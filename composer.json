@@ -1,0 +1,43 @@
+{
+  "name": "maithemewp/mai-engine",
+  "description": "The required plugin to power Mai themes",
+  "type": "wordpress-plugin",
+  "license": "gpl-2.0-or-later",
+  "require": {
+    "php": ">=5.6",
+    "yahnis-elsts/plugin-update-checker": "^4.8"
+  },
+  "require-dev": {
+    "php": "^5.6|^7",
+    "brain/monkey": "^2.2",
+    "dealerdirect/phpcodesniffer-composer-installer": "v0.5.0",
+    "phpcompatibility/phpcompatibility-wp": "2.0.0",
+    "phpunit/phpunit": "~5.7.9",
+    "squizlabs/php_codesniffer": "^3.4.2",
+    "wp-coding-standards/wpcs": "2.1.0",
+    "wp-phpunit/wp-phpunit": "^5.1"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "BizBudding\\MaiEngine\\Tests\\Unit\\": "tests/php/unit/",
+      "BizBudding\\MaiEngine\\Tests\\Integration\\": "tests/php/integration/"
+    }
+  },
+  "config": {
+    "preferred-install": {
+      "*": "dist"
+    },
+    "sort-order": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "scripts": {
+    "stylelint": "stylelint './assets/scss/**/*.scss' --fix",
+    "i18n": "wp i18n make-pot ./ ./assets/lang/mai-engine.pot",
+    "install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
+    "phpcs": "phpcs --standard=WordPress --extensions=php -p -s lib config templates tests functions.php",
+    "phpcbf": "phpcbf --standard=WordPress --extensions=php -p lib config templates tests functions.php",
+    "test-unit": "composer dump && vendor/bin/phpunit --testsuite unit --color=always",
+    "test-integration": "composer dump && vendor/bin/phpunit --testsuite integration --configuration tests/phpunit/integration/phpunit.xml.dist --color=always"
+  }
+}
