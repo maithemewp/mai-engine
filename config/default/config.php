@@ -197,8 +197,8 @@ return [
 				},
 			],
 			[
-				'handle' => mai_handle() . '-global',
-				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/global.css',
+				'handle' => mai_handle() . '-critical',
+				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/critical.css',
 			],
 			[
 				'handle' => mai_handle() . '-header',
