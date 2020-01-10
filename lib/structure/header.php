@@ -40,7 +40,7 @@ add_filter( 'genesis_markup_title-area_close', 'mai_title_area_hook', 10, 1 );
 function mai_title_area_hook( $close_html ) {
 	if ( $close_html ) {
 		ob_start();
-		do_action( 'genesis_after_title_area' );
+		do_action( 'mai_after_title_area' );
 		$close_html = $close_html . ob_get_clean();
 	}
 

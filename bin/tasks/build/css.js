@@ -107,13 +107,13 @@ module.exports = function() {
 			.pipe( bulksass() )
 			.pipe( plumber() )
 			.pipe( rename( fileName() + '.css' ) )
-			.pipe( gulpif( true, sourcemap.init() ) )
+			.pipe( gulpif( config.css.sourcemaps, sourcemap.init() ) )
 			.pipe( sass.sync( {
 				outputStyle: 'compressed',
 				includePaths: [].concat( normalize ).concat( themeConf() )
 			} ) )
 			.pipe( postcss( getPostProcessors( fileName() ) ) )
-			.pipe( gulpif( true, sourcemap.write( './' ) ) )
+			.pipe( gulpif( config.css.sourcemaps, sourcemap.write( './' ) ) )
 			.pipe( gulp.dest( fileDest() ) )
 			.pipe( notify( { message: config.messages.css } ) );
 	} );

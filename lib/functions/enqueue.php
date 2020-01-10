@@ -48,6 +48,8 @@ function mai_enqueue_assets() {
 		$editor    = isset( $asset['editor'] ) ? $asset['editor'] : false;
 		$condition = isset( $asset['condition'] ) ? $asset['condition'] : '__return_true';
 		$localize  = isset( $asset['localize'] ) ? $asset['localize'] : [];
+		$hook      = isset( $asset['hook'] ) ? $asset['hook'] : false;
+		$priority  = isset( $asset['priority'] ) ? $asset['priority'] : 10;
 		$last_arg  = 'style' === $type ? $media : $in_footer;
 		$register  = "wp_register_$type";
 		$enqueue   = "wp_enqueue_$type";
@@ -55,7 +57,19 @@ function mai_enqueue_assets() {
 		if ( is_admin() && $editor || ! is_admin() && ! $editor || 'both' === $editor ) {
 			if ( is_callable( $condition ) && $condition() ) {
 				$register( $handle, $src, $deps, $ver, $last_arg );
-				$enqueue( $handle );
+
+				if ( ! $hook ) {
+					$enqueue( $handle );
+				} else {
+					add_action( $hook, function () use ( $handle, $src, $media ) {
+						printf(
+							'<link rel="stylesheet" id="%s" href="%s" type="text/css" media="%s">',
+							$handle,
+							$src,
+							$media
+						);
+					}, $priority );
+				}
 
 				if ( ! empty( $localize ) ) {
 					wp_localize_script( $handle, $localize['name'], $localize['data'] );

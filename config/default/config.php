@@ -197,8 +197,46 @@ return [
 				},
 			],
 			[
-				'handle' => mai_handle(),
-				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/all.css',
+				'handle' => mai_handle() . '-global',
+				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/global.css',
+			],
+			[
+				'handle' => mai_handle() . '-header',
+				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/header.css',
+				'hook'   => 'genesis_before_header',
+			],
+			[
+				'handle'   => mai_handle() . '-desktop',
+				'src'      => mai_url() . 'assets/css/' . mai_active_theme() . '/desktop.css',
+				'media'    => '(min-width:896px)',
+				'hook'     => 'mai_after_title_area',
+				'priority' => 5,
+			],
+			[
+				'handle' => mai_handle() . '-hero',
+				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/hero.css',
+				'hook'   => 'genesis_before_content_sidebar_wrap',
+				'priority' => 5,
+			],
+			[
+				'handle' => mai_handle() . '-content',
+				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/content.css',
+				'hook'   => 'genesis_before_content',
+			],
+			[
+				'handle' => mai_handle() . '-comments',
+				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/comments.css',
+				'hook'   => 'genesis_before_comments',
+			],
+			[
+				'handle' => mai_handle() . '-sidebar',
+				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/sidebar.css',
+				'hook'   => 'genesis_before_sidebar_widget_area',
+			],
+			[
+				'handle' => mai_handle() . '-footer',
+				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/footer.css',
+				'hook'   => 'genesis_before_footer',
 			],
 		],
 		'remove' => [

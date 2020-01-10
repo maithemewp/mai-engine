@@ -57,14 +57,14 @@ function mai_hero_setup() {
 	add_filter( 'genesis_attr_entry', 'mai_hero_entry_attr' );
 	add_filter( 'body_class', 'mai_hero_body_class' );
 
-	add_action( 'genesis_hero_section', 'genesis_do_posts_page_heading' );
-	add_action( 'genesis_hero_section', 'genesis_do_date_archive_title' );
-	add_action( 'genesis_hero_section', 'genesis_do_taxonomy_title_description' );
-	add_action( 'genesis_hero_section', 'genesis_do_author_title_description' );
-	add_action( 'genesis_hero_section', 'genesis_do_cpt_archive_title_description' );
+	add_action( 'mai_hero_section', 'genesis_do_posts_page_heading' );
+	add_action( 'mai_hero_section', 'genesis_do_date_archive_title' );
+	add_action( 'mai_hero_section', 'genesis_do_taxonomy_title_description' );
+	add_action( 'mai_hero_section', 'genesis_do_author_title_description' );
+	add_action( 'mai_hero_section', 'genesis_do_cpt_archive_title_description' );
 	add_action( 'genesis_archive_title_descriptions', 'mai_do_archive_headings_intro_text', 12, 3 );
-	add_action( 'genesis_hero_section', 'mai_hero_title', 10 );
-	add_action( 'genesis_hero_section', 'mai_hero_excerpt', 20 );
+	add_action( 'mai_hero_section', 'mai_hero_title', 10 );
+	add_action( 'mai_hero_section', 'mai_hero_excerpt', 20 );
 	add_action( 'be_title_toggle_remove', 'mai_hero_title_toggle' );
 	add_action( 'genesis_before_content', 'mai_hero_remove_404_title' );
 	add_action( 'genesis_before_content_sidebar_wrap', 'mai_hero_display' );
@@ -275,7 +275,7 @@ function mai_hero_display() {
 		]
 	);
 
-	do_action( 'genesis_hero_section' );
+	do_action( 'mai_hero_section' );
 
 	genesis_markup(
 		[

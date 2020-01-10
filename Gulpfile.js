@@ -59,6 +59,7 @@ toolkit.extendConfig(
 		},
 		css: {
 			basefontsize: 10,
+			sourcemaps: false,
 			remmediaquery: false,
 			remreplace: true,
 			cssnano: {
