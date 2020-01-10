@@ -1,0 +1,24 @@
+////
+/// Custom properties.
+///
+/// @group  Generic
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+:root {
+	--color-white: #{$color-white};
+	--color-black: #{$color-black};
+	--color-primary: #{$color-primary};
+	--color-secondary: #{$color-secondary};
+	--color-success: #{$color-success};
+	--color-info: #{$color-info};
+	--color-warning: #{$color-warning};
+	--color-error: #{$color-error};
+	--color-heading: #{$color-heading};
+	--color-body: #{$color-body};
+	--color-border: #{$color-border};
+	--color-background: #{$color-background};
+	--color-muted: #{$color-muted};
+	--color-overlay: #{$color-overlay};
+}

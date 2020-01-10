@@ -1,0 +1,151 @@
+////
+/// Typography.
+///
+/// @group  Elements
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Body.
+////
+
+body {
+	height: 100%;
+	margin: 0;
+	color: $color-body;
+	background-color: $color-white;
+	font-family: $base-font-family;
+	font-size: $base-font-size;
+	font-weight: $base-font-weight;
+	line-height: $base-line-height;
+
+	@include mq(m) {
+		font-size: $base-font-size * $major-second;
+	}
+}
+
+////
+/// Links.
+////
+
+a {
+	color: $link-color;
+	text-decoration: $link-text-decoration;
+
+	@include transition();
+
+	@include hover-focus {
+		color: $link-color-hover;
+		text-decoration: $link-text-decoration-hover;
+	}
+}
+
+////
+/// Paragraphs.
+////
+
+p {
+	margin: $paragraph_margin;
+
+	&:empty {
+		display: none;
+	}
+}
+
+////
+/// Horizontal Rules.
+////
+
+hr {
+	clear: both;
+	margin: $horizontal-rule-margin;
+	padding: $horizontal-rule-padding;
+	border: 0;
+	border-bottom: $horizontal-rule-border;
+	border-collapse: collapse;
+}
+
+////
+/// Strong.
+////
+
+b,
+strong {
+	font-weight: $strong-font-weight;
+}
+
+////
+/// Emphasis.
+////
+
+em,
+i {
+	font-style: $emphasis-font-style;
+}
+
+////
+/// Blockquotes.
+////
+
+blockquote {
+	border-left: $blockquote-border-left;
+	background-color: $blockquote-background-color;
+	font-style: $blockquote-font-style;
+
+	@include margin($blockquote-margin);
+	@include padding($blockquote-padding);
+
+	p {
+		padding: $blockquote-paragraph-padding;
+
+		&:last-of-type {
+			margin-bottom: 0;
+		}
+	}
+}
+
+////
+/// Citations.
+////
+
+cite {
+	display: block;
+	font-family: $cite-font-family;
+	font-weight: $cite-font-weight;
+	font-style: $cite-font-style;
+}
+
+////
+/// Code.
+////
+
+code,
+kbd,
+samp {
+	padding: $code-padding;
+	border-radius: $code-border-radius;
+	background-color: $code-background-color;
+	font-family: $code-font-family;
+	font-size: $code-font-size;
+}
+
+pre {
+	overflow-x: scroll;
+	padding: $preformatted-padding;
+	border-radius: $code-border-radius;
+	background-color: $code-background-color;
+	font-family: $code-font-family;
+
+	code,
+	kbd,
+	samp {
+		padding: 0;
+		background-color: transparent;
+		font-size: $code-font-size;
+	}
+}
+
+code.hljs {
+	background: transparent;
+}

@@ -1,0 +1,25 @@
+////
+/// Avatar component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+$avatar-float: left !default;
+$avatar-margin-right: $spacing-m !default;
+$avatar-border-radius: $base-border-radius !default;
+
+////
+/// Avatar.
+////
+
+.avatar {
+	float: $avatar-float;
+	margin-right: $avatar-margin-right;
+	border-radius: $avatar-border-radius;
+}

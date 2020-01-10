@@ -1,0 +1,46 @@
+////
+/// Media.
+///
+/// @group  Elements
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Media Objects.
+////
+
+embed,
+iframe,
+object,
+video,
+.wp-caption {
+	width: 100%;
+	max-width: 100%;
+}
+
+////
+/// Image.
+////
+
+img {
+	max-width: 100%;
+	height: auto;
+	vertical-align: top;
+}
+
+////
+/// Figure.
+////
+
+figure {
+	margin: 0;
+}
+
+////
+/// Iframe.
+////
+
+iframe {
+	border: 0;
+}

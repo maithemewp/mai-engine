@@ -1,0 +1,34 @@
+////
+/// Before footer component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+$before-footer-padding: $spacing-xl 0 $spacing-xl - $gutter !default;
+$before-footer-border-bottom: $base-border !default;
+$before-footer-background-color: $color-background !default;
+$before-footer-color: $color-body !default;
+$before-footer-title-font-size: $font-size-h5 !default;
+
+////
+/// Before footer.
+////
+
+.before-footer {
+	position: relative;
+	padding: $before-footer-padding;
+	border-bottom: $before-footer-border-bottom;
+	color: $before-footer-color;
+	background-color: $before-footer-background-color;
+
+	// Widget title
+	.widget-title {
+		font-size: $before-footer-title-font-size;
+	}
+}

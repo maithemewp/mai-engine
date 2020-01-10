@@ -1,0 +1,37 @@
+////
+/// Site header object.
+///
+/// @group  Objects
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+$site-header-background-color: $color-white !default;
+$site-header-border-bottom: $base-border !default;
+
+////
+/// Site Header.
+////
+
+.site-header {
+	position: relative;
+	z-index: 10;
+	border-bottom: $site-header-border-bottom;
+	background-color: $site-header-background-color;
+
+	// Wrap.
+	.wrap {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+
+		@include mq(m) {
+			flex-wrap: nowrap;
+		}
+	}
+}

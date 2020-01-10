@@ -1,0 +1,56 @@
+////
+/// Sticky header component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+$sticky-header-background-color: $color-white !default;
+$sticky-header-border-bottom: $base-border !default;
+$sticky-title-area-padding: $spacing-m null !default;
+
+////
+/// Sticky Header.
+////
+
+.sticky-header {
+
+	// Site Header.
+	.site-header {
+		position: fixed;
+
+		@include transition;
+	}
+
+	// Hero Section.
+	.hero-section {
+
+		.wrap {
+			margin-top: $spacing-xxl;
+		}
+	}
+}
+
+////
+/// Sticky.
+////
+
+.sticky {
+
+	// Site Header.
+	&.site-header {
+		border-bottom: $sticky-header-border-bottom;
+		background-color: $sticky-header-background-color;
+	}
+
+	// Title Area.
+	.title-area {
+
+		@include padding($sticky-title-area-padding);
+	}
+}

@@ -1,0 +1,101 @@
+////
+/// Pagination component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+$pagination-font-family: $base-font-family !default;
+$pagination-font-size: smaller !default;
+$pagination-padding: $gutter 0 !default;
+$pagination-border-top: $base-border !default;
+$pagination-background-color: $color-background !default;
+$pagination-link-color: $color-body !default;
+$pagination-link-color-hover: $color-primary !default;
+
+////
+/// Pagination.
+////
+
+.pagination {
+	width: 100%;
+	padding: $pagination-padding;
+	border-top: $pagination-border-top;
+	background-color: $pagination-background-color;
+	font-family: $pagination-font-family;
+	font-size: $pagination-font-size;
+
+	@include mq(m) {
+		margin-top: auto;
+	}
+
+	// Wrap.
+	.wrap {
+		justify-content: center;
+	}
+
+	// List.
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		margin-bottom: 0;
+		list-style-type: none;
+	}
+
+	// List item.
+	li {
+		margin-right: $spacing-s;
+	}
+
+	// Active item.
+	.active {
+	}
+
+	// Previous item.
+	&-prev {
+	}
+
+	// Next item.
+	&-next {
+	}
+
+	a {
+		color: $pagination-link-color;
+
+		@include hover-focus {
+			color: $pagination-link-color-hover;
+		}
+	}
+}
+
+////
+/// Adjacent Posts Nav.
+////
+
+.adjacent-entry-pagination {
+
+	// Narrow Content.
+	.narrow-content & {
+
+		.wrap {
+
+			@include mq(m) {
+				width: $layout-width-content;
+			}
+		}
+	}
+
+	// Wrap.
+	.wrap {
+		justify-content: space-between;
+
+		> div {
+			max-width: $one-half;
+		}
+	}
+}

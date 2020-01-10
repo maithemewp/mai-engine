@@ -1,0 +1,38 @@
+////
+/// Breakpoint variables.
+///
+/// @group  Settings
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+$mq-base: 896px !default;
+$mq-increment: 128px !default;
+
+$mq-xxxxs: $mq-base - ($mq-increment * 5) !default;
+$mq-xxxs: $mq-base - ($mq-increment * 4) !default;
+$mq-xxs: $mq-base - ($mq-increment * 3) !default;
+$mq-xs: $mq-base - ($mq-increment * 2) !default;
+$mq-s: $mq-base - $mq-increment !default;
+$mq-m: $mq-base !default;
+$mq-l: $mq-base + $mq-increment !default;
+$mq-xl: $mq-base + ($mq-increment * 2) !default;
+$mq-xxl: $mq-base + ($mq-increment * 3) !default;
+$mq-xxxl: $mq-base + ($mq-increment * 4) !default;
+$mq-xxxxl: $mq-base + ($mq-increment * 5) !default;
+
+$mq-media-type: all;
+
+$mq-breakpoints: (
+	xxxxs: $mq-xxxxs,
+	xxxs: $mq-xxxs,
+	xxs: $mq-xxs,
+	xs: $mq-xs,
+	s: $mq-s,
+	m: $mq-m,
+	l: $mq-l,
+	xl: $mq-xl,
+	xxl: $mq-xxl,
+	xxxl: $mq-xxxl,
+	xxxxl: $mq-xxxxl,
+) !default;

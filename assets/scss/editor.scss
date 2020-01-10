@@ -1,0 +1,44 @@
+////
+/// Editor stylesheet.
+///
+/// This is the primary editor stylesheet. It is used for the WordPress 5.0+
+/// block editor (Gutenberg) and is not intended for older versions of the
+/// WordPress edit screen.
+///
+/// @group  Styles
+/// @author BizBudding <team@bizbudding.com>
+/// @link   http://sass-guidelin.es/#main-file
+////
+////
+/// Default settings.
+////
+@import "../../node_modules/bourbon/core/bourbon";
+@import "settings/_index";
+@import "tools/_index";
+////
+/// Theme variables.
+////
+@import "config";
+////
+/// Base elements.
+////
+@import "elements/_index";
+////
+/// Base.
+////
+@import "../../assets/scss/elements/typography";
+@import "../../assets/scss/elements/button";
+@import "../../assets/scss/components/blocks/_index";
+
+////
+/// Overrides.
+////
+
+body {
+	height: auto;
+}
+
+.editor-post-title__block .editor-post-title__input {
+
+	@include heading();
+}

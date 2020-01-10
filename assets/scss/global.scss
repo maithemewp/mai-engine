@@ -1,0 +1,26 @@
+////
+/// Global styles.
+///
+/// This is the primary stylesheet.
+///
+/// @group  Styles
+/// @author BizBudding <team@bizbudding.com>
+/// @link   http://sass-guidelin.es/#main-file
+////
+// Default settings.
+@import "../../node_modules/bourbon/core/bourbon";
+@import "settings/_index";
+@import "tools/_index";
+// Theme variables.
+@import "config";
+// Generic styles.
+@import "generic/_index";
+
+// Base elements.
+@import "elements/_index";
+
+// Components.
+@import "components/containers/_index";
+
+// Utility classes.
+@import "utilities/_index";

@@ -1,0 +1,40 @@
+////
+/// Widget component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+$widget-title-margin-bottom: $spacing-m !default;
+$widget-title-font-size: $font-size-h5 !default;
+
+////
+/// Widget.
+////
+
+.widget {
+	margin-bottom: $gutter;
+
+	// Widget wrapper.
+	&-wrap {
+	}
+
+	// Widget title.
+	&-title {
+		margin-bottom: $widget-title-margin-bottom;
+		font-size: $widget-title-font-size;
+	}
+
+	// Paragraph.
+	p {
+
+		&:last-of-type {
+			margin-bottom: 0;
+		}
+	}
+}

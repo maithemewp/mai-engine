@@ -1,0 +1,57 @@
+////
+/// Typography variables.
+///
+/// @group  Settings
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+// Font sizes
+$base-font-size: 1.6rem !default;
+
+$font-size-h1: 2.3em !default;
+$font-size-h2: 1.8em !default;
+$font-size-h3: 1.5em !default;
+$font-size-h4: 1.3em !default;
+$font-size-h5: 1.2em !default;
+$font-size-h6: 1.1em !default;
+
+$font-sizes: (
+	h1: $font-size-h1,
+	h2: $font-size-h2,
+	h3: $font-size-h3,
+	h4: $font-size-h4,
+	h5: $font-size-h5,
+	h6: $font-size-h6,
+) !default;
+
+// Font families
+$base-font-stack: system-ui, -apple-system, blinkmacsystemfont, helvetica, arial, sans-serif;
+$base-font-family: $base-font-stack !default;
+
+$font-family-heading: $base-font-family !default;
+$font-family-code: $font-stack-consolas !default;
+
+// Font weight
+$font-weight-hairline: 100 !default;
+$font-weight-extralight: 200 !default;
+$font-weight-light: 300 !default;
+$font-weight-regular: 400 !default;
+$font-weight-medium: 500 !default;
+$font-weight-semibold: 600 !default;
+$font-weight-bold: 700 !default;
+$font-weight-extrabold: 800 !default;
+$font-weight-black: 900 !default;
+
+$base-font-weight: $font-weight-regular !default;
+$font-weight-heading: $font-weight-semibold !default;
+
+// Line height
+$base-line-height: modular-scale(0, $golden) !default;
+
+$line-height-heading: modular-scale(-1, $golden) !default;
+
+// Letter spacing
+$base-letter-spacing: normal !default;
+
+$letter-spacing-heading: $base-letter-spacing !default;

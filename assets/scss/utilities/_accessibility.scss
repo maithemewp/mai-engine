@@ -1,0 +1,60 @@
+////
+/// Accessibility classes.
+///
+/// @group  Utilities
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Screen Readers.
+////
+
+.screen-reader-shortcut,
+.screen-reader-text,
+.screen-reader-text span {
+
+	@include hide-visually;
+
+	&:active,
+	&:focus {
+
+		@include hide-visually(unhide);
+
+		position: absolute;
+		padding: $spacing-s;
+		color: $color-white;
+		background-color: $color-muted;
+		text-decoration: none;
+	}
+}
+
+////
+/// More Link.
+////
+
+.more-link {
+	position: relative;
+}
+
+////
+/// Skip Links.
+////
+
+.genesis-skip-link {
+	margin: 0;
+
+	li {
+		width: 0;
+		height: 0;
+		list-style: none;
+	}
+}
+
+////
+/// Focus.
+////
+
+:focus {
+	outline: $base-border;
+}

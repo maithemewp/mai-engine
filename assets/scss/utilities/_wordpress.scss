@@ -1,0 +1,26 @@
+////
+/// WordPress classes.
+///
+/// @group  Utilities
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Post Edit Link.
+////
+
+.post-edit-link {
+	display: none;
+}
+
+////
+/// Admin Bar.
+////
+
+#wpadminbar {
+
+	.sticky-header & {
+		position: fixed;
+	}
+}

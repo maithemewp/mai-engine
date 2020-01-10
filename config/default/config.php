@@ -190,19 +190,15 @@ return [
 			],
 			[
 				'handle'    => mai_handle(),
-				'src'       => mai_url() . 'assets/js/min/main.min.js',
-				'deps'      => [ 'jquery' ],
+				'src'       => mai_url() . 'assets/js/min/global.min.js',
+				'deps'      => [],
 				'condition' => function () {
 					return ! genesis_is_amp();
 				},
 			],
 			[
-				'handle' => mai_handle() . DIRECTORY_SEPARATOR . mai_active_theme(),
-				'src'    => mai_url() . 'config/' . mai_active_theme() . '/config.css',
-			],
-			[
 				'handle' => mai_handle(),
-				'src'    => mai_url() . 'assets/css/main.css',
+				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/all.css',
 			],
 		],
 		'remove' => [
@@ -361,3 +357,4 @@ return [
 		],
 	],
 ];
+

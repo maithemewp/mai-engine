@@ -1,0 +1,37 @@
+////
+/// Nav Primary component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+$nav-primary-padding-mobile: $spacing-m 5vw !default;
+$nav-primary-background-color-mobile: $color-white !default;
+
+////
+/// Nav Primary.
+////
+
+.nav-primary {
+	order: 2;
+	display: none;
+	width: 100vw;
+	margin: 0 -5vw;
+	padding: $nav-primary-padding-mobile;
+	background-color: $nav-primary-background-color-mobile;
+
+	@include mq(m) {
+		display: flex !important;
+		position: relative;
+		top: auto;
+		width: auto;
+		margin: 0 0 0 auto;
+		padding: 0;
+		background: 0;
+	}
+}

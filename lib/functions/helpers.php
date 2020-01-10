@@ -142,7 +142,7 @@ function mai_version() {
 function mai_config( $sub_config = 'default' ) {
 	$config  = [];
 	$default = require mai_dir() . "config/default/config.php";
-	$active  = mai_active_theme( false );
+	$active  = mai_active_theme();
 	$theme   = mai_dir() . "config/$active/config.php";
 
 	if ( is_readable( $theme ) ) {
@@ -168,14 +168,16 @@ function mai_config( $sub_config = 'default' ) {
  *
  * @since 0.1.0
  *
- * @param bool $suffix Include the pro suffix.
- *
  * @return string
  */
-function mai_active_theme( $suffix = true ) {
+function mai_active_theme() {
 	static $theme = null;
 
 	if ( is_null( $theme ) ) {
+
+		if ( ! $theme ) {
+			$theme = get_theme_support( 'mai' );
+		}
 
 		if ( ! $theme ) {
 			$theme = genesis_get_theme_handle();
@@ -202,7 +204,7 @@ function mai_active_theme( $suffix = true ) {
 		}
 	}
 
-	return $suffix ? $theme : str_replace( '-pro', '', $theme );
+	return str_replace( 'mai-', '', $theme );
 }
 
 /**
@@ -217,7 +219,7 @@ function mai_child_themes() {
 	$files        = glob( mai_dir() . 'config/*', GLOB_ONLYDIR );
 
 	foreach ( $files as $file ) {
-		$child_themes[] = basename( $file, '.php' ) . '-pro';
+		$child_themes[] = 'mai-' . basename( $file, '.php' );
 	}
 
 	return $child_themes;
@@ -234,7 +236,7 @@ function mai_default_colors() {
 	static $colors = null;
 
 	if ( is_null( $colors ) ) {
-		$theme  = mai_active_theme( false );
+		$theme  = mai_active_theme();
 		$file   = mai_dir() . "config/$theme/config.json";
 		$colors = is_readable( $file ) ? json_decode( file_get_contents( $file ), true ) : [];
 	}

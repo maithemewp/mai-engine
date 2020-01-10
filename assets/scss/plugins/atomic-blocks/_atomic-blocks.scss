@@ -1,0 +1,32 @@
+////
+/// Atomic blocks.
+///
+/// @group  Plugins
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+////
+/// Atomic Blocks.
+////
+
+.ab {
+
+	// Button.
+	&-button {
+
+		@include button;
+	}
+
+	// Container.
+	&-container-image-wrap {
+
+		.ab-container-image {
+			margin: 0;
+		}
+	}
+}

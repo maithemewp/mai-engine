@@ -1,0 +1,76 @@
+////
+/// Hero section component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+$hero-section-padding-mobile: $spacing-l 0 !default;
+$hero-section-color: $color-body !default;
+$hero-section-padding-desktop: $spacing-xl 0 !default;
+$hero-section-border-bottom: $base-border !default;
+$hero-heading-font-size-mobile: $font-size-h1 !default;
+$hero-heading-font-size-desktop: $font-size-h1 !default;
+$hero-heading-color: $color-body !default;
+$hero-heading-margin-bottom: 0 !default;
+$hero-text-margin-top: $spacing-m !default;
+
+////
+/// Placeholder.
+////
+
+@mixin hero-section {
+	display: flex;
+	width: 100%;
+	padding: $hero-section-padding-mobile;
+	border-bottom: $hero-section-border-bottom;
+	color: $hero-section-color;
+	background-position: center;
+	background-size: cover;
+	text-align: center;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+
+	@include overlay;
+
+	@include mq(m) {
+
+		padding: $hero-section-padding-desktop;
+	}
+
+	.wrap {
+		position: relative;
+		justify-content: center;
+	}
+
+	h1 {
+		width: 100%;
+		margin-bottom: $hero-heading-margin-bottom;
+		color: $hero-heading-color;
+		font-size: $hero-heading-font-size-mobile;
+
+		@include mq(m) {
+			font-size: $hero-heading-font-size-desktop;
+		}
+	}
+
+	p {
+		margin-top: $hero-text-margin-top;
+		margin-bottom: 0;
+	}
+}
+
+////
+/// Hero Section.
+////
+
+.hero-section {
+
+	@include hero-section;
+}

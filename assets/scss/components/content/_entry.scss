@@ -1,0 +1,166 @@
+////
+/// Entry component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+$entry-archive-margin-bottom: $gutter !default;
+$entry-archive-border-radius: $base-border-radius !default;
+$entry-archive-background-color: $color-white !default;
+$entry-archive-border: $base-border !default;
+$entry-archive-title-font-size: $font-size-h4 !default;
+$entry-meta-font-size: smaller !default;
+$entry-image-border-radius: $base-border-radius $base-border-radius 0 0 !default;
+$entry-wrap-padding: $gap !default;
+
+////
+/// Entry.
+////
+
+.entry {
+
+	// Entry header.
+	&-header {
+	}
+
+	// Entry title.
+	&-title {
+	}
+
+	// Entry title link.
+	&-title-link {
+	}
+
+	// Entry time.
+	&-time {
+	}
+
+	// Entry author.
+	&-author {
+	}
+
+	// Entry author link.
+	&-author-link {
+	}
+
+	// Entry author name.
+	&-author-name {
+	}
+
+	// Entry comments link
+	&-comments-link {
+	}
+
+	// Entry meta.
+	&-meta {
+		font-size: $entry-meta-font-size;
+	}
+
+	// Entry image link.
+	&-image-link {
+		display: block;
+
+		img {
+			min-width: 100%;
+			border-radius: $entry-image-border-radius;
+		}
+	}
+
+	// Entry content.
+	&-content {
+
+		p {
+
+			&:last-of-type {
+
+			}
+		}
+	}
+
+	// Entry footer.
+	&-footer {
+
+		p {
+
+			&:last-of-type {
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	// Entry categories.
+	&-categories {
+	}
+
+	// Entry tags.
+	&-tags {
+	}
+
+	// Entry wrap.
+	&-wrap {
+		padding: $entry-wrap-padding;
+	}
+}
+
+////
+/// Archive.
+////
+
+.is-archive,
+.featured-content {
+
+	// Entry.
+	.entry {
+		margin-bottom: $entry-archive-margin-bottom;
+		border: $entry-archive-border;
+		border-radius: $entry-archive-border-radius;
+		background-color: $entry-archive-background-color;
+
+		&:last-of-type {
+
+			@include mq($until: xs) {
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	// Entry title.
+	.entry-title {
+		font-size: $entry-archive-title-font-size;
+
+		a {
+			color: $color-heading;
+
+			@include hover-focus {
+				color: $link-color-hover;
+				text-decoration: $link-text-decoration-hover;
+			}
+		}
+	}
+}
+
+////
+/// Single.
+////
+
+.is-single {
+
+	// Entry.
+	.entry {
+		margin-bottom: $gutter;
+	}
+
+	// Entry content.
+	.entry-content {
+
+		#{$all-headings} {
+			margin-top: $gap;
+		}
+	}
+}

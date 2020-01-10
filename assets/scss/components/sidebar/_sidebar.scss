@@ -1,0 +1,55 @@
+////
+/// Sidebar component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+$sidebar-margin-mobile: $spacing-m null !default;
+$sidebar-margin-desktop: $spacing-l null !default;
+$sidebar-entry-title-margin-bottom: $spacing-xxs !default;
+$sidebar-entry-title-font-size: $base-font-size !default;
+$sidebar-entry-image-max-width: $spacing-xxl !default;
+
+////
+/// Sidebar.
+////
+
+.sidebar {
+
+	@include margin($sidebar-margin-mobile);
+
+	@include mq(m) {
+
+		@include margin($sidebar-margin-desktop);
+	}
+
+	// When Visible.
+	.content-sidebar &,
+	.sidebar-content & {
+
+		@include mq(m) {
+			width: $layout-width-sidebar;
+		}
+	}
+
+	// Entry.
+	.entry {
+
+		@include clearfix;
+
+		&-title {
+			margin-bottom: $sidebar-entry-title-margin-bottom;
+			font-size: $sidebar-entry-title-font-size;
+		}
+
+		&-image {
+			max-width: $sidebar-entry-image-max-width;
+		}
+	}
+}

@@ -77,6 +77,9 @@ function mai_load_files() {
 		// Composer.
 		'../vendor/autoload',
 
+		// Dependencies.
+		'../vendor/advanced-custom-fields/advanced-custom-fields-pro/acf',
+
 		// Functions.
 		'functions/helpers',
 		'functions/autoload',
@@ -102,11 +105,10 @@ function mai_load_files() {
 		'structure/wrap',
 
 		// Plugins.
-		'plugins/gravity-forms',
 		'plugins/woocommerce',
 
 		// Admin.
-		'admin/notices',
+		'admin/settings',
 
 		// Customizer.
 		'customize/register',
@@ -124,3 +126,6 @@ function mai_load_files() {
 		}
 	}
 }
+
+
+

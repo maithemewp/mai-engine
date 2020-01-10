@@ -1,0 +1,45 @@
+////
+/// Before header component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+$before-header-padding: $spacing-s 0 !default;
+$before-header-border-bottom: $base-border !default;
+$before-header-background-color: $color-background !default;
+$before-header-font-size: small !default;
+$before-header-line-height: 1 !default;
+
+////
+/// Before Header.
+////
+
+.before-header {
+	padding: $before-header-padding;
+	border-bottom: $before-header-border-bottom;
+	background-color: $before-header-background-color;
+	font-size: $before-header-font-size;
+	line-height: $before-header-line-height;
+
+	// Wrap.
+	.wrap {
+		align-items: center;
+	}
+
+	// Widgets.
+	.widget {
+		margin-bottom: 0;
+	}
+
+	p,
+	button,
+	.button {
+		margin-bottom: 0;
+	}
+}

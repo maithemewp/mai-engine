@@ -1,0 +1,48 @@
+////
+/// Header search component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+////
+/// Form.
+////
+
+.header-search-form {
+	display: none;
+	position: relative;
+	height: 100%;
+	align-items: center;
+
+	.search-form-input {
+		width: $mq-xxs;
+		margin: auto;
+
+		@include position(absolute, auto 0 auto auto);
+	}
+
+	.search-form-submit {
+		display: none;
+	}
+}
+
+////
+/// Button.
+////
+
+.header-search-toggle {
+	padding: $spacing-xs;
+	background-color: transparent;
+	color: $menu-item-link-color;
+
+	@include hover-focus {
+		background-color: transparent;
+		color: $menu-item-link-color;
+	}
+}

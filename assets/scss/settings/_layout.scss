@@ -1,0 +1,12 @@
+////
+/// Layout variables.
+///
+/// @group  Settings
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+$layout-width: $mq-xl !default;
+$layout-width-sidebar: 30rem !default; // 300px Google Ads
+$layout-width-content: calc(#{$layout-width} - (#{$layout-width-sidebar} + #{$spacing-xl})) !default;
+$layout-max-width-content: calc(100% - (#{$layout-width-sidebar} + #{$spacing-xl})) !default;

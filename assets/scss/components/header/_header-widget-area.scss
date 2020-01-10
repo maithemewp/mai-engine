@@ -1,0 +1,38 @@
+////
+/// Header right component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+////
+/// Header Widget Area.
+////
+
+.header-widget-area {
+	margin-right: $gap;
+	margin-left: auto;
+
+	@include mq($until: xxs) {
+		display: none;
+	}
+
+	@include mq(m) {
+		margin: 0;
+		order: 3;
+	}
+
+	// Widget.
+	.widget {
+		margin-bottom: 0;
+
+		@include mq(m) {
+			margin-left: $gutter;
+		}
+	}
+}

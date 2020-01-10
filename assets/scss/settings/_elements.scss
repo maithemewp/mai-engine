@@ -1,0 +1,33 @@
+////
+/// Element variables.
+///
+/// @group  Settings
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+$link-color: $color-primary !default;
+$link-text-decoration: none !default;
+$link-color-hover: $color-primary !default;
+$link-text-decoration-hover: underline !default;
+$paragraph_margin: 0 0 $spacing-m !default;
+$horizontal-rule-margin: 0 0 $spacing-m !default;
+$horizontal-rule-padding: $spacing-m 0 0 !default;
+$horizontal-rule-border: $base-border !default;
+$strong-font-weight: $font-weight-bold !default;
+$emphasis-font-style: italic !default;
+$blockquote-margin: $spacing-m auto !default;
+$blockquote-padding: $gap !default;
+$blockquote-border-left: $base-border !default;
+$blockquote-background-color: transparent !default;
+$blockquote-font-style: italic !default;
+$blockquote-paragraph-padding: $spacing-s 0 !default;
+$cite-font-weight: bolder !default;
+$cite-font-style: normal !default;
+$cite-font-family: $font-family-heading !default;
+$code-padding: 0.05em 0.5em !default;
+$code-border-radius: $base-border-radius !default;
+$code-background-color: $color-background !default;
+$code-font-family: $font-family-code !default;
+$code-font-size: 90% !default;
+$preformatted-padding: $spacing-m !default;

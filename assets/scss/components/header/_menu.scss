@@ -1,0 +1,118 @@
+////
+/// Menu component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+$menu-font-family: $base-font-family !default;
+$menu-font-weight: $base-font-weight !default;
+$menu-font-size-desktop: smaller !default;
+$menu-line-height: 1 !default;
+$menu-item-padding-mobile: $spacing-m 0 !default;
+$menu-item-padding-desktop: $spacing-m $spacing-s * $golden !default;
+$menu-item-margin-mobile: null auto !default;
+$menu-item-margin-desktop: 0 !default;
+$menu-item-link-color: $color-body !default;
+$menu-item-link-color-hover: $color-primary !default;
+
+////
+/// Menu.
+////
+
+.menu {
+	margin: 0;
+	font-family: $menu-font-family;
+	font-weight: $menu-font-weight;
+	line-height: $menu-line-height;
+	list-style-type: none;
+
+	@include mq(m) {
+		display: flex;
+		border: 0;
+		font-size: $menu-font-size-desktop;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		align-items: center;
+	}
+
+	// Menu item.
+	&-item {
+		display: flex;
+		position: relative;
+		padding: $menu-item-padding-mobile;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+
+		@include margin($menu-item-margin-mobile);
+
+		@include mq(m) {
+			display: block;
+			margin: $menu-item-margin-desktop;
+			padding: $menu-item-padding-desktop;
+
+			&:last-of-type {
+				padding-right: 0;
+			}
+
+			&:first-of-type {
+				padding-left: 0;
+			}
+		}
+
+		&-has-children {
+
+			> a > span {
+
+				&:after {
+
+					@include mq(m) {
+						display: inline-block;
+						margin-bottom: 0.1em;
+						margin-left: 0.3em;
+						content: "";
+
+						@include transition;
+						@include triangle("down", $spacing-xs, $spacing-xxs, $menu-item-link-color);
+					}
+				}
+			}
+		}
+
+		&.button {
+			padding: 0;
+
+			@include mq(m) {
+				margin-left: $spacing-m;
+			}
+		}
+	}
+
+	// Link.
+	a {
+		display: block;
+		width: 100%;
+		color: $menu-item-link-color;
+		text-decoration: none;
+	}
+
+	// Links hover.
+	a:hover,
+	a:focus,
+	.current-menu-item > a {
+		color: $menu-item-link-color-hover;
+
+		span {
+
+			&:after {
+				border-top-color: $menu-item-link-color-hover;
+			}
+		}
+	}
+}

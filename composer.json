@@ -3,14 +3,31 @@
   "description": "The required plugin to power Mai themes",
   "type": "wordpress-plugin",
   "license": "gpl-2.0-or-later",
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "advanced-custom-fields/advanced-custom-fields-pro",
+        "version": "5.8.7",
+        "type": "library",
+        "dist": {
+          "type": "zip",
+          "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download"
+        }
+      }
+    }
+  ],
   "require": {
     "php": ">=5.6",
-    "yahnis-elsts/plugin-update-checker": "^4.8"
+    "yahnis-elsts/plugin-update-checker": "^4.8",
+    "advanced-custom-fields/advanced-custom-fields-pro": "*"
   },
   "require-dev": {
     "php": "^5.6|^7",
     "brain/monkey": "^2.2",
+    "composer/installers": "^1.0",
     "dealerdirect/phpcodesniffer-composer-installer": "v0.5.0",
+    "philippbaschke/acf-pro-installer": "^1.0",
     "phpcompatibility/phpcompatibility-wp": "2.0.0",
     "phpunit/phpunit": "~5.7.9",
     "squizlabs/php_codesniffer": "^3.4.2",

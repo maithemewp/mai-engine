@@ -1,0 +1,69 @@
+////
+/// Terms filter component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+$terms-filter-alignment: center !default;
+$terms-filter-padding: $gutter 0 0 !default;
+$terms-filter-background-color: transparent !default;
+$terms-filter-border-bottom: 1px solid transparent !default;
+$terms-filter-link-padding: 0 $spacing-s !default;
+$terms-filter-link-background-color: transparent !default;
+$terms-filter-link-color: $color-body !default;
+$terms-filter-link-color-hover: $color-primary !default;
+$terms-filter-link-font-family: $base-font-family !default;
+$terms-filter-link-font-size: smaller !default;
+
+////
+/// Terms Filter.
+////
+
+.terms-filter {
+	display: flex;
+	width: 100%;
+	padding: $terms-filter-padding;
+	border-bottom: $terms-filter-border-bottom;
+	background-color: $terms-filter-background-color;
+	justify-content: $terms-filter-alignment;
+
+	// Link.
+	a {
+		padding: $terms-filter-link-padding;
+		color: $terms-filter-link-color;
+		background-color: $terms-filter-link-background-color;
+		font-family: $terms-filter-link-font-family;
+		font-size: $terms-filter-link-font-size;
+
+		@include hover-focus {
+			color: $terms-filter-link-color-hover;
+		}
+	}
+
+	// Active.
+	.active {
+		color: $terms-filter-link-color-hover;
+	}
+}
+
+////
+/// Entry.
+////
+
+.entry {
+
+	@include transition;
+
+	// Hidden.
+	&.hide {
+		position: absolute;
+		opacity: 0;
+		transform: scale(0.1);
+	}
+}

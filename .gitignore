@@ -1,2 +1,7 @@
-node_modules
 *.lock
+.env
+node_modules
+vendor/bin
+vendor/symfony
+vendor/philippbaschke
+vendor/vlucas

@@ -1,0 +1,45 @@
+////
+/// Site inner object.
+///
+/// @group  Objects
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+$site-inner-margin-top-no-hero-mobile: $spacing-xl * $perfect-fifth !default;
+$site-inner-margin-top-no-hero-desktop: $spacing-xxl !default;
+
+////
+/// Site Inner.
+////
+
+.site-inner {
+
+	@include mq(m) {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+	}
+
+	// No Hero Section.
+	.no-hero-section.transparent-header &,
+	.no-hero-section.sticky-header & {
+		margin-top: $site-inner-margin-top-no-hero-mobile;
+
+		@include mq(m) {
+			margin-top: $site-inner-margin-top-no-hero-desktop;
+		}
+	}
+
+	.no-hero-section.genesis-title-hidden & {
+		margin-top: 0;
+
+		@include mq(m) {
+			margin-top: 0;
+		}
+	}
+}

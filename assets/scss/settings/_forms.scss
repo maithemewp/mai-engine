@@ -1,0 +1,31 @@
+////
+/// Form variables.
+///
+/// @group  Settings
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+$all-text-inputs: append($all-text-inputs, "select");
+$label-margin: 0 0 $spacing-s !default;
+$label-font-size: smaller !default;
+$label-font-weight: $font-weight-heading !default;
+$input-margin: 0 0 $spacing-s !default;
+$input-padding: 1em !default;
+$input-font-size: $base-font-size !default;
+$input-color: $color-body !default;
+$input-background-color: $color-white !default;
+$input-border: $base-border !default;
+$input-border-width: $base-border-width !default;
+$input-border-color: $base-border-color !default;
+$input-border-radius: $base-border-radius !default;
+$input-focus-border-color: $color-primary !default;
+$input-placeholder-color: $color-muted !default;
+$input-disabled-border-color: $color-border !default;
+$input-disabled-background-color: $color-muted !default;
+$textarea-line-height: $base-line-height !default;
+$select-height: calc((#{$base-font-size} / #{$major-second}) + #{$base-font-size} * 2) !default;
+$select-padding: 0 null !default;
+$legend-margin: 0 0 $spacing-s !default;
+$legend-padding: 0 !default;
+$legend-font-size: $font-size-h5 !default;

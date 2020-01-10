@@ -1,0 +1,92 @@
+////
+/// Footer widgets component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+$footer-widgets-padding: $spacing-xl 0 $spacing-xl - $gutter !default;
+$footer-widgets-background-color: transparent !default;
+$footer-widgets-color: $color-body !default;
+$footer-widgets-font-size: $base-font-size !default;
+$footer-widgets-title-color: $color-heading !default;
+$footer-widgets-title-font-size: $font-size-h5 !default;
+$footer-widgets-link-color: $color-primary !default;
+$footer-widgets-link-color-hover: $color-primary !default;
+$footer-widgets-input-color: $input-color !default;
+$footer-widgets-input-background-color: $input-background-color !default;
+$footer-widgets-menu-columns: 2 !default;
+$footer-widgets-menu-font-size: $base-font-size !default;
+$footer-widgets-menu-font-family: $base-font-family !default;
+$footer-widgets-menu-font-weight: $base-font-weight !default;
+$footer-widgets-menu-item-padding: 0 !default;
+$footer-widgets-menu-item-margin: 0 0 $spacing-m !default;
+
+////
+/// Footer Widgets.
+////
+
+.footer-widgets {
+	padding: $footer-widgets-padding;
+	color: $footer-widgets-color;
+	background-color: $footer-widgets-background-color;
+	font-size: $footer-widgets-font-size;
+
+	// Title.
+	.widget-title {
+		color: $footer-widgets-title-color;
+		font-size: $footer-widgets-title-font-size;
+	}
+
+	// Link.
+	a {
+		color: $footer-widgets-link-color;
+
+		@include hover-focus {
+			color: $footer-widgets-link-color-hover;
+		}
+	}
+
+	// Inputs.
+	#{$all-text-inputs} {
+		color: $footer-widgets-input-color;
+		background-color: $footer-widgets-input-background-color;
+	}
+
+	// Menu.
+	.menu {
+		display: block;
+		font-family: $footer-widgets-menu-font-family;
+		font-size: $footer-widgets-menu-font-size;
+		font-weight: $footer-widgets-menu-font-weight;
+		columns: $footer-widgets-menu-columns;
+	}
+
+	// Menu item.
+	.menu-item {
+		margin: $footer-widgets-menu-item-margin;
+		padding: $footer-widgets-menu-item-padding;
+	}
+}
+
+////
+/// Footer widget area.
+////
+
+.footer-widget-area {
+	width: 100%;
+
+	@include mq(m) {
+		flex: 1;
+		margin-left: $gutter;
+
+		&:first-of-type {
+			margin-left: 0;
+		}
+	}
+}

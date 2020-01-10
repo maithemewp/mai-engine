@@ -1,0 +1,50 @@
+////
+/// Footer credits component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+$footer-credits-padding-top: $gutter !default;
+$footer-credits-padding-bottom: $gutter !default;
+$footer-credits-font-size: smaller !default;
+$footer-credits-background-color: transparent !default;
+$footer-credits-color: $color-body !default;
+$footer-credits-link-color: $color-primary !default;
+$footer-credits-link-color-hover: $color-primary !default;
+
+////
+/// Footer Credits.
+////
+
+.footer-credits {
+	padding-top: $footer-credits-padding-top;
+	padding-bottom: $footer-credits-padding-bottom;
+	color: $footer-credits-color;
+	background-color: $footer-credits-background-color;
+	font-size: $footer-credits-font-size;
+
+	.footer-widgets + & {
+		padding-top: 0;
+	}
+
+	// Paragraphs.
+	p {
+		width: 100%;
+		margin-bottom: 0;
+	}
+
+	// Links.
+	a {
+		color: $footer-credits-link-color;
+
+		@include hover-focus {
+			color: $footer-credits-link-color-hover;
+		}
+	}
+}

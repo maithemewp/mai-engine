@@ -1,0 +1,83 @@
+////
+/// Modal component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+$modal-padding: $gutter !default;
+$modal-border-radius: $base-border-radius !default;
+$modal-background-color: $color-white !default;
+$modal-box-shadow: 0 0 0 100vw rgba($color-heading, 0.2), $base-box-shadow !default;
+$modal-text-align: center !default;
+$modal-text-margin-bottom: $spacing-m !default;
+
+////
+/// Modal.
+////
+
+.modal {
+	display: none;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+	z-index: 999;
+	padding: $modal-padding;
+	border-radius: $modal-border-radius;
+	opacity: 0;
+	background-color: $modal-background-color;
+	box-shadow: $modal-box-shadow;
+	text-align: $modal-text-align;
+
+	@include position(fixed, 10vh 10vw);
+
+	@include mq(m) {
+
+		@include position(fixed, 20vh 20vw);
+	}
+
+	// Paragraphs.
+	p {
+		margin-top: 0;
+		margin-bottom: $modal-text-margin-bottom;
+	}
+}
+
+////
+/// Close Button.
+////
+
+.close {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0;
+	color: inherit;
+	background-color: transparent;
+	font-size: 0;
+
+	@include size($base-font-size);
+	@include size($gap);
+
+	@include hover-focus {
+		color: inherit;
+		background-color: transparent;
+	}
+
+	&:before {
+		font-size: $base-font-size;
+
+		@include icon("\f00d", 700);
+	}
+
+	.modal & {
+
+		@include position(absolute, $gap $gap null null);
+	}
+}

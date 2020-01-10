@@ -1,0 +1,63 @@
+////
+/// Table.
+///
+/// @group  Elements
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+$table-margin: $spacing-s 0 !default;
+$table-border-radius: $base-border-radius !default;
+$table-padding: $spacing-s !default;
+$table-border: $base-border !default;
+$table-header-background-color: $color-background !default;
+$table-header-font-size: smaller !default;
+$table-header-font-weight: $font-weight-heading !default;
+
+////
+/// Table.
+////
+
+table {
+	width: 100%;
+	margin: $table-margin;
+	border-radius: $table-border-radius;
+	border-spacing: 0;
+	border-collapse: collapse;
+	word-break: break-all;
+}
+
+////
+/// Table Cells.
+////
+
+th,
+td {
+	padding: $table-padding;
+	border: $table-border;
+	border-right: 0;
+	border-left: 0;
+	text-align: left;
+
+	&:first-of-type {
+		border-left: $table-border;
+	}
+
+	&:last-of-type {
+		border-right: $table-border;
+	}
+}
+
+////
+/// Headers.
+////
+
+th {
+	background-color: $table-header-background-color;
+	font-size: $table-header-font-size;
+	font-weight: $table-header-font-weight;
+}

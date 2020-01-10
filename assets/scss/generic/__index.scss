@@ -1,0 +1,14 @@
+////
+/// Generic imports.
+///
+/// This is the first point that real CSS is output. Resets, normalization,
+/// custom properties, etc. are best handled here. These are the base
+/// styles that other styles will build upon.
+///
+/// @group  Generic
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+@import "custom-properties";
+@import "../../../node_modules/node-normalize-scss/normalize";
+@import "box-sizing";

@@ -1,0 +1,89 @@
+////
+/// Content component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+$content-margin-mobile: $spacing-l null !default;
+$content-margin-desktop: $spacing-xl null !default;
+
+////
+/// Content.
+////
+
+.content {
+	width: 100%;
+
+	@include margin($content-margin-mobile);
+
+	@include mq(m) {
+
+		@include margin($content-margin-desktop);
+	}
+
+	// With Sidebar.
+	.content-sidebar &,
+	.sidebar-content & {
+
+		@include mq(m) {
+			width: $layout-width-content;
+			max-width: $layout-max-width-content;
+		}
+	}
+
+	// Narrow Layout.
+	.narrow-content & {
+
+		@include margin(null auto);
+
+		@include mq(m) {
+			width: $layout-width-content;
+		}
+	}
+
+	// Sidebar First.
+	.sidebar-content & {
+
+		@include mq(m) {
+			order: 1;
+		}
+	}
+
+	// Full Width Content.
+	.full-width-content & {
+	}
+
+	// Archives.
+	.is-archive & {
+		display: flex;
+		flex-wrap: wrap;
+		width: 100%;
+	}
+
+	// With Heading Block.
+	.no-hero-section &,
+	.has-heading-block & {
+		margin: 0 auto;
+	}
+
+	// Front Page Content.
+	.front-page & {
+		width: 100%;
+		margin: 0 auto;
+
+		@include mq(m) {
+			width: 100%;
+		}
+	}
+
+	// Block Template.
+	.template-blocks & {
+		margin: 0 auto;
+	}
+}
