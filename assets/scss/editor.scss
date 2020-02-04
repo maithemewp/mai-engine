@@ -9,36 +9,68 @@
 /// @author BizBudding <team@bizbudding.com>
 /// @link   http://sass-guidelin.es/#main-file
 ////
+
 ////
 /// Default settings.
 ////
+
 @import "../../node_modules/bourbon/core/bourbon";
 @import "settings/_index";
 @import "tools/_index";
+
 ////
 /// Theme variables.
 ////
+
 @import "config";
+
 ////
-/// Base elements.
+/// Elements.
 ////
-@import "elements/_index";
+
+@import "elements/html";
+
 ////
-/// Base.
+/// Blocks.
 ////
-@import "../../assets/scss/elements/typography";
-@import "../../assets/scss/elements/button";
-@import "../../assets/scss/blocks/_index";
+
+@import "blocks/_index";
 
 ////
 /// Overrides.
 ////
 
-body {
+div.editor-styles-wrapper {
+
+	@include body;
+
 	height: auto;
+	overflow-x: initial;
+
+	@import "elements/typography";
+	@import "elements/heading";
+	@import "elements/list";
 }
 
 .editor-post-title__block .editor-post-title__input {
 
 	@include heading();
+}
+
+/**
+ * Change editor width.
+ *
+ * @link https://developer.wordpress.org/block-editor/developers/themes/theme-support/#changing-the-width-of-the-editor
+ */
+
+.wp-block {
+	max-width: $mq-s;
+
+	&[data-align="wide"] {
+		max-width: $mq-l;
+	}
+
+	&[data-align="full"] {
+		max-width: none;
+	}
 }

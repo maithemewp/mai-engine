@@ -165,11 +165,11 @@ mai_get_variable( 'color-primary' );
 
 This will check the currently active child themes config for the variable, and if it's not found will use the default config variable. 
     
-#### SCSS variables**
+#### SCSS variables
 
 While JSON variables can be used in SCSS, not all SCSS variables need to be defined in the JSON config. The majority of variables used throughout the SCSS framework are defined in the `assets/scss/settings` directory.
     
-#### CSS Custom Properties**
+#### CSS Custom Properties
     
 CSS Custom Properties are different to SCSS variables in that they can be changed at runtime, unlike SCSS variables which are compiled prior to deployment. That being said, Custom Properties work with SCSS, as seen in this project. 
 

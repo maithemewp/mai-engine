@@ -40,13 +40,18 @@ toolkit.extendConfig(
 			css: [ '**/*.css', '!node_modules/**' ],
 			js: [ './assets/js/**/*.js', '!node_modules/**' ],
 			json: [ '**/*.json', '!node_modules/**' ],
-			i18n: './assets/lang/'
+			i18n: './assets/lang/',
+			svg: [
+				'./node_modules/@fortawesome/fontawesome-free/svgs/regular',
+				'./node_modules/@fortawesome/fontawesome-free/svgs/solid'
+			]
 		},
 		dest: {
 			i18npo: './assets/lang/',
 			i18nmo: './assets/lang/',
 			images: './assets/img/',
-			js: './assets/js/min/'
+			js: './assets/js/min/',
+			svg: './assets/svg/'
 		},
 		js: {
 			'global': [

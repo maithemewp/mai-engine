@@ -53,6 +53,19 @@ function mai_remove_genesis_theme_supports() {
 	add_theme_support( 'genesis-breadcrumbs' );
 }
 
+register_activation_hook( dirname( __DIR__ ) . '/mai-engine.php', 'mai_short_circuit_acf' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function mai_short_circuit_acf() {
+	deactivate_plugins( '/advanced-custom-fields/acf.php' );
+}
+
+
 add_action( 'genesis_setup', 'mai_load_files', 90 );
 /**
  * Load plugin files.
@@ -79,6 +92,7 @@ function mai_load_files() {
 
 		// Dependencies.
 		'../vendor/advanced-custom-fields/advanced-custom-fields-pro/acf',
+		'../vendor/wpackagist-plugin/advanced-custom-fields-font-awesome/acf-font-awesome',
 
 		// Functions.
 		'functions/helpers',
@@ -103,6 +117,12 @@ function mai_load_files() {
 		'structure/sidebar',
 		'structure/single',
 		'structure/wrap',
+
+		// Shortcodes.
+		'shortcodes/icon',
+
+		// Blocks.
+		'blocks/icon',
 
 		// Plugins.
 		'plugins/woocommerce',

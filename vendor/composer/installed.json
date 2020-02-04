@@ -310,6 +310,27 @@
         ]
     },
     {
+        "name": "wpackagist-plugin/advanced-custom-fields-font-awesome",
+        "version": "dev-trunk",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "svn",
+            "url": "https://plugins.svn.wordpress.org/advanced-custom-fields-font-awesome/",
+            "reference": "trunk"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://downloads.wordpress.org/plugin/advanced-custom-fields-font-awesome.zip?timestamp=1564849030"
+        },
+        "require": {
+            "composer/installers": "~1.0"
+        },
+        "time": "2019-08-03T16:17:10+00:00",
+        "type": "wordpress-plugin",
+        "installation-source": "dist",
+        "homepage": "https://wordpress.org/plugins/advanced-custom-fields-font-awesome/"
+    },
+    {
         "name": "yahnis-elsts/plugin-update-checker",
         "version": "v4.8.1",
         "version_normalized": "4.8.1.0",

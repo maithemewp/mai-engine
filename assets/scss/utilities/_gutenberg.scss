@@ -47,3 +47,14 @@
 .has-text-align-right {
 	text-align: right;
 }
+
+////
+/// Text Alignment.
+////
+
+@each $mq-breakpoints, $font-size-value in $font-sizes {
+
+	.has-#{ $font-size-name }-font-size {
+		font-size: #{ $font-size-value };
+	}
+}

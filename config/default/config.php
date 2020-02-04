@@ -201,6 +201,11 @@ return [
 				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/critical.css',
 			],
 			[
+				'handle' => mai_handle() . '-editor',
+				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/editor.css',
+				'editor' => true,
+			],
+			[
 				'handle' => mai_handle() . '-header',
 				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/header.css',
 				'hook'   => 'genesis_before_header',
@@ -213,9 +218,9 @@ return [
 				'priority' => 5,
 			],
 			[
-				'handle' => mai_handle() . '-hero',
-				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/hero.css',
-				'hook'   => 'genesis_before_content_sidebar_wrap',
+				'handle'   => mai_handle() . '-hero',
+				'src'      => mai_url() . 'assets/css/' . mai_active_theme() . '/hero.css',
+				'hook'     => 'genesis_before_content_sidebar_wrap',
 				'priority' => 5,
 			],
 			[

@@ -1,6 +1,9 @@
 .wp-block-group {
 
 	&__inner-container {
+		width: 90%;
+		max-width: $layout-width;
 
+		@include margin(null auto);
 	}
 }

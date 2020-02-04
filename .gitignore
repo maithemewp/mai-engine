@@ -1,7 +1,15 @@
-*.lock
+.DS_Store
+.git
 .env
+*.lock
+*.zip
 node_modules
 vendor/bin
 vendor/symfony
 vendor/philippbaschke
 vendor/vlucas
+vendor/fortawesome/font-awesome/*
+!vendor/fortawesome/font-awesome/svgs
+vendor/fortawesome/font-awesome/svgs/brands
+vendor/advanced-custom-fields/advanced-custom-fields/lang
+

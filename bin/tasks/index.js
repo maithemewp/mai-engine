@@ -10,10 +10,11 @@ module.exports = {
 	'build:rtl': [ require( './build/rtl' ) ],
 	'build:js': [ require( './build/js' ) ],
 	'build:images': [ require( './build/images' ) ],
+	'build:svg': [ require( './build/svg' ) ],
 	'build:i18n:potgen': [ require( './build/i18n' ) ],
 	'build:i18n:potomo': [ require( './build/potomo' ) ],
 	'build:i18n': [ [ 'build:i18n:potgen', 'build:i18n:potomo' ] ],
-	'build': [ [ 'build:css', 'build:js', 'build:images', 'build:i18n' ] ],
+	'build': [ [ 'build:css', 'build:js', 'build:images', 'build:svg', 'build:i18n' ] ],
 	'build:styleguide': [ require( './build/styleguide' ) ],
 
 	'lint:scss': [ require( './lint/stylelint-scss' ) ],
