@@ -10,13 +10,13 @@
 /// Variables.
 ////
 
-$footer-credits-padding-top: $gutter !default;
-$footer-credits-padding-bottom: $gutter !default;
+$footer-credits-padding-top: var(--gutter) !default;
+$footer-credits-padding-bottom: var(--gutter) !default;
 $footer-credits-font-size: smaller !default;
 $footer-credits-background-color: transparent !default;
-$footer-credits-color: $color-body !default;
-$footer-credits-link-color: $color-primary !default;
-$footer-credits-link-color-hover: $color-primary !default;
+$footer-credits-color: var(--color-body) !default;
+$footer-credits-link-color: var(--color-primary) !default;
+$footer-credits-link-color-hover: var(--color-primary) !default;
 
 ////
 /// Footer Credits.

@@ -15,26 +15,32 @@
 ////
 
 @import "../../node_modules/bourbon/core/bourbon";
-@import "settings/_index";
-@import "tools/_index";
+@import "abstracts/_index";
 
 ////
 /// Theme variables.
 ////
 
 @import "config";
+@import "variables";
 
 ////
 /// Elements.
 ////
 
-@import "elements/html";
+@import "base/html";
 
 ////
 /// Blocks.
 ////
 
-@import "blocks/_index";
+@import "components/blocks/_index";
+
+////
+/// Utilities.
+////
+
+@import "utilities/_index";
 
 ////
 /// Overrides.
@@ -47,9 +53,9 @@ div.editor-styles-wrapper {
 	height: auto;
 	overflow-x: initial;
 
-	@import "elements/typography";
-	@import "elements/heading";
-	@import "elements/list";
+	@import "base/typography";
+	@import "base/heading";
+	@import "base/list";
 }
 
 .editor-post-title__block .editor-post-title__input {
@@ -64,10 +70,10 @@ div.editor-styles-wrapper {
  */
 
 .wp-block {
-	max-width: $mq-s;
+	max-width: var(--screen-s);
 
 	&[data-align="wide"] {
-		max-width: $mq-l;
+		max-width: var(--screen-l);
 	}
 
 	&[data-align="full"] {

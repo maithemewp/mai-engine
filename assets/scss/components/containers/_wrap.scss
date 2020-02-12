@@ -10,7 +10,7 @@
 /// Variables.
 ////
 
-$wrap-max-width: $layout-width !default;
+$wrap-max-width: var(--layout-width) !default;
 
 ////
 /// Wrap.

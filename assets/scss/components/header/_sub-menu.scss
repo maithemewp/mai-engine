@@ -10,22 +10,22 @@
 /// Variables.
 ////
 
-$sub-menu-padding: $spacing-s null !default;
-$sub-menu-width: $spacing-xxxl * $major-third !default;
-$sub-menu-border: $base-border !default;
+$sub-menu-padding: var(--spacing-s) null !default;
+$sub-menu-width: calc(var(--spacing-xxxl) * #{$major-third}) !default;
+$sub-menu-border: var(--border) !default;
 $sub-menu-border-radius: 0 !default;
-$sub-menu-background-color: $color-white !default;
-$sub-menu-transition: opacity $base-transition-duration $base-transition-timing-function !default;
+$sub-menu-background-color: var(--color-white) !default;
+$sub-menu-transition: opacity var(--transition-duration) var(--transition-timing-function) !default;
 $sub-menu-font-size-desktop: inherit !default;
-$sub-menu-link-padding: $spacing-s $spacing-m !default;
-$sub-menu-link-color: $color-body !default;
-$sub-menu-link-color-hover: $color-primary !default;
-$sub-menu-toggle-icon-background-color: $color-body !default;
+$sub-menu-link-padding: var(--spacing-s) var(--spacing-m) !default;
+$sub-menu-link-color: var(--color-body) !default;
+$sub-menu-link-color-hover: var(--color-primary) !default;
+$sub-menu-toggle-icon-background-color: var(--color-body) !default;
 $sub-menu-toggle-margin: 0 !default;
 $sub-menu-toggle-padding: 0 !default;
 $sub-menu-toggle-background-color: transparent !default;
 $sub-menu-toggle-line-height: 0 !default;
-$sub-menu-toggle-size: $spacing-l !default;
+$sub-menu-toggle-size: var(--spacing-l) !default;
 
 ////
 /// Sub menu.
@@ -35,7 +35,7 @@ $sub-menu-toggle-size: $spacing-l !default;
 	display: none;
 	top: 100%;
 	width: 100%;
-	margin: $spacing-m $spacing-m 0;
+	margin: var(--spacing-m) var(--spacing-m) 0;
 	list-style-type: none;
 
 	@include mq(m) {
@@ -43,7 +43,7 @@ $sub-menu-toggle-size: $spacing-l !default;
 		position: absolute;
 		left: -999rem;
 		width: $sub-menu-width;
-		margin: 0 0 0 -$spacing-m;
+		margin: 0 0 0 calc(0 - var(--spacing-m));
 		border: $sub-menu-border;
 		border-radius: $sub-menu-border-radius;
 		opacity: 0;
@@ -56,8 +56,8 @@ $sub-menu-toggle-size: $spacing-l !default;
 		&:before {
 			content: "";
 
-			@include position(absolute, -$spacing-xxs null null $spacing-l);
-			@include triangle("up", $spacing-s, $spacing-xxs, $color-white);
+			@include position(absolute, calc(0 - var(--spacing-xxs)) null null var(--spacing-l));
+			//@include triangle("up", var(--spacing-s), var(--spacing-xxs), var(--color-white));
 		}
 	}
 
@@ -127,9 +127,10 @@ $sub-menu-toggle-size: $spacing-l !default;
 		padding: $sub-menu-toggle-padding;
 		background-color: $sub-menu-toggle-background-color;
 		line-height: $sub-menu-toggle-line-height;
+		height: $sub-menu-toggle-size;
+		width: $sub-menu-toggle-size;
 
-		@include position(absolute, $spacing-s 0 null null);
-		@include size($sub-menu-toggle-size);
+		@include position(absolute, var(--spacing-s) 0 null null);
 
 		@include mq(m) {
 			display: none;
@@ -140,20 +141,20 @@ $sub-menu-toggle-size: $spacing-l !default;
 		}
 
 		&:focus {
-			outline: $base-border;
+			outline: var(--border);
 		}
 
 		&:before {
 			content: "";
 
-			@include triangle("down", 1rem, 0.5rem, $sub-menu-toggle-icon-background-color);
+			//@include triangle("down", 1rem, 0.5rem, $sub-menu-toggle-icon-background-color);
 		}
 
 		&.activated {
 
 			&:before {
 
-				@include triangle("up", 1rem, 0.5rem, $sub-menu-toggle-icon-background-color);
+				//@include triangle("up", 1rem, 0.5rem, $sub-menu-toggle-icon-background-color);
 			}
 		}
 	}

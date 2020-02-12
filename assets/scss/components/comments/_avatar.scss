@@ -11,8 +11,8 @@
 ////
 
 $avatar-float: left !default;
-$avatar-margin-right: $spacing-m !default;
-$avatar-border-radius: $base-border-radius !default;
+$avatar-margin-right: var(--spacing-m);
+$avatar-border-radius: var(--base-border-radius) !default;
 
 ////
 /// Avatar.

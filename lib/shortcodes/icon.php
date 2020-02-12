@@ -6,36 +6,33 @@
  * @since 1.0.0
  *
  * @param $atts
- * @param $id
  *
  * @return array
  */
-function mai_icon_shortcode_atts( $id = 1 ) {
+function mai_icon_shortcode_atts() {
 	return [
-		'class'            => 'mai-icon-' . $id,
 		'style'            => 'regular',
 		'icon'             => 'address-book',
 		'display'          => 'flex',
 		'align'            => 'center',
 		'size'             => '40',
-		'color_icon'       => mai_default_color( 'primary' ),
+		'color_icon'       => mai_get_color( 'primary' ),
 		'color_background' => '',
 		'color_border'     => '',
-		'margin_top'       => '10',
-		'margin_right'     => '10',
-		'margin_left'      => '10',
-		'margin_bottom'    => '10',
-		'padding_top'      => '10',
-		'padding_right'    => '10',
-		'padding_left'     => '10',
-		'padding_bottom'   => '10',
+		'color_shadow'     => '',
+		'margin_top'       => '',
+		'margin_right'     => '',
+		'margin_left'      => '',
+		'margin_bottom'    => '',
+		'padding_top'      => '',
+		'padding_right'    => '',
+		'padding_left'     => '',
+		'padding_bottom'   => '',
 		'border_width'     => '',
 		'border_radius'    => '',
 		'x_offset'         => '',
 		'y_offset'         => '',
-		'spread'           => '',
 		'blur'             => '',
-		'inset'            => '',
 	];
 }
 
@@ -50,15 +47,17 @@ add_shortcode( 'mai_icon', 'mai_icon_shortcode' );
  * @return string
  */
 function mai_icon_shortcode( $atts ) {
-	static $id = 1;
+	static $id = 0;
+
+	$id ++;
 
 	$atts = shortcode_atts(
-		mai_icon_shortcode_atts( $id++ ),
+		mai_icon_shortcode_atts(),
 		$atts,
 		'mai_icon'
 	);
 
-	$file = mai_dir() . 'assets/svg/' . $atts['style'] . '/' . $atts['icon'] . '.svg';
+	$file = mai_get_dir() . 'vendor/fortawesome/font-awesome/svgs/' . $atts['style'] . '/' . $atts['icon'] . '.svg';
 
 	if ( ! file_exists( $file ) ) {
 		return $file;
@@ -78,7 +77,12 @@ function mai_icon_shortcode( $atts ) {
 			$atts['padding_left'],
 		] ) . 'px;';
 
-	$shadow = '';
+	$shadow = implode( ' ', [
+		$atts['x_offset'] . 'px',
+		$atts['y_offset'] . 'px',
+		$atts['blur'] . 'px',
+		$atts['color_shadow'],
+	] );
 
 	$css = '';
 	$css .= $atts['display'] ? 'display:' . $atts['display'] . ';' : '';
@@ -89,21 +93,31 @@ function mai_icon_shortcode( $atts ) {
 	$css .= 'padding:' . $padding;
 
 	$css = sprintf(
-		'.%s{%s}',
-		$atts['class'],
+		'.mai-icon-%s{%s}',
+		$id,
 		$css
 	);
 
+	$svg = '-webkit-filter: drop-shadow(' . $shadow . ');';
+	$svg .= 'filter: drop-shadow(' . $shadow . ')';
+
+	$css .= sprintf(
+		'.mai-icon-%s svg{%s}',
+		$id,
+		$svg
+	);
+
 	return sprintf(
-		'<style>%s</style><span class="mai-icon %s">%s</span>',
+		'<style>%s</style><span class="mai-icon mai-icon-%s">%s</span>',
 		mai_minify_css( $css ),
-		$atts['class'],
+		$id,
 		str_replace(
 			'><path',
 			sprintf(
-				' fill="%s" width="%s"><path',
+				' fill="%s" width="%s" class="align%s"><path',
 				$atts['color_icon'],
-				$atts['size']
+				$atts['size'],
+				$atts['align']
 			),
 			file_get_contents( $file )
 		)

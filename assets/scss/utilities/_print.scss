@@ -11,7 +11,7 @@
 	*,
 	*:before,
 	*:after {
-		color: $color-heading !important;
+		color: var(--color-heading) !important;
 		background: transparent !important;
 		box-shadow: none !important;
 		text-shadow: none !important;
@@ -62,7 +62,7 @@
 
 	blockquote,
 	pre {
-		border: $base-border;
+		border: var(--border);
 		page-break-inside: avoid;
 	}
 
@@ -107,7 +107,7 @@
 
 	.site-inner {
 		position: relative;
-		top: -#{$spacing-xl};
+		top: calc(0 - var(--spacing-xl));
 		padding-top: 0;
 	}
 

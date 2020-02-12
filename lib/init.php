@@ -65,7 +65,6 @@ function mai_short_circuit_acf() {
 	deactivate_plugins( '/advanced-custom-fields/acf.php' );
 }
 
-
 add_action( 'genesis_setup', 'mai_load_files', 90 );
 /**
  * Load plugin files.
@@ -95,12 +94,14 @@ function mai_load_files() {
 		'../vendor/wpackagist-plugin/advanced-custom-fields-font-awesome/acf-font-awesome',
 
 		// Functions.
+		'functions/utilities',
 		'functions/helpers',
 		'functions/autoload',
 		'functions/setup',
 		'functions/enqueue',
 		'functions/markup',
 		'functions/header',
+		'functions/images',
 		'functions/widgets',
 		'functions/defaults',
 		'functions/onboarding',
@@ -125,6 +126,7 @@ function mai_load_files() {
 		'blocks/icon',
 
 		// Plugins.
+		'plugins/acf',
 		'plugins/woocommerce',
 
 		// Admin.

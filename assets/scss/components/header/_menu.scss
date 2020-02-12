@@ -10,16 +10,16 @@
 /// Variables.
 ////
 
-$menu-font-family: $base-font-family !default;
-$menu-font-weight: $base-font-weight !default;
+$menu-font-family: var(--font-family-body) !default;
+$menu-font-weight: var(--font-weight-body) !default;
 $menu-font-size-desktop: smaller !default;
 $menu-line-height: 1 !default;
-$menu-item-padding-mobile: $spacing-m 0 !default;
-$menu-item-padding-desktop: $spacing-m $spacing-s * $golden !default;
+$menu-item-padding-mobile: var(--spacing-m) 0 !default;
+$menu-item-padding-desktop: var(--spacing-m) calc(var(--spacing-s) * #{$golden}) !default;
 $menu-item-margin-mobile: null auto !default;
 $menu-item-margin-desktop: 0 !default;
-$menu-item-link-color: $color-body !default;
-$menu-item-link-color-hover: $color-primary !default;
+$menu-item-link-color: var(--color-body) !default;
+$menu-item-link-color-hover: var(--color-primary) !default;
 
 ////
 /// Menu.
@@ -79,7 +79,7 @@ $menu-item-link-color-hover: $color-primary !default;
 						content: "";
 
 						@include transition;
-						@include triangle("down", $spacing-xs, $spacing-xxs, $menu-item-link-color);
+						//@include triangle("down", var(--spacing-xs), var(--spacing-xxs), $menu-item-link-color);
 					}
 				}
 			}
@@ -89,7 +89,7 @@ $menu-item-link-color-hover: $color-primary !default;
 			padding: 0;
 
 			@include mq(m) {
-				margin-left: $spacing-m;
+				margin-left: var(--spacing-m);
 			}
 		}
 	}

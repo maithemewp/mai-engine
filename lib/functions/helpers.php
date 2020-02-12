@@ -13,253 +13,6 @@
 defined( 'ABSPATH' ) || die;
 
 /**
- * Returns the plugin directory.
- *
- * @since 0.1.0
- *
- * @return string
- */
-function mai_dir() {
-	static $dir = null;
-
-	if ( is_null( $dir ) ) {
-		$dir = trailingslashit( dirname( dirname( __DIR__ ) ) );
-	}
-
-	return $dir;
-}
-
-/**
- * Returns the plugin URL.
- *
- * @since 0.1.0
- *
- * @return string
- */
-function mai_url() {
-	static $url = null;
-
-	if ( is_null( $url ) ) {
-		$url = trailingslashit( plugins_url( basename( mai_dir() ) ) );
-	}
-
-	return $url;
-}
-
-/**
- * Returns an array of plugin data from the main plugin file.
- *
- * @since 0.1.0
- *
- * @param string $header Optionally return one key.
- *
- * @return array|string|null
- */
-function mai_plugin_data( $header = '' ) {
-	static $data = null;
-
-	if ( is_null( $data ) ) {
-		$data = get_file_data( mai_dir() . 'mai-engine.php', [
-			'name'        => 'Plugin Name',
-			'version'     => 'Version',
-			'plugin-uri'  => 'Plugin URI',
-			'text-domain' => 'Text Domain',
-			'description' => 'Description',
-			'author'      => 'Author',
-			'author-uri'  => 'Author URI',
-			'domain-path' => 'Domain Path',
-			'network'     => 'Network',
-		], 'plugin' );
-	}
-
-	if ( array_key_exists( $header, $data ) ) {
-		return $data[ $header ];
-	}
-
-	return $data;
-}
-
-/**
- * Returns the plugin name.
- *
- * @since 0.1.0
- *
- * @return string
- */
-function mai_name() {
-	static $name = null;
-
-	if ( is_null( $name ) ) {
-		$name = mai_plugin_data( 'name' );
-	}
-
-	return $name;
-}
-
-/**
- * Returns the plugin handle/text domain.
- *
- * @since 0.1.0
- *
- * @return string
- */
-function mai_handle() {
-	static $handle = null;
-
-	if ( is_null( $handle ) ) {
-		$handle = mai_plugin_data( 'text-domain' );
-	}
-
-	return $handle;
-}
-
-/**
- * Returns the plugin version.
- *
- * @since 0.1.0
- *
- * @return string
- */
-function mai_version() {
-	static $version = null;
-
-	if ( is_null( $version ) ) {
-		$version = mai_plugin_data( 'version' );
-	}
-
-	return $version;
-}
-
-/**
- * Returns the active child theme's config.
- *
- * @since 0.1.0
- *
- * @param string $sub_config Name of config to get.
- *
- * @return array
- */
-function mai_config( $sub_config = 'default' ) {
-	$config  = [];
-	$default = require mai_dir() . "config/default/config.php";
-	$active  = mai_active_theme();
-	$theme   = mai_dir() . "config/$active/config.php";
-
-	if ( is_readable( $theme ) ) {
-		$config = array_replace_recursive( $default, require $theme );
-	}
-
-	$data = $config[ $sub_config ];
-
-	// Allow users to override from within actual child theme.
-	$child = get_stylesheet_directory() . "/config/$sub_config.php";
-
-	if ( is_readable( $child ) ) {
-		$data = require $child;
-	}
-
-	return apply_filters( "mai_{$sub_config}_config", $data );
-}
-
-/**
- * Returns the active theme key.
- *
- * Checks multiple places to find a match.
- *
- * @since 0.1.0
- *
- * @return string
- */
-function mai_active_theme() {
-	static $theme = null;
-
-	if ( is_null( $theme ) ) {
-
-		if ( ! $theme ) {
-			$theme = get_theme_support( 'mai' );
-		}
-
-		if ( ! $theme ) {
-			$theme = genesis_get_theme_handle();
-		}
-
-		if ( ! $theme ) {
-			$theme = wp_get_theme()->get( 'TextDomain' );
-		}
-
-		if ( ! $theme ) {
-			$onboarding_file = get_stylesheet_directory() . '/config/onboarding.php';
-
-			if ( is_readable( $onboarding_file ) ) {
-				$onboarding_config = require $onboarding_file;
-
-				if ( isset( $onboarding_config['dependencies']['mai'] ) ) {
-					$theme = $onboarding_config['dependencies']['mai'];
-				}
-			}
-		}
-
-		if ( ! $theme || ! in_array( $theme, mai_child_themes(), true ) ) {
-			$theme = 'default';
-		}
-	}
-
-	return str_replace( 'mai-', '', $theme );
-}
-
-/**
- * Returns an array of all BizBudding child themes.
- *
- * @since 0.1.0
- *
- * @return array
- */
-function mai_child_themes() {
-	$child_themes = [];
-	$files        = glob( mai_dir() . 'config/*', GLOB_ONLYDIR );
-
-	foreach ( $files as $file ) {
-		$child_themes[] = 'mai-' . basename( $file, '.php' );
-	}
-
-	return $child_themes;
-}
-
-/**
- * Description of expected behavior.
- *
- * @since 0.1.0
- *
- * @return array
- */
-function mai_default_colors() {
-	static $colors = null;
-
-	if ( is_null( $colors ) ) {
-		$theme  = mai_active_theme();
-		$file   = mai_dir() . "config/$theme/config.json";
-		$colors = is_readable( $file ) ? json_decode( file_get_contents( $file ), true ) : [];
-	}
-
-	return $colors;
-}
-
-/**
- * Description of expected behavior.
- *
- * @since 0.1.0
- *
- * @param string $color
- *
- * @return string
- */
-function mai_default_color( $color = null ) {
-	$colors = mai_default_colors();
-
-	return isset( $colors[ 'color-' . $color ] ) ? $colors[ 'color-' . $color ] : '';
-}
-
-/**
  * Check if were on any type of singular page.
  *
  * @since 0.1.0
@@ -282,25 +35,14 @@ function mai_is_type_archive() {
 }
 
 /**
- * Checks if current page has the hero section enabled.
- *
- * @since 0.1.0
- *
- * @return bool
- */
-function mai_has_hero_section() {
-	return in_array( 'has-hero-section', get_body_class(), true );
-}
-
-/**
  * Checks if given sidebar contains a certain widget.
  *
  * @since  0.1.0
  *
  * @uses   $sidebars_widgets
  *
- * @param  string $sidebar Name of sidebar, e.g `primary`.
- * @param  string $widget  Widget ID to check, e.g `custom_html`.
+ * @param string $sidebar Name of sidebar, e.g `primary`.
+ * @param string $widget  Widget ID to check, e.g `custom_html`.
  *
  * @return bool
  */
@@ -315,13 +57,48 @@ function mai_sidebar_has_widget( $sidebar, $widget ) {
 }
 
 /**
+ * Checks if first block is cover.
+ *
+ */
+function mai_has_cover_block() {
+	$has_cover_block = false;
+
+	if ( ! mai_is_type_single() || ! has_blocks() ) {
+		return $has_cover_block;
+	}
+
+	$post_object = get_post( get_the_ID() );
+	$blocks      = (array) parse_blocks( $post_object->post_content );
+
+	$type  = isset( $blocks[0]['blockName'] ) ?: '';
+	$align = isset( $blocks[0]['attrs']['align'] ) ?: '';
+
+	if ( 'core/cover' === $type || 'full' === $align ) {
+		$has_cover_block = true;
+	}
+
+	return $has_cover_block;
+}
+
+/**
+ * Checks if current page has the hero section enabled.
+ *
+ * @since 0.1.0
+ *
+ * @return bool
+ */
+function mai_has_hero_section() {
+	return in_array( 'has-hero-section', get_body_class(), true );
+}
+
+/**
  * Checks if the Hero Section is active.
  *
  * @since 0.1.0
  *
  * @return bool
  */
-function mai_hero_section_active() {
+function mai_is_hero_section_active() {
 	$active    = false;
 	$post_type = get_post_type();
 
@@ -345,11 +122,11 @@ function mai_hero_section_active() {
  *
  * @since  1.0.0
  *
- * @author Gary Jones
- *
  * @param string $css CSS to minify
  *
  * @return string Minified CSS
+ * @author Gary Jones
+ *
  */
 function mai_minify_css( $css ) {
 	$css = preg_replace( '/\s+/', ' ', $css );

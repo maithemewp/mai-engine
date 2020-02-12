@@ -10,8 +10,8 @@
 /// Variables.
 ////
 
-$site-header-background-color: $color-white !default;
-$site-header-border-bottom: $base-border !default;
+$site-header-background-color: var(--color-white) !default;
+$site-header-border-bottom: var(--border) !default;
 
 ////
 /// Site Header.

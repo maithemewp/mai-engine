@@ -10,15 +10,15 @@
 /// Variables.
 ////
 
-$title-area-line-height: $line-height-heading !default;
-$title-area-padding-mobile: $spacing-m null !default;
-$title-area-padding-desktop: $gap null !default;
+$title-area-line-height: var(--line-height-heading) !default;
+$title-area-padding-mobile: var(--spacing-m) null !default;
+$title-area-padding-desktop: var(--gap) null !default;
 $site-title-font-size: 1em !default;
-$site-title-font-family: $font-family-heading !default;
-$site-title-font-weight: $font-weight-heading !default;
-$site-title-color: $color-body !default;
-$site-title-color-hover: $color-primary !default;
-$site-description-color: $color-body !default;
+$site-title-font-family: var(--font-family-heading) !default;
+$site-title-font-weight: var(--font-weight-heading) !default;
+$site-title-color: var(--color-body) !default;
+$site-title-color-hover: var(--color-primary) !default;
+$site-description-color: var(--color-body) !default;
 $site-description-font-size: smaller !default;
 
 ////

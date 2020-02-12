@@ -20,7 +20,7 @@ add_filter( 'genesis_comment_list_args', 'mai_setup_comments_gravatar' );
  * @return mixed
  */
 function mai_setup_comments_gravatar( array $args ) {
-	$args['avatar_size'] = mai_config( 'genesis-settings' )['avatar_size'];
+	$args['avatar_size'] = mai_get_config( 'genesis-settings' )['avatar_size'];
 
 	return $args;
 }

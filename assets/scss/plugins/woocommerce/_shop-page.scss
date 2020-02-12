@@ -12,7 +12,7 @@
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
-	margin-bottom: $gutter;
+	margin-bottom: var(--gutter);
 
 	> * {
 		order: 2;
@@ -36,7 +36,7 @@
 .woocommerce-ordering {
 
 	@include mq($until: xs) {
-		margin-top: $gap;
+		margin-top: var(--gap);
 	}
 }
 
@@ -47,7 +47,7 @@
 
 	.entry {
 		width: 100%;
-		margin-bottom: $gutter;
+		margin-bottom: var(--gutter);
 
 		&:last-of-type {
 
@@ -57,16 +57,16 @@
 		}
 
 		@include mq(xs) {
-			width: $one-half;
+			width: var(--one-half);
 
 			&:nth-of-type(odd) {
-				margin-right: $gutter;
+				margin-right: var(--gutter);
 			}
 		}
 
 		@include mq(m) {
 
-			margin-right: $gutter;
+			margin-right: var(--gutter);
 		}
 	}
 
@@ -87,7 +87,7 @@
 		flex-wrap: wrap;
 		align-items: flex-start;
 		width: 100%;
-		padding: $gap;
+		padding: var(--gap);
 		flex: 1;
 	}
 
@@ -108,12 +108,12 @@
 
 .woocommerce-loop-product-title {
 	margin-bottom: auto;
-	font-size: $font-size-h6;
+	font-size: var(--font-size-h6);
 }
 
 .add_to_cart_button {
 	margin-top: auto;
-	padding: $spacing-m $gap;
+	padding: var(--spacing-m) var(--gap);
 	transition: none;
 
 	&:after {
@@ -125,12 +125,12 @@
 }
 
 .added {
-	padding: $spacing-m;
+	padding: var(--spacing-m);
 	font-size: 0;
 	align-self: flex-start;
 
 	&:after {
-		font-size: $base-font-size / $major-second;
+		font-size: calc(var(--font-size-body) / #{$major-second});
 	}
 }
 
@@ -139,27 +139,27 @@
 	@include button;
 
 	align-self: flex-end;
-	margin-left: $spacing-s;
-	padding: $spacing-m - 0.1rem;
-	border: 1px solid $color-primary;
-	color: $color-primary;
+	margin-left: var(--spacing-s);
+	padding: var(--spacing-m) - 0.1rem;
+	border: var(--border-size) var(--border-style) var(--color-primary);
+	color: var(--color-primary);
 	background: transparent;
 
 	@include hover-focus {
-		color: $color-white;
-		background: $color-primary;
+		color: var(--color-white);
+		background: var(--color-primary);
 	}
 }
 
 .star-rating {
 	display: block;
-	margin-bottom: $spacing-xxs;
+	margin-bottom: var(--spacing-x)xs;
 
 	&:before {
 		display: inline-block;
-		color: $color-warning;
+		color: var(--color-warning);
 		font-family: "Font Awesome 5 Free", sans-serif;
-		font-size: $spacing-m;
+		font-size: var(--spacing-m);
 		font-weight: 700;
 		letter-spacing: 0.2em;
 		content: "\f005";
@@ -207,7 +207,7 @@
 
 .price {
 	display: block;
-	margin-bottom: $spacing-m;
+	margin-bottom: var(--spacing-m);
 
 	ins {
 		text-decoration: none;
@@ -224,7 +224,7 @@
 		}
 
 		.columns-2 & {
-			width: $one-half;
+			width: var(--one-half);
 
 			&:nth-of-type(2n) {
 				margin-right: 0;
@@ -232,7 +232,7 @@
 		}
 
 		.columns-3 & {
-			width: $one-third;
+			width: var(--one-third);
 
 			&:nth-of-type(3n) {
 				margin-right: 0;
@@ -240,7 +240,7 @@
 		}
 
 		.columns-4 & {
-			width: $one-fourth;
+			width: var(--one-fourth);
 
 			&:nth-of-type(4n) {
 				margin-right: 0;

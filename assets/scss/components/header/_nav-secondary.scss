@@ -11,7 +11,7 @@
 ////
 
 $nav-secondary-background-color: transparent !default;
-$nav-secondary-border-top: $base-border !default;
+$nav-secondary-border-top: var(--border) !default;
 $nav-secondary-alignment: flex-start !default;
 
 ////

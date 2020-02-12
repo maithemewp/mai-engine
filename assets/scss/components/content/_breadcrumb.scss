@@ -10,7 +10,7 @@
 /// Variables.
 ////
 
-$breadcrumb-margin: 0 0 $spacing-m !default;
+$breadcrumb-margin: 0 0 var(--spacing-m) !default;
 
 ////
 /// Breadcrumb.

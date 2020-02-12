@@ -5,7 +5,9 @@
         "version_normalized": "5.8.7.0",
         "dist": {
             "type": "zip",
-            "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download&t=5.8.7"
+            "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download&t=5.8.7",
+            "reference": null,
+            "shasum": null
         },
         "require": {
             "composer/installers": "^1.0",
@@ -16,17 +18,17 @@
     },
     {
         "name": "composer/installers",
-        "version": "v1.7.0",
-        "version_normalized": "1.7.0.0",
+        "version": "v1.8.0",
+        "version_normalized": "1.8.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/composer/installers.git",
-            "reference": "141b272484481432cda342727a427dc1e206bfa0"
+            "reference": "7d610d50aae61ae7ed6675e58efeabdf279bb5e3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/composer/installers/zipball/141b272484481432cda342727a427dc1e206bfa0",
-            "reference": "141b272484481432cda342727a427dc1e206bfa0",
+            "url": "https://api.github.com/repos/composer/installers/zipball/7d610d50aae61ae7ed6675e58efeabdf279bb5e3",
+            "reference": "7d610d50aae61ae7ed6675e58efeabdf279bb5e3",
             "shasum": ""
         },
         "require": {
@@ -40,7 +42,7 @@
             "composer/composer": "1.0.*@dev",
             "phpunit/phpunit": "^4.8.36"
         },
-        "time": "2019-08-12T15:00:31+00:00",
+        "time": "2020-02-07T10:39:20+00:00",
         "type": "composer-plugin",
         "extra": {
             "class": "Composer\\Installers\\Plugin",
@@ -76,6 +78,7 @@
             "Kanboard",
             "Lan Management System",
             "MODX Evo",
+            "MantisBT",
             "Mautic",
             "Maya",
             "OXID",
@@ -130,12 +133,78 @@
             "shopware",
             "silverstripe",
             "sydes",
+            "sylius",
             "symfony",
             "typo3",
             "wordpress",
             "yawik",
             "zend",
             "zikula"
+        ]
+    },
+    {
+        "name": "fortawesome/font-awesome",
+        "version": "5.12.1",
+        "version_normalized": "5.12.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/FortAwesome/Font-Awesome.git",
+            "reference": "0d1f27efb836eb2ab994ba37221849ed64a73e5c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/0d1f27efb836eb2ab994ba37221849ed64a73e5c",
+            "reference": "0d1f27efb836eb2ab994ba37221849ed64a73e5c",
+            "shasum": ""
+        },
+        "time": "2020-02-05T14:36:40+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "CC-BY-4.0",
+            "OFL-1.1",
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Travis Chase",
+                "homepage": "http://twitter.com/supercodepoet"
+            },
+            {
+                "name": "Dave Gandy",
+                "homepage": "http://twitter.com/davegandy"
+            },
+            {
+                "name": "Rob Madole",
+                "homepage": "http://twitter.com/robmadole"
+            },
+            {
+                "name": "Jory Raphael",
+                "homepage": "http://twitter.com/sensibleworld"
+            },
+            {
+                "name": "Geremia Taglialatela",
+                "homepage": "http://twitter.com/gtagliala"
+            },
+            {
+                "name": "Brian Talbot",
+                "homepage": "http://twitter.com/talbs"
+            },
+            {
+                "name": "Mike Wilkerson",
+                "homepage": "http://twitter.com/mw77"
+            }
+        ],
+        "description": "The iconic font, CSS, and SVG framework",
+        "homepage": "https://fontawesome.com",
+        "keywords": [
+            "FontAwesome",
+            "awesome",
+            "bootstrap",
+            "font",
+            "icon",
+            "svg"
         ]
     },
     {
@@ -320,7 +389,9 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://downloads.wordpress.org/plugin/advanced-custom-fields-font-awesome.zip?timestamp=1564849030"
+            "url": "https://downloads.wordpress.org/plugin/advanced-custom-fields-font-awesome.zip?timestamp=1564849030",
+            "reference": null,
+            "shasum": null
         },
         "require": {
             "composer/installers": "~1.0"
@@ -332,28 +403,29 @@
     },
     {
         "name": "yahnis-elsts/plugin-update-checker",
-        "version": "v4.8.1",
-        "version_normalized": "4.8.1.0",
+        "version": "v4.9",
+        "version_normalized": "4.9.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/YahnisElsts/plugin-update-checker.git",
-            "reference": "908249c92e81c46cb66e4d81632c5e917dc879ae"
+            "reference": "28f29c940cc22754aff85a99645e3c0a51c097e8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/YahnisElsts/plugin-update-checker/zipball/908249c92e81c46cb66e4d81632c5e917dc879ae",
-            "reference": "908249c92e81c46cb66e4d81632c5e917dc879ae",
+            "url": "https://api.github.com/repos/YahnisElsts/plugin-update-checker/zipball/28f29c940cc22754aff85a99645e3c0a51c097e8",
+            "reference": "28f29c940cc22754aff85a99645e3c0a51c097e8",
             "shasum": ""
         },
         "require": {
+            "ext-json": "*",
             "php": ">=5.2.0"
         },
-        "time": "2019-10-08T12:15:30+00:00",
+        "time": "2020-02-07T11:07:19+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
             "files": [
-                "load-v4p8.php"
+                "load-v4p9.php"
             ]
         },
         "notification-url": "https://packagist.org/downloads/",

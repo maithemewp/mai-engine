@@ -7,23 +7,28 @@
 /// @author BizBudding <team@bizbudding.com>
 /// @link   http://sass-guidelin.es/#main-file
 ////
+
 // Default settings.
 @import "../../node_modules/bourbon/core/bourbon";
-@import "settings/_index";
-@import "tools/_index";
+@import "abstracts/_index";
+
 // Theme variables.
 @import "config";
-// Generic styles.
-@import "generic/_index";
+
+// Normalize.
+@import "../../node_modules/node-normalize-scss/normalize";
+
+// Custom properties
+@import "../../../../settings/_index";
 
 // Base elements.
-@import "elements/_index";
+@import "base/_index";
 
 // Components.
 @import "components/containers/_index";
 
 // Blocks.
-@import "blocks/_index";
+@import "components/blocks/_index";
 
 // Utility classes.
 @import "utilities/_index";

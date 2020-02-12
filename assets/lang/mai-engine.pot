@@ -1,35 +1,22 @@
-# Copyright (C) 2020 BizBudding
-# This file is distributed under the same license as the Mai Engine plugin.
+# Copyright (C) 2020 mai-engine 0.1.0
+# This file is distributed under the same license as the mai-engine 0.1.0 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 0.1.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: mai-engine 0.1.0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-01-09T08:35:26+00:00\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.1.0\n"
-"X-Domain: mai-engine\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#. Plugin Name of the plugin
-msgid "Mai Engine"
+#: lib/blocks/icon.php:14
+msgid "Icon"
 msgstr ""
 
-#. Plugin URI of the plugin
-msgid "https://wordpress.org/plugins/mai-engine/"
-msgstr ""
-
-#. Description of the plugin
-msgid "The required plugin to power Mai child themes."
-msgstr ""
-
-#. Author of the plugin
-msgid "BizBudding"
-msgstr ""
-
-#. Author URI of the plugin
-msgid "https://bizbudding.com/"
+#: lib/blocks/icon.php:15
+msgid "A custom icon block."
 msgstr ""

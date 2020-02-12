@@ -10,7 +10,7 @@
  * Plugin URI:  https://wordpress.org/plugins/mai-engine/
  * Description: The required plugin to power Mai child themes.
  * Version:     0.1.0
- * Author:      BizBudding
+ * Author:      BizBudding Inc
  * Author URI:  https://bizbudding.com/
  * Text Domain: mai-engine
  * License:     GPL-2.0-or-later
@@ -25,3 +25,8 @@
  */
 
 require_once __DIR__ . '/lib/init.php';
+
+
+
+
+

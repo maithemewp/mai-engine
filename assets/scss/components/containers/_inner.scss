@@ -10,8 +10,8 @@
 /// Variables.
 ////
 
-$site-inner-margin-top-no-hero-mobile: $spacing-xl * $perfect-fifth !default;
-$site-inner-margin-top-no-hero-desktop: $spacing-xxl !default;
+$site-inner-margin-top-no-hero-mobile: calc(var(--spacing-xl) * #{$perfect-fifth}) !default;
+$site-inner-margin-top-no-hero-desktop: var(--spacing-xxl) !default;
 
 ////
 /// Site Inner.

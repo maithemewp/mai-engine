@@ -15,10 +15,10 @@
 ////
 
 .header-widget-area {
-	margin-right: $gap;
+	margin-right: var(--gap);
 	margin-left: auto;
 
-	@include mq($until: xxs) {
+	@include mq($until: xs) {
 		display: none;
 	}
 
@@ -32,7 +32,7 @@
 		margin-bottom: 0;
 
 		@include mq(m) {
-			margin-left: $gutter;
+			margin-left: var(--gutter);
 		}
 	}
 }

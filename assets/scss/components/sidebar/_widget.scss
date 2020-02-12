@@ -10,15 +10,15 @@
 /// Variables.
 ////
 
-$widget-title-margin-bottom: $spacing-m !default;
-$widget-title-font-size: $font-size-h5 !default;
+$widget-title-margin-bottom: var(--spacing-m) !default;
+$widget-title-font-size: var(--font-size-h5) !default;
 
 ////
 /// Widget.
 ////
 
 .widget {
-	margin-bottom: $gutter;
+	margin-bottom: var(--gutter);
 
 	// Widget wrapper.
 	&-wrap {

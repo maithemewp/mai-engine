@@ -170,7 +170,6 @@ class acf_pro {
 	 
 }
 
-
 // instantiate
 new acf_pro();
 

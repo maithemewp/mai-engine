@@ -12,19 +12,51 @@
 
 $transparent-header-site-header-border-bottom: 1px solid transparent !default;
 $transparent-header-site-header-background-color: transparent !default;
-$transparent-header-hero-section-wrap-margin-top: $spacing-xxl !default;
+$transparent-header-hero-section-wrap-margin-top: var(--spacing-xxl) !default;
+$transparent-header-site-title-color: $site-title-color !default;
+$transparent-header-site-title-color-hover: $site-title-color-hover !default;
+$transparent-header-site-description-color: $site-description-color !default;
+$transparent-header-menu-item-link-color: var(--color-white) !default;
+$transparent-header-menu-item-link-color-hover: var(--color-primary) !default;
 
 ////
 /// Transparent Header.
 ////
 
-.transparent-header {
+.has-transparent-header {
 
 	// Site Header.
 	.site-header {
 		position: absolute;
 		border-bottom: $transparent-header-site-header-border-bottom;
 		background-color: $transparent-header-site-header-background-color;
+	}
+
+	// Title Area.
+	.site-title {
+
+		a {
+			color: $transparent-header-site-title-color;
+
+			@include hover-focus {
+				color: $transparent-header-site-title-color-hover;
+			}
+		}
+	}
+
+	.site-description {
+		color: $transparent-header-site-description-color;
+	}
+
+	// Menu.
+	a {
+		color: $transparent-header-menu-item-link-color;
+	}
+
+	a:hover,
+	a:focus,
+	.current-menu-item > a {
+		color: $transparent-header-menu-item-link-color-hover;
 	}
 
 	// Hero Section.

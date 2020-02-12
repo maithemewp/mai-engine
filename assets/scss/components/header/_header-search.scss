@@ -21,7 +21,7 @@
 	align-items: center;
 
 	.search-form-input {
-		width: $mq-xxs;
+		width: var(--screen-xxs);
 		margin: auto;
 
 		@include position(absolute, auto 0 auto auto);
@@ -37,7 +37,7 @@
 ////
 
 .header-search-toggle {
-	padding: $spacing-xs;
+	padding: var(--spacing-xs);
 	background-color: transparent;
 	color: $menu-item-link-color;
 

@@ -13,10 +13,10 @@
 $menu-toggle-margin: 0 !default;
 $menu-toggle-padding: 0 !default;
 $menu-toggle-background-color: transparent !default;
-$menu-toggle-line-width: $spacing-m * $perfect-fifth !default;
+$menu-toggle-line-width: calc(var(--spacing-m) * #{$perfect-fifth}) !default;
 $menu-toggle-line-height: 3px !default;
-$menu-toggle-line-background-color: $color-heading !default;
-$menu-toggle-line-spacing: -$spacing-s !default;
+$menu-toggle-line-background-color: var(--color-heading) !default;
+$menu-toggle-line-spacing: calc(0 - var(--spacing-s)) !default;
 
 ////
 /// Menu Toggle.
@@ -30,8 +30,8 @@ $menu-toggle-line-spacing: -$spacing-s !default;
 	padding: $menu-toggle-padding;
 	background-color: $menu-toggle-background-color;
 	order: 1;
-
-	@include size($spacing-m * $perfect-fifth);
+	height: calc(var(--spacing-m) * #{$perfect-fifth});
+	width: calc(var(--spacing-m) * #{$perfect-fifth});
 
 	@include mq(m) {
 		display: none;
@@ -42,7 +42,7 @@ $menu-toggle-line-spacing: -$spacing-s !default;
 	}
 
 	&:focus {
-		outline: $base-border;
+		outline: var(--border);
 	}
 
 	// Hamburger.

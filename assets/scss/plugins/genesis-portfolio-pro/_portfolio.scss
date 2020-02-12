@@ -10,7 +10,7 @@
 /// Variables.
 ////
 
-$portfolio-item-width: $one-third !default;
+$portfolio-item-width: var(--one-third) !default;
 
 ////
 /// Portfolio.

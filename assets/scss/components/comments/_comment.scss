@@ -12,7 +12,8 @@
 /// Variables.
 ////
 
-$comment-margin: $spacing-l 0 !default;
+$comment-margin: var(--spacing-l) 0 !default;
+$comment-background: none;
 
 ////
 /// Comment.
@@ -20,6 +21,7 @@ $comment-margin: $spacing-l 0 !default;
 
 .comment {
 	margin: $comment-margin;
+	background-color: var(--color-background, $comment-background);
 
 	// Comment list wrapper.
 	&-list {

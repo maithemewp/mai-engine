@@ -19,14 +19,14 @@
 }
 
 .woocommerce-MyAccount-navigation {
-	padding: $gap;
-	border: $base-border;
-	border-radius: $base-border-radius;
-	background-color: $color-background;
+	padding: var(--gap);
+	border: var(--border);
+	border-radius: var(--border-radius);
+	background-color: var(--color-background);
 
 	@include mq(m) {
-		width: $one-fourth;
-		margin-right: $gutter;
+		width: var(--one-fourth);
+		margin-right: var(--gutter);
 	}
 
 	ul {
@@ -38,6 +38,6 @@
 .woocommerce-MyAccount-content {
 
 	@include mq(m) {
-		width: $three-fourths;
+		width: var(--three-fourths);
 	}
 }

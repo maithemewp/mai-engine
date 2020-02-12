@@ -5,16 +5,18 @@
 /// @author BizBudding <team@bizbudding.com>
 /// @link   http://sass-guidelin.es/#main-file
 ////
+
 ////
 /// Default settings.
 ////
 @import "../../node_modules/bourbon/core/bourbon";
-@import "settings/_index";
-@import "tools/_index";
+@import "abstracts/_index";
+
 ////
 /// Theme variables.
 ////
 @import "config";
+
 ////
 /// Component.
 ////

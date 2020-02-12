@@ -1,0 +1,8 @@
+.mai-icon {
+
+  @include clearfix();
+
+  svg {
+    display: block;
+  }
+}

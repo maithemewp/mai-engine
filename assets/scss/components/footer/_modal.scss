@@ -10,12 +10,12 @@
 /// Variables.
 ////
 
-$modal-padding: $gutter !default;
-$modal-border-radius: $base-border-radius !default;
-$modal-background-color: $color-white !default;
-$modal-box-shadow: 0 0 0 100vw rgba($color-heading, 0.2), $base-box-shadow !default;
+$modal-padding: var(--gutter) !default;
+$modal-border-radius: var(--border-radius) !default;
+$modal-background-color: var(--color-white) !default;
+$modal-shadow: 0 0 0 100vw rgba(var(--color-heading), var(--shadow-opacity)), var(--shadow) !default;
 $modal-text-align: center !default;
-$modal-text-margin-bottom: $spacing-m !default;
+$modal-text-margin-bottom: var(--spacing-m) !default;
 
 ////
 /// Modal.
@@ -32,7 +32,7 @@ $modal-text-margin-bottom: $spacing-m !default;
 	border-radius: $modal-border-radius;
 	opacity: 0;
 	background-color: $modal-background-color;
-	box-shadow: $modal-box-shadow;
+	box-shadow: $modal-shadow;
 	text-align: $modal-text-align;
 
 	@include position(fixed, 10vh 10vw);
@@ -62,8 +62,7 @@ $modal-text-margin-bottom: $spacing-m !default;
 	background-color: transparent;
 	font-size: 0;
 
-	@include size($base-font-size);
-	@include size($gap);
+	@include size(1em);
 
 	@include hover-focus {
 		color: inherit;
@@ -71,13 +70,13 @@ $modal-text-margin-bottom: $spacing-m !default;
 	}
 
 	&:before {
-		font-size: $base-font-size;
+		font-size: 1em;
 
 		@include icon("\f00d", 700);
 	}
 
 	.modal & {
 
-		@include position(absolute, $gap $gap null null);
+		@include position(absolute, var(--gap) var(--gap) null null);
 	}
 }

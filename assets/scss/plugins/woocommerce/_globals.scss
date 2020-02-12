@@ -8,12 +8,12 @@
 
 .onsale {
 	z-index: 1;
-	padding: $spacing-xs $spacing-m;
-	border-radius: $base-border-radius;
-	color: $color-white;
-	background: $color-primary;
+	padding: var(--spacing-xs) var(--spacing-m);
+	border-radius: var(--border-radius);
+	color: var(--color-white);
+	background: var(--color-primary);
 	font-size: small;
-	font-weight: $font-weight-heading;
+	font-weight: var(--font-weight-heading);
 
 	@include position(absolute, -0.5em auto auto -0.5em);
 }
@@ -30,8 +30,8 @@
 	@include box;
 
 	.button {
-		margin-left: $spacing-m;
-		padding: $spacing-m $gap;
+		margin-left: var(--spacing-m);
+		padding: var(--spacing-m) var(--gap);
 		order: 2;
 	}
 
@@ -45,16 +45,16 @@
 }
 
 .woocommerce-message {
-	border-color: $color-success;
-	background-color: rgba($color-success, 0.1);
+	border-color: var(--color-success);
+	background-color: rgba(var(--color-success), var(--shadow-opacity));
 
 	&--info {
-		border-color: $color-primary;
-		background-color: rgba($color-primary, 0.1);
+		border-color: var(--color-primary);
+		background-color: rgba(var(--color-primary), var(--shadow-opacity));
 	}
 }
 
 .woocommerce-error {
-	border-color: $color-error;
-	background-color: rgba($color-error, 0.1);
+	border-color: var(--color-error);
+	background-color: rgba(var(--color-error), var(--shadow-opacity));
 }

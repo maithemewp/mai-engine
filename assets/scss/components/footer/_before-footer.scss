@@ -10,11 +10,11 @@
 /// Variables.
 ////
 
-$before-footer-padding: $spacing-xl 0 $spacing-xl - $gutter !default;
-$before-footer-border-bottom: $base-border !default;
-$before-footer-background-color: $color-background !default;
-$before-footer-color: $color-body !default;
-$before-footer-title-font-size: $font-size-h5 !default;
+$before-footer-padding: var(--spacing-xl) 0 calc(var(--spacing-xl) - var(--gutter)) !default;
+$before-footer-border-bottom: var(--border) !default;
+$before-footer-background-color: var(--color-background) !default;
+$before-footer-color: var(--color-body) !default;
+$before-footer-title-font-size: var(--font-size-h5) !default;
 
 ////
 /// Before footer.

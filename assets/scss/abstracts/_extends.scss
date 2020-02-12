@@ -1,0 +1,140 @@
+////
+/// Custom extends.
+///
+/// @group  Tools
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Body mixin
+///
+/// @group  Tools
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+@mixin body {
+	height: 100%;
+	margin: 0;
+	color: var(--color-body);
+	background-color: var(--color-white);
+	font-family: var(--font-family-body);
+	font-size: var(--font-size-body);
+	font-weight: var(--font-weight-body);
+	line-height: var(--line-height-body);
+
+	@include mq(m) {
+		font-size: calc(var(--font-size-body) * #{$major-second});
+	}
+}
+
+////
+/// Heading mixin
+///
+/// @group  Tools
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+@mixin heading {
+	margin: 0 0 0.5em;
+	font-family: var(--font-family-heading);
+	font-weight: var(--font-weight-heading);
+	line-height: var(--line-height-heading);
+	letter-spacing: var(--letter-spacing-heading);
+	color: var(--color-heading);
+}
+
+////
+/// Button mixin
+///
+/// @group  Tools
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+@mixin button {
+	display: inline-block;
+	width: auto;
+	padding: var(--button-padding);
+	border: var(--button-border);
+	border-radius: var(--button-border-radius);
+	color: var(--button-color);
+	background-color: var(--button-background);
+	font-family: var(--button-font-family);
+	font-size: var(--button-font-size);
+	font-weight: var(--button-font-weight);
+	letter-spacing: var(--button-letter-spacing);
+	text-transform: var(--button-text-transform);
+	line-height: 1;
+	text-align: center;
+	white-space: normal;
+	text-decoration: none;
+	cursor: pointer;
+
+	@include transition();
+
+	@include hover-focus {
+		border: var(--button-border-hover);
+		outline: none;
+		color: var(--button-color-hover);
+		background-color: var(--button-background-hover);
+		text-decoration: none;
+	}
+
+	// Disabled.
+	&:disabled {
+
+		&,
+		&:hover,
+		&:focus {
+			opacity: var(--button-disabled-opacity);
+			background-color: var(--button-disabled-background-color);
+			cursor: not-allowed;
+		}
+	}
+
+	// Small.
+	&.small {
+		padding: var(--button-small-padding);
+		font-size: var(--button-small-font-size);
+	}
+
+	// Rounded.
+	&.rounded {
+		border-radius: 100rem;
+	}
+
+	// Outline.
+	&.outline {
+		border: var(--button-outline-border);
+		color: var(--button-outline-color);
+		background: transparent;
+
+		@include hover-focus {
+			color: var(--button-outline-color-hover);
+			background: var(--button-outline-background-hover);
+		}
+
+		&.white {
+			border-color: var(--color-white);
+			background-color: transparent;
+			color: var(--color-white);
+
+			@include hover-focus {
+				color: var(--color-primary);
+				background: var(--color-white);
+			}
+		}
+	}
+
+	&.white {
+		background-color: var(--color-white);
+		color: var(--color-primary);
+	}
+
+	&.subtle {
+
+	}
+}

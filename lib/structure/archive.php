@@ -83,7 +83,7 @@ add_filter( 'genesis_author_box_gravatar_size', 'mai_author_box_gravatar' );
  * @return int Modified icon size.
  */
 function mai_author_box_gravatar( $size ) {
-	return mai_config( 'genesis-settings' )['avatar_size'];
+	return mai_get_config( 'genesis-settings' )['avatar_size'];
 }
 
 add_action( 'genesis_entry_header', 'mai_entry_wrap_open', 4 );
@@ -149,18 +149,4 @@ function mai_widget_entry_wrap_open( $open, $args ) {
 	}
 
 	return $open;
-}
-
-add_action( 'genesis_before_content_sidebar_wrap', 'mai_display_terms_filter', 15 );
-/**
- * Description of expected behavior.
- *
- * @since 0.1.0
- *
- * @return void
- */
-function mai_display_terms_filter() {
-	if ( mai_is_type_archive() && post_type_supports( get_post_type(), 'terms-filter' ) ) {
-		echo do_shortcode( '[terms_filter]' );
-	}
 }

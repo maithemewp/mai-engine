@@ -18,17 +18,15 @@ add_action( 'genesis_meta', 'mai_hero_setup' );
  * @return void
  */
 function mai_hero_setup() {
-
-	if ( ! mai_hero_section_active() ) {
+	if ( ! mai_is_hero_section_active() ) {
 		return;
 	}
-
 
 	if ( genesis_entry_header_hidden_on_current_page() ) {
 		return;
 	}
 
-	if ( is_singular() ) {
+	if ( mai_is_type_single() ) {
 		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
 	}
 

@@ -21,7 +21,7 @@ add_action( 'mai_setup', 'mai_widget_area_options' );
  * @return void
  */
 function mai_widget_area_options() {
-	$config                  = mai_config( 'theme-support' )['add'];
+	$config                  = mai_get_config( 'theme-support' )['add'];
 	$footer_widget_areas     = intval( get_theme_mod( 'footer_widget_areas', $config['genesis-footer-widgets'] ) );
 	$front_page_widget_areas = intval( get_theme_mod( 'front_page_widget_areas', $config['front-page-widgets'] ) );
 

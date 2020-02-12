@@ -10,8 +10,8 @@
 /// Variables.
 ////
 
-$nav-primary-padding-mobile: $spacing-m 5vw !default;
-$nav-primary-background-color-mobile: $color-white !default;
+$nav-primary-padding-mobile: var(--spacing-m) 5vw !default;
+$nav-primary-background-color-mobile: var(--color-white) !default;
 
 ////
 /// Nav Primary.

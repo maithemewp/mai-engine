@@ -26,12 +26,12 @@ add_action( 'enqueue_block_editor_assets', 'mai_enqueue_assets' );
  * @return void
  */
 function mai_enqueue_assets() {
-	$assets       = mai_config( 'scripts-and-styles' )['add'];
-	$google_fonts = implode( '|', mai_config( 'google-fonts' ) );
+	$assets       = mai_get_config( 'scripts-and-styles' )['add'];
+	$google_fonts = implode( '|', mai_get_config( 'google-fonts' ) );
 
 	if ( $google_fonts ) {
 		$assets[] = [
-			'handle' => mai_handle() . '-google-fonts',
+			'handle' => mai_get_handle() . '-google-fonts',
 			'src'    => "//fonts.googleapis.com/css?family=$google_fonts&display=swap",
 			'editor' => 'both',
 		];
@@ -88,7 +88,7 @@ add_action( 'wp_enqueue_scripts', 'mai_deregister_scripts_and_styles', 15 );
  * @return void
  */
 function mai_deregister_scripts_and_styles() {
-	$assets = mai_config( 'scripts-and-styles' )['remove'];
+	$assets = mai_get_config( 'scripts-and-styles' )['remove'];
 
 	foreach ( $assets as $asset ) {
 		wp_deregister_script( $asset );

@@ -10,11 +10,11 @@
 /// Variables.
 ////
 
-$sidebar-margin-mobile: $spacing-m null !default;
-$sidebar-margin-desktop: $spacing-l null !default;
-$sidebar-entry-title-margin-bottom: $spacing-xxs !default;
-$sidebar-entry-title-font-size: $base-font-size !default;
-$sidebar-entry-image-max-width: $spacing-xxl !default;
+$sidebar-margin-mobile: var(--spacing-m) null !default;
+$sidebar-margin-desktop: var(--spacing-l) null !default;
+$sidebar-entry-title-margin-bottom: var(--spacing-xxs) !default;
+$sidebar-entry-title-font-size: var(--font-size-body) !default;
+$sidebar-entry-image-max-width: var(--spacing-xxl) !default;
 
 ////
 /// Sidebar.
@@ -34,7 +34,7 @@ $sidebar-entry-image-max-width: $spacing-xxl !default;
 	.sidebar-content & {
 
 		@include mq(m) {
-			width: $layout-width-sidebar;
+			width: var(--layout-width-sidebar);
 		}
 	}
 

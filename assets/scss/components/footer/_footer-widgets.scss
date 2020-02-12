@@ -10,22 +10,22 @@
 /// Variables.
 ////
 
-$footer-widgets-padding: $spacing-xl 0 $spacing-xl - $gutter !default;
+$footer-widgets-padding: var(--spacing-xl) 0 calc(var(--spacing-xl) - var(--gutter)) !default;
 $footer-widgets-background-color: transparent !default;
-$footer-widgets-color: $color-body !default;
-$footer-widgets-font-size: $base-font-size !default;
-$footer-widgets-title-color: $color-heading !default;
-$footer-widgets-title-font-size: $font-size-h5 !default;
-$footer-widgets-link-color: $color-primary !default;
-$footer-widgets-link-color-hover: $color-primary !default;
-$footer-widgets-input-color: $input-color !default;
-$footer-widgets-input-background-color: $input-background-color !default;
+$footer-widgets-color: var(--color-body) !default;
+$footer-widgets-font-size: var(--font-size-body) !default;
+$footer-widgets-title-color: var(--color-heading) !default;
+$footer-widgets-title-font-size: var(--font-size-h5) !default;
+$footer-widgets-link-color: var(--color-primary) !default;
+$footer-widgets-link-color-hover: var(--color-primary) !default;
+$footer-widgets-input-color: var(--input-color) !default;
+$footer-widgets-input-background-color: var(--input-background-color) !default;
 $footer-widgets-menu-columns: 2 !default;
-$footer-widgets-menu-font-size: $base-font-size !default;
-$footer-widgets-menu-font-family: $base-font-family !default;
-$footer-widgets-menu-font-weight: $base-font-weight !default;
+$footer-widgets-menu-font-size: var(--font-size-body) !default;
+$footer-widgets-menu-font-family: var(--font-family-body) !default;
+$footer-widgets-menu-font-weight: var(--font-weight-body) !default;
 $footer-widgets-menu-item-padding: 0 !default;
-$footer-widgets-menu-item-margin: 0 0 $spacing-m !default;
+$footer-widgets-menu-item-margin: 0 0 var(--spacing-m) !default;
 
 ////
 /// Footer Widgets.
@@ -83,7 +83,7 @@ $footer-widgets-menu-item-margin: 0 0 $spacing-m !default;
 
 	@include mq(m) {
 		flex: 1;
-		margin-left: $gutter;
+		margin-left: var(--gutter);
 
 		&:first-of-type {
 			margin-left: 0;

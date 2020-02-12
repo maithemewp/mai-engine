@@ -20,22 +20,22 @@
 
 	// Gallery item.
 	&-item {
-		width: $one-half;
-		margin-bottom: $gutter;
+		width: var(--one-half);
+		margin-bottom: var(--gutter);
 
 		.gallery-columns-1 & {
 			width: 100%;
 		}
 
 		@include mq(m) {
-			margin-left: $gutter;
+			margin-left: var(--gutter);
 
 			.gallery-columns-1 & {
 				margin-left: 0;
 			}
 
 			.gallery-columns-2 & {
-				width: $one-half;
+				width: var(--one-half);
 
 				&:nth-of-type(2n + 1) {
 					margin-left: 0;
@@ -43,7 +43,7 @@
 			}
 
 			.gallery-columns-3 & {
-				width: $one-third;
+				width: var(--one-third);
 
 				&:nth-of-type(3n + 1) {
 					margin-left: 0;
@@ -51,7 +51,7 @@
 			}
 
 			.gallery-columns-4 & {
-				width: $one-fourth;
+				width: var(--one-fourth);
 
 				&:nth-of-type(4n + 1) {
 					margin-left: 0;
@@ -59,7 +59,7 @@
 			}
 
 			.gallery-columns-5 & {
-				width: $one-fifth;
+				width: var(--one-fifth);
 
 				&:nth-of-type(5n + 1) {
 					margin-left: 0;
@@ -67,7 +67,7 @@
 			}
 
 			.gallery-columns-6 & {
-				width: $one-sixth;
+				width: var(--one-sixth);
 
 				&:nth-of-type(6n + 1) {
 					margin-left: 0;

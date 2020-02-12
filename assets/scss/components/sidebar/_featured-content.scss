@@ -10,8 +10,8 @@
 /// Variables.
 ////
 
-$featured-content-margin-bottom: $spacing-m !default;
-$featured-content-entry-image-border-radius: $base-border-radius !default;
+$featured-content-margin-bottom: var(--spacing-m) !default;
+$featured-content-entry-image-border-radius: var(--border-radius) !default;
 
 ////
 /// Featured content.

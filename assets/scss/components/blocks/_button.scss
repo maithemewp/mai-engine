@@ -1,0 +1,20 @@
+.wp-block-button__link {
+
+	@include button;
+
+	.is-style-rounded & {
+		border-radius: 10rem;
+	}
+
+	.is-style-outline & {
+		border: var(--border-size) var(--border-style) var(--color-primary);
+		color: var(--color-primary);
+		background-color: transparent;
+
+		@include hover-focus {
+			border-color: var(--color-primary);
+			color: var(--color-white);
+			background-color: var(--color-primary);
+		}
+	}
+}

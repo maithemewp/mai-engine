@@ -58,13 +58,13 @@
 	}
 
 	> div {
-		width: $one-half;
-		margin: 0 $gutter $gutter 0;
-		padding: $spacing-m 0;
-		border-radius: $base-border-radius;
-		color: $color-white;
+		width: var(--one-half);
+		margin: 0 var(--gutter) var(--gutter) 0;
+		padding: var(--spacing-m) 0;
+		border-radius: var(--border-radius);
+		color: var(--color-white);
 		font-size: smaller;
-		font-weight: $font-weight-heading;
+		font-weight: var(--font-weight-heading);
 		text-align: center;
 
 		&:nth-of-type(even) {
@@ -72,11 +72,11 @@
 		}
 
 		@include mq(xs) {
-			width: $one-fifth;
-			padding: $gap 0;
+			width: var(--one-fifth);
+			padding: var(--gap) 0;
 
 			&:nth-of-type(even) {
-				margin-right: $gutter;
+				margin-right: var(--gutter);
 			}
 
 			&:nth-of-type(5n) {
@@ -101,14 +101,14 @@
 
 .play-video {
 	padding: 0;
-	border: 2px solid $color-white;
+	border: 2px solid var(--color-white);
 	border-radius: 10rem;
 	background: transparent;
-
-	@include size($spacing-xxl);
+	height: var(--spacing-xxl);
+	width: var(--spacing-xxl);
 
 	@include hover-focus {
-		color: $color-body;
-		background: $color-white;
+		color: var(--color-body);
+		background: var(--color-white);
 	}
 }

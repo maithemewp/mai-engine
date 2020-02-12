@@ -10,7 +10,7 @@
 /// Variables.
 ////
 
-$site-footer-border-top: $base-border !default;
+$site-footer-border-top: var(--border) !default;
 
 ////
 /// Site Footer.

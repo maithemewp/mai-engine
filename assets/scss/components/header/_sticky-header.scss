@@ -10,15 +10,15 @@
 /// Variables.
 ////
 
-$sticky-header-background-color: $color-white !default;
-$sticky-header-border-bottom: $base-border !default;
-$sticky-title-area-padding: $spacing-m null !default;
+$sticky-header-background-color: var(--color-white) !default;
+$sticky-header-border-bottom: var(--border) !default;
+$sticky-title-area-padding: var(--spacing-m) null !default;
 
 ////
 /// Sticky Header.
 ////
 
-.sticky-header {
+.has-sticky-header {
 
 	// Site Header.
 	.site-header {
@@ -31,7 +31,7 @@ $sticky-title-area-padding: $spacing-m null !default;
 	.hero-section {
 
 		.wrap {
-			margin-top: $spacing-xxl;
+			margin-top: var(--spacing-xxl);
 		}
 	}
 }

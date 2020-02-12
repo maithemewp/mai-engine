@@ -1,0 +1,190 @@
+////
+/// Form.
+///
+/// @group  Elements
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+:root {
+	--label-margin: 0 0 var(--spacing-s);
+	--label-font-size: smaller;
+	--label-font-weight: var(--font-weight-heading);
+	--input-margin: 0 0 var(--spacing-s);
+	--input-padding: 1em;
+	--input-font-size: var(--font-size-body);
+	--input-color: var(--color-body);
+	--input-background-color: var(--color-white);
+	--input-border: var(--border);
+	--input-border-width: var(--border-size);
+	--input-border-color: var(--border-color);
+	--input-border-radius: var(--border-radius);
+	--input-focus-border-color: var(--color-primary);
+	--input-placeholder-color: var(--color-muted);
+	--input-disabled-border-color: var(--color-border);
+	--input-disabled-background-color: var(--color-muted);
+	--textarea-line-height: var(--line-height-body);
+	--select-height: calc((var(--font-size-body) / var(--major-second)) + var(--font-size-body) * 2);
+	--select-padding: 0 null;
+	--legend-margin: 0 0 var(--spacing-s);
+	--legend-padding: 0;
+	--legend-font-size: var(--font-size-h5);
+}
+
+////
+/// Rules
+////
+
+::placeholder {
+	opacity: 1; // Firefox fix
+	color: var(--input-placeholder-color);
+}
+
+////
+/// Abbreviations.
+////
+
+abbr[title] {
+	text-decoration: none;
+}
+
+////
+/// Label.
+////
+
+label {
+	display: inline-block;
+	margin: var(--label-margin);
+	font-size: var(--label-font-size);
+	font-weight: var(--label-font-weight);
+
+	i + &,
+	input + &,
+	select + &,
+	textarea + & {
+		font-size: smaller;
+		font-weight: var(--font-weight-body);
+	}
+}
+
+////
+/// Text Inputs.
+////
+
+#{$all-text-inputs} {
+	width: 100%;
+	margin: var(--input-margin);
+	padding: var(--input-padding);
+	border-width: var(--input-border-width);
+	border-style: solid;
+	border-color: var(--input-border-color);
+	border-radius: var(--input-border-radius);
+	color: var(--input-color);
+	background-color: var(--input-background-color);
+	background-clip: padding-box; // Remove iOS box shadow
+	box-shadow: none;
+	font-size: var(--input-font-size);
+
+	@include transition;
+
+	&:focus {
+		border-color: var(--input-focus-border-color);
+		outline: none;
+	}
+
+	&:disabled,
+	&:disabled:hover {
+		border-color: var(--input-disabled-border-color);
+		background-color: var(--input-disabled-background-color);
+		cursor: not-allowed;
+	}
+}
+
+////
+/// Textarea.
+////
+
+textarea {
+	line-height: var(--textarea-line-height);
+}
+
+////
+/// Select.
+////
+
+select {
+	height: var(--select-height);
+
+	@include padding(var(--select-padding));
+
+	&[multiple] {
+		height: auto;
+	}
+}
+
+////
+/// Other Inputs.
+////
+
+input[type="checkbox"],
+input[type="image"],
+input[type="radio"] {
+	width: auto;
+	margin-right: var(--spacing-s);
+}
+
+input[type="color"] {
+	min-height: var(--spacing-xl);
+}
+
+input[type="search"] {
+	-webkit-appearance: none;
+
+	&::-webkit-search-cancel-button,
+	&::-webkit-search-results-button {
+		display: none;
+	}
+}
+
+////
+/// Fieldset.
+////
+
+fieldset {
+	min-width: 0;
+	margin: 0;
+	padding: 0.01em 0 0 0;
+	border: 0;
+
+	body:not(:-moz-handler-blocked) & {
+		display: table-cell;
+	}
+}
+
+////
+/// Legend.
+////
+
+legend {
+	display: table;
+	float: left;
+	width: 100%;
+	margin: var(--legend-margin);
+	padding: var(--legend-padding);
+	font-size: var(--legend-font-size);
+
+	@include heading;
+
+	+ * {
+		clear: both;
+	}
+}
+
+////
+/// Buttons.
+////
+
+#{$all-buttons} {
+
+	@include button;
+}

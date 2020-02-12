@@ -11,16 +11,16 @@
 	justify-content: center;
 	align-items: center;
 	align-content: center;
-	border-radius: $base-border-radius;
-	color: $color-white;
-	background-color: $color-error;
-	font-weight: $font-weight-heading;
-
-	@include size($gap);
+	border-radius: var(--border-radius);
+	color: var(--color-white);
+	background-color: var(--color-error);
+	font-weight: var(--font-weight-heading);
+	height: var(--gap);
+	width: var(--gap);
 
 	@include hover-focus {
-		color: $color-white;
-		background-color: lighten($color-error, 10);
+		color: var(--color-white);
+		background-color: lighten(var(--color-error), 10);
 		text-decoration: none;
 	}
 }
@@ -28,22 +28,22 @@
 .product-thumbnail {
 
 	img {
-		border-radius: $base-border-radius;
-
-		@include size($spacing-xl);
+		border-radius: var(--border-radius);
+		height: var(--spacing-xl);
+		width: var(--spacing-xl);
 	}
 }
 
 .quantity {
 
 	.input-text {
-		max-width: $spacing-xxxl;
-		margin: 0 $spacing-m 0 0;
+		max-width: var(--spacing-xxxl);
+		margin: 0 var(--spacing-m) 0 0;
 	}
 }
 
 .actions {
-	padding: $spacing-l;
+	padding: var(--spacing-l);
 
 	> .button {
 
@@ -56,7 +56,7 @@
 .coupon {
 	display: flex;
 	align-items: center;
-	width: $two-thirds;
+	width: var(--two-thirds);
 
 	@include mq(xs) {
 		float: left;
@@ -78,7 +78,7 @@
 }
 
 .cart-collaterals {
-	margin: $gutter 0;
+	margin: var(--gutter) 0;
 
 	@include mq(m) {
 		display: flex;
@@ -89,7 +89,7 @@
 .cart_totals {
 
 	@include mq(m) {
-		width: $one-half;
+		width: var(--one-half);
 	}
 }
 
@@ -122,19 +122,19 @@
 			align-content: center;
 			position: relative;
 			padding: 0;
-			border: $base-border;
+			border: var(--border);
 			border-bottom: 0;
 		}
 
 		.actions {
 			display: block;
 			padding: 1em;
-			border-bottom: $base-border;
+			border-bottom: var(--border);
 
 			.button {
 				margin: 0;
 
-				@include padding($spacing-m);
+				@include padding(var(--spacing-m));
 			}
 		}
 
@@ -150,20 +150,20 @@
 		}
 
 		.cart_item {
-			margin: $gap 0;
-			border-bottom: $base-border;
+			margin: var(--gap) 0;
+			border-bottom: var(--border);
 
 			td:before {
 				display: flex;
 				align-items: center;
 				align-self: stretch;
 				width: 25%;
-				margin-right: $spacing-m;
+				margin-right: var(--spacing-m);
 				padding: 1.5em 1em;
-				border-right: $base-border;
-				background-color: $color-background;
+				border-right: var(--border);
+				background-color: var(--color-background);
 				font-size: smaller;
-				font-weight: $font-weight-heading;
+				font-weight: var(--font-weight-heading);
 				white-space: nowrap;
 			}
 		}

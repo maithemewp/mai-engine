@@ -27,7 +27,7 @@ function mai_autoload_register( $class ) {
 		return;
 	}
 
-	$class_dir  = mai_dir() . 'lib/classes/';
+	$class_dir  = mai_get_dir() . 'lib/classes/';
 	$class_file = strtolower( str_replace( '_', '-', $class ) );
 
 	/* @noinspection PhpIncludeInspection */

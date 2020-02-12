@@ -114,7 +114,7 @@
 
 	h2 {
 		padding-bottom: 0.5em;
-		border-bottom: $base-border;
+		border-bottom: $border;
 	}
 }
 
@@ -274,8 +274,8 @@ li {
 
 .ui-datepicker {
 	padding: 0.5em;
-	border: $base-border;
-	border-radius: $base-border-radius;
+	border: $border;
+	border-radius: $border-radius;
 	background-color: $color-white;
 
 	&-header {

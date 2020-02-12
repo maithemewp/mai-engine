@@ -10,14 +10,14 @@
 /// Variables.
 ////
 
-$entry-archive-margin-bottom: $gutter !default;
-$entry-archive-border-radius: $base-border-radius !default;
-$entry-archive-background-color: $color-white !default;
-$entry-archive-border: $base-border !default;
-$entry-archive-title-font-size: $font-size-h4 !default;
+$entry-archive-margin-bottom: var(--gutter) !default;
+$entry-archive-border-radius: var(--border-radius) !default;
+$entry-archive-background-color: var(--color-white) !default;
+$entry-archive-border: var(--border) !default;
+$entry-archive-title-font-size: var(--font-size-h4) !default;
 $entry-meta-font-size: smaller !default;
-$entry-image-border-radius: $base-border-radius $base-border-radius 0 0 !default;
-$entry-wrap-padding: $gap !default;
+$entry-image-border-radius: var(--border-radius) var(--border-radius) 0 0 !default;
+$entry-wrap-padding: var(--gap) !default;
 
 ////
 /// Entry.
@@ -135,11 +135,11 @@ $entry-wrap-padding: $gap !default;
 		font-size: $entry-archive-title-font-size;
 
 		a {
-			color: $color-heading;
+			color: var(--color-heading);
 
 			@include hover-focus {
-				color: $link-color-hover;
-				text-decoration: $link-text-decoration-hover;
+				color: var(--link-color-hover);
+				text-decoration: var(--link-text-decoration-hover);
 			}
 		}
 	}
@@ -153,14 +153,14 @@ $entry-wrap-padding: $gap !default;
 
 	// Entry.
 	.entry {
-		margin-bottom: $gutter;
+		margin-bottom: var(--gutter);
 	}
 
 	// Entry content.
 	.entry-content {
 
 		#{$all-headings} {
-			margin-top: $gap;
+			margin-top: var(--gap);
 		}
 	}
 }

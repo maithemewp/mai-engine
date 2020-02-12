@@ -10,13 +10,13 @@
 /// Variables.
 ////
 
-$pagination-font-family: $base-font-family !default;
+$pagination-font-family: var(--font-family-body) !default;
 $pagination-font-size: smaller !default;
-$pagination-padding: $gutter 0 !default;
-$pagination-border-top: $base-border !default;
-$pagination-background-color: $color-background !default;
-$pagination-link-color: $color-body !default;
-$pagination-link-color-hover: $color-primary !default;
+$pagination-padding: var(--gutter) 0 !default;
+$pagination-border-top: var(--border) !default;
+$pagination-background-color: var(--color-background) !default;
+$pagination-link-color: var(--color-body) !default;
+$pagination-link-color-hover: var(--color-primary) !default;
 
 ////
 /// Pagination.
@@ -49,7 +49,7 @@ $pagination-link-color-hover: $color-primary !default;
 
 	// List item.
 	li {
-		margin-right: $spacing-s;
+		margin-right: var(--spacing-s);
 	}
 
 	// Active item.
@@ -85,7 +85,7 @@ $pagination-link-color-hover: $color-primary !default;
 		.wrap {
 
 			@include mq(m) {
-				width: $layout-width-content;
+				width: var(--layout-width-content);
 			}
 		}
 	}
@@ -95,7 +95,7 @@ $pagination-link-color-hover: $color-primary !default;
 		justify-content: space-between;
 
 		> div {
-			max-width: $one-half;
+			max-width: var(--one-half);
 		}
 	}
 }

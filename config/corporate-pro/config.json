@@ -1,0 +1,16 @@
+{
+  "color-primary": "#0072ff",
+  "color-heading": "#2a3139",
+  "color-body": "#4d5968",
+  "border-radius": "50px",
+  "base-font-family": "Muli, var(--font-family-stack)",
+  "font-weight-heading": "700",
+  "font-size-h1": "calc(var(--font-size-body) * 3)",
+  "hero-heading-color": "var(--color-white)",
+  "button-font-family": "var(--font-family-heading)",
+  "transparent-header-site-title-color": "var(--color-white)",
+  "transparent-header-site-title-color-hover": "var(--color-white)",
+  "transparent-header-site-description-color": "var(--color-white)",
+  "transparent-header-menu-item-link-color": "var(--color-white)",
+  "transparent-header-menu-item-link-color-hover": "var(--color-white)"
+}

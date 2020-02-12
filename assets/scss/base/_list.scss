@@ -1,0 +1,49 @@
+////
+/// List.
+///
+/// @group  Elements
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Variables.
+////
+
+$list-margin: 0 0 var(--spacing-m) !default;
+$list-padding: 0 !default;
+$list-list-style-position: inside !default;
+$sub-list-margin: var(--spacing-s) var(--spacing-m) !default;
+$description-term-font-weight: var(--font-weight-heading) !default;
+
+////
+/// Lists.
+////
+
+ul,
+ol,
+dl {
+	margin: $list-margin;
+	padding: $list-padding;
+	list-style-position: $list-list-style-position;
+
+	// Sub list.
+	ul,
+	ol,
+	dl {
+		margin: $sub-list-margin;
+	}
+}
+
+////
+/// Data Cells.
+////
+
+dd,
+dt {
+	margin: 0;
+}
+
+dt {
+	font-weight: $description-term-font-weight;
+}

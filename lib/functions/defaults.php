@@ -18,7 +18,7 @@ add_action( 'after_switch_theme', 'mai_default_theme_settings' );
  * @return void
  */
 function mai_default_theme_settings() {
-	$settings = mai_config( 'genesis-settings' );
+	$settings = mai_get_config( 'genesis-settings' );
 
 	genesis_update_settings( $settings );
 	update_option( 'posts_per_page', $settings['blog_cat_num'] );
@@ -35,7 +35,7 @@ add_filter( 'simple_social_default_styles', 'mai_default_social_styles' );
  * @return array Modified social style defaults.
  */
 function mai_default_social_styles( $defaults ) {
-	$args = mai_config( 'simple-social-icons' );
+	$args = mai_get_config( 'simple-social-icons' );
 
 	return wp_parse_args( $args, $defaults );
 }
@@ -51,7 +51,7 @@ add_filter( 'icon_widget_defaults', 'mai_icon_widget_defaults' );
  * @return array
  */
 function mai_icon_widget_defaults( $defaults ) {
-	$defaults['color']   = mai_default_color( 'primary' );
+	$defaults['color']   = mai_get_color( 'primary' );
 	$defaults['weight']  = '400';
 	$defaults['size']    = '3x';
 	$defaults['align']   = 'center';

@@ -3,9 +3,9 @@
 if( function_exists('acf_add_options_page') ) {
 
 	acf_add_options_page(array(
-		'page_title' 	=> mai_name(),
-		'menu_title'	=> mai_name(),
-		'menu_slug' 	=> mai_handle(),
+		'page_title' 	=> mai_get_name(),
+		'menu_title'	=> mai_get_name(),
+		'menu_slug' 	=> mai_get_handle(),
 		'capability'	=> 'edit_posts',
 		'redirect'		=> false
 	));
@@ -13,13 +13,13 @@ if( function_exists('acf_add_options_page') ) {
 	acf_add_options_sub_page(array(
 		'page_title' 	=> 'Addons',
 		'menu_title'	=> 'Addons',
-		'parent_slug'	=> mai_handle(),
+		'parent_slug'	=> mai_get_handle(),
 	));
 
 	acf_add_options_sub_page(array(
 		'page_title' 	=> 'Courses',
 		'menu_title'	=> 'Courses',
-		'parent_slug'	=> mai_handle(),
+		'parent_slug'	=> mai_get_handle(),
 	));
 
 }

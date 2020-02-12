@@ -1,0 +1,54 @@
+////
+/// Custom variables.
+///
+/// @group  Tools
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+/// Map variables.
+$all-buttons: append($all-buttons, ".button");
+$all-buttons: append($all-buttons, ".button.menu-item a");
+$all-text-inputs: append($all-text-inputs, "select");
+$all-headings: (h1, h2, h3, h4, h5, h6);
+
+$screens: (
+	xxxs: var(--screen-xxxs),
+	xxs: var(--screen-xxs),
+	xs: var(--screen-xs),
+	s: var(--screen-s),
+	m: var(--screen-m),
+	l: var(--screen-l),
+	xl: var(--screen-xl),
+	xxl: var(--screen-xxl),
+	xxxl: var(--screen-xxxl),
+) !default;
+
+// Colors
+$colors: (
+	"primary": var(--color-primary),
+	"secondary": var(--color-secondary),
+	"success": var(--color-success),
+	"info": var(--color-info),
+	"warning": var(--color-warning),
+	"error": var(--color-error),
+	"heading": var(--color-heading),
+	"body": var(--color-body),
+	"border": var(--color-border),
+	"background": var(--color-background),
+	"muted": var(--color-muted),
+	"shadow": var(--color-shadow),
+	"white": var(--color-white),
+	"black": var(--color-black),
+) !default;
+
+// Font sizes
+$font-sizes: (
+	body: var(--font-size-body),
+	h1: var(--font-size-h1),
+	h2: var(--font-size-h2),
+	h3: var(--font-size-h3),
+	h4: var(--font-size-h4),
+	h5: var(--font-size-h5),
+	h6: var(--font-size-h6),
+) !default;

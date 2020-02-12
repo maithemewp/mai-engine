@@ -23,19 +23,19 @@ add_action( 'genesis_setup', 'mai_setup', 100 );
 function mai_setup() {
 
 	// Get active theme.
-	$active_theme = mai_active_theme();
-	$handle       = mai_handle();
+	$active_theme = mai_get_active_theme();
+	$handle       = mai_get_handle();
 
 	// Get setup configs.
-	$responsive_menu   = mai_config( 'responsive-menu' );
-	$theme_support     = mai_config( 'theme-support' );
-	$post_type_support = mai_config( 'post-type-support' );
-	$image_sizes       = mai_config( 'image-sizes' );
-	$page_layouts      = mai_config( 'page-layouts' );
-	$widget_areas      = mai_config( 'widget-areas' );
+	$responsive_menu   = mai_get_config( 'responsive-menu' );
+	$theme_support     = mai_get_config( 'theme-support' );
+	$post_type_support = mai_get_config( 'post-type-support' );
+	$image_sizes       = mai_get_config( 'image-sizes' );
+	$page_layouts      = mai_get_config( 'page-layouts' );
+	$widget_areas      = mai_get_config( 'widget-areas' );
 
 	// Add theme textdomain.
-	load_child_theme_textdomain( genesis_get_theme_handle(), mai_dir() . '/assets/lang' );
+	load_child_theme_textdomain( genesis_get_theme_handle(), mai_get_dir() . '/assets/lang' );
 
 	// Add editor styles.
 	add_editor_style( "../../plugins/$handle/assets/css/{$active_theme}/editor.css" );

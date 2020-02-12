@@ -10,8 +10,8 @@
 /// Variables.
 ////
 
-$content-margin-mobile: $spacing-l null !default;
-$content-margin-desktop: $spacing-xl null !default;
+$content-margin-mobile: var(--spacing-l) null !default;
+$content-margin-desktop: var(--spacing-xl) null !default;
 
 ////
 /// Content.
@@ -32,8 +32,8 @@ $content-margin-desktop: $spacing-xl null !default;
 	.sidebar-content & {
 
 		@include mq(m) {
-			width: $layout-width-content;
-			max-width: $layout-max-width-content;
+			width: var(--layout-width-content);
+			max-width: var(--layout-max-width-content);
 		}
 	}
 
@@ -43,7 +43,7 @@ $content-margin-desktop: $spacing-xl null !default;
 		@include margin(null auto);
 
 		@include mq(m) {
-			width: $layout-width-content;
+			width: var(--layout-width-content);
 		}
 	}
 

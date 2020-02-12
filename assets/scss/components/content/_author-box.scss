@@ -10,13 +10,13 @@
 /// Variables.
 ////
 
-$author-box-margin: $gutter 0 !default;
-$author-box-padding: $gap !default;
-$author-box-border: $base-border !default;
-$author-box-border-radius: $base-border-radius !default;
-$author-box-background-color: $color-background !default;
-$author-box-title-margin-bottom: $spacing-xs !default;
-$author-box-content-padding-left: $spacing-xl + $spacing-m !default;
+$author-box-margin: var(--gutter) 0 !default;
+$author-box-padding: var(--gap) !default;
+$author-box-border: var(--border) !default;
+$author-box-border-radius: var(--border-radius) !default;
+$author-box-background-color: var(--color-background) !default;
+$author-box-title-margin-bottom: var(--spacing-xs) !default;
+$author-box-content-padding-left: calc(var(--spacing-xl) + var(--spacing-m)) !default;
 
 ////
 /// Author box.

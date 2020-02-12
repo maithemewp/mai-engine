@@ -11,14 +11,14 @@
 ////
 
 $terms-filter-alignment: center !default;
-$terms-filter-padding: $gutter 0 0 !default;
+$terms-filter-padding: var(--gutter) 0 0 !default;
 $terms-filter-background-color: transparent !default;
-$terms-filter-border-bottom: 1px solid transparent !default;
-$terms-filter-link-padding: 0 $spacing-s !default;
+$terms-filter-border-bottom: var(--border-size) var(--border-style) transparent !default;
+$terms-filter-link-padding: 0 var(--spacing-s) !default;
 $terms-filter-link-background-color: transparent !default;
-$terms-filter-link-color: $color-body !default;
-$terms-filter-link-color-hover: $color-primary !default;
-$terms-filter-link-font-family: $base-font-family !default;
+$terms-filter-link-color: var(--color-body) !default;
+$terms-filter-link-color-hover: var(--color-primary) !default;
+$terms-filter-link-font-family: var(--font-family-body) !default;
 $terms-filter-link-font-size: smaller !default;
 
 ////

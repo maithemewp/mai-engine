@@ -36,56 +36,56 @@
 	.four-sixths,
 	.five-sixths {
 		float: left;
-		margin-bottom: $gutter;
-		margin-left: $gutter;
+		margin-bottom: var(--gutter);
+		margin-left: var(--gutter);
 	}
 
 	.one-half,
 	.two-fourths,
 	.three-sixths {
-		width: $one-half;
+		width: var(--one-half);
 	}
 
 	.one-third,
 	.two-sixths {
-		width: $one-third;
+		width: var(--one-third);
 	}
 
 	.one-fourth {
-		width: $one-fourth;
+		width: var(--one-fourth);
 	}
 
 	.one-fifth {
-		width: $one-fifth;
+		width: var(--one-fifth);
 	}
 
 	.one-sixth {
-		width: $one-sixth;
+		width: var(--one-sixth);
 	}
 
 	.two-thirds,
 	.four-sixths {
-		width: $two-thirds;
+		width: var(--two-thirds);
 	}
 
 	.two-fifths {
-		width: $two-fifths;
+		width: var(--two-fifths);
 	}
 
 	.three-fourths {
-		width: $three-fourths;
+		width: var(--three-fourths);
 	}
 
 	.three-fifths {
-		width: $three-fifths;
+		width: var(--three-fifths);
 	}
 
 	.four-fifths {
-		width: $four-fifths;
+		width: var(--four-fifths);
 	}
 
 	.five-sixths {
-		width: $five-sixths;
+		width: var(--five-sixths);
 	}
 
 	.first {

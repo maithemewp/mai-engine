@@ -10,15 +10,15 @@
 /// Variables.
 ////
 
-$hero-section-padding-mobile: $spacing-l 0 !default;
-$hero-section-color: $color-body !default;
-$hero-section-padding-desktop: $spacing-xl 0 !default;
-$hero-section-border-bottom: $base-border !default;
-$hero-heading-font-size-mobile: $font-size-h1 !default;
-$hero-heading-font-size-desktop: $font-size-h1 !default;
-$hero-heading-color: $color-body !default;
+$hero-section-padding-mobile: var(--spacing-l) 0 !default;
+$hero-section-color: var(--color-body) !default;
+$hero-section-padding-desktop: var(--spacing-xl) 0 !default;
+$hero-section-border-bottom: var(--border) !default;
+$hero-heading-font-size-mobile: var(--font-size-h1) !default;
+$hero-heading-font-size-desktop: var(--font-size-h1) !default;
+$hero-heading-color: var(--color-body) !default;
 $hero-heading-margin-bottom: 0 !default;
-$hero-text-margin-top: $spacing-m !default;
+$hero-text-margin-top: var(--spacing-m) !default;
 
 ////
 /// Placeholder.

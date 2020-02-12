@@ -101,8 +101,8 @@ function mai_custom_header() {
 register_default_headers(
 	[
 		'child' => [
-			'url'           => mai_url() . 'assets/img/hero.jpg',
-			'thumbnail_url' => mai_url() . 'assets/img/hero.jpg',
+			'url'           => mai_get_url() . 'assets/img/hero.jpg',
+			'thumbnail_url' => mai_get_url() . 'assets/img/hero.jpg',
 			'description'   => __( 'Hero Image', 'child-theme-engine' ),
 		],
 	]

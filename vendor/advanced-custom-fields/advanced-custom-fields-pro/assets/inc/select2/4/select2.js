@@ -3,11 +3,11 @@
  * https://select2.github.io
  *
  * Released under the MIT license
- * https://github.com/select2/select2/blob/master/LICENSE.md
+ * https://github.com/select2/select2/blob/master/LICENSE.m
  */
 (function (factory) {
-  if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module.
+  if (typeof define === 'function' && define.am) {
+    // Am. Register as an anonymous module.
     define(['jquery'], factory);
   } else if (typeof exports === 'object') {
     // Node/CommonJS
@@ -17,15 +17,15 @@
     factory(jQuery);
   }
 }(function (jQuery) {
-  // This is needed so we can catch the AMD loader configuration and use it
+  // This is needed so we can catch the Am loader configuration and use it
   // The inner file should be wrapped (by `banner.start.js`) in a function that
-  // returns the AMD loader references.
+  // returns the Am loader references.
   var S2 =
 (function () {
-  // Restore the Select2 AMD loader so it can be used
+  // Restore the Select2 Am loader so it can be used
   // Needed mostly in the language files, where the loader is not inserted
-  if (jQuery && jQuery.fn && jQuery.fn.select2 && jQuery.fn.select2.amd) {
-    var S2 = jQuery.fn.select2.amd;
+  if (jQuery && jQuery.fn && jQuery.fn.select2 && jQuery.fn.select2.am) {
+    var S2 = jQuery.fn.select2.am;
   }
 var S2;(function () { if (!S2 || !S2.requirejs) {
 if (!S2) { S2 = {}; } else { require = S2; }
@@ -89,7 +89,7 @@ var requirejs, require, define;
                 //want the directory, "one/two" for this normalization.
                 name = baseParts.slice(0, baseParts.length - 1).concat(name);
 
-                //start trimDots
+                //start trimots
                 for (i = 0; i < name.length; i += 1) {
                     part = name[i];
                     if (part === ".") {
@@ -110,7 +110,7 @@ var requirejs, require, define;
                         }
                     }
                 }
-                //end trimDots
+                //end trimots
 
                 name = name.join("/");
             } else if (name.indexOf('./') === 0) {
@@ -414,7 +414,7 @@ var requirejs, require, define;
             //http://www.whatwg.org/specs/web-apps/current-work/multipage/timers.html#dom-windowtimers-settimeout:
             //If want a value immediately, use require('id') instead -- something
             //that works in almond on the global level, but not guaranteed and
-            //unlikely to work in other AMD implementations.
+            //unlikely to work in other Am implementations.
             setTimeout(function () {
                 main(undef, deps, callback, relName);
             }, 4);
@@ -455,7 +455,7 @@ var requirejs, require, define;
         }
     };
 
-    define.amd = {
+    define.am = {
         jQuery: true
     };
 }());
@@ -4607,7 +4607,7 @@ S2.define('select2/defaults',[
       }
 
       if (options.query != null) {
-        var Query = require(options.amdBase + 'compat/query');
+        var Query = require(options.amBase + 'compat/query');
 
         options.dataAdapter = Utils.Decorate(
           options.dataAdapter,
@@ -4616,7 +4616,7 @@ S2.define('select2/defaults',[
       }
 
       if (options.initSelection != null) {
-        var InitSelection = require(options.amdBase + 'compat/initSelection');
+        var InitSelection = require(options.amBase + 'compat/initSelection');
 
         options.dataAdapter = Utils.Decorate(
           options.dataAdapter,
@@ -4678,7 +4678,7 @@ S2.define('select2/defaults',[
         options.dropdownCss != null ||
         options.adaptDropdownCssClass != null
       ) {
-        var DropdownCSS = require(options.amdBase + 'compat/dropdownCss');
+        var DropdownCSS = require(options.amBase + 'compat/dropdownCss');
 
         options.dropdownAdapter = Utils.Decorate(
           options.dropdownAdapter,
@@ -4726,7 +4726,7 @@ S2.define('select2/defaults',[
         options.containerCss != null ||
         options.adaptContainerCssClass != null
       ) {
-        var ContainerCSS = require(options.amdBase + 'compat/containerCss');
+        var ContainerCSS = require(options.amBase + 'compat/containerCss');
 
         options.selectionAdapter = Utils.Decorate(
           options.selectionAdapter,
@@ -4769,7 +4769,7 @@ S2.define('select2/defaults',[
         } catch (e) {
           try {
             // If we couldn't load it, check if it wasn't the full path
-            name = this.defaults.amdLanguageBase + name;
+            name = this.defaults.amLanguageBase + name;
             language = Translation.loadPath(name);
           } catch (ex) {
             // The translation could not be loaded at all. Sometimes this is
@@ -4792,7 +4792,7 @@ S2.define('select2/defaults',[
       options.translations = languages;
     } else {
       var baseTranslation = Translation.loadPath(
-        this.defaults.amdLanguageBase + 'en'
+        this.defaults.amLanguageBase + 'en'
       );
       var customTranslation = new Translation(options.language);
 
@@ -4860,8 +4860,8 @@ S2.define('select2/defaults',[
     }
 
     this.defaults = {
-      amdBase: './',
-      amdLanguageBase: './i18n/',
+      amBase: './',
+      amLanguageBase: './i18n/',
       closeOnSelect: true,
       debug: false,
       dropdownAutoWidth: false,
@@ -4919,7 +4919,7 @@ S2.define('select2/options',[
     this.options = Defaults.apply(this.options);
 
     if ($element && $element.is('input')) {
-      var InputCompat = require(this.get('amdBase') + 'compat/inputData');
+      var InputCompat = require(this.get('amBase') + 'compat/inputData');
 
       this.options.dataAdapter = Utils.Decorate(
         this.options.dataAdapter,
@@ -5704,7 +5704,7 @@ S2.define('jquery.select2',[
   return Select2;
 });
 
-  // Return the AMD loader configuration so it can be used outside of this file
+  // Return the Am loader configuration so it can be used outside of this file
   return {
     define: S2.define,
     require: S2.require
@@ -5715,10 +5715,10 @@ S2.define('jquery.select2',[
   // We know that all of the modules exist above this, so we're safe
   var select2 = S2.require('jquery.select2');
 
-  // Hold the AMD module references on the jQuery function that was just loaded
+  // Hold the Am module references on the jQuery function that was just loaded
   // This allows Select2 to use the internal loader outside of this file, such
   // as in the language files.
-  jQuery.fn.select2.amd = S2;
+  jQuery.fn.select2.am = S2;
 
   // Return the Select2 instance for anyone who is importing it.
   return select2;

@@ -73,8 +73,12 @@ return [
 
 	'image-sizes' => [
 		'add'    => [
-			'featured' => [ 620, 380, true ],
-			'hero'     => [ 1920, 1080, true ],
+			'landscape-xl' => mai_apply_aspect_ratio( 'xxxl', '16:9' ),
+			'landscape-lg' => mai_apply_aspect_ratio( 'xxl', '16:9' ),
+			'landscape-m'  => mai_apply_aspect_ratio( 'm', '16:9' ),
+			'landscape-sm' => mai_apply_aspect_ratio( 'xxs', '16:9' ),
+			'landscape-xs' => mai_apply_aspect_ratio( 'xxxs', '16:9' ),
+			'tiny'         => mai_apply_aspect_ratio( 80, '1:1' ),
 		],
 		'remove' => [],
 	],
@@ -95,7 +99,7 @@ return [
 			[
 				'id'    => 'narrow-content',
 				'label' => __( 'Narrow Content', 'child-theme-engine' ),
-				'img'   => mai_url() . 'assets/img/narrow-content.gif',
+				'img'   => mai_get_url() . 'assets/img/narrow-content.gif',
 			],
 		],
 		'remove' => [
@@ -166,6 +170,9 @@ return [
 		],
 		'extras' => [
 			'media_query_width' => '896px',
+			'css'               => '',
+			'enable_AMP'        => true,
+			'enable_non_AMP'    => true,
 		],
 	],
 
@@ -182,65 +189,115 @@ return [
 
 	'scripts-and-styles' => [
 		'add'    => [
+
+			// Scripts.
 			[
-				'handle' => mai_handle() . '-editor',
-				'src'    => mai_url() . 'assets/js/editor.js',
-				'deps'   => [ 'wp-blocks' ],
+				'handle' => mai_get_handle() . '-editor',
+				'src'    => mai_get_url() . 'assets/js/editor.js',
+				'deps'   => [ 'jquery', 'wp-blocks' ],
 				'editor' => true,
 			],
 			[
-				'handle'    => mai_handle(),
-				'src'       => mai_url() . 'assets/js/min/global.min.js',
+				'handle'    => mai_get_handle(),
+				'src'       => mai_get_url() . 'assets/js/min/global.min.js',
 				'deps'      => [],
 				'condition' => function () {
-					return ! genesis_is_amp();
+					return ! genesis_is_amp() && ! genesis_is_in_dev_mode();
+				},
+			],
+
+			// Dev scripts.
+			[
+				'handle'    => mai_get_handle() . '-filters',
+				'src'       => mai_get_url() . 'assets/js/filters.js',
+				'deps'      => [],
+				'condition' => function () {
+					return genesis_is_in_dev_mode();
 				},
 			],
 			[
-				'handle' => mai_handle() . '-critical',
-				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/critical.css',
+				'handle'    => mai_get_handle() . '-header',
+				'src'       => mai_get_url() . 'assets/js/header.js',
+				'deps'      => [],
+				'condition' => function () {
+					return genesis_is_in_dev_mode();
+				},
 			],
 			[
-				'handle' => mai_handle() . '-editor',
-				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/editor.css',
+				'handle'    => mai_get_handle() . '-menu',
+				'src'       => mai_get_url() . 'assets/js/menu.js',
+				'deps'      => [],
+				'condition' => function () {
+					return genesis_is_in_dev_mode();
+				},
+			],
+			[
+				'handle'    => mai_get_handle() . '-scroll',
+				'src'       => mai_get_url() . 'assets/js/scroll.js',
+				'deps'      => [],
+				'condition' => function () {
+					return genesis_is_in_dev_mode();
+				},
+			],
+			[
+				'handle'    => mai_get_handle() . '-toggle',
+				'src'       => mai_get_url() . 'assets/js/toggle.js',
+				'deps'      => [],
+				'condition' => function () {
+					return genesis_is_in_dev_mode();
+				},
+			],
+
+			// Styles.
+			[
+				'handle' => mai_get_handle() . '-editor',
+				'src'    => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '/editor.css',
 				'editor' => true,
 			],
 			[
-				'handle' => mai_handle() . '-header',
-				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/header.css',
+				'handle' => mai_get_handle() . '-variables',
+				'src'    => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '/variables.css',
+			],
+			[
+				'handle' => mai_get_handle() . '-critical',
+				'src'    => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '/critical.css',
+			],
+			[
+				'handle' => mai_get_handle() . '-header',
+				'src'    => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '/header.css',
 				'hook'   => 'genesis_before_header',
 			],
 			[
-				'handle'   => mai_handle() . '-desktop',
-				'src'      => mai_url() . 'assets/css/' . mai_active_theme() . '/desktop.css',
+				'handle'   => mai_get_handle() . '-desktop',
+				'src'      => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '/desktop.css',
 				'media'    => '(min-width:896px)',
 				'hook'     => 'mai_after_title_area',
 				'priority' => 5,
 			],
 			[
-				'handle'   => mai_handle() . '-hero',
-				'src'      => mai_url() . 'assets/css/' . mai_active_theme() . '/hero.css',
+				'handle'   => mai_get_handle() . '-hero',
+				'src'      => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '/hero.css',
 				'hook'     => 'genesis_before_content_sidebar_wrap',
 				'priority' => 5,
 			],
 			[
-				'handle' => mai_handle() . '-content',
-				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/content.css',
+				'handle' => mai_get_handle() . '-content',
+				'src'    => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '/content.css',
 				'hook'   => 'genesis_before_content',
 			],
 			[
-				'handle' => mai_handle() . '-comments',
-				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/comments.css',
+				'handle' => mai_get_handle() . '-comments',
+				'src'    => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '/comments.css',
 				'hook'   => 'genesis_before_comments',
 			],
 			[
-				'handle' => mai_handle() . '-sidebar',
-				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/sidebar.css',
+				'handle' => mai_get_handle() . '-sidebar',
+				'src'    => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '/sidebar.css',
 				'hook'   => 'genesis_before_sidebar_widget_area',
 			],
 			[
-				'handle' => mai_handle() . '-footer',
-				'src'    => mai_url() . 'assets/css/' . mai_active_theme() . '/footer.css',
+				'handle' => mai_get_handle() . '-footer',
+				'src'    => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '/footer.css',
 				'hook'   => 'genesis_before_footer',
 			],
 		],
@@ -267,8 +324,8 @@ return [
 		'background_color_hover' => '',
 		'border_radius'          => 3,
 		'border_width'           => 0,
-		'icon_color'             => mai_default_color( 'heading' ),
-		'icon_color_hover'       => mai_default_color( 'primary' ),
+		'icon_color'             => mai_get_color( 'heading' ),
+		'icon_color_hover'       => mai_get_color( 'primary' ),
 		'size'                   => 40,
 	],
 
@@ -307,17 +364,18 @@ return [
 			'automatic-feed-links',
 			'custom-header'            => [
 				'header-selector'  => '.hero-section',
-				'default_image'    => mai_url() . 'assets/img/hero.jpg',
+				'default_image'    => mai_get_url() . 'assets/img/hero.jpg',
 				'header-text'      => false,
 				'width'            => 1280,
 				'height'           => 720,
 				'flex-height'      => true,
 				'flex-width'       => true,
 				'uploads'          => true,
-				'video'            => true,
+				'video'            => false,
 				'wp-head-callback' => 'mai_custom_header',
 			],
 			'editor-styles',
+			'editor-color-palette'     => mai_get_color_palette(),
 			'front-page-widgets'       => 5,
 			'genesis-accessibility'    => [
 				'404-page',
