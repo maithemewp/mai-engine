@@ -7,27 +7,15 @@
 ////
 
 ////
-/// Variables.
-////
-
-$footer-credits-padding-top: var(--gutter) !default;
-$footer-credits-padding-bottom: var(--gutter) !default;
-$footer-credits-font-size: smaller !default;
-$footer-credits-background-color: transparent !default;
-$footer-credits-color: var(--color-body) !default;
-$footer-credits-link-color: var(--color-primary) !default;
-$footer-credits-link-color-hover: var(--color-primary) !default;
-
-////
 /// Footer Credits.
 ////
 
 .footer-credits {
-	padding-top: $footer-credits-padding-top;
-	padding-bottom: $footer-credits-padding-bottom;
-	color: $footer-credits-color;
-	background-color: $footer-credits-background-color;
-	font-size: $footer-credits-font-size;
+	padding-top: var(--footer-credits-padding-top, var(--gutter));
+	padding-bottom: var(--footer-credits-padding-bottom, var(--gutter));
+	color: var(--footer-credits-color);
+	background-color: var(--footer-credits-background-color);
+	font-size: var(--footer-credits-font-size, (smaller));
 
 	.footer-widgets + & {
 		padding-top: 0;
@@ -41,10 +29,11 @@ $footer-credits-link-color-hover: var(--color-primary) !default;
 
 	// Links.
 	a {
-		color: $footer-credits-link-color;
+		color: var(--footer-credits-link-color);
 
-		@include hover-focus {
-			color: $footer-credits-link-color-hover;
+		&:hover,
+		&:focus {
+			color: var(--footer-credits-link-color-hover);
 		}
 	}
 }

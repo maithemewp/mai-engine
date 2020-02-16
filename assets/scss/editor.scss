@@ -10,44 +10,15 @@
 /// @link   http://sass-guidelin.es/#main-file
 ////
 
-////
-/// Default settings.
-////
-
-@import "../../node_modules/bourbon/core/bourbon";
 @import "abstracts/_index";
-
-////
-/// Theme variables.
-////
-
-@import "config";
-@import "variables";
-
-////
-/// Elements.
-////
-
 @import "base/html";
-
-////
-/// Blocks.
-////
-
 @import "components/blocks/_index";
-
-////
-/// Utilities.
-////
-
 @import "utilities/_index";
 
-////
-/// Overrides.
-////
+.editor-styles-wrapper {
 
-div.editor-styles-wrapper {
-
+	@import "base/custom-properties";
+	@include custom-properties;
 	@include body;
 
 	height: auto;
@@ -63,17 +34,17 @@ div.editor-styles-wrapper {
 	@include heading();
 }
 
-/**
- * Change editor width.
- *
- * @link https://developer.wordpress.org/block-editor/developers/themes/theme-support/#changing-the-width-of-the-editor
- */
+///
+/// Change editor width.
+///
+/// @link https://developer.wordpress.org/block-editor/developers/themes/theme-support/#changing-the-width-of-the-editor
+///
 
 .wp-block {
-	max-width: var(--screen-s);
+	max-width: var(--screen-sm);
 
 	&[data-align="wide"] {
-		max-width: var(--screen-l);
+		max-width: var(--screen-lg);
 	}
 
 	&[data-align="full"] {

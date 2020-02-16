@@ -1,0 +1,17 @@
+////
+/// Site footer object.
+///
+/// @group  Objects
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Site Footer.
+////
+
+.site-footer {
+	margin-top: auto;
+	border-top: var(--site-footer-border-top, var(--border));
+	background-color: var(--site-footer-background-color, var(--color-white));
+}

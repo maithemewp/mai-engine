@@ -7,10 +7,6 @@
 ////
 
 ////
-/// Variables.
-////
-
-////
 /// Header Widget Area.
 ////
 
@@ -22,7 +18,7 @@
 		display: none;
 	}
 
-	@include mq(m) {
+	@include mq(md) {
 		margin: 0;
 		order: 3;
 	}
@@ -31,7 +27,7 @@
 	.widget {
 		margin-bottom: 0;
 
-		@include mq(m) {
+		@include mq(md) {
 			margin-left: var(--gutter);
 		}
 	}

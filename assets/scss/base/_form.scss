@@ -6,38 +6,13 @@
 /// @link   https://github.com/maithemewp/mai-engine
 ////
 
-:root {
-	--label-margin: 0 0 var(--spacing-s);
-	--label-font-size: smaller;
-	--label-font-weight: var(--font-weight-heading);
-	--input-margin: 0 0 var(--spacing-s);
-	--input-padding: 1em;
-	--input-font-size: var(--font-size-body);
-	--input-color: var(--color-body);
-	--input-background-color: var(--color-white);
-	--input-border: var(--border);
-	--input-border-width: var(--border-size);
-	--input-border-color: var(--border-color);
-	--input-border-radius: var(--border-radius);
-	--input-focus-border-color: var(--color-primary);
-	--input-placeholder-color: var(--color-muted);
-	--input-disabled-border-color: var(--color-border);
-	--input-disabled-background-color: var(--color-muted);
-	--textarea-line-height: var(--line-height-body);
-	--select-height: calc((var(--font-size-body) / var(--major-second)) + var(--font-size-body) * 2);
-	--select-padding: 0 null;
-	--legend-margin: 0 0 var(--spacing-s);
-	--legend-padding: 0;
-	--legend-font-size: var(--font-size-h5);
-}
-
 ////
 /// Rules
 ////
 
 ::placeholder {
 	opacity: 1; // Firefox fix
-	color: var(--input-placeholder-color);
+	color: var(--input-placeholder-color, var(--color-muted));
 }
 
 ////
@@ -54,9 +29,9 @@ abbr[title] {
 
 label {
 	display: inline-block;
-	margin: var(--label-margin);
-	font-size: var(--label-font-size);
-	font-weight: var(--label-font-weight);
+	margin: var(--label-margin, 0 0 var(--spacing-sm));
+	font-size: var(--label-font-size, (smaller));
+	font-weight: var(--label-font-weight, var(--font-weight-heading));
 
 	i + &,
 	input + &,
@@ -73,12 +48,9 @@ label {
 
 #{$all-text-inputs} {
 	width: 100%;
-	margin: var(--input-margin);
-	padding: var(--input-padding);
-	border-width: var(--input-border-width);
-	border-style: solid;
-	border-color: var(--input-border-color);
-	border-radius: var(--input-border-radius);
+	margin: var(--input-margin, 0 0 var(--spacing-sm));
+	padding: var(--input-padding, 1em);
+	border: var(--input-border, var(--border));
 	color: var(--input-color);
 	background-color: var(--input-background-color);
 	background-clip: padding-box; // Remove iOS box shadow
@@ -88,14 +60,13 @@ label {
 	@include transition;
 
 	&:focus {
-		border-color: var(--input-focus-border-color);
+		--input-border: (var(--border-width) var(--border-style) var(--color-primary));
 		outline: none;
 	}
 
 	&:disabled,
 	&:disabled:hover {
-		border-color: var(--input-disabled-border-color);
-		background-color: var(--input-disabled-background-color);
+		--input-background-color: var(--color-muted);
 		cursor: not-allowed;
 	}
 }
@@ -113,9 +84,8 @@ textarea {
 ////
 
 select {
-	height: var(--select-height);
-
-	@include padding(var(--select-padding));
+	height: var(--select-height, (calc((var(--font-size-md) / var(--major-second)) + var(--font-size-md) * 2)));
+	padding: var(--select-padding, (0 auto));
 
 	&[multiple] {
 		height: auto;
@@ -130,7 +100,7 @@ input[type="checkbox"],
 input[type="image"],
 input[type="radio"] {
 	width: auto;
-	margin-right: var(--spacing-s);
+	margin-right: var(--spacing-sm);
 }
 
 input[type="color"] {
@@ -169,11 +139,9 @@ legend {
 	display: table;
 	float: left;
 	width: 100%;
-	margin: var(--legend-margin);
-	padding: var(--legend-padding);
-	font-size: var(--legend-font-size);
-
-	@include heading;
+	margin: var(--legend-margin, 0 0 var(--spacing-sm));
+	padding: var(--legend-padding, 0);
+	font-size: var(--legend-font-size, var(--font-size-xl));
 
 	+ * {
 		clear: both;

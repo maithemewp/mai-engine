@@ -51,7 +51,7 @@ add_filter( 'genesis_register_widget_area_defaults', 'mai_front_page_1_heading',
  */
 function mai_front_page_1_heading( $defaults, $args ) {
 	if ( 'front-page-1' === $args['id'] ) {
-		$defaults['before_title'] = '<h1 class="hero-title" itemprop="headline">';
+		$defaults['before_title'] = '<h1 class="page-header-title" itemprop="headline">';
 		$defaults['after_title']  = "</h1>\n";
 	}
 
@@ -76,8 +76,8 @@ function mai_widget_area_defaults( $defaults, $id ) {
 	$wrap_open  = $slider && 'front-page-1' === $id ? '' : '<div class="wrap">';
 	$wrap_close = $slider && 'front-page-1' === $id ? '' : '</div>';
 
-	// Add hero section markup to Front Page 1.
-	$hero = 'front-page-1' === $id ? ' hero-section" role="banner' : '';
+	// Add page header markup to Front Page 1.
+	$page_header = 'front-page-1' === $id ? ' page-header" role="banner' : '';
 
 	// Get custom header markup.
 	ob_start();
@@ -89,7 +89,7 @@ function mai_widget_area_defaults( $defaults, $id ) {
 	if ( false !== strpos( $id, 'front-page-' ) ) {
 		$defaults['before'] = genesis_markup(
 			[
-				'open'    => '<div class="' . $id . $hero . '">' . $custom_header . $wrap_open,
+				'open'    => '<div class="' . $id . $page_header . '">' . $custom_header . $wrap_open,
 				'context' => 'widget-area-wrap',
 				'echo'    => false,
 				'params'  => [

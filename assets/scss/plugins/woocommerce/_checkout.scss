@@ -8,7 +8,7 @@
 
 form.checkout {
 
-	@include mq(m) {
+	@include mq(md) {
 		columns: 2;
 		column-gap: var(--gutter);
 
@@ -60,11 +60,11 @@ form.checkout {
 
 		display: inline-block;
 		width: 100%;
-		margin-bottom: var(--spacing-m);
+		margin-bottom: var(--spacing-md);
 		padding-left: var(--gutter) + var(--gap);
 
 		img {
-			margin-top: var(--spacing-s);
+			margin-top: var(--spacing-sm);
 		}
 	}
 }
@@ -76,7 +76,7 @@ form.checkout {
 		img {
 			display: block;
 			max-width: calc(var(--spacing-xxxl) * #{$golden});
-			margin-bottom: var(--spacing-m);
+			margin-bottom: var(--spacing-md);
 		}
 	}
 }
@@ -86,7 +86,7 @@ form.checkout {
 	label {
 
 		img {
-			max-width: calc(var(--spacing-l) * #{$minor-third});
+			max-width: calc(var(--spacing-lg) * #{$minor-third});
 			margin-right: var(--spacing-xs);
 		}
 	}
@@ -99,8 +99,8 @@ form.checkout {
 	.form-row {
 
 		> div {
-			margin-bottom: var(--spacing-m);
-			padding: var(--spacing-m);
+			margin-bottom: var(--spacing-md);
+			padding: var(--spacing-md);
 			border: var(--border);
 			border-radius: var(--border-radius);
 		}
@@ -130,7 +130,7 @@ form.checkout {
 	&,
 	.select2-selection__rendered,
 	.select2-selection__arrow {
-		height: calc((var(--font-size-body) / #{$major-second}) + var(--font-size-body) * 2);
-		line-height: calc((var(--font-size-body) / #{$major-second}) + var(--font-size-body) * 2);
+		height: calc((var(--font-size-md) / #{$major-second}) + var(--font-size-md) * 2);
+		line-height: calc((var(--font-size-md) / #{$major-second}) + var(--font-size-md) * 2);
 	}
 }

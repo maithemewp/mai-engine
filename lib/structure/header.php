@@ -47,6 +47,20 @@ function mai_title_area_hook( $close_html ) {
 	return $close_html;
 }
 
+add_filter( 'genesis_markup_site-title_content', 'mai_site_title_link' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @param $atts
+ *
+ * @return string
+ */
+function mai_site_title_link( $default ) {
+	return str_replace( '<a', '<a class="site-title-link" ', $default );
+}
+
 add_action( 'genesis_before_header_wrap', 'mai_before_header_widget' );
 /**
  * Displays the before header widget area.

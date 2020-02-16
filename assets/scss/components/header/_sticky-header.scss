@@ -6,51 +6,6 @@
 /// @link   https://github.com/maithemewp/mai-engine
 ////
 
-////
-/// Variables.
-////
-
-$sticky-header-background-color: var(--color-white) !default;
-$sticky-header-border-bottom: var(--border) !default;
-$sticky-title-area-padding: var(--spacing-m) null !default;
-
-////
-/// Sticky Header.
-////
-
 .has-sticky-header {
-
-	// Site Header.
-	.site-header {
-		position: fixed;
-
-		@include transition;
-	}
-
-	// Hero Section.
-	.hero-section {
-
-		.wrap {
-			margin-top: var(--spacing-xxl);
-		}
-	}
-}
-
-////
-/// Sticky.
-////
-
-.sticky {
-
-	// Site Header.
-	&.site-header {
-		border-bottom: $sticky-header-border-bottom;
-		background-color: $sticky-header-background-color;
-	}
-
-	// Title Area.
-	.title-area {
-
-		@include padding($sticky-title-area-padding);
-	}
+	--site-header-position: sticky;
 }

@@ -7,11 +7,12 @@
 	}
 
 	.is-style-outline & {
-		border: var(--border-size) var(--border-style) var(--color-primary);
+		border: var(--border-width) var(--border-style) var(--color-primary);
 		color: var(--color-primary);
 		background-color: transparent;
 
-		@include hover-focus {
+		&:hover,
+		&:focus {
 			border-color: var(--color-primary);
 			color: var(--color-white);
 			background-color: var(--color-primary);

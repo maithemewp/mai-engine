@@ -64,7 +64,7 @@
 			}
 		}
 
-		@include mq(m) {
+		@include mq(md) {
 
 			margin-right: var(--gutter);
 		}
@@ -108,12 +108,12 @@
 
 .woocommerce-loop-product-title {
 	margin-bottom: auto;
-	font-size: var(--font-size-h6);
+	font-size: var(--font-size-lg);
 }
 
 .add_to_cart_button {
 	margin-top: auto;
-	padding: var(--spacing-m) var(--gap);
+	padding: var(--spacing-md) var(--gap);
 	transition: none;
 
 	&:after {
@@ -125,12 +125,12 @@
 }
 
 .added {
-	padding: var(--spacing-m);
+	padding: var(--spacing-md);
 	font-size: 0;
 	align-self: flex-start;
 
 	&:after {
-		font-size: calc(var(--font-size-body) / #{$major-second});
+		font-size: calc(var(--font-size-md) / #{$major-second});
 	}
 }
 
@@ -139,13 +139,14 @@
 	@include button;
 
 	align-self: flex-end;
-	margin-left: var(--spacing-s);
-	padding: var(--spacing-m) - 0.1rem;
-	border: var(--border-size) var(--border-style) var(--color-primary);
+	margin-left: var(--spacing-sm);
+	padding: var(--spacing-md) - 0.1rem;
+	border: var(--border-width) var(--border-style) var(--color-primary);
 	color: var(--color-primary);
 	background: transparent;
 
-	@include hover-focus {
+	&:hover,
+	&:focus {
 		color: var(--color-white);
 		background: var(--color-primary);
 	}
@@ -153,13 +154,13 @@
 
 .star-rating {
 	display: block;
-	margin-bottom: var(--spacing-x)xs;
+	margin-bottom: var(--spacing-x) xs;
 
 	&:before {
 		display: inline-block;
 		color: var(--color-warning);
 		font-family: "Font Awesome 5 Free", sans-serif;
-		font-size: var(--spacing-m);
+		font-size: var(--spacing-md);
 		font-weight: 700;
 		letter-spacing: 0.2em;
 		content: "\f005";
@@ -207,14 +208,14 @@
 
 .price {
 	display: block;
-	margin-bottom: var(--spacing-m);
+	margin-bottom: var(--spacing-md);
 
 	ins {
 		text-decoration: none;
 	}
 }
 
-@include mq(m) {
+@include mq(md) {
 
 	.entry {
 

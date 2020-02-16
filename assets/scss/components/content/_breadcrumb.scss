@@ -7,18 +7,12 @@
 ////
 
 ////
-/// Variables.
-////
-
-$breadcrumb-margin: 0 0 var(--spacing-m) !default;
-
-////
 /// Breadcrumb.
 ////
 
 .breadcrumb {
 	width: 100%;
-	margin: $breadcrumb-margin;
+	margin: var(--breadcrumb-margin, 0 0 var(--spacing-md));
 
 	// Link wrapper.
 	&-link-wrap {

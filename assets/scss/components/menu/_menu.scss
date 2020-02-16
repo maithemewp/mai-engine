@@ -1,0 +1,80 @@
+////
+/// Menu component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Menu.
+////
+
+.menu {
+	margin: 0;
+	font-family: var(--menu-font-family);
+	font-weight: var(--menu-font-weight);
+	line-height: var(--menu-line-height, 1);
+	list-style-type: none;
+
+	@include mq(md) {
+		display: flex;
+		border: 0;
+		font-size: var(--menu-font-size-desktop, (smaller));
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		align-items: center;
+	}
+
+	// Menu item.
+	&-item {
+		display: flex;
+		position: relative;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		margin: var(--menu-item-margin-mobile, (0 auto));
+
+		@include mq(md) {
+			display: block;
+			margin: var(--menu-item-margin-desktop, 0);
+
+			&:last-of-type a {
+				padding-right: 0;
+			}
+
+			&:first-of-type a {
+				padding-left: 0;
+			}
+		}
+
+		// Link.
+		&-link {
+			display: block;
+			width: 100%;
+			color: var(--menu-item-link-color, var(--color-gray));
+			padding: var(--menu-item-padding-mobile, (var(--spacing-md)));
+			text-decoration: none;
+
+			@include mq(md) {
+				padding: var(--menu-item-padding-desktop, (var(--spacing-md) calc(var(--spacing-sm) * var(--golden))));
+			}
+
+			// Links hover.
+			&:hover,
+			&:focus,
+			&-current {
+				color: var(--menu-item-link-color-hover, var(--color-primary));
+			}
+		}
+
+		// Buttons
+		&.button {
+			padding: 0;
+
+			@include mq(md) {
+				margin-left: var(--spacing-md);
+			}
+		}
+	}
+}

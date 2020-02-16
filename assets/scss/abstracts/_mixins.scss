@@ -31,7 +31,7 @@
 	padding: var(--gap);
 	border: var(--border);
 	border-radius: var(--border-radius);
-	background-color: var(--color-background);
+	background-color: var(--color-light);
 
 	p {
 
@@ -82,16 +82,6 @@
 /// @param {String} $media-type ($screen-media-type) - Media type: screen, print…
 /// @param {String} $screens ($screen-breakpoints) - Breakpoints map
 ////
-@function mq-get-breakpoint-width($name, $screens: $screens) {
-
-	@if map-has-key($screens, $name) {
-
-		@return map-get($screens, $name);
-	} @else {
-
-		@warn "Breakpoint #{$name} wasn't found in $screens.";
-	}
-}
 
 @mixin mq(
 	$from: false,
@@ -110,7 +100,7 @@
 		@if type-of($from) == number {
 			$min-width: $from;
 		} @else {
-			$min-width: mq-get-breakpoint-width($from, $screens);
+			$min-width: map-get($screens, $from);
 		}
 	}
 
@@ -120,7 +110,7 @@
 		@if type-of($until) == number {
 			$max-width: $until;
 		} @else {
-			$max-width: mq-get-breakpoint-width($until, $screens);
+			$max-width: map-get($screens, $until);
 		}
 	}
 
@@ -157,7 +147,7 @@
 ////
 
 @mixin notice($color: "info") {
-	margin-bottom: var(--spacing-m);
+	margin-bottom: var(--spacing-md);
 
 	@include box;
 
@@ -182,7 +172,7 @@
 
 	&:before {
 		display: block;
-		background-color: var(--color-shadow);
+		background-color: var(--color-muted);
 		opacity: var(--shadow-opacity);
 		content: "";
 

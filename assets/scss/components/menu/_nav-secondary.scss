@@ -1,0 +1,27 @@
+////
+/// Nav Secondary component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Nav Secondary.
+////
+
+.nav-secondary {
+	background-color: var(--nav-secondary-background-color);
+
+	@include mq(md) {
+		border-top: var(--nav-secondary-border-top, var(--border));
+	}
+
+	// Menu.
+	.menu {
+
+		@include mq(md) {
+			justify-content: var(--nav-secondary-alignment, flex-start);
+		}
+	}
+}

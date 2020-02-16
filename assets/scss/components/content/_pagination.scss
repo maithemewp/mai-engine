@@ -7,30 +7,18 @@
 ////
 
 ////
-/// Variables.
-////
-
-$pagination-font-family: var(--font-family-body) !default;
-$pagination-font-size: smaller !default;
-$pagination-padding: var(--gutter) 0 !default;
-$pagination-border-top: var(--border) !default;
-$pagination-background-color: var(--color-background) !default;
-$pagination-link-color: var(--color-body) !default;
-$pagination-link-color-hover: var(--color-primary) !default;
-
-////
 /// Pagination.
 ////
 
 .pagination {
 	width: 100%;
-	padding: $pagination-padding;
-	border-top: $pagination-border-top;
-	background-color: $pagination-background-color;
-	font-family: $pagination-font-family;
-	font-size: $pagination-font-size;
+	padding: var(--pagination-padding, (var(--gutter) 0));
+	border-top: var(--pagination-border-top, var(--border));
+	background-color: var(--pagination-background-color);
+	font-family: var(--pagination-font-family);
+	font-size: var(--pagination-font-size, (smaller));
 
-	@include mq(m) {
+	@include mq(md) {
 		margin-top: auto;
 	}
 
@@ -49,7 +37,7 @@ $pagination-link-color-hover: var(--color-primary) !default;
 
 	// List item.
 	li {
-		margin-right: var(--spacing-s);
+		margin-right: var(--spacing-sm);
 	}
 
 	// Active item.
@@ -65,10 +53,11 @@ $pagination-link-color-hover: var(--color-primary) !default;
 	}
 
 	a {
-		color: $pagination-link-color;
+		color: var(--pagination-link-color, var(--color-gray));
 
-		@include hover-focus {
-			color: $pagination-link-color-hover;
+		&:hover,
+		&:focus {
+			color: var(--pagination-link-color-hover, var(--color-primary));
 		}
 	}
 }
@@ -84,7 +73,7 @@ $pagination-link-color-hover: var(--color-primary) !default;
 
 		.wrap {
 
-			@include mq(m) {
+			@include mq(md) {
 				width: var(--layout-width-content);
 			}
 		}

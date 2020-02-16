@@ -7,70 +7,44 @@
 ////
 
 ////
-/// Variables.
-////
-
-$footer-widgets-padding: var(--spacing-xl) 0 calc(var(--spacing-xl) - var(--gutter)) !default;
-$footer-widgets-background-color: transparent !default;
-$footer-widgets-color: var(--color-body) !default;
-$footer-widgets-font-size: var(--font-size-body) !default;
-$footer-widgets-title-color: var(--color-heading) !default;
-$footer-widgets-title-font-size: var(--font-size-h5) !default;
-$footer-widgets-link-color: var(--color-primary) !default;
-$footer-widgets-link-color-hover: var(--color-primary) !default;
-$footer-widgets-input-color: var(--input-color) !default;
-$footer-widgets-input-background-color: var(--input-background-color) !default;
-$footer-widgets-menu-columns: 2 !default;
-$footer-widgets-menu-font-size: var(--font-size-body) !default;
-$footer-widgets-menu-font-family: var(--font-family-body) !default;
-$footer-widgets-menu-font-weight: var(--font-weight-body) !default;
-$footer-widgets-menu-item-padding: 0 !default;
-$footer-widgets-menu-item-margin: 0 0 var(--spacing-m) !default;
-
-////
 /// Footer Widgets.
 ////
 
 .footer-widgets {
-	padding: $footer-widgets-padding;
-	color: $footer-widgets-color;
-	background-color: $footer-widgets-background-color;
-	font-size: $footer-widgets-font-size;
-
-	// Title.
-	.widget-title {
-		color: $footer-widgets-title-color;
-		font-size: $footer-widgets-title-font-size;
-	}
+	padding: var(--footer-widgets-padding, (var(--spacing-xl) 0 calc(var(--spacing-xl) - var(--gutter))));
+	color: var(--footer-widgets-color);
+	background-color: var(--footer-widgets-background-color);
+	font-size: var(--footer-widgets-font-size);
 
 	// Link.
 	a {
-		color: $footer-widgets-link-color;
+		color: var(--footer-widgets-link-color);
 
-		@include hover-focus {
-			color: $footer-widgets-link-color-hover;
+		&:hover,
+		&:focus {
+			color: var(--footer-widgets-link-color-hover);
 		}
 	}
 
 	// Inputs.
 	#{$all-text-inputs} {
-		color: $footer-widgets-input-color;
-		background-color: $footer-widgets-input-background-color;
+		color: var(--footer-widgets-input-color);
+		background-color: var(--footer-widgets-input-background-color);
 	}
 
 	// Menu.
 	.menu {
 		display: block;
-		font-family: $footer-widgets-menu-font-family;
-		font-size: $footer-widgets-menu-font-size;
-		font-weight: $footer-widgets-menu-font-weight;
-		columns: $footer-widgets-menu-columns;
+		font-family: var(--footer-widgets-menu-font-family);
+		font-size: var(--footer-widgets-menu-font-size);
+		font-weight: var(--footer-widgets-menu-font-weight);
+		columns: var(--footer-widgets-menu-columns, (2));
 	}
 
 	// Menu item.
 	.menu-item {
-		margin: $footer-widgets-menu-item-margin;
-		padding: $footer-widgets-menu-item-padding;
+		margin: var(--footer-widgets-menu-item-margin, (0 0 var(--spacing-md)));
+		padding: var(--footer-widgets-menu-item-padding, 0);
 	}
 }
 
@@ -81,7 +55,7 @@ $footer-widgets-menu-item-margin: 0 0 var(--spacing-m) !default;
 .footer-widget-area {
 	width: 100%;
 
-	@include mq(m) {
+	@include mq(md) {
 		flex: 1;
 		margin-left: var(--gutter);
 

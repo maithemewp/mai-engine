@@ -1,0 +1,23 @@
+////
+/// Global styles.
+///
+/// This is the primary stylesheet.
+///
+/// @group  Styles
+/// @author BizBudding <team@bizbudding.com>
+/// @link   http://sass-guidelin.es/#main-file
+////
+
+@import "abstracts/_index";
+@import "base/_index";
+@import "layout/_index";
+@import "utilities/_index";
+@import "components/blocks/_index";
+@import "components/header/_index";
+@import "components/menu/_index";
+@import "components/widgets/_index";
+@import "components/content/_index";
+@import "components/comments/_index";
+@import "components/sidebar/_index";
+@import "components/footer/_index";
+@import "config";

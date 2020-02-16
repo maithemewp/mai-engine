@@ -1,0 +1,20 @@
+////
+/// Featured Content component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Featured content.
+////
+
+.featured-content {
+	--entry-width: 100%;
+	--entry-wrap-padding: 0;
+	--widget-wrap-display: flex;
+	--widget-wrap-flex-wrap: wrap;
+	--widget-wrap-justify-content: space-between;
+	--widget-title-width: 100%;
+}

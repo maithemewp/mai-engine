@@ -5,16 +5,11 @@
 /// @author BizBudding <team@bizbudding.com>
 /// @link   https://github.com/maithemewp/mai-engine
 ////
-@import "header";
+
+@import "site-header";
 @import "before-header";
 @import "title-area";
 @import "header-widget-area";
-@import "transparent-header";
-@import "sticky-header";
 @import "search-form";
-@import "nav-primary";
-@import "nav-secondary";
-@import "menu";
-@import "menu-toggle";
-@import "sub-menu";
-@import "header-search";
+@import "sticky-header";
+@import "transparent-header";

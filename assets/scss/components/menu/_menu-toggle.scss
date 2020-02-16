@@ -1,0 +1,80 @@
+////
+/// Menu toggle component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Menu Toggle.
+////
+
+.menu-toggle {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: var(--menu-toggle-margin, 0);
+	padding: var(--menu-toggle-padding, 0);
+	background-color: var(--menu-toggle-background-color, transparent);
+	order: 1;
+	height: calc(var(--spacing-md) * var(--perfect-fifth));
+	width: calc(var(--spacing-md) * var(--perfect-fifth));
+
+	@include mq(md) {
+		display: none;
+	}
+
+	&:hover,
+	&:focus {
+		background-color: transparent;
+	}
+
+	&:focus {
+		outline: var(--border);
+	}
+
+	// Hamburger.
+	.hamburger,
+	.hamburger:before,
+	.hamburger:after {
+		display: block;
+		position: absolute;
+		width: var(--menu-toggle-line-width, (calc(var(--spacing-md) * var(--perfect-fifth))));
+		height: var(--menu-toggle-line-height, 3px);
+		background-color: var(--menu-toggle-line-background-color, var(--color-dark));
+		content: "";
+	}
+
+	.hamburger {
+		top: auto;
+		right: auto;
+		bottom: auto;
+		margin: auto;
+
+		&:before {
+			top: var(--menu-toggle-line-spacing, (calc(0 - var(--spacing-sm))));
+		}
+
+		&:after {
+			bottom: var(--menu-toggle-line-spacing, (calc(0 - var(--spacing-sm))));
+		}
+	}
+
+	&.activated {
+
+		.hamburger {
+			background-color: transparent;
+
+			&:before {
+				top: 0;
+				transform: rotate(45deg);
+			}
+
+			&:after {
+				bottom: 0;
+				transform: rotate(-45deg);
+			}
+		}
+	}
+}

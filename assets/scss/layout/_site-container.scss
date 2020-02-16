@@ -1,0 +1,23 @@
+////
+/// Site container object.
+///
+/// @group  Objects
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Site Container.
+////
+
+.site-container {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	min-height: 100%;
+
+	> * {
+		width: 100%;
+	}
+}

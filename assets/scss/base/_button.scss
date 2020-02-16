@@ -4,31 +4,71 @@
 /// @author BizBudding <team@bizbudding.com>
 /// @link   https://github.com/maithemewp/mai-engine
 
-:root {
-	--button-padding: calc(var(--spacing-m) * var(--minor-third)) var(--gutter);
-	--button-border: 0;
-	--button-border-radius: var(--border-radius);
-	--button-color: var(--color-white);
-	--button-background: var(--color-primary);
-	--button-font-family: var(--font-family-body);
-	--button-font-size: calc(var(--font-size-body) / var(--major-second));
-	--button-font-weight: var(--font-weight-heading);
-	--button-border-hover: 0;
-	--button-color-hover: var(--color-white);
-	--button-background-hover: var(--color-primary);
-	--button-disabled-opacity: 0.5;
-	--button-disabled-background-color: var(--color-muted);
-	--button-small-padding: 1em 1.5em;
-	--button-small-font-size: small;
-	--button-outline-border: var(--border);
-	--button-outline-color: var(--color-primary);
-	--button-outline-color-hover: var(--color-white);
-	--button-outline-background-hover: var(--color-primary);
-	--button-letter-spacing: var(--letter-spacing-body);
-	--button-text-transform: none;
-}
-
 #{$all-buttons} {
 
 	@include button();
+}
+
+.button {
+
+	// Disabled.
+	&:disabled {
+
+		&,
+		&:hover,
+		&:focus {
+			--button-backround: var(--color-muted);
+			--button-opacity: 0.5;
+			--button-cursor: not-allowed;
+		}
+	}
+}
+
+// Small.
+.button-small {
+	--button-padding: 1em 1.5em;
+	--button-font-size: small;
+}
+
+// Subtle
+.button-subtle {
+	--button-background-color: var(--color-muted);
+	--button-color: var(--color-dark);
+}
+
+// Rounded.
+.button-rounded {
+	--button-border-radius: 100rem;
+}
+
+// Outline.
+.button-outline {
+	--button-border: var(--border);
+	--button-color: var(--color-primary);
+	--button-background: transparent;
+
+	&:hover,
+	&:focus {
+		--button-color: var(--color-white);
+		--button-background: var(--color-light);
+	}
+}
+
+// White
+.button-white {
+	--button-background-color: var(--color-white);
+	--button-color: var(--color-primary);
+}
+
+// White outline
+.button-white.button-outline {
+	--button-border-color: var(--color-white);
+	--button-background: transparent;
+	--button-color: var(--color-white);
+
+	&:hover,
+	&:focus {
+		--button-color: var(--color-primary);
+		--button-background: var(--color-white);
+	}
 }

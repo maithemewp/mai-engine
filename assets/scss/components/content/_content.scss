@@ -7,31 +7,22 @@
 ////
 
 ////
-/// Variables.
-////
-
-$content-margin-mobile: var(--spacing-l) null !default;
-$content-margin-desktop: var(--spacing-xl) null !default;
-
-////
 /// Content.
 ////
 
 .content {
 	width: 100%;
+	margin: var(--content-margin-mobile, (var(--spacing-lg) auto));
 
-	@include margin($content-margin-mobile);
-
-	@include mq(m) {
-
-		@include margin($content-margin-desktop);
+	@include mq(md) {
+		margin: var(--content-margin-desktop, (var(--spacing-xl) auto));
 	}
 
 	// With Sidebar.
 	.content-sidebar &,
 	.sidebar-content & {
 
-		@include mq(m) {
+		@include mq(md) {
 			width: var(--layout-width-content);
 			max-width: var(--layout-max-width-content);
 		}
@@ -39,10 +30,10 @@ $content-margin-desktop: var(--spacing-xl) null !default;
 
 	// Narrow Layout.
 	.narrow-content & {
+		margin-left: auto;
+		margin-right: auto;
 
-		@include margin(null auto);
-
-		@include mq(m) {
+		@include mq(md) {
 			width: var(--layout-width-content);
 		}
 	}
@@ -50,7 +41,7 @@ $content-margin-desktop: var(--spacing-xl) null !default;
 	// Sidebar First.
 	.sidebar-content & {
 
-		@include mq(m) {
+		@include mq(md) {
 			order: 1;
 		}
 	}
@@ -67,7 +58,7 @@ $content-margin-desktop: var(--spacing-xl) null !default;
 	}
 
 	// With Heading Block.
-	.no-hero-section &,
+	.no-page-header &,
 	.has-heading-block & {
 		margin: 0 auto;
 	}
@@ -77,7 +68,7 @@ $content-margin-desktop: var(--spacing-xl) null !default;
 		width: 100%;
 		margin: 0 auto;
 
-		@include mq(m) {
+		@include mq(md) {
 			width: 100%;
 		}
 	}

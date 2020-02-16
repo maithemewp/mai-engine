@@ -1,0 +1,77 @@
+////
+/// Page header component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Placeholder.
+////
+
+.page-header {
+	display: flex;
+	width: 100%;
+	padding: var(--page-header-padding-mobile, (var(--spacing-xl) 0));
+	border-bottom: var(--page-header-border-bottom, var(--border));
+	color: var(--page-header-color);
+	background-position: center;
+	background-size: cover;
+	text-align: var(--page-header-text-align, center);
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+
+	--wrap-position: relative;
+	--wrap-justify-content: center;
+
+
+	@include overlay;
+
+	@include mq(md) {
+		padding: var(--page-header-padding-desktop, (var(--spacing-xxl) 0));
+	}
+}
+
+.page-header-inner {
+	padding: var(--page-header-inner-padding);
+	background: var(--page-header-inner-background);
+}
+
+.page-header-title {}
+
+.page-header-subtitle {
+	margin: var(--page-header-subtitle-margin, 0);
+}
+
+////
+/// Custom header
+////
+
+.wp-custom-header {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	@include overlay;
+	@include position(absolute, 0 0 0 0);
+
+	// Video play/pause button.
+	&-video-button {
+		display: none;
+	}
+
+	// Video play button.
+	&-video-play {
+	}
+
+	// Video pause button.
+	&-video-pause {
+	}
+
+	// Image.
+	img {
+		max-width: none;
+	}
+}

@@ -19,22 +19,16 @@ body {
 /// Links.
 ////
 
-:root {
-	--link-color: var(--color-primary);
-	--link-text-decoration: none;
-	--link-color-hover: var(--color-primary);
-	--link-text-decoration-hover: underline;
-}
-
 a {
-	color: var(--link-color);
-	text-decoration: var(--link-text-decoration);
+	color: var(--link-color, var(--color-primary));
+	text-decoration: var(--link-text-decoration, none);
 
 	@include transition();
 
-	@include hover-focus {
-		color: var(--link-color-hover);
-		text-decoration: var(--link-text-decoration-hover);
+	&:hover,
+	&:focus {
+		color: var(--link-color-hover, var(--color-primary));
+		text-decoration: var(--link-text-decoration-hover, underline);
 	}
 }
 
@@ -42,12 +36,8 @@ a {
 /// Paragraphs.
 ////
 
-:root {
-	--paragraph_margin: 0 0 var(--spacing-m);
-}
-
 p {
-	margin: var(--paragraph_margin);
+	margin: var(--paragraph-margin, (0 0 var(--spacing-md)));
 
 	&:empty {
 		display: none;
@@ -58,17 +48,11 @@ p {
 /// Horizontal Rules.
 ////
 
-:root {
-	--horizontal-rule-margin: 0 0 var(--spacing-m);
-	--horizontal-rule-padding: var(--spacing-m) 0 0;
-	--horizontal-rule-border: var(--border);
-}
-
 hr {
 	clear: both;
-	margin: var(--horizontal-rule-margin);
-	padding: var(--horizontal-rule-padding);
-	border: 0;
+	margin: var(--horizontal-rule-margin, 0 0 var(--spacing-md));
+	padding: var(--horizontal-rule-padding, (var(--spacing-md) 0 0));
+	border: var(--horizontal-rule-border, var(--border));
 	border-bottom: var(--horizontal-rule-border);
 	border-collapse: collapse;
 }
@@ -77,54 +61,33 @@ hr {
 /// Strong.
 ////
 
-:root {
-	--strong-font-weight: var(--font-weight-bold);
-}
-
 b,
 strong {
-	font-weight: var(--strong-font-weight);
+	font-weight: var(--strong-font-weight, var(--font-weight-bold));
 }
 
 ////
 /// Emphasis.
 ////
 
-:root {
-	--emphasis-font-style: italic;
-}
-
 em,
 i {
-	font-style: var(--emphasis-font-style);
+	font-style: var(--emphasis-font-style, italic);
 }
 
 ////
 /// Blockquotes.
 ////
 
-:root {
-	--blockquote-margin: var(--spacing-m) auto;
-	--blockquote-padding: var(--gap);
-	--blockquote-border-left: var(--border);
-	--blockquote-background-color: transparent;
-	--blockquote-font-style: italic;
-	--blockquote-paragraph-padding: var(--spacing-s) 0;
-	--cite-font-weight: bolder;
-	--cite-font-style: normal;
-	--cite-font-family: var(--font-family-heading);
-}
-
 blockquote {
-	border-left: var(--blockquote-border-left);
+	border-left: var(--blockquote-border-left, var(--border));
 	background-color: var(--blockquote-background-color);
-	font-style: var(--blockquote-font-style);
-
-	@include margin(var(--blockquote-margin));
-	@include padding(var(--blockquote-padding));
+	font-style: var(--blockquote-font-style, italic);
+	margin: var(--blockquote-margin, (var(--spacing-md) auto));
+	padding: var(--blockquote-padding, var(--gap));
 
 	p {
-		padding: var(--blockquote-paragraph-padding);
+		padding: var(--blockquote-paragraph-padding, (var(--spacing-sm) 0));
 
 		&:last-of-type {
 			margin-bottom: 0;
@@ -136,55 +99,37 @@ blockquote {
 /// Citations.
 ////
 
-:root {
-	--cite-font-weight: bolder;
-	--cite-font-style: normal;
-	--cite-font-family: var(--font-family-heading);
-}
-
 cite {
 	display: block;
-	font-family: var(--cite-font-family);
-	font-weight: var(--cite-font-weight);
-	font-style: var(--cite-font-style);
+	font-family: var(--cite-font-family, bolder);
+	font-weight: var(--cite-font-weight, normal);
+	font-style: var(--cite-font-style, var(--font-family-heading));
 }
 
 ////
 /// Code.
 ////
 
-:root {
-	--code-padding: 0.05em 0.5em;
-	--code-border-radius: var(--border-radius);
-	--code-background-color: var(--color-background);
-	--code-font-family: var(--font-family-code);
-	--code-font-size: 90%;
-	--preformatted-padding: var(--spacing-m);
-}
-
+pre,
 code,
 kbd,
 samp {
-	padding: var(--code-padding);
-	border-radius: var(--code-border-radius);
-	background-color: var(--code-background-color);
-	font-family: var(--code-font-family);
-	font-size: var(--code-font-size);
+	padding: var(--code-padding, (0.05em 0.5em));
+	border-radius: var(--code-border-radius, var(--border-radius));
+	background-color: var(--code-background-color, var(--color-light));
+	font-family: var(--code-font-family, var(--font-family-code));
+	font-size: var(--code-font-size, (90%));
 }
 
 pre {
 	overflow-x: scroll;
-	padding: var(--preformatted-padding);
-	border-radius: var(--code-border-radius);
-	background-color: var(--code-background-color);
-	font-family: var(--code-font-family);
+	padding: var(--preformatted-padding, var(--spacing-md));
 
 	code,
 	kbd,
 	samp {
 		padding: 0;
 		background-color: transparent;
-		font-size: var(--code-font-size);
 	}
 }
 

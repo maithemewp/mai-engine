@@ -92,16 +92,18 @@ function mai_load_files() {
 		// Dependencies.
 		'../vendor/advanced-custom-fields/advanced-custom-fields-pro/acf',
 		'../vendor/wpackagist-plugin/advanced-custom-fields-font-awesome/acf-font-awesome',
+		'../vendor/aristath/kirki/kirki',
 
 		// Functions.
-		'functions/utilities',
 		'functions/helpers',
+		'functions/utilities',
+		'functions/images',
 		'functions/autoload',
 		'functions/setup',
 		'functions/enqueue',
+		'functions/css',
 		'functions/markup',
 		'functions/header',
-		'functions/images',
 		'functions/widgets',
 		'functions/defaults',
 		'functions/onboarding',
@@ -111,13 +113,14 @@ function mai_load_files() {
 		'structure/comments',
 		'structure/footer',
 		'structure/header',
-		'structure/hero',
+		'structure/page-header',
 		'structure/home',
 		'structure/menus',
 		'structure/pagination',
 		'structure/sidebar',
 		'structure/single',
 		'structure/wrap',
+		'structure/widgets',
 
 		// Shortcodes.
 		'shortcodes/icon',
@@ -133,10 +136,10 @@ function mai_load_files() {
 		'admin/settings',
 
 		// Customizer.
-		'customize/register',
-		'customize/header',
-		'customize/widgets',
-		'customize/colors',
+		'customize/kirki',
+		'customize/panels',
+		'customize/sections',
+		'customize/fields',
 	];
 
 	// Loop through and load each file in array.

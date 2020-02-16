@@ -73,11 +73,17 @@ return [
 
 	'image-sizes' => [
 		'add'    => [
-			'landscape-xl' => mai_apply_aspect_ratio( 'xxxl', '16:9' ),
-			'landscape-lg' => mai_apply_aspect_ratio( 'xxl', '16:9' ),
-			'landscape-m'  => mai_apply_aspect_ratio( 'm', '16:9' ),
-			'landscape-sm' => mai_apply_aspect_ratio( 'xxs', '16:9' ),
-			'landscape-xs' => mai_apply_aspect_ratio( 'xxxs', '16:9' ),
+			'landscape-xl' => mai_apply_aspect_ratio( 1920, '16:9' ),
+			'landscape-lg' => mai_apply_aspect_ratio( 1280, '16:9' ),
+			'landscape-md' => mai_apply_aspect_ratio( 896, '16:9' ),
+			'landscape-sm' => mai_apply_aspect_ratio( 512, '16:9' ),
+			'landscape-xs' => mai_apply_aspect_ratio( 256, '16:9' ),
+			'portrait-md'  => mai_apply_aspect_ratio( 896, '9:16' ),
+			'portrait-sm'  => mai_apply_aspect_ratio( 512, '9:16' ),
+			'portrait-xs'  => mai_apply_aspect_ratio( 256, '9:16' ),
+			'square-md'    => mai_apply_aspect_ratio( 896, '1:1' ),
+			'square-sm'    => mai_apply_aspect_ratio( 512, '1:1' ),
+			'square-xs'    => mai_apply_aspect_ratio( 256, '1:1' ),
 			'tiny'         => mai_apply_aspect_ratio( 80, '1:1' ),
 		],
 		'remove' => [],
@@ -128,8 +134,8 @@ return [
 			'genesis-singular-images'    => [ 'page', 'post' ],
 			'genesis-title-toggle'       => [ 'post', 'product' ],
 			'genesis-adjacent-entry-nav' => [ 'post', 'product', 'portfolio' ],
-			'hero-section-single'        => [ 'page', 'post', 'product', 'portfolio' ],
-			'hero-section-archive'       => [ 'page', 'post', 'product', 'portfolio' ],
+			'page-header-single'        => [ 'page', 'post', 'product', 'portfolio' ],
+			'page-header-archive'       => [ 'page', 'post', 'product', 'portfolio' ],
 			'terms-filter'               => [ 'post', 'portfolio' ],
 		],
 		'remove' => [],
@@ -251,55 +257,51 @@ return [
 			// Styles.
 			[
 				'handle' => mai_get_handle() . '-editor',
-				'src'    => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '/editor.css',
+				'src'    => mai_get_asset_path( 'editor.css' ),
 				'editor' => true,
 			],
 			[
-				'handle' => mai_get_handle() . '-variables',
-				'src'    => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '/variables.css',
+				'handle' => mai_get_handle(),
+				'src'    => mai_get_asset_path( 'main.css' ),
 			],
 			[
-				'handle' => mai_get_handle() . '-critical',
-				'src'    => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '/critical.css',
+				'handle' => mai_get_handle() . '-' . mai_get_active_theme(),
+				'src'    => mai_get_asset_path('themes/' . mai_get_active_theme() . '.css'),
 			],
+
+			/*
 			[
 				'handle' => mai_get_handle() . '-header',
-				'src'    => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '/header.css',
+				'src'    => mai_get_asset_path( 'header.css' ),
 				'hook'   => 'genesis_before_header',
 			],
 			[
-				'handle'   => mai_get_handle() . '-desktop',
-				'src'      => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '/desktop.css',
-				'media'    => '(min-width:896px)',
+				'handle'   => mai_get_handle() . '-menu',
+				'src'      => mai_get_asset_path( 'menu.css' ),
 				'hook'     => 'mai_after_title_area',
 				'priority' => 5,
 			],
 			[
-				'handle'   => mai_get_handle() . '-hero',
-				'src'      => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '/hero.css',
-				'hook'     => 'genesis_before_content_sidebar_wrap',
-				'priority' => 5,
-			],
-			[
 				'handle' => mai_get_handle() . '-content',
-				'src'    => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '/content.css',
+				'src'    => mai_get_asset_path( 'content.css' ),
 				'hook'   => 'genesis_before_content',
 			],
 			[
 				'handle' => mai_get_handle() . '-comments',
-				'src'    => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '/comments.css',
+				'src'    => mai_get_asset_path( 'comments.css' ),
 				'hook'   => 'genesis_before_comments',
 			],
 			[
 				'handle' => mai_get_handle() . '-sidebar',
-				'src'    => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '/sidebar.css',
+				'src'    => mai_get_asset_path( 'sidebar.css' ),
 				'hook'   => 'genesis_before_sidebar_widget_area',
 			],
 			[
 				'handle' => mai_get_handle() . '-footer',
-				'src'    => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '/footer.css',
+				'src'    => mai_get_asset_path( 'footer.css' ),
 				'hook'   => 'genesis_before_footer',
 			],
+			*/
 		],
 		'remove' => [
 			'superfish',
@@ -363,8 +365,8 @@ return [
 			'align-wide',
 			'automatic-feed-links',
 			'custom-header'            => [
-				'header-selector'  => '.hero-section',
-				'default_image'    => mai_get_url() . 'assets/img/hero.jpg',
+				'header-selector'  => '.page-header',
+				'default_image'    => mai_get_url() . 'assets/img/page-header.jpg',
 				'header-text'      => false,
 				'width'            => 1280,
 				'height'           => 720,
@@ -404,7 +406,7 @@ return [
 			'genesis-structural-wraps' => [
 				'header',
 				'menu-secondary',
-				'hero-section',
+				'page-header',
 				'footer-widgets',
 				'front-page-widgets',
 			],
@@ -425,6 +427,24 @@ return [
 			'wc-product-gallery-lightbox',
 			'wc-product-gallery-slider',
 			'wp-block-styles',
+
+
+			'mai-archive-settings' => [
+				'post-types' => [
+
+				],
+
+				'taxonomies' => [
+
+				],
+
+				'other' => [
+					'search',
+					'user',
+				],
+			],
+
+
 		],
 		'remove' => [],
 	],
@@ -457,5 +477,7 @@ return [
 			'sidebar-alt',
 		],
 	],
+
+
 ];
 

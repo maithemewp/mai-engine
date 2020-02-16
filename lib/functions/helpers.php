@@ -13,6 +13,28 @@
 defined( 'ABSPATH' ) || die;
 
 /**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @return string
+ */
+function mai_is_in_dev_mode() {
+	return genesis_is_in_dev_mode() || defined( 'WP_DEBUG' ) && WP_DEBUG;
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @return string
+ */
+function mai_has_string( $needle, $haystack ) {
+	return false !== strpos( $haystack, $needle );
+}
+
+/**
  * Check if were on any type of singular page.
  *
  * @since 0.1.0
@@ -81,36 +103,36 @@ function mai_has_cover_block() {
 }
 
 /**
- * Checks if current page has the hero section enabled.
+ * Checks if current page has the page header enabled.
  *
  * @since 0.1.0
  *
  * @return bool
  */
-function mai_has_hero_section() {
-	return in_array( 'has-hero-section', get_body_class(), true );
+function mai_has_page_header() {
+	return in_array( 'has-page-header', get_body_class(), true );
 }
 
 /**
- * Checks if the Hero Section is active.
+ * Checks if the Page Header is active.
  *
  * @since 0.1.0
  *
  * @return bool
  */
-function mai_is_hero_section_active() {
+function mai_is_page_header_active() {
 	$active    = false;
 	$post_type = get_post_type();
 
-	if ( mai_is_type_archive() && post_type_supports( $post_type, 'hero-section-archive' ) ) {
+	if ( mai_is_type_archive() && post_type_supports( $post_type, 'page-header-archive' ) ) {
 		$active = true;
 	}
 
-	if ( mai_is_type_single() && post_type_supports( $post_type, 'hero-section-single' ) ) {
+	if ( mai_is_type_single() && post_type_supports( $post_type, 'page-header-single' ) ) {
 		$active = true;
 	}
 
-	if ( ! $post_type && class_exists( 'WooCommerce' ) && is_shop() && post_type_supports( 'product', 'hero-section-archive' ) ) {
+	if ( ! $post_type && class_exists( 'WooCommerce' ) && is_shop() && post_type_supports( 'product', 'page-header-archive' ) ) {
 		$active = true;
 	}
 
@@ -142,3 +164,5 @@ function mai_minify_css( $css ) {
 
 	return trim( $css );
 }
+
+

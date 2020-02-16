@@ -7,28 +7,18 @@
 ////
 
 ////
-/// Variables.
-////
-
-$before-footer-padding: var(--spacing-xl) 0 calc(var(--spacing-xl) - var(--gutter)) !default;
-$before-footer-border-bottom: var(--border) !default;
-$before-footer-background-color: var(--color-background) !default;
-$before-footer-color: var(--color-body) !default;
-$before-footer-title-font-size: var(--font-size-h5) !default;
-
-////
 /// Before footer.
 ////
 
 .before-footer {
 	position: relative;
-	padding: $before-footer-padding;
-	border-bottom: $before-footer-border-bottom;
-	color: $before-footer-color;
-	background-color: $before-footer-background-color;
+	padding: var(--before-footer-padding, (var(--spacing-xl) 0 calc(var(--spacing-xl) - var(--gutter))));
+	border-bottom: var(--before-footer-border-bottom, var(--border));
+	color: var(--before-footer-color, var(--color-gray));
+	background-color: var(--before-footer-background-color, var(--color-light));
 
 	// Widget title
 	.widget-title {
-		font-size: $before-footer-title-font-size;
+		font-size: var(--before-footer-title-font-size, var(--font-size-xl));
 	}
 }

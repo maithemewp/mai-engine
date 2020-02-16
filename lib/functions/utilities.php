@@ -131,6 +131,36 @@ function mai_get_version() {
 }
 
 /**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @return string
+ */
+function mai_get_asset_version( $file ) {
+	$file = str_replace( mai_get_url(), mai_get_dir(), $file );
+
+	return mai_is_in_dev_mode() && mai_has_string( mai_get_dir(), $file ) ? filemtime( $file ) : mai_get_version();
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @return string
+ */
+function mai_get_asset_path( $file ) {
+	$type     = mai_has_string( '.css', $file ) ? 'css' : 'js';
+	$url      = mai_get_url();
+	$filename = explode( '.', $file )[0];
+	$default  = "${url}assets/$type/$file";
+	$minified = "${url}assets/$type/$filename.min.$type";
+
+	return mai_is_in_dev_mode() || 'css' === $type ? $default : $minified;
+}
+
+/**
  * Returns the active child theme's config.
  *
  * @since 0.1.0
@@ -140,19 +170,17 @@ function mai_get_version() {
  * @return array
  */
 function mai_get_config( $sub_config = 'default' ) {
-	$config  = [];
-	$default = require mai_get_dir() . "config/default/config.php";
-	$active  = mai_get_active_theme();
-	$theme   = mai_get_dir() . "config/$active/config.php";
+	$config = require mai_get_dir() . "config/default.php";
+	$theme  = mai_get_dir() . 'config/' . mai_get_active_theme() . '.php';
 
 	if ( is_readable( $theme ) ) {
-		$config = array_replace_recursive( $default, require $theme );
+		$config = array_replace_recursive( $config, require $theme );
 	}
 
-	$data = $config[ $sub_config ];
+	$data = isset( $config[ $sub_config ] ) ? $config[ $sub_config ] : [];
 
 	// Allow users to override from within actual child theme.
-	$child = get_stylesheet_directory() . "/config/$sub_config.php";
+	$child = get_stylesheet_directory() . "/config.php";
 
 	if ( is_readable( $child ) ) {
 		$data = require $child;
@@ -204,7 +232,7 @@ function mai_get_active_theme() {
 		}
 	}
 
-	return $theme;
+	return str_replace( 'mai-', '', $theme );
 }
 
 /**
@@ -216,34 +244,86 @@ function mai_get_active_theme() {
  */
 function mai_get_child_themes() {
 	$child_themes = [];
-	$files        = glob( mai_get_dir() . 'config/*', GLOB_ONLYDIR );
+	$files        = glob( mai_get_dir() . 'config/*.php' );
 
 	foreach ( $files as $file ) {
-		$child_themes[] = basename( $file, '.php' );
+		$child_themes[] = 'mai-' . basename( $file, '.php' );
 	}
 
 	return $child_themes;
 }
 
 /**
- * Returns an array of the themes JSON variables.
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @return object WP_Filesystem_Base
+ */
+function mai_get_filesystem() {
+	static $wp_filesystem = null;
+
+	if ( is_null( $wp_filesystem ) ) {
+		require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		WP_Filesystem();
+		global $wp_filesystem;
+	}
+
+	return $wp_filesystem;
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @param string $css       CSS to read.
+ * @param string $selectors Selectors.
+ *
+ * @return array
+ */
+function mai_get_css_rules( $css, $selectors = '(?ims)([a-z0-9\s\.\:#_\-@,]+)' ) {
+	preg_match_all( '/(' . $selectors . ')\{([^\}]*)\}/', $css, $matches );
+
+	$result = [];
+	foreach ( $matches[0] as $i => $x ) {
+		$selector  = trim( $matches[1][ $i ] );
+		$rules     = explode( ';', trim( $matches[2][ $i ] ) );
+		$rules_arr = [];
+		foreach ( $rules as $strRule ) {
+			if ( ! empty( $strRule ) ) {
+				$rule                          = explode( ":", $strRule );
+				$rules_arr[ trim( $rule[0] ) ] = trim( $rule[1] );
+			}
+		}
+
+		$selectors = explode( ',', trim( $selector ) );
+		foreach ( $selectors as $strSel ) {
+			$result[ $strSel ] = $rules_arr;
+		}
+	}
+
+	return $result;
+}
+
+/**
+ * Returns an array of the theme variables.
  *
  * @since 0.1.0
  *
  * @return array
  */
-function mai_get_variables() {
-	static $variables;
+function mai_get_css_variables() {
+	static $variables = null;
 
 	if ( is_null( $variables ) ) {
-		$defaults  = json_decode( file_get_contents( mai_get_dir() . "config/default/config.json" ), true );
-		$active    = mai_get_active_theme();
-		$file      = mai_get_dir() . "config/$active/config.json";
-		$theme     = is_readable( $file ) ? json_decode( file_get_contents( $file ), true ) : [];
-		$variables = array_merge( $defaults, $theme );
+		$wp_filesystem = mai_get_filesystem();
+		$default       = $wp_filesystem->get_contents( mai_get_dir() . '/assets/css/critical.css' );
+		$theme         = $wp_filesystem->get_contents( mai_get_dir() . '/assets/css/themes/' . mai_get_active_theme() . '.css' );
+		$variables     = array_replace_recursive( mai_get_css_rules( $default, ':root' ), mai_get_css_rules( $theme, ':root' ) );
 	}
 
-	return $variables;
+	return $variables[':root'];
 }
 
 /**
@@ -257,15 +337,15 @@ function mai_get_colors() {
 	static $colors = [];
 
 	if ( empty( $colors ) ) {
-		$vars = mai_get_variables();
+		$vars = mai_get_css_variables();
 
-		foreach ( $vars as $var => $hex ) {
-			if ( false === strpos( $var, 'color-' ) ) {
-				continue;
+		if ( is_array( $vars ) ) {
+			foreach ( $vars as $name => $value ) {
+				if ( mai_has_string( '--color-', $name ) && ! mai_has_string( 'social', $name ) ) {
+					$name            = str_replace( '--color-', '', $name );
+					$colors[ $name ] = $value;
+				}
 			}
-
-			$name            = str_replace( 'color-', '', $var );
-			$colors[ $name ] = $hex;
 		}
 	}
 
@@ -320,10 +400,10 @@ function mai_get_breakpoints() {
 	static $breakpoints = [];
 
 	if ( empty( $breakpoints ) ) {
-		$vars = mai_get_variables();
+		$vars = [];
 
 		foreach ( $vars as $var => $hex ) {
-			if ( false === strpos( $var, 'screen-' ) ) {
+			if ( substr( $var, 0, 6 ) === 'screen-' ) {
 				continue;
 			}
 
@@ -347,3 +427,4 @@ function mai_get_breakpoint( $size = 'm' ) {
 
 	return intval( $breakpoints[ $size ] );
 }
+

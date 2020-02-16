@@ -7,10 +7,6 @@
 ////
 
 ////
-/// Variables.
-////
-
-////
 /// Gallery.
 ////
 
@@ -27,7 +23,7 @@
 			width: 100%;
 		}
 
-		@include mq(m) {
+		@include mq(md) {
 			margin-left: var(--gutter);
 
 			.gallery-columns-1 & {

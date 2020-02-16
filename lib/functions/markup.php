@@ -59,7 +59,7 @@ function mai_body_classes( $classes ) {
 	}
 
 	// Add transparent header class.
-	if ( current_theme_supports( 'transparent-header' ) && ( mai_is_hero_section_active() || is_front_page() && is_active_sidebar( 'front-page-1' ) ) ) {
+	if ( current_theme_supports( 'transparent-header' ) && ( mai_is_page_header_active() || is_front_page() && is_active_sidebar( 'front-page-1' ) ) ) {
 		$classes[] = 'has-transparent-header';
 	}
 
@@ -78,8 +78,8 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'is-archive';
 	}
 
-	// Add no hero section class.
-	$classes[] = 'no-hero-section';
+	// Add no page header class.
+	$classes[] = 'no-page-header';
 
 	// Add front page 1 slider class.
 	$classes[] = mai_sidebar_has_widget( 'front-page-1', 'seo_slider' ) ? 'has-home-slider' : '';

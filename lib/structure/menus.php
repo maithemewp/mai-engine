@@ -11,7 +11,7 @@
 
 // Reposition primary and secondary navigation menus.
 remove_action( 'genesis_after_header', 'genesis_do_nav' );
-add_action( 'mai_after_title_area', 'genesis_do_nav' );
+add_action( 'mai_after_title_area', 'genesis_do_nav', 15 );
 remove_action( 'genesis_after_header', 'genesis_do_subnav' );
 add_action( 'genesis_after_header_wrap', 'genesis_do_subnav' );
 
@@ -49,4 +49,23 @@ function mai_menu_depth( $args ) {
 	}
 
 	return $args;
+}
+
+add_filter( 'nav_menu_link_attributes', 'mai_nav_link_atts' );
+/**
+ * Pass nav menu link attributes through attribute parser.
+ *
+ * Adds nav menu link attributes via the Genesis markup API.
+ *
+ * @since 0.1.0
+ *
+ * @param array $atts
+ *
+ * @return array
+ */
+function mai_nav_link_atts( $atts ) {
+	$atts['class'] = 'menu-item-link';
+	$atts['class'] .= $atts['aria-current'] ? ' menu-item-link-current' : '';
+
+	return $atts;
 }

@@ -13,6 +13,15 @@
 defined( 'ABSPATH' ) || die;
 
 return [
-
+	'google-fonts'  => [
+		'Playfair+Display:700|Open+Sans:400',
+	],
+	'theme-support' => [
+		'add' => [
+			'sticky-header',
+			'genesis-footer-widgets' => 2,
+		],
+	],
 ];
+
 

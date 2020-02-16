@@ -7,33 +7,23 @@
 ////
 
 ////
-/// Variables.
-////
-
-$sidebar-margin-mobile: var(--spacing-m) null !default;
-$sidebar-margin-desktop: var(--spacing-l) null !default;
-$sidebar-entry-title-margin-bottom: var(--spacing-xxs) !default;
-$sidebar-entry-title-font-size: var(--font-size-body) !default;
-$sidebar-entry-image-max-width: var(--spacing-xxl) !default;
-
-////
 /// Sidebar.
 ////
 
 .sidebar {
+	margin-top: var(--sidebar-margin-mobile, var(--spacing-md));
+	margin-bottom: var(--sidebar-margin-mobile, var(--spacing-md));
 
-	@include margin($sidebar-margin-mobile);
-
-	@include mq(m) {
-
-		@include margin($sidebar-margin-desktop);
+	@include mq(md) {
+		margin-top: var(--sidebar-margin-desktop, var(--spacing-lg));
+		margin-bottom: var(--sidebar-margin-desktop, var(--spacing-lg));
 	}
 
 	// When Visible.
 	.content-sidebar &,
 	.sidebar-content & {
 
-		@include mq(m) {
+		@include mq(md) {
 			width: var(--layout-width-sidebar);
 		}
 	}
@@ -44,12 +34,12 @@ $sidebar-entry-image-max-width: var(--spacing-xxl) !default;
 		@include clearfix;
 
 		&-title {
-			margin-bottom: $sidebar-entry-title-margin-bottom;
-			font-size: $sidebar-entry-title-font-size;
+			margin-bottom: var(--sidebar-entry-title-margin-bottom, var(--spacing-xxs));
+			font-size: var(--sidebar-entry-title-font-size, var(--font-size-md));
 		}
 
 		&-image {
-			max-width: $sidebar-entry-image-max-width;
+			max-width: var(--sidebar-entry-image-max-width, var(--spacing-xxl));
 		}
 	}
 }

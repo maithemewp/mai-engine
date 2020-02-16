@@ -7,27 +7,15 @@
 ////
 
 ////
-/// Variables.
-////
-
-$author-box-margin: var(--gutter) 0 !default;
-$author-box-padding: var(--gap) !default;
-$author-box-border: var(--border) !default;
-$author-box-border-radius: var(--border-radius) !default;
-$author-box-background-color: var(--color-background) !default;
-$author-box-title-margin-bottom: var(--spacing-xs) !default;
-$author-box-content-padding-left: calc(var(--spacing-xl) + var(--spacing-m)) !default;
-
-////
 /// Author box.
 ////
 
 .author-box {
-	margin: $author-box-margin;
-	padding: $author-box-padding;
-	border: $author-box-border;
-	border-radius: $author-box-border-radius;
-	background-color: $author-box-background-color;
+	margin: var(--author-box-margin, var(--gutter) 0);
+	padding: var(--author-box-padding, var(--gap));
+	border: var(--author-box-border, var(--border));
+	border-radius: var(--author-box-border-radius, var(--border-radius));
+	background-color: var(--author-box-background-color, var(--color-light));
 
 	// Archives.
 	.is-archive & {
@@ -36,12 +24,12 @@ $author-box-content-padding-left: calc(var(--spacing-xl) + var(--spacing-m)) !de
 
 	// Author box title.
 	&-title {
-		margin-bottom: $author-box-title-margin-bottom;
+		margin: var(--author-box-title-margin, 0 0 var(--spacing-xs));
 	}
 
 	// Author box content.
 	&-content {
-		padding-left: $author-box-content-padding-left;
+		padding: var(--author-box-content-padding-left, (0 0 0 calc(var(--spacing-xl) + var(--spacing-md))));
 
 		p {
 

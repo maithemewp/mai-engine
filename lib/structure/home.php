@@ -26,7 +26,7 @@ function mai_front_page_loop() {
 		remove_action( 'genesis_loop', 'genesis_do_loop' );
 		remove_action( 'genesis_before_loop', 'genesis_do_breadcrumbs' );
 		remove_action( 'genesis_after_content_sidebar_wrap', 'genesis_posts_nav' );
-		remove_post_type_support( get_post_type(), 'hero-section-single' );
+		remove_post_type_support( get_post_type(), 'page-header-single' );
 	}
 }
 
@@ -40,7 +40,7 @@ function mai_front_page_loop() {
  * @return array
  */
 function mai_front_page_body_class( $classes ) {
-	$classes   = array_diff( $classes, [ 'no-hero-section' ] );
+	$classes   = array_diff( $classes, [ 'no-page-header' ] );
 	$classes[] = 'front-page';
 
 	return $classes;

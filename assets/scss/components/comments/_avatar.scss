@@ -7,19 +7,11 @@
 ////
 
 ////
-/// Variables.
-////
-
-$avatar-float: left !default;
-$avatar-margin-right: var(--spacing-m);
-$avatar-border-radius: var(--base-border-radius) !default;
-
-////
 /// Avatar.
 ////
 
 .avatar {
-	float: $avatar-float;
-	margin-right: $avatar-margin-right;
-	border-radius: $avatar-border-radius;
+	float: var(--avatar-float, left);
+	margin-right: var(--avatar-margin-right, var(--spacing-md));
+	border-radius: var(--avatar-border-radius, var(--border-radius));
 }

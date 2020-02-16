@@ -8,7 +8,7 @@
 
 .onsale {
 	z-index: 1;
-	padding: var(--spacing-xs) var(--spacing-m);
+	padding: var(--spacing-xs) var(--spacing-md);
 	border-radius: var(--border-radius);
 	color: var(--color-white);
 	background: var(--color-primary);
@@ -30,8 +30,8 @@
 	@include box;
 
 	.button {
-		margin-left: var(--spacing-m);
-		padding: var(--spacing-m) var(--gap);
+		margin-left: var(--spacing-md);
+		padding: var(--spacing-md) var(--gap);
 		order: 2;
 	}
 

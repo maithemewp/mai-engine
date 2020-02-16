@@ -38,7 +38,7 @@ function mai_setup() {
 	load_child_theme_textdomain( genesis_get_theme_handle(), mai_get_dir() . '/assets/lang' );
 
 	// Add editor styles.
-	add_editor_style( "../../plugins/$handle/assets/css/{$active_theme}/editor.css" );
+	add_editor_style( "../../plugins/$handle/assets/css/themes/{$active_theme}.css" );
 
 	// Add responsive menus.
 	genesis_register_responsive_menus( $responsive_menu );

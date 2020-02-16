@@ -9,7 +9,7 @@
 .woocommerce-product-gallery {
 	position: relative;
 
-	@include mq(m) {
+	@include mq(md) {
 		width: var(--one-half);
 		margin-right: var(--gutter);
 	}
@@ -19,14 +19,15 @@
 		justify-content: center;
 		align-items: center;
 		z-index: 1;
-		border-radius: var(--spacing-l);
+		border-radius: var(--spacing-lg);
 		background-color: var(--color-white);
-		height: var(--spacing-l);
-		width: var(--spacing-l);
+		height: var(--spacing-lg);
+		width: var(--spacing-lg);
 
 		@include position(absolute, 1em 1em null null);
 
-		@include hover-focus {
+		&:hover,
+		&:focus {
 			text-decoration: none;
 
 			&:before {
@@ -40,7 +41,7 @@
 		}
 
 		&:before {
-			color: var(--color-heading);
+			color: var(--color-dark);
 			font-size: smaller;
 
 			@include transition;
@@ -55,12 +56,12 @@
 
 .flex-control-nav {
 	display: flex;
-	margin-top: var(--spacing-s);
+	margin-top: var(--spacing-sm);
 	list-style-type: none;
 
 	li {
 		flex: 1;
-		margin-right: var(--spacing-s);
+		margin-right: var(--spacing-sm);
 
 		&:last-of-type {
 			margin-right: 0;
@@ -74,7 +75,7 @@
 
 .summary {
 
-	@include mq(m) {
+	@include mq(md) {
 		width: var(--one-half);
 	}
 }
@@ -101,10 +102,10 @@ form.cart {
 
 	li {
 		margin-bottom: -1px;
-		padding: var(--spacing-m) var(--spacing-l);
+		padding: var(--spacing-md) var(--spacing-lg);
 		border: var(--border);
 		border-right: 0;
-		background-color: var(--color-background);
+		background-color: var(--color-light);
 		list-style-type: none;
 
 		&.active {
@@ -119,7 +120,7 @@ form.cart {
 }
 
 .comment-reply-title {
-	font-size: var(--font-size-h3);
+	font-size: var(--font-size-xxxl);
 
 	@include heading();
 }
@@ -139,12 +140,13 @@ form.cart {
 			display: block;
 			color: var(--color-warning);
 			font-family: "Font Awesome 5 Free", sans-serif;
-			font-size: var(--spacing-m);
+			font-size: var(--spacing-md);
 
 			@include icon();
 		}
 
-		@include hover-focus {
+		&:hover,
+		&:focus {
 
 			&:before {
 				font-weight: 700;
@@ -172,7 +174,8 @@ form.cart {
 
 			}
 
-			@include hover-focus {
+			&:hover,
+			&:focus {
 
 				&:before {
 					font-weight: 700;
@@ -201,11 +204,10 @@ form.cart {
 	}
 
 	.woocommerce-loop-product__title {
-		font-size: var(--font-size-h5);
+		font-size: var(--font-size-xl);
 	}
 
 	.button {
-
-		@include padding(var(--spacing-m) calc(var(--spacing-m) * #{$minor-third}));
+		padding: var(--spacing-md) calc(var(--spacing-md) * var(--minor-third));
 	}
 }

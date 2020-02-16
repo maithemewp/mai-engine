@@ -7,31 +7,21 @@
 ////
 
 ////
-/// Variables.
-////
-
-$list-margin: 0 0 var(--spacing-m) !default;
-$list-padding: 0 !default;
-$list-list-style-position: inside !default;
-$sub-list-margin: var(--spacing-s) var(--spacing-m) !default;
-$description-term-font-weight: var(--font-weight-heading) !default;
-
-////
 /// Lists.
 ////
 
 ul,
 ol,
 dl {
-	margin: $list-margin;
-	padding: $list-padding;
-	list-style-position: $list-list-style-position;
+	margin: var(--list-margin, (0 0 var(--spacing-md)));
+	padding: var(--list-padding, 0);
+	list-style-position: var(--list-list-style-position, inside);
 
 	// Sub list.
 	ul,
 	ol,
 	dl {
-		margin: $sub-list-margin;
+		margin: var(--sub-list-margin, (var(--spacing-sm) var(--spacing-md)));
 	}
 }
 
@@ -45,5 +35,5 @@ dt {
 }
 
 dt {
-	font-weight: $description-term-font-weight;
+	font-weight: var(--description-term-font-weight, var(--font-weight-heading));
 }

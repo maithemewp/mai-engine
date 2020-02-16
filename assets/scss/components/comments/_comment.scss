@@ -9,19 +9,12 @@
 ////
 
 ////
-/// Variables.
-////
-
-$comment-margin: var(--spacing-l) 0 !default;
-$comment-background: none;
-
-////
 /// Comment.
 ////
 
 .comment {
-	margin: $comment-margin;
-	background-color: var(--color-background, $comment-background);
+	margin: var(--comment-margin, (var(--spacing-lg) 0));
+	background-color: var(--comment-background);
 
 	// Comment list wrapper.
 	&-list {
@@ -31,8 +24,8 @@ $comment-background: none;
 	// Comment children.
 	.children {
 		list-style-type: none;
-
-		@include margin(0 null);
+		margin-top: 0;
+		margin-bottom: 0;
 	}
 
 	// Comment header.

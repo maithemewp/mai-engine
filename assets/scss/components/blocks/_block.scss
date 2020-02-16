@@ -7,10 +7,6 @@
 ////
 
 ////
-/// Variables.
-////
-
-////
 /// Block.
 ////
 
@@ -37,19 +33,19 @@
 	// Columns block.
 	&-columns {
 
-		@include mq($until: m) {
+		@include mq($until: md) {
 			flex-wrap: wrap;
 		}
 	}
 
 	&-column {
 
-		@include mq($until: m) {
+		@include mq($until: md) {
 			flex: none;
 			width: 100%;
 		}
 
-		@include mq(m) {
+		@include mq(md) {
 			margin-left: var(--gutter);
 
 			&:first-of-type {
@@ -85,8 +81,8 @@
 
 	// Embed block.
 	&-embed {
-
-		@include margin(var(--spacing-m) null);
+		margin-top: var(--spacing-md);
+		margin-bottom: var(--spacing-md);
 	}
 
 	// File block.
@@ -98,8 +94,8 @@
 
 	// Gallery block.
 	&-gallery {
-
-		@include margin(var(--spacing-m) null);
+		margin-top: var(--spacing-md);
+		margin-bottom: var(--spacing-md);
 
 		&.is-cropped {
 		}
@@ -132,15 +128,15 @@
 
 	// Image block.
 	&-image {
-
-		@include margin(var(--spacing-m) null);
+		margin-top: var(--spacing-md);
+		margin-bottom: var(--spacing-md);
 
 		&.alignleft {
-			margin-right: var(--spacing-m);
+			margin-right: var(--spacing-md);
 		}
 
 		&.alignright {
-			margin-left: var(--spacing-m);
+			margin-left: var(--spacing-md);
 		}
 
 		&.alignwide {
@@ -167,7 +163,7 @@
 		}
 
 		li > a {
-			color: var(--color-heading);
+			color: var(--color-dark);
 			font-family: var(--font-family-heading);
 			font-weight: var(--font-weight-semibold);
 			line-height: var(--line-height-heading);
@@ -181,12 +177,12 @@
 	// Pullquote block.
 	&-pullquote {
 		border-left: 0;
-
-		@include margin(var(--spacing-l) null);
+		margin-top: var(--spacing-lg);
+		margin-bottom: var(--spacing-lg);
 
 		&.aligncenter {
-
-			@include margin(var(--spacing-l) null);
+			margin-top: var(--spacing-md);
+			margin-bottom: var(--spacing-md);
 		}
 	}
 

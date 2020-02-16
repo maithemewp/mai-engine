@@ -32,3 +32,7 @@ function mai_apply_aspect_ratio( $size = 'm', $ratio = '16:9' ) {
 
 	return [ $width, $height, true ];
 }
+
+function mai_image_orientation() {
+
+}

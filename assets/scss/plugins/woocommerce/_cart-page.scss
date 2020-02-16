@@ -18,7 +18,8 @@
 	height: var(--gap);
 	width: var(--gap);
 
-	@include hover-focus {
+	&:hover,
+	&:focus {
 		color: var(--color-white);
 		background-color: lighten(var(--color-error), 10);
 		text-decoration: none;
@@ -38,12 +39,12 @@
 
 	.input-text {
 		max-width: var(--spacing-xxxl);
-		margin: 0 var(--spacing-m) 0 0;
+		margin: 0 var(--spacing-md) 0 0;
 	}
 }
 
 .actions {
-	padding: var(--spacing-l);
+	padding: var(--spacing-lg);
 
 	> .button {
 
@@ -80,7 +81,7 @@
 .cart-collaterals {
 	margin: var(--gutter) 0;
 
-	@include mq(m) {
+	@include mq(md) {
 		display: flex;
 		justify-content: flex-end;
 	}
@@ -88,7 +89,7 @@
 
 .cart_totals {
 
-	@include mq(m) {
+	@include mq(md) {
 		width: var(--one-half);
 	}
 }
@@ -133,8 +134,7 @@
 
 			.button {
 				margin: 0;
-
-				@include padding(var(--spacing-m));
+				padding: var(--spacing-md);
 			}
 		}
 
@@ -158,10 +158,10 @@
 				align-items: center;
 				align-self: stretch;
 				width: 25%;
-				margin-right: var(--spacing-m);
+				margin-right: var(--spacing-md);
 				padding: 1.5em 1em;
 				border-right: var(--border);
-				background-color: var(--color-background);
+				background-color: var(--color-light);
 				font-size: smaller;
 				font-weight: var(--font-weight-heading);
 				white-space: nowrap;

@@ -1,4 +1,11 @@
 {
-  "color-primary": "green",
-  "color-heading": "green"
+  "color-primary": "#067ccc",
+  "color-dark": "#323232",
+  "font-family-body": "open sans, var(--font-family-stack)",
+  "font-family-heading": "playfair display, var(--font-family-body)",
+  "before-header-padding": "0",
+  "nav-secondary-background-color": "var(--color-dark)",
+  "page-header-inner-padding": "var(--spacing-xl)",
+  "page-header-inner-background": "var(--color-white)",
+  "site-footer-background-color": "var(--color-dark)"
 }

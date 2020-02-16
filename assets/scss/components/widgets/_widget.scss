@@ -1,0 +1,35 @@
+////
+/// Widget component.
+///
+/// @group  Components
+/// @author BizBudding <team@bizbudding.com>
+/// @link   https://github.com/maithemewp/mai-engine
+////
+
+////
+/// Widget
+////
+
+.widget {
+	margin: var(--widget-margin, 0 0 var(--gutter));
+
+	// Paragraph
+	p {
+
+		&:last-of-type {
+			margin-bottom: 0;
+		}
+	}
+}
+
+// Widget wrap
+.widget-wrap {
+	display: var(--widget-wrap-display);
+	flex-wrap: var(--widget-wrap-flex-wrap);
+	justify-content: var(--widget-wrap-justify-content);
+}
+
+// Widget title
+.widget-title {
+	width: var(--widget-title-width, 100%);
+}

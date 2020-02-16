@@ -7,33 +7,17 @@
 ////
 
 ////
-/// Variables.
-////
-
-$title-area-line-height: var(--line-height-heading) !default;
-$title-area-padding-mobile: var(--spacing-m) null !default;
-$title-area-padding-desktop: var(--gap) null !default;
-$site-title-font-size: 1em !default;
-$site-title-font-family: var(--font-family-heading) !default;
-$site-title-font-weight: var(--font-weight-heading) !default;
-$site-title-color: var(--color-body) !default;
-$site-title-color-hover: var(--color-primary) !default;
-$site-description-color: var(--color-body) !default;
-$site-description-font-size: smaller !default;
-
-////
 /// Title Area.
 ////
 
 .title-area {
-	line-height: $title-area-line-height;
+	line-height: var(--title-area-line-height, var(--line-height-heading));
+	padding: var(--title-area-padding, (var(--spacing-md) 0));
 
-	@include padding($title-area-padding-mobile);
 	@include transition;
 
-	@include mq(m) {
-
-		@include padding($title-area-padding-desktop);
+	@include mq(md) {
+		padding: var(--title-area-padding, (var(--gap) 0));
 	}
 }
 
@@ -43,9 +27,9 @@ $site-description-font-size: smaller !default;
 
 .site-title {
 	margin: 0;
-	font-family: $site-title-font-family;
-	font-size: $site-title-font-size;
-	font-weight: $site-title-font-weight;
+	font-family: var(--site-title-font-family, var(--font-family-heading));
+	font-size: var(--site-title-font-size, (1em));
+	font-weight: var(--site-title-font-weight, var(--font-weight-heading));
 
 	.wp-custom-logo & {
 
@@ -53,11 +37,12 @@ $site-description-font-size: smaller !default;
 	}
 
 	// Link.
-	a {
-		color: $site-title-color;
+	&-link {
+		color: var(--site-title-color, var(--color-dark));
 
-		@include hover-focus {
-			color: $site-title-color-hover;
+		&:hover,
+		&:focus {
+			color: var(--site-title-color-hover, var(--color-primary));
 		}
 	}
 }
@@ -68,8 +53,8 @@ $site-description-font-size: smaller !default;
 
 .site-description {
 	margin: 0;
-	color: $site-description-color;
-	font-size: $site-description-font-size;
+	color: var(--site-description-color);
+	font-size: var(--site-description-font-size, (smaller));
 
 	// Has Custom Logo.
 	.wp-custom-logo & {

@@ -70,10 +70,10 @@ function mai_custom_header() {
 	}
 
 	if ( is_object( $id ) ) {
-		$url = wp_get_attachment_image_url( $id->ID, 'hero' );
+		$url = wp_get_attachment_image_url( $id->ID, 'page-header' );
 
 	} elseif ( $id ) {
-		$url = get_the_post_thumbnail_url( $id, 'hero' );
+		$url = get_the_post_thumbnail_url( $id, 'page-header' );
 	}
 
 	if ( ! $url ) {
@@ -84,7 +84,7 @@ function mai_custom_header() {
 		$selector = get_theme_support( 'custom-header', 'header-selector' );
 
 		/** @noinspection CssUnknownTarget */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-		return printf( '<style id="hero-css" type="text/css">' . esc_attr( $selector ) . '{background-image:url(%s)}</style>' . "\n", esc_url( $url ) );
+		return printf( '<style id="page-header-css" type="text/css">' . esc_attr( $selector ) . '{background-image:url(%s)}</style>' . "\n", esc_url( $url ) );
 
 	} else {
 		return '';
@@ -101,9 +101,9 @@ function mai_custom_header() {
 register_default_headers(
 	[
 		'child' => [
-			'url'           => mai_get_url() . 'assets/img/hero.jpg',
-			'thumbnail_url' => mai_get_url() . 'assets/img/hero.jpg',
-			'description'   => __( 'Hero Image', 'child-theme-engine' ),
+			'url'           => mai_get_url() . 'assets/img/page-header.jpg',
+			'thumbnail_url' => mai_get_url() . 'assets/img/page-header.jpg',
+			'description'   => __( 'Page Header Image', 'child-theme-engine' ),
 		],
 	]
 );

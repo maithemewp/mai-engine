@@ -38,11 +38,11 @@ function mai_enqueue_assets() {
 	}
 
 	foreach ( $assets as $asset ) {
-		$handle    = $asset['handle'];
-		$src       = isset( $asset['src'] ) ? $asset['src'] : '';
+		$handle    = $asset['handle']; // Required.
+		$src       = $asset['src']; // Required.
 		$type      = false !== strpos( $src, '.js' ) ? 'script' : 'style';
 		$deps      = isset( $asset['deps'] ) ? $asset['deps'] : [];
-		$ver       = isset( $asset['ver'] ) ? $asset['ver'] : genesis_get_theme_version();
+		$ver       = isset( $asset['ver'] ) ? $asset['ver'] : mai_get_asset_version( $asset['src'] );
 		$media     = isset( $asset['media'] ) ? $asset['media'] : 'all';
 		$in_footer = isset( $asset['in_footer'] ) ? $asset['in_footer'] : true;
 		$editor    = isset( $asset['editor'] ) ? $asset['editor'] : false;
@@ -61,11 +61,12 @@ function mai_enqueue_assets() {
 				if ( ! $hook ) {
 					$enqueue( $handle );
 				} else {
-					add_action( $hook, function () use ( $handle, $src, $media ) {
+					add_action( $hook, function () use ( $handle, $src, $ver, $media ) {
 						printf(
-							'<link rel="stylesheet" id="%s" href="%s" type="text/css" media="%s">',
+							'<link rel="stylesheet" id="%s" href="%s?ver=%s" type="text/css" media="%s">',
 							$handle,
 							$src,
+							$ver,
 							$media
 						);
 					}, $priority );
