@@ -15,7 +15,7 @@ const gulp = require('gulp'),
 	remtopx = require('postcss-rem-to-pixel'),
 	notify = require('gulp-notify'),
 	map = require('lodash.map'),
-	merge = require('lodash.merge'),
+	deepmerge = require('deepmerge'),
 	rename = require('gulp-rename'),
 	fs = require('fs'),
 	gulpif = require('gulp-if'),
@@ -99,7 +99,7 @@ module.exports = function () {
 			let defaults = require('../../../config/default/config.json');
 			let theme = require('../../../config/' + themeName() + '/config.json');
 
-			return {...defaults, ...theme};
+			return deepmerge(defaults, theme);
 		};
 
 		let fileSrc = function () {
