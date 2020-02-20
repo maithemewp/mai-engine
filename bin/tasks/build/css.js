@@ -15,6 +15,7 @@ const gulp = require('gulp'),
 	remtopx = require('postcss-rem-to-pixel'),
 	notify = require('gulp-notify'),
 	map = require('lodash.map'),
+	merge = require('lodash.merge'),
 	rename = require('gulp-rename'),
 	fs = require('fs'),
 	gulpif = require('gulp-if'),
@@ -22,22 +23,18 @@ const gulp = require('gulp'),
 	path = require('path'),
 	combineSelectors = require('postcss-combine-duplicated-selectors'),
 	discardDuplicates = require('postcss-discard-duplicates'),
-	cleancss = require('gulp-clean-css'),
-	gulpStylelint = require('gulp-stylelint'),
-	purge = require('gulp-css-purge'),
-	stylelintWordPress = require('stylelint-config-wordpress'),
-	inject = require('gulp-inject');
+	cleancss = require('gulp-clean-css');
 
 module.exports = function () {
 
-	const getPostProcessors = function (fileName) {
+	const getPostProcessors = function (fileName, themeName) {
 		const postProcessors = [
 			mqpacker({
 				sort: true,
 			}),
 			autoprefix(),
-			cssnano(config.css.cssnano),
-			//combineSelectors,
+			// cssnano(config.css.cssnano),
+			combineSelectors,
 			discardDuplicates,
 		];
 
@@ -59,11 +56,11 @@ module.exports = function () {
 
 	};
 
-	const themes = function () {
+	let themes = function () {
 		return fs.readdirSync('./config/');
 	};
 
-	const stylesheets = [];
+	let stylesheets = [];
 
 	themes().forEach(function (theme) {
 
@@ -90,18 +87,19 @@ module.exports = function () {
 			return stylesheet.replace('.scss', '').split('+')[1];
 		};
 
+		let outputFileName = function (fileName) {
+			return fileName === 'editor' ? themeName() + '-editor.css' : themeName() + '.css';
+		};
+
 		let themeConf = function () {
 			return config.src.base + 'config/' + themeName();
 		};
 
 		let themeVars = function () {
-		   const defaults = require('../../../config/default/config.json');
-		   const theme = require('../../../config/' + themeName() + '/config.json');
+			let defaults = require('../../../config/default/config.json');
+			let theme = require('../../../config/' + themeName() + '/config.json');
 
-		   return {
-		   	...defaults,
-				...theme
-			};
+			return {...defaults, ...theme};
 		};
 
 		let fileSrc = function () {
@@ -109,7 +107,7 @@ module.exports = function () {
 		};
 
 		let fileDest = function () {
-			return './assets/css/' + themeName() + '/';
+			return './assets/css/';
 		};
 
 		if (!fs.existsSync(fileSrc())) {
@@ -121,20 +119,20 @@ module.exports = function () {
 			.pipe(sassVars(themeVars(), {verbose: false}))
 			.pipe(bulksass())
 			.pipe(plumber())
-			.pipe(rename(fileName() + '.css'))
+			.pipe(rename(outputFileName(fileName())))
 			.pipe(gulpif(config.css.sourcemaps, sourcemap.init()))
 			.pipe(sass.sync({
 				outputStyle: 'compressed',
 				includePaths: [].concat(normalize).concat(themeConf())
 			}))
-			.pipe(cleancss({
-				level: {
-					2: {
-						all: true
-					}
-				}
-			}))
-			.pipe(postcss(getPostProcessors(fileName())))
+			// .pipe(cleancss({
+			// 	level: {
+			// 		2: {
+			// 			all: true
+			// 		}
+			// 	}
+			// }))
+			.pipe(postcss(getPostProcessors(fileName(), themeName())))
 			.pipe(gulpif(config.css.sourcemaps, sourcemap.write('./')))
 			.pipe(gulp.dest(fileDest()))
 			.pipe(notify({message: config.messages.css}));

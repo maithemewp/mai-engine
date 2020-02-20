@@ -26,7 +26,7 @@ function mai_structural_wrap_hooks() {
 			function ( $output, $original ) use ( $context ) {
 				$position = ( 'open' === $original ) ? 'before' : 'after';
 				ob_start();
-				do_action( "genesis_{$position}_{$context}_wrap" );
+				do_action( "mai_{$position}_{$context}_wrap" );
 				if ( 'open' === $original ) {
 					return ob_get_clean() . $output;
 				} else {

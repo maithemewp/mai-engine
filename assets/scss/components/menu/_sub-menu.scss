@@ -14,128 +14,86 @@
 	display: none;
 	top: 100%;
 	width: 100%;
-	margin: var(--spacing-md) var(--spacing-md) 0;
+	margin: var(--space-md) var(--space-md) 0;
 	list-style-type: none;
 
 	@include mq(md) {
 		display: block;
 		position: absolute;
 		left: -999rem;
-		width: var(--sub-menu-width, (calc(var(--spacing-xxxl) * var(--major-third))));
-		margin: 0 0 0 calc(0 - var(--spacing-md));
+		width: var(--sub-menu-width, var(--space-xxxl));
+		margin: 0 0 0 calc(0 - var(--space-md));
 		border: var(--sub-menu-border, var(--border));
 		border-radius: var(--sub-menu-border-radius, 0);
 		opacity: 0;
 		background-color: var(--sub-menu-background-color, var(--color-white));
 		transition: var(--sub-menu-transition, (opacity var(--transition-duration) var(--transition-timing-function)));
-		font-size: var(--sub-menu-font-size-desktop);
-		padding-top: var(--sub-menu-padding, var(--spacing-sm));
-		padding-bottom: var(--sub-menu-padding, var(--spacing-sm));
+		padding-top: var(--sub-menu-padding, var(--space-sm));
+		padding-bottom: var(--sub-menu-padding, var(--space-sm));
 
 		&:before {
 			content: "";
 
-			@include position(absolute, calc(0 - var(--spacing-xxs)) null null var(--spacing-lg));
-			//@include triangle("up", var(--spacing-sm), var(--spacing-xxs), var(--color-white));
+			@include position(absolute, calc(0 - var(--space-xxs)) null null var(--space-lg));
+			//@include triangle("up", var(--space-sm), var(--space-xxs), var(--color-white));
 		}
 	}
+}
 
-	// Link.
-	a {
+////
+/// Sub menu toggle.
+////
 
-		@include mq(md) {
-			color: var(--sub-menu-link-color, var(--color-gray));
-		}
+.sub-menu-toggle {
+	display: flex;
+	justify-content: center;
+	margin: var(--sub-menu-toggle-margin, 0);
+	padding: var(--sub-menu-toggle-padding, 0);
+	background-color: var(--sub-menu-toggle-background-color, transparent);
+	line-height: 0;
+	height: var(--sub-menu-toggle-size, var(--space-lg));
+	width: var(--sub-menu-toggle-size, var(--space-lg));
+
+	@include position(absolute, var(--space-sm) 0 null null);
+
+	@include mq(md) {
+		display: none;
 	}
 
-	// Link Hover.
-	a:hover,
-	a:focus,
-	.current-menu-item > a {
-		color: var(--sub-menu-link-color-hover, var(--color-primary));
+	&:hover,
+	&:focus {
+		background-color: transparent;
 	}
 
-	// Has Children.
-	.menu-item-has-children:hover > &,
-	.menu-item-has-children:focus > &,
-	.menu-item-has-children:focus-within > & {
-
-		@include mq(md) {
-			left: auto;
-			opacity: 1;
-		}
+	&:focus {
+		outline: var(--border);
 	}
 
-	// Sub menu menu item.
-	.menu-item {
-		width: 100%;
+	&:before {
+		content: "";
 
-		@include mq($until: md) {
-
-			&:last-of-type {
-				padding-bottom: 0;
-			}
-		}
-
-		@include mq(md) {
-			width: auto;
-			padding: var(--sub-menu-link-padding, (var(--spacing-sm) var(--spacing-md)));
-		}
-
-		&-has-children {
-			position: relative;
-		}
+		//@include triangle("down", 1rem, 0.5rem, $sub-menu-toggle-icon-background-color);
 	}
 
-	// Sub sub menu.
-	& & {
-
-		@include mq(md) {
-			top: -1px;
-			left: 100%;
-			margin-left: 0;
-			white-space: nowrap;
-		}
-	}
-
-	// Sub menu toggle.
-	&-toggle {
-		display: flex;
-		justify-content: center;
-		margin: var(--sub-menu-toggle-margin, 0);
-		padding: var(--sub-menu-toggle-padding, 0);
-		background-color: var(--sub-menu-toggle-background-color, transparent);
-		line-height: 0;
-		height: var(--sub-menu-toggle-size, var(--spacing-lg));
-		width: var(--sub-menu-toggle-size, var(--spacing-lg));
-
-		@include position(absolute, var(--spacing-sm) 0 null null);
-
-		@include mq(md) {
-			display: none;
-		}
-
-		&:hover,
-		&:focus {
-			background-color: transparent;
-		}
-
-		&:focus {
-			outline: var(--border);
-		}
+	&.activated {
 
 		&:before {
-			content: "";
 
-			//@include triangle("down", 1rem, 0.5rem, $sub-menu-toggle-icon-background-color);
+			//@include triangle("up", 1rem, 0.5rem, $sub-menu-toggle-icon-background-color);
 		}
+	}
+}
 
-		&.activated {
+////
+/// Sub sub menu.
+////
 
-			&:before {
+.sub-menu .sub-menu {
 
-				//@include triangle("up", 1rem, 0.5rem, $sub-menu-toggle-icon-background-color);
-			}
-		}
+	@include mq(md) {
+		top: -1px;
+		left: 100%;
+		margin-left: 0;
+		white-space: nowrap;
 	}
 }

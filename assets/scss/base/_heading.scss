@@ -22,6 +22,6 @@
 @each $heading, $font-size in $font-sizes {
 
 	#{$heading} {
-		font-size: var(--#{$heading}-font-size, $font-size);
+		font-size: var(--#{$heading}-font-size, strip_slashes($font-size));
 	}
 }

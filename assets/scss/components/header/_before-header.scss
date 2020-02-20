@@ -11,7 +11,7 @@
 ////
 
 .before-header {
-	padding: var(--before-header-padding, (var(--spacing-sm) 0));
+	padding: var(--before-header-padding, (var(--space-sm) 0));
 	border-bottom: var(--before-header-border-bottom, var(--border));
 	background-color: var(--before-header-background-color, var(--color-light));
 	font-size: var(--before-header-font-size, small);

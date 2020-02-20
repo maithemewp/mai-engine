@@ -14,7 +14,7 @@
 	margin-right: var(--gap);
 	margin-left: auto;
 
-	@include mq($until: xs) {
+	@include mq(xs, max) {
 		display: none;
 	}
 

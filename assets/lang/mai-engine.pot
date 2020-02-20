@@ -1,8 +1,8 @@
-# Copyright (C) 2020 mai-engine 0.1.0
-# This file is distributed under the same license as the mai-engine 0.1.0 package.
+# Copyright (C) 2020 mai-engine 1.0.0
+# This file is distributed under the same license as the mai-engine 1.0.0 package.
 msgid ""
 msgstr ""
-"Project-Id-Version: mai-engine 0.1.0\n"
+"Project-Id-Version: mai-engine 1.0.0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,10 +13,87 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/blocks/icon.php:14
-msgid "Icon"
+#: config/default/config.php:102
+msgid "Narrow Content"
+msgstr ""
+
+#: config/default/config.php:154
+msgid "Menu"
+msgstr ""
+
+#: config/default/config.php:359
+msgid "Header Left Menu"
+msgstr ""
+
+#: config/default/config.php:360
+msgid "Header Right Menu"
+msgstr ""
+
+#: config/default/config.php:361
+msgid "Below Header Menu"
+msgstr ""
+
+#: config/default/config.php:362
+msgid "Footer Menu"
+msgstr ""
+
+#: config/default/config.php:462
+msgid "Before Header"
+msgstr ""
+
+#: config/default/config.php:463
+msgid "The Before Header widget area."
+msgstr ""
+
+#: config/default/config.php:467
+msgid "Before Footer"
+msgstr ""
+
+#: config/default/config.php:468
+msgid "The Before Footer widget area."
 msgstr ""
 
 #: lib/blocks/icon.php:15
+msgid "Icon"
+msgstr ""
+
+#: lib/blocks/icon.php:16
 msgid "A custom icon block."
+msgstr ""
+
+#: lib/customize/sections.php:13
+msgid "Archive Layout"
+msgstr ""
+
+#: lib/functions/header.php:106
+msgid "Page Header Image"
+msgstr ""
+
+#: lib/functions/widgets.php:34
+msgid "Front Page "
+msgstr ""
+
+#. translators: The front page widget area number.
+#: lib/functions/widgets.php:36
+msgid "The Front Page %s widget area."
+msgstr ""
+
+#: lib/structure/header.php:121
+msgid "Toggle header search"
+msgstr ""
+
+#: lib/structure/page-header.php:118
+msgid "Latest Posts"
+msgstr ""
+
+#: lib/structure/page-header.php:121
+msgid "Not found, error 404"
+msgstr ""
+
+#: lib/structure/page-header.php:124
+msgid "Search results for: "
+msgstr ""
+
+#: lib/structure/page-header.php:159
+msgid "Showing the latest posts"
 msgstr ""

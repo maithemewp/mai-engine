@@ -24,12 +24,12 @@
 
 	// Author box title.
 	&-title {
-		margin: var(--author-box-title-margin, 0 0 var(--spacing-xs));
+		margin: var(--author-box-title-margin, 0 0 var(--space-xs));
 	}
 
 	// Author box content.
 	&-content {
-		padding: var(--author-box-content-padding-left, (0 0 0 calc(var(--spacing-xl) + var(--spacing-md))));
+		padding: var(--author-box-content-padding-left, (0 0 0 calc(var(--space-xl) + var(--space-md))));
 
 		p {
 

@@ -33,14 +33,14 @@
 	// Columns block.
 	&-columns {
 
-		@include mq($until: md) {
+		@include mq(md, max) {
 			flex-wrap: wrap;
 		}
 	}
 
 	&-column {
 
-		@include mq($until: md) {
+		@include mq(md, max) {
 			flex: none;
 			width: 100%;
 		}
@@ -81,8 +81,8 @@
 
 	// Embed block.
 	&-embed {
-		margin-top: var(--spacing-md);
-		margin-bottom: var(--spacing-md);
+		margin-top: var(--space-md);
+		margin-bottom: var(--space-md);
 	}
 
 	// File block.
@@ -94,8 +94,8 @@
 
 	// Gallery block.
 	&-gallery {
-		margin-top: var(--spacing-md);
-		margin-bottom: var(--spacing-md);
+		margin-top: var(--space-md);
+		margin-bottom: var(--space-md);
 
 		&.is-cropped {
 		}
@@ -128,15 +128,15 @@
 
 	// Image block.
 	&-image {
-		margin-top: var(--spacing-md);
-		margin-bottom: var(--spacing-md);
+		margin-top: var(--space-md);
+		margin-bottom: var(--space-md);
 
 		&.alignleft {
-			margin-right: var(--spacing-md);
+			margin-right: var(--space-md);
 		}
 
 		&.alignright {
-			margin-left: var(--spacing-md);
+			margin-left: var(--space-md);
 		}
 
 		&.alignwide {
@@ -164,7 +164,7 @@
 
 		li > a {
 			color: var(--color-dark);
-			font-family: var(--font-family-heading);
+			font-family: var(--font-secondary);
 			font-weight: var(--font-weight-semibold);
 			line-height: var(--line-height-heading);
 		}
@@ -177,12 +177,12 @@
 	// Pullquote block.
 	&-pullquote {
 		border-left: 0;
-		margin-top: var(--spacing-lg);
-		margin-bottom: var(--spacing-lg);
+		margin-top: var(--space-lg);
+		margin-bottom: var(--space-lg);
 
 		&.aligncenter {
-			margin-top: var(--spacing-md);
-			margin-bottom: var(--spacing-md);
+			margin-top: var(--space-md);
+			margin-bottom: var(--space-md);
 		}
 	}
 

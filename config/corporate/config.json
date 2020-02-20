@@ -1,1 +1,8 @@
-{}
+{
+  "breakpoint": 1152,
+  "colors": {
+	"primary": "blue",
+	"dark": "#2a3139",
+	"medium": "#4d5968"
+  }
+}

@@ -31,9 +31,9 @@ function mai_widget_area_options() {
 	for ( $i = 1; $i <= $front_page_widget_areas; $i++ ) {
 		genesis_register_widget_area( [
 			'id'          => 'front-page-' . $i,
-			'name'        => __( 'Front Page ', 'child-theme-engine' ) . $i,
+			'name'        => __( 'Front Page ', 'mai-engine' ) . $i,
 			/* translators: The front page widget area number. */
-			'description' => sprintf( __( 'The Front Page %s widget area.', 'child-theme-engine' ), $i ),
+			'description' => sprintf( __( 'The Front Page %s widget area.', 'mai-engine' ), $i ),
 		] );
 	}
 }

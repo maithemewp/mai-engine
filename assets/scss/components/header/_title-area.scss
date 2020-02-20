@@ -12,7 +12,8 @@
 
 .title-area {
 	line-height: var(--title-area-line-height, var(--line-height-heading));
-	padding: var(--title-area-padding, (var(--spacing-md) 0));
+	padding: var(--title-area-padding, (var(--space-md) 0));
+	text-align: var(--title-area-text-align, start);
 
 	@include transition;
 
@@ -21,13 +22,17 @@
 	}
 }
 
+.has-logo-center {
+	--title-area-text-align: center;
+}
+
 ////
 /// Site title.
 ////
 
 .site-title {
 	margin: 0;
-	font-family: var(--site-title-font-family, var(--font-family-heading));
+	font-family: var(--site-title-font-family, var(--font-secondary));
 	font-size: var(--site-title-font-size, (1em));
 	font-weight: var(--site-title-font-weight, var(--font-weight-heading));
 

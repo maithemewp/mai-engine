@@ -41,6 +41,7 @@ const mmq = require('gulp-merge-media-queries'); // Combine matching media queri
 const rtlcss = require('gulp-rtlcss'); // Generates RTL stylesheet.
 const postcss = require('gulp-postcss'); // PostCSS
 const cleancss = require('gulp-clean-css');
+const normalize = require('node-normalize-scss').includePaths;
 
 // JS related plugins.
 const concat = require('gulp-concat'); // Concatenates JS files.
@@ -63,9 +64,6 @@ const cache = require('gulp-cache'); // Cache files in stream for later use.
 const remember = require('gulp-remember'); //  Adds all the files it has ever seen back into the stream.
 const plumber = require('gulp-plumber'); // Prevent pipe breaking caused by errors from gulp plugins.
 const beep = require('beepbeep');
-const fs = require('fs');
-const merge = require('merge-stream');
-const map = require('lodash.map');
 
 /**
  * Custom Error Handler.
@@ -103,7 +101,7 @@ const reload = done => {
 	done();
 };
 
-gulp.task('themeStyles', () => {
+gulp.task('mainStyles', () => {
 	return gulp
 		.src(config.themeStyleSrc, {allowEmpty: true})
 		.pipe(plumber(errorHandler))
@@ -119,7 +117,7 @@ gulp.task('themeStyles', () => {
 		.pipe(lineec()) // Consistent Line Endings for non UNIX systems.
 		// .pipe(gulp.dest(config.themeStyleDestination))
 		.pipe(filter('**/*.css')) // Filtering stream to only css files.
-		.pipe(mmq({log: true})) // Merge Media Queries only for .min.css version.
+		.pipe(mmq({log: false})) // Merge Media Queries only for .min.css version.
 		.pipe(browserSync.stream()) // Reloads style.css if that is enqueued.
 		// .pipe(rename({suffix: '.min'}))
 		.pipe(minifycss({maxLineLen: 10}))
@@ -128,7 +126,7 @@ gulp.task('themeStyles', () => {
 		.pipe(gulp.dest(config.themeStyleDestination))
 		.pipe(filter('**/*.css')) // Filtering stream to only css files.
 		.pipe(browserSync.stream()) // Reloads style.min.css if that is enqueued.
-		.pipe(notify({message: '\n\n✅  ===> STYLES — completed!\n', onLast: true}));
+		// .pipe(notify({message: '\n\n✅  ===> STYLES — completed!\n', onLast: true}));
 });
 
 /**
@@ -145,67 +143,33 @@ gulp.task('themeStyles', () => {
  *    6. Minifies the CSS file and generates style.min.css
  *    7. Injects CSS or reloads the browser via browserSync
  */
-gulp.task('baseStyles', (cb) => {
-	const themes = function () {
-		return fs.readdirSync('./assets/scss/themes/');
-	};
-
-	console.log(themes());
-
-	const tasks = map(themes(), function (theme) {
-
-		let themeName = function () {
-			return theme.substring(0, theme.indexOf('+'));
-		};
-
-		let fileName = function () {
-			return theme.replace('.scss', '').split('+')[1];
-		};
-
-		let themeConf = function () {
-			return config.themeDir + fileName();
-		};
-
-		let fileSrc = function () {
-			return './assets/scss/main.scss';
-		};
-
-		let fileDest = function () {
-			return './assets/css/' + themeName() + '/';
-		};
-
-		if (!fs.existsSync(fileSrc())) {
-			return console.log('ERROR >> Source file ' + fileSrc() +
-				' was not found.');
-		}
-
-		return gulp
-			.src(fileSrc(), {allowEmpty: true})
-			.pipe(plumber(errorHandler))
-			.pipe(
-				sass({
-					errLogToConsole: config.errLogToConsole,
-					outputStyle: config.outputStyle,
-					precision: config.precision,
-					includePaths: [].concat(themeConf())
-				})
-			)
-			.on('error', sass.logError)
-			.pipe(autoprefixer(config.BROWSERS_LIST))
-			.pipe(lineec()) // Consistent Line Endings for non UNIX systems.
-			.pipe(filter('**/*.css')) // Filtering stream to only css files.
-			.pipe(mmq({log: true})) // Merge Media Queries only for .min.css version.
-			.pipe(browserSync.stream()) // Reloads style.css if that is enqueued.
-			.pipe(minifycss({maxLineLen: 10}))
-			.pipe(cleancss({level: {2: {restructureRules: true}}}))
-			.pipe(lineec()) // Consistent Line Endings for non UNIX systems.
-			.pipe(gulp.dest(fileDest()))
-			.pipe(filter('**/*.css')) // Filtering stream to only css files.
-			.pipe(browserSync.stream()) // Reloads style.min.css if that is enqueued.
-			.pipe(notify({message: '\n\n✅  ===> STYLES — completed!\n', onLast: true}));
-	});
-
-	return merge(tasks);
+gulp.task('editorStyles', (cb) => {
+	return gulp
+		.src(config.styleSrc, {allowEmpty: true})
+		.pipe(plumber(errorHandler))
+		.pipe(
+			sass({
+				errLogToConsole: config.errLogToConsole,
+				outputStyle: config.outputStyle,
+				precision: config.precision,
+				includePaths: [].concat(normalize)
+			})
+		)
+		.on('error', sass.logError)
+		.pipe(autoprefixer(config.BROWSERS_LIST))
+		.pipe(lineec()) // Consistent Line Endings for non UNIX systems.
+		// .pipe(gulp.dest(config.themeStyleDestination))
+		.pipe(filter('**/*.css')) // Filtering stream to only css files.
+		.pipe(mmq({log: false})) // Merge Media Queries only for .min.css version.
+		.pipe(browserSync.stream()) // Reloads style.css if that is enqueued.
+		// .pipe(rename({suffix: '.min'}))
+		.pipe(minifycss({maxLineLen: 10}))
+		.pipe(cleancss({level: {2: {restructureRules: true}}}))
+		.pipe(lineec()) // Consistent Line Endings for non UNIX systems.
+		.pipe(gulp.dest(config.styleDestination))
+		.pipe(filter('**/*.css')) // Filtering stream to only css files.
+		.pipe(browserSync.stream()) // Reloads style.min.css if that is enqueued.
+		// .pipe(notify({message: '\n\n✅  ===> STYLES — completed!\n', onLast: true}));
 });
 
 gulp.task(

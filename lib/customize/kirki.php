@@ -13,6 +13,7 @@ add_action( 'genesis_setup', 'mai_kirki_filters' );
  */
 function mai_kirki_filters() {
 	add_filter( 'kirki/dynamic_css/method', '__return_true' );
+
 	add_filter( 'kirki_gutenberg_' . mai_get_handle() . '_dynamic_css', function () {
 		return home_url( '?action=kirki-styles' );
 	} );
@@ -58,7 +59,7 @@ function mai_disable_kirki_loader( $config ) {
 	], $config );
 }
 
-add_filter( 'kirki/config', 'mai_kirki_url' );
+add_filter( 'kirki/config', 'mai_kirki_url', 100 );
 /**
  * Manually set the Kirki URL.
  *

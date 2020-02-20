@@ -37,7 +37,7 @@
 
 	// List item.
 	li {
-		margin-right: var(--spacing-sm);
+		margin-right: var(--space-sm);
 	}
 
 	// Active item.
@@ -53,7 +53,7 @@
 	}
 
 	a {
-		color: var(--pagination-link-color, var(--color-gray));
+		color: var(--pagination-link-color, var(--color-medium));
 
 		&:hover,
 		&:focus {

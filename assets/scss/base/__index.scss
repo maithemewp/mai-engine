@@ -10,7 +10,8 @@
 /// @link   https://github.com/maithemewp/mai-engine
 ////
 
-@import "custom-properties";
+@import "globals";
+@import "box-sizing";
 @import "normalize";
 @import "html";
 @import "typography";
@@ -20,4 +21,3 @@
 @import "form";
 @import "table";
 @import "media";
-

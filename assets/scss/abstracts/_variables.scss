@@ -14,39 +14,35 @@ $all-headings: (h1, h2, h3, h4, h5, h6, legend);
 
 // Breakpoints
 $screens: (
-	xxxs: $screen-xxxs,
-	xxs: $screen-xxs,
-	xs: $screen-xs,
-	sm: $screen-sm,
-	md: $screen-md,
-	lg: $screen-lg,
-	xl: $screen-xl,
-	xxl: $screen-xxl,
-	xxxl: $screen-xxxl,
+	xs: $breakpoint / 3,   // 400  (400 x 1)
+	sm: $breakpoint / 2,   // 600  (400 x 1.5)
+	md: $breakpoint / 1.5, // 800  (400 x 2)
+	lg: $breakpoint / 1.2, // 1000 (400 x 2.5)
+	xl: $breakpoint / 1,   // 1200 (400 x 3)
 ) !default;
 
 // Colors
 $colors: (
-	primary: $color-primary,
-	secondary: $color-secondary,
-	success: $color-success,
-	danger: $color-danger,
-	warning: $color-warning,
-	info: $color-info,
-	black: $color-black,
-	dark: $color-dark,
-	gray: $color-gray,
-	muted: $color-muted,
-	light: $color-light,
-	white: $color-white,
+	primary: var(--color-primary),
+	secondary: var(--color-secondary),
+	success: var(--color-success),
+	danger: var(--color-danger),
+	warning: var(--color-warning),
+	info: var(--color-info),
+	black: var(--color-black),
+	dark: var(--color-dark),
+	medium: var(--color-medium),
+	muted: var(--color-muted),
+	light: var(--color-light),
+	white: var(--color-white),
 ) !default;
 
 // Font sizes
 $font-sizes: (
-	h1: $font-size-xxxxxl,
-	h2: $font-size-xxxxl,
-	h3: $font-size-xxxl,
-	h4: $font-size-xxl,
-	h5: $font-size-xl,
-	h6: $font-size-lg,
+	h1: var(--text-xl),
+	h2: var(--text-lg),
+	h3: var(--text-md),
+	h4: var(--text-sm),
+	h5: var(--text-xs),
+	h6: var(--text-base),
 ) !default;

@@ -35,7 +35,7 @@
 
 .woocommerce-ordering {
 
-	@include mq($until: xs) {
+	@include mq(xs, max) {
 		margin-top: var(--gap);
 	}
 }
@@ -51,7 +51,7 @@
 
 		&:last-of-type {
 
-			@include mq($until: xs) {
+			@include mq(xs, max) {
 				margin-bottom: 0;
 			}
 		}
@@ -108,12 +108,11 @@
 
 .woocommerce-loop-product-title {
 	margin-bottom: auto;
-	font-size: var(--font-size-lg);
 }
 
 .add_to_cart_button {
 	margin-top: auto;
-	padding: var(--spacing-md) var(--gap);
+	padding: var(--space-md) var(--gap);
 	transition: none;
 
 	&:after {
@@ -125,12 +124,12 @@
 }
 
 .added {
-	padding: var(--spacing-md);
+	padding: var(--space-md);
 	font-size: 0;
 	align-self: flex-start;
 
 	&:after {
-		font-size: calc(var(--font-size-md) / #{$major-second});
+		font-size: calc(var(--text-base) / #{$major-second});
 	}
 }
 
@@ -139,8 +138,8 @@
 	@include button;
 
 	align-self: flex-end;
-	margin-left: var(--spacing-sm);
-	padding: var(--spacing-md) - 0.1rem;
+	margin-left: var(--space-sm);
+	padding: var(--space-md) - 0.1rem;
 	border: var(--border-width) var(--border-style) var(--color-primary);
 	color: var(--color-primary);
 	background: transparent;
@@ -154,13 +153,13 @@
 
 .star-rating {
 	display: block;
-	margin-bottom: var(--spacing-x) xs;
+	margin-bottom: var(--space-x) xs;
 
 	&:before {
 		display: inline-block;
 		color: var(--color-warning);
 		font-family: "Font Awesome 5 Free", sans-serif;
-		font-size: var(--spacing-md);
+		font-size: var(--space-md);
 		font-weight: 700;
 		letter-spacing: 0.2em;
 		content: "\f005";
@@ -208,7 +207,7 @@
 
 .price {
 	display: block;
-	margin-bottom: var(--spacing-md);
+	margin-bottom: var(--space-md);
 
 	ins {
 		text-decoration: none;

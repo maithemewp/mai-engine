@@ -11,34 +11,29 @@
 ////
 
 @import "abstracts/_index";
+@import "base/globals";
 @import "base/html";
+@import "base/typography";
+@import "base/heading";
+@import "base/list";
 @import "components/blocks/_index";
 @import "utilities/_index";
+@import "config";
 
 .editor-styles-wrapper {
 
-	@import "base/custom-properties";
-	@include custom-properties;
 	@include body;
-
-	height: auto;
-	overflow-x: initial;
-
-	@import "base/typography";
-	@import "base/heading";
-	@import "base/list";
 }
+
 
 .editor-post-title__block .editor-post-title__input {
 
-	@include heading();
+	@include heading;
 }
 
-///
-/// Change editor width.
-///
-/// @link https://developer.wordpress.org/block-editor/developers/themes/theme-support/#changing-the-width-of-the-editor
-///
+p {
+	font-size: var(--text-base);
+}
 
 .wp-block {
 	max-width: var(--screen-sm);

@@ -134,6 +134,7 @@ function mai_load_files() {
 
 		// Admin.
 		'admin/settings',
+		'admin/page-header',
 
 		// Customizer.
 		'customize/kirki',

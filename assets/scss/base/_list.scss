@@ -13,7 +13,7 @@
 ul,
 ol,
 dl {
-	margin: var(--list-margin, (0 0 var(--spacing-md)));
+	margin: var(--list-margin, (0 0 var(--space-md)));
 	padding: var(--list-padding, 0);
 	list-style-position: var(--list-list-style-position, inside);
 
@@ -21,7 +21,7 @@ dl {
 	ul,
 	ol,
 	dl {
-		margin: var(--sub-list-margin, (var(--spacing-sm) var(--spacing-md)));
+		margin: var(--sub-list-margin, (var(--space-sm) var(--space-md)));
 	}
 }
 

@@ -4,14 +4,14 @@
 	// Columns block.
 	&-columns {
 
-		@include mq($until: md) {
+		@include mq(md, max) {
 			flex-wrap: wrap;
 		}
 	}
 
 	&-column {
 
-		@include mq($until: md) {
+		@include mq(md, max) {
 			flex: none;
 			width: 100%;
 		}

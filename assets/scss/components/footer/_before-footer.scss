@@ -12,13 +12,13 @@
 
 .before-footer {
 	position: relative;
-	padding: var(--before-footer-padding, (var(--spacing-xl) 0 calc(var(--spacing-xl) - var(--gutter))));
+	padding: var(--before-footer-padding, (var(--space-xl) 0 calc(var(--space-xl) - var(--gutter))));
 	border-bottom: var(--before-footer-border-bottom, var(--border));
-	color: var(--before-footer-color, var(--color-gray));
+	color: var(--before-footer-color, var(--color-medium));
 	background-color: var(--before-footer-background-color, var(--color-light));
 
 	// Widget title
 	.widget-title {
-		font-size: var(--before-footer-title-font-size, var(--font-size-xl));
+		font-size: var(--before-footer-title-font-size, var(--text-xs));
 	}
 }

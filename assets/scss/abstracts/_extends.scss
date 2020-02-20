@@ -6,6 +6,7 @@
 /// @link   https://github.com/maithemewp/mai-engine
 ////
 
+
 ////
 /// Body mixin
 ///
@@ -15,17 +16,16 @@
 ////
 
 @mixin body {
-	height: 100%;
 	margin: 0;
-	color: var(--color-gray);
+	color: var(--color-medium);
 	background-color: var(--color-white);
-	font-family: var(--font-family-body);
-	font-size: var(--font-size-md);
+	font-family: var(--font-primary);
+	font-size: var(--text-base);
 	font-weight: var(--font-weight-body);
 	line-height: var(--line-height-body);
 
 	@include mq(md) {
-		font-size: calc(var(--font-size-md) * #{$major-second});
+		font-size: calc(var(--text-base) * #{$major-second});
 	}
 }
 
@@ -38,8 +38,8 @@
 ////
 
 @mixin heading {
-	margin: var(--heading-margin, 0 0 var(--font-size-md));
-	font-family: var(--font-family-heading);
+	margin: var(--heading-margin, 0 0 var(--text-base));
+	font-family: var(--font-secondary);
 	font-weight: var(--font-weight-heading);
 	line-height: var(--line-height-heading);
 	letter-spacing: var(--letter-spacing-heading);
@@ -57,15 +57,15 @@
 @mixin button {
 	display: inline-block;
 	width: auto;
-	margin: (--button-margin, 0);
-	padding: var(--button-padding, (calc(var(--spacing-md) * var(--minor-third)) var(--gutter)));
+	margin: var(--button-margin, 0);
+	padding: var(--button-padding, (var(--gap) var(--gutter)));
 	border: var(--button-border, 0);
 	border-color: var(--button-border-color);
 	border-radius: var(--button-border-radius, var(--border-radius));
 	color: var(--button-color, var(--color-white));
 	background-color: var(--button-background, var(--color-primary));
 	font-family: var(--button-font-family);
-	font-size: var(--button-font-size, (smaller));
+	font-size: var(--button-font-size);
 	font-weight: var(--button-font-weight, var(--font-weight-heading));
 	letter-spacing: var(--button-letter-spacing);
 	text-transform: var(--button-text-transform);

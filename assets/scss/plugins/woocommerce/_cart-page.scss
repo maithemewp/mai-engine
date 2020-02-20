@@ -30,21 +30,21 @@
 
 	img {
 		border-radius: var(--border-radius);
-		height: var(--spacing-xl);
-		width: var(--spacing-xl);
+		height: var(--space-xl);
+		width: var(--space-xl);
 	}
 }
 
 .quantity {
 
 	.input-text {
-		max-width: var(--spacing-xxxl);
-		margin: 0 var(--spacing-md) 0 0;
+		max-width: var(--space-xxxl);
+		margin: 0 var(--space-md) 0 0;
 	}
 }
 
 .actions {
-	padding: var(--spacing-lg);
+	padding: var(--space-lg);
 
 	> .button {
 
@@ -98,7 +98,7 @@
 	width: 100%;
 }
 
-@include mq($until: xs) {
+@include mq(xs, max) {
 
 	.woocommerce-cart-form {
 
@@ -134,7 +134,7 @@
 
 			.button {
 				margin: 0;
-				padding: var(--spacing-md);
+				padding: var(--space-md);
 			}
 		}
 
@@ -158,7 +158,7 @@
 				align-items: center;
 				align-self: stretch;
 				width: 25%;
-				margin-right: var(--spacing-md);
+				margin-right: var(--space-md);
 				padding: 1.5em 1em;
 				border-right: var(--border);
 				background-color: var(--color-light);

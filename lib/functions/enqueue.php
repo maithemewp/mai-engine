@@ -89,10 +89,28 @@ add_action( 'wp_enqueue_scripts', 'mai_deregister_scripts_and_styles', 15 );
  * @return void
  */
 function mai_deregister_scripts_and_styles() {
+	global $wp_styles;
 	$assets = mai_get_config( 'scripts-and-styles' )['remove'];
 
 	foreach ( $assets as $asset ) {
 		wp_deregister_script( $asset );
 		wp_deregister_style( $asset );
+		$wp_styles->remove( $asset );
 	}
 }
+
+add_filter( 'block_editor_settings', 'mai_remove_noto_serif_editor_styles' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @return string
+ */
+function mai_remove_noto_serif_editor_styles( $settings ) {
+	unset( $settings['styles'][0] );
+	unset( $settings['styles'][1] );
+
+	return $settings;
+}
+

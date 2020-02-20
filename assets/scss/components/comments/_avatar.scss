@@ -12,6 +12,6 @@
 
 .avatar {
 	float: var(--avatar-float, left);
-	margin-right: var(--avatar-margin-right, var(--spacing-md));
+	margin-right: var(--avatar-margin-right, var(--space-md));
 	border-radius: var(--avatar-border-radius, var(--border-radius));
 }

@@ -11,12 +11,12 @@
 ////
 
 .sidebar {
-	margin-top: var(--sidebar-margin-mobile, var(--spacing-md));
-	margin-bottom: var(--sidebar-margin-mobile, var(--spacing-md));
+	margin-top: var(--sidebar-margin-mobile, var(--space-md));
+	margin-bottom: var(--sidebar-margin-mobile, var(--space-md));
 
 	@include mq(md) {
-		margin-top: var(--sidebar-margin-desktop, var(--spacing-lg));
-		margin-bottom: var(--sidebar-margin-desktop, var(--spacing-lg));
+		margin-top: var(--sidebar-margin-desktop, var(--space-lg));
+		margin-bottom: var(--sidebar-margin-desktop, var(--space-lg));
 	}
 
 	// When Visible.
@@ -34,12 +34,12 @@
 		@include clearfix;
 
 		&-title {
-			margin-bottom: var(--sidebar-entry-title-margin-bottom, var(--spacing-xxs));
-			font-size: var(--sidebar-entry-title-font-size, var(--font-size-md));
+			margin-bottom: var(--sidebar-entry-title-margin-bottom, var(--space-xxs));
+			font-size: var(--sidebar-entry-title-font-size, var(--text-base));
 		}
 
 		&-image {
-			max-width: var(--sidebar-entry-image-max-width, var(--spacing-xxl));
+			max-width: var(--sidebar-entry-image-max-width, var(--space-xxl));
 		}
 	}
 }

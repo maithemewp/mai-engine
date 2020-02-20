@@ -13,7 +13,7 @@
 ////
 
 .comment {
-	margin: var(--comment-margin, (var(--spacing-lg) 0));
+	margin: var(--comment-margin, (var(--space-lg) 0));
 	background-color: var(--comment-background);
 
 	// Comment list wrapper.

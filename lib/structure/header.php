@@ -118,7 +118,7 @@ function mai_header_search( $menu, $args ) {
 		);
 		$menu .= sprintf(
 			'<li class="menu-item"><button class="header-search-toggle" onclick="toggle(\'header-search-form\')"><i class="fas fa-search"><span class="screen-reader-text">%s</span></i></button></li>',
-			__( 'Toggle header search', 'child-theme-engine' )
+			__( 'Toggle header search', 'mai-engine' )
 		);
 	}
 

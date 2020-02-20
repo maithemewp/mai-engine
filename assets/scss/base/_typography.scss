@@ -37,7 +37,7 @@ a {
 ////
 
 p {
-	margin: var(--paragraph-margin, (0 0 var(--spacing-md)));
+	margin: var(--paragraph-margin, (0 0 var(--space-md)));
 
 	&:empty {
 		display: none;
@@ -50,8 +50,8 @@ p {
 
 hr {
 	clear: both;
-	margin: var(--horizontal-rule-margin, 0 0 var(--spacing-md));
-	padding: var(--horizontal-rule-padding, (var(--spacing-md) 0 0));
+	margin: var(--horizontal-rule-margin, 0 0 var(--space-md));
+	padding: var(--horizontal-rule-padding, (var(--space-md) 0 0));
 	border: var(--horizontal-rule-border, var(--border));
 	border-bottom: var(--horizontal-rule-border);
 	border-collapse: collapse;
@@ -83,11 +83,11 @@ blockquote {
 	border-left: var(--blockquote-border-left, var(--border));
 	background-color: var(--blockquote-background-color);
 	font-style: var(--blockquote-font-style, italic);
-	margin: var(--blockquote-margin, (var(--spacing-md) auto));
+	margin: var(--blockquote-margin, (var(--space-md) auto));
 	padding: var(--blockquote-padding, var(--gap));
 
 	p {
-		padding: var(--blockquote-paragraph-padding, (var(--spacing-sm) 0));
+		padding: var(--blockquote-paragraph-padding, (var(--space-sm) 0));
 
 		&:last-of-type {
 			margin-bottom: 0;
@@ -103,7 +103,7 @@ cite {
 	display: block;
 	font-family: var(--cite-font-family, bolder);
 	font-weight: var(--cite-font-weight, normal);
-	font-style: var(--cite-font-style, var(--font-family-heading));
+	font-style: var(--cite-font-style, var(--font-secondary));
 }
 
 ////
@@ -117,13 +117,13 @@ samp {
 	padding: var(--code-padding, (0.05em 0.5em));
 	border-radius: var(--code-border-radius, var(--border-radius));
 	background-color: var(--code-background-color, var(--color-light));
-	font-family: var(--code-font-family, var(--font-family-code));
+	font-family: var(--code-font-family, var(--font-code));
 	font-size: var(--code-font-size, (90%));
 }
 
 pre {
 	overflow-x: scroll;
-	padding: var(--preformatted-padding, var(--spacing-md));
+	padding: var(--preformatted-padding, var(--space-md));
 
 	code,
 	kbd,

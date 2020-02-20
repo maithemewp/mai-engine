@@ -12,8 +12,6 @@
 
 .menu {
 	margin: 0;
-	font-family: var(--menu-font-family);
-	font-weight: var(--menu-font-weight);
 	line-height: var(--menu-line-height, 1);
 	list-style-type: none;
 
@@ -22,59 +20,59 @@
 		border: 0;
 		font-size: var(--menu-font-size-desktop, (smaller));
 		flex-wrap: wrap;
-		justify-content: flex-end;
+		justify-content: var(--menu-alignment, flex-end);
 		align-items: center;
 	}
+}
 
-	// Menu item.
-	&-item {
-		display: flex;
-		position: relative;
-		flex-wrap: wrap;
-		align-items: center;
-		justify-content: space-between;
-		margin: var(--menu-item-margin-mobile, (0 auto));
+// Menu item.
+.menu-item {
+	display: flex;
+	position: relative;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	margin: var(--menu-item-margin-mobile, (0 auto));
+
+	@include mq(md) {
+		display: block;
+		margin: var(--menu-item-margin-desktop, 0);
+
+		&:last-of-type a {
+			padding-right: 0;
+		}
+
+		&:first-of-type a {
+			padding-left: 0;
+		}
+	}
+
+	// Buttons
+	&.button {
+		padding: 0;
 
 		@include mq(md) {
-			display: block;
-			margin: var(--menu-item-margin-desktop, 0);
-
-			&:last-of-type a {
-				padding-right: 0;
-			}
-
-			&:first-of-type a {
-				padding-left: 0;
-			}
+			margin-left: var(--space-md);
 		}
+	}
+}
 
-		// Link.
-		&-link {
-			display: block;
-			width: 100%;
-			color: var(--menu-item-link-color, var(--color-gray));
-			padding: var(--menu-item-padding-mobile, (var(--spacing-md)));
-			text-decoration: none;
+// Link.
+.menu-item-link {
+	display: block;
+	width: 100%;
+	color: var(--menu-item-link-color, var(--color-medium));
+	padding: var(--menu-item-padding-mobile, (var(--space-md) 0));
+	text-decoration: none;
 
-			@include mq(md) {
-				padding: var(--menu-item-padding-desktop, (var(--spacing-md) calc(var(--spacing-sm) * var(--golden))));
-			}
+	@include mq(md) {
+		padding: var(--menu-item-padding-desktop, (var(--space-md) var(--space-sm)));
+	}
 
-			// Links hover.
-			&:hover,
-			&:focus,
-			&-current {
-				color: var(--menu-item-link-color-hover, var(--color-primary));
-			}
-		}
-
-		// Buttons
-		&.button {
-			padding: 0;
-
-			@include mq(md) {
-				margin-left: var(--spacing-md);
-			}
-		}
+	// Links hover.
+	&:hover,
+	&:focus,
+	&-current {
+		color: var(--menu-item-link-color-hover, var(--color-primary));
 	}
 }

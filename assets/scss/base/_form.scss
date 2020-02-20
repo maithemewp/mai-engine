@@ -29,7 +29,7 @@ abbr[title] {
 
 label {
 	display: inline-block;
-	margin: var(--label-margin, 0 0 var(--spacing-sm));
+	margin: var(--label-margin, 0 0 var(--space-sm));
 	font-size: var(--label-font-size, (smaller));
 	font-weight: var(--label-font-weight, var(--font-weight-heading));
 
@@ -48,9 +48,10 @@ label {
 
 #{$all-text-inputs} {
 	width: 100%;
-	margin: var(--input-margin, 0 0 var(--spacing-sm));
+	margin: var(--input-margin, 0 0 var(--space-sm));
 	padding: var(--input-padding, 1em);
 	border: var(--input-border, var(--border));
+	border-radius: var(--input-border-radius, var(--border-radius));
 	color: var(--input-color);
 	background-color: var(--input-background-color);
 	background-clip: padding-box; // Remove iOS box shadow
@@ -60,7 +61,7 @@ label {
 	@include transition;
 
 	&:focus {
-		--input-border: (var(--border-width) var(--border-style) var(--color-primary));
+		--input-border: var(--border-width) var(--border-style) var(--color-primary);
 		outline: none;
 	}
 
@@ -84,7 +85,7 @@ textarea {
 ////
 
 select {
-	height: var(--select-height, (calc((var(--font-size-md) / var(--major-second)) + var(--font-size-md) * 2)));
+	height: var(--select-height, (calc( var(--text-base) * 2)));
 	padding: var(--select-padding, (0 auto));
 
 	&[multiple] {
@@ -100,11 +101,11 @@ input[type="checkbox"],
 input[type="image"],
 input[type="radio"] {
 	width: auto;
-	margin-right: var(--spacing-sm);
+	margin-right: var(--space-sm);
 }
 
 input[type="color"] {
-	min-height: var(--spacing-xl);
+	min-height: var(--space-xl);
 }
 
 input[type="search"] {
@@ -139,9 +140,9 @@ legend {
 	display: table;
 	float: left;
 	width: 100%;
-	margin: var(--legend-margin, 0 0 var(--spacing-sm));
+	margin: var(--legend-margin, 0 0 var(--space-sm));
 	padding: var(--legend-padding, 0);
-	font-size: var(--legend-font-size, var(--font-size-xl));
+	font-size: var(--legend-font-size, var(--text-xs));
 
 	+ * {
 		clear: both;

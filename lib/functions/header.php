@@ -103,7 +103,7 @@ register_default_headers(
 		'child' => [
 			'url'           => mai_get_url() . 'assets/img/page-header.jpg',
 			'thumbnail_url' => mai_get_url() . 'assets/img/page-header.jpg',
-			'description'   => __( 'Page Header Image', 'child-theme-engine' ),
+			'description'   => __( 'Page Header Image', 'mai-engine' ),
 		],
 	]
 );

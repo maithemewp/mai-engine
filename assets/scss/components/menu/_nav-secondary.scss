@@ -11,17 +11,9 @@
 ////
 
 .nav-secondary {
-	background-color: var(--nav-secondary-background-color);
 
 	@include mq(md) {
+		--menu-alignment: flex-start;
 		border-top: var(--nav-secondary-border-top, var(--border));
-	}
-
-	// Menu.
-	.menu {
-
-		@include mq(md) {
-			justify-content: var(--nav-secondary-alignment, flex-start);
-		}
 	}
 }

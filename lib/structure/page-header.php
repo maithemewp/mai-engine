@@ -115,13 +115,13 @@ function mai_page_header_title() {
 		$title = get_the_title( wc_get_page_id( 'shop' ) );
 
 	} elseif ( is_home() && 'posts' === get_option( 'show_on_front' ) ) {
-		$title = apply_filters( 'genesis_latest_posts_title', esc_html__( 'Latest Posts', 'child-theme-engine' ) );
+		$title = apply_filters( 'genesis_latest_posts_title', esc_html__( 'Latest Posts', 'mai-engine' ) );
 
 	} elseif ( is_404() ) {
-		$title = apply_filters( 'genesis_404_entry_title', esc_html__( 'Not found, error 404', 'child-theme-engine' ) );
+		$title = apply_filters( 'genesis_404_entry_title', esc_html__( 'Not found, error 404', 'mai-engine' ) );
 
 	} elseif ( is_search() ) {
-		$title = apply_filters( 'genesis_search_title_text', esc_html__( 'Search results for: ', 'child-theme-engine' ) . get_search_query() );
+		$title = apply_filters( 'genesis_search_title_text', esc_html__( 'Search results for: ', 'mai-engine' ) . get_search_query() );
 
 	} elseif ( is_singular() ) {
 		$title = get_the_title();
@@ -156,7 +156,7 @@ function mai_page_header_excerpt() {
 		$excerpt = ob_get_clean();
 
 	} elseif ( is_home() && 'posts' === get_option( 'show_on_front' ) ) {
-		$excerpt = apply_filters( 'genesis_latest_posts_subtitle', esc_html__( 'Showing the latest posts', 'child-theme-engine' ) );
+		$excerpt = apply_filters( 'genesis_latest_posts_subtitle', esc_html__( 'Showing the latest posts', 'mai-engine' ) );
 
 	} elseif ( is_home() ) {
 		$id = get_option( 'page_for_posts' );

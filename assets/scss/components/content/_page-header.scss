@@ -13,7 +13,7 @@
 .page-header {
 	display: flex;
 	width: 100%;
-	padding: var(--page-header-padding-mobile, (var(--spacing-xl) 0));
+	padding: var(--page-header-padding-mobile, (var(--space-xl) 0));
 	border-bottom: var(--page-header-border-bottom, var(--border));
 	color: var(--page-header-color);
 	background-position: center;
@@ -30,7 +30,7 @@
 	@include overlay;
 
 	@include mq(md) {
-		padding: var(--page-header-padding-desktop, (var(--spacing-xxl) 0));
+		padding: var(--page-header-padding-desktop, (var(--space-xxl) 0));
 	}
 }
 

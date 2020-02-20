@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || die;
  *
  * @return array
  */
-function mai_apply_aspect_ratio( $size = 'm', $ratio = '16:9' ) {
+function mai_apply_aspect_ratio( $size = 'md', $ratio = '16:9' ) {
 	$ratio       = explode( ':', $ratio );
 	$x           = $ratio[0];
 	$y           = $ratio[1];
@@ -33,6 +33,3 @@ function mai_apply_aspect_ratio( $size = 'm', $ratio = '16:9' ) {
 	return [ $width, $height, true ];
 }
 
-function mai_image_orientation() {
-
-}

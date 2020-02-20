@@ -38,7 +38,8 @@ function mai_setup() {
 	load_child_theme_textdomain( genesis_get_theme_handle(), mai_get_dir() . '/assets/lang' );
 
 	// Add editor styles.
-	add_editor_style( "../../plugins/$handle/assets/css/themes/{$active_theme}.css" );
+	// http://example.com/wp-content/themes/theme/../../plugins/mai-engine/assets/css/themes/theme.css
+	add_editor_style( "../../plugins/$handle/assets/css/{$active_theme}-editor.css" );
 
 	// Add responsive menus.
 	genesis_register_responsive_menus( $responsive_menu );
@@ -81,7 +82,17 @@ function mai_setup() {
 	array_walk(
 		$image_sizes['add'],
 		function ( $args, $name ) {
-			add_image_size( $name, $args[0], $args[1], $args[2] );
+			if ( is_array( $args ) ) {
+				add_image_size( $name, $args[0], $args[1], $args[2] );
+			} elseif ( $args ) {
+
+				// Image sm: 384px  (384 * 1) - one-third  - breakpoint xs
+				// Image md: 768px  (384 * 2) - two-thirds - breakpoint md
+				// Image lg: 1152px (384 * 3) - full-width - breakpoint xl
+				add_image_size( $name . '-sm', mai_get_breakpoint( 'xs' ), mai_apply_aspect_ratio( 'xs', $args ), true );
+				add_image_size( $name . '-md', mai_get_breakpoint( 'md' ), mai_apply_aspect_ratio( 'md', $args ), true );
+				add_image_size( $name . '-lg', mai_get_breakpoint( 'xl' ), mai_apply_aspect_ratio( 'xl', $args ), true );
+			}
 		}
 	);
 

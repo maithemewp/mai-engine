@@ -9,11 +9,62 @@
  * @license   GPL-2.0-or-later
  */
 
-// Reposition primary and secondary navigation menus.
-remove_action( 'genesis_after_header', 'genesis_do_nav' );
-add_action( 'mai_after_title_area', 'genesis_do_nav', 15 );
-remove_action( 'genesis_after_header', 'genesis_do_subnav' );
-add_action( 'genesis_after_header_wrap', 'genesis_do_subnav' );
+add_action( 'genesis_header', 'mai_header_left_menu', 5 );
+/**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @return void
+ */
+function mai_header_left_menu() {
+	genesis_nav_menu( [
+		'theme_location' => 'header-left',
+	] );
+}
+
+add_action( 'mai_after_title_area', 'mai_header_right_menu', 5 );
+/**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @return void
+ */
+function mai_header_right_menu() {
+	genesis_nav_menu( [
+		'theme_location' => 'header-right',
+	] );
+}
+
+add_action( 'mai_after_header_wrap', 'mai_below_header_menu' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @return void
+ */
+function mai_below_header_menu() {
+	genesis_nav_menu( [
+		'theme_location' => 'below-header',
+	] );
+}
+
+add_action( 'genesis_footer', 'mai_footer_menu' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @return void
+ */
+function mai_footer_menu() {
+	genesis_nav_menu( [
+		'theme_location' => 'footer',
+	] );
+}
+
 
 add_filter( 'walker_nav_menu_start_el', 'mai_replace_hash_with_void', 999 );
 /**
@@ -44,7 +95,7 @@ add_filter( 'wp_nav_menu_args', 'mai_menu_depth' );
  * @return array Menu options with depth set to 1.
  */
 function mai_menu_depth( $args ) {
-	if ( 'primary' !== $args['theme_location'] && 'secondary' !== $args['theme_location'] ) {
+	if ( 'footer' === $args['theme_location'] ) {
 		$args['depth'] = 1;
 	}
 

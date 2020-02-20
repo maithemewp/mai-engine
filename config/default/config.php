@@ -73,20 +73,15 @@ return [
 
 	'image-sizes' => [
 		'add'    => [
-			'landscape-xl' => mai_apply_aspect_ratio( 1920, '16:9' ),
-			'landscape-lg' => mai_apply_aspect_ratio( 1280, '16:9' ),
-			'landscape-md' => mai_apply_aspect_ratio( 896, '16:9' ),
-			'landscape-sm' => mai_apply_aspect_ratio( 512, '16:9' ),
-			'landscape-xs' => mai_apply_aspect_ratio( 256, '16:9' ),
-			'portrait-md'  => mai_apply_aspect_ratio( 896, '9:16' ),
-			'portrait-sm'  => mai_apply_aspect_ratio( 512, '9:16' ),
-			'portrait-xs'  => mai_apply_aspect_ratio( 256, '9:16' ),
-			'square-md'    => mai_apply_aspect_ratio( 896, '1:1' ),
-			'square-sm'    => mai_apply_aspect_ratio( 512, '1:1' ),
-			'square-xs'    => mai_apply_aspect_ratio( 256, '1:1' ),
-			'tiny'         => mai_apply_aspect_ratio( 80, '1:1' ),
+			'full'      => [ 1600, 900, true ],
+			'landscape' => '4:3',
+			'portfolio' => false,
+			'square'    => false,
+			'tiny'      => [ 80, 80, true ],
 		],
-		'remove' => [],
+		'remove' => [
+
+		],
 	],
 
 	/*
@@ -104,7 +99,7 @@ return [
 		'add'    => [
 			[
 				'id'    => 'narrow-content',
-				'label' => __( 'Narrow Content', 'child-theme-engine' ),
+				'label' => __( 'Narrow Content', 'mai-engine' ),
 				'img'   => mai_get_url() . 'assets/img/narrow-content.gif',
 			],
 		],
@@ -134,8 +129,8 @@ return [
 			'genesis-singular-images'    => [ 'page', 'post' ],
 			'genesis-title-toggle'       => [ 'post', 'product' ],
 			'genesis-adjacent-entry-nav' => [ 'post', 'product', 'portfolio' ],
-			'page-header-single'        => [ 'page', 'post', 'product', 'portfolio' ],
-			'page-header-archive'       => [ 'page', 'post', 'product', 'portfolio' ],
+			'page-header-single'         => [ 'page', 'post', 'product', 'portfolio' ],
+			'page-header-archive'        => [ 'page', 'post', 'product', 'portfolio' ],
 			'terms-filter'               => [ 'post', 'portfolio' ],
 		],
 		'remove' => [],
@@ -154,7 +149,10 @@ return [
 
 	'responsive-menu' => [
 		'script' => [
-			'mainMenu'         => sprintf( '<span class="hamburger"> </span><span class="screen-reader-text">%s</span>', __( 'Menu', 'child-theme-engine' ) ),
+			'mainMenu'         => sprintf(
+				'<span class="menu-toggle-icon"> </span><span class="screen-reader-text">%s</span>',
+				__( 'Menu', 'mai-engine' )
+			),
 			'menuIconClass'    => null,
 			'subMenuIconClass' => null,
 			'menuClasses'      => [
@@ -175,7 +173,7 @@ return [
 			],
 		],
 		'extras' => [
-			'media_query_width' => '896px',
+			'media_query_width' => mai_get_breakpoint( 'md' ),
 			'css'               => '',
 			'enable_AMP'        => true,
 			'enable_non_AMP'    => true,
@@ -256,52 +254,10 @@ return [
 
 			// Styles.
 			[
-				'handle' => mai_get_handle() . '-editor',
-				'src'    => mai_get_asset_path( 'editor.css' ),
-				'editor' => true,
-			],
-			[
 				'handle' => mai_get_handle(),
-				'src'    => mai_get_asset_path( 'main.css' ),
-			],
-			[
-				'handle' => mai_get_handle() . '-' . mai_get_active_theme(),
-				'src'    => mai_get_asset_path('themes/' . mai_get_active_theme() . '.css'),
+				'src'    => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '.css',
 			],
 
-			/*
-			[
-				'handle' => mai_get_handle() . '-header',
-				'src'    => mai_get_asset_path( 'header.css' ),
-				'hook'   => 'genesis_before_header',
-			],
-			[
-				'handle'   => mai_get_handle() . '-menu',
-				'src'      => mai_get_asset_path( 'menu.css' ),
-				'hook'     => 'mai_after_title_area',
-				'priority' => 5,
-			],
-			[
-				'handle' => mai_get_handle() . '-content',
-				'src'    => mai_get_asset_path( 'content.css' ),
-				'hook'   => 'genesis_before_content',
-			],
-			[
-				'handle' => mai_get_handle() . '-comments',
-				'src'    => mai_get_asset_path( 'comments.css' ),
-				'hook'   => 'genesis_before_comments',
-			],
-			[
-				'handle' => mai_get_handle() . '-sidebar',
-				'src'    => mai_get_asset_path( 'sidebar.css' ),
-				'hook'   => 'genesis_before_sidebar_widget_area',
-			],
-			[
-				'handle' => mai_get_handle() . '-footer',
-				'src'    => mai_get_asset_path( 'footer.css' ),
-				'hook'   => 'genesis_before_footer',
-			],
-			*/
 		],
 		'remove' => [
 			'superfish',
@@ -400,12 +356,15 @@ return [
 			],
 			'genesis-footer-widgets'   => 3,
 			'genesis-menus'            => [
-				'primary'   => __( 'Header Menu', 'child-theme-engine' ),
-				'secondary' => __( 'After Header Menu', 'child-theme-engine' ),
+				'header-left'  => __( 'Header Left Menu', 'mai-engine' ),
+				'header-right' => __( 'Header Right Menu', 'mai-engine' ),
+				'below-header' => __( 'Below Header Menu', 'mai-engine' ),
+				'footer'       => __( 'Footer Menu', 'mai-engine' ),
 			],
 			'genesis-structural-wraps' => [
 				'header',
-				'menu-secondary',
+				'menu-below-header',
+				'menu-footer',
 				'page-header',
 				'footer-widgets',
 				'front-page-widgets',
@@ -429,20 +388,56 @@ return [
 			'wp-block-styles',
 
 
-			'mai-archive-settings' => [
-				'post-types' => [
+			'page-header' => [],
+			'layouts'     => [],
 
+
+			'loop' => [
+				'post'      => [
+					'singular',
+					'archives',
+					'taxonomies' => [
+						'category',
+						'post_tag',
+					],
 				],
-
-				'taxonomies' => [
-
+				'page'      => [],
+				'product'   => [
+					'product_cat',
 				],
-
-				'other' => [
+				'portfolio' => [
+					'portfolio_cat',
+				],
+				'templates' => [
+					'author',
 					'search',
-					'user',
+					'date',
 				],
 			],
+
+
+			// Mai Settings - Panel
+			// Styles
+			// Colors
+			// Typography
+			// Spacing
+			// Global
+			// Site Header - (sticky/reveal/etc)
+			// Navigation Menus
+			// Page Header default
+			// Site Footer - footer widgets
+			// Single Post / Page
+			// Default - Layout, Page Header, Order
+			// Post - Edit post archive settings → // Layout, Page Header, Order
+			// Page - Layout, Page Header, Order
+			// Portfolio -
+			// Blog / Archives
+			// Default
+			// Post
+			// Category
+			// Tags
+			// Portfolio
+			// Portfolio Categories
 
 
 		],
@@ -464,13 +459,13 @@ return [
 		'add'    => [
 			[
 				'id'          => 'before-header',
-				'name'        => __( 'Before Header', 'child-theme-engine' ),
-				'description' => __( 'The Before Header widget area.', 'child-theme-engine' ),
+				'name'        => __( 'Before Header', 'mai-engine' ),
+				'description' => __( 'The Before Header widget area.', 'mai-engine' ),
 			],
 			[
 				'id'          => 'before-footer',
-				'name'        => __( 'Before Footer', 'child-theme-engine' ),
-				'description' => __( 'The Before Footer widget area.', 'child-theme-engine' ),
+				'name'        => __( 'Before Footer', 'mai-engine' ),
+				'description' => __( 'The Before Footer widget area.', 'mai-engine' ),
 			],
 		],
 		'remove' => [

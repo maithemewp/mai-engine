@@ -78,6 +78,11 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'is-archive';
 	}
 
+	// Add nav classes.
+	if ( has_nav_menu( 'header-left' ) && has_nav_menu( 'header-right' ) ) {
+		$classes[] = 'has-logo-center';
+	}
+
 	// Add no page header class.
 	$classes[] = 'no-page-header';
 

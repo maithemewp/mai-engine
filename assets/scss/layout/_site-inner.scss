@@ -21,10 +21,10 @@
 	// No Page Header.
 	.no-page-header.transparent-header &,
 	.no-page-header.sticky-header & {
-		margin-top: var(--site-inner-margin-top-no-page-header-mobile, (calc(var(--spacing-xl) * var(--perfect-fifth))));
+		margin-top: var(--site-inner-margin-top-no-page-header-mobile, (calc(var(--space-xl) * var(--perfect-fifth))));
 
 		@include mq(md) {
-			margin-top: var(--site-inner-margin-top-no-page-header-desktop, var(--spacing-xxl));
+			margin-top: var(--site-inner-margin-top-no-page-header-desktop, var(--space-xxl));
 		}
 	}
 

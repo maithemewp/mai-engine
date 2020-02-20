@@ -12,10 +12,10 @@
 
 .content {
 	width: 100%;
-	margin: var(--content-margin-mobile, (var(--spacing-lg) auto));
+	margin: var(--content-margin-mobile, (var(--space-lg) auto));
 
 	@include mq(md) {
-		margin: var(--content-margin-desktop, (var(--spacing-xl) auto));
+		margin: var(--content-margin-desktop, (var(--space-xl) auto));
 	}
 
 	// With Sidebar.

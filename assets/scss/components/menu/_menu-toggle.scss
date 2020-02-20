@@ -18,8 +18,8 @@
 	padding: var(--menu-toggle-padding, 0);
 	background-color: var(--menu-toggle-background-color, transparent);
 	order: 1;
-	height: calc(var(--spacing-md) * var(--perfect-fifth));
-	width: calc(var(--spacing-md) * var(--perfect-fifth));
+	height: var(--space-md);
+	width: var(--space-md);
 
 	@include mq(md) {
 		display: none;
@@ -34,36 +34,9 @@
 		outline: var(--border);
 	}
 
-	// Hamburger.
-	.hamburger,
-	.hamburger:before,
-	.hamburger:after {
-		display: block;
-		position: absolute;
-		width: var(--menu-toggle-line-width, (calc(var(--spacing-md) * var(--perfect-fifth))));
-		height: var(--menu-toggle-line-height, 3px);
-		background-color: var(--menu-toggle-line-background-color, var(--color-dark));
-		content: "";
-	}
-
-	.hamburger {
-		top: auto;
-		right: auto;
-		bottom: auto;
-		margin: auto;
-
-		&:before {
-			top: var(--menu-toggle-line-spacing, (calc(0 - var(--spacing-sm))));
-		}
-
-		&:after {
-			bottom: var(--menu-toggle-line-spacing, (calc(0 - var(--spacing-sm))));
-		}
-	}
-
 	&.activated {
 
-		.hamburger {
+		.menu-toggle-icon {
 			background-color: transparent;
 
 			&:before {
@@ -76,5 +49,35 @@
 				transform: rotate(-45deg);
 			}
 		}
+	}
+}
+
+////
+/// Menu toggle icon.
+////
+
+.menu-toggle-icon,
+.menu-toggle-icon:before,
+.menu-toggle-icon:after {
+	display: block;
+	position: absolute;
+	width: var(--menu-toggle-line-width, var(--space-md));
+	height: var(--menu-toggle-line-height, 3px);
+	background-color: var(--menu-toggle-line-background-color, var(--color-dark));
+	content: "";
+}
+
+.menu-toggle-icon {
+	top: auto;
+	right: auto;
+	bottom: auto;
+	margin: auto;
+
+	&:before {
+		top: var(--menu-toggle-line-spacing, (calc(0 - var(--space-sm))));
+	}
+
+	&:after {
+		bottom: var(--menu-toggle-line-spacing, (calc(0 - var(--space-sm))));
 	}
 }
