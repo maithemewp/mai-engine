@@ -15,8 +15,8 @@
 	color: var(--color-white);
 	background-color: var(--color-error);
 	font-weight: var(--font-weight-heading);
-	height: var(--gap);
-	width: var(--gap);
+	height: 1em;
+	width: 1em;
 
 	&:hover,
 	&:focus {
@@ -39,7 +39,7 @@
 
 	.input-text {
 		max-width: var(--space-xxxl);
-		margin: 0 var(--space-md) 0 0;
+		margin: 0 var(--spacing) 0 0;
 	}
 }
 
@@ -81,7 +81,7 @@
 .cart-collaterals {
 	margin: var(--gutter) 0;
 
-	@include mq(md) {
+	@include mq(lg) {
 		display: flex;
 		justify-content: flex-end;
 	}
@@ -89,7 +89,7 @@
 
 .cart_totals {
 
-	@include mq(md) {
+	@include mq(lg) {
 		width: var(--one-half);
 	}
 }
@@ -134,7 +134,7 @@
 
 			.button {
 				margin: 0;
-				padding: var(--space-md);
+				padding: var(--spacing);
 			}
 		}
 
@@ -150,15 +150,15 @@
 		}
 
 		.cart_item {
-			margin: var(--gap) 0;
+			margin: var(--row-gap) 0;
 			border-bottom: var(--border);
 
-			td:before {
+			td::before {
 				display: flex;
 				align-items: center;
 				align-self: stretch;
 				width: 25%;
-				margin-right: var(--space-md);
+				margin-right: var(--spacing);
 				padding: 1.5em 1em;
 				border-right: var(--border);
 				background-color: var(--color-light);
@@ -168,31 +168,31 @@
 			}
 		}
 
-		.product-remove:before {
+		.product-remove::before {
 			content: "Delete";
 		}
 
-		.product-thumbnail:before {
+		.product-thumbnail::before {
 			content: "Image";
 		}
 
-		.product-name:before {
+		.product-name::before {
 			content: "Product";
 		}
 
-		.product-price:before {
+		.product-price::before {
 			content: "Price";
 		}
 
-		.product-quantity:before {
+		.product-quantity::before {
 			content: "Quantity";
 		}
 
-		.product-subtotal:before {
+		.product-subtotal::before {
 			content: "Subtotal";
 		}
 
-		.product-total:before {
+		.product-total::before {
 			content: "Total";
 		}
 	}

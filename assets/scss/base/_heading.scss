@@ -1,27 +1,12 @@
-////
-/// Heading.
-///
-/// @group  Elements
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-////
-/// Placeholder
-////
 
 #{$all-headings} {
 
 	@include heading;
 }
 
-////
-/// Rules
-////
-
 @each $heading, $font-size in $font-sizes {
 
 	#{$heading} {
-		font-size: var(--#{$heading}-font-size, strip_slashes($font-size));
+		font-size: var(--#{$heading}-font-size, $font-size);
 	}
 }

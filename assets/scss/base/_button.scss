@@ -1,8 +1,3 @@
-/// Button.
-///
-/// @group  Elements
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
 
 #{$all-buttons} {
 
@@ -11,7 +6,6 @@
 
 .button {
 
-	// Disabled.
 	&:disabled {
 
 		&,
@@ -24,24 +18,20 @@
 	}
 }
 
-// Small.
 .button-small {
 	--button-padding: 1em 1.5em;
 	--button-font-size: small;
 }
 
-// Subtle
 .button-subtle {
 	--button-background-color: var(--color-muted);
 	--button-color: var(--color-dark);
 }
 
-// Rounded.
 .button-rounded {
 	--button-border-radius: 100rem;
 }
 
-// Outline.
 .button-outline {
 	--button-border: var(--border);
 	--button-color: var(--color-primary);
@@ -54,13 +44,11 @@
 	}
 }
 
-// White
 .button-white {
 	--button-background-color: var(--color-white);
 	--button-color: var(--color-primary);
 }
 
-// White outline
 .button-white.button-outline {
 	--button-border-color: var(--color-white);
 	--button-background: transparent;

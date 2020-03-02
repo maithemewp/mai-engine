@@ -98,6 +98,11 @@ return [
 	'page-layouts' => [
 		'add'    => [
 			[
+				'id'    => 'standard-content',
+				'label' => __( 'Standard Content', 'mai-engine' ),
+				'img'   => mai_get_url() . 'assets/img/standard-content.gif',
+			],
+			[
 				'id'    => 'narrow-content',
 				'label' => __( 'Narrow Content', 'mai-engine' ),
 				'img'   => mai_get_url() . 'assets/img/narrow-content.gif',
@@ -157,8 +162,11 @@ return [
 			'subMenuIconClass' => null,
 			'menuClasses'      => [
 				'combine' => [
-					'.nav-primary',
-					'.nav-secondary',
+					'.nav-header-right',
+				],
+				'others'  => [
+					'.nav-header-left',
+					'.nav-below-header',
 				],
 			],
 			'menuAnimation'    => [
@@ -330,7 +338,6 @@ return [
 				'flex-width'       => true,
 				'uploads'          => true,
 				'video'            => false,
-				'wp-head-callback' => 'mai_custom_header',
 			],
 			'editor-styles',
 			'editor-color-palette'     => mai_get_color_palette(),
@@ -462,6 +469,16 @@ return [
 				'name'        => __( 'Before Header', 'mai-engine' ),
 				'description' => __( 'The Before Header widget area.', 'mai-engine' ),
 			],
+//			[
+//				'id'          => 'header_left',
+//				'name'        => __( 'Header Left', 'mai-engine' ),
+//				'description' => __( 'The Header Left widget area.', 'mai-engine' ),
+//			],
+//			[
+//				'id'          => 'header-right-widget',
+//				'name'        => __( 'Header Right', 'mai-engine' ),
+//				'description' => __( 'The Header Right widget area.', 'mai-engine' ),
+//			],
 			[
 				'id'          => 'before-footer',
 				'name'        => __( 'Before Footer', 'mai-engine' ),
@@ -473,6 +490,17 @@ return [
 		],
 	],
 
+	/*
+	|--------------------------------------------------------------------------
+	| Custom functions
+	|--------------------------------------------------------------------------
+	|
+	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
+	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
+	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
+	|
+	*/
 
+	'custom-functions' => '__return_null',
 ];
 

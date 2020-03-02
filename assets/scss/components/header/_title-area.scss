@@ -1,24 +1,11 @@
-////
-/// Title area component.
-///
-/// @group  Components
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-////
-/// Title Area.
-////
-
 .title-area {
 	line-height: var(--title-area-line-height, var(--line-height-heading));
-	padding: var(--title-area-padding, (var(--space-md) 0));
+	padding: var(--title-area-padding, (var(--spacing) 0));
 	text-align: var(--title-area-text-align, start);
+	transition: var(--title-area-transition, var(--transition));
 
-	@include transition;
-
-	@include mq(md) {
-		padding: var(--title-area-padding, (var(--gap) 0));
+	@include mq(lg) {
+		--title-area-padding: calc(var(--spacing) * 2) 0;
 	}
 }
 
@@ -26,58 +13,29 @@
 	--title-area-text-align: center;
 }
 
-////
-/// Site title.
-////
-
 .site-title {
 	margin: 0;
 	font-family: var(--site-title-font-family, var(--font-secondary));
 	font-size: var(--site-title-font-size, (1em));
 	font-weight: var(--site-title-font-weight, var(--font-weight-heading));
-
-	.wp-custom-logo & {
-
-		@include hide-visually;
-	}
-
-	// Link.
-	&-link {
-		color: var(--site-title-color, var(--color-dark));
-
-		&:hover,
-		&:focus {
-			color: var(--site-title-color-hover, var(--color-primary));
-		}
-	}
 }
 
-////
-/// Site description.
-////
+.site-title-link {
+	color: var(--color-dark);
+
+	&:hover,
+	&:focus {
+		color: var(--color-primary);
+	}
+}
 
 .site-description {
 	margin: 0;
 	color: var(--site-description-color);
 	font-size: var(--site-description-font-size, (smaller));
-
-	// Has Custom Logo.
-	.wp-custom-logo & {
-
-		@include hide-visually;
-	}
 }
 
-////
-/// Custom logo.
-////
-
-.custom-logo {
-	width: auto;
-
-	// Link.
-	&-link {
-		display: flex;
-		align-items: center;
-	}
+.custom-logo-link {
+	display: flex;
+	align-items: center;
 }

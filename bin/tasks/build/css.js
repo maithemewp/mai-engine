@@ -33,7 +33,7 @@ module.exports = function () {
 				sort: true,
 			}),
 			autoprefix(),
-			// cssnano(config.css.cssnano),
+			cssnano(config.css.cssnano),
 			combineSelectors,
 			discardDuplicates,
 		];

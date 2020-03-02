@@ -1,19 +1,4 @@
-////
-/// Custom properties.
-///
-/// @group  Base
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
 @mixin custom-properties {
-
-	--screen-xs: #{map_get($screens, xs)};
-	--screen-sm: #{map_get($screens, sm)};
-	--screen-md: #{map_get($screens, md)};
-	--screen-lg: #{map_get($screens, lg)};
-	--screen-xl: #{map_get($screens, xl)};
-
 	--color-primary: #{map_get($colors, "primary")};
 	--color-secondary: #{map_get($colors, "secondary")};
 	--color-success: #{map_get($colors, "success")};
@@ -27,18 +12,24 @@
 	--color-light: #{map_get($colors, "light")};
 	--color-white: #{map_get($colors, "white")};
 
-	--text-scale-ratio: 1.2;
+	--breakpoint-xl: #{map_get($breakpoints, xl)};
+	--breakpoint-lg: calc(var(--breakpoint-xl) / 1.2);
+	--breakpoint-md: calc(var(--breakpoint-xl) / 1.5);
+	--breakpoint-sm: calc(var(--breakpoint-xl) / 2);
+	--breakpoint-xs: calc(var(--breakpoint-xl) / 3);
+
+	--text-scale-ratio: 1.382;
 	--text-base: 16px;
-	--text-xs: calc((1em / var(--text-scale-ratio)) / var(--text-scale-ratio));
-	--text-sm: calc(var(--text-xs) * var(--text-scale-ratio));
-	--text-md: calc(var(--text-sm) * var(--text-scale-ratio) * var(--text-scale-ratio));
-	--text-lg: calc(var(--text-md) * var(--text-scale-ratio));
-	--text-xl: calc(var(--text-lg) * var(--text-scale-ratio));
-	--text-xxl: calc(var(--text-xl) * var(--text-scale-ratio));
-	--text-xxxl: calc(var(--text-xxl) * var(--text-scale-ratio));
+	--text-xs: calc(var(--text-base) * (var(--text-scale-ratio)) * 0.5);
+	--text-sm: calc(var(--text-base) * (var(--text-scale-ratio)) * 0.75);
+	--text-md: calc(var(--text-base) * (var(--text-scale-ratio)) * 1);
+	--text-lg: calc(var(--text-base) * (var(--text-scale-ratio)) * 2);
+	--text-xl: calc(var(--text-base) * (var(--text-scale-ratio)) * 3);
+	--text-xxl: calc(var(--text-base) * (var(--text-scale-ratio)) * 4);
+	--text-xxxl: calc(var(--text-base) * (var(--text-scale-ratio)) * 5);
 
 	--font-stack: system-ui, -apple-system, blinkmacsystemfont, helvetica, arial, sans-serif;
-	--font-code: Consolas, monaco, monospace;
+	--font-code: consolas, monaco, monospace;
 	--font-primary: var(--font-stack);
 	--font-secondary: var(--font-stack);
 
@@ -61,45 +52,18 @@
 	--letter-spacing-body: normal;
 	--letter-spacing-heading: var(--letter-spacing-body);
 
-	--space-xxxs: calc(var(--text-base) / 8);
-	--space-xxs: calc(var(--text-base) / 5);
-	--space-xs: calc(var(--text-base) / 3);
-	--space-sm: calc(var(--text-base) / 2);
-	--space-md: var(--text-base);
-	--space-lg: calc(var(--text-base) * 2);
-	--space-xl: calc(var(--text-base) * 3);
-	--space-xxl: calc(var(--text-base) * 5);
-	--space-xxxl: calc(var(--text-base) * 8);
-
-	--gutter: var(--space-lg);
-	--gap: var(--space-md);
-
-	--one-half: calc((100% - (var(--gutter) * 1)) / 2);
-	--one-third: calc((100% - (var(--gutter) * 2)) / 3);
-	--one-fourth: calc((100% - (var(--gutter) * 3)) / 4);
-	--one-fifth: calc((100% - (var(--gutter) * 4)) / 5);
-	--one-sixth: calc((100% - (var(--gutter) * 5)) / 6);
-	--two-thirds: calc(var(--one-third) * 2 + var(--gutter));
-	--two-fourths: calc(var(--one-fourth) * 2 + var(--gutter));
-	--two-fifths: calc(var(--one-fifth) * 2 + var(--gutter));
-	--two-sixths: calc(var(--one-sixth) * 2 + var(--gutter));
-	--three-fourths: calc(var(--one-fourth) * 3 + (var(--gutter) * 2));
-	--three-fifths: calc(var(--one-fifth) * 3 + (var(--gutter) * 2));
-	--three-sixths: calc(var(--one-sixth) * 3 + (var(--gutter) * 2));
-	--four-fifths: calc(var(--one-fifth) * 4 + (var(--gutter) * 3));
-	--four-sixths: calc(var(--one-sixth) * 4 + (var(--gutter) * 3));
-	--five-sixths: calc(var(--one-sixth) * 5 + (var(--gutter) * 4));
-
-	--layout-width: var(--screen-lg);
-	--layout-width-sidebar: 30rem; // Google ads
-	--layout-width-content: calc(var(--layout-width) - (var(--layout-width-sidebar) + var(--space-xl)));
-	--layout-max-width-content: calc(100% - (var(--layout-width-sidebar) + var(--space-xl)));
+	--spacing: var(--text-base);
+	--row-gap: var(--spacing);
+	--column-gap: var(--spacing);
+	--wrap-width: var(--breakpoint-xl);
+	--sidebar-width: 30rem; // Google ads
+	--content-width: calc(var(--wrap-width) - (var(--sidebar-width) + var(--column-gap)));
 
 	--border-radius: 4px;
-	--border-width: 1px;
+	--border-size: 1px;
 	--border-style: solid;
 	--border-color: var(--color-muted);
-	--border: var(--border-width) var(--border-style) var(--border-color);
+	--border: var(--border-size) var(--border-style) var(--border-color);
 
 	--shadow-x: 0;
 	--shadow-y: 0;

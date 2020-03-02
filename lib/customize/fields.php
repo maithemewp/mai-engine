@@ -1,6 +1,6 @@
 <?php
 
-add_action( 'genesis_setup', 'mai_add_fields', 15 );
+add_action( '', 'mai_add_fields', 15 );
 /**
  * Add fields defined in config to Customizer.
  *

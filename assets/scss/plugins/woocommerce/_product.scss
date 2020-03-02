@@ -9,9 +9,9 @@
 .woocommerce-product-gallery {
 	position: relative;
 
-	@include mq(md) {
+	@include mq(lg) {
 		width: var(--one-half);
-		margin-right: var(--gutter);
+		margin-right: var(--column-gap);
 	}
 
 	&__trigger {
@@ -30,7 +30,7 @@
 		&:focus {
 			text-decoration: none;
 
-			&:before {
+			&::before {
 				color: var(--color-primary);
 			}
 		}
@@ -40,7 +40,7 @@
 			@include hide-visually();
 		}
 
-		&:before {
+		&::before {
 			color: var(--color-dark);
 			font-size: smaller;
 
@@ -75,7 +75,7 @@
 
 .summary {
 
-	@include mq(md) {
+	@include mq(lg) {
 		width: var(--one-half);
 	}
 }
@@ -86,23 +86,23 @@ form.cart {
 }
 
 .product_meta {
-	margin-top: var(--gap);
+	margin-top: var(--row-gap);
 }
 
 .woocommerce-tabs {
 	width: 100%;
-	margin: var(--gutter) 0;
+	margin: var(--row-gap) 0;
 }
 
 .wc-tabs {
 	display: flex;
 	width: 100%;
-	margin-bottom: var(--gap);
+	margin-bottom: var(--row-gap);
 	border-bottom: var(--border);
 
 	li {
 		margin-bottom: -1px;
-		padding: var(--space-md) var(--space-lg);
+		padding: var(--spacing) var(--space-lg);
 		border: var(--border);
 		border-right: 0;
 		background-color: var(--color-light);
@@ -136,11 +136,11 @@ form.cart {
 		color: transparent;
 		font-size: 0;
 
-		&:before {
+		&::before {
 			display: block;
 			color: var(--color-warning);
 			font-family: "Font Awesome 5 Free", sans-serif;
-			font-size: var(--space-md);
+			font-size: var(--spacing);
 
 			@include icon();
 		}
@@ -148,14 +148,14 @@ form.cart {
 		&:hover,
 		&:focus {
 
-			&:before {
+			&::before {
 				font-weight: 700;
 			}
 		}
 
 		&.active {
 
-			&:before {
+			&::before {
 				font-weight: 700;
 			}
 		}
@@ -163,13 +163,13 @@ form.cart {
 
 	&.selected {
 
-		a:before {
+		a::before {
 			font-weight: 700;
 		}
 
 		.active ~ a {
 
-			&:before {
+			&::before {
 				font-weight: 400;
 
 			}
@@ -177,7 +177,7 @@ form.cart {
 			&:hover,
 			&:focus {
 
-				&:before {
+				&::before {
 					font-weight: 700;
 				}
 			}
@@ -187,7 +187,7 @@ form.cart {
 
 .review {
 	display: block;
-	margin-bottom: var(--gutter);
+	margin-bottom: var(--row-gap);
 	list-style-type: none;
 }
 
@@ -198,7 +198,7 @@ form.cart {
 .related {
 
 	.entry {
-		margin-bottom: var(--gutter);
+		margin-bottom: var(--row-gap);
 		border: var(--border);
 		border-radius: var(--border-radius);
 	}

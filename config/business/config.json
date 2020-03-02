@@ -1,5 +1,6 @@
 {
   "colors": {
-	"primary": "red"
+	"primary": "#fb2056",
+	"dark": "#232c39"
   }
 }

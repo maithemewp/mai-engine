@@ -1,0 +1,22 @@
+:root {
+	--font-primary: hind, var(--font-stack);
+	--font-secondary: montserrat, var(--font-primary);
+	--button-font-family: var(--font-secondary);
+	--button-font-size: var(--text-base);
+}
+
+.site-title-link {
+	font-family: var(--font-secondary);
+	color: var(--color-white);
+}
+
+.menu {
+	--link-color: var(--color-white);
+	font-family: var(--font-secondary);
+}
+
+.site-footer {
+	--heading-color: var(--color-muted);
+	background-color: var(--color-dark);
+	border: 0;
+}

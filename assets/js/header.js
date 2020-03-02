@@ -17,5 +17,5 @@ window.addEventListener('scroll', function () {
 if (document.body.classList.contains('has-sticky-header')) {
 	console.log(siteHeader);
 	console.log(siteHeaderHeight + 'px');
-    siteHeader.style.marginTop(siteHeaderHeight + 'px');
+    // siteHeader.style.marginTop(siteHeaderHeight + 'px');
 }

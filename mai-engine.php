@@ -24,7 +24,7 @@
  * @copyright 2019 BizBudding
  */
 
-require_once __DIR__ . '/lib/init.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 
 

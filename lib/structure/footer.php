@@ -14,25 +14,7 @@ remove_action( 'genesis_footer', 'genesis_do_footer' );
 remove_action( 'genesis_before_footer', 'genesis_footer_widget_areas' );
 add_action( 'genesis_footer', 'genesis_footer_widget_areas', 6 );
 
-add_action( 'genesis_footer', 'mai_before_footer_widget', 5 );
-/**
- * Displays before footer widget area.
- *
- * @since 0.1.0
- *
- * @return void
- */
-function mai_before_footer_widget() {
-	genesis_widget_area(
-		'before-footer',
-		[
-			'before' => '<div class="before-footer"><div class="wrap">',
-			'after'  => '</div></div>',
-		]
-	);
-}
-
-add_action( 'genesis_footer', 'mai_do_footer_credits' );
+add_action( 'genesis_footer', 'mai_do_footer_credits', 11 );
 /**
  * Output custom footer credits.
  *

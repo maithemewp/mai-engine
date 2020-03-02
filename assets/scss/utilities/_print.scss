@@ -1,16 +1,8 @@
-////
-/// Print only styles.
-///
-/// @group  Utilities
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
 @media print {
 
 	*,
-	*:before,
-	*:after {
+	*::before,
+	*::after {
 		color: var(--color-dark) !important;
 		background: transparent !important;
 		box-shadow: none !important;
@@ -22,17 +14,17 @@
 		text-decoration: underline;
 	}
 
-	a[href]:after {
+	a[href]::after {
 		content: " (" attr(href) ")";
 	}
 
-	abbr[title]:after {
+	abbr[title]::after {
 		content: " (" attr(title) ")";
 	}
 
-	a[href^="javascript:"]:after,
-	a[href^="#"]:after,
-	.site-title > a:after {
+	a[href^="javascript:"]::after,
+	a[href^="#"]::after,
+	.site-title > a::after {
 		content: "";
 	}
 
@@ -75,6 +67,7 @@
 	input,
 	select,
 	textarea,
+	nav,
 	.breadcrumb,
 	.comment-edit-link,
 	.comment-form,
@@ -83,12 +76,8 @@
 	.edit-link,
 	.entry-comments-link,
 	.entry-footer,
-	.genesis-box,
 	.header-widget-area,
 	.hidden-print,
-	.home-top,
-	.nav-primary,
-	.nav-secondary,
 	.post-edit-link,
 	.sidebar {
 		display: none !important;

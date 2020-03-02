@@ -1,28 +1,15 @@
-////
-/// Wrap component.
-///
-/// @group  Components
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-////
-/// Wrap.
-////
-
 .wrap {
-	position: var(--wrap-position);
+	position: var(--wrap-position, unset);
 	display: flex;
-	flex-wrap: wrap;
+	flex-wrap: var(--wrap-flex-wrap, wrap);
+	align-items: var(--wrap-align-items, flex-start);
 	justify-content: var(--wrap-justify-content, space-between);
 	width: 90%;
-	max-width: var(--wrap-max-width, var(--layout-width));
+	max-width: var(--wrap-width);
 	margin-left: auto;
 	margin-right: auto;
 
-	// Sub wrap.
 	.wrap {
 		width: 100%;
-		max-width: 100%;
 	}
 }

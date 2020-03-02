@@ -1,14 +1,3 @@
-////
-/// Table.
-///
-/// @group  Elements
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-////
-/// Table.
-////
 
 table {
 	width: 100%;
@@ -18,10 +7,6 @@ table {
 	border-collapse: collapse;
 	word-break: break-all;
 }
-
-////
-/// Table Cells.
-////
 
 th,
 td {
@@ -39,10 +24,6 @@ td {
 		border-right: var(--table-border);
 	}
 }
-
-////
-/// Headers.
-////
 
 th {
 	background-color: var(--table-header-background-color, var(--color-light));

@@ -1,16 +1,3 @@
-////
-/// Abstracts imports.
-///
-/// These are used throughout the code but don't output CSS on their own.
-/// Things like functions, mixins, and extensions go here.
-///
-/// @group  Abstracts
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
 @import "../../../node_modules/bourbon/core/bourbon";
 @import "variables";
-@import "functions";
 @import "mixins";
-@import "extends";

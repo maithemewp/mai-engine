@@ -1,0 +1,14 @@
+.wp-block-latest-posts {
+
+	&-post-excerpt {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	li > a {
+		color: var(--color-dark);
+		font-family: var(--font-secondary);
+		font-weight: var(--font-weight-semibold);
+		line-height: var(--line-height-heading);
+	}
+}

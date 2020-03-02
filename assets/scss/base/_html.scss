@@ -1,18 +1,9 @@
-////
-/// HTML Element.
-///
-/// @group  Elements
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
 html {
 	max-width: 100vw;
 	font-size: 62.5%; // 10px browser default
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-font-smoothing: antialiased;
 
-	// Admin Bar Visible.
 	&.admin-bar-showing {
 		height: calc(100% - 32px);
 	}

@@ -1,0 +1,25 @@
+.entry {
+	width: var(--entry-width);
+	color: var(--entry-color);
+	margin: var(--entry-margin);
+}
+
+.entry-wrap {
+	padding: var(--entry-wrap-padding, var(--spacing));
+}
+
+.is-archive {
+	--entry-margin-bottom: var(--row-gap);
+	--entry-border: var(--border);
+	--entry-border-radius: var(--border-radius);
+	--entry-background-color: var(--color-white);
+}
+
+.is-single {
+	--entry-margin: 0 auto;
+}
+
+.widget {
+	--entry-width: 100%;
+	--entry-wrap-padding: 0;
+}

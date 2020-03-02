@@ -1,41 +1,5 @@
-////
-/// Author box component.
-///
-/// @group  Components
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-////
-/// Author box.
-////
-
 .author-box {
-	margin: var(--author-box-margin, var(--gutter) 0);
-	padding: var(--author-box-padding, var(--gap));
-	border: var(--author-box-border, var(--border));
-	border-radius: var(--author-box-border-radius, var(--border-radius));
-	background-color: var(--author-box-background-color, var(--color-light));
-
-	// Archives.
-	.is-archive & {
-		margin-top: 0;
-	}
-
-	// Author box title.
-	&-title {
-		margin: var(--author-box-title-margin, 0 0 var(--space-xs));
-	}
-
-	// Author box content.
-	&-content {
-		padding: var(--author-box-content-padding-left, (0 0 0 calc(var(--space-xl) + var(--space-md))));
-
-		p {
-
-			&:last-of-type {
-				margin-bottom: 0;
-			}
-		}
-	}
+	padding: var(--spacing);
+	border: var(--border);
+	border-radius: var(--border-radius);
 }

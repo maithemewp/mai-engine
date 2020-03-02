@@ -10,7 +10,7 @@
 
 	.woocommerce {
 
-		@include mq(md) {
+		@include mq(lg) {
 			display: flex;
 			flex-wrap: wrap;
 			align-items: flex-start;
@@ -19,12 +19,12 @@
 }
 
 .woocommerce-MyAccount-navigation {
-	padding: var(--gap);
+	padding: var(--column-gap);
 	border: var(--border);
 	border-radius: var(--border-radius);
 	background-color: var(--color-light);
 
-	@include mq(md) {
+	@include mq(lg) {
 		width: var(--one-fourth);
 		margin-right: var(--gutter);
 	}
@@ -37,7 +37,7 @@
 
 .woocommerce-MyAccount-content {
 
-	@include mq(md) {
+	@include mq(lg) {
 		width: var(--three-fourths);
 	}
 }

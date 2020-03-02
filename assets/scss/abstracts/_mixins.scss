@@ -1,53 +1,54 @@
-////
-/// Custom mixins.
-///
-/// @group  Tools
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
+@mixin body {
+	margin: 0;
+	color: var(--color-medium);
+	background-color: var(--color-white);
+	font-family: var(--font-primary);
+	font-size: var(--text-base);
+	font-weight: var(--font-weight-body);
+	line-height: var(--line-height-body);
 
-////
-/// Border mixin
-///
-/// @group  Tools
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-@mixin border( $values ) {
-
-	@include _directional-property(border, null, $values);
-}
-
-////
-/// Well mixin
-///
-/// @group  Tools
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-@mixin box {
-	padding: var(--gap);
-	border: var(--border);
-	border-radius: var(--border-radius);
-	background-color: var(--color-light);
-
-	p {
-
-		&:last-of-type {
-			margin-bottom: 0;
-		}
+	@include mq(lg) {
+		font-size: calc(var(--text-base) * #{$major-second});
 	}
 }
 
-////
-/// Hover focus mixin
-///
-/// @group  Tools
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
+@mixin button {
+	display: inline-block;
+	width: auto;
+	margin: var(--button-margin, 0);
+	padding: var(--button-padding, (var(--spacing) calc(var(--spacing) * 2)));
+	border: var(--button-border, 0);
+	border-color: var(--button-border-color);
+	border-radius: var(--button-border-radius, var(--border-radius));
+	color: var(--button-color, var(--color-white));
+	background-color: var(--button-background, var(--color-primary));
+	font-family: var(--button-font-family);
+	font-size: var(--button-font-size);
+	font-weight: var(--button-font-weight, var(--font-weight-heading));
+	letter-spacing: var(--button-letter-spacing);
+	text-transform: var(--button-text-transform);
+	line-height: 1;
+	text-align: center;
+	white-space: normal;
+	text-decoration: none;
+	cursor: var(--button-cursor, pointer);
+	opacity: var(--button-opacity);
+	transition: var(--button-transition, var(--transition));
+
+	&:hover,
+	&:focus {
+		outline: none;
+		text-decoration: none;
+	}
+}
+
+@mixin heading {
+	margin: var(--heading-margin, 0 0 var(--text-base));
+	font-family: var(--font-secondary);
+	font-weight: var(--font-weight-heading);
+	line-height: var(--line-height-heading);
+	color: var(--heading-color, var(--color-dark));
+}
 
 @mixin hover-focus {
 
@@ -59,83 +60,12 @@
 	}
 }
 
-////
-/// Icon mixin
-///
-/// @group  Tools
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
+@mixin mq($size, $query: min) {
+	$size: map_get($breakpoints, $size);
 
-@mixin icon($glyph: "\f005", $font-weight: 400) {
-	font-family: "Font Awesome 5 Free", sans-serif;
-	font-weight: $font-weight;
-	content: $glyph;
-}
-
-////
-/// Media Query mixin
-////
-
-@mixin mq($breakpoint: xl, $query: min) {
-	$breakpoint: map_get($screens, $breakpoint);
-
-	@media (#{$query}-width: #{$breakpoint}px) {
+	@media (#{$query}-width: #{$size}) {
 
 		@content;
 	}
 }
 
-////
-/// Notice mixin
-///
-/// @group  Tools
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-@mixin notice($color: "info") {
-	margin-bottom: var(--space-md);
-
-	@include box;
-
-	@if $color != "info" {
-		border-color: var(--color-#{$color});
-		color: var(--color-#{$color});
-		background-color: rgba(var(--color-#{$color}), 0.1);
-	}
-}
-
-////
-/// Overlay mixin
-///
-/// @group  Tools
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-@mixin overlay {
-	overflow: hidden;
-	position: relative;
-
-	&:before {
-		display: block;
-		background-color: var(--color-muted);
-		opacity: var(--shadow-opacity);
-		content: "";
-
-		@include position(absolute, 0 0 0 0);
-	}
-}
-
-////
-/// Transition mixin
-///
-/// @group  Tools
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-@mixin transition {
-	transition: var(--transition);
-}

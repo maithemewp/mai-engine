@@ -14,42 +14,46 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: config/default/config.php:102
+msgid "Standard Content"
+msgstr ""
+
+#: config/default/config.php:107
 msgid "Narrow Content"
 msgstr ""
 
-#: config/default/config.php:154
+#: config/default/config.php:159
 msgid "Menu"
 msgstr ""
 
-#: config/default/config.php:359
+#: config/default/config.php:367
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/default/config.php:360
+#: config/default/config.php:368
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/default/config.php:361
+#: config/default/config.php:369
 msgid "Below Header Menu"
 msgstr ""
 
-#: config/default/config.php:362
+#: config/default/config.php:370
 msgid "Footer Menu"
 msgstr ""
 
-#: config/default/config.php:462
+#: config/default/config.php:470
 msgid "Before Header"
 msgstr ""
 
-#: config/default/config.php:463
+#: config/default/config.php:471
 msgid "The Before Header widget area."
 msgstr ""
 
-#: config/default/config.php:467
+#: config/default/config.php:485
 msgid "Before Footer"
 msgstr ""
 
-#: config/default/config.php:468
+#: config/default/config.php:486
 msgid "The Before Footer widget area."
 msgstr ""
 
@@ -78,7 +82,7 @@ msgstr ""
 msgid "The Front Page %s widget area."
 msgstr ""
 
-#: lib/structure/header.php:121
+#: lib/structure/header.php:103
 msgid "Toggle header search"
 msgstr ""
 

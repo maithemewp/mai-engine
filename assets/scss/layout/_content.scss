@@ -1,0 +1,30 @@
+.content {
+	width: 100%;
+	margin: var(--content-margin, (0 auto));
+
+	@include mq(lg) {
+		max-width: var(--content-width);
+		order: var(--content-order, 0);
+	}
+}
+
+.full-content {
+	--content-width: 100%;
+}
+
+.wide-content {
+	--content-width: var(--breakpoint-xl);
+}
+
+.narrow-content {
+	--content-width: var(--breakpoint-sm);
+}
+
+.content-sidebar,
+.sidebar-content {
+	--content-margin: 0;
+}
+
+.sidebar-content {
+	--content-order: 1;
+}

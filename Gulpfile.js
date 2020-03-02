@@ -81,7 +81,8 @@ toolkit.extendConfig(
             open: 'external',
             port: '8000',
             files: [
-                './assets/css/*'
+                './assets/**/*',
+                './config/**/*',
             ]
         }
     }

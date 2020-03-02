@@ -1,15 +1,3 @@
-////
-/// Gutenberg classes.
-///
-/// @group  Utilities
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-/// Loops through the theme colors and adds utility classes for them. Primarily,
-/// these are the `.has-{$color}-color` and `.has-{$color}-background-color`
-/// classes added via Gutenberg. However, they are useful elsewhere.
-
 @each $color-name, $color-value in $colors {
 
 	.has-#{ $color-name }-color {
@@ -20,10 +8,6 @@
 		background-color: #{ $color-value };
 	}
 }
-
-/// Loops through the editor font sizes and adds utility classes for them. This
-/// handles the `.has-{$size}-font-size` classes added via Gutenberg, which may
-/// be useful elsewhere.
 
 @each $font-size-name, $font-size-value in $font-sizes {
 

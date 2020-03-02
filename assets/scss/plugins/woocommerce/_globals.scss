@@ -8,7 +8,7 @@
 
 .onsale {
 	z-index: 1;
-	padding: var(--space-xs) var(--space-md);
+	padding: var(--space-xs) var(--spacing);
 	border-radius: var(--border-radius);
 	color: var(--color-white);
 	background: var(--color-primary);
@@ -24,16 +24,8 @@
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	margin-bottom: $gutter;
+	margin-bottom: var(--row-gap);
 	font-size: smaller;
-
-	@include box;
-
-	.button {
-		margin-left: var(--space-md);
-		padding: var(--space-md) var(--gap);
-		order: 2;
-	}
 
 	li {
 		list-style-type: none;

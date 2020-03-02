@@ -1,15 +1,3 @@
-////
-/// Before header component.
-///
-/// @group  Components
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-////
-/// Before Header.
-////
-
 .before-header {
 	padding: var(--before-header-padding, (var(--space-sm) 0));
 	border-bottom: var(--before-header-border-bottom, var(--border));
@@ -20,9 +8,5 @@
 	--widget-margin: 0;
 	--paragraph-margin: 0;
 	--button-margin: 0;
-
-	// Wrap.
-	.wrap {
-		align-items: center;
-	}
+	--wrap-align-items: center;
 }

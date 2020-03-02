@@ -1,66 +1,15 @@
-////
-/// Footer widgets component.
-///
-/// @group  Components
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-////
-/// Footer Widgets.
-////
-
 .footer-widgets {
 	padding: var(--footer-widgets-padding, (var(--space-xl) 0 calc(var(--space-xl) - var(--gutter))));
 	color: var(--footer-widgets-color);
 	background-color: var(--footer-widgets-background-color);
 	font-size: var(--footer-widgets-font-size);
 
-	// Link.
-	a {
-		color: var(--footer-widgets-link-color);
-
-		&:hover,
-		&:focus {
-			color: var(--footer-widgets-link-color-hover);
-		}
-	}
-
-	// Inputs.
-	#{$all-text-inputs} {
-		color: var(--footer-widgets-input-color);
-		background-color: var(--footer-widgets-input-background-color);
-	}
-
-	// Menu.
-	.menu {
-		display: block;
-		font-family: var(--footer-widgets-menu-font-family);
-		font-size: var(--footer-widgets-menu-font-size);
-		font-weight: var(--footer-widgets-menu-font-weight);
-		columns: var(--footer-widgets-menu-columns, (2));
-	}
-
-	// Menu item.
-	.menu-item {
-		margin: var(--footer-widgets-menu-item-margin, (0 0 var(--space-md)));
-		padding: var(--footer-widgets-menu-item-padding, 0);
-	}
+	--menu-columns: 2;
+	--menu-display: block;
+	--menu-item-margin: 0 0 var(--spacing);
+	--menu-item-padding: 0;
 }
 
-////
-/// Footer widget area.
-////
-
 .footer-widget-area {
-	width: 100%;
-
-	@include mq(md) {
-		flex: 1;
-		margin-left: var(--gutter);
-
-		&:first-of-type {
-			margin-left: 0;
-		}
-	}
+	flex: 1;
 }

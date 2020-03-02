@@ -16,7 +16,7 @@
 			width: 100%;
 		}
 
-		@include mq(md) {
+		@include mq(lg) {
 			margin-left: var(--gutter);
 
 			&:first-of-type {

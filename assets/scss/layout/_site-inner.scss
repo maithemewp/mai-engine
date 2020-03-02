@@ -1,38 +1,15 @@
-////
-/// Site inner object.
-///
-/// @group  Objects
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-////
-/// Site Inner.
-////
-
 .site-inner {
+	width: 100%;
+	margin: var(--site-inner-margin, 0);
 
-	@include mq(md) {
+	@include mq(lg) {
 		display: flex;
 		flex: 1;
 		flex-direction: column;
 	}
+}
 
-	// No Page Header.
-	.no-page-header.transparent-header &,
-	.no-page-header.sticky-header & {
-		margin-top: var(--site-inner-margin-top-no-page-header-mobile, (calc(var(--space-xl) * var(--perfect-fifth))));
-
-		@include mq(md) {
-			margin-top: var(--site-inner-margin-top-no-page-header-desktop, var(--space-xxl));
-		}
-	}
-
-	.no-page-header.genesis-title-hidden & {
-		margin-top: 0;
-
-		@include mq(md) {
-			margin-top: 0;
-		}
-	}
+.no-page-header.transparent-header,
+.no-page-header.sticky-header {
+	--site-inner-margin: 20vh;
 }

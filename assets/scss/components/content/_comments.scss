@@ -1,0 +1,27 @@
+
+.comment {
+	margin: var(--comment-margin, (var(--space-lg) 0));
+	background-color: var(--comment-background);
+}
+
+.comment-list {
+	list-style-type: none;
+}
+
+.children {
+	list-style-type: none;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.comment-author {
+	margin: 0;
+}
+
+.comment-edit-link {
+	display: none;
+}
+
+.comment-respond {
+	width: 100%;
+}

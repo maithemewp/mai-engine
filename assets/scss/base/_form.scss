@@ -1,31 +1,11 @@
-////
-/// Form.
-///
-/// @group  Elements
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-////
-/// Rules
-////
-
 ::placeholder {
 	opacity: 1; // Firefox fix
 	color: var(--input-placeholder-color, var(--color-muted));
 }
 
-////
-/// Abbreviations.
-////
-
 abbr[title] {
 	text-decoration: none;
 }
-
-////
-/// Label.
-////
 
 label {
 	display: inline-block;
@@ -33,18 +13,9 @@ label {
 	font-size: var(--label-font-size, (smaller));
 	font-weight: var(--label-font-weight, var(--font-weight-heading));
 
-	i + &,
-	input + &,
-	select + &,
-	textarea + & {
-		font-size: smaller;
-		font-weight: var(--font-weight-body);
-	}
+	--input-font-size: smaller;
+	--input-font-weight: var(--font-weight-body);
 }
-
-////
-/// Text Inputs.
-////
 
 #{$all-text-inputs} {
 	width: 100%;
@@ -56,46 +27,34 @@ label {
 	background-color: var(--input-background-color);
 	background-clip: padding-box; // Remove iOS box shadow
 	box-shadow: none;
-	font-size: var(--input-font-size);
-
-	@include transition;
-
-	&:focus {
-		--input-border: var(--border-width) var(--border-style) var(--color-primary);
-		outline: none;
-	}
-
-	&:disabled,
-	&:disabled:hover {
-		--input-background-color: var(--color-muted);
-		cursor: not-allowed;
-	}
+	line-height: 1;
+	outline: none;
+	cursor: var(--input-cursor);
+	transition: var(--input-transition, var(--transition));
 }
 
-////
-/// Textarea.
-////
+:focus {
+	--input-border: var(--border-size) var(--border-style) var(--color-primary);
+}
+
+:disabled,
+:disabled:hover {
+	--input-background-color: var(--color-muted);
+	--input-cursor: not-allowed;
+}
 
 textarea {
-	line-height: var(--textarea-line-height);
+	line-height: var(--textarea-line-height, var(--line-height-body));
 }
 
-////
-/// Select.
-////
-
 select {
-	height: var(--select-height, (calc( var(--text-base) * 2)));
+	height: var(--select-height, (calc(var(--text-base) * 2)));
 	padding: var(--select-padding, (0 auto));
 
 	&[multiple] {
 		height: auto;
 	}
 }
-
-////
-/// Other Inputs.
-////
 
 input[type="checkbox"],
 input[type="image"],
@@ -117,10 +76,6 @@ input[type="search"] {
 	}
 }
 
-////
-/// Fieldset.
-////
-
 fieldset {
 	min-width: 0;
 	margin: 0;
@@ -131,10 +86,6 @@ fieldset {
 		display: table-cell;
 	}
 }
-
-////
-/// Legend.
-////
 
 legend {
 	display: table;
@@ -147,13 +98,4 @@ legend {
 	+ * {
 		clear: both;
 	}
-}
-
-////
-/// Buttons.
-////
-
-#{$all-buttons} {
-
-	@include button;
 }

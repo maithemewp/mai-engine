@@ -1,19 +1,8 @@
-////
-/// Content imports.
-///
-/// @group  Components
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-@import "content";
 @import "page-header";
 @import "breadcrumb";
-@import "archive-description";
 @import "author-box";
-@import "entry";
-@import "gallery";
-@import "singular-image";
-@import "more-link";
-@import "pagination";
-@import "featured-content";
+@import "archive-pagination";
+@import "adjacent-entry-nav";
+@import "comments";
+@import "widget";
+@import "avatar";

@@ -1,15 +1,3 @@
-////
-/// Menu toggle component.
-///
-/// @group  Components
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-////
-/// Menu Toggle.
-////
-
 .menu-toggle {
 	display: flex;
 	align-items: center;
@@ -18,10 +6,10 @@
 	padding: var(--menu-toggle-padding, 0);
 	background-color: var(--menu-toggle-background-color, transparent);
 	order: 1;
-	height: var(--space-md);
-	width: var(--space-md);
+	height: var(--spacing);
+	width: var(--spacing);
 
-	@include mq(md) {
+	@include mq(lg) {
 		display: none;
 	}
 
@@ -33,35 +21,31 @@
 	&:focus {
 		outline: var(--border);
 	}
+}
 
-	&.activated {
+.activated {
 
-		.menu-toggle-icon {
-			background-color: transparent;
+	.menu-toggle-icon {
+		background-color: transparent;
 
-			&:before {
-				top: 0;
-				transform: rotate(45deg);
-			}
+		&::before {
+			top: 0;
+			transform: rotate(45deg);
+		}
 
-			&:after {
-				bottom: 0;
-				transform: rotate(-45deg);
-			}
+		&::after {
+			bottom: 0;
+			transform: rotate(-45deg);
 		}
 	}
 }
 
-////
-/// Menu toggle icon.
-////
-
 .menu-toggle-icon,
-.menu-toggle-icon:before,
-.menu-toggle-icon:after {
+.menu-toggle-icon::before,
+.menu-toggle-icon::after {
 	display: block;
 	position: absolute;
-	width: var(--menu-toggle-line-width, var(--space-md));
+	width: var(--menu-toggle-line-width, var(--spacing));
 	height: var(--menu-toggle-line-height, 3px);
 	background-color: var(--menu-toggle-line-background-color, var(--color-dark));
 	content: "";
@@ -73,11 +57,11 @@
 	bottom: auto;
 	margin: auto;
 
-	&:before {
+	&::before {
 		top: var(--menu-toggle-line-spacing, (calc(0 - var(--space-sm))));
 	}
 
-	&:after {
+	&::after {
 		bottom: var(--menu-toggle-line-spacing, (calc(0 - var(--space-sm))));
 	}
 }

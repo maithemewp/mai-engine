@@ -1,24 +1,5 @@
-////
-/// Breadcrumb component.
-///
-/// @group  Components
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-////
-/// Breadcrumb.
-////
 
 .breadcrumb {
 	width: 100%;
-	margin: var(--breadcrumb-margin, 0 0 var(--space-md));
-
-	// Link wrapper.
-	&-link-wrap {
-	}
-
-	// Breadcrumb separator.
-	&-separator {
-	}
+	margin: var(--breadcrumb-margin, 0 0 var(--spacing));
 }

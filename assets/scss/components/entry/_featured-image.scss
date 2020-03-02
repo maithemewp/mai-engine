@@ -1,0 +1,8 @@
+.entry-image-link {
+	display: block;
+}
+
+.entry-image {
+	min-width: 100%;
+	border-radius: var(--entry-image-border-radius, (var(--border-radius) var(--border-radius) 0 0));
+}

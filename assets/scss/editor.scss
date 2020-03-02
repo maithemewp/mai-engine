@@ -1,15 +1,3 @@
-////
-/// Editor stylesheet.
-///
-/// This is the primary editor stylesheet. It is used for the WordPress 5.0+
-/// block editor (Gutenberg) and is not intended for older versions of the
-/// WordPress edit screen.
-///
-/// @group  Styles
-/// @author BizBudding <team@bizbudding.com>
-/// @link   http://sass-guidelin.es/#main-file
-////
-
 @import "abstracts/_index";
 @import "base/globals";
 @import "base/html";
@@ -25,7 +13,6 @@
 	@include body;
 }
 
-
 .editor-post-title__block .editor-post-title__input {
 
 	@include heading;
@@ -36,10 +23,9 @@ p {
 }
 
 .wp-block {
-	max-width: var(--screen-sm);
 
 	&[data-align="wide"] {
-		max-width: var(--screen-lg);
+		max-width: var(--breakpoint);
 	}
 
 	&[data-align="full"] {

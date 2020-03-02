@@ -1,30 +1,24 @@
-////
-/// Site header object.
-///
-/// @group  Objects
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-////
-/// Site Header.
-////
-
 .site-header {
+	width: 100%;
 	position: var(--site-header-position, relative);
 	z-index: 10;
 	border-bottom: var(--site-header-border-bottom, var(--border));
 	background-color: var(--site-header-background-color, var(--color-white));
 
-	// Wrap.
-	.wrap {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		justify-content: space-between;
+	--wrap-justify-content: space-between;
+	--wrap-align-items: center;
 
-		@include mq(md) {
-			flex-wrap: nowrap;
-		}
+	@include mq(lg) {
+		--wrap-flex-wrap: nowrap;
 	}
+}
+
+.has-sticky-header {
+	--site-header-position: sticky;
+}
+
+.has-transparent-header {
+	--site-header-position: absolute;
+	--site-header-border-bottom: none;
+	--site-header-background-color: transparent;
 }

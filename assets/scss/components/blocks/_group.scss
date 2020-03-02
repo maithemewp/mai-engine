@@ -1,8 +1,8 @@
 .wp-block-group {
 
 	&__inner-container {
-		width: 90%;
-		max-width: var(--layout-width);
+		width: 90% !important;
+		max-width: var(--content-width) !important;
 		margin-left: auto;
 		margin-right: auto;
 	}

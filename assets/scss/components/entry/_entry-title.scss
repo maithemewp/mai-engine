@@ -1,0 +1,15 @@
+.entry-title-link {
+	color: var(--entry-title-color, var(--color-medium));
+	text-decoration: var(--entry-title-text-decoration, none);
+
+	&:hover,
+	&:focus {
+		--entry-title-color: var(--color-primary);
+		--entry-title-text-decoration: underline;
+	}
+}
+
+.is-archive {
+	--entry-title-font-size: var(--text-sm);
+	--entry-title-color: var(--color-dark);
+}

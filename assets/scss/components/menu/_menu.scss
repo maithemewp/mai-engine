@@ -1,22 +1,17 @@
-////
-/// Menu component.
-///
-/// @group  Components
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-////
-/// Menu.
-////
-
 .menu {
+	columns: var(--menu-columns, auto);
 	margin: 0;
 	line-height: var(--menu-line-height, 1);
 	list-style-type: none;
+	width: 100%;
 
-	@include mq(md) {
-		display: flex;
+	--link-color: var(--color-medium);
+	--link-color-hover: var(--color-primary);
+	--button-padding: 0;
+	--button-margin: 0 0 0 var(--spacing);
+
+	@include mq(lg) {
+		display: var(--menu-display, (flex));
 		border: 0;
 		font-size: var(--menu-font-size-desktop, (smaller));
 		flex-wrap: wrap;
@@ -25,54 +20,40 @@
 	}
 }
 
-// Menu item.
 .menu-item {
 	display: flex;
 	position: relative;
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-between;
-	margin: var(--menu-item-margin-mobile, (0 auto));
+	margin: var(--menu-item-margin, (0 auto));
 
-	@include mq(md) {
+	@include mq(lg) {
 		display: block;
-		margin: var(--menu-item-margin-desktop, 0);
 
-		&:last-of-type a {
-			padding-right: 0;
-		}
-
-		&:first-of-type a {
-			padding-left: 0;
-		}
-	}
-
-	// Buttons
-	&.button {
-		padding: 0;
-
-		@include mq(md) {
-			margin-left: var(--space-md);
-		}
+		--menu-item-margin: 0;
 	}
 }
 
-// Link.
+.menu-item-first {
+	--menu-item-link-padding: var(--spacing) var(--space-sm) var(--spacing) 0;
+}
+
+.menu-item-last {
+	--menu-item-link-padding: var(--spacing) 0 var(--spacing) var(--space-sm);
+}
+
 .menu-item-link {
 	display: block;
 	width: 100%;
-	color: var(--menu-item-link-color, var(--color-medium));
-	padding: var(--menu-item-padding-mobile, (var(--space-md) 0));
+	padding: var(--spacing) 0;
 	text-decoration: none;
 
-	@include mq(md) {
-		padding: var(--menu-item-padding-desktop, (var(--space-md) var(--space-sm)));
+	@include mq(lg) {
+		padding: var(--menu-item-padding, (var(--spacing) var(--space-sm)));
 	}
+}
 
-	// Links hover.
-	&:hover,
-	&:focus,
-	&-current {
-		color: var(--menu-item-link-color-hover, var(--color-primary));
-	}
+.has-transparent-header {
+	--menu-item-link-color: var(--color-white);
 }

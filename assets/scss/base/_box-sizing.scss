@@ -1,13 +1,6 @@
-////
-/// Box Sizing.
-///
-/// @group  Generic
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
 
 *,
-*:before,
-*:after {
+*::before,
+*::after {
 	box-sizing: border-box;
 }

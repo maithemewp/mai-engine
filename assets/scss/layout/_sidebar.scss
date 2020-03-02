@@ -1,0 +1,7 @@
+.sidebar {
+	margin: var(--sidebar-margin, (var(--row-gap) 0));
+
+	@include mq(lg) {
+		width: var(--sidebar-width);
+	}
+}

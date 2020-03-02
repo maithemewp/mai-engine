@@ -1,28 +1,16 @@
-////
-/// Sub menu component.
-///
-/// @group  Components
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-////
-/// Sub menu.
-////
-
 .sub-menu {
 	display: none;
 	top: 100%;
 	width: 100%;
-	margin: var(--space-md) var(--space-md) 0;
+	margin: var(--spacing) var(--spacing) 0;
 	list-style-type: none;
 
-	@include mq(md) {
+	@include mq(lg) {
 		display: block;
 		position: absolute;
 		left: -999rem;
 		width: var(--sub-menu-width, var(--space-xxxl));
-		margin: 0 0 0 calc(0 - var(--space-md));
+		margin: 0 0 0 calc(0 - var(--spacing));
 		border: var(--sub-menu-border, var(--border));
 		border-radius: var(--sub-menu-border-radius, 0);
 		opacity: 0;
@@ -31,7 +19,7 @@
 		padding-top: var(--sub-menu-padding, var(--space-sm));
 		padding-bottom: var(--sub-menu-padding, var(--space-sm));
 
-		&:before {
+		&::before {
 			content: "";
 
 			@include position(absolute, calc(0 - var(--space-xxs)) null null var(--space-lg));
@@ -39,10 +27,6 @@
 		}
 	}
 }
-
-////
-/// Sub menu toggle.
-////
 
 .sub-menu-toggle {
 	display: flex;
@@ -56,7 +40,7 @@
 
 	@include position(absolute, var(--space-sm) 0 null null);
 
-	@include mq(md) {
+	@include mq(lg) {
 		display: none;
 	}
 
@@ -69,28 +53,24 @@
 		outline: var(--border);
 	}
 
-	&:before {
+	&::before {
 		content: "";
 
 		//@include triangle("down", 1rem, 0.5rem, $sub-menu-toggle-icon-background-color);
 	}
+}
 
-	&.activated {
+.activated {
 
-		&:before {
+	.sub-menu::before {
 
-			//@include triangle("up", 1rem, 0.5rem, $sub-menu-toggle-icon-background-color);
-		}
+		//@include triangle("up", 1rem, 0.5rem, $sub-menu-toggle-icon-background-color);
 	}
 }
 
-////
-/// Sub sub menu.
-////
-
 .sub-menu .sub-menu {
 
-	@include mq(md) {
+	@include mq(lg) {
 		top: -1px;
 		left: 100%;
 		margin-left: 0;

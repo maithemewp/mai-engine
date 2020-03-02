@@ -1,67 +1,47 @@
-////
-/// Alignment classes.
-///
-/// @group  Utilities
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
+@include mq(lg) {
 
-////
-/// Alignment.
-////
-
-.align {
-
-	@include mq(md) {
-
-		&left {
-			float: left;
-			margin: 0 var(--space-md) 0 0;
-		}
-
-		&right {
-			float: right;
-			margin: 0 0 var(--space-md) 0;
-		}
-
-		&center {
-			margin: 0 auto;
-
-			@include clearfix;
-		}
+	.alignleft {
+		float: left;
+		margin: 0 var(--spacing) 0 0;
 	}
 
-	// Wide and Full.
-	&wide,
-	&full {
-		overflow: hidden;
-		position: relative;
-		left: 50%;
-		width: 100vw;
-
-		.content-sidebar &,
-		.sidebar-content & {
-			left: auto;
-			width: 100%;
-			max-width: 100%;
-			margin-left: 0;
-			transform: none;
-		}
-
-		> img {
-			display: inline-block;
-			width: 100%;
-			margin: var(--space-md) auto;
-		}
+	.alignright {
+		float: right;
+		margin: 0 0 var(--spacing) 0;
 	}
 
-	&wide {
-		max-width: 120%;
-		transform: translate(-50%);
-	}
+	.aligncenter {
+		margin: 0 auto;
 
-	&full {
-		max-width: none;
-		margin-left: -50vw;
+		@include clearfix;
 	}
+}
+
+.alignwide,
+.alignfull {
+	overflow: hidden;
+	position: relative;
+	left: var(--alignwide-left, 50%);
+	width: var(--alignwide-width, 100vw);
+	max-width: var(--alignwide-max-width, 120%);
+	transform: var(--alignwide-transform, translate(-50%));
+
+	> img {
+		display: inline-block;
+		width: 100%;
+		margin: var(--spacing) auto;
+	}
+}
+
+.alignfull {
+	--alignwide-max-width: none;
+	--alignwide-transform: translate(-50vw);
+}
+
+.content-sidebar,
+.sidebar-content {
+	--alignwide-left: auto;
+	--alignwide-width: 100%;
+	--alignwide-max-width: 100%;
+	--alignwide-transform: none;
 }

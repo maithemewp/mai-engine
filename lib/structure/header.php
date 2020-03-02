@@ -61,24 +61,6 @@ function mai_site_title_link( $default ) {
 	return str_replace( '<a', '<a class="site-title-link" ', $default );
 }
 
-add_action( 'genesis_before_header_wrap', 'mai_before_header_widget' );
-/**
- * Displays the before header widget area.
- *
- * @since 0.1.0
- *
- * @return void
- */
-function mai_before_header_widget() {
-	genesis_widget_area(
-		'before-header',
-		[
-			'before' => '<div class="before-header"><div class="wrap">',
-			'after'  => '</div></div>',
-		]
-	);
-}
-
 add_filter( 'get_custom_logo', 'mai_custom_logo_size' );
 /**
  * Add max-width style to custom logo.
@@ -141,4 +123,23 @@ function mai_header_search_form( $form ) {
 	}
 
 	return $form;
+}
+
+
+add_action( 'mai_after_title_area', 'mai_header_right' );
+
+function mai_header_right() {
+
+	genesis_markup( [
+		'open'    => '<div %s>',
+		'context' => 'header-right',
+	] );
+
+	do_action( 'mai_header_right' );
+
+	genesis_markup( [
+		'close'   => '</div>',
+		'context' => 'header-right',
+	] );
+
 }

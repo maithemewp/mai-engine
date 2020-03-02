@@ -120,3 +120,21 @@ function mai_nav_link_atts( $atts ) {
 
 	return $atts;
 }
+
+add_filter( 'wp_nav_menu_objects', 'mai_first_last_menu_items' );
+/**
+ * Adds first and last classes to menu items for cleaner styling.
+ *
+ * @since 0.1.0
+ *
+ * @param object $items The menu items, sorted by each menu item's menu order.
+ *
+ * @return string
+ */
+function mai_first_last_menu_items( $items ) {
+	$items[1]->classes[]                 = 'menu-item-first';
+	$items[ count( $items ) ]->classes[] = 'menu-item-last';
+
+	return $items;
+}
+
