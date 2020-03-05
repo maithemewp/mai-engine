@@ -326,11 +326,11 @@ function mai_get_breakpoints() {
 
 	if ( empty( $breakpoints ) ) {
 		$breakpoint        = mai_get_variables()['breakpoint'];
-		$breakpoints['xs'] = $breakpoint / 3;   // 400  (400 x 1)
-		$breakpoints['sm'] = $breakpoint / 2;   // 600  (400 x 1.5)
-		$breakpoints['md'] = $breakpoint / 1.5; // 800  (400 x 2)
-		$breakpoints['lg'] = $breakpoint / 1.2; // 1000 (400 x 2.5)
-		$breakpoints['xl'] = $breakpoint / 1;   // 1200 (400 x 3)
+		$breakpoints['xs'] = absint( $breakpoint / 3 );   // 400  (400 x 1)
+		$breakpoints['sm'] = absint( $breakpoint / 2 );   // 600  (400 x 1.5)
+		$breakpoints['md'] = absint( $breakpoint / 1.5 ); // 800  (400 x 2)
+		$breakpoints['lg'] = absint( $breakpoint / 1.2 ); // 1000 (400 x 2.5)
+		$breakpoints['xl'] = absint( $breakpoint / 1 );   // 1200 (400 x 3)
 	}
 
 	return $breakpoints;
