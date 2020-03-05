@@ -5,15 +5,10 @@
 *.zip
 LICENSE
 README
-
-
 node_modules
-
 vendor/*
-
 !vendor/composer
 vendor/composer/installers
-
 !vendor/advanced-custom-fields
 !vendor/aristath
 !vendor/fortawesome

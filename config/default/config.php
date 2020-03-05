@@ -164,7 +164,7 @@ return [
 					'.nav-header-left',
 					'.nav-header-right',
 					'.nav-below-header',
-					'.mobile-menu .menu-header-menu-container'
+					'.mobile-menu .menu-header-menu-container',
 				],
 			],
 			'menuAnimation'    => [
@@ -208,60 +208,49 @@ return [
 				'editor' => true,
 			],
 			[
-				'handle'    => mai_get_handle(),
-				'src'       => mai_get_url() . 'assets/js/min/global.min.js',
-				'deps'      => [],
-				'condition' => function () {
-					return ! genesis_is_amp() && ! genesis_is_in_dev_mode();
-				},
+				'handle' => mai_get_handle(),
+				'src'    => mai_get_url() . 'assets/js/min/global.min.js',
+				'deps'   => [],
 			],
 
-			// Dev scripts.
+			/**
+			 * Grid scripts.
+			 */
+
 			[
-				'handle'    => mai_get_handle() . '-filters',
-				'src'       => mai_get_url() . 'assets/js/filters.js',
-				'deps'      => [],
-				'condition' => function () {
-					return genesis_is_in_dev_mode();
-				},
+				'handle' => mai_get_handle() . '-customizer',
+				'src'    => mai_get_url() . 'assets/js/customizer.js',
+				'deps'   => [],
+				'editor' => true, // Only load in the admin editor.
 			],
 			[
-				'handle'    => mai_get_handle() . '-header',
-				'src'       => mai_get_url() . 'assets/js/header.js',
-				'deps'      => [],
-				'condition' => function () {
-					return genesis_is_in_dev_mode();
-				},
+				'handle' => mai_get_handle() . '-sortable',
+				'src'    => mai_get_url() . 'assets/js/sortable.js',
+				'deps'   => [],
+				'editor' => true, // Only load in the admin editor.
 			],
 			[
-				'handle'    => mai_get_handle() . '-menu',
-				'src'       => mai_get_url() . 'assets/js/menu.js',
-				'deps'      => [],
-				'condition' => function () {
-					return genesis_is_in_dev_mode();
-				},
+				'handle' => mai_get_handle() . '-wp-query',
+				'src'    => mai_get_url() . 'assets/js/wp-query.js',
+				'deps'   => [],
+				'editor' => true, // Only load in the admin editor.
+				'localize' => [
+					'name' => 'maiGridWPQueryVars',
+					'data' => [
+						'fields' => [], // TODO: Get real data.
+						'keys'   => [], // TODO: Get real data.
+					],
+				],
 			],
-			[
-				'handle'    => mai_get_handle() . '-scroll',
-				'src'       => mai_get_url() . 'assets/js/scroll.js',
-				'deps'      => [],
-				'condition' => function () {
-					return genesis_is_in_dev_mode();
-				},
-			],
-			[
-				'handle'    => mai_get_handle() . '-toggle',
-				'src'       => mai_get_url() . 'assets/js/toggle.js',
-				'deps'      => [],
-				'condition' => function () {
-					return genesis_is_in_dev_mode();
-				},
-			],
+
+			/**
+			 * End grid scripts.
+			 */
 
 			// Styles.
 			[
 				'handle' => mai_get_handle(),
-				'src'    => mai_get_url() . 'assets/css/' . mai_get_active_theme() . '.css',
+				'src'    => mai_get_url() . 'assets/css/min/' . mai_get_active_theme() . '.min.css',
 			],
 
 		],

@@ -88,7 +88,7 @@ module.exports = function () {
 		};
 
 		let outputFileName = function (fileName) {
-			return fileName === 'editor' ? themeName() + '-editor.css' : themeName() + '.css';
+			return fileName === 'editor' ? themeName() + '-editor.min.css' : themeName() + '.min.css';
 		};
 
 		let themeConf = function () {
@@ -107,7 +107,7 @@ module.exports = function () {
 		};
 
 		let fileDest = function () {
-			return './assets/css/';
+			return './assets/css/min/';
 		};
 
 		if (!fs.existsSync(fileSrc())) {

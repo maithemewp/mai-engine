@@ -187,7 +187,7 @@ function mai_minify_css( $css ) {
  *
  * @return array
  */
-function mai_apply_aspect_ratio( $size = 'md', $ratio = '16:9' ) {
+function mai_do_aspect_ratio( $size = 'md', $ratio = '16:9' ) {
 	$ratio       = explode( ':', $ratio );
 	$x           = $ratio[0];
 	$y           = $ratio[1];

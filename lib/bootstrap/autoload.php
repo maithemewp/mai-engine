@@ -27,11 +27,11 @@ function mai_autoload_register( $class ) {
 		return;
 	}
 
-	$class_dir  = mai_get_dir() . 'lib/classes/';
-	$class_file = strtolower( str_replace( '_', '-', $class ) );
+	$dir  = mai_get_dir() . 'lib/classes/';
+	$file = strtolower( str_replace( '_', '-', $class ) );
 
 	/* @noinspection PhpIncludeInspection */
-	require_once "{$class_dir}class-{$class_file}.php";
+	require_once "{$dir}class-{$file}.php";
 }
 
 add_action( 'genesis_setup', 'mai_autoload_files', 90 );
@@ -88,6 +88,14 @@ function mai_autoload_files() {
 		'customize/panels',
 		'customize/sections',
 		'customize/fields',
+
+		// Grid.
+		'grid/setup',
+		'grid/functions',
+		'grid/field-groups',
+		'grid/loop',
+		'grid/rest-api',
+		'grid/customizer',
 	];
 
 	foreach ( $files as $file ) {

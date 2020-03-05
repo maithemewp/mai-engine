@@ -39,7 +39,7 @@ function mai_setup() {
 	load_child_theme_textdomain( genesis_get_theme_handle(), mai_get_dir() . '/assets/lang' );
 
 	// Add editor styles (uri).
-	add_editor_style( "../../plugins/$handle/assets/css/{$active_theme}-editor.css" );
+	add_editor_style( "../../plugins/$handle/assets/css/min/{$active_theme}-editor.min.css" );
 
 	// Add custom functionality.
 	is_callable( $custom_functions ) ? $custom_functions() : null;
@@ -88,9 +88,9 @@ function mai_setup() {
 			if ( is_array( $args ) ) {
 				add_image_size( $name, $args[0], $args[1], $args[2] );
 			} elseif ( $args ) {
-				add_image_size( $name . '-sm', mai_get_breakpoint( 'xs' ), mai_apply_aspect_ratio( 'xs', $args ), true );
-				add_image_size( $name . '-md', mai_get_breakpoint( 'md' ), mai_apply_aspect_ratio( 'md', $args ), true );
-				add_image_size( $name . '-lg', mai_get_breakpoint( 'xl' ), mai_apply_aspect_ratio( 'xl', $args ), true );
+				add_image_size( $name . '-sm', mai_get_breakpoint( 'xs' ), mai_do_aspect_ratio( 'xs', $args ), true );
+				add_image_size( $name . '-md', mai_get_breakpoint( 'md' ), mai_do_aspect_ratio( 'md', $args ), true );
+				add_image_size( $name . '-lg', mai_get_breakpoint( 'xl' ), mai_do_aspect_ratio( 'xl', $args ), true );
 			}
 		}
 	);

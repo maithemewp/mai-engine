@@ -17,6 +17,7 @@ remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
 add_action( 'wp_enqueue_scripts', 'genesis_enqueue_main_stylesheet', 99 );
 
 add_action( 'wp_enqueue_scripts', 'mai_enqueue_assets' );
+add_action( 'admin_enqueue_scripts', 'mai_enqueue_assets' );
 add_action( 'enqueue_block_editor_assets', 'mai_enqueue_assets' );
 /**
  * Register and enqueue all scripts and styles.
