@@ -3,11 +3,19 @@
 .env
 *.lock
 *.zip
+LICENSE
+README
+
+
 node_modules
+
 vendor/*
+
 !vendor/composer
-# !vendor/yahnis-elsts
-# !vendor/advanced-custom-fields
-# !vendor/wpackagist-plugin
-# !vendor/fortawesome
-# !vendor/aristath
+vendor/composer/installers
+
+!vendor/advanced-custom-fields
+!vendor/aristath
+!vendor/fortawesome
+!vendor/wpackagist-plugin
+!vendor/yahnis-elsts
