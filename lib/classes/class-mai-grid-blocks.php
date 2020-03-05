@@ -96,7 +96,7 @@ final class Mai_Grid_Blocks  {
 			// 'mode'            => 'auto',
 			// 'mode'            => 'edit',
 			'mode'            => 'preview',
-			'enqueue_assets'  => array( $this, 'enqueue_assets'),
+			// 'enqueue_assets'  => array( $this, 'enqueue_assets'),
 			'render_callback' => array( $this, 'do_post_grid' ),
 			'supports'        => array(
 				'align'  => array( 'wide' ),
@@ -114,7 +114,7 @@ final class Mai_Grid_Blocks  {
 			// 'mode'            => 'auto',
 			// 'mode'            => 'edit',
 			'mode'            => 'preview',
-			'enqueue_assets'  => array( $this, 'enqueue_assets'),
+			// 'enqueue_assets'  => array( $this, 'enqueue_assets'),
 			'render_callback' => array( $this, 'do_term_grid' ),
 			'supports'        => array(
 				'align'  => array( 'wide' ),
@@ -123,13 +123,13 @@ final class Mai_Grid_Blocks  {
 		) );
 	}
 
-	function enqueue_assets() {
-		if ( ! is_admin() ) {
-			return;
-		}
-		// mai_enqueue_asset( 'fields', 'css' );
-		mai_enqueue_asset( 'mai-grid-sortable', 'sortable', 'js' );
-	}
+	// function enqueue_assets() {
+	// 	if ( ! is_admin() ) {
+	// 		return;
+	// 	}
+	// 	// mai_enqueue_asset( 'fields', 'css' );
+	// 	// mai_enqueue_asset( 'mai-grid-sortable', 'sortable', 'js' );
+	// }
 
 	function do_post_grid( $block, $content = '', $is_preview = false ) {
 		// TODO: block id?
@@ -150,7 +150,7 @@ final class Mai_Grid_Blocks  {
 		if ( ! empty( $block['className'] ) ) {
 			$args['class'] = ( isset( $args['class'] ) && ! empty( $args['class'] ) ) ? ' ' . $block['className'] : $block['className'];
 		}
-		$grid = new Mai_Grid_Base( $args );
+		$grid = new Mai_Grid( $args );
 		$grid->render();
 	}
 

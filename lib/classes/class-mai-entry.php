@@ -18,7 +18,7 @@ class Mai_Entry {
 		$this->context     = $this->args['context'];
 		$this->id          = $this->get_id();
 		$this->url         = $this->get_url();
-		$this->breakpoints = mai_temp_get_breakpoints();
+		$this->breakpoints = mai_get_breakpoints();
 	}
 
 	function render() {
