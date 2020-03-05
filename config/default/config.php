@@ -94,14 +94,35 @@ return [
 	'page-layouts' => [
 		'add'    => [
 			[
-				'id'    => 'standard-content',
-				'label' => __( 'Standard Content', 'mai-engine' ),
-				'img'   => mai_get_url() . 'assets/img/standard-content.gif',
+				'id'      => 'standard-content',
+				'label'   => __( 'Standard Content', 'mai-engine' ),
+				'img'     => mai_get_url() . 'assets/img/standard-content.gif',
+				'type'    => [ 'site' ],
+				'default' => true,
 			],
 			[
-				'id'    => 'narrow-content',
-				'label' => __( 'Narrow Content', 'mai-engine' ),
-				'img'   => mai_get_url() . 'assets/img/narrow-content.gif',
+				'id'      => 'wide-content',
+				'label'   => __( 'Wide Content', 'mai-engine' ),
+				'img'     => GENESIS_ADMIN_IMAGES_URL . '/layouts/' . 'c.gif',
+				'type'    => [ 'site' ],
+			],
+			[
+				'id'      => 'narrow-content',
+				'label'   => __( 'Narrow Content', 'mai-engine' ),
+				'img'     => mai_get_url() . 'assets/img/narrow-content.gif',
+				'type'    => [ 'site' ],
+			],
+			[
+				'id'      => 'content-sidebar',
+				'label'   => __( 'Content, Sidebar', 'mai-engine' ),
+				'img'     => GENESIS_ADMIN_IMAGES_URL . '/layouts/' . 'cs.gif',
+				'type'    => [ 'site' ],
+			],
+			[
+				'id'      => 'sidebar-content',
+				'label'   => __( 'Sidebar, Content', 'mai-engine' ),
+				'img'     => GENESIS_ADMIN_IMAGES_URL . '/layouts/' . 'sc.gif',
+				'type'    => [ 'site' ],
 			],
 		],
 		'remove' => [
