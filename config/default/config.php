@@ -276,7 +276,6 @@ return [
 
 		],
 		'remove' => [
-			'superfish',
 			'simple-social-icons-font',
 		],
 	],
@@ -349,12 +348,10 @@ return [
 			],
 			'editor-styles',
 			'editor-color-palette'     => mai_get_color_palette(),
-			'front-page-widgets'       => 5,
+			// 'front-page-widgets'       => 5, // TODO: Remove?
 			'genesis-accessibility'    => [
 				'404-page',
-				'drop-down-menu',
 				'headings',
-				'rems',
 				'search-form',
 				'skip-links',
 			],
@@ -382,7 +379,7 @@ return [
 				'menu-footer',
 				'page-header',
 				'footer-widgets',
-				'front-page-widgets',
+				// 'front-page-widgets', // TODO: Remove?
 			],
 			'gutenberg'                => [
 				'wide-images' => true,

@@ -50,3 +50,4 @@ function mai_remove_genesis_theme_supports() {
 	remove_action( 'genesis_init', 'genesis_theme_support' );
 	add_theme_support( 'genesis-breadcrumbs' );
 }
+
