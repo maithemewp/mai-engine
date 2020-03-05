@@ -304,6 +304,30 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| Template Settings
+	|--------------------------------------------------------------------------
+	|
+	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
+	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
+	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
+	|
+	*/
+
+	'archive-settings' => [
+		'post',
+		'category',
+		'portfolio',
+		'page',
+		'search',
+	],
+
+	'single-settings' => [
+		'page',
+		'post',
+	],
+
+	/*
+	|--------------------------------------------------------------------------
 	| Theme Support
 	|--------------------------------------------------------------------------
 	|
