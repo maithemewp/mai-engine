@@ -70,9 +70,6 @@ function mai_do_archive_loop() {
 
 	if ( have_posts() ) {
 
-		// Enqueue entries CSS.
-		mai_enqueue_asset( 'mai-entries', 'entries', 'css' );
-
 		/**
 		 * Fires inside the standard loop, before the while() block.
 		 *
