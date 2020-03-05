@@ -27,7 +27,27 @@ function mai_site_header_options() {
 	}
 }
 
-add_filter( 'genesis_markup_title-area_close', 'mai_title_area_hook', 10, 1 );
+add_filter( 'genesis_markup_title-area_open', 'mai_before_title_area_hook', 10, 1 );
+/**
+ * Add custom hook after the title area.
+ *
+ * @since 0.1.0
+ *
+ * @param string $open_html Closing html markup.
+ *
+ * @return string
+ */
+function mai_before_title_area_hook( $open_html ) {
+	if ( $open_html ) {
+		ob_start();
+		do_action( 'mai_before_title_area' );
+		$open_html = ob_get_clean() . $open_html;
+	}
+
+	return $open_html;
+}
+
+add_filter( 'genesis_markup_title-area_close', 'mai_after_title_area_hook', 10, 1 );
 /**
  * Add custom hook after the title area.
  *
@@ -37,7 +57,7 @@ add_filter( 'genesis_markup_title-area_close', 'mai_title_area_hook', 10, 1 );
  *
  * @return string
  */
-function mai_title_area_hook( $close_html ) {
+function mai_after_title_area_hook( $close_html ) {
 	if ( $close_html ) {
 		ob_start();
 		do_action( 'mai_after_title_area' );
@@ -78,68 +98,48 @@ function mai_custom_logo_size( $html ) {
 	return str_replace( '<img ', '<img style="max-width:' . $width . 'px;max-height:' . $height . 'px"', $html );
 }
 
-add_filter( 'wp_nav_menu_items', 'mai_header_search', 10, 2 );
+add_action( 'mai_before_title_area', 'mai_header_sections' );
+add_action( 'mai_after_title_area', 'mai_header_sections' );
 /**
- * Filter menu items, appending a search form.
+ * Adds header left and right sections.
  *
- * @since 1.1.0
+ * @since 1.0.0
  *
- * @param string   $menu HTML string of list items.
- * @param stdClass $args Menu arguments.
- *
- * @return string Amended HTML string of list items.
+ * @return void
  */
-function mai_header_search( $menu, $args ) {
-	$settings = get_theme_mod( 'header-search', true );
+function mai_header_sections() {
+	$location = 'header-' . ( did_action( 'genesis_site_title' ) ? 'right' : 'left' );
 
-	if ( $settings && 'primary' === $args->theme_location ) {
-		$menu .= get_search_form(
-			[
-				'echo' => false,
-			]
-		);
-		$menu .= sprintf(
-			'<li class="menu-item"><button class="header-search-toggle" onclick="toggle(\'header-search-form\')"><i class="fas fa-search"><span class="screen-reader-text">%s</span></i></button></li>',
-			__( 'Toggle header search', 'mai-engine' )
-		);
+	if ( ! is_active_sidebar( $location ) && ! has_nav_menu( $location ) ) {
+		return;
 	}
-
-	return $menu;
-}
-
-add_filter( 'get_search_form', 'mai_header_search_form' );
-/**
- * Description of expected behavior.
- *
- * @since 0.1.0
- *
- * @param $form
- *
- * @return string
- */
-function mai_header_search_form( $form ) {
-	if ( ! did_action( 'genesis_after_header' ) ) {
-		$form = str_replace( 'class="search-form"', 'class="header-search-form"', $form );
-	}
-
-	return $form;
-}
-
-
-add_action( 'mai_after_title_area', 'mai_header_right' );
-
-function mai_header_right() {
 
 	genesis_markup( [
 		'open'    => '<div %s>',
-		'context' => 'header-right',
+		'context' => $location,
 	] );
 
-	do_action( 'mai_header_right' );
+	do_action( 'mai_' . str_replace( '-', '_', $location ) );
 
 	genesis_markup( [
 		'close'   => '</div>',
-		'context' => 'header-right',
+		'context' => $location,
 	] );
+}
 
+add_filter( 'genesis_attr_header-left', 'mai_header_section_class' );
+add_filter( 'genesis_attr_header-right', 'mai_header_section_class' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param $atts
+ *
+ * @return mixed
+ */
+function mai_header_section_class( $atts ) {
+	$atts['class'] = 'header-section ' . $atts['class'];
+
+	return $atts;
 }

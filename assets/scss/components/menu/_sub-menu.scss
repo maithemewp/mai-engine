@@ -16,14 +16,14 @@
 		opacity: 0;
 		background-color: var(--sub-menu-background-color, var(--color-white));
 		transition: var(--sub-menu-transition, (opacity var(--transition-duration) var(--transition-timing-function)));
-		padding-top: var(--sub-menu-padding, var(--space-sm));
-		padding-bottom: var(--sub-menu-padding, var(--space-sm));
+		padding-top: var(--sub-menu-padding, var(--spacing));
+		padding-bottom: var(--sub-menu-padding, var(--spacing));
 
 		&::before {
 			content: "";
 
 			@include position(absolute, calc(0 - var(--space-xxs)) null null var(--space-lg));
-			//@include triangle("up", var(--space-sm), var(--space-xxs), var(--color-white));
+			//@include triangle("up", var(--spacing), var(--space-xxs), var(--color-white));
 		}
 	}
 }
@@ -38,7 +38,7 @@
 	height: var(--sub-menu-toggle-size, var(--space-lg));
 	width: var(--sub-menu-toggle-size, var(--space-lg));
 
-	@include position(absolute, var(--space-sm) 0 null null);
+	@include position(absolute, var(--spacing) 0 null null);
 
 	@include mq(lg) {
 		display: none;

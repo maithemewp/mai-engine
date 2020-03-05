@@ -36,11 +36,11 @@
 }
 
 .menu-item-first {
-	--menu-item-link-padding: var(--spacing) var(--space-sm) var(--spacing) 0;
+	--menu-item-link-padding: var(--spacing) var(--spacing) var(--spacing) 0;
 }
 
 .menu-item-last {
-	--menu-item-link-padding: var(--spacing) 0 var(--spacing) var(--space-sm);
+	--menu-item-link-padding: var(--spacing) 0 var(--spacing) var(--spacing);
 }
 
 .menu-item-link {
@@ -50,7 +50,7 @@
 	text-decoration: none;
 
 	@include mq(lg) {
-		padding: var(--menu-item-padding, (var(--spacing) var(--space-sm)));
+		padding: var(--menu-item-link-padding, (var(--spacing) var(--spacing)));
 	}
 }
 

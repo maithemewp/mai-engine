@@ -75,13 +75,9 @@ return [
 		'add'    => [
 			'full'      => [ 1600, 900, true ],
 			'landscape' => '4:3',
-			'portfolio' => false,
-			'square'    => false,
 			'tiny'      => [ 80, 80, true ],
 		],
-		'remove' => [
-
-		],
+		'remove' => [],
 	],
 
 	/*
@@ -162,11 +158,13 @@ return [
 			'subMenuIconClass' => null,
 			'menuClasses'      => [
 				'combine' => [
-					'.nav-header-right',
+
 				],
 				'others'  => [
 					'.nav-header-left',
+					'.nav-header-right',
 					'.nav-below-header',
+					'.mobile-menu .menu-header-menu-container'
 				],
 			],
 			'menuAnimation'    => [
@@ -329,15 +327,15 @@ return [
 			'align-wide',
 			'automatic-feed-links',
 			'custom-header'            => [
-				'header-selector'  => '.page-header',
-				'default_image'    => mai_get_url() . 'assets/img/page-header.jpg',
-				'header-text'      => false,
-				'width'            => 1280,
-				'height'           => 720,
-				'flex-height'      => true,
-				'flex-width'       => true,
-				'uploads'          => true,
-				'video'            => false,
+				'header-selector' => '.page-header',
+				'default_image'   => mai_get_url() . 'assets/img/page-header.jpg',
+				'header-text'     => false,
+				'width'           => 1280,
+				'height'          => 720,
+				'flex-height'     => true,
+				'flex-width'      => true,
+				'uploads'         => true,
+				'video'           => false,
 			],
 			'editor-styles',
 			'editor-color-palette'     => mai_get_color_palette(),
@@ -393,60 +391,6 @@ return [
 			'wc-product-gallery-lightbox',
 			'wc-product-gallery-slider',
 			'wp-block-styles',
-
-
-			'page-header' => [],
-			'layouts'     => [],
-
-
-			'loop' => [
-				'post'      => [
-					'singular',
-					'archives',
-					'taxonomies' => [
-						'category',
-						'post_tag',
-					],
-				],
-				'page'      => [],
-				'product'   => [
-					'product_cat',
-				],
-				'portfolio' => [
-					'portfolio_cat',
-				],
-				'templates' => [
-					'author',
-					'search',
-					'date',
-				],
-			],
-
-
-			// Mai Settings - Panel
-			// Styles
-			// Colors
-			// Typography
-			// Spacing
-			// Global
-			// Site Header - (sticky/reveal/etc)
-			// Navigation Menus
-			// Page Header default
-			// Site Footer - footer widgets
-			// Single Post / Page
-			// Default - Layout, Page Header, Order
-			// Post - Edit post archive settings → // Layout, Page Header, Order
-			// Page - Layout, Page Header, Order
-			// Portfolio -
-			// Blog / Archives
-			// Default
-			// Post
-			// Category
-			// Tags
-			// Portfolio
-			// Portfolio Categories
-
-
 		],
 		'remove' => [],
 	],
@@ -468,25 +412,45 @@ return [
 				'id'          => 'before-header',
 				'name'        => __( 'Before Header', 'mai-engine' ),
 				'description' => __( 'The Before Header widget area.', 'mai-engine' ),
+				'location'    => 'mai_before_header_wrap',
 			],
-//			[
-//				'id'          => 'header_left',
-//				'name'        => __( 'Header Left', 'mai-engine' ),
-//				'description' => __( 'The Header Left widget area.', 'mai-engine' ),
-//			],
-//			[
-//				'id'          => 'header-right-widget',
-//				'name'        => __( 'Header Right', 'mai-engine' ),
-//				'description' => __( 'The Header Right widget area.', 'mai-engine' ),
-//			],
+			[
+				'id'          => 'header_left',
+				'name'        => __( 'Header Left', 'mai-engine' ),
+				'description' => __( 'The Header Left widget area.', 'mai-engine' ),
+				'location'    => 'mai_header_left',
+				'args'        => [
+					'before' => '<div class="header-widget-area">',
+					'after'  => '</div>',
+				],
+			],
+			[
+				'id'          => 'header_right',
+				'name'        => __( 'Header Right', 'mai-engine' ),
+				'description' => __( 'The Header Right widget area.', 'mai-engine' ),
+				'location'    => 'mai_header_right',
+				'args'        => [
+					'before' => '<div class="header-widget-area">',
+					'after'  => '</div>',
+				],
+			],
 			[
 				'id'          => 'before-footer',
 				'name'        => __( 'Before Footer', 'mai-engine' ),
 				'description' => __( 'The Before Footer widget area.', 'mai-engine' ),
+				'location'    => 'genesis_footer',
+				'priority'    => 5,
+			],
+			[
+				'id'          => 'mobile-menu',
+				'name'        => __( 'Mobile Menu', 'mai-engine' ),
+				'description' => __( 'The Mobile Menu widget area.', 'mai-engine' ),
+				'location'    => 'genesis_header',
 			],
 		],
 		'remove' => [
 			'sidebar-alt',
+			'header-right',
 		],
 	],
 

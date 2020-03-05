@@ -56,12 +56,12 @@
 
 .flex-control-nav {
 	display: flex;
-	margin-top: var(--space-sm);
+	margin-top: var(--spacing);
 	list-style-type: none;
 
 	li {
 		flex: 1;
-		margin-right: var(--space-sm);
+		margin-right: var(--spacing);
 
 		&:last-of-type {
 			margin-right: 0;

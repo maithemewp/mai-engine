@@ -134,7 +134,7 @@
 	@include button;
 
 	align-self: flex-end;
-	margin-left: var(--space-sm);
+	margin-left: var(--spacing);
 	padding: var(--spacing) - 0.1rem;
 	border: var(--border-size) var(--border-style) var(--color-primary);
 	color: var(--color-primary);

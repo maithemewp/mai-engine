@@ -9,7 +9,7 @@ dl {
 	ul,
 	ol,
 	dl {
-		margin: var(--sub-list-margin, (var(--space-sm) var(--spacing)));
+		margin: var(--sub-list-margin, (var(--spacing) var(--spacing)));
 	}
 }
 

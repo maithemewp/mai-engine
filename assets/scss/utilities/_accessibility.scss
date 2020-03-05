@@ -10,7 +10,7 @@
 		@include hide-visually(unhide);
 
 		position: absolute;
-		padding: var(--space-sm);
+		padding: var(--spacing);
 		color: var(--color-white);
 		background-color: var(--color-muted);
 		text-decoration: none;

@@ -7,6 +7,9 @@ $baseDir = dirname($vendorDir);
 
 return array(
     '320cde22f66dd4f5d3fd621d3e88b98f' => $vendorDir . '/symfony/polyfill-ctype/bootstrap.php',
+    '6124b4c8570aa390c21fafd04a26c69f' => $vendorDir . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
+    '051bafe20e2674435a162870efa2d2a7' => $vendorDir . '/brain/monkey/inc/api.php',
+    '38fbb71d514eee25044aa9d94851ee76' => $vendorDir . '/wp-phpunit/wp-phpunit/__loaded.php',
     '241d2b5b9c1e680c0770b006b0271156' => $vendorDir . '/yahnis-elsts/plugin-update-checker/load-v4p9.php',
     'cafd36f73acfb2610c629ce6be467fd6' => $vendorDir . '/advanced-custom-fields/advanced-custom-fields-pro/acf.php',
     'eee0895027fcd0de79706ca409434c0e' => $vendorDir . '/wpackagist-plugin/advanced-custom-fields-font-awesome/acf-font-awesome.php',

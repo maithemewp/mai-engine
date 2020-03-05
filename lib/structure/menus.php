@@ -9,7 +9,24 @@
  * @license   GPL-2.0-or-later
  */
 
-add_action( 'genesis_header', 'mai_header_left_menu', 5 );
+add_filter( 'genesis_attr_nav-header-left', 'mai_header_nav_class' );
+add_filter( 'genesis_attr_nav-header-right', 'mai_header_nav_class' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param $atts
+ *
+ * @return mixed
+ */
+function mai_header_nav_class( $atts ) {
+	$atts['class'] = 'nav-header ' . $atts['class'];
+
+	return $atts;
+}
+
+add_action( 'mai_header_left', 'mai_header_left_menu', 15 );
 /**
  * Description of expected behavior.
  *
@@ -23,7 +40,7 @@ function mai_header_left_menu() {
 	] );
 }
 
-add_action( 'mai_after_title_area', 'mai_header_right_menu', 5 );
+add_action( 'mai_header_right', 'mai_header_right_menu' );
 /**
  * Description of expected behavior.
  *
@@ -64,7 +81,6 @@ function mai_footer_menu() {
 		'theme_location' => 'footer',
 	] );
 }
-
 
 add_filter( 'walker_nav_menu_start_el', 'mai_replace_hash_with_void', 999 );
 /**

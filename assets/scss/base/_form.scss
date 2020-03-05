@@ -9,7 +9,7 @@ abbr[title] {
 
 label {
 	display: inline-block;
-	margin: var(--label-margin, 0 0 var(--space-sm));
+	margin: var(--label-margin, 0 0 var(--spacing));
 	font-size: var(--label-font-size, (smaller));
 	font-weight: var(--label-font-weight, var(--font-weight-heading));
 
@@ -19,7 +19,7 @@ label {
 
 #{$all-text-inputs} {
 	width: 100%;
-	margin: var(--input-margin, 0 0 var(--space-sm));
+	margin: var(--input-margin, 0 0 var(--spacing));
 	padding: var(--input-padding, 1em);
 	border: var(--input-border, var(--border));
 	border-radius: var(--input-border-radius, var(--border-radius));
@@ -60,7 +60,7 @@ input[type="checkbox"],
 input[type="image"],
 input[type="radio"] {
 	width: auto;
-	margin-right: var(--space-sm);
+	margin-right: var(--spacing);
 }
 
 input[type="color"] {
@@ -91,7 +91,7 @@ legend {
 	display: table;
 	float: left;
 	width: 100%;
-	margin: var(--legend-margin, 0 0 var(--space-sm));
+	margin: var(--legend-margin, 0 0 var(--spacing));
 	padding: var(--legend-padding, 0);
 	font-size: var(--legend-font-size, var(--text-xs));
 

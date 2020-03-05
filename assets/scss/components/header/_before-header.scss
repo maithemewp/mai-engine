@@ -1,11 +1,11 @@
 .before-header {
-	padding: var(--before-header-padding, (var(--space-sm) 0));
-	border-bottom: var(--before-header-border-bottom, var(--border));
-	background-color: var(--before-header-background-color, var(--color-light));
-	font-size: var(--before-header-font-size, small);
-	line-height: var(--before-header-line-height, 1);
+	padding: var(--spacing) 0;
+	border-bottom: var(--border);
+	font-size: small;
+	line-height: 1;
 
 	--widget-margin: 0;
+	--heading-margin: 0;
 	--paragraph-margin: 0;
 	--button-margin: 0;
 	--wrap-align-items: center;

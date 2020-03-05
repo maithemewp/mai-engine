@@ -1,0 +1,6 @@
+.mobile-menu {
+
+	@include mq(lg) {
+		display: none;
+	}
+}
