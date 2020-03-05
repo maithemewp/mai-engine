@@ -1,116 +1,11 @@
 <?php
 
-// TEMPORARY TILL I'M USING MAI ENGINE.
-
-function mai_temp_get_image_sizes() {
-	$breakpoints = mai_temp_get_breakpoints();
-	return [
-		'sm' => $breakpoints['xs'], // 384px.
-		'md' => $breakpoints['md'], // 768px.
-		'lg' => $breakpoints['xl'], // 1152px.
-	];
-}
-
-function mai_temp_get_breakpoints() {
-
-	// "screen-xs": "400px", // mobile portrait
-	// "screen-sm": "600px", // mobile landscape
-	// "screen-md": "800px", // tablet portrait
-	// "screen-lg": "1000px", // tablet landscape
-	// "screen-xl": "1200px", // desktop
-
-	return [
-		'xs' => '',
-		'sm' => 512,
-		'md' => 768,
-		'lg' => 1024,
-		'xl' => 1152,
-	];
-}
-
-// add_action( 'init', function() {
-
-	$image_sizes = mai_temp_get_image_sizes();
-
-	$sizes = [
-		'full'         => mai_apply_aspect_ratio( 1600, '16:9' ),
-		'landscape-lg' => mai_apply_aspect_ratio( $image_sizes['lg'], '4:3' ),
-		'landscape-md' => mai_apply_aspect_ratio( $image_sizes['md'], '4:3' ),
-		'landscape-sm' => mai_apply_aspect_ratio( $image_sizes['sm'], '4:3' ),
-		'portrait-lg'  => mai_apply_aspect_ratio( $image_sizes['lg'], '3:4' ),
-		'portrait-md'  => mai_apply_aspect_ratio( $image_sizes['md'], '3:4' ),
-		'portrait-sm'  => mai_apply_aspect_ratio( $image_sizes['sm'], '3:4' ),
-		'square-lg'    => mai_apply_aspect_ratio( $image_sizes['lg'], '1:1' ),
-		'square-md'    => mai_apply_aspect_ratio( $image_sizes['md'], '1:1' ),
-		'square-sm'    => mai_apply_aspect_ratio( $image_sizes['sm'], '1:1' ),
-		'tiny'         => mai_apply_aspect_ratio( 80, '1:1' ),
-	];
-
-	foreach( $sizes as $name => $values ) {
-		add_image_size( $name, $values[0], $values[1], $values[2] );
-	}
-
-// });
-
-function mai_apply_aspect_ratio( $width = 896, $ratio = '16:9' ) {
-	$ratio       = explode( ':', $ratio );
-	$x           = $ratio[0];
-	$y           = $ratio[1];
-	$height      = (int) $width / $x * $y;
-	return [ $width, $height, true ];
-}
-
-//  END TEMPORARY.
-
 /**
  * // Loop.
  * @link  https://github.com/studiopress/genesis/blob/master/lib/structure/loops.php#L64
  * // Post.
  * @link  https://github.com/studiopress/genesis/blob/master/lib/structure/post.php
  */
-
-// do_action( 'genesis_entry_header' );
-// do_action( 'genesis_before_entry_content' );
-// do_action( 'genesis_entry_content' );
-// do_action( 'genesis_after_entry_content' );
-// do_action( 'genesis_entry_footer' );
-
-/**
- * his is in v1 already but we need it.
- * TODO: Remove _new.
- */
-function mai_is_content_archive_new() {
-	return (bool) ( is_home() || is_archive() || is_tax() || is_search() || is_date() || is_author() );
-}
-
-/**
- * Enqueue an asset.
- *
- * @param   string  $handle        The asset handle.
- * @param   string  $name          The asset name.
- * @param   string  $type          The type. Typically js or css.
- * @param   array   $dependencies  Script dependencies.
- *
- * @return  void
- */
-function mai_enqueue_asset( $handle, $name, $type, $dependencies = [] ) {
-	// TODO: These should get cleaned up once in the engine.
-	// TODO: Static variables?
-	$base_url = trailingslashit( MAI_GRID_PLUGIN_URL ) . 'assets/' . $type;
-	$base_dir = trailingslashit( MAI_GRID_PLUGIN_DIR ) . 'assets/' . $type;
-	$suffix   = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '': '.min';
-	$suffix   = ''; // Temp fix.
-	$url      = sprintf( '%s/%s%s.%s', $base_url, $name, $suffix, $type );
-	$version  = MAI_GRID_VERSION . '.' . date ( 'njYHi', filemtime( "{$base_dir}/{$name}{$suffix}.{$type}" ) );
-	switch ( $type ) {
-		case 'css':
-			wp_enqueue_style( $handle, $url, $dependencies, $version );
-		break;
-		case 'js':
-			wp_enqueue_script( $handle, $url, $dependencies, $version, true );
-		break;
-	}
-}
 
 function mai_do_entries_open( $args ) {
 
