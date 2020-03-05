@@ -4,4 +4,10 @@
 *.lock
 *.zip
 node_modules
-vendor
+vendor/*
+!vendor/composer
+# !vendor/yahnis-elsts
+# !vendor/advanced-custom-fields
+# !vendor/wpackagist-plugin
+# !vendor/fortawesome
+# !vendor/aristath
