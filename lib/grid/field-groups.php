@@ -6,10 +6,9 @@ function mai_register_grid_field_groups() {
 
 	$post_grid = $term_grid = $user_grid = [];
 
-	// Settings config.
-	$config = new Mai_Entry_Settings( 'block' );
-	$fields = $config->get_fields();
-
+	// Get fields
+	$settings = new Mai_Entry_Settings( 'block' );
+	$fields   = $settings->fields;
 	// Setup fields.
 	foreach( $fields as $name => $field ) {
 
@@ -25,15 +24,15 @@ function mai_register_grid_field_groups() {
 
 		// Post grid.
 		if ( in_array( 'mai_post_grid', $field['group'] ) ) {
-			$post_grid[] = $config->get_data( $name, $field );
+			$post_grid[] = $settings->get_data( $name, $field );
 		}
 		// Term grid.
 		if ( in_array( 'mai_term_grid', $field['group'] ) ) {
-			$term_grid[] = $config->get_data( $name, $field );
+			$term_grid[] = $settings->get_data( $name, $field );
 		}
 		// Post grid.
 		if ( in_array( 'mai_user_grid', $field['group'] ) ) {
-			$user_grid[] = $config->get_data( $name, $field );
+			$user_grid[] = $settings->get_data( $name, $field );
 		}
 	}
 
