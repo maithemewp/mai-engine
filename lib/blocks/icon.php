@@ -15,7 +15,8 @@ function mai_register_icon_block() {
 			'title'           => __( 'Icon', 'mai-engine' ),
 			'description'     => __( 'A custom icon block.', 'mai-engine' ),
 			'render_callback' => 'mai_render_icon_block',
-			'category'        => 'mai',
+			'category'        => 'widgets',
+			'keywords'        => [ 'icon' ],
 			'icon'            => 'star-filled',
 		] );
 	}
