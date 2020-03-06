@@ -140,7 +140,7 @@ function mai_get_version() {
 function mai_get_asset_version( $file ) {
 	$file = str_replace( mai_get_url(), mai_get_dir(), $file );
 
-	return mai_is_in_dev_mode() && mai_has_string( mai_get_dir(), $file ) ? filemtime( $file ) : mai_get_version();
+	return file_exists( $file ) && mai_is_in_dev_mode() && mai_has_string( mai_get_dir(), $file ) ? filemtime( $file ) : mai_get_version();
 }
 
 /**
