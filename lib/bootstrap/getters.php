@@ -523,3 +523,13 @@ function mai_get_available_image_sizes() {
 	}
 	return $image_sizes;
 }
+
+function mai_get_settings_fields( $context ) {
+	$settings = new Mai_Entry_Settings( $context );
+	return $settings->fields;
+}
+
+function mai_get_settings_keys( $context ) {
+	$settings = new Mai_Entry_Settings( $context );
+	return $settings->keys;
+}
