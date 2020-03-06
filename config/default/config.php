@@ -36,13 +36,13 @@ return [
 		'breadcrumb_archive'        => 0,
 		'breadcrumb_404'            => 0,
 		'breadcrumb_attachment'     => 0,
-		'content_archive'           => 'full',
-		'content_archive_limit'     => 200,
-		'content_archive_thumbnail' => 1,
-		'image_size'                => 'featured',
-		'image_alignment'           => 'alignnone',
-		'posts_nav'                 => 'numeric',
-		'site_layout'               => 'narrow-content',
+		'content_archive'           => 'full',      // TODO: Not sure we need this with new archive settings.
+		'content_archive_limit'     => 200,         // TODO: ^
+		'content_archive_thumbnail' => 1,           // TODO: ^
+		'image_size'                => 'featured',  // TODO: ^
+		'image_alignment'           => 'alignnone', // TODO: ^
+		'posts_nav'                 => 'numeric',   // TODO: ^
+		'site_layout'               => 'standard-content',
 	],
 
 	/*
@@ -57,7 +57,7 @@ return [
 	*/
 
 	'google-fonts' => [
-		'Source+Sans+Pro:400,600,700',
+		'Source+Sans+Pro:400,600,700', // TODO: Should this be empty to start, incase a custom site doesn't want a google font? Or that site should just filter this and return empty array?
 	],
 
 	/*
