@@ -134,13 +134,10 @@ function mai_add_archive_customizer_settings( $name, $type = 'post_type' ) {
 		case 'post_type':
 			$post_type = get_post_type_object( $name );
 			$label     = $post_type->labels->name;
-			// $label     = $post_type->labels->singular_name;
-			// $label     = trim( $label . ' ' . esc_attr__( 'Archives', 'mai-engine' ) );
 		break;
 		case 'taxonomy':
 			$taxonomy  = get_taxonomy( $name );
 			$label     = $taxonomy->labels->name;
-			// $label     = trim( '&mdash; ' . $label . ' ' . esc_attr__( 'Archives', 'mai-engine' ) );
 		break;
 		case 'search':
 			$label     = esc_attr__( 'Search Results', 'mai-engine' );
@@ -169,6 +166,12 @@ function mai_add_archive_customizer_settings( $name, $type = 'post_type' ) {
 		if ( ! $field['archive'] ) {
 			continue;
 		}
+
+		// TODO: Check post type support. How to handle where it works with grid post_type as well?
+		// Skip if post type doesn't support a required feature.
+		// if ( 'post_type' === $type && isset( $field['supports'] ) && ! in_array( $field['supports'], $post_type->supports ) ) {
+		// 	continue;
+		// }
 
 		// Add field.
 		Kirki::add_field( $config_id, $settings->get_data( $field_name, $field, $config_id ) );
@@ -225,6 +228,12 @@ function mai_add_single_customizer_settings( $name ) {
 		if ( ! $field['single'] ) {
 			continue;
 		}
+
+		// TODO: Check post type support. How to handle where it works with grid post_type as well?
+		// Skip if post type doesn't support a required feature.
+		// if ( 'post_type' === $type && isset( $field['supports'] ) && ! in_array( $field['supports'], $post_type->supports ) ) {
+		// 	continue;
+		// }
 
 		// Add field.
 		Kirki::add_field( $config_id, $settings->get_data( $field_name, $field, $config_id ) );
