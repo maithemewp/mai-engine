@@ -350,13 +350,176 @@ function mai_get_breakpoint( $size = 'md', $suffix = '' ) {
 	return $breakpoints[ $size ] . '';
 }
 
-/**
- * Description of expected behavior.
- *
- * @since 0.1.0
- *
- * @return string
- */
-function mai_get_image_sizes() {
+function mai_get_flex_align( $value ) {
+	switch ( $value ) {
+		case 'start':
+		case 'top':
+			$return = 'flex-start';
+			break;
+		case 'center':
+		case 'middle':
+			$return = 'center';
+			break;
+		case 'right':
+		case 'bottom':
+			$return = 'flex-end';
+			break;
+		default:
+			$return = 'unset';
+	}
+	return $return;
+}
 
+/**
+ * Get the gap value.
+ * If only a number value, force to pixels.
+ *
+ * @param   int|string  The value. Could be integer 24 or with type 24px, 2rem, etc.
+ *
+ * @return  string  The value, ready to be used in CSS.
+ */
+function mai_get_gap( $value ) {
+	if ( empty( $value ) || is_numeric( $value ) ) {
+		return sprintf( '%spx', intval( $value ) );
+	}
+	return trim( $value );
+}
+
+/**
+ * Get the columns at different breakpoints.
+ * We use strings because the clear option is just an empty string.
+ */
+function mai_get_breakpoint_columns( $args ) {
+
+	$columns = [
+		'lg' => (int) $args['columns'],
+	];
+	if ( $args['columns_responsive'] ) {
+		$columns['md'] = (int) $args['columns_md'];
+		$columns['sm'] = (int) $args['columns_sm'];
+		$columns['xs'] = (int) $args['columns_xs'];
+	} else {
+		switch ( (int) $args['columns'] ) {
+			case 6:
+				$columns['md'] = 4;
+				$columns['sm'] = 3;
+				$columns['xs'] = 2;
+			break;
+			case 5:
+				$columns['md'] = 3;
+				$columns['sm'] = 2;
+				$columns['xs'] = 2;
+			break;
+			case 4:
+				$columns['md'] = 4;
+				$columns['sm'] = 2;
+				$columns['xs'] = 1;
+			break;
+			case 3:
+				$columns['md'] = 3;
+				$columns['sm'] = 1;
+				$columns['xs'] = 1;
+			break;
+			case 2:
+				$columns['md'] = 2;
+				$columns['sm'] = 2;
+				$columns['xs'] = 1;
+			break;
+			case 1:
+				$columns['md'] = 1;
+				$columns['sm'] = 1;
+				$columns['xs'] = 1;
+			break;
+			case 0: // Auto.
+				$columns['md'] = 0;
+				$columns['sm'] = 0;
+				$columns['xs'] = 0;
+			break;
+		}
+	}
+
+	return $columns;
+}
+
+function mai_get_align_text( $alignment ) {
+	switch ( $alignment ) {
+		case 'start':
+		case 'top':
+			$value = 'start';
+		break;
+		case 'center':
+		case 'middle':
+			$value = 'center';
+		break;
+		case 'bottom':
+		case 'end':
+			$value = 'end';
+		break;
+		default:
+			$value = 'unset';
+	}
+	return $value;
+}
+
+/**
+ * Return content stripped down and limited content.
+ *
+ * Strips out tags and shortcodes, limits the output to `$max_char` characters.
+ *
+ * @param   string  $content The content to limit.
+ * @param   int     $limit   The maximum number of characters to return.
+ *
+ * @return  string  Limited content.
+ */
+function mai_get_content_limit( $content, $limit ) {
+
+	// Strip tags and shortcodes so the content truncation count is done correctly.
+	$content = strip_tags( strip_shortcodes( $content ), apply_filters( 'get_the_content_limit_allowedtags', '<script>,<style>' ) );
+
+	// Remove inline styles / scripts.
+	$content = trim( preg_replace( '#<(s(cript|tyle)).*?</\1>#si', '', $content ) );
+
+	// Truncate $content to $limit.
+	$content = genesis_truncate_phrase( $content, $limit );
+
+	return $content;
+}
+
+function mai_get_aspect_ratio( $image_size ) {
+	$all_sizes = mai_get_available_image_sizes();
+	$sizes     = isset( $all_sizes[ $image_size ] ) ? $all_sizes[ $image_size ] : false;
+	// TODO: Get default landscape aspect ratio.
+	return $sizes ? sprintf( '%s/%s', $sizes['height'], $sizes['width'] ) : '4/3';
+}
+
+/**
+ * Utility method to get a combined list of default and custom registered image sizes.
+ * Originally taken from CMB2. Static variable added here.
+ *
+ * We can't use `genesis_get_image_sizes()` because we need it earlier than Genesis is loaded for Kirki.
+ *
+ * @link    http://core.trac.wordpress.org/ticket/18947
+ * @global  array  $_wp_additional_image_sizes.
+ * @return  array  The image sizes.
+ */
+function mai_get_available_image_sizes() {
+	// Cache.
+	static $image_sizes = array();
+	if ( ! empty( $image_sizes ) ) {
+		return $image_sizes;
+	}
+	// Get image sizes.
+	global $_wp_additional_image_sizes;
+	$default_image_sizes = array( 'thumbnail', 'medium', 'large' );
+	foreach ( $default_image_sizes as $size ) {
+		$image_sizes[ $size ] = array(
+			'height' => intval( get_option( "{$size}_size_h" ) ),
+			'width'  => intval( get_option( "{$size}_size_w" ) ),
+			'crop'   => get_option( "{$size}_crop" ) ? get_option( "{$size}_crop" ) : false,
+		);
+	}
+	if ( isset( $_wp_additional_image_sizes ) && count( $_wp_additional_image_sizes ) ) {
+		$image_sizes = array_merge( $image_sizes, $_wp_additional_image_sizes );
+	}
+	return $image_sizes;
 }

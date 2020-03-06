@@ -2,8 +2,8 @@
 
 class Mai_Entry_Settings {
 
-	public $context;
-	public $type;
+	public $context; // archive, single, block.
+	public $type;    // post, taxonomy, user.
 	public $fields;
 	public $defaults;
 	public $keys;
@@ -20,6 +20,10 @@ class Mai_Entry_Settings {
 	 * Get field configs.
 	 */
 	function get_fields() {
+		static $fields = null;
+		if ( ! is_null( $fields ) ) {
+			return $fields;
+		}
 		return [
 			/***********
 			 * Display *
@@ -908,22 +912,23 @@ class Mai_Entry_Settings {
 
 	function get_defaults() {
 		static $defaults = [];
-		if ( $defaults ) {
-			return;
+		if ( isset( $defaults[ $this->context ] ) ) {
+			return $defaults[ $this->context ];
 		}
-		return array_merge(
+		$defaults[ $this->context ] = array_merge(
 			[
 				'context' => $this->context,
 				'type'    => $this->type,
 			],
 			wp_list_pluck( $this->fields, 'default' )
 		);
+		return $defaults[ $this->context ];
 	}
 
 	function get_keys() {
-		static $keys = [];
-		if ( $keys ) {
-			return;
+		static $keys = null;
+		if ( ! is_null( $keys ) ) {
+			return $keys;
 		}
 		foreach( $this->fields as $name => $field ) {
 			// Skip if no key.
@@ -1024,7 +1029,6 @@ class Mai_Entry_Settings {
 		}
 		return $show;
 	}
-
 	/**
 	 * TODO: Conditionally check if image sizes are supported.
 	 */
@@ -1038,7 +1042,7 @@ class Mai_Entry_Settings {
 	}
 	function image_size() {
 		$choices = [];
-		$sizes   = mai_get_available_image_sizes_new();
+		$sizes   = mai_get_available_image_sizes();
 		foreach ( $sizes as $index => $value ) {
 			$choices[ $index ] = sprintf( '%s (%s x %s)', $index, $value['width'], $value['height'] );
 		}
@@ -1216,7 +1220,7 @@ class Mai_Entry_Settings {
 		];
 	}
 
-	function get_data( $name, $field, $section_id = '', $prefix = '' ) {
+	function get_data( $name, $field, $section_id = '' ) {
 
 		// If an ACF field.
 		if ( 'block' === $this->context ) {
@@ -1284,7 +1288,7 @@ class Mai_Entry_Settings {
 			}
 			// Maybe add conditional logic.
 			if ( isset( $field['conditions'] ) ) {
-				$data['active_callback'] = $this->get_conditions( $field, $prefix );
+				$data['active_callback'] = $this->get_conditions( $field );
 			}
 			// Maybe add default.
 			if ( isset( $field['default'] ) ) {
@@ -1308,14 +1312,14 @@ class Mai_Entry_Settings {
 	 * ACF uses field => {key} and kirki uses setting => {name}.
 	 * ACF uses == for checkbox, and kirki uses 'contains'.
 	 */
-	function get_conditions( $field, $prefix = '' ) {
+	function get_conditions( $field ) {
 		if ( is_array( $field['conditions'] ) ) {
 			$count      = 0; // Kirki's nesting is different than ACF, so we need this.
 			$conditions = [];
 			foreach( $field['conditions'] as $index => $condition ) {
 				// If 'AND' relation.
 				if ( isset( $condition['setting'] ) ) {
-					$conditions[] = $this->get_condition( $condition, $field, $prefix );
+					$conditions[] = $this->get_condition( $condition, $field );
 					$count++; // For Kirki's nesting.
 				}
 				// 'OR' relation - nested one level further.
@@ -1326,7 +1330,7 @@ class Mai_Entry_Settings {
 						}
 					} else {
 						foreach( $condition as $child_condition ) {
-							$conditions[ $count ][] = $this->get_condition( $child_condition, $field, $prefix );
+							$conditions[ $count ][] = $this->get_condition( $child_condition, $field );
 						}
 					}
 				}
@@ -1336,7 +1340,7 @@ class Mai_Entry_Settings {
 		return $field['conditions'];
 	}
 
-	function get_condition( $condition, $field, $prefix = '' ) {
+	function get_condition( $condition, $field ) {
 		$array = [];
 		if ( 'block' === $this->context ) {
 			$array = [
@@ -1349,7 +1353,6 @@ class Mai_Entry_Settings {
 			}
 		} else {
 			$array = [
-				// 'setting'  => sprintf( '%s%s', $prefix, $condition['setting'] ), // Kirki settings must be prefixed.
 				'setting'  => $condition['setting'],
 				'operator' => $condition['operator'],
 				'value'    => $condition['value'],

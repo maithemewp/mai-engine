@@ -1,9 +1,8 @@
 <?php
 
 /**
- * This should handle templates, sanitization, enqueing of files, etc., but nothing with ACF
- * since ACF should only be used for the block. We need a shortcode and helper function as well,
- * outside of ACF.
+ * Instantiate a grid.
+ * Use render() method to display.
  */
 class Mai_Grid {
 
@@ -95,7 +94,7 @@ class Mai_Grid {
 		}
 
 		// Enqueue scripts and styles.
-		$this->enqueue_assets();
+		// $this->enqueue_assets();
 
 		// Grid specific classes.
 		$this->args['class'] = 'mai-grid ' . $this->args['class'];
@@ -253,22 +252,22 @@ class Mai_Grid {
 		return $escaped;
 	}
 
-	function enqueue_assets() {
+	// function enqueue_assets() {
 
-		if ( is_admin() ) {
+	// 	if ( is_admin() ) {
 
-			// Query JS.
-			switch ( $this->args['type'] ) {
-				case 'post':
-					wp_localize_script( mai_get_handle() . '-wp-query', 'maiGridWPQueryVars', [
-						'fields' => $this->fields,
-						'keys'   => $this->keys,
-					] );
-					break;
-				case 'term':
-					break;
-			}
-		}
-	}
+	// 		// Query JS.
+	// 		switch ( $this->args['type'] ) {
+	// 			case 'post':
+	// 				wp_localize_script( mai_get_handle() . '-wp-query', 'maiGridWPQueryVars', [
+	// 					'fields' => $this->fields,
+	// 					'keys'   => $this->keys,
+	// 				] );
+	// 				break;
+	// 			case 'term':
+	// 				break;
+	// 		}
+	// 	}
+	// }
 
 }
