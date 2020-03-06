@@ -19,7 +19,6 @@ class ComposerStaticInitb109c82834b5632899cf4c449109f709
         'fbd278ae8fc5e3610054be5e1c07c680' => __DIR__ . '/../..' . '/lib/bootstrap/getters.php',
         'ef614b1cf80882942d99bbd790324ab7' => __DIR__ . '/../..' . '/lib/bootstrap/genesis.php',
         '5add43ea922ea2890fae7376e8d27a1e' => __DIR__ . '/../..' . '/lib/bootstrap/autoload.php',
-        '57b81ab45993267fa30056dc3d0da0c2' => __DIR__ . '/../..' . '/lib/bootstrap/layouts.php',
         '6102893d049374a5aa60a7f07be67015' => __DIR__ . '/../..' . '/lib/bootstrap/setup.php',
     );
 

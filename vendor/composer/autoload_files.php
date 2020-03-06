@@ -18,6 +18,5 @@ return array(
     'fbd278ae8fc5e3610054be5e1c07c680' => $baseDir . '/lib/bootstrap/getters.php',
     'ef614b1cf80882942d99bbd790324ab7' => $baseDir . '/lib/bootstrap/genesis.php',
     '5add43ea922ea2890fae7376e8d27a1e' => $baseDir . '/lib/bootstrap/autoload.php',
-    '57b81ab45993267fa30056dc3d0da0c2' => $baseDir . '/lib/bootstrap/layouts.php',
     '6102893d049374a5aa60a7f07be67015' => $baseDir . '/lib/bootstrap/setup.php',
 );

@@ -50,7 +50,6 @@
 	  "lib/bootstrap/getters.php",
 	  "lib/bootstrap/genesis.php",
 	  "lib/bootstrap/autoload.php",
-	  "lib/bootstrap/layouts.php",
 	  "lib/bootstrap/setup.php"
 	]
   },
