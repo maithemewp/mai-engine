@@ -86,41 +86,41 @@ final class Mai_Grid_Blocks  {
 			return;
 		}
 		// Mai Post Grid.
-		acf_register_block_type( array(
+		acf_register_block_type( [
 			'name'            => 'mai-post-grid',
 			'title'           => __( 'Mai Post Grid', 'mai-grid' ),
 			'description'     => __( 'Display posts/pages/cpts in various layouts.', 'mai-grid' ),
 			'icon'            => 'grid-view',
 			'category'        => 'widgets',
-			'keywords'        => array( 'grid', 'post', 'page' ),
+			'keywords'        => [ 'grid', 'post', 'page' ],
 			// 'mode'            => 'auto',
 			// 'mode'            => 'edit',
 			'mode'            => 'preview',
-			// 'enqueue_assets'  => array( $this, 'enqueue_assets'),
-			'render_callback' => array( $this, 'do_post_grid' ),
-			'supports'        => array(
-				'align'  => array( 'wide' ),
+			// 'enqueue_assets'  => [ $this, 'enqueue_assets'],
+			'render_callback' => [ $this, 'do_post_grid' ],
+			'supports'        => [
+				'align'  => [ 'wide' ],
 				'ancher' => true,
-			),
-		) );
+			],
+		] );
 		// Mai Term Grid.
-		acf_register_block_type( array(
+		acf_register_block_type( [
 			'name'            => 'mai-term-grid',
 			'title'           => __( 'Mai Term Grid', 'mai-grid' ),
 			'description'     => __( 'Display posts/pages/cpts in various layouts.', 'mai-grid' ),
 			'icon'            => 'grid-view',
 			'category'        => 'widgets',
-			'keywords'        => array( 'grid', 'category', 'term' ),
+			'keywords'        => [ 'grid', 'category', 'term' ],
 			// 'mode'            => 'auto',
 			// 'mode'            => 'edit',
 			'mode'            => 'preview',
-			// 'enqueue_assets'  => array( $this, 'enqueue_assets'),
-			'render_callback' => array( $this, 'do_term_grid' ),
-			'supports'        => array(
-				'align'  => array( 'wide' ),
+			// 'enqueue_assets'  => [ $this, 'enqueue_assets'],
+			'render_callback' => [ $this, 'do_term_grid' ],
+			'supports'        => [
+				'align'  => [ 'wide' ],
 				'ancher' => true,
-			),
-		) );
+			],
+		] );
 	}
 
 	// function enqueue_assets() {
