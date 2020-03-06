@@ -259,8 +259,8 @@ return [
 				'localize' => [
 					'name' => 'maiGridWPQueryVars',
 					'data' => [
-						'fields' => [], // TODO: Get real data.
-						'keys'   => [], // TODO: Get real data.
+						'fields' => mai_get_settings_fields( 'block' ),
+						'keys'   => mai_get_settings_keys( 'block' ),
 					],
 				],
 			],
