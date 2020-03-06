@@ -51,3 +51,12 @@ function mai_remove_genesis_theme_supports() {
 	add_theme_support( 'genesis-breadcrumbs' );
 }
 
+/**
+ * Empty Genesis initial layouts.
+ * All layouts are handled in the config now.
+ *
+ * @since 0.1.0
+ *
+ * @return array
+ */
+add_filter( 'genesis_initial_layouts', '__return_empty_array' );
