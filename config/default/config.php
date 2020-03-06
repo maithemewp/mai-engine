@@ -234,16 +234,17 @@ return [
 				'deps'   => [],
 			],
 
-			/**
-			 * Grid scripts.
-			 */
+			// Customizer scripts.
 
 			[
-				'handle' => mai_get_handle() . '-customizer',
-				'src'    => mai_get_url() . 'assets/js/customizer.js',
-				'deps'   => [],
-				'editor' => true, // Only load in the admin editor.
+				'handle'     => mai_get_handle() . '-customizer',
+				'src'        => mai_get_url() . 'assets/js/customizer.js',
+				'deps'       => [],
+				'customizer' => true,
 			],
+
+			// Grid scripts.
+
 			[
 				'handle' => mai_get_handle() . '-sortable',
 				'src'    => mai_get_url() . 'assets/js/sortable.js',
@@ -264,14 +265,24 @@ return [
 				],
 			],
 
-			/**
-			 * End grid scripts.
-			 */
-
 			// Styles.
 			[
 				'handle' => mai_get_handle(),
 				'src'    => mai_get_url() . 'assets/css/min/' . mai_get_active_theme() . '.min.css',
+			],
+
+			// Customizer styles.
+			[
+				'handle'     => mai_get_handle() . '-customizer',
+				'src'        => mai_get_url() . 'assets/css/admin/customizer.css',
+				'customizer' => true,
+			],
+
+			// Grid styles.
+			[
+				'handle' => mai_get_handle() . '-acf',
+				'src'    => mai_get_url() . 'assets/css/admin/acf.css',
+				'editor' => true,
 			],
 
 		],

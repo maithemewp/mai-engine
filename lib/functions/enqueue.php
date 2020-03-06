@@ -18,6 +18,7 @@ add_action( 'wp_enqueue_scripts', 'genesis_enqueue_main_stylesheet', 99 );
 
 add_action( 'wp_enqueue_scripts', 'mai_enqueue_assets' );
 add_action( 'admin_enqueue_scripts', 'mai_enqueue_assets' );
+add_action( 'customize_controls_enqueue_scripts', 'mai_enqueue_assets' );
 add_action( 'enqueue_block_editor_assets', 'mai_enqueue_assets' );
 /**
  * Register and enqueue all scripts and styles.
@@ -39,23 +40,24 @@ function mai_enqueue_assets() {
 	}
 
 	foreach ( $assets as $asset ) {
-		$handle    = $asset['handle']; // Required.
-		$src       = $asset['src']; // Required.
-		$type      = false !== strpos( $src, '.js' ) ? 'script' : 'style';
-		$deps      = isset( $asset['deps'] ) ? $asset['deps'] : [];
-		$ver       = isset( $asset['ver'] ) ? $asset['ver'] : mai_get_asset_version( $asset['src'] );
-		$media     = isset( $asset['media'] ) ? $asset['media'] : 'all';
-		$in_footer = isset( $asset['in_footer'] ) ? $asset['in_footer'] : true;
-		$editor    = isset( $asset['editor'] ) ? $asset['editor'] : false;
-		$condition = isset( $asset['condition'] ) ? $asset['condition'] : '__return_true';
-		$localize  = isset( $asset['localize'] ) ? $asset['localize'] : [];
-		$hook      = isset( $asset['hook'] ) ? $asset['hook'] : false;
-		$priority  = isset( $asset['priority'] ) ? $asset['priority'] : 10;
-		$last_arg  = 'style' === $type ? $media : $in_footer;
-		$register  = "wp_register_$type";
-		$enqueue   = "wp_enqueue_$type";
+		$handle     = $asset['handle']; // Required.
+		$src        = $asset['src']; // Required.
+		$type       = false !== strpos( $src, '.js' ) ? 'script' : 'style';
+		$deps       = isset( $asset['deps'] ) ? $asset['deps'] : [];
+		$ver        = isset( $asset['ver'] ) ? $asset['ver'] : mai_get_asset_version( $asset['src'] );
+		$media      = isset( $asset['media'] ) ? $asset['media'] : 'all';
+		$in_footer  = isset( $asset['in_footer'] ) ? $asset['in_footer'] : true;
+		$editor     = isset( $asset['editor'] ) ? $asset['editor'] : false;
+		$customizer = isset( $asset['customizer'] ) ? $asset['customizer'] : false;
+		$condition  = isset( $asset['condition'] ) ? $asset['condition'] : '__return_true';
+		$localize   = isset( $asset['localize'] ) ? $asset['localize'] : [];
+		$hook       = isset( $asset['hook'] ) ? $asset['hook'] : false;
+		$priority   = isset( $asset['priority'] ) ? $asset['priority'] : 10;
+		$last_arg   = 'style' === $type ? $media : $in_footer;
+		$register   = "wp_register_$type";
+		$enqueue    = "wp_enqueue_$type";
 
-		if ( is_admin() && $editor || ! is_admin() && ! $editor || 'both' === $editor ) {
+		if ( is_admin() && $editor || ! is_admin() && ! $editor || 'both' === $editor || $customizer ) {
 			if ( is_callable( $condition ) && $condition() ) {
 				$register( $handle, $src, $deps, $ver, $last_arg );
 
