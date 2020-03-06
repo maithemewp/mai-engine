@@ -20,11 +20,11 @@ class Mai_Entry_Settings {
 	 * Get field configs.
 	 */
 	function get_fields() {
-		static $fields = null;
-		if ( ! is_null( $fields ) ) {
-			return $fields;
+		static $fields = [];
+		if ( isset( $fields[ $this->context ] ) ) {
+			return $fields[ $this->context ];
 		}
-		return [
+		$fields[ $this->context ] = [
 			/***********
 			 * Display *
 			 ***********/
@@ -908,6 +908,7 @@ class Mai_Entry_Settings {
 				'default'    => '',
 			],
 		];
+		return $fields[ $this->context ];
 	}
 
 	function get_defaults() {
@@ -1292,6 +1293,10 @@ class Mai_Entry_Settings {
 			}
 			// Maybe add default.
 			if ( isset( $field['default'] ) ) {
+				// Force radio buttonsets to strings, for some reason integers don't work with Kirki.
+				if ( 'radio-buttonset' === $field['type'] && is_integer( $field['default'] ) ) {
+					$field['default'] = (string) $field['default'];
+				}
 				$data['default'] = $field['default'];
 			}
 			// Maybe add choices.
