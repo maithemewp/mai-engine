@@ -259,7 +259,7 @@ return [
 				'localize' => [
 					'name' => 'maiGridWPQueryVars',
 					'data' => [
-						'fields' => mai_get_settings_fields( 'block' ),
+						// 'fields' => mai_get_settings_fields( 'block' ),
 						'keys'   => mai_get_settings_keys( 'block' ),
 					],
 				],
@@ -326,10 +326,11 @@ return [
 
 	'archive-settings' => [
 		'post',
-		'category',
-		'portfolio',
+		// 'category',
+		// 'portfolio',
 		'page',
-		'search',
+		// 'search',
+		// 'author',
 	],
 
 	'single-settings' => [
