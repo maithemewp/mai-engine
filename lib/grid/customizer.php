@@ -133,13 +133,14 @@ function mai_add_archive_customizer_settings( $name, $type = 'post_type' ) {
 	switch ( $type ) {
 		case 'post_type':
 			$post_type = get_post_type_object( $name );
-			$label     = $post_type->labels->singular_name;
-			$label     = trim( $label . ' ' . esc_attr__( 'Archives', 'mai-engine' ) );
+			$label     = $post_type->labels->name;
+			// $label     = $post_type->labels->singular_name;
+			// $label     = trim( $label . ' ' . esc_attr__( 'Archives', 'mai-engine' ) );
 		break;
 		case 'taxonomy':
 			$taxonomy  = get_taxonomy( $name );
-			$label     = $taxonomy->labels->singular_name;
-			$label     = trim( '&mdash; ' . $label . ' ' . esc_attr__( 'Archives', 'mai-engine' ) );
+			$label     = $taxonomy->labels->name;
+			// $label     = trim( '&mdash; ' . $label . ' ' . esc_attr__( 'Archives', 'mai-engine' ) );
 		break;
 		case 'search':
 			$label     = esc_attr__( 'Search Results', 'mai-engine' );
