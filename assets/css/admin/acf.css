@@ -48,22 +48,22 @@
 
 .acf-block-component .acf-block-fields div.acf-field.mai-grid-show-conditional {
 	position: relative;
-	margin-left: calc( 28px + .25rem );
+	margin-left: calc(28px + 0.25rem);
 	padding-top: 8px;
 	padding-bottom: 12px;
 }
 
 .acf-block-component .acf-block-fields div.acf-field.mai-grid-show-conditional::before {
-	content: '';
+	content: "";
 	position: absolute;
-	bottom: calc( 100% - 19px );
+	bottom: calc(100% - 19px);
 	width: 18px;
 	border-left: 1px solid #ccd0d4;
 	border-bottom: 1px solid #ccd0d4;
 }
 
 .acf-block-component .acf-block-fields div.acf-field.mai-sortable ~ div.acf-field.mai-grid-show-conditional::after {
-	content: '';
+	content: "";
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -116,7 +116,7 @@
 	border-radius: 3px 0 0 0;
 }
 .acf-block-component .acf-block-fields > div.acf-field.mai-grid-nested-columns-first::before {
-	content: '';
+	content: "";
 	display: block;
 	height: 16px;
 	width: 0;
