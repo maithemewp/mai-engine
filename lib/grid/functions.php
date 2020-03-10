@@ -46,7 +46,7 @@ function mai_do_entries_open( $args ) {
 				default:
 					$image_size = $args['image_size'];
 			}
-			$attributes['style'] .= sprintf( '--aspect-ratio:%s;', mai_get_aspect_ratio( $args['image_size'] ) );
+			$attributes['style'] .= sprintf( '--aspect-ratio:%s;', mai_get_image_aspect_ratio( $args['image_size'] ) );
 		}
 	}
 

@@ -534,7 +534,7 @@ function mai_get_content_limit( $content, $limit ) {
  *
  * @return string
  */
-function mai_get_aspect_ratio( $image_size ) {
+function mai_get_image_aspect_ratio( $image_size ) {
 	$all_sizes = mai_get_available_image_sizes();
 	$sizes     = isset( $all_sizes[ $image_size ] ) ? $all_sizes[ $image_size ] : false;
 
