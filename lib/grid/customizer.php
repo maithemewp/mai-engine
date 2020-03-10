@@ -47,11 +47,6 @@ function mai_archive_customizer_settings() {
 			continue;
 		}
 
-		// Skip if does not have an archive.
-		if ( ! $post_type->has_archive ) {
-			continue;
-		}
-
 		// Add the settings.
 		mai_add_archive_customizer_settings( $name, 'post_type' );
 
@@ -152,17 +147,17 @@ function mai_add_archive_customizer_settings( $name, $type = 'post_type' ) {
 		case 'post_type':
 			$post_type = get_post_type_object( $name );
 			$label     = $post_type->labels->name;
-			break;
+		break;
 		case 'taxonomy':
 			$taxonomy = get_taxonomy( $name );
 			$label    = $taxonomy->labels->name;
-			break;
+		break;
 		case 'search':
 			$label = esc_attr__( 'Search Results', 'mai-engine' );
-			break;
+		break;
 		case 'author':
 			$label = esc_attr__( 'Author Archives', 'mai-engine' );
-			break;
+		break;
 		default:
 			$label = '';
 	}
