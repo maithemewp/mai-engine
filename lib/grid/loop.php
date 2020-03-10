@@ -59,7 +59,7 @@ add_action( 'genesis_before_loop', function() {
 	remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_close', 15 );
 	remove_action( 'genesis_entry_footer', 'genesis_post_meta' );
 
-	// Swap loop
+	// Swap loop.
 	remove_action( 'genesis_loop', 'genesis_do_loop' );
 	add_action( 'genesis_loop', 'mai_do_archive_loop' );
 });

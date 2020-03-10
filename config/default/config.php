@@ -73,7 +73,7 @@ return [
 
 	'image-sizes' => [
 		'add'    => [
-			'full'      => [ 1600, 900, true ],
+			'cover'     => [ 1600, 900, true ],
 			'landscape' => '4:3',
 			'tiny'      => [ 80, 80, true ],
 		],
@@ -326,11 +326,11 @@ return [
 
 	'archive-settings' => [
 		'post',
-		// 'category',
-		// 'portfolio',
+		'category',
+		'portfolio',
 		'page',
-		// 'search',
-		// 'author',
+		'search',
+		'author',
 	],
 
 	'single-settings' => [

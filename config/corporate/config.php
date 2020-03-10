@@ -26,7 +26,7 @@ return [
 	],
 	'image-sizes'   => [
 		'add'    => [
-			'full'      => [ 1600, 900, true ],
+			'cover'     => [ 1600, 900, true ],
 			'landscape' => '4:3',
 			'portrait'  => '3:4',
 			'portfolio' => '1:2',
