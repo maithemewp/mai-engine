@@ -611,3 +611,222 @@ function mai_get_settings_keys( $context ) {
 
 	return $settings->keys;
 }
+
+/**
+ * Description of expected behavior.
+ *
+ * @since  1.0.0
+ *
+ * @return array|mixed|null|void
+ *
+ * @todo   Make this work for singular too.
+ */
+function mai_get_template_args() {
+	// Setup cache.
+	static $args = null;
+	if ( null !== $args ) {
+		return $args;
+	}
+
+	// TODO: This is the archive helper function in mai-engine.
+
+	// Bail if not an archive.
+	if ( ! mai_is_type_archive() ) {
+		$args = [];
+
+		return $args;
+	}
+
+	$settings = new Mai_Entry_Settings( 'archive' );
+	$name     = mai_get_archive_args_name();
+	$key      = 'mai_archive_' . $name;
+	$args     = wp_parse_args( get_option( $key, [] ), $settings->defaults );
+
+	// Allow devs to filter.
+	$args = apply_filters( 'mai_template_args', $args );
+
+	// Sanitize.
+	$args = mai_get_sanitized_entry_args( $args );
+
+	return $args;
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @param array $args Entry args.
+ *
+ * @return mixed
+ */
+function mai_get_sanitized_entry_args( $args ) {
+
+	// Get settings.
+	$settings = new Mai_Entry_Settings( $args['context'] );
+
+	// Sanitize.
+	foreach ( $args as $name => $value ) {
+		// Skip if not set.
+		if ( ! isset( $settings->fields[ $name ]['sanitize'] ) ) {
+			continue;
+		}
+		$function = $settings->fields[ $name ]['sanitize'];
+		if ( is_array( $value ) ) {
+			$escaped = [];
+			foreach ( $value as $key => $val ) {
+				$escaped[ $key ] = $function( $val );
+			}
+			$args[ $name ] = $escaped;
+		} else {
+			$args[ $name ] = $function( $value );
+		}
+	}
+
+	return $args;
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @return bool|mixed|string
+ */
+function mai_get_archive_args_name() {
+
+	// Get the name.
+	if ( is_home() ) {
+		$name = 'post';
+	} elseif ( is_category() ) {
+		$name = 'category';
+	} elseif ( is_tag() ) {
+		$name = 'post_tag';
+	} elseif ( is_tax() ) {
+		$name = get_query_var( 'taxonomy' );
+	} elseif ( is_post_type_archive() ) {
+		$name = get_query_var( 'post_type' );
+	} elseif ( is_search() ) {
+		$name = 'search';
+	} elseif ( is_author() ) {
+		$name = 'author';
+	} elseif ( is_date() ) {
+		$name = 'date';
+	} else {
+		$name = 'post';
+	}
+
+	// If archive isn't supported in config, use 'post'.
+	if ( 'post' !== $name && ! in_array( $name, (array) mai_get_config( 'archive-settings' ) ) ) {
+		return 'post';
+	}
+
+	return $name;
+}
+
+/**
+ * Return the site layout.
+ * First check custom field data, then customizer settings.
+ * If none, use default.
+ *
+ * @since   0.1.0
+ *
+ * @global  WP_Query  $wp_query Query object.
+ *
+ * @return  string    Site layout.
+ */
+function mai_get_site_layout() {
+
+	// Setup cache.
+	static $site_layout = null;
+
+	// If cache is populated, return value.
+	if ( ! is_null( $site_layout ) ) {
+		return esc_attr( $site_layout );
+	}
+
+	$site_layout = mai_get_meta_site_layout();
+
+	if ( $site_layout ) {
+		return $site_layout;
+	}
+
+	// Get the template args.
+	$args = mai_get_template_args();
+
+	// If we have a layout via the Customizer.
+	if ( isset( $args['site_layout'] ) && ! empty( $args['site_layout'] ) ) {
+		$site_layout = $args['site_layout'];
+	}
+
+	// TODO: Started to work on fallbacks to Post archive, but don't think we should do that anymore.
+	// If you enable a panel for a content type, then you have to use it.
+
+	// If an archive, but not post/default, get the fallback.
+	// if ( ! $site_layout ) {
+	// 	$archive = mai_get_archive_args_name();
+	// 	if ( $archive && 'post' !== $archive ) {
+	// 		$defaults = get_option( 'mai_archive_post', [] );
+	// 		if ( isset( $defaults['site_layout'] ) && ! empty( $defaults['site_layout'] ) ) {
+	// 			$site_layout = $defaults['site_layout'];
+	// 		}
+	// 	}
+	// }
+
+	// Use Genesis default setting.
+	if ( ! $site_layout ) {
+		$site_layout = genesis_get_option( 'site_layout' );
+	}
+
+	return $site_layout;
+}
+
+/**
+ * Return the meta site layout from different contexts, if avaiable.
+ *
+ * This is partially taken from genesis_site_layout().
+ *
+ * @since   0.1.0
+ *
+ * @global  WP_Query  $wp_query Query object.
+ *
+ * @return  string    Site layout.
+ */
+function mai_get_meta_site_layout() {
+
+	// Setup cache.
+	static $site_layout = null;
+
+	// If cache is populated, return value.
+	if ( ! is_null( $site_layout ) ) {
+		return esc_attr( $site_layout );
+	}
+
+	// Default to site for layout type.
+	$type = 'site';
+
+	if ( is_singular() || ( is_home() && ! genesis_is_root_page() ) ) { // If viewing a singular page or post, or the posts page, but not the front page.
+
+		$post_id     = is_home() ? get_option( 'page_for_posts' ) : null;
+		$site_layout = genesis_get_custom_field( '_genesis_layout', $post_id );
+
+	} elseif ( is_category() || is_tag() || is_tax() ) { // If viewing a taxonomy archive.
+
+		global $wp_query;
+		$term        = $wp_query->get_queried_object();
+		$site_layout = $term ? get_term_meta( $term->term_id, 'layout', true ) : '';
+
+	} elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) { // If viewing a supported post type.
+
+		$site_layout = genesis_get_cpt_option( 'layout' );
+
+	} elseif ( is_author() ) { // If viewing an author archive.
+
+		$site_layout = get_the_author_meta( 'layout', (int) get_query_var( 'author' ) );
+
+	}
+
+	// Return site layout.
+	return esc_attr( $site_layout );
+
+}
