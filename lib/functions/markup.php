@@ -173,39 +173,10 @@ function mai_add_cover_block_image( $block_content, $image_id ) {
 	// Restore.
 	libxml_use_internal_errors( $libxml_previous_state );
 
-	// Start image atts.
-	$atts = [
-		'class'  => 'wp-cover-block__image',
-		'sizes'  => '100vw',
-		'srcset' => '',
-	];
+	// Get image HTML.
+	$image_html = mai_get_cover_image_html( $image_id, [ 'class'  => 'wp-cover-block__image' ] );
 
-	// Build srcset array.
-	$image_sizes = mai_get_available_image_sizes();
-	$srcset = [];
-	$sizes  = [
-		'landscape-sm',
-		'landscape-md',
-		'landscape-lg',
-		'cover',
-	];
-	foreach( $sizes as $size ) {
-		if ( ! isset( $image_sizes[ $size ] ) ) {
-			continue;
-		}
-		$url = wp_get_attachment_image_url( $image_id, $size );
-		if ( ! $url ) {
-			continue;
-		}
-		$srcset[] = sprintf( '%s %sw', $url, $image_sizes[ $size ]['width'] );
-	}
-
-	// Convert to string.
-	$atts['srcset'] = implode( ',', $srcset );
-
-	// Get the image HTML.
-	$image_html = wp_get_attachment_image( $image_id, 'cover', false, $atts );
-
+	// Bail if no image.
 	if ( ! $image_html ) {
 		return $block_content;
 	}

@@ -830,3 +830,47 @@ function mai_get_meta_site_layout() {
 	return esc_attr( $site_layout );
 
 }
+
+/**
+ * Get cover image HTML by ID,
+ * with srcset for our registered image sizes.
+ *
+ * @param   int    $image_id  The image ID.
+ * @param   array  $atts      Any image attributes to add to the attachment.
+ *
+ * @return  string|HTML  The image markup.
+ */
+function mai_get_cover_image_html( $image_id, $atts = [] ) {
+
+	// Setup atts.
+	$atts = wp_parse_args( $atts, [
+		'sizes' => '100vw',
+	] );
+
+	// Build srcset array.
+	$image_sizes = mai_get_available_image_sizes();
+	$srcset = [];
+	$sizes  = [
+		'landscape-sm',
+		'landscape-md',
+		'landscape-lg',
+		'cover',
+	];
+	foreach( $sizes as $size ) {
+		if ( ! isset( $image_sizes[ $size ] ) ) {
+			continue;
+		}
+		$url = wp_get_attachment_image_url( $image_id, $size );
+		if ( ! $url ) {
+			continue;
+		}
+		$srcset[] = sprintf( '%s %sw', $url, $image_sizes[ $size ]['width'] );
+	}
+
+	// Convert to string.
+	$atts['srcset'] = implode( ',', $srcset );
+
+	// Get the image HTML.
+	return wp_get_attachment_image( $image_id, 'cover', false, $atts );
+
+}
