@@ -112,7 +112,7 @@ function mai_back_to_top_anchor( $attr ) {
 }
 
 /**
- * Convert cover block to inline image.
+ * Convert cover block to inline image with custom srcset.
  * Changes inline styles to CSS custom properties for use in CSS.
  *
  * @param   string  $block_content  The existing block content.
@@ -147,6 +147,9 @@ function mai_render_cover_block( $block_content, $block ) {
 /**
  * Add cover block image as inline element,
  * instead of using a background-image inline style.
+ * Adds custom srcset to the image element.
+ *
+ * TODO: Use <figure>?
  *
  * @param   string  $block_content  The existing block content.
  * @param   int     $image_id       The cover block image ID.
