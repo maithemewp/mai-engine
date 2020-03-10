@@ -181,13 +181,12 @@ function mai_minify_css( $css ) {
  *
  * @return array
  */
-function mai_do_aspect_ratio( $size = 'md', $ratio = '16:9' ) {
+function mai_get_image_sizes_from_aspect_ratio( $size = 'md', $ratio = '16:9' ) {
 	$ratio       = explode( ':', $ratio );
 	$x           = $ratio[0];
 	$y           = $ratio[1];
 	$breakpoints = mai_get_breakpoints();
-	$width       = isset( $breakpoints[ $size ] ) ? mai_get_breakpoint( $size ) : $size;
-	$height      = (int) $width / $x * $y;
-
+	$width       = isset( $breakpoints[ $size ] ) ? (int) mai_get_breakpoint( $size ) : (int) $size;
+	$height      = $width / $x * $y;
 	return [ $width, $height, true ];
 }
