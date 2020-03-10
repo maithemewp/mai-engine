@@ -92,6 +92,16 @@ class Mai_Entry_Settings {
 				'group'   => [ 'mai_post_grid', 'mai_term_grid', 'mai_user_grid' ],
 				'default' => '',
 			],
+			'site_layout'            => [
+				'label'    => esc_html__( 'Layout', 'mai-engine' ),
+				'desc'     => esc_html__( '"Site Default" uses the setting in Customizer > Theme Settings > Site Layout.', 'mai-engine' ),
+				'block'    => false,
+				'archive'  => true,
+				'single'   => true,
+				'sanitize' => 'esc_html',
+				'type'     => 'select',
+				'default'  => ( 'archive' === $this->context ) ? 'wide-content' : 'standard-content',
+			],
 			'show'                   => [
 				'label'    => esc_html__( 'Show', 'mai-engine' ),
 				'desc'     => ( 'archive' === $this->context ) ? esc_html__( 'Show/hide and re-order entry elements. Click "Toggle Hooks" to show Genesis hooks.', 'mai-engine' ) : '',
@@ -1082,6 +1092,19 @@ class Mai_Entry_Settings {
 	 */
 	public function get_choices( $field ) {
 		return $this->$field();
+	}
+
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since  0.1.0
+	 *
+	 * @param  string  $field Field name.
+	 *
+	 * @return array   The layout choices.
+	 */
+	public function site_layout() {
+		return [ '' => esc_html__( 'Site Default', 'mai-engine' ) ] + genesis_get_layouts_for_customizer();
 	}
 
 	/**
