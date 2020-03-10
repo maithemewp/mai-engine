@@ -87,9 +87,12 @@ function mai_setup() {
 			if ( is_array( $args ) ) {
 				add_image_size( $name, $args[0], $args[1], $args[2] );
 			} elseif ( $args ) {
-				add_image_size( $name . '-sm', mai_get_breakpoint( 'xs' ), mai_do_aspect_ratio( 'xs', $args ), true );
-				add_image_size( $name . '-md', mai_get_breakpoint( 'md' ), mai_do_aspect_ratio( 'md', $args ), true );
-				add_image_size( $name . '-lg', mai_get_breakpoint( 'xl' ), mai_do_aspect_ratio( 'xl', $args ), true );
+				$sm = mai_get_aspect_ratio( 'xs', $args );
+				$md = mai_get_aspect_ratio( 'md', $args );
+				$lg = mai_get_aspect_ratio( 'xl', $args );
+				add_image_size( $name . '-sm', $sm[0], $sm[1], $sm[2] );
+				add_image_size( $name . '-md', $md[0], $md[1], $md[2] );
+				add_image_size( $name . '-lg', $lg[0], $lg[1], $lg[2] );
 			}
 		}
 	);
