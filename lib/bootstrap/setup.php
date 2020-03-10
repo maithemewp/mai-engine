@@ -21,7 +21,6 @@ add_action( 'genesis_setup', 'mai_setup', 100 );
  * @return void
  */
 function mai_setup() {
-
 	// Get active theme.
 	$active_theme = mai_get_active_theme();
 	$handle       = mai_get_handle();

@@ -48,6 +48,8 @@ add_filter( 'genesis_markup_entry-title_content', 'mai_feature_posts_widget_entr
  *
  * @since 0.1.0
  *
+ * @param string $default Default string.
+ *
  * @return string
  */
 function mai_feature_posts_widget_entry_title_link( $default ) {

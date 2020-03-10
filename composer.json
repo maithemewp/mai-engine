@@ -4,83 +4,73 @@
   "type": "wordpress-plugin",
   "license": "gpl-2.0-or-later",
   "repositories": [
-	{
-	  "type": "package",
-	  "package": {
-		"name": "advanced-custom-fields/advanced-custom-fields-pro",
-		"version": "5.8.7",
-		"type": "library",
-		"dist": {
-		  "type": "zip",
-		  "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download"
-		}
-	  }
-	},
-	{
-	  "type": "composer",
-	  "url": "https://wpackagist.org"
-	}
+    {
+      "type": "package",
+      "package": {
+        "name": "advanced-custom-fields/advanced-custom-fields-pro",
+        "version": "5.8.7",
+        "type": "library",
+        "dist": {
+          "type": "zip",
+          "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download"
+        }
+      }
+    },
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
+    }
   ],
   "require": {
-	"php": ">=5.6",
-	"yahnis-elsts/plugin-update-checker": "^4.8",
-	"advanced-custom-fields/advanced-custom-fields-pro": "*",
-	"wpackagist-plugin/advanced-custom-fields-font-awesome": "dev-trunk",
-	"fortawesome/font-awesome": "^5.12",
-	"aristath/kirki": "*"
+    "php": ">=5.6",
+    "yahnis-elsts/plugin-update-checker": "^4.8",
+    "advanced-custom-fields/advanced-custom-fields-pro": "*",
+    "wpackagist-plugin/advanced-custom-fields-font-awesome": "dev-trunk",
+    "fortawesome/font-awesome": "^5.12",
+    "aristath/kirki": "*"
   },
   "require-dev": {
-	"php": "^5.6|^7",
-	"brain/monkey": "^2.2",
-	"composer/installers": "^1.0",
-	"dealerdirect/phpcodesniffer-composer-installer": "v0.5.0",
-	"philippbaschke/acf-pro-installer": "^1.0",
-	"phpcompatibility/phpcompatibility-wp": "2.0.0",
-	"phpunit/phpunit": "~5.7.9",
-	"squizlabs/php_codesniffer": "^3.4.2",
-	"wp-coding-standards/wpcs": "2.1.0",
-	"wp-phpunit/wp-phpunit": "^5.1"
-  },
-  "autoload": {
-	"files": [
-	  "vendor/advanced-custom-fields/advanced-custom-fields-pro/acf.php",
-	  "vendor/wpackagist-plugin/advanced-custom-fields-font-awesome/acf-font-awesome.php",
-	  "vendor/aristath/kirki/kirki.php",
-	  "lib/bootstrap/helpers.php",
-	  "lib/bootstrap/getters.php",
-	  "lib/bootstrap/genesis.php",
-	  "lib/bootstrap/autoload.php",
-	  "lib/bootstrap/setup.php"
-	]
+    "php": "^5.6|^7",
+    "brain/monkey": "^2.2",
+    "composer/installers": "^1.0",
+    "dealerdirect/phpcodesniffer-composer-installer": "v0.5.0",
+    "friendsofphp/php-cs-fixer": "^2.16",
+    "philippbaschke/acf-pro-installer": "^1.0",
+    "phpcompatibility/phpcompatibility-wp": "2.0.0",
+    "phpunit/phpunit": "~5.7.9",
+    "squizlabs/php_codesniffer": "^3.4.2",
+    "wp-coding-standards/wpcs": "2.1.0",
+    "wp-phpunit/wp-phpunit": "^5.1"
   },
   "autoload-dev": {
-	"psr-4": {
-	  "BizBudding\\MaiEngine\\Tests\\Unit\\": "tests/php/unit/",
-	  "BizBudding\\MaiEngine\\Tests\\Integration\\": "tests/php/integration/"
-	}
+    "psr-4": {
+      "BizBudding\\MaiEngine\\Tests\\Unit\\": "tests/php/unit/",
+      "BizBudding\\MaiEngine\\Tests\\Integration\\": "tests/php/integration/"
+    }
   },
   "config": {
-	"preferred-install": {
-	  "*": "dist"
-	},
-	"sort-order": true
+    "preferred-install": {
+      "*": "dist"
+    },
+    "sort-order": true
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
   "scripts": {
-	"stylelint": "stylelint './assets/scss/**/*.scss' --fix",
-	"i18n": "wp i18n make-pot ./ ./assets/lang/mai-engine.pot",
-	"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
-	"phpcs": "phpcs --standard=WordPress --extensions=php -p -s lib config templates tests functions.php",
-	"phpcbf": "phpcbf --standard=WordPress --extensions=php -p lib config templates tests functions.php",
-	"test-unit": "composer dump && vendor/bin/phpunit --testsuite unit --color=always",
-	"test-integration": "composer dump && vendor/bin/phpunit --testsuite integration --configuration tests/phpunit/integration/phpunit.xml.dist --color=always"
+    "stylelint": "stylelint './assets/scss/**/*.scss' --fix",
+    "i18n": "wp i18n make-pot ./ ./assets/lang/mai-engine.pot",
+    "install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
+    "phpcs": "vendor/bin/phpcs --standard=WordPress --extensions=php -p -s lib config",
+    "phpcbf": "vendor/bin/phpcbf --standard=WordPress --extensions=php -p lib config",
+    "fixer": "vendor/bin/php-cs-fixer fix lib/ && php-cs-fixer fix config/",
+    "test-unit": "composer dump && vendor/bin/phpunit --testsuite unit --color=always",
+    "test-integration": "composer dump && vendor/bin/phpunit --testsuite integration --configuration tests/phpunit/integration/phpunit.xml.dist --color=always"
   },
   "extra": {
-	"installer-paths": {
-	  "vendor/wpackagist-plugin/advanced-custom-fields-font-awesome": [
-		"wpackagist-plugin/advanced-custom-fields-font-awesome"
-	  ]
-	}
+    "installer-paths": {
+      "vendor/wpackagist-plugin/advanced-custom-fields-font-awesome": [
+        "wpackagist-plugin/advanced-custom-fields-font-awesome"
+      ]
+    }
   }
 }

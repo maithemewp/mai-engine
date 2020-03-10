@@ -7,16 +7,12 @@ $baseDir = dirname($vendorDir);
 
 return array(
     '320cde22f66dd4f5d3fd621d3e88b98f' => $vendorDir . '/symfony/polyfill-ctype/bootstrap.php',
+    '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => $vendorDir . '/symfony/polyfill-mbstring/bootstrap.php',
+    '0d59ee240a4cd96ddbb4ff164fccea4d' => $vendorDir . '/symfony/polyfill-php73/bootstrap.php',
     '6124b4c8570aa390c21fafd04a26c69f' => $vendorDir . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
+    '023d27dca8066ef29e6739335ea73bad' => $vendorDir . '/symfony/polyfill-php70/bootstrap.php',
+    '25072dd6e2470089de65ae7bf11d3109' => $vendorDir . '/symfony/polyfill-php72/bootstrap.php',
     '051bafe20e2674435a162870efa2d2a7' => $vendorDir . '/brain/monkey/inc/api.php',
     '38fbb71d514eee25044aa9d94851ee76' => $vendorDir . '/wp-phpunit/wp-phpunit/__loaded.php',
     '241d2b5b9c1e680c0770b006b0271156' => $vendorDir . '/yahnis-elsts/plugin-update-checker/load-v4p9.php',
-    'cafd36f73acfb2610c629ce6be467fd6' => $vendorDir . '/advanced-custom-fields/advanced-custom-fields-pro/acf.php',
-    'eee0895027fcd0de79706ca409434c0e' => $vendorDir . '/wpackagist-plugin/advanced-custom-fields-font-awesome/acf-font-awesome.php',
-    'f18ca86c4bd84e2179f49e8b8d6eb4ad' => $vendorDir . '/aristath/kirki/kirki.php',
-    'ec1db33709be83f20c3040827460c088' => $baseDir . '/lib/bootstrap/helpers.php',
-    'fbd278ae8fc5e3610054be5e1c07c680' => $baseDir . '/lib/bootstrap/getters.php',
-    'ef614b1cf80882942d99bbd790324ab7' => $baseDir . '/lib/bootstrap/genesis.php',
-    '5add43ea922ea2890fae7376e8d27a1e' => $baseDir . '/lib/bootstrap/autoload.php',
-    '6102893d049374a5aa60a7f07be67015' => $baseDir . '/lib/bootstrap/setup.php',
 );

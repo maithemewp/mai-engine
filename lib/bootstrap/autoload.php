@@ -16,7 +16,7 @@ spl_autoload_register( 'mai_autoload_register' );
  *
  * @since 0.1.0
  *
- * @param $class
+ * @param string $class Class to check.
  *
  * @return void
  */
@@ -43,7 +43,6 @@ add_action( 'genesis_setup', 'mai_autoload_files', 90 );
  * @return void
  */
 function mai_autoload_files() {
-
 	$files = [
 
 		// Functions.

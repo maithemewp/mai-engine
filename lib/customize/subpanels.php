@@ -12,8 +12,6 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-
 $settings = mai_get_settings();
 
 $loop_settings = $settings['loop']['archives'][''];
-

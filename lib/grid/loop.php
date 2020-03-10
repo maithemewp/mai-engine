@@ -1,13 +1,26 @@
 <?php
+/**
+ * Mai Engine.
+ *
+ * @package   BizBudding\MaiEngine
+ * @link      https://bizbudding.com
+ * @author    BizBudding
+ * @copyright Copyright © 2019 BizBudding
+ * @license   GPL-2.0-or-later
+ */
 
+add_filter( 'pre_get_posts', 'mai_archive_posts_per_page' );
 /**
  * Show only posts in 1 or more categories on the main blog.
  * Only targets the main blog page set as the static Page for Posts
  * in Dashboard > Settings > Reading.
  *
+ * @since 0.1.0
+ *
+ * @param object $query WP Query.
+ *
  * @return  void
  */
-add_filter( 'pre_get_posts', 'mai_archive_posts_per_page' );
 function mai_archive_posts_per_page( $query ) {
 	// Bail if in the Dashboard.
 	if ( is_admin() ) {
@@ -35,37 +48,46 @@ function mai_archive_posts_per_page( $query ) {
 
 
 // Mai loop.
-add_action( 'genesis_before_loop', function() {
+add_action(
+	'genesis_before_loop',
+	function () {
 
-	// Bail if not an archive.
-	// TODO: This is the archive helper function in mai-engine.
-	if ( ! ( is_home() || is_archive() || is_tax() || is_search() || is_date() || is_author() ) ) {
-		return;
+		// Bail if not an archive.
+		// TODO: This is the archive helper function in mai-engine.
+		if ( ! ( is_home() || is_archive() || is_tax() || is_search() || is_date() || is_author() ) ) {
+			return;
+		}
+
+		// Remove entry elements.
+		remove_action( 'genesis_entry_header', 'genesis_do_post_format_image', 4 );
+		remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
+		remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
+		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
+		remove_action( 'genesis_entry_header', 'genesis_post_info', 12 );
+
+		remove_action( 'genesis_entry_content', 'genesis_do_post_image', 8 );
+		remove_action( 'genesis_entry_content', 'genesis_do_post_content' );
+		remove_action( 'genesis_entry_content', 'genesis_do_post_content_nav', 12 );
+		remove_action( 'genesis_entry_content', 'genesis_do_post_permalink', 14 );
+
+		remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_open', 5 );
+		remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_close', 15 );
+		remove_action( 'genesis_entry_footer', 'genesis_post_meta' );
+
+		// Swap loop.
+		remove_action( 'genesis_loop', 'genesis_do_loop' );
+		add_action( 'genesis_loop', 'mai_do_archive_loop' );
 	}
+);
 
-	// Remove entry elements.
-	remove_action( 'genesis_entry_header', 'genesis_do_post_format_image', 4 );
-	remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
-	remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
-	remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
-	remove_action( 'genesis_entry_header', 'genesis_post_info', 12 );
-
-	remove_action( 'genesis_entry_content', 'genesis_do_post_image', 8 );
-	remove_action( 'genesis_entry_content', 'genesis_do_post_content' );
-	remove_action( 'genesis_entry_content', 'genesis_do_post_content_nav', 12 );
-	remove_action( 'genesis_entry_content', 'genesis_do_post_permalink', 14 );
-
-	remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_open', 5 );
-	remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_close', 15 );
-	remove_action( 'genesis_entry_footer', 'genesis_post_meta' );
-
-	// Swap loop.
-	remove_action( 'genesis_loop', 'genesis_do_loop' );
-	add_action( 'genesis_loop', 'mai_do_archive_loop' );
-});
-
+/**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @return void
+ */
 function mai_do_archive_loop() {
-
 	$args = mai_get_template_args();
 
 	if ( have_posts() ) {
@@ -80,12 +102,10 @@ function mai_do_archive_loop() {
 		mai_do_entries_open( $args );
 
 		while ( have_posts() ) {
-
 			the_post();
 
 			global $post;
 			mai_do_entry( $post, $args );
-
 		} // End of one post.
 
 		mai_do_entries_close( $args );
@@ -93,26 +113,30 @@ function mai_do_archive_loop() {
 		/**
 		 * Fires inside the standard loop, after the while() block.
 		 *
-		 * @since 1.0.0
+		 * @since 0.1.0
 		 */
 		do_action( 'genesis_after_endwhile' );
-
 	} else { // If no posts exist.
 
 		/**
 		 * Fires inside the standard loop when they are no posts to show.
 		 *
-		 * @since 1.0.0
+		 * @since 0.1.0
 		 */
 		do_action( 'genesis_loop_else' );
-
 	} // End loop.
-
 }
 
-// TODO: Make this work for singular too.
+/**
+ * Description of expected behavior.
+ *
+ * @since  1.0.0
+ *
+ * @return array|mixed|null|void
+ *
+ * @todo   Make this work for singular too.
+ */
 function mai_get_template_args() {
-
 	// Setup cache.
 	static $args = null;
 	if ( null !== $args ) {
@@ -123,6 +147,7 @@ function mai_get_template_args() {
 	// TODO: This is the archive helper function in mai-engine.
 	if ( ! ( is_home() || is_archive() || is_tax() || is_search() || is_date() || is_author() ) ) {
 		$args = [];
+
 		return $args;
 	}
 
@@ -140,13 +165,22 @@ function mai_get_template_args() {
 	return $args;
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @param array $args Entry args.
+ *
+ * @return mixed
+ */
 function mai_get_sanitized_entry_args( $args ) {
 
 	// Get settings.
 	$settings = new Mai_Entry_Settings( $args['context'] );
 
 	// Sanitize.
-	foreach( $args as $name => $value ) {
+	foreach ( $args as $name => $value ) {
 		// Skip if not set.
 		if ( ! isset( $settings->fields[ $name ]['sanitize'] ) ) {
 			continue;
@@ -154,7 +188,7 @@ function mai_get_sanitized_entry_args( $args ) {
 		$function = $settings->fields[ $name ]['sanitize'];
 		if ( is_array( $value ) ) {
 			$escaped = [];
-			foreach( $value as $key => $val ) {
+			foreach ( $value as $key => $val ) {
 				$escaped[ $key ] = $function( $val );
 			}
 			$args[ $name ] = $escaped;
@@ -166,43 +200,33 @@ function mai_get_sanitized_entry_args( $args ) {
 	return $args;
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @return bool|mixed|string
+ */
 function mai_get_archive_args_name() {
-
 	if ( is_home() ) {
-
 		return 'post';
-
 	} elseif ( is_category() ) {
 
 		// TODO: Check if category is supported in config?
 		return 'category';
-
 	} elseif ( is_tag() ) {
-
 		return 'post_tag';
-
 	} elseif ( is_tax() ) {
-
 		return get_query_var( 'taxonomy' );
-
 	} elseif ( is_post_type_archive() ) {
-
 		return get_query_var( 'post_type' );
-
 	} elseif ( is_search() ) {
-
 		return 'search';
-
 	} elseif ( is_author() ) {
-
 		return 'author';
-
 	} elseif ( is_date() ) {
-
 		return 'date';
-
 	}
 
 	return false;
-
 }

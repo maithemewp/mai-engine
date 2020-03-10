@@ -25,7 +25,7 @@ return [
 	|
 	*/
 
-	'genesis-settings' => [
+	'genesis-settings'    => [
 		'avatar_size'               => 48,
 		'blog_cat_num'              => 9,
 		'breadcrumb_home'           => 0,
@@ -37,11 +37,11 @@ return [
 		'breadcrumb_404'            => 0,
 		'breadcrumb_attachment'     => 0,
 		'content_archive'           => 'full',      // TODO: Not sure we need this with new archive settings.
-		'content_archive_limit'     => 200,         // TODO: ^
-		'content_archive_thumbnail' => 1,           // TODO: ^
-		'image_size'                => 'featured',  // TODO: ^
-		'image_alignment'           => 'alignnone', // TODO: ^
-		'posts_nav'                 => 'numeric',   // TODO: ^
+		'content_archive_limit'     => 200,         // TODO: Same as above.
+		'content_archive_thumbnail' => 1,           // TODO: Same as above.
+		'image_size'                => 'featured',  // TODO: Same as above.
+		'image_alignment'           => 'alignnone', // TODO: Same as above.
+		'posts_nav'                 => 'numeric',   // TODO: Same as above.
 		'site_layout'               => 'standard-content',
 	],
 
@@ -56,8 +56,9 @@ return [
 	|
 	*/
 
-	'google-fonts' => [
-		'Source+Sans+Pro:400,600,700', // TODO: Should this be empty to start, incase a custom site doesn't want a google font? Or that site should just filter this and return empty array?
+	'google-fonts'        => [
+		'Source+Sans+Pro:400,600,700',
+		// TODO: Should this be empty to start, incase a custom site doesn't want a google font? Or that site should just filter this and return empty array?
 	],
 
 	/*
@@ -71,7 +72,7 @@ return [
 	|
 	*/
 
-	'image-sizes' => [
+	'image-sizes'         => [
 		'add'    => [
 			'cover'     => [ 1600, 900, true ],
 			'landscape' => '4:3',
@@ -91,7 +92,7 @@ return [
 	|
 	*/
 
-	'page-layouts' => [
+	'page-layouts'        => [
 		'add'    => [
 			[
 				'id'      => 'standard-content',
@@ -101,28 +102,28 @@ return [
 				'default' => true,
 			],
 			[
-				'id'      => 'wide-content',
-				'label'   => __( 'Wide Content', 'mai-engine' ),
-				'img'     => GENESIS_ADMIN_IMAGES_URL . '/layouts/' . 'c.gif',
-				'type'    => [ 'site' ],
+				'id'    => 'wide-content',
+				'label' => __( 'Wide Content', 'mai-engine' ),
+				'img'   => GENESIS_ADMIN_IMAGES_URL . '/layouts/c.gif',
+				'type'  => [ 'site' ],
 			],
 			[
-				'id'      => 'narrow-content',
-				'label'   => __( 'Narrow Content', 'mai-engine' ),
-				'img'     => mai_get_url() . 'assets/img/narrow-content.gif',
-				'type'    => [ 'site' ],
+				'id'    => 'narrow-content',
+				'label' => __( 'Narrow Content', 'mai-engine' ),
+				'img'   => mai_get_url() . 'assets/img/narrow-content.gif',
+				'type'  => [ 'site' ],
 			],
 			[
-				'id'      => 'content-sidebar',
-				'label'   => __( 'Content, Sidebar', 'mai-engine' ),
-				'img'     => GENESIS_ADMIN_IMAGES_URL . '/layouts/' . 'cs.gif',
-				'type'    => [ 'site' ],
+				'id'    => 'content-sidebar',
+				'label' => __( 'Content, Sidebar', 'mai-engine' ),
+				'img'   => GENESIS_ADMIN_IMAGES_URL . '/layouts/cs.gif',
+				'type'  => [ 'site' ],
 			],
 			[
-				'id'      => 'sidebar-content',
-				'label'   => __( 'Sidebar, Content', 'mai-engine' ),
-				'img'     => GENESIS_ADMIN_IMAGES_URL . '/layouts/' . 'sc.gif',
-				'type'    => [ 'site' ],
+				'id'    => 'sidebar-content',
+				'label' => __( 'Sidebar, Content', 'mai-engine' ),
+				'img'   => GENESIS_ADMIN_IMAGES_URL . '/layouts/sc.gif',
+				'type'  => [ 'site' ],
 			],
 		],
 		'remove' => [
@@ -143,7 +144,7 @@ return [
 	|
 	*/
 
-	'post-type-support' => [
+	'post-type-support'   => [
 		'add'    => [
 			'excerpt'                    => [ 'page' ],
 			'genesis-layouts'            => [ 'product' ],
@@ -169,7 +170,7 @@ return [
 	|
 	*/
 
-	'responsive-menu' => [
+	'responsive-menu'     => [
 		'script' => [
 			'mainMenu'         => sprintf(
 				'<span class="menu-toggle-icon"> </span><span class="screen-reader-text">%s</span>',
@@ -178,9 +179,7 @@ return [
 			'menuIconClass'    => null,
 			'subMenuIconClass' => null,
 			'menuClasses'      => [
-				'combine' => [
-
-				],
+				'combine' => [],
 				'others'  => [
 					'.nav-header-left',
 					'.nav-header-right',
@@ -218,7 +217,7 @@ return [
 	|
 	*/
 
-	'scripts-and-styles' => [
+	'scripts-and-styles'  => [
 		'add'    => [
 
 			// Scripts.
@@ -252,15 +251,14 @@ return [
 				'editor' => true, // Only load in the admin editor.
 			],
 			[
-				'handle' => mai_get_handle() . '-wp-query',
-				'src'    => mai_get_url() . 'assets/js/wp-query.js',
-				'deps'   => [],
-				'editor' => true, // Only load in the admin editor.
+				'handle'   => mai_get_handle() . '-wp-query',
+				'src'      => mai_get_url() . 'assets/js/wp-query.js',
+				'deps'     => [],
+				'editor'   => true, // Only load in the admin editor.
 				'localize' => [
 					'name' => 'maiGridWPQueryVars',
 					'data' => [
-						// 'fields' => mai_get_settings_fields( 'block' ),
-						'keys'   => mai_get_settings_keys( 'block' ),
+						'keys' => mai_get_settings_keys( 'block' ),
 					],
 				],
 			],
@@ -324,7 +322,7 @@ return [
 	|
 	*/
 
-	'archive-settings' => [
+	'archive-settings'    => [
 		'post',
 		'category',
 		'portfolio',
@@ -333,7 +331,7 @@ return [
 		'author',
 	],
 
-	'single-settings' => [
+	'single-settings'     => [
 		'page',
 		'post',
 	],
@@ -349,7 +347,7 @@ return [
 	|
 	*/
 
-	'theme-support' => [
+	'theme-support'       => [
 		'add'    => [
 
 			// Genesis defaults.
@@ -384,7 +382,6 @@ return [
 			],
 			'editor-styles',
 			'editor-color-palette'     => mai_get_color_palette(),
-			// 'front-page-widgets'       => 5, // TODO: Remove?
 			'genesis-accessibility'    => [
 				'404-page',
 				'headings',
@@ -415,7 +412,6 @@ return [
 				'menu-footer',
 				'page-header',
 				'footer-widgets',
-				// 'front-page-widgets', // TODO: Remove?
 			],
 			'gutenberg'                => [
 				'wide-images' => true,
@@ -449,7 +445,7 @@ return [
 	|
 	*/
 
-	'widget-areas' => [
+	'widget-areas'        => [
 		'add'    => [
 			[
 				'id'          => 'before-header',
@@ -508,6 +504,5 @@ return [
 	|
 	*/
 
-	'custom-functions' => '__return_null',
+	'custom-functions'    => '__return_null',
 ];
-

@@ -51,8 +51,6 @@ function mai_enqueue_assets() {
 		$customizer = isset( $asset['customizer'] ) ? $asset['customizer'] : false;
 		$condition  = isset( $asset['condition'] ) ? $asset['condition'] : '__return_true';
 		$localize   = isset( $asset['localize'] ) ? $asset['localize'] : [];
-		$hook       = isset( $asset['hook'] ) ? $asset['hook'] : false;
-		$priority   = isset( $asset['priority'] ) ? $asset['priority'] : 10;
 		$last_arg   = 'style' === $type ? $media : $in_footer;
 		$register   = "wp_register_$type";
 		$enqueue    = "wp_enqueue_$type";
@@ -60,20 +58,7 @@ function mai_enqueue_assets() {
 		if ( is_admin() && $editor || ! is_admin() && ! $editor || 'both' === $editor || $customizer ) {
 			if ( is_callable( $condition ) && $condition() ) {
 				$register( $handle, $src, $deps, $ver, $last_arg );
-
-				if ( ! $hook ) {
-					$enqueue( $handle );
-				} else {
-					add_action( $hook, function () use ( $handle, $src, $ver, $media ) {
-						printf(
-							'<link rel="stylesheet" id="%s" href="%s?ver=%s" type="text/css" media="%s">',
-							$handle,
-							$src,
-							$ver,
-							$media
-						);
-					}, $priority );
-				}
+				$enqueue( $handle );
 
 				if ( ! empty( $localize ) ) {
 					wp_localize_script( $handle, $localize['name'], $localize['data'] );
@@ -108,6 +93,8 @@ add_filter( 'block_editor_settings', 'mai_remove_noto_serif_editor_styles' );
  *
  * @since 0.1.0
  *
+ * @param array $settings Editor settings.
+ *
  * @return string
  */
 function mai_remove_noto_serif_editor_styles( $settings ) {
@@ -116,4 +103,3 @@ function mai_remove_noto_serif_editor_styles( $settings ) {
 
 	return $settings;
 }
-

@@ -1,17 +1,79 @@
 <?php
+/**
+ * Mai Engine.
+ *
+ * @package   BizBudding\MaiEngine
+ * @link      https://bizbudding.com
+ * @author    BizBudding
+ * @copyright Copyright © 2019 BizBudding
+ * @license   GPL-2.0-or-later
+ */
 
-
+/**
+ * Class Mai_Entry
+ */
 class Mai_Entry {
 
+	/**
+	 * Entry.
+	 *
+	 * @var $entry
+	 */
 	protected $entry;
+
+	/**
+	 * Args.
+	 *
+	 * @var $args
+	 */
 	protected $args;
+
+	/**
+	 * Type.
+	 *
+	 * @var $type
+	 */
 	protected $type;
+
+	/**
+	 * Context.
+	 *
+	 * @var $context
+	 */
 	protected $context;
+
+	/**
+	 * Id.
+	 *
+	 * @var $id
+	 */
 	protected $id;
+
+	/**
+	 * Url.
+	 *
+	 * @var $url
+	 */
 	protected $url;
+
+	/**
+	 * Breakpoints.
+	 *
+	 * @var $breakpoints
+	 */
 	protected $breakpoints;
 
-	function __construct( $entry, $args ) {
+	/**
+	 * Mai_Entry constructor.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string $entry Entry object.
+	 * @param array  $args  Entry args.
+	 *
+	 * @return void
+	 */
+	public function __construct( $entry, $args ) {
 		$this->entry       = $entry;
 		$this->args        = $args;
 		$this->type        = $this->args['type'];
@@ -21,17 +83,24 @@ class Mai_Entry {
 		$this->breakpoints = mai_get_breakpoints();
 	}
 
-	function render() {
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
+	 */
+	public function render() {
 
 		// Wrap.
 		switch ( $this->type ) {
 			case 'post':
 				$wrap = 'article';
-			break;
+				break;
 			case 'term':
 			case 'user':
 				$wrap = 'div';
-			break;
+				break;
 			default:
 				$wrap = 'div';
 		}
@@ -50,7 +119,7 @@ class Mai_Entry {
 		);
 
 		// Check if extra wrap is needed.
-		$has_inner = in_array( 'image', $this->args['show'] ) && in_array( $this->args['image_position'], array( 'left', 'right' ) );
+		$has_inner = in_array( 'image', $this->args['show'], true ) && in_array( $this->args['image_position'], [ 'left', 'right' ], true );
 
 		// If we have inner wrap.
 		if ( $has_inner ) {
@@ -73,7 +142,7 @@ class Mai_Entry {
 		}
 
 		// Loop through our elements.
-		foreach( $this->args['show'] as $element ) {
+		foreach ( $this->args['show'] as $element ) {
 
 			// Skip image is left or right, skip.
 			if ( ( 'image' === $element ) && $has_inner ) {
@@ -116,44 +185,66 @@ class Mai_Entry {
 				],
 			]
 		);
-
 	}
 
-	function get_id() {
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return int
+	 */
+	public function get_id() {
 		switch ( $this->type ) {
 			case 'post':
 				$entry_id = $this->entry->ID;
-			break;
+				break;
 			case 'term':
 				$entry_id = $this->entry->term_id;
-			break;
+				break;
 			case 'user':
 				$entry_id = $this->entry->ID;
-			break;
+				break;
 			default:
 				$entry_id = 0;
 		}
+
 		return $entry_id;
 	}
 
-	function get_url() {
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return false|string|WP_Error
+	 */
+	public function get_url() {
 		switch ( $this->type ) {
 			case 'post':
 				$url = get_permalink( $this->id );
-			break;
+				break;
 			case 'term':
 				$url = get_term_link( $this->id );
-			break;
+				break;
 			case 'user':
 				$url = get_author_posts_url( $this->id );
-			break;
+				break;
 			default:
 				$url = '';
 		}
+
 		return $url;
 	}
 
-	function do_image() {
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
+	 */
+	public function do_image() {
 
 		// Get the image HTML.
 		$image = $this->get_image();
@@ -173,19 +264,26 @@ class Mai_Entry {
 				'echo'    => true,
 				'atts'    => [
 					'href' => $this->url,
-				]
+				],
 			]
 		);
 	}
 
-	function get_image() {
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return string
+	 */
+	public function get_image() {
 
 		// Get the image ID.
 		$image_id = $this->get_image_id();
 
 		// Bail if no image ID.
 		if ( ! $image_id ) {
-			return;
+			return '';
 		}
 
 		/**
@@ -205,52 +303,59 @@ class Mai_Entry {
 		return $image;
 	}
 
-	function calculate_image_sizes( $sizes, $size, $image_src, $image_meta, $attachment_id ) {
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param array  $sizes         Array of images.
+	 * @param string $size          Image size.
+	 * @param string $image_src     Image source.
+	 * @param array  $image_meta    Image meta array.
+	 * @param int    $attachment_id Image attachment ID.
+	 *
+	 * @return string
+	 */
+	public function calculate_image_sizes( $sizes, $size, $image_src, $image_meta, $attachment_id ) {
 
-		// '(min-width: 768px) 322px, (min-width: 576px) 255px, calc( (100vw - 30px) / 2)'
-
-		/**
-		 * TODO:
-		 * handle 0/auto columns.
-		 */
-
+		// TODO: handle 0/auto columns.
 		$new_sizes = [];
-
-		// $image_sizes = mai_temp_get_image_sizes();
 		$container = $this->breakpoints['xl'] . 'px';
-		foreach( $this->get_breakpoint_columns() as $size => $count ) {
-			// if ( 0 === $columns ) {
-				// $new_sizes[] = 	"(min-width: 768px) 322px, (min-width: 576px) 255px, calc( (100vw - 30px) / 2)";
-			// }
+
+		foreach ( $this->get_breakpoint_columns() as $size => $count ) {
 			switch ( $size ) {
 				case 'xs':
 					$max_width   = ( $this->breakpoints['sm'] + 1 ) . 'px';
 					$new_sizes[] = "(max-width: {$max_width}) calc( {$container} / $count )";
-				break;
+					break;
 				case 'sm':
 					$min_width   = $this->breakpoints['sm'] . 'px';
 					$max_width   = ( $this->breakpoints['md'] + 1 ) . 'px';
 					$new_sizes[] = "(min-width: {$min_width}) and (max-width: {$max_width}) calc( {$container} / $count )";
-				break;
+					break;
 				case 'md':
 					$min_width   = $this->breakpoints['md'] . 'px';
 					$max_width   = ( $this->breakpoints['lg'] + 1 ) . 'px';
 					$new_sizes[] = "(min-width: {$min_width}) and (max-width: {$max_width}) calc( {$container} / $count )";
-				break;
+					break;
 				case 'lg':
 					$min_width   = $this->breakpoints['lg'] . 'px';
 					$new_sizes[] = "(min-width: {$min_width}) calc( {$container} / $count )";
-				break;
+					break;
 			}
-
-
 		}
 
 		return implode( ',', $new_sizes );
 	}
 
-	function get_breakpoint_columns() {
-
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return array
+	 */
+	public function get_breakpoint_columns() {
 		$columns = [
 			'lg' => (int) $this->args['columns'],
 		];
@@ -265,108 +370,117 @@ class Mai_Entry {
 					$columns['md'] = 4;
 					$columns['sm'] = 3;
 					$columns['xs'] = 2;
-				break;
+					break;
 				case 5:
 					$columns['md'] = 3;
 					$columns['sm'] = 2;
 					$columns['xs'] = 2;
-				break;
+					break;
 				case 4:
 					$columns['md'] = 4;
 					$columns['sm'] = 2;
 					$columns['xs'] = 1;
-				break;
+					break;
 				case 3:
 					$columns['md'] = 3;
 					$columns['sm'] = 1;
 					$columns['xs'] = 1;
-				break;
+					break;
 				case 2:
 					$columns['md'] = 2;
 					$columns['sm'] = 2;
 					$columns['xs'] = 1;
-				break;
+					break;
 				case 1:
 					$columns['md'] = 1;
 					$columns['sm'] = 1;
 					$columns['xs'] = 1;
-				break;
+					break;
 				case 0: // Auto.
 					$columns['md'] = 0;
 					$columns['sm'] = 0;
 					$columns['xs'] = 0;
-				break;
+					break;
 			}
 		}
 
 		return $columns;
 	}
 
-	function get_image_id() {
-
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return bool|int|mixed|null|string
+	 */
+	public function get_image_id() {
 		switch ( $this->type ) {
 			case 'post':
 				$image_id = get_post_thumbnail_id( $this->id );
 				$image_id = $image_id ? $image_id : genesis_get_image_id( 0, $this->id );
-			break;
+				break;
 			case 'term':
 				$image_id = get_term_meta( $this->id, 'mai_image', true ); // TODO.
-			break;
+				break;
 			case 'user':
 				$image_id = get_user_meta( $this->id, 'mai_image', true ); // TODO.
-			break;
+				break;
 			default:
 				$image_id = 0;
 		}
 
-		// Get fallback.
-		if ( ! $image_id ) {
-			// TODO;
-			// $image_id = genesis_get_option( 'featured_image_fallback' );
-		}
+		// TODO: Get fallback.
 
 		// Filter.
 		$image_id = apply_filters( 'mai_entry_image_id', $image_id, $this->entry, $this->args );
 
 		// Bail if no image ID.
 		if ( ! $image_id ) {
-			return;
+			return false;
 		}
 
 		return $image_id;
 	}
 
-	function get_image_size() {
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return string
+	 */
+	public function get_image_size() {
 		switch ( $this->args['image_orientation'] ) {
 			case 'landscape':
 			case 'portrait':
 			case 'square':
 				$image_size = $this->get_image_size_by_cols();
 				$image_size = sprintf( '%s-%s', $this->args['image_orientation'], $image_size );
-			break;
+				break;
 			default:
 				$image_size = $this->args['image_size'];
 		}
+
 		return $image_size;
 	}
 
-	function get_image_size_by_cols() {
-
-		// "image-sm": "one-third  - 400",
-		// "image-md": "two-thirds - 800",
-		// "image-lg": "one-whole  - 1200",
-
-		$fw_content  = ( 'full-width-content' === genesis_site_layout() ) ? true: false;
-		$img_aligned = in_array( $this->args['image_position'], ['left', 'right'] );
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return string
+	 */
+	public function get_image_size_by_cols() {
+		$fw_content  = ( 'full-width-content' === genesis_site_layout() ) ? true : false;
+		$img_aligned = in_array( $this->args['image_position'], [ 'left', 'right' ], true );
 
 		// If singular.
 		if ( 'singular' === $this->context ) {
-
 			$image_size = $fw_content ? 'lg' : 'md';
-		}
-		// Archive or block.
-		else {
-
+		} else {
+			// Archive or block.
 			switch ( $this->args['columns'] ) {
 				case 1:
 					if ( $fw_content ) {
@@ -382,7 +496,7 @@ class Mai_Entry {
 							$image_size = 'md';
 						}
 					}
-				break;
+					break;
 				case 2:
 					if ( $fw_content ) {
 						if ( $img_aligned ) {
@@ -393,7 +507,7 @@ class Mai_Entry {
 					} else {
 						$image_size = 'sm';
 					}
-				break;
+					break;
 				default:
 					$image_size = 'sm';
 			}
@@ -409,14 +523,12 @@ class Mai_Entry {
 	 *
 	 * @return  void
 	 */
-	function do_title() {
-
+	public function do_title() {
 		$link = false;
 
 		// Title.
 		switch ( $this->type ) {
 			case 'post':
-
 				// Not a block.
 				if ( 'block' !== $this->context ) {
 
@@ -430,7 +542,7 @@ class Mai_Entry {
 					}
 
 					// If HTML5 with semantic headings, wrap in H1.
-					$wrap  = genesis_get_seo_option( 'semantic_headings' ) ? 'h1' : $wrap;
+					$wrap = genesis_get_seo_option( 'semantic_headings' ) ? 'h1' : $wrap;
 
 					// Filter the post title text.
 					$title = apply_filters( 'genesis_post_title_text', $title );
@@ -459,23 +571,22 @@ class Mai_Entry {
 					if ( ( 'archive' === $this->context ) && apply_filters( 'genesis_link_post_title', true ) ) {
 						$link = true;
 					}
-				}
-				// Block.
-				else {
-
+				} else {
+					// Block.
 					$wrap  = 'h3';
 					$title = get_the_title( $this->entry );
 					$link  = true;
 				}
-			break;
+
+				break;
 			case 'term':
 				$wrap  = 'h3'; // Only blocks use this function for terms.
-				$title = ''; // TODO.
-			break;
+				$title = ''; // TODO: Add title.
+				break;
 			case 'user':
 				$wrap  = 'h3'; // Only blocks use this function for users.
-				$title = ''; // TODO.
-			break;
+				$title = ''; // TODO: Add title.
+				break;
 			default:
 				$title = '';
 		}
@@ -510,7 +621,7 @@ class Mai_Entry {
 		 *
 		 * The wrapping element for the entry title.
 		 *
-		 * @param  string  $wrap The wrapping element (h1, h2, p, etc.).
+		 * @param  string $wrap The wrapping element (h1, h2, p, etc.).
 		 */
 		$wrap = apply_filters( 'mai_entry_title_wrap', $wrap, $this->args );
 
@@ -535,8 +646,8 @@ class Mai_Entry {
 			$output = apply_filters( 'genesis_post_title_output', $output, $wrap, $title ) . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- title output is left unescaped to accommodate trusted user input. See https://codex.wordpress.org/Function_Reference/the_title#Security_considerations.
 		}
 
+		// TODO: Output should be escaped.
 		echo $output;
-
 	}
 
 	/**
@@ -546,7 +657,7 @@ class Mai_Entry {
 	 *
 	 * @return  void
 	 */
-	function do_excerpt() {
+	public function do_excerpt() {
 
 		// Excerpt.
 		switch ( $this->type ) {
@@ -583,7 +694,6 @@ class Mai_Entry {
 				],
 			]
 		);
-
 	}
 
 	/**
@@ -593,7 +703,7 @@ class Mai_Entry {
 	 *
 	 * @return  void
 	 */
-	function do_content() {
+	public function do_content() {
 
 		// Content.
 		switch ( $this->type ) {
@@ -630,7 +740,6 @@ class Mai_Entry {
 				],
 			]
 		);
-
 	}
 
 	/**
@@ -638,7 +747,7 @@ class Mai_Entry {
 	 *
 	 * Initially based off genesis_post_info().
 	 */
-	function do_header_meta() {
+	public function do_header_meta() {
 
 		// Bail if none.
 		if ( ! $this->args['header_meta'] ) {
@@ -661,7 +770,6 @@ class Mai_Entry {
 				],
 			]
 		);
-
 	}
 
 	/**
@@ -669,7 +777,7 @@ class Mai_Entry {
 	 *
 	 * Initially based off genesis_post_meta().
 	 */
-	function do_footer_meta() {
+	public function do_footer_meta() {
 
 		// Bail if none.
 		if ( ! $this->args['footer_meta'] ) {
@@ -692,22 +800,28 @@ class Mai_Entry {
 				],
 			]
 		);
-
 	}
 
-	function do_more_link() {
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
+	 */
+	public function do_more_link() {
 
 		// Link.
 		switch ( $this->type ) {
 			case 'post':
 				$more_link = get_the_permalink( $this->entry );
-			break;
+				break;
 			case 'term':
 				$more_link = ''; // TODO.
-			break;
+				break;
 			case 'user':
 				$more_link = ''; // TODO.
-			break;
+				break;
 			default:
 				$more_link = '';
 		}
@@ -736,8 +850,14 @@ class Mai_Entry {
 		);
 	}
 
-	function do_after_entry_widget_area() {
-
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
+	 */
+	public function do_after_entry_widget_area() {
 		genesis_widget_area(
 			'after-entry',
 			[
@@ -747,31 +867,77 @@ class Mai_Entry {
 		);
 	}
 
-	function do_author_box() {
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
+	 */
+	public function do_author_box() {
+		// TODO: Output should be escaped.
 		echo genesis_get_author_box( 'single' );
 	}
 
-	function do_adjacent_entry_nav() {
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
+	 */
+	public function do_adjacent_entry_nav() {
 		genesis_adjacent_entry_nav();
 	}
 
 	/**
 	 * Backwards compatibility for Genesis hooks.
 	 */
-	function do_genesis_entry_header() {
+	public function do_genesis_entry_header() {
 		do_action( 'genesis_entry_header' );
 	}
-	function do_genesis_before_entry_content() {
+
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
+	 */
+	public function do_genesis_before_entry_content() {
 		do_action( 'genesis_before_entry_content' );
 	}
-	function do_genesis_entry_content() {
+
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
+	 */
+	public function do_genesis_entry_content() {
 		do_action( 'genesis_entry_content' );
 	}
-	function do_genesis_after_entry_content() {
+
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
+	 */
+	public function do_genesis_after_entry_content() {
 		do_action( 'genesis_after_entry_content' );
 	}
-	function do_genesis_entry_footer() {
+
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
+	 */
+	public function do_genesis_entry_footer() {
 		do_action( 'genesis_entry_footer' );
 	}
-
 }

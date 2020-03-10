@@ -1,11 +1,18 @@
 <?php
+/**
+ * Mai Engine.
+ *
+ * @package   BizBudding\MaiEngine
+ * @link      https://bizbudding.com
+ * @author    BizBudding
+ * @copyright Copyright © 2019 BizBudding
+ * @license   GPL-2.0-or-later
+ */
 
 /**
  * Helper function that returns list of shortcode attributes.
  *
- * @since 1.0.0
- *
- * @param $atts
+ * @since 0.1.0
  *
  * @return array
  */
@@ -42,14 +49,14 @@ add_shortcode( 'mai_icon', 'mai_icon_shortcode' );
  *
  * @since 2.0.0
  *
- * @param array $atts Shortcode attributes.
+ * @param array $atts The shortcode attributes.
  *
  * @return string
  */
 function mai_icon_shortcode( $atts ) {
 	static $id = 0;
 
-	$id ++;
+	$id++;
 
 	$atts = shortcode_atts(
 		mai_icon_shortcode_atts(),
@@ -63,28 +70,37 @@ function mai_icon_shortcode( $atts ) {
 		return $file;
 	}
 
-	$margin = implode( 'px ', [
+	$margin = implode(
+		'px ',
+		[
 			$atts['margin_top'],
 			$atts['margin_right'],
 			$atts['margin_bottom'],
 			$atts['margin_left'],
-		] ) . 'px;';
+		]
+	) . 'px;';
 
-	$padding = implode( 'px ', [
+	$padding = implode(
+		'px ',
+		[
 			$atts['padding_top'],
 			$atts['padding_right'],
 			$atts['padding_bottom'],
 			$atts['padding_left'],
-		] ) . 'px;';
+		]
+	) . 'px;';
 
-	$shadow = implode( ' ', [
-		$atts['x_offset'] . 'px',
-		$atts['y_offset'] . 'px',
-		$atts['blur'] . 'px',
-		$atts['color_shadow'],
-	] );
+	$shadow = implode(
+		' ',
+		[
+			$atts['x_offset'] . 'px',
+			$atts['y_offset'] . 'px',
+			$atts['blur'] . 'px',
+			$atts['color_shadow'],
+		]
+	);
 
-	$css = '';
+	$css  = '';
 	$css .= $atts['display'] ? 'display:' . $atts['display'] . ';' : '';
 	$css .= $atts['align'] ? 'justify-content:' . $atts['align'] . ';' : '';
 	$css .= $atts['color_background'] ? 'background-color:' . $atts['color_background'] . ';' : '';
@@ -98,7 +114,7 @@ function mai_icon_shortcode( $atts ) {
 		$css
 	);
 
-	$svg = '-webkit-filter: drop-shadow(' . $shadow . ');';
+	$svg  = '-webkit-filter: drop-shadow(' . $shadow . ');';
 	$svg .= 'filter: drop-shadow(' . $shadow . ')';
 
 	$css .= sprintf(
@@ -119,6 +135,7 @@ function mai_icon_shortcode( $atts ) {
 				$atts['size'],
 				$atts['align']
 			),
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 			file_get_contents( $file )
 		)
 	);

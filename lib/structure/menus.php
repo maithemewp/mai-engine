@@ -14,9 +14,9 @@ add_filter( 'genesis_attr_nav-header-right', 'mai_header_nav_class' );
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
- * @param $atts
+ * @param array $atts Element attributes.
  *
  * @return mixed
  */
@@ -35,9 +35,11 @@ add_action( 'mai_header_left', 'mai_header_left_menu', 15 );
  * @return void
  */
 function mai_header_left_menu() {
-	genesis_nav_menu( [
-		'theme_location' => 'header-left',
-	] );
+	genesis_nav_menu(
+		[
+			'theme_location' => 'header-left',
+		]
+	);
 }
 
 add_action( 'mai_header_right', 'mai_header_right_menu' );
@@ -49,9 +51,11 @@ add_action( 'mai_header_right', 'mai_header_right_menu' );
  * @return void
  */
 function mai_header_right_menu() {
-	genesis_nav_menu( [
-		'theme_location' => 'header-right',
-	] );
+	genesis_nav_menu(
+		[
+			'theme_location' => 'header-right',
+		]
+	);
 }
 
 add_action( 'mai_after_header_wrap', 'mai_below_header_menu' );
@@ -63,9 +67,11 @@ add_action( 'mai_after_header_wrap', 'mai_below_header_menu' );
  * @return void
  */
 function mai_below_header_menu() {
-	genesis_nav_menu( [
-		'theme_location' => 'below-header',
-	] );
+	genesis_nav_menu(
+		[
+			'theme_location' => 'below-header',
+		]
+	);
 }
 
 add_action( 'genesis_footer', 'mai_footer_menu' );
@@ -77,9 +83,11 @@ add_action( 'genesis_footer', 'mai_footer_menu' );
  * @return void
  */
 function mai_footer_menu() {
-	genesis_nav_menu( [
-		'theme_location' => 'footer',
-	] );
+	genesis_nav_menu(
+		[
+			'theme_location' => 'footer',
+		]
+	);
 }
 
 add_filter( 'walker_nav_menu_start_el', 'mai_replace_hash_with_void', 999 );
@@ -126,12 +134,12 @@ add_filter( 'nav_menu_link_attributes', 'mai_nav_link_atts' );
  *
  * @since 0.1.0
  *
- * @param array $atts
+ * @param array $atts Element attributes.
  *
  * @return array
  */
 function mai_nav_link_atts( $atts ) {
-	$atts['class'] = 'menu-item-link';
+	$atts['class']  = 'menu-item-link';
 	$atts['class'] .= $atts['aria-current'] ? ' menu-item-link-current' : '';
 
 	return $atts;
@@ -153,4 +161,3 @@ function mai_first_last_menu_items( $items ) {
 
 	return $items;
 }
-

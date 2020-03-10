@@ -1,19 +1,31 @@
 <?php
-
 /**
- * // Loop.
- * @link  https://github.com/studiopress/genesis/blob/master/lib/structure/loops.php#L64
- * // Post.
- * @link  https://github.com/studiopress/genesis/blob/master/lib/structure/post.php
+ * Mai Engine.
+ *
+ * @package   BizBudding\MaiEngine
+ * @link      https://bizbudding.com
+ * @author    BizBudding
+ * @copyright Copyright © 2019 BizBudding
+ * @license   GPL-2.0-or-later
  */
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @param array $args Entries open args.
+ *
+ * @link  https://github.com/studiopress/genesis/blob/master/lib/structure/loops.php#L64
+ * @link  https://github.com/studiopress/genesis/blob/master/lib/structure/post.php
+ */
 function mai_do_entries_open( $args ) {
 
 	// Start the attributes.
-	$attributes = array(
+	$attributes = [
 		'class' => 'entries',
 		'style' => '',
-	);
+	];
 
 	// Boxed.
 	if ( $args['boxed'] ) {
@@ -21,7 +33,7 @@ function mai_do_entries_open( $args ) {
 	}
 
 	// Image position.
-	if ( in_array( 'image', $args['show'] ) && $args['image_position'] ) {
+	if ( in_array( 'image', $args['show'], true ) && $args['image_position'] ) {
 		$attributes['class'] .= ' has-image-' . $args['image_position'];
 		if ( 'background' === $args['image_position'] ) {
 			// TODO: This needs to use the engine config to get available image orientations.
@@ -30,7 +42,7 @@ function mai_do_entries_open( $args ) {
 				case 'portrait':
 				case 'square':
 					$image_size = sprintf( '%s-md', $args['image_orientation'] );
-				break;
+					break;
 				default:
 					$image_size = $args['image_size'];
 			}
@@ -75,11 +87,18 @@ function mai_do_entries_open( $args ) {
 			],
 		]
 	);
-
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @param array $args Entries close args.
+ *
+ * @return void
+ */
 function mai_do_entries_close( $args ) {
-
 	genesis_markup(
 		[
 			'close'   => '</div>',
@@ -101,16 +120,17 @@ function mai_do_entries_close( $args ) {
 			],
 		]
 	);
-
 }
 
 /**
  * Echo a grid entry.
  *
- * @param   object  The (post, term, user) entry object.
- * @param   object  The object to get the entry.
+ * @since 0.1.0
  *
- * @return  string
+ * @param object $entry The (post, term, user) entry object.
+ * @param array  $args  The object to get the entry.
+ *
+ * @return  void
  */
 function mai_do_entry( $entry, $args ) {
 	$entry = new Mai_Entry( $entry, $args );

@@ -18,8 +18,8 @@ add_action( 'genesis_before', 'mai_no_sidebar' );
  * @return void
  */
 function mai_no_sidebar() {
-	if ( ! in_array( genesis_site_layout(), [ 'narrow-content', 'standard-content' ] ) ) {
-//		return;
+	if ( ! in_array( genesis_site_layout(), [ 'narrow-content', 'standard-content' ], true ) ) {
+		return;
 	}
 
 	add_filter( 'genesis_markup_sidebar-primary_open', '__return_false' );

@@ -1,10 +1,19 @@
 <?php
+/**
+ * Mai Engine.
+ *
+ * @package   BizBudding\MaiEngine
+ * @link      https://bizbudding.com
+ * @author    BizBudding
+ * @copyright Copyright © 2019 BizBudding
+ * @license   GPL-2.0-or-later
+ */
 
 add_action( '', 'mai_add_fields', 15 );
 /**
  * Add fields defined in config to Customizer.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return array|mixed
  */
@@ -34,7 +43,7 @@ function mai_add_fields() {
 				}
 
 				foreach ( $fields as $field ) {
-					\Kirki::add_field( $handle, apply_filters( 'mai_field', $field, $panel, $section, $prefix, $counter ++ ) );
+					\Kirki::add_field( $handle, apply_filters( 'mai_field', $field, $panel, $section, $prefix, $counter++ ) );
 				}
 			}
 		}
@@ -47,7 +56,7 @@ add_filter( 'mai_field', 'mai_format_field', 10, 5 );
 /**
  * Modify fields before adding them.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param array  $field   Field array values.
  * @param string $panel   Field panel string.

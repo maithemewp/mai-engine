@@ -21,9 +21,7 @@ return [
 			'sticky-header',
 		],
 	],
-	'plugins'       => [
-
-	],
+	'plugins'       => [],
 	'image-sizes'   => [
 		'add'    => [
 			'cover'     => [ 1600, 900, true ],
@@ -33,9 +31,6 @@ return [
 			'square'    => '1:1',
 			'tiny'      => [ 80, 80, true ],
 		],
-		'remove' => [
-
-		],
+		'remove' => [],
 	],
 ];
-

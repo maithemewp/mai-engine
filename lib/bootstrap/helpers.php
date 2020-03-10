@@ -28,21 +28,13 @@ function mai_is_in_dev_mode() {
  *
  * @since 0.1.0
  *
+ * @param string $needle   String to check for.
+ * @param string $haystack String to check in.
+ *
  * @return string
  */
 function mai_has_string( $needle, $haystack ) {
 	return false !== strpos( $haystack, $needle );
-}
-
-/**
- * Description of expected behavior.
- *
- * @since 0.1.0
- *
- * @return string
- */
-function mai_any_condition( $matches, $condition ) {
-
 }
 
 /**
@@ -92,6 +84,9 @@ function mai_sidebar_has_widget( $sidebar, $widget ) {
 /**
  * Checks if first block is cover.
  *
+ * @since 0.1.0
+ *
+ * @return bool
  */
 function mai_has_cover_block() {
 	$has_cover_block = false;
@@ -155,11 +150,11 @@ function mai_is_page_header_active() {
  *
  * @since  1.0.0
  *
- * @param string $css CSS to minify
- *
- * @return string Minified CSS
  * @author Gary Jones
  *
+ * @param string $css CSS to minify.
+ *
+ * @return string
  */
 function mai_minify_css( $css ) {
 	$css = preg_replace( '/\s+/', ' ', $css );
@@ -176,14 +171,13 @@ function mai_minify_css( $css ) {
 	return trim( $css );
 }
 
-
 /**
  * Description of expected behavior.
  *
  * @since 0.1.0
  *
- * @param string $size
- * @param string $ratio
+ * @param string $size  Image size.
+ * @param string $ratio Aspect ratio.
  *
  * @return array
  */

@@ -1,4 +1,13 @@
 <?php
+/**
+ * Mai Engine.
+ *
+ * @package   BizBudding\MaiEngine
+ * @link      https://bizbudding.com
+ * @author    BizBudding
+ * @copyright Copyright © 2019 BizBudding
+ * @license   GPL-2.0-or-later
+ */
 
 /**
  * Instantiate a grid.
@@ -6,14 +15,58 @@
  */
 class Mai_Grid {
 
+	/**
+	 * Context.
+	 *
+	 * @var $context
+	 */
 	protected $context;
+
+	/**
+	 * Type.
+	 *
+	 * @var $type
+	 */
 	protected $type;
+
+	/**
+	 * Fields.
+	 *
+	 * @var $fields
+	 */
 	protected $fields;
+
+	/**
+	 * Keys.
+	 *
+	 * @var $keys
+	 */
 	protected $keys;
+
+	/**
+	 * Args.
+	 *
+	 * @var $args
+	 */
 	protected $args;
+
+	/**
+	 * Config.
+	 *
+	 * @var $config
+	 */
 	protected $config;
 
-	function __construct( $args ) {
+	/**
+	 * Mai_Grid constructor.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param array $args Loop args.
+	 *
+	 * @return void
+	 */
+	public function __construct( $args ) {
 		$this->context = 'block';
 		$this->config  = new Mai_Entry_Settings( $this->context ); // TODO: Use dependency injection.
 		$this->type    = $this->config->type;
@@ -22,7 +75,16 @@ class Mai_Grid {
 		$this->args    = $this->get_args( $args );
 	}
 
-	function get_args( $args ) {
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param array $args Loop args.
+	 *
+	 * @return array
+	 */
+	public function get_args( $args ) {
 
 		/**
 		 * Get defaults and parse args.
@@ -35,25 +97,31 @@ class Mai_Grid {
 			'type'    => $this->type,  // post, term, user.
 			'class'   => '',
 		];
+
 		foreach ( $this->fields as $name => $field ) {
+
 			// Skip if not the context we want.
 			if ( ! ( isset( $field[ $args['context'] ] ) && $field[ $args['context'] ] ) ) {
 				continue;
 			}
+
 			// Skip if field type is a tab.
 			if ( 'tab' === $field['type'] ) {
 				continue;
 			}
+
 			// Skip if block and not the block we need.
 			if ( 'block' === $args['context'] ) {
+
 				/**
 				 * Skip if not in the grid we need.
 				 * Nested conditionals so we don't do in_array() for no reason if not a block.
 				 */
-				if ( ! in_array( sprintf( 'mai_%s_grid', $args['type'] ), $field['group'] ) ) {
+				if ( ! in_array( sprintf( 'mai_%s_grid', $args['type'] ), $field['group'], true ) ) {
 					continue;
 				}
 			}
+
 			// Add to our defaults.
 			$defaults[ $name ] = $field;
 		}
@@ -75,8 +143,8 @@ class Mai_Grid {
 					}
 					$args[ $name ] = $sub_values;
 				}
-			} // Standard field.
-			else {
+			} else {
+				// Standard field.
 				// Get the sanitization function, as type/context aren't actual fields.
 				$sanitize      = isset( $this->fields[ $name ] ) ? $this->fields[ $name ]['sanitize'] : 'esc_html';
 				$args[ $name ] = $this->sanitize( $value, $sanitize );
@@ -86,18 +154,22 @@ class Mai_Grid {
 		return apply_filters( 'mai_grid_args', $args );
 	}
 
-	function render() {
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
+	 */
+	public function render() {
 
 		// Bail if not showing any elements.
 		if ( empty( $this->args['show'] ) ) {
 			return;
 		}
 
-		// Enqueue scripts and styles.
-		// $this->enqueue_assets();
-
 		// Grid specific classes.
-		$this->args['class'] = 'mai-grid ' . $this->args['class'];
+		$this->args['class'] = 'mai-engine ' . $this->args['class'];
 		$this->args['class'] = trim( $this->args['class'] );
 
 		// Open.
@@ -110,24 +182,28 @@ class Mai_Grid {
 		mai_do_entries_close( $this->args );
 	}
 
-	function do_grid_entries() {
-
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
+	 */
+	public function do_grid_entries() {
 		switch ( $this->args['type'] ) {
 			case 'post':
-				$show  = array_flip( $this->args['show'] );
 				$posts = new WP_Query( $this->get_post_query_args() );
 				if ( $posts->have_posts() ) {
-					while ( $posts->have_posts() ) : $posts->the_post();
+					while ( $posts->have_posts() ) :
+						$posts->the_post();
 
 						global $post;
 						mai_do_entry( $post, $this->args );
 
 					endwhile;
-				} else {
-					// TODO.
 				}
+
 				wp_reset_postdata();
-				break;
 				break;
 			case 'term':
 				// TODO.
@@ -136,11 +212,16 @@ class Mai_Grid {
 				// TODO.
 				break;
 		}
-
 	}
 
-	function get_post_query_args() {
-
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return array
+	 */
+	public function get_post_query_args() {
 		$query_args = [
 			'post_type'           => $this->args['post_type'],
 			'posts_per_page'      => $this->args['number'],
@@ -161,7 +242,7 @@ class Mai_Grid {
 				}
 				break;
 			case 'tax_meta':
-				$tax_query = $meta_query = [];
+				$tax_query = [];
 				if ( $this->args['taxonomies'] ) {
 					foreach ( $this->args['taxonomies'] as $taxo ) {
 						// Skip if we don't have all the tax query args.
@@ -176,20 +257,22 @@ class Mai_Grid {
 							'operator' => $taxo['operator'],
 						];
 					}
+
 					// If we have tax query values.
 					if ( $tax_query ) {
+
+						// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 						$query_args['tax_query'] = $tax_query;
+
 						if ( $this->args['taxonomies_relation'] ) {
+							// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 							$query_args['tax_query'][] = [
 								'relation' => $this->args['taxonomies_relation'],
 							];
 						}
 					}
 				}
-				// TODO: Add meta_query.
-				if ( $this->args['meta_keys'] ) {
 
-				}
 				break;
 		}
 
@@ -202,6 +285,8 @@ class Mai_Grid {
 		if ( $this->args['orderby'] ) {
 			$query_args['orderby'] = $this->args['orderby'];
 			if ( 'meta_value_num' === $this->args['orderby'] ) {
+
+				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 				$query_args['meta_key'] = $this->args['orderby_meta_key'];
 			}
 		}
@@ -223,7 +308,7 @@ class Mai_Grid {
 	 *
 	 * @return  mixed
 	 */
-	function sanitize( $value, $function = 'esc_html', $allow_null = false ) {
+	public function sanitize( $value, $function = 'esc_html', $allow_null = false ) {
 
 		// Return null if allowing null.
 		if ( is_null( $value ) && $allow_null ) {
@@ -251,23 +336,4 @@ class Mai_Grid {
 
 		return $escaped;
 	}
-
-	// function enqueue_assets() {
-
-	// 	if ( is_admin() ) {
-
-	// 		// Query JS.
-	// 		switch ( $this->args['type'] ) {
-	// 			case 'post':
-	// 				wp_localize_script( mai_get_handle() . '-wp-query', 'maiGridWPQueryVars', [
-	// 					'fields' => $this->fields,
-	// 					'keys'   => $this->keys,
-	// 				] );
-	// 				break;
-	// 			case 'term':
-	// 				break;
-	// 		}
-	// 	}
-	// }
-
 }

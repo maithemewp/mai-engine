@@ -27,6 +27,10 @@ Mai Engine makes use of two package managers, NPM for JavaScript and Composer fo
     ```
 
     *Please note that this step requires that you have Composer installed globally on your machine. We recommend using Homebrew to install Composer: `brew install composer`*
+    
+    ```shell
+    export PATH="$HOME/.composer/vendor/bin:$PATH"
+    ```
 
 4. Install Node packages:
 

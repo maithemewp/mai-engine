@@ -73,7 +73,7 @@ add_filter( 'genesis_markup_site-title_content', 'mai_site_title_link' );
  *
  * @since 0.1.0
  *
- * @param $atts
+ * @param string $default Default site title link.
  *
  * @return string
  */
@@ -103,7 +103,7 @@ add_action( 'mai_after_title_area', 'mai_header_sections' );
 /**
  * Adds header left and right sections.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
@@ -114,17 +114,22 @@ function mai_header_sections() {
 		return;
 	}
 
-	genesis_markup( [
-		'open'    => '<div %s>',
-		'context' => $location,
-	] );
+	genesis_markup(
+		[
+			'open'    => '<div %s>',
+			'context' => $location,
+		]
+	);
 
+	// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	do_action( 'mai_' . str_replace( '-', '_', $location ) );
 
-	genesis_markup( [
-		'close'   => '</div>',
-		'context' => $location,
-	] );
+	genesis_markup(
+		[
+			'close'   => '</div>',
+			'context' => $location,
+		]
+	);
 }
 
 add_filter( 'genesis_attr_header-left', 'mai_header_section_class' );
@@ -132,9 +137,9 @@ add_filter( 'genesis_attr_header-right', 'mai_header_section_class' );
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
- * @param $atts
+ * @param array $atts Element attributes.
  *
  * @return mixed
  */

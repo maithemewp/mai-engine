@@ -1,8 +1,8 @@
 {
   "breakpoint": 1152,
   "colors": {
-	"primary": "#0072ff",
-	"dark": "#2a3139",
-	"medium": "#4d5968"
+    "primary": "#0072ff",
+    "dark": "#2a3139",
+    "medium": "#4d5968"
   }
 }

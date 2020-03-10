@@ -42,7 +42,6 @@ function mai_archive_post_class( $classes ) {
 	if ( 'full-width-content' === genesis_site_layout() ) {
 		$classes[] = 'one-third';
 		$count     = 3;
-
 	} else {
 		$classes[] = 'one-half';
 		$count     = 2;

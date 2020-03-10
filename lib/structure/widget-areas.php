@@ -1,10 +1,19 @@
 <?php
+/**
+ * Mai Engine.
+ *
+ * @package   BizBudding\MaiEngine
+ * @link      https://bizbudding.com
+ * @author    BizBudding
+ * @copyright Copyright © 2019 BizBudding
+ * @license   GPL-2.0-or-later
+ */
 
 add_action( 'genesis_before', 'mai_widget_areas' );
 /**
  * Display widget areas defined in config.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
@@ -22,9 +31,13 @@ function mai_widget_areas() {
 		$args     = isset( $widget_area['args'] ) ? wp_parse_args( $widget_area['args'], $defaults ) : $defaults;
 
 		if ( $hook ) {
-			add_action( $hook, function () use ( $id, $args ) {
-				genesis_widget_area( $id, $args );
-			}, $priority );
+			add_action(
+				$hook,
+				function () use ( $id, $args ) {
+					genesis_widget_area( $id, $args );
+				},
+				$priority
+			);
 		}
 	}
 }

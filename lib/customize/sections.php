@@ -1,9 +1,18 @@
 <?php
+/**
+ * Mai Engine.
+ *
+ * @package   BizBudding\MaiEngine
+ * @link      https://bizbudding.com
+ * @author    BizBudding
+ * @copyright Copyright © 2019 BizBudding
+ * @license   GPL-2.0-or-later
+ */
 
 /**
  * Returns array of default Customizer panels and sections.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return array
  */
@@ -19,7 +28,7 @@ add_action( 'genesis_setup', 'mai_add_sections' );
 /**
  * Adds Kirki sections.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
@@ -31,11 +40,14 @@ function mai_add_sections() {
 		$priority = 10;
 
 		foreach ( $sections as $section => $title ) {
-			\Kirki::add_section( $handle . "_{$panel}_${section}", [
-				'title'    => $title,
-				'panel'    => $handle . "_{$panel}",
-				'priority' => $priority,
-			] );
+			\Kirki::add_section(
+				$handle . "_{$panel}_${section}",
+				[
+					'title'    => $title,
+					'panel'    => $handle . "_{$panel}",
+					'priority' => $priority,
+				]
+			);
 
 			$priority = $priority + 10;
 		}

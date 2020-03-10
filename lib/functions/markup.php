@@ -101,6 +101,8 @@ add_filter( 'genesis_attr_site-container', 'mai_back_to_top_anchor' );
  *
  * @since 0.1.0
  *
+ * @param array $attr Element attributes.
+ *
  * @return array
  */
 function mai_back_to_top_anchor( $attr ) {
