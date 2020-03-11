@@ -34,12 +34,17 @@ function mai_render_cover_block( $block_content, $block ) {
 		return $block_content;
 	}
 
-	// Convert inline styles to css properties.
-	$block_content = str_replace( 'background-image', '--background-image', $block_content );
+	// Get the image URL.
+	$image_url = isset( $block['attrs']['url'] ) ? $block['attrs']['url'] : false;
+
+	// Strip background-image inline CSS.
+	if ( $image_url ) {
+		$block_content = str_replace( sprintf( 'background-image:url(%s);', $image_url ), '', $block_content );
+	}
+
+	// Convert inline style to css properties.
 	$block_content = str_replace( 'background-position', '--object-position', $block_content );
 	$block_content = mai_add_cover_block_image( $block_content, $image_id );
-
-	// TODO: Remove background image inline style.
 
 	return $block_content;
 }
