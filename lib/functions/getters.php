@@ -561,29 +561,35 @@ function mai_get_settings_keys( $context ) {
  *
  * @since  1.0.0
  *
- * @return array|mixed|null|void
- *
- * @todo   Make this work for singular too.
+ * @return array
  */
 function mai_get_template_args() {
 	// Setup cache.
 	static $args = null;
-	if ( null !== $args ) {
+	if ( ! is_null( $args ) ) {
 		return $args;
 	}
 
-	// TODO: This is the archive helper function in mai-engine.
+	$name = $context = '';
 
-	// Bail if not an archive.
-	if ( ! mai_is_type_archive() ) {
-		$args = [];
-
-		return $args;
+	// If archive.
+	if ( mai_is_type_archive() ) {
+		$name    = mai_get_archive_args_name();
+		$context = 'archive';
+	}
+	// Singular.
+	elseif ( is_singular() ) {
+		$name    = mai_get_singular_args_name();
+		$context = 'single';
 	}
 
-	$settings = new Mai_Entry_Settings( 'archive' );
-	$name     = mai_get_archive_args_name();
-	$key      = 'mai_archive_' . $name;
+	// Bail if no data.
+	if ( ! ( $name && $context ) ) {
+		return [];
+	}
+
+	$settings = new Mai_Entry_Settings( $context );
+	$key      = sprintf( 'mai_%s_%s', $context, $name );
 	$args     = wp_parse_args( get_option( $key, [] ), $settings->defaults );
 
 	// Allow devs to filter.
@@ -631,11 +637,11 @@ function mai_get_sanitized_entry_args( $args ) {
 }
 
 /**
- * Description of expected behavior.
+ * Get the name to be used in the main args function/helpers.
  *
  * @since 0.1.0
  *
- * @return bool|mixed|string
+ * @return string
  */
 function mai_get_archive_args_name() {
 
@@ -665,6 +671,12 @@ function mai_get_archive_args_name() {
 		return 'post';
 	}
 
+	return $name;
+}
+
+function mai_get_singular_args_name() {
+	$name = get_post_type();
+	$name = $name ?: get_query_var( 'post_type' );
 	return $name;
 }
 
