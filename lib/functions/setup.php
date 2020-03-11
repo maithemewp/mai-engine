@@ -137,7 +137,7 @@ function mai_setup() {
 		}
 	);
 
-	// Remove default widget area content.
+	// Remove default widget area content. Unregistering isn't enough in some scenarios where an existing site already has content/widgets in the sidebar.
 	if ( in_array( 'sidebar', $widget_areas['remove'] ) ) {
 		remove_action( 'genesis_sidebar', 'genesis_do_sidebar' );
 	}
