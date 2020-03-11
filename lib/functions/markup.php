@@ -86,9 +86,6 @@ function mai_body_classes( $classes ) {
 	// Add no page header class.
 	$classes[] = 'no-page-header';
 
-	// Add front page 1 slider class.
-	$classes[] = mai_sidebar_has_widget( 'front-page-1', 'seo_slider' ) ? 'has-home-slider' : '';
-
 	// Add block classes.
 	$classes[] = mai_has_cover_block() ? 'has-cover-block' : '';
 
