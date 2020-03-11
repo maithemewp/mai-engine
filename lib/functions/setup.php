@@ -137,8 +137,11 @@ function mai_setup() {
 		}
 	);
 
-	// Remove default widget area content. Unregistering isn't enough in some scenarios where an existing site already has content/widgets in the sidebar.
-	if ( in_array( 'sidebar', $widget_areas['remove'] ) ) {
+	/**
+	 * Remove default widget area content if sidebar is not registered or if a no-sidebar layout.
+	 * Unregistering isn't enough in some scenarios where an existing site already has content/widgets in the sidebar.
+	 */
+	if ( in_array( 'sidebar', $widget_areas['remove'] ) || in_array( genesis_site_layout(), [ 'wide-content', 'standard-content', 'narrow-content' ] ) ) {
 		remove_action( 'genesis_sidebar', 'genesis_do_sidebar' );
 	}
 	if ( in_array( 'sidebar-alt', $widget_areas['remove'] ) ) {
