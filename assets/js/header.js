@@ -1,3 +1,9 @@
+
+/**
+ * TODO: debounce scroll with Intersection Observer
+ * @link https://caniuse.com/#feat=intersectionobserver
+ */
+
 var scrollPosition = window.scrollY,
     siteHeader = document.getElementsByClassName('site-header')[0],
     siteHeaderHeight = siteHeader.offsetHeight;
