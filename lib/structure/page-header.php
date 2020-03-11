@@ -61,11 +61,11 @@ function mai_page_header_setup() {
 	add_action( 'mai_page_header', 'genesis_do_author_title_description' );
 	add_action( 'mai_page_header', 'genesis_do_cpt_archive_title_description' );
 	add_action( 'genesis_archive_title_descriptions', 'mai_do_archive_headings_intro_text', 12, 3 );
-	add_action( 'mai_page_header', 'mai_page_header_title', 10 );
-	add_action( 'mai_page_header', 'mai_page_header_excerpt', 20 );
+	add_action( 'mai_page_header', 'mai_do_page_header_title', 10 );
+	add_action( 'mai_page_header', 'mai_do_page_header_excerpt', 20 );
 	add_action( 'be_title_toggle_remove', 'mai_page_header_title_toggle' );
 	add_action( 'genesis_before_content', 'mai_page_header_remove_404_title' );
-	add_action( 'genesis_before_content_sidebar_wrap', 'mai_page_header_display' );
+	add_action( 'genesis_before_content_sidebar_wrap', 'mai_do_page_header' );
 
 	if ( ! is_customize_preview() && is_front_page() ) {
 		add_action( 'genesis_before_page-header_wrap', 'the_custom_header_markup' );
@@ -91,6 +91,8 @@ function mai_page_header_body_class( $classes ) {
 /**
  * Remove default title of 404 pages.
  *
+ * @todo  is this needed with the new grid output stuff?
+ *
  * @since 0.1.0
  *
  * @return void
@@ -103,6 +105,14 @@ function mai_page_header_remove_404_title() {
 	}
 }
 
+function mai_do_page_header_image() {
+	$image = get_custom_header();
+	if ( ! $image || ! property_exists( $image, 'attachment_id' ) || ! $image->attachment_id ) {
+		return;
+	}
+	echo mai_get_cover_image_html( $image->attachment_id, [ 'class' => 'page-header-image' ] );
+}
+
 /**
  * Display title in page header.
  *
@@ -110,7 +120,7 @@ function mai_page_header_remove_404_title() {
  *
  * @return void
  */
-function mai_page_header_title() {
+function mai_do_page_header_title() {
 	if ( class_exists( 'WooCommerce' ) && is_shop() ) {
 		$title = get_the_title( wc_get_page_id( 'shop' ) );
 	} elseif ( is_home() && 'posts' === get_option( 'show_on_front' ) ) {
@@ -142,7 +152,7 @@ function mai_page_header_title() {
  *
  * @return void
  */
-function mai_page_header_excerpt() {
+function mai_do_page_header_excerpt() {
 	$excerpt = '';
 	$id      = '';
 
@@ -246,13 +256,15 @@ function mai_page_header_entry_attr( $atts ) {
  *
  * @return void
  */
-function mai_page_header_display() {
+function mai_do_page_header() {
 	genesis_markup(
 		[
 			'open'    => '<section %s role="banner">',
 			'context' => 'page-header',
 		]
 	);
+
+	mai_do_page_header_image();
 
 	genesis_structural_wrap( 'page-header', 'open' );
 

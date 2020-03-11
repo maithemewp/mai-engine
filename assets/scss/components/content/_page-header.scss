@@ -28,6 +28,14 @@
 	}
 }
 
+.page-header-image {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	z-index: -1;
+}
+
 .has-transparent-header {
 	--page-header-wrap-margin-top: var(--space-xxl);
 }
