@@ -19,7 +19,9 @@ add_filter( 'genesis_before', 'mai_structural_wrap_hooks' );
  */
 function mai_structural_wrap_hooks() {
 	$wraps = get_theme_support( 'genesis-structural-wraps' );
-
+	if ( ! $wraps ) {
+		return;
+	}
 	foreach ( $wraps[0] as $context ) {
 		add_filter(
 			"genesis_structural_wrap-{$context}",
