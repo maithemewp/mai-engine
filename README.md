@@ -39,19 +39,82 @@ Mai Engine makes use of two package managers, NPM for JavaScript and Composer fo
     ```
 
     *Please note that this step requires that you have Node installed globally on your machine. We recommend using Homebrew to install Node: `brew install node`*
+    
+    
+### Composer scripts
 
+Mai Engine uses PHP Code Sniffer for linting and fixing coding standards. To lint all PHP files against WordPress coding standards run the following command:
 
-### Using the Gulp workflow
+```shell
+composer phpcs
+```
+
+To have PHP Code Sniffer attempt to automatically fix any warnings run the following:
+
+```shell
+composer phpcbf
+```
+
+### NPM scripts
 
 Mai Engine utilizes Gulp and Sass to automate tedious tasks, such as automatically generating the many stylesheets required by the child themes.
 
-To get started using Gulp and Sass, first ensure that you have the Gulp CLI installed globally on your machine. To install Gulp CLI simply run the following command from the terminal:
+First you will need to install NPM on your machine:
+
+```shell
+brew install npm
+```
+
+It is also recommended to install NVM (Node Version Manager) to allow easy switching of Node versions:
+
+```shell
+brew install nvm
+```
+
+Next, install the Gulp CLI globally on your machine. To install Gulp CLI run the following command from the terminal:
 
 ```shell
  sudo npm install gulp-cli -g
- ```
+```
 
+Now that all of the global packages are installed, navigate to the root directory of this plugin, e.g:
+
+```shell
+cd Sites/my-project/wp-content/plugins/mai-engine
+```
+
+From there, make sure that Node is running the correct version (11.15.0). To do this, you will first need to run the following commands to configure nvm correctly:
+
+```shell
+export NVM_DIR="$HOME/.nvm" # Sets the path to NVM 
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+```
+
+Then you will be able to use NVM commands. Run the following to switch to the correct version:
+
+```shell
+nvm install 11.15.0
+nvm use 11.15.0
+```
+
+You should see the following message in the terminal:
+
+```shell
+Now using node v11.15.0 (npm v6.7.0)
+```
+
+#### Gulp
+ 
 Once the Gulp CLI and Node packages have been installed, you are ready to begin using the following Gulp tasks to automate development:
+
+**Default**
+
+Running the default gulp task will kick of development and Gulp will watch files for changes. When a change to a file is detected Gulp will run the build tasks and recompile assets. 
+
+```shell
+gulp
+```
 
 **CSS**
 
@@ -69,62 +132,18 @@ gulp build:js
 
 Goals of the CSS system: Keep it DRY. Prioritize performance.
 
-Please note: files in the `assets/css/` directory should never be edited directly as any changes will be overridden when running the gulp build task. All changes should be made to the SCSS files in the `assets/scss/` directory and then compiled using the `gulp build:css` command.
+Please note: files in the `assets/css/min/` directory should never be edited directly as any changes will be overridden when running the gulp build task. All changes should be made to the SCSS files in the `assets/scss/` directory and then compiled using the `gulp build:css` command.
 
 **Organization**
 
-This project follows the ITCSS principal to organize the CSS files in such a way that they can better deal with CSS specificity. One of the key principles of ITCSS is that it separates your CSS codebase to several sections (called layers), which take the form of the inverted triangle:
+This project follows the ITCSS principal to organize the CSS files in such a way that they can better deal with CSS specificity. One of the key principles of ITCSS is that it separates your CSS codebase to several sections (called layers), which take the form of the inverted triangle. The structured is also loosely based on the [Sass Guidelines](https://sass-guidelin.es/). More information about ITCSS can be found [here](https://www.xfive.co/blog/itcss-scalable-maintainable-css-architecture/).
 
-- **Settings** – used with preprocessors and contain font, colors definitions, etc.
-- **Tools** – globally used mixins and functions. It’s important not to output any CSS in the first 2 layers.
-- **Generic** – reset and/or normalize styles, box-sizing definition, etc. This is the first layer which generates actual CSS.
-- **Elements** – styling for bare HTML elements (like H1, A, etc.). These come with default styling from the browser so we can redefine them here.
+- **Abstracts** – used with preprocessors and contain font, colors definitions, globally used mixins and functions. It’s important not to output any CSS in this layer.
+- **Base** – reset and/or normalize styles, box-sizing definition, styling for bare HTML elements (like H1, A, etc.). These come with default styling from the browser so we can redefine them here. This is the first layer which generates actual CSS.
+- **Layout** – the layout/ folder contains everything that takes part in laying out the site or application. These elements are usually only in one place and contain multiple components.
 - **Components** – specific UI components. This is where the majority of our work takes place and our UI components are often composed of Objects and Components
-- **Blocks** – similar to components but separated into their own directory because of the importance.
-- **Plugins** - also similar to components except separated into their own directory.
 - **Utilities** – utilities and helper classes with ability to override anything which goes before in the triangle, eg. hide helper class
-
-More information about ITCSS can be found [here](https://www.xfive.co/blog/itcss-scalable-maintainable-css-architecture/).
-
-**Progressive Loading of CSS**
-
-Instead of loading one large stylesheet in the `<head>` of the website, Mai Engine splits up it's CSS into separate, componentized stylesheets that are only loaded when needed. Below is a list of the different components and the hooks at which they are loaded:
-
-- **Editor**
-    purpose: Provides theme styling to the block editor in the admin.
-    hook: `enqueue_block_editor_assets`
-
-- **Critical**
-    purpose: Provides critical styles that are required before the header.
-    hook: `wp_enqueue_scripts`
-
-- **Header**
-    purpose: Adds styling for the site header component.
-    hook: `genesis_before_header`
-
-- **Desktop**
-    purpose: Adds desktop styles for the navigation menu.
-    hook: `mai_after_title_area`
-
-- **Page Header**
-    purpose: Adds styling for the page header.
-    hook: `genesis_before_content_sidebar_wrap`
-
-- **Content**
-    purpose: Adds styling for the content area.
-    hook: `genesis_before_content`
-
-- **Comments**
-    purpose: Adds styling for the comments area.
-    hook: `genesis_before_comments`
-
-- **Sidebar**
-    purpose: Adds styling for the sidebar and widgets.
-    hook: `genesis_before_sidebar_widget_area`
-
-- **Footer**
-    purpose: Adds styling for the site footer.
-    hook: `genesis_before_footer`
+- **Plugins** - styling for third party plugins. Not imported in the main stylesheet.
 
 ### Variables
 
@@ -142,8 +161,11 @@ Any variables defined in the JSON file are usable in SCSS files and will be proc
 
 ```json
 {
-  "color-primary": "#fb2056",
-  "color-heading": "#232c39"
+  "breakpoint": 1200,
+  "colors": {
+    "primary": "#fb2056",
+    "heading": "#232c39"
+  }
 }
 ```
 
@@ -151,11 +173,15 @@ These can be used in SCSS files in the following way:
 
 ```scss
 body {
-    color: $color-primary;
+    color: map_get($colors, primary);
 }
 
 h1 {
-    color: $color-heading;
+    color: map_get($colors, heading);
+}
+
+.wrap {
+    max-width: $breakpoint;
 }
 ```
 
@@ -164,7 +190,7 @@ h1 {
 To access the JSON variables with PHP, use the following helper function:
 
 ```php
-mai_get_variable( 'color-primary' );
+mai_get_color( 'primary' );
 ```
 
 This will check the currently active child themes config for the variable, and if it's not found will use the default config variable.
@@ -177,6 +203,4 @@ While JSON variables can be used in SCSS, not all SCSS variables need to be defi
 
 CSS Custom Properties are different to SCSS variables in that they can be changed at runtime, unlike SCSS variables which are compiled prior to deployment. That being said, Custom Properties work with SCSS, as seen in this project.
 
-Mai Engine only uses CSS Custom Properties where absolutely necessary as to not hinder performance. Our goal is to use no more than 100 if possible.
-
-All CSS Custom Properties are defined in one place in the plugin, the `assets/scss/generic/_custom-properties.scss` file. You may be wondering why they are not also defined in the `assets/scss/settings` directory along with the other SCSS variables. The reason for this is that CSS Custom Properties output CSS code on the front end, whereas the `assets/scss/settings` directory does not output any actual CSS.
+Mai Engine makes extensive use of CSS Custom Properties to reduce overall file size and allow for easier child theme customizations. Global CSS Custom Properties are defined in one place in the plugin, the `assets/scss/base/_globals.scss` file. 
