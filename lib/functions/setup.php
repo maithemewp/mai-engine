@@ -136,4 +136,13 @@ function mai_setup() {
 			unregister_sidebar( $id );
 		}
 	);
+
+	// Remove default widget area content.
+	if ( in_array( 'sidebar', $widget_areas['remove'] ) ) {
+		remove_action( 'genesis_sidebar', 'genesis_do_sidebar' );
+	}
+	if ( in_array( 'sidebar-alt', $widget_areas['remove'] ) ) {
+		remove_action( 'genesis_sidebar_alt', 'genesis_do_sidebar_alt' );
+	}
+
 }
