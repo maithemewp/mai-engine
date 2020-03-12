@@ -14,12 +14,6 @@ defined( 'ABSPATH' ) || die;
 
 return [
 	'google-fonts'  => [
-		'Montserrat:600|Hind:400',
-	],
-	'theme-support' => [
-		'add' => [
-			'sticky-header',
-			'transparent-header',
-		],
+		'',
 	],
 ];

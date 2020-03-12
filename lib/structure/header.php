@@ -109,8 +109,9 @@ add_action( 'mai_after_title_area', 'mai_header_sections' );
  */
 function mai_header_sections() {
 	$location = 'header-' . ( did_action( 'genesis_site_title' ) ? 'right' : 'left' );
+	$action   = str_replace( '-', '_', $location );
 
-	if ( ! is_active_sidebar( $location ) && ! has_nav_menu( $location ) ) {
+	if ( ! is_active_sidebar( $action ) && ! has_nav_menu( $location ) ) {
 		return;
 	}
 
@@ -122,7 +123,7 @@ function mai_header_sections() {
 	);
 
 	// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
-	do_action( 'mai_' . str_replace( '-', '_', $location ) );
+	do_action( 'mai_' . $action );
 
 	genesis_markup(
 		[

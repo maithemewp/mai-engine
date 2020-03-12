@@ -1,3 +1,15 @@
 .header-section {
 	display: flex;
+	flex: 1;
+	align-items: center;
+
+	--heading-margin: 0;
+}
+
+.header-left {
+	justify-content: flex-start;
+}
+
+.header-right {
+	justify-content: flex-end;
 }

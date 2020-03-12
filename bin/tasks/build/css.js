@@ -96,7 +96,7 @@ module.exports = function () {
 		};
 
 		let themeVars = function () {
-			let defaults = require('../../../config/default/config.json');
+			let defaults = require('../../../config/_default/config.json');
 			let theme = require('../../../config/' + themeName() + '/config.json');
 
 			return deepmerge(defaults, theme);
@@ -107,7 +107,7 @@ module.exports = function () {
 		};
 
 		let fileDest = function () {
-			return './assets/css/min/';
+			return './assets/css/themes/';
 		};
 
 		if (!fs.existsSync(fileSrc())) {

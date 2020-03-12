@@ -25,7 +25,7 @@ return [
 	|
 	*/
 
-	'genesis-settings'    => [
+	'genesis-settings' => [
 		'avatar_size'               => 48,
 		'blog_cat_num'              => 9,
 		'breadcrumb_home'           => 0,
@@ -56,7 +56,7 @@ return [
 	|
 	*/
 
-	'google-fonts'        => [
+	'google-fonts' => [
 		'Source+Sans+Pro:400,600,700',
 		// TODO: Should this be empty to start, incase a custom site doesn't want a google font? Or that site should just filter this and return empty array?
 	],
@@ -72,7 +72,7 @@ return [
 	|
 	*/
 
-	'image-sizes'         => [
+	'image-sizes' => [
 		'add'    => [
 			'cover'     => [ 1600, 900, true ],
 			'landscape' => '4:3',
@@ -92,7 +92,7 @@ return [
 	|
 	*/
 
-	'page-layouts'        => [
+	'page-layouts' => [
 		'add'    => [
 			[
 				'id'      => 'standard-content',
@@ -144,7 +144,7 @@ return [
 	|
 	*/
 
-	'post-type-support'   => [
+	'post-type-support' => [
 		'add'    => [
 			'excerpt'                    => [ 'page' ],
 			'genesis-layouts'            => [ 'product' ],
@@ -170,7 +170,7 @@ return [
 	|
 	*/
 
-	'responsive-menu'     => [
+	'responsive-menu' => [
 		'script' => [
 			'mainMenu'         => sprintf(
 				'<span class="menu-toggle-icon"> </span><span class="screen-reader-text">%s</span>',
@@ -217,7 +217,7 @@ return [
 	|
 	*/
 
-	'scripts-and-styles'  => [
+	'scripts-and-styles' => [
 		'add'    => [
 
 			// Scripts.
@@ -266,7 +266,7 @@ return [
 			// Styles.
 			[
 				'handle' => mai_get_handle(),
-				'src'    => mai_get_url() . 'assets/css/min/' . mai_get_active_theme() . '.min.css',
+				'src'    => mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css',
 			],
 
 			// Customizer styles.
@@ -281,6 +281,15 @@ return [
 				'handle' => mai_get_handle() . '-acf',
 				'src'    => mai_get_url() . 'assets/css/admin/acf.css',
 				'editor' => true,
+			],
+
+			// Plugin styles.
+			[
+				'handle'    => mai_get_handle() . '-simple-social-icons',
+				'src'       => mai_get_url() . 'assets/css/plugins/simple-social-icons.css',
+				'condition' => function () {
+					return class_exists( 'Simple_Social_Icons_Widget' );
+				},
 			],
 
 		],
@@ -322,7 +331,7 @@ return [
 	|
 	*/
 
-	'archive-settings'    => [
+	'archive-settings' => [
 		'post',
 		'category',
 		'portfolio',
@@ -331,7 +340,7 @@ return [
 		'author',
 	],
 
-	'single-settings'     => [
+	'single-settings' => [
 		'page',
 		'post',
 	],
@@ -347,7 +356,7 @@ return [
 	|
 	*/
 
-	'theme-support'       => [
+	'theme-support' => [
 		'add'    => [
 
 			// Genesis defaults.
@@ -445,7 +454,7 @@ return [
 	|
 	*/
 
-	'widget-areas'        => [
+	'widget-areas' => [
 		'add'    => [
 			[
 				'id'          => 'before-header',
@@ -504,5 +513,5 @@ return [
 	|
 	*/
 
-	'custom-functions'    => '__return_null',
+	'custom-functions' => '__return_null',
 ];
