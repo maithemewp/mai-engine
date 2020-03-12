@@ -58,8 +58,8 @@ function mai_do_entries_open( $args ) {
 	$attributes['style'] .= sprintf( '--columns-md:%s;', $columns['md'] );
 	$attributes['style'] .= sprintf( '--columns-sm:%s;', $columns['sm'] );
 	$attributes['style'] .= sprintf( '--columns-xs:%s;', $columns['xs'] );
-	$attributes['style'] .= sprintf( '--column-gap:%s;', mai_get_gap( $args['column_gap'] ) );
-	$attributes['style'] .= sprintf( '--row-gap:%s;', mai_get_gap( $args['row_gap'] ) );
+	$attributes['style'] .= sprintf( '--column-gap:%s;', mai_get_unit_value( $args['column_gap'] ) );
+	$attributes['style'] .= sprintf( '--row-gap:%s;', mai_get_unit_value( $args['row_gap'] ) );
 	$attributes['style'] .= sprintf( '--align-columns:%s;', ! empty( $args['align_columns'] ) ? mai_get_flex_align( $args['align_columns'] ) : 'unset' );
 	$attributes['style'] .= sprintf( '--align-columns-vertical:%s;', ! empty( $args['align_columns_vertical'] ) ? mai_get_flex_align( $args['align_columns_vertical'] ) : 'unset' );
 	$attributes['style'] .= sprintf( '--align-text:%s;', mai_get_align_text( $args['align_text'] ) );
