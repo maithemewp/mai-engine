@@ -1,11 +1,12 @@
 .title-area {
-	padding: var(--title-area-padding, (var(--spacing) 0));
+	padding: var(--logo-top, var(--spacing)) 0 var(--logo-bottom, var(--spacing));
 	line-height: var(--title-area-line-height, var(--line-height-heading));
 	text-align: var(--title-area-text-align, start);
 	transition: var(--title-area-transition, var(--transition));
 
-	@include mq(lg) {
-		--title-area-padding: calc(var(--spacing) * 2) 0;
+	@include mq(lg, 'max') {
+		--logo-top: var(--logo-top-mobile);
+		--logo-bottom: var(--logo-bottom-mobile);
 	}
 }
 
@@ -38,4 +39,9 @@
 .custom-logo-link {
 	display: flex;
 	align-items: center;
+}
+
+.custom-logo {
+	max-width: var(--logo-width,'180px');
+	transition: var(--title-area-transition, var(--transition));
 }
