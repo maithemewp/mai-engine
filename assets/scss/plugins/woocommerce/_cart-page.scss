@@ -14,7 +14,7 @@
 	&:focus {
 		color: var(--color-white);
 		text-decoration: none;
-		background-color: lighten(var(--color-error), 10);
+		background-color: var(--color-error);
 	}
 }
 

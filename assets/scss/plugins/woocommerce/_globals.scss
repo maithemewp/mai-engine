@@ -1,4 +1,9 @@
 .onsale {
+	position: absolute;
+	top: -0.5em;
+	right: auto;
+	bottom: -0.5em;
+	left: auto;
 	z-index: 1;
 	padding: var(--space-xs) var(--spacing);
 	color: var(--color-white);
@@ -6,8 +11,6 @@
 	font-size: small;
 	background: var(--color-primary);
 	border-radius: var(--border-radius);
-
-	@include position(absolute, -0.5em auto auto -0.5em);
 }
 
 .woocommerce-info,

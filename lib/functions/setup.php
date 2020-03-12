@@ -38,7 +38,7 @@ function mai_setup() {
 	load_child_theme_textdomain( genesis_get_theme_handle(), mai_get_dir() . '/assets/lang' );
 
 	// Add editor styles (uri).
-	add_editor_style( "../../plugins/$handle/assets/css/min/{$active_theme}-editor.min.css" );
+	add_editor_style( "../../plugins/$handle/assets/css/themes/{$active_theme}-editor.min.css" );
 
 	// Add custom functionality.
 	is_callable( $custom_functions ) ? $custom_functions() : null;

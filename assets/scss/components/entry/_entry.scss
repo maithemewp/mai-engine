@@ -26,7 +26,7 @@
 	flex-wrap: wrap;
 	align-items: var(--align-columns-vertical);
 	justify-content: var(--align-columns);
-	margin: calc(var(--column-gap) - (1.5 * var(--column-gap))) calc(var(--row-gap) - (1.5 * var(--row-gap)));
+	margin: calc(var(--row-gap) * -0.5) calc(var(--column-gap) * -0.5);
 
 	--entry-margin: calc(var(--row-gap) / 2) calc(var(--column-gap) / 2);
 	--columns: var(--columns-xs);

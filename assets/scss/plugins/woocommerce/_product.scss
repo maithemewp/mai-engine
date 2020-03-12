@@ -126,8 +126,6 @@ form.cart {
 			color: var(--color-warning);
 			font-size: var(--spacing);
 			font-family: "Font Awesome 5 Free", sans-serif;
-
-			@include icon();
 		}
 
 		&:hover,

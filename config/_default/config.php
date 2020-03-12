@@ -271,24 +271,45 @@ return [
 
 			// Customizer styles.
 			[
-				'handle'     => mai_get_handle() . '-customizer',
-				'src'        => mai_get_url() . 'assets/css/admin/customizer.css',
+				'handle'     => mai_get_handle() . '-kirki',
+				'src'        => mai_get_url() . 'assets/css/plugins/kirki.min.css',
 				'customizer' => true,
 			],
 
 			// Grid styles.
 			[
-				'handle' => mai_get_handle() . '-acf',
-				'src'    => mai_get_url() . 'assets/css/admin/acf.css',
+				'handle' => mai_get_handle() . '-advanced-custom-fields',
+				'src'    => mai_get_url() . 'assets/css/plugins/advanced-custom-fields.min.css',
 				'editor' => true,
 			],
 
 			// Plugin styles.
 			[
+				'handle'    => mai_get_handle() . '-atomic-blocks',
+				'src'       => mai_get_url() . 'assets/css/plugins/atomic-blocks.min.css',
+				'condition' => function () {
+					return function_exists( 'atomic_blocks_main_plugin_file' );
+				},
+			],
+			[
+				'handle'    => mai_get_handle() . '-seo-slider',
+				'src'       => mai_get_url() . 'assets/css/plugins/seo-slider.min.css',
+				'condition' => function () {
+					return defined( 'SEO_SLIDER_VERSION' );
+				},
+			],
+			[
 				'handle'    => mai_get_handle() . '-simple-social-icons',
-				'src'       => mai_get_url() . 'assets/css/plugins/simple-social-icons.css',
+				'src'       => mai_get_url() . 'assets/css/plugins/simple-social-icons.min.css',
 				'condition' => function () {
 					return class_exists( 'Simple_Social_Icons_Widget' );
+				},
+			],
+			[
+				'handle'    => mai_get_handle() . '-woocommerce',
+				'src'       => mai_get_url() . 'assets/css/plugins/woocommerce.min.css',
+				'condition' => function () {
+					return class_exists( 'WooCommerce' );
 				},
 			],
 

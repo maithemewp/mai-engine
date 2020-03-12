@@ -6,7 +6,9 @@ module.exports = {
 
 	'browser-sync': [ require( './browser-sync' ) ],
 
-	'build:css': [ require( './build/css' ) ],
+	'build:theme-css': [ require( './build/theme-css' ) ],
+	'build:plugin-css': [ require( './build/plugin-css' ) ],
+	'build:css': [ [ 'build:theme-css', 'build:plugin-css' ] ],
 	'build:rtl': [ require( './build/rtl' ) ],
 	'build:js': [ require( './build/js' ) ],
 	'build:images': [ require( './build/images' ) ],
