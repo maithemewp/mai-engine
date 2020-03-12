@@ -58,7 +58,7 @@ function mai_header_right_menu() {
 	);
 }
 
-add_action( 'mai_after_header_wrap', 'mai_below_header_menu' );
+add_action( 'genesis_after_header', 'mai_below_header_menu', 8 );
 /**
  * Description of expected behavior.
  *
