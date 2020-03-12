@@ -13,83 +13,83 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: config/default/config.php:99
+#: config/_default/config.php:99
 msgid "Standard Content"
 msgstr ""
 
-#: config/default/config.php:106
+#: config/_default/config.php:106
 msgid "Wide Content"
 msgstr ""
 
-#: config/default/config.php:112
+#: config/_default/config.php:112
 msgid "Narrow Content"
 msgstr ""
 
-#: config/default/config.php:118
+#: config/_default/config.php:118
 msgid "Content, Sidebar"
 msgstr ""
 
-#: config/default/config.php:124
+#: config/_default/config.php:124
 msgid "Sidebar, Content"
 msgstr ""
 
-#: config/default/config.php:177
+#: config/_default/config.php:177
 msgid "Menu"
 msgstr ""
 
-#: config/default/config.php:404
+#: config/_default/config.php:434
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/default/config.php:405
+#: config/_default/config.php:435
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/default/config.php:406
+#: config/_default/config.php:436
 msgid "Below Header Menu"
 msgstr ""
 
-#: config/default/config.php:407
+#: config/_default/config.php:437
 msgid "Footer Menu"
 msgstr ""
 
-#: config/default/config.php:452
+#: config/_default/config.php:482
 msgid "Before Header"
 msgstr ""
 
-#: config/default/config.php:453
+#: config/_default/config.php:483
 msgid "The Before Header widget area."
 msgstr ""
 
-#: config/default/config.php:458
+#: config/_default/config.php:489
 msgid "Header Left"
 msgstr ""
 
-#: config/default/config.php:459
+#: config/_default/config.php:490
 msgid "The Header Left widget area."
 msgstr ""
 
-#: config/default/config.php:468
+#: config/_default/config.php:499
 msgid "Header Right"
 msgstr ""
 
-#: config/default/config.php:469
+#: config/_default/config.php:500
 msgid "The Header Right widget area."
 msgstr ""
 
-#: config/default/config.php:478
+#: config/_default/config.php:509
 msgid "Before Footer"
 msgstr ""
 
-#: config/default/config.php:479
+#: config/_default/config.php:510
 msgid "The Before Footer widget area."
 msgstr ""
 
-#: config/default/config.php:485
+#: config/_default/config.php:516
 msgid "Mobile Menu"
 msgstr ""
 
-#: config/default/config.php:486
+#: config/_default/config.php:517
 msgid "The Mobile Menu widget area."
 msgstr ""
 
@@ -573,18 +573,18 @@ msgstr ""
 msgid "Author Archives"
 msgstr ""
 
-#: lib/structure/page-header.php:127
+#: lib/structure/page-header.php:136
 msgid "Latest Posts"
 msgstr ""
 
-#: lib/structure/page-header.php:129
+#: lib/structure/page-header.php:138
 msgid "Not found, error 404"
 msgstr ""
 
-#: lib/structure/page-header.php:131
+#: lib/structure/page-header.php:140
 msgid "Search results for: "
 msgstr ""
 
-#: lib/structure/page-header.php:164
+#: lib/structure/page-header.php:173
 msgid "Showing the latest posts"
 msgstr ""
