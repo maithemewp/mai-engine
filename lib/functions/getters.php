@@ -388,7 +388,7 @@ function mai_get_flex_align( $value ) {
 }
 
 /**
- * Get the gap value.
+ * Get the unit value.
  *
  * If only a number value, force to pixels.
  *
@@ -398,7 +398,7 @@ function mai_get_flex_align( $value ) {
  *
  * @return string
  */
-function mai_get_gap( $value ) {
+function mai_get_unit_value( $value ) {
 	if ( empty( $value ) || is_numeric( $value ) ) {
 		return sprintf( '%spx', intval( $value ) );
 	}
