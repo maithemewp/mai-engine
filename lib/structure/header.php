@@ -13,6 +13,9 @@ add_action( 'mai_setup', 'mai_site_header_options' );
 /**
  * Description of expected behavior.
  *
+ * @todo  Not sure if these will stay theme_mods, probably our settings/options instead.
+ * @todo  Add has-shrink-header. This will be for sticky and conceal (when we add conceal later).
+ *
  * @since 0.1.0
  *
  * @return void
@@ -25,6 +28,19 @@ function mai_site_header_options() {
 	if ( get_theme_mod( 'sticky_header', 0 ) ) {
 		add_theme_support( 'sticky-header' );
 	}
+}
+
+add_action( 'genesis_header', 'mai_header_tracker', 3 );
+/**
+ * Adds an empty, unstyled element to use for header scroll tracking.
+ * We can't use the header itself because it can't be tracked when sticky/fixed.
+ *
+ * @since 0.1.0
+ *
+ * @return void
+ */
+function mai_header_tracker() {
+	echo '<span id="header-tracker"></span>';
 }
 
 add_filter( 'genesis_markup_title-area_open', 'mai_before_title_area_hook', 10, 1 );
@@ -67,6 +83,30 @@ function mai_after_title_area_hook( $close_html ) {
 	return $close_html;
 }
 
+add_filter( 'genesis_attr_site-header', 'mai_site_header_properties' );
+/**
+ * Add logo width and spacing properties to the header.
+ * Inline properties allow us to still use CSS without PHP inline styles.
+ *
+ * @since 0.1.0
+ *
+ * @param array $attributes The existing attributes.
+ *
+ * @return array  The modified attributes.
+ */
+function mai_site_header_properties( $attributes ) {
+	$values = get_option( 'mai_header' );
+	$values = $values ?: mai_header_settings_defaults_temp_function();
+	$attributes['style']  = isset( $attributes['style'] ) ? $attributes['style'] . ' ' : '';
+	$attributes['style'] .= sprintf( '--logo-width-large:%s;', mai_get_unit_value( $values['logo_width_large'] ) );
+	$attributes['style'] .= sprintf( '--logo-top-large:%s;', mai_get_unit_value( $values['logo_spacing_large']['top'] ) );
+	$attributes['style'] .= sprintf( '--logo-bottom-large:%s;', mai_get_unit_value( $values['logo_spacing_large']['bottom'] ) );
+	$attributes['style'] .= sprintf( '--logo-width-small:%s;', mai_get_unit_value( $values['logo_width_small'] ) );
+	$attributes['style'] .= sprintf( '--logo-top-small:%s;', mai_get_unit_value( $values['logo_spacing_small']['top'] ) );
+	$attributes['style'] .= sprintf( '--logo-bottom-small:%s;', mai_get_unit_value( $values['logo_spacing_small']['bottom'] ) );
+	return $attributes;
+}
+
 add_filter( 'genesis_markup_site-title_content', 'mai_site_title_link' );
 /**
  * Description of expected behavior.
@@ -79,23 +119,6 @@ add_filter( 'genesis_markup_site-title_content', 'mai_site_title_link' );
  */
 function mai_site_title_link( $default ) {
 	return str_replace( '<a', '<a class="site-title-link" ', $default );
-}
-
-add_filter( 'get_custom_logo', 'mai_custom_logo_size' );
-/**
- * Add max-width style to custom logo.
- *
- * @since 0.1.0
- *
- * @param string $html Custom logo HTML output.
- *
- * @return string
- */
-function mai_custom_logo_size( $html ) {
-	$width  = get_theme_support( 'custom-logo' )[0]['width'];
-	$height = get_theme_support( 'custom-logo' )[0]['height'];
-
-	return str_replace( '<img ', '<img style="max-width:' . $width . 'px;max-height:' . $height . 'px"', $html );
 }
 
 add_action( 'mai_before_title_area', 'mai_header_sections' );
