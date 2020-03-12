@@ -1,31 +1,21 @@
 
 
-/**
- * TODO: debounce scroll with Intersection Observer
- * @link https://caniuse.com/#feat=intersectionobserver
- */
+var isTop = new IntersectionObserver( function( tracker ) {
+	var tracker = tracker[0];
+	var header  = document.querySelector( '.site-header' );
+	// var body    = document.getElementsByTagName( 'body' )[0];
+	// tracker.intersectionRatio
+	if ( tracker.isIntersecting ) {
+		header.classList.remove( 'is-stuck' );
+		// body.classList.remove( 'header-stuck' );
+	} else {
+		header.classList.add( 'is-stuck' );
+		// body.classList.add( 'header-stuck' );
+	}
 
-var scrollPosition = window.scrollY,
-    siteHeader = document.getElementsByClassName('site-header')[0],
-    siteHeaderHeight = siteHeader.offsetHeight;
+}, { threshold: [0,1] });
 
-window.addEventListener('scroll', function () {
-
-    scrollPosition = window.scrollY;
-
-    if (scrollPosition >= siteHeaderHeight) {
-        siteHeader.classList.add('sticky');
-    } else {
-        siteHeader.classList.remove('sticky');
-    }
-
-});
-
-if (document.body.classList.contains('has-sticky-header')) {
-	console.log(siteHeader);
-	console.log(siteHeaderHeight + 'px');
-    // siteHeader.style.marginTop(siteHeaderHeight + 'px');
-}
+isTop.observe( document.getElementById( 'header-tracker' ) );
 
 
 
