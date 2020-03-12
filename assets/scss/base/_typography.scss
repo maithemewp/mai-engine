@@ -23,9 +23,9 @@ p {
 		display: none;
 	}
 
-	&:last-of-type {
-		margin: var(--paragraph-last-margin, 0 0 var(--spacing));
-	}
+	// &:last-of-type {
+	// 	margin: var(--paragraph-last-margin, 0 0 var(--spacing));
+	// }
 }
 
 hr {
