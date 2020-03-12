@@ -86,15 +86,17 @@ function mai_body_classes( $classes ) {
 	}
 
 	// Add nav classes.
-	if ( has_nav_menu( 'header-left' ) && has_nav_menu( 'header-right' ) ) {
+	if ( ( is_active_sidebar( 'header_left' ) || has_nav_menu( 'header-left' ) ) && ( has_nav_menu( 'header-right' ) || is_active_sidebar( 'header_right' ) ) ) {
 		$classes[] = 'has-logo-center';
+	}
+
+	// Add block classes.
+	if ( mai_has_cover_block() ) {
+		$classes[] = 'has-cover-block';
 	}
 
 	// Add no page header class.
 	$classes[] = 'no-page-header';
-
-	// Add block classes.
-	$classes[] = mai_has_cover_block() ? 'has-cover-block' : '';
 
 	return $classes;
 }
