@@ -1,29 +1,28 @@
 .sub-menu {
-	display: none;
 	top: 100%;
+	display: none;
 	width: 100%;
 	margin: var(--spacing) var(--spacing) 0;
 	list-style-type: none;
 
 	@include mq(lg) {
-		display: block;
 		position: absolute;
 		left: -999rem;
+		display: block;
 		width: var(--sub-menu-width, var(--space-xxxl));
 		margin: 0 0 0 calc(0 - var(--spacing));
+		padding-top: var(--sub-menu-padding, var(--spacing));
+		padding-bottom: var(--sub-menu-padding, var(--spacing));
+		background-color: var(--sub-menu-background-color, var(--color-white));
 		border: var(--sub-menu-border, var(--border));
 		border-radius: var(--sub-menu-border-radius, 0);
 		opacity: 0;
-		background-color: var(--sub-menu-background-color, var(--color-white));
 		transition: var(--sub-menu-transition, (opacity var(--transition-duration) var(--transition-timing-function)));
-		padding-top: var(--sub-menu-padding, var(--spacing));
-		padding-bottom: var(--sub-menu-padding, var(--spacing));
 
 		&::before {
 			content: "";
 
 			@include position(absolute, calc(0 - var(--space-xxs)) null null var(--space-lg));
-			//@include triangle("up", var(--spacing), var(--space-xxs), var(--color-white));
 		}
 	}
 }
@@ -31,12 +30,12 @@
 .sub-menu-toggle {
 	display: flex;
 	justify-content: center;
+	width: var(--sub-menu-toggle-size, var(--space-lg));
+	height: var(--sub-menu-toggle-size, var(--space-lg));
 	margin: var(--sub-menu-toggle-margin, 0);
 	padding: var(--sub-menu-toggle-padding, 0);
-	background-color: var(--sub-menu-toggle-background-color, transparent);
 	line-height: 0;
-	height: var(--sub-menu-toggle-size, var(--space-lg));
-	width: var(--sub-menu-toggle-size, var(--space-lg));
+	background-color: var(--sub-menu-toggle-background-color, transparent);
 
 	@include position(absolute, var(--spacing) 0 null null);
 
@@ -51,20 +50,6 @@
 
 	&:focus {
 		outline: var(--border);
-	}
-
-	&::before {
-		content: "";
-
-		//@include triangle("down", 1rem, 0.5rem, $sub-menu-toggle-icon-background-color);
-	}
-}
-
-.activated {
-
-	.sub-menu::before {
-
-		//@include triangle("up", 1rem, 0.5rem, $sub-menu-toggle-icon-background-color);
 	}
 }
 

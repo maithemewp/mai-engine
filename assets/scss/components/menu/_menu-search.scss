@@ -1,8 +1,8 @@
 .header-search-form {
-	display: none;
 	position: relative;
-	height: 100%;
+	display: none;
 	align-items: center;
+	height: 100%;
 
 	.search-form-input {
 		width: var(--breakpoint-xxs);
@@ -18,12 +18,12 @@
 
 .header-search-toggle {
 	padding: var(--space-xs);
-	background-color: transparent;
 	color: var(--menu-item-link-color);
+	background-color: transparent;
 
 	&:hover,
 	&:focus {
-		background-color: transparent;
 		color: var(--menu-item-link-color);
+		background-color: transparent;
 	}
 }

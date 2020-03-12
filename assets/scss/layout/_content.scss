@@ -3,8 +3,8 @@
 	margin: var(--content-margin, (0 auto));
 
 	@include mq(lg) {
-		max-width: var(--content-width);
 		order: var(--content-order, 0);
+		max-width: var(--content-width);
 	}
 }
 

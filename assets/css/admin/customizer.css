@@ -8,21 +8,21 @@
 
 .customize-control.customize-control-kirki-sortable .mai-toggle-hooks {
 	float: right;
+	margin: 0 0 4px 0;
+	padding: 6px 12px 2px;
 	color: #008dd4;
 	font-size: 11px;
 	font-style: normal;
-	text-decoration: none;
 	text-transform: uppercase;
-	padding: 6px 12px 2px;
-	margin: 0 0 4px 0;
+	text-decoration: none;
 	border-radius: 3px;
 }
 
 .customize-control.customize-control-kirki-sortable .mai-toggle-hooks:hover,
 .customize-control.customize-control-kirki-sortable .mai-toggle-hooks:focus {
+	text-decoration: underline;
 	outline: none;
 	box-shadow: none;
-	text-decoration: underline;
 }
 
 .customize-control.customize-control-kirki-sortable ul.ui-sortable {
@@ -37,6 +37,32 @@
 	cursor: move;
 }
 
+.customize-control.customize-control-kirki-sortable ul.ui-sortable li[data-value^="genesis_"] {
+	font-size: 11px;
+	font-family: "Courier New", Courier, monospace;
+}
+
+.customize-control.customize-control-kirki-sortable ul.ui-sortable li .dashicons.visibility {
+	display: inline-flex;
+	clear: none;
+	width: 14px;
+	height: 14px;
+	margin: -3px 6px 0 0 !important;
+	padding: 0;
+	color: #555;
+	line-height: 0;
+	text-align: center;
+	vertical-align: middle;
+	background: #fff;
+	border: 1px solid #7e8993;
+	border-radius: 4px;
+	outline: 0;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+	transition: 0.05s border-color ease-in-out;
+	-webkit-appearance: none;
+}
+
 .customize-control.customize-control-kirki-sortable ul.ui-sortable li:not(.invisible) {
 	border: 1px solid #7e8993;
 }
@@ -49,16 +75,11 @@
 	background: rgba(0, 0, 0, 0.02);
 }
 
-.customize-control.customize-control-kirki-sortable ul.ui-sortable li[data-value^="genesis_"] {
-	font-family: "Courier New", Courier, monospace;
-	font-size: 11px;
-}
-
 .customize-control.customize-control-kirki-sortable ul.ui-sortable li[data-value^="genesis_"]:not(.mai-sortable-expanded) {
 	height: 4px;
 	padding: 0;
 	overflow: hidden;
-	border: 1px solid rgba(0,0,0,.2);
+	border: 1px solid rgba(0, 0, 0, 0.2);
 	border-radius: 2px;
 }
 
@@ -70,27 +91,6 @@
 	border: 1px solid #7e8993 !important;
 }
 
-.customize-control.customize-control-kirki-sortable ul.ui-sortable li .dashicons.visibility {
-	border: 1px solid #7e8993;
-	border-radius: 4px;
-	background: #fff;
-	color: #555;
-	clear: none;
-	cursor: pointer;
-	display: inline-flex;
-	line-height: 0;
-	width: 14px;
-	height: 14px;
-	margin: -3px 6px 0 0 !important;
-	outline: 0;
-	padding: 0;
-	text-align: center;
-	vertical-align: middle;
-	-webkit-appearance: none;
-	box-shadow: inset 0 1px 2px	rgba(0, 0, 0, 0.1);
-	transition: .05s border-color ease-in-out;
-}
-
 /* remove kirki's eye. */
 .customize-control.customize-control-kirki-sortable ul.ui-sortable li.invisible .dashicons.visibility::before {
 	display: none !important;
@@ -99,13 +99,12 @@
 /* this is to match ACF's checkbox styling. */
 .customize-control.customize-control-kirki-sortable ul.ui-sortable li:not(.invisible) .dashicons.visibility::before {
 	display: flex;
-	content: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M14.83%204.89l1.34.94-5.81%208.38H9.02L5.78%209.67l1.34-1.25%202.57%202.4z%27%20fill%3D%27%231e8cbe%27%2F%3E%3C%2Fsvg%3E");
-	margin: 1px 0 0 -1px;
-	height: 100%;
 	width: 100%;
+	height: 100%;
+	margin: 1px 0 0 -1px;
 	transform: scale(1.4);
+	content: url(data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M14.83%204.89l1.34.94-5.81%208.38H9.02L5.78%209.67l1.34-1.25%202.57%202.4z%27%20fill%3D%27%231e8cbe%27%2F%3E%3C%2Fsvg%3E);
 }
-
 
 /* Kirki responsive columns container */
 
@@ -113,8 +112,8 @@
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_sm"],
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_xs"] {
 	box-sizing: border-box !important;
-	border-left: 1px solid #ccd0d4 !important;
 	padding: 12px 0 16px 12px !important;
+	border-left: 1px solid #ccd0d4 !important;
 }
 
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_md"],
@@ -129,14 +128,14 @@
 }
 
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_md"]::before {
-	content: '';
-	display: block;
-	height: 16px;
-	width: 0;
 	position: absolute;
-	left: 7px;
 	bottom: 100%;
+	left: 7px;
+	display: block;
+	width: 0;
+	height: 16px;
 	border-left: 1px solid #ccd0d4 !important;
+	content: "";
 }
 
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_xs"] {
@@ -167,13 +166,17 @@
 
 .acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear .acf-button-group label:first-child {
 	position: absolute;
-	bottom: calc( 100% + 3px);
 	right: 0;
-	background: transparent;
+	bottom: calc(100% + 3px);
 	color: #008dd4;
 	font-size: 10px;
 	text-transform: uppercase;
+	background: transparent;
 	border: transparent;
+}
+
+.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear .acf-button-group label:nth-child(2) {
+	border-radius: 3px 0 0 3px;
 }
 
 .acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear .acf-button-group label:first-child:hover,
@@ -183,10 +186,6 @@
 	border-color: #0071a1;
 }
 
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear .acf-button-group label:nth-child(2) {
-	border-radius: 3px 0 0 3px;
-}
-
 /* kirki buttonset */
 
 .customize-control.customize-control-kirki-radio-buttonset .buttonset {
@@ -194,10 +193,10 @@
 }
 
 .customize-control.customize-control-kirki-radio-buttonset .buttonset .switch-label {
+	margin-left: -1px;
+	padding: 6px 4px;
 	background: #fff;
 	border: 1px solid #9fa7ae;
-	padding: 6px 4px;
-	margin-left: -1px;
 }
 
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_text"] .buttonset,
@@ -210,22 +209,14 @@
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_columns"] .switch-label:first-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_columns_vertical"] .switch-label:first-of-type {
 	position: absolute;
-	bottom: 100%;
 	right: 0;
-	background: transparent !important;
+	bottom: 100%;
+	padding: 6px 12px;
 	color: #008dd4 !important;
 	font-size: 11px;
 	text-transform: uppercase;
-	padding: 6px 12px;
+	background: transparent !important;
 	border: transparent;
-}
-
-.customize-control.customize-control-kirki-radio-buttonset[id$="align_text"] .switch-label:first-of-type:hover,
-.customize-control.customize-control-kirki-radio-buttonset[id$="align_columns"] .switch-label:first-of-type:hover,
-.customize-control.customize-control-kirki-radio-buttonset[id$="align_columns_vertical"] .switch-label:first-of-type:hover {
-	outline: none !important;
-	box-shadow: none !important;
-	text-decoration: underline !important;
 }
 
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns"] .switch-label:first-of-type,
@@ -244,6 +235,7 @@
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_columns_vertical"] .switch-label:nth-of-type(2) {
 	border-radius: 3px 0 0 3px;
 }
+
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns"] .switch-label:last-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_md"] .switch-label:last-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_sm"] .switch-label:last-of-type,
@@ -252,4 +244,12 @@
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_columns"] .switch-label:last-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_columns_vertical"] .switch-label:last-of-type {
 	border-radius: 0 3px 3px 0;
+}
+
+.customize-control.customize-control-kirki-radio-buttonset[id$="align_text"] .switch-label:first-of-type:hover,
+.customize-control.customize-control-kirki-radio-buttonset[id$="align_columns"] .switch-label:first-of-type:hover,
+.customize-control.customize-control-kirki-radio-buttonset[id$="align_columns_vertical"] .switch-label:first-of-type:hover {
+	text-decoration: underline !important;
+	outline: none !important;
+	box-shadow: none !important;
 }

@@ -1,11 +1,3 @@
-////
-/// Checkout page.
-///
-/// @group  WooCommerce
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
 form.checkout {
 
 	@include mq(lg) {
@@ -24,8 +16,6 @@ form.checkout {
 	align-items: center;
 	margin-bottom: var(--gutter);
 
-	@include box;
-
 	p {
 		width: 100%;
 	}
@@ -33,51 +23,6 @@ form.checkout {
 
 .woocommerce-checkout-payment {
 	margin-top: var(--gutter);
-}
-
-.woocommerce-PaymentMethod,
-.wc_payment_method {
-	display: flex;
-	position: relative;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	align-items: center;
-
-	> input {
-
-		@include position(absolute, var(--spacing) null null var(--spacing));
-
-		&:checked + label {
-			border-color: var(--color-primary);
-			background-color: rgba(var(--color-primary), var(--shadow-opacity));
-		}
-	}
-
-	label[for*="payment_method"] {
-
-		@include heading;
-
-		display: inline-block;
-		width: 100%;
-		margin-bottom: var(--spacing);
-		padding-left: calc(var(--column-gap) * 2);
-
-		img {
-			margin-top: var(--spacing);
-		}
-	}
-}
-
-.payment_method_paypal {
-
-	label {
-
-		img {
-			display: block;
-			max-width: var(--space-xxxl);
-			margin-bottom: var(--spacing);
-		}
-	}
 }
 
 .payment_method_stripe {
@@ -113,6 +58,50 @@ form.checkout {
 		&-last {
 			float: right;
 			width: var(--one-half);
+		}
+	}
+}
+
+.payment_method_paypal {
+
+	label {
+
+		img {
+			display: block;
+			max-width: var(--space-xxxl);
+			margin-bottom: var(--spacing);
+		}
+	}
+}
+
+.woocommerce-PaymentMethod,
+.wc_payment_method {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+
+	> input {
+
+		@include position(absolute, var(--spacing) null null var(--spacing));
+
+		&:checked + label {
+			background-color: rgba(var(--color-primary), var(--shadow-opacity));
+			border-color: var(--color-primary);
+		}
+	}
+
+	label[for*="payment_method"] {
+		display: inline-block;
+		width: 100%;
+		margin-bottom: var(--spacing);
+		padding-left: calc(var(--column-gap) * 2);
+
+		@include heading;
+
+		img {
+			margin-top: var(--spacing);
 		}
 	}
 }

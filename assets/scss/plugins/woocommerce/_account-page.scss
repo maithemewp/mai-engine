@@ -1,11 +1,3 @@
-////
-/// My Account page.
-///
-/// @group  WooCommerce
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
 .woocommerce-account {
 
 	.woocommerce {
@@ -20,9 +12,9 @@
 
 .woocommerce-MyAccount-navigation {
 	padding: var(--column-gap);
+	background-color: var(--color-light);
 	border: var(--border);
 	border-radius: var(--border-radius);
-	background-color: var(--color-light);
 
 	@include mq(lg) {
 		width: var(--one-fourth);

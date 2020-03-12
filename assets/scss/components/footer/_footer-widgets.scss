@@ -1,8 +1,8 @@
 .footer-widgets {
 	padding: var(--footer-widgets-padding, (var(--space-xl) 0 calc(var(--space-xl) - var(--gutter))));
 	color: var(--footer-widgets-color);
-	background-color: var(--footer-widgets-background-color);
 	font-size: var(--footer-widgets-font-size);
+	background-color: var(--footer-widgets-background-color);
 
 	--menu-columns: 2;
 	--menu-display: block;

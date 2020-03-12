@@ -1,9 +1,9 @@
 .site-header {
-	width: 100%;
 	position: var(--site-header-position, relative);
 	z-index: 10;
-	border-bottom: var(--site-header-border-bottom, var(--border));
+	width: 100%;
 	background-color: var(--site-header-background-color, var(--color-white));
+	border-bottom: var(--site-header-border-bottom, var(--border));
 
 	--wrap-justify-content: space-between;
 	--wrap-align-items: center;

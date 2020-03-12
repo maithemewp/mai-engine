@@ -8,7 +8,7 @@ const gulp = require( 'gulp' ),
 
 module.exports = function() {
 
-	const themeLintFile = config.lintfiles.stylelint;
+	const themeLintFile = config.lintfiles.scss;
 
 	let lintFile = path.join( __dirname, '../../lintfiles/', '.stylelintscssrc' );
 
@@ -16,11 +16,14 @@ module.exports = function() {
 		lintFile = themeLintFile;
 	}
 
+	console.log(lintFile);
+
 	return gulp.src( config.src.scss )
 		.pipe( stylelint( {
 			configFile: lintFile,
 			reporters: [
 				{ formatter: 'string', console: true },
 			],
+			fix: true
 		} ) );
 };

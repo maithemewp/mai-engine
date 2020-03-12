@@ -1,9 +1,9 @@
 .menu {
-	columns: var(--menu-columns, auto);
+	width: 100%;
 	margin: 0;
 	line-height: var(--menu-line-height, 1);
+	columns: var(--menu-columns, auto);
 	list-style-type: none;
-	width: 100%;
 
 	--link-color: var(--color-medium);
 	--link-color-hover: var(--color-primary);
@@ -12,17 +12,17 @@
 
 	@include mq(lg) {
 		display: var(--menu-display, (flex));
-		border: 0;
-		font-size: var(--menu-font-size-desktop, (smaller));
 		flex-wrap: wrap;
-		justify-content: var(--menu-alignment, flex-end);
 		align-items: center;
+		justify-content: var(--menu-alignment, flex-end);
+		font-size: var(--menu-font-size-desktop, (smaller));
+		border: 0;
 	}
 }
 
 .menu-item {
-	display: flex;
 	position: relative;
+	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-between;

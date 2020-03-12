@@ -1,8 +1,8 @@
 html {
 	max-width: 100vw;
 	font-size: 62.5%; // 10px browser default
-	-moz-osx-font-smoothing: grayscale;
 	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 
 	&.admin-bar-showing {
 		height: calc(100% - 32px);

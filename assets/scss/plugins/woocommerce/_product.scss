@@ -1,11 +1,3 @@
-////
-/// Product page.
-///
-/// @group  WooCommerce
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
 .woocommerce-product-gallery {
 	position: relative;
 
@@ -15,16 +7,21 @@
 	}
 
 	&__trigger {
-		display: flex;
-		justify-content: center;
-		align-items: center;
 		z-index: 1;
-		border-radius: var(--space-lg);
-		background-color: var(--color-white);
-		height: var(--space-lg);
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		width: var(--space-lg);
+		height: var(--space-lg);
+		background-color: var(--color-white);
+		border-radius: var(--space-lg);
 
 		@include position(absolute, 1em 1em null null);
+
+		&::before {
+			color: var(--color-dark);
+			font-size: smaller;
+		}
 
 		&:hover,
 		&:focus {
@@ -39,19 +36,32 @@
 
 			@include hide-visually();
 		}
-
-		&::before {
-			color: var(--color-dark);
-			font-size: smaller;
-
-			@include transition;
-			@include icon("\f002", 700);
-		}
 	}
 }
 
 .flex-viewport {
 	max-width: 90vw;
+}
+
+.wc-tabs {
+	display: flex;
+	width: 100%;
+	margin-bottom: var(--row-gap);
+	border-bottom: var(--border);
+
+	li {
+		margin-bottom: -1px;
+		padding: var(--spacing) var(--space-lg);
+		list-style-type: none;
+		background-color: var(--color-light);
+		border: var(--border);
+		border-right: 0;
+
+		&.active {
+			background-color: var(--color-white);
+			border-bottom-color: var(--color-white);
+		}
+	}
 }
 
 .flex-control-nav {
@@ -94,31 +104,6 @@ form.cart {
 	margin: var(--row-gap) 0;
 }
 
-.wc-tabs {
-	display: flex;
-	width: 100%;
-	margin-bottom: var(--row-gap);
-	border-bottom: var(--border);
-
-	li {
-		margin-bottom: -1px;
-		padding: var(--spacing) var(--space-lg);
-		border: var(--border);
-		border-right: 0;
-		background-color: var(--color-light);
-		list-style-type: none;
-
-		&.active {
-			border-bottom-color: var(--color-white);
-			background-color: var(--color-white);
-		}
-
-		&:last-of-type {
-			border-right: var(--border);
-		}
-	}
-}
-
 .comment-reply-title {
 	font-size: var(--text-md);
 
@@ -139,8 +124,8 @@ form.cart {
 		&::before {
 			display: block;
 			color: var(--color-warning);
-			font-family: "Font Awesome 5 Free", sans-serif;
 			font-size: var(--spacing);
+			font-family: "Font Awesome 5 Free", sans-serif;
 
 			@include icon();
 		}
@@ -171,7 +156,6 @@ form.cart {
 
 			&::before {
 				font-weight: 400;
-
 			}
 
 			&:hover,

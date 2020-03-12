@@ -15,9 +15,9 @@ a {
 }
 
 p {
+	width: var(--paragraph-width, auto);
 	margin: var(--paragraph-margin, (0 0 var(--spacing)));
 	padding: var(--paragraph-padding, 0);
-	width: var(--paragraph-width, auto);
 
 	&:empty {
 		display: none;
@@ -48,10 +48,10 @@ i {
 }
 
 blockquote {
-	border-left: var(--blockquote-border-left, var(--border));
-	font-style: var(--blockquote-font-style, italic);
 	margin: var(--blockquote-margin, (var(--spacing) auto));
 	padding: var(--spacing);
+	font-style: var(--blockquote-font-style, italic);
+	border-left: var(--blockquote-border-left, var(--border));
 
 	--paragraph-padding: (var(--row-gap) 0);
 	--paragraph-last-margin: 0;
@@ -59,8 +59,8 @@ blockquote {
 
 cite {
 	display: block;
-	font-family: var(--cite-font-family, bolder);
 	font-weight: var(--cite-font-weight, normal);
+	font-family: var(--cite-font-family, bolder);
 	font-style: var(--cite-font-style, var(--font-secondary));
 }
 
@@ -69,15 +69,15 @@ code,
 kbd,
 samp {
 	padding: var(--code-padding, (0.05em 0.5em));
-	border-radius: var(--code-border-radius, var(--border-radius));
-	background: var(--code-background, var(--color-light));
-	font-family: var(--code-font-family, var(--font-code));
 	font-size: var(--code-font-size, (90%));
+	font-family: var(--code-font-family, var(--font-code));
+	background: var(--code-background, var(--color-light));
+	border-radius: var(--code-border-radius, var(--border-radius));
 }
 
 pre {
-	overflow-x: scroll;
 	padding: var(--preformatted-padding, var(--spacing));
+	overflow-x: scroll;
 
 	--code-padding: 0;
 	--code-background: transparent;

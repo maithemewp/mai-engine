@@ -2,12 +2,12 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	order: 1;
+	width: var(--spacing);
+	height: var(--spacing);
 	margin: var(--menu-toggle-margin, 0);
 	padding: var(--menu-toggle-padding, 0);
 	background-color: var(--menu-toggle-background-color, transparent);
-	order: 1;
-	height: var(--spacing);
-	width: var(--spacing);
 
 	@include mq(lg) {
 		display: none;
@@ -23,28 +23,11 @@
 	}
 }
 
-.activated {
-
-	.menu-toggle-icon {
-		background-color: transparent;
-
-		&::before {
-			top: 0;
-			transform: rotate(45deg);
-		}
-
-		&::after {
-			bottom: 0;
-			transform: rotate(-45deg);
-		}
-	}
-}
-
 .menu-toggle-icon,
 .menu-toggle-icon::before,
 .menu-toggle-icon::after {
-	display: block;
 	position: absolute;
+	display: block;
 	width: var(--menu-toggle-line-width, var(--spacing));
 	height: var(--menu-toggle-line-height, 3px);
 	background-color: var(--menu-toggle-line-background-color, var(--color-dark));
@@ -63,5 +46,22 @@
 
 	&::after {
 		bottom: var(--menu-toggle-line-spacing, (calc(0 - var(--spacing))));
+	}
+}
+
+.activated {
+
+	.menu-toggle-icon {
+		background-color: transparent;
+
+		&::before {
+			top: 0;
+			transform: rotate(45deg);
+		}
+
+		&::after {
+			bottom: 0;
+			transform: rotate(-45deg);
+		}
 	}
 }

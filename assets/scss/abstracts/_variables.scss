@@ -2,15 +2,13 @@ $all-buttons: append($all-buttons, ".button");
 $all-buttons: append($all-buttons, ".button .menu-item-link");
 $all-text-inputs: append($all-text-inputs, "select");
 $all-headings: (h1, h2, h3, h4, h5, h6, legend);
-
 $breakpoints: (
-	xl: calc(#{$breakpoint}px / 1), 
-	lg: calc(#{$breakpoint}px / 1.2), 
-	md: calc(#{$breakpoint}px / 1.5), 
-	sm: calc(#{$breakpoint}px / 2), 
-	xs: calc(#{$breakpoint}px / 3), 
+	xl: calc(#{$breakpoint}px / 1),
+	lg: calc(#{$breakpoint}px / 1.2),
+	md: calc(#{$breakpoint}px / 1.5),
+	sm: calc(#{$breakpoint}px / 2),
+	xs: calc(#{$breakpoint}px / 3),
 ) !default;
-
 $colors: (
 	primary: var(--color-primary),
 	secondary: var(--color-secondary),
@@ -25,7 +23,6 @@ $colors: (
 	light: var(--color-light),
 	white: var(--color-white),
 ) !default;
-
 $font-sizes: (
 	h1: var(--text-xl),
 	h2: var(--text-lg),

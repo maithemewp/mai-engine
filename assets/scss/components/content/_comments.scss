@@ -1,4 +1,3 @@
-
 .comment {
 	margin: var(--comment-margin, (var(--space-lg) 0));
 	background-color: var(--comment-background);
@@ -9,9 +8,9 @@
 }
 
 .children {
-	list-style-type: none;
 	margin-top: 0;
 	margin-bottom: 0;
+	list-style-type: none;
 }
 
 .comment-author {

@@ -83,25 +83,10 @@ Now that all of the global packages are installed, navigate to the root director
 cd Sites/my-project/wp-content/plugins/mai-engine
 ```
 
-From there, make sure that Node is running the correct version (11.15.0). To do this, you will first need to run the following commands to configure nvm correctly:
+From there, make sure that Node is running the correct version (11.15.0). To do this, you will first need to run some commands to configure nvm correctly. A simple composer script is provided:
 
 ```shell
-export NVM_DIR="$HOME/.nvm" # Sets the path to NVM 
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-```
-
-Then you will be able to use NVM commands. Run the following to switch to the correct version:
-
-```shell
-nvm install 11.15.0
-nvm use 11.15.0
-```
-
-You should see the following message in the terminal:
-
-```shell
-Now using node v11.15.0 (npm v6.7.0)
+composer setup-nvm
 ```
 
 #### Gulp

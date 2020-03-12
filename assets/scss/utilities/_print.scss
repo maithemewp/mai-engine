@@ -4,9 +4,9 @@
 	*::before,
 	*::after {
 		color: var(--color-dark) !important;
+		text-shadow: none !important;
 		background: transparent !important;
 		box-shadow: none !important;
-		text-shadow: none !important;
 	}
 
 	a,
@@ -32,13 +32,8 @@
 		display: table-header-group;
 	}
 
-	img,
 	tr {
 		page-break-inside: avoid;
-	}
-
-	img {
-		max-width: 100% !important;
 	}
 
 	@page {
@@ -54,13 +49,19 @@
 
 	blockquote,
 	pre {
-		border: var(--border);
 		page-break-inside: avoid;
+		border: var(--border);
 	}
 
 	.content,
 	.content-sidebar {
 		width: 100%;
+	}
+
+	.site-title > a {
+		margin: 0;
+		text-decoration: none;
+		text-indent: 0;
 	}
 
 	button,
@@ -88,12 +89,6 @@
 		text-align: center;
 	}
 
-	.site-title > a {
-		margin: 0;
-		text-decoration: none;
-		text-indent: 0;
-	}
-
 	.site-inner {
 		position: relative;
 		top: calc(0 - var(--space-xl));
@@ -110,13 +105,14 @@
 	h4,
 	h5,
 	h6 {
-		orphans: 3;
 		page-break-after: avoid;
 		page-break-inside: avoid;
+		orphans: 3;
 		widows: 3;
 	}
 
 	img {
+		max-width: 100% !important;
 		page-break-after: avoid;
 		page-break-inside: avoid;
 	}

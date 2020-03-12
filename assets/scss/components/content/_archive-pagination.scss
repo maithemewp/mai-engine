@@ -1,9 +1,8 @@
-
 .archive-pagination {
 	width: 100%;
 	padding: var(--pagination-padding, (var(--row-gap) 0));
-	border-top: var(--pagination-border-top, var(--border));
 	font-size: var(--pagination-font-size, (smaller));
+	border-top: var(--pagination-border-top, var(--border));
 
 	--wrap-justify-content: center;
 	--link-color: var(--color-medium);

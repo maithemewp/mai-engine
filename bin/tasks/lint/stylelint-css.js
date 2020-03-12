@@ -16,11 +16,14 @@ module.exports = function() {
 		lintFile = themeLintFile;
 	}
 
+	console.log(lintFile);
+
 	return gulp.src( config.src.css )
 		.pipe( stylelint( {
 			configFile: lintFile,
 			reporters: [
 				{ formatter: 'string', console: true },
 			],
+			fix: true
 		} ) );
 };

@@ -1,7 +1,5 @@
-
 .wp-block {
 
-	// Columns block.
 	&-columns {
 
 		@include mq(md, max) {

@@ -1,28 +1,26 @@
-
 .page-header {
+	position: relative;
 	display: flex;
-	width: 100%;
-	padding: var(--page-header-padding, (20vh 0));
-	border-bottom: var(--page-header-border-bottom, var(--border));
-	color: var(--page-header-color);
-	background-position: center;
-	background-size: cover;
-	text-align: var(--page-header-text-align, center);
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: center;
+	width: 100%;
+	padding: var(--page-header-padding, (20vh 0));
+	overflow: hidden;
+	color: var(--page-header-color);
+	text-align: var(--page-header-text-align, center);
+	background-position: center;
+	background-size: cover;
+	border-bottom: var(--page-header-border-bottom, var(--border));
 
 	--wrap-position: relative;
 	--wrap-justify-content: center;
 
-	overflow: hidden;
-	position: relative;
-
 	&::before {
-		content: "";
 		display: block;
 		background-color: var(--color-muted);
 		opacity: var(--shadow-opacity);
+		content: "";
 
 		@include position(absolute, 0 0 0 0);
 	}
@@ -30,10 +28,10 @@
 
 .page-header-image {
 	position: absolute;
+	z-index: -1;
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
-	z-index: -1;
 }
 
 .has-transparent-header {

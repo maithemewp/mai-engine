@@ -1,26 +1,20 @@
-
 .nav-header-left {
-
-	order: 2;
 	display: none;
+	order: 2;
 	width: 100vw;
 	margin: 0 -5vw;
 	padding: var(--nav-primary-padding-mobile, (var(--spacing) 5vw));
 	background-color: var(--nav-primary-background-color-mobile, var(--color-white));
 
 	@include mq(lg) {
-		display: flex !important;
 		position: relative;
 		top: auto;
+		display: flex !important;
 		width: auto;
 		margin: 0 0 0 auto;
 		padding: 0;
 		background: 0;
 	}
-}
-
-.nav-header-right {
-
 }
 
 .nav-below-header {

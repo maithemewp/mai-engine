@@ -6,14 +6,13 @@
 
 	&:active,
 	&:focus {
-
-		@include hide-visually(unhide);
-
 		position: absolute;
 		padding: var(--spacing);
 		color: var(--color-white);
-		background-color: var(--color-muted);
 		text-decoration: none;
+		background-color: var(--color-muted);
+
+		@include hide-visually(unhide);
 	}
 }
 
@@ -21,10 +20,10 @@
 	margin: 0;
 
 	li {
-		background: var(--color-white);
 		width: 0;
 		height: 0;
 		list-style: none;
+		background: var(--color-white);
 	}
 }
 

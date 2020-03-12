@@ -16,6 +16,7 @@ toolkit.extendConfig(
             phpmd: './phpmd.xml',
             eslint: './.eslintrc',
             stylelint: './.stylelintrc',
+            scss: "./.stylelintscssrc",
             csscomb: './.csscomb.json',
         },
         bump: {
@@ -37,7 +38,7 @@ toolkit.extendConfig(
             php: ['**/*.php', '!vendor/**'],
             images: './assets/img/**/*',
             scss: './assets/scss/**/*.scss',
-            css: ['**/*.css', '!node_modules/**'],
+            css: ['./assets/css/**/*.css', '!./assets/css/min/*.css', '!node_modules/**'],
             js: ['./assets/js/**/*.js', '!node_modules/**'],
             json: ['**/*.json', '!node_modules/**'],
             i18n: './assets/lang/',

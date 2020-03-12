@@ -1,6 +1,6 @@
 .title-area {
-	line-height: var(--title-area-line-height, var(--line-height-heading));
 	padding: var(--title-area-padding, (var(--spacing) 0));
+	line-height: var(--title-area-line-height, var(--line-height-heading));
 	text-align: var(--title-area-text-align, start);
 	transition: var(--title-area-transition, var(--transition));
 
@@ -15,9 +15,9 @@
 
 .site-title {
 	margin: 0;
-	font-family: var(--site-title-font-family, var(--font-secondary));
-	font-size: var(--site-title-font-size, (1em));
 	font-weight: var(--site-title-font-weight, var(--font-weight-heading));
+	font-size: var(--site-title-font-size, (1em));
+	font-family: var(--site-title-font-family, var(--font-secondary));
 }
 
 .site-title-link {

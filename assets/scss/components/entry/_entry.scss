@@ -1,22 +1,19 @@
 .entry {
-	width: var(--entry-width);
-	color: var(--entry-color);
-	margin: var(--entry-margin);
+	flex: 1 1 calc((100% / var(--columns)) - var(--column-gap));
+	width: 100%;
+	max-width: calc((100% / var(--columns)) - var(--column-gap));
+	margin: var(--entry-margin, 0);
+	text-align: var(--align-text);
+	background-color: var(--color-white);
+	border-radius: var(--border-radius);
+}
+
+.entry > * + * {
+	margin-top: 12px;
 }
 
 .entry-wrap {
 	padding: var(--entry-wrap-padding, var(--spacing));
-}
-
-.is-archive {
-	--entry-margin-bottom: var(--row-gap);
-	--entry-border: var(--border);
-	--entry-border-radius: var(--border-radius);
-	--entry-background-color: var(--color-white);
-}
-
-.is-single {
-	--entry-margin: 0 auto;
 }
 
 .widget {
@@ -24,66 +21,26 @@
 	--entry-wrap-padding: 0;
 }
 
-
-
-
-/**
- * Grid stuff.
- */
-
-
-.entries,
-.entries * {
-	box-sizing: border-box;
-}
-
 .entries-wrap {
-	display: -webkit-box;
 	display: flex;
 	flex-wrap: wrap;
-	-webkit-box-pack: var(--align-columns);
-	justify-content: var(--align-columns);
-	-webkit-box-align: var(--align-columns-vertical);
 	align-items: var(--align-columns-vertical);
-	margin-left: calc( var(--column-gap) - ( 1.5 * var(--column-gap) ) );
-	margin-right:calc( var(--column-gap) - ( 1.5 * var(--column-gap) ) );
-	margin-top: calc( var(--row-gap) - ( 1.5 * var(--row-gap) ) );
-	margin-bottom: calc( var(--row-gap) - ( 1.5 * var(--row-gap) ) );
-}
+	justify-content: var(--align-columns);
+	margin: calc(var(--column-gap) - (1.5 * var(--column-gap))) calc(var(--row-gap) - (1.5 * var(--row-gap)));
 
-@media only screen and (max-width: 511px) {
-	.entry {
-		--columns: var(--columns-xs);
-	}
-}
-@media only screen and (min-width: 512px) and (max-width: 767px) {
-	.entry {
+	--entry-margin: calc(var(--row-gap) / 2) calc(var(--column-gap) / 2);
+	--columns: var(--columns-xs);
+
+	@include mq(sm) {
 		--columns: var(--columns-sm);
 	}
-}
-@media only screen and (min-width: 768px) and (max-width: 1023px) {
-	.entry {
+
+	@include mq(md) {
 		--columns: var(--columns-md);
 	}
-}
-@media only screen and (min-width: 1024px) {
-	.entry {
+
+	@include mq(lg) {
 		--columns: var(--columns-lg);
 	}
-}
-.entry {
-	width: 100%;
-	-webkit-box-flex: 1;
-	flex: 1 1 calc( ( 100% / var(--columns) ) - var(--column-gap) );
-	max-width: calc( ( 100% / var(--columns) ) - var(--column-gap) );
-	text-align: var(--align-text);
-	margin-left: calc( var(--column-gap) / 2 );
-	margin-right:calc( var(--column-gap) / 2 );
-	margin-top: calc( var(--row-gap) / 2 );
-	margin-bottom:calc( var(--row-gap) / 2 );
-}
-
-.entry > * + * {
-	margin-top: 12px;
 }
 

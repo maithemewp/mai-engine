@@ -57,8 +57,9 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "scripts": {
-    "stylelint": "stylelint './assets/scss/**/*.scss' --fix",
+    "stylelint": "stylelint './assets/scss/**/*.scss' --config .stylelintscssrc --syntax scss --fix --color",
     "i18n": "wp i18n make-pot ./ ./assets/lang/mai-engine.pot",
+    "setup-nvm": "export NVM_DIR=\"$HOME/.nvm\" && [ -s \"/usr/local/opt/nvm/nvm.sh\" ] && . \"/usr/local/opt/nvm/nvm.sh\" && nvm install 11.15.0 && nvm use 11.15.0",
     "install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
     "phpcs": "vendor/bin/phpcs --standard=WordPress --extensions=php -p -s lib config",
     "phpcbf": "vendor/bin/phpcbf --standard=WordPress --extensions=php -p lib config",

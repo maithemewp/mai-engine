@@ -1,19 +1,6 @@
-////
-/// Simple social icons.
-///
-/// @group  Plugins
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
-////
-/// Simple Social Icons.
-////
-
 .simple-social-icons {
 	overflow: hidden;
 
-	// SVG.
 	svg {
 
 		&[class^="social-"],
@@ -21,43 +8,42 @@
 			display: inline-block;
 			width: 1em;
 			height: 1em;
-			stroke-width: 0;
-			stroke: currentColor;
 			fill: currentColor;
+			stroke: currentColor;
+			stroke-width: 0;
 		}
 	}
 
-	// List.
 	ul {
 		display: flex;
-		margin: -0.2em -0.2em 0 0;
-		padding: 0;
 		flex-wrap: wrap;
 		justify-content: flex-start;
+		margin: -0.2em -0.2em 0 0;
+		padding: 0;
 
 		li {
 			margin: 0.2em 0.2em 0 0;
 			padding: 0;
-			border: none;
-			background: none;
 			list-style-type: none;
+			background: none;
+			border: none;
 
 			a {
 				display: inline-block;
-				-moz-box-sizing: content-box;
 				-webkit-box-sizing: content-box;
+				-moz-box-sizing: content-box;
 				box-sizing: content-box;
 				width: 1em;
 				height: 1em;
 				margin: 2px;
-				border: none;
 				font-weight: 400;
 				font-style: normal;
 				font-variant: normal;
 				line-height: 1;
 				text-align: center;
-				text-decoration: none;
 				text-transform: none;
+				text-decoration: none;
+				border: none;
 			}
 		}
 

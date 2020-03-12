@@ -1,7 +1,8 @@
 .before-footer {
-	--heading-font-size: var(--text-xs);
-	--wrap-justify-content: space-between;
 	position: relative;
 	padding: (var(--space-xl) 0 calc(var(--space-xl) - var(--gutter)));
 	border-bottom: var(--border);
+
+	--heading-font-size: var(--text-xs);
+	--wrap-justify-content: space-between;
 }

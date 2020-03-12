@@ -46,21 +46,17 @@ function mai_register_icon_block() {
  * @return void
  */
 function mai_render_icon_block( $block, $content = '', $is_preview = false, $post_id = 0 ) {
-	$params = '';
-	$style  = strtolower( get_field( 'style' ) ) ?: 'regular';
-	$icon   = 'regular' === $style ? get_field( 'regular' ) : get_field( 'solid' );
-	$icon   = str_replace( [ 'fas', 'far', 'fa-', ' ' ], '', $icon );
+	$atts = [];
 
 	foreach ( mai_icon_shortcode_atts() as $param => $default ) {
-		$field = get_field( $param ) ? get_field( $param ) : $default;
-		$value = 'icon' === $param ? $icon : $field;
-
-		if ( '' !== $value && 'class' !== $value ) {
-			$params .= ' ' . $param . '="' . $value . '"';
-		}
+		$atts[ $param ] = get_field( $param ) ?: $default;
 	}
 
-	echo do_shortcode( sprintf( '[mai_icon %s]', $params ) );
+	$style        = strtolower( get_field( 'style' ) ) ?: 'regular';
+	$icon         = 'regular' === $style ? get_field( 'regular' ) : get_field( 'solid' );
+	$atts['icon'] = str_replace( [ 'fas', 'far', 'fa-', ' ' ], '', $icon );
+
+	echo mai_icon_shortcode( $atts );
 }
 
 

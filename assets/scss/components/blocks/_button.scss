@@ -7,15 +7,15 @@
 	}
 
 	.is-style-outline & {
-		border: var(--border-size) var(--border-style) var(--color-primary);
 		color: var(--color-primary);
 		background-color: transparent;
+		border: var(--border-size) var(--border-style) var(--color-primary);
 
 		&:hover,
 		&:focus {
-			border-color: var(--color-primary);
 			color: var(--color-white);
 			background-color: var(--color-primary);
+			border-color: var(--color-primary);
 		}
 	}
 }

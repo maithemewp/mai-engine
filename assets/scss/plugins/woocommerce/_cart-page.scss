@@ -1,37 +1,29 @@
-////
-/// Cart page.
-///
-/// @group  WooCommerce
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
 .remove {
 	display: flex;
-	justify-content: center;
-	align-items: center;
 	align-content: center;
-	border-radius: var(--border-radius);
-	color: var(--color-white);
-	background-color: var(--color-error);
-	font-weight: var(--font-weight-heading);
-	height: 1em;
+	align-items: center;
+	justify-content: center;
 	width: 1em;
+	height: 1em;
+	color: var(--color-white);
+	font-weight: var(--font-weight-heading);
+	background-color: var(--color-error);
+	border-radius: var(--border-radius);
 
 	&:hover,
 	&:focus {
 		color: var(--color-white);
-		background-color: lighten(var(--color-error), 10);
 		text-decoration: none;
+		background-color: lighten(var(--color-error), 10);
 	}
 }
 
 .product-thumbnail {
 
 	img {
-		border-radius: var(--border-radius);
-		height: var(--space-xl);
 		width: var(--space-xl);
+		height: var(--space-xl);
+		border-radius: var(--border-radius);
 	}
 }
 
@@ -118,10 +110,10 @@
 		}
 
 		td {
-			display: flex;
-			align-items: center;
-			align-content: center;
 			position: relative;
+			display: flex;
+			align-content: center;
+			align-items: center;
 			padding: 0;
 			border: var(--border);
 			border-bottom: 0;
@@ -160,11 +152,11 @@
 				width: 25%;
 				margin-right: var(--spacing);
 				padding: 1.5em 1em;
-				border-right: var(--border);
-				background-color: var(--color-light);
-				font-size: smaller;
 				font-weight: var(--font-weight-heading);
+				font-size: smaller;
 				white-space: nowrap;
+				background-color: var(--color-light);
+				border-right: var(--border);
 			}
 		}
 

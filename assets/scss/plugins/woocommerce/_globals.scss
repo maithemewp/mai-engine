@@ -1,19 +1,11 @@
-////
-/// Globals.
-///
-/// @group  WooCommerce
-/// @author BizBudding <team@bizbudding.com>
-/// @link   https://github.com/maithemewp/mai-engine
-////
-
 .onsale {
 	z-index: 1;
 	padding: var(--space-xs) var(--spacing);
-	border-radius: var(--border-radius);
 	color: var(--color-white);
-	background: var(--color-primary);
-	font-size: small;
 	font-weight: var(--font-weight-heading);
+	font-size: small;
+	background: var(--color-primary);
+	border-radius: var(--border-radius);
 
 	@include position(absolute, -0.5em auto auto -0.5em);
 }
@@ -37,16 +29,16 @@
 }
 
 .woocommerce-message {
-	border-color: var(--color-success);
 	background-color: rgba(var(--color-success), var(--shadow-opacity));
+	border-color: var(--color-success);
 
 	&--info {
-		border-color: var(--color-primary);
 		background-color: rgba(var(--color-primary), var(--shadow-opacity));
+		border-color: var(--color-primary);
 	}
 }
 
 .woocommerce-error {
-	border-color: var(--color-error);
 	background-color: rgba(var(--color-error), var(--shadow-opacity));
+	border-color: var(--color-error);
 }
