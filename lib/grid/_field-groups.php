@@ -23,39 +23,35 @@ function mai_register_grid_field_groups() {
 	$user_grid = [];
 
 	// Get fields.
-	// $settings = new Mai_Entry_Settings( 'block' );
-	// $fields   = $settings->fields;
+	$settings = new Mai_Entry_Settings( 'block' );
+	$fields   = $settings->fields;
 
-	// // Setup fields.
-	// foreach ( $fields as $name => $field ) {
+	// Setup fields.
+	foreach ( $fields as $name => $field ) {
 
-	// 	// Bail if not a block field.
-	// 	if ( ! $field['block'] ) {
-	// 		continue;
-	// 	}
+		// Bail if not a block field.
+		if ( ! $field['block'] ) {
+			continue;
+		}
 
-	// 	// Bail if no groups.
-	// 	if ( ! isset( $field['group'] ) ) {
-	// 		continue;
-	// 	}
+		// Bail if no groups.
+		if ( ! isset( $field['group'] ) ) {
+			continue;
+		}
 
-	// 	// Post grid.
-	// 	if ( in_array( 'mai_post_grid', $field['group'], true ) ) {
-	// 		$post_grid[] = $settings->get_data( $name, $field );
-	// 	}
-	// 	// Term grid.
-	// 	if ( in_array( 'mai_term_grid', $field['group'], true ) ) {
-	// 		$term_grid[] = $settings->get_data( $name, $field );
-	// 	}
-	// 	// Post grid.
-	// 	if ( in_array( 'mai_user_grid', $field['group'], true ) ) {
-	// 		$user_grid[] = $settings->get_data( $name, $field );
-	// 	}
-	// }
-
-	$base_fields = mai_get_config( 'grid-base-settings' );
-	$post_fields = mai_get_config( 'grid-post-settings' );
-	$term_fields = mai_get_config( 'grid-term-settings' );
+		// Post grid.
+		if ( in_array( 'mai_post_grid', $field['group'], true ) ) {
+			$post_grid[] = $settings->get_data( $name, $field );
+		}
+		// Term grid.
+		if ( in_array( 'mai_term_grid', $field['group'], true ) ) {
+			$term_grid[] = $settings->get_data( $name, $field );
+		}
+		// Post grid.
+		if ( in_array( 'mai_user_grid', $field['group'], true ) ) {
+			$user_grid[] = $settings->get_data( $name, $field );
+		}
+	}
 
 	acf_add_local_field_group(
 		[

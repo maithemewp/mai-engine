@@ -23,11 +23,11 @@ class Mai_Grid {
 	protected $context;
 
 	/**
-	 * Type.
+	 * Settings.
 	 *
-	 * @var $type
+	 * @var $settings
 	 */
-	protected $type;
+	protected $settings;
 
 	/**
 	 * Fields.
@@ -37,25 +37,11 @@ class Mai_Grid {
 	protected $fields;
 
 	/**
-	 * Keys.
-	 *
-	 * @var $keys
-	 */
-	protected $keys;
-
-	/**
 	 * Args.
 	 *
 	 * @var $args
 	 */
 	protected $args;
-
-	/**
-	 * Config.
-	 *
-	 * @var $config
-	 */
-	protected $config;
 
 	/**
 	 * Mai_Grid constructor.
@@ -67,12 +53,11 @@ class Mai_Grid {
 	 * @return void
 	 */
 	public function __construct( $args ) {
-		$this->context = 'block';
-		$this->config  = new Mai_Entry_Settings( $this->context ); // TODO: Use dependency injection.
-		$this->type    = $this->config->type;
-		$this->fields  = $this->config->get_fields();
-		$this->keys    = $this->config->get_keys();
-		$this->args    = $this->get_args( $args );
+		$this->context  = 'block';
+		$this->settings = new Mai_Entry_Settings( $this->context ); // TODO: Use dependency injection.
+		$this->fields   = $this->settings->fields;
+		$this->defaults = $this->settings->defaults;
+		$this->args     = $this->get_args( $args );
 	}
 
 	/**
@@ -86,48 +71,8 @@ class Mai_Grid {
 	 */
 	public function get_args( $args ) {
 
-		/**
-		 * Get defaults and parse args.
-		 * Skip tabs.
-		 * Skip if not the type/context we need.
-		 * Check for sub fields first.
-		 */
-		$defaults = [
-			'context' => $this->context,
-			'type'    => $this->type,  // post, term, user.
-			'class'   => '',
-		];
-
-		foreach ( $this->fields as $name => $field ) {
-
-			// Skip if not the context we want.
-			if ( ! ( isset( $field[ $args['context'] ] ) && $field[ $args['context'] ] ) ) {
-				continue;
-			}
-
-			// Skip if field type is a tab.
-			if ( 'tab' === $field['type'] ) {
-				continue;
-			}
-
-			// Skip if block and not the block we need.
-			if ( 'block' === $args['context'] ) {
-
-				/**
-				 * Skip if not in the grid we need.
-				 * Nested conditionals so we don't do in_array() for no reason if not a block.
-				 */
-				if ( ! in_array( sprintf( 'mai_%s_grid', $args['type'] ), $field['group'], true ) ) {
-					continue;
-				}
-			}
-
-			// Add to our defaults.
-			$defaults[ $name ] = $field;
-		}
-
 		// Parse args.
-		$args = wp_parse_args( $args, $defaults );
+		$args = wp_parse_args( $args, $this->defaults );
 
 		// Sanitize.
 		foreach ( $args as $name => $value ) {
@@ -169,6 +114,7 @@ class Mai_Grid {
 		}
 
 		// Grid specific classes.
+		$this->args['class'] = isset( $this->args['class'] ) ? $this->args['class'] : '';
 		$this->args['class'] = 'mai-engine ' . $this->args['class'];
 		$this->args['class'] = trim( $this->args['class'] );
 
@@ -206,7 +152,10 @@ class Mai_Grid {
 				wp_reset_postdata();
 				break;
 			case 'term':
-				// TODO.
+				$term_query = new WP_Term_Query( $this->get_term_query_args() );
+				foreach ( $term_query->terms as $term ) {
+					mai_do_entry( $term, $this->args );
+				}
 				break;
 			case 'user':
 				// TODO.
@@ -297,6 +246,16 @@ class Mai_Grid {
 		}
 
 		return apply_filters( 'mai_post_grid_query_args', $query_args );
+	}
+
+	public function get_term_query_args() {
+		$query_args = [
+			'taxonomy' => $this->args['taxonomy'],
+			'number'   => $this->args['number'],
+			'offset'   => absint( $this->args['offset'] ),
+		];
+
+		return apply_filters( 'mai_term_grid_query_args', $query_args );
 	}
 
 	/**

@@ -25,9 +25,12 @@ final class Mai_Grid_Blocks {
 	 */
 	private static $instance;
 
-	private $base_fields;
-	private $post_fields;
-	private $term_fields;
+	/**
+	 * Settings.
+	 *
+	 * @var object $settings Mai_Entry_Settings
+	 */
+	private $settings;
 
 	/**
 	 * Fields.
@@ -96,8 +99,8 @@ final class Mai_Grid_Blocks {
 	 * @return void
 	 */
 	public function run() {
-		// add_action( 'acf/init', [ $this, 'blocks_init' ], 10, 3 );
-		// add_action( 'acf/init', [ $this, 'register_blocks' ], 10, 3 );
+		add_action( 'acf/init', [ $this, 'blocks_init' ], 10, 3 );
+		add_action( 'acf/init', [ $this, 'register_blocks' ], 10, 3 );
 	}
 
 	/**
@@ -108,14 +111,9 @@ final class Mai_Grid_Blocks {
 	 * @return void
 	 */
 	public function blocks_init() {
-		// $this->settings = new Mai_Entry_Settings( 'block' );
-		// $this->fields   = $this->settings->fields;
-
-		$this->base_fields = mai_get_config( 'grid-base-settings' );
-		$this->post_fields = mai_get_config( 'grid-post-settings' );
-		$this->term_fields = mai_get_config( 'grid-term-settings' );
-
-		// $this->run_filters();
+		$this->settings = new Mai_Entry_Settings( 'block' );
+		$this->fields   = $this->settings->fields;
+		$this->run_filters();
 	}
 
 	/**
@@ -211,8 +209,12 @@ final class Mai_Grid_Blocks {
 	 * @return void
 	 */
 	public function do_grid( $type, $block, $content = '', $is_preview = false ) {
+		$args = [
+			'type'    => $type,
+			'context' => 'block',
+		];
 
-		$args = [ 'type' => $type ] + $this->get_field_values( $type );
+		$args = array_merge( $args, $this->get_field_values() );
 
 		if ( ! empty( $block['className'] ) ) {
 			$args['class'] = ( isset( $args['class'] ) && ! empty( $args['class'] ) ) ? ' ' . $block['className'] : $block['className'];
@@ -229,19 +231,21 @@ final class Mai_Grid_Blocks {
 	 *
 	 * @return array
 	 */
-	public function get_field_values( $type ) {
-		$values = [];
-		$method = $type . '_fields';
-		$fields = $this->base_fields + $this->$method;
-		foreach ( $fields as $name => $field ) {
+	public function get_field_values() {
+		$fields = [];
+		foreach ( $this->fields as $name => $field ) {
+			// Skip if not a block field.
+			// if ( ! $field['block'] ) {
+			// 	continue;
+			// }
 			// Skip tabs.
 			if ( 'tab' === $field['type'] ) {
 				continue;
 			}
-			$values[ $name ] = $this->get_field( $name );
+			$fields[ $name ] = $this->get_field( $name );
 		}
 
-		return $values;
+		return $fields;
 	}
 
 	/**
@@ -371,6 +375,10 @@ final class Mai_Grid_Blocks {
 
 		// Add filters.
 		foreach ( $this->fields as $name => $values ) {
+			// Skip if not an ACF field.
+			if ( ! $values['block'] ) {
+				continue;
+			}
 			// Choices.
 			if ( method_exists( $this->settings, $name ) ) {
 				add_filter(
