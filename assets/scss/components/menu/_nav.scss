@@ -17,11 +17,11 @@
 	}
 }
 
-.nav-below-header {
+.nav-after-header {
 
 	@include mq(lg) {
 		--menu-alignment: flex-start;
-		border-top: var(--nav-below-header-border-top, var(--border));
+		border-top: var(--nav-after-header-border-top, var(--border));
 	}
 }
 

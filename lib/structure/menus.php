@@ -69,7 +69,7 @@ add_action( 'genesis_after_header', 'mai_below_header_menu', 8 );
 function mai_below_header_menu() {
 	genesis_nav_menu(
 		[
-			'theme_location' => 'below-header',
+			'theme_location' => 'after-header',
 		]
 	);
 }

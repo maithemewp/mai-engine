@@ -46,7 +46,7 @@ msgid "Header Right Menu"
 msgstr ""
 
 #: config/_default/config.php:436
-msgid "Below Header Menu"
+msgid "After Header Menu"
 msgstr ""
 
 #: config/_default/config.php:437

@@ -183,7 +183,7 @@ return [
 				'others'  => [
 					'.nav-header-left',
 					'.nav-header-right',
-					'.nav-below-header',
+					'.nav-after-header',
 					'.mobile-menu .menu-header-menu-container',
 				],
 			],
@@ -433,12 +433,12 @@ return [
 			'genesis-menus'            => [
 				'header-left'  => __( 'Header Left Menu', 'mai-engine' ),
 				'header-right' => __( 'Header Right Menu', 'mai-engine' ),
-				'below-header' => __( 'Below Header Menu', 'mai-engine' ),
+				'after-header' => __( 'After Header Menu', 'mai-engine' ),
 				'footer'       => __( 'Footer Menu', 'mai-engine' ),
 			],
 			'genesis-structural-wraps' => [
 				'header',
-				'menu-below-header',
+				'menu-after-header',
 				'menu-footer',
 				'page-header',
 				'footer-widgets',
