@@ -26,18 +26,11 @@ final class Mai_Grid_Blocks {
 	private static $instance;
 
 	/**
-	 * Helper.
+	 * Settings.
 	 *
-	 * @var $helper
+	 * @var object $settings Mai_Entry_Settings
 	 */
-	private $helper;
-
-	/**
-	 * Config.
-	 *
-	 * @var object $config Mai_Entry_Settings
-	 */
-	private $config;
+	private $settings;
 
 	/**
 	 * Fields.
@@ -118,8 +111,8 @@ final class Mai_Grid_Blocks {
 	 * @return void
 	 */
 	public function blocks_init() {
-		$this->config = new Mai_Entry_Settings( 'block' );
-		$this->fields = $this->config->fields;
+		$this->settings = new Mai_Entry_Settings( 'block' );
+		$this->fields   = $this->settings->fields;
 		$this->run_filters();
 	}
 
@@ -384,16 +377,15 @@ final class Mai_Grid_Blocks {
 		foreach ( $this->fields as $name => $values ) {
 			// Skip if not an ACF field.
 			if ( ! $values['block'] ) {
-				return;
+				continue;
 			}
 			// Choices.
-			if ( method_exists( $this->config, $name ) ) {
+			if ( method_exists( $this->settings, $name ) ) {
 				add_filter(
 					"acf/load_field/key={$values['key']}",
-					function ( $field ) {
+					function ( $field ) use( $name) {
 						// Set choices from our config function.
-						$field['choices'] = $this->config->get_choices( $field['name'] );
-
+						$field['choices'] = $this->settings->get_choices( $field['name'] );
 						return $field;
 					}
 				);
@@ -402,12 +394,12 @@ final class Mai_Grid_Blocks {
 			if ( isset( $values['acf']['sub_fields'] ) ) {
 				foreach ( $values['acf']['sub_fields'] as $sub_name => $sub_values ) {
 					// Choices.
-					if ( method_exists( $this->config, $sub_name ) ) {
+					if ( method_exists( $this->settings, $sub_name ) ) {
 						add_filter(
 							"acf/load_field/key={$sub_values['key']}",
 							function ( $field ) {
 								// Set choices from our config function.
-								$field['choices'] = $this->config->get_choices( $field['name'] );
+								$field['choices'] = $this->settings->get_choices( $field['name'] );
 
 								return $field;
 							}
@@ -464,7 +456,7 @@ final class Mai_Grid_Blocks {
 	public function load_show( $field ) {
 
 		// Default choices, in default order.
-		$field['choices'] = $this->config->get_choices( 'show' );
+		$field['choices'] = $this->settings->get_choices( 'show' );
 
 		// Get existing values, which are sorted correctly, without infinite loop.
 		remove_filter( "acf/load_field/key={$this->fields['show']['key']}", [ $this, 'load_show' ] );
