@@ -1,3 +1,11 @@
+.entry-title {
+	--entry-title-font-size: var(--text-xxxxl);
+}
+
+.entries {
+	--entry-title-font-size: var(--text-lg);
+}
+
 .entry-title-link {
 	color: var(--entry-title-color, var(--color-medium));
 	text-decoration: var(--entry-title-text-decoration, none);
