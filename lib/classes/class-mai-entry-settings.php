@@ -1582,6 +1582,7 @@ class Mai_Entry_Settings {
 				 */
 				$data['default_value'] = $field['default'];
 			}
+
 		} else {
 
 			// Kirki.
@@ -1620,10 +1621,11 @@ class Mai_Entry_Settings {
 				$data['default'] = $field['default'];
 			}
 
-			// Maybe add choices.
-			if ( method_exists( $this, $name ) ) {
-				$data['choices'] = $this->get_choices( $name );
-			}
+		}
+
+		// Maybe add choices.
+		if ( method_exists( $this, $name ) ) {
+			$data['choices'] = $this->get_choices( $name );
 		}
 
 		// TODO: Handle message/description for checkbox field (Boxed).
