@@ -18,6 +18,7 @@
 }
 
 .nav-after-header {
+	width: 100%;
 
 	@include mq(lg) {
 		--menu-alignment: flex-start;
@@ -26,6 +27,7 @@
 }
 
 .nav-footer {
+	width: 100%;
 	--menu-alignment: center;
 
 	@include mq(lg) {
