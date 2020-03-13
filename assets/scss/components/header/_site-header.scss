@@ -8,20 +8,21 @@
 
 .site-header {
 	position: var(--site-header-position, relative);
+	top: var(--site-header-top, unset);
 	z-index: 10;
 	width: 100%;
 	background-color: var(--site-header-background-color, var(--color-white));
 	border-bottom: var(--site-header-border-bottom, var(--border));
-	top: var(--site-header-top, unset);
+
 	--wrap-justify-content: space-between;
 	--wrap-align-items: center;
-	--logo-width: var(--logo-width-small, '120px');
+	--logo-width: var(--logo-width-small, 120px);
 	--logo-top: var(--logo-top-small);
 	--logo-bottom: var(--logo-bottom-small);
 
 	@include mq(lg) {
 		--wrap-flex-wrap: nowrap;
-		--logo-width: var(--logo-width-large, '180px');
+		--logo-width: var(--logo-width-large, 180px);
 		--logo-top: var(--logo-top-large);
 		--logo-bottom: var(--logo-bottom-large);
 	}

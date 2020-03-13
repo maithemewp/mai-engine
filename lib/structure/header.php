@@ -30,19 +30,6 @@ function mai_site_header_options() {
 	}
 }
 
-add_action( 'genesis_header', 'mai_header_tracker', 3 );
-/**
- * Adds an empty, unstyled element to use for header scroll tracking.
- * We can't use the header itself because it can't be tracked when sticky/fixed.
- *
- * @since 0.1.0
- *
- * @return void
- */
-function mai_header_tracker() {
-	echo '<span id="header-tracker"></span>';
-}
-
 add_filter( 'genesis_markup_title-area_open', 'mai_before_title_area_hook', 10, 1 );
 /**
  * Add custom hook after the title area.
