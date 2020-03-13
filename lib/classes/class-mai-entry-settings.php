@@ -1373,7 +1373,7 @@ class Mai_Entry_Settings {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Get object taxonomies. This is a subfield of taxonomy.
 	 *
 	 * @since 0.1.0
 	 *
@@ -1382,16 +1382,19 @@ class Mai_Entry_Settings {
 	public function taxonomy() {
 		$choices = [];
 
-		// TODO: Processing form data without nonce verification.
-		if ( isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) {
-			$taxonomies = get_object_taxonomies( sanitize_text_field( wp_unslash( $_REQUEST['post_type'] ) ), 'objects' );
+		if ( ! ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) ) {
+			return $choices;
+		}
 
+		foreach ( $_REQUEST['post_type'] as $post_type ) {
+			$taxonomies = get_object_taxonomies( sanitize_text_field( wp_unslash( $post_type ) ), 'objects' );
 			if ( $taxonomies ) {
 				foreach ( $taxonomies as $name => $taxo ) {
 					$choices[ $name ] = $taxo->label;
 				}
 			}
 		}
+
 
 		return $choices;
 	}
@@ -1454,8 +1457,7 @@ class Mai_Entry_Settings {
 	public function post_parent__in() {
 		$choices = [];
 
-		// TODO: Processing form data without nonce verification.
-		if ( ! ( isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) ) {
+		if ( ! ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) ) {
 			return $choices;
 		}
 
