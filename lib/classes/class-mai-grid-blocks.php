@@ -481,8 +481,7 @@ final class Mai_Grid_Blocks {
 	 */
 	public function get_posts( $args ) {
 
-		// TODO: Processing form data without nonce verification.
-		if ( isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) {
+		if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) {
 			$args['post_type'] = sanitize_text_field( wp_unslash( $_REQUEST['post_type'] ) );
 		}
 
@@ -500,8 +499,7 @@ final class Mai_Grid_Blocks {
 	 */
 	public function get_terms( $args ) {
 
-		// TODO: Processing form data without nonce verification.
-		if ( isset( $_REQUEST['taxonomy'] ) && ! empty( $_REQUEST['taxonomy'] ) ) {
+		if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['taxonomy'] ) && ! empty( $_REQUEST['taxonomy'] ) ) {
 			$args['taxonomy'] = sanitize_text_field( wp_unslash( $_REQUEST['taxonomy'] ) );
 		}
 
@@ -519,8 +517,7 @@ final class Mai_Grid_Blocks {
 	 */
 	public function get_parents( $args ) {
 
-		// TODO: Processing form data without nonce verification.
-		if ( isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) {
+		if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) {
 			$args['post_type'] = sanitize_text_field( wp_unslash( $_REQUEST['post_type'] ) );
 		}
 
