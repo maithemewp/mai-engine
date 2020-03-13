@@ -48,7 +48,7 @@ textarea {
 }
 
 select {
-	height: var(--select-height, (calc(var(--text-base) * 2)));
+	height: var(--select-height, (calc(var(--text-md) * 2)));
 	padding: var(--select-padding, (0 auto));
 
 	&[multiple] {

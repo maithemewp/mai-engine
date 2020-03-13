@@ -1,15 +1,14 @@
-
 @mixin body {
 	margin: 0;
 	color: var(--color-medium);
 	font-weight: var(--font-weight-body);
-	font-size: var(--text-base);
+	font-size: var(--text-md);
 	font-family: var(--font-primary);
 	line-height: var(--line-height-body);
 	background-color: var(--color-white);
 
 	@include mq(lg) {
-		font-size: calc(var(--text-base) * #{$major-second});
+		font-size: calc(var(--text-md) * #{$major-second});
 	}
 }
 
@@ -44,7 +43,7 @@
 }
 
 @mixin heading {
-	margin: var(--heading-margin, 0 0 var(--text-base));
+	margin: var(--heading-margin, 0 0 var(--text-md));
 	color: var(--heading-color, var(--color-dark));
 	font-weight: var(--font-weight-heading);
 	font-family: var(--font-secondary);

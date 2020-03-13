@@ -118,7 +118,7 @@ form.checkout {
 	&,
 	.select2-selection__rendered,
 	.select2-selection__arrow {
-		height: calc((var(--text-base) / #{$major-second}) + var(--text-base) * 2);
-		line-height: calc((var(--text-base) / #{$major-second}) + var(--text-base) * 2);
+		height: calc((var(--text-md) / #{$major-second}) + var(--text-md) * 2);
+		line-height: calc((var(--text-md) / #{$major-second}) + var(--text-md) * 2);
 	}
 }

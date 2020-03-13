@@ -180,7 +180,7 @@
 	font-size: 0;
 
 	&::after {
-		font-size: calc(var(--text-base) / #{$major-second});
+		font-size: calc(var(--text-md) / #{$major-second});
 	}
 }
 

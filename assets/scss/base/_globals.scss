@@ -18,15 +18,19 @@
 	--breakpoint-sm: calc(var(--breakpoint-xl) / 2);
 	--breakpoint-xs: calc(var(--breakpoint-xl) / 3);
 
-	--text-scale-ratio: 1.382;
-	--text-base: 16px;
-	--text-xs: calc(var(--text-base) * (var(--text-scale-ratio)) * 0.5);
-	--text-sm: calc(var(--text-base) * (var(--text-scale-ratio)) * 0.75);
-	--text-md: calc(var(--text-base) * (var(--text-scale-ratio)) * 1);
-	--text-lg: calc(var(--text-base) * (var(--text-scale-ratio)) * 2);
-	--text-xl: calc(var(--text-base) * (var(--text-scale-ratio)) * 3);
-	--text-xxl: calc(var(--text-base) * (var(--text-scale-ratio)) * 4);
-	--text-xxxl: calc(var(--text-base) * (var(--text-scale-ratio)) * 5);
+	--text-scale-ratio: 1.25;
+
+	--text-xxxxs: calc(var(--text-xxxs) / var(--text-scale-ratio));
+	--text-xxxs: calc(var(--text-xxs) / var(--text-scale-ratio));
+	--text-xxs: calc(var(--text-xs) / var(--text-scale-ratio));
+	--text-xs: calc(var(--text-sm) / var(--text-scale-ratio));
+	--text-sm: calc(var(--text-md) / var(--text-scale-ratio));
+	--text-md: 16px;
+	--text-lg: calc(var(--text-md) * var(--text-scale-ratio));
+	--text-xl: calc(var(--text-lg) * var(--text-scale-ratio));
+	--text-xxl: calc(var(--text-xl) * var(--text-scale-ratio));
+	--text-xxxl: calc(var(--text-xxl) * var(--text-scale-ratio));
+	--text-xxxxl: calc(var(--text-xxxl) * var(--text-scale-ratio));
 
 	--font-stack: system-ui, -apple-system, blinkmacsystemfont, helvetica, arial, sans-serif;
 	--font-code: consolas, monaco, monospace;
@@ -52,7 +56,7 @@
 	--letter-spacing-body: normal;
 	--letter-spacing-heading: var(--letter-spacing-body);
 
-	--spacing: var(--text-base);
+	--spacing: var(--text-md);
 	--row-gap: var(--spacing);
 	--column-gap: var(--spacing);
 	--wrap-width: var(--breakpoint-xl);
