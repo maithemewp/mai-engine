@@ -24,6 +24,8 @@ p {
 
 .wp-block {
 
+	max-width: var(--breakpoint-md);
+
 	&[data-align="wide"] {
 		max-width: var(--breakpoint);
 	}
