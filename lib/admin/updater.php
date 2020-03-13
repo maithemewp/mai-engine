@@ -18,6 +18,10 @@ add_action( 'admin_init', 'mai_plugin_updater' );
  * @return void
  */
 function mai_plugin_updater() {
+	// Bail if current user cannot manage plugins.
+	if ( ! current_user_can( 'install_plugins' ) ) {
+		return;
+	}
 	Puc_v4_Factory::buildUpdateChecker(
 		'https://github.com/maithemewp/mai-engine',
 		__FILE__,
