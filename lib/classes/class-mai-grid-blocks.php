@@ -25,9 +25,10 @@ final class Mai_Grid_Blocks {
 	 */
 	private static $instance;
 
-	private $base_fields;
-	private $post_fields;
-	private $term_fields;
+	// private $base_fields;
+	// private $post_fields;
+	// private $term_fields;
+	// private $fields;
 
 	/**
 	 * Fields.
@@ -96,26 +97,7 @@ final class Mai_Grid_Blocks {
 	 * @return void
 	 */
 	public function run() {
-		// add_action( 'acf/init', [ $this, 'blocks_init' ], 10, 3 );
-		// add_action( 'acf/init', [ $this, 'register_blocks' ], 10, 3 );
-	}
-
-	/**
-	 * Description of expected behavior.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @return void
-	 */
-	public function blocks_init() {
-		// $this->settings = new Mai_Entry_Settings( 'block' );
-		// $this->fields   = $this->settings->fields;
-
-		$this->base_fields = mai_get_config( 'grid-base-settings' );
-		$this->post_fields = mai_get_config( 'grid-post-settings' );
-		$this->term_fields = mai_get_config( 'grid-term-settings' );
-
-		// $this->run_filters();
+		add_action( 'acf/init', [ $this, 'register_blocks' ], 10, 3 );
 	}
 
 	/**
@@ -126,10 +108,17 @@ final class Mai_Grid_Blocks {
 	 * @return void
 	 */
 	public function register_blocks() {
+
 		// Bail if no ACF Pro >= 5.8.
 		if ( ! function_exists( 'acf_register_block_type' ) ) {
 			return;
 		}
+
+		// $this->base_fields = mai_get_config( 'grid-base-settings' );
+		// $this->post_fields = mai_get_config( 'grid-post-settings' );
+		// $this->term_fields = mai_get_config( 'grid-term-settings' );
+		$this->fields = mai_get_config( 'grid-settings' );
+
 		// Mai Post Grid.
 		acf_register_block_type(
 			[
@@ -147,23 +136,27 @@ final class Mai_Grid_Blocks {
 				],
 			]
 		);
+
 		// Mai Term Grid.
-		acf_register_block_type(
-			[
-				'name'            => 'mai-term-grid',
-				'title'           => __( 'Mai Term Grid', 'mai-engine' ),
-				'description'     => __( 'Display posts/pages/cpts in various layouts.', 'mai-engine' ),
-				'icon'            => 'grid-view',
-				'category'        => 'widgets',
-				'keywords'        => [ 'grid', 'category', 'term' ],
-				'mode'            => 'preview',
-				'render_callback' => [ $this, 'do_term_grid' ],
-				'supports'        => [
-					'align'  => [ 'wide' ],
-					'ancher' => true,
-				],
-			]
-		);
+		// acf_register_block_type(
+		// 	[
+		// 		'name'            => 'mai-term-grid',
+		// 		'title'           => __( 'Mai Term Grid', 'mai-engine' ),
+		// 		'description'     => __( 'Display posts/pages/cpts in various layouts.', 'mai-engine' ),
+		// 		'icon'            => 'grid-view',
+		// 		'category'        => 'widgets',
+		// 		'keywords'        => [ 'grid', 'category', 'term' ],
+		// 		'mode'            => 'preview',
+		// 		'render_callback' => [ $this, 'do_term_grid' ],
+		// 		'supports'        => [
+		// 			'align'  => [ 'wide' ],
+		// 			'ancher' => true,
+		// 		],
+		// 	]
+		// );
+
+		// Run filters.
+		$this->run_filters();
 	}
 
 	/**
@@ -178,6 +171,9 @@ final class Mai_Grid_Blocks {
 	 * @return void
 	 */
 	public function do_post_grid( $block, $content = '', $is_preview = false ) {
+		echo 'TODO';
+		return;
+
 		// TODO: block id?
 		$this->do_grid( 'post', $block, $content = '', $is_preview = false );
 	}
@@ -231,35 +227,14 @@ final class Mai_Grid_Blocks {
 	 */
 	public function get_field_values( $type ) {
 		$values = [];
-		$method = $type . '_fields';
-		$fields = $this->base_fields + $this->$method;
-		foreach ( $fields as $name => $field ) {
-			// Skip tabs.
-			if ( 'tab' === $field['type'] ) {
+		foreach( $this->fields as $name => $field ) {
+			// Skip if not the block we want.
+			if ( ! in_array( $type, $field['block'] ) ) {
 				continue;
 			}
-			$values[ $name ] = $this->get_field( $name );
+			$value = get_field( $name );
+			return is_null( $value ) ? $this->fields[ $name ]['default'] : $value;
 		}
-
-		return $values;
-	}
-
-	/**
-	 * Description of expected behavior.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $name Field name.
-	 *
-	 * @return mixed
-	 *
-	 * @todo  Can we get defaults better from settings config?
-	 * @todo  What if we want null? Will we ever?
-	 */
-	public function get_field( $name ) {
-		$value = get_field( $name );
-
-		return is_null( $value ) ? $this->fields[ $name ]['default'] : $value;
 	}
 
 	/**
@@ -270,180 +245,17 @@ final class Mai_Grid_Blocks {
 	 * @return void
 	 */
 	public function run_filters() {
-
-		// Add field wrapper classes.
-		add_filter(
-			'acf/field_wrapper_attributes',
-			function ( $wrapper, $field ) {
-
-				// Conditional Show.
-				if ( in_array(
-					$field['key'],
-					[
-						$this->fields['image_orientation']['key'],
-						$this->fields['image_size']['key'],
-						$this->fields['image_position']['key'],
-						$this->fields['header_meta']['key'],
-						$this->fields['content_limit']['key'],
-						$this->fields['more_link_text']['key'],
-						$this->fields['footer_meta']['key'],
-					],
-					true
-				) ) {
-					$wrapper['class'] = isset( $wrapper['class'] ) && ! empty( $wrapper['class'] ) ? $wrapper['class'] . ' mai-engine-show-conditional' : 'mai-engine-show-conditional';
-				}
-
-				// Button Group.
-				if ( in_array(
-					$field['key'],
-					[
-						$this->fields['align_text']['key'],
-						$this->fields['align_text_vertical']['key'],
-						$this->fields['columns']['key'],
-						$this->fields['columns_md']['key'],
-						$this->fields['columns_sm']['key'],
-						$this->fields['columns_xs']['key'],
-						$this->fields['align_columns']['key'],
-						$this->fields['align_columns_vertical']['key'],
-					],
-					true
-				) ) {
-					$wrapper['class'] = isset( $wrapper['class'] ) && ! empty( $wrapper['class'] ) ? $wrapper['class'] . ' mai-engine-button-group' : 'mai-engine-button-group';
-				}
-
-				// Button Group.
-				if ( in_array(
-					$field['key'],
-					[
-						$this->fields['align_text']['key'],
-						$this->fields['align_text_vertical']['key'],
-						$this->fields['columns_md']['key'],
-						$this->fields['columns_sm']['key'],
-						$this->fields['columns_xs']['key'],
-						$this->fields['align_columns']['key'],
-						$this->fields['align_columns_vertical']['key'],
-					],
-					true
-				) ) {
-					$wrapper['class'] = isset( $wrapper['class'] ) && ! empty( $wrapper['class'] ) ? $wrapper['class'] . ' mai-engine-button-group-clear' : 'mai-engine-button-group-clear';
-				}
-
-				// Nested Columns.
-				if ( in_array(
-					$field['key'],
-					[
-						$this->fields['columns_md']['key'],
-						$this->fields['columns_sm']['key'],
-						$this->fields['columns_xs']['key'],
-					],
-					true
-				) ) {
-					$wrapper['class'] = isset( $wrapper['class'] ) && ! empty( $wrapper['class'] ) ? $wrapper['class'] . ' mai-engine-nested-columns' : 'mai-engine-nested-columns';
-				}
-
-				// Nested Columns First.
-				if ( in_array(
-					$field['key'],
-					[
-						$this->fields['columns_md']['key'],
-					],
-					true
-				) ) {
-					$wrapper['class'] = isset( $wrapper['class'] ) && ! empty( $wrapper['class'] ) ? $wrapper['class'] . ' mai-engine-nested-columns-first' : 'mai-engine-nested-columns-first';
-				}
-
-				// Nested Columns Last.
-				if ( in_array(
-					$field['key'],
-					[
-						$this->fields['columns_xs']['key'],
-					],
-					true
-				) ) {
-					$wrapper['class'] = isset( $wrapper['class'] ) && ! empty( $wrapper['class'] ) ? $wrapper['class'] . ' mai-engine-nested-columns-last' : 'mai-engine-nested-columns-last';
-				}
-
-				return $wrapper;
-			},
-			10,
-			2
-		);
-
-		// Add filters.
-		foreach ( $this->fields as $name => $values ) {
-			// Choices.
-			if ( method_exists( $this->settings, $name ) ) {
-				add_filter(
-					"acf/load_field/key={$values['key']}",
-					function ( $field ) use( $name) {
-						// Set choices from our config function.
-						$field['choices'] = $this->settings->get_choices( $field['name'] );
-						return $field;
-					}
-				);
-			}
-			// Sub fields.
-			if ( isset( $values['acf']['sub_fields'] ) ) {
-				foreach ( $values['acf']['sub_fields'] as $sub_name => $sub_values ) {
-					// Choices.
-					if ( method_exists( $this->settings, $sub_name ) ) {
-						add_filter(
-							"acf/load_field/key={$sub_values['key']}",
-							function ( $field ) {
-								// Set choices from our config function.
-								$field['choices'] = $this->settings->get_choices( $field['name'] );
-
-								return $field;
-							}
-						);
-					}
-				}
-			}
-		}
-
-		// Show.
-		add_filter( "acf/load_field/key={$this->fields['show']['key']}", [ $this, 'load_show' ] );
-
-		// Posts.
-		add_filter(
-			"acf/fields/post_object/query/key={$this->fields['post__in']['key']}",
-			[
-				$this,
-				'get_posts',
-			],
-			10,
-			1
-		);
-		// Terms.
-		add_filter(
-			"acf/fields/taxonomy/query/key={$this->fields['taxonomies']['acf']['sub_fields']['terms']['key']}",
-			[
-				$this,
-				'get_terms',
-			],
-			10,
-			1
-		);
-		// Parent.
-		add_filter(
-			"acf/fields/post_object/query/key={$this->fields['post_parent__in']['key']}",
-			[
-				$this,
-				'get_parents',
-			],
-			10,
-			1
-		);
-		// Exclude Entries.
-		add_filter(
-			"acf/fields/post_object/query/key={$this->fields['post__not_in']['key']}",
-			[
-				$this,
-				'get_posts',
-			],
-			10,
-			1
-		);
+		// Show 'show'
+		add_filter( 'acf/load_field/key=field_5e441d93d6236', [ $this, 'load_show' ] );
+		// Posts 'post__in'.
+		add_filter( 'acf/fields/post_object/query/key=field_5df1053632cbc', [ $this, 'get_posts' ], 10, 1 );
+		// Terms 'terms' sub field.
+		add_filter( 'acf/fields/taxonomy/query/key=field_5df139a216272', [ $this, 'get_terms' ], 10, 1 );
+		// Parent 'post_parent__in'.
+		add_filter( 'acf/fields/post_object/query/key=field_5df1053632ce4', [ $this, 'get_parents' ], 10, 1 );
+		// Exclude Entries 'post__not_in'.
+		add_filter( 'acf/fields/post_object/query/key=field_5e349237e1c01', [ $this, 'get_posts' ], 10, 1 );
+		// TODO: Exclude for term grid.
 	}
 
 	/**
@@ -456,19 +268,13 @@ final class Mai_Grid_Blocks {
 	 * @return mixed
 	 */
 	public function load_show( $field ) {
-
-		// Default choices, in default order.
-		$field['choices'] = $this->settings->get_choices( 'show' );
-
 		// Get existing values, which are sorted correctly, without infinite loop.
-		remove_filter( "acf/load_field/key={$this->fields['show']['key']}", [ $this, 'load_show' ] );
+		remove_filter( 'acf/load_field/key=field_5e441d93d6236', [ $this, 'load_show' ] );
 		$existing = get_field( 'show' );
 		$defaults = $field['choices'];
-		add_filter( "acf/load_field/key={$this->fields['show']['key']}", [ $this, 'load_show' ] );
-
+		add_filter( 'acf/load_field/key=field_5e441d93d6236', [ $this, 'load_show' ] );
 		// If we have existing values, reorder them.
 		$field['choices'] = $existing ? array_merge( array_flip( $existing ), $defaults ) : $field['choices'];
-
 		return $field;
 	}
 

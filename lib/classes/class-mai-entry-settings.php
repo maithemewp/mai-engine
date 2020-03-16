@@ -1398,7 +1398,6 @@ class Mai_Entry_Settings {
 				$choices[ $name ] = $post_type->label;
 			}
 		}
-
 		return $choices;
 	}
 

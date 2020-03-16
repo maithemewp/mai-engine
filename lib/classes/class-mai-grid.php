@@ -53,10 +53,10 @@ class Mai_Grid {
 	 * @return void
 	 */
 	public function __construct( $args ) {
-		$this->context  = 'block';
-		$this->settings = new Mai_Entry_Settings( $this->context ); // TODO: Use dependency injection.
-		$this->fields   = $this->settings->fields;
-		$this->defaults = $this->settings->defaults;
+		// $this->context  = 'block';
+		// $this->settings = new Mai_Entry_Settings( $this->context ); // TODO: Use dependency injection.
+		// $this->fields   = $this->settings->fields;
+		// $this->defaults = $this->settings->defaults;
 		$this->args     = $this->get_args( $args );
 	}
 

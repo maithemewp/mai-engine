@@ -61,7 +61,12 @@ function mai_enqueue_assets() {
 				$enqueue( $handle );
 
 				if ( ! empty( $localize ) ) {
-					wp_localize_script( $handle, $localize['name'], $localize['data'] );
+					if ( is_callable( $localize['data'] ) ) {
+						$localize_data = call_user_func( $localize['data'] );
+					} else {
+						$localize_data = $localize['data'];
+					}
+					wp_localize_script( $handle, $localize['name'], $localize_data );
 				}
 			}
 		}

@@ -39,23 +39,24 @@ function mai_register_grid_field_groups() {
 	// 		continue;
 	// 	}
 
-	// 	// Post grid.
-	// 	if ( in_array( 'mai_post_grid', $field['group'], true ) ) {
-	// 		$post_grid[] = $settings->get_data( $name, $field );
-	// 	}
-	// 	// Term grid.
-	// 	if ( in_array( 'mai_term_grid', $field['group'], true ) ) {
-	// 		$term_grid[] = $settings->get_data( $name, $field );
-	// 	}
-	// 	// Post grid.
-	// 	if ( in_array( 'mai_user_grid', $field['group'], true ) ) {
-	// 		$user_grid[] = $settings->get_data( $name, $field );
-	// 	}
-	// }
+	$fields = mai_get_config( 'grid-settings' );
 
-	$base_fields = mai_get_config( 'grid-base-settings' );
-	$post_fields = mai_get_config( 'grid-post-settings' );
-	$term_fields = mai_get_config( 'grid-term-settings' );
+	foreach( $fields as $key => $field ) {
+
+		// Post grid.
+		if ( in_array( 'post', $field['block'], true ) ) {
+			$post_grid[] = mai_get_acf_field_data( $key, $field );
+		}
+		// Term grid.
+		if ( in_array( 'term', $field['block'], true ) ) {
+			$term_grid[] = mai_get_acf_field_data( $key, $field );
+		}
+		// Post grid.
+		if ( in_array( 'user', $field['block'], true ) ) {
+			$user_grid[] = mai_get_acf_field_data( $key, $field );
+		}
+
+	}
 
 	acf_add_local_field_group(
 		[
@@ -92,4 +93,94 @@ function mai_register_grid_field_groups() {
 			'active'   => true,
 		]
 	);
+}
+
+
+// function mai_get_grid_show_choices() {
+
+// }
+
+
+
+
+
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @param string $key        Field key.
+ * @param array  $field      Field data.
+ * @param string $section_id Section ID.
+ *
+ * @return array
+ */
+function mai_get_acf_field_data( $key, $field ) {
+
+	// Setup data.
+	$data = [
+		'key'   => $key,
+		'name'  => $field['name'],
+		'label' => $field['label'],
+		'type'  => $field['type'],
+	];
+
+	// Maybe add description.
+	if ( isset( $field['desc'] ) ) {
+		$data['instructions'] = $field['desc'];
+	}
+
+	// Additional attributes.
+	if ( isset( $field['atts'] ) ) {
+		foreach ( $field['atts'] as $key => $value ) {
+			// Sub fields.
+			if ( 'sub_fields' === $key ) {
+				$data['sub_fields'] = [];
+				foreach ( $value as $sub_key => $sub_field ) {
+					$data['sub_fields'][] = mai_get_acf_field_data( $sub_key, $sub_field );
+				}
+			} else {
+				// Standard field data.
+				$data[ $key ] = $value;
+			}
+		}
+	}
+
+	// Maybe add conditional logic.
+	if ( isset( $field['conditions'] ) ) {
+		$data['conditional_logic'] = $field['conditions'];
+	}
+
+	// Maybe add default.
+	if ( isset( $field['default'] ) ) {
+		/**
+		 * This needs default_value instead of default.
+		 *
+		 * @link  https://www.advancedcustomfields.com/resources/register-fields-via-php/
+		 */
+		$data['default_value'] = $field['default'];
+	}
+
+	// Maybe add choices.
+	// TODO: If sites with a lot of posts cause slow loading,
+	// (if ACF ajax isn't working with this code),
+	// we can move to load_field filters.
+	if ( isset( $field['choices'] ) ) {
+		if ( is_array( $field['choices'] ) ) {
+			$data['choices'] = $field['choices'];
+		}
+		elseif ( is_callable( $field['choices'] ) ) {
+			$data['choices'] = call_user_func( $field['choices'] );
+		}
+	}
+
+	return $data;
+}
+
+function mai_get_grid_localized_data() {
+	$fields = mai_get_config( 'grid-settings' );
+	$fields = wp_list_pluck( $fields, 'name' );
+	$fields = array_flip( $fields );
+	return [ 'keys' => $fields ];
 }
