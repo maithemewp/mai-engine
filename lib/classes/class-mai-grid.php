@@ -92,7 +92,6 @@ class Mai_Grid {
 					$sub_values = [];
 					foreach ( $value as $index => $group ) {
 						foreach ( $group as $sub_name => $sub_value ) {
-							vd( $sub_name );
 							$field                             = $this->settings[ $name ]['atts']['sub_fields'][ $sub_name ];
 							$sub_values[ $index ][ $sub_name ] = $this->sanitize( $sub_value, $field['sanitize'] );
 						}
