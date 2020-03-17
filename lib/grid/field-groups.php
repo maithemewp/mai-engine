@@ -165,7 +165,8 @@ function mai_get_acf_field_data( $key, $field ) {
 	// Maybe add choices.
 	// TODO: If sites with a lot of posts cause slow loading,
 	// (if ACF ajax isn't working with this code),
-	// we can move to load_field filters.
+	// we may need to move to load_field filters,
+	// though this should work as-is.
 	if ( isset( $field['choices'] ) ) {
 		if ( is_array( $field['choices'] ) ) {
 			$data['choices'] = $field['choices'];
