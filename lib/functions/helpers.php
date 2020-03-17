@@ -232,24 +232,3 @@ function mai_sanitize_bool( $value ) {
 	// Everything else will map nicely to boolean.
 	return (bool) $value;
 }
-
-/**
- * Description of expected behavior.
- *
- * @since 0.1.0
- *
- * @param string $size  Image size.
- * @param string $ratio Aspect ratio.
- *
- * @return array
- */
-function mai_get_image_sizes_from_aspect_ratio( $size = 'md', $ratio = '16:9' ) {
-	$ratio       = explode( ':', $ratio );
-	$x           = $ratio[0];
-	$y           = $ratio[1];
-	$breakpoints = mai_get_breakpoints();
-	$width       = isset( $breakpoints[ $size ] ) ? (int) mai_get_breakpoint( $size ) : (int) $size;
-	$height      = $width / $x * $y;
-
-	return [ $width, $height, true ];
-}

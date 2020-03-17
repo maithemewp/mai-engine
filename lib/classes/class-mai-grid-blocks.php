@@ -242,6 +242,9 @@ final class Mai_Grid_Blocks {
 	 * @return void
 	 */
 	public function run_filters() {
+		/*****************
+		 * Mai Post Grid *
+		 *****************/
 		// Show 'show'.
 		add_filter( 'acf/load_field/key=field_5e441d93d6236', [ $this, 'load_show' ] );
 		// Posts 'post__in'.
@@ -252,7 +255,17 @@ final class Mai_Grid_Blocks {
 		add_filter( 'acf/fields/post_object/query/key=field_5df1053632ce4', [ $this, 'get_parents' ], 10, 1 );
 		// Exclude Entries 'post__not_in'.
 		add_filter( 'acf/fields/post_object/query/key=field_5e349237e1c01', [ $this, 'get_posts' ], 10, 1 );
-		// TODO: Exclude for term grid.
+		/*****************
+		 * Mai Term Grid *
+		 *****************/
+		// Include Entries 'include'.
+		add_filter( 'acf/fields/taxonomy/query/key=field_5df10647743cb', [ $this, 'get_terms' ], 10, 1 );
+		// Exclude Entries 'exclude'.
+		add_filter( 'acf/fields/taxonomy/query/key=field_5e459348f2d12', [ $this, 'get_terms' ], 10, 1 );
+		/*****************
+		 * Mai User Grid *
+		 *****************/
+		// TODO: Will we need/have these? Maybe rely on select field.
 	}
 
 	/**
@@ -309,7 +322,11 @@ final class Mai_Grid_Blocks {
 	public function get_terms( $args ) {
 
 		if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['taxonomy'] ) && ! empty( $_REQUEST['taxonomy'] ) ) {
-			$args['taxonomy'] = sanitize_text_field( wp_unslash( $_REQUEST['taxonomy'] ) );
+			$taxonomies = [];
+			foreach ( $_REQUEST['taxonomy'] as $taxonomy ) {
+				$taxonomies[] = sanitize_text_field( wp_unslash( $taxonomy ) );
+			}
+			$args['taxonomy'] = implode( ',', $taxonomies );
 		}
 
 		return $args;
@@ -332,6 +349,8 @@ final class Mai_Grid_Blocks {
 				$args['post_type'][] = sanitize_text_field( wp_unslash( $post_type ) );
 			}
 		}
+
+		// TODO: Check if has children? If not, just use get_posts() method here.
 
 		return $args;
 	}

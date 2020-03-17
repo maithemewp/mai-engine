@@ -76,18 +76,7 @@ return [
 		'type'       => 'select',
 		'sanitize'   => 'esc_html',
 		'default'    => 'landscape-md',
-		'choices'    => function() {
-			$choices = [];
-			if ( ! is_admin() ) {
-				return $choices;
-			}
-			$sizes   = mai_get_available_image_sizes();
-			foreach ( $sizes as $index => $value ) {
-				$choices[ $index ] = sprintf( '%s (%s x %s)', $index, $value['width'], $value['height'] );
-			}
-
-			return $choices;
-		},
+		'choices'    => 'mai_get_image_size_choices',
 		'conditions' => [
 			[
 				'field'    => 'field_5e441d93d6236', // Show.
@@ -538,28 +527,7 @@ return [
 		'type'     => 'select',
 		'sanitize' => 'esc_html',
 		'default'  => [ 'post' ],
-		'choices'  => function() {
-			$choices = [];
-			if ( ! is_admin() ) {
-				return $choices;
-			}
-			$post_types = get_post_types(
-				[
-					'public'             => true,
-					'publicly_queryable' => true,
-				],
-				'objects',
-				'or'
-			);
-			unset( $post_types['attachment'] );
-			if ( $post_types ) {
-				foreach ( $post_types as $name => $post_type ) {
-					$choices[ $name ] = $post_type->label;
-				}
-			}
-
-			return $choices;
-		},
+		'choices'  => 'mai_get_post_type_choices',
 		'atts'     => [
 			'multiple' => 1,
 			'ui'       => 1,
@@ -617,7 +585,8 @@ return [
 		'block'      => [ 'post' ],
 		'type'       => 'post_object',
 		'sanitize'   => 'absint',
-		'default'    => '', // Can't be empty array.
+		'default'    => '',
+		// 'choices'    => 'mai_get_acf_post_choices',
 		'conditions' => [
 			[
 				'field'    => 'field_5df1053632ca2', // Post_type.
@@ -671,7 +640,7 @@ return [
 						if ( ! ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) ) {
 							return $choices;
 						}
-						foreach ( $_REQUEST['post_type'] as $post_type ) {
+						foreach( (array) $_REQUEST['post_type'] as $post_type ) {
 							$taxonomies = get_object_taxonomies( sanitize_text_field( wp_unslash( $post_type ) ), 'objects' );
 							if ( $taxonomies ) {
 								foreach ( $taxonomies as $name => $taxo ) {
@@ -702,7 +671,6 @@ return [
 					],
 					'atts'     => [
 						'field_type' => 'multi_select',
-						'taxonomy'   => 'category',
 						'add_term'   => 0,
 						'save_terms' => 0,
 						'load_terms' => 0,
@@ -870,26 +838,7 @@ return [
 		'type'       => 'post_object',
 		'sanitize'   => 'absint',
 		'default'    => '',
-		'choices'    => function() {
-			$choices = [];
-			if ( ! is_admin() ) {
-				return $choices;
-			}
-			if ( ! ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) ) {
-				return $choices;
-			}
-			$posts = acf_get_grouped_posts(
-				[
-					'post_type'   => sanitize_text_field( wp_unslash( $_REQUEST['post_type'] ) ),
-					'post_status' => 'publish',
-				]
-			);
-			if ( $posts ) {
-				$choices = $posts;
-			}
-
-			return $choices;
-		},
+		// 'choices'    => 'mai_get_acf_post_choices',
 		'conditions' => [
 			[
 				'field'    => 'field_5df1053632ca2', // Post_type.
@@ -902,9 +851,9 @@ return [
 			],
 		],
 		'atts'       => [
-			'multiple' => 1,
-			'ui'       => 1,
-			'ajax'     => 1,
+			'multiple'      => 1,
+			'return_format' => 'id',
+			'ui'            => 1,
 		],
 	],
 	'field_5df1bf01ea1de' => [
@@ -1129,29 +1078,11 @@ return [
 		'label'      => esc_html__( 'Entries', 'mai-engine' ),
 		'desc'       => esc_html__( 'Show specific entries. Choose all that apply. If empty, Grid will get entries by date.', 'mai-engine' ),
 		'block'      => [ 'term' ],
-		'type'       => 'select',
+		'type'       => 'taxonomy',
 		'sanitize'   => 'absint',
 		'default'    => '',
-		'choices'    => function() {
-			$choices = [];
-			if ( ! is_admin() ) {
-				return $choices;
-			}
-			if ( ! ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['taxonomy'] ) && ! empty( $_REQUEST['taxonomy'] ) ) ) {
-				return $choices;
-			}
-			$terms = get_terms( array(
-				'taxonomy'   => esc_html( $_REQUEST['taxonomy'] ),
-				'hide_empty' => false,
-			) );
-			if ( $terms ) {
-				foreach ( $terms as $name => $term ) {
-					$choices[ $term->term_id ] = $taxonomy->label;
-				}
-			}
-
-			return $choices;
-		},
+		// 'choices'    => '',
+		// 'choices'    => 'mai_get_acf_taxonomy_choices',
 		'conditions' => [
 			[
 				'field'    => 'field_5df2063632ca2', // Taxonomy.
@@ -1164,24 +1095,22 @@ return [
 			],
 		],
 		'atts'       => [
-			'multiple' => 1,
-			'ui'       => 1,
-			'ajax'     => 1,
+			'field_type' => 'multi_select',
+			'add_term'   => 0,
+			'save_terms' => 0,
+			'load_terms' => 0,
+			'multiple'   => 1,
 		],
 	],
 	'field_5df1054743df5' => [
 		'name'       => 'parent',
 		'label'      => esc_html__( 'Parent', 'mai-engine' ),
 		'block'      => [ 'term' ],
-		'type'       => 'post_object',
+		'type'       => 'taxonomy',
 		'sanitize'   => 'absint',
 		'default'    => '',
-		'choices'    => function() {
-			$choices = [];
-			if ( ! is_admin() ) {
-				return $choices;
-			}
-		},
+		// 'choices'    => [],
+		// 'choices'    => 'mai_get_acf_taxonomy_choices',
 		'conditions' => [
 			[
 				'field'    => 'field_5df2063632ca2', // Taxonomy.
@@ -1194,9 +1123,11 @@ return [
 			],
 		],
 		'atts'       => [
-			'multiple' => 1,
-			'ui'       => 1,
-			'ajax'     => 1,
+			'field_type' => 'multi_select',
+			'add_term'   => 0,
+			'save_terms' => 0,
+			'load_terms' => 0,
+			'multiple'   => 1,
 		],
 	],
 	'field_5df2cg12fb2ef' => [
@@ -1230,21 +1161,21 @@ return [
 		'block'      => [ 'term' ],
 		'type'       => 'taxonomy',
 		'sanitize'   => 'absint',
-		'default'    => [],
+		'default'    => '',
+		// 'choices'    => 'mai_get_acf_taxonomy_choices',
 		'conditions' => [
 			[
-				'field'    => 'field_5df1053632ca2', // Post_type.
+				'field'    => 'field_5df2063632ca2', // Taxonomy.
 				'operator' => '!=empty',
 			],
 			[
-				'field'    => 'field_5df1053632cad', // Query_by.
+				'field'    => 'field_5df1054642cad', // Query_by.
 				'operator' => '!=',
 				'value'    => 'title',
 			],
 		],
 		'atts'       => [
 			'field_type' => 'multi_select',
-			'taxonomy'   => 'category',
 			'add_term'   => 0,
 			'save_terms' => 0,
 			'load_terms' => 0,

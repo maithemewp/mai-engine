@@ -694,4 +694,105 @@ function mai_get_singular_args_name() {
 	return $name;
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @param string $size  Image size.
+ * @param string $ratio Aspect ratio.
+ *
+ * @return array
+ */
+function mai_get_image_sizes_from_aspect_ratio( $size = 'md', $ratio = '16:9' ) {
+	$ratio       = explode( ':', $ratio );
+	$x           = $ratio[0];
+	$y           = $ratio[1];
+	$breakpoints = mai_get_breakpoints();
+	$width       = isset( $breakpoints[ $size ] ) ? (int) mai_get_breakpoint( $size ) : (int) $size;
+	$height      = $width / $x * $y;
 
+	return [ $width, $height, true ];
+}
+
+
+function mai_get_image_size_choices() {
+	$choices = [];
+	if ( ! ( is_admin() || is_customize_preview() ) ) {
+		return $choices;
+	}
+	$sizes   = mai_get_available_image_sizes();
+	foreach ( $sizes as $index => $value ) {
+		$choices[ $index ] = sprintf( '%s (%s x %s)', $index, $value['width'], $value['height'] );
+	}
+
+	return $choices;
+}
+
+function mai_get_post_type_choices() {
+	$choices = [];
+	if ( ! ( is_admin() || is_customize_preview() ) ) {
+		return $choices;
+	}
+	$post_types = get_post_types(
+		[
+			'public'             => true,
+			'publicly_queryable' => true,
+		],
+		'objects',
+		'or'
+	);
+	unset( $post_types['attachment'] );
+	if ( $post_types ) {
+		foreach ( $post_types as $name => $post_type ) {
+			$choices[ $name ] = $post_type->label;
+		}
+	}
+
+	return $choices;
+}
+
+function mai_get_acf_post_choices() {
+	$choices = [];
+	if ( ! ( is_admin() || is_customize_preview() ) ) {
+		return $choices;
+	}
+	if ( ! ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) ) {
+		return $choices;
+	}
+	$posts = acf_get_grouped_posts(
+		[
+			'post_type'   => sanitize_text_field( wp_unslash( $_REQUEST['post_type'] ) ),
+			'post_status' => 'publish',
+		]
+	);
+	if ( $posts ) {
+		$choices = $posts;
+	}
+
+	return $choices;
+
+}
+
+function mai_get_acf_taxonomy_choices() {
+	$choices = [];
+	if ( ! ( is_admin() || is_customize_preview() ) ) {
+		return $choices;
+	}
+	if ( ! ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['taxonomy'] ) && ! empty( $_REQUEST['taxonomy'] ) ) ) {
+		return $choices;
+	}
+	foreach( (array) $_REQUEST['taxonomy'] as $taxonomy ) {
+		$terms = get_terms( [
+			'taxonomy'   => esc_html( $taxonomy ),
+			'hide_empty' => false,
+		] );
+		if ( $terms ) {
+			foreach ( $terms as $name => $term ) {
+				$choices[ $term->term_id ] = $term->name;
+			}
+		}
+	}
+
+	return $choices;
+}
