@@ -16,4 +16,10 @@ return [
 	'google-fonts' => [
 		'',
 	],
+	'theme-support' => [
+		'add' => [
+			'sticky-header',
+			'transparent-header',
+		],
+	],
 ];

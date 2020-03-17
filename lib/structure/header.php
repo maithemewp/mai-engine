@@ -9,27 +9,6 @@
  * @license   GPL-2.0-or-later
  */
 
-add_action( 'mai_setup', 'mai_site_header_options' );
-/**
- * Description of expected behavior.
- *
- * @todo  Not sure if these will stay theme_mods, probably our settings/options instead.
- * @todo  Add has-shrink-header. This will be for sticky and conceal (when we add conceal later).
- *
- * @since 0.1.0
- *
- * @return void
- */
-function mai_site_header_options() {
-	if ( get_theme_mod( 'transparent_header', 0 ) ) {
-		add_theme_support( 'transparent-header' );
-	}
-
-	if ( get_theme_mod( 'sticky_header', 0 ) ) {
-		add_theme_support( 'sticky-header' );
-	}
-}
-
 add_filter( 'genesis_markup_title-area_open', 'mai_before_title_area_hook', 10, 1 );
 /**
  * Add custom hook after the title area.
@@ -82,9 +61,9 @@ add_filter( 'genesis_attr_site-header', 'mai_site_header_properties' );
  * @return array  The modified attributes.
  */
 function mai_site_header_properties( $attributes ) {
-	$values               = get_option( 'mai_header' );
-	$values               = $values ?: mai_header_settings_defaults_temp_function();
-	$attributes['style']  = isset( $attributes['style'] ) ? $attributes['style'] . ' ' : '';
+	$values              = get_option( 'mai_header' );
+	$values              = $values ?: mai_header_settings_defaults_temp_function();
+	$attributes['style'] = isset( $attributes['style'] ) ? $attributes['style'] . ' ' : '';
 	$attributes['style'] .= sprintf( '--logo-width-large:%s;', mai_get_unit_value( $values['logo_width_large'] ) );
 	$attributes['style'] .= sprintf( '--logo-top-large:%s;', mai_get_unit_value( $values['logo_spacing_large']['top'] ) );
 	$attributes['style'] .= sprintf( '--logo-bottom-large:%s;', mai_get_unit_value( $values['logo_spacing_large']['bottom'] ) );
@@ -159,4 +138,18 @@ function mai_header_section_class( $atts ) {
 	$atts['class'] = 'header-section ' . $atts['class'];
 
 	return $atts;
+}
+
+add_filter( 'genesis_structural_wrap-header', 'mai_site_header_wrap' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param $output
+ *
+ * @return mixed
+ */
+function mai_site_header_wrap( $output ) {
+	return str_replace( 'wrap', 'site-header-wrap wrap', $output );
 }
