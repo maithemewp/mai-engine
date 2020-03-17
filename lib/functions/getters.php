@@ -159,6 +159,13 @@ function mai_get_asset_version( $file ) {
  * @return array
  */
 function mai_get_config( $sub_config = 'default' ) {
+
+	// Setup caching.
+	static $configs = null;
+	if ( isset( $configs[ $sub_config ] ) ) {
+		return $configs[ $sub_config ];
+	}
+
 	$config = require mai_get_dir() . 'config/_default/config.php';
 	$theme  = mai_get_dir() . 'config/' . mai_get_active_theme() . '/config.php';
 
@@ -166,16 +173,16 @@ function mai_get_config( $sub_config = 'default' ) {
 		$config = array_replace_recursive( $config, require $theme );
 	}
 
-	$data = isset( $config[ $sub_config ] ) ? $config[ $sub_config ] : [];
+	$configs[ $sub_config ] = isset( $config[ $sub_config ] ) ? $config[ $sub_config ] : [];
 
 	// Allow users to override from within actual child theme.
 	$child = get_stylesheet_directory() . '/config.php';
 
 	if ( is_readable( $child ) ) {
-		$data = require $child;
+		$configs[ $sub_config ] = require $child;
 	}
 
-	return apply_filters( "mai_{$sub_config}_config", $data );
+	return apply_filters( "mai_{$sub_config}_config", $configs[ $sub_config ] );
 }
 
 /**
