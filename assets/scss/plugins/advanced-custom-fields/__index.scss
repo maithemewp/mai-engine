@@ -96,6 +96,23 @@
 	font-weight: 400;
 }
 
+// boxed.
+.acf-block-component .acf-block-fields div.acf-field.acf-field-5e2a08a182c2c {
+	margin-top: 14px;
+}
+
+// TODO: fix when editing fields right in block, not sidebar.
+.acf-block-component .acf-block-fields div.acf-field.acf-field-5e2a08a182c2c::before {
+	position: absolute;
+	top: -14px;
+	left: 23px;
+	width: 100%;
+	height: 14px;
+	border-bottom: 1px solid #ccd0d4;
+	border-left: 1px solid #ccd0d4;
+	content: "";
+}
+
 /* ACF responsive columns container */
 
 .acf-block-component .acf-block-fields div.acf-field.acf-field-5c854069d358c {
