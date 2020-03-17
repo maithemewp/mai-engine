@@ -176,12 +176,14 @@ return [
 			'menuIconClass'    => null,
 			'subMenuIconClass' => null,
 			'menuClasses'      => [
-				'combine' => [],
-				'others'  => [
+				'combine' => [
 					'.nav-header-left',
 					'.nav-header-right',
 					'.nav-after-header',
 					'.mobile-menu .menu-header-menu-container',
+				],
+				'others'  => [
+
 				],
 			],
 			'menuAnimation'    => [
@@ -199,7 +201,7 @@ return [
 			'media_query_width' => mai_get_breakpoint( 'md' ),
 			'css'               => '',
 			'enable_AMP'        => true,
-			'enable_non_AMP'    => true,
+//			'enable_non_AMP'    => true,
 		],
 	],
 

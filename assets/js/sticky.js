@@ -44,8 +44,6 @@ var siteInnerMargin = function() {
 	siteInner.style.marginTop     = '-' + headerHeight + 'px';
 	firstElement.style.paddingTop = parseInt( headerHeight ) + parseInt( paddingBottom ) + 'px';
 
-	console.log( paddingBottom );
-
 	setTimeout( function() {
 		timeout = false;
 	}, 100 );

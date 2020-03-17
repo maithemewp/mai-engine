@@ -1,0 +1,6 @@
+.genesis-responsive-menu {
+
+	@include mq(false, lg) {
+		display: none;
+	}
+}
