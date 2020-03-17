@@ -148,7 +148,7 @@ function mai_is_page_header_active() {
 /**
  * Quick and dirty way to mostly minify CSS.
  *
- * @since  1.0.0
+ * @since 0.1.0
  *
  * @author Gary Jones
  *
@@ -169,6 +169,30 @@ function mai_minify_css( $css ) {
 	$css = preg_replace( '/#([a-f0-9])\\1([a-f0-9])\\2([a-f0-9])\\3/i', '#\1\2\3', $css );
 
 	return trim( $css );
+}
+
+/**
+ * Sanitize a value to boolean.
+ * Taken from rest_sanitize_boolean()
+ * but seemed risky to use that directly.
+ *
+ * @since   0.1.0
+ *
+ * @param   mixed  $value
+ *
+ * @return  bool
+ */
+function mai_sanitize_bool( $value ) {
+	// String values are translated to `true`; make sure 'false' is false.
+	if ( is_string( $value ) ) {
+		$value = strtolower( $value );
+		if ( in_array( $value, array( 'false', '0' ), true ) ) {
+			$value = false;
+		}
+	}
+
+	// Everything else will map nicely to boolean.
+	return (bool) $value;
 }
 
 /**

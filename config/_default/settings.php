@@ -335,8 +335,8 @@ return [
 		'label'    => '',
 		'block'    => [ 'post', 'term', 'user' ],
 		'type'     => 'true_false',
-		'sanitize' => 'esc_html',
-		'default'  => '',
+		'sanitize' => 'mai_sanitize_bool',
+		'default'  => 0,
 		'atts'     => [
 			'message' => esc_html__( 'Custom responsive columns', 'mai-engine' ),
 		],
