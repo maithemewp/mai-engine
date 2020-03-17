@@ -123,7 +123,7 @@ class Mai_Grid {
 					foreach ( $value as $index => $group ) {
 						foreach ( $group as $sub_name => $sub_value ) {
 							$field                             = $this->settings[ $name ]['atts']['sub_fields'][ $sub_name ];
-							$sub_values[ $index ][ $sub_name ] = $this->sanitize( $sub_value, $field['sanitize'] );
+							$sub_values[ $index ][ $sub_name ] = mai_sanitize( $sub_value, $field['sanitize'] );
 						}
 					}
 					$args[ $name ] = $sub_values;
@@ -131,7 +131,7 @@ class Mai_Grid {
 			} else {
 				// Standard field. Check
 				$sanitize      = isset( $this->settings[ $name ] ) ? $this->settings[ $name ]['sanitize'] : 'esc_html';
-				$args[ $name ] = $this->sanitize( $value, $sanitize );
+				$args[ $name ] = mai_sanitize( $value, $sanitize );
 			}
 		}
 
@@ -179,21 +179,21 @@ class Mai_Grid {
 			case 'post':
 				$posts = new WP_Query( $this->get_post_query_args() );
 				if ( $posts->have_posts() ) {
-					while ( $posts->have_posts() ) :
-						$posts->the_post();
-
+					while ( $posts->have_posts() ) : $posts->the_post();
 						global $post;
 						mai_do_entry( $post, $this->args );
-
 					endwhile;
 				}
 
 				wp_reset_postdata();
 				break;
 			case 'term':
+				echo 'COMING SOON.';
 				$term_query = new WP_Term_Query( $this->get_term_query_args() );
-				foreach ( $term_query->terms as $term ) {
-					mai_do_entry( $term, $this->args );
+				if ( ! empty( $term_query->terms ) ) {
+					foreach ( $term_query->terms as $term ) {
+						mai_do_entry( $term, $this->args );
+					}
 				}
 				break;
 			case 'user':
@@ -304,41 +304,4 @@ class Mai_Grid {
 		return apply_filters( 'mai_term_grid_query_args', $query_args );
 	}
 
-	/**
-	 * Sanitize a value. Checks for null/array.
-	 *
-	 * @param   string $value      The value to sanitize.
-	 * @param   string $function   The function to use for escaping.
-	 * @param   bool   $allow_null Wether to return or escape if the value is.
-	 *
-	 * @return  mixed
-	 */
-	public function sanitize( $value, $function = 'esc_html', $allow_null = false ) {
-
-		// Return null if allowing null.
-		if ( is_null( $value ) && $allow_null ) {
-			return $value;
-		}
-
-		// If array, escape and return it.
-		if ( is_array( $value ) ) {
-			$escaped = [];
-			foreach ( $value as $index => $item ) {
-				if ( is_array( $item ) ) {
-					$escaped[ $index ] = $this->sanitize( $item, $function );
-				} else {
-					$item              = trim( $item );
-					$escaped[ $index ] = $function( $item );
-				}
-			}
-
-			return $escaped;
-		}
-
-		// Return single value.
-		$value   = trim( $value );
-		$escaped = $function( $value );
-
-		return $escaped;
-	}
 }
