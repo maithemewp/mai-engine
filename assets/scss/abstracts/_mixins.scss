@@ -6,6 +6,15 @@
 	}
 }
 
+@mixin mq-minmax($min_size, $max_size) {
+	$min_size: map_get($breakpoints, $min_size);
+	$max_size: map_get($breakpoints, $max_size) - 1px;
+
+	@media (#{min-width}: $min_size) and (#{max-width}: $max_size) {
+		@content;
+	}
+}
+
 @mixin hover-focus {
 
 	&:hover,
@@ -14,5 +23,3 @@
 		@content;
 	}
 }
-
-
