@@ -58,13 +58,6 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'template-' . $basename;
 	}
 
-	// Add sidebar class.
-	if ( in_array( genesis_site_layout(), [ 'wide-content', 'standard-content', 'narrow-content' ], true ) ) {
-		$classes[] = 'no-sidebar';
-	} else {
-		$classes[] = 'has-sidebar';
-	}
-
 	// Add transparent header class.
 	if ( current_theme_supports( 'transparent-header' ) && ( mai_is_page_header_active() || is_front_page() && is_active_sidebar( 'front-page-1' ) ) ) {
 		$classes[] = 'has-transparent-header';
