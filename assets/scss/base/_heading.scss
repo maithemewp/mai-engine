@@ -1,4 +1,3 @@
-
 #{$all-headings} {
 
 	@include heading;
@@ -6,7 +5,7 @@
 
 @each $heading, $font-size in $font-sizes {
 
-	#{$heading}:not(.entry-title) {
+	#{$heading} {
 		font-size: var(--#{$heading}-font-size, $font-size);
 	}
 }

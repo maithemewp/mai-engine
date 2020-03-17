@@ -1,5 +1,5 @@
 .entry-title {
-	--entry-title-font-size: var(--text-xxxxl);
+	font-size: var(--entry-title-font-size, var(--text-xxxxl));
 }
 
 .entries {
