@@ -52,7 +52,7 @@ add_filter( 'genesis_attr_content-sidebar-wrap', 'mai_content_sidebar_wrap', 10,
  * @return mixed
  */
 function mai_content_sidebar_wrap( $atts ) {
-	$atts['class'] = 'wrap';
+	$atts['class'] .= ' wrap';
 
 	return $atts;
 }

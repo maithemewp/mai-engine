@@ -1,5 +1,5 @@
 .widget {
-	margin: var(--widget-margin, 0 0 var(--gutter));
+	margin: var(--widget-margin, 0 0 var(--row-gap));
 
 	--paragraph-last-margin: 0;
 }

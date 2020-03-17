@@ -18,7 +18,7 @@ add_action( 'genesis_before', 'mai_no_sidebar' );
  * @return void
  */
 function mai_no_sidebar() {
-	if ( ! in_array( genesis_site_layout(), [ 'narrow-content', 'standard-content', 'wide-content' ], true ) ) {
+	if ( mai_has_string('sidebar', genesis_site_layout())) {
 		return;
 	}
 
