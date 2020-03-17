@@ -16,11 +16,11 @@
 class Mai_Grid {
 
 	/**
-	 * Context.
+	 * Type.
 	 *
-	 * @var $context
+	 * @var $type
 	 */
-	protected $context;
+	protected $type;
 
 	/**
 	 * Settings.
@@ -30,11 +30,11 @@ class Mai_Grid {
 	protected $settings;
 
 	/**
-	 * Fields.
+	 * Defaults.
 	 *
-	 * @var $fields
+	 * @var $defaults
 	 */
-	protected $fields;
+	protected $defaults;
 
 	/**
 	 * Args.
@@ -53,11 +53,21 @@ class Mai_Grid {
 	 * @return void
 	 */
 	public function __construct( $args ) {
-		// $this->context  = 'block';
-		// $this->settings = new Mai_Entry_Settings( $this->context ); // TODO: Use dependency injection.
-		// $this->fields   = $this->settings->fields;
-		// $this->defaults = $this->settings->defaults;
-		$this->args     = $this->get_args( $args );
+		$args['context'] = 'block'; // Required for Mai_Entry.
+		$this->type      = isset( $args['type'] ) ?: 'post';
+		$this->settings  = mai_get_config( 'grid-settings' );
+		$this->defaults  = $this->get_defaults( $this->type );
+		$this->args      = $this->get_sanitized_args( $args );
+	}
+
+	public function get_defaults() {
+		foreach( $this->settings as $key => $field ) {
+			// Remove tabs or fields not in this grid type.
+			if ( ( 'tab' === $field['type'] ) || ! in_array( $this->type, $field['block'] ) ) {
+				unset( $this->settings[ $key ] );
+			}
+		}
+		return wp_list_pluck( $this->settings, 'default', 'name' );
 	}
 
 	/**
@@ -69,7 +79,7 @@ class Mai_Grid {
 	 *
 	 * @return array
 	 */
-	public function get_args( $args ) {
+	public function get_sanitized_args( $args ) {
 
 		// Parse args.
 		$args = wp_parse_args( $args, $this->defaults );
@@ -77,21 +87,21 @@ class Mai_Grid {
 		// Sanitize.
 		foreach ( $args as $name => $value ) {
 			// Has sub fields.
-			if ( isset( $this->fields[ $name ]['acf']['sub_fields'] ) ) {
+			if ( isset( $this->settings[ $name ]['atts']['sub_fields'] ) ) {
 				if ( $value ) {
 					$sub_values = [];
 					foreach ( $value as $index => $group ) {
 						foreach ( $group as $sub_name => $sub_value ) {
-							$field                             = $this->fields[ $name ]['acf']['sub_fields'][ $sub_name ];
+							vd( $sub_name );
+							$field                             = $this->settings[ $name ]['atts']['sub_fields'][ $sub_name ];
 							$sub_values[ $index ][ $sub_name ] = $this->sanitize( $sub_value, $field['sanitize'] );
 						}
 					}
 					$args[ $name ] = $sub_values;
 				}
 			} else {
-				// Standard field.
-				// Get the sanitization function, as type/context aren't actual fields.
-				$sanitize      = isset( $this->fields[ $name ] ) ? $this->fields[ $name ]['sanitize'] : 'esc_html';
+				// Standard field. Check
+				$sanitize      = isset( $this->settings[ $name ] ) ? $this->settings[ $name ]['sanitize'] : 'esc_html';
 				$args[ $name ] = $this->sanitize( $value, $sanitize );
 			}
 		}

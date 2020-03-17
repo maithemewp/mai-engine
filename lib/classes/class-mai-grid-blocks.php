@@ -25,11 +25,6 @@ final class Mai_Grid_Blocks {
 	 */
 	private static $instance;
 
-	// private $base_fields;
-	// private $post_fields;
-	// private $term_fields;
-	// private $fields;
-
 	/**
 	 * Fields.
 	 *
@@ -114,9 +109,6 @@ final class Mai_Grid_Blocks {
 			return;
 		}
 
-		// $this->base_fields = mai_get_config( 'grid-base-settings' );
-		// $this->post_fields = mai_get_config( 'grid-post-settings' );
-		// $this->term_fields = mai_get_config( 'grid-term-settings' );
 		$this->fields = mai_get_config( 'grid-settings' );
 
 		// Mai Post Grid.
@@ -138,22 +130,22 @@ final class Mai_Grid_Blocks {
 		);
 
 		// Mai Term Grid.
-		// acf_register_block_type(
-		// 	[
-		// 		'name'            => 'mai-term-grid',
-		// 		'title'           => __( 'Mai Term Grid', 'mai-engine' ),
-		// 		'description'     => __( 'Display posts/pages/cpts in various layouts.', 'mai-engine' ),
-		// 		'icon'            => 'grid-view',
-		// 		'category'        => 'widgets',
-		// 		'keywords'        => [ 'grid', 'category', 'term' ],
-		// 		'mode'            => 'preview',
-		// 		'render_callback' => [ $this, 'do_term_grid' ],
-		// 		'supports'        => [
-		// 			'align'  => [ 'wide' ],
-		// 			'ancher' => true,
-		// 		],
-		// 	]
-		// );
+		acf_register_block_type(
+			[
+				'name'            => 'mai-term-grid',
+				'title'           => __( 'Mai Term Grid', 'mai-engine' ),
+				'description'     => __( 'Display posts/pages/cpts in various layouts.', 'mai-engine' ),
+				'icon'            => 'grid-view',
+				'category'        => 'widgets',
+				'keywords'        => [ 'grid', 'category', 'term' ],
+				'mode'            => 'preview',
+				'render_callback' => [ $this, 'do_term_grid' ],
+				'supports'        => [
+					'align'  => [ 'wide' ],
+					'ancher' => true,
+				],
+			]
+		);
 
 		// Run filters.
 		$this->run_filters();
@@ -171,9 +163,6 @@ final class Mai_Grid_Blocks {
 	 * @return void
 	 */
 	public function do_post_grid( $block, $content = '', $is_preview = false ) {
-		echo 'TODO';
-		return;
-
 		// TODO: block id?
 		$this->do_grid( 'post', $block, $content = '', $is_preview = false );
 	}
@@ -227,14 +216,19 @@ final class Mai_Grid_Blocks {
 	 */
 	public function get_field_values( $type ) {
 		$values = [];
-		foreach( $this->fields as $name => $field ) {
+		foreach( $this->fields as $key => $field ) {
+			// Skip tabs.
+			if ( 'tab' === $field['type'] ) {
+				continue;
+			}
 			// Skip if not the block we want.
 			if ( ! in_array( $type, $field['block'] ) ) {
 				continue;
 			}
-			$value = get_field( $name );
-			return is_null( $value ) ? $this->fields[ $name ]['default'] : $value;
+			$value                    = get_field( $field['name'] );
+			$values[ $field['name'] ] = is_null( $value ) ? $this->fields[ $key ]['default'] : $value;
 		}
+		return $values;
 	}
 
 	/**

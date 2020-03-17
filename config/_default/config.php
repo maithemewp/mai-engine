@@ -590,7 +590,7 @@ return [
 			'atts' => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-engine-show-conditional',
+					'class' => 'mai-grid-show-conditional',
 					'id'    => '',
 				],
 			],
@@ -625,7 +625,7 @@ return [
 			'atts' => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-engine-show-conditional',
+					'class' => 'mai-grid-show-conditional',
 					'id'    => '',
 				],
 			],
@@ -654,7 +654,7 @@ return [
 			'atts' => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-engine-show-conditional',
+					'class' => 'mai-grid-show-conditional',
 					'id'    => '',
 				],
 			],
@@ -677,7 +677,7 @@ return [
 			'atts' => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-engine-show-conditional',
+					'class' => 'mai-grid-show-conditional',
 					'id'    => '',
 				],
 			],
@@ -709,7 +709,7 @@ return [
 			'atts' => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-engine-show-conditional',
+					'class' => 'mai-grid-show-conditional',
 					'id'    => '',
 				],
 			],
@@ -733,7 +733,7 @@ return [
 				'placeholder' => esc_html__( 'Read More', 'mai-engine' ),
 				'wrapper'     => [
 					'width' => '',
-					'class' => 'mai-engine-show-conditional',
+					'class' => 'mai-grid-show-conditional',
 					'id'    => '',
 				],
 			],
@@ -756,7 +756,7 @@ return [
 			'atts' => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-engine-show-conditional',
+					'class' => 'mai-grid-show-conditional',
 					'id'    => '',
 				],
 			],
@@ -788,7 +788,7 @@ return [
 			'atts' => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-engine-button-group mai-engine-button-group-clear',
+					'class' => 'mai-grid-button-group mai-grid-button-group-clear',
 					'id'    => '',
 				],
 			],
@@ -825,7 +825,7 @@ return [
 			'atts' => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-engine-button-group mai-engine-button-group-clear',
+					'class' => 'mai-grid-button-group mai-grid-button-group-clear',
 					'id'    => '',
 				],
 			],
@@ -859,7 +859,7 @@ return [
 			'atts' => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-engine-button-group',
+					'class' => 'mai-grid-button-group',
 					'id'    => '',
 				],
 			],
@@ -901,7 +901,7 @@ return [
 			'atts' => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-engine-button-group mai-engine-button-group-clear mai-engine-nested-columns-first',
+					'class' => 'mai-grid-button-group mai-grid-nested-columns mai-grid-nested-columns-first',
 					'id'    => '',
 				],
 			],
@@ -932,7 +932,7 @@ return [
 			'atts' => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-engine-button-group mai-engine-button-group-clear mai-engine-nested-columns',
+					'class' => 'mai-grid-button-group mai-grid-nested-columns',
 					'id'    => '',
 				],
 			],
@@ -963,7 +963,7 @@ return [
 			'atts' => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-engine-button-group mai-engine-button-group-clear mai-engine-nested-columns mai-engine-nested-columns-last',
+					'class' => 'mai-grid-button-group mai-grid-nested-columns mai-grid-nested-columns-last',
 					'id'    => '',
 				],
 			],
@@ -991,7 +991,7 @@ return [
 			'atts' => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-engine-button-group mai-engine-button-group-clear mai-engine-nested-columns',
+					'class' => 'mai-grid-button-group mai-grid-button-group-clear',
 					'id'    => '',
 				],
 			],
@@ -1019,7 +1019,7 @@ return [
 			'atts' => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-engine-button-group mai-engine-button-group-clear',
+					'class' => 'mai-grid-button-group mai-grid-button-group-clear',
 					'id'    => '',
 				],
 			],
@@ -1084,14 +1084,13 @@ return [
 				'ajax'     => 0,
 			],
 		],
-		'field_5df1053632ca8'               => [
+		'field_5df1053632ca8' => [
 			'name'       => 'posts_per_page',
 			'label'      => esc_html__( 'Number of Entries', 'mai-engine' ),
 			'desc'       => esc_html__( 'Use 0 to show all.', 'mai-engine' ),
 			'block'      => [ 'post' ],
 			'type'       => 'number',
 			'sanitize'   => 'absint',
-			'name'       => 'field_5df1053632ca8',
 			'default'    => 12,
 			'conditions' => [
 				[
@@ -1104,7 +1103,7 @@ return [
 					'value'    => 'title',
 				],
 			],
-			'atts'        => [
+			'atts' => [
 				'placeholder' => 12,
 				'min'         => 0,
 			],
