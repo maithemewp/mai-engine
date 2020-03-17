@@ -78,6 +78,9 @@ return [
 		'default'    => 'landscape-md',
 		'choices'    => function() {
 			$choices = [];
+			if ( ! is_admin() ) {
+				return $choices;
+			}
 			$sizes   = mai_get_available_image_sizes();
 			foreach ( $sizes as $index => $value ) {
 				$choices[ $index ] = sprintf( '%s (%s x %s)', $index, $value['width'], $value['height'] );
@@ -536,7 +539,10 @@ return [
 		'sanitize' => 'esc_html',
 		'default'  => [ 'post' ],
 		'choices'  => function() {
-			$choices    = [];
+			$choices = [];
+			if ( ! is_admin() ) {
+				return $choices;
+			}
 			$post_types = get_post_types(
 				[
 					'public'             => true,
@@ -659,6 +665,9 @@ return [
 					'default'  => '',
 					'choices'  => function() {
 						$choices = [];
+						if ( ! is_admin() ) {
+							return $choices;
+						}
 						if ( ! ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) ) {
 							return $choices;
 						}
@@ -680,12 +689,18 @@ return [
 					],
 				],
 				'field_5df139a216272' => [
-					'name'     => 'terms',
-					'label'    => esc_html__( 'Terms', 'mai-engine' ),
-					'block'    => [ 'post' ],
-					'type'     => 'taxonomy',
-					'sanitize' => 'absint',
-					'default'  => [],
+					'name'       => 'terms',
+					'label'      => esc_html__( 'Terms', 'mai-engine' ),
+					'block'      => [ 'post' ],
+					'type'       => 'taxonomy',
+					'sanitize'   => 'absint',
+					'default'    => [],
+					'conditions' => [
+						[
+							'field'    => 'field_5df1398916271', // Taxonomy.
+							'operator' => '!=empty',
+						],
+					],
 					'atts'     => [
 						'field_type' => 'multi_select',
 						'taxonomy'   => 'category',
@@ -693,12 +708,6 @@ return [
 						'save_terms' => 0,
 						'load_terms' => 0,
 						'multiple'   => 0,
-						'conditions' => [
-							[
-								'field'    => 'field_5df1398916271', // Taxonomy.
-								'operator' => '!=empty',
-							],
-						],
 					],
 				],
 				'field_5df18f2305c2c' => [
@@ -864,6 +873,9 @@ return [
 		'default'    => '',
 		'choices'    => function() {
 			$choices = [];
+			if ( ! is_admin() ) {
+				return $choices;
+			}
 			if ( ! ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) ) {
 				return $choices;
 			}
@@ -1011,9 +1023,9 @@ return [
 			'ui'            => 1,
 		],
 	],
-	// TODO: These shoud be separate fields. We can then have desc text and easier to check when building query.
+	// TODO: Shoud these be separate fields? We can then have desc text and easier to check when building query.
 	'field_5df1053632d03' => [
-		'name'       => 'exclude',
+		'name'       => 'excludes',
 		'label'      => esc_html__( 'Exclude', 'mai-engine' ),
 		'block'      => [ 'post' ],
 		'type'       => 'checkbox',
@@ -1040,6 +1052,29 @@ return [
 		'type'     => 'select',
 		'sanitize' => 'esc_html',
 		'default'  => [ 'category' ],
+		'choices'  => function() {
+			$choices = [];
+			if ( ! is_admin() ) {
+				return $choices;
+			}
+			$taxonomies = get_taxonomies(
+				[
+					'public'             => true,
+					'publicly_queryable' => true,
+				],
+				'objects',
+				'or'
+			);
+			if ( $taxonomies ) {
+				unset( $taxonomies['post_format'] );
+				unset( $taxonomies['yst_prominent_words'] );
+				foreach ( $taxonomies as $name => $taxonomy ) {
+					$choices[ $name ] = $taxonomy->label;
+				}
+			}
+
+			return $choices;
+		},
 		'atts'     => [
 			'multiple' => 1,
 			'ui'       => 1,
@@ -1126,7 +1161,10 @@ return [
 		'sanitize'   => 'absint',
 		'default'    => '',
 		'choices'    => function() {
-
+			$choices = [];
+			if ( ! is_admin() ) {
+				return $choices;
+			}
 		},
 		'conditions' => [
 			[
@@ -1169,8 +1207,37 @@ return [
 			'min'         => 0,
 		],
 	],
-	'field_5df21757632e1' => [
+	'field_5e459348f2d12' => [
 		'name'       => 'exclude',
+		'label'      => esc_html__( 'Exclude Entries', 'mai-engine' ),
+		'desc'       => esc_html__( 'Hide specific entries. Choose all that apply.', 'mai-engine' ),
+		'block'      => [ 'term' ],
+		'type'       => 'taxonomy',
+		'sanitize'   => 'absint',
+		'default'    => [],
+		'conditions' => [
+			[
+				'field'    => 'field_5df1053632ca2', // Post_type.
+				'operator' => '!=empty',
+			],
+			[
+				'field'    => 'field_5df1053632cad', // Query_by.
+				'operator' => '!=',
+				'value'    => 'title',
+			],
+		],
+		'atts'       => [
+			'field_type' => 'multi_select',
+			'taxonomy'   => 'category',
+			'add_term'   => 0,
+			'save_terms' => 0,
+			'load_terms' => 0,
+			'multiple'   => 1,
+		],
+	],
+	// TODO: Shoud these be separate fields? We can then have desc text and easier to check when building query.
+	'field_5df21757632e1' => [
+		'name'       => 'excludes',
 		'label'      => esc_html__( 'Exclude', 'mai-engine' ),
 		'block'      => [ 'term' ],
 		'type'       => 'checkbox',
