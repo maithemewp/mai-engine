@@ -49,7 +49,7 @@ function mai_after_title_area_hook( $close_html ) {
 	return $close_html;
 }
 
-add_filter( 'genesis_attr_title-area', 'mai_title_area_properties' );
+add_filter( 'genesis_attr_site-header', 'mai_site_header_properties' );
 /**
  * Add logo width and spacing properties to the header.
  * Inline properties allow us to still use CSS without PHP inline styles.
@@ -60,7 +60,7 @@ add_filter( 'genesis_attr_title-area', 'mai_title_area_properties' );
  *
  * @return array  The modified attributes.
  */
-function mai_title_area_properties( $attr ) {
+function mai_site_header_properties( $attr ) {
 	$values        = get_option( 'mai_header' );
 	$values        = $values ?: mai_header_settings_defaults_temp_function();
 	$attr['style'] = isset( $attr['style'] ) ? $attr['style'] . ' ' : '';
