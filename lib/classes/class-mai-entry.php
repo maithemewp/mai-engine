@@ -119,7 +119,14 @@ class Mai_Entry {
 		);
 
 		// Check if extra wrap is needed.
-		$has_inner = in_array( 'image', $this->args['show'], true ) && in_array( $this->args['image_position'], [ 'left', 'right' ], true );
+		$has_inner = in_array( 'image', $this->args['show'], true ) && in_array(
+			$this->args['image_position'],
+			[
+				'left',
+				'right',
+			],
+			true
+		);
 
 		// If we have inner wrap.
 		if ( $has_inner ) {

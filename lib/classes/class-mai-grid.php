@@ -60,23 +60,42 @@ class Mai_Grid {
 		$this->args      = $this->get_sanitized_args( $args );
 	}
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
 	public function get_settings() {
 		$settings = [];
 		$config   = mai_get_config( 'grid-settings' );
-		foreach( $config as $key => $setting ) {
+
+		foreach ( $config as $key => $setting ) {
+
 			// Skip tabs.
 			if ( 'tab' === $setting['type'] ) {
 				continue;
 			}
+
 			// Skip fields not in this grid type.
-			if ( ! in_array( $this->type, $setting['block'] ) ) {
+			if ( ! in_array( $this->type, $setting['block'], true ) ) {
 				continue;
 			}
+
 			$settings[ $setting['name'] ] = $setting;
 		}
+
 		return $settings;
 	}
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
 	public function get_defaults() {
 		return wp_list_pluck( $this->settings, 'default' );
 	}
@@ -268,6 +287,13 @@ class Mai_Grid {
 		return apply_filters( 'mai_post_grid_query_args', $query_args );
 	}
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
 	public function get_term_query_args() {
 		$query_args = [
 			'taxonomy' => $this->args['taxonomy'],

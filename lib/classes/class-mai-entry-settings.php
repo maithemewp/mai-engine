@@ -550,11 +550,8 @@ class Mai_Entry_Settings {
 
 			if ( 'post' === $this->type ) {
 
-				/************
-				 * WP_Query *
-				 */
-				$all_fields = $all_fields + [
-					'post_type'              => [
+				$new_fields = [
+					'post_type'           => [
 						'label'    => esc_html__( 'Post Type', 'mai-engine' ),
 						'block'    => true,
 						'archive'  => false,
@@ -570,7 +567,7 @@ class Mai_Entry_Settings {
 							'ajax'     => 0,
 						],
 					],
-					'number'               => [
+					'number'              => [
 						'label'      => esc_html__( 'Number of Entries', 'mai-engine' ),
 						'desc'       => esc_html__( 'Use 0 to show all.', 'mai-engine' ),
 						'block'      => true,
@@ -597,7 +594,7 @@ class Mai_Entry_Settings {
 							'min'         => 0,
 						],
 					],
-					'query_by'               => [
+					'query_by'            => [
 						'label'      => esc_html__( 'Get Entries By', 'mai-engine' ),
 						'block'      => true,
 						'archive'    => false,
@@ -620,7 +617,7 @@ class Mai_Entry_Settings {
 							],
 						],
 					],
-					'post__in'               => [
+					'post__in'            => [
 						'label'      => esc_html__( 'Entries', 'mai-engine' ),
 						'desc'       => esc_html__( 'Show specific entries. Choose all that apply. If empty, Grid will get entries by date.', 'mai-engine' ),
 						'block'      => true,
@@ -648,7 +645,7 @@ class Mai_Entry_Settings {
 							'ui'            => 1,
 						],
 					],
-					'taxonomies'             => [
+					'taxonomies'          => [
 						'label'      => esc_html__( 'Taxonomies', 'mai-engine' ),
 						'block'      => true,
 						'archive'    => false,
@@ -722,7 +719,7 @@ class Mai_Entry_Settings {
 							],
 						],
 					],
-					'taxonomies_relation'    => [
+					'taxonomies_relation' => [
 						'label'      => esc_html__( 'Taxonomies Relation', 'mai-engine' ),
 						'block'      => true,
 						'archive'    => false,
@@ -749,7 +746,7 @@ class Mai_Entry_Settings {
 							],
 						],
 					],
-					'meta_keys'              => [
+					'meta_keys'           => [
 						'label'      => esc_html__( 'Meta Keys', 'mai-engine' ),
 						'block'      => true,
 						'archive'    => false,
@@ -817,7 +814,7 @@ class Mai_Entry_Settings {
 							],
 						],
 					],
-					'meta_keys_relation'     => [
+					'meta_keys_relation'  => [
 						'label'      => esc_html__( 'Meta Keys Relation', 'mai-engine' ),
 						'block'      => true,
 						'archive'    => false,
@@ -844,7 +841,7 @@ class Mai_Entry_Settings {
 							],
 						],
 					],
-					'post_parent__in'        => [
+					'post_parent__in'     => [
 						'label'      => esc_html__( 'Parent', 'mai-engine' ),
 						'block'      => true,
 						'archive'    => false,
@@ -871,7 +868,7 @@ class Mai_Entry_Settings {
 							'ajax'     => 1,
 						],
 					],
-					'offset'                 => [
+					'offset'              => [
 						'label'      => esc_html__( 'Offset', 'mai-engine' ),
 						'desc'       => esc_html__( 'Skip this number of entries.', 'mai-engine' ),
 						'block'      => true,
@@ -898,7 +895,7 @@ class Mai_Entry_Settings {
 							'min'         => 0,
 						],
 					],
-					'orderby'                => [
+					'orderby'             => [
 						'label'      => esc_html__( 'Order By', 'mai-engine' ),
 						'block'      => true,
 						'archive'    => false,
@@ -930,7 +927,7 @@ class Mai_Entry_Settings {
 							'ajax' => 1,
 						],
 					],
-					'orderby_meta_key'       => [
+					'orderby_meta_key'    => [
 						'label'      => esc_html__( 'Meta key', 'mai-engine' ),
 						'block'      => true,
 						'archive'    => false,
@@ -952,7 +949,7 @@ class Mai_Entry_Settings {
 							],
 						],
 					],
-					'order'                  => [
+					'order'               => [
 						'label'      => esc_html__( 'Order', 'mai-engine' ),
 						'block'      => true,
 						'archive'    => false,
@@ -969,7 +966,7 @@ class Mai_Entry_Settings {
 							],
 						],
 					],
-					'post__not_in'           => [
+					'post__not_in'        => [
 						'label'      => esc_html__( 'Exclude Entries', 'mai-engine' ),
 						'desc'       => esc_html__( 'Hide specific entries. Choose all that apply.', 'mai-engine' ),
 						'block'      => true,
@@ -1006,7 +1003,7 @@ class Mai_Entry_Settings {
 			if ( 'term' === $this->type ) {
 
 				$all_fields = $all_fields + [
-					'taxonomy'            => [
+					'taxonomy' => [
 						'label'    => esc_html__( 'Taxonomy', 'mai-engine' ),
 						'block'    => true,
 						'archive'  => false,
@@ -1022,7 +1019,7 @@ class Mai_Entry_Settings {
 							'ajax'     => 0,
 						],
 					],
-					'number'               => [
+					'number'   => [
 						'label'      => esc_html__( 'Number of Entries', 'mai-engine' ),
 						'desc'       => esc_html__( 'Use 0 to show all.', 'mai-engine' ),
 						'block'      => true,
@@ -1049,7 +1046,7 @@ class Mai_Entry_Settings {
 							'min'         => 0,
 						],
 					],
-					'query_by'               => [
+					'query_by' => [
 						'label'      => esc_html__( 'Get Entries By', 'mai-engine' ),
 						'block'      => true,
 						'archive'    => false,
@@ -1060,10 +1057,10 @@ class Mai_Entry_Settings {
 						'group'      => [ 'mai_term_grid' ],
 						'default'    => 'date',
 						'choices'    => [
-							'date'     => esc_html__( 'Date', 'mai-engine' ),
-							'title'    => esc_html__( 'Title', 'mai-engine' ),
+							'date'   => esc_html__( 'Date', 'mai-engine' ),
+							'title'  => esc_html__( 'Title', 'mai-engine' ),
 							// 'tax_meta' => esc_html__( 'Taxonomy/Meta', 'mai-engine' ),
-							'parent'   => esc_html__( 'Parent', 'mai-engine' ),
+							'parent' => esc_html__( 'Parent', 'mai-engine' ),
 						],
 						'conditions' => [
 							[
@@ -1079,7 +1076,7 @@ class Mai_Entry_Settings {
 			$all_fields = $all_fields + [
 
 				// TODO: These shoud be separate fields. We can then have desc text and easier to check when building query.
-				'exclude'                => [
+				'exclude' => [
 					'label'      => esc_html__( 'Exclude', 'mai-engine' ),
 					'block'      => true,
 					'archive'    => false,
@@ -1098,6 +1095,7 @@ class Mai_Entry_Settings {
 				],
 			];
 
+			$all_fields = $all_fields + $new_fields;
 		}
 
 		// Get fields by context.
@@ -1108,7 +1106,6 @@ class Mai_Entry_Settings {
 			}
 			$fields[ $this->context ][ $name ] = $values;
 		}
-
 
 		return $fields[ $this->context ];
 	}
@@ -1122,14 +1119,17 @@ class Mai_Entry_Settings {
 	 */
 	public function get_defaults() {
 		static $defaults = [];
+
 		if ( isset( $defaults[ $this->context ] ) ) {
 			return $defaults[ $this->context ];
 		}
+
 		$defaults[ $this->context ] = [
 			'context' => $this->context,
 			'type'    => $this->type,
 		];
-		foreach( $this->fields as $name => $values ) {
+
+		foreach ( $this->fields as $name => $values ) {
 			if ( ! $values[ $this->context ] ) {
 				continue;
 			}
@@ -1138,6 +1138,7 @@ class Mai_Entry_Settings {
 			}
 			$defaults[ $this->context ][ $name ] = $values['default'];
 		}
+
 		return $defaults[ $this->context ];
 	}
 
@@ -1150,9 +1151,11 @@ class Mai_Entry_Settings {
 	 */
 	public function get_keys() {
 		static $keys = null;
+
 		if ( ! is_null( $keys ) ) {
 			return $keys;
 		}
+
 		foreach ( $this->fields as $name => $field ) {
 			// Skip if no key.
 			if ( ! isset( $field['key'] ) ) {
@@ -1243,7 +1246,7 @@ class Mai_Entry_Settings {
 	 *
 	 * @since  0.1.0
 	 *
-	 * @param  string  $field Field name.
+	 * @param  string $field Field name.
 	 *
 	 * @return array   The layout choices.
 	 */
@@ -1398,6 +1401,7 @@ class Mai_Entry_Settings {
 				$choices[ $name ] = $post_type->label;
 			}
 		}
+
 		return $choices;
 	}
 
@@ -1423,7 +1427,6 @@ class Mai_Entry_Settings {
 				}
 			}
 		}
-
 
 		return $choices;
 	}
@@ -1593,7 +1596,6 @@ class Mai_Entry_Settings {
 				 */
 				$data['default_value'] = $field['default'];
 			}
-
 		} else {
 
 			// Kirki.
@@ -1631,7 +1633,6 @@ class Mai_Entry_Settings {
 
 				$data['default'] = $field['default'];
 			}
-
 		}
 
 		// Maybe add choices.

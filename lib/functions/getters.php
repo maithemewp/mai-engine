@@ -577,15 +577,14 @@ function mai_get_template_args() {
 		return $args;
 	}
 
-	$name = $context = '';
+	$name    = '';
+	$context = '';
 
-	// If archive.
 	if ( mai_is_type_archive() ) {
 		$name    = mai_get_archive_args_name();
 		$context = 'archive';
-	}
-	// Singular.
-	elseif ( is_singular() ) {
+
+	} elseif ( is_singular() ) {
 		$name    = mai_get_singular_args_name();
 		$context = 'single';
 	}
@@ -674,16 +673,24 @@ function mai_get_archive_args_name() {
 	}
 
 	// If archive isn't supported in config, use 'post'.
-	if ( 'post' !== $name && ! in_array( $name, (array) mai_get_config( 'archive-settings' ) ) ) {
+	if ( 'post' !== $name && ! in_array( $name, (array) mai_get_config( 'archive-settings' ), true ) ) {
 		return 'post';
 	}
 
 	return $name;
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return false|mixed|string
+ */
 function mai_get_singular_args_name() {
 	$name = get_post_type();
 	$name = $name ?: get_query_var( 'post_type' );
+
 	return $name;
 }
 

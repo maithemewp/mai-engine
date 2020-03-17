@@ -212,22 +212,25 @@ final class Mai_Grid_Blocks {
 	 *
 	 * @since 0.1.0
 	 *
+	 * @param string $type Field type.
+	 *
 	 * @return array
 	 */
 	public function get_field_values( $type ) {
 		$values = [];
-		foreach( $this->fields as $key => $field ) {
+		foreach ( $this->fields as $key => $field ) {
 			// Skip tabs.
 			if ( 'tab' === $field['type'] ) {
 				continue;
 			}
 			// Skip if not the block we want.
-			if ( ! in_array( $type, $field['block'] ) ) {
+			if ( ! in_array( $type, $field['block'], true ) ) {
 				continue;
 			}
 			$value                    = get_field( $field['name'] );
 			$values[ $field['name'] ] = is_null( $value ) ? $this->fields[ $key ]['default'] : $value;
 		}
+
 		return $values;
 	}
 
@@ -239,7 +242,7 @@ final class Mai_Grid_Blocks {
 	 * @return void
 	 */
 	public function run_filters() {
-		// Show 'show'
+		// Show 'show'.
 		add_filter( 'acf/load_field/key=field_5e441d93d6236', [ $this, 'load_show' ] );
 		// Posts 'post__in'.
 		add_filter( 'acf/fields/post_object/query/key=field_5df1053632cbc', [ $this, 'get_posts' ], 10, 1 );
@@ -269,6 +272,7 @@ final class Mai_Grid_Blocks {
 		add_filter( 'acf/load_field/key=field_5e441d93d6236', [ $this, 'load_show' ] );
 		// If we have existing values, reorder them.
 		$field['choices'] = $existing ? array_merge( array_flip( $existing ), $defaults ) : $field['choices'];
+
 		return $field;
 	}
 
@@ -285,7 +289,7 @@ final class Mai_Grid_Blocks {
 
 		$args['post_type'] = [];
 		if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) {
-			foreach( $_REQUEST['post_type'] as $post_type ) {
+			foreach ( $_REQUEST['post_type'] as $post_type ) {
 				$args['post_type'][] = sanitize_text_field( wp_unslash( $post_type ) );
 			}
 		}
@@ -324,7 +328,7 @@ final class Mai_Grid_Blocks {
 
 		$args['post_type'] = [];
 		if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) {
-			foreach( $_REQUEST['post_type'] as $post_type ) {
+			foreach ( $_REQUEST['post_type'] as $post_type ) {
 				$args['post_type'][] = sanitize_text_field( wp_unslash( $post_type ) );
 			}
 		}

@@ -59,7 +59,7 @@ function mai_body_classes( $classes ) {
 	}
 
 	// Add sidebar class.
-	if ( in_array( genesis_site_layout(), [ 'wide-content', 'standard-content', 'narrow-content' ] ) ) {
+	if ( in_array( genesis_site_layout(), [ 'wide-content', 'standard-content', 'narrow-content' ], true ) ) {
 		$classes[] = 'no-sidebar';
 	} else {
 		$classes[] = 'has-sidebar';

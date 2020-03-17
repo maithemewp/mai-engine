@@ -78,7 +78,7 @@ function mai_icon_shortcode( $atts ) {
 			$atts['margin_bottom'],
 			$atts['margin_left'],
 		]
-	) . 'px;';
+	);
 
 	$padding = implode(
 		'px ',
@@ -88,7 +88,7 @@ function mai_icon_shortcode( $atts ) {
 			$atts['padding_bottom'],
 			$atts['padding_left'],
 		]
-	) . 'px;';
+	);
 
 	$shadow = implode(
 		' ',
@@ -105,8 +105,8 @@ function mai_icon_shortcode( $atts ) {
 	$css .= $atts['align'] ? 'justify-content:' . $atts['align'] . ';' : '';
 	$css .= $atts['color_background'] ? 'background-color:' . $atts['color_background'] . ';' : '';
 	$css .= $atts['color_border'] ? 'border-color:' . $atts['color_border'] . ';' : '';
-	$css .= 'margin:' . $margin;
-	$css .= 'padding:' . $padding;
+	$css .= 'margin:' . $margin . 'px;';
+	$css .= 'padding:' . $padding . 'px;';
 
 	$css = sprintf(
 		'.mai-icon-%s{%s}',

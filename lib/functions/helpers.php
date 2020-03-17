@@ -148,7 +148,7 @@ function mai_is_page_header_active() {
 /**
  * Quick and dirty way to mostly minify CSS.
  *
- * @since 0.1.0
+ * @since  0.1.0
  *
  * @author Gary Jones
  *
@@ -176,17 +176,17 @@ function mai_minify_css( $css ) {
  * Taken from rest_sanitize_boolean()
  * but seemed risky to use that directly.
  *
- * @since   0.1.0
+ * @since  0.1.0
  *
- * @param   mixed  $value
+ * @param  string $value String to sanitize.
  *
- * @return  bool
+ * @return bool
  */
 function mai_sanitize_bool( $value ) {
 	// String values are translated to `true`; make sure 'false' is false.
 	if ( is_string( $value ) ) {
 		$value = strtolower( $value );
-		if ( in_array( $value, array( 'false', '0' ), true ) ) {
+		if ( in_array( $value, [ 'false', '0' ], true ) ) {
 			$value = false;
 		}
 	}
@@ -212,5 +212,6 @@ function mai_get_image_sizes_from_aspect_ratio( $size = 'md', $ratio = '16:9' ) 
 	$breakpoints = mai_get_breakpoints();
 	$width       = isset( $breakpoints[ $size ] ) ? (int) mai_get_breakpoint( $size ) : (int) $size;
 	$height      = $width / $x * $y;
+
 	return [ $width, $height, true ];
 }

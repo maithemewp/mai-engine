@@ -29,19 +29,19 @@ function mai_register_grid_field_groups() {
 	// // Setup fields.
 	// foreach ( $fields as $name => $field ) {
 
-	// 	// Bail if not a block field.
-	// 	if ( ! $field['block'] ) {
-	// 		continue;
-	// 	}
+	// Bail if not a block field.
+	// if ( ! $field['block'] ) {
+	// continue;
+	// }
 
-	// 	// Bail if no groups.
-	// 	if ( ! isset( $field['group'] ) ) {
-	// 		continue;
-	// 	}
+	// Bail if no groups.
+	// if ( ! isset( $field['group'] ) ) {
+	// continue;
+	// }
 
 	$fields = mai_get_config( 'grid-settings' );
 
-	foreach( $fields as $key => $field ) {
+	foreach ( $fields as $key => $field ) {
 
 		// Post grid.
 		if ( in_array( 'post', $field['block'], true ) ) {
@@ -55,7 +55,6 @@ function mai_register_grid_field_groups() {
 		if ( in_array( 'user', $field['block'], true ) ) {
 			$user_grid[] = mai_get_acf_field_data( $key, $field );
 		}
-
 	}
 
 	acf_add_local_field_group(
@@ -101,18 +100,13 @@ function mai_register_grid_field_groups() {
 // }
 
 
-
-
-
-
 /**
  * Description of expected behavior.
  *
  * @since 0.1.0
  *
- * @param string $key        Field key.
- * @param array  $field      Field data.
- * @param string $section_id Section ID.
+ * @param string $key   Field key.
+ * @param array  $field Field data.
  *
  * @return array
  */
@@ -170,8 +164,7 @@ function mai_get_acf_field_data( $key, $field ) {
 	if ( isset( $field['choices'] ) ) {
 		if ( is_array( $field['choices'] ) ) {
 			$data['choices'] = $field['choices'];
-		}
-		elseif ( is_callable( $field['choices'] ) ) {
+		} elseif ( is_callable( $field['choices'] ) ) {
 			$data['choices'] = call_user_func( $field['choices'] );
 		}
 	}
@@ -179,9 +172,17 @@ function mai_get_acf_field_data( $key, $field ) {
 	return $data;
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return array
+ */
 function mai_get_grid_localized_data() {
 	$fields = mai_get_config( 'grid-settings' );
 	$fields = wp_list_pluck( $fields, 'name' );
 	$fields = array_flip( $fields );
+
 	return [ 'keys' => $fields ];
 }

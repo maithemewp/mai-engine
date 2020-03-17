@@ -82,8 +82,8 @@ add_filter( 'genesis_attr_site-header', 'mai_site_header_properties' );
  * @return array  The modified attributes.
  */
 function mai_site_header_properties( $attributes ) {
-	$values = get_option( 'mai_header' );
-	$values = $values ?: mai_header_settings_defaults_temp_function();
+	$values               = get_option( 'mai_header' );
+	$values               = $values ?: mai_header_settings_defaults_temp_function();
 	$attributes['style']  = isset( $attributes['style'] ) ? $attributes['style'] . ' ' : '';
 	$attributes['style'] .= sprintf( '--logo-width-large:%s;', mai_get_unit_value( $values['logo_width_large'] ) );
 	$attributes['style'] .= sprintf( '--logo-top-large:%s;', mai_get_unit_value( $values['logo_spacing_large']['top'] ) );
@@ -91,6 +91,7 @@ function mai_site_header_properties( $attributes ) {
 	$attributes['style'] .= sprintf( '--logo-width-small:%s;', mai_get_unit_value( $values['logo_width_small'] ) );
 	$attributes['style'] .= sprintf( '--logo-top-small:%s;', mai_get_unit_value( $values['logo_spacing_small']['top'] ) );
 	$attributes['style'] .= sprintf( '--logo-bottom-small:%s;', mai_get_unit_value( $values['logo_spacing_small']['bottom'] ) );
+
 	return $attributes;
 }
 

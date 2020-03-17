@@ -13,7 +13,7 @@
 defined( 'ABSPATH' ) || die;
 
 return [
-	'google-fonts'  => [
+	'google-fonts' => [
 		'',
 	],
 ];

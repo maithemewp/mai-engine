@@ -66,13 +66,13 @@ function mai_render_cover_block( $block_content, $block ) {
 function mai_add_cover_block_image( $block_content, $image_id ) {
 
 	// Create the new document.
-	$dom = new DOMDocument;
+	$dom = new DOMDocument();
 
 	// Modify state.
 	$libxml_previous_state = libxml_use_internal_errors( true );
 
 	// Load the content in the document HTML.
-	$dom->loadHTML( mb_convert_encoding( $block_content, 'HTML-ENTITIES', "UTF-8" ) );
+	$dom->loadHTML( mb_convert_encoding( $block_content, 'HTML-ENTITIES', 'UTF-8' ) );
 
 	// Handle errors.
 	libxml_clear_errors();
@@ -104,7 +104,7 @@ function mai_add_cover_block_image( $block_content, $image_id ) {
 		$fragment = $dom->createDocumentFragment();
 		$fragment->appendXml( $image_html );
 
-		// Add it to the beginning.
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		$block->insertBefore( $fragment, $block->firstChild );
 	}
 

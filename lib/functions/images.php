@@ -78,9 +78,12 @@ function mai_get_available_image_sizes() {
 function mai_get_cover_image_html( $image_id, $atts = [] ) {
 
 	// Setup atts.
-	$atts = wp_parse_args( $atts, [
-		'sizes' => '100vw',
-	] );
+	$atts = wp_parse_args(
+		$atts,
+		[
+			'sizes' => '100vw',
+		]
+	);
 
 	// Build srcset array.
 	$image_sizes = mai_get_available_image_sizes();

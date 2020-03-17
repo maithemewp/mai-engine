@@ -47,7 +47,13 @@ function mai_add_panels() {
 	}
 }
 
-
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return array
+ */
 function mai_header_settings_defaults_temp_function() {
 	return [
 		'logo_width_large'   => '180px',
@@ -62,7 +68,6 @@ function mai_header_settings_defaults_temp_function() {
 		],
 	];
 }
-
 
 add_action( 'init', 'mai_header_customizer_settings' );
 /**
@@ -92,68 +97,79 @@ function mai_header_customizer_settings() {
 	);
 
 	// Kirki::add_field( $config_id, [
-	// 	'type'        => 'custom',
-	// 	'settings'    => 'logo_heading',
-	// 	'label'       => esc_html__( 'Logo/Title Sizing', 'mai-engine' ),
-	// 	'section'     => 'title_tagline',
-	// 	'priority'    => 60,
-	// 	'default'     => '',
+	// 'type'        => 'custom',
+	// 'settings'    => 'logo_heading',
+	// 'label'       => esc_html__( 'Logo/Title Sizing', 'mai-engine' ),
+	// 'section'     => 'title_tagline',
+	// 'priority'    => 60,
+	// 'default'     => '',
 	// ] );
 
 	$defaults = mai_header_settings_defaults_temp_function();
 
-	Kirki::add_field( $config_id, [
-		'type'        => 'text',
-		'settings'    => 'logo_width_large',
-		'label'       => esc_html__( 'Logo Width', 'mai-engine' ),
-		'section'     => 'title_tagline',
-		'priority'    => 60,
-		'default'     => $defaults['logo_width_large'],
-	] );
+	Kirki::add_field(
+		$config_id,
+		[
+			'type'     => 'text',
+			'settings' => 'logo_width_large',
+			'label'    => esc_html__( 'Logo Width', 'mai-engine' ),
+			'section'  => 'title_tagline',
+			'priority' => 60,
+			'default'  => $defaults['logo_width_large'],
+		]
+	);
 
-	Kirki::add_field( $config_id, [
-		'type'        => 'dimensions',
-		'settings'    => 'logo_spacing_large',
-		'label'       => esc_html__( 'Logo Spacing', 'mai-engine' ),
-		'section'     => 'title_tagline',
-		'priority'    => 60,
-		'default'     => [
-			'top'    => $defaults['logo_spacing_large']['top'],
-			'bottom' => $defaults['logo_spacing_large']['bottom'],
-		],
-		'choices'     => [
-			'labels' => [
-				'top'    => esc_html__( 'Top', 'mai-engine' ),
-				'bottom' => esc_html__( 'Bottom', 'mai-engine' ),
+	Kirki::add_field(
+		$config_id,
+		[
+			'type'     => 'dimensions',
+			'settings' => 'logo_spacing_large',
+			'label'    => esc_html__( 'Logo Spacing', 'mai-engine' ),
+			'section'  => 'title_tagline',
+			'priority' => 60,
+			'default'  => [
+				'top'    => $defaults['logo_spacing_large']['top'],
+				'bottom' => $defaults['logo_spacing_large']['bottom'],
 			],
-		],
-	] );
-
-	Kirki::add_field( $config_id, [
-		'type'        => 'text',
-		'settings'    => 'logo_width_small',
-		'label'       => esc_html__( 'Shrink/Mobile Logo Width', 'mai-engine' ),
-		'section'     => 'title_tagline',
-		'priority'    => 60,
-		'default'     => $defaults['logo_width_small'],
-	] );
-
-	Kirki::add_field( $config_id, [
-		'type'        => 'dimensions',
-		'settings'    => 'logo_spacing_small',
-		'label'       => esc_html__( 'Shrink/Mobile Logo Spacing', 'mai-engine' ),
-		'section'     => 'title_tagline',
-		'priority'    => 60,
-		'default'     => [
-			'top'    => $defaults['logo_spacing_small']['top'],
-			'bottom' => $defaults['logo_spacing_small']['bottom'],
-		],
-		'choices'     => [
-			'labels' => [
-				'top'    => esc_html__( 'Top', 'mai-engine' ),
-				'bottom' => esc_html__( 'Bottom', 'mai-engine' ),
+			'choices'  => [
+				'labels' => [
+					'top'    => esc_html__( 'Top', 'mai-engine' ),
+					'bottom' => esc_html__( 'Bottom', 'mai-engine' ),
+				],
 			],
-		],
-	] );
+		]
+	);
 
+	Kirki::add_field(
+		$config_id,
+		[
+			'type'     => 'text',
+			'settings' => 'logo_width_small',
+			'label'    => esc_html__( 'Shrink/Mobile Logo Width', 'mai-engine' ),
+			'section'  => 'title_tagline',
+			'priority' => 60,
+			'default'  => $defaults['logo_width_small'],
+		]
+	);
+
+	Kirki::add_field(
+		$config_id,
+		[
+			'type'     => 'dimensions',
+			'settings' => 'logo_spacing_small',
+			'label'    => esc_html__( 'Shrink/Mobile Logo Spacing', 'mai-engine' ),
+			'section'  => 'title_tagline',
+			'priority' => 60,
+			'default'  => [
+				'top'    => $defaults['logo_spacing_small']['top'],
+				'bottom' => $defaults['logo_spacing_small']['bottom'],
+			],
+			'choices'  => [
+				'labels' => [
+					'top'    => esc_html__( 'Top', 'mai-engine' ),
+					'bottom' => esc_html__( 'Bottom', 'mai-engine' ),
+				],
+			],
+		]
+	);
 }

@@ -20,7 +20,7 @@ add_filter( 'genesis_site_layout', 'mai_site_layout' );
  *
  * @return string
  */
-function mai_site_layout( $layout ) {
+function mai_site_layout() {
 	static $site_layout = null;
 
 	if ( ! is_null( $site_layout ) ) {
@@ -35,6 +35,8 @@ function mai_site_layout( $layout ) {
 	} elseif ( is_category() || is_tag() || is_tax() ) {
 
 		/**
+		 * WP Query object.
+		 *
 		 * @var WP_Query $wp_query
 		 */
 		global $wp_query;

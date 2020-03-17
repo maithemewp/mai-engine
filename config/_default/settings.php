@@ -1,4 +1,13 @@
 <?php
+/**
+ * Mai Engine.
+ *
+ * @package   BizBudding\MaiEngine
+ * @link      https://bizbudding.com
+ * @author    BizBudding
+ * @copyright Copyright © 2019 BizBudding
+ * @license   GPL-2.0-or-later
+ */
 
 return [
 	'field_5bd51cac98282' => [
@@ -47,7 +56,7 @@ return [
 		],
 		'conditions' => [
 			[
-				'field'    => 'field_5e441d93d6236', // show
+				'field'    => 'field_5e441d93d6236', // Show.
 				'operator' => '==',
 				'value'    => 'image',
 			],
@@ -78,12 +87,12 @@ return [
 		},
 		'conditions' => [
 			[
-				'field'    => 'field_5e441d93d6236', // show
+				'field'    => 'field_5e441d93d6236', // Show.
 				'operator' => '==',
 				'value'    => 'image',
 			],
 			[
-				'field'    => 'field_5e4d4efe99279', // image_orientation
+				'field'    => 'field_5e4d4efe99279', // Image_orientation.
 				'operator' => '==',
 				'value'    => 'custom',
 			],
@@ -112,7 +121,7 @@ return [
 		],
 		'conditions' => [
 			[
-				'field'    => 'field_5e441d93d6236', // show
+				'field'    => 'field_5e441d93d6236', // Show.
 				'operator' => '==',
 				'value'    => 'image',
 			],
@@ -135,7 +144,7 @@ return [
 		'default'    => '[post_date] [post_author_posts_link before="by "]',
 		'conditions' => [
 			[
-				'field'    => 'field_5e441d93d6236', // show
+				'field'    => 'field_5e441d93d6236', // Show.
 				'operator' => '==',
 				'value'    => 'header_meta',
 			],
@@ -159,14 +168,14 @@ return [
 		'conditions' => [
 			[
 				[
-					'field'    => 'field_5e441d93d6236', // show
+					'field'    => 'field_5e441d93d6236', // Show.
 					'operator' => '==',
 					'value'    => 'excerpt',
 				],
 			],
 			[
 				[
-					'field'    => 'field_5e441d93d6236', // show
+					'field'    => 'field_5e441d93d6236', // Show.
 					'operator' => '==',
 					'value'    => 'content',
 				],
@@ -189,7 +198,7 @@ return [
 		'default'    => '',
 		'conditions' => [
 			[
-				'field'    => 'field_5e441d93d6236', // show
+				'field'    => 'field_5e441d93d6236', // Show.
 				'operator' => '==',
 				'value'    => 'more_link',
 			],
@@ -214,7 +223,7 @@ return [
 		'default'    => '[post_categories]',
 		'conditions' => [
 			[
-				'field'    => 'field_5e441d93d6236', // show
+				'field'    => 'field_5e441d93d6236', // Show.
 				'operator' => '==',
 				'value'    => 'footer_meta',
 			],
@@ -233,7 +242,7 @@ return [
 		'block'    => [ 'post', 'term', 'user' ],
 		'type'     => 'true_false',
 		'sanitize' => 'esc_html',
-		'default'  => 1, // true
+		'default'  => 1, // True.
 		'atts'     => [
 			'message' => __( 'Display boxed', 'mai-engine' ),
 		],
@@ -275,14 +284,14 @@ return [
 		'conditions' => [
 			[
 				[
-					'field'    => 'field_5e2f3adf82130', // image_position
+					'field'    => 'field_5e2f3adf82130', // Image_position.
 					'operator' => '==',
 					'value'    => 'left',
 				],
 			],
 			[
 				[
-					'field'    => 'field_5e2f3adf82130', // image_position
+					'field'    => 'field_5e2f3adf82130', // Image_position.
 					'operator' => '==',
 					'value'    => 'background',
 				],
@@ -359,7 +368,7 @@ return [
 		],
 		'conditions' => [
 			[
-				'field'    => 'field_5e334124b905d', // columns_responsive
+				'field'    => 'field_5e334124b905d', // Columns_responsive.
 				'operator' => '==',
 				'value'    => 1,
 			],
@@ -390,7 +399,7 @@ return [
 		],
 		'conditions' => [
 			[
-				'field'    => 'field_5e334124b905d', // columns_responsive
+				'field'    => 'field_5e334124b905d', // Columns_responsive.
 				'operator' => '==',
 				'value'    => 1,
 			],
@@ -421,7 +430,7 @@ return [
 		],
 		'conditions' => [
 			[
-				'field'    => 'field_5e334124b905d', // columns_responsive
+				'field'    => 'field_5e334124b905d', // Columns_responsive.
 				'operator' => '==',
 				'value'    => 1,
 			],
@@ -449,7 +458,7 @@ return [
 		],
 		'conditions' => [
 			[
-				'field'    => 'field_5c854069d358c', // columns
+				'field'    => 'field_5c854069d358c', // Columns.
 				'operator' => '!=',
 				'value'    => 1,
 			],
@@ -477,7 +486,7 @@ return [
 		],
 		'conditions' => [
 			[
-				'field'    => 'field_5c854069d358c', // columns
+				'field'    => 'field_5c854069d358c', // Columns.
 				'operator' => '!=',
 				'value'    => 1,
 			],
@@ -561,11 +570,11 @@ return [
 		'default'    => 12,
 		'conditions' => [
 			[
-				'field'    => 'field_5df1053632ca2', // post_type
+				'field'    => 'field_5df1053632ca2', // Post_type.
 				'operator' => '!=empty',
 			],
 			[
-				'field'    => 'field_5df1053632cad', // query_by
+				'field'    => 'field_5df1053632cad', // Query_by.
 				'operator' => '!=',
 				'value'    => 'title',
 			],
@@ -590,7 +599,7 @@ return [
 		],
 		'conditions' => [
 			[
-				'field'    => 'field_5df1053632ca2', // post_type
+				'field'    => 'field_5df1053632ca2', // Post_type.
 				'operator' => '!=empty',
 			],
 		],
@@ -605,11 +614,11 @@ return [
 		'default'    => '', // Can't be empty array.
 		'conditions' => [
 			[
-				'field'    => 'field_5df1053632ca2', // post_type
+				'field'    => 'field_5df1053632ca2', // Post_type.
 				'operator' => '!=empty',
 			],
 			[
-				'field'    => 'field_5df1053632cad', // query_by
+				'field'    => 'field_5df1053632cad', // Query_by.
 				'operator' => '==',
 				'value'    => 'title',
 			],
@@ -628,11 +637,11 @@ return [
 		'default'    => '',
 		'conditions' => [
 			[
-				'field'    => 'field_5df1053632ca2', // post_type
+				'field'    => 'field_5df1053632ca2', // Post_type.
 				'operator' => '!=empty',
 			],
 			[
-				'field'    => 'field_5df1053632cad', // query_by
+				'field'    => 'field_5df1053632cad', // Query_by.
 				'operator' => '==',
 				'value'    => 'tax_meta',
 			],
@@ -686,7 +695,7 @@ return [
 						'multiple'   => 0,
 						'conditions' => [
 							[
-								'field'    => 'field_5df1398916271', // taxonomy
+								'field'    => 'field_5df1398916271', // Taxonomy.
 								'operator' => '!=empty',
 							],
 						],
@@ -705,7 +714,7 @@ return [
 					],
 					'conditions' => [
 						[
-							'field'    => 'field_5df1398916271', // taxonomy
+							'field'    => 'field_5df1398916271', // Taxonomy.
 							'operator' => '!=empty',
 						],
 					],
@@ -726,16 +735,16 @@ return [
 		],
 		'conditions' => [
 			[
-				'field'    => 'field_5df1053632ca2', // post_type
+				'field'    => 'field_5df1053632ca2', // Post_type.
 				'operator' => '!=empty',
 			],
 			[
-				'field'    => 'field_5df1053632cad', // query_by
+				'field'    => 'field_5df1053632cad', // Query_by.
 				'operator' => '==',
 				'value'    => 'tax_meta',
 			],
 			[
-				'field'    => 'field_5df1397316270', // taxonomies
+				'field'    => 'field_5df1397316270', // Taxonomies.
 				'operator' => '>',
 				'value'    => '1', // More than 1 row.
 			],
@@ -749,11 +758,11 @@ return [
 		'default'    => '',
 		'conditions' => [
 			[
-				'field'    => 'field_5df1053632ca2', // post_type
+				'field'    => 'field_5df1053632ca2', // Post_type.
 				'operator' => '!=empty',
 			],
 			[
-				'field'    => 'field_5df1053632cad', // query_by
+				'field'    => 'field_5df1053632cad', // Query_by.
 				'operator' => '==',
 				'value'    => 'tax_meta',
 			],
@@ -790,7 +799,7 @@ return [
 					],
 					'conditions' => [
 						[
-							'field'    => 'field_5df3398916382', // meta_key
+							'field'    => 'field_5df3398916382', // Meta_key.
 							'operator' => '!=empty',
 						],
 					],
@@ -805,11 +814,11 @@ return [
 					'default'    => '',
 					'conditions' => [
 						[
-							'field'    => 'field_5df3398916382', // meta_key
+							'field'    => 'field_5df3398916382', // Meta_key.
 							'operator' => '!=empty',
 						],
 						[
-							'field'    => 'field_5df29f2315d3d', // meta_compare
+							'field'    => 'field_5df29f2315d3d', // Meta_compare.
 							'operator' => '!=',
 							'value'    => 'EXISTS',
 						],
@@ -831,16 +840,16 @@ return [
 		],
 		'conditions' => [
 			[
-				'field'    => 'field_5df1053632ca2', // post_type
+				'field'    => 'field_5df1053632ca2', // Post_type.
 				'operator' => '!=empty',
 			],
 			[
-				'field'    => 'field_5df1053632cad', // query_by
+				'field'    => 'field_5df1053632cad', // Query_by.
 				'operator' => '==',
 				'value'    => 'tax_meta',
 			],
 			[
-				'field'    => 'field_5df2053632dg5', // meta_keys
+				'field'    => 'field_5df2053632dg5', // Meta_keys.
 				'operator' => '>',
 				'value'    => '1', // More than 1 row.
 			],
@@ -872,11 +881,11 @@ return [
 		},
 		'conditions' => [
 			[
-				'field'    => 'field_5df1053632ca2', // post_type
+				'field'    => 'field_5df1053632ca2', // Post_type.
 				'operator' => '!=empty',
 			],
 			[
-				'field'    => 'field_5df1053632cad', // query_by
+				'field'    => 'field_5df1053632cad', // Query_by.
 				'operator' => '==',
 				'value'    => 'parent',
 			],
@@ -897,11 +906,11 @@ return [
 		'default'    => 0,
 		'conditions' => [
 			[
-				'field'    => 'field_5df1053632ca2', // post_type
+				'field'    => 'field_5df1053632ca2', // Post_type.
 				'operator' => '!=empty',
 			],
 			[
-				'field'    => 'field_5df1053632cad', // query_by
+				'field'    => 'field_5df1053632cad', // Query_by.
 				'operator' => '!=',
 				'value'    => 'title',
 			],
@@ -931,7 +940,7 @@ return [
 		],
 		'conditions' => [
 			[
-				'field'    => 'field_5df1053632ca2', // post_type
+				'field'    => 'field_5df1053632ca2', // Post_type.
 				'operator' => '!=empty',
 			],
 		],
@@ -949,11 +958,11 @@ return [
 		'default'    => '',
 		'conditions' => [
 			[
-				'field'    => 'field_5df1053632ca2', // post_type
+				'field'    => 'field_5df1053632ca2', // Post_type.
 				'operator' => '!=empty',
 			],
 			[
-				'field'    => 'field_5df1053632cec', // orderby
+				'field'    => 'field_5df1053632cec', // Orderby.
 				'operator' => '==',
 				'value'    => 'meta_value_num',
 			],
@@ -972,7 +981,7 @@ return [
 		],
 		'conditions' => [
 			[
-				'field'    => 'field_5df1053632ca2', // post_type
+				'field'    => 'field_5df1053632ca2', // Post_type.
 				'operator' => '!=empty',
 			],
 		],
@@ -987,11 +996,11 @@ return [
 		'default'    => '',
 		'conditions' => [
 			[
-				'field'    => 'field_5df1053632ca2', // post_type
+				'field'    => 'field_5df1053632ca2', // Post_type.
 				'operator' => '!=empty',
 			],
 			[
-				'field'    => 'field_5df1053632cad', // query_by
+				'field'    => 'field_5df1053632cad', // Query_by.
 				'operator' => '!=',
 				'value'    => 'title',
 			],
@@ -1016,7 +1025,7 @@ return [
 		],
 		'conditions' => [
 			[
-				'field'    => 'field_5df1053632ca2', // post_type
+				'field'    => 'field_5df1053632ca2', // Post_type.
 				'operator' => '!=empty',
 			],
 		],
@@ -1047,11 +1056,11 @@ return [
 		'default'    => 12,
 		'conditions' => [
 			[
-				'field'    => 'field_5df2063632ca2', // taxonomy
+				'field'    => 'field_5df2063632ca2', // Taxonomy.
 				'operator' => '!=empty',
 			],
 			[
-				'field'    => 'field_5df1054642cad', // query_by
+				'field'    => 'field_5df1054642cad', // Query_by.
 				'operator' => '!=',
 				'value'    => 'title',
 			],
@@ -1075,7 +1084,7 @@ return [
 		],
 		'conditions' => [
 			[
-				'field'    => 'field_5df2063632ca2', // taxonomy
+				'field'    => 'field_5df2063632ca2', // Taxonomy.
 				'operator' => '!=empty',
 			],
 		],
@@ -1093,7 +1102,7 @@ return [
 		],
 		'conditions' => [
 			[
-				'field'    => 'field_5df2063632ca2', // taxonomy
+				'field'    => 'field_5df2063632ca2', // Taxonomy.
 				'operator' => '!=empty',
 			],
 		],

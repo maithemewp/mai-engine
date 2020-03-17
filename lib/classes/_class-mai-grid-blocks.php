@@ -236,7 +236,7 @@ final class Mai_Grid_Blocks {
 		foreach ( $this->fields as $name => $field ) {
 			// Skip if not a block field.
 			// if ( ! $field['block'] ) {
-			// 	continue;
+			// continue;
 			// }
 			// Skip tabs.
 			if ( 'tab' === $field['type'] ) {
@@ -383,9 +383,10 @@ final class Mai_Grid_Blocks {
 			if ( method_exists( $this->settings, $name ) ) {
 				add_filter(
 					"acf/load_field/key={$values['key']}",
-					function ( $field ) use( $name) {
+					function ( $field ) use ( $name ) {
 						// Set choices from our config function.
 						$field['choices'] = $this->settings->get_choices( $field['name'] );
+
 						return $field;
 					}
 				);
@@ -493,7 +494,7 @@ final class Mai_Grid_Blocks {
 
 		$args['post_type'] = [];
 		if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) {
-			foreach( $_REQUEST['post_type'] as $post_type ) {
+			foreach ( $_REQUEST['post_type'] as $post_type ) {
 				$args['post_type'][] = sanitize_text_field( wp_unslash( $post_type ) );
 			}
 		}
@@ -532,7 +533,7 @@ final class Mai_Grid_Blocks {
 
 		$args['post_type'] = [];
 		if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) {
-			foreach( $_REQUEST['post_type'] as $post_type ) {
+			foreach ( $_REQUEST['post_type'] as $post_type ) {
 				$args['post_type'][] = sanitize_text_field( wp_unslash( $post_type ) );
 			}
 		}
