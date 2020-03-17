@@ -4,7 +4,7 @@
 	text-align: var(--title-area-text-align, start);
 	transition: var(--title-area-transition, var(--transition));
 
-	@include mq(lg, 'max') {
+	@include mq(false, lg) {
 		--logo-top: var(--logo-top-mobile);
 		--logo-bottom: var(--logo-bottom-mobile);
 	}

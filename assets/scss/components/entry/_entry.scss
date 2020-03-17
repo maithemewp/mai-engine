@@ -30,15 +30,15 @@
 
 	--entry-margin: calc(var(--row-gap) / 2) calc(var(--column-gap) / 2);
 
-	@include mq(sm,max) {
+	@include mq(false, sm) {
 		--columns: var(--columns-xs);
 	}
 
-	@include mq-minmax(sm,md) {
+	@include mq(sm, md) {
 		--columns: var(--columns-sm);
 	}
 
-	@include mq-minmax(md,lg) {
+	@include mq(md, lg) {
 		--columns: var(--columns-md);
 	}
 

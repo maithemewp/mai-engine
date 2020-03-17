@@ -1,16 +1,21 @@
-@mixin mq($size, $query: min) {
-	$size: map_get($breakpoints, $size);
+@mixin mq($min: false, $max: false) {
+	$query: "";
 
-	@media (#{$query}-width: #{$size}) {
-		@content;
+	@if ($min) {
+		$min: map_get($breakpoints, $min);
+		$query: "(min-width: #{$min})";
 	}
-}
 
-@mixin mq-minmax($min_size, $max_size) {
-	$min_size: map_get($breakpoints, $min_size);
-	$max_size: map_get($breakpoints, $max_size) - 1px;
+	@if ($max) {
+		$max: map_get($breakpoints, $max);
+		$query: "(max-width: #{$max})";
+	}
 
-	@media (#{min-width}: $min_size) and (#{max-width}: $max_size) {
+	@if ($min and $max) {
+		$query: "(min-width: #{$min} ) and (max-width: #{$max})";
+	}
+
+	@media #{$query} {
 		@content;
 	}
 }

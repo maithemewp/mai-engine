@@ -2,14 +2,14 @@
 
 	&-columns {
 
-		@include mq(md, max) {
+		@include mq(false, md) {
 			flex-wrap: wrap;
 		}
 	}
 
 	&-column {
 
-		@include mq(md, max) {
+		@include mq(false, md) {
 			flex: none;
 			width: 100%;
 		}
