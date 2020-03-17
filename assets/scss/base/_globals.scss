@@ -80,8 +80,7 @@
 	--transition-property: all;
 	--transition-duration: 0.2s;
 	--transition-timing-function: ease;
-	--transition-delay: 0;
-	--transition: var(--transition-property) var(--transition-duration) var(--transition-timing-function) var(--transition-delay);
+	--transition: var(--transition-property) var(--transition-duration) var(--transition-timing-function);
 }
 
 :root {

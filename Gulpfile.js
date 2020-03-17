@@ -57,11 +57,13 @@ toolkit.extendConfig(
         js: {
             'global': [
                 './assets/js/filters.js',
-                './assets/js/header.js',
                 './assets/js/menu.js',
                 './assets/js/scroll.js',
                 './assets/js/toggle.js'
-            ]
+            ],
+            'sticky': [
+				'./assets/js/sticky.js',
+            ],
         },
         css: {
             basefontsize: 10,

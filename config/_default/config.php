@@ -22,7 +22,7 @@ return [
 	|
 	*/
 
-	'genesis-settings'    => [
+	'genesis-settings' => [
 		'avatar_size'               => 48,
 		'blog_cat_num'              => 9,
 		'breadcrumb_home'           => 0,
@@ -53,7 +53,7 @@ return [
 	|
 	*/
 
-	'google-fonts'        => [
+	'google-fonts' => [
 		'Source+Sans+Pro:400,600,700',
 		// TODO: Should this be empty to start, incase a custom site doesn't want a google font? Or that site should just filter this and return empty array?
 	],
@@ -69,7 +69,7 @@ return [
 	|
 	*/
 
-	'image-sizes'         => [
+	'image-sizes' => [
 		'add'    => [
 			'cover'     => [ 1600, 900, true ],
 			'landscape' => '4:3',
@@ -89,7 +89,7 @@ return [
 	|
 	*/
 
-	'page-layouts'        => [
+	'page-layouts' => [
 		'add'    => [
 			[
 				'id'      => 'standard-content',
@@ -141,7 +141,7 @@ return [
 	|
 	*/
 
-	'post-type-support'   => [
+	'post-type-support' => [
 		'add'    => [
 			'excerpt'                    => [ 'page' ],
 			'genesis-layouts'            => [ 'product' ],
@@ -167,7 +167,7 @@ return [
 	|
 	*/
 
-	'responsive-menu'     => [
+	'responsive-menu' => [
 		'script' => [
 			'mainMenu'         => sprintf(
 				'<span class="menu-toggle-icon"> </span><span class="screen-reader-text">%s</span>',
@@ -214,7 +214,7 @@ return [
 	|
 	*/
 
-	'scripts-and-styles'  => [
+	'scripts-and-styles' => [
 		'add'    => [
 
 			// Scripts.
@@ -225,9 +225,17 @@ return [
 				'editor' => true,
 			],
 			[
-				'handle' => mai_get_handle(),
+				'handle' => mai_get_handle() . '-global',
 				'src'    => mai_get_url() . 'assets/js/min/global.min.js',
 				'deps'   => [],
+			],
+			[
+				'handle'    => mai_get_handle() . '-sticky',
+				'src'       => mai_get_url() . 'assets/js/min/sticky.min.js',
+				'deps'      => [],
+				'condition' => function () {
+					return current_theme_supports( 'transparent-header' );
+				},
 			],
 
 			// Customizer scripts.
@@ -347,7 +355,7 @@ return [
 	|
 	*/
 
-	'archive-settings'    => [
+	'archive-settings' => [
 		'post',
 		'category',
 		'portfolio',
@@ -356,7 +364,7 @@ return [
 		'author',
 	],
 
-	'single-settings'     => [
+	'single-settings' => [
 		'page',
 		'post',
 	],
@@ -372,7 +380,7 @@ return [
 	|
 	*/
 
-	'theme-support'       => [
+	'theme-support' => [
 		'add'    => [
 
 			// Genesis defaults.
@@ -470,14 +478,14 @@ return [
 	|
 	*/
 
-	'widget-areas'        => [
+	'widget-areas' => [
 		'add'    => [
 			[
 				'id'          => 'before-header',
 				'name'        => __( 'Before Header', 'mai-engine' ),
 				'description' => __( 'The Before Header widget area.', 'mai-engine' ),
-				'location'    => 'genesis_header',
-				'priority'    => 2,
+//				'location'    => 'mai_before_header_wrap',
+				'location'    => 'genesis_before_header',
 			],
 			[
 				'id'          => 'header_left',
@@ -530,7 +538,7 @@ return [
 	|
 	*/
 
-	'grid-settings'       => require __DIR__ . '/settings.php',
+	'grid-settings' => require __DIR__ . '/settings.php',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -543,5 +551,5 @@ return [
 	|
 	*/
 
-	'custom-functions'    => '__return_null',
+	'custom-functions' => '__return_null',
 ];
