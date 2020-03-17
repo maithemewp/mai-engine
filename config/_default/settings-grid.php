@@ -685,7 +685,6 @@ return [
 					'atts'     => [
 						'ui'   => 1,
 						'ajax' => 1,
-
 					],
 				],
 				'field_5df139a216272' => [
@@ -1069,6 +1068,7 @@ return [
 				unset( $taxonomies['post_format'] );
 				unset( $taxonomies['yst_prominent_words'] );
 				foreach ( $taxonomies as $name => $taxonomy ) {
+					// TODO: These should be IDs.
 					$choices[ $name ] = $taxonomy->label;
 				}
 			}
@@ -1132,10 +1132,26 @@ return [
 		'type'       => 'select',
 		'sanitize'   => 'absint',
 		'default'    => '',
-		'choices'    => [
-			'this' => esc_html__( 'This', 'mai-engine' ),
-			'that' => esc_html__( 'That', 'mai-engine' ),
-		],
+		'choices'    => function() {
+			$choices = [];
+			if ( ! is_admin() ) {
+				return $choices;
+			}
+			if ( ! ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['taxonomy'] ) && ! empty( $_REQUEST['taxonomy'] ) ) ) {
+				return $choices;
+			}
+			$terms = get_terms( array(
+				'taxonomy'   => esc_html( $_REQUEST['taxonomy'] ),
+				'hide_empty' => false,
+			) );
+			if ( $terms ) {
+				foreach ( $terms as $name => $term ) {
+					$choices[ $term->term_id ] = $taxonomy->label;
+				}
+			}
+
+			return $choices;
+		},
 		'conditions' => [
 			[
 				'field'    => 'field_5df2063632ca2', // Taxonomy.
@@ -1148,9 +1164,9 @@ return [
 			],
 		],
 		'atts'       => [
-			'multiple'      => 1,
-			'return_format' => 'id',
-			'ui'            => 1,
+			'multiple' => 1,
+			'ui'       => 1,
+			'ajax'     => 1,
 		],
 	],
 	'field_5df1054743df5' => [
