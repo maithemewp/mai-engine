@@ -76,7 +76,7 @@ return [
 		'type'       => 'select',
 		'sanitize'   => 'esc_html',
 		'default'    => 'landscape-md',
-		'choices'    => function () {
+		'choices'    => function() {
 			$choices = [];
 			$sizes   = mai_get_available_image_sizes();
 			foreach ( $sizes as $index => $value ) {
@@ -535,7 +535,7 @@ return [
 		'type'     => 'select',
 		'sanitize' => 'esc_html',
 		'default'  => [ 'post' ],
-		'choices'  => function () {
+		'choices'  => function() {
 			$choices    = [];
 			$post_types = get_post_types(
 				[
@@ -560,6 +560,26 @@ return [
 			'ajax'     => 0,
 		],
 	],
+	'field_5df1053632cad' => [
+		'name'       => 'query_by',
+		'label'      => esc_html__( 'Get Entries By', 'mai-engine' ),
+		'block'      => [ 'post' ],
+		'type'       => 'select',
+		'sanitize'   => 'esc_html',
+		'default'    => 'date',
+		'choices'    => [
+			'date'     => esc_html__( 'Date', 'mai-engine' ),
+			'title'    => esc_html__( 'Title', 'mai-engine' ),
+			'tax_meta' => esc_html__( 'Taxonomy/Meta', 'mai-engine' ),
+			'parent'   => esc_html__( 'Parent', 'mai-engine' ),
+		],
+		'conditions' => [
+			[
+				'field'    => 'field_5df1053632ca2', // Post_type.
+				'operator' => '!=empty',
+			],
+		],
+	],
 	'field_5df1053632ca8' => [
 		'name'       => 'posts_per_page',
 		'label'      => esc_html__( 'Number of Entries', 'mai-engine' ),
@@ -582,26 +602,6 @@ return [
 		'atts'       => [
 			'placeholder' => 12,
 			'min'         => 0,
-		],
-	],
-	'field_5df1053632cad' => [
-		'name'       => 'query_by',
-		'label'      => esc_html__( 'Get Entries By', 'mai-engine' ),
-		'block'      => [ 'post' ],
-		'type'       => 'select',
-		'sanitize'   => 'esc_html',
-		'default'    => 'date',
-		'choices'    => [
-			'date'     => esc_html__( 'Date', 'mai-engine' ),
-			'title'    => esc_html__( 'Title', 'mai-engine' ),
-			'tax_meta' => esc_html__( 'Taxonomy/Meta', 'mai-engine' ),
-			'parent'   => esc_html__( 'Parent', 'mai-engine' ),
-		],
-		'conditions' => [
-			[
-				'field'    => 'field_5df1053632ca2', // Post_type.
-				'operator' => '!=empty',
-			],
 		],
 	],
 	'field_5df1053632cbc' => [
@@ -657,7 +657,7 @@ return [
 					'type'     => 'select',
 					'sanitize' => 'esc_html',
 					'default'  => '',
-					'choices'  => function () {
+					'choices'  => function() {
 						$choices = [];
 						if ( ! ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) ) {
 							return $choices;
@@ -862,7 +862,7 @@ return [
 		'type'       => 'post_object',
 		'sanitize'   => 'absint',
 		'default'    => '',
-		'choices'    => function () {
+		'choices'    => function() {
 			$choices = [];
 			if ( ! ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) ) {
 				return $choices;
@@ -1046,6 +1046,25 @@ return [
 			'ajax'     => 0,
 		],
 	],
+	'field_5df1054642cad' => [
+		'name'       => 'query_by',
+		'label'      => esc_html__( 'Get Entries By', 'mai-engine' ),
+		'block'      => [ 'term' ],
+		'type'       => 'select',
+		'sanitize'   => 'esc_html',
+		'default'    => 'date',
+		'choices'    => [
+			'date'   => esc_html__( 'Date', 'mai-engine' ),
+			'title'  => esc_html__( 'Title', 'mai-engine' ),
+			'parent' => esc_html__( 'Parent', 'mai-engine' ),
+		],
+		'conditions' => [
+			[
+				'field'    => 'field_5df2063632ca2', // Taxonomy.
+				'operator' => '!=empty',
+			],
+		],
+	],
 	'field_5df2065733db9' => [
 		'name'       => 'number',
 		'label'      => esc_html__( 'Number of Entries', 'mai-engine' ),
@@ -1070,26 +1089,87 @@ return [
 			'min'         => 0,
 		],
 	],
-	'field_5df1054642cad' => [
-		'name'       => 'query_by',
-		'label'      => esc_html__( 'Get Entries By', 'mai-engine' ),
+	'field_5df10647743cb' => [
+		'name'       => 'include',
+		'label'      => esc_html__( 'Entries', 'mai-engine' ),
+		'desc'       => esc_html__( 'Show specific entries. Choose all that apply. If empty, Grid will get entries by date.', 'mai-engine' ),
 		'block'      => [ 'term' ],
 		'type'       => 'select',
-		'sanitize'   => 'esc_html',
-		'default'    => 'date',
+		'sanitize'   => 'absint',
+		'default'    => '',
 		'choices'    => [
-			'date'   => esc_html__( 'Date', 'mai-engine' ),
-			'title'  => esc_html__( 'Title', 'mai-engine' ),
-			'parent' => esc_html__( 'Parent', 'mai-engine' ),
+			'this' => esc_html__( 'This', 'mai-engine' ),
+			'that' => esc_html__( 'That', 'mai-engine' ),
 		],
 		'conditions' => [
 			[
 				'field'    => 'field_5df2063632ca2', // Taxonomy.
 				'operator' => '!=empty',
 			],
+			[
+				'field'    => 'field_5df1054642cad', // Query_by.
+				'operator' => '==',
+				'value'    => 'title',
+			],
+		],
+		'atts'       => [
+			'multiple'      => 1,
+			'return_format' => 'id',
+			'ui'            => 1,
 		],
 	],
-	'field_5df2164632d03' => [
+	'field_5df1054743df5' => [
+		'name'       => 'parent',
+		'label'      => esc_html__( 'Parent', 'mai-engine' ),
+		'block'      => [ 'term' ],
+		'type'       => 'post_object',
+		'sanitize'   => 'absint',
+		'default'    => '',
+		'choices'    => function() {
+
+		},
+		'conditions' => [
+			[
+				'field'    => 'field_5df2063632ca2', // Taxonomy.
+				'operator' => '!=empty',
+			],
+			[
+				'field'    => 'field_5df1054642cad', // Query_by.
+				'operator' => '==',
+				'value'    => 'parent',
+			],
+		],
+		'atts'       => [
+			'multiple' => 1,
+			'ui'       => 1,
+			'ajax'     => 1,
+		],
+	],
+	'field_5df2cg12fb2ef' => [
+		'name'       => 'offset',
+		'label'      => esc_html__( 'Offset', 'mai-engine' ),
+		'desc'       => esc_html__( 'Skip this number of entries.', 'mai-engine' ),
+		'block'      => [ 'term' ],
+		'type'       => 'number',
+		'sanitize'   => 'absint',
+		'default'    => 0,
+		'conditions' => [
+			[
+				'field'    => 'field_5df2063632ca2', // Taxonomy.
+				'operator' => '!=empty',
+			],
+			[
+				'field'    => 'field_5df1053632cad', // Query_by.
+				'operator' => '!=',
+				'value'    => 'title',
+			],
+		],
+		'atts'       => [
+			'placeholder' => 0,
+			'min'         => 0,
+		],
+	],
+	'field_5df21757632e1' => [
 		'name'       => 'exclude',
 		'label'      => esc_html__( 'Exclude', 'mai-engine' ),
 		'block'      => [ 'term' ],
@@ -1097,6 +1177,7 @@ return [
 		'sanitize'   => 'esc_html',
 		'default'    => '',
 		'choices'    => [
+			'hide_empty'        => esc_html__( 'Exclude terms with no posts', 'mai-engine' ),
 			'exclude_current'   => esc_html__( 'Exclude current', 'mai-engine' ),
 			'exclude_displayed' => esc_html__( 'Exclude displayed', 'mai-engine' ),
 		],
