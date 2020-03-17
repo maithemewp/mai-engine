@@ -147,47 +147,6 @@
 	border-radius: 0 0 0 3px;
 }
 
-/* ACF button group. */
-
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group .acf-button-group {
-	display: -webkit-box;
-	display: flex;
-}
-
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear {
-	position: relative;
-}
-
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear .acf-button-group {
-	flex-wrap: wrap;
-}
-
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear .acf-button-group > .acf-label {
-	padding-right: 54px;
-}
-
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear .acf-button-group label:first-child {
-	position: absolute;
-	right: 0;
-	bottom: calc(100% + 3px);
-	color: #008dd4;
-	font-size: 10px;
-	text-transform: uppercase;
-	background: transparent;
-	border: transparent;
-}
-
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear .acf-button-group label:nth-child(2) {
-	border-radius: 3px 0 0 3px;
-}
-
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear .acf-button-group label:first-child:hover,
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear .acf-button-group label:first-child:focus {
-	color: #016087;
-	background: #f3f5f6;
-	border-color: #0071a1;
-}
-
 /* kirki buttonset */
 
 .customize-control.customize-control-kirki-radio-buttonset .buttonset {
