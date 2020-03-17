@@ -49,29 +49,29 @@ function mai_after_title_area_hook( $close_html ) {
 	return $close_html;
 }
 
-add_filter( 'genesis_attr_site-header', 'mai_site_header_properties' );
+add_filter( 'genesis_attr_title-area', 'mai_title_area_properties' );
 /**
  * Add logo width and spacing properties to the header.
  * Inline properties allow us to still use CSS without PHP inline styles.
  *
  * @since 0.1.0
  *
- * @param array $attributes The existing attributes.
+ * @param array $attr The existing attributes.
  *
  * @return array  The modified attributes.
  */
-function mai_site_header_properties( $attributes ) {
-	$values              = get_option( 'mai_header' );
-	$values              = $values ?: mai_header_settings_defaults_temp_function();
-	$attributes['style'] = isset( $attributes['style'] ) ? $attributes['style'] . ' ' : '';
-	$attributes['style'] .= sprintf( '--logo-width-large:%s;', mai_get_unit_value( $values['logo_width_large'] ) );
-	$attributes['style'] .= sprintf( '--logo-top-large:%s;', mai_get_unit_value( $values['logo_spacing_large']['top'] ) );
-	$attributes['style'] .= sprintf( '--logo-bottom-large:%s;', mai_get_unit_value( $values['logo_spacing_large']['bottom'] ) );
-	$attributes['style'] .= sprintf( '--logo-width-small:%s;', mai_get_unit_value( $values['logo_width_small'] ) );
-	$attributes['style'] .= sprintf( '--logo-top-small:%s;', mai_get_unit_value( $values['logo_spacing_small']['top'] ) );
-	$attributes['style'] .= sprintf( '--logo-bottom-small:%s;', mai_get_unit_value( $values['logo_spacing_small']['bottom'] ) );
+function mai_title_area_properties( $attr ) {
+	$values        = get_option( 'mai_header' );
+	$values        = $values ?: mai_header_settings_defaults_temp_function();
+	$attr['style'] = isset( $attr['style'] ) ? $attr['style'] . ' ' : '';
+	$attr['style'] .= sprintf( '--logo-width-large:%s;', mai_get_unit_value( $values['logo_width_large'] ) );
+	$attr['style'] .= sprintf( '--logo-top-large:%s;', mai_get_unit_value( $values['logo_spacing_large']['top'] ) );
+	$attr['style'] .= sprintf( '--logo-bottom-large:%s;', mai_get_unit_value( $values['logo_spacing_large']['bottom'] ) );
+	$attr['style'] .= sprintf( '--logo-width-small:%s;', mai_get_unit_value( $values['logo_width_small'] ) );
+	$attr['style'] .= sprintf( '--logo-top-small:%s;', mai_get_unit_value( $values['logo_spacing_small']['top'] ) );
+	$attr['style'] .= sprintf( '--logo-bottom-small:%s;', mai_get_unit_value( $values['logo_spacing_small']['bottom'] ) );
 
-	return $attributes;
+	return $attr;
 }
 
 add_filter( 'genesis_markup_site-title_content', 'mai_site_title_link' );

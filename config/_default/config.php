@@ -484,7 +484,8 @@ return [
 				'id'          => 'before-header',
 				'name'        => __( 'Before Header', 'mai-engine' ),
 				'description' => __( 'The Before Header widget area.', 'mai-engine' ),
-				'location'    => 'mai_before_header_wrap',
+//				'location'    => 'mai_before_header_wrap',
+				'location'    => 'genesis_before_header',
 			],
 			[
 				'id'          => 'header_left',
