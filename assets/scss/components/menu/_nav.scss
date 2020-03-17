@@ -22,7 +22,7 @@
 
 	@include mq(lg) {
 		--menu-alignment: flex-start;
-		border-top: var(--nav-after-header-border-top, var(--border));
+		border-top: var(--nav-after-header-border-top, 0);
 	}
 }
 

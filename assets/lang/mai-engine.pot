@@ -61,35 +61,35 @@ msgstr ""
 msgid "The Before Header widget area."
 msgstr ""
 
-#: config/_default/config.php:492
+#: config/_default/config.php:491
 msgid "Header Left"
 msgstr ""
 
-#: config/_default/config.php:493
+#: config/_default/config.php:492
 msgid "The Header Left widget area."
 msgstr ""
 
-#: config/_default/config.php:502
+#: config/_default/config.php:501
 msgid "Header Right"
 msgstr ""
 
-#: config/_default/config.php:503
+#: config/_default/config.php:502
 msgid "The Header Right widget area."
 msgstr ""
 
-#: config/_default/config.php:512
+#: config/_default/config.php:511
 msgid "Before Footer"
 msgstr ""
 
-#: config/_default/config.php:513
+#: config/_default/config.php:512
 msgid "The Before Footer widget area."
 msgstr ""
 
-#: config/_default/config.php:519
+#: config/_default/config.php:518
 msgid "Mobile Menu"
 msgstr ""
 
-#: config/_default/config.php:520
+#: config/_default/config.php:519
 msgid "The Mobile Menu widget area."
 msgstr ""
 

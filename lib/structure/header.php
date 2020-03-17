@@ -139,17 +139,3 @@ function mai_header_section_class( $atts ) {
 
 	return $atts;
 }
-
-add_filter( 'genesis_structural_wrap-header', 'mai_site_header_wrap' );
-/**
- * Description of expected behavior.
- *
- * @since 1.0.0
- *
- * @param $output
- *
- * @return mixed
- */
-function mai_site_header_wrap( $output ) {
-	return str_replace( 'wrap', 'site-header-wrap wrap', $output );
-}

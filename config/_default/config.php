@@ -234,7 +234,7 @@ return [
 				'src'       => mai_get_url() . 'assets/js/min/sticky.min.js',
 				'deps'      => [],
 				'condition' => function () {
-					return current_theme_supports( 'transparent-header' );
+					return current_theme_supports( 'sticky-header' );
 				},
 			],
 
@@ -484,7 +484,6 @@ return [
 				'id'          => 'before-header',
 				'name'        => __( 'Before Header', 'mai-engine' ),
 				'description' => __( 'The Before Header widget area.', 'mai-engine' ),
-//				'location'    => 'mai_before_header_wrap',
 				'location'    => 'genesis_before_header',
 			],
 			[
