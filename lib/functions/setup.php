@@ -9,9 +9,6 @@
  * @license   GPL-2.0-or-later
  */
 
-// Prevent direct file access.
-defined( 'ABSPATH' ) || die;
-
 add_action( 'genesis_setup', 'mai_setup', 100 );
 /**
  * Theme setup.
@@ -21,6 +18,7 @@ add_action( 'genesis_setup', 'mai_setup', 100 );
  * @return void
  */
 function mai_setup() {
+	
 	// Get active theme.
 	$active_theme = mai_get_active_theme();
 	$handle       = mai_get_handle();
@@ -136,25 +134,4 @@ function mai_setup() {
 			unregister_sidebar( $id );
 		}
 	);
-
-	/**
-	 * Remove default widget area content if sidebar is not registered or if a no-sidebar layout.
-	 * Unregistering isn't enough in some scenarios where an existing site already has content/widgets in the sidebar.
-	 */
-	if ( in_array( 'sidebar', $widget_areas['remove'] ) || in_array(
-		genesis_site_layout(),
-		[
-			'wide-content',
-			'standard-content',
-			'narrow-content',
-		],
-		true
-	) ) {
-		remove_action( 'genesis_sidebar', 'genesis_do_sidebar' );
-	}
-
-	if ( in_array( 'sidebar-alt', $widget_areas['remove'], true ) ) {
-		remove_action( 'genesis_sidebar_alt', 'genesis_do_sidebar_alt' );
-	}
-
 }
