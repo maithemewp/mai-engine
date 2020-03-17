@@ -55,19 +55,30 @@ class Mai_Grid {
 	public function __construct( $args ) {
 		$args['context'] = 'block'; // Required for Mai_Entry.
 		$this->type      = isset( $args['type'] ) ?: 'post';
-		$this->settings  = mai_get_config( 'grid-settings' );
-		$this->defaults  = $this->get_defaults( $this->type );
+		$this->settings  = $this->get_settings();
+		$this->defaults  = $this->get_defaults();
 		$this->args      = $this->get_sanitized_args( $args );
 	}
 
-	public function get_defaults() {
-		foreach( $this->settings as $key => $field ) {
-			// Remove tabs or fields not in this grid type.
-			if ( ( 'tab' === $field['type'] ) || ! in_array( $this->type, $field['block'] ) ) {
-				unset( $this->settings[ $key ] );
+	public function get_settings() {
+		$settings = [];
+		$config   = mai_get_config( 'grid-settings' );
+		foreach( $config as $key => $setting ) {
+			// Skip tabs.
+			if ( 'tab' === $setting['type'] ) {
+				continue;
 			}
+			// Skip fields not in this grid type.
+			if ( ! in_array( $this->type, $setting['block'] ) ) {
+				continue;
+			}
+			$settings[ $setting['name'] ] = $setting;
 		}
-		return wp_list_pluck( $this->settings, 'default', 'name' );
+		return $settings;
+	}
+
+	public function get_defaults() {
+		return wp_list_pluck( $this->settings, 'default' );
 	}
 
 	/**
@@ -182,7 +193,7 @@ class Mai_Grid {
 	public function get_post_query_args() {
 		$query_args = [
 			'post_type'           => $this->args['post_type'],
-			'posts_per_page'      => $this->args['number'],
+			'posts_per_page'      => $this->args['posts_per_page'],
 			'post_status'         => 'publish',
 			'offset'              => absint( $this->args['offset'] ),
 			'ignore_sticky_posts' => true,
