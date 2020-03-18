@@ -119,14 +119,7 @@ class Mai_Entry {
 		);
 
 		// Check if extra wrap is needed.
-		$has_inner = in_array( 'image', $this->args['show'], true ) && in_array(
-			$this->args['image_position'],
-			[
-				'left',
-				'right',
-			],
-			true
-		);
+		$has_inner = in_array( 'image', $this->args['show'], true ) && in_array( $this->args['image_position'], [ 'left', 'right' ], true );
 
 		// If we have inner wrap.
 		if ( $has_inner ) {
@@ -192,6 +185,7 @@ class Mai_Entry {
 				],
 			]
 		);
+
 	}
 
 	/**
@@ -440,14 +434,14 @@ class Mai_Entry {
 		// TODO: Get fallback.
 
 		// Filter.
-		$image_id = apply_filters( 'mai_entry_image_id', $image_id, $this->entry, $this->args );
+		$image_id = apply_filters( 'mai_entry_image_id', (int) $image_id, $this->entry, $this->args );
 
 		// Bail if no image ID.
 		if ( ! $image_id ) {
 			return false;
 		}
 
-		return $image_id;
+		return (int) $image_id;
 	}
 
 	/**
@@ -588,7 +582,7 @@ class Mai_Entry {
 				break;
 			case 'term':
 				$wrap  = 'h3'; // Only blocks use this function for terms.
-				$title = ''; // TODO: Add title.
+				$title = $this->entry->name;
 				break;
 			case 'user':
 				$wrap  = 'h3'; // Only blocks use this function for users.
@@ -672,7 +666,11 @@ class Mai_Entry {
 				$excerpt = get_the_excerpt();
 				break;
 			case 'term':
-				$excerpt = ''; // TODO (intro text).
+				global $wp_embed;
+				$excerpt = get_term_meta( $this->id, 'intro_text', true );
+				$excerpt = $wp_embed->autoembed( $excerpt );
+				$excerpt = do_shortcode( $excerpt );
+				$excerpt = wpautop( $excerpt );
 				break;
 			case 'user':
 				$excerpt = ''; // TODO (possibly not an option for users).
@@ -824,7 +822,7 @@ class Mai_Entry {
 				$more_link = get_the_permalink( $this->entry );
 				break;
 			case 'term':
-				$more_link = ''; // TODO.
+				$more_link = get_term_link( $this->entry );
 				break;
 			case 'user':
 				$more_link = ''; // TODO.
@@ -838,6 +836,7 @@ class Mai_Entry {
 			return;
 		}
 
+		// TODO: Where the heck is the best spot to filter this? I think we need a helper function cause this is the default everywhere.
 		$more_link_text = $this->args['more_link_text'] ? $this->args['more_link_text'] : __( 'Read More', 'mai-engine' );
 
 		genesis_markup(
