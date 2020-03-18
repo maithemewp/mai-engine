@@ -49,32 +49,6 @@ function mai_after_title_area_hook( $close_html ) {
 	return $close_html;
 }
 
-add_action( 'genesis_setup', 'mai_title_area_custom_properties', 100 );
-/**
- * Add logo width and spacing properties to the header.
- * Inline properties allow us to still use CSS without PHP inline styles.
- *
- * @since 0.1.0
- *
- * @return void
- */
-function mai_title_area_custom_properties() {
-	$values = get_option( 'mai_header' );
-	$values = $values ?: mai_header_settings_defaults_temp_function();
-	$styles = mai_get_inline_styles();
-
-	$styles[''] = [
-		':root' => [
-			'--logo-width-large'  => mai_get_unit_value( $values['logo_width_large'] ),
-			'--logo-top-large'    => mai_get_unit_value( $values['logo_spacing_large']['top'] ),
-			'--logo-bottom-large' => mai_get_unit_value( $values['logo_spacing_large']['bottom'] ),
-			'--logo-width-small'  => mai_get_unit_value( $values['logo_width_small'] ),
-			'--logo-top-small'    => mai_get_unit_value( $values['logo_spacing_small']['top'] ),
-			'--logo-bottom-small' => mai_get_unit_value( $values['logo_spacing_small']['bottom'] ),
-		],
-	];
-}
-
 add_filter( 'genesis_markup_site-title_content', 'mai_site_title_link' );
 /**
  * Description of expected behavior.

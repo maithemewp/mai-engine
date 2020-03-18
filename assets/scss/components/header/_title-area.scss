@@ -1,13 +1,8 @@
 .title-area {
-	padding: var(--logo-top, var(--spacing)) 0 var(--logo-bottom, var(--spacing));
+	padding: var(--title-area-padding-top, var(--spacing)) 0 var(--title-area-padding-bottom, var(--spacing));
 	line-height: var(--title-area-line-height, var(--line-height-heading));
 	text-align: var(--title-area-text-align, start);
 	transition: var(--title-area-transition, var(--transition));
-
-	@include mq(false, lg) {
-		--logo-top: var(--logo-top-mobile);
-		--logo-bottom: var(--logo-bottom-mobile);
-	}
 }
 
 .has-logo-center {
@@ -42,6 +37,6 @@
 }
 
 .custom-logo {
-	max-width: var(--logo-width,'180px');
+	max-width: var(--custom-logo-width, 18rem);
 	transition: var(--title-area-transition, var(--transition));
 }

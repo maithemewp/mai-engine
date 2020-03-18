@@ -108,36 +108,3 @@ function mai_remove_noto_serif_editor_styles( $settings ) {
 
 	return $settings;
 }
-
-add_action( 'genesis_footer', 'mai_add_inline_styles' );
-/**
- * Description of expected behavior.
- *
- * @since 1.0.0
- *
- * @return void
- */
-function mai_add_inline_styles() {
-	$styles = mai_get_inline_styles();
-
-	wp_register_style( mai_get_handle() . '-footer', false );
-	wp_enqueue_style( mai_get_handle() . '-footer' );
-	wp_add_inline_style( mai_get_handle() . '-footer', $styles->getStyles() );
-}
-
-/**
- * Description of expected behavior.
- *
- * @since 1.0.0
- *
- * @return Mai_Inline_Styles
- */
-function mai_get_inline_styles() {
-	static $class;
-
-	if ( is_null( $class ) ) {
-		$class = new Mai_Inline_Styles();
-	}
-
-	return $class;
-}
