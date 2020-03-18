@@ -776,3 +776,33 @@ function mai_get_taxonomy_choices() {
 
 	return $choices;
 }
+
+function mai_get_post_type_taxonomy_choices() {
+	$choices = [];
+	if ( ! is_admin() ) {
+		return $choices;
+	}
+	$post_types = mai_get_acf_request( 'post_type' );
+	if ( ! $post_types ) {
+		return $choices;
+	}
+	foreach( (array) $post_types as $post_type ) {
+		$taxonomies = get_object_taxonomies( sanitize_text_field( wp_unslash( $post_type ) ), 'objects' );
+		if ( $taxonomies ) {
+			unset( $taxonomies['post_format'] );
+			unset( $taxonomies['yst_prominent_words'] );
+			foreach ( $taxonomies as $name => $taxo ) {
+				$choices[ $name ] = $taxo->label;
+			}
+		}
+	}
+
+	return $choices;
+}
+
+function mai_get_acf_request( $request ) {
+	if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST[ $request ] ) && ! empty( $_REQUEST[ $request ] ) ) {
+		return $_REQUEST[ $request ];
+	}
+	return false;
+}

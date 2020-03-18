@@ -623,6 +623,7 @@ return [
 		],
 		'atts'       => [
 			'collapsed'    => 'field_5df1398916271',
+			'layout'       => 'block',
 			'button_label' => esc_html__( 'Add Condition', 'mai-engine' ),
 			'sub_fields'   => [
 				'field_5df1398916271' => [
@@ -632,25 +633,7 @@ return [
 					'type'     => 'select',
 					'sanitize' => 'esc_html',
 					'default'  => '',
-					'choices'  => function() {
-						$choices = [];
-						if ( ! is_admin() ) {
-							return $choices;
-						}
-						if ( ! ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) ) {
-							return $choices;
-						}
-						foreach( (array) $_REQUEST['post_type'] as $post_type ) {
-							$taxonomies = get_object_taxonomies( sanitize_text_field( wp_unslash( $post_type ) ), 'objects' );
-							if ( $taxonomies ) {
-								foreach ( $taxonomies as $name => $taxo ) {
-									$choices[ $name ] = $taxo->label;
-								}
-							}
-						}
-
-						return $choices;
-					},
+					'choices'  => 'mai_get_post_type_taxonomy_choices',
 					'atts'     => [
 						'ui'   => 1,
 						'ajax' => 1,
@@ -745,6 +728,7 @@ return [
 		],
 		'atts'       => [
 			'collapsed'    => 'field_5df3398916382',
+			'layout'       => 'block',
 			'button_label' => esc_html__( 'Add Condition', 'mai-engine' ),
 			'sub_fields'   => [
 				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
