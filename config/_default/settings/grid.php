@@ -314,15 +314,7 @@ return [
 		'type'     => 'button_group',
 		'sanitize' => 'absint',
 		'default'  => 3,
-		'choices'  => [
-			1 => esc_html__( '1', 'mai-engine' ),
-			2 => esc_html__( '2', 'mai-engine' ),
-			3 => esc_html__( '3', 'mai-engine' ),
-			4 => esc_html__( '4', 'mai-engine' ),
-			5 => esc_html__( '5', 'mai-engine' ),
-			6 => esc_html__( '6', 'mai-engine' ),
-			0 => esc_html__( 'Auto', 'mai-engine' ),
-		],
+		'choices'  => 'mai_get_columns_choices',
 		'atts'     => [
 			'wrapper' => [
 				'width' => '',
@@ -349,15 +341,7 @@ return [
 		'type'       => 'button_group',
 		'sanitize'   => 'absint',
 		'default'    => 1,
-		'choices'    => [
-			1 => esc_html__( '1', 'mai-engine' ),
-			2 => esc_html__( '2', 'mai-engine' ),
-			3 => esc_html__( '3', 'mai-engine' ),
-			4 => esc_html__( '4', 'mai-engine' ),
-			5 => esc_html__( '5', 'mai-engine' ),
-			6 => esc_html__( '6', 'mai-engine' ),
-			0 => esc_html__( 'Auto', 'mai-engine' ),
-		],
+		'choices'    => 'mai_get_columns_choices',
 		'conditions' => [
 			[
 				'field'    => 'field_5e334124b905d', // Columns_responsive.
@@ -380,15 +364,7 @@ return [
 		'type'       => 'button_group',
 		'sanitize'   => 'absint',
 		'default'    => 1,
-		'choices'    => [
-			1 => esc_html__( '1', 'mai-engine' ),
-			2 => esc_html__( '2', 'mai-engine' ),
-			3 => esc_html__( '3', 'mai-engine' ),
-			4 => esc_html__( '4', 'mai-engine' ),
-			5 => esc_html__( '5', 'mai-engine' ),
-			6 => esc_html__( '6', 'mai-engine' ),
-			0 => esc_html__( 'Auto', 'mai-engine' ),
-		],
+		'choices'    => 'mai_get_columns_choices',
 		'conditions' => [
 			[
 				'field'    => 'field_5e334124b905d', // Columns_responsive.
@@ -411,15 +387,7 @@ return [
 		'type'       => 'button_group',
 		'sanitize'   => 'absint',
 		'default'    => 1,
-		'choices'    => [
-			1 => esc_html__( '1', 'mai-engine' ),
-			2 => esc_html__( '2', 'mai-engine' ),
-			3 => esc_html__( '3', 'mai-engine' ),
-			4 => esc_html__( '4', 'mai-engine' ),
-			5 => esc_html__( '5', 'mai-engine' ),
-			6 => esc_html__( '6', 'mai-engine' ),
-			0 => esc_html__( 'Auto', 'mai-engine' ),
-		],
+		'choices'    => 'mai_get_columns_choices',
 		'conditions' => [
 			[
 				'field'    => 'field_5e334124b905d', // Columns_responsive.

@@ -16,9 +16,9 @@ add_action( 'init', 'mai_archive_customizer_settings' );
  * @return  void
  */
 function mai_archive_customizer_settings() {
-	$archives = mai_get_config( 'archive-settings' );
+	$types = mai_get_config( 'archive-settings-content-types' );
 
-	if ( ! $archives ) {
+	if ( ! $types ) {
 		return;
 	}
 
@@ -32,7 +32,7 @@ function mai_archive_customizer_settings() {
 		]
 	);
 
-	foreach ( $archives as $name ) {
+	foreach ( $types as $name ) {
 
 		// Get the post type object.
 		$post_type = get_post_type_object( $name );
@@ -51,7 +51,7 @@ function mai_archive_customizer_settings() {
 		mai_add_archive_customizer_settings( $name, 'post_type' );
 
 		// Get supported taxonomies.
-		$taxonomies = array_intersect( $archives, get_object_taxonomies( $name ) );
+		$taxonomies = array_intersect( $types, get_object_taxonomies( $name ) );
 
 		// Skip if no taxonomies.
 		if ( ! $taxonomies ) {
@@ -64,11 +64,11 @@ function mai_archive_customizer_settings() {
 		}
 	}
 
-	if ( in_array( 'search', $archives, true ) ) {
+	if ( in_array( 'search', $types, true ) ) {
 		mai_add_archive_customizer_settings( 'search', 'search' );
 	}
 
-	if ( in_array( 'author', $archives, true ) ) {
+	if ( in_array( 'author', $types, true ) ) {
 		mai_add_archive_customizer_settings( 'author', 'author' );
 	}
 }
@@ -80,7 +80,7 @@ add_action( 'init', 'mai_single_customizer_settings' );
  * @return  void
  */
 function mai_single_customizer_settings() {
-	$post_types = mai_get_config( 'single-settings' );
+	$post_types = mai_get_config( 'single-settings-post-types' );
 
 	if ( ! $post_types ) {
 		return;
@@ -163,8 +163,7 @@ function mai_add_archive_customizer_settings( $name, $type = 'post_type' ) {
 	}
 
 	// Get fields.
-	$settings = new Mai_Entry_Settings( 'archive' );
-	$fields   = $settings->get_fields();
+	$fields = mai_get_config( 'archive-settings' );
 
 	// Section.
 	Kirki::add_section(
@@ -176,15 +175,10 @@ function mai_add_archive_customizer_settings( $name, $type = 'post_type' ) {
 	);
 
 	// Loop through fields.
-	foreach ( $fields as $field_name => $field ) {
-
-		// Bail if not an archive field.
-		if ( ! $field['archive'] ) {
-			continue;
-		}
+	foreach ( $fields as $field ) {
 
 		// Add field.
-		Kirki::add_field( $config_id, $settings->get_data( $field_name, $field, $config_id ) );
+		Kirki::add_field( $config_id, mai_get_kirki_field_data( $field, $config_id ) );
 	}
 }
 
@@ -224,8 +218,7 @@ function mai_add_single_customizer_settings( $name ) {
 	$label     = $post_type->labels->name;
 
 	// Get fields.
-	$settings = new Mai_Entry_Settings( 'single' );
-	$fields   = $settings->get_fields();
+	$fields = mai_get_config( 'archive-settings' );
 
 	// Section.
 	Kirki::add_section(
@@ -237,14 +230,70 @@ function mai_add_single_customizer_settings( $name ) {
 	);
 
 	// Loop through fields.
-	foreach ( $fields as $field_name => $field ) {
-
-		// Bail if not an single field.
-		if ( ! $field['single'] ) {
-			continue;
-		}
+	foreach ( $fields as $field ) {
 
 		// Add field.
-		Kirki::add_field( $config_id, $settings->get_data( $field_name, $field, $config_id ) );
+		Kirki::add_field( $config_id, mai_get_kirki_field_data( $field, $config_id ) );
 	}
+}
+
+/**
+ * Setup the field data from config for kirki add_field method.
+ *
+ * @param  array  $field      The field config data.
+ * @param  string $section_id The Customizer section ID.
+ *
+ * @return array The field data.
+ */
+function mai_get_kirki_field_data( $field, $section_id ) {
+
+	$data = [
+		'type'     => $field['type'],
+		'label'    => $field['label'],
+		'settings' => $field['name'],
+		'section'  => $section_id,
+		'priority' => 10,
+	];
+
+	// Maybe add description.
+	if ( isset( $field['desc'] ) ) {
+		$data['description'] = $field['desc'];
+	}
+
+	// Maybe add attributes.
+	if ( isset( $field['atts'] ) ) {
+		foreach ( $field['atts'] as $key => $value ) {
+			$data[ $key ] = $value;
+		}
+	}
+
+	// Maybe add conditional logic.
+	if ( isset( $field['conditions'] ) ) {
+		$data['active_callback'] = $field['conditions'];
+	}
+
+	// Maybe add default.
+	if ( isset( $field['default'] ) ) {
+		// Force radio buttonsets to strings, for some reason integers don't work with Kirki.
+		if ( 'radio-buttonset' === $field['type'] && is_integer( $field['default'] ) ) {
+			$field['default'] = (string) $field['default'];
+		}
+		$data['default'] = $field['default'];
+	}
+
+	// Maybe get choices.
+	if ( isset( $field['choices'] ) ) {
+		if ( is_array( $field['choices'] ) ) {
+			$data['choices'] = $field['choices'];
+		} elseif ( is_callable( $field['choices'] ) ) {
+			$data['choices'] = call_user_func( $field['choices'] );
+		}
+	}
+
+	// Maybe add custom sanitize function.
+	if ( isset( $field['sanitize'] ) ) {
+		$data['sanitize_callback'] = $field['sanitize'];
+	}
+
+	return $data;
 }

@@ -514,9 +514,20 @@ return [
 	|
 	*/
 
+	'archive-settings-content-types' => [
+		'post',
+		'category',
+		'search',
+	],
+
+	'single-settings-post-types' => [
+		'page',
+		'post',
+	],
+
 	'archive-settings' => require __DIR__ . '/settings/archive.php',
-	'grid-settings'    => require __DIR__ . '/settings/grid.php',
 	'single-settings'  => require __DIR__ . '/settings/single.php',
+	'grid-settings'    => require __DIR__ . '/settings/grid.php',
 
 	/*
 	|--------------------------------------------------------------------------

@@ -715,6 +715,9 @@ function mai_get_image_sizes_from_aspect_ratio( $size = 'md', $ratio = '16:9' ) 
 	return [ $width, $height, true ];
 }
 
+function mai_get_site_layout_choices() {
+	return [ '' => esc_html__( 'Site Default', 'mai-engine' ) ] + genesis_get_layouts_for_customizer();
+}
 
 function mai_get_image_size_choices() {
 	$choices = [];
@@ -727,6 +730,18 @@ function mai_get_image_size_choices() {
 	}
 
 	return $choices;
+}
+
+function mai_get_columns_choices() {
+	return [
+		1 => esc_html__( '1', 'mai-engine' ),
+		2 => esc_html__( '2', 'mai-engine' ),
+		3 => esc_html__( '3', 'mai-engine' ),
+		4 => esc_html__( '4', 'mai-engine' ),
+		5 => esc_html__( '5', 'mai-engine' ),
+		6 => esc_html__( '6', 'mai-engine' ),
+		0 => esc_html__( 'Auto', 'mai-engine' ),
+	];
 }
 
 function mai_get_post_type_choices() {
