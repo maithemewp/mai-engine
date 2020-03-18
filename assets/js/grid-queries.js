@@ -3,7 +3,7 @@ jQuery(document).ready(function($) {
 	if ( 'object' !== typeof acf ) {
 		return
 	}
-	// var fields = maiGridQueryVars.fields;
+
 	var post = maiGridQueryVars.post;
 	var term = maiGridQueryVars.term;
 	var user = maiGridQueryVars.user;
