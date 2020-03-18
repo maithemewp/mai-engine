@@ -172,6 +172,44 @@ function mai_minify_css( $css ) {
 }
 
 /**
+ * Sanitize a value. Checks for null/array.
+ *
+ * @param   string $value      The value to sanitize.
+ * @param   string $function   The function to use for escaping.
+ * @param   bool   $allow_null Wether to return or escape if the value is.
+ *
+ * @return  mixed
+ */
+function mai_sanitize( $value, $function = 'esc_html', $allow_null = false ) {
+
+	// Return null if allowing null.
+	if ( is_null( $value ) && $allow_null ) {
+		return $value;
+	}
+
+	// If array, escape and return it.
+	if ( is_array( $value ) ) {
+		$escaped = [];
+		foreach ( $value as $index => $item ) {
+			if ( is_array( $item ) ) {
+				$escaped[ $index ] = mai_sanitize( $item, $function );
+			} else {
+				$item              = trim( $item );
+				$escaped[ $index ] = $function( $item );
+			}
+		}
+
+		return $escaped;
+	}
+
+	// Return single value.
+	$value   = trim( $value );
+	$escaped = $function( $value );
+
+	return $escaped;
+}
+
+/**
  * Sanitize a value to boolean.
  * Taken from rest_sanitize_boolean()
  * but seemed risky to use that directly.
@@ -193,25 +231,4 @@ function mai_sanitize_bool( $value ) {
 
 	// Everything else will map nicely to boolean.
 	return (bool) $value;
-}
-
-/**
- * Description of expected behavior.
- *
- * @since 0.1.0
- *
- * @param string $size  Image size.
- * @param string $ratio Aspect ratio.
- *
- * @return array
- */
-function mai_get_image_sizes_from_aspect_ratio( $size = 'md', $ratio = '16:9' ) {
-	$ratio       = explode( ':', $ratio );
-	$x           = $ratio[0];
-	$y           = $ratio[1];
-	$breakpoints = mai_get_breakpoints();
-	$width       = isset( $breakpoints[ $size ] ) ? (int) mai_get_breakpoint( $size ) : (int) $size;
-	$height      = $width / $x * $y;
-
-	return [ $width, $height, true ];
 }

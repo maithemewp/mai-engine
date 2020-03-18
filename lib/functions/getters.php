@@ -694,4 +694,85 @@ function mai_get_singular_args_name() {
 	return $name;
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @param string $size  Image size.
+ * @param string $ratio Aspect ratio.
+ *
+ * @return array
+ */
+function mai_get_image_sizes_from_aspect_ratio( $size = 'md', $ratio = '16:9' ) {
+	$ratio       = explode( ':', $ratio );
+	$x           = $ratio[0];
+	$y           = $ratio[1];
+	$breakpoints = mai_get_breakpoints();
+	$width       = isset( $breakpoints[ $size ] ) ? (int) mai_get_breakpoint( $size ) : (int) $size;
+	$height      = $width / $x * $y;
 
+	return [ $width, $height, true ];
+}
+
+
+function mai_get_image_size_choices() {
+	$choices = [];
+	if ( ! ( is_admin() || is_customize_preview() ) ) {
+		return $choices;
+	}
+	$sizes   = mai_get_available_image_sizes();
+	foreach ( $sizes as $index => $value ) {
+		$choices[ $index ] = sprintf( '%s (%s x %s)', $index, $value['width'], $value['height'] );
+	}
+
+	return $choices;
+}
+
+function mai_get_post_type_choices() {
+	$choices = [];
+	if ( ! ( is_admin() || is_customize_preview() ) ) {
+		return $choices;
+	}
+	$post_types = get_post_types(
+		[
+			'public'             => true,
+			'publicly_queryable' => true,
+		],
+		'objects',
+		'or'
+	);
+	unset( $post_types['attachment'] );
+	if ( $post_types ) {
+		foreach ( $post_types as $name => $post_type ) {
+			$choices[ $name ] = $post_type->label;
+		}
+	}
+
+	return $choices;
+}
+
+function mai_get_taxonomy_choices() {
+	$choices = [];
+	if ( ! is_admin() ) {
+		return $choices;
+	}
+	$taxonomies = get_taxonomies(
+		[
+			'public'             => true,
+			'publicly_queryable' => true,
+		],
+		'objects',
+		'or'
+	);
+	if ( $taxonomies ) {
+		unset( $taxonomies['post_format'] );
+		unset( $taxonomies['yst_prominent_words'] );
+		foreach ( $taxonomies as $name => $taxonomy ) {
+			// TODO: These should be IDs.
+			$choices[ $name ] = $taxonomy->label;
+		}
+	}
+
+	return $choices;
+}

@@ -258,12 +258,12 @@ return [
 				'editor' => true, // Only load in the admin editor.
 			],
 			[
-				'handle'   => mai_get_handle() . '-wp-query',
-				'src'      => mai_get_url() . 'assets/js/wp-query.js',
+				'handle'   => mai_get_handle() . '-grid-queries',
+				'src'      => mai_get_url() . 'assets/js/grid-queries.js',
 				'deps'     => [],
 				'editor'   => true, // Only load in the admin editor.
 				'localize' => [
-					'name' => 'maiGridWPQueryVars',
+					'name' => 'maiGridQueryVars',
 					'data' => 'mai_get_grid_localized_data',
 				],
 			],
@@ -539,7 +539,9 @@ return [
 	|
 	*/
 
-	'grid-settings' => require __DIR__ . '/settings.php',
+	'archive-settings' => require __DIR__ . '/settings-archive.php',
+	'grid-settings'    => require __DIR__ . '/settings-grid.php',
+	'single-settings'  => require __DIR__ . '/settings-single.php',
 
 	/*
 	|--------------------------------------------------------------------------

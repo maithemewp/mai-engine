@@ -23,22 +23,6 @@ function mai_register_grid_field_groups() {
 	$user_grid = [];
 
 	// Get fields.
-	// $settings = new Mai_Entry_Settings( 'block' );
-	// $fields   = $settings->fields;
-
-	// // Setup fields.
-	// foreach ( $fields as $name => $field ) {
-
-	// Bail if not a block field.
-	// if ( ! $field['block'] ) {
-	// continue;
-	// }
-
-	// Bail if no groups.
-	// if ( ! isset( $field['group'] ) ) {
-	// continue;
-	// }
-
 	$fields = mai_get_config( 'grid-settings' );
 
 	foreach ( $fields as $key => $field ) {
@@ -92,13 +76,25 @@ function mai_register_grid_field_groups() {
 			'active'   => true,
 		]
 	);
+
+	// acf_add_local_field_group(
+	// 	[
+	// 		'key'      => 'group_5de9b54440a2u',
+	// 		'title'    => __( 'Mai User Grid', 'mai-engine' ),
+	// 		'fields'   => $term_grid,
+	// 		'location' => [
+	// 			[
+	// 				[
+	// 					'param'    => 'block',
+	// 					'operator' => '==',
+	// 					'value'    => 'acf/mai-user-grid',
+	// 				],
+	// 			],
+	// 		],
+	// 		'active'   => true,
+	// 	]
+	// );
 }
-
-
-// function mai_get_grid_show_choices() {
-
-// }
-
 
 /**
  * Description of expected behavior.
@@ -180,9 +176,24 @@ function mai_get_acf_field_data( $key, $field ) {
  * @return array
  */
 function mai_get_grid_localized_data() {
-	$fields = mai_get_config( 'grid-settings' );
-	$fields = wp_list_pluck( $fields, 'name' );
-	$fields = array_flip( $fields );
-
-	return [ 'keys' => $fields ];
+	$data     = [];
+	$settings = mai_get_config( 'grid-settings' );
+	foreach( $settings as $key => $field ) {
+		if ( 'tab' === $field['type'] ) {
+			continue;
+		}
+		foreach( [ 'post', 'term', 'user' ] as $type ) {
+			if ( ! in_array( $type, $field['block'] ) ) {
+				continue;
+			}
+			if ( isset( $field['atts']['sub_fields'] ) ) {
+				foreach( $field['atts']['sub_fields'] as $sub_key => $sub_field ) {
+					$data[ $type ][ $sub_field['name'] ] = $sub_key;
+				}
+			} else {
+				$data[ $type ][ $field['name'] ] = $key;
+			}
+		}
+	}
+	return $data;
 }

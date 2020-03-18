@@ -76,15 +76,7 @@ return [
 		'type'       => 'select',
 		'sanitize'   => 'esc_html',
 		'default'    => 'landscape-md',
-		'choices'    => function () {
-			$choices = [];
-			$sizes   = mai_get_available_image_sizes();
-			foreach ( $sizes as $index => $value ) {
-				$choices[ $index ] = sprintf( '%s (%s x %s)', $index, $value['width'], $value['height'] );
-			}
-
-			return $choices;
-		},
+		'choices'    => 'mai_get_image_size_choices',
 		'conditions' => [
 			[
 				'field'    => 'field_5e441d93d6236', // Show.
@@ -535,29 +527,31 @@ return [
 		'type'     => 'select',
 		'sanitize' => 'esc_html',
 		'default'  => [ 'post' ],
-		'choices'  => function () {
-			$choices    = [];
-			$post_types = get_post_types(
-				[
-					'public'             => true,
-					'publicly_queryable' => true,
-				],
-				'objects',
-				'or'
-			);
-			unset( $post_types['attachment'] );
-			if ( $post_types ) {
-				foreach ( $post_types as $name => $post_type ) {
-					$choices[ $name ] = $post_type->label;
-				}
-			}
-
-			return $choices;
-		},
+		'choices'  => 'mai_get_post_type_choices',
 		'atts'     => [
 			'multiple' => 1,
 			'ui'       => 1,
 			'ajax'     => 0,
+		],
+	],
+	'field_5df1053632cad' => [
+		'name'       => 'query_by',
+		'label'      => esc_html__( 'Get Entries By', 'mai-engine' ),
+		'block'      => [ 'post' ],
+		'type'       => 'select',
+		'sanitize'   => 'esc_html',
+		'default'    => 'date',
+		'choices'    => [
+			'date'     => esc_html__( 'Date', 'mai-engine' ),
+			'id'       => esc_html__( 'Title', 'mai-engine' ),
+			'tax_meta' => esc_html__( 'Taxonomy/Meta', 'mai-engine' ),
+			'parent'   => esc_html__( 'Parent', 'mai-engine' ),
+		],
+		'conditions' => [
+			[
+				'field'    => 'field_5df1053632ca2', // Post_type.
+				'operator' => '!=empty',
+			],
 		],
 	],
 	'field_5df1053632ca8' => [
@@ -576,32 +570,12 @@ return [
 			[
 				'field'    => 'field_5df1053632cad', // Query_by.
 				'operator' => '!=',
-				'value'    => 'title',
+				'value'    => 'id',
 			],
 		],
 		'atts'       => [
 			'placeholder' => 12,
 			'min'         => 0,
-		],
-	],
-	'field_5df1053632cad' => [
-		'name'       => 'query_by',
-		'label'      => esc_html__( 'Get Entries By', 'mai-engine' ),
-		'block'      => [ 'post' ],
-		'type'       => 'select',
-		'sanitize'   => 'esc_html',
-		'default'    => 'date',
-		'choices'    => [
-			'date'     => esc_html__( 'Date', 'mai-engine' ),
-			'title'    => esc_html__( 'Title', 'mai-engine' ),
-			'tax_meta' => esc_html__( 'Taxonomy/Meta', 'mai-engine' ),
-			'parent'   => esc_html__( 'Parent', 'mai-engine' ),
-		],
-		'conditions' => [
-			[
-				'field'    => 'field_5df1053632ca2', // Post_type.
-				'operator' => '!=empty',
-			],
 		],
 	],
 	'field_5df1053632cbc' => [
@@ -611,7 +585,8 @@ return [
 		'block'      => [ 'post' ],
 		'type'       => 'post_object',
 		'sanitize'   => 'absint',
-		'default'    => '', // Can't be empty array.
+		'default'    => '',
+		// 'choices'    => 'mai_get_acf_post_choices',
 		'conditions' => [
 			[
 				'field'    => 'field_5df1053632ca2', // Post_type.
@@ -620,7 +595,7 @@ return [
 			[
 				'field'    => 'field_5df1053632cad', // Query_by.
 				'operator' => '==',
-				'value'    => 'title',
+				'value'    => 'id',
 			],
 		],
 		'atts'       => [
@@ -657,12 +632,15 @@ return [
 					'type'     => 'select',
 					'sanitize' => 'esc_html',
 					'default'  => '',
-					'choices'  => function () {
+					'choices'  => function() {
 						$choices = [];
+						if ( ! is_admin() ) {
+							return $choices;
+						}
 						if ( ! ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) ) {
 							return $choices;
 						}
-						foreach ( $_REQUEST['post_type'] as $post_type ) {
+						foreach( (array) $_REQUEST['post_type'] as $post_type ) {
 							$taxonomies = get_object_taxonomies( sanitize_text_field( wp_unslash( $post_type ) ), 'objects' );
 							if ( $taxonomies ) {
 								foreach ( $taxonomies as $name => $taxo ) {
@@ -676,29 +654,27 @@ return [
 					'atts'     => [
 						'ui'   => 1,
 						'ajax' => 1,
-
 					],
 				],
 				'field_5df139a216272' => [
-					'name'     => 'terms',
-					'label'    => esc_html__( 'Terms', 'mai-engine' ),
-					'block'    => [ 'post' ],
-					'type'     => 'taxonomy',
-					'sanitize' => 'absint',
-					'default'  => [],
+					'name'       => 'terms',
+					'label'      => esc_html__( 'Terms', 'mai-engine' ),
+					'block'      => [ 'post' ],
+					'type'       => 'taxonomy',
+					'sanitize'   => 'absint',
+					'default'    => [],
+					'conditions' => [
+						[
+							'field'    => 'field_5df1398916271', // Taxonomy.
+							'operator' => '!=empty',
+						],
+					],
 					'atts'     => [
 						'field_type' => 'multi_select',
-						'taxonomy'   => 'category',
 						'add_term'   => 0,
 						'save_terms' => 0,
 						'load_terms' => 0,
 						'multiple'   => 0,
-						'conditions' => [
-							[
-								'field'    => 'field_5df1398916271', // Taxonomy.
-								'operator' => '!=empty',
-							],
-						],
 					],
 				],
 				'field_5df18f2305c2c' => [
@@ -862,23 +838,7 @@ return [
 		'type'       => 'post_object',
 		'sanitize'   => 'absint',
 		'default'    => '',
-		'choices'    => function () {
-			$choices = [];
-			if ( ! ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) ) {
-				return $choices;
-			}
-			$posts = acf_get_grouped_posts(
-				[
-					'post_type'   => sanitize_text_field( wp_unslash( $_REQUEST['post_type'] ) ),
-					'post_status' => 'publish',
-				]
-			);
-			if ( $posts ) {
-				$choices = $posts;
-			}
-
-			return $choices;
-		},
+		// 'choices'    => 'mai_get_acf_post_choices',
 		'conditions' => [
 			[
 				'field'    => 'field_5df1053632ca2', // Post_type.
@@ -891,9 +851,9 @@ return [
 			],
 		],
 		'atts'       => [
-			'multiple' => 1,
-			'ui'       => 1,
-			'ajax'     => 1,
+			'multiple'      => 1, // WP_Query allows multiple parents.
+			'return_format' => 'id',
+			'ui'            => 1,
 		],
 	],
 	'field_5df1bf01ea1de' => [
@@ -912,7 +872,7 @@ return [
 			[
 				'field'    => 'field_5df1053632cad', // Query_by.
 				'operator' => '!=',
-				'value'    => 'title',
+				'value'    => 'id',
 			],
 		],
 		'atts'       => [
@@ -935,13 +895,17 @@ return [
 			'rand'           => esc_html__( 'Random', 'mai-engine' ),
 			'comment_count'  => esc_html__( 'Comment Count', 'mai-engine' ),
 			'menu_order'     => esc_html__( 'Menu Order', 'mai-engine' ),
-			'post__in'       => esc_html__( 'Entries Order', 'mai-engine' ),
 			'meta_value_num' => esc_html__( 'Meta Value Number', 'mai-engine' ),
 		],
 		'conditions' => [
 			[
 				'field'    => 'field_5df1053632ca2', // Post_type.
 				'operator' => '!=empty',
+			],
+			[
+				'field'    => 'field_5df1053632cad', // Query_by.
+				'operator' => '!=',
+				'value'    => 'id',
 			],
 		],
 		'atts'       => [
@@ -1002,7 +966,7 @@ return [
 			[
 				'field'    => 'field_5df1053632cad', // Query_by.
 				'operator' => '!=',
-				'value'    => 'title',
+				'value'    => 'id',
 			],
 		],
 		'atts'       => [
@@ -1011,9 +975,9 @@ return [
 			'ui'            => 1,
 		],
 	],
-	// TODO: These shoud be separate fields. We can then have desc text and easier to check when building query.
+	// TODO: Shoud these be separate fields? We can then have desc text and easier to check when building query.
 	'field_5df1053632d03' => [
-		'name'       => 'exclude',
+		'name'       => 'excludes',
 		'label'      => esc_html__( 'Exclude', 'mai-engine' ),
 		'block'      => [ 'post' ],
 		'type'       => 'checkbox',
@@ -1040,10 +1004,30 @@ return [
 		'type'     => 'select',
 		'sanitize' => 'esc_html',
 		'default'  => [ 'category' ],
+		'choices'  => 'mai_get_taxonomy_choices',
 		'atts'     => [
 			'multiple' => 1,
 			'ui'       => 1,
 			'ajax'     => 0,
+		],
+	],
+	'field_5df1054642cad' => [
+		'name'       => 'query_by',
+		'label'      => esc_html__( 'Get Entries By', 'mai-engine' ),
+		'block'      => [ 'term' ],
+		'type'       => 'select',
+		'sanitize'   => 'esc_html',
+		'default'    => 'date',
+		'choices'    => [
+			'name'   => esc_html__( 'Taxonomy', 'mai-engine' ),
+			'id'     => esc_html__( 'Name', 'mai-engine' ),
+			'parent' => esc_html__( 'Parent', 'mai-engine' ),
+		],
+		'conditions' => [
+			[
+				'field'    => 'field_5df2063632ca2', // Taxonomy.
+				'operator' => '!=empty',
+			],
 		],
 	],
 	'field_5df2065733db9' => [
@@ -1062,7 +1046,7 @@ return [
 			[
 				'field'    => 'field_5df1054642cad', // Query_by.
 				'operator' => '!=',
-				'value'    => 'title',
+				'value'    => 'id',
 			],
 		],
 		'atts'       => [
@@ -1070,33 +1054,172 @@ return [
 			'min'         => 0,
 		],
 	],
-	'field_5df1054642cad' => [
-		'name'       => 'query_by',
-		'label'      => esc_html__( 'Get Entries By', 'mai-engine' ),
+	'field_5df10647743cb' => [
+		'name'       => 'include',
+		'label'      => esc_html__( 'Entries', 'mai-engine' ),
+		'desc'       => esc_html__( 'Show specific entries. Choose all that apply. If empty, Grid will get entries by date.', 'mai-engine' ),
+		'block'      => [ 'term' ],
+		'type'       => 'taxonomy',
+		'sanitize'   => 'absint',
+		'default'    => '',
+		'conditions' => [
+			[
+				'field'    => 'field_5df2063632ca2', // Taxonomy.
+				'operator' => '!=empty',
+			],
+			[
+				'field'    => 'field_5df1054642cad', // Query_by.
+				'operator' => '==',
+				'value'    => 'id',
+			],
+		],
+		'atts'       => [
+			'field_type' => 'multi_select',
+			'add_term'   => 0,
+			'save_terms' => 0,
+			'load_terms' => 0,
+			'multiple'   => 1,
+		],
+	],
+	'field_5df1054743df5' => [
+		'name'       => 'parent',
+		'label'      => esc_html__( 'Parent', 'mai-engine' ),
+		'block'      => [ 'term' ],
+		'type'       => 'taxonomy',
+		'sanitize'   => 'absint',
+		'default'    => '',
+		'conditions' => [
+			[
+				'field'    => 'field_5df2063632ca2', // Taxonomy.
+				'operator' => '!=empty',
+			],
+			[
+				'field'    => 'field_5df1054642cad', // Query_by.
+				'operator' => '==',
+				'value'    => 'parent',
+			],
+		],
+		'atts'       => [
+			'field_type' => 'multi_select',
+			'add_term'   => 0,
+			'save_terms' => 0,
+			'load_terms' => 0,
+			'multiple'   => 0, // WP_Term_Query only allows 1.
+		],
+	],
+	'field_5df2cg12fb2ef' => [
+		'name'       => 'offset',
+		'label'      => esc_html__( 'Offset', 'mai-engine' ),
+		'desc'       => esc_html__( 'Skip this number of entries.', 'mai-engine' ),
+		'block'      => [ 'term' ],
+		'type'       => 'number',
+		'sanitize'   => 'absint',
+		'default'    => 0,
+		'conditions' => [
+			[
+				'field'    => 'field_5df2063632ca2', // Taxonomy.
+				'operator' => '!=empty',
+			],
+			[
+				'field'    => 'field_5df1053632cad', // Query_by.
+				'operator' => '!=',
+				'value'    => 'id',
+			],
+		],
+		'atts'       => [
+			'placeholder' => 0,
+			'min'         => 0,
+		],
+	],
+	'field_5dg2164743dfd' => [
+		'name'       => 'orderby',
+		'label'      => esc_html__( 'Order By', 'mai-engine' ),
 		'block'      => [ 'term' ],
 		'type'       => 'select',
 		'sanitize'   => 'esc_html',
 		'default'    => 'date',
 		'choices'    => [
-			'date'   => esc_html__( 'Date', 'mai-engine' ),
-			'title'  => esc_html__( 'Title', 'mai-engine' ),
-			'parent' => esc_html__( 'Parent', 'mai-engine' ),
+			'name'    => esc_html__( 'Title', 'mai-engine' ),
+			'slug'    => esc_html__( 'Slug', 'mai-engine' ),
+			'count'   => esc_html__( 'Entry Totals', 'mai-engine' ),
+			'id'      => esc_html__( 'Term ID', 'mai-engine' ),
 		],
 		'conditions' => [
 			[
 				'field'    => 'field_5df2063632ca2', // Taxonomy.
 				'operator' => '!=empty',
 			],
+			[
+				'field'    => 'field_5df1054642cad', // Query_by.
+				'operator' => '!=',
+				'value'    => 'id',
+			],
+		],
+		'atts'       => [
+			'ui'   => 1,
+			'ajax' => 1,
 		],
 	],
-	'field_5df2164632d03' => [
+	'field_5df2164743dgc' => [
+		'name'       => 'order',
+		'label'      => esc_html__( 'Order', 'mai-engine' ),
+		'block'      => [ 'term' ],
+		'type'       => 'select',
+		'sanitize'   => 'esc_html',
+		'default'    => '',
+		'choices'    => [
+			'ASC'  => esc_html__( 'Ascending', 'mai-engine' ),
+			'DESC' => esc_html__( 'Descending', 'mai-engine' ),
+		],
+		'conditions' => [
+			[
+				'field'    => 'field_5df2063632ca2', // Taxonomy.
+				'operator' => '!=empty',
+			],
+			[
+				'field'    => 'field_5df1054642cad', // Query_by.
+				'operator' => '!=',
+				'value'    => 'id',
+			],
+		],
+	],
+	'field_5e459348f2d12' => [
 		'name'       => 'exclude',
+		'label'      => esc_html__( 'Exclude Entries', 'mai-engine' ),
+		'desc'       => esc_html__( 'Hide specific entries. Choose all that apply.', 'mai-engine' ),
+		'block'      => [ 'term' ],
+		'type'       => 'taxonomy',
+		'sanitize'   => 'absint',
+		'default'    => '',
+		'conditions' => [
+			[
+				'field'    => 'field_5df2063632ca2', // Taxonomy.
+				'operator' => '!=empty',
+			],
+			[
+				'field'    => 'field_5df1054642cad', // Query_by.
+				'operator' => '!=',
+				'value'    => 'id',
+			],
+		],
+		'atts'       => [
+			'field_type' => 'multi_select',
+			'add_term'   => 0,
+			'save_terms' => 0,
+			'load_terms' => 0,
+			'multiple'   => 1,
+		],
+	],
+	// TODO: Shoud these be separate fields? We can then have desc text and easier to check when building query.
+	'field_5df21757632e1' => [
+		'name'       => 'excludes',
 		'label'      => esc_html__( 'Exclude', 'mai-engine' ),
 		'block'      => [ 'term' ],
 		'type'       => 'checkbox',
 		'sanitize'   => 'esc_html',
 		'default'    => '',
 		'choices'    => [
+			'hide_empty'        => esc_html__( 'Exclude terms with no posts', 'mai-engine' ),
 			'exclude_current'   => esc_html__( 'Exclude current', 'mai-engine' ),
 			'exclude_displayed' => esc_html__( 'Exclude displayed', 'mai-engine' ),
 		],

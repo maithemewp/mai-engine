@@ -242,6 +242,9 @@ final class Mai_Grid_Blocks {
 	 * @return void
 	 */
 	public function run_filters() {
+		/*****************
+		 * Mai Post Grid *
+		 *****************/
 		// Show 'show'.
 		add_filter( 'acf/load_field/key=field_5e441d93d6236', [ $this, 'load_show' ] );
 		// Posts 'post__in'.
@@ -252,7 +255,19 @@ final class Mai_Grid_Blocks {
 		add_filter( 'acf/fields/post_object/query/key=field_5df1053632ce4', [ $this, 'get_parents' ], 10, 1 );
 		// Exclude Entries 'post__not_in'.
 		add_filter( 'acf/fields/post_object/query/key=field_5e349237e1c01', [ $this, 'get_posts' ], 10, 1 );
-		// TODO: Exclude for term grid.
+		/*****************
+		 * Mai Term Grid *
+		 *****************/
+		// Include Entries 'include'.
+		add_filter( 'acf/fields/taxonomy/query/key=field_5df10647743cb', [ $this, 'get_terms' ], 10, 1 );
+		// Exclude Entries 'exclude'.
+		add_filter( 'acf/fields/taxonomy/query/key=field_5e459348f2d12', [ $this, 'get_terms' ], 10, 1 );
+		// Parent 'parent'.
+		add_filter( 'acf/fields/taxonomy/query/key=field_5df1054743df5', [ $this, 'get_terms' ], 10, 1 );
+		/*****************
+		 * Mai User Grid *
+		 *****************/
+		// TODO: Will we need/have these? Maybe rely on select field.
 	}
 
 	/**
@@ -288,10 +303,12 @@ final class Mai_Grid_Blocks {
 	public function get_posts( $args ) {
 
 		$args['post_type'] = [];
-		if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) {
-			foreach ( $_REQUEST['post_type'] as $post_type ) {
-				$args['post_type'][] = sanitize_text_field( wp_unslash( $post_type ) );
-			}
+		$post_types = $this->get_request( 'post_type' );
+		if ( ! $post_types ) {
+			return $args;
+		}
+		foreach ( $post_types as $post_type ) {
+			$args['post_type'][] = sanitize_text_field( wp_unslash( $post_type ) );
 		}
 
 		return $args;
@@ -308,9 +325,15 @@ final class Mai_Grid_Blocks {
 	 */
 	public function get_terms( $args ) {
 
-		if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['taxonomy'] ) && ! empty( $_REQUEST['taxonomy'] ) ) {
-			$args['taxonomy'] = sanitize_text_field( wp_unslash( $_REQUEST['taxonomy'] ) );
+		$taxonomies = $this->get_request( 'taxonomy' );
+		if ( ! $taxonomies ) {
+			return $args;
 		}
+		$array = [];
+		foreach ( (array) $taxonomies as $taxonomy ) {
+			$array[] = sanitize_text_field( wp_unslash( $taxonomy ) );
+		}
+		$args['taxonomy'] = implode( ',', $array );
 
 		return $args;
 	}
@@ -327,12 +350,23 @@ final class Mai_Grid_Blocks {
 	public function get_parents( $args ) {
 
 		$args['post_type'] = [];
-		if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) {
-			foreach ( $_REQUEST['post_type'] as $post_type ) {
-				$args['post_type'][] = sanitize_text_field( wp_unslash( $post_type ) );
-			}
+		$post_types = $this->get_request( 'post_type' );
+		if ( ! $post_types ) {
+			return $args;
+		}
+		foreach ( $post_types as $post_type ) {
+			$args['post_type'][] = sanitize_text_field( wp_unslash( $post_type ) );
 		}
 
+		// TODO: Check if has children? If not, just use get_posts() method here.
+
 		return $args;
+	}
+
+	public function get_request( $request ) {
+		if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST[ $request ] ) && ! empty( $_REQUEST[ $request ] ) ) {
+			return $_REQUEST[ $request ];
+		}
+		return false;
 	}
 }
