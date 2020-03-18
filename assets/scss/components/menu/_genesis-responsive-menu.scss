@@ -1,6 +1,21 @@
 .genesis-responsive-menu {
 
 	@include mq(false, lg) {
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
 		display: none;
+		align-items: center;
+		justify-content: center;
+		width: 100vw;
+		height: 100vh;
+		padding: var(--spacing);
+		background-color: var(--color-white);
+
+		&[style*="display: block"] {
+			display: flex !important;
+		}
 	}
 }

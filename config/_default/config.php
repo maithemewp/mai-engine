@@ -201,7 +201,7 @@ return [
 			'media_query_width' => mai_get_breakpoint( 'md' ),
 			'css'               => '',
 			'enable_AMP'        => true,
-//			'enable_non_AMP'    => true,
+			'enable_non_AMP'    => true,
 		],
 	],
 
