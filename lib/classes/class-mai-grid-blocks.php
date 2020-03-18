@@ -262,6 +262,8 @@ final class Mai_Grid_Blocks {
 		add_filter( 'acf/fields/taxonomy/query/key=field_5df10647743cb', [ $this, 'get_terms' ], 10, 1 );
 		// Exclude Entries 'exclude'.
 		add_filter( 'acf/fields/taxonomy/query/key=field_5e459348f2d12', [ $this, 'get_terms' ], 10, 1 );
+		// Parent 'parent'.
+		add_filter( 'acf/fields/taxonomy/query/key=field_5df1054743df5', [ $this, 'get_terms' ], 10, 1 );
 		/*****************
 		 * Mai User Grid *
 		 *****************/
