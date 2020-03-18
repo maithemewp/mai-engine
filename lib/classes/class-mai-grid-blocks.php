@@ -307,7 +307,7 @@ final class Mai_Grid_Blocks {
 		if ( ! $post_types ) {
 			return $args;
 		}
-		foreach ( $post_types as $post_type ) {
+		foreach ( (array) $post_types as $post_type ) {
 			$args['post_type'][] = sanitize_text_field( wp_unslash( $post_type ) );
 		}
 
@@ -325,15 +325,14 @@ final class Mai_Grid_Blocks {
 	 */
 	public function get_terms( $args ) {
 
+		$args['taxonomy'] = [];
 		$taxonomies = $this->get_request( 'taxonomy' );
 		if ( ! $taxonomies ) {
 			return $args;
 		}
-		$array = [];
 		foreach ( (array) $taxonomies as $taxonomy ) {
-			$array[] = sanitize_text_field( wp_unslash( $taxonomy ) );
+			$args['taxonomy'][] = sanitize_text_field( wp_unslash( $taxonomy ) );
 		}
-		$args['taxonomy'] = implode( ',', $array );
 
 		return $args;
 	}
@@ -354,7 +353,7 @@ final class Mai_Grid_Blocks {
 		if ( ! $post_types ) {
 			return $args;
 		}
-		foreach ( $post_types as $post_type ) {
+		foreach ( (array) $post_types as $post_type ) {
 			$args['post_type'][] = sanitize_text_field( wp_unslash( $post_type ) );
 		}
 
