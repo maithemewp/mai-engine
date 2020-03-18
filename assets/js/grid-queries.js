@@ -63,6 +63,11 @@ jQuery(document).ready(function($) {
 				data.taxonomy = getTaxonomy( $input, term );
 			}
 
+			// If Parent field.
+			if ( term.parent === data.field_key ) {
+				data.taxonomy = getTaxonomy( $input, term );
+			}
+
 		}
 
 		return data;
