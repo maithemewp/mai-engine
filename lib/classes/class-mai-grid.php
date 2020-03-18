@@ -214,7 +214,7 @@ class Mai_Grid {
 			'post_type'           => $this->args['post_type'],
 			'posts_per_page'      => $this->args['posts_per_page'],
 			'post_status'         => 'publish',
-			'offset'              => absint( $this->args['offset'] ),
+			'offset'              => $this->args['offset'],
 			'ignore_sticky_posts' => true,
 		];
 
@@ -223,10 +223,11 @@ class Mai_Grid {
 			case 'parent':
 				$query_args['post_parent__in'] = $this->args['post_parent__in'];
 				break;
-			case 'title':
+			case 'id':
 				// Empty array returns all posts, so we need to check for values.
 				if ( $this->args['post__in'] ) {
 					$query_args['post__in'] = $this->args['post__in'];
+					$this->args['orderby']  = 'post__in';
 				}
 				break;
 			case 'tax_meta':
@@ -270,7 +271,7 @@ class Mai_Grid {
 		}
 
 		// Orderby.
-		if ( $this->args['orderby'] ) {
+		if ( $this->args['orderby'] && 'id' !== $this->args['query_by'] ) {
 			$query_args['orderby'] = $this->args['orderby'];
 			if ( 'meta_value_num' === $this->args['orderby'] ) {
 
@@ -298,8 +299,27 @@ class Mai_Grid {
 		$query_args = [
 			'taxonomy' => $this->args['taxonomy'],
 			'number'   => $this->args['number'],
-			'offset'   => absint( $this->args['offset'] ),
+			'offset'   => $this->args['offset'],
 		];
+
+		// Handle query_by.
+		switch ( $this->args['query_by'] ) {
+			case 'name':
+				// Nothing, this is the default.
+			break;
+			case 'id':
+				$query_args['include'] = $this->args['include'];
+				$this->args['orderby'] = 'include';
+			break;
+			case 'parent':
+				$query_args['parent'] = $this->args['parent'];
+			break;
+		}
+
+		// Orderby.
+		if ( $this->args['orderby'] && 'id' !== $this->args['query_by'] ) {
+			$query_args['orderby'] = $this->args['orderby'];
+		}
 
 		return apply_filters( 'mai_term_grid_query_args', $query_args );
 	}
