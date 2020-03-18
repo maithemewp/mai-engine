@@ -303,10 +303,12 @@ final class Mai_Grid_Blocks {
 	public function get_posts( $args ) {
 
 		$args['post_type'] = [];
-		if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) {
-			foreach ( $_REQUEST['post_type'] as $post_type ) {
-				$args['post_type'][] = sanitize_text_field( wp_unslash( $post_type ) );
-			}
+		$post_types = $this->get_request( 'post_type' );
+		if ( ! $post_types ) {
+			return $args;
+		}
+		foreach ( $post_types as $post_type ) {
+			$args['post_type'][] = sanitize_text_field( wp_unslash( $post_type ) );
 		}
 
 		return $args;
@@ -323,13 +325,15 @@ final class Mai_Grid_Blocks {
 	 */
 	public function get_terms( $args ) {
 
-		if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['taxonomy'] ) && ! empty( $_REQUEST['taxonomy'] ) ) {
-			$taxonomies = [];
-			foreach ( $_REQUEST['taxonomy'] as $taxonomy ) {
-				$taxonomies[] = sanitize_text_field( wp_unslash( $taxonomy ) );
-			}
-			$args['taxonomy'] = implode( ',', $taxonomies );
+		$taxonomies = $this->get_request( 'taxonomy' );
+		if ( ! $taxonomies ) {
+			return $args;
 		}
+		$array = [];
+		foreach ( (array) $taxonomies as $taxonomy ) {
+			$array[] = sanitize_text_field( wp_unslash( $taxonomy ) );
+		}
+		$args['taxonomy'] = implode( ',', $array );
 
 		return $args;
 	}
@@ -346,14 +350,23 @@ final class Mai_Grid_Blocks {
 	public function get_parents( $args ) {
 
 		$args['post_type'] = [];
-		if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ) {
-			foreach ( $_REQUEST['post_type'] as $post_type ) {
-				$args['post_type'][] = sanitize_text_field( wp_unslash( $post_type ) );
-			}
+		$post_types = $this->get_request( 'post_type' );
+		if ( ! $post_types ) {
+			return $args;
+		}
+		foreach ( $post_types as $post_type ) {
+			$args['post_type'][] = sanitize_text_field( wp_unslash( $post_type ) );
 		}
 
 		// TODO: Check if has children? If not, just use get_posts() method here.
 
 		return $args;
+	}
+
+	public function get_request( $request ) {
+		if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST[ $request ] ) && ! empty( $_REQUEST[ $request ] ) ) {
+			return $_REQUEST[ $request ];
+		}
+		return false;
 	}
 }
