@@ -39,7 +39,7 @@ jQuery(document).ready(function($) {
 			}
 
 			// If Parent field
-			if ( post.parent === data.field_key ) {
+			if ( post.post_parent__in === data.field_key ) {
 				data.post_type = getPostType( $input, post );
 			}
 
