@@ -303,7 +303,7 @@ final class Mai_Grid_Blocks {
 	public function get_posts( $args ) {
 
 		$args['post_type'] = [];
-		$post_types = $this->get_request( 'post_type' );
+		$post_types = mai_get_acf_request( 'post_type' );
 		if ( ! $post_types ) {
 			return $args;
 		}
@@ -326,7 +326,7 @@ final class Mai_Grid_Blocks {
 	public function get_terms( $args ) {
 
 		$args['taxonomy'] = [];
-		$taxonomies = $this->get_request( 'taxonomy' );
+		$taxonomies = mai_get_acf_request( 'taxonomy' );
 		if ( ! $taxonomies ) {
 			return $args;
 		}
@@ -349,7 +349,7 @@ final class Mai_Grid_Blocks {
 	public function get_parents( $args ) {
 
 		$args['post_type'] = [];
-		$post_types = $this->get_request( 'post_type' );
+		$post_types = mai_get_acf_request( 'post_type' );
 		if ( ! $post_types ) {
 			return $args;
 		}
@@ -362,10 +362,4 @@ final class Mai_Grid_Blocks {
 		return $args;
 	}
 
-	public function get_request( $request ) {
-		if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST[ $request ] ) && ! empty( $_REQUEST[ $request ] ) ) {
-			return $_REQUEST[ $request ];
-		}
-		return false;
-	}
 }
