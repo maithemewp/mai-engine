@@ -201,7 +201,7 @@ return [
 			'media_query_width' => mai_get_breakpoint( 'md' ),
 			'css'               => '',
 			'enable_AMP'        => true,
-//			'enable_non_AMP'    => true,
+			'enable_non_AMP'    => true,
 		],
 	],
 
@@ -344,31 +344,6 @@ return [
 		'icon_color'             => mai_get_color( 'heading' ),
 		'icon_color_hover'       => mai_get_color( 'primary' ),
 		'size'                   => 40,
-	],
-
-	/*
-	|--------------------------------------------------------------------------
-	| Template Settings
-	|--------------------------------------------------------------------------
-	|
-	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
-	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
-	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
-	|
-	*/
-
-	'archive-settings' => [
-		'post',
-		'category',
-		'portfolio',
-		'page',
-		'search',
-		'author',
-	],
-
-	'single-settings' => [
-		'page',
-		'post',
 	],
 
 	/*
@@ -539,9 +514,9 @@ return [
 	|
 	*/
 
-	'archive-settings' => require __DIR__ . '/settings-archive.php',
-	'grid-settings'    => require __DIR__ . '/settings-grid.php',
-	'single-settings'  => require __DIR__ . '/settings-single.php',
+	'archive-settings' => require __DIR__ . '/settings/archive.php',
+	'grid-settings'    => require __DIR__ . '/settings/grid.php',
+	'single-settings'  => require __DIR__ . '/settings/single.php',
 
 	/*
 	|--------------------------------------------------------------------------

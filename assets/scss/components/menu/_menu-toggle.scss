@@ -1,4 +1,5 @@
 .menu-toggle {
+	z-index: 100;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -28,7 +29,7 @@
 .menu-toggle-icon::after {
 	position: absolute;
 	display: block;
-	width: var(--menu-toggle-line-width, var(--spacing));
+	width: var(--menu-toggle-line-width, (calc(var(--spacing) * 2)));
 	height: var(--menu-toggle-line-height, 3px);
 	background-color: var(--menu-toggle-line-background-color, var(--color-dark));
 	content: "";
@@ -41,11 +42,11 @@
 	margin: auto;
 
 	&::before {
-		top: var(--menu-toggle-line-spacing, (calc(0 - var(--spacing))));
+		top: var(--menu-toggle-line-spacing, (calc(var(--spacing) * -0.5)));
 	}
 
 	&::after {
-		bottom: var(--menu-toggle-line-spacing, (calc(0 - var(--spacing))));
+		bottom: var(--menu-toggle-line-spacing, (calc(var(--spacing) * -0.5)));
 	}
 }
 

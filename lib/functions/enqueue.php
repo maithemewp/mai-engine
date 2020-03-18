@@ -100,7 +100,7 @@ add_filter( 'block_editor_settings', 'mai_remove_noto_serif_editor_styles' );
  *
  * @param array $settings Editor settings.
  *
- * @return string
+ * @return array
  */
 function mai_remove_noto_serif_editor_styles( $settings ) {
 	unset( $settings['styles'][0] );

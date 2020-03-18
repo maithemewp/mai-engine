@@ -47,28 +47,6 @@ function mai_add_panels() {
 	}
 }
 
-/**
- * Description of expected behavior.
- *
- * @since 1.0.0
- *
- * @return array
- */
-function mai_header_settings_defaults_temp_function() {
-	return [
-		'logo_width_large'   => '180px',
-		'logo_width_small'   => '120px',
-		'logo_spacing_large' => [
-			'top'    => '36px',
-			'bottom' => '36px',
-		],
-		'logo_spacing_small' => [
-			'top'    => '16px',
-			'bottom' => '16px',
-		],
-	];
-}
-
 add_action( 'init', 'mai_header_customizer_settings' );
 /**
  * Add header customizer settings.
@@ -96,45 +74,36 @@ function mai_header_customizer_settings() {
 		]
 	);
 
-	// Kirki::add_field( $config_id, [
-	// 'type'        => 'custom',
-	// 'settings'    => 'logo_heading',
-	// 'label'       => esc_html__( 'Logo/Title Sizing', 'mai-engine' ),
-	// 'section'     => 'title_tagline',
-	// 'priority'    => 60,
-	// 'default'     => '',
-	// ] );
-
-	$defaults = mai_header_settings_defaults_temp_function();
-
-	Kirki::add_field(
-		$config_id,
-		[
-			'type'     => 'text',
-			'settings' => 'logo_width_large',
-			'label'    => esc_html__( 'Logo Width', 'mai-engine' ),
-			'section'  => 'title_tagline',
-			'priority' => 60,
-			'default'  => $defaults['logo_width_large'],
-		]
-	);
 
 	Kirki::add_field(
 		$config_id,
 		[
 			'type'     => 'dimensions',
-			'settings' => 'logo_spacing_large',
-			'label'    => esc_html__( 'Logo Spacing', 'mai-engine' ),
+			'settings' => 'logo_width',
+			'label'    => esc_html__( 'Logo Width', 'mai-engine' ),
 			'section'  => 'title_tagline',
 			'priority' => 60,
 			'default'  => [
-				'top'    => $defaults['logo_spacing_large']['top'],
-				'bottom' => $defaults['logo_spacing_large']['bottom'],
+				'mobile'  => '120px',
+				'desktop' => '180px',
 			],
 			'choices'  => [
 				'labels' => [
-					'top'    => esc_html__( 'Top', 'mai-engine' ),
-					'bottom' => esc_html__( 'Bottom', 'mai-engine' ),
+					'mobile'  => esc_html__( 'Mobile', 'mai-engine' ),
+					'desktop' => esc_html__( 'Desktop', 'mai-engine' ),
+				],
+			],
+			'output'   => [
+				[
+					'choice'   => 'mobile',
+					'element'  => ':root',
+					'property' => '--custom-logo-width',
+				],
+				[
+					'choice'      => 'desktop',
+					'element'     => ':root',
+					'property'    => '--custom-logo-width',
+					'media_query' => sprintf( '@media (min-width: %spx)', mai_get_breakpoint( 'lg' ) ),
 				],
 			],
 		]
@@ -143,31 +112,47 @@ function mai_header_customizer_settings() {
 	Kirki::add_field(
 		$config_id,
 		[
-			'type'     => 'text',
-			'settings' => 'logo_width_small',
-			'label'    => esc_html__( 'Shrink/Mobile Logo Width', 'mai-engine' ),
-			'section'  => 'title_tagline',
-			'priority' => 60,
-			'default'  => $defaults['logo_width_small'],
-		]
-	);
-
-	Kirki::add_field(
-		$config_id,
-		[
 			'type'     => 'dimensions',
-			'settings' => 'logo_spacing_small',
-			'label'    => esc_html__( 'Shrink/Mobile Logo Spacing', 'mai-engine' ),
+			'settings' => 'logo_spacing',
+			'label'    => esc_html__( 'Logo Spacing', 'mai-engine' ),
 			'section'  => 'title_tagline',
 			'priority' => 60,
 			'default'  => [
-				'top'    => $defaults['logo_spacing_small']['top'],
-				'bottom' => $defaults['logo_spacing_small']['bottom'],
+				'mobile_top'     => '16px',
+				'mobile_bottom'  => '16px',
+				'desktop_top'    => '36px',
+				'desktop_bottom' => '36px',
 			],
 			'choices'  => [
 				'labels' => [
-					'top'    => esc_html__( 'Top', 'mai-engine' ),
-					'bottom' => esc_html__( 'Bottom', 'mai-engine' ),
+					'mobile_top'     => esc_html__( 'Mobile Top', 'mai-engine' ),
+					'mobile_bottom'  => esc_html__( 'Mobile Bottom', 'mai-engine' ),
+					'desktop_top'    => esc_html__( 'Desktop Top', 'mai-engine' ),
+					'desktop_bottom' => esc_html__( 'Desktop Bottom', 'mai-engine' ),
+				],
+			],
+			'output'   => [
+				[
+					'choice'   => 'mobile_top',
+					'element'  => ':root',
+					'property' => '--title-area-padding-top',
+				],
+				[
+					'choice'   => 'mobile_bottom',
+					'element'  => ':root',
+					'property' => '--title-area-padding-bottom',
+				],
+				[
+					'choice'      => 'desktop_top',
+					'element'     => ':root',
+					'property'    => '--title-area-padding-top',
+					'media_query' => sprintf( '@media (min-width: %spx)', mai_get_breakpoint( 'lg' ) ),
+				],
+				[
+					'choice'      => 'desktop_bottom',
+					'element'     => ':root',
+					'property'    => '--title-area-padding-bottom',
+					'media_query' => sprintf( '@media (min-width: %spx)', mai_get_breakpoint( 'lg' ) ),
 				],
 			],
 		]
