@@ -543,7 +543,7 @@ return [
 		'default'    => 'date',
 		'choices'    => [
 			'date'     => esc_html__( 'Date', 'mai-engine' ),
-			'title'    => esc_html__( 'Title', 'mai-engine' ),
+			'id'       => esc_html__( 'Title', 'mai-engine' ),
 			'tax_meta' => esc_html__( 'Taxonomy/Meta', 'mai-engine' ),
 			'parent'   => esc_html__( 'Parent', 'mai-engine' ),
 		],
@@ -570,7 +570,7 @@ return [
 			[
 				'field'    => 'field_5df1053632cad', // Query_by.
 				'operator' => '!=',
-				'value'    => 'title',
+				'value'    => 'id',
 			],
 		],
 		'atts'       => [
@@ -595,7 +595,7 @@ return [
 			[
 				'field'    => 'field_5df1053632cad', // Query_by.
 				'operator' => '==',
-				'value'    => 'title',
+				'value'    => 'id',
 			],
 		],
 		'atts'       => [
@@ -851,7 +851,7 @@ return [
 			],
 		],
 		'atts'       => [
-			'multiple'      => 1,
+			'multiple'      => 1, // WP_Query allows multiple parents.
 			'return_format' => 'id',
 			'ui'            => 1,
 		],
@@ -872,7 +872,7 @@ return [
 			[
 				'field'    => 'field_5df1053632cad', // Query_by.
 				'operator' => '!=',
-				'value'    => 'title',
+				'value'    => 'id',
 			],
 		],
 		'atts'       => [
@@ -895,13 +895,17 @@ return [
 			'rand'           => esc_html__( 'Random', 'mai-engine' ),
 			'comment_count'  => esc_html__( 'Comment Count', 'mai-engine' ),
 			'menu_order'     => esc_html__( 'Menu Order', 'mai-engine' ),
-			'post__in'       => esc_html__( 'Entries Order', 'mai-engine' ),
 			'meta_value_num' => esc_html__( 'Meta Value Number', 'mai-engine' ),
 		],
 		'conditions' => [
 			[
 				'field'    => 'field_5df1053632ca2', // Post_type.
 				'operator' => '!=empty',
+			],
+			[
+				'field'    => 'field_5df1053632cad', // Query_by.
+				'operator' => '!=',
+				'value'    => 'id',
 			],
 		],
 		'atts'       => [
@@ -962,7 +966,7 @@ return [
 			[
 				'field'    => 'field_5df1053632cad', // Query_by.
 				'operator' => '!=',
-				'value'    => 'title',
+				'value'    => 'id',
 			],
 		],
 		'atts'       => [
@@ -1000,30 +1004,7 @@ return [
 		'type'     => 'select',
 		'sanitize' => 'esc_html',
 		'default'  => [ 'category' ],
-		'choices'  => function() {
-			$choices = [];
-			if ( ! is_admin() ) {
-				return $choices;
-			}
-			$taxonomies = get_taxonomies(
-				[
-					'public'             => true,
-					'publicly_queryable' => true,
-				],
-				'objects',
-				'or'
-			);
-			if ( $taxonomies ) {
-				unset( $taxonomies['post_format'] );
-				unset( $taxonomies['yst_prominent_words'] );
-				foreach ( $taxonomies as $name => $taxonomy ) {
-					// TODO: These should be IDs.
-					$choices[ $name ] = $taxonomy->label;
-				}
-			}
-
-			return $choices;
-		},
+		'choices'  => 'mai_get_taxonomy_choices',
 		'atts'     => [
 			'multiple' => 1,
 			'ui'       => 1,
@@ -1038,8 +1019,8 @@ return [
 		'sanitize'   => 'esc_html',
 		'default'    => 'date',
 		'choices'    => [
-			'date'   => esc_html__( 'Date', 'mai-engine' ),
-			'title'  => esc_html__( 'Title', 'mai-engine' ),
+			'name'   => esc_html__( 'Taxonomy', 'mai-engine' ),
+			'id'     => esc_html__( 'Name', 'mai-engine' ),
 			'parent' => esc_html__( 'Parent', 'mai-engine' ),
 		],
 		'conditions' => [
@@ -1065,7 +1046,7 @@ return [
 			[
 				'field'    => 'field_5df1054642cad', // Query_by.
 				'operator' => '!=',
-				'value'    => 'title',
+				'value'    => 'id',
 			],
 		],
 		'atts'       => [
@@ -1081,8 +1062,6 @@ return [
 		'type'       => 'taxonomy',
 		'sanitize'   => 'absint',
 		'default'    => '',
-		// 'choices'    => '',
-		// 'choices'    => 'mai_get_acf_taxonomy_choices',
 		'conditions' => [
 			[
 				'field'    => 'field_5df2063632ca2', // Taxonomy.
@@ -1091,7 +1070,7 @@ return [
 			[
 				'field'    => 'field_5df1054642cad', // Query_by.
 				'operator' => '==',
-				'value'    => 'title',
+				'value'    => 'id',
 			],
 		],
 		'atts'       => [
@@ -1109,8 +1088,6 @@ return [
 		'type'       => 'taxonomy',
 		'sanitize'   => 'absint',
 		'default'    => '',
-		// 'choices'    => [],
-		// 'choices'    => 'mai_get_acf_taxonomy_choices',
 		'conditions' => [
 			[
 				'field'    => 'field_5df2063632ca2', // Taxonomy.
@@ -1127,7 +1104,7 @@ return [
 			'add_term'   => 0,
 			'save_terms' => 0,
 			'load_terms' => 0,
-			'multiple'   => 1,
+			'multiple'   => 0, // WP_Term_Query only allows 1.
 		],
 	],
 	'field_5df2cg12fb2ef' => [
@@ -1146,12 +1123,64 @@ return [
 			[
 				'field'    => 'field_5df1053632cad', // Query_by.
 				'operator' => '!=',
-				'value'    => 'title',
+				'value'    => 'id',
 			],
 		],
 		'atts'       => [
 			'placeholder' => 0,
 			'min'         => 0,
+		],
+	],
+	'field_5dg2164743dfd' => [
+		'name'       => 'orderby',
+		'label'      => esc_html__( 'Order By', 'mai-engine' ),
+		'block'      => [ 'term' ],
+		'type'       => 'select',
+		'sanitize'   => 'esc_html',
+		'default'    => 'date',
+		'choices'    => [
+			'name'    => esc_html__( 'Title', 'mai-engine' ),
+			'slug'    => esc_html__( 'Slug', 'mai-engine' ),
+			'count'   => esc_html__( 'Entry Totals', 'mai-engine' ),
+			'id'      => esc_html__( 'Term ID', 'mai-engine' ),
+		],
+		'conditions' => [
+			[
+				'field'    => 'field_5df2063632ca2', // Taxonomy.
+				'operator' => '!=empty',
+			],
+			[
+				'field'    => 'field_5df1054642cad', // Query_by.
+				'operator' => '!=',
+				'value'    => 'id',
+			],
+		],
+		'atts'       => [
+			'ui'   => 1,
+			'ajax' => 1,
+		],
+	],
+	'field_5df2164743dgc' => [
+		'name'       => 'order',
+		'label'      => esc_html__( 'Order', 'mai-engine' ),
+		'block'      => [ 'term' ],
+		'type'       => 'select',
+		'sanitize'   => 'esc_html',
+		'default'    => '',
+		'choices'    => [
+			'ASC'  => esc_html__( 'Ascending', 'mai-engine' ),
+			'DESC' => esc_html__( 'Descending', 'mai-engine' ),
+		],
+		'conditions' => [
+			[
+				'field'    => 'field_5df2063632ca2', // Taxonomy.
+				'operator' => '!=empty',
+			],
+			[
+				'field'    => 'field_5df1054642cad', // Query_by.
+				'operator' => '!=',
+				'value'    => 'id',
+			],
 		],
 	],
 	'field_5e459348f2d12' => [
@@ -1162,7 +1191,6 @@ return [
 		'type'       => 'taxonomy',
 		'sanitize'   => 'absint',
 		'default'    => '',
-		// 'choices'    => 'mai_get_acf_taxonomy_choices',
 		'conditions' => [
 			[
 				'field'    => 'field_5df2063632ca2', // Taxonomy.
@@ -1171,7 +1199,7 @@ return [
 			[
 				'field'    => 'field_5df1054642cad', // Query_by.
 				'operator' => '!=',
-				'value'    => 'title',
+				'value'    => 'id',
 			],
 		],
 		'atts'       => [
