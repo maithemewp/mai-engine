@@ -251,7 +251,7 @@ function mai_page_header_archive_title_attr( $atts ) {
  * @return array
  */
 function mai_page_header_entry_attr( $atts ) {
-	if ( is_singular() ) {
+	if ( is_singular() && ! did_action( 'genesis_entry_content' ) ) {
 		$atts['itemref'] = 'page-header';
 	}
 
