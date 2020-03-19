@@ -715,6 +715,60 @@ function mai_get_image_sizes_from_aspect_ratio( $size = 'md', $ratio = '16:9' ) 
 	return [ $width, $height, true ];
 }
 
+function mai_get_grid_show_choices() {
+	$choices = [
+		'image'       => esc_html__( 'Image', 'mai-engine' ),
+		'title'       => esc_html__( 'Title', 'mai-engine' ),
+		'header_meta' => esc_html__( 'Header Meta', 'mai-engine' ),
+		'excerpt'     => esc_html__( 'Excerpt', 'mai-engine' ),
+		'content'     => esc_html__( 'Content', 'mai-engine' ),
+		'more_link'   => esc_html__( 'Read More link', 'mai-engine' ),
+		'footer_meta' => esc_html__( 'Footer Meta', 'mai-engine' ),
+	];
+	return $choices;
+}
+
+function mai_get_archive_show_choices() {
+	$choices = [
+		'image'                        => esc_html__( 'Image', 'mai-engine' ),
+		'genesis_entry_header'         => 'genesis_entry_header',
+		'title'                        => esc_html__( 'Title', 'mai-engine' ),
+		'header_meta'                  => esc_html__( 'Header Meta', 'mai-engine' ),
+		'genesis_before_entry_content' => 'genesis_before_entry_content',
+		'excerpt'                      => esc_html__( 'Excerpt', 'mai-engine' ),
+		'content'                      => esc_html__( 'Content', 'mai-engine' ),
+		'genesis_entry_content'        => 'genesis_entry_content',
+		'more_link'                    => esc_html__( 'Read More link', 'mai-engine' ),
+		'genesis_after_entry_content'  => 'genesis_after_entry_content',
+		'footer_meta'                  => esc_html__( 'Footer Meta', 'mai-engine' ),
+		'genesis_entry_footer'         => 'genesis_entry_footer',
+	];
+	return $choices;
+}
+
+function mai_get_single_show_choices( $name ) {
+	$choices = [
+		'image'                        => esc_html__( 'Image', 'mai-engine' ),
+		'genesis_entry_header'         => 'genesis_entry_header',
+		'title'                        => esc_html__( 'Title', 'mai-engine' ),
+		'header_meta'                  => esc_html__( 'Header Meta', 'mai-engine' ),
+		'genesis_before_entry_content' => 'genesis_before_entry_content',
+		'content'                      => esc_html__( 'Content', 'mai-engine' ),
+		'genesis_entry_content'        => 'genesis_entry_content',
+		'more_link'                    => esc_html__( 'Read More link', 'mai-engine' ),
+		'genesis_after_entry_content'  => 'genesis_after_entry_content',
+		'footer_meta'                  => esc_html__( 'Footer Meta', 'mai-engine' ),
+		'genesis_entry_footer'         => 'genesis_entry_footer',
+		'author_box'                   => esc_html__( 'Author Box', 'mai-engine' ),
+		'after_entry'                  => esc_html__( 'After Entry Widget Area', 'mai-engine' ),
+		'adjacent_entry_nav'           => esc_html__( 'Previous/Next Entry Nav', 'mai-engine' ),
+	];
+	if ( mai_post_type_has_page_header( $name ) ) {
+		// TODO: Check if it's enabled by post/content type, and remove 'title'.
+	}
+	return $choices;
+}
+
 function mai_get_site_layout_choices() {
 	return [ '' => esc_html__( 'Site Default', 'mai-engine' ) ] + genesis_get_layouts_for_customizer();
 }

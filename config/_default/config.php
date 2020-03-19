@@ -80,6 +80,19 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| Page Header
+	|--------------------------------------------------------------------------
+	|
+	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
+	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
+	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
+	|
+	*/
+	'page-header-single'  => [ 'page', 'post', 'product', 'portfolio' ],
+	'page-header-archive' => [ 'page', 'post', 'product', 'portfolio' ], // Needs to support search, author, etc. Same as 'archive-settings'.
+
+	/*
+	|--------------------------------------------------------------------------
 	| Page Layouts
 	|--------------------------------------------------------------------------
 	|
