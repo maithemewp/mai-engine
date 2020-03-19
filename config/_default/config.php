@@ -232,11 +232,11 @@ return [
 				'deps'   => [],
 			],
 			[
-				'handle'    => mai_get_handle() . '-sticky',
-				'src'       => mai_get_url() . 'assets/js/min/sticky.min.js',
+				'handle'    => mai_get_handle() . '-header',
+				'src'       => mai_get_url() . 'assets/js/min/header.min.js',
 				'deps'      => [],
 				'condition' => function () {
-					return current_theme_supports( 'sticky-header' );
+					return current_theme_supports( 'sticky-header' ) || current_theme_supports( 'transparent-header' );
 				},
 			],
 

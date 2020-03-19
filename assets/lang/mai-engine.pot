@@ -37,472 +37,60 @@ msgstr ""
 msgid "Menu"
 msgstr ""
 
-#: config/_default/config.php:439
+#: config/_default/config.php:414
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/_default/config.php:440
+#: config/_default/config.php:415
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/_default/config.php:441
+#: config/_default/config.php:416
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default/config.php:442
+#: config/_default/config.php:417
 msgid "Footer Menu"
 msgstr ""
 
-#: config/_default/config.php:487
+#: config/_default/config.php:462
 msgid "Before Header"
 msgstr ""
 
-#: config/_default/config.php:488
+#: config/_default/config.php:463
 msgid "The Before Header widget area."
 msgstr ""
 
-#: config/_default/config.php:493
+#: config/_default/config.php:468
 msgid "Header Left"
 msgstr ""
 
-#: config/_default/config.php:494
+#: config/_default/config.php:469
 msgid "The Header Left widget area."
 msgstr ""
 
-#: config/_default/config.php:503
+#: config/_default/config.php:478
 msgid "Header Right"
 msgstr ""
 
-#: config/_default/config.php:504
+#: config/_default/config.php:479
 msgid "The Header Right widget area."
 msgstr ""
 
-#: config/_default/config.php:513
+#: config/_default/config.php:488
 msgid "Before Footer"
 msgstr ""
 
-#: config/_default/config.php:514
+#: config/_default/config.php:489
 msgid "The Before Footer widget area."
 msgstr ""
 
-#: config/_default/config.php:520
+#: config/_default/config.php:495
 msgid "Mobile Menu"
 msgstr ""
 
-#: config/_default/config.php:521
+#: config/_default/config.php:496
 msgid "The Mobile Menu widget area."
-msgstr ""
-
-#: config/_default/settings.php:15, lib/classes/class-mai-entry-settings.php:86
-msgid "Display"
-msgstr ""
-
-#: config/_default/settings.php:22, lib/classes/class-mai-entry-settings.php:106
-msgid "Show"
-msgstr ""
-
-#: config/_default/settings.php:28, lib/classes/class-mai-entry-settings.php:1270
-msgid "Image"
-msgstr ""
-
-#: config/_default/settings.php:29, config/_default/settings.php:596, config/_default/settings.php:931, config/_default/settings.php:1082, lib/classes/class-mai-entry-settings.php:609, lib/classes/class-mai-entry-settings.php:909, lib/classes/class-mai-entry-settings.php:1061, lib/classes/class-mai-entry-settings.php:1272
-msgid "Title"
-msgstr ""
-
-#: config/_default/settings.php:30, config/_default/settings.php:139, lib/classes/class-mai-entry-settings.php:197, lib/classes/class-mai-entry-settings.php:1273
-msgid "Header Meta"
-msgstr ""
-
-#: config/_default/settings.php:31, lib/classes/class-mai-entry-settings.php:1275
-msgid "Excerpt"
-msgstr ""
-
-#: config/_default/settings.php:32, lib/classes/class-mai-entry-settings.php:1276
-msgid "Content"
-msgstr ""
-
-#: config/_default/settings.php:33, lib/classes/class-mai-entry-settings.php:1278
-msgid "Read More link"
-msgstr ""
-
-#: config/_default/settings.php:34, config/_default/settings.php:218, lib/classes/class-mai-entry-settings.php:271, lib/classes/class-mai-entry-settings.php:1280
-msgid "Footer Meta"
-msgstr ""
-
-#: config/_default/settings.php:46, lib/classes/class-mai-entry-settings.php:125
-msgid "Image Orientation"
-msgstr ""
-
-#: config/_default/settings.php:52, lib/classes/class-mai-entry-settings.php:135
-msgid "Landscape"
-msgstr ""
-
-#: config/_default/settings.php:53, lib/classes/class-mai-entry-settings.php:136
-msgid "Portrait"
-msgstr ""
-
-#: config/_default/settings.php:54, lib/classes/class-mai-entry-settings.php:137
-msgid "Square"
-msgstr ""
-
-#: config/_default/settings.php:55, lib/classes/class-mai-entry-settings.php:138
-msgid "Custom"
-msgstr ""
-
-#: config/_default/settings.php:74, lib/classes/class-mai-entry-settings.php:149
-msgid "Image Size"
-msgstr ""
-
-#: config/_default/settings.php:110, lib/classes/class-mai-entry-settings.php:172
-msgid "Image Position"
-msgstr ""
-
-#: config/_default/settings.php:116, lib/classes/class-mai-entry-settings.php:182
-msgid "Full"
-msgstr ""
-
-#: config/_default/settings.php:117, config/_default/settings.php:455, lib/classes/class-mai-entry-settings.php:183, lib/classes/class-mai-entry-settings.php:460
-msgid "Left"
-msgstr ""
-
-#: config/_default/settings.php:118, config/_default/settings.php:260, config/_default/settings.php:456, lib/classes/class-mai-entry-settings.php:184, lib/classes/class-mai-entry-settings.php:318, lib/classes/class-mai-entry-settings.php:461
-msgid "Center"
-msgstr ""
-
-#: config/_default/settings.php:119, config/_default/settings.php:457, lib/classes/class-mai-entry-settings.php:185, lib/classes/class-mai-entry-settings.php:462
-msgid "Right"
-msgstr ""
-
-#: config/_default/settings.php:120, lib/classes/class-mai-entry-settings.php:186
-msgid "Background"
-msgstr ""
-
-#: config/_default/settings.php:162, lib/classes/class-mai-entry-settings.php:216
-msgid "Content Limit"
-msgstr ""
-
-#: config/_default/settings.php:163, lib/classes/class-mai-entry-settings.php:217
-msgid "Limit the number of characters shown for the content or excerpt. Use 0 for no limit."
-msgstr ""
-
-#: config/_default/settings.php:194, lib/classes/class-mai-entry-settings.php:244
-msgid "More Link Text"
-msgstr ""
-
-#: config/_default/settings.php:208, lib/classes/class-mai-entry-settings.php:262, lib/classes/class-mai-entry-settings.php:266, lib/classes/class-mai-entry.php:841
-msgid "Read More"
-msgstr ""
-
-#: config/_default/settings.php:241, lib/classes/class-mai-entry-settings.php:290
-msgid "Boxed"
-msgstr ""
-
-#: config/_default/settings.php:247, lib/classes/class-mai-entry-settings.php:302
-msgid "Display boxed"
-msgstr ""
-
-#: config/_default/settings.php:252, lib/classes/class-mai-entry-settings.php:306
-msgid "Align Text"
-msgstr ""
-
-#: config/_default/settings.php:258, config/_default/settings.php:279, config/_default/settings.php:454, config/_default/settings.php:482, lib/classes/class-mai-entry-settings.php:316, lib/classes/class-mai-entry-settings.php:333, lib/classes/class-mai-entry-settings.php:459, lib/classes/class-mai-entry-settings.php:483
-msgid "Clear"
-msgstr ""
-
-#: config/_default/settings.php:259, lib/classes/class-mai-entry-settings.php:317
-msgid "Start"
-msgstr ""
-
-#: config/_default/settings.php:261, lib/classes/class-mai-entry-settings.php:319
-msgid "End"
-msgstr ""
-
-#: config/_default/settings.php:273, lib/classes/class-mai-entry-settings.php:323
-msgid "Align Text (vertical)"
-msgstr ""
-
-#: config/_default/settings.php:280, config/_default/settings.php:483, lib/classes/class-mai-entry-settings.php:334, lib/classes/class-mai-entry-settings.php:484, lib/customize/panels.php:136, lib/customize/panels.php:169
-msgid "Top"
-msgstr ""
-
-#: config/_default/settings.php:281, config/_default/settings.php:484, lib/classes/class-mai-entry-settings.php:335, lib/classes/class-mai-entry-settings.php:485
-msgid "Middle"
-msgstr ""
-
-#: config/_default/settings.php:282, config/_default/settings.php:485, lib/classes/class-mai-entry-settings.php:336, lib/classes/class-mai-entry-settings.php:486, lib/customize/panels.php:137, lib/customize/panels.php:170
-msgid "Bottom"
-msgstr ""
-
-#: config/_default/settings.php:313, lib/classes/class-mai-entry-settings.php:96, lib/classes/class-mai-entry-settings.php:359
-msgid "Layout"
-msgstr ""
-
-#: config/_default/settings.php:320, lib/classes/class-mai-entry-settings.php:369
-msgid "Columns (desktop)"
-msgstr ""
-
-#: config/_default/settings.php:326, config/_default/settings.php:361, config/_default/settings.php:392, config/_default/settings.php:423, lib/classes/class-mai-entry-settings.php:1369
-msgid "1"
-msgstr ""
-
-#: config/_default/settings.php:327, config/_default/settings.php:362, config/_default/settings.php:393, config/_default/settings.php:424, lib/classes/class-mai-entry-settings.php:1370
-msgid "2"
-msgstr ""
-
-#: config/_default/settings.php:328, config/_default/settings.php:363, config/_default/settings.php:394, config/_default/settings.php:425, lib/classes/class-mai-entry-settings.php:1371
-msgid "3"
-msgstr ""
-
-#: config/_default/settings.php:329, config/_default/settings.php:364, config/_default/settings.php:395, config/_default/settings.php:426, lib/classes/class-mai-entry-settings.php:1372
-msgid "4"
-msgstr ""
-
-#: config/_default/settings.php:330, config/_default/settings.php:365, config/_default/settings.php:396, config/_default/settings.php:427, lib/classes/class-mai-entry-settings.php:1373
-msgid "5"
-msgstr ""
-
-#: config/_default/settings.php:331, config/_default/settings.php:366, config/_default/settings.php:397, config/_default/settings.php:428, lib/classes/class-mai-entry-settings.php:1374
-msgid "6"
-msgstr ""
-
-#: config/_default/settings.php:332, config/_default/settings.php:367, config/_default/settings.php:398, config/_default/settings.php:429, lib/classes/class-mai-entry-settings.php:1375
-msgid "Auto"
-msgstr ""
-
-#: config/_default/settings.php:350, lib/classes/class-mai-entry-settings.php:380, lib/classes/class-mai-entry-settings.php:391
-msgid "Custom responsive columns"
-msgstr ""
-
-#: config/_default/settings.php:355, lib/classes/class-mai-entry-settings.php:395
-msgid "Columns (lg tablets)"
-msgstr ""
-
-#: config/_default/settings.php:386, lib/classes/class-mai-entry-settings.php:413
-msgid "Columns (sm tablets)"
-msgstr ""
-
-#: config/_default/settings.php:417, lib/classes/class-mai-entry-settings.php:431
-msgid "Columns (mobile)"
-msgstr ""
-
-#: config/_default/settings.php:448, lib/classes/class-mai-entry-settings.php:449
-msgid "Align Columns"
-msgstr ""
-
-#: config/_default/settings.php:476, lib/classes/class-mai-entry-settings.php:473
-msgid "Align Columns (vertical)"
-msgstr ""
-
-#: config/_default/settings.php:504, lib/classes/class-mai-entry-settings.php:497
-msgid "Column Gap"
-msgstr ""
-
-#: config/_default/settings.php:512, lib/classes/class-mai-entry-settings.php:508
-msgid "Row Gap"
-msgstr ""
-
-#: config/_default/settings.php:523, config/_default/settings.php:609, lib/classes/class-mai-entry-settings.php:538, lib/classes/class-mai-entry-settings.php:621
-msgid "Entries"
-msgstr ""
-
-#: config/_default/settings.php:533, lib/classes/class-mai-entry-settings.php:555
-msgid "Post Type"
-msgstr ""
-
-#: config/_default/settings.php:565, config/_default/settings.php:1051, lib/classes/class-mai-entry-settings.php:571, lib/classes/class-mai-entry-settings.php:1023
-msgid "Number of Entries"
-msgstr ""
-
-#: config/_default/settings.php:566, config/_default/settings.php:1052, lib/classes/class-mai-entry-settings.php:572, lib/classes/class-mai-entry-settings.php:1024
-msgid "Use 0 to show all."
-msgstr ""
-
-#: config/_default/settings.php:589, config/_default/settings.php:1075, lib/classes/class-mai-entry-settings.php:598, lib/classes/class-mai-entry-settings.php:1050
-msgid "Get Entries By"
-msgstr ""
-
-#: config/_default/settings.php:595, config/_default/settings.php:933, config/_default/settings.php:1081, lib/classes/class-mai-entry-settings.php:608, lib/classes/class-mai-entry-settings.php:911, lib/classes/class-mai-entry-settings.php:1060
-msgid "Date"
-msgstr ""
-
-#: config/_default/settings.php:597, lib/classes/class-mai-entry-settings.php:610
-msgid "Taxonomy/Meta"
-msgstr ""
-
-#: config/_default/settings.php:598, config/_default/settings.php:860, config/_default/settings.php:1083, lib/classes/class-mai-entry-settings.php:611, lib/classes/class-mai-entry-settings.php:845, lib/classes/class-mai-entry-settings.php:1063
-msgid "Parent"
-msgstr ""
-
-#: config/_default/settings.php:610, lib/classes/class-mai-entry-settings.php:622
-msgid "Show specific entries. Choose all that apply. If empty, Grid will get entries by date."
-msgstr ""
-
-#: config/_default/settings.php:634, lib/classes/class-mai-entry-settings.php:649
-msgid "Taxonomies"
-msgstr ""
-
-#: config/_default/settings.php:651, config/_default/settings.php:772, lib/classes/class-mai-entry-settings.php:671, lib/classes/class-mai-entry-settings.php:772
-msgid "Add Condition"
-msgstr ""
-
-#: config/_default/settings.php:655, config/_default/settings.php:1038, lib/classes/class-mai-entry-settings.php:674, lib/classes/class-mai-entry-settings.php:1007
-msgid "Taxonomy"
-msgstr ""
-
-#: config/_default/settings.php:684, lib/classes/class-mai-entry-settings.php:686
-msgid "Terms"
-msgstr ""
-
-#: config/_default/settings.php:706, lib/classes/class-mai-entry-settings.php:708
-msgid "Operator"
-msgstr ""
-
-#: config/_default/settings.php:712, lib/classes/class-mai-entry-settings.php:1443
-msgid "In"
-msgstr ""
-
-#: config/_default/settings.php:713, lib/classes/class-mai-entry-settings.php:1444
-msgid "Not In"
-msgstr ""
-
-#: config/_default/settings.php:727, lib/classes/class-mai-entry-settings.php:723
-msgid "Taxonomies Relation"
-msgstr ""
-
-#: config/_default/settings.php:733, config/_default/settings.php:838, lib/classes/class-mai-entry-settings.php:1457
-msgid "And"
-msgstr ""
-
-#: config/_default/settings.php:734, config/_default/settings.php:839, lib/classes/class-mai-entry-settings.php:1458
-msgid "Or"
-msgstr ""
-
-#: config/_default/settings.php:755, lib/classes/class-mai-entry-settings.php:750
-msgid "Meta Keys"
-msgstr ""
-
-#: config/_default/settings.php:777, lib/classes/class-mai-entry-settings.php:776
-msgid "Meta Key"
-msgstr ""
-
-#: config/_default/settings.php:785, lib/classes/class-mai-entry-settings.php:783
-msgid "Compare"
-msgstr ""
-
-#: config/_default/settings.php:791, lib/classes/class-mai-entry-settings.php:1471
-msgid "Is equal to"
-msgstr ""
-
-#: config/_default/settings.php:792, lib/classes/class-mai-entry-settings.php:1472
-msgid "Is not equal to"
-msgstr ""
-
-#: config/_default/settings.php:793, lib/classes/class-mai-entry-settings.php:1473
-msgid "Is greater than"
-msgstr ""
-
-#: config/_default/settings.php:794, lib/classes/class-mai-entry-settings.php:1474
-msgid "Is great than or equal to"
-msgstr ""
-
-#: config/_default/settings.php:795, lib/classes/class-mai-entry-settings.php:1475
-msgid "Is less than"
-msgstr ""
-
-#: config/_default/settings.php:796, lib/classes/class-mai-entry-settings.php:1476
-msgid "Is less than or equal to"
-msgstr ""
-
-#: config/_default/settings.php:797, lib/classes/class-mai-entry-settings.php:1477
-msgid "Exists"
-msgstr ""
-
-#: config/_default/settings.php:798, lib/classes/class-mai-entry-settings.php:1478
-msgid "Does not exist"
-msgstr ""
-
-#: config/_default/settings.php:810, lib/classes/class-mai-entry-settings.php:797
-msgid "Meta Value"
-msgstr ""
-
-#: config/_default/settings.php:832, lib/classes/class-mai-entry-settings.php:818
-msgid "Meta Keys Relation"
-msgstr ""
-
-#: config/_default/settings.php:901, lib/classes/class-mai-entry-settings.php:872
-msgid "Offset"
-msgstr ""
-
-#: config/_default/settings.php:902, lib/classes/class-mai-entry-settings.php:873
-msgid "Skip this number of entries."
-msgstr ""
-
-#: config/_default/settings.php:925, lib/classes/class-mai-entry-settings.php:899
-msgid "Order By"
-msgstr ""
-
-#: config/_default/settings.php:932, lib/classes/class-mai-entry-settings.php:910
-msgid "Slug"
-msgstr ""
-
-#: config/_default/settings.php:934, lib/classes/class-mai-entry-settings.php:912
-msgid "Modified"
-msgstr ""
-
-#: config/_default/settings.php:935, lib/classes/class-mai-entry-settings.php:913
-msgid "Random"
-msgstr ""
-
-#: config/_default/settings.php:936, lib/classes/class-mai-entry-settings.php:914
-msgid "Comment Count"
-msgstr ""
-
-#: config/_default/settings.php:937, lib/classes/class-mai-entry-settings.php:915
-msgid "Menu Order"
-msgstr ""
-
-#: config/_default/settings.php:938, lib/classes/class-mai-entry-settings.php:916
-msgid "Entries Order"
-msgstr ""
-
-#: config/_default/settings.php:939, lib/classes/class-mai-entry-settings.php:917
-msgid "Meta Value Number"
-msgstr ""
-
-#: config/_default/settings.php:954, lib/classes/class-mai-entry-settings.php:931
-msgid "Meta key"
-msgstr ""
-
-#: config/_default/settings.php:973, lib/classes/class-mai-entry-settings.php:953
-msgid "Order"
-msgstr ""
-
-#: config/_default/settings.php:979, lib/classes/class-mai-entry-settings.php:1534
-msgid "Ascending"
-msgstr ""
-
-#: config/_default/settings.php:980, lib/classes/class-mai-entry-settings.php:1535
-msgid "Descending"
-msgstr ""
-
-#: config/_default/settings.php:991, lib/classes/class-mai-entry-settings.php:970
-msgid "Exclude Entries"
-msgstr ""
-
-#: config/_default/settings.php:992, lib/classes/class-mai-entry-settings.php:971
-msgid "Hide specific entries. Choose all that apply."
-msgstr ""
-
-#: config/_default/settings.php:1017, config/_default/settings.php:1094, lib/classes/class-mai-entry-settings.php:1080
-msgid "Exclude"
-msgstr ""
-
-#: config/_default/settings.php:1023, config/_default/settings.php:1100, lib/classes/class-mai-entry-settings.php:1520
-msgid "Exclude current"
-msgstr ""
-
-#: config/_default/settings.php:1024, config/_default/settings.php:1101, lib/classes/class-mai-entry-settings.php:1521
-msgid "Exclude displayed"
 msgstr ""
 
 #: lib/blocks/icon.php:25
@@ -513,12 +101,172 @@ msgstr ""
 msgid "A custom icon block."
 msgstr ""
 
+#: lib/classes/class-mai-entry-settings.php:86, config/_default/settings/grid.php:15
+msgid "Display"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:96, lib/classes/class-mai-entry-settings.php:359, config/_default/settings/archive.php:15, config/_default/settings/grid.php:305, config/_default/settings/single.php:15
+msgid "Layout"
+msgstr ""
+
 #: lib/classes/class-mai-entry-settings.php:97
 msgid "\"Site Default\" uses the setting in Customizer > Theme Settings > Site Layout."
 msgstr ""
 
+#: lib/classes/class-mai-entry-settings.php:106, config/_default/settings/archive.php:24, config/_default/settings/grid.php:22, config/_default/settings/single.php:24
+msgid "Show"
+msgstr ""
+
 #: lib/classes/class-mai-entry-settings.php:107
 msgid "Show/hide and re-order entry elements. Click \"Toggle Hooks\" to show Genesis hooks."
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:125, config/_default/settings/archive.php:56, config/_default/settings/grid.php:46
+msgid "Image Orientation"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:135, config/_default/settings/archive.php:61, config/_default/settings/grid.php:52
+msgid "Landscape"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:136, config/_default/settings/archive.php:62, config/_default/settings/grid.php:53
+msgid "Portrait"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:137, config/_default/settings/archive.php:63, config/_default/settings/grid.php:54
+msgid "Square"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:138, config/_default/settings/archive.php:64, config/_default/settings/grid.php:55
+msgid "Custom"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:149, config/_default/settings/archive.php:76, config/_default/settings/grid.php:74
+msgid "Image Size"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:172, config/_default/settings/archive.php:96, config/_default/settings/grid.php:102
+msgid "Image Position"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:182, config/_default/settings/archive.php:101, config/_default/settings/grid.php:108
+msgid "Full"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:183, lib/classes/class-mai-entry-settings.php:460, config/_default/settings/archive.php:102, config/_default/settings/grid.php:109, config/_default/settings/grid.php:415
+msgid "Left"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:184, lib/classes/class-mai-entry-settings.php:318, lib/classes/class-mai-entry-settings.php:461, config/_default/settings/archive.php:103, config/_default/settings/grid.php:110, config/_default/settings/grid.php:252, config/_default/settings/grid.php:416
+msgid "Center"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:185, lib/classes/class-mai-entry-settings.php:462, config/_default/settings/archive.php:104, config/_default/settings/grid.php:111, config/_default/settings/grid.php:417
+msgid "Right"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:186, config/_default/settings/archive.php:105, config/_default/settings/grid.php:112
+msgid "Background"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:197, lib/classes/class-mai-entry-settings.php:1273, config/_default/settings/archive.php:43, config/_default/settings/grid.php:30, config/_default/settings/grid.php:131, config/_default/settings/single.php:45
+msgid "Header Meta"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:216, config/_default/settings/grid.php:154
+msgid "Content Limit"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:217, config/_default/settings/grid.php:155
+msgid "Limit the number of characters shown for the content or excerpt. Use 0 for no limit."
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:244, config/_default/settings/grid.php:186
+msgid "More Link Text"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:262, lib/classes/class-mai-entry-settings.php:266, lib/classes/class-mai-entry.php:849, config/_default/settings/grid.php:200
+msgid "Read More"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:271, lib/classes/class-mai-entry-settings.php:1280, config/_default/settings/archive.php:50, config/_default/settings/grid.php:34, config/_default/settings/grid.php:210, config/_default/settings/single.php:52
+msgid "Footer Meta"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:290, config/_default/settings/grid.php:233
+msgid "Boxed"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:302, config/_default/settings/grid.php:239
+msgid "Display boxed"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:306, config/_default/settings/grid.php:244
+msgid "Align Text"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:316, lib/classes/class-mai-entry-settings.php:333, lib/classes/class-mai-entry-settings.php:459, lib/classes/class-mai-entry-settings.php:483, config/_default/settings/grid.php:250, config/_default/settings/grid.php:271, config/_default/settings/grid.php:414, config/_default/settings/grid.php:442
+msgid "Clear"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:317, config/_default/settings/grid.php:251
+msgid "Start"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:319, config/_default/settings/grid.php:253
+msgid "End"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:323, config/_default/settings/grid.php:265
+msgid "Align Text (vertical)"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:334, lib/classes/class-mai-entry-settings.php:484, config/_default/settings/grid.php:272, config/_default/settings/grid.php:443
+msgid "Top"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:335, lib/classes/class-mai-entry-settings.php:485, config/_default/settings/grid.php:273, config/_default/settings/grid.php:444
+msgid "Middle"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:336, lib/classes/class-mai-entry-settings.php:486, config/_default/settings/grid.php:274, config/_default/settings/grid.php:445
+msgid "Bottom"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:369, config/_default/settings/grid.php:312
+msgid "Columns (desktop)"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:380, lib/classes/class-mai-entry-settings.php:391, config/_default/settings/grid.php:334
+msgid "Custom responsive columns"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:395, config/_default/settings/grid.php:339
+msgid "Columns (lg tablets)"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:413, config/_default/settings/grid.php:362
+msgid "Columns (sm tablets)"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:431, config/_default/settings/grid.php:385
+msgid "Columns (mobile)"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:449, config/_default/settings/grid.php:408
+msgid "Align Columns"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:473, config/_default/settings/grid.php:436
+msgid "Align Columns (vertical)"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:497, config/_default/settings/grid.php:464
+msgid "Column Gap"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:508, config/_default/settings/grid.php:472
+msgid "Row Gap"
 msgstr ""
 
 #: lib/classes/class-mai-entry-settings.php:520
@@ -529,15 +277,267 @@ msgstr ""
 msgid "Sticky posts are not included in count."
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:1254
+#: lib/classes/class-mai-entry-settings.php:538, lib/classes/class-mai-entry-settings.php:621, config/_default/settings/grid.php:483, config/_default/settings/grid.php:551, config/_default/settings/grid.php:1010
+msgid "Entries"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:555, config/_default/settings/grid.php:493
+msgid "Post Type"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:571, lib/classes/class-mai-entry-settings.php:1023, config/_default/settings/grid.php:527, config/_default/settings/grid.php:986
+msgid "Number of Entries"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:572, lib/classes/class-mai-entry-settings.php:1024, config/_default/settings/grid.php:528, config/_default/settings/grid.php:987
+msgid "Use 0 to show all."
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:598, lib/classes/class-mai-entry-settings.php:1050, config/_default/settings/grid.php:507, config/_default/settings/grid.php:967
+msgid "Get Entries By"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:608, lib/classes/class-mai-entry-settings.php:911, lib/classes/class-mai-entry-settings.php:1060, config/_default/settings/grid.php:513, config/_default/settings/grid.php:844
+msgid "Date"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:609, lib/classes/class-mai-entry-settings.php:909, lib/classes/class-mai-entry-settings.php:1061, lib/classes/class-mai-entry-settings.php:1272, config/_default/settings/archive.php:42, config/_default/settings/grid.php:29, config/_default/settings/grid.php:514, config/_default/settings/grid.php:842, config/_default/settings/grid.php:1093, config/_default/settings/single.php:44
+msgid "Title"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:610, config/_default/settings/grid.php:515
+msgid "Taxonomy/Meta"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:611, lib/classes/class-mai-entry-settings.php:845, lib/classes/class-mai-entry-settings.php:1063, config/_default/settings/grid.php:516, config/_default/settings/grid.php:788, config/_default/settings/grid.php:975, config/_default/settings/grid.php:1037
+msgid "Parent"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:622, config/_default/settings/grid.php:552, config/_default/settings/grid.php:1011
+msgid "Show specific entries. Choose all that apply. If empty, Grid will get entries by date."
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:649, config/_default/settings/grid.php:577
+msgid "Taxonomies"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:671, lib/classes/class-mai-entry-settings.php:772, config/_default/settings/grid.php:595, config/_default/settings/grid.php:700
+msgid "Add Condition"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:674, lib/classes/class-mai-entry-settings.php:1007, config/_default/settings/grid.php:599, config/_default/settings/grid.php:953, config/_default/settings/grid.php:973
+msgid "Taxonomy"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:686, config/_default/settings/grid.php:612
+msgid "Terms"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:708, config/_default/settings/grid.php:633
+msgid "Operator"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:723, config/_default/settings/grid.php:654
+msgid "Taxonomies Relation"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:750, config/_default/settings/grid.php:682
+msgid "Meta Keys"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:776, config/_default/settings/grid.php:705
+msgid "Meta Key"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:783, config/_default/settings/grid.php:713
+msgid "Compare"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:797, config/_default/settings/grid.php:738
+msgid "Meta Value"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:818, config/_default/settings/grid.php:760
+msgid "Meta Keys Relation"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:872, config/_default/settings/grid.php:812, config/_default/settings/grid.php:1063
+msgid "Offset"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:873, config/_default/settings/grid.php:813, config/_default/settings/grid.php:1064
+msgid "Skip this number of entries."
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:899, config/_default/settings/grid.php:836, config/_default/settings/grid.php:1087
+msgid "Order By"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:910, config/_default/settings/grid.php:843, config/_default/settings/grid.php:1094
+msgid "Slug"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:912, config/_default/settings/grid.php:845
+msgid "Modified"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:913, config/_default/settings/grid.php:846
+msgid "Random"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:914, config/_default/settings/grid.php:847
+msgid "Comment Count"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:915, config/_default/settings/grid.php:848
+msgid "Menu Order"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:916
+msgid "Entries Order"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:917, config/_default/settings/grid.php:849
+msgid "Meta Value Number"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:931, config/_default/settings/grid.php:869
+msgid "Meta key"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:953, config/_default/settings/grid.php:888, config/_default/settings/grid.php:1116
+msgid "Order"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:970, config/_default/settings/grid.php:906, config/_default/settings/grid.php:1139
+msgid "Exclude Entries"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:971, config/_default/settings/grid.php:907, config/_default/settings/grid.php:1140
+msgid "Hide specific entries. Choose all that apply."
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1080, config/_default/settings/grid.php:932, config/_default/settings/grid.php:1167
+msgid "Exclude"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1254, lib/functions/getters.php:719
 msgid "Site Default"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1270, config/_default/settings/archive.php:40, config/_default/settings/grid.php:28, config/_default/settings/single.php:42
+msgid "Image"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1275, config/_default/settings/archive.php:45, config/_default/settings/grid.php:31, config/_default/settings/single.php:47
+msgid "Excerpt"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1276, config/_default/settings/archive.php:46, config/_default/settings/grid.php:32, config/_default/settings/single.php:48
+msgid "Content"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1278, config/_default/settings/archive.php:48, config/_default/settings/grid.php:33, config/_default/settings/single.php:50
+msgid "Read More link"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1369, lib/functions/getters.php:737
+msgid "1"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1370, lib/functions/getters.php:738
+msgid "2"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1371, lib/functions/getters.php:739
+msgid "3"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1372, lib/functions/getters.php:740
+msgid "4"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1373, lib/functions/getters.php:741
+msgid "5"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1374, lib/functions/getters.php:742
+msgid "6"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1375, lib/functions/getters.php:743
+msgid "Auto"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1443, config/_default/settings/grid.php:639
+msgid "In"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1444, config/_default/settings/grid.php:640
+msgid "Not In"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1457, config/_default/settings/grid.php:660, config/_default/settings/grid.php:766
+msgid "And"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1458, config/_default/settings/grid.php:661, config/_default/settings/grid.php:767
+msgid "Or"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1471, config/_default/settings/grid.php:719
+msgid "Is equal to"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1472, config/_default/settings/grid.php:720
+msgid "Is not equal to"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1473, config/_default/settings/grid.php:721
+msgid "Is greater than"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1474, config/_default/settings/grid.php:722
+msgid "Is great than or equal to"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1475, config/_default/settings/grid.php:723
+msgid "Is less than"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1476, config/_default/settings/grid.php:724
+msgid "Is less than or equal to"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1477, config/_default/settings/grid.php:725
+msgid "Exists"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1478, config/_default/settings/grid.php:726
+msgid "Does not exist"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1520, config/_default/settings/grid.php:938, config/_default/settings/grid.php:1174
+msgid "Exclude current"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1521, config/_default/settings/grid.php:939, config/_default/settings/grid.php:1175
+msgid "Exclude displayed"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1534, config/_default/settings/grid.php:894, config/_default/settings/grid.php:1122
+msgid "Ascending"
+msgstr ""
+
+#: lib/classes/class-mai-entry-settings.php:1535, config/_default/settings/grid.php:895, config/_default/settings/grid.php:1123
+msgid "Descending"
 msgstr ""
 
 #: lib/classes/class-mai-grid-blocks.php:70, lib/classes/class-mai-grid-blocks.php:84, lib/classes/_class-mai-grid-blocks.php:77, lib/classes/_class-mai-grid-blocks.php:91
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: lib/classes/class-mai-grid-blocks.php:118, lib/classes/_class-mai-grid-blocks.php:135, lib/grid/field-groups.php:63, lib/grid/_field-groups.php:59
+#: lib/classes/class-mai-grid-blocks.php:118, lib/classes/_class-mai-grid-blocks.php:135, lib/grid/field-groups.php:47, lib/grid/_field-groups.php:59
 msgid "Mai Post Grid"
 msgstr ""
 
@@ -545,24 +545,24 @@ msgstr ""
 msgid "Display posts/pages/cpts in various layouts."
 msgstr ""
 
-#: lib/classes/class-mai-grid-blocks.php:136, lib/classes/_class-mai-grid-blocks.php:152, lib/grid/field-groups.php:81, lib/grid/_field-groups.php:77
+#: lib/classes/class-mai-grid-blocks.php:136, lib/classes/_class-mai-grid-blocks.php:152, lib/grid/field-groups.php:65, lib/grid/_field-groups.php:77
 msgid "Mai Term Grid"
 msgstr ""
 
-#: lib/customize/panels.php:115
+#: lib/customize/panels.php:83
 msgid "Logo Width"
 msgstr ""
 
-#: lib/customize/panels.php:127
+#: lib/customize/panels.php:92, lib/customize/panels.php:126
+msgid "Desktop"
+msgstr ""
+
+#: lib/customize/panels.php:93, lib/customize/panels.php:127
+msgid "Mobile / Sticky"
+msgstr ""
+
+#: lib/customize/panels.php:117
 msgid "Logo Spacing"
-msgstr ""
-
-#: lib/customize/panels.php:148
-msgid "Shrink/Mobile Logo Width"
-msgstr ""
-
-#: lib/customize/panels.php:160
-msgid "Shrink/Mobile Logo Spacing"
 msgstr ""
 
 #: lib/customize/sections.php:22
@@ -599,4 +599,24 @@ msgstr ""
 
 #: lib/structure/page-header.php:173
 msgid "Showing the latest posts"
+msgstr ""
+
+#: config/_default/settings/archive.php:16, config/_default/settings/single.php:16
+msgid "\"Site Default\" will use the setting in Customizer > Theme Settings > Site Layout."
+msgstr ""
+
+#: config/_default/settings/grid.php:974
+msgid "Name"
+msgstr ""
+
+#: config/_default/settings/grid.php:1095
+msgid "Entry Totals"
+msgstr ""
+
+#: config/_default/settings/grid.php:1096
+msgid "Term ID"
+msgstr ""
+
+#: config/_default/settings/grid.php:1173
+msgid "Exclude terms with no posts"
 msgstr ""

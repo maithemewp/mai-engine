@@ -7,6 +7,7 @@ var beforeHeader   = document.getElementsByClassName( 'before-header' )[ 0 ];
 var siteHeader     = document.getElementsByClassName( 'site-header' )[ 0 ];
 var navAfterHeader = document.getElementsByClassName( 'nav-after-header' )[ 0 ];
 var siteInner      = document.getElementsByClassName( 'site-inner' )[ 0 ];
+var hasSticky      = body.classList.contains( 'has-sticky-header' );
 var hasTransparent = body.classList.contains( 'has-transparent-header' );
 var firstElement   = siteInner.firstChild;
 var timeout        = false;
@@ -22,7 +23,9 @@ var isTop = new IntersectionObserver( function( tracker ) {
 	}
 }, { threshold: [ 0, 1 ] } );
 
-isTop.observe( beforeHeader ? beforeHeader : skipLink );
+if ( hasSticky ) {
+	isTop.observe( beforeHeader ? beforeHeader : skipLink );
+}
 
 /**
  * Transparent header.
@@ -41,8 +44,13 @@ var siteInnerMargin = function() {
 	headerHeight += beforeHeader ? beforeHeader.offsetHeight : 0;
 	headerHeight += navAfterHeader ? navAfterHeader.offsetHeight : 0;
 
-	siteInner.style.marginTop     = '-' + headerHeight + 'px';
+	if ( hasSticky ) {
+		siteInner.style.marginTop = '-' + headerHeight + 'px';
+	}
+
 	firstElement.style.paddingTop = parseInt( headerHeight ) + parseInt( paddingBottom ) + 'px';
+
+	console.log( headerHeight );
 
 	setTimeout( function() {
 		timeout = false;
