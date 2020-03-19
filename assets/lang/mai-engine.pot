@@ -561,6 +561,10 @@ msgstr ""
 msgid "Mobile / Sticky"
 msgstr ""
 
+#: lib/customize/panels.php:93, lib/customize/panels.php:127
+msgid "Mobile"
+msgstr ""
+
 #: lib/customize/panels.php:117
 msgid "Logo Spacing"
 msgstr ""

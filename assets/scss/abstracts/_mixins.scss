@@ -7,7 +7,7 @@
 	}
 
 	@if ($max) {
-		$max: map_get($breakpoints, $max);
+		$max: map_get($breakpoints, $max) - 1;
 		$query: "(max-width: #{$max})";
 	}
 
