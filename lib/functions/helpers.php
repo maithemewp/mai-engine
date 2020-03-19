@@ -45,7 +45,12 @@ function mai_has_string( $needle, $haystack ) {
  * @return bool
  */
 function mai_is_type_single() {
-	return is_front_page() || is_single() || is_page() || is_404() || is_attachment() || is_singular();
+	static $is_type_single = null;
+	if ( ! is_null( $is_type_single ) ) {
+		return $is_type_single;
+	}
+	$is_type_single = is_front_page() || is_single() || is_page() || is_404() || is_attachment() || is_singular();
+	return $is_type_single;
 }
 
 /**
@@ -56,7 +61,12 @@ function mai_is_type_single() {
  * @return bool
  */
 function mai_is_type_archive() {
-	return is_home() || is_post_type_archive() || is_category() || is_tag() || is_tax() || is_author() || is_date() || is_year() || is_month() || is_day() || is_time() || is_archive() || is_search();
+	static $is_type_archive = null;
+	if ( ! is_null( $is_type_archive ) ) {
+		return $is_type_archive;
+	}
+	$is_type_archive = is_home() || is_post_type_archive() || is_category() || is_tag() || is_tax() || is_author() || is_date() || is_year() || is_month() || is_day() || is_time() || is_archive() || is_search();
+	return $is_type_archive;
 }
 
 /**
@@ -72,13 +82,20 @@ function mai_is_type_archive() {
  * @return bool
  */
 function mai_sidebar_has_widget( $sidebar, $widget ) {
+	static $sidebar_has_widget = null;
+	if ( ! is_null( $sidebar_has_widget ) ) {
+		return $sidebar_has_widget;
+	}
+
+	$sidebar_has_widget = false;
+
 	global $sidebars_widgets;
 
 	if ( isset( $sidebars_widgets[ $sidebar ][0] ) && strpos( $sidebars_widgets[ $sidebar ][0], $widget ) !== false && is_active_sidebar( $sidebar ) ) {
-		return true;
+		$sidebar_has_widget = true;
 	}
 
-	return false;
+	return $sidebar_has_widget;
 }
 
 /**
@@ -89,6 +106,12 @@ function mai_sidebar_has_widget( $sidebar, $widget ) {
  * @return bool
  */
 function mai_has_cover_block() {
+
+	static $has_cover_block = null;
+	if ( ! is_null( $has_cover_block ) ) {
+		return $has_cover_block;
+	}
+
 	$has_cover_block = false;
 
 	if ( ! mai_is_type_single() || ! has_blocks() ) {
@@ -116,7 +139,28 @@ function mai_has_cover_block() {
  * @return bool
  */
 function mai_has_page_header() {
-	return in_array( 'has-page-header', get_body_class(), true );
+	static $has_page_header = null;
+	if ( ! is_null( $has_page_header ) ) {
+		return $has_page_header;
+	}
+	$has_page_header = in_array( 'has-page-header', get_body_class(), true );
+	return $has_page_header;
+}
+
+/**
+ * Checks if current page has a sidebar.
+ *
+ * @since 0.1.0
+ *
+ * @return bool
+ */
+function mai_has_sidebar() {
+	static $has_sidebar = null;
+	if ( ! is_null( $has_sidebar ) ) {
+		return $has_sidebar;
+	}
+	$has_sidebar = in_array( mai_site_layout(), [ 'content-sidebar', 'sidebar-content' ] );
+	return $has_sidebar;
 }
 
 /**
@@ -127,22 +171,27 @@ function mai_has_page_header() {
  * @return bool
  */
 function mai_is_page_header_active() {
-	$active    = false;
-	$post_type = get_post_type();
+	static $page_header_active = null;
+	if ( ! is_null( $page_header_active ) ) {
+		return $page_header_active;
+	}
+
+	$page_header_active = false;
+	$post_type          = get_post_type();
 
 	if ( mai_is_type_archive() && post_type_supports( $post_type, 'page-header-archive' ) ) {
-		$active = true;
+		$page_header_active = true;
 	}
 
 	if ( mai_is_type_single() && post_type_supports( $post_type, 'page-header-single' ) ) {
-		$active = true;
+		$page_header_active = true;
 	}
 
 	if ( ! $post_type && class_exists( 'WooCommerce' ) && is_shop() && post_type_supports( 'product', 'page-header-archive' ) ) {
-		$active = true;
+		$page_header_active = true;
 	}
 
-	return $active;
+	return $page_header_active;
 }
 
 /**
