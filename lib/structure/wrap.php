@@ -40,19 +40,3 @@ function mai_structural_wrap_hooks() {
 		);
 	}
 }
-
-add_filter( 'genesis_attr_content-sidebar-wrap', 'mai_content_sidebar_wrap', 10, 1 );
-/**
- * Change content-sidebar-wrap class to wrap.
- *
- * @since 0.1.0
- *
- * @param array $atts Default element attributes.
- *
- * @return mixed
- */
-function mai_content_sidebar_wrap( $atts ) {
-	$atts['class'] .= ' wrap';
-
-	return $atts;
-}

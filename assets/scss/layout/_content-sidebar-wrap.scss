@@ -1,3 +1,20 @@
 .content-sidebar-wrap {
+	display: grid;
+	grid-template-columns: var(--content-sidebar-columns, 1fr);
 	margin: var(--row-gap) auto;
+	column-gap: var(--content-sidebar-gap, calc(var(--column-gap) * 3));
+}
+
+.content-sidebar {
+
+	@include mq(lg) {
+		--content-sidebar-columns: 1fr var(--sidebar-width);
+	}
+}
+
+.sidebar-content {
+
+	@include mq(lg) {
+		--content-sidebar-columns: var(--sidebar-width) 1fr;
+	}
 }
