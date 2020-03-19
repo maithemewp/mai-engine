@@ -158,6 +158,10 @@ function mai_has_page_header() {
 	return $has_page_header;
 }
 
+function mai_post_type_has_page_header( $post_type ) {
+	return in_array( $post_type, mai_get_config( 'page-header-single' ), true );
+}
+
 /**
  * Checks if the Page Header is active.
  *
