@@ -8,7 +8,7 @@
 	--link-color: var(--color-medium);
 	--link-color-hover: var(--color-primary);
 	--button-padding: 0;
-	--button-margin: 0 0 0 var(--spacing);
+	--button-margin: 0 0 0 var(--spacing-md);
 
 	@include mq(lg) {
 		display: var(--menu-display, (flex));
@@ -36,21 +36,21 @@
 }
 
 .menu-item-first {
-	--menu-item-link-padding: var(--spacing) var(--spacing) var(--spacing) 0;
+	--menu-item-link-padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) 0;
 }
 
 .menu-item-last {
-	--menu-item-link-padding: var(--spacing) 0 var(--spacing) var(--spacing);
+	--menu-item-link-padding: var(--spacing-md) 0 var(--spacing-md) var(--spacing-md);
 }
 
 .menu-item-link {
 	display: block;
 	width: 100%;
-	padding: var(--spacing) 0;
+	padding: var(--spacing-md) 0;
 	text-decoration: none;
 
 	@include mq(lg) {
-		padding: var(--menu-item-link-padding, (var(--spacing) var(--spacing)));
+		padding: var(--menu-item-link-padding, (var(--spacing-md) var(--spacing-md)));
 	}
 }
 

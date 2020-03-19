@@ -3,7 +3,7 @@
 	order: 2;
 	width: 100vw;
 	margin: 0 -5vw;
-	padding: var(--nav-primary-padding-mobile, (var(--spacing) 5vw));
+	padding: var(--nav-primary-padding-mobile, (var(--spacing-md) 5vw));
 	background-color: var(--nav-primary-background-color-mobile, var(--color-white));
 
 	@include mq(lg) {

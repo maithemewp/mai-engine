@@ -4,8 +4,8 @@
 	align-items: center;
 	justify-content: center;
 	order: 1;
-	width: var(--spacing);
-	height: var(--spacing);
+	width: var(--spacing-md);
+	height: var(--spacing-md);
 	margin: var(--menu-toggle-margin, 0);
 	padding: var(--menu-toggle-padding, 0);
 	background-color: var(--menu-toggle-background-color, transparent);
@@ -29,7 +29,7 @@
 .menu-toggle-icon::after {
 	position: absolute;
 	display: block;
-	width: var(--menu-toggle-line-width, (calc(var(--spacing) * 2)));
+	width: var(--menu-toggle-line-width, (calc(var(--spacing-md) * 2)));
 	height: var(--menu-toggle-line-height, 3px);
 	background-color: var(--menu-toggle-line-background-color, var(--color-dark));
 	border-radius: var(--menu-toggle-line-border-radius, var(--border-radius));
@@ -43,11 +43,11 @@
 	margin: auto;
 
 	&::before {
-		top: var(--menu-toggle-line-spacing, (calc(var(--spacing) * -0.5)));
+		top: var(--menu-toggle-line-spacing, (calc(var(--spacing-md) * -0.5)));
 	}
 
 	&::after {
-		bottom: var(--menu-toggle-line-spacing, (calc(var(--spacing) * -0.5)));
+		bottom: var(--menu-toggle-line-spacing, (calc(var(--spacing-md) * -0.5)));
 	}
 }
 

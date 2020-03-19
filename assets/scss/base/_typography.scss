@@ -16,7 +16,7 @@ a {
 
 p {
 	width: var(--paragraph-width, auto);
-	margin: var(--paragraph-margin, (0 0 var(--spacing)));
+	margin: var(--paragraph-margin, (0 0 var(--spacing-md)));
 	padding: var(--paragraph-padding, 0);
 
 	&:empty {
@@ -24,14 +24,14 @@ p {
 	}
 
 	// &:last-of-type {
-	// 	margin: var(--paragraph-last-margin, 0 0 var(--spacing));
+	// 	margin: var(--paragraph-last-margin, 0 0 var(--spacing-md));
 	// }
 }
 
 hr {
 	clear: both;
-	margin: var(--horizontal-rule-margin, 0 0 var(--spacing));
-	padding: var(--horizontal-rule-padding, (var(--spacing) 0 0));
+	margin: var(--horizontal-rule-margin, 0 0 var(--spacing-md));
+	padding: var(--horizontal-rule-padding, (var(--spacing-md) 0 0));
 	border: var(--horizontal-rule-border, var(--border));
 	border-bottom: var(--horizontal-rule-border);
 	border-collapse: collapse;
@@ -48,8 +48,8 @@ i {
 }
 
 blockquote {
-	margin: var(--blockquote-margin, (var(--spacing) auto));
-	padding: var(--spacing);
+	margin: var(--blockquote-margin, (var(--spacing-md) auto));
+	padding: var(--spacing-md);
 	font-style: var(--blockquote-font-style, italic);
 	border-left: var(--blockquote-border-left, var(--border));
 
@@ -76,7 +76,7 @@ samp {
 }
 
 pre {
-	padding: var(--preformatted-padding, var(--spacing));
+	padding: var(--preformatted-padding, var(--spacing-md));
 	overflow-x: scroll;
 
 	--code-padding: 0;

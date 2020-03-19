@@ -51,7 +51,7 @@
 
 	li {
 		margin-bottom: -1px;
-		padding: var(--spacing) var(--space-lg);
+		padding: var(--spacing-md) var(--space-lg);
 		list-style-type: none;
 		background-color: var(--color-light);
 		border: var(--border);
@@ -66,12 +66,12 @@
 
 .flex-control-nav {
 	display: flex;
-	margin-top: var(--spacing);
+	margin-top: var(--spacing-md);
 	list-style-type: none;
 
 	li {
 		flex: 1;
-		margin-right: var(--spacing);
+		margin-right: var(--spacing-md);
 
 		&:last-of-type {
 			margin-right: 0;
@@ -124,7 +124,7 @@ form.cart {
 		&::before {
 			display: block;
 			color: var(--color-warning);
-			font-size: var(--spacing);
+			font-size: var(--spacing-md);
 			font-family: "Font Awesome 5 Free", sans-serif;
 		}
 

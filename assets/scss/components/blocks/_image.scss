@@ -1,13 +1,13 @@
 .wp-block-image {
-	margin-top: var(--spacing);
-	margin-bottom: var(--spacing);
+	margin-top: var(--spacing-md);
+	margin-bottom: var(--spacing-md);
 
 	&.alignleft {
-		margin-right: var(--spacing);
+		margin-right: var(--spacing-md);
 	}
 
 	&.alignright {
-		margin-left: var(--spacing);
+		margin-left: var(--spacing-md);
 	}
 
 	&.alignwide {

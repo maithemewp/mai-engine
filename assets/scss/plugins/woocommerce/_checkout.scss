@@ -43,8 +43,8 @@ form.checkout {
 	.form-row {
 
 		> div {
-			margin-bottom: var(--spacing);
-			padding: var(--spacing);
+			margin-bottom: var(--spacing-md);
+			padding: var(--spacing-md);
 			border: var(--border);
 			border-radius: var(--border-radius);
 		}
@@ -69,7 +69,7 @@ form.checkout {
 		img {
 			display: block;
 			max-width: var(--space-xxxl);
-			margin-bottom: var(--spacing);
+			margin-bottom: var(--spacing-md);
 		}
 	}
 }
@@ -84,7 +84,7 @@ form.checkout {
 
 	> input {
 
-		@include position(absolute, var(--spacing) null null var(--spacing));
+		@include position(absolute, var(--spacing-md) null null var(--spacing-md));
 
 		&:checked + label {
 			background-color: rgba(var(--color-primary), var(--shadow-opacity));
@@ -95,13 +95,13 @@ form.checkout {
 	label[for*="payment_method"] {
 		display: inline-block;
 		width: 100%;
-		margin-bottom: var(--spacing);
+		margin-bottom: var(--spacing-md);
 		padding-left: calc(var(--column-gap) * 2);
 
 		@include heading;
 
 		img {
-			margin-top: var(--spacing);
+			margin-top: var(--spacing-md);
 		}
 	}
 }

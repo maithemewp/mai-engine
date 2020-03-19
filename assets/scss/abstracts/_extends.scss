@@ -16,7 +16,7 @@
 	display: inline-block;
 	width: auto;
 	margin: var(--button-margin, 0);
-	padding: var(--button-padding, (var(--spacing) calc(var(--spacing) * 2)));
+	padding: var(--button-padding, (var(--spacing-md) calc(var(--spacing-md) * 2)));
 	color: var(--button-color, var(--color-white));
 	font-weight: var(--button-font-weight, var(--font-weight-heading));
 	font-size: var(--button-font-size);

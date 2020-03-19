@@ -31,7 +31,7 @@
 
 	.input-text {
 		max-width: var(--space-xxxl);
-		margin: 0 var(--spacing) 0 0;
+		margin: 0 var(--spacing-md) 0 0;
 	}
 }
 
@@ -126,7 +126,7 @@
 
 			.button {
 				margin: 0;
-				padding: var(--spacing);
+				padding: var(--spacing-md);
 			}
 		}
 
@@ -150,7 +150,7 @@
 				align-items: center;
 				align-self: stretch;
 				width: 25%;
-				margin-right: var(--spacing);
+				margin-right: var(--spacing-md);
 				padding: 1.5em 1em;
 				font-weight: var(--font-weight-heading);
 				font-size: smaller;

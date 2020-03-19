@@ -1,6 +1,6 @@
 table {
 	width: 100%;
-	margin: var(--table-margin, var(--spacing) 0);
+	margin: var(--table-margin, var(--spacing-md) 0);
 	word-break: break-all;
 	border-radius: var(--table-border-radius, var(--border-radius));
 	border-collapse: collapse;
@@ -15,7 +15,7 @@ th {
 
 th,
 td {
-	padding: var(--table-padding, var(--spacing));
+	padding: var(--table-padding, var(--spacing-md));
 	text-align: left;
 	border: var(--table-border, var(--border));
 	border-right: 0;

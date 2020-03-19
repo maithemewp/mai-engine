@@ -56,9 +56,20 @@
 	--letter-spacing-body: normal;
 	--letter-spacing-heading: var(--letter-spacing-body);
 
-	--spacing: 16px;
-	--row-gap: var(--spacing);
-	--column-gap: var(--spacing);
+	--spacing-xxxxs: calc(var(--text-xxxs) / var(--text-scale-ratio));
+	--spacing-xxxs: calc(var(--text-xxs) / var(--text-scale-ratio));
+	--spacing-xxs: calc(var(--text-xs) / var(--text-scale-ratio));
+	--spacing-xs: calc(var(--text-sm) / var(--text-scale-ratio));
+	--spacing-sm: calc(var(--text-md) / var(--text-scale-ratio));
+	--spacing-md: 16px;
+	--spacing-lg: calc(var(--text-md) * var(--text-scale-ratio));
+	--spacing-xl: calc(var(--text-lg) * var(--text-scale-ratio));
+	--spacing-xxl: calc(var(--text-xl) * var(--text-scale-ratio));
+	--spacing-xxxl: calc(var(--text-xxl) * var(--text-scale-ratio));
+	--spacing-xxxxl: calc(var(--text-xxxl) * var(--text-scale-ratio));
+
+	--row-gap: var(--spacing-md);
+	--column-gap: var(--spacing-md);
 	--wrap-width: var(--breakpoint-xl);
 	--sidebar-width: 30rem; // Google ads
 	--content-width: calc(var(--wrap-width) - var(--sidebar-width) - var(--column-gap));

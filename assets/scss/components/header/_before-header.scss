@@ -1,7 +1,7 @@
 .before-header {
 	z-index: 1;
 	width: 100%;
-	min-height: calc(var(--spacing) * 2);
+	min-height: calc(var(--spacing-md) * 2);
 	font-size: var(--text-sm);
 	line-height: 1;
 	border-bottom: var(--border);

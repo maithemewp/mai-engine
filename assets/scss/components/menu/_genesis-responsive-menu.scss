@@ -11,7 +11,7 @@
 		justify-content: center;
 		width: 100vw;
 		height: 100vh;
-		padding: var(--spacing);
+		padding: var(--spacing-md);
 		background-color: var(--color-white);
 
 		&[style*="display: block"] {

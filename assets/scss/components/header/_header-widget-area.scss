@@ -1,10 +1,10 @@
 @include mq(lg) {
 
 	.header-left {
-		--widget-margin: 0 var(--spacing) 0 0;
+		--widget-margin: 0 var(--spacing-md) 0 0;
 	}
 
 	.header-right {
-		--widget-margin: 0 0 0 var(--spacing);
+		--widget-margin: 0 0 0 var(--spacing-md);
 	}
 }

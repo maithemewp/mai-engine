@@ -9,7 +9,7 @@ abbr[title] {
 
 label {
 	display: inline-block;
-	margin: var(--label-margin, 0 0 var(--spacing));
+	margin: var(--label-margin, 0 0 var(--spacing-md));
 	font-weight: var(--label-font-weight, var(--font-weight-heading));
 	font-size: var(--label-font-size, (smaller));
 
@@ -19,7 +19,7 @@ label {
 
 #{$all-text-inputs} {
 	width: 100%;
-	margin: var(--input-margin, 0 0 var(--spacing));
+	margin: var(--input-margin, 0 0 var(--spacing-md));
 	padding: var(--input-padding, 1em);
 	color: var(--input-color);
 	line-height: 1;
@@ -60,7 +60,7 @@ input[type="checkbox"],
 input[type="image"],
 input[type="radio"] {
 	width: auto;
-	margin-right: var(--spacing);
+	margin-right: var(--spacing-md);
 }
 
 input[type="color"] {
@@ -91,7 +91,7 @@ legend {
 	display: table;
 	float: left;
 	width: 100%;
-	margin: var(--legend-margin, 0 0 var(--spacing));
+	margin: var(--legend-margin, 0 0 var(--spacing-md));
 	padding: var(--legend-padding, 0);
 	font-size: var(--legend-font-size, var(--text-xs));
 

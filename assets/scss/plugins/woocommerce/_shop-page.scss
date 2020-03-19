@@ -40,7 +40,7 @@
 		display: inline-block;
 		color: var(--color-warning);
 		font-weight: 700;
-		font-size: var(--spacing);
+		font-size: var(--spacing-md);
 		font-family: "Font Awesome 5 Free", sans-serif;
 		letter-spacing: 0.2em;
 		content: "\f005";
@@ -88,7 +88,7 @@
 
 .price {
 	display: block;
-	margin-bottom: var(--spacing);
+	margin-bottom: var(--spacing-md);
 
 	ins {
 		text-decoration: none;
@@ -108,7 +108,7 @@
 		flex-wrap: wrap;
 		align-items: flex-start;
 		width: 100%;
-		padding: var(--spacing);
+		padding: var(--spacing-md);
 	}
 
 	.price,
@@ -176,7 +176,7 @@
 
 .added {
 	align-self: flex-start;
-	padding: var(--spacing);
+	padding: var(--spacing-md);
 	font-size: 0;
 
 	&::after {
@@ -186,8 +186,8 @@
 
 .added_to_cart {
 	align-self: flex-end;
-	margin-left: var(--spacing);
-	padding: var(--spacing) - 0.1rem;
+	margin-left: var(--spacing-md);
+	padding: var(--spacing-md) - 0.1rem;
 	color: var(--color-primary);
 	background: transparent;
 	border: var(--border-size) var(--border-style) var(--color-primary);

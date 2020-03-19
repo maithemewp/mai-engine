@@ -4,7 +4,7 @@
 	flex-wrap: var(--wrap-flex-wrap, wrap);
 	align-items: var(--wrap-align-items, flex-start);
 	justify-content: var(--wrap-justify-content, space-between);
-	width: calc(100% - calc(var(--spacing) * 2));
+	width: calc(100% - calc(var(--spacing-md) * 2));
 	max-width: var(--wrap-width);
 	margin-right: auto;
 	margin-left: auto;

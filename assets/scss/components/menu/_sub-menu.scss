@@ -2,7 +2,7 @@
 	top: 100%;
 	display: none;
 	width: 100%;
-	margin: var(--spacing) var(--spacing) 0;
+	margin: var(--spacing-md) var(--spacing-md) 0;
 	list-style-type: none;
 
 	@include mq(lg) {
@@ -10,9 +10,9 @@
 		left: -999rem;
 		display: block;
 		width: var(--sub-menu-width, var(--space-xxxl));
-		margin: 0 0 0 calc(0 - var(--spacing));
-		padding-top: var(--sub-menu-padding, var(--spacing));
-		padding-bottom: var(--sub-menu-padding, var(--spacing));
+		margin: 0 0 0 calc(0 - var(--spacing-md));
+		padding-top: var(--sub-menu-padding, var(--spacing-md));
+		padding-bottom: var(--sub-menu-padding, var(--spacing-md));
 		background-color: var(--sub-menu-background-color, var(--color-white));
 		border: var(--sub-menu-border, var(--border));
 		border-radius: var(--sub-menu-border-radius, 0);
@@ -37,7 +37,7 @@
 	line-height: 0;
 	background-color: var(--sub-menu-toggle-background-color, transparent);
 
-	@include position(absolute, var(--spacing) 0 null null);
+	@include position(absolute, var(--spacing-md) 0 null null);
 
 	@include mq(lg) {
 		display: none;
