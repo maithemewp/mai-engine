@@ -1,5 +1,5 @@
 .title-area {
-	padding: var(--title-area-padding-top, var(--spacing)) 0 var(--title-area-padding-bottom, var(--spacing));
+	padding: var(--title-area-padding, var(--spacing)) 0 var(--title-area-padding, var(--spacing));
 	line-height: var(--title-area-line-height, var(--line-height-heading));
 	text-align: var(--title-area-text-align, start);
 	transition: var(--title-area-transition, var(--transition));

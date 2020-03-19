@@ -84,19 +84,19 @@ function mai_header_customizer_settings() {
 			'section'  => 'title_tagline',
 			'priority' => 60,
 			'default'  => [
-				'mobile'  => '120px',
 				'desktop' => '180px',
+				'mobile'  => '120px',
 			],
 			'choices'  => [
 				'labels' => [
-					'mobile'  => esc_html__( 'Mobile', 'mai-engine' ),
 					'desktop' => esc_html__( 'Desktop', 'mai-engine' ),
+					'mobile'  => esc_html__( 'Mobile / Sticky', 'mai-engine' ),
 				],
 			],
 			'output'   => [
 				[
 					'choice'   => 'mobile',
-					'element'  => ':root',
+					'element'  => [ ':root', '.is-stuck' ],
 					'property' => '--custom-logo-width',
 				],
 				[
@@ -118,40 +118,25 @@ function mai_header_customizer_settings() {
 			'section'  => 'title_tagline',
 			'priority' => 60,
 			'default'  => [
-				'mobile_top'     => '16px',
-				'mobile_bottom'  => '16px',
-				'desktop_top'    => '36px',
-				'desktop_bottom' => '36px',
+				'desktop' => '36px',
+				'mobile'  => '16px',
 			],
 			'choices'  => [
 				'labels' => [
-					'mobile_top'     => esc_html__( 'Mobile Top', 'mai-engine' ),
-					'mobile_bottom'  => esc_html__( 'Mobile Bottom', 'mai-engine' ),
-					'desktop_top'    => esc_html__( 'Desktop Top', 'mai-engine' ),
-					'desktop_bottom' => esc_html__( 'Desktop Bottom', 'mai-engine' ),
+					'desktop' => esc_html__( 'Desktop', 'mai-engine' ),
+					'mobile'  => esc_html__( 'Mobile / Sticky', 'mai-engine' ),
 				],
 			],
 			'output'   => [
 				[
-					'choice'   => 'mobile_top',
-					'element'  => ':root',
-					'property' => '--title-area-padding-top',
+					'choice'   => 'mobile',
+					'element'  => [ ':root', '.is-stuck' ],
+					'property' => '--title-area-padding',
 				],
 				[
-					'choice'   => 'mobile_bottom',
-					'element'  => ':root',
-					'property' => '--title-area-padding-bottom',
-				],
-				[
-					'choice'      => 'desktop_top',
+					'choice'      => 'desktop',
 					'element'     => ':root',
-					'property'    => '--title-area-padding-top',
-					'media_query' => sprintf( '@media (min-width: %spx)', mai_get_breakpoint( 'lg' ) ),
-				],
-				[
-					'choice'      => 'desktop_bottom',
-					'element'     => ':root',
-					'property'    => '--title-area-padding-bottom',
+					'property'    => '--title-area-padding',
 					'media_query' => sprintf( '@media (min-width: %spx)', mai_get_breakpoint( 'lg' ) ),
 				],
 			],
