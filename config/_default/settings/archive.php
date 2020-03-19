@@ -57,12 +57,7 @@ return [
 		'type'       => 'select',
 		'sanitize'   => 'esc_html',
 		'default'    => 'landscape',
-		'choices'    => [
-			'landscape' => esc_html__( 'Landscape', 'mai-engine' ),
-			'portrait'  => esc_html__( 'Portrait', 'mai-engine' ),
-			'square'    => esc_html__( 'Square', 'mai-engine' ),
-			'custom'    => esc_html__( 'Custom', 'mai-engine' ),
-		],
+		'choices'    => 'mai_get_image_orientation_choices',
 		'conditions' => [
 			[
 				'setting'  => 'show',
@@ -112,369 +107,260 @@ return [
 			],
 		],
 	],
-	// [
-	// 	'name'       => 'header_meta',
-	// 	'label'      => esc_html__( 'Header Meta', 'mai-engine' ),
-	// 	'type'       => 'text',
-	// 	'sanitize'   => 'wp_kses_post',
-	// 	// TODO: this should be different, or empty depending on the post type?
-	// 	'default'    => '[post_date] [post_author_posts_link before="by "]',
-	// 	'conditions' => [
-	// 		[
-	// 			'setting'  => 'show',
-	// 			'operator' => '==',
-	// 			'value'    => 'header_meta',
-	// 		],
-	// 	],
-	// 	'atts'       => [
-	// 		'wrapper' => [
-	// 			'width' => '',
-	// 			'class' => 'mai-grid-show-conditional',
-	// 			'id'    => '',
-	// 		],
-	// 	],
-	// ],
-	// [
-	// 	'name'       => 'content_limit',
-	// 	'label'      => esc_html__( 'Content Limit', 'mai-engine' ),
-	// 	'desc'       => esc_html__( 'Limit the number of characters shown for the content or excerpt. Use 0 for no limit.', 'mai-engine' ),
-	// 	'type'       => 'text',
-	// 	'sanitize'   => 'absint',
-	// 	'default'    => 0,
-	// 	'conditions' => [
-	// 		[
-	// 			[
-	// 				'setting'  => 'show',
-	// 				'operator' => '==',
-	// 				'value'    => 'excerpt',
-	// 			],
-	// 		],
-	// 		[
-	// 			[
-	// 				'setting'  => 'show',
-	// 				'operator' => '==',
-	// 				'value'    => 'content',
-	// 			],
-	// 		],
-	// 	],
-	// 	'atts'       => [
-	// 		'wrapper' => [
-	// 			'width' => '',
-	// 			'class' => 'mai-grid-show-conditional',
-	// 			'id'    => '',
-	// 		],
-	// 	],
-	// ],
-	// [
-	// 	'name'       => 'more_link_text',
-	// 	'label'      => esc_html__( 'More Link Text', 'mai-engine' ),
-	// 	'type'       => 'text',
-	// 	'sanitize'   => 'esc_attr', // We may want to add icons/spans and HTML in here.
-	// 	'default'    => '',
-	// 	'conditions' => [
-	// 		[
-	// 			'setting'  => 'show',
-	// 			'operator' => '==',
-	// 			'value'    => 'more_link',
-	// 		],
-	// 	],
-	// 	'atts'       => [
-	// 		// TODO: This text should be filtered, same as the template that outputs it.
-	// 		'placeholder' => esc_html__( 'Read More', 'mai-engine' ),
-	// 		'wrapper'     => [
-	// 			'width' => '',
-	// 			'class' => 'mai-grid-show-conditional',
-	// 			'id'    => '',
-	// 		],
-	// 	],
-	// ],
-	// [
-	// 	'name'       => 'footer_meta',
-	// 	'label'      => esc_html__( 'Footer Meta', 'mai-engine' ),
-	// 	'type'       => 'text',
-	// 	'sanitize'   => 'wp_kses_post',
-	// 	// TODO: this should be different, or empty depending on the post type?
-	// 	'default'    => '[post_categories]',
-	// 	'conditions' => [
-	// 		[
-	// 			'setting'  => 'show',
-	// 			'operator' => '==',
-	// 			'value'    => 'footer_meta',
-	// 		],
-	// 	],
-	// 	'atts'       => [
-	// 		'wrapper' => [
-	// 			'width' => '',
-	// 			'class' => 'mai-grid-show-conditional',
-	// 			'id'    => '',
-	// 		],
-	// 	],
-	// ],
-	// [
-	// 	'name'     => 'boxed',
-	// 	'label'    => esc_html__( 'Boxed', 'mai-engine' ),
-	// 	'type'     => 'true_false',
-	// 	'sanitize' => 'esc_html',
-	// 	'default'  => 1, // True.
-	// 	'atts'     => [
-	// 		'message' => __( 'Display boxed', 'mai-engine' ),
-	// 	],
-	// ],
-	// [
-	// 	'name'     => 'align_text',
-	// 	'label'    => esc_html__( 'Align Text', 'mai-engine' ),
-	// 	'type'     => 'button_group',
-	// 	'sanitize' => 'esc_html',
-	// 	'default'  => '',
-	// 	'choices'  => [
-	// 		''       => esc_html__( 'Clear', 'mai-engine' ),
-	// 		'start'  => esc_html__( 'Start', 'mai-engine' ),
-	// 		'center' => esc_html__( 'Center', 'mai-engine' ),
-	// 		'end'    => esc_html__( 'End', 'mai-engine' ),
-	// 	],
-	// 	'atts'     => [
-	// 		'wrapper' => [
-	// 			'width' => '',
-	// 			'class' => 'mai-grid-button-group mai-grid-button-group-clear',
-	// 			'id'    => '',
-	// 		],
-	// 	],
-	// ],
-	// [
-	// 	'name'       => 'align_text_vertical',
-	// 	'label'      => esc_html__( 'Align Text (vertical)', 'mai-engine' ),
-	// 	'type'       => 'button_group',
-	// 	'sanitize'   => 'esc_html',
-	// 	'default'    => '',
-	// 	'choices'    => [
-	// 		''       => esc_html__( 'Clear', 'mai-engine' ),
-	// 		'top'    => esc_html__( 'Top', 'mai-engine' ),
-	// 		'middle' => esc_html__( 'Middle', 'mai-engine' ),
-	// 		'bottom' => esc_html__( 'Bottom', 'mai-engine' ),
-	// 	],
-	// 	'conditions' => [
-	// 		[
-	// 			[
-	// 				'setting'  => 'field_5e2f3adf82130', // Image_position.
-	// 				'operator' => '==',
-	// 				'value'    => 'left',
-	// 			],
-	// 		],
-	// 		[
-	// 			[
-	// 				'setting'  => 'field_5e2f3adf82130', // Image_position.
-	// 				'operator' => '==',
-	// 				'value'    => 'background',
-	// 			],
-	// 		],
-	// 	],
-	// 	'atts'       => [
-	// 		'wrapper' => [
-	// 			'width' => '',
-	// 			'class' => 'mai-grid-button-group mai-grid-button-group-clear',
-	// 			'id'    => '',
-	// 		],
-	// 	],
-	// ],
-	// /********
-	//  * Layout
-	//  */
-	// [
-	// 	'name'    => 'layout_tab',
-	// 	'label'   => esc_html__( 'Layout', 'mai-engine' ),
-	// 	'type'    => 'tab',
-	// 	'default' => '',
-	// ],
-	// [
-	// 	'name'     => 'columns',
-	// 	'label'    => esc_html__( 'Columns (desktop)', 'mai-engine' ),
-	// 	'type'     => 'button_group',
-	// 	'sanitize' => 'absint',
-	// 	'default'  => 3,
-	// 	'choices'  => [
-	// 		1 => esc_html__( '1', 'mai-engine' ),
-	// 		2 => esc_html__( '2', 'mai-engine' ),
-	// 		3 => esc_html__( '3', 'mai-engine' ),
-	// 		4 => esc_html__( '4', 'mai-engine' ),
-	// 		5 => esc_html__( '5', 'mai-engine' ),
-	// 		6 => esc_html__( '6', 'mai-engine' ),
-	// 		0 => esc_html__( 'Auto', 'mai-engine' ),
-	// 	],
-	// 	'atts'     => [
-	// 		'wrapper' => [
-	// 			'width' => '',
-	// 			'class' => 'mai-grid-button-group',
-	// 			'id'    => '',
-	// 		],
-	// 	],
-	// ],
-	// [
-	// 	'name'     => 'columns_responsive',
-	// 	'label'    => '',
-	// 	'type'     => 'true_false',
-	// 	'sanitize' => 'mai_sanitize_bool',
-	// 	'default'  => 0,
-	// 	'atts'     => [
-	// 		'message' => esc_html__( 'Custom responsive columns', 'mai-engine' ),
-	// 	],
-	// ],
-	// [
-	// 	'name'       => 'columns_md',
-	// 	'label'      => esc_html__( 'Columns (lg tablets)', 'mai-engine' ),
-	// 	'type'       => 'button_group',
-	// 	'sanitize'   => 'absint',
-	// 	'default'    => 1,
-	// 	'choices'    => [
-	// 		1 => esc_html__( '1', 'mai-engine' ),
-	// 		2 => esc_html__( '2', 'mai-engine' ),
-	// 		3 => esc_html__( '3', 'mai-engine' ),
-	// 		4 => esc_html__( '4', 'mai-engine' ),
-	// 		5 => esc_html__( '5', 'mai-engine' ),
-	// 		6 => esc_html__( '6', 'mai-engine' ),
-	// 		0 => esc_html__( 'Auto', 'mai-engine' ),
-	// 	],
-	// 	'conditions' => [
-	// 		[
-	// 			'setting'  => 'field_5e334124b905d', // Columns_responsive.
-	// 			'operator' => '==',
-	// 			'value'    => 1,
-	// 		],
-	// 	],
-	// 	'atts'       => [
-	// 		'wrapper' => [
-	// 			'width' => '',
-	// 			'class' => 'mai-grid-button-group mai-grid-nested-columns mai-grid-nested-columns-first',
-	// 			'id'    => '',
-	// 		],
-	// 	],
-	// ],
-	// [
-	// 	'name'       => 'columns_sm',
-	// 	'label'      => esc_html__( 'Columns (sm tablets)', 'mai-engine' ),
-	// 	'type'       => 'button_group',
-	// 	'sanitize'   => 'absint',
-	// 	'default'    => 1,
-	// 	'choices'    => [
-	// 		1 => esc_html__( '1', 'mai-engine' ),
-	// 		2 => esc_html__( '2', 'mai-engine' ),
-	// 		3 => esc_html__( '3', 'mai-engine' ),
-	// 		4 => esc_html__( '4', 'mai-engine' ),
-	// 		5 => esc_html__( '5', 'mai-engine' ),
-	// 		6 => esc_html__( '6', 'mai-engine' ),
-	// 		0 => esc_html__( 'Auto', 'mai-engine' ),
-	// 	],
-	// 	'conditions' => [
-	// 		[
-	// 			'setting'  => 'field_5e334124b905d', // Columns_responsive.
-	// 			'operator' => '==',
-	// 			'value'    => 1,
-	// 		],
-	// 	],
-	// 	'atts'       => [
-	// 		'wrapper' => [
-	// 			'width' => '',
-	// 			'class' => 'mai-grid-button-group mai-grid-nested-columns',
-	// 			'id'    => '',
-	// 		],
-	// 	],
-	// ],
-	// [
-	// 	'name'       => 'columns_xs',
-	// 	'label'      => esc_html__( 'Columns (mobile)', 'mai-engine' ),
-	// 	'type'       => 'button_group',
-	// 	'sanitize'   => 'absint',
-	// 	'default'    => 1,
-	// 	'choices'    => [
-	// 		1 => esc_html__( '1', 'mai-engine' ),
-	// 		2 => esc_html__( '2', 'mai-engine' ),
-	// 		3 => esc_html__( '3', 'mai-engine' ),
-	// 		4 => esc_html__( '4', 'mai-engine' ),
-	// 		5 => esc_html__( '5', 'mai-engine' ),
-	// 		6 => esc_html__( '6', 'mai-engine' ),
-	// 		0 => esc_html__( 'Auto', 'mai-engine' ),
-	// 	],
-	// 	'conditions' => [
-	// 		[
-	// 			'setting'  => 'field_5e334124b905d', // Columns_responsive.
-	// 			'operator' => '==',
-	// 			'value'    => 1,
-	// 		],
-	// 	],
-	// 	'atts'       => [
-	// 		'wrapper' => [
-	// 			'width' => '',
-	// 			'class' => 'mai-grid-button-group mai-grid-nested-columns mai-grid-nested-columns-last',
-	// 			'id'    => '',
-	// 		],
-	// 	],
-	// ],
-	// [
-	// 	'name'       => 'align_columns',
-	// 	'label'      => esc_html__( 'Align Columns', 'mai-engine' ),
-	// 	'type'       => 'button_group',
-	// 	'sanitize'   => 'esc_html',
-	// 	'default'    => '',
-	// 	'choices'    => [
-	// 		''       => esc_html__( 'Clear', 'mai-engine' ),
-	// 		'left'   => esc_html__( 'Left', 'mai-engine' ),
-	// 		'center' => esc_html__( 'Center', 'mai-engine' ),
-	// 		'right'  => esc_html__( 'Right', 'mai-engine' ),
-	// 	],
-	// 	'conditions' => [
-	// 		[
-	// 			'setting'  => 'field_5c854069d358c', // Columns.
-	// 			'operator' => '!=',
-	// 			'value'    => 1,
-	// 		],
-	// 	],
-	// 	'atts'       => [
-	// 		'wrapper' => [
-	// 			'width' => '',
-	// 			'class' => 'mai-grid-button-group mai-grid-button-group-clear',
-	// 			'id'    => '',
-	// 		],
-	// 	],
-	// ],
-	// [
-	// 	'name'       => 'align_columns_vertical',
-	// 	'label'      => esc_html__( 'Align Columns (vertical)', 'mai-engine' ),
-	// 	'type'       => 'button_group',
-	// 	'sanitize'   => 'esc_html',
-	// 	'default'    => '',
-	// 	'choices'    => [
-	// 		''       => esc_html__( 'Clear', 'mai-engine' ),
-	// 		'top'    => esc_html__( 'Top', 'mai-engine' ),
-	// 		'middle' => esc_html__( 'Middle', 'mai-engine' ),
-	// 		'bottom' => esc_html__( 'Bottom', 'mai-engine' ),
-	// 	],
-	// 	'conditions' => [
-	// 		[
-	// 			'setting'  => 'field_5c854069d358c', // Columns.
-	// 			'operator' => '!=',
-	// 			'value'    => 1,
-	// 		],
-	// 	],
-	// 	'atts'       => [
-	// 		'wrapper' => [
-	// 			'width' => '',
-	// 			'class' => 'mai-grid-button-group mai-grid-button-group-clear',
-	// 			'id'    => '',
-	// 		],
-	// 	],
-	// ],
-	// [
-	// 	'name'     => 'column_gap',
-	// 	'label'    => esc_html__( 'Column Gap', 'mai-engine' ),
-	// 	'type'     => 'text',
-	// 	'sanitize' => 'esc_html',
-	// 	'default'  => '24px',
-	// ],
-	// [
-	// 	'name'     => 'row_gap',
-	// 	'label'    => esc_html__( 'Row Gap', 'mai-engine' ),
-	// 	'type'     => 'text',
-	// 	'sanitize' => 'esc_html',
-	// 	'default'  => '24px',
-	// ],
+	[
+		'name'       => 'header_meta',
+		'label'      => esc_html__( 'Header Meta', 'mai-engine' ),
+		'type'       => 'text',
+		'sanitize'   => 'wp_kses_post',
+		// TODO: this should be different, or empty depending on the post type?
+		'default'    => '[post_date] [post_author_posts_link before="by "]',
+		'conditions' => [
+			[
+				'setting'  => 'show',
+				'operator' => 'contains',
+				'value'    => 'header_meta',
+			],
+		],
+	],
+	[
+		'name'       => 'content_limit',
+		'label'      => esc_html__( 'Content Limit', 'mai-engine' ),
+		'desc'       => esc_html__( 'Limit the number of characters shown for the content or excerpt. Use 0 for no limit.', 'mai-engine' ),
+		'type'       => 'text',
+		'sanitize'   => 'absint',
+		'default'    => 0,
+		'conditions' => [
+			[
+				[
+					'setting'  => 'show',
+					'operator' => 'contains',
+					'value'    => 'excerpt',
+				],
+			],
+			[
+				[
+					'setting'  => 'show',
+					'operator' => 'contains',
+					'value'    => 'content',
+				],
+			],
+		],
+	],
+	[
+		'name'       => 'more_link_text',
+		'label'      => esc_html__( 'More Link Text', 'mai-engine' ),
+		'type'       => 'text',
+		'sanitize'   => 'esc_attr', // We may want to add icons/spans and HTML in here.
+		'default'    => '',
+		'conditions' => [
+			[
+				'setting'  => 'show',
+				'operator' => 'contains',
+				'value'    => 'more_link',
+			],
+		],
+		'atts'       => [
+			// TODO: This text should be filtered, same as the template that outputs it.
+			'input_attrs' => [
+				'placeholder' => esc_html__( 'Read More', 'mai-engine' ),
+			],
+		],
+	],
+	[
+		'name'       => 'footer_meta',
+		'label'      => esc_html__( 'Footer Meta', 'mai-engine' ),
+		'type'       => 'text',
+		'sanitize'   => 'wp_kses_post',
+		// TODO: this should be different, or empty depending on the post type?
+		'default'    => '[post_categories]',
+		'conditions' => [
+			[
+				'setting'  => 'show',
+				'operator' => 'contains',
+				'value'    => 'footer_meta',
+			],
+		],
+	],
+	[
+		'name'     => 'boxed',
+		// 'label'    => esc_html__( 'Boxed', 'mai-engine' ),
+		'label'    => esc_html__( 'Display boxed', 'mai-engine' ),
+		'type'     => 'checkbox',
+		'sanitize' => 'esc_html',
+		'default'  => true,
+	],
+	[
+		'name'     => 'align_text',
+		'label'    => esc_html__( 'Align Text', 'mai-engine' ),
+		'type'     => 'radio-buttonset',
+		'sanitize' => 'esc_html',
+		'default'  => '',
+		'choices'  => [
+			''       => esc_html__( 'Clear', 'mai-engine' ),
+			'start'  => esc_html__( 'Start', 'mai-engine' ),
+			'center' => esc_html__( 'Center', 'mai-engine' ),
+			'end'    => esc_html__( 'End', 'mai-engine' ),
+		],
+	],
+	[
+		'name'       => 'align_text_vertical',
+		'label'      => esc_html__( 'Align Text (vertical)', 'mai-engine' ),
+		'type'       => 'radio-buttonset',
+		'sanitize'   => 'esc_html',
+		'default'    => '',
+		'choices'    => [
+			''       => esc_html__( 'Clear', 'mai-engine' ),
+			'top'    => esc_html__( 'Top', 'mai-engine' ),
+			'middle' => esc_html__( 'Middle', 'mai-engine' ),
+			'bottom' => esc_html__( 'Bottom', 'mai-engine' ),
+		],
+		'conditions' => [
+			[
+				[
+					'setting'  => 'image_position',
+					'operator' => '==',
+					'value'    => 'left',
+				],
+				[
+					'setting'  => 'image_position',
+					'operator' => '==',
+					'value'    => 'right',
+				],
+				[
+					'setting'  => 'image_position',
+					'operator' => '==',
+					'value'    => 'background',
+				],
+			],
+		],
+	],
+	[
+		'name'     => 'columns',
+		'label'    => esc_html__( 'Columns (desktop)', 'mai-engine' ),
+		'type'     => 'radio-buttonset',
+		'sanitize' => 'absint',
+		'default'  => 3,
+		'choices'  => 'mai_get_columns_choices',
+	],
+	[
+		'name'     => 'columns_responsive',
+		'label'    => esc_html__( 'Custom responsive columns', 'mai-engine' ),
+		'type'     => 'checkbox',
+		'sanitize' => 'mai_sanitize_bool',
+		'default'  => '',
+	],
+	[
+		'name'       => 'columns_md',
+		'label'      => esc_html__( 'Columns (lg tablets)', 'mai-engine' ),
+		'type'       => 'radio-buttonset',
+		'sanitize'   => 'absint',
+		'default'    => 1,
+		'choices'    => 'mai_get_columns_choices',
+		'conditions' => [
+			[
+				'setting'  => 'columns_responsive',
+				'operator' => '==',
+				'value'    => 1,
+			],
+		],
+	],
+	[
+		'name'       => 'columns_sm',
+		'label'      => esc_html__( 'Columns (sm tablets)', 'mai-engine' ),
+		'type'       => 'radio-buttonset',
+		'sanitize'   => 'absint',
+		'default'    => 1,
+		'choices'    => 'mai_get_columns_choices',
+		'conditions' => [
+			[
+				'setting'  => 'columns_responsive',
+				'operator' => '==',
+				'value'    => 1,
+			],
+		],
+	],
+	[
+		'name'       => 'columns_xs',
+		'label'      => esc_html__( 'Columns (mobile)', 'mai-engine' ),
+		'type'       => 'radio-buttonset',
+		'sanitize'   => 'absint',
+		'default'    => 1,
+		'choices'    => 'mai_get_columns_choices',
+		'conditions' => [
+			[
+				'setting'  => 'columns_responsive',
+				'operator' => '==',
+				'value'    => 1,
+			],
+		],
+	],
+	[
+		'name'       => 'align_columns',
+		'label'      => esc_html__( 'Align Columns', 'mai-engine' ),
+		'type'       => 'radio-buttonset',
+		'sanitize'   => 'esc_html',
+		'default'    => '',
+		'choices'    => [
+			''       => esc_html__( 'Clear', 'mai-engine' ),
+			'left'   => esc_html__( 'Left', 'mai-engine' ),
+			'center' => esc_html__( 'Center', 'mai-engine' ),
+			'right'  => esc_html__( 'Right', 'mai-engine' ),
+		],
+		'conditions' => [
+			[
+				'setting'  => 'columns',
+				'operator' => '!=',
+				'value'    => 1,
+			],
+		],
+	],
+	[
+		'name'       => 'align_columns_vertical',
+		'label'      => esc_html__( 'Align Columns (vertical)', 'mai-engine' ),
+		'type'       => 'radio-buttonset',
+		'sanitize'   => 'esc_html',
+		'default'    => '',
+		'choices'    => [
+			''       => esc_html__( 'Clear', 'mai-engine' ),
+			'top'    => esc_html__( 'Top', 'mai-engine' ),
+			'middle' => esc_html__( 'Middle', 'mai-engine' ),
+			'bottom' => esc_html__( 'Bottom', 'mai-engine' ),
+		],
+		'conditions' => [
+			[
+				'setting'  => 'columns',
+				'operator' => '!=',
+				'value'    => 1,
+			],
+		],
+	],
+	[
+		'name'     => 'column_gap',
+		'label'    => esc_html__( 'Column Gap', 'mai-engine' ),
+		'type'     => 'text',
+		'sanitize' => 'esc_html',
+		'default'  => '36px',
+	],
+	[
+		'name'     => 'row_gap',
+		'label'    => esc_html__( 'Row Gap', 'mai-engine' ),
+		'type'     => 'text',
+		'sanitize' => 'esc_html',
+		'default'  => '64px',
+	],
+	[
+		// TODO: On Post Archives, this should save to the direct posts_per_page option (same as main Settings > Reading option).
+		'name'     => 'posts_per_page',
+		'label'    => esc_html__( 'Posts Per Page', 'mai-engine' ),
+		'desc'     => esc_html__( 'Sticky posts are not included in count.', 'mai-engine' ),
+		'sanitize' => 'esc_html', // Can't absint cause empty string means to use default.
+		'type'     => 'text',
+		'default'  => '',
+		'atts'     => [
+			'input_attrs' => [
+				'placeholder' => get_option( 'posts_per_page' ),
+			],
+		],
+	],
 
 ];

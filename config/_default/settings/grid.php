@@ -48,12 +48,7 @@ return [
 		'type'       => 'select',
 		'sanitize'   => 'esc_html',
 		'default'    => 'landscape',
-		'choices'    => [
-			'landscape' => esc_html__( 'Landscape', 'mai-engine' ),
-			'portrait'  => esc_html__( 'Portrait', 'mai-engine' ),
-			'square'    => esc_html__( 'Square', 'mai-engine' ),
-			'custom'    => esc_html__( 'Custom', 'mai-engine' ),
-		],
+		'choices'    => 'mai_get_image_orientation_choices',
 		'conditions' => [
 			[
 				'field'    => 'field_5e441d93d6236', // Show.

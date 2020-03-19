@@ -367,7 +367,7 @@ function mai_get_breakpoint( $size = 'md', $suffix = '' ) {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param string $value Gets flex align rule.
  *
@@ -536,7 +536,7 @@ function mai_get_content_limit( $content, $limit ) {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param string $context Entry context.
  *
@@ -551,7 +551,7 @@ function mai_get_settings_fields( $context ) {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param string $context Entry context.
  *
@@ -683,7 +683,7 @@ function mai_get_archive_args_name() {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return false|mixed|string
  */
@@ -732,7 +732,29 @@ function mai_get_image_size_choices() {
 	return $choices;
 }
 
+function mai_get_image_orientation_choices() {
+	$choices = [];
+	if ( ! ( is_admin() || is_customize_preview() ) ) {
+		return $choices;
+	}
+	$all = [
+		'landscape' => esc_html__( 'Landscape', 'mai-engine' ),
+		'portrait'  => esc_html__( 'Portrait', 'mai-engine' ),
+		'square'    => esc_html__( 'Square', 'mai-engine' ),
+	];
+	$orientations = mai_get_available_image_orientations();
+	foreach( $orientations as $orientation ) {
+		$choices[ $orientation ] = $all[ $orientation ];
+	}
+	$choices['custom'] = esc_html__( 'Custom', 'mai-engine' );
+	return $choices;
+}
+
 function mai_get_columns_choices() {
+	$choices = [];
+	if ( ! ( is_admin() || is_customize_preview() ) ) {
+		return $choices;
+	}
 	return [
 		1 => esc_html__( '1', 'mai-engine' ),
 		2 => esc_html__( '2', 'mai-engine' ),
@@ -769,7 +791,7 @@ function mai_get_post_type_choices() {
 
 function mai_get_taxonomy_choices() {
 	$choices = [];
-	if ( ! is_admin() ) {
+	if ( ! ( is_admin() || is_customize_preview() ) ) {
 		return $choices;
 	}
 	$taxonomies = get_taxonomies(
@@ -794,7 +816,7 @@ function mai_get_taxonomy_choices() {
 
 function mai_get_post_type_taxonomy_choices() {
 	$choices = [];
-	if ( ! is_admin() ) {
+	if ( ! ( is_admin() || is_customize_preview() ) ) {
 		return $choices;
 	}
 	$post_types = mai_get_acf_request( 'post_type' );
@@ -818,7 +840,7 @@ function mai_get_post_type_taxonomy_choices() {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param $request
  *
@@ -835,7 +857,7 @@ function mai_get_acf_request( $request ) {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param string $name
  * @param string $style

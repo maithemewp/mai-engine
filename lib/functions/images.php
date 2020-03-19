@@ -27,7 +27,7 @@ function mai_get_image_aspect_ratio( $image_size ) {
 }
 
 /**
- * Utility method to get a combined list of default and custom registered image sizes.
+ * Get a combined list of default and custom registered image sizes.
  *
  * Originally taken from CMB2. Static variable added here.
  *
@@ -64,6 +64,35 @@ function mai_get_available_image_sizes() {
 	}
 
 	return $image_sizes;
+}
+
+/**
+ * Get available image orientations.
+ *
+ * @since  0.1.0
+ *
+ * @return array
+ */
+function mai_get_available_image_orientations() {
+	static $orientations = null;
+	if ( is_null( $orientations ) ) {
+		$image_sizes  = mai_get_config( 'image-sizes' );
+		$orientations = array_intersect( array_keys( $image_sizes['add'] ), [ 'landscape', 'portrait', 'square' ] );
+		$orientations = array_values( array_diff( $orientations, array_keys( $image_sizes['remove'] ) ) );
+	}
+	return $orientations;
+}
+
+/**
+ * Check if we have a specific image orientations.
+ *
+ * @since  0.1.0
+ *
+ * @return bool
+ */
+function mai_has_image_orientiation( $orientation ) {
+	$orientations = mai_get_availalbe_image_orientations();
+	return isset( $orientations[ $orientation ] );
 }
 
 /**
