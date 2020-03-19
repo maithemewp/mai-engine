@@ -724,7 +724,7 @@ function mai_get_image_size_choices() {
 	if ( ! ( is_admin() || is_customize_preview() ) ) {
 		return $choices;
 	}
-	$sizes   = mai_get_available_image_sizes();
+	$sizes = mai_get_available_image_sizes();
 	foreach ( $sizes as $index => $value ) {
 		$choices[ $index ] = sprintf( '%s (%s x %s)', $index, $value['width'], $value['height'] );
 	}
@@ -801,7 +801,7 @@ function mai_get_post_type_taxonomy_choices() {
 	if ( ! $post_types ) {
 		return $choices;
 	}
-	foreach( (array) $post_types as $post_type ) {
+	foreach ( (array) $post_types as $post_type ) {
 		$taxonomies = get_object_taxonomies( sanitize_text_field( wp_unslash( $post_type ) ), 'objects' );
 		if ( $taxonomies ) {
 			unset( $taxonomies['post_format'] );
@@ -815,9 +815,40 @@ function mai_get_post_type_taxonomy_choices() {
 	return $choices;
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param $request
+ *
+ * @return bool
+ */
 function mai_get_acf_request( $request ) {
 	if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST[ $request ] ) && ! empty( $_REQUEST[ $request ] ) ) {
 		return $_REQUEST[ $request ];
 	}
+
 	return false;
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param string $name
+ * @param string $style
+ *
+ * @return string
+ */
+function mai_get_icon( $name, $style = 'regular' ) {
+	$file = mai_get_dir() . "vendor/fortawesome/font-awesome/svgs/$style/$name.svg";
+
+	if ( ! file_exists( $file ) ) {
+		return '';
+	}
+
+	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+	return file_get_contents( $file );
 }

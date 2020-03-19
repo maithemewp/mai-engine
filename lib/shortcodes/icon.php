@@ -64,10 +64,10 @@ function mai_icon_shortcode( $atts ) {
 		'mai_icon'
 	);
 
-	$file = mai_get_dir() . 'vendor/fortawesome/font-awesome/svgs/' . $atts['style'] . '/' . $atts['icon'] . '.svg';
+	$svg = mai_get_icon( $atts['icon'], $atts['style'] );
 
-	if ( ! file_exists( $file ) ) {
-		return $file;
+	if ( ! $svg ) {
+		return '';
 	}
 
 	$margin = implode(
@@ -100,7 +100,7 @@ function mai_icon_shortcode( $atts ) {
 		]
 	);
 
-	$css  = '';
+	$css = '';
 	$css .= $atts['display'] ? 'display:' . $atts['display'] . ';' : '';
 	$css .= $atts['align'] ? 'justify-content:' . $atts['align'] . ';' : '';
 	$css .= $atts['color_background'] ? 'background-color:' . $atts['color_background'] . ';' : '';
@@ -114,13 +114,13 @@ function mai_icon_shortcode( $atts ) {
 		$css
 	);
 
-	$svg  = '-webkit-filter: drop-shadow(' . $shadow . ');';
-	$svg .= 'filter: drop-shadow(' . $shadow . ')';
+	$svg_css = '-webkit-filter: drop-shadow(' . $shadow . ');';
+	$svg_css .= 'filter: drop-shadow(' . $shadow . ')';
 
 	$css .= sprintf(
 		'.mai-icon-%s svg{%s}',
 		$id,
-		$svg
+		$svg_css
 	);
 
 	return sprintf(
@@ -135,8 +135,7 @@ function mai_icon_shortcode( $atts ) {
 				$atts['size'],
 				$atts['align']
 			),
-			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-			file_get_contents( $file )
+			$svg
 		)
 	);
 }

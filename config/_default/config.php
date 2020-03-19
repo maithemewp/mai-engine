@@ -170,7 +170,7 @@ return [
 	'responsive-menu' => [
 		'script' => [
 			'mainMenu'         => sprintf(
-				'<span class="menu-toggle-icon"> </span><span class="screen-reader-text">%s</span>',
+				'<span class="menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
 				__( 'Menu', 'mai-engine' )
 			),
 			'menuIconClass'    => null,
