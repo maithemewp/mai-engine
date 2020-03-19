@@ -19,7 +19,15 @@ return [
 	'theme-support' => [
 		'add' => [
 			'sticky-header',
+			// 'transparent-header',
 			'genesis-footer-widgets' => 2,
+		],
+	],
+	'image-sizes' => [
+		'add'    => [
+			'landscape' => '4:3',
+			'portrait'  => '3:4',
+			// 'square'    => '1:1',
 		],
 	],
 ];
