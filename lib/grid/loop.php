@@ -46,7 +46,6 @@ function mai_archive_posts_per_page( $query ) {
 	$query->set( 'posts_per_page', $args['posts_per_page'] );
 }
 
-
 // Mai loop.
 add_action(
 	'genesis_before_loop',

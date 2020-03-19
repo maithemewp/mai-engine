@@ -131,7 +131,7 @@ class Mai_Entry {
 			genesis_markup(
 				[
 					'open'    => '<div %s>',
-					'context' => 'entry-inner',
+					'context' => 'entry-wrap',
 					'echo'    => true,
 					'params'  => [
 						'args'  => $this->args,
@@ -320,33 +320,42 @@ class Mai_Entry {
 	public function calculate_image_sizes( $sizes, $size, $image_src, $image_meta, $attachment_id ) {
 
 		// TODO: handle 0/auto columns.
-		$new_sizes = [];
-		$container = $this->breakpoints['xl'] . 'px';
 
-		foreach ( $this->get_breakpoint_columns() as $size => $count ) {
-			switch ( $size ) {
+		$new_sizes   = [];
+		$has_sidebar = mai_has_sidebar();
+		$columns     = array_reverse( $this->get_breakpoint_columns(), true ); // mobile first.
+
+		foreach ( $columns as $break => $count ) {
+			switch ( $break ) {
 				case 'xs':
-					$max_width   = ( $this->breakpoints['sm'] + 1 ) . 'px';
-					$new_sizes[] = "(max-width: {$max_width}) calc( {$container} / $count )";
+					$max_width   = $this->breakpoints['sm'] - 1;
+					$width       = floor( $max_width / $count );
+					$new_sizes[] = "(max-width:{$max_width}px) {$width}px";
 					break;
 				case 'sm':
-					$min_width   = $this->breakpoints['sm'] . 'px';
-					$max_width   = ( $this->breakpoints['md'] + 1 ) . 'px';
-					$new_sizes[] = "(min-width: {$min_width}) and (max-width: {$max_width}) calc( {$container} / $count )";
+					$min_width   = $this->breakpoints['sm'];
+					$max_width   = $this->breakpoints['md'] - 1;
+					$width       = floor( $max_width / $count );
+					$new_sizes[] = "(min-width:{$min_width}px) and (max-width: {$max_width}px) {$width}px";
 					break;
 				case 'md':
-					$min_width   = $this->breakpoints['md'] . 'px';
-					$max_width   = ( $this->breakpoints['lg'] + 1 ) . 'px';
-					$new_sizes[] = "(min-width: {$min_width}) and (max-width: {$max_width}) calc( {$container} / $count )";
-					break;
+					$min_width   = $this->breakpoints['md'];
+					$max_width   = $this->breakpoints['lg'] - 1;
+					$container   = $has_sidebar ? $max_width * 2/3 : $max_width;
+					$width       = floor( $container / $count );
+					$new_sizes[] = "(min-width:{$min_width}px) and (max-width: {$max_width}px) {$width}px";
+				break;
 				case 'lg':
-					$min_width   = $this->breakpoints['lg'] . 'px';
-					$new_sizes[] = "(min-width: {$min_width}) calc( {$container} / $count )";
+					$min_width   = $this->breakpoints['lg'];
+					$container   = $this->breakpoints['xl'];
+					$container   = $has_sidebar ? $container * 2/3 : $container;
+					$width       = floor( $container / $count );
+					$new_sizes[] = "(min-width:{$min_width}px) {$width}px";
 					break;
 			}
 		}
 
-		return implode( ',', $new_sizes );
+		return implode( ', ', $new_sizes );
 	}
 
 	/**
