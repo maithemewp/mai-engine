@@ -178,7 +178,7 @@ function mai_add_archive_customizer_settings( $name, $type = 'post_type' ) {
 	foreach ( $fields as $field ) {
 
 		// Add field.
-		Kirki::add_field( $config_id, mai_get_kirki_field_data( $field, $config_id ) );
+		Kirki::add_field( $config_id, mai_get_kirki_field_data( $field, $config_id, $name ) );
 	}
 }
 
@@ -218,7 +218,7 @@ function mai_add_single_customizer_settings( $name ) {
 	$label     = $post_type->labels->name;
 
 	// Get fields.
-	$fields = mai_get_config( 'archive-settings' );
+	$fields = mai_get_config( 'single-settings' );
 
 	// Section.
 	Kirki::add_section(
@@ -233,19 +233,20 @@ function mai_add_single_customizer_settings( $name ) {
 	foreach ( $fields as $field ) {
 
 		// Add field.
-		Kirki::add_field( $config_id, mai_get_kirki_field_data( $field, $config_id ) );
+		Kirki::add_field( $config_id, mai_get_kirki_field_data( $field, $config_id, $name ) );
 	}
 }
 
 /**
  * Setup the field data from config for kirki add_field method.
  *
- * @param  array  $field      The field config data.
- * @param  string $section_id The Customizer section ID.
+ * @param  array  $field        The field config data.
+ * @param  string $section_id   The Customizer section ID.
+ * @param  string $name         The post or content type name.
  *
  * @return array The field data.
  */
-function mai_get_kirki_field_data( $field, $section_id ) {
+function mai_get_kirki_field_data( $field, $section_id, $name = '' ) {
 
 	$data = [
 		'type'     => $field['type'],
@@ -286,7 +287,7 @@ function mai_get_kirki_field_data( $field, $section_id ) {
 		if ( is_array( $field['choices'] ) ) {
 			$data['choices'] = $field['choices'];
 		} elseif ( is_callable( $field['choices'] ) ) {
-			$data['choices'] = call_user_func( $field['choices'] );
+			$data['choices'] = call_user_func_array( $field['choices'], [ 'name' => $name ] );
 		}
 	}
 
