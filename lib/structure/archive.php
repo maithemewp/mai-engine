@@ -16,46 +16,6 @@ add_action( 'genesis_entry_header', 'genesis_do_post_image', 1 );
 // Enable shortcodes in archive description.
 add_filter( 'genesis_cpt_archive_intro_text_output', 'do_shortcode' );
 
-add_filter( 'post_class', 'mai_archive_post_class' );
-/**
- * Add column class to archive posts.
- *
- * @since 0.1.0
- *
- * @param array $classes Array of post classes.
- *
- * @return array
- */
-function mai_archive_post_class( $classes ) {
-	if ( ! mai_is_type_archive() ) {
-		return $classes;
-	}
-
-	if ( class_exists( 'WooCommerce' ) && is_woocommerce() ) {
-		return $classes;
-	}
-
-	if ( did_action( 'genesis_before_sidebar_widget_area' ) ) {
-		return $classes;
-	}
-
-	if ( 'full-width-content' === genesis_site_layout() ) {
-		$classes[] = 'one-third';
-		$count     = 3;
-	} else {
-		$classes[] = 'one-half';
-		$count     = 2;
-	}
-
-	global $wp_query;
-
-	if ( 0 === $wp_query->current_post || 0 === $wp_query->current_post % $count ) {
-		$classes[] = 'first';
-	}
-
-	return $classes;
-}
-
 add_filter( 'get_the_content_more_link', 'mai_read_more_link' );
 add_filter( 'the_content_more_link', 'mai_read_more_link' );
 /**
