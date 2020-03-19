@@ -161,12 +161,21 @@
 }
 
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_text"] .buttonset,
+.customize-control.customize-control-kirki-radio-buttonset[id$="align_text_vertical"] .buttonset,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_columns"] .buttonset,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_columns_vertical"] .buttonset {
 	position: relative;
 }
 
+.customize-control.customize-control-kirki-radio-buttonset[id$="align_text"] .switch-label,
+.customize-control.customize-control-kirki-radio-buttonset[id$="align_text_vertical"] .switch-label,
+.customize-control.customize-control-kirki-radio-buttonset[id$="align_columns"] .switch-label,
+.customize-control.customize-control-kirki-radio-buttonset[id$="align_columns_vertical"] .switch-label {
+	flex: 1;
+}
+
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_text"] .switch-label:first-of-type,
+.customize-control.customize-control-kirki-radio-buttonset[id$="align_text_vertical"] .switch-label:first-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_columns"] .switch-label:first-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_columns_vertical"] .switch-label:first-of-type {
 	position: absolute;
@@ -192,6 +201,7 @@
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_sm"] .switch-label:nth-of-type(2),
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_xs"] .switch-label:nth-of-type(2),
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_text"] .switch-label:nth-of-type(2),
+.customize-control.customize-control-kirki-radio-buttonset[id$="align_text_vertical"] .switch-label:nth-of-type(2),
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_columns"] .switch-label:nth-of-type(2),
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_columns_vertical"] .switch-label:nth-of-type(2) {
 	border-radius: 3px 0 0 3px;
@@ -202,12 +212,14 @@
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_sm"] .switch-label:last-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_xs"] .switch-label:last-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_text"] .switch-label:last-of-type,
+.customize-control.customize-control-kirki-radio-buttonset[id$="align_text_vertical"] .switch-label:last-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_columns"] .switch-label:last-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_columns_vertical"] .switch-label:last-of-type {
 	border-radius: 0 3px 3px 0;
 }
 
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_text"] .switch-label:first-of-type:hover,
+.customize-control.customize-control-kirki-radio-buttonset[id$="align_text_vertical"] .switch-label:first-of-type:hover,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_columns"] .switch-label:first-of-type:hover,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_columns_vertical"] .switch-label:first-of-type:hover {
 	text-decoration: underline !important;
