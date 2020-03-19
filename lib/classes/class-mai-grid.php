@@ -325,9 +325,19 @@ class Mai_Grid {
 			break;
 		}
 
+		// Exclude.
+		if ( $this->args['exclude'] && 'id' !== $this->args['query_by'] ) {
+			$query_args['exclude'] = $this->args['exclude'];
+		}
+
 		// Orderby.
 		if ( $this->args['orderby'] && 'id' !== $this->args['query_by'] ) {
 			$query_args['orderby'] = $this->args['orderby'];
+		}
+
+		// Order.
+		if ( $this->args['order'] ) {
+			$query_args['order'] = $this->args['order'];
 		}
 
 		return apply_filters( 'mai_term_grid_query_args', $query_args );
