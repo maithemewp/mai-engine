@@ -61,8 +61,8 @@ toolkit.extendConfig(
                 './assets/js/scroll.js',
                 './assets/js/toggle.js'
             ],
-            'sticky': [
-				'./assets/js/sticky.js',
+            'header': [
+				'./assets/js/header.js',
             ],
         },
         css: {
@@ -77,17 +77,6 @@ toolkit.extendConfig(
                 zindex: false
             },
         },
-        server: {
-            notify: false,
-            proxy: 'http://mai.local',
-            host: 'mai.local',
-            open: 'external',
-            port: '8000',
-            files: [
-                './assets/**/*',
-                './config/**/*',
-            ]
-        }
     }
 );
 
