@@ -3,9 +3,18 @@
 	width: 100%;
 	max-width: calc((100% / var(--columns)) - var(--column-gap));
 	margin: var(--entry-margin, 0);
+	padding: var(--entry-padding, 0);
 	text-align: var(--align-text);
 	background-color: var(--color-white);
+	border: var(--entry-border, unset);
 	border-radius: var(--border-radius);
+	box-shadow: var(--entry-box-shadow, unset);
+}
+
+.has-boxed {
+	--entry-padding: var(--spacing-xl);
+	--entry-border: 1px solid rgba(0, 0, 0, 0.05);
+	--entry-box-shadow: 0 0 24px rgba(0, 0, 0, 0.05);
 }
 
 .entry > * + * {

@@ -231,7 +231,7 @@ return [
 		'sanitize' => 'esc_html',
 		'default'  => 1, // True.
 		'atts'     => [
-			'message' => __( 'Display boxed', 'mai-engine' ),
+			'message' => __( 'Display boxed styling', 'mai-engine' ),
 		],
 	],
 	'field_5c853f84eacd6' => [

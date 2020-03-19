@@ -182,9 +182,15 @@ return [
 		],
 	],
 	[
+		'name'     => 'boxed_heading',
+		'label'    => esc_html__( 'Boxed', 'mai-engine' ),
+		'type'     => 'custom',
+		'sanitize' => 'esc_html',
+		'default'  => '',
+	],
+	[
 		'name'     => 'boxed',
-		// 'label'    => esc_html__( 'Boxed', 'mai-engine' ),
-		'label'    => esc_html__( 'Display boxed', 'mai-engine' ),
+		'label'    => esc_html__( 'Display boxed styling', 'mai-engine' ),
 		'type'     => 'checkbox',
 		'sanitize' => 'esc_html',
 		'default'  => true,
