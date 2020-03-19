@@ -90,7 +90,7 @@ function mai_header_customizer_settings() {
 			'choices'  => [
 				'labels' => [
 					'desktop' => esc_html__( 'Desktop', 'mai-engine' ),
-					'mobile'  => esc_html__( 'Mobile / Sticky', 'mai-engine' ),
+					'mobile'  => current_theme_supports( 'sticky-header' ) ? esc_html__( 'Mobile / Sticky', 'mai-engine' ) : esc_html__( 'Mobile', 'mai-engine' ),
 				],
 			],
 			'output'   => [
@@ -124,7 +124,7 @@ function mai_header_customizer_settings() {
 			'choices'  => [
 				'labels' => [
 					'desktop' => esc_html__( 'Desktop', 'mai-engine' ),
-					'mobile'  => esc_html__( 'Mobile / Sticky', 'mai-engine' ),
+					'mobile'  => current_theme_supports( 'sticky-header' ) ? esc_html__( 'Mobile / Sticky', 'mai-engine' ) : esc_html__( 'Mobile', 'mai-engine' ),
 				],
 			],
 			'output'   => [

@@ -19,7 +19,6 @@ return [
 	'theme-support' => [
 		'add' => [
 			'sticky-header',
-			'shrink-header',
 			'genesis-footer-widgets' => 2,
 		],
 	],
