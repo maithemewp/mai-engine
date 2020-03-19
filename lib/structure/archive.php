@@ -9,10 +9,6 @@
  * @license   GPL-2.0-or-later
  */
 
-// Reposition entry image.
-remove_action( 'genesis_entry_content', 'genesis_do_post_image', 8 );
-add_action( 'genesis_entry_header', 'genesis_do_post_image', 1 );
-
 // Enable shortcodes in archive description.
 add_filter( 'genesis_cpt_archive_intro_text_output', 'do_shortcode' );
 
@@ -43,69 +39,4 @@ add_filter( 'genesis_author_box_gravatar_size', 'mai_author_box_gravatar' );
  */
 function mai_author_box_gravatar( $size ) {
 	return mai_get_config( 'genesis-settings' )['avatar_size'];
-}
-
-add_action( 'genesis_entry_header', 'mai_entry_wrap_open', 4 );
-/**
- * Outputs the opening entry wrap markup.
- *
- * @since 0.1.0
- *
- * @return void
- */
-function mai_entry_wrap_open() {
-	if ( mai_is_type_archive() ) {
-		genesis_markup(
-			[
-				'open'    => '<div %s>',
-				'context' => 'entry-wrap',
-			]
-		);
-	}
-}
-
-add_action( 'genesis_entry_footer', 'mai_entry_wrap_close', 15 );
-/**
- * Outputs the closing entry wrap markup.
- *
- * @since 0.1.0
- *
- * @return void
- */
-function mai_entry_wrap_close() {
-	if ( mai_is_type_archive() ) {
-		genesis_markup(
-			[
-				'close'   => '</div>',
-				'context' => 'entry-wrap',
-			]
-		);
-	}
-}
-
-add_filter( 'genesis_markup_entry-header_open', 'mai_widget_entry_wrap_open', 10, 2 );
-/**
- * Outputs the opening entry wrap markup in widgets.
- *
- * @since 0.1.0
- *
- * @param string $open Opening markup.
- * @param array  $args Markup args.
- *
- * @return string
- */
-function mai_widget_entry_wrap_open( $open, $args ) {
-	if ( isset( $args['params']['is_widget'] ) && $args['params']['is_widget'] ) {
-		$markup = genesis_markup(
-			[
-				'open'    => '<div %s>',
-				'context' => 'entry-wrap',
-				'echo'    => false,
-			]
-		);
-
-		$open = $markup . $open;
-	}
-
-	return $open;
 }
