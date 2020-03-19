@@ -157,7 +157,7 @@ msgstr ""
 msgid "Left"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:184, lib/classes/class-mai-entry-settings.php:318, lib/classes/class-mai-entry-settings.php:461, config/_default/settings/archive.php:103, config/_default/settings/grid.php:110, config/_default/settings/grid.php:252, config/_default/settings/grid.php:416
+#: lib/classes/class-mai-entry-settings.php:184, lib/classes/class-mai-entry-settings.php:318, lib/classes/class-mai-entry-settings.php:461, config/_default/settings/archive.php:103, config/_default/settings/archive.php:206, config/_default/settings/grid.php:110, config/_default/settings/grid.php:252, config/_default/settings/grid.php:416
 msgid "Center"
 msgstr ""
 
@@ -169,27 +169,27 @@ msgstr ""
 msgid "Background"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:197, lib/classes/class-mai-entry-settings.php:1273, config/_default/settings/archive.php:43, config/_default/settings/grid.php:30, config/_default/settings/grid.php:131, config/_default/settings/single.php:45
+#: lib/classes/class-mai-entry-settings.php:197, lib/classes/class-mai-entry-settings.php:1273, config/_default/settings/archive.php:43, config/_default/settings/archive.php:117, config/_default/settings/grid.php:30, config/_default/settings/grid.php:131, config/_default/settings/single.php:45
 msgid "Header Meta"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:216, config/_default/settings/grid.php:154
+#: lib/classes/class-mai-entry-settings.php:216, config/_default/settings/archive.php:132, config/_default/settings/grid.php:154
 msgid "Content Limit"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:217, config/_default/settings/grid.php:155
+#: lib/classes/class-mai-entry-settings.php:217, config/_default/settings/archive.php:133, config/_default/settings/grid.php:155
 msgid "Limit the number of characters shown for the content or excerpt. Use 0 for no limit."
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:244, config/_default/settings/grid.php:186
+#: lib/classes/class-mai-entry-settings.php:244, config/_default/settings/archive.php:156, config/_default/settings/grid.php:186
 msgid "More Link Text"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:262, lib/classes/class-mai-entry-settings.php:266, lib/classes/class-mai-entry.php:849, config/_default/settings/grid.php:200
+#: lib/classes/class-mai-entry-settings.php:262, lib/classes/class-mai-entry-settings.php:266, lib/classes/class-mai-entry.php:849, config/_default/settings/archive.php:170, config/_default/settings/grid.php:200
 msgid "Read More"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:271, lib/classes/class-mai-entry-settings.php:1280, config/_default/settings/archive.php:50, config/_default/settings/grid.php:34, config/_default/settings/grid.php:210, config/_default/settings/single.php:52
+#: lib/classes/class-mai-entry-settings.php:271, lib/classes/class-mai-entry-settings.php:1280, config/_default/settings/archive.php:50, config/_default/settings/archive.php:176, config/_default/settings/grid.php:34, config/_default/settings/grid.php:210, config/_default/settings/single.php:52
 msgid "Footer Meta"
 msgstr ""
 
@@ -197,39 +197,39 @@ msgstr ""
 msgid "Boxed"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:302, config/_default/settings/grid.php:239
+#: lib/classes/class-mai-entry-settings.php:302, config/_default/settings/archive.php:192, config/_default/settings/grid.php:239
 msgid "Display boxed"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:306, config/_default/settings/grid.php:244
+#: lib/classes/class-mai-entry-settings.php:306, config/_default/settings/archive.php:199, config/_default/settings/grid.php:244
 msgid "Align Text"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:316, lib/classes/class-mai-entry-settings.php:333, lib/classes/class-mai-entry-settings.php:459, lib/classes/class-mai-entry-settings.php:483, config/_default/settings/grid.php:250, config/_default/settings/grid.php:271, config/_default/settings/grid.php:414, config/_default/settings/grid.php:442
+#: lib/classes/class-mai-entry-settings.php:316, lib/classes/class-mai-entry-settings.php:333, lib/classes/class-mai-entry-settings.php:459, lib/classes/class-mai-entry-settings.php:483, config/_default/settings/archive.php:204, config/_default/settings/archive.php:217, config/_default/settings/grid.php:250, config/_default/settings/grid.php:271, config/_default/settings/grid.php:414, config/_default/settings/grid.php:442
 msgid "Clear"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:317, config/_default/settings/grid.php:251
+#: lib/classes/class-mai-entry-settings.php:317, config/_default/settings/archive.php:205, config/_default/settings/grid.php:251
 msgid "Start"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:319, config/_default/settings/grid.php:253
+#: lib/classes/class-mai-entry-settings.php:319, config/_default/settings/archive.php:207, config/_default/settings/grid.php:253
 msgid "End"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:323, config/_default/settings/grid.php:265
+#: lib/classes/class-mai-entry-settings.php:323, config/_default/settings/archive.php:212, config/_default/settings/grid.php:265
 msgid "Align Text (vertical)"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:334, lib/classes/class-mai-entry-settings.php:484, config/_default/settings/grid.php:272, config/_default/settings/grid.php:443
+#: lib/classes/class-mai-entry-settings.php:334, lib/classes/class-mai-entry-settings.php:484, config/_default/settings/archive.php:218, config/_default/settings/grid.php:272, config/_default/settings/grid.php:443
 msgid "Top"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:335, lib/classes/class-mai-entry-settings.php:485, config/_default/settings/grid.php:273, config/_default/settings/grid.php:444
+#: lib/classes/class-mai-entry-settings.php:335, lib/classes/class-mai-entry-settings.php:485, config/_default/settings/archive.php:219, config/_default/settings/grid.php:273, config/_default/settings/grid.php:444
 msgid "Middle"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:336, lib/classes/class-mai-entry-settings.php:486, config/_default/settings/grid.php:274, config/_default/settings/grid.php:445
+#: lib/classes/class-mai-entry-settings.php:336, lib/classes/class-mai-entry-settings.php:486, config/_default/settings/archive.php:220, config/_default/settings/grid.php:274, config/_default/settings/grid.php:445
 msgid "Bottom"
 msgstr ""
 
