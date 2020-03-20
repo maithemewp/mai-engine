@@ -35,6 +35,20 @@ function mai_do_entries_open( $args ) {
 	// Image position.
 	if ( in_array( 'image', $args['show'], true ) && $args['image_position'] ) {
 		$attributes['class'] .= ' has-image-' . $args['image_position'];
+
+		// Image width.
+		switch ( $args['image_width'] ) {
+			case 'half':
+				$attributes['style'] .= sprintf( '--template-columns:%s;', '1fr' );
+			break;
+			case 'third':
+				$attributes['style'] .= sprintf( '--template-columns:%s;', '2fr' );
+			break;
+			case 'fourth':
+				$attributes['style'] .= sprintf( '--template-columns:%s;', '3fr' );
+			break;
+		}
+
 		if ( 'background' === $args['image_position'] ) {
 			switch ( $args['image_orientation'] ) {
 				case 'landscape':

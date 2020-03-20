@@ -1,0 +1,7 @@
+.entry-more {
+	margin: var(--entry-more-margin, 0);
+}
+
+[style*="--align-text-vertical:start;"] {
+	--entry-more-margin: auto 0 0;
+}

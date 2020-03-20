@@ -97,6 +97,47 @@ return [
 		],
 	],
 	[
+		'name'       => 'image_width',
+		'label'      => esc_html__( 'Image Width', 'mai-engine' ),
+		'type'       => 'radio-buttonset',
+		'sanitize'   => 'esc_html',
+		'default'    => 'third',
+		'choices'    => [
+			'half'   => esc_html__( 'One Half', 'mai-engine' ),
+			'third'  => esc_html__( 'One Third', 'mai-engine' ),
+			'fourth' => esc_html__( 'One Fourth', 'mai-engine' ),
+		],
+		'conditions' => [
+			[
+				[
+					'setting'  => 'show',
+					'operator' => 'contains',
+					'value'    => 'image',
+				],
+				[
+					'setting'  => 'image_position',
+					'operator' => '==',
+					'value'    => 'left',
+				],
+				[
+					'setting'  => 'image_position',
+					'operator' => '==',
+					'value'    => 'right',
+				],
+				[
+					'setting'  => 'image_position',
+					'operator' => '==',
+					'value'    => 'left-full',
+				],
+				[
+					'setting'  => 'image_position',
+					'operator' => '==',
+					'value'    => 'right-full',
+				],
+			],
+		],
+	],
+	[
 		'name'       => 'header_meta',
 		'label'      => esc_html__( 'Header Meta', 'mai-engine' ),
 		'type'       => 'text',
@@ -125,8 +166,6 @@ return [
 					'operator' => 'contains',
 					'value'    => 'excerpt',
 				],
-			],
-			[
 				[
 					'setting'  => 'show',
 					'operator' => 'contains',

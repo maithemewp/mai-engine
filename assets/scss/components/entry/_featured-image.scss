@@ -1,8 +1,13 @@
 .entry-image-link {
 	display: block;
+	order: var(--entry-image-link-order, unset);
+	margin: var(--entry-image-link-margin, unset);
 }
 
 .entry-image {
+	width: var(--entry-image-width, unset);
 	min-width: 100%;
-	border-radius: var(--entry-image-border-radius, (var(--border-radius) var(--border-radius) 0 0));
+	height: var(--entry-image-height, inherit);
+	object-fit: var(--entry-image-object-fit, unset);
+	border-radius: var(--entry-image-border-radius, var(--border-radius));
 }
