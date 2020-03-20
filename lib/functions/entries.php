@@ -36,12 +36,12 @@ function mai_do_entries_open( $args ) {
 	if ( in_array( 'image', $args['show'], true ) && $args['image_position'] ) {
 		$attributes['class'] .= ' has-image-' . $args['image_position'];
 		if ( 'background' === $args['image_position'] ) {
-			// TODO: This needs to use the engine config to get available image orientations.
 			switch ( $args['image_orientation'] ) {
 				case 'landscape':
 				case 'portrait':
 				case 'square':
-					$image_size = sprintf( '%s-md', $args['image_orientation'] );
+					$orientation = mai_has_image_orientiation( $args['image_orientation'] ) ? $args['image_orientation'] : 'landscape';
+					$image_size  = sprintf( '%s-md', $args['image_orientation'] );
 					break;
 				default:
 					$image_size = $args['image_size'];
