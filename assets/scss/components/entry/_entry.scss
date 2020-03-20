@@ -80,7 +80,7 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: var(--align-text-vertical, center);
-	padding: var(--entry-wrap-padding, var(--spacing-md));
+	padding: var(--entry-wrap-padding, var(--spacing-xl));
 }
 
 .widget {
