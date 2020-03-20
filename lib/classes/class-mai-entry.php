@@ -92,6 +92,11 @@ class Mai_Entry {
 	 */
 	public function render() {
 
+		// Remove post attributes filter for term/user grid.
+		if ( 'post' !== $this->type ) {
+			remove_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
+		}
+
 		// Wrap.
 		switch ( $this->type ) {
 			case 'post':
@@ -111,6 +116,9 @@ class Mai_Entry {
 				'open'    => "<{$wrap} %s>",
 				'context' => 'entry',
 				'echo'    => true,
+				'atts'    => [
+					'class' => 'this-right-here',
+				],
 				'params'  => [
 					'args'  => $this->args,
 					'entry' => $this->entry,
@@ -185,6 +193,11 @@ class Mai_Entry {
 				],
 			]
 		);
+
+		// Add back post attributes for other entries.
+		if ( 'post' !== $this->type ) {
+			add_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
+		}
 
 	}
 
@@ -298,7 +311,8 @@ class Mai_Entry {
 		 * @param int          $attachment_id Image attachment ID of the original image or 0.
 		 */
 		add_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 5 );
-		$image = wp_get_attachment_image( $image_id, $this->get_image_size() );
+		$size  = $this->get_image_size();
+		$image = wp_get_attachment_image( $image_id, $size, false, [ 'class' => "entry-image size-{$size}" ] );
 		remove_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 5 );
 
 		return $image;
