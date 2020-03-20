@@ -569,6 +569,14 @@ msgstr ""
 msgid "Logo Spacing"
 msgstr ""
 
+#: lib/functions/customizer.php:57
+msgid "Search Results"
+msgstr ""
+
+#: lib/functions/customizer.php:60
+msgid "Author Archives"
+msgstr ""
+
 #: lib/functions/getters.php:762
 msgid "Author Box"
 msgstr ""
@@ -579,22 +587,6 @@ msgstr ""
 
 #: lib/functions/getters.php:764
 msgid "Previous/Next Entry Nav"
-msgstr ""
-
-#: lib/grid/customizer.php:29
-msgid "Content Archives"
-msgstr ""
-
-#: lib/grid/customizer.php:93
-msgid "Singular Content"
-msgstr ""
-
-#: lib/grid/customizer.php:156
-msgid "Search Results"
-msgstr ""
-
-#: lib/grid/customizer.php:159
-msgid "Author Archives"
 msgstr ""
 
 #: lib/structure/page-header.php:136

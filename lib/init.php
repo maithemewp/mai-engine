@@ -78,6 +78,7 @@ function mai_load_files() {
 		'functions/widgets',
 		'functions/defaults',
 		'functions/onboarding',
+		'functions/customizer',
 
 		// Structure.
 		'structure/archive',
@@ -108,10 +109,11 @@ function mai_load_files() {
 		'admin/page-header',
 
 		// Customizer.
+		'customize/archives',
 		'customize/kirki',
-		'customize/panels',
-		'customize/sections',
-		'customize/fields',
+		'customize/logo',
+		'customize/page-header',
+		'customize/singular',
 
 		// Grid.
 		'grid/setup',
