@@ -11,7 +11,7 @@
 
 add_action( 'genesis_before', 'mai_no_sidebar' );
 /**
- * Remove sidebars on narrow content layout.
+ * Remove sidebars on no-sidebar layouts.
  *
  * @since 0.1.0
  *
