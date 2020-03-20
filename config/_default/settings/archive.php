@@ -84,6 +84,8 @@ return [
 			'left'       => esc_html__( 'Left', 'mai-engine' ),
 			'center'     => esc_html__( 'Center', 'mai-engine' ),
 			'right'      => esc_html__( 'Right', 'mai-engine' ),
+			'left-full'  => esc_html__( 'Left (Full)', 'mai-engine' ),
+			'right-full' => esc_html__( 'Right (Full)', 'mai-engine' ),
 			'background' => esc_html__( 'Background', 'mai-engine' ),
 		],
 		'conditions' => [
@@ -222,6 +224,16 @@ return [
 				[
 					'setting'  => 'image_position',
 					'operator' => '==',
+					'value'    => 'left-full',
+				],
+				[
+					'setting'  => 'image_position',
+					'operator' => '==',
+					'value'    => 'right-full',
+				],
+				[
+					'setting'  => 'image_position',
+					'operator' => '==',
 					'value'    => 'background',
 				],
 			],
@@ -231,8 +243,8 @@ return [
 		'name'     => 'columns',
 		'label'    => esc_html__( 'Columns (desktop)', 'mai-engine' ),
 		'type'     => 'radio-buttonset',
-		'sanitize' => 'absint',
-		'default'  => 3,
+		'sanitize' => 'esc_html',
+		'default'  => '3',
 		'choices'  => 'mai_get_columns_choices',
 	],
 	[
@@ -246,8 +258,8 @@ return [
 		'name'       => 'columns_md',
 		'label'      => esc_html__( 'Columns (lg tablets)', 'mai-engine' ),
 		'type'       => 'radio-buttonset',
-		'sanitize'   => 'absint',
-		'default'    => 1,
+		'sanitize'   => 'esc_html',
+		'default'    => '1',
 		'choices'    => 'mai_get_columns_choices',
 		'conditions' => [
 			[
@@ -261,8 +273,8 @@ return [
 		'name'       => 'columns_sm',
 		'label'      => esc_html__( 'Columns (sm tablets)', 'mai-engine' ),
 		'type'       => 'radio-buttonset',
-		'sanitize'   => 'absint',
-		'default'    => 1,
+		'sanitize'   => 'esc_html',
+		'default'    => '1',
 		'choices'    => 'mai_get_columns_choices',
 		'conditions' => [
 			[
@@ -276,8 +288,8 @@ return [
 		'name'       => 'columns_xs',
 		'label'      => esc_html__( 'Columns (mobile)', 'mai-engine' ),
 		'type'       => 'radio-buttonset',
-		'sanitize'   => 'absint',
-		'default'    => 1,
+		'sanitize'   => 'esc_html',
+		'default'    => '1',
 		'choices'    => 'mai_get_columns_choices',
 		'conditions' => [
 			[

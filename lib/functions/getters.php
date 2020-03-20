@@ -416,8 +416,6 @@ function mai_get_unit_value( $value ) {
 /**
  * Get the columns at different breakpoints.
  *
- * We use strings because the clear option is just an empty string.
- *
  * @since 0.1.0
  *
  * @param array $args Column args.
@@ -425,16 +423,17 @@ function mai_get_unit_value( $value ) {
  * @return array
  */
 function mai_get_breakpoint_columns( $args ) {
+
 	$columns = [
-		'lg' => (int) $args['columns'],
+		'lg' => $args['columns'],
 	];
 
 	if ( $args['columns_responsive'] ) {
-		$columns['md'] = (int) $args['columns_md'];
-		$columns['sm'] = (int) $args['columns_sm'];
-		$columns['xs'] = (int) $args['columns_xs'];
+		$columns['md'] = $args['columns_md'];
+		$columns['sm'] = $args['columns_sm'];
+		$columns['xs'] = $args['columns_xs'];
 	} else {
-		switch ( (int) $args['columns'] ) {
+		switch ( $args['columns'] ) {
 			case 6:
 				$columns['md'] = 4;
 				$columns['sm'] = 3;
@@ -532,37 +531,6 @@ function mai_get_content_limit( $content, $limit ) {
 	return $content;
 }
 
-
-/**
- * Description of expected behavior.
- *
- * @since 0.1.0
- *
- * @param string $context Entry context.
- *
- * @return array
- */
-function mai_get_settings_fields( $context ) {
-	$settings = new Mai_Entry_Settings( $context );
-
-	return $settings->fields;
-}
-
-/**
- * Description of expected behavior.
- *
- * @since 0.1.0
- *
- * @param string $context Entry context.
- *
- * @return null
- */
-function mai_get_settings_keys( $context ) {
-	$settings = new Mai_Entry_Settings( $context );
-
-	return $settings->keys;
-}
-
 /**
  * Description of expected behavior.
  *
@@ -581,12 +549,13 @@ function mai_get_template_args() {
 	$context = '';
 
 	if ( mai_is_type_archive() ) {
-		$name    = mai_get_archive_args_name();
-		$context = 'archive';
+		$settings = mai_get_config( 'archive-settings' );
+		$name     = mai_get_archive_args_name();
+		$context  = 'archive';
 
 	} elseif ( is_singular() ) {
-		$name    = mai_get_singular_args_name();
-		$context = 'single';
+		$name     = mai_get_singular_args_name();
+		$context  = 'single';
 	}
 
 	// Bail if no data.
@@ -594,15 +563,24 @@ function mai_get_template_args() {
 		return [];
 	}
 
-	$settings = new Mai_Entry_Settings( $context );
+	// Get settings.
+	$settings = mai_get_config( $context . '-settings' );
+
+	// Bail if no settings.
+	if ( ! $settings ) {
+		return [];
+	}
+
+	// Build key and parse args.
 	$key      = sprintf( 'mai_%s_%s', $context, $name );
-	$args     = wp_parse_args( get_option( $key, [] ), $settings->defaults );
+	$defaults = [ 'context' => $context ] + wp_list_pluck( $settings, 'default', 'name' );
+	$args     = wp_parse_args( get_option( $key, [] ), $defaults );
 
 	// Allow devs to filter.
-	$args = apply_filters( 'mai_template_args', $args );
+	$args = apply_filters( 'mai_template_args', $args, $context );
 
 	// Sanitize.
-	$args = mai_get_sanitized_entry_args( $args );
+	$args = mai_get_sanitized_entry_args( $args, $context );
 
 	return $args;
 }
@@ -612,22 +590,31 @@ function mai_get_template_args() {
  *
  * @since 0.1.0
  *
- * @param array $args Entry args.
+ * @param array  $args    Entry args.
+ * @param string $context The args context..
  *
  * @return mixed
  */
-function mai_get_sanitized_entry_args( $args ) {
+function mai_get_sanitized_entry_args( $args, $context ) {
 
-	// Get settings.
-	$settings = new Mai_Entry_Settings( $args['context'] );
+	// Get settings. Cached so it's fine to get again.
+	$settings = mai_get_config( $context . '-settings' );
+
+	// Bail if no settings.
+	if ( ! $settings ) {
+		return $args;
+	}
+
+	// Get sanitize array.
+	$sanitize = wp_list_pluck( $settings, 'sanitize', 'name' );
 
 	// Sanitize.
 	foreach ( $args as $name => $value ) {
 		// Skip if not set.
-		if ( ! isset( $settings->fields[ $name ]['sanitize'] ) ) {
+		if ( ! isset( $sanitize[ $name ] ) ) {
 			continue;
 		}
-		$function = $settings->fields[ $name ]['sanitize'];
+		$function = $sanitize[ $name ];
 		if ( is_array( $value ) ) {
 			$escaped = [];
 			foreach ( $value as $key => $val ) {
@@ -810,13 +797,13 @@ function mai_get_columns_choices() {
 		return $choices;
 	}
 	return [
-		1 => esc_html__( '1', 'mai-engine' ),
-		2 => esc_html__( '2', 'mai-engine' ),
-		3 => esc_html__( '3', 'mai-engine' ),
-		4 => esc_html__( '4', 'mai-engine' ),
-		5 => esc_html__( '5', 'mai-engine' ),
-		6 => esc_html__( '6', 'mai-engine' ),
-		0 => esc_html__( 'Auto', 'mai-engine' ),
+		'1' => esc_html__( '1', 'mai-engine' ),
+		'2' => esc_html__( '2', 'mai-engine' ),
+		'3' => esc_html__( '3', 'mai-engine' ),
+		'4' => esc_html__( '4', 'mai-engine' ),
+		'5' => esc_html__( '5', 'mai-engine' ),
+		'6' => esc_html__( '6', 'mai-engine' ),
+		'0' => esc_html__( 'Auto', 'mai-engine' ),
 	];
 }
 
