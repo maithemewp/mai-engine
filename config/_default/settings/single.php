@@ -30,7 +30,7 @@ return [
 			'image',
 			'header_meta',
 			'genesis_before_entry_content',
-			// 'excerpt',
+			'excerpt',
 			'content',
 			'genesis_entry_content',
 			'more_link',
