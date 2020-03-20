@@ -59,3 +59,10 @@
 		--button-background: var(--color-white);
 	}
 }
+
+.entry-more-link {
+	--button-background: var(--color-muted);
+	--button-color: var(--color-dark);
+	--button-padding: 1em 1.5em;
+	--button-font-size: small;
+}

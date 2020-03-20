@@ -76,7 +76,7 @@ class Mai_Entry {
 	public function __construct( $entry, $args ) {
 		$this->entry       = $entry;
 		$this->args        = $args;
-		$this->type        = $this->args['type'];
+		$this->type        = isset( $this->args['type'] ) ? $this->args['type'] : 'post';
 		$this->context     = $this->args['context'];
 		$this->id          = $this->get_id();
 		$this->url         = $this->get_url();
@@ -127,10 +127,10 @@ class Mai_Entry {
 		);
 
 		// Check if extra wrap is needed.
-		$has_inner = in_array( 'image', $this->args['show'], true ) && in_array( $this->args['image_position'], [ 'left', 'right' ], true );
+		$has_wrap = in_array( 'image', $this->args['show'], true ) && in_array( $this->args['image_position'], [ 'left', 'right', 'left-full', 'right-full' ], true );
 
 		// If we have inner wrap.
-		if ( $has_inner ) {
+		if ( $has_wrap ) {
 
 			// Image outside inner wrap.
 			$this->do_image();
@@ -153,7 +153,7 @@ class Mai_Entry {
 		foreach ( $this->args['show'] as $element ) {
 
 			// Skip image is left or right, skip.
-			if ( ( 'image' === $element ) && $has_inner ) {
+			if ( ( 'image' === $element ) && $has_wrap ) {
 				continue;
 			}
 
@@ -165,7 +165,7 @@ class Mai_Entry {
 		}
 
 		// If we have inner wrap.
-		if ( $has_inner ) {
+		if ( $has_wrap ) {
 
 			// Inner close.
 			genesis_markup(
@@ -842,34 +842,37 @@ class Mai_Entry {
 		// Link.
 		switch ( $this->type ) {
 			case 'post':
-				$more_link = get_the_permalink( $this->entry );
+				$href = get_the_permalink( $this->entry );
 				break;
 			case 'term':
-				$more_link = get_term_link( $this->entry );
+				$href = get_term_link( $this->entry );
 				break;
 			case 'user':
-				$more_link = ''; // TODO.
+				$href = ''; // TODO.
 				break;
 			default:
-				$more_link = '';
+				$href = '';
 		}
 
 		// Bail if no link.
-		if ( ! $more_link ) {
+		if ( ! $href ) {
 			return;
 		}
 
 		// TODO: Where the heck is the best spot to filter this? I think we need a helper function cause this is the default everywhere.
 		$more_link_text = $this->args['more_link_text'] ? $this->args['more_link_text'] : __( 'Read More', 'mai-engine' );
 
-		genesis_markup(
+		// The link HTML.
+		$more_link = genesis_markup(
 			[
 				'open'    => '<a %s>',
 				'close'   => '</a>',
 				'content' => $more_link_text,
-				'context' => 'entry-read-more',
+				'context' => 'entry-more-link',
+				'echo'    => false,
 				'atts'    => [
-					'href' => $more_link,
+					'href'  => $href,
+					'class' => 'button entry-more-link',
 				],
 				'params'  => [
 					'args'  => $this->args,
@@ -877,6 +880,21 @@ class Mai_Entry {
 				],
 			]
 		);
+
+		// The wrap with the link.
+		genesis_markup(
+			[
+				'open'    => '<p %s>',
+				'close'   => '</p>',
+				'content' => $more_link,
+				'context' => 'entry-more',
+				'params'  => [
+					'args'  => $this->args,
+					'entry' => $this->entry,
+				],
+			]
+		);
+
 	}
 
 	/**
