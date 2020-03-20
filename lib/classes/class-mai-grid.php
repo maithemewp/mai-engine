@@ -152,11 +152,6 @@ class Mai_Grid {
 			return;
 		}
 
-		// Remove post attributes filter for term/user grid.
-		if ( 'post' !== $this->type ) {
-			remove_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
-		}
-
 		// Grid specific classes.
 		$this->args['class'] = isset( $this->args['class'] ) ? $this->args['class'] : '';
 		$this->args['class'] = 'mai-grid ' . $this->args['class'];
@@ -171,10 +166,6 @@ class Mai_Grid {
 		// Close.
 		mai_do_entries_close( $this->args );
 
-		// Add back post attributes for other entries.
-		if ( 'post' !== $this->type ) {
-			add_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
-		}
 	}
 
 	/**
