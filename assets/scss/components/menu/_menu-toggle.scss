@@ -4,10 +4,10 @@
 	align-items: center;
 	justify-content: center;
 	order: 1;
-	width: var(--spacing-md);
-	height: var(--spacing-md);
+	min-height: var(--text-md);
 	margin: var(--menu-toggle-margin, 0);
 	padding: var(--menu-toggle-padding, 0);
+	color: var(--menu-toggle-color, var(--color-dark));
 	background-color: var(--menu-toggle-background-color, transparent);
 
 	@include mq(lg) {
@@ -24,23 +24,29 @@
 	}
 }
 
-.menu-toggle-icon,
-.menu-toggle-icon::before,
-.menu-toggle-icon::after {
-	position: absolute;
-	display: block;
-	width: var(--menu-toggle-line-width, (calc(var(--spacing-md) * 2)));
-	height: var(--menu-toggle-line-height, 3px);
-	background-color: var(--menu-toggle-line-background-color, var(--color-dark));
-	border-radius: var(--menu-toggle-line-border-radius, var(--border-radius));
-	content: "";
-}
-
 .menu-toggle-icon {
+	position: relative;
 	top: auto;
 	right: auto;
 	bottom: auto;
 	margin: auto;
+
+	&,
+	&::before,
+	&::after {
+		display: block;
+		width: var(--menu-toggle-line-width, (calc(var(--spacing-md) * 2)));
+		height: var(--menu-toggle-line-height, 3px);
+		background-color: var(--menu-toggle-line-background-color, var(--color-dark));
+		border-radius: var(--menu-toggle-line-border-radius, var(--border-radius));
+		transition: var(--transition);
+		content: "";
+	}
+
+	&::before,
+	&::after {
+		position: absolute;
+	}
 
 	&::before {
 		top: var(--menu-toggle-line-spacing, (calc(var(--spacing-md) * -0.5)));
@@ -49,11 +55,8 @@
 	&::after {
 		bottom: var(--menu-toggle-line-spacing, (calc(var(--spacing-md) * -0.5)));
 	}
-}
 
-.activated {
-
-	.menu-toggle-icon {
+	.activated & {
 		background-color: transparent;
 
 		&::before {

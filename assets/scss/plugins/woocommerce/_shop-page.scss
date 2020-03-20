@@ -26,7 +26,7 @@
 
 .woocommerce-ordering {
 
-	@include mq(xs, max) {
+	@include mq(xs) {
 		margin-top: var(--row-gap);
 	}
 }
@@ -141,7 +141,7 @@
 
 		&:last-of-type {
 
-			@include mq(xs, max) {
+			@include mq(xs) {
 				margin-bottom: 0;
 			}
 		}
