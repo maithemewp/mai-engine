@@ -75,6 +75,7 @@ function mai_load_files() {
 		'functions/setup',
 		'functions/enqueue',
 		'functions/markup',
+		'functions/entries',
 		'functions/widgets',
 		'functions/defaults',
 		'functions/onboarding',
