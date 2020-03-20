@@ -47,7 +47,7 @@ function mai_add_archive_customizer_settings( $name, $type = 'post_type' ) {
 	switch ( $type ) {
 		case 'post_type':
 			$post_type = get_post_type_object( $name );
-			$label     = $post_type->labels->name;
+			$label     = 'post' === $name ? $post_type->labels->name . ' / ' . esc_html__( 'Defaults', 'mai-engine' ) : $post_type->labels->name;
 			break;
 		case 'taxonomy':
 			$taxonomy = get_taxonomy( $name );
@@ -176,10 +176,6 @@ function mai_get_kirki_field_data( $field, $section_id, $name = '' ) {
 
 	// Maybe add default.
 	if ( isset( $field['default'] ) ) {
-		// Force radio buttonsets to strings, for some reason integers don't work with Kirki.
-		if ( 'radio-buttonset' === $field['type'] && is_integer( $field['default'] ) ) {
-			$field['default'] = (string) $field['default'];
-		}
 		$data['default'] = $field['default'];
 	}
 
