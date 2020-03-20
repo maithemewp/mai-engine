@@ -31,8 +31,7 @@ function mai_archive_posts_per_page( $query ) {
 		return;
 	}
 	// Bail if not an archive.
-	// TODO: This is the archive helper function in mai-engine.
-	if ( ! ( is_home() || is_archive() || is_tax() || is_search() || is_date() || is_author() ) ) {
+	if ( ! mai_is_type_archive() ) {
 		return;
 	}
 	// Get the template args.
@@ -47,37 +46,34 @@ function mai_archive_posts_per_page( $query ) {
 }
 
 // Mai loop.
-add_action(
-	'genesis_before_loop',
-	function () {
+add_action( 'genesis_before_loop', 'mai_setup_archive_loop' );
+function mai_setup_archive_loop() {
 
-		// Bail if not an archive.
-		// TODO: This is the archive helper function in mai-engine.
-		if ( ! ( is_home() || is_archive() || is_tax() || is_search() || is_date() || is_author() ) ) {
-			return;
-		}
-
-		// Remove entry elements.
-		remove_action( 'genesis_entry_header', 'genesis_do_post_format_image', 4 );
-		remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
-		remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
-		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
-		remove_action( 'genesis_entry_header', 'genesis_post_info', 12 );
-
-		remove_action( 'genesis_entry_content', 'genesis_do_post_image', 8 );
-		remove_action( 'genesis_entry_content', 'genesis_do_post_content' );
-		remove_action( 'genesis_entry_content', 'genesis_do_post_content_nav', 12 );
-		remove_action( 'genesis_entry_content', 'genesis_do_post_permalink', 14 );
-
-		remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_open', 5 );
-		remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_close', 15 );
-		remove_action( 'genesis_entry_footer', 'genesis_post_meta' );
-
-		// Swap loop.
-		remove_action( 'genesis_loop', 'genesis_do_loop' );
-		add_action( 'genesis_loop', 'mai_do_archive_loop' );
+	// Bail if not an archive.
+	if ( ! mai_is_type_archive() ) {
+		return;
 	}
-);
+
+	// Remove entry elements.
+	remove_action( 'genesis_entry_header', 'genesis_do_post_format_image', 4 );
+	remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
+	remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
+	remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
+	remove_action( 'genesis_entry_header', 'genesis_post_info', 12 );
+
+	remove_action( 'genesis_entry_content', 'genesis_do_post_image', 8 );
+	remove_action( 'genesis_entry_content', 'genesis_do_post_content' );
+	remove_action( 'genesis_entry_content', 'genesis_do_post_content_nav', 12 );
+	remove_action( 'genesis_entry_content', 'genesis_do_post_permalink', 14 );
+
+	remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_open', 5 );
+	remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_close', 15 );
+	remove_action( 'genesis_entry_footer', 'genesis_post_meta' );
+
+	// Swap loop.
+	remove_action( 'genesis_loop', 'genesis_do_loop' );
+	add_action( 'genesis_loop', 'mai_do_archive_loop' );
+}
 
 /**
  * Description of expected behavior.
