@@ -81,6 +81,7 @@ function mai_load_files() {
 
 		// Structure.
 		'structure/archive',
+		'structure/breadcrumbs',
 		'structure/comments',
 		'structure/footer',
 		'structure/header',
