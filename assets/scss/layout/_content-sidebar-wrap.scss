@@ -3,9 +3,13 @@
 	grid-template-columns: var(--content-sidebar-columns, 1fr);
 	width: calc(100% - (var(--spacing-md) * 2));
 	max-width: var(--wrap-width);
-	margin: var(--row-gap) auto;
+	margin: var(--content-sidebar-wrap-margin, var(--row-gap) auto);
 	column-gap: var(--content-sidebar-column-gap, calc(var(--column-gap) * 3));
 	row-gap: var(--content-sidebar-row-gap, calc(var(--row-gap) * 2));
+}
+
+.has-page-header {
+	--content-sidebar-wrap-margin: 0 auto var(--row-gap);
 }
 
 .content-sidebar {
