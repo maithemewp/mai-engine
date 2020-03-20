@@ -116,9 +116,6 @@ class Mai_Entry {
 				'open'    => "<{$wrap} %s>",
 				'context' => 'entry',
 				'echo'    => true,
-				'atts'    => [
-					'class' => 'this-right-here',
-				],
 				'params'  => [
 					'args'  => $this->args,
 					'entry' => $this->entry,
@@ -689,11 +686,7 @@ class Mai_Entry {
 				$excerpt = get_the_excerpt();
 				break;
 			case 'term':
-				global $wp_embed;
 				$excerpt = get_term_meta( $this->id, 'intro_text', true );
-				$excerpt = $wp_embed->autoembed( $excerpt );
-				$excerpt = do_shortcode( $excerpt );
-				$excerpt = wpautop( $excerpt );
 				break;
 			case 'user':
 				$excerpt = ''; // TODO (possibly not an option for users).
@@ -714,7 +707,7 @@ class Mai_Entry {
 				'open'    => '<div %s>',
 				'close'   => '</div>',
 				'context' => 'entry-excerpt',
-				'content' => $excerpt,
+				'content' => wpautop( $excerpt ),
 				'echo'    => true,
 				'params'  => [
 					'args'  => $this->args,
