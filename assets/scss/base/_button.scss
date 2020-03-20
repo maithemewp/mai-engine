@@ -23,7 +23,7 @@
 }
 
 .button-subtle {
-	--button-background-color: var(--color-muted);
+	--button-background: var(--color-muted);
 	--button-color: var(--color-dark);
 }
 
@@ -44,7 +44,7 @@
 }
 
 .button-white {
-	--button-background-color: var(--color-white);
+	--button-background: var(--color-white);
 	--button-color: var(--color-primary);
 }
 
