@@ -1,9 +1,11 @@
 .archive-pagination {
 	width: 100%;
 	padding: var(--pagination-padding, (var(--row-gap) 0));
+	color: var(--button-color, var(--color-dark));
 	font-size: var(--pagination-font-size, (smaller));
 	border-top: var(--pagination-border-top, var(--border));
 
+	--button-background: var(--color-muted);
 	--wrap-justify-content: center;
 	--link-color: var(--color-medium);
 	--link-color-hover: var(--color-primary);
@@ -13,3 +15,27 @@
 	}
 }
 
+.archive-pagination ul {
+	display: flex;
+	justify-content: var(--archive-pagination-justify-content, var(--wrap-justify-content));
+	list-style: none;
+}
+
+.archive-pagination a {
+	margin: 4px;
+	padding: 0.5em 0.75em;
+	color: var(--button-color);
+	background-color: var(--button-background);
+	border-radius: var(--border-radius);
+
+	&:hover,
+	&:focus {
+		--button-background: var(--color-primary);
+		--button-color: var(--color-white);
+	}
+}
+
+.active {
+	--button-background: var(--color-primary);
+	--button-color: var(--color-white);
+}
