@@ -1,9 +1,8 @@
 .archive-pagination {
 	width: 100%;
-	padding: var(--pagination-padding, (var(--row-gap) 0));
+	padding: var(--pagination-padding, var(--spacing-xxxl));
 	color: var(--button-color, var(--color-dark));
 	font-size: var(--pagination-font-size, (smaller));
-	border-top: var(--pagination-border-top, var(--border));
 
 	--button-background: var(--color-muted);
 	--wrap-justify-content: center;
@@ -23,7 +22,7 @@
 
 .archive-pagination a {
 	margin: 4px;
-	padding: 0.5em 0.75em;
+	padding: 0.75em 1em;
 	color: var(--button-color);
 	background-color: var(--button-background);
 	border-radius: var(--border-radius);

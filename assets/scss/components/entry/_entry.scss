@@ -37,7 +37,7 @@
 .has-image-left {
 
 	@include mq(sm) {
-		--entry-image-link-margin: var(--spacing-xl) 0 0 var(--spacing-xl);
+		--entry-image-link-margin: var(--spacing-xl) 0 var(--spacing-xl) var(--spacing-xl);
 	}
 }
 
