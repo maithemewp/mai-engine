@@ -172,6 +172,7 @@
 	position: relative;
 }
 
+.customize-control.customize-control-kirki-radio-buttonset[id$="image_width"] .switch-label,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_text"] .switch-label,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_text_vertical"] .switch-label,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_columns"] .switch-label,
@@ -201,6 +202,7 @@
 	order: 99;
 }
 
+.customize-control.customize-control-kirki-radio-buttonset[id$="image_width"] .switch-label:first-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns"] .switch-label:nth-of-type(2),
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_md"] .switch-label:nth-of-type(2),
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_sm"] .switch-label:nth-of-type(2),
@@ -212,10 +214,11 @@
 	border-radius: 3px 0 0 3px;
 }
 
-.customize-control.customize-control-kirki-radio-buttonset[id$="columns"] .switch-label:last-of-type,
-.customize-control.customize-control-kirki-radio-buttonset[id$="columns_md"] .switch-label:last-of-type,
-.customize-control.customize-control-kirki-radio-buttonset[id$="columns_sm"] .switch-label:last-of-type,
-.customize-control.customize-control-kirki-radio-buttonset[id$="columns_xs"] .switch-label:last-of-type,
+.customize-control.customize-control-kirki-radio-buttonset[id$="image_width"] .switch-label:last-of-type,
+.customize-control.customize-control-kirki-radio-buttonset[id$="columns"] .switch-label:first-of-type,
+.customize-control.customize-control-kirki-radio-buttonset[id$="columns_md"] .switch-label:first-of-type,
+.customize-control.customize-control-kirki-radio-buttonset[id$="columns_sm"] .switch-label:first-of-type,
+.customize-control.customize-control-kirki-radio-buttonset[id$="columns_xs"] .switch-label:first-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_text"] .switch-label:last-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_text_vertical"] .switch-label:last-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_columns"] .switch-label:last-of-type,
