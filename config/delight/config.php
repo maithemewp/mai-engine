@@ -27,7 +27,7 @@ return [
 		'add'    => [
 			'landscape' => '4:3',
 			'portrait'  => '3:4',
-			// 'square'    => '1:1',
+			'square'    => '1:1',
 		],
 	],
 ];
