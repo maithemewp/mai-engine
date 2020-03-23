@@ -6,10 +6,6 @@
 	font-family: var(--font-primary);
 	line-height: var(--line-height-body);
 	background-color: var(--color-white);
-
-	@include mq(lg) {
-		font-size: calc(var(--text-md) * #{$major-second});
-	}
 }
 
 @mixin button {
