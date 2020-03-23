@@ -1,5 +1,5 @@
 .breadcrumb {
-	width: 100%;
+	width: calc(100% - (var(--spacing-md) * 2));
 	max-width: var(--wrap-width);
 	margin: var(--breadcrumb-margin, var(--spacing-md) auto);
 	font-size: var(--text-sm);
