@@ -29,8 +29,7 @@
 
 	&:hover,
 	&:focus {
-		--button-background: var(--color-primary);
-		--button-color: var(--color-white);
+		filter: brightness(90%);
 	}
 }
 
