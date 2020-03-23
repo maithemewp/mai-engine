@@ -47,7 +47,7 @@ function mai_add_archive_customizer_settings( $name, $type = 'post_type' ) {
 	switch ( $type ) {
 		case 'post_type':
 			$post_type = get_post_type_object( $name );
-			$label     = 'post' === $name ? $post_type->labels->name . ' / ' . esc_html__( 'Defaults', 'mai-engine' ) : $post_type->labels->name;
+			$label     = 'post' === $name ? esc_html__( 'Default', 'mai-engine' ) : $post_type->labels->name;
 			break;
 		case 'taxonomy':
 			$taxonomy = get_taxonomy( $name );
