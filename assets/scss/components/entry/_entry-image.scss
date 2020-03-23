@@ -1,0 +1,79 @@
+.entry-image-link {
+	display: var(--entry-image-link-display, block);
+	flex: 1 0 100%;
+	align-self: var(--entry-image-link-align, unset);
+	order: var(--entry-image-link-order, unset);
+	max-width: var(--image-width, 100%);
+	margin: var(--entry-image-link-margin, unset);
+}
+
+.entry-image {
+	width: var(--entry-image-width, unset);
+	min-width: 100%;
+	height: var(--entry-image-height, inherit);
+	object-fit: var(--entry-image-object-fit, unset);
+	border-radius: var(--entry-image-border-radius, var(--border-radius));
+}
+
+.has-image-left-middle,
+.has-image-right-middle {
+	--entry-image-link-align: center;
+}
+
+.has-image-left-full,
+.has-image-right-full {
+
+	@include mq(sm) {
+		--entry-image-object-fit: cover;
+		--entry-image-width: 100%;
+		--entry-image-height: 100%;
+	}
+}
+
+[class*="has-image-right"] {
+
+	@include mq(sm) {
+		--entry-image-link-order: 1;
+	}
+}
+
+[class*="has-image-left"]:not(.has-boxed) {
+	--entry-image-link-margin: 0 var(--spacing-xl) 0 0;
+}
+
+[class*="has-image-right"]:not(.has-boxed) {
+	--entry-image-link-margin: 0 0 0 var(--spacing-xl);
+}
+
+.has-boxed.has-image-left-full,
+.has-boxed.has-image-right-full {
+	--entry-image-border-radius: 0;
+}
+
+.has-image-background {
+	--entry-position: relative;
+}
+
+.has-image-background .entry::before {
+	display: block;
+	width: 1px;
+	height: 0;
+	margin-left: -1px;
+	padding-bottom: calc(100% / ( var(--aspect-ratio, 4/3) ));
+	content: "";
+}
+
+.has-image-background .entry-image-link,
+.has-image-background .entry-wrap {
+	position: absolute;
+	top: 0;
+	left: 0;
+	// z-index: -2;
+	width: 100%;
+	height: 100%;
+}
+
+.has-image-background .entry-image-link {
+	-o-object-fit: cover;
+	object-fit: cover;
+}

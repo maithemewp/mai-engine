@@ -1,7 +1,7 @@
 .entry {
+	position: var(--entry-position, static);
 	display: var(--entry-display, block);
 	flex: 1 1 calc((100% / var(--columns)) - var(--column-gap));
-	grid-template-columns: var(--entry-grid-template-columns, unset);
 	width: 100%;
 	max-width: calc((100% / var(--columns)) - var(--column-gap));
 	margin: var(--entry-margin, 0);
@@ -14,73 +14,44 @@
 	box-shadow: var(--entry-box-shadow, unset);
 }
 
+[class*="has-image-left"],
+[class*="has-image-right"] {
+
+	@include mq(sm) {
+		--entry-display: flex;
+	}
+}
+
 .has-boxed {
 	--entry-border: 1px solid rgba(0, 0, 0, 0.05);
 	--entry-box-shadow: 0 0 24px rgba(0, 0, 0, 0.05);
 	--entry-overflow: hidden;
 }
 
-.has-boxed:not([class*="has-image-left"]):not([class*="has-image-right"]) {
+.has-boxed:not([class*="has-image-left-full"]):not([class*="has-image-right-full"]) {
 	--entry-padding: var(--spacing-xl);
 }
 
-.has-image-left,
-.has-image-right,
-.has-image-left-full,
-.has-image-right-full {
-
-	@include mq(sm) {
-		--entry-display: grid;
-	}
+.has-image-background,
+.has-boxed.has-image-left-full,
+.has-boxed.has-image-right-full {
+	--entry-wrap-padding: var(--spacing-xl);
 }
 
-.has-image-left {
-
-	@include mq(sm) {
-		--entry-image-link-margin: var(--spacing-xl) 0 var(--spacing-xl) var(--spacing-xl);
-	}
-}
-
-.has-image-right {
-
-	@include mq(sm) {
-		--entry-image-link-margin: var(--spacing-xl) var(--spacing-xl) 0 0;
-	}
-}
-
-.has-image-left-full,
-.has-image-right-full {
-	--entry-image-border-radius: 0;
-
-	@include mq(sm) {
-		--entry-image-object-fit: cover;
-		--entry-image-width: 100%;
-		--entry-image-height: 100%;
-	}
-}
-
-.has-image-left,
-.has-image-left-full {
-
-	@include mq(sm) {
-		--entry-grid-template-columns: 1fr var(--template-columns, 2fr);
-	}
-}
-
-.has-image-right,
-.has-image-right-full {
-
-	@include mq(sm) {
-		--entry-grid-template-columns: var(--template-columns, 2fr) 1fr;
-		--entry-image-link-order: 1;
-	}
+.has-image-background {
+	--entry-title-color: var(--color-white);
+	--entry-wrap-color: var(--color-white);
+	--entry-wrap-background: rgba(0, 0, 0, 0.6);
 }
 
 .entry-wrap {
 	display: flex;
+	flex: 1 1 100%;
 	flex-direction: column;
 	justify-content: var(--align-text-vertical, center);
-	padding: var(--entry-wrap-padding, var(--spacing-xl));
+	padding: var(--entry-wrap-padding, 0);
+	color: var(--entry-wrap-color, unset);
+	background: var(--entry-wrap-background, unset);
 }
 
 .widget {

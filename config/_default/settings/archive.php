@@ -80,13 +80,15 @@ return [
 		'sanitize'   => 'esc_html',
 		'default'    => 'full',
 		'choices'    => [
-			'full'       => esc_html__( 'Full', 'mai-engine' ),
-			'left'       => esc_html__( 'Left', 'mai-engine' ),
-			'center'     => esc_html__( 'Center', 'mai-engine' ),
-			'right'      => esc_html__( 'Right', 'mai-engine' ),
-			'left-full'  => esc_html__( 'Left (Full)', 'mai-engine' ),
-			'right-full' => esc_html__( 'Right (Full)', 'mai-engine' ),
-			'background' => esc_html__( 'Background', 'mai-engine' ),
+			'full'         => esc_html__( 'Full', 'mai-engine' ),
+			'center'       => esc_html__( 'Center', 'mai-engine' ),
+			'left-top'     => esc_html__( 'Left Top', 'mai-engine' ),
+			'left-middle'  => esc_html__( 'Left Middle', 'mai-engine' ),
+			'left-full'    => esc_html__( 'Left Full', 'mai-engine' ),
+			'right-top'    => esc_html__( 'Right Top', 'mai-engine' ),
+			'right-middle' => esc_html__( 'Right Middle', 'mai-engine' ),
+			'right-full'   => esc_html__( 'Right Full', 'mai-engine' ),
+			'background'   => esc_html__( 'Background', 'mai-engine' ),
 		],
 		'conditions' => [
 			[
@@ -103,9 +105,9 @@ return [
 		'sanitize'   => 'esc_html',
 		'default'    => 'third',
 		'choices'    => [
-			'half'   => esc_html__( 'One Half', 'mai-engine' ),
-			'third'  => esc_html__( 'One Third', 'mai-engine' ),
 			'fourth' => esc_html__( 'One Fourth', 'mai-engine' ),
+			'third'  => esc_html__( 'One Third', 'mai-engine' ),
+			'half'   => esc_html__( 'One Half', 'mai-engine' ),
 		],
 		'conditions' => [
 			[
@@ -114,20 +116,32 @@ return [
 					'operator' => 'contains',
 					'value'    => 'image',
 				],
+			],
+			[
 				[
 					'setting'  => 'image_position',
 					'operator' => '==',
-					'value'    => 'left',
+					'value'    => 'left-top',
 				],
 				[
 					'setting'  => 'image_position',
 					'operator' => '==',
-					'value'    => 'right',
+					'value'    => 'left-middle',
 				],
 				[
 					'setting'  => 'image_position',
 					'operator' => '==',
 					'value'    => 'left-full',
+				],
+				[
+					'setting'  => 'image_position',
+					'operator' => '==',
+					'value'    => 'right-top',
+				],
+				[
+					'setting'  => 'image_position',
+					'operator' => '==',
+					'value'    => 'right-middle',
 				],
 				[
 					'setting'  => 'image_position',

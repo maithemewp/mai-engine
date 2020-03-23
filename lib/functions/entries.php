@@ -36,32 +36,35 @@ function mai_do_entries_open( $args ) {
 	if ( in_array( 'image', $args['show'], true ) && $args['image_position'] ) {
 		$attributes['class'] .= ' has-image-' . $args['image_position'];
 
-		// Image width.
-		switch ( $args['image_width'] ) {
-			case 'half':
-				$attributes['style'] .= sprintf( '--template-columns:%s;', '1fr' );
-			break;
-			case 'third':
-				$attributes['style'] .= sprintf( '--template-columns:%s;', '2fr' );
-			break;
-			case 'fourth':
-				$attributes['style'] .= sprintf( '--template-columns:%s;', '3fr' );
-			break;
+		if ( 'background' === $args['image_position'] ) {
+			$aspect_ratio         = mai_has_image_orientiation( $args['image_orientation'] ) ? mai_get_orientation_aspect_ratio( $args['image_orientation'] ) : mai_get_image_aspect_ratio( $args['image_size'] );
+			$attributes['style'] .= sprintf( '--aspect-ratio:%s;', $aspect_ratio );
+
+		} else {
+
+			if ( 'custom' === $args['image_orientation'] ) {
+
+				$image_sizes = mai_get_available_image_sizes();
+				$image_size  = $image_sizes[ $args['image_size'] ];
+				$attributes['style'] .= sprintf( '--image-width:%spx;', $image_size['width'] );
+
+			} else {
+
+				// Image width.
+				switch ( $args['image_width'] ) {
+					case 'half':
+						$attributes['style'] .= sprintf( '--image-width:%s;', '50%' );
+					break;
+					case 'third':
+						$attributes['style'] .= sprintf( '--image-width:%s;', '33.33333333%' );
+					break;
+					case 'fourth':
+						$attributes['style'] .= sprintf( '--image-width:%s;', '25%' );
+					break;
+				}
+			}
 		}
 
-		if ( 'background' === $args['image_position'] ) {
-			switch ( $args['image_orientation'] ) {
-				case 'landscape':
-				case 'portrait':
-				case 'square':
-					$orientation = mai_has_image_orientiation( $args['image_orientation'] ) ? $args['image_orientation'] : 'landscape';
-					$image_size  = sprintf( '%s-md', $args['image_orientation'] );
-					break;
-				default:
-					$image_size = $args['image_size'];
-			}
-			$attributes['style'] .= sprintf( '--aspect-ratio:%s;', mai_get_image_aspect_ratio( $args['image_size'] ) );
-		}
 	}
 
 	// Get the columns breakpoint array.
