@@ -9,6 +9,14 @@
  * @license   GPL-2.0-or-later
  */
 
+function mai_get_orientation_aspect_ratio( $orientation ) {
+	$image_sizes = mai_get_config( 'image-sizes' );
+	if ( isset( $image_sizes['add'][ $orientation ] ) ) {
+		return str_replace( ':', '/', $image_sizes['add'][ $orientation ] );
+	}
+	return false;
+}
+
 /**
  * Description of expected behavior.
  *
@@ -21,9 +29,7 @@
 function mai_get_image_aspect_ratio( $image_size ) {
 	$all_sizes = mai_get_available_image_sizes();
 	$sizes     = isset( $all_sizes[ $image_size ] ) ? $all_sizes[ $image_size ] : false;
-
-	// TODO: Get default landscape aspect ratio.
-	return $sizes ? sprintf( '%s/%s', $sizes['height'], $sizes['width'] ) : '4/3';
+	return $sizes ? sprintf( '%s/%s', $sizes['width'], $sizes['height'] ) : '4/3';
 }
 
 /**
@@ -91,8 +97,8 @@ function mai_get_available_image_orientations() {
  * @return bool
  */
 function mai_has_image_orientiation( $orientation ) {
-	$orientations = mai_get_availalbe_image_orientations();
-	return isset( $orientations[ $orientation ] );
+	$orientations = mai_get_available_image_orientations();
+	return in_array( $orientation, $orientations );
 }
 
 /**
