@@ -17,9 +17,21 @@
 		height: 100vh;
 		padding: var(--spacing-md);
 		background-color: var(--color-white);
+		animation: menuOverlay 500ms;
 
 		&[style*="display: block"] {
 			display: flex !important;
 		}
+	}
+}
+
+@keyframes menuOverlay {
+
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
 	}
 }
