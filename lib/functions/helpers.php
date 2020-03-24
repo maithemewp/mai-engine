@@ -181,7 +181,6 @@ function mai_is_page_header_active() {
 		}
 
 		if ( mai_is_type_single() && ( in_array( $post_type, mai_get_config( 'page-header-single' ) ) ) ) {
-			// vd( mai_get_config( 'page-header-single' ) );
 			$page_header_active = true;
 		}
 
