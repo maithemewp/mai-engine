@@ -95,27 +95,27 @@ function mai_page_header_customizer_settings() {
 		]
 	);
 
-	Kirki::add_field(
-		$config_id,
-		[
-			'type'     => 'radio-buttonset',
-			'settings' => 'text_align',
-			'label'    => esc_html__( 'Text Alignment', 'mai-engine' ),
-			'section'  => 'mai_page_header',
-			'default'  => 'center',
-			'choices'  => [
-				'start'  => esc_html__( 'Start' ),
-				'center' => esc_html__( 'Center' ),
-				'end'    => esc_html__( 'End' ),
-			],
-			'output'   => [
-				[
-					'choice'   => [ 'start', 'center', 'end' ],
-					'element'  => ':root',
-					'property' => '--page-header-text-align',
-				],
-			],
-		]
-	);
+	// Kirki::add_field(
+	// 	$config_id,
+	// 	[
+	// 		'type'     => 'radio-buttonset',
+	// 		'settings' => 'text_align',
+	// 		'label'    => esc_html__( 'Text Alignment', 'mai-engine' ),
+	// 		'section'  => 'mai_page_header',
+	// 		'default'  => 'center',
+	// 		'choices'  => [
+	// 			'start'  => esc_html__( 'Start' ),
+	// 			'center' => esc_html__( 'Center' ),
+	// 			'end'    => esc_html__( 'End' ),
+	// 		],
+	// 		'output'   => [
+	// 			[
+	// 				'choice'   => [ 'start', 'center', 'end' ],
+	// 				'element'  => ':root',
+	// 				'property' => '--page-header-text-align',
+	// 			],
+	// 		],
+	// 	]
+	// );
 
 }
