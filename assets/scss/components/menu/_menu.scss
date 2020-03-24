@@ -22,7 +22,7 @@
 
 .menu-item {
 	position: relative;
-	display: flex;
+	display: inline-flex;
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-between;
@@ -46,8 +46,11 @@
 .menu-item-link {
 	display: block;
 	width: 100%;
-	padding: var(--spacing-md) 0;
 	text-decoration: none;
+
+	@include mq(false,lg) {
+		padding: var(--menu-item-link-padding, var(--spacing-sm) var(--spacing-xxs));
+	}
 
 	@include mq(lg) {
 		padding: var(--menu-item-link-padding, (var(--spacing-md) var(--spacing-md)));

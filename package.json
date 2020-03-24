@@ -79,5 +79,8 @@
     "images": "gulp images",
     "clearCache": "gulp clearCache",
     "translate": "gulp translate"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-pro": "^5.13.0"
   }
 }
