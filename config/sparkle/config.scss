@@ -1,3 +1,27 @@
 :root {
-	--font-primary: hind, var(--font-stack);
+	--font-primary: "Work Sans", sans-serif, var(--font-stack);
+	--font-secondary: "Josefin Sans", sans-serif, var(--font-stack);
+	--color-primary: #f98588;
+	--color-light: #fdf3f2;
+	--color-dark: #000;
+	--color-medium: #7f7d7e;
+	--color-muted: #f9f6f6;
+	--button-background: var(--color-dark);
+	--site-container-max-width: var(--breakpoint-xl);
+	--site-container-margin: var(--spacing-md) auto;
+	--alignfull-max-width: var(--site-container-max-width);
+	--alignfull-margin-left: calc(((var(--site-container-max-width) - var(--content-width)) / 2) * -1);
+	--alignfull-margin-right: 0;
+}
+
+body {
+	background: var(--color-light);
+}
+
+.site-container {
+	box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.02);
+}
+
+.site-inner {
+	background: var(--color-white);
 }

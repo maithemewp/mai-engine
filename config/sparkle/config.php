@@ -14,6 +14,14 @@ defined( 'ABSPATH' ) || die;
 
 return [
 	'google-fonts' => [
-		'',
+		'https://fonts.googleapis.com/css?family=Josefin+Sans:600,700|Work+Sans:400,400i,500,500i,600,600i,700,700i&display=swap',
 	],
+	'image-sizes' => [
+		'add'    => [
+			'portrait'  => '3:4',
+			// 'square'    => '1:1',
+		],
+	],
+	'page-header-single'  => [],
+	'page-header-archive' => [],
 ];

@@ -30,4 +30,6 @@ return [
 			'square'    => '1:1',
 		],
 	],
+	'page-header-single'  => [ 'page', 'post' ],
+	'page-header-archive' => [],
 ];
