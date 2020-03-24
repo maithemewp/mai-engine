@@ -1,5 +1,9 @@
 .genesis-responsive-menu {
 
+	.menu {
+		--menu-item-display: flex;
+	}
+
 	@include mq(false, lg) {
 		position: fixed;
 		top: 0;

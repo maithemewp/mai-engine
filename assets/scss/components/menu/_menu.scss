@@ -5,6 +5,7 @@
 	columns: var(--menu-columns, auto);
 	list-style-type: none;
 
+	--menu-item-display: inline-flex;
 	--link-color: var(--color-medium);
 	--link-color-hover: var(--color-primary);
 	--button-padding: 0;
@@ -22,7 +23,7 @@
 
 .menu-item {
 	position: relative;
-	display: inline-flex;
+	display: var(--menu-item-display);
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-between;
