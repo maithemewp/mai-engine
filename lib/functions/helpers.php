@@ -176,15 +176,16 @@ function mai_is_page_header_active() {
 		$page_header_active = false;
 		$post_type          = get_post_type();
 
-		if ( mai_is_type_archive() && post_type_supports( $post_type, 'page-header-archive' ) ) {
+		if ( mai_is_type_archive() && ( in_array( $post_type, mai_get_config( 'page-header-archive' ) ) ) ) {
 			$page_header_active = true;
 		}
 
-		if ( mai_is_type_single() && post_type_supports( $post_type, 'page-header-single' ) ) {
+		if ( mai_is_type_single() && ( in_array( $post_type, mai_get_config( 'page-header-single' ) ) ) ) {
+			// vd( mai_get_config( 'page-header-single' ) );
 			$page_header_active = true;
 		}
 
-		if ( ! $post_type && class_exists( 'WooCommerce' ) && is_shop() && post_type_supports( 'product', 'page-header-archive' ) ) {
+		if ( ! $post_type && class_exists( 'WooCommerce' ) && is_shop() && in_array( 'product', mai_get_config( 'page-header-archive' ) ) ) {
 			$page_header_active = true;
 		}
 	}
