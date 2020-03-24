@@ -88,8 +88,8 @@ return [
 	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
 	|
 	*/
-	'page-header-single'  => [ 'page', 'post', 'product', 'portfolio' ],
-	'page-header-archive' => [ 'page', 'post', 'product', 'portfolio' ], // Needs to support search, author, etc. Same as 'archive-settings'.
+	'page-header-single'  => [],
+	'page-header-archive' => [], // Needs to support search, author, etc. Same as 'archive-settings'.
 
 	/*
 	|--------------------------------------------------------------------------
@@ -162,8 +162,6 @@ return [
 			'genesis-singular-images'    => [ 'page', 'post' ],
 			'genesis-title-toggle'       => [ 'post', 'product' ],
 			'genesis-adjacent-entry-nav' => [ 'post', 'product', 'portfolio' ],
-			'page-header-single'         => [ 'page', 'post', 'product', 'portfolio' ],
-			'page-header-archive'        => [ 'page', 'post', 'product', 'portfolio' ],
 			'terms-filter'               => [ 'post', 'portfolio' ],
 		],
 		'remove' => [],
