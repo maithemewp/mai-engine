@@ -3,6 +3,14 @@
 	@include clearfix();
 
 	svg {
-		display: block;
+		display: var(--icon-display);
+		justify-content: var(--icon-align);
+		width: var(--icon-size);
+		margin: var(--icon-margin);
+		padding: var(--icon-padding);
+		color: var(--icon-color);
+		border: var(--icon-border, unset);
+		border-radius: var(--icon-border-radius, unset);
+		box-shadow: var(--icon-box-shadow, unset);
 	}
 }

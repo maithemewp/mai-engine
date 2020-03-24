@@ -16,14 +16,15 @@
  *
  * @return array
  */
-function mai_icon_shortcode_atts() {
+function mai_get_icon_default_args() {
 	return [
 		'style'            => 'regular',
 		'icon'             => 'address-book',
 		'display'          => 'flex',
 		'align'            => 'center',
 		'size'             => '40',
-		'color_icon'       => mai_get_color( 'primary' ),
+		'class'            => '',
+		'color_icon'       => 'currentColor',
 		'color_background' => '',
 		'color_border'     => '',
 		'color_shadow'     => '',
@@ -54,17 +55,30 @@ add_shortcode( 'mai_icon', 'mai_icon_shortcode' );
  * @return string
  */
 function mai_icon_shortcode( $atts ) {
+	return mai_get_icon( $atts );
+}
+
+/**
+ * Render the icon shortcode.
+ *
+ * @since 2.0.0
+ *
+ * @param array $atts The shortcode attributes.
+ *
+ * @return string
+ */
+function mai_icon_shortcode_og( $atts ) {
 	static $id = 0;
 
 	$id++;
 
 	$atts = shortcode_atts(
-		mai_icon_shortcode_atts(),
+		mai_get_icon_default_args(),
 		$atts,
 		'mai_icon'
 	);
 
-	$svg = mai_get_icon( $atts['icon'], $atts['style'] );
+	$svg = mai_get_svg( $atts['icon'], $atts['style'] );
 
 	if ( ! $svg ) {
 		return '';

@@ -56,7 +56,7 @@ function mai_render_icon_block( $block, $content = '', $is_preview = false, $pos
 	$icon         = 'regular' === $style ? get_field( 'regular' ) : get_field( 'solid' );
 	$atts['icon'] = str_replace( [ 'fas', 'far', 'fa-', ' ' ], '', $icon );
 
-	echo mai_icon_shortcode( $atts );
+	echo mai_get_icon( $atts );
 }
 
 

@@ -895,6 +895,78 @@ function mai_get_acf_request( $request ) {
 	return false;
 }
 
+function mai_get_icon( $args ) {
+	static $id = 0;
+
+	$id++;
+
+	$args = shortcode_atts(
+		mai_get_icon_default_args(),
+		$args,
+		'mai_icon'
+	);
+
+	$args = array_map(
+		'esc_html',
+		$args,
+	);
+
+	$svg = mai_get_svg( $args['icon'], $args['style'] );
+
+	if ( ! $svg ) {
+		return '';
+	}
+
+	// Build classes.
+	$class = sprintf( 'mai-icon mai-icon-%s', $id );
+
+	// Add custom classes.
+	if ( ! empty( $args['class'] ) ) {
+		$class .= ' ' . esc_attr( $args['class'] );
+	}
+
+	// Get it started.
+	$html       = '';
+	$attributes = [
+		'class' => $class,
+		'style' => '',
+	];
+
+	// Build inline styles.
+	$attributes['style'] .= sprintf( '--icon-display:%s;', $args['display'] );
+	$attributes['style'] .= sprintf( '--icon-align:%s;', $args['align'] );
+	$attributes['style'] .= sprintf( '--icon-size:%s;', mai_get_unit_value( $args['size'] ) );
+	$attributes['style'] .= sprintf( '--icon-color:%s;', $args['color_icon'] );
+	$attributes['style'] .= sprintf( '--icon-margin:%s %s %s %s;', mai_get_unit_value( $args['margin_top'] ), mai_get_unit_value( $args['margin_right'] ), mai_get_unit_value( $args['margin_bottom'] ), mai_get_unit_value( $args['margin_left'] ) );
+	$attributes['style'] .= sprintf( '--icon-padding:%s %s %s %s;', mai_get_unit_value( $args['padding_top'] ), mai_get_unit_value( $args['padding_right'] ), mai_get_unit_value( $args['padding_bottom'] ), mai_get_unit_value( $args['padding_left'] ) );
+	if ( $args['color_background'] ) {
+		$attributes['style'] .= sprintf( '--icon-background:%s;', $args['color_background'] );
+	}
+	if ( $args['color_shadow'] ) {
+		$attributes['style'] .= sprintf( '--icon-shadow:%s;', $args['color_shadow'] );
+	}
+	if ( $args['border_width'] && $args['color_border'] ) {
+		$attributes['style'] .= sprintf( '--icon-border:%s solid %s;', mai_get_unit_value( $args['border_width'] ), mai_get_unit_value( $args['color_border'] ) );
+	}
+	if ( $args['border_radius'] ) {
+		$attributes['style'] .= sprintf( '--icon-border-radius:%s;', $args['border_radius'] );
+	}
+
+	// TODO: x_offset, y_offset, blur.
+
+	return genesis_markup(
+		[
+			'open'    => '<span %s>',
+			'close'   => '</span>',
+			'content' => $svg,
+			'context' => 'mai-icon',
+			'echo'    => false,
+			'atts'    => $attributes,
+		]
+	);
+
+}
+
 /**
  * Description of expected behavior.
  *
@@ -905,7 +977,7 @@ function mai_get_acf_request( $request ) {
  *
  * @return string
  */
-function mai_get_icon( $name, $style = 'regular' ) {
+function mai_get_svg( $name, $style = 'regular' ) {
 	$file = mai_get_dir() . "vendor/fortawesome/font-awesome/svgs/$style/$name.svg";
 
 	if ( ! file_exists( $file ) ) {
