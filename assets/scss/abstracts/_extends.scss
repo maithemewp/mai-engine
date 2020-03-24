@@ -44,5 +44,7 @@
 	color: var(--heading-color, var(--color-dark));
 	font-weight: var(--font-weight-heading);
 	font-family: var(--font-secondary);
-	line-height: var(--line-height-heading);
+	line-height: var(--heading-line-height, 1.2);
+	letter-spacing: var(--heading-letter-spacing, unset);
+	text-transform: var(--heading-text-transform, unset);
 }
