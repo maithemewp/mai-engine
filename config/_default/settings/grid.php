@@ -92,11 +92,15 @@ return [
 		'sanitize'   => 'esc_html',
 		'default'    => 'full',
 		'choices'    => [
-			'full'       => esc_html__( 'Full', 'mai-engine' ),
-			'left'       => esc_html__( 'Left', 'mai-engine' ),
-			'center'     => esc_html__( 'Center', 'mai-engine' ),
-			'right'      => esc_html__( 'Right', 'mai-engine' ),
-			'background' => esc_html__( 'Background', 'mai-engine' ),
+			'full'         => esc_html__( 'Full', 'mai-engine' ),
+			'center'       => esc_html__( 'Center', 'mai-engine' ),
+			'left-top'     => esc_html__( 'Left Top', 'mai-engine' ),
+			'left-middle'  => esc_html__( 'Left Middle', 'mai-engine' ),
+			'left-full'    => esc_html__( 'Left Full', 'mai-engine' ),
+			'right-top'    => esc_html__( 'Right Top', 'mai-engine' ),
+			'right-middle' => esc_html__( 'Right Middle', 'mai-engine' ),
+			'right-full'   => esc_html__( 'Right Full', 'mai-engine' ),
+			'background'   => esc_html__( 'Background', 'mai-engine' ),
 		],
 		'conditions' => [
 			[
@@ -110,6 +114,93 @@ return [
 				'width' => '',
 				'class' => 'mai-grid-show-conditional',
 				'id'    => '',
+			],
+		],
+	],
+	'field_5e2f3beg93241' => [
+		'name'       => 'image_width',
+		'label'      => esc_html__( 'Image Width', 'mai-engine' ),
+		'block'      => [ 'post', 'term', 'user' ],
+		'type'       => 'button_group',
+		'sanitize'   => 'esc_html',
+		'default'    => 'third',
+		'choices'    => [
+			'fourth' => esc_html__( 'One Fourth', 'mai-engine' ),
+			'third'  => esc_html__( 'One Third', 'mai-engine' ),
+			'half'   => esc_html__( 'One Half', 'mai-engine' ),
+		],
+		'conditions' => [
+			[
+				[
+					'field'    => 'field_5e441d93d6236', // Show.
+					'operator' => '==',
+					'value'    => 'image',
+				],
+				[
+					'field'    => 'field_5e2f3adf82130', // Image Position.
+					'operator' => '==',
+					'value'    => 'left-top',
+				],
+			],
+			[
+				[
+					'field'    => 'field_5e441d93d6236', // Show.
+					'operator' => '==',
+					'value'    => 'image',
+				],
+				[
+					'field'    => 'field_5e2f3adf82130', // Image Position.
+					'operator' => '==',
+					'value'    => 'left-middle',
+				],
+			],
+			[
+				[
+					'field'    => 'field_5e441d93d6236', // Show.
+					'operator' => '==',
+					'value'    => 'image',
+				],
+				[
+					'field'    => 'field_5e2f3adf82130', // Image Position.
+					'operator' => '==',
+					'value'    => 'left-full',
+				],
+			],
+			[
+				[
+					'field'    => 'field_5e441d93d6236', // Show.
+					'operator' => '==',
+					'value'    => 'image',
+				],
+				[
+					'field'    => 'field_5e2f3adf82130', // Image Position.
+					'operator' => '==',
+					'value'    => 'right-top',
+				],
+			],
+			[
+				[
+					'field'    => 'field_5e441d93d6236', // Show.
+					'operator' => '==',
+					'value'    => 'image',
+				],
+				[
+					'field'    => 'field_5e2f3adf82130', // Image Position.
+					'operator' => '==',
+					'value'    => 'right-middle',
+				],
+			],
+			[
+				[
+					'field'    => 'field_5e441d93d6236', // Show.
+					'operator' => '==',
+					'value'    => 'image',
+				],
+				[
+					'field'    => 'field_5e2f3adf82130', // Image Position.
+					'operator' => '==',
+					'value'    => 'right-full',
+				],
 			],
 		],
 	],
@@ -263,12 +354,82 @@ return [
 		'conditions' => [
 			[
 				[
-					'field'    => 'field_5e2f3adf82130', // Image_position.
+					'field'    => 'field_5e441d93d6236', // Show.
 					'operator' => '==',
-					'value'    => 'left',
+					'value'    => 'image',
+				],
+				[
+					'field'    => 'field_5e2f3adf82130', // Image Position.
+					'operator' => '==',
+					'value'    => 'left-top',
 				],
 			],
 			[
+				[
+					'field'    => 'field_5e441d93d6236', // Show.
+					'operator' => '==',
+					'value'    => 'image',
+				],
+				[
+					'field'    => 'field_5e2f3adf82130', // Image Position.
+					'operator' => '==',
+					'value'    => 'left-middle',
+				],
+			],
+			[
+				[
+					'field'    => 'field_5e441d93d6236', // Show.
+					'operator' => '==',
+					'value'    => 'image',
+				],
+				[
+					'field'    => 'field_5e2f3adf82130', // Image Position.
+					'operator' => '==',
+					'value'    => 'left-full',
+				],
+			],
+			[
+				[
+					'field'    => 'field_5e441d93d6236', // Show.
+					'operator' => '==',
+					'value'    => 'image',
+				],
+				[
+					'field'    => 'field_5e2f3adf82130', // Image Position.
+					'operator' => '==',
+					'value'    => 'right-top',
+				],
+			],
+			[
+				[
+					'field'    => 'field_5e441d93d6236', // Show.
+					'operator' => '==',
+					'value'    => 'image',
+				],
+				[
+					'field'    => 'field_5e2f3adf82130', // Image Position.
+					'operator' => '==',
+					'value'    => 'right-middle',
+				],
+			],
+			[
+				[
+					'field'    => 'field_5e441d93d6236', // Show.
+					'operator' => '==',
+					'value'    => 'image',
+				],
+				[
+					'field'    => 'field_5e2f3adf82130', // Image Position.
+					'operator' => '==',
+					'value'    => 'right-full',
+				],
+			],
+			[
+				[
+					'field'    => 'field_5e441d93d6236', // Show.
+					'operator' => '==',
+					'value'    => 'image',
+				],
 				[
 					'field'    => 'field_5e2f3adf82130', // Image_position.
 					'operator' => '==',
