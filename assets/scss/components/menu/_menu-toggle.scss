@@ -6,7 +6,7 @@
 	order: 1;
 	min-height: var(--text-md);
 	margin: var(--menu-toggle-margin, 0);
-	padding: var(--menu-toggle-padding, 0);
+	padding: var(--menu-toggle-padding, 24px 12px);
 	color: var(--menu-toggle-color, var(--color-dark));
 	background-color: var(--menu-toggle-background-color, transparent);
 
