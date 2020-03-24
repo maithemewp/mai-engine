@@ -54,6 +54,11 @@
 	}
 }
 
+.menu-item-link > span {
+	display: flex;
+	align-items: center;
+}
+
 .has-transparent-header {
 	--menu-item-link-color: var(--color-white);
 }

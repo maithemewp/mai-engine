@@ -108,7 +108,7 @@ function mai_replace_hash_with_void( $menu_item ) {
 	return $menu_item;
 }
 
-add_filter( 'wp_nav_menu_args', 'mai_menu_depth' );
+add_filter( 'wp_nav_menu_args', 'mai_footer_menu_depth' );
 /**
  * Reduces secondary navigation menu to one level depth.
  *
@@ -118,7 +118,7 @@ add_filter( 'wp_nav_menu_args', 'mai_menu_depth' );
  *
  * @return array Menu options with depth set to 1.
  */
-function mai_menu_depth( $args ) {
+function mai_footer_menu_depth( $args ) {
 	if ( 'footer' === $args['theme_location'] ) {
 		$args['depth'] = 1;
 	}
@@ -161,3 +161,12 @@ function mai_first_last_menu_items( $items ) {
 
 	return $items;
 }
+
+/**
+ * Allow shortcodes in nav menu items.
+ *
+ * @since 0.1.0
+ *
+ * @return string|HTML
+ */
+add_filter( 'walker_nav_menu_start_el', 'do_shortcode' );
