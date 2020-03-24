@@ -5,6 +5,7 @@
 	width: 100%;
 	background-color: var(--site-header-background-color, var(--color-white));
 	border-bottom: var(--site-header-border-bottom, var(--border));
+	box-shadow: var(--site-header-box-shadow, unset);
 	transition: var(--transition);
 
 	--wrap-justify-content: space-between;
@@ -45,5 +46,6 @@
 
 	@include mq(sm) {
 		--site-header-background-color: var(--color-white);
+		--site-header-box-shadow: 0 0 24px rgba(0, 0, 0, 0.07);
 	}
 }
