@@ -6,6 +6,7 @@
 .button {
 
 	&:disabled {
+		--hover-filter: unset;
 
 		&,
 		&:hover,
@@ -24,7 +25,7 @@
 
 .button-subtle {
 	--button-background: var(--color-muted);
-	--button-color: var(--color-dark);
+	--button-color: var(--color-medium);
 }
 
 .button-rounded {
@@ -35,6 +36,7 @@
 	--button-border: var(--border);
 	--button-color: var(--color-primary);
 	--button-background: transparent;
+	--hover-filter: unset;
 
 	&:hover,
 	&:focus {
@@ -52,6 +54,7 @@
 	--button-border-color: var(--color-white);
 	--button-background: transparent;
 	--button-color: var(--color-white);
+	--hover-filter: unset;
 
 	&:hover,
 	&:focus {

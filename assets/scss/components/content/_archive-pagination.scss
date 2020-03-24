@@ -5,6 +5,8 @@
 	font-size: var(--pagination-font-size, (smaller));
 
 	--button-background: var(--color-muted);
+	--button-color: var(--color-medium);
+	--button-padding: 0.75em 1em;
 	--wrap-justify-content: center;
 	--link-color: var(--color-medium);
 	--link-color-hover: var(--color-primary);
@@ -22,18 +24,19 @@
 
 .archive-pagination a {
 	margin: 4px;
-	padding: 0.75em 1em;
+	padding: var(--button-padding);
 	color: var(--button-color);
 	background-color: var(--button-background);
 	border-radius: var(--border-radius);
 
 	&:hover,
 	&:focus {
-		filter: brightness(90%);
+		filter: var(--darken);
 	}
 }
 
 .active {
 	--button-background: var(--color-primary);
 	--button-color: var(--color-white);
+	--hover-filter: unset;
 }

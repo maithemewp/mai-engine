@@ -90,6 +90,10 @@
 	--shadow-opacity: 0.5;
 	--shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-spread) rgba(var(--shadow-color), var(--shadow-opacity));
 
+	--darken: brightness(95%);
+	--lighten: brightness(110%);
+	--hover-filter: var(--darken);
+
 	--transition-property: all;
 	--transition-duration: 0.2s;
 	--transition-timing-function: ease;
