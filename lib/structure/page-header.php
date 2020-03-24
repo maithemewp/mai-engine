@@ -113,13 +113,13 @@ function mai_page_header_remove_404_title() {
  * @return void
  */
 function mai_do_page_header_image() {
-	$image = get_custom_header();
+	$header = get_option( 'mai_page_header' );
 
-	if ( ! $image || ! property_exists( $image, 'attachment_id' ) || ! $image->attachment_id ) {
+	if ( ! $header || ! isset( $header['image'] ) || empty( $header['image'] ) ) {
 		return;
 	}
 
-	echo mai_get_cover_image_html( $image->attachment_id, [ 'class' => 'page-header-image' ] );
+	echo mai_get_cover_image_html( $header['image'], [ 'class' => 'page-header-image' ] );
 }
 
 /**

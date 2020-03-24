@@ -392,17 +392,17 @@ return [
 			// Custom.
 			'align-wide',
 			'automatic-feed-links',
-			'custom-header'            => [
-				'header-selector' => '.page-header',
-				'default_image'   => mai_get_url() . 'assets/img/page-header.jpg',
-				'header-text'     => false,
-				'width'           => 1280,
-				'height'          => 720,
-				'flex-height'     => true,
-				'flex-width'      => true,
-				'uploads'         => true,
-				'video'           => false,
-			],
+			// 'custom-header'            => [
+			// 	'header-selector' => '.page-header',
+			// 	'default_image'   => mai_get_url() . 'assets/img/page-header.jpg',
+			// 	'header-text'     => false,
+			// 	'width'           => 1280,
+			// 	'height'          => 720,
+			// 	'flex-height'     => true,
+			// 	'flex-width'      => true,
+			// 	'uploads'         => true,
+			// 	'video'           => false,
+			// ],
 			'editor-styles',
 			'editor-color-palette'     => mai_get_color_palette(),
 			'genesis-accessibility'    => [
@@ -541,6 +541,7 @@ return [
 	'archive-settings' => require __DIR__ . '/settings/archive.php',
 	'single-settings'  => require __DIR__ . '/settings/single.php',
 	'grid-settings'    => require __DIR__ . '/settings/grid.php',
+	'page-header-settings'    => require __DIR__ . '/settings/page-header.php',
 
 	/*
 	|--------------------------------------------------------------------------

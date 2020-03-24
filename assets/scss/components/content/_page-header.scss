@@ -5,7 +5,7 @@
 	align-items: center;
 	justify-content: center;
 	width: 100%;
-	padding: var(--page-header-padding, (20vh 0));
+	padding: var(--page-header-padding, var(--page-header-padding-top, 10vw) var(--page-header-padding-right, 0) var(--page-header-padding-bottom, 10vw) var(--page-header-padding-left, 0));
 	overflow: hidden;
 	color: var(--page-header-color);
 	text-align: var(--page-header-text-align, center);
@@ -15,11 +15,17 @@
 
 	--wrap-position: relative;
 	--wrap-justify-content: center;
+	--page-header-overlay: var(--color-muted);
+	--page-header-overlay-opacity: var(--shadow-opacity);
+	--page-header-inner-max-width: 100%;
+	--page-header-inner-padding: 0;
+	--page-header-inner-background: unset;
+	--page-header-inner-shadow: unset;
 
 	&::before {
 		display: block;
-		background-color: var(--color-muted);
-		opacity: var(--shadow-opacity);
+		background-color: var(--page-header-overlay);
+		opacity: var(--page-header-overlay-opacity);
 		content: "";
 
 		@include position(absolute, 0 0 0 0);
@@ -27,7 +33,9 @@
 
 	&::after {
 		position: absolute;
+		top: 0;
 		bottom: -1px;
+		left: 0;
 		width: 100%;
 		height: 10rem;
 		content: "";
@@ -36,10 +44,20 @@
 
 .page-header-image {
 	position: absolute;
+	top: 0;
+	left: 0;
 	z-index: -1;
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+}
+
+.page-header-inner {
+	width: 100%;
+	max-width: var(--page-header-inner-max-width);
+	padding: var(--page-header-inner-padding);
+	background: var(--page-header-inner-background);
+	box-shadow: var(--page-header-inner-shadow);
 }
 
 .has-transparent-header {

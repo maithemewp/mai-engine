@@ -9,13 +9,13 @@
  * @license   GPL-2.0-or-later
  */
 
-add_action( 'init', 'mai_header_customizer_settings' );
+add_action( 'init', 'mai_logo_customizer_settings' );
 /**
- * Add header customizer settings.
+ * Add logo customizer settings.
  *
  * @return  void
  */
-function mai_header_customizer_settings() {
+function mai_logo_customizer_settings() {
 
 	// Bail if no Kirki.
 	if ( ! class_exists( 'Kirki' ) ) {
