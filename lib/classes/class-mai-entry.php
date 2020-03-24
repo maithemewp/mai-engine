@@ -95,6 +95,8 @@ class Mai_Entry {
 		// Remove post attributes filter for term/user grid.
 		if ( 'post' !== $this->type ) {
 			remove_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
+		} elseif ( in_array( 'image', $this->args['show'] ) ) {
+			add_filter( 'post_class', [ $this, 'has_image_class' ] );
 		}
 
 		// Wrap.
@@ -194,6 +196,8 @@ class Mai_Entry {
 		// Add back post attributes for other entries.
 		if ( 'post' !== $this->type ) {
 			add_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
+		} elseif ( in_array( 'image', $this->args['show'] ) ) {
+			remove_filter( 'post_class', [ $this, 'has_image_class' ] );
 		}
 
 	}
@@ -367,6 +371,13 @@ class Mai_Entry {
 		}
 
 		return implode( ', ', $new_sizes );
+	}
+
+	public function has_image_class( $class ) {
+		if ( has_post_thumbnail( $this->entry ) ) {
+			$class[] = 'has-image';
+		}
+		return $class;
 	}
 
 	/**
