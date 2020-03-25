@@ -61,7 +61,7 @@
 
 .entries {
 
-	* + & {
+	&:not(:first-child) {
 		margin: var(--entries-margin, var(--spacing-md) 0 0);
 	}
 

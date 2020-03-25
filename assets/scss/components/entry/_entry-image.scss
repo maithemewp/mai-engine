@@ -5,6 +5,10 @@
 	order: var(--entry-image-link-order, unset);
 	max-width: var(--image-width, 100%);
 	margin: var(--entry-image-link-margin, unset);
+
+	&:not(:first-child) {
+		--entry-image-link-margin: var(--spacing-md) 0 0;
+	}
 }
 
 .entry-image {

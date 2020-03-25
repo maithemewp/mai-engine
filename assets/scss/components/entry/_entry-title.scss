@@ -1,5 +1,10 @@
 .entry-title {
+	margin: var(--entry-title-margin, var(--heading-margin));
 	font-size: var(--entry-title-font-size, var(--text-xxxxl));
+
+	&:not(:first-child) {
+		--entry-title-margin: var(--spacing-md) 0 0;
+	}
 }
 
 .entries {

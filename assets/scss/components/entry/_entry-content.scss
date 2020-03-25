@@ -1,0 +1,7 @@
+.entry-content {
+	margin: var(--entry-content-margin, 0);
+
+	&:not(:first-child) {
+		--entry-content-margin: var(--spacing-md) 0 0;
+	}
+}
