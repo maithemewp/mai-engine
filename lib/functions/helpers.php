@@ -174,17 +174,33 @@ function mai_is_page_header_active() {
 
 	if ( is_null( $page_header_active ) ) {
 		$page_header_active = false;
-		$post_type          = get_post_type();
 
-		if ( mai_is_type_archive() && ( in_array( $post_type, mai_get_config( 'page-header-archive' ) ) ) ) {
-			$page_header_active = true;
+		// Archive.
+		if ( mai_is_type_archive() ) {
+			$content_types = mai_get_config( 'page-header-archive' );
+			// Blog and CPT archives.
+			if ( ( ( is_home() && ! is_front_page() ) || is_post_type_archive() ) && in_array( mai_get_post_type(), $content_types ) ) {
+				$page_header_active = true;
+			}
+			// Term archives.
+			elseif ( ( is_category() || is_tag() || is_tax() ) && in_array( get_queried_object()->taxonomy, $content_types ) ) {
+				$page_header_active = true;
+			}
+			// Author archives.
+			elseif ( is_author() && in_array( 'author', $content_types ) ) {
+				$page_header_active = true;
+			}
+			// Date archives.
+			elseif ( is_date() && in_array( 'date', $content_types ) ) {
+				$page_header_active = true;
+			}
+			// Search results.
+			elseif ( is_search() && in_array( 'search', $content_types ) ) {
+				$page_header_active = true;
+			}
 		}
-
-		if ( mai_is_type_single() && ( in_array( $post_type, mai_get_config( 'page-header-single' ) ) ) ) {
-			$page_header_active = true;
-		}
-
-		if ( ! $post_type && class_exists( 'WooCommerce' ) && is_shop() && in_array( 'product', mai_get_config( 'page-header-archive' ) ) ) {
+		// Single.
+		elseif ( mai_is_type_single() && ( in_array( mai_get_post_type(), mai_get_config( 'page-header-single' ) ) ) ) {
 			$page_header_active = true;
 		}
 	}
