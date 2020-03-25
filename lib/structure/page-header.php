@@ -18,6 +18,7 @@ add_action( 'genesis_meta', 'mai_page_header_setup' );
  * @return void
  */
 function mai_page_header_setup() {
+
 	if ( ! mai_is_page_header_active() ) {
 		return;
 	}
@@ -55,7 +56,7 @@ function mai_page_header_setup() {
 	add_filter( 'genesis_attr_entry', 'mai_page_header_entry_attr' );
 	add_filter( 'body_class', 'mai_page_header_body_class' );
 
-	add_action( 'mai_page_header', 'genesis_do_posts_page_heading' );
+	// add_action( 'mai_page_header', 'genesis_do_posts_page_heading' );
 	add_action( 'mai_page_header', 'genesis_do_date_archive_title' );
 	add_action( 'mai_page_header', 'genesis_do_taxonomy_title_description' );
 	add_action( 'mai_page_header', 'genesis_do_author_title_description' );
@@ -130,6 +131,7 @@ function mai_do_page_header_image() {
  * @return void
  */
 function mai_do_page_header_title() {
+	$title = '';
 	if ( class_exists( 'WooCommerce' ) && is_shop() ) {
 		$title = get_the_title( wc_get_page_id( 'shop' ) );
 	} elseif ( is_home() && 'posts' === get_option( 'show_on_front' ) ) {
@@ -141,8 +143,8 @@ function mai_do_page_header_title() {
 	} elseif ( is_singular() ) {
 		$title = get_the_title();
 	}
-
-	if ( isset( $title ) && $title ) {
+	$title = apply_filters( 'mai_page_header_title', $title );
+	if ( $title ) {
 		genesis_markup(
 			[
 				'open'    => '<h1 %s itemprop="headline">',
