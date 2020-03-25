@@ -156,13 +156,10 @@ return [
 
 	'post-type-support' => [
 		'add'    => [
-			'excerpt'                    => [ 'page' ],
-			'genesis-layouts'            => [ 'product' ],
-			'genesis-seo'                => [ 'product' ],
-			'genesis-singular-images'    => [ 'page', 'post' ],
-			'genesis-title-toggle'       => [ 'post', 'product' ],
-			'genesis-adjacent-entry-nav' => [ 'post', 'product', 'portfolio' ],
-			'terms-filter'               => [ 'post', 'portfolio' ],
+			'excerpt'              => [ 'page' ],
+			'genesis-layouts'      => [ 'product' ],
+			'genesis-seo'          => [ 'product' ],
+			'genesis-title-toggle' => [ 'post', 'product' ],
 		],
 		'remove' => [],
 	],
