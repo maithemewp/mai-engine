@@ -47,4 +47,8 @@
 	line-height: var(--heading-line-height, 1.2);
 	letter-spacing: var(--heading-letter-spacing, unset);
 	text-transform: var(--heading-text-transform, unset);
+
+	* + & {
+		--heading-margin: var(--spacing-xl) 0 0 0;
+	}
 }

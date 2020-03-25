@@ -66,4 +66,8 @@
 
 .page-header-subtitle {
 	margin: var(--page-header-subtitle-margin, 0);
+
+	* + & {
+		--page-header-subtitle-margin: var(--spacing-md) 0 0;
+	}
 }
