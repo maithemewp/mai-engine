@@ -528,7 +528,7 @@ return [
 		'search',
 	],
 
-	'single-settings-post-types' => [
+	'single-settings-content-types' => [
 		'page',
 		'post',
 	],
