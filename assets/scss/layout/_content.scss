@@ -1,6 +1,6 @@
 .content {
 	width: 100%;
-	margin: var(--content-margin, (0 auto));
+	margin: var(--content-margin, var(--spacing-xxl) auto);
 
 	@include mq(lg) {
 		order: var(--content-order, 0);
