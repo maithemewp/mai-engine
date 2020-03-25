@@ -19,7 +19,7 @@ label {
 
 #{$all-text-inputs} {
 	width: 100%;
-	margin: var(--input-margin, 0 0 var(--spacing-md));
+	margin: var(--input-margin, 0);
 	padding: var(--input-padding, 1em);
 	color: var(--input-color);
 	line-height: 1;
