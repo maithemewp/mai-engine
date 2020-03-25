@@ -9,6 +9,8 @@
  * @license   GPL-2.0-or-later
  */
 
+// TODO: CURRENTLY UNUSED. SEE HERE https://github.com/maithemewp/mai-engine/issues/29
+
 return [
 	[
 		'name'     => 'image',
