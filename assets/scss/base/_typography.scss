@@ -16,17 +16,15 @@ a {
 
 p {
 	width: var(--paragraph-width, auto);
-	margin: var(--paragraph-margin, (0 0 var(--spacing-md)));
+	margin: var(--paragraph-margin, var(--spacing-md) 0 0);
 	padding: var(--paragraph-padding, 0);
 
 	&:empty {
 		display: none;
 	}
 
-	// &:last-of-type {
-	// 	margin: var(--paragraph-last-margin, 0 0 var(--spacing-md));
-	// }
 }
+
 
 hr {
 	clear: both;

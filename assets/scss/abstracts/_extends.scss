@@ -40,7 +40,7 @@
 }
 
 @mixin heading {
-	margin: var(--heading-margin, var(--text-md) 0 0);
+	margin: var(--heading-margin, 0);
 	color: var(--heading-color, var(--color-dark));
 	font-weight: var(--font-weight-heading);
 	font-family: var(--font-secondary);

@@ -8,6 +8,10 @@
 	#{$heading} {
 		font-size: var(--heading-font-size, var(--#{$heading}-font-size, $font-size));
 	}
+
+	* + #{$heading} {
+		margin: var(--spacing-xl) 0 0 0;
+	}
 }
 
 .is-style-subheading {
