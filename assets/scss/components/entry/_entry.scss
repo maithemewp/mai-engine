@@ -59,6 +59,14 @@
 	--entry-wrap-padding: 0;
 }
 
+.entries {
+
+	* + & {
+		margin: var(--entries-margin, var(--spacing-md) 0 0);
+	}
+
+}
+
 .entries-wrap {
 	display: flex;
 	flex-wrap: wrap;
