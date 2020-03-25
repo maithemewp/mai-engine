@@ -9,26 +9,45 @@
  * @license   GPL-2.0-or-later
  */
 
+$locations = [];
+foreach( (array) mai_get_config( 'page-header-single' ) as $name ) {
+	if ( ! post_type_exists( $name ) ) {
+		continue;
+	}
+	$locations[] = [
+		[
+			'param'    => 'post_type',
+			'operator' => '==',
+			'value'    => $name,
+		],
+	];
+}
+$taxonomies = get_taxonomies();
+foreach( (array) mai_get_config( 'page-header-archive' ) as $name ) {
+	if ( isset( $taxonomies[ $name ] ) ) {
+		$locations[] = [
+			[
+				'param'    => 'taxonomy',
+				'operator' => '==',
+				'value'    => $name,
+			],
+		];
+	} elseif ( 'author' === $name ) {
+		$locations[] = [
+			[
+				'param'    => 'user_form',
+				'operator' => '==',
+				'value'    => 'edit',
+			],
+		];
+	}
+}
+
 acf_add_local_field_group(
 	[
 		'key'                   => 'group_5e4ebe9174ed9',
 		'title'                 => 'Page Header',
-		'location'              => [
-			[
-				[
-					'param'    => 'post_type',
-					'operator' => '==',
-					'value'    => 'post',
-				],
-			],
-			[
-				[
-					'param'    => 'post_type',
-					'operator' => '==',
-					'value'    => 'page',
-				],
-			],
-		],
+		'location'              => $locations,
 		'menu_order'            => 0,
 		'position'              => 'side',
 		'style'                 => 'seamless',
@@ -39,66 +58,20 @@ acf_add_local_field_group(
 		'description'           => '',
 		'fields'                => [
 			[
-				'key'               => 'field_5e4ebe9950b3d',
-				'label'             => 'Enabled',
-				'name'              => 'enabled',
-				'type'              => 'true_false',
-				'instructions'      => '',
-				'required'          => 0,
-				'conditional_logic' => 0,
-				'wrapper'           => [
-					'width' => '',
-					'class' => '',
-					'id'    => '',
-				],
-				'message'           => '',
-				'default_value'     => 0,
-				'ui'                => 0,
-				'ui_on_text'        => '',
-				'ui_off_text'       => '',
+				'key'           => 'field_5e4ebeb050b3e',
+				'label'         => esc_html__( 'Page Header Image', 'mai-engine' ),
+				'name'          => 'page_header_image',
+				'type'          => 'image',
+				'return_format' => 'id',
+				'preview_size'  => 'landscape-sm',
+				'library'       => 'all',
 			],
 			[
-				'key'               => 'field_5e4ebeb050b3e',
-				'label'             => 'Image',
-				'name'              => 'image',
-				'type'              => 'image',
-				'instructions'      => '',
-				'required'          => 0,
-				'conditional_logic' => 0,
-				'wrapper'           => [
-					'width' => '',
-					'class' => '',
-					'id'    => '',
-				],
-				'return_format'     => 'array',
-				'preview_size'      => 'medium',
-				'library'           => 'all',
-				'min_width'         => '',
-				'min_height'        => '',
-				'min_size'          => '',
-				'max_width'         => '',
-				'max_height'        => '',
-				'max_size'          => '',
-				'mime_types'        => '',
-			],
-			[
-				'key'               => 'field_5e4ebeb950b3f',
-				'label'             => 'Subtitle',
-				'name'              => 'subtitle',
-				'type'              => 'textarea',
-				'instructions'      => '',
-				'required'          => 0,
-				'conditional_logic' => 0,
-				'wrapper'           => [
-					'width' => '',
-					'class' => '',
-					'id'    => '',
-				],
-				'default_value'     => '',
-				'placeholder'       => '',
-				'maxlength'         => '',
-				'rows'              => '',
-				'new_lines'         => '',
+				'key'           => 'field_5e4ebeb950b3f',
+				'label'         => esc_html__( 'Page Header Subtitle', 'mai-engine' ),
+				'name'          => 'page_header_subtitle',
+				'type'          => 'textarea',
+				'rows'          => '3',
 			],
 		],
 	]
