@@ -31,5 +31,5 @@ return [
 		],
 	],
 	'page-header-single'  => [ 'page', 'post' ],
-	'page-header-archive' => [],
+	'page-header-archive' => [ 'category', 'product', 'post' ],
 ];
