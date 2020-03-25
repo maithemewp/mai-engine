@@ -52,25 +52,22 @@ function mai_page_header_setup() {
 
 	add_filter( 'woocommerce_show_page_title', '__return_null' );
 	add_filter( 'genesis_search_title_output', '__return_false' );
-	add_filter( 'genesis_attr_archive-title', 'mai_page_header_archive_title_attr' );
+	// add_filter( 'genesis_attr_archive-title', 'mai_page_header_archive_title_attr' );
 	add_filter( 'genesis_attr_entry', 'mai_page_header_entry_attr' );
 	add_filter( 'body_class', 'mai_page_header_body_class' );
 
 	// add_action( 'mai_page_header', 'genesis_do_posts_page_heading' );
-	add_action( 'mai_page_header', 'genesis_do_date_archive_title' );
-	add_action( 'mai_page_header', 'genesis_do_taxonomy_title_description' );
-	add_action( 'mai_page_header', 'genesis_do_author_title_description' );
-	add_action( 'mai_page_header', 'genesis_do_cpt_archive_title_description' );
-	add_action( 'genesis_archive_title_descriptions', 'mai_do_archive_headings_intro_text', 12, 3 );
+	// add_action( 'mai_page_header', 'genesis_do_date_archive_title' );
+	// add_action( 'mai_page_header', 'genesis_do_taxonomy_title_description' );
+	// add_action( 'mai_page_header', 'genesis_do_author_title_description' );
+	// add_action( 'mai_page_header', 'genesis_do_cpt_archive_title_description' );
+	// add_action( 'genesis_archive_title_descriptions', 'mai_do_archive_headings_intro_text', 12, 3 );
+
 	add_action( 'mai_page_header', 'mai_do_page_header_title', 10 );
-	add_action( 'mai_page_header', 'mai_do_page_header_excerpt', 20 );
+	add_action( 'mai_page_header', 'mai_do_page_header_subtitle', 20 );
 	add_action( 'be_title_toggle_remove', 'mai_page_header_title_toggle' );
 	add_action( 'genesis_before_content', 'mai_page_header_remove_404_title' );
 	add_action( 'genesis_before_content_sidebar_wrap', 'mai_do_page_header' );
-
-	if ( ! is_customize_preview() && is_front_page() ) {
-		add_action( 'genesis_before_page-header_wrap', 'the_custom_header_markup' );
-	}
 }
 
 /**
@@ -87,6 +84,17 @@ function mai_page_header_body_class( $classes ) {
 	$classes[] = 'has-page-header';
 
 	return $classes;
+}
+
+/**
+ * Remove page header title if using Genesis Title Toggle plugin.
+ *
+ * @since 0.1.0
+ *
+ * @return void
+ */
+function mai_page_header_title_toggle() {
+	remove_action( 'mai_page_header', 'mai_do_page_header_title', 10 );
 }
 
 /**
@@ -132,18 +140,56 @@ function mai_do_page_header_image() {
  */
 function mai_do_page_header_title() {
 	$title = '';
-	if ( class_exists( 'WooCommerce' ) && is_shop() ) {
-		$title = get_the_title( wc_get_page_id( 'shop' ) );
-	} elseif ( is_home() && 'posts' === get_option( 'show_on_front' ) ) {
-		$title = apply_filters( 'genesis_latest_posts_title', esc_html__( 'Latest Posts', 'mai-engine' ) );
-	} elseif ( is_404() ) {
-		$title = apply_filters( 'genesis_404_entry_title', esc_html__( 'Not found, error 404', 'mai-engine' ) );
+
+	if ( is_singular() ) {
+		$title = get_the_title();
+	} elseif ( is_home() ) {
+		if ( is_front_page() ) {
+			$title = apply_filters( 'genesis_latest_posts_title', esc_html__( 'Latest Posts', 'mai-engine' ) );
+		} else {
+			$title = get_the_title( get_option( 'page_for_posts' ) );
+		}
+	} elseif ( is_post_type_archive() ) {
+		if ( class_exists( 'WooCommerce' ) && is_shop() ) {
+			$title = get_the_title( wc_get_page_id( 'shop' ) );
+		} else {
+			if ( genesis_has_post_type_archive_support( mai_get_post_type() ) ) {
+				$title = genesis_get_cpt_option( 'headline' );
+			}
+			if ( ! $title ) {
+				$title = post_type_archive_title( '', false );
+			}
+		}
+	} elseif ( is_category() || is_tag() || is_tax() ) {
+		global $wp_query;
+		$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
+		if ( $term ) {
+			$title = get_term_meta( $term->term_id, 'headline', true );
+			if ( ! $title ) {
+				$title = $term->name;
+			}
+		}
 	} elseif ( is_search() ) {
 		$title = apply_filters( 'genesis_search_title_text', esc_html__( 'Search results for: ', 'mai-engine' ) . get_search_query() );
-	} elseif ( is_singular() ) {
-		$title = get_the_title();
+	} elseif ( is_author() ) {
+		$title = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
+		if ( ! $title ) {
+			$title = get_the_author_meta( 'display_name', (int) get_query_var( 'author' ) );
+		}
+	} elseif ( is_date() ) {
+		if ( is_day() ) {
+			$title = __( 'Archives for ', 'mai-theme-engine' ) . get_the_date();
+		} elseif ( is_month() ) {
+			$title = __( 'Archives for ', 'mai-theme-engine' ) . single_month_title( ' ', false );
+		} elseif ( is_year() ) {
+			$title = __( 'Archives for ', 'mai-theme-engine' ) . get_query_var( 'year' );
+		}
+	} elseif ( is_404() ) {
+		$title = apply_filters( 'genesis_404_entry_title', esc_html__( 'Not found, error 404', 'mai-engine' ) );
 	}
+
 	$title = apply_filters( 'mai_page_header_title', $title );
+
 	if ( $title ) {
 		genesis_markup(
 			[
@@ -157,46 +203,61 @@ function mai_do_page_header_title() {
 }
 
 /**
- * Display page excerpt.
+ * Display page subtitle.
  *
  * @since 0.1.0
  *
  * @return void
  */
-function mai_do_page_header_excerpt() {
-	$excerpt = '';
-	$id      = '';
+function mai_do_page_header_subtitle() {
+	$subtitle = '';
 
-	if ( class_exists( 'WooCommerce' ) && is_shop() ) {
-		ob_start();
-		woocommerce_result_count();
-		$excerpt = ob_get_clean();
-	} elseif ( is_home() && 'posts' === get_option( 'show_on_front' ) ) {
-		$excerpt = apply_filters( 'genesis_latest_posts_subtitle', esc_html__( 'Showing the latest posts', 'mai-engine' ) );
+	if ( is_singular() ) {
+		$subtitle = get_post_meta( get_the_ID(), 'page_header_subtitle', true );
 	} elseif ( is_home() ) {
-		$id = get_option( 'page_for_posts' );
+		if ( is_front_page() ) {
+			$subtitle = '';
+		} else {
+			$subtitle = get_post_meta( get_option( 'page_for_posts' ), 'page_header_subtitle', true );
+		}
+	} elseif ( is_post_type_archive() ) {
+		if ( class_exists( 'WooCommerce' ) && is_shop() ) {
+			$subtitle = get_post_meta( wc_get_page_id( 'shop' ), 'page_header_subtitle', true );
+		} else {
+			if ( genesis_has_post_type_archive_support( mai_get_post_type() ) ) {
+				$subtitle = genesis_get_cpt_option( 'intro_text' );
+				$subtitle = apply_filters( 'genesis_cpt_archive_intro_text_output', $subtitle ? $subtitle : '' );
+			}
+		}
+	} elseif ( is_category() || is_tag() || is_tax() ) {
+		global $wp_query;
+		$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
+		if ( $term ) {
+			$subtitle = get_term_meta( $term->term_id, 'page_header_subtitle', true );
+			$subtitle = apply_filters( 'genesis_term_intro_text_output', $subtitle ? $subtitle : '' );
+		}
 	} elseif ( is_search() ) {
-
-		// phpcs:ignore WordPress.VIP.RestrictedFunctions.get_page_by_path_get_page_by_path
-		$id = get_page_by_path( 'search' );
+		$subtitle = apply_filters( 'genesis_search_title_text', esc_html__( 'Search results for: ', 'mai-engine' ) . get_search_query() );
+	} elseif ( is_author() ) {
+		$subtitle = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
+		$subtitle = apply_filters( 'genesis_author_intro_text_output', $subtitle ? $subtitle : '' );
+		if ( ! $subtitle ) {
+			$subtitle = get_the_author_meta( 'display_name', (int) get_query_var( 'author' ) );
+		}
+	} elseif ( is_date() ) {
+		$subtitle = '';
 	} elseif ( is_404() ) {
-
-		// phpcs:ignore WordPress.VIP.RestrictedFunctions.get_page_by_path_get_page_by_path
-		$id = get_page_by_path( 'error-404' );
-	} elseif ( ( is_singular() ) && ! is_singular( 'product' ) ) {
-		$id = get_the_ID();
+		$subtitle = '';
 	}
 
-	if ( $id ) {
-		$excerpt = has_excerpt( $id ) ? do_shortcode( get_the_excerpt( $id ) ) : '';
-	}
+	$subtitle = apply_filters( 'mai_page_header_subtitle', $subtitle );
 
-	if ( $excerpt ) {
+	if ( $subtitle ) {
 		genesis_markup(
 			[
 				'open'    => '<p %s itemprop="description">',
 				'close'   => '</p>',
-				'content' => $excerpt,
+				'content' => $subtitle,
 				'context' => 'page-header-subtitle',
 			]
 		);
