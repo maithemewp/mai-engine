@@ -255,9 +255,9 @@ function mai_do_page_header_subtitle() {
 	if ( $subtitle ) {
 		genesis_markup(
 			[
-				'open'    => '<p %s itemprop="description">',
-				'close'   => '</p>',
-				'content' => $subtitle,
+				'open'    => '<div %s itemprop="description">',
+				'close'   => '</div>',
+				'content' => wpautop( $subtitle ),
 				'context' => 'page-header-subtitle',
 			]
 		);
