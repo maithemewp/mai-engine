@@ -59,7 +59,7 @@ acf_add_local_field_group(
 		'fields'                => [
 			[
 				'key'           => 'field_5e4ebeb050b3e',
-				'label'         => esc_html__( 'Page Header Image', 'mai-engine' ),
+				'label'         => esc_html__( 'Image', 'mai-engine' ),
 				'name'          => 'page_header_image',
 				'type'          => 'image',
 				'return_format' => 'id',
@@ -68,8 +68,8 @@ acf_add_local_field_group(
 			],
 			[
 				'key'           => 'field_5e4ebeb950b3f',
-				'label'         => esc_html__( 'Page Header Subtitle', 'mai-engine' ),
-				'name'          => 'page_header_subtitle',
+				'label'         => esc_html__( 'Description', 'mai-engine' ),
+				'name'          => 'page_header_description',
 				'type'          => 'textarea',
 				'rows'          => '3',
 			],

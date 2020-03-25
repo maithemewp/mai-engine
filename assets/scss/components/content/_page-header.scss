@@ -64,10 +64,10 @@
 	--page-header-wrap-margin-top: var(--space-xxl);
 }
 
-.page-header-subtitle {
-	margin: var(--page-header-subtitle-margin, 0);
+.page-header-description {
+	margin: var(--page-header-description-margin, 0);
 
 	&:not(:first-child) {
-		--page-header-subtitle-margin: var(--spacing-md) 0 0;
+		--page-header-description-margin: var(--spacing-md) 0 0;
 	}
 }
