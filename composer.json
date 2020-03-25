@@ -26,7 +26,6 @@
     "yahnis-elsts/plugin-update-checker": "^4.8",
     "advanced-custom-fields/advanced-custom-fields-pro": "*",
     "wpackagist-plugin/advanced-custom-fields-font-awesome": "dev-trunk",
-    "fortawesome/font-awesome": "^5.12",
     "aristath/kirki": "*"
   },
   "require-dev": {
