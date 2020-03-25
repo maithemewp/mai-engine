@@ -67,7 +67,7 @@
 .page-header-subtitle {
 	margin: var(--page-header-subtitle-margin, 0);
 
-	* + & {
+	&:not(:first-child) {
 		--page-header-subtitle-margin: var(--spacing-md) 0 0;
 	}
 }
