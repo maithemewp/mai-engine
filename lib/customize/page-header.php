@@ -36,11 +36,8 @@ function mai_page_header_customizer_settings() {
 		]
 	);
 
-	// $config_id = mai_get_handle();
-
-	// Content Archives panel.
 	Kirki::add_section(
-		'mai_page_header',
+		$config_id,
 		[
 			'title'       => esc_attr__( 'Page Header', 'mai-engine' ),
 			'description' => '',
@@ -54,7 +51,7 @@ function mai_page_header_customizer_settings() {
 			'type'     => 'image',
 			'settings' => 'image',
 			'label'    => esc_html__( 'Header Image', 'mai-engine' ),
-			'section'  => 'mai_page_header',
+			'section'  => $config_id,
 			'default'  => '',
 			'choices'  => [
 				'save_as' => 'id',
@@ -69,7 +66,7 @@ function mai_page_header_customizer_settings() {
 			'settings'    => 'spacing',
 			'label'       => esc_html__( 'Header Spacing', 'mai-engine' ),
 			'description' => esc_html__( 'Accepts all unit values (px, rem, em, vw, etc).', 'mai-engine' ),
-			'section'     => 'mai_page_header',
+			'section'     => $config_id,
 			'default'     => [
 				'top'    => '10vw',
 				'bottom' => '10vw',
@@ -101,7 +98,7 @@ function mai_page_header_customizer_settings() {
 	// 		'type'     => 'radio-buttonset',
 	// 		'settings' => 'text_align',
 	// 		'label'    => esc_html__( 'Text Alignment', 'mai-engine' ),
-	// 		'section'  => 'mai_page_header',
+	// 		'section'  => $config_id,
 	// 		'default'  => 'center',
 	// 		'choices'  => [
 	// 			'start'  => esc_html__( 'Start' ),

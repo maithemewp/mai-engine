@@ -113,6 +113,7 @@ function mai_load_files() {
 		'customize/archives',
 		'customize/kirki',
 		'customize/logo',
+		'customize/site-header',
 		'customize/page-header',
 		'customize/singular',
 
