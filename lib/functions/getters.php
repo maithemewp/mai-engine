@@ -353,6 +353,8 @@ function mai_get_breakpoints() {
 /**
  * Returns the default breakpoint for the theme.
  *
+ * @since 0.1.0
+ *
  * @param string $size   Breakpoint size.
  * @param string $suffix Optional suffix, e.g. 'px'.
  *
@@ -362,6 +364,20 @@ function mai_get_breakpoint( $size = 'md', $suffix = '' ) {
 	$breakpoints = mai_get_breakpoints();
 
 	return $breakpoints[ $size ] . '';
+}
+
+/**
+ * Return the current post type.
+ * Sometimes we need this earlier than get_post_type()
+ * can handle, so we fall back to the query var.
+ *
+ * @since 0.1.0
+ *
+ * @return string
+ */
+function mai_get_post_type() {
+	$name = get_post_type();
+	return $name ?: get_query_var( 'post_type' );
 }
 
 /**
@@ -675,10 +691,7 @@ function mai_get_archive_args_name() {
  * @return false|mixed|string
  */
 function mai_get_singular_args_name() {
-	$name = get_post_type();
-	$name = $name ?: get_query_var( 'post_type' );
-
-	return $name;
+	return mai_get_post_type();
 }
 
 /**
