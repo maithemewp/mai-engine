@@ -178,7 +178,7 @@ function mai_is_page_header_active() {
 		// Archive.
 		if ( mai_is_type_archive() ) {
 			$content_types = mai_get_config( 'page-header-archive' );
-			// Blog and CPT archives.
+			// Blog and cpt archives.
 			if ( ( ( is_home() && ! is_front_page() ) || is_post_type_archive() ) && in_array( mai_get_post_type(), $content_types ) ) {
 				$page_header_active = true;
 			}
@@ -200,8 +200,15 @@ function mai_is_page_header_active() {
 			}
 		}
 		// Single.
-		elseif ( mai_is_type_single() && ( in_array( mai_get_post_type(), mai_get_config( 'page-header-single' ) ) ) ) {
-			$page_header_active = true;
+		elseif ( mai_is_type_single() ) {
+			$content_types = mai_get_config( 'page-header-single' );
+			// Single pages, posts, and cpts.
+			if ( is_singular() && in_array( mai_get_post_type(), $content_types ) ) {
+			}
+			// 404.
+			elseif ( is_404() && in_array( '404', $content_types ) ) {
+				$page_header_active = true;
+			}
 		}
 	}
 
