@@ -122,13 +122,39 @@ function mai_page_header_remove_404_title() {
  * @return void
  */
 function mai_do_page_header_image() {
-	$header = get_option( 'mai_page_header' );
+	$image_id = '';
 
-	if ( ! $header || ! isset( $header['image'] ) || empty( $header['image'] ) ) {
+	if ( is_singular() ) {
+		$image_id = get_post_meta( get_the_ID(), 'page_header_image', true );
+	} elseif ( is_home() ) {
+		if ( is_front_page() ) {
+			$image_id = '';
+		} else {
+			$image_id = get_post_meta( get_option( 'page_for_posts' ), 'page_header_image', true );
+		}
+	} elseif ( is_category() || is_tag() || is_tax() ) {
+		global $wp_query;
+		$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
+		if ( $term ) {
+			$image_id = get_term_meta( $term->term_id, 'page_header_image', true );
+		}
+	}
+
+	if ( ! $image_id ) {
+		$header = get_option( 'mai_page_header' );
+
+		if ( $header && isset( $header['image'] ) && $header['image'] ) {
+			$image_id = $header['image'];
+		}
+	}
+
+	$image_id = apply_filters( 'mai_page_header_image', $image_id );
+
+	if ( ! $image_id ) {
 		return;
 	}
 
-	echo mai_get_cover_image_html( $header['image'], [ 'class' => 'page-header-image' ] );
+	echo mai_get_cover_image_html( $image_id, [ 'class' => 'page-header-image' ] );
 }
 
 /**
