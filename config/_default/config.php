@@ -80,19 +80,6 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Page Header
-	|--------------------------------------------------------------------------
-	|
-	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
-	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
-	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
-	|
-	*/
-	'page-header-single'  => [],
-	'page-header-archive' => [], // Needs to support search, author, etc. Same as 'archive-settings'.
-
-	/*
-	|--------------------------------------------------------------------------
 	| Page Layouts
 	|--------------------------------------------------------------------------
 	|
@@ -513,7 +500,7 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Settings
+	| Content Types & Settings
 	|--------------------------------------------------------------------------
 	|
 	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
@@ -522,21 +509,36 @@ return [
 	|
 	*/
 
-	'archive-settings-content-types' => [
+	'loop-archive' => [
 		'post',
 		'category',
 		'search',
 	],
 
-	'single-settings-content-types' => [
+	'loop-single' => [
 		'page',
 		'post',
 	],
 
-	'archive-settings' => require __DIR__ . '/settings/archive.php',
-	'single-settings'  => require __DIR__ . '/settings/single.php',
-	'grid-settings'    => require __DIR__ . '/settings/grid.php',
-	'page-header-settings'    => require __DIR__ . '/settings/page-header.php',
+	'page-header-single'  => [],
+	'page-header-archive' => [], // Needs to support search, author, etc. Same as 'archive-settings'.
+
+	'archive-settings'     => require __DIR__ . '/settings/archive.php',
+	'single-settings'      => require __DIR__ . '/settings/single.php',
+	'grid-settings'        => require __DIR__ . '/settings/grid.php',
+	'page-header-settings' => require __DIR__ . '/settings/page-header.php',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Page Header
+	|--------------------------------------------------------------------------
+	|
+	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
+	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
+	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
+	|
+	*/
+
 
 	/*
 	|--------------------------------------------------------------------------

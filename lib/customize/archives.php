@@ -16,7 +16,7 @@ add_action( 'init', 'mai_archive_customizer_settings' );
  * @return  void
  */
 function mai_archive_customizer_settings() {
-	$types = mai_get_config( 'archive-settings-content-types' );
+	$types = mai_get_config( 'loop-archive' );
 
 	if ( ! $types ) {
 		return;

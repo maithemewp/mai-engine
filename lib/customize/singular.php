@@ -16,7 +16,7 @@ add_action( 'init', 'mai_single_customizer_settings' );
  * @return  void
  */
 function mai_single_customizer_settings() {
-	$post_types = mai_get_config( 'single-settings-content-types' );
+	$post_types = mai_get_config( 'loop-single' );
 
 	if ( ! $post_types ) {
 		return;
