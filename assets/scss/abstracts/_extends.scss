@@ -48,7 +48,7 @@
 	letter-spacing: var(--heading-letter-spacing, unset);
 	text-transform: var(--heading-text-transform, unset);
 
-	* + & {
+	&:not(:first-child) {
 		--heading-margin: var(--spacing-xl) 0 0 0;
 	}
 }

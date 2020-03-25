@@ -1,7 +1,10 @@
 .widget {
-	margin: var(--widget-margin, 0 0 var(--row-gap));
+	margin: var(--widget-margin, 0);
 
-	--paragraph-last-margin: 0;
+	&:not(:first-of-type) {
+		--widget-margin: var(--text-xxl) 0 0;
+	}
+
 }
 
 .widget-wrap {
