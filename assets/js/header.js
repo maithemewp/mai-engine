@@ -50,8 +50,6 @@ var siteInnerMargin = function() {
 
 	firstElement.style.paddingTop = parseInt( headerHeight ) + parseInt( paddingBottom ) + 'px';
 
-	console.log( headerHeight );
-
 	setTimeout( function() {
 		timeout = false;
 	}, 100 );

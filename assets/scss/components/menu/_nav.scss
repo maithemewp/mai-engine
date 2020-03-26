@@ -1,5 +1,6 @@
-.nav-header-left {
-	display: none;
+.nav-header-left,
+.nav-header-right {
+	display: var(--nav-header-display, (flex));
 	order: 2;
 	width: 100vw;
 	margin: 0 -5vw;
@@ -9,7 +10,7 @@
 	@include mq(lg) {
 		position: relative;
 		top: auto;
-		display: flex !important;
+		display: flex;
 		width: auto;
 		margin: 0;
 		padding: 0;
@@ -19,6 +20,7 @@
 
 .nav-after-header {
 	z-index: 1;
+	display: var(--nav-header-display, (flex));
 	width: 100%;
 
 	@include mq(lg) {

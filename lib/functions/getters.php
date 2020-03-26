@@ -150,6 +150,25 @@ function mai_get_asset_version( $file ) {
 }
 
 /**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param string $file File base name.
+ *
+ * @return string
+ */
+function mai_get_asset_url( $file ) {
+	$type    = false !== strpos( $file, '.js' ) ? 'js' : 'css';
+	$name    = str_replace( [ '.js', '.css' ], '', $file );
+	$uri     = mai_get_url();
+	$default = "${uri}assets/${type}/${name}.${type}";
+	$min     = "${uri}assets/${type}/min/${name}.min.${type}";
+
+	return mai_is_in_dev_mode() ? $default : $min;
+}
+
+/**
  * Returns the active child theme's config.
  *
  * @since 0.1.0
@@ -377,6 +396,7 @@ function mai_get_breakpoint( $size = 'md', $suffix = '' ) {
  */
 function mai_get_post_type() {
 	$name = get_post_type();
+
 	return $name ?: get_query_var( 'post_type' );
 }
 
@@ -570,8 +590,8 @@ function mai_get_template_args() {
 		$context  = 'archive';
 
 	} elseif ( is_singular() ) {
-		$name     = mai_get_singular_args_name();
-		$context  = 'single';
+		$name    = mai_get_singular_args_name();
+		$context = 'single';
 	}
 
 	// Bail if no data.
@@ -725,6 +745,7 @@ function mai_get_grid_show_choices() {
 		'more_link'   => esc_html__( 'Read More link', 'mai-engine' ),
 		'footer_meta' => esc_html__( 'Footer Meta', 'mai-engine' ),
 	];
+
 	return $choices;
 }
 
@@ -743,6 +764,7 @@ function mai_get_archive_show_choices() {
 		'footer_meta'                  => esc_html__( 'Footer Meta', 'mai-engine' ),
 		'genesis_entry_footer'         => 'genesis_entry_footer',
 	];
+
 	return $choices;
 }
 
@@ -766,6 +788,7 @@ function mai_get_single_show_choices( $name ) {
 	if ( mai_post_type_has_page_header( $name ) ) {
 		// TODO: Check if it's enabled by post/content type, and remove 'title'.
 	}
+
 	return $choices;
 }
 
@@ -791,16 +814,17 @@ function mai_get_image_orientation_choices() {
 	if ( ! ( is_admin() || is_customize_preview() ) ) {
 		return $choices;
 	}
-	$all = [
+	$all          = [
 		'landscape' => esc_html__( 'Landscape', 'mai-engine' ),
 		'portrait'  => esc_html__( 'Portrait', 'mai-engine' ),
 		'square'    => esc_html__( 'Square', 'mai-engine' ),
 	];
 	$orientations = mai_get_available_image_orientations();
-	foreach( $orientations as $orientation ) {
+	foreach ( $orientations as $orientation ) {
 		$choices[ $orientation ] = $all[ $orientation ];
 	}
 	$choices['custom'] = esc_html__( 'Custom', 'mai-engine' );
+
 	return $choices;
 }
 
@@ -809,6 +833,7 @@ function mai_get_columns_choices() {
 	if ( ! ( is_admin() || is_customize_preview() ) ) {
 		return $choices;
 	}
+
 	return [
 		'1' => esc_html__( '1', 'mai-engine' ),
 		'2' => esc_html__( '2', 'mai-engine' ),

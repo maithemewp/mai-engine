@@ -1,4 +1,3 @@
-
 var menuButtons = document.querySelectorAll( '.menu-item.button' );
 
 [].forEach.call( menuButtons, function( menuButton ) {

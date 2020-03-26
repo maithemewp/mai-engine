@@ -14,7 +14,7 @@ module.exports = function() {
 		return gulp.src( files )
 			.pipe( plumber() )
 			.pipe( concat( filename + '.js' ) )
-			.pipe( gulp.dest( config.dest.js ) )
+			// .pipe( gulp.dest( config.dest.js ) )
 			.pipe( rename( filename + '.min.js' ) )
 			.pipe( uglify() )
 			.pipe( gulp.dest( config.dest.js ) )

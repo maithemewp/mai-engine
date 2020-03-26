@@ -25,7 +25,6 @@ function mai_setup() {
 
 	// Get setup configs.
 	$custom_functions  = mai_get_config( 'custom-functions' );
-	$responsive_menu   = mai_get_config( 'responsive-menu' );
 	$theme_support     = mai_get_config( 'theme-support' );
 	$post_type_support = mai_get_config( 'post-type-support' );
 	$image_sizes       = mai_get_config( 'image-sizes' );
@@ -40,9 +39,6 @@ function mai_setup() {
 
 	// Add custom functionality.
 	is_callable( $custom_functions ) ? $custom_functions() : null;
-
-	// Add responsive menus.
-	genesis_register_responsive_menus( $responsive_menu );
 
 	// Add theme supports.
 	array_walk(
