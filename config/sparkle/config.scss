@@ -10,16 +10,13 @@
 	--button-background: var(--color-dark);
 }
 
-body {
-	background: var(--color-light);
+body:not(.editor-styles-wrapper) {
+	--body-background: var(--color-light);
 }
 
 .site-container {
-	box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.02);
-}
-
-.site-inner {
 	background: var(--color-white);
+	box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.02);
 }
 
 .circle-overlay {

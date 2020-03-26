@@ -31,6 +31,7 @@
 	display: block;
 	width: var(--menu-item-link-width, 100%);
 	padding: var(--menu-item-link-padding, (var(--spacing-sm) var(--spacing-xxs)));
+	text-align: center;
 	text-decoration: none;
 }
 

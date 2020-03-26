@@ -5,7 +5,7 @@
 	font-size: var(--text-md);
 	font-family: var(--font-primary);
 	line-height: var(--line-height-body);
-	background-color: var(--color-white);
+	background-color: var(--body-background, var(--color-white));
 }
 
 @mixin button {
