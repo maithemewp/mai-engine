@@ -64,13 +64,20 @@ function mai_body_classes( $classes ) {
 	}
 
 	// Add transparent header class.
-	if ( current_theme_supports( 'transparent-header' ) && ( mai_is_page_header_active() || is_front_page() && is_active_sidebar( 'front-page-1' ) ) ) {
+	if ( current_theme_supports( 'transparent-header' ) && mai_has_page_header() ) {
 		$classes[] = 'has-transparent-header';
 	}
 
 	// Add sticky header class.
 	if ( current_theme_supports( 'sticky-header' ) ) {
 		$classes[] = 'has-sticky-header';
+	}
+
+	// Add page header class.
+	if ( mai_has_page_header() ) {
+		$classes[] = 'has-page-header';
+	} else {
+		$classes[] = 'no-page-header';
 	}
 
 	// Add single type class.

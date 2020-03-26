@@ -19,11 +19,7 @@ add_action( 'genesis_meta', 'mai_page_header_setup' );
  */
 function mai_page_header_setup() {
 
-	if ( ! mai_is_page_header_active() ) {
-		return;
-	}
-
-	if ( genesis_entry_header_hidden_on_current_page() ) {
+	if ( ! mai_has_page_header() ) {
 		return;
 	}
 
@@ -54,7 +50,6 @@ function mai_page_header_setup() {
 	add_filter( 'genesis_search_title_output', '__return_false' );
 	// add_filter( 'genesis_attr_archive-title', 'mai_page_header_archive_title_attr' );
 	add_filter( 'genesis_attr_entry', 'mai_page_header_entry_attr' );
-	add_filter( 'body_class', 'mai_page_header_body_class' );
 
 	// add_action( 'mai_page_header', 'genesis_do_posts_page_heading' );
 	// add_action( 'mai_page_header', 'genesis_do_date_archive_title' );
@@ -68,22 +63,6 @@ function mai_page_header_setup() {
 	add_action( 'be_title_toggle_remove', 'mai_page_header_title_toggle' );
 	add_action( 'genesis_before_content', 'mai_page_header_remove_404_title' );
 	add_action( 'genesis_before_content_sidebar_wrap', 'mai_do_page_header' );
-}
-
-/**
- * Adds page-header utility class to body element.
- *
- * @since 0.1.0
- *
- * @param array $classes List of body classes.
- *
- * @return array
- */
-function mai_page_header_body_class( $classes ) {
-	$classes   = array_diff( $classes, [ 'no-page-header' ] );
-	$classes[] = 'has-page-header';
-
-	return $classes;
 }
 
 /**

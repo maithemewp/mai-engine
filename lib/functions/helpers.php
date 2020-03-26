@@ -144,11 +144,13 @@ function mai_has_sidebar() {
 /**
  * Checks if current page has the page header enabled.
  *
+ * TODO: Remove if we don't end up going this route.
+ *
  * @since 0.1.0
  *
  * @return bool
  */
-function mai_has_page_header() {
+function mai_has_page_header_old() {
 	static $has_page_header = null;
 
 	if ( is_null( $has_page_header ) ) {
@@ -158,10 +160,6 @@ function mai_has_page_header() {
 	return $has_page_header;
 }
 
-function mai_post_type_has_page_header( $post_type ) {
-	return in_array( $post_type, mai_get_config( 'page-header-single' ), true );
-}
-
 /**
  * Checks if the Page Header is active.
  *
@@ -169,34 +167,34 @@ function mai_post_type_has_page_header( $post_type ) {
  *
  * @return bool
  */
-function mai_is_page_header_active() {
-	static $page_header_active = null;
+function mai_has_page_header() {
+	static $has_page_header = null;
 
-	if ( is_null( $page_header_active ) ) {
-		$page_header_active = false;
+	if ( is_null( $has_page_header ) ) {
+		$has_page_header = false;
 
 		// Archive.
 		if ( mai_is_type_archive() ) {
 			$content_types = mai_get_config( 'page-header-archive' );
 			// Blog and cpt archives.
 			if ( ( ( is_home() && ! is_front_page() ) || is_post_type_archive() ) && in_array( mai_get_post_type(), $content_types ) ) {
-				$page_header_active = true;
+				$has_page_header = true;
 			}
 			// Term archives.
 			elseif ( ( is_category() || is_tag() || is_tax() ) && in_array( get_queried_object()->taxonomy, $content_types ) ) {
-				$page_header_active = true;
+				$has_page_header = true;
 			}
 			// Author archives.
 			elseif ( is_author() && in_array( 'author', $content_types ) ) {
-				$page_header_active = true;
+				$has_page_header = true;
 			}
 			// Date archives.
 			elseif ( is_date() && in_array( 'date', $content_types ) ) {
-				$page_header_active = true;
+				$has_page_header = true;
 			}
 			// Search results.
 			elseif ( is_search() && in_array( 'search', $content_types ) ) {
-				$page_header_active = true;
+				$has_page_header = true;
 			}
 		}
 		// Single.
@@ -204,15 +202,20 @@ function mai_is_page_header_active() {
 			$content_types = mai_get_config( 'page-header-single' );
 			// Single pages, posts, and cpts.
 			if ( is_singular() && in_array( mai_get_post_type(), $content_types ) ) {
+				$has_page_header = true;
 			}
 			// 404.
 			elseif ( is_404() && in_array( '404', $content_types ) ) {
-				$page_header_active = true;
+				$has_page_header = true;
 			}
 		}
 	}
 
-	return $page_header_active;
+	if ( genesis_entry_header_hidden_on_current_page() ) {
+		$has_page_header = false;
+	}
+
+	return $has_page_header;
 }
 
 /**
