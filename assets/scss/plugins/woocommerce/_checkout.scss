@@ -30,8 +30,8 @@ form.checkout {
 	label {
 
 		img {
-			max-width: calc(var(--space-lg) * #{$minor-third});
-			margin-right: var(--space-xs);
+			max-width: calc(var(--spacing-lg) * #{$minor-third});
+			margin-right: var(--spacing-xs);
 		}
 	}
 
@@ -68,7 +68,7 @@ form.checkout {
 
 		img {
 			display: block;
-			max-width: var(--space-xxxl);
+			max-width: var(--spacing-xxxl);
 			margin-bottom: var(--spacing-md);
 		}
 	}

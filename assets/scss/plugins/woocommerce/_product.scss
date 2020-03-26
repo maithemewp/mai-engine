@@ -11,10 +11,10 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: var(--space-lg);
-		height: var(--space-lg);
+		width: var(--spacing-lg);
+		height: var(--spacing-lg);
 		background-color: var(--color-white);
-		border-radius: var(--space-lg);
+		border-radius: var(--spacing-lg);
 
 		@include position(absolute, 1em 1em null null);
 
@@ -51,7 +51,7 @@
 
 	li {
 		margin-bottom: -1px;
-		padding: var(--spacing-md) var(--space-lg);
+		padding: var(--spacing-md) var(--spacing-lg);
 		list-style-type: none;
 		background-color: var(--color-light);
 		border: var(--border);

@@ -9,8 +9,19 @@ var mobileMenu     = document.querySelector( '.mobile-menu' );
 var mobileMenuWrap = document.querySelector( '.mobile-menu .wrap' );
 var mobileMenuList = document.querySelector( '.mobile-menu .menu' );
 var menuToggle     = document.getElementsByClassName( 'menu-toggle' )[ 0 ];
+var subMenus       = document.querySelectorAll( '.sub-menu' );
 var mediaQuery     = window.matchMedia( '(max-width:' + localizedData.breakpoint + 'px)' );
 var timeout        = false;
+
+var addBodyClasses = function() {
+	if ( mediaQuery.matches ) {
+		body.classList.add( 'is-mobile' );
+		body.classList.remove( 'is-desktop' );
+	} else {
+		body.classList.remove( 'is-mobile' );
+		body.classList.add( 'is-desktop' );
+	}
+};
 
 var createMobileMenu = function() {
 	if ( mobileMenu ) {
@@ -40,9 +51,19 @@ var createMenuToggle = function() {
 	menuToggle.setAttribute( 'class', 'menu-toggle' );
 	menuToggle.setAttribute( 'aria-expanded', 'false' );
 	menuToggle.setAttribute( 'aria-pressed', 'false' );
-	menuToggle.setAttribute( 'class', 'menu-toggle' );
 	menuToggle.innerHTML = localizedData.menuToggle;
 	siteHeaderWrap.appendChild( menuToggle );
+};
+
+var createSubMenuToggles = function() {
+	subMenus.forEach( function( subMenu ) {
+		var subMenuToggle = document.createElement( 'button' );
+		subMenuToggle.setAttribute( 'class', 'sub-menu-toggle' );
+		subMenuToggle.setAttribute( 'aria-expanded', 'false' );
+		subMenuToggle.setAttribute( 'aria-pressed', 'false' );
+		subMenuToggle.innerHTML = localizedData.subMenuToggle;
+		subMenu.parentNode.insertBefore( subMenuToggle, subMenu );
+	} );
 };
 
 var cloneMenuItems = function() {
@@ -70,24 +91,31 @@ var cloneMenuItems = function() {
 	} );
 };
 
-var hideMenus = function() {
-	navMenus.forEach( function( navMenu ) {
-		if ( navMenu ) {
-			navMenu.style.display = mediaQuery.matches ? 'none' : 'flex';
-		}
-	} );
+var toggleAriaValues = function( element ) {
+	var ariaValue = element.getAttribute( 'aria-expanded' ) === 'false' ? 'true' : 'false';
+
+	element.setAttribute( 'aria-expanded', ariaValue );
+	element.setAttribute( 'aria-pressed', ariaValue );
+
+	return element;
 };
 
 var toggleMobileMenu = function() {
-	var ariaValue = menuToggle.getAttribute( 'aria-expanded' ) === 'false' ? 'true' : 'false';
-
-	menuToggle.setAttribute( 'aria-expanded', ariaValue );
-	menuToggle.setAttribute( 'aria-pressed', ariaValue );
+	toggleAriaValues( menuToggle );
 
 	body.classList.toggle( 'mobile-menu-visible' );
 };
 
-var doResponsiveMenus = function() {
+var toggleSubMenu = function( event ) {
+	var subMenuToggle = event.target.classList.contains( 'sub-menu-toggle' ) ? event.target : event.target.parentNode;
+	subMenuToggle     = subMenuToggle.classList.contains( 'menu-item' ) ? subMenuToggle.getElementsByClassName( 'sub-menu-toggle' )[ 0 ] : subMenuToggle;
+	var subMenu       = subMenuToggle.nextSibling;
+
+	toggleAriaValues( subMenuToggle );
+	subMenu.parentNode.classList.toggle( 'sub-menu-visible' );
+};
+
+var onResize = function() {
 	if ( timeout ) {
 		return;
 	}
@@ -95,7 +123,7 @@ var doResponsiveMenus = function() {
 	timeout = true;
 
 	// Do stuff.
-	hideMenus();
+	addBodyClasses();
 
 	setTimeout( function() {
 		timeout = false;
@@ -105,7 +133,11 @@ var doResponsiveMenus = function() {
 createMobileMenu();
 createMenuToggle();
 cloneMenuItems();
-doResponsiveMenus();
+createSubMenuToggles();
+onResize();
 
-window.addEventListener( 'resize', doResponsiveMenus, false );
+window.addEventListener( 'resize', onResize, false );
 menuToggle.addEventListener( 'click', toggleMobileMenu, false );
+document.querySelectorAll( '.sub-menu-toggle' ).forEach( function( subMenu ) {
+	subMenu.addEventListener( 'click', toggleSubMenu, false );
+} );

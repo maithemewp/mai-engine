@@ -21,8 +21,8 @@
 .product-thumbnail {
 
 	img {
-		width: var(--space-xl);
-		height: var(--space-xl);
+		width: var(--spacing-xl);
+		height: var(--spacing-xl);
 		border-radius: var(--border-radius);
 	}
 }
@@ -30,13 +30,13 @@
 .quantity {
 
 	.input-text {
-		max-width: var(--space-xxxl);
+		max-width: var(--spacing-xxxl);
 		margin: 0 var(--spacing-md) 0 0;
 	}
 }
 
 .actions {
-	padding: var(--space-lg);
+	padding: var(--spacing-lg);
 
 	> .button {
 

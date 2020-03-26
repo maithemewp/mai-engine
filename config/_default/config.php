@@ -225,11 +225,15 @@ return [
 				'localize' => [
 					'name' => 'responsiveMenu',
 					'data' => [
-						'breakpoint' => mai_get_breakpoint( 'lg', '' ),
-						'ariaLabel'  => __( 'Mobile Menu', 'mai-engine' ),
-						'menuToggle' => sprintf(
+						'breakpoint'    => mai_get_breakpoint( 'lg', '' ),
+						'ariaLabel'     => __( 'Mobile Menu', 'mai-engine' ),
+						'menuToggle'    => sprintf(
 							'<span class="menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
 							__( 'Menu', 'mai-engine' )
+						),
+						'subMenuToggle' => sprintf(
+							'<span class="sub-menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
+							__( 'Sub Menu', 'mai-engine' )
 						),
 					],
 				],

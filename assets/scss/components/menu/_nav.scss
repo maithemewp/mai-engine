@@ -1,21 +1,12 @@
 .nav-header-left,
 .nav-header-right {
+	position: relative;
 	display: var(--nav-header-display, (flex));
 	order: 2;
-	width: 100vw;
-	margin: 0 -5vw;
-	padding: var(--nav-primary-padding-mobile, (var(--spacing-md) 5vw));
-	background-color: var(--nav-primary-background-color-mobile, var(--color-white));
-
-	@include mq(lg) {
-		position: relative;
-		top: auto;
-		display: flex;
-		width: auto;
-		margin: 0;
-		padding: 0;
-		background: 0;
-	}
+	width: var(--nav-header-width, 100vw);
+	margin: var(--nav-header-margin, 0 -5vw);
+	padding: var(--nav-header-padding, (var(--spacing-md) 5vw));
+	background-color: var(--nav-header-background-color, var(--color-white));
 }
 
 .nav-after-header {
@@ -23,11 +14,18 @@
 	display: var(--nav-header-display, (flex));
 	width: 100%;
 
-	@include mq(lg) {
-		--menu-alignment: flex-start;
-		border-top: var(--nav-after-header-border-top, 0);
-		border-bottom: var(--nav-after-header-border-bottom, 0);
-	}
+	--menu-alignment: flex-start;
+}
+
+.is-mobile {
+	--nav-header-display: none;
+}
+
+.is-desktop {
+	--nav-header-width: auto;
+	--nav-header-margin: 0;
+	--nav-header-padding: 0;
+	--nav-header-background-color: transparent;
 }
 
 .has-transparent-header {

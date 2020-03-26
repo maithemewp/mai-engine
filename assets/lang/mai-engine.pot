@@ -37,59 +37,63 @@ msgstr ""
 msgid "Menu"
 msgstr ""
 
-#: config/_default/config.php:229, config/_default/config.php:491
+#: config/_default/config.php:229, config/_default/config.php:495
 msgid "Mobile Menu"
 msgstr ""
 
-#: config/_default/config.php:410
+#: config/_default/config.php:236
+msgid "Sub Menu"
+msgstr ""
+
+#: config/_default/config.php:414
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/_default/config.php:411
+#: config/_default/config.php:415
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/_default/config.php:412
+#: config/_default/config.php:416
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default/config.php:413
+#: config/_default/config.php:417
 msgid "Footer Menu"
 msgstr ""
 
-#: config/_default/config.php:458
+#: config/_default/config.php:462
 msgid "Before Header"
 msgstr ""
 
-#: config/_default/config.php:459
+#: config/_default/config.php:463
 msgid "The Before Header widget area."
 msgstr ""
 
-#: config/_default/config.php:464
+#: config/_default/config.php:468
 msgid "Header Left"
 msgstr ""
 
-#: config/_default/config.php:465
+#: config/_default/config.php:469
 msgid "The Header Left widget area."
 msgstr ""
 
-#: config/_default/config.php:474
+#: config/_default/config.php:478
 msgid "Header Right"
 msgstr ""
 
-#: config/_default/config.php:475
+#: config/_default/config.php:479
 msgid "The Header Right widget area."
 msgstr ""
 
-#: config/_default/config.php:484
+#: config/_default/config.php:488
 msgid "Before Footer"
 msgstr ""
 
-#: config/_default/config.php:485
+#: config/_default/config.php:489
 msgid "The Before Footer widget area."
 msgstr ""
 
-#: config/_default/config.php:492
+#: config/_default/config.php:496
 msgid "The Mobile Menu widget area."
 msgstr ""
 
