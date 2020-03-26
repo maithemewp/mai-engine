@@ -7,3 +7,11 @@
 	min-height: 100vh;
 	margin: var(--site-container-margin, unset);
 }
+
+.has-boxed-container {
+
+	@include mq(lg) {
+		--site-container-max-width: var(--breakpoint-xl);
+		--site-container-margin: var(--spacing-md) auto;
+	}
+}

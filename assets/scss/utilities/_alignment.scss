@@ -26,10 +26,19 @@
 
 .alignfull {
 	clear: both;
-	width: 100vw;
-	max-width: var(--alignfull-max-width, 100vw);
+	width: auto;
+	max-width: var(--alignfull-max-width, 1000%);
 	margin-right: var(--alignfull-margin-right, calc(-50vw + 50%));
 	margin-left: var(--alignfull-margin-left, calc(-50vw + 50%));
+}
+
+.has-boxed-container {
+
+	@include mq(lg) {
+		--alignfull-max-width: var(--site-container-max-width);
+		--alignfull-margin-right: calc(((var(--site-container-max-width) - var(--content-width)) / 2) * -1);
+		--alignfull-margin-left: calc(((var(--site-container-max-width) - var(--content-width)) / 2) * -1);
+	}
 }
 
 .content-sidebar,

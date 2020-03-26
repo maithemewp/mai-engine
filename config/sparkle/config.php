@@ -22,6 +22,9 @@ return [
 			// 'square'    => '1:1',
 		],
 	],
+	'theme-support' => [
+		'add' => [ 'boxed-container' ],
+	],
 	'page-header-single'  => [],
 	'page-header-archive' => [],
 ];

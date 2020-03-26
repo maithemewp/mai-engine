@@ -58,6 +58,11 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'template-' . $basename;
 	}
 
+	// Add boxed container class.
+	if ( current_theme_supports( 'boxed-container' ) ) {
+		$classes[] = 'has-boxed-container';
+	}
+
 	// Add transparent header class.
 	if ( current_theme_supports( 'transparent-header' ) && ( mai_is_page_header_active() || is_front_page() && is_active_sidebar( 'front-page-1' ) ) ) {
 		$classes[] = 'has-transparent-header';
