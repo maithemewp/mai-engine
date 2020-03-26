@@ -23,8 +23,11 @@ return [
 		],
 	],
 	'theme-support' => [
-		'add' => [ 'boxed-container' ],
+		'add' => [
+			'boxed-container',
+			'sticky-header',
+		],
 	],
-	'page-header-single'  => [],
+	'page-header-single'  => [ 'page' ],
 	'page-header-archive' => [],
 ];
