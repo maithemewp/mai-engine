@@ -769,10 +769,16 @@ function mai_get_archive_show_choices() {
 }
 
 function mai_get_single_show_choices( $name ) {
+	if ( in_array( $name, mai_get_config( 'page-header-single' ) ) ) {
+		$title = esc_html__( 'Title (when page header is hidden)', 'mai-engine' );
+	} else {
+		$title = esc_html__( 'Title', 'mai-engine' );
+	}
+
 	$choices = [
 		'image'                        => esc_html__( 'Image', 'mai-engine' ),
 		'genesis_entry_header'         => 'genesis_entry_header',
-		'title'                        => esc_html__( 'Title', 'mai-engine' ),
+		'title'                        => $title,
 		'header_meta'                  => esc_html__( 'Header Meta', 'mai-engine' ),
 		'genesis_before_entry_content' => 'genesis_before_entry_content',
 		'content'                      => esc_html__( 'Content', 'mai-engine' ),
@@ -785,9 +791,6 @@ function mai_get_single_show_choices( $name ) {
 		'after_entry'                  => esc_html__( 'After Entry Widget Area', 'mai-engine' ),
 		'adjacent_entry_nav'           => esc_html__( 'Previous/Next Entry Nav', 'mai-engine' ),
 	];
-	if ( mai_post_type_has_page_header( $name ) ) {
-		// TODO: Check if it's enabled by post/content type, and remove 'title'.
-	}
 
 	return $choices;
 }
