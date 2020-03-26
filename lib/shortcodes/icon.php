@@ -18,8 +18,8 @@
  */
 function mai_get_icon_default_args() {
 	return [
-		'style'            => 'regular',
-		'icon'             => 'address-book',
+		'style'            => 'light',
+		'icon'             => 'bolt',
 		'display'          => 'flex',
 		'align'            => 'center',
 		'size'             => '40',

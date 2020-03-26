@@ -1019,7 +1019,7 @@ function mai_get_icon( $args ) {
  * @return string
  */
 function mai_get_svg( $name, $style = 'regular' ) {
-	$file = mai_get_dir() . "vendor/fortawesome/font-awesome/svgs/$style/$name.svg";
+	$file = mai_get_dir() . "assets/icons/svgs/$style/$name.svg";
 
 	if ( ! file_exists( $file ) ) {
 		return '';

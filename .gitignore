@@ -6,16 +6,7 @@
 *.zip
 LICENSE
 README
-node_modules/*
-!node_modules/@fortawesome
-node_modules/@fortawesome/fontawesome-pro/*
-!node_modules/@fortawesome/fontawesome-pro/sprites
-!node_modules/@fortawesome/fontawesome-pro/svgs
-node_modules/@fortawesome/fontawesome-pro/svgs/*
-!node_modules/@fortawesome/fontawesome-pro/svgs/brands
-!node_modules/@fortawesome/fontawesome-pro/svgs/light
-!node_modules/@fortawesome/fontawesome-pro/svgs/regular
-!node_modules/@fortawesome/fontawesome-pro/svgs/solid
+node_modules
 vendor/*
 !vendor/composer
 vendor/composer/installers

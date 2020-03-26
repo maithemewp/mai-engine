@@ -4,6 +4,20 @@ jQuery(document).ready(function($) {
 		return
 	}
 
+	acf.addFilter( 'select2_ajax_data', function( data, args, $input, field, instance ) {
+
+		// If not Mai Icon select field.
+		if ( 'field_5e3f4bcd867e8' !== data.field_key ) {
+			return data;
+		}
+
+		var $wrapper = $input.parents( '.acf-block-fields' );
+		var $style   = $wrapper.find( 'input[name="acf-block_5e7cf8dc21367[field_5e3f49758c633]"]:checked' );
+		data.style   = $style.val();
+
+		return data;
+	});
+
 	var post = maiGridQueryVars.post;
 	var term = maiGridQueryVars.term;
 	var user = maiGridQueryVars.user;
