@@ -40,10 +40,12 @@ function mai_render_cover_block( $block_content, $block ) {
 	// Strip background-image inline CSS.
 	if ( $image_url ) {
 		$block_content = str_replace( sprintf( 'background-image:url(%s);', $image_url ), '', $block_content );
+		$block_content = str_replace( sprintf( 'background-image:url(%s)', $image_url ), '', $block_content ); // Some cover blocks only have one inline style, so no semicolon.
 	}
 
 	// Convert inline style to css properties.
 	$block_content = str_replace( 'background-position', '--object-position', $block_content );
+	$block_content = str_replace( 'style=""', '', $block_content ); // Some scenarios will leave an empty style attribute.
 	$block_content = mai_add_cover_block_image( $block_content, $image_id );
 
 	return $block_content;
