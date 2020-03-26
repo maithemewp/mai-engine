@@ -26,8 +26,8 @@
 
 .alignfull {
 	clear: both;
-	width: 100vw;
-	max-width: var(--alignfull-max-width, 100vw);
+	width: auto;
+	max-width: var(--alignfull-max-width, 1000%);
 	margin-right: var(--alignfull-margin-right, calc(-50vw + 50%));
 	margin-left: var(--alignfull-margin-left, calc(-50vw + 50%));
 }
