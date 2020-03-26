@@ -1,0 +1,9 @@
+.mobile-menu {
+	display: var(--mobile-menu-display, none);
+
+	--mobile-menu-width: 100%;
+}
+
+.mobile-menu-visible {
+	--mobile-menu-display: block;
+}

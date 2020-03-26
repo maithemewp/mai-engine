@@ -216,46 +216,45 @@ return [
 
 			// Scripts.
 			[
-				'handle' => mai_get_handle() . '-editor',
-				'src'    => mai_get_url() . 'assets/js/editor.js',
-				'deps'   => [ 'jquery', 'wp-blocks' ],
-				'editor' => true,
+				'handle' => mai_get_handle() . '-global',
+				'src'    => mai_get_asset_url( 'global.js' ),
 			],
 			[
-				'handle' => mai_get_handle() . '-global',
-				'src'    => mai_get_url() . 'assets/js/min/global.min.js',
-				'deps'   => [],
+				'handle'   => mai_get_handle() . '-menus',
+				'src'      => mai_get_asset_url( 'menus.js' ),
+				'localize' => [
+					'name' => 'responsiveMenu',
+					'data' => [
+						'breakpoint' => mai_get_breakpoint( 'lg', '' ),
+						'ariaLabel'  => __( 'Mobile Menu', 'mai-engine' ),
+						'menuToggle' => sprintf(
+							'<span class="menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
+							__( 'Menu', 'mai-engine' )
+						),
+					],
+				],
 			],
 			[
 				'handle'    => mai_get_handle() . '-header',
-				'src'       => mai_get_url() . 'assets/js/min/header.min.js',
-				'deps'      => [],
+				'src'       => mai_get_asset_url( 'header.js' ),
 				'condition' => function () {
 					return current_theme_supports( 'sticky-header' ) || current_theme_supports( 'transparent-header' );
 				},
 			],
 
 			// Customizer scripts.
-
 			[
-				'handle'     => mai_get_handle() . '-customizer',
-				'src'        => mai_get_url() . 'assets/js/customizer.js',
-				'deps'       => [],
-				'customizer' => true,
+				'handle'    => mai_get_handle() . '-customizer',
+				'src'       => mai_get_asset_url( 'customizer.js' ),
+				'condition' => function () {
+					return is_customize_preview();
+				},
 			],
 
-			// Grid scripts.
-
+			// Admin scripts.
 			[
-				'handle' => mai_get_handle() . '-sortable',
-				'src'    => mai_get_url() . 'assets/js/sortable.js',
-				'deps'   => [],
-				'editor' => true, // Only load in the admin editor.
-			],
-			[
-				'handle'   => mai_get_handle() . '-grid-queries',
-				'src'      => mai_get_url() . 'assets/js/grid-queries.js',
-				'deps'     => [],
+				'handle'   => mai_get_handle() . '-admin',
+				'src'      => mai_get_asset_url( 'admin.js' ),
 				'editor'   => true, // Only load in the admin editor.
 				'localize' => [
 					'name' => 'maiGridQueryVars',
@@ -271,12 +270,14 @@ return [
 
 			// Customizer styles.
 			[
-				'handle'     => mai_get_handle() . '-kirki',
-				'src'        => mai_get_url() . 'assets/css/plugins/kirki.min.css',
-				'customizer' => true,
+				'handle'    => mai_get_handle() . '-kirki',
+				'src'       => mai_get_url() . 'assets/css/plugins/kirki.min.css',
+				'condition' => function () {
+					return is_customize_preview();
+				},
 			],
 
-			// Grid styles.
+			// Admin styles.
 			[
 				'handle' => mai_get_handle() . '-advanced-custom-fields',
 				'src'    => mai_get_url() . 'assets/css/plugins/advanced-custom-fields.min.css',
@@ -489,7 +490,7 @@ return [
 				'id'          => 'mobile-menu',
 				'name'        => __( 'Mobile Menu', 'mai-engine' ),
 				'description' => __( 'The Mobile Menu widget area.', 'mai-engine' ),
-				'location'    => 'genesis_header',
+				'location'    => 'mai_after_header_wrap',
 			],
 		],
 		'remove' => [

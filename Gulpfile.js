@@ -55,15 +55,21 @@ toolkit.extendConfig(
 			svg: './assets/svg/'
 		},
 		js: {
+			'admin': [
+				'./assets/js/admin.js',
+			],
+			'customizer': [
+				'./assets/js/customizer.js',
+			],
 			'global': [
-				'./assets/js/filters.js',
-				'./assets/js/menu.js',
-				'./assets/js/scroll.js',
-				'./assets/js/toggle.js'
+				'./assets/js/global.js',
 			],
 			'header': [
 				'./assets/js/header.js',
 			],
+			'menus': [
+				'./assets/js/menus.js',
+			]
 		},
 		css: {
 			basefontsize: 10,
