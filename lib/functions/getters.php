@@ -921,7 +921,7 @@ function mai_get_icon( $args ) {
 
 	$args = array_map(
 		'esc_html',
-		$args,
+		$args
 	);
 
 	$svg = mai_get_svg( $args['icon'], $args['style'] );
