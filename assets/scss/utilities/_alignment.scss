@@ -32,6 +32,15 @@
 	margin-left: var(--alignfull-margin-left, calc(-50vw + 50%));
 }
 
+.has-boxed-container {
+
+	@include mq(lg) {
+		--alignfull-max-width: var(--site-container-max-width);
+		--alignfull-margin-right: calc(((var(--site-container-max-width) - var(--content-width)) / 2) * -1);
+		--alignfull-margin-left: calc(((var(--site-container-max-width) - var(--content-width)) / 2) * -1);
+	}
+}
+
 .content-sidebar,
 .sidebar-content {
 	--alignfull-left: auto;
