@@ -3,6 +3,9 @@
 	line-height: var(--title-area-line-height, var(--line-height-heading));
 	text-align: var(--title-area-text-align, start);
 	transition: var(--title-area-transition, var(--transition));
+
+	--link-text-decoration: none;
+	--link-text-decoration-hover: none;
 }
 
 .has-logo-center {

@@ -97,7 +97,7 @@ msgstr ""
 msgid "The Mobile Menu widget area."
 msgstr ""
 
-#: lib/admin/page-header.php:62, lib/classes/class-mai-entry-settings.php:1270, lib/functions/getters.php:740, lib/functions/getters.php:754, lib/functions/getters.php:773
+#: lib/admin/page-header.php:62, lib/classes/class-mai-entry-settings.php:1270, lib/functions/getters.php:740, lib/functions/getters.php:754, lib/functions/getters.php:779
 msgid "Image"
 msgstr ""
 
@@ -137,19 +137,19 @@ msgstr ""
 msgid "Image Orientation"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:135, lib/functions/getters.php:818
+#: lib/classes/class-mai-entry-settings.php:135, lib/functions/getters.php:821
 msgid "Landscape"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:136, lib/functions/getters.php:819
+#: lib/classes/class-mai-entry-settings.php:136, lib/functions/getters.php:822
 msgid "Portrait"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:137, lib/functions/getters.php:820
+#: lib/classes/class-mai-entry-settings.php:137, lib/functions/getters.php:823
 msgid "Square"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:138, lib/functions/getters.php:826
+#: lib/classes/class-mai-entry-settings.php:138, lib/functions/getters.php:829
 msgid "Custom"
 msgstr ""
 
@@ -181,7 +181,7 @@ msgstr ""
 msgid "Background"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:197, lib/classes/class-mai-entry-settings.php:1273, lib/functions/getters.php:742, lib/functions/getters.php:757, lib/functions/getters.php:776, config/_default/settings/archive.php:156, config/_default/settings/grid.php:209
+#: lib/classes/class-mai-entry-settings.php:197, lib/classes/class-mai-entry-settings.php:1273, lib/functions/getters.php:742, lib/functions/getters.php:757, lib/functions/getters.php:782, config/_default/settings/archive.php:156, config/_default/settings/grid.php:209
 msgid "Header Meta"
 msgstr ""
 
@@ -201,7 +201,7 @@ msgstr ""
 msgid "Read More"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:271, lib/classes/class-mai-entry-settings.php:1280, lib/functions/getters.php:746, lib/functions/getters.php:764, lib/functions/getters.php:782, config/_default/settings/archive.php:213, config/_default/settings/grid.php:288
+#: lib/classes/class-mai-entry-settings.php:271, lib/classes/class-mai-entry-settings.php:1280, lib/functions/getters.php:746, lib/functions/getters.php:764, lib/functions/getters.php:788, config/_default/settings/archive.php:213, config/_default/settings/grid.php:288
 msgid "Footer Meta"
 msgstr ""
 
@@ -433,7 +433,7 @@ msgstr ""
 msgid "Exclude"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:1254, lib/functions/getters.php:796
+#: lib/classes/class-mai-entry-settings.php:1254, lib/functions/getters.php:799
 msgid "Site Default"
 msgstr ""
 
@@ -441,39 +441,39 @@ msgstr ""
 msgid "Excerpt"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:1276, lib/functions/getters.php:744, lib/functions/getters.php:760, lib/functions/getters.php:778
+#: lib/classes/class-mai-entry-settings.php:1276, lib/functions/getters.php:744, lib/functions/getters.php:760, lib/functions/getters.php:784
 msgid "Content"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:1278, lib/functions/getters.php:745, lib/functions/getters.php:762, lib/functions/getters.php:780
+#: lib/classes/class-mai-entry-settings.php:1278, lib/functions/getters.php:745, lib/functions/getters.php:762, lib/functions/getters.php:786
 msgid "Read More link"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:1369, lib/functions/getters.php:838
+#: lib/classes/class-mai-entry-settings.php:1369, lib/functions/getters.php:841
 msgid "1"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:1370, lib/functions/getters.php:839
+#: lib/classes/class-mai-entry-settings.php:1370, lib/functions/getters.php:842
 msgid "2"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:1371, lib/functions/getters.php:840
+#: lib/classes/class-mai-entry-settings.php:1371, lib/functions/getters.php:843
 msgid "3"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:1372, lib/functions/getters.php:841
+#: lib/classes/class-mai-entry-settings.php:1372, lib/functions/getters.php:844
 msgid "4"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:1373, lib/functions/getters.php:842
+#: lib/classes/class-mai-entry-settings.php:1373, lib/functions/getters.php:845
 msgid "5"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:1374, lib/functions/getters.php:843
+#: lib/classes/class-mai-entry-settings.php:1374, lib/functions/getters.php:846
 msgid "6"
 msgstr ""
 
-#: lib/classes/class-mai-entry-settings.php:1375, lib/functions/getters.php:844
+#: lib/classes/class-mai-entry-settings.php:1375, lib/functions/getters.php:847
 msgid "Auto"
 msgstr ""
 
@@ -625,27 +625,31 @@ msgstr ""
 msgid "Author Archives"
 msgstr ""
 
-#: lib/functions/getters.php:784
+#: lib/functions/getters.php:773
+msgid "Title (when page header is hidden)"
+msgstr ""
+
+#: lib/functions/getters.php:790
 msgid "Author Box"
 msgstr ""
 
-#: lib/functions/getters.php:785
+#: lib/functions/getters.php:791
 msgid "After Entry Widget Area"
 msgstr ""
 
-#: lib/functions/getters.php:786
+#: lib/functions/getters.php:792
 msgid "Previous/Next Entry Nav"
 msgstr ""
 
-#: lib/structure/page-header.php:174
+#: lib/structure/page-header.php:153
 msgid "Latest Posts"
 msgstr ""
 
-#: lib/structure/page-header.php:199, lib/structure/page-header.php:266
+#: lib/structure/page-header.php:178, lib/structure/page-header.php:245
 msgid "Search results for: "
 msgstr ""
 
-#: lib/structure/page-header.php:214
+#: lib/structure/page-header.php:193
 msgid "Not found, error 404"
 msgstr ""
 

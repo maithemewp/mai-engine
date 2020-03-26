@@ -6,7 +6,7 @@
 .button {
 
 	&:disabled {
-		--hover-filter: unset;
+		--filter-hover: unset;
 
 		&,
 		&:hover,
@@ -36,7 +36,7 @@
 	--button-border: var(--border);
 	--button-color: var(--color-primary);
 	--button-background: transparent;
-	--hover-filter: unset;
+	--filter-hover: unset;
 
 	&:hover,
 	&:focus {
@@ -54,7 +54,7 @@
 	--button-border-color: var(--color-white);
 	--button-background: transparent;
 	--button-color: var(--color-white);
-	--hover-filter: unset;
+	--filter-hover: unset;
 
 	&:hover,
 	&:focus {
