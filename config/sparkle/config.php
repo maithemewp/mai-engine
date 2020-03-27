@@ -16,6 +16,9 @@ return [
 	'google-fonts' => [
 		'https://fonts.googleapis.com/css?family=Josefin+Sans:600,700|Work+Sans:400,400i,500,500i,600,600i,700,700i&display=swap',
 	],
+	'editor-color-palette' => [
+
+	],
 	'image-sizes' => [
 		'add'    => [
 			'portrait'  => '3:4',
@@ -26,6 +29,7 @@ return [
 		'add' => [
 			'boxed-container',
 			'sticky-header',
+			'transparent-header',
 		],
 	],
 	'page-header-single'  => [ 'page' ],

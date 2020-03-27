@@ -54,10 +54,6 @@
 	box-shadow: var(--page-header-inner-shadow);
 }
 
-.has-transparent-header {
-	--page-header-wrap-margin-top: var(--spacing-xxl);
-}
-
 .page-header-description {
 	margin: var(--page-header-description-margin, 0);
 

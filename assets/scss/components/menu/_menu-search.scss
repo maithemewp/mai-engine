@@ -18,12 +18,12 @@
 
 .header-search-toggle {
 	padding: var(--spacing-xs);
-	color: var(--menu-item-link-color);
+	color: var(--link-color);
 	background-color: transparent;
 
 	&:hover,
 	&:focus {
-		color: var(--menu-item-link-color);
+		color: var(--link-color);
 		background-color: transparent;
 	}
 }

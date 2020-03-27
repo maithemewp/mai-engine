@@ -40,8 +40,8 @@
 	align-items: center;
 }
 
-.has-transparent-header {
-	--menu-item-link-color: var(--color-white);
+.has-transparent-header .menu {
+	--link-color: var(--color-white);
 }
 
 .is-desktop {

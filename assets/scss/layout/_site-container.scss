@@ -13,5 +13,9 @@
 	@include mq(lg) {
 		--site-container-max-width: var(--breakpoint-xl);
 		--site-container-margin: var(--spacing-md) auto;
+
+		&.has-transparent-header {
+			--site-container-margin: 0 auto var(--spacing-md);
+		}
 	}
 }
