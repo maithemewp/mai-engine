@@ -32,6 +32,20 @@
 	margin-left: var(--alignfull-margin-left, calc(-50vw + 50%));
 }
 
+.max-width-md,
+.max-width-sm {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.max-width-md {
+	max-width: var(--breakpoint-md);
+}
+
+.max-width-sm {
+	max-width: var(--breakpoint-sm);
+}
+
 .has-boxed-container {
 
 	@include mq(lg) {
