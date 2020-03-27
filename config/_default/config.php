@@ -261,8 +261,8 @@ return [
 				'src'      => mai_get_asset_url( 'admin.js' ),
 				'editor'   => true, // Only load in the admin editor.
 				'localize' => [
-					'name' => 'maiGridQueryVars',
-					'data' => 'mai_get_grid_localized_data',
+					'name' => 'maiAdminVars',
+					'data' => 'mai_get_admin_localized_data',
 				],
 			],
 

@@ -1,17 +1,41 @@
 .mai-icon {
-	display: block;
+	display: var(--icon-display);
+	margin: var(--icon-margin);
+	text-align: var(--icon-align);
 
 	@include clearfix();
 
 	svg {
-		display: var(--icon-display);
-		justify-content: var(--icon-align);
-		width: var(--icon-size);
-		margin: var(--icon-margin);
-		padding: var(--icon-padding);
+		position: relative;
+		max-width: var(--icon-size);
+		max-height: var(--icon-size);
 		color: var(--icon-color);
-		border: var(--icon-border, unset);
-		border-radius: var(--icon-border-radius, unset);
-		box-shadow: var(--icon-box-shadow, unset);
+		fill: currentColor;
 	}
+
+}
+
+.mai-icon-wrap {
+	display: block;
+	width: calc(var(--icon-size) + (var(--icon-padding) * 2));
+	height: calc(var(--icon-size) + (var(--icon-padding) * 2));
+	margin: auto;
+	padding: var(--icon-padding);
+	text-align: center;
+	background-color: var(--icon-background);
+	border: var(--icon-border, unset);
+	border-radius: var(--icon-border-radius, unset);
+	box-shadow: var(--icon-box-shadow, unset);
+}
+
+:root {
+	--icon-size: 2rem;
+}
+
+.menu {
+	--icon-size: 2rem;
+}
+
+.entry-content {
+	--icon-size: 4rem;
 }

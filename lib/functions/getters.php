@@ -433,17 +433,18 @@ function mai_get_flex_align( $value ) {
 /**
  * Get the unit value.
  *
- * If only a number value, force to pixels.
+ * If only a number value, use the fallback..
  *
  * @since 0.1.0
  *
- * @param  string $value The value. Could be integer 24 or with type 24px, 2rem, etc.
+ * @param  string  $value     The value. Could be integer 24 or with type 24px, 2rem, etc.
+ * @param  string  $fallback  The fallback unit value.
  *
  * @return string
  */
-function mai_get_unit_value( $value ) {
+function mai_get_unit_value( $value, $fallback = 'px' ) {
 	if ( empty( $value ) || is_numeric( $value ) ) {
-		return sprintf( '%spx', intval( $value ) );
+		return sprintf( '%s%s', intval( $value ), $fallback );
 	}
 
 	return trim( $value );
@@ -979,26 +980,28 @@ function mai_get_icon( $args ) {
 	$attributes['style'] .= sprintf( '--icon-size:%s;', mai_get_unit_value( $args['size'] ) );
 	$attributes['style'] .= sprintf( '--icon-color:%s;', $args['color_icon'] );
 	$attributes['style'] .= sprintf( '--icon-margin:%s %s %s %s;', mai_get_unit_value( $args['margin_top'] ), mai_get_unit_value( $args['margin_right'] ), mai_get_unit_value( $args['margin_bottom'] ), mai_get_unit_value( $args['margin_left'] ) );
-	$attributes['style'] .= sprintf( '--icon-padding:%s %s %s %s;', mai_get_unit_value( $args['padding_top'] ), mai_get_unit_value( $args['padding_right'] ), mai_get_unit_value( $args['padding_bottom'] ), mai_get_unit_value( $args['padding_left'] ) );
+	$attributes['style'] .= sprintf( '--icon-padding:%s;', mai_get_unit_value( $args['padding'] ) );
+	// $attributes['style'] .= sprintf( '--icon-padding:%s %s %s %s;', mai_get_unit_value( $args['padding_top'] ), mai_get_unit_value( $args['padding_right'] ), mai_get_unit_value( $args['padding_bottom'] ), mai_get_unit_value( $args['padding_left'] ) );
 	if ( $args['color_background'] ) {
 		$attributes['style'] .= sprintf( '--icon-background:%s;', $args['color_background'] );
 	}
 	if ( $args['color_shadow'] ) {
-		$attributes['style'] .= sprintf( '--icon-shadow:%s;', $args['color_shadow'] );
+		$attributes['style'] .= sprintf( '--icon-box-shadow:%s %s %s %s;', mai_get_unit_value( $args['x_offset'] ), mai_get_unit_value( $args['y_offset'] ), mai_get_unit_value( $args['blur'] ), $args['color_shadow'] );
 	}
 	if ( $args['border_width'] && $args['color_border'] ) {
 		$attributes['style'] .= sprintf( '--icon-border:%s solid %s;', mai_get_unit_value( $args['border_width'] ), mai_get_unit_value( $args['color_border'] ) );
 	}
 	if ( $args['border_radius'] ) {
-		$attributes['style'] .= sprintf( '--icon-border-radius:%s;', $args['border_radius'] );
+		$radius = explode( ' ', trim( $args['border_radius'] ) );
+		$radius = array_map( 'mai_get_unit_value', $radius );
+		$radius = array_filter( $radius );
+		$attributes['style'] .= sprintf( '--icon-border-radius:%s;', implode( ' ', $radius ) );
 	}
-
-	// TODO: x_offset, y_offset, blur.
 
 	return genesis_markup(
 		[
-			'open'    => '<span %s>',
-			'close'   => '</span>',
+			'open'    => '<span %s><span class="mai-icon-wrap">',
+			'close'   => '</span></span>',
 			'content' => $svg,
 			'context' => 'mai-icon',
 			'echo'    => false,
@@ -1006,6 +1009,38 @@ function mai_get_icon( $args ) {
 		]
 	);
 
+}
+
+/**
+ * Helper function that returns list of shortcode attributes.
+ *
+ * @since 0.1.0
+ *
+ * @return array
+ */
+function mai_get_icon_default_args() {
+	return [
+		'style'            => 'light',
+		'icon'             => 'bolt',
+		'display'          => 'flex',
+		'align'            => 'center',
+		'size'             => '40',
+		'class'            => '',
+		'color_icon'       => 'currentColor',
+		'color_background' => '',
+		'color_border'     => '',
+		'color_shadow'     => '',
+		'margin_top'       => 0,
+		'margin_right'     => 0,
+		'margin_left'      => 0,
+		'margin_bottom'    => 0,
+		'padding'          => 0,
+		'border_width'     => 0,
+		'border_radius'    => '50%',
+		'x_offset'         => 0,
+		'y_offset'         => 0,
+		'blur'             => 0,
+	];
 }
 
 /**
@@ -1027,4 +1062,40 @@ function mai_get_svg( $name, $style = 'regular' ) {
 
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 	return file_get_contents( $file );
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return array
+ */
+function mai_get_admin_localized_data() {
+	$palette  = mai_get_color_palette();
+	$palette  = wp_list_pluck( $palette, 'color', 'slug' );
+	unset( $palette['black'] ); // Too many for iris picker, we need to remove some.
+	unset( $palette['white'] );
+	unset( $palette['light'] );
+	$palette  = array_values( $palette ); // Remove keys.
+	$data     = [ 'palette' => $palette ];
+	$settings = mai_get_config( 'grid-settings' );
+	foreach( $settings as $key => $field ) {
+		if ( 'tab' === $field['type'] ) {
+			continue;
+		}
+		foreach( [ 'post', 'term', 'user' ] as $type ) {
+			if ( ! in_array( $type, $field['block'] ) ) {
+				continue;
+			}
+			if ( isset( $field['atts']['sub_fields'] ) ) {
+				foreach( $field['atts']['sub_fields'] as $sub_key => $sub_field ) {
+					$data[ $type ][ $sub_field['name'] ] = $sub_key;
+				}
+			} else {
+				$data[ $type ][ $field['name'] ] = $key;
+			}
+		}
+	}
+	return $data;
 }

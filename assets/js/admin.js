@@ -4,28 +4,27 @@ jQuery(document).ready(function($) {
 		return
 	}
 
-	acf.addFilter( 'select2_ajax_data', function( data, args, $input, field, instance ) {
-
-		// If not Mai Icon select field.
-		if ( 'field_5e3f4bcd867e8' !== data.field_key ) {
-			return data;
-		}
-
-		var $wrapper = $input.parents( '.acf-block-fields' );
-		var $style   = $wrapper.find( 'input[name="acf-block_5e7cf8dc21367[field_5e3f49758c633]"]:checked' );
-		data.style   = $style.val();
-
-		return data;
+	// ACF color picker default color palette.
+	acf.add_filter( 'color_picker_args', function( args, $field ) {
+		args.palettes = maiAdminVars.palette;
+		return args;
 	});
 
-	var post = maiGridQueryVars.post;
-	var term = maiGridQueryVars.term;
-	var user = maiGridQueryVars.user;
+	var icons = [ "field_5e3f4bcd978f9", "field_5e3f4bcd867e8" ];
+	var post  = maiAdminVars.post;
+	var term  = maiAdminVars.term;
+	var user  = maiAdminVars.user;
 
 	acf.addFilter( 'select2_ajax_data', function( data, args, $input, field, instance ) {
 
+		// If Mai Icon or Icon (Brands) select field.
+		if ( icons.includes( data.field_key ) ) {
+			data.style = acf.getField( 'field_5e3f49758c633' ).val(); // Style.
+		}
+
 		// Mai Post Grid.
-		if ( $.inArray( data.field_key, Object.values( post ) ) >= 0 ) {
+		// if ( $.inArray( data.field_key, Object.values( post ) ) >= 0 ) {
+		if ( Object.values( post ).includes( data.field_key ) ) {
 
 			// Bail if the post_type field.
 			if ( post.post_type === data.field_key ) {
@@ -60,7 +59,8 @@ jQuery(document).ready(function($) {
 		}
 
 		// Mai Term Grid.
-		if ( $.inArray( data.field_key, Object.values( term ) ) >= 0 ) {
+		// if ( $.inArray( data.field_key, Object.values( term ) ) >= 0 ) {
+		if ( Object.values( term ).includes( data.field_key ) ) {
 
 			// Bail if the taxonomy field.
 			if ( term.taxonomy === data.field_key ) {
@@ -89,22 +89,25 @@ jQuery(document).ready(function($) {
 	});
 
 	function getPostType( $input, keys ) {
-		var $wrapper  = $input.parents( '.acf-block-fields' );
-		var $postType = $wrapper.find( '.acf-field[data-key="' + keys.post_type + '"] select' );
-		return $postType.val();
+		return acf.getField( keys.post_type ).val();
+		// var $wrapper  = $input.parents( '.acf-block-fields' );
+		// var $postType = $wrapper.find( '.acf-field[data-key="' + keys.post_type + '"] select' );
+		// return $postType.val();
 	}
 
 	function getRowTaxonomy( $input, keys ) {
-		var $wrapper  = $input.parents( '.acf-row' );
-		var $taxonomy = $wrapper.find( '.acf-field[data-key="' + keys.taxonomy + '"] select' );
-		return $taxonomy.val();
+		return acf.getField( keys.taxonomy ).val();
+		// var $wrapper  = $input.parents( '.acf-row' );
+		// var $taxonomy = $wrapper.find( '.acf-field[data-key="' + keys.taxonomy + '"] select' );
+		// return $taxonomy.val();
 	}
 
 
 	function getTaxonomy( $input, keys ) {
-		var $wrapper  = $input.parents( '.acf-block-fields' );
-		var $taxonomy = $wrapper.find( '.acf-field[data-key="' + keys.taxonomy + '"] select' );
-		return $taxonomy.val();
+		return acf.getField( keys.taxonomy ).val();
+		// var $wrapper  = $input.parents( '.acf-block-fields' );
+		// var $taxonomy = $wrapper.find( '.acf-field[data-key="' + keys.taxonomy + '"] select' );
+		// return $taxonomy.val();
 	}
 
 });

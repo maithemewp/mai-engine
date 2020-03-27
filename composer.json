@@ -65,12 +65,5 @@
     "fixer": "vendor/bin/php-cs-fixer fix lib/ && php-cs-fixer fix config/",
     "test-unit": "composer dump && vendor/bin/phpunit --testsuite unit --color=always",
     "test-integration": "composer dump && vendor/bin/phpunit --testsuite integration --configuration tests/phpunit/integration/phpunit.xml.dist --color=always"
-  },
-  "extra": {
-    "installer-paths": {
-      "vendor/wpackagist-plugin/advanced-custom-fields-font-awesome": [
-        "wpackagist-plugin/advanced-custom-fields-font-awesome"
-      ]
-    }
   }
 }

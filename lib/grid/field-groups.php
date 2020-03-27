@@ -167,33 +167,3 @@ function mai_get_acf_field_data( $key, $field ) {
 
 	return $data;
 }
-
-/**
- * Description of expected behavior.
- *
- * @since 1.0.0
- *
- * @return array
- */
-function mai_get_grid_localized_data() {
-	$data     = [];
-	$settings = mai_get_config( 'grid-settings' );
-	foreach( $settings as $key => $field ) {
-		if ( 'tab' === $field['type'] ) {
-			continue;
-		}
-		foreach( [ 'post', 'term', 'user' ] as $type ) {
-			if ( ! in_array( $type, $field['block'] ) ) {
-				continue;
-			}
-			if ( isset( $field['atts']['sub_fields'] ) ) {
-				foreach( $field['atts']['sub_fields'] as $sub_key => $sub_field ) {
-					$data[ $type ][ $sub_field['name'] ] = $sub_key;
-				}
-			} else {
-				$data[ $type ][ $field['name'] ] = $key;
-			}
-		}
-	}
-	return $data;
-}

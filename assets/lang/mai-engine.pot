@@ -97,7 +97,7 @@ msgstr ""
 msgid "The Mobile Menu widget area."
 msgstr ""
 
-#: lib/admin/page-header.php:62, lib/functions/getters.php:740, lib/functions/getters.php:754, lib/functions/getters.php:779
+#: lib/admin/page-header.php:62, lib/functions/getters.php:741, lib/functions/getters.php:755, lib/functions/getters.php:780
 msgid "Image"
 msgstr ""
 
@@ -105,20 +105,136 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: lib/blocks/icon.php:25, lib/blocks/icon.php:92, lib/blocks/icon.php:110
-msgid "Icon"
+#: lib/blocks/icon.php:25
+msgid "Mai Icon"
 msgstr ""
 
 #: lib/blocks/icon.php:26
 msgid "A custom icon block."
 msgstr ""
 
-#: lib/blocks/icon.php:171
+#: lib/blocks/icon.php:115, lib/blocks/icon.php:133
+msgid "Icon"
+msgstr ""
+
+#: lib/blocks/icon.php:121
 msgid "Style"
 msgstr ""
 
-#: lib/blocks/icon.php:254, config/_default/settings/archive.php:15, config/_default/settings/grid.php:453, config/_default/settings/single.php:15
-msgid "Layout"
+#: lib/blocks/icon.php:125
+msgid "Light"
+msgstr ""
+
+#: lib/blocks/icon.php:126
+msgid "Regular"
+msgstr ""
+
+#: lib/blocks/icon.php:127
+msgid "Solid"
+msgstr ""
+
+#: lib/blocks/icon.php:128
+msgid "Brands"
+msgstr ""
+
+#: lib/blocks/icon.php:151
+msgid "Icon (Brands)"
+msgstr ""
+
+#: lib/blocks/icon.php:170, config/_default/settings/grid.php:15
+msgid "Display"
+msgstr ""
+
+#: lib/blocks/icon.php:174
+msgid "Inline"
+msgstr ""
+
+#: lib/blocks/icon.php:175
+msgid "Block"
+msgstr ""
+
+#: lib/blocks/icon.php:184
+msgid "Align"
+msgstr ""
+
+#: lib/blocks/icon.php:187, lib/blocks/icon.php:329, config/_default/settings/archive.php:363, config/_default/settings/grid.php:563
+msgid "Left"
+msgstr ""
+
+#: lib/blocks/icon.php:188, config/_default/settings/archive.php:84, config/_default/settings/archive.php:249, config/_default/settings/archive.php:364, config/_default/settings/grid.php:96, config/_default/settings/grid.php:330, config/_default/settings/grid.php:564
+msgid "Center"
+msgstr ""
+
+#: lib/blocks/icon.php:189, lib/blocks/icon.php:337, config/_default/settings/archive.php:365, config/_default/settings/grid.php:565
+msgid "Right"
+msgstr ""
+
+#: lib/blocks/icon.php:199
+msgid "Size"
+msgstr ""
+
+#: lib/blocks/icon.php:200
+msgid "Use 0 for theme default"
+msgstr ""
+
+#: lib/blocks/icon.php:208
+msgid "Styles"
+msgstr ""
+
+#: lib/blocks/icon.php:213
+msgid "Icon Color"
+msgstr ""
+
+#: lib/blocks/icon.php:219, config/_default/settings/archive.php:91, config/_default/settings/grid.php:103
+msgid "Background"
+msgstr ""
+
+#: lib/blocks/icon.php:225
+msgid "Border Color"
+msgstr ""
+
+#: lib/blocks/icon.php:231
+msgid "Border Width"
+msgstr ""
+
+#: lib/blocks/icon.php:245
+msgid "Shadow"
+msgstr ""
+
+#: lib/blocks/icon.php:251
+msgid "X Offset"
+msgstr ""
+
+#: lib/blocks/icon.php:264
+msgid "Y Offset"
+msgstr ""
+
+#: lib/blocks/icon.php:277
+msgid "Blur"
+msgstr ""
+
+#: lib/blocks/icon.php:290
+msgid "Padding"
+msgstr ""
+
+#: lib/blocks/icon.php:298
+msgid "Round Corners"
+msgstr ""
+
+#: lib/blocks/icon.php:303
+msgid "50%"
+msgstr ""
+
+#: lib/blocks/icon.php:307
+msgid "Margin"
+msgstr ""
+
+#: lib/blocks/icon.php:313, lib/customize/page-header.php:76, config/_default/settings/archive.php:261, config/_default/settings/archive.php:383, config/_default/settings/grid.php:350, config/_default/settings/grid.php:591
+msgid "Top"
+msgstr ""
+
+#: lib/blocks/icon.php:321, lib/customize/page-header.php:77, config/_default/settings/archive.php:263, config/_default/settings/archive.php:385, config/_default/settings/grid.php:352, config/_default/settings/grid.php:593
+msgid "Bottom"
 msgstr ""
 
 #: lib/classes/class-mai-entry.php:867, config/_default/settings/archive.php:207, config/_default/settings/grid.php:278
@@ -181,14 +297,6 @@ msgstr ""
 msgid "Accepts all unit values (px, rem, em, vw, etc)."
 msgstr ""
 
-#: lib/customize/page-header.php:76, config/_default/settings/archive.php:261, config/_default/settings/archive.php:383, config/_default/settings/grid.php:350, config/_default/settings/grid.php:591
-msgid "Top"
-msgstr ""
-
-#: lib/customize/page-header.php:77, config/_default/settings/archive.php:263, config/_default/settings/archive.php:385, config/_default/settings/grid.php:352, config/_default/settings/grid.php:593
-msgid "Bottom"
-msgstr ""
-
 #: lib/customize/singular.php:29
 msgid "Singular Content"
 msgstr ""
@@ -217,91 +325,91 @@ msgstr ""
 msgid "Author Archives"
 msgstr ""
 
-#: lib/functions/getters.php:741, lib/functions/getters.php:756, lib/functions/getters.php:775, config/_default/settings/grid.php:662, config/_default/settings/grid.php:990, config/_default/settings/grid.php:1241
+#: lib/functions/getters.php:742, lib/functions/getters.php:757, lib/functions/getters.php:776, config/_default/settings/grid.php:662, config/_default/settings/grid.php:990, config/_default/settings/grid.php:1241
 msgid "Title"
 msgstr ""
 
-#: lib/functions/getters.php:742, lib/functions/getters.php:757, lib/functions/getters.php:782, config/_default/settings/archive.php:156, config/_default/settings/grid.php:209
+#: lib/functions/getters.php:743, lib/functions/getters.php:758, lib/functions/getters.php:783, config/_default/settings/archive.php:156, config/_default/settings/grid.php:209
 msgid "Header Meta"
 msgstr ""
 
-#: lib/functions/getters.php:743, lib/functions/getters.php:759
+#: lib/functions/getters.php:744, lib/functions/getters.php:760
 msgid "Excerpt"
 msgstr ""
 
-#: lib/functions/getters.php:744, lib/functions/getters.php:760, lib/functions/getters.php:784
+#: lib/functions/getters.php:745, lib/functions/getters.php:761, lib/functions/getters.php:785
 msgid "Content"
 msgstr ""
 
-#: lib/functions/getters.php:745, lib/functions/getters.php:762, lib/functions/getters.php:786
+#: lib/functions/getters.php:746, lib/functions/getters.php:763, lib/functions/getters.php:787
 msgid "Read More link"
 msgstr ""
 
-#: lib/functions/getters.php:746, lib/functions/getters.php:764, lib/functions/getters.php:788, config/_default/settings/archive.php:213, config/_default/settings/grid.php:288
+#: lib/functions/getters.php:747, lib/functions/getters.php:765, lib/functions/getters.php:789, config/_default/settings/archive.php:213, config/_default/settings/grid.php:288
 msgid "Footer Meta"
 msgstr ""
 
-#: lib/functions/getters.php:773
+#: lib/functions/getters.php:774
 msgid "Title (when page header is hidden)"
 msgstr ""
 
-#: lib/functions/getters.php:790
+#: lib/functions/getters.php:791
 msgid "Author Box"
 msgstr ""
 
-#: lib/functions/getters.php:791
+#: lib/functions/getters.php:792
 msgid "After Entry Widget Area"
 msgstr ""
 
-#: lib/functions/getters.php:792
+#: lib/functions/getters.php:793
 msgid "Previous/Next Entry Nav"
 msgstr ""
 
-#: lib/functions/getters.php:799
+#: lib/functions/getters.php:800
 msgid "Site Default"
 msgstr ""
 
-#: lib/functions/getters.php:821
+#: lib/functions/getters.php:822
 msgid "Landscape"
 msgstr ""
 
-#: lib/functions/getters.php:822
+#: lib/functions/getters.php:823
 msgid "Portrait"
 msgstr ""
 
-#: lib/functions/getters.php:823
+#: lib/functions/getters.php:824
 msgid "Square"
 msgstr ""
 
-#: lib/functions/getters.php:829
+#: lib/functions/getters.php:830
 msgid "Custom"
 msgstr ""
 
-#: lib/functions/getters.php:841
+#: lib/functions/getters.php:842
 msgid "1"
 msgstr ""
 
-#: lib/functions/getters.php:842
+#: lib/functions/getters.php:843
 msgid "2"
 msgstr ""
 
-#: lib/functions/getters.php:843
+#: lib/functions/getters.php:844
 msgid "3"
 msgstr ""
 
-#: lib/functions/getters.php:844
+#: lib/functions/getters.php:845
 msgid "4"
 msgstr ""
 
-#: lib/functions/getters.php:845
+#: lib/functions/getters.php:846
 msgid "5"
 msgstr ""
 
-#: lib/functions/getters.php:846
+#: lib/functions/getters.php:847
 msgid "6"
 msgstr ""
 
-#: lib/functions/getters.php:847
+#: lib/functions/getters.php:848
 msgid "Auto"
 msgstr ""
 
@@ -315,6 +423,10 @@ msgstr ""
 
 #: lib/structure/page-header.php:193
 msgid "Not found, error 404"
+msgstr ""
+
+#: config/_default/settings/archive.php:15, config/_default/settings/grid.php:453, config/_default/settings/single.php:15
+msgid "Layout"
 msgstr ""
 
 #: config/_default/settings/archive.php:16, config/_default/settings/single.php:16
@@ -341,10 +453,6 @@ msgstr ""
 msgid "Full"
 msgstr ""
 
-#: config/_default/settings/archive.php:84, config/_default/settings/archive.php:249, config/_default/settings/archive.php:364, config/_default/settings/grid.php:96, config/_default/settings/grid.php:330, config/_default/settings/grid.php:564
-msgid "Center"
-msgstr ""
-
 #: config/_default/settings/archive.php:85, config/_default/settings/grid.php:97
 msgid "Left Top"
 msgstr ""
@@ -367,10 +475,6 @@ msgstr ""
 
 #: config/_default/settings/archive.php:90, config/_default/settings/grid.php:102
 msgid "Right Full"
-msgstr ""
-
-#: config/_default/settings/archive.php:91, config/_default/settings/grid.php:103
-msgid "Background"
 msgstr ""
 
 #: config/_default/settings/archive.php:103, config/_default/settings/grid.php:122
@@ -457,14 +561,6 @@ msgstr ""
 msgid "Align Columns"
 msgstr ""
 
-#: config/_default/settings/archive.php:363, config/_default/settings/grid.php:563
-msgid "Left"
-msgstr ""
-
-#: config/_default/settings/archive.php:365, config/_default/settings/grid.php:565
-msgid "Right"
-msgstr ""
-
 #: config/_default/settings/archive.php:377, config/_default/settings/grid.php:584
 msgid "Align Columns (vertical)"
 msgstr ""
@@ -483,10 +579,6 @@ msgstr ""
 
 #: config/_default/settings/archive.php:413
 msgid "Sticky posts are not included in count."
-msgstr ""
-
-#: config/_default/settings/grid.php:15
-msgid "Display"
 msgstr ""
 
 #: config/_default/settings/grid.php:631, config/_default/settings/grid.php:699, config/_default/settings/grid.php:1158
