@@ -294,15 +294,6 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'append'            => 'px',
 				],
 				[
-					'key'               => 'field_5e3f4b0a8c643',
-					'label'             => esc_html__( 'Round Corners', 'mai-engine' ),
-					'instructions'      => esc_html__( 'Accepts any unit value (%, px, etc.) and shorthand (0 16 0 16). Use 0px for square.', 'mai-theme' ),
-					'name'              => 'border_radius',
-					'type'              => 'text',
-					'default_value'     => '50%',
-					'placeholder'       => esc_html__( '50%', 'mai-engine' ),
-				],
-				[
 					'key'               => 'field_5e3f5b7g9d74b',
 					'label'             => esc_html__( 'Margin', 'mai-engine' ),
 					'name'              => 'margin_message',
@@ -339,6 +330,15 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					'type'              => 'number',
 					'default_value'     => 0,
 					'append'            => 'px',
+				],
+				[
+					'key'               => 'field_5e3f4b0a8c643',
+					'label'             => esc_html__( 'Round Corners', 'mai-engine' ),
+					'instructions'      => esc_html__( 'Accepts any unit value (%, px, etc.) and shorthand (0 16 0 16). Use 0px for square.', 'mai-theme' ),
+					'name'              => 'border_radius',
+					'type'              => 'text',
+					'default_value'     => '50%',
+					'placeholder'       => esc_html__( '50%', 'mai-engine' ),
 				],
 			],
 			'location'              => [

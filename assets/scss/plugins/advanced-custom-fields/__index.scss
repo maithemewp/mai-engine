@@ -60,6 +60,10 @@
 	border-top: 1px solid #e2e4e7;
 }
 
+.acf-block-panel .acf-block-fields div.acf-field[data-name="padding"] .acf-input {
+	max-width: calc(50% - 16px) !important;
+}
+
 .acf-block-panel .acf-block-fields div.acf-field[data-name="margin_message"] {
 	clear: both !important;
 	padding-bottom: 0;
