@@ -22,20 +22,25 @@ add_filter( 'pre_get_posts', 'mai_archive_posts_per_page' );
  * @return  void
  */
 function mai_archive_posts_per_page( $query ) {
+
 	// Bail if in the Dashboard.
 	if ( is_admin() ) {
 		return;
 	}
+
 	// Bail if not the main query.
 	if ( ! $query->is_main_query() ) {
 		return;
 	}
+
 	// Bail if not an archive.
 	if ( ! mai_is_type_archive() ) {
 		return;
 	}
+
 	// Get the template args.
 	$args = mai_get_template_args();
+
 	// Bail if no posts_per_page.
 	if ( ! isset( $args['posts_per_page'] ) || ( empty( $args['posts_per_page'] ) && '0' !== $args['posts_per_page'] ) ) {
 		return;
@@ -45,8 +50,14 @@ function mai_archive_posts_per_page( $query ) {
 	$query->set( 'posts_per_page', $args['posts_per_page'] );
 }
 
-// Mai loop.
 add_action( 'genesis_before_loop', 'mai_setup_archive_loop' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
 function mai_setup_archive_loop() {
 
 	// Bail if not an archive.

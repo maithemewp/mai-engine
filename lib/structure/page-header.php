@@ -112,12 +112,8 @@ function mai_do_page_header_image() {
 		}
 	}
 
-	if ( ! $image_id ) {
-		$header = get_option( 'mai_page_header' );
-
-		if ( $header && isset( $header['image'] ) && $header['image'] ) {
-			$image_id = $header['image'];
-		}
+	if ( ! $image_id && mai_get_option( 'page-header-image' ) ) {
+		$image_id = mai_get_option( 'page-header-image' );
 	}
 
 	$image_id = apply_filters( 'mai_page_header_image', $image_id );

@@ -9,39 +9,24 @@
  * @license   GPL-2.0-or-later
  */
 
-add_action( 'init', 'mai_page_header_customizer_settings' );
+add_action( 'after_setup_theme', 'mai_page_header_customizer_settings' );
 /**
  * Add page_header customizer settings.
  *
  * @return  void
  */
 function mai_page_header_customizer_settings() {
-
-	// Bail if no Kirki.
-	if ( ! class_exists( 'Kirki' ) ) {
-		return;
-	}
-
-	$config_id = 'mai_page_header';
-
-	/**
-	 * Kirki Config.
-	 */
-	Kirki::add_config(
-		$config_id,
-		[
-			'capability'  => 'edit_theme_options',
-			'option_type' => 'option',
-			'option_name' => $config_id,
-		]
-	);
+	$config_id = mai_get_handle();
+	$panel_id  = $config_id;
+	$section_id   = $panel_id . '-page-header';
 
 	Kirki::add_section(
-		$config_id,
+		$section_id,
 		[
 			'title'       => esc_attr__( 'Page Header', 'mai-engine' ),
 			'description' => '',
 			'priority'    => 60,
+			'panel'       => $panel_id,
 		]
 	);
 
@@ -49,9 +34,9 @@ function mai_page_header_customizer_settings() {
 		$config_id,
 		[
 			'type'     => 'image',
-			'settings' => 'image',
-			'label'    => esc_html__( 'Header Image', 'mai-engine' ),
-			'section'  => $config_id,
+			'settings' => 'page-header-image',
+			'label'    => esc_html__( 'Page Header Image', 'mai-engine' ),
+			'section'  => $section_id,
 			'default'  => '',
 			'choices'  => [
 				'save_as' => 'id',
@@ -63,21 +48,21 @@ function mai_page_header_customizer_settings() {
 		$config_id,
 		[
 			'type'        => 'dimensions',
-			'settings'    => 'spacing',
-			'label'       => esc_html__( 'Header Spacing', 'mai-engine' ),
+			'settings'    => 'page-header-spacing',
+			'label'       => esc_html__( 'Page Header Spacing', 'mai-engine' ),
 			'description' => esc_html__( 'Accepts all unit values (px, rem, em, vw, etc).', 'mai-engine' ),
-			'section'     => $config_id,
+			'section'     => $section_id,
 			'default'     => [
 				'top'    => '10vw',
 				'bottom' => '10vw',
 			],
-			'choices'  => [
+			'choices'     => [
 				'labels' => [
 					'top'    => esc_html__( 'Top', 'mai-engine' ),
 					'bottom' => esc_html__( 'Bottom', 'mai-engine' ),
 				],
 			],
-			'output'   => [
+			'output'      => [
 				[
 					'choice'   => 'top',
 					'element'  => ':root',

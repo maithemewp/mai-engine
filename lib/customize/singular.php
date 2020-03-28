@@ -9,37 +9,62 @@
  * @license   GPL-2.0-or-later
  */
 
-add_action( 'init', 'mai_single_customizer_settings' );
+add_action( 'after_setup_theme', 'mai_single_customizer_settings' );
 /**
  * Add single customizer settings from post_types in config.
  *
  * @return  void
  */
 function mai_single_customizer_settings() {
-	$post_types = mai_get_config( 'loop-single' );
+	$config     = mai_get_config( 'loop' );
+	$post_types = isset( $config['single'] ) ? $config['single'] : [];
 
-	if ( ! $post_types ) {
+	if ( empty( $post_types ) ) {
 		return;
 	}
 
-	// Singular Content panel.
 	Kirki::add_panel(
-		'mai_singular_content',
+		mai_get_handle() . '-singular-content',
 		[
 			'title'       => esc_attr__( 'Singular Content', 'mai-engine' ),
 			'description' => '',
-			'priority'    => 130,
+			'panel'       => mai_get_handle(),
 		]
 	);
 
 	foreach ( $post_types as $post_type ) {
-
-		// Bail if not a post type.
 		if ( ! post_type_exists( $post_type ) ) {
 			continue;
 		}
 
-		// Add the settings.
 		mai_add_single_customizer_settings( $post_type );
+	}
+}
+
+/**
+ * Add single customizer settings.
+ *
+ * @param  string $name The registered post type name.
+ */
+function mai_add_single_customizer_settings( $name ) {
+	$panel_id   = mai_get_handle() . '-singular-content';
+	$section_id = mai_get_handle() . '-single-' . $name;
+	$post_type  = get_post_type_object( $name );
+	$label      = $post_type->labels->name;
+	$fields     = mai_get_config( 'single-settings' );
+
+	Kirki::add_section(
+		$section_id,
+		[
+			'title' => $label,
+			'panel' => $panel_id,
+		]
+	);
+
+	foreach ( $fields as $field ) {
+		Kirki::add_field(
+			mai_get_handle(),
+			mai_get_kirki_field_data( $field, $section_id, $name )
+		);
 	}
 }

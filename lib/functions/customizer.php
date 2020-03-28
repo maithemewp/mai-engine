@@ -10,151 +10,27 @@
  */
 
 /**
- * Add archive customizer settings.
- *
- * @param  string $name The registered content type name.
- * @param  string $type The object type. Either 'taxonomy', 'post_type', 'search', 'author'.
- *
- * @todo: Date?
- */
-function mai_add_archive_customizer_settings( $name, $type = 'post_type' ) {
-
-	// Bail if no Kirki.
-	if ( ! class_exists( 'Kirki' ) ) {
-		return;
-	}
-
-	// Bail if no name.
-	if ( ! $name ) {
-		return;
-	}
-
-	$config_id = 'mai_archive_' . $name;
-
-	/**
-	 * Kirki Config.
-	 */
-	Kirki::add_config(
-		$config_id,
-		[
-			'capability'  => 'edit_theme_options',
-			'option_type' => 'option',
-			'option_name' => $config_id,
-		]
-	);
-
-	// Get label.
-	switch ( $type ) {
-		case 'post_type':
-			$post_type = get_post_type_object( $name );
-			$label     = 'post' === $name ? esc_html__( 'Default', 'mai-engine' ) : $post_type->labels->name;
-			break;
-		case 'taxonomy':
-			$taxonomy = get_taxonomy( $name );
-			$label    = $taxonomy->labels->name;
-			break;
-		case 'search':
-			$label = esc_attr__( 'Search Results', 'mai-engine' );
-			break;
-		case 'author':
-			$label = esc_attr__( 'Author Archives', 'mai-engine' );
-			break;
-		default:
-			$label = '';
-	}
-
-	// Get fields.
-	$fields = mai_get_config( 'archive-settings' );
-
-	// Section.
-	Kirki::add_section(
-		$config_id,
-		[
-			'title' => $label,
-			'panel' => 'mai_content_archives',
-		]
-	);
-
-	// Loop through fields.
-	foreach ( $fields as $field ) {
-
-		// Add field.
-		Kirki::add_field( $config_id, mai_get_kirki_field_data( $field, $config_id, $name ) );
-	}
-}
-
-/**
- * Add single customizer settings.
- *
- * @param  string $name The registered post type name.
- */
-function mai_add_single_customizer_settings( $name ) {
-
-	// Bail if no Kirki.
-	if ( ! class_exists( 'Kirki' ) ) {
-		return;
-	}
-
-	// Bail if no name.
-	if ( ! $name ) {
-		return;
-	}
-
-	$config_id = 'mai_single_' . $name;
-
-	/**
-	 * Kirki Config.
-	 */
-	Kirki::add_config(
-		$config_id,
-		[
-			'capability'  => 'edit_theme_options',
-			'option_type' => 'option',
-			'option_name' => $config_id,
-		]
-	);
-
-	// Get label.
-	$post_type = get_post_type_object( $name );
-	$label     = $post_type->labels->name;
-
-	// Get fields.
-	$fields = mai_get_config( 'single-settings' );
-
-	// Section.
-	Kirki::add_section(
-		$config_id,
-		[
-			'title' => $label,
-			'panel' => 'mai_singular_content',
-		]
-	);
-
-	// Loop through fields.
-	foreach ( $fields as $field ) {
-
-		// Add field.
-		Kirki::add_field( $config_id, mai_get_kirki_field_data( $field, $config_id, $name ) );
-	}
-}
-
-/**
  * Setup the field data from config for kirki add_field method.
  *
- * @param  array  $field        The field config data.
- * @param  string $section_id   The Customizer section ID.
- * @param  string $name         The post or content type name.
+ * @param  array  $field      The field config data.
+ * @param  string $section_id The Customizer section ID.
+ * @param  string $name       The post or content type name.
  *
  * @return array The field data.
  */
 function mai_get_kirki_field_data( $field, $section_id, $name = '' ) {
-
 	$data = [
-		'type'     => $field['type'],
-		'label'    => $field['label'],
-		'settings' => $field['name'],
-		'section'  => $section_id,
-		'priority' => 10,
+		'type'        => $field['type'],
+		'label'       => $field['label'],
+		'settings'    => $field['name'],
+		'section'     => $section_id,
+		'priority'    => 10,
+		'option_type' => 'option',
+		'option_name' => sprintf(
+			'%s[%s]',
+			mai_get_handle(),
+			str_replace( mai_get_handle() . '-', '', $section_id )
+		),
 	];
 
 	// Maybe add description.
@@ -171,7 +47,7 @@ function mai_get_kirki_field_data( $field, $section_id, $name = '' ) {
 
 	// Maybe add conditional logic.
 	if ( isset( $field['conditions'] ) ) {
-		$data['active_callback'] = $field['conditions'];
+//		$data['active_callback'] = $field['conditions'];
 	}
 
 	// Maybe add default.

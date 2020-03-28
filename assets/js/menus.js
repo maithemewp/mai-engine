@@ -1,5 +1,5 @@
 ( function() {
-	var localizedData    = typeof responsiveMenu === 'undefined' ? {} : responsiveMenu;
+	var localizedData    = typeof maiMobileMenu === 'undefined' ? {} : maiMobileMenu;
 	var body             = document.getElementsByTagName( 'body' )[ 0 ];
 	var siteHeaderWrap   = document.querySelector( '.site-header > .wrap' );
 	var navHeaderLeft    = document.getElementsByClassName( 'nav-header-left' )[ 0 ];

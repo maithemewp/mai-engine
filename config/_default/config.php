@@ -223,9 +223,9 @@ return [
 				'handle'   => mai_get_handle() . '-menus',
 				'src'      => mai_get_asset_url( 'menus.js' ),
 				'localize' => [
-					'name' => 'responsiveMenu',
+					'name' => 'maiMobileMenu',
 					'data' => [
-						'breakpoint'    => mai_get_breakpoint( 'lg', '' ),
+						'breakpoint'    => mai_get_breakpoint(),
 						'ariaLabel'     => __( 'Mobile Menu', 'mai-engine' ),
 						'menuToggle'    => sprintf(
 							'<span class="menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
@@ -514,15 +514,16 @@ return [
 	|
 	*/
 
-	'loop-archive' => [
-		'post',
-		'category',
-		'search',
-	],
-
-	'loop-single' => [
-		'page',
-		'post',
+	'loop' => [
+		'archive' => [
+			'post',
+			'category',
+			'search',
+		],
+		'single'  => [
+			'page',
+			'post',
+		],
 	],
 
 	'page-header' => [

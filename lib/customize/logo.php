@@ -9,33 +9,14 @@
  * @license   GPL-2.0-or-later
  */
 
-add_action( 'init', 'mai_logo_customizer_settings' );
+add_action( 'after_setup_theme', 'mai_logo_customizer_settings' );
 /**
  * Add logo customizer settings.
  *
  * @return  void
  */
 function mai_logo_customizer_settings() {
-
-	// Bail if no Kirki.
-	if ( ! class_exists( 'Kirki' ) ) {
-		return;
-	}
-
-	$config_id = 'mai_header';
-
-	/**
-	 * Kirki Config.
-	 */
-	Kirki::add_config(
-		$config_id,
-		[
-			'capability'  => 'edit_theme_options',
-			'option_type' => 'option',
-			'option_name' => $config_id,
-		]
-	);
-
+	$config_id = mai_get_handle();
 
 	Kirki::add_field(
 		$config_id,

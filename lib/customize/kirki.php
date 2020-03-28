@@ -12,7 +12,7 @@
 // Disable kirki telemetry.
 add_filter( 'kirki_telemetry', '__return_false' );
 
-add_action( 'genesis_setup', 'mai_kirki_filters' );
+add_action( 'after_setup_theme', 'mai_kirki_filters' );
 /**
  * Add miscellaneous Kirki filters after setup.
  *
@@ -35,7 +35,7 @@ function mai_kirki_filters() {
 	}
 }
 
-add_action( 'genesis_setup', 'mai_add_kirki_config' );
+add_action( 'after_setup_theme', 'mai_add_kirki_config' );
 /**
  * Add Kirki config.
  *
@@ -56,6 +56,14 @@ function mai_add_kirki_config() {
 			'option_name'       => $handle,
 			'gutenberg_support' => true,
 			'disable_output'    => false,
+		]
+	);
+
+	\Kirki::add_panel(
+		$handle,
+		[
+			'priority' => 150,
+			'title'    => esc_html__( 'Mai Settings', 'mai-engine' ),
 		]
 	);
 }

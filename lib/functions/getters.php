@@ -268,6 +268,39 @@ function mai_get_child_themes() {
 }
 
 /**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return array
+ */
+function mai_get_options() {
+	static $options = [];
+
+	if ( empty( $options ) ) {
+		$options = get_option( mai_get_handle() );
+	}
+
+	return $options;
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param string $option  Option name.
+ * @param mixed  $default Default value.
+ *
+ * @return mixed
+ */
+function mai_get_option( $option, $default = false ) {
+	$options = mai_get_options();
+
+	return isset( $options[ $option ] ) ? $options[ $option ] : $default;
+}
+
+/**
  * Returns an array of the themes JSON variables.
  *
  * @since 0.1.0
@@ -379,10 +412,10 @@ function mai_get_breakpoints() {
  *
  * @return mixed
  */
-function mai_get_breakpoint( $size = 'md', $suffix = '' ) {
+function mai_get_breakpoint( $size = 'lg', $suffix = '' ) {
 	$breakpoints = mai_get_breakpoints();
 
-	return $breakpoints[ $size ] . '';
+	return mai_get_option( 'breakpoint', $breakpoints[ $size ] . $suffix );
 }
 
 /**
@@ -437,8 +470,8 @@ function mai_get_flex_align( $value ) {
  *
  * @since 0.1.0
  *
- * @param  string  $value     The value. Could be integer 24 or with type 24px, 2rem, etc.
- * @param  string  $fallback  The fallback unit value.
+ * @param  string $value    The value. Could be integer 24 or with type 24px, 2rem, etc.
+ * @param  string $fallback The fallback unit value.
  *
  * @return string
  */
@@ -609,9 +642,9 @@ function mai_get_template_args() {
 	}
 
 	// Build key and parse args.
-	$key      = sprintf( 'mai_%s_%s', $context, $name );
+	$key      = sprintf( '%s-%s', $context, $name );
 	$defaults = [ 'context' => $context ] + wp_list_pluck( $settings, 'default', 'name' );
-	$args     = wp_parse_args( get_option( $key, [] ), $defaults );
+	$args     = wp_parse_args( mai_get_option( $key, [] ), $defaults );
 
 	// Allow devs to filter.
 	$args = apply_filters( 'mai_template_args', $args, $context );
@@ -992,9 +1025,9 @@ function mai_get_icon( $args ) {
 		$attributes['style'] .= sprintf( '--icon-border:%s solid %s;', mai_get_unit_value( $args['border_width'] ), mai_get_unit_value( $args['color_border'] ) );
 	}
 	if ( $args['border_radius'] ) {
-		$radius = explode( ' ', trim( $args['border_radius'] ) );
-		$radius = array_map( 'mai_get_unit_value', $radius );
-		$radius = array_filter( $radius );
+		$radius              = explode( ' ', trim( $args['border_radius'] ) );
+		$radius              = array_map( 'mai_get_unit_value', $radius );
+		$radius              = array_filter( $radius );
 		$attributes['style'] .= sprintf( '--icon-border-radius:%s;', implode( ' ', $radius ) );
 	}
 
@@ -1072,24 +1105,24 @@ function mai_get_svg( $name, $style = 'regular' ) {
  * @return array
  */
 function mai_get_admin_localized_data() {
-	$palette  = mai_get_color_palette();
-	$palette  = wp_list_pluck( $palette, 'color', 'slug' );
+	$palette = mai_get_color_palette();
+	$palette = wp_list_pluck( $palette, 'color', 'slug' );
 	unset( $palette['black'] ); // Too many for iris picker, we need to remove some.
 	unset( $palette['white'] );
 	unset( $palette['light'] );
 	$palette  = array_values( $palette ); // Remove keys.
 	$data     = [ 'palette' => $palette ];
 	$settings = mai_get_config( 'grid-settings' );
-	foreach( $settings as $key => $field ) {
+	foreach ( $settings as $key => $field ) {
 		if ( 'tab' === $field['type'] ) {
 			continue;
 		}
-		foreach( [ 'post', 'term', 'user' ] as $type ) {
+		foreach ( [ 'post', 'term', 'user' ] as $type ) {
 			if ( ! in_array( $type, $field['block'] ) ) {
 				continue;
 			}
 			if ( isset( $field['atts']['sub_fields'] ) ) {
-				foreach( $field['atts']['sub_fields'] as $sub_key => $sub_field ) {
+				foreach ( $field['atts']['sub_fields'] as $sub_key => $sub_field ) {
 					$data[ $type ][ $sub_field['name'] ] = $sub_key;
 				}
 			} else {
@@ -1097,5 +1130,6 @@ function mai_get_admin_localized_data() {
 			}
 		}
 	}
+
 	return $data;
 }
