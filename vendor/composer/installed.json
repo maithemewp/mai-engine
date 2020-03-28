@@ -1,11 +1,11 @@
 [
     {
         "name": "advanced-custom-fields/advanced-custom-fields-pro",
-        "version": "5.8.8",
-        "version_normalized": "5.8.8.0",
+        "version": "5.8.9",
+        "version_normalized": "5.8.9.0",
         "dist": {
             "type": "zip",
-            "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download&t=5.8.8"
+            "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download&t=5.8.9"
         },
         "type": "library",
         "installation-source": "dist"
@@ -3509,17 +3509,17 @@
     },
     {
         "name": "vlucas/phpdotenv",
-        "version": "v2.6.1",
-        "version_normalized": "2.6.1.0",
+        "version": "v2.6.2",
+        "version_normalized": "2.6.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/vlucas/phpdotenv.git",
-            "reference": "2a7dcf7e3e02dc5e701004e51a6f304b713107d5"
+            "reference": "c4a653ed3f1ff900baa15b4130c8770b57285b62"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/2a7dcf7e3e02dc5e701004e51a6f304b713107d5",
-            "reference": "2a7dcf7e3e02dc5e701004e51a6f304b713107d5",
+            "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/c4a653ed3f1ff900baa15b4130c8770b57285b62",
+            "reference": "c4a653ed3f1ff900baa15b4130c8770b57285b62",
             "shasum": ""
         },
         "require": {
@@ -3527,9 +3527,15 @@
             "symfony/polyfill-ctype": "^1.9"
         },
         "require-dev": {
+            "ext-filter": "*",
+            "ext-pcre": "*",
             "phpunit/phpunit": "^4.8.35 || ^5.0"
         },
-        "time": "2019-01-29T11:11:52+00:00",
+        "suggest": {
+            "ext-filter": "Required to use the boolean validator.",
+            "ext-pcre": "Required to use most of the library."
+        },
+        "time": "2020-03-27T23:16:19+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
