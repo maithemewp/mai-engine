@@ -40,7 +40,7 @@
 	align-items: center;
 }
 
-.has-transparent-header .menu {
+.has-transparent-header .site-header:not(.is-stuck) .menu {
 	--link-color: var(--color-white);
 }
 
