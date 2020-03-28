@@ -25,7 +25,6 @@
     "php": ">=5.6",
     "yahnis-elsts/plugin-update-checker": "^4.8",
     "advanced-custom-fields/advanced-custom-fields-pro": "*",
-    "wpackagist-plugin/advanced-custom-fields-font-awesome": "dev-trunk",
     "aristath/kirki": "*"
   },
   "require-dev": {
