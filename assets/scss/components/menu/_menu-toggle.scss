@@ -4,11 +4,11 @@
 	align-items: center;
 	justify-content: center;
 	order: 1;
-	min-height: var(--text-md);
-	margin: var(--menu-toggle-margin, 0);
-	padding: var(--menu-toggle-padding, (24px 0 24px 16px));
-	color: var(--menu-toggle-color, var(--color-dark));
-	background-color: var(--menu-toggle-background-color, transparent);
+	min-height: 2em;
+	margin: 0;
+	padding: 0;
+	color: var(--color-dark);
+	background-color: transparent;
 
 	&:hover,
 	&:focus {

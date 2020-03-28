@@ -60,20 +60,8 @@ function mai_page_header_setup() {
 
 	add_action( 'mai_page_header', 'mai_do_page_header_title', 10 );
 	add_action( 'mai_page_header', 'mai_do_page_header_description', 20 );
-	add_action( 'be_title_toggle_remove', 'mai_page_header_title_toggle' );
 	add_action( 'genesis_before_content', 'mai_page_header_remove_404_title' );
 	add_action( 'genesis_before_content_sidebar_wrap', 'mai_do_page_header' );
-}
-
-/**
- * Remove page header title if using Genesis Title Toggle plugin.
- *
- * @since 0.1.0
- *
- * @return void
- */
-function mai_page_header_title_toggle() {
-	remove_action( 'mai_page_header', 'mai_do_page_header_title', 10 );
 }
 
 /**
@@ -103,17 +91,22 @@ function mai_page_header_remove_404_title() {
 function mai_do_page_header_image() {
 	$image_id = '';
 
-	if ( is_singular() ) {
+	if ( mai_is_type_single() ) {
 		$image_id = get_post_meta( get_the_ID(), 'page_header_image', true );
+
 	} elseif ( is_home() ) {
 		if ( is_front_page() ) {
 			$image_id = '';
+
 		} else {
 			$image_id = get_post_meta( get_option( 'page_for_posts' ), 'page_header_image', true );
 		}
-	} elseif ( is_category() || is_tag() || is_tax() ) {
+
+	} elseif ( mai_is_type_archive() ) {
 		global $wp_query;
+
 		$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
+
 		if ( $term ) {
 			$image_id = get_term_meta( $term->term_id, 'page_header_image', true );
 		}
@@ -129,11 +122,9 @@ function mai_do_page_header_image() {
 
 	$image_id = apply_filters( 'mai_page_header_image', $image_id );
 
-	if ( ! $image_id ) {
-		return;
+	if ( $image_id ) {
+		echo mai_get_cover_image_html( $image_id, [ 'class' => 'page-header-image' ] );
 	}
-
-	echo mai_get_cover_image_html( $image_id, [ 'class' => 'page-header-image' ] );
 }
 
 /**
@@ -342,6 +333,14 @@ function mai_do_page_header() {
 	);
 
 	mai_do_page_header_image();
+
+	genesis_markup(
+		[
+			'open'    => '<div %s>',
+			'close'   => '</div>',
+			'context' => 'page-header-overlay',
+		]
+	);
 
 	genesis_structural_wrap( 'page-header', 'open' );
 

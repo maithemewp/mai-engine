@@ -9,45 +9,62 @@
  * @license   GPL-2.0-or-later
  */
 
-$locations = [];
-foreach( (array) mai_get_config( 'page-header-single' ) as $name ) {
-	if ( ! post_type_exists( $name ) ) {
-		continue;
-	}
-	$locations[] = [
-		[
-			'param'    => 'post_type',
-			'operator' => '==',
-			'value'    => $name,
-		],
+add_action( 'after_setup_theme', 'mai_add_page_header_metabox' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function mai_add_page_header_metabox() {
+	$config     = mai_get_config( 'page-header' );
+	$page_types = [
+		'single'  => array_merge( array_keys( get_post_types() ), [
+			'404',
+		] ),
+		'archive' => array_merge( array_keys( get_taxonomies() ), [
+			'author',
+			'date',
+			'search',
+		] ),
 	];
-}
-$taxonomies = get_taxonomies();
-foreach( (array) mai_get_config( 'page-header-archive' ) as $name ) {
-	if ( isset( $taxonomies[ $name ] ) ) {
-		$locations[] = [
-			[
-				'param'    => 'taxonomy',
-				'operator' => '==',
-				'value'    => $name,
-			],
-		];
-	} elseif ( 'author' === $name ) {
-		$locations[] = [
-			[
-				'param'    => 'user_form',
-				'operator' => '==',
-				'value'    => 'edit',
-			],
-		];
-	}
-}
 
-acf_add_local_field_group(
-	[
-		'key'                   => 'group_5e4ebe9174ed9',
+	foreach ( $page_types as $page_type => $content_types ) {
+		foreach ( $content_types as $content_type ) {
+			$enable = false;
+			$param  = 'single' === $page_type ? 'post_type' : 'taxonomy';
+			$param  = 'author' === $content_type ? 'user_form' : $param;
+			$param  = in_array( $content_type, [ '404', 'date', 'search' ], true ) ? $param = 'page' : $param;
+
+			if ( '*' === $config ) {
+				$enable = true;
+			}
+
+			if ( isset( $config[ $page_type ] ) && '*' === $config[ $page_type ] ) {
+				$enable = true;
+			}
+
+			if ( isset( $config[ $page_type ] ) && is_array( $config[ $page_type ] ) && in_array( $content_type, $config[ $page_type ], true ) ) {
+				$enable = true;
+			}
+
+			if ( $enable ) {
+				$locations[] = [
+					[
+						'param'    => $param,
+						'operator' => '==',
+						'value'    => $content_type,
+					],
+				];
+			}
+		}
+	}
+
+	$field_data = [
+		'key'                   => 'page_header',
 		'title'                 => 'Page Header',
-		'location'              => $locations,
+		'location'              => isset( $locations ) ? $locations : false,
 		'menu_order'            => 0,
 		'position'              => 'side',
 		'style'                 => 'seamless',
@@ -58,7 +75,7 @@ acf_add_local_field_group(
 		'description'           => '',
 		'fields'                => [
 			[
-				'key'           => 'field_5e4ebeb050b3e',
+				'key'           => 'page_header_image',
 				'label'         => esc_html__( 'Image', 'mai-engine' ),
 				'name'          => 'page_header_image',
 				'type'          => 'image',
@@ -67,12 +84,14 @@ acf_add_local_field_group(
 				'library'       => 'all',
 			],
 			[
-				'key'           => 'field_5e4ebeb950b3f',
-				'label'         => esc_html__( 'Description', 'mai-engine' ),
-				'name'          => 'page_header_description',
-				'type'          => 'textarea',
-				'rows'          => '3',
+				'key'   => 'page_header_description',
+				'label' => esc_html__( 'Description', 'mai-engine' ),
+				'name'  => 'page_header_description',
+				'type'  => 'textarea',
+				'rows'  => '3',
 			],
 		],
-	]
-);
+	];
+
+	acf_add_local_field_group( $field_data );
+}

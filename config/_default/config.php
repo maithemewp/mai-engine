@@ -525,8 +525,10 @@ return [
 		'post',
 	],
 
-	'page-header-single'  => [],
-	'page-header-archive' => [], // Needs to support search, author, etc. Same as 'archive-settings'.
+	'page-header' => [
+		'archive' => [],
+		'single'  => [],
+	],
 
 	'archive-settings'     => require __DIR__ . '/settings/archive.php',
 	'single-settings'      => require __DIR__ . '/settings/single.php',
