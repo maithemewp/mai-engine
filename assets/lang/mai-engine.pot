@@ -61,7 +61,7 @@ msgstr ""
 msgid "Footer Menu"
 msgstr ""
 
-#: config/_default/config.php:448
+#: config/_default/config.php:448, lib/admin/hide-elements.php:32
 msgid "Before Header"
 msgstr ""
 
@@ -85,7 +85,7 @@ msgstr ""
 msgid "The Header Right widget area."
 msgstr ""
 
-#: config/_default/config.php:474
+#: config/_default/config.php:474, lib/admin/hide-elements.php:37
 msgid "Before Footer"
 msgstr ""
 
@@ -95,6 +95,34 @@ msgstr ""
 
 #: config/_default/config.php:482
 msgid "The Mobile Menu widget area."
+msgstr ""
+
+#: lib/admin/hide-elements.php:9
+msgid "Hide Elements"
+msgstr ""
+
+#: lib/admin/hide-elements.php:33, lib/customize/site-header.php:26
+msgid "Site Header"
+msgstr ""
+
+#: lib/admin/hide-elements.php:34
+msgid "After Header"
+msgstr ""
+
+#: lib/admin/hide-elements.php:35, lib/customize/page-header.php:26
+msgid "Page Header"
+msgstr ""
+
+#: lib/admin/hide-elements.php:36
+msgid "Content Area"
+msgstr ""
+
+#: lib/admin/hide-elements.php:38
+msgid "Footer Widgets"
+msgstr ""
+
+#: lib/admin/hide-elements.php:39
+msgid "Footer Credits"
 msgstr ""
 
 #: lib/admin/page-header.php:79, lib/functions/getters.php:774, lib/functions/getters.php:788, lib/functions/getters.php:813
@@ -297,10 +325,6 @@ msgstr ""
 msgid "Logo Spacing"
 msgstr ""
 
-#: lib/customize/page-header.php:26
-msgid "Page Header"
-msgstr ""
-
 #: lib/customize/page-header.php:38
 msgid "Page Header Image"
 msgstr ""
@@ -315,10 +339,6 @@ msgstr ""
 
 #: lib/customize/singular.php:29
 msgid "Singular Content"
-msgstr ""
-
-#: lib/customize/site-header.php:26
-msgid "Site Header"
 msgstr ""
 
 #: lib/customize/site-header.php:37

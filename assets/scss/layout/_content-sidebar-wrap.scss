@@ -1,10 +1,14 @@
 .content-sidebar-wrap {
 	display: grid;
 	grid-template-columns: var(--content-sidebar-columns, 1fr);
-	width: calc(100% - (var(--spacing-md) * 2));
+	width: var(--content-sidebar-wrap-width, calc(100% - (var(--spacing-md) * 2)));
 	max-width: var(--wrap-width);
 	margin: var(--content-sidebar-wrap-margin, (var(--row-gap) auto));
 	column-gap: var(--content-sidebar-column-gap, (calc(var(--column-gap) * 3)));
+}
+
+.has-boxed-container {
+	--content-sidebar-wrap-width: 100%;
 }
 
 .has-cover-block,
