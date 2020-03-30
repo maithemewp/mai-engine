@@ -9,7 +9,7 @@ abbr[title] {
 
 label {
 	display: inline-block;
-	margin: var(--label-margin, 0 0 var(--spacing-md));
+	margin: var(--label-margin, 0 0 var(--spacing-xxxs));
 	font-weight: var(--label-font-weight, var(--font-weight-heading));
 	font-size: var(--label-font-size, (smaller));
 
@@ -23,7 +23,7 @@ label {
 	padding: var(--input-padding, 1em);
 	color: var(--input-color);
 	line-height: 1;
-	background-color: var(--input-background-color);
+	background-color: var(--input-background-color, #fff);
 	background-clip: padding-box; // Remove iOS box shadow
 	border: var(--input-border, var(--border));
 	border-radius: var(--input-border-radius, var(--border-radius));
@@ -31,6 +31,10 @@ label {
 	box-shadow: none;
 	cursor: var(--input-cursor);
 	transition: var(--input-transition, var(--transition));
+}
+
+input::placeholder {
+	color: rgba(0, 0, 0, 0.3);
 }
 
 :focus {
