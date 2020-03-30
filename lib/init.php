@@ -104,8 +104,10 @@ function mai_load_files() {
 
 		// Plugins.
 		'plugins/acf',
+		'plugins/wpforms',
 
 		// Admin.
+		'admin/images',
 		'admin/settings',
 		'admin/page-header',
 		'admin/hide-elements',
