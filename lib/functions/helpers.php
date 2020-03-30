@@ -315,5 +315,5 @@ function mai_is_element_hidden( $element ) {
 		$elements = get_post_meta( get_the_ID(), 'hide_elements', true );
 	}
 
-	return in_array( $element, $elements, true );
+	return in_array( $element, (array) $elements, true );
 }
