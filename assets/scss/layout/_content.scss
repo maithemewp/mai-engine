@@ -1,6 +1,6 @@
 .content {
 	width: 100%;
-	margin: var(--content-margin, var(--spacing-xxl) auto);
+	margin: var(--content-margin, (var(--spacing-xxl) auto));
 
 	@include mq(lg) {
 		order: var(--content-order, 0);
@@ -27,4 +27,8 @@
 
 .sidebar-content {
 	--content-order: 1;
+}
+
+.has-cover-block {
+	--content-margin: 0 auto var(--spacing-xxl);
 }

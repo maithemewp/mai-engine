@@ -11,12 +11,12 @@
 
 return [
 	'google-fonts'  => [
-		'',
+		'Karla:400,700',
 	],
 	'theme-support' => [
 		'add' => [
-			'sticky-header',
 			'transparent-header',
+			'genesis-footer-widgets' => 4,
 		],
 	],
 	'page-header'   => '*',

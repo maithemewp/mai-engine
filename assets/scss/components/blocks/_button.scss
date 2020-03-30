@@ -1,6 +1,19 @@
 .wp-block-button__link {
-
-	@include button;
+	padding: var(--button-padding, (var(--spacing-md) calc(var(--spacing-md) * 2)));
+	font-weight: var(--button-font-weight, var(--font-weight-heading));
+	font-size: var(--button-font-size);
+	font-family: var(--button-font-family);
+	line-height: 1;
+	letter-spacing: var(--button-letter-spacing);
+	white-space: normal;
+	text-align: center;
+	text-transform: var(--button-text-transform);
+	text-decoration: none;
+	border: var(--button-border, 0);
+	border-color: var(--button-border-color);
+	cursor: var(--button-cursor, pointer);
+	opacity: var(--button-opacity);
+	transition: var(--button-transition, var(--transition));
 
 	.is-style-rounded & {
 		border-radius: 10rem;

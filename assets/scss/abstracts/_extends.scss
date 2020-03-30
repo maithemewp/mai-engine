@@ -31,11 +31,22 @@
 	opacity: var(--button-opacity);
 	transition: var(--button-transition, var(--transition));
 
+	&::before {
+		display: block;
+		background-color: transparent;
+		content: "";
+
+		@include position(absolute, 0 0 0 0);
+	}
+
 	&:hover,
 	&:focus {
 		text-decoration: none;
 		outline: none;
-		filter: var(--filter-hover);
+
+		&::before {
+			background-color: rgba(255, 255, 255, 0.1);
+		}
 	}
 }
 

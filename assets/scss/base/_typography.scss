@@ -10,7 +10,6 @@ a {
 
 	&:hover,
 	&:focus {
-		filter: var(--link-filter-hover);
 		--link-color: var(--link-color-hover);
 		--link-text-decoration: var(--link-text-decoration-hover);
 	}
@@ -18,17 +17,16 @@ a {
 
 p {
 	width: var(--paragraph-width, auto);
-	margin: var(--paragraph-margin, 0);
+	margin: var(--paragraph-margin, (var(--spacing-md) 0 0));
 	padding: var(--paragraph-padding, 0);
-
-	&:not(:first-child) {
-		--paragraph-margin: var(--spacing-md) 0 0;
-	}
 
 	&:empty {
 		display: none;
 	}
 
+	&:first-child {
+		margin: 0;
+	}
 }
 
 

@@ -3,3 +3,8 @@
 	font-size: var(--subheading-font-size, var(--text-md));
 	text-transform: var(--subheading-text-transform, uppercase);
 }
+
+.circle,
+.circle > img {
+	border-radius: 100rem;
+}

@@ -11,7 +11,9 @@
 	var siteInner      = document.getElementsByClassName( 'site-inner' )[ 0 ];
 	var hasSticky      = body.classList.contains( 'has-sticky-header' );
 	var hasTransparent = body.classList.contains( 'has-transparent-header' );
-	var firstElement   = siteInner.firstChild;
+	var hasPageHeader  = body.classList.contains('has-page-header');
+	var hasCoverBlock  = body.classList.contains( 'has-cover-block' );
+	var firstElement   = hasCoverBlock ? document.getElementsByClassName( 'wp-block-cover__inner-container' )[ 0 ] : siteInner.firstChild;
 	var timeout        = false;
 
 	/**
@@ -42,7 +44,7 @@
 		headerHeight += beforeHeader ? beforeHeader.offsetHeight : 0;
 		headerHeight += navAfterHeader ? navAfterHeader.offsetHeight : 0;
 
-		if ( hasSticky ) {
+		if ( hasSticky || hasCoverBlock || hasPageHeader ) {
 			siteInner.style.marginTop = '-' + headerHeight + 'px';
 		}
 

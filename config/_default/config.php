@@ -53,10 +53,7 @@ return [
 	|
 	*/
 
-	'google-fonts' => [
-		'Source+Sans+Pro:400,600,700',
-		// TODO: Should this be empty to start, incase a custom site doesn't want a google font? Or that site should just filter this and return empty array?
-	],
+	'google-fonts' => [],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -379,17 +376,6 @@ return [
 			// Custom.
 			'align-wide',
 			'automatic-feed-links',
-			// 'custom-header'            => [
-			// 	'header-selector' => '.page-header',
-			// 	'default_image'   => mai_get_url() . 'assets/img/page-header.jpg',
-			// 	'header-text'     => false,
-			// 	'width'           => 1280,
-			// 	'height'          => 720,
-			// 	'flex-height'     => true,
-			// 	'flex-width'      => true,
-			// 	'uploads'         => true,
-			// 	'video'           => false,
-			// ],
 			'editor-styles',
 			'editor-color-palette'     => mai_get_color_palette(),
 			'genesis-accessibility'    => [

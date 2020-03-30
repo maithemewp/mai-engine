@@ -1,5 +1,5 @@
 .menu {
-	display: flex;
+	display: var(--menu-display, (flex));
 	flex-wrap: var(--menu-flex-wrap, wrap);
 	align-items: var(--menu-align-items, center);
 	width: 100%;
@@ -31,7 +31,7 @@
 	display: block;
 	width: var(--menu-item-link-width, 100%);
 	padding: var(--menu-item-link-padding, (var(--spacing-sm) var(--spacing-xxs)));
-	text-align: center;
+	color: var(--menu-item-link-color, var(--link-color));
 	text-decoration: none;
 }
 

@@ -64,7 +64,7 @@ function mai_body_classes( $classes ) {
 	}
 
 	// Add transparent header class.
-	if ( current_theme_supports( 'transparent-header' ) && mai_has_page_header() ) {
+	if ( current_theme_supports( 'transparent-header' ) ) {
 		$classes[] = 'has-transparent-header';
 	}
 
@@ -73,11 +73,21 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'has-sticky-header';
 	}
 
+	// Add block classes.
+	if ( mai_has_cover_block() ) {
+		$classes[] = 'has-cover-block';
+	}
+
 	// Add page header class.
 	if ( mai_has_page_header() ) {
 		$classes[] = 'has-page-header';
 	} else {
 		$classes[] = 'no-page-header';
+	}
+
+	// Add nav classes.
+	if ( ( is_active_sidebar( 'header_left' ) || has_nav_menu( 'header-left' ) ) && ( has_nav_menu( 'header-right' ) || is_active_sidebar( 'header_right' ) ) ) {
+		$classes[] = 'has-logo-center';
 	}
 
 	// Add single type class.
@@ -89,19 +99,6 @@ function mai_body_classes( $classes ) {
 	if ( mai_is_type_archive() ) {
 		$classes[] = 'is-archive';
 	}
-
-	// Add nav classes.
-	if ( ( is_active_sidebar( 'header_left' ) || has_nav_menu( 'header-left' ) ) && ( has_nav_menu( 'header-right' ) || is_active_sidebar( 'header_right' ) ) ) {
-		$classes[] = 'has-logo-center';
-	}
-
-	// Add block classes.
-	if ( mai_has_cover_block() ) {
-		$classes[] = 'has-cover-block';
-	}
-
-	// Add no page header class.
-	$classes[] = 'no-page-header';
 
 	return $classes;
 }

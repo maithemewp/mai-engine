@@ -8,11 +8,11 @@
 	svg {
 		position: relative;
 		max-width: var(--icon-size);
+		height: 100%;
 		max-height: var(--icon-size);
 		color: var(--icon-color);
 		fill: currentColor;
 	}
-
 }
 
 .mai-icon-wrap {

@@ -1,0 +1,23 @@
+$dividers: (
+	angle,
+	curve,
+	wave
+);
+
+@each $divider in $dividers {
+
+	.has-#{$divider}-divider {
+
+		&::after {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			z-index: 1;
+			display: block;
+			height: 10rem;
+			background-image: url("../../svg/divider-#{$divider}.svg");
+			content: "";
+		}
+	}
+}

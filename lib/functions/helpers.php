@@ -113,10 +113,10 @@ function mai_has_cover_block() {
 		$post_object = get_post( get_the_ID() );
 		$blocks      = (array) parse_blocks( $post_object->post_content );
 
-		$type  = isset( $blocks[0]['blockName'] ) ?: '';
-		$align = isset( $blocks[0]['attrs']['align'] ) ?: '';
+		$block_name = isset( $blocks[0]['blockName'] ) ? $blocks[0]['blockName'] : '';
+		$align      = isset( $blocks[0]['attrs']['align'] ) ? $blocks[0]['attrs']['align'] : '';
 
-		if ( 'core/cover' === $type || 'full' === $align ) {
+		if ( 'core/cover' === $block_name || 'full' === $align ) {
 			$has_cover_block = true;
 		}
 	}
@@ -139,25 +139,6 @@ function mai_has_sidebar() {
 	}
 
 	return $has_sidebar;
-}
-
-/**
- * Checks if current page has the page header enabled.
- *
- * TODO: Remove if we don't end up going this route.
- *
- * @since 0.1.0
- *
- * @return bool
- */
-function mai_has_page_header_old() {
-	static $has_page_header = null;
-
-	if ( is_null( $has_page_header ) ) {
-		$has_page_header = in_array( 'has-page-header', get_body_class(), true );
-	}
-
-	return $has_page_header;
 }
 
 /**
@@ -218,6 +199,10 @@ function mai_has_page_header() {
 	}
 
 	if ( genesis_entry_header_hidden_on_current_page() ) {
+		$has_page_header = false;
+	}
+
+	if ( mai_is_element_hidden( 'page_header' ) ) {
 		$has_page_header = false;
 	}
 
@@ -312,4 +297,23 @@ function mai_sanitize_bool( $value ) {
 
 	// Everything else will map nicely to boolean.
 	return (bool) $value;
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param bool $element
+ *
+ * @return mixed
+ */
+function mai_is_element_hidden( $element ) {
+	static $elements = null;
+
+	if ( is_null( $elements ) ) {
+		$elements = get_post_meta( get_the_ID(), 'hide_elements', true );
+	}
+
+	return in_array( $element, $elements, true );
 }

@@ -111,7 +111,3 @@ function mai_add_archive_customizer_settings( $name, $type = 'post_type' ) {
 		);
 	}
 }
-
-add_action('after_setup_theme', function () {
-//	s(Kirki::$fields);
-}, 11);

@@ -108,6 +108,7 @@ function mai_load_files() {
 		// Admin.
 		'admin/settings',
 		'admin/page-header',
+		'admin/hide-elements',
 
 		// Customizer.
 		'customize/archives',
