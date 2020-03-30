@@ -16,6 +16,13 @@ body:not(.editor-styles-wrapper) {
 	box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.02);
 }
 
+.menu {
+	--link-color: var(--color-dark);
+	font-size: var(--text-xs);
+	font-family: var(--font-secondary);
+	text-transform: uppercase;
+}
+
 .circle-overlay {
 	--heading-font-size: var(--text-xl);
 	--heading-margin: var(--spacing-xxs, 0);
