@@ -10,6 +10,7 @@ img {
 	max-width: 100%;
 	height: auto;
 	vertical-align: top;
+	border-radius: var(--image-border-radius, 0);
 }
 
 figure {
@@ -18,4 +19,8 @@ figure {
 
 iframe {
 	border: 0;
+}
+
+.has-circle-image {
+	--image-border-radius: 999px;
 }
