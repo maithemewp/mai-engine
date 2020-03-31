@@ -28,6 +28,7 @@ function mai_archive_customizer_settings() {
 		[
 			'title'       => esc_attr__( 'Content Archives', 'mai-engine' ),
 			'description' => '',
+			'priority'    => 70,
 			'panel'       => mai_get_handle(),
 		]
 	);

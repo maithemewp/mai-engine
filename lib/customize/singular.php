@@ -28,6 +28,7 @@ function mai_single_customizer_settings() {
 		[
 			'title'       => esc_attr__( 'Singular Content', 'mai-engine' ),
 			'description' => '',
+			'priority'    => 80,
 			'panel'       => mai_get_handle(),
 		]
 	);
