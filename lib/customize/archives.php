@@ -32,14 +32,6 @@ function mai_archive_customizer_settings() {
 		]
 	);
 
-	if ( in_array( 'search', $types, true ) ) {
-		mai_add_archive_customizer_settings( 'search', 'search' );
-	}
-
-	if ( in_array( 'author', $types, true ) ) {
-		mai_add_archive_customizer_settings( 'author', 'author' );
-	}
-
 	foreach ( $types as $name ) {
 		$post_type = get_post_type_object( $name );
 
@@ -61,6 +53,15 @@ function mai_archive_customizer_settings() {
 			}
 		}
 	}
+
+	if ( in_array( 'search', $types, true ) ) {
+		mai_add_archive_customizer_settings( 'search', 'search' );
+	}
+
+	if ( in_array( 'author', $types, true ) ) {
+		mai_add_archive_customizer_settings( 'author', 'author' );
+	}
+
 }
 
 /**
