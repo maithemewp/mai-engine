@@ -37,7 +37,7 @@ msgstr ""
 msgid "Menu"
 msgstr ""
 
-#: config/_default/config.php:226, config/_default/config.php:481
+#: config/_default/config.php:226, config/_default/config.php:477
 msgid "Mobile Menu"
 msgstr ""
 
@@ -45,55 +45,55 @@ msgstr ""
 msgid "Sub Menu"
 msgstr ""
 
-#: config/_default/config.php:400
+#: config/_default/config.php:396
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/_default/config.php:401
+#: config/_default/config.php:397
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/_default/config.php:402
+#: config/_default/config.php:398
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default/config.php:403
+#: config/_default/config.php:399
 msgid "Footer Menu"
 msgstr ""
 
-#: config/_default/config.php:448, lib/admin/hide-elements.php:32
+#: config/_default/config.php:444, lib/admin/hide-elements.php:32
 msgid "Before Header"
 msgstr ""
 
-#: config/_default/config.php:449
+#: config/_default/config.php:445
 msgid "The Before Header widget area."
 msgstr ""
 
-#: config/_default/config.php:454
+#: config/_default/config.php:450
 msgid "Header Left"
 msgstr ""
 
-#: config/_default/config.php:455
+#: config/_default/config.php:451
 msgid "The Header Left widget area."
 msgstr ""
 
-#: config/_default/config.php:464
+#: config/_default/config.php:460
 msgid "Header Right"
 msgstr ""
 
-#: config/_default/config.php:465
+#: config/_default/config.php:461
 msgid "The Header Right widget area."
 msgstr ""
 
-#: config/_default/config.php:474, lib/admin/hide-elements.php:37
+#: config/_default/config.php:470, lib/admin/hide-elements.php:37
 msgid "Before Footer"
 msgstr ""
 
-#: config/_default/config.php:475
+#: config/_default/config.php:471
 msgid "The Before Footer widget area."
 msgstr ""
 
-#: config/_default/config.php:482
+#: config/_default/config.php:478
 msgid "The Mobile Menu widget area."
 msgstr ""
 
@@ -289,15 +289,15 @@ msgstr ""
 msgid "Content Archives"
 msgstr ""
 
-#: lib/customize/archives.php:81
+#: lib/customize/archives.php:94
 msgid "Default"
 msgstr ""
 
-#: lib/customize/archives.php:88
+#: lib/customize/archives.php:101
 msgid "Search Results"
 msgstr ""
 
-#: lib/customize/archives.php:91
+#: lib/customize/archives.php:104
 msgid "Author Archives"
 msgstr ""
 

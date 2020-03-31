@@ -28,11 +28,12 @@
 	--entry-overflow: hidden;
 }
 
-.has-boxed:not([class*="has-image-left-full"]):not([class*="has-image-right-full"]) {
+.has-boxed:not([class*="has-image-full"]):not([class*="has-image-left-full"]):not([class*="has-image-right-full"]) {
 	--entry-padding: var(--spacing-xl);
 }
 
 .has-image-background,
+.has-boxed.has-image-full,
 .has-boxed.has-image-left-full,
 .has-boxed.has-image-right-full {
 	--entry-wrap-padding: var(--spacing-xl);
