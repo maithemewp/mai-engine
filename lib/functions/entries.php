@@ -48,7 +48,7 @@ function mai_do_entries_open( $args ) {
 				$image_size  = $image_sizes[ $args['image_size'] ];
 				$attributes['style'] .= sprintf( '--image-width:%spx;', $image_size['width'] );
 
-			} else {
+			} elseif ( mai_has_string( 'left', $args['image_position'] ) || mai_has_string( 'right', $args['image_position'] ) ) {
 
 				// Image width.
 				switch ( $args['image_width'] ) {
