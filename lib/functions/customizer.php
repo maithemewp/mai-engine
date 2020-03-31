@@ -47,7 +47,7 @@ function mai_get_kirki_field_data( $field, $section_id, $name = '' ) {
 
 	// Maybe add conditional logic.
 	if ( isset( $field['conditions'] ) ) {
-//		$data['active_callback'] = $field['conditions'];
+		$data['active_callback'] = $field['conditions'];
 	}
 
 	// Maybe add default.
