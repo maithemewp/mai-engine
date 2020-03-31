@@ -245,11 +245,9 @@ return [
 
 			// Customizer scripts.
 			[
-				'handle'    => mai_get_handle() . '-customizer',
-				'src'       => mai_get_asset_url( 'customizer.js' ),
-				'condition' => function () {
-					return is_customize_preview();
-				},
+				'handle'     => mai_get_handle() . '-customizer',
+				'src'        => mai_get_asset_url( 'customizer.js' ),
+				'customizer' => true,
 			],
 
 			// Admin scripts.
@@ -271,11 +269,9 @@ return [
 
 			// Customizer styles.
 			[
-				'handle'    => mai_get_handle() . '-kirki',
-				'src'       => mai_get_url() . 'assets/css/plugins/kirki.min.css',
-				'condition' => function () {
-					return is_customize_preview();
-				},
+				'handle'     => mai_get_handle() . '-kirki',
+				'src'        => mai_get_url() . 'assets/css/plugins/kirki.min.css',
+				'customizer' => true,
 			],
 
 			// Admin styles.

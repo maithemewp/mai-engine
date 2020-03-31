@@ -55,7 +55,7 @@ function mai_enqueue_assets() {
 		$register   = "wp_register_$type";
 		$enqueue    = "wp_enqueue_$type";
 
-		if ( is_admin() && $editor || ! is_admin() && ! $editor || 'both' === $editor ) {
+		if ( is_admin() && $editor || ! is_admin() && ! $editor && ! $customizer || 'both' === $editor || is_customize_preview() && $customizer ) {
 			if ( is_callable( $condition ) && $condition() ) {
 				$register( $handle, $src, $deps, $ver, $last_arg );
 				$enqueue( $handle );
