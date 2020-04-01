@@ -560,9 +560,9 @@ return [
 		'default'    => '',
 		'choices'    => [
 			''       => esc_html__( 'Clear', 'mai-engine' ),
-			'left'   => esc_html__( 'Left', 'mai-engine' ),
+			'start'  => esc_html__( 'Start', 'mai-engine' ),
 			'center' => esc_html__( 'Center', 'mai-engine' ),
-			'right'  => esc_html__( 'Right', 'mai-engine' ),
+			'end'    => esc_html__( 'End', 'mai-engine' ),
 		],
 		'conditions' => [
 			[
