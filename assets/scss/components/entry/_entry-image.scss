@@ -1,8 +1,8 @@
 .entry-image-link {
 	display: var(--entry-image-link-display, block);
-	// flex: 1 0 100%;
 	align-self: var(--entry-image-link-align, unset);
 	order: var(--entry-image-link-order, unset);
+	max-width: var(--image-width, unset);
 
 	&:not(:first-child) {
 		margin-top: var(--spacing-md);
