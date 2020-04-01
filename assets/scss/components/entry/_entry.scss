@@ -24,8 +24,8 @@
 }
 
 .has-boxed {
-	--entry-border: 1px solid rgba(0, 0, 0, 0.05);
-	--entry-box-shadow: 0 0 24px rgba(0, 0, 0, 0.05);
+	--entry-border: var(--border);
+	--entry-box-shadow: var(--shadow);
 	--entry-overflow: hidden;
 }
 

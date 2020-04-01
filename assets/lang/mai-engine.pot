@@ -185,7 +185,7 @@ msgstr ""
 msgid "Align"
 msgstr ""
 
-#: lib/blocks/icon.php:218, lib/blocks/icon.php:351, config/_default/settings/archive.php:363, config/_default/settings/grid.php:563
+#: lib/blocks/icon.php:218, lib/blocks/icon.php:351, config/_default/settings/archive.php:363
 msgid "Left"
 msgstr ""
 
@@ -193,7 +193,7 @@ msgstr ""
 msgid "Center"
 msgstr ""
 
-#: lib/blocks/icon.php:220, lib/blocks/icon.php:359, config/_default/settings/archive.php:365, config/_default/settings/grid.php:565
+#: lib/blocks/icon.php:220, lib/blocks/icon.php:359, config/_default/settings/archive.php:365
 msgid "Right"
 msgstr ""
 
@@ -265,7 +265,7 @@ msgstr ""
 msgid "50%"
 msgstr ""
 
-#: lib/classes/class-mai-entry.php:867, config/_default/settings/archive.php:207, config/_default/settings/grid.php:278
+#: lib/classes/class-mai-entry.php:887, config/_default/settings/archive.php:207, config/_default/settings/grid.php:278
 msgid "Read More"
 msgstr ""
 
@@ -545,11 +545,11 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#: config/_default/settings/archive.php:248, config/_default/settings/grid.php:329
+#: config/_default/settings/archive.php:248, config/_default/settings/grid.php:329, config/_default/settings/grid.php:563
 msgid "Start"
 msgstr ""
 
-#: config/_default/settings/archive.php:250, config/_default/settings/grid.php:331
+#: config/_default/settings/archive.php:250, config/_default/settings/grid.php:331, config/_default/settings/grid.php:565
 msgid "End"
 msgstr ""
 
