@@ -1,11 +1,12 @@
 .entry {
 	position: var(--entry-position, static);
-	display: var(--entry-display, block);
+	display: var(--entry-display, flex);
 	flex: 1 1 calc((100% / var(--columns)) - var(--column-gap));
+	flex-direction: var(--entry-flex-direction, column);
 	width: 100%;
 	max-width: calc((100% / var(--columns)) - var(--column-gap));
 	margin: var(--entry-margin, 0);
-	padding: var(--entry-padding, 0);
+	padding: var(--entry-padding, 0); /* must be a single value for use in calc() full "full" images */
 	overflow: var(--entry-overflow, unset);
 	text-align: var(--align-text);
 	background-color: var(--color-white);
@@ -18,7 +19,7 @@
 [class*="has-image-right"] {
 
 	@include mq(sm) {
-		--entry-display: flex;
+		--entry-flex-direction: row;
 	}
 }
 
@@ -28,12 +29,11 @@
 	--entry-overflow: hidden;
 }
 
-.has-boxed:not([class*="has-image-full"]):not([class*="has-image-left-full"]):not([class*="has-image-right-full"]) {
-	--entry-padding: var(--spacing-xl);
+.has-boxed:not([class*="has-image-left-full"]):not([class*="has-image-right-full"]) {
+	--entry-padding: var(--spacing-xl); /* must be a single value for use in calc() full "full" images */
 }
 
 .has-image-background,
-.has-boxed.has-image-full,
 .has-boxed.has-image-left-full,
 .has-boxed.has-image-right-full {
 	--entry-wrap-padding: var(--spacing-xl);
