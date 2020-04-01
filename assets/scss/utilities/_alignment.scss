@@ -55,8 +55,8 @@
 
 	@include mq(lg) {
 		--alignfull-max-width: var(--site-container-max-width);
-		--alignfull-margin-right: calc(((var(--site-container-max-width) - var(--content-width)) / 2) * -1);
-		--alignfull-margin-left: calc(((var(--site-container-max-width) - var(--content-width)) / 2) * -1);
+		--alignfull-margin-right: calc(var(--content-sidebar-wrap-side-spacing) / 2 * -1);
+		--alignfull-margin-left: calc(var(--content-sidebar-wrap-side-spacing) / 2 * -1);
 	}
 }
 

@@ -1,14 +1,17 @@
 .content-sidebar-wrap {
 	display: grid;
-	grid-template-columns: var(--content-sidebar-columns, 1fr);
-	width: var(--content-sidebar-wrap-width, calc(100% - (var(--spacing-md) * 2)));
+	grid-template-columns: var(--content-sidebar-wrap-columns, 1fr);
+	width: var(--content-sidebar-wrap-width, calc(100% - var(--content-sidebar-wrap-side-spacing)));
 	max-width: var(--wrap-width);
 	margin: var(--content-sidebar-wrap-margin, (var(--row-gap) auto));
-	column-gap: var(--content-sidebar-column-gap, (calc(var(--column-gap) * 3)));
+	column-gap: var(--content-sidebar-wrap-column-gap, (calc(var(--column-gap) * 3)));
 }
 
 .has-boxed-container {
-	// --content-sidebar-wrap-width: 100%;
+
+	@include mq(lg) {
+		--content-sidebar-wrap-side-spacing: calc(var(--spacing-lg) * 4);
+	}
 }
 
 .has-cover-block,
@@ -19,13 +22,13 @@
 .content-sidebar {
 
 	@include mq(lg) {
-		--content-sidebar-columns: 1fr var(--sidebar-width);
+		--content-sidebar-wrap-columns: 1fr var(--sidebar-width);
 	}
 }
 
 .sidebar-content {
 
 	@include mq(lg) {
-		--content-sidebar-columns: var(--sidebar-width) 1fr;
+		--content-sidebar-wrap-columns: var(--sidebar-width) 1fr;
 	}
 }
