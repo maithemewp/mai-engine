@@ -9,6 +9,7 @@
 }
 
 @mixin button {
+	position: relative;
 	display: inline-block;
 	width: auto;
 	margin: var(--button-margin, 0);
