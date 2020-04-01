@@ -26,11 +26,13 @@
 	margin: 4px;
 	padding: var(--button-padding);
 	color: var(--button-color);
+	text-decoration: none;
 	background-color: var(--button-background);
 	border-radius: var(--border-radius);
 
 	&:hover,
 	&:focus {
+		text-decoration: none;
 		filter: var(--darken);
 	}
 }
