@@ -89,7 +89,7 @@
 	--shadow-spread: 0;
 	--shadow-color: var(--color-muted);
 	--shadow-opacity: 0.5;
-	--shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-spread) rgba(var(--shadow-color), var(--shadow-opacity));
+	--shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-spread) var(--shadow-color);
 
 	--darken: brightness(95%);
 	--lighten: brightness(110%);
