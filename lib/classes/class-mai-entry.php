@@ -126,7 +126,7 @@ class Mai_Entry {
 		);
 
 		// Check if extra wrap is needed.
-		$has_wrap = in_array( 'image', $this->args['show'], true ) && ( in_array( $this->args['image_position'], [ 'background', 'full' ] ) || mai_has_string( 'left', $this->args['image_position'] ) || mai_has_string( 'right', $this->args['image_position'] ) );
+		$has_wrap = in_array( 'image', $this->args['show'], true ) && ( in_array( $this->args['image_position'], [ 'background' ] ) || mai_has_string( 'left', $this->args['image_position'] ) || mai_has_string( 'right', $this->args['image_position'] ) );
 
 		// If we have inner wrap.
 		if ( $has_wrap ) {
@@ -678,6 +678,10 @@ class Mai_Entry {
 			$output = apply_filters( 'genesis_post_title_output', $output, $wrap, $title ) . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- title output is left unescaped to accommodate trusted user input. See https://codex.wordpress.org/Function_Reference/the_title#Security_considerations.
 		}
 
+		if ( ! $output ) {
+			return;
+		}
+
 		// TODO: Output should be escaped.
 		echo $output;
 	}
@@ -710,6 +714,10 @@ class Mai_Entry {
 		if ( $this->args['content_limit'] > 0 ) {
 			// TODO: Add [...] or whatever the read more thing is?
 			$excerpt = mai_get_content_limit( $excerpt, $this->args['content_limit'] );
+		}
+
+		if ( ! $excerpt ) {
+			return;
 		}
 
 		// Output.
@@ -758,6 +766,10 @@ class Mai_Entry {
 			$content = mai_get_content_limit( $content, $this->args['content_limit'] );
 		}
 
+		if ( ! $content ) {
+			return;
+		}
+
 		// Output.
 		genesis_markup(
 			[
@@ -787,13 +799,17 @@ class Mai_Entry {
 		}
 
 		// Run shortcodes.
-		$this->args['header_meta'] = do_shortcode( $this->args['header_meta'] );
+		$header_meta = do_shortcode( $this->args['header_meta'] );
+
+		if ( ! $header_meta ) {
+			return;
+		}
 
 		genesis_markup(
 			[
 				'open'    => '<p %s>',
 				'close'   => '</p>',
-				'content' => genesis_strip_p_tags( $this->args['header_meta'] ),
+				'content' => genesis_strip_p_tags( $header_meta ),
 				'context' => 'entry-meta-before-content',
 				'echo'    => true,
 				'params'  => [
@@ -817,13 +833,17 @@ class Mai_Entry {
 		}
 
 		// Run shortcodes.
-		$this->args['footer_meta'] = do_shortcode( $this->args['footer_meta'] );
+		$footer_meta = do_shortcode( $this->args['footer_meta'] );
+
+		if ( ! $footer_meta ) {
+			return;
+		}
 
 		genesis_markup(
 			[
 				'open'    => '<p %s>',
 				'close'   => '</p>',
-				'content' => genesis_strip_p_tags( $this->args['footer_meta'] ),
+				'content' => genesis_strip_p_tags( $footer_meta ),
 				'context' => 'entry-meta-after-content',
 				'echo'    => true,
 				'params'  => [
@@ -892,6 +912,7 @@ class Mai_Entry {
 				'close'   => '</p>',
 				'content' => $more_link,
 				'context' => 'entry-more',
+				'echo'    => true,
 				'params'  => [
 					'args'  => $this->args,
 					'entry' => $this->entry,
