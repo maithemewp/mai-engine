@@ -125,7 +125,7 @@ msgstr ""
 msgid "Footer Credits"
 msgstr ""
 
-#: lib/admin/page-header.php:79, lib/functions/getters.php:774, lib/functions/getters.php:788, lib/functions/getters.php:813
+#: lib/admin/page-header.php:79, lib/functions/getters.php:777, lib/functions/getters.php:791, lib/functions/getters.php:816
 msgid "Image"
 msgstr ""
 
@@ -349,91 +349,91 @@ msgstr ""
 msgid "The largest screen width at which the mobile menu becomes active, in pixels."
 msgstr ""
 
-#: lib/functions/getters.php:775, lib/functions/getters.php:790, lib/functions/getters.php:809, config/_default/settings/grid.php:662, config/_default/settings/grid.php:990, config/_default/settings/grid.php:1241
+#: lib/functions/getters.php:778, lib/functions/getters.php:793, lib/functions/getters.php:812, config/_default/settings/grid.php:662, config/_default/settings/grid.php:990, config/_default/settings/grid.php:1241
 msgid "Title"
 msgstr ""
 
-#: lib/functions/getters.php:776, lib/functions/getters.php:791, lib/functions/getters.php:816, config/_default/settings/archive.php:156, config/_default/settings/grid.php:209
+#: lib/functions/getters.php:779, lib/functions/getters.php:794, lib/functions/getters.php:819, config/_default/settings/archive.php:156, config/_default/settings/grid.php:209
 msgid "Header Meta"
 msgstr ""
 
-#: lib/functions/getters.php:777, lib/functions/getters.php:793
+#: lib/functions/getters.php:780, lib/functions/getters.php:796
 msgid "Excerpt"
 msgstr ""
 
-#: lib/functions/getters.php:778, lib/functions/getters.php:794, lib/functions/getters.php:818
+#: lib/functions/getters.php:781, lib/functions/getters.php:797, lib/functions/getters.php:821
 msgid "Content"
 msgstr ""
 
-#: lib/functions/getters.php:779, lib/functions/getters.php:796, lib/functions/getters.php:820
+#: lib/functions/getters.php:782, lib/functions/getters.php:799, lib/functions/getters.php:823
 msgid "Read More link"
 msgstr ""
 
-#: lib/functions/getters.php:780, lib/functions/getters.php:798, lib/functions/getters.php:822, config/_default/settings/archive.php:213, config/_default/settings/grid.php:288
+#: lib/functions/getters.php:783, lib/functions/getters.php:801, lib/functions/getters.php:825, config/_default/settings/archive.php:213, config/_default/settings/grid.php:288
 msgid "Footer Meta"
 msgstr ""
 
-#: lib/functions/getters.php:807
+#: lib/functions/getters.php:810
 msgid "Title (when page header is hidden)"
 msgstr ""
 
-#: lib/functions/getters.php:824
+#: lib/functions/getters.php:827
 msgid "Author Box"
 msgstr ""
 
-#: lib/functions/getters.php:825
+#: lib/functions/getters.php:828
 msgid "After Entry Widget Area"
 msgstr ""
 
-#: lib/functions/getters.php:826
+#: lib/functions/getters.php:829
 msgid "Previous/Next Entry Nav"
 msgstr ""
 
-#: lib/functions/getters.php:833
+#: lib/functions/getters.php:836
 msgid "Site Default"
 msgstr ""
 
-#: lib/functions/getters.php:855
+#: lib/functions/getters.php:858
 msgid "Landscape"
 msgstr ""
 
-#: lib/functions/getters.php:856
+#: lib/functions/getters.php:859
 msgid "Portrait"
 msgstr ""
 
-#: lib/functions/getters.php:857
+#: lib/functions/getters.php:860
 msgid "Square"
 msgstr ""
 
-#: lib/functions/getters.php:863
+#: lib/functions/getters.php:866
 msgid "Custom"
 msgstr ""
 
-#: lib/functions/getters.php:875
+#: lib/functions/getters.php:878
 msgid "1"
 msgstr ""
 
-#: lib/functions/getters.php:876
+#: lib/functions/getters.php:879
 msgid "2"
 msgstr ""
 
-#: lib/functions/getters.php:877
+#: lib/functions/getters.php:880
 msgid "3"
 msgstr ""
 
-#: lib/functions/getters.php:878
+#: lib/functions/getters.php:881
 msgid "4"
 msgstr ""
 
-#: lib/functions/getters.php:879
+#: lib/functions/getters.php:882
 msgid "5"
 msgstr ""
 
-#: lib/functions/getters.php:880
+#: lib/functions/getters.php:883
 msgid "6"
 msgstr ""
 
-#: lib/functions/getters.php:881
+#: lib/functions/getters.php:884
 msgid "Auto"
 msgstr ""
 

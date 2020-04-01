@@ -144,9 +144,12 @@ function mai_get_version() {
  * @return string
  */
 function mai_get_asset_version( $file ) {
-	$file = str_replace( mai_get_url(), mai_get_dir(), $file );
-
-	return file_exists( $file ) && mai_is_in_dev_mode() && mai_has_string( mai_get_dir(), $file ) ? filemtime( $file ) : mai_get_version();
+	$file    = str_replace( mai_get_url(), mai_get_dir(), $file );
+	$version = mai_get_version();
+	if ( file_exists( $file ) && mai_has_string( mai_get_dir(), $file ) ) {
+		$version .= '.' . date ( 'njYHi', filemtime( $file ) );
+	}
+	return $version;
 }
 
 /**
