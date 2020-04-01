@@ -75,6 +75,7 @@
 	--wrap-width: var(--breakpoint-xl);
 	--sidebar-width: 30rem; // Google ads
 	--content-width: calc(var(--wrap-width) - var(--sidebar-width) - var(--column-gap));
+	--content-sidebar-wrap-side-spacing: calc(var(--spacing-md) * 2);
 
 	--border-radius: 4px;
 	--border-size: 1px;
