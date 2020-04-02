@@ -32,6 +32,23 @@
 		color: var(--button-color, var(--color-white));
 		background-color: var(--button-background, var(--color-primary));
 		border-radius: var(--button-border-radius, var(--border-radius));
+
+		&.button-secondary {
+			--button-color: var(--color-dark);
+			--button-background: var(--color-muted);
+		}
+
+		&.button-tertiary {
+			--button-padding: var(--spacing-md) var(--spacing-xs);
+			--button-color: var(--color-primary);
+			--button-background: transparent;
+		}
+
+		&.button-tertiary::after {
+			display: inline-block;
+			margin-left: var(--spacing-xxxs);
+			content: "\2192";
+		}
 	}
 
 	&:hover,
