@@ -80,6 +80,7 @@ function mai_load_files() {
 		'functions/defaults',
 		'functions/onboarding',
 		'functions/customizer',
+		'functions/plugins',
 
 		// Structure.
 		'structure/archive',
@@ -114,12 +115,11 @@ function mai_load_files() {
 		$files = array_merge(
 			$files,
 			[
-				'plugins/acf',
-				'plugins/wpforms',
 				'admin/images',
 				'admin/settings',
 				'admin/page-header',
 				'admin/hide-elements',
+				'admin/acf',
 			]
 		);
 	}
