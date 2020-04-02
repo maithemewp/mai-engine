@@ -22,6 +22,7 @@ return [
 	[
 		'name'     => 'show',
 		'label'    => esc_html__( 'Show', 'mai-engine' ),
+		'desc'     => esc_html__( 'Show/hide and re-order entry elements. Click "Toggle Hooks" to show Genesis hooks.', 'mai-engine' ),
 		'type'     => 'sortable',
 		'sanitize' => 'esc_html',
 		'default'  => [

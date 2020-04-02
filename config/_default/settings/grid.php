@@ -20,6 +20,7 @@ return [
 	'field_5e441d93d6236' => [
 		'name'     => 'show',
 		'label'    => esc_html__( 'Show', 'mai-engine' ),
+		'desc'     => esc_html__( 'Show/hide and re-order elements.', 'mai-engine' ),
 		'block'    => [ 'post', 'term', 'user' ],
 		'type'     => 'checkbox',
 		'sanitize' => 'esc_html',
