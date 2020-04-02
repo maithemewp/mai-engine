@@ -81,9 +81,16 @@ body:not(.editor-styles-wrapper) {
 	display: block;
 	width: 100%;
 	margin-top: -60px;
-	margin-bottom: -60px;
 	border: 16px solid #faf7f6;
 	box-shadow: 0 0 0 2px #fff, 0 0 8px 4px rgba(0, 0, 0, 0.02);
+}
+
+@include mq(lg) {
+
+	.home-form .wp-block-image img {
+		margin-bottom: -60px;
+	}
+
 }
 
 .home-form h2 {
@@ -91,7 +98,8 @@ body:not(.editor-styles-wrapper) {
 	align-items: center;
 }
 
-.home-form h2::before {
+.home-form h2::before,
+.home-form h2::after {
 	flex-grow: 1;
 	height: 1px;
 	margin-right: var(--spacing-md);
@@ -99,15 +107,27 @@ body:not(.editor-styles-wrapper) {
 	content: "";
 }
 
-.wpforms-container.inline-fields {
-	margin-bottom: 0;
+.home-form h2::before {
+	margin-right: var(--spacing-md);
 }
 
-.wpforms-container.inline-fields .wpforms-form {
-	display: flex;
-	align-items: flex-end;
+.home-form h2::after {
+	margin-left: var(--spacing-md);
 }
 
-.wpforms-container.inline-fields .wpforms-submit-container {
-	padding: 10px 0;
+@include mq(lg) {
+
+	.wpforms-container.inline-fields {
+		margin-bottom: 0;
+	}
+
+	.wpforms-container.inline-fields .wpforms-form {
+		display: flex;
+		align-items: flex-end;
+	}
+
+	.wpforms-container.inline-fields .wpforms-submit-container {
+		padding: 10px 0;
+	}
+
 }
