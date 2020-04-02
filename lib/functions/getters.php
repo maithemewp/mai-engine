@@ -1113,6 +1113,20 @@ function mai_get_svg( $name, $style = 'light', $class = '' ) {
  *
  * @since 0.1.0
  *
+ * @param string $name
+ * @param string $style
+ *
+ * @return string
+ */
+function mai_get_svg_url( $name, $style = 'light') {
+	return mai_get_url() . "assets/icons/svgs/$style/$name.svg";
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
  * @return array
  */
 function mai_get_admin_localized_data() {
