@@ -1,6 +1,8 @@
 :root {
 	--font-primary: karla, var(--font-stack);
 	--font-secondary: karla, var(--font-stack);
+	--button-filter-hover: none;
+	--button-transform-hover: scale(1.05);
 	--page-header-border-bottom: 0;
 	--menu-toggle-icon-background-color: var(--color-white);
 	--menu-toggle-line-background-color: var(--color-white);
@@ -66,4 +68,8 @@ video {
 	padding: var(--spacing-xxxxl) 0;
 	border-top: var(--border);
 	border-bottom: var(--border);
+}
+
+.footer-credits {
+	
 }

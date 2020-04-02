@@ -8,46 +8,38 @@
 	background: var(--body-background, var(--color-white));
 }
 
-@mixin button {
+@mixin button($block: false) {
 	position: relative;
 	display: inline-block;
 	width: auto;
 	margin: var(--button-margin, 0);
 	padding: var(--button-padding, (var(--spacing-md) calc(var(--spacing-md) * 2)));
-	color: var(--button-color, var(--color-white));
 	font-weight: var(--button-font-weight, var(--font-weight-heading));
-	font-size: var(--button-font-size);
-	font-family: var(--button-font-family);
+	font-size: var(--button-font-size, var(--text-md));
+	font-family: var(--button-font-family, var(--font-primary));
 	line-height: 1;
-	letter-spacing: var(--button-letter-spacing);
+	letter-spacing: var(--button-letter-spacing, normal);
 	white-space: normal;
 	text-align: center;
-	text-transform: var(--button-text-transform);
+	text-transform: var(--button-text-transform, none);
 	text-decoration: none;
-	background-color: var(--button-background, var(--color-primary));
 	border: var(--button-border, 0);
-	border-color: var(--button-border-color);
-	border-radius: var(--button-border-radius, var(--border-radius));
 	cursor: var(--button-cursor, pointer);
-	opacity: var(--button-opacity);
+	opacity: var(--button-opacity, 1);
 	transition: var(--button-transition, var(--transition));
 
-	&::before {
-		display: block;
-		background-color: transparent;
-		content: "";
-
-		@include position(absolute, 0 0 0 0);
+	@if (false == $block) {
+		color: var(--button-color, var(--color-white));
+		background-color: var(--button-background, var(--color-primary));
+		border-radius: var(--button-border-radius, var(--border-radius));
 	}
 
 	&:hover,
 	&:focus {
 		text-decoration: none;
 		outline: none;
-
-		&::before {
-			background-color: rgba(255, 255, 255, 0.1);
-		}
+		transform: var(--button-transform-hover, none);
+		filter: var(--button-filter-hover, brightness(0.9));
 	}
 }
 
