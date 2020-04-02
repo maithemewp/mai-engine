@@ -238,3 +238,38 @@
 .customize-control.customize-control-kirki-dimensions .wrapper {
 	padding-top: 0;
 }
+
+// Theme settings panel ordering
+
+#customize-theme-controls #sub-accordion-panel-mai-engine {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.accordion-section {
+	width: 100%;
+}
+
+$sections: (
+	section-genesis_updates,
+	section-genesis_layout,
+	section-mai-engine-site-header,
+	section-mai-engine-page-header,
+	section-genesis_breadcrumbs,
+	panel-mai-engine-content-archives,
+	panel-mai-engine-singular-content,
+	section-genesis_header,
+	section-genesis_comments,
+	section-genesis_footer,
+	section-genesis_scripts,
+);
+
+@each $section in $sections {
+	$priority: index($sections, $section);
+	$border: if(1 == $priority, 1px solid #ddd, 0);
+
+	#accordion-#{$section} {
+		order: $priority;
+		border-top: $border !important;
+	}
+}

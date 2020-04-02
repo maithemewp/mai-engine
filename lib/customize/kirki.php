@@ -63,7 +63,7 @@ function mai_add_kirki_config() {
 		$handle,
 		[
 			'priority' => 150,
-			'title'    => esc_html__( 'Mai Settings', 'mai-engine' ),
+			'title'    => esc_html__( 'Theme Settings', 'mai-engine' ),
 		]
 	);
 }
@@ -99,4 +99,25 @@ function mai_kirki_url( $config ) {
 	$config['url_path'] = mai_get_url() . 'vendor/aristath/kirki';
 
 	return $config;
+}
+
+add_action( 'customize_register', 'mai_reposition_genesis_customizer_sections' );
+/**
+ * Move Genesis Customizer sections into our settings panel.
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Customize_Manager $wp_customize WP Customize Manager object.
+ *
+ * @return void
+ */
+function mai_reposition_genesis_customizer_sections( $wp_customize ) {
+	$sections = genesis_get_config( 'customizer-theme-settings' )['genesis']['sections'];
+
+	foreach ( $sections as $id => $data ) {
+		$wp_customize->get_section( $id )->panel = mai_get_handle();
+	}
+	
+	$wp_customize->remove_section( 'genesis_single' );
+	$wp_customize->remove_section( 'genesis_archives' );
 }
