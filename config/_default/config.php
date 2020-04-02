@@ -96,15 +96,15 @@ return [
 				'default' => true,
 			],
 			[
-				'id'    => 'wide-content',
-				'label' => __( 'Wide Content', 'mai-engine' ),
-				'img'   => GENESIS_ADMIN_IMAGES_URL . '/layouts/c.gif',
-				'type'  => [ 'site' ],
-			],
-			[
 				'id'    => 'narrow-content',
 				'label' => __( 'Narrow Content', 'mai-engine' ),
 				'img'   => mai_get_url() . 'assets/img/narrow-content.gif',
+				'type'  => [ 'site' ],
+			],
+			[
+				'id'    => 'wide-content',
+				'label' => __( 'Wide Content', 'mai-engine' ),
+				'img'   => GENESIS_ADMIN_IMAGES_URL . '/layouts/c.gif',
 				'type'  => [ 'site' ],
 			],
 			[
