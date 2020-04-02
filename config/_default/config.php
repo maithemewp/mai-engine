@@ -233,7 +233,16 @@ return [
 							__( 'Sub Menu', 'mai-engine' )
 						),
 						'searchIcon'    => mai_get_svg( 'search', 'light' ),
-						'searchBox'     => mai_get_menu_search_box(),
+						'searchBox'     => ! defined( 'STYLESHEETPATH' ) ?:
+							sprintf(
+								'<div class="search-box">%s</div>',
+								get_search_form(
+									[
+										'aria_label' => esc_html__( 'Menu Search', 'mai-engine' ),
+										'echo'       => false,
+									]
+								)
+							),
 					],
 				],
 			],
