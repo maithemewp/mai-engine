@@ -102,24 +102,6 @@ function mai_load_files() {
 		'blocks/icon',
 		'blocks/cover',
 
-		// Plugins.
-		'plugins/acf',
-		'plugins/wpforms',
-
-		// Admin.
-		'admin/images',
-		'admin/settings',
-		'admin/page-header',
-		'admin/hide-elements',
-
-		// Customizer.
-		'customize/archives',
-		'customize/kirki',
-		'customize/logo',
-		'customize/site-header',
-		'customize/page-header',
-		'customize/singular',
-
 		// Grid.
 		'grid/setup',
 		'grid/functions',
@@ -127,6 +109,34 @@ function mai_load_files() {
 		'grid/loop',
 		'grid/customizer',
 	];
+
+	if ( is_admin() ) {
+		$files = array_merge(
+			$files,
+			[
+				'plugins/acf',
+				'plugins/wpforms',
+				'admin/images',
+				'admin/settings',
+				'admin/page-header',
+				'admin/hide-elements',
+			]
+		);
+	}
+
+	if ( is_customize_preview() ) {
+		$files = array_merge(
+			$files,
+			[
+				'customize/archives',
+				'customize/kirki',
+				'customize/logo',
+				'customize/site-header',
+				'customize/page-header',
+				'customize/singular',
+			]
+		);
+	}
 
 	foreach ( $files as $file ) {
 		$filename = __DIR__ . "/$file.php";
