@@ -91,6 +91,7 @@ function mai_load_files() {
 		'structure/page-header',
 		'structure/menus',
 		'structure/pagination',
+		'structure/search-form',
 		'structure/sidebar',
 		'structure/single',
 		'structure/wrap',
