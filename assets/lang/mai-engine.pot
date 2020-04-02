@@ -37,7 +37,7 @@ msgstr ""
 msgid "Menu"
 msgstr ""
 
-#: config/_default/config.php:226, config/_default/config.php:479
+#: config/_default/config.php:226, config/_default/config.php:484
 msgid "Mobile Menu"
 msgstr ""
 
@@ -45,55 +45,59 @@ msgstr ""
 msgid "Sub Menu"
 msgstr ""
 
-#: config/_default/config.php:398
+#: config/_default/config.php:238
+msgid "Menu Search"
+msgstr ""
+
+#: config/_default/config.php:403
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/_default/config.php:399
+#: config/_default/config.php:404
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/_default/config.php:400
+#: config/_default/config.php:405
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default/config.php:401
+#: config/_default/config.php:406
 msgid "Footer Menu"
 msgstr ""
 
-#: config/_default/config.php:446, lib/admin/hide-elements.php:32
+#: config/_default/config.php:451, lib/admin/hide-elements.php:32
 msgid "Before Header"
 msgstr ""
 
-#: config/_default/config.php:447
+#: config/_default/config.php:452
 msgid "The Before Header widget area."
 msgstr ""
 
-#: config/_default/config.php:452
+#: config/_default/config.php:457
 msgid "Header Left"
 msgstr ""
 
-#: config/_default/config.php:453
+#: config/_default/config.php:458
 msgid "The Header Left widget area."
 msgstr ""
 
-#: config/_default/config.php:462
+#: config/_default/config.php:467
 msgid "Header Right"
 msgstr ""
 
-#: config/_default/config.php:463
+#: config/_default/config.php:468
 msgid "The Header Right widget area."
 msgstr ""
 
-#: config/_default/config.php:472, lib/admin/hide-elements.php:37
+#: config/_default/config.php:477, lib/admin/hide-elements.php:37
 msgid "Before Footer"
 msgstr ""
 
-#: config/_default/config.php:473
+#: config/_default/config.php:478
 msgid "The Before Footer widget area."
 msgstr ""
 
-#: config/_default/config.php:480
+#: config/_default/config.php:485
 msgid "The Mobile Menu widget area."
 msgstr ""
 
@@ -301,8 +305,8 @@ msgstr ""
 msgid "Author Archives"
 msgstr ""
 
-#: lib/customize/kirki.php:66
-msgid "Mai Settings"
+#: lib/customize/kirki.php:70
+msgid "Theme Settings"
 msgstr ""
 
 #: lib/customize/logo.php:26
