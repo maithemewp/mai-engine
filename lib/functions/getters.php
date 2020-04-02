@@ -155,7 +155,7 @@ function mai_get_asset_version( $file ) {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param string $file File base name.
  *
@@ -273,7 +273,7 @@ function mai_get_child_themes() {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return array
  */
@@ -290,7 +290,7 @@ function mai_get_options() {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param string $option  Option name.
  * @param mixed  $default Default value.
@@ -607,7 +607,7 @@ function mai_get_content_limit( $content, $limit ) {
 /**
  * Description of expected behavior.
  *
- * @since  1.0.0
+ * @since  0.1.0
  *
  * @return array
  */
@@ -1103,7 +1103,7 @@ function mai_get_svg( $name, $style = 'regular' ) {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return array
  */
@@ -1135,4 +1135,23 @@ function mai_get_admin_localized_data() {
 	}
 
 	return $data;
+}
+
+/**
+ * Get the menu search box markup.
+ *
+ * @since 0.1.0
+ *
+ * @return array
+ */
+function mai_get_menu_search_box() {
+	return sprintf(
+		'<div class="search-box">%s</div>',
+		get_search_form(
+			[
+				'aria_label' => esc_html__( 'Menu Search', 'mai-engine' ),
+				'echo'       => false,
+			]
+		)
+	);
 }
