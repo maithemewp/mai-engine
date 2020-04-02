@@ -5,7 +5,7 @@
     "light": "#f7f8fa",
     "success": "#00cd9e",
     "warning": "#ffc54e",
-    "error": "#ff478f",
+    "danger": "#ff478f",
     "info": "#0095ed"
   }
 }

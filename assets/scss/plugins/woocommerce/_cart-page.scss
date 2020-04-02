@@ -7,14 +7,14 @@
 	height: 1em;
 	color: var(--color-white);
 	font-weight: var(--font-weight-heading);
-	background-color: var(--color-error);
+	background-color: var(--color-danger);
 	border-radius: var(--border-radius);
 
 	&:hover,
 	&:focus {
 		color: var(--color-white);
 		text-decoration: none;
-		background-color: var(--color-error);
+		background-color: var(--color-danger);
 	}
 }
 
