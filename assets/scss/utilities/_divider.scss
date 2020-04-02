@@ -1,22 +1,29 @@
 $dividers: (
 	angle,
 	curve,
-	wave
+	wave,
 );
 
 @each $divider in $dividers {
 
 	.has-#{$divider}-divider {
 
+		> div {
+			position: relative;
+			z-index: 3 !important;
+		}
+
 		&::after {
 			position: absolute;
 			right: 0;
-			bottom: 0;
+			bottom: -1px;
 			left: 0;
-			z-index: 1;
+			z-index: 2;
 			display: block;
-			height: 10rem;
-			background-image: url("../../svg/divider-#{$divider}.svg");
+			height: 32rem;
+			max-height: 25vw;
+			background-color: var(--divider-background-color, var(--color-white));
+			mask-image: url("../../svg/divider-#{$divider}.svg");
 			content: "";
 		}
 	}
