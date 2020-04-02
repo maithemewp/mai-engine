@@ -232,16 +232,13 @@ return [
 							'<span class="sub-menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
 							__( 'Sub Menu', 'mai-engine' )
 						),
-						'searchIcon'    => mai_get_svg( 'search', 'light' ),
+						'searchIcon'    => mai_get_svg( 'search', 'light', 'search-toggle-icon' ),
 						'searchBox'     => ! defined( 'STYLESHEETPATH' ) ?:
-							sprintf(
-								'<div class="search-box">%s</div>',
-								get_search_form(
-									[
-										'aria_label' => esc_html__( 'Menu Search', 'mai-engine' ),
-										'echo'       => false,
-									]
-								)
+							get_search_form(
+								[
+									'aria_label' => esc_html__( 'Menu Search', 'mai-engine' ),
+									'echo'       => false,
+								]
 							),
 					],
 				],

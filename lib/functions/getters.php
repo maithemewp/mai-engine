@@ -147,8 +147,9 @@ function mai_get_asset_version( $file ) {
 	$file    = str_replace( mai_get_url(), mai_get_dir(), $file );
 	$version = mai_get_version();
 	if ( file_exists( $file ) && mai_has_string( mai_get_dir(), $file ) ) {
-		$version .= '.' . date ( 'njYHi', filemtime( $file ) );
+		$version .= '.' . date( 'njYHi', filemtime( $file ) );
 	}
+
 	return $version;
 }
 
@@ -1086,18 +1087,25 @@ function mai_get_icon_default_args() {
  *
  * @param string $name
  * @param string $style
+ * @param string $class
  *
  * @return string
  */
-function mai_get_svg( $name, $style = 'regular' ) {
+function mai_get_svg( $name, $style = 'light', $class = '' ) {
 	$file = mai_get_dir() . "assets/icons/svgs/$style/$name.svg";
 
 	if ( ! file_exists( $file ) ) {
 		return '';
 	}
 
+	$svg = file_get_contents( $file );
+
+	if ( $class ) {
+		$svg = str_replace( '<svg', "<svg class='$class' ", $svg );
+	}
+
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-	return file_get_contents( $file );
+	return $svg;
 }
 
 /**

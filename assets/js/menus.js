@@ -12,6 +12,8 @@
 	var mobileMenuWidget = document.querySelector( '.mobile-menu .widget' );
 	var menuToggle       = document.getElementsByClassName( 'menu-toggle' )[ 0 ];
 	var subMenus         = document.querySelectorAll( '.sub-menu' );
+	var subMenuToggles   = document.querySelectorAll( '.sub-menu-toggle' );
+	var searchMenuItems  = document.querySelectorAll( '.menu-item.search' );
 	var mediaQuery       = window.matchMedia( '(max-width:' + localizedData.breakpoint + 'px)' );
 	var timeout          = false;
 
@@ -68,6 +70,29 @@
 		} );
 	};
 
+	var createSearchForm = function() {
+		if ( ! searchMenuItems ) {
+			return;
+		}
+
+		searchMenuItems.forEach( function( item ) {
+			var icon   = maiMenuVars.searchIcon;
+			var button = document.createElement( 'button' );
+			var search = document.createElement( 'div' );
+
+			button.setAttribute( 'class', 'search-toggle' );
+			button.setAttribute( 'aria-expanded', 'false' );
+			button.setAttribute( 'aria-pressed', 'false' );
+
+			button.innerHTML = '<span class="screen-reader-text">' + item.innerText + '</span>' + icon;
+			item.innerHTML   = '';
+			search.innerHTML = maiMenuVars.searchBox;
+
+			item.append( button );
+			item.append( search.firstChild );
+		} );
+	};
+
 	var cloneMenuItems = function() {
 		if ( mobileMenuWidget ) {
 			return;
@@ -86,7 +111,7 @@
 
 				menuItem.setAttribute( 'id', lastClass );
 
-				if ( null === mobileMenuList.querySelector( '#' + lastClass ) ) {
+				if ( null === mobileMenuList.querySelector( '#' + lastClass ) && ! menuItem.classList.contains( 'search' ) ) {
 					mobileMenuList.appendChild( menuItem );
 				}
 			} );
@@ -117,6 +142,32 @@
 		subMenu.parentNode.classList.toggle( 'sub-menu-visible' );
 	};
 
+	var toggleSearchForm = function( event ) {
+		var target = event.target;
+		var item   = target.classList.contains( 'search' ) ? target : target.closest( '.menu-item.search' );
+		var form   = item.querySelector( '.search-form' );
+		var toggle = item.querySelector( '.search-toggle' );
+		var input  = item.querySelector( '.search-form-input' );
+
+		input.setAttribute( 'required', '' );
+
+		if ( ! target.classList.contains( 'search-form-input' ) && ! target.classList.contains( 'search-form-submit' ) && ! target.classList.contains( 'search-form' ) ) {
+			form.classList.toggle( 'search-form-visible' );
+			toggleAriaValues( toggle );
+		}
+
+		if ( form.classList.contains( 'search-form-visible' ) ) {
+			input.focus();
+
+			document.addEventListener( 'mouseup', function( event ) {
+				if ( ! event.target.closest( '.menu-item.search' ) ) {
+					form.classList.remove( 'search-form-visible' );
+					toggleAriaValues( toggle );
+				}
+			} );
+		}
+	};
+
 	var onResize = function() {
 		if ( timeout ) {
 			return;
@@ -124,7 +175,6 @@
 
 		timeout = true;
 
-		// Do stuff.
 		addBodyClasses();
 
 		setTimeout( function() {
@@ -133,81 +183,22 @@
 	};
 
 	var onReady = function() {
+		onResize();
 		createMobileMenu();
 		createMenuToggle();
-		cloneMenuItems();
 		createSubMenuToggles();
-		onResize();
+		createSearchForm();
+		cloneMenuItems();
 
 		window.addEventListener( 'resize', onResize, false );
 		menuToggle.addEventListener( 'click', toggleMobileMenu, false );
-		document.querySelectorAll( '.sub-menu-toggle' ).forEach( function( subMenu ) {
+		subMenuToggles.forEach( function( subMenu ) {
 			subMenu.addEventListener( 'click', toggleSubMenu, false );
+		} );
+		searchMenuItems.forEach( function( searchMenuItem ) {
+			searchMenuItem.addEventListener( 'click', toggleSearchForm, false );
 		} );
 	};
 
 	return onReady();
-} )();
-
-
-( function() {
-
-	var searchMenuItems = document.querySelectorAll( '.menu-item.search' );
-
-	if ( ! searchMenuItems ) {
-		return;
-	}
-
-	searchMenuItems.forEach( function( item, index ) {
-		var icon   = maiMenuVars.searchIcon;
-		var button = document.createElement( 'button' );
-		var search = document.createElement( 'div' );
-
-		button.setAttribute( 'class', 'search-toggle' );
-		button.setAttribute( 'aria-expanded', 'false' );
-		button.setAttribute( 'aria-pressed', 'false' );
-
-		button.innerHTML = '<span class="screen-reader-text">' + item.innerText + '</span>' + icon;
-		item.innerHTML   = '';
-		search.innerHTML = maiMenuVars.searchBox;
-
-		item.append( button );
-		item.append( search.firstChild );
-
-		button.addEventListener( 'click', function(e) {
-			var toggle = item.querySelector( '.search-toggle' );
-			var box    = item.querySelector( '.search-box' );
-			var input  = item.querySelector( '.search-form-input' );
-
-			box.classList.toggle( 'search-box-visible' );
-			toggleAriaValues( toggle );
-
-
-			if ( box.classList.contains( 'search-box-visible' ) ) {
-
-				input.focus();
-
-				document.addEventListener( 'mouseup', function(e) {
-					// Bail if click is on a child of our search box container.
-					if ( e.target.closest( '.menu-item.search' ) ) {
-						return;
-					}
-					box.classList.remove( 'search-box-visible' );
-					toggle.setAttribute( 'aria-expanded', false );
-					toggle.setAttribute( 'aria-pressed', false );
-				});
-			}
-		});
-
-		var toggleAriaValues = function( element ) {
-			var ariaValue = element.getAttribute( 'aria-expanded' ) === 'false' ? 'true' : 'false';
-
-			element.setAttribute( 'aria-expanded', ariaValue );
-			element.setAttribute( 'aria-pressed', ariaValue );
-
-			return element;
-		};
-
-	} );
-
 } )();
