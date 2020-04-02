@@ -1,5 +1,5 @@
 ( function() {
-	var localizedData    = typeof maiMobileMenu === 'undefined' ? {} : maiMobileMenu;
+	var localizedData    = typeof maiMenuVars === 'undefined' ? {} : maiMenuVars;
 	var body             = document.getElementsByTagName( 'body' )[ 0 ];
 	var siteHeaderWrap   = document.querySelector( '.site-header > .wrap' );
 	var navHeaderLeft    = document.getElementsByClassName( 'nav-header-left' )[ 0 ];
@@ -147,4 +147,67 @@
 	};
 
 	return onReady();
+} )();
+
+
+( function() {
+
+	var searchMenuItems = document.querySelectorAll( '.menu-item.search' );
+
+	if ( ! searchMenuItems ) {
+		return;
+	}
+
+	searchMenuItems.forEach( function( item, index ) {
+		var icon   = maiMenuVars.searchIcon;
+		var button = document.createElement( 'button' );
+		var search = document.createElement( 'div' );
+
+		button.setAttribute( 'class', 'search-toggle' );
+		button.setAttribute( 'aria-expanded', 'false' );
+		button.setAttribute( 'aria-pressed', 'false' );
+
+		button.innerHTML = '<span class="screen-reader-text">' + item.innerText + '</span>' + icon;
+		item.innerHTML   = '';
+		search.innerHTML = maiMenuVars.searchBox;
+
+		item.append( button );
+		item.append( search.firstChild );
+
+		button.addEventListener( 'click', function(e) {
+			var toggle = item.querySelector( '.search-toggle' );
+			var box    = item.querySelector( '.search-box' );
+			var input  = item.querySelector( '.search-form-input' );
+
+			box.classList.toggle( 'search-box-visible' );
+			toggleAriaValues( toggle );
+
+
+			if ( box.classList.contains( 'search-box-visible' ) ) {
+
+				input.focus();
+
+				document.addEventListener( 'mouseup', function(e) {
+					// Bail if click is on a child of our search box container.
+					if ( e.target.closest( '.menu-item.search' ) ) {
+						return;
+					}
+					box.classList.remove( 'search-box-visible' );
+					toggle.setAttribute( 'aria-expanded', false );
+					toggle.setAttribute( 'aria-pressed', false );
+				});
+			}
+		});
+
+		var toggleAriaValues = function( element ) {
+			var ariaValue = element.getAttribute( 'aria-expanded' ) === 'false' ? 'true' : 'false';
+
+			element.setAttribute( 'aria-expanded', ariaValue );
+			element.setAttribute( 'aria-pressed', ariaValue );
+
+			return element;
+		};
+
+	} );
+
 } )();

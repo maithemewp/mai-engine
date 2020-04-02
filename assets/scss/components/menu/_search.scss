@@ -1,0 +1,67 @@
+button.search-toggle {
+	--button-background: none;
+	--button-border: none;
+	--button-border-color: none;
+	--button-border-radius: none;
+	--button-opacity: none;
+	--button-transition: none;
+	width: 1.5em;
+	padding: 0;
+	color: currentColor;
+	font-size: inherit;
+
+	&::before,
+	&::after {
+		display: none;
+	}
+}
+
+.search-box {
+	position: absolute;
+	top: 84%;
+	right: -1px;
+	z-index: 98;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	min-width: 320px;
+	margin: 0 auto;
+	padding: var(--spacing-md);
+	font-size: var(--text-sm);
+	background-color: var(--color-white);
+	border: var(--border);
+	box-shadow: var(--shadow);
+
+	&.search-box-visible {
+		display: flex;
+	}
+}
+
+.search-box .search-form {
+	display: flex;
+	width: 100%;
+	overflow: hidden;
+	border-radius: var(--border-radius);
+}
+
+.search-box .search-form-input {
+	flex: 1;
+	border-radius: var(--input-border-radius);
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.search-box .search-form .search-form-submit {
+	position: initial;
+	flex: 1 0 auto;
+	width: auto;
+	height: auto;
+	margin: 0 0 0 -1px; /* cover input border if we have one */
+	padding: 4px 12px;
+	border: inherit;
+	border-radius: var(--button-border-radius);
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	box-shadow: none;
+	clip: unset;
+}

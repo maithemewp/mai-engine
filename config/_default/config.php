@@ -220,7 +220,7 @@ return [
 				'handle'   => mai_get_handle() . '-menus',
 				'src'      => mai_get_asset_url( 'menus.js' ),
 				'localize' => [
-					'name' => 'maiMobileMenu',
+					'name' => 'maiMenuVars',
 					'data' => [
 						'breakpoint'    => mai_get_breakpoint(),
 						'ariaLabel'     => __( 'Mobile Menu', 'mai-engine' ),
@@ -232,6 +232,8 @@ return [
 							'<span class="sub-menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
 							__( 'Sub Menu', 'mai-engine' )
 						),
+						'searchIcon'    => mai_get_svg( 'search', 'light' ),
+						'searchBox'     => sprintf( '<div class="search-box">%s</div>', get_search_form( false ) ),
 					],
 				],
 			],
