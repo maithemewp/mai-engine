@@ -90,24 +90,15 @@ jQuery(document).ready(function($) {
 
 	function getPostType( $input, keys ) {
 		return acf.getField( keys.post_type ).val();
-		// var $wrapper  = $input.parents( '.acf-block-fields' );
-		// var $postType = $wrapper.find( '.acf-field[data-key="' + keys.post_type + '"] select' );
-		// return $postType.val();
 	}
 
 	function getRowTaxonomy( $input, keys ) {
 		return acf.getField( keys.taxonomy ).val();
-		// var $wrapper  = $input.parents( '.acf-row' );
-		// var $taxonomy = $wrapper.find( '.acf-field[data-key="' + keys.taxonomy + '"] select' );
-		// return $taxonomy.val();
 	}
 
 
 	function getTaxonomy( $input, keys ) {
 		return acf.getField( keys.taxonomy ).val();
-		// var $wrapper  = $input.parents( '.acf-block-fields' );
-		// var $taxonomy = $wrapper.find( '.acf-field[data-key="' + keys.taxonomy + '"] select' );
-		// return $taxonomy.val();
 	}
 
 });
@@ -169,3 +160,27 @@ jQuery(document).ready(function($) {
 
 });
 
+wp.domReady( () => {
+
+	wp.blocks.registerBlockStyle( 'core/heading', {
+		name: 'subheading',
+		label: 'Subheading'
+	});
+
+	wp.blocks.registerBlockStyle( 'core/button', [
+		{
+			name: 'primary',
+			label: 'Primary',
+			isDefault: true,
+		},
+		{
+			name: 'secondary',
+			label: 'Secondary'
+		},
+		{
+			name: 'tertiary',
+			label: 'Tertiary'
+		}
+	]);
+
+} );
