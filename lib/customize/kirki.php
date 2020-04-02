@@ -21,10 +21,14 @@ add_action( 'after_setup_theme', 'mai_kirki_filters' );
  * @return void
  */
 function mai_kirki_filters() {
+	$handle = mai_get_handle();
+
+	add_filter( "kirki_${handle}_webfonts_skip_hidden", '__return_false' );
+
 	add_filter( 'kirki/dynamic_css/method', '__return_true' );
 
 	add_filter(
-		'kirki_gutenberg_' . mai_get_handle() . '_dynamic_css',
+		"kirki_gutenberg_${handle}_dynamic_css",
 		function () {
 			return home_url( '?action=kirki-styles' );
 		}
@@ -117,7 +121,7 @@ function mai_reposition_genesis_customizer_sections( $wp_customize ) {
 	foreach ( $sections as $id => $data ) {
 		$wp_customize->get_section( $id )->panel = mai_get_handle();
 	}
-	
+
 	$wp_customize->remove_section( 'genesis_single' );
 	$wp_customize->remove_section( 'genesis_archives' );
 }
