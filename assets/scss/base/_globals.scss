@@ -88,8 +88,8 @@
 	--shadow-blur: 1em;
 	--shadow-spread: 0;
 	--shadow-opacity: 0.5;
-	--shadow-color: #{rgba(map_get($colors, "muted"), var(--shadow-opacity))};
-	--shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-spread) var(--shadow-color);
+	--shadow-color: #{hex_to_rgb(map_get($colors, "muted"))};
+	--shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-spread) rgba(var(--shadow-color), var(--shadow-opacity));
 
 	--darken: brightness(95%);
 	--lighten: brightness(110%);
