@@ -821,7 +821,6 @@ function mai_get_single_show_choices( $name ) {
 		'genesis_before_entry_content' => 'genesis_before_entry_content',
 		'content'                      => esc_html__( 'Content', 'mai-engine' ),
 		'genesis_entry_content'        => 'genesis_entry_content',
-		'more_link'                    => esc_html__( 'Read More link', 'mai-engine' ),
 		'genesis_after_entry_content'  => 'genesis_after_entry_content',
 		'footer_meta'                  => esc_html__( 'Footer Meta', 'mai-engine' ),
 		'genesis_entry_footer'         => 'genesis_entry_footer',
