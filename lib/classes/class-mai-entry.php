@@ -126,7 +126,10 @@ class Mai_Entry {
 		);
 
 		// Check if extra wrap is needed.
-		$has_wrap = in_array( 'image', $this->args['show'], true ) && ( in_array( $this->args['image_position'], [ 'background' ] ) || mai_has_string( 'left', $this->args['image_position'] ) || mai_has_string( 'right', $this->args['image_position'] ) );
+		$has_wrap = false;
+		if ( 'single' !== $this->context ) {
+			$has_wrap = in_array( 'image', $this->args['show'], true ) && ( in_array( $this->args['image_position'], [ 'background' ] ) || mai_has_string( 'left', $this->args['image_position'] ) || mai_has_string( 'right', $this->args['image_position'] ) );
+		}
 
 		// If we have inner wrap.
 		if ( $has_wrap ) {
@@ -261,6 +264,10 @@ class Mai_Entry {
 	 */
 	public function do_image() {
 
+		if ( ( 'single' === $this->context ) && mai_is_element_hidden( 'featured_image' ) ) {
+			return;
+		}
+
 		// Get the image HTML.
 		$image = $this->get_image();
 
@@ -338,7 +345,8 @@ class Mai_Entry {
 
 		$new_sizes   = [];
 		$has_sidebar = mai_has_sidebar();
-		$columns     = array_reverse( $this->get_breakpoint_columns(), true ); // mobile first.
+		$single      = [ 'xs' => 1, 'sm' => 1, 'md' => 1, 'lg' => 1 ];
+		$columns     = ( 'single' === $this->context ) ? $single : array_reverse( $this->get_breakpoint_columns(), true ); // mobile first.
 
 		foreach ( $columns as $break => $count ) {
 			switch ( $break ) {
@@ -506,12 +514,13 @@ class Mai_Entry {
 	 */
 	public function get_image_size_by_cols() {
 		$fw_content  = ( 'full-width-content' === genesis_site_layout() ) ? true : false;
-		$img_aligned = in_array( $this->args['image_position'], [ 'left', 'right' ], true );
 
-		// If singular.
-		if ( 'singular' === $this->context ) {
+		// If single.
+		if ( 'single' === $this->context ) {
 			$image_size = $fw_content ? 'lg' : 'md';
 		} else {
+			$img_aligned = in_array( $this->args['image_position'], [ 'left', 'right' ], true );
+
 			// Archive or block.
 			switch ( $this->args['columns'] ) {
 				case 1:
@@ -556,6 +565,11 @@ class Mai_Entry {
 	 * @return  void
 	 */
 	public function do_title() {
+
+		if ( ( 'single' === $this->context ) && mai_is_element_hidden( 'entry_title' ) ) {
+			return;
+		}
+
 		$link = false;
 
 		// Title.
@@ -563,15 +577,14 @@ class Mai_Entry {
 			case 'post':
 				// Not a block.
 				if ( 'block' !== $this->context ) {
-
 					// Singular and archive wrap and title text.
-					if ( 'singular' === $this->context ) {
+					if ( 'single' === $this->context ) {
 						$wrap  = 'h1';
-						$title = genesis_entry_header_hidden_on_current_page() ? get_the_title() : '';
 					} else {
 						$wrap  = 'h2';
-						$title = get_the_title();
 					}
+
+					$title = get_the_title();
 
 					// If HTML5 with semantic headings, wrap in H1.
 					$wrap = genesis_get_seo_option( 'semantic_headings' ) ? 'h1' : $wrap;
@@ -581,7 +594,7 @@ class Mai_Entry {
 
 					// Wrap in H2 on static homepages if Primary Title H1 is set to title or description.
 					if (
-						( 'singular' === $this->context )
+						( 'single' === $this->context )
 						&& is_front_page()
 						&& ! is_home()
 						&& genesis_seo_active()
@@ -675,14 +688,14 @@ class Mai_Entry {
 
 		// Add genesis filter.
 		if ( 'post' === $this->type ) {
-			$output = apply_filters( 'genesis_post_title_output', $output, $wrap, $title ) . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- title output is left unescaped to accommodate trusted user input. See https://codex.wordpress.org/Function_Reference/the_title#Security_considerations.
+			$output = apply_filters( 'genesis_post_title_output', $output, $wrap, $title ) . "\n";
 		}
 
 		if ( ! $output ) {
 			return;
 		}
 
-		// TODO: Output should be escaped.
+		// title output is left unescaped to accommodate trusted user input. See https://codex.wordpress.org/Function_Reference/the_title#Security_considerations.
 		echo $output;
 	}
 
@@ -711,7 +724,7 @@ class Mai_Entry {
 		}
 
 		// Limit.
-		if ( $this->args['content_limit'] > 0 ) {
+		if ( $excerpt && isset( $this->args['content_limit'] ) && $this->args['content_limit'] > 0 ) {
 			// TODO: Add [...] or whatever the read more thing is?
 			$excerpt = mai_get_content_limit( $excerpt, $this->args['content_limit'] );
 		}
@@ -761,7 +774,7 @@ class Mai_Entry {
 		}
 
 		// Limit.
-		if ( $content && ( $this->args['content_limit'] > 0 ) ) {
+		if ( $content && isset( $this->args['content_limit'] ) && ( $this->args['content_limit'] > 0 ) ) {
 			// TODO: Add [...] or whatever the read more thing is?
 			$content = mai_get_content_limit( $content, $this->args['content_limit'] );
 		}
@@ -794,7 +807,7 @@ class Mai_Entry {
 	public function do_header_meta() {
 
 		// Bail if none.
-		if ( ! $this->args['header_meta'] ) {
+		if ( ! isset( $this->args['header_meta'] ) || ! $this->args['header_meta'] ) {
 			return;
 		}
 
@@ -828,7 +841,7 @@ class Mai_Entry {
 	public function do_footer_meta() {
 
 		// Bail if none.
-		if ( ! $this->args['footer_meta'] ) {
+		if ( ! isset( $this->args['footer_meta'] ) || ! $this->args['footer_meta'] ) {
 			return;
 		}
 
@@ -953,13 +966,49 @@ class Mai_Entry {
 
 	/**
 	 * Description of expected behavior.
+	 * Can't use genesis_adjacent_entry_nav() because it checks for post_type support.
 	 *
 	 * @since 0.1.0
 	 *
 	 * @return void
 	 */
 	public function do_adjacent_entry_nav() {
-		genesis_adjacent_entry_nav();
+
+		genesis_markup(
+			[
+				'open'    => '<div %s>',
+				'context' => 'adjacent-entry-pagination',
+			]
+		);
+
+		$previous_post_text = '<span class="screen-reader-text">' . esc_html__( 'Previous Post:', 'genesis' ) . ' </span><span class="adjacent-post-link">&#xAB; %image %title</span>';
+
+		genesis_markup(
+			[
+				'open'    => '<div %s>',
+				'context' => 'pagination-previous',
+				'content' => get_previous_post_link( '%link', $previous_post_text ),
+				'close'   => '</div>',
+			]
+		);
+
+		$next_post_text = '<span class="screen-reader-text">' . esc_html__( 'Next Post:', 'genesis' ) . ' </span><span class="adjacent-post-link">%title %image &#xBB;</span>';
+
+		genesis_markup(
+			[
+				'open'    => '<div %s>',
+				'context' => 'pagination-next',
+				'content' => get_next_post_link( '%link', $next_post_text ),
+				'close'   => '</div>',
+			]
+		);
+
+		genesis_markup(
+			[
+				'close'   => '</div>',
+				'context' => 'adjacent-entry-pagination',
+			]
+		);
 	}
 
 	/**

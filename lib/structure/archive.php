@@ -31,12 +31,13 @@ add_filter( 'genesis_author_box_gravatar_size', 'mai_author_box_gravatar' );
 /**
  * Modifies size of the Gravatar in the author box.
  *
- * @since 2.2.3
+ * @since 0.1.0
  *
  * @param int $size Original icon size.
  *
  * @return int Modified icon size.
  */
 function mai_author_box_gravatar( $size ) {
-	return mai_get_config( 'genesis-settings' )['avatar_size'];
+	$image_sizes = mai_get_available_image_sizes();
+	return isset( $image_sizes['tiny']['width'] ) ? $image_sizes['tiny']['width'] : 80;
 }

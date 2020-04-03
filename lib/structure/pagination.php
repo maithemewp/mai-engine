@@ -31,7 +31,7 @@ add_filter( 'genesis_markup_open', 'mai_entry_pagination_wrap_open', 10, 2 );
  * @return string
  */
 function mai_entry_pagination_wrap_open( $open, $args ) {
-	if ( 'archive-pagination' === $args['context'] || 'adjacent-entry-pagination' === $args['context'] ) {
+	if ( 'archive-pagination' === $args['context'] ) {
 		$open .= '<div class="wrap">';
 	}
 
@@ -50,7 +50,7 @@ add_filter( 'genesis_markup_close', 'mai_entry_pagination_wrap_close', 10, 2 );
  * @return string
  */
 function mai_entry_pagination_wrap_close( $close, $args ) {
-	if ( 'archive-pagination' === $args['context'] || 'adjacent-entry-pagination' === $args['context'] ) {
+	if ( 'archive-pagination' === $args['context'] ) {
 		$close .= '</div>';
 	}
 

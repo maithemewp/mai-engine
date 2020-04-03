@@ -67,5 +67,12 @@
 	--button-background: var(--color-muted);
 	--button-color: var(--color-dark);
 	--button-padding: 1em 1.5em;
-	--button-font-size: small;
+	--button-font-size: var(--text-sm);
+}
+
+.comment-reply-link {
+	--button-background: var(--color-muted);
+	--button-color: var(--color-dark);
+	--button-padding: 0.75em 1em;
+	--button-font-size: var(--text-xs);
 }

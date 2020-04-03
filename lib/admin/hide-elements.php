@@ -59,6 +59,7 @@ function mai_add_hide_elements_metabox() {
 					'page_header'    => __( 'Page Header', 'mai-engine' ),
 					'breadcrumbs'    => __( 'Breadcrumbs', 'mai-engine' ),
 					'entry_title'    => __( 'Entry Title', 'mai-engine' ),
+					'featured_image' => __( 'Featured Image', 'mai-engine' ),
 					'before_footer'  => __( 'Before Footer', 'mai-engine' ),
 					'footer_widgets' => __( 'Footer Widgets', 'mai-engine' ),
 					'footer_credits' => __( 'Footer Credits', 'mai-engine' ),

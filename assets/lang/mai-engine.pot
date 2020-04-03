@@ -89,7 +89,7 @@ msgstr ""
 msgid "The Header Right widget area."
 msgstr ""
 
-#: config/_default/config.php:478, lib/admin/hide-elements.php:62
+#: config/_default/config.php:478, lib/admin/hide-elements.php:63
 msgid "Before Footer"
 msgstr ""
 
@@ -125,11 +125,15 @@ msgstr ""
 msgid "Entry Title"
 msgstr ""
 
-#: lib/admin/hide-elements.php:63
-msgid "Footer Widgets"
+#: lib/admin/hide-elements.php:62
+msgid "Featured Image"
 msgstr ""
 
 #: lib/admin/hide-elements.php:64
+msgid "Footer Widgets"
+msgstr ""
+
+#: lib/admin/hide-elements.php:65
 msgid "Footer Credits"
 msgstr ""
 
@@ -273,7 +277,7 @@ msgstr ""
 msgid "50%"
 msgstr ""
 
-#: lib/classes/class-mai-entry.php:887, config/_default/settings/archive.php:208, config/_default/settings/grid.php:279
+#: lib/classes/class-mai-entry.php:900, config/_default/settings/archive.php:208, config/_default/settings/grid.php:279
 msgid "Read More"
 msgstr ""
 
@@ -361,7 +365,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: lib/functions/getters.php:780, lib/functions/getters.php:795, lib/functions/getters.php:820, config/_default/settings/archive.php:157, config/_default/settings/grid.php:210
+#: lib/functions/getters.php:780, lib/functions/getters.php:795, lib/functions/getters.php:820, config/_default/settings/archive.php:157, config/_default/settings/grid.php:210, config/_default/settings/single.php:83
 msgid "Header Meta"
 msgstr ""
 
@@ -373,11 +377,11 @@ msgstr ""
 msgid "Content"
 msgstr ""
 
-#: lib/functions/getters.php:783, lib/functions/getters.php:800, lib/functions/getters.php:824
+#: lib/functions/getters.php:783, lib/functions/getters.php:800
 msgid "Read More link"
 msgstr ""
 
-#: lib/functions/getters.php:784, lib/functions/getters.php:802, lib/functions/getters.php:826, config/_default/settings/archive.php:214, config/_default/settings/grid.php:289
+#: lib/functions/getters.php:784, lib/functions/getters.php:802, lib/functions/getters.php:825, config/_default/settings/archive.php:214, config/_default/settings/grid.php:289, config/_default/settings/single.php:98
 msgid "Footer Meta"
 msgstr ""
 
@@ -385,63 +389,63 @@ msgstr ""
 msgid "Title (when page header is hidden)"
 msgstr ""
 
-#: lib/functions/getters.php:828
+#: lib/functions/getters.php:827
 msgid "Author Box"
 msgstr ""
 
-#: lib/functions/getters.php:829
+#: lib/functions/getters.php:828
 msgid "After Entry Widget Area"
 msgstr ""
 
-#: lib/functions/getters.php:830
+#: lib/functions/getters.php:829
 msgid "Previous/Next Entry Nav"
 msgstr ""
 
-#: lib/functions/getters.php:837
+#: lib/functions/getters.php:836
 msgid "Site Default"
 msgstr ""
 
-#: lib/functions/getters.php:859
+#: lib/functions/getters.php:858
 msgid "Landscape"
 msgstr ""
 
-#: lib/functions/getters.php:860
+#: lib/functions/getters.php:859
 msgid "Portrait"
 msgstr ""
 
-#: lib/functions/getters.php:861
+#: lib/functions/getters.php:860
 msgid "Square"
 msgstr ""
 
-#: lib/functions/getters.php:867
+#: lib/functions/getters.php:866
 msgid "Custom"
 msgstr ""
 
-#: lib/functions/getters.php:879
+#: lib/functions/getters.php:878
 msgid "1"
 msgstr ""
 
-#: lib/functions/getters.php:880
+#: lib/functions/getters.php:879
 msgid "2"
 msgstr ""
 
-#: lib/functions/getters.php:881
+#: lib/functions/getters.php:880
 msgid "3"
 msgstr ""
 
-#: lib/functions/getters.php:882
+#: lib/functions/getters.php:881
 msgid "4"
 msgstr ""
 
-#: lib/functions/getters.php:883
+#: lib/functions/getters.php:882
 msgid "5"
 msgstr ""
 
-#: lib/functions/getters.php:884
+#: lib/functions/getters.php:883
 msgid "6"
 msgstr ""
 
-#: lib/functions/getters.php:885
+#: lib/functions/getters.php:884
 msgid "Auto"
 msgstr ""
 
@@ -469,15 +473,15 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: config/_default/settings/archive.php:25
+#: config/_default/settings/archive.php:25, config/_default/settings/single.php:25
 msgid "Show/hide and re-order entry elements. Click \"Toggle Hooks\" to show Genesis hooks."
 msgstr ""
 
-#: config/_default/settings/archive.php:44, config/_default/settings/grid.php:39
+#: config/_default/settings/archive.php:44, config/_default/settings/grid.php:39, config/_default/settings/single.php:48
 msgid "Image Orientation"
 msgstr ""
 
-#: config/_default/settings/archive.php:59, config/_default/settings/grid.php:62
+#: config/_default/settings/archive.php:59, config/_default/settings/grid.php:62, config/_default/settings/single.php:63
 msgid "Image Size"
 msgstr ""
 

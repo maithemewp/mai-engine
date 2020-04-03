@@ -16,7 +16,7 @@ return [
 		'desc'     => esc_html__( '"Site Default" will use the setting in Customizer > Theme Settings > Site Layout.', 'mai-engine' ),
 		'type'     => 'select',
 		'sanitize' => 'esc_html',
-		'default'  => 'wide-content',
+		'default'  => '',
 		'choices'  => 'mai_get_site_layout_choices',
 	],
 	[

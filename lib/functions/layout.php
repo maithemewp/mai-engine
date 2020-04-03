@@ -68,7 +68,7 @@ function mai_site_layout() {
 
 	// Use default layout as a fallback, if necessary.
 	if ( ! genesis_get_layout( $site_layout ) ) {
-		$site_layout = genesis_get_default_layout();
+		$site_layout = 'standard-layout';
 	}
 
 	return $site_layout;
