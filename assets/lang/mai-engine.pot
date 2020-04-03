@@ -65,7 +65,7 @@ msgstr ""
 msgid "Footer Menu"
 msgstr ""
 
-#: config/_default/config.php:452, lib/admin/hide-elements.php:32
+#: config/_default/config.php:452, lib/admin/hide-elements.php:57
 msgid "Before Header"
 msgstr ""
 
@@ -89,7 +89,7 @@ msgstr ""
 msgid "The Header Right widget area."
 msgstr ""
 
-#: config/_default/config.php:478, lib/admin/hide-elements.php:37
+#: config/_default/config.php:478, lib/admin/hide-elements.php:62
 msgid "Before Footer"
 msgstr ""
 
@@ -101,31 +101,35 @@ msgstr ""
 msgid "The Mobile Menu widget area."
 msgstr ""
 
-#: lib/admin/hide-elements.php:9
+#: lib/admin/hide-elements.php:27
 msgid "Hide Elements"
 msgstr ""
 
-#: lib/admin/hide-elements.php:33, lib/customize/site-header.php:26
+#: lib/admin/hide-elements.php:42
+msgid "Select elements to hide on this page."
+msgstr ""
+
+#: lib/admin/hide-elements.php:58, lib/customize/site-header.php:26
 msgid "Site Header"
 msgstr ""
 
-#: lib/admin/hide-elements.php:34
-msgid "After Header"
-msgstr ""
-
-#: lib/admin/hide-elements.php:35, lib/customize/page-header.php:26
+#: lib/admin/hide-elements.php:59, lib/customize/page-header.php:26
 msgid "Page Header"
 msgstr ""
 
-#: lib/admin/hide-elements.php:36
-msgid "Content Area"
+#: lib/admin/hide-elements.php:60
+msgid "Breadcrumbs"
 msgstr ""
 
-#: lib/admin/hide-elements.php:38
+#: lib/admin/hide-elements.php:61
+msgid "Entry Title"
+msgstr ""
+
+#: lib/admin/hide-elements.php:63
 msgid "Footer Widgets"
 msgstr ""
 
-#: lib/admin/hide-elements.php:39
+#: lib/admin/hide-elements.php:64
 msgid "Footer Credits"
 msgstr ""
 
@@ -441,15 +445,15 @@ msgstr ""
 msgid "Auto"
 msgstr ""
 
-#: lib/structure/page-header.php:140
+#: lib/structure/page-header.php:142
 msgid "Latest Posts"
 msgstr ""
 
-#: lib/structure/page-header.php:165, lib/structure/page-header.php:232
+#: lib/structure/page-header.php:167, lib/structure/page-header.php:234
 msgid "Search results for: "
 msgstr ""
 
-#: lib/structure/page-header.php:180
+#: lib/structure/page-header.php:182
 msgid "Not found, error 404"
 msgstr ""
 

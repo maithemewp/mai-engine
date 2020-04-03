@@ -160,7 +160,7 @@ jQuery(document).ready(function($) {
 
 });
 
-wp.domReady( () => {
+wp.domReady( function() {
 
 	wp.blocks.registerBlockStyle( 'core/heading', {
 		name: 'subheading',

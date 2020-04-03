@@ -61,7 +61,7 @@ function mai_load_files() {
 	$files = [
 
 		// Composer.
-		'../vendor/autoload.php',
+		'../vendor/autoload',
 		'../vendor/advanced-custom-fields/advanced-custom-fields-pro/acf',
 		'../vendor/wpackagist-plugin/advanced-custom-fields-font-awesome/acf-font-awesome',
 		'../vendor/aristath/kirki/kirki',
@@ -106,10 +106,8 @@ function mai_load_files() {
 
 		// Grid.
 		'grid/setup',
-		'grid/functions',
 		'grid/field-groups',
 		'grid/loop',
-		'grid/customizer',
 	];
 
 	if ( is_admin() ) {

@@ -18,7 +18,6 @@ add_action( 'genesis_meta', 'mai_page_header_setup' );
  * @return void
  */
 function mai_page_header_setup() {
-
 	if ( ! mai_has_page_header() ) {
 		return;
 	}
@@ -58,7 +57,10 @@ function mai_page_header_setup() {
 	// add_action( 'mai_page_header', 'genesis_do_cpt_archive_title_description' );
 	// add_action( 'genesis_archive_title_descriptions', 'mai_do_archive_headings_intro_text', 12, 3 );
 
-	add_action( 'mai_page_header', 'mai_do_page_header_title', 10 );
+	if ( ! mai_is_element_hidden( 'entry_title' ) ) {
+		add_action( 'mai_page_header', 'mai_do_page_header_title', 10 );
+	}
+
 	add_action( 'mai_page_header', 'mai_do_page_header_description', 20 );
 	add_action( 'genesis_before_content', 'mai_page_header_remove_404_title' );
 	add_action( 'genesis_before_content_sidebar_wrap', 'mai_do_page_header' );

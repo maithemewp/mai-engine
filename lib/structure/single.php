@@ -9,12 +9,29 @@
  * @license   GPL-2.0-or-later
  */
 
+// Disable Genesis Title Toggle setting.
+add_filter( 'genesis_title_toggle_enabled', '__return_false' );
+
 // Reposition singular image.
 remove_action( 'genesis_entry_content', 'genesis_do_singular_image', 8 );
 add_action( 'genesis_entry_header', 'genesis_do_singular_image' );
 
 // Disables the post edit link.
 add_filter( 'edit_post_link', '__return_empty_string' );
+
+add_action( 'genesis_before', 'mai_maybe_hide_entry_title' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function mai_maybe_hide_entry_title() {
+	if ( ! did_action( 'genesis_entry_content' ) && mai_is_element_hidden( 'entry_title' ) ) {
+		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
+	}
+}
 
 add_filter( 'post_class', 'mai_single_post_class' );
 /**

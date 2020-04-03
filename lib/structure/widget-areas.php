@@ -30,7 +30,7 @@ function mai_widget_areas() {
 		];
 		$args     = isset( $widget_area['args'] ) ? wp_parse_args( $widget_area['args'], $defaults ) : $defaults;
 
-		if ( $hook ) {
+		if ( $hook && ! mai_is_element_hidden( mai_convert_case( $id ) ) ) {
 			add_action(
 				$hook,
 				function () use ( $id, $args ) {

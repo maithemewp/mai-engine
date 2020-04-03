@@ -9,6 +9,24 @@
  * @license   GPL-2.0-or-later
  */
 
+add_action( 'genesis_before', 'mai_maybe_hide_site_header' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function mai_maybe_hide_site_header() {
+	if ( ! mai_is_element_hidden( 'site_header' ) ) {
+		return;
+	}
+
+	remove_action( 'genesis_header', 'genesis_header_markup_open', 5 );
+	remove_action( 'genesis_header', 'genesis_do_header' );
+	remove_action( 'genesis_header', 'genesis_header_markup_close', 15 );
+}
+
 add_filter( 'genesis_markup_title-area_open', 'mai_before_title_area_hook', 10, 1 );
 /**
  * Add custom hook after the title area.
