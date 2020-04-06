@@ -15,19 +15,19 @@ if( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if( ! class_exists('ACF') ) :
 
 class ACF {
-	
+
 	/** @var string The plugin version number. */
 	var $version = '5.8.9';
-	
+
 	/** @var array The plugin settings array. */
 	var $settings = array();
-	
+
 	/** @var array The plugin data array. */
 	var $data = array();
-	
+
 	/** @var array Storage for class instances. */
 	var $instances = array();
-	
+
 	/**
 	 * __construct
 	 *
@@ -38,11 +38,11 @@ class ACF {
 	 *
 	 * @param	void
 	 * @return	void
-	 */	
+	 */
 	function __construct() {
 		// Do nothing.
 	}
-	
+
 	/**
 	 * initialize
 	 *
@@ -55,14 +55,14 @@ class ACF {
 	 * @return	void
 	 */
 	function initialize() {
-		
+
 		// Define constants.
 		$this->define( 'ACF', true );
 		$this->define( 'ACF_PATH', plugin_dir_path( __FILE__ ) );
 		$this->define( 'ACF_BASENAME', plugin_basename( __FILE__ ) );
 		$this->define( 'ACF_VERSION', $this->version );
 		$this->define( 'ACF_MAJOR_VERSION', 5 );
-		
+
 		// Define settings.
 		$this->settings = array(
 			'name'						=> __('Advanced Custom Fields', 'acf'),
@@ -96,20 +96,20 @@ class ACF {
 			'row_index_offset'			=> 1,
 			'remove_wp_meta_box'		=> true
 		);
-		
+
 		// Include utility functions.
 		include_once( ACF_PATH . 'includes/acf-utility-functions.php');
-		
+
 		// Include previous API functions.
 		acf_include('includes/api/api-helpers.php');
 		acf_include('includes/api/api-template.php');
 		acf_include('includes/api/api-term.php');
-		
+
 		// Include classes.
 		acf_include('includes/class-acf-data.php');
 		acf_include('includes/fields/class-acf-field.php');
 		acf_include('includes/locations/class-acf-location.php');
-		
+
 		// Include functions.
 		acf_include('includes/acf-helper-functions.php');
 		acf_include('includes/acf-hook-functions.php');
@@ -121,7 +121,7 @@ class ACF {
 		acf_include('includes/acf-user-functions.php');
 		acf_include('includes/acf-value-functions.php');
 		acf_include('includes/acf-input-functions.php');
-		
+
 		// Include core.
 		acf_include('includes/fields.php');
 		acf_include('includes/locations.php');
@@ -138,7 +138,7 @@ class ACF {
 		acf_include('includes/updates.php');
 		acf_include('includes/upgrades.php');
 		acf_include('includes/validation.php');
-		
+
 		// Include ajax.
 		acf_include('includes/ajax/class-acf-ajax.php');
 		acf_include('includes/ajax/class-acf-ajax-check-screen.php');
@@ -146,7 +146,7 @@ class ACF {
 		acf_include('includes/ajax/class-acf-ajax-upgrade.php');
 		acf_include('includes/ajax/class-acf-ajax-query.php');
 		acf_include('includes/ajax/class-acf-ajax-query-users.php');
-		
+
 		// Include forms.
 		acf_include('includes/forms/form-attachment.php');
 		acf_include('includes/forms/form-comment.php');
@@ -158,7 +158,7 @@ class ACF {
 		acf_include('includes/forms/form-taxonomy.php');
 		acf_include('includes/forms/form-user.php');
 		acf_include('includes/forms/form-widget.php');
-		
+
 		// Include admin.
 		if( is_admin() ) {
 			acf_include('includes/admin/admin.php');
@@ -168,24 +168,24 @@ class ACF {
 			acf_include('includes/admin/admin-tools.php');
 			acf_include('includes/admin/admin-upgrade.php');
 		}
-		
+
 		// Include PRO.
 		acf_include('pro/acf-pro.php');
-		
+
 		// Include tests.
 		if( defined('ACF_DEV') && ACF_DEV ) {
 			acf_include('tests/tests.php');
 		}
-		
+
 		// Add actions.
 		add_action( 'init', array($this, 'init'), 5 );
 		add_action( 'init', array($this, 'register_post_types'), 5 );
 		add_action( 'init', array($this, 'register_post_status'), 5 );
-		
+
 		// Add filters.
 		add_filter( 'posts_where', array($this, 'posts_where'), 10, 2 );
 	}
-	
+
 	/**
 	 * init
 	 *
@@ -198,31 +198,31 @@ class ACF {
 	 * @return	void
 	 */
 	function init() {
-		
+
 		// Bail early if called directly from functions.php or plugin file.
 		if( !did_action('plugins_loaded') ) {
 			return;
 		}
-		
+
 		// This function may be called directly from template functions. Bail early if already did this.
 		if( acf_did('init') ) {
 			return;
 		}
-		
+
 		// Update url setting. Allows other plugins to modify the URL (force SSL).
 		acf_update_setting( 'url', plugin_dir_url( __FILE__ ) );
-		
+
 		// Load textdomain file.
 		acf_load_textdomain();
-		
+
 		// Include 3rd party compatiblity.
 		acf_include('includes/third-party.php');
-		
+
 		// Include wpml support.
 		if( defined('ICL_SITEPRESS_VERSION') ) {
 			acf_include('includes/wpml.php');
 		}
-		
+
 		// Include fields.
 		acf_include('includes/fields/class-acf-field-text.php');
 		acf_include('includes/fields/class-acf-field-textarea.php');
@@ -255,7 +255,7 @@ class ACF {
 		acf_include('includes/fields/class-acf-field-accordion.php');
 		acf_include('includes/fields/class-acf-field-tab.php');
 		acf_include('includes/fields/class-acf-field-group.php');
-		
+
 		/**
 		 * Fires after field types have been included.
 		 *
@@ -265,7 +265,7 @@ class ACF {
 		 * @param	int $major_version The major version of ACF.
 		 */
 		do_action( 'acf/include_field_types', ACF_MAJOR_VERSION );
-		
+
 		// Include locations.
 		acf_include('includes/locations/class-acf-location-post-type.php');
 		acf_include('includes/locations/class-acf-location-post-template.php');
@@ -288,7 +288,7 @@ class ACF {
 		acf_include('includes/locations/class-acf-location-widget.php');
 		acf_include('includes/locations/class-acf-location-nav-menu.php');
 		acf_include('includes/locations/class-acf-location-nav-menu-item.php');
-		
+
 		/**
 		 * Fires after location types have been included.
 		 *
@@ -298,7 +298,7 @@ class ACF {
 		 * @param	int $major_version The major version of ACF.
 		 */
 		do_action( 'acf/include_location_rules', ACF_MAJOR_VERSION );
-		
+
 		/**
 		 * Fires during initialization. Used to add local fields.
 		 *
@@ -308,7 +308,7 @@ class ACF {
 		 * @param	int $major_version The major version of ACF.
 		 */
 		do_action( 'acf/include_fields', ACF_MAJOR_VERSION );
-		
+
 		/**
 		 * Fires after ACF is completely "initialized".
 		 *
@@ -319,7 +319,7 @@ class ACF {
 		 */
 		do_action( 'acf/init', ACF_MAJOR_VERSION );
 	}
-	
+
 	/**
 	 * register_post_types
 	 *
@@ -330,12 +330,12 @@ class ACF {
 	 *
 	 * @param	void
 	 * @return	void
-	 */	
+	 */
 	function register_post_types() {
-		
+
 		// Vars.
 		$cap = acf_get_setting('capability');
-		
+
 		// Register the Field Group post type.
 		register_post_type('acf-field-group', array(
 			'labels'			=> array(
@@ -348,7 +348,7 @@ class ACF {
 			    'view_item'				=> __( 'View Field Group', 'acf' ),
 			    'search_items'			=> __( 'Search Field Groups', 'acf' ),
 			    'not_found'				=> __( 'No Field Groups found', 'acf' ),
-			    'not_found_in_trash'	=> __( 'No Field Groups found in Trash', 'acf' ), 
+			    'not_found_in_trash'	=> __( 'No Field Groups found in Trash', 'acf' ),
 			),
 			'public'			=> false,
 			'hierarchical'		=> true,
@@ -366,8 +366,8 @@ class ACF {
 			'rewrite'			=> false,
 			'query_var'			=> false,
 		));
-		
-		
+
+
 		// Register the Field post type.
 		register_post_type('acf-field', array(
 			'labels'			=> array(
@@ -380,7 +380,7 @@ class ACF {
 			    'view_item'				=> __( 'View Field', 'acf' ),
 			    'search_items'			=> __( 'Search Fields', 'acf' ),
 			    'not_found'				=> __( 'No Fields found', 'acf' ),
-			    'not_found_in_trash'	=> __( 'No Fields found in Trash', 'acf' ), 
+			    'not_found_in_trash'	=> __( 'No Fields found in Trash', 'acf' ),
 			),
 			'public'			=> false,
 			'hierarchical'		=> true,
@@ -399,7 +399,7 @@ class ACF {
 			'query_var'			=> false,
 		));
 	}
-	
+
 	/**
 	 * register_post_status
 	 *
@@ -412,7 +412,7 @@ class ACF {
 	 * @return	void
 	 */
 	function register_post_status() {
-		
+
 		// Register the Disabled post status.
 		register_post_status('acf-disabled', array(
 			'label'                     => __( 'Inactive', 'acf' ),
@@ -423,7 +423,7 @@ class ACF {
 			'label_count'               => _n_noop( 'Inactive <span class="count">(%s)</span>', 'Inactive <span class="count">(%s)</span>', 'acf' ),
 		));
 	}
-	
+
 	/**
 	 * posts_where
 	 *
@@ -437,26 +437,26 @@ class ACF {
 	 */
 	function posts_where( $where, $wp_query ) {
 		global $wpdb;
-		
+
 		// Add custom "acf_field_key" arg.
 		if( $field_key = $wp_query->get('acf_field_key') ) {
 			$where .= $wpdb->prepare(" AND {$wpdb->posts}.post_name = %s", $field_key );
 	    }
-	    
+
 	    // Add custom "acf_field_name" arg.
 	    if( $field_name = $wp_query->get('acf_field_name') ) {
 			$where .= $wpdb->prepare(" AND {$wpdb->posts}.post_excerpt = %s", $field_name );
 	    }
-	    
+
 	    // Add custom "acf_group_key" arg.
 		if( $group_key = $wp_query->get('acf_group_key') ) {
 			$where .= $wpdb->prepare(" AND {$wpdb->posts}.post_name = %s", $group_key );
 	    }
-	    
+
 	    // Return.
 	    return $where;
 	}
-	
+
 	/**
 	 * define
 	 *
@@ -474,7 +474,7 @@ class ACF {
 			define( $name, $value );
 		}
 	}
-	
+
 	/**
 	 * has_setting
 	 *
@@ -489,7 +489,7 @@ class ACF {
 	function has_setting( $name ) {
 		return isset($this->settings[ $name ]);
 	}
-	
+
 	/**
 	 * get_setting
 	 *
@@ -504,7 +504,7 @@ class ACF {
 	function get_setting( $name ) {
 		return isset($this->settings[ $name ]) ? $this->settings[ $name ] : null;
 	}
-	
+
 	/**
 	 * update_setting
 	 *
@@ -521,7 +521,7 @@ class ACF {
 		$this->settings[ $name ] = $value;
 		return true;
 	}
-	
+
 	/**
 	 * get_data
 	 *
@@ -536,7 +536,7 @@ class ACF {
 	function get_data( $name ) {
 		return isset($this->data[ $name ]) ? $this->data[ $name ] : null;
 	}
-	
+
 	/**
 	 * set_data
 	 *
@@ -552,7 +552,7 @@ class ACF {
 	function set_data( $name, $value ) {
 		$this->data[ $name ] = $value;
 	}
-	
+
 	/**
 	 * get_instance
 	 *
@@ -568,7 +568,7 @@ class ACF {
 		$name = strtolower($class);
 		return isset($this->instances[ $name ]) ? $this->instances[ $name ] : null;
 	}
-	
+
 	/**
 	 * new_instance
 	 *
@@ -604,7 +604,7 @@ class ACF {
  */
 function acf() {
 	global $acf;
-	
+
 	// Instantiate only once.
 	if( !isset($acf) ) {
 		$acf = new ACF();

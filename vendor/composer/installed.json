@@ -58,17 +58,17 @@
     },
     {
         "name": "aristath/kirki",
-        "version": "v3.1.0",
-        "version_normalized": "3.1.0.0",
+        "version": "v3.1.1",
+        "version_normalized": "3.1.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/aristath/kirki.git",
-            "reference": "8fffee314c70e67a8844c0b863aca7bb45ee105b"
+            "reference": "1aeb0bd106d85b6a0e0c73b2a13b7c43dfce58b6"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/aristath/kirki/zipball/8fffee314c70e67a8844c0b863aca7bb45ee105b",
-            "reference": "8fffee314c70e67a8844c0b863aca7bb45ee105b",
+            "url": "https://api.github.com/repos/aristath/kirki/zipball/1aeb0bd106d85b6a0e0c73b2a13b7c43dfce58b6",
+            "reference": "1aeb0bd106d85b6a0e0c73b2a13b7c43dfce58b6",
             "shasum": ""
         },
         "require": {
@@ -83,7 +83,7 @@
             "phpunit/phpunit": "*",
             "wp-coding-standards/wpcs": "*"
         },
-        "time": "2020-03-01T14:46:32+00:00",
+        "time": "2020-04-05T08:23:30+00:00",
         "type": "library",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
