@@ -52,7 +52,11 @@ function mai_get_kirki_field_data( $field, $section_id, $name = '' ) {
 
 	// Maybe add default.
 	if ( isset( $field['default'] ) ) {
-		$data['default'] = $field['default'];
+		if ( is_array( $field['default'] ) ) {
+			$data['default'] = $field['default'];
+		} elseif ( is_callable( $field['default'] ) ) {
+			$data['default'] = call_user_func_array( $field['default'], [ 'name' => $name ] );
+		}
 	}
 
 	// Maybe get choices.

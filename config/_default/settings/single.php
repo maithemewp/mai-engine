@@ -31,15 +31,11 @@ return [
 			'header_meta',
 			'image',
 			'genesis_before_entry_content',
-			'excerpt',
 			'content',
 			'genesis_entry_content',
 			'genesis_after_entry_content',
 			'footer_meta',
 			'genesis_entry_footer',
-			'author_box',
-			'after_entry',
-			'adjacent_entry_nav',
 		],
 		'choices'  => 'mai_get_single_show_choices',
 	],
@@ -83,8 +79,7 @@ return [
 		'label'      => esc_html__( 'Header Meta', 'mai-engine' ),
 		'type'       => 'text',
 		'sanitize'   => 'wp_kses_post',
-		// TODO: this should be different, or empty depending on the post type?
-		'default'    => '[post_date] [post_author_posts_link before="by "]',
+		'default'    => 'mai_get_header_meta_default',
 		'conditions' => [
 			[
 				'setting'  => 'show',

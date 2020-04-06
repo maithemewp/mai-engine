@@ -773,6 +773,39 @@ function mai_get_image_sizes_from_aspect_ratio( $size = 'md', $ratio = '16:9' ) 
 	return [ $width, $height, true ];
 }
 
+function mai_get_header_meta_default( $name ) {
+	$post_type = get_post_type_object( $name );
+	if ( $post_type && $post_type->hierarchical ) {
+		return '';
+	}
+
+	return '[post_date] [post_author_posts_link before="by "]';
+}
+
+function mai_get_footer_meta_default( $name ) {
+	$taxonomies = get_object_taxonomies( $name, 'objects' );
+
+	if ( $taxonomies ) {
+		// Get only public taxonomies.
+		$taxonomies = wp_list_filter( $taxonomies, array( 'public' => true ) );
+		// Remove Post Formats and Yoast prominent keyworks
+		unset( $taxonomies['post_format'] );
+		unset( $taxonomies['yst_prominent_words'] );
+	}
+
+	// Bail if none.
+	if ( ! $taxonomies ) {
+		return '';
+	}
+
+	$default = '';
+	foreach ( $taxos as $name => $taxonomy ) {
+		$default .= '[post_terms taxonomy="' . $name . '" before="' . $taxonomy->labels->singular_name . ': "]';
+	}
+
+	return $default;
+}
+
 function mai_get_grid_show_choices() {
 	$choices = [
 		'image'       => esc_html__( 'Image', 'mai-engine' ),
@@ -787,7 +820,7 @@ function mai_get_grid_show_choices() {
 	return $choices;
 }
 
-function mai_get_archive_show_choices() {
+function mai_get_archive_show_choices( $name ) {
 	$choices = [
 		'image'                        => esc_html__( 'Image', 'mai-engine' ),
 		'genesis_entry_header'         => 'genesis_entry_header',
@@ -819,6 +852,7 @@ function mai_get_single_show_choices( $name ) {
 		'title'                        => $title,
 		'header_meta'                  => esc_html__( 'Header Meta', 'mai-engine' ),
 		'genesis_before_entry_content' => 'genesis_before_entry_content',
+		'excerpt'                      => esc_html__( 'Manual Excerpts', 'mai-engine' ),
 		'content'                      => esc_html__( 'Content', 'mai-engine' ),
 		'genesis_entry_content'        => 'genesis_entry_content',
 		'genesis_after_entry_content'  => 'genesis_after_entry_content',
@@ -883,94 +917,6 @@ function mai_get_columns_choices() {
 		'6' => esc_html__( '6', 'mai-engine' ),
 		'0' => esc_html__( 'Auto', 'mai-engine' ),
 	];
-}
-
-function mai_get_post_type_choices() {
-	$choices = [];
-	if ( ! ( is_admin() || is_customize_preview() ) ) {
-		return $choices;
-	}
-	$post_types = get_post_types(
-		[
-			'public'             => true,
-			'publicly_queryable' => true,
-		],
-		'objects',
-		'or'
-	);
-	unset( $post_types['attachment'] );
-	if ( $post_types ) {
-		foreach ( $post_types as $name => $post_type ) {
-			$choices[ $name ] = $post_type->label;
-		}
-	}
-
-	return $choices;
-}
-
-function mai_get_taxonomy_choices() {
-	$choices = [];
-	if ( ! ( is_admin() || is_customize_preview() ) ) {
-		return $choices;
-	}
-	$taxonomies = get_taxonomies(
-		[
-			'public'             => true,
-			'publicly_queryable' => true,
-		],
-		'objects',
-		'or'
-	);
-	if ( $taxonomies ) {
-		unset( $taxonomies['post_format'] );
-		unset( $taxonomies['yst_prominent_words'] );
-		foreach ( $taxonomies as $name => $taxonomy ) {
-			// TODO: These should be IDs.
-			$choices[ $name ] = $taxonomy->label;
-		}
-	}
-
-	return $choices;
-}
-
-function mai_get_post_type_taxonomy_choices() {
-	$choices = [];
-	if ( ! ( is_admin() || is_customize_preview() ) ) {
-		return $choices;
-	}
-	$post_types = mai_get_acf_request( 'post_type' );
-	if ( ! $post_types ) {
-		return $choices;
-	}
-	foreach ( (array) $post_types as $post_type ) {
-		$taxonomies = get_object_taxonomies( sanitize_text_field( wp_unslash( $post_type ) ), 'objects' );
-		if ( $taxonomies ) {
-			unset( $taxonomies['post_format'] );
-			unset( $taxonomies['yst_prominent_words'] );
-			foreach ( $taxonomies as $name => $taxo ) {
-				$choices[ $name ] = $taxo->label;
-			}
-		}
-	}
-
-	return $choices;
-}
-
-/**
- * Description of expected behavior.
- *
- * @since 0.1.0
- *
- * @param $request
- *
- * @return bool
- */
-function mai_get_acf_request( $request ) {
-	if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST[ $request ] ) && ! empty( $_REQUEST[ $request ] ) ) {
-		return $_REQUEST[ $request ];
-	}
-
-	return false;
 }
 
 function mai_get_icon( $args ) {
