@@ -14,5 +14,4 @@ vendor/composer/semver
 vendor/composer/xdebug-handler
 !vendor/advanced-custom-fields
 !vendor/aristath
-!vendor/wpackagist-plugin
 !vendor/yahnis-elsts
