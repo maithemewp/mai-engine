@@ -18,6 +18,10 @@ add_action( 'after_setup_theme', 'mai_add_page_header_metabox' );
  * @return void
  */
 function mai_add_page_header_metabox() {
+	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+		return;
+	}
+
 	$config     = mai_get_config( 'page-header' );
 	$page_types = [
 		'single'  => array_merge( array_keys( get_post_types() ), [

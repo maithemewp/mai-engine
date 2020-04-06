@@ -76,8 +76,8 @@ class Mai_Entry {
 	public function __construct( $entry, $args ) {
 		$this->entry       = $entry;
 		$this->args        = $args;
-		$this->type        = isset( $this->args['type'] ) ? $this->args['type'] : 'post';
 		$this->context     = $this->args['context'];
+		$this->type        = isset( $this->args['type'] ) ? $this->args['type'] : 'post';
 		$this->id          = $this->get_id();
 		$this->url         = $this->get_url();
 		$this->breakpoints = mai_get_breakpoints();
@@ -711,7 +711,12 @@ class Mai_Entry {
 		// Excerpt.
 		switch ( $this->type ) {
 			case 'post':
-				$excerpt = get_the_excerpt();
+				if ( 'single' === $this->context ) {
+					// Manual excerpts only, on single posts.
+					$excerpt = has_excerpt() ? get_the_excerpt() : '';
+				} else {
+					$excerpt = get_the_excerpt();
+				}
 				break;
 			case 'term':
 				$excerpt = get_term_meta( $this->id, 'intro_text', true );
@@ -741,6 +746,9 @@ class Mai_Entry {
 				'context' => 'entry-excerpt',
 				'content' => wpautop( $excerpt ),
 				'echo'    => true,
+				'atts'    => [
+					'class' => ( 'single' === $this->context ) ? 'entry-excerpt entry-excerpt-single' : 'entry-excerpt',
+				],
 				'params'  => [
 					'args'  => $this->args,
 					'entry' => $this->entry,
@@ -758,38 +766,53 @@ class Mai_Entry {
 	 */
 	public function do_content() {
 
-		// Content.
-		switch ( $this->type ) {
-			case 'post':
-				$content = strip_shortcodes( get_the_content( null, false, $this->entry ) );
-				break;
-			case 'term':
-				$content = term_description( $this->id );
-				break;
-			case 'user':
-				$content = get_the_author_meta( 'description', $this->id );
-				break;
-			default:
-				$content = '';
-		}
-
-		// Limit.
-		if ( $content && isset( $this->args['content_limit'] ) && ( $this->args['content_limit'] > 0 ) ) {
-			// TODO: Add [...] or whatever the read more thing is?
-			$content = mai_get_content_limit( $content, $this->args['content_limit'] );
-		}
-
-		if ( ! $content ) {
-			return;
-		}
-
-		// Output.
 		genesis_markup(
 			[
 				'open'    => '<div %s>',
+				// 'close'   => '</div>',
+				'context' => 'entry-content',
+				// 'content' => $content,
+				'echo'    => true,
+				'params'  => [
+					'args'  => $this->args,
+					'entry' => $this->entry,
+				],
+			]
+		);
+
+		// Single needs the_content() directly, to parse_blocks and other filters.
+		if ( 'single' === $this->context ) {
+			the_content();
+		} else {
+
+			// Content.
+			switch ( $this->type ) {
+				case 'post':
+					$content = strip_shortcodes( get_the_content( null, false, $this->entry ) );
+					break;
+				case 'term':
+					$content = term_description( $this->id );
+					break;
+				case 'user':
+					$content = get_the_author_meta( 'description', $this->id );
+					break;
+				default:
+					$content = '';
+			}
+
+			// Limit.
+			if ( $content && isset( $this->args['content_limit'] ) && ( $this->args['content_limit'] > 0 ) ) {
+				// TODO: Add [...] or whatever the read more thing is?
+				$content = mai_get_content_limit( $content, $this->args['content_limit'] );
+			}
+
+			echo $content;
+		}
+
+		genesis_markup(
+			[
 				'close'   => '</div>',
 				'context' => 'entry-content',
-				'content' => $content,
 				'echo'    => true,
 				'params'  => [
 					'args'  => $this->args,

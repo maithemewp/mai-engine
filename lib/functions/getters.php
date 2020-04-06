@@ -648,6 +648,11 @@ function mai_get_template_args() {
 	// Build key and parse args.
 	$key      = sprintf( '%s-%s', $context, $name );
 	$defaults = [ 'context' => $context ] + wp_list_pluck( $settings, 'default', 'name' );
+	foreach( $defaults as $key => $default ) {
+		if ( is_callable( $defaults[ $key ] ) ) {
+			$defaults[ $key ] = $defaults[ $key ]( $name );
+		}
+	}
 	$args     = wp_parse_args( mai_get_option( $key, [] ), $defaults );
 
 	// Allow devs to filter.
@@ -836,6 +841,33 @@ function mai_get_archive_show_choices( $name ) {
 		'genesis_entry_footer'         => 'genesis_entry_footer',
 	];
 
+	return $choices;
+}
+
+function mai_get_single_show_defaults( $name ) {
+	$choices = [
+		'image',
+		'genesis_entry_header',
+		'title',
+		'header_meta',
+		'genesis_before_entry_content',
+		'excerpt',
+		'content',
+		'genesis_entry_content',
+		'genesis_after_entry_content',
+		'footer_meta',
+		'genesis_entry_footer',
+		'author_box',
+		'after_entry',
+		'adjacent_entry_nav',
+	];
+	if ( 'post' !== $name ) {
+		$choices = array_flip( $choices );
+		unset( $choices['author_box'] );
+		unset( $choices['after_entry'] );
+		unset( $choices['adjacent_entry_nav'] );
+		$choices = array_flip( $choices );
+	}
 	return $choices;
 }
 

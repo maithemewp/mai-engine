@@ -63,7 +63,6 @@ function mai_load_files() {
 		// Composer.
 		'../vendor/autoload',
 		'../vendor/advanced-custom-fields/advanced-custom-fields-pro/acf',
-		'../vendor/wpackagist-plugin/advanced-custom-fields-font-awesome/acf-font-awesome',
 		'../vendor/aristath/kirki/kirki',
 
 		// Functions.
@@ -76,6 +75,7 @@ function mai_load_files() {
 		'functions/enqueue',
 		'functions/markup',
 		'functions/entries',
+		'functions/grid',
 		'functions/widgets',
 		'functions/defaults',
 		'functions/onboarding',
@@ -88,26 +88,23 @@ function mai_load_files() {
 		'structure/comments',
 		'structure/footer',
 		'structure/header',
-		'structure/page-header',
+		'structure/loops',
 		'structure/menus',
+		'structure/page-header',
 		'structure/pagination',
 		'structure/search-form',
 		'structure/sidebar',
 		'structure/single',
-		'structure/wrap',
 		'structure/widget-areas',
-
-		// Shortcodes.
-		'shortcodes/icon',
+		'structure/wrap',
 
 		// Blocks.
 		'blocks/icon',
 		'blocks/cover',
+		'blocks/grid',
 
-		// Grid.
-		'grid/setup',
-		'grid/field-groups',
-		'grid/loop',
+		// Shortcodes.
+		'shortcodes/icon',
 	];
 
 	if ( is_admin() ) {

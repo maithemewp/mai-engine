@@ -24,7 +24,7 @@ function mai_register_icon_block() {
 				'name'            => 'mai-icon',
 				'title'           => __( 'Mai Icon', 'mai-engine' ),
 				'description'     => __( 'A custom icon block.', 'mai-engine' ),
-				'render_callback' => 'mai_render_icon_block',
+				'render_callback' => 'mai_do_icon_block',
 				'category'        => 'widgets',
 				'keywords'        => [ 'icon' ],
 				'icon'            => 'heart',
@@ -46,7 +46,7 @@ function mai_register_icon_block() {
  *
  * @return void
  */
-function mai_render_icon_block( $block, $content = '', $is_preview = false, $post_id = 0 ) {
+function mai_do_icon_block( $block, $content = '', $is_preview = false, $post_id = 0 ) {
 	$atts = [
 		'style' => get_field( 'style' ),
 		'icon'  => get_field( 'icon' ),
@@ -124,7 +124,7 @@ function mai_get_icon_choices( $style ) {
 	return $choices;
 }
 
-add_action( 'after_setup_theme', 'mai_add_icon_block_fields' );
+add_action( 'acf/init', 'mai_register_icon_field_groups' );
 /**
  * Description of expected behavior.
  *
@@ -132,11 +132,15 @@ add_action( 'after_setup_theme', 'mai_add_icon_block_fields' );
  *
  * @return void
  */
-function mai_add_icon_block_fields() {
+function mai_register_icon_field_groups() {
+	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+		return;
+	}
+
 	acf_add_local_field_group(
 		[
 			'key'         => 'group_5e3f491031be8',
-			'title'       => 'Icon',
+			'title'       => esc_html__( 'Icon', 'mai-engine' ),
 			'fields'      => [
 				[
 					'key'   => 'field_5df14557d58dg',

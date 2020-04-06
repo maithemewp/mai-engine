@@ -9,6 +9,10 @@ add_action( 'after_setup_theme', 'mai_add_hide_elements_metabox' );
  * @return void
  */
 function mai_add_hide_elements_metabox() {
+	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+		return;
+	}
+
 	$post_types = array_keys( get_post_types() );
 	$locations  = [];
 
