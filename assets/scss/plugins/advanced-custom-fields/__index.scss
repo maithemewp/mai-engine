@@ -57,6 +57,7 @@
 
 .acf-block-panel .acf-block-fields div.acf-field[data-name="padding"] {
 	clear: both !important;
+	padding-top: 16px;
 	border-top: 1px solid #e2e4e7;
 }
 
@@ -66,6 +67,8 @@
 
 .acf-block-panel .acf-block-fields div.acf-field[data-name="margin_message"] {
 	clear: both !important;
+	margin-bottom: 0;
+	padding-top: 16px;
 	padding-bottom: 0;
 	border-top: 1px solid #e2e4e7;
 }
@@ -82,7 +85,7 @@
 .acf-block-panel .acf-block-fields div.acf-field[data-name="margin_left"],
 .acf-block-panel .acf-block-fields div.acf-field[data-name="margin_right"] {
 	clear: none !important;
-	max-width: 50% !important;
+	max-width: calc(50% - 32px) !important;
 }
 
 .acf-block-panel .acf-block-fields div.acf-field[data-name="margin_top"],
@@ -95,12 +98,19 @@
 	float: right !important;
 }
 
+.acf-block-panel .acf-block-fields div.acf-field[data-name="margin_left"],
+.acf-block-panel .acf-block-fields div.acf-field[data-name="margin_right"] {
+	margin-top: 0 !important;
+}
+
 .acf-block-panel .acf-block-fields div.acf-field[data-name="border_width"] {
 	clear: none !important;
+	max-width: calc(50% - 32px) !important;
 }
 
 .acf-block-panel .acf-block-fields div.acf-field[data-name="color_shadow"] {
 	clear: both !important;
+	padding-top: 16px;
 	border-top: 1px solid #e2e4e7;
 }
 
@@ -109,23 +119,25 @@
 .acf-block-panel .acf-block-fields div.acf-field[data-name="blur"] {
 	float: left !important;
 	clear: none !important;
-	max-width: 33.333333% !important;
+	max-width: calc(33.333333% - 16px) !important;
+	margin-top: 0 !important;
 }
 
 .acf-block-panel .acf-block-fields div.acf-field[data-name="x_offset"] {
-	padding-right: 8px;
+	margin-right: 0;
 }
 
 .acf-block-panel .acf-block-fields div.acf-field[data-name="y_offset"] {
-	padding-right: 8px;
-	padding-left: 8px;
+	margin-right: 8px;
+	margin-left: 8px;
 }
 
 .acf-block-panel .acf-block-fields div.acf-field[data-name="blur"] {
-	padding-left: 8px;
+	margin-left: 0;
 }
 
 .acf-block-panel .acf-block-fields div.acf-field[data-name="border_radius"] {
+	padding-top: 16px;
 	border-top: 1px solid #e2e4e7;
 }
 
@@ -175,8 +187,8 @@
 [id$="-field_5e3f4bcd978f9-results"] .select2-results__option:not(.loading-results):not(.select2-results__message),
 [id$="-field_5e3f4bcd867e8-results"] .select2-results__option:not(.loading-results):not(.select2-results__message) {
 	flex: 1 1 100%;
-	max-width: 76px;
-	padding: 2px;
+	max-width: calc(33.3333% - 8px);
+	padding: 4px;
 	text-align: center;
 }
 
