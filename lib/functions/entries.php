@@ -149,7 +149,7 @@ function mai_do_entries_close( $args ) {
  *
  * @return  void
  */
-function mai_do_entry( $entry, $args ) {
+function mai_do_entry( $entry, $args = [] ) {
 	$entry = new Mai_Entry( $entry, $args );
 	$entry->render();
 }
