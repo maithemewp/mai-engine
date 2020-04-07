@@ -72,7 +72,6 @@ function mai_register_grid_blocks() {
  * @return void
  */
 function mai_do_post_grid_block( $block, $content = '', $is_preview = false, $post_id = 0 ) {
-	echo "WTF MATE!";
 	// TODO: block id?
 	mai_do_grid_block( 'post', $block, $content = '', $is_preview = false, $post_id = 0 );
 }
