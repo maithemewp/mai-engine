@@ -16,12 +16,17 @@
 	--content-width: var(--breakpoint-xl);
 }
 
+.standard-content {
+	--content-width: var(--breakpoint-md);
+}
+
 .narrow-content {
 	--content-width: var(--breakpoint-sm);
 }
 
 .content-sidebar,
 .sidebar-content {
+	--content-width: var(--breakpoint-lg);
 	--content-margin: 0;
 }
 

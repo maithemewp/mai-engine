@@ -145,15 +145,15 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: lib/blocks/grid.php:29, lib/blocks/grid.php:188, lib/classes/_class-mai-grid-blocks.php:118
+#: lib/blocks/grid.php:29, lib/blocks/grid.php:187
 msgid "Mai Post Grid"
 msgstr ""
 
-#: lib/blocks/grid.php:30, lib/classes/_class-mai-grid-blocks.php:119, lib/classes/_class-mai-grid-blocks.php:137
+#: lib/blocks/grid.php:30
 msgid "Display posts/pages/cpts in various layouts."
 msgstr ""
 
-#: lib/blocks/grid.php:47, lib/blocks/grid.php:206, lib/classes/_class-mai-grid-blocks.php:136
+#: lib/blocks/grid.php:47, lib/blocks/grid.php:205
 msgid "Mai Term Grid"
 msgstr ""
 
@@ -293,12 +293,8 @@ msgstr ""
 msgid "50%"
 msgstr ""
 
-#: lib/classes/class-mai-entry.php:923, config/_default/settings/archive.php:208, config/_default/settings/grid.php:279
+#: lib/classes/class-mai-entry.php:926, config/_default/settings/archive.php:208, config/_default/settings/grid.php:279
 msgid "Read More"
-msgstr ""
-
-#: lib/classes/_class-mai-grid-blocks.php:70, lib/classes/_class-mai-grid-blocks.php:84
-msgid "Cheatin&#8217; huh?"
 msgstr ""
 
 #: lib/customize/archives.php:29

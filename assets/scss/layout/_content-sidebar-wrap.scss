@@ -1,17 +1,15 @@
 .content-sidebar-wrap {
 	display: grid;
 	grid-template-columns: var(--content-sidebar-wrap-columns, 1fr);
-	width: var(--content-sidebar-wrap-width, calc(100% - var(--content-sidebar-wrap-side-spacing)));
-	max-width: var(--wrap-width);
+	width: 100%;
 	margin: var(--content-sidebar-wrap-margin, (var(--row-gap) auto));
-	column-gap: var(--content-sidebar-wrap-column-gap, (calc(var(--column-gap) * 3)));
+	padding: var(--content-sidebar-wrap-padding, 0);
+	column-gap: var(--content-sidebar-gap, (calc(var(--column-gap) * 3)));
 }
 
 .has-boxed-container {
-
-	@include mq(lg) {
-		--content-sidebar-wrap-side-spacing: calc(var(--spacing-lg) * 4);
-	}
+	--content-sidebar-wrap-side-spacing: 4vw;
+	--content-sidebar-wrap-padding: 0 var(--content-sidebar-wrap-side-spacing);
 }
 
 .has-cover-block,
