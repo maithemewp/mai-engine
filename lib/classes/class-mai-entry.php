@@ -276,17 +276,20 @@ class Mai_Entry {
 			return;
 		}
 
+		// TODO: Is this the best way to handle non-linked featured images?
+		// We'll need this later for Mai Favorites when we can disable links in grid.
+		$wrap = ( 'single' === $this->context ) ? 'span' : 'a';
+		$atts = ( 'single' === $this->context ) ? [] : ['href' => $this->url];
+
 		// Image.
 		genesis_markup(
 			[
-				'open'    => '<a %s>',
-				'close'   => '</a>',
+				'open'    => "<{$wrap} %s>",
+				'close'   => "</{$wrap}>",
 				'content' => $image,
 				'context' => 'entry-image-link',
 				'echo'    => true,
-				'atts'    => [
-					'href' => $this->url,
-				],
+				'atts'    => $atts,
 			]
 		);
 	}
