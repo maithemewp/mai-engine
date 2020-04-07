@@ -62,34 +62,6 @@ function mai_feature_posts_widget_entry_title_link( $default ) {
 	return str_replace( $search, $replace, $default );
 }
 
-add_filter( 'previous_post_link', 'mai_adjacent_entry_link_thumbnail', 10, 5 );
-add_filter( 'next_post_link', 'mai_adjacent_entry_link_thumbnail', 10, 5 );
-/**
- * Add adjacent entry images.
- *
- * The dynamic portion of the hook name, `$adjacent`, refers to the type
- * of adjacency, 'next' or 'previous'.
- *
- * @param   string   $output    The adjacent post link.
- * @param   string   $format    Link anchor format.
- * @param   string   $link      Link permalink format.
- * @param   WP_Post  $post      The adjacent post.
- * @param   string   $adjacent  Whether the post is previous or next.
- *
- * @return  string|HTML  The post link and image HTML.
- */
-function mai_adjacent_entry_link_thumbnail( $output, $format, $link, $post, $adjacent ) {
-	$image    = apply_filters( 'mai_show_adjacent_entry_image', '__return_true' );
-	$image_id = get_post_thumbnail_id( $post );
-	if ( $image && $image_id ) {
-		add_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
-		$image = wp_get_attachment_image( $image_id, 'tiny', false, [ 'class' => 'adjacent-entry-image' ] );
-		remove_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
-	}
-	$image = $image ?: '';
-	return str_replace( '%image', $image, $output );
-}
-
 /**
  * Add comment reply button classes.
  *
