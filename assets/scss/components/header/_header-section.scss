@@ -1,5 +1,5 @@
 .header-section {
-	display: flex;
+	display: var(--header-section-display, none);
 	flex: 1;
 	align-items: center;
 
@@ -12,4 +12,8 @@
 
 .header-right {
 	justify-content: flex-end;
+}
+
+.is-desktop {
+	--header-section-display: flex;
 }
