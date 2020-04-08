@@ -33,7 +33,7 @@
 	&::after {
 		display: block;
 		width: var(--menu-toggle-line-width, (calc(var(--spacing-md) * 2)));
-		height: var(--menu-toggle-line-height, 3px);
+		height: var(--menu-toggle-line-height, 2px);
 		border-radius: var(--menu-toggle-line-border-radius, var(--border-radius));
 		transition: var(--transition);
 	}

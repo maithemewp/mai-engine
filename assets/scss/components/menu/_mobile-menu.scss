@@ -8,6 +8,7 @@
 	display: var(--mobile-menu-display, none);
 	width: 100%;
 	max-height: 100vh;
+	padding: var(--spacing-md) 0;
 	overflow-y: auto;
 	background: var(--site-header-background-color, var(--color-white));
 	animation: var(--mobile-menu-animation-name) var(--mobile-menu-animation-duration) var(--mobile-menu-animation-timing);
@@ -20,10 +21,13 @@
 		--mobile-menu-display: none;
 	}
 
-	/* only show overlay when window width is the same or less than site-container. */
+	/**
+	 * only show overlay when window width
+	 * is the same or less than site-container.
+	 */
 	@include mq(false,lg) {
 
-		& .site-container::after {
+		.site-container::after {
 			position: fixed;
 			top: 0;
 			left: 0;
