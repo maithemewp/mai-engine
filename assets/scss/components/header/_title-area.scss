@@ -9,7 +9,10 @@
 }
 
 .has-logo-center {
-	--title-area-text-align: center;
+
+	&.is-desktop {
+		--title-area-text-align: center;
+	}
 }
 
 .site-title {
