@@ -1,10 +1,30 @@
-.subheading {
-	color: var(--subheading-color, var(--color-primary));
-	font-size: var(--subheading-font-size, var(--text-md));
-	text-transform: var(--subheading-text-transform, uppercase);
+.is-box-shadow {
+	box-shadow: var(--shadow);
 }
 
-.circle,
-.circle > img {
-	border-radius: 100rem;
+// WP already has .is-style-rounded for images,
+// but added has-circle-image for naming consistency.
+.has-circle-image,
+.is-circle,
+.is-rounded {
+	border-radius: 9999px;
+}
+
+.is-circle,
+.is-square {
+	position: relative;
+	display: flex;
+	flex-direction: row !important; /* for editor */
+	align-items: center;
+	justify-content: center;
+}
+
+.is-circle::before,
+.is-square::before {
+	display: block;
+	width: 1px;
+	height: 0;
+	margin-left: -1px;
+	padding-bottom: 100%;
+	content: "";
 }

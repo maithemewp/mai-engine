@@ -23,6 +23,10 @@ body:not(.editor-styles-wrapper) {
 	text-transform: uppercase;
 }
 
+// background: rgba(255, 255, 255, 0.8);
+// border-radius: 100rem;
+// box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.02);
+
 .circle-overlay {
 	--heading-font-size: var(--text-xl);
 	--heading-margin: var(--spacing-xxs, 0);
@@ -115,7 +119,32 @@ body:not(.editor-styles-wrapper) {
 	margin-left: var(--spacing-md);
 }
 
-@include mq(lg) {
+@include mq(false,md) {
+
+	.wpforms-container.inline-fields .wpforms-field-container,
+	.wpforms-container.inline-fields .wpforms-field {
+		display: block;
+		float: none;
+		width: 100%;
+	}
+
+	.wpforms-container.inline-fields .wpforms-field-container {
+		padding: 0;
+	}
+
+	.wpforms-container.inline-fields .wpforms-field {
+		padding: 0 0 var(--spacing-md);
+	}
+
+	.wpforms-container.inline-fields .wpforms-submit-container {
+		float: none;
+		width: 100%;
+		padding: 0;
+	}
+
+}
+
+@include mq(md) {
 
 	.wpforms-container.inline-fields {
 		margin-bottom: 0;
