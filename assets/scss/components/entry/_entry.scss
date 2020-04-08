@@ -17,10 +17,7 @@
 
 [class*="has-image-left"],
 [class*="has-image-right"] {
-
-	@include mq(sm) {
-		--entry-flex-direction: row;
-	}
+	--entry-flex-direction: row;
 }
 
 .has-boxed {

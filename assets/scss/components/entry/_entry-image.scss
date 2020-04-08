@@ -24,19 +24,13 @@
 
 .has-image-left-full,
 .has-image-right-full {
-
-	@include mq(sm) {
-		--entry-image-object-fit: cover;
-		--entry-image-width: 100%;
-		--entry-image-height: 100%;
-	}
+	--entry-image-object-fit: cover;
+	--entry-image-width: 100%;
+	--entry-image-height: 100%;
 }
 
 [class*="has-image-right"] {
-
-	@include mq(sm) {
-		--entry-image-link-order: 1;
-	}
+	--entry-image-link-order: 1;
 }
 
 [class*="has-image-left"]:not(.has-boxed) {
