@@ -2,9 +2,6 @@
 	box-shadow: var(--shadow);
 }
 
-// WP already has .is-style-rounded for images,
-// but added has-circle-image for naming consistency.
-.has-circle-image,
 .is-circle,
 .is-rounded {
 	border-radius: 9999px;
