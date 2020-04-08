@@ -8,6 +8,7 @@
 	box-shadow: var(--site-header-box-shadow, unset);
 	transition: var(--transition);
 
+	--wrap-flex-wrap: nowrap;
 	--wrap-justify-content: space-between;
 	--wrap-align-items: center;
 	--logo-width: var(--logo-width-small, 120px);
@@ -15,7 +16,6 @@
 	--logo-bottom: var(--logo-bottom-small);
 
 	@include mq(lg) {
-		--wrap-flex-wrap: nowrap;
 		--logo-width: var(--logo-width-large, 180px);
 		--logo-top: var(--logo-top-large);
 		--logo-bottom: var(--logo-bottom-large);
