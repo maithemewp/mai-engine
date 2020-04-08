@@ -37,20 +37,6 @@
 	align-items: center;
 }
 
-.is-medium-max-width,
-.is-small-max-width {
-	margin-right: auto;
-	margin-left: auto;
-}
-
-.is-medium-max-width {
-	max-width: var(--breakpoint-md);
-}
-
-.is-small-max-width {
-	max-width: var(--breakpoint-sm);
-}
-
 .has-boxed-container {
 
 	@include mq(xl) {
