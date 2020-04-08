@@ -37,17 +37,17 @@
 	align-items: center;
 }
 
-.max-width-md,
-.max-width-sm {
+.is-medium-max-width,
+.is-small-max-width {
 	margin-right: auto;
 	margin-left: auto;
 }
 
-.max-width-md {
+.is-medium-max-width {
 	max-width: var(--breakpoint-md);
 }
 
-.max-width-sm {
+.is-small-max-width {
 	max-width: var(--breakpoint-sm);
 }
 
