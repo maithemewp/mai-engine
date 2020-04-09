@@ -104,10 +104,6 @@ function mai_load_files() {
 
 		// Shortcodes.
 		'shortcodes/icon',
-
-
-		'customize/api',
-
 	] );
 
 	if ( is_admin() ) {
@@ -127,12 +123,11 @@ function mai_load_files() {
 		$files = array_merge(
 			$files,
 			[
-				//'customize/archives',
 				'customize/kirki',
-
+				'customize/api',
 				'customize/fields',
 				'customize/logo',
-				'customize/page-header',
+				//'customize/archives',
 				//'customize/singular',
 			]
 		);
