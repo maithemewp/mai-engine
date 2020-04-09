@@ -1106,7 +1106,7 @@ function mai_get_svg_url( $name, $style = 'light') {
  *
  * @return array
  */
-function mai_get_admin_localized_data() {
+function mai_get_editor_localized_data() {
 	$palette = mai_get_color_palette();
 	$palette = wp_list_pluck( $palette, 'color', 'slug' );
 	unset( $palette['black'] ); // Too many for iris picker, we need to remove some.

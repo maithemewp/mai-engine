@@ -55,8 +55,8 @@ toolkit.extendConfig(
 			svg: './assets/svg/'
 		},
 		js: {
-			'admin': [
-				'./assets/js/admin.js',
+			'editor': [
+				'./assets/js/editor.js',
 			],
 			'customizer': [
 				'./assets/js/customizer.js',

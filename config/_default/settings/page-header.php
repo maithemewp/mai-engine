@@ -15,7 +15,6 @@ return [
 		'label'    => __( 'Default Image', 'mai-engine' ),
 		'type'     => 'image',
 		'sanitize' => 'absint',
-		'default'  => '',
 		'choices'  => [
 			'save_as' => 'id',
 		],
@@ -25,18 +24,6 @@ return [
 		'label'    => __( 'Show', 'mai-engine' ),
 		'type'     => 'sortable',
 		'sanitize' => 'esc_html',
-		'default'  => [
-			'image',
-			'genesis_entry_header',
-			'title',
-			'header_meta',
-			'genesis_before_entry_content',
-			'excerpt',
-			'genesis_entry_content',
-			'more_link',
-			'genesis_after_entry_content',
-			'genesis_entry_footer',
-		],
 		'choices'  => 'mai_get_archive_show_choices',
 	],
 	[
@@ -53,10 +40,6 @@ return [
 		'settings'    => 'page-header-spacing',
 		'label'       => __( 'Page Header Spacing', 'mai-engine' ),
 		'description' => __( 'Accepts all unit values (px, rem, em, vw, etc).', 'mai-engine' ),
-		'default'     => [
-			'top'    => '10vw',
-			'bottom' => '10vw',
-		],
 		'choices'     => [
 			'labels' => [
 				'top'    => __( 'Top', 'mai-engine' ),
@@ -80,7 +63,6 @@ return [
 		'type'     => 'radio-buttonset',
 		'settings' => 'text_align',
 		'label'    => __( 'Text Alignment', 'mai-engine' ),
-		'default'  => 'center',
 		'choices'  => [
 			'start'  => __( 'Start', 'mai-engine' ),
 			'center' => __( 'Center', 'mai-engine' ),

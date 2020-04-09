@@ -253,19 +253,21 @@ return [
 
 			// Customizer scripts.
 			[
-				'handle'     => mai_get_handle() . '-customizer',
-				'src'        => mai_get_asset_url( 'customizer.js' ),
-				'customizer' => true,
+				'handle'   => mai_get_handle() . '-customizer',
+				'src'      => mai_get_asset_url( 'customizer.js' ),
+				'deps'     => [ 'jquery' ],
+				'location' => 'customizer',
 			],
 
 			// Admin scripts.
 			[
-				'handle'   => mai_get_handle() . '-admin',
-				'src'      => mai_get_asset_url( 'admin.js' ),
-				'editor'   => true, // Only load in the admin editor.
+				'handle'   => mai_get_handle() . '-editor',
+				'src'      => mai_get_asset_url( 'editor.js' ),
+				'deps'     => [ 'jquery' ],
+				'location' => 'editor',
 				'localize' => [
-					'name' => 'maiAdminVars',
-					'data' => 'mai_get_admin_localized_data',
+					'name' => 'maiEditorVars',
+					'data' => 'mai_get_editor_localized_data',
 				],
 			],
 
@@ -277,16 +279,16 @@ return [
 
 			// Customizer styles.
 			[
-				'handle'     => mai_get_handle() . '-kirki',
-				'src'        => mai_get_url() . 'assets/css/plugins/kirki.min.css',
-				'customizer' => true,
+				'handle'   => mai_get_handle() . '-kirki',
+				'src'      => mai_get_url() . 'assets/css/plugins/kirki.min.css',
+				'location' => 'customizer',
 			],
 
 			// Admin styles.
 			[
-				'handle' => mai_get_handle() . '-advanced-custom-fields',
-				'src'    => mai_get_url() . 'assets/css/plugins/advanced-custom-fields.min.css',
-				'editor' => true,
+				'handle'   => mai_get_handle() . '-advanced-custom-fields',
+				'src'      => mai_get_url() . 'assets/css/plugins/advanced-custom-fields.min.css',
+				'location' => 'editor',
 			],
 
 			// Plugin styles.

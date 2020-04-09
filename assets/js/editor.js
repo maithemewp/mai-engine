@@ -6,14 +6,14 @@ jQuery(document).ready(function($) {
 
 	// ACF color picker default color palette.
 	acf.add_filter( 'color_picker_args', function( args, $field ) {
-		args.palettes = maiAdminVars.palette;
+		args.palettes = maiEditorVars.palette;
 		return args;
 	});
 
 	var icons = [ "field_5e3f4bcd978f9", "field_5e3f4bcd867e8" ];
-	var post  = maiAdminVars.post;
-	var term  = maiAdminVars.term;
-	var user  = maiAdminVars.user;
+	var post  = maiEditorVars.post;
+	var term  = maiEditorVars.term;
+	var user  = maiEditorVars.user;
 
 	acf.addFilter( 'select2_ajax_data', function( data, args, $input, field, instance ) {
 
