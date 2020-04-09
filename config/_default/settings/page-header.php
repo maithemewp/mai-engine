@@ -9,12 +9,10 @@
  * @license   GPL-2.0-or-later
  */
 
-// TODO: CURRENTLY UNUSED. SEE HERE https://github.com/maithemewp/mai-engine/issues/29
-
 return [
 	[
 		'name'     => 'image',
-		'label'    => esc_html__( 'Default Image', 'mai-engine' ),
+		'label'    => __( 'Default Image', 'mai-engine' ),
 		'type'     => 'image',
 		'sanitize' => 'absint',
 		'default'  => '',
@@ -24,7 +22,7 @@ return [
 	],
 	[
 		'name'     => 'show',
-		'label'    => esc_html__( 'Show', 'mai-engine' ),
+		'label'    => __( 'Show', 'mai-engine' ),
 		'type'     => 'sortable',
 		'sanitize' => 'esc_html',
 		'default'  => [
@@ -40,5 +38,60 @@ return [
 			'genesis_entry_footer',
 		],
 		'choices'  => 'mai_get_archive_show_choices',
+	],
+	[
+		'type'     => 'image',
+		'settings' => 'page-header-image',
+		'label'    => __( 'Page Header Image', 'mai-engine' ),
+		'default'  => '',
+		'choices'  => [
+			'save_as' => 'id',
+		],
+	],
+	[
+		'type'        => 'dimensions',
+		'settings'    => 'page-header-spacing',
+		'label'       => __( 'Page Header Spacing', 'mai-engine' ),
+		'description' => __( 'Accepts all unit values (px, rem, em, vw, etc).', 'mai-engine' ),
+		'default'     => [
+			'top'    => '10vw',
+			'bottom' => '10vw',
+		],
+		'choices'     => [
+			'labels' => [
+				'top'    => __( 'Top', 'mai-engine' ),
+				'bottom' => __( 'Bottom', 'mai-engine' ),
+			],
+		],
+		'output'      => [
+			[
+				'choice'   => 'top',
+				'element'  => ':root',
+				'property' => '--page-header-padding-top',
+			],
+			[
+				'choice'   => 'bottom',
+				'element'  => ':root',
+				'property' => '--page-header-padding-bottom',
+			],
+		],
+	],
+	[
+		'type'     => 'radio-buttonset',
+		'settings' => 'text_align',
+		'label'    => __( 'Text Alignment', 'mai-engine' ),
+		'default'  => 'center',
+		'choices'  => [
+			'start'  => __( 'Start', 'mai-engine' ),
+			'center' => __( 'Center', 'mai-engine' ),
+			'end'    => __( 'End', 'mai-engine' ),
+		],
+		'output'   => [
+			[
+				'choice'   => [ 'start', 'center', 'end' ],
+				'element'  => ':root',
+				'property' => '--page-header-text-align',
+			],
+		],
 	],
 ];

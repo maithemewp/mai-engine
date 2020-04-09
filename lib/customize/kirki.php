@@ -116,12 +116,16 @@ add_action( 'customize_register', 'mai_reposition_genesis_customizer_sections' )
  * @return void
  */
 function mai_reposition_genesis_customizer_sections( $wp_customize ) {
+	$handle   = mai_get_handle();
 	$sections = genesis_get_config( 'customizer-theme-settings' )['genesis']['sections'];
 
 	foreach ( $sections as $id => $data ) {
-		$wp_customize->get_section( $id )->panel = mai_get_handle();
+		$wp_customize->get_section( $id )->panel = $handle;
 	}
 
 	$wp_customize->remove_section( 'genesis_single' );
 	$wp_customize->remove_section( 'genesis_archives' );
+
+	$wp_customize->get_section( 'genesis_footer' )->panel = "{$handle}-site-footer";
+	$wp_customize->get_section( 'genesis_footer' )->title = __( 'Footer Text', 'mai-engine' );
 }
