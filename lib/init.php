@@ -114,7 +114,6 @@ function mai_load_files() {
 		'customize/upsell',
 		//'customize/archives',
 		//'customize/singular',
-
 	] );
 
 	if ( is_admin() ) {
