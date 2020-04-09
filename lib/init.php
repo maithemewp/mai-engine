@@ -58,7 +58,7 @@ add_action( 'genesis_setup', 'mai_load_files', 90 );
  * @return void
  */
 function mai_load_files() {
-	$files = [
+	$files = apply_filters( 'mai_load_files', [
 
 		// Composer.
 		'../vendor/autoload',
@@ -105,7 +105,7 @@ function mai_load_files() {
 
 		// Shortcodes.
 		'shortcodes/icon',
-	];
+	] );
 
 	if ( is_admin() ) {
 		$files = array_merge(
@@ -137,7 +137,10 @@ function mai_load_files() {
 	foreach ( $files as $file ) {
 		$filename = __DIR__ . "/$file.php";
 
-		if ( is_readable( $filename ) ) {
+		if ( is_readable( $file ) ) {
+			require_once $file;
+
+		} elseif ( is_readable( $filename ) ) {
 			require_once $filename;
 		}
 	}
