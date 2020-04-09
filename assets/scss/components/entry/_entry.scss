@@ -69,6 +69,7 @@
 	flex-wrap: wrap;
 	align-items: var(--align-columns-vertical);
 	justify-content: var(--align-columns);
+	max-width: 100vw;
 	margin: calc(var(--row-gap) * -0.5) calc(var(--column-gap) * -0.5);
 
 	--entry-margin: calc(var(--row-gap) / 2) calc(var(--column-gap) / 2);

@@ -1,6 +1,6 @@
 .site-inner {
 	width: 100%;
-	margin: var(--site-inner-margin, 0);
+	margin: var(--site-inner-margin, 0) auto;
 
 	@include mq(lg) {
 		display: flex;
@@ -11,5 +11,5 @@
 
 .no-page-header.transparent-header,
 .no-page-header.sticky-header {
-	--site-inner-margin: 20vh;
+	--site-inner-margin: 20vh auto;
 }

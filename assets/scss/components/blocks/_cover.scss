@@ -1,5 +1,21 @@
 .wp-block-cover {
 	min-height: 0;
+
+	&.alignfull {
+		padding-right: var(--side-spacing);
+		padding-left: var(--side-spacing);
+	}
+
+	&.has-background:not(.alignfull) {
+		padding: var(--spacing-xl) var(--spacing-lg);
+	}
+
+	&__inner-container {
+		width: 100% !important;
+		max-width: var(--content-width) !important;
+		margin-right: auto;
+		margin-left: auto;
+	}
 }
 
 .wp-cover-block__image {
@@ -9,9 +25,4 @@
 	height: 100%;
 	object-fit: cover;
 	object-position: var(--object-position, 50%);
-}
-
-.wp-block-cover .wp-block-cover__inner-container {
-	width: 90%;
-	max-width: var(--content-width);
 }

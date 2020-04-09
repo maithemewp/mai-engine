@@ -4,12 +4,10 @@
 	flex-wrap: var(--wrap-flex-wrap, wrap);
 	align-items: var(--wrap-align-items, flex-start);
 	justify-content: var(--wrap-justify-content, space-between);
-	width: calc(100% - calc(var(--spacing-md) * 2));
+	width: 100%;
 	max-width: var(--wrap-width);
 	margin-right: auto;
 	margin-left: auto;
-
-	.wrap {
-		width: 100%;
-	}
+	padding-right: var(--side-spacing);
+	padding-left: var(--side-spacing);
 }

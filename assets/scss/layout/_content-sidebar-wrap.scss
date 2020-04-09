@@ -2,14 +2,10 @@
 	display: grid;
 	grid-template-columns: var(--content-sidebar-wrap-columns, 1fr);
 	width: 100%;
+	max-width: var(--wrap-width);
 	margin: var(--content-sidebar-wrap-margin, (var(--row-gap) auto));
-	padding: var(--content-sidebar-wrap-padding, 0);
+	padding: var(--content-sidebar-wrap-padding, 0 var(--side-spacing));
 	column-gap: var(--content-sidebar-gap, (calc(var(--column-gap) * 3)));
-}
-
-.has-boxed-container {
-	--content-sidebar-wrap-side-spacing: 4vw;
-	--content-sidebar-wrap-padding: 0 var(--content-sidebar-wrap-side-spacing);
 }
 
 .has-cover-block,
