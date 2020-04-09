@@ -31,7 +31,31 @@
 	margin-right: var(--alignfull-margin-right, calc(50% - 50vw));
 	margin-left: var(--alignfull-margin-left, calc(50% - 50vw));
 
-	@include mq(lg) {
+	@include mq(false,lg) {
+
+		.content-sidebar &,
+		.sidebar-content & {
+			--alignfull-margin-right: calc(var(--side-spacing) * -1);
+			--alignfull-margin-left: calc(var(--side-spacing) * -1);
+		}
+
+	}
+
+	@include mq(lg,xl) {
+
+		.content-sidebar & {
+			--alignfull-margin-right: 0;
+			--alignfull-margin-left: calc(var(--side-spacing) * -1);
+		}
+
+		.sidebar-content & {
+			--alignfull-margin-right: calc(var(--side-spacing) * -1);
+			--alignfull-margin-left: 0;
+		}
+
+	}
+
+	@include mq(xl) {
 
 		.content-sidebar & {
 			--alignfull-margin-right: 0;
