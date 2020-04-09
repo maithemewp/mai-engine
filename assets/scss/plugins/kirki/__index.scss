@@ -239,6 +239,49 @@
 	padding-top: 0;
 }
 
+// Link section
+
+#accordion-section-mai-customizer {
+	margin-bottom: -1px;
+}
+
+#accordion-section-mai-customizer h3 {
+	position: relative;
+	margin: 0;
+	padding: 1px 0;
+	border: 0;
+	cursor: pointer;
+}
+
+#accordion-section-mai-customizer a {
+	display: block;
+	padding: 11px 10px 12px 14px;
+	text-decoration: none;
+	background: #fff;
+	border-left: 4px solid #fff;
+}
+
+#accordion-section-mai-customizer a::after {
+	position: absolute;
+	top: 0;
+	right: 10px;
+	bottom: 0;
+	z-index: 1;
+	display: flex;
+	align-items: center;
+	float: right;
+	padding: 0;
+	font: 400 20px/1 dashicons, sans-serif;
+	text-align: center;
+	text-indent: 0;
+	background: 0 0;
+	border: none;
+	content: "\f345";
+	speak: none;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
 // Color picker
 
 .color-alpha,

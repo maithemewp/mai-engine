@@ -111,6 +111,7 @@ function mai_load_files() {
 		'customize/fields',
 		'customize/logo',
 		'customize/color-palette',
+		'customize/upsell',
 		//'customize/archives',
 		//'customize/singular',
 
