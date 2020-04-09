@@ -9,9 +9,8 @@
 @import "utilities/_index";
 @import "config";
 
-.editor-styles-wrapper {
-
-	@include body;
+body {
+	background: var(--color-white);
 }
 
 .editor-post-title__block .editor-post-title__input {

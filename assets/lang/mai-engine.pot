@@ -109,11 +109,11 @@ msgstr ""
 msgid "Select elements to hide on this page."
 msgstr ""
 
-#: lib/admin/hide-elements.php:62, lib/customize/site-header.php:26
+#: lib/admin/hide-elements.php:62
 msgid "Site Header"
 msgstr ""
 
-#: lib/admin/hide-elements.php:63, lib/customize/page-header.php:26
+#: lib/admin/hide-elements.php:63
 msgid "Page Header"
 msgstr ""
 
@@ -217,7 +217,7 @@ msgstr ""
 msgid "Left"
 msgstr ""
 
-#: lib/blocks/icon.php:223, config/_default/settings/archive.php:85, config/_default/settings/archive.php:250, config/_default/settings/archive.php:365, config/_default/settings/grid.php:97, config/_default/settings/grid.php:331, config/_default/settings/grid.php:565
+#: lib/blocks/icon.php:223, config/_default/settings/archive.php:85, config/_default/settings/archive.php:250, config/_default/settings/archive.php:365, config/_default/settings/grid.php:97, config/_default/settings/grid.php:331, config/_default/settings/grid.php:565, config/_default/settings/page-header.php:86
 msgid "Center"
 msgstr ""
 
@@ -277,11 +277,11 @@ msgstr ""
 msgid "Margin"
 msgstr ""
 
-#: lib/blocks/icon.php:339, lib/customize/page-header.php:61, config/_default/settings/archive.php:262, config/_default/settings/archive.php:384, config/_default/settings/grid.php:351, config/_default/settings/grid.php:592
+#: lib/blocks/icon.php:339, config/_default/settings/archive.php:262, config/_default/settings/archive.php:384, config/_default/settings/grid.php:351, config/_default/settings/grid.php:592, config/_default/settings/page-header.php:62
 msgid "Top"
 msgstr ""
 
-#: lib/blocks/icon.php:347, lib/customize/page-header.php:62, config/_default/settings/archive.php:264, config/_default/settings/archive.php:386, config/_default/settings/grid.php:353, config/_default/settings/grid.php:594
+#: lib/blocks/icon.php:347, config/_default/settings/archive.php:264, config/_default/settings/archive.php:386, config/_default/settings/grid.php:353, config/_default/settings/grid.php:594, config/_default/settings/page-header.php:63
 msgid "Bottom"
 msgstr ""
 
@@ -317,6 +317,10 @@ msgstr ""
 msgid "Theme Settings"
 msgstr ""
 
+#: lib/customize/kirki.php:130
+msgid "Footer Text"
+msgstr ""
+
 #: lib/customize/logo.php:26
 msgid "Logo Width"
 msgstr ""
@@ -337,28 +341,8 @@ msgstr ""
 msgid "Logo Spacing"
 msgstr ""
 
-#: lib/customize/page-header.php:38
-msgid "Page Header Image"
-msgstr ""
-
-#: lib/customize/page-header.php:52
-msgid "Page Header Spacing"
-msgstr ""
-
-#: lib/customize/page-header.php:53
-msgid "Accepts all unit values (px, rem, em, vw, etc)."
-msgstr ""
-
 #: lib/customize/singular.php:29
 msgid "Singular Content"
-msgstr ""
-
-#: lib/customize/site-header.php:37
-msgid "Mobile Menu Breakpoint"
-msgstr ""
-
-#: lib/customize/site-header.php:38
-msgid "The largest screen width at which the mobile menu becomes active, in pixels."
 msgstr ""
 
 #: lib/functions/getters.php:817, lib/functions/getters.php:832, lib/functions/getters.php:878, config/_default/settings/grid.php:663, config/_default/settings/grid.php:991, config/_default/settings/grid.php:1242
@@ -473,7 +457,7 @@ msgstr ""
 msgid "\"Site Default\" will use the setting in Customizer > Theme Settings > Site Layout."
 msgstr ""
 
-#: config/_default/settings/archive.php:24, config/_default/settings/grid.php:22, config/_default/settings/page-header.php:27, config/_default/settings/single.php:24
+#: config/_default/settings/archive.php:24, config/_default/settings/grid.php:22, config/_default/settings/page-header.php:25, config/_default/settings/single.php:24
 msgid "Show"
 msgstr ""
 
@@ -565,11 +549,11 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#: config/_default/settings/archive.php:249, config/_default/settings/grid.php:330, config/_default/settings/grid.php:564
+#: config/_default/settings/archive.php:249, config/_default/settings/grid.php:330, config/_default/settings/grid.php:564, config/_default/settings/page-header.php:85
 msgid "Start"
 msgstr ""
 
-#: config/_default/settings/archive.php:251, config/_default/settings/grid.php:332, config/_default/settings/grid.php:566
+#: config/_default/settings/archive.php:251, config/_default/settings/grid.php:332, config/_default/settings/grid.php:566, config/_default/settings/page-header.php:87
 msgid "End"
 msgstr ""
 
@@ -845,6 +829,22 @@ msgstr ""
 msgid "Exclude terms with no posts"
 msgstr ""
 
-#: config/_default/settings/page-header.php:17
+#: config/_default/settings/page-header.php:15
 msgid "Default Image"
+msgstr ""
+
+#: config/_default/settings/page-header.php:45
+msgid "Page Header Image"
+msgstr ""
+
+#: config/_default/settings/page-header.php:54
+msgid "Page Header Spacing"
+msgstr ""
+
+#: config/_default/settings/page-header.php:55
+msgid "Accepts all unit values (px, rem, em, vw, etc)."
+msgstr ""
+
+#: config/_default/settings/page-header.php:82
+msgid "Text Alignment"
 msgstr ""
