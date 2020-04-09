@@ -104,6 +104,16 @@ function mai_load_files() {
 
 		// Shortcodes.
 		'shortcodes/icon',
+
+		// Customizer.
+		'customize/kirki',
+		'customize/api',
+		'customize/fields',
+		'customize/logo',
+		'customize/color-palette',
+		//'customize/archives',
+		//'customize/singular',
+
 	] );
 
 	if ( is_admin() ) {
@@ -115,20 +125,6 @@ function mai_load_files() {
 				'admin/page-header',
 				'admin/hide-elements',
 				'admin/acf',
-			]
-		);
-	}
-
-	if ( is_customize_preview() ) {
-		$files = array_merge(
-			$files,
-			[
-				'customize/kirki',
-				'customize/api',
-				'customize/fields',
-				'customize/logo',
-				//'customize/archives',
-				//'customize/singular',
 			]
 		);
 	}

@@ -373,11 +373,11 @@ function mai_get_color_palette() {
 	$colors  = mai_get_colors();
 	$palette = [];
 
-	foreach ( $colors as $color => $hex ) {
+	foreach ( $colors as $name => $hex ) {
 		$palette[] = [
-			'name'  => ucwords( $color ),
-			'slug'  => $color,
-			'color' => $hex,
+			'name'  => mai_convert_case( $name, 'title' ),
+			'slug'  => mai_convert_case( $name, 'kebab' ),
+			'color' => mai_get_option( 'color-' . $name, $hex ),
 		];
 	}
 
@@ -648,12 +648,12 @@ function mai_get_template_args() {
 	// Build key and parse args.
 	$key      = sprintf( '%s-%s', $context, $name );
 	$defaults = [ 'context' => $context ] + wp_list_pluck( $settings, 'default', 'name' );
-	foreach( $defaults as $key => $default ) {
+	foreach ( $defaults as $key => $default ) {
 		if ( is_callable( $defaults[ $key ] ) ) {
 			$defaults[ $key ] = $defaults[ $key ]( $name );
 		}
 	}
-	$args     = wp_parse_args( mai_get_option( $key, [] ), $defaults );
+	$args = wp_parse_args( mai_get_option( $key, [] ), $defaults );
 
 	// Allow devs to filter.
 	$args = apply_filters( 'mai_template_args', $args, $context );
@@ -792,7 +792,7 @@ function mai_get_footer_meta_default( $name ) {
 
 	if ( $taxonomies ) {
 		// Get only public taxonomies.
-		$taxonomies = wp_list_filter( $taxonomies, array( 'public' => true ) );
+		$taxonomies = wp_list_filter( $taxonomies, [ 'public' => true ] );
 		// Remove Post Formats and Yoast prominent keyworks
 		unset( $taxonomies['post_format'] );
 		unset( $taxonomies['yst_prominent_words'] );
@@ -868,6 +868,7 @@ function mai_get_single_show_defaults( $name ) {
 		unset( $choices['adjacent_entry_nav'] );
 		$choices = array_flip( $choices );
 	}
+
 	return $choices;
 }
 
@@ -1095,7 +1096,7 @@ function mai_get_svg( $name, $style = 'light', $class = '' ) {
  *
  * @return string
  */
-function mai_get_svg_url( $name, $style = 'light') {
+function mai_get_svg_url( $name, $style = 'light' ) {
 	return mai_get_url() . "assets/icons/svgs/$style/$name.svg";
 }
 

@@ -186,7 +186,7 @@ function mai_add_customizer_fields( $panel, $section ) {
 	$panel   = mai_get_handle() === $panel ? '' : $panel;
 
 	foreach ( $configs as $config ) {
-		$path = str_replace( '//', '/', "{$config}/{$panel}/{$section}.php" );
+		$path   = str_replace( '//', '/', "{$config}/{$panel}/{$section}.php" );
 		$fields = is_readable( $path ) ? require $path : [];
 
 		foreach ( $fields as $field ) {
@@ -207,6 +207,8 @@ function mai_add_customizer_fields( $panel, $section ) {
  * @return void
  */
 function mai_add_customizer_field( $field, $panel, $section ) {
+	static $counter = 1;
+
 	$handle     = mai_get_handle();
 	$panel_id   = $handle . "-{$panel}";
 	$section_id = str_replace(
@@ -215,13 +217,23 @@ function mai_add_customizer_field( $field, $panel, $section ) {
 		"{$panel_id}-{$section}"
 	);
 
-	$field['section']     = $section_id;
-	$field['option_type'] = 'option';
-	$field['option_name'] = sprintf(
-		'%s[%s]',
-		$handle,
-		str_replace( $handle . '-', '', $section_id )
-	);
+	$field['section'] = $section_id;
+
+	$settings = false;
+
+	if ( isset( $field['settings'] ) ) {
+		$settings = $field['settings'];
+	} elseif ( isset( $field['name'] ) ) {
+		$settings = $field['name'];
+	}
+
+	$field['settings'] = $panel . '-' . $section . '-' . $settings;
+
+	if ( 'divider' === $field['type'] ) {
+		$field['type']     = 'custom';
+		$field['settings'] = 'divider-' . $counter++;
+		$field['default']  = '<hr>';
+	}
 
 	\Kirki::add_field( $handle, $field );
 }

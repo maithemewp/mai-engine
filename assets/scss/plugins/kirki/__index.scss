@@ -239,6 +239,23 @@
 	padding-top: 0;
 }
 
+// Color picker
+
+.color-alpha,
+.wp-color-result-text {
+	min-height: 28px;
+	line-height: 28px !important;
+}
+
+.wp-picker-clear {
+	min-height: 30px !important;
+	margin-left: 6px !important;
+}
+
+.wp-picker-active {
+	min-width: 256px;
+}
+
 // Theme settings panel ordering
 
 #customize-theme-controls #sub-accordion-panel-mai-engine {
