@@ -80,7 +80,8 @@ toolkit.extendConfig(
 				discardComments: {
 					removeAll: true
 				},
-				zindex: false
+				zindex: false,
+				reduceIdents: false,
 			},
 		},
 	}
