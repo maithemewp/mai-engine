@@ -47,6 +47,14 @@ function mai_get_kirki_field_data( $field, $section_id, $name = '' ) {
 
 	// Maybe add conditional logic.
 	if ( isset( $field['conditions'] ) ) {
+		foreach ( $field['conditions'] as $index => $condition ) {
+			foreach ( $condition as $key => $value ) {
+				if ( 'setting' === $key ) {
+					$field['conditions'][ $index ][ $key ] = "{$data['option_name']}[$value]";
+				}
+			}
+		}
+
 		$data['active_callback'] = $field['conditions'];
 	}
 

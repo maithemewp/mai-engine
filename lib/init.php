@@ -112,8 +112,8 @@ function mai_load_files() {
 		'customize/logo',
 		'customize/color-palette',
 		'customize/upsell',
-		//'customize/archives',
-		//'customize/singular',
+		'customize/archives',
+		'customize/singular',
 	] );
 
 	if ( is_admin() ) {
