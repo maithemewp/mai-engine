@@ -33,7 +33,7 @@ function mai_get_customizer_sections() {
 				'tables',
 			],
 			'site-header'      => [
-				'site-header',
+				'header-settings',
 				'title-area',
 				'header-left',
 				'header-right',

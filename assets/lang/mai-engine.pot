@@ -868,3 +868,11 @@ msgstr ""
 #: config/_default/settings/navigation-menus/after-header.php:7
 msgid "Alignment"
 msgstr ""
+
+#: config/_default/settings/site-header/header-settings.php:7
+msgid "Enable sticky header?"
+msgstr ""
+
+#: config/_default/settings/site-header/header-settings.php:13
+msgid "Enable transparent header?"
+msgstr ""
