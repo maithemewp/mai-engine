@@ -85,4 +85,21 @@ function mai_logo_customizer_settings() {
 			],
 		]
 	);
+
+	Kirki::add_field(
+		$config_id,
+		[
+			'type'     => 'radio-buttonset',
+			'settings' => 'logo_alignment',
+			'label'    => __( 'Logo Alignment', 'mai-engine' ),
+			'section'  => 'title_tagline',
+			'default'  => 'left',
+			'priority' => 70,
+			'choices'  => [
+				'left'   => __( 'Left', 'mai-engine' ),
+				'center' => __( 'Center', 'mai-engine' ),
+				'right'  => __( 'Right', 'mai-engine' ),
+			],
+		]
+	);
 }

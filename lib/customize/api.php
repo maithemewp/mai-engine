@@ -16,23 +16,6 @@
  *
  * @return array
  */
-function mai_get_customizer_configs() {
-	return apply_filters(
-		'mai_customizer_configs',
-		[
-			mai_get_dir() . 'config/_default/settings',
-			mai_get_dir() . 'config/' . mai_get_active_theme() . '/settings',
-		]
-	);
-}
-
-/**
- * Description of expected behavior.
- *
- * @since 1.0.0
- *
- * @return array
- */
 function mai_get_customizer_sections() {
 	return apply_filters(
 		'mai_customizer_sections',
@@ -80,6 +63,23 @@ function mai_get_customizer_sections() {
 				'footer-widgets',
 				'footer-credits',
 			],
+		]
+	);
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return array
+ */
+function mai_get_customizer_configs() {
+	return apply_filters(
+		'mai_customizer_configs',
+		[
+			mai_get_dir() . 'config/_default/settings',
+			mai_get_dir() . 'config/' . mai_get_active_theme() . '/settings',
 		]
 	);
 }

@@ -9,12 +9,14 @@
 	background-color: var(--nav-header-background-color, var(--color-white));
 }
 
+.nav-header-right {
+	--menu-justify-content: flex-end;
+}
+
 .nav-after-header {
 	z-index: 1;
 	display: var(--nav-header-display, (flex));
 	width: 100%;
-
-	--menu-alignment: flex-start;
 }
 
 .is-mobile {
@@ -35,7 +37,7 @@
 
 .nav-footer {
 	width: 100%;
-	--menu-alignment: center;
+	--menu-justify-content: center;
 
 	@include mq(lg) {
 		border-top: var(--nav-footer-border-top, var(--border));

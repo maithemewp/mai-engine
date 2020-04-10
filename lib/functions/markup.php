@@ -59,7 +59,7 @@ function mai_body_classes( $classes ) {
 	}
 
 	// Add boxed container class.
-	if ( current_theme_supports( 'boxed-container' ) ) {
+	if ( mai_get_option( 'boxed_container', current_theme_supports( 'boxed-container' ) ) ) {
 		$classes[] = 'has-boxed-container';
 	}
 
@@ -86,7 +86,7 @@ function mai_body_classes( $classes ) {
 	}
 
 	// Add nav classes.
-	if ( ( is_active_sidebar( 'header_left' ) || has_nav_menu( 'header-left' ) ) && ( has_nav_menu( 'header-right' ) || is_active_sidebar( 'header_right' ) ) ) {
+	if ( ( is_active_sidebar( 'header_left' ) || has_nav_menu( 'header-left' ) ) && ( has_nav_menu( 'header-right' ) || is_active_sidebar( 'header_right' ) ) || 'center' === mai_get_option( 'logo_alignment', 'left' ) ) {
 		$classes[] = 'has-logo-center';
 	}
 

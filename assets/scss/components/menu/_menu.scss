@@ -2,6 +2,7 @@
 	display: var(--menu-display, (flex));
 	flex-wrap: var(--menu-flex-wrap, wrap);
 	align-items: var(--menu-align-items, center);
+	justify-content: var(--menu-justify-content, flex-start);
 	width: 100%;
 	margin: 0;
 	line-height: var(--menu-line-height, 1);
@@ -47,7 +48,6 @@
 
 .is-desktop {
 	--menu-flex-wrap: nowrap;
-	--menu-alignment: flex-end;
 	--menu-font-size-desktop: smaller;
 
 	--menu-item-width: auto;

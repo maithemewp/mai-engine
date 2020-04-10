@@ -14,19 +14,18 @@ defined( 'ABSPATH' ) || die;
 
 return [
 	'google-fonts' => [
+		// TODO: Do we need all of the Work Sans variants?
 		'Josefin+Sans:600,700|Work+Sans:400,400i,500,500i,600,600i,700,700i',
 	],
 	'image-sizes' => [
 		'add'    => [
 			'portrait'  => '3:4',
-			// 'square'    => '1:1',
 		],
 	],
 	'theme-support' => [
 		'add' => [
 			'boxed-container',
 			'sticky-header',
-			// 'transparent-header',
 		],
 	],
 	'page-header-single'  => [ 'page' ],
