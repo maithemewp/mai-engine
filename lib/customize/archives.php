@@ -76,17 +76,6 @@ function mai_archive_customizer_settings() {
 function mai_add_archive_customizer_settings( $name, $type = 'post_type' ) {
 	$panel_id   = mai_get_handle() . '-content-archives';
 	$section_id = mai_get_handle() . '-archive-' . $name;
-	$filter     = function( $value, $field_id ) use ( $name ) {
-		$settings = mai_get_options();
-		$setting  = isset( $settings[ 'archive-' . $name ] ) ? $settings[ 'archive-' . $name ] : false;
-		if ( $setting && isset( $setting[ $field_id ] ) ) {
-			return $setting[ $field_id ];
-		}
-		return $value;
-	};
-
-	// Allows our nested settings to work with conditional logic.
-	add_filter( 'kirki_values_get_value', $filter, 10, 2 );
 
 	switch ( $type ) {
 		case 'post_type':
