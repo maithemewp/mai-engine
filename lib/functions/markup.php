@@ -64,12 +64,12 @@ function mai_body_classes( $classes ) {
 	}
 
 	// Add transparent header class.
-	if ( mai_get_option('site-header-header-settings-transparent', current_theme_supports( 'transparent-header' ) ) ) {
+	if ( mai_get_option( 'site-header-header-settings-transparent', current_theme_supports( 'transparent-header' ) ) ) {
 		$classes[] = 'has-transparent-header';
 	}
 
 	// Add sticky header class.
-	if ( mai_get_option('site-header-header-settings-sticky', current_theme_supports( 'sticky-header' ) ) ) {
+	if ( mai_get_option( 'site-header-header-settings-sticky', current_theme_supports( 'sticky-header' ) ) ) {
 		$classes[] = 'has-sticky-header';
 	}
 
