@@ -5,11 +5,11 @@ return [
 		'type'     => 'radio-buttonset',
 		'settings' => 'alignment',
 		'label'    => __( 'Alignment', 'mai-engine' ),
-		'default'  => 'start',
+		'default'  => 'flex-start',
 		'choices'  => [
-			'flex-start'  => __( 'Left', 'mai-engine' ),
-			'center' => __( 'Center', 'mai-engine' ),
-			'flex-end'    => __( 'Right', 'mai-engine' ),
+			'flex-start' => __( 'Left', 'mai-engine' ),
+			'center'     => __( 'Center', 'mai-engine' ),
+			'flex-end'   => __( 'Right', 'mai-engine' ),
 		],
 		'output' => [
 			[
