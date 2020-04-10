@@ -44,7 +44,7 @@
 
 .entry-wrap {
 	display: flex;
-	flex: 1 1 100%;
+	flex: 1; /* 1 1 100% breaks image-left/right-full */
 	flex-direction: column;
 	justify-content: var(--align-text-vertical, center);
 	padding: var(--entry-wrap-padding, 0);
