@@ -11,22 +11,6 @@
 
 return [
 	[
-		'name'     => 'image',
-		'label'    => __( 'Default Image', 'mai-engine' ),
-		'type'     => 'image',
-		'sanitize' => 'absint',
-		'choices'  => [
-			'save_as' => 'id',
-		],
-	],
-	[
-		'name'     => 'show',
-		'label'    => __( 'Show', 'mai-engine' ),
-		'type'     => 'sortable',
-		'sanitize' => 'esc_html',
-		'choices'  => 'mai_get_archive_show_choices',
-	],
-	[
 		'type'     => 'image',
 		'settings' => 'page-header-image',
 		'label'    => __( 'Page Header Image', 'mai-engine' ),
@@ -40,11 +24,13 @@ return [
 		'settings'    => 'page-header-spacing',
 		'label'       => __( 'Page Header Spacing', 'mai-engine' ),
 		'description' => __( 'Accepts all unit values (px, rem, em, vw, etc).', 'mai-engine' ),
+		'default'     => [
+			'top'    => '',
+			'bottom' => '',
+		],
 		'choices'     => [
-			'labels' => [
-				'top'    => __( 'Top', 'mai-engine' ),
-				'bottom' => __( 'Bottom', 'mai-engine' ),
-			],
+			'top'    => __( 'Top', 'mai-engine' ),
+			'bottom' => __( 'Bottom', 'mai-engine' ),
 		],
 		'output'      => [
 			[
@@ -58,11 +44,15 @@ return [
 				'property' => '--page-header-padding-bottom',
 			],
 		],
+		'input_attrs' => [
+			'placeholder' => '10vw',
+		]
 	],
 	[
 		'type'     => 'radio-buttonset',
 		'settings' => 'text_align',
 		'label'    => __( 'Text Alignment', 'mai-engine' ),
+		'default'  => '',
 		'choices'  => [
 			'start'  => __( 'Start', 'mai-engine' ),
 			'center' => __( 'Center', 'mai-engine' ),
