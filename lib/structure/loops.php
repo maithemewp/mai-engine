@@ -9,7 +9,7 @@
  * @license   GPL-2.0-or-later
  */
 
-add_action( 'genesis_before_loop', 'mai_setup_archive_loop' );
+add_action( 'genesis_before_loop', 'mai_setup_loop' );
 /**
  * Description of expected behavior.
  *
@@ -17,12 +17,7 @@ add_action( 'genesis_before_loop', 'mai_setup_archive_loop' );
  *
  * @return void
  */
-function mai_setup_archive_loop() {
-
-	// Bail if not an archive.
-	if ( ! mai_is_type_archive() ) {
-		return;
-	}
+function mai_setup_loop() {
 
 	// Remove entry elements.
 	remove_action( 'genesis_entry_header', 'genesis_do_post_format_image', 4 );
@@ -42,7 +37,7 @@ function mai_setup_archive_loop() {
 
 	// Swap loop.
 	remove_action( 'genesis_loop', 'genesis_do_loop' );
-	add_action( 'genesis_loop', 'mai_do_archive_loop' );
+	add_action( 'genesis_loop', 'mai_do_loop' );
 }
 
 /**
@@ -52,8 +47,9 @@ function mai_setup_archive_loop() {
  *
  * @return void
  */
-function mai_do_archive_loop() {
-	$args = mai_get_template_args();
+function mai_do_loop() {
+	$archive = mai_is_type_archive();
+	$args    = mai_get_template_args();
 
 	if ( have_posts() ) {
 
@@ -64,7 +60,9 @@ function mai_do_archive_loop() {
 		 */
 		do_action( 'genesis_before_while' );
 
-		mai_do_entries_open( $args );
+		if ( $archive ) {
+			mai_do_entries_open( $args );
+		}
 
 		while ( have_posts() ) {
 			the_post();
@@ -87,104 +85,9 @@ function mai_do_archive_loop() {
 			do_action( 'genesis_after_entry' );
 		}
 
-		mai_do_entries_close( $args );
-
-		/**
-		 * Fires inside the standard loop, after the while() block.
-		 *
-		 * @since 0.1.0
-		 */
-		do_action( 'genesis_after_endwhile' );
-	} else {
-
-		/**
-		 * Fires inside the standard loop when they are no posts to show.
-		 *
-		 * @since 0.1.0
-		 */
-		do_action( 'genesis_loop_else' );
-	}
-}
-
-add_action( 'genesis_before_loop', 'mai_setup_single_loop' );
-/**
- * Description of expected behavior.
- *
- * @since 1.0.0
- *
- * @return void
- */
-function mai_setup_single_loop() {
-
-	// Bail if not an archive.
-	if ( ! mai_is_type_single() ) {
-		return;
-	}
-
-	// Remove entry elements.
-	remove_action( 'genesis_entry_header', 'genesis_do_post_format_image', 4 );
-	remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
-	remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
-	remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
-	remove_action( 'genesis_entry_header', 'genesis_post_info', 12 );
-
-	remove_action( 'genesis_entry_content', 'genesis_do_post_image', 8 );
-	remove_action( 'genesis_entry_content', 'genesis_do_post_content' );
-	remove_action( 'genesis_entry_content', 'genesis_do_post_content_nav', 12 );
-	remove_action( 'genesis_entry_content', 'genesis_do_post_permalink', 14 );
-
-	remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_open', 5 );
-	remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_close', 15 );
-	remove_action( 'genesis_entry_footer', 'genesis_post_meta' );
-
-	// Swap loop.
-	remove_action( 'genesis_loop', 'genesis_do_loop' );
-	add_action( 'genesis_loop', 'mai_do_single_loop' );
-}
-
-/**
- * Description of expected behavior.
- *
- * @since 0.1.0
- *
- * @return void
- */
-function mai_do_single_loop() {
-	$args = mai_get_template_args();
-
-	if ( have_posts() ) {
-
-		/**
-		 * Fires inside the standard loop, before the while() block.
-		 *
-		 * @since 2.1.0
-		 */
-		do_action( 'genesis_before_while' );
-
-		// mai_do_entries_open( $args );
-
-		while ( have_posts() ) {
-			the_post();
-
-			/**
-			 * Fires inside the standard loop, before the entry opening markup.
-			 *
-			 * @since 2.0.0
-			 */
-			do_action( 'genesis_before_entry' );
-
-			global $post;
-			mai_do_entry( $post, $args );
-
-			/**
-			 * Fires inside the standard loop, before the entry opening markup.
-			 *
-			 * @since 2.0.0
-			 */
-			do_action( 'genesis_after_entry' );
+		if ( $archive ) {
+			mai_do_entries_close( $args );
 		}
-
-		// mai_do_entries_close( $args );
 
 		/**
 		 * Fires inside the standard loop, after the while() block.
