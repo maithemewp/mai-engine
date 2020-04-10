@@ -4,6 +4,11 @@
 	order: var(--entry-image-link-order, unset);
 	max-width: var(--image-width, unset);
 
+	.has-image-left-full &,
+	.has-image-right-full & {
+		flex-basis: 1 0 var(--image-width);
+	}
+
 	.has-image-left-full &::before,
 	.has-image-right-full &::before {
 		display: block;
