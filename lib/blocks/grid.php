@@ -300,18 +300,13 @@ function mai_get_acf_field_data( $key, $field ) {
 	if ( isset( $field['choices'] ) ) {
 		if ( is_array( $field['choices'] ) ) {
 			$data['choices'] = $field['choices'];
-		} elseif ( is_callable( $field['choices'] ) ) {
+		} elseif ( is_callable( $field['choices'] ) && mai_has_string( 'mai_', $field['choices'] ) ) {
 			$data['choices'] = call_user_func( $field['choices'] );
 		}
 	}
 
 	return $data;
 }
-
-// add_action( 'acf/init', 'mai_do_grid_block_filters' );
-// function mai_do_grid_block_filters() {
-
-// }
 
 /*****************
  * Mai Post Grid *

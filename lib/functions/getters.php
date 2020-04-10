@@ -640,19 +640,19 @@ function mai_get_template_args() {
 		return [];
 	}
 
-	// Get settings.
-	$config   = mai_get_config( 'archive-settings' );
+	// Get defaults.
+	$config   = mai_get_config( $context . '-settings' );
 	$defaults = [ 'context' => $context ] + wp_list_pluck( $config, 'default', 'name' );
-	$settings = mai_get_option( $context . '-' . $name, [] );
-	$settings = array_filter( $settings );
-
-	// Bail if no settings.
-	if ( ! $settings ) {
-		return [];
+	foreach( $defaults as $key => $value ) {
+		if ( is_callable( $value ) && mai_has_string( 'mai_', $value ) ) {
+			$defaults[ $key ] = call_user_func_array( $value, [ 'name' => $name ] );
+		}
 	}
 
-	// Parse settings with defaults.
-	$args = wp_parse_args( $settings, $defaults );
+	// Get args.
+	$args = mai_get_option( $context . '-' . $name, [] );
+	$args = array_filter( $args );
+	$args = wp_parse_args( $args, $defaults );
 
 	// Allow devs to filter.
 	$args = apply_filters( 'mai_template_args', $args, $context );
