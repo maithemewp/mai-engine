@@ -121,6 +121,7 @@ function mai_load_files() {
 		$files = array_merge(
 			$files,
 			[
+				'admin/blog',
 				'admin/images',
 				'admin/settings',
 				'admin/page-header',

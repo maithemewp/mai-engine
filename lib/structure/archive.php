@@ -41,3 +41,30 @@ function mai_author_box_gravatar( $size ) {
 	$image_sizes = mai_get_available_image_sizes();
 	return isset( $image_sizes['tiny']['width'] ) ? $image_sizes['tiny']['width'] : 80;
 }
+
+/**
+ * Output the static blog page content before the posts.
+ *
+ * @return  void
+ */
+add_action( 'genesis_archive_title_descriptions', 'mai_do_blog_description' );
+function mai_do_blog_description() {
+	// Bail if not the blog page.
+	if ( ! ( is_home() && $posts_page = get_option( 'page_for_posts' ) ) ) {
+		return;
+	}
+
+	// If not the first page.
+	if ( 0 !== absint( get_query_var( 'paged' ) ) ) {
+		return;
+	}
+
+	$content = apply_filters( 'the_content', get_post( $posts_page )->post_content );
+
+	// Bail if no content.
+	if ( empty( $content ) ) {
+		return;
+	}
+
+	echo $content;
+}
