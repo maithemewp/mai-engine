@@ -62,8 +62,10 @@ function mai_get_kirki_field_data( $field, $section_id, $name = '' ) {
 	if ( isset( $field['default'] ) ) {
 		if ( is_array( $field['default'] ) ) {
 			$data['default'] = $field['default'];
-		} elseif ( is_callable( $field['default'] ) && mai_has_string( 'mai_', $field['default'] ) ) {
+		} elseif ( is_string( $field['default'] ) && is_callable( $field['default'] ) && mai_has_string( 'mai_', $field['default'] ) ) {
 			$data['default'] = call_user_func_array( $field['default'], [ 'name' => $name ] );
+		} else {
+			$data['default'] = $field['default'];
 		}
 	}
 

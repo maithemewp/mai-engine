@@ -644,7 +644,7 @@ function mai_get_template_args() {
 	$config   = mai_get_config( $context . '-settings' );
 	$defaults = [ 'context' => $context ] + wp_list_pluck( $config, 'default', 'name' );
 	foreach( $defaults as $key => $value ) {
-		if ( is_callable( $value ) && mai_has_string( 'mai_', $value ) ) {
+		if ( is_string( $value ) && is_callable( $value ) && mai_has_string( 'mai_', $value ) ) {
 			$defaults[ $key ] = call_user_func_array( $value, [ 'name' => $name ] );
 		}
 	}
