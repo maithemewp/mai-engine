@@ -279,10 +279,14 @@ function mai_get_child_themes() {
  * @return array
  */
 function mai_get_options() {
-	static $options = [];
-
-	if ( empty( $options ) ) {
+	if ( is_customize_preview() ) {
 		$options = get_option( mai_get_handle() );
+	} else {
+		static $options = [];
+
+		if ( empty( $options ) ) {
+			$options = get_option( mai_get_handle() );
+		}
 	}
 
 	return $options;
@@ -623,7 +627,6 @@ function mai_get_template_args() {
 	$context = '';
 
 	if ( mai_is_type_archive() ) {
-		$settings = mai_get_config( 'archive-settings' );
 		$name     = mai_get_archive_args_name();
 		$context  = 'archive';
 
@@ -638,22 +641,18 @@ function mai_get_template_args() {
 	}
 
 	// Get settings.
-	$settings = mai_get_config( $context . '-settings' );
+	$config   = mai_get_config( 'archive-settings' );
+	$defaults = [ 'context' => $context ] + wp_list_pluck( $config, 'default', 'name' );
+	$settings = mai_get_option( $context . '-' . $name, [] );
+	$settings = array_filter( $settings );
 
 	// Bail if no settings.
 	if ( ! $settings ) {
 		return [];
 	}
 
-	// Build key and parse args.
-	$key      = sprintf( '%s-%s', $context, $name );
-	$defaults = [ 'context' => $context ] + wp_list_pluck( $settings, 'default', 'name' );
-	foreach ( $defaults as $key => $default ) {
-		if ( is_callable( $defaults[ $key ] ) ) {
-			$defaults[ $key ] = $defaults[ $key ]( $name );
-		}
-	}
-	$args = wp_parse_args( mai_get_option( $key, [] ), $defaults );
+	// Parse settings with defaults.
+	$args = wp_parse_args( $settings, $defaults );
 
 	// Allow devs to filter.
 	$args = apply_filters( 'mai_template_args', $args, $context );
