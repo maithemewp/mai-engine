@@ -62,7 +62,7 @@ function mai_get_kirki_field_data( $field, $section_id, $name = '' ) {
 	if ( isset( $field['default'] ) ) {
 		if ( is_array( $field['default'] ) ) {
 			$data['default'] = $field['default'];
-		} elseif ( is_callable( $field['default'] ) ) {
+		} elseif ( is_callable( $field['default'] ) && mai_has_string( 'mai_', $field['default'] ) ) {
 			$data['default'] = call_user_func_array( $field['default'], [ 'name' => $name ] );
 		}
 	}
@@ -71,7 +71,7 @@ function mai_get_kirki_field_data( $field, $section_id, $name = '' ) {
 	if ( isset( $field['choices'] ) ) {
 		if ( is_array( $field['choices'] ) ) {
 			$data['choices'] = $field['choices'];
-		} elseif ( is_callable( $field['choices'] ) ) {
+		} elseif ( is_callable( $field['choices'] ) && mai_has_string( 'mai_', $field['choices'] ) ) {
 			$data['choices'] = call_user_func_array( $field['choices'], [ 'name' => $name ] );
 		}
 	}
