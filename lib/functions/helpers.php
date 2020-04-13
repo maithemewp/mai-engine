@@ -142,6 +142,17 @@ function mai_has_sidebar() {
 }
 
 /**
+ * Check is site has sticky header.
+ *
+ * @since 0.1.0
+ *
+ * @return bool
+ */
+function mai_has_sticky_header() {
+	return mai_get_option( 'site-header-header-settings-sticky', current_theme_supports( 'sticky-header' ) );
+}
+
+/**
  * Checks if the Page Header is active.
  *
  * @since 0.1.0
@@ -149,9 +160,14 @@ function mai_has_sidebar() {
  * @return bool
  */
 function mai_has_page_header() {
-	static $has_page_header = false;
+	static $has_page_header = null;
 
-	if ( false !== $has_page_header ) {
+	if ( ! is_null( $has_page_header ) ) {
+		return $has_page_header;
+	}
+
+	if ( ! mai_has_any_page_header_types() ) {
+		$has_page_header = false;
 		return $has_page_header;
 	}
 
@@ -207,6 +223,30 @@ function mai_has_page_header() {
 	}
 
 	return $has_page_header;
+}
+
+/**
+ * Check is there are any page header types available.
+ *
+ * @since 0.1.0
+ *
+ * @return bool
+ */
+function mai_has_any_page_header_types() {
+	$config = mai_get_config( 'page-header' );
+	return ( isset( $config['archive'] ) && ! empty( $config['archive'] ) ) || ( isset( $config['single'] ) && ! empty( $config['single'] ) );
+}
+
+/**
+ * Check is after header menu is active.
+ * Need this as it's own function for customizer fields.
+ *
+ * @since 0.1.0
+ *
+ * @return bool
+ */
+function mai_has_after_header_menu() {
+	return has_nav_menu( 'after-header' );
 }
 
 /**
