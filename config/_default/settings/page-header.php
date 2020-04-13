@@ -18,6 +18,7 @@ return [
 		'choices'  => [
 			'save_as' => 'id',
 		],
+		'active_callback'  => 'mai_has_any_page_header_types',
 	],
 	[
 		'type'        => 'dimensions',
@@ -46,7 +47,8 @@ return [
 		],
 		'input_attrs' => [
 			'placeholder' => '10vw',
-		]
+		],
+		'active_callback'  => 'mai_has_any_page_header_types',
 	],
 	[
 		'type'     => 'radio-buttonset',
@@ -65,5 +67,6 @@ return [
 				'property' => '--page-header-text-align',
 			],
 		],
+		'active_callback'  => 'mai_has_any_page_header_types',
 	],
 ];
