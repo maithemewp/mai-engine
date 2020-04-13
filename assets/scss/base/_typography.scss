@@ -29,14 +29,10 @@ p {
 	}
 }
 
-
 hr {
 	clear: both;
-	margin: var(--horizontal-rule-margin, 0 0 var(--spacing-md));
-	padding: var(--horizontal-rule-padding, (var(--spacing-md) 0 0));
-	border: var(--horizontal-rule-border, var(--border));
-	border-bottom: var(--horizontal-rule-border);
-	border-collapse: collapse;
+	width: 100%;
+	margin: var(--horizontal-rule-margin, var(--spacing-md) auto 0);
 }
 
 b,
