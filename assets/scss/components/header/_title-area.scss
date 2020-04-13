@@ -10,9 +10,9 @@
 }
 
 .has-logo-center {
-	--title-area-margin: 0 auto;
 
 	&.is-desktop {
+		--title-area-margin: 0 auto;
 		--title-area-text-align: center;
 	}
 }
