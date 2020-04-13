@@ -17,5 +17,6 @@ return [
 				'property' => '--menu-justify-content',
 			],
 		],
+		'active_callback' => 'mai_has_after_header_menu',
 	],
 ];
