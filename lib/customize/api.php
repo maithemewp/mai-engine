@@ -47,7 +47,7 @@ function mai_get_customizer_sections() {
 				'sub-menu',
 				'sub-menu-toggle',
 			],
-			'page-header',
+			'page-header'      => [],
 			'content-area'     => [
 				'main-content',
 				'breadcrumbs',
@@ -96,8 +96,12 @@ function mai_add_customizer_panels() {
 	$handle = mai_get_handle();
 	$panels = mai_get_customizer_sections();
 
+	if ( ! mai_get_option( 'site-header-header-settings-sticky', current_theme_supports( 'sticky-header' ) ) ) {
+		unset( $panels['page-header'] );
+	}
+
 	foreach ( $panels as $panel => $sections ) {
-		if ( is_array( $sections ) ) {
+		if ( $sections ) {
 			mai_add_customizer_panel( $panel );
 			mai_add_customizer_sections( $panel, $sections );
 
