@@ -59,17 +59,17 @@ function mai_body_classes( $classes ) {
 	}
 
 	// Add boxed container class.
-	if ( mai_get_option( 'boxed_container', current_theme_supports( 'boxed-container' ) ) ) {
+	if ( mai_has_boxed_container() ) {
 		$classes[] = 'has-boxed-container';
 	}
 
 	// Add transparent header class.
-	if ( mai_get_option( 'site-header-header-settings-transparent', current_theme_supports( 'transparent-header' ) ) ) {
+	if ( mai_has_transparent_header() ) {
 		$classes[] = 'has-transparent-header';
 	}
 
 	// Add sticky header class.
-	if ( mai_get_option( 'site-header-header-settings-sticky', current_theme_supports( 'sticky-header' ) ) ) {
+	if ( mai_has_sticky_header() ) {
 		$classes[] = 'has-sticky-header';
 	}
 

@@ -142,7 +142,18 @@ function mai_has_sidebar() {
 }
 
 /**
- * Check is site has sticky header.
+ * Checks if site has boxed container.
+ *
+ * @since 0.1.0
+ *
+ * @return bool
+ */
+function mai_has_boxed_container() {
+	return mai_get_option( 'boxed_container', current_theme_supports( 'boxed-container' ) );
+}
+
+/**
+ * Checks if site has sticky header.
  *
  * @since 0.1.0
  *
@@ -150,6 +161,17 @@ function mai_has_sidebar() {
  */
 function mai_has_sticky_header() {
 	return mai_get_option( 'site-header-header-settings-sticky', current_theme_supports( 'sticky-header' ) );
+}
+
+/**
+ * Check of site has transparent header.
+ *
+ * @since 0.1.0
+ *
+ * @return bool
+ */
+function mai_has_transparent_header() {
+	return mai_get_option( 'site-header-header-settings-transparent', current_theme_supports( 'transparent-header' ) );
 }
 
 /**
