@@ -102,7 +102,7 @@ function mai_add_customizer_panels() {
 			mai_add_customizer_sections( $panel, $sections );
 
 		} else {
-			mai_add_customizer_sections( $handle, $sections );
+			mai_add_customizer_sections( $handle, $panel );
 		}
 	}
 }
