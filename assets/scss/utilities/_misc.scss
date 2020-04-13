@@ -3,25 +3,26 @@
 }
 
 .is-circle,
-.is-rounded {
-	border-radius: 9999px;
+.is-square {
+	display: grid;
+
+	> :first-child {
+		display: flex;
+		flex-direction: column;
+		place-content: center;
+		grid-area: 1/-1;
+	}
 }
 
 .is-circle,
-.is-square {
-	position: relative;
-	display: flex;
-	flex-direction: row !important; /* for editor */
-	align-items: center;
-	justify-content: center;
+.is-rounded {
+	border-radius: 9999px;
 }
 
 .is-circle::before,
 .is-square::before {
 	display: block;
-	width: 1px;
-	height: 0;
-	margin-left: -1px;
+	grid-area: 1/-1;
 	padding-bottom: 100%;
 	content: "";
 }
