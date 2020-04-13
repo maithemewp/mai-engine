@@ -85,8 +85,11 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'no-page-header';
 	}
 
-	// Add nav classes.
-	if ( ( is_active_sidebar( 'header_left' ) || has_nav_menu( 'header-left' ) ) && ( has_nav_menu( 'header-right' ) || is_active_sidebar( 'header_right' ) ) || 'center' === mai_get_option( 'logo_alignment', 'left' ) ) {
+	$header_left  = has_nav_menu( 'header-left' ) || is_active_sidebar( 'header_left' );
+	$header_right = has_nav_menu( 'header-right' ) || is_active_sidebar( 'header_right' );
+
+	// Add logo classes.
+	if ( ( $header_left && $header_right ) || ( ! $header_right && ! $header_right ) ) {
 		$classes[] = 'has-logo-center';
 	}
 

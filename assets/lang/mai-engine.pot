@@ -213,15 +213,15 @@ msgstr ""
 msgid "Align"
 msgstr ""
 
-#: lib/blocks/icon.php:222, lib/blocks/icon.php:355, lib/customize/logo.php:99, config/_default/settings/archive.php:364, config/_default/settings/navigation-menus/after-header.php:10
+#: lib/blocks/icon.php:222, lib/blocks/icon.php:355, config/_default/settings/archive.php:364, config/_default/settings/navigation-menus/after-header.php:10
 msgid "Left"
 msgstr ""
 
-#: lib/blocks/icon.php:223, lib/customize/logo.php:100, config/_default/settings/archive.php:85, config/_default/settings/archive.php:250, config/_default/settings/archive.php:365, config/_default/settings/grid.php:97, config/_default/settings/grid.php:331, config/_default/settings/grid.php:565, config/_default/settings/page-header.php:58, config/_default/settings/navigation-menus/after-header.php:11
+#: lib/blocks/icon.php:223, config/_default/settings/archive.php:85, config/_default/settings/archive.php:250, config/_default/settings/archive.php:365, config/_default/settings/grid.php:97, config/_default/settings/grid.php:331, config/_default/settings/grid.php:565, config/_default/settings/page-header.php:58, config/_default/settings/navigation-menus/after-header.php:11
 msgid "Center"
 msgstr ""
 
-#: lib/blocks/icon.php:224, lib/blocks/icon.php:363, lib/customize/logo.php:101, config/_default/settings/archive.php:366, config/_default/settings/navigation-menus/after-header.php:12
+#: lib/blocks/icon.php:224, lib/blocks/icon.php:363, config/_default/settings/archive.php:366, config/_default/settings/navigation-menus/after-header.php:12
 msgid "Right"
 msgstr ""
 
@@ -347,10 +347,6 @@ msgstr ""
 
 #: lib/customize/logo.php:60
 msgid "Logo Spacing"
-msgstr ""
-
-#: lib/customize/logo.php:94
-msgid "Logo Alignment"
 msgstr ""
 
 #: lib/customize/singular.php:29
