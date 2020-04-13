@@ -1,7 +1,7 @@
 .entry {
 	position: var(--entry-position, static);
 	display: var(--entry-display, flex);
-	flex: 1 1 calc((100% / var(--columns)) - var(--column-gap));
+	flex: var(--entry-flex, 1 1 calc((100% / var(--columns)) - var(--column-gap)));
 	flex-direction: var(--entry-flex-direction, column);
 	width: 100%;
 	max-width: calc((100% / var(--columns)) - var(--column-gap));
