@@ -769,7 +769,7 @@ return [
 							'operator' => '!=empty',
 						],
 					],
-					'atts'     => [
+					'atts'       => [
 						'field_type' => 'multi_select',
 						'add_term'   => 0,
 						'save_terms' => 0,
@@ -1239,10 +1239,10 @@ return [
 		'sanitize'   => 'esc_html',
 		'default'    => 'date',
 		'choices'    => [
-			'name'    => esc_html__( 'Title', 'mai-engine' ),
-			'slug'    => esc_html__( 'Slug', 'mai-engine' ),
-			'count'   => esc_html__( 'Entry Totals', 'mai-engine' ),
-			'id'      => esc_html__( 'Term ID', 'mai-engine' ),
+			'name'  => esc_html__( 'Title', 'mai-engine' ),
+			'slug'  => esc_html__( 'Slug', 'mai-engine' ),
+			'count' => esc_html__( 'Entry Totals', 'mai-engine' ),
+			'id'    => esc_html__( 'Term ID', 'mai-engine' ),
 		],
 		'conditions' => [
 			[

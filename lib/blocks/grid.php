@@ -218,21 +218,21 @@ function mai_register_grid_field_groups() {
 	);
 
 	// acf_add_local_field_group(
-	// 	[
-	// 		'key'      => 'group_5de9b54440a2u',
-	// 		'title'    => __( 'Mai User Grid', 'mai-engine' ),
-	// 		'fields'   => $term_grid,
-	// 		'location' => [
-	// 			[
-	// 				[
-	// 					'param'    => 'block',
-	// 					'operator' => '==',
-	// 					'value'    => 'acf/mai-user-grid',
-	// 				],
-	// 			],
-	// 		],
-	// 		'active'   => true,
-	// 	]
+	// [
+	// 'key'      => 'group_5de9b54440a2u',
+	// 'title'    => __( 'Mai User Grid', 'mai-engine' ),
+	// 'fields'   => $term_grid,
+	// 'location' => [
+	// [
+	// [
+	// 'param'    => 'block',
+	// 'operator' => '==',
+	// 'value'    => 'acf/mai-user-grid',
+	// ],
+	// ],
+	// ],
+	// 'active'   => true,
+	// ]
 	// );
 }
 
@@ -310,7 +310,7 @@ function mai_get_acf_field_data( $key, $field ) {
 
 /*****************
  * Mai Post Grid *
- *****************/
+ */
 // Show 'show'.
 add_filter( 'acf/load_field/key=field_5e441d93d6236', 'mai_acf_load_show' );
 // Posts 'post__in'.
@@ -323,7 +323,7 @@ add_filter( 'acf/fields/post_object/query/key=field_5df1053632ce4', 'mai_acf_get
 add_filter( 'acf/fields/post_object/query/key=field_5e349237e1c01', 'mai_acf_get_posts', 10, 1 );
 /*****************
  * Mai Term Grid *
- *****************/
+ */
 // Include Entries 'include'.
 add_filter( 'acf/fields/taxonomy/query/key=field_5df10647743cb', 'mai_acf_get_terms', 10, 1 );
 // Exclude Entries 'exclude'.
@@ -368,7 +368,7 @@ function mai_acf_load_show( $field ) {
 function mai_acf_get_posts( $args ) {
 
 	$args['post_type'] = [];
-	$post_types = mai_get_acf_request( 'post_type' );
+	$post_types        = mai_get_acf_request( 'post_type' );
 	if ( ! $post_types ) {
 		return $args;
 	}
@@ -391,7 +391,7 @@ function mai_acf_get_posts( $args ) {
 function mai_acf_get_terms( $args ) {
 
 	$args['taxonomy'] = [];
-	$taxonomies = mai_get_acf_request( 'taxonomy' );
+	$taxonomies       = mai_get_acf_request( 'taxonomy' );
 	if ( ! $taxonomies ) {
 		return $args;
 	}
@@ -414,7 +414,7 @@ function mai_acf_get_terms( $args ) {
 function mai_acf_get_parents( $args ) {
 
 	$args['post_type'] = [];
-	$post_types = mai_get_acf_request( 'post_type' );
+	$post_types        = mai_get_acf_request( 'post_type' );
 	if ( ! $post_types ) {
 		return $args;
 	}
@@ -427,6 +427,13 @@ function mai_acf_get_parents( $args ) {
 	return $args;
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return array
+ */
 function mai_get_post_type_choices() {
 	$choices = [];
 	if ( ! ( is_admin() || is_customize_preview() ) ) {
@@ -450,6 +457,13 @@ function mai_get_post_type_choices() {
 	return $choices;
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return array
+ */
 function mai_get_taxonomy_choices() {
 	$choices = [];
 	if ( ! ( is_admin() || is_customize_preview() ) ) {
@@ -475,6 +489,13 @@ function mai_get_taxonomy_choices() {
 	return $choices;
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return array
+ */
 function mai_get_post_type_taxonomy_choices() {
 	$choices = [];
 	if ( ! ( is_admin() || is_customize_preview() ) ) {
@@ -503,7 +524,7 @@ function mai_get_post_type_taxonomy_choices() {
  *
  * @since 0.1.0
  *
- * @param $request
+ * @param string $request Request data.
  *
  * @return bool
  */

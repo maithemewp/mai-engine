@@ -44,7 +44,7 @@ function mai_kirki_filters() {
  *
  * @since 1.0.0
  *
- * @param $css
+ * @param array $css Kirki CSS output.
  *
  * @return array
  */

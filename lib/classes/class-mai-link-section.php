@@ -61,7 +61,7 @@ class Mai_Link_Section extends WP_Customize_Section {
 	protected function render_template() {
 		?>
 		<li id="accordion-section-{{ data.id }}"
-		    class="accordion-section control-section control-section-{{ data.type }} cannot-expand">
+			class="accordion-section control-section control-section-{{ data.type }} cannot-expand">
 			<h3 class="wp-ui-highlight">
 				<a href="{{ data.button_url }}" class="wp-ui-text-highlight" target="_blank" rel="nofollow">
 					{{ data.title }}

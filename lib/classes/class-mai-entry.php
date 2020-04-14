@@ -95,7 +95,7 @@ class Mai_Entry {
 		// Remove post attributes filter for term/user grid.
 		if ( 'post' !== $this->type ) {
 			remove_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
-		} elseif ( in_array( 'image', $this->args['show'] ) ) {
+		} elseif ( in_array( 'image', $this->args['show'], true ) ) {
 			add_filter( 'post_class', [ $this, 'has_image_class' ] );
 		}
 
@@ -128,7 +128,7 @@ class Mai_Entry {
 		// Check if extra wrap is needed.
 		$has_wrap = false;
 		if ( 'single' !== $this->context ) {
-			$has_wrap = in_array( 'image', $this->args['show'], true ) && ( in_array( $this->args['image_position'], [ 'background' ] ) || mai_has_string( 'left', $this->args['image_position'] ) || mai_has_string( 'right', $this->args['image_position'] ) );
+			$has_wrap = in_array( 'image', $this->args['show'], true ) && ( in_array( $this->args['image_position'], [ 'background' ], true ) || mai_has_string( 'left', $this->args['image_position'] ) || mai_has_string( 'right', $this->args['image_position'] ) );
 		}
 
 		// If we have inner wrap.
@@ -199,7 +199,7 @@ class Mai_Entry {
 		// Add back post attributes for other entries.
 		if ( 'post' !== $this->type ) {
 			add_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
-		} elseif ( in_array( 'image', $this->args['show'] ) ) {
+		} elseif ( in_array( 'image', $this->args['show'], true ) ) {
 			remove_filter( 'post_class', [ $this, 'has_image_class' ] );
 		}
 
@@ -279,7 +279,7 @@ class Mai_Entry {
 		// TODO: Is this the best way to handle non-linked featured images?
 		// We'll need this later for Mai Favorites when we can disable links in grid.
 		$wrap = ( 'single' === $this->context ) ? 'span' : 'a';
-		$atts = ( 'single' === $this->context ) ? [] : ['href' => $this->url];
+		$atts = ( 'single' === $this->context ) ? [] : [ 'href' => $this->url ];
 
 		// Image.
 		genesis_markup(
@@ -348,7 +348,12 @@ class Mai_Entry {
 
 		$new_sizes   = [];
 		$has_sidebar = mai_has_sidebar();
-		$single      = [ 'xs' => 1, 'sm' => 1, 'md' => 1, 'lg' => 1 ];
+		$single      = [
+			'xs' => 1,
+			'sm' => 1,
+			'md' => 1,
+			'lg' => 1,
+		];
 		$columns     = ( 'single' === $this->context ) ? $single : array_reverse( $this->get_breakpoint_columns(), true ); // mobile first.
 
 		foreach ( $columns as $break => $count ) {
@@ -367,14 +372,14 @@ class Mai_Entry {
 				case 'md':
 					$min_width   = $this->breakpoints['md'];
 					$max_width   = $this->breakpoints['lg'] - 1;
-					$container   = $has_sidebar ? $max_width * 2/3 : $max_width;
+					$container   = $has_sidebar ? $max_width * 2 / 3 : $max_width;
 					$width       = floor( $container / $count );
 					$new_sizes[] = "(min-width:{$min_width}px) and (max-width: {$max_width}px) {$width}px";
-				break;
+					break;
 				case 'lg':
 					$min_width   = $this->breakpoints['lg'];
 					$container   = $this->breakpoints['xl'];
-					$container   = $has_sidebar ? $container * 2/3 : $container;
+					$container   = $has_sidebar ? $container * 2 / 3 : $container;
 					$width       = floor( $container / $count );
 					$new_sizes[] = "(min-width:{$min_width}px) {$width}px";
 					break;
@@ -384,10 +389,20 @@ class Mai_Entry {
 		return implode( ', ', $new_sizes );
 	}
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $class Classes.
+	 *
+	 * @return array
+	 */
 	public function has_image_class( $class ) {
 		if ( has_post_thumbnail( $this->entry ) ) {
 			$class[] = 'has-image';
 		}
+
 		return $class;
 	}
 
@@ -516,7 +531,7 @@ class Mai_Entry {
 	 * @return string
 	 */
 	public function get_image_size_by_cols() {
-		$fw_content  = ( 'full-width-content' === genesis_site_layout() ) ? true : false;
+		$fw_content = ( 'full-width-content' === genesis_site_layout() ) ? true : false;
 
 		// If single.
 		if ( 'single' === $this->context ) {
@@ -582,9 +597,9 @@ class Mai_Entry {
 				if ( 'block' !== $this->context ) {
 					// Singular and archive wrap and title text.
 					if ( 'single' === $this->context ) {
-						$wrap  = 'h1';
+						$wrap = 'h1';
 					} else {
-						$wrap  = 'h2';
+						$wrap = 'h2';
 					}
 
 					$title = get_the_title();

@@ -190,6 +190,7 @@ function mai_has_page_header() {
 
 	if ( ! mai_has_any_page_header_types() ) {
 		$has_page_header = false;
+
 		return $has_page_header;
 	}
 
@@ -256,6 +257,7 @@ function mai_has_page_header() {
  */
 function mai_has_any_page_header_types() {
 	$config = mai_get_config( 'page-header' );
+
 	return ( isset( $config['archive'] ) && ! empty( $config['archive'] ) ) || ( isset( $config['single'] ) && ! empty( $config['single'] ) );
 }
 
@@ -366,7 +368,7 @@ function mai_sanitize_bool( $value ) {
  *
  * @since 1.0.0
  *
- * @param bool $element
+ * @param bool $element Element to check.
  *
  * @return mixed
  */
@@ -383,19 +385,19 @@ function mai_is_element_hidden( $element ) {
 /**
  * Converts a string to different naming conventions.
  *
- * camel:    myNameIsBond
- * pascal:   MyNameIsBond
- * snake:    my_name_is_bond
- * ada:      My_Name_Is_Bond
- * macro:    MY_NAME_IS_BOND
- * kebab:    my-name-is-bond
- * train:    My-Name-Is-Bond
- * cobol:    MY-NAME-IS-BOND
- * lower:    my name is bond
- * upper:    MY NAME IS BOND
- * title:    My Name Is Bond
- * sentence: My name is bond
- * dot:      my.name.is.bond
+ * Camel:    myNameIsBond.
+ * Pascal:   MyNameIsBond.
+ * Snake:    my_name_is_bond.
+ * Ada:      My_Name_Is_Bond.
+ * Macro:    MY_NAME_IS_BOND.
+ * Kebab:    my-name-is-bond.
+ * Train:    My-Name-Is-Bond.
+ * Cobol:    MY-NAME-IS-BOND.
+ * Lower:    my name is bond.
+ * Upper:    MY NAME IS BOND.
+ * Title:    My Name Is Bond.
+ * Sentence: My name is bond.
+ * Dot:      my.name.is.bond.
  *
  * @since  1.0.0
  *

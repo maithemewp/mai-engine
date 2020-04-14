@@ -87,7 +87,7 @@ function mai_load_icon_choices( $field ) {
  *
  * @since 1.0.0
  *
- * @param $field
+ * @param array $field Field args.
  *
  * @return mixed
  */
@@ -96,8 +96,9 @@ function mai_load_icon_brand_choices( $field ) {
 	if ( 'acf-field-group' === get_post_type() ) {
 		return $field;
 	}
+
 	$field['choices']       = mai_get_icon_choices( 'brands' );
-	$field['default_value'] = 'wordpress';
+	$field['default_value'] = 'WordPress';
 
 	return $field;
 }
@@ -107,7 +108,7 @@ function mai_load_icon_brand_choices( $field ) {
  *
  * @since 1.0.0
  *
- * @param $style
+ * @param string $style Icon style.
  *
  * @return array
  */

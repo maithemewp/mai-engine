@@ -28,8 +28,9 @@ add_action( 'customize_controls_enqueue_scripts', 'mai_enqueue_assets' );
  * @return void
  */
 function mai_enqueue_assets() {
-	$assets       = mai_get_config( 'scripts-and-styles' )['add'];
-	$google_fonts = implode( '|', mai_get_config( 'google-fonts' ) );
+	$assets         = mai_get_config( 'scripts-and-styles' )['add'];
+	$google_fonts   = implode( '|', mai_get_config( 'google-fonts' ) );
+	$current_screen = function_exists( 'get_current_screen' ) ? get_current_screen() : false;
 
 	if ( $google_fonts ) {
 		$assets[] = [
@@ -63,7 +64,7 @@ function mai_enqueue_assets() {
 			$load = true;
 		}
 
-		if ( in_array( 'editor', $location, true ) && function_exists( 'get_current_screen' ) && method_exists( $current_screen = get_current_screen(), 'is_block_editor' ) && $current_screen->is_block_editor() ) {
+		if ( in_array( 'editor', $location, true ) && $current_screen && method_exists( $current_screen, 'is_block_editor' ) && $current_screen->is_block_editor() ) {
 			$load = true;
 		}
 

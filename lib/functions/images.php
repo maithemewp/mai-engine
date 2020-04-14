@@ -9,11 +9,22 @@
  * @license   GPL-2.0-or-later
  */
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param string $orientation Orientation type.
+ *
+ * @return bool|mixed
+ */
 function mai_get_orientation_aspect_ratio( $orientation ) {
 	$image_sizes = mai_get_config( 'image-sizes' );
+
 	if ( isset( $image_sizes['add'][ $orientation ] ) ) {
 		return str_replace( ':', '/', $image_sizes['add'][ $orientation ] );
 	}
+
 	return false;
 }
 
@@ -29,6 +40,7 @@ function mai_get_orientation_aspect_ratio( $orientation ) {
 function mai_get_image_aspect_ratio( $image_size ) {
 	$all_sizes = mai_get_available_image_sizes();
 	$sizes     = isset( $all_sizes[ $image_size ] ) ? $all_sizes[ $image_size ] : false;
+
 	return $sizes ? sprintf( '%s/%s', $sizes['width'], $sizes['height'] ) : '4/3';
 }
 
@@ -81,11 +93,13 @@ function mai_get_available_image_sizes() {
  */
 function mai_get_available_image_orientations() {
 	static $orientations = null;
+
 	if ( is_null( $orientations ) ) {
 		$image_sizes  = mai_get_config( 'image-sizes' );
 		$orientations = array_intersect( array_keys( $image_sizes['add'] ), [ 'landscape', 'portrait', 'square' ] );
 		$orientations = array_values( array_diff( $orientations, array_keys( $image_sizes['remove'] ) ) );
 	}
+
 	return $orientations;
 }
 
@@ -94,11 +108,14 @@ function mai_get_available_image_orientations() {
  *
  * @since  0.1.0
  *
+ * @param string $orientation Orientation type.
+ *
  * @return bool
  */
 function mai_has_image_orientiation( $orientation ) {
 	$orientations = mai_get_available_image_orientations();
-	return in_array( $orientation, $orientations );
+
+	return in_array( $orientation, $orientations, true );
 }
 
 /**
@@ -145,5 +162,4 @@ function mai_get_cover_image_html( $image_id, $atts = [] ) {
 
 	// Get the image HTML.
 	return wp_get_attachment_image( $image_id, 'cover', false, $atts );
-
 }

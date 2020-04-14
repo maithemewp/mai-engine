@@ -16,12 +16,13 @@ add_action( 'edit_form_after_title', 'mai_add_editor_on_posts_page' );
  * otherwise default editor will show. This is a bit hacky and I wish Gutenberg didn't do this.
  *
  * @since 0.1.0
- * @param $post
+ *
+ * @param WP_Post $post Post object.
  *
  * @return void
  */
 function mai_add_editor_on_posts_page( $post ) {
-	if ( $post->ID !== get_option( 'page_for_posts' ) ) {
+	if ( get_option( 'page_for_posts' ) !== $post->ID ) {
 		return;
 	}
 
@@ -34,14 +35,16 @@ function mai_add_editor_on_posts_page( $post ) {
 	}
 
 	// Update the post, adding a space as the content.
-	$post_id = wp_update_post( [
-		'ID'           => $post->ID,
-		'post_content' => ' ',
-	] );
+	$post_id = wp_update_post(
+		[
+			'ID'           => $post->ID,
+			'post_content' => ' ',
+		]
+	);
 
 	// TODO: Make a page refresh happen so block editor is enabled.
 	// if ( $post_id ) {
-	// 	wp_safe_redirect( get_permalink() );
-	// 	exit;
+	// wp_safe_redirect( get_permalink() );
+	// exit;
 	// }
 }

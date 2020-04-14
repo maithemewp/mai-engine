@@ -39,18 +39,23 @@ add_filter( 'genesis_author_box_gravatar_size', 'mai_author_box_gravatar' );
  */
 function mai_author_box_gravatar( $size ) {
 	$image_sizes = mai_get_available_image_sizes();
+
 	return isset( $image_sizes['tiny']['width'] ) ? $image_sizes['tiny']['width'] : 80;
 }
 
+add_action( 'genesis_archive_title_descriptions', 'mai_do_blog_description' );
 /**
  * Output the static blog page content before the posts.
  *
- * @return  void
+ * @since 1.0.0
+ *
+ * @return void
  */
-add_action( 'genesis_archive_title_descriptions', 'mai_do_blog_description' );
 function mai_do_blog_description() {
+	$posts_page = get_option( 'page_for_posts' );
+
 	// Bail if not the blog page.
-	if ( ! ( is_home() && $posts_page = get_option( 'page_for_posts' ) ) ) {
+	if ( ! ( is_home() && $posts_page ) ) {
 		return;
 	}
 
@@ -66,5 +71,5 @@ function mai_do_blog_description() {
 		return;
 	}
 
-	echo $content;
+	echo wp_kses_post( $content );
 }

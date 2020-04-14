@@ -62,17 +62,18 @@ function mai_feature_posts_widget_entry_title_link( $default ) {
 	return str_replace( $search, $replace, $default );
 }
 
+add_filter( 'comment_reply_link', 'mai_comment_reply_button_class' );
 /**
  * Add comment reply button classes.
  *
  * @since 0.1.0
  *
- * @param string The button html.
+ * @param string $link The button html.
  *
  * @return string
  */
-add_filter( 'comment_reply_link', 'mai_comment_reply_button_class' );
 function mai_comment_reply_button_class( $link ) {
 	$link = str_replace( 'comment-reply-link', 'comment-reply-link button button-secondary', $link );
+
 	return $link;
 }

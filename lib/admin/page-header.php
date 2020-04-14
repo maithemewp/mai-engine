@@ -24,14 +24,20 @@ function mai_add_page_header_metabox() {
 
 	$config     = mai_get_config( 'page-header' );
 	$page_types = [
-		'single'  => array_merge( array_keys( get_post_types() ), [
-			'404',
-		] ),
-		'archive' => array_merge( array_keys( get_taxonomies() ), [
-			'author',
-			'date',
-			'search',
-		] ),
+		'single'  => array_merge(
+			array_keys( get_post_types() ),
+			[
+				'404',
+			]
+		),
+		'archive' => array_merge(
+			array_keys( get_taxonomies() ),
+			[
+				'author',
+				'date',
+				'search',
+			]
+		),
 	];
 
 	foreach ( $page_types as $page_type => $content_types ) {

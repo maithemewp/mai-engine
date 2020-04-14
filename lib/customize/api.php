@@ -112,7 +112,7 @@ function mai_add_customizer_panels() {
  *
  * @since 1.0.0
  *
- * @param $panel
+ * @param string $panel Panel name.
  *
  * @return void
  */
@@ -133,8 +133,8 @@ function mai_add_customizer_panel( $panel ) {
  *
  * @since 1.0.0
  *
- * @param $panel
- * @param $sections
+ * @param string $panel    Panel name.
+ * @param mixed  $sections Sections.
  *
  * @return void
  */
@@ -152,8 +152,8 @@ function mai_add_customizer_sections( $panel, $sections ) {
  *
  * @since 1.0.0
  *
- * @param $panel
- * @param $section
+ * @param string $panel   Panel name.
+ * @param string $section Section name.
  *
  * @return void
  */
@@ -176,8 +176,8 @@ function mai_add_customizer_section( $panel, $section ) {
  *
  * @since 1.0.0
  *
- * @param $panel
- * @param $section
+ * @param string $panel   Panel name.
+ * @param string $section Section name.
  *
  * @return void
  */
@@ -200,9 +200,9 @@ function mai_add_customizer_fields( $panel, $section ) {
  *
  * @since 1.0.0
  *
- * @param $field
- * @param $panel
- * @param $section
+ * @param array  $field   Field data.
+ * @param string $panel   Panel name.
+ * @param string $section Section name.
  *
  * @return void
  */

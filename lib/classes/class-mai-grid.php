@@ -129,7 +129,7 @@ class Mai_Grid {
 					$args[ $name ] = $sub_values;
 				}
 			} else {
-				// Standard field. Check
+				// Standard field check.
 				$sanitize      = isset( $this->settings[ $name ] ) ? $this->settings[ $name ]['sanitize'] : 'esc_html';
 				$args[ $name ] = mai_sanitize( $value, $sanitize );
 			}
@@ -180,7 +180,8 @@ class Mai_Grid {
 			case 'post':
 				$posts = new WP_Query( $this->get_post_query_args() );
 				if ( $posts->have_posts() ) {
-					while ( $posts->have_posts() ) : $posts->the_post();
+					while ( $posts->have_posts() ) :
+						$posts->the_post();
 						global $post;
 						mai_do_entry( $post, $this->args );
 					endwhile;
@@ -306,14 +307,14 @@ class Mai_Grid {
 		switch ( $this->args['query_by'] ) {
 			case 'name':
 				// Nothing, this is the default.
-			break;
+				break;
 			case 'id':
 				$query_args['include'] = $this->args['include'];
 				$this->args['orderby'] = 'include';
-			break;
+				break;
 			case 'parent':
 				$query_args['parent'] = $this->args['parent'];
-			break;
+				break;
 		}
 
 		// Exclude.

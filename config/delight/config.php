@@ -13,18 +13,18 @@
 defined( 'ABSPATH' ) || die;
 
 return [
-	'google-fonts'  => [
+	'google-fonts'        => [
 		'Playfair+Display:700|Open+Sans:400',
 	],
-	'theme-support' => [
+	'theme-support'       => [
 		'add' => [
 			'sticky-header',
 			// 'transparent-header',
 			'genesis-footer-widgets' => 2,
 		],
 	],
-	'image-sizes' => [
-		'add'    => [
+	'image-sizes'         => [
+		'add' => [
 			'landscape' => '4:3',
 			'portrait'  => '3:4',
 			'square'    => '1:1',

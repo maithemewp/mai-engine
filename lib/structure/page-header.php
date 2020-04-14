@@ -103,7 +103,6 @@ function mai_do_page_header_image() {
 		} else {
 			$image_id = get_post_meta( get_option( 'page_for_posts' ), 'page_header_image', true );
 		}
-
 	} elseif ( mai_is_type_archive() ) {
 		global $wp_query;
 

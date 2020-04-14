@@ -627,8 +627,8 @@ function mai_get_template_args() {
 	$context = '';
 
 	if ( mai_is_type_archive() ) {
-		$name     = mai_get_archive_args_name();
-		$context  = 'archive';
+		$name    = mai_get_archive_args_name();
+		$context = 'archive';
 
 	} elseif ( is_singular() ) {
 		$name    = mai_get_singular_args_name();
@@ -643,7 +643,7 @@ function mai_get_template_args() {
 	// Get defaults.
 	$config   = mai_get_config( $context . '-settings' );
 	$defaults = [ 'context' => $context ] + wp_list_pluck( $config, 'default', 'name' );
-	foreach( $defaults as $key => $value ) {
+	foreach ( $defaults as $key => $value ) {
 		if ( is_string( $value ) && is_callable( $value ) && mai_has_string( 'mai_', $value ) ) {
 			$defaults[ $key ] = call_user_func_array( $value, [ 'name' => $name ] );
 		}
@@ -777,8 +777,18 @@ function mai_get_image_sizes_from_aspect_ratio( $size = 'md', $ratio = '16:9' ) 
 	return [ $width, $height, true ];
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param string $name Post type name.
+ *
+ * @return string
+ */
 function mai_get_header_meta_default( $name ) {
 	$post_type = get_post_type_object( $name );
+
 	if ( $post_type && $post_type->hierarchical ) {
 		return '';
 	}
@@ -786,13 +796,22 @@ function mai_get_header_meta_default( $name ) {
 	return '[post_date] [post_author_posts_link before="by "]';
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param string $name Taxonomy name.
+ *
+ * @return string
+ */
 function mai_get_footer_meta_default( $name ) {
 	$taxonomies = get_object_taxonomies( $name, 'objects' );
 
 	if ( $taxonomies ) {
 		// Get only public taxonomies.
 		$taxonomies = wp_list_filter( $taxonomies, [ 'public' => true ] );
-		// Remove Post Formats and Yoast prominent keyworks
+		// Remove Post Formats and Yoast prominent keywords.
 		unset( $taxonomies['post_format'] );
 		unset( $taxonomies['yst_prominent_words'] );
 	}
@@ -803,13 +822,21 @@ function mai_get_footer_meta_default( $name ) {
 	}
 
 	$default = '';
-	foreach ( $taxos as $name => $taxonomy ) {
+
+	foreach ( $taxonomies as $name => $taxonomy ) {
 		$default .= '[post_terms taxonomy="' . $name . '" before="' . $taxonomy->labels->singular_name . ': "]';
 	}
 
 	return $default;
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return array
+ */
 function mai_get_grid_show_choices() {
 	$choices = [
 		'image'       => esc_html__( 'Image', 'mai-engine' ),
@@ -824,7 +851,14 @@ function mai_get_grid_show_choices() {
 	return $choices;
 }
 
-function mai_get_archive_show_choices( $name ) {
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return array
+ */
+function mai_get_archive_show_choices() {
 	$choices = [
 		'image'                        => esc_html__( 'Image', 'mai-engine' ),
 		'genesis_entry_header'         => 'genesis_entry_header',
@@ -843,6 +877,15 @@ function mai_get_archive_show_choices( $name ) {
 	return $choices;
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param string $name Post type name.
+ *
+ * @return array|null
+ */
 function mai_get_single_show_defaults( $name ) {
 	$choices = [
 		'image',
@@ -860,6 +903,7 @@ function mai_get_single_show_defaults( $name ) {
 		'after_entry',
 		'adjacent_entry_nav',
 	];
+
 	if ( 'post' !== $name ) {
 		$choices = array_flip( $choices );
 		unset( $choices['author_box'] );
@@ -871,8 +915,17 @@ function mai_get_single_show_defaults( $name ) {
 	return $choices;
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param string $name Post type name.
+ *
+ * @return array
+ */
 function mai_get_single_show_choices( $name ) {
-	if ( in_array( $name, mai_get_config( 'page-header-single' ) ) ) {
+	if ( in_array( $name, mai_get_config( 'page-header-single' ), true ) ) {
 		$title = esc_html__( 'Title (when page header is hidden)', 'mai-engine' );
 	} else {
 		$title = esc_html__( 'Title', 'mai-engine' );
@@ -898,10 +951,24 @@ function mai_get_single_show_choices( $name ) {
 	return $choices;
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return array
+ */
 function mai_get_site_layout_choices() {
 	return [ '' => esc_html__( 'Site Default', 'mai-engine' ) ] + genesis_get_layouts_for_customizer();
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return array
+ */
 function mai_get_image_size_choices() {
 	$choices = [];
 	if ( ! ( is_admin() || is_customize_preview() ) ) {
@@ -915,6 +982,13 @@ function mai_get_image_size_choices() {
 	return $choices;
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return array
+ */
 function mai_get_image_orientation_choices() {
 	$choices = [];
 	if ( ! ( is_admin() || is_customize_preview() ) ) {
@@ -934,6 +1008,13 @@ function mai_get_image_orientation_choices() {
 	return $choices;
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return array
+ */
 function mai_get_columns_choices() {
 	$choices = [];
 	if ( ! ( is_admin() || is_customize_preview() ) ) {
@@ -951,6 +1032,15 @@ function mai_get_columns_choices() {
 	];
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param array $args Icon args.
+ *
+ * @return null|string
+ */
 function mai_get_icon( $args ) {
 	static $id = 0;
 
@@ -982,7 +1072,6 @@ function mai_get_icon( $args ) {
 	}
 
 	// Get it started.
-	$html       = '';
 	$attributes = [
 		'class' => $class,
 		'style' => '',
@@ -995,20 +1084,23 @@ function mai_get_icon( $args ) {
 	$attributes['style'] .= sprintf( '--icon-color:%s;', $args['color_icon'] );
 	$attributes['style'] .= sprintf( '--icon-margin:%s %s %s %s;', mai_get_unit_value( $args['margin_top'] ), mai_get_unit_value( $args['margin_right'] ), mai_get_unit_value( $args['margin_bottom'] ), mai_get_unit_value( $args['margin_left'] ) );
 	$attributes['style'] .= sprintf( '--icon-padding:%s;', mai_get_unit_value( $args['padding'] ) );
-	// $attributes['style'] .= sprintf( '--icon-padding:%s %s %s %s;', mai_get_unit_value( $args['padding_top'] ), mai_get_unit_value( $args['padding_right'] ), mai_get_unit_value( $args['padding_bottom'] ), mai_get_unit_value( $args['padding_left'] ) );
+
 	if ( $args['color_background'] ) {
 		$attributes['style'] .= sprintf( '--icon-background:%s;', $args['color_background'] );
 	}
+
 	if ( $args['color_shadow'] ) {
 		$attributes['style'] .= sprintf( '--icon-box-shadow:%s %s %s %s;', mai_get_unit_value( $args['x_offset'] ), mai_get_unit_value( $args['y_offset'] ), mai_get_unit_value( $args['blur'] ), $args['color_shadow'] );
 	}
+
 	if ( $args['border_width'] && $args['color_border'] ) {
 		$attributes['style'] .= sprintf( '--icon-border:%s solid %s;', mai_get_unit_value( $args['border_width'] ), mai_get_unit_value( $args['color_border'] ) );
 	}
+
 	if ( $args['border_radius'] ) {
-		$radius              = explode( ' ', trim( $args['border_radius'] ) );
-		$radius              = array_map( 'mai_get_unit_value', $radius );
-		$radius              = array_filter( $radius );
+		$radius               = explode( ' ', trim( $args['border_radius'] ) );
+		$radius               = array_map( 'mai_get_unit_value', $radius );
+		$radius               = array_filter( $radius );
 		$attributes['style'] .= sprintf( '--icon-border-radius:%s;', implode( ' ', $radius ) );
 	}
 
@@ -1022,7 +1114,6 @@ function mai_get_icon( $args ) {
 			'atts'    => $attributes,
 		]
 	);
-
 }
 
 /**
@@ -1062,9 +1153,9 @@ function mai_get_icon_default_args() {
  *
  * @since 0.1.0
  *
- * @param string $name
- * @param string $style
- * @param string $class
+ * @param string $name  SVG name.
+ * @param string $style SVG style.
+ * @param string $class SVG classes.
  *
  * @return string
  */
@@ -1090,8 +1181,8 @@ function mai_get_svg( $name, $style = 'light', $class = '' ) {
  *
  * @since 0.1.0
  *
- * @param string $name
- * @param string $style
+ * @param string $name  SVG name.
+ * @param string $style SVG style.
  *
  * @return string
  */
@@ -1109,18 +1200,22 @@ function mai_get_svg_url( $name, $style = 'light' ) {
 function mai_get_editor_localized_data() {
 	$palette = mai_get_color_palette();
 	$palette = wp_list_pluck( $palette, 'color', 'slug' );
+
 	unset( $palette['black'] ); // Too many for iris picker, we need to remove some.
 	unset( $palette['white'] );
 	unset( $palette['light'] );
+
 	$palette  = array_values( $palette ); // Remove keys.
 	$data     = [ 'palette' => $palette ];
 	$settings = mai_get_config( 'grid-settings' );
+
 	foreach ( $settings as $key => $field ) {
 		if ( 'tab' === $field['type'] ) {
 			continue;
 		}
+
 		foreach ( [ 'post', 'term', 'user' ] as $type ) {
-			if ( ! in_array( $type, $field['block'] ) ) {
+			if ( ! in_array( $type, $field['block'], true ) ) {
 				continue;
 			}
 			if ( isset( $field['atts']['sub_fields'] ) ) {

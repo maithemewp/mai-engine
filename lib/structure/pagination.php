@@ -117,11 +117,11 @@ add_filter( 'next_post_link', 'mai_adjacent_entry_link_thumbnail', 10, 5 );
  * The dynamic portion of the hook name, `$adjacent`, refers to the type
  * of adjacency, 'next' or 'previous'.
  *
- * @param   string   $output    The adjacent post link.
- * @param   string   $format    Link anchor format.
- * @param   string   $link      Link permalink format.
- * @param   WP_Post  $post      The adjacent post.
- * @param   string   $adjacent  Whether the post is previous or next.
+ * @param   string  $output   The adjacent post link.
+ * @param   string  $format   Link anchor format.
+ * @param   string  $link     Link permalink format.
+ * @param   WP_Post $post     The adjacent post.
+ * @param   string  $adjacent Whether the post is previous or next.
  *
  * @return  string|HTML  The post link and image HTML.
  */
@@ -135,5 +135,6 @@ function mai_adjacent_entry_link_thumbnail( $output, $format, $link, $post, $adj
 		remove_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
 	}
 	$image = $show_image && $image ? $image : '';
+
 	return str_replace( '%image', $image, $output );
 }
