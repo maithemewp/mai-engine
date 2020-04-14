@@ -874,10 +874,10 @@ msgstr ""
 msgid "Alignment"
 msgstr ""
 
-#: config/_default/settings/site-header/header-settings.php:16
+#: config/_default/settings/site-header/settings.php:16
 msgid "Enable sticky header?"
 msgstr ""
 
-#: config/_default/settings/site-header/header-settings.php:22
+#: config/_default/settings/site-header/settings.php:22
 msgid "Enable transparent header?"
 msgstr ""

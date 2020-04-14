@@ -11,21 +11,21 @@
 
 return [
 	[
-		'name'     => 'site_layout',
-		'label'    => esc_html__( 'Layout', 'mai-engine' ),
-		'desc'     => esc_html__( '"Site Default" will use the setting in Customizer > Theme Settings > Site Layout.', 'mai-engine' ),
-		'type'     => 'select',
-		'sanitize' => 'esc_html',
-		'default'  => '',
-		'choices'  => 'mai_get_site_layout_choices',
+		'settings'    => 'site_layout',
+		'label'       => esc_html__( 'Layout', 'mai-engine' ),
+		'description' => esc_html__( '"Site Default" will use the setting in Customizer > Theme Settings > Site Layout.', 'mai-engine' ),
+		'type'        => 'select',
+		'sanitize'    => 'esc_html',
+		'default'     => '',
+		'choices'     => 'mai_get_site_layout_choices',
 	],
 	[
-		'name'     => 'show',
-		'label'    => esc_html__( 'Show', 'mai-engine' ),
-		'desc'     => esc_html__( 'Show/hide and re-order entry elements. Click "Toggle Hooks" to show Genesis hooks.', 'mai-engine' ),
-		'type'     => 'sortable',
-		'sanitize' => 'esc_html',
-		'default'  => [
+		'settings'    => 'show',
+		'label'       => esc_html__( 'Show', 'mai-engine' ),
+		'description' => esc_html__( 'Show/hide and re-order entry elements. Click "Toggle Hooks" to show Genesis hooks.', 'mai-engine' ),
+		'type'        => 'sortable',
+		'sanitize'    => 'esc_html',
+		'default'     => [
 			'image',
 			'genesis_entry_header',
 			'title',
@@ -40,13 +40,13 @@ return [
 		'choices'  => 'mai_get_archive_show_choices',
 	],
 	[
-		'name'       => 'image_orientation',
-		'label'      => esc_html__( 'Image Orientation', 'mai-engine' ),
-		'type'       => 'select',
-		'sanitize'   => 'esc_html',
-		'default'    => 'landscape',
-		'choices'    => 'mai_get_image_orientation_choices',
-		'conditions' => [
+		'settings'        => 'image_orientation',
+		'label'           => esc_html__( 'Image Orientation', 'mai-engine' ),
+		'type'            => 'select',
+		'sanitize'        => 'esc_html',
+		'default'         => 'landscape',
+		'choices'         => 'mai_get_image_orientation_choices',
+		'active_callback' => [
 			[
 				'setting'  => 'show',
 				'operator' => 'contains',
@@ -55,13 +55,13 @@ return [
 		],
 	],
 	[
-		'name'       => 'image_size',
-		'label'      => esc_html__( 'Image Size', 'mai-engine' ),
-		'type'       => 'select',
-		'sanitize'   => 'esc_html',
-		'default'    => 'landscape-md',
-		'choices'    => 'mai_get_image_size_choices',
-		'conditions' => [
+		'settings'        => 'image_size',
+		'label'           => esc_html__( 'Image Size', 'mai-engine' ),
+		'type'            => 'select',
+		'sanitize'        => 'esc_html',
+		'default'         => 'landscape-md',
+		'choices'         => 'mai_get_image_size_choices',
+		'active_callback' => [
 			[
 				'setting'  => 'show',
 				'operator' => 'contains',
@@ -75,7 +75,7 @@ return [
 		],
 	],
 	[
-		'name'       => 'image_position',
+		'settings'   => 'image_position',
 		'label'      => esc_html__( 'Image Position', 'mai-engine' ),
 		'type'       => 'select',
 		'sanitize'   => 'esc_html',
@@ -91,7 +91,7 @@ return [
 			'right-full'   => esc_html__( 'Right Full', 'mai-engine' ),
 			'background'   => esc_html__( 'Background', 'mai-engine' ),
 		],
-		'conditions' => [
+		'active_callback' => [
 			[
 				'setting'  => 'show',
 				'operator' => 'contains',
@@ -100,7 +100,7 @@ return [
 		],
 	],
 	[
-		'name'       => 'image_width',
+		'settings'   => 'image_width',
 		'label'      => esc_html__( 'Image Width', 'mai-engine' ),
 		'type'       => 'radio-buttonset',
 		'sanitize'   => 'esc_html',
@@ -110,7 +110,7 @@ return [
 			'third'  => esc_html__( 'One Third', 'mai-engine' ),
 			'half'   => esc_html__( 'One Half', 'mai-engine' ),
 		],
-		'conditions' => [
+		'active_callback' => [
 			[
 				[
 					'setting'  => 'show',
@@ -153,13 +153,13 @@ return [
 		],
 	],
 	[
-		'name'       => 'header_meta',
-		'label'      => esc_html__( 'Header Meta', 'mai-engine' ),
-		'type'       => 'text',
-		'sanitize'   => 'wp_kses_post',
-		// TODO: this should be different, or empty depending on the post type?
-		'default'    => '[post_date] [post_author_posts_link before="by "]',
-		'conditions' => [
+		'settings'        => 'header_meta',
+		'label'           => esc_html__( 'Header Meta', 'mai-engine' ),
+		'type'            => 'text',
+		'sanitize'        => 'wp_kses_post',
+		// TODO:             this should be different, or empty depending on the post type?
+		'default'         => '[post_date] [post_author_posts_link before="by "]',
+		'active_callback' => [
 			[
 				'setting'  => 'show',
 				'operator' => 'contains',
@@ -168,13 +168,13 @@ return [
 		],
 	],
 	[
-		'name'       => 'content_limit',
-		'label'      => esc_html__( 'Content Limit', 'mai-engine' ),
-		'desc'       => esc_html__( 'Limit the number of characters shown for the content or excerpt. Use 0 for no limit.', 'mai-engine' ),
-		'type'       => 'text',
-		'sanitize'   => 'absint',
-		'default'    => 0,
-		'conditions' => [
+		'settings'        => 'content_limit',
+		'label'           => esc_html__( 'Content Limit', 'mai-engine' ),
+		'description'     => esc_html__( 'Limit the number of characters shown for the content or excerpt. Use 0 for no limit.', 'mai-engine' ),
+		'type'            => 'text',
+		'sanitize'        => 'absint',
+		'default'         => 0,
+		'active_callback' => [
 			[
 				[
 					'setting'  => 'show',
@@ -190,12 +190,12 @@ return [
 		],
 	],
 	[
-		'name'       => 'more_link_text',
-		'label'      => esc_html__( 'More Link Text', 'mai-engine' ),
-		'type'       => 'text',
-		'sanitize'   => 'esc_attr', // We may want to add icons/spans and HTML in here.
-		'default'    => '',
-		'conditions' => [
+		'settings'        => 'more_link_text',
+		'label'           => esc_html__( 'More Link Text', 'mai-engine' ),
+		'type'            => 'text',
+		'sanitize'        => 'esc_attr', // We may want to add icons/spans and HTML in here.
+		'default'         => '',
+		'active_callback' => [
 			[
 				'setting'  => 'show',
 				'operator' => 'contains',
@@ -210,13 +210,13 @@ return [
 		],
 	],
 	[
-		'name'       => 'footer_meta',
-		'label'      => esc_html__( 'Footer Meta', 'mai-engine' ),
-		'type'       => 'text',
-		'sanitize'   => 'wp_kses_post',
-		// TODO: this should be different, or empty depending on the post type?
-		'default'    => '[post_categories]',
-		'conditions' => [
+		'settings'        => 'footer_meta',
+		'label'           => esc_html__( 'Footer Meta', 'mai-engine' ),
+		'type'            => 'text',
+		'sanitize'        => 'wp_kses_post',
+		// TODO:             this should be different, or empty depending on the post type?
+		'default'         => '[post_categories]',
+		'active_callback' => [
 			[
 				'setting'  => 'show',
 				'operator' => 'contains',
@@ -225,21 +225,21 @@ return [
 		],
 	],
 	[
-		'name'     => 'boxed_heading',
+		'settings' => 'boxed_heading',
 		'label'    => esc_html__( 'Boxed', 'mai-engine' ),
 		'type'     => 'custom',
 		'sanitize' => 'esc_html',
 		'default'  => '',
 	],
 	[
-		'name'     => 'boxed',
+		'settings' => 'boxed',
 		'label'    => esc_html__( 'Display boxed styling', 'mai-engine' ),
 		'type'     => 'checkbox',
 		'sanitize' => 'esc_html',
 		'default'  => true,
 	],
 	[
-		'name'     => 'align_text',
+		'settings' => 'align_text',
 		'label'    => esc_html__( 'Align Text', 'mai-engine' ),
 		'type'     => 'radio-buttonset',
 		'sanitize' => 'esc_html',
@@ -252,7 +252,7 @@ return [
 		],
 	],
 	[
-		'name'       => 'align_text_vertical',
+		'settings'   => 'align_text_vertical',
 		'label'      => esc_html__( 'Align Text (vertical)', 'mai-engine' ),
 		'type'       => 'radio-buttonset',
 		'sanitize'   => 'esc_html',
@@ -263,7 +263,7 @@ return [
 			'middle' => esc_html__( 'Middle', 'mai-engine' ),
 			'bottom' => esc_html__( 'Bottom', 'mai-engine' ),
 		],
-		'conditions' => [
+		'active_callback' => [
 			[
 				[
 					'setting'  => 'image_position',
@@ -294,7 +294,7 @@ return [
 		],
 	],
 	[
-		'name'     => 'columns',
+		'settings' => 'columns',
 		'label'    => esc_html__( 'Columns (desktop)', 'mai-engine' ),
 		'type'     => 'radio-buttonset',
 		'sanitize' => 'esc_html',
@@ -302,20 +302,20 @@ return [
 		'choices'  => 'mai_get_columns_choices',
 	],
 	[
-		'name'     => 'columns_responsive',
+		'settings' => 'columns_responsive',
 		'label'    => esc_html__( 'Custom responsive columns', 'mai-engine' ),
 		'type'     => 'checkbox',
 		'sanitize' => 'mai_sanitize_bool',
 		'default'  => '',
 	],
 	[
-		'name'       => 'columns_md',
-		'label'      => esc_html__( 'Columns (lg tablets)', 'mai-engine' ),
-		'type'       => 'radio-buttonset',
-		'sanitize'   => 'esc_html',
-		'default'    => '1',
-		'choices'    => 'mai_get_columns_choices',
-		'conditions' => [
+		'settings'        => 'columns_md',
+		'label'           => esc_html__( 'Columns (lg tablets)', 'mai-engine' ),
+		'type'            => 'radio-buttonset',
+		'sanitize'        => 'esc_html',
+		'default'         => '1',
+		'choices'         => 'mai_get_columns_choices',
+		'active_callback' => [
 			[
 				'setting'  => 'columns_responsive',
 				'operator' => '==',
@@ -324,13 +324,13 @@ return [
 		],
 	],
 	[
-		'name'       => 'columns_sm',
-		'label'      => esc_html__( 'Columns (sm tablets)', 'mai-engine' ),
-		'type'       => 'radio-buttonset',
-		'sanitize'   => 'esc_html',
-		'default'    => '1',
-		'choices'    => 'mai_get_columns_choices',
-		'conditions' => [
+		'settings'        => 'columns_sm',
+		'label'           => esc_html__( 'Columns (sm tablets)', 'mai-engine' ),
+		'type'            => 'radio-buttonset',
+		'sanitize'        => 'esc_html',
+		'default'         => '1',
+		'choices'         => 'mai_get_columns_choices',
+		'active_callback' => [
 			[
 				'setting'  => 'columns_responsive',
 				'operator' => '==',
@@ -339,13 +339,13 @@ return [
 		],
 	],
 	[
-		'name'       => 'columns_xs',
-		'label'      => esc_html__( 'Columns (mobile)', 'mai-engine' ),
-		'type'       => 'radio-buttonset',
-		'sanitize'   => 'esc_html',
-		'default'    => '1',
-		'choices'    => 'mai_get_columns_choices',
-		'conditions' => [
+		'settings'        => 'columns_xs',
+		'label'           => esc_html__( 'Columns (mobile)', 'mai-engine' ),
+		'type'            => 'radio-buttonset',
+		'sanitize'        => 'esc_html',
+		'default'         => '1',
+		'choices'         => 'mai_get_columns_choices',
+		'active_callback' => [
 			[
 				'setting'  => 'columns_responsive',
 				'operator' => '==',
@@ -354,7 +354,7 @@ return [
 		],
 	],
 	[
-		'name'       => 'align_columns',
+		'settings'   => 'align_columns',
 		'label'      => esc_html__( 'Align Columns', 'mai-engine' ),
 		'type'       => 'radio-buttonset',
 		'sanitize'   => 'esc_html',
@@ -365,7 +365,7 @@ return [
 			'center' => esc_html__( 'Center', 'mai-engine' ),
 			'right'  => esc_html__( 'Right', 'mai-engine' ),
 		],
-		'conditions' => [
+		'active_callback' => [
 			[
 				'setting'  => 'columns',
 				'operator' => '!=',
@@ -374,7 +374,7 @@ return [
 		],
 	],
 	[
-		'name'       => 'align_columns_vertical',
+		'settings'   => 'align_columns_vertical',
 		'label'      => esc_html__( 'Align Columns (vertical)', 'mai-engine' ),
 		'type'       => 'radio-buttonset',
 		'sanitize'   => 'esc_html',
@@ -385,7 +385,7 @@ return [
 			'middle' => esc_html__( 'Middle', 'mai-engine' ),
 			'bottom' => esc_html__( 'Bottom', 'mai-engine' ),
 		],
-		'conditions' => [
+		'active_callback' => [
 			[
 				'setting'  => 'columns',
 				'operator' => '!=',
@@ -394,14 +394,14 @@ return [
 		],
 	],
 	[
-		'name'     => 'column_gap',
+		'settings' => 'column_gap',
 		'label'    => esc_html__( 'Column Gap', 'mai-engine' ),
 		'type'     => 'text',
 		'sanitize' => 'esc_html',
 		'default'  => '36px',
 	],
 	[
-		'name'     => 'row_gap',
+		'settings' => 'row_gap',
 		'label'    => esc_html__( 'Row Gap', 'mai-engine' ),
 		'type'     => 'text',
 		'sanitize' => 'esc_html',
@@ -409,13 +409,13 @@ return [
 	],
 	[
 		// TODO: On Post Archives, this should save to the direct posts_per_page option (same as main Settings > Reading option).
-		'name'     => 'posts_per_page',
-		'label'    => esc_html__( 'Posts Per Page', 'mai-engine' ),
-		'desc'     => esc_html__( 'Sticky posts are not included in count.', 'mai-engine' ),
-		'sanitize' => 'esc_html', // Can't absint cause empty string means to use default.
-		'type'     => 'text',
-		'default'  => '',
-		'atts'     => [
+		'settings'    => 'posts_per_page',
+		'label'       => esc_html__( 'Posts Per Page', 'mai-engine' ),
+		'description' => esc_html__( 'Sticky posts are not included in count.', 'mai-engine' ),
+		'sanitize'    => 'esc_html', // Can't absint cause empty string means to use default.
+		'type'        => 'text',
+		'default'     => '',
+		'atts'        => [
 			'input_attrs' => [
 				'placeholder' => get_option( 'posts_per_page' ),
 			],

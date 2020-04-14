@@ -63,9 +63,10 @@ function mai_add_single_customizer_settings( $name ) {
 	);
 
 	foreach ( $fields as $field ) {
-		Kirki::add_field(
-			mai_get_handle(),
-			mai_get_kirki_field_data( $field, $section_id, $name )
-		);
+		mai_add_customizer_field( $field, 'single', $name, $name );
+		// Kirki::add_field(
+		// 	mai_get_handle(),
+		// 	mai_get_kirki_field_data( $field, $section_id, $name )
+		// );
 	}
 }

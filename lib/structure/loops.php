@@ -9,6 +9,10 @@
  * @license   GPL-2.0-or-later
  */
 
+// add_action( 'genesis_before', function() {
+// 	vd( get_option( 'mai-engine' ) );
+// });
+
 add_action( 'genesis_before_loop', 'mai_setup_loop' );
 /**
  * Description of expected behavior.

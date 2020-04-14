@@ -531,7 +531,7 @@ return [
 	'archive-settings'     => require __DIR__ . '/settings/archive.php',
 	'single-settings'      => require __DIR__ . '/settings/single.php',
 	'grid-settings'        => require __DIR__ . '/settings/grid.php',
-	'page-header-settings' => require __DIR__ . '/settings/page-header.php',
+	// 'page-header-settings' => require __DIR__ . '/settings/page-header.php',
 
 	/*
 	|--------------------------------------------------------------------------
