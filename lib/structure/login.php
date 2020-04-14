@@ -9,7 +9,13 @@
  * @license   GPL-2.0-or-later
  */
 
-// Change login logo.
+/**
+ * Add site logo as login logo.
+ *
+ * @since 0.1.0
+ *
+ * @return void
+ */
 add_action( 'login_head',  'mai_login_logo_css' );
 function mai_login_logo_css() {
 
@@ -78,8 +84,14 @@ function mai_login_logo_css() {
 
 }
 
-// Change login link.
+/**
+ * Change login logo url to home url.
+ *
+ * @since 0.1.0
+ *
+ * @return void
+ */
 add_filter( 'login_headerurl', 'mai_login_link' );
 function mai_login_link() {
-	return get_site_url();
+	return home_url();
 }
