@@ -90,6 +90,7 @@ function mai_load_files() {
 			'structure/comments',
 			'structure/footer',
 			'structure/header',
+			'structure/login',
 			'structure/loops',
 			'structure/menus',
 			'structure/page-header',
