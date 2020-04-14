@@ -21,7 +21,7 @@
  * @author    BizBudding <info@bizbudding.com>
  * @license   GPL-2.0-or-later
  * @link      https://bizbudding.com/
- * @copyright 2019 BizBudding
+ * @copyright 2020 BizBudding
  */
 
 require_once __DIR__ . '/lib/init.php';

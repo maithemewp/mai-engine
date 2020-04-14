@@ -5,7 +5,7 @@
  * @package   BizBudding\MaiEngine
  * @link      https://bizbudding.com
  * @author    BizBudding
- * @copyright Copyright © 2019 BizBudding
+ * @copyright Copyright © 2020 BizBudding
  * @license   GPL-2.0-or-later
  */
 
