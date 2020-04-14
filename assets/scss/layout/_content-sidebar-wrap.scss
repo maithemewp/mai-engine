@@ -4,13 +4,12 @@
 	grid-template-columns: var(--content-sidebar-wrap-columns, 1fr);
 	width: calc(100% - calc(var(--side-spacing) * 2));
 	max-width: var(--wrap-width);
-	margin: var(--content-sidebar-wrap-margin, (var(--row-gap) auto));
+	margin: var(--content-sidebar-wrap-margin, var(--content-sidebar-wrap-margin-top, var(--spacing-xxxxl)) auto var(--spacing-xxxxl));
 	column-gap: var(--content-sidebar-gap);
 }
 
-.has-cover-block,
-.has-page-header {
-	--content-sidebar-wrap-margin: 0 auto var(--row-gap);
+.has-cover-block {
+	--content-sidebar-wrap-margin-top: 0;
 }
 
 .content-sidebar {

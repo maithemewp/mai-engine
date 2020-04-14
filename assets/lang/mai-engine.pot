@@ -33,115 +33,128 @@ msgstr ""
 msgid "Sidebar, Content"
 msgstr ""
 
-#: config/_default/config.php:166, config/_default/config.php:229
+#: config/_default/config.php:166, config/_default/config.php:227
 msgid "Menu"
 msgstr ""
 
-#: config/_default/config.php:226, config/_default/config.php:487
+#: config/_default/config.php:224, config/_default/config.php:492
 msgid "Mobile Menu"
 msgstr ""
 
-#: config/_default/config.php:233
+#: config/_default/config.php:231
 msgid "Sub Menu"
 msgstr ""
 
-#: config/_default/config.php:239
+#: config/_default/config.php:237
 msgid "Menu Search"
 msgstr ""
 
-#: config/_default/config.php:406
+#: config/_default/config.php:411
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/_default/config.php:407
+#: config/_default/config.php:412
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/_default/config.php:408
+#: config/_default/config.php:413
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default/config.php:409
+#: config/_default/config.php:414
 msgid "Footer Menu"
 msgstr ""
 
-#: config/_default/config.php:454, lib/admin/hide-elements.php:61
+#: config/_default/config.php:459, lib/admin/hide-elements.php:71
 msgid "Before Header"
 msgstr ""
 
-#: config/_default/config.php:455
+#: config/_default/config.php:460
 msgid "The Before Header widget area."
 msgstr ""
 
-#: config/_default/config.php:460
+#: config/_default/config.php:465
 msgid "Header Left"
 msgstr ""
 
-#: config/_default/config.php:461
+#: config/_default/config.php:466
 msgid "The Header Left widget area."
 msgstr ""
 
-#: config/_default/config.php:470
+#: config/_default/config.php:475
 msgid "Header Right"
 msgstr ""
 
-#: config/_default/config.php:471
+#: config/_default/config.php:476
 msgid "The Header Right widget area."
 msgstr ""
 
-#: config/_default/config.php:480, lib/admin/hide-elements.php:67
+#: config/_default/config.php:485, lib/admin/hide-elements.php:77
 msgid "Before Footer"
 msgstr ""
 
-#: config/_default/config.php:481
+#: config/_default/config.php:486
 msgid "The Before Footer widget area."
 msgstr ""
 
-#: config/_default/config.php:488
+#: config/_default/config.php:493
 msgid "The Mobile Menu widget area."
 msgstr ""
 
-#: lib/admin/hide-elements.php:31
+#: lib/admin/demo-import.php:32
+msgid "Theme Dependency"
+msgstr ""
+
+#. translators: 1: Opening div and paragraph tags 2: Line break 3: Opening strong tag 4: Closing strong tag 5: closing div and paragraph tags.
+#: lib/admin/demo-import.php:160
+msgid "%1$s%3$sThat's it, all done!%4$s%2$sThe demo import has finished. Please check your page and make sure that everything has imported correctly. "
+msgstr ""
+
+#: lib/admin/demo-import.php:160
+msgid "View Site"
+msgstr ""
+
+#: lib/admin/hide-elements.php:41
 msgid "Hide Elements"
 msgstr ""
 
-#: lib/admin/hide-elements.php:46
+#: lib/admin/hide-elements.php:56
 msgid "Select elements to hide on this page."
 msgstr ""
 
-#: lib/admin/hide-elements.php:62
+#: lib/admin/hide-elements.php:72
 msgid "Site Header"
 msgstr ""
 
-#: lib/admin/hide-elements.php:63
+#: lib/admin/hide-elements.php:73
 msgid "Page Header"
 msgstr ""
 
-#: lib/admin/hide-elements.php:64
+#: lib/admin/hide-elements.php:74
 msgid "Breadcrumbs"
 msgstr ""
 
-#: lib/admin/hide-elements.php:65
+#: lib/admin/hide-elements.php:75
 msgid "Entry Title"
 msgstr ""
 
-#: lib/admin/hide-elements.php:66
+#: lib/admin/hide-elements.php:76
 msgid "Featured Image"
 msgstr ""
 
-#: lib/admin/hide-elements.php:68
+#: lib/admin/hide-elements.php:78
 msgid "Footer Widgets"
 msgstr ""
 
-#: lib/admin/hide-elements.php:69
+#: lib/admin/hide-elements.php:79
 msgid "Footer Credits"
 msgstr ""
 
-#: lib/admin/page-header.php:83, lib/functions/getters.php:815, lib/functions/getters.php:829, lib/functions/getters.php:882
+#: lib/admin/page-header.php:89, lib/functions/getters.php:843, lib/functions/getters.php:864, lib/functions/getters.php:936
 msgid "Image"
 msgstr ""
 
-#: lib/admin/page-header.php:92
+#: lib/admin/page-header.php:98
 msgid "Description"
 msgstr ""
 
@@ -169,131 +182,131 @@ msgstr ""
 msgid "A custom icon block."
 msgstr ""
 
-#: lib/blocks/icon.php:143, lib/blocks/icon.php:148, lib/blocks/icon.php:167
+#: lib/blocks/icon.php:144, lib/blocks/icon.php:149, lib/blocks/icon.php:168
 msgid "Icon"
 msgstr ""
 
-#: lib/blocks/icon.php:154
+#: lib/blocks/icon.php:155
 msgid "Style"
 msgstr ""
 
-#: lib/blocks/icon.php:158
+#: lib/blocks/icon.php:159
 msgid "Light"
 msgstr ""
 
-#: lib/blocks/icon.php:159
+#: lib/blocks/icon.php:160
 msgid "Regular"
 msgstr ""
 
-#: lib/blocks/icon.php:160
+#: lib/blocks/icon.php:161
 msgid "Solid"
 msgstr ""
 
-#: lib/blocks/icon.php:161
+#: lib/blocks/icon.php:162
 msgid "Brands"
 msgstr ""
 
-#: lib/blocks/icon.php:186
+#: lib/blocks/icon.php:187
 msgid "Icon (Brands)"
 msgstr ""
 
-#: lib/blocks/icon.php:205, config/_default/settings/grid.php:15
+#: lib/blocks/icon.php:206, config/_default/settings/grid.php:15
 msgid "Display"
 msgstr ""
 
-#: lib/blocks/icon.php:209
+#: lib/blocks/icon.php:210
 msgid "Inline"
 msgstr ""
 
-#: lib/blocks/icon.php:210
+#: lib/blocks/icon.php:211
 msgid "Block"
 msgstr ""
 
-#: lib/blocks/icon.php:219
+#: lib/blocks/icon.php:220
 msgid "Align"
 msgstr ""
 
-#: lib/blocks/icon.php:222, lib/blocks/icon.php:355, config/_default/settings/archive.php:364, config/_default/settings/navigation-menus/after-header.php:10
+#: lib/blocks/icon.php:223, lib/blocks/icon.php:356, config/_default/settings/archive.php:364, config/_default/settings/navigation-menus/after-header.php:19
 msgid "Left"
 msgstr ""
 
-#: lib/blocks/icon.php:223, config/_default/settings/archive.php:85, config/_default/settings/archive.php:250, config/_default/settings/archive.php:365, config/_default/settings/grid.php:97, config/_default/settings/grid.php:331, config/_default/settings/grid.php:565, config/_default/settings/page-header.php:58, config/_default/settings/navigation-menus/after-header.php:11
+#: lib/blocks/icon.php:224, config/_default/settings/archive.php:85, config/_default/settings/archive.php:250, config/_default/settings/archive.php:365, config/_default/settings/grid.php:97, config/_default/settings/grid.php:331, config/_default/settings/grid.php:565, config/_default/settings/page-header.php:60, config/_default/settings/navigation-menus/after-header.php:20
 msgid "Center"
 msgstr ""
 
-#: lib/blocks/icon.php:224, lib/blocks/icon.php:363, config/_default/settings/archive.php:366, config/_default/settings/navigation-menus/after-header.php:12
+#: lib/blocks/icon.php:225, lib/blocks/icon.php:364, config/_default/settings/archive.php:366, config/_default/settings/navigation-menus/after-header.php:21
 msgid "Right"
 msgstr ""
 
-#: lib/blocks/icon.php:234
+#: lib/blocks/icon.php:235
 msgid "Size"
 msgstr ""
 
-#: lib/blocks/icon.php:235
+#: lib/blocks/icon.php:236
 msgid "Use 0 for theme default"
 msgstr ""
 
-#: lib/blocks/icon.php:243
+#: lib/blocks/icon.php:244
 msgid "Styles"
 msgstr ""
 
-#: lib/blocks/icon.php:248
+#: lib/blocks/icon.php:249
 msgid "Icon Color"
 msgstr ""
 
-#: lib/blocks/icon.php:254, config/_default/settings/archive.php:92, config/_default/settings/grid.php:104
+#: lib/blocks/icon.php:255, config/_default/settings/archive.php:92, config/_default/settings/grid.php:104
 msgid "Background"
 msgstr ""
 
-#: lib/blocks/icon.php:260
+#: lib/blocks/icon.php:261
 msgid "Border Color"
 msgstr ""
 
-#: lib/blocks/icon.php:266
+#: lib/blocks/icon.php:267
 msgid "Border Width"
 msgstr ""
 
-#: lib/blocks/icon.php:280
+#: lib/blocks/icon.php:281
 msgid "Shadow"
 msgstr ""
 
-#: lib/blocks/icon.php:286
+#: lib/blocks/icon.php:287
 msgid "X Offset"
 msgstr ""
 
-#: lib/blocks/icon.php:299
+#: lib/blocks/icon.php:300
 msgid "Y Offset"
 msgstr ""
 
-#: lib/blocks/icon.php:312
+#: lib/blocks/icon.php:313
 msgid "Blur"
 msgstr ""
 
-#: lib/blocks/icon.php:325
+#: lib/blocks/icon.php:326
 msgid "Padding"
 msgstr ""
 
-#: lib/blocks/icon.php:333
+#: lib/blocks/icon.php:334
 msgid "Margin"
 msgstr ""
 
-#: lib/blocks/icon.php:339, config/_default/settings/archive.php:262, config/_default/settings/archive.php:384, config/_default/settings/grid.php:351, config/_default/settings/grid.php:592, config/_default/settings/page-header.php:32
+#: lib/blocks/icon.php:340, config/_default/settings/archive.php:262, config/_default/settings/archive.php:384, config/_default/settings/grid.php:351, config/_default/settings/grid.php:592, config/_default/settings/page-header.php:33
 msgid "Top"
 msgstr ""
 
-#: lib/blocks/icon.php:347, config/_default/settings/archive.php:264, config/_default/settings/archive.php:386, config/_default/settings/grid.php:353, config/_default/settings/grid.php:594, config/_default/settings/page-header.php:33
+#: lib/blocks/icon.php:348, config/_default/settings/archive.php:264, config/_default/settings/archive.php:386, config/_default/settings/grid.php:353, config/_default/settings/grid.php:594, config/_default/settings/page-header.php:34
 msgid "Bottom"
 msgstr ""
 
-#: lib/blocks/icon.php:371
+#: lib/blocks/icon.php:372
 msgid "Round Corners"
 msgstr ""
 
-#: lib/blocks/icon.php:376
+#: lib/blocks/icon.php:377
 msgid "50%"
 msgstr ""
 
-#: lib/classes/class-mai-entry.php:926, config/_default/settings/archive.php:208, config/_default/settings/grid.php:279
+#: lib/classes/class-mai-entry.php:941, config/_default/settings/archive.php:208, config/_default/settings/grid.php:279
 msgid "Read More"
 msgstr ""
 
@@ -357,107 +370,107 @@ msgstr ""
 msgid "Get Mai Customizer for even more settings!"
 msgstr ""
 
-#: lib/functions/getters.php:816, lib/functions/getters.php:831, lib/functions/getters.php:878, config/_default/settings/grid.php:663, config/_default/settings/grid.php:991, config/_default/settings/grid.php:1242
+#: lib/functions/getters.php:844, lib/functions/getters.php:866, lib/functions/getters.php:932, config/_default/settings/grid.php:663, config/_default/settings/grid.php:991, config/_default/settings/grid.php:1242
 msgid "Title"
 msgstr ""
 
-#: lib/functions/getters.php:817, lib/functions/getters.php:832, lib/functions/getters.php:885, config/_default/settings/archive.php:157, config/_default/settings/grid.php:210, config/_default/settings/single.php:68
+#: lib/functions/getters.php:845, lib/functions/getters.php:867, lib/functions/getters.php:939, config/_default/settings/archive.php:157, config/_default/settings/grid.php:210, config/_default/settings/single.php:68
 msgid "Header Meta"
 msgstr ""
 
-#: lib/functions/getters.php:818, lib/functions/getters.php:834
+#: lib/functions/getters.php:846, lib/functions/getters.php:869
 msgid "Excerpt"
 msgstr ""
 
-#: lib/functions/getters.php:819, lib/functions/getters.php:835, lib/functions/getters.php:888
+#: lib/functions/getters.php:847, lib/functions/getters.php:870, lib/functions/getters.php:942
 msgid "Content"
 msgstr ""
 
-#: lib/functions/getters.php:820, lib/functions/getters.php:837
+#: lib/functions/getters.php:848, lib/functions/getters.php:872
 msgid "Read More link"
 msgstr ""
 
-#: lib/functions/getters.php:821, lib/functions/getters.php:839, lib/functions/getters.php:891, config/_default/settings/archive.php:214, config/_default/settings/grid.php:289, config/_default/settings/single.php:82
+#: lib/functions/getters.php:849, lib/functions/getters.php:874, lib/functions/getters.php:945, config/_default/settings/archive.php:214, config/_default/settings/grid.php:289, config/_default/settings/single.php:82
 msgid "Footer Meta"
 msgstr ""
 
-#: lib/functions/getters.php:876
+#: lib/functions/getters.php:930
 msgid "Title (when page header is hidden)"
 msgstr ""
 
-#: lib/functions/getters.php:887
+#: lib/functions/getters.php:941
 msgid "Manual Excerpts"
 msgstr ""
 
-#: lib/functions/getters.php:893
+#: lib/functions/getters.php:947
 msgid "Author Box"
 msgstr ""
 
-#: lib/functions/getters.php:894
+#: lib/functions/getters.php:948
 msgid "After Entry Widget Area"
 msgstr ""
 
-#: lib/functions/getters.php:895
+#: lib/functions/getters.php:949
 msgid "Previous/Next Entry Nav"
 msgstr ""
 
-#: lib/functions/getters.php:902
+#: lib/functions/getters.php:963
 msgid "Site Default"
 msgstr ""
 
-#: lib/functions/getters.php:924
+#: lib/functions/getters.php:999
 msgid "Landscape"
 msgstr ""
 
-#: lib/functions/getters.php:925
+#: lib/functions/getters.php:1000
 msgid "Portrait"
 msgstr ""
 
-#: lib/functions/getters.php:926
+#: lib/functions/getters.php:1001
 msgid "Square"
 msgstr ""
 
-#: lib/functions/getters.php:932
+#: lib/functions/getters.php:1007
 msgid "Custom"
 msgstr ""
 
-#: lib/functions/getters.php:944
+#: lib/functions/getters.php:1026
 msgid "1"
 msgstr ""
 
-#: lib/functions/getters.php:945
+#: lib/functions/getters.php:1027
 msgid "2"
 msgstr ""
 
-#: lib/functions/getters.php:946
+#: lib/functions/getters.php:1028
 msgid "3"
 msgstr ""
 
-#: lib/functions/getters.php:947
+#: lib/functions/getters.php:1029
 msgid "4"
 msgstr ""
 
-#: lib/functions/getters.php:948
+#: lib/functions/getters.php:1030
 msgid "5"
 msgstr ""
 
-#: lib/functions/getters.php:949
+#: lib/functions/getters.php:1031
 msgid "6"
 msgstr ""
 
-#: lib/functions/getters.php:950
+#: lib/functions/getters.php:1032
 msgid "Auto"
 msgstr ""
 
-#: lib/structure/page-header.php:142
+#: lib/structure/page-header.php:141
 msgid "Latest Posts"
 msgstr ""
 
-#: lib/structure/page-header.php:167, lib/structure/page-header.php:234
+#: lib/structure/page-header.php:166, lib/structure/page-header.php:233
 msgid "Search results for: "
 msgstr ""
 
-#: lib/structure/page-header.php:182
+#: lib/structure/page-header.php:181
 msgid "Not found, error 404"
 msgstr ""
 
@@ -561,11 +574,11 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#: config/_default/settings/archive.php:249, config/_default/settings/grid.php:330, config/_default/settings/grid.php:564, config/_default/settings/page-header.php:57
+#: config/_default/settings/archive.php:249, config/_default/settings/grid.php:330, config/_default/settings/grid.php:564, config/_default/settings/page-header.php:59
 msgid "Start"
 msgstr ""
 
-#: config/_default/settings/archive.php:251, config/_default/settings/grid.php:332, config/_default/settings/grid.php:566, config/_default/settings/page-header.php:59
+#: config/_default/settings/archive.php:251, config/_default/settings/grid.php:332, config/_default/settings/grid.php:566, config/_default/settings/page-header.php:61
 msgid "End"
 msgstr ""
 
@@ -845,26 +858,26 @@ msgstr ""
 msgid "Page Header Image"
 msgstr ""
 
-#: config/_default/settings/page-header.php:25
+#: config/_default/settings/page-header.php:26
 msgid "Page Header Spacing"
 msgstr ""
 
-#: config/_default/settings/page-header.php:26
+#: config/_default/settings/page-header.php:27
 msgid "Accepts all unit values (px, rem, em, vw, etc)."
 msgstr ""
 
-#: config/_default/settings/page-header.php:54
+#: config/_default/settings/page-header.php:56
 msgid "Text Alignment"
 msgstr ""
 
-#: config/_default/settings/navigation-menus/after-header.php:7
+#: config/_default/settings/navigation-menus/after-header.php:16
 msgid "Alignment"
 msgstr ""
 
-#: config/_default/settings/site-header/header-settings.php:7
+#: config/_default/settings/site-header/header-settings.php:16
 msgid "Enable sticky header?"
 msgstr ""
 
-#: config/_default/settings/site-header/header-settings.php:13
+#: config/_default/settings/site-header/header-settings.php:22
 msgid "Enable transparent header?"
 msgstr ""
