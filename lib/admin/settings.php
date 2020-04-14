@@ -18,13 +18,28 @@
  */
 add_action( 'admin_init', 'mai_update_first_version' );
 function mai_update_first_version() {
-	// Bail if first version is already set.
 	if ( false !== get_option( 'mai_first_version' ) ) {
 		return;
 	}
 
-	// Update the first version.
-	update_option( 'mai_first_version', MAI_THEME_ENGINE_VERSION );
+	update_option( 'mai_first_version', mai_get_plugin_data( 'version' ) );
+}
+
+/**
+ * Maybe run the version updater.
+ * Mostly taken from G core. Some original inspiration from link below.
+ *
+ * @link   https://www.sitepoint.com/wordpress-plugin-updates-right-way/
+ *
+ * @return void
+ */
+add_action( 'admin_init', 'mai_update_database_version', 20 );
+function mai_update_database_version() {
+	if ( version_compare( get_option( 'mai_db_version' ), mai_get_plugin_data( 'db-version' ), '>=' ) ) {
+		return;
+	}
+
+	update_option( 'mai_db_version', mai_get_plugin_data( 'db-version' ) );
 }
 
 if ( function_exists( 'acf_add_options_page' ) ) {

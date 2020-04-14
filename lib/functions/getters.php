@@ -51,11 +51,11 @@ function mai_get_url() {
  *
  * @since 0.1.0
  *
- * @param string $header Optionally return one key.
+ * @param string $key Optionally return one key.
  *
  * @return array|string|null
  */
-function mai_get_plugin_data( $header = '' ) {
+function mai_get_plugin_data( $key = '' ) {
 	static $data = null;
 
 	if ( is_null( $data ) ) {
@@ -64,6 +64,7 @@ function mai_get_plugin_data( $header = '' ) {
 			[
 				'name'        => 'Plugin Name',
 				'version'     => 'Version',
+				'db-version'  => 'DB Version',
 				'plugin-uri'  => 'Plugin URI',
 				'text-domain' => 'Text Domain',
 				'description' => 'Description',
@@ -76,8 +77,8 @@ function mai_get_plugin_data( $header = '' ) {
 		);
 	}
 
-	if ( array_key_exists( $header, $data ) ) {
-		return $data[ $header ];
+	if ( array_key_exists( $key, $data ) ) {
+		return $data[ $key ];
 	}
 
 	return $data;
