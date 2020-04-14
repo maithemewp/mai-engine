@@ -9,6 +9,24 @@
  * @license   GPL-2.0-or-later
  */
 
+/**
+ * Set the first version number.
+ *
+ * @since 1.2.1
+ *
+ * @return void
+ */
+add_action( 'admin_init', 'mai_update_first_version' );
+function mai_update_first_version() {
+	// Bail if first version is already set.
+	if ( false !== get_option( 'mai_first_version' ) ) {
+		return;
+	}
+
+	// Update the first version.
+	update_option( 'mai_first_version', MAI_THEME_ENGINE_VERSION );
+}
+
 if ( function_exists( 'acf_add_options_page' ) ) {
 	acf_add_options_page(
 		[
