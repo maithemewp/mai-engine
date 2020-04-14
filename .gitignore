@@ -15,3 +15,5 @@ vendor/composer/xdebug-handler
 !vendor/advanced-custom-fields
 !vendor/aristath
 !vendor/yahnis-elsts
+!vendor/wpackagist-plugin
+

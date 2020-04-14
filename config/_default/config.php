@@ -282,11 +282,18 @@ return [
 				'location' => 'customizer',
 			],
 
-			// Admin styles.
+			// ACF styles.
 			[
 				'handle'   => mai_get_handle() . '-advanced-custom-fields',
 				'src'      => mai_get_url() . 'assets/css/plugins/advanced-custom-fields.min.css',
 				'location' => 'editor',
+			],
+
+			// One click demo import styles.
+			[
+				'handle'   => mai_get_handle() . '-one-click-demo-import',
+				'src'      => mai_get_url() . 'assets/css/plugins/one-click-demo-import.min.css',
+				'location' => 'admin',
 			],
 
 			// Plugin styles.

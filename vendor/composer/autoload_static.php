@@ -10,9 +10,25 @@ class ComposerStaticInitb109c82834b5632899cf4c449109f709
         '241d2b5b9c1e680c0770b006b0271156' => __DIR__ . '/..' . '/yahnis-elsts/plugin-update-checker/load-v4p9.php',
     );
 
+    public static $prefixLengthsPsr4 = array (
+        'C' => 
+        array (
+            'Composer\\Installers\\' => 20,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'Composer\\Installers\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
+        ),
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInitb109c82834b5632899cf4c449109f709::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitb109c82834b5632899cf4c449109f709::$prefixDirsPsr4;
 
         }, null, ClassLoader::class);
     }

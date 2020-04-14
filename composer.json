@@ -25,7 +25,8 @@
     "php": ">=5.6",
     "yahnis-elsts/plugin-update-checker": "^4.8",
     "advanced-custom-fields/advanced-custom-fields-pro": "*",
-    "aristath/kirki": "*"
+    "aristath/kirki": "*",
+    "wpackagist-plugin/one-click-demo-import": "dev-trunk"
   },
   "require-dev": {
     "php": "^5.6|^7",
@@ -64,5 +65,12 @@
     "fixer": "vendor/bin/php-cs-fixer fix lib/ && php-cs-fixer fix config/",
     "test-unit": "composer dump && vendor/bin/phpunit --testsuite unit --color=always",
     "test-integration": "composer dump && vendor/bin/phpunit --testsuite integration --configuration tests/phpunit/integration/phpunit.xml.dist --color=always"
+  },
+  "extra": {
+    "installer-paths": {
+      "vendor/wpackagist-plugin/one-click-demo-import": [
+        "wpackagist-plugin/one-click-demo-import"
+      ]
+    }
   }
 }

@@ -66,6 +66,7 @@ function mai_load_files() {
 			'../vendor/autoload',
 			'../vendor/advanced-custom-fields/advanced-custom-fields-pro/acf',
 			'../vendor/aristath/kirki/kirki',
+			'../vendor/wpackagist-plugin/one-click-demo-import/one-click-demo-import',
 
 			// Functions.
 			'functions/helpers',
@@ -130,6 +131,7 @@ function mai_load_files() {
 				'admin/page-header',
 				'admin/hide-elements',
 				'admin/acf',
+				'admin/demo-import',
 			]
 		);
 	}
