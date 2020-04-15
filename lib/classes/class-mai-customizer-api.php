@@ -158,7 +158,7 @@ class Mai_Customizer_API {
 		$field['section'] = "{$this->handle}-{$panel}-{$section}";
 
 		if ( $settings ) {
-			$field['settings'] = $panel . '_' . $section . '_' . mai_convert_case( $settings, 'kebab' );
+			$field['settings'] = $section . '_' . mai_convert_case( $settings, 'kebab' );
 		}
 
 		if ( 'divider' === $field['type'] ) {
@@ -175,6 +175,10 @@ class Mai_Customizer_API {
 
 		if ( isset( $field['sanitize'] ) ) {
 			$field['sanitize_callback'] = $field['sanitize'];
+		}
+
+		if ( isset( $field['type'] ) && 'color' === $field['type'] ) {
+			$field['choices']['palettes'] = array_values( mai_get_colors() );
 		}
 
 		if ( isset( $field['active_callback'] ) ) {
@@ -222,7 +226,7 @@ class Mai_Customizer_API {
 				'tables',
 			],
 			'site-header'      => [
-				'main-header',
+				'header-settings',
 				'title-area',
 				'header-left',
 				'header-right',

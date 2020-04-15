@@ -42,6 +42,9 @@ function mai_color_palette_customizer_settings() {
 						'property' => '--color-' . $name,
 					],
 				],
+				'choices'  => [
+					'palettes' => array_values( mai_get_colors() ),
+				],
 			]
 		);
 	}
