@@ -92,7 +92,7 @@ function mai_load_files() {
 			'structure/footer',
 			'structure/header',
 			'structure/login',
-			'structure/loops',
+			'structure/loop',
 			'structure/menus',
 			'structure/page-header',
 			'structure/pagination',
