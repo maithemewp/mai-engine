@@ -25,17 +25,17 @@ return [
 		'description' => esc_html__( 'Show/hide and re-order entry elements. Click "Toggle Hooks" to show Genesis hooks.', 'mai-engine' ),
 		'type'        => 'sortable',
 		'sanitize'    => 'esc_html',
-		'default'     => mai_get_single_show_defaults(),
-		'choices'     => mai_get_single_show_choices(),
+		'default'     => 'mai_get_single_show_defaults',
+		'choices'     => 'mai_get_single_show_choices',
 	],
 	[
-		'settings'   => 'image_orientation',
-		'label'      => esc_html__( 'Image Orientation', 'mai-engine' ),
-		'type'       => 'select',
-		'sanitize'   => 'esc_html',
-		'default'    => 'landscape',
-		'choices'    => mai_get_image_orientation_choices(),
-		'conditions' => [
+		'settings'        => 'image_orientation',
+		'label'           => esc_html__( 'Image Orientation', 'mai-engine' ),
+		'type'            => 'select',
+		'sanitize'        => 'esc_html',
+		'default'         => 'landscape',
+		'choices'         => mai_get_image_orientation_choices(),
+		'active_callback' => [
 			[
 				'setting'  => 'show',
 				'operator' => 'contains',
@@ -44,13 +44,13 @@ return [
 		],
 	],
 	[
-		'settings'   => 'image_size',
-		'label'      => esc_html__( 'Image Size', 'mai-engine' ),
-		'type'       => 'select',
-		'sanitize'   => 'esc_html',
-		'default'    => 'landscape-md',
-		'choices'    => mai_get_image_size_choices(),
-		'conditions' => [
+		'settings'        => 'image_size',
+		'label'           => esc_html__( 'Image Size', 'mai-engine' ),
+		'type'            => 'select',
+		'sanitize'        => 'esc_html',
+		'default'         => 'landscape-md',
+		'choices'         => mai_get_image_size_choices(),
+		'active_callback' => [
 			[
 				'setting'  => 'show',
 				'operator' => 'contains',
@@ -64,12 +64,12 @@ return [
 		],
 	],
 	[
-		'settings'   => 'header_meta',
-		'label'      => esc_html__( 'Header Meta', 'mai-engine' ),
-		'type'       => 'text',
-		'sanitize'   => 'wp_kses_post',
-		'default'    => mai_get_header_meta_default(),
-		'conditions' => [
+		'settings'        => 'header_meta',
+		'label'           => esc_html__( 'Header Meta', 'mai-engine' ),
+		'type'            => 'text',
+		'sanitize'        => 'wp_kses_post',
+		'default'         => 'mai_get_header_meta_default',
+		'active_callback' => [
 			[
 				'setting'  => 'show',
 				'operator' => 'contains',
@@ -78,13 +78,12 @@ return [
 		],
 	],
 	[
-		'settings'   => 'footer_meta',
-		'label'      => esc_html__( 'Footer Meta', 'mai-engine' ),
-		'type'       => 'text',
-		'sanitize'   => 'wp_kses_post',
-		// TODO: this should be different, or empty depending on the post type?
-		'default'    => '[post_categories]',
-		'conditions' => [
+		'settings'        => 'footer_meta',
+		'label'           => esc_html__( 'Footer Meta', 'mai-engine' ),
+		'type'            => 'text',
+		'sanitize'        => 'wp_kses_post',
+		'default'         => 'mai_get_footer_meta_default',
+		'active_callback' => [
 			[
 				'setting'  => 'show',
 				'operator' => 'contains',

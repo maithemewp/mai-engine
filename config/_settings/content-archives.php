@@ -157,8 +157,7 @@ return [
 		'label'           => esc_html__( 'Header Meta', 'mai-engine' ),
 		'type'            => 'text',
 		'sanitize'        => 'wp_kses_post',
-		// TODO:             this should be different, or empty depending on the post type?
-		'default'         => '[post_date] [post_author_posts_link before="by "]',
+		'default'         => 'mai_get_header_meta_default',
 		'active_callback' => [
 			[
 				'setting'  => 'show',
@@ -214,8 +213,7 @@ return [
 		'label'           => esc_html__( 'Footer Meta', 'mai-engine' ),
 		'type'            => 'text',
 		'sanitize'        => 'wp_kses_post',
-		// TODO:             this should be different, or empty depending on the post type?
-		'default'         => '[post_categories]',
+		'default'         => 'mai_get_footer_meta_default',
 		'active_callback' => [
 			[
 				'setting'  => 'show',

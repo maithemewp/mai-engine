@@ -170,6 +170,12 @@ class Mai_Customizer_API {
 			$field['option_type'] = 'option';
 			$field['option_name'] = "$this->handle[$panel][$section]";
 			$field['settings']    = $settings;
+			if ( isset( $field['default'] ) && is_string( $field['default'] ) && mai_has_string( 'mai_', $field['default'] ) && is_callable( $field['default'] ) ) {
+				$field['default'] = call_user_func_array( $field['default'], [ 'name' => $section ] );
+			}
+			if ( isset( $field['choices'] ) && is_string( $field['choices'] ) && mai_has_string( 'mai_', $field['choices'] ) && is_callable( $field['choices'] ) ) {
+				$field['choices'] = call_user_func_array( $field['choices'], [ 'name' => $section ] );
+			}
 		}
 
 		// TODO:
