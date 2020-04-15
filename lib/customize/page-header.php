@@ -18,28 +18,49 @@ add_action( 'after_setup_theme', 'mai_page_header_customizer_settings' );
  * @return void
  */
 function mai_page_header_customizer_settings() {
-	if ( ! mai_has_any_page_header_types() ) {
-		return;
+	$handle          = mai_get_handle();
+	$section         = $handle . '-page-header';
+	$config          = mai_get_config( 'page-header' );
+	$archive_default = [];
+	$single_default  = [];
+	$archives        = [];
+	$singles         = [];
+
+	if ( isset( $config['archive'] ) && ! empty( $config['archive'] && is_array( $config['archive'] ) ) ) {
+		$archive_default = array_merge( $archive_default, $config['archive'] );
 	}
 
-	$handle  = mai_get_handle();
-	$section = $handle . '-page-header';
-	$config  = mai_get_config( 'page-header' );
-	$default = [];
-
-	if ( isset( $config['archive'] ) && ( ! empty( $config['archive'] ) || '*' === $config['archive'] ) ) {
-		array_push( $default, 'archive' );
+	if ( isset( $config['single'] ) && ! empty( $config['single']  && is_array( $config['single'] ) ) ) {
+		$single_default = array_merge( $single_default, $config['single'] );
 	}
 
-	if ( isset( $config['single'] ) && ( ! empty( $config['single'] ) || '*' === $config['single'] ) ) {
-		array_push( $default, 'single' );
+	$post_types      = get_post_types( [ 'public' => true ], 'objects' );
+	unset( $post_types['attachment'] );
+	if ( $post_types ) {
+		foreach( $post_types as $name => $post_type ) {
+			if ( ( '*' === $config ) || ( isset( $config['archive'] ) && '*' === $config['archive'] ) ) {
+				$archive_default[] = $name;
+			}
+			if ( ( '*' === $config ) || ( isset( $config['single'] ) && '*' === $config['single'] ) ) {
+				$single_default[] = $name;
+			}
+			$archives[ $name ] = $post_type->label;
+			$singles[ $name ]  = $post_type->label;
+		}
+	}
+	$taxonomies = get_taxonomies( [ 'public' => true ], 'objects' );
+	unset( $taxonomies['post_format'] );
+	unset( $taxonomies['yst_prominent_words'] );
+	if ( $taxonomies ) {
+		foreach( $taxonomies as $name => $taxonomy ) {
+			if ( ( '*' === $config ) || ( isset( $config['archive'] ) && '*' === $config['archive'] ) ) {
+				$archive_default[] = $name;
+			}
+			$archives[ $name ] = $taxonomy->label;
+		}
 	}
 
-	if ( '*' === $config ) {
-		$default = [ 'archive', 'single' ];
-	}
-
-	Kirki::add_section(
+	\Kirki::add_section(
 		$section,
 		[
 			'title' => __( 'Page Header', 'mai-engine' ),
@@ -50,16 +71,39 @@ function mai_page_header_customizer_settings() {
 	\Kirki::add_field(
 		$handle,
 		[
-			'type'        => 'multicheck',
-			'settings'    => 'page-header',
+			'type'        => 'select',
+			'multiple'    => 99,
+			'settings'    => 'page-header-single',
 			'section'     => $section,
-			'label'       => __( 'Enable on', 'mai-engine' ),
+			'label'       => __( 'Enable on singular content', 'mai-engine' ),
 			'description' => __( 'These settings can be overridden on a per post basis.', 'mai-engine' ),
-			'default'     => $default,
-			'choices'     => [
-				'single'  => __( 'Single Content', 'mai-engine' ),
-				'archive' => __( 'Content Archives', 'mai-engine' ),
-			],
+			'default'     => $single_default,
+			'choices'     => array_merge(
+				$singles,
+				[
+					'404' => __( '404', 'mai-engine' ),
+				]
+			),
+		]
+	);
+
+	\Kirki::add_field(
+		$handle,
+		[
+			'type'        => 'select',
+			'multiple'    => 99,
+			'settings'    => 'page-header-archive',
+			'section'     => $section,
+			'label'       => __( 'Enable on content archives', 'mai-engine' ),
+			'default'     => $archive_default,
+			'choices'     => array_merge(
+				$archives,
+				[
+					'search' => __( 'Search Results', 'mai-engine' ),
+					'author' => __( 'Author Archives', 'mai-engine' ),
+					'date'   => __( 'Date Archives', 'mai-engine' ),
+				],
+			),
 		]
 	);
 

@@ -746,22 +746,6 @@ msgstr ""
 msgid "Logo Spacing"
 msgstr ""
 
-#: lib/customize/page-header.php:56
-msgid "Enable on"
-msgstr ""
-
-#: lib/customize/page-header.php:57
-msgid "These settings can be overridden on a per post basis."
-msgstr ""
-
-#: lib/customize/page-header.php:60
-msgid "Single Content"
-msgstr ""
-
-#: lib/customize/page-header.php:61
-msgid "Content Archives"
-msgstr ""
-
 #: lib/customize/page-header.php:72
 msgid "Default Image"
 msgstr ""

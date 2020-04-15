@@ -73,6 +73,10 @@ function mai_do_page_header_image() {
 	} elseif ( is_front_page() ) {
 		$image_id = '';
 
+		if ( 'page' === get_option( 'show_on_front' ) ) {
+			$image_id = get_post_meta( get_option( 'page_on_front' ), 'page_header_image', true );
+		}
+
 	} elseif ( is_home() ) {
 		$image_id = get_post_meta( get_option( 'page_for_posts' ), 'page_header_image', true );
 
