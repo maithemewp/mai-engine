@@ -17,6 +17,10 @@ body {
 	box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.02);
 }
 
+.nav-after-header {
+	border-bottom: var(--border);
+}
+
 .menu {
 	--link-color: var(--color-dark);
 	font-size: var(--text-xs);
@@ -75,7 +79,7 @@ body {
 	margin-left: var(--spacing-md);
 }
 
-@include mq(false,md) {
+@include mq(false, md) {
 
 	.wpforms-container.inline-fields .wpforms-field-container,
 	.wpforms-container.inline-fields .wpforms-field {

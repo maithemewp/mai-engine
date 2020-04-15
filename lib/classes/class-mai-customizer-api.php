@@ -236,7 +236,6 @@ class Mai_Customizer_API {
 				'sub-menu',
 				'sub-menu-toggle',
 			],
-			'page-header'      => mai_get_config( 'page-header' )['archive'],
 			'content-archives' => mai_get_config( 'loop' )['archive'],
 			'single-content'   => mai_get_config( 'loop' )['single'],
 			'content-area'     => [

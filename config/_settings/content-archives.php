@@ -429,7 +429,7 @@ return [
 		'choices'         => [
 			'save_as' => 'id',
 		],
-		'active_callback' => 'mai_has_any_page_header_types',
+		'active_callback' => mai_has_any_page_header_types(),
 	],
 ];
 

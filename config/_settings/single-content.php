@@ -102,5 +102,4 @@ return [
 		],
 		'active_callback' => 'mai_has_any_page_header_types',
 	],
-
 ];

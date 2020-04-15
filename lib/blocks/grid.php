@@ -438,9 +438,7 @@ function mai_acf_get_parents( $args ) {
  */
 function mai_get_post_type_choices() {
 	$choices = [];
-	if ( ! ( is_admin() || is_customize_preview() ) ) {
-		return $choices;
-	}
+
 	$post_types = get_post_types(
 		[
 			'public'             => true,
@@ -449,7 +447,9 @@ function mai_get_post_type_choices() {
 		'objects',
 		'or'
 	);
+
 	unset( $post_types['attachment'] );
+
 	if ( $post_types ) {
 		foreach ( $post_types as $name => $post_type ) {
 			$choices[ $name ] = $post_type->label;
@@ -468,9 +468,7 @@ function mai_get_post_type_choices() {
  */
 function mai_get_taxonomy_choices() {
 	$choices = [];
-	if ( ! ( is_admin() || is_customize_preview() ) ) {
-		return $choices;
-	}
+
 	$taxonomies = get_taxonomies(
 		[
 			'public'             => true,
@@ -479,9 +477,11 @@ function mai_get_taxonomy_choices() {
 		'objects',
 		'or'
 	);
+
 	if ( $taxonomies ) {
 		unset( $taxonomies['post_format'] );
 		unset( $taxonomies['yst_prominent_words'] );
+
 		foreach ( $taxonomies as $name => $taxonomy ) {
 			// TODO: These should be IDs.
 			$choices[ $name ] = $taxonomy->label;

@@ -584,7 +584,7 @@ class Mai_Entry {
 	 */
 	public function do_title() {
 
-		if ( ( 'single' === $this->context ) && mai_is_element_hidden( 'entry_title' ) ) {
+		if ( ( 'single' === $this->context ) && ( mai_is_element_hidden( 'entry_title' ) || mai_has_page_header() ) ) {
 			return;
 		}
 

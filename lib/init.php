@@ -116,6 +116,7 @@ function mai_load_files() {
 			'customize/color-palette',
 			'customize/upsell',
 			'customize/layout',
+			'customize/page-header',
 		]
 	);
 

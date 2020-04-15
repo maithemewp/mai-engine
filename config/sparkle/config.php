@@ -29,7 +29,6 @@ return [
 		],
 	],
 	'page-header'   => [
-		'archive' => [],
-		'single'  => [ 'page' ],
+		'single' => [ 'page' ],
 	],
 ];

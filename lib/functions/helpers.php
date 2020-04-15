@@ -195,46 +195,51 @@ function mai_has_page_header() {
 	}
 
 	$config = mai_get_config( 'page-header' );
+	$option = mai_get_option( 'page-header', [] );
 
 	if ( mai_is_type_archive() ) {
 		$content_types = isset( $config['archive'] ) ? $config['archive'] : [];
 
-		if ( ( ( is_home() && ! is_front_page() ) || is_post_type_archive() ) && in_array( mai_get_post_type(), $content_types, true ) ) {
+		if ( ( ( is_home() && ! is_front_page() ) || is_post_type_archive() ) && is_array( $content_types ) && in_array( mai_get_post_type(), $content_types, true ) ) {
 			$has_page_header = true;
 
-		} elseif ( ( is_category() || is_tag() || is_tax() ) && in_array( get_queried_object()->taxonomy, $content_types, true ) ) {
+		} elseif ( ( is_category() || is_tag() || is_tax() ) && is_array( $content_types ) && in_array( get_queried_object()->taxonomy, $content_types, true ) ) {
 			$has_page_header = true;
 
-		} elseif ( is_author() && in_array( 'author', $content_types, true ) ) {
+		} elseif ( is_author() && is_array( $content_types ) && in_array( 'author', $content_types, true ) ) {
 			$has_page_header = true;
 
-		} elseif ( is_date() && in_array( 'date', $content_types, true ) ) {
+		} elseif ( is_date() && is_array( $content_types ) && in_array( 'date', $content_types, true ) ) {
 			$has_page_header = true;
 
-		} elseif ( is_search() && in_array( 'search', $content_types, true ) ) {
+		} elseif ( is_search() && is_array( $content_types ) && in_array( 'search', $content_types, true ) ) {
 			$has_page_header = true;
 
 		} elseif ( '*' === $content_types ) {
 			$has_page_header = true;
 		}
+
+		$has_page_header = in_array( 'archive', $option, true );
 	}
 
 	if ( mai_is_type_single() ) {
 		$content_types = isset( $config['single'] ) ? $config['single'] : [];
 
-		if ( is_singular() && in_array( mai_get_post_type(), $content_types, true ) ) {
+		if ( is_singular() && is_array( $content_types ) && in_array( mai_get_post_type(), $content_types, true ) ) {
 			$has_page_header = true;
 
-		} elseif ( is_404() && in_array( '404', $content_types, true ) ) {
+		} elseif ( is_404() && is_array( $content_types ) && in_array( '404', $content_types, true ) ) {
 			$has_page_header = true;
 
 		} elseif ( '*' === $content_types ) {
 			$has_page_header = true;
 		}
+
+		$has_page_header = in_array( 'single', $option, true );
 	}
 
 	if ( '*' === $config ) {
-		$has_page_header = true;
+		$has_page_header = in_array( 'single', $option, true ) && in_array( 'archive', $option, true );
 	}
 
 	if ( genesis_entry_header_hidden_on_current_page() ) {
@@ -256,9 +261,25 @@ function mai_has_page_header() {
  * @return bool
  */
 function mai_has_any_page_header_types() {
-	$config = mai_get_config( 'page-header' );
+	static $has_types = null;
 
-	return ( isset( $config['archive'] ) && ! empty( $config['archive'] ) ) || ( isset( $config['single'] ) && ! empty( $config['single'] ) );
+	if ( is_null( $has_types ) ) {
+		$config = mai_get_config( 'page-header' );
+
+		if ( isset( $config['archive'] ) && ( ! empty( $config['archive'] ) || '*' === $config['archive'] ) ) {
+			$has_types = true;
+		}
+
+		if ( isset( $config['single'] ) && ( ! empty( $config['single'] ) || '*' === $config['single'] ) ) {
+			$has_types = true;
+		}
+
+		if ( '*' === $config ) {
+			$has_types = true;
+		}
+	}
+
+	return $has_types;
 }
 
 /**

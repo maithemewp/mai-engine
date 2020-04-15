@@ -55,7 +55,11 @@ module.exports = function() {
 	};
 
 	let themes = function() {
-		return fs.readdirSync( './config/' );
+		let themes = fs.readdirSync( './config/' );
+
+		themes.splice( themes.indexOf( '_settings' ), 1 );
+
+		return themes;
 	};
 
 	let stylesheets = [];
