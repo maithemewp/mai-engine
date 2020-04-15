@@ -94,6 +94,14 @@ function mai_do_page_header_image() {
 		}
 	}
 
+	if ( ! $image_id ) {
+		$args = mai_get_template_args();
+
+		if ( isset( $args['page-header-image'] ) && ! empty( $args['page-header-image'] ) ) {
+			$image_id = $args['page-header-image'];
+		}
+	}
+
 	if ( ! $image_id && mai_get_option( 'page-header-image' ) ) {
 		$image_id = mai_get_option( 'page-header-image' );
 	}

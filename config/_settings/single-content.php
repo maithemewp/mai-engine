@@ -94,11 +94,18 @@ return [
 	[
 		'type'            => 'image',
 		'settings'        => 'page-header-image',
-		'label'           => __( 'Page Header Image', 'mai-engine' ),
+		'label'           => __( 'Page Header Default Image', 'mai-engine' ),
 		'default'         => '',
 		'choices'         => [
 			'save_as' => 'id',
 		],
-		'active_callback' => 'mai_has_any_page_header_types',
+		'active_callback' => 'mai_has_single_page_header_support',
+	],
+	[
+		'type'            => 'checkbox',
+		'settings'        => 'page-header-featured',
+		'label'           => esc_html__( 'Use Featured Image As Page Header Image', 'mai-engine' ),
+		'default'         => false,
+		'active_callback' => 'mai_has_single_page_header_support',
 	],
 ];

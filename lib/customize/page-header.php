@@ -110,14 +110,14 @@ function mai_page_header_customizer_settings() {
 	\Kirki::add_field(
 		$handle,
 		[
-			'type'     => 'image',
-			'settings' => 'page-header-image',
-			'section'  => $section,
-			'label'    => __( 'Default Image', 'mai-engine' ),
-			'default'  => '',
-			'choices'  => [
-				'save_as' => 'id',
-			],
+			'type'        => 'select',
+			'multiple'    => 99,
+			'settings'    => 'page-header-featured',
+			'section'     => $section,
+			'label'       => __( 'Use featured image as the page header', 'mai-engine' ),
+			'description' => __( 'These settings can be overridden on a per post basis.', 'mai-engine' ),
+			'default'     => $single_default,
+			'choices'     => $singles,
 		]
 	);
 

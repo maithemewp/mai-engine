@@ -194,57 +194,16 @@ function mai_has_page_header() {
 		return $has_page_header;
 	}
 
-	$has_page_header = false;
-	$config          = mai_get_config( 'page-header' );
-
-	if ( '*' === $config ) {
-		$has_page_header = true;
-	} else {
-
-		if ( mai_is_type_archive() ) {
-			$archives      = isset( $config['archive'] ) ? $config['archive'] : [];
-			$content_types = mai_get_option( 'page-header-archive', $archives );
-
-			if ( '*' === $content_types ) {
-				$has_page_header = true;
-			} else {
-
-				if ( ( ( is_home() && ! is_front_page() ) || is_post_type_archive() ) && is_array( $content_types ) && in_array( mai_get_post_type(), $content_types, true ) ) {
-					$has_page_header = true;
-
-				} elseif ( ( is_category() || is_tag() || is_tax() ) && is_array( $content_types ) && in_array( get_queried_object()->taxonomy, $content_types, true ) ) {
-					$has_page_header = true;
-
-				} elseif ( is_author() && is_array( $content_types ) && in_array( 'author', $content_types, true ) ) {
-					$has_page_header = true;
-
-				} elseif ( is_date() && is_array( $content_types ) && in_array( 'date', $content_types, true ) ) {
-					$has_page_header = true;
-
-				} elseif ( is_search() && is_array( $content_types ) && in_array( 'search', $content_types, true ) ) {
-					$has_page_header = true;
-				}
-			}
-		} elseif ( mai_is_type_single() ) {
-			$singles       = isset( $config['single'] ) ? $config['single'] : [];
-			$content_types = mai_get_option( 'page-header-archive', $singles );
-
-			if ( '*' === $content_types ) {
-				$has_page_header = true;
-			} else {
-
-				if ( is_singular() && is_array( $content_types ) && in_array( mai_get_post_type(), $content_types, true ) ) {
-					$has_page_header = true;
-
-				} elseif ( is_404() && is_array( $content_types ) && in_array( '404', $content_types, true ) ) {
-					$has_page_header = true;
-				}
-			}
-		}
-
+	$name = false;
+	if ( mai_is_type_archive() ) {
+		$name            = mai_get_archive_args_name();
+		$has_page_header = mai_has_archive_page_header_support( $name );
+	} elseif ( mai_is_type_single() ) {
+		$name            = mai_get_singular_args_name();
+		$has_page_header = mai_has_single_page_header_support( $name );
 	}
 
-	if ( mai_is_type_single() ) {
+	if ( $has_page_header && mai_is_type_single() ) {
 
 		if ( genesis_entry_header_hidden_on_current_page() ) {
 			$has_page_header = false;
@@ -285,6 +244,58 @@ function mai_has_any_page_header_types() {
 	}
 
 	return $has_types;
+}
+
+/**
+ * Checks if a content type has Page Header support.
+ *
+ * @since 0.1.0
+ *
+ * @param string $type The content type.
+ *
+ * @return bool
+ */
+function mai_has_single_page_header_support( $type ) {
+	$config = mai_get_config( 'page-header' );
+
+	if ( '*' === $config ) {
+		return true;
+	}
+
+	$singles       = isset( $config['single'] ) ? $config['single'] : [];
+	$content_types = mai_get_option( 'page-header-single', $singles );
+
+	if ( '*' === $content_types ) {
+		return true;
+	}
+
+	return is_array( $content_types ) && in_array( $type, $content_types );
+}
+
+/**
+ * Checks if a content type has Page Header support.
+ *
+ * @since 0.1.0
+ *
+ * @param string $type The content type.
+ *
+ * @return bool
+ */
+function mai_has_archive_page_header_support( $type ) {
+	$config = mai_get_config( 'page-header' );
+
+	if ( '*' === $config ) {
+		return true;
+	}
+
+	$archives      = isset( $config['archive'] ) ? $config['archive'] : [];
+	$content_types = mai_get_option( 'page-header-archive', $archives );
+
+	if ( '*' === $content_types ) {
+		return true;
+	}
+
+	return is_array( $content_types ) && in_array( $type, $content_types );
 }
 
 /**

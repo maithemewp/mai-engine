@@ -58,7 +58,7 @@ function mai_get_template_args() {
 		$context  = 'archive';
 		$settings = 'content-archives';
 
-	} elseif ( is_singular() ) {
+	} elseif ( mai_is_type_single() ) {
 		$name     = mai_get_singular_args_name();
 		$context  = 'single';
 		$settings = 'single-content';
@@ -150,6 +150,11 @@ function mai_get_sanitized_entry_args( $args, $context ) {
  * @return string
  */
 function mai_get_archive_args_name() {
+	static $name = null;
+
+	if ( ! is_null( $name ) ) {
+		return $name;
+	}
 
 	// Get the name.
 	if ( is_home() ) {
