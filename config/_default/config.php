@@ -23,23 +23,18 @@ return [
 	*/
 
 	'genesis-settings'    => [
-		'avatar_size'               => 48,
-		'blog_cat_num'              => 9,
-		'breadcrumb_home'           => 0,
-		'breadcrumb_front_page'     => 0,
-		'breadcrumb_posts_page'     => 0,
-		'breadcrumb_single'         => 0,
-		'breadcrumb_page'           => 0,
-		'breadcrumb_archive'        => 0,
-		'breadcrumb_404'            => 0,
-		'breadcrumb_attachment'     => 0,
-		'content_archive'           => 'full',      // TODO: Not sure we need this with new archive settings.
-		'content_archive_limit'     => 200,         // TODO: Same as above.
-		'content_archive_thumbnail' => 1,           // TODO: Same as above.
-		'image_size'                => 'featured',  // TODO: Same as above.
-		'image_alignment'           => 'alignnone', // TODO: Same as above.
-		'posts_nav'                 => 'numeric',   // TODO: Same as above.
-		'site_layout'               => 'standard-content',
+		'avatar_size'           => 48,
+		'blog_cat_num'          => 12,
+		'breadcrumb_home'       => 0,
+		'breadcrumb_front_page' => 0,
+		'breadcrumb_posts_page' => 0,
+		'breadcrumb_single'     => 0,
+		'breadcrumb_page'       => 0,
+		'breadcrumb_archive'    => 0,
+		'breadcrumb_404'        => 0,
+		'breadcrumb_attachment' => 0,
+		'site_layout'           => 'standard-content',
+		'footer_text'           => 'Copyright [footer_copyright] · [footer_home_link] · All Rights Reserved · Powered by <a target="_blank" rel="nofollow noopener sponsored" href="https://bizbudding.com/mai-theme/">Mai Theme</a>',
 	],
 
 	/*
@@ -245,7 +240,7 @@ return [
 				'handle'    => mai_get_handle() . '-header',
 				'src'       => mai_get_asset_url( 'header.js' ),
 				'condition' => function () {
-					return current_theme_supports( 'sticky-header' ) || current_theme_supports( 'transparent-header' );
+					return mai_has_sticky_header() || mai_has_transparent_header();
 				},
 			],
 

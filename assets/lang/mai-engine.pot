@@ -13,91 +13,91 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: config/_default/config.php:93
+#: config/_default/config.php:88
 msgid "Standard Content"
 msgstr ""
 
-#: config/_default/config.php:100
+#: config/_default/config.php:95
 msgid "Narrow Content"
 msgstr ""
 
-#: config/_default/config.php:106
+#: config/_default/config.php:101
 msgid "Wide Content"
 msgstr ""
 
-#: config/_default/config.php:112
+#: config/_default/config.php:107
 msgid "Content, Sidebar"
 msgstr ""
 
-#: config/_default/config.php:118
+#: config/_default/config.php:113
 msgid "Sidebar, Content"
 msgstr ""
 
-#: config/_default/config.php:166, config/_default/config.php:227
+#: config/_default/config.php:161, config/_default/config.php:222
 msgid "Menu"
 msgstr ""
 
-#: config/_default/config.php:224, config/_default/config.php:492
+#: config/_default/config.php:219, config/_default/config.php:487
 msgid "Mobile Menu"
 msgstr ""
 
-#: config/_default/config.php:231
+#: config/_default/config.php:226
 msgid "Sub Menu"
 msgstr ""
 
-#: config/_default/config.php:237
+#: config/_default/config.php:232
 msgid "Menu Search"
 msgstr ""
 
-#: config/_default/config.php:411
+#: config/_default/config.php:406
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/_default/config.php:412
+#: config/_default/config.php:407
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/_default/config.php:413
+#: config/_default/config.php:408
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default/config.php:414
+#: config/_default/config.php:409
 msgid "Footer Menu"
 msgstr ""
 
-#: config/_default/config.php:459, lib/admin/hide-elements.php:71
+#: config/_default/config.php:454, lib/admin/hide-elements.php:71
 msgid "Before Header"
 msgstr ""
 
-#: config/_default/config.php:460
+#: config/_default/config.php:455
 msgid "The Before Header widget area."
 msgstr ""
 
-#: config/_default/config.php:465
+#: config/_default/config.php:460
 msgid "Header Left"
 msgstr ""
 
-#: config/_default/config.php:466
+#: config/_default/config.php:461
 msgid "The Header Left widget area."
 msgstr ""
 
-#: config/_default/config.php:475
+#: config/_default/config.php:470
 msgid "Header Right"
 msgstr ""
 
-#: config/_default/config.php:476
+#: config/_default/config.php:471
 msgid "The Header Right widget area."
 msgstr ""
 
-#: config/_default/config.php:485, lib/admin/hide-elements.php:78
+#: config/_default/config.php:480, lib/admin/hide-elements.php:78
 msgid "Before Footer"
 msgstr ""
 
-#: config/_default/config.php:486
+#: config/_default/config.php:481
 msgid "The Before Footer widget area."
 msgstr ""
 
-#: config/_default/config.php:493
+#: config/_default/config.php:488
 msgid "The Mobile Menu widget area."
 msgstr ""
 
