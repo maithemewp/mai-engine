@@ -113,6 +113,7 @@ function mai_load_files() {
 			// Customizer.
 			'customize/setup',
 			'customize/logo',
+			'customize/beta-tester',
 			'customize/color-palette',
 			'customize/upsell',
 			'customize/layout',

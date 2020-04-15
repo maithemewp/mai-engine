@@ -590,6 +590,14 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
+#: lib/admin/updater.php:78
+msgid "Mai Beta Tester"
+msgstr ""
+
+#: lib/admin/updater.php:79
+msgid "Check this box to enable beta updates of all Mai plugins and add-ons."
+msgstr ""
+
 #: lib/blocks/grid.php:29, lib/blocks/grid.php:189
 msgid "Mai Post Grid"
 msgstr ""
