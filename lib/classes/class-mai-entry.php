@@ -95,7 +95,7 @@ class Mai_Entry {
 		// Remove post attributes filter for term/user grid.
 		if ( 'post' !== $this->type ) {
 			remove_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
-		} elseif ( in_array( 'image', $this->args['show'], true ) ) {
+		} elseif ( in_array( 'image', (array) $this->args['show'], true ) ) {
 			add_filter( 'post_class', [ $this, 'has_image_class' ] );
 		}
 
@@ -152,7 +152,7 @@ class Mai_Entry {
 		}
 
 		// Loop through our elements.
-		foreach ( $this->args['show'] as $element ) {
+		foreach ( (array) $this->args['show'] as $element ) {
 
 			// Skip image is left or right, skip.
 			if ( ( 'image' === $element ) && $has_wrap ) {
@@ -199,7 +199,7 @@ class Mai_Entry {
 		// Add back post attributes for other entries.
 		if ( 'post' !== $this->type ) {
 			add_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
-		} elseif ( in_array( 'image', $this->args['show'], true ) ) {
+		} elseif ( in_array( 'image', (array) $this->args['show'], true ) ) {
 			remove_filter( 'post_class', [ $this, 'has_image_class' ] );
 		}
 

@@ -163,3 +163,77 @@ function mai_get_cover_image_html( $image_id, $atts = [] ) {
 	// Get the image HTML.
 	return wp_get_attachment_image( $image_id, 'cover', false, $atts );
 }
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return array
+ */
+function mai_get_image_size_choices() {
+	$choices = [];
+	if ( ! ( is_admin() || is_customize_preview() ) ) {
+		return $choices;
+	}
+	$sizes = mai_get_available_image_sizes();
+	foreach ( $sizes as $index => $value ) {
+		$choices[ $index ] = sprintf( '%s (%s x %s)', $index, $value['width'], $value['height'] );
+	}
+
+	return $choices;
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return array
+ */
+function mai_get_image_orientation_choices() {
+	static $choices = null;
+
+	if ( ! ( is_admin() || is_customize_preview() ) ) {
+		return $choices;
+	}
+
+	if ( is_null( $choices ) ) {
+		$all = [
+			'landscape' => esc_html__( 'Landscape', 'mai-engine' ),
+			'portrait'  => esc_html__( 'Portrait', 'mai-engine' ),
+			'square'    => esc_html__( 'Square', 'mai-engine' ),
+		];
+
+		$orientations = mai_get_available_image_orientations();
+
+		foreach ( $orientations as $orientation ) {
+			$choices[ $orientation ] = $all[ $orientation ];
+		}
+
+		$choices['custom'] = esc_html__( 'Custom', 'mai-engine' );
+	}
+
+	return $choices;
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 0.1.0
+ *
+ * @param string $size  Image size.
+ * @param string $ratio Aspect ratio.
+ *
+ * @return array
+ */
+function mai_get_image_sizes_from_aspect_ratio( $size = 'md', $ratio = '16:9' ) {
+	$ratio       = explode( ':', $ratio );
+	$x           = $ratio[0];
+	$y           = $ratio[1];
+	$breakpoints = mai_get_breakpoints();
+	$width       = isset( $breakpoints[ $size ] ) ? (int) mai_get_breakpoint( $size ) : (int) $size;
+	$height      = $width / $x * $y;
+
+	return [ $width, $height, true ];
+}

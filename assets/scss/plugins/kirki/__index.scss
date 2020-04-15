@@ -78,10 +78,11 @@
 }
 
 .customize-control.customize-control-kirki-sortable ul.ui-sortable li[data-value^="genesis_"]:not(.mai-sortable-expanded) {
-	height: 4px;
+	height: 0;
+	margin: 0;
 	padding: 0;
 	overflow: hidden;
-	border: 1px solid rgba(0, 0, 0, 0.2);
+	border: 0;
 	border-radius: 2px;
 }
 
@@ -316,11 +317,11 @@ $sections: (
 	section-mai-engine-color-palette,
 	section-genesis_breadcrumbs,
 	panel-mai-engine-content-archives,
-	panel-mai-engine-singular-content,
+	panel-mai-engine-single-content,
 	panel-mai-engine-base-styles,
 	panel-mai-engine-site-header,
 	panel-mai-engine-navigation-menus,
-	section-mai-engine-page-header,
+	panel-mai-engine-page-header,
 	panel-mai-engine-content-area,
 	panel-mai-engine-site-footer,
 	section-genesis_comments,

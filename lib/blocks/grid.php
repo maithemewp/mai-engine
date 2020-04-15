@@ -126,7 +126,7 @@ function mai_do_grid_block( $type, $block, $content = '', $is_preview = false, $
  * @return array
  */
 function mai_get_grid_field_values( $type ) {
-	$fields = mai_get_config( 'grid-settings' );
+	$fields = mai_get_settings( 'grid-block' );
 	$values = [];
 
 	foreach ( $fields as $key => $field ) {
@@ -134,10 +134,12 @@ function mai_get_grid_field_values( $type ) {
 		if ( 'tab' === $field['type'] ) {
 			continue;
 		}
+
 		// Skip if not the block we want.
 		if ( ! in_array( $type, $field['block'], true ) ) {
 			continue;
 		}
+
 		$value                    = get_field( $field['name'] );
 		$values[ $field['name'] ] = is_null( $value ) ? $fields[ $key ]['default'] : $value;
 	}
@@ -163,7 +165,7 @@ function mai_register_grid_field_groups() {
 	$user_grid = [];
 
 	// Get fields.
-	$fields = mai_get_config( 'grid-settings' );
+	$fields = mai_get_settings( 'grid-block' );
 
 	foreach ( $fields as $key => $field ) {
 

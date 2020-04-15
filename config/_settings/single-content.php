@@ -17,7 +17,7 @@ return [
 		'type'        => 'select',
 		'sanitize'    => 'esc_html',
 		'default'     => '',
-		'choices'     => 'mai_get_site_layout_choices',
+		'choices'     => mai_get_site_layout_choices(),
 	],
 	[
 		'settings'    => 'show',
@@ -25,8 +25,8 @@ return [
 		'description' => esc_html__( 'Show/hide and re-order entry elements. Click "Toggle Hooks" to show Genesis hooks.', 'mai-engine' ),
 		'type'        => 'sortable',
 		'sanitize'    => 'esc_html',
-		'default'     => 'mai_get_single_show_defaults',
-		'choices'     => 'mai_get_single_show_choices',
+		'default'     => mai_get_single_show_defaults(),
+		'choices'     => mai_get_single_show_choices(),
 	],
 	[
 		'settings'   => 'image_orientation',
@@ -34,7 +34,7 @@ return [
 		'type'       => 'select',
 		'sanitize'   => 'esc_html',
 		'default'    => 'landscape',
-		'choices'    => 'mai_get_image_orientation_choices',
+		'choices'    => mai_get_image_orientation_choices(),
 		'conditions' => [
 			[
 				'setting'  => 'show',
@@ -49,7 +49,7 @@ return [
 		'type'       => 'select',
 		'sanitize'   => 'esc_html',
 		'default'    => 'landscape-md',
-		'choices'    => 'mai_get_image_size_choices',
+		'choices'    => mai_get_image_size_choices(),
 		'conditions' => [
 			[
 				'setting'  => 'show',
@@ -68,7 +68,7 @@ return [
 		'label'      => esc_html__( 'Header Meta', 'mai-engine' ),
 		'type'       => 'text',
 		'sanitize'   => 'wp_kses_post',
-		'default'    => 'mai_get_header_meta_default',
+		'default'    => mai_get_header_meta_default(),
 		'conditions' => [
 			[
 				'setting'  => 'show',
@@ -91,6 +91,16 @@ return [
 				'value'    => 'footer_meta',
 			],
 		],
+	],
+	[
+		'type'            => 'image',
+		'settings'        => 'page-header-image',
+		'label'           => __( 'Page Header Image', 'mai-engine' ),
+		'default'         => '',
+		'choices'         => [
+			'save_as' => 'id',
+		],
+		'active_callback' => 'mai_has_any_page_header_types',
 	],
 
 ];

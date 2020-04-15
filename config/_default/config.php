@@ -22,7 +22,7 @@ return [
 	|
 	*/
 
-	'genesis-settings'     => [
+	'genesis-settings'    => [
 		'avatar_size'               => 48,
 		'blog_cat_num'              => 9,
 		'breadcrumb_home'           => 0,
@@ -53,7 +53,7 @@ return [
 	|
 	*/
 
-	'google-fonts'         => [],
+	'google-fonts'        => [],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -66,7 +66,7 @@ return [
 	|
 	*/
 
-	'image-sizes'          => [
+	'image-sizes'         => [
 		'add'    => [
 			'cover'     => [ 1600, 900, true ],
 			'landscape' => '4:3',
@@ -86,7 +86,7 @@ return [
 	|
 	*/
 
-	'page-layouts'         => [
+	'page-layouts'        => [
 		'add'    => [
 			[
 				'id'      => 'standard-content',
@@ -138,7 +138,7 @@ return [
 	|
 	*/
 
-	'post-type-support'    => [
+	'post-type-support'   => [
 		'add'    => [
 			'excerpt'              => [ 'page' ],
 			'genesis-layouts'      => [ 'product' ],
@@ -159,7 +159,7 @@ return [
 	|
 	*/
 
-	'responsive-menu'      => [
+	'responsive-menu'     => [
 		'script' => [
 			'mainMenu'         => sprintf(
 				'<span class="menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
@@ -206,7 +206,7 @@ return [
 	|
 	*/
 
-	'scripts-and-styles'   => [
+	'scripts-and-styles'  => [
 		'add'    => [
 
 			// Scripts.
@@ -343,7 +343,7 @@ return [
 	|
 	*/
 
-	'simple-social-icons'  => [
+	'simple-social-icons' => [
 		'alignment'              => 'alignleft',
 		'background_color'       => '',
 		'background_color_hover' => '',
@@ -365,7 +365,7 @@ return [
 	|
 	*/
 
-	'theme-support'        => [
+	'theme-support'       => [
 		'add'    => [
 
 			// Genesis defaults.
@@ -452,7 +452,7 @@ return [
 	|
 	*/
 
-	'widget-areas'         => [
+	'widget-areas'        => [
 		'add'    => [
 			[
 				'id'          => 'before-header',
@@ -511,7 +511,7 @@ return [
 	|
 	*/
 
-	'loop'                 => [
+	'loop'                => [
 		'archive' => [
 			'post',
 			'category',
@@ -523,14 +523,14 @@ return [
 		],
 	],
 
-	'page-header'          => [
+	'page-header'         => [
 		'archive' => [],
 		'single'  => [],
 	],
 
-	'archive-settings'     => require __DIR__ . '/settings/archive.php',
-	'single-settings'      => require __DIR__ . '/settings/single.php',
-	'grid-settings'        => require __DIR__ . '/settings/grid.php',
+	// 'archive-settings' => require __DIR__ . '/settings/content-archives/fallback.php',
+	// 'single-settings'  => require __DIR__ . '/settings/single-content/fallback.php',
+	// 'grid-settings'    => require __DIR__ . '/settings/grid.php',
 	// 'page-header-settings' => require __DIR__ . '/settings/page-header.php',
 
 	/*
@@ -556,5 +556,5 @@ return [
 	|
 	*/
 
-	'custom-functions'     => '__return_null',
+	'custom-functions'    => '__return_null',
 ];

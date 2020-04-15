@@ -130,6 +130,19 @@ function mai_kirki_url( $config ) {
 	return $config;
 }
 
+add_action( 'after_setup_theme', 'mai_register_customizer_api' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function mai_register_customizer_api() {
+	$customizer_api = new Mai_Customizer_API();
+	$customizer_api->add_panels();
+}
+
 add_action( 'customize_register', 'mai_reposition_genesis_customizer_sections' );
 /**
  * Move Genesis Customizer sections into our settings panel.

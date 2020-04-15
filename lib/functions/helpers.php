@@ -373,9 +373,9 @@ function mai_sanitize_bool( $value ) {
  * @return mixed
  */
 function mai_is_element_hidden( $element ) {
-	static $elements = null;
+	static $elements = [];
 
-	if ( is_null( $elements ) ) {
+	if ( empty( $elements ) ) {
 		$elements = get_post_meta( get_the_ID(), 'hide_elements', true );
 	}
 

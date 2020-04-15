@@ -70,10 +70,11 @@ function mai_load_files() {
 
 			// Functions.
 			'functions/helpers',
-			'functions/getters',
+			'functions/utilities',
 			'functions/autoload',
 			'functions/layout',
 			'functions/images',
+			'functions/loop',
 			'functions/setup',
 			'functions/enqueue',
 			'functions/markup',
@@ -110,14 +111,10 @@ function mai_load_files() {
 			'shortcodes/icon',
 
 			// Customizer.
-			'customize/kirki',
-			'customize/api',
-			'customize/fields',
+			'customize/setup',
 			'customize/logo',
 			'customize/color-palette',
 			'customize/upsell',
-			'customize/archives',
-			'customize/singular',
 			'customize/layout',
 		]
 	);

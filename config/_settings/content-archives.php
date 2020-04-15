@@ -17,7 +17,7 @@ return [
 		'type'        => 'select',
 		'sanitize'    => 'esc_html',
 		'default'     => '',
-		'choices'     => 'mai_get_site_layout_choices',
+		'choices'     => mai_get_site_layout_choices(),
 	],
 	[
 		'settings'    => 'show',
@@ -37,7 +37,7 @@ return [
 			'genesis_after_entry_content',
 			'genesis_entry_footer',
 		],
-		'choices'  => 'mai_get_archive_show_choices',
+		'choices'     => mai_get_archive_show_choices(),
 	],
 	[
 		'settings'        => 'image_orientation',
@@ -45,7 +45,7 @@ return [
 		'type'            => 'select',
 		'sanitize'        => 'esc_html',
 		'default'         => 'landscape',
-		'choices'         => 'mai_get_image_orientation_choices',
+		'choices'         => mai_get_image_orientation_choices(),
 		'active_callback' => [
 			[
 				'setting'  => 'show',
@@ -60,7 +60,7 @@ return [
 		'type'            => 'select',
 		'sanitize'        => 'esc_html',
 		'default'         => 'landscape-md',
-		'choices'         => 'mai_get_image_size_choices',
+		'choices'         => mai_get_image_size_choices(),
 		'active_callback' => [
 			[
 				'setting'  => 'show',
@@ -75,12 +75,12 @@ return [
 		],
 	],
 	[
-		'settings'   => 'image_position',
-		'label'      => esc_html__( 'Image Position', 'mai-engine' ),
-		'type'       => 'select',
-		'sanitize'   => 'esc_html',
-		'default'    => 'full',
-		'choices'    => [
+		'settings'        => 'image_position',
+		'label'           => esc_html__( 'Image Position', 'mai-engine' ),
+		'type'            => 'select',
+		'sanitize'        => 'esc_html',
+		'default'         => 'full',
+		'choices'         => [
 			'full'         => esc_html__( 'Full', 'mai-engine' ),
 			'center'       => esc_html__( 'Center', 'mai-engine' ),
 			'left-top'     => esc_html__( 'Left Top', 'mai-engine' ),
@@ -100,12 +100,12 @@ return [
 		],
 	],
 	[
-		'settings'   => 'image_width',
-		'label'      => esc_html__( 'Image Width', 'mai-engine' ),
-		'type'       => 'radio-buttonset',
-		'sanitize'   => 'esc_html',
-		'default'    => 'third',
-		'choices'    => [
+		'settings'        => 'image_width',
+		'label'           => esc_html__( 'Image Width', 'mai-engine' ),
+		'type'            => 'radio-buttonset',
+		'sanitize'        => 'esc_html',
+		'default'         => 'third',
+		'choices'         => [
 			'fourth' => esc_html__( 'One Fourth', 'mai-engine' ),
 			'third'  => esc_html__( 'One Third', 'mai-engine' ),
 			'half'   => esc_html__( 'One Half', 'mai-engine' ),
@@ -202,7 +202,7 @@ return [
 				'value'    => 'more_link',
 			],
 		],
-		'atts'       => [
+		'atts'            => [
 			// TODO: This text should be filtered, same as the template that outputs it.
 			'input_attrs' => [
 				'placeholder' => esc_html__( 'Read More', 'mai-engine' ),
@@ -252,12 +252,12 @@ return [
 		],
 	],
 	[
-		'settings'   => 'align_text_vertical',
-		'label'      => esc_html__( 'Align Text (vertical)', 'mai-engine' ),
-		'type'       => 'radio-buttonset',
-		'sanitize'   => 'esc_html',
-		'default'    => '',
-		'choices'    => [
+		'settings'        => 'align_text_vertical',
+		'label'           => esc_html__( 'Align Text (vertical)', 'mai-engine' ),
+		'type'            => 'radio-buttonset',
+		'sanitize'        => 'esc_html',
+		'default'         => '',
+		'choices'         => [
 			''       => esc_html__( 'Clear', 'mai-engine' ),
 			'top'    => esc_html__( 'Top', 'mai-engine' ),
 			'middle' => esc_html__( 'Middle', 'mai-engine' ),
@@ -299,7 +299,7 @@ return [
 		'type'     => 'radio-buttonset',
 		'sanitize' => 'esc_html',
 		'default'  => '3',
-		'choices'  => 'mai_get_columns_choices',
+		'choices'  => mai_get_columns_choices(),
 	],
 	[
 		'settings' => 'columns_responsive',
@@ -314,7 +314,7 @@ return [
 		'type'            => 'radio-buttonset',
 		'sanitize'        => 'esc_html',
 		'default'         => '1',
-		'choices'         => 'mai_get_columns_choices',
+		'choices'         => mai_get_columns_choices(),
 		'active_callback' => [
 			[
 				'setting'  => 'columns_responsive',
@@ -329,7 +329,7 @@ return [
 		'type'            => 'radio-buttonset',
 		'sanitize'        => 'esc_html',
 		'default'         => '1',
-		'choices'         => 'mai_get_columns_choices',
+		'choices'         => mai_get_columns_choices(),
 		'active_callback' => [
 			[
 				'setting'  => 'columns_responsive',
@@ -344,7 +344,7 @@ return [
 		'type'            => 'radio-buttonset',
 		'sanitize'        => 'esc_html',
 		'default'         => '1',
-		'choices'         => 'mai_get_columns_choices',
+		'choices'         => mai_get_columns_choices(),
 		'active_callback' => [
 			[
 				'setting'  => 'columns_responsive',
@@ -354,12 +354,12 @@ return [
 		],
 	],
 	[
-		'settings'   => 'align_columns',
-		'label'      => esc_html__( 'Align Columns', 'mai-engine' ),
-		'type'       => 'radio-buttonset',
-		'sanitize'   => 'esc_html',
-		'default'    => '',
-		'choices'    => [
+		'settings'        => 'align_columns',
+		'label'           => esc_html__( 'Align Columns', 'mai-engine' ),
+		'type'            => 'radio-buttonset',
+		'sanitize'        => 'esc_html',
+		'default'         => '',
+		'choices'         => [
 			''       => esc_html__( 'Clear', 'mai-engine' ),
 			'left'   => esc_html__( 'Left', 'mai-engine' ),
 			'center' => esc_html__( 'Center', 'mai-engine' ),
@@ -374,12 +374,12 @@ return [
 		],
 	],
 	[
-		'settings'   => 'align_columns_vertical',
-		'label'      => esc_html__( 'Align Columns (vertical)', 'mai-engine' ),
-		'type'       => 'radio-buttonset',
-		'sanitize'   => 'esc_html',
-		'default'    => '',
-		'choices'    => [
+		'settings'        => 'align_columns_vertical',
+		'label'           => esc_html__( 'Align Columns (vertical)', 'mai-engine' ),
+		'type'            => 'radio-buttonset',
+		'sanitize'        => 'esc_html',
+		'default'         => '',
+		'choices'         => [
 			''       => esc_html__( 'Clear', 'mai-engine' ),
 			'top'    => esc_html__( 'Top', 'mai-engine' ),
 			'middle' => esc_html__( 'Middle', 'mai-engine' ),
@@ -421,6 +421,15 @@ return [
 			],
 		],
 	],
-
+	[
+		'type'            => 'image',
+		'settings'        => 'page-header-image',
+		'label'           => __( 'Page Header Image', 'mai-engine' ),
+		'default'         => '',
+		'choices'         => [
+			'save_as' => 'id',
+		],
+		'active_callback' => 'mai_has_any_page_header_types',
+	],
 ];
 

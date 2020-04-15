@@ -11,18 +11,8 @@
 
 return [
 	[
-		'type'            => 'image',
-		'settings'        => 'page-header-image',
-		'label'           => __( 'Page Header Image', 'mai-engine' ),
-		'default'         => '',
-		'choices'         => [
-			'save_as' => 'id',
-		],
-		'active_callback' => 'mai_has_any_page_header_types',
-	],
-	[
 		'type'            => 'dimensions',
-		'settings'        => 'page-header-spacing',
+		'settings'        => 'spacing',
 		'label'           => __( 'Page Header Spacing', 'mai-engine' ),
 		'description'     => __( 'Accepts all unit values (px, rem, em, vw, etc).', 'mai-engine' ),
 		'default'         => [
@@ -52,7 +42,7 @@ return [
 	],
 	[
 		'type'            => 'radio-buttonset',
-		'settings'        => 'text_align',
+		'settings'        => 'text-align',
 		'label'           => __( 'Text Alignment', 'mai-engine' ),
 		'default'         => '',
 		'choices'         => [

@@ -9,6 +9,7 @@
  * @license   GPL-2.0-or-later
  */
 
+add_action( 'admin_init', 'mai_update_first_version' );
 /**
  * Set the first version number.
  *
@@ -16,7 +17,6 @@
  *
  * @return void
  */
-add_action( 'admin_init', 'mai_update_first_version' );
 function mai_update_first_version() {
 	if ( false !== get_option( 'mai_first_version' ) ) {
 		return;
@@ -25,6 +25,7 @@ function mai_update_first_version() {
 	update_option( 'mai_first_version', mai_get_plugin_data( 'version' ) );
 }
 
+add_action( 'admin_init', 'mai_update_database_version', 20 );
 /**
  * Maybe run the version updater.
  * Mostly taken from G core. Some original inspiration from link below.
@@ -33,7 +34,6 @@ function mai_update_first_version() {
  *
  * @return void
  */
-add_action( 'admin_init', 'mai_update_database_version', 20 );
 function mai_update_database_version() {
 	if ( version_compare( get_option( 'mai_db_version' ), mai_get_plugin_data( 'db-version' ), '>=' ) ) {
 		return;

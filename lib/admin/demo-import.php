@@ -131,6 +131,8 @@ function mai_after_demo_import() {
 	wp_delete_post( 1 );
 
 	/**
+	 * WP Rewrite object.
+	 *
 	 * @var WP_Rewrite $wp_rewrite WP Rewrite object.
 	 */
 	global $wp_rewrite;
