@@ -106,7 +106,7 @@ function mai_do_loop() {
 	}
 }
 
-// add_filter( 'pre_get_posts', 'mai_archive_posts_per_page' );
+add_filter( 'pre_get_posts', 'mai_archive_posts_per_page' );
 /**
  * Show only posts in 1 or more categories on the main blog.
  * Only targets the main blog page set as the static Page for Posts
@@ -132,6 +132,11 @@ function mai_archive_posts_per_page( $query ) {
 
 	// Bail if not an archive.
 	if ( ! mai_is_type_archive() ) {
+		return;
+	}
+
+	// Bail if home, this uses the default posts_per_page.
+	if ( is_home() ) {
 		return;
 	}
 
