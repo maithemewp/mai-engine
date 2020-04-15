@@ -146,11 +146,10 @@ class Mai_Customizer_API {
 	 * @param array  $field   The field config data.
 	 * @param string $panel   The Customizer panel ID.
 	 * @param string $section The Customizer section ID.
-	 * @param string $name    The post or content type name.
 	 *
 	 * @return void
 	 */
-	private function add_field( $field, $panel, $section, $name = '' ) {
+	private function add_field( $field, $panel, $section ) {
 		static $counter = 1;
 
 		$settings = isset( $field['name'] ) ? $field['name'] : isset( $field['settings'] ) ? $field['settings'] : '';
@@ -172,6 +171,9 @@ class Mai_Customizer_API {
 			$field['option_name'] = "$this->handle[$panel][$section]";
 			$field['settings']    = $settings;
 		}
+
+		// TODO:
+		// if panel = content-archive and section = post, check for posts_per_page and option_type = option and option_name = posts_per_page.
 
 		if ( isset( $field['sanitize'] ) ) {
 			$field['sanitize_callback'] = $field['sanitize'];
