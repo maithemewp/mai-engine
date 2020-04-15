@@ -25,15 +25,15 @@ function mai_customizer_theme_settings_beta_tester( $config ) {
 		return $config;
 	}
 
-	$config['genesis']['sections']['genesis_updates']['controls']['mai_tester'] = array(
+	$config['genesis']['sections']['genesis_updates']['controls']['mai_tester'] = [
 		'label'       => __( 'Mai Beta Tester', 'mai-engine' ),
 		'description' => __( 'Check this box to enable beta updates of all Mai plugins and add-ons.', 'mai-engine' ),
 		'section'     => 'genesis_updates',
 		'type'        => 'checkbox',
-		'settings'    => array(
+		'settings'    => [
 			'default' => 0,
-		),
-	);
+		],
+	];
 
 	return $config;
 }

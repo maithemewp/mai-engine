@@ -163,7 +163,5 @@ function mai_reposition_genesis_customizer_sections( $wp_customize ) {
 
 	$wp_customize->remove_section( 'genesis_single' );
 	$wp_customize->remove_section( 'genesis_archives' );
-
-	$wp_customize->get_section( 'genesis_footer' )->panel = "{$handle}-site-footer";
-	$wp_customize->get_section( 'genesis_footer' )->title = __( 'Footer Text', 'mai-engine' );
+	$wp_customize->remove_section( 'genesis_footer' );
 }

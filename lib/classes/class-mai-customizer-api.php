@@ -162,7 +162,7 @@ class Mai_Customizer_API {
 		$field['section'] = "{$this->handle}-{$panel}-{$section}";
 
 		if ( $settings ) {
-			$field['settings'] = $section . '_' . mai_convert_case( $settings, 'kebab' );
+			$field['settings'] = $section . '-' . mai_convert_case( $settings, 'kebab' );
 		}
 
 		if ( 'divider' === $field['type'] ) {
@@ -261,7 +261,7 @@ class Mai_Customizer_API {
 				'sidebar',
 				'search-form',
 			],
-			'site-footer'      => [
+			'footer'      => [
 				'footer-settings',
 				'before-footer',
 				'footer-widgets',

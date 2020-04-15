@@ -13,91 +13,91 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: config/_default/config.php:88
+#: config/_default/config.php:87
 msgid "Standard Content"
 msgstr ""
 
-#: config/_default/config.php:95
+#: config/_default/config.php:94
 msgid "Narrow Content"
 msgstr ""
 
-#: config/_default/config.php:101
+#: config/_default/config.php:100
 msgid "Wide Content"
 msgstr ""
 
-#: config/_default/config.php:107
+#: config/_default/config.php:106
 msgid "Content, Sidebar"
 msgstr ""
 
-#: config/_default/config.php:113
+#: config/_default/config.php:112
 msgid "Sidebar, Content"
 msgstr ""
 
-#: config/_default/config.php:161, config/_default/config.php:222
+#: config/_default/config.php:160, config/_default/config.php:221
 msgid "Menu"
 msgstr ""
 
-#: config/_default/config.php:219, config/_default/config.php:487
+#: config/_default/config.php:218, config/_default/config.php:485
 msgid "Mobile Menu"
 msgstr ""
 
-#: config/_default/config.php:226
+#: config/_default/config.php:225
 msgid "Sub Menu"
 msgstr ""
 
-#: config/_default/config.php:232
+#: config/_default/config.php:231
 msgid "Menu Search"
 msgstr ""
 
-#: config/_default/config.php:406
+#: config/_default/config.php:405
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/_default/config.php:407
+#: config/_default/config.php:406
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/_default/config.php:408
+#: config/_default/config.php:407
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default/config.php:409
+#: config/_default/config.php:408
 msgid "Footer Menu"
 msgstr ""
 
-#: config/_default/config.php:454, lib/admin/hide-elements.php:71
+#: config/_default/config.php:452, lib/admin/hide-elements.php:71
 msgid "Before Header"
 msgstr ""
 
-#: config/_default/config.php:455
+#: config/_default/config.php:453
 msgid "The Before Header widget area."
 msgstr ""
 
-#: config/_default/config.php:460
+#: config/_default/config.php:458
 msgid "Header Left"
 msgstr ""
 
-#: config/_default/config.php:461
+#: config/_default/config.php:459
 msgid "The Header Left widget area."
 msgstr ""
 
-#: config/_default/config.php:470
+#: config/_default/config.php:468
 msgid "Header Right"
 msgstr ""
 
-#: config/_default/config.php:471
+#: config/_default/config.php:469
 msgid "The Header Right widget area."
 msgstr ""
 
-#: config/_default/config.php:480, lib/admin/hide-elements.php:78
+#: config/_default/config.php:478, lib/admin/hide-elements.php:78
 msgid "Before Footer"
 msgstr ""
 
-#: config/_default/config.php:481
+#: config/_default/config.php:479
 msgid "The Before Footer widget area."
 msgstr ""
 
-#: config/_default/config.php:488
+#: config/_default/config.php:486
 msgid "The Mobile Menu widget area."
 msgstr ""
 
@@ -289,7 +289,7 @@ msgstr ""
 msgid "Row Gap"
 msgstr ""
 
-#: config/_settings/content-archives.php:408
+#: config/_settings/content-archives.php:408, lib/classes/class-mai-customizer-api.php:297
 msgid "Posts Per Page"
 msgstr ""
 
@@ -590,14 +590,6 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: lib/admin/updater.php:78
-msgid "Mai Beta Tester"
-msgstr ""
-
-#: lib/admin/updater.php:79
-msgid "Check this box to enable beta updates of all Mai plugins and add-ons."
-msgstr ""
-
 #: lib/blocks/grid.php:29, lib/blocks/grid.php:189
 msgid "Mai Post Grid"
 msgstr ""
@@ -718,6 +710,14 @@ msgstr ""
 msgid "50%"
 msgstr ""
 
+#: lib/customize/beta-tester.php:29
+msgid "Mai Beta Tester"
+msgstr ""
+
+#: lib/customize/beta-tester.php:30
+msgid "Check this box to enable beta updates of all Mai plugins and add-ons."
+msgstr ""
+
 #: lib/customize/color-palette.php:25
 msgid "Color Palette"
 msgstr ""
@@ -782,12 +782,8 @@ msgstr ""
 msgid "Theme Settings"
 msgstr ""
 
-#: lib/customize/setup.php:168
-msgid "Footer Text"
-msgstr ""
-
 #: lib/customize/upsell.php:36
-msgid "Get Mai Customizer for even more settings!"
+msgid "Customize more now!"
 msgstr ""
 
 #: lib/functions/grid.php:82, lib/functions/loop.php:264
@@ -802,19 +798,19 @@ msgstr ""
 msgid "Read More link"
 msgstr ""
 
-#: lib/functions/grid.php:229
+#: lib/functions/grid.php:229, config/_settings/footer/footer-settings.php:21
 msgid "1"
 msgstr ""
 
-#: lib/functions/grid.php:230
+#: lib/functions/grid.php:230, config/_settings/footer/footer-settings.php:22
 msgid "2"
 msgstr ""
 
-#: lib/functions/grid.php:231
+#: lib/functions/grid.php:231, config/_settings/footer/footer-settings.php:23
 msgid "3"
 msgstr ""
 
-#: lib/functions/grid.php:232
+#: lib/functions/grid.php:232, config/_settings/footer/footer-settings.php:24
 msgid "4"
 msgstr ""
 
@@ -822,7 +818,7 @@ msgstr ""
 msgid "5"
 msgstr ""
 
-#: lib/functions/grid.php:234
+#: lib/functions/grid.php:234, config/_settings/footer/footer-settings.php:25
 msgid "6"
 msgstr ""
 
@@ -874,8 +870,28 @@ msgstr ""
 msgid "Search results for: "
 msgstr ""
 
+#: lib/structure/page-header.php:186
+msgid "Archives for "
+msgstr ""
+
 #: lib/structure/page-header.php:199
 msgid "Not found, error 404"
+msgstr ""
+
+#: config/_settings/footer/footer-settings.php:16
+msgid "Footer widget areas"
+msgstr ""
+
+#: config/_settings/footer/footer-settings.php:17
+msgid "Save and reload customizer to view changes."
+msgstr ""
+
+#: config/_settings/footer/footer-settings.php:20
+msgid "None"
+msgstr ""
+
+#: config/_settings/footer/footer-settings.php:31
+msgid "Site footer text"
 msgstr ""
 
 #: config/_settings/navigation-menus/after-header.php:16

@@ -118,6 +118,7 @@ function mai_load_files() {
 			'customize/upsell',
 			'customize/layout',
 			'customize/page-header',
+			'customize/footer',
 		]
 	);
 

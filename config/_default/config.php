@@ -34,7 +34,6 @@ return [
 		'breadcrumb_404'        => 0,
 		'breadcrumb_attachment' => 0,
 		'site_layout'           => 'standard-content',
-		'footer_text'           => 'Copyright [footer_copyright] · [footer_home_link] · All Rights Reserved · Powered by <a target="_blank" rel="nofollow noopener sponsored" href="https://bizbudding.com/mai-theme/">Mai Theme</a>',
 	],
 
 	/*
@@ -401,7 +400,7 @@ return [
 					'.site-description',
 				],
 			],
-			'genesis-footer-widgets'   => 3,
+			'genesis-footer-widgets'   => mai_get_option( 'footer-settings-widgets', 3 ),
 			'genesis-menus'            => [
 				'header-left'  => __( 'Header Left Menu', 'mai-engine' ),
 				'header-right' => __( 'Header Right Menu', 'mai-engine' ),
@@ -413,7 +412,6 @@ return [
 				'menu-after-header',
 				'menu-footer',
 				'page-header',
-				'footer-widgets',
 			],
 			'gutenberg'                => [
 				'wide-images' => true,
