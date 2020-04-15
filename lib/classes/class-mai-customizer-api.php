@@ -152,7 +152,12 @@ class Mai_Customizer_API {
 	private function add_field( $field, $panel, $section ) {
 		static $counter = 1;
 
-		$settings = isset( $field['name'] ) ? $field['name'] : isset( $field['settings'] ) ? $field['settings'] : '';
+		// posts_per_page updates the core option value for post archives. Setting added later because Kirki only saves as associative array.
+		if ( 'content-archives' === $panel && 'post' === $section && 'posts_per_page' === $field['settings'] ) {
+			return;
+		}
+
+		$settings = isset( $field['settings'] ) ? $field['settings'] : '';
 
 		$field['section'] = "{$this->handle}-{$panel}-{$section}";
 
@@ -177,9 +182,6 @@ class Mai_Customizer_API {
 				$field['choices'] = call_user_func_array( $field['choices'], [ 'name' => $section ] );
 			}
 		}
-
-		// TODO:
-		// if panel = content-archive and section = post, check for posts_per_page and option_type = option and option_name = posts_per_page.
 
 		if ( isset( $field['sanitize'] ) ) {
 			$field['sanitize_callback'] = $field['sanitize'];
@@ -267,4 +269,36 @@ class Mai_Customizer_API {
 			],
 		];
 	}
+}
+
+/**
+ * Adds Posts Per Page option to Customizer > Theme Settings > Content Archives > Default.
+ * Saves/manages WP core option.
+ *
+ * @since 0.1.0
+ *
+ * @param WP_Customize_Manager $wp_customize WP_Customize_Manager instance.
+ *
+ * @return void
+ */
+add_action( 'customize_register', 'mai_customize_register_posts_per_page', 99 );
+function mai_customize_register_posts_per_page( $wp_customize ) {
+	$wp_customize->add_setting(
+		'posts_per_page',
+		[
+			'default'           => get_option( 'posts_per_page' ),
+			'type'              => 'option',
+			'sanitize_callback' => 'absint',
+		]
+	);
+	$wp_customize->add_control(
+		'posts_per_page',
+		[
+			'label'    => __( 'Posts Per Page', 'mai-theme-engine' ),
+			'section'  => 'mai-engine-content-archives-post',
+			'settings' => 'posts_per_page',
+			'type'     => 'text',
+			'priority' => 99,
+		]
+	);
 }

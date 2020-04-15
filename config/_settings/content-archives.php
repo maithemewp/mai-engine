@@ -16,7 +16,7 @@ return [
 		'description' => esc_html__( '"Site Default" will use the setting in Customizer > Theme Settings > Site Layout.', 'mai-engine' ),
 		'type'        => 'select',
 		'sanitize'    => 'esc_html',
-		'default'     => '',
+		'default'     => 'wide-content',
 		'choices'     => mai_get_site_layout_choices(),
 	],
 	[
@@ -201,11 +201,9 @@ return [
 				'value'    => 'more_link',
 			],
 		],
-		'atts'            => [
-			// TODO: This text should be filtered, same as the template that outputs it.
-			'input_attrs' => [
-				'placeholder' => esc_html__( 'Read More', 'mai-engine' ),
-			],
+		// TODO: This text should be filtered, same as the template that outputs it.
+		'input_attrs'     => [
+			'placeholder' => esc_html__( 'Read More', 'mai-engine' ),
 		],
 	],
 	[
@@ -406,17 +404,14 @@ return [
 		'default'  => '64px',
 	],
 	[
-		// TODO: On Post Archives, this should save to the direct posts_per_page option (same as main Settings > Reading option).
 		'settings'    => 'posts_per_page',
 		'label'       => esc_html__( 'Posts Per Page', 'mai-engine' ),
 		'description' => esc_html__( 'Sticky posts are not included in count.', 'mai-engine' ),
 		'sanitize'    => 'esc_html', // Can't absint cause empty string means to use default.
 		'type'        => 'text',
 		'default'     => '',
-		'atts'        => [
-			'input_attrs' => [
-				'placeholder' => get_option( 'posts_per_page' ),
-			],
+		'input_attrs' => [
+			'placeholder' => get_option( 'posts_per_page' ),
 		],
 	],
 	[
