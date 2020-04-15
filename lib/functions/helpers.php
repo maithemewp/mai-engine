@@ -149,7 +149,7 @@ function mai_has_sidebar() {
  * @return bool
  */
 function mai_has_boxed_container() {
-	return mai_get_option( 'boxed_container', current_theme_supports( 'boxed-container' ) );
+	return mai_get_option( 'boxed-container', current_theme_supports( 'boxed-container' ) );
 }
 
 /**
@@ -160,7 +160,7 @@ function mai_has_boxed_container() {
  * @return bool
  */
 function mai_has_sticky_header() {
-	return mai_get_option( 'site-header-header-settings-sticky', current_theme_supports( 'sticky-header' ) );
+	return mai_get_option( 'site-header-settings-sticky', current_theme_supports( 'sticky-header' ) );
 }
 
 /**
@@ -171,7 +171,7 @@ function mai_has_sticky_header() {
  * @return bool
  */
 function mai_has_transparent_header() {
-	return mai_get_option( 'site-header-header-settings-transparent', current_theme_supports( 'transparent-header' ) );
+	return mai_get_option( 'site-header-settings-transparent', current_theme_supports( 'transparent-header' ) );
 }
 
 /**

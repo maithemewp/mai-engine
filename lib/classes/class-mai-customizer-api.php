@@ -294,7 +294,7 @@ function mai_customize_register_posts_per_page( $wp_customize ) {
 	$wp_customize->add_control(
 		'posts_per_page',
 		[
-			'label'    => __( 'Posts Per Page', 'mai-theme-engine' ),
+			'label'    => __( 'Posts Per Page', 'mai-engine' ),
 			'section'  => 'mai-engine-content-archives-post',
 			'settings' => 'posts_per_page',
 			'type'     => 'text',

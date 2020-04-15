@@ -183,7 +183,7 @@ function mai_do_page_header_title() {
 		}
 
 	} elseif ( is_date() ) {
-		$title = __( 'Archives for ', 'mai-theme-engine' );
+		$title = __( 'Archives for ', 'mai-engine' );
 
 		if ( is_day() ) {
 			$title .= get_the_date();

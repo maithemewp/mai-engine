@@ -22,7 +22,7 @@ function mai_boxed_container_customizer_settings() {
 		$config_id,
 		[
 			'type'     => 'custom',
-			'settings' => 'layout_divider',
+			'settings' => 'layout-divider',
 			'section'  => 'genesis_layout',
 			'default'  => '<hr>',
 			'priority' => 60,
@@ -33,7 +33,7 @@ function mai_boxed_container_customizer_settings() {
 		$config_id,
 		[
 			'type'     => 'checkbox',
-			'settings' => 'boxed_container',
+			'settings' => 'boxed-container',
 			'label'    => __( 'Enable boxed container layout?', 'mai-engine' ),
 			'section'  => 'genesis_layout',
 			'default'  => current_theme_supports( 'boxed-container' ),

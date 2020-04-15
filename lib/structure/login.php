@@ -26,7 +26,7 @@ function mai_login_logo_css() {
 		return;
 	}
 
-	$widths   = mai_get_option( 'logo_width', [] );
+	$widths   = mai_get_option( 'logo-width', [] );
 	$width_px = isset( $widths['desktop'] ) && ! empty( $widths['desktop'] ) ? mai_get_unit_value( $widths['desktop'] ) : '180px';
 
 	// Hide the default logo and heading.
