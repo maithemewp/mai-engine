@@ -9,7 +9,7 @@
  * @license   GPL-2.0-or-later
  */
 
-add_action( 'customize_register', 'mai_add_customizer_upsell_link' );
+// add_action( 'customize_register', 'mai_add_customizer_upsell_link' );
 /**
  * Description of expected behavior.
  *
@@ -20,7 +20,7 @@ add_action( 'customize_register', 'mai_add_customizer_upsell_link' );
  * @return void
  */
 function mai_add_customizer_upsell_link( $wp_customize ) {
-	if ( ! function_exists( 'mai_customizer_add_config' ) ) {
+	if ( function_exists( 'mai_customizer_add_config' ) ) {
 		return;
 	}
 
@@ -33,7 +33,7 @@ function mai_add_customizer_upsell_link( $wp_customize ) {
 			$wp_customize,
 			'mai-customizer',
 			[
-				'title'      => __( 'Get Mai Customizer for even more settings!', 'mai-engine' ),
+				'title'      => __( 'Customize more now!', 'mai-engine' ),
 				'priority'   => 0,
 				'type'       => 'mai-link',
 				'panel'      => $handle,
