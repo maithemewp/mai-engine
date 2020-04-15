@@ -50,7 +50,7 @@ function mai_register_grid_blocks() {
 			'category'        => 'widgets',
 			'keywords'        => [ 'grid', 'category', 'term' ],
 			'mode'            => 'preview',
-			'render_callback' => 'mai_do_term_grid_blockk',
+			'render_callback' => 'mai_do_term_grid_block',
 			'supports'        => [
 				'align'  => [ 'wide' ],
 				'ancher' => true,
