@@ -196,9 +196,9 @@ function mai_has_page_header() {
 
 	$name = false;
 	if ( mai_is_type_archive() ) {
-		$has_page_header = mai_has_page_header_support( $name, mai_get_archive_args_name() );
+		$has_page_header = mai_has_page_header_support( mai_get_archive_args_name(), 'archive' );
 	} elseif ( mai_is_type_single() ) {
-		$has_page_header = mai_has_page_header_support( $name, mai_get_singular_args_name() );
+		$has_page_header = mai_has_page_header_support( mai_get_singular_args_name(), 'single' );
 	}
 
 	if ( $has_page_header && mai_is_type_single() ) {
