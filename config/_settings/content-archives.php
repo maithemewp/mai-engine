@@ -231,7 +231,7 @@ return [
 		'settings' => 'boxed',
 		'label'    => esc_html__( 'Display boxed styling', 'mai-engine' ),
 		'type'     => 'checkbox',
-		'sanitize' => 'esc_html',
+		'sanitize' => 'mai_sanitize_bool',
 		'default'  => true,
 	],
 	[
@@ -407,17 +407,17 @@ return [
 		'settings'    => 'posts_per_page',
 		'label'       => esc_html__( 'Posts Per Page', 'mai-engine' ),
 		'description' => esc_html__( 'Sticky posts are not included in count.', 'mai-engine' ),
-		'sanitize'    => 'esc_html', // Can't absint cause empty string means to use default.
 		'type'        => 'text',
+		'sanitize'    => 'esc_html', // Can't absint cause empty string means to use default.
 		'default'     => '',
 		'input_attrs' => [
 			'placeholder' => get_option( 'posts_per_page' ),
 		],
 	],
 	[
-		'type'            => 'image',
 		'settings'        => 'page-header-image',
 		'label'           => __( 'Page Header default image', 'mai-engine' ),
+		'type'            => 'image',
 		'default'         => '',
 		'choices'         => [
 			'save_as' => 'id',
@@ -425,9 +425,10 @@ return [
 		'active_callback' => 'mai_has_archive_page_header_support_callback',
 	],
 	[
-		'type'            => 'checkbox',
 		'settings'        => 'page-header-featured',
 		'label'           => esc_html__( 'Use featured image as page header image', 'mai-engine' ),
+		'type'            => 'checkbox',
+		'sanitize'        => 'mai_sanitize_bool',
 		'default'         => false,
 		'active_callback' => 'mai_has_archive_page_header_support_callback',
 	],

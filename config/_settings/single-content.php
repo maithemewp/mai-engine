@@ -102,9 +102,10 @@ return [
 		'active_callback' => 'mai_has_single_page_header_support_callback',
 	],
 	[
-		'type'            => 'checkbox',
 		'settings'        => 'page-header-featured',
 		'label'           => esc_html__( 'Use featured image as page header image', 'mai-engine' ),
+		'type'            => 'checkbox',
+		'sanitize'        => 'mai_sanitize_bool',
 		'default'         => false,
 		'active_callback' => 'mai_has_single_page_header_support_callback',
 	],
