@@ -1,0 +1,28 @@
+
+ul,
+ol,
+dl {
+	margin: var(--list-margin, 0);
+	padding: var(--list-padding, 0);
+	list-style-position: var(--list-list-style-position, inside);
+
+	ul,
+	ol,
+	dl {
+		margin: var(--sub-list-margin, (var(--spacing-md) var(--spacing-md)));
+	}
+
+	&:not(:first-child) {
+		--list-margin: var(--spacing-md) 0 0;
+	}
+
+}
+
+dd,
+dt {
+	margin: 0;
+}
+
+dt {
+	font-weight: var(--description-term-font-weight, var(--font-weight-heading));
+}

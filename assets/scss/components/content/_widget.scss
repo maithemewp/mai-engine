@@ -1,0 +1,26 @@
+.widget {
+	width: var(--widget-width, 100%);
+	margin: var(--widget-margin, 0);
+
+	&:not(:first-of-type) {
+		--widget-margin: var(--text-xxl) 0 0;
+	}
+
+}
+
+.widget-wrap {
+	display: var(--widget-wrap-display);
+	flex-wrap: var(--widget-wrap-flex-wrap);
+	justify-content: var(--widget-wrap-justify-content);
+}
+
+.featured-content {
+	--widget-wrap-display: flex;
+	--widget-wrap-flex-wrap: wrap;
+	--widget-wrap-justify-content: space-between;
+	--widget-title-width: 100%;
+}
+
+.widget-title {
+	width: var(--widget-title-width, 100%);
+}

@@ -1,0 +1,33 @@
+.footer-widgets {
+	padding: var(--spacing-xxxxl) 0;
+
+	--menu-display: block;
+	--menu-item-width: 100%;
+	--menu-item-margin: 0 0 var(--spacing-md);
+	--menu-item-link-padding: 0;
+	--wrap-display: grid;
+
+	@include mq(false, sm) {
+		--columns: var(--columns-xs, 3);
+	}
+
+	@include mq(sm, md) {
+		--columns: var(--columns-sm, 3);
+	}
+
+	@include mq(md, lg) {
+		--columns: var(--columns-md, 2);
+	}
+
+	@include mq(lg) {
+		--columns: var(--columns-lg, 1);
+	}
+
+	> .wrap {
+		grid-template-columns: repeat(var(--columns, 3), 1fr);
+		align-items: var(--footer-widgets-align-items, unset);
+		justify-content: var(--footer-widgets-justify-content, unset);
+		column-gap: var(--spacing-xxl);
+		row-gap: var(--spacing-xxl);
+	}
+}

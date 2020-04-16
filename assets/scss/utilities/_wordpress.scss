@@ -1,0 +1,11 @@
+.post-edit-link {
+	display: none;
+}
+
+#wpadminbar {
+	position: var(--wpadminbar-position, absolute);
+}
+
+.sticky-header {
+	--wpadminbar-position: fixed;
+}

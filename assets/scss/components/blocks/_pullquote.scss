@@ -1,0 +1,10 @@
+.wp-block-pullquote {
+	margin-top: var(--spacing-lg);
+	margin-bottom: var(--spacing-lg);
+	border-left: 0;
+
+	&.aligncenter {
+		margin-top: var(--spacing-md);
+		margin-bottom: var(--spacing-md);
+	}
+}

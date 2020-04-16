@@ -1,0 +1,19 @@
+.header-section {
+	display: var(--header-section-display, none);
+	flex: 1;
+	align-items: center;
+
+	--heading-margin: 0;
+}
+
+.header-left {
+	justify-content: flex-start;
+}
+
+.header-right {
+	justify-content: flex-end;
+}
+
+.is-desktop {
+	--header-section-display: flex;
+}

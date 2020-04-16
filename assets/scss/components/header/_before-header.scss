@@ -1,0 +1,41 @@
+.before-header {
+	z-index: 1;
+	display: flex;
+	width: 100%;
+	min-height: calc(var(--spacing-md) * 2);
+	font-size: var(--text-sm);
+	line-height: 1;
+	border-bottom: var(--border);
+
+	--widget-margin: var(--spacing-xs);
+	--heading-margin: 0;
+	--paragraph-margin: 0;
+	--button-margin: 0;
+	--wrap-align-items: center;
+	--wrap-width: 100%;
+
+	&.has-1-widgets {
+		--wrap-align-items: flex-end;
+	}
+
+	&:not(.has-1-widgets) {
+		--widget-width: auto;
+	}
+
+	.widget:not(:first-of-type) {
+		--widget-margin: var(--spacing-xs);
+	}
+
+	@include mq(xl) {
+
+		.widget:first-of-type {
+			margin-left: 0;
+		}
+
+		.widget:last-of-type {
+			margin-right: 0;
+		}
+
+	}
+
+}

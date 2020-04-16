@@ -1,0 +1,107 @@
+::placeholder {
+	color: var(--input-placeholder-color, var(--color-muted));
+	opacity: 1; // Firefox fix
+}
+
+abbr[title] {
+	text-decoration: none;
+}
+
+label {
+	display: inline-block;
+	margin: var(--label-margin, 0 0 var(--spacing-xxxs));
+	font-weight: var(--label-font-weight, var(--font-weight-heading));
+	font-size: var(--label-font-size, (smaller));
+
+	--input-font-size: smaller;
+	--input-font-weight: var(--font-weight-body);
+}
+
+#{$all-text-inputs} {
+	width: 100%;
+	margin: var(--input-margin, 0);
+	padding: var(--input-padding, var(--spacing-md));
+	color: var(--input-color);
+	line-height: 1;
+	background-color: var(--input-background-color, #fff);
+	background-clip: padding-box; // Remove iOS box shadow
+	border: var(--input-border, var(--border-size) var(--border-style) rgba(0, 0, 0, 0.08));
+	border-radius: var(--input-border-radius, var(--border-radius));
+	outline: none;
+	box-shadow: none;
+	cursor: var(--input-cursor);
+	transition: var(--input-transition, var(--transition));
+
+	&:focus {
+		outline: none;
+
+		--input-border: var(--border-size) var(--border-style) var(--color-primary);
+	}
+}
+
+input::placeholder {
+	color: rgba(0, 0, 0, 0.3);
+}
+
+:disabled,
+:disabled:hover {
+	--input-background-color: var(--color-muted);
+	--input-cursor: not-allowed;
+}
+
+textarea {
+	line-height: var(--textarea-line-height, var(--line-height-body));
+}
+
+select {
+	height: var(--select-height, (calc(var(--text-md) * 2)));
+	padding: var(--select-padding, (0 auto));
+
+	&[multiple] {
+		height: auto;
+	}
+}
+
+input[type="checkbox"],
+input[type="image"],
+input[type="radio"] {
+	width: auto;
+	margin-right: var(--spacing-md);
+}
+
+input[type="color"] {
+	min-height: var(--spacing-xl);
+}
+
+input[type="search"] {
+	-webkit-appearance: none;
+
+	&::-webkit-search-cancel-button,
+	&::-webkit-search-results-button {
+		display: none;
+	}
+}
+
+fieldset {
+	min-width: 0;
+	margin: 0;
+	padding: 0.01em 0 0 0;
+	border: 0;
+
+	body:not(:-moz-handler-blocked) & {
+		display: table-cell;
+	}
+}
+
+legend {
+	display: table;
+	float: left;
+	width: 100%;
+	margin: var(--legend-margin, 0 0 var(--spacing-md));
+	padding: var(--legend-padding, 0);
+	font-size: var(--legend-font-size, var(--text-xs));
+
+	+ * {
+		clear: both;
+	}
+}

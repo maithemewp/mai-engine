@@ -1,0 +1,17 @@
+{
+  "breakpoint": 1200,
+  "colors": {
+    "primary": "#007bff",
+    "secondary": "#6c757d",
+    "success": "#28a745",
+    "danger": "#dc3545",
+    "warning": "#ffc107",
+    "info": "#42a2b8",
+    "black": "#000000",
+    "dark": "#343a40",
+    "medium": "#6c757d",
+    "muted": "#dee2e6",
+    "light": "#f8f9fa",
+    "white": "#ffffff"
+  }
+}

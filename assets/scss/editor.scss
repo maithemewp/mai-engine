@@ -1,0 +1,36 @@
+@import "abstracts/_index";
+@import "base/globals";
+@import "base/html";
+@import "base/typography";
+@import "base/heading";
+@import "base/list";
+@import "components/blocks/_index";
+@import "components/entry/_index";
+@import "utilities/_index";
+@import "config";
+
+body {
+	background: var(--color-white);
+}
+
+.editor-post-title__block .editor-post-title__input {
+
+	@include heading;
+}
+
+p {
+	font-size: var(--text-md);
+}
+
+.wp-block {
+
+	max-width: var(--breakpoint-md);
+
+	&[data-align="wide"] {
+		max-width: var(--breakpoint);
+	}
+
+	&[data-align="full"] {
+		max-width: none;
+	}
+}

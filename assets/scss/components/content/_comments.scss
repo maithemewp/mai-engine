@@ -1,0 +1,71 @@
+.entry-comments {
+	margin-top: var(--spacing-xxxl);
+}
+
+.comment-list {
+	list-style-type: none;
+}
+
+.comment {
+	margin: 0;
+	padding: var(--spacing-xl);
+	border: var(--border);
+	border-radius: var(--border-radius);
+	box-shadow: var(--shadow);
+
+	&:not(:first-child) {
+		margin-top: var(--spacing-md);
+	}
+
+	.children {
+		margin: var(--spacing-md) 0 0;
+		list-style-type: none;
+	}
+
+	.comment {
+		--shadow: none;
+		margin-right: calc(var(--spacing-xl) * -1 - 1px); /* make all child comments flush to right, over border as well */
+
+		&:last-child {
+			margin-bottom: calc(var(--spacing-xl) * -1 - 1px); /* make all child comments flush to bottom, over border as well */
+		}
+	}
+
+}
+
+.comment-header {
+	display: flex;
+}
+
+.comment-author {
+	display: flex;
+	place-items: center;
+	font-family: var(--font-secondary);
+
+	.avatar {
+		margin-right: var(--spacing-sm);
+	}
+}
+
+.comment-meta {
+	margin: 0 0 0 auto;
+	font-size: var(--text-xs);
+}
+
+.comment-content,
+.comment-reply {
+	margin-top: var(--spacing-md);
+}
+
+.comment-reply {
+	text-align: end;
+}
+
+.comment-edit-link {
+	display: none;
+}
+
+.comment-respond {
+	width: 100%;
+	margin-top: var(--spacing-xxxl);
+}

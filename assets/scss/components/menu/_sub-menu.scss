@@ -1,0 +1,94 @@
+.sub-menu {
+	position: var(--sub-menu-position, relative);
+	top: 100%;
+	left: var(--sub-menu-left, auto);
+	display: var(--sub-menu-display, none);
+	flex-wrap: wrap;
+	width: var(--sub-menu-width, 100%);
+	margin: var(--sub-menu-margin, var(--spacing-md) var(--spacing-md) 0);
+	padding: var(--sub-menu-padding, 0);
+	font-size: 0.9em;
+	list-style-type: none;
+	background-color: var(--sub-menu-background-color, transparent);
+	border: var(--sub-menu-border, 0);
+	opacity: var(--sub-menu-opacity, 1);
+	transition: var(--sub-menu-transition, none);
+
+	--list-margin: 0 !important;
+	--menu-item-width: 100%;
+}
+
+.sub-menu-toggle {
+	position: var(--sub-menu-toggle-position, absolute);
+	top: 0;
+	right: 0;
+	z-index: 1;
+	display: var(--sub-menu-toggle-display, (flex));
+	align-items: center;
+	justify-content: center;
+	width: 3em;
+	height: calc((var(--spacing-sm) * 2) + 1em);
+	margin: 0;
+	line-height: 0;
+	background-color: transparent;
+
+	&:hover,
+	&:focus {
+		background-color: transparent;
+	}
+
+	&:focus {
+		outline: var(--border);
+	}
+}
+
+.sub-menu-toggle-icon {
+	display: block;
+	width: 0;
+	height: 0;
+	border-top: var(--spacing-xxxxs) solid var(--color-dark);
+	border-right: var(--spacing-xxxxs) solid transparent;
+	border-left: var(--spacing-xxxxs) solid transparent;
+	content: " ";
+}
+
+.sub-menu-visible {
+	--sub-menu-display: flex;
+	--sub-menu-opacity: 1;
+	--sub-menu-left: auto;
+}
+
+.sub-menu .sub-menu {
+	top: var(--sub-sub-menu-top, auto);
+	left: var(--sub-sub-menu-left, auto);
+	margin-left: var(--sub-sub-menu-margin-left, auto);
+	white-space: var(--sub-sub-menu-white-space, normal);
+}
+
+.is-desktop {
+	--sub-menu-position: absolute;
+	--sub-menu-left: -999rem;
+	--sub-menu-display: flex;
+	--sub-menu-width: 200px;
+	--sub-menu-margin: 0 0 0 calc(0 - var(--spacing-md));
+	--sub-menu-background-color: var(--color-white);
+	--sub-menu-border: var(--border);
+	--sub-menu-opacity: 0;
+	--sub-menu-transition: opacity var(--transition-duration) var(--transition-timing-function);
+
+	--sub-menu-toggle-position: relative;
+	--sub-menu-toggle-display: none;
+
+	--sub-sub-menu-top: -1px;
+	--sub-sub-menu-left: 100%;
+	--sub-sub-menu-margin-left: 0;
+	--sub-sub-menu-white-space: nowrap;
+
+	.menu-item:hover,
+	.menu-item:focus,
+	.menu-item:focus-within {
+		--sub-menu-display: flex;
+		--sub-menu-opacity: 1;
+		--sub-menu-left: auto;
+	}
+}

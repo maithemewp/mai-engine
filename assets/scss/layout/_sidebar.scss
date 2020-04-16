@@ -1,0 +1,6 @@
+.sidebar {
+
+	@include mq(lg) {
+		width: var(--sidebar-width);
+	}
+}

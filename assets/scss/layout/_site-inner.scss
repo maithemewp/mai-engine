@@ -1,0 +1,15 @@
+.site-inner {
+	width: 100%;
+	margin: var(--site-inner-margin, 0) auto;
+
+	@include mq(lg) {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+	}
+}
+
+.no-page-header.transparent-header,
+.no-page-header.sticky-header {
+	--site-inner-margin: 20vh auto;
+}

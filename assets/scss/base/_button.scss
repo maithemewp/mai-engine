@@ -1,0 +1,71 @@
+#{$all-buttons} {
+
+	@include button();
+}
+
+.button {
+
+	&:disabled {
+		--filter-hover: unset;
+
+		&,
+		&:hover,
+		&:focus {
+			--button-backround: var(--color-muted);
+			--button-opacity: 0.5;
+			--button-cursor: not-allowed;
+		}
+	}
+}
+
+.button-small {
+	--button-padding: 1em 1.5em;
+	--button-font-size: var(--text-sm);
+}
+
+.button-subtle {
+	--button-background: var(--color-muted);
+	--button-color: var(--color-dark);
+}
+
+.button-rounded {
+	--button-border-radius: 100rem;
+}
+
+.button-outline {
+	--button-border: var(--border);
+	--button-color: var(--color-primary);
+	--button-background: transparent;
+	--filter-hover: unset;
+
+	&:hover,
+	&:focus {
+		--button-color: var(--color-white);
+		--button-background: var(--color-light);
+	}
+}
+
+.button-white {
+	--button-background: var(--color-white);
+	--button-color: var(--color-primary);
+}
+
+.button-white.button-outline {
+	--button-border-color: var(--color-white);
+	--button-background: transparent;
+	--button-color: var(--color-white);
+	--filter-hover: unset;
+
+	&:hover,
+	&:focus {
+		--button-color: var(--color-primary);
+		--button-background: var(--color-white);
+	}
+}
+
+.comment-reply-link {
+	--button-background: var(--color-muted);
+	--button-color: var(--color-dark);
+	--button-padding: 0.75em 1em;
+	--button-font-size: var(--text-xs);
+}

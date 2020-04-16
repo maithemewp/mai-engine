@@ -1,0 +1,25 @@
+.wp-block {
+
+	&-columns {
+
+		@include mq(false, md) {
+			flex-wrap: wrap;
+		}
+	}
+
+	&-column {
+
+		@include mq(false, md) {
+			flex: none;
+			width: 100%;
+		}
+
+		@include mq(lg) {
+			margin-left: var(--gutter);
+
+			&:first-of-type {
+				margin-left: 0;
+			}
+		}
+	}
+}

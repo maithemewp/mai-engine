@@ -1,0 +1,34 @@
+.content {
+	width: 100%;
+	max-width: var(--content-max-width);
+	margin: var(--content-margin, 0 auto var(--spacing-xxl));
+
+	@include mq(lg) {
+		order: var(--content-order, 0);
+	}
+}
+
+.full-content {
+	--content-max-width: 100%;
+}
+
+.wide-content {
+	--content-max-width: var(--breakpoint-xl);
+}
+
+.standard-content {
+	--content-max-width: var(--breakpoint-md);
+}
+
+.narrow-content {
+	--content-max-width: var(--breakpoint-sm);
+}
+
+.content-sidebar,
+.sidebar-content {
+	--content-max-width: var(--breakpoint-lg);
+}
+
+.sidebar-content {
+	--content-order: 1;
+}

@@ -1,0 +1,14 @@
+.entry-excerpt {
+	display: block;
+	width: 100%;
+	margin: var(--entry-excerpt-margin, unset);
+
+	&:not(:first-child) {
+		--entry-excerpt-margin: var(--spacing-md) 0 0;
+	}
+}
+
+.entry-excerpt-single {
+	font-size: var(--text-lg);
+	font-style: italic;
+}

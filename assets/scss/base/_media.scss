@@ -1,0 +1,26 @@
+embed,
+iframe,
+object,
+video {
+	width: 100%;
+	max-width: 100%;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	vertical-align: top;
+	border-radius: var(--image-border-radius, 0);
+}
+
+figure {
+	margin: 0;
+}
+
+iframe {
+	border: 0;
+}
+
+.has-rounded-image {
+	--image-border-radius: 9999px;
+}

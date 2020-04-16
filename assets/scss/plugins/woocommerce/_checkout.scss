@@ -1,0 +1,124 @@
+form.checkout {
+
+	@include mq(lg) {
+		columns: 2;
+		column-gap: var(--gutter);
+
+		> div {
+			break-inside: avoid;
+		}
+	}
+}
+
+.woocommerce-form-coupon {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	margin-bottom: var(--gutter);
+
+	p {
+		width: 100%;
+	}
+}
+
+.woocommerce-checkout-payment {
+	margin-top: var(--gutter);
+}
+
+.payment_method_stripe {
+
+	label {
+
+		img {
+			max-width: calc(var(--spacing-lg) * #{$minor-third});
+			margin-right: var(--spacing-xs);
+		}
+	}
+
+	.woocommerce-validated {
+		display: flex;
+		align-items: baseline;
+	}
+
+	.form-row {
+
+		> div {
+			margin-bottom: var(--spacing-md);
+			padding: var(--spacing-md);
+			border: var(--border);
+			border-radius: var(--border-radius);
+		}
+
+		&-first {
+			float: left;
+			width: var(--one-half);
+			margin-right: var(--gutter);
+		}
+
+		&-last {
+			float: right;
+			width: var(--one-half);
+		}
+	}
+}
+
+.payment_method_paypal {
+
+	label {
+
+		img {
+			display: block;
+			max-width: var(--spacing-xxxl);
+			margin-bottom: var(--spacing-md);
+		}
+	}
+}
+
+.woocommerce-PaymentMethod,
+.wc_payment_method {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+
+	> input {
+
+		@include position(absolute, var(--spacing-md) null null var(--spacing-md));
+
+		&:checked + label {
+			background-color: rgba(var(--color-primary), var(--shadow-opacity));
+			border-color: var(--color-primary);
+		}
+	}
+
+	label[for*="payment_method"] {
+		display: inline-block;
+		width: 100%;
+		margin-bottom: var(--spacing-md);
+		padding-left: calc(var(--column-gap) * 2);
+
+		@include heading;
+
+		img {
+			margin-top: var(--spacing-md);
+		}
+	}
+}
+
+.place-order {
+
+	.button {
+		width: 100%;
+	}
+}
+
+.select2-container--default .select2-selection--single {
+
+	&,
+	.select2-selection__rendered,
+	.select2-selection__arrow {
+		height: calc((var(--text-md) / #{$major-second}) + var(--text-md) * 2);
+		line-height: calc((var(--text-md) / #{$major-second}) + var(--text-md) * 2);
+	}
+}

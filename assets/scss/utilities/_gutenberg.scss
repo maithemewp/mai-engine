@@ -1,0 +1,17 @@
+@each $color-name, $color-value in $colors {
+
+	.has-#{ $color-name }-color {
+		color: #{ $color-value } !important;
+	}
+
+	.has-#{ $color-name }-background-color {
+		background-color: #{ $color-value };
+	}
+}
+
+@each $font-size-name, $font-size-value in $font-sizes {
+
+	.has-#{ $font-size-name }-font-size {
+		font-size: #{ $font-size-value };
+	}
+}

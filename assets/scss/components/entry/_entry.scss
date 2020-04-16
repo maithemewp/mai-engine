@@ -1,0 +1,93 @@
+.entry {
+	position: var(--entry-position, static);
+	display: var(--entry-display, flex);
+	flex: var(--entry-flex, 1 1 calc((100% / var(--columns)) - var(--column-gap)));
+	flex-direction: var(--entry-flex-direction, column);
+	width: 100%;
+	max-width: calc((100% / var(--columns)) - var(--column-gap));
+	margin: var(--entry-margin, 0);
+	padding: var(--entry-padding, 0); /* must be a single value for use in calc() full "full" images */
+	overflow: var(--entry-overflow, unset);
+	text-align: var(--align-text);
+	background-color: var(--color-white);
+	border: var(--entry-border, unset);
+	border-radius: var(--border-radius);
+	box-shadow: var(--entry-box-shadow, unset);
+}
+
+[class*="has-image-left"],
+[class*="has-image-right"] {
+	--entry-flex-direction: row;
+}
+
+.has-boxed {
+	--entry-border: var(--border);
+	--entry-box-shadow: var(--shadow);
+	--entry-overflow: hidden;
+}
+
+.has-boxed:not([class*="has-image-left-full"]):not([class*="has-image-right-full"]) {
+	--entry-padding: var(--spacing-xl); /* must be a single value for use in calc() full "full" images */
+}
+
+.has-image-background,
+.has-boxed.has-image-left-full,
+.has-boxed.has-image-right-full {
+	--entry-wrap-padding: var(--spacing-xl);
+}
+
+.has-image-background .has-image {
+	--entry-title-color: var(--color-white);
+	--entry-wrap-color: var(--color-white);
+	--entry-wrap-background: rgba(0, 0, 0, 0.6);
+}
+
+.entry-wrap {
+	display: flex;
+	flex: 1; /* 1 1 100% breaks image-left/right-full */
+	flex-direction: column;
+	justify-content: var(--align-text-vertical, center);
+	padding: var(--entry-wrap-padding, 0);
+	color: var(--entry-wrap-color, unset);
+	background: var(--entry-wrap-background, unset);
+}
+
+.widget {
+	--entry-width: 100%;
+	--entry-wrap-padding: 0;
+}
+
+.entries {
+
+	&:not(:first-child) {
+		margin: var(--entries-margin, var(--spacing-md) 0 0);
+	}
+}
+
+.entries-wrap {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: var(--align-columns-vertical);
+	justify-content: var(--align-columns);
+	max-width: 100vw;
+	margin: calc(var(--row-gap) * -0.5) calc(var(--column-gap) * -0.5);
+
+	--entry-margin: calc(var(--row-gap) / 2) calc(var(--column-gap) / 2);
+
+	@include mq(false, sm) {
+		--columns: var(--columns-xs);
+	}
+
+	@include mq(sm, md) {
+		--columns: var(--columns-sm);
+	}
+
+	@include mq(md, lg) {
+		--columns: var(--columns-md);
+	}
+
+	@include mq(lg) {
+		--columns: var(--columns-lg);
+	}
+}
+

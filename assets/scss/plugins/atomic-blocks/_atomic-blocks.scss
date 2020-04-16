@@ -1,0 +1,14 @@
+.ab {
+
+	&-button {
+
+		@include button();
+	}
+
+	&-container-image-wrap {
+
+		.ab-container-image {
+			margin: 0;
+		}
+	}
+}

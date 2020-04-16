@@ -1,0 +1,32 @@
+.screen-reader-shortcut,
+.screen-reader-text,
+.screen-reader-text span {
+
+	@include hide-visually;
+
+	&:active,
+	&:focus {
+		position: absolute;
+		padding: var(--spacing-md);
+		color: var(--color-white);
+		text-decoration: none;
+		background-color: var(--color-muted);
+
+		@include hide-visually(unhide);
+	}
+}
+
+.genesis-skip-link {
+	margin: 0;
+
+	li {
+		width: 0;
+		height: 0;
+		list-style: none;
+		background: var(--color-white);
+	}
+}
+
+:focus {
+	outline: var(--border);
+}

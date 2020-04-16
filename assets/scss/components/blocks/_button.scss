@@ -1,0 +1,27 @@
+.wp-block-button__link {
+
+	@include button($block: true);
+
+	.is-style-outline & {
+		color: var(--color-primary);
+		background-color: transparent;
+		border: var(--border-size) var(--border-style) currentColor;
+	}
+
+	.is-style-secondary & {
+		color: var(--color-dark);
+		background-color: var(--color-muted);
+	}
+
+	.is-style-tertiary & {
+		--button-padding: var(--spacing-md) var(--spacing-xs);
+		color: var(--color-primary);
+		background-color: transparent;
+	}
+
+	.is-style-tertiary &::after {
+		display: inline-block;
+		margin-left: var(--spacing-xxxs);
+		content: "\2192";
+	}
+}

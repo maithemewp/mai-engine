@@ -1,0 +1,28 @@
+.entry-title {
+	margin: var(--entry-title-margin, var(--heading-margin));
+	font-size: var(--entry-title-font-size, var(--text-xxxxl));
+
+	&:not(:first-child) {
+		--entry-title-margin: var(--spacing-xl) 0 0;
+	}
+}
+
+.entries {
+	--entry-title-font-size: var(--text-lg);
+}
+
+.entry-title-link {
+	color: var(--entry-title-color, var(--color-medium));
+	text-decoration: var(--entry-title-text-decoration, none);
+
+	&:hover,
+	&:focus {
+		--entry-title-color: var(--color-primary);
+		--entry-title-text-decoration: underline;
+	}
+}
+
+.is-archive {
+	--entry-title-font-size: var(--text-sm);
+	--entry-title-color: var(--color-dark);
+}

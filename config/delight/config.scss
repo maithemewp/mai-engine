@@ -1,0 +1,16 @@
+:root {
+	--font-secondary: playfair display;
+}
+
+.nav-after-header {
+	background-color: var(--color-dark);
+}
+
+.page-header {
+	--page-header-overlay: transparent;
+	--page-header-overlay-opacity: 1;
+	--page-header-inner-background: rgba(255, 255, 255, 0.9);
+	--page-header-inner-max-width: 800px;
+	--page-header-inner-padding: var(--spacing-xxl) var(--spacing-xxxl);
+	--page-header-inner-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}

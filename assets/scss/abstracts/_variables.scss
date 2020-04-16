@@ -1,0 +1,35 @@
+$all-buttons: append($all-buttons, ".button");
+$all-text-inputs: append($all-text-inputs, "select");
+$all-headings: (h1, h2, h3, h4, h5, h6, legend);
+
+$breakpoints: (
+	xl: ($breakpoint / 1) * 1px,
+	lg: ($breakpoint / 1.2) * 1px,
+	md: ($breakpoint / 1.5) * 1px,
+	sm: ($breakpoint / 2) * 1px,
+	xs: ($breakpoint / 3) * 1px,
+) !default;
+
+$colors: (
+	primary: var(--color-primary),
+	secondary: var(--color-secondary),
+	success: var(--color-success),
+	danger: var(--color-danger),
+	warning: var(--color-warning),
+	info: var(--color-info),
+	black: var(--color-black),
+	dark: var(--color-dark),
+	medium: var(--color-medium),
+	muted: var(--color-muted),
+	light: var(--color-light),
+	white: var(--color-white),
+) !default;
+
+$font-sizes: (
+	h1: var(--text-xxxxl),
+	h2: var(--text-xxxl),
+	h3: var(--text-xxl),
+	h4: var(--text-xl),
+	h5: var(--text-lg),
+	h6: var(--text-md),
+) !default;

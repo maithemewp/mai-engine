@@ -1,0 +1,7 @@
+{
+  "extends": [
+    "stylelint-config-wordpress/scss",
+    "stylelint-config-rational-order"
+  ]
+}
+

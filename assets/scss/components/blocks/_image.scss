@@ -1,0 +1,20 @@
+.wp-block-image {
+	margin-top: var(--spacing-md);
+	margin-bottom: var(--spacing-md);
+
+	&.alignleft {
+		margin-right: var(--spacing-md);
+	}
+
+	&.alignright {
+		margin-left: var(--spacing-md);
+	}
+
+	&.alignwide {
+		max-width: 120%;
+	}
+
+	&.alignfull {
+		max-width: none;
+	}
+}
