@@ -1,0 +1,16 @@
+# Default editor settings
+[*]
+charset = utf-8
+end_of_line = crlf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# JavaScript settings
+[*.js]
+tab_width = 2
+indent_style = tab
+
+# JSON
+[*.json]
+indent_size = 2
+indent_style = space
