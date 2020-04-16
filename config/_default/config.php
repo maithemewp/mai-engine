@@ -455,7 +455,7 @@ return [
 				'location'    => 'genesis_before_header',
 			],
 			[
-				'id'          => 'header_left',
+				'id'          => 'header-left',
 				'name'        => __( 'Header Left', 'mai-engine' ),
 				'description' => __( 'The Header Left widget area.', 'mai-engine' ),
 				'location'    => 'mai_header_left',
@@ -465,7 +465,7 @@ return [
 				],
 			],
 			[
-				'id'          => 'header_right',
+				'id'          => 'header-right',
 				'name'        => __( 'Header Right', 'mai-engine' ),
 				'description' => __( 'The Header Right widget area.', 'mai-engine' ),
 				'location'    => 'mai_header_right',
