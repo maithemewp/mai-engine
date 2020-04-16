@@ -8,7 +8,7 @@
 
 			.content-sidebar &,
 			.sidebar-content & {
-				--content-width: calc(100vw - var(--sidebar-width) - var(--content-sidebar-gap) - (var(--side-spacing) * 3));
+				--content-max-width: calc(100vw - var(--sidebar-width) - var(--content-sidebar-gap) - (var(--side-spacing) * 3));
 			}
 
 		}
@@ -17,7 +17,7 @@
 
 			.content-sidebar &,
 			.sidebar-content & {
-				--content-width: calc(var(--breakpoint-xl) - var(--sidebar-width) - var(--content-sidebar-gap) - var(--side-spacing));
+				--content-max-width: calc(var(--breakpoint-xl) - var(--sidebar-width) - var(--content-sidebar-gap) - var(--side-spacing));
 			}
 
 		}
@@ -29,7 +29,7 @@
 
 	&__inner-container {
 		width: 100% !important;
-		max-width: var(--content-width) !important;
+		max-width: var(--content-max-width) !important;
 		margin-right: auto;
 		margin-left: auto;
 	}
