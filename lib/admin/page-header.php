@@ -46,10 +46,11 @@ function mai_add_page_header_metabox() {
 	}
 
 	$field_data = [
-		'key'                   => 'page_header',
-		'title'                 => esc_html__( 'Page Header', 'mai-engine' ),
-		'location'              => $locations ?: false,
-		'fields'                => [
+		'key'      => 'page_header',
+		'title'    => esc_html__( 'Page Header', 'mai-engine' ),
+		'location' => $locations ?: false,
+		'position' => 'side',
+		'fields'   => [
 			[
 				'key'           => 'page_header_image',
 				'label'         => esc_html__( 'Image', 'mai-engine' ),
