@@ -7,12 +7,14 @@
 	width: var(--sub-menu-width, 100%);
 	margin: var(--sub-menu-margin, var(--spacing-md) var(--spacing-md) 0);
 	padding: var(--sub-menu-padding, 0);
+	font-size: 0.9em;
 	list-style-type: none;
 	background-color: var(--sub-menu-background-color, transparent);
 	border: var(--sub-menu-border, 0);
 	opacity: var(--sub-menu-opacity, 1);
 	transition: var(--sub-menu-transition, none);
 
+	--list-margin: 0 !important;
 	--menu-item-width: 100%;
 }
 
@@ -67,9 +69,8 @@
 	--sub-menu-position: absolute;
 	--sub-menu-left: -999rem;
 	--sub-menu-display: flex;
-	--sub-menu-width: calc(var(--sidebar-width) / 2);
+	--sub-menu-width: 200px;
 	--sub-menu-margin: 0 0 0 calc(0 - var(--spacing-md));
-	--sub-menu-padding: var(--spacing-md) 0;
 	--sub-menu-background-color: var(--color-white);
 	--sub-menu-border: var(--border);
 	--sub-menu-opacity: 0;

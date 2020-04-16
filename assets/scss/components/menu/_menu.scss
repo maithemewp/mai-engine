@@ -18,6 +18,7 @@
 	--button-margin: 0 0 0 var(--spacing-md);
 }
 
+/* TODO: current menu item styles */
 .menu-item {
 	position: relative;
 	display: var(--menu-item-display, (flex));
@@ -29,7 +30,9 @@
 }
 
 .menu-item-link {
-	display: block;
+	display: flex;
+	flex: 1;
+	align-items: center;
 	width: var(--menu-item-link-width, 100%);
 	padding: var(--menu-item-link-padding, (var(--spacing-sm) var(--spacing-xxs)));
 	color: var(--menu-item-link-color, var(--link-color));
@@ -40,6 +43,51 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+.menu-item-has-children > a::after {
+	display: inline-block;
+	width: 6px;
+	height: 6px;
+	border-color: currentColor;
+	border-style: solid;
+	border-top: 0;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left: 0;
+	transform: var(--sub-menu-toggle-transform, rotate(45deg));
+	content: "";
+}
+
+.genesis-nav-menu > .menu-item-has-children > a::after {
+	margin-top: -6px;
+}
+
+.genesis-nav-menu .menu-item-has-children > a::after {
+	margin-left: 10px;
+}
+
+.genesis-nav-menu .sub-menu .menu-item-has-children > a::after {
+	--sub-menu-toggle-transform: rotate(-45deg);
+}
+
+.mobile-menu .sub-menu-toggle::after {
+	margin: auto;
+}
+
+.mobile-menu .sub-menu-toggle.activated::after {
+	margin-top: 3px;
+	--sub-menu-toggle-transform: rotate(-135deg);
+}
+
+/* TODO: These menus will be forced to 1 level so we need to hide toggles */
+.nav-secondary .genesis-nav-menu .menu-item-has-children > a::after,
+.site-footer .genesis-nav-menu .menu-item-has-children > a::after {
+	display: none;
+}
+
+[dir="rtl"] .genesis-nav-menu .sub-menu .menu-item-has-children > a::after {
+	--sub-menu-toggle-transform: rotate(135deg);
 }
 
 .has-transparent-header .site-header:not(.is-stuck) .menu {
