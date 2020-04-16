@@ -141,26 +141,3 @@ function mai_after_demo_import() {
 	$wp_rewrite->set_permalink_structure( '/%postname%/' );
 	$wp_rewrite->flush_rules();
 }
-
-add_filter( 'gettext', 'mai_modify_ocdi_strings', 20, 3 );
-/**
- * Modify hardcoded strings in One Click Demo Import.
- *
- * @since 1.0.0
- *
- * @param string $translated_text   Translated text string.
- * @param string $untranslated_text Untranslated text string.
- * @param string $domain            Text domain.
- *
- * @return string
- */
-function mai_modify_ocdi_strings( $translated_text, $untranslated_text, $domain ) {
-	$custom_field_text = '%1$s%3$sThat\'s it, all done!%4$s%2$sThe demo import has finished. Please check your page and make sure that everything has imported correctly. If it did, you can deactivate the %3$sOne Click Demo Import%4$s plugin, because it has done its job.%5$s';
-
-	if ( is_admin() && $untranslated_text === $custom_field_text ) {
-		// Translators: 1: Opening div and paragraph tags 2: Line break 3: Opening strong tag 4: Closing strong tag 5: closing div and paragraph tags.
-		return __( '%1$s%3$sThat\'s it, all done!%4$s%2$sThe demo import has finished. Please check your page and make sure that everything has imported correctly. ', 'mai-engine' ) . sprintf( '<a href="%s" target="_blank">%s</a>', home_url(), __( 'View Site', 'mai-engine' ) );
-	}
-
-	return $translated_text;
-}
