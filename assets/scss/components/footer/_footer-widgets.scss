@@ -1,11 +1,33 @@
 .footer-widgets {
 	padding: var(--spacing-xxxxl) 0;
 
-	--menu-columns: 2;
 	--menu-display: block;
 	--menu-item-width: 100%;
 	--menu-item-margin: 0 0 var(--spacing-md);
 	--menu-item-link-padding: 0;
+	--wrap-display: grid;
+
+	@include mq(false, sm) {
+		--columns: var(--columns-xs);
+	}
+
+	@include mq(sm, md) {
+		--columns: var(--columns-sm);
+	}
+
+	@include mq(md, lg) {
+		--columns: var(--columns-md);
+	}
+
+	@include mq(lg) {
+		--columns: var(--columns-lg);
+	}
+
+	> .wrap {
+		grid-template-columns: repeat(var(--columns, 3), 1fr);
+		column-gap: var(--spacing-xxl);
+		row-gap: var(--spacing-xxl);
+	}
 }
 
 .footer-widget-area {

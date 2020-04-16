@@ -409,6 +409,7 @@ return [
 			],
 			'genesis-structural-wraps' => [
 				'header',
+				'footer-widgets',
 				'menu-after-header',
 				'menu-footer',
 				'page-header',
