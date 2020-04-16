@@ -12,6 +12,7 @@ a {
 	&:focus {
 		--link-color: var(--link-color-hover);
 		--link-text-decoration: var(--link-text-decoration-hover);
+		outline-color: var(--border-color);
 	}
 }
 
