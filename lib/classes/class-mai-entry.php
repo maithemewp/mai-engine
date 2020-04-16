@@ -949,8 +949,9 @@ class Mai_Entry {
 				'context' => 'entry-more-link',
 				'echo'    => false,
 				'atts'    => [
-					'href'  => $href,
-					'class' => 'button entry-more-link',
+					'href'   => $href,
+					'target' => is_admin() ? '_blank' : false,
+					'class'  => 'entry-more-link ' . ( is_admin() ? 'wp-block-button__link has-small-font-size' : 'button button-small button-subtle' ),
 				],
 				'params'  => [
 					'args'  => $this->args,
@@ -966,6 +967,9 @@ class Mai_Entry {
 				'close'   => '</p>',
 				'content' => $more_link,
 				'context' => 'entry-more',
+				'atts'    => [
+					'class' => 'entry-more' . ( is_admin() ? ' wp-block-button is-style-secondary' : '' ),
+				],
 				'echo'    => true,
 				'params'  => [
 					'args'  => $this->args,

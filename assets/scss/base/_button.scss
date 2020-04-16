@@ -20,12 +20,12 @@
 
 .button-small {
 	--button-padding: 1em 1.5em;
-	--button-font-size: small;
+	--button-font-size: var(--text-sm);
 }
 
 .button-subtle {
 	--button-background: var(--color-muted);
-	--button-color: var(--color-medium);
+	--button-color: var(--color-dark);
 }
 
 .button-rounded {
@@ -61,13 +61,6 @@
 		--button-color: var(--color-primary);
 		--button-background: var(--color-white);
 	}
-}
-
-.entry-more-link {
-	--button-background: var(--color-muted);
-	--button-color: var(--color-dark);
-	--button-padding: 1em 1.5em;
-	--button-font-size: var(--text-sm);
 }
 
 .comment-reply-link {
