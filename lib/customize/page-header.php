@@ -102,7 +102,7 @@ function mai_page_header_customizer_settings() {
 					'search' => __( 'Search Results', 'mai-engine' ),
 					'author' => __( 'Author Archives', 'mai-engine' ),
 					'date'   => __( 'Date Archives', 'mai-engine' ),
-				],
+				]
 			),
 		]
 	);
