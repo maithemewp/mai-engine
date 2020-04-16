@@ -25,11 +25,9 @@
 
 	> .wrap {
 		grid-template-columns: repeat(var(--columns, 3), 1fr);
+		align-items: var(--footer-widgets-align-items, unset);
+		justify-content: var(--footer-widgets-justify-content, unset);
 		column-gap: var(--spacing-xxl);
 		row-gap: var(--spacing-xxl);
 	}
-}
-
-.footer-widget-area {
-	flex: 1;
 }
