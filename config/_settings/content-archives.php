@@ -417,19 +417,19 @@ return [
 	[
 		'type'            => 'image',
 		'settings'        => 'page-header-image',
-		'label'           => __( 'Page Header Default Image', 'mai-engine' ),
+		'label'           => __( 'Page Header default image', 'mai-engine' ),
 		'default'         => '',
 		'choices'         => [
 			'save_as' => 'id',
 		],
-		'active_callback' => 'mai_has_archive_page_header_support',
+		'active_callback' => 'mai_has_archive_page_header_support_callback',
 	],
 	[
 		'type'            => 'checkbox',
 		'settings'        => 'page-header-featured',
-		'label'           => esc_html__( 'Use Featured Image As Page Header Image', 'mai-engine' ),
+		'label'           => esc_html__( 'Use featured image as page header image', 'mai-engine' ),
 		'default'         => false,
-		'active_callback' => 'mai_has_archive_page_header_support',
+		'active_callback' => 'mai_has_archive_page_header_support_callback',
 	],
 ];
 

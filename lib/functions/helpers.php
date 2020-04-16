@@ -251,6 +251,36 @@ function mai_has_any_page_header_types() {
  *
  * @since 0.1.0
  *
+ * @param object $control The customizer field control.
+ *
+ * @return bool
+ */
+function mai_has_single_page_header_support_callback( $control ) {
+	$name = str_replace( 'mai-engine[single-content][', '', $control->option_name );
+	$name = str_replace( ']', '', $name );
+	return mai_has_single_page_header_support( $name );
+}
+
+/**
+ * Checks if a content type has Page Header support.
+ *
+ * @since 0.1.0
+ *
+ * @param object $control The customizer field control.
+ *
+ * @return bool
+ */
+function mai_has_archive_page_header_support_callback( $control ) {
+	$name = str_replace( 'mai-engine[content-archive][', '', $control->option_name );
+	$name = str_replace( ']', '', $name );
+	return mai_has_single_page_header_support( $name );
+}
+
+/**
+ * Checks if a content type has Page Header support.
+ *
+ * @since 0.1.0
+ *
  * @param string $type The content type.
  *
  * @return bool

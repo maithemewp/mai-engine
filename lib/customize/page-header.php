@@ -110,20 +110,6 @@ function mai_page_header_customizer_settings() {
 	\Kirki::add_field(
 		$handle,
 		[
-			'type'        => 'select',
-			'multiple'    => 99,
-			'settings'    => 'page-header-featured',
-			'section'     => $section,
-			'label'       => __( 'Use featured image as the page header', 'mai-engine' ),
-			'description' => __( 'These settings can be overridden on a per post basis.', 'mai-engine' ),
-			'default'     => $single_default,
-			'choices'     => $singles,
-		]
-	);
-
-	\Kirki::add_field(
-		$handle,
-		[
 			'type'        => 'dimensions',
 			'settings'    => 'page-header-spacing',
 			'section'     => $section,
