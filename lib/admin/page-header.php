@@ -23,54 +23,32 @@ function mai_add_page_header_metabox() {
 		return;
 	}
 
-	$config     = mai_get_config( 'page-header' );
-	$post_types = get_post_types( [ 'public' => true ], 'names' );
-	unset( $post_types['attachment'] );
-	$taxonomies = get_taxonomies( [ 'public' => true ], 'names' );
-	unset( $taxonomies['post_format'] );
-	unset( $taxonomies['product_shipping_class'] );
-	unset( $taxonomies['yst_prominent_words'] );
+	$locations = [];
 
-	$page_types = [
-		'single'  => array_keys( $post_types ),
-		'archive' => array_merge( array_keys( $taxonomies ), [ 'author' ] ),
-	];
+	foreach( mai_get_single_page_header_types() as $type ) {
+		$locations[] = [
+			[
+				'param'    => 'post_type',
+				'operator' => '==',
+				'value'    => $type,
+			],
+		];
+	}
 
-	foreach ( $page_types as $page_type => $content_types ) {
-		foreach ( $content_types as $content_type ) {
-			$enable = false;
-			$param  = 'single' === $page_type ? 'post_type' : 'taxonomy';
-			$param  = 'author' === $content_type ? 'user_form' : $param;
-			$param  = in_array( $content_type, [ '404', 'date', 'search' ], true ) ? $param = 'page' : $param;
-
-			if ( '*' === $config ) {
-				$enable = true;
-			}
-
-			if ( isset( $config[ $page_type ] ) && '*' === $config[ $page_type ] ) {
-				$enable = true;
-			}
-
-			if ( isset( $config[ $page_type ] ) && is_array( $config[ $page_type ] ) && in_array( $content_type, $config[ $page_type ], true ) ) {
-				$enable = true;
-			}
-
-			if ( $enable ) {
-				$locations[] = [
-					[
-						'param'    => $param,
-						'operator' => '==',
-						'value'    => $content_type,
-					],
-				];
-			}
-		}
+	foreach( mai_get_archive_page_header_types() as $type ) {
+		$locations[] = [
+			[
+				'param'    => 'author' === $type ? 'user_form' : 'taxonomy',
+				'operator' => '==',
+				'value'    => $type,
+			],
+		];
 	}
 
 	$field_data = [
 		'key'                   => 'page_header',
 		'title'                 => esc_html__( 'Page Header', 'mai-engine' ),
-		'location'              => isset( $locations ) ? $locations : false,
+		'location'              => $locations ?: false,
 		'fields'                => [
 			[
 				'key'           => 'page_header_image',
