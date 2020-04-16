@@ -165,8 +165,20 @@ function mai_get_archive_args_name() {
 		$name = 'post_tag';
 	} elseif ( is_tax() ) {
 		$name = get_query_var( 'taxonomy' );
+		if ( ! $name ) {
+			$object = get_queried_object();
+			if ( $object ) {
+				$name = $object->taxonomy;
+			}
+		}
 	} elseif ( is_post_type_archive() ) {
 		$name = get_query_var( 'post_type' );
+		if ( ! $name ) {
+			$object = get_queried_object();
+			if ( $object ) {
+				$name = $object->name;
+			}
+		}
 	} elseif ( is_search() ) {
 		$name = 'search';
 	} elseif ( is_author() ) {
