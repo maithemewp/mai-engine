@@ -479,10 +479,19 @@ class Mai_Entry {
 				$image_id = $image_id ? $image_id : genesis_get_image_id( 0, $this->id );
 				break;
 			case 'term':
-				$image_id = get_term_meta( $this->id, 'mai_image', true ); // TODO.
+				$key = 'featured_image';
+				// We need to check each term because a grid archive can show multiple taxonomies.
+				if ( class_exists( 'WooCommerce' ) && 'block' === $this->context && 'term' === $this->type ) {
+					$term = get_term( $this->id );
+					if ( $term && 'product_cat' === $term->taxonomy ) {
+						$key = 'thumbnail_id';
+					}
+				}
+				$image_id = get_term_meta( $this->id, $key, true );
 				break;
 			case 'user':
-				$image_id = get_user_meta( $this->id, 'mai_image', true ); // TODO.
+				$image_id = get_user_meta( $this->id, 'featured_image', true ); // TODO.
+				// $image_id = $image_id ? $image_id : fallback to avatar?      // TODO.
 				break;
 			default:
 				$image_id = 0;
