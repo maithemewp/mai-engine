@@ -873,19 +873,19 @@ msgstr ""
 msgid "Site Default"
 msgstr ""
 
-#: lib/structure/page-header.php:153
+#: lib/structure/page-header.php:152
 msgid "Latest Posts"
 msgstr ""
 
-#: lib/structure/page-header.php:188, lib/structure/page-header.php:276
+#: lib/structure/page-header.php:185, lib/structure/page-header.php:270
 msgid "Search results for: "
 msgstr ""
 
-#: lib/structure/page-header.php:198
+#: lib/structure/page-header.php:194
 msgid "Archives for "
 msgstr ""
 
-#: lib/structure/page-header.php:211
+#: lib/structure/page-header.php:206
 msgid "Not found, error 404"
 msgstr ""
 
@@ -905,14 +905,14 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: config/_settings/navigation-menus/after-header.php:16
-msgid "Alignment"
-msgstr ""
-
-#: config/_settings/site-header/header-settings.php:16
+#: config/_settings/header/site-header.php:16
 msgid "Enable sticky header?"
 msgstr ""
 
-#: config/_settings/site-header/header-settings.php:22
+#: config/_settings/header/site-header.php:22
 msgid "Enable transparent header?"
+msgstr ""
+
+#: config/_settings/navigation-menus/after-header.php:16
+msgid "Alignment"
 msgstr ""
