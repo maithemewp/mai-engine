@@ -165,4 +165,20 @@ function mai_page_header_customizer_settings() {
 			],
 		]
 	);
+
+	\Kirki::add_field(
+		$handle,
+			[
+			'type'        => 'image',
+			'settings'    => 'page-header-image',
+			'section'     => $section,
+			'label'       => __( 'Default Image', 'mai-engine' ),
+			'description' => __( 'This can be overridden on a per post basis.', 'mai-engine' ),
+			'default'     => '',
+			'choices'     => [
+				'save_as' => 'id',
+			],
+		]
+	);
+
 }
