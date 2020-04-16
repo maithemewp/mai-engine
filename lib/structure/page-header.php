@@ -80,16 +80,15 @@ function mai_do_page_header_image() {
 		$image_id = get_post_meta( get_option( 'page_for_posts' ), 'page_header_image', true );
 
 	} elseif ( mai_is_type_archive() ) {
+		if ( is_category() || is_tag() || is_tax() ) {
+			global $wp_query;
 
-		/**
-		 *
-		 */
-		global $wp_query;
+			$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
 
-		$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
+			if ( $term ) {
+				$image_id = get_term_meta( $term->term_id, 'page_header_image', true );
+			}
 
-		if ( $term ) {
-			$image_id = get_term_meta( $term->term_id, 'page_header_image', true );
 		}
 	}
 
