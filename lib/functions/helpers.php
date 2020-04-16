@@ -196,11 +196,9 @@ function mai_has_page_header() {
 
 	$name = false;
 	if ( mai_is_type_archive() ) {
-		$name            = mai_get_archive_args_name();
-		$has_page_header = mai_has_archive_page_header_support( $name );
+		$has_page_header = mai_has_page_header_support( $name, mai_get_archive_args_name() );
 	} elseif ( mai_is_type_single() ) {
-		$name            = mai_get_singular_args_name();
-		$has_page_header = mai_has_single_page_header_support( $name );
+		$has_page_header = mai_has_page_header_support( $name, mai_get_singular_args_name() );
 	}
 
 	if ( $has_page_header && mai_is_type_single() ) {
@@ -233,11 +231,7 @@ function mai_has_any_page_header_types() {
 		if ( '*' === $config ) {
 			$has_types = true;
 		} else {
-			$archive = isset( $config['archive'] ) ? $config['archive'] : [];
-			$single  = isset( $config['single'] ) ? $config['single'] : [];
-			$archive = mai_get_option( 'page-header-archive', $archive );
-			$single  = mai_get_option( 'page-header-single', $single );
-			if ( $archive || $single ) {
+			if ( mai_get_archive_page_header_types() || mai_get_single_page_header_types() ) {
 				$has_types = true;
 			}
 		}
@@ -258,7 +252,7 @@ function mai_has_any_page_header_types() {
 function mai_has_single_page_header_support_callback( $control ) {
 	$name = str_replace( 'mai-engine[single-content][', '', $control->option_name );
 	$name = str_replace( ']', '', $name );
-	return mai_has_single_page_header_support( $name );
+	return mai_has_page_header_support( $name, 'single' );
 }
 
 /**
@@ -273,7 +267,7 @@ function mai_has_single_page_header_support_callback( $control ) {
 function mai_has_archive_page_header_support_callback( $control ) {
 	$name = str_replace( 'mai-engine[content-archive][', '', $control->option_name );
 	$name = str_replace( ']', '', $name );
-	return mai_has_single_page_header_support( $name );
+	return mai_has_page_header_support( $name, 'archive' );
 }
 
 /**
@@ -281,51 +275,77 @@ function mai_has_archive_page_header_support_callback( $control ) {
  *
  * @since 0.1.0
  *
- * @param string $type The content type.
+ * @param string $type    The content type.
+ * @param string $context The type context, either 'archive' or 'single'.
  *
  * @return bool
  */
-function mai_has_single_page_header_support( $type ) {
-	$config = mai_get_config( 'page-header' );
-
-	if ( '*' === $config ) {
-		return true;
+function mai_has_page_header_support( $type, $context ) {
+	$types = [];
+	switch ( $context ) {
+		case 'archive':
+			$types = mai_get_archive_page_header_types();
+		break;
+		case 'single':
+			$types = mai_get_single_page_header_types();
+		break;
 	}
 
-	$singles       = isset( $config['single'] ) ? $config['single'] : [];
-	$content_types = mai_get_option( 'page-header-single', $singles );
+	if ( $types ) {
+		if ( '*' === $types ) {
+			return true;
+		}
 
-	if ( '*' === $content_types ) {
-		return true;
+		if ( is_array( $types ) && in_array( $type, $types ) ) {
+			return true;
+		}
 	}
 
-	return is_array( $content_types ) && in_array( $type, $content_types );
+	return false;
 }
 
 /**
- * Checks if a content type has Page Header support.
+ * Get single content types that have page header enabled.
  *
  * @since 0.1.0
  *
- * @param string $type The content type.
- *
- * @return bool
+ * @return string|array May be * for all or array of types.
  */
-function mai_has_archive_page_header_support( $type ) {
+function mai_get_single_page_header_types() {
+	$types = null;
+	if ( ! is_null( $types ) ) {
+		return $types;
+	}
+	$settings = mai_get_option( 'page-header-single' );
+	if ( $settings ) {
+		$types = $settings;
+		return $types;
+	}
 	$config = mai_get_config( 'page-header' );
+	$types  = isset( $config['single'] ) ? $config['single']: [];
+	return $types;
+}
 
-	if ( '*' === $config ) {
-		return true;
+/**
+ * Get archive content types that have page header enabled.
+ *
+ * @since 0.1.0
+ *
+ * @return string|array May be * for all or array of types.
+ */
+function mai_get_archive_page_header_types() {
+	$types = null;
+	if ( ! is_null( $types ) ) {
+		return $types;
 	}
-
-	$archives      = isset( $config['archive'] ) ? $config['archive'] : [];
-	$content_types = mai_get_option( 'page-header-archive', $archives );
-
-	if ( '*' === $content_types ) {
-		return true;
+	$settings = mai_get_option( 'page-header-archive' );
+	if ( $settings ) {
+		$types = $settings;
+		return $types;
 	}
-
-	return is_array( $content_types ) && in_array( $type, $content_types );
+	$config = mai_get_config( 'page-header' );
+	$types  = isset( $config['archive'] ) ? $config['archive']: [];
+	return $types;
 }
 
 /**

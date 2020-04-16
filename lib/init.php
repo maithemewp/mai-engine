@@ -130,6 +130,7 @@ function mai_load_files() {
 				'admin/images',
 				'admin/settings',
 				'admin/page-header',
+				'admin/term-image',
 				'admin/hide-elements',
 				'admin/acf',
 				'admin/demo-import',

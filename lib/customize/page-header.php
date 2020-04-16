@@ -9,9 +9,10 @@
  * @license   GPL-2.0-or-later
  */
 
-add_action( 'after_setup_theme', 'mai_page_header_customizer_settings' );
+add_action( 'init', 'mai_page_header_customizer_settings' );
 /**
- * Description of expected behavior.
+ * Add page header customizer fields.
+ * This needs to be on 'init' so custom post types and custom taxonomies are available.
  *
  * @since 1.0.0
  *
@@ -34,7 +35,7 @@ function mai_page_header_customizer_settings() {
 		$single_default = array_merge( $single_default, $config['single'] );
 	}
 
-	$post_types      = get_post_types( [ 'public' => true ], 'objects' );
+	$post_types = get_post_types( [ 'public' => true ], 'objects' );
 	unset( $post_types['attachment'] );
 	if ( $post_types ) {
 		foreach( $post_types as $name => $post_type ) {
@@ -50,6 +51,7 @@ function mai_page_header_customizer_settings() {
 	}
 	$taxonomies = get_taxonomies( [ 'public' => true ], 'objects' );
 	unset( $taxonomies['post_format'] );
+	unset( $taxonomies['product_shipping_class'] );
 	unset( $taxonomies['yst_prominent_words'] );
 	if ( $taxonomies ) {
 		foreach( $taxonomies as $name => $taxonomy ) {

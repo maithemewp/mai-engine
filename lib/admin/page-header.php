@@ -9,9 +9,10 @@
  * @license   GPL-2.0-or-later
  */
 
-add_action( 'after_setup_theme', 'mai_add_page_header_metabox' );
+add_action( 'init', 'mai_add_page_header_metabox' );
 /**
- * Description of expected behavior.
+ * Add page header metabox.
+ * This needs to be on init so custom post types and taxonomies are available.
  *
  * @since 1.0.0
  *
@@ -23,22 +24,19 @@ function mai_add_page_header_metabox() {
 	}
 
 	$config     = mai_get_config( 'page-header' );
+	$post_types = get_post_types( [ 'public' => true ], 'names' );
+	unset( $post_types['attachment'] );
+	$taxonomies = get_taxonomies( [ 'public' => true ], 'names' );
+	unset( $taxonomies['post_format'] );
+	unset( $taxonomies['product_shipping_class'] );
+	unset( $taxonomies['yst_prominent_words'] );
+
 	$page_types = [
-		'single'  => array_merge(
-			array_keys( get_post_types() ),
-			[
-				'404',
-			]
-		),
-		'archive' => array_merge(
-			array_keys( get_taxonomies() ),
-			[
-				'author',
-				'date',
-				'search',
-			]
-		),
+		'single'  => array_keys( $post_types ),
+		'archive' => array_merge( array_keys( $taxonomies ), [ 'author' ] ),
 	];
+
+	vd( $page_types );
 
 	foreach ( $page_types as $page_type => $content_types ) {
 		foreach ( $content_types as $content_type ) {
@@ -73,16 +71,8 @@ function mai_add_page_header_metabox() {
 
 	$field_data = [
 		'key'                   => 'page_header',
-		'title'                 => 'Page Header',
+		'title'                 => esc_html__( 'Page Header', 'mai-engine' ),
 		'location'              => isset( $locations ) ? $locations : false,
-		'menu_order'            => 0,
-		'position'              => 'side',
-		'style'                 => 'seamless',
-		'label_placement'       => 'left',
-		'instruction_placement' => 'label',
-		'hide_on_screen'        => '',
-		'active'                => true,
-		'description'           => '',
 		'fields'                => [
 			[
 				'key'           => 'page_header_image',
