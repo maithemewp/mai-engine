@@ -25,7 +25,7 @@ function mai_widget_areas() {
 		$hook     = isset( $widget_area['location'] ) ? $widget_area['location'] : false;
 		$priority = isset( $widget_area['priority'] ) ? $widget_area['priority'] : 10;
 		$defaults = [
-			'before' => sprintf( '<div class="%s"><div class="wrap">', $id ),
+			'before' => sprintf( '<div class="%s has-%s-widgets"><div class="wrap">', $id, mai_get_widget_count( $id ) ),
 			'after'  => '</div></div>',
 		];
 		$args     = isset( $widget_area['args'] ) ? wp_parse_args( $widget_area['args'], $defaults ) : $defaults;
