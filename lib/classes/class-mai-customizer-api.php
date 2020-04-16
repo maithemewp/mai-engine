@@ -235,8 +235,8 @@ class Mai_Customizer_API {
 				'lists',
 				'tables',
 			],
-			'site-header'      => [
-				'header-settings',
+			'header'      => [
+				'site-header',
 				'title-area',
 				'header-left',
 				'header-right',
@@ -262,7 +262,7 @@ class Mai_Customizer_API {
 				'search-form',
 			],
 			'footer'      => [
-				'footer-settings',
+				'site-footer',
 				'before-footer',
 				'footer-widgets',
 				'footer-credits',
