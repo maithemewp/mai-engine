@@ -18,19 +18,19 @@ add_action( 'genesis_before_loop', 'mai_setup_loop' );
  * @return void
  */
 function mai_setup_loop() {
-
+	$has_loop = false;
+	$types    = mai_get_config( 'loop' );
 	if ( mai_is_type_archive() ) {
 		$name     = mai_get_archive_args_name();
-		$settings = 'content-archives';
-
+		$archives = isset( $types['archive'] ) ? $types['archive'] : [];
+		$has_loop = in_array( $name, $archives );
 	} elseif ( mai_is_type_single() ) {
 		$name     = mai_get_singular_args_name();
-		$settings = 'single-content';
+		$singles  = isset( $types['single'] ) ? $types['single'] : [];
+		$has_loop = in_array( $name, $singles );
 	}
 
-	$types = mai_get_settings( $settings );
-
-	if ( ! in_array( $name, $types ) ) {
+	if ( ! $has_loop ) {
 		return;
 	}
 
