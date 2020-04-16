@@ -1,5 +1,5 @@
 .widget {
-	width: 100%;
+	width: var(--widget-width, 100%);
 	margin: var(--widget-margin, 0);
 
 	&:not(:first-of-type) {

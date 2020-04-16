@@ -7,10 +7,22 @@
 	line-height: 1;
 	border-bottom: var(--border);
 
-	--widget-margin: 0;
+	--widget-margin: var(--spacing-xs);
 	--heading-margin: 0;
 	--paragraph-margin: 0;
 	--button-margin: 0;
 	--wrap-align-items: center;
-	--wrap-width: calc(100% - var(--spacing-sm));
+	--wrap-width: 100%;
+
+	&.has-1-widgets {
+		--wrap-align-items: flex-end;
+	}
+
+	&:not(.has-1-widgets) {
+		--widget-width: auto;
+	}
+
+	.widget:not(:first-of-type) {
+		--widget-margin: var(--spacing-xs);
+	}
 }

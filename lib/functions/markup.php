@@ -63,6 +63,11 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'has-boxed-container';
 	}
 
+	// Add before class.
+	if ( ! is_active_sidebar( 'header-before' ) ) {
+		$classes[] = 'has-before-header';
+	}
+
 	// Add transparent header class.
 	if ( mai_has_transparent_header() ) {
 		$classes[] = 'has-transparent-header';

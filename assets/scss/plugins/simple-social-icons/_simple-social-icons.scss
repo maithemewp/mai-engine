@@ -1,6 +1,11 @@
 .simple-social-icons {
 	overflow: hidden;
 
+	.before-header &,
+	.before-header &:not(:first-of-type) {
+		--widget-margin: var(--spacing-xxxxs) var(--spacing-xs);
+	}
+
 	svg {
 
 		&[class^="social-"],
