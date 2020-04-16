@@ -18,7 +18,7 @@
 
 	.alignwide {
 		width: auto;
-		max-width: 100%;
+		max-width: var(--wrap-max-width);
 		margin-right: calc(25% - 25vw);
 		margin-left: calc(25% - 25vw);
 	}
