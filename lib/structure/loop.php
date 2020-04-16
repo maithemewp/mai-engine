@@ -19,6 +19,21 @@ add_action( 'genesis_before_loop', 'mai_setup_loop' );
  */
 function mai_setup_loop() {
 
+	if ( mai_is_type_archive() ) {
+		$name     = mai_get_archive_args_name();
+		$settings = 'content-archives';
+
+	} elseif ( mai_is_type_single() ) {
+		$name     = mai_get_singular_args_name();
+		$settings = 'single-content';
+	}
+
+	$types = mai_get_settings( $settings );
+
+	if ( ! in_array( $name, $types ) ) {
+		return;
+	}
+
 	// Remove entry elements.
 	remove_action( 'genesis_entry_header', 'genesis_do_post_format_image', 4 );
 	remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
