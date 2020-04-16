@@ -36,8 +36,6 @@ function mai_add_page_header_metabox() {
 		'archive' => array_merge( array_keys( $taxonomies ), [ 'author' ] ),
 	];
 
-	vd( $page_types );
-
 	foreach ( $page_types as $page_type => $content_types ) {
 		foreach ( $content_types as $content_type ) {
 			$enable = false;
