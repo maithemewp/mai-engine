@@ -8,19 +8,19 @@
 	--wrap-display: grid;
 
 	@include mq(false, sm) {
-		--columns: var(--columns-xs);
+		--columns: var(--columns-xs, 3);
 	}
 
 	@include mq(sm, md) {
-		--columns: var(--columns-sm);
+		--columns: var(--columns-sm, 3);
 	}
 
 	@include mq(md, lg) {
-		--columns: var(--columns-md);
+		--columns: var(--columns-md, 2);
 	}
 
 	@include mq(lg) {
-		--columns: var(--columns-lg);
+		--columns: var(--columns-lg, 1);
 	}
 
 	> .wrap {
