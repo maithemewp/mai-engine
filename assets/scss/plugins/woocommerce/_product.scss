@@ -116,55 +116,12 @@ form.cart {
 
 .stars {
 
-	a {
-		display: inline-block;
-		color: transparent;
-		font-size: 0;
-
-		&::before {
-			display: block;
-			color: var(--color-warning);
-			font-size: var(--spacing-md);
-			font-family: "Font Awesome 5 Free", sans-serif;
-		}
-
-		&:hover,
-		&:focus {
-
-			&::before {
-				font-weight: 700;
-			}
-		}
-
-		&.active {
-
-			&::before {
-				font-weight: 700;
-			}
-		}
+	a::before {
+		display: block;
+		color: var(--color-warning);
+		font-size: var(--spacing-md);
 	}
 
-	&.selected {
-
-		a::before {
-			font-weight: 700;
-		}
-
-		.active ~ a {
-
-			&::before {
-				font-weight: 400;
-			}
-
-			&:hover,
-			&:focus {
-
-				&::before {
-					font-weight: 700;
-				}
-			}
-		}
-	}
 }
 
 .review {

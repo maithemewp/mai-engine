@@ -133,7 +133,7 @@ msgstr ""
 msgid "Full"
 msgstr ""
 
-#: config/_settings/content-archives.php:85, config/_settings/content-archives.php:246, config/_settings/content-archives.php:361, config/_settings/grid-block.php:97, config/_settings/grid-block.php:331, config/_settings/grid-block.php:565, lib/blocks/icon.php:224, lib/customize/page-header.php:156, config/_settings/navigation-menus/after-header.php:20
+#: config/_settings/content-archives.php:85, config/_settings/content-archives.php:246, config/_settings/content-archives.php:361, config/_settings/grid-block.php:97, config/_settings/grid-block.php:331, config/_settings/grid-block.php:565, lib/blocks/icon.php:224, lib/customize/page-header.php:161, config/_settings/navigation-menus/after-header.php:20
 msgid "Center"
 msgstr ""
 
@@ -181,7 +181,7 @@ msgstr ""
 msgid "One Half"
 msgstr ""
 
-#: config/_settings/content-archives.php:157, config/_settings/grid-block.php:210, config/_settings/single-content.php:68, lib/functions/grid.php:81, lib/functions/loop.php:279, lib/functions/loop.php:351
+#: config/_settings/content-archives.php:157, config/_settings/grid-block.php:210, config/_settings/single-content.php:68, lib/functions/grid.php:81, lib/functions/loop.php:280, lib/functions/loop.php:352
 msgid "Header Meta"
 msgstr ""
 
@@ -201,7 +201,7 @@ msgstr ""
 msgid "Read More"
 msgstr ""
 
-#: config/_settings/content-archives.php:211, config/_settings/grid-block.php:289, config/_settings/single-content.php:82, lib/functions/grid.php:85, lib/functions/loop.php:286, lib/functions/loop.php:357
+#: config/_settings/content-archives.php:211, config/_settings/grid-block.php:289, config/_settings/single-content.php:82, lib/functions/grid.php:85, lib/functions/loop.php:287, lib/functions/loop.php:358
 msgid "Footer Meta"
 msgstr ""
 
@@ -221,11 +221,11 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#: config/_settings/content-archives.php:245, config/_settings/grid-block.php:330, config/_settings/grid-block.php:564, lib/customize/page-header.php:155
+#: config/_settings/content-archives.php:245, config/_settings/grid-block.php:330, config/_settings/grid-block.php:564, lib/customize/page-header.php:160
 msgid "Start"
 msgstr ""
 
-#: config/_settings/content-archives.php:247, config/_settings/grid-block.php:332, config/_settings/grid-block.php:566, lib/customize/page-header.php:157
+#: config/_settings/content-archives.php:247, config/_settings/grid-block.php:332, config/_settings/grid-block.php:566, lib/customize/page-header.php:162
 msgid "End"
 msgstr ""
 
@@ -233,7 +233,7 @@ msgstr ""
 msgid "Align Text (vertical)"
 msgstr ""
 
-#: config/_settings/content-archives.php:258, config/_settings/content-archives.php:380, config/_settings/grid-block.php:351, config/_settings/grid-block.php:592, lib/blocks/icon.php:340, lib/customize/page-header.php:125
+#: config/_settings/content-archives.php:258, config/_settings/content-archives.php:380, config/_settings/grid-block.php:351, config/_settings/grid-block.php:592, lib/blocks/icon.php:340, lib/customize/page-header.php:130
 msgid "Top"
 msgstr ""
 
@@ -241,7 +241,7 @@ msgstr ""
 msgid "Middle"
 msgstr ""
 
-#: config/_settings/content-archives.php:260, config/_settings/content-archives.php:382, config/_settings/grid-block.php:353, config/_settings/grid-block.php:594, lib/blocks/icon.php:348, lib/customize/page-header.php:126
+#: config/_settings/content-archives.php:260, config/_settings/content-archives.php:382, config/_settings/grid-block.php:353, config/_settings/grid-block.php:594, lib/blocks/icon.php:348, lib/customize/page-header.php:131
 msgid "Bottom"
 msgstr ""
 
@@ -297,11 +297,11 @@ msgstr ""
 msgid "Sticky posts are not included in count."
 msgstr ""
 
-#: config/_settings/content-archives.php:420, config/_settings/single-content.php:97
+#: config/_settings/content-archives.php:419, config/_settings/single-content.php:97
 msgid "Page Header default image"
 msgstr ""
 
-#: config/_settings/content-archives.php:430, config/_settings/single-content.php:107
+#: config/_settings/content-archives.php:429, config/_settings/single-content.php:106
 msgid "Use featured image as page header image"
 msgstr ""
 
@@ -329,7 +329,7 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: config/_settings/grid-block.php:663, config/_settings/grid-block.php:991, config/_settings/grid-block.php:1242, lib/functions/grid.php:80, lib/functions/loop.php:278, lib/functions/loop.php:350
+#: config/_settings/grid-block.php:663, config/_settings/grid-block.php:991, config/_settings/grid-block.php:1242, lib/functions/grid.php:80, lib/functions/loop.php:279, lib/functions/loop.php:351
 msgid "Title"
 msgstr ""
 
@@ -549,7 +549,7 @@ msgstr ""
 msgid "Site Header"
 msgstr ""
 
-#: lib/admin/hide-elements.php:73, lib/admin/page-header.php:50, lib/customize/page-header.php:68
+#: lib/admin/hide-elements.php:73, lib/admin/page-header.php:50, lib/customize/page-header.php:73
 msgid "Page Header"
 msgstr ""
 
@@ -577,7 +577,7 @@ msgstr ""
 msgid "Footer Credits"
 msgstr ""
 
-#: lib/admin/page-header.php:56, lib/admin/term-image.php:51, lib/functions/grid.php:79, lib/functions/loop.php:276, lib/functions/loop.php:348
+#: lib/admin/page-header.php:56, lib/admin/term-image.php:51, lib/functions/grid.php:79, lib/functions/loop.php:277, lib/functions/loop.php:349
 msgid "Image"
 msgstr ""
 
@@ -741,51 +741,51 @@ msgstr ""
 msgid "Logo Spacing"
 msgstr ""
 
-#: lib/customize/page-header.php:80
+#: lib/customize/page-header.php:85
 msgid "Enable on singular content"
 msgstr ""
 
-#: lib/customize/page-header.php:81
+#: lib/customize/page-header.php:86
 msgid "These settings can be overridden on a per post basis."
 msgstr ""
 
-#: lib/customize/page-header.php:86
+#: lib/customize/page-header.php:91
 msgid "404"
 msgstr ""
 
-#: lib/customize/page-header.php:99
+#: lib/customize/page-header.php:104
 msgid "Enable on content archives"
 msgstr ""
 
-#: lib/customize/page-header.php:104
+#: lib/customize/page-header.php:109
 msgid "Search Results"
 msgstr ""
 
-#: lib/customize/page-header.php:105
+#: lib/customize/page-header.php:110
 msgid "Author Archives"
 msgstr ""
 
-#: lib/customize/page-header.php:106
+#: lib/customize/page-header.php:111
 msgid "Date Archives"
 msgstr ""
 
-#: lib/customize/page-header.php:118
+#: lib/customize/page-header.php:123
 msgid "Vertical Spacing"
 msgstr ""
 
-#: lib/customize/page-header.php:119
+#: lib/customize/page-header.php:124
 msgid "Accepts all unit values (px, rem, em, vw, etc)."
 msgstr ""
 
-#: lib/customize/page-header.php:152
+#: lib/customize/page-header.php:157
 msgid "Text Alignment"
 msgstr ""
 
-#: lib/customize/page-header.php:175
+#: lib/customize/page-header.php:180
 msgid "Default Image"
 msgstr ""
 
-#: lib/customize/page-header.php:176
+#: lib/customize/page-header.php:181
 msgid "This can be overridden on a per post basis."
 msgstr ""
 
@@ -797,15 +797,15 @@ msgstr ""
 msgid "Customize more now!"
 msgstr ""
 
-#: lib/functions/grid.php:82, lib/functions/loop.php:281
+#: lib/functions/grid.php:82, lib/functions/loop.php:282
 msgid "Excerpt"
 msgstr ""
 
-#: lib/functions/grid.php:83, lib/functions/loop.php:282, lib/functions/loop.php:354
+#: lib/functions/grid.php:83, lib/functions/loop.php:283, lib/functions/loop.php:355
 msgid "Content"
 msgstr ""
 
-#: lib/functions/grid.php:84, lib/functions/loop.php:284
+#: lib/functions/grid.php:84, lib/functions/loop.php:285
 msgid "Read More link"
 msgstr ""
 
@@ -853,19 +853,19 @@ msgstr ""
 msgid "Custom"
 msgstr ""
 
-#: lib/functions/loop.php:353
+#: lib/functions/loop.php:354
 msgid "Manual Excerpts"
 msgstr ""
 
-#: lib/functions/loop.php:359
+#: lib/functions/loop.php:360
 msgid "Author Box"
 msgstr ""
 
-#: lib/functions/loop.php:360
+#: lib/functions/loop.php:361
 msgid "After Entry Widget Area"
 msgstr ""
 
-#: lib/functions/loop.php:361
+#: lib/functions/loop.php:362
 msgid "Previous/Next Entry Nav"
 msgstr ""
 
@@ -873,19 +873,19 @@ msgstr ""
 msgid "Site Default"
 msgstr ""
 
-#: lib/structure/page-header.php:152
+#: lib/structure/page-header.php:151
 msgid "Latest Posts"
 msgstr ""
 
-#: lib/structure/page-header.php:185, lib/structure/page-header.php:270
+#: lib/structure/page-header.php:184, lib/structure/page-header.php:269
 msgid "Search results for: "
 msgstr ""
 
-#: lib/structure/page-header.php:194
+#: lib/structure/page-header.php:193
 msgid "Archives for "
 msgstr ""
 
-#: lib/structure/page-header.php:206
+#: lib/structure/page-header.php:205
 msgid "Not found, error 404"
 msgstr ""
 
