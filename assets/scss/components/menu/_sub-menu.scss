@@ -12,6 +12,8 @@
 	border: var(--sub-menu-border, 0);
 	opacity: var(--sub-menu-opacity, 1);
 	transition: var(--sub-menu-transition, none);
+
+	--menu-item-width: 100%;
 }
 
 .sub-menu-toggle {

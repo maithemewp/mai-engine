@@ -160,7 +160,7 @@ function mai_has_boxed_container() {
  * @return bool
  */
 function mai_has_sticky_header() {
-	return mai_get_option( 'site-header-settings-sticky', current_theme_supports( 'sticky-header' ) );
+	return mai_get_option( 'site-header-sticky', current_theme_supports( 'sticky-header' ) );
 }
 
 /**
@@ -171,7 +171,7 @@ function mai_has_sticky_header() {
  * @return bool
  */
 function mai_has_transparent_header() {
-	return mai_get_option( 'site-header-settings-transparent', current_theme_supports( 'transparent-header' ) );
+	return mai_get_option( 'site-header-transparent', current_theme_supports( 'transparent-header' ) );
 }
 
 /**
@@ -210,7 +210,6 @@ function mai_has_page_header() {
 		if ( mai_is_element_hidden( 'page_header' ) ) {
 			$has_page_header = false;
 		}
-
 	}
 
 	return $has_page_header;
@@ -227,9 +226,11 @@ function mai_has_any_page_header_types() {
 	static $has_types = null;
 
 	if ( is_null( $has_types ) ) {
-		$config  = mai_get_config( 'page-header' );
+		$config = mai_get_config( 'page-header' );
+
 		if ( '*' === $config ) {
 			$has_types = true;
+
 		} else {
 			if ( mai_get_archive_page_header_types() || mai_get_single_page_header_types() ) {
 				$has_types = true;
@@ -250,8 +251,9 @@ function mai_has_any_page_header_types() {
  * @return bool
  */
 function mai_has_single_page_header_support_callback( $control ) {
-	$name = str_replace( 'mai-engine[single-content][', '', $control->option_name );
+	$name = str_replace( mai_get_handle() . '[single-content][', '', $control->option_name );
 	$name = str_replace( ']', '', $name );
+
 	return mai_has_page_header_support( $name, 'single' );
 }
 
@@ -265,8 +267,9 @@ function mai_has_single_page_header_support_callback( $control ) {
  * @return bool
  */
 function mai_has_archive_page_header_support_callback( $control ) {
-	$name = str_replace( 'mai-engine[content-archive][', '', $control->option_name );
+	$name = str_replace( mai_get_handle() . '[content-archive][', '', $control->option_name );
 	$name = str_replace( ']', '', $name );
+
 	return mai_has_page_header_support( $name, 'archive' );
 }
 
@@ -282,13 +285,14 @@ function mai_has_archive_page_header_support_callback( $control ) {
  */
 function mai_has_page_header_support( $type, $context ) {
 	$types = [];
+
 	switch ( $context ) {
 		case 'archive':
 			$types = mai_get_archive_page_header_types();
-		break;
+			break;
 		case 'single':
 			$types = mai_get_single_page_header_types();
-		break;
+			break;
 	}
 
 	if ( $types ) {
@@ -313,16 +317,22 @@ function mai_has_page_header_support( $type, $context ) {
  */
 function mai_get_single_page_header_types() {
 	$types = null;
+
 	if ( ! is_null( $types ) ) {
 		return $types;
 	}
+
 	$settings = mai_get_option( 'page-header-single' );
+
 	if ( $settings ) {
 		$types = $settings;
+
 		return $types;
 	}
+
 	$config = mai_get_config( 'page-header' );
-	$types  = isset( $config['single'] ) ? $config['single']: [];
+	$types  = isset( $config['single'] ) ? $config['single'] : [];
+
 	return $types;
 }
 
@@ -335,16 +345,22 @@ function mai_get_single_page_header_types() {
  */
 function mai_get_archive_page_header_types() {
 	$types = null;
+
 	if ( ! is_null( $types ) ) {
 		return $types;
 	}
+
 	$settings = mai_get_option( 'page-header-archive' );
+
 	if ( $settings ) {
 		$types = $settings;
+
 		return $types;
 	}
+
 	$config = mai_get_config( 'page-header' );
-	$types  = isset( $config['archive'] ) ? $config['archive']: [];
+	$types  = isset( $config['archive'] ) ? $config['archive'] : [];
+
 	return $types;
 }
 

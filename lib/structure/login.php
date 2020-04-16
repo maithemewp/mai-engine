@@ -68,7 +68,7 @@ function mai_login_logo_css() {
 	// Add our own inline logo.
 	add_action(
 		'login_message',
-		function() use ( $logo_id ) {
+		function () use ( $logo_id ) {
 			// From WP core.
 			if ( is_multisite() ) {
 				$login_header_url   = network_home_url();

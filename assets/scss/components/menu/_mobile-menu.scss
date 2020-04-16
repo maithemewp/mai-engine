@@ -25,7 +25,7 @@
 	 * only show overlay when window width
 	 * is the same or less than site-container.
 	 */
-	@include mq(false,lg) {
+	@include mq(false, lg) {
 
 		.site-container::after {
 			position: fixed;

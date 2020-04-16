@@ -45,15 +45,18 @@ function mai_plugin_updater() {
 
 	// Allow tokens to be used to bypass GitHub rate limit.
 	// if ( defined( 'MAI_UPDATER_TOKEN' ) ) {
-	// 	$updater->setAuthentication( MAI_UPDATER_TOKEN );
+	// $updater->setAuthentication( MAI_UPDATER_TOKEN );
 	// }
 
 	// Add icons for Dashboard > Updates screen.
-	$updater->addResultFilter( function( $info, $response = null ) {
-		$info->icons = array(
-			'1x' => mai_get_url() . 'assets/img/icon-128x128.png',
-			'2x' => mai_get_url() . 'assets/img/icon-256x256.png',
-		);
-		return $info;
-	});
+	$updater->addResultFilter(
+		function ( $info, $response = null ) {
+			$info->icons = [
+				'1x' => mai_get_url() . 'assets/img/icon-128x128.png',
+				'2x' => mai_get_url() . 'assets/img/icon-256x256.png',
+			];
+
+			return $info;
+		}
+	);
 }

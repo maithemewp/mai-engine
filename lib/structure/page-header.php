@@ -76,7 +76,6 @@ function mai_do_page_header_image() {
 		if ( 'page' === get_option( 'show_on_front' ) ) {
 			$image_id = get_post_meta( get_option( 'page_on_front' ), 'page_header_image', true );
 		}
-
 	} elseif ( is_home() ) {
 		$image_id = get_post_meta( get_option( 'page_for_posts' ), 'page_header_image', true );
 
@@ -164,7 +163,6 @@ function mai_do_page_header_title() {
 		if ( ! $title ) {
 			$title = post_type_archive_title( '', false );
 		}
-
 	} elseif ( is_category() || is_tag() || is_tax() ) {
 
 		/**
@@ -183,7 +181,6 @@ function mai_do_page_header_title() {
 				$title = $term->name;
 			}
 		}
-
 	} elseif ( is_search() ) {
 		$title = apply_filters( 'genesis_search_title_text', esc_html__( 'Search results for: ', 'mai-engine' ) . get_search_query() );
 
@@ -193,7 +190,6 @@ function mai_do_page_header_title() {
 		if ( ! $title ) {
 			$title = get_the_author_meta( 'display_name', (int) get_query_var( 'author' ) );
 		}
-
 	} elseif ( is_date() ) {
 		$title = __( 'Archives for ', 'mai-engine' );
 
@@ -206,7 +202,6 @@ function mai_do_page_header_title() {
 		} elseif ( is_year() ) {
 			$title .= get_query_var( 'year' );
 		}
-
 	} elseif ( is_404() ) {
 		$title = apply_filters( 'genesis_404_entry_title', esc_html__( 'Not found, error 404', 'mai-engine' ) );
 	}
@@ -271,7 +266,6 @@ function mai_do_page_header_description() {
 			$description = get_term_meta( $term->term_id, 'page_header_description', true );
 			$description = apply_filters( 'genesis_term_intro_text_output', $description ? $description : '' );
 		}
-
 	} elseif ( is_search() ) {
 		$description = apply_filters( 'genesis_search_title_text', esc_html__( 'Search results for: ', 'mai-engine' ) . get_search_query() );
 
@@ -282,7 +276,6 @@ function mai_do_page_header_description() {
 		if ( ! $description ) {
 			$description = get_the_author_meta( 'display_name', (int) get_query_var( 'author' ) );
 		}
-
 	} elseif ( is_date() ) {
 
 		$description = '';

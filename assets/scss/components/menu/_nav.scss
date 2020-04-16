@@ -14,7 +14,7 @@
 }
 
 .nav-after-header {
-	z-index: 1;
+	z-index: 9;
 	display: var(--nav-header-display, (flex));
 	width: 100%;
 }
@@ -38,9 +38,4 @@
 .nav-footer {
 	width: 100%;
 	--menu-justify-content: center;
-
-	@include mq(lg) {
-		border-top: var(--nav-footer-border-top, var(--border));
-		border-bottom: var(--nav-footer-border-bottom, var(--border));
-	}
 }

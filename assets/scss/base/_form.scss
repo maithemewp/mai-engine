@@ -31,14 +31,16 @@ label {
 	box-shadow: none;
 	cursor: var(--input-cursor);
 	transition: var(--input-transition, var(--transition));
+
+	&:focus {
+		outline: none;
+
+		--input-border: var(--border-size) var(--border-style) var(--color-primary);
+	}
 }
 
 input::placeholder {
 	color: rgba(0, 0, 0, 0.3);
-}
-
-:focus {
-	--input-border: var(--border-size) var(--border-style) var(--color-primary);
 }
 
 :disabled,

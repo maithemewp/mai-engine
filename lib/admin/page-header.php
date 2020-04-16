@@ -25,7 +25,7 @@ function mai_add_page_header_metabox() {
 
 	$locations = [];
 
-	foreach( mai_get_single_page_header_types() as $type ) {
+	foreach ( mai_get_single_page_header_types() as $type ) {
 		$locations[] = [
 			[
 				'param'    => 'post_type',
@@ -35,7 +35,7 @@ function mai_add_page_header_metabox() {
 		];
 	}
 
-	foreach( mai_get_archive_page_header_types() as $type ) {
+	foreach ( mai_get_archive_page_header_types() as $type ) {
 		$locations[] = [
 			[
 				'param'    => 'author' === $type ? 'user_form' : 'taxonomy',

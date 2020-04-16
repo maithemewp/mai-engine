@@ -30,7 +30,7 @@ function mai_add_featured_image_metabox() {
 		unset( $taxonomies['product_cat'] );
 	}
 	if ( $taxonomies ) {
-		foreach( $taxonomies as $taxonomy ) {
+		foreach ( $taxonomies as $taxonomy ) {
 			$locations[] = [
 				[
 					'param'    => 'taxonomy',

@@ -31,7 +31,7 @@
 	margin-right: var(--alignfull-margin-right, calc(50% - 50vw));
 	margin-left: var(--alignfull-margin-left, calc(50% - 50vw));
 
-	@include mq(false,lg) {
+	@include mq(false, lg) {
 
 		.content-sidebar &,
 		.sidebar-content & {
@@ -41,7 +41,7 @@
 
 	}
 
-	@include mq(lg,xl) {
+	@include mq(lg, xl) {
 
 		.content-sidebar & {
 			--alignfull-margin-right: 0;
@@ -93,7 +93,6 @@
 		}
 
 	}
-
 
 	@include mq(xl) {
 

@@ -1,21 +1,17 @@
 .entry-image-link {
 	display: var(--entry-image-link-display, block);
+	flex-basis: var(--entry-image-link-flex-basis, auto);
 	align-self: var(--entry-image-link-align, unset);
 	order: var(--entry-image-link-order, unset);
 	max-width: var(--image-width, unset);
+	margin: var(--entry-image-link-margin, 0);
 
-	.has-image-left-full &,
-	.has-image-right-full & {
-		flex-basis: 1 0 var(--image-width);
-	}
-
-	.has-image-left-full &::before,
-	.has-image-right-full &::before {
-		display: block;
+	&::before {
+		display: var(--entry-image-link-before-display, none);
 		width: 1px;
 		height: 0;
 		margin-left: -1px;
-		padding-bottom: calc(100% / ( var(--aspect-ratio, 4/3) ));
+		padding-bottom: calc(100% / (var(--aspect-ratio, 4/3)));
 		content: "";
 	}
 
@@ -32,14 +28,28 @@
 	border-radius: var(--entry-image-border-radius, var(--border-radius));
 }
 
+.has-image-center {
+	--entry-image-link-margin: 0 auto;
+}
+
 .has-image-left-middle,
 .has-image-right-middle {
 	--entry-image-link-align: center;
 }
 
+.has-image-left-full {
+	--entry-image-link-margin: 0 var(--column-gap) 0 0;
+}
+
+.has-image-right-full {
+	--entry-image-link-margin: 0 0 0 var(--column-gap);
+}
+
 .has-image-left-full,
 .has-image-right-full {
 	--entry-image-link-display: flex;
+	--entry-image-link-flex-basis: 1 0 var(--image-width);
+	--entry-image-link-before-display: block;
 	--entry-image-object-fit: cover;
 	--entry-image-width: 100%;
 	--entry-image-height: 100%;
@@ -97,8 +107,7 @@
 		width: 1px;
 		height: 0;
 		margin-left: -1px;
-		padding-bottom: calc(100% / ( var(--aspect-ratio, 4/3) ));
+		padding-bottom: calc(100% / (var(--aspect-ratio, 4/3)));
 		content: "";
 	}
-
 }

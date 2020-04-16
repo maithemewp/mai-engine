@@ -10,10 +10,13 @@
 	}
 }
 
-.entries[style*="--align-text-vertical:unset;"].has-image-full .entry-more:last-child,
-.entries[style*="--align-text-vertical:unset;"].has-image-center .entry-more:last-child,
-.entries[style*="--align-text-vertical:unset;"][class*=".has-image-left"] .entry-more:last-child,
-.entries[style*="--align-text-vertical:unset;"][class*=".has-image-right"] .entry-more:last-child,
-.entries[style*="--align-text-vertical:start;"]:not(.has-image-background) .entry-more:last-child {
-	--entry-more-margin: auto 0 0;
+.entries[style*="--align-text-vertical:unset;"].has-image-full,
+.entries[style*="--align-text-vertical:unset;"].has-image-center,
+.entries[style*="--align-text-vertical:unset;"][class*=".has-image-left"],
+.entries[style*="--align-text-vertical:unset;"][class*=".has-image-right"],
+.entries[style*="--align-text-vertical:start;"]:not(.has-image-background) {
+
+	.entry-more:last-child {
+		--entry-more-margin: auto 0 0;
+	}
 }

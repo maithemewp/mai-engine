@@ -31,14 +31,14 @@ function mai_page_header_customizer_settings() {
 		$archive_default = array_merge( $archive_default, $config['archive'] );
 	}
 
-	if ( isset( $config['single'] ) && ! empty( $config['single']  && is_array( $config['single'] ) ) ) {
+	if ( isset( $config['single'] ) && ! empty( $config['single'] && is_array( $config['single'] ) ) ) {
 		$single_default = array_merge( $single_default, $config['single'] );
 	}
 
 	$post_types = get_post_types( [ 'public' => true ], 'objects' );
 	unset( $post_types['attachment'] );
 	if ( $post_types ) {
-		foreach( $post_types as $name => $post_type ) {
+		foreach ( $post_types as $name => $post_type ) {
 			if ( ( '*' === $config ) || ( isset( $config['archive'] ) && '*' === $config['archive'] ) ) {
 				$archive_default[] = $name;
 			}
@@ -54,7 +54,7 @@ function mai_page_header_customizer_settings() {
 	unset( $taxonomies['product_shipping_class'] );
 	unset( $taxonomies['yst_prominent_words'] );
 	if ( $taxonomies ) {
-		foreach( $taxonomies as $name => $taxonomy ) {
+		foreach ( $taxonomies as $name => $taxonomy ) {
 			if ( ( '*' === $config ) || ( isset( $config['archive'] ) && '*' === $config['archive'] ) ) {
 				$archive_default[] = $name;
 			}
@@ -92,13 +92,13 @@ function mai_page_header_customizer_settings() {
 	\Kirki::add_field(
 		$handle,
 		[
-			'type'        => 'select',
-			'multiple'    => 99,
-			'settings'    => 'page-header-archive',
-			'section'     => $section,
-			'label'       => __( 'Enable on content archives', 'mai-engine' ),
-			'default'     => $archive_default,
-			'choices'     => array_merge(
+			'type'     => 'select',
+			'multiple' => 99,
+			'settings' => 'page-header-archive',
+			'section'  => $section,
+			'label'    => __( 'Enable on content archives', 'mai-engine' ),
+			'default'  => $archive_default,
+			'choices'  => array_merge(
 				$archives,
 				[
 					'search' => __( 'Search Results', 'mai-engine' ),
@@ -168,7 +168,7 @@ function mai_page_header_customizer_settings() {
 
 	\Kirki::add_field(
 		$handle,
-			[
+		[
 			'type'        => 'image',
 			'settings'    => 'page-header-image',
 			'section'     => $section,

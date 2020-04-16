@@ -1,6 +1,7 @@
 :root {
 	--font-primary: "Work Sans", sans-serif;
 	--font-secondary: "Josefin Sans", sans-serif;
+	--border-radius: 1px;
 	--heading-text-transform: uppercase;
 	--button-background: var(--color-dark);
 	--button-border-radius: 0;
@@ -17,6 +18,11 @@ body {
 	box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.02);
 }
 
+.before-header {
+	text-align: center;
+	background-color: var(--color-light);
+}
+
 .nav-after-header {
 	border-bottom: var(--border);
 }
@@ -26,6 +32,10 @@ body {
 	font-size: var(--text-xs);
 	font-family: var(--font-secondary);
 	text-transform: uppercase;
+}
+
+.footer-widgets {
+	text-align: center;
 }
 
 .home .wp-block-group.has-white-background-color {

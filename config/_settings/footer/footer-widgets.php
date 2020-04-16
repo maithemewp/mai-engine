@@ -12,7 +12,7 @@
 return [
 	[
 		'type'        => 'select',
-		'settings'    => 'widgets',
+		'settings'    => 'widget-areas',
 		'label'       => __( 'Footer widget areas', 'mai-engine' ),
 		'description' => __( 'Save and reload customizer to view changes.', 'mai-engine' ),
 		'default'     => get_theme_support( 'genesis-footer-widgets' ),
