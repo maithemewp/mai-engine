@@ -242,8 +242,9 @@ function mai_get_footer_meta_default( $name ) {
 	if ( $taxonomies ) {
 		// Get only public taxonomies.
 		$taxonomies = wp_list_filter( $taxonomies, [ 'public' => true ] );
-		// Remove Post Formats and Yoast prominent keywords.
+		// Remove taxonomies we don't want.
 		unset( $taxonomies['post_format'] );
+		unset( $taxonomies['product_shipping_class'] );
 		unset( $taxonomies['yst_prominent_words'] );
 	}
 

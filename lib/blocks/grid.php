@@ -479,7 +479,9 @@ function mai_get_taxonomy_choices() {
 	);
 
 	if ( $taxonomies ) {
+		// Remove taxonomies we don't want.
 		unset( $taxonomies['post_format'] );
+		unset( $taxonomies['product_shipping_class'] );
 		unset( $taxonomies['yst_prominent_words'] );
 
 		foreach ( $taxonomies as $name => $taxonomy ) {
@@ -510,8 +512,11 @@ function mai_get_post_type_taxonomy_choices() {
 	foreach ( (array) $post_types as $post_type ) {
 		$taxonomies = get_object_taxonomies( sanitize_text_field( wp_unslash( $post_type ) ), 'objects' );
 		if ( $taxonomies ) {
+			// Remove taxonomies we don't want.
 			unset( $taxonomies['post_format'] );
+			unset( $taxonomies['product_shipping_class'] );
 			unset( $taxonomies['yst_prominent_words'] );
+
 			foreach ( $taxonomies as $name => $taxo ) {
 				$choices[ $name ] = $taxo->label;
 			}

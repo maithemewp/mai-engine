@@ -37,6 +37,7 @@ function mai_page_header_customizer_settings() {
 
 	$post_types = get_post_types( [ 'public' => true ], 'objects' );
 	unset( $post_types['attachment'] );
+
 	if ( $post_types ) {
 		foreach ( $post_types as $name => $post_type ) {
 			if ( ( '*' === $config ) || ( isset( $config['archive'] ) && '*' === $config['archive'] ) ) {
@@ -49,10 +50,14 @@ function mai_page_header_customizer_settings() {
 			$singles[ $name ]  = $post_type->label;
 		}
 	}
+
 	$taxonomies = get_taxonomies( [ 'public' => true ], 'objects' );
+
+	// Remove taxonomies we don't want.
 	unset( $taxonomies['post_format'] );
 	unset( $taxonomies['product_shipping_class'] );
 	unset( $taxonomies['yst_prominent_words'] );
+
 	if ( $taxonomies ) {
 		foreach ( $taxonomies as $name => $taxonomy ) {
 			if ( ( '*' === $config ) || ( isset( $config['archive'] ) && '*' === $config['archive'] ) ) {
