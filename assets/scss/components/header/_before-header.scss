@@ -25,4 +25,17 @@
 	.widget:not(:first-of-type) {
 		--widget-margin: var(--spacing-xs);
 	}
+
+	@include mq(xl) {
+
+		.widget:first-of-type {
+			margin-left: 0;
+		}
+
+		.widget:last-of-type {
+			margin-right: 0;
+		}
+
+	}
+
 }
