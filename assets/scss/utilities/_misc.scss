@@ -27,16 +27,21 @@
 	content: "";
 }
 
-.has-medium-max-width,
-.has-small-max-width {
+.has-md-max-width,
+.has-sm-max-width,
+.has-xs-max-width {
 	margin-right: auto;
 	margin-left: auto;
 }
 
-.has-medium-max-width {
+.has-md-max-width {
 	max-width: var(--breakpoint-md);
 }
 
-.has-small-max-width {
+.has-sm-max-width {
 	max-width: var(--breakpoint-sm);
+}
+
+.has-xs-max-width {
+	max-width: var(--breakpoint-xs);
 }
