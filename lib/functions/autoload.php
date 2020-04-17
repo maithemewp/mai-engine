@@ -21,7 +21,7 @@ spl_autoload_register( 'mai_autoload_register' );
  * @return void
  */
 function mai_autoload_register( $class ) {
-	$namespace = 'Mai';
+	$namespace = 'Mai_';
 
 	if ( strpos( $class, $namespace ) === false ) {
 		return;
