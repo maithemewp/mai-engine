@@ -216,7 +216,7 @@ function mai_get_active_theme() {
 
 	if ( is_null( $theme ) ) {
 		if ( ! $theme ) {
-			$theme = get_theme_support( 'mai' );
+			$theme = get_theme_support( mai_get_handle() );
 		}
 
 		if ( ! $theme ) {
@@ -225,18 +225,6 @@ function mai_get_active_theme() {
 
 		if ( ! $theme ) {
 			$theme = wp_get_theme()->get( 'TextDomain' );
-		}
-
-		if ( ! $theme ) {
-			$onboarding_file = get_stylesheet_directory() . '/config/onboarding.php';
-
-			if ( is_readable( $onboarding_file ) ) {
-				$onboarding_config = require $onboarding_file;
-
-				if ( isset( $onboarding_config['dependencies']['mai'] ) ) {
-					$theme = $onboarding_config['dependencies']['mai'];
-				}
-			}
 		}
 
 		if ( ! $theme || ! in_array( $theme, mai_get_child_themes(), true ) ) {

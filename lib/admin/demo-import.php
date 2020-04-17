@@ -9,6 +9,10 @@
  * @license   GPL-2.0-or-later
  */
 
+// Override demo importer constants
+define( 'PT_OCDI_PATH', plugin_dir_path( dirname( __DIR__ ) ) . 'vendor/wpackagist-plugin/one-click-demo-import/' );
+define( 'PT_OCDI_URL', plugin_dir_url( dirname( __DIR__ ) ) . 'vendor/wpackagist-plugin/one-click-demo-import/' );
+
 // Dependency installer labels.
 add_filter( 'wp_dependency_dismiss_label', 'mai_get_name' );
 add_filter( 'wp_dependency_required_row_meta', '__return_false' );
@@ -126,8 +130,10 @@ add_filter( 'pt-ocdi/after_all_import_execution', 'mai_after_demo_import', 100 )
 function mai_after_demo_import() {
 
 	// Assign menus to their locations.
-	$locations['primary'] = get_term_by( 'name', 'Header Menu', 'nav_menu' );
-	$locations['footer']  = get_term_by( 'name', 'Footer Menu', 'nav_menu' );
+	$locations['header-left']  = get_term_by( 'name', 'Header Left Menu', 'nav_menu' );
+	$locations['header-right'] = get_term_by( 'name', 'Header Right Menu', 'nav_menu' );
+	$locations['after-header'] = get_term_by( 'name', 'After Header Menu', 'nav_menu' );
+	$locations['footer']       = get_term_by( 'name', 'Footer Menu', 'nav_menu' );
 
 	foreach ( $locations as $location => $menu ) {
 		if ( $menu ) {
