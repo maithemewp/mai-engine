@@ -134,10 +134,9 @@ return [
 
 	'post-type-support' => [
 		'add'    => [
-			'excerpt'              => [ 'page' ],
-			'genesis-layouts'      => [ 'product' ],
-			'genesis-seo'          => [ 'product' ],
-			'genesis-title-toggle' => [ 'post', 'product' ],
+			'excerpt'         => [ 'page' ],
+			'genesis-layouts' => [ 'product' ],
+			'genesis-seo'     => [ 'product' ],
 		],
 		'remove' => [],
 	],
