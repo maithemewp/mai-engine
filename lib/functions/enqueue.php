@@ -98,11 +98,14 @@ add_action( 'wp_enqueue_scripts', 'mai_deregister_scripts_and_styles', 15 );
  */
 function mai_deregister_scripts_and_styles() {
 	global $wp_styles;
+
 	$assets = mai_get_config( 'scripts-and-styles' )['remove'];
 
 	foreach ( $assets as $asset ) {
 		wp_deregister_script( $asset );
 		wp_deregister_style( $asset );
+		wp_dequeue_script( $asset );
+		wp_dequeue_style( $asset );
 		$wp_styles->remove( $asset );
 	}
 }
