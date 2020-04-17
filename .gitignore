@@ -3,6 +3,7 @@
 .env
 .npmrc
 *.lock
+*lock.json
 *.zip
 LICENSE
 README
