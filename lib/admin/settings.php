@@ -18,11 +18,11 @@ add_action( 'admin_init', 'mai_update_first_version' );
  * @return void
  */
 function mai_update_first_version() {
-	if ( false !== mai_get_option( 'first_version' ) ) {
+	if ( false !== mai_get_option( 'first-version' ) ) {
 		return;
 	}
 
-	mai_update_option( 'first_version', mai_get_version() );
+	mai_update_option( 'first-version', mai_get_version() );
 }
 
 add_action( 'admin_init', 'mai_update_database_version' );
