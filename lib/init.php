@@ -71,69 +71,63 @@ add_action( 'genesis_setup', 'mai_load_files', 90 );
  * @return void
  */
 function mai_load_files() {
-	$files = apply_filters(
-		'mai_load_files',
-		[
+	$files = [
 
-			// Composer.
-			'../vendor/autoload',
-			'../vendor/advanced-custom-fields/advanced-custom-fields-pro/acf',
-			'../vendor/aristath/kirki/kirki',
-			'../vendor/wpackagist-plugin/one-click-demo-import/one-click-demo-import',
+		// Composer.
+		'../vendor/autoload',
 
-			// Functions.
-			'functions/helpers',
-			'functions/utilities',
-			'functions/autoload',
-			'functions/layout',
-			'functions/images',
-			'functions/loop',
-			'functions/setup',
-			'functions/enqueue',
-			'functions/markup',
-			'functions/entries',
-			'functions/grid',
-			'functions/widgets',
-			'functions/defaults',
-			'functions/onboarding',
-			'functions/plugins',
+		// Functions.
+		'functions/helpers',
+		'functions/utilities',
+		'functions/autoload',
+		'functions/layout',
+		'functions/images',
+		'functions/loop',
+		'functions/setup',
+		'functions/enqueue',
+		'functions/markup',
+		'functions/entries',
+		'functions/grid',
+		'functions/widgets',
+		'functions/defaults',
+		'functions/onboarding',
+		'functions/plugins',
 
-			// Structure.
-			'structure/archive',
-			'structure/breadcrumbs',
-			'structure/comments',
-			'structure/footer',
-			'structure/header',
-			'structure/login',
-			'structure/loop',
-			'structure/menus',
-			'structure/page-header',
-			'structure/pagination',
-			'structure/search-form',
-			'structure/sidebar',
-			'structure/single',
-			'structure/widget-areas',
-			'structure/wrap',
+		// Structure.
+		'structure/archive',
+		'structure/breadcrumbs',
+		'structure/comments',
+		'structure/footer',
+		'structure/header',
+		'structure/login',
+		'structure/loop',
+		'structure/menus',
+		'structure/page-header',
+		'structure/pagination',
+		'structure/search-form',
+		'structure/sidebar',
+		'structure/single',
+		'structure/widget-areas',
+		'structure/wrap',
 
-			// Blocks.
-			'blocks/icon',
-			'blocks/cover',
-			'blocks/grid',
+		// Blocks.
+		'blocks/icon',
+		'blocks/cover',
+		'blocks/grid',
 
-			// Shortcodes.
-			'shortcodes/icon',
+		// Shortcodes.
+		'shortcodes/icon',
 
-			// Customizer.
-			'customize/setup',
-			'customize/logo',
-			'customize/beta-tester',
-			'customize/color-palette',
-			'customize/upsell',
-			'customize/layout',
-			'customize/page-header',
-			'customize/footer',
-		]
-	);
+		// Customizer.
+		'customize/setup',
+		'customize/logo',
+		'customize/beta-tester',
+		'customize/color-palette',
+		'customize/upsell',
+		'customize/layout',
+		'customize/page-header',
+		'customize/footer',
+	];
 
 	if ( is_admin() ) {
 		$files = array_merge(
@@ -149,6 +143,18 @@ function mai_load_files() {
 				'admin/demo-import',
 			]
 		);
+	}
+
+	if ( ! class_exists( 'ACF' ) ) {
+		$files[] = '../vendor/advanced-custom-fields/advanced-custom-fields-pro/acf';
+	}
+
+	if ( ! class_exists( 'Kirki' ) ) {
+		$files[] = '../vendor/aristath/kirki/kirki';
+	}
+
+	if ( ! class_exists( 'OCDI_Plugin' ) ) {
+		$files[] = '../vendor/wpackagist-plugin/one-click-demo-import/one-click-demo-import';
 	}
 
 	foreach ( $files as $file ) {
