@@ -145,7 +145,7 @@ function mai_load_files() {
 		);
 	}
 
-	if ( ! class_exists( 'ACF' ) ) {
+	if ( ! class_exists( 'acf_pro' ) ) {
 		$files[] = '../vendor/advanced-custom-fields/advanced-custom-fields-pro/acf';
 	}
 
