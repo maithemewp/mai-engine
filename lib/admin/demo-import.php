@@ -9,6 +9,10 @@
  * @license   GPL-2.0-or-later
  */
 
+// Dependency installer labels.
+add_filter( 'wp_dependency_dismiss_label', 'mai_get_name' );
+add_filter( 'wp_dependency_required_row_meta', '__return_false' );
+
 // Disable branding.
 add_filter( 'pt-ocdi/disable_pt_branding', '__return_true' );
 
@@ -33,6 +37,42 @@ function mai_change_plugin_dependency_text( $actions ) {
 	);
 
 	return $actions;
+}
+
+add_filter( 'pt-ocdi/plugin_page_title', 'mai_demo_import_page_title' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param $plugin_title
+ *
+ * @return mixed
+ */
+function mai_demo_import_page_title( $plugin_title ) {
+	$intro = sprintf(
+		'<p>%s %s.</p>',
+		__( 'Hi! Thanks for choosing Mai', 'mai-engine' ),
+		mai_convert_case( mai_get_active_theme(), 'title' )
+	);
+
+	$intro .= sprintf(
+		'<p>%s <a href="%s"><strong>%s</strong></a> %s</p>',
+		__( 'Choose a One Click Demo Import to load pages, posts, and images that match the corresponding Mai Sparkle demo website. Loading the demo content will not overwrite any of your existing content. If you do not need the demo content, simply', 'mai-engine' ),
+		get_admin_url(),
+		__( 'skip', 'mai-engine' ),
+		__( 'this step.', 'mai-engine' )
+	);
+
+	$intro .= sprintf(
+		'<p>%s <a href="%s" target="_blank"><strong>%s</strong></a> %s</p>',
+		__( 'Please contact', 'mai-engine' ),
+		'https://support.bizbudding.com',
+		__( 'support', 'mai-engine' ),
+		__( 'for assistance. As with any update, be sure to back up your site first!', 'mai-engine' )
+	);
+
+	return $plugin_title . $intro;
 }
 
 add_filter( 'pt-ocdi/plugin_page_setup', 'mai_demo_import_plugin_page' );
