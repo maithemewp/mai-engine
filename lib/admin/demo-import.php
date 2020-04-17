@@ -9,9 +9,13 @@
  * @license   GPL-2.0-or-later
  */
 
-// Override demo importer constants
-define( 'PT_OCDI_PATH', plugin_dir_path( dirname( __DIR__ ) ) . 'vendor/wpackagist-plugin/one-click-demo-import/' );
-define( 'PT_OCDI_URL', plugin_dir_url( dirname( __DIR__ ) ) . 'vendor/wpackagist-plugin/one-click-demo-import/' );
+// Override demo importer constants.
+if ( ! defined( 'PT_OCDI_PATH' ) ) {
+	define( 'PT_OCDI_PATH', plugin_dir_path( dirname( __DIR__ ) ) . 'vendor/wpackagist-plugin/one-click-demo-import/' );
+}
+if ( ! defined( 'PT_OCDI_URL' ) ) {
+	define( 'PT_OCDI_URL', plugin_dir_url( dirname( __DIR__ ) ) . 'vendor/wpackagist-plugin/one-click-demo-import/' );
+}
 
 // Dependency installer labels.
 add_filter( 'wp_dependency_dismiss_label', 'mai_get_name' );

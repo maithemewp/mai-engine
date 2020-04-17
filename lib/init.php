@@ -9,26 +9,6 @@
  * @license   GPL-2.0-or-later
  */
 
-<<<<<<< HEAD
-=======
-add_action( 'plugins_loaded', 'mai_setup_one_click_demo_import' );
-/**
- * Sets up One Click Demo Import dependency.
- *
- * @since 1.0.0
- *
- * @return void
- */
-function mai_setup_one_click_demo_import() {
-	if ( ! defined( 'PT_OCDI_PATH' ) ) {
-		define( 'PT_OCDI_PATH', plugin_dir_path( __DIR__ ) . 'vendor/wpackagist-plugin/one-click-demo-import/' );
-	}
-	if ( ! defined( 'PT_OCDI_URL' ) ) {
-		define( 'PT_OCDI_URL', plugin_dir_url( __DIR__ ) . 'vendor/wpackagist-plugin/one-click-demo-import/' );
-	}
-}
-
->>>>>>> check for defined constants
 add_action( 'setup_theme', 'mai_load_genesis', 100 );
 /**
  * Starts the engine.
