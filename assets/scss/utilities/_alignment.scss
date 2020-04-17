@@ -17,10 +17,16 @@
 	}
 
 	.alignwide {
-		width: auto;
-		max-width: var(--wrap-max-width);
-		margin-right: calc(25% - 25vw);
-		margin-left: calc(25% - 25vw);
+		width: var(--alignwide-width, auto);
+		max-width: var(--alignwide-max-width, 1000%);
+		margin-right: var(--alignwide-margin-right, calc(25% - 25vw));
+		margin-left: var(--alignwide-margin-left, calc(25% - 25vw));
+
+		.content-sidebar &,
+		.sidebar-content & {
+			--alignfull-margin-right: 0;
+			--alignfull-margin-left: 0;
+		}
 	}
 }
 
