@@ -69,7 +69,7 @@ function mai_demo_import_files() {
 		$name = basename( $path );
 
 		$demos[] = [
-			'import_file_name'             => mai_convert_case( $name, 'title' ),
+			'import_file_name'             => mai_convert_case( "$theme $name", 'title' ),
 			'local_import_file'            => "$path/content.xml",
 			'local_import_widget_file'     => "$path/widgets.wie",
 			'local_import_customizer_file' => "$path/customizer.dat",
@@ -95,6 +95,7 @@ add_filter( 'pt-ocdi/after_all_import_execution', 'mai_after_demo_import', 100 )
  * @return void
  */
 function mai_after_demo_import() {
+	$handle = mai_get_handle();
 
 	// Assign menus to their locations.
 	$locations['primary'] = get_term_by( 'name', 'Header Menu', 'nav_menu' );
@@ -140,4 +141,20 @@ function mai_after_demo_import() {
 	// Update permalink structure.
 	$wp_rewrite->set_permalink_structure( '/%postname%/' );
 	$wp_rewrite->flush_rules();
+}
+
+add_filter( 'mai_plugin_dependencies', 'mai_add_plugin_dependencies', 10, 1 );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param array $defaults Default plugins.
+ *
+ * @return array
+ */
+function mai_add_plugin_dependencies( $defaults ) {
+	$config = mai_get_config( 'required-plugins' );
+
+	return array_merge_recursive( $config, $defaults );
 }

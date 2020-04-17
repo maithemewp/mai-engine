@@ -22,7 +22,7 @@ return [
 	|
 	*/
 
-	'genesis-settings'    => [
+	'genesis-settings' => [
 		'avatar_size'           => 48,
 		'blog_cat_num'          => 12,
 		'breadcrumb_home'       => 0,
@@ -47,7 +47,7 @@ return [
 	|
 	*/
 
-	'google-fonts'        => [],
+	'google-fonts' => [],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -60,7 +60,7 @@ return [
 	|
 	*/
 
-	'image-sizes'         => [
+	'image-sizes' => [
 		'add'    => [
 			'cover'     => [ 1600, 900, true ],
 			'landscape' => '4:3',
@@ -80,7 +80,7 @@ return [
 	|
 	*/
 
-	'page-layouts'        => [
+	'page-layouts' => [
 		'add'    => [
 			[
 				'id'      => 'standard-content',
@@ -132,7 +132,7 @@ return [
 	|
 	*/
 
-	'post-type-support'   => [
+	'post-type-support' => [
 		'add'    => [
 			'excerpt'              => [ 'page' ],
 			'genesis-layouts'      => [ 'product' ],
@@ -141,6 +141,19 @@ return [
 		],
 		'remove' => [],
 	],
+
+	/*
+	|--------------------------------------------------------------------------
+	| Required Plugins
+	|--------------------------------------------------------------------------
+	|
+	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
+	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
+	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
+	|
+	*/
+
+	'required-plugins' => [],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -153,7 +166,7 @@ return [
 	|
 	*/
 
-	'responsive-menu'     => [
+	'responsive-menu' => [
 		'script' => [
 			'mainMenu'         => sprintf(
 				'<span class="menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
@@ -200,7 +213,7 @@ return [
 	|
 	*/
 
-	'scripts-and-styles'  => [
+	'scripts-and-styles' => [
 		'add'    => [
 
 			// Scripts.
@@ -359,7 +372,7 @@ return [
 	|
 	*/
 
-	'theme-support'       => [
+	'theme-support' => [
 		'add'    => [
 
 			// Genesis defaults.
@@ -446,7 +459,7 @@ return [
 	|
 	*/
 
-	'widget-areas'        => [
+	'widget-areas' => [
 		'add'    => [
 			[
 				'id'          => 'before-header',
@@ -505,7 +518,7 @@ return [
 	|
 	*/
 
-	'loop'                => [
+	'loop' => [
 		'archive' => [
 			'post',
 			'category',
@@ -517,7 +530,7 @@ return [
 		],
 	],
 
-	'page-header'         => [
+	'page-header' => [
 		'archive' => [],
 		'single'  => [],
 	],
@@ -550,5 +563,5 @@ return [
 	|
 	*/
 
-	'custom-functions'    => '__return_null',
+	'custom-functions' => '__return_null',
 ];
