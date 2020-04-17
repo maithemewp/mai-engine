@@ -25,6 +25,7 @@ return [
 	'theme-support'    => [
 		'add' => [
 			'boxed-container',
+			'genesis-footer-widgets' => 4,
 			'sticky-header',
 		],
 	],
