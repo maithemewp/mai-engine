@@ -273,13 +273,15 @@ function mai_get_child_themes() {
  * @return array
  */
 function mai_get_options() {
+	$handle = mai_get_handle();
+
 	if ( is_customize_preview() ) {
-		$options = get_option( mai_get_handle() );
+		$options = get_option( $handle );
 	} else {
 		static $options = [];
 
 		if ( empty( $options ) ) {
-			$options = get_option( mai_get_handle() );
+			$options = get_option( $handle );
 		}
 	}
 
@@ -300,6 +302,27 @@ function mai_get_option( $option, $default = false ) {
 	$options = mai_get_options();
 
 	return isset( $options[ $option ] ) ? $options[ $option ] : $default;
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param string $option Option name.
+ * @param mixed  $value  Option value.
+ *
+ * @return void
+ */
+function mai_update_option( $option, $value ) {
+	$handle = mai_get_handle();
+
+	// Can't be static.
+	$options = get_option( $handle );
+
+	$options[ $option ] = $value;
+
+	update_option( $handle, $options );
 }
 
 /**
@@ -545,9 +568,9 @@ function mai_get_icon( $args ) {
 	}
 
 	if ( $args['border_radius'] ) {
-		$radius               = explode( ' ', trim( $args['border_radius'] ) );
-		$radius               = array_map( 'mai_get_unit_value', $radius );
-		$radius               = array_filter( $radius );
+		$radius              = explode( ' ', trim( $args['border_radius'] ) );
+		$radius              = array_map( 'mai_get_unit_value', $radius );
+		$radius              = array_filter( $radius );
 		$attributes['style'] .= sprintf( '--icon-border-radius:%s;', implode( ' ', $radius ) );
 	}
 
@@ -699,5 +722,6 @@ function mai_get_widget_count( $widget_area_id ) {
 	} else {
 		$widget_count = 0;
 	}
+
 	return $widget_count;
 }

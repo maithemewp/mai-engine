@@ -13,31 +13,34 @@ add_action( 'admin_init', 'mai_update_first_version' );
 /**
  * Set the first version number.
  *
- * @since 1.2.1
+ * @since 1.0.0
  *
  * @return void
  */
 function mai_update_first_version() {
-	if ( false !== get_option( 'mai_first_version' ) ) {
+	if ( false !== mai_get_option( 'first_version' ) ) {
 		return;
 	}
 
-	update_option( 'mai_first_version', mai_get_plugin_data( 'version' ) );
+	mai_update_option( 'first_version', mai_get_version() );
 }
 
-add_action( 'admin_init', 'mai_update_database_version', 20 );
+add_action( 'admin_init', 'mai_update_database_version' );
 /**
  * Maybe run the version updater.
+ *
  * Mostly taken from G core. Some original inspiration from link below.
+ *
+ * @since  1.0.0
  *
  * @link   https://www.sitepoint.com/wordpress-plugin-updates-right-way/
  *
  * @return void
  */
 function mai_update_database_version() {
-	if ( version_compare( get_option( 'mai_db_version' ), mai_get_plugin_data( 'db-version' ), '>=' ) ) {
-		return;
-	}
+	$db_version = mai_get_plugin_data( 'db-version' );
 
-	update_option( 'mai_db_version', mai_get_plugin_data( 'db-version' ) );
+	if ( version_compare( mai_get_option( 'db_version' ), $db_version, '<=' ) ) {
+		mai_update_option( 'db_version', $db_version );
+	}
 }
