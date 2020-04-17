@@ -1,7 +1,0 @@
-{
-	"declaration_names" : "color, background-color",
-	"selectors" : {
-		".panel" : "border",
-		".test" : "padding-right"
-	}
-}
