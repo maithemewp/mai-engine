@@ -44,6 +44,9 @@ function mai_setup() {
 	array_walk(
 		$theme_support['add'],
 		function ( $value, $key ) {
+			if ( 'genesis-footer-widgets' === $key ) {
+				$value = mai_get_option( 'footer-widgets-widget-areas', $value );
+			}
 			is_int( $key ) ? add_theme_support( $value ) : add_theme_support( $key, $value );
 		}
 	);

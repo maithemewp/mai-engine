@@ -405,7 +405,7 @@ return [
 					'.site-description',
 				],
 			],
-			'genesis-footer-widgets'   => mai_get_option( 'footer-widgets-widget-areas', 3 ),
+			'genesis-footer-widgets'   => 3,
 			'genesis-menus'            => [
 				'header-left'  => __( 'Header Left Menu', 'mai-engine' ),
 				'header-right' => __( 'Header Right Menu', 'mai-engine' ),

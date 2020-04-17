@@ -187,7 +187,7 @@ function mai_get_config( $sub_config = 'default' ) {
 	$theme  = mai_get_dir() . 'config/' . mai_get_active_theme() . '/config.php';
 
 	if ( is_readable( $theme ) ) {
-		$config = array_merge_recursive( $config, require $theme );
+		$config = array_replace_recursive( $config, require $theme );
 	}
 
 	$configs[ $sub_config ] = isset( $config[ $sub_config ] ) ? $config[ $sub_config ] : [];
