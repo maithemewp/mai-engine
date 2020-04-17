@@ -33,71 +33,67 @@ msgstr ""
 msgid "Sidebar, Content"
 msgstr ""
 
-#: config/_default/config.php:160, config/_default/config.php:221
+#: config/_default/config.php:172, config/_default/config.php:233
 msgid "Menu"
 msgstr ""
 
-#: config/_default/config.php:218, config/_default/config.php:486
+#: config/_default/config.php:230, config/_default/config.php:491
 msgid "Mobile Menu"
 msgstr ""
 
-#: config/_default/config.php:225
+#: config/_default/config.php:237
 msgid "Sub Menu"
 msgstr ""
 
-#: config/_default/config.php:231
-msgid "Menu Search"
-msgstr ""
-
-#: config/_default/config.php:405
+#: config/_default/config.php:410
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/_default/config.php:406
+#: config/_default/config.php:411
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/_default/config.php:407
+#: config/_default/config.php:412
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default/config.php:408
+#: config/_default/config.php:413
 msgid "Footer Menu"
 msgstr ""
 
-#: config/_default/config.php:453, lib/admin/hide-elements.php:71
+#: config/_default/config.php:458, lib/admin/hide-elements.php:71
 msgid "Before Header"
 msgstr ""
 
-#: config/_default/config.php:454
+#: config/_default/config.php:459
 msgid "The Before Header widget area."
 msgstr ""
 
-#: config/_default/config.php:459
+#: config/_default/config.php:464
 msgid "Header Left"
 msgstr ""
 
-#: config/_default/config.php:460
+#: config/_default/config.php:465
 msgid "The Header Left widget area."
 msgstr ""
 
-#: config/_default/config.php:469
+#: config/_default/config.php:474
 msgid "Header Right"
 msgstr ""
 
-#: config/_default/config.php:470
+#: config/_default/config.php:475
 msgid "The Header Right widget area."
 msgstr ""
 
-#: config/_default/config.php:479, lib/admin/hide-elements.php:78
+#: config/_default/config.php:484, lib/admin/hide-elements.php:78
 msgid "Before Footer"
 msgstr ""
 
-#: config/_default/config.php:480
+#: config/_default/config.php:485
 msgid "The Before Footer widget area."
 msgstr ""
 
-#: config/_default/config.php:487
+#: config/_default/config.php:492
 msgid "The Mobile Menu widget area."
 msgstr ""
 
@@ -197,7 +193,7 @@ msgstr ""
 msgid "More Link Text"
 msgstr ""
 
-#: config/_settings/content-archives.php:206, config/_settings/grid-block.php:279, lib/classes/class-mai-entry.php:950
+#: config/_settings/content-archives.php:206, config/_settings/grid-block.php:279
 msgid "Read More"
 msgstr ""
 
@@ -533,8 +529,36 @@ msgstr ""
 msgid "Exclude terms with no posts"
 msgstr ""
 
-#: lib/admin/demo-import.php:32
+#: lib/admin/demo-import.php:44
 msgid "Theme Dependency"
+msgstr ""
+
+#: lib/admin/demo-import.php:197
+msgid "Hi! Thanks for choosing Mai"
+msgstr ""
+
+#: lib/admin/demo-import.php:203
+msgid "Choose a One Click Demo Import to load pages, posts, and images that match the corresponding Mai Sparkle demo website. Loading the demo content will not overwrite any of your existing content. If you do not need the demo content, simply"
+msgstr ""
+
+#: lib/admin/demo-import.php:205
+msgid "skip"
+msgstr ""
+
+#: lib/admin/demo-import.php:206
+msgid "this step."
+msgstr ""
+
+#: lib/admin/demo-import.php:211
+msgid "Please contact"
+msgstr ""
+
+#: lib/admin/demo-import.php:213
+msgid "support"
+msgstr ""
+
+#: lib/admin/demo-import.php:214
+msgid "for assistance. As with any update, be sure to back up your site first!"
 msgstr ""
 
 #: lib/admin/hide-elements.php:41
@@ -729,14 +753,6 @@ msgstr ""
 msgid "Desktop"
 msgstr ""
 
-#: lib/customize/logo.php:36, lib/customize/logo.php:70
-msgid "Mobile / Sticky"
-msgstr ""
-
-#: lib/customize/logo.php:36, lib/customize/logo.php:70
-msgid "Mobile"
-msgstr ""
-
 #: lib/customize/logo.php:60
 msgid "Logo Spacing"
 msgstr ""
@@ -869,24 +885,8 @@ msgstr ""
 msgid "Previous/Next Entry Nav"
 msgstr ""
 
-#: lib/functions/utilities.php:486
+#: lib/functions/utilities.php:490
 msgid "Site Default"
-msgstr ""
-
-#: lib/structure/page-header.php:151
-msgid "Latest Posts"
-msgstr ""
-
-#: lib/structure/page-header.php:184, lib/structure/page-header.php:269
-msgid "Search results for: "
-msgstr ""
-
-#: lib/structure/page-header.php:193
-msgid "Archives for "
-msgstr ""
-
-#: lib/structure/page-header.php:205
-msgid "Not found, error 404"
 msgstr ""
 
 #: config/_settings/footer/footer-credits.php:16
