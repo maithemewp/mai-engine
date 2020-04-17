@@ -39,42 +39,6 @@ function mai_change_plugin_dependency_text( $actions ) {
 	return $actions;
 }
 
-add_filter( 'pt-ocdi/plugin_page_title', 'mai_demo_import_page_title' );
-/**
- * Description of expected behavior.
- *
- * @since 1.0.0
- *
- * @param $plugin_title
- *
- * @return mixed
- */
-function mai_demo_import_page_title( $plugin_title ) {
-	$intro = sprintf(
-		'<p>%s %s.</p>',
-		__( 'Hi! Thanks for choosing Mai', 'mai-engine' ),
-		mai_convert_case( mai_get_active_theme(), 'title' )
-	);
-
-	$intro .= sprintf(
-		'<p>%s <a href="%s"><strong>%s</strong></a> %s</p>',
-		__( 'Choose a One Click Demo Import to load pages, posts, and images that match the corresponding Mai Sparkle demo website. Loading the demo content will not overwrite any of your existing content. If you do not need the demo content, simply', 'mai-engine' ),
-		get_admin_url(),
-		__( 'skip', 'mai-engine' ),
-		__( 'this step.', 'mai-engine' )
-	);
-
-	$intro .= sprintf(
-		'<p>%s <a href="%s" target="_blank"><strong>%s</strong></a> %s</p>',
-		__( 'Please contact', 'mai-engine' ),
-		'https://support.bizbudding.com',
-		__( 'support', 'mai-engine' ),
-		__( 'for assistance. As with any update, be sure to back up your site first!', 'mai-engine' )
-	);
-
-	return $plugin_title . $intro;
-}
-
 add_filter( 'pt-ocdi/plugin_page_setup', 'mai_demo_import_plugin_page' );
 /**
  * Modify the one click demo import plugin page settings.
@@ -89,6 +53,31 @@ function mai_demo_import_plugin_page( $defaults ) {
 	$defaults['menu_slug'] = 'mai-demo-import';
 
 	return $defaults;
+}
+
+add_action( 'pt-ocdi/before_content_import', 'mai_before_content_import', 9, 1 );
+/**
+ * Install and activate required plugins.
+ *
+ * @since 1.0.0
+ *
+ * @param array $selected_import Selected demo data.
+ *
+ * @return void
+ */
+function mai_before_content_import( $selected_import ) {
+	$theme        = mai_get_active_theme();
+	$name         = isset( $selected_import['import_file_name'] ) ? $selected_import['import_file_name'] : '';
+	$demo         = str_replace( $theme . ' ', '', mai_convert_case( $name, 'lower' ) );
+	$dependencies = mai_get_config( 'required-plugins' );
+
+	foreach ( $dependencies as $step => $dependency ) {
+		$demos = isset( $dependency['demos'] ) ? $dependency['demos'] : [];
+
+		if ( in_array( $demo, $demos, true ) || is_string( $demos ) && '*' === $demos ) {
+			genesis_onboarding_install_dependencies( $dependencies, $step );
+		}
+	}
 }
 
 add_filter( 'pt-ocdi/import_files', 'mai_demo_import_files' );
@@ -135,7 +124,6 @@ add_filter( 'pt-ocdi/after_all_import_execution', 'mai_after_demo_import', 100 )
  * @return void
  */
 function mai_after_demo_import() {
-	$handle = mai_get_handle();
 
 	// Assign menus to their locations.
 	$locations['primary'] = get_term_by( 'name', 'Header Menu', 'nav_menu' );
@@ -183,18 +171,38 @@ function mai_after_demo_import() {
 	$wp_rewrite->flush_rules();
 }
 
-add_filter( 'mai_plugin_dependencies', 'mai_add_plugin_dependencies', 10, 1 );
+add_filter( 'pt-ocdi/plugin_intro_text', 'mai_demo_import_intro_text' );
 /**
  * Description of expected behavior.
  *
  * @since 1.0.0
  *
- * @param array $defaults Default plugins.
+ * @param $intro_text
  *
- * @return array
+ * @return mixed
  */
-function mai_add_plugin_dependencies( $defaults ) {
-	$config = mai_get_config( 'required-plugins' );
+function mai_demo_import_intro_text( $intro_text ) {
+	$intro = sprintf(
+		'<p>%s %s.</p>',
+		__( 'Hi! Thanks for choosing Mai', 'mai-engine' ),
+		mai_convert_case( mai_get_active_theme(), 'title' )
+	);
 
-	return array_merge_recursive( $config, $defaults );
+	$intro .= sprintf(
+		'<p>%s <a href="%s"><strong>%s</strong></a> %s</p>',
+		__( 'Choose a One Click Demo Import to load pages, posts, and images that match the corresponding Mai Sparkle demo website. Loading the demo content will not overwrite any of your existing content. If you do not need the demo content, simply', 'mai-engine' ),
+		get_admin_url(),
+		__( 'skip', 'mai-engine' ),
+		__( 'this step.', 'mai-engine' )
+	);
+
+	$intro .= sprintf(
+		'<p>%s <a href="%s" target="_blank"><strong>%s</strong></a> %s</p>',
+		__( 'Please contact', 'mai-engine' ),
+		'https://support.bizbudding.com',
+		__( 'support', 'mai-engine' ),
+		__( 'for assistance. As with any update, be sure to back up your site first!', 'mai-engine' )
+	);
+
+	return $intro_text . $intro;
 }

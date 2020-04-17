@@ -33,18 +33,22 @@ return [
 	],
 	'required-plugins' => [
 		[
-			'name'     => 'Simple Social Icons',
-			'host'     => 'wordpress',
-			'slug'     => 'simple-social-icons/simple-social-icons.php',
-			'uri'      => 'https://wordpress.org/plugins/simple-social-icons/',
-			'optional' => true,
+			'name'       => 'Simple Social Icons',
+			'slug'       => 'simple-social-icons/simple-social-icons.php',
+			'public_url' => 'https://wordpress.org/plugins/simple-social-icons/',
+			'demos'      => [ 'creative' ],
 		],
 		[
-			'name'     => 'WP Forms Lite',
-			'host'     => 'wordpress',
-			'slug'     => 'wpforms-lite/wpforms.php',
-			'uri'      => 'https://wordpress.org/plugins/query-monitor/',
-			'optional' => true,
+			'name'       => 'WP Forms Lite',
+			'slug'       => 'wpforms-lite/wpforms.php',
+			'public_url' => 'https://wordpress.org/plugins/wpforms-lite/',
+			'demos'      => [ 'creative', 'fashion' ],
+		],
+		[
+			'name'       => 'WooCommerce',
+			'slug'       => 'woocommerce/woocommerce.php',
+			'public_url' => 'https://wordpress.org/plugins/woocommerce/',
+			'demos'      => [ 'creative' ],
 		],
 	],
 ];
