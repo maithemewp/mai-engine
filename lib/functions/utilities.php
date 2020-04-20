@@ -190,14 +190,14 @@ function mai_get_config( $sub_config = 'default' ) {
 		$config = array_replace_recursive( $config, require $theme );
 	}
 
-	$configs[ $sub_config ] = isset( $config[ $sub_config ] ) ? $config[ $sub_config ] : [];
-
 	// Allow users to override from within actual child theme.
 	$child = get_stylesheet_directory() . '/config.php';
 
 	if ( is_readable( $child ) ) {
-		$configs[ $sub_config ] = require $child;
+		$config = array_replace_recursive( $config, require $child );
 	}
+
+	$configs[ $sub_config ] = isset( $config[ $sub_config ] ) ? $config[ $sub_config ] : [];
 
 	return apply_filters( "mai_{$sub_config}_config", $configs[ $sub_config ] );
 }
