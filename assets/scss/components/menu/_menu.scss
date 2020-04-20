@@ -30,7 +30,7 @@
 }
 
 .menu-item-link {
-	display: flex;
+	display: var(--menu-item-link-display, flex);
 	flex: 1;
 	align-items: center;
 	width: var(--menu-item-link-width, 100%);
@@ -46,7 +46,7 @@
 }
 
 .menu-item-has-children > a::after {
-	display: inline-block;
+	display: var(--menu-item-dropdown-toggle, inline-block);
 	width: 6px;
 	height: 6px;
 	border-color: currentColor;
@@ -57,6 +57,12 @@
 	border-left: 0;
 	transform: var(--sub-menu-toggle-transform, rotate(45deg));
 	content: "";
+
+	.sidebar &,
+	.footer-widgets &,
+	.nav-footer & {
+		--menu-item-dropdown-toggle: none;
+	}
 }
 
 .genesis-nav-menu > .menu-item-has-children > a::after {
@@ -80,12 +86,6 @@
 	--sub-menu-toggle-transform: rotate(-135deg);
 }
 
-/* TODO: These menus will be forced to 1 level so we need to hide toggles */
-.nav-secondary .genesis-nav-menu .menu-item-has-children > a::after,
-.site-footer .genesis-nav-menu .menu-item-has-children > a::after {
-	display: none;
-}
-
 [dir="rtl"] .genesis-nav-menu .sub-menu .menu-item-has-children > a::after {
 	--sub-menu-toggle-transform: rotate(135deg);
 }
@@ -97,9 +97,16 @@
 .is-desktop {
 	--menu-flex-wrap: nowrap;
 	--menu-font-size-desktop: smaller;
-
 	--menu-item-width: auto;
 	--menu-item-link-width: auto;
 	--menu-item-margin: 0;
 	--menu-item-link-padding: var(--spacing-md) var(--spacing-md);
+}
+
+.sidebar,
+.footer-widgets {
+	--menu-display: block;
+	--menu-item-width: 100%;
+	--menu-item-margin: 0 0 var(--spacing-md);
+	--menu-item-link-padding: 0;
 }
