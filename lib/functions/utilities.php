@@ -360,7 +360,6 @@ function mai_get_colors() {
 
 	if ( empty( $colors ) ) {
 		$colors = mai_get_variables()['colors'];
-
 		foreach ( $colors as $name => $hex ) {
 			$colors[ $name ] = $hex;
 		}

@@ -885,7 +885,7 @@ msgstr ""
 msgid "Previous/Next Entry Nav"
 msgstr ""
 
-#: lib/functions/utilities.php:490
+#: lib/functions/utilities.php:489
 msgid "Site Default"
 msgstr ""
 

@@ -38,7 +38,6 @@ add_filter( 'body_class', 'mai_body_classes' );
  * @return array
  */
 function mai_body_classes( $classes ) {
-
 	// Remove unnecessary page template classes.
 	$template  = get_page_template_slug();
 	$basename  = basename( $template, '.php' );
