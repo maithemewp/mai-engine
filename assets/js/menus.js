@@ -12,7 +12,7 @@
 	var mobileMenuWidget = document.querySelector( '.mobile-menu .widget' );
 	var menuToggle       = document.getElementsByClassName( 'menu-toggle' )[ 0 ];
 	var subMenus         = document.querySelectorAll( '.sub-menu' );
-	var subMenuToggles   = document.querySelectorAll( '.sub-menu-toggle' );
+	var subMenuToggles   = [];
 	var searchMenuItems  = document.querySelectorAll( '.menu-item.search' );
 	var mediaQuery       = window.matchMedia( '(max-width:' + localizedData.breakpoint + 'px)' );
 	var timeout          = false;
@@ -68,6 +68,7 @@
 			subMenuToggle.innerHTML = localizedData.subMenuToggle;
 			subMenu.parentNode.insertBefore( subMenuToggle, subMenu );
 		} );
+		subMenuToggles = document.querySelectorAll( '.sub-menu-toggle' );
 	};
 
 	var createSearchForm = function() {

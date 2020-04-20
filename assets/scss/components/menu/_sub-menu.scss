@@ -25,15 +25,11 @@
 }
 
 .sub-menu-toggle {
-	position: var(--sub-menu-toggle-position, absolute);
-	top: 0;
-	right: 0;
-	z-index: 1;
 	display: var(--sub-menu-toggle-display, (flex));
 	align-items: center;
 	justify-content: center;
 	width: 3em;
-	height: 100%;
+	height: auto;
 	margin: 0;
 	line-height: 0;
 	background-color: transparent;

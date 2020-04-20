@@ -9,7 +9,6 @@
 	columns: var(--menu-columns, auto);
 	list-style-type: none;
 
-	--menu-item-display: inline-flex;
 	--link-color: var(--color-medium);
 	--link-color-hover: var(--color-primary);
 	--link-text-decoration: none;
@@ -23,7 +22,6 @@
 	position: relative;
 	display: var(--menu-item-display, (flex));
 	flex-wrap: var(--menu-item-flex-wrap, wrap);
-	align-items: center;
 	justify-content: space-between;
 	width: var(--menu-item-width, 100%);
 	margin: var(--menu-item-margin, (0 auto));
