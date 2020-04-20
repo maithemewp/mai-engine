@@ -33,7 +33,7 @@
 	align-items: center;
 	justify-content: center;
 	width: 3em;
-	height: calc((var(--spacing-sm) * 2) + 1em);
+	height: 100%;
 	margin: 0;
 	line-height: 0;
 	background-color: transparent;
@@ -49,19 +49,22 @@
 }
 
 .sub-menu-toggle-icon {
-	display: block;
-	width: 0;
-	height: 0;
-	border-top: var(--spacing-xxxxs) solid var(--color-dark);
-	border-right: var(--spacing-xxxxs) solid transparent;
-	border-left: var(--spacing-xxxxs) solid transparent;
-	content: " ";
+	width: 6px;
+	height: 6px;
+	border-color: var(--menu-item-link-color, var(--link-color));
+	border-style: solid;
+	border-top: 0;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left: 0;
+	transform: var(--sub-menu-toggle-transform, rotate(45deg));
 }
 
 .sub-menu-visible {
 	--sub-menu-display: flex;
 	--sub-menu-opacity: 1;
 	--sub-menu-left: auto;
+	--sub-menu-toggle-transform: rotate(-45deg);
 }
 
 .sub-menu .sub-menu {
