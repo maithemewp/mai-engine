@@ -285,7 +285,7 @@ msgstr ""
 msgid "Row Gap"
 msgstr ""
 
-#: config/_settings/content-archives.php:408, lib/classes/class-mai-customizer-api.php:298
+#: config/_settings/content-archives.php:408, lib/classes/class-mai-customizer-api.php:297
 msgid "Posts Per Page"
 msgstr ""
 
