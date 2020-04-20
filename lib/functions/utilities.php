@@ -338,8 +338,8 @@ function mai_get_variables() {
 
 	if ( is_null( $variables ) ) {
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		$defaults = json_decode( file_get_contents( mai_get_dir() . 'config/_default/config.json' ), true );
-		$file     = mai_get_dir() . 'config/' . mai_get_active_theme() . '/config.json';
+		$defaults  = json_decode( file_get_contents( mai_get_dir() . 'config/_default/config.json' ), true );
+		$file      = mai_get_dir() . 'config/' . mai_get_active_theme() . '/config.json';
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		$theme     = is_readable( $file ) ? json_decode( file_get_contents( $file ), true ) : [];
 		$variables = array_replace_recursive( $defaults, $theme );
