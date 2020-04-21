@@ -129,6 +129,20 @@
 		toggleAriaValues( menuToggle );
 
 		body.classList.toggle( 'mobile-menu-visible' );
+
+		if ( body.classList.contains( 'mobile-menu-visible' ) ) {
+			body.addEventListener( 'mouseup', maybeCloseMobileMenu, false );
+			body.addEventListener( 'keydown', maybeCloseMobileMenu, false );
+		} else {
+			body.removeEventListener( 'mouseup', maybeCloseMobileMenu, false );
+			body.removeEventListener( 'keydown', maybeCloseMobileMenu, false );
+		}
+	};
+
+	var maybeCloseMobileMenu = function( event ) {
+		if ( ! event.target.closest( '.site-header, .mobile-menu' ) || 27 == event.keyCode ) {
+			toggleMobileMenu();
+		}
 	};
 
 	var toggleSubMenu = function( event ) {
