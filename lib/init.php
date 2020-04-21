@@ -77,7 +77,6 @@ function mai_load_files() {
 		'functions/grid',
 		'functions/widgets',
 		'functions/defaults',
-		'functions/onboarding',
 		'functions/plugins',
 
 		// Structure.
