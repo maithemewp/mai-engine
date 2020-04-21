@@ -193,12 +193,15 @@
 
 		window.addEventListener( 'resize', onResize, false );
 		menuToggle.addEventListener( 'click', toggleMobileMenu, false );
-		subMenuToggles.forEach( function( subMenu ) {
-			subMenu.addEventListener( 'click', toggleSubMenu, false );
-		} );
 		searchMenuItems.forEach( function( searchMenuItem ) {
 			searchMenuItem.addEventListener( 'click', toggleSearchForm, false );
 		} );
+		document.addEventListener( 'click', function( event ) {
+			if ( event.target.classList.contains( 'sub-menu-toggle' ) || event.target.classList.contains( 'sub-menu-toggle-icon' ) ) {
+				toggleSubMenu( event );
+			}
+		}, false );
+
 	};
 
 	return onReady();

@@ -37,7 +37,7 @@ msgstr ""
 msgid "Menu"
 msgstr ""
 
-#: config/_default/config.php:230, config/_default/config.php:491
+#: config/_default/config.php:230, config/_default/config.php:498
 msgid "Mobile Menu"
 msgstr ""
 
@@ -45,55 +45,55 @@ msgstr ""
 msgid "Sub Menu"
 msgstr ""
 
-#: config/_default/config.php:410
+#: config/_default/config.php:417
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/_default/config.php:411
+#: config/_default/config.php:418
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/_default/config.php:412
+#: config/_default/config.php:419
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default/config.php:413
+#: config/_default/config.php:420
 msgid "Footer Menu"
 msgstr ""
 
-#: config/_default/config.php:458, lib/admin/hide-elements.php:71
+#: config/_default/config.php:465, lib/admin/hide-elements.php:71
 msgid "Before Header"
 msgstr ""
 
-#: config/_default/config.php:459
+#: config/_default/config.php:466
 msgid "The Before Header widget area."
 msgstr ""
 
-#: config/_default/config.php:464
+#: config/_default/config.php:471
 msgid "Header Left"
 msgstr ""
 
-#: config/_default/config.php:465
+#: config/_default/config.php:472
 msgid "The Header Left widget area."
 msgstr ""
 
-#: config/_default/config.php:474
+#: config/_default/config.php:481
 msgid "Header Right"
 msgstr ""
 
-#: config/_default/config.php:475
+#: config/_default/config.php:482
 msgid "The Header Right widget area."
 msgstr ""
 
-#: config/_default/config.php:484, lib/admin/hide-elements.php:78
+#: config/_default/config.php:491, lib/admin/hide-elements.php:78
 msgid "Before Footer"
 msgstr ""
 
-#: config/_default/config.php:485
+#: config/_default/config.php:492
 msgid "The Before Footer widget area."
 msgstr ""
 
-#: config/_default/config.php:492
+#: config/_default/config.php:499
 msgid "The Mobile Menu widget area."
 msgstr ""
 
@@ -529,36 +529,48 @@ msgstr ""
 msgid "Exclude terms with no posts"
 msgstr ""
 
-#: lib/admin/demo-import.php:44
+#: lib/admin/demo-import.php:45
 msgid "Theme Dependency"
 msgstr ""
 
-#: lib/admin/demo-import.php:197
+#: lib/admin/demo-import.php:202
 msgid "Hi! Thanks for choosing Mai"
 msgstr ""
 
-#: lib/admin/demo-import.php:203
+#: lib/admin/demo-import.php:208
 msgid "Choose a One Click Demo Import to load pages, posts, and images that match the corresponding Mai Sparkle demo website. Loading the demo content will not overwrite any of your existing content. If you do not need the demo content, simply"
 msgstr ""
 
-#: lib/admin/demo-import.php:205
+#: lib/admin/demo-import.php:210
 msgid "skip"
 msgstr ""
 
-#: lib/admin/demo-import.php:206
+#: lib/admin/demo-import.php:211
 msgid "this step."
 msgstr ""
 
-#: lib/admin/demo-import.php:211
+#: lib/admin/demo-import.php:216
 msgid "Please contact"
 msgstr ""
 
-#: lib/admin/demo-import.php:213
+#: lib/admin/demo-import.php:218
 msgid "support"
 msgstr ""
 
-#: lib/admin/demo-import.php:214
+#: lib/admin/demo-import.php:219
 msgid "for assistance. As with any update, be sure to back up your site first!"
+msgstr ""
+
+#: lib/admin/demo-import.php:271
+msgid "Quit and return to automatic demo importer"
+msgstr ""
+
+#: lib/admin/demo-import.php:272
+msgid "Automatic import"
+msgstr ""
+
+#: lib/admin/demo-import.php:300
+msgid "Could not verify nonce."
 msgstr ""
 
 #: lib/admin/hide-elements.php:41
@@ -811,6 +823,10 @@ msgstr ""
 
 #: lib/customize/upsell.php:36
 msgid "Customize more now!"
+msgstr ""
+
+#: lib/functions/deactivate.php:41
+msgid "Your theme does not support the Mai Engine plugin. As a result, Mai Engine has been deactivated."
 msgstr ""
 
 #: lib/functions/grid.php:82, lib/functions/loop.php:282
