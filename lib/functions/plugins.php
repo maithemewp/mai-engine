@@ -41,8 +41,33 @@ add_filter( 'wpforms_frontend_form_data', 'mai_wpforms_default_button_class' );
 function mai_wpforms_default_button_class( $data ) {
 	if ( isset( $data['settings']['submit_class'] ) && ! mai_has_string( 'button', $data['settings']['submit_class'] ) ) {
 		$data['settings']['submit_class'] .= ' button';
-		$data['settings']['submit_class']  = trim( $data['settings']['submit_class'] );
+		$data['settings']['submit_class'] = trim( $data['settings']['submit_class'] );
 	}
 
 	return $data;
+}
+
+add_filter( 'woocommerce_enqueue_styles', 'jk_dequeue_styles' );
+/**
+ * Disable WooCommerce styles.
+ *
+ * @since 1.0.0
+ *
+ * @param $enqueue_styles
+ *
+ * @return mixed
+ */
+function jk_dequeue_styles( $enqueue_styles ) {
+	$styles = [
+		'general',
+		// 'layout',
+		// 'smallscreen',
+		// 'blocks',
+	];
+
+	foreach ( $styles as $style ) {
+		unset( $enqueue_styles["woocommerce-$style"] );
+	}
+
+	return $enqueue_styles;
 }
