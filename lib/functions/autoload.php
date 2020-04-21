@@ -29,7 +29,7 @@ function mai_autoload_register( $class ) {
 
 	$dir  = mai_get_dir() . 'lib/classes/';
 	$name = strtolower( str_replace( '_', '-', $class ) );
-	$name = "{$dir}class-{$file}.php";
+	$file = "{$dir}class-{$name}.php";
 
 	if ( file_exists( $file ) ) {
 		/* @noinspection PhpIncludeInspection */
