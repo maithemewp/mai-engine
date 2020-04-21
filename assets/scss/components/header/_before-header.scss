@@ -1,5 +1,5 @@
 .before-header {
-	z-index: 1;
+	z-index: 11; /* 1 more than .site-header so sub-menus are on top. */
 	display: flex;
 	width: 100%;
 	min-height: calc(var(--spacing-md) * 2);
@@ -16,6 +16,7 @@
 
 	&.has-1-widgets {
 		--wrap-align-items: flex-end;
+		--menu-justify-content: flex-end;
 	}
 
 	&:not(.has-1-widgets) {

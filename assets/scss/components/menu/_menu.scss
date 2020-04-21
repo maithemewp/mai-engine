@@ -47,6 +47,7 @@
 	display: var(--menu-item-dropdown-toggle, inline-block);
 	width: 6px;
 	height: 6px;
+	margin-left: var(--spacing-xxs);
 	border-color: currentColor;
 	border-style: solid;
 	border-top: 0;

@@ -1,5 +1,6 @@
 .sub-menu {
 	position: var(--sub-menu-position, relative);
+	z-index: 9;
 	display: var(--sub-menu-display, none);
 	flex: 1 1 100%;
 	flex-wrap: wrap;
@@ -8,7 +9,7 @@
 	--list-margin: 0 !important;
 	--menu-item-width: 100%;
 
-	.nav-before-header &,
+	.before-header &,
 	.nav-header &,
 	.nav-after-header & {
 		top: 100%;
@@ -21,7 +22,6 @@
 		opacity: var(--sub-menu-opacity, 1);
 		transition: var(--sub-menu-transition, none);
 	}
-
 }
 
 .sub-menu-toggle {
