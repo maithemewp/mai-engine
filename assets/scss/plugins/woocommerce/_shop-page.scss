@@ -124,6 +124,10 @@
 	flex-wrap: wrap;
 	width: 100%;
 
+	&.related {
+		margin-top: var(--spacing-lg);
+	}
+
 	.entry {
 		width: 100%;
 		margin-bottom: var(--gutter);
