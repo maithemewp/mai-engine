@@ -112,7 +112,6 @@ function mai_load_files() {
 		'customize/upsell',
 		'customize/layout',
 		'customize/page-header',
-		'customize/footer',
 	];
 
 	if ( is_admin() ) {
@@ -146,10 +145,7 @@ function mai_load_files() {
 	foreach ( $files as $file ) {
 		$filename = __DIR__ . "/$file.php";
 
-		if ( is_readable( $file ) ) {
-			require_once $file;
-
-		} elseif ( is_readable( $filename ) ) {
+		if ( is_readable( $filename ) ) {
 			require_once $filename;
 		}
 	}
