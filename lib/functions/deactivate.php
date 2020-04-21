@@ -9,7 +9,7 @@
  * @license   GPL-2.0-or-later
  */
 
-//add_action( 'admin_init', 'mai_deactivate_plugin' );
+// add_action( 'admin_init', 'mai_deactivate_plugin' );
 /**
  * Description of expected behavior.
  *

@@ -265,7 +265,7 @@ add_action( 'pt-ocdi/plugin_page_footer', 'mai_demo_import_manual_import_button'
  * @return void
  */
 function mai_demo_import_manual_import_button() {
-	$url = wp_nonce_url( admin_url( "admin-post.php?action=manual-import" ), 'manual-import', 'mai-nonce' );
+	$url = wp_nonce_url( admin_url( 'admin-post.php?action=manual-import' ), 'manual-import', 'mai-nonce' );
 
 	if ( mai_get_option( 'manual-import', false ) ) {
 		$message = __( 'Quit and return to automatic demo importer', 'mai-engine' );

@@ -1,4 +1,4 @@
-jQuery(document).ready(function($) {
+jQuery( document ).ready( function( $ ) {
 
 	// Get the sortable elements.
 	var $sortables = $( '.kirki-sortable-item[data-value^="genesis_"]' );
@@ -29,9 +29,9 @@ jQuery(document).ready(function($) {
 	$description.after( '<a href="#" role="button" class="mai-toggle-hooks">Toggle Hooks</a>' );
 
 	// Button click event.
-	$wrapper.on( 'click', '.mai-toggle-hooks', function(e) {
+	$wrapper.on( 'click', '.mai-toggle-hooks', function( e ) {
 		e.preventDefault();
 		$sortables.toggleClass( 'mai-sortable-expanded' );
-	});
+	} );
 
-});
+} );

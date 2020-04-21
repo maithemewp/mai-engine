@@ -88,7 +88,6 @@ function mai_do_page_header_image() {
 			if ( $term ) {
 				$image_id = get_term_meta( $term->term_id, 'page_header_image', true );
 			}
-
 		}
 	}
 

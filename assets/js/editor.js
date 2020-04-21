@@ -1,16 +1,16 @@
-jQuery(document).ready(function($) {
+jQuery( document ).ready( function( $ ) {
 
 	if ( 'object' !== typeof acf ) {
-		return
+		return;
 	}
 
 	// ACF color picker default color palette.
 	acf.add_filter( 'color_picker_args', function( args, $field ) {
 		args.palettes = maiEditorVars.palette;
 		return args;
-	});
+	} );
 
-	var icons = [ "field_5e3f4bcd978f9", "field_5e3f4bcd867e8" ];
+	var icons = [ 'field_5e3f4bcd978f9', 'field_5e3f4bcd867e8' ];
 	var post  = maiEditorVars.post;
 	var term  = maiEditorVars.term;
 	var user  = maiEditorVars.user;
@@ -86,7 +86,7 @@ jQuery(document).ready(function($) {
 
 		return data;
 
-	});
+	} );
 
 	function getPostType( $input, keys ) {
 		return acf.getField( keys.post_type ).val();
@@ -96,26 +96,23 @@ jQuery(document).ready(function($) {
 		return acf.getField( keys.taxonomy ).val();
 	}
 
-
 	function getTaxonomy( $input, keys ) {
 		return acf.getField( keys.taxonomy ).val();
 	}
 
-});
+} );
 
-
-
-jQuery(document).ready(function($) {
+jQuery( document ).ready( function( $ ) {
 
 	if ( 'object' !== typeof acf ) {
-		return
+		return;
 	}
 
 	/**
-	*  Initialize the field.
-	*
-	*  This function will initialize the $field.
-	*/
+	 *  Initialize the field.
+	 *
+	 *  This function will initialize the $field.
+	 */
 	function initialize_sortable_field( $field ) {
 
 		// Bail if not a sortable field.
@@ -124,22 +121,22 @@ jQuery(document).ready(function($) {
 		}
 
 		// Add sortable
-		$field.find( '.acf-checkbox-list' ).sortable({
+		$field.find( '.acf-checkbox-list' ).sortable( {
 			items: '> li',
 			handle: '> .mai-acf-sortable-handle',
 			// forceHelperSize: true,
 			placeholder: 'sortable-checkbox-placeholder',
 			forcePlaceholderSize: true,
 			scroll: true,
-			create: function(event, ui) {
-				$(this).find( 'li' ).append( '<span class="mai-acf-sortable-handle"><i class="dashicons dashicons-menu"></i></span>' );
+			create: function( event, ui ) {
+				$( this ).find( 'li' ).append( '<span class="mai-acf-sortable-handle"><i class="dashicons dashicons-menu"></i></span>' );
 			},
-			stop: function(event, ui) {
+			stop: function( event, ui ) {
 			},
-			update: function(event, ui) {
-				$(this).find( 'input[type="checkbox"]' ).trigger( 'change' );
+			update: function( event, ui ) {
+				$( this ).find( 'input[type="checkbox"]' ).trigger( 'change' );
 			}
-		});
+		} );
 
 	}
 
@@ -158,14 +155,14 @@ jQuery(document).ready(function($) {
 
 	}
 
-});
+} );
 
 wp.domReady( function() {
 
 	wp.blocks.registerBlockStyle( 'core/heading', {
 		name: 'subheading',
 		label: 'Subheading'
-	});
+	} );
 
 	wp.blocks.registerBlockStyle( 'core/button', [
 		{
@@ -181,6 +178,6 @@ wp.domReady( function() {
 			name: 'tertiary',
 			label: 'Tertiary'
 		}
-	]);
+	] );
 
 } );

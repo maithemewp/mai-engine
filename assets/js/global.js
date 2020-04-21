@@ -10,7 +10,6 @@ var menuButtons = document.querySelectorAll( '.menu-item.button' );
 	menuButton.classList.remove( 'button' );
 } );
 
-
 function hide( element ) {
 	var el = document.getElementsByClassName( element )[ 0 ];
 
