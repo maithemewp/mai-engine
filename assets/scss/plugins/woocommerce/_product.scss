@@ -3,7 +3,7 @@
 
 	@include mq(lg) {
 		width: var(--one-half);
-		margin-right: var(--column-gap);
+		margin-right: var(--spacing-xxl);
 	}
 
 	&__trigger {
@@ -58,10 +58,10 @@
 			padding: var(--spacing-sm) var(--spacing-md);
 			background-color: var(--color-light);
 			border: var(--border);
+		}
 
-			+ a {
-				margin-left: -1px;
-			}
+		&:not(.active) a {
+			border-color: var(--color-light);
 		}
 
 		&.active a,
