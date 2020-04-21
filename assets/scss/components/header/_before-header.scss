@@ -13,6 +13,8 @@
 	--button-margin: 0;
 	--wrap-align-items: center;
 	--wrap-width: 100%;
+	--menu-item-link-padding: var(--spacing-xxxs) var(--spacing-sm);
+	--menu-item-dropdown-margin-top: 0;
 
 	&.has-1-widgets {
 		--wrap-align-items: flex-end;

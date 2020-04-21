@@ -2,6 +2,9 @@
 	--mobile-menu-animation-name: standardmenu;
 	--mobile-menu-animation-duration: 0.3s;
 	--mobile-menu-animation-timing: ease-in-out;
+	--sub-menu-margin: 0 0 var(--spacing-md) var(--spacing-xxs);
+	--sub-menu-padding: 0;
+
 	position: absolute;
 	top: 100%;
 	left: 0;
@@ -43,6 +46,45 @@
 	}
 }
 
+.sub-menu-toggle {
+	display: var(--sub-menu-toggle-display, (flex));
+	align-items: center;
+	justify-content: center;
+	width: 3em;
+	height: auto;
+	margin: 0;
+	line-height: 0;
+	background-color: transparent;
+
+	&:hover,
+	&:focus {
+		background-color: transparent;
+	}
+
+	&:focus {
+		outline: var(--border);
+	}
+}
+
+.sub-menu-toggle-icon {
+	width: 6px;
+	height: 6px;
+	border-color: var(--menu-item-link-color, var(--link-color));
+	border-style: solid;
+	border-top: 0;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left: 0;
+	transform: var(--sub-menu-toggle-transform, rotate(45deg));
+}
+
+.sub-menu-visible {
+	--sub-menu-display: flex;
+	--sub-menu-opacity: 1;
+	--sub-menu-left: auto;
+	--sub-menu-toggle-transform: rotate(-135deg);
+}
+
 @keyframes standardmenu {
 
 	0% {
@@ -52,18 +94,6 @@
 
 	100% {
 		top: 100%;
-		opacity: 1;
-	}
-
-}
-
-@keyframes fadein {
-
-	0% {
-		opacity: 0;
-	}
-
-	100% {
 		opacity: 1;
 	}
 
