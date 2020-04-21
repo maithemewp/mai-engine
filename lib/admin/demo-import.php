@@ -98,10 +98,14 @@ add_filter( 'pt-ocdi/import_files', 'mai_demo_import_files' );
  * @return array
  */
 function mai_demo_import_files() {
-	$url   = mai_get_url();
-	$dir   = mai_get_dir();
+	if ( mai_get_option( 'manual-import' ) ) {
+		return [];
+	}
+
+	$url   = get_stylesheet_directory_uri();
+	$dir   = get_stylesheet_directory();
 	$theme = mai_get_active_theme();
-	$demos = glob( "$dir/config/$theme/demos/*", GLOB_ONLYDIR );
+	$demos = glob( "$dir/demos/*", GLOB_ONLYDIR );
 
 	foreach ( $demos as $path ) {
 		$name = basename( $path );
@@ -111,7 +115,7 @@ function mai_demo_import_files() {
 			'local_import_file'            => "$path/content.xml",
 			'local_import_widget_file'     => "$path/widgets.wie",
 			'local_import_customizer_file' => "$path/customizer.dat",
-			'import_preview_image_url'     => "$url/config/$theme/demos/$name/screenshot.png",
+			'import_preview_image_url'     => "$url/demos/$name/screenshot.png",
 			'import_notice'                => '',
 			'preview_url'                  => "https://demo.bizbudding.com/$theme-$name/",
 		];
@@ -250,4 +254,55 @@ function mai_require_genesis_connect( $plugins ) {
 	}
 
 	return $plugins;
+}
+
+add_action( 'pt-ocdi/plugin_page_footer', 'mai_demo_import_manual_import_button' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function mai_demo_import_manual_import_button() {
+	$url = wp_nonce_url( admin_url( "admin-post.php?action=manual-import" ), 'manual-import', 'mai-nonce' );
+
+	if ( mai_get_option( 'manual-import', false ) ) {
+		$message = __( 'Quit and return to automatic demo importer', 'mai-engine' );
+		$label   = __( 'Automatic import', 'mai-engine' );
+	} else {
+		$message = __( 'Skip one click demo import and upload files manually', 'mai-engine' );
+		$label   = __( 'Manual import', 'mai-engine' );
+	}
+
+	$button = sprintf(
+		'<div class="about-wrap import-switcher"><p>%s &nbsp; <a href="%s" class="button button-secondary">%s</a></p></div>',
+		$message,
+		$url,
+		$label
+	);
+
+	echo $button;
+}
+
+add_action( 'admin_post_manual-import', 'mai_handle_manual_import_button' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function mai_handle_manual_import_button() {
+	$nonce = isset( $_REQUEST['mai-nonce'] ) ? $_REQUEST['mai-nonce'] : false;
+
+	if ( ! wp_verify_nonce( $nonce, 'manual-import' ) ) {
+		die( __( 'Could not verify nonce.', 'mai-engine' ) );
+	}
+
+	$option = mai_get_option( 'manual-import' );
+	$value  = $option ? false : true;
+
+	mai_update_option( 'manual-import', $value );
+	wp_safe_redirect( admin_url( 'themes.php?page=mai-demo-import' ) );
 }

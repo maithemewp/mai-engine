@@ -295,6 +295,13 @@ return [
 				'location' => 'editor',
 			],
 
+			// OCDI styles.
+			[
+				'handle'   => mai_get_handle() . '-one-click-demo-import',
+				'src'      => mai_get_url() . 'assets/css/plugins/one-click-demo-import.min.css',
+				'location' => 'admin',
+			],
+
 			// Plugin styles.
 			[
 				'handle'    => mai_get_handle() . '-atomic-blocks',
