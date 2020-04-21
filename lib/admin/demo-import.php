@@ -13,6 +13,7 @@
 if ( ! defined( 'PT_OCDI_PATH' ) ) {
 	define( 'PT_OCDI_PATH', plugin_dir_path( dirname( __DIR__ ) ) . 'vendor/wpackagist-plugin/one-click-demo-import/' );
 }
+
 if ( ! defined( 'PT_OCDI_URL' ) ) {
 	define( 'PT_OCDI_URL', plugin_dir_url( dirname( __DIR__ ) ) . 'vendor/wpackagist-plugin/one-click-demo-import/' );
 }
@@ -215,4 +216,38 @@ function mai_demo_import_intro_text( $intro_text ) {
 	);
 
 	return $intro_text . $intro;
+}
+
+add_filter( 'mai_plugin_dependencies', 'mai_require_genesis_connect', 10, 1 );
+/**
+ * Recommend Genesis Connect if WooCommerce or EDD installed.
+ *
+ * @since 1.0.0
+ *
+ * @param array $plugins List of plugin dependencies.
+ *
+ * @return array
+ */
+function mai_require_genesis_connect( $plugins ) {
+	if ( class_exists( 'WooCommerce' ) ) {
+		$plugins[] = [
+			'name'     => 'Genesis Connect for WooCommerce',
+			'host'     => 'wordpress',
+			'slug'     => 'genesis-connect-woocommerce/genesis-connect-woocommerce.php',
+			'uri'      => 'https://wordpress.org/plugins/genesis-connect-woocommerce/',
+			'optional' => false,
+		];
+	}
+
+	if ( class_exists( 'Easy_Digital_Downloads' ) ) {
+		$plugins[] = [
+			'name'     => 'Genesis Connect for EDD',
+			'host'     => 'wordpress',
+			'slug'     => 'easy-digital-downloads/easy-digital-downloads.php',
+			'uri'      => 'https://wordpress.org/plugins/easy-digital-downloads/',
+			'optional' => false,
+		];
+	}
+
+	return $plugins;
 }
