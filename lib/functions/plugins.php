@@ -51,7 +51,7 @@ add_filter( 'woocommerce_enqueue_styles', 'mai_dequeue_woocommerce_styles' );
 /**
  * Disable WooCommerce styles.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param $enqueue_styles
  *
@@ -72,3 +72,13 @@ function mai_dequeue_woocommerce_styles( $enqueue_styles ) {
 	return $enqueue_styles;
 }
 
+/**
+ * Trim zeros in price decimals.
+ *
+ * @since 0.1.0
+ *
+ * @param $enqueue_styles
+ *
+ * @return mixed
+ */
+add_filter( 'woocommerce_price_trim_zeros', '__return_true' );
