@@ -77,8 +77,6 @@ function mai_dequeue_woocommerce_styles( $enqueue_styles ) {
  *
  * @since 0.1.0
  *
- * @param $enqueue_styles
- *
- * @return mixed
+ * @return bool
  */
 add_filter( 'woocommerce_price_trim_zeros', '__return_true' );
