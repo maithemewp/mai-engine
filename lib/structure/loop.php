@@ -18,19 +18,7 @@ add_action( 'genesis_before_loop', 'mai_setup_loop' );
  * @return void
  */
 function mai_setup_loop() {
-	$has_loop = false;
-	$types    = mai_get_config( 'loop' );
-	if ( mai_is_type_archive() ) {
-		$name     = mai_get_archive_args_name();
-		$archives = isset( $types['archive'] ) ? $types['archive'] : [];
-		$has_loop = in_array( $name, $archives );
-	} elseif ( mai_is_type_single() ) {
-		$name     = mai_get_singular_args_name();
-		$singles  = isset( $types['single'] ) ? $types['single'] : [];
-		$has_loop = in_array( $name, $singles );
-	}
-
-	if ( ! $has_loop ) {
+	if ( ! mai_has_custom_loop() ) {
 		return;
 	}
 
@@ -152,6 +140,11 @@ function mai_archive_posts_per_page( $query ) {
 
 	// Bail if home, this uses the default posts_per_page.
 	if ( is_home() ) {
+		return;
+	}
+
+	// Bail if not an explicited supported loop.
+	if ( ! in_array( mai_get_archive_args_name(), mai_get_config( 'loop' )['archive'], true ) ) {
 		return;
 	}
 

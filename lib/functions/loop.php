@@ -36,6 +36,40 @@ function mai_get_content_limit( $content, $limit ) {
 }
 
 /**
+ * Check if a loop supports our loop settings.
+ *
+ * @since  0.1.0
+ *
+ * @return bool
+ */
+function mai_has_custom_loop() {
+	if ( mai_is_type_archive() ) {
+		$name     = mai_get_archive_args_name();
+		$context  = 'archive';
+	} elseif ( mai_is_type_single() ) {
+		$name     = mai_get_singular_args_name();
+		$context  = 'single';
+	}
+
+	if ( isset( $name, $context ) ) {
+
+		if ( in_array( $name, mai_get_config( 'loop' )[ $context ], true ) ) {
+			return true;
+		}
+
+		$post_types = get_post_types( [ '_builtin' => true, 'public' => true ] );
+		$taxonomies = get_taxonomies( [ '_builtin' => true, 'public' => true ] );
+
+		if ( isset( $post_types[ $name ] ) || isset( $taxonomies[ $name ] ) ) {
+			return true;
+		}
+
+	}
+
+	return false;
+}
+
+/**
  * Description of expected behavior.
  *
  * @since  0.1.0
@@ -57,7 +91,10 @@ function mai_get_template_args() {
 		$name     = mai_get_archive_args_name();
 		$context  = 'archive';
 		$settings = 'content-archives';
-
+		// Use post as fallback for archives. This happens on category/tag/etc archives when they don't have loop settings.
+		if ( ! in_array( $name, mai_get_config( 'loop' )[ $context ], true ) ) {
+			$name = 'post';
+		}
 	} elseif ( mai_is_type_single() ) {
 		$name     = mai_get_singular_args_name();
 		$context  = 'single';
@@ -85,6 +122,7 @@ function mai_get_template_args() {
 		return ! is_null( $value) && '' !== $value; // Remove settings with empty string, since that means use the default.
 	});
 	$args    = wp_parse_args( $args, $defaults );
+
 	// Allow devs to filter.
 	$args = apply_filters( 'mai_template_args', $args, $context );
 
@@ -188,11 +226,6 @@ function mai_get_archive_args_name() {
 		$name = 'date';
 	} else {
 		$name = 'post';
-	}
-
-	// If archive isn't supported in config, use 'post'.
-	if ( 'post' !== $name && ! in_array( $name, (array) mai_get_config( 'loop' )['archive'], true ) ) {
-		return 'post';
 	}
 
 	return $name;
