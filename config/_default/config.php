@@ -534,11 +534,6 @@ return [
 		'single'  => [],
 	],
 
-	// 'archive-settings' => require __DIR__ . '/settings/content-archives/fallback.php',
-	// 'single-settings'  => require __DIR__ . '/settings/single-content/fallback.php',
-	// 'grid-settings'    => require __DIR__ . '/settings/grid.php',
-	// 'page-header-settings' => require __DIR__ . '/settings/page-header.php',
-
 	/*
 	|--------------------------------------------------------------------------
 	| Page Header

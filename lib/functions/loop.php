@@ -190,7 +190,7 @@ function mai_get_archive_args_name() {
 	}
 
 	// If archive isn't supported in config, use 'post'.
-	if ( 'post' !== $name && ! in_array( $name, (array) mai_get_settings( 'content-archives' ), true ) ) {
+	if ( 'post' !== $name && ! in_array( $name, (array) mai_get_config( 'loop' )['archive'], true ) ) {
 		return 'post';
 	}
 

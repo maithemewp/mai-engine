@@ -20,7 +20,6 @@
  * @link  https://github.com/studiopress/genesis/blob/master/lib/structure/post.php
  */
 function mai_do_entries_open( $args ) {
-
 	// Start the attributes.
 	$attributes = [
 		'class' => 'entries',
