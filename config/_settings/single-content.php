@@ -99,7 +99,7 @@ return [
 		'choices'         => [
 			'save_as' => 'id',
 		],
-		'active_callback' => 'mai_has_single_page_header_support_callback',
+		'active_callback' => 'mai_has_page_header_support_callback',
 	],
 	[
 		'settings'        => 'page-header-featured',
@@ -107,6 +107,6 @@ return [
 		'type'            => 'checkbox',
 		'sanitize'        => 'mai_sanitize_bool',
 		'default'         => false,
-		'active_callback' => 'mai_has_single_page_header_support_callback',
+		'active_callback' => 'mai_has_page_header_support_callback',
 	],
 ];

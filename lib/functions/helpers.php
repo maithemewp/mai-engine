@@ -188,20 +188,14 @@ function mai_has_page_header() {
 		return $has_page_header;
 	}
 
-	if ( ! mai_has_any_page_header_types() ) {
-		$has_page_header = false;
+	$config = mai_get_config( 'page-header' );
 
-		return $has_page_header;
-	}
-
-	$name = false;
 	if ( mai_is_type_archive() ) {
-		$has_page_header = mai_has_page_header_support( mai_get_archive_args_name(), 'archive' );
-	} elseif ( mai_is_type_single() ) {
-		$has_page_header = mai_has_page_header_support( mai_get_singular_args_name(), 'single' );
+		$has_page_header = in_array( mai_get_archive_args_name(), mai_get_page_header_types( 'archive' ) );
 	}
 
-	if ( $has_page_header && mai_is_type_single() ) {
+	if ( mai_is_type_single() ) {
+		$has_page_header = in_array( mai_get_singular_args_name(), mai_get_page_header_types( 'single' ) );
 
 		if ( genesis_entry_header_hidden_on_current_page() ) {
 			$has_page_header = false;
@@ -212,100 +206,19 @@ function mai_has_page_header() {
 		}
 	}
 
+	if ( is_string( $config ) && '*' === $config ) {
+		$has_page_header = true;
+	}
+
+	if ( isset( $config['archive'] ) && '*' === $config['archive'] && mai_is_type_archive() ) {
+		$has_page_header = true;
+	}
+
+	if ( isset( $config['single'] ) && '*' === $config['single'] && mai_is_type_archive() ) {
+		$has_page_header = true;
+	}
+
 	return $has_page_header;
-}
-
-/**
- * Check is there are any page header types available.
- *
- * @since 0.1.0
- *
- * @return bool
- */
-function mai_has_any_page_header_types() {
-	static $has_types = null;
-
-	if ( is_null( $has_types ) ) {
-		$config = mai_get_config( 'page-header' );
-
-		if ( '*' === $config ) {
-			$has_types = true;
-
-		} else {
-			if ( mai_get_archive_page_header_types() || mai_get_single_page_header_types() ) {
-				$has_types = true;
-			}
-		}
-	}
-
-	return $has_types;
-}
-
-/**
- * Checks if a content type has Page Header support.
- *
- * @since 0.1.0
- *
- * @param object $control The customizer field control.
- *
- * @return bool
- */
-function mai_has_single_page_header_support_callback( $control ) {
-	$name = str_replace( mai_get_handle() . '[single-content][', '', $control->option_name );
-	$name = str_replace( ']', '', $name );
-
-	return mai_has_page_header_support( $name, 'single' );
-}
-
-/**
- * Checks if a content type has Page Header support.
- *
- * @since 0.1.0
- *
- * @param object $control The customizer field control.
- *
- * @return bool
- */
-function mai_has_archive_page_header_support_callback( $control ) {
-	$name = str_replace( mai_get_handle() . '[content-archive][', '', $control->option_name );
-	$name = str_replace( ']', '', $name );
-
-	return mai_has_page_header_support( $name, 'archive' );
-}
-
-/**
- * Checks if a content type has Page Header support.
- *
- * @since 0.1.0
- *
- * @param string $type    The content type.
- * @param string $context The type context, either 'archive' or 'single'.
- *
- * @return bool
- */
-function mai_has_page_header_support( $type, $context ) {
-	$types = [];
-
-	switch ( $context ) {
-		case 'archive':
-			$types = mai_get_archive_page_header_types();
-			break;
-		case 'single':
-			$types = mai_get_single_page_header_types();
-			break;
-	}
-
-	if ( $types ) {
-		if ( '*' === $types ) {
-			return true;
-		}
-
-		if ( is_array( $types ) && in_array( $type, $types ) ) {
-			return true;
-		}
-	}
-
-	return false;
 }
 
 /**
@@ -313,55 +226,56 @@ function mai_has_page_header_support( $type, $context ) {
  *
  * @since 0.1.0
  *
+ * @param string $context Archive or single.
+ *
  * @return string|array May be * for all or array of types.
  */
-function mai_get_single_page_header_types() {
-	$types = null;
+function mai_get_page_header_types( $context ) {
+	$config   = mai_get_config( 'page-header' );
+	$settings = mai_get_option( 'page-header-' . $context );
+	$default  = [
+		'archive' => array_merge( array_values( get_taxonomies( [ 'public' => true ] ) ), [
+			'search',
+			'author',
+			'date',
+		] ),
+		'single'  => array_merge( array_values( get_post_types( [ 'public' => true ] ) ), [
+			'404',
+		] ),
+	];
 
-	if ( ! is_null( $types ) ) {
-		return $types;
+	if ( '*' === $config || isset( $config[ $context ] ) && '*' === $config[ $context ] ) {
+		$types = $default[ $context ];
 	}
 
-	$settings = mai_get_option( 'page-header-single' );
-
-	if ( $settings ) {
-		$types = $settings;
-
-		return $types;
+	if ( isset( $config[ $context ] ) && is_array( $config[ $context ] ) ) {
+		$types = $config[ $context ];
 	}
 
-	$config = mai_get_config( 'page-header' );
-	$types  = isset( $config['single'] ) ? $config['single'] : [];
-
-	return $types;
+	return $settings ? $settings : $types;
 }
 
 /**
- * Get archive content types that have page header enabled.
+ * Checks if a content type has Page Header support.
  *
  * @since 0.1.0
  *
- * @return string|array May be * for all or array of types.
+ * @param Kirki_Control_Base $control The customizer field control (not WP_Customize_Control).
+ *
+ * @return bool
  */
-function mai_get_archive_page_header_types() {
-	$types = null;
+function mai_has_page_header_support_callback( $control ) {
+	$types   = [
+		'archive' => 'content-archives',
+		'single'  => 'single-content',
+	];
+	$handle  = mai_get_handle();
+	$name    = $control->option_name;
+	$context = mai_has_string( 'archive', $name ) ? 'archive' : 'single';
+	$type    = str_replace( $handle . '[' . $types[ $context ] . '][', '', $name );
+	$type    = str_replace( ']', '', $type );
 
-	if ( ! is_null( $types ) ) {
-		return $types;
-	}
-
-	$settings = mai_get_option( 'page-header-archive' );
-
-	if ( $settings ) {
-		$types = $settings;
-
-		return $types;
-	}
-
-	$config = mai_get_config( 'page-header' );
-	$types  = isset( $config['archive'] ) ? $config['archive'] : [];
-
-	return $types;
+	return in_array( $type, mai_get_page_header_types( $context ) );
 }
 
 /**

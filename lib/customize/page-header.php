@@ -28,30 +28,32 @@ function mai_page_header_customizer_settings() {
 	$singles         = [];
 
 	if ( isset( $config['archive'] ) && ! empty( $config['archive'] && is_array( $config['archive'] ) ) ) {
-		$archive_default = array_merge( $archive_default, $config['archive'] );
+		$archive_default = $config['archive'];
 	}
 
 	if ( isset( $config['single'] ) && ! empty( $config['single'] && is_array( $config['single'] ) ) ) {
-		$single_default = array_merge( $single_default, $config['single'] );
+		$single_default = $config['single'];
 	}
 
-	$post_types = get_post_types( [ 'public' => true ], 'objects' );
+	$post_types = get_post_types( [ 'public' => true ] );
 	unset( $post_types['attachment'] );
 
 	if ( $post_types ) {
-		foreach ( $post_types as $name => $post_type ) {
+		foreach ( $post_types as $post_type => $name ) {
 			if ( ( '*' === $config ) || ( isset( $config['archive'] ) && '*' === $config['archive'] ) ) {
-				$archive_default[] = $name;
+				$archive_default[] = $post_type;
 			}
+
 			if ( ( '*' === $config ) || ( isset( $config['single'] ) && '*' === $config['single'] ) ) {
-				$single_default[] = $name;
+				$single_default[] = $post_type;
 			}
-			$archives[ $name ] = $post_type->label;
-			$singles[ $name ]  = $post_type->label;
+
+			$archives[ $post_type ] = mai_convert_case( $post_type, 'title' );
+			$singles[ $post_type ]  = mai_convert_case( $post_type, 'title' );
 		}
 	}
 
-	$taxonomies = get_taxonomies( [ 'public' => true ], 'objects' );
+	$taxonomies = get_taxonomies( [ 'public' => true ] );
 
 	// Remove taxonomies we don't want.
 	unset( $taxonomies['post_format'] );
@@ -59,11 +61,11 @@ function mai_page_header_customizer_settings() {
 	unset( $taxonomies['yst_prominent_words'] );
 
 	if ( $taxonomies ) {
-		foreach ( $taxonomies as $name => $taxonomy ) {
+		foreach ( $taxonomies as $taxonomy => $name ) {
 			if ( ( '*' === $config ) || ( isset( $config['archive'] ) && '*' === $config['archive'] ) ) {
-				$archive_default[] = $name;
+				$archive_default[] = $taxonomy;
 			}
-			$archives[ $name ] = $taxonomy->label;
+			$archives[ $taxonomy ] = mai_convert_case( $taxonomy, 'title' );
 		}
 	}
 
