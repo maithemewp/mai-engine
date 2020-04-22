@@ -130,6 +130,7 @@ function mai_load_files() {
 				'admin/hide-elements',
 				'admin/acf',
 				'admin/demo-import',
+				'admin/updater',
 			]
 		);
 	}
