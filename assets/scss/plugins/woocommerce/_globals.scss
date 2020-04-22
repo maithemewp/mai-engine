@@ -45,3 +45,9 @@
 	background-color: rgba(var(--color-danger), var(--shadow-opacity));
 	border-color: var(--color-danger);
 }
+
+.woocommerce .page-header,
+.woocommerce-page .page-header {
+	width: 100%;
+	height: 100%; /* .woocommerce img CSS adds height: auto; which breaks page header image without this */
+}
