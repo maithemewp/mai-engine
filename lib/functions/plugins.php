@@ -47,7 +47,7 @@ function mai_wpforms_default_button_class( $data ) {
 	return $data;
 }
 
-add_filter( 'woocommerce_enqueue_styles', 'jk_dequeue_styles' );
+add_filter( 'woocommerce_enqueue_styles', 'mai_dequeue_woocommerce_styles' );
 /**
  * Disable WooCommerce styles.
  *
@@ -57,7 +57,7 @@ add_filter( 'woocommerce_enqueue_styles', 'jk_dequeue_styles' );
  *
  * @return mixed
  */
-function jk_dequeue_styles( $enqueue_styles ) {
+function mai_dequeue_woocommerce_styles( $enqueue_styles ) {
 	$styles = [
 		'general',
 		// 'layout',
@@ -71,3 +71,4 @@ function jk_dequeue_styles( $enqueue_styles ) {
 
 	return $enqueue_styles;
 }
+
