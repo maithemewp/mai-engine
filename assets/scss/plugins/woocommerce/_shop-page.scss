@@ -121,7 +121,7 @@
 }
 
 .products {
-	--price-font-size: var(--text-lg);
+	--price-font-size: var(--text-md);
 
 	&.related {
 		margin-top: var(--spacing-xxl);
@@ -129,6 +129,7 @@
 
 	.product {
 		flex-direction: column;
+		text-align: center;
 	}
 }
 
