@@ -29,7 +29,7 @@ function mai_plugin_updater() {
 
 	$updater = Puc_v4_Factory::buildUpdateChecker(
 		'https://github.com/maithemewp/mai-engine',
-		__FILE__,
+		realpath( __DIR__ . '/../..' ) . '/mai-engine.php',
 		'mai-engine'
 	);
 
