@@ -81,9 +81,10 @@ function mai_get_template_args() {
 	// Get args.
 	$options = mai_get_option( $settings, [] );
 	$args    = isset( $options[ $name ] ) ? $options[ $name ] : [];
-	$args    = array_filter( $args ); // Remove settings with empty string, since that means use the default.
+	$args    = array_filter( $args, function( $value ) {
+		return ! is_null( $value) && '' !== $value; // Remove settings with empty string, since that means use the default.
+	});
 	$args    = wp_parse_args( $args, $defaults );
-
 	// Allow devs to filter.
 	$args = apply_filters( 'mai_template_args', $args, $context );
 
