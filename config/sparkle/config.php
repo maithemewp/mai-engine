@@ -29,6 +29,12 @@ return [
 			'sticky-header',
 		],
 	],
+	'loop'                => [
+		'archive' => [
+			'post',
+			'category',
+		],
+	],
 	'page-header'      => [
 		'single' => [ 'page' ],
 	],

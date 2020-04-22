@@ -520,8 +520,6 @@ return [
 	'loop'                => [
 		'archive' => [
 			'post',
-			'category',
-			'search',
 		],
 		'single'  => [
 			'page',
