@@ -49,7 +49,7 @@ function mai_remove_genesis_theme_supports() {
 	add_filter( 'genesis_initial_layouts', '__return_empty_array' );
 }
 
-add_action( 'genesis_setup', 'mai_load_files', 90 );
+add_action( 'after_setup_theme', 'mai_load_files', 0 );
 /**
  * Description of expected behavior.
  *

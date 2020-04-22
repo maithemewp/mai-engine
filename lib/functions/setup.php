@@ -9,7 +9,7 @@
  * @license   GPL-2.0-or-later
  */
 
-add_action( 'genesis_setup', 'mai_setup', 100 );
+add_action( 'after_setup_theme', 'mai_setup', 5 );
 /**
  * Theme setup.
  *

@@ -59,6 +59,8 @@ module.exports = function() {
 
 		themes.splice( themes.indexOf( '_settings' ), 1 );
 
+		themes.push( '_default' );
+
 		return themes;
 	};
 
@@ -90,7 +92,9 @@ module.exports = function() {
 		};
 
 		let outputFileName = function( fileName ) {
-			return fileName === 'editor' ? themeName() + '-editor.min.css' : themeName() + '.min.css';
+			const outputFileName = fileName === 'editor' ? themeName() + '-editor.min.css' : themeName() + '.min.css';
+
+			return outputFileName.replace( '_', '' );
 		};
 
 		let themeConf = function() {

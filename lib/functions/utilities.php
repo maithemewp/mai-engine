@@ -216,7 +216,7 @@ function mai_get_active_theme() {
 
 	if ( is_null( $theme ) ) {
 		if ( ! $theme ) {
-			$theme = get_theme_support( mai_get_handle() );
+			$theme = get_theme_support( mai_get_handle() )[0];
 		}
 
 		if ( ! $theme ) {
@@ -227,12 +227,14 @@ function mai_get_active_theme() {
 			$theme = wp_get_theme()->get( 'TextDomain' );
 		}
 
+		$theme = str_replace( 'mai-', '', $theme );
+
 		if ( ! $theme || ! in_array( $theme, mai_get_child_themes(), true ) ) {
 			$theme = 'default';
 		}
 	}
 
-	return str_replace( 'mai-', '', $theme );
+	return $theme;
 }
 
 /**
@@ -247,7 +249,7 @@ function mai_get_child_themes() {
 	$files        = glob( mai_get_dir() . 'config/*', GLOB_ONLYDIR );
 
 	foreach ( $files as $file ) {
-		$child_themes[] = 'mai-' . basename( $file, '.php' );
+		$child_themes[] = basename( $file, '.php' );
 	}
 
 	return $child_themes;
@@ -555,9 +557,9 @@ function mai_get_icon( $args ) {
 	}
 
 	if ( $args['border_radius'] ) {
-		$radius               = explode( ' ', trim( $args['border_radius'] ) );
-		$radius               = array_map( 'mai_get_unit_value', $radius );
-		$radius               = array_filter( $radius );
+		$radius              = explode( ' ', trim( $args['border_radius'] ) );
+		$radius              = array_map( 'mai_get_unit_value', $radius );
+		$radius              = array_filter( $radius );
 		$attributes['style'] .= sprintf( '--icon-border-radius:%s;', implode( ' ', $radius ) );
 	}
 
