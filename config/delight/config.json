@@ -1,5 +1,9 @@
 {
   "colors": {
-    "dark": "#323232"
+    "primary": "#067ccc",
+    "light": "#fdf3f2",
+    "dark": "#323232",
+    "medium": "#515151",
+    "muted": "#ebe9eb"
   }
 }
