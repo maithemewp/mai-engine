@@ -129,7 +129,7 @@ msgstr ""
 msgid "Full"
 msgstr ""
 
-#: config/_settings/content-archives.php:85, config/_settings/content-archives.php:246, config/_settings/content-archives.php:361, config/_settings/grid-block.php:97, config/_settings/grid-block.php:331, config/_settings/grid-block.php:565, lib/blocks/icon.php:224, lib/customize/page-header.php:161, config/_settings/navigation-menus/after-header.php:20
+#: config/_settings/content-archives.php:85, config/_settings/content-archives.php:246, config/_settings/content-archives.php:361, config/_settings/grid-block.php:97, config/_settings/grid-block.php:331, config/_settings/grid-block.php:565, lib/blocks/icon.php:224, lib/customize/page-header.php:163, config/_settings/navigation-menus/after-header.php:20
 msgid "Center"
 msgstr ""
 
@@ -217,11 +217,11 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#: config/_settings/content-archives.php:245, config/_settings/grid-block.php:330, config/_settings/grid-block.php:564, lib/customize/page-header.php:160
+#: config/_settings/content-archives.php:245, config/_settings/grid-block.php:330, config/_settings/grid-block.php:564, lib/customize/page-header.php:162
 msgid "Start"
 msgstr ""
 
-#: config/_settings/content-archives.php:247, config/_settings/grid-block.php:332, config/_settings/grid-block.php:566, lib/customize/page-header.php:162
+#: config/_settings/content-archives.php:247, config/_settings/grid-block.php:332, config/_settings/grid-block.php:566, lib/customize/page-header.php:164
 msgid "End"
 msgstr ""
 
@@ -229,7 +229,7 @@ msgstr ""
 msgid "Align Text (vertical)"
 msgstr ""
 
-#: config/_settings/content-archives.php:258, config/_settings/content-archives.php:380, config/_settings/grid-block.php:351, config/_settings/grid-block.php:592, lib/blocks/icon.php:340, lib/customize/page-header.php:130
+#: config/_settings/content-archives.php:258, config/_settings/content-archives.php:380, config/_settings/grid-block.php:351, config/_settings/grid-block.php:592, lib/blocks/icon.php:340, lib/customize/page-header.php:132
 msgid "Top"
 msgstr ""
 
@@ -237,7 +237,7 @@ msgstr ""
 msgid "Middle"
 msgstr ""
 
-#: config/_settings/content-archives.php:260, config/_settings/content-archives.php:382, config/_settings/grid-block.php:353, config/_settings/grid-block.php:594, lib/blocks/icon.php:348, lib/customize/page-header.php:131
+#: config/_settings/content-archives.php:260, config/_settings/content-archives.php:382, config/_settings/grid-block.php:353, config/_settings/grid-block.php:594, lib/blocks/icon.php:348, lib/customize/page-header.php:133
 msgid "Bottom"
 msgstr ""
 
@@ -585,7 +585,7 @@ msgstr ""
 msgid "Site Header"
 msgstr ""
 
-#: lib/admin/hide-elements.php:73, lib/admin/page-header.php:50, lib/customize/page-header.php:73
+#: lib/admin/hide-elements.php:73, lib/admin/page-header.php:50, lib/customize/page-header.php:75
 msgid "Page Header"
 msgstr ""
 
@@ -769,51 +769,51 @@ msgstr ""
 msgid "Logo Spacing"
 msgstr ""
 
-#: lib/customize/page-header.php:85
+#: lib/customize/page-header.php:87
 msgid "Enable on singular content"
 msgstr ""
 
-#: lib/customize/page-header.php:86
+#: lib/customize/page-header.php:88
 msgid "These settings can be overridden on a per post basis."
 msgstr ""
 
-#: lib/customize/page-header.php:91
+#: lib/customize/page-header.php:93
 msgid "404"
 msgstr ""
 
-#: lib/customize/page-header.php:104
+#: lib/customize/page-header.php:106
 msgid "Enable on content archives"
 msgstr ""
 
-#: lib/customize/page-header.php:109
+#: lib/customize/page-header.php:111
 msgid "Search Results"
 msgstr ""
 
-#: lib/customize/page-header.php:110
+#: lib/customize/page-header.php:112
 msgid "Author Archives"
 msgstr ""
 
-#: lib/customize/page-header.php:111
+#: lib/customize/page-header.php:113
 msgid "Date Archives"
 msgstr ""
 
-#: lib/customize/page-header.php:123
+#: lib/customize/page-header.php:125
 msgid "Vertical Spacing"
 msgstr ""
 
-#: lib/customize/page-header.php:124
+#: lib/customize/page-header.php:126
 msgid "Accepts all unit values (px, rem, em, vw, etc)."
 msgstr ""
 
-#: lib/customize/page-header.php:157
+#: lib/customize/page-header.php:159
 msgid "Text Alignment"
 msgstr ""
 
-#: lib/customize/page-header.php:180
+#: lib/customize/page-header.php:182
 msgid "Default Image"
 msgstr ""
 
-#: lib/customize/page-header.php:181
+#: lib/customize/page-header.php:183
 msgid "This can be overridden on a per post basis."
 msgstr ""
 
@@ -901,7 +901,7 @@ msgstr ""
 msgid "Previous/Next Entry Nav"
 msgstr ""
 
-#: lib/functions/utilities.php:489
+#: lib/functions/utilities.php:491
 msgid "Site Default"
 msgstr ""
 

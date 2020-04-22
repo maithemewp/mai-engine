@@ -41,9 +41,9 @@
 .custom-logo-link {
 	display: flex;
 	align-items: center;
+	max-width: var(--custom-logo-width, 18rem);
 }
 
 .custom-logo {
-	max-width: var(--custom-logo-width, 18rem);
 	transition: var(--title-area-transition, var(--transition));
 }
