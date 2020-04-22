@@ -58,6 +58,10 @@ add_action( 'after_setup_theme', 'mai_load_files', 0 );
  * @return void
  */
 function mai_load_files() {
+	if ( ! function_exists( 'genesis' ) ) {
+		return;
+	}
+
 	$files = [
 
 		// Composer.
