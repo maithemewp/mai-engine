@@ -239,7 +239,7 @@ function mai_require_genesis_connect( $plugins ) {
 			'host'     => 'wordpress',
 			'slug'     => 'genesis-connect-woocommerce/genesis-connect-woocommerce.php',
 			'uri'      => 'https://wordpress.org/plugins/genesis-connect-woocommerce/',
-			'optional' => false,
+			'optional' => true,
 		];
 	}
 
@@ -249,7 +249,7 @@ function mai_require_genesis_connect( $plugins ) {
 			'host'     => 'wordpress',
 			'slug'     => 'easy-digital-downloads/easy-digital-downloads.php',
 			'uri'      => 'https://wordpress.org/plugins/easy-digital-downloads/',
-			'optional' => false,
+			'optional' => true,
 		];
 	}
 

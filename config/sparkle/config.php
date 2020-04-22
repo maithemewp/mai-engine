@@ -34,6 +34,12 @@ return [
 	],
 	'required-plugins' => [
 		[
+			'name'       => 'Genesis Connect for WooCommerce',
+			'slug'       => 'genesis-connect-woocommerce/genesis-connect-woocommerce.php',
+			'public_url' => 'https://wordpress.org/plugins/genesis-connect-woocommerce/',
+			'demos'      => [ 'creative' ],
+		],
+		[
 			'name'       => 'Simple Social Icons',
 			'slug'       => 'simple-social-icons/simple-social-icons.php',
 			'public_url' => 'https://wordpress.org/plugins/simple-social-icons/',
