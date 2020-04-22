@@ -9,7 +9,7 @@
  * Plugin Name: Mai Engine
  * Plugin URI:  https://wordpress.org/plugins/mai-engine/
  * Description: The required plugin to power Mai child themes.
- * Version:     0.1.0
+ * Version:     0.1.1
  * DB Version:  2.0.0
  * Author:      BizBudding Inc
  * Author URI:  https://bizbudding.com/
