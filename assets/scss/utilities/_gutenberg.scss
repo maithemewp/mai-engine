@@ -6,6 +6,10 @@
 
 	.has-#{ $color-name }-background-color {
 		background-color: #{ $color-value };
+
+		.wp-block-cover & {
+			background-color: rgba($color-value, var(--background-color-opacity, 0.9));
+		}
 	}
 }
 

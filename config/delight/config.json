@@ -1,9 +1,16 @@
 {
   "colors": {
     "primary": "#067ccc",
-    "light": "#fdf3f2",
+    "secondary": "#6c757d",
+    "success": "#28a745",
+    "danger": "#dc3545",
+    "warning": "#ffc107",
+    "info": "#42a2b8",
+    "black": "#000000",
     "dark": "#323232",
     "medium": "#515151",
-    "muted": "#ebe9eb"
+    "muted": "#ebe9eb",
+    "light": "#fdf3f2",
+    "white": "#ffffff"
   }
 }
