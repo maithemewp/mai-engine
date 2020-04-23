@@ -1,8 +1,35 @@
 :root {
+	--font-primary: open sans;
 	--font-secondary: playfair display;
+	--font-weight-body: var(--font-weight-light);
+	--body-background: #fcfcfc;
+	--border: 1px solid rgba(0, 0, 0, 0.06);
+	--shadow: 0 4px 24px rgba(0, 0, 0, 0.025);
+}
+
+html {
+	-moz-osx-font-smoothing: unset;
+}
+
+.button-secondary {
+	--button-font-weight: var(--font-weight-body);
+}
+
+.is-single {
+
+	.content > .entry {
+		--entry-background: var(--color-white);
+		--entry-padding: calc(8px + 2vw);
+		--entry-border: var(--border);
+		--entry-box-shadow: var(--shadow);
+	}
 }
 
 .nav-after-header {
+	--menu-item-link-color: var(--color-white);
+	font-size: 0.9em;
+	letter-spacing: 0.1rem;
+	text-transform: uppercase;
 	background-color: var(--color-dark);
 }
 
