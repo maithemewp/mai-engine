@@ -26,7 +26,6 @@
 }
 
 .search-toggle-icon {
+	height: var(--text-xl);
 	fill: currentColor;
-
-	@include size(1em);
 }
