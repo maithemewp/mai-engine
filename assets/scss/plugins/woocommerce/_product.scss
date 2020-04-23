@@ -119,12 +119,6 @@ form.cart {
 	margin: var(--spacing-xxxl) 0 var(--row-gap);
 }
 
-.comment-reply-title {
-	font-size: var(--text-md);
-
-	@include heading();
-}
-
 .comment-form-rating {
 	margin-top: 1em;
 }
