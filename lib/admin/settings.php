@@ -40,7 +40,7 @@ add_action( 'admin_init', 'mai_update_database_version' );
 function mai_update_database_version() {
 	$db_version = mai_get_plugin_data( 'db-version' );
 
-	if ( version_compare( mai_get_option( 'db_version' ), $db_version, '<=' ) ) {
-		mai_update_option( 'db_version', $db_version );
+	if ( version_compare( mai_get_option( 'db-version' ), $db_version, '<=' ) ) {
+		mai_update_option( 'db-version', $db_version );
 	}
 }
