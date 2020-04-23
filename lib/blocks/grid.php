@@ -107,10 +107,15 @@ function mai_do_term_grid_block( $block, $content = '', $is_preview = false, $po
  * @return void
  */
 function mai_do_grid_block( $type, $block, $content = '', $is_preview = false, $post_id = 0 ) {
-	$args = mai_get_grid_field_values( $type );
+	$args          = mai_get_grid_field_values( $type );
+	$args['class'] = isset( $args['class'] ) ? $args['class'] : '';
 
 	if ( ! empty( $block['className'] ) ) {
-		$args['class'] = ( isset( $args['class'] ) && ! empty( $args['class'] ) ) ? ' ' . $block['className'] : $block['className'];
+		$args['class'] = mai_add_classes( $block['className'], $args['class'] );
+	}
+
+	if ( ! empty( $block['align'] ) ) {
+		$args['class'] = mai_add_classes( 'align' . $block['align'], $args['class'] );
 	}
 
 	mai_do_grid( $type, $args );

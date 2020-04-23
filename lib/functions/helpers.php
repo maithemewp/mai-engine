@@ -449,3 +449,22 @@ function mai_convert_case( $string, $case = 'snake' ) {
 
 	return $cases[ $case ];
 }
+
+/**
+ * Add classes to an existing string of classes.
+ *
+ * @since  0.1.0
+ *
+ * @param  string|array  $new       The classes to add.
+ * @param  string        $existing  The existing classes.
+ *
+ * @return string  HTML ready classes.
+ */
+function mai_add_classes( $new, $existing = '' ) {
+	if ( ! empty( $new ) ) {
+		$space = ! empty( $existing ) ? ' ' : '';
+		$new   = is_array( $new ) ? implode( ' ', $new ) : $new;
+		return $existing . $space . $new;
+	}
+	return $existing;
+}

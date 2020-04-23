@@ -152,7 +152,7 @@ class Mai_Grid {
 			return;
 		}
 
-		// Grid specific classes.
+		// Grid specific classes. Didn't use mai_add_classes() because I want mai-grid first.
 		$this->args['class'] = isset( $this->args['class'] ) ? $this->args['class'] : '';
 		$this->args['class'] = 'mai-grid ' . $this->args['class'];
 		$this->args['class'] = trim( $this->args['class'] );

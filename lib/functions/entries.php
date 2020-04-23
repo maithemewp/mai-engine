@@ -22,7 +22,7 @@
 function mai_do_entries_open( $args ) {
 	// Start the attributes.
 	$attributes = [
-		'class' => 'entries',
+		'class' => mai_add_classes( 'entries', isset( $args['class'] ) ? $args['class'] : '' ),
 		'style' => '',
 	];
 
