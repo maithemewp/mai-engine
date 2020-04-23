@@ -20,7 +20,7 @@
 .site-title {
 	margin: 0;
 	font-weight: var(--site-title-font-weight, var(--font-weight-heading));
-	font-size: var(--site-title-font-size, (1em));
+	font-size: var(--site-title-font-size, var(--text-xl));
 	font-family: var(--site-title-font-family, var(--font-secondary));
 }
 
