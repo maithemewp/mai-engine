@@ -44,3 +44,16 @@ function mai_update_database_version() {
 		mai_update_option( 'db-version', $db_version );
 	}
 }
+
+/**
+ * Expose Reusable Blocks UI in backend.
+ * @link https://www.billerickson.net/reusable-blocks-accessible-in-wordpress-admin-area
+ *
+ * @since 0.1.0
+ *
+ * @return void
+ */
+add_action( 'admin_menu', 'mai_show_reusable_blocks_admin_menu' );
+function mai_show_reusable_blocks_admin_menu() {
+	add_menu_page( 'Reusable Blocks', 'Reusable Blocks', 'edit_posts', 'edit.php?post_type=wp_block', '', 'dashicons-editor-table', 22 );
+}
