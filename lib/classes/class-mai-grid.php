@@ -43,6 +43,10 @@ class Mai_Grid {
 	 */
 	protected $args;
 
+	// All displayed items incase exclude_displayed is true in any instance of grid.
+	public static $existing_post_ids = array();
+	public static $existing_term_ids = array();
+
 	/**
 	 * Mai_Grid constructor.
 	 *
@@ -184,7 +188,11 @@ class Mai_Grid {
 						$posts->the_post();
 						global $post;
 						mai_do_entry( $post, $this->args );
+						// Add this post to the existing post IDs.
+						$this::$existing_post_ids[] = get_the_ID();
 					endwhile;
+					// Clear duplicate IDs.
+					$this::$existing_post_ids = array_unique( $this::$existing_post_ids );
 				}
 
 				wp_reset_postdata();
@@ -194,7 +202,11 @@ class Mai_Grid {
 				if ( ! empty( $term_query->terms ) ) {
 					foreach ( $term_query->terms as $term ) {
 						mai_do_entry( $term, $this->args );
+						// Add this term to the existing term IDs.
+						$this::$existing_term_ids[] = $term->term_id;
 					}
+					// Clear duplicate IDs.
+					$this::$existing_term_ids = array_unique( $this::$existing_term_ids );
 				}
 				break;
 			case 'user':
@@ -266,11 +278,6 @@ class Mai_Grid {
 				break;
 		}
 
-		// Exclude entries.
-		if ( ( 'title' !== $this->args['query_by'] ) && $this->args['post__not_in'] ) {
-			$query_args['post__not_in'] = $this->args['post__not_in'];
-		}
-
 		// Orderby.
 		if ( $this->args['orderby'] && 'id' !== $this->args['query_by'] ) {
 			$query_args['orderby'] = $this->args['orderby'];
@@ -284,6 +291,29 @@ class Mai_Grid {
 		// Order.
 		if ( $this->args['order'] ) {
 			$query_args['order'] = $this->args['order'];
+		}
+
+		// Exclude entries.
+		if ( ( 'title' !== $this->args['query_by'] ) && $this->args['post__not_in'] ) {
+			$query_args['post__not_in'] = $this->args['post__not_in'];
+		}
+
+		// Exclude displayed.
+		if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'] ) && ! empty( $this::$existing_post_ids ) ) {
+			if ( isset( $query_args['post__not_in'] ) ) {
+				$query_args['post__not_in'] = array_push( $query_args['post__not_in'], $this::$existing_post_ids );
+			} else {
+				$query_args['post__not_in'] = $this::$existing_post_ids;
+			}
+		}
+
+		// Exclude current.
+		if ( is_singular() && $this->args['excludes'] && in_array( 'exclude_current', $this->args['excludes'] ) ) {
+			if ( isset( $query_args['post__not_in'] ) ) {
+				$query_args['post__not_in'] = array_push( $query_args['post__not_in'], get_the_ID() );
+			} else {
+				$query_args['post__not_in'] = [ get_the_ID() ];
+			}
 		}
 
 		return apply_filters( 'mai_post_grid_query_args', $query_args );
@@ -317,11 +347,6 @@ class Mai_Grid {
 				break;
 		}
 
-		// Exclude.
-		if ( $this->args['exclude'] && 'id' !== $this->args['query_by'] ) {
-			$query_args['exclude'] = $this->args['exclude'];
-		}
-
 		// Orderby.
 		if ( $this->args['orderby'] && 'id' !== $this->args['query_by'] ) {
 			$query_args['orderby'] = $this->args['orderby'];
@@ -330,6 +355,29 @@ class Mai_Grid {
 		// Order.
 		if ( $this->args['order'] ) {
 			$query_args['order'] = $this->args['order'];
+		}
+
+		// Exclude.
+		if ( $this->args['exclude'] && 'id' !== $this->args['query_by'] ) {
+			$query_args['exclude'] = $this->args['exclude'];
+		}
+
+		// Exclude displayed.
+		if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'] ) && ! empty( $this::$existing_term_ids ) ) {
+			if ( isset( $query_args['exclude'] ) ) {
+				$query_args['exclude'] = array_push( $query_args['exclude'], $this::$existing_term_ids );
+			} else {
+				$query_args['exclude'] = $this::$existing_term_ids;
+			}
+		}
+
+		// Exclude current.
+		if ( ( is_category() || is_tag() || is_tax() ) && $this->args['excludes'] && in_array( 'exclude_current', $this->args['excludes'] ) ) {
+			if ( isset( $query_args['post__not_in'] ) ) {
+				$query_args['post__not_in'] = array_push( $query_args['post__not_in'], get_queried_object_id() );
+			} else {
+				$query_args['post__not_in'] = [ get_queried_object_id() ];
+			}
 		}
 
 		return apply_filters( 'mai_term_grid_query_args', $query_args );

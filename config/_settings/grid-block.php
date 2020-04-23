@@ -1075,7 +1075,6 @@ return [
 			'ui'            => 1,
 		],
 	],
-	// TODO: Shoud these be separate fields? We can then have desc text and easier to check when building query.
 	'field_5df1053632d03' => [
 		'name'       => 'excludes',
 		'label'      => esc_html__( 'Exclude', 'mai-engine' ),
