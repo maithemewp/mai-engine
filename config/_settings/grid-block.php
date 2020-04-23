@@ -1038,7 +1038,7 @@ return [
 		'block'      => [ 'post' ],
 		'type'       => 'select',
 		'sanitize'   => 'esc_html',
-		'default'    => '',
+		'default'    => 'DESC',
 		'choices'    => [
 			'ASC'  => esc_html__( 'Ascending', 'mai-engine' ),
 			'DESC' => esc_html__( 'Descending', 'mai-engine' ),
