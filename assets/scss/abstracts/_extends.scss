@@ -53,6 +53,8 @@
 
 	&:hover,
 	&:focus {
+		--button-background: var(--button-background-hover, var(--button-background));
+		--button-color: var(--button-color-hover, var(--button-color));
 		text-decoration: none;
 		outline: none;
 		transform: var(--button-transform-hover, none);
