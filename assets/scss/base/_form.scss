@@ -28,14 +28,14 @@ label {
 	border: var(--input-border, var(--border-size) var(--border-style) rgba(0, 0, 0, 0.08));
 	border-radius: var(--input-border-radius, var(--border-radius));
 	outline: none;
-	box-shadow: none;
+	box-shadow: var(--input-box-shadow, none);
 	cursor: var(--input-cursor);
 	transition: var(--input-transition, var(--transition));
 
 	&:focus {
 		outline: none;
 
-		--input-border: var(--border-size) var(--border-style) var(--color-primary);
+		--input-border: var(--input-border-focus, (var(--border-size) var(--border-style) var(--color-primary)));
 	}
 }
 
