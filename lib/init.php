@@ -82,6 +82,7 @@ function mai_load_files() {
 		'functions/widgets',
 		'functions/defaults',
 		'functions/plugins',
+		'functions/shortcodes',
 
 		// Structure.
 		'structure/archive',
