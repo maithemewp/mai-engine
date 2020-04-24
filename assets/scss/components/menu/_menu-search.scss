@@ -17,7 +17,7 @@
 	margin: 0;
 	padding: var(--menu-item-link-padding, (var(--spacing-sm) var(--spacing-xxs)));
 	color: var(--link-color);
-	background-color: transparent;
+	background: transparent;
 
 	&:hover,
 	&:focus {
