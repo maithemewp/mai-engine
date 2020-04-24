@@ -23,7 +23,8 @@ add_filter( 'genesis_attr_footer-widgets', 'mai_footer_widgets_columns' );
  * @return array
  */
 function mai_footer_widgets_columns( $attributes ) {
-	$count   = absint( mai_get_option( 'footer-widgets-widget-areas', 3 ) );
+	$default = get_theme_support( 'genesis-footer-widgets' )[0];
+	$count   = absint( mai_get_option( 'footer-widgets-widget-areas', $default ) );
 	$columns = [ 'lg' => $count ];
 
 	switch ( $count ) {
@@ -68,11 +69,40 @@ function mai_footer_widgets_columns( $attributes ) {
 			$columns['xs'] = $count;
 	}
 
-	$attributes['style']  = isset( $attributes['style'] ) ? $attributes['style'] : '';
+	$attributes['style'] = isset( $attributes['style'] ) ? $attributes['style'] : '';
 	$attributes['style'] .= "--columns-xs:{$columns['xs']};";
 	$attributes['style'] .= "--columns-sm:{$columns['sm']};";
 	$attributes['style'] .= "--columns-md:{$columns['md']};";
 	$attributes['style'] .= "--columns-lg:{$columns['lg']};";
 
 	return $attributes;
+}
+
+/**
+ * Count number of widgets in a widget area.
+ *
+ * @since 0.1.0
+ *
+ * @param string $widget_area_id The widget area ID.
+ *
+ * @return int
+ */
+function mai_get_widget_count( $widget_area_id ) {
+
+	/**
+	 * If loading from front page, consult $_wp_sidebars_widgets rather than options
+	 * to see if wp_convert_widget_settings() has made manipulations in memory.
+	 */
+	global $_wp_sidebars_widgets;
+
+	$_wp_sidebars_widgets = ! empty( $_wp_sidebars_widgets ) ? $_wp_sidebars_widgets : get_option( 'sidebars_widgets', [] );
+
+	if ( isset( $_wp_sidebars_widgets[ $widget_area_id ] ) ) {
+		$widget_count = count( $_wp_sidebars_widgets[ $widget_area_id ] );
+
+	} else {
+		$widget_count = 0;
+	}
+
+	return $widget_count;
 }
