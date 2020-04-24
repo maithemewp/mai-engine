@@ -17,7 +17,7 @@ html {
 
 .is-single {
 
-	.content > .entry {
+	&:not(.home) .content > .entry {
 		--entry-background: var(--color-white);
 		--entry-padding: calc(8px + 2vw);
 		--entry-border: var(--border);
