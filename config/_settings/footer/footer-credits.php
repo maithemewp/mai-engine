@@ -14,7 +14,12 @@ return [
 		'type'        => 'textarea',
 		'settings'    => 'text',
 		'label'       => __( 'Site footer text', 'mai-engine' ),
-		'description' => sprintf( __( 'The text that will appear in your site footer. Can include <a href="%s" target="_blank" rel="noopener noreferrer">footer shortcodes</a>.', 'genesis' ), 'https://studiopress.github.io/genesis/basics/genesis-shortcodes/#footer-shortcodes' ),
-		'default'     => 'Copyright [footer_copyright] · [footer_home_link] · All Rights Reserved · Powered by <a target="_blank" rel="nofollow noopener sponsored" href="https://bizbudding.com/mai-theme/">Mai Theme</a>',
+		'description' => sprintf(
+			'%s<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
+			__( 'The text that will appear in your site footer. Can include ', 'mai-engine' ),
+			'https://studiopress.github.io/genesis/basics/genesis-shortcodes/#footer-shortcodes',
+			__( 'footer shortcodes.', 'mai-engine' )
+		),
+		'default'     => mai_default_footer_credits(),
 	],
 ];

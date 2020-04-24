@@ -50,12 +50,32 @@ function mai_do_footer_credits() {
 	);
 
 	// phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped -- sanitized already.
-	echo do_shortcode( genesis_strip_p_tags( wp_kses_post( mai_get_option( 'footer-credits-text' ) ) ) );
+	echo do_shortcode( genesis_strip_p_tags( wp_kses_post( mai_get_option( 'footer-credits-text', mai_default_footer_credits() ) ) ) );
 
 	genesis_markup(
 		[
 			'close'   => '</p></div></div>',
 			'context' => 'footer-credits',
 		]
+	);
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return string
+ */
+function mai_default_footer_credits() {
+	return apply_filters(
+		'mai_default_footer_credits',
+		sprintf(
+			'%s [footer_copyright] · [footer_home_link] · %s · %s <a target="_blank" rel="nofollow noopener sponsored" href="https://bizbudding.com/mai-theme/">%s</a>',
+			__( 'Copyright', 'mai-engine' ),
+			__( 'All Rights Reserved', 'mai-engine' ),
+			__( 'Powered by', 'mai-engine' ),
+			mai_get_name()
+		)
 	);
 }
