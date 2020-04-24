@@ -24,7 +24,7 @@
 	text-align: center;
 	text-transform: var(--button-text-transform, none);
 	text-decoration: none;
-	background-color: var(--button-background, var(--color-primary));
+	background: var(--button-background, var(--color-primary));
 	border: var(--button-border, 0);
 	border-radius: var(--button-border-radius, var(--border-radius));
 	cursor: var(--button-cursor, pointer);
