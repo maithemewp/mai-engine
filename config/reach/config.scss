@@ -1,8 +1,10 @@
 :root {
 	--font-primary: karla, var(--font-stack);
 	--font-secondary: karla, var(--font-stack);
+	--button-border-radius: 9rem;
 	--button-filter-hover: none;
 	--button-transform-hover: scale(1.05);
+	--input-border-radius: 9rem;
 	--page-header-border-bottom: 0;
 	--menu-toggle-icon-background-color: var(--color-white);
 	--menu-toggle-line-background-color: var(--color-white);
@@ -58,18 +60,31 @@ video {
 
 .before-footer {
 	border: 0;
+
+	--heading-color: var();
+	--input-border: 0;
+	--input-border-focus: 0;
+	--input-box-shadow: var(--shadow);
+
+	@include mq(lg) {
+		--wrap-flex-wrap: nowrap;
+		--widget-margin: 0;
+	}
+
+	.wpforms-container {
+		margin-bottom: 0;
+	}
 }
 
 .footer-widgets {
 	padding: 0;
+
+	--heading-margin: 0 0 1em;
+	--heading-font-size: var(--text-lg);
 }
 
 .footer-widgets > .wrap {
 	padding: var(--spacing-xxxxl) 0;
 	border-top: var(--border);
 	border-bottom: var(--border);
-}
-
-.footer-credits {
-	
 }

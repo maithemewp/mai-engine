@@ -1,7 +1,8 @@
 {
   "colors": {
     "primary": "#7b51ff",
-    "dark": "#404e6b",
+    "dark": "#4b657e",
+    "medium": "#5f749e",
     "light": "#f7f8fa",
     "success": "#00cd9e",
     "warning": "#ffc54e",
