@@ -53,9 +53,9 @@
 
 	&:hover,
 	&:focus {
-		color: var(--button-color-hover, var(--button-color));
+		--button-color-hover: var(--button-color, var(--color-white));
+		--button-background-hover: var(--button-background, var(--color-primary));
 		text-decoration: none;
-		background: var(--button-background-hover, var(--button-background));
 		outline: none;
 		transform: var(--button-transform-hover, none);
 		filter: var(--button-filter-hover, brightness(0.9));
