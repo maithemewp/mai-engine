@@ -190,6 +190,18 @@ function mai_has_page_header() {
 
 	$config = mai_get_config( 'page-header' );
 
+	if ( is_string( $config ) && '*' === $config ) {
+		$has_page_header = true;
+	}
+
+	if ( isset( $config['archive'] ) && '*' === $config['archive'] && mai_is_type_archive() ) {
+		$has_page_header = true;
+	}
+
+	if ( isset( $config['single'] ) && '*' === $config['single'] && mai_is_type_archive() ) {
+		$has_page_header = true;
+	}
+
 	if ( mai_is_type_archive() ) {
 		$has_page_header = in_array( mai_get_archive_args_name(), mai_get_page_header_types( 'archive' ) );
 	}
@@ -204,18 +216,6 @@ function mai_has_page_header() {
 		if ( mai_is_element_hidden( 'page_header' ) ) {
 			$has_page_header = false;
 		}
-	}
-
-	if ( is_string( $config ) && '*' === $config ) {
-		$has_page_header = true;
-	}
-
-	if ( isset( $config['archive'] ) && '*' === $config['archive'] && mai_is_type_archive() ) {
-		$has_page_header = true;
-	}
-
-	if ( isset( $config['single'] ) && '*' === $config['single'] && mai_is_type_archive() ) {
-		$has_page_header = true;
 	}
 
 	return $has_page_header;
@@ -390,11 +390,9 @@ function mai_sanitize_bool( $value ) {
  * @return mixed
  */
 function mai_is_element_hidden( $element ) {
-	static $elements = [];
 
-	if ( empty( $elements ) ) {
-		$elements = get_post_meta( get_the_ID(), 'hide_elements', true );
-	}
+	// Can't be static, entry-title breaks.
+	$elements = get_post_meta( get_the_ID(), 'hide_elements', true );
 
 	return in_array( $element, (array) $elements, true );
 }
@@ -455,8 +453,8 @@ function mai_convert_case( $string, $case = 'snake' ) {
  *
  * @since  0.1.0
  *
- * @param  string|array  $new       The classes to add.
- * @param  string        $existing  The existing classes.
+ * @param  string|array $new      The classes to add.
+ * @param  string       $existing The existing classes.
  *
  * @return string  HTML ready classes.
  */
@@ -464,7 +462,9 @@ function mai_add_classes( $new, $existing = '' ) {
 	if ( ! empty( $new ) ) {
 		$space = ! empty( $existing ) ? ' ' : '';
 		$new   = is_array( $new ) ? implode( ' ', $new ) : $new;
+
 		return $existing . $space . $new;
 	}
+
 	return $existing;
 }
