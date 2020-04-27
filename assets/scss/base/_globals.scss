@@ -56,7 +56,7 @@
 	--letter-spacing-body: normal;
 	--letter-spacing-heading: var(--letter-spacing-body);
 
-	--spacing-scale-ratio: 1.25;
+	--spacing-scale-ratio: 1.618;
 
 	--spacing-xxxxs: calc(var(--spacing-xxxs) / var(--spacing-scale-ratio));
 	--spacing-xxxs: calc(var(--spacing-xxs) / var(--spacing-scale-ratio));
