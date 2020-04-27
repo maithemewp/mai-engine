@@ -1,4 +1,5 @@
 .wp-block-cover {
+	position: relative; // so negative margins inside will work.
 	min-height: 0;
 
 	&.has-background:not(.alignfull) {

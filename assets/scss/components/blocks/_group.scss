@@ -1,4 +1,5 @@
 .wp-block-group {
+	position: relative; // so negative margins inside will work.
 
 	&.alignfull {
 		padding-right: var(--side-spacing);
