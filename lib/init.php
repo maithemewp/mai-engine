@@ -109,6 +109,9 @@ function mai_load_files() {
 		// Shortcodes.
 		'shortcodes/icon',
 
+		// Widgets.
+		'widgets/reusable-block',
+
 		// Customizer.
 		'customize/setup',
 		'customize/logo',
