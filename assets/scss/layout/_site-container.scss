@@ -1,10 +1,10 @@
 .site-container {
 	display: flex;
+	flex: 1;
 	flex-direction: column;
 	flex-wrap: wrap;
 	justify-content: flex-start;
 	max-width: var(--site-container-max-width, unset);
-	min-height: 100vh;
 	margin: var(--site-container-margin, unset);
 }
 
