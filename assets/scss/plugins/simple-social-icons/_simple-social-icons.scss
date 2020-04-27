@@ -3,7 +3,7 @@
 
 	.before-header &,
 	.before-header &:not(:first-of-type) {
-		--widget-margin: var(--spacing-xxxxs) var(--spacing-xs);
+		--widget-margin: var(--spacing-xs) var(--spacing-sm);
 	}
 
 	svg {

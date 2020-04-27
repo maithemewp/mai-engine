@@ -56,19 +56,18 @@
 	--letter-spacing-body: normal;
 	--letter-spacing-heading: var(--letter-spacing-body);
 
-	--spacing-scale-ratio: 1.618;
-
-	--spacing-xxxxs: calc(var(--spacing-xxxs) / var(--spacing-scale-ratio));
-	--spacing-xxxs: calc(var(--spacing-xxs) / var(--spacing-scale-ratio));
-	--spacing-xxs: calc(var(--spacing-xs) / var(--spacing-scale-ratio));
-	--spacing-xs: calc(var(--spacing-sm) / var(--spacing-scale-ratio));
-	--spacing-sm: calc(var(--spacing-md) / var(--spacing-scale-ratio));
+	--spacing-xxxxs: 1px;
+	--spacing-xxxs: 2px;
+	--spacing-xxs: 4px;
+	--spacing-xs: 8px;
+	--spacing-sm: 12px;
 	--spacing-md: 16px;
-	--spacing-lg: calc(var(--spacing-md) * var(--spacing-scale-ratio));
-	--spacing-xl: calc(var(--spacing-lg) * var(--spacing-scale-ratio));
-	--spacing-xxl: calc(var(--spacing-xl) * var(--spacing-scale-ratio));
-	--spacing-xxxl: calc(var(--spacing-xxl) * var(--spacing-scale-ratio));
-	--spacing-xxxxl: calc(var(--spacing-xxxl) * var(--spacing-scale-ratio));
+	--spacing-lg: 32px;
+	--spacing-xl: 64px;
+	--spacing-xxl: 128px;
+	--spacing-xxxl: 192px;
+	--spacing-xxxxl: 256px;
+
 	--side-spacing: 4vw;
 
 	--row-gap: var(--spacing-md);

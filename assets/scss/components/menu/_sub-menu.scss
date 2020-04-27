@@ -13,7 +13,7 @@
 	flex: 1 1 100%;
 	flex-wrap: wrap;
 	margin: var(--sub-menu-margin, 0);
-	padding: var(--sub-menu-padding, var(--spacing-xxxs) 0);
+	padding: var(--sub-menu-padding, var(--spacing-xxs) 0);
 	font-size: 0.9em;
 	list-style-type: var(--sub-menu-list-style, none);
 
@@ -48,8 +48,8 @@
 		--menu-item-display: list-item;
 		--menu-item-margin: var(--spacing-sm) 0 0;
 		--menu-item-link-display: inline;
-		--menu-item-link-padding: var(--spacing-xs) var(--spacing-xxxs);
-		--sub-menu-item-link-padding: var(--spacing-xs) var(--spacing-xxxs);
+		--menu-item-link-padding: var(--spacing-xs) var(--spacing-xxs);
+		--sub-menu-item-link-padding: var(--spacing-xs) var(--spacing-xxs);
 		text-align: start;
 	}
 }

@@ -4,7 +4,7 @@
 	grid-template-columns: var(--content-sidebar-wrap-columns, 1fr);
 	width: calc(100% - calc(var(--side-spacing) * 2));
 	max-width: var(--wrap-max-width);
-	margin: var(--content-sidebar-wrap-margin, var(--content-sidebar-wrap-margin-top, var(--spacing-xxxxl)) auto var(--spacing-xxxxl));
+	margin: var(--content-sidebar-wrap-margin, var(--content-sidebar-wrap-margin-top, var(--spacing-xl)) auto var(--spacing-xl));
 	column-gap: var(--content-sidebar-gap);
 }
 

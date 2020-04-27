@@ -1,5 +1,5 @@
 .footer-widgets {
-	padding: var(--spacing-xxxxl) 0;
+	padding: var(--spacing-xl) 0;
 	--wrap-display: grid;
 
 	@include mq(false, sm) {
@@ -22,7 +22,7 @@
 		grid-template-columns: repeat(var(--columns, 3), 1fr);
 		align-items: var(--footer-widgets-align-items, unset);
 		justify-content: var(--footer-widgets-justify-content, unset);
-		column-gap: var(--spacing-xxl);
-		row-gap: var(--spacing-xxl);
+		column-gap: var(--spacing-lg);
+		row-gap: var(--spacing-lg);
 	}
 }
