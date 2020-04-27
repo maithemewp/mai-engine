@@ -62,11 +62,11 @@
 	--spacing-xs: 8px;
 	--spacing-sm: 12px;
 	--spacing-md: 16px;
-	--spacing-lg: 32px;
-	--spacing-xl: 64px;
-	--spacing-xxl: 128px;
-	--spacing-xxxl: 192px;
-	--spacing-xxxxl: 256px;
+	--spacing-lg: calc(var(--spacing-md) * 1.5); // 24px.
+	--spacing-xl: calc(var(--spacing-md) * 2.25); // 36px.
+	--spacing-xxl: calc(var(--spacing-md) * 4.5); // 72px.
+	--spacing-xxxl: calc(var(--spacing-md) * 8); // 128px.
+	--spacing-xxxxl: calc(var(--spacing-md) * 16); // 156px.
 
 	--side-spacing: 4vw;
 
