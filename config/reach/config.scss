@@ -87,4 +87,8 @@ video {
 	padding: var(--spacing-xxxxl) 0;
 	border-top: var(--border);
 	border-bottom: var(--border);
+
+	@include mq(lg) {
+		grid-template-columns: repeat(1, 2fr 1fr 1fr 1fr);
+	}
 }
