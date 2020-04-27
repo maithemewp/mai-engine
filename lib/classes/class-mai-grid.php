@@ -310,7 +310,7 @@ class Mai_Grid {
 		// Exclude current.
 		if ( is_singular() && $this->args['excludes'] && in_array( 'exclude_current', $this->args['excludes'] ) ) {
 			if ( isset( $query_args['post__not_in'] ) ) {
-				$query_args['post__not_in'] = array_push( $query_args['post__not_in'], get_the_ID() );
+				$query_args['post__not_in'][] = get_the_ID();
 			} else {
 				$query_args['post__not_in'] = [ get_the_ID() ];
 			}

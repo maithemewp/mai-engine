@@ -1,4 +1,5 @@
 .sidebar {
+	--list-list-style-position: outside;
 
 	@include mq(lg) {
 		width: var(--sidebar-width);
