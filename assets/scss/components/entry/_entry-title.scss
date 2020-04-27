@@ -3,7 +3,7 @@
 	font-size: var(--entry-title-font-size, var(--text-xxxxl));
 
 	&:not(:first-child) {
-		--entry-title-margin: var(--spacing-xl) 0 0;
+		--entry-title-margin: var(--spacing-lg) 0 0;
 	}
 }
 
