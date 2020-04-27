@@ -9,7 +9,7 @@ abbr[title] {
 
 label {
 	display: inline-block;
-	margin: var(--label-margin, 0 0 var(--spacing-xxxs));
+	margin: var(--label-margin, 0 0 var(--spacing-xs));
 	font-weight: var(--label-font-weight, var(--font-weight-heading));
 	font-size: var(--label-font-size, (smaller));
 
@@ -35,7 +35,7 @@ label {
 	&:focus {
 		outline: none;
 
-		--input-border: var(--input-border-focus, (var(--border-size) var(--border-style) var(--color-primary)));
+		--input-border: var(--input-border-focus, var(--border-size) var(--border-style) var(--color-primary));
 	}
 }
 
