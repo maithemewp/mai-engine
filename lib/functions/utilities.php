@@ -364,7 +364,7 @@ function mai_get_colors() {
 		$colors  = mai_get_variables()['colors'];
 
 		foreach ( $colors as $name => $hex ) {
-			$colors[ $name ] = mai_get_option( "color-$name", $hex );
+			$colors[ $name ] = $hex;
 		}
 	}
 

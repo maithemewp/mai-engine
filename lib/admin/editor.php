@@ -35,11 +35,11 @@ add_filter( 'pre_http_request', 'mai_pre_http_request_editor_styles', 10, 3 );
  */
 function mai_pre_http_request_editor_styles( $response, $parsed_args, $url ) {
 	if ( mai_get_url() === $url ) {
-		$colors = mai_get_colors();
+		$colors = mai_get_color_palette();
 		$css    = 'body {';
 
-		foreach ( $colors as $name => $hex ) {
-			$css .= "--color-$name: $hex;";
+		foreach ( $colors as $color ) {
+			$css .= "--color-{$color['slug']}: {$color['color']};";
 		}
 
 		$css .= '}';
