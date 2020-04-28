@@ -22,7 +22,7 @@ label {
 	margin: var(--input-margin, 0);
 	padding: var(--input-padding, var(--spacing-md));
 	color: var(--input-color);
-	line-height: 1;
+	line-height: var(--input-line-height, 1);
 	background-color: var(--input-background-color, #fff);
 	background-clip: padding-box; // Remove iOS box shadow
 	border: var(--input-border, var(--border-size) var(--border-style) rgba(0, 0, 0, 0.08));
@@ -50,11 +50,12 @@ input::placeholder {
 }
 
 textarea {
-	line-height: var(--textarea-line-height, var(--line-height-body));
+	--input-line-height: var(--line-height-body);
+	--input-border-radius: var(--border-radius);
 }
 
 select {
-	height: var(--select-height, (calc(var(--text-md) * 2)));
+	height: var(--select-height, (calc(var(--text-md, 1em) * 2)));
 	padding: var(--select-padding, (0 auto));
 
 	&[multiple] {

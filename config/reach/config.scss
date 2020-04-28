@@ -23,6 +23,10 @@ video {
 	border-radius: var(--border-radius);
 }
 
+textarea {
+	--input-border-radius: calc(var(--text-md, 1em) * 2);
+}
+
 .is-stuck {
 
 	@include mq(sm) {
