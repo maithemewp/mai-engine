@@ -11,34 +11,40 @@
 	--link-color: var(--color-medium);
 	--link-color-hover: var(--color-primary);
 
+	ul {
+		display: var(--archive-pagination-display, flex);
+		align-items: center;
+		justify-content: var(--archive-pagination-justify-content, var(--wrap-justify-content));
+		list-style: none;
+	}
+
+	a {
+		margin: 4px;
+		padding: var(--button-padding);
+		color: var(--button-color);
+		text-decoration: none;
+		background: var(--button-background);
+		border-radius: var(--border-radius);
+
+		&:hover,
+		&:focus {
+			text-decoration: none;
+			filter: var(--darken);
+		}
+	}
+
+	.active {
+		--button-background: var(--color-primary);
+		--button-color: var(--color-white);
+		--filter-hover: unset;
+	}
+
+	.facetwp-pager + ul {
+		--archive-pagination-display: none;
+	}
+
 	@include mq(lg) {
 		margin-top: auto;
 	}
 }
 
-.archive-pagination ul {
-	display: flex;
-	justify-content: var(--archive-pagination-justify-content, var(--wrap-justify-content));
-	list-style: none;
-}
-
-.archive-pagination a {
-	margin: 4px;
-	padding: var(--button-padding);
-	color: var(--button-color);
-	text-decoration: none;
-	background: var(--button-background);
-	border-radius: var(--border-radius);
-
-	&:hover,
-	&:focus {
-		text-decoration: none;
-		filter: var(--darken);
-	}
-}
-
-.active {
-	--button-background: var(--color-primary);
-	--button-color: var(--color-white);
-	--filter-hover: unset;
-}
