@@ -678,6 +678,8 @@ class Mai_Entry {
 
 		// If linking.
 		if ( $link ) {
+			// This filter overrides href.
+			remove_filter( 'genesis_attr_entry-title-link', 'genesis_attributes_entry_title_link' );
 			$title = genesis_markup(
 				[
 					'open'    => '<a %s>',
@@ -687,6 +689,7 @@ class Mai_Entry {
 					'echo'    => false,
 					'atts'    => [
 						'href' => $this->url,
+						'rel'  => 'bookmark',
 					],
 					'params'  => [
 						'args'  => $this->args,
@@ -694,6 +697,7 @@ class Mai_Entry {
 					],
 				]
 			);
+			add_filter( 'genesis_attr_entry-title-link', 'genesis_attributes_entry_title_link' );
 		}
 
 		/**
