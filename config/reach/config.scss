@@ -5,6 +5,7 @@
 	--button-filter-hover: none;
 	--button-transform-hover: scale(1.05);
 	--input-border-radius: 9rem;
+	--site-header-border-bottom: 0;
 	--page-header-border-bottom: 0;
 	--menu-toggle-icon-background-color: var(--color-white);
 	--menu-toggle-line-background-color: var(--color-white);
@@ -54,6 +55,10 @@ video {
 .page-header-overlay {
 	background-color: var(--color-primary);
 	opacity: 1;
+}
+
+.has-wave-divider::after {
+	height: 16rem;
 }
 
 .site-footer {
