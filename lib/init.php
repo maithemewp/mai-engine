@@ -135,6 +135,7 @@ function mai_load_files() {
 				'admin/acf',
 				'admin/demo-import',
 				'admin/updater',
+				'admin/editor',
 			]
 		);
 	}
