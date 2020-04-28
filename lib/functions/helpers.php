@@ -112,9 +112,8 @@ function mai_has_cover_block() {
 
 		$post_object = get_post( get_the_ID() );
 		$blocks      = (array) parse_blocks( $post_object->post_content );
-
-		$block_name = isset( $blocks[0]['blockName'] ) ? $blocks[0]['blockName'] : '';
-		$align      = isset( $blocks[0]['attrs']['align'] ) ? $blocks[0]['attrs']['align'] : '';
+		$block_name  = isset( $blocks[0]['blockName'] ) ? $blocks[0]['blockName'] : '';
+		$align       = isset( $blocks[0]['attrs']['align'] ) ? $blocks[0]['attrs']['align'] : '';
 
 		if ( 'core/cover' === $block_name || 'full' === $align ) {
 			$has_cover_block = true;
@@ -233,15 +232,17 @@ function mai_has_page_header() {
 function mai_get_page_header_types( $context ) {
 	$config   = mai_get_config( 'page-header' );
 	$settings = mai_get_option( 'page-header-' . $context );
+	$single   = array_merge( array_values( get_post_types( [ 'public' => true ] ) ), [
+		'404',
+	] );
+	$archive  = array_merge( $single, array_values( get_taxonomies( [ 'public' => true ] ) ), [
+		'search',
+		'author',
+		'date',
+	] );
 	$default  = [
-		'archive' => array_merge( array_values( get_taxonomies( [ 'public' => true ] ) ), [
-			'search',
-			'author',
-			'date',
-		] ),
-		'single'  => array_merge( array_values( get_post_types( [ 'public' => true ] ) ), [
-			'404',
-		] ),
+		'archive' => $archive,
+		'single'  => $single,
 	];
 
 	if ( '*' === $config || isset( $config[ $context ] ) && '*' === $config[ $context ] ) {

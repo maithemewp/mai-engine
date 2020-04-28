@@ -22,6 +22,7 @@ function mai_page_header_customizer_settings() {
 	$handle          = mai_get_handle();
 	$section         = $handle . '-page-header';
 	$config          = mai_get_config( 'page-header' );
+	$defaults        = $config['customizer'];
 	$archive_default = [];
 	$single_default  = [];
 	$archives        = [];
@@ -124,10 +125,7 @@ function mai_page_header_customizer_settings() {
 			'section'     => $section,
 			'label'       => __( 'Vertical Spacing', 'mai-engine' ),
 			'description' => __( 'Accepts all unit values (px, rem, em, vw, etc).', 'mai-engine' ),
-			'default'     => [
-				'top'    => '',
-				'bottom' => '',
-			],
+			'default'     => $defaults['spacing'],
 			'choices'     => [
 				'top'    => __( 'Top', 'mai-engine' ),
 				'bottom' => __( 'Bottom', 'mai-engine' ),
@@ -157,7 +155,7 @@ function mai_page_header_customizer_settings() {
 			'settings' => 'page-header-text-align',
 			'section'  => $section,
 			'label'    => __( 'Text Alignment', 'mai-engine' ),
-			'default'  => '',
+			'default'  => $defaults['text-align'],
 			'choices'  => [
 				'start'  => __( 'Start', 'mai-engine' ),
 				'center' => __( 'Center', 'mai-engine' ),
@@ -168,6 +166,45 @@ function mai_page_header_customizer_settings() {
 					'choice'   => [ 'start', 'center', 'end' ],
 					'element'  => ':root',
 					'property' => '--page-header-text-align',
+				],
+			],
+		]
+	);
+
+	\Kirki::add_field(
+		$handle,
+		[
+			'type'     => 'select',
+			'settings' => 'page-header-divider',
+			'section'  => $section,
+			'label'    => __( 'Divider style', 'mai-engine' ),
+			'default'  => $defaults['divider'],
+			'choices'  => [
+				'none'  => __( 'None', 'mai-engine' ),
+				'angle' => __( 'Angle', 'mai-engine' ),
+				'curve' => __( 'Curve', 'mai-engine' ),
+				'wave'  => __( 'Wave', 'mai-engine' ),
+			],
+		]
+	);
+
+	\Kirki::add_field(
+		$handle,
+		[
+			'type'     => 'slider',
+			'settings' => 'page-header-overlay-opacity',
+			'section'  => $section,
+			'label'    => __( 'Overlay opacity', 'mai-engine' ),
+			'default'  => $defaults['overlay-opacity'],
+			'choices'  => [
+				'min'  => 0,
+				'max'  => 1,
+				'step' => 0.01,
+			],
+			'output'   => [
+				[
+					'element'  => '.page-header-overlay',
+					'property' => 'opacity',
 				],
 			],
 		]
@@ -187,5 +224,24 @@ function mai_page_header_customizer_settings() {
 			],
 		]
 	);
+}
 
+add_filter( 'genesis_attr_page-header-overlay', 'mai_page_header_divider_class', 10, 1 );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param $attr
+ *
+ * @return array
+ */
+function mai_page_header_divider_class( $attr ) {
+	$option = mai_get_option( 'page-header-divider', 'none' );
+
+	if ( 'none' !== $option ) {
+		$attr['class'] .= " has-$option-divider";
+	}
+
+	return $attr;
 }

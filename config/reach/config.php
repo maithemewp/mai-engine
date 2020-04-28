@@ -19,7 +19,10 @@ return [
 			'genesis-footer-widgets' => 4,
 		],
 	],
-	'page-header'      => '*',
+	'page-header'      => [
+		'archive' => '*',
+		'single'  => '*',
+	],
 	'required-plugins' => [
 		[
 			'name'       => 'Genesis Connect for WooCommerce',

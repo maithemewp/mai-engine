@@ -44,11 +44,11 @@ function mai_get_content_limit( $content, $limit ) {
  */
 function mai_has_custom_loop() {
 	if ( mai_is_type_archive() ) {
-		$name     = mai_get_archive_args_name();
-		$context  = 'archive';
+		$name    = mai_get_archive_args_name();
+		$context = 'archive';
 	} elseif ( mai_is_type_single() ) {
-		$name     = mai_get_singular_args_name();
-		$context  = 'single';
+		$name    = mai_get_singular_args_name();
+		$context = 'single';
 	}
 
 	if ( isset( $name, $context ) ) {
@@ -118,9 +118,9 @@ function mai_get_template_args() {
 	// Get args.
 	$options = mai_get_option( $settings, [] );
 	$args    = isset( $options[ $name ] ) ? $options[ $name ] : [];
-	$args    = array_filter( $args, function( $value ) {
-		return ! is_null( $value) && '' !== $value; // Remove settings with empty string, since that means use the default.
-	});
+	$args    = array_filter( $args, function ( $value ) {
+		return ! is_null( $value ) && '' !== $value; // Remove settings with empty string, since that means use the default.
+	} );
 	$args    = wp_parse_args( $args, $defaults );
 
 	// Allow devs to filter.
@@ -191,41 +191,38 @@ function mai_get_sanitized_entry_args( $args, $context ) {
 function mai_get_archive_args_name() {
 	static $name = null;
 
-	if ( ! is_null( $name ) ) {
-		return $name;
-	}
-
-	// Get the name.
-	if ( is_home() ) {
-		$name = 'post';
-	} elseif ( is_category() ) {
-		$name = 'category';
-	} elseif ( is_tag() ) {
-		$name = 'post_tag';
-	} elseif ( is_tax() ) {
-		$name = get_query_var( 'taxonomy' );
-		if ( ! $name ) {
-			$object = get_queried_object();
-			if ( $object ) {
-				$name = $object->taxonomy;
+	if ( is_null( $name ) ) {
+		if ( is_home() ) {
+			$name = 'post';
+		} elseif ( is_category() ) {
+			$name = 'category';
+		} elseif ( is_tag() ) {
+			$name = 'post_tag';
+		} elseif ( is_tax() ) {
+			$name = get_query_var( 'taxonomy' );
+			if ( ! $name ) {
+				$object = get_queried_object();
+				if ( $object ) {
+					$name = $object->taxonomy;
+				}
 			}
-		}
-	} elseif ( is_post_type_archive() ) {
-		$name = get_query_var( 'post_type' );
-		if ( ! $name ) {
-			$object = get_queried_object();
-			if ( $object ) {
-				$name = $object->name;
+		} elseif ( is_post_type_archive() ) {
+			$name = get_query_var( 'post_type' );
+			if ( ! $name ) {
+				$object = get_queried_object();
+				if ( $object ) {
+					$name = $object->name;
+				}
 			}
+		} elseif ( is_search() ) {
+			$name = 'search';
+		} elseif ( is_author() ) {
+			$name = 'author';
+		} elseif ( is_date() ) {
+			$name = 'date';
+		} else {
+			$name = 'post';
 		}
-	} elseif ( is_search() ) {
-		$name = 'search';
-	} elseif ( is_author() ) {
-		$name = 'author';
-	} elseif ( is_date() ) {
-		$name = 'date';
-	} else {
-		$name = 'post';
 	}
 
 	return $name;
