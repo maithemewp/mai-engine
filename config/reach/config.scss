@@ -9,6 +9,11 @@
 	--page-header-border-bottom: 0;
 	--menu-toggle-icon-background-color: var(--color-white);
 	--menu-toggle-line-background-color: var(--color-white);
+	--content-sidebar-wrap-margin-top: var(--spacing-xxl);
+}
+
+.has-boxed {
+	--entry-border: 0;
 }
 
 embed,
@@ -46,19 +51,24 @@ video {
 	.page-header {
 		color: var(--color-white);
 	}
+
+	.page-header {
+		--heading-color: var(--color-white);
+	}
+
+	.page-header-overlay {
+		background-color: var(--color-primary);
+		opacity: 1;
+	}
 }
 
-.page-header {
-	--heading-color: var(--color-white);
-}
+.has-angle-divider,
+.has-curve-divider,
+.has-wave-divider {
 
-.page-header-overlay {
-	background-color: var(--color-primary);
-	opacity: 1;
-}
-
-.has-wave-divider::after {
-	height: 16rem;
+	&::after {
+		height: 16rem;
+	}
 }
 
 .site-footer {
@@ -79,6 +89,10 @@ video {
 		--widget-margin: 0;
 	}
 
+	.wrap {
+		padding: var(--spacing-xl) 0;
+	}
+
 	.wpforms-container {
 		margin-bottom: 0;
 	}
@@ -92,11 +106,19 @@ video {
 }
 
 .footer-widgets > .wrap {
-	padding: var(--spacing-xxxxl) 0;
+	padding: var(--spacing-xxl) 0;
 	border-top: var(--border);
 	border-bottom: var(--border);
 
 	@include mq(lg) {
 		grid-template-columns: repeat(1, 2fr 1fr 1fr 1fr);
+	}
+}
+
+.logos {
+
+	img {
+		padding: 0 1em;
+		opacity: 0.5;
 	}
 }
