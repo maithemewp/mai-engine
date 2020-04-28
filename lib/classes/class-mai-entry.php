@@ -151,7 +151,7 @@ class Mai_Entry {
 			);
 
 			// Overlay link.
-			if ( 'background' === $this->args['image_position'] ) {
+			if ( ( 'single' !== $this->context ) && ( 'background' === $this->args['image_position'] ) ) {
 				printf( '<a href="%s" class="entry-overlay"></a>', $this->url );
 			}
 
@@ -405,7 +405,7 @@ class Mai_Entry {
 	 * @return array
 	 */
 	public function has_image_class( $class ) {
-		if ( has_post_thumbnail( $this->entry ) ) {
+		if ( $this->get_image_id() ) {
 			$class[] = 'has-image';
 		}
 
@@ -660,10 +660,12 @@ class Mai_Entry {
 			case 'term':
 				$wrap  = 'h3'; // Only blocks use this function for terms.
 				$title = $this->entry->name;
+				$link  = true;
 				break;
 			case 'user':
 				$wrap  = 'h3'; // Only blocks use this function for users.
 				$title = ''; // TODO: Add title.
+				$link  = true;
 				break;
 			default:
 				$title = '';

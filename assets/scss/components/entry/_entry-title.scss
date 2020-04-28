@@ -12,6 +12,7 @@
 }
 
 .entry-title-link {
+	display: block;
 	color: var(--entry-title-color, var(--color-medium));
 	text-decoration: var(--entry-title-text-decoration, none);
 
