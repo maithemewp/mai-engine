@@ -13,6 +13,7 @@
 	border: var(--entry-border, unset);
 	border-radius: var(--border-radius);
 	box-shadow: var(--entry-box-shadow, unset);
+	// transition: var(--entry-transition, var(--transition));
 }
 
 [class*="has-image-left"],
@@ -40,7 +41,12 @@
 .has-image-background .has-image {
 	--entry-title-color: var(--color-white);
 	--entry-wrap-color: var(--color-white);
-	--entry-wrap-background: rgba(0, 0, 0, 0.6);
+	--entry-overlay-background: rgba(0, 0, 0, var(--entry-overlay-opacity, 0.6));
+
+	&:hover,
+	&:focus {
+		--entry-overlay-background: var(--entry-overlay-hover-background, rgba(0, 0, 0, var(--entry-overlay-opacity, var(--entry-overlay-hover-opacity, 0.8))));
+	}
 }
 
 .entry-wrap {
@@ -50,7 +56,11 @@
 	justify-content: var(--align-text-vertical, center);
 	padding: var(--entry-wrap-padding, 0);
 	color: var(--entry-wrap-color, unset);
-	background: var(--entry-wrap-background, unset);
+	transition: all 0.3s ease-in-out;
+
+	> *:not(.entry-overlay) {
+		z-index: 1;
+	}
 }
 
 .widget {
