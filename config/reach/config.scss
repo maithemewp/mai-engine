@@ -38,10 +38,13 @@ video {
 	--menu-item-link-color: var(--color-dark);
 }
 
-.site-title-link,
-.site-description,
-.page-header {
-	color: var(--color-white);
+.has-transparent-header {
+
+	.site-title-link,
+	.site-description,
+	.page-header {
+		color: var(--color-white);
+	}
 }
 
 .page-header {
