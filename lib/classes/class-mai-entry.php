@@ -285,7 +285,14 @@ class Mai_Entry {
 		// TODO: Is this the best way to handle non-linked featured images?
 		// We'll need this later for Mai Favorites when we can disable links in grid.
 		$wrap = ( 'single' === $this->context ) || ( 'background' === $this->args['image_position'] ) ? 'span' : 'a';
-		$atts = ( 'single' === $this->context ) || ( 'background' === $this->args['image_position'] ) ? [] : [ 'href' => $this->url ];
+		$atts = ( 'single' === $this->context ) || ( 'background' === $this->args['image_position'] ) ? [] : [
+			'href'        => $this->url,
+			'aria-hidden' => 'true',
+			'tabindex'    => '-1',
+		];
+
+		// This filter overrides href.
+		remove_filter( 'genesis_attr_entry-image-link', 'genesis_attributes_entry_image_link' );
 
 		// Image.
 		genesis_markup(
@@ -298,6 +305,8 @@ class Mai_Entry {
 				'atts'    => $atts,
 			]
 		);
+
+		add_filter( 'genesis_attr_entry-image-link', 'genesis_attributes_entry_image_link' );
 	}
 
 	/**
