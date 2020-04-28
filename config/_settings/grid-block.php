@@ -1083,8 +1083,8 @@ return [
 		'sanitize'   => 'esc_html',
 		'default'    => '',
 		'choices'    => [
-			'exclude_current'   => esc_html__( 'Exclude current', 'mai-engine' ),
 			'exclude_displayed' => esc_html__( 'Exclude displayed', 'mai-engine' ),
+			'exclude_current'   => esc_html__( 'Exclude current', 'mai-engine' ),
 		],
 		'conditions' => [
 			[
@@ -1199,7 +1199,7 @@ return [
 			],
 		],
 		'atts'       => [
-			'field_type' => 'multi_select',
+			'field_type' => 'select',
 			'add_term'   => 0,
 			'save_terms' => 0,
 			'load_terms' => 0,
@@ -1316,11 +1316,13 @@ return [
 		'block'      => [ 'term' ],
 		'type'       => 'checkbox',
 		'sanitize'   => 'esc_html',
-		'default'    => '',
+		'default'    => [
+			'hide_empty',
+		],
 		'choices'    => [
 			'hide_empty'        => esc_html__( 'Exclude terms with no posts', 'mai-engine' ),
-			'exclude_current'   => esc_html__( 'Exclude current', 'mai-engine' ),
 			'exclude_displayed' => esc_html__( 'Exclude displayed', 'mai-engine' ),
+			'exclude_current'   => esc_html__( 'Exclude current', 'mai-engine' ),
 		],
 		'conditions' => [
 			[

@@ -362,6 +362,13 @@ class Mai_Grid {
 			$query_args['exclude'] = $this->args['exclude'];
 		}
 
+		// Exclude terms with no posts.
+		if ( $this->args['excludes'] && in_array( 'hide_empty', $this->args['excludes'] ) ) {
+			$query_args['hide_empty'] = true;
+		} else {
+			$query_args['hide_empty'] = false;
+		}
+
 		// Exclude displayed.
 		if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'] ) && ! empty( $this::$existing_term_ids ) ) {
 			if ( isset( $query_args['exclude'] ) ) {
