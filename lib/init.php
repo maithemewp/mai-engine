@@ -116,7 +116,6 @@ function mai_load_files() {
 		'customize/setup',
 		'customize/logo',
 		'customize/beta-tester',
-		'customize/color-palette',
 		'customize/upsell',
 		'customize/layout',
 		'customize/page-header',
@@ -135,7 +134,6 @@ function mai_load_files() {
 				'admin/acf',
 				'admin/demo-import',
 				'admin/updater',
-				'admin/editor',
 			]
 		);
 	}
@@ -160,3 +158,4 @@ function mai_load_files() {
 		}
 	}
 }
+

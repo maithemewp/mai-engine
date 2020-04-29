@@ -229,11 +229,8 @@ class Mai_Customizer_API {
 				'headings',
 				'links',
 				'buttons',
-				'inputs',
+				'forms',
 				'blockquotes',
-				'code',
-				'lists',
-				'tables',
 			],
 			'header'           => [
 				'site-header',
