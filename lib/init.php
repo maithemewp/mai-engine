@@ -133,7 +133,8 @@ function mai_load_files() {
 				'admin/hide-elements',
 				'admin/acf',
 				'admin/demo-import',
-				'admin/updater',
+				'admin/update-checker',
+				'admin/child-theme-updater',
 			]
 		);
 	}
