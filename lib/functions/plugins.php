@@ -146,7 +146,7 @@ function mai_facetwp_genesis_pager( $output, $params ) {
 			$output .= '<li><a class="facetwp-page last-page" data-page="' . $total_pages . '"><span class="screen-reader-text">Page </span>' . $total_pages . '</a></li>';
 		}
 		if ( $page < $total_pages ) {
-			$output .= sprintf( '<li><a class="facetwp-page" data-page="%s">Next →</a></li>', ( $page + 1 ), esc_html__( 'Next →', 'mai-engine' ) );
+			$output .= sprintf( '<li><a class="facetwp-page" data-page="%s">%s</a></li>', ( $page + 1 ), esc_html__( 'Next →', 'mai-engine' ) );
 		}
 	}
 
