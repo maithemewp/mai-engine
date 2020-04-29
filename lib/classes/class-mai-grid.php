@@ -58,7 +58,7 @@ class Mai_Grid {
 	 */
 	public function __construct( $args ) {
 		$args['context'] = 'block'; // Required for Mai_Entry.
-		$this->type      = isset( $args['type'] ) ?: 'post';
+		$this->type      = isset( $args['type'] ) ? $args['type'] : 'post';
 		$this->settings  = $this->get_settings();
 		$this->defaults  = $this->get_defaults();
 		$this->args      = $this->get_sanitized_args( $args );
