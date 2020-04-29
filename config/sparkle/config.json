@@ -5,5 +5,8 @@
     "dark": "#000000",
     "medium": "#7f7d7e",
     "muted": "#f9f6f6"
+  },
+  "border": {
+    "radius": "1px"
   }
 }

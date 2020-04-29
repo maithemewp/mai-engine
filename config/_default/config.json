@@ -13,5 +13,11 @@
     "muted": "#dee2e6",
     "light": "#f8f9fa",
     "white": "#ffffff"
+  },
+  "border": {
+    "width": "1px",
+    "style": "solid",
+    "color": "var(--color-muted)",
+    "radius": "4px"
   }
 }

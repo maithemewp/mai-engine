@@ -33,3 +33,10 @@ $font-sizes: (
 	h5: var(--text-lg),
 	h6: var(--text-md),
 ) !default;
+
+$border: (
+	width: var(--border-size),
+	style: var(--border-style),
+	color: var(--border-color),
+	radius: var(--border-radius),
+) !default;
