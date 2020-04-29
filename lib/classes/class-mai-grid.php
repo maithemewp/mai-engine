@@ -123,14 +123,14 @@ class Mai_Grid {
 			// Has sub fields.
 			if ( isset( $this->settings[ $name ]['atts']['sub_fields'] ) ) {
 				if ( $value ) {
-					$sub_values = [];
-					foreach ( $value as $index => $group ) {
-						foreach ( $group as $sub_name => $sub_value ) {
-							$field                             = $this->settings[ $name ]['atts']['sub_fields'][ $sub_name ];
-							$sub_values[ $index ][ $sub_name ] = mai_sanitize( $sub_value, $field['sanitize'] );
+					$nested_values = [];
+					foreach ( $this->settings[ $name ]['atts']['sub_fields'] as $field_key => $sub_field ) {
+						foreach ( $sub_field as $nested_name => $nested_value ) {
+							$field                             = $this->settings[ $name ]['atts']['sub_fields'][ $field_key ];
+							$nested_values[ $field_key ][ $nested_name ] = mai_sanitize( $nested_value, $field['sanitize'] );
 						}
 					}
-					$args[ $name ] = $sub_values;
+					$args[ $name ] = $nested_values;
 				}
 			} else {
 				// Standard field check.
