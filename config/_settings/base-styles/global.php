@@ -2,11 +2,7 @@
 
 $color_default = mai_get_colors();
 $color_output  = [];
-$color_choices = [
-	'irisArgs' => [
-		'palettes' => array_values( $color_default ),
-	],
-];
+$color_choices = [];
 
 foreach ( $color_default as $name => $hex ) {
 	$color_choices[ $name ] = mai_convert_case( $name, 'title' );
@@ -14,12 +10,6 @@ foreach ( $color_default as $name => $hex ) {
 		'choice'   => $name,
 		'element'  => ':root',
 		'property' => "--color-$name",
-	];
-	$color_output[]         = [
-		'choice'   => $name,
-		'element'  => '.edit-post-visual-editor.editor-styles-wrapper',
-		'property' => "--color-$name",
-		'context'  => [ 'editor' ],
 	];
 }
 
@@ -37,9 +27,27 @@ return [
 	],
 	[
 		'type'     => 'slider',
+		'settings' => 'border-width',
+		'label'    => __( 'Border width', 'mai-engine' ),
+		'default'  => mai_get_integer_value( mai_get_variables()['border']['width'] ),
+		'choices'  => [
+			'min'  => 0,
+			'max'  => 10,
+			'step' => 1,
+		],
+		'output'   => [
+			[
+				'element'  => ':root',
+				'property' => '--border-width',
+				'units'    => 'px',
+			],
+		],
+	],
+	[
+		'type'     => 'slider',
 		'settings' => 'border-radius',
 		'label'    => __( 'Border radius', 'mai-engine' ),
-		'default'  => mai_get_variables()['border']['radius'],
+		'default'  => mai_get_integer_value( mai_get_variables()['border']['radius'] ),
 		'choices'  => [
 			'min'  => 0,
 			'max'  => 100,

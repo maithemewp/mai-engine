@@ -187,10 +187,47 @@ class Mai_Customizer_API {
 			$field['sanitize_callback'] = $field['sanitize'];
 		}
 
+		// Set theme color palette for color controls.
 		if ( isset( $field['type'] ) && 'color' === $field['type'] ) {
 			$field['choices']['palettes'] = array_values( mai_get_colors() );
 		}
 
+		// Set theme color palette for multicolor controls.
+		if ( isset( $field['type'] ) && 'multicolor' === $field['type'] ) {
+			$field['choices']['irisArgs']['palettes'] = array_values( mai_get_colors() );
+		}
+
+		// Automate editor CSS output for custom properties on root element.
+		if ( isset( $field['output'] ) ) {
+			foreach ( $field['output'] as $output ) {
+				if ( isset( $output['element'] ) && ':root' === $output['element'] ) {
+					$args = [
+						'element',
+						'property',
+						'choice',
+						'units',
+						'prefix',
+						'suffix',
+						'media_query',
+						'exclude',
+						'value_pattern',
+						'pattern_replace',
+					];
+
+					$editor_output['context'] = [ 'editor' ];
+
+					foreach ( $args as $arg ) {
+						if ( isset( $output[ $arg ] ) ) {
+							$editor_output[ $arg ] = 'element' === $arg ? '.edit-post-visual-editor.editor-styles-wrapper' : $output[ $arg ];
+						}
+					}
+
+					$field['output'][] = $editor_output;
+				}
+			}
+		}
+
+		// Workaround to fix active callback function with nested options.
 		if ( isset( $field['active_callback'] ) ) {
 			if ( is_array( $field['active_callback'] ) ) {
 				foreach ( $field['active_callback'] as $index => $condition ) {

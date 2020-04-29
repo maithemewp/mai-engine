@@ -487,6 +487,19 @@ function mai_get_unit_value( $value, $fallback = 'px' ) {
  *
  * @since 1.0.0
  *
+ * @param $string
+ *
+ * @return int
+ */
+function mai_get_integer_value( $string ) {
+	return (int) preg_replace( "/[^0-9.]/", "", $string );
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
  * @return array
  */
 function mai_get_site_layout_choices() {
