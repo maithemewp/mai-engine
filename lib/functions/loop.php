@@ -225,7 +225,7 @@ function mai_get_archive_args_name() {
 		}
 	}
 
-	return $name;
+	return apply_filters( 'mai_archive_args_name', $name );
 }
 
 /**
@@ -236,7 +236,8 @@ function mai_get_archive_args_name() {
  * @return false|mixed|string
  */
 function mai_get_singular_args_name() {
-	return mai_get_post_type();
+	$name = mai_get_post_type();
+	return apply_filters( 'mai_archive_args_name', $name );
 }
 
 /**
