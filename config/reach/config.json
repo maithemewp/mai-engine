@@ -9,5 +9,11 @@
     "warning": "#ffc54e",
     "danger": "#ff478f",
     "info": "#0095ed"
+  },
+  "button": {
+    "border-radius": "100px"
+  },
+  "input": {
+    "border-radius": "100px"
   }
 }

@@ -19,5 +19,11 @@
     "style": "solid",
     "color": "var(--color-muted)",
     "radius": "4px"
+  },
+  "button": {
+    "border-radius": "var(--border-radius)"
+  },
+  "input": {
+    "border-radius": "var(--border-radius)"
   }
 }

@@ -41,7 +41,7 @@
 	text-decoration: none;
 	background: var(--button-background, var(--color-primary));
 	border: var(--button-border, 0);
-	border-radius: var(--button-border-radius, var(--border-radius));
+	border-radius: var(--button-border-radius, #{map_get($button, "border-radius")});
 	cursor: var(--button-cursor, pointer);
 	opacity: var(--button-opacity, 1);
 	transition: var(--button-transition, var(--transition));

@@ -8,5 +8,8 @@
   },
   "border": {
     "radius": "1px"
+  },
+  "button": {
+    "border-radius": "0"
   }
 }

@@ -1,7 +1,6 @@
 :root {
 	--font-primary: karla, var(--font-stack);
 	--font-secondary: karla, var(--font-stack);
-	--button-border-radius: 9rem;
 	--button-filter-hover: none;
 	--button-transform-hover: scale(1.05);
 	--input-border-radius: 9rem;
@@ -84,9 +83,6 @@ textarea {
 	border: 0;
 
 	--heading-color: var();
-	--input-border: 0;
-	--input-border-focus: 0;
-	--input-box-shadow: var(--shadow);
 
 	@include mq(lg) {
 		--wrap-flex-wrap: nowrap;
@@ -95,10 +91,6 @@ textarea {
 
 	.wrap {
 		padding: var(--spacing-xl) 0;
-	}
-
-	.wpforms-container {
-		margin-bottom: 0;
 	}
 }
 
@@ -125,4 +117,12 @@ textarea {
 		padding: 0 1em;
 		opacity: 0.5;
 	}
+}
+
+.wpforms-container.inline-fields {
+	margin-bottom: 0;
+
+	--input-border: 0;
+	--input-border-focus: 0;
+	--input-box-shadow: var(--shadow);
 }
