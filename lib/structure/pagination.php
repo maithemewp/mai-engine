@@ -9,12 +9,6 @@
  * @license   GPL-2.0-or-later
  */
 
-// Reposition pagination.
-remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
-add_action( 'genesis_after_content_sidebar_wrap', 'genesis_posts_nav' );
-remove_action( 'genesis_after_entry', 'genesis_adjacent_entry_nav' );
-add_action( 'genesis_after_content_sidebar_wrap', 'genesis_adjacent_entry_nav' );
-
 // Remove alignment classes.
 remove_filter( 'genesis_attr_pagination-previous', 'genesis_adjacent_entry_attr_previous_post' );
 remove_filter( 'genesis_attr_pagination-next', 'genesis_adjacent_entry_attr_next_post' );
@@ -129,11 +123,13 @@ function mai_adjacent_entry_link_thumbnail( $output, $format, $link, $post, $adj
 	$image      = '';
 	$show_image = apply_filters( 'mai_show_adjacent_entry_image', true );
 	$image_id   = get_post_thumbnail_id( $post );
+
 	if ( $show_image && $image_id ) {
 		add_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
 		$image = wp_get_attachment_image( $image_id, 'tiny', false, [ 'class' => 'adjacent-entry-image' ] );
 		remove_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
 	}
+
 	$image = $show_image && $image ? $image : '';
 
 	return str_replace( '%image', $image, $output );
