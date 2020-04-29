@@ -26,6 +26,34 @@ function mai_is_in_dev_mode() {
 /**
  * Description of expected behavior.
  *
+ * @since 1.0.0
+ *
+ * @param mixed  $data     Data to dump.
+ * @param string $function Debug function to use. Defaults to 's'.
+ * @param string $hook     Hook to run function on.
+ * @param int    $priority Priority of hook.
+ *
+ * @return void
+ */
+function mai_debug( $data, $function = 's', $hook = 'after_setup_theme', $priority = 999 ) {
+	if ( ! mai_is_in_dev_mode() ) {
+		return;
+	}
+
+	add_action( $hook, function () use ( $data, $function ) {
+		if ( function_exists( $function ) ) {
+			$function( $data );
+		} else {
+			echo '<pre style="margin:1em;padding:1em;background:#222;color:#eee;font-size:small">';
+			is_array( $data ) ? print_r( $data ) : var_dump( $data );
+			echo '</pre>';
+		}
+	}, $priority );
+}
+
+/**
+ * Description of expected behavior.
+ *
  * @since 0.1.0
  *
  * @param string $needle   String to check for.

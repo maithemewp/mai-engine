@@ -158,4 +158,3 @@ function mai_load_files() {
 		}
 	}
 }
-
