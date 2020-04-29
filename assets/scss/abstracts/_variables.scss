@@ -34,6 +34,20 @@ $font-sizes: (
 	h6: var(--text-md),
 ) !default;
 
+$spacing: (
+	xxxxs: 1px,
+	xxxs: 2px,
+	xxs: 4px,
+	xs: 8px,
+	sm: 12px,
+	md: 16px,
+	lg: calc(var(--spacing-md) * 1.5), // 24px,
+	xl: calc(var(--spacing-md) * 2.25), // 36px,
+	xxl: calc(var(--spacing-md) * 4.5), // 72px,
+	xxxl: calc(var(--spacing-md) * 8), // 128px,
+	xxxxl: calc(var(--spacing-md) * 16), // 156px,
+) !default;
+
 $border: (
 	width: var(--border-size),
 	style: var(--border-style),

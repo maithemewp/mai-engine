@@ -56,17 +56,17 @@
 	--letter-spacing-body: normal;
 	--letter-spacing-heading: var(--letter-spacing-body);
 
-	--spacing-xxxxs: 1px;
-	--spacing-xxxs: 2px;
-	--spacing-xxs: 4px;
-	--spacing-xs: 8px;
-	--spacing-sm: 12px;
-	--spacing-md: 16px;
-	--spacing-lg: calc(var(--spacing-md) * 1.5); // 24px.
-	--spacing-xl: calc(var(--spacing-md) * 2.25); // 36px.
-	--spacing-xxl: calc(var(--spacing-md) * 4.5); // 72px.
-	--spacing-xxxl: calc(var(--spacing-md) * 8); // 128px.
-	--spacing-xxxxl: calc(var(--spacing-md) * 16); // 156px.
+	--spacing-xxxxs: #{map_get($spacing, xxxxs)};
+	--spacing-xxxs: #{map_get($spacing, xxxs)};
+	--spacing-xxs: #{map_get($spacing, xxs)};
+	--spacing-xs: #{map_get($spacing, xs)};
+	--spacing-sm: #{map_get($spacing, sm)};
+	--spacing-md: #{map_get($spacing, md)};
+	--spacing-lg: #{map_get($spacing, lg)};
+	--spacing-xl: #{map_get($spacing, xl)};
+	--spacing-xxl: #{map_get($spacing, xxl)};
+	--spacing-xxxl: #{map_get($spacing, xxxl)};
+	--spacing-xxxxl: #{map_get($spacing, xxxxl)};
 
 	--side-spacing: 4vw;
 
