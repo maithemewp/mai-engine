@@ -6,7 +6,7 @@
 	var navHeaderRight   = document.getElementsByClassName( 'nav-header-right' )[ 0 ];
 	var navAfterHeader   = document.getElementsByClassName( 'nav-after-header' )[ 0 ];
 	var navMenus         = [ navHeaderLeft, navHeaderRight, navAfterHeader ];
-	var mobileMenu       = document.getElementsByClassName( '.mobile-menu' )[ 0 ];
+	var mobileMenu       = document.querySelector( '.mobile-menu' );
 	var mobileMenuWrap   = document.querySelector( '.mobile-menu .wrap' );
 	var mobileMenuList   = document.querySelector( '.mobile-menu .menu' );
 	var mobileMenuWidget = document.querySelector( '.mobile-menu .widget' );
