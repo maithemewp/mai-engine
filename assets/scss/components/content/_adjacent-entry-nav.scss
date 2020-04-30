@@ -1,12 +1,10 @@
 .adjacent-entry-pagination {
 	--image-border-radius: var(--border-radius);
-	margin-top: var(--spacing-xl);
 
-	@include mq(lg) {
-		display: grid;
-		grid-gap: var(--spacing-md);
-		grid-template-columns: 1fr 1fr;
-	}
+	display: grid;
+	grid-gap: var(--spacing-md);
+	grid-template-columns: repeat(auto-fit, minmax(256px, 1fr));
+	margin-top: var(--spacing-xl);
 }
 
 .pagination-previous {
