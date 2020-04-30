@@ -11,10 +11,6 @@ body {
 	background: var(--color-light);
 }
 
-.has-boxed-container.has-before-header {
-	--site-container-margin: 0 auto var(--spacing-md);
-}
-
 .site-container {
 	background: var(--color-white);
 }
@@ -25,7 +21,6 @@ body {
 }
 
 .before-header {
-	text-align: center;
 	background-color: var(--color-light);
 }
 

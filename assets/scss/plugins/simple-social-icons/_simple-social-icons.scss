@@ -1,9 +1,10 @@
 .simple-social-icons {
 	overflow: hidden;
+	--widget-flex: 0 1 auto;
 
 	.before-header &,
 	.before-header &:not(:first-of-type) {
-		--widget-margin: var(--spacing-xs) var(--spacing-sm);
+		// --widget-margin: var(--spacing-xs) var(--spacing-sm);
 	}
 
 	svg {
@@ -23,11 +24,11 @@
 		display: flex;
 		flex-wrap: nowrap;
 		justify-content: flex-start;
-		margin: -0.2em -0.2em 0 0;
+		margin: 0;
 		padding: 0;
 
 		li {
-			margin: 0.2em 0.2em 0 0;
+			margin: 0;
 			padding: 0;
 			list-style-type: none;
 			background: none;
@@ -40,7 +41,8 @@
 				box-sizing: content-box;
 				width: 1em;
 				height: 1em;
-				margin: 2px;
+				margin: var(--simple-social-icon-padding, 2px 4px);
+				padding: var(--simple-social-icon-padding, 4px 6px) !important; /* override SSI inline styles */
 				font-weight: 400;
 				font-style: normal;
 				font-variant: normal;

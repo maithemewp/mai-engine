@@ -2,7 +2,7 @@
 ul,
 ol,
 dl {
-	margin: var(--list-margin, 0);
+	margin: var(--list-margin, var(--list-margin-top, 0) var(--list-margin-right, 0) var(--list-margin-bottom, 0) var(--list-margin-left, 0));
 	padding: var(--list-padding, 0);
 	list-style-position: var(--list-list-style-position, inside);
 
@@ -13,9 +13,20 @@ dl {
 	}
 
 	&:not(:first-child) {
-		--list-margin: var(--spacing-md) 0 0;
+		--list-margin-top: var(--spacing-sm);
 	}
 
+}
+
+li {
+	margin: var(--list-item-margin, var(--list-item-margin-top, 0) var(--list-item-margin-right, 0) var(--list-item-margin-bottom, 0) var(--list-item-margin-left, 0));
+}
+
+.entry-content,
+.sidebar {
+	--list-list-style-position: outside;
+	--list-margin-left: var(--spacing-md);
+	--list-item-margin-top: var(--spacing-xs);
 }
 
 dd,

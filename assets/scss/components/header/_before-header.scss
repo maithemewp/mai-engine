@@ -1,24 +1,28 @@
 .before-header {
 	z-index: 11; /* 1 more than .site-header so sub-menus are on top. */
-	display: flex;
 	width: 100%;
 	min-height: calc(var(--spacing-md) * 2);
 	font-size: var(--text-sm);
 	line-height: 1;
 	border-bottom: var(--border);
 
-	--widget-margin: var(--spacing-xs);
+	--widget-margin: var(--spacing-sm) 0;
 	--heading-margin: 0;
 	--paragraph-margin: 0;
 	--button-margin: 0;
 	--wrap-align-items: center;
-	--wrap-width: 100%;
 	--menu-item-width: auto;
 	--menu-item-margin: 0;
 	--menu-item-link-padding: var(--spacing-xs) var(--spacing-sm);
 	--menu-item-dropdown-margin-top: 0;
 
+	.widget {
+		flex: var(--widget-flex, 1 1 auto);
+	}
+
 	&.has-1-widgets {
+		text-align: center;
+
 		--wrap-align-items: flex-end;
 		--menu-justify-content: flex-end;
 	}
@@ -27,11 +31,16 @@
 		--widget-width: auto;
 	}
 
-	.widget:not(:first-of-type) {
-		--widget-margin: var(--spacing-xs);
+	@include mq(false, sm) {
+		--wrap-justify-content: center;
+	}
+
+	@include mq(sm) {
+		--wrap-flex-wrap: nowrap;
 	}
 
 	@include mq(xl) {
+		--wrap-width: 100%;
 
 		.widget:first-of-type {
 			margin-left: 0;

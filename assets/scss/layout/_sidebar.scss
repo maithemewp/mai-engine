@@ -1,5 +1,8 @@
 .sidebar {
-	--list-list-style-position: outside;
+
+	.widget:first-of-type {
+		--widget-margin-top: 0;
+	}
 
 	@include mq(lg) {
 		width: var(--sidebar-width);
