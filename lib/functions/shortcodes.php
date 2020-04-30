@@ -66,14 +66,14 @@ function mai_back_to_top_shortcode( $atts = [] ) {
 	);
 }
 
-add_shortcode( 'mai_reusable_block', 'mai_reusable_block_shortcode' );
+add_shortcode( 'mai_content', 'mai_content_shortcode' );
 /**
  * Display a reusable block via a shortcode.
  * 'id' can be a slug or ID.
  *
  * Examples:
- * [mai_reusable_block id="123"]
- * [mai_reusable_block id="my-reusable-block"]
+ * [mai_content id="123"]
+ * [mai_content id="my-reusable-block"]
  *
  * @since 1.0.0
  *
@@ -81,18 +81,18 @@ add_shortcode( 'mai_reusable_block', 'mai_reusable_block_shortcode' );
  *
  * @return string
  */
-function mai_reusable_block_shortcode( $atts = [] ) {
+function mai_content_shortcode( $atts = [] ) {
 	$atts = shortcode_atts(
 		[
 			'id' => '',
 		],
 		$atts,
-		'mai_reusable_block'
+		'mai_content'
 	);
 
 	if ( empty( $atts['id'] ) ) {
 		return;
 	}
 
-	return mai_get_reusable_block( $atts['id'] );
+	return mai_get_post_content( $atts['id'] );
 }

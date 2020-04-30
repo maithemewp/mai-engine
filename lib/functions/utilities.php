@@ -507,15 +507,16 @@ function mai_get_site_layout_choices() {
 }
 
 /**
- * Get the reusable block content by ID.
+ * Get post content by slug or ID.
+ * Great for displaying reusable blocks in areas that are not block enabled.
  *
  * @since 0.2.0
  *
- * @param int|string $post_slug_or_id The reusable block wp_block post slug or ID.
+ * @param int|string $post_slug_or_id The post slug or ID.
  *
  * @return string|HTML
  */
-function mai_get_reusable_block( $post_slug_or_id ) {
+function mai_get_post_content( $post_slug_or_id ) {
 	$content = false;
 	if ( is_numeric( $post_slug_or_id ) ) {
 		$content = get_post_field( 'post_content', $post_slug_or_id );
