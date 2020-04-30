@@ -507,6 +507,32 @@ function mai_get_site_layout_choices() {
 }
 
 /**
+ * Get the reusable block content by ID.
+ *
+ * @since 0.2.0
+ *
+ * @param int|string $post_slug_or_id The reusable block wp_block post slug or ID.
+ *
+ * @return string|HTML
+ */
+function mai_get_reusable_block( $post_slug_or_id ) {
+	$content = false;
+	if ( is_numeric( $post_slug_or_id ) ) {
+		$content = get_post_field( 'post_content', $post_slug_or_id );
+	} else {
+		$post = get_page_by_path( $post_slug_or_id, OBJECT, 'wp_block' );
+		if ( $post ) {
+			$content = $post->post_content;
+		}
+	}
+	if ( ! $content ) {
+		return;
+	}
+	// TODO: Do we want to apply ALL the_content filters here?
+	return apply_filters( 'the_content', $content );
+}
+
+/**
  * Description of expected behavior.
  *
  * @since 1.0.0

@@ -47,11 +47,15 @@ class Mai_Reusable_Block_Widget extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 		if ( isset( $instance['block'] ) && ! empty( $instance['block'] ) ) {
+			$content = mai_get_reusable_block( $instance['block'] );
+			if ( ! $content ) {
+				return;
+			}
 			echo $args['before_widget'];
 			if ( ! empty( $instance['title'] ) ) {
 				echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
 			}
-			echo apply_filters( 'the_content', get_post_field( 'post_content', $instance['block'] ) ); // TODO: Do we want to apply ALL the_content filters here?
+			echo $content;
 			echo $args['after_widget'];
 		}
 	}
