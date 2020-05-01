@@ -336,15 +336,28 @@ function mai_get_settings( $name ) {
  * @return array
  */
 function mai_get_variables() {
-	static $variables;
+	static $variables = null;
 
 	if ( is_null( $variables ) ) {
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		$defaults = json_decode( file_get_contents( mai_get_dir() . 'config/_default/config.json' ), true );
-		$file     = mai_get_dir() . 'config/' . mai_get_active_theme() . '/config.json';
+		$defaults     = json_decode( file_get_contents( mai_get_dir() . 'config/_default/config.json' ), true );
+		$engine_file  = mai_get_dir() . 'config/' . mai_get_active_theme() . '/config.json';
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		$theme     = is_readable( $file ) ? json_decode( file_get_contents( $file ), true ) : [];
-		$variables = array_replace_recursive( $defaults, $theme );
+		$engine_theme = is_readable( $engine_file ) ? json_decode( file_get_contents( $engine_file ), true ): [];
+		$variables    = array_replace_recursive( $defaults, $engine_theme );
+		$custom_theme = mai_get_custom_theme_variables();
+		$variables    = $custom_theme ? array_replace_recursive( $variables, $custom_theme ) : $variables;
+	}
+
+	return $variables;
+}
+
+function mai_get_custom_theme_variables() {
+	static $variables = null;
+
+	if ( is_null( $variables ) ) {
+		$file      = get_stylesheet_directory() . '/config.json';
+		$variables = is_readable( $file ) ? json_decode( file_get_contents( $file ), true ): [];
 	}
 
 	return $variables;

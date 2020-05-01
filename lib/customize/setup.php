@@ -41,6 +41,7 @@ function mai_kirki_filters() {
 
 /**
  * Removes custom properties CSS output when they are the same as the defaults.
+ * Skips defaults set in the child theme.
  *
  * @since 1.0.0
  *
@@ -53,8 +54,14 @@ function mai_remove_kirki_default_output( $css ) {
 		return $css;
 	}
 
+	$custom_theme = mai_get_custom_theme_variables();
+
 	foreach ( $css['global'][':root'] as $property => $value ) {
 		$name = str_replace( '--color-', '', $property );
+
+		if ( isset( $custom_theme['colors'][ $name ] ) ) {
+			continue;
+		}
 
 		if ( mai_get_color( $name ) === $value ) {
 			unset( $css['global'][':root'][ $property ] );
