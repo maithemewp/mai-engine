@@ -1,11 +1,11 @@
 @each $color-name, $color-value in $colors {
 
 	.has-#{ $color-name }-color {
-		color: #{ $color-value } !important;
+		color: var(--color-#{ $color-name }) !important;
 	}
 
 	.has-#{ $color-name }-background-color {
-		background-color: #{ $color-value } !important;
+		background-color: var(--color-#{ $color-name }) !important;
 	}
 }
 
