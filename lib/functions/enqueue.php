@@ -12,9 +12,28 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-// Genesis style trump.
+/**
+ * Genesis style trump, and cache bust when stylesheet is updated.
+ *
+ * @since 0.1.0
+ *
+ * @return void
+ */
 remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
-add_action( 'wp_enqueue_scripts', 'genesis_enqueue_main_stylesheet', 99 );
+add_action( 'wp_enqueue_scripts', 'mai_enqueue_main_stylesheet', 999 );
+function mai_enqueue_main_stylesheet() {
+	$version = sprintf( '%s.%s',
+		genesis_get_theme_version(),
+		date( 'njYHi', filemtime( get_stylesheet_directory() . '/style.css' ) )
+	);
+
+	wp_enqueue_style(
+		genesis_get_theme_handle(),
+		get_stylesheet_uri(),
+		false,
+		$version,
+	);
+}
 
 add_action( 'wp_enqueue_scripts', 'mai_enqueue_assets' );
 add_action( 'admin_enqueue_scripts', 'mai_enqueue_assets' );
