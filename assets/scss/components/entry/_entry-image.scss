@@ -5,6 +5,7 @@
 	order: var(--entry-image-link-order, unset);
 	max-width: var(--image-width, unset);
 	margin: var(--entry-image-link-margin, 0);
+	line-height: 0;
 
 	&::before {
 		display: var(--entry-image-link-before-display, none);
