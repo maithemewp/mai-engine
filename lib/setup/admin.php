@@ -14,7 +14,7 @@ function mai_setup_wizard_submenu_page() {
 		__( 'Setup Wizard', 'mai-engine' ),
 		__( 'Setup Wizard', 'mai-engine' ),
 		'manage_options',
-		'mai-setup',
+		'mai-demo-import',
 		'mai_render_setup_wizard_page'
 	);
 }

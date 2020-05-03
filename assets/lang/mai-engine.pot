@@ -37,7 +37,7 @@ msgstr ""
 msgid "Menu"
 msgstr ""
 
-#: config/_default/config.php:230, config/_default/config.php:498
+#: config/_default/config.php:230, config/_default/config.php:519
 msgid "Mobile Menu"
 msgstr ""
 
@@ -45,55 +45,55 @@ msgstr ""
 msgid "Sub Menu"
 msgstr ""
 
-#: config/_default/config.php:417
+#: config/_default/config.php:438
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/_default/config.php:418
+#: config/_default/config.php:439
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/_default/config.php:419
+#: config/_default/config.php:440
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default/config.php:420
+#: config/_default/config.php:441
 msgid "Footer Menu"
 msgstr ""
 
-#: config/_default/config.php:465, lib/admin/hide-elements.php:71
+#: config/_default/config.php:486, lib/admin/hide-elements.php:71
 msgid "Before Header"
 msgstr ""
 
-#: config/_default/config.php:466
+#: config/_default/config.php:487
 msgid "The Before Header widget area."
 msgstr ""
 
-#: config/_default/config.php:471
+#: config/_default/config.php:492
 msgid "Header Left"
 msgstr ""
 
-#: config/_default/config.php:472
+#: config/_default/config.php:493
 msgid "The Header Left widget area."
 msgstr ""
 
-#: config/_default/config.php:481
+#: config/_default/config.php:502
 msgid "Header Right"
 msgstr ""
 
-#: config/_default/config.php:482
+#: config/_default/config.php:503
 msgid "The Header Right widget area."
 msgstr ""
 
-#: config/_default/config.php:491, lib/admin/hide-elements.php:78
+#: config/_default/config.php:512, lib/admin/hide-elements.php:78
 msgid "Before Footer"
 msgstr ""
 
-#: config/_default/config.php:492
+#: config/_default/config.php:513
 msgid "The Before Footer widget area."
 msgstr ""
 
-#: config/_default/config.php:499
+#: config/_default/config.php:520
 msgid "The Mobile Menu widget area."
 msgstr ""
 
@@ -129,7 +129,7 @@ msgstr ""
 msgid "Full"
 msgstr ""
 
-#: config/_settings/content-archives.php:85, config/_settings/content-archives.php:246, config/_settings/content-archives.php:361, config/_settings/grid-block.php:97, config/_settings/grid-block.php:331, config/_settings/grid-block.php:565, lib/blocks/icon.php:224, lib/customize/page-header.php:163, config/_settings/navigation-menus/after-header.php:20
+#: config/_settings/content-archives.php:85, config/_settings/content-archives.php:246, config/_settings/content-archives.php:361, config/_settings/grid-block.php:97, config/_settings/grid-block.php:331, config/_settings/grid-block.php:565, lib/blocks/icon.php:224, lib/customize/page-header.php:161, config/_settings/navigation-menus/after-header.php:20
 msgid "Center"
 msgstr ""
 
@@ -177,7 +177,7 @@ msgstr ""
 msgid "One Half"
 msgstr ""
 
-#: config/_settings/content-archives.php:157, config/_settings/grid-block.php:210, config/_settings/single-content.php:68, lib/functions/grid.php:81, lib/functions/loop.php:280, lib/functions/loop.php:352
+#: config/_settings/content-archives.php:157, config/_settings/grid-block.php:210, config/_settings/single-content.php:68, lib/functions/grid.php:81, lib/functions/loop.php:312, lib/functions/loop.php:384
 msgid "Header Meta"
 msgstr ""
 
@@ -197,7 +197,7 @@ msgstr ""
 msgid "Read More"
 msgstr ""
 
-#: config/_settings/content-archives.php:211, config/_settings/grid-block.php:289, config/_settings/single-content.php:82, lib/functions/grid.php:85, lib/functions/loop.php:287, lib/functions/loop.php:358
+#: config/_settings/content-archives.php:211, config/_settings/grid-block.php:289, config/_settings/single-content.php:82, lib/functions/grid.php:85, lib/functions/loop.php:319, lib/functions/loop.php:390
 msgid "Footer Meta"
 msgstr ""
 
@@ -217,11 +217,11 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#: config/_settings/content-archives.php:245, config/_settings/grid-block.php:330, config/_settings/grid-block.php:564, lib/customize/page-header.php:162
+#: config/_settings/content-archives.php:245, config/_settings/grid-block.php:330, config/_settings/grid-block.php:564, lib/customize/page-header.php:160
 msgid "Start"
 msgstr ""
 
-#: config/_settings/content-archives.php:247, config/_settings/grid-block.php:332, config/_settings/grid-block.php:566, lib/customize/page-header.php:164
+#: config/_settings/content-archives.php:247, config/_settings/grid-block.php:332, config/_settings/grid-block.php:566, lib/customize/page-header.php:162
 msgid "End"
 msgstr ""
 
@@ -229,7 +229,7 @@ msgstr ""
 msgid "Align Text (vertical)"
 msgstr ""
 
-#: config/_settings/content-archives.php:258, config/_settings/content-archives.php:380, config/_settings/grid-block.php:351, config/_settings/grid-block.php:592, lib/blocks/icon.php:340, lib/customize/page-header.php:132
+#: config/_settings/content-archives.php:258, config/_settings/content-archives.php:380, config/_settings/grid-block.php:351, config/_settings/grid-block.php:592, lib/blocks/icon.php:340, lib/customize/page-header.php:130
 msgid "Top"
 msgstr ""
 
@@ -237,7 +237,7 @@ msgstr ""
 msgid "Middle"
 msgstr ""
 
-#: config/_settings/content-archives.php:260, config/_settings/content-archives.php:382, config/_settings/grid-block.php:353, config/_settings/grid-block.php:594, lib/blocks/icon.php:348, lib/customize/page-header.php:133
+#: config/_settings/content-archives.php:260, config/_settings/content-archives.php:382, config/_settings/grid-block.php:353, config/_settings/grid-block.php:594, lib/blocks/icon.php:348, lib/customize/page-header.php:131
 msgid "Bottom"
 msgstr ""
 
@@ -285,7 +285,7 @@ msgstr ""
 msgid "Row Gap"
 msgstr ""
 
-#: config/_settings/content-archives.php:408, lib/classes/class-mai-customizer-api.php:297
+#: config/_settings/content-archives.php:408, lib/customize/setup.php:199
 msgid "Posts Per Page"
 msgstr ""
 
@@ -309,7 +309,7 @@ msgstr ""
 msgid "Show/hide and re-order elements."
 msgstr ""
 
-#: config/_settings/grid-block.php:632, config/_settings/grid-block.php:700, config/_settings/grid-block.php:1159
+#: config/_settings/grid-block.php:632, config/_settings/grid-block.php:700, config/_settings/grid-block.php:1158
 msgid "Entries"
 msgstr ""
 
@@ -317,7 +317,7 @@ msgstr ""
 msgid "Post Type"
 msgstr ""
 
-#: config/_settings/grid-block.php:656, config/_settings/grid-block.php:1116
+#: config/_settings/grid-block.php:656, config/_settings/grid-block.php:1115
 msgid "Get Entries By"
 msgstr ""
 
@@ -325,7 +325,7 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: config/_settings/grid-block.php:663, config/_settings/grid-block.php:991, config/_settings/grid-block.php:1242, lib/functions/grid.php:80, lib/functions/loop.php:279, lib/functions/loop.php:351
+#: config/_settings/grid-block.php:663, config/_settings/grid-block.php:991, config/_settings/grid-block.php:1241, lib/functions/grid.php:80, lib/functions/loop.php:311, lib/functions/loop.php:383
 msgid "Title"
 msgstr ""
 
@@ -333,19 +333,19 @@ msgstr ""
 msgid "Taxonomy/Meta"
 msgstr ""
 
-#: config/_settings/grid-block.php:665, config/_settings/grid-block.php:937, config/_settings/grid-block.php:1124, config/_settings/grid-block.php:1186
+#: config/_settings/grid-block.php:665, config/_settings/grid-block.php:937, config/_settings/grid-block.php:1123, config/_settings/grid-block.php:1185
 msgid "Parent"
 msgstr ""
 
-#: config/_settings/grid-block.php:676, config/_settings/grid-block.php:1135
+#: config/_settings/grid-block.php:676, config/_settings/grid-block.php:1134
 msgid "Number of Entries"
 msgstr ""
 
-#: config/_settings/grid-block.php:677, config/_settings/grid-block.php:1136
+#: config/_settings/grid-block.php:677, config/_settings/grid-block.php:1135
 msgid "Use 0 to show all."
 msgstr ""
 
-#: config/_settings/grid-block.php:701, config/_settings/grid-block.php:1160
+#: config/_settings/grid-block.php:701, config/_settings/grid-block.php:1159
 msgid "Show specific entries. Choose all that apply. If empty, Grid will get entries by date."
 msgstr ""
 
@@ -357,7 +357,7 @@ msgstr ""
 msgid "Add Condition"
 msgstr ""
 
-#: config/_settings/grid-block.php:748, config/_settings/grid-block.php:1102, config/_settings/grid-block.php:1122
+#: config/_settings/grid-block.php:748, config/_settings/grid-block.php:1101, config/_settings/grid-block.php:1121
 msgid "Taxonomy"
 msgstr ""
 
@@ -441,19 +441,19 @@ msgstr ""
 msgid "Meta Keys Relation"
 msgstr ""
 
-#: config/_settings/grid-block.php:961, config/_settings/grid-block.php:1212
+#: config/_settings/grid-block.php:961, config/_settings/grid-block.php:1211
 msgid "Offset"
 msgstr ""
 
-#: config/_settings/grid-block.php:962, config/_settings/grid-block.php:1213
+#: config/_settings/grid-block.php:962, config/_settings/grid-block.php:1212
 msgid "Skip this number of entries."
 msgstr ""
 
-#: config/_settings/grid-block.php:985, config/_settings/grid-block.php:1236
+#: config/_settings/grid-block.php:985, config/_settings/grid-block.php:1235
 msgid "Order By"
 msgstr ""
 
-#: config/_settings/grid-block.php:992, config/_settings/grid-block.php:1243
+#: config/_settings/grid-block.php:992, config/_settings/grid-block.php:1242
 msgid "Slug"
 msgstr ""
 
@@ -481,96 +481,52 @@ msgstr ""
 msgid "Meta key"
 msgstr ""
 
-#: config/_settings/grid-block.php:1037, config/_settings/grid-block.php:1265
+#: config/_settings/grid-block.php:1037, config/_settings/grid-block.php:1264
 msgid "Order"
 msgstr ""
 
-#: config/_settings/grid-block.php:1043, config/_settings/grid-block.php:1271
+#: config/_settings/grid-block.php:1043, config/_settings/grid-block.php:1270
 msgid "Ascending"
 msgstr ""
 
-#: config/_settings/grid-block.php:1044, config/_settings/grid-block.php:1272
+#: config/_settings/grid-block.php:1044, config/_settings/grid-block.php:1271
 msgid "Descending"
 msgstr ""
 
-#: config/_settings/grid-block.php:1055, config/_settings/grid-block.php:1288
+#: config/_settings/grid-block.php:1055, config/_settings/grid-block.php:1287
 msgid "Exclude Entries"
 msgstr ""
 
-#: config/_settings/grid-block.php:1056, config/_settings/grid-block.php:1289
+#: config/_settings/grid-block.php:1056, config/_settings/grid-block.php:1288
 msgid "Hide specific entries. Choose all that apply."
 msgstr ""
 
-#: config/_settings/grid-block.php:1081, config/_settings/grid-block.php:1316
+#: config/_settings/grid-block.php:1080, config/_settings/grid-block.php:1315
 msgid "Exclude"
 msgstr ""
 
-#: config/_settings/grid-block.php:1087, config/_settings/grid-block.php:1323
-msgid "Exclude current"
-msgstr ""
-
-#: config/_settings/grid-block.php:1088, config/_settings/grid-block.php:1324
+#: config/_settings/grid-block.php:1086, config/_settings/grid-block.php:1324
 msgid "Exclude displayed"
 msgstr ""
 
-#: config/_settings/grid-block.php:1123
+#: config/_settings/grid-block.php:1087, config/_settings/grid-block.php:1325
+msgid "Exclude current"
+msgstr ""
+
+#: config/_settings/grid-block.php:1122
 msgid "Name"
 msgstr ""
 
-#: config/_settings/grid-block.php:1244
+#: config/_settings/grid-block.php:1243
 msgid "Entry Totals"
 msgstr ""
 
-#: config/_settings/grid-block.php:1245
+#: config/_settings/grid-block.php:1244
 msgid "Term ID"
 msgstr ""
 
-#: config/_settings/grid-block.php:1322
+#: config/_settings/grid-block.php:1323
 msgid "Exclude terms with no posts"
-msgstr ""
-
-#: lib/admin/demo-import.php:45
-msgid "Theme Dependency"
-msgstr ""
-
-#: lib/admin/demo-import.php:202
-msgid "Hi! Thanks for choosing Mai"
-msgstr ""
-
-#: lib/admin/demo-import.php:208
-msgid "Choose a One Click Demo Import to load pages, posts, and images that match the corresponding Mai Sparkle demo website. Loading the demo content will not overwrite any of your existing content. If you do not need the demo content, simply"
-msgstr ""
-
-#: lib/admin/demo-import.php:210
-msgid "skip"
-msgstr ""
-
-#: lib/admin/demo-import.php:211
-msgid "this step."
-msgstr ""
-
-#: lib/admin/demo-import.php:216
-msgid "Please contact"
-msgstr ""
-
-#: lib/admin/demo-import.php:218
-msgid "support"
-msgstr ""
-
-#: lib/admin/demo-import.php:219
-msgid "for assistance. As with any update, be sure to back up your site first!"
-msgstr ""
-
-#: lib/admin/demo-import.php:271
-msgid "Quit and return to automatic demo importer"
-msgstr ""
-
-#: lib/admin/demo-import.php:272
-msgid "Automatic import"
-msgstr ""
-
-#: lib/admin/demo-import.php:300
-msgid "Could not verify nonce."
 msgstr ""
 
 #: lib/admin/hide-elements.php:41
@@ -585,7 +541,7 @@ msgstr ""
 msgid "Site Header"
 msgstr ""
 
-#: lib/admin/hide-elements.php:73, lib/admin/page-header.php:50, lib/customize/page-header.php:75
+#: lib/admin/hide-elements.php:73, lib/admin/page-header.php:50, lib/customize/page-header.php:76
 msgid "Page Header"
 msgstr ""
 
@@ -613,7 +569,7 @@ msgstr ""
 msgid "Footer Credits"
 msgstr ""
 
-#: lib/admin/page-header.php:56, lib/admin/term-image.php:51, lib/functions/grid.php:79, lib/functions/loop.php:277, lib/functions/loop.php:349
+#: lib/admin/page-header.php:56, lib/admin/term-image.php:51, lib/functions/grid.php:79, lib/functions/loop.php:309, lib/functions/loop.php:381
 msgid "Image"
 msgstr ""
 
@@ -621,7 +577,11 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: lib/blocks/grid.php:29, lib/blocks/grid.php:189
+#: lib/admin/settings.php:94
+msgid "Reusable Blocks"
+msgstr ""
+
+#: lib/blocks/grid.php:29, lib/blocks/grid.php:196
 msgid "Mai Post Grid"
 msgstr ""
 
@@ -629,7 +589,7 @@ msgstr ""
 msgid "Display posts/pages/cpts in various layouts."
 msgstr ""
 
-#: lib/blocks/grid.php:47, lib/blocks/grid.php:207
+#: lib/blocks/grid.php:47, lib/blocks/grid.php:214
 msgid "Mai Term Grid"
 msgstr ""
 
@@ -649,7 +609,7 @@ msgstr ""
 msgid "Icon"
 msgstr ""
 
-#: lib/blocks/icon.php:155
+#: lib/blocks/icon.php:155, lib/setup/api.php:53
 msgid "Style"
 msgstr ""
 
@@ -749,10 +709,6 @@ msgstr ""
 msgid "Check this box to enable beta updates of all Mai plugins and add-ons."
 msgstr ""
 
-#: lib/customize/color-palette.php:25
-msgid "Color Palette"
-msgstr ""
-
 #: lib/customize/layout.php:37
 msgid "Enable boxed container layout?"
 msgstr ""
@@ -769,55 +725,79 @@ msgstr ""
 msgid "Logo Spacing"
 msgstr ""
 
-#: lib/customize/page-header.php:87
+#: lib/customize/page-header.php:88
 msgid "Enable on singular content"
 msgstr ""
 
-#: lib/customize/page-header.php:88
+#: lib/customize/page-header.php:89
 msgid "These settings can be overridden on a per post basis."
 msgstr ""
 
-#: lib/customize/page-header.php:93
+#: lib/customize/page-header.php:94
 msgid "404"
 msgstr ""
 
-#: lib/customize/page-header.php:106
+#: lib/customize/page-header.php:107
 msgid "Enable on content archives"
 msgstr ""
 
-#: lib/customize/page-header.php:111
+#: lib/customize/page-header.php:112
 msgid "Search Results"
 msgstr ""
 
-#: lib/customize/page-header.php:112
+#: lib/customize/page-header.php:113
 msgid "Author Archives"
 msgstr ""
 
-#: lib/customize/page-header.php:113
+#: lib/customize/page-header.php:114
 msgid "Date Archives"
 msgstr ""
 
-#: lib/customize/page-header.php:125
+#: lib/customize/page-header.php:126
 msgid "Vertical Spacing"
 msgstr ""
 
-#: lib/customize/page-header.php:126
+#: lib/customize/page-header.php:127
 msgid "Accepts all unit values (px, rem, em, vw, etc)."
 msgstr ""
 
-#: lib/customize/page-header.php:159
+#: lib/customize/page-header.php:157
 msgid "Text Alignment"
 msgstr ""
 
-#: lib/customize/page-header.php:182
+#: lib/customize/page-header.php:180
+msgid "Divider style"
+msgstr ""
+
+#: lib/customize/page-header.php:183, config/_settings/footer/footer-widgets.php:20
+msgid "None"
+msgstr ""
+
+#: lib/customize/page-header.php:184
+msgid "Angle"
+msgstr ""
+
+#: lib/customize/page-header.php:185
+msgid "Curve"
+msgstr ""
+
+#: lib/customize/page-header.php:186
+msgid "Wave"
+msgstr ""
+
+#: lib/customize/page-header.php:197
+msgid "Overlay opacity"
+msgstr ""
+
+#: lib/customize/page-header.php:219
 msgid "Default Image"
 msgstr ""
 
-#: lib/customize/page-header.php:183
+#: lib/customize/page-header.php:220
 msgid "This can be overridden on a per post basis."
 msgstr ""
 
-#: lib/customize/setup.php:95
+#: lib/customize/setup.php:102
 msgid "Theme Settings"
 msgstr ""
 
@@ -829,15 +809,15 @@ msgstr ""
 msgid "Your theme does not support the Mai Engine plugin. As a result, Mai Engine has been deactivated."
 msgstr ""
 
-#: lib/functions/grid.php:82, lib/functions/loop.php:282
+#: lib/functions/grid.php:82, lib/functions/loop.php:314
 msgid "Excerpt"
 msgstr ""
 
-#: lib/functions/grid.php:83, lib/functions/loop.php:283, lib/functions/loop.php:355
+#: lib/functions/grid.php:83, lib/functions/loop.php:315, lib/functions/loop.php:387, lib/setup/api.php:73
 msgid "Content"
 msgstr ""
 
-#: lib/functions/grid.php:84, lib/functions/loop.php:285
+#: lib/functions/grid.php:84, lib/functions/loop.php:317
 msgid "Read More link"
 msgstr ""
 
@@ -885,28 +865,216 @@ msgstr ""
 msgid "Custom"
 msgstr ""
 
-#: lib/functions/loop.php:354
+#: lib/functions/loop.php:386
 msgid "Manual Excerpts"
 msgstr ""
 
-#: lib/functions/loop.php:360
+#: lib/functions/loop.php:392
 msgid "Author Box"
 msgstr ""
 
-#: lib/functions/loop.php:361
+#: lib/functions/loop.php:393
 msgid "After Entry Widget Area"
 msgstr ""
 
-#: lib/functions/loop.php:362
+#: lib/functions/loop.php:394
 msgid "Previous/Next Entry Nav"
 msgstr ""
 
-#: lib/functions/utilities.php:491
+#: lib/functions/plugins.php:124, lib/structure/pagination.php:63
+msgid "← Previous"
+msgstr ""
+
+#: lib/functions/plugins.php:149, lib/structure/pagination.php:75
+msgid "Next →"
+msgstr ""
+
+#: lib/functions/shortcodes.php:52
+msgid "Return to top of page"
+msgstr ""
+
+#: lib/functions/shortcodes.php:53
+msgid "Back to top"
+msgstr ""
+
+#: lib/functions/utilities.php:519
 msgid "Site Default"
+msgstr ""
+
+#: lib/setup/admin.php:14, lib/setup/admin.php:15
+msgid "Setup Wizard"
+msgstr ""
+
+#: lib/setup/api.php:35
+msgid "Welcome"
+msgstr ""
+
+#: lib/setup/api.php:36
+msgid "Welcome to the Mai Setup Wizard! Enter your email address in the form below to get started."
+msgstr ""
+
+#: lib/setup/api.php:38
+msgid "Please enter a valid email address."
+msgstr ""
+
+#: lib/setup/api.php:39
+msgid "Success!"
+msgstr ""
+
+#: lib/setup/api.php:40, lib/setup/api.php:58, lib/setup/api.php:130
+msgid "Continue"
+msgstr ""
+
+#: lib/setup/api.php:47
+msgid "Email address"
+msgstr ""
+
+#: lib/setup/api.php:54
+msgid "Please select your site style below."
+msgstr ""
+
+#: lib/setup/api.php:56
+msgid "Please select a site style to continue."
+msgstr ""
+
+#: lib/setup/api.php:57
+msgid "Good choice!"
+msgstr ""
+
+#: lib/setup/api.php:63
+msgid "Plugins"
+msgstr ""
+
+#: lib/setup/api.php:64
+msgid "The following plugins will be installed:"
+msgstr ""
+
+#: lib/setup/api.php:66
+msgid "Plugins could not be installed."
+msgstr ""
+
+#: lib/setup/api.php:67
+msgid "Plugins successfully installed!"
+msgstr ""
+
+#: lib/setup/api.php:68
+msgid "Install Plugins"
+msgstr ""
+
+#: lib/setup/api.php:74
+msgid "Select which content you would like to import. Please note that this step can take up to 5 minutes."
+msgstr ""
+
+#: lib/setup/api.php:76
+msgid "Content could not be installed."
+msgstr ""
+
+#: lib/setup/api.php:77
+msgid "Content successfully installed!"
+msgstr ""
+
+#: lib/setup/api.php:78
+msgid "Import Content"
+msgstr ""
+
+#: lib/setup/api.php:83
+msgid "Done"
+msgstr ""
+
+#: lib/setup/api.php:86
+msgid "Your theme has been all set up."
+msgstr ""
+
+#: lib/setup/api.php:88
+msgid "View your site"
+msgstr ""
+
+#: lib/setup/api.php:91
+msgid "View Your Site"
+msgstr ""
+
+#: lib/setup/plugins.php:103
+msgid "Theme Dependency"
+msgstr ""
+
+#: lib/setup/widgets.php:17
+msgid "Import file could not be found. Please try again."
+msgstr ""
+
+#: lib/setup/widgets.php:29
+msgid "Import data could not be read. Please try a different file."
+msgstr ""
+
+#: lib/setup/widgets.php:85
+msgid "Site does not support widget"
+msgstr ""
+
+#: lib/setup/widgets.php:97
+msgid "Widget already exists"
+msgstr ""
+
+#: lib/setup/widgets.php:142
+msgid "Imported"
+msgstr ""
+
+#: lib/structure/footer.php:75
+msgid "Copyright"
+msgstr ""
+
+#: lib/structure/footer.php:76
+msgid "All Rights Reserved"
+msgstr ""
+
+#: lib/structure/footer.php:77
+msgid "Powered by"
+msgstr ""
+
+#: lib/widgets/reusable-block.php:32
+msgid "Mai Reusable Block"
+msgstr ""
+
+#: lib/widgets/reusable-block.php:35
+msgid "Display an existing reusable block in a widget area."
+msgstr ""
+
+#: lib/widgets/reusable-block.php:73
+msgid "Title:"
+msgstr ""
+
+#: lib/widgets/reusable-block.php:88
+msgid "Select from saved Reusable Blocks:"
+msgstr ""
+
+#: lib/widgets/reusable-block.php:90
+msgid "Select Reusable Block"
+msgstr ""
+
+#: lib/widgets/reusable-block.php:103
+msgid "Edit the currently saved block."
+msgstr ""
+
+#: config/_settings/base-styles/buttons.php:7, config/_settings/base-styles/global.php:49
+msgid "Border radius"
+msgstr ""
+
+#: config/_settings/base-styles/forms.php:7
+msgid "Input border radius"
+msgstr ""
+
+#: config/_settings/base-styles/global.php:31
+msgid "Border width"
 msgstr ""
 
 #: config/_settings/footer/footer-credits.php:16
 msgid "Site footer text"
+msgstr ""
+
+#: config/_settings/footer/footer-credits.php:19
+msgid "The text that will appear in your site footer. Can include "
+msgstr ""
+
+#: config/_settings/footer/footer-credits.php:21
+msgid "footer shortcodes."
 msgstr ""
 
 #: config/_settings/footer/footer-widgets.php:16
@@ -915,10 +1083,6 @@ msgstr ""
 
 #: config/_settings/footer/footer-widgets.php:17
 msgid "Save and reload customizer to view changes."
-msgstr ""
-
-#: config/_settings/footer/footer-widgets.php:20
-msgid "None"
 msgstr ""
 
 #: config/_settings/header/site-header.php:16

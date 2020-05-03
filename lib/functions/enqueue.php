@@ -31,7 +31,7 @@ function mai_enqueue_main_stylesheet() {
 		genesis_get_theme_handle(),
 		get_stylesheet_uri(),
 		false,
-		$version,
+		$version
 	);
 }
 
