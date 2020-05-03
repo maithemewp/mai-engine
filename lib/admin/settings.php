@@ -9,6 +9,41 @@
  * @license   GPL-2.0-or-later
  */
 
+add_action( 'admin_menu', 'mai_admin_menu_page', 0 );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function mai_admin_menu_page() {
+	add_menu_page(
+		mai_get_name(),
+		mai_get_name(),
+		'manage_options',
+		mai_get_handle(),
+		'mai_render_admin_menu_page',
+		mai_get_url() . 'assets/img/mai-dashicon.png',
+		59
+	);
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function mai_render_admin_menu_page() {
+	global $title;
+
+	echo '<div class="wrap">';
+	echo "<h1>$title</h1>";
+	echo '</div>';
+}
+
 add_action( 'admin_init', 'mai_update_first_version' );
 /**
  * Set the first version number.
@@ -45,15 +80,26 @@ function mai_update_database_version() {
 	}
 }
 
+add_action( 'admin_menu', 'mai_show_reusable_blocks_admin_menu' );
 /**
  * Expose Reusable Blocks UI in backend.
- * @link https://www.billerickson.net/reusable-blocks-accessible-in-wordpress-admin-area
+ *
+ * @link  https://www.billerickson.net/reusable-blocks-accessible-in-wordpress-admin-area
  *
  * @since 0.1.0
  *
  * @return void
  */
-add_action( 'admin_menu', 'mai_show_reusable_blocks_admin_menu' );
 function mai_show_reusable_blocks_admin_menu() {
-	add_menu_page( 'Reusable Blocks', 'Reusable Blocks', 'edit_posts', 'edit.php?post_type=wp_block', '', 'dashicons-editor-table', 22 );
+	$title = __( 'Reusable Blocks', 'mai-engine' );
+
+	add_menu_page(
+		$title,
+		$title,
+		'edit_posts',
+		'edit.php?post_type=wp_block',
+		'',
+		'dashicons-editor-table',
+		22
+	);
 }

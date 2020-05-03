@@ -61,6 +61,9 @@ toolkit.extendConfig(
 			'customizer': [
 				'./assets/js/customizer.js',
 			],
+			'setup-wizard': [
+				'./assets/js/setup-wizard.js',
+			],
 			'global': [
 				'./assets/js/global.js',
 			],

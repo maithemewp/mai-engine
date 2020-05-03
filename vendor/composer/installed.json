@@ -12,17 +12,17 @@
     },
     {
         "name": "aristath/kirki",
-        "version": "v3.1.1",
-        "version_normalized": "3.1.1.0",
+        "version": "v3.1.2",
+        "version_normalized": "3.1.2.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/aristath/kirki.git",
-            "reference": "1aeb0bd106d85b6a0e0c73b2a13b7c43dfce58b6"
+            "url": "https://github.com/kirki-framework/kirki.git",
+            "reference": "e61ae5f77f1685d371d8fc4636579bed2a9f8704"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/aristath/kirki/zipball/1aeb0bd106d85b6a0e0c73b2a13b7c43dfce58b6",
-            "reference": "1aeb0bd106d85b6a0e0c73b2a13b7c43dfce58b6",
+            "url": "https://api.github.com/repos/kirki-framework/kirki/zipball/e61ae5f77f1685d371d8fc4636579bed2a9f8704",
+            "reference": "e61ae5f77f1685d371d8fc4636579bed2a9f8704",
             "shasum": ""
         },
         "require": {
@@ -37,7 +37,7 @@
             "phpunit/phpunit": "*",
             "wp-coding-standards/wpcs": "*"
         },
-        "time": "2020-04-05T08:23:30+00:00",
+        "time": "2020-04-20T14:43:15+00:00",
         "type": "library",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -64,154 +64,55 @@
         ]
     },
     {
-        "name": "composer/installers",
-        "version": "v1.9.0",
-        "version_normalized": "1.9.0.0",
+        "name": "proteusthemes/wp-content-importer-v2",
+        "version": "v2.1.0",
+        "version_normalized": "2.1.0.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/composer/installers.git",
-            "reference": "b93bcf0fa1fccb0b7d176b0967d969691cd74cca"
+            "url": "https://github.com/proteusthemes/WordPress-Importer.git",
+            "reference": "7414ce1bfb56a8be780c520ed63e99cac7ac403b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/composer/installers/zipball/b93bcf0fa1fccb0b7d176b0967d969691cd74cca",
-            "reference": "b93bcf0fa1fccb0b7d176b0967d969691cd74cca",
+            "url": "https://api.github.com/repos/proteusthemes/WordPress-Importer/zipball/7414ce1bfb56a8be780c520ed63e99cac7ac403b",
+            "reference": "7414ce1bfb56a8be780c520ed63e99cac7ac403b",
             "shasum": ""
         },
-        "require": {
-            "composer-plugin-api": "^1.0 || ^2.0"
-        },
-        "replace": {
-            "roundcube/plugin-installer": "*",
-            "shama/baton": "*"
-        },
-        "require-dev": {
-            "composer/composer": "1.6.* || 2.0.*@dev",
-            "composer/semver": "1.0.* || 2.0.*@dev",
-            "phpunit/phpunit": "^4.8.36",
-            "sebastian/comparator": "^1.2.4",
-            "symfony/process": "^2.3"
-        },
-        "time": "2020-04-07T06:57:05+00:00",
-        "type": "composer-plugin",
-        "extra": {
-            "class": "Composer\\Installers\\Plugin",
-            "branch-alias": {
-                "dev-master": "1.0-dev"
-            }
-        },
+        "time": "2018-04-13T07:31:18+00:00",
+        "type": "library",
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "Composer\\Installers\\": "src/Composer/Installers"
+                "ProteusThemes\\WPContentImporter2\\": "src/"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "MIT"
+            "GPL-2.0+"
         ],
         "authors": [
             {
-                "name": "Kyle Robinson Young",
-                "email": "kyle@dontkry.com",
-                "homepage": "https://github.com/shama"
+                "name": "Primoz Cigler",
+                "email": "primoz@proteusnet.com"
+            },
+            {
+                "name": "Gregor Capuder",
+                "email": "capuderg@gmail.com"
+            },
+            {
+                "name": "Humanmade contributors",
+                "homepage": "https://github.com/humanmade/WordPress-Importer/graphs/contributors"
             }
         ],
-        "description": "A multi-framework Composer library installer",
-        "homepage": "https://composer.github.io/installers/",
+        "description": "Improved WP content importer used in OCDI plugin and MerlinWP.",
         "keywords": [
-            "Craft",
-            "Dolibarr",
-            "Eliasis",
-            "Hurad",
-            "ImageCMS",
-            "Kanboard",
-            "Lan Management System",
-            "MODX Evo",
-            "MantisBT",
-            "Mautic",
-            "Maya",
-            "OXID",
-            "Plentymarkets",
-            "Porto",
-            "RadPHP",
-            "SMF",
-            "Thelia",
-            "Whmcs",
-            "WolfCMS",
-            "agl",
-            "aimeos",
-            "annotatecms",
-            "attogram",
-            "bitrix",
-            "cakephp",
-            "chef",
-            "cockpit",
-            "codeigniter",
-            "concrete5",
-            "croogo",
-            "dokuwiki",
-            "drupal",
-            "eZ Platform",
-            "elgg",
-            "expressionengine",
-            "fuelphp",
-            "grav",
-            "installer",
-            "itop",
-            "joomla",
-            "known",
-            "kohana",
-            "laravel",
-            "lavalite",
-            "lithium",
-            "magento",
-            "majima",
-            "mako",
-            "mediawiki",
-            "modulework",
-            "modx",
-            "moodle",
-            "osclass",
-            "phpbb",
-            "piwik",
-            "ppi",
-            "puppet",
-            "pxcms",
-            "reindex",
-            "roundcube",
-            "shopware",
-            "silverstripe",
-            "sydes",
-            "sylius",
-            "symfony",
-            "typo3",
+            "content",
+            "import",
+            "proteusthemes",
+            "theme",
             "wordpress",
-            "yawik",
-            "zend",
-            "zikula"
+            "wp"
         ]
-    },
-    {
-        "name": "wpackagist-plugin/one-click-demo-import",
-        "version": "dev-trunk",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "svn",
-            "url": "https://plugins.svn.wordpress.org/one-click-demo-import/",
-            "reference": "trunk"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://downloads.wordpress.org/plugin/one-click-demo-import.zip?timestamp=1567701621"
-        },
-        "require": {
-            "composer/installers": "~1.0"
-        },
-        "time": "2019-09-05T16:40:21+00:00",
-        "type": "wordpress-plugin",
-        "installation-source": "dist",
-        "homepage": "https://wordpress.org/plugins/one-click-demo-import/"
     },
     {
         "name": "yahnis-elsts/plugin-update-checker",

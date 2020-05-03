@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Composer\\Installers\\' => array($vendorDir . '/composer/installers/src/Composer/Installers'),
+    'ProteusThemes\\WPContentImporter2\\' => array($vendorDir . '/proteusthemes/wp-content-importer-v2/src'),
 );

@@ -11,16 +11,16 @@ class ComposerStaticInitb109c82834b5632899cf4c449109f709
     );
 
     public static $prefixLengthsPsr4 = array (
-        'C' => 
+        'P' => 
         array (
-            'Composer\\Installers\\' => 20,
+            'ProteusThemes\\WPContentImporter2\\' => 33,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Composer\\Installers\\' => 
+        'ProteusThemes\\WPContentImporter2\\' => 
         array (
-            0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
+            0 => __DIR__ . '/..' . '/proteusthemes/wp-content-importer-v2/src',
         ),
     );
 

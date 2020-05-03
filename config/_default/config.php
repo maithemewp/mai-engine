@@ -263,7 +263,7 @@ return [
 				'location' => 'customizer',
 			],
 
-			// Admin scripts.
+			// Editor scripts.
 			[
 				'handle'   => mai_get_handle() . '-editor',
 				'src'      => mai_get_asset_url( 'editor.js' ),
@@ -272,6 +272,20 @@ return [
 				'localize' => [
 					'name' => 'maiEditorVars',
 					'data' => 'mai_get_editor_localized_data',
+				],
+			],
+
+			// Setup wizard.
+			[
+				'handle'   => mai_get_handle() . '-setup-wizard',
+				'src'      => mai_get_asset_url( 'setup-wizard.js' ),
+				'deps'     => [ 'jquery' ],
+				'location' => 'admin',
+				'localize' => [
+					'name' => 'maiSetupWizard',
+					'data' => [
+						'steps' => array_keys( mai_setup_wizard_steps() ),
+					],
 				],
 			],
 
@@ -286,6 +300,13 @@ return [
 				'handle'   => mai_get_handle() . '-kirki',
 				'src'      => mai_get_url() . 'assets/css/plugins/kirki.min.css',
 				'location' => 'customizer',
+			],
+
+			// Admin styles.
+			[
+				'handle'   => mai_get_handle() . '-admin',
+				'src'      => mai_get_url() . 'assets/css/admin/admin.min.css',
+				'location' => 'admin',
 			],
 
 			// ACF styles.
