@@ -40,7 +40,7 @@ return [
 			'name'       => 'WP Forms Lite',
 			'slug'       => 'wpforms-lite/wpforms.php',
 			'public_url' => 'https://wordpress.org/plugins/wpforms-lite/',
-			'demos'      => [ 'agency' ],
+			'demos'      => [ 'agency', 'podcast' ],
 		],
 		[
 			'name'       => 'WooCommerce',

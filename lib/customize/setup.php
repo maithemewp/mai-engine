@@ -146,7 +146,7 @@ add_action( 'after_setup_theme', 'mai_register_customizer_api' );
  * @return void
  */
 function mai_register_customizer_api() {
-	$customizer_api = new Mai_Customizer_API();
+	$customizer_api = mai_get_instance( Mai_Customizer_API::class );
 	$customizer_api->add_panels();
 }
 

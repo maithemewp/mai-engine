@@ -497,3 +497,23 @@ function mai_add_classes( $new, $existing = '' ) {
 
 	return $existing;
 }
+
+/**
+ * Returns single instance of class (avoids singletons).
+ *
+ * @since 1.0.0
+ *
+ * @param string $class Class name.
+ * @param mixed  $args  Passed args.
+ *
+ * @return object
+ */
+function mai_get_instance( $class, ...$args ) {
+	static $classes = [];
+
+	if ( ! array_key_exists( $class, $classes ) ) {
+		$classes[ $class ] = new $class( ...$args );
+	}
+
+	return $classes[ $class ];
+}

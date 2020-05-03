@@ -70,7 +70,7 @@ module.exports = function() {
 
 		let files = function() {
 			return fs.readdirSync( './assets/scss/' ).filter( function( file ) {
-				if ( file.includes( '.scss' ) ) {
+				if ( file.includes( '.scss' ) && ! file.includes( 'admin' ) ) {
 					return file;
 				}
 			} );

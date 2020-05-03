@@ -119,6 +119,16 @@ function mai_load_files() {
 		'customize/upsell',
 		'customize/layout',
 		'customize/page-header',
+
+		// Setup wizard.
+		'setup/api',
+		'setup/admin',
+		'setup/ajax',
+		'setup/demos',
+		'setup/plugins',
+		'setup/content',
+		'setup/widgets',
+		'setup/customizer',
 	];
 
 	if ( is_admin() ) {
@@ -132,9 +142,9 @@ function mai_load_files() {
 				'admin/page-header',
 				'admin/hide-elements',
 				'admin/acf',
-				'admin/demo-import',
 				'admin/update-checker',
 				'admin/child-theme-updater',
+				'admin/merlin',
 			]
 		);
 	}
@@ -145,10 +155,6 @@ function mai_load_files() {
 
 	if ( ! class_exists( 'Kirki' ) ) {
 		$files[] = '../vendor/aristath/kirki/kirki';
-	}
-
-	if ( ! class_exists( 'OCDI_Plugin' ) ) {
-		$files[] = '../vendor/wpackagist-plugin/one-click-demo-import/one-click-demo-import';
 	}
 
 	foreach ( $files as $file ) {
