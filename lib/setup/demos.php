@@ -161,12 +161,7 @@ function mai_fetch_demo_data( $theme = 'reach', $demo = 'podcast' ) {
 	$types = mai_get_demo_data_types();
 
 	foreach ( $types as $content_type => $file_type ) {
-		$file = "$cache_dir/$content_type.$file_type";
-
-		if ( file_exists( $file ) ) {
-			continue;
-		}
-
+		$file     = "$cache_dir/$content_type.$file_type";
 		$url      = "https://demo.bizbudding.com/$theme-$demo/wp-content/uploads/sites/$id/mai-engine/$content_type.$file_type";
 		$response = wp_remote_get( $url );
 		$body     = wp_remote_retrieve_body( $response );
