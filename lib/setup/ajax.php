@@ -24,7 +24,6 @@ function mai_setup_wizard_ajax() {
 	}
 
 	$function = "mai_{$data['current_step']}_step_ajax";
-
 	$response = $function( $data, $option, $response );
 
 	wp_send_json( $response );
@@ -81,7 +80,7 @@ function mai_style_step_ajax( $data, $option, $response ) {
 		$response['plugin_list'] = mai_get_demo_plugin_list_items( $option['site_style'] );
 
 	} else {
-		$response['error'] = 'Please select a site style';
+		$response['error'] = __( 'Please select a site style', 'mai-engine' );
 	}
 
 	update_option( 'mai-setup-wizard', $option );
@@ -136,11 +135,12 @@ function mai_plugins_step_ajax( $data, $option, $response ) {
  */
 function mai_content_step_ajax( $data, $option, $response ) {
 	$content = [];
+	$theme   = mai_get_active_theme();
 
 	do_action( 'mai_before_demo_import' );
 
-	if ( isset( $_POST['content'] ) ) {
-		$demo_data = mai_fetch_demo_data( mai_get_active_theme(), $option['site_style'] );
+	if ( isset( $_POST['content'] ) && isset( $option['site_style'] ) && $option['site_style'] ) {
+		$demo_data = mai_fetch_demo_data( $theme, $option['site_style'] );
 
 		if ( isset( $demo_data['error'] ) ) {
 			$response['error'] = $demo_data['error'];
@@ -149,7 +149,8 @@ function mai_content_step_ajax( $data, $option, $response ) {
 			foreach ( $_POST['content'] as $type ) {
 				$content[] = sanitize_text_field( $type );
 				$types     = mai_get_demo_data_types();
-				$file      = WP_CONTENT_DIR . "/mai/{$type}.{$types[$type]}";
+				$handle    = mai_get_handle();
+				$file      = WP_CONTENT_DIR . "/{$handle}/{$type}.{$types[$type]}";
 				$function  = "mai_import_demo_data_$type";
 
 				$function( $file );

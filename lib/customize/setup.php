@@ -165,7 +165,9 @@ function mai_reposition_genesis_customizer_sections( $wp_customize ) {
 	$sections = genesis_get_config( 'customizer-theme-settings' )['genesis']['sections'];
 
 	foreach ( $sections as $id => $data ) {
-		$wp_customize->get_section( $id )->panel = $handle;
+		if ( $wp_customize && isset( $wp_customize->get_section( $id )->panel ) ) {
+			$wp_customize->get_section( $id )->panel = $handle;
+		}
 	}
 
 	$wp_customize->remove_section( 'genesis_single' );

@@ -100,7 +100,7 @@
 			if ( response.hasOwnProperty( 'error' ) ) {
 				continue_button.removeClass( 'loading' );
 				current_step.addClass( 'is-error' );
-				console.log( response.error );
+				console.log( 'Mai Setup Wizard: ' + response.error );
 				return;
 			}
 

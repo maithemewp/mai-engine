@@ -285,7 +285,7 @@ msgstr ""
 msgid "Row Gap"
 msgstr ""
 
-#: config/_settings/content-archives.php:408, lib/customize/setup.php:199
+#: config/_settings/content-archives.php:408, lib/customize/setup.php:201
 msgid "Posts Per Page"
 msgstr ""
 
@@ -991,6 +991,14 @@ msgstr ""
 
 #: lib/setup/api.php:91
 msgid "View Your Site"
+msgstr ""
+
+#: lib/setup/demos.php:148
+msgid "Demos is not an object"
+msgstr ""
+
+#: lib/setup/demos.php:154
+msgid "Could not find demo ID "
 msgstr ""
 
 #: lib/setup/plugins.php:103

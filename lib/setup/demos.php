@@ -11,7 +11,7 @@ function mai_get_demo_style_choices() {
 	$choices = [];
 	$demos   = mai_get_theme_demos();
 
-	foreach ( $demos as $demo ) {
+	foreach ( $demos as $demo => $id ) {
 		$choices[] = [
 			'element' => 'input',
 			'type'    => 'radio',
@@ -116,7 +116,7 @@ function mai_get_demo_screenshot( $demo, $theme = '' ) {
 function mai_get_demo_data_types() {
 	return [
 		'content'    => 'xml',
-		'widgets'    => 'wie',
+		'widgets'    => 'json',
 		'customizer' => 'dat',
 	];
 }
@@ -135,14 +135,30 @@ function mai_fetch_demo_data( $theme = 'reach', $demo = 'podcast' ) {
 	include_once ABSPATH . 'wp-admin/includes/file.php';
 	\WP_Filesystem();
 	global $wp_filesystem;
-	$cache_dir = WP_CONTENT_DIR . '/mai/';
+	$cache_dir = WP_CONTENT_DIR . DIRECTORY_SEPARATOR . mai_get_handle() . DIRECTORY_SEPARATOR;
 
 	if ( ! is_dir( $cache_dir ) ) {
 		wp_mkdir_p( $cache_dir );
 	}
 
-	$types    = mai_get_demo_data_types();
 	$response = [];
+	$demos    = mai_get_theme_demos();
+
+	if ( ! is_object( $demos ) ) {
+		$response['error'] = __( 'Demos is not an object', 'mai-engine' );
+
+		return $response;
+	}
+
+	if ( ! isset( $demos->{$demo} ) ) {
+		$response['error'] = __( 'Could not find demo ID ', 'mai-engine' );
+		$response['error'] .= $demo;
+
+		return $response;
+	}
+
+	$id    = $demos->{$demo};
+	$types = mai_get_demo_data_types();
 
 	foreach ( $types as $content_type => $file_type ) {
 		$file = "$cache_dir/$content_type.$file_type";
@@ -151,7 +167,7 @@ function mai_fetch_demo_data( $theme = 'reach', $demo = 'podcast' ) {
 			continue;
 		}
 
-		$url      = "https://demo.bizbudding.com/$theme-$demo/wp-content/mai-engine/$content_type.$file_type";
+		$url      = "https://demo.bizbudding.com/$theme-$demo/wp-content/uploads/sites/$id/mai-engine/$content_type.$file_type";
 		$response = wp_remote_get( $url );
 		$body     = wp_remote_retrieve_body( $response );
 
