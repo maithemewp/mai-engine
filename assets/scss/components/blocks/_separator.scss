@@ -23,7 +23,7 @@
 	&.is-style-round-down,
 	&.is-style-wave-left,
 	&.is-style-wave-right {
-		width: var(--alignfull-width, 100vw);
+		width: var(--alignfull-width, unset);
 		max-width: var(--alignfull-max-width, 1000%) !important;
 		height: var(--separator-height) !important;
 		margin-top: 0;
@@ -32,7 +32,7 @@
 		margin-left: var(--alignfull-margin-left, calc(50% - 50vw));
 		background-color: var(--divider-background-color, var(--color-white));
 		mask-repeat: no-repeat;
-		mask-size: 100vw var(--separator-height);
+		mask-size: 100% var(--separator-height);
 		border: none;
 	}
 
