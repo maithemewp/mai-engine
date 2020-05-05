@@ -106,3 +106,79 @@ function mai_get_divider( $atts ) {
 		]
 	);
 }
+
+add_action( 'acf/init', 'mai_register_divider_field_groups' );
+/**
+ * Register Mai Divider block field group.
+ *
+ * @since 0.2.0
+ *
+ * @return void
+ */
+function mai_register_divider_field_groups() {
+	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+		return;
+	}
+
+	acf_add_local_field_group( [
+		'key'    => 'group_5eb199873d4ff',
+		'title'  => esc_html__( 'Mai Divider', 'mai-engine' ),
+		'fields' => [
+			[
+				'key'     => 'field_5eb19996e23b9',
+				'label'   => esc_html__( 'Style', 'mai-engine' ),
+				'name'    => 'style',
+				'type'    => 'radio',
+				'choices' => [
+					'angle' => esc_html__( 'Angle', 'mai-engine' ),
+					'curve' => esc_html__( 'Curve', 'mai-engine' ),
+					'point' => esc_html__( 'Point', 'mai-engine' ),
+					'round' => esc_html__( 'Round', 'mai-engine' ),
+					'wave'  => esc_html__( 'Wave', 'mai-engine' ),
+				],
+			],
+			[
+				'key'     => 'field_5eb19a01e23ba',
+				'label'   => esc_html__( 'Flip Vertical', 'mai-engine' ),
+				'name'    => 'flip_vertical',
+				'type'    => 'true_false',
+				'wrapper' => [
+					'width' => '50',
+					'class' => '',
+					'id'    => '',
+				],
+				'ui' => 1,
+			],
+			[
+				'key'     => 'field_5eb19a28e23bb',
+				'label'   => esc_html__( 'Flip Horizontal', 'mai-engine' ),
+				'name'    => 'flip_horizontal',
+				'type'    => 'true_false',
+				'wrapper' => [
+					'width' => '50',
+					'class' => '',
+					'id'    => '',
+				],
+				'ui' => 1,
+			],
+			[
+				'key'           => 'field_5eb1a70c7f083',
+				'label'         => esc_html__( 'Color', 'mai-engine' ),
+				'name'          => 'color',
+				'type'          => 'color_picker',
+				'default_value' => '#ffffff',
+			],
+		],
+		'location' => [
+			[
+				[
+					'param'    => 'block',
+					'operator' => '==',
+					'value'    => 'acf/mai-divider',
+				],
+			],
+		],
+		'description' => '',
+	] );
+
+}
