@@ -180,4 +180,47 @@ wp.domReady( function() {
 		}
 	] );
 
+	wp.blocks.registerBlockStyle( 'core/separator', [
+		{
+			name: 'angle-up',
+			label: 'Angle Up'
+		},
+		{
+			name: 'angle-down',
+			label: 'Angle Down'
+		},
+		{
+			name: 'curve-right',
+			label: 'Curved Right'
+		},
+		{
+			name: 'curve-left',
+			label: 'Curved Left'
+		},
+		{
+			name: 'round-up',
+			label: 'Rounded Up'
+		},
+		{
+			name: 'round-down',
+			label: 'Rounded Down'
+		},
+		{
+			name: 'triangle-up',
+			label: 'Triangle Up'
+		},
+		{
+			name: 'triangle-down',
+			label: 'Triangle Down'
+		},
+		{
+			name: 'wave-left',
+			label: 'Wave Left'
+		},
+		{
+			name: 'wave-right',
+			label: 'Wave Right'
+		}
+	] );
+
 } );
