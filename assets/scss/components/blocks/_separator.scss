@@ -4,10 +4,10 @@
 	&.is-style-angle-down,
 	&.is-style-curve-left,
 	&.is-style-curve-right,
+	&.is-style-point-up,
+	&.is-style-point-down,
 	&.is-style-round-up,
 	&.is-style-round-down,
-	&.is-style-triangle-up,
-	&.is-style-triangle-down,
 	&.is-style-wave-left,
 	&.is-style-wave-right {
 		--separator-height: calc(4rem + 4vw);
@@ -34,14 +34,14 @@
 		mask-image: url(../../svg/divider-curve.svg);
 	}
 
+	&.is-style-point-up,
+	&.is-style-point-down {
+		mask-image: url(../../svg/divider-point.svg);
+	}
+
 	&.is-style-round-up,
 	&.is-style-round-down {
 		mask-image: url(../../svg/divider-round.svg);
-	}
-
-	&.is-style-triangle-up,
-	&.is-style-triangle-down {
-		mask-image: url(../../svg/divider-triangle.svg);
 	}
 
 	&.is-style-wave-left,
@@ -55,7 +55,7 @@
 		transform: scaleX(-1);
 	}
 
-	&.is-style-triangle-up,
+	&.is-style-point-up,
 	&.is-style-round-down {
 		transform: scaleY(-1);
 	}

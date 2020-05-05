@@ -198,20 +198,20 @@ wp.domReady( function() {
 			label: 'Curved Left'
 		},
 		{
+			name: 'point-up',
+			label: 'Point Up'
+		},
+		{
+			name: 'point-down',
+			label: 'Point Down'
+		},
+		{
 			name: 'round-up',
 			label: 'Rounded Up'
 		},
 		{
 			name: 'round-down',
 			label: 'Rounded Down'
-		},
-		{
-			name: 'triangle-up',
-			label: 'Triangle Up'
-		},
-		{
-			name: 'triangle-down',
-			label: 'Triangle Down'
 		},
 		{
 			name: 'wave-left',
