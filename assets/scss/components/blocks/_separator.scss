@@ -1,5 +1,18 @@
 .wp-block-separator {
 
+	// Needed media queries cause vw caused subpixel issues.
+	@include mq(false,md) {
+		--separator-height: calc(4rem);
+	}
+
+	@include mq(md) {
+		--separator-height: calc(8rem);
+	}
+
+	@include mq(xl) {
+		--separator-height: calc(12rem);
+	}
+
 	&.is-style-angle-up,
 	&.is-style-angle-down,
 	&.is-style-curve-left,
@@ -10,7 +23,6 @@
 	&.is-style-round-down,
 	&.is-style-wave-left,
 	&.is-style-wave-right {
-		--separator-height: calc(4rem + 4vw);
 		width: var(--alignfull-width, 100vw);
 		max-width: var(--alignfull-max-width, 1000%) !important;
 		height: var(--separator-height) !important;
