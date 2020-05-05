@@ -375,9 +375,8 @@ function mai_get_colors() {
 
 	if ( empty( $colors ) ) {
 		$colors = mai_get_variables()['colors'];
-		$option = mai_get_option( 'global-color-palette', [] );
 		foreach ( $colors as $name => $hex ) {
-			$colors[ $name ] = isset( $option[ $name ] ) ? $option[ $name ] : $hex;
+			$colors[ $name ] = $hex;
 		}
 	}
 
@@ -408,13 +407,14 @@ function mai_get_color( $color = null ) {
  */
 function mai_get_color_palette() {
 	$colors  = mai_get_colors();
+	$option  = mai_get_option( 'global-color-palette', [] );
 	$palette = [];
 
 	foreach ( $colors as $name => $hex ) {
 		$palette[] = [
 			'name'  => mai_convert_case( $name, 'title' ),
 			'slug'  => mai_convert_case( $name, 'kebab' ),
-			'color' => $hex,
+			'color' => isset( $option[ $name ] ) ? $option[ $name ] : $hex,
 		];
 	}
 
