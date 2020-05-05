@@ -57,7 +57,26 @@
 		margin-bottom: var(--spacing-#{ $spacing-name }) !important;
 	}
 
+	.has--#{ $spacing-name }-margin-top {
+		margin-top: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
+	}
+
+	.has--#{ $spacing-name }-margin-bottom {
+		margin-bottom: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
+	}
+
 	.has-#{ $spacing-name }-padding {
 		padding: var(--spacing-#{ $spacing-name }) !important;
 	}
+
+}
+
+.flip-horizontal {
+	--scale-y: -1;
+	transform: scale(var(--scale-x, 1), var(--scale-y, 1));
+}
+
+.flip-vertical {
+	--scale-x: -1;
+	transform: scale(var(--scale-x, 1), var(--scale-y, 1));
 }
