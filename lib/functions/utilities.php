@@ -571,7 +571,7 @@ function mai_get_icon( $args ) {
 		$args
 	);
 
-	$svg = mai_get_svg( $args['icon'], $args['style'] );
+	$svg = mai_get_svg_icon( $args['icon'], $args['style'] );
 
 	if ( ! $svg ) {
 		return '';
@@ -673,7 +673,7 @@ function mai_get_icon_default_args() {
  *
  * @return string
  */
-function mai_get_svg( $name, $style = 'light', $class = '' ) {
+function mai_get_svg_icon( $name, $style = 'light', $class = '' ) {
 	$file = mai_get_dir() . "assets/icons/svgs/$style/$name.svg";
 
 	if ( ! file_exists( $file ) ) {

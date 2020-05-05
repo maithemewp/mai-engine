@@ -236,7 +236,7 @@ return [
 							'<span class="sub-menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
 							__( 'Sub Menu', 'mai-engine' )
 						),
-						'searchIcon'    => mai_get_svg( 'search', 'regular', 'search-toggle-icon' ),
+						'searchIcon'    => mai_get_svg_icon( 'search', 'regular', 'search-toggle-icon' ),
 						'searchBox'     => ! defined( 'STYLESHEETPATH' ) ?:
 							get_search_form(
 								[
