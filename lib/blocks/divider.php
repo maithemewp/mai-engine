@@ -27,7 +27,7 @@ function mai_register_divider_block() {
 				'render_callback' => 'mai_do_divider_block',
 				'category'        => 'widgets',
 				'keywords'        => [ 'divider' ],
-				'icon'            => 'line',
+				'icon'            => mai_get_svg_icon( 'wave-sine', 'regular' ),
 				'mode'            => 'preview',
 			]
 		);
