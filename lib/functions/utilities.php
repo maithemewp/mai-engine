@@ -665,6 +665,34 @@ function mai_get_icon_default_args() {
 /**
  * Description of expected behavior.
  *
+ * @since 0.2.0
+ *
+ * @param string $name  SVG name.
+ * @param string $class SVG class name.
+ *
+ * @return string
+ */
+function mai_get_svg( $name, $class = '' ) {
+	$file = mai_get_dir() . "assets/svgs/$name.svg";
+
+	if ( ! file_exists( $file ) ) {
+		return '';
+	}
+
+	$svg = file_get_contents( $file );
+
+	if ( $class ) {
+		$svg = str_replace( '<svg', '<svg class="$class" ', $svg );
+	}
+
+	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+	return $svg;
+}
+
+
+/**
+ * Description of expected behavior.
+ *
  * @since 0.1.0
  *
  * @param string $name  SVG name.
@@ -683,7 +711,7 @@ function mai_get_svg_icon( $name, $style = 'light', $class = '' ) {
 	$svg = file_get_contents( $file );
 
 	if ( $class ) {
-		$svg = str_replace( '<svg', "<svg class='$class' ", $svg );
+		$svg = str_replace( '<svg', '<svg class="$class" ', $svg );
 	}
 
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
