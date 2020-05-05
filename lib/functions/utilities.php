@@ -375,9 +375,9 @@ function mai_get_colors() {
 
 	if ( empty( $colors ) ) {
 		$colors = mai_get_variables()['colors'];
-
+		$option = mai_get_option( 'global-color-palette', [] );
 		foreach ( $colors as $name => $hex ) {
-			$colors[ $name ] = $hex;
+			$colors[ $name ] = isset( $option[ $name ] ) ? $option[ $name ] : $hex;
 		}
 	}
 
@@ -408,14 +408,13 @@ function mai_get_color( $color = null ) {
  */
 function mai_get_color_palette() {
 	$colors  = mai_get_colors();
-	$option  = mai_get_option( 'global-color-palette', [] );
 	$palette = [];
 
 	foreach ( $colors as $name => $hex ) {
 		$palette[] = [
 			'name'  => mai_convert_case( $name, 'title' ),
 			'slug'  => mai_convert_case( $name, 'kebab' ),
-			'color' => isset( $option[ $name ] ) ? $option[ $name ] : $hex,
+			'color' => $hex,
 		];
 	}
 
@@ -673,7 +672,7 @@ function mai_get_icon_default_args() {
  * @return string
  */
 function mai_get_svg( $name, $class = '' ) {
-	$file = mai_get_dir() . "assets/svgs/$name.svg";
+	$file = mai_get_dir() . "assets/svg/$name.svg";
 
 	if ( ! file_exists( $file ) ) {
 		return '';
@@ -682,7 +681,7 @@ function mai_get_svg( $name, $class = '' ) {
 	$svg = file_get_contents( $file );
 
 	if ( $class ) {
-		$svg = str_replace( '<svg', '<svg class="$class" ', $svg );
+		$svg = str_replace( '<svg', "<svg class='$class' ", $svg );
 	}
 
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
@@ -711,7 +710,7 @@ function mai_get_svg_icon( $name, $style = 'light', $class = '' ) {
 	$svg = file_get_contents( $file );
 
 	if ( $class ) {
-		$svg = str_replace( '<svg', '<svg class="$class" ', $svg );
+		$svg = str_replace( '<svg', "<svg class='$class' ", $svg );
 	}
 
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents

@@ -104,6 +104,7 @@ function mai_load_files() {
 		// Blocks.
 		'blocks/icon',
 		'blocks/cover',
+		'blocks/divider',
 		'blocks/grid',
 
 		// Shortcodes.

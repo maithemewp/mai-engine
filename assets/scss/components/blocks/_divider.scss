@@ -1,0 +1,27 @@
+.mai-divider {
+
+	// Needed media queries cause vw caused subpixel issues.
+	@include mq(false,md) {
+		--separator-height: calc(4rem);
+	}
+
+	@include mq(md) {
+		--separator-height: calc(8rem);
+	}
+
+	@include mq(xl) {
+		--separator-height: calc(12rem);
+	}
+
+	display: block;
+	min-height: var(--separator-height) !important;
+	background-color: var(--divider-background-color, var(--color-white));
+}
+
+.mai-divider-svg {
+	display: block;
+	// negative 1px to fix subpixel gap.
+	margin-top: -1px;
+	margin-bottom: -1px;
+	fill: var(--divider-color, currentColor);
+}
