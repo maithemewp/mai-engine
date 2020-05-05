@@ -700,7 +700,7 @@ function mai_get_svg_icon( $name, $style = 'light', $class = '' ) {
  *
  * @return string
  */
-function mai_get_svg_url( $name, $style = 'light' ) {
+function mai_get_svg_icon_url( $name, $style = 'light' ) {
 	return mai_get_url() . "assets/icons/svgs/$style/$name.svg";
 }
 

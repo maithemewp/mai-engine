@@ -20,7 +20,7 @@ add_filter( 'get_search_form', 'mai_search_form_submit_icon' );
  * @return string
  */
 function mai_search_form_submit_icon( $form ) {
-	$icon = mai_get_svg_url( 'search', 'regular' );
+	$icon = mai_get_svg_icon_url( 'search', 'regular' );
 	$form = str_replace( '<form class="search-form"', sprintf( '<form style="--background-image:url(%s);" class="search-form"', $icon ), $form );
 	$form = str_replace( 'search-form-submit', 'button-secondary search-form-submit search-form-submit-icon', $form );
 
