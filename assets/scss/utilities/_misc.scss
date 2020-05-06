@@ -71,6 +71,11 @@
 
 }
 
+.has-overlap {
+	position: relative;
+	z-index: 2;
+}
+
 .flip-horizontal {
 	--scale-y: -1;
 	transform: scale(var(--scale-x, 1), var(--scale-y, 1));
