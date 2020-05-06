@@ -1,4 +1,5 @@
 .mai-divider {
+	z-index: -1;
 	display: block;
 	height: var(--divider-height, calc(4rem + 4vw)) !important;
 	background-color: transparent;

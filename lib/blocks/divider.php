@@ -134,7 +134,7 @@ function mai_get_divider( $atts ) {
 	}
 
 	if ( ! empty( $atts['class'] ) ) {
-		$class .= ' ' . $atts['class'];
+		$attributes['class'] .= ' ' . $atts['class'];
 	}
 
 	return genesis_markup(
