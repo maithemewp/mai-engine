@@ -2,6 +2,12 @@
 	display: block;
 	height: var(--divider-height, calc(4rem + 4vw)) !important;
 	background-color: transparent;
+
+	.wp-block-cover &,
+	.wp-block-group & {
+		position: relative;
+		z-index: -1;
+	}
 }
 
 .mai-divider-svg {
