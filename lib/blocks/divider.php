@@ -70,10 +70,28 @@ function mai_get_divider( $atts ) {
 		return;
 	}
 
+	$atts = wp_parse_args( $atts, [
+		'style'           => 'angle',
+		'height'          => 'md',
+		'flip_vertical'   => false,
+		'flip_horizontal' => false,
+		'color'           => mai_get_color( 'primary' ),
+		'class'           => '',
+	] );
+
+	$atts = [
+		'style'           => esc_html( $atts['style'] ),
+		'height'          => esc_html( $atts['height'] ),
+		'flip_vertical'   => mai_sanitize_bool( $atts['flip_vertical'] ),
+		'flip_horizontal' => mai_sanitize_bool( $atts['flip_horizontal'] ),
+		'color'           => esc_html( $atts['color'] ),
+		'class'           => sanitize_html_class( $atts['class'] ),
+	];
+
 	$is_palette = false;
 	$colors     = array_flip( mai_get_colors() );
 	$attributes = [
-		'class' => 'mai-divider alignfull',
+		'class' => sprintf( 'mai-divider mai-divider-%s alignfull', $atts['style'] ),
 		'style' => '',
 	];
 
@@ -87,22 +105,22 @@ function mai_get_divider( $atts ) {
 	if ( $atts['height'] ) {
 		switch ( $atts['height'] ) {
 			case 'xs':
-				$height = '4rem';
+				$height = '2rem';
 			break;
 			case 'sm':
-				$height = 'calc(4rem + 2vw)';
+				$height = 'calc(2rem + 2vw)';
 			break;
 			case 'md':
-				$height = 'calc(4rem + 4vw)';
+				$height = 'calc(2rem + 6vw)';
 			break;
 			case 'lg':
-				$height = 'calc(4rem + 8vw)';
+				$height = 'calc(2rem + 12vw)';
 			break;
 			case 'xl':
-				$height = 'calc(4rem + 12vw)';
+				$height = 'calc(2rem + 16vw)';
 			break;
 			default:
-				$height = 'calc(4rem + 4vw)';
+				$height = 'calc(2rem + 4vw)';
 		}
 		$attributes['style'] .= sprintf( '--divider-height:%s;', $height );
 	}
