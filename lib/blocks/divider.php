@@ -49,6 +49,7 @@ function mai_register_divider_block() {
 function mai_do_divider_block( $block, $content = '', $is_preview = false, $post_id = 0 ) {
 	$atts = [
 		'style'           => get_field( 'style' ),
+		'height'          => get_field( 'height' ),
 		'flip_vertical'   => get_field( 'flip_vertical' ),
 		'flip_horizontal' => get_field( 'flip_horizontal' ),
 		'color'           => get_field( 'color' ),
@@ -73,13 +74,37 @@ function mai_get_divider( $atts ) {
 	$colors     = array_flip( mai_get_colors() );
 	$attributes = [
 		'class' => 'mai-divider alignfull',
+		'style' => '',
 	];
 
 	if ( isset( $colors[ $atts['color'] ] ) ) {
 		$is_palette = true;
 		$attributes['class'] .= sprintf( ' has-%s-color', $colors[ $atts['color'] ] );
 	} else {
-		$attributes['style'] = sprintf( '--divider-color:%s;', $atts['color'] );
+		$attributes['style'] .= sprintf( '--divider-color:%s;', $atts['color'] );
+	}
+
+	if ( $atts['height'] ) {
+		switch ( $atts['height'] ) {
+			case 'xs':
+				$height = '4rem';
+			break;
+			case 'sm':
+				$height = 'calc(4rem + 2vw)';
+			break;
+			case 'md':
+				$height = 'calc(4rem + 4vw)';
+			break;
+			case 'lg':
+				$height = 'calc(4rem + 8vw)';
+			break;
+			case 'xl':
+				$height = 'calc(4rem + 12vw)';
+			break;
+			default:
+				$height = 'calc(4rem + 4vw)';
+		}
+		$attributes['style'] .= sprintf( '--divider-height:%s;', $height );
 	}
 
 	if ( $atts['flip_vertical'] ) {
@@ -136,6 +161,20 @@ function mai_register_divider_field_groups() {
 					'round' => esc_html__( 'Round', 'mai-engine' ),
 					'wave'  => esc_html__( 'Wave', 'mai-engine' ),
 				],
+			],
+			[
+				'key'     => 'field_5eb211f885ac8',
+				'label'   => esc_html__( 'Height', 'mai-engine' ),
+				'name'    => 'height',
+				'type'    => 'button_group',
+				'choices' => [
+					'xs' => esc_html__( 'XS', 'mai-engine' ),
+					'sm' => esc_html__( 'SM', 'mai-engine' ),
+					'md' => esc_html__( 'MD', 'mai-engine' ),
+					'lg' => esc_html__( 'LG', 'mai-engine' ),
+					'xl' => esc_html__( 'XL', 'mai-engine' ),
+				],
+				'default_value' => 'md',
 			],
 			[
 				'key'   => 'field_5eb19a01e23ba',
