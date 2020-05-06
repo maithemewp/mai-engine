@@ -120,7 +120,7 @@ function mai_get_divider( $atts ) {
 				$height = 'calc(2rem + 16vw)';
 			break;
 			default:
-				$height = 'calc(2rem + 4vw)';
+				$height = 'calc(2rem + 2vw)';
 		}
 		$attributes['style'] .= sprintf( '--divider-height:%s;', $height );
 	}
