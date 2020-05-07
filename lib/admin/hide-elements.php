@@ -70,6 +70,7 @@ function mai_add_hide_elements_metabox() {
 					'choices'           => [
 						'before_header'  => __( 'Before Header', 'mai-engine' ),
 						'site_header'    => __( 'Site Header', 'mai-engine' ),
+						'after_header'   => __( 'After Header Menu', 'mai-engine' ),
 						'page_header'    => __( 'Page Header', 'mai-engine' ),
 						'breadcrumbs'    => __( 'Breadcrumbs', 'mai-engine' ),
 						'entry_title'    => __( 'Entry Title', 'mai-engine' ),

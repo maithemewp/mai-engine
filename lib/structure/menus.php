@@ -58,15 +58,20 @@ function mai_header_right_menu() {
 	);
 }
 
-add_action( 'genesis_after_header', 'mai_below_header_menu' );
+add_action( 'genesis_after_header', 'mai_after_header_menu' );
 /**
- * Description of expected behavior.
+ * Display the After Header menu.
  *
  * @since 0.1.0
  *
  * @return void
  */
-function mai_below_header_menu() {
+function mai_after_header_menu() {
+
+	if ( is_singular() && mai_is_element_hidden( 'after_header' ) ) {
+		return;
+	}
+
 	genesis_nav_menu(
 		[
 			'theme_location' => 'after-header',
