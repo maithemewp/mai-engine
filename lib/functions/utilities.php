@@ -475,6 +475,28 @@ function mai_get_post_type() {
 }
 
 /**
+ * Get all public post types.
+ * Not sure why there is no built in way in WP to get these in one function.
+ *
+ * @since 0.2.0
+ *
+ * @return array
+ */
+function mai_get_public_post_types() {
+	$wp = get_post_types( [
+		'public'   => true,
+		'_builtin' => true,
+	], 'objects' );
+
+	$cpt = get_post_types( [
+		'public'   => true,
+		'_builtin' => false,
+	], 'objects' );
+
+	return array_merge( (array) $wp, (array) $cpt );
+}
+
+/**
  * Get the unit value.
  *
  * If only a number value, use the fallback..
@@ -516,6 +538,60 @@ function mai_get_integer_value( $string ) {
  */
 function mai_get_site_layout_choices() {
 	return [ '' => esc_html__( 'Site Default', 'mai-engine' ) ] + genesis_get_layouts_for_customizer();
+}
+
+/**
+ * Get content type choices for Kirki.
+ *
+ * @since 0.2.0
+ *
+ * @param bool $archive Whether archive or single content type choices.
+ *
+ * @return array
+ */
+function mai_get_content_type_choices( $archive = false ) {
+	$choices    = [];
+	$post_types = mai_get_public_post_types();
+
+	// Remove post types we don't want.
+	unset( $post_types['attachment'] );
+
+	if ( $post_types ) {
+		foreach ( $post_types as $name => $post_type ) {
+			// If archive choices, skip ctp's that don't have an archive.
+			if ( $archive && ! $post_type->_builtin && ! $post_type->has_archive ) {
+				continue;
+			}
+			$choices[ $name ] = $post_type->label;
+		}
+	}
+
+	$taxonomies = get_taxonomies( [ 'public' => true ], 'objects' );
+
+	// Remove taxonomies we don't want.
+	unset( $taxonomies['post_format'] );
+	unset( $taxonomies['product_shipping_class'] );
+	unset( $taxonomies['yst_prominent_words'] );
+
+	if ( $taxonomies ) {
+		foreach ( $taxonomies as $name => $taxonomy ) {
+			$choices[ $name ] = $taxonomy->label;
+		}
+	}
+
+	if ( $archive ) {
+		$choices += [
+			'search' => __( 'Search Results', 'mai-engine' ),
+			'author' => __( 'Author Archives', 'mai-engine' ),
+			'date'   => __( 'Date Archives', 'mai-engine' ),
+		];
+	} else {
+		$choices += [
+			'404-page' => __( '404', 'mai-engine' ),
+		];
+	}
+
+	return $choices;
 }
 
 /**

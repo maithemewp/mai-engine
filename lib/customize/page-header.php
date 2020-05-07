@@ -23,10 +23,10 @@ function mai_page_header_customizer_settings() {
 	$section         = $handle . '-page-header';
 	$config          = mai_get_config( 'page-header' );
 	$defaults        = $config['customizer'];
+	$archives        = mai_get_content_type_choices( $archive = true );
+	$singles         = mai_get_content_type_choices( $archive = false );
 	$archive_default = [];
 	$single_default  = [];
-	$archives        = [];
-	$singles         = [];
 
 	if ( isset( $config['archive'] ) && ! empty( $config['archive'] && is_array( $config['archive'] ) ) ) {
 		$archive_default = $config['archive'];
@@ -36,39 +36,19 @@ function mai_page_header_customizer_settings() {
 		$single_default = $config['single'];
 	}
 
-	$post_types = get_post_types( [ 'public' => true ], 'objects' );
-	unset( $post_types['attachment'] );
-
-	if ( $post_types ) {
-		foreach ( $post_types as $post_type => $object ) {
+	if ( $archives ) {
+		foreach ( $archives as $name => $object ) {
 			if ( ( '*' === $config ) || ( isset( $config['archive'] ) && '*' === $config['archive'] ) ) {
-				$archive_default[] = $post_type;
+				$archive_default[] = $name;
 			}
-
-			if ( ( '*' === $config ) || ( isset( $config['single'] ) && '*' === $config['single'] ) ) {
-				$single_default[] = $post_type;
-			}
-
-			if ( $object->has_archive ) {
-				$archives[ $post_type ] = mai_convert_case( $post_type, 'title' );
-			}
-			$singles[ $post_type ]  = mai_convert_case( $post_type, 'title' );
 		}
 	}
 
-	$taxonomies = get_taxonomies( [ 'public' => true ] );
-
-	// Remove taxonomies we don't want.
-	unset( $taxonomies['post_format'] );
-	unset( $taxonomies['product_shipping_class'] );
-	unset( $taxonomies['yst_prominent_words'] );
-
-	if ( $taxonomies ) {
-		foreach ( $taxonomies as $taxonomy => $name ) {
-			if ( ( '*' === $config ) || ( isset( $config['archive'] ) && '*' === $config['archive'] ) ) {
-				$archive_default[] = $taxonomy;
+	if ( $singles ) {
+		foreach ( $singles as $name => $object ) {
+			if ( ( '*' === $config ) || ( isset( $config['single'] ) && '*' === $config['single'] ) ) {
+				$single_default[] = $name;
 			}
-			$archives[ $taxonomy ] = mai_convert_case( $taxonomy, 'title' );
 		}
 	}
 
@@ -89,12 +69,7 @@ function mai_page_header_customizer_settings() {
 			'label'       => __( 'Enable on singular content', 'mai-engine' ),
 			'description' => __( 'These settings can be overridden on a per post basis.', 'mai-engine' ),
 			'default'     => $single_default,
-			'choices'     => array_merge(
-				$singles,
-				[
-					'404' => __( '404', 'mai-engine' ),
-				]
-			),
+			'choices'     => $singles,
 		]
 	);
 
@@ -106,14 +81,7 @@ function mai_page_header_customizer_settings() {
 			'section'  => $section,
 			'label'    => __( 'Enable on content archives', 'mai-engine' ),
 			'default'  => $archive_default,
-			'choices'  => array_merge(
-				$archives,
-				[
-					'search' => __( 'Search Results', 'mai-engine' ),
-					'author' => __( 'Author Archives', 'mai-engine' ),
-					'date'   => __( 'Date Archives', 'mai-engine' ),
-				]
-			),
+			'choices'  => $archives,
 		]
 	);
 
