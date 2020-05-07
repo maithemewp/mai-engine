@@ -283,8 +283,9 @@ function mai_get_options( $use_cache ) {
  *
  * @since 0.1.0
  *
- * @param string $option  Option name.
- * @param mixed  $default Default value.
+ * @param string $option    Option name.
+ * @param mixed  $default   Default value.
+ * @param bool   $use_cache Whether to use static cache when fetching option.
  *
  * @return mixed
  */
