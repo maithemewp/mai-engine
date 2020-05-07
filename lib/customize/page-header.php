@@ -36,11 +36,11 @@ function mai_page_header_customizer_settings() {
 		$single_default = $config['single'];
 	}
 
-	$post_types = get_post_types( [ 'public' => true ] );
+	$post_types = get_post_types( [ 'public' => true ], 'objects' );
 	unset( $post_types['attachment'] );
 
 	if ( $post_types ) {
-		foreach ( $post_types as $post_type => $name ) {
+		foreach ( $post_types as $post_type => $object ) {
 			if ( ( '*' === $config ) || ( isset( $config['archive'] ) && '*' === $config['archive'] ) ) {
 				$archive_default[] = $post_type;
 			}
@@ -49,7 +49,9 @@ function mai_page_header_customizer_settings() {
 				$single_default[] = $post_type;
 			}
 
-			$archives[ $post_type ] = mai_convert_case( $post_type, 'title' );
+			if ( $object->has_archive ) {
+				$archives[ $post_type ] = mai_convert_case( $post_type, 'title' );
+			}
 			$singles[ $post_type ]  = mai_convert_case( $post_type, 'title' );
 		}
 	}
@@ -81,8 +83,7 @@ function mai_page_header_customizer_settings() {
 	\Kirki::add_field(
 		$handle,
 		[
-			'type'        => 'select',
-			'multiple'    => 99,
+			'type'        => 'multicheck',
 			'settings'    => 'page-header-single',
 			'section'     => $section,
 			'label'       => __( 'Enable on singular content', 'mai-engine' ),
@@ -100,8 +101,7 @@ function mai_page_header_customizer_settings() {
 	\Kirki::add_field(
 		$handle,
 		[
-			'type'     => 'select',
-			'multiple' => 99,
+			'type'     => 'multicheck',
 			'settings' => 'page-header-archive',
 			'section'  => $section,
 			'label'    => __( 'Enable on content archives', 'mai-engine' ),

@@ -203,6 +203,7 @@
 	order: 99;
 }
 
+.customize-control.customize-control-kirki-radio-buttonset[id$="page-header-text-align"] .switch-label:first-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="image_width"] .switch-label:first-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns"] .switch-label:nth-of-type(2),
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_md"] .switch-label:nth-of-type(2),
@@ -215,6 +216,7 @@
 	border-radius: 3px 0 0 3px;
 }
 
+.customize-control.customize-control-kirki-radio-buttonset[id$="page-header-text-align"] .switch-label:last-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="image_width"] .switch-label:last-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns"] .switch-label:first-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_md"] .switch-label:first-of-type,
@@ -240,7 +242,18 @@
 	padding-top: 0;
 }
 
-// Link section
+// Page Header checkboxes.
+
+#customize-control-mai-engine-page-header-single > ul,
+#customize-control-mai-engine-page-header-archive > ul {
+	max-height: 150px;
+	padding: 8px 12px;
+	overflow: auto;
+	background: #fff;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+// Link section.
 
 #accordion-section-mai-customizer {
 	margin-bottom: -1px;
@@ -283,7 +296,7 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-// Color picker
+// Color picker.
 
 .color-alpha,
 .wp-color-result-text {
@@ -300,7 +313,7 @@
 	min-width: 256px;
 }
 
-// Theme settings panel ordering
+// Theme settings panel ordering.
 
 #customize-theme-controls #sub-accordion-panel-mai-engine {
 	display: flex;
