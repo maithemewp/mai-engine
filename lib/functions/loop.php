@@ -236,8 +236,8 @@ function mai_get_archive_args_name() {
  * @return false|mixed|string
  */
 function mai_get_singular_args_name() {
-	$name = mai_get_post_type();
-	return apply_filters( 'mai_archive_args_name', $name );
+	$name = is_404() ? '404-page' : mai_get_post_type();
+	return apply_filters( 'mai_single_args_name', $name );
 }
 
 /**
