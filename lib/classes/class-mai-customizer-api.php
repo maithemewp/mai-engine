@@ -284,8 +284,8 @@ class Mai_Customizer_API {
 				'sub-menu',
 				'sub-menu-toggle',
 			],
-			'content-archives' => mai_get_config( 'loop' )['archive'],
-			'single-content'   => mai_get_config( 'loop' )['single'],
+			// 'content-archives' => mai_get_config( 'loop' )['archive'],
+			// 'single-content'   => mai_get_config( 'loop' )['single'],
 			'content-area'     => [
 				'main-content',
 				'breadcrumbs',
