@@ -529,13 +529,27 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Content Types & Settings
+	| Loop Content Types & Settings
 	|--------------------------------------------------------------------------
 	|
-	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
-	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
-	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
+	| Enable loop (archive/single) settings for content types.
+	| This is only for defaults when activating the theme.
+	| These can be added/removed via:
+	| Customizer > Theme Settings > Content Archives
+	| or
+	| Customizer > Theme Settings > Single Content
 	|
+	| Archive can be any of the following:
+	| 1. any post_type name as long as the post type is public and has an archive,
+	| 2. any public taxonomy name,
+	| 3. 'search' for search results,
+	| 4. 'author' for author archives,
+	| 5. 'date' for date archives.
+	|
+	| Single can be any of the following:
+	| 1. any public post_type name,
+	| 2. any public taxonomy name,
+	| 3. '404-page' for 404.
 	*/
 
 	'loop' => [
