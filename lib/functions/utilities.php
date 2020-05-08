@@ -260,9 +260,11 @@ function mai_get_child_themes() {
  *
  * @since 0.1.0
  *
+ * @param bool $use_cache Whether to use static variable.
+ *
  * @return array
  */
-function mai_get_options( $use_cache ) {
+function mai_get_options( $use_cache = true ) {
 	$handle = mai_get_handle();
 
 	if ( ! $use_cache || is_customize_preview() ) {
@@ -306,7 +308,8 @@ function mai_get_option( $option, $default = false, $use_cache = true ) {
  * @return void
  */
 function mai_update_option( $option, $value ) {
-	$options = mai_get_options( false );
+	$handle  = mai_get_handle();
+	$options = get_option( $handle );
 
 	$options[ $option ] = $value;
 
@@ -513,7 +516,27 @@ function mai_get_integer_value( $string ) {
  * @return array
  */
 function mai_get_site_layout_choices() {
-	return [ '' => esc_html__( 'Site Default', 'mai-engine' ) ] + genesis_get_layouts_for_customizer();
+	return [ '' => esc_html__( 'Default', 'mai-engine' ) ] + genesis_get_layouts_for_customizer();
+}
+
+/**
+ * Get a direct link to open a specific customizer section.
+ * Optionally include a frontend URL to preview.
+ *
+ * @since 0.2.0
+ *
+ * @param   string  $name  The name of the link to open.
+ * @param   string  $type  The link type (panel or section) to open.
+ * @param   string  $url   The preview URL.
+ *
+ * @return  string  The customizer URL.
+ */
+function mai_get_customizer_link( $name, $type = 'section', $url = '' ) {
+	$query['autofocus[' . $type . ']'] = $name;
+	if ( $url ) {
+		$query['url'] = esc_url( $url );
+	}
+	return add_query_arg( $query, admin_url( 'customize.php' ) );
 }
 
 /**
@@ -528,8 +551,11 @@ function mai_get_site_layout_choices() {
 function mai_get_content_type_choices( $archive = false ) {
 	$choices    = [
 		'post' => esc_html__( 'Post', 'mai-engine' ),
-		'page' => esc_html__( 'Page', 'mai-engine' ),
 	];
+
+	if ( ! $archive ) {
+		$choices['page'] = esc_html__( 'Page', 'mai-engine' );
+	}
 
 	$post_types = get_post_types( [
 		'public'   => true,
@@ -537,9 +563,6 @@ function mai_get_content_type_choices( $archive = false ) {
 	], 'objects' );
 
 	if ( $post_types ) {
-		if ( $archive ) {
-			unset( $choices['page'] );
-		}
 		foreach ( $post_types as $name => $post_type ) {
 			// Skip post types without archives.
 			if ( $archive && ! (bool) $post_type->has_archive ) {
