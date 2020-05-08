@@ -171,7 +171,7 @@ class Mai_Customizer_API {
 			$field['settings'] = 'divider-' . $counter++;
 		}
 
-		if ( in_array( $panel, [ 'content-archives', 'single-content' ], true ) ) {
+		if ( in_array( $panel, [ 'site-layouts', 'content-archives', 'single-content' ], true ) ) {
 			$field['option_type'] = 'option';
 			$field['option_name'] = "$this->handle[$panel][$section]";
 
@@ -228,55 +228,19 @@ class Mai_Customizer_API {
 			}
 		}
 
-		// if ( in_array( $panel, [ 'content-archives' ], true ) ) {
-
-		// 	$addition_callback = [
-		// 		'setting'  => 'mai-engine[loop-archive]',
-		// 		'operator' => 'contains',
-		// 		'value'    => $section,
-		// 	];
-
-		// 	if ( isset( $field['active_callback'] ) ) {
-		// 		if ( is_array( $field['active_callback'] ) ) {
-		// 			$field['active_callback'][] = $addition_callback;
-		// 		}
-		// 	} else {
-		// 		// $field['active_callback'] = [ $addition_callback ];
-		// 	}
-		// 	// vd( $field );
-		// }
-
 		// Workaround to fix active callback function with nested options.
 		if ( isset( $field['active_callback'] ) ) {
 			if ( is_array( $field['active_callback'] ) ) {
 				foreach ( $field['active_callback'] as $index => $condition ) {
-					// if ( is_string( $condition ) && is_callable( $condition ) ) {
-					// 	// This is used for content-archives and single-content to have callable function in with the normal array.
-					// 	if ( in_array( $panel, [ 'content-archives', 'single-content' ], true ) ) {
+					foreach ( $condition as $key => $value ) {
+						if ( 'setting' === $key ) {
+							$field['active_callback'][ $index ][ $key ] = "{$this->handle}[$panel][$section][$value]";
+						}
 
-					// 	}
-					// 	$active = call_user_func_array( $condition, [ 'section' => $section ] );
-					// 	// If not active bail.
-					// 	if ( ! $active ) {
-					// 		$field['active_callback'] = false;
-					// 		break;
-					// 	}
-					// }
-					if ( is_array( $condition ) ) {
-						if ( isset( $condition['setting'] ) && is_string( $condition['setting'] ) && mai_has_string( $this->handle, $condition['setting'] ) ) {
-							$field['active_callback'][ $index ]['value'] = str_replace( '{content_type}', $section, $field['active_callback'][ $index ]['value'] );
-						} elseif ( is_array( $condition ) ) {
-							foreach ( $condition as $key => $value ) {
-								if ( 'setting' === $key ) {
-									$field['active_callback'][ $index ][ $key ] = "{$this->handle}[$panel][$section][$value]";
-								}
-
-								if ( is_array( $value ) ) {
-									foreach ( $value as $nested_key => $nested_value ) {
-										if ( 'setting' === $nested_key ) {
-											$field['active_callback'][ $index ][ $key ][ $nested_key ] = "{$this->handle}[$panel][$section][$nested_value]";
-										}
-									}
+						if ( is_array( $value ) ) {
+							foreach ( $value as $nested_key => $nested_value ) {
+								if ( 'setting' === $nested_key ) {
+									$field['active_callback'][ $index ][ $key ][ $nested_key ] = "{$this->handle}[$panel][$section][$nested_value]";
 								}
 							}
 						}
@@ -321,10 +285,13 @@ class Mai_Customizer_API {
 				'sub-menu',
 				'sub-menu-toggle',
 			],
-			// 'content-archives' => mai_get_option( 'loop-archive', mai_get_config( 'loop' )['archive'] ),
-			// 'single-content'   => mai_get_option( 'loop-single', mai_get_config( 'loop' )['single'] ),
-			'content-archives' => array_keys( mai_get_content_type_choices( true ) ),
-			'single-content'   => array_keys( mai_get_content_type_choices( false ) ),
+			'site-layouts'     => [
+				'default',
+				'archive',
+				'single',
+			],
+			'content-archives' => mai_get_option( 'archive-settings', mai_get_config( 'archive-settings' ), false ),
+			'single-content'   => mai_get_option( 'single-settings', mai_get_config( 'single-settings' ), false ),
 			'content-area'     => [
 				'main-content',
 				'breadcrumbs',

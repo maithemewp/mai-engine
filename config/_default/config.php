@@ -33,7 +33,6 @@ return [
 		'breadcrumb_archive'    => 0,
 		'breadcrumb_404'        => 0,
 		'breadcrumb_attachment' => 0,
-		'site_layout'           => 'standard-content',
 	],
 
 	/*
@@ -119,6 +118,25 @@ return [
 			'sidebar-sidebar-content',
 			'sidebar-content-sidebar',
 		],
+	],
+
+	/*
+	|--------------------------------------------------------------------------
+	| Site Layouts
+	|--------------------------------------------------------------------------
+	|
+	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
+	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
+	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
+	|
+	*/
+
+	'site-layouts' => [
+		'default' => [
+			'site'    => 'standard-content',
+			'archive' => 'wide-content',
+			'single'  => '',
+		]
 	],
 
 	/*
@@ -529,10 +547,10 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Loop Content Types & Settings
+	| Archive & Single Settings Content Types
 	|--------------------------------------------------------------------------
 	|
-	| Enable loop (archive/single) settings for content types.
+	| Enable (archive/single) settings for content types.
 	| This is only for defaults when activating the theme.
 	| These can be added/removed via:
 	| Customizer > Theme Settings > Content Archives
@@ -552,14 +570,13 @@ return [
 	| 3. '404-page' for 404.
 	*/
 
-	'loop' => [
-		'archive' => [
-			'post',
-		],
-		'single'  => [
-			'page',
-			'post',
-		],
+	'archive-settings' => [
+		'post',
+	],
+
+	'single-settings' => [
+		'page',
+		'post',
 	],
 
 	/*
