@@ -43,7 +43,7 @@ function mai_kirki_filters() {
  * Removes custom properties CSS output when they are the same as the defaults.
  * Skips defaults set in the child theme.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param array $css Kirki CSS output.
  *
@@ -75,7 +75,7 @@ add_action( 'after_setup_theme', 'mai_add_kirki_config' );
 /**
  * Add Kirki config.
  *
- * @since  1.0.0
+ * @since  0.1.0
  *
  * @link   https://aristath.github.io/kirki/docs/getting-started/config.html
  *
@@ -137,11 +137,12 @@ function mai_kirki_url( $config ) {
 	return $config;
 }
 
-add_action( 'after_setup_theme', 'mai_register_customizer_api' );
+add_action( 'init', 'mai_register_customizer_api' );
 /**
- * Description of expected behavior.
+ * Setup the Customizer API.
+ * This needs to be on 'init', and not 'after_setup_theme' so get_post_types() has all post_types available.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
@@ -154,7 +155,7 @@ add_action( 'customize_register', 'mai_reposition_genesis_customizer_sections' )
 /**
  * Move Genesis Customizer sections into our settings panel.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param WP_Customize_Manager $wp_customize WP Customize Manager object.
  *
@@ -170,6 +171,7 @@ function mai_reposition_genesis_customizer_sections( $wp_customize ) {
 		}
 	}
 
+	$wp_customize->remove_section( 'genesis_layout' );
 	$wp_customize->remove_section( 'genesis_single' );
 	$wp_customize->remove_section( 'genesis_archives' );
 	$wp_customize->remove_section( 'genesis_footer' );
