@@ -55,19 +55,31 @@ function mai_site_layout() {
 
 	// Maybe use layout via mai customizer settings.
 	if ( ! $site_layout ) {
-		$args = mai_get_template_args();
-		if ( $args && isset( $args['site_layout'] ) && ! empty( $args['site_layout'] ) ) {
-			$site_layout = $args['site_layout'];
+		$layouts = wp_parse_args( mai_get_option( 'site-layouts', [] ), mai_get_config( 'site-layouts' ) );
+
+		if ( mai_is_type_archive() ) {
+			$name    = mai_get_archive_args_name();
+			$context = 'archive';
+		} elseif ( mai_is_type_single() ) {
+			$name    = mai_get_singular_args_name();
+			$context = 'single';
+		}
+
+		if ( isset( $name, $context ) ) {
+			if ( isset( $layouts[ $context ][ $name ] ) && ! empty( $layouts[ $context ][ $name ] ) ) {
+				$site_layout = $layouts[ $context ][ $name ];
+			}
+		}
+
+		if ( ! $site_layout && isset( $context ) ) {
+			if ( isset( $layouts['default'][ $context ] ) && ! empty( $layouts['default'][ $context ] ) ) {
+				$site_layout = $layouts['default'][ $context ];
+			}
 		}
 	}
 
-	// Use Theme Settings layout.
+	// Hard-code fallback. This should never happen.
 	if ( ! $site_layout ) {
-		$site_layout = genesis_get_option( 'site_layout' );
-	}
-
-	// Use default layout as a fallback, if necessary.
-	if ( ! genesis_get_layout( $site_layout ) ) {
 		$site_layout = 'standard-layout';
 	}
 

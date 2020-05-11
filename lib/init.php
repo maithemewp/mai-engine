@@ -118,7 +118,7 @@ function mai_load_files() {
 		'customize/logo',
 		'customize/beta-tester',
 		'customize/upsell',
-		'customize/layout',
+		'customize/loop',
 		'customize/page-header',
 
 		// Setup wizard.

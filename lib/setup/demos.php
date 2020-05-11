@@ -11,26 +11,28 @@ function mai_get_demo_style_choices() {
 	$choices = [];
 	$demos   = mai_get_theme_demos();
 
-	foreach ( $demos as $demo => $id ) {
-		$choices[] = [
-			'element' => 'input',
-			'type'    => 'radio',
-			'name'    => 'mai-step-style',
-			'id'      => 'mai-step-style-' . $demo,
-			'class'   => 'mai-radio-img-input',
-			'checked' => mai_get_chosen_demo_style() === $demo ? true : false,
-			'value'   => $demo,
-			'label'   => sprintf(
-				'<h4>%s</h4>',
-				mai_convert_case( mai_get_active_theme() . ' ' . $demo, 'title' )
-			),
-			'image'   => [
-				'src'   => mai_get_demo_screenshot( $demo ),
-				'alt'   => 'image',
-				'width' => 200,
-				'class' => 'mai-step-screenshot',
-			],
-		];
+	if ( $demos ) {
+		foreach ( $demos as $demo => $id ) {
+			$choices[] = [
+				'element' => 'input',
+				'type'    => 'radio',
+				'name'    => 'mai-step-style',
+				'id'      => 'mai-step-style-' . $demo,
+				'class'   => 'mai-radio-img-input',
+				'checked' => mai_get_chosen_demo_style() === $demo ? true : false,
+				'value'   => $demo,
+				'label'   => sprintf(
+					'<h4>%s</h4>',
+					mai_convert_case( mai_get_active_theme() . ' ' . $demo, 'title' )
+				),
+				'image'   => [
+					'src'   => mai_get_demo_screenshot( $demo ),
+					'alt'   => 'image',
+					'width' => 200,
+					'class' => 'mai-step-screenshot',
+				],
+			];
+		}
 	}
 
 	return $choices;

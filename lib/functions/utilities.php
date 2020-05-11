@@ -260,12 +260,14 @@ function mai_get_child_themes() {
  *
  * @since 0.1.0
  *
+ * @param bool $use_cache Whether to use static variable.
+ *
  * @return array
  */
-function mai_get_options() {
+function mai_get_options( $use_cache = true ) {
 	$handle = mai_get_handle();
 
-	if ( is_customize_preview() ) {
+	if ( ! $use_cache || is_customize_preview() ) {
 		$options = get_option( $handle );
 	} else {
 		static $options = [];
@@ -283,13 +285,14 @@ function mai_get_options() {
  *
  * @since 0.1.0
  *
- * @param string $option  Option name.
- * @param mixed  $default Default value.
+ * @param string $option    Option name.
+ * @param mixed  $default   Default value.
+ * @param bool   $use_cache Whether to use static cache when fetching option.
  *
  * @return mixed
  */
-function mai_get_option( $option, $default = false ) {
-	$options = mai_get_options();
+function mai_get_option( $option, $default = false, $use_cache = true ) {
+	$options = mai_get_options( $use_cache );
 
 	return isset( $options[ $option ] ) ? $options[ $option ] : $default;
 }
@@ -305,9 +308,7 @@ function mai_get_option( $option, $default = false ) {
  * @return void
  */
 function mai_update_option( $option, $value ) {
-	$handle = mai_get_handle();
-
-	// Can't be static.
+	$handle  = mai_get_handle();
 	$options = get_option( $handle );
 
 	$options[ $option ] = $value;
@@ -515,7 +516,127 @@ function mai_get_integer_value( $string ) {
  * @return array
  */
 function mai_get_site_layout_choices() {
-	return [ '' => esc_html__( 'Site Default', 'mai-engine' ) ] + genesis_get_layouts_for_customizer();
+	return [ '' => esc_html__( 'Default', 'mai-engine' ) ] + genesis_get_layouts_for_customizer();
+}
+
+/**
+ * Get a direct link to open a specific customizer section.
+ * Optionally include a frontend URL to preview.
+ *
+ * @since 0.2.0
+ *
+ * @param   string  $name  The name of the link to open.
+ * @param   string  $type  The link type (panel or section) to open.
+ * @param   string  $url   The preview URL.
+ *
+ * @return  string  The customizer URL.
+ */
+function mai_get_customizer_link( $name, $type = 'section', $url = '' ) {
+	$query['autofocus[' . $type . ']'] = $name;
+	if ( $url ) {
+		$query['url'] = esc_url( $url );
+	}
+	return add_query_arg( $query, admin_url( 'customize.php' ) );
+}
+
+/**
+ * Get content type choices for Kirki.
+ *
+ * @since 0.2.0
+ *
+ * @param bool $archive Whether archive or single content type choices.
+ *
+ * @return array
+ */
+function mai_get_content_type_choices( $archive = false ) {
+	$choices    = [
+		'post' => esc_html__( 'Post', 'mai-engine' ),
+	];
+
+	if ( ! $archive ) {
+		$choices['page'] = esc_html__( 'Page', 'mai-engine' );
+	}
+
+	$post_types = get_post_types( [
+		'public'   => true,
+		'_builtin' => false,
+	], 'objects' );
+
+	if ( $post_types ) {
+		foreach ( $post_types as $name => $post_type ) {
+			// Skip post types without archives.
+			if ( $archive && ! (bool) $post_type->has_archive ) {
+				continue;
+			}
+			$choices[ $name ] = $post_type->label;
+		}
+	}
+
+	$taxonomies = get_taxonomies( [ 'public' => true ], 'objects' );
+
+	// Remove taxonomies we don't want.
+	unset( $taxonomies['post_format'] );
+	unset( $taxonomies['product_shipping_class'] );
+	unset( $taxonomies['yst_prominent_words'] );
+
+	if ( $taxonomies ) {
+		foreach ( $taxonomies as $name => $taxonomy ) {
+			$choices[ $name ] = $taxonomy->label;
+		}
+	}
+
+	if ( $archive ) {
+		$choices += [
+			'search' => __( 'Search Results', 'mai-engine' ),
+			'author' => __( 'Author Archives', 'mai-engine' ),
+			'date'   => __( 'Date Archives', 'mai-engine' ),
+		];
+	} else {
+		$choices += [
+			'404-page' => __( '404', 'mai-engine' ),
+		];
+	}
+
+	return $choices;
+}
+
+/**
+ * Get loop content type choices.
+ * We need to check custom post type and a custom taxonomy's post type support
+ *
+ * @since 0.2.0
+ *
+ * @param bool $archive Whether archive or single content type choices.
+ *
+ * @return array
+ */
+function mai_get_loop_content_type_choices( $archive = true ) {
+	$choices = mai_get_content_type_choices( $archive );
+	$default = [];
+	$feature = $archive ? 'mai-archive-settings' : 'mai-single-settings';
+
+	foreach( $choices as $name => $label ) {
+		if ( post_type_exists( $name ) ) {
+			$post_type = get_post_type_object( $name );
+			if ( ! $post_type->_builtin && ! post_type_supports( $post_type->name, $feature ) ) {
+				unset( $choices[ $name ] );
+			}
+		} elseif ( taxonomy_exists( $name ) ) {
+			$taxonomy = get_taxonomy( $name );
+			/**
+			 * If we have a tax, get the first one.
+			 * This is the simplest way to handle shared taxonomies.
+			 * Using reset() since we hit an error on a term archive that object_type array didn't start with [0].
+			 */
+			$post_type = reset( $taxonomy->object_type );
+			$post_type = get_post_type_object( $post_type );
+			if ( ! $post_type->_builtin && ! post_type_supports( $post_type->name, $feature ) ) {
+				unset( $choices[ $name ] );
+			}
+		}
+	}
+
+	return $choices;
 }
 
 /**

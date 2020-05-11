@@ -263,7 +263,7 @@ function mai_get_page_header_types( $context ) {
 	$config   = mai_get_config( 'page-header' );
 	$settings = mai_get_option( 'page-header-' . $context );
 	$single   = array_merge( array_values( get_post_types( [ 'public' => true ] ) ), [
-		'404',
+		'404-page',
 	] );
 	$archive  = array_merge( $single, array_values( get_taxonomies( [ 'public' => true ] ) ), [
 		'search',

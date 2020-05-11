@@ -171,9 +171,10 @@ class Mai_Customizer_API {
 			$field['settings'] = 'divider-' . $counter++;
 		}
 
-		if ( in_array( $panel, [ 'content-archives', 'single-content' ], true ) ) {
+		if ( in_array( $panel, [ 'site-layouts', 'content-archives', 'single-content' ], true ) ) {
 			$field['option_type'] = 'option';
 			$field['option_name'] = "$this->handle[$panel][$section]";
+
 			$field['settings']    = $settings;
 			if ( isset( $field['default'] ) && is_string( $field['default'] ) && mai_has_string( 'mai_', $field['default'] ) && is_callable( $field['default'] ) ) {
 				$field['default'] = call_user_func_array( $field['default'], [ 'name' => $section ] );
@@ -284,8 +285,13 @@ class Mai_Customizer_API {
 				'sub-menu',
 				'sub-menu-toggle',
 			],
-			'content-archives' => mai_get_config( 'loop' )['archive'],
-			'single-content'   => mai_get_config( 'loop' )['single'],
+			'site-layouts'     => [
+				'default',
+				'archive',
+				'single',
+			],
+			'content-archives' => mai_get_option( 'archive-settings', mai_get_config( 'archive-settings' ), false ),
+			'single-content'   => mai_get_option( 'single-settings', mai_get_config( 'single-settings' ), false ),
 			'content-area'     => [
 				'main-content',
 				'breadcrumbs',

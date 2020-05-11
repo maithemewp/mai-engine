@@ -45,15 +45,15 @@ function mai_get_content_limit( $content, $limit ) {
 function mai_has_custom_loop() {
 	if ( mai_is_type_archive() ) {
 		$name    = mai_get_archive_args_name();
-		$context = 'archive';
+		$types   = mai_get_config( 'archive-settings' );
 	} elseif ( mai_is_type_single() ) {
 		$name    = mai_get_singular_args_name();
-		$context = 'single';
+		$types   = mai_get_config( 'single-settings' );
 	}
 
-	if ( isset( $name, $context ) ) {
+	if ( isset( $name, $types ) ) {
 
-		if ( in_array( $name, mai_get_config( 'loop' )[ $context ], true ) ) {
+		if ( in_array( $name, $types, true ) ) {
 			return true;
 		}
 
@@ -92,7 +92,7 @@ function mai_get_template_args() {
 		$context  = 'archive';
 		$settings = 'content-archives';
 		// Use post as fallback for archives. This happens on category/tag/etc archives when they don't have loop settings.
-		if ( ! in_array( $name, mai_get_config( 'loop' )[ $context ], true ) ) {
+		if ( ! in_array( $name, mai_get_config( 'archive-settings' ), true ) ) {
 			$name = 'post';
 		}
 	} elseif ( mai_is_type_single() ) {
@@ -236,8 +236,8 @@ function mai_get_archive_args_name() {
  * @return false|mixed|string
  */
 function mai_get_singular_args_name() {
-	$name = mai_get_post_type();
-	return apply_filters( 'mai_archive_args_name', $name );
+	$name = is_404() ? '404-page' : mai_get_post_type();
+	return apply_filters( 'mai_single_args_name', $name );
 }
 
 /**
