@@ -65,7 +65,20 @@ function mai_has_string( $needle, $haystack ) {
 	return false !== strpos( $haystack, $needle );
 }
 
-
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param array  $array
+ * @param string $key
+ * @param mixed  $default
+ *
+ * @return mixed
+ */
+function mai_isset( $array, $key, $default = false ) {
+	return isset( $array[ $key ] ) ? $array[ $key ] : $default;
+}
 
 /**
  * Check if were on any type of singular page.
