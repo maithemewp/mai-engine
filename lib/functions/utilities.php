@@ -662,8 +662,33 @@ function mai_get_post_content( $post_slug_or_id ) {
 	if ( ! $content ) {
 		return;
 	}
-	// TODO: Do we want to apply ALL the_content filters here?
-	return apply_filters( 'the_content', $content );
+	return mai_get_processed_content( $content );
+}
+
+/**
+ * A big ol' helper/cleanup function to
+ * enabled embeds inside the shortcodes and
+ * keep the shorcodes from causing extra p's and br's.
+ *
+ * Most of the order comes from /wp-includes/default-filters.php
+ *
+ * @since   0.3.0
+ *
+ * @param   string|HTML  $content  The unprocessed content.
+ *
+ * @return  string|HTML  The processed content.
+ */
+function mai_get_processed_content( $content ) {
+	global $wp_embed;
+	$content = $wp_embed->autoembed( $content );              // WP runs priority 8.
+	$content = $wp_embed->run_shortcode( $content );          // WP runs priority 8.
+	$content = wptexturize( $content );                       // WP runs priority 10.
+	$content = wpautop( $content );                           // WP runs priority 10.
+	$content = shortcode_unautop( $content );                 // WP runs priority 10.
+	$content = wp_make_content_images_responsive( $content ); // WP runs priority 10.
+	$content = do_shortcode( $content );                      // WP runs priority 11.
+	$content = convert_smilies( $content );                   // WP runs priority 20.
+	return $content;
 }
 
 /**
