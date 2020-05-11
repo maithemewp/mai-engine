@@ -122,14 +122,7 @@ function mai_load_files() {
 		'customize/page-header',
 
 		// Setup wizard.
-		'setup/api',
-		'setup/admin',
-		'setup/ajax',
-		'setup/demos',
-		'setup/plugins',
-		'setup/content',
-		'setup/widgets',
-		'setup/customizer',
+		'setup-wizard/setup-wizard'
 	];
 
 	if ( is_admin() ) {
@@ -145,7 +138,7 @@ function mai_load_files() {
 				'admin/acf',
 				'admin/update-checker',
 				'admin/child-theme-updater',
-				'admin/merlin',
+				'admin/setup-wizard',
 			]
 		);
 	}

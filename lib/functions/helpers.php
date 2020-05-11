@@ -65,6 +65,8 @@ function mai_has_string( $needle, $haystack ) {
 	return false !== strpos( $haystack, $needle );
 }
 
+
+
 /**
  * Check if were on any type of singular page.
  *

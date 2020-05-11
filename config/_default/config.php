@@ -284,7 +284,7 @@ return [
 				'localize' => [
 					'name' => 'maiSetupWizard',
 					'data' => [
-						'steps' => array_keys( mai_setup_wizard_steps() ),
+						// 'steps' => array_keys( mai_setup_wizard_steps() ),
 					],
 				],
 			],
