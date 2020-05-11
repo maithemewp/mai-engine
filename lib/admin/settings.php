@@ -24,7 +24,7 @@ function mai_admin_menu_page() {
 		'manage_options',
 		mai_get_handle(),
 		'mai_render_admin_menu_page',
-		mai_get_url() . 'assets/img/mai-dashicon.png',
+		mai_get_url() . 'assets/svg/mai-icon-white.svg',
 		59
 	);
 }
