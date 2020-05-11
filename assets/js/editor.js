@@ -166,17 +166,20 @@ wp.domReady( function() {
 
 	wp.blocks.registerBlockStyle( 'core/button', [
 		{
-			name: 'primary',
-			label: 'Primary',
-			isDefault: true,
-		},
-		{
 			name: 'secondary',
 			label: 'Secondary'
 		},
 		{
 			name: 'tertiary',
 			label: 'Tertiary'
+		},
+		{
+			name: 'white',
+			label: 'White'
+		},
+		{
+			name: 'white-outline',
+			label: 'White Outline'
 		}
 	] );
 

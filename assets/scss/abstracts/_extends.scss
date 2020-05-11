@@ -23,13 +23,13 @@
 	}
 }
 
-@mixin button($block: false) {
+@mixin button() {
 	position: relative;
 	display: inline-block;
 	width: auto;
 	margin: var(--button-margin, 0);
 	padding: var(--button-padding, (var(--spacing-md) calc(var(--spacing-md) * 2)));
-	color: var(--button-color, var(--color-white));
+	color: var(--button-color, var(--button-primary-color, var(--color-white)));
 	font-weight: var(--button-font-weight, var(--font-weight-heading));
 	font-size: var(--button-font-size, var(--text-md));
 	font-family: var(--button-font-family, var(--font-primary));
@@ -39,41 +39,36 @@
 	text-align: center;
 	text-transform: var(--button-text-transform, none);
 	text-decoration: none;
-	background: var(--button-background, var(--color-primary));
-	border: var(--button-border, 0);
-	border-radius: var(--button-border-radius, #{map_get($button, "border-radius")});
+	background: var(--button-background, var(--button-primary-background, var(--color-primary)));
+	border: var(--button-border, var(--button-primary-border, 0));
+	border-radius: var(--button-border-radius, var(--button-primary-border-radius, #{map_get($button, "border-radius")}));
 	cursor: var(--button-cursor, pointer);
 	opacity: var(--button-opacity, 1);
 	transition: var(--button-transition, var(--transition));
 
-	@if (false == $block) {
-
-		&.button-secondary {
-			--button-color: var(--color-dark);
-			--button-background: var(--color-muted);
-		}
-
-		&.button-tertiary {
-			--button-padding: var(--spacing-md) var(--spacing-xs);
-			--button-color: var(--color-primary);
-			--button-background: transparent;
-		}
-
-		&.button-tertiary::after {
-			display: inline-block;
-			margin-left: var(--spacing-xs);
-			content: "\2192";
-		}
-	}
-
 	&:hover,
 	&:focus {
-		--button-color: var(--button-color-hover, var(--color-white));
-		--button-background: var(--button-background-hover, var(--color-primary));
+		--button-color: var(--button-color-hover, var(--button-primary-color-hover, var(--color-white)));
+		--button-background: var(--button-background-hover, var(--button-primary-background-hover, var(--color-primary)));
+		--button-border: var(--button-border-hover, var(--button-primary-border-hover, var(--button-border, 0)));
+		--button-border-radius: var(--button-border-radius-hover, var(--button-primary-border-radius-hover, var(--button-border-radius, #{map_get($button, "border-radius")})));
 		text-decoration: none;
 		outline: none;
 		transform: var(--button-transform-hover, none);
 		filter: var(--button-filter-hover, brightness(0.9));
+	}
+
+	&:disabled {
+		--filter-hover: unset;
+		--button-filter-hover: unset;
+
+		&,
+		&:hover,
+		&:focus {
+			--button-backround: var(--color-muted);
+			--button-opacity: 0.5;
+			--button-cursor: not-allowed;
+		}
 	}
 
 }
