@@ -1,9 +1,9 @@
 .toplevel_page_mai-engine {
 
 	.dashicons-before {
-		background-image: url(../../img/mai-dashicon.png);
+		background-image: url(../../svg/mai-icon-white.svg);
 		background-position: center;
-		background-size: 16px;
+		background-size: 18px;
 		background-repeat: no-repeat;
 		opacity: 0.6;
 	}
@@ -13,175 +13,13 @@
 	&:focus {
 
 		.dashicons-before {
-			background-image: url(../../img/mai-dashicon-hover.png);
+			background-image: url(../../svg/mai-icon-white.svg);
 			opacity: 1;
 		}
 	}
 
 	img {
 		display: none;
-	}
-}
-
-.mai-setup-wizard {
-	position: fixed;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	display: flex;
-	place-items: center;
-	place-content: center;
-	z-index: 99999;
-	background: #f1f1f1;
-	text-align: center;
-
-	h2 {
-		font-size: 2.5em;
-		margin: 0 auto 1em;
-	}
-
-	p {
-		max-width: 360px;
-		margin: 0 auto 2em;
-	}
-
-	.mai-continue-wrap {
-		margin-bottom: 0;
-	}
-}
-
-.current-nav {
-	color: #007cba;
-}
-
-.mai-skip {
-	display: inline-block;
-	margin-top: 1em;
-}
-
-.mai-step-fields {
-	display: inline-block;
-	text-align: left;
-	margin: 0 auto;
-}
-
-.mai-step-field {
-	margin-bottom: 10px;
-
-	input {
-		margin-top: -2px;
-		margin-right: 5px;
-	}
-}
-
-.success-message {
-	font-weight: bold;
-	color: limegreen;
-}
-
-.mai-setup-form {
-	background: #fff;
-	padding: 3em;
-	display: flex;
-	flex-wrap: wrap;
-	place-content: center;
-	place-items: center;
-	min-height: 50vh;
-	min-width: 50vw;
-	max-height: 500px;
-	width: 700px;
-	box-shadow: 0 5px 10px #ededed;
-	border-radius: 4px;
-
-	.mai-continue {
-		display: inline-flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-
-	p {
-		width: 100%;
-	}
-}
-
-.mai-spinner {
-	display: none;
-	margin-left: 1em;
-
-	.loading & {
-		display: block;
-	}
-}
-
-.mai-setup-form {
-
-	.error-message,
-	.success-message {
-		display: none;
-	}
-}
-
-.is-error {
-
-	.error-message {
-		display: block;
-	}
-}
-
-.is-success {
-
-	.success-message {
-		display: block;
-	}
-}
-
-.mai-step-done.current-step {
-
-	~ .mai-continue-wrap {
-		display: none;
-	}
-}
-
-.mai-step {
-	display: none;
-	margin-bottom: 2em;
-	width: 100%;
-}
-
-input.mai-email-address {
-	font-size: 14px;
-	min-height: 46px;
-	line-height: 3.14285714;
-	padding: 0 1em;
-}
-
-.mai-radio-label {
-	display: inline-block;
-	margin-right: 1em;
-	text-align: center;
-}
-
-.mai-radio-img-input {
-	position: absolute;
-	opacity: 0;
-	width: 0;
-	height: 0;
-}
-
-.mai-radio-img-input + img {
-	cursor: pointer;
-	outline: 3px solid #eee;
-}
-
-.mai-radio-img-input:checked + img {
-	outline: 3px solid #007cba;
-}
-
-.mai-step-style {
-
-	.mai-step-field {
-		display: inline;
 	}
 }
 

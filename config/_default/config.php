@@ -293,20 +293,6 @@ return [
 				],
 			],
 
-			// Setup wizard.
-			[
-				'handle'   => mai_get_handle() . '-setup-wizard',
-				'src'      => mai_get_asset_url( 'setup-wizard.js' ),
-				'deps'     => [ 'jquery' ],
-				'location' => 'admin',
-				'localize' => [
-					'name' => 'maiSetupWizard',
-					'data' => [
-						// 'steps' => array_keys( mai_setup_wizard_steps() ),
-					],
-				],
-			],
-
 			// Styles.
 			[
 				'handle' => mai_get_handle(),
