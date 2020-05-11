@@ -23,77 +23,61 @@ add_filter( 'mai_setup_wizard_demos', 'mai_setup_wizard_demos', 15, 1 );
  *
  * @since 1.0.0
  *
- * @param $demos
+ * @param $defaults
  *
  * @return array
  */
-function mai_setup_wizard_demos( $demos ) {
-	$demo_url = 'https://demo.bizbudding.com/reach-podcast/wp-content/uploads/sites/12/mai-engine/';
+function mai_setup_wizard_demos( $defaults ) {
+	$theme  = mai_get_active_theme();
+	$demos  = mai_get_theme_demos();
+	$config = mai_get_config( 'required-plugins' );
 
-	$demos[] = [
-		'name'       => 'Agency',
-		'content'    => $demo_url . 'content.xml',
-		'widgets'    => $demo_url . 'widgets.json',
-		'customizer' => $demo_url . 'customizer.dat',
-		'preview'    => 'https://demo.bizbudding.com/reach-agency/',
-		'plugins'    => [
-			[
-				'name' => 'Genesis Connect for WooCommerce',
-				'slug' => 'genesis-connect-woocommerce/genesis-connect-woocommerce.php',
-				'uri'  => 'https://wordpress.org/plugins/genesis-connect-woocommerce/',
-			],
-			[
-				'name' => 'Hello Dolly',
-				'slug' => 'hello-dolly/hello.php',
-				'uri'  => 'https://wordpress.org/plugins/hello-dolly/',
-			],
-			[
-				'name' => 'Simple Social Icons',
-				'slug' => 'simple-social-icons/simple-social-icons.php',
-				'uri'  => 'https://wordpress.org/plugins/simple-social-icons/',
-			],
-		],
-	];
+	foreach ( $demos as $demo => $id ) {
+		$demo_url = "https://demo.bizbudding.com/{$theme}-{$demo}/wp-content/uploads/sites/{$id}/mai-engine/";
 
-	$demos[] = [
-		'name'       => 'Podcast',
-		'content'    => $demo_url . 'content.xml',
-		'widgets'    => $demo_url . 'widgets.json',
-		'customizer' => $demo_url . 'customizer.dat',
-		'preview'    => 'https://demo.bizbudding.com/reach-podcast/',
-		'plugins'    => [
-			[
-				'name' => 'Simple Social Icons',
-				'slug' => 'simple-social-icons/simple-social-icons.php',
-				'uri'  => 'https://wordpress.org/plugins/simple-social-icons/',
-			],
-			[
-				'name' => 'WP Forms Lite',
-				'slug' => 'wpforms-lite/wpforms.php',
-				'uri'  => 'https://wordpress.org/plugins/wpforms-lite/',
-			],
-		],
-	];
+		foreach ( $config as $plugin ) {
+			if ( in_array( $demo, $plugin['demos'], true ) ) {
+				$plugins[] = $plugin;
+			}
+		}
 
-	$demos[] = [
-		'name'       => 'Local',
-		'content'    => $demo_url . 'content.xml',
-		'widgets'    => $demo_url . 'widgets.json',
-		'customizer' => $demo_url . 'customizer.dat',
-		'preview'    => 'https://demo.bizbudding.com/reach-local/',
-		'plugins'    => [
-			[
-				'name' => 'Genesis Connect for EDD',
-				'slug' => 'genesis-connect-edd/genesis-connect-edd.php',
-				'uri'  => 'https://wordpress.org/plugins/genesis-connect-edd/',
-			],
-			[
-				'name' => 'Genesis Widget Column Classes',
-				'slug' => 'genesis-widget-column-classes/genesis-widget-column-classes.php',
-				'uri'  => 'https://wordpress.org/plugins/genesis-widget-column-classes/',
-			],
-		],
-	];
+		$defaults[] = [
+			'name'       => ucwords( $demo ),
+			'content'    => $demo_url . 'content.xml',
+			'widgets'    => $demo_url . 'widgets.json',
+			'customizer' => $demo_url . 'customizer.dat',
+			'preview'    => "https://demo.bizbudding.com/{$theme}-{$demo}/",
+			'plugins'    => $plugins,
+		];
+	}
 
-	return $demos;
+
+	return $defaults;
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return bool|mixed
+ */
+function mai_get_theme_demos() {
+	$transient = mai_get_handle() . '-demos';
+	$body      = get_transient( $transient );
+
+	if ( ! $body ) {
+		$theme    = mai_get_active_theme();
+		$endpoint = 'https://demo.bizbudding.com/sparkle-creative/wp-json/mai-demo-exporter/v2/sites/?theme=' . $theme;
+		$request  = wp_remote_get( $endpoint );
+
+		if ( is_wp_error( $request ) ) {
+			return false;
+		}
+
+		$body = wp_remote_retrieve_body( $request );
+		set_transient( $transient, $body, 28800 );
+	}
+
+	return json_decode( $body, true );
 }
