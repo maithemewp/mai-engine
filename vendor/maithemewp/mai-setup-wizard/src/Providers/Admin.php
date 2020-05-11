@@ -13,7 +13,22 @@ class Admin extends AbstractServiceProvider {
 	}
 
 	public function add_menu_page() {
-		$args = \apply_filters(
+		$args = $this->get_menu_defaults();
+
+		if ( isset( $args['parent_slug'] ) && $args['parent_slug'] ) {
+			unset ( $args['icon_url'] );
+
+			\add_submenu_page( ...\array_values( $args ) );
+
+		} else {
+			unset ( $args['parent_slug'] );
+
+			\add_menu_page( ...\array_values( $args ) );
+		}
+	}
+
+	private function get_menu_defaults() {
+		return \apply_filters(
 			'mai_setup_wizard_menu',
 			[
 				'parent_slug' => 'themes.php',
@@ -26,17 +41,6 @@ class Admin extends AbstractServiceProvider {
 				'position'    => null,
 			]
 		);
-
-		if ( isset( $args['parent_slug'] ) && $args['parent_slug'] ) {
-			unset ( $args['icon_url'] );
-
-			\add_submenu_page( ...\array_values( $args ) );
-
-		} else {
-			unset ( $args['parent_slug'] );
-
-			\add_menu_page( ...\array_values( $args ) );
-		}
 	}
 
 	public function render_admin_page() {
@@ -66,7 +70,33 @@ class Admin extends AbstractServiceProvider {
 		<?php
 	}
 
+	private function is_setup_wizard_screen() {
+		$base = false;
+
+		if ( \function_exists( 'get_current_screen' ) ) {
+			$current = \get_current_screen();
+			$base    = isset( $current->base ) ? $current->base : false;
+		}
+
+		$menu   = $this->get_menu_defaults();
+		$screen = '';
+
+		if ( isset( $menu['parent_slug'] ) ) {
+			$screen .= $menu['parent_slug'];
+		}
+
+		$screen .= '_page_';
+		$screen .= $menu['menu_slug'];
+
+		return $screen === $base;
+	}
+
 	public function load_scripts() {
+		if ( ! $this->is_setup_wizard_screen() ) {
+			print_r($this->is_setup_wizard_screen());
+			return;
+		}
+
 		$file = 'resources/js/setup-wizard.js';
 		$demo = $this->demo->get_chosen_demo();
 
@@ -90,6 +120,10 @@ class Admin extends AbstractServiceProvider {
 	}
 
 	public function load_styles() {
+		if ( ! $this->is_setup_wizard_screen() ) {
+			return;
+		}
+
 		$file = 'resources/css/setup-wizard.css';
 
 		\wp_enqueue_style(

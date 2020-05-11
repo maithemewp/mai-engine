@@ -153,7 +153,7 @@ class Field extends AbstractServiceProvider {
 			foreach ( $content_types as $content_type ) {
 				$fields[] = [
 					'id'         => $demo['id'] . '-' . $content_type,
-					'label'      => \ucwords( $content_type ),
+					'label'      => \ucwords( $content_type ) . '<span class="progress"> &nbsp; <span>0</span>%</span>',
 					'element'    => 'input',
 					'attributes' => [
 						'value'     => $content_type,

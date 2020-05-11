@@ -128,6 +128,12 @@
 	var handleResponse = function( response, step, fields, counter, type ) {
 		var success = response.hasOwnProperty( 'success' ) && response.success && 'success' === type;
 
+		if ( response.hasOwnProperty( 'status' ) && 'newAJAX' === response.status ) {
+			postAjax( step, fields, counter );
+
+			return;
+		}
+
 		if ( ! success && 'error' !== type ) {
 			if ( response.hasOwnProperty( 'data' ) ) {
 				$( '#' + step.id + ' .error' ).show().text( response.data );
@@ -138,10 +144,6 @@
 			$( fields[ counter ] ).closest( 'li' ).removeAttr( 'data-status' );
 			console.log( response );
 			return;
-		}
-
-		if ( response.hasOwnProperty( 'data' ) ) {
-			// $( '#' + step.id + ' .success' ).show().text( response.data );
 		}
 
 		console.log( response );

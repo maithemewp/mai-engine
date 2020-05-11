@@ -86,7 +86,7 @@ class Ajax extends AbstractServiceProvider {
 			\wp_send_json_success( __( 'No plugins selected.', 'mai-setup-wizard' ) );
 		}
 
-		\set_time_limit( 120 );
+		\set_time_limit( \apply_filters( 'mai_setup_wizard_time_limit', 300 ) );
 
 		require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
 		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
@@ -126,7 +126,7 @@ class Ajax extends AbstractServiceProvider {
 			\wp_send_json_error( __( 'No field value.', 'mai-setup-wizard' ) );
 		}
 
-		\set_time_limit( 120 );
+		\set_time_limit( \apply_filters( 'mai_setup_wizard_time_limit', 300 ) );
 
 		$this->importer->import( $field['value'] );
 	}

@@ -186,3 +186,11 @@
 	opacity: 0;
 	transition: 0.2s ease;
 }
+
+.progress {
+	display: none;
+}
+
+[data-status="running"] .progress {
+	display: inline;
+}
