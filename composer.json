@@ -17,8 +17,8 @@
       }
     },
     {
-      "type": "composer",
-      "url": "https://wpackagist.org"
+      "type": "vcs",
+      "url": "https://github.com/maithemewp/mai-setup-wizard"
     }
   ],
   "require": {
@@ -26,7 +26,8 @@
     "yahnis-elsts/plugin-update-checker": "^4.8",
     "advanced-custom-fields/advanced-custom-fields-pro": "*",
     "aristath/kirki": "*",
-    "proteusthemes/wp-content-importer-v2": "^2.1"
+    "proteusthemes/wp-content-importer-v2": "^2.1",
+    "maithemewp/mai-setup-wizard": "*"
   },
   "require-dev": {
     "php": "^5.6|^7",
@@ -66,12 +67,5 @@
     "fixer": "vendor/bin/php-cs-fixer fix lib/ && php-cs-fixer fix config/",
     "test-unit": "composer dump && vendor/bin/phpunit --testsuite unit --color=always",
     "test-integration": "composer dump && vendor/bin/phpunit --testsuite integration --configuration tests/phpunit/integration/phpunit.xml.dist --color=always"
-  },
-  "extra": {
-    "installer-paths": {
-      "vendor/wpackagist-plugin/one-click-demo-import": [
-        "wpackagist-plugin/one-click-demo-import"
-      ]
-    }
   }
 }

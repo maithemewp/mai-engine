@@ -7,20 +7,36 @@ namespace Composer\Autoload;
 class ComposerStaticInitb109c82834b5632899cf4c449109f709
 {
     public static $files = array (
+        'bac9754b41a0e1a9006aca89fa437612' => __DIR__ . '/..' . '/maithemewp/mai-setup-wizard/mai-setup-wizard.php',
         '241d2b5b9c1e680c0770b006b0271156' => __DIR__ . '/..' . '/yahnis-elsts/plugin-update-checker/load-v4p9.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'P' => 
         array (
+            'Psr\\Container\\' => 14,
             'ProteusThemes\\WPContentImporter2\\' => 33,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'Psr\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
         'ProteusThemes\\WPContentImporter2\\' => 
         array (
             0 => __DIR__ . '/..' . '/proteusthemes/wp-content-importer-v2/src',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'P' => 
+        array (
+            'Pimple' => 
+            array (
+                0 => __DIR__ . '/..' . '/pimple/pimple/src',
+            ),
         ),
     );
 
@@ -29,6 +45,7 @@ class ComposerStaticInitb109c82834b5632899cf4c449109f709
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitb109c82834b5632899cf4c449109f709::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitb109c82834b5632899cf4c449109f709::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitb109c82834b5632899cf4c449109f709::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }

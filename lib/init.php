@@ -120,9 +120,6 @@ function mai_load_files() {
 		'customize/upsell',
 		'customize/loop',
 		'customize/page-header',
-
-		// Setup wizard.
-		'setup-wizard/setup-wizard'
 	];
 
 	if ( is_admin() ) {

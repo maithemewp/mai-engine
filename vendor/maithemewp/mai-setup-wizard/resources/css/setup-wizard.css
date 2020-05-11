@@ -1,0 +1,188 @@
+.setup-wizard {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 99999;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	align-content: center;
+	justify-content: center;
+	width: 100vw;
+	height: 100vh;
+	text-align: center;
+	background: #f1f1f1;
+}
+
+.setup-wizard h1 {
+	width: 100%;
+	margin-bottom: 1em;
+}
+
+.setup-wizard > p {
+	width: 100%;
+}
+
+.setup-wizard > .wrap {
+	width: 100%;
+	margin: 0 auto;
+}
+
+.step {
+	width: 100%;
+	max-width: 640px;
+	margin: 0 auto;
+	padding: 2em 3em 3em;
+	background: #fff;
+	border-radius: 4px;
+	box-shadow: 0 1px 6px #e1e1e1;
+}
+
+.setup-wizard .wrap .wrap {
+	margin: 1em auto;
+}
+
+.setup-wizard ul {
+	display: inline-block;
+}
+
+.error,
+.success {
+	margin-bottom: 0;
+	font-style: italic;
+}
+
+#previous {
+	/*display: none;*/
+}
+
+#submit {
+	display: inline-flex;
+	align-items: center;
+}
+
+#submit img {
+	display: none;
+	margin-left: 5px;
+}
+
+#submit.is-running img {
+	display: inline-block;
+}
+
+.label {
+	display: inline-flex;
+	align-items: center;
+}
+
+[data-status] {
+	position: relative;
+}
+
+[data-status]::after {
+	position: absolute;
+	left: calc(100% + 10px);
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	margin-left: 10px;
+	vertical-align: middle;
+	background-image: url(https://www.cupraofficial.com/etc.clientlibs/seatComponents/components/login-component/clientlibs/resources/images/spinner.gif);
+	background-position: center;
+	background-size: 18px;
+	visibility: hidden;
+	filter: brightness(0.5);
+	content: "";
+}
+
+[data-status="running"]::after {
+	visibility: visible;
+}
+
+[data-status="complete"]::after {
+	background-image: url(https://pluspng.com/img-png/png-tick-png-check-correct-mark-success-tick-valid-yes-icon-download-svg-download-png-512.png);
+	visibility: visible;
+	filter: none;
+}
+
+#demo ul {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	margin-top: 3em;
+}
+
+#demo label {
+	display: flex;
+	flex-wrap: wrap;
+	width: 200px;
+	margin: 0;
+	text-align: center;
+	background: #fafafa;
+	outline: 1px solid #e8e8e8;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+#demo label:focus-within {
+	outline: 1px solid #007cba;
+}
+
+#demo input {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+#demo img {
+	pointer-events: none;
+	cursor: pointer;
+	/*outline: 3px solid #eee;*/
+}
+
+#demo input:checked + img {
+	/*outline: 3px solid #007cba;*/
+}
+
+#demo h4 {
+	position: relative;
+}
+
+#demo [data-status]:after {
+	display: none;
+}
+
+#demo h4::after {
+	position: absolute;
+	left: calc(100% + 5px);
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	vertical-align: middle;
+	background-position: center;
+	background-size: 18px;
+	content: "";
+	background-image: url(https://pluspng.com/img-png/png-tick-png-check-correct-mark-success-tick-valid-yes-icon-download-svg-download-png-512.png);
+	visibility: hidden;
+}
+
+#demo input:checked ~ span h4::after {
+	visibility: visible;
+}
+
+#demo .label {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	padding: 0 1em;
+	border-top: 1px solid #e8e8e8;
+}
+
+#demo label:hover a {
+	opacity: 1;
+}
+
+#demo .label a {
+	opacity: 0;
+	transition: 0.2s ease;
+}

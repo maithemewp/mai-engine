@@ -18,4 +18,7 @@ vendor/composer/xdebug-handler
 !vendor/aristath
 !vendor/yahnis-elsts
 !vendor/wpackagist-plugin
+!vendor/maithemewp
+!vendor/psr
+!vendor/pimple
 
