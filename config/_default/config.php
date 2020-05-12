@@ -136,7 +136,7 @@ return [
 			'site'    => 'standard-content',
 			'archive' => 'wide-content',
 			'single'  => '',
-		]
+		],
 	],
 
 	/*
@@ -299,6 +299,13 @@ return [
 				'src'    => mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css',
 			],
 
+			// Desktop only.
+			[
+				'handle' => mai_get_handle() . '-desktop',
+				'src'    => mai_get_url() . 'assets/css/desktop/min-width-' . mai_get_breakpoint() . 'px.min.css',
+				'media'  => '(min-width:' . mai_get_breakpoint() . 'px)',
+			],
+
 			// Customizer styles.
 			[
 				'handle'   => mai_get_handle() . '-kirki',
@@ -318,13 +325,6 @@ return [
 				'handle'   => mai_get_handle() . '-advanced-custom-fields',
 				'src'      => mai_get_url() . 'assets/css/plugins/advanced-custom-fields.min.css',
 				'location' => 'editor',
-			],
-
-			// OCDI styles.
-			[
-				'handle'   => mai_get_handle() . '-one-click-demo-import',
-				'src'      => mai_get_url() . 'assets/css/plugins/one-click-demo-import.min.css',
-				'location' => 'admin',
 			],
 
 			// Plugin styles.

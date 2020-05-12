@@ -9,6 +9,7 @@ module.exports = {
 	'build:theme-css': [ require( './build/theme-css' ) ],
 	'build:plugin-css': [ require( './build/plugin-css' ) ],
 	'build:admin-css': [ require( './build/admin-css' ) ],
+	'build:desktop-css': [ require( './build/desktop-css' ) ],
 	'build:css': [ [ 'build:theme-css', 'build:plugin-css', 'build:admin-css' ] ],
 	'build:rtl': [ require( './build/rtl' ) ],
 	'build:js': [ require( './build/js' ) ],
