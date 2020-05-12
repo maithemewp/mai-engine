@@ -28,9 +28,10 @@ add_filter( 'mai_setup_wizard_demos', 'mai_setup_wizard_demos', 15, 1 );
  * @return array
  */
 function mai_setup_wizard_demos( $defaults ) {
-	$theme  = mai_get_active_theme();
-	$demos  = mai_get_theme_demos();
-	$config = mai_get_config( 'required-plugins' );
+	$theme   = mai_get_active_theme();
+	$demos   = mai_get_theme_demos();
+	$config  = mai_get_config( 'required-plugins' );
+	$plugins = [];
 
 	if ( empty( $demos ) ) {
 		return [];
