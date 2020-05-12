@@ -13,13 +13,13 @@
 		justify-content: center;
 		width: var(--spacing-lg);
 		height: var(--spacing-lg);
-		background-color: var(--color-white);
+		background-color: var(--color-lightest);
 		border-radius: var(--spacing-lg);
 
 		@include position(absolute, 1em 1em null null);
 
 		&::before {
-			color: var(--color-dark);
+			color: var(--color-darkest);
 			font-size: smaller;
 		}
 
@@ -56,18 +56,18 @@
 			display: block;
 			margin-bottom: -1px;
 			padding: var(--spacing-xs) var(--spacing-md);
-			background-color: var(--color-light);
+			background-color: var(--color-lighter);
 			border: var(--border);
 		}
 
 		&:not(.active) a {
-			border-color: var(--color-light);
+			border-color: var(--color-lighter);
 		}
 
 		&.active a,
 		&.active a:focus {
-			background-color: var(--color-white);
-			border-bottom-color: var(--color-white);
+			background-color: var(--color-lightest);
+			border-bottom-color: var(--color-lightest);
 			outline: none;
 		}
 	}

@@ -4,12 +4,12 @@
 	min-height: var(--body-min-height, 100vh);
 	min-height: -webkit-fill-available;
 	margin: 0;
-	color: var(--color-medium);
+	color: var(--color-dark);
 	font-weight: var(--font-weight-body);
 	font-size: var(--text-md);
 	font-family: var(--font-primary);
 	line-height: var(--line-height-body);
-	background: var(--body-background, var(--color-white));
+	background: var(--body-background, var(--color-lightest));
 }
 
 @mixin button() {
@@ -18,7 +18,7 @@
 	width: auto;
 	margin: var(--button-margin, 0);
 	padding: var(--button-padding, (var(--spacing-md) calc(var(--spacing-md) * 2)));
-	color: var(--button-color, var(--button-primary-color, var(--color-white)));
+	color: var(--button-color, var(--button-primary-color, var(--color-lightest)));
 	font-weight: var(--button-font-weight, var(--font-weight-heading));
 	font-size: var(--button-font-size, var(--text-md));
 	font-family: var(--button-font-family, var(--font-primary));
@@ -37,7 +37,7 @@
 
 	&:hover,
 	&:focus {
-		--button-color: var(--button-color-hover, var(--button-primary-color-hover, var(--color-white)));
+		--button-color: var(--button-color-hover, var(--button-primary-color-hover, var(--color-lightest)));
 		--button-background: var(--button-background-hover, var(--button-primary-background-hover, var(--color-primary)));
 		--button-border: var(--button-border-hover, var(--button-primary-border-hover, var(--button-border, 0)));
 		--button-border-radius: var(--button-border-radius-hover, var(--button-primary-border-radius-hover, var(--button-border-radius, #{map_get($button, "border-radius")})));
@@ -54,7 +54,7 @@
 		&,
 		&:hover,
 		&:focus {
-			--button-backround: var(--color-muted);
+			--button-backround: var(--color-medium);
 			--button-opacity: 0.5;
 			--button-cursor: not-allowed;
 		}
@@ -64,7 +64,7 @@
 
 @mixin heading {
 	margin: var(--heading-margin, 0);
-	color: var(--heading-color, var(--color-dark));
+	color: var(--heading-color, var(--color-darkest));
 	font-weight: var(--font-weight-heading);
 	font-family: var(--font-secondary);
 	line-height: var(--heading-line-height, 1.2);

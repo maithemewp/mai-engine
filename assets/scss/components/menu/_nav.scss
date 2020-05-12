@@ -6,7 +6,7 @@
 	width: var(--nav-header-width, 100vw);
 	margin: var(--nav-header-margin, 0 -5vw);
 	padding: var(--nav-header-padding, (var(--spacing-md) 5vw));
-	background-color: var(--nav-header-background-color, var(--color-white));
+	background-color: var(--nav-header-background-color, var(--color-lightest));
 }
 
 .nav-header-right {

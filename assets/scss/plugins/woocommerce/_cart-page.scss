@@ -5,14 +5,14 @@
 	justify-content: center;
 	width: 1em;
 	height: 1em;
-	color: var(--color-white);
+	color: var(--color-lightest);
 	font-weight: var(--font-weight-heading);
 	background-color: var(--color-danger);
 	border-radius: var(--border-radius);
 
 	&:hover,
 	&:focus {
-		color: var(--color-white);
+		color: var(--color-lightest);
 		text-decoration: none;
 		background-color: var(--color-danger);
 	}
@@ -155,7 +155,7 @@
 				font-weight: var(--font-weight-heading);
 				font-size: smaller;
 				white-space: nowrap;
-				background-color: var(--color-light);
+				background-color: var(--color-lighter);
 				border-right: var(--border);
 			}
 		}

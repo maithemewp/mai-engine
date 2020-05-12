@@ -88,11 +88,11 @@
 .price {
 	display: block;
 	margin-bottom: var(--spacing-md);
-	color: var(--color-dark);
+	color: var(--color-darkest);
 	font-size: var(--price-font-size, var(--text-xl));
 
 	del {
-		color: var(--color-medium);
+		color: var(--color-dark);
 	}
 
 	ins {
@@ -151,8 +151,8 @@
 }
 
 .add_to_cart_button {
-	--button-color: var(--color-dark);
-	--button-background: var(--color-muted);
+	--button-color: var(--color-darkest);
+	--button-background: var(--color-medium);
 	margin-top: auto;
 	transition: none;
 
@@ -184,7 +184,7 @@
 
 	&:hover,
 	&:focus {
-		color: var(--color-white);
+		color: var(--color-lightest);
 		background: var(--color-primary);
 	}
 }

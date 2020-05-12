@@ -6,8 +6,8 @@
 	--input-border-radius: 9rem;
 	--site-header-border-bottom: 0;
 	--page-header-border-bottom: 0;
-	--menu-toggle-icon-background-color: var(--color-white);
-	--menu-toggle-line-background-color: var(--color-white);
+	--menu-toggle-icon-background-color: var(--color-lightest);
+	--menu-toggle-line-background-color: var(--color-lightest);
 	--content-sidebar-wrap-margin-top: var(--spacing-xxl);
 }
 
@@ -37,14 +37,14 @@ textarea {
 	width: 90vw;
 	height: 90vh;
 	margin: auto;
-	background-color: var(--color-white);
+	background-color: var(--color-lightest);
 	border-radius: var(--border-radius);
 
 	@include position(fixed, 0 0 0 0);
 }
 
 .is-mobile {
-	--menu-item-link-color: var(--color-dark);
+	--menu-item-link-color: var(--color-darkest);
 }
 
 .has-transparent-header {
@@ -52,11 +52,11 @@ textarea {
 	.site-title-link,
 	.site-description,
 	.page-header {
-		color: var(--color-white);
+		color: var(--color-lightest);
 	}
 
 	.page-header {
-		--heading-color: var(--color-white);
+		--heading-color: var(--color-lightest);
 	}
 
 	.page-header-overlay {
@@ -75,7 +75,7 @@ textarea {
 }
 
 .site-footer {
-	background-color: var(--color-light);
+	background-color: var(--color-lighter);
 	border: 0;
 }
 

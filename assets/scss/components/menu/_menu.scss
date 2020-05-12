@@ -9,7 +9,7 @@
 	columns: var(--menu-columns, auto);
 	list-style-type: none;
 
-	--link-color: var(--color-medium);
+	--link-color: var(--color-dark);
 	--link-color-hover: var(--color-primary);
 	--link-text-decoration: none;
 	--link-text-decoration-hover: none;
@@ -72,7 +72,7 @@
 }
 
 .has-transparent-header .site-header:not(.is-stuck) .menu {
-	--link-color: var(--color-white);
+	--link-color: var(--color-lightest);
 }
 
 .is-desktop {

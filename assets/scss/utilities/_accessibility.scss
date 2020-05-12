@@ -8,9 +8,9 @@
 	&:focus {
 		position: absolute;
 		padding: var(--spacing-md);
-		color: var(--color-white);
+		color: var(--color-lightest);
 		text-decoration: none;
-		background-color: var(--color-muted);
+		background-color: var(--color-medium);
 
 		@include hide-visually(unhide);
 	}
@@ -23,7 +23,7 @@
 		width: 0;
 		height: 0;
 		list-style: none;
-		background: var(--color-white);
+		background: var(--color-lightest);
 	}
 }
 

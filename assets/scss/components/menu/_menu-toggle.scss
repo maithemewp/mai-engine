@@ -7,7 +7,7 @@
 	min-height: 2em;
 	margin: 0;
 	padding: 0;
-	color: var(--color-dark);
+	color: var(--color-darkest);
 	background-color: transparent;
 
 	&:hover,
@@ -26,7 +26,7 @@
 	right: auto;
 	bottom: auto;
 	margin: auto;
-	background-color: var(--menu-toggle-icon-background-color, var(--color-dark));
+	background-color: var(--menu-toggle-icon-background-color, var(--color-darkest));
 	transition: var(--menu-toggle-transition, background-color 0s 0.2s);
 
 	&,
@@ -41,7 +41,7 @@
 	&::before,
 	&::after {
 		position: absolute;
-		background-color: var(--menu-toggle-line-background-color, var(--color-dark));
+		background-color: var(--menu-toggle-line-background-color, var(--color-darkest));
 		content: "";
 	}
 

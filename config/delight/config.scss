@@ -18,7 +18,7 @@ html {
 .is-single {
 
 	&:not(.home) .content > .entry {
-		--entry-background: var(--color-white);
+		--entry-background: var(--color-lightest);
 		--entry-padding: calc(8px + 2vw);
 		--entry-border: var(--border);
 		--entry-box-shadow: var(--shadow);
@@ -26,11 +26,11 @@ html {
 }
 
 .nav-after-header {
-	--menu-item-link-color: var(--color-white);
+	--menu-item-link-color: var(--color-lightest);
 	font-size: 0.9em;
 	letter-spacing: 0.1rem;
 	text-transform: uppercase;
-	background-color: var(--color-dark);
+	background-color: var(--color-darkest);
 }
 
 .page-header {

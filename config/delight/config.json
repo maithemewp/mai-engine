@@ -6,11 +6,10 @@
     "danger": "#dc3545",
     "warning": "#ffc107",
     "info": "#42a2b8",
-    "black": "#000000",
-    "dark": "#323232",
-    "medium": "#515151",
-    "muted": "#ebe9eb",
-    "light": "#f0f0f0",
-    "white": "#ffffff"
+    "darkest": "#323232",
+    "dark": "#515151",
+    "medium": "#ebe9eb",
+    "lighter": "#f0f0f0",
+    "lightest": "#ffffff"
   }
 }

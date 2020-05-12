@@ -1,5 +1,5 @@
 ::placeholder {
-	color: var(--input-placeholder-color, var(--color-muted));
+	color: var(--input-placeholder-color, var(--color-medium));
 	opacity: 1; // Firefox fix
 }
 
@@ -45,7 +45,7 @@ input::placeholder {
 
 :disabled,
 :disabled:hover {
-	--input-background-color: var(--color-muted);
+	--input-background-color: var(--color-medium);
 	--input-cursor: not-allowed;
 }
 

@@ -17,12 +17,13 @@ $colors: (
 	danger: var(--color-danger),
 	warning: var(--color-warning),
 	info: var(--color-info),
-	black: var(--color-black),
+	darkest: var(--color-darkest),
+	darker: var(--color-darker),
 	dark: var(--color-dark),
 	medium: var(--color-medium),
-	muted: var(--color-muted),
 	light: var(--color-light),
-	white: var(--color-white),
+	lighter: var(--color-lighter),
+	lightest: var(--color-lightest),
 ) !default;
 
 $font-sizes: (

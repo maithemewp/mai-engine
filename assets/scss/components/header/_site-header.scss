@@ -3,7 +3,7 @@
 	top: var(--site-header-top, unset);
 	z-index: 10;
 	width: 100%;
-	background-color: var(--site-header-background-color, var(--color-white));
+	background-color: var(--site-header-background-color, var(--color-lightest));
 	border-bottom: var(--site-header-border-bottom, var(--border));
 	box-shadow: var(--site-header-box-shadow, unset);
 	transition: var(--transition);
@@ -45,7 +45,7 @@
 .is-stuck {
 
 	@include mq(sm) {
-		--site-header-background-color: var(--color-white);
+		--site-header-background-color: var(--color-lightest);
 		--site-header-box-shadow: 0 0 24px rgba(0, 0, 0, 0.07);
 	}
 }

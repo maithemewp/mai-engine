@@ -1,14 +1,14 @@
 .archive-pagination {
 	width: 100%;
 	padding: var(--pagination-padding, var(--spacing-xl));
-	color: var(--button-color, var(--color-dark));
+	color: var(--button-color, var(--color-darkest));
 	font-size: var(--pagination-font-size, (smaller));
 
-	--button-background: var(--color-muted);
-	--button-color: var(--color-medium);
+	--button-background: var(--color-medium);
+	--button-color: var(--color-dark);
 	--button-padding: 0.75em 1em;
 	--wrap-justify-content: center;
-	--link-color: var(--color-medium);
+	--link-color: var(--color-dark);
 	--link-color-hover: var(--color-primary);
 
 	ul {
@@ -35,7 +35,7 @@
 
 	.active {
 		--button-background: var(--color-primary);
-		--button-color: var(--color-white);
+		--button-color: var(--color-lightest);
 		--filter-hover: unset;
 	}
 

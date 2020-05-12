@@ -3,21 +3,23 @@
   "colors": {
     "primary": "#007bff",
     "secondary": "#6c757d",
+    "tertiary": "#fd7e14",
     "success": "#28a745",
     "danger": "#dc3545",
     "warning": "#ffc107",
     "info": "#42a2b8",
-    "black": "#000000",
-    "dark": "#343a40",
-    "medium": "#6c757d",
-    "muted": "#dee2e6",
-    "light": "#f8f9fa",
-    "white": "#ffffff"
+    "darkest": "#2e3338",
+    "darker": "#5c6570",
+    "dark": "#8f98a3",
+    "medium": "#c7ccd1",
+    "light": "#e3e6e8",
+    "lighter": "#f1f2f4",
+    "lightest": "#ffffff"
   },
   "border": {
     "width": "1px",
     "style": "solid",
-    "color": "var(--color-muted)",
+    "color": "var(--color-medium)",
     "radius": "4px"
   },
   "button": {

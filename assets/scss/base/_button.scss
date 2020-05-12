@@ -6,8 +6,8 @@
 
 .button-secondary,
 .wp-block-button.is-style-secondary {
-	--button-color: var(--button-secondary-color, var(--color-dark));
-	--button-background: var(--button-secondary-background, var(--color-muted));
+	--button-color: var(--button-secondary-color, var(--color-darkest));
+	--button-background: var(--button-secondary-background, var(--color-medium));
 	--button-border: var(--button-secondary-border, var(--button-border));
 	--button-border-radius: var(--button-secondary-border-radius, var(--button-border-radius));
 
@@ -63,8 +63,8 @@
 }
 
 .button-white {
-	--button-color: var(--button-white-color, var(--color-dark));
-	--button-background: var(--button-white-background, var(--color-white));
+	--button-color: var(--button-white-color, var(--color-darkest));
+	--button-background: var(--button-white-background, var(--color-lightest));
 	--button-border: var(--button-white-border, var(--button-border));
 	--button-border-radius: var(--button-white-border-radius, var(--button-border-radius));
 
@@ -79,7 +79,7 @@
 }
 
 .button-white-outline {
-	--button-color: var(--button-white-outline-color, var(--color-white));
+	--button-color: var(--button-white-outline-color, var(--color-lightest));
 	--button-background: var(--button-white-outline-background, transparent);
 	--button-border: var(--button-white-outline-border, var(--button-border));
 	--button-border-radius: var(--button-white-outline-border-radius, var(--button-border-radius));
@@ -101,8 +101,8 @@
 }
 
 .comment-reply-link {
-	--button-background: var(--color-muted);
-	--button-color: var(--color-dark);
+	--button-background: var(--color-medium);
+	--button-color: var(--color-darkest);
 	--button-padding: 0.75em 1em;
 	--button-font-size: var(--text-xs);
 }

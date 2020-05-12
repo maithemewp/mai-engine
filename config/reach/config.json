@@ -2,13 +2,13 @@
   "breakpoint": 1152,
   "colors": {
     "primary": "#7b51ff",
-    "dark": "#4b657e",
-    "medium": "#5f749e",
-    "light": "#f7f8fa",
     "success": "#00cd9e",
     "warning": "#ffc54e",
     "danger": "#ff478f",
-    "info": "#0095ed"
+    "info": "#0095ed",
+    "darkest": "#4b657e",
+    "dark": "#5f749e",
+    "lighter": "#f7f8fa"
   },
   "button": {
     "border-radius": "100px"

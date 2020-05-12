@@ -17,7 +17,7 @@ return [
 	[
 		'type'     => 'multicolor',
 		'settings' => 'color-palette',
-		'label'    => __( 'Color palette', 'kirki' ),
+		'label'    => __( 'Color palette', 'mai-engine' ),
 		'choices'  => $color_choices,
 		'default'  => $color_default,
 		'output'   => $color_output,
