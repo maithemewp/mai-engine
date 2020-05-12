@@ -423,6 +423,38 @@ function mai_get_color_palette() {
 }
 
 /**
+ * Returns a lighter version of a color.
+ *
+ * @since 0.3.0
+ *
+ * @param string $color  Any color string, including hex, rgb, rgba, etc.
+ * @param int    $amount The percentage amount to change the color.
+ *
+ * @return string
+ */
+function mai_get_lighter_color( $color, $amount = 5 ) {
+	$color   = ariColor::newColor( $color );
+	$lighter = $color->getNew( 'lightness', $color->lightness + $amount );
+	return $lighter->toCSS( 'hex' );
+}
+
+/**
+ * Returns a darker version of a color.
+ *
+ * @since 0.3.0
+ *
+ * @param string $color  Any color string, including hex, rgb, rgba, etc.
+ * @param int    $amount The percentage amount to change the color.
+ *
+ * @return string
+ */
+function mai_get_darker_color( $color, $amount = 5 ) {
+	$color   = ariColor::newColor( $color );
+	$darker  = $color->getNew( 'lightness', $color->lightness - $amount );
+	return $darker->toCSS( 'hex' );
+}
+
+/**
  * Description of expected behavior.
  *
  * @since 0.1.0

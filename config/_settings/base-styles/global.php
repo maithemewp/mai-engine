@@ -7,9 +7,31 @@ $color_choices = [];
 foreach ( $color_default as $name => $hex ) {
 	$color_choices[ $name ] = mai_convert_case( $name, 'title' );
 	$color_output[]         = [
-		'choice'   => $name,
-		'element'  => ':root',
-		'property' => "--color-$name",
+		'choice'            => $name,
+		'element'           => ':root',
+		'property'          => "--color-$name",
+	];
+	$color_output[]         = [
+		'choice'            => $name,
+		'element'           => ':root',
+		'property'          => "--color-$name-light",
+		'sanitize_callback' => function( $values ) use ( $name ) {
+			if ( isset( $values[ $name ] ) ) {
+				$values[ $name ] = mai_get_lighter_color( $values[ $name ] );
+			}
+			return $values;
+		}
+	];
+	$color_output[]         = [
+		'choice'            => $name,
+		'element'           => ':root',
+		'property'          => "--color-$name-dark",
+		'sanitize_callback' => function( $values ) use ( $name ) {
+			if ( isset( $values[ $name ] ) ) {
+				$values[ $name ] = mai_get_darker_color( $values[ $name ] );
+			}
+			return $values;
+		}
 	];
 }
 
