@@ -32,6 +32,10 @@ function mai_setup_wizard_demos( $defaults ) {
 	$demos  = mai_get_theme_demos();
 	$config = mai_get_config( 'required-plugins' );
 
+	if ( empty( $demos ) ) {
+		return [];
+	}
+
 	foreach ( $demos as $demo => $id ) {
 		$demo_url = "https://demo.bizbudding.com/{$theme}-{$demo}/wp-content/uploads/sites/{$id}/mai-engine/";
 
