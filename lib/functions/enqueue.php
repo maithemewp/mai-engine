@@ -12,6 +12,10 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
+// Remove default child theme stylesheet.
+remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
+
+add_action( 'wp_enqueue_scripts', 'mai_enqueue_main_stylesheet', 999 );
 /**
  * Genesis style trump, and cache bust when stylesheet is updated.
  *
@@ -19,8 +23,6 @@ defined( 'ABSPATH' ) || die;
  *
  * @return void
  */
-remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
-add_action( 'wp_enqueue_scripts', 'mai_enqueue_main_stylesheet', 999 );
 function mai_enqueue_main_stylesheet() {
 	$version = sprintf( '%s.%s',
 		genesis_get_theme_version(),
@@ -70,6 +72,7 @@ function mai_enqueue_assets() {
 		$condition = isset( $asset['condition'] ) ? $asset['condition'] : '__return_true';
 		$location  = isset( $asset['location'] ) ? is_array( $asset['location'] ) ? $asset['location'] : [ $asset['location'] ] : [ 'public' ];
 		$localize  = isset( $asset['localize'] ) ? $asset['localize'] : [];
+		$inline    = isset( $asset['inline'] ) ? $asset['inline'] : false;
 		$last_arg  = 'style' === $type ? $media : $in_footer;
 		$register  = "wp_register_$type";
 		$enqueue   = "wp_enqueue_$type";
@@ -94,6 +97,10 @@ function mai_enqueue_assets() {
 		if ( $load && is_callable( $condition ) && $condition() ) {
 			$register( $handle, $src, $deps, $ver, $last_arg );
 			$enqueue( $handle );
+
+			if ( $inline ) {
+				wp_add_inline_style( $handle, mai_minify_css( $inline ) );
+			}
 
 			if ( ! empty( $localize ) ) {
 				if ( is_callable( $localize['data'] ) ) {
@@ -144,4 +151,31 @@ function mai_remove_noto_serif_editor_styles( $settings ) {
 	unset( $settings['styles'][1] );
 
 	return $settings;
+}
+
+add_action( 'wp_enqueue_scripts', 'mai_admin_bar_inline_styles' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function mai_admin_bar_inline_styles() {
+	if ( ! is_admin_bar_showing() ) {
+		return;
+	}
+
+	$css = <<<EOT
+body.admin-bar {
+	@media (max-width: 782px) {
+		min-height: calc(100vh - 46px);
+	}
+	@media (min-width: 783px) {
+		min-height: calc(100vh - 32px);
+	}
+}
+EOT;
+
+	wp_add_inline_style( mai_get_handle(), mai_minify_css( $css ) );
 }
