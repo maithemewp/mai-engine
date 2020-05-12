@@ -1,21 +1,18 @@
 .footer-widgets {
 	padding: var(--spacing-xxl) 0 var(--spacing-xl);
 	--wrap-display: grid;
+	--columns: var(--columns-xs, 1);
 
-	@include mq(false, sm) {
-		--columns: var(--columns-xs, 3);
+	@include mq(sm) {
+		--columns: var(--columns-sm, 2);
 	}
 
-	@include mq(sm, md) {
-		--columns: var(--columns-sm, 3);
-	}
-
-	@include mq(md, lg) {
-		--columns: var(--columns-md, 2);
+	@include mq(md) {
+		--columns: var(--columns-md, 4);
 	}
 
 	@include mq(lg) {
-		--columns: var(--columns-lg, 1);
+		--columns: var(--columns-lg, 4);
 	}
 
 	> .wrap {

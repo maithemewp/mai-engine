@@ -24,25 +24,21 @@
 		--mobile-menu-display: none;
 	}
 
-	/**
-	 * only show overlay when window width
-	 * is the same or less than site-container.
-	 */
-	@include mq(false, lg) {
+	.site-container::after {
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.6);
+		opacity: 1;
+		animation: fadein 0.3s ease-in-out;
+		content: "";
 
-		.site-container::after {
-			position: fixed;
-			top: 0;
-			left: 0;
-			z-index: 1;
-			width: 100%;
-			height: 100%;
-			background: rgba(0, 0, 0, 0.6);
-			opacity: 1;
-			animation: fadein 0.3s ease-in-out;
-			content: "";
+		@include mq(lg) {
+			display: none;
 		}
-
 	}
 }
 

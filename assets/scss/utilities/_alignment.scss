@@ -37,31 +37,7 @@
 	margin-right: var(--alignfull-margin-right, calc(50% - 50vw));
 	margin-left: var(--alignfull-margin-left, calc(50% - 50vw));
 
-	@include mq(false, lg) {
-
-		.content-sidebar &,
-		.sidebar-content & {
-			--alignfull-margin-right: calc(var(--side-spacing) * -1);
-			--alignfull-margin-left: calc(var(--side-spacing) * -1);
-		}
-
-	}
-
-	@include mq(lg, xl) {
-
-		.content-sidebar & {
-			--alignfull-margin-right: 0;
-			--alignfull-margin-left: calc(var(--side-spacing) * -1);
-		}
-
-		.sidebar-content & {
-			--alignfull-margin-right: calc(var(--side-spacing) * -1);
-			--alignfull-margin-left: 0;
-		}
-
-	}
-
-	@include mq(xl) {
+	@include mq(lg) {
 
 		.content-sidebar & {
 			--alignfull-margin-right: 0;
@@ -70,9 +46,7 @@
 		.sidebar-content & {
 			--alignfull-margin-left: 0;
 		}
-
 	}
-
 }
 
 .alignvertical {
@@ -82,25 +56,13 @@
 
 .has-boxed-container {
 
-	&.content-sidebar,
-	&.sidebar-content {
-		--alignfull-margin-right: calc(var(--side-spacing) * -1);
-		--alignfull-margin-left: calc(var(--side-spacing) * -1);
-	}
-
 	@include mq(lg) {
 
-		&.content-sidebar {
-			--alignfull-margin-right: 0;
-		}
-
+		&.content-sidebar,
 		&.sidebar-content {
-			--alignfull-margin-left: 0;
+			--alignfull-margin-right: calc(var(--side-spacing) * -1);
+			--alignfull-margin-left: calc(var(--side-spacing) * -1);
 		}
-
-	}
-
-	@include mq(xl) {
 
 		&.narrow-content,
 		&.standard-content {
@@ -112,7 +74,5 @@
 			--alignfull-margin-right: calc((var(--site-container-max-width) - var(--content-max-width)) - var(--side-spacing));
 			--alignfull-margin-left: calc((var(--site-container-max-width) - var(--content-max-width)) - var(--side-spacing));
 		}
-
 	}
 }
-

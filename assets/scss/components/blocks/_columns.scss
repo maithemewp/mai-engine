@@ -1,18 +1,20 @@
 .wp-block {
 
 	&-columns {
+		flex-wrap: wrap;
 		margin-bottom: 0 !important; // Why the heck does WP add margin bottom here when we have spacer block?
 
-		@include mq(false, md) {
-			flex-wrap: wrap;
+		@include mq(md) {
+			flex-wrap: nowrap;
 		}
 	}
 
 	&-column {
+		flex: none;
+		width: 100%;
 
-		@include mq(false, md) {
-			flex: none;
-			width: 100%;
+		@include mq(md) {
+			flex: auto;
 		}
 
 		@include mq(lg) {

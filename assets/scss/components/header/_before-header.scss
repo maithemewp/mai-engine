@@ -10,6 +10,7 @@
 	--heading-margin: 0;
 	--paragraph-margin: 0;
 	--button-margin: 0;
+	--wrap-justify-content: center;
 	--wrap-align-items: center;
 	--menu-item-width: auto;
 	--menu-item-margin: 0;
@@ -31,11 +32,8 @@
 		--widget-width: auto;
 	}
 
-	@include mq(false, sm) {
-		--wrap-justify-content: center;
-	}
-
 	@include mq(sm) {
+		--wrap-justify-content: space-between;
 		--wrap-flex-wrap: nowrap;
 	}
 

@@ -10,17 +10,6 @@
 	font-family: var(--font-primary);
 	line-height: var(--line-height-body);
 	background: var(--body-background, var(--color-white));
-
-	&.admin-bar {
-
-		@media only screen and (max-width: 782px) {
-			--body-min-height: calc(100vh - 46px);
-		}
-
-		@media only screen and (min-width: 783px) {
-			--body-min-height: calc(100vh - 32px);
-		}
-	}
 }
 
 @mixin button() {
