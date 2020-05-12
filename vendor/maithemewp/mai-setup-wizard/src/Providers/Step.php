@@ -163,7 +163,7 @@ class Step extends AbstractServiceProvider {
 				</ul>
 			<?php endif; ?>
 			<div>
-				<?php if ( 1 !== $counter && apply_filters( 'mai_setup_wizard_previous', 0 ) ): ?>
+				<?php if ( 1 !== $counter && apply_filters( 'mai_setup_wizard_previous', true ) ): ?>
 					<a href="javascript:void(0)" id="previous" class="button">
 						<?php esc_html_e( 'Previous', 'mai-setup-wizard' ); ?>
 					</a>
