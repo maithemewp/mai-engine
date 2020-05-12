@@ -64,7 +64,6 @@ function mai_get_plugin_data( $key = '' ) {
 			[
 				'name'        => 'Plugin Name',
 				'version'     => 'Version',
-				'db-version'  => 'DB Version',
 				'plugin-uri'  => 'Plugin URI',
 				'text-domain' => 'Text Domain',
 				'description' => 'Description',
@@ -310,7 +309,7 @@ function mai_get_option( $option, $default = false, $use_cache = true ) {
  */
 function mai_update_option( $option, $value ) {
 	$handle  = mai_get_handle();
-	$options = get_option( $handle );
+	$options = get_option( $handle, [] );
 
 	$options[ $option ] = $value;
 
@@ -342,10 +341,10 @@ function mai_get_variables() {
 
 	if ( is_null( $variables ) ) {
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		$defaults     = json_decode( file_get_contents( mai_get_dir() . 'config/_default/config.json' ), true );
-		$engine_file  = mai_get_dir() . 'config/' . mai_get_active_theme() . '/config.json';
+		$defaults    = json_decode( file_get_contents( mai_get_dir() . 'config/_default/config.json' ), true );
+		$engine_file = mai_get_dir() . 'config/' . mai_get_active_theme() . '/config.json';
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		$engine_theme = is_readable( $engine_file ) ? json_decode( file_get_contents( $engine_file ), true ): [];
+		$engine_theme = is_readable( $engine_file ) ? json_decode( file_get_contents( $engine_file ), true ) : [];
 		$variables    = array_replace_recursive( $defaults, $engine_theme );
 		$custom_theme = mai_get_custom_theme_variables();
 		$variables    = $custom_theme ? array_replace_recursive( $variables, $custom_theme ) : $variables;
@@ -359,7 +358,7 @@ function mai_get_custom_theme_variables() {
 
 	if ( is_null( $variables ) ) {
 		$file      = get_stylesheet_directory() . '/config.json';
-		$variables = is_readable( $file ) ? json_decode( file_get_contents( $file ), true ): [];
+		$variables = is_readable( $file ) ? json_decode( file_get_contents( $file ), true ) : [];
 	}
 
 	return $variables;
@@ -526,17 +525,18 @@ function mai_get_site_layout_choices() {
  *
  * @since 0.2.0
  *
- * @param   string  $name  The name of the link to open.
- * @param   string  $type  The link type (panel or section) to open.
- * @param   string  $url   The preview URL.
+ * @param   string $name The name of the link to open.
+ * @param   string $type The link type (panel or section) to open.
+ * @param   string $url  The preview URL.
  *
  * @return  string  The customizer URL.
  */
 function mai_get_customizer_link( $name, $type = 'section', $url = '' ) {
-	$query['autofocus[' . $type . ']'] = $name;
+	$query[ 'autofocus[' . $type . ']' ] = $name;
 	if ( $url ) {
 		$query['url'] = esc_url( $url );
 	}
+
 	return add_query_arg( $query, admin_url( 'customize.php' ) );
 }
 
@@ -550,7 +550,7 @@ function mai_get_customizer_link( $name, $type = 'section', $url = '' ) {
  * @return array
  */
 function mai_get_content_type_choices( $archive = false ) {
-	$choices    = [
+	$choices = [
 		'post' => esc_html__( 'Post', 'mai-engine' ),
 	];
 
@@ -616,7 +616,7 @@ function mai_get_loop_content_type_choices( $archive = true ) {
 	$default = [];
 	$feature = $archive ? 'mai-archive-settings' : 'mai-single-settings';
 
-	foreach( $choices as $name => $label ) {
+	foreach ( $choices as $name => $label ) {
 		if ( post_type_exists( $name ) ) {
 			$post_type = get_post_type_object( $name );
 			if ( ! $post_type->_builtin && ! post_type_supports( $post_type->name, $feature ) ) {
@@ -663,6 +663,7 @@ function mai_get_post_content( $post_slug_or_id ) {
 	if ( ! $content ) {
 		return;
 	}
+
 	return mai_get_processed_content( $content );
 }
 
@@ -675,7 +676,7 @@ function mai_get_post_content( $post_slug_or_id ) {
  *
  * @since   0.3.0
  *
- * @param   string|HTML  $content  The unprocessed content.
+ * @param   string|HTML $content The unprocessed content.
  *
  * @return  string|HTML  The processed content.
  */
@@ -689,6 +690,7 @@ function mai_get_processed_content( $content ) {
 	$content = wp_make_content_images_responsive( $content ); // WP runs priority 10.
 	$content = do_shortcode( $content );                      // WP runs priority 11.
 	$content = convert_smilies( $content );                   // WP runs priority 20.
+
 	return $content;
 }
 

@@ -136,6 +136,7 @@ function mai_load_files() {
 				'admin/update-checker',
 				'admin/child-theme-updater',
 				'admin/setup-wizard',
+				'admin/upgrade',
 			]
 		);
 	}

@@ -11,7 +11,6 @@
  * GitHub Plugin URI: https: //github.com/maithemewp/mai-engine/
  * Description:       The required plugin to power Mai child themes.
  * Version:           0.2.0
- * DB Version:        2.0.0
  * Author:            BizBudding Inc
  * Author URI:        https: //bizbudding.com/
  * Text Domain:       mai-engine
