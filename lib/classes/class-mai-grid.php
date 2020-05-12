@@ -44,8 +44,8 @@ class Mai_Grid {
 	protected $args;
 
 	// All displayed items incase exclude_displayed is true in any instance of grid.
-	public static $existing_post_ids = array();
-	public static $existing_term_ids = array();
+	public static $existing_post_ids = [];
+	public static $existing_term_ids = [];
 
 	/**
 	 * Mai_Grid constructor.
@@ -126,7 +126,7 @@ class Mai_Grid {
 					$nested_values = [];
 					foreach ( $this->settings[ $name ]['atts']['sub_fields'] as $field_key => $sub_field ) {
 						foreach ( $sub_field as $nested_name => $nested_value ) {
-							$field                             = $this->settings[ $name ]['atts']['sub_fields'][ $field_key ];
+							$field                                       = $this->settings[ $name ]['atts']['sub_fields'][ $field_key ];
 							$nested_values[ $field_key ][ $nested_name ] = mai_sanitize( $nested_value, $field['sanitize'] );
 						}
 					}
@@ -248,7 +248,7 @@ class Mai_Grid {
 				if ( $this->args['taxonomies'] ) {
 					foreach ( $this->args['taxonomies'] as $taxo ) {
 						// Skip if we don't have all the tax query args.
-						if ( ! ( $taxo['taxonomy'] && $taxo['taxonomy'] && $taxo['taxonomy'] ) ) {
+						if ( ! isset( $taxo['taxonomy'] ) || ! ( $taxo['taxonomy'] && $taxo['taxonomy'] && $taxo['taxonomy'] ) ) {
 							continue;
 						}
 						// Set the value.
