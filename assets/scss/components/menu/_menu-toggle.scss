@@ -8,11 +8,11 @@
 	margin: 0;
 	padding: 0;
 	color: var(--color-darkest);
-	background-color: transparent;
+	background: transparent;
 
 	&:hover,
 	&:focus {
-		background-color: transparent;
+		background: transparent;
 	}
 
 	&:focus {
@@ -26,8 +26,8 @@
 	right: auto;
 	bottom: auto;
 	margin: auto;
-	background-color: var(--menu-toggle-icon-background-color, var(--color-darkest));
-	transition: var(--menu-toggle-transition, background-color 0s 0.2s);
+	background: var(--menu-toggle-icon-background-color, var(--color-darkest));
+	transition: var(--menu-toggle-transition, background 0s 0.2s);
 
 	&,
 	&::before,
@@ -41,7 +41,7 @@
 	&::before,
 	&::after {
 		position: absolute;
-		background-color: var(--menu-toggle-line-background-color, var(--color-darkest));
+		background: var(--menu-toggle-line-background, var(--color-darkest));
 		content: "";
 	}
 
@@ -59,7 +59,7 @@
 }
 
 .mobile-menu-visible {
-	--menu-toggle-icon-background-color: transparent;
+	--menu-toggle-icon-background: transparent;
 	--menu-toggle-line-spacing: 0;
 	--menu-toggle-line-before-transform: rotate(45deg);
 	--menu-toggle-line-after-transform: rotate(-45deg);
