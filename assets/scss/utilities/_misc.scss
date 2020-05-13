@@ -34,6 +34,10 @@
 	margin-top: 0 !important;
 }
 
+.has-no-margin-bottom {
+	margin-bottom: 0 !important;
+}
+
 @each $breakpoint-name, $breakpoint-size in $breakpoints {
 
 	.has-#{ $breakpoint-name }-max-width {

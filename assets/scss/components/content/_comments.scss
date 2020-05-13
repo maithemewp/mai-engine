@@ -31,6 +31,12 @@
 
 .comment-header {
 	display: flex;
+	margin-bottom: var(--spacing-md);
+}
+
+.comment-author,
+.comment-meta {
+	margin-bottom: 0;
 }
 
 .comment-author {
@@ -44,7 +50,7 @@
 }
 
 .comment-meta {
-	margin: 0 0 0 auto;
+	margin-left: auto;
 	font-size: var(--text-xs);
 }
 

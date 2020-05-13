@@ -124,6 +124,10 @@
 	letter-spacing: var(--heading-letter-spacing, unset);
 	text-transform: var(--heading-text-transform, unset);
 
+	&:last-child {
+		--heading-margin-bottom: 0;
+	}
+
 	.entry-content > &:not(:first-child) {
 		--heading-margin-top: var(--spacing-xl);
 	}

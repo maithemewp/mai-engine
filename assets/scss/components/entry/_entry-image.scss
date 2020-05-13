@@ -4,7 +4,7 @@
 	align-self: var(--entry-image-link-align, unset);
 	order: var(--entry-image-link-order, unset);
 	max-width: var(--image-width, unset);
-	margin: var(--entry-image-link-margin, 0 0 var(--spacing-md));
+	margin: var(--entry-image-link-margin, 0 0 var(--spacing-xl));
 	line-height: 0;
 
 	&::before {

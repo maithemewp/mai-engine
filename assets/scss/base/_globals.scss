@@ -59,17 +59,18 @@
 	--letter-spacing-body: normal;
 	--letter-spacing-heading: var(--letter-spacing-body);
 
-	--spacing-xxxxs: #{map_get($spacing, xxxxs)};
-	--spacing-xxxs: #{map_get($spacing, xxxs)};
-	--spacing-xxs: #{map_get($spacing, xxs)};
-	--spacing-xs: #{map_get($spacing, xs)};
-	--spacing-sm: #{map_get($spacing, sm)};
-	--spacing-md: #{map_get($spacing, md)};
-	--spacing-lg: #{map_get($spacing, lg)};
-	--spacing-xl: #{map_get($spacing, xl)};
-	--spacing-xxl: #{map_get($spacing, xxl)};
-	--spacing-xxxl: #{map_get($spacing, xxxl)};
-	--spacing-xxxxl: #{map_get($spacing, xxxxl)};
+	--spacing-scale-ratio: 1.5;
+	--spacing-xxxxs: calc(var(--spacing-xxxs) / var(--spacing-scale-ratio));
+	--spacing-xxxs: calc(var(--spacing-xxs) / var(--spacing-scale-ratio));
+	--spacing-xxs: calc(var(--spacing-xs) / var(--spacing-scale-ratio));
+	--spacing-xs: calc(var(--spacing-sm) / var(--spacing-scale-ratio));
+	--spacing-sm: calc(var(--spacing-md) / var(--spacing-scale-ratio));
+	--spacing-md: 16px;
+	--spacing-lg: calc(var(--spacing-md) * var(--spacing-scale-ratio));
+	--spacing-xl: calc(var(--spacing-lg) * var(--spacing-scale-ratio));
+	--spacing-xxl: calc(var(--spacing-xl) * var(--spacing-scale-ratio));
+	--spacing-xxxl: calc(var(--spacing-xxl) * var(--spacing-scale-ratio));
+	--spacing-xxxxl: calc(var(--spacing-xxxl) * var(--spacing-scale-ratio));
 
 	--side-spacing: 4vw;
 
