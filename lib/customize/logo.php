@@ -9,7 +9,7 @@
  * @license   GPL-2.0-or-later
  */
 
-add_action( 'after_setup_theme', 'mai_logo_customizer_settings' );
+add_action( 'init', 'mai_logo_customizer_settings' );
 /**
  * Add logo customizer settings.
  *

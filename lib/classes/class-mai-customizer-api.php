@@ -168,7 +168,9 @@ class Mai_Customizer_API {
 		if ( 'divider' === $field['type'] ) {
 			$field['type']     = 'custom';
 			$field['default']  = '<hr>';
-			$field['settings'] = 'divider-' . $counter++;
+			$field['settings'] = 'divider-' . $counter;
+
+			$counter++;
 		}
 
 		if ( in_array( $panel, [ 'site-layouts', 'content-archives', 'single-content' ], true ) ) {

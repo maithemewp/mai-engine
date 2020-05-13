@@ -209,6 +209,21 @@ function mai_page_header_customizer_settings() {
 			],
 		]
 	);
+
+	\Kirki::add_field(
+		$handle,
+		[
+			'settings' => 'page-header-text-color',
+			'section'  => $section,
+			'label'    => esc_html__( 'Default text color', 'mai-engine' ),
+			'type'     => 'radio-buttonset',
+			'default'  => 'light',
+			'choices'  => [
+				'light' => __( 'Light', 'mai-engine' ),
+				'dark'  => __( 'Dark', 'mai-engine' ),
+			],
+		]
+	);
 }
 
 add_filter( 'genesis_attr_page-header-overlay', 'mai_page_header_divider_class', 10, 1 );
@@ -229,4 +244,62 @@ function mai_page_header_divider_class( $attr ) {
 	}
 
 	return $attr;
+}
+
+add_filter( 'genesis_attr_page-header', 'mai_add_page_header_content_type_css' );
+/**
+ * Removes custom properties CSS output when they are the same as the defaults.
+ * Skips defaults set in the child theme.
+ *
+ * @since 0.1.0
+ *
+ * @param array $attr Kirki CSS output.
+ *
+ * @return array
+ */
+function mai_add_page_header_content_type_css( $attr ) {
+	$args   = mai_get_template_args();
+	$styles = '';
+
+	if ( isset( $args['page-header-background-color'] ) && $args['page-header-background-color'] !== mai_get_color( 'medium' ) ) {
+		$styles .= "--background-color:{$args['page-header-background-color']};";
+	}
+
+	if ( isset( $args['page-header-overlay-color'] ) && $args['page-header-overlay-color'] !== mai_get_color( 'medium' ) ) {
+		$styles .= "--overlay-color:{$args['page-header-overlay-color']};";
+	}
+
+	if ( $styles ) {
+		$attr['styles'] = $styles;
+	}
+
+	return $attr;
+}
+
+add_filter( 'body_class', 'mai_add_page_header_text_color_class' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param $classes
+ *
+ * @return mixed
+ */
+function mai_add_page_header_text_color_class( $classes ) {
+	$global = mai_get_option( 'page-header-text-color', 'light' );
+	$class  = 'has-page-header-' . $global;
+	$args   = mai_get_template_args();
+
+	if ( isset( $args['page-header-text-color'] ) && 'light' === $args['page-header-text-color'] ) {
+		$class = 'has-page-header-dark';
+	}
+
+	if ( isset( $args['page-header-text-color'] ) && 'dark' === $args['page-header-text-color'] ) {
+		$class = 'has-page-header-light';
+	}
+
+	$classes[] = $class;
+
+	return $classes;
 }

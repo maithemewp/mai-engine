@@ -92,6 +92,10 @@ return [
 		],
 	],
 	[
+		'type'    => 'divider',
+		'default' => '<hr>',
+	],
+	[
 		'type'            => 'image',
 		'settings'        => 'page-header-image',
 		'label'           => __( 'Page Header default image', 'mai-engine' ),
@@ -108,5 +112,54 @@ return [
 		'sanitize'        => 'mai_sanitize_bool',
 		'default'         => false,
 		'active_callback' => 'mai_has_page_header_support_callback',
+	],
+	[
+		'settings'        => 'page-header-background-color',
+		'label'           => esc_html__( 'Page header background color', 'mai-engine' ),
+		'type'            => 'color',
+		'default'         => mai_get_color( 'medium' ),
+		'active_callback' => [
+			[
+				'setting'  => 'page-header-image',
+				'operator' => '===',
+				'value'    => '',
+			],
+			[
+				'setting'  => 'page-header-featured',
+				'operator' => '===',
+				'value'    => false,
+			],
+		],
+	],
+	[
+		'settings'        => 'page-header-overlay-color',
+		'label'           => esc_html__( 'Page header overlay color', 'mai-engine' ),
+		'type'            => 'color',
+		'default'         => mai_get_color( 'medium' ),
+		'active_callback' => [
+			[
+				[
+					'setting'  => 'page-header-image',
+					'operator' => '!==',
+					'value'    => '',
+				],
+				[
+					'setting'  => 'page-header-featured',
+					'operator' => '!==',
+					'value'    => false,
+				],
+			],
+		],
+	],
+	[
+		'settings' => 'page-header-text-color',
+		'label'    => esc_html__( 'Page header text color', 'mai-engine' ),
+		'type'     => 'radio-buttonset',
+		'default'  => 'default',
+		'choices'  => [
+			'default' => __( 'Default', 'mai-engine' ),
+			'light'   => __( 'Light', 'mai-engine' ),
+			'dark'    => __( 'Dark', 'mai-engine' ),
+		],
 	],
 ];

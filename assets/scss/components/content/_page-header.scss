@@ -8,6 +8,7 @@
 	padding: var(--page-header-padding, (var(--page-header-padding-top, 10vw) var(--page-header-padding-right, 0) var(--page-header-padding-bottom, 10vw) var(--page-header-padding-left, 0)));
 	overflow: hidden;
 	text-align: var(--page-header-text-align, center);
+	background-color: var(--background-color, var(--color-medium));
 	border-bottom: var(--page-header-border-bottom, var(--border));
 
 	--wrap-position: relative;
@@ -20,7 +21,7 @@
 
 .page-header-overlay {
 	display: block;
-	background-color: var(--color-medium);
+	background-color: var(--overlay-color, var(--color-medium));
 	opacity: var(--shadow-opacity);
 	content: "";
 

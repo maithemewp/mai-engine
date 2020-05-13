@@ -58,7 +58,6 @@ function mai_archive_settings_customizer_settings() {
 			'default'     => sprintf( '<a href="%s" class="button button-primary">%s</a>', $link, esc_html__( 'Refresh Now', 'mai-engine' ) ),
 		]
 	);
-
 }
 
 add_action( 'init', 'mai_single_settings_customizer_settings' );
@@ -76,11 +75,6 @@ function mai_single_settings_customizer_settings() {
 	$choices = mai_get_loop_content_type_choices( $archive = false );
 	$default = mai_get_config( 'single-settings' );
 	$link    = mai_get_customizer_link( $section, 'panel' );
-
-
-	if ( isset( $config['single'] ) && ! empty( $config['single'] && is_array( $config['single'] ) ) ) {
-		$default = $config['single'];
-	}
 
 	\Kirki::add_section(
 		$section,
@@ -115,5 +109,4 @@ function mai_single_settings_customizer_settings() {
 			'default'     => sprintf( '<a href="%s" class="button button-primary">%s</a>', $link, esc_html__( 'Refresh Now', 'mai-engine' ) ),
 		]
 	);
-
 }
