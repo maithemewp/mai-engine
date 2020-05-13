@@ -24,5 +24,9 @@
 }
 
 .author-box-content {
-	margin-top: var(--spacing-sm);
+	margin-bottom: var(--author-box-content-margin-bottom, var(--spacing-md));
+
+	&:last-child {
+		--author-box-content-margin-bottom: 0;
+	}
 }
