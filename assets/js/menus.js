@@ -105,7 +105,13 @@
 			navMenuClone.setAttribute( 'id', navMenu.getAttribute( 'id' ) + '-clone' );
 
 			Array.from( navMenuClone.children ).forEach( function( menuItem ) {
-				var lastClass = menuItem.getAttribute( 'class' ).split( ' ' ).pop();
+				var lastClasses = menuItem.getAttribute( 'class' );
+
+				if ( ! lastClasses ) {
+					return;
+				}
+
+				var lastClass = lastClasses.split( ' ' ).pop();
 
 				menuItem.setAttribute( 'id', lastClass );
 
