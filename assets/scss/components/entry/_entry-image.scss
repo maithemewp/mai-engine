@@ -46,6 +46,10 @@
 	--entry-image-object-fit: cover;
 	--entry-image-width: 100%;
 	--entry-image-height: 100%;
+
+	&.has-boxed {
+		--entry-image-link-margin: 0;
+	}
 }
 
 .has-image-left-top,
