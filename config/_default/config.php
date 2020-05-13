@@ -577,17 +577,8 @@ return [
 	*/
 
 	'page-header' => [
-		'archive'    => [],
-		'single'     => [],
-		'customizer' => [
-			'divider'         => 'none',
-			'overlay-opacity' => 0.5,
-			'text-align'      => '',
-			'spacing'         => [
-				'top'    => '',
-				'bottom' => '',
-			],
-		],
+		'archive' => [],
+		'single'  => [],
 	],
 
 	/*

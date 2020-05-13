@@ -22,11 +22,19 @@ function mai_page_header_customizer_settings() {
 	$handle          = mai_get_handle();
 	$section         = $handle . '-page-header';
 	$config          = mai_get_config( 'page-header' );
-	$defaults        = $config['customizer'];
 	$archives        = mai_get_content_type_choices( $archive = true );
 	$singles         = mai_get_content_type_choices( $archive = false );
 	$archive_default = [];
 	$single_default  = [];
+	$defaults        = [
+		'divider'         => 'none',
+		'overlay-opacity' => 0.5,
+		'text-align'      => '',
+		'spacing'         => [
+			'top'    => '',
+			'bottom' => '',
+		],
+	];
 
 	if ( isset( $config['archive'] ) && ! empty( $config['archive'] && is_array( $config['archive'] ) ) ) {
 		$archive_default = $config['archive'];
@@ -103,11 +111,17 @@ function mai_page_header_customizer_settings() {
 					'choice'   => 'top',
 					'element'  => ':root',
 					'property' => '--page-header-padding-top',
+					'exclude'  => [
+						$defaults['spacing']['top'],
+					],
 				],
 				[
 					'choice'   => 'bottom',
 					'element'  => ':root',
 					'property' => '--page-header-padding-bottom',
+					'exclude'  => [
+						$defaults['spacing']['bottom'],
+					],
 				],
 			],
 			'input_attrs' => [
@@ -173,6 +187,9 @@ function mai_page_header_customizer_settings() {
 				[
 					'element'  => '.page-header-overlay',
 					'property' => 'opacity',
+					'exclude'  => [
+						$defaults['overlay-opacity'],
+					],
 				],
 			],
 		]

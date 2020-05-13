@@ -41,12 +41,18 @@ function mai_logo_customizer_settings() {
 					'choice'   => 'mobile',
 					'element'  => [ ':root', '.is-stuck' ],
 					'property' => '--custom-logo-width',
+					'exclude'  => [
+						'120px',
+					],
 				],
 				[
 					'choice'      => 'desktop',
 					'element'     => ':root',
 					'property'    => '--custom-logo-width',
 					'media_query' => sprintf( '@media (min-width: %spx)', mai_get_breakpoint( 'lg' ) ),
+					'exclude'  => [
+						'180px',
+					],
 				],
 			],
 		]
@@ -75,12 +81,18 @@ function mai_logo_customizer_settings() {
 					'choice'   => 'mobile',
 					'element'  => [ ':root', '.is-stuck' ],
 					'property' => '--title-area-padding',
+					'exclude' => [
+						'16px'
+					],
 				],
 				[
 					'choice'      => 'desktop',
 					'element'     => ':root',
 					'property'    => '--title-area-padding',
 					'media_query' => sprintf( '@media (min-width: %spx)', mai_get_breakpoint( 'lg' ) ),
+					'exclude' => [
+						'36px'
+					],
 				],
 			],
 		]

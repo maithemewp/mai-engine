@@ -23,7 +23,6 @@ add_action( 'after_setup_theme', 'mai_kirki_filters' );
 function mai_kirki_filters() {
 	$handle = mai_get_handle();
 
-	add_filter( "kirki_{$handle}_styles", 'mai_remove_kirki_default_output', 10, 1 );
 	add_filter( "kirki_${handle}_webfonts_skip_hidden", '__return_false' );
 	add_filter( 'kirki/dynamic_css/method', '__return_true' );
 
@@ -37,38 +36,6 @@ function mai_kirki_filters() {
 	if ( ! is_customize_preview() ) {
 		add_filter( 'kirki_output_inline_styles', '__return_false' );
 	}
-}
-
-/**
- * Removes custom properties CSS output when they are the same as the defaults.
- * Skips defaults set in the child theme.
- *
- * @since 0.1.0
- *
- * @param array $css Kirki CSS output.
- *
- * @return array
- */
-function mai_remove_kirki_default_output( $css ) {
-	if ( ! isset( $css['global'][':root'] ) ) {
-		return $css;
-	}
-
-	$custom_theme = mai_get_custom_theme_variables();
-
-	foreach ( $css['global'][':root'] as $property => $value ) {
-		$name = str_replace( '--color-', '', $property );
-
-		if ( isset( $custom_theme['colors'][ $name ] ) ) {
-			continue;
-		}
-
-		if ( mai_get_color( $name ) === $value ) {
-			unset( $css['global'][':root'][ $property ] );
-		}
-	}
-
-	return $css;
 }
 
 add_action( 'after_setup_theme', 'mai_add_kirki_config' );

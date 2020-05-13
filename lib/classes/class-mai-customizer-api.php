@@ -174,11 +174,12 @@ class Mai_Customizer_API {
 		if ( in_array( $panel, [ 'site-layouts', 'content-archives', 'single-content' ], true ) ) {
 			$field['option_type'] = 'option';
 			$field['option_name'] = "$this->handle[$panel][$section]";
-
 			$field['settings']    = $settings;
+
 			if ( isset( $field['default'] ) && is_string( $field['default'] ) && mai_has_string( 'mai_', $field['default'] ) && is_callable( $field['default'] ) ) {
 				$field['default'] = call_user_func_array( $field['default'], [ 'name' => $section ] );
 			}
+
 			if ( isset( $field['choices'] ) && is_string( $field['choices'] ) && mai_has_string( 'mai_', $field['choices'] ) && is_callable( $field['choices'] ) ) {
 				$field['choices'] = call_user_func_array( $field['choices'], [ 'name' => $section ] );
 			}
@@ -198,9 +199,20 @@ class Mai_Customizer_API {
 			$field['choices']['irisArgs']['palettes'] = array_values( mai_get_colors() );
 		}
 
+		// Prevent output if value same as default.
+		if ( isset( $field['output'] ) ) {
+			foreach ( $field['output'] as $count => $output ) {
+				if ( ! isset( $output['exclude'] ) ) {
+					$field['output'][ $count ]['exclude'] = [
+						$field['default'],
+					];
+				}
+			}
+		}
+
 		// Automate editor CSS output for custom properties on root element.
 		if ( isset( $field['output'] ) ) {
-			foreach ( $field['output'] as $output ) {
+			foreach ( $field['output'] as $count => $output ) {
 				if ( isset( $output['element'] ) && ':root' === $output['element'] ) {
 					$args = [
 						'element',

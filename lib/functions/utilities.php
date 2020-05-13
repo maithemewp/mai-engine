@@ -353,6 +353,13 @@ function mai_get_variables() {
 	return $variables;
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return array|mixed|null
+ */
 function mai_get_custom_theme_variables() {
 	static $variables = null;
 
