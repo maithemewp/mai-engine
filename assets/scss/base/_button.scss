@@ -1,6 +1,11 @@
 #{$all-buttons} {
 
 	@include button();
+
+	&:disabled {
+
+		@include button-style("disabled");
+	}
 }
 
 .button-secondary {
@@ -22,3 +27,9 @@
 
 	@include button-style("ghost");
 }
+
+.button-small {
+
+	@include button-style("small");
+}
+
