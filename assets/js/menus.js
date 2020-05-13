@@ -122,6 +122,13 @@
 		} );
 	};
 
+	var addMenuItemClasses = function() {
+		var menuItems = document.querySelectorAll( '.mobile-menu .menu-item' );
+		menuItems.forEach( function( menuItem ) {
+			menuItem.classList.add( 'mobile-menu-item' );
+		} );
+	};
+
 	var toggleAriaValues = function( element ) {
 		var ariaValue = element.getAttribute( 'aria-expanded' ) === 'false' ? 'true' : 'false';
 
@@ -205,6 +212,7 @@
 		createMobileMenu();
 		createMenuToggle();
 		cloneMenuItems();
+		addMenuItemClasses();
 		createSubMenuToggles();
 		createSearchForm();
 
