@@ -38,7 +38,7 @@
 
 .page-header-inner {
 	width: 100%;
-	max-width: var(--page-header-inner-max-width, 100%);
+	max-width: var(--page-header-inner-max-width, var(--breakpoint-sm));
 	padding: var(--page-header-inner-padding, 0);
 }
 
