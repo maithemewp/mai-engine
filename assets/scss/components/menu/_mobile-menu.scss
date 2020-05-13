@@ -13,8 +13,12 @@
 	max-height: 100vh;
 	padding: var(--spacing-md) 0;
 	overflow-y: auto;
-	background: var(--site-header-background, var(--color-lightest));
+	background: var(--mobile-menu-background, var(--site-header-background, var(--color-lightest)));
 	animation: var(--mobile-menu-animation-name) var(--mobile-menu-animation-duration) var(--mobile-menu-animation-timing);
+}
+
+.has-transparent-header {
+	--mobile-menu-background: var(--color-lightest);
 }
 
 .mobile-menu-visible {

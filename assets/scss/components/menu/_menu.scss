@@ -71,8 +71,11 @@
 	}
 }
 
-.has-transparent-header .site-header:not(.is-stuck) .menu {
-	--link-color: var(--color-lightest);
+.has-transparent-header {
+
+	&:not(.mobile-menu-visible) .site-header:not(.is-stuck) .menu {
+		--link-color: var(--color-lightest);
+	}
 }
 
 .is-desktop {

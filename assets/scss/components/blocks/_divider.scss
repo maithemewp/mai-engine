@@ -1,7 +1,7 @@
 .mai-divider {
 	display: block;
 	height: var(--divider-height, calc(4rem + 4vw)) !important;
-	background-color: transparent;
+	background: transparent;
 
 	.wp-block-cover &,
 	.wp-block-group & {
