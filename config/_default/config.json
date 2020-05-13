@@ -23,6 +23,11 @@
     "radius": "4px"
   },
   "button": {
+    "overlay-brightness": "100%",
+    "background-color": "var(--color-primary)",
+    "background": "linear-gradient(var(--button-overlay-color), var(--button-overlay-color)), linear-gradient(var(--button-background-color), var(--button-background-color))",
+    "color": "var(--color-lightest)",
+    "border": "0",
     "border-radius": "var(--border-radius)"
   },
   "input": {

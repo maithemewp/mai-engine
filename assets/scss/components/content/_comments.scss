@@ -69,3 +69,12 @@
 	width: 100%;
 	margin-top: var(--spacing-xl);
 }
+
+
+.comment-reply-link {
+	--button-background-color: var(--color-medium);
+	--button-color: var(--color-darker);
+	--button-padding: 0.75em 1em;
+	--button-font-size: var(--text-xs);
+}
+

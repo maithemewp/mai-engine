@@ -55,3 +55,15 @@ $border: (
 	color: var(--border-color),
 	radius: var(--border-radius),
 ) !default;
+
+$button: (
+	border-radius: var(--button-border-radius),
+) !default;
+
+$button-styles: (
+	secondary,
+	tertiary,
+	white,
+	outline,
+	white-outline,
+) !default;

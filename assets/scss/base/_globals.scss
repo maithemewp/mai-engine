@@ -93,10 +93,6 @@
 	--shadow-color: #{hex_to_rgb(map_get($colors, "medium"))};
 	--shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-spread) rgba(var(--shadow-color), var(--shadow-opacity));
 
-	--darken: brightness(95%);
-	--lighten: brightness(110%);
-	--filter-hover: var(--lighten);
-
 	--transition-property: all;
 	--transition-duration: 0.2s;
 	--transition-timing-function: ease;
@@ -108,6 +104,11 @@
 	--link-text-decoration-hover: underline;
 	--link-filter-hover: none;
 	--link-transition: var(--transition);
+
+	--button-overlay-brightness: #{map_get($button, "overlay-brightness")}; // White.
+	--button-overlay-opacity: 0; // Always transparent in default state.
+	--button-overlay-color: hsla(0, 0%, var(--button-overlay-brightness), var(--button-overlay-opacity));
+	--button-background-color: #{map_get($button, "background-color")};
 }
 
 :root {

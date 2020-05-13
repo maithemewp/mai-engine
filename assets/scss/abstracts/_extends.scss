@@ -12,45 +12,122 @@
 	background: var(--body-background, var(--color-lightest));
 }
 
-@mixin button() {
-	--button-border: 0;
-	--button-border-radius: #{map_get($button, "border-radius")};
+@mixin button-style($style) {
+
+	@if ("secondary" == $style) {
+		--button-background-color: var(--color-secondary);
+	}
+
+	@if ("tertiary" == $style) {
+		padding-right: var(--spacing-xs);
+		padding-left: var(--spacing-xs);
+
+		--button-color: var(--color-primary);
+		--button-background: transparent;
+
+		&:hover,
+		&:focus {
+			--button-color: var(--color-secondary);
+			--button-background: transparent;
+		}
+
+		&::after {
+			display: inline-block;
+			margin-left: var(--spacing-xs);
+			content: "\2192";
+		}
+	}
+
+	@if ("white" == $style) {
+		--button-color: var(--color-darkest);
+		--button-background: var(--color-lightest);
+
+		&:hover,
+		&:focus {
+			--button-color: var(--color-primary);
+		}
+	}
+
+	@if ("outline" == $style) {
+		--button-color: var(--color-primary);
+		--button-background: transparent;
+		--button-border: 2px solid currentColor;
+	}
+
+	@if ("white-outline" == $style) {
+		--button-color: var(--color-lightest);
+		--button-background: transparent;
+		--button-border: 2px solid currentColor;
+	}
+
+	@if ("ghost" == $style) {
+		--button-background: hsla(0, 0%, var(--button-overlay-brightness), 0.2);
+		--button-color: var(--color-lightest);
+
+		&:hover,
+		&:focus {
+			--button-background: hsla(0, 0%, var(--button-overlay-brightness), 0.4);
+		}
+	}
+
+	@if ("small" == $style) {
+		--button-padding: 1em 1.5em;
+		--button-font-size: var(--text-sm);
+	}
+
+	@if ("disabled" == $style) {
+		--button-backround-color: var(--color-medium);
+
+		&,
+		&:hover,
+		&:focus {
+			--button-backround-color: var(--color-medium);
+			--button-opacity: 0.5;
+			--button-cursor: not-allowed;
+		}
+	}
+}
+
+@mixin button {
 	position: relative;
 	display: inline-block;
 	width: auto;
 	margin: var(--button-margin, 0);
 	padding: var(--button-padding, (var(--spacing-md) calc(var(--spacing-md) * 2)));
+	color: var(--button-color, #{map_get($button, "color")});
 	font-weight: var(--button-font-weight, var(--font-weight-heading));
 	font-size: var(--button-font-size, var(--text-md));
 	font-family: var(--button-font-family, var(--font-primary));
-	line-height: 1;
+	line-height: var(--button-line-height, 1);
 	letter-spacing: var(--button-letter-spacing, normal);
-	white-space: normal;
-	text-align: center;
+	white-space: var(--button-white-space, normal);
+	text-align: var(--button-text-align, center);
 	text-transform: var(--button-text-transform, none);
-	text-decoration: none;
+	text-decoration: var(--button-text-decoration, none);
+	background: var(--button-background, #{map_get($button, "background")});
+	border: var(--button-border, #{map_get($button, "border")});
+	border-radius: var(--button-border-radius, #{map_get($button, "border-radius")});
+	transform: var(--button-transform, none);
 	cursor: var(--button-cursor, pointer);
 	opacity: var(--button-opacity, 1);
 	transition: var(--button-transition, var(--transition));
 
 	&:hover,
 	&:focus {
-		text-decoration: none;
-		outline: none;
-		transform: var(--button-transform-hover, none);
+		--button-overlay-opacity: var(--button-overlay-opacity-hover, 0.2);
+		--button-overlay-color: var(--button-overlay-color-hover, hsla(0, 0%, var(--button-overlay-brightness), var(--button-overlay-opacity)));
+		--button-text-decoration: var(--button-text-decoration-hover, none);
+		--button-outline: var(--button-outline-hover, none);
+		--button-transform: var(--button-transform-hover, none);
+		--button-color: var(--button-color-hover, #{map_get($button, "color")});
+		--button-border: var(--button-border-hover, #{map_get($button, "border")});
+		--button-background: var(--button-background-hover, #{map_get($button, "background")});
 	}
 
 	&:disabled {
 
-		&,
-		&:hover,
-		&:focus {
-			--button-backround: var(--color-medium);
-			--button-opacity: 0.5;
-			--button-cursor: not-allowed;
-		}
+		@include button-style(disabled);
 	}
-
 }
 
 @mixin heading {

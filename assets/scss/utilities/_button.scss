@@ -1,0 +1,34 @@
+.button-secondary {
+
+	@include button-style("secondary");
+}
+
+.button-tertiary {
+
+	@include button-style("tertiary");
+}
+
+.button-white {
+
+	@include button-style("white");
+}
+
+.button-outline {
+
+	@include button-style("outline");
+}
+
+.button-white-outline {
+
+	@include button-style("white-outline");
+}
+
+.button-ghost {
+
+	@include button-style("ghost");
+}
+
+.button-small {
+
+	@include button-style("small");
+}
