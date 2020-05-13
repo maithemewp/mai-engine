@@ -70,18 +70,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/maithemewp/mai-setup-wizard.git",
-            "reference": "89709b0e712329ad90177640408589bbbc6fd833"
+            "reference": "aa0a4fc9f558dcc738ce9a44dca19863fa10af5c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/maithemewp/mai-setup-wizard/zipball/89709b0e712329ad90177640408589bbbc6fd833",
-            "reference": "89709b0e712329ad90177640408589bbbc6fd833",
+            "url": "https://api.github.com/repos/maithemewp/mai-setup-wizard/zipball/aa0a4fc9f558dcc738ce9a44dca19863fa10af5c",
+            "reference": "aa0a4fc9f558dcc738ce9a44dca19863fa10af5c",
             "shasum": ""
         },
         "require": {
             "pimple/pimple": "^3.3"
         },
-        "time": "2020-05-11T11:30:46+00:00",
+        "time": "2020-05-13T03:27:27+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

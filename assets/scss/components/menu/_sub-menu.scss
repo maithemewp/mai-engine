@@ -23,7 +23,7 @@
 		top: 100%;
 		left: var(--sub-menu-left, auto);
 		width: var(--sub-menu-width, 100%);
-		background-color: var(--sub-menu-background-color, transparent);
+		background: var(--sub-menu-background, transparent);
 		border: var(--sub-menu-border, 0);
 		opacity: var(--sub-menu-opacity, 1);
 		animation: var(--sub-menu-animation-name) var(--sub-menu-animation-duration) var(--sub-menu-animation-timing);
@@ -59,7 +59,7 @@
 	--sub-menu-left: -999rem;
 	--sub-menu-width: 200px;
 	--sub-menu-margin: 0 0 0 calc(0 - var(--spacing-md));
-	--sub-menu-background-color: var(--color-lightest);
+	--sub-menu-background: var(--color-lightest);
 	--sub-menu-border: var(--border);
 	--sub-menu-opacity: 0;
 	--sub-menu-transition: opacity var(--transition-duration) var(--transition-timing-function);
