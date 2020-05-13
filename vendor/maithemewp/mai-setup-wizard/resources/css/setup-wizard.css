@@ -30,7 +30,7 @@
 
 .step {
 	width: 100%;
-	max-width: 640px;
+	max-width: 660px;
 	margin: 0 auto;
 	padding: 2em 3em 3em;
 	background: #fff;
@@ -108,8 +108,12 @@
 #demo ul {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-between;
+	justify-content: center;
 	margin-top: 3em;
+}
+
+#demo li {
+	margin: 0 0.75em 1.5em;
 }
 
 #demo label {

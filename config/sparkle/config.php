@@ -13,9 +13,12 @@
 defined( 'ABSPATH' ) || die;
 
 return [
+	'demos'            => [
+		'creative' => 2,
+		'fashion'  => 18,
+	],
 	'google-fonts'     => [
-		// TODO: Do we need all of the Work Sans variants? (No, not sure which weights we're using yet so have them all in there - Mike).
-		'Josefin+Sans:600,700|Work+Sans:400,400i,500,500i,600,600i,700,700i',
+		'Josefin+Sans:600|Work+Sans:400,400i,700',
 	],
 	'image-sizes'      => [
 		'add' => [
@@ -36,7 +39,7 @@ return [
 	'page-header'      => [
 		'single' => [ 'page' ],
 	],
-	'required-plugins' => [
+	'plugins'          => [
 		[
 			'name'  => 'Genesis Connect for WooCommerce',
 			'slug'  => 'genesis-connect-woocommerce/genesis-connect-woocommerce.php',

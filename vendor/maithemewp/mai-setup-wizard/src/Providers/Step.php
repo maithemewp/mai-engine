@@ -151,13 +151,18 @@ class Step extends AbstractServiceProvider {
 			<p class="error"><?php echo $step['error_message']; ?></p>
 			<p class="success"><?php echo $step['success_message']; ?></p>
 			<?php if ( $step['fields'] ): ?>
-				<ul>
+				<?php
+				$items = \sprintf(
+					' class="items-%s"',
+					\count( $step['fields'] )
+				);
+				?>
+				<ul<?php echo $items; ?>>
 					<?php
 					/**
 					 * @var Field $field
 					 */
-					?>
-					<?php foreach ( $step['fields'] as $field ) : ?>
+					foreach ( $step['fields'] as $field ) : ?>
 						<li><?php echo $this->field->render( $field ); ?></li>
 					<?php endforeach; ?>
 				</ul>

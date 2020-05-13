@@ -10,6 +10,10 @@
  */
 
 return [
+	'demos'            => [
+		'podcast' => 12,
+		'agency'  => 13,
+	],
 	'google-fonts'     => [
 		'Karla:400,700',
 	],
@@ -23,7 +27,7 @@ return [
 		'archive' => '*',
 		'single'  => '*',
 	],
-	'required-plugins' => [
+	'plugins'          => [
 		[
 			'name'  => 'Genesis Connect for WooCommerce',
 			'slug'  => 'genesis-connect-woocommerce/genesis-connect-woocommerce.php',
