@@ -212,7 +212,7 @@ class Mai_Customizer_API {
 
 		// Automate editor CSS output for custom properties on root element.
 		if ( isset( $field['output'] ) ) {
-			foreach ( $field['output'] as $count => $output ) {
+			foreach ( $field['output'] as $output ) {
 				if ( isset( $output['element'] ) && ':root' === $output['element'] ) {
 					$args = [
 						'element',
