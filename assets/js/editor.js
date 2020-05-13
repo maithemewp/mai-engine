@@ -156,31 +156,3 @@ jQuery( document ).ready( function( $ ) {
 	}
 
 } );
-
-wp.domReady( function() {
-
-	wp.blocks.registerBlockStyle( 'core/heading', {
-		name: 'subheading',
-		label: 'Subheading'
-	} );
-
-	wp.blocks.registerBlockStyle( 'core/button', [
-		{
-			name: 'secondary',
-			label: 'Secondary'
-		},
-		{
-			name: 'tertiary',
-			label: 'Tertiary'
-		},
-		{
-			name: 'white',
-			label: 'White'
-		},
-		{
-			name: 'white-outline',
-			label: 'White Outline'
-		}
-	] );
-
-} );

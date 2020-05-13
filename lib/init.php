@@ -102,10 +102,12 @@ function mai_load_files() {
 		'structure/wrap',
 
 		// Blocks.
-		'blocks/icon',
+		'blocks/button',
 		'blocks/cover',
 		'blocks/divider',
 		'blocks/grid',
+		'blocks/heading',
+		'blocks/icon',
 
 		// Shortcodes.
 		'shortcodes/icon',
