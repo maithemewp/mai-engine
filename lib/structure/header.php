@@ -132,3 +132,55 @@ function mai_header_section_class( $atts ) {
 
 	return $atts;
 }
+
+/**
+ * Hide site title if using a logo.
+ *
+ * Adds class for screen readers to site title.
+ * This will keep the site title markup but will not have any visual presence on the page.
+ *
+ * @since   0.3.0
+ *
+ * @param   array  $attributes  Current attributes.
+ *
+ * @return  array  The modified attributes.
+ */
+add_filter( 'genesis_attr_site-title', 'mai_hide_site_title' );
+function mai_hide_site_title( $attributes ) {
+	if ( ! get_custom_logo() ) {
+		return $attributes;
+	}
+	$attributes['class'] .= ' screen-reader-text';
+	return $attributes;
+}
+
+/**
+ * Hide site description if using a logo.
+ *
+ * Adds class for screen readers to site description.
+ * This will keep the site description markup but will not have any visual presence on the page.
+ *
+ * @since   0.3.0
+ *
+ * @param   array  $attributes  Current attributes.
+ *
+ * @return  array  The modified attributes.
+ */
+add_filter( 'genesis_attr_site-description', 'mai_hide_site_description' );
+function mai_hide_site_description( $attributes ) {
+	if ( ! get_custom_logo() ) {
+		return $attributes;
+	}
+	$attributes['class'] .= ' screen-reader-text';
+	return $attributes;
+}
+
+/**
+ * Always show the site title and description.
+ * It's hidden screen-reader-text class if a custom logo is used.
+ *
+ * @since 0.3.0
+ *
+ * @return bool
+ */
+add_filter( 'theme_mod_header_text', '__return_true' );

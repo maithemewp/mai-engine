@@ -118,7 +118,7 @@ function mai_register_customizer_api() {
 	$customizer_api->add_panels();
 }
 
-add_action( 'customize_register', 'mai_reposition_genesis_customizer_sections' );
+add_action( 'customize_register', 'mai_handle_existing_customizer_sections' );
 /**
  * Move Genesis Customizer sections into our settings panel.
  *
@@ -128,7 +128,7 @@ add_action( 'customize_register', 'mai_reposition_genesis_customizer_sections' )
  *
  * @return void
  */
-function mai_reposition_genesis_customizer_sections( $wp_customize ) {
+function mai_handle_existing_customizer_sections( $wp_customize ) {
 	$handle   = mai_get_handle();
 	$sections = genesis_get_config( 'customizer-theme-settings' )['genesis']['sections'];
 
@@ -138,6 +138,7 @@ function mai_reposition_genesis_customizer_sections( $wp_customize ) {
 		}
 	}
 
+	$wp_customize->remove_control( 'header_text' );
 	$wp_customize->remove_section( 'genesis_layout' );
 	$wp_customize->remove_section( 'genesis_single' );
 	$wp_customize->remove_section( 'genesis_archives' );
