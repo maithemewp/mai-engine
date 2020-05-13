@@ -41,6 +41,22 @@ function mai_render_admin_menu_page() {
 
 	echo '<div class="wrap">';
 	echo "<h1>$title</h1>";
+
+	echo sprintf(
+		'<p>%s %s.</p><h2>%s</h2>',
+		__( 'Hi! Thanks for choosing Mai', 'mai-engine' ),
+		mai_convert_case( mai_get_active_theme(), 'title' ),
+		__( 'Quick Links', 'mai-engine' )
+	);
+
+	echo '<ul>';
+
+	echo '<li>· <a href="https://support.bizbudding.com/" target="_blank">' . __('Support', 'mai-engine') . '</a></li>';
+	echo '<li>· <a href="https://bizbudding.com/" target="_blank">' . __('BizBudding', 'mai-engine') . '</a></li>';
+	echo '<li>· <a href="https://demo.bizbudding.com/" target="_blank">' . __('Theme Demos', 'mai-engine') . '</a></li>';
+
+	echo '<ul>';
+
 	echo '</div>';
 }
 
