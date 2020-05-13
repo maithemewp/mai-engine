@@ -32,20 +32,6 @@ textarea {
 	}
 }
 
-.mobile-menu {
-	width: 90vw;
-	height: 90vh;
-	margin: auto;
-	background-color: var(--color-lightest);
-	border-radius: var(--border-radius);
-
-	@include position(fixed, 0 0 0 0);
-}
-
-.is-mobile {
-	--menu-item-link-color: var(--color-darkest);
-}
-
 .has-transparent-header {
 
 	.site-title-link,
@@ -61,15 +47,6 @@ textarea {
 	.page-header-overlay {
 		background-color: var(--color-primary);
 		opacity: 1;
-	}
-}
-
-.has-angle-divider,
-.has-curve-divider,
-.has-wave-divider {
-
-	&::after {
-		height: 16rem;
 	}
 }
 

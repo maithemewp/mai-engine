@@ -23,11 +23,8 @@
 }
 
 .has-transparent-header {
-
-	&:not(.mobile-menu-visible) {
-		--site-header-border-bottom: none;
-		--site-header-background: transparent;
-	}
+	--site-header-border-bottom: none;
+	--site-header-background: transparent;
 }
 
 .has-sticky-header {
