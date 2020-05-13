@@ -11,9 +11,9 @@
 
 add_action( 'init', 'mai_register_button_styles' );
 /**
- * Description of expected behavior.
+ * Register additional button styles.
  *
- * @since 1.0.0
+ * @since 0.3.0
  *
  * @return void
  */
@@ -21,8 +21,6 @@ function mai_register_button_styles() {
 	$styles = [
 		'secondary',
 		'tertiary',
-		'white',
-		'white-outline',
 		'ghost',
 	];
 
