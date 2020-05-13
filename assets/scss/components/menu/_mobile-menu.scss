@@ -13,7 +13,7 @@
 	max-height: 100vh;
 	padding: var(--spacing-md) 0;
 	overflow-y: auto;
-	background: var(--site-header-background-color, var(--color-lightest));
+	background: var(--site-header-background, var(--color-lightest));
 	animation: var(--mobile-menu-animation-name) var(--mobile-menu-animation-duration) var(--mobile-menu-animation-timing);
 }
 
@@ -50,11 +50,11 @@
 	height: auto;
 	margin: 0;
 	line-height: 0;
-	background-color: transparent;
+	background: transparent;
 
 	&:hover,
 	&:focus {
-		background-color: transparent;
+		background: transparent;
 	}
 
 	&:focus {
