@@ -2,10 +2,10 @@
 	--font-primary: "Work Sans", sans-serif;
 	--font-secondary: "Josefin Sans", sans-serif;
 	--heading-text-transform: uppercase;
-	--button-background: var(--color-darkest);
+	--button-primary-background: var(--color-darkest);
+	--button-secondary-color: var(--color-darkest);
 	--text-scale-ratio: 1.125;
-	--border-color: var(--color-light);
-	--shadow: 0 0 16px 2px rgba(0, 0, 0, 0.025);
+	--border-color: var(--color-lighter);
 }
 
 body {

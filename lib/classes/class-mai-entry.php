@@ -981,7 +981,7 @@ class Mai_Entry {
 				'atts'    => [
 					'href'   => $href,
 					'target' => is_admin() ? '_blank' : false,
-					'class'  => 'entry-more-link ' . ( is_admin() ? 'wp-block-button__link has-small-font-size' : 'button button-small button-subtle' ),
+					'class'  => 'entry-more-link ' . ( is_admin() ? 'wp-block-button__link has-small-font-size' : 'button button-small button-secondary' ),
 				],
 				'params'  => [
 					'args'  => $this->args,

@@ -19,19 +19,9 @@
 		@include button-style("tertiary");
 	}
 
-	.is-style-white & {
-
-		@include button-style("white");
-	}
-
 	.is-style-outline & {
 
 		@include button-style("outline");
-	}
-
-	.is-style-white-outline & {
-
-		@include button-style("white-outline");
 	}
 
 	.is-style-ghost & {

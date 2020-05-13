@@ -2,3 +2,23 @@
 
 	@include button();
 }
+
+.button-secondary {
+
+	@include button-style("secondary");
+}
+
+.button-tertiary {
+
+	@include button-style("tertiary");
+}
+
+.button-outline {
+
+	@include button-style("outline");
+}
+
+.button-ghost {
+
+	@include button-style("ghost");
+}
