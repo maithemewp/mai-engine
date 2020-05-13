@@ -1,5 +1,5 @@
 .entry-comments {
-	margin-top: var(--spacing-xl);
+	margin-bottom: var(--spacing-xxl);
 }
 
 .comment-list {
@@ -7,18 +7,14 @@
 }
 
 .comment {
-	margin: 0;
+	margin: 0 0 var(--spacing-md);
 	padding: var(--spacing-xl);
 	border: var(--border);
 	border-radius: var(--border-radius);
 	box-shadow: var(--shadow);
 
-	&:not(:first-child) {
-		margin-top: var(--spacing-md);
-	}
-
 	.children {
-		margin: var(--spacing-md) 0 0;
+		margin: var(--spacing-lg) 0 0;
 		list-style-type: none;
 	}
 
@@ -52,9 +48,8 @@
 	font-size: var(--text-xs);
 }
 
-.comment-content,
-.comment-reply {
-	margin-top: var(--spacing-md);
+.comment-content {
+	margin-bottom: var(--spacing-md);
 }
 
 .comment-reply {
@@ -67,7 +62,7 @@
 
 .comment-respond {
 	width: 100%;
-	margin-top: var(--spacing-xl);
+	margin-bottom: var(--spacing-xl);
 }
 
 

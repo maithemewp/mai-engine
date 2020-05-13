@@ -69,10 +69,11 @@
 }
 
 .entries {
+	// Can't apply left/right margin because it overrides alignwide/alignfull.
+	margin-bottom: var(--entries-margin-top, var(--spacing-md));
 
-	&:not(:first-child) {
-		// Can't apply left/right margin because it overrides alignwide/alignfull.
-		margin-top: var(--entries-margin-top, var(--spacing-md));
+	&:last-child {
+		--entries-margin-top: 0;
 	}
 }
 

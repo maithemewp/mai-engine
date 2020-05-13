@@ -43,9 +43,9 @@
 }
 
 .page-header-description {
-	margin: var(--page-header-description-margin, 0);
+	margin: var(--page-header-description-margin, 0 0 var(--spacing-md));
 
-	&:not(:first-child) {
-		--page-header-description-margin: var(--spacing-md) 0 0;
+	&:last-child {
+		--page-header-description-margin: 0 0 var(--spacing-md);
 	}
 }

@@ -116,7 +116,7 @@
 }
 
 @mixin heading {
-	margin: var(--heading-margin, 0);
+	margin: var(--heading-margin, var(--heading-margin-top, 0) var(--heading-margin-sides, 0) var(--heading-margin-bottom, var(--spacing-md)));
 	color: var(--heading-color, var(--color-darkest));
 	font-weight: var(--font-weight-heading);
 	font-family: var(--font-secondary);
@@ -124,7 +124,7 @@
 	letter-spacing: var(--heading-letter-spacing, unset);
 	text-transform: var(--heading-text-transform, unset);
 
-	&:not(:first-child) {
-		--heading-margin: var(--spacing-xl) 0 0 0;
+	.entry-content > &:not(:first-child) {
+		--heading-margin-top: var(--spacing-xl);
 	}
 }

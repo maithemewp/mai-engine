@@ -1,7 +1,7 @@
 .entry-header {
-	margin: var(--entry-header-margin, 0);
+	margin: var(--entry-header-margin, 0 0 var(--spacing-md));
 
-	&:not(:first-child) {
-		--entry-header-margin: var(--spacing-md) 0 0;
+	&:last-child {
+		--entry-header-margin: 0;
 	}
 }

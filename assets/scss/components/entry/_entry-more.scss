@@ -1,12 +1,12 @@
 .entry-more-link {
-	margin: var(--entry-more-link-margin, 0);
+	margin: var(--entry-more-link-margin, 0 0 var(--spacing-md));
 }
 
 .entry-more {
 	margin: var(--entry-more-margin, 0);
 
-	&:not(:first-child) .entry-more-link {
-		--entry-more-link-margin: var(--spacing-md) 0 0;
+	&:last-child .entry-more-link {
+		--entry-more-link-margin: 0;
 	}
 }
 

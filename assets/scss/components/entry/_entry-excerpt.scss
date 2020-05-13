@@ -1,10 +1,10 @@
 .entry-excerpt {
 	display: block;
 	width: 100%;
-	margin: var(--entry-excerpt-margin, unset);
+	margin: var(--entry-excerpt-margin, 0 0 var(--spacing-md));
 
-	&:not(:first-child) {
-		--entry-excerpt-margin: var(--spacing-md) 0 0;
+	&:last-child {
+		--entry-excerpt-margin: 0;
 	}
 }
 

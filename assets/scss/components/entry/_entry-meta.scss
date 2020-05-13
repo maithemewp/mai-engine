@@ -1,8 +1,4 @@
 .entry-meta {
-	margin: var(--entry-meta-margin, var(--paragraph-margin, 0));
+	margin: var(--entry-meta-margin, var(--paragraph-margin, 0 0 var(--spacing-xl)));
 	font-size: var(--entry-meta-font-size, var(--text-sm));
-
-	&:not(:first-child) {
-		--entry-meta-margin: var(--spacing-md) 0 0;
-	}
 }

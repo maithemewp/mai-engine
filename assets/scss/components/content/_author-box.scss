@@ -3,14 +3,11 @@
 	grid-column-gap: var(--spacing-lg);
 	grid-template-rows: 1fr;
 	grid-template-columns: auto 1fr;
+	margin: 0 0 var(--spacing-xxl);
 	padding: var(--spacing-xl);
 	border: var(--border);
 	border-radius: var(--border-radius);
 	box-shadow: var(--shadow);
-
-	&:not(:first-child) {
-		margin-top: var(--spacing-xl);
-	}
 
 	.avatar {
 		grid-row: 1/all;
