@@ -47,6 +47,25 @@ function mai_get_url() {
 }
 
 /**
+ * Gets the plugin basename.
+ *
+ * @since 1.0.0
+ *
+ * @return string
+ */
+function mai_get_base() {
+	static $base = null;
+
+	if ( is_null( $base ) ) {
+		$dir  = basename( dirname( dirname( __DIR__ ) ) );
+		$file = mai_get_handle() . '.php';
+		$base = $dir . DIRECTORY_SEPARATOR . $file;
+	}
+
+	return $base;
+}
+
+/**
  * Returns an array of plugin data from the main plugin file.
  *
  * @since 0.1.0
@@ -442,6 +461,7 @@ function mai_get_color_palette() {
 function mai_get_lighter_color( $color, $amount = 5 ) {
 	$color   = ariColor::newColor( $color );
 	$lighter = $color->getNew( 'lightness', $color->lightness + $amount );
+
 	return $lighter->toCSS( 'hex' );
 }
 
@@ -456,8 +476,9 @@ function mai_get_lighter_color( $color, $amount = 5 ) {
  * @return string
  */
 function mai_get_darker_color( $color, $amount = 5 ) {
-	$color   = ariColor::newColor( $color );
-	$darker  = $color->getNew( 'lightness', $color->lightness - $amount );
+	$color  = ariColor::newColor( $color );
+	$darker = $color->getNew( 'lightness', $color->lightness - $amount );
+
 	return $darker->toCSS( 'hex' );
 }
 
@@ -572,6 +593,7 @@ function mai_get_site_layout_choices() {
  */
 function mai_get_customizer_link( $name, $type = 'section', $url = '' ) {
 	$query[ 'autofocus[' . $type . ']' ] = $name;
+
 	if ( $url ) {
 		$query['url'] = esc_url( $url );
 	}
@@ -652,15 +674,16 @@ function mai_get_content_type_choices( $archive = false ) {
  */
 function mai_get_loop_content_type_choices( $archive = true ) {
 	$choices = mai_get_content_type_choices( $archive );
-	$default = [];
 	$feature = $archive ? 'mai-archive-settings' : 'mai-single-settings';
 
 	foreach ( $choices as $name => $label ) {
 		if ( post_type_exists( $name ) ) {
 			$post_type = get_post_type_object( $name );
+
 			if ( ! $post_type->_builtin && ! post_type_supports( $post_type->name, $feature ) ) {
 				unset( $choices[ $name ] );
 			}
+
 		} elseif ( taxonomy_exists( $name ) ) {
 			$taxonomy = get_taxonomy( $name );
 			/**
@@ -687,23 +710,27 @@ function mai_get_loop_content_type_choices( $archive = true ) {
  *
  * @param int|string $post_slug_or_id The post slug or ID.
  *
- * @return string|HTML
+ * @return string
  */
 function mai_get_post_content( $post_slug_or_id ) {
 	$content = false;
+
 	if ( is_numeric( $post_slug_or_id ) ) {
 		$content = get_post_field( 'post_content', $post_slug_or_id );
+
 	} else {
 		$post = get_page_by_path( $post_slug_or_id, OBJECT, 'wp_block' );
+
 		if ( $post ) {
 			$content = $post->post_content;
 		}
 	}
-	if ( ! $content ) {
-		return;
+
+	if ( $content ) {
+		$content = mai_get_processed_content( $content );
 	}
 
-	return mai_get_processed_content( $content );
+	return $content;
 }
 
 /**
@@ -713,14 +740,18 @@ function mai_get_post_content( $post_slug_or_id ) {
  *
  * Most of the order comes from /wp-includes/default-filters.php
  *
- * @since   0.3.0
+ * @since  0.3.0
  *
- * @param   string|HTML $content The unprocessed content.
+ * @param  string $content The unprocessed content.
  *
- * @return  string|HTML  The processed content.
+ * @return string  The processed content.
  */
 function mai_get_processed_content( $content ) {
+	/**
+	 * @var WP_Embed $wp_embed
+	 */
 	global $wp_embed;
+
 	$content = $wp_embed->autoembed( $content );              // WP runs priority 8.
 	$content = $wp_embed->run_shortcode( $content );          // WP runs priority 8.
 	$content = wptexturize( $content );                       // WP runs priority 10.
