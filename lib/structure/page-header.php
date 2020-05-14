@@ -58,52 +58,14 @@ function mai_page_header_setup() {
 
 add_action( 'mai_before_page-header_wrap', 'mai_do_page_header_image' );
 /**
- * Description of expected behavior.
+ * Display the page header image.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
 function mai_do_page_header_image() {
-	$image_id = '';
-
-	if ( mai_is_type_single() ) {
-		$image_id = get_post_meta( get_the_ID(), 'page_header_image', true );
-
-	} elseif ( is_front_page() ) {
-		$image_id = '';
-
-		if ( 'page' === get_option( 'show_on_front' ) ) {
-			$image_id = get_post_meta( get_option( 'page_on_front' ), 'page_header_image', true );
-		}
-	} elseif ( is_home() ) {
-		$image_id = get_post_meta( get_option( 'page_for_posts' ), 'page_header_image', true );
-
-	} elseif ( mai_is_type_archive() ) {
-		if ( is_category() || is_tag() || is_tax() ) {
-			global $wp_query;
-
-			$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
-
-			if ( $term ) {
-				$image_id = get_term_meta( $term->term_id, 'page_header_image', true );
-			}
-		}
-	}
-
-	if ( ! $image_id ) {
-		$args = mai_get_template_args();
-
-		if ( isset( $args['page-header-image'] ) && ! empty( $args['page-header-image'] ) ) {
-			$image_id = $args['page-header-image'];
-		}
-	}
-
-	if ( ! $image_id && mai_get_option( 'page-header-image' ) ) {
-		$image_id = mai_get_option( 'page-header-image' );
-	}
-
-	$image_id = apply_filters( 'mai_page_header_image', $image_id );
+	$image_id = mai_get_page_header_image_id();
 
 	if ( $image_id ) {
 		echo mai_get_cover_image_html( $image_id, [ 'class' => 'page-header-image' ] );
@@ -112,13 +74,17 @@ function mai_do_page_header_image() {
 
 add_action( 'mai_before_page-header_wrap', 'mai_do_page_header_overlay' );
 /**
- * Description of expected behavior.
+ * Display the page header overlay if there is a page header image.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
 function mai_do_page_header_overlay() {
+	if ( ! mai_get_page_header_image_id() ) {
+		return;
+	}
+
 	genesis_markup(
 		[
 			'open'    => '<div %s>',
@@ -141,70 +107,7 @@ function mai_do_page_header_title() {
 		return;
 	}
 
-	$title = '';
-
-	if ( is_singular() ) {
-		$title = get_the_title();
-
-	} elseif ( is_front_page() ) {
-		$title = apply_filters( 'genesis_latest_posts_title', esc_html__( 'Latest Posts', 'mai-engine' ) );
-
-	} elseif ( is_home() ) {
-		$title = get_the_title( get_option( 'page_for_posts' ) );
-
-	} elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
-		$title = get_the_title( wc_get_page_id( 'shop' ) );
-
-	} elseif ( is_post_type_archive() && genesis_has_post_type_archive_support( mai_get_post_type() ) ) {
-		$title = genesis_get_cpt_option( 'headline' );
-
-		if ( ! $title ) {
-			$title = post_type_archive_title( '', false );
-		}
-	} elseif ( is_category() || is_tag() || is_tax() ) {
-
-		/**
-		 * WP Query.
-		 *
-		 * @var WP_Query $wp_query WP Query object.
-		 */
-		global $wp_query;
-
-		$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
-
-		if ( $term ) {
-			$title = get_term_meta( $term->term_id, 'headline', true );
-
-			if ( ! $title ) {
-				$title = $term->name;
-			}
-		}
-	} elseif ( is_search() ) {
-		$title = apply_filters( 'genesis_search_title_text', esc_html__( 'Search results for: ', 'mai-engine' ) . get_search_query() );
-
-	} elseif ( is_author() ) {
-		$title = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
-
-		if ( ! $title ) {
-			$title = get_the_author_meta( 'display_name', (int) get_query_var( 'author' ) );
-		}
-	} elseif ( is_date() ) {
-		$title = __( 'Archives for ', 'mai-engine' );
-
-		if ( is_day() ) {
-			$title .= get_the_date();
-
-		} elseif ( is_month() ) {
-			$title .= single_month_title( ' ', false );
-
-		} elseif ( is_year() ) {
-			$title .= get_query_var( 'year' );
-		}
-	} elseif ( is_404() ) {
-		$title = apply_filters( 'genesis_404_entry_title', esc_html__( 'Not found, error 404', 'mai-engine' ) );
-	}
-
-	$title = apply_filters( 'mai_page_header_title', $title );
+	$title = mai_get_page_header_title();
 
 	if ( $title ) {
 		genesis_markup(
@@ -231,57 +134,7 @@ function mai_do_page_header_description() {
 		return;
 	}
 
-	$description = '';
-
-	if ( is_singular() ) {
-		$description = get_post_meta( get_the_ID(), 'page_header_description', true );
-
-	} elseif ( is_front_page() ) {
-		$description = '';
-
-	} elseif ( is_home() ) {
-		$description = get_post_meta( get_option( 'page_for_posts' ), 'page_header_description', true );
-
-	} elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
-		$description = get_post_meta( wc_get_page_id( 'shop' ), 'page_header_description', true );
-
-	} elseif ( is_post_type_archive() && genesis_has_post_type_archive_support( mai_get_post_type() ) ) {
-		$description = genesis_get_cpt_option( 'intro_text' );
-		$description = apply_filters( 'genesis_cpt_archive_intro_text_output', $description ? $description : '' );
-
-	} elseif ( is_category() || is_tag() || is_tax() ) {
-
-		/**
-		 * WP Query.
-		 *
-		 * @var WP_Query $wp_query WP Query object.
-		 */
-		global $wp_query;
-
-		$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
-
-		if ( $term ) {
-			$description = get_term_meta( $term->term_id, 'page_header_description', true );
-			$description = apply_filters( 'genesis_term_intro_text_output', $description ? $description : '' );
-		}
-	} elseif ( is_search() ) {
-		$description = apply_filters( 'genesis_search_title_text', esc_html__( 'Search results for: ', 'mai-engine' ) . get_search_query() );
-
-	} elseif ( is_author() ) {
-		$description = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
-		$description = apply_filters( 'genesis_author_intro_text_output', $description ? $description : '' );
-
-		if ( ! $description ) {
-			$description = get_the_author_meta( 'display_name', (int) get_query_var( 'author' ) );
-		}
-	} elseif ( is_date() ) {
-
-		$description = '';
-	} elseif ( is_404() ) {
-		$description = '';
-	}
-
-	$description = apply_filters( 'mai_page_header_description', $description );
+	$description = mai_get_page_header_description();
 
 	if ( $description ) {
 		genesis_markup(
@@ -316,7 +169,7 @@ add_filter( 'genesis_structural_wrap-page-header', 'mai_page_header_divider', 10
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param $output
  * @param $original_output
@@ -324,25 +177,23 @@ add_filter( 'genesis_structural_wrap-page-header', 'mai_page_header_divider', 10
  * @return string
  */
 function mai_page_header_divider( $output, $original_output ) {
-	$style = mai_get_option( 'page-header-divider', 'none' );
+	$style = mai_get_option( 'page-header-divider', mai_get_config( 'page-header')['divider'] );
 
-	if ( 'none' === $style ) {
+	if ( ! $style ) {
 		return $output;
 	}
 
 	if ( 'close' === $original_output ) {
-		$color = mai_get_option( 'page-header-divider-color', mai_get_color( 'lightest' ) );
-
 		$args = [
-			'style'           => $style,
-			'height'          => 'md',
-			'flip_vertical'   => false,
-			'flip_horizontal' => false,
-			'color'           => false,
-			'class'           => false,
+			'style'            => $style,
+			'color'            => mai_get_option( 'page-header-divider-color', mai_get_color( 'lightest' ) ),
+			'flip_horizontal'  => mai_get_option( 'page-header-divider-flip-horizontal', mai_get_config( 'page-header')['divider-flip-horizontal'] ),
+			'flip_vertical'    => mai_get_option( 'page-header-divider-flip-vertical', mai_get_config( 'page-header')['divider-flip-vertical'] ),
+			'height'           => 'md',
+			'class'            => 'page-header-divider',
 		];
 
-		$output .= str_replace( 'currentColor', $color, mai_get_divider( $args ) );
+		$output .= mai_get_divider( $args );
 	}
 
 	return $output;

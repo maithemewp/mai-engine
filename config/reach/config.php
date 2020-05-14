@@ -24,8 +24,12 @@ return [
 		],
 	],
 	'page-header'      => [
-		'archive' => '*',
-		'single'  => '*',
+		'archive'                 => '*',
+		'single'                  => '*',
+		'background-color'        => mai_get_color( 'primary' ),
+		'text-color'              => 'light',
+		'divider'                 => 'curve',
+		'divider-flip-horizontal' => true,
 	],
 	'plugins'          => [
 		[

@@ -577,8 +577,23 @@ return [
 	*/
 
 	'page-header' => [
-		'archive' => [],
-		'single'  => [],
+		'archive'                 => [],
+		'single'                  => [],
+		'background-color'        => mai_get_color( 'medium' ),
+		'image'                   => '',
+		'overlay-opacity'         => '0.5',
+		'text-color'              => 'dark',
+		'spacing'                 => [
+			'top'    => '10vw',
+			'bottom' => '10vw',
+		],
+		'text-align'              => '',
+		'divider'                 => '',
+		'divider-color'           => mai_get_color( 'lightest' ),
+		'divider-flip-horizontal' => false,
+		'divider-flip-vertical'   => false,
+		'divider-overlay-opacity' => 0.5,
+		'divider-text-align'      => '',
 	],
 
 	/*

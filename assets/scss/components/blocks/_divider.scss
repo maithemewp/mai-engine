@@ -5,7 +5,7 @@
 	display: block;
 	width: var(--divider-width, var(--alignfull-width, auto));
 	height: var(--divider-height, calc(4rem + 4vw)) !important;
-	background: transparent;
+	background: var(--divider-background-color, transparent);
 
 	.wp-block-cover &,
 	.wp-block-group & {
@@ -19,6 +19,7 @@
 	width: 100%;
 	// extra height and negative px to fix subpixel gap.
 	height: calc(100% + 2px);
-	margin: -1px 0 0 !important;
+	margin: -2px !important;
 	color: var(--divider-color, currentColor);
+	background-color: transparent;
 }

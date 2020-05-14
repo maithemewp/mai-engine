@@ -1,6 +1,6 @@
 .site-footer {
 	width: 100%;
 	margin-top: auto;
-	background-color: var(--color-lightest);
+	background: var(--site-footer-background, var(--color-lightest));
 	border-top: var(--border);
 }

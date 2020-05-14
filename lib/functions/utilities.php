@@ -578,9 +578,161 @@ function mai_get_page_header_image_id() {
 		$image_id = mai_get_option( 'page-header-image' );
 	}
 
+	if ( ! $image_id && mai_get_config( 'page-header' )['image'] ) {
+		$image_id = mai_get_option( 'page-header-image' );
+	}
+
+
 	$image_id = apply_filters( 'mai_page_header_image', $image_id );
 
 	return $image_id;
+}
+
+/**
+ * Get the page header title.
+ *
+ * @since 0.3.0
+ *
+ * @return string
+ */
+function mai_get_page_header_title() {
+	static $title = null;
+
+	if ( ! is_null( $title ) ) {
+		return $title;
+	}
+
+	if ( is_singular() ) {
+		$title = get_the_title();
+
+	} elseif ( is_front_page() ) {
+		$title = apply_filters( 'genesis_latest_posts_title', esc_html__( 'Latest Posts', 'mai-engine' ) );
+
+	} elseif ( is_home() ) {
+		$title = get_the_title( get_option( 'page_for_posts' ) );
+
+	} elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
+		$title = get_the_title( wc_get_page_id( 'shop' ) );
+
+	} elseif ( is_post_type_archive() && genesis_has_post_type_archive_support( mai_get_post_type() ) ) {
+		$title = genesis_get_cpt_option( 'headline' );
+
+		if ( ! $title ) {
+			$title = post_type_archive_title( '', false );
+		}
+	} elseif ( is_category() || is_tag() || is_tax() ) {
+
+		/**
+		 * WP Query.
+		 *
+		 * @var WP_Query $wp_query WP Query object.
+		 */
+		global $wp_query;
+
+		$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
+
+		if ( $term ) {
+			$title = get_term_meta( $term->term_id, 'headline', true );
+
+			if ( ! $title ) {
+				$title = $term->name;
+			}
+		}
+	} elseif ( is_search() ) {
+		$title = apply_filters( 'genesis_search_title_text', esc_html__( 'Search results for: ', 'mai-engine' ) . get_search_query() );
+
+	} elseif ( is_author() ) {
+		$title = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
+
+		if ( ! $title ) {
+			$title = get_the_author_meta( 'display_name', (int) get_query_var( 'author' ) );
+		}
+	} elseif ( is_date() ) {
+		$title = __( 'Archives for ', 'mai-engine' );
+
+		if ( is_day() ) {
+			$title .= get_the_date();
+
+		} elseif ( is_month() ) {
+			$title .= single_month_title( ' ', false );
+
+		} elseif ( is_year() ) {
+			$title .= get_query_var( 'year' );
+		}
+	} elseif ( is_404() ) {
+		$title = apply_filters( 'genesis_404_entry_title', esc_html__( 'Not found, error 404', 'mai-engine' ) );
+	}
+
+	$title = apply_filters( 'mai_page_header_title', $title );
+
+	return $title;
+}
+
+/**
+ * Get the page header description.
+ *
+ * @since 0.3.0
+ *
+ * @return string
+ */
+function mai_get_page_header_description() {
+	static $description = null;
+
+	if ( ! is_null( $description ) ) {
+		return $description;
+	}
+
+	if ( is_singular() ) {
+		$description = get_post_meta( get_the_ID(), 'page_header_description', true );
+
+	} elseif ( is_front_page() ) {
+		$description = '';
+
+	} elseif ( is_home() ) {
+		$description = get_post_meta( get_option( 'page_for_posts' ), 'page_header_description', true );
+
+	} elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
+		$description = get_post_meta( wc_get_page_id( 'shop' ), 'page_header_description', true );
+
+	} elseif ( is_post_type_archive() && genesis_has_post_type_archive_support( mai_get_post_type() ) ) {
+		$description = genesis_get_cpt_option( 'intro_text' );
+		$description = apply_filters( 'genesis_cpt_archive_intro_text_output', $description ? $description : '' );
+
+	} elseif ( is_category() || is_tag() || is_tax() ) {
+
+		/**
+		 * WP Query.
+		 *
+		 * @var WP_Query $wp_query WP Query object.
+		 */
+		global $wp_query;
+
+		$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
+
+		if ( $term ) {
+			$description = get_term_meta( $term->term_id, 'page_header_description', true );
+			$description = apply_filters( 'genesis_term_intro_text_output', $description ? $description : '' );
+		}
+	} elseif ( is_search() ) {
+		$description = apply_filters( 'genesis_search_title_text', esc_html__( 'Search results for: ', 'mai-engine' ) . get_search_query() );
+
+	} elseif ( is_author() ) {
+		$description = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
+		$description = apply_filters( 'genesis_author_intro_text_output', $description ? $description : '' );
+
+		if ( ! $description ) {
+			$description = get_the_author_meta( 'display_name', (int) get_query_var( 'author' ) );
+		}
+	} elseif ( is_date() ) {
+
+		$description = '';
+	} elseif ( is_404() ) {
+		$description = '';
+	}
+
+	$description = apply_filters( 'mai_page_header_description', $description );
+
+	return $description;
 }
 
 /**

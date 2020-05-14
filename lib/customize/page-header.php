@@ -14,7 +14,7 @@ add_action( 'init', 'mai_page_header_customizer_settings' );
  * Add page header customizer fields.
  * This needs to be on 'init' so custom post types and custom taxonomies are available.
  *
- * @since 1.0.0
+ * @since 0.3.0
  *
  * @return void
  */
@@ -26,15 +26,6 @@ function mai_page_header_customizer_settings() {
 	$singles         = mai_get_content_type_choices( $archive = false );
 	$archive_default = [];
 	$single_default  = [];
-	$defaults        = [
-		'divider'         => 'none',
-		'overlay-opacity' => 0.5,
-		'text-align'      => '',
-		'spacing'         => [
-			'top'    => '',
-			'bottom' => '',
-		],
-	];
 
 	if ( isset( $config['archive'] ) && ! empty( $config['archive'] && is_array( $config['archive'] ) ) ) {
 		$archive_default = $config['archive'];
@@ -101,7 +92,7 @@ function mai_page_header_customizer_settings() {
 			'section'     => $section,
 			'label'       => __( 'Vertical Spacing', 'mai-engine' ),
 			'description' => __( 'Accepts all unit values (px, rem, em, vw, etc).', 'mai-engine' ),
-			'default'     => $defaults['spacing'],
+			'default'     => $config['spacing'],
 			'choices'     => [
 				'top'    => __( 'Top', 'mai-engine' ),
 				'bottom' => __( 'Bottom', 'mai-engine' ),
@@ -111,17 +102,11 @@ function mai_page_header_customizer_settings() {
 					'choice'   => 'top',
 					'element'  => ':root',
 					'property' => '--page-header-padding-top',
-					'exclude'  => [
-						$defaults['spacing']['top'],
-					],
 				],
 				[
 					'choice'   => 'bottom',
 					'element'  => ':root',
 					'property' => '--page-header-padding-bottom',
-					'exclude'  => [
-						$defaults['spacing']['bottom'],
-					],
 				],
 			],
 			'input_attrs' => [
@@ -137,7 +122,7 @@ function mai_page_header_customizer_settings() {
 			'settings' => 'page-header-text-align',
 			'section'  => $section,
 			'label'    => __( 'Text Alignment', 'mai-engine' ),
-			'default'  => $defaults['text-align'],
+			'default'  => $config['text-align'],
 			'choices'  => [
 				'start'  => __( 'Start', 'mai-engine' ),
 				'center' => __( 'Center', 'mai-engine' ),
@@ -156,16 +141,14 @@ function mai_page_header_customizer_settings() {
 	\Kirki::add_field(
 		$handle,
 		[
-			'type'     => 'select',
-			'settings' => 'page-header-divider',
-			'section'  => $section,
-			'label'    => __( 'Divider style', 'mai-engine' ),
-			'default'  => $defaults['divider'],
-			'choices'  => [
-				'none'  => __( 'None', 'mai-engine' ),
-				'angle' => __( 'Angle', 'mai-engine' ),
-				'curve' => __( 'Curve', 'mai-engine' ),
-				'wave'  => __( 'Wave', 'mai-engine' ),
+			'type'        => 'image',
+			'settings'    => 'page-header-image',
+			'section'     => $section,
+			'label'       => __( 'Default image', 'mai-engine' ),
+			'description' => __( 'This can be overridden on a per post basis.', 'mai-engine' ),
+			'default'     => $config['image'],
+			'choices'     => [
+				'save_as' => 'id',
 			],
 		]
 	);
@@ -174,18 +157,17 @@ function mai_page_header_customizer_settings() {
 		$handle,
 		[
 			'type'            => 'color',
-			'settings'        => 'page-header-divider-color',
+			'settings'        => 'page-header-background-color',
 			'section'         => $section,
-			'label'           => esc_html__( 'Divider color', 'mai-engine' ),
-			'default'         => mai_get_color( 'lightest' ),
+			'label'           => esc_html__( 'Default background color', 'mai-engine' ),
+			'default'         => $config['background-color'],
 			'choices'         => [
 				'palettes' => array_values( mai_get_colors() ),
 			],
-			'active_callback' => [
+			'output'          => [
 				[
-					'setting'  => 'page-header-divider',
-					'operator' => '!==',
-					'value'    => 'none',
+					'element'  => '.page-header',
+					'property' => '--page-header-background-color',
 				],
 			],
 		]
@@ -195,10 +177,10 @@ function mai_page_header_customizer_settings() {
 		$handle,
 		[
 			'type'     => 'slider',
-			'settings' => 'page-header-overlay-opacity',
+			'settings' => 'overlay-opacity',
 			'section'  => $section,
 			'label'    => __( 'Overlay opacity', 'mai-engine' ),
-			'default'  => $defaults['overlay-opacity'],
+			'default'  => $config['overlay-opacity'],
 			'choices'  => [
 				'min'  => 0,
 				'max'  => 1,
@@ -208,25 +190,14 @@ function mai_page_header_customizer_settings() {
 				[
 					'element'  => '.page-header-overlay',
 					'property' => 'opacity',
-					'exclude'  => [
-						$defaults['overlay-opacity'],
-					],
 				],
 			],
-		]
-	);
-
-	\Kirki::add_field(
-		$handle,
-		[
-			'type'        => 'image',
-			'settings'    => 'page-header-image',
-			'section'     => $section,
-			'label'       => __( 'Default Image', 'mai-engine' ),
-			'description' => __( 'This can be overridden on a per post basis.', 'mai-engine' ),
-			'default'     => '',
-			'choices'     => [
-				'save_as' => 'id',
+			'active_callback' => [
+				[
+					'setting'  => 'page-header-image',
+					'operator' => '!==',
+					'value'    => '',
+				],
 			],
 		]
 	);
@@ -238,10 +209,109 @@ function mai_page_header_customizer_settings() {
 			'section'  => $section,
 			'label'    => esc_html__( 'Default text color', 'mai-engine' ),
 			'type'     => 'radio-buttonset',
-			'default'  => 'light',
+			'default'  => $config['text-color'],
 			'choices'  => [
 				'light' => __( 'Light', 'mai-engine' ),
 				'dark'  => __( 'Dark', 'mai-engine' ),
+			],
+		]
+	);
+
+	\Kirki::add_field(
+		$handle,
+		[
+			'type'     => 'select',
+			'settings' => 'page-header-divider',
+			'section'  => $section,
+			'label'    => __( 'Divider style', 'mai-engine' ),
+			'default'  => $config['divider'],
+			'choices'  => [
+				''      => __( 'None', 'mai-engine' ),
+				'angle' => __( 'Angle', 'mai-engine' ),
+				'curve' => __( 'Curve', 'mai-engine' ),
+				'point' => __( 'Point', 'mai-engine' ),
+				'round' => __( 'Round', 'mai-engine' ),
+				'wave'  => __( 'Wave', 'mai-engine' ),
+			],
+		]
+	);
+
+	\Kirki::add_field(
+		$handle,
+		[
+			'type'            => 'toggle',
+			'settings'        => 'page-header-divider-flip-horizontal',
+			'section'         => $section,
+			'label'           => __( 'Flip divider horizontally', 'mai-engine' ),
+			'default'         => $config['divider-flip-horizontal'],
+			'active_callback' => [
+				[
+					'setting'  => 'page-header-divider',
+					'operator' => '!==',
+					'value'    => '',
+				],
+				[
+					'setting'  => 'page-header-divider',
+					'operator' => '!==',
+					'value'    => 'point',
+				],
+				[
+					'setting'  => 'page-header-divider',
+					'operator' => '!==',
+					'value'    => 'round',
+				],
+			],
+		]
+	);
+
+	\Kirki::add_field(
+		$handle,
+		[
+			'type'            => 'toggle',
+			'settings'        => 'page-header-divider-flip-vertical',
+			'section'         => $section,
+			'label'           => __( 'Flip divider vertically', 'mai-engine' ),
+			'default'         => $config['divider-flip-vertical'],
+			'active_callback' => [
+				[
+					'setting'  => 'page-header-divider',
+					'operator' => '!==',
+					'value'    => '',
+				],
+				[
+					'setting'  => 'page-header-divider',
+					'operator' => '!==',
+					'value'    => 'angle',
+				],
+				[
+					'setting'  => 'page-header-divider',
+					'operator' => '!==',
+					'value'    => 'wave',
+				],
+			],
+		]
+	);
+
+	\Kirki::add_field(
+		$handle,
+		[
+			'type'            => 'color',
+			'settings'        => 'page-header-divider-color',
+			'section'         => $section,
+			'label'           => esc_html__( 'Divider color', 'mai-engine' ),
+			'description'     => esc_html__( 'Leave blank to show the page header background', 'mai-engine' ),
+			'default'         => $config[ 'divider-color' ],
+			'choices'         => [
+				'palettes' => array_values( mai_get_colors() ),
+			],
+			'active_callback' => [
+				[
+					[
+						'setting'  => 'page-header-divider',
+						'operator' => '!==',
+						'value'    => '',
+					],
+				]
 			],
 		]
 	);

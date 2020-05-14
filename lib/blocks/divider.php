@@ -62,7 +62,7 @@ function mai_do_divider_block( $block, $content = '', $is_preview = false, $post
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.3.0
  *
  * @param $atts
  *
@@ -75,7 +75,7 @@ function mai_do_divider( $atts ) {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.3.0
  *
  * @param array $atts
  *
@@ -83,28 +83,44 @@ function mai_do_divider( $atts ) {
  */
 function mai_get_divider( $atts = [] ) {
 	$atts = wp_parse_args( $atts, [
-		'style'           => 'angle',
-		'height'          => 'md',
-		'flip_vertical'   => false,
-		'flip_horizontal' => false,
-		'color'           => mai_get_color( 'primary' ),
-		'class'           => '',
+		'style'            => 'angle',
+		'height'           => 'md',
+		'flip_horizontal'  => false,
+		'flip_vertical'    => false,
+		'background_color' => 'transparent',
+		'color'            => mai_get_color( 'primary' ),
+		'class'            => '',
 	] );
 
-	$file = mai_get_svg( 'divider-' . $atts['style'], 'mai-divider-svg' );
+	$atts = [
+		'style'            => esc_html( $atts['style'] ),
+		'height'           => esc_html( $atts['height'] ),
+		'flip_horizontal'  => mai_sanitize_bool( $atts['flip_horizontal'] ),
+		'flip_vertical'    => mai_sanitize_bool( $atts['flip_vertical'] ),
+		'background_color' => esc_html( $atts['background_color'] ),
+		'color'            => esc_html( $atts['color'] ),
+		'class'            => sanitize_html_class( $atts['class'] ),
+	];
+
+	$flipping_horizontal = $atts['flip_horizontal'] && ! in_array( $atts['style'], [ 'point', 'round' ] );
+	$flipping_vertical   = $atts['flip_vertical'] && ! in_array( $atts['style'], [ 'angle', 'wave' ] );
+
+	$file_name = 'divider-' . $atts['style'];
+
+	if ( $flipping_vertical ) {
+		$file_name .= '-inverted';
+	}
+
+	$file = mai_get_svg( $file_name, 'mai-divider-svg' );
 
 	if ( ! $file ) {
 		return '';
 	}
 
-	$atts = [
-		'style'           => esc_html( $atts['style'] ),
-		'height'          => esc_html( $atts['height'] ),
-		'flip_vertical'   => mai_sanitize_bool( $atts['flip_vertical'] ),
-		'flip_horizontal' => mai_sanitize_bool( $atts['flip_horizontal'] ),
-		'color'           => esc_html( $atts['color'] ),
-		'class'           => sanitize_html_class( $atts['class'] ),
-	];
+	$atts['background_color'] = trim( $atts['background_color'] );
+	$atts['background_color'] = $atts['background_color'] ?: 'transparent';
+	$atts['color']            = trim( $atts['color'] );
+	$atts['color']            = $atts['color'] ?: 'transparent';
 
 	$colors     = array_flip( mai_get_colors() );
 	$attributes = [
@@ -116,6 +132,12 @@ function mai_get_divider( $atts = [] ) {
 		$attributes['class'] .= sprintf( ' has-%s-color', $colors[ $atts['color'] ] );
 	} else {
 		$attributes['style'] .= sprintf( '--divider-color:%s;', $atts['color'] );
+	}
+
+	if ( isset( $colors[ $atts['background_color'] ] ) ) {
+		$attributes['class'] .= sprintf( ' has-%s-background-color', $colors[ $atts['background_color'] ] );
+	} else {
+		$attributes['style'] .= sprintf( '--divider-background-color:%s;', $atts['background_color'] );
 	}
 
 	if ( $atts['height'] ) {
@@ -141,11 +163,11 @@ function mai_get_divider( $atts = [] ) {
 		$attributes['style'] .= sprintf( '--divider-height:%s;', $height );
 	}
 
-	if ( $atts['flip_vertical'] ) {
+	if ( $flipping_vertical ) {
 		$attributes['class'] .= ' flip-vertical';
 	}
 
-	if ( $atts['flip_horizontal'] ) {
+	if ( $flipping_horizontal ) {
 		$attributes['class'] .= ' flip-horizontal';
 	}
 

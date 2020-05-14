@@ -8,6 +8,7 @@
 	--menu-toggle-icon-background: var(--color-lightest);
 	--menu-toggle-line-background: var(--color-lightest);
 	--content-sidebar-wrap-margin-top: var(--spacing-xxl);
+	--site-footer-background: var(--color-lighter);
 }
 
 .has-boxed {
@@ -32,6 +33,10 @@ textarea {
 	}
 }
 
+.page-header {
+	--heading-color: var(--color-lightest);
+}
+
 .has-transparent-header {
 
 	.site-title-link,
@@ -40,18 +45,13 @@ textarea {
 		color: var(--color-lightest);
 	}
 
-	.page-header {
-		--heading-color: var(--color-lightest);
-	}
-
-	.page-header-overlay {
-		background-color: var(--color-primary);
-		opacity: 1;
-	}
+	// .page-header-overlay {
+	// 	background-color: var(--color-primary);
+	// 	opacity: 1;
+	// }
 }
 
 .site-footer {
-	background-color: var(--color-lighter);
 	border: 0;
 }
 
