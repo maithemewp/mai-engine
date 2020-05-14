@@ -231,47 +231,7 @@ function mai_get_config( $sub_config = 'default' ) {
  * @return string
  */
 function mai_get_active_theme() {
-	static $theme = null;
-
-	if ( is_null( $theme ) ) {
-		if ( ! $theme ) {
-			$theme = get_theme_support( mai_get_handle() )[0];
-		}
-
-		if ( ! $theme ) {
-			$theme = genesis_get_theme_handle();
-		}
-
-		if ( ! $theme ) {
-			$theme = wp_get_theme()->get( 'TextDomain' );
-		}
-
-		$theme = str_replace( 'mai-', '', $theme );
-
-		if ( ! $theme || ! in_array( $theme, mai_get_child_themes(), true ) ) {
-			$theme = 'default';
-		}
-	}
-
-	return $theme;
-}
-
-/**
- * Returns an array of all BizBudding child themes.
- *
- * @since 0.1.0
- *
- * @return array
- */
-function mai_get_child_themes() {
-	$child_themes = [];
-	$files        = glob( mai_get_dir() . 'config/*', GLOB_ONLYDIR );
-
-	foreach ( $files as $file ) {
-		$child_themes[] = basename( $file, '.php' );
-	}
-
-	return $child_themes;
+	return apply_filters( 'mai_active_theme', mai_engine_support() );
 }
 
 /**

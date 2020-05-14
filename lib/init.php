@@ -9,6 +9,84 @@
  * @license   GPL-2.0-or-later
  */
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return bool|string
+ */
+function mai_engine_support() {
+	static $theme = null;
+
+	if ( is_null( $theme ) ) {
+		$theme = get_theme_support( 'mai-engine' )[0];
+
+		if ( ! $theme ) {
+			$theme = defined( 'CHILD_THEME_NAME' ) ? CHILD_THEME_NAME : null;
+		}
+
+		if ( ! $theme ) {
+			$theme = wp_get_theme()->get( 'Name' );
+		}
+
+		if ( ! $theme ) {
+			$theme = wp_get_theme()->get( 'TextDomain' );
+		}
+
+		if ( ! $theme ) {
+			$theme = basename( get_stylesheet_directory() );
+		}
+
+		$configs = glob( dirname( __DIR__ ) . '/config/*', GLOB_ONLYDIR );
+		$themes  = [];
+		$theme   = str_replace( 'mai-', '', sanitize_title_with_dashes( $theme ) );
+
+		foreach ( $configs as $config ) {
+			$themes[] = basename( $config, '.php' );
+		}
+
+		if ( ! in_array( $theme, $themes, true ) ) {
+			$theme = 'default';
+		}
+	}
+
+	return $theme;
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function mai_deactivate_plugin() {
+	deactivate_plugins( basename( dirname( __DIR__ ) ) . '/mai-engine.php' );
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function mai_deactivate_plugin_notice() {
+	printf(
+		'<div class="notice notice-error is-dismissible"><p>%s%s%s%s%s</p></div>',
+		__( 'Your theme does not support the ', 'mai-engine' ),
+		'Mai Engine',
+		__( ' plugin. As a result, ', 'mai-engine' ),
+		'Mai Engine',
+		__( ' has been deactivated.', 'mai-engine' )
+	);
+
+	if ( isset( $_GET['activate'] ) ) {
+		unset( $_GET['activate'] );
+	}
+}
+
 add_action( 'setup_theme', 'mai_load_genesis', 100 );
 /**
  * Starts the engine.
@@ -58,7 +136,26 @@ add_action( 'after_setup_theme', 'mai_load_files', 0 );
  * @return void
  */
 function mai_load_files() {
+	$deactivate = true;
+
+	if ( current_theme_supports( 'mai-engine' ) ) {
+		$deactivate = false;
+	}
+
+	if ( mai_engine_support() && 'default' !== mai_engine_support() ) {
+		$deactivate = false;
+	}
+
 	if ( ! function_exists( 'genesis' ) ) {
+		$deactivate = true;
+	}
+
+	if ( $deactivate && current_user_can( 'activate_plugins' ) ) {
+		add_action( 'admin_init', 'mai_deactivate_plugin' );
+		add_action( 'admin_notices', 'mai_deactivate_plugin_notice' );
+	}
+
+	if ( $deactivate ) {
 		return;
 	}
 
@@ -108,9 +205,6 @@ function mai_load_files() {
 		'blocks/grid',
 		'blocks/heading',
 		'blocks/icon',
-
-		// Shortcodes.
-		'shortcodes/icon',
 
 		// Widgets.
 		'widgets/reusable-block',
