@@ -167,11 +167,12 @@ function mai_admin_bar_inline_styles() {
 	}
 
 	$css = <<<EOT
-body.admin-bar {
-	@media (max-width: 782px) {
+@media (max-width: 782px) {
+	body.admin-bar {
 		min-height: calc(100vh - 46px);
 	}
-	@media (min-width: 783px) {
+@media (min-width: 783px) {
+	body.admin-bar {
 		min-height: calc(100vh - 32px);
 	}
 }
