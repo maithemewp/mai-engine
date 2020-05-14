@@ -12,7 +12,7 @@
 	border-bottom: var(--page-header-border-bottom, var(--border));
 
 	--wrap-position: relative;
-	--wrap-justify-content: center;
+	--wrap-justify-content: var(--page-header-text-align, center);
 	--divider-position: absolute;
 	--divider-width: 100%;
 	--divider-bottom: 0;
@@ -47,6 +47,7 @@
 
 .page-header-description {
 	margin: var(--page-header-description-margin, 0 0 var(--spacing-md));
+	font-size: var(--page-header-font-size, var(--text-lg));
 
 	&:last-child {
 		--page-header-description-margin: 0;

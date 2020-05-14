@@ -703,7 +703,6 @@ return [
 		'type'       => 'post_object',
 		'sanitize'   => 'absint',
 		'default'    => '',
-		// 'choices'    => 'mai_get_acf_post_choices',
 		'conditions' => [
 			[
 				'field'    => 'field_5df1053632ca2', // Post_type.
