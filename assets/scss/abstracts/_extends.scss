@@ -41,12 +41,13 @@
 	@if ("outline" == $style) {
 		color: var(--button-outline-color, var(--color-primary));
 		background: var(--button-outline-background, transparent);
-		border: 2px solid currentColor;
+		border: 2px solid var(--button-outline-border-color, currentColor);
 
 		&:hover,
 		&:focus {
 			--button-overlay-opacity: 0;
-
+			--button-outline-border-color: var(--button-outline-background-hover, var(--color-primary));
+			// TODO: This still needs work. Hover should use
 			color: var(--button-outline-color-hover, var(--color-lightest));
 			background: var(--button-outline-background-hover, var(--color-primary));
 		}
