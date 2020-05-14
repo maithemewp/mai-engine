@@ -147,7 +147,7 @@ function mai_header_section_class( $atts ) {
  */
 add_filter( 'genesis_attr_site-title', 'mai_hide_site_title' );
 function mai_hide_site_title( $attributes ) {
-	if ( ! get_custom_logo() ) {
+	if ( ! has_custom_logo() ) {
 		return $attributes;
 	}
 	$attributes['class'] .= ' screen-reader-text';
@@ -168,7 +168,7 @@ function mai_hide_site_title( $attributes ) {
  */
 add_filter( 'genesis_attr_site-description', 'mai_hide_site_description' );
 function mai_hide_site_description( $attributes ) {
-	if ( ! get_custom_logo() ) {
+	if ( ! has_custom_logo() ) {
 		return $attributes;
 	}
 	$attributes['class'] .= ' screen-reader-text';
