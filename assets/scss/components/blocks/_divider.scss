@@ -16,10 +16,10 @@
 
 .mai-divider-svg {
 	display: block;
-	width: 100%;
-	// extra height and negative px to fix subpixel gap.
+	// extra width/height and negative px to fix subpixel gap.
+	width: calc(100% + 2px);
 	height: calc(100% + 2px);
-	margin: -2px !important;
+	margin: -1px !important;
 	color: var(--divider-color, currentColor);
 	background-color: transparent;
 }

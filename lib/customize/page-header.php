@@ -156,15 +156,15 @@ function mai_page_header_customizer_settings() {
 	\Kirki::add_field(
 		$handle,
 		[
-			'type'            => 'color',
-			'settings'        => 'page-header-background-color',
-			'section'         => $section,
-			'label'           => esc_html__( 'Default background color', 'mai-engine' ),
-			'default'         => $config['background-color'],
-			'choices'         => [
+			'type'     => 'color',
+			'settings' => 'page-header-background-color',
+			'section'  => $section,
+			'label'    => esc_html__( 'Background/overlay color', 'mai-engine' ),
+			'default'  => $config['background-color'],
+			'choices'  => [
 				'palettes' => array_values( mai_get_colors() ),
 			],
-			'output'          => [
+			'output'   => [
 				[
 					'element'  => '.page-header',
 					'property' => '--page-header-background-color',
@@ -176,27 +176,21 @@ function mai_page_header_customizer_settings() {
 	\Kirki::add_field(
 		$handle,
 		[
-			'type'     => 'slider',
-			'settings' => 'overlay-opacity',
-			'section'  => $section,
-			'label'    => __( 'Overlay opacity', 'mai-engine' ),
-			'default'  => $config['overlay-opacity'],
-			'choices'  => [
+			'type'        => 'slider',
+			'settings'    => 'overlay-opacity',
+			'section'     => $section,
+			'label'       => __( 'Overlay opacity', 'mai-engine' ),
+			'description' => esc_html__( 'The background color opacity when page header has an image', 'mai-engine' ),
+			'default'     => $config['overlay-opacity'],
+			'choices'     => [
 				'min'  => 0,
 				'max'  => 1,
 				'step' => 0.01,
 			],
-			'output'   => [
+			'output'      => [
 				[
 					'element'  => '.page-header-overlay',
 					'property' => 'opacity',
-				],
-			],
-			'active_callback' => [
-				[
-					'setting'  => 'page-header-image',
-					'operator' => '!==',
-					'value'    => '',
 				],
 			],
 		]
@@ -299,7 +293,7 @@ function mai_page_header_customizer_settings() {
 			'settings'        => 'page-header-divider-color',
 			'section'         => $section,
 			'label'           => esc_html__( 'Divider color', 'mai-engine' ),
-			'description'     => esc_html__( 'Leave blank to show the page header background', 'mai-engine' ),
+			'description'     => esc_html__( 'This should match your body background color', 'mai-engine' ),
 			'default'         => $config[ 'divider-color' ],
 			'choices'         => [
 				'palettes' => array_values( mai_get_colors() ),
