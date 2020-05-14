@@ -9,7 +9,7 @@
 	padding: var(--entry-padding, 0); /* must be a single value for use in calc() full "full" images */
 	overflow: var(--entry-overflow, unset);
 	text-align: var(--align-text);
-	background-color: var(--entry-background, unset);
+	background: var(--entry-background, unset);
 	border: var(--entry-border, unset);
 	border-radius: var(--border-radius);
 	box-shadow: var(--entry-box-shadow, unset);

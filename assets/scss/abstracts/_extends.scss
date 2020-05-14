@@ -41,7 +41,7 @@
 	@if ("outline" == $style) {
 		color: var(--button-outline-color, var(--color-primary));
 		background: var(--button-outline-background, transparent);
-		border: 2px solid var(--color-primary);
+		border: 2px solid currentColor;
 
 		&:hover,
 		&:focus {
