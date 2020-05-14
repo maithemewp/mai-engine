@@ -233,18 +233,46 @@ function mai_register_divider_field_groups() {
 				'default_value' => 'md',
 			],
 			[
-				'key'   => 'field_5eb19a01e23ba',
-				'label' => esc_html__( 'Flip Vertical', 'mai-engine' ),
-				'name'  => 'flip_vertical',
-				'type'  => 'true_false',
-				'ui'    => 1,
+				'key'               => 'field_5eb19a28e23bb',
+				'label'             => esc_html__( 'Flip Horizontally', 'mai-engine' ),
+				'name'              => 'flip_horizontal',
+				'type'              => 'true_false',
+				'ui'                => 1,
+				'conditional_logic' => [
+					[
+						[
+							'field'    => 'field_5eb19996e23b9', // Style.
+							'operator' => '!=',
+							'value'    => 'point',
+						],
+						[
+							'field'    => 'field_5eb19996e23b9', // Style.
+							'operator' => '!=',
+							'value'    => 'round',
+						],
+					],
+				],
 			],
 			[
-				'key'   => 'field_5eb19a28e23bb',
-				'label' => esc_html__( 'Flip Horizontal', 'mai-engine' ),
-				'name'  => 'flip_horizontal',
-				'type'  => 'true_false',
-				'ui'    => 1,
+				'key'               => 'field_5eb19a01e23ba',
+				'label'             => esc_html__( 'Flip Vertically', 'mai-engine' ),
+				'name'              => 'flip_vertical',
+				'type'              => 'true_false',
+				'ui'                => 1,
+				'conditional_logic' => [
+					[
+						[
+							'setting'  => 'field_5eb19996e23b9', // Style.
+							'operator' => '!=',
+							'value'    => 'angle',
+						],
+						[
+							'setting'  => 'field_5eb19996e23b9', // Style.
+							'operator' => '!=',
+							'value'    => 'wave',
+						],
+					],
+				],
 			],
 			[
 				'key'           => 'field_5eb1a70c7f083',
