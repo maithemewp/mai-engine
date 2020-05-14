@@ -82,11 +82,9 @@
 }
 
 .flip-horizontal {
-	--scale-y: -1;
-	transform: scale(var(--scale-x, 1), var(--scale-y, 1));
+	transform: scale(-1, 1);
 }
 
 .flip-vertical {
-	--scale-x: -1;
-	transform: scale(var(--scale-x, 1), var(--scale-y, 1));
+	transform: scale(1, -1);
 }
