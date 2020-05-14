@@ -237,11 +237,9 @@ class Mai_Grid {
 				$query_args['post_parent__in'] = $this->args['post_parent__in'];
 				break;
 			case 'id':
-				// Empty array returns all posts, so we need to check for values.
-				if ( $this->args['post__in'] ) {
-					$query_args['post__in'] = $this->args['post__in'];
-					$this->args['orderby']  = 'post__in';
-				}
+				// Empty array returns all posts, array(-1) prevents this.
+				$query_args['post__in'] = $this->args['post__in'] ?: array(-1);
+				$query_args['orderby']  = 'post__in';
 				break;
 			case 'tax_meta':
 				$tax_query = [];
@@ -336,11 +334,12 @@ class Mai_Grid {
 		// Handle query_by.
 		switch ( $this->args['query_by'] ) {
 			case 'name':
-				// Nothing, this is the default.
+				// Nothing, "Taxonomy" name is the default.
 				break;
 			case 'id':
 				$query_args['include'] = $this->args['include'];
-				$this->args['orderby'] = 'include';
+				$query_args['orderby'] = 'include';
+				$query_args['order']   = 'DESC';
 				break;
 			case 'parent':
 				$query_args['parent'] = $this->args['parent'];
@@ -353,7 +352,7 @@ class Mai_Grid {
 		}
 
 		// Order.
-		if ( $this->args['order'] ) {
+		if ( $this->args['order'] && 'id' !== $this->args['query_by'] ) {
 			$query_args['order'] = $this->args['order'];
 		}
 

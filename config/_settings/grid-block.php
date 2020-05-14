@@ -657,10 +657,10 @@ return [
 		'block'      => [ 'post' ],
 		'type'       => 'select',
 		'sanitize'   => 'esc_html',
-		'default'    => 'date',
+		'default'    => '',
 		'choices'    => [
-			'date'     => esc_html__( 'Date', 'mai-engine' ),
-			'id'       => esc_html__( 'Title', 'mai-engine' ),
+			''         => esc_html__( 'Default Query', 'mai-engine' ),
+			'id'       => esc_html__( 'Choice', 'mai-engine' ),
 			'tax_meta' => esc_html__( 'Taxonomy/Meta', 'mai-engine' ),
 			'parent'   => esc_html__( 'Parent', 'mai-engine' ),
 		],
@@ -697,8 +697,8 @@ return [
 	],
 	'field_5df1053632cbc' => [
 		'name'       => 'post__in',
-		'label'      => esc_html__( 'Entries', 'mai-engine' ),
-		'desc'       => esc_html__( 'Show specific entries. Choose all that apply. If empty, Grid will get entries by date.', 'mai-engine' ),
+		'label'      => esc_html__( 'Choose Entries', 'mai-engine' ),
+		'desc'       => esc_html__( 'Show specific entries. Choose all that apply.', 'mai-engine' ),
 		'block'      => [ 'post' ],
 		'type'       => 'post_object',
 		'sanitize'   => 'absint',
@@ -1047,6 +1047,11 @@ return [
 			[
 				'field'    => 'field_5df1053632ca2', // Post_type.
 				'operator' => '!=empty',
+			],
+			[
+				'field'    => 'field_5df1053632cad', // Query_by.
+				'operator' => '!=',
+				'value'    => 'id',
 			],
 		],
 	],
