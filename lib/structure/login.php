@@ -51,7 +51,7 @@ function mai_login_logo_css() {
 		.login .mai-login-logo img {
 			display: block !important;
 			height: auto !important;
-			width: auto !important;
+			width: 100% !important;
 			max-width: 100% !important;
 			margin: 0 auto !important;
 		}
