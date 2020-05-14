@@ -78,15 +78,6 @@
 	}
 }
 
-.is-desktop {
-	--menu-flex-wrap: nowrap;
-	--menu-font-size-desktop: smaller;
-	--menu-item-width: auto;
-	--menu-item-link-width: auto;
-	--menu-item-margin: 0;
-	--menu-item-link-padding: var(--spacing-md) var(--spacing-md);
-}
-
 .sidebar,
 .footer-widgets {
 	--menu-display: block;

@@ -496,7 +496,7 @@ function mai_get_breakpoints() {
 function mai_get_breakpoint( $size = 'lg', $suffix = '' ) {
 	$breakpoints = mai_get_breakpoints();
 
-	return mai_get_option( 'breakpoint', $breakpoints[ $size ] . $suffix );
+	return mai_get_option( 'mobile-menu-breakpoint', $breakpoints[ $size ] ) . $suffix;
 }
 
 /**

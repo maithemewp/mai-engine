@@ -24,10 +24,6 @@
 .mobile-menu-visible {
 	--mobile-menu-display: block;
 
-	&.is-desktop {
-		--mobile-menu-display: none;
-	}
-
 	.site-container::after {
 		position: fixed;
 		top: 0;

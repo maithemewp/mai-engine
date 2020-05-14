@@ -9,14 +9,6 @@
 	--link-text-decoration-hover: none;
 }
 
-.has-logo-center {
-
-	&.is-desktop {
-		--title-area-margin: 0 auto;
-		--title-area-text-align: center;
-	}
-}
-
 .site-title {
 	margin: 0;
 	font-weight: var(--site-title-font-weight, var(--font-weight-heading));

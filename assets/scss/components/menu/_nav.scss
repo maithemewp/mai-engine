@@ -23,13 +23,6 @@
 	--nav-header-display: none;
 }
 
-.is-desktop {
-	--nav-header-width: auto;
-	--nav-header-margin: 0;
-	--nav-header-padding: 0;
-	--nav-header-background: transparent;
-}
-
 .has-transparent-header {
 	--nav-after-header-border-top: var(--border);
 	--nav-after-header-border-bottom: var(--border);

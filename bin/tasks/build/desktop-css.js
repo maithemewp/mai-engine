@@ -9,44 +9,9 @@ const gulp              = require( 'gulp' ),
 	  autoprefix        = require( 'autoprefixer' ),
 	  cssnano           = require( 'cssnano' ),
 	  notify            = require( 'gulp-notify' ),
+	  rename            = require( 'gulp-rename' ),
 	  combineSelectors  = require( 'postcss-combine-duplicated-selectors' ),
-	  discardDuplicates = require( 'postcss-discard-duplicates' ),
-	  through           = require( 'through2' ),
-	  rework            = require( 'rework' ),
-	  split             = require( 'rework-split-media' ),
-	  reworkMoveMedia   = require( 'rework-move-media' ),
-	  stringify         = require( 'css-stringify' ),
-	  cleanUpString     = require( 'clean-up-string' ),
-	  dirname           = require( 'path' ).dirname,
-	  pathjoin          = require( 'path' ).join;
-
-const extractMediaQueries = function() {
-	return through.obj( function( file, enc, callback ) {
-		let stream         = this;
-		let reworkData     = rework( file.contents.toString() ).use( reworkMoveMedia() );
-		let stylesheets    = split( reworkData );
-		let stylesheetKeys = Object.keys( stylesheets );
-
-		stylesheetKeys.forEach( function( key ) {
-			let clone      = file.clone( { contents: false } );
-			let query      = key.split( 'width' )[ 0 ];
-			let size       = key.split( 'width' )[ 1 ];
-			let name       = cleanUpString( query + '-width-' + size );
-			let contents   = stringify( stylesheets[ key ] );
-			clone.contents = new Buffer( contents );
-
-			if ( name ) {
-				clone.path = pathjoin( dirname( file.path ), name + '.css' );
-			} else {
-				clone.path = file.path;
-			}
-
-			stream.push( clone );
-		} );
-
-		callback();
-	} );
-};
+	  discardDuplicates = require( 'postcss-discard-duplicates' );
 
 module.exports = function() {
 
@@ -62,12 +27,12 @@ module.exports = function() {
 		];
 	};
 
-	return gulp.src( './assets/css/themes/default.min.css' )
+	return gulp.src( './assets/scss/desktop.scss' )
 		.pipe( plumber() )
+		.pipe( rename( 'desktop.min.scss' ) )
 		.pipe( sass.sync( {
 			outputStyle: 'compressed',
 		} ) )
-		.pipe( extractMediaQueries() )
 		.pipe( postcss( getPostProcessors() ) )
 		.pipe( gulp.dest( './assets/css/desktop/' ) )
 		.pipe( notify( { message: config.messages.css } ) );

@@ -302,7 +302,7 @@ return [
 			// Desktop only.
 			[
 				'handle' => mai_get_handle() . '-desktop',
-				'src'    => mai_get_url() . 'assets/css/desktop/min-width-' . mai_get_breakpoint() . 'px.min.css',
+				'src'    => mai_get_url() . 'assets/css/desktop/desktop.min.css',
 				'media'  => '(min-width:' . mai_get_breakpoint() . 'px)',
 			],
 
