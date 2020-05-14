@@ -105,9 +105,6 @@
 	--link-text-decoration-hover: underline;
 	--link-filter-hover: none;
 	--link-transition: var(--transition);
-
-	--button-overlay-brightness: #{map_get($button, "overlay-brightness")}; // White.
-	--button-overlay-opacity: 0; // Always transparent in default state.
 }
 
 :root {
