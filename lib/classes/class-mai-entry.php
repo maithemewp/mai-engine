@@ -112,12 +112,21 @@ class Mai_Entry {
 				$wrap = 'div';
 		}
 
+		$atts = [
+			'class' => 'entry',
+		];
+
+		if ( 'term' === $this->type ) {
+			$atts['class'] .= sprintf( ' term-%s type-%s %s-%s', $this->entry->term_id, $this->entry->taxonomy, $this->entry->taxonomy, $this->entry->slug );
+		}
+
 		// Open.
 		genesis_markup(
 			[
 				'open'    => "<{$wrap} %s>",
 				'context' => 'entry',
 				'echo'    => true,
+				'atts'    => $atts,
 				'params'  => [
 					'args'  => $this->args,
 					'entry' => $this->entry,
