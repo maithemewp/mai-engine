@@ -20,6 +20,7 @@
 	}
 
 	.is-style-outline & {
+		line-height: calc(1em - 4px); // Makes height same as button with no border.
 
 		@include button-style("outline");
 	}

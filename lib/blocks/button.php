@@ -21,7 +21,6 @@ function mai_register_button_styles() {
 	$styles = [
 		'secondary',
 		'tertiary',
-		'ghost',
 	];
 
 	foreach ( $styles as $style ) {

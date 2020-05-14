@@ -15,21 +15,20 @@
 @mixin button-style($style) {
 
 	@if ("secondary" == $style) {
-		--button-color: var(--button-secondary-color, var(--color-darker));
-		--button-background: var(--button-secondary-background, var(--color-secondary));
+		color: var(--button-secondary-color, var(--color-lightest));
+		background: var(--button-secondary-background, var(--color-secondary));
 	}
 
 	@if ("tertiary" == $style) {
 		padding-right: var(--spacing-xs);
 		padding-left: var(--spacing-xs);
-
-		--button-color: var(--button-tertiary-color, var(--color-primary));
-		--button-background: var(--button-tertiary-background, transparent);
+		color: var(--button-tertiary-color, var(--color-primary));
+		background: var(--button-tertiary-background, transparent);
 
 		&:hover,
 		&:focus {
-			--button-color: var(--color-secondary);
-			--button-background: transparent;
+			color: var(--color-secondary);
+			background: transparent;
 		}
 
 		&::after {
@@ -40,35 +39,32 @@
 	}
 
 	@if ("outline" == $style) {
-		--button-color: var(--button-outline-color, var(--color-primary));
-		--button-background: var(--button-outline-background, transparent);
-		--button-border: 2px solid currentColor;
-	}
+		color: var(--button-outline-color, var(--color-primary));
+		background: var(--button-outline-background, transparent);
+		border: 2px solid var(--color-primary);
 
-	@if ("ghost" == $style) {
-		--button-color: var(--button-ghost-color, var(--color-lightest));
-		--button-background: var(--button-ghost-background, hsla(0, 0%, var(--button-overlay-brightness), 0.2));
+		--button-overlay-color: transparent;
 
 		&:hover,
 		&:focus {
-			--button-background: hsla(0, 0%, var(--button-overlay-brightness), 0.4);
+			color: var(--button-outline-color-hover, var(--color-lightest));
+			background: var(--button-outline-background-hover, var(--color-primary));
 		}
 	}
 
 	@if ("small" == $style) {
-		--button-padding: 1em 1.5em;
-		--button-font-size: var(--text-sm);
+		padding: 1em 1.5em;
+		font-size: var(--text-sm);
 	}
 
 	@if ("disabled" == $style) {
-		--button-background: var(--color-medium);
+		background: var(--color-light);
 
 		&,
 		&:hover,
 		&:focus {
-			--button-background: var(--color-medium);
-			--button-opacity: 0.5;
-			--button-cursor: not-allowed;
+			opacity: 0.5;
+			cursor: not-allowed;
 		}
 	}
 }
@@ -89,7 +85,7 @@
 	text-align: var(--button-text-align, center);
 	text-transform: var(--button-text-transform, none);
 	text-decoration: var(--button-text-decoration, none);
-	background: var(--button-background, var(--button-primary-background, #{map_get($button, "background")}));
+	background: var(--button-background, #{map_get($button, "background-color")});
 	border: var(--button-border, #{map_get($button, "border")});
 	border-radius: var(--button-border-radius, #{map_get($button, "border-radius")});
 	transform: var(--button-transform, none);
@@ -97,16 +93,31 @@
 	opacity: var(--button-opacity, 1);
 	transition: var(--button-transition, var(--transition));
 
+	&::before {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: -1;
+		display: block;
+		background-color: var(--button-overlay-color, hsla(0, 0%, var(--button-overlay-brightness), var(--button-overlay-opacity)));
+		border-radius: var(--button-border-radius, #{map_get($button, "border-radius")});
+		transition: var(--transition);
+		content: "";
+	}
+
 	&:hover,
 	&:focus {
+		--button-overlay-brightness: var(--button-overlay-brightness-hover, #{map_get($button, "overlay-brightness")});
 		--button-overlay-opacity: var(--button-overlay-opacity-hover, 0.2);
 		--button-overlay-color: var(--button-overlay-color-hover, hsla(0, 0%, var(--button-overlay-brightness), var(--button-overlay-opacity)));
 		--button-text-decoration: var(--button-text-decoration-hover, none);
 		--button-outline: var(--button-outline-hover, none);
-		--button-transform: var(--button-transform-hover, none);
+		--button-transform: var(--button-transform-hover, scale(1)); // Pseudo element z-index hack.
 		--button-color: var(--button-color-hover, #{map_get($button, "color")});
 		--button-border: var(--button-border-hover, #{map_get($button, "border")});
-		--button-background: var(--button-background-hover, #{map_get($button, "background")});
+		--button-background: var(--button-background-hover, #{map_get($button, "background-color")});
 	}
 
 	&:disabled {

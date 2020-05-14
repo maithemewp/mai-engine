@@ -108,8 +108,6 @@
 
 	--button-overlay-brightness: #{map_get($button, "overlay-brightness")}; // White.
 	--button-overlay-opacity: 0; // Always transparent in default state.
-	--button-overlay-color: hsla(0, 0%, var(--button-overlay-brightness), var(--button-overlay-opacity));
-	--button-background: #{map_get($button, "background-color")};
 }
 
 :root {
