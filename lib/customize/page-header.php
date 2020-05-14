@@ -173,6 +173,27 @@ function mai_page_header_customizer_settings() {
 	\Kirki::add_field(
 		$handle,
 		[
+			'type'            => 'color',
+			'settings'        => 'page-header-divider-color',
+			'section'         => $section,
+			'label'           => esc_html__( 'Divider color', 'mai-engine' ),
+			'default'         => mai_get_color( 'lightest' ),
+			'choices'         => [
+				'palettes' => array_values( mai_get_colors() ),
+			],
+			'active_callback' => [
+				[
+					'setting'  => 'page-header-divider',
+					'operator' => '!==',
+					'value'    => 'none',
+				],
+			],
+		]
+	);
+
+	\Kirki::add_field(
+		$handle,
+		[
 			'type'     => 'slider',
 			'settings' => 'page-header-overlay-opacity',
 			'section'  => $section,

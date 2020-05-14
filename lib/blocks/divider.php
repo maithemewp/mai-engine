@@ -56,20 +56,32 @@ function mai_do_divider_block( $block, $content = '', $is_preview = false, $post
 		'class'           => isset( $block['className'] ) && ! empty( $block['className'] ) ? sanitize_html_class( $block['className'] ) : '',
 	];
 
-	echo mai_do_divider( $atts );
+	echo mai_get_divider( $atts );
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param $atts
+ *
+ * @return void
+ */
 function mai_do_divider( $atts ) {
 	echo mai_get_divider( $atts );
 }
 
-function mai_get_divider( $atts ) {
-	$file = mai_get_svg( 'divider-' . $atts['style'], 'mai-divider-svg' );
-
-	if ( ! $file ) {
-		return;
-	}
-
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param array $atts
+ *
+ * @return string
+ */
+function mai_get_divider( $atts = [] ) {
 	$atts = wp_parse_args( $atts, [
 		'style'           => 'angle',
 		'height'          => 'md',
@@ -78,6 +90,12 @@ function mai_get_divider( $atts ) {
 		'color'           => mai_get_color( 'primary' ),
 		'class'           => '',
 	] );
+
+	$file = mai_get_svg( 'divider-' . $atts['style'], 'mai-divider-svg' );
+
+	if ( ! $file ) {
+		return '';
+	}
 
 	$atts = [
 		'style'           => esc_html( $atts['style'] ),
@@ -88,7 +106,6 @@ function mai_get_divider( $atts ) {
 		'class'           => sanitize_html_class( $atts['class'] ),
 	];
 
-	$is_palette = false;
 	$colors     = array_flip( mai_get_colors() );
 	$attributes = [
 		'class' => sprintf( 'mai-divider mai-divider-%s alignfull', $atts['style'] ),
@@ -96,7 +113,6 @@ function mai_get_divider( $atts ) {
 	];
 
 	if ( isset( $colors[ $atts['color'] ] ) ) {
-		$is_palette = true;
 		$attributes['class'] .= sprintf( ' has-%s-color', $colors[ $atts['color'] ] );
 	} else {
 		$attributes['style'] .= sprintf( '--divider-color:%s;', $atts['color'] );

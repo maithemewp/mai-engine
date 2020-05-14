@@ -14,36 +14,6 @@ foreach ( $color_default as $name => $hex ) {
 			$hex,
 		],
 	];
-	$color_output[]         = [
-		'choice'            => $name,
-		'element'           => ':root',
-		'property'          => "--color-$name-light",
-		'sanitize_callback' => function ( $values ) use ( $name ) {
-			if ( isset( $values[ $name ] ) ) {
-				$values[ $name ] = mai_get_lighter_color( $values[ $name ] );
-			}
-
-			return $values;
-		},
-		'exclude'           => [
-			mai_get_lighter_color( $hex ),
-		],
-	];
-	$color_output[]         = [
-		'choice'            => $name,
-		'element'           => ':root',
-		'property'          => "--color-$name-dark",
-		'sanitize_callback' => function ( $values ) use ( $name ) {
-			if ( isset( $values[ $name ] ) ) {
-				$values[ $name ] = mai_get_darker_color( $values[ $name ] );
-			}
-
-			return $values;
-		},
-		'exclude'           => [
-			mai_get_darker_color( $hex ),
-		],
-	];
 }
 
 return [

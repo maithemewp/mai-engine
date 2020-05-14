@@ -312,6 +312,42 @@ function mai_page_header_entry_attr( $atts ) {
 	return $atts;
 }
 
+add_filter( 'genesis_structural_wrap-page-header', 'mai_page_header_divider', 10, 2 );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param $output
+ * @param $original_output
+ *
+ * @return string
+ */
+function mai_page_header_divider( $output, $original_output ) {
+	$style = mai_get_option( 'page-header-divider', 'none' );
+
+	if ( 'none' === $style ) {
+		return $output;
+	}
+
+	if ( 'close' === $original_output ) {
+		$color = mai_get_option( 'page-header-divider-color', mai_get_color( 'lightest' ) );
+
+		$args = [
+			'style'           => $style,
+			'height'          => 'md',
+			'flip_vertical'   => false,
+			'flip_horizontal' => false,
+			'color'           => false,
+			'class'           => false,
+		];
+
+		$output .= str_replace( 'currentColor', $color, mai_get_divider( $args ) );
+	}
+
+	return $output;
+}
+
 /**
  * Display the page header.
  *

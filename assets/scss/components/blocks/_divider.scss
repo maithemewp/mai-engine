@@ -1,5 +1,9 @@
 .mai-divider {
+	position: var(--divider-position, unset);
+	bottom: var(--divider-bottom, auto);
+	z-index: 1;
 	display: block;
+	width: var(--divider-width, var(--alignfull-width, auto));
 	height: var(--divider-height, calc(4rem + 4vw)) !important;
 	background: transparent;
 
