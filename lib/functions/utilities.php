@@ -49,7 +49,7 @@ function mai_get_url() {
 /**
  * Gets the plugin basename.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return string
  */
@@ -279,7 +279,7 @@ function mai_get_option( $option, $default = false, $use_cache = true ) {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param string $option Option name.
  * @param mixed  $value  Option value.
@@ -298,7 +298,7 @@ function mai_update_option( $option, $value ) {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param string $name Settings to get.
  *
@@ -335,7 +335,7 @@ function mai_get_variables() {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return array|mixed|null
  */
@@ -516,9 +516,9 @@ function mai_get_unit_value( $value, $fallback = 'px' ) {
 }
 
 /**
- * Description of expected behavior.
+ * Get an integer value from string.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param $string
  *
@@ -529,9 +529,64 @@ function mai_get_integer_value( $string ) {
 }
 
 /**
+ * Get the page header image ID.
+ *
+ * @since 0.3.0
+ *
+ * @return mixed
+ */
+function mai_get_page_header_image_id() {
+	static $image_id = null;
+
+	if ( ! is_null( $image_id ) ) {
+		return $image_id;
+	}
+
+	if ( mai_is_type_single() ) {
+		$image_id = get_post_meta( get_the_ID(), 'page_header_image', true );
+
+	} elseif ( is_front_page() ) {
+		$image_id = '';
+
+		if ( 'page' === get_option( 'show_on_front' ) ) {
+			$image_id = get_post_meta( get_option( 'page_on_front' ), 'page_header_image', true );
+		}
+	} elseif ( is_home() ) {
+		$image_id = get_post_meta( get_option( 'page_for_posts' ), 'page_header_image', true );
+
+	} elseif ( mai_is_type_archive() ) {
+		if ( is_category() || is_tag() || is_tax() ) {
+			global $wp_query;
+
+			$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
+
+			if ( $term ) {
+				$image_id = get_term_meta( $term->term_id, 'page_header_image', true );
+			}
+		}
+	}
+
+	if ( ! $image_id ) {
+		$args = mai_get_template_args();
+
+		if ( isset( $args['page-header-image'] ) && ! empty( $args['page-header-image'] ) ) {
+			$image_id = $args['page-header-image'];
+		}
+	}
+
+	if ( ! $image_id && mai_get_option( 'page-header-image' ) ) {
+		$image_id = mai_get_option( 'page-header-image' );
+	}
+
+	$image_id = apply_filters( 'mai_page_header_image', $image_id );
+
+	return $image_id;
+}
+
+/**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return array
  */
@@ -727,7 +782,7 @@ function mai_get_processed_content( $content ) {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param array $args Icon args.
  *
