@@ -1,6 +1,4 @@
 .mai-divider {
-	position: var(--divider-position, unset);
-	bottom: var(--divider-bottom, auto);
 	z-index: 1;
 	display: block;
 	width: var(--divider-width, var(--alignfull-width, auto));
@@ -16,10 +14,8 @@
 
 .mai-divider-svg {
 	display: block;
-	// extra width/height and negative px to fix subpixel gap.
-	width: calc(100% + 2px);
-	height: calc(100% + 2px);
-	margin: -1px !important;
+	width: 100%;
+	height: 100%;
 	color: var(--divider-color, currentColor);
 	background-color: transparent;
 }
