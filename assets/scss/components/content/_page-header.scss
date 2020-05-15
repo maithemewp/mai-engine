@@ -5,7 +5,6 @@
 	align-items: center;
 	justify-content: center;
 	width: 100%;
-	padding: var(--page-header-padding, (var(--page-header-padding-top, 10vw) var(--page-header-padding-right, 0) var(--page-header-padding-bottom, 10vw) var(--page-header-padding-left, 0)));
 	overflow: hidden;
 	text-align: var(--page-header-text-align, center);
 	background-color: var(--page-header-background-color, var(--color-medium));
@@ -14,8 +13,9 @@
 	--wrap-position: relative;
 	--wrap-justify-content: var(--page-header-text-align, center);
 
-	.wrap {
+	> .wrap {
 		z-index: 2;
+		padding: var(--page-header-padding, (var(--page-header-padding-top, 10vw) var(--page-header-padding-right, 0) var(--page-header-padding-bottom, 10vw) var(--page-header-padding-left, 0)));
 	}
 }
 
