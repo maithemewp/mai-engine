@@ -272,16 +272,16 @@ function mai_get_acf_field_data( $key, $field ) {
 
 	// Additional attributes.
 	if ( isset( $field['atts'] ) ) {
-		foreach ( $field['atts'] as $key => $value ) {
+		foreach ( $field['atts'] as $field_key => $value ) {
 			// Sub fields.
-			if ( 'sub_fields' === $key ) {
+			if ( 'sub_fields' === $field_key ) {
 				$data['sub_fields'] = [];
-				foreach ( $value as $sub_key => $sub_field ) {
-					$data['sub_fields'][] = mai_get_acf_field_data( $sub_key, $sub_field );
+				foreach ( $value as $sub_field_key => $sub_field ) {
+					$data['sub_fields'][] = mai_get_acf_field_data( $sub_field_key, $sub_field );
 				}
 			} else {
 				// Standard field data.
-				$data[ $key ] = $value;
+				$data[ $field_key ] = $value;
 			}
 		}
 	}
@@ -375,7 +375,6 @@ function mai_acf_load_show( $field ) {
  * @return mixed
  */
 function mai_acf_get_posts( $args ) {
-
 	$args['post_type'] = [];
 	$post_types        = mai_get_acf_request( 'post_type' );
 	if ( ! $post_types ) {
@@ -398,7 +397,6 @@ function mai_acf_get_posts( $args ) {
  * @return mixed
  */
 function mai_acf_get_terms( $args ) {
-
 	$args['taxonomy'] = [];
 	$taxonomies       = mai_get_acf_request( 'taxonomy' );
 	if ( ! $taxonomies ) {
