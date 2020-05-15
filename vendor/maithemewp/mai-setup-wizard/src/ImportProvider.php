@@ -5,14 +5,14 @@ namespace MaiSetupWizard;
 class ImportProvider extends AbstractServiceProvider {
 
 	public function add_hooks() {
-		\add_action( 'mai_setup_wizard_before_import', [ $this, 'before_import' ] );
 		\add_action( 'mai_setup_wizard_after_import', [ $this, 'after_import' ] );
 	}
 
 	private function get_cache_dir() {
-		$demo = $this->demo->get_chosen_demo();
+		$theme = \mai_get_active_theme();
+		$demo  = $this->demo->get_chosen_demo();
 
-		return WP_CONTENT_DIR . "/{$this->plugin->slug}/{$demo}/";
+		return WP_CONTENT_DIR . "/{$this->plugin->slug}/{$theme}/{$demo}/";
 	}
 
 	public function import( $content_type ) {
@@ -92,8 +92,6 @@ class ImportProvider extends AbstractServiceProvider {
 		$importer = new \ProteusThemes\WPContentImporter2\Importer( [
 			'fetch_attachments' => true,
 		], $logger );
-
-		\do_action( 'mai_setup_wizard_before_import' );
 
 		$importer->import( $file );
 
@@ -234,6 +232,8 @@ class ImportProvider extends AbstractServiceProvider {
 			}
 		}
 
+		\do_action( 'mai_setup_wizard_after_import' );
+
 		\wp_send_json_success( __( 'Sucessfully imported widgets.', 'mai-setup-wizard' ) );
 	}
 
@@ -292,6 +292,8 @@ class ImportProvider extends AbstractServiceProvider {
 			\set_theme_mod( $key, $val );
 		}
 
+		\do_action( 'mai_setup_wizard_after_import' );
+
 		\wp_send_json_success( __( 'Sucessfully imported customizer.', 'mai-setup-wizard' ) );
 	}
 
@@ -348,7 +350,24 @@ class ImportProvider extends AbstractServiceProvider {
 		return $mods;
 	}
 
-	public function before_import() {
+	function after_import() {
+
+		// Set nav menu locations.
+		$menus     = \get_theme_support( 'genesis-menus' )[0];
+		$locations = [];
+
+		foreach ( $menus as $id => $name ) {
+			$name = 'Footer Menu' === $name ? $name : \str_replace( ' Menu', '', $name );
+			$menu = \get_term_by( 'name', $name, 'nav_menu' );
+
+			if ( $menu && isset( $menu->term_id ) ) {
+				$locations[ $id ] = $menu->term_id;
+			}
+		}
+
+		if ( ! empty( $locations ) ) {
+			\set_theme_mod( 'nav_menu_locations', $locations );
+		}
 
 		// Set static front page.
 		\update_option( 'show_on_front', 'page' );
@@ -368,27 +387,6 @@ class ImportProvider extends AbstractServiceProvider {
 
 		if ( $privacy_policy && isset( $privacy_policy->ID ) ) {
 			\wp_delete_post( $privacy_policy->ID );
-		}
-	}
-
-
-	function after_import() {
-
-		// Set nav menu locations.
-		$menus     = \get_theme_support( 'genesis-menus' )[0];
-		$locations = [];
-
-		foreach ( $menus as $id => $name ) {
-			$name = 'Footer Menu' === $name ? $name : \str_replace( ' Menu', '', $name );
-			$menu = \get_term_by( 'name', $name, 'nav_menu' );
-
-			if ( $menu && isset( $menu->term_id ) ) {
-				$locations[ $id ] = $menu->term_id;
-			}
-		}
-
-		if ( ! empty( $locations ) ) {
-			\set_theme_mod( 'nav_menu_locations', $locations );
 		}
 
 		// Assign front page and posts page.
