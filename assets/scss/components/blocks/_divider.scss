@@ -1,14 +1,18 @@
 .mai-divider {
-	z-index: 1;
+	z-index: var(--divider-z-index, 1);
 	display: block;
 	width: var(--divider-width, var(--alignfull-width, auto));
-	height: var(--divider-height, calc(4rem + 4vw)) !important;
+	height: var(--divider-height, calc(4rem + 4vw));
 	background: var(--divider-background-color, transparent);
 
 	.wp-block-cover &,
 	.wp-block-group & {
+		--divider-z-index: -1;
 		position: relative;
-		z-index: -1;
+	}
+
+	@include mq(lg) {
+		height: calc(var(--divider-height) * 2);
 	}
 }
 

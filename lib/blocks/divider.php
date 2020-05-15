@@ -146,19 +146,19 @@ function mai_get_divider( $atts = [] ) {
 				$height = '2rem';
 			break;
 			case 'sm':
-				$height = 'calc(2rem + 2vw)';
+				$height = '4rem';
 			break;
 			case 'md':
-				$height = 'calc(2rem + 6vw)';
+				$height = '8rem';
 			break;
 			case 'lg':
-				$height = 'calc(2rem + 12vw)';
+				$height = '12rem';
 			break;
 			case 'xl':
-				$height = 'calc(2rem + 16vw)';
+				$height = '16rem';
 			break;
 			default:
-				$height = 'calc(2rem + 2vw)';
+				$height = '8rem';
 		}
 		$attributes['style'] .= sprintf( '--divider-height:%s;', $height );
 	}
