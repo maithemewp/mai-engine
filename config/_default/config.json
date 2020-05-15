@@ -19,7 +19,7 @@
   "border": {
     "width": "1px",
     "style": "solid",
-    "color": "var(--color-medium)",
+    "color": "var(--color-light)",
     "radius": "4px"
   },
   "button": {
