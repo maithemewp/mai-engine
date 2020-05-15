@@ -195,6 +195,4 @@
 	display: none;
 }
 
-[data-status="running"] .progress {
-	display: inline;
-}
+[data-status="running"] .progress {}
