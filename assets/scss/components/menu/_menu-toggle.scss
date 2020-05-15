@@ -1,4 +1,5 @@
 .menu-toggle {
+	--button-overlay-display: none;
 	z-index: 100;
 	display: var(--menu-toggle-display, (flex));
 	align-items: center;
