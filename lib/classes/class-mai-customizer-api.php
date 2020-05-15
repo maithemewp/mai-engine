@@ -204,7 +204,7 @@ class Mai_Customizer_API {
 		// Prevent output if value same as default.
 		if ( isset( $field['output'] ) ) {
 			foreach ( $field['output'] as $count => $output ) {
-				if ( ! isset( $output['exclude'] ) ) {
+				if ( ! isset( $output['exclude'] ) && isset( $field['default'] ) ) {
 					$field['output'][ $count ]['exclude'] = [
 						$field['default'],
 					];
