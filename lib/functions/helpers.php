@@ -26,7 +26,7 @@ function mai_is_in_dev_mode() {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.3.0
  *
  * @param mixed  $data     Data to dump.
  * @param string $function Debug function to use. Defaults to 's'.
@@ -66,9 +66,9 @@ function mai_has_string( $needle, $haystack ) {
 }
 
 /**
- * Description of expected behavior.
+ * Check if an array key is set, or return a default.
  *
- * @since 1.0.0
+ * @since 0.3.0
  *
  * @param array  $array
  * @param string $key
@@ -427,7 +427,7 @@ function mai_sanitize_bool( $value ) {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.3.0
  *
  * @param bool $element Element to check.
  *
@@ -458,7 +458,7 @@ function mai_is_element_hidden( $element ) {
  * Sentence: My name is bond.
  * Dot:      my.name.is.bond.
  *
- * @since  1.0.0
+ * @since  0.3.0
  *
  * @author Lee Anthony https://seothemes.com
  *
@@ -516,7 +516,7 @@ function mai_add_classes( $new, $existing = '' ) {
 /**
  * Returns single instance of class (avoids singletons).
  *
- * @since 1.0.0
+ * @since 0.3.0
  *
  * @param string $class Class name.
  * @param mixed  $args  Passed args.

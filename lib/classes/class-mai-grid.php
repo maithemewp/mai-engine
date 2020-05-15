@@ -122,16 +122,16 @@ class Mai_Grid {
 		foreach ( $args as $name => $value ) {
 			// Has sub fields.
 			if ( isset( $this->settings[ $name ]['atts']['sub_fields'] ) ) {
-				if ( $value ) {
-					$nested_values = [];
-					foreach ( $this->settings[ $name ]['atts']['sub_fields'] as $field_key => $sub_field ) {
-						foreach ( $sub_field as $nested_name => $nested_value ) {
-							$field                                       = $this->settings[ $name ]['atts']['sub_fields'][ $field_key ];
-							$nested_values[ $field_key ][ $nested_name ] = mai_sanitize( $nested_value, $field['sanitize'] );
+				$sub_fields_values = [];
+				if ( $value && is_array( $value ) ) {
+					$sub_fields_config = array_column( $this->settings[ $name ]['atts']['sub_fields'], 'sanitize', 'name' );
+					foreach ( $value as $sub_field_index => $sub_field_row ) {
+						foreach ( $sub_field_row as $sub_field_name => $sub_field_value ) {
+							$sub_fields_values[ $sub_field_index ][ $sub_field_name ] = mai_sanitize( $sub_field_value, $sub_fields_config[ $sub_field_name ] );
 						}
 					}
-					$args[ $name ] = $nested_values;
 				}
+				$args[ $name ] = $sub_fields_values;
 			} else {
 				// Standard field check.
 				$sanitize      = isset( $this->settings[ $name ] ) ? $this->settings[ $name ]['sanitize'] : 'esc_html';
