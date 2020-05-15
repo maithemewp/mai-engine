@@ -45,10 +45,6 @@ textarea {
 		color: var(--color-lightest);
 	}
 
-	// .page-header-overlay {
-	// 	background-color: var(--color-primary);
-	// 	opacity: 1;
-	// }
 }
 
 .site-footer {
@@ -101,6 +97,7 @@ textarea {
 
 .wpforms-container.inline-fields {
 	margin-bottom: 0;
+	overflow: hidden;
 
 	--input-border: 0;
 	--input-border-focus: 0;
