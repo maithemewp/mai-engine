@@ -14,6 +14,7 @@
 }
 
 .search-toggle {
+	--button-overlay-display: none;
 	margin: 0;
 	padding: var(--menu-item-link-padding, (var(--spacing-sm) var(--spacing-xxs)));
 	color: var(--link-color);
