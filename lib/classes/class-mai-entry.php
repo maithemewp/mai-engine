@@ -500,7 +500,9 @@ class Mai_Entry {
 		switch ( $this->type ) {
 			case 'post':
 				$image_id = get_post_thumbnail_id( $this->id );
-				$image_id = $image_id ? $image_id : genesis_get_image_id( 0, $this->id );
+				if ( ! $image_id && ( 'archive' !== $this->context ) ) {
+					$image_id = genesis_get_image_id( 0, $this->id );
+				}
 				break;
 			case 'term':
 				$key = 'featured_image';
