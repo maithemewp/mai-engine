@@ -1,10 +1,8 @@
 <?php
 
-namespace MaiSetupWizard\Providers;
+namespace MaiSetupWizard;
 
-use MaiSetupWizard\AbstractServiceProvider;
-
-class Demo extends AbstractServiceProvider {
+class DemoProvider extends AbstractServiceProvider {
 	public $demos = [];
 
 	public function add_hooks() {
@@ -66,7 +64,7 @@ class Demo extends AbstractServiceProvider {
 	}
 
 	private function get_default_args( $args ) {
-		return apply_filters( 'mai_setup_wizard_demo_defaults', [
+		return \apply_filters( 'mai_setup_wizard_demo_defaults', [
 			'content'    => false,
 			'widgets'    => false,
 			'customizer' => false,

@@ -6,9 +6,6 @@
       "email": "seothemeswp@gmail.com"
     }
   ],
-  "require": {
-    "pimple/pimple": "^3.3"
-  },
   "autoload": {
     "files": [
       "mai-setup-wizard.php"

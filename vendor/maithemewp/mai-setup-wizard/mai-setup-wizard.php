@@ -16,6 +16,34 @@
 
 namespace MaiSetupWizard;
 
+// Prevent direct file access.
+\defined( 'ABSPATH' ) || die();
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return array
+ */
+function get_instance() {
+	static $container = [];
+
+	if ( empty( $container ) ) {
+		$container = [
+			'plugin' => new Plugin( __FILE__ ),
+			'admin'  => new AdminProvider(),
+			'ajax'   => new AjaxProvider(),
+			'demo'   => new DemoProvider(),
+			'field'  => new FieldProvider(),
+			'import' => new ImportProvider(),
+			'step'   => new StepProvider(),
+		];
+	}
+
+	return $container;
+}
+
 \add_action( 'init', __NAMESPACE__ . '\\init' );
 /**
  * Description of expected behavior.
@@ -35,28 +63,15 @@ function init() {
 		}
 	} );
 
-	$container = new \Pimple\Container();
+	$providers = get_instance();
 
-	$container['file'] = __FILE__;
-
-	$providers = \glob( __DIR__ . '/src/Providers/*.php' );
-
-	foreach ( $providers as $provider ) {
-		$key   = \strtolower( \basename( $provider, '.php' ) );
-		$class = __NAMESPACE__ . '\\Providers\\' . \basename( $provider, '.php' );
-
-		$container[ $key ] = function () use ( $class ) {
-			return new $class();
-		};
-	}
-
-	foreach ( $container->keys() as $key ) {
-		if ( method_exists( $container[ $key ], 'register' ) ) {
-			$container[ $key ]->register( $container );
+	foreach ( $providers as $name => $provider ) {
+		if ( \method_exists( $providers[ $name ], 'register' ) ) {
+			$providers[ $name ]->register( $providers );
 		}
 
-		if ( method_exists( $container[ $key ], 'add_hooks' ) ) {
-			$container[ $key ]->add_hooks();
+		if ( \method_exists( $providers[ $name ], 'add_hooks' ) ) {
+			$providers[ $name ]->add_hooks();
 		}
 	}
 }

@@ -3,54 +3,49 @@
 namespace MaiSetupWizard;
 
 abstract class AbstractServiceProvider implements ServiceProviderInterface {
-	/**
-	 * @var string
-	 */
-	protected $file;
 
 	/**
-	 * @var Providers\Plugin $plugin
+	 * @var Plugin $plugin
 	 */
 	protected $plugin;
 
 	/**
-	 * @var Providers\Demo $demo
+	 * @var DemoProvider $demo
 	 */
 	protected $demo;
 
 	/**
-	 * @var Providers\Field $field
+	 * @var FieldProvider $field
 	 */
 	protected $field;
 
 	/**
-	 * @var Providers\Step $step
+	 * @var StepProvider $step
 	 */
 	protected $step;
 
 	/**
-	 * @var Providers\Admin $admin
+	 * @var AdminProvider $admin
 	 */
 	protected $admin;
 
 	/**
-	 * @var Providers\Importer $importer
+	 * @var ImportProvider $import
 	 */
-	protected $importer;
+	protected $import;
 
 	/**
-	 * @var Providers\Ajax $ajax
+	 * @var AjaxProvider $ajax
 	 */
 	protected $ajax;
 
-	public function register( \Pimple\Container $container ) {
-		$this->file     = isset( $container['file'] ) ? $container['file'] : '';
-		$this->plugin   = isset( $container['plugin'] ) ? $container['plugin'] : '';
-		$this->demo     = isset( $container['demo'] ) ? $container['demo'] : '';
-		$this->field    = isset( $container['field'] ) ? $container['field'] : '';
-		$this->step     = isset( $container['step'] ) ? $container['step'] : '';
-		$this->admin    = isset( $container['admin'] ) ? $container['admin'] : '';
-		$this->importer = isset( $container['importer'] ) ? $container['importer'] : '';
-		$this->ajax     = isset( $container['ajax'] ) ? $container['ajax'] : '';
+	public function register( $container = [] ) {
+		$this->plugin = isset( $container['plugin'] ) ? $container['plugin'] : '';
+		$this->demo   = isset( $container['demo'] ) ? $container['demo'] : '';
+		$this->field  = isset( $container['field'] ) ? $container['field'] : '';
+		$this->step   = isset( $container['step'] ) ? $container['step'] : '';
+		$this->admin  = isset( $container['admin'] ) ? $container['admin'] : '';
+		$this->import = isset( $container['import'] ) ? $container['import'] : '';
+		$this->ajax   = isset( $container['ajax'] ) ? $container['ajax'] : '';
 	}
 }

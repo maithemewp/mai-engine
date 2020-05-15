@@ -1,10 +1,8 @@
 <?php
 
-namespace MaiSetupWizard\Providers;
+namespace MaiSetupWizard;
 
-use MaiSetupWizard\AbstractServiceProvider;
-
-class Admin extends AbstractServiceProvider {
+class AdminProvider extends AbstractServiceProvider {
 
 	public function add_hooks() {
 		\add_action( 'admin_menu', [ $this, 'add_menu_page' ] );
@@ -93,7 +91,8 @@ class Admin extends AbstractServiceProvider {
 
 	public function load_scripts() {
 		if ( ! $this->is_setup_wizard_screen() ) {
-			print_r($this->is_setup_wizard_screen());
+			\print_r( $this->is_setup_wizard_screen() );
+
 			return;
 		}
 
@@ -115,6 +114,7 @@ class Admin extends AbstractServiceProvider {
 				'ajaxUrl'     => \admin_url( 'admin-ajax.php' ),
 				'currentStep' => ( isset( $_GET['step'] ) ? \esc_attr( $_GET['step'] ) : 'welcome' ),
 				'chosenDemo'  => $demo,
+				'nonce'       => \wp_create_nonce( $this->plugin->slug ),
 			]
 		);
 	}
@@ -138,8 +138,8 @@ class Admin extends AbstractServiceProvider {
 	private function get_asset_version( $file ) {
 		$version = $this->plugin->version;
 
-		if ( ( defined( 'WP_DEBUG' ) && true === WP_DEBUG ) || ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ) {
-			$version = filemtime( $this->plugin->dir . $file );
+		if ( ( \defined( 'WP_DEBUG' ) && true === WP_DEBUG ) || ( \defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ) {
+			$version = \filemtime( $this->plugin->dir . $file );
 		}
 
 		return $version;

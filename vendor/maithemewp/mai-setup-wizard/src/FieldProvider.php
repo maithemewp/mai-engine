@@ -1,10 +1,9 @@
 <?php
 
-namespace MaiSetupWizard\Providers;
+namespace MaiSetupWizard;
 
-use MaiSetupWizard\AbstractServiceProvider;
 
-class Field extends AbstractServiceProvider {
+class FieldProvider extends AbstractServiceProvider {
 	public $fields = [];
 
 	public function add_hooks() {

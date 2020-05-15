@@ -111,6 +111,7 @@
 				action: 'mai_setup_wizard_' + step.id,
 				counter: counter,
 				field: field,
+				nonce: data.nonce
 			},
 			success: function( response ) {
 				setTimeout( function() {

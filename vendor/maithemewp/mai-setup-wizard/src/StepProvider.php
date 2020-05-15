@@ -1,10 +1,8 @@
 <?php
 
-namespace MaiSetupWizard\Providers;
+namespace MaiSetupWizard;
 
-use MaiSetupWizard\AbstractServiceProvider;
-
-class Step extends AbstractServiceProvider {
+class StepProvider extends AbstractServiceProvider {
 	private $steps = [];
 
 	public function add_hooks() {
@@ -19,7 +17,7 @@ class Step extends AbstractServiceProvider {
 		}
 
 		\usort( $this->steps, function ( $a, $b ) {
-			return strcmp( $a['order'], $b['order'] );
+			return \strcmp( $a['order'], $b['order'] );
 		} );
 
 		return $this->steps;
@@ -128,7 +126,7 @@ class Step extends AbstractServiceProvider {
 	private function get_default_args( $id ) {
 		$title = \ucwords( \str_replace( [ '-', '_' ], ' ', $id ) );
 
-		return apply_filters( 'mai_setup_wizard_step_defaults', [
+		return \apply_filters( 'mai_setup_wizard_step_defaults', [
 			'title'           => $title,
 			'description'     => $title,
 			'order'           => 10,
@@ -168,19 +166,19 @@ class Step extends AbstractServiceProvider {
 				</ul>
 			<?php endif; ?>
 			<div>
-				<?php if ( 1 !== $counter && apply_filters( 'mai_setup_wizard_previous', true ) ): ?>
+				<?php if ( 1 !== $counter && \apply_filters( 'mai_setup_wizard_previous', true ) ): ?>
 					<a href="javascript:void(0)" id="previous" class="button">
-						<?php esc_html_e( 'Previous', 'mai-setup-wizard' ); ?>
+						<?php \esc_html_e( 'Previous', 'mai-setup-wizard' ); ?>
 					</a>
 				<?php endif; ?>
-				<?php $skip_target = filter_var( $step['skip_url'], FILTER_VALIDATE_URL ) === false ? '' : ' target="_blank"'; ?>
-				<?php if ( $step['skip_text'] && $counter < count( $steps ) ): ?>
+				<?php $skip_target = \filter_var( $step['skip_url'], FILTER_VALIDATE_URL ) === false ? '' : ' target="_blank"'; ?>
+				<?php if ( $step['skip_text'] && $counter < \count( $steps ) ): ?>
 					<a href="<?php echo $step['skip_url']; ?>" <?php echo $skip_target; ?>id="skip" class="button">
 						<?php echo $step['skip_text']; ?>
 					</a>
 				<?php endif; ?>
 				<?php if ( $counter < \count( $steps ) ): ?>
-					<?php $continue_target = filter_var( $step['skip_url'], FILTER_VALIDATE_URL ) === false ? '' : ' target="_blank"'; ?>
+					<?php $continue_target = \filter_var( $step['skip_url'], FILTER_VALIDATE_URL ) === false ? '' : ' target="_blank"'; ?>
 					<button href="<?php echo $step['continue_url']; ?>" <?php echo $continue_target; ?>id="submit" class="button-primary" data-default="<?php echo $step['continue_text']; ?>" data-loading="<?php esc_attr_e( $step['loading_text'] ); ?>">
 						<?php echo $step['continue_text']; ?>
 						<img src="https://www.cupraofficial.com/etc.clientlibs/seatComponents/components/login-component/clientlibs/resources/images/spinner.gif" alt="spinner" width="20">

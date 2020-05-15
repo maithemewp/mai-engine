@@ -1,10 +1,8 @@
 <?php
 
-namespace MaiSetupWizard\Providers;
+namespace MaiSetupWizard;
 
-use MaiSetupWizard\AbstractServiceProvider;
-
-class Ajax extends AbstractServiceProvider {
+class AjaxProvider extends AbstractServiceProvider {
 
 	public function add_hooks() {
 		\add_action( 'wp_ajax_mai_setup_wizard_welcome', [ $this, 'step_welcome' ] );
@@ -33,6 +31,8 @@ class Ajax extends AbstractServiceProvider {
 	}
 
 	public function step_welcome() {
+		\check_ajax_referer( $this->plugin->slug, 'nonce' );
+
 		$field         = $this->get_field();
 		$email_address = isset( $field['value'] ) ? \sanitize_email( $field['value'] ) : false;
 
@@ -63,6 +63,8 @@ class Ajax extends AbstractServiceProvider {
 	}
 
 	public function step_demo() {
+		\check_ajax_referer( $this->plugin->slug, 'nonce' );
+
 		$field = $this->get_field();
 		$demo  = isset( $field['value'] ) ? $field['value'] : false;
 
@@ -79,6 +81,8 @@ class Ajax extends AbstractServiceProvider {
 	}
 
 	public function step_plugins() {
+		\check_ajax_referer( $this->plugin->slug, 'nonce' );
+
 		$field = $this->get_field();
 		$slug  = isset( $field['value'] ) ? $field['value'] : false;
 
@@ -119,6 +123,8 @@ class Ajax extends AbstractServiceProvider {
 	}
 
 	public function step_content() {
+		\check_ajax_referer( $this->plugin->slug, 'nonce' );
+
 		$field        = $this->get_field();
 		$content_type = isset( $field['value'] ) ? $field['value'] : false;
 
@@ -128,6 +134,6 @@ class Ajax extends AbstractServiceProvider {
 
 		\set_time_limit( \apply_filters( 'mai_setup_wizard_time_limit', 300 ) );
 
-		$this->importer->import( $field['value'] );
+		$this->import->import( $field['value'] );
 	}
 }

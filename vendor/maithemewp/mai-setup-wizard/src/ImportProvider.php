@@ -1,15 +1,12 @@
 <?php
 
-namespace MaiSetupWizard\Providers;
+namespace MaiSetupWizard;
 
-use MaiSetupWizard\AbstractServiceProvider;
-use MaiSetupWizard\CustomizeSetting;
-
-class Importer extends AbstractServiceProvider {
+class ImportProvider extends AbstractServiceProvider {
 
 	public function add_hooks() {
-		add_action( 'mai_setup_wizard_before_import', [ $this, 'before_import' ] );
-		add_action( 'mai_setup_wizard_after_import', [ $this, 'after_import' ] );
+		\add_action( 'mai_setup_wizard_before_import', [ $this, 'before_import' ] );
+		\add_action( 'mai_setup_wizard_after_import', [ $this, 'after_import' ] );
 	}
 
 	private function get_cache_dir() {
@@ -79,15 +76,15 @@ class Importer extends AbstractServiceProvider {
 	}
 
 	private function import_content( $file ) {
-		if ( ! class_exists( 'WP_Importer' ) ) {
+		if ( ! \class_exists( 'WP_Importer' ) ) {
 			require_once ABSPATH . '/wp-admin/includes/class-wp-importer.php';
 		}
 
-		if ( ! function_exists( 'wp_generate_attachment_metadata' ) ) {
+		if ( ! \function_exists( 'wp_generate_attachment_metadata' ) ) {
 			require_once ABSPATH . '/wp-admin/includes/image.php';
 		}
 
-		if ( ! function_exists( 'wp_read_audio_metadata' ) ) {
+		if ( ! \function_exists( 'wp_read_audio_metadata' ) ) {
 			require_once ABSPATH . '/wp-admin/includes/media.php';
 		}
 
@@ -325,7 +322,7 @@ class Importer extends AbstractServiceProvider {
 				$id = \media_handle_sideload( $file_array, 0 );
 
 				if ( \is_wp_error( $id ) ) {
-					unlink( $file_array['tmp_name'] );
+					\unlink( $file_array['tmp_name'] );
 
 					return $id;
 				}
@@ -354,23 +351,23 @@ class Importer extends AbstractServiceProvider {
 	public function before_import() {
 
 		// Set static front page.
-		update_option( 'show_on_front', 'page' );
+		\update_option( 'show_on_front', 'page' );
 
 		// Trash default posts and pages.
-		$hello_world    = get_page_by_path( 'hello-world', OBJECT, 'post' );
-		$sample_page    = get_page_by_path( 'sample-page', OBJECT, 'page' );
-		$privacy_policy = get_page_by_path( 'privacy-policy', OBJECT, 'page' );
+		$hello_world    = \get_page_by_path( 'hello-world', OBJECT, 'post' );
+		$sample_page    = \get_page_by_path( 'sample-page', OBJECT, 'page' );
+		$privacy_policy = \get_page_by_path( 'privacy-policy', OBJECT, 'page' );
 
 		if ( $hello_world && isset( $hello_world->ID ) ) {
-			wp_delete_post( $hello_world->ID );
+			\wp_delete_post( $hello_world->ID );
 		}
 
 		if ( $sample_page && isset( $sample_page->ID ) ) {
-			wp_delete_post( $sample_page->ID );
+			\wp_delete_post( $sample_page->ID );
 		}
 
 		if ( $privacy_policy && isset( $privacy_policy->ID ) ) {
-			wp_delete_post( $privacy_policy->ID );
+			\wp_delete_post( $privacy_policy->ID );
 		}
 	}
 
@@ -378,12 +375,12 @@ class Importer extends AbstractServiceProvider {
 	function after_import() {
 
 		// Set nav menu locations.
-		$menus     = get_theme_support( 'genesis-menus' )[0];
+		$menus     = \get_theme_support( 'genesis-menus' )[0];
 		$locations = [];
 
 		foreach ( $menus as $id => $name ) {
-			$name = 'Footer Menu' === $name ? $name : str_replace( ' Menu', '', $name );
-			$menu = get_term_by( 'name', $name, 'nav_menu' );
+			$name = 'Footer Menu' === $name ? $name : \str_replace( ' Menu', '', $name );
+			$menu = \get_term_by( 'name', $name, 'nav_menu' );
 
 			if ( $menu && isset( $menu->term_id ) ) {
 				$locations[ $id ] = $menu->term_id;
@@ -391,33 +388,33 @@ class Importer extends AbstractServiceProvider {
 		}
 
 		if ( ! empty( $locations ) ) {
-			set_theme_mod( 'nav_menu_locations', $locations );
+			\set_theme_mod( 'nav_menu_locations', $locations );
 		}
 
 		// Assign front page and posts page.
-		$home = get_page_by_title( apply_filters( 'mai_home_page_title', 'Home' ) );
-		$blog = get_page_by_title( apply_filters( 'mai_blog_page_title', 'Blog' ) );
-		$shop = get_page_by_title( apply_filters( 'mai_shop_page_title', 'Shop' ) );
+		$home = \get_page_by_title( \apply_filters( 'mai_home_page_title', 'Home' ) );
+		$blog = \get_page_by_title( \apply_filters( 'mai_blog_page_title', 'Blog' ) );
+		$shop = \get_page_by_title( \apply_filters( 'mai_shop_page_title', 'Shop' ) );
 
 		if ( $home ) {
-			update_option( 'page_on_front', $home->ID );
+			\update_option( 'page_on_front', $home->ID );
 		}
 
 		if ( $blog ) {
-			update_option( 'page_for_posts', $blog->ID );
+			\update_option( 'page_for_posts', $blog->ID );
 		}
 
 		if ( $shop ) {
-			update_option( 'woocommerce_shop_page_id', $shop->ID );
+			\update_option( 'woocommerce_shop_page_id', $shop->ID );
 		}
 
 		// Update WP Forms settings.
-		$wpforms = get_option( 'wpforms_settings', [] );
+		$wpforms = \get_option( 'wpforms_settings', [] );
 
 		if ( ! isset( $wpforms['disable-css'] ) ) {
 			$wpforms['disable-css'] = 2;
 
-			update_option( 'wpforms_settings', $wpforms );
+			\update_option( 'wpforms_settings', $wpforms );
 		}
 
 		/**
@@ -431,5 +428,4 @@ class Importer extends AbstractServiceProvider {
 		$wp_rewrite->set_permalink_structure( '/%postname%/' );
 		$wp_rewrite->flush_rules();
 	}
-
 }
