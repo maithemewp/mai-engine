@@ -19,10 +19,10 @@ add_action( 'admin_menu', 'mai_admin_menu_page', 0 );
  */
 function mai_admin_menu_page() {
 	add_menu_page(
-		mai_get_name(),
-		mai_get_name(),
+		esc_html( 'Mai Theme', 'mai-engine' ),
+		esc_html( 'Mai Theme', 'mai-engine' ),
 		'manage_options',
-		mai_get_handle(),
+		'mai-theme',
 		'mai_render_admin_menu_page',
 		mai_get_url() . 'assets/svg/mai-icon-white.svg',
 		59
