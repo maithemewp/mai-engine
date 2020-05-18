@@ -6,10 +6,13 @@
 	justify-content: center;
 	width: 100%;
 	overflow: hidden;
+	color: var(--page-header-color, var(--color));
 	text-align: var(--page-header-text-align, center);
 	background-color: var(--page-header-background-color, var(--color-medium));
 	border-bottom: var(--page-header-border-bottom, var(--border));
 
+	--color: currentColor;
+	--heading-color: currentColor;
 	--wrap-position: relative;
 	--wrap-justify-content: var(--page-header-text-align, center);
 
@@ -17,6 +20,10 @@
 		z-index: 2;
 		padding: var(--page-header-padding, (var(--page-header-padding-top, 10vw) var(--page-header-padding-right, 0) var(--page-header-padding-bottom, 10vw) var(--page-header-padding-left, 0)));
 	}
+}
+
+.has-dark-page-header {
+	--page-header-color: var(--color-lightest);
 }
 
 .page-header-overlay {

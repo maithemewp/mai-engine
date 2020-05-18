@@ -12,7 +12,7 @@
 	var hasSticky      = body.classList.contains( 'has-sticky-header' );
 	var hasTransparent = body.classList.contains( 'has-transparent-header' );
 	var hasPageHeader  = body.classList.contains( 'has-page-header' );
-	var hasCoverBlock  = body.classList.contains( 'has-cover-block' );
+	var hasCoverBlock  = body.classList.contains( 'has-alignfull-first' );
 	var firstElement   = hasCoverBlock ? document.getElementsByClassName( 'wp-block-cover__inner-container' )[ 0 ] : siteInner.firstChild;
 	var timeout        = false;
 

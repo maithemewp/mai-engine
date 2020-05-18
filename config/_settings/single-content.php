@@ -155,11 +155,11 @@ return [
 		'settings' => 'page-header-text-color',
 		'label'    => esc_html__( 'Page header text color', 'mai-engine' ),
 		'type'     => 'radio-buttonset',
-		'default'  => 'default',
+		'default'  => '',
 		'choices'  => [
-			'default' => __( 'Default', 'mai-engine' ),
-			'light'   => __( 'Light', 'mai-engine' ),
-			'dark'    => __( 'Dark', 'mai-engine' ),
+			''      => __( 'Default', 'mai-engine' ),
+			'light' => __( 'Light', 'mai-engine' ),
+			'dark'  => __( 'Dark', 'mai-engine' ),
 		],
 	],
 ];

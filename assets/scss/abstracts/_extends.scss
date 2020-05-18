@@ -4,12 +4,12 @@
 	min-height: var(--body-min-height, 100vh);
 	min-height: -webkit-fill-available;
 	margin: 0;
-	color: var(--color-dark);
+	color: var(--color, var(--color-dark));
 	font-weight: var(--font-weight-body);
-	font-size: var(--text-md);
-	font-family: var(--font-primary);
-	line-height: var(--line-height-body);
-	background: var(--body-background, var(--color-lightest));
+	font-size: var(--font-size, var(--text-md));
+	font-family: var(--font-family, var(--font-primary));
+	line-height: var(--line-height);
+	background: var(--background, var(--color-lightest));
 }
 
 @mixin button-style($style) {

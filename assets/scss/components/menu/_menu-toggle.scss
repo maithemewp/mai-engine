@@ -8,7 +8,6 @@
 	min-height: 2em;
 	margin: 0;
 	padding: 0;
-	color: var(--color-darkest);
 	background: transparent;
 
 	&:hover,
@@ -27,7 +26,8 @@
 	right: auto;
 	bottom: auto;
 	margin: auto;
-	background: var(--menu-toggle-icon-background, var(--color-darkest));
+	color: var(--menu-toggle-color, var(--color-darkest));
+	background: var(--menu-toggle-icon-background, currentColor);
 	transition: var(--menu-toggle-transition, background 0s 0.2s);
 
 	&,
@@ -42,7 +42,7 @@
 	&::before,
 	&::after {
 		position: absolute;
-		background: var(--menu-toggle-line-background, var(--color-darkest));
+		background: currentColor;
 		content: "";
 	}
 
@@ -66,4 +66,8 @@
 	--menu-toggle-line-after-transform: rotate(-45deg);
 	--menu-toggle-line-before-transition: top 0.2s 0s, transform 0.2s 0.2s;
 	--menu-toggle-line-after-transition: top 0.2s 0s, transform 0.2s 0.2s;
+}
+
+.has-dark-header {
+	--menu-toggle-color: var(--color-lightest);
 }

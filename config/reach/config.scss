@@ -5,8 +5,6 @@
 	--input-border-radius: 9rem;
 	--site-header-border-bottom: 0;
 	--page-header-border-bottom: 0;
-	--menu-toggle-icon-background: var(--color-lightest);
-	--menu-toggle-line-background: var(--color-lightest);
 	--content-sidebar-wrap-margin-top: var(--spacing-xxl);
 	--site-footer-background: var(--color-lighter);
 }
@@ -31,20 +29,6 @@ textarea {
 	@include mq(sm) {
 		--site-header-background: var(--color-primary);
 	}
-}
-
-.page-header {
-	--heading-color: var(--color-lightest);
-}
-
-.has-transparent-header {
-
-	.site-title-link,
-	.site-description,
-	.page-header {
-		color: var(--color-lightest);
-	}
-
 }
 
 .site-footer {

@@ -18,29 +18,13 @@
 	animation: var(--mobile-menu-animation-name) var(--mobile-menu-animation-duration) var(--mobile-menu-animation-timing);
 }
 
-.has-transparent-header {
+.has-dark-header {
 	--mobile-menu-background: var(--color-lightest);
 }
 
 .mobile-menu-visible {
 	--mobile-menu-display: block;
-
-	.site-container::after {
-		position: fixed;
-		top: 0;
-		left: 0;
-		z-index: 1;
-		width: 100%;
-		height: 100%;
-		background: rgba(0, 0, 0, 0.6);
-		opacity: 1;
-		animation: fadein 0.3s ease-in-out;
-		content: "";
-
-		@include mq(lg) {
-			display: none;
-		}
-	}
+	--mobile-menu-background: var(--color-lightest);
 }
 
 .sub-menu-toggle {

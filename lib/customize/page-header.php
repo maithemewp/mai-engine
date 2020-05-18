@@ -314,8 +314,9 @@ function mai_page_header_customizer_settings() {
 add_filter( 'genesis_attr_page-header-overlay', 'mai_page_header_divider_class', 10, 1 );
 /**
  * Description of expected behavior.
+ * The setting is for text color, so the class is the reverse. If text is light, that means the background is dark.
  *
- * @since 1.0.0
+ * @since 0.3.0
  *
  * @param $attr
  *
@@ -359,32 +360,4 @@ function mai_add_page_header_content_type_css( $attr ) {
 	}
 
 	return $attr;
-}
-
-add_filter( 'body_class', 'mai_add_page_header_text_color_class' );
-/**
- * Description of expected behavior.
- *
- * @since 1.0.0
- *
- * @param $classes
- *
- * @return mixed
- */
-function mai_add_page_header_text_color_class( $classes ) {
-	$global = mai_get_option( 'page-header-text-color', 'light' );
-	$class  = 'has-page-header-' . $global;
-	$args   = mai_get_template_args();
-
-	if ( isset( $args['page-header-text-color'] ) && 'light' === $args['page-header-text-color'] ) {
-		$class = 'has-page-header-dark';
-	}
-
-	if ( isset( $args['page-header-text-color'] ) && 'dark' === $args['page-header-text-color'] ) {
-		$class = 'has-page-header-light';
-	}
-
-	$classes[] = $class;
-
-	return $classes;
 }

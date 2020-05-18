@@ -67,27 +67,27 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'has-before-header';
 	}
 
-	// Add transparent header class.
-	if ( mai_has_transparent_header() ) {
-		$classes[] = 'has-transparent-header';
-	}
-
 	// Add sticky header class.
 	if ( mai_has_sticky_header() ) {
 		$classes[] = 'has-sticky-header';
 	}
 
-	// Add block classes.
-	if ( mai_has_cover_block() ) {
-		$classes[] = 'has-cover-block';
+	// Add transparent header class.
+	if ( mai_has_transparent_header() ) {
+		$classes[] = 'has-transparent-header';
 	}
 
-	// Add page header class.
-	if ( mai_has_page_header() ) {
-		$classes[] = 'has-page-header';
-	} else {
-		$classes[] = 'no-page-header';
+	// Add alignfull class.
+	if ( mai_has_alignfull_first() ) {
+		$classes[] = 'has-alignfull-first';
 	}
+
+	// Add site header shade class.
+	$classes[] = mai_has_light_site_header() ? 'has-light-header' : 'has-dark-header';
+
+	// Add page header classes.
+	$classes[] = mai_has_page_header() ? 'has-page-header' : 'no-page-header';
+	$classes[] = mai_has_light_page_header() ? 'has-light-page-header' : 'has-dark-page-header';
 
 	$header_left  = has_nav_menu( 'header-left' ) || is_active_sidebar( 'header_left' );
 	$header_right = has_nav_menu( 'header-right' ) || is_active_sidebar( 'header_right' );

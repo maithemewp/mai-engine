@@ -137,13 +137,13 @@ function mai_sidebar_has_widget( $sidebar, $widget ) {
 }
 
 /**
- * Checks if first block is cover.
+ * Checks if first block is cover or group block aligned full.
  *
  * @since 0.1.0
  *
  * @return bool
  */
-function mai_has_cover_block() {
+function mai_has_alignfull_first() {
 	static $has_cover_block = null;
 
 	if ( is_null( $has_cover_block ) ) {
@@ -158,7 +158,7 @@ function mai_has_cover_block() {
 		$block_name  = isset( $blocks[0]['blockName'] ) ? $blocks[0]['blockName'] : '';
 		$align       = isset( $blocks[0]['attrs']['align'] ) ? $blocks[0]['attrs']['align'] : '';
 
-		if ( 'core/cover' === $block_name || 'full' === $align ) {
+		if ( in_array( $block_name, [ 'core/cover', 'core/group' ] ) && ( 'full' === $align ) ) {
 			$has_cover_block = true;
 		}
 	}
@@ -206,7 +206,7 @@ function mai_has_sticky_header() {
 }
 
 /**
- * Check of site has transparent header.
+ * Check if site has transparent header.
  *
  * @since 0.1.0
  *
@@ -214,6 +214,65 @@ function mai_has_sticky_header() {
  */
 function mai_has_transparent_header() {
 	return mai_get_option( 'site-header-transparent', current_theme_supports( 'transparent-header' ) );
+}
+
+/**
+ * Check of the page has a light site header.
+ *
+ * @since 0.3.0
+ *
+ * @return bool
+ */
+function mai_has_light_site_header() {
+	static $has_light_site_header = null;
+
+	if ( ! is_null( $has_light_site_header ) ) {
+		return $has_light_site_header;
+	}
+
+	$has_light_site_header = false;
+
+	if ( mai_has_transparent_header() ) {
+		if ( mai_has_page_header() ) {
+			$has_light_site_header = mai_has_light_page_header();
+		} else {
+			// TODO: Having alignfull first doesn't necessarily mean it's a light header.
+			$has_light_site_header = ! mai_has_alignfull_first();
+		}
+	}
+
+	return $has_light_site_header;
+}
+
+/**
+ * Check of the page has a light page header.
+ *
+ * @since 0.3.0
+ *
+ * @return bool
+ */
+function mai_has_light_page_header() {
+	static $has_light_page_header = null;
+
+	if ( ! is_null( $has_light_page_header ) ) {
+		return $has_light_page_header;
+	}
+
+	if ( ! mai_has_page_header() ) {
+		$has_light_page_header = false;
+	} else {
+		$args = mai_get_template_args();
+
+		if ( isset( $args['page-header-text-color'] ) && ! empty( $args['page-header-text-color'] ) ) {
+			$text_color = $args['page-header-text-color'];
+		} else {
+			$text_color = mai_get_option( 'page-header-text-color', 'dark' );
+		}
+
+		$has_light_page_header = 'light' !== $text_color;
+	}
+
+	return $has_light_page_header;
 }
 
 /**

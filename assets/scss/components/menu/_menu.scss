@@ -9,13 +9,10 @@
 	columns: var(--menu-columns, auto);
 	list-style-type: none;
 
-	--link-color: var(--color-darker);
-	--link-color-hover: var(--color-primary);
 	--link-text-decoration: none;
 	--link-text-decoration-hover: none;
 	--button-padding: 0;
 	--button-margin: 0 0 0 var(--spacing-md);
-
 }
 
 /* TODO: current menu item styles */
@@ -28,14 +25,36 @@
 	margin: var(--menu-item-margin, (0 auto));
 }
 
+
 .menu-item-link {
 	display: var(--menu-item-link-display, flex);
 	flex: 1;
 	align-items: center;
 	width: var(--menu-item-link-width, 100%);
 	padding: var(--menu-item-link-padding, (var(--spacing-sm) var(--spacing-xxs)));
-	color: var(--menu-item-link-color, var(--link-color));
 	text-decoration: none;
+}
+
+/**
+ * Menu specific variables, ready for customization
+ * including Mai Customizer settings.
+ * The engine should just use --menu-item-link-color and
+ * reserse specific menus for themes or customizations.
+ */
+@each $location, $menu in $menus {
+
+	.nav-#{$location} {
+
+		.menu > .menu-item > .menu-item-link {
+			color: var(--nav-#{$location}-color, var(--menu-item-link-color, var(--color-darker)));
+
+			&:hover,
+			&:focus {
+				--menu-item-link-color: var(--nav-#{$location}-color-hover, var(--menu-item-link-color-hover, var(--color-primary)));
+			}
+		}
+	}
+
 }
 
 .menu-item-link > span {
@@ -68,13 +87,6 @@
 
 	.sub-menu & {
 		--menu-item-dropdown-margin-left: auto;
-	}
-}
-
-.has-transparent-header {
-
-	&:not(.mobile-menu-visible) .site-header:not(.is-stuck) .menu {
-		--link-color: var(--color-lightest);
 	}
 }
 

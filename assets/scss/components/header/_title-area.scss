@@ -1,12 +1,14 @@
 .title-area {
 	margin: var(--title-area-margin, 0);
 	padding: var(--title-area-padding, var(--spacing-md)) 0 var(--title-area-padding, var(--spacing-md));
+	color: var(--title-area-color, var(--color-darkest));
 	line-height: var(--title-area-line-height, var(--line-height-heading));
 	text-align: var(--title-area-text-align, start);
 	transition: var(--title-area-transition, var(--transition));
 
 	--link-text-decoration: none;
 	--link-text-decoration-hover: none;
+
 }
 
 .site-title {
@@ -17,11 +19,11 @@
 }
 
 .site-title-link {
-	color: var(--color-darkest);
+	color: var(--title-area-color, currentColor);
 
 	&:hover,
 	&:focus {
-		color: var(--color-primary);
+		color: var(--title-area-color-hover, var(--color-primary));
 	}
 }
 

@@ -27,6 +27,16 @@
 	--site-header-background: transparent;
 }
 
+.has-dark-header {
+	--title-area-color: var(--color-lightest);
+	--title-area-color-hover: var(--color-light);
+
+	.site-header {
+		--menu-item-link-color: var(--color-lightest);
+		--menu-item-link-color-hover: var(--color-lighter);
+	}
+}
+
 .has-sticky-header {
 	--title-area-transition: all 250ms ease-in-out;
 
