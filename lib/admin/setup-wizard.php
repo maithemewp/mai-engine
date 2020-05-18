@@ -4,15 +4,15 @@ add_filter( 'mai_setup_wizard_menu', 'mai_setup_wizard_menu', 10, 2 );
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.3.0
  *
  * @param array $args
  *
  * @return array
  */
 function mai_setup_wizard_menu( $args ) {
-	$args['parent_slug'] = mai_get_handle();
-	$args['menu_slug']   = 'mai-demo-import';
+	$args['parent_slug'] = 'mai-theme';
+	$args['menu_slug']   = 'mai-setup-wizard';
 	$args['menu_title']  = __( 'Setup Wizard', 'mai-engine' );
 
 	return $args;
@@ -22,7 +22,7 @@ add_filter( 'mai_setup_wizard_demos', 'mai_setup_wizard_demos', 15, 1 );
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.3.0
  *
  * @param $defaults
  *

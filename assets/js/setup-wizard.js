@@ -49,7 +49,7 @@
 			skip_button.fadeOut();
 		}
 
-		var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname + '?page=mai-demo-import&step=' + next_step_class;
+		var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname + '?page=mai-setup-wizard&step=' + next_step_class;
 		window.history.pushState( { path: newurl }, '', newurl );
 	} );
 
@@ -119,7 +119,7 @@
 			current_nav.removeClass( 'current-nav' );
 			next_nav.addClass( 'current-nav' );
 
-			var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname + '?page=mai-demo-import&step=' + next_step_class;
+			var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname + '?page=mai-setup-wizard&step=' + next_step_class;
 			window.history.pushState( { path: newurl }, '', newurl );
 
 			continue_button.delay(4000).removeClass( 'loading' );

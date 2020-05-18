@@ -71,7 +71,7 @@ add_action( 'admin_menu', 'mai_show_reusable_blocks_admin_menu' );
  * @return void
  */
 function mai_show_reusable_blocks_admin_menu() {
-	$title = __( 'Reusable Blocks', 'mai-engine' );
+	$title = esc_html__( 'Reusable Blocks', 'mai-engine' );
 
 	add_menu_page(
 		$title,
