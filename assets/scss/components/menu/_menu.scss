@@ -45,6 +45,7 @@
 
 	.nav-#{$location} {
 
+		.search-toggle,
 		.menu > .menu-item > .menu-item-link {
 			color: var(--nav-#{$location}-color, var(--menu-item-link-color, var(--color-darker)));
 
