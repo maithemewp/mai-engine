@@ -33,7 +33,7 @@ p {
 hr {
 	clear: both;
 	width: 100%;
-	margin: var(--horizontal-rule-margin, var(--spacing-md) auto 0);
+	margin: var(--horizontal-rule-margin, 0 auto var(--spacing-md));
 }
 
 b,
