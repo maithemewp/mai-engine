@@ -28,10 +28,10 @@
 }
 
 .has-dark-header {
-	--title-area-color: var(--color-lightest);
-	--title-area-color-hover: var(--color-light);
 
-	.site-header {
+	.site-header:not(.is-stuck) {
+		--title-area-color: var(--color-lightest);
+		--title-area-color-hover: var(--color-light);
 		--menu-item-link-color: var(--color-lightest);
 		--menu-item-link-color-hover: var(--color-lighter);
 	}

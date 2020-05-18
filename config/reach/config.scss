@@ -27,7 +27,7 @@ textarea {
 .is-stuck {
 
 	@include mq(sm) {
-		--site-header-background: var(--color-primary);
+		// --site-header-background: var(--color-primary);
 	}
 }
 

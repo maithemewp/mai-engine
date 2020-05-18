@@ -230,7 +230,7 @@ function mai_has_light_site_header() {
 		return $has_light_site_header;
 	}
 
-	$has_light_site_header = false;
+	$has_light_site_header = true;
 
 	if ( mai_has_transparent_header() ) {
 		if ( mai_has_page_header() ) {
