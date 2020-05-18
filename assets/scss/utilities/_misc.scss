@@ -5,6 +5,7 @@
 .is-circle,
 .is-square {
 	display: grid;
+	padding: 0 !important;
 
 	> :first-child {
 		display: flex;
