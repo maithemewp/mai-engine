@@ -13,7 +13,7 @@ add_shortcode( 'mai_icon', 'mai_icon_shortcode' );
 /**
  * Render the icon shortcode.
  *
- * @since 2.0.0
+ * @since 0.3.0
  *
  * @param array $atts The shortcode attributes.
  *
@@ -27,7 +27,7 @@ add_shortcode( 'mai_search_form', 'mai_search_form_shortcode' );
 /**
  * Adds search form shortcode.
  *
- * @since 1.0.0
+ * @since 0.3.0
  *
  * @return string
  */
@@ -37,9 +37,9 @@ function mai_search_form_shortcode() {
 
 add_shortcode( 'mai_back_to_top', 'mai_back_to_top_shortcode' );
 /**
- * Description of expected behavior.
+ * Add [mai_back_to_top] shortcode.
  *
- * @since 1.0.0
+ * @since 0.3.0
  *
  * @param array $atts Shortcode attributes.
  *
@@ -57,11 +57,23 @@ function mai_back_to_top_shortcode( $atts = [] ) {
 		'mai_back_to_top'
 	);
 
+	$atts = [
+		'link'  => esc_url( $atts['link'] ),
+		'title' => esc_html( $atts['title'] ),
+		'text'  => esc_html( $atts['text'] ),
+		'class' => sanitize_html_class( $atts['class'] ),
+	];
+
+	$class = 'mai-back-to-top';
+	if ( $atts['class'] ) {
+		$class .= ' ' . $atts['class'];
+	}
+
 	return sprintf(
 		'<a href="%s" title="%s" class="%s">%s</a>',
 		$atts['link'],
 		$atts['title'],
-		$atts['class'],
+		trim( $class ),
 		$atts['text']
 	);
 }
@@ -75,7 +87,7 @@ add_shortcode( 'mai_content', 'mai_content_shortcode' );
  * [mai_content id="123"]
  * [mai_content id="my-reusable-block"]
  *
- * @since 1.0.0
+ * @since 0.3.0
  *
  * @param array $atts Shortcode attributes.
  *
