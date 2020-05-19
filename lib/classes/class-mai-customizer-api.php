@@ -193,12 +193,12 @@ class Mai_Customizer_API {
 
 		// Set theme color palette for color controls.
 		if ( isset( $field['type'] ) && 'color' === $field['type'] ) {
-			$field['choices']['palettes'] = array_values( mai_get_colors() );
+			$field['choices']['palettes'] = mai_get_color_choices();
 		}
 
 		// Set theme color palette for multicolor controls.
 		if ( isset( $field['type'] ) && 'multicolor' === $field['type'] ) {
-			$field['choices']['irisArgs']['palettes'] = array_values( mai_get_colors() );
+			$field['choices']['irisArgs']['palettes'] = mai_get_color_choices();
 		}
 
 		// Prevent output if value same as default.

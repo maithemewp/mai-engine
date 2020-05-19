@@ -362,6 +362,7 @@ function mai_get_colors() {
 
 	if ( empty( $colors ) ) {
 		$colors = mai_get_variables()['colors'];
+
 		foreach ( $colors as $name => $hex ) {
 			$colors[ $name ] = $hex;
 		}
@@ -406,6 +407,27 @@ function mai_get_color_palette() {
 	}
 
 	return $palette;
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return array
+ */
+function mai_get_color_choices() {
+	static $choices = [];
+
+	if ( empty( $choices ) ) {
+		$palette = mai_get_color_palette();
+
+		foreach ( $palette as $color => $args ) {
+			$choices[] = $args['color'];
+		}
+	}
+
+	return $choices;
 }
 
 /**

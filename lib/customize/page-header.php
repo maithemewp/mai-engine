@@ -162,7 +162,7 @@ function mai_page_header_customizer_settings() {
 			'label'    => esc_html__( 'Background/overlay color', 'mai-engine' ),
 			'default'  => $config['background-color'],
 			'choices'  => [
-				'palettes' => array_values( mai_get_colors() ),
+				'palettes' => mai_get_color_choices(),
 			],
 			'output'   => [
 				[
@@ -296,7 +296,7 @@ function mai_page_header_customizer_settings() {
 			'description'     => esc_html__( 'This should match your body background color', 'mai-engine' ),
 			'default'         => $config[ 'divider-color' ],
 			'choices'         => [
-				'palettes' => array_values( mai_get_colors() ),
+				'palettes' => mai_get_color_choices(),
 			],
 			'active_callback' => [
 				[
