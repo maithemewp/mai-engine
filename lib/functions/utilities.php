@@ -895,29 +895,48 @@ function mai_get_loop_content_type_choices( $archive = true ) {
  * Get post content by slug or ID.
  * Great for displaying reusable blocks in areas that are not block enabled.
  *
- * @since 0.2.0
+ * Switched from get_post_field to WP_Query so blocks are parsed and shortcodes are rendered better.
+ *
+ * @since 0.3.0
  *
  * @param int|string $post_slug_or_id The post slug or ID.
  *
  * @return string
  */
 function mai_get_post_content( $post_slug_or_id ) {
-	$content = false;
+	$post_id = $post_type = false;
 
 	if ( is_numeric( $post_slug_or_id ) ) {
-		$content = get_post_field( 'post_content', $post_slug_or_id );
+		$post_id   = $post_slug_or_id;
+		$post_type = get_post_type( $post_id );
 
 	} else {
 		$post = get_page_by_path( $post_slug_or_id, OBJECT, 'wp_block' );
 
 		if ( $post ) {
-			$content = $post->post_content;
+			$post_id   = $post->ID;
+			$post_type = $post->post_type;
 		}
 	}
 
-	if ( $content ) {
-		$content = do_shortcode( $content );
+	if ( ! ( $post_id && $post_type ) ) {
+		return;
 	}
+
+	$loop = new WP_Query( array(
+		'post_type'              => $post_type,
+		'post__in'               => [ $post_id ],
+		'posts_per_page'         => 1,
+		'no_found_rows'          => true,
+		'update_post_term_cache' => false,
+		'update_post_meta_cache' => false,
+	));
+
+	ob_start();
+	if ( $loop->have_posts() ): while( $loop->have_posts() ): $loop->the_post();
+		the_content();
+	endwhile; endif; wp_reset_postdata();
+	$content = ob_get_clean();
 
 	return $content;
 }
