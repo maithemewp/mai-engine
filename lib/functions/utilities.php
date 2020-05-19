@@ -915,8 +915,8 @@ function mai_get_post_content( $post_slug_or_id ) {
 		}
 	}
 
-	if ( $content ) {
-		$content = mai_get_processed_content( $content );
+	if ( $content && has_shortcode( $content ) ) {
+		$content = do_shortcode( $content );
 	}
 
 	return $content;
