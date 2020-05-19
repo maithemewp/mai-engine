@@ -23,3 +23,40 @@ li.toplevel_page_mai-theme {
 	}
 }
 
+.setup-wizard {
+	--color-primary: #2cb563;
+
+	> .setup-wizard-logo-wrap {
+		order: -2;
+		width: 100%;
+		margin-bottom: 0;
+	}
+
+	.setup-wizard-logo {
+		width: 100%;
+		max-width: 100px;
+	}
+
+	> h1 {
+		order: -1;
+		font-size: 1.5em;
+		letter-spacing: 2px;
+		text-transform: uppercase;
+	}
+
+	a {
+		color: var(--color-primary);
+	}
+
+	.button-primary {
+		background: var(--color-primary) !important;
+		border-color: var(--color-primary) !important;
+	}
+
+	.button:not(.button-primary),
+	.button-secondary {
+		color: var(--color-primary) !important;
+		border-color: var(--color-primary) !important;
+	}
+
+}

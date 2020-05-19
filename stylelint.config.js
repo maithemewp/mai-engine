@@ -11,7 +11,7 @@ module.exports = {
     ignoreFiles: ['style.min.css'],
     rules: {
         'block-no-empty': null,
-        'font-family-no-missing-generic-family-keyword': null,
+        'font-family-no-missing-generic-family-keyword': false,
         'max-line-length': 255,
         'no-duplicate-selectors': null,
         'no-descending-specificity': null,

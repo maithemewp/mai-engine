@@ -76,3 +76,57 @@ function mai_setup_wizard_demos( $defaults ) {
 
 	return $defaults;
 }
+
+add_action( 'mai_setup_wizard_before_steps', 'mai_setup_wizard_header_content' );
+/**
+ * Add wizard logo/icon.
+ *
+ * @since 0.3.0
+ *
+ * @return void
+ */
+function mai_setup_wizard_header_content() {
+	printf( '<p class="setup-wizard-logo-wrap"><img class="setup-wizard-logo" src="%sassets/img/wizard-icon.png" alt="Mai Theme logo"></p>', mai_get_url() );
+}
+
+
+add_filter( 'mai_setup_wizard_steps', 'mai_setup_wizard_welcome_step_description' );
+/**
+ * Add additional description text to the welcome step.
+ *
+ * @since 0.3.0
+ *
+ * @return string
+ */
+function mai_setup_wizard_welcome_step_description( $steps ) {
+	$text = __( 'Mai Theme Setup Wizard Page', 'mai-engine' );
+	$link = sprintf( '<a target="_blank" rel="noopener nofollow" href="https://bizbudding.com/mai-setup-wizard/">%s</a>', $text );
+	$steps['welcome']['description'] .= ' ' . sprintf( '%s %s %s.',
+		__( 'To learn more about providing your email and claiming your free goodies, visit the', 'mai-engine' ),
+		$link,
+		__( 'on BizBudding', 'mai-engine' )
+	);
+	return $steps;
+}
+
+add_action( 'mai_setup_wizard_email_submit', 'mai_setup_wizard_email_option' );
+/**
+ * Send email to subcribe user.
+ *
+ * @since 0.3.0
+ *
+ * @return void
+ */
+function mai_setup_wizard_email_option( $email_address ) {
+	$to          = 'subscribe-af4840f00e125c4e59953f0197daf346@subscription-serv.com';
+	$subject     = 'mai setup wizard email optin';
+	$message     = $email_address;
+	$headers     = [];
+	$attachments = [];
+	$filter      = function( $email ) use ( $email_address ) {
+		return $email_address;
+	};
+	add_filter( 'wp_mail_from', $filter );
+	$sent = wp_mail( $to, $subject, $message, $headers, $attachments );
+	remove_filter( 'wp_mail_from', $filter );
+}

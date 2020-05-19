@@ -7,6 +7,9 @@
 	--button-secondary-color: var(--color-darkest);
 	--text-scale-ratio: 1.125;
 	--border-color: var(--color-lighter);
+	--menu-font-size: var(--text-xs);
+	--menu-font-family: var(--font-secondary);
+	--menu-item-link-color: var(--color-darkest);
 }
 
 body {
@@ -23,7 +26,7 @@ body {
 }
 
 .before-header {
-	background-color: var(--color-lighter);
+	background: var(--color-lighter);
 }
 
 .nav-after-header {
@@ -31,14 +34,11 @@ body {
 }
 
 .menu {
-	--link-color: var(--color-darkest);
-	font-size: var(--text-xs);
-	font-family: var(--font-secondary);
 	text-transform: uppercase;
 }
 
 .before-footer {
-	background-color: var(--color-medium);
+	background: var(--color-medium);
 }
 
 .footer-widgets {

@@ -25,7 +25,6 @@
 	margin: var(--menu-item-margin, (0 auto));
 }
 
-
 .menu-item-link {
 	display: var(--menu-item-link-display, flex);
 	flex: 1;
@@ -39,11 +38,13 @@
  * Menu specific variables, ready for customization
  * including Mai Customizer settings.
  * The engine should just use --menu-item-link-color and
- * reserse specific menus for themes or customizations.
+ * reserve specific menus for themes or customizations.
  */
 @each $location, $menu in $menus {
 
 	.nav-#{$location} {
+		font-size: var(--nav-#{$location}-font-size, var(--menu-font-size, inherit));
+		font-family: var(--nav-#{$location}-font-family, var(--menu-font-family, inherit));
 
 		.search-toggle,
 		.menu > .menu-item > .menu-item-link {
