@@ -175,8 +175,9 @@ class FieldProvider extends AbstractServiceProvider {
 				'element'    => 'a',
 				'content'    => __( 'View your site', 'mai-setup-wizard' ),
 				'attributes' => [
-					'class' => 'button button-primary button-hero',
-					'href' => \home_url(),
+					'class'  => 'button button-primary button-hero',
+					'href'   => \home_url(),
+					'target' => '_blank',
 				],
 			],
 		];
