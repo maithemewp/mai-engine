@@ -22,7 +22,7 @@ function mai_page_header_setup() {
 		return;
 	}
 
-	if ( mai_is_type_single() ) {
+	if ( mai_is_type_single() && apply_filters( 'mai_entry_title_in_page_header', true ) ) {
 		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
 	}
 
@@ -109,7 +109,7 @@ function mai_do_page_header_title() {
 
 	$title = mai_get_page_header_title();
 
-	if ( $title ) {
+	if ( $title && apply_filters( 'mai_entry_title_in_page_header', true ) ) {
 		genesis_markup(
 			[
 				'open'    => '<h1 %s itemprop="headline">',
@@ -177,7 +177,7 @@ add_filter( 'genesis_structural_wrap-page-header', 'mai_page_header_divider', 10
  * @return string
  */
 function mai_page_header_divider( $output, $original_output ) {
-	$style = mai_get_option( 'page-header-divider', mai_get_config( 'page-header')['divider'] );
+	$style = mai_get_option( 'page-header-divider', mai_get_config( 'page-header' )['divider'] );
 
 	if ( ! $style ) {
 		return $output;
@@ -185,12 +185,12 @@ function mai_page_header_divider( $output, $original_output ) {
 
 	if ( 'close' === $original_output ) {
 		$args = [
-			'style'            => $style,
-			'color'            => mai_get_option( 'page-header-divider-color', mai_get_color( 'lightest' ) ),
-			'flip_horizontal'  => mai_get_option( 'page-header-divider-flip-horizontal', mai_get_config( 'page-header')['divider-flip-horizontal'] ),
-			'flip_vertical'    => mai_get_option( 'page-header-divider-flip-vertical', mai_get_config( 'page-header')['divider-flip-vertical'] ),
-			'height'           => 'md',
-			'class'            => 'page-header-divider',
+			'style'           => $style,
+			'color'           => mai_get_option( 'page-header-divider-color', mai_get_color( 'lightest' ) ),
+			'flip_horizontal' => mai_get_option( 'page-header-divider-flip-horizontal', mai_get_config( 'page-header' )['divider-flip-horizontal'] ),
+			'flip_vertical'   => mai_get_option( 'page-header-divider-flip-vertical', mai_get_config( 'page-header' )['divider-flip-vertical'] ),
+			'height'          => 'md',
+			'class'           => 'page-header-divider',
 		];
 
 		$output .= mai_get_divider( $args );
