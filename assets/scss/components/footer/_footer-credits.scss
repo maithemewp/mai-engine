@@ -2,7 +2,7 @@
 	width: 100%;
 	padding: var(--spacing-lg) 0;
 	font-size: smaller;
-	text-align: center;
+	text-align: var(--footer-credits-text-align, center);
 
 	--paragraph-margin: 0;
 	--paragraph-width: 100%;

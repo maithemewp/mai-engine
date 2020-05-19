@@ -54,14 +54,10 @@ textarea {
 	padding: var(--spacing-xxl) 0;
 	border-top: var(--border);
 	border-bottom: var(--border);
-
-	@include mq(lg) {
-		grid-template-columns: repeat(1, 2fr 1fr 1fr 1fr);
-	}
 }
 
 .footer-credits {
-	text-align: left;
+	--footer-credits-text-align: left;
 }
 
 .logos {
@@ -74,7 +70,7 @@ textarea {
 
 .wpforms-container.inline-fields {
 	margin-bottom: 0;
-	overflow: hidden;
+	overflow: visible;
 
 	--input-border: 0;
 	--input-border-focus: 0;
