@@ -44,6 +44,8 @@ class AjaxProvider extends AbstractServiceProvider {
 			\wp_send_json_error( __( 'Please enter a valid email address.', 'mai-setup-wizard' ) );
 		}
 
+		\do_action( 'mai_setup_wizard_email_submit', $email_address );
+
 		$email = \apply_filters( 'mai_setup_wizard_email', [
 			'to'          => \apply_filters( 'mai_setup_wizard_email_address', 'seothemeswp@gmail.com' ),
 			'subject'     => $this->plugin->name,
@@ -51,7 +53,7 @@ class AjaxProvider extends AbstractServiceProvider {
 			'headers'     => [ 'Content-Type: text/html; charset=UTF-8' ],
 			'attachments' => [],
 			'send'        => false,
-		] );
+		], $email_address );
 
 		if ( $email['send'] ) {
 			\wp_mail( ...\array_values( $email ) );

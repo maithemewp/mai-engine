@@ -14,29 +14,14 @@ class ComposerStaticInitb109c82834b5632899cf4c449109f709
     public static $prefixLengthsPsr4 = array (
         'P' => 
         array (
-            'Psr\\Container\\' => 14,
             'ProteusThemes\\WPContentImporter2\\' => 33,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Psr\\Container\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/container/src',
-        ),
         'ProteusThemes\\WPContentImporter2\\' => 
         array (
             0 => __DIR__ . '/..' . '/proteusthemes/wp-content-importer-v2/src',
-        ),
-    );
-
-    public static $prefixesPsr0 = array (
-        'P' => 
-        array (
-            'Pimple' => 
-            array (
-                0 => __DIR__ . '/..' . '/pimple/pimple/src',
-            ),
         ),
     );
 
@@ -45,7 +30,6 @@ class ComposerStaticInitb109c82834b5632899cf4c449109f709
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitb109c82834b5632899cf4c449109f709::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitb109c82834b5632899cf4c449109f709::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitb109c82834b5632899cf4c449109f709::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }
