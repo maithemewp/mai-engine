@@ -1,6 +1,9 @@
 .after-entry {
 	margin-bottom: var(--spacing-xl);
-	padding: var(--spacing-md);
-	border: var(--border);
-	border-radius: var(--border-radius);
+
+	.widget {
+		padding: var(--spacing-md);
+		border: var(--border);
+		border-radius: var(--border-radius);
+	}
 }

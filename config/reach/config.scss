@@ -24,13 +24,6 @@ textarea {
 	--input-border-radius: calc(var(--text-md, 1em) * 2);
 }
 
-.is-stuck {
-
-	@include mq(sm) {
-		// --site-header-background: var(--color-primary);
-	}
-}
-
 .site-footer {
 	border: 0;
 }
