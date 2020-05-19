@@ -35,6 +35,58 @@ function mai_add_hide_elements_metabox() {
 		];
 	}
 
+	$choices           = [];
+	$page_header       = mai_get_config( 'page-header' );
+	$breadcrumb_single = genesis_get_option( 'breadcrumb_single' );
+	$breadcrumb_page   = genesis_get_option( 'breadcrumb_page' );
+	$widget_areas      = wp_get_sidebars_widgets();
+	$footer_widgets    = (int) mai_get_option( 'footer-widgets-widget-areas', get_theme_support( 'genesis-footer-widgets' )[0] );
+	$menus             = get_theme_support( 'genesis-menus' )[0];
+
+	if ( isset( $widget_areas['before-header'] ) ) {
+		$choices['before_header'] = __( 'Before Header', 'mai-engine' );
+	}
+
+	$choices['site_header'] = __( 'Site Header', 'mai-engine' );
+
+	if ( mai_get_option( 'site-header-sticky', current_theme_supports( 'sticky-header' ) ) ) {
+		$choices['sticky_header'] = __( 'Sticky Header', 'mai-engine' );
+	}
+
+	if ( mai_get_option( 'site-header-transparent', current_theme_supports( 'transparent-header' ) ) ) {
+		$choices['transparent_header'] = __( 'Transparent Header', 'mai-engine' );
+	}
+
+	if ( array_key_exists( 'after-header', $menus ) ) {
+		$choices['after_header'] = __( 'After Header Menu', 'mai-engine' );
+	}
+
+	if ( '*' === $page_header || ( isset( $page_header['single'] ) && ! empty( $page_header['single'] ) ) ) {
+		$choices['page_header'] = __( 'Page Header', 'mai-engine' );
+	}
+
+	if ( $breadcrumb_single || $breadcrumb_page ) {
+		$choices['breadcrumbs'] = __( 'Breadcrumbs', 'mai-engine' );
+	}
+
+	$choices['entry_title']    = __( 'Entry Title', 'mai-engine' );
+	$choices['entry_excerpt']  = __( 'Entry Excerpt', 'mai-engine' );
+	$choices['featured_image'] = __( 'Featured Image', 'mai-engine' );
+
+	if ( isset( $widget_areas['before-footer'] ) ) {
+		$choices['before_footer'] = __( 'Before Footer', 'mai-engine' );
+	}
+
+	for ( $i = 1; $i <= $footer_widgets; $i++ ) {
+		if ( isset( $widget_areas[ 'footer-' . $i ] ) ) {
+			$choices['footer_widgets'] = __( 'Footer Widgets', 'mai-engine' );
+		}
+	}
+
+	if ( mai_get_option( 'footer-credits-text', mai_default_footer_credits() ) ) {
+		$choices['footer_credits'] = __( 'Footer Credits', 'mai-engine' );
+	}
+
 	acf_add_local_field_group(
 		[
 			'key'                   => 'hide_elements',
@@ -67,19 +119,7 @@ function mai_add_hide_elements_metabox() {
 						'class' => '',
 						'id'    => '',
 					],
-					'choices'           => [
-						'before_header'  => __( 'Before Header', 'mai-engine' ),
-						'site_header'    => __( 'Site Header', 'mai-engine' ),
-						'after_header'   => __( 'After Header Menu', 'mai-engine' ),
-						'page_header'    => __( 'Page Header', 'mai-engine' ),
-						'breadcrumbs'    => __( 'Breadcrumbs', 'mai-engine' ),
-						'entry_title'    => __( 'Entry Title', 'mai-engine' ),
-						'entry_excerpt'  => __( 'Entry Excerpt', 'mai-engine' ),
-						'featured_image' => __( 'Featured Image', 'mai-engine' ),
-						'before_footer'  => __( 'Before Footer', 'mai-engine' ),
-						'footer_widgets' => __( 'Footer Widgets', 'mai-engine' ),
-						'footer_credits' => __( 'Footer Credits', 'mai-engine' ),
-					],
+					'choices'           => $choices,
 				],
 			],
 		]

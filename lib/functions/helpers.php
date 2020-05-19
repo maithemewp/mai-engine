@@ -202,7 +202,11 @@ function mai_has_boxed_container() {
  * @return bool
  */
 function mai_has_sticky_header() {
-	return mai_get_option( 'site-header-sticky', current_theme_supports( 'sticky-header' ) );
+	$default = current_theme_supports( 'sticky-header' );
+	$option  = mai_get_option( 'site-header-sticky', $default );
+	$hidden  = mai_is_element_hidden( 'sticky_header' );
+
+	return $option && ! $hidden;
 }
 
 /**
@@ -213,7 +217,11 @@ function mai_has_sticky_header() {
  * @return bool
  */
 function mai_has_transparent_header() {
-	return mai_get_option( 'site-header-transparent', current_theme_supports( 'transparent-header' ) );
+	$default = current_theme_supports( 'transparent-header' );
+	$option  = mai_get_option( 'site-header-transparent', $default );
+	$hidden  = mai_is_element_hidden( 'transparent_header' );
+
+	return $option && ! $hidden;
 }
 
 /**
