@@ -16,6 +16,10 @@
 	// transition: var(--entry-transition, var(--transition));
 }
 
+.single-entry {
+	margin-bottom: var(--spacing-lg);
+}
+
 [class*="has-image-left"],
 [class*="has-image-right"] {
 	--entry-flex-direction: row;

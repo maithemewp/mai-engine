@@ -116,8 +116,14 @@ class Mai_Entry {
 			'class' => 'entry',
 		];
 
+
 		if ( 'term' === $this->type ) {
 			$atts['class'] .= sprintf( ' term-%s type-%s %s-%s', $this->entry->term_id, $this->entry->taxonomy, $this->entry->taxonomy, $this->entry->slug );
+		}
+
+		// Add single-entry class.
+		if ( ( 'post' === $this->type ) && ( 'single' === $this->context ) ) {
+			add_filter( 'post_class', [ $this, 'single_entry_class' ] );
 		}
 
 		// Open.
@@ -133,6 +139,11 @@ class Mai_Entry {
 				],
 			]
 		);
+
+		// Remove single-entry class filter.
+		if ( ( 'post' === $this->type ) && ( 'single' === $this->context ) ) {
+			remove_filter( 'post_class', [ $this, 'single_entry_class' ] );
+		}
 
 		// Check if extra wrap is needed.
 		$has_wrap = false;
@@ -414,9 +425,24 @@ class Mai_Entry {
 	}
 
 	/**
+	 * Add single-entry class.
+	 *
+	 * @since 0.3.2
+	 *
+	 * @param array $class Classes.
+	 *
+	 * @return array
+	 */
+	public function single_entry_class( $class ) {
+		$class[] = 'single-entry';
+
+		return $class;
+	}
+
+	/**
 	 * Description of expected behavior.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 *
 	 * @param array $class Classes.
 	 *
