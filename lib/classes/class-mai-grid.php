@@ -186,13 +186,20 @@ class Mai_Grid {
 				if ( $posts->have_posts() ) {
 					while ( $posts->have_posts() ) :
 						$posts->the_post();
+
+						/**
+						 * @var WP_Post $post
+						 */
 						global $post;
+
 						mai_do_entry( $post, $this->args );
+
 						// Add this post to the existing post IDs.
-						$this::$existing_post_ids[] = get_the_ID();
+						self::$existing_post_ids[] = get_the_ID();
 					endwhile;
+
 					// Clear duplicate IDs.
-					$this::$existing_post_ids = array_unique( $this::$existing_post_ids );
+					self::$existing_post_ids = array_unique( self::$existing_post_ids );
 				}
 
 				wp_reset_postdata();
@@ -200,13 +207,18 @@ class Mai_Grid {
 			case 'term':
 				$term_query = new WP_Term_Query( $this->get_term_query_args() );
 				if ( ! empty( $term_query->terms ) ) {
+
+					/**
+					 * @var WP_Term $term
+					 */
 					foreach ( $term_query->terms as $term ) {
 						mai_do_entry( $term, $this->args );
+
 						// Add this term to the existing term IDs.
-						$this::$existing_term_ids[] = $term->term_id;
+						self::$existing_term_ids[] = $term->term_id;
 					}
 					// Clear duplicate IDs.
-					$this::$existing_term_ids = array_unique( $this::$existing_term_ids );
+					self::$existing_term_ids = array_unique( self::$existing_term_ids );
 				}
 				break;
 			case 'user':
@@ -238,7 +250,7 @@ class Mai_Grid {
 				break;
 			case 'id':
 				// Empty array returns all posts, array(-1) prevents this.
-				$query_args['post__in'] = $this->args['post__in'] ?: array(-1);
+				$query_args['post__in'] = $this->args['post__in'] ?: [ -1 ];
 				$query_args['orderby']  = 'post__in';
 				break;
 			case 'tax_meta':
@@ -297,11 +309,11 @@ class Mai_Grid {
 		}
 
 		// Exclude displayed.
-		if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'] ) && ! empty( $this::$existing_post_ids ) ) {
+		if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'] ) && ! empty( self::$existing_post_ids ) ) {
 			if ( isset( $query_args['post__not_in'] ) ) {
-				$query_args['post__not_in'] = array_push( $query_args['post__not_in'], $this::$existing_post_ids );
+				$query_args['post__not_in'] = array_push( $query_args['post__not_in'], self::$existing_post_ids );
 			} else {
-				$query_args['post__not_in'] = $this::$existing_post_ids;
+				$query_args['post__not_in'] = self::$existing_post_ids;
 			}
 		}
 
@@ -369,11 +381,11 @@ class Mai_Grid {
 		}
 
 		// Exclude displayed.
-		if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'] ) && ! empty( $this::$existing_term_ids ) ) {
+		if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'] ) && ! empty( self::$existing_term_ids ) ) {
 			if ( isset( $query_args['exclude'] ) ) {
-				$query_args['exclude'] = array_push( $query_args['exclude'], $this::$existing_term_ids );
+				$query_args['exclude'] = array_push( $query_args['exclude'], self::$existing_term_ids );
 			} else {
-				$query_args['exclude'] = $this::$existing_term_ids;
+				$query_args['exclude'] = self::$existing_term_ids;
 			}
 		}
 
