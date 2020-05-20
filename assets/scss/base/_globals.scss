@@ -97,13 +97,6 @@
 	--transition-duration: 0.2s;
 	--transition-timing-function: ease;
 	--transition: var(--transition-property) var(--transition-duration) var(--transition-timing-function);
-
-	--link-color: var(--color-primary);
-	--link-color-hover: var(--color-primary);
-	--link-text-decoration: none;
-	--link-text-decoration-hover: underline;
-	--link-filter-hover: none;
-	--link-transition: var(--transition);
 }
 
 :root {

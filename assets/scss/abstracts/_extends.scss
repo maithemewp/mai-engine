@@ -111,12 +111,12 @@
 	&:hover,
 	&:focus {
 		--button-overlay-opacity: var(--button-overlay-opacity-hover, 0.2);
-		--button-text-decoration: var(--button-text-decoration-hover, none);
-		--button-outline: var(--button-outline-hover, none);
-		--button-transform: var(--button-transform-hover, scale(1)); // Pseudo element z-index hack.
-		--button-color: var(--button-color-hover, #{map_get($button, "color")});
-		--button-border: var(--button-border-hover, #{map_get($button, "border")});
-		--button-background: var(--button-background-hover, #{map_get($button, "background-color")});
+		color: var(--button-color-hover, #{map_get($button, "color")});
+		text-decoration: var(--button-text-decoration-hover, none);
+		background: var(--button-background-hover, #{map_get($button, "background-color")});
+		border: var(--button-border-hover, #{map_get($button, "border")});
+		outline: var(--button-outline-hover, none);
+		transform: var(--button-transform-hover, scale(1)); // Pseudo element z-index hack.
 	}
 
 	&:disabled {

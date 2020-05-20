@@ -4,14 +4,14 @@ body {
 }
 
 a {
-	color: var(--link-color);
-	text-decoration: var(--link-text-decoration);
-	transition: var(--link-transition);
+	color: var(--link-color, var(--color-primary));
+	text-decoration: var(--link-text-decoration, none);
+	transition: var(--link-transition, var(--transition));
 
 	&:hover,
 	&:focus {
-		--link-color: var(--link-color-hover);
-		--link-text-decoration: var(--link-text-decoration-hover);
+		color: var(--link-color-hover, var(--color-primary));
+		text-decoration: var(--link-text-decoration-hover, underline);
 		outline-color: var(--border-color);
 	}
 }

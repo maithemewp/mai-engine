@@ -21,10 +21,11 @@
 	a {
 		margin: 4px;
 		padding: var(--button-padding);
-		color: var(--button-color);
-		text-decoration: none;
 		background: var(--button-background);
 		border-radius: var(--border-radius);
+
+		--link-color: var(--button-color);
+		--link-text-decoration: none;
 
 		&:hover,
 		&:focus {

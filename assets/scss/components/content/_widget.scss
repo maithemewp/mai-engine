@@ -1,6 +1,7 @@
 .widget {
 	width: var(--widget-width, 100%);
 	margin: var(--widget-margin, var(--widget-margin-top, 0) var(--widget-margin-right, var(--widget-margin-sides, 0)) var(--widget-margin-bottom, var(--spacing-sm)) var(--widget-margin-left, var(--widget-margin-sides, 0)));
+	border-radius: var(--widget-border-radius, var(--border-radius));
 }
 
 .widget-wrap {
