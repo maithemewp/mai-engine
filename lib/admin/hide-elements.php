@@ -9,11 +9,13 @@
  * @license   GPL-2.0-or-later
  */
 
-add_action( 'after_setup_theme', 'mai_add_hide_elements_metabox' );
+add_action( 'init', 'mai_add_hide_elements_metabox', 20 );
 /**
- * Description of expected behavior.
+ * Register field group for the hide elements metabox.
+ * This can't be on 'after_setup_theme' or 'acf/init' hook because it's too early,
+ * and get_post_types() doesn't get all custom post types.
  *
- * @since 1.0.0
+ * @since 0.3.0
  *
  * @return void
  */
@@ -23,14 +25,11 @@ function mai_add_hide_elements_metabox() {
 	}
 
 	$post_types = array_keys( get_post_types() );
-	$excluded   = [ 'wp_block' ];
+	$post_types = get_post_types( [ 'public' => true ] );
+	unset( $post_types['attachment'] );
 	$locations  = [];
 
 	foreach ( $post_types as $post_type ) {
-		if ( in_array( $post_type, $excluded, true ) ) {
-			continue;
-		}
-
 		$locations[] = [
 			[
 				'param'    => 'post_type',
@@ -98,7 +97,6 @@ function mai_add_hide_elements_metabox() {
 			'title'                 => __( 'Hide Elements', 'mai-engine' ),
 			'menu_order'            => 10,
 			'position'              => 'side',
-			'style'                 => 'seamless',
 			'label_placement'       => 'left',
 			'instruction_placement' => 'label',
 			'hide_on_screen'        => '',

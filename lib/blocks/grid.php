@@ -152,11 +152,11 @@ function mai_get_grid_field_values( $type ) {
 	return $values;
 }
 
-add_action( 'init', 'mai_register_grid_field_groups' );
+add_action( 'init', 'mai_register_grid_field_groups', 20 );
 /**
  * Register field groups for the grid block.
- * This can't be on 'acf/init' hook because it's too early,
- * so get_post_types() doesn't get all custom post types.
+ * This can't be on 'after_setup_theme' or 'acf/init' hook because it's too early,
+ * and get_post_types() doesn't get all custom post types.
  *
  * @since 0.1.0
  *
