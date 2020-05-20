@@ -15,21 +15,17 @@
 @mixin button-style($style) {
 
 	@if ("secondary" == $style) {
-		color: var(--button-secondary-color, var(--color-lightest));
-		background: var(--button-secondary-background, var(--color-secondary));
+		--button-color: var(--color-lightest);
+		--button-background: var(--color-secondary);
+		--button-background-hover: var(--color-secondary);
 	}
 
 	@if ("tertiary" == $style) {
-		padding-right: var(--spacing-xs);
-		padding-left: var(--spacing-xs);
-		color: var(--button-tertiary-color, var(--color-primary));
-		background: var(--button-tertiary-background, transparent);
-
-		&:hover,
-		&:focus {
-			color: var(--color-secondary);
-			background: transparent;
-		}
+		--button-padding: var(--button-padding, (var(--spacing-md) var(--spacing-xs)));
+		--button-color: var(--color-primary);
+		--button-background: transparent;
+		--button-color-hover: var(--color-secondary);
+		--button-background-hover: transparent;
 
 		&::after {
 			display: inline-block;
@@ -39,34 +35,28 @@
 	}
 
 	@if ("outline" == $style) {
-		color: var(--button-outline-color, var(--color-primary));
-		line-height: calc(1em - 4px); // Makes height same as button with no border.
-		background: var(--button-outline-background, transparent);
-		border: 2px solid var(--button-outline-border-color, currentColor);
-
+		border: 2px solid currentColor; // Same as Gutenberg default styles.
+		--button-line-height: calc(1em - 4px); // Makes height same as button with no border.
+		--button-color: var(--color-primary);
+		--button-background: transparent;
 		--button-overlay-positioning: -2px;
+		--button-background-hover: transparent;
 
 		&:hover,
 		&:focus {
 			--button-overlay-z-index: 1;
-			--button-overlay-opacity: calc(var(--button-overlay-opacity-hover, 0.2) * 2);
+			--button-overlay-opacity: calc(var(--button-overlay-opacity-hover, 0.2) * 2); // Twice the opacity as default.
 		}
 	}
 
 	@if ("small" == $style) {
-		padding: 1em 1.5em;
-		font-size: var(--text-sm);
+		--button-padding: 1em 1.5em;
+		--button-font-size: var(--text-sm);
 	}
 
 	@if ("disabled" == $style) {
-		background: var(--color-light);
-
-		&,
-		&:hover,
-		&:focus {
-			cursor: not-allowed;
-			opacity: 0.5;
-		}
+		--button-cursor: not-allowed;
+		--button-opacity: 0.5;
 	}
 }
 
@@ -94,6 +84,17 @@
 	opacity: var(--button-opacity, 1);
 	transition: var(--button-transition, var(--transition));
 
+	&:hover,
+	&:focus {
+		--button-overlay-opacity: var(--button-overlay-opacity-hover, 0.2);
+		color: var(--button-color-hover, #{map_get($button, "color")});
+		text-decoration: var(--button-text-decoration-hover, none);
+		background: var(--button-background-hover, #{map_get($button, "background-color")});
+		border: var(--button-border-hover, #{map_get($button, "border")});
+		outline: var(--button-outline-hover, none);
+		transform: var(--button-transform-hover, scale(1)); // Pseudo element z-index hack.
+	}
+
 	&::before {
 		position: absolute;
 		top: var(--button-overlay-positioning, 0);
@@ -107,17 +108,6 @@
 		opacity: var(--button-overlay-opacity, 0);
 		transition: var(--transition);
 		content: "";
-	}
-
-	&:hover,
-	&:focus {
-		--button-overlay-opacity: var(--button-overlay-opacity-hover, 0.2);
-		color: var(--button-color-hover, #{map_get($button, "color")});
-		text-decoration: var(--button-text-decoration-hover, none);
-		background: var(--button-background-hover, #{map_get($button, "background-color")});
-		border: var(--button-border-hover, #{map_get($button, "border")});
-		outline: var(--button-outline-hover, none);
-		transform: var(--button-transform-hover, scale(1)); // Pseudo element z-index hack.
 	}
 
 	&:disabled {
