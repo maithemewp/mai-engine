@@ -20,16 +20,17 @@
 	--button-overlay-display: none;
 	margin: 0;
 	padding: var(--menu-item-link-padding, (var(--spacing-sm) var(--spacing-xxs)));
-	color: var(--menu-item-link-color);
+	color: var(--menu-item-link-color, var(--color-darkest));
 	background: transparent;
 
 	&:hover,
 	&:focus {
-		color: var(--menu-item-link-color-hover, var(--link-color-hover));
+		color: var(--menu-item-link-color-hover, var(--color-primary));
+		background: transparent;
 	}
 }
 
 .search-toggle-icon {
-	height: var(--text-xl);
+	width: 1em;
 	fill: currentColor;
 }
