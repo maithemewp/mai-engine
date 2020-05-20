@@ -31,32 +31,13 @@
 	align-items: center;
 	width: var(--menu-item-link-width, 100%);
 	padding: var(--menu-item-link-padding, (var(--spacing-sm) var(--spacing-xxs)));
+	color: var(--menu-item-link-color, var(--color-darkest));
 	text-decoration: none;
-}
 
-/**
- * Menu specific variables, ready for customization
- * including Mai Customizer settings.
- * The engine should just use --menu-item-link-color and
- * reserve specific menus for themes or customizations.
- */
-@each $location, $menu in $menus {
-
-	.nav-#{$location} {
-		font-size: var(--nav-#{$location}-font-size, var(--menu-font-size, inherit));
-		font-family: var(--nav-#{$location}-font-family, var(--menu-font-family, inherit));
-
-		.search-toggle,
-		.menu > .menu-item > .menu-item-link {
-			color: var(--nav-#{$location}-color, var(--menu-item-link-color, var(--color-darker)));
-
-			&:hover,
-			&:focus {
-				--menu-item-link-color: var(--nav-#{$location}-color-hover, var(--menu-item-link-color-hover, var(--color-primary)));
-			}
-		}
+	&:hover,
+	&:focus {
+		color: var(--menu-item-link-color-hover, var(--color-primary));
 	}
-
 }
 
 .menu-item-link > span {
@@ -79,17 +60,17 @@
 	border-left: 0;
 	transform: var(--sub-menu-toggle-transform, rotate(45deg));
 	content: "";
+}
 
-	.sidebar &,
-	.footer-widgets &,
-	.nav-footer &,
-	.mobile-menu & {
-		--menu-item-dropdown-toggle: none;
-	}
+.sub-menu {
+	--menu-item-dropdown-margin-left: auto;
+}
 
-	.sub-menu & {
-		--menu-item-dropdown-margin-left: auto;
-	}
+.sidebar,
+.footer-widgets,
+.nav-footer,
+.mobile-menu {
+	--menu-item-dropdown-toggle: none;
 }
 
 .sidebar,

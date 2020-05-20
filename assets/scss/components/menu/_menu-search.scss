@@ -1,15 +1,18 @@
-.menu-item.search .search-form {
-	--search-form-display: none;
-	position: var(--search-form-position, absolute);
-	top: 100%;
-	right: 0;
-	padding: var(--spacing-md);
-	background-color: var(--color-lightest);
-	border-radius: var(--border-radius);
-	box-shadow: var(--shadow);
+.menu {
 
-	&.search-form-visible {
-		--search-form-display: flex;
+	.search-form {
+		position: absolute;
+		top: 100%;
+		right: 0;
+		display: var(--menu-search-form-display, none);
+		padding: var(--spacing-md);
+		background-color: var(--color-lightest);
+		border-radius: var(--border-radius);
+		box-shadow: var(--shadow);
+	}
+
+	.search-form-visible {
+		--menu-search-form-display: flex;
 	}
 }
 
@@ -17,7 +20,7 @@
 	--button-overlay-display: none;
 	margin: 0;
 	padding: var(--menu-item-link-padding, (var(--spacing-sm) var(--spacing-xxs)));
-	// Color handled in _menu.scss.
+	color: var(--menu-item-link-color);
 	background: transparent;
 
 	&:hover,
