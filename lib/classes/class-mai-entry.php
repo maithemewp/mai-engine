@@ -17,14 +17,14 @@ class Mai_Entry {
 	/**
 	 * Entry.
 	 *
-	 * @var $entry
+	 * @var WP_Post|WP_Term $entry
 	 */
 	protected $entry;
 
 	/**
 	 * Args.
 	 *
-	 * @var $args
+	 * @var array $args
 	 */
 	protected $args;
 
@@ -68,8 +68,8 @@ class Mai_Entry {
 	 *
 	 * @since 0.1.0
 	 *
-	 * @param string $entry Entry object.
-	 * @param array  $args  Entry args.
+	 * @param WP_Post|WP_Term $entry Entry object.
+	 * @param array           $args  Entry args.
 	 *
 	 * @return void
 	 */

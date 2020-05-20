@@ -44,11 +44,12 @@ function mai_get_content_limit( $content, $limit ) {
  */
 function mai_has_custom_loop() {
 	if ( mai_is_type_archive() ) {
-		$name    = mai_get_archive_args_name();
-		$types   = mai_get_config( 'archive-settings' );
+		$name  = mai_get_archive_args_name();
+		$types = mai_get_config( 'archive-settings' );
+
 	} elseif ( mai_is_type_single() ) {
-		$name    = mai_get_singular_args_name();
-		$types   = mai_get_config( 'single-settings' );
+		$name  = mai_get_singular_args_name();
+		$types = mai_get_config( 'single-settings' );
 	}
 
 	if ( isset( $name, $types ) ) {
@@ -64,6 +65,11 @@ function mai_has_custom_loop() {
 			return true;
 		}
 
+		$other_types = [ 'author', 'date', 'search', '404-page' ];
+
+		if ( in_array( $name, $other_types, true ) ) {
+			return true;
+		}
 	}
 
 	return false;
@@ -194,32 +200,44 @@ function mai_get_archive_args_name() {
 	if ( is_null( $name ) ) {
 		if ( is_home() ) {
 			$name = 'post';
+
 		} elseif ( is_category() ) {
 			$name = 'category';
+
 		} elseif ( is_tag() ) {
 			$name = 'post_tag';
+
 		} elseif ( is_tax() ) {
 			$name = get_query_var( 'taxonomy' );
+
 			if ( ! $name ) {
 				$object = get_queried_object();
+
 				if ( $object ) {
 					$name = $object->taxonomy;
 				}
 			}
+
 		} elseif ( is_post_type_archive() ) {
 			$name = get_query_var( 'post_type' );
+
 			if ( ! $name ) {
 				$object = get_queried_object();
+
 				if ( $object ) {
 					$name = $object->name;
 				}
 			}
+
 		} elseif ( is_search() ) {
 			$name = 'search';
+
 		} elseif ( is_author() ) {
 			$name = 'author';
+
 		} elseif ( is_date() ) {
 			$name = 'date';
+
 		} else {
 			$name = 'post';
 		}
@@ -237,6 +255,7 @@ function mai_get_archive_args_name() {
  */
 function mai_get_singular_args_name() {
 	$name = is_404() ? '404-page' : mai_get_post_type();
+
 	return apply_filters( 'mai_single_args_name', $name );
 }
 
