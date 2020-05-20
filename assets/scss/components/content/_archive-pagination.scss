@@ -1,50 +1,22 @@
 .archive-pagination {
 	width: 100%;
-	padding: var(--pagination-padding, var(--spacing-xl));
-	color: var(--button-color, var(--color-darkest));
-	font-size: var(--pagination-font-size, (smaller));
+	padding: var(--pagination-padding, var(--spacing-xl) 0);
 
-	--button-background: var(--color-medium);
-	--button-color: var(--color-dark);
-	--button-padding: 0.75em 1em;
-	--wrap-justify-content: center;
-	--link-color: var(--color-dark);
-	--link-color-hover: var(--color-primary);
+	--button-font-size: smaller;
+	--button-padding: 1em;
 
 	ul {
-		display: var(--archive-pagination-display, flex);
-		align-items: center;
-		justify-content: var(--archive-pagination-justify-content, var(--wrap-justify-content));
-		list-style: none;
+		display: var(--archive-pagination-ul-display, block);
+		width: 100%;
+		text-align: var(--archive-pagination-ul-text-align, center);
 	}
 
-	a {
-		margin: 4px;
-		padding: var(--button-padding);
-		background: var(--button-background);
-		border-radius: var(--border-radius);
-
-		--link-color: var(--button-color);
-		--link-text-decoration: none;
-
-		&:hover,
-		&:focus {
-			text-decoration: none;
-		}
+	li {
+		display: inline-block;
 	}
+}
 
-	.active {
-		--button-background: var(--color-primary);
-		--button-color: var(--color-lightest);
-		--filter-hover: unset;
-	}
-
-	.facetwp-pager + ul {
-		--archive-pagination-display: none;
-	}
-
-	@include mq(lg) {
-		margin-top: auto;
-	}
+.facetwp-pager + ul {
+	display: none;
 }
 

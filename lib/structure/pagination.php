@@ -134,3 +134,35 @@ function mai_adjacent_entry_link_thumbnail( $output, $format, $link, $post, $adj
 
 	return str_replace( '%image', $image, $output );
 }
+
+add_action( 'genesis_after_endwhile', 'mai_posts_nav', 9 );
+/**
+ * Add button class to pagination links.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function mai_posts_nav() {
+	remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
+
+	ob_start();
+	genesis_posts_nav();
+	$pagination = ob_get_clean();
+
+	$pagination = str_replace(
+		[
+			'active" ><a href',
+			'active"><a href',
+			'<a href',
+		],
+		[
+			'active" ><a class="button" href',
+			'active"><a class="button" href',
+			'<a class="button button-secondary" href',
+		],
+		$pagination
+	);
+
+	echo $pagination;
+}

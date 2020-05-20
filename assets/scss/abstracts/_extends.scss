@@ -76,7 +76,7 @@
 	width: auto;
 	margin: var(--button-margin, 0);
 	padding: var(--button-padding, (var(--spacing-md) calc(var(--spacing-md) * 2)));
-	color: var(--button-color, var(--button-primary-color, #{map_get($button, "color")}));
+	color: var(--button-color, #{map_get($button, "color")});
 	font-weight: var(--button-font-weight, var(--font-weight-heading));
 	font-size: var(--button-font-size, var(--text-md));
 	font-family: var(--button-font-family, var(--font-primary));
