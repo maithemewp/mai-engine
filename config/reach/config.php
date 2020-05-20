@@ -29,7 +29,7 @@ return [
 		'background-color'        => mai_get_color( 'primary' ),
 		'text-color'              => 'light',
 		'divider'                 => 'curve',
-		'divider-flip-horizontal' => true,
+		'divider-flip-horizontal' => false,
 	],
 	'plugins'          => [
 		[
