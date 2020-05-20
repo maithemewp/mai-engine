@@ -148,7 +148,6 @@ function mai_posts_nav() {
 
 	ob_start();
 	genesis_posts_nav();
-	$pagination = ob_get_clean();
 
 	$pagination = str_replace(
 		[
@@ -161,7 +160,7 @@ function mai_posts_nav() {
 			'active"><a class="button" href',
 			'<a class="button button-secondary" href',
 		],
-		$pagination
+		ob_get_clean()
 	);
 
 	echo $pagination;
