@@ -40,6 +40,7 @@
 
 	@if ("outline" == $style) {
 		color: var(--button-outline-color, var(--color-primary));
+		line-height: calc(1em - 4px); // Makes height same as button with no border.
 		background: var(--button-outline-background, transparent);
 		border: 2px solid var(--button-outline-border-color, currentColor);
 

@@ -25,10 +25,8 @@
 			.sidebar-content & {
 				--content-max-width: calc(var(--breakpoint-xl) - var(--sidebar-width) - var(--content-sidebar-gap) - var(--side-spacing));
 			}
-
 		}
 	}
-
 }
 
 .wp-block-cover__inner-container {

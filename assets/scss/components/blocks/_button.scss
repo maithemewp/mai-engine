@@ -3,8 +3,6 @@
 	@include button();
 
 	&:active,
-	&:focus,
-	&:hover,
 	&:visited {
 		color: var(--button-color-hover, var(--button-color));
 	}
@@ -20,13 +18,7 @@
 	}
 
 	.is-style-outline & {
-		line-height: calc(1em - 4px); // Makes height same as button with no border.
 
 		@include button-style("outline");
-	}
-
-	.is-style-ghost & {
-
-		@include button-style("ghost");
 	}
 }

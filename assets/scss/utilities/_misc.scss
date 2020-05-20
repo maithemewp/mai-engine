@@ -81,17 +81,3 @@
 	z-index: 2;
 	overflow: visible;
 }
-
-.flip-horizontal {
-	// --scale-y: -1;
-	// transform: scale(var(--scale-x, 1), var(--scale-y, 1));
-	--rotate-y: 180deg;
-	transform: rotateX(var(--rotate-x, 0)) rotateY(var(--rotate-y, 0));
-}
-
-.flip-vertical {
-	// --scale-x: -1;
-	// transform: scale(var(--scale-x, 1), var(--scale-y, 1));
-	--rotate-x: 180deg;
-	transform: rotateX(var(--rotate-x, 0)) rotateY(var(--rotate-y, 0));
-}
