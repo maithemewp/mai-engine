@@ -23,9 +23,14 @@ function mai_add_hide_elements_metabox() {
 	}
 
 	$post_types = array_keys( get_post_types() );
+	$excluded   = [ 'wp_block' ];
 	$locations  = [];
 
 	foreach ( $post_types as $post_type ) {
+		if ( in_array( $post_type, $excluded, true ) ) {
+			continue;
+		}
+
 		$locations[] = [
 			[
 				'param'    => 'post_type',
