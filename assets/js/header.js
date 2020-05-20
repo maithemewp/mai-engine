@@ -21,9 +21,9 @@
 	 */
 	var isTop = new IntersectionObserver( function( tracker ) {
 		if ( tracker[ 0 ].isIntersecting ) {
-			siteHeader.classList.remove( 'is-stuck' );
+			body.classList.remove( 'site-header-stuck' );
 		} else {
-			siteHeader.classList.add( 'is-stuck' );
+			body.classList.add( 'site-header-stuck' );
 		}
 	}, { threshold: [ 0, 1 ] } );
 

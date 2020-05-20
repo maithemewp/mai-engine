@@ -11,30 +11,18 @@
 	--wrap-flex-wrap: nowrap;
 	--wrap-justify-content: space-between;
 	--wrap-align-items: center;
-	--logo-width: var(--logo-width-small, 120px);
-	--logo-top: var(--logo-top-small);
-	--logo-bottom: var(--logo-bottom-small);
-
-	@include mq(lg) {
-		--logo-width: var(--logo-width-large, 180px);
-		--logo-top: var(--logo-top-large);
-		--logo-bottom: var(--logo-bottom-large);
-	}
 }
 
-.has-transparent-header {
+.has-transparent-header:not(.site-header-stuck) {
 	--site-header-border-bottom: none;
 	--site-header-background: transparent;
 }
 
-.has-dark-header {
-
-	.site-header:not(.is-stuck) {
-		--title-area-color: var(--color-lightest);
-		--title-area-color-hover: var(--color-light);
-		--menu-item-link-color: var(--color-lightest);
-		--menu-item-link-color-hover: var(--color-lighter);
-	}
+.has-dark-header:not(.site-header-stuck) {
+	--title-area-color: var(--color-lightest);
+	--title-area-color-hover: var(--color-light);
+	--menu-item-link-color: var(--color-lightest);
+	--menu-item-link-color-hover: var(--color-lighter);
 }
 
 .has-sticky-header {
@@ -46,16 +34,9 @@
 	}
 }
 
-.site-header.is-stuck {
-	--logo-top: var(--logo-top-small);
-	--logo-bottom: var(--logo-bottom-small);
-	--logo-width: var(--logo-width-small);
-}
-
-.is-stuck {
+.site-header-stuck {
 
 	@include mq(sm) {
-		--site-header-background: var(--color-lightest);
 		--site-header-box-shadow: 0 0 24px rgba(0, 0, 0, 0.07);
 	}
 }
