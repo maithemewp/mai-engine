@@ -15,7 +15,6 @@
 	--button-margin: 0 0 0 var(--spacing-md);
 }
 
-/* TODO: current menu item styles */
 .menu-item {
 	position: relative;
 	display: var(--menu-item-display, (flex));
@@ -34,6 +33,7 @@
 	color: var(--menu-item-link-color, var(--color-darkest));
 	text-decoration: none;
 
+	&-current,
 	&:hover,
 	&:focus {
 		color: var(--menu-item-link-color-hover, var(--color-primary));
