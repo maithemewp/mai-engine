@@ -26,6 +26,11 @@ function mai_render_cover_block( $block_content, $block ) {
 		return $block_content;
 	}
 
+	// Return early if using parallax.
+	if ( isset( $block['attrs']['hasParallax'] ) && $block['attrs']['hasParallax'] ) {
+		return $block_content;
+	}
+
 	// Get the image ID.
 	$image_id = isset( $block['attrs']['id'] ) ? $block['attrs']['id'] : false;
 
