@@ -85,12 +85,17 @@ function mai_isset( $array, $key, $default = false ) {
  *
  * @since 0.1.0
  *
+ * @param bool $use_cache
+ *
  * @return bool
  */
-function mai_is_type_single() {
+function mai_is_type_single( $use_cache = true ) {
 	static $is_type_single = null;
 
-	if ( is_null( $is_type_single ) ) {
+	if ( ! is_null( $is_type_single ) && $use_cache ) {
+		return $is_type_single;
+
+	} else {
 		$is_type_single = is_front_page() || is_single() || is_page() || is_404() || is_attachment() || is_singular();
 	}
 
@@ -102,12 +107,17 @@ function mai_is_type_single() {
  *
  * @since 0.1.0
  *
+ * @param bool $use_cache
+ *
  * @return bool
  */
-function mai_is_type_archive() {
+function mai_is_type_archive( $use_cache = true ) {
 	static $is_type_archive = null;
 
-	if ( is_null( $is_type_archive ) ) {
+	if ( ! is_null( $is_type_archive ) && $use_cache ) {
+		return $is_type_archive;
+
+	} else {
 		$is_type_archive = is_home() || is_post_type_archive() || is_category() || is_tag() || is_tax() || is_author() || is_date() || is_year() || is_month() || is_day() || is_time() || is_archive() || is_search();
 	}
 
@@ -303,11 +313,11 @@ function mai_has_page_header() {
 		$has_page_header = true;
 	}
 
-	if ( isset( $config['archive'] ) && '*' === $config['archive'] && mai_is_type_archive() ) {
+	if ( isset( $config['archive'] ) && '*' === $config['archive'] && mai_is_type_archive( false ) ) {
 		$has_page_header = true;
 	}
 
-	if ( isset( $config['single'] ) && '*' === $config['single'] && mai_is_type_archive() ) {
+	if ( isset( $config['single'] ) && '*' === $config['single'] && mai_is_type_single( false ) ) {
 		$has_page_header = true;
 	}
 
