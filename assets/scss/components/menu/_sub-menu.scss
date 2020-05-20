@@ -1,34 +1,40 @@
 .sub-menu {
-	--sub-menu-animation-name: fadein;
-	--sub-menu-animation-duration: 0.2s;
-	--sub-menu-animation-timing: ease-in-out;
-	--sub-menu-toggle-transform: rotate(-45deg);
 	--list-margin: 0 !important;
 	--menu-item-width: 100%;
 	--menu-item-link-padding: var(--sub-menu-item-link-padding, var(--spacing-xs) var(--spacing-md));
 	--link-color: var(--color-darker);
 
 	position: var(--sub-menu-position, relative);
+	top: var(--sub-menu-top, auto);
+	left: var(--sub-menu-left, auto);
 	z-index: 9;
 	display: var(--sub-menu-display, none);
 	flex: 1 1 100%;
 	flex-wrap: wrap;
+	width: var(--sub-menu-width, auto);
 	margin: var(--sub-menu-margin, 0);
 	padding: var(--sub-menu-padding, var(--spacing-xxs) 0);
-	font-size: 0.9em;
+	font-size: var(--sub-menu-font-size, calc(var(--menu-font-size-desktop) * 0.9));
 	list-style-type: var(--sub-menu-list-style, none);
+	background: var(--sub-menu-background, none);
+	border: var(--sub-menu-border, 0);
+	opacity: var(--sub-menu-opacity, 1);
+	animation: var(--sub-menu-animation, none);
 
-	.before-header &,
-	.nav-header &,
-	.nav-after-header & {
-		top: 100%;
-		left: var(--sub-menu-left, auto);
-		width: var(--sub-menu-width, 100%);
-		background: var(--sub-menu-background, var(--color-lightest));
-		border: var(--sub-menu-border, 0);
-		opacity: var(--sub-menu-opacity, 1);
-		animation: var(--sub-menu-animation-name) var(--sub-menu-animation-duration) var(--sub-menu-animation-timing);
+	&.visible {
+		left: var(--sub-menu-visible-left, auto);
+		display: var(--sub-menu-visible-display, flex);
+		opacity: var(--sub-menu-visible-opacity, 1);
 	}
+}
+
+.before-header,
+.nav-header,
+.nav-after-header {
+	--sub-menu-top: 100%;
+	--sub-menu-width: 100%;
+	--sub-menu-background: var(--color-lightest);
+	--sub-menu-animation: fade-in 0.2s ease-in-out;
 }
 
 .sub-menu .sub-menu {
@@ -42,15 +48,15 @@
 .footer-widgets {
 	--sub-menu-position: static;
 	--sub-menu-display: block;
+	--sub-menu-margin: 0;
 	--sub-menu-list-style: disc;
+	--sub-menu-item-link-padding: var(--spacing-xs) var(--spacing-xxs);
 
 	.sub-menu {
-		--sub-menu-margin: 0;
 		--menu-item-display: list-item;
 		--menu-item-margin: var(--spacing-sm) 0 0;
 		--menu-item-link-display: inline;
 		--menu-item-link-padding: var(--spacing-xs) var(--spacing-xxs);
-		--sub-menu-item-link-padding: var(--spacing-xs) var(--spacing-xxs);
 		text-align: start;
 	}
 }

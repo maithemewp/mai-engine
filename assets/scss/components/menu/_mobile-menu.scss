@@ -1,8 +1,5 @@
 .mobile-menu {
 	--button-overlay-display: none;
-	--mobile-menu-animation-name: standardmenu;
-	--mobile-menu-animation-duration: 0.3s;
-	--mobile-menu-animation-timing: ease-in-out;
 	--sub-menu-margin: 0 0 var(--spacing-md) var(--spacing-xxs);
 	--sub-menu-padding: 0;
 
@@ -15,7 +12,7 @@
 	padding: var(--spacing-md) 0;
 	overflow-y: auto;
 	background: var(--mobile-menu-background, var(--site-header-background, var(--color-lightest)));
-	animation: var(--mobile-menu-animation-name) var(--mobile-menu-animation-duration) var(--mobile-menu-animation-timing);
+	animation: var(--mobile-menu-animation, standardmenu 0.3s ease-in-out);
 }
 
 .has-dark-header {
@@ -25,45 +22,6 @@
 .mobile-menu-visible {
 	--mobile-menu-display: block;
 	--mobile-menu-background: var(--color-lightest);
-}
-
-.sub-menu-toggle {
-	display: var(--sub-menu-toggle-display, (flex));
-	align-items: center;
-	justify-content: center;
-	width: 3em;
-	height: auto;
-	margin: 0;
-	line-height: 0;
-	background: transparent;
-
-	&:hover,
-	&:focus {
-		background: transparent;
-	}
-
-	&:focus {
-		outline: var(--border);
-	}
-}
-
-.sub-menu-toggle-icon {
-	width: 6px;
-	height: 6px;
-	border-color: var(--menu-item-link-color, var(--link-color));
-	border-style: solid;
-	border-top: 0;
-	border-right-width: 1px;
-	border-bottom-width: 1px;
-	border-left: 0;
-	transform: var(--sub-menu-toggle-transform, rotate(45deg));
-}
-
-.sub-menu-visible {
-	--sub-menu-display: flex;
-	--sub-menu-opacity: 1;
-	--sub-menu-left: auto;
-	--sub-menu-toggle-transform: rotate(-135deg);
 }
 
 @keyframes standardmenu {
@@ -77,5 +35,4 @@
 		top: 100%;
 		opacity: 1;
 	}
-
 }

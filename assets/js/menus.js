@@ -164,7 +164,9 @@
 		var subMenu       = subMenuToggle.nextSibling;
 
 		toggleAriaValues( subMenuToggle );
-		subMenu.parentNode.classList.toggle( 'sub-menu-visible' );
+
+		subMenuToggle.classList.toggle( 'active' );
+		subMenu.classList.toggle( 'visible' );
 	};
 
 	var toggleSearchForm = function( event ) {

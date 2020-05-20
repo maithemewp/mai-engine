@@ -1,0 +1,35 @@
+.sub-menu-toggle {
+	display: var(--sub-menu-toggle-display, (flex));
+	align-items: center;
+	justify-content: center;
+	width: 3em;
+	height: auto;
+	margin: 0;
+	line-height: 0;
+	background: transparent;
+
+	&:hover,
+	&:focus {
+		background: transparent;
+	}
+
+	&:focus {
+		outline: var(--border);
+	}
+}
+
+.sub-menu-toggle-icon {
+	width: 8px;
+	height: 8px;
+	border-color: var(--menu-item-link-color, var(--color-darkest));
+	border-style: solid;
+	border-top: 0;
+	border-right-width: 2px;
+	border-bottom-width: 2px;
+	border-left: 0;
+	transform: var(--sub-menu-toggle-transform, rotate(45deg));
+}
+
+.active {
+	--sub-menu-toggle-transform: rotate(-135deg);
+}
