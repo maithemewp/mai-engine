@@ -89,7 +89,7 @@ function mai_isset( $array, $key, $default = false ) {
  *
  * @return bool
  */
-function mai_is_type_single( $use_cache = true ) {
+function mai_is_type_single( $use_cache = false ) {
 	static $is_type_single = null;
 
 	if ( ! is_null( $is_type_single ) && $use_cache ) {
@@ -111,7 +111,7 @@ function mai_is_type_single( $use_cache = true ) {
  *
  * @return bool
  */
-function mai_is_type_archive( $use_cache = true ) {
+function mai_is_type_archive( $use_cache = false ) {
 	static $is_type_archive = null;
 
 	if ( ! is_null( $is_type_archive ) && $use_cache ) {
