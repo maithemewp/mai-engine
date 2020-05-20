@@ -1,11 +1,7 @@
 .content {
 	width: 100%;
 	max-width: var(--content-max-width);
-	margin: var(--content-margin, var(--content-margin-top, 0) auto var(--content-margin-bottom, var(--spacing-xxl)));
-
-	&:last-child {
-		--content-margin-bottom: 0;
-	}
+	margin: var(--content-margin, var(--content-margin-top, 0) var(--content-margin-sides, auto) var(--content-margin-bottom, var(--spacing-xxl)));
 
 	@include mq(lg) {
 		order: var(--content-order, 0);

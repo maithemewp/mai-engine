@@ -20,7 +20,6 @@ return [
 	'theme-support'    => [
 		'add' => [
 			'transparent-header',
-			'genesis-footer-widgets' => 1,
 		],
 	],
 	'page-header'      => [

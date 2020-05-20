@@ -12,72 +12,6 @@
 // Enable shortcodes in widgets.
 add_filter( 'widget_text', 'do_shortcode' );
 
-add_filter( 'genesis_attr_footer-widgets', 'mai_footer_widgets_columns' );
-/**
- * Get the columns at different breakpoints.
- *
- * @since 0.1.0
- *
- * @param array $attributes Column args.
- *
- * @return array
- */
-function mai_footer_widgets_columns( $attributes ) {
-	$default = get_theme_support( 'genesis-footer-widgets' )[0];
-	$count   = absint( mai_get_option( 'footer-widgets-widget-areas', $default ) );
-	$columns = [ 'lg' => $count ];
-
-	switch ( $count ) {
-		case 6:
-			$columns['md'] = 4;
-			$columns['sm'] = 3;
-			$columns['xs'] = 2;
-			break;
-		case 5:
-			$columns['md'] = 3;
-			$columns['sm'] = 2;
-			$columns['xs'] = 2;
-			break;
-		case 4:
-			$columns['md'] = 4;
-			$columns['sm'] = 2;
-			$columns['xs'] = 1;
-			break;
-		case 3:
-			$columns['md'] = 3;
-			$columns['sm'] = 1;
-			$columns['xs'] = 1;
-			break;
-		case 2:
-			$columns['md'] = 2;
-			$columns['sm'] = 2;
-			$columns['xs'] = 1;
-			break;
-		case 1:
-			$columns['md'] = 1;
-			$columns['sm'] = 1;
-			$columns['xs'] = 1;
-			break;
-		case 0: // Auto.
-			$columns['md'] = 0;
-			$columns['sm'] = 0;
-			$columns['xs'] = 0;
-			break;
-		default:
-			$columns['md'] = $count;
-			$columns['sm'] = $count;
-			$columns['xs'] = $count;
-	}
-
-	$attributes['style'] = isset( $attributes['style'] ) ? $attributes['style'] : '';
-	$attributes['style'] .= "--columns-xs:{$columns['xs']};";
-	$attributes['style'] .= "--columns-sm:{$columns['sm']};";
-	$attributes['style'] .= "--columns-md:{$columns['md']};";
-	$attributes['style'] .= "--columns-lg:{$columns['lg']};";
-
-	return $attributes;
-}
-
 /**
  * Count number of widgets in a widget area.
  *
@@ -105,4 +39,28 @@ function mai_get_widget_count( $widget_area_id ) {
 	}
 
 	return $widget_count;
+}
+
+/**
+ * Get a widget area's default content.
+ *
+ * @since 0.3.3
+ *
+ * @param string $location The widget area location id.
+ *
+ * @return string  The widget area content.
+ */
+function mai_get_widget_area_default_content( $location ) {
+	static $widget_areas = [];
+	if ( isset( $widget_areas[ $location ] ) ) {
+		return $widget_areas[ $location ];
+	}
+	$areas = mai_get_config( 'widget-areas' )['add'];
+	foreach ( $areas as $area ) {
+		$widget_areas[ $area['id'] ] = isset( $area['default'] ) ? $area['default'] : '';
+	}
+	if ( ! isset( $widget_areas[ $location ] ) ) {
+		$widget_areas[ $location ] = '';
+	}
+	return $widget_areas[ $location ];
 }

@@ -21,7 +21,7 @@ video {
 }
 
 textarea {
-	--input-border-radius: var(--border-radius,calc(var(--text-md, 1em) * 2));
+	--input-border-radius: var(--border-radius, calc(var(--text-md, 1em) * 2));
 }
 
 .site-footer {
@@ -37,10 +37,6 @@ textarea {
 	@include mq(lg) {
 		--wrap-flex-wrap: nowrap;
 		--widget-margin: 0;
-	}
-
-	.wrap {
-		padding: var(--spacing-xl) 0;
 	}
 }
 

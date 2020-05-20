@@ -20,7 +20,6 @@ return [
 	'theme-support'       => [
 		'add' => [
 			'sticky-header',
-			'genesis-footer-widgets' => 2,
 		],
 	],
 	'image-sizes'         => [

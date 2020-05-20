@@ -13,11 +13,10 @@
 	border: var(--entry-border, unset);
 	border-radius: var(--border-radius);
 	box-shadow: var(--entry-box-shadow, unset);
-	// transition: var(--entry-transition, var(--transition));
 }
 
 .single-entry {
-	margin-bottom: var(--spacing-lg);
+	margin-bottom: var(--spacing-xxl);
 }
 
 [class*="has-image-left"],

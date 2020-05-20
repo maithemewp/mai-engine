@@ -437,7 +437,6 @@ return [
 					'.site-description',
 				],
 			],
-			'genesis-footer-widgets'   => 3,
 			'genesis-menus'            => [
 				'header-left'  => __( 'Header Left Menu', 'mai-engine' ),
 				'header-right' => __( 'Header Right Menu', 'mai-engine' ),
@@ -469,7 +468,9 @@ return [
 			'wc-product-gallery-slider',
 			'wp-block-styles',
 		],
-		'remove' => [],
+		'remove' => [
+			'genesis-footer-widgets',
+		],
 	],
 
 	/*
@@ -517,6 +518,27 @@ return [
 				'description' => __( 'The Before Footer widget area.', 'mai-engine' ),
 				'location'    => 'genesis_footer',
 				'priority'    => 5,
+			],
+			[
+				'id'          => 'footer',
+				'name'        => __( 'Footer', 'mai-engine' ),
+				'description' => __( 'The Footer widget area.', 'mai-engine' ),
+				'location'    => 'genesis_footer',
+				'priority'    => 10,
+			],
+			[
+				'id'          => 'footer-credits',
+				'name'        => __( 'Footer Credits', 'mai-engine' ),
+				'description' => __( 'The Footer Credits widget area.', 'mai-engine' ),
+				'location'    => 'genesis_footer',
+				'priority'    => 12,
+				'default'     => sprintf(
+					'%s [footer_copyright] · [footer_home_link] · %s · %s <a target="_blank" rel="nofollow noopener sponsored" href="https://bizbudding.com/mai-theme/">%s</a>',
+					__( 'Copyright', 'mai-engine' ),
+					__( 'All Rights Reserved', 'mai-engine' ),
+					__( 'Powered by', 'mai-engine' ),
+					mai_get_name()
+				),
 			],
 			[
 				'id'          => 'mobile-menu',

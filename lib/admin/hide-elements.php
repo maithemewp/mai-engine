@@ -44,7 +44,7 @@ function mai_add_hide_elements_metabox() {
 	$breadcrumb_single = genesis_get_option( 'breadcrumb_single' );
 	$breadcrumb_page   = genesis_get_option( 'breadcrumb_page' );
 	$widget_areas      = wp_get_sidebars_widgets();
-	$footer_widgets    = (int) mai_get_option( 'footer-widgets-widget-areas', get_theme_support( 'genesis-footer-widgets' )[0] );
+	$widget_config     = mai_get_config( 'widget-areas' )['add'];
 	$menus             = get_theme_support( 'genesis-menus' )[0];
 
 	if ( isset( $widget_areas['before-header'] ) ) {
@@ -77,17 +77,15 @@ function mai_add_hide_elements_metabox() {
 	$choices['entry_excerpt']  = __( 'Entry Excerpt', 'mai-engine' );
 	$choices['featured_image'] = __( 'Featured Image', 'mai-engine' );
 
-	if ( isset( $widget_areas['before-footer'] ) ) {
+	if ( isset( $widget_areas['before-footer'] ) && is_active_sidebar( 'before-footer' ) ) {
 		$choices['before_footer'] = __( 'Before Footer', 'mai-engine' );
 	}
 
-	for ( $i = 1; $i <= $footer_widgets; $i++ ) {
-		if ( isset( $widget_areas[ 'footer-' . $i ] ) ) {
-			$choices['footer_widgets'] = __( 'Footer Widgets', 'mai-engine' );
-		}
+	if ( isset( $widget_areas['footer'] ) && is_active_sidebar( 'footer' ) ) {
+		$choices['footer'] = __( 'Footer', 'mai-engine' );
 	}
 
-	if ( mai_get_option( 'footer-credits-text', mai_default_footer_credits() ) ) {
+	if ( is_active_sidebar( 'footer-credits' ) || mai_get_widget_area_default_content( 'footer-credits' ) ) {
 		$choices['footer_credits'] = __( 'Footer Credits', 'mai-engine' );
 	}
 

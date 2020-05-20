@@ -125,3 +125,4 @@ function mai_back_to_top_anchor( $attr ) {
 
 	return $attr;
 }
+
