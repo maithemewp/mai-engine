@@ -272,16 +272,6 @@ function mai_page_header_customizer_settings() {
 					'operator' => '!==',
 					'value'    => '',
 				],
-				[
-					'setting'  => 'page-header-divider',
-					'operator' => '!==',
-					'value'    => 'angle',
-				],
-				[
-					'setting'  => 'page-header-divider',
-					'operator' => '!==',
-					'value'    => 'wave',
-				],
 			],
 		]
 	);
