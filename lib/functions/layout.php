@@ -18,17 +18,19 @@ add_filter( 'genesis_site_layout', 'mai_site_layout' );
  *
  * @since 0.1.0
  *
+ * @param bool $use_cache Whether to use memoization or not.
+ *
  * @return string
  */
-function mai_site_layout() {
+function mai_site_layout( $use_cache = true ) {
 	static $site_layout = null;
 
-	if ( ! is_null( $site_layout ) ) {
+	// Cache option added to prevent $GLOBALS['content_width'] breaking.
+	if ( ! is_null( $site_layout ) && $use_cache ) {
 		return esc_attr( $site_layout );
 	}
 
 	if ( is_singular() || ( is_home() && ! genesis_is_root_page() ) ) {
-
 		$post_id     = is_home() ? get_option( 'page_for_posts' ) : null;
 		$site_layout = genesis_get_custom_field( '_genesis_layout', $post_id );
 
@@ -40,15 +42,14 @@ function mai_site_layout() {
 		 * @var WP_Query $wp_query
 		 */
 		global $wp_query;
+
 		$term        = $wp_query->get_queried_object();
 		$site_layout = $term ? get_term_meta( $term->term_id, 'layout', true ) : '';
 
 	} elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-
 		$site_layout = genesis_get_cpt_option( 'layout' );
 
 	} elseif ( is_author() ) {
-
 		$site_layout = get_the_author_meta( 'layout', (int) get_query_var( 'author' ) );
 
 	}
@@ -60,6 +61,7 @@ function mai_site_layout() {
 		if ( mai_is_type_archive() ) {
 			$name    = mai_get_archive_args_name();
 			$context = 'archive';
+
 		} elseif ( mai_is_type_single() ) {
 			$name    = mai_get_singular_args_name();
 			$context = 'single';
@@ -80,8 +82,33 @@ function mai_site_layout() {
 
 	// Hard-code fallback. This should never happen.
 	if ( ! $site_layout ) {
-		$site_layout = 'standard-layout';
+		$site_layout = 'standard-content';
 	}
 
 	return $site_layout;
+}
+
+add_action( 'after_setup_theme', 'mai_content_width' );
+/**
+ * Filter the content width based on the user selected layout.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function mai_content_width() {
+	$layout = mai_site_layout( false );
+
+	// Taken from assets/scss/layout/_content.scss.
+	$breakpoints = [
+		'wide-content'     => 'xl',
+		'content-sidebar'  => 'lg',
+		'sidebar-content'  => 'lg',
+		'standard-content' => 'md',
+		'narrow-content'   => 'sm',
+	];
+
+	$width = mai_isset( $breakpoints, $layout, 'md' );
+
+	$GLOBALS['content_width'] = mai_get_breakpoint( $width);
 }

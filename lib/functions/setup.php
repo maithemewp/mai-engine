@@ -83,10 +83,12 @@ function mai_setup() {
 		function ( $args, $name ) {
 			if ( is_array( $args ) ) {
 				add_image_size( $name, $args[0], $args[1], $args[2] );
+
 			} elseif ( $args ) {
 				$sm = mai_get_image_sizes_from_aspect_ratio( 'xs', $args );
 				$md = mai_get_image_sizes_from_aspect_ratio( 'md', $args );
 				$lg = mai_get_image_sizes_from_aspect_ratio( 'xl', $args );
+
 				add_image_size( $name . '-sm', $sm[0], $sm[1], $sm[2] );
 				add_image_size( $name . '-md', $md[0], $md[1], $md[2] );
 				add_image_size( $name . '-lg', $lg[0], $lg[1], $lg[2] );
