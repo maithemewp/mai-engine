@@ -101,10 +101,10 @@ add_filter( 'mai_setup_wizard_steps', 'mai_setup_wizard_welcome_step_description
 function mai_setup_wizard_welcome_step_description( $steps ) {
 	$text = __( 'Mai Theme Setup Wizard Page', 'mai-engine' );
 	$link = sprintf( '<a target="_blank" rel="noopener nofollow" href="https://bizbudding.com/mai-setup-wizard/">%s</a>', $text );
-	$steps['welcome']['description'] .= ' ' . sprintf( '%s %s %s.',
-		__( 'To learn more about providing your email and claiming your free goodies, visit the', 'mai-engine' ),
+	$steps['welcome']['description'] = sprintf( '%s %s %s',
+		__( 'Welcome to the Mai Setup Wizard! Enter your email address in the form below to receive automatic updates, share your environment information, win free swag, receive the latest news and get special offers. To learn more about providing your email and claiming your free goodies, visit the', 'mai-engine' ),
 		$link,
-		__( 'on BizBudding', 'mai-engine' )
+		__( 'on BizBudding for all the details, terms and conditions of this program.', 'mai-engine' )
 	);
 	return $steps;
 }
