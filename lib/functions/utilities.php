@@ -973,6 +973,58 @@ function mai_get_processed_content( $content ) {
 }
 
 /**
+ * Get a menu.
+ *
+ * @since 0.3.3
+ *
+ * @param mixed $menu The menu ID, slug, name, or object.
+ * @param array $args The menu args.
+ *
+ * @return string
+ */
+function mai_get_menu( $menu, $args = '' ) {
+	add_filter( 'wp_nav_menu_args', 'genesis_header_menu_args' );
+	$menu_class = 'menu';
+	if ( isset( $args['class'] ) && $args['class'] ) {
+		$menu_class = mai_add_classes( $args['class'], $menu_class );
+	}
+	$html = wp_nav_menu( [
+		'menu'        => $menu,
+		'menu_class'  => $menu_class,
+		'echo'        => false,
+		'fallback_cb' => '',
+	] );
+	remove_filter( 'wp_nav_menu_args', 'genesis_header_menu_args' );
+	if ( $html ) {
+		$atts = [];
+		if ( isset( $args['align'] ) && $args['align'] ) {
+			switch ( trim( $args['align'] ) ) {
+				case 'left':
+					$atts['style'] = '--menu-justify-content:flex-start;';
+					break;
+				case 'center':
+					$atts['style'] = '--menu-justify-content:center;';
+					break;
+				case 'right':
+					$atts['style'] = '--menu-justify-content:flex-end;';
+					break;
+			}
+		}
+		$html = genesis_markup(
+			[
+				'open'    => '<nav %s>',
+				'close'   => '</nav>',
+				'content' => $html,
+				'context' => 'nav-menu',
+				'echo'    => false,
+				'atts'    => $atts,
+			]
+		);
+	}
+	return $html;
+}
+
+/**
  * Description of expected behavior.
  *
  * @since 0.1.0

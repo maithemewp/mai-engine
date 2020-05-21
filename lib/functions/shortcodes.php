@@ -108,3 +108,31 @@ function mai_content_shortcode( $atts = [] ) {
 
 	return mai_get_post_content( $atts['id'] );
 }
+
+add_shortcode( 'mai_menu', 'mai_menu_shortcode' );
+/**
+ * Display a menu.
+ *
+ * @since 0.3.3
+ *
+ * @param array $atts The shortcode atts.
+ *
+ * @return string
+ */
+function mai_menu_shortcode( $atts ) {
+	$atts = shortcode_atts(
+		[
+			'id'    => '',      // The menu ID, slug, name, or object.
+			'class' => '',      // HTML classes.
+			'align' => 'center' // Accepts left, center, or right.
+		],
+		$atts,
+		'mai_menu'
+	);
+
+	if ( ! $atts['id'] ) {
+		return;
+	}
+
+	return mai_get_menu( $atts['id'], $atts );
+}
