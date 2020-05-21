@@ -5,9 +5,9 @@
 }
 
 .widget-wrap {
-	display: var(--widget-wrap-display);
-	flex-wrap: var(--widget-wrap-flex-wrap);
-	justify-content: var(--widget-wrap-justify-content);
+	display: var(--widget-wrap-display, unset);
+	flex-wrap: var(--widget-wrap-flex-wrap, unset);
+	justify-content: var(--widget-wrap-justify-content, unset);
 }
 
 .featured-content {
