@@ -3,4 +3,6 @@
 	margin-top: auto;
 	background: var(--site-footer-background, var(--color-lightest));
 	border-top: var(--border);
+
+	--widget-margin: 0;
 }
