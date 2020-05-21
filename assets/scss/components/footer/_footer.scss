@@ -1,6 +1,8 @@
 .before-footer,
 .site-footer,
 .footer-credits {
+	width: 100%;
+
 	--content-max-width: var(--breakpoint-xl);
 	--widget-margin: 0;
 	--alignfull-margin-right: calc(50% - 50vw);
@@ -8,21 +10,15 @@
 }
 
 .before-footer {
-	position: relative;
-	border-bottom: var(--border);
-
 	--wrap-justify-content: space-between;
 }
 
 .site-footer {
-	width: 100%;
-	margin-top: auto;
 	background: var(--site-footer-background, var(--color-lightest));
 	border-top: var(--border);
 }
 
 .footer-credits {
-	width: 100%;
 	padding: var(--spacing-lg) 0;
 	font-size: smaller;
 	text-align: var(--footer-credits-text-align, center);
