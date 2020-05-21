@@ -1,16 +1,16 @@
 .before-footer,
 .site-footer,
 .footer-credits {
+	--content-max-width: var(--breakpoint-xl);
 	--widget-margin: 0;
 	--alignfull-margin-right: calc(50% - 50vw);
-	--alignfull-margin-right: calc(50% - 50vw);
+	--alignfull-margin-left: calc(50% - 50vw);
 }
 
 .before-footer {
 	position: relative;
 	border-bottom: var(--border);
 
-	--content-max-width: var(--breakpoint-xl);
 	--wrap-justify-content: space-between;
 }
 
