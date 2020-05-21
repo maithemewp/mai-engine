@@ -510,6 +510,12 @@ return [
 				],
 			],
 			[
+				'id'          => 'mobile-menu',
+				'name'        => __( 'Mobile Menu', 'mai-engine' ),
+				'description' => __( 'The Mobile Menu widget area.', 'mai-engine' ),
+				'location'    => 'mai_after_header_wrap',
+			],
+			[
 				'id'          => 'sidebar',
 				'name'        => __( 'Primary Sidebar', 'mai-engine' ),
 				'description' => __( 'The Primary Sidebar widget area.', 'mai-engine' ),
@@ -554,12 +560,6 @@ return [
 					__( 'Powered by', 'mai-engine' ),
 					mai_get_name()
 				),
-			],
-			[
-				'id'          => 'mobile-menu',
-				'name'        => __( 'Mobile Menu', 'mai-engine' ),
-				'description' => __( 'The Mobile Menu widget area.', 'mai-engine' ),
-				'location'    => 'mai_after_header_wrap',
 			],
 		],
 		'remove' => [],
