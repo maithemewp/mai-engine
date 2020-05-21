@@ -997,17 +997,38 @@ function mai_get_menu( $menu, $args = '' ) {
 	remove_filter( 'wp_nav_menu_args', 'genesis_header_menu_args' );
 	if ( $html ) {
 		$atts = [];
+		if ( isset( $args['display'] ) && $args['display'] ) {
+			switch ( trim( $args['display'] ) ) {
+				case 'list':
+					$atts['style'] = '--menu-display:block;--menu-item-link-padding:var(--spacing-xs) 0;';
+				break;
+			}
+		}
 		if ( isset( $args['align'] ) && $args['align'] ) {
-			switch ( trim( $args['align'] ) ) {
-				case 'left':
-					$atts['style'] = '--menu-justify-content:flex-start;';
+			if ( isset( $args['display'] ) && 'list' === trim( $args['display'] ) ) {
+				switch ( trim( $args['align'] ) ) {
+					case 'left':
+						$atts['style'] = 'text-align:left;';
 					break;
-				case 'center':
-					$atts['style'] = '--menu-justify-content:center;';
+					case 'center':
+						$atts['style'] = 'text-align:center;';
 					break;
-				case 'right':
-					$atts['style'] = '--menu-justify-content:flex-end;';
+					case 'right':
+						$atts['style'] = 'text-align:right;';
 					break;
+				}
+			} else {
+				switch ( trim( $args['align'] ) ) {
+					case 'left':
+						$atts['style'] = '--menu-justify-content:flex-start;';
+					break;
+					case 'center':
+						$atts['style'] = '--menu-justify-content:center;';
+					break;
+					case 'right':
+						$atts['style'] = '--menu-justify-content:flex-end;';
+					break;
+				}
 			}
 		}
 		$html = genesis_markup(
