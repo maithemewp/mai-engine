@@ -17,10 +17,6 @@
 	z-index: 9;
 	display: var(--nav-header-display, (flex));
 	width: 100%;
-
-	.has-logo-center & {
-		--menu-justify-content: center;
-	}
 }
 
 .is-mobile {
