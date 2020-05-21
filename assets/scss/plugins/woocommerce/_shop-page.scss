@@ -87,7 +87,7 @@
 
 .price {
 	display: block;
-	margin-bottom: var(--spacing-md);
+	margin-bottom: var(--price-margin-bottom, var(--spacing-md));
 	color: var(--color-darkest);
 	font-size: var(--price-font-size, var(--text-xl));
 
