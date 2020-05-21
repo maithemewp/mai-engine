@@ -15,10 +15,6 @@
           "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download"
         }
       }
-    },
-    {
-      "type": "vcs",
-      "url": "https://github.com/maithemewp/mai-setup-wizard"
     }
   ],
   "require": {
@@ -27,7 +23,7 @@
     "advanced-custom-fields/advanced-custom-fields-pro": "*",
     "aristath/kirki": "*",
     "proteusthemes/wp-content-importer-v2": "^2.1",
-    "maithemewp/mai-setup-wizard": "*"
+    "maithemewp/mai-setup-wizard": "dev-master"
   },
   "require-dev": {
     "php": "^5.6|^7",
