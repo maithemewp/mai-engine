@@ -2,8 +2,8 @@
 
 	.has-#{ $color-name }-color {
 		color: var(--color-#{ $color-name }) !important;
-		--heading-color: currentColor;
-		--menu-item-link-color: currentColor;
+		--heading-color: var(--color-#{ $color-name });
+		--menu-item-link-color: var(--color-#{ $color-name });
 	}
 
 	.has-#{ $color-name }-background-color {
