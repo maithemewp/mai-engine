@@ -110,7 +110,7 @@ function mai_load_genesis() {
 	}
 }
 
-add_action( 'genesis_init', 'mai_remove_genesis_theme_supports', 5 );
+add_action( 'genesis_init', 'mai_modify_genesis_defaults', 5 );
 /**
  * Removes all Genesis functions that use the is_child_theme() function.
  *
@@ -124,7 +124,7 @@ add_action( 'genesis_init', 'mai_remove_genesis_theme_supports', 5 );
  *
  * @return void
  */
-function mai_remove_genesis_theme_supports() {
+function mai_modify_genesis_defaults() {
 	remove_action( 'genesis_init', 'genesis_theme_support' );
 	add_theme_support( 'genesis-breadcrumbs' );
 	add_filter( 'genesis_initial_layouts', '__return_empty_array' );

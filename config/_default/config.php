@@ -426,7 +426,7 @@ return [
 				'search-form',
 				'skip-links',
 			],
-			'genesis-after-entry-widget-area',
+			'',
 			'genesis-custom-logo'      => [
 				'height'      => 60,
 				'width'       => 120,
@@ -510,6 +510,24 @@ return [
 				],
 			],
 			[
+				'id'          => 'sidebar',
+				'name'        => __( 'Primary Sidebar', 'mai-engine' ),
+				'description' => __( 'The Primary Sidebar widget area.', 'mai-engine' ),
+				'location'    => '',
+			],
+			[
+				'id'          => 'sidebar-alt',
+				'name'        => __( 'Secondary Sidebar', 'mai-engine' ),
+				'description' => __( 'The Secondary Sidebar widget area.', 'mai-engine' ),
+				'location'    => '',
+			],
+			[
+				'id'          => 'after-entry',
+				'name'        => __( 'After Entry', 'mai-engine' ),
+				'description' => __( 'The After Entry widget area.', 'mai-engine' ),
+				'location'    => '',
+			],
+			[
 				'id'          => 'before-footer',
 				'name'        => __( 'Before Footer', 'mai-engine' ),
 				'description' => __( 'The Before Footer widget area.', 'mai-engine' ),
@@ -544,10 +562,7 @@ return [
 				'location'    => 'mai_after_header_wrap',
 			],
 		],
-		'remove' => [
-			'sidebar-alt',
-			'header-right',
-		],
+		'remove' => [],
 	],
 
 	/*

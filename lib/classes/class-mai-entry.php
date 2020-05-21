@@ -1054,7 +1054,7 @@ class Mai_Entry {
 	 *
 	 * @return void
 	 */
-	public function do_after_entry_widget_area() {
+	public function do_after_entry() {
 		genesis_widget_area(
 			'after-entry',
 			[
