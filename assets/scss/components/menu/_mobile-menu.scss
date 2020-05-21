@@ -16,7 +16,12 @@
 }
 
 .has-dark-header {
-	--mobile-menu-background: var(--color-lightest);
+
+	.mobile-menu {
+		--mobile-menu-background: var(--color-lightest);
+		--menu-item-link-color: var(--color-darkest);
+		--menu-item-link-color-hover: var(--color-primary);
+	}
 }
 
 .mobile-menu-visible {
