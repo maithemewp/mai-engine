@@ -29,6 +29,10 @@ body {
 	background: var(--color-lighter);
 }
 
+.nav-header {
+	font-size: var(--text-sm);
+}
+
 .nav-after-header {
 	border-bottom: var(--border);
 }
