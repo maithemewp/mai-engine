@@ -441,13 +441,10 @@ return [
 				'header-left'  => __( 'Header Left Menu', 'mai-engine' ),
 				'header-right' => __( 'Header Right Menu', 'mai-engine' ),
 				'after-header' => __( 'After Header Menu', 'mai-engine' ),
-				'footer'       => __( 'Footer Menu', 'mai-engine' ),
 			],
 			'genesis-structural-wraps' => [
 				'header',
-				'footer-widgets',
 				'menu-after-header',
-				'menu-footer',
 				'page-header',
 			],
 			'gutenberg'                => [

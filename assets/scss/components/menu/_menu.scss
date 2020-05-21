@@ -67,14 +67,11 @@
 }
 
 .sidebar,
-.footer-widgets,
-.nav-footer,
 .mobile-menu {
 	--menu-item-dropdown-toggle: none;
 }
 
-.sidebar,
-.footer-widgets {
+.sidebar {
 	--menu-display: block;
 	--menu-item-width: 100%;
 	--menu-item-margin: 0 0 var(--spacing-md);

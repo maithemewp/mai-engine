@@ -40,19 +40,6 @@ textarea {
 	}
 }
 
-.footer-widgets {
-	padding: 0;
-
-	--heading-margin: 0 0 1em;
-	--heading-font-size: var(--text-lg);
-}
-
-.footer-widgets > .wrap {
-	padding: var(--spacing-xxl) 0;
-	border-top: var(--border);
-	border-bottom: var(--border);
-}
-
 .footer-credits {
 	--footer-credits-text-align: left;
 }

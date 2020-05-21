@@ -318,7 +318,6 @@ class Mai_Customizer_API {
 			'footer'           => [
 				'site-footer',
 				'before-footer',
-				'footer-widgets',
 				'footer-credits',
 			],
 		];
