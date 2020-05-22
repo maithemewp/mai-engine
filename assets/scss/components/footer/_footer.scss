@@ -1,7 +1,7 @@
-.before-footer,
-.site-footer,
-.footer-credits {
+.site-footer {
 	width: 100%;
+	background: var(--site-footer-background, var(--color-lightest));
+	border-top: var(--border);
 
 	--content-max-width: var(--breakpoint-xl);
 	--widget-margin: 0;
@@ -11,17 +11,12 @@
 }
 
 .before-footer,
-.site-footer {
+.footer {
 	--paragraph-margin: 0 0 var(--spacing-xs);
 }
 
 .before-footer {
 	--wrap-justify-content: space-between;
-}
-
-.site-footer {
-	background: var(--site-footer-background, var(--color-lightest));
-	border-top: var(--border);
 }
 
 .footer-credits {
@@ -38,9 +33,7 @@
 
 	@include mq(lg) {
 
-		.before-footer,
-		.site-footer,
-		.footer-credits {
+		.site-footer {
 			--alignfull-margin-right: calc((var(--site-container-max-width) - var(--content-max-width)) - var(--side-spacing));
 			--alignfull-margin-left: calc((var(--site-container-max-width) - var(--content-max-width)) - var(--side-spacing));
 		}
