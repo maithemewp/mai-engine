@@ -749,7 +749,7 @@ return [
 					'type'     => 'select',
 					'sanitize' => 'esc_html',
 					'default'  => '',
-					'choices'  => 'mai_get_post_type_taxonomy_choices',
+					'choices'  => 'mai_get_post_types_taxonomy_choices',
 					'atts'     => [
 						'ui'   => 1,
 						'ajax' => 1,
@@ -759,7 +759,7 @@ return [
 					'name'       => 'terms',
 					'label'      => esc_html__( 'Terms', 'mai-engine' ),
 					'block'      => [ 'post' ],
-					'type'       => 'taxonomy',
+					'type'       => 'select',
 					'sanitize'   => 'absint',
 					'default'    => [],
 					'conditions' => [
@@ -769,11 +769,9 @@ return [
 						],
 					],
 					'atts'       => [
-						'field_type' => 'multi_select',
-						'add_term'   => 0,
-						'save_terms' => 0,
-						'load_terms' => 0,
-						'multiple'   => 0,
+						'ui'       => 1,
+						'ajax'     => 1,
+						'multiple' => 1,
 					],
 				],
 				'field_5df18f2305c2c' => [

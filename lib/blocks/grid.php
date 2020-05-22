@@ -325,7 +325,8 @@ add_filter( 'acf/load_field/key=field_5e441d93d6236', 'mai_acf_load_show' );
 // Posts 'post__in'.
 add_filter( 'acf/fields/post_object/query/key=field_5df1053632cbc', 'mai_acf_get_posts', 10, 1 );
 // Terms 'terms' sub field.
-add_filter( 'acf/fields/taxonomy/query/key=field_5df139a216272', 'mai_acf_get_terms', 10, 1 );
+add_filter( 'acf/load_field/key=field_5df139a216272', 'mai_acf_load_terms' );
+add_filter( 'acf/prepare_field/key=field_5df139a216272', 'mai_acf_prepare_terms' );
 // Parent 'post_parent__in'.
 add_filter( 'acf/fields/post_object/query/key=field_5df1053632ce4', 'mai_acf_get_parents', 10, 1 );
 // Exclude Entries 'post__not_in'.
@@ -334,11 +335,11 @@ add_filter( 'acf/fields/post_object/query/key=field_5e349237e1c01', 'mai_acf_get
  * Mai Term Grid *
  */
 // Include Entries 'include'.
-add_filter( 'acf/fields/taxonomy/query/key=field_5df10647743cb', 'mai_acf_get_terms', 10, 1 );
+add_filter( 'acf/fields/taxonomy/query/key=field_5df10647743cb', 'mai_acf_get_taxonomies', 10, 1 );
 // Exclude Entries 'exclude'.
-add_filter( 'acf/fields/taxonomy/query/key=field_5e459348f2d12', 'mai_acf_get_terms', 10, 1 );
+add_filter( 'acf/fields/taxonomy/query/key=field_5e459348f2d12', 'mai_acf_get_taxonomies', 10, 1 );
 // Parent 'parent'.
-add_filter( 'acf/fields/taxonomy/query/key=field_5df1054743df5', 'mai_acf_get_terms', 10, 1 );
+add_filter( 'acf/fields/taxonomy/query/key=field_5df1054743df5', 'mai_acf_get_taxonomies', 10, 1 );
 /*****************
  * Mai User Grid *
  *****************/
@@ -388,7 +389,56 @@ function mai_acf_get_posts( $args ) {
 }
 
 /**
- * Description of expected behavior.
+ * Load term choices based on existing saved field value.
+ * Ajax loading terms was working, but if a term was already saved
+ * it was not loading correctly when editing a post.
+ *
+ * @link https://github.com/maithemewp/mai-engine/issues/93
+ *
+ * @since 0.3.3
+ *
+ * @param array $field The ACF field array.
+ *
+ * @return mixed
+ */
+function mai_acf_prepare_terms( $field ) {
+	if ( ! $field['value'] ) {
+		return $field;
+	}
+	$term_id = $field['value'][0];
+	if ( ! $term_id ) {
+		return $field;
+	}
+	$term = get_term( $term_id );
+	if ( ! $term ) {
+		return $field;
+	}
+	$field['choices'] = mai_get_term_choices_from_taxonomy( $term->taxonomy );
+	return $field;
+}
+
+/**
+ * Get terms from an ajax query.
+ * The taxonomy is passed via JS on select2_query_args filter.
+ *
+ * @since 0.1.0
+ *
+ * @param array $field The ACF field array.
+ *
+ * @return mixed
+ */
+function mai_acf_load_terms( $field ) {
+	$taxonomy = mai_get_acf_request( 'taxonomy' );
+	if ( ! $taxonomy ) {
+		return $field;
+	}
+	$field['choices'] = mai_get_term_choices_from_taxonomy( $taxonomy );
+	return $field;
+}
+
+/**
+ * Get taxonomies from an ajax query.
+ * The taxonomy is passed via JS on select2_query_args filter.
  *
  * @since 0.1.0
  *
@@ -396,7 +446,7 @@ function mai_acf_get_posts( $args ) {
  *
  * @return mixed
  */
-function mai_acf_get_terms( $args ) {
+function mai_acf_get_taxonomies( $args ) {
 	$args['taxonomy'] = [];
 	$taxonomies       = mai_get_acf_request( 'taxonomy' );
 	if ( ! $taxonomies ) {
@@ -437,7 +487,7 @@ function mai_acf_get_parents( $args ) {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return array
  */
@@ -467,7 +517,7 @@ function mai_get_post_type_choices() {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return array
  */
@@ -499,18 +549,37 @@ function mai_get_taxonomy_choices() {
 }
 
 /**
- * Description of expected behavior.
+ * Get taxonomy choices from the current post type.
+ * The post_type is passed via JS on select2_query_args filter.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return array
  */
-function mai_get_post_type_taxonomy_choices() {
+function mai_get_post_types_taxonomy_choices() {
 	$choices = [];
 	if ( ! ( is_admin() || is_customize_preview() ) ) {
 		return $choices;
 	}
 	$post_types = mai_get_acf_request( 'post_type' );
+	if ( ! $post_types ) {
+		$taxonomies = get_taxonomies( [], 'objects' );
+		$choices    = wp_list_pluck( $taxonomies, 'label', 'name' );
+		return $choices;
+	}
+
+	return mai_get_taxonomy_choices_from_post_types( $post_types );
+}
+
+/**
+ * Get taxonomy choices from an array of post types.
+ *
+ * @since 0.3.3
+ *
+ * @return array
+ */
+function mai_get_taxonomy_choices_from_post_types( $post_types = [] ) {
+	$choices = [];
 	if ( ! $post_types ) {
 		return $choices;
 	}
@@ -528,6 +597,20 @@ function mai_get_post_type_taxonomy_choices() {
 		}
 	}
 
+	return $choices;
+}
+
+function mai_get_term_choices_from_taxonomy( $taxonomy = '' ) {
+	$choices = [];
+	$terms = get_terms( $taxonomy, array(
+		'hide_empty' => false,
+	) );
+	if ( ! $terms ) {
+		return $choices;
+	}
+	foreach ( $terms as $term ) {
+		$choices[ $term->term_id ] = $term->name;
+	}
 	return $choices;
 }
 
