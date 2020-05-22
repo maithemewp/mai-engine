@@ -1,5 +1,5 @@
 .entry-title {
-	margin: var(--entry-title-margin, 0 0 var(--spacing-md));
+	margin: var(--entry-title-margin, 0 0 var(--entry-title-margin-bottom, var(--spacing-md)));
 	font-size: var(--entry-title-font-size, var(--text-xxxxl));
 
 	&:last-child {

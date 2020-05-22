@@ -7,6 +7,12 @@
 	--widget-margin: 0;
 	--alignfull-margin-right: calc(50% - 50vw);
 	--alignfull-margin-left: calc(50% - 50vw);
+	--entry-title-margin-bottom: var(--spacing-xxs);
+}
+
+.before-footer,
+.site-footer {
+	--paragraph-margin: 0 0 var(--spacing-xs);
 }
 
 .before-footer {

@@ -1,4 +1,7 @@
 .sidebar {
+	--widget-margin-bottom: var(--spacing-xl);
+	--entry-title-margin-bottom: var(--spacing-xxs);
+	--paragraph-margin: 0 0 var(--spacing-xs);
 
 	.widget:first-of-type {
 		--widget-margin-top: 0;
