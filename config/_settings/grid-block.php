@@ -138,6 +138,11 @@ return [
 					'value'    => 'image',
 				],
 				[
+					'field'    => 'field_5e4d4efe99279', // Image Orientation.
+					'operator' => '!=',
+					'value'    => 'custom',
+				],
+				[
 					'field'    => 'field_5e2f3adf82130', // Image Position.
 					'operator' => '==',
 					'value'    => 'left-top',
@@ -148,6 +153,11 @@ return [
 					'field'    => 'field_5e441d93d6236', // Show.
 					'operator' => '==',
 					'value'    => 'image',
+				],
+				[
+					'field'    => 'field_5e4d4efe99279', // Image Orientation.
+					'operator' => '!=',
+					'value'    => 'custom',
 				],
 				[
 					'field'    => 'field_5e2f3adf82130', // Image Position.
@@ -162,6 +172,11 @@ return [
 					'value'    => 'image',
 				],
 				[
+					'field'    => 'field_5e4d4efe99279', // Image Orientation.
+					'operator' => '!=',
+					'value'    => 'custom',
+				],
+				[
 					'field'    => 'field_5e2f3adf82130', // Image Position.
 					'operator' => '==',
 					'value'    => 'left-full',
@@ -172,6 +187,11 @@ return [
 					'field'    => 'field_5e441d93d6236', // Show.
 					'operator' => '==',
 					'value'    => 'image',
+				],
+				[
+					'field'    => 'field_5e4d4efe99279', // Image Orientation.
+					'operator' => '!=',
+					'value'    => 'custom',
 				],
 				[
 					'field'    => 'field_5e2f3adf82130', // Image Position.
@@ -186,6 +206,11 @@ return [
 					'value'    => 'image',
 				],
 				[
+					'field'    => 'field_5e4d4efe99279', // Image Orientation.
+					'operator' => '!=',
+					'value'    => 'custom',
+				],
+				[
 					'field'    => 'field_5e2f3adf82130', // Image Position.
 					'operator' => '==',
 					'value'    => 'right-middle',
@@ -196,6 +221,11 @@ return [
 					'field'    => 'field_5e441d93d6236', // Show.
 					'operator' => '==',
 					'value'    => 'image',
+				],
+				[
+					'field'    => 'field_5e4d4efe99279', // Image Orientation.
+					'operator' => '!=',
+					'value'    => 'custom',
 				],
 				[
 					'field'    => 'field_5e2f3adf82130', // Image Position.
