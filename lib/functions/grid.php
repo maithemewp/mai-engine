@@ -163,17 +163,21 @@ function mai_get_breakpoint_columns( $args ) {
 function mai_get_align_text( $alignment ) {
 	switch ( $alignment ) {
 		case 'start':
-		case 'top':
 			$value = 'start';
-			break;
+		break;
+		case 'top':
+			$value = 'flex-start';
+		break;
 		case 'center':
 		case 'middle':
 			$value = 'center';
-			break;
-		case 'bottom':
+		break;
 		case 'end':
 			$value = 'end';
-			break;
+		break;
+		case 'bottom':
+			$value = 'flex-end';
+		break;
 		default:
 			$value = 'unset';
 	}
