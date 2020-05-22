@@ -23,7 +23,6 @@ jQuery( document ).ready( function( $ ) {
 		}
 
 		// Mai Post Grid.
-		// if ( $.inArray( data.field_key, Object.values( post ) ) >= 0 ) {
 		if ( Object.values( post ).includes( data.field_key ) ) {
 
 			// Bail if the post_type field.
@@ -59,7 +58,6 @@ jQuery( document ).ready( function( $ ) {
 		}
 
 		// Mai Term Grid.
-		// if ( $.inArray( data.field_key, Object.values( term ) ) >= 0 ) {
 		if ( Object.values( term ).includes( data.field_key ) ) {
 
 			// Bail if the taxonomy field.

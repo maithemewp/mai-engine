@@ -321,25 +321,25 @@ function mai_get_acf_field_data( $key, $field ) {
  * Mai Post Grid *
  */
 // Show 'show'.
-add_filter( 'acf/load_field/key=field_5e441d93d6236', 'mai_acf_load_show' );
+add_filter( 'acf/load_field/key=field_5e441d93d6236', 'mai_acf_load_show', 10, 1 );
 // Posts 'post__in'.
 add_filter( 'acf/fields/post_object/query/key=field_5df1053632cbc', 'mai_acf_get_posts', 10, 1 );
 // Terms 'terms' sub field.
-add_filter( 'acf/load_field/key=field_5df139a216272', 'mai_acf_load_terms' );
-add_filter( 'acf/prepare_field/key=field_5df139a216272', 'mai_acf_prepare_terms' );
+add_filter( 'acf/load_field/key=field_5df139a216272', 'mai_acf_load_terms', 10, 1 );
+add_filter( 'acf/prepare_field/key=field_5df139a216272', 'mai_acf_prepare_terms', 10, 1 );
 // Parent 'post_parent__in'.
-add_filter( 'acf/fields/post_object/query/key=field_5df1053632ce4', 'mai_acf_get_parents', 10, 1 );
+add_filter( 'acf/fields/post_object/query/key=field_5df1053632ce4', 'mai_acf_get_post_parents', 10, 1 );
 // Exclude Entries 'post__not_in'.
 add_filter( 'acf/fields/post_object/query/key=field_5e349237e1c01', 'mai_acf_get_posts', 10, 1 );
 /*****************
  * Mai Term Grid *
  */
 // Include Entries 'include'.
-add_filter( 'acf/fields/taxonomy/query/key=field_5df10647743cb', 'mai_acf_get_taxonomies', 10, 1 );
+add_filter( 'acf/fields/taxonomy/query/key=field_5df10647743cb', 'mai_acf_get_terms', 10, 1 );
 // Exclude Entries 'exclude'.
-add_filter( 'acf/fields/taxonomy/query/key=field_5e459348f2d12', 'mai_acf_get_taxonomies', 10, 1 );
+add_filter( 'acf/fields/taxonomy/query/key=field_5e459348f2d12', 'mai_acf_get_terms', 10, 1 );
 // Parent 'parent'.
-add_filter( 'acf/fields/taxonomy/query/key=field_5df1054743df5', 'mai_acf_get_taxonomies', 10, 1 );
+add_filter( 'acf/fields/taxonomy/query/key=field_5df1054743df5', 'mai_acf_get_term_parents', 10, 1 );
 /*****************
  * Mai User Grid *
  *****************/
@@ -437,7 +437,7 @@ function mai_acf_load_terms( $field ) {
 }
 
 /**
- * Get taxonomies from an ajax query.
+ * Get terms from an ajax query.
  * The taxonomy is passed via JS on select2_query_args filter.
  *
  * @since 0.1.0
@@ -446,7 +446,7 @@ function mai_acf_load_terms( $field ) {
  *
  * @return mixed
  */
-function mai_acf_get_taxonomies( $args ) {
+function mai_acf_get_terms( $args ) {
 	$args['taxonomy'] = [];
 	$taxonomies       = mai_get_acf_request( 'taxonomy' );
 	if ( ! $taxonomies ) {
@@ -460,7 +460,8 @@ function mai_acf_get_taxonomies( $args ) {
 }
 
 /**
- * Description of expected behavior.
+ * Get taxonomies from an ajax query.
+ * The taxonomy is passed via JS on select2_query_args filter.
  *
  * @since 0.1.0
  *
@@ -468,8 +469,35 @@ function mai_acf_get_taxonomies( $args ) {
  *
  * @return mixed
  */
-function mai_acf_get_parents( $args ) {
+function mai_acf_get_term_parents( $args ) {
+	$args['taxonomy'] = [];
+	$taxonomies       = mai_get_acf_request( 'taxonomy' );
+	if ( ! $taxonomies ) {
+		return $args;
+	}
+	acf_log( $taxonomies );
+	foreach ( (array) $taxonomies as $taxonomy ) {
+		$args['taxonomy'][] = sanitize_text_field( wp_unslash( $taxonomy ) );
+	}
+	foreach( $args['taxonomy'] as $index => $taxonomy ) {
+		if ( ! is_taxonomy_hierarchical( $taxonomy ) ) {
+			unset( $args['taxonomy'][ $index ] );
+		}
+		continue;
+	}
+	return $args;
+}
 
+/**
+ * Set the post type args for post_object query in ACF.
+ *
+ * @since 0.1.0
+ *
+ * @param array $args Field args.
+ *
+ * @return mixed
+ */
+function mai_acf_get_post_parents( $args ) {
 	$args['post_type'] = [];
 	$post_types        = mai_get_acf_request( 'post_type' );
 	if ( ! $post_types ) {
@@ -479,13 +507,17 @@ function mai_acf_get_parents( $args ) {
 		$args['post_type'][] = sanitize_text_field( wp_unslash( $post_type ) );
 	}
 
-	// TODO: Check if has children? If not, just use get_posts() method here.
+	foreach ( $args['post_type'] as $index => $post_type ) {
+		if ( ! is_post_type_hierarchical( $post_type ) ) {
+			unset( $args['post_type'][ $index ] );
+		}
+	}
 
 	return $args;
 }
 
 /**
- * Description of expected behavior.
+ * Get post type choices for select field.
  *
  * @since 0.1.0
  *
@@ -515,7 +547,7 @@ function mai_get_post_type_choices() {
 }
 
 /**
- * Description of expected behavior.
+ * Get taxonomy choices for select field
  *
  * @since 0.1.0
  *
@@ -540,7 +572,6 @@ function mai_get_taxonomy_choices() {
 		unset( $taxonomies['yst_prominent_words'] );
 
 		foreach ( $taxonomies as $name => $taxonomy ) {
-			// TODO: These should be IDs.
 			$choices[ $name ] = $taxonomy->label;
 		}
 	}
@@ -576,6 +607,8 @@ function mai_get_post_types_taxonomy_choices() {
  *
  * @since 0.3.3
  *
+ * @param array $post_types Array of registered post_type names.
+ *
  * @return array
  */
 function mai_get_taxonomy_choices_from_post_types( $post_types = [] ) {
@@ -600,6 +633,15 @@ function mai_get_taxonomy_choices_from_post_types( $post_types = [] ) {
 	return $choices;
 }
 
+/**
+ * Get term choices from a taxonomy
+ *
+ * @since 0.3.3
+ *
+ * @param string $taxonomy A registered taxonomy name.
+ *
+ * @return array
+ */
 function mai_get_term_choices_from_taxonomy( $taxonomy = '' ) {
 	$choices = [];
 	$terms = get_terms( $taxonomy, array(

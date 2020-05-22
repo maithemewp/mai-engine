@@ -182,43 +182,48 @@ class Mai_Grid {
 	public function do_grid_entries() {
 		switch ( $this->args['type'] ) {
 			case 'post':
-				$posts = new WP_Query( $this->get_post_query_args() );
-				if ( $posts->have_posts() ) {
-					while ( $posts->have_posts() ) :
-						$posts->the_post();
+				$query_args = $this->get_post_query_args();
+				if ( $query_args['post_type'] ) {
+					$posts = new WP_Query( $query_args );
+					if ( $posts->have_posts() ) {
+						while ( $posts->have_posts() ) :
+							$posts->the_post();
 
-						/**
-						 * @var WP_Post $post
-						 */
-						global $post;
+							/**
+							 * @var WP_Post $post
+							 */
+							global $post;
 
-						mai_do_entry( $post, $this->args );
+							mai_do_entry( $post, $this->args );
 
-						// Add this post to the existing post IDs.
-						self::$existing_post_ids[] = get_the_ID();
-					endwhile;
+							// Add this post to the existing post IDs.
+							self::$existing_post_ids[] = get_the_ID();
+						endwhile;
 
-					// Clear duplicate IDs.
-					self::$existing_post_ids = array_unique( self::$existing_post_ids );
+						// Clear duplicate IDs.
+						self::$existing_post_ids = array_unique( self::$existing_post_ids );
+					}
+					wp_reset_postdata();
 				}
-
-				wp_reset_postdata();
 				break;
 			case 'term':
-				$term_query = new WP_Term_Query( $this->get_term_query_args() );
-				if ( ! empty( $term_query->terms ) ) {
+				$query_args = $this->get_term_query_args();
+				if ( $query_args['taxonomy'] ) {
+					$term_query = new WP_Term_Query( $query_args );
+					if ( ! empty( $term_query->terms ) ) {
 
-					/**
-					 * @var WP_Term $term
-					 */
-					foreach ( $term_query->terms as $term ) {
-						mai_do_entry( $term, $this->args );
+						/**
+						 * @var WP_Term $term
+						 */
+						foreach ( $term_query->terms as $term ) {
+							mai_do_entry( $term, $this->args );
 
-						// Add this term to the existing term IDs.
-						self::$existing_term_ids[] = $term->term_id;
+							// Add this term to the existing term IDs.
+							self::$existing_term_ids[] = $term->term_id;
+						}
+						// Clear duplicate IDs.
+						self::$existing_term_ids = array_unique( self::$existing_term_ids );
 					}
-					// Clear duplicate IDs.
-					self::$existing_term_ids = array_unique( self::$existing_term_ids );
 				}
 				break;
 			case 'user':
@@ -246,7 +251,18 @@ class Mai_Grid {
 		// Handle query_by.
 		switch ( $this->args['query_by'] ) {
 			case 'parent':
-				$query_args['post_parent__in'] = $this->args['post_parent__in'];
+				if ( $this->args['current_children'] ) {
+					if ( is_singular() ) {
+						$post_id = get_the_ID();
+					} elseif ( is_admin() ) {
+						$post_id = isset( $_REQUEST['post_id'] ) ? absint( $_REQUEST['post_id'] ) : false;
+					}
+					if ( isset( $post_id ) && $post_id ) {
+						$query_args['post_parent__in'] = [ $post_id ];
+					}
+				} else {
+					$query_args['post_parent__in'] = $this->args['post_parent__in'];
+				}
 				break;
 			case 'id':
 				// Empty array returns all posts, array(-1) prevents this.
@@ -354,7 +370,16 @@ class Mai_Grid {
 				$query_args['order']   = 'DESC';
 				break;
 			case 'parent':
-				$query_args['parent'] = $this->args['parent'];
+				if ( $this->args['current_children'] ) {
+					if ( is_category() || is_tag() || is_tax() ) {
+						$term_id = get_queried_object_id();
+					}
+					if ( isset( $term_id ) && $term_id ) {
+						$query_args['parent'] = [ $term_id ];
+					}
+				} else {
+					$query_args['parent'] = $this->args['parent'];
+				}
 				break;
 		}
 

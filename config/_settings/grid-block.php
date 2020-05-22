@@ -315,7 +315,7 @@ return [
 		'sanitize' => 'esc_html',
 		'default'  => 1, // True.
 		'atts'     => [
-			'message' => __( 'Display boxed styling', 'mai-engine' ),
+			'message' => esc_html__( 'Display boxed styling', 'mai-engine' ),
 		],
 	],
 	'field_5c853f84eacd6' => [
@@ -671,30 +671,6 @@ return [
 			],
 		],
 	],
-	'field_5df1053632ca8' => [
-		'name'       => 'posts_per_page',
-		'label'      => esc_html__( 'Number of Entries', 'mai-engine' ),
-		'desc'       => esc_html__( 'Use 0 to show all.', 'mai-engine' ),
-		'block'      => [ 'post' ],
-		'type'       => 'number',
-		'sanitize'   => 'absint',
-		'default'    => 12,
-		'conditions' => [
-			[
-				'field'    => 'field_5df1053632ca2', // Post_type.
-				'operator' => '!=empty',
-			],
-			[
-				'field'    => 'field_5df1053632cad', // Query_by.
-				'operator' => '!=',
-				'value'    => 'id',
-			],
-		],
-		'atts'       => [
-			'placeholder' => 12,
-			'min'         => 0,
-		],
-	],
 	'field_5df1053632cbc' => [
 		'name'       => 'post__in',
 		'label'      => esc_html__( 'Choose Entries', 'mai-engine' ),
@@ -929,6 +905,28 @@ return [
 			],
 		],
 	],
+	'field_5df1053744df7' => [
+		'name'       => 'current_children',
+		'label'      => '',
+		'block'      => [ 'post' ],
+		'type'       => 'true_false',
+		'sanitize'   => 'esc_html',
+		'default'    => 0, // False.
+		'conditions' => [
+			[
+				'field'    => 'field_5df1053632ca2', // Post_type.
+				'operator' => '!=empty',
+			],
+			[
+				'field'    => 'field_5df1053632cad', // Query_by.
+				'operator' => '==',
+				'value'    => 'parent',
+			],
+		],
+		'atts'     => [
+			'message' => esc_html__( 'Show children of current entry', 'mai-engine' ),
+		],
+	],
 	'field_5df1053632ce4' => [
 		'name'       => 'post_parent__in',
 		'label'      => esc_html__( 'Parent', 'mai-engine' ),
@@ -946,11 +944,40 @@ return [
 				'operator' => '==',
 				'value'    => 'parent',
 			],
+			[
+				'field'    => 'field_5df1053744df7', // Current_children.
+				'operator' => '!=',
+				'value'    => 1,
+			],
 		],
 		'atts'       => [
 			'multiple'      => 1, // WP_Query allows multiple parents.
 			'return_format' => 'id',
 			'ui'            => 1,
+		],
+	],
+	'field_5df1053632ca8' => [
+		'name'       => 'posts_per_page',
+		'label'      => esc_html__( 'Number of Entries', 'mai-engine' ),
+		'desc'       => esc_html__( 'Use 0 to show all.', 'mai-engine' ),
+		'block'      => [ 'post' ],
+		'type'       => 'number',
+		'sanitize'   => 'absint',
+		'default'    => 12,
+		'conditions' => [
+			[
+				'field'    => 'field_5df1053632ca2', // Post_type.
+				'operator' => '!=empty',
+			],
+			[
+				'field'    => 'field_5df1053632cad', // Query_by.
+				'operator' => '!=',
+				'value'    => 'id',
+			],
+		],
+		'atts'       => [
+			'placeholder' => 12,
+			'min'         => 0,
 		],
 	],
 	'field_5df1bf01ea1de' => [
@@ -1182,6 +1209,28 @@ return [
 			'multiple'   => 1,
 		],
 	],
+	'field_5df1053854eg6' => [
+		'name'       => 'current_children',
+		'label'      => '',
+		'block'      => [ 'term' ],
+		'type'       => 'true_false',
+		'sanitize'   => 'esc_html',
+		'default'    => 0, // False.
+		'conditions' => [
+			[
+				'field'    => 'field_5df2063632ca2', // Taxonomy.
+				'operator' => '!=empty',
+			],
+			[
+				'field'    => 'field_5df1054642cad', // Query_by.
+				'operator' => '==',
+				'value'    => 'parent',
+			],
+		],
+		'atts'     => [
+			'message' => esc_html__( 'Show children of current entry', 'mai-engine' ),
+		],
+	],
 	'field_5df1054743df5' => [
 		'name'       => 'parent',
 		'label'      => esc_html__( 'Parent', 'mai-engine' ),
@@ -1198,6 +1247,11 @@ return [
 				'field'    => 'field_5df1054642cad', // Query_by.
 				'operator' => '==',
 				'value'    => 'parent',
+			],
+			[
+				'field'    => 'field_5df1053854eg6', // Current_children.
+				'operator' => '!=',
+				'value'    => 1,
 			],
 		],
 		'atts'       => [
