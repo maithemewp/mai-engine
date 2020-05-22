@@ -475,7 +475,6 @@ function mai_acf_get_term_parents( $args ) {
 	if ( ! $taxonomies ) {
 		return $args;
 	}
-	acf_log( $taxonomies );
 	foreach ( (array) $taxonomies as $taxonomy ) {
 		$args['taxonomy'][] = sanitize_text_field( wp_unslash( $taxonomy ) );
 	}
