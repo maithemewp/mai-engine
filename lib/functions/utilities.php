@@ -1271,3 +1271,32 @@ function mai_get_editor_localized_data() {
 
 	return $data;
 }
+
+/**
+ * Get the post type on an admin page.
+ *
+ * @since 0.3.3
+ *
+ * @return string|null
+ */
+function mai_get_admin_post_type() {
+	global $post, $typenow, $current_screen;
+
+	if ( $post && $post->post_type ) {
+		return $post->post_type;
+	}
+
+	if ( $typenow ) {
+		return $typenow;
+	}
+
+	if ( $current_screen && $current_screen->post_type ) {
+		return $current_screen->post_type;
+	}
+
+	if ( isset( $_REQUEST['post_type'] ) ) {
+		return sanitize_key( $_REQUEST['post_type'] );
+	}
+
+	return null;
+}
