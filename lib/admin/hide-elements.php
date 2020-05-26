@@ -9,22 +9,19 @@
  * @license   GPL-2.0-or-later
  */
 
-add_action( 'init', 'mai_add_hide_elements_metabox', 20 );
+add_action( 'acf/init', 'mai_add_hide_elements_metabox' );
 /**
- * Register field group for the hide elements metabox.
- * This can't be on 'after_setup_theme' or 'acf/init' hook because it's too early,
- * and get_post_types() doesn't get all custom post types.
+ * Add Hide Elements metabox.
+ *
+ * Choices added later via acf/load_field filter so
+ * get_post_types() and other functions are available.
  *
  * @since 0.3.0
  *
  * @return void
  */
 function mai_add_hide_elements_metabox() {
-	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
-		return;
-	}
 
-	$post_types = array_keys( get_post_types() );
 	$post_types = get_post_types( [ 'public' => true ] );
 	unset( $post_types['attachment'] );
 	$locations  = [];
@@ -37,56 +34,6 @@ function mai_add_hide_elements_metabox() {
 				'value'    => $post_type,
 			],
 		];
-	}
-
-	$choices           = [];
-	$page_header       = mai_get_config( 'page-header' );
-	$breadcrumb_single = genesis_get_option( 'breadcrumb_single' );
-	$breadcrumb_page   = genesis_get_option( 'breadcrumb_page' );
-	$widget_areas      = wp_get_sidebars_widgets();
-	$widget_config     = mai_get_config( 'widget-areas' )['add'];
-	$menus             = get_theme_support( 'genesis-menus' )[0];
-
-	if ( isset( $widget_areas['before-header'] ) ) {
-		$choices['before_header'] = __( 'Before Header', 'mai-engine' );
-	}
-
-	$choices['site_header'] = __( 'Site Header', 'mai-engine' );
-
-	if ( mai_get_option( 'site-header-sticky', current_theme_supports( 'sticky-header' ) ) ) {
-		$choices['sticky_header'] = __( 'Sticky Header', 'mai-engine' );
-	}
-
-	if ( mai_get_option( 'site-header-transparent', current_theme_supports( 'transparent-header' ) ) ) {
-		$choices['transparent_header'] = __( 'Transparent Header', 'mai-engine' );
-	}
-
-	if ( array_key_exists( 'after-header', $menus ) ) {
-		$choices['after_header'] = __( 'After Header Menu', 'mai-engine' );
-	}
-
-	if ( '*' === $page_header || ( isset( $page_header['single'] ) && ! empty( $page_header['single'] ) ) ) {
-		$choices['page_header'] = __( 'Page Header', 'mai-engine' );
-	}
-
-	if ( $breadcrumb_single || $breadcrumb_page ) {
-		$choices['breadcrumbs'] = __( 'Breadcrumbs', 'mai-engine' );
-	}
-
-	$choices['entry_title']    = __( 'Entry Title', 'mai-engine' );
-	$choices['entry_excerpt']  = __( 'Entry Excerpt', 'mai-engine' );
-	$choices['featured_image'] = __( 'Featured Image', 'mai-engine' );
-
-	if ( isset( $widget_areas['before-footer'] ) && is_active_sidebar( 'before-footer' ) ) {
-		$choices['before_footer'] = __( 'Before Footer', 'mai-engine' );
-	}
-
-	if ( isset( $widget_areas['footer'] ) && is_active_sidebar( 'footer' ) ) {
-		$choices['footer'] = __( 'Footer', 'mai-engine' );
-	}
-
-	if ( is_active_sidebar( 'footer-credits' ) || mai_get_widget_area_default_content( 'footer-credits' ) ) {
-		$choices['footer_credits'] = __( 'Footer Credits', 'mai-engine' );
 	}
 
 	acf_add_local_field_group(
@@ -103,26 +50,75 @@ function mai_add_hide_elements_metabox() {
 			'location'              => $locations,
 			'fields'                => [
 				[
-					'key'               => 'hide_elements',
-					'name'              => 'hide_elements',
-					'type'              => 'checkbox',
-					'instructions'      => __( 'Select elements to hide on this page.', 'mai-engine' ),
-					'required'          => 0,
-					'conditional_logic' => 0,
-					'allow_custom'      => 0,
-					'default_value'     => [],
-					'layout'            => 'vertical',
-					'toggle'            => 0,
-					'return_format'     => 'value',
-					'save_custom'       => 0,
-					'wrapper'           => [
-						'width' => '',
-						'class' => '',
-						'id'    => '',
-					],
-					'choices'           => $choices,
+					'key'           => 'hide_elements',
+					'name'          => 'hide_elements',
+					'type'          => 'checkbox',
+					'instructions'  => __( 'Select elements to hide on this page.', 'mai-engine' ),
+					'default_value' => [],
+					'choices'       => [],
 				],
 			],
 		]
 	);
+}
+
+add_filter( 'acf/load_field/key=hide_elements', 'mai_load_hide_elements_field' );
+/**
+ * Load hide_elements choices.
+ *
+ * @since 0.3.3
+ *
+ * @param array $field The existing field array.
+ *
+ * @return array
+ */
+function mai_load_hide_elements_field( $field ) {
+
+	$field['choices'] = [];
+	$post_type        = mai_get_admin_post_type();
+	$page_header      = mai_get_option( 'page-header-single', mai_get_config( 'page-header' )['single'] );
+
+	if ( is_active_sidebar( 'before-header' ) ) {
+		$field['choices']['before_header'] = __( 'Before Header', 'mai-engine' );
+	}
+
+	$field['choices']['site_header'] = __( 'Site Header', 'mai-engine' );
+
+	if ( mai_get_option( 'site-header-sticky', current_theme_supports( 'sticky-header' ) ) ) {
+		$field['choices']['sticky_header'] = __( 'Sticky Header', 'mai-engine' );
+	}
+
+	if ( mai_get_option( 'site-header-transparent', current_theme_supports( 'transparent-header' ) ) ) {
+		$field['choices']['transparent_header'] = __( 'Transparent Header', 'mai-engine' );
+	}
+
+	if ( has_nav_menu( 'after-header' ) ) {
+		$field['choices']['after_header'] = __( 'After Header Menu', 'mai-engine' );
+	}
+
+	if ( $page_header &&  ( '*' === $page_header || ( is_array( $page_header ) && in_array( $post_type, $page_header ) ) ) ) {
+		$field['choices']['page_header'] = __( 'Page Header', 'mai-engine' );
+	}
+
+	if ( ( 'page' === $post_type && genesis_get_option( 'breadcrumb_page' ) ) || (  'page' !== $post_type && genesis_get_option( 'breadcrumb_single' ) ) ) {
+		$field['choices']['breadcrumbs'] = __( 'Breadcrumbs', 'mai-engine' );
+	}
+
+	$field['choices']['entry_title']    = __( 'Entry Title', 'mai-engine' );
+	$field['choices']['entry_excerpt']  = __( 'Entry Excerpt', 'mai-engine' );
+	$field['choices']['featured_image'] = __( 'Featured Image', 'mai-engine' );
+
+	if ( is_active_sidebar( 'before-footer' ) ) {
+		$field['choices']['before_footer'] = __( 'Before Footer', 'mai-engine' );
+	}
+
+	if ( is_active_sidebar( 'footer' ) ) {
+		$field['choices']['footer'] = __( 'Footer', 'mai-engine' );
+	}
+
+	if ( ( is_active_sidebar( 'footer-credits' ) || mai_get_widget_area_default_content( 'footer-credits' ) ) ) {
+		$field['choices']['footer_credits'] = __( 'Footer Credits', 'mai-engine' );
+	}
+
+	return $field;
 }

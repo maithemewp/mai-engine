@@ -11,7 +11,7 @@
 
 add_action( 'acf/init', 'mai_register_grid_blocks' );
 /**
- * Description of expected behavior.
+ * Register Mai Grid blocks.
  *
  * @since 0.1.0
  *
@@ -226,23 +226,6 @@ function mai_register_grid_field_groups() {
 		]
 	);
 
-	// acf_add_local_field_group(
-	// [
-	// 'key'      => 'group_5de9b54440a2u',
-	// 'title'    => __( 'Mai User Grid', 'mai-engine' ),
-	// 'fields'   => $term_grid,
-	// 'location' => [
-	// [
-	// [
-	// 'param'    => 'block',
-	// 'operator' => '==',
-	// 'value'    => 'acf/mai-user-grid',
-	// ],
-	// ],
-	// ],
-	// 'active'   => true,
-	// ]
-	// );
 }
 
 /**
