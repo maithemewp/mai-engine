@@ -72,6 +72,29 @@ function mai_dequeue_woocommerce_styles( $enqueue_styles ) {
 	return $enqueue_styles;
 }
 
+add_filter( 'woocommerce_style_smallscreen_breakpoint', 'mai_woocommerce_breakpoint' );
+/**
+ * Modifies the WooCommerce breakpoints.
+ *
+ * @since 0.1.0
+ *
+ * @return string Pixel width of the theme's breakpoint.
+ */
+function mai_woocommerce_breakpoint() {
+	$breakpoint      = 'md';
+	$current         = mai_site_layout( false );
+	$sidebar_layouts = [
+		'content-sidebar',
+		'sidebar-content',
+	];
+
+	if ( in_array( $current, $sidebar_layouts, true ) ) {
+		$breakpoint = 'lg';
+	}
+
+	return mai_get_breakpoint( $breakpoint );
+}
+
 /**
  * Trim zeros in price decimals.
  *
@@ -181,29 +204,6 @@ function mai_facetwp_archive_pagination( $content, $args ) {
 	}
 
 	return $content . facetwp_display( 'pager' );
-}
-
-add_filter( 'woocommerce_style_smallscreen_breakpoint', 'mai_woocommerce_breakpoint' );
-/**
- * Modifies the WooCommerce breakpoints.
- *
- * @since 2.3.0
- *
- * @return string Pixel width of the theme's breakpoint.
- */
-function mai_woocommerce_breakpoint() {
-	$breakpoint      = 'md';
-	$current         = mai_site_layout( false );
-	$sidebar_layouts = [
-		'content-sidebar',
-		'sidebar-content',
-	];
-
-	if ( in_array( $current, $sidebar_layouts, true ) ) {
-		$breakpoint = 'lg';
-	}
-
-	return mai_get_breakpoint( $breakpoint );
 }
 
 // Dependency installer labels.

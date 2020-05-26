@@ -13,37 +13,53 @@
 	border-radius: var(--border-radius);
 }
 
+/**
+ * We can't use display: flex; here because lots of plugins break with it,
+ * like Memberships and Subscriptions.
+ */
 .woocommerce-info,
 .woocommerce-error,
 .woocommerce-message {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
+	position: relative;
 	margin-bottom: var(--row-gap);
+	padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) var(--spacing-lg);
+	overflow: hidden;
 	font-size: smaller;
+	border: var(--border);
+	border-left: none;
+
+	&::before {
+		position: absolute;
+		top: -1px;
+		bottom: -1px;
+		left: 0;
+		display: block;
+		width: 6px;
+		height: 100%;
+		background-color: var(--border-left-color, var(--color-primary));
+		content: "";
+	}
 
 	li {
 		list-style-type: none;
 	}
 
-	a {
-		margin-left: 0.382em;
+	.button {
+		margin: 0 0 0 0.382em;
 	}
 }
 
 .woocommerce-message {
-	background-color: rgba(var(--color-success), var(--shadow-opacity));
-	border-color: var(--color-success);
+	--border-left-color: var(--color-success);
 
 	&--info {
-		background-color: rgba(var(--color-primary), var(--shadow-opacity));
-		border-color: var(--color-primary);
+		background-color: var(--color-success);
+		border-color: var(--color-success);
 	}
 }
 
 .woocommerce-error {
-	background-color: rgba(var(--color-danger), var(--shadow-opacity));
-	border-color: var(--color-danger);
+	--border-left-color: var(--color-danger);
 }
 
 .woocommerce .page-header,

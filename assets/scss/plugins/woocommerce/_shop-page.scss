@@ -34,55 +34,6 @@
 .star-rating {
 	display: block;
 	margin-bottom: var(--spacing-xs);
-
-	&::before {
-		display: inline-block;
-		color: var(--color-warning);
-		font-weight: 700;
-		font-size: var(--spacing-md);
-		font-family: "Font Awesome 5 Free", sans-serif;
-		letter-spacing: 0.2em;
-		content: "\f005";
-	}
-
-	&[aria-label*="Rated 1"] {
-
-		&::before {
-			content: "\f005";
-		}
-	}
-
-	&[aria-label*="Rated 2"] {
-
-		&::before {
-			content: "\f005 f005";
-		}
-	}
-
-	&[aria-label*="Rated 3"] {
-
-		&::before {
-			content: "\f005 f005 f005";
-		}
-	}
-
-	&[aria-label*="Rated 4"] {
-
-		&::before {
-			content: "\f005 f005 f005 f005";
-		}
-	}
-
-	&[aria-label*="Rated 5"] {
-
-		&::before {
-			content: "\f005 f005 f005 f005 f005";
-		}
-	}
-
-	span {
-		display: none;
-	}
 }
 
 .price {
@@ -97,30 +48,6 @@
 
 	ins {
 		text-decoration: none;
-	}
-}
-
-.product {
-	position: relative;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	align-content: flex-start;
-	list-style-type: none;
-
-	&-inner {
-		display: flex;
-		flex: 1;
-		flex-wrap: wrap;
-		align-items: flex-start;
-		width: 100%;
-		padding: var(--spacing-md);
-	}
-
-	.price,
-	.star-rating {
-		align-self: flex-start;
-		width: 100%;
 	}
 }
 
