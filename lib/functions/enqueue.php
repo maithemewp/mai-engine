@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || die;
 // Remove default child theme stylesheet.
 remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
 
-add_action( 'wp_enqueue_scripts', 'mai_enqueue_main_stylesheet', 999 );
+add_action( 'get_footer', 'mai_enqueue_child_theme_stylesheet' );
 /**
  * Genesis style trump, and cache bust when stylesheet is updated.
  *
@@ -23,7 +23,7 @@ add_action( 'wp_enqueue_scripts', 'mai_enqueue_main_stylesheet', 999 );
  *
  * @return void
  */
-function mai_enqueue_main_stylesheet() {
+function mai_enqueue_child_theme_stylesheet() {
 	$version = sprintf( '%s.%s',
 		genesis_get_theme_version(),
 		date( 'njYHi', filemtime( get_stylesheet_directory() . '/style.css' ) )
