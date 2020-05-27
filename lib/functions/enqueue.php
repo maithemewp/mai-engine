@@ -63,7 +63,7 @@ function mai_enqueue_assets() {
 
 	foreach ( $assets as $asset ) {
 		$handle    = $asset['handle'];
-		$src       = $asset['src'];
+		$src       = $asset['src'] . ( isset( $asset['async'] ) && $asset['async'] ? '#async' : '' );
 		$type      = false !== strpos( $src, '.js' ) ? 'script' : 'style';
 		$deps      = isset( $asset['deps'] ) ? $asset['deps'] : [];
 		$ver       = isset( $asset['ver'] ) ? $asset['ver'] : mai_get_asset_version( $asset['src'] );
@@ -179,4 +179,22 @@ function mai_admin_bar_inline_styles() {
 EOT;
 
 	wp_add_inline_style( mai_get_handle(), mai_minify_css( $css ) );
+}
+
+add_filter( 'clean_url', 'mai_async_scripts', 11, 1 );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param $url
+ *
+ * @return mixed|string
+ */
+function mai_async_scripts( $url ) {
+	if ( strpos( $url, '#async' ) !== false ) {
+		$url = str_replace( '#async', '', $url ) . "' async='async";
+	}
+
+	return $url;
 }

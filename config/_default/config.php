@@ -237,10 +237,12 @@ return [
 			[
 				'handle' => mai_get_handle() . '-global',
 				'src'    => mai_get_asset_url( 'global.js' ),
+				'async'  => true,
 			],
 			[
 				'handle'   => mai_get_handle() . '-menus',
 				'src'      => mai_get_asset_url( 'menus.js' ),
+				'async'    => true,
 				'localize' => [
 					'name' => 'maiMenuVars',
 					'data' => [
@@ -268,6 +270,7 @@ return [
 			[
 				'handle'    => mai_get_handle() . '-header',
 				'src'       => mai_get_asset_url( 'header.js' ),
+				'async'     => true,
 				'condition' => function () {
 					return mai_has_sticky_header() || mai_has_transparent_header();
 				},
