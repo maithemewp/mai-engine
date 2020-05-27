@@ -130,10 +130,6 @@ add_action( 'mai_page_header', 'mai_do_page_header_description' );
  * @return void
  */
 function mai_do_page_header_description() {
-	if ( mai_is_element_hidden( 'entry_excerpt' ) ) {
-		return;
-	}
-
 	$description = mai_get_page_header_description();
 
 	if ( $description ) {

@@ -792,13 +792,14 @@ class Mai_Entry {
 	 * @return  void
 	 */
 	public function do_excerpt() {
+		$excerpt = '';
 
 		// Excerpt.
 		switch ( $this->type ) {
 			case 'post':
 				if ( 'single' === $this->context ) {
 					// Manual excerpts only, on single posts.
-					$excerpt = has_excerpt() ? get_the_excerpt() : '';
+					$excerpt = has_excerpt() && ! mai_is_element_hidden( 'entry_excerpt' ) ? get_the_excerpt() : '';
 				} else {
 					$excerpt = get_the_excerpt();
 				}
