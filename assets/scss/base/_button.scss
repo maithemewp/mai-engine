@@ -23,13 +23,12 @@
 	@include button-style("outline");
 }
 
-.button-ghost {
-
-	@include button-style("ghost");
-}
-
 .button-small {
 
 	@include button-style("small");
 }
 
+.button-large {
+
+	@include button-style("large");
+}

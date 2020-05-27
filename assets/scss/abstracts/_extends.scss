@@ -54,6 +54,11 @@
 		--button-font-size: var(--text-sm);
 	}
 
+	@if ("large" == $style) {
+		--button-padding: var(--spacing-lg) calc(var(--spacing-lg) * 2);
+		--button-font-size: var(--text-lg);
+	}
+
 	@if ("disabled" == $style) {
 		--button-cursor: not-allowed;
 		--button-opacity: 0.5;
