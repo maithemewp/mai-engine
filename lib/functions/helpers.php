@@ -511,6 +511,9 @@ function mai_sanitize_bool( $value ) {
  * @return mixed
  */
 function mai_is_element_hidden( $element ) {
+	if ( ! is_singular() ) {
+		return false;
+	}
 
 	// Can't be static, entry-title breaks.
 	$elements = get_post_meta( get_the_ID(), 'hide_elements', true );
