@@ -11,15 +11,6 @@
 
 return [
 	[
-		'settings'    => 'site_layout',
-		'label'       => esc_html__( 'Layout', 'mai-engine' ),
-		'description' => esc_html__( '"Site Default" will use the setting in Customizer > Theme Settings > Site Layout.', 'mai-engine' ),
-		'type'        => 'select',
-		'sanitize'    => 'esc_html',
-		'default'     => '',
-		'choices'     => mai_get_site_layout_choices(),
-	],
-	[
 		'settings'    => 'show',
 		'label'       => esc_html__( 'Show', 'mai-engine' ),
 		'description' => esc_html__( 'Show/hide and re-order entry elements. Click "Toggle Hooks" to show Genesis hooks.', 'mai-engine' ),

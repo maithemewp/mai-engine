@@ -41,6 +41,10 @@ body {
 	text-transform: uppercase;
 }
 
+.breadcrumb {
+	text-align: center;
+}
+
 .before-footer {
 	background: var(--color-medium);
 }
@@ -128,11 +132,14 @@ body {
 
 	.wpforms-container.inline-fields .wpforms-form {
 		display: flex;
-		align-items: flex-end;
 	}
 
 	.wpforms-container.inline-fields .wpforms-submit-container {
 		padding: 10px 0;
+	}
+
+	.wpforms-container.inline-fields .wpforms-submit {
+		height: 100%;
 	}
 
 }

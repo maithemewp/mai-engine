@@ -823,20 +823,20 @@ function mai_get_content_type_choices( $archive = false ) {
 		}
 	}
 
-	$taxonomies = get_taxonomies( [ 'public' => true ], 'objects' );
-
-	// Remove taxonomies we don't want.
-	unset( $taxonomies['post_format'] );
-	unset( $taxonomies['product_shipping_class'] );
-	unset( $taxonomies['yst_prominent_words'] );
-
-	if ( $taxonomies ) {
-		foreach ( $taxonomies as $name => $taxonomy ) {
-			$choices[ $name ] = $taxonomy->label;
-		}
-	}
-
 	if ( $archive ) {
+		$taxonomies = get_taxonomies( [ 'public' => true ], 'objects' );
+
+		// Remove taxonomies we don't want.
+		unset( $taxonomies['post_format'] );
+		unset( $taxonomies['product_shipping_class'] );
+		unset( $taxonomies['yst_prominent_words'] );
+
+		if ( $taxonomies ) {
+			foreach ( $taxonomies as $name => $taxonomy ) {
+				$choices[ $name ] = $taxonomy->label;
+			}
+		}
+
 		$choices += [
 			'search' => __( 'Search Results', 'mai-engine' ),
 			'author' => __( 'Author Archives', 'mai-engine' ),
