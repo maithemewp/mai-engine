@@ -300,13 +300,16 @@ return [
 			[
 				'handle' => mai_get_handle(),
 				'src'    => mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css',
+				'media'  => 'print',
+				'onload' => "this.media='all'",
 			],
 
 			// Desktop only.
 			[
 				'handle' => mai_get_handle() . '-desktop',
 				'src'    => mai_get_url() . 'assets/css/desktop/desktop.min.css',
-				'media'  => '(min-width:' . mai_get_breakpoint() . 'px)',
+				'media'  => 'print',
+				'onload' => "this.media='(min-width:" . mai_get_breakpoint() . "px)'",
 			],
 
 			// Fonts.
@@ -314,6 +317,8 @@ return [
 				'handle'    => mai_get_handle() . '-google-fonts',
 				'src'       => content_url( 'fonts/style.min.css' ),
 				'editor'    => 'both',
+				'media'     => 'print',
+				'onload'    => "this.media='all'",
 				'condition' => function () {
 					return file_exists( WP_CONTENT_DIR . '/fonts/style.min.css' );
 				},
@@ -344,6 +349,8 @@ return [
 			[
 				'handle'    => mai_get_handle() . '-atomic-blocks',
 				'src'       => mai_get_url() . 'assets/css/plugins/atomic-blocks.min.css',
+				'media'     => 'print',
+				'onload'    => "this.media='all'",
 				'condition' => function () {
 					return function_exists( 'atomic_blocks_main_plugin_file' );
 				},
@@ -351,6 +358,8 @@ return [
 			[
 				'handle'    => mai_get_handle() . '-seo-slider',
 				'src'       => mai_get_url() . 'assets/css/plugins/seo-slider.min.css',
+				'media'     => 'print',
+				'onload'    => "this.media='all'",
 				'condition' => function () {
 					return defined( 'SEO_SLIDER_VERSION' );
 				},
@@ -358,6 +367,8 @@ return [
 			[
 				'handle'    => mai_get_handle() . '-simple-social-icons',
 				'src'       => mai_get_url() . 'assets/css/plugins/simple-social-icons.min.css',
+				'media'     => 'print',
+				'onload'    => "this.media='all'",
 				'condition' => function () {
 					return class_exists( 'Simple_Social_Icons_Widget' );
 				},
@@ -365,11 +376,12 @@ return [
 			[
 				'handle'    => mai_get_handle() . '-woocommerce',
 				'src'       => mai_get_url() . 'assets/css/plugins/woocommerce.min.css',
+				'media'     => 'print',
+				'onload'    => "this.media='all'",
 				'condition' => function () {
 					return class_exists( 'WooCommerce' );
 				},
 			],
-
 		],
 		'remove' => [
 			'simple-social-icons-font',

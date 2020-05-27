@@ -68,6 +68,7 @@ function mai_enqueue_assets() {
 		$location  = isset( $asset['location'] ) ? is_array( $asset['location'] ) ? $asset['location'] : [ $asset['location'] ] : [ 'public' ];
 		$localize  = isset( $asset['localize'] ) ? $asset['localize'] : [];
 		$inline    = isset( $asset['inline'] ) ? $asset['inline'] : false;
+		$onload    = isset( $asset['onload'] ) ? $asset['onload'] : false;
 		$last_arg  = 'style' === $type ? $media : $in_footer;
 		$register  = "wp_register_$type";
 		$enqueue   = "wp_enqueue_$type";
@@ -104,6 +105,16 @@ function mai_enqueue_assets() {
 					$localize_data = $localize['data'];
 				}
 				wp_localize_script( $handle, $localize['name'], $localize_data );
+			}
+
+			if ( $onload ) {
+				add_filter( 'style_loader_tag', function ( $html, $handle ) use ( $asset ) {
+					if ( $handle === $asset['handle'] ) {
+						$html = str_replace( '>', ' onload="' . $asset['onload'] . '">', $html );
+					}
+
+					return $html;
+				}, 11, 2 );
 			}
 		}
 	}
