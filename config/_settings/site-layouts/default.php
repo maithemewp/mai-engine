@@ -13,6 +13,12 @@ $layouts = mai_get_config( 'site-layouts' );
 
 return [
 	[
+		'type'     => 'checkbox',
+		'settings' => 'boxed-container',
+		'label'    => __( 'Enable boxed site container', 'mai-engine' ),
+		'default'  => '',
+	],
+	[
 		'type'     => 'select',
 		'settings' => 'site',
 		'label'    => __( 'Site Default', 'mai-engine' ),

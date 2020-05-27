@@ -10,6 +10,10 @@
 	font-family: var(--font-family, var(--font-primary));
 	line-height: var(--line-height);
 	background: var(--background, var(--color-lightest));
+
+	&.has-boxed-container {
+		--background: var(--color-lighter);
+	}
 }
 
 @mixin button-style($style) {

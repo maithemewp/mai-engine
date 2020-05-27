@@ -201,7 +201,12 @@ function mai_has_sidebar() {
  * @return bool
  */
 function mai_has_boxed_container() {
-	return mai_get_option( 'boxed-container', current_theme_supports( 'boxed-container' ) );
+	$boxed_container = current_theme_supports( 'boxed-container' );
+	$site_layouts    = mai_get_option( 'site-layouts' );
+	if ( $site_layouts && is_array( $site_layouts ) && isset( $site_layouts['default']['boxed-container'] ) ) {
+		$boxed_container = $site_layouts['default']['boxed-container'];
+	}
+	return $boxed_container;
 }
 
 /**
