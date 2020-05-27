@@ -89,8 +89,8 @@ function mai_body_classes( $classes ) {
 	$classes[] = mai_has_page_header() ? 'has-page-header' : 'no-page-header';
 	$classes[] = mai_has_light_page_header() ? 'has-light-page-header' : 'has-dark-page-header';
 
-	$header_left  = has_nav_menu( 'header-left' ) || is_active_sidebar( 'header_left' );
-	$header_right = has_nav_menu( 'header-right' ) || is_active_sidebar( 'header_right' );
+	$header_left  = has_nav_menu( 'header-left' ) || is_active_sidebar( 'header-left' );
+	$header_right = has_nav_menu( 'header-right' ) || is_active_sidebar( 'header-right' );
 
 	// Add logo classes.
 	if ( ( $header_left && $header_right ) || ( ! $header_right && ! $header_right ) ) {
