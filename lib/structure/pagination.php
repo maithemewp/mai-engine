@@ -126,7 +126,7 @@ function mai_adjacent_entry_link_thumbnail( $output, $format, $link, $post, $adj
 
 	if ( $show_image && $image_id ) {
 		add_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
-		$image = wp_get_attachment_image( $image_id, 'tiny', false, [ 'class' => 'adjacent-entry-image' ] );
+		$image = wp_get_attachment_image( $image_id, 'tiny', false, [ 'class' => 'adjacent-entry-image', 'loading' => 'lazy' ] );
 		remove_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
 	}
 

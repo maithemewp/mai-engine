@@ -160,6 +160,9 @@ function mai_get_cover_image_html( $image_id, $atts = [] ) {
 	// Convert to string.
 	$atts['srcset'] = implode( ',', $srcset );
 
+	// Add native lazy loading.
+	$atts['loading'] = 'lazy';
+
 	// Get the image HTML.
 	return wp_get_attachment_image( $image_id, 'cover', false, $atts );
 }
