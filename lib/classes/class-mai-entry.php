@@ -346,39 +346,85 @@ class Mai_Entry {
 			return '';
 		}
 
-		/**
-		 * Filters the output of 'wp_calculate_image_sizes()'.
-		 *
-		 * @param string       $sizes         A source size value for use in a 'sizes' attribute.
-		 * @param array|string $size          Requested size. Image size or array of width and height values
-		 *                                    in pixels (in that order).
-		 * @param string|null  $image_src     The URL to the image file or null.
-		 * @param array|null   $image_meta    The image meta data as returned by wp_get_attachment_metadata() or null.
-		 * @param int          $attachment_id Image attachment ID of the original image or 0.
-		 */
+		add_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
 		add_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 5 );
 		$size  = $this->get_image_size();
 		$image = wp_get_attachment_image( $image_id, $size, false, [ 'class' => "entry-image size-{$size}" ] );
 		remove_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 5 );
+		remove_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
 
 		return $image;
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Modify the max image width to use in srcset based on the breakpoint and amount of columns.
+	 * This allows srcset to never show an image larger than it'll ever be displayed via the theme settings.
+	 *
+	 * @since 0.3.3
+	 *
+	 * @param int   $size       The max width.
+	 * @param array $size_array The array of width and height values.
+	 *
+	 * @return int
+	 */
+	public function srcset_max_image_width( $size, $size_array ) {
+		$size        = 1600; // Max theme image size.
+		$has_sidebar = mai_has_sidebar();
+		$single      = [
+			'xs' => 1,
+			'sm' => 1,
+			'md' => 1,
+			'lg' => 1,
+		];
+		$columns     = ( 'single' === $this->context ) ? $single : array_reverse( $this->get_breakpoint_columns(), true ); // mobile first.
+		$widths      = [];
+		foreach ( $columns as $break => $count ) {
+			switch ( $break ) {
+				case 'xs':
+					$max_width   = $this->breakpoints['sm'];
+					$widths[]    = floor( $max_width / $count );
+				break;
+				case 'sm':
+					$min_width   = $this->breakpoints['sm'];
+					$max_width   = $this->breakpoints['md'];
+					$widths[]    = floor( $max_width / $count );
+					break;
+				case 'md':
+					$min_width   = $this->breakpoints['md'];
+					$max_width   = $this->breakpoints['lg'];
+					$container   = $has_sidebar ? $max_width * 2 / 3 : $max_width;
+					$widths[]    = floor( $container / $count );
+					break;
+				case 'lg':
+					$min_width   = $this->breakpoints['lg'];
+					$container   = $this->breakpoints['xl'];
+					$container   = $has_sidebar ? $container * 2 / 3 : $container;
+					$widths[]    = floor( $container / $count );
+					break;
+			}
+		}
+		if ( $widths ) {
+			$size = absint( max( $widths ) );
+		}
+
+		return $size;
+	}
+
+	/**
+	 * Show sizes image attribute with appropriate values based on registered theme image sizes and breakpoints/columns.
 	 *
 	 * @since 0.1.0
 	 *
-	 * @param array  $sizes         Array of images.
-	 * @param string $size          Image size.
-	 * @param string $image_src     Image source.
-	 * @param array  $image_meta    Image meta array.
-	 * @param int    $attachment_id Image attachment ID.
+	 * @param string       $sizes         A source size value for use in a 'sizes' attribute.
+	 * @param array|string $size          Requested size. Image size or array of width and height values
+	 *                                    in pixels (in that order).
+	 * @param string|null  $image_src     The URL to the image file or null.
+	 * @param array|null   $image_meta    The image meta data as returned by wp_get_attachment_metadata() or null.
+	 * @param int          $attachment_id Image attachment ID of the original image or 0.
 	 *
 	 * @return string
 	 */
 	public function calculate_image_sizes( $sizes, $size, $image_src, $image_meta, $attachment_id ) {
-
 		// TODO: handle 0/auto columns.
 
 		$new_sizes   = [];
