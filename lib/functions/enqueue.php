@@ -50,18 +50,13 @@ add_action( 'customize_controls_enqueue_scripts', 'mai_enqueue_assets' );
  */
 function mai_enqueue_assets() {
 	$assets         = mai_get_config( 'scripts-and-styles' )['add'];
-	$google_fonts   = implode( '|', mai_get_config( 'google-fonts' ) );
 	$current_screen = function_exists( 'get_current_screen' ) ? get_current_screen() : false;
 
-	if ( $google_fonts ) {
-		$assets[] = [
-			'handle' => mai_get_handle() . '-google-fonts',
-			'src'    => "//fonts.googleapis.com/css?family=$google_fonts&display=swap",
-			'editor' => 'both',
-		];
-	}
-
 	foreach ( $assets as $asset ) {
+		if ( ! isset( $asset['handle'] ) || ! isset( $asset['src'] ) ) {
+			continue;
+		}
+
 		$handle    = $asset['handle'];
 		$src       = $asset['src'] . ( isset( $asset['async'] ) && $asset['async'] ? '#async' : '' );
 		$type      = false !== strpos( $src, '.js' ) ? 'script' : 'style';
@@ -197,4 +192,48 @@ function mai_async_scripts( $url ) {
 	}
 
 	return $url;
+}
+
+add_action( 'admin_init', 'mai_download_google_fonts' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function mai_download_google_fonts() {
+	$config = mai_get_config( 'google-fonts' );
+
+	if ( $config ) {
+		$downloader = mai_get_instance( Mai_Fonts_Downloader::class );
+		$family     = urlencode( implode( '|', $config ) );
+		$url        = 'https://fonts.googleapis.com/css?family=' . $family . '&display=swap';
+
+		$downloader->get_styles( $url );
+	}
+}
+
+add_action( 'wp_enqueue_scripts', 'mai_google_fonts_fallback' );
+add_action( 'enqueue_block_editor_assets', 'mai_google_fonts_fallback' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function mai_google_fonts_fallback() {
+	$config       = mai_get_config( 'google-fonts' );
+	$google_fonts = implode( '|', $config );
+	$local_css    = WP_CONTENT_DIR . '/fonts/style.min.css';
+
+	if ( $config && ! file_exists( $local_css ) ) {
+		wp_register_style(
+			mai_get_handle() . '-google-fonts',
+			"//fonts.googleapis.com/css?family=$google_fonts&display=swap"
+		);
+
+		wp_enqueue_style( mai_get_handle() . '-google-fonts' );
+	}
 }

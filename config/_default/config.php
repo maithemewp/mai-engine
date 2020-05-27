@@ -309,6 +309,16 @@ return [
 				'media'  => '(min-width:' . mai_get_breakpoint() . 'px)',
 			],
 
+			// Fonts.
+			[
+				'handle'    => mai_get_handle() . '-google-fonts',
+				'src'       => content_url( 'fonts/style.min.css' ),
+				'editor'    => 'both',
+				'condition' => function () {
+					return file_exists( WP_CONTENT_DIR . '/fonts/style.min.css' );
+				},
+			],
+
 			// Customizer styles.
 			[
 				'handle'   => mai_get_handle() . '-kirki',
