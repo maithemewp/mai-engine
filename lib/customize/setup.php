@@ -24,18 +24,6 @@ function mai_kirki_filters() {
 	$handle = mai_get_handle();
 
 	add_filter( "kirki_${handle}_webfonts_skip_hidden", '__return_false' );
-	add_filter( 'kirki/dynamic_css/method', '__return_true' );
-
-	add_filter(
-		"kirki_gutenberg_${handle}_dynamic_css",
-		function () {
-			return home_url( '?action=kirki-styles' );
-		}
-	);
-
-	if ( ! is_customize_preview() ) {
-		add_filter( 'kirki_output_inline_styles', '__return_false' );
-	}
 }
 
 add_action( 'after_setup_theme', 'mai_add_kirki_config' );
