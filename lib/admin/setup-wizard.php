@@ -1,25 +1,8 @@
 <?php
 
-add_action( 'after_setup_theme', 'mai_redirect_to_setup_wizard', 5 );
-/**
- * Description of expected behavior.
- *
- * @since 1.0.0
- *
- * @return void
- */
-function mai_redirect_to_setup_wizard() {
-	global $pagenow;
-
-	if ( $pagenow === 'admin.php' && isset( $_GET['page'] ) && sanitize_text_field( $_GET['page'] ) === 'mai-demo-import' ) {
-		wp_redirect( admin_url( '/admin.php?page=mai-setup-wizard' ) );
-		exit;
-	}
-}
-
 add_filter( 'mai_setup_wizard_menu', 'mai_setup_wizard_menu', 10, 2 );
 /**
- * Description of expected behavior.
+ * Add setup wizard menu item.
  *
  * @since 0.3.0
  *
@@ -37,7 +20,7 @@ function mai_setup_wizard_menu( $args ) {
 
 add_filter( 'mai_setup_wizard_demos', 'mai_setup_wizard_demos', 15, 1 );
 /**
- * Description of expected behavior.
+ * Get available setup wizard demos.
  *
  * @since 0.3.0
  *
