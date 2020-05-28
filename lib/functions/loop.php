@@ -97,8 +97,9 @@ function mai_get_template_args() {
 		$name     = mai_get_archive_args_name();
 		$context  = 'archive';
 		$settings = 'content-archives';
+
 		// Use post as fallback for archives. This happens on category/tag/etc archives when they don't have loop settings.
-		if ( ! in_array( $name, mai_get_config( 'archive-settings' ), true ) ) {
+		if ( ! in_array( $name, mai_get_option( 'archive-settings', mai_get_config( 'archive-settings' ) ), true ) ) {
 			$name = 'post';
 		}
 	} elseif ( mai_is_type_single() ) {
