@@ -45,11 +45,11 @@ function mai_get_content_limit( $content, $limit ) {
 function mai_has_custom_loop() {
 	if ( mai_is_type_archive() ) {
 		$name  = mai_get_archive_args_name();
-		$types = mai_get_config( 'archive-settings' );
+		$types = mai_get_option( 'archive-settings', mai_get_config( 'archive-settings' ) );
 
 	} elseif ( mai_is_type_single() ) {
 		$name  = mai_get_singular_args_name();
-		$types = mai_get_config( 'single-settings' );
+		$types = mai_get_option( 'single-settings', mai_get_config( 'single-settings' ) );
 	}
 
 	if ( isset( $name, $types ) ) {
