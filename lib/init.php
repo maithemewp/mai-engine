@@ -15,41 +15,43 @@ defined( 'ABSPATH' ) || die();
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return bool|string
  */
-function mai_engine_support() {
+function mai_get_engine_theme() {
 	static $theme = null;
 
 	if ( is_null( $theme ) ) {
-		$theme = get_theme_support( 'mai-engine' )[0];
+		$current_theme = defined( 'CHILD_THEME_NAME' ) ? CHILD_THEME_NAME : null;
 
-		if ( ! $theme ) {
-			$theme = defined( 'CHILD_THEME_NAME' ) ? CHILD_THEME_NAME : null;
+		if ( ! $current_theme ) {
+			$current_theme = wp_get_theme()->get( 'Name' );
 		}
 
-		if ( ! $theme ) {
-			$theme = wp_get_theme()->get( 'Name' );
+		if ( ! $current_theme ) {
+			$current_theme = wp_get_theme()->get( 'TextDomain' );
 		}
 
-		if ( ! $theme ) {
-			$theme = wp_get_theme()->get( 'TextDomain' );
+		if ( ! $current_theme ) {
+			$current_theme = basename( get_stylesheet_directory() );
 		}
 
-		if ( ! $theme ) {
-			$theme = basename( get_stylesheet_directory() );
+		$configs       = glob( dirname( __DIR__ ) . '/config/*', GLOB_ONLYDIR );
+		$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $theme ) );
+		$engine_themes = [];
+
+		foreach ( $configs as $index => $config ) {
+			$base = basename( $config, '.php' );
+			if ( in_array( $base, [ '_default', '_settings' ] ) ) {
+				continue;
+			}
+			$engine_themes[] = $base;
 		}
 
-		$configs = glob( dirname( __DIR__ ) . '/config/*', GLOB_ONLYDIR );
-		$themes  = [];
-		$theme   = str_replace( 'mai-', '', sanitize_title_with_dashes( $theme ) );
-
-		foreach ( $configs as $config ) {
-			$themes[] = basename( $config, '.php' );
-		}
-
-		if ( ! in_array( $theme, $themes, true ) ) {
+		if ( in_array( $current_theme, $engine_themes, true ) ) {
+			$theme = $current_theme;
+		} elseif ( current_theme_supports( 'mai-engine' ) ) {
 			$theme = 'default';
 		}
 	}
@@ -58,9 +60,9 @@ function mai_engine_support() {
 }
 
 /**
- * Description of expected behavior.
+ * Deactivate Mai Engine plugin.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
@@ -69,9 +71,9 @@ function mai_deactivate_plugin() {
 }
 
 /**
- * Description of expected behavior.
+ * Show notice that Mai Engine has been deactivated.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
@@ -132,7 +134,7 @@ function mai_modify_genesis_defaults() {
 
 add_action( 'after_setup_theme', 'mai_load_files', 0 );
 /**
- * Description of expected behavior.
+ * Load mai-engine files, or deactivate if active theme is not supported.
  *
  * @since 0.1.0
  *
@@ -141,16 +143,8 @@ add_action( 'after_setup_theme', 'mai_load_files', 0 );
 function mai_load_files() {
 	$deactivate = true;
 
-	if ( current_theme_supports( 'mai-engine' ) ) {
+	if ( function_exists( 'genesis' ) && mai_get_engine_theme() ) {
 		$deactivate = false;
-	}
-
-	if ( mai_engine_support() && 'default' !== mai_engine_support() ) {
-		$deactivate = false;
-	}
-
-	if ( ! function_exists( 'genesis' ) ) {
-		$deactivate = true;
 	}
 
 	if ( $deactivate && current_user_can( 'activate_plugins' ) ) {

@@ -231,7 +231,7 @@ function mai_get_config( $sub_config = 'default' ) {
  * @return string
  */
 function mai_get_active_theme() {
-	return apply_filters( 'mai_active_theme', mai_engine_support() );
+	return apply_filters( 'mai_active_theme', mai_get_engine_theme() );
 }
 
 /**
