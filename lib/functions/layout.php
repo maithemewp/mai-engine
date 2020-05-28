@@ -80,6 +80,13 @@ function mai_site_layout( $use_cache = true ) {
 		}
 	}
 
+	// Use site default.
+	if ( ! $site_layout ) {
+		if ( isset( $layouts['default']['site'] ) && ! empty( $layouts['default']['site'] ) ) {
+			$site_layout = $layouts['default']['site'];
+		}
+	}
+
 	// Hard-code fallback. This should never happen.
 	if ( ! $site_layout ) {
 		$site_layout = 'standard-content';
