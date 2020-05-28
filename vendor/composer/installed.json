@@ -70,15 +70,15 @@
         "source": {
             "type": "git",
             "url": "https://github.com/maithemewp/mai-setup-wizard.git",
-            "reference": "098922848f9f6239cd199ff06b38e5d7fec198de"
+            "reference": "094d02a48659e8dcfd35c7732f789b98f2a9a732"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/maithemewp/mai-setup-wizard/zipball/098922848f9f6239cd199ff06b38e5d7fec198de",
-            "reference": "098922848f9f6239cd199ff06b38e5d7fec198de",
+            "url": "https://api.github.com/repos/maithemewp/mai-setup-wizard/zipball/094d02a48659e8dcfd35c7732f789b98f2a9a732",
+            "reference": "094d02a48659e8dcfd35c7732f789b98f2a9a732",
             "shasum": ""
         },
-        "time": "2020-05-19T14:37:11+00:00",
+        "time": "2020-05-21T07:32:00+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -86,16 +86,13 @@
                 "mai-setup-wizard.php"
             ]
         },
+        "notification-url": "https://packagist.org/downloads/",
         "authors": [
             {
                 "name": "Lee Anthony",
                 "email": "seothemeswp@gmail.com"
             }
-        ],
-        "support": {
-            "source": "https://github.com/maithemewp/mai-setup-wizard/tree/master",
-            "issues": "https://github.com/maithemewp/mai-setup-wizard/issues"
-        }
+        ]
     },
     {
         "name": "proteusthemes/wp-content-importer-v2",

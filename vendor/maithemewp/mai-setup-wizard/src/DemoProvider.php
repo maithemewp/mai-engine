@@ -57,6 +57,10 @@ class DemoProvider extends AbstractServiceProvider {
 	}
 
 	public function get_chosen_demo() {
+		if ( ! $this->demos ) {
+			return '';
+		}
+
 		$options = \get_option( $this->plugin->slug, [] );
 		$first   = \reset( $this->demos );
 
