@@ -173,16 +173,16 @@ function mai_admin_bar_inline_styles() {
 	}
 
 	$css = <<<EOT
-		@media (max-width: 782px) {
-			body.admin-bar {
-				min-height: calc(100vh - 46px);
-			}
-		@media (min-width: 783px) {
-			body.admin-bar {
-				min-height: calc(100vh - 32px);
-			}
+	@media (max-width: 782px) {
+		body.admin-bar {
+			min-height: calc(100vh - 46px);
 		}
-	EOT;
+	@media (min-width: 783px) {
+		body.admin-bar {
+			min-height: calc(100vh - 32px);
+		}
+	}
+EOT;
 
 	wp_add_inline_style( mai_get_handle(), mai_minify_css( $css ) );
 }
@@ -270,3 +270,4 @@ function mai_google_fonts_fallback() {
 		wp_enqueue_style( mai_get_handle() . '-google-fonts' );
 	}
 }
+
