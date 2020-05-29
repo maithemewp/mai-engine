@@ -38,14 +38,16 @@ function mai_get_engine_theme() {
 		}
 
 		$configs       = glob( dirname( __DIR__ ) . '/config/*', GLOB_ONLYDIR );
-		$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $theme ) );
+		$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $current_theme ) );
 		$engine_themes = [];
 
 		foreach ( $configs as $index => $config ) {
 			$base = basename( $config, '.php' );
+
 			if ( in_array( $base, [ '_default', '_settings' ] ) ) {
 				continue;
 			}
+
 			$engine_themes[] = $base;
 		}
 
