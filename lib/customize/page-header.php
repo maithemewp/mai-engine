@@ -164,12 +164,6 @@ function mai_page_header_customizer_settings() {
 			'choices'  => [
 				'palettes' => mai_get_color_choices(),
 			],
-			'output'   => [
-				[
-					'element'  => '.page-header',
-					'property' => '--page-header-background-color',
-				],
-			],
 		]
 	);
 
@@ -177,7 +171,7 @@ function mai_page_header_customizer_settings() {
 		$handle,
 		[
 			'type'        => 'slider',
-			'settings'    => 'overlay-opacity',
+			'settings'    => 'page-header-overlay-opacity',
 			'section'     => $section,
 			'label'       => __( 'Overlay opacity', 'mai-engine' ),
 			'description' => esc_html__( 'The background color opacity when page header has an image', 'mai-engine' ),
@@ -186,12 +180,6 @@ function mai_page_header_customizer_settings() {
 				'min'  => 0,
 				'max'  => 1,
 				'step' => 0.01,
-			],
-			'output'      => [
-				[
-					'element'  => '.page-header-overlay',
-					'property' => 'opacity',
-				],
 			],
 		]
 	);
@@ -334,19 +322,22 @@ add_filter( 'genesis_attr_page-header', 'mai_add_page_header_content_type_css' )
  * @return array
  */
 function mai_add_page_header_content_type_css( $attr ) {
-	$args   = mai_get_template_args();
-	$styles = '';
+	$args    = mai_get_template_args();
+	$config  = mai_get_config( 'page-header' );
+	$color   = isset( $args['page-header-background-color'] ) && ! empty( $args['page-header-background-color'] ) ? $args['page-header-background-color']: $config['background-color'];
+	$opacity = isset( $args['page-header-overlay-opacity'] ) && ! empty( $args['page-header-overlay-opacity'] ) ? $args['page-header-overlay-opacity']:    $config['overlay-opacity'];
+	$styles  = '';
 
-	if ( isset( $args['page-header-background-color'] ) && $args['page-header-background-color'] !== mai_get_color( 'medium' ) ) {
-		$styles .= "--background-color:{$args['page-header-background-color']};";
+	if ( $color ) {
+		$styles .= "--page-header-background-color:{$color};";
 	}
 
-	if ( isset( $args['page-header-overlay-color'] ) && $args['page-header-overlay-color'] !== mai_get_color( 'medium' ) ) {
-		$styles .= "--overlay-color:{$args['page-header-overlay-color']};";
+	if ( $opacity ) {
+		$styles .= "--page-header-overlay-opacity:{$opacity};";
 	}
 
 	if ( $styles ) {
-		$attr['styles'] = $styles;
+		$attr['style'] = $styles;
 	}
 
 	return $attr;

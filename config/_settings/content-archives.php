@@ -417,29 +417,22 @@ return [
 	],
 	[
 		'settings'        => 'page-header-background-color',
-		'label'           => esc_html__( 'Page header background color', 'mai-engine' ),
+		'label'           => esc_html__( 'Background/overlay color', 'mai-engine' ),
 		'type'            => 'color',
-		'default'         => mai_get_color( 'medium' ),
-		'active_callback' => [
-			[
-				'setting'  => 'page-header-image',
-				'operator' => '===',
-				'value'    => '',
-			],
-		],
+		'default'         => '',
+		'active_callback' => 'mai_has_page_header_support_callback',
 	],
 	[
-		'settings'        => 'page-header-overlay-color',
-		'label'           => esc_html__( 'Page header overlay color', 'mai-engine' ),
-		'type'            => 'color',
-		'default'         => mai_get_color( 'medium' ),
-		'active_callback' => [
-			[
-				'setting'  => 'page-header-image',
-				'operator' => '!==',
-				'value'    => '',
-			],
+		'settings'        => 'page-header-overlay-opacity',
+		'label'           => esc_html__( 'The background color opacity when page header has an image', 'mai-engine' ),
+		'type'            => 'slider',
+		'default'         => '',
+		'choices'     => [
+			'min'  => 0,
+			'max'  => 1,
+			'step' => 0.01,
 		],
+		'active_callback' => 'mai_has_page_header_support_callback',
 	],
 	[
 		'settings' => 'page-header-text-color',
@@ -451,6 +444,7 @@ return [
 			'light' => __( 'Light', 'mai-engine' ),
 			'dark'  => __( 'Dark', 'mai-engine' ),
 		],
+		'active_callback' => 'mai_has_page_header_support_callback',
 	],
 ];
 
