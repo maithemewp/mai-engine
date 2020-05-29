@@ -39,7 +39,7 @@ function mai_logo_customizer_settings() {
 			'output'   => [
 				[
 					'choice'   => 'mobile',
-					'element'  => [ ':root', '.is-stuck' ],
+					'element'  => [ ':root', '.header-stuck' ],
 					'property' => '--custom-logo-width',
 					'exclude'  => [
 						'120px',
@@ -79,7 +79,7 @@ function mai_logo_customizer_settings() {
 			'output'   => [
 				[
 					'choice'   => 'mobile',
-					'element'  => [ ':root', '.is-stuck' ],
+					'element'  => [ ':root', '.header-stuck' ],
 					'property' => '--title-area-padding',
 					'exclude' => [
 						'16px'
