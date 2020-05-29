@@ -47,9 +47,6 @@ function mai_logo_customizer_settings() {
 					'element'     => ':root',
 					'property'    => '--custom-logo-width',
 					'media_query' => sprintf( '@media (min-width: %spx)', mai_get_breakpoint( 'lg' ) ),
-					'exclude'  => [
-						'180px',
-					],
 				],
 			],
 		]
