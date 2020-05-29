@@ -38,6 +38,10 @@
 	&:focus {
 		color: var(--menu-item-link-color-hover, var(--color-primary));
 	}
+
+	&.button {
+		--menu-item-link-color: var(--button-color, #{map_get($button, "color")});
+	}
 }
 
 .menu-item-link > span {
