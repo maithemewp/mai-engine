@@ -144,7 +144,7 @@ function mai_deregister_scripts_and_styles() {
 
 add_filter( 'block_editor_settings', 'mai_remove_noto_serif_editor_styles' );
 /**
- * Description of expected behavior.
+ * Remove noto serif default editor style.
  *
  * @since 0.1.0
  *
@@ -161,9 +161,9 @@ function mai_remove_noto_serif_editor_styles( $settings ) {
 
 add_action( 'wp_enqueue_scripts', 'mai_admin_bar_inline_styles' );
 /**
- * Description of expected behavior.
+ * Admin bar inline styles.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
@@ -189,9 +189,9 @@ EOT;
 
 add_filter( 'clean_url', 'mai_async_scripts', 11, 1 );
 /**
- * Description of expected behavior.
+ * Add async attribute to a url.
  *
- * @since 1.0.0
+ * @since 0.3.4
  *
  * @param $url
  *
@@ -207,9 +207,9 @@ function mai_async_scripts( $url ) {
 
 add_action( 'admin_init', 'mai_download_google_fonts' );
 /**
- * Description of expected behavior.
+ * Download google fonts locally.
  *
- * @since 1.0.0
+ * @since 0.3.4
  *
  * @return void
  */
@@ -228,9 +228,9 @@ function mai_download_google_fonts() {
 add_action( 'wp_enqueue_scripts', 'mai_google_fonts_fallback' );
 add_action( 'enqueue_block_editor_assets', 'mai_google_fonts_fallback' );
 /**
- * Description of expected behavior.
+ * Fallback to enqueue google fonts from google CDN.
  *
- * @since 1.0.0
+ * @since 0.3.4
  *
  * @return void
  */
