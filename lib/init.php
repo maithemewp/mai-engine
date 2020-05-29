@@ -130,8 +130,21 @@ add_action( 'genesis_init', 'mai_modify_genesis_defaults', 5 );
  */
 function mai_modify_genesis_defaults() {
 	remove_action( 'genesis_init', 'genesis_theme_support' );
-	add_theme_support( 'genesis-breadcrumbs' );
 	add_filter( 'genesis_initial_layouts', '__return_empty_array' );
+	add_theme_support( 'genesis-breadcrumbs' );
+}
+
+add_action( 'genesis_setup', 'mai_remove_genesis_default_widget_areas', 8 );
+/**
+ * Remove Genesis default widget areas.
+ * We'll re-register them via our config.
+ *
+ * @since 0.3.7
+ *
+ * @return void
+ */
+function mai_remove_genesis_default_widget_areas() {
+	remove_action( 'genesis_setup', 'genesis_register_default_widget_areas' );
 }
 
 add_action( 'after_setup_theme', 'mai_load_files', 0 );

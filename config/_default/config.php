@@ -532,14 +532,8 @@ return [
 			],
 			[
 				'id'          => 'sidebar',
-				'name'        => __( 'Primary Sidebar', 'mai-engine' ),
-				'description' => __( 'The Primary Sidebar widget area.', 'mai-engine' ),
-				'location'    => '',
-			],
-			[
-				'id'          => 'sidebar-alt',
-				'name'        => __( 'Secondary Sidebar', 'mai-engine' ),
-				'description' => __( 'The Secondary Sidebar widget area.', 'mai-engine' ),
+				'name'        => __( 'Sidebar', 'mai-engine' ),
+				'description' => __( 'The Sidebar widget area.', 'mai-engine' ),
 				'location'    => '',
 			],
 			[

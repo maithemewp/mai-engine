@@ -24,13 +24,12 @@ function mai_setup() {
 	$handle       = mai_get_handle();
 
 	// Get setup configs.
-	$custom_functions     = mai_get_config( 'custom-functions' );
-	$theme_support        = mai_get_config( 'theme-support' );
-	$post_type_support    = mai_get_config( 'post-type-support' );
-	$image_sizes          = mai_get_config( 'image-sizes' );
-	$page_layouts         = mai_get_config( 'page-layouts' );
-	$widget_areas         = mai_get_config( 'widget-areas' );
-	$default_widget_areas = [ 'header-right', 'sidebar', 'sidebar-alt' ];
+	$custom_functions  = mai_get_config( 'custom-functions' );
+	$theme_support     = mai_get_config( 'theme-support' );
+	$post_type_support = mai_get_config( 'post-type-support' );
+	$image_sizes       = mai_get_config( 'image-sizes' );
+	$page_layouts      = mai_get_config( 'page-layouts' );
+	$widget_areas      = mai_get_config( 'widget-areas' );
 
 	// Add theme textdomain.
 	load_child_theme_textdomain( genesis_get_theme_handle(), mai_get_dir() . '/assets/lang' );
@@ -115,14 +114,6 @@ function mai_setup() {
 		$page_layouts['remove'],
 		function ( $name ) {
 			genesis_unregister_layout( $name );
-		}
-	);
-
-	// Remove Genesis default widget areas so we can re-register any in the correct order.
-	array_walk(
-		$default_widget_areas,
-		function ( $id ) {
-			unregister_sidebar( $id );
 		}
 	);
 
