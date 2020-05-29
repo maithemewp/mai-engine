@@ -132,7 +132,7 @@ function mai_get_template_args() {
 		if ( in_array( $name, [ 'header_meta', 'footer_meta' ] ) ) {
 			continue;
 		}
-		if ( is_null( $value )|| '' === $value ) {
+		if ( is_null( $value ) || '' === $value ) {
 			unset( $args[ $name ] );
 		}
 	}

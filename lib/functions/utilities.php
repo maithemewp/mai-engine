@@ -596,6 +596,14 @@ function mai_get_page_header_image_id() {
 		}
 	}
 
+	if ( ! $image_id && is_singular() ) {
+		$args = mai_get_template_args();
+
+		if ( isset( $args['page-header-featured'] ) && $args['page-header-featured'] ) {
+			$image_id = get_post_thumbnail_id();
+		}
+	}
+
 	if ( ! $image_id && mai_get_option( 'page-header-image' ) ) {
 		$image_id = mai_get_option( 'page-header-image' );
 	}
