@@ -22,6 +22,7 @@
 		--button-color: var(--color-lightest);
 		--button-background: var(--color-secondary);
 		--button-background-hover: var(--color-secondary);
+		--menu-item-link-color: var(--color-lightest);
 	}
 
 	@if ("tertiary" == $style) {
@@ -30,6 +31,7 @@
 		--button-background: transparent;
 		--button-color-hover: var(--color-secondary);
 		--button-background-hover: transparent;
+		--menu-item-link-color: var(--color-primary);
 
 		&::after {
 			display: inline-block;
@@ -45,6 +47,7 @@
 		--button-background: transparent;
 		--button-overlay-positioning: -2px;
 		--button-background-hover: transparent;
+		--menu-item-link-color: var(--color-primary);
 
 		&:hover,
 		&:focus {
@@ -70,6 +73,7 @@
 }
 
 @mixin button {
+	--menu-item-link-color: #{map_get($button, "color")};
 	position: relative;
 	display: inline-block;
 	width: auto;
