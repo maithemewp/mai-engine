@@ -235,7 +235,11 @@ add_action( 'enqueue_block_editor_assets', 'mai_google_fonts_fallback' );
  * @return void
  */
 function mai_google_fonts_fallback() {
-	$config       = mai_get_config( 'google-fonts' );
+	$config = mai_get_config( 'google-fonts' );
+	if ( ! $config ) {
+		return;
+	}
+
 	$google_fonts = implode( '|', $config );
 	$local_css    = WP_CONTENT_DIR . '/fonts/style.min.css';
 
