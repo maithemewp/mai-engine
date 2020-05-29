@@ -75,18 +75,12 @@ function mai_logo_customizer_settings() {
 					'choice'   => 'mobile',
 					'element'  => [ ':root', '.header-stuck' ],
 					'property' => '--title-area-padding',
-					'exclude' => [
-						'16px'
-					],
 				],
 				[
 					'choice'      => 'desktop',
 					'element'     => ':root',
 					'property'    => '--title-area-padding',
 					'media_query' => sprintf( '@media (min-width: %spx)', mai_get_breakpoint( 'lg' ) ),
-					'exclude' => [
-						'36px'
-					],
 				],
 			],
 		]
