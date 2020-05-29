@@ -73,14 +73,14 @@ class Mai_Fonts_Downloader {
 		$change     = false; // If in the end this is true, we need to update the cache option.
 
 		// If the fonts folder don't exist, create it.
-		if ( ! file_exists( WP_CONTENT_DIR . '/fonts' ) ) {
-			wp_mkdir_p( WP_CONTENT_DIR . '/fonts' );
+		if ( ! file_exists( WP_CONTENT_DIR . '/mai-fonts' ) ) {
+			wp_mkdir_p( WP_CONTENT_DIR . '/mai-fonts' );
 		}
 
 		foreach ( $font_files as $font_family => $files ) {
 
 			// The folder path for this font-family.
-			$folder_path = WP_CONTENT_DIR . '/fonts/' . str_replace( '-', '', $font_family );
+			$folder_path = WP_CONTENT_DIR . '/mai-fonts/' . str_replace( '-', '', $font_family );
 
 			// If the folder doesn't exist, create it.
 			if ( ! file_exists( $folder_path ) ) {
@@ -88,7 +88,7 @@ class Mai_Fonts_Downloader {
 			}
 
 			// Stylesheet path.
-			$stylesheet_path = WP_CONTENT_DIR . '/fonts/style.min.css';
+			$stylesheet_path = WP_CONTENT_DIR . '/mai-fonts/style.min.css';
 
 			$css = str_replace( 'https://fonts.gstatic.com/s/', '', $css );
 			$v   = preg_match_all( "/\/v(.*?)\//", $css, $matches );

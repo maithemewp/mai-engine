@@ -241,7 +241,7 @@ function mai_google_fonts_fallback() {
 	}
 
 	$google_fonts = implode( '|', $config );
-	$local_css    = WP_CONTENT_DIR . '/fonts/style.min.css';
+	$local_css    = WP_CONTENT_DIR . '/mai-fonts/style.min.css';
 
 	if ( ! file_exists( $local_css ) ) {
 		wp_register_style(
