@@ -82,31 +82,45 @@ class StepProvider extends AbstractServiceProvider {
 	}
 
 	private function get_plugins_step() {
-		return [
-			'id'              => 'plugins',
-			'title'           => __( 'Recommended Plugins', 'mai-setup-wizard' ),
-			'description'     => __( 'The following plugins will be installed and activated.', 'mai-setup-wizard' ),
-			'order'           => 30,
-			'error_message'   => __( 'Plugins could not be installed.', 'mai-setup-wizard' ),
-			'success_message' => __( 'Plugins successfully installed!', 'mai-setup-wizard' ),
-			'continue_text'   => __( 'Install Plugins', 'mai-setup-wizard' ),
-			'loading_text'    => __( 'Installing plugins...', 'mai-setup-wizard' ),
-			'fields'          => $this->field->get_fields( 'plugins' ),
-		];
+		$step = [];
+		$demo = $this->demo->get_demo( $this->demo->get_chosen_demo() );
+
+		if ( isset( $demo['plugins'] ) && ! empty( $demo['plugins'] ) ) {
+			$step = [
+				'id'              => 'plugins',
+				'title'           => __( 'Recommended Plugins', 'mai-setup-wizard' ),
+				'description'     => __( 'The following plugins will be installed and activated.', 'mai-setup-wizard' ),
+				'order'           => 30,
+				'error_message'   => __( 'Plugins could not be installed.', 'mai-setup-wizard' ),
+				'success_message' => __( 'Plugins successfully installed!', 'mai-setup-wizard' ),
+				'continue_text'   => __( 'Install Plugins', 'mai-setup-wizard' ),
+				'loading_text'    => __( 'Installing plugins...', 'mai-setup-wizard' ),
+				'fields'          => $this->field->get_fields( 'plugins' ),
+			];
+		}
+
+		return $step;
 	}
 
 	private function get_content_step() {
-		return [
-			'id'              => 'content',
-			'title'           => __( 'Content', 'mai-setup-wizard' ),
-			'description'     => __( 'Select which content you would like to import. Please note that this step can take up to 5 minutes.', 'mai-setup-wizard' ),
-			'order'           => 40,
-			'error_message'   => __( 'Content could not be installed.', 'mai-setup-wizard' ),
-			'success_message' => __( 'Content successfully installed!', 'mai-setup-wizard' ),
-			'continue_text'   => __( 'Import Content', 'mai-setup-wizard' ),
-			'loading_text'    => __( 'Importing content...', 'mai-setup-wizard' ),
-			'fields'          => $this->field->get_fields( 'content' ),
-		];
+		$step = [];
+		$demo = $this->demo->get_demo( $this->demo->get_chosen_demo() );
+
+		if ( isset( $demo['content'] ) && ! empty( $demo['content'] ) ) {
+			$step = [
+				'id'              => 'content',
+				'title'           => __( 'Content', 'mai-setup-wizard' ),
+				'description'     => __( 'Select which content you would like to import. Please note that this step can take up to 5 minutes.', 'mai-setup-wizard' ),
+				'order'           => 40,
+				'error_message'   => __( 'Content could not be installed.', 'mai-setup-wizard' ),
+				'success_message' => __( 'Content successfully installed!', 'mai-setup-wizard' ),
+				'continue_text'   => __( 'Import Content', 'mai-setup-wizard' ),
+				'loading_text'    => __( 'Importing content...', 'mai-setup-wizard' ),
+				'fields'          => $this->field->get_fields( 'content' ),
+			];
+		}
+
+		return $step;
 	}
 
 	private function get_done_step() {
@@ -158,7 +172,7 @@ class StepProvider extends AbstractServiceProvider {
 				<ul<?php echo $items; ?>>
 					<?php
 					/**
-					 * @var Field $field
+					 * @var FieldProvider $field
 					 */
 					foreach ( $step['fields'] as $field ) : ?>
 						<li><?php echo $this->field->render( $field ); ?></li>
@@ -179,7 +193,7 @@ class StepProvider extends AbstractServiceProvider {
 				<?php endif; ?>
 				<?php if ( $counter < \count( $steps ) ): ?>
 					<?php $continue_target = \filter_var( $step['skip_url'], FILTER_VALIDATE_URL ) === false ? '' : ' target="_blank"'; ?>
-					<button href="<?php echo $step['continue_url']; ?>" <?php echo $continue_target; ?>id="submit" class="button-primary" data-default="<?php echo $step['continue_text']; ?>" data-loading="<?php esc_attr_e( $step['loading_text'] ); ?>">
+					<button href="<?php echo $step['continue_url']; ?>" <?php echo $continue_target; ?>id="submit" class="button-primary" data-default="<?php echo $step['continue_text']; ?>" data-loading="<?php \esc_attr_e( $step['loading_text'] ); ?>">
 						<?php echo $step['continue_text']; ?>
 						<img src="https://www.cupraofficial.com/etc.clientlibs/seatComponents/components/login-component/clientlibs/resources/images/spinner.gif" alt="spinner" width="20">
 					</button>

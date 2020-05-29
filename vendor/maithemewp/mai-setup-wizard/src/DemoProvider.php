@@ -60,6 +60,7 @@ class DemoProvider extends AbstractServiceProvider {
 		if ( ! $this->demos ) {
 			return '';
 		}
+
 		$options = \get_option( $this->plugin->slug, [] );
 		$first   = \reset( $this->demos );
 

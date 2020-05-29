@@ -53,7 +53,7 @@ function get_instance() {
  * @return void
  */
 function init() {
-	if ( ! \is_admin() ) {
+	if ( ! \is_admin() || ! \apply_filters( 'mai_init_setup_wizard', true ) ) {
 		return;
 	}
 
