@@ -41,9 +41,6 @@ function mai_logo_customizer_settings() {
 					'choice'   => 'mobile',
 					'element'  => [ ':root', '.header-stuck' ],
 					'property' => '--custom-logo-width',
-					'exclude'  => [
-						'120px',
-					],
 				],
 				[
 					'choice'      => 'desktop',
