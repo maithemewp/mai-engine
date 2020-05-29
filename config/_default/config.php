@@ -300,16 +300,12 @@ return [
 			[
 				'handle' => mai_get_handle(),
 				'src'    => mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css',
-				'media'  => 'print',
-				'onload' => "this.media='all'",
 			],
 
 			// Desktop only.
 			[
 				'handle' => mai_get_handle() . '-desktop',
 				'src'    => mai_get_url() . 'assets/css/desktop/desktop.min.css',
-				'media'  => 'print',
-				'onload' => "this.media='(min-width:" . mai_get_breakpoint() . "px)'",
 			],
 
 			// Fonts.
