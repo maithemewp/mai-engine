@@ -98,9 +98,7 @@ class Mai_Fonts_Downloader {
 			}
 
 			// Generate stylesheet.
-			if ( ! file_exists( $stylesheet_path ) ) {
-				$this->get_filesystem()->put_contents( $stylesheet_path, mai_minify_css( $css ) );
-			}
+			$this->get_filesystem()->put_contents( $stylesheet_path, mai_minify_css( $css ) );
 
 			foreach ( $files as $url ) {
 
@@ -293,6 +291,7 @@ class Mai_Fonts_Downloader {
 	 */
 	protected function get_filesystem() {
 		global $wp_filesystem;
+
 		if ( ! $wp_filesystem ) {
 			if ( ! function_exists( 'WP_Filesystem' ) ) {
 				require_once wp_normalize_path( ABSPATH . '/wp-admin/includes/file.php' );
