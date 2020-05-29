@@ -80,7 +80,7 @@ class Mai_Fonts_Downloader {
 		foreach ( $font_files as $font_family => $files ) {
 
 			// The folder path for this font-family.
-			$folder_path = WP_CONTENT_DIR . '/fonts/' . $font_family;
+			$folder_path = WP_CONTENT_DIR . '/fonts/' . str_replace( '-', '', $font_family );
 
 			// If the folder doesn't exist, create it.
 			if ( ! file_exists( $folder_path ) ) {
