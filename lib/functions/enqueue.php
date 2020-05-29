@@ -243,7 +243,7 @@ function mai_google_fonts_fallback() {
 	$google_fonts = implode( '|', $config );
 	$local_css    = WP_CONTENT_DIR . '/fonts/style.min.css';
 
-	if ( $config && ! file_exists( $local_css ) ) {
+	if ( ! file_exists( $local_css ) ) {
 		wp_register_style(
 			mai_get_handle() . '-google-fonts',
 			"//fonts.googleapis.com/css?family=$google_fonts&display=swap"
