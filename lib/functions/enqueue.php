@@ -189,7 +189,7 @@ function mai_admin_bar_inline_styles() {
 
 add_action( 'wp_head', 'mai_enqueue_desktop_styles' );
 /**
- * Load desktop styles only at breakpoing set in Customizer.
+ * Load desktop styles only at breakpoint set in Customizer.
  *
  * @since 0.3.5
  *
