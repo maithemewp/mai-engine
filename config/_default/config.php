@@ -311,12 +311,12 @@ return [
 			// Fonts.
 			[
 				'handle'    => mai_get_handle() . '-google-fonts',
-				'src'       => content_url( 'fonts/style.min.css' ),
+				'src'       => content_url( 'mai-fonts/style.min.css' ),
 				'editor'    => 'both',
 				'media'     => 'print',
 				'onload'    => "this.media='all'",
 				'condition' => function () {
-					return file_exists( WP_CONTENT_DIR . '/fonts/style.min.css' );
+					return file_exists( WP_CONTENT_DIR . '/mai-fonts/style.min.css' );
 				},
 			],
 
