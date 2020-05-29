@@ -173,18 +173,36 @@ function mai_admin_bar_inline_styles() {
 	}
 
 	$css = <<<EOT
-@media (max-width: 782px) {
-	body.admin-bar {
-		min-height: calc(100vh - 46px);
-	}
-@media (min-width: 783px) {
-	body.admin-bar {
-		min-height: calc(100vh - 32px);
-	}
-}
-EOT;
+		@media (max-width: 782px) {
+			body.admin-bar {
+				min-height: calc(100vh - 46px);
+			}
+		@media (min-width: 783px) {
+			body.admin-bar {
+				min-height: calc(100vh - 32px);
+			}
+		}
+	EOT;
 
 	wp_add_inline_style( mai_get_handle(), mai_minify_css( $css ) );
+}
+
+add_action( 'wp_head', 'mai_enqueue_desktop_styles' );
+/**
+ * Load desktop styles only at breakpoing set in Customizer.
+ *
+ * @since 0.3.5
+ *
+ * @return void
+ */
+function mai_enqueue_desktop_styles() {
+	$file       = 'assets/css/desktop/desktop.min.css';
+	$path       = mai_get_dir() . $file;
+	$url        = mai_get_url() . $file;
+	$breakpoint = mai_get_option( 'mobile-menu-breakpoint', mai_get_breakpoint() );
+	if ( file_exists( $path ) && $breakpoint ) {
+		printf( '<link id="mai-desktop-styles" href="%s" rel="stylesheet" media="screen and (min-width: %spx)" rel="preload">', $url, $breakpoint );
+	}
 }
 
 add_filter( 'clean_url', 'mai_async_scripts', 11, 1 );

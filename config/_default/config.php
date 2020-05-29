@@ -302,12 +302,6 @@ return [
 				'src'    => mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css',
 			],
 
-			// Desktop only.
-			[
-				'handle' => mai_get_handle() . '-desktop',
-				'src'    => mai_get_url() . 'assets/css/desktop/desktop.min.css',
-			],
-
 			// Fonts.
 			[
 				'handle'    => mai_get_handle() . '-google-fonts',
