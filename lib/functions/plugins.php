@@ -104,7 +104,7 @@ function mai_woocommerce_breakpoint() {
  */
 add_filter( 'woocommerce_price_trim_zeros', '__return_true' );
 
-add_filter( 'genesis_attr_entries', 'mai_add_facetwp_template_class' );
+add_filter( 'genesis_attr_entries', 'mai_add_facetwp_template_class', 10, 3 );
 /**
  * Add facetwp-template class to archives.
  *
@@ -112,10 +112,16 @@ add_filter( 'genesis_attr_entries', 'mai_add_facetwp_template_class' );
  *
  * @return array
  */
-function mai_add_facetwp_template_class( $attributes ) {
-	if ( class_exists( 'facetwp' ) ) {
-		$attributes['class'] .= ' facetwp-template';
+function mai_add_facetwp_template_class( $attributes, $context, $args ) {
+	if ( ! class_exists( 'facetwp' ) ) {
+		return $attributes;
 	}
+
+	if ( ! isset( $args['params']['args'] ) || ( 'archive' !== $args['params']['args']['context'] ) ) {
+		return $attributes;
+	}
+
+	$attributes['class'] .= ' facetwp-template';
 
 	return $attributes;
 }
