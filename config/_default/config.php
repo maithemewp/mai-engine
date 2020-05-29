@@ -311,7 +311,7 @@ return [
 			// Fonts.
 			[
 				'handle'    => mai_get_handle() . '-google-fonts',
-				'src'       => content_url( 'mai-fonts/style.min.css' ),
+				'src'       => content_url( 'mai-fonts/style.min.css&display=swap' ),
 				'editor'    => 'both',
 				'media'     => 'print',
 				'onload'    => "this.media='all'",
