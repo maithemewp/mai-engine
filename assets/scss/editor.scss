@@ -1,5 +1,4 @@
 @import "abstracts/_index";
-@import "base/button";
 @import "base/globals";
 @import "base/heading";
 @import "base/html";
@@ -33,5 +32,30 @@ p {
 
 	&[data-align="full"] {
 		max-width: none;
+	}
+}
+
+.wp-block-button__link {
+
+	@include button();
+
+	&:active,
+	&:visited {
+		color: var(--button-color-hover, var(--button-color));
+	}
+
+	.is-style-secondary & {
+
+		@include button-style("secondary");
+	}
+
+	.is-style-tertiary & {
+
+		@include button-style("tertiary");
+	}
+
+	.is-style-outline & {
+
+		@include button-style("outline");
 	}
 }
