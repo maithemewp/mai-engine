@@ -15,7 +15,7 @@
 	width: var(--sub-menu-width, auto);
 	margin: var(--sub-menu-margin, 0);
 	padding: var(--sub-menu-padding, var(--spacing-xxs) 0);
-	font-size: var(--sub-menu-font-size, calc(var(--menu-font-size-desktop) * 0.9));
+	font-size: var(--sub-menu-font-size, 90%); /* 90% of whatever the menu is set to. */
 	list-style-type: var(--sub-menu-list-style, none);
 	background: var(--sub-menu-background, none);
 	border: var(--sub-menu-border, 0);
