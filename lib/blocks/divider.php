@@ -29,6 +29,10 @@ function mai_register_divider_block() {
 				'keywords'        => [ 'divider' ],
 				'icon'            => mai_get_svg_icon( 'wave-sine', 'regular' ),
 				'mode'            => 'preview',
+				'align'           => 'full',
+				'supports'        => [
+					'align' => [ 'wide', 'full' ],
+				],
 			]
 		);
 	}
@@ -54,6 +58,7 @@ function mai_do_divider_block( $block, $content = '', $is_preview = false, $post
 		'flip_horizontal' => get_field( 'flip_horizontal' ),
 		'color'           => get_field( 'color' ),
 		'class'           => isset( $block['className'] ) && ! empty( $block['className'] ) ? sanitize_html_class( $block['className'] ) : '',
+		'align'           => isset( $block['align'] ) ? esc_html( $block['align'] ) : 'full',
 	];
 
 	echo mai_get_divider( $atts );
@@ -89,6 +94,7 @@ function mai_get_divider( $atts = [] ) {
 		'flip_vertical'    => false,
 		'background_color' => 'transparent',
 		'color'            => mai_get_color( 'primary' ),
+		'align'            => 'full',
 		'class'            => '',
 	] );
 
@@ -99,6 +105,7 @@ function mai_get_divider( $atts = [] ) {
 		'flip_vertical'    => mai_sanitize_bool( $atts['flip_vertical'] ),
 		'background_color' => esc_html( $atts['background_color'] ),
 		'color'            => esc_html( $atts['color'] ),
+		'align'            => esc_html( $atts['align'] ),
 		'class'            => sanitize_html_class( $atts['class'] ),
 	];
 
@@ -119,9 +126,13 @@ function mai_get_divider( $atts = [] ) {
 
 	$colors     = array_flip( mai_get_colors() );
 	$attributes = [
-		'class' => sprintf( 'mai-divider mai-divider-%s alignfull', $atts['style'] ),
+		'class' => sprintf( 'mai-divider mai-divider-%s', $atts['style'] ),
 		'style' => '',
 	];
+
+	if ( $atts['align'] ) {
+		$attributes['class'] .= ' align' . $atts['align'];
+	}
 
 	if ( isset( $colors[ $atts['color'] ] ) ) {
 		$attributes['class'] .= sprintf( ' has-%s-color', $colors[ $atts['color'] ] );
