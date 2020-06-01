@@ -16,7 +16,7 @@ return [
 		'type'     => 'checkbox',
 		'settings' => 'boxed-container',
 		'label'    => __( 'Enable boxed site container', 'mai-engine' ),
-		'default'  => '',
+		'default'  => in_array( 'boxed-container', (array) mai_get_config( 'theme-support' )['add'] ),
 	],
 	[
 		'type'     => 'select',
