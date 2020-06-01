@@ -2,7 +2,8 @@
 	--list-margin: 0 !important;
 	--menu-item-width: 100%;
 	--menu-item-link-padding: var(--sub-menu-item-link-padding, var(--spacing-xs) var(--spacing-md));
-	--link-color: var(--color-darker);
+	--menu-item-link-color: var(--sub-menu-link-color, var(--color-darker));
+	--menu-item-link-color-hover: var(--sub-menu-link-color-hover, var(--color-primary));
 
 	position: var(--sub-menu-position, relative);
 	top: var(--sub-menu-top, auto);
@@ -32,9 +33,9 @@
 .nav-header,
 .nav-after-header {
 	--sub-menu-top: 100%;
-	--sub-menu-width: 100%;
+	--sub-menu-width: 18rem;
 	--sub-menu-background: var(--color-lightest);
-	--sub-menu-animation: fade-in 0.2s ease-in-out;
+	--sub-menu-animation: fadein 0.1s ease-in-out;
 }
 
 .sub-menu .sub-menu {
