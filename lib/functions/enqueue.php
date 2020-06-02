@@ -238,9 +238,9 @@ function mai_download_google_fonts() {
 		$downloader = mai_get_instance( Mai_Fonts_Downloader::class );
 		$family     = implode( '|', $config );
 		$base       = mai_has_string( ':wght@', $family ) ? 'css2' : 'css';
-		$url        = esc_url( sprintf( 'https://fonts.googleapis.com/%s?family=%s&display=swap', $base, $family ) );
+		$url        = sprintf( 'https://fonts.googleapis.com/%s?family=%s&display=swap', $base, $family );
 
-		$downloader->get_styles( $url );
+		$downloader->get_styles( esc_url( $url ) );
 	}
 }
 

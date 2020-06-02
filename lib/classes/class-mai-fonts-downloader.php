@@ -163,6 +163,7 @@ class Mai_Fonts_Downloader {
 		// Try to retrieved cached response from the gfonts API.
 		$cached_responses = get_transient( 'mai_remote_url_contents' );
 		$cached_responses = ( $cached_responses && is_array( $cached_responses ) ) ? $cached_responses : [];
+
 		if ( isset( $cached_responses[ md5( $url . $user_agent ) ] ) ) {
 			return $cached_responses[ md5( $url . $user_agent ) ];
 		}
