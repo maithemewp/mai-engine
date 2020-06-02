@@ -237,7 +237,8 @@ function mai_download_google_fonts() {
 	if ( $config ) {
 		$downloader = mai_get_instance( Mai_Fonts_Downloader::class );
 		$family     = implode( '|', $config );
-		$url        = esc_url( 'https://fonts.googleapis.com/css?family=' . $family . '&display=swap' );
+		$base       = mai_has_string( ':wght@', $family ) ? 'css2' : 'css';
+		$url        = esc_url( sprintf( 'https://fonts.googleapis.com/%s?family=%s&display=swap', $base, $family ) );
 
 		$downloader->get_styles( $url );
 	}
@@ -258,13 +259,15 @@ function mai_google_fonts_fallback() {
 		return;
 	}
 
-	$google_fonts = implode( '|', $config );
-	$local_css    = WP_CONTENT_DIR . '/mai-fonts/style.min.css';
+	$local_css = WP_CONTENT_DIR . '/mai-fonts/style.min.css';
 
 	if ( ! file_exists( $local_css ) ) {
+		$family     = implode( '|', $config );
+		$base       = mai_has_string( ':wght@', $family ) ? 'css2' : 'css';
+		$url        = esc_url( sprintf( 'https://fonts.googleapis.com/%s?family=%s&display=swap', $base, $family ) );
 		wp_register_style(
 			mai_get_handle() . '-google-fonts',
-			"//fonts.googleapis.com/css?family=$google_fonts&display=swap"
+			$url
 		);
 
 		wp_enqueue_style( mai_get_handle() . '-google-fonts' );
