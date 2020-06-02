@@ -51,9 +51,9 @@ function mai_render_admin_menu_page() {
 
 	echo '<ul>';
 
-	echo '<li>· <a href="https://support.bizbudding.com/" target="_blank">' . __('Support', 'mai-engine') . '</a></li>';
-	echo '<li>· <a href="https://bizbudding.com/" target="_blank">' . __('BizBudding', 'mai-engine') . '</a></li>';
-	echo '<li>· <a href="https://demo.bizbudding.com/" target="_blank">' . __('Theme Demos', 'mai-engine') . '</a></li>';
+	echo '<li>· <a href="https://support.bizbudding.com/" target="_blank" rel="noopener nofollow">' . __('Support', 'mai-engine') . '</a></li>';
+	echo '<li>· <a href="https://bizbudding.com/" target="_blank" rel="noopener nofollow">' . __('BizBudding', 'mai-engine') . '</a></li>';
+	echo '<li>· <a href="https://demo.bizbudding.com/" target="_blank" rel="noopener nofollow">' . __('Theme Demos', 'mai-engine') . '</a></li>';
 
 	echo '<ul>';
 
