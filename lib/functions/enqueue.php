@@ -226,6 +226,8 @@ function mai_async_scripts( $url ) {
 add_action( 'admin_init', 'mai_download_google_fonts' );
 /**
  * Download google fonts locally.
+ * Note: Can't use `add_query_arg` because of
+ * multiple "family" args required by the Google API.
  *
  * @since 0.3.4
  *
@@ -234,10 +236,14 @@ add_action( 'admin_init', 'mai_download_google_fonts' );
 function mai_download_google_fonts() {
 	$config = mai_get_config( 'google-fonts' );
 
-	if ( $config ) {
+	if ( $config && is_array( $config ) ) {
 		$downloader = mai_get_instance( Mai_Fonts_Downloader::class );
-		$family     = implode( '|', $config );
-		$url        = sprintf( 'https://fonts.googleapis.com/css2?family=%s&display=swap', $family );
+		$url        = 'https://fonts.googleapis.com/css2';
+		foreach( $config as $index => $font ) {
+			$sep  =  ( $index ? '&' : '?' );
+			$url .=  urldecode( $sep . 'family=' . $font );
+		}
+		$url .= '&display=swap';
 
 		$downloader->get_styles( esc_url( $url ) );
 	}
