@@ -16,6 +16,24 @@
 	}
 }
 
+@mixin heading {
+	margin: var(--heading-margin, var(--heading-margin-top, 0) var(--heading-margin-sides, 0) var(--heading-margin-bottom, var(--spacing-md)));
+	color: var(--heading-color, var(--color-darkest));
+	font-weight: var(--font-weight-heading);
+	font-family: var(--font-secondary);
+	line-height: var(--heading-line-height, 1.2);
+	letter-spacing: var(--heading-letter-spacing, unset);
+	text-transform: var(--heading-text-transform, unset);
+
+	&:last-child {
+		--heading-margin-bottom: 0;
+	}
+
+	.entry-content > &:not(:first-child) {
+		--heading-margin-top: var(--spacing-xxl);
+	}
+}
+
 @mixin button-style($style) {
 
 	@if ("secondary" == $style) {
@@ -122,23 +140,5 @@
 	&:disabled {
 
 		@include button-style(disabled);
-	}
-}
-
-@mixin heading {
-	margin: var(--heading-margin, var(--heading-margin-top, 0) var(--heading-margin-sides, 0) var(--heading-margin-bottom, var(--spacing-md)));
-	color: var(--heading-color, var(--color-darkest));
-	font-weight: var(--font-weight-heading);
-	font-family: var(--font-secondary);
-	line-height: var(--heading-line-height, 1.2);
-	letter-spacing: var(--heading-letter-spacing, unset);
-	text-transform: var(--heading-text-transform, unset);
-
-	&:last-child {
-		--heading-margin-bottom: 0;
-	}
-
-	.entry-content > &:not(:first-child) {
-		--heading-margin-top: var(--spacing-xxl);
 	}
 }
