@@ -203,10 +203,12 @@ function mai_get_asset_url( $file ) {
  */
 function mai_get_config( $sub_config = 'default' ) {
 	$config = require mai_get_dir() . 'config/_default/config.php';
-	$theme  = mai_get_dir() . 'config/' . mai_get_active_theme() . '/config.php';
+	$theme  = mai_get_active_theme();
+	$theme  = ( 'default' === $theme ) ? '_default' : $theme;
+	$path   = mai_get_dir() . 'config/' . $theme . '/config.php';
 
-	if ( is_readable( $theme ) ) {
-		$config = array_replace_recursive( $config, require $theme );
+	if ( is_readable( $path ) ) {
+		$config = array_replace_recursive( $config, require $path );
 	}
 
 	// Allow users to override from within actual child theme.
