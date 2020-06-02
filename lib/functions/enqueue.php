@@ -228,6 +228,7 @@ add_action( 'admin_init', 'mai_download_google_fonts' );
  * Download google fonts locally.
  * Note: Can't use `add_query_arg` because of
  * multiple "family" args required by the Google API.
+ * Note: `esc_url` breaks the API call as well.
  *
  * @since 0.3.4
  *
@@ -245,7 +246,7 @@ function mai_download_google_fonts() {
 		}
 		$url .= '&display=swap';
 
-		$downloader->get_styles( esc_url( $url ) );
+		$downloader->get_styles( $url );
 	}
 }
 
