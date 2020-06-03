@@ -268,8 +268,13 @@ function mai_google_fonts_fallback() {
 	$local_css = WP_CONTENT_DIR . '/mai-fonts/style.min.css';
 
 	if ( ! file_exists( $local_css ) ) {
-		$family     = implode( '|', $config );
-		$url        = esc_url( sprintf( 'https://fonts.googleapis.com/css2?family=%s&display=swap', $family ) );
+		$url = 'https://fonts.googleapis.com/css2';
+		foreach( $config as $index => $font ) {
+			$sep  =  ( $index ? '&' : '?' );
+			$url .=  urldecode( $sep . 'family=' . $font );
+		}
+		$url .= '&display=swap';
+
 		wp_register_style(
 			mai_get_handle() . '-google-fonts',
 			$url
