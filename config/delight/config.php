@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || die;
 return [
 	'demos'               => [],
 	'google-fonts'        => [
-		'Playfair+Display:700|Open+Sans:300,400',
+		// 'Playfair+Display:700|Open+Sans:300,400',
 	],
 	'theme-support'       => [
 		'add' => [
