@@ -997,20 +997,22 @@ function mai_get_processed_content( $content ) {
  * @return string
  */
 function mai_get_menu( $menu, $args = '' ) {
-	add_filter( 'wp_nav_menu_args', 'genesis_header_menu_args' );
-	$menu_class = 'menu';
+	$menu_class = 'menu genesis-nav-menu';
 	if ( isset( $args['class'] ) && $args['class'] ) {
 		$menu_class = mai_add_classes( $args['class'], $menu_class );
 	}
+
 	$html = wp_nav_menu( [
+		'container'   => 'ul',
 		'menu'        => $menu,
 		'menu_class'  => $menu_class,
 		'echo'        => false,
 		'fallback_cb' => '',
 	] );
-	remove_filter( 'wp_nav_menu_args', 'genesis_header_menu_args' );
+
 	if ( $html ) {
 		$atts = [];
+
 		if ( isset( $args['display'] ) && $args['display'] ) {
 			switch ( trim( $args['display'] ) ) {
 				case 'list':
@@ -1018,6 +1020,7 @@ function mai_get_menu( $menu, $args = '' ) {
 				break;
 			}
 		}
+
 		if ( isset( $args['align'] ) && $args['align'] ) {
 			if ( isset( $args['display'] ) && 'list' === trim( $args['display'] ) ) {
 				switch ( trim( $args['align'] ) ) {
@@ -1053,6 +1056,7 @@ function mai_get_menu( $menu, $args = '' ) {
 				'context' => 'nav-menu',
 				'echo'    => false,
 				'atts'    => $atts,
+				'params'  => $args,
 			]
 		);
 	}

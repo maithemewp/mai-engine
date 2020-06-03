@@ -9,11 +9,67 @@
  * @license   GPL-2.0-or-later
  */
 
+/**
+ * Remove the default Genesis header.
+ * This has too much code related to header-right
+ * so let's just build our own.
+ *
+ * @since 0.3.8
+ *
+ * @return void
+ */
+remove_action( 'genesis_header', 'genesis_do_header' );
+
+add_action( 'genesis_header', 'mai_do_header' );
+/**
+ * Display the header content.
+ *
+ * @since 0.3.8
+ *
+ * @return void
+ */
+function mai_do_header() {
+	add_filter( 'genesis_attr_nav-menu', 'mai_nav_header_attributes', 10, 3 );
+	do_action( 'mai_before_title_area' );
+
+	genesis_markup(
+		[
+			'open'    => '<div %s>',
+			'context' => 'title-area',
+		]
+	);
+
+	/**
+	 * Fires inside the title area, before the site description hook.
+	 */
+	do_action( 'genesis_site_title' );
+
+	/**
+	 * Fires inside the title area, after the site title hook.
+	 */
+	do_action( 'genesis_site_description' );
+
+	genesis_markup(
+		[
+			'close'   => '</div>',
+			'context' => 'title-area',
+		]
+	);
+
+	do_action( 'mai_after_title_area' );
+	remove_filter( 'genesis_attr_nav-menu', 'mai_nav_header_attributes', 10, 3 );
+}
+
+function mai_nav_header_attributes( $attributes, $context, $params ) {
+	$attributes['class'] .= ' nav-header';
+	return $attributes;
+}
+
 add_action( 'genesis_before', 'mai_maybe_hide_site_header' );
 /**
- * Description of expected behavior.
+ * Hide the site header on specific pages.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
@@ -23,48 +79,8 @@ function mai_maybe_hide_site_header() {
 	}
 
 	remove_action( 'genesis_header', 'genesis_header_markup_open', 5 );
-	remove_action( 'genesis_header', 'genesis_do_header' );
+	remove_action( 'genesis_header', 'mai_do_header' );
 	remove_action( 'genesis_header', 'genesis_header_markup_close', 15 );
-}
-
-add_filter( 'genesis_markup_title-area_open', 'mai_before_title_area_hook', 10, 1 );
-/**
- * Add custom hook after the title area.
- *
- * @since 0.1.0
- *
- * @param string $open_html Closing html markup.
- *
- * @return string
- */
-function mai_before_title_area_hook( $open_html ) {
-	if ( $open_html ) {
-		ob_start();
-		do_action( 'mai_before_title_area' );
-		$open_html = ob_get_clean() . $open_html;
-	}
-
-	return $open_html;
-}
-
-add_filter( 'genesis_markup_title-area_close', 'mai_after_title_area_hook', 10, 1 );
-/**
- * Add custom hook after the title area.
- *
- * @since 0.1.0
- *
- * @param string $close_html Closing html markup.
- *
- * @return string
- */
-function mai_after_title_area_hook( $close_html ) {
-	if ( $close_html ) {
-		ob_start();
-		do_action( 'mai_after_title_area' );
-		$close_html = $close_html . ob_get_clean();
-	}
-
-	return $close_html;
 }
 
 add_filter( 'genesis_markup_site-title_content', 'mai_site_title_link' );
@@ -81,56 +97,63 @@ function mai_site_title_link( $default ) {
 	return str_replace( '<a', '<a class="site-title-link" ', $default );
 }
 
-add_action( 'mai_before_title_area', 'mai_header_sections' );
-add_action( 'mai_after_title_area', 'mai_header_sections' );
-/**
- * Adds header left and right sections.
- *
- * @since 0.1.0
- *
- * @return void
- */
-function mai_header_sections() {
-	$location = 'header-' . ( did_action( 'genesis_site_title' ) ? 'right' : 'left' );
-	$action   = str_replace( '-', '_', $location );
-
-	if ( ! is_active_sidebar( $action ) && ! has_nav_menu( $location ) ) {
+add_action( 'mai_before_title_area', 'mai_do_header_left' );
+function mai_do_header_left() {
+	if ( ! is_active_sidebar( 'header-left' ) && ! has_nav_menu( 'header-left' ) ) {
 		return;
 	}
 
 	genesis_markup(
 		[
 			'open'    => '<div %s>',
-			'context' => $location,
+			'context' => 'header-left',
+			'atts'    => [
+				'class' => 'header-section header-left',
+			],
 		]
 	);
 
-	// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
-	do_action( 'mai_' . $action );
+	do_action( 'mai_header_left' );
 
 	genesis_markup(
 		[
 			'close'   => '</div>',
-			'context' => $location,
+			'context' => 'header-left',
 		]
 	);
 }
 
-add_filter( 'genesis_attr_header-left', 'mai_header_section_class' );
-add_filter( 'genesis_attr_header-right', 'mai_header_section_class' );
+add_action( 'mai_after_title_area', 'mai_do_header_right' );
 /**
- * Description of expected behavior.
+ * Adds header right section.
  *
  * @since 0.1.0
  *
- * @param array $atts Element attributes.
- *
- * @return mixed
+ * @return void
  */
-function mai_header_section_class( $atts ) {
-	$atts['class'] = 'header-section ' . $atts['class'];
+function mai_do_header_right() {
+	if ( ! is_active_sidebar( 'header-right' ) && ! has_nav_menu( 'header-right' ) ) {
+		return;
+	}
 
-	return $atts;
+	genesis_markup(
+		[
+			'open'    => '<div %s>',
+			'context' => 'header-right',
+			'atts'    => [
+				'class' => 'header-section header-right',
+			],
+		]
+	);
+
+	do_action( 'mai_header_right' );
+
+	genesis_markup(
+		[
+			'close'   => '</div>',
+			'context' => 'header-right',
+		]
+	);
 }
 
 /**
