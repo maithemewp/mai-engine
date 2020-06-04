@@ -161,6 +161,61 @@ function mai_page_header_entry_attr( $atts ) {
 	return $atts;
 }
 
+
+add_filter( 'genesis_attr_page-header-overlay', 'mai_page_header_divider_class', 10, 1 );
+/**
+ * The setting is for text color, so the class is the reverse.
+ * If text is light, that means the background is dark.
+ *
+ * @since 0.3.0
+ *
+ * @param $attr
+ *
+ * @return array
+ */
+function mai_page_header_divider_class( $attr ) {
+	$option = mai_get_option( 'page-header-divider', 'none' );
+
+	if ( 'none' !== $option ) {
+		$attr['class'] .= " has-$option-divider";
+	}
+
+	return $attr;
+}
+
+add_filter( 'genesis_attr_page-header', 'mai_add_page_header_content_type_css' );
+/**
+ * Removes custom properties CSS output when they are the same as the defaults.
+ * Skips defaults set in the child theme.
+ *
+ * @since 0.1.0
+ *
+ * @param array $attr Kirki CSS output.
+ *
+ * @return array
+ */
+function mai_add_page_header_content_type_css( $attr ) {
+	$args    = mai_get_template_args();
+	$config  = mai_get_config( 'page-header' );
+	$color   = isset( $args['page-header-background-color'] ) && ! empty( $args['page-header-background-color'] ) ? $args['page-header-background-color'] : mai_get_option( 'page-header-background-color' );
+	$opacity = isset( $args['page-header-overlay-opacity'] ) && ! empty( $args['page-header-overlay-opacity'] ) ? $args['page-header-overlay-opacity'] : mai_get_option( 'page-header-overlay-opacity' );
+	$styles  = '';
+
+	if ( $color ) {
+		$styles .= "--page-header-background-color:{$color};";
+	}
+
+	if ( $opacity ) {
+		$styles .= "--page-header-overlay-opacity:{$opacity};";
+	}
+
+	if ( $styles ) {
+		$attr['style'] = $styles;
+	}
+
+	return $attr;
+}
+
 add_filter( 'genesis_structural_wrap-page-header', 'mai_page_header_divider', 10, 2 );
 /**
  * Description of expected behavior.
@@ -187,6 +242,7 @@ function mai_page_header_divider( $output, $original_output ) {
 			'flip_vertical'   => mai_get_option( 'page-header-divider-flip-vertical', mai_get_config( 'page-header' )['divider-flip-vertical'] ),
 			'height'          => 'md',
 			'class'           => 'page-header-divider',
+			'align'           =>'full',
 		];
 
 		$output .= mai_get_divider( $args );
