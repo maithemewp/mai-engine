@@ -13,6 +13,7 @@
 	padding: var(--spacing-md) 0;
 	overflow-y: auto;
 	background: var(--mobile-menu-background, var(--site-header-background, var(--color-lightest)));
+	border-bottom: var(--border);
 	animation: var(--mobile-menu-animation, standardmenu 0.3s ease-in-out);
 
 	.menu-item.search {
