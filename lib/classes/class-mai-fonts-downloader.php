@@ -20,7 +20,7 @@ class Mai_Fonts_Downloader {
 	 * Get styles from URL.
 	 *
 	 * @access public
-	 * @since  3.1.0
+	 * @since  0.3.8
 	 *
 	 * @param string $url The URL.
 	 *
@@ -36,7 +36,7 @@ class Mai_Fonts_Downloader {
 	 * Get styles with fonts downloaded locally.
 	 *
 	 * @access protected
-	 * @since  3.1.0
+	 * @since  0.3.8
 	 *
 	 * @param string $css The styles.
 	 *
@@ -61,7 +61,7 @@ class Mai_Fonts_Downloader {
 	 * Download files mentioned in our CSS locally.
 	 *
 	 * @access protected
-	 * @since  3.1.0
+	 * @since  0.3.8
 	 *
 	 * @param string $css The CSS we want to parse.
 	 *
@@ -77,6 +77,26 @@ class Mai_Fonts_Downloader {
 			wp_mkdir_p( WP_CONTENT_DIR . '/mai-fonts' );
 		}
 
+		// Stylesheet path.
+		$stylesheet_path = WP_CONTENT_DIR . '/mai-fonts/style.min.css';
+
+		// Strip google references urls, including version directories like /v12/.
+		$css  = str_replace( 'https://fonts.gstatic.com/s/', '', $css );
+		$v    = preg_match_all( "/\/v(.*?)\//", $css, $matches );
+		$done = [];
+		if ( isset( $matches[0] ) && $matches[0] ) {
+			foreach( $matches[0] as $match ) {
+				if ( isset( $done[ $match ] ) ) {
+					continue;
+				}
+				$css            = str_replace( $match, '/', $css );
+				$done[ $match ] = $match;
+			}
+		}
+
+		// Generate stylesheet.
+		$this->get_filesystem()->put_contents( $stylesheet_path, mai_minify_css( $css ) );
+
 		foreach ( $font_files as $font_family => $files ) {
 
 			// The folder path for this font-family.
@@ -86,19 +106,6 @@ class Mai_Fonts_Downloader {
 			if ( ! file_exists( $folder_path ) ) {
 				wp_mkdir_p( $folder_path );
 			}
-
-			// Stylesheet path.
-			$stylesheet_path = WP_CONTENT_DIR . '/mai-fonts/style.min.css';
-
-			$css = str_replace( 'https://fonts.gstatic.com/s/', '', $css );
-			$v   = preg_match_all( "/\/v(.*?)\//", $css, $matches );
-
-			foreach ( $matches as $match ) {
-				$css = str_replace( $match, '/', $css );
-			}
-
-			// Generate stylesheet.
-			$this->get_filesystem()->put_contents( $stylesheet_path, mai_minify_css( $css ) );
 
 			foreach ( $files as $url ) {
 
@@ -151,7 +158,7 @@ class Mai_Fonts_Downloader {
 	 * and cache the result.
 	 *
 	 * @access public
-	 * @since  3.1.0
+	 * @since  0.3.8
 	 *
 	 * @param string $url        The URL we want to get the contents from.
 	 * @param string $user_agent The user-agent to use for our request.
@@ -161,7 +168,7 @@ class Mai_Fonts_Downloader {
 	public function get_cached_url_contents( $url = '', $user_agent = null ) {
 
 		// Try to retrieved cached response from the gfonts API.
-		$cached_responses = get_transient( 'mai_remote_url_contents' );
+		$cached_responses = get_transient( 'mai_remote_url_font_contents' );
 		$cached_responses = ( $cached_responses && is_array( $cached_responses ) ) ? $cached_responses : [];
 
 		if ( isset( $cached_responses[ md5( $url . $user_agent ) ] ) ) {
@@ -176,7 +183,7 @@ class Mai_Fonts_Downloader {
 		// so we want to be able to get the latest version weekly.
 		if ( $contents ) {
 			$cached_responses[ md5( $url . $user_agent ) ] = $contents;
-			set_transient( 'mai_remote_url_contents', $cached_responses, WEEK_IN_SECONDS );
+			set_transient( 'mai_remote_url_font_contents', $cached_responses, WEEK_IN_SECONDS );
 		}
 
 		return $contents;
@@ -186,7 +193,7 @@ class Mai_Fonts_Downloader {
 	 * Get remote file contents.
 	 *
 	 * @access public
-	 * @since  3.1.0
+	 * @since  0.3.8
 	 *
 	 * @param string $url The URL we want to get the contents from.
 	 *
@@ -220,7 +227,7 @@ class Mai_Fonts_Downloader {
 	 * Get font files from the CSS.
 	 *
 	 * @access public
-	 * @since  3.1.0
+	 * @since  0.3.8
 	 *
 	 * @param string $css The CSS we want to parse.
 	 *
@@ -287,7 +294,7 @@ class Mai_Fonts_Downloader {
 	 * Get the filesystem.
 	 *
 	 * @access protected
-	 * @since  3.1.0
+	 * @since  0.3.8
 	 * @return \WP_Filesystem_Base
 	 */
 	protected function get_filesystem() {

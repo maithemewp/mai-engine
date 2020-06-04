@@ -15,7 +15,7 @@ return [
 		'agency'  => 13,
 	],
 	'google-fonts'     => [
-		'Karla:wght@400;700',
+		'https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap',
 	],
 	'theme-support'    => [
 		'add' => [

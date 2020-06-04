@@ -239,14 +239,9 @@ function mai_download_google_fonts() {
 
 	if ( $config && is_array( $config ) ) {
 		$downloader = mai_get_instance( Mai_Fonts_Downloader::class );
-		$url        = 'https://fonts.googleapis.com/css2';
-		foreach( $config as $index => $font ) {
-			$sep  =  ( $index ? '&' : '?' );
-			$url .=  urldecode( $sep . 'family=' . $font );
+		foreach( $config as $url ) {
+			$downloader->get_styles( $url );
 		}
-		$url .= '&display=swap';
-
-		$downloader->get_styles( $url );
 	}
 }
 
@@ -268,19 +263,20 @@ function mai_google_fonts_fallback() {
 	$local_css = WP_CONTENT_DIR . '/mai-fonts/style.min.css';
 
 	if ( ! file_exists( $local_css ) ) {
-		$url = 'https://fonts.googleapis.com/css2';
-		foreach( $config as $index => $font ) {
-			$sep  =  ( $index ? '&' : '?' );
-			$url .=  urldecode( $sep . 'family=' . $font );
+		$handle = mai_get_handle() . '-google-fonts';
+
+		foreach( $config as $index => $url ) {
+			if ( $index > 0 ) {
+				$handle .= '-' . ( $index + 1 ); // start with mai-engine-google-fonts-2.
+			}
+
+			wp_register_style(
+				$handle,
+				$url
+			);
+
+			wp_enqueue_style( $handle );
 		}
-		$url .= '&display=swap';
-
-		wp_register_style(
-			mai_get_handle() . '-google-fonts',
-			$url
-		);
-
-		wp_enqueue_style( mai_get_handle() . '-google-fonts' );
 	}
 }
 

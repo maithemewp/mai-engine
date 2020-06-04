@@ -18,7 +18,7 @@ return [
 		'fashion'  => 18,
 	],
 	'google-fonts'     => [
-		'Josefin+Sans:wght@600|Work+Sans:ital,wght@0,400;0,700;1,400',
+		'https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&family=Work+Sans:ital,wght@0,400;0,700;1,400&display=swap',
 	],
 	'image-sizes'      => [
 		'add' => [
