@@ -91,7 +91,8 @@ jQuery( document ).ready( function( $ ) {
 	}
 
 	function getRowTaxonomy( $input, keys ) {
-		return acf.getField( keys.taxonomy ).val();
+		var $field = $input.parents( '.acf-field' ).prev( '.acf-field' );
+		return acf.getField( $field ).val();
 	}
 
 	function getTaxonomy( $input, keys ) {
