@@ -1,4 +1,5 @@
 .mobile-menu {
+	--wrap-display: block;
 	--button-overlay-display: none;
 	--sub-menu-margin: 0 0 var(--spacing-md) var(--spacing-xxs);
 	--sub-menu-padding: 0;
@@ -13,6 +14,10 @@
 	overflow-y: auto;
 	background: var(--mobile-menu-background, var(--site-header-background, var(--color-lightest)));
 	animation: var(--mobile-menu-animation, standardmenu 0.3s ease-in-out);
+
+	.menu-item.search {
+		display: none;
+	}
 }
 
 .has-dark-header {
