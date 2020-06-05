@@ -69,11 +69,7 @@ module.exports = function() {
 	themes().forEach( function( theme ) {
 
 		let files = function() {
-			return fs.readdirSync( './assets/scss/' ).filter( function( file ) {
-				if ( file.includes( '.scss' ) && ! file.includes( 'admin' ) ) {
-					return file;
-				}
-			} );
+			return [ 'editor', 'main' ];
 		};
 
 		files().forEach( function( file ) {
