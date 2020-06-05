@@ -149,6 +149,10 @@ msgstr ""
 msgid "Powered by"
 msgstr ""
 
+#: config/_default/config.php:570
+msgid "Mai Theme"
+msgstr ""
+
 #: config/_settings/content-archives.php:15, config/_settings/grid-block.php:22, config/_settings/single-content.php:15
 msgid "Show"
 msgstr ""
@@ -353,7 +357,7 @@ msgstr ""
 msgid "Page header text color"
 msgstr ""
 
-#: config/_settings/content-archives.php:443, config/_settings/single-content.php:132, lib/functions/utilities.php:776
+#: config/_settings/content-archives.php:443, config/_settings/single-content.php:132, lib/functions/utilities.php:782
 msgid "Default"
 msgstr ""
 
@@ -709,7 +713,7 @@ msgstr ""
 msgid "on BizBudding for all the details, terms and conditions of this program."
 msgstr ""
 
-#: lib/blocks/divider.php:25, lib/blocks/divider.php:201
+#: lib/blocks/divider.php:25, lib/blocks/divider.php:212
 msgid "Mai Divider"
 msgstr ""
 
@@ -717,63 +721,63 @@ msgstr ""
 msgid "A custom divider block."
 msgstr ""
 
-#: lib/blocks/divider.php:205, lib/blocks/icon.php:155
+#: lib/blocks/divider.php:216, lib/blocks/icon.php:155
 msgid "Style"
 msgstr ""
 
-#: lib/blocks/divider.php:209, lib/customize/page-header.php:212
+#: lib/blocks/divider.php:220, lib/customize/page-header.php:212
 msgid "Angle"
 msgstr ""
 
-#: lib/blocks/divider.php:210, lib/customize/page-header.php:213
+#: lib/blocks/divider.php:221, lib/customize/page-header.php:213
 msgid "Curve"
 msgstr ""
 
-#: lib/blocks/divider.php:211, lib/customize/page-header.php:216
+#: lib/blocks/divider.php:222, lib/customize/page-header.php:216
 msgid "Wave"
 msgstr ""
 
-#: lib/blocks/divider.php:212, lib/customize/page-header.php:214
+#: lib/blocks/divider.php:223, lib/customize/page-header.php:214
 msgid "Point"
 msgstr ""
 
-#: lib/blocks/divider.php:213, lib/customize/page-header.php:215
+#: lib/blocks/divider.php:224, lib/customize/page-header.php:215
 msgid "Round"
 msgstr ""
 
-#: lib/blocks/divider.php:218
+#: lib/blocks/divider.php:229
 msgid "Height"
 msgstr ""
 
-#: lib/blocks/divider.php:222
+#: lib/blocks/divider.php:233
 msgid "XS"
 msgstr ""
 
-#: lib/blocks/divider.php:223
+#: lib/blocks/divider.php:234
 msgid "SM"
 msgstr ""
 
-#: lib/blocks/divider.php:224
+#: lib/blocks/divider.php:235
 msgid "MD"
 msgstr ""
 
-#: lib/blocks/divider.php:225
+#: lib/blocks/divider.php:236
 msgid "LG"
 msgstr ""
 
-#: lib/blocks/divider.php:226
+#: lib/blocks/divider.php:237
 msgid "XL"
 msgstr ""
 
-#: lib/blocks/divider.php:232
+#: lib/blocks/divider.php:243
 msgid "Flip Horizontally"
 msgstr ""
 
-#: lib/blocks/divider.php:253
+#: lib/blocks/divider.php:264
 msgid "Flip Vertically"
 msgstr ""
 
-#: lib/blocks/divider.php:260
+#: lib/blocks/divider.php:271
 msgid "Color"
 msgstr ""
 
@@ -1109,23 +1113,23 @@ msgstr ""
 msgid "Back to top"
 msgstr ""
 
-#: lib/functions/utilities.php:812
+#: lib/functions/utilities.php:818
 msgid "Post"
 msgstr ""
 
-#: lib/functions/utilities.php:816
+#: lib/functions/utilities.php:822
 msgid "Page"
 msgstr ""
 
-#: lib/functions/utilities.php:849
+#: lib/functions/utilities.php:855
 msgid "Search Results"
 msgstr ""
 
-#: lib/functions/utilities.php:850
+#: lib/functions/utilities.php:856
 msgid "Author Archives"
 msgstr ""
 
-#: lib/functions/utilities.php:851
+#: lib/functions/utilities.php:857
 msgid "Date Archives"
 msgstr ""
 

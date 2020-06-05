@@ -39,6 +39,11 @@
 .actions {
 	padding: var(--spacing-lg);
 
+	.button {
+
+		@include button-style("secondary");
+	}
+
 	> .button {
 
 		@include mq(xs) {
@@ -50,11 +55,7 @@
 .coupon {
 	display: flex;
 	align-items: center;
-	width: var(--two-thirds);
-
-	@include mq(xs) {
-		float: left;
-	}
+	font-size: var(--text-sm);
 
 	label {
 
@@ -62,6 +63,7 @@
 	}
 
 	input {
+		width: 120px !important;
 		margin: 0;
 	}
 
@@ -81,9 +83,11 @@
 }
 
 .cart_totals {
+	margin-top: var(--spacing-md);
 
-	@include mq(lg) {
-		width: var(--one-half);
+	@include mq(false, sm) {
+		float: none !important;
+		width: 100% !important;
 	}
 }
 
@@ -91,7 +95,7 @@
 	width: 100%;
 }
 
-@include mq(xs) {
+@include mq(false, sm) {
 
 	.woocommerce-cart-form {
 
@@ -121,24 +125,30 @@
 		}
 
 		.actions {
-			display: block;
+			display: flex;
+			flex-direction: column;
 			padding: 1em;
+			overflow: hidden;
 			border-bottom: var(--border);
 
 			.button {
-				margin: 0;
+				float: none;
 				padding: var(--spacing-md);
+			}
+
+			> .button {
+				order: -1;
+				margin-bottom: 1em;
 			}
 		}
 
 		.coupon {
-			flex-wrap: wrap;
+			float: none !important;
 			width: 100%;
-			margin-bottom: 1em;
 
 			.input-text {
-				width: 100%;
-				margin-bottom: 1em;
+				flex: 1;
+				width: auto !important;
 			}
 		}
 
