@@ -217,6 +217,7 @@ function mai_load_files() {
 		'blocks/grid',
 		'blocks/heading',
 		'blocks/icon',
+		'blocks/image',
 
 		// Widgets.
 		'widgets/reusable-block',
