@@ -3,6 +3,10 @@ body {
 	@include body;
 }
 
+.has-boxed-container {
+	--body-background: var(--color-lighter);
+}
+
 a {
 	color: var(--link-color, var(--color-primary));
 	text-decoration: var(--link-text-decoration, none);

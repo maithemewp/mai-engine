@@ -9,11 +9,7 @@
 	font-size: var(--font-size, var(--text-md));
 	font-family: var(--font-family, var(--font-primary));
 	line-height: var(--line-height);
-	background: var(--background, var(--color-lightest));
-
-	&.has-boxed-container {
-		--background: var(--color-lighter);
-	}
+	background: var(--body-background, var(--color-lightest));
 }
 
 @mixin heading {
@@ -26,11 +22,11 @@
 	text-transform: var(--heading-text-transform, unset);
 
 	&:last-child {
-		--heading-margin-bottom: 0;
+		margin-bottom: 0;
 	}
 
 	.entry-content > &:not(:first-child) {
-		--heading-margin-top: var(--spacing-xxl);
+		margin-top: var(--spacing-xxl);
 	}
 }
 
@@ -66,6 +62,7 @@
 
 		&:hover,
 		&:focus {
+			border: 2px solid currentColor; // Same as Gutenberg default styles.
 			--button-overlay-z-index: 1;
 			--button-overlay-opacity: calc(var(--button-overlay-opacity-hover, 0.2) * 2); // Twice the opacity as default.
 		}
