@@ -567,7 +567,7 @@ return [
 					__( 'Copyright', 'mai-engine' ),
 					__( 'All Rights Reserved', 'mai-engine' ),
 					__( 'Powered by', 'mai-engine' ),
-					mai_get_name()
+					__( 'Mai Theme', 'mai-engine' ),
 				),
 			],
 		],
