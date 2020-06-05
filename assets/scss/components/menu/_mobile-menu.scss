@@ -14,7 +14,7 @@
 	overflow-y: auto;
 	background: var(--mobile-menu-background, var(--site-header-background, var(--color-lightest)));
 	border-bottom: var(--border);
-	animation: var(--mobile-menu-animation, standardmenu 0.3s ease-in-out);
+	animation: var(--mobile-menu-animation, none);
 
 	.menu-item.search {
 		display: none;
@@ -33,6 +33,7 @@
 .mobile-menu-visible {
 	--mobile-menu-display: block;
 	--mobile-menu-background: var(--color-lightest);
+	--mobile-menu-animation: standardmenu 0.3s ease-in-out;
 }
 
 @keyframes standardmenu {
