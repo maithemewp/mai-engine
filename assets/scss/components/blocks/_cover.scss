@@ -1,4 +1,6 @@
 .wp-block-cover {
+	--divider-z-index: -1;
+
 	position: relative; // so negative margins inside will work.
 	min-height: 0;
 
