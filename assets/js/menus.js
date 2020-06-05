@@ -116,6 +116,7 @@
 				menuItem.setAttribute( 'id', lastClass );
 
 				if ( null === mobileMenuList.querySelector( '#' + lastClass ) && ! menuItem.classList.contains( 'search' ) ) {
+					menuItem.removeAttribute( 'id' );
 					mobileMenuList.appendChild( menuItem );
 				}
 			} );
