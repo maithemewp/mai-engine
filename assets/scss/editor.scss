@@ -12,6 +12,9 @@
 body {
 	min-height: auto;
 	background: var(--color-lightest);
+	--list-list-style-position: outside;
+	--list-margin-left: var(--spacing-md);
+	--list-item-margin-bottom: var(--spacing-xs);
 }
 
 .editor-post-title__block .editor-post-title__input {

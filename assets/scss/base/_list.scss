@@ -5,6 +5,7 @@ dl {
 	margin: var(--list-margin, var(--list-margin-top, 0) var(--list-margin-right, 0) var(--list-margin-bottom, var(--spacing-sm)) var(--list-margin-left, 0));
 	padding: var(--list-padding, 0);
 	list-style-position: var(--list-list-style-position, inside);
+	list-style-type: var(--list-style-type, initial);
 
 	ul,
 	ol,
@@ -20,6 +21,8 @@ li {
 
 .entry-content,
 .sidebar {
+
+	/* These are added to edistor.scss too */
 	--list-list-style-position: outside;
 	--list-margin-left: var(--spacing-md);
 	--list-item-margin-bottom: var(--spacing-xs);
