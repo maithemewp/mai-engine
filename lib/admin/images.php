@@ -26,19 +26,29 @@ function mai_get_media_chooser_sizes( $sizes ) {
 		return $sizes;
 	}
 
-	$additional = $_wp_additional_image_sizes;
+	$keepers = [
+		'landscape-sm' => __( 'Landscape (Small)', 'mai-engine' ),
+		'landscape-md' => __( 'Landscape (Medium)', 'mai-engine' ),
+		'landscape-lg' => __( 'Landscape (Large)', 'mai-engine' ),
+		'portrait-sm'  => __( 'Portrait (Small)', 'mai-engine' ),
+		'portrait-md'  => __( 'Portrait (Medium)', 'mai-engine' ),
+		'portrait-lg'  => __( 'Portrait (Large)', 'mai-engine' ),
+		'square-sm'    => __( 'Square (Small)', 'mai-engine' ),
+		'square-md'    => __( 'Square (Medium)', 'mai-engine' ),
+		'square-lg'    => __( 'Square (Large)', 'mai-engine' ),
+		'tiny'         => __( 'Tiny', 'mai-engine' ),
+		'cover'        => __( 'Cover', 'mai-engine' ),
+	];
 
-	unset( $additional['1536x1536'] );
-	unset( $additional['2048x2048'] );
+	if ( ! $keepers ) {
+		return $sizes;
+	}
 
-	if ( count( $additional ) ) {
-		$additional = array_keys( $additional );
-		foreach ( $additional as $name ) {
-			$name           = str_replace( '-sm', ' (sm)', $name );
-			$name           = str_replace( '-md', ' (md)', $name );
-			$name           = str_replace( '-lg', ' (lg)', $name );
-			$sizes[ $name ] = ucfirst( $name );
+	foreach( $_wp_additional_image_sizes as $name => $sizes_array ) {
+		if ( ! isset( $keepers[ $name ] ) ) {
+			continue;
 		}
+		$sizes[ $name ] = $keepers[ $name ];
 	}
 
 	return $sizes;

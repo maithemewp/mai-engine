@@ -665,6 +665,50 @@ msgstr ""
 msgid "Featured Image"
 msgstr ""
 
+#: lib/admin/images.php:30
+msgid "Landscape (Small)"
+msgstr ""
+
+#: lib/admin/images.php:31
+msgid "Landscape (Medium)"
+msgstr ""
+
+#: lib/admin/images.php:32
+msgid "Landscape (Large)"
+msgstr ""
+
+#: lib/admin/images.php:33
+msgid "Portrait (Small)"
+msgstr ""
+
+#: lib/admin/images.php:34
+msgid "Portrait (Medium)"
+msgstr ""
+
+#: lib/admin/images.php:35
+msgid "Portrait (Large)"
+msgstr ""
+
+#: lib/admin/images.php:36
+msgid "Square (Small)"
+msgstr ""
+
+#: lib/admin/images.php:37
+msgid "Square (Medium)"
+msgstr ""
+
+#: lib/admin/images.php:38
+msgid "Square (Large)"
+msgstr ""
+
+#: lib/admin/images.php:39
+msgid "Tiny"
+msgstr ""
+
+#: lib/admin/images.php:40
+msgid "Cover"
+msgstr ""
+
 #: lib/admin/page-header.php:56, lib/admin/term-image.php:51, lib/functions/grid.php:79, lib/functions/loop.php:340, lib/functions/loop.php:412
 msgid "Image"
 msgstr ""
