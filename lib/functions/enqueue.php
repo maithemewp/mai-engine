@@ -200,6 +200,7 @@ function mai_enqueue_desktop_styles() {
 	$path       = mai_get_dir() . $file;
 	$url        = mai_get_url() . $file;
 	$breakpoint = mai_get_option( 'mobile-menu-breakpoint', mai_get_breakpoint() );
+
 	if ( file_exists( $path ) && $breakpoint ) {
 		printf( '<link id="mai-desktop-styles" href="%s" rel="stylesheet" media="screen and (min-width: %spx)" rel="preload">', $url, $breakpoint );
 	}
@@ -226,6 +227,7 @@ function mai_async_scripts( $url ) {
 add_action( 'admin_init', 'mai_download_google_fonts' );
 /**
  * Download google fonts locally.
+ *
  * Note: Can't use `add_query_arg` because of
  * multiple "family" args required by the Google API.
  * Note: `esc_url` breaks the API call as well.
@@ -239,7 +241,8 @@ function mai_download_google_fonts() {
 
 	if ( $config && is_array( $config ) ) {
 		$downloader = mai_get_instance( Mai_Fonts_Downloader::class );
-		foreach( $config as $url ) {
+
+		foreach ( $config as $url ) {
 			$downloader->get_styles( $url );
 		}
 	}
@@ -256,6 +259,7 @@ add_action( 'enqueue_block_editor_assets', 'mai_google_fonts_fallback' );
  */
 function mai_google_fonts_fallback() {
 	$config = mai_get_config( 'google-fonts' );
+
 	if ( ! $config ) {
 		return;
 	}
@@ -265,9 +269,9 @@ function mai_google_fonts_fallback() {
 	if ( ! file_exists( $local_css ) ) {
 		$handle = mai_get_handle() . '-google-fonts';
 
-		foreach( $config as $index => $url ) {
+		foreach ( $config as $index => $url ) {
 			if ( $index > 0 ) {
-				$handle .= '-' . ( $index + 1 ); // start with mai-engine-google-fonts-2.
+				$handle .= '-' . ( $index + 1 ); // Start with mai-engine-google-fonts-2.
 			}
 
 			wp_register_style(
