@@ -95,7 +95,7 @@
 	font-size: 0;
 
 	&::after {
-		font-size: calc(var(--text-md) / #{$major-second});
+		font-size: calc(var(--text-md) / var(--text-scale-ratio));
 	}
 }
 

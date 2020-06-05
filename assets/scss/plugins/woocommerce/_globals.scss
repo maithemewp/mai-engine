@@ -67,3 +67,20 @@
 	width: 100%;
 	height: 100%; /* .woocommerce img CSS adds height: auto; which breaks page header image without this */
 }
+
+@include mq(false, sm) {
+
+	.woocommerce .col2-set .col-1,
+	.woocommerce-page .col2-set .col-1,
+	.woocommerce .col2-set .col-2,
+	.woocommerce-page .col2-set .col-2 {
+		float: none;
+		width: 100%;
+	}
+
+	.woocommerce .col2-set .col-2,
+	.woocommerce-page .col2-set .col-2 {
+		margin-top: var(--spacing-lg);
+	}
+
+}

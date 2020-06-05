@@ -1,13 +1,5 @@
-form.checkout {
-
-	@include mq(lg) {
-		columns: 2;
-		column-gap: var(--gutter);
-
-		> div {
-			break-inside: avoid;
-		}
-	}
+#customer_details {
+	margin: var(--spacing-xl) 0;
 }
 
 .woocommerce-form-coupon {
@@ -118,7 +110,7 @@ form.checkout {
 	&,
 	.select2-selection__rendered,
 	.select2-selection__arrow {
-		height: calc((var(--text-md) / #{$major-second}) + var(--text-md) * 2);
-		line-height: calc((var(--text-md) / #{$major-second}) + var(--text-md) * 2);
+		height: calc((var(--text-md) / var(--text-scale-ratio)) + var(--text-md) * 2);
+		line-height: calc((var(--text-md) / var(--text-scale-ratio)) + var(--text-md) * 2);
 	}
 }
