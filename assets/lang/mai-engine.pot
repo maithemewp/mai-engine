@@ -225,7 +225,7 @@ msgstr ""
 msgid "One Half"
 msgstr ""
 
-#: config/_settings/content-archives.php:148, config/_settings/grid-block.php:240, config/_settings/single-content.php:59, lib/functions/grid.php:81, lib/functions/loop.php:343, lib/functions/loop.php:415
+#: config/_settings/content-archives.php:148, config/_settings/grid-block.php:240, config/_settings/single-content.php:59, lib/functions/grid.php:81, lib/functions/loop.php:346, lib/functions/loop.php:418
 msgid "Header Meta"
 msgstr ""
 
@@ -245,7 +245,7 @@ msgstr ""
 msgid "Read More"
 msgstr ""
 
-#: config/_settings/content-archives.php:202, config/_settings/grid-block.php:319, config/_settings/single-content.php:73, lib/functions/grid.php:85, lib/functions/loop.php:350, lib/functions/loop.php:421
+#: config/_settings/content-archives.php:202, config/_settings/grid-block.php:319, config/_settings/single-content.php:73, lib/functions/grid.php:85, lib/functions/loop.php:353, lib/functions/loop.php:424
 msgid "Footer Meta"
 msgstr ""
 
@@ -533,7 +533,7 @@ msgstr ""
 msgid "Order By"
 msgstr ""
 
-#: config/_settings/grid-block.php:1045, config/_settings/grid-block.php:1327, lib/functions/grid.php:80, lib/functions/loop.php:342, lib/functions/loop.php:414
+#: config/_settings/grid-block.php:1045, config/_settings/grid-block.php:1327, lib/functions/grid.php:80, lib/functions/loop.php:345, lib/functions/loop.php:417
 msgid "Title"
 msgstr ""
 
@@ -709,7 +709,7 @@ msgstr ""
 msgid "Cover"
 msgstr ""
 
-#: lib/admin/page-header.php:56, lib/admin/term-image.php:51, lib/functions/grid.php:79, lib/functions/loop.php:340, lib/functions/loop.php:412
+#: lib/admin/page-header.php:56, lib/admin/term-image.php:51, lib/functions/grid.php:79, lib/functions/loop.php:343, lib/functions/loop.php:415
 msgid "Image"
 msgstr ""
 
@@ -1065,15 +1065,15 @@ msgstr ""
 msgid "Customize more now!"
 msgstr ""
 
-#: lib/functions/grid.php:82, lib/functions/loop.php:345
+#: lib/functions/grid.php:82, lib/functions/loop.php:348
 msgid "Excerpt"
 msgstr ""
 
-#: lib/functions/grid.php:83, lib/functions/loop.php:346, lib/functions/loop.php:418
+#: lib/functions/grid.php:83, lib/functions/loop.php:349, lib/functions/loop.php:421
 msgid "Content"
 msgstr ""
 
-#: lib/functions/grid.php:84, lib/functions/loop.php:348
+#: lib/functions/grid.php:84, lib/functions/loop.php:351
 msgid "Read More link"
 msgstr ""
 
@@ -1121,31 +1121,35 @@ msgstr ""
 msgid "Custom"
 msgstr ""
 
-#: lib/functions/loop.php:417
+#: lib/functions/loop.php:420
 msgid "Manual Excerpts"
 msgstr ""
 
-#: lib/functions/loop.php:423
+#: lib/functions/loop.php:426
 msgid "Author Box"
 msgstr ""
 
-#: lib/functions/loop.php:424
+#: lib/functions/loop.php:427
 msgid "After Entry Widget Area"
 msgstr ""
 
-#: lib/functions/loop.php:425
+#: lib/functions/loop.php:428
 msgid "Previous/Next Entry Nav"
 msgstr ""
 
-#: lib/functions/plugins.php:153, lib/structure/pagination.php:63
+#: lib/functions/plugins.php:169
+msgid "Go to page"
+msgstr ""
+
+#: lib/functions/plugins.php:175, lib/structure/pagination.php:85
 msgid "← Previous"
 msgstr ""
 
-#: lib/functions/plugins.php:178, lib/structure/pagination.php:75
+#: lib/functions/plugins.php:200, lib/structure/pagination.php:97
 msgid "Next →"
 msgstr ""
 
-#: lib/functions/plugins.php:233
+#: lib/functions/plugins.php:257
 msgid "Theme Dependency"
 msgstr ""
 

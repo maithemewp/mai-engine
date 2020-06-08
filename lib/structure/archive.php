@@ -12,19 +12,25 @@
 // Enable shortcodes in archive description.
 add_filter( 'genesis_cpt_archive_intro_text_output', 'do_shortcode' );
 
-add_filter( 'get_the_content_more_link', 'mai_read_more_link' );
-add_filter( 'the_content_more_link', 'mai_read_more_link' );
 /**
- * Modify the content limit read more link
+ * Filter the excerpt and content "read more" string.
  *
  * @since 0.1.0
+ * @since 0.3.11 Modified and added excerpt_more.
  *
- * @param string $more_link_text Default more link text.
+ * @uses excerpt_more              When the excerpt is shorter then the full content, this read more link will show.
+ * @uses get_the_content_more_link Genesis function to get the more link, if characters are limited.
+ * @uses the_content_more_link     Core WP function to get the more link, if characters are limited.
+ *
+ * @param  string $more "Read more" excerpt string.
  *
  * @return string
  */
-function mai_read_more_link( $more_link_text ) {
-	return str_replace( [ '[', ']', '...' ], '', $more_link_text );
+add_filter( 'excerpt_more', 'mai_read_more_ellipsis' );
+add_filter( 'get_the_content_more_link', 'mai_read_more_ellipsis' );
+add_filter( 'the_content_more_link', 'mai_read_more_ellipsis' );
+function mai_read_more_ellipsis( $more ) {
+	return mai_get_ellipsis();
 }
 
 add_filter( 'genesis_author_box_gravatar_size', 'mai_author_box_gravatar' );

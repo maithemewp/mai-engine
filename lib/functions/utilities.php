@@ -906,6 +906,16 @@ function mai_get_loop_content_type_choices( $archive = true ) {
 }
 
 /**
+ * Get the read more ellipses.
+ * Filtered so devs can change.
+ *
+ * @return string;
+ */
+function mai_get_ellipsis() {
+	return apply_filters( 'mai_read_more_ellipses', ' &hellip;' );
+}
+
+/**
  * Get post content by slug or ID.
  * Great for displaying reusable blocks in areas that are not block enabled.
  *

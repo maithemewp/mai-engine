@@ -32,6 +32,9 @@ function mai_get_content_limit( $content, $limit ) {
 	// Truncate $content to $limit.
 	$content = genesis_truncate_phrase( $content, $limit );
 
+	// Add ellipses.
+	$content .= mai_get_ellipsis();
+
 	return $content;
 }
 
