@@ -126,6 +126,27 @@ function mai_add_facetwp_template_class( $attributes, $context, $args ) {
 	return $attributes;
 }
 
+add_filter( 'facetwp_shortcode_html', 'mai_facetwp_page_wrap', 10, 2 );
+/**
+ * Add the wrap class to facetwp pager element.
+ *
+ * @since 0.3.11
+ *
+ * @param string $html The shortcode HTML.
+ * @param array  $atts The shortcode attributes.
+ *
+ * @return string
+ */
+function mai_facetwp_page_wrap( $html, $atts ) {
+	if ( ! ( isset( $atts['pager'] ) && $atts['pager'] ) ) {
+		return $html;
+	}
+
+	$html = str_replace( 'facetwp-pager', 'wrap facetwp-pager', $html );
+
+	return $html;
+}
+
 add_filter( 'facetwp_pager_html', 'mai_facetwp_genesis_pager', 10, 2 );
 /**
  * Style pagination to look like Genesis.
@@ -146,45 +167,47 @@ function mai_facetwp_genesis_pager( $output, $params ) {
 	$page        = (int) $params['page'];
 	$total_pages = (int) $params['total_pages'];
 
-	// Only show pagination when > 1 page.
-	if ( 1 < $total_pages ) {
+	// Only show pagination when more than one page.
+	if ( $total_pages > 1 ) {
 
 		if ( 1 < $page ) {
-			$output .= sprintf( '<li><a class="facetwp-page" data-page="%s">%s</a></li>', ( $page - 1 ), esc_html__( '← Previous', 'mai-engine' ) );
+			$output .= sprintf( '<li class="pagination-previous"><a class="facetwp-page button button-secondary" data-page="%s">%s</a></li>', ( $page - 1 ), esc_html__( '← Previous', 'mai-engine' ) );
 		}
 		if ( 3 < $page ) {
-			$output .= '<li><a class="facetwp-page first-page" data-page="1"><span class="screen-reader-text">Page </span>1</a></li>';
+			$output .= '<li><a class="facetwp-page button button-secondary first-page" data-page="1"><span class="screen-reader-text">Go to page</span> 1</a></li>';
 			$output .= '<li class="pagination-omission">&hellip;</li>';
 		}
 		for ( $i = 2; $i > 0; $i-- ) {
 			if ( 0 < ( $page - $i ) ) {
-				$output .= '<li><a class="facetwp-page" data-page="' . ( $page - $i ) . '"><span class="screen-reader-text">Page </span>' . ( $page - $i ) . '</a></li>';
+				$output .= '<li><a class="facetwp-page button button-secondary" data-page="' . ( $page - $i ) . '"><span class="screen-reader-text">Go to page</span> ' . ( $page - $i ) . '</a></li>';
 			}
 		}
 
 		// Current page.
-		$output .= '<li class="active"><a class="facetwp-page" aria-label="Current page" data-page="' . $page . '"><span class="screen-reader-text">Page </span>' . $page . '</a></li>';
+		$output .= '<li class="active"><a class="facetwp-page button" aria-label="Current page" data-page="' . $page . '"><span class="screen-reader-text">Go to page</span> ' . $page . '</a></li>';
 
 		for ( $i = 1; $i <= 2; $i++ ) {
 			if ( $total_pages >= ( $page + $i ) ) {
-				$output .= '<li><a class="facetwp-page" data-page="' . ( $page + $i ) . '"><span class="screen-reader-text">Page </span>' . ( $page + $i ) . '</a></li>';
+				$output .= '<li><a class="facetwp-page button button-secondary" data-page="' . ( $page + $i ) . '"><span class="screen-reader-text">Go to page</span> ' . ( $page + $i ) . '</a></li>';
 			}
 		}
 		if ( $total_pages > ( $page + 2 ) ) {
 			$output .= '<li class="pagination-omission">&hellip;</li>';
-			$output .= '<li><a class="facetwp-page last-page" data-page="' . $total_pages . '"><span class="screen-reader-text">Page </span>' . $total_pages . '</a></li>';
+			$output .= '<li><a class="facetwp-page button button-secondary last-page" data-page="' . $total_pages . '"><span class="screen-reader-text">Go to page</span> ' . $total_pages . '</a></li>';
 		}
 		if ( $page < $total_pages ) {
-			$output .= sprintf( '<li><a class="facetwp-page" data-page="%s">%s</a></li>', ( $page + 1 ), esc_html__( 'Next →', 'mai-engine' ) );
+			$output .= sprintf( '<li class="pagination-next"><a class="facetwp-page button button-secondary" data-page="%s">%s</a></li>', ( $page + 1 ), esc_html__( 'Next →', 'mai-engine' ) );
 		}
 	}
+
+	$output .= '<style type="text/css">.archive-pagination .wrap.facetwp-pager + .wrap { display:none; } .facetwp-pager .facetwp-page{ display:inline-block; padding:var(--button-padding); }</style>';
 
 	$output .= '</ul>';
 
 	return $output;
 }
 
-add_filter( 'genesis_markup_archive-pagination_content', 'mai_facetwp_archive_pagination', 10, 2 );
+add_filter( 'genesis_markup_archive-pagination_content', 'mai_facetwp_archive_pagination', 20, 2 );
 /**
  * Add facetwp pager before genesis pagination.
  * This will only display if there are facets on the page.
@@ -209,7 +232,7 @@ function mai_facetwp_archive_pagination( $content, $args ) {
 		return $content;
 	}
 
-	return $content . facetwp_display( 'pager' );
+	return facetwp_display( 'pager' ) . $content;
 }
 
 // Dependency installer labels.

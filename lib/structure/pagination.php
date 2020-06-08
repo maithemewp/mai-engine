@@ -13,7 +13,29 @@
 remove_filter( 'genesis_attr_pagination-previous', 'genesis_adjacent_entry_attr_previous_post' );
 remove_filter( 'genesis_attr_pagination-next', 'genesis_adjacent_entry_attr_next_post' );
 
-add_filter( 'genesis_markup_open', 'mai_entry_pagination_wrap_open', 10, 2 );
+add_filter( 'genesis_markup_archive-pagination_content', 'mai_archive_pagination_wrap', 10, 2 );
+/**
+ * Add facetwp pager before genesis pagination.
+ * This will only display if there are facets on the page.
+ *
+ * @since 0.2.0
+ *
+ * @param string $content The existing content.
+ * @param array  $args    The genesis_markup() element args.
+ *
+ * @return string|HTML
+ */
+function mai_archive_pagination_wrap( $content, $args ) {
+	if ( $args['open'] ) {
+		$content = '<div class="wrap">' . $content;
+	}
+	if ( $args['close'] ) {
+		$content .= '</div>';
+	}
+	return $content;
+}
+
+// add_filter( 'genesis_markup_open', 'mai_entry_pagination_wrap_open', 10, 2 );
 /**
  * Outputs the opening pagination wrap markup.
  *
@@ -32,7 +54,7 @@ function mai_entry_pagination_wrap_open( $open, $args ) {
 	return $open;
 }
 
-add_filter( 'genesis_markup_close', 'mai_entry_pagination_wrap_close', 10, 2 );
+// add_filter( 'genesis_markup_close', 'mai_entry_pagination_wrap_close', 10, 2 );
 /**
  * Outputs the closing pagination wrap markup.
  *
