@@ -339,8 +339,6 @@ return [
 			[
 				'handle'    => mai_get_handle() . '-atomic-blocks',
 				'src'       => mai_get_url() . 'assets/css/plugins/atomic-blocks.min.css',
-				'media'     => 'print',
-				'onload'    => "this.media='all'",
 				'condition' => function () {
 					return function_exists( 'atomic_blocks_main_plugin_file' );
 				},
@@ -348,8 +346,6 @@ return [
 			[
 				'handle'    => mai_get_handle() . '-seo-slider',
 				'src'       => mai_get_url() . 'assets/css/plugins/seo-slider.min.css',
-				'media'     => 'print',
-				'onload'    => "this.media='all'",
 				'condition' => function () {
 					return defined( 'SEO_SLIDER_VERSION' );
 				},
@@ -357,8 +353,6 @@ return [
 			[
 				'handle'    => mai_get_handle() . '-simple-social-icons',
 				'src'       => mai_get_url() . 'assets/css/plugins/simple-social-icons.min.css',
-				'media'     => 'print',
-				'onload'    => "this.media='all'",
 				'condition' => function () {
 					return class_exists( 'Simple_Social_Icons_Widget' );
 				},
@@ -366,8 +360,6 @@ return [
 			[
 				'handle'    => mai_get_handle() . '-woocommerce',
 				'src'       => mai_get_url() . 'assets/css/plugins/woocommerce.min.css',
-				'media'     => 'print',
-				'onload'    => "this.media='all'",
 				'condition' => function () {
 					return class_exists( 'WooCommerce' );
 				},

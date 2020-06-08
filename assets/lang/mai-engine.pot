@@ -49,7 +49,7 @@ msgstr ""
 msgid "Menu"
 msgstr ""
 
-#: config/_default/config.php:250, config/_default/config.php:529
+#: config/_default/config.php:250, config/_default/config.php:521
 msgid "Mobile Menu"
 msgstr ""
 
@@ -57,99 +57,99 @@ msgstr ""
 msgid "Sub Menu"
 msgstr ""
 
-#: config/_default/config.php:456
+#: config/_default/config.php:448
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/_default/config.php:457
+#: config/_default/config.php:449
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/_default/config.php:458, lib/admin/hide-elements.php:96
+#: config/_default/config.php:450, lib/admin/hide-elements.php:96
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default/config.php:503, lib/admin/hide-elements.php:82
+#: config/_default/config.php:495, lib/admin/hide-elements.php:82
 msgid "Before Header"
 msgstr ""
 
-#: config/_default/config.php:504
+#: config/_default/config.php:496
 msgid "The Before Header widget area."
 msgstr ""
 
-#: config/_default/config.php:509
+#: config/_default/config.php:501
 msgid "Header Left"
 msgstr ""
 
-#: config/_default/config.php:510
+#: config/_default/config.php:502
 msgid "The Header Left widget area."
 msgstr ""
 
-#: config/_default/config.php:519
+#: config/_default/config.php:511
 msgid "Header Right"
 msgstr ""
 
-#: config/_default/config.php:520
+#: config/_default/config.php:512
 msgid "The Header Right widget area."
 msgstr ""
 
-#: config/_default/config.php:530
+#: config/_default/config.php:522
 msgid "The Mobile Menu widget area."
 msgstr ""
 
-#: config/_default/config.php:535
+#: config/_default/config.php:527
 msgid "Sidebar"
 msgstr ""
 
-#: config/_default/config.php:536
+#: config/_default/config.php:528
 msgid "The Sidebar widget area."
 msgstr ""
 
-#: config/_default/config.php:541
+#: config/_default/config.php:533
 msgid "After Entry"
 msgstr ""
 
-#: config/_default/config.php:542
+#: config/_default/config.php:534
 msgid "The After Entry widget area."
 msgstr ""
 
-#: config/_default/config.php:547, lib/admin/hide-elements.php:112
+#: config/_default/config.php:539, lib/admin/hide-elements.php:112
 msgid "Before Footer"
 msgstr ""
 
-#: config/_default/config.php:548
+#: config/_default/config.php:540
 msgid "The Before Footer widget area."
 msgstr ""
 
-#: config/_default/config.php:554, lib/admin/hide-elements.php:116
+#: config/_default/config.php:546, lib/admin/hide-elements.php:116
 msgid "Footer"
 msgstr ""
 
-#: config/_default/config.php:555
+#: config/_default/config.php:547
 msgid "The Footer widget area."
 msgstr ""
 
-#: config/_default/config.php:561, lib/admin/hide-elements.php:120
+#: config/_default/config.php:553, lib/admin/hide-elements.php:120
 msgid "Footer Credits"
 msgstr ""
 
-#: config/_default/config.php:562
+#: config/_default/config.php:554
 msgid "The Footer Credits widget area."
 msgstr ""
 
-#: config/_default/config.php:567
+#: config/_default/config.php:559
 msgid "Copyright"
 msgstr ""
 
-#: config/_default/config.php:568
+#: config/_default/config.php:560
 msgid "All Rights Reserved"
 msgstr ""
 
-#: config/_default/config.php:569
+#: config/_default/config.php:561
 msgid "Powered by"
 msgstr ""
 
-#: config/_default/config.php:570
+#: config/_default/config.php:562
 msgid "Mai Theme"
 msgstr ""
 
