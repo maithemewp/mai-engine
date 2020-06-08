@@ -506,22 +506,15 @@ function mai_acf_get_post_parents( $args ) {
  * @return array
  */
 function mai_get_post_type_choices() {
-	$choices = [];
-
-	$post_types = get_post_types(
-		[
-			'public'             => true,
-			'publicly_queryable' => true,
-		],
-		'objects',
-		'or'
-	);
-
+	$choices    = [];
+	$post_types = get_post_types( [ 'public' => true ] );
 	unset( $post_types['attachment'] );
+	$post_types = array_keys( $post_types );
+	$post_types = apply_filters( 'mai_grid_post_types', $post_types );
 
 	if ( $post_types ) {
-		foreach ( $post_types as $name => $post_type ) {
-			$choices[ $name ] = $post_type->label;
+		foreach ( $post_types as $post_type ) {
+			$choices[ $post_type ] = get_post_type_object( $post_type )->label;
 		}
 	}
 
