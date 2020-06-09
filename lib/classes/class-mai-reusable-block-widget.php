@@ -9,18 +9,6 @@
  * @license   GPL-2.0-or-later
  */
 
-/**
- * Register the widget.
- *
- * @since 0.1.0
- *
- * @return void
- */
-add_action( 'widgets_init', 'mai_register_reusable_block_widget' );
-function mai_register_reusable_block_widget() {
-	register_widget( 'Mai_Reusable_Block_Widget' );
-}
-
 class Mai_Reusable_Block_Widget extends WP_Widget {
 
 	/**
@@ -66,12 +54,12 @@ class Mai_Reusable_Block_Widget extends WP_Widget {
 	 * @param array $instance The widget options
 	 */
 	public function form( $instance ) {
-		$title          = ! empty( $instance['title'] ) ? $instance['title']: '';
-		$block_selected = ! empty( $instance['block'] ) ? $instance['block']: '';
+		$title          = ! empty( $instance['title'] ) ? $instance['title'] : '';
+		$block_selected = ! empty( $instance['block'] ) ? $instance['block'] : '';
 
 		echo '<p>';
-			printf( '<label for="%s">%s</label>', esc_attr( $this->get_field_id( 'title' ) ), esc_attr__( 'Title:', 'mai-engine' ) );
-			printf( '<input class="widefat" id="%s" name="%s" type="text" value="%s">', esc_attr( $this->get_field_id( 'title' ) ), esc_attr( $this->get_field_name( 'title' ) ), esc_attr( $title ) );
+		printf( '<label for="%s">%s</label>', esc_attr( $this->get_field_id( 'title' ) ), esc_attr__( 'Title:', 'mai-engine' ) );
+		printf( '<input class="widefat" id="%s" name="%s" type="text" value="%s">', esc_attr( $this->get_field_id( 'title' ) ), esc_attr( $this->get_field_name( 'title' ) ), esc_attr( $title ) );
 		echo '</p>';
 
 		$blocks = new WP_Query( [
@@ -85,14 +73,14 @@ class Mai_Reusable_Block_Widget extends WP_Widget {
 
 		if ( $blocks->have_posts() ) {
 			echo '<p>';
-				printf( '<label for="%s">%s</label>', esc_attr( $this->get_field_id( 'block' ) ), esc_attr__( 'Select from saved Reusable Blocks:', 'mai-engine' ) );
-				printf( '<select class="widefat" id="%s" name="%s">', esc_attr( $this->get_field_id( 'block' ) ), esc_attr( $this->get_field_name( 'block' ) ) );
-					printf( '<option values="">%s</option>', esc_html__( 'Select Reusable Block', 'mai-engine' ) );
-					while ( $blocks->have_posts() ) : $blocks->the_post();
-						$selected = ( $block_selected == get_the_ID() ) ? 'selected="selected"' : '';
-						printf( '<option value="%s" %s>%s</option>', get_the_ID(), $selected, get_the_title() );
-					endwhile;
-				echo '</select>';
+			printf( '<label for="%s">%s</label>', esc_attr( $this->get_field_id( 'block' ) ), esc_attr__( 'Select from saved Reusable Blocks:', 'mai-engine' ) );
+			printf( '<select class="widefat" id="%s" name="%s">', esc_attr( $this->get_field_id( 'block' ) ), esc_attr( $this->get_field_name( 'block' ) ) );
+			printf( '<option values="">%s</option>', esc_html__( 'Select Reusable Block', 'mai-engine' ) );
+			while ( $blocks->have_posts() ) : $blocks->the_post();
+				$selected = ( $block_selected == get_the_ID() ) ? 'selected="selected"' : '';
+				printf( '<option value="%s" %s>%s</option>', get_the_ID(), $selected, get_the_title() );
+			endwhile;
+			echo '</select>';
 			echo '</p>';
 		} else {
 			printf( '<p>%s</p>', esc_attr__( 'No saved reusable blocks yet.', 'mai-engine' ) );
@@ -100,7 +88,7 @@ class Mai_Reusable_Block_Widget extends WP_Widget {
 		wp_reset_postdata();
 
 		echo '<p style="font-size: 11px; line-height: 13px;">';
-			printf( '<a href="%s">%s</a>', '#', esc_html__( 'Edit the currently saved block.', 'mai-engine' ) );
+		printf( '<a href="%s">%s</a>', '#', esc_html__( 'Edit the currently saved block.', 'mai-engine' ) );
 		echo '</p>';
 	}
 
@@ -113,7 +101,7 @@ class Mai_Reusable_Block_Widget extends WP_Widget {
 	 * @return array
 	 */
 	public function update( $new_instance, $old_instance ) {
-		$instance = array();
+		$instance          = [];
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
 		$instance['block'] = ( ! empty( $new_instance['block'] ) ) ? strip_tags( $new_instance['block'] ) : '';
 

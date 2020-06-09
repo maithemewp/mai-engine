@@ -34,13 +34,13 @@ function mai_widget_areas() {
 		if ( $hook && ! mai_is_element_hidden( mai_convert_case( $id ) ) ) {
 			add_action(
 				$hook,
-				function () use ( $id, $args, $defaults ) {
+				function () use ( $id, $args ) {
 					genesis_widget_area( $id, $args );
-					if ( ! is_active_sidebar( $id ) && ! empty( $defaults['content'] ) ) {
-						$content = str_replace( ' ', '&nbsp;', $defaults['content'] );
-						echo $defaults['before'];
+					if ( ! is_active_sidebar( $id ) && ! empty( $args['content'] ) ) {
+						$content = str_replace( ' ', '&nbsp;', $args['content'] );
+						echo $args['before'];
 						echo wp_kses_post( do_shortcode( $content ) );
-						echo $defaults['after'];
+						echo $args['after'];
 					}
 				},
 				$priority

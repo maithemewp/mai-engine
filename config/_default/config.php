@@ -479,95 +479,6 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Widget Areas
-	|--------------------------------------------------------------------------
-	|
-	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
-	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
-	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
-	|
-	*/
-
-	'widget-areas' => [
-		'add'    => [
-			[
-				'id'          => 'before-header',
-				'name'        => __( 'Before Header', 'mai-engine' ),
-				'description' => __( 'The Before Header widget area.', 'mai-engine' ),
-				'location'    => 'genesis_before_header',
-			],
-			[
-				'id'          => 'header-left',
-				'name'        => __( 'Header Left', 'mai-engine' ),
-				'description' => __( 'The Header Left widget area.', 'mai-engine' ),
-				'location'    => 'mai_header_left',
-				'args'        => [
-					'before' => '<div class="header-widget-area">',
-					'after'  => '</div>',
-				],
-			],
-			[
-				'id'          => 'header-right',
-				'name'        => __( 'Header Right', 'mai-engine' ),
-				'description' => __( 'The Header Right widget area.', 'mai-engine' ),
-				'location'    => 'mai_header_right',
-				'args'        => [
-					'before' => '<div class="header-widget-area">',
-					'after'  => '</div>',
-				],
-			],
-			[
-				'id'          => 'mobile-menu',
-				'name'        => __( 'Mobile Menu', 'mai-engine' ),
-				'description' => __( 'The Mobile Menu widget area.', 'mai-engine' ),
-				'location'    => 'mai_after_header_wrap',
-			],
-			[
-				'id'          => 'sidebar',
-				'name'        => __( 'Sidebar', 'mai-engine' ),
-				'description' => __( 'The Sidebar widget area.', 'mai-engine' ),
-				'location'    => '',
-			],
-			[
-				'id'          => 'after-entry',
-				'name'        => __( 'After Entry', 'mai-engine' ),
-				'description' => __( 'The After Entry widget area.', 'mai-engine' ),
-				'location'    => '',
-			],
-			[
-				'id'          => 'before-footer',
-				'name'        => __( 'Before Footer', 'mai-engine' ),
-				'description' => __( 'The Before Footer widget area.', 'mai-engine' ),
-				'location'    => 'genesis_footer',
-				'priority'    => 5,
-			],
-			[
-				'id'          => 'footer',
-				'name'        => __( 'Footer', 'mai-engine' ),
-				'description' => __( 'The Footer widget area.', 'mai-engine' ),
-				'location'    => 'genesis_footer',
-				'priority'    => 10,
-			],
-			[
-				'id'          => 'footer-credits',
-				'name'        => __( 'Footer Credits', 'mai-engine' ),
-				'description' => __( 'The Footer Credits widget area.', 'mai-engine' ),
-				'location'    => 'genesis_footer',
-				'priority'    => 12,
-				'default'     => sprintf(
-					'%s [footer_copyright] · [footer_home_link] · %s · %s <a target="_blank" rel="nofollow noopener sponsored" href="https://bizbudding.com/mai-theme/">%s</a>',
-					__( 'Copyright', 'mai-engine' ),
-					__( 'All Rights Reserved', 'mai-engine' ),
-					__( 'Powered by', 'mai-engine' ),
-					__( 'Mai Theme', 'mai-engine' )
-				),
-			],
-		],
-		'remove' => [],
-	],
-
-	/*
-	|--------------------------------------------------------------------------
 	| Archive & Single Settings Content Types
 	|--------------------------------------------------------------------------
 	|
@@ -643,4 +554,97 @@ return [
 	*/
 
 	'custom-functions' => '__return_null',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Widget Areas
+	|--------------------------------------------------------------------------
+	|
+	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
+	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
+	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
+	|
+	*/
+
+	'widget-areas' => [
+		'add'    => [
+			[
+				'id'          => 'before-header',
+				'name'        => __( 'Before Header', 'mai-engine' ),
+				'description' => __( 'The Before Header widget area.', 'mai-engine' ),
+				'location'    => 'genesis_before_header',
+			],
+			[
+				'id'          => 'header-left',
+				'name'        => __( 'Header Left', 'mai-engine' ),
+				'description' => __( 'The Header Left widget area.', 'mai-engine' ),
+				'location'    => 'mai_header_left',
+				'args'        => [
+					'before' => '<div class="header-widget-area">',
+					'after'  => '</div>',
+				],
+			],
+			[
+				'id'          => 'header-right',
+				'name'        => __( 'Header Right', 'mai-engine' ),
+				'description' => __( 'The Header Right widget area.', 'mai-engine' ),
+				'location'    => 'mai_header_right',
+				'args'        => [
+					'before' => '<div class="header-widget-area">',
+					'after'  => '</div>',
+				],
+			],
+			[
+				'id'          => 'mobile-menu',
+				'name'        => __( 'Mobile Menu', 'mai-engine' ),
+				'description' => __( 'The Mobile Menu widget area.', 'mai-engine' ),
+				'location'    => 'mai_after_header_wrap',
+			],
+			[
+				'id'          => 'sidebar',
+				'name'        => __( 'Sidebar', 'mai-engine' ),
+				'description' => __( 'The Sidebar widget area.', 'mai-engine' ),
+				'location'    => '',
+			],
+			[
+				'id'          => 'after-entry',
+				'name'        => __( 'After Entry', 'mai-engine' ),
+				'description' => __( 'The After Entry widget area.', 'mai-engine' ),
+				'location'    => '',
+			],
+			[
+				'id'          => 'before-footer',
+				'name'        => __( 'Before Footer', 'mai-engine' ),
+				'description' => __( 'The Before Footer widget area.', 'mai-engine' ),
+				'location'    => 'genesis_footer',
+				'priority'    => 5,
+			],
+			[
+				'id'          => 'footer',
+				'name'        => __( 'Footer', 'mai-engine' ),
+				'description' => __( 'The Footer widget area.', 'mai-engine' ),
+				'location'    => 'genesis_footer',
+				'priority'    => 10,
+				'args'        => [
+					'before' => '',
+					'after'  => '',
+				],
+			],
+			[
+				'id'          => 'footer-credits',
+				'name'        => __( 'Footer Credits', 'mai-engine' ),
+				'description' => __( 'The Footer Credits widget area.', 'mai-engine' ),
+				'location'    => 'genesis_footer',
+				'priority'    => 12,
+				'default'     => sprintf(
+					'%s [footer_copyright] · [footer_home_link] · %s · %s <a target="_blank" rel="nofollow noopener sponsored" href="https://bizbudding.com/mai-theme/">%s</a>',
+					__( 'Copyright', 'mai-engine' ),
+					__( 'All Rights Reserved', 'mai-engine' ),
+					__( 'Powered by', 'mai-engine' ),
+					__( 'Mai Theme', 'mai-engine' )
+				),
+			],
+		],
+		'remove' => [],
+	],
 ];
