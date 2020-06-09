@@ -337,17 +337,6 @@ return [
 			],
 		],
 	],
-	'field_5e2a08a182c2c' => [
-		'name'     => 'boxed',
-		'label'    => esc_html__( 'Boxed', 'mai-engine' ),
-		'block'    => [ 'post', 'term', 'user' ],
-		'type'     => 'true_false',
-		'sanitize' => 'esc_html',
-		'default'  => 1, // True.
-		'atts'     => [
-			'message' => esc_html__( 'Display boxed styling', 'mai-engine' ),
-		],
-	],
 	'field_5c853f84eacd6' => [
 		'name'     => 'align_text',
 		'label'    => esc_html__( 'Align Text', 'mai-engine' ),
@@ -474,6 +463,102 @@ return [
 				'class' => 'mai-grid-button-group mai-grid-button-group-clear',
 				'id'    => '',
 			],
+		],
+	],
+	'field_5f3b19b193c3d' => [
+		'name'       => 'image_stack',
+		'label'      => esc_html__( 'Stack Image', 'mai-engine' ),
+		'block'      => [ 'post', 'term', 'user' ],
+		'type'       => 'true_false',
+		'sanitize'   => 'mai_sanitize_bool',
+		'default'    => 1, // True.
+		'atts'       => [
+			'message' => esc_html__( 'Stack image and content on mobile', 'mai-engine' ),
+		],
+		'conditions' => [
+			[
+				[
+					'field'    => 'field_5e441d93d6236', // Show.
+					'operator' => '==',
+					'value'    => 'image',
+				],
+				[
+					'field'    => 'field_5e2f3adf82130', // Image Position.
+					'operator' => '==',
+					'value'    => 'left-top',
+				],
+			],
+			[
+				[
+					'field'    => 'field_5e441d93d6236', // Show.
+					'operator' => '==',
+					'value'    => 'image',
+				],
+				[
+					'field'    => 'field_5e2f3adf82130', // Image Position.
+					'operator' => '==',
+					'value'    => 'left-middle',
+				],
+			],
+			[
+				[
+					'field'    => 'field_5e441d93d6236', // Show.
+					'operator' => '==',
+					'value'    => 'image',
+				],
+				[
+					'field'    => 'field_5e2f3adf82130', // Image Position.
+					'operator' => '==',
+					'value'    => 'left-full',
+				],
+			],
+			[
+				[
+					'field'    => 'field_5e441d93d6236', // Show.
+					'operator' => '==',
+					'value'    => 'image',
+				],
+				[
+					'field'    => 'field_5e2f3adf82130', // Image Position.
+					'operator' => '==',
+					'value'    => 'right-top',
+				],
+			],
+			[
+				[
+					'field'    => 'field_5e441d93d6236', // Show.
+					'operator' => '==',
+					'value'    => 'image',
+				],
+				[
+					'field'    => 'field_5e2f3adf82130', // Image Position.
+					'operator' => '==',
+					'value'    => 'right-middle',
+				],
+			],
+			[
+				[
+					'field'    => 'field_5e441d93d6236', // Show.
+					'operator' => '==',
+					'value'    => 'image',
+				],
+				[
+					'field'    => 'field_5e2f3adf82130', // Image Position.
+					'operator' => '==',
+					'value'    => 'right-full',
+				],
+			],
+		],
+	],
+	'field_5e2a08a182c2c' => [
+		'name'     => 'boxed',
+		'label'    => esc_html__( 'Boxed', 'mai-engine' ),
+		'block'    => [ 'post', 'term', 'user' ],
+		'type'     => 'true_false',
+		'sanitize' => 'mai_sanitize_bool',
+		'default'  => 1, // True.
+		'atts'     => [
+			'message' => esc_html__( 'Display boxed styling', 'mai-engine' ),
 		],
 	],
 	/********
@@ -940,7 +1025,7 @@ return [
 		'label'      => '',
 		'block'      => [ 'post' ],
 		'type'       => 'true_false',
-		'sanitize'   => 'esc_html',
+		'sanitize'   => 'mai_sanitize_bool',
 		'default'    => 0, // False.
 		'conditions' => [
 			[
@@ -1244,7 +1329,7 @@ return [
 		'label'      => '',
 		'block'      => [ 'term' ],
 		'type'       => 'true_false',
-		'sanitize'   => 'esc_html',
+		'sanitize'   => 'mai_sanitize_bool',
 		'default'    => 0, // False.
 		'conditions' => [
 			[

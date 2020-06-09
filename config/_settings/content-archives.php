@@ -212,20 +212,6 @@ return [
 		],
 	],
 	[
-		'settings' => 'boxed_heading',
-		'label'    => esc_html__( 'Boxed', 'mai-engine' ),
-		'type'     => 'custom',
-		'sanitize' => 'esc_html',
-		'default'  => '',
-	],
-	[
-		'settings' => 'boxed',
-		'label'    => esc_html__( 'Display boxed styling', 'mai-engine' ),
-		'type'     => 'checkbox',
-		'sanitize' => 'mai_sanitize_bool',
-		'default'  => true,
-	],
-	[
 		'settings' => 'align_text',
 		'label'    => esc_html__( 'Align Text', 'mai-engine' ),
 		'type'     => 'radio-buttonset',
@@ -279,6 +265,92 @@ return [
 				],
 			],
 		],
+	],
+	[
+		'settings'        => 'image_stack_heading',
+		'label'           => esc_html__( 'Stack Image', 'mai-engine' ),
+		'type'            => 'custom',
+		'sanitize'        => 'esc_html',
+		'default'         => '',
+		'active_callback' => [
+			[
+				[
+					'setting'  => 'image_position',
+					'operator' => '==',
+					'value'    => 'left',
+				],
+				[
+					'setting'  => 'image_position',
+					'operator' => '==',
+					'value'    => 'right',
+				],
+				[
+					'setting'  => 'image_position',
+					'operator' => '==',
+					'value'    => 'left-full',
+				],
+				[
+					'setting'  => 'image_position',
+					'operator' => '==',
+					'value'    => 'right-full',
+				],
+				[
+					'setting'  => 'image_position',
+					'operator' => '==',
+					'value'    => 'background',
+				],
+			],
+		],
+	],
+	[
+		'settings'        => 'image_stack',
+		'label'           => esc_html__( 'Stack image and content on mobile', 'mai-engine' ),
+		'type'            => 'checkbox',
+		'sanitize'        => 'mai_sanitize_bool',
+		'default'         => true,
+		'active_callback' => [
+			[
+				[
+					'setting'  => 'image_position',
+					'operator' => '==',
+					'value'    => 'left',
+				],
+				[
+					'setting'  => 'image_position',
+					'operator' => '==',
+					'value'    => 'right',
+				],
+				[
+					'setting'  => 'image_position',
+					'operator' => '==',
+					'value'    => 'left-full',
+				],
+				[
+					'setting'  => 'image_position',
+					'operator' => '==',
+					'value'    => 'right-full',
+				],
+				[
+					'setting'  => 'image_position',
+					'operator' => '==',
+					'value'    => 'background',
+				],
+			],
+		],
+	],
+	[
+		'settings' => 'boxed_heading',
+		'label'    => esc_html__( 'Boxed', 'mai-engine' ),
+		'type'     => 'custom',
+		'sanitize' => 'esc_html',
+		'default'  => '',
+	],
+	[
+		'settings' => 'boxed',
+		'label'    => esc_html__( 'Display boxed styling', 'mai-engine' ),
+		'type'     => 'checkbox',
+		'sanitize' => 'mai_sanitize_bool',
+		'default'  => true,
 	],
 	[
 		'settings' => 'columns',

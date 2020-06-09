@@ -1,6 +1,6 @@
 .entry-image-link {
 	display: var(--entry-image-link-display, block);
-	flex-basis: var(--entry-image-link-flex-basis, auto);
+	flex: var(--entry-image-link-flex, initial);
 	align-self: var(--entry-image-link-align, unset);
 	order: var(--entry-image-link-order, unset);
 	max-width: var(--image-width, unset);
@@ -41,7 +41,7 @@
 .has-image-left-full,
 .has-image-right-full {
 	--entry-image-link-display: flex;
-	--entry-image-link-flex-basis: 1 0 var(--image-width);
+	--entry-image-link-flex: 1 1 var(--image-width);
 	--entry-image-link-before-display: block;
 	--entry-image-object-fit: cover;
 	--entry-image-width: 100%;

@@ -177,7 +177,7 @@ msgstr ""
 msgid "Full"
 msgstr ""
 
-#: config/_settings/content-archives.php:76, config/_settings/content-archives.php:237, config/_settings/content-archives.php:352, config/_settings/grid-block.php:97, config/_settings/grid-block.php:361, config/_settings/grid-block.php:595, lib/blocks/icon.php:224, lib/customize/page-header.php:128, config/_settings/navigation-menus/after-header.php:20
+#: config/_settings/content-archives.php:76, config/_settings/content-archives.php:237, config/_settings/content-archives.php:352, config/_settings/grid-block.php:97, config/_settings/grid-block.php:350, config/_settings/grid-block.php:680, lib/blocks/icon.php:224, lib/customize/page-header.php:128, config/_settings/navigation-menus/after-header.php:20
 msgid "Center"
 msgstr ""
 
@@ -249,67 +249,67 @@ msgstr ""
 msgid "Footer Meta"
 msgstr ""
 
-#: config/_settings/content-archives.php:216, config/_settings/grid-block.php:342
+#: config/_settings/content-archives.php:216, config/_settings/grid-block.php:555
 msgid "Boxed"
 msgstr ""
 
-#: config/_settings/content-archives.php:223, config/_settings/grid-block.php:348
+#: config/_settings/content-archives.php:223, config/_settings/grid-block.php:561
 msgid "Display boxed styling"
 msgstr ""
 
-#: config/_settings/content-archives.php:230, config/_settings/grid-block.php:353
+#: config/_settings/content-archives.php:230, config/_settings/grid-block.php:342
 msgid "Align Text"
 msgstr ""
 
-#: config/_settings/content-archives.php:235, config/_settings/content-archives.php:248, config/_settings/content-archives.php:350, config/_settings/content-archives.php:370, config/_settings/grid-block.php:359, config/_settings/grid-block.php:380, config/_settings/grid-block.php:593, config/_settings/grid-block.php:621
+#: config/_settings/content-archives.php:235, config/_settings/content-archives.php:248, config/_settings/content-archives.php:350, config/_settings/content-archives.php:370, config/_settings/grid-block.php:348, config/_settings/grid-block.php:369, config/_settings/grid-block.php:678, config/_settings/grid-block.php:706
 msgid "Clear"
 msgstr ""
 
-#: config/_settings/content-archives.php:236, config/_settings/grid-block.php:360, config/_settings/grid-block.php:594, lib/customize/page-header.php:127
+#: config/_settings/content-archives.php:236, config/_settings/grid-block.php:349, config/_settings/grid-block.php:679, lib/customize/page-header.php:127
 msgid "Start"
 msgstr ""
 
-#: config/_settings/content-archives.php:238, config/_settings/grid-block.php:362, config/_settings/grid-block.php:596, lib/customize/page-header.php:129
+#: config/_settings/content-archives.php:238, config/_settings/grid-block.php:351, config/_settings/grid-block.php:681, lib/customize/page-header.php:129
 msgid "End"
 msgstr ""
 
-#: config/_settings/content-archives.php:243, config/_settings/grid-block.php:374
+#: config/_settings/content-archives.php:243, config/_settings/grid-block.php:363
 msgid "Align Text (vertical)"
 msgstr ""
 
-#: config/_settings/content-archives.php:249, config/_settings/content-archives.php:371, config/_settings/grid-block.php:381, config/_settings/grid-block.php:622, lib/blocks/icon.php:340, lib/customize/page-header.php:97
+#: config/_settings/content-archives.php:249, config/_settings/content-archives.php:371, config/_settings/grid-block.php:370, config/_settings/grid-block.php:707, lib/blocks/icon.php:340, lib/customize/page-header.php:97
 msgid "Top"
 msgstr ""
 
-#: config/_settings/content-archives.php:250, config/_settings/content-archives.php:372, config/_settings/grid-block.php:382, config/_settings/grid-block.php:623
+#: config/_settings/content-archives.php:250, config/_settings/content-archives.php:372, config/_settings/grid-block.php:371, config/_settings/grid-block.php:708
 msgid "Middle"
 msgstr ""
 
-#: config/_settings/content-archives.php:251, config/_settings/content-archives.php:373, config/_settings/grid-block.php:383, config/_settings/grid-block.php:624, lib/blocks/icon.php:348, lib/customize/page-header.php:98
+#: config/_settings/content-archives.php:251, config/_settings/content-archives.php:373, config/_settings/grid-block.php:372, config/_settings/grid-block.php:709, lib/blocks/icon.php:348, lib/customize/page-header.php:98
 msgid "Bottom"
 msgstr ""
 
-#: config/_settings/content-archives.php:285, config/_settings/grid-block.php:491
+#: config/_settings/content-archives.php:285, config/_settings/grid-block.php:576
 msgid "Columns (desktop)"
 msgstr ""
 
-#: config/_settings/content-archives.php:293, config/_settings/grid-block.php:513
+#: config/_settings/content-archives.php:293, config/_settings/grid-block.php:598
 msgid "Custom responsive columns"
 msgstr ""
 
-#: config/_settings/content-archives.php:300, config/_settings/grid-block.php:518
+#: config/_settings/content-archives.php:300, config/_settings/grid-block.php:603
 msgid "Columns (lg tablets)"
 msgstr ""
 
-#: config/_settings/content-archives.php:315, config/_settings/grid-block.php:541
+#: config/_settings/content-archives.php:315, config/_settings/grid-block.php:626
 msgid "Columns (sm tablets)"
 msgstr ""
 
-#: config/_settings/content-archives.php:330, config/_settings/grid-block.php:564
+#: config/_settings/content-archives.php:330, config/_settings/grid-block.php:649
 msgid "Columns (mobile)"
 msgstr ""
 
-#: config/_settings/content-archives.php:345, config/_settings/grid-block.php:587
+#: config/_settings/content-archives.php:345, config/_settings/grid-block.php:672
 msgid "Align Columns"
 msgstr ""
 
@@ -321,15 +321,15 @@ msgstr ""
 msgid "Right"
 msgstr ""
 
-#: config/_settings/content-archives.php:365, config/_settings/grid-block.php:615
+#: config/_settings/content-archives.php:365, config/_settings/grid-block.php:700
 msgid "Align Columns (vertical)"
 msgstr ""
 
-#: config/_settings/content-archives.php:385, config/_settings/grid-block.php:643
+#: config/_settings/content-archives.php:385, config/_settings/grid-block.php:728
 msgid "Column Gap"
 msgstr ""
 
-#: config/_settings/content-archives.php:392, config/_settings/grid-block.php:651
+#: config/_settings/content-archives.php:392, config/_settings/grid-block.php:736
 msgid "Row Gap"
 msgstr ""
 
@@ -377,247 +377,255 @@ msgstr ""
 msgid "Show/hide and re-order elements."
 msgstr ""
 
-#: config/_settings/grid-block.php:484
+#: config/_settings/grid-block.php:470
+msgid "Stack Image"
+msgstr ""
+
+#: config/_settings/grid-block.php:476
+msgid "Stack image and content on mobile"
+msgstr ""
+
+#: config/_settings/grid-block.php:569
 msgid "Layout"
 msgstr ""
 
-#: config/_settings/grid-block.php:662, config/_settings/grid-block.php:1217
+#: config/_settings/grid-block.php:747, config/_settings/grid-block.php:1302
 msgid "Entries"
 msgstr ""
 
-#: config/_settings/grid-block.php:672
+#: config/_settings/grid-block.php:757
 msgid "Post Type"
 msgstr ""
 
-#: config/_settings/grid-block.php:686, config/_settings/grid-block.php:1174
+#: config/_settings/grid-block.php:771, config/_settings/grid-block.php:1259
 msgid "Get Entries By"
 msgstr ""
 
-#: config/_settings/grid-block.php:692
+#: config/_settings/grid-block.php:777
 msgid "Default Query"
 msgstr ""
 
-#: config/_settings/grid-block.php:693
+#: config/_settings/grid-block.php:778
 msgid "Choice"
 msgstr ""
 
-#: config/_settings/grid-block.php:694
+#: config/_settings/grid-block.php:779
 msgid "Taxonomy/Meta"
 msgstr ""
 
-#: config/_settings/grid-block.php:695, config/_settings/grid-block.php:962, config/_settings/grid-block.php:1182, config/_settings/grid-block.php:1266
+#: config/_settings/grid-block.php:780, config/_settings/grid-block.php:1047, config/_settings/grid-block.php:1267, config/_settings/grid-block.php:1351
 msgid "Parent"
 msgstr ""
 
-#: config/_settings/grid-block.php:706
+#: config/_settings/grid-block.php:791
 msgid "Choose Entries"
 msgstr ""
 
-#: config/_settings/grid-block.php:707
+#: config/_settings/grid-block.php:792
 msgid "Show specific entries. Choose all that apply."
 msgstr ""
 
-#: config/_settings/grid-block.php:731
+#: config/_settings/grid-block.php:816
 msgid "Taxonomies"
 msgstr ""
 
-#: config/_settings/grid-block.php:749, config/_settings/grid-block.php:852
+#: config/_settings/grid-block.php:834, config/_settings/grid-block.php:937
 msgid "Add Condition"
 msgstr ""
 
-#: config/_settings/grid-block.php:753, config/_settings/grid-block.php:1160, config/_settings/grid-block.php:1180
+#: config/_settings/grid-block.php:838, config/_settings/grid-block.php:1245, config/_settings/grid-block.php:1265
 msgid "Taxonomy"
 msgstr ""
 
-#: config/_settings/grid-block.php:766
+#: config/_settings/grid-block.php:851
 msgid "Terms"
 msgstr ""
 
-#: config/_settings/grid-block.php:785
+#: config/_settings/grid-block.php:870
 msgid "Operator"
 msgstr ""
 
-#: config/_settings/grid-block.php:791
+#: config/_settings/grid-block.php:876
 msgid "In"
 msgstr ""
 
-#: config/_settings/grid-block.php:792
+#: config/_settings/grid-block.php:877
 msgid "Not In"
 msgstr ""
 
-#: config/_settings/grid-block.php:806
+#: config/_settings/grid-block.php:891
 msgid "Taxonomies Relation"
 msgstr ""
 
-#: config/_settings/grid-block.php:812, config/_settings/grid-block.php:918
+#: config/_settings/grid-block.php:897, config/_settings/grid-block.php:1003
 msgid "And"
 msgstr ""
 
-#: config/_settings/grid-block.php:813, config/_settings/grid-block.php:919
+#: config/_settings/grid-block.php:898, config/_settings/grid-block.php:1004
 msgid "Or"
 msgstr ""
 
-#: config/_settings/grid-block.php:834
+#: config/_settings/grid-block.php:919
 msgid "Meta Keys"
 msgstr ""
 
-#: config/_settings/grid-block.php:857
+#: config/_settings/grid-block.php:942
 msgid "Meta Key"
 msgstr ""
 
-#: config/_settings/grid-block.php:865
+#: config/_settings/grid-block.php:950
 msgid "Compare"
 msgstr ""
 
-#: config/_settings/grid-block.php:871
+#: config/_settings/grid-block.php:956
 msgid "Is equal to"
 msgstr ""
 
-#: config/_settings/grid-block.php:872
+#: config/_settings/grid-block.php:957
 msgid "Is not equal to"
 msgstr ""
 
-#: config/_settings/grid-block.php:873
+#: config/_settings/grid-block.php:958
 msgid "Is greater than"
 msgstr ""
 
-#: config/_settings/grid-block.php:874
+#: config/_settings/grid-block.php:959
 msgid "Is great than or equal to"
 msgstr ""
 
-#: config/_settings/grid-block.php:875
+#: config/_settings/grid-block.php:960
 msgid "Is less than"
 msgstr ""
 
-#: config/_settings/grid-block.php:876
+#: config/_settings/grid-block.php:961
 msgid "Is less than or equal to"
 msgstr ""
 
-#: config/_settings/grid-block.php:877
+#: config/_settings/grid-block.php:962
 msgid "Exists"
 msgstr ""
 
-#: config/_settings/grid-block.php:878
+#: config/_settings/grid-block.php:963
 msgid "Does not exist"
 msgstr ""
 
-#: config/_settings/grid-block.php:890
+#: config/_settings/grid-block.php:975
 msgid "Meta Value"
 msgstr ""
 
-#: config/_settings/grid-block.php:912
+#: config/_settings/grid-block.php:997
 msgid "Meta Keys Relation"
 msgstr ""
 
-#: config/_settings/grid-block.php:957, config/_settings/grid-block.php:1261
+#: config/_settings/grid-block.php:1042, config/_settings/grid-block.php:1346
 msgid "Show children of current entry"
 msgstr ""
 
-#: config/_settings/grid-block.php:991, config/_settings/grid-block.php:1193
+#: config/_settings/grid-block.php:1076, config/_settings/grid-block.php:1278
 msgid "Number of Entries"
 msgstr ""
 
-#: config/_settings/grid-block.php:992, config/_settings/grid-block.php:1194
+#: config/_settings/grid-block.php:1077, config/_settings/grid-block.php:1279
 msgid "Use 0 to show all."
 msgstr ""
 
-#: config/_settings/grid-block.php:1015, config/_settings/grid-block.php:1297
+#: config/_settings/grid-block.php:1100, config/_settings/grid-block.php:1382
 msgid "Offset"
 msgstr ""
 
-#: config/_settings/grid-block.php:1016, config/_settings/grid-block.php:1298
+#: config/_settings/grid-block.php:1101, config/_settings/grid-block.php:1383
 msgid "Skip this number of entries."
 msgstr ""
 
-#: config/_settings/grid-block.php:1039, config/_settings/grid-block.php:1321
+#: config/_settings/grid-block.php:1124, config/_settings/grid-block.php:1406
 msgid "Order By"
 msgstr ""
 
-#: config/_settings/grid-block.php:1045, config/_settings/grid-block.php:1327, lib/functions/grid.php:80, lib/functions/loop.php:345, lib/functions/loop.php:417
+#: config/_settings/grid-block.php:1130, config/_settings/grid-block.php:1412, lib/functions/grid.php:80, lib/functions/loop.php:345, lib/functions/loop.php:417
 msgid "Title"
 msgstr ""
 
-#: config/_settings/grid-block.php:1046, config/_settings/grid-block.php:1328
+#: config/_settings/grid-block.php:1131, config/_settings/grid-block.php:1413
 msgid "Slug"
 msgstr ""
 
-#: config/_settings/grid-block.php:1047
+#: config/_settings/grid-block.php:1132
 msgid "Date"
 msgstr ""
 
-#: config/_settings/grid-block.php:1048
+#: config/_settings/grid-block.php:1133
 msgid "Modified"
 msgstr ""
 
-#: config/_settings/grid-block.php:1049
+#: config/_settings/grid-block.php:1134
 msgid "Random"
 msgstr ""
 
-#: config/_settings/grid-block.php:1050
+#: config/_settings/grid-block.php:1135
 msgid "Comment Count"
 msgstr ""
 
-#: config/_settings/grid-block.php:1051
+#: config/_settings/grid-block.php:1136
 msgid "Menu Order"
 msgstr ""
 
-#: config/_settings/grid-block.php:1052
+#: config/_settings/grid-block.php:1137
 msgid "Meta Value Number"
 msgstr ""
 
-#: config/_settings/grid-block.php:1072
+#: config/_settings/grid-block.php:1157
 msgid "Meta key"
 msgstr ""
 
-#: config/_settings/grid-block.php:1091, config/_settings/grid-block.php:1350
+#: config/_settings/grid-block.php:1176, config/_settings/grid-block.php:1435
 msgid "Order"
 msgstr ""
 
-#: config/_settings/grid-block.php:1097, config/_settings/grid-block.php:1356
+#: config/_settings/grid-block.php:1182, config/_settings/grid-block.php:1441
 msgid "Ascending"
 msgstr ""
 
-#: config/_settings/grid-block.php:1098, config/_settings/grid-block.php:1357
+#: config/_settings/grid-block.php:1183, config/_settings/grid-block.php:1442
 msgid "Descending"
 msgstr ""
 
-#: config/_settings/grid-block.php:1114, config/_settings/grid-block.php:1373
+#: config/_settings/grid-block.php:1199, config/_settings/grid-block.php:1458
 msgid "Exclude Entries"
 msgstr ""
 
-#: config/_settings/grid-block.php:1115, config/_settings/grid-block.php:1374
+#: config/_settings/grid-block.php:1200, config/_settings/grid-block.php:1459
 msgid "Hide specific entries. Choose all that apply."
 msgstr ""
 
-#: config/_settings/grid-block.php:1139, config/_settings/grid-block.php:1401
+#: config/_settings/grid-block.php:1224, config/_settings/grid-block.php:1486
 msgid "Exclude"
 msgstr ""
 
-#: config/_settings/grid-block.php:1145, config/_settings/grid-block.php:1410
+#: config/_settings/grid-block.php:1230, config/_settings/grid-block.php:1495
 msgid "Exclude displayed"
 msgstr ""
 
-#: config/_settings/grid-block.php:1146, config/_settings/grid-block.php:1411
+#: config/_settings/grid-block.php:1231, config/_settings/grid-block.php:1496
 msgid "Exclude current"
 msgstr ""
 
-#: config/_settings/grid-block.php:1181
+#: config/_settings/grid-block.php:1266
 msgid "Name"
 msgstr ""
 
-#: config/_settings/grid-block.php:1218
+#: config/_settings/grid-block.php:1303
 msgid "Show specific entries. Choose all that apply. If empty, Grid will get entries by date."
 msgstr ""
 
-#: config/_settings/grid-block.php:1329
+#: config/_settings/grid-block.php:1414
 msgid "Entry Totals"
 msgstr ""
 
-#: config/_settings/grid-block.php:1330
+#: config/_settings/grid-block.php:1415
 msgid "Term ID"
 msgstr ""
 
-#: config/_settings/grid-block.php:1409
+#: config/_settings/grid-block.php:1494
 msgid "Exclude terms with no posts"
 msgstr ""
 
@@ -1085,8 +1093,94 @@ msgstr ""
 msgid "Theme Settings"
 msgstr ""
 
+#: lib/customize/updates.php:26
+msgid "Check for child theme updates"
+msgstr ""
+
+#: lib/customize/updates.php:27
+msgid "By checking this box, you allow Mai Engine to periodically check for child theme updates. Update requests send information about your site including software and theme data, as well as the site’s URL and locale. See the privacy policy for more details. Please note that updating your child theme may override any customizations that you have made."
+msgstr ""
+
 #: lib/customize/upsell.php:36
 msgid "Customize more now!"
+msgstr ""
+
+#: lib/functions/block-areas.php:22, lib/functions/block-areas.php:30
+msgid "Block Areas"
+msgstr ""
+
+#: lib/functions/block-areas.php:23
+msgid "Block Area"
+msgstr ""
+
+#: lib/functions/block-areas.php:24
+msgctxt "Admin Menu text"
+msgid "Block Areas"
+msgstr ""
+
+#: lib/functions/block-areas.php:25
+msgctxt "Block Area"
+msgid "Add New"
+msgstr ""
+
+#: lib/functions/block-areas.php:26
+msgid "Add New Block Area"
+msgstr ""
+
+#: lib/functions/block-areas.php:27
+msgid "New Block Area"
+msgstr ""
+
+#: lib/functions/block-areas.php:28
+msgid "Edit Block Area"
+msgstr ""
+
+#: lib/functions/block-areas.php:29
+msgid "View Block Area"
+msgstr ""
+
+#: lib/functions/block-areas.php:31
+msgid "Search Block Areas"
+msgstr ""
+
+#: lib/functions/block-areas.php:32
+msgid "Parent Block Area:"
+msgstr ""
+
+#: lib/functions/block-areas.php:33
+msgid "No block areas found."
+msgstr ""
+
+#: lib/functions/block-areas.php:34
+msgid "No block areas found in Trash."
+msgstr ""
+
+#: lib/functions/block-areas.php:35
+msgid "Block area archives"
+msgstr ""
+
+#: lib/functions/block-areas.php:36
+msgid "Insert in to block area"
+msgstr ""
+
+#: lib/functions/block-areas.php:37
+msgid "Uploaded to this block area"
+msgstr ""
+
+#: lib/functions/block-areas.php:38
+msgid "Filter block areas list"
+msgstr ""
+
+#: lib/functions/block-areas.php:39
+msgid "Block areas list navigation"
+msgstr ""
+
+#: lib/functions/block-areas.php:40
+msgid "Block areas list"
+msgstr ""
+
+#: lib/functions/block-areas.php:45
+msgid "Block areas to include in your theme."
 msgstr ""
 
 #: lib/functions/grid.php:82, lib/functions/loop.php:348

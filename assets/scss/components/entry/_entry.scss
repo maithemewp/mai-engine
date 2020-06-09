@@ -105,3 +105,12 @@
 	}
 }
 
+@include mq(false, sm) {
+
+	.has-image-stack {
+		--image-width: 100%;
+		--entry-flex-wrap: wrap;
+	}
+
+}
+
