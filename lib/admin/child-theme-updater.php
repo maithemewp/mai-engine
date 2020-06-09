@@ -15,19 +15,30 @@ add_action( 'upgrader_source_selection', 'mai_before_child_theme_update', 10, 4 
  *
  * @since 1.0.0
  *
- * @param string       $source        File source location.
- * @param string       $remote_source Remote file source location.
- * @param \WP_Upgrader $theme_object  WP_Upgrader instance.
- * @param array        $hook_extra    Extra arguments passed to hooked filters.
+ * @param string          $source        File source location.
+ * @param string          $remote_source Remote file source location.
+ * @param \Theme_Upgrader $theme_object  Theme_Upgrader instance.
+ * @param array           $hook_extra    Extra arguments passed to hooked filters.
  *
  * @return string
  */
 function mai_before_child_theme_update( $source, $remote_source, $theme_object, $hook_extra ) {
 
+	$enabled = genesis_get_option( 'mai_child_theme_updates' );
+
+	if ( ! $enabled ) {
+		return $source;
+	}
+
 	// Return early if there is an error or if it's not a theme update or if custom child theme.
 	if ( is_wp_error( $source ) || ! is_a( $theme_object, 'Theme_Upgrader' ) || 'default' === mai_get_active_theme() ) {
+		return $source;
+	}
 
-		// TODO: Return early if Genesis update.
+	// Return early if parent theme update.
+	$theme_info = $theme_object->theme_info();
+
+	if ( 'Genesis' === $theme_info->get( 'Name' ) ) {
 		return $source;
 	}
 
@@ -59,6 +70,11 @@ add_action( 'upgrader_post_install', 'mai_after_child_theme_update', 10, 3 );
  * @return bool
  */
 function mai_after_child_theme_update( $response, $hook_extra, $result ) {
+	$enabled = genesis_get_option( 'mai_child_theme_updates' );
+
+	if ( ! $enabled ) {
+		return $response;
+	}
 
 	// Return early if no response or destination does not exist or if custom child theme.
 	if ( ! $response || ! array_key_exists( 'destination', $result ) || 'default' === mai_get_active_theme() ) {
