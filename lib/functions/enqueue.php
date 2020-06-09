@@ -37,6 +37,33 @@ function mai_enqueue_child_theme_stylesheet() {
 	);
 }
 
+add_action( 'genesis_before', 'mai_js_nojs_script', 1 );
+/**
+ * Echo out the script that changes 'no-js' class to 'js'.
+ *
+ * Adds a script on the genesis_before hook which immediately changes the
+ * class to js if JavaScript is enabled. This is how WP does things on
+ * the back end, to allow different styles for the same elements
+ * depending if JavaScript is active or not.
+ *
+ * Outputting the script immediately also reduces a flash of incorrectly
+ * styled content, as the page does not load with no-js styles, then
+ * switch to js once everything has finished loading.
+ *
+ * @since  1.0.0
+ *
+ * @return void
+ */
+function mai_js_nojs_script() {
+	echo <<<EOT
+<script>
+//<![CDATA[
+(function(){var c = document.body.classList;c.remove('no-js');c.add('js')})();
+//]]>
+</script>
+EOT;
+}
+
 add_action( 'wp_enqueue_scripts', 'mai_enqueue_assets' );
 add_action( 'admin_enqueue_scripts', 'mai_enqueue_assets' );
 add_action( 'enqueue_block_editor_assets', 'mai_enqueue_assets' );

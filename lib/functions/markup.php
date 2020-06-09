@@ -107,6 +107,9 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'is-archive';
 	}
 
+	// Always assume no-js.
+	$classes[] = 'no-js';
+
 	return $classes;
 }
 
@@ -125,4 +128,3 @@ function mai_back_to_top_anchor( $attr ) {
 
 	return $attr;
 }
-
