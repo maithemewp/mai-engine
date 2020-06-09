@@ -219,9 +219,6 @@ function mai_load_files() {
 		'blocks/icon',
 		'blocks/image',
 
-		// Widgets.
-		'widgets/reusable-block',
-
 		// Customizer.
 		'customize/setup',
 		'customize/logo',
@@ -229,6 +226,7 @@ function mai_load_files() {
 		'customize/upsell',
 		'customize/loop',
 		'customize/page-header',
+		'customize/updates',
 	];
 
 	if ( is_admin() ) {

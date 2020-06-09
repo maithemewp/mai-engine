@@ -69,6 +69,12 @@ add_action( 'admin_init', 'mai_child_theme_update_checker' );
  * @return void
  */
 function mai_child_theme_update_checker() {
+	$enabled = genesis_get_option( 'mai_child_theme_updates' );
+
+	if ( ! $enabled ) {
+		return;
+	}
+
 	$child_theme = mai_get_active_theme();
 
 	if ( 'default' === $child_theme ) {
