@@ -49,7 +49,7 @@ msgstr ""
 msgid "Menu"
 msgstr ""
 
-#: config/_default/config.php:250, config/_default/config.php:521
+#: config/_default/config.php:250, config/_default/config.php:599
 msgid "Mobile Menu"
 msgstr ""
 
@@ -69,87 +69,87 @@ msgstr ""
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default/config.php:495, lib/admin/hide-elements.php:82
+#: config/_default/config.php:573, lib/admin/hide-elements.php:82
 msgid "Before Header"
 msgstr ""
 
-#: config/_default/config.php:496
+#: config/_default/config.php:574
 msgid "The Before Header widget area."
 msgstr ""
 
-#: config/_default/config.php:501
+#: config/_default/config.php:579
 msgid "Header Left"
 msgstr ""
 
-#: config/_default/config.php:502
+#: config/_default/config.php:580
 msgid "The Header Left widget area."
 msgstr ""
 
-#: config/_default/config.php:511
+#: config/_default/config.php:589
 msgid "Header Right"
 msgstr ""
 
-#: config/_default/config.php:512
+#: config/_default/config.php:590
 msgid "The Header Right widget area."
 msgstr ""
 
-#: config/_default/config.php:522
+#: config/_default/config.php:600
 msgid "The Mobile Menu widget area."
 msgstr ""
 
-#: config/_default/config.php:527
+#: config/_default/config.php:605
 msgid "Sidebar"
 msgstr ""
 
-#: config/_default/config.php:528
+#: config/_default/config.php:606
 msgid "The Sidebar widget area."
 msgstr ""
 
-#: config/_default/config.php:533
+#: config/_default/config.php:611
 msgid "After Entry"
 msgstr ""
 
-#: config/_default/config.php:534
+#: config/_default/config.php:612
 msgid "The After Entry widget area."
 msgstr ""
 
-#: config/_default/config.php:539, lib/admin/hide-elements.php:112
+#: config/_default/config.php:617, lib/admin/hide-elements.php:112
 msgid "Before Footer"
 msgstr ""
 
-#: config/_default/config.php:540
+#: config/_default/config.php:618
 msgid "The Before Footer widget area."
 msgstr ""
 
-#: config/_default/config.php:546, lib/admin/hide-elements.php:116
+#: config/_default/config.php:624, lib/admin/hide-elements.php:116
 msgid "Footer"
 msgstr ""
 
-#: config/_default/config.php:547
+#: config/_default/config.php:625
 msgid "The Footer widget area."
 msgstr ""
 
-#: config/_default/config.php:553, lib/admin/hide-elements.php:120
+#: config/_default/config.php:635, lib/admin/hide-elements.php:120
 msgid "Footer Credits"
 msgstr ""
 
-#: config/_default/config.php:554
+#: config/_default/config.php:636
 msgid "The Footer Credits widget area."
 msgstr ""
 
-#: config/_default/config.php:559
+#: config/_default/config.php:641
 msgid "Copyright"
 msgstr ""
 
-#: config/_default/config.php:560
+#: config/_default/config.php:642
 msgid "All Rights Reserved"
 msgstr ""
 
-#: config/_default/config.php:561
+#: config/_default/config.php:643
 msgid "Powered by"
 msgstr ""
 
-#: config/_default/config.php:562
+#: config/_default/config.php:644
 msgid "Mai Theme"
 msgstr ""
 
@@ -941,6 +941,30 @@ msgstr ""
 msgid "50%"
 msgstr ""
 
+#: lib/classes/class-mai-reusable-block-widget.php:20
+msgid "Mai Reusable Block"
+msgstr ""
+
+#: lib/classes/class-mai-reusable-block-widget.php:23
+msgid "Display an existing reusable block in a widget area."
+msgstr ""
+
+#: lib/classes/class-mai-reusable-block-widget.php:61
+msgid "Title:"
+msgstr ""
+
+#: lib/classes/class-mai-reusable-block-widget.php:76
+msgid "Select from saved Reusable Blocks:"
+msgstr ""
+
+#: lib/classes/class-mai-reusable-block-widget.php:78
+msgid "Select Reusable Block"
+msgstr ""
+
+#: lib/classes/class-mai-reusable-block-widget.php:91
+msgid "Edit the currently saved block."
+msgstr ""
+
 #: lib/customize/beta-tester.php:29
 msgid "Mai Beta Tester"
 msgstr ""
@@ -1179,30 +1203,6 @@ msgstr ""
 
 #: lib/functions/utilities.php:857
 msgid "Date Archives"
-msgstr ""
-
-#: lib/widgets/reusable-block.php:32
-msgid "Mai Reusable Block"
-msgstr ""
-
-#: lib/widgets/reusable-block.php:35
-msgid "Display an existing reusable block in a widget area."
-msgstr ""
-
-#: lib/widgets/reusable-block.php:73
-msgid "Title:"
-msgstr ""
-
-#: lib/widgets/reusable-block.php:88
-msgid "Select from saved Reusable Blocks:"
-msgstr ""
-
-#: lib/widgets/reusable-block.php:90
-msgid "Select Reusable Block"
-msgstr ""
-
-#: lib/widgets/reusable-block.php:103
-msgid "Edit the currently saved block."
 msgstr ""
 
 #: config/_settings/base-styles/buttons.php:7, config/_settings/base-styles/global.php:52

@@ -1,4 +1,17 @@
 :root {
 	--font-primary: montserrat, var(--font-stack);
 	--font-secondary: montserrat, var(--font-stack);
+	--border-radius: 0;
+}
+
+.nav-after-header {
+	background: var(--color-darkest);
+
+	--menu-item-link-color: var(--color-lightest);
+}
+
+.site-footer {
+	--heading-color: var(--color-lightest);
+	--entry-title-color: var(--color-light);
+	--entry-title-font-size: var(--text-lg);
 }
