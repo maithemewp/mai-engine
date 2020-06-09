@@ -559,7 +559,7 @@ return [
 					__( 'Copyright', 'mai-engine' ),
 					__( 'All Rights Reserved', 'mai-engine' ),
 					__( 'Powered by', 'mai-engine' ),
-					__( 'Mai Theme', 'mai-engine' ),
+					__( 'Mai Theme', 'mai-engine' )
 				),
 			],
 		],
