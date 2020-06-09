@@ -192,6 +192,7 @@ function mai_load_files() {
 		'functions/defaults',
 		'functions/plugins',
 		'functions/shortcodes',
+		'functions/block-areas',
 
 		// Structure.
 		'structure/archive',
