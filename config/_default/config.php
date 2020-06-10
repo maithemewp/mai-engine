@@ -337,6 +337,13 @@ return [
 
 			// Plugin styles.
 			[
+				'handle'    => mai_get_handle() . '-amp',
+				'src'       => mai_get_url() . 'assets/css/plugins/amp.min.css',
+				'condition' => function () {
+					return genesis_is_amp();
+				},
+			],
+			[
 				'handle'    => mai_get_handle() . '-atomic-blocks',
 				'src'       => mai_get_url() . 'assets/css/plugins/atomic-blocks.min.css',
 				'condition' => function () {

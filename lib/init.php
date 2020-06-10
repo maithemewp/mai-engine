@@ -195,6 +195,7 @@ function mai_load_files() {
 		'functions/templates',
 
 		// Structure.
+		'structure/amp',
 		'structure/archive',
 		'structure/breadcrumbs',
 		'structure/comments',
