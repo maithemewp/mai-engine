@@ -71,19 +71,15 @@ add_action( 'admin_menu', 'mai_show_reusable_blocks_admin_menu' );
  * @return void
  */
 function mai_show_reusable_blocks_admin_menu() {
-	if ( ! empty( mai_get_config( 'template-parts' ) ) ) {
-		return;
-	}
-
 	$title = esc_html__( 'Reusable Blocks', 'mai-engine' );
 
-	add_menu_page(
+	add_submenu_page(
+		'themes.php',
 		$title,
 		$title,
 		'edit_posts',
 		'edit.php?post_type=wp_block',
 		'',
-		'dashicons-editor-table',
 		22
 	);
 }
