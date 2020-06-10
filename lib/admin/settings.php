@@ -19,8 +19,8 @@ add_action( 'admin_menu', 'mai_admin_menu_page', 0 );
  */
 function mai_admin_menu_page() {
 	add_menu_page(
-		esc_html( 'Mai Theme', 'mai-engine' ),
-		esc_html( 'Mai Theme', 'mai-engine' ),
+		esc_html__( 'Mai Theme', 'mai-engine' ),
+		esc_html__( 'Mai Theme', 'mai-engine' ),
 		'manage_options',
 		'mai-theme',
 		'mai_render_admin_menu_page',
@@ -51,9 +51,9 @@ function mai_render_admin_menu_page() {
 
 	echo '<ul>';
 
-	echo '<li>· <a href="https://support.bizbudding.com/" target="_blank" rel="noopener nofollow">' . __('Support', 'mai-engine') . '</a></li>';
-	echo '<li>· <a href="https://bizbudding.com/" target="_blank" rel="noopener nofollow">' . __('BizBudding', 'mai-engine') . '</a></li>';
-	echo '<li>· <a href="https://demo.bizbudding.com/" target="_blank" rel="noopener nofollow">' . __('Theme Demos', 'mai-engine') . '</a></li>';
+	echo '<li>· <a href="https://support.bizbudding.com/" target="_blank" rel="noopener nofollow">' . __( 'Support', 'mai-engine' ) . '</a></li>';
+	echo '<li>· <a href="https://bizbudding.com/" target="_blank" rel="noopener nofollow">' . __( 'BizBudding', 'mai-engine' ) . '</a></li>';
+	echo '<li>· <a href="https://demo.bizbudding.com/" target="_blank" rel="noopener nofollow">' . __( 'Theme Demos', 'mai-engine' ) . '</a></li>';
 
 	echo '<ul>';
 
@@ -71,6 +71,10 @@ add_action( 'admin_menu', 'mai_show_reusable_blocks_admin_menu' );
  * @return void
  */
 function mai_show_reusable_blocks_admin_menu() {
+	if ( ! empty( mai_get_config( 'template-parts' ) ) ) {
+		return;
+	}
+
 	$title = esc_html__( 'Reusable Blocks', 'mai-engine' );
 
 	add_menu_page(
