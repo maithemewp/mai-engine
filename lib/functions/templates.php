@@ -104,7 +104,7 @@ function mai_render_template_part( $slug, array $args = [] ) {
 	$post = get_post( $id );
 	setup_postdata( $post );
 
-	if ( '' !== $post->post_content ) {
+	if ( '' !== $post->post_content && 'publish' === $post->post_status ) {
 		echo $args['before']; // phpcs:ignore WordPress.Security.EscapeOutput
 		the_content();
 		echo $args['after']; // phpcs:ignore WordPress.Security.EscapeOutput
