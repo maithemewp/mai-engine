@@ -230,6 +230,7 @@ function mai_load_files() {
 		'customize/loop',
 		'customize/page-header',
 		'customize/updates',
+		'customize/performance',
 	];
 
 	if ( is_admin() ) {

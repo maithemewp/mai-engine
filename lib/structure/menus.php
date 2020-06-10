@@ -144,7 +144,7 @@ add_filter( 'nav_menu_link_attributes', 'mai_nav_link_atts' );
  * @return array
  */
 function mai_nav_link_atts( $atts ) {
-	$atts['class']  = 'menu-item-link';
+	$atts['class'] = 'menu-item-link';
 	$atts['class'] .= $atts['aria-current'] ? ' menu-item-link-current' : '';
 
 	return $atts;
@@ -156,9 +156,9 @@ add_filter( 'wp_nav_menu_objects', 'mai_first_last_menu_items' );
  *
  * @since 0.1.0
  *
- * @param object $items The menu items, sorted by each menu item's menu order.
+ * @param array $items The menu items, sorted by each menu item's menu order.
  *
- * @return string
+ * @return array
  */
 function mai_first_last_menu_items( $items ) {
 	$items[1]->classes[]                 = 'menu-item-first';
@@ -172,6 +172,41 @@ function mai_first_last_menu_items( $items ) {
  *
  * @since 0.1.0
  *
- * @return string|HTML
+ * @return string
  */
 add_filter( 'walker_nav_menu_start_el', 'do_shortcode' );
+
+add_filter( 'nav_menu_css_class', 'mai_remove_menu_item_classes', 100 );
+add_filter( 'nav_menu_item_id', 'mai_remove_menu_item_classes', 100 );
+add_filter( 'page_css_class', 'mai_remove_menu_item_classes', 100 );
+/**
+ * Remove unnecessary menu item classes.
+ *
+ * @since 1.0.0
+ *
+ * @param $classes
+ *
+ * @return array|string
+ */
+function mai_remove_menu_item_classes( $classes ) {
+	if ( is_array( $classes ) && mai_get_option( 'remove-menu-item-classes', true ) ) {
+		$safelist = [
+			'menu-item',
+			'menu-item-first',
+			'menu-item-last',
+			'current-menu-item',
+		];
+
+		$classes = array_flip( $classes );
+
+		foreach ( $classes as $class => $index ) {
+			if ( ! in_array( $class, $safelist, true ) ) {
+				unset( $classes[ $class ] );
+			}
+		}
+
+		$classes = array_flip( $classes );
+	}
+
+	return $classes;
+}

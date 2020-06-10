@@ -12,10 +12,21 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-// Remove default child theme stylesheet.
-remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
+add_action('init', 'mai_genesis_style_trump');
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function mai_genesis_style_trump() {
+	if ( mai_get_option( 'genesis-style-trump', true ) ) {
+		remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
+		add_action( 'get_footer', 'mai_enqueue_child_theme_stylesheet' );
+	}
+}
 
-add_action( 'get_footer', 'mai_enqueue_child_theme_stylesheet' );
 /**
  * Genesis style trump, and cache bust when stylesheet is updated.
  *
