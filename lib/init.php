@@ -208,6 +208,7 @@ function mai_load_files() {
 		'structure/search-form',
 		'structure/sidebar',
 		'structure/single',
+		'structure/template-parts',
 		'structure/widget-areas',
 		'structure/wrap',
 

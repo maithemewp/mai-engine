@@ -557,6 +557,19 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| Template Parts
+	|--------------------------------------------------------------------------
+	|
+	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
+	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
+	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
+	|
+	*/
+
+	'template-parts' => [],
+
+	/*
+	|--------------------------------------------------------------------------
 	| Widget Areas
 	|--------------------------------------------------------------------------
 	|
@@ -595,12 +608,6 @@ return [
 				],
 			],
 			[
-				'id'          => 'mobile-menu',
-				'name'        => __( 'Mobile Menu', 'mai-engine' ),
-				'description' => __( 'The Mobile Menu widget area.', 'mai-engine' ),
-				'location'    => 'mai_after_header_wrap',
-			],
-			[
 				'id'          => 'sidebar',
 				'name'        => __( 'Sidebar', 'mai-engine' ),
 				'description' => __( 'The Sidebar widget area.', 'mai-engine' ),
@@ -611,6 +618,12 @@ return [
 				'name'        => __( 'After Entry', 'mai-engine' ),
 				'description' => __( 'The After Entry widget area.', 'mai-engine' ),
 				'location'    => '',
+			],
+			[
+				'id'          => 'mobile-menu',
+				'name'        => __( 'Mobile Menu', 'mai-engine' ),
+				'description' => __( 'The Mobile Menu widget area.', 'mai-engine' ),
+				'location'    => 'mai_after_header_wrap',
 			],
 			[
 				'id'          => 'before-footer',
@@ -624,7 +637,6 @@ return [
 				'name'        => __( 'Footer', 'mai-engine' ),
 				'description' => __( 'The Footer widget area.', 'mai-engine' ),
 				'location'    => 'genesis_footer',
-				'priority'    => 10,
 				'args'        => [
 					'before' => '',
 					'after'  => '',
