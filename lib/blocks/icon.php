@@ -11,7 +11,7 @@
 
 add_action( 'acf/init', 'mai_register_icon_block' );
 /**
- * Description of expected behavior.
+ * Register Mai Icon block.
  *
  * @since 0.1.0
  *
@@ -29,6 +29,9 @@ function mai_register_icon_block() {
 				'keywords'        => [ 'icon' ],
 				'icon'            => 'heart',
 				'mode'            => 'preview',
+				'supports'        => [
+					'align' => false,
+				],
 			]
 		);
 	}
@@ -52,9 +55,7 @@ function mai_do_icon_block( $block, $content = '', $is_preview = false, $post_id
 		'icon'  => get_field( 'icon' ),
 	];
 
-	foreach ( mai_get_icon_default_args() as $param => $default ) {
-		$atts[ $param ] = get_field( $param ) ?: $default;
-	}
+	$atts = wp_parse_args( $atts, mai_get_icon_default_args() );
 
 	echo mai_get_icon( $atts );
 }
@@ -167,6 +168,7 @@ function mai_register_icon_field_groups() {
 					'name'              => 'icon',
 					'label'             => esc_html__( 'Icon', 'mai-engine' ),
 					'type'              => 'select',
+					'default'           => 'heart',
 					'multiple'          => 0,
 					'ui'                => 1,
 					'ajax'              => 1,
@@ -207,8 +209,8 @@ function mai_register_icon_field_groups() {
 					'type'          => 'button_group',
 					'default_value' => 'block',
 					'choices'       => [
-						'inline-block' => esc_html__( 'Inline', 'mai-engine' ),
 						'block'        => esc_html__( 'Block', 'mai-engine' ),
+						'inline-block' => esc_html__( 'Inline', 'mai-engine' ),
 					],
 					'allow_null'    => 0,
 					'layout'        => 'horizontal',
@@ -228,6 +230,13 @@ function mai_register_icon_field_groups() {
 					'default_value' => '',
 					'layout'        => 'horizontal',
 					'return_format' => 'value',
+					'conditional_logic' => [
+						[
+							'field'    => 'field_5e3f49c18c634', // Display.
+							'operator' => '==',
+							'value'    => 'block',
+						],
+					],
 				],
 				[
 					'key'           => 'field_5e3f4a0f8c636',
