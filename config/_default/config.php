@@ -644,10 +644,6 @@ return [
 				'name'        => __( 'Footer', 'mai-engine' ),
 				'description' => __( 'The Footer widget area.', 'mai-engine' ),
 				'location'    => 'genesis_footer',
-				'args'        => [
-					'before' => '',
-					'after'  => '',
-				],
 			],
 			[
 				'id'          => 'footer-credits',
