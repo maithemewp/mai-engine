@@ -195,10 +195,10 @@ add_filter( 'genesis_attr_page-header', 'mai_add_page_header_content_type_css' )
  * @return array
  */
 function mai_add_page_header_content_type_css( $attr ) {
-	$args    = mai_get_template_args();
 	$config  = mai_get_config( 'page-header' );
-	$color   = isset( $args['page-header-background-color'] ) && ! empty( $args['page-header-background-color'] ) ? $args['page-header-background-color'] : mai_get_option( 'page-header-background-color' );
-	$opacity = isset( $args['page-header-overlay-opacity'] ) && ! empty( $args['page-header-overlay-opacity'] ) ? $args['page-header-overlay-opacity'] : mai_get_option( 'page-header-overlay-opacity' );
+	$args    = mai_get_template_args();
+	$color   = isset( $args['page-header-background-color'] ) && ! empty( $args['page-header-background-color'] ) ? $args['page-header-background-color'] : mai_get_option( 'page-header-background-color', $config['background-color'] );
+	$opacity = isset( $args['page-header-overlay-opacity'] ) && ! empty( $args['page-header-overlay-opacity'] ) ? $args['page-header-overlay-opacity'] : mai_get_option( 'page-header-overlay-opacity', $config['overlay-opacity'] );
 	$styles  = '';
 
 	if ( $color ) {
