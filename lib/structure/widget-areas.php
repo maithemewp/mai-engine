@@ -19,9 +19,15 @@ add_action( 'genesis_before', 'mai_widget_areas' );
  */
 function mai_widget_areas() {
 	$widget_areas = mai_get_config( 'widget-areas' )['add'];
+	$removed      = mai_get_config( 'widget-areas' )['remove'];
 
 	foreach ( $widget_areas as $widget_area ) {
-		$id       = $widget_area['id'];
+		$id = $widget_area['id'];
+
+		if ( in_array( $id, $removed, true ) ) {
+			continue;
+		}
+
 		$hook     = isset( $widget_area['location'] ) ? $widget_area['location'] : false;
 		$priority = isset( $widget_area['priority'] ) ? $widget_area['priority'] : 10;
 		$defaults = [
@@ -31,7 +37,7 @@ function mai_widget_areas() {
 		];
 		$args     = isset( $widget_area['args'] ) ? wp_parse_args( $widget_area['args'], $defaults ) : $defaults;
 
-		if ( $hook && ! mai_is_element_hidden( mai_convert_case( $id ) ) ) {
+		if ( $hook && is_active_sidebar( $id ) && ! mai_is_element_hidden( mai_convert_case( $id ) ) ) {
 			add_action(
 				$hook,
 				function () use ( $id, $args ) {
