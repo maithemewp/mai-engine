@@ -51,8 +51,8 @@ function mai_setup_loop() {
  * @return void
  */
 function mai_do_loop() {
-	$archive = mai_is_type_archive();
 	$args    = mai_get_template_args();
+	$archive = ( 'archive' === $args['context'] );
 
 	if ( have_posts() ) {
 
