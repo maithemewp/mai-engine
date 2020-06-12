@@ -4,7 +4,7 @@
 	align-self: var(--entry-image-link-align, unset);
 	order: var(--entry-image-link-order, unset);
 	max-width: var(--image-width, unset);
-	margin: var(--entry-image-link-margin, 0 0 var(--spacing-xl));
+	margin: var(--entry-image-link-margin, var(--entry-image-link-margin-top, 0) var(--entry-image-link-margin-right, 0) var(--entry-image-link-margin-bottom, var(--spacing-lg)) var(--entry-image-link-margin-left, 0));
 	line-height: 0;
 
 	&::before {
@@ -92,12 +92,12 @@
 }
 
 .has-boxed.has-image-full .entry-image-link {
-	margin-right: calc(var(--entry-padding) * -1);
-	margin-left: calc(var(--entry-padding) * -1);
+	--entry-image-link-margin-right: calc(var(--entry-padding) * -1);
+	--entry-image-link-margin-left: calc(var(--entry-padding) * -1);
 }
 
 .has-boxed.has-image-full .entry-image-link:first-child {
-	margin-top: calc(var(--entry-padding) * -1);
+	--entry-image-link-margin-top: calc(var(--entry-padding) * -1);
 }
 
 .has-image-background {
