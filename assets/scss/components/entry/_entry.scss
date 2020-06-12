@@ -76,6 +76,8 @@
 	// Can't apply left/right margin because it overrides alignwide/alignfull.
 	margin-bottom: var(--entries-margin-top, var(--spacing-md));
 
+	--entry-meta-margin: 0 0 var(--spacing-md) 0;
+
 	&:last-child {
 		--entries-margin-top: 0;
 	}

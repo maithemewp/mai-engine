@@ -3,6 +3,6 @@
 }
 
 .entry-meta {
-	margin: var(--entry-meta-margin, var(--paragraph-margin, 0 0 var(--spacing-xl)));
+	margin: var(--entry-meta-margin, 0 0 var(--spacing-xl) 0);
 	font-size: var(--entry-meta-font-size, var(--text-sm));
 }
