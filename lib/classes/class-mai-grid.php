@@ -240,9 +240,10 @@ class Mai_Grid {
 	 * @return array
 	 */
 	public function get_post_query_args() {
+		$per_page   = ( 0 === $this->args['posts_per_page'] ) ? -1 : $this->args['posts_per_page'];
 		$query_args = [
 			'post_type'           => $this->args['post_type'],
-			'posts_per_page'      => $this->args['posts_per_page'],
+			'posts_per_page'      => $per_page,
 			'post_status'         => 'publish',
 			'offset'              => $this->args['offset'],
 			'ignore_sticky_posts' => true,

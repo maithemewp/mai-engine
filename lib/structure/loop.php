@@ -155,7 +155,7 @@ function mai_archive_posts_per_page( $query ) {
 	if ( ! isset( $args['posts_per_page'] ) || ( empty( $args['posts_per_page'] ) && '0' !== $args['posts_per_page'] ) ) {
 		return;
 	}
-	// TODO: Hide posts if posts_per_page is 0?
+
 	// Set posts per page.
 	$query->set( 'posts_per_page', $args['posts_per_page'] );
 }
