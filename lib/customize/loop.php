@@ -46,17 +46,17 @@ function mai_archive_settings_customizer_settings() {
 		]
 	);
 
-	Kirki::add_field(
+	\Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'custom',
 			'settings'    => 'archive-settings-refresh',
 			'section'     => $section,
 			'label'       => esc_html__( 'Refresh after updating!', 'mai-engine' ),
-			'description' => esc_html__( 'In order to show/hide panels for the updated values you must reload the Customizer after saving any changes.', 'mai-engine' ),
-			'default'     => sprintf( '<button onClick="window.location.reload();" class="button button-primary">%s</button>', esc_html__( 'Refresh Now', 'mai-engine' ) ),
+			'description' => sprintf( '<p>%s</p>', esc_html__( 'In order to show/hide panels for the updated values you must reload the Customizer after saving any changes.', 'mai-engine' ) ),
 		]
 	);
+
 }
 
 add_action( 'init', 'mai_single_settings_customizer_settings' );
@@ -96,15 +96,16 @@ function mai_single_settings_customizer_settings() {
 		]
 	);
 
-	Kirki::add_field(
+
+	\Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'custom',
 			'settings'    => 'single-settings-refresh',
 			'section'     => $section,
 			'label'       => esc_html__( 'Refresh after updating!', 'mai-engine' ),
-			'description' => esc_html__( 'In order to show/hide panels for the updated values you must reload the Customizer after saving any changes.', 'mai-engine' ),
-			'default'     => sprintf( '<button onClick="window.location.reload();" class="button button-primary">%s</button>', esc_html__( 'Refresh Now', 'mai-engine' ) ),
+			'description' => sprintf( '<p>%s</p>', esc_html__( 'In order to show/hide panels for the updated values you must reload the Customizer after saving any changes.', 'mai-engine' ) ),
 		]
 	);
+
 }
