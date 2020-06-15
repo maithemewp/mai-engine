@@ -42,22 +42,17 @@ function mai_register_icon_block() {
  *
  * @since 0.1.0
  *
- * @param array  $block      The block settings and attributes.
- * @param string $content    The block inner HTML (empty).
- * @param bool   $is_preview True during AJAX preview.
- * @param int    $post_id    The post ID this block is saved to.
- *
  * @return void
  */
-function mai_do_icon_block( $block, $content = '', $is_preview = false, $post_id = 0 ) {
-	$atts = [
-		'style' => get_field( 'style' ),
-		'icon'  => get_field( 'icon' ),
-	];
+function mai_do_icon_block() {
+	$args     = [];
+	$settings = array_keys( mai_get_icon_default_args() );
 
-	$atts = wp_parse_args( $atts, mai_get_icon_default_args() );
+	foreach ( $settings as $setting ) {
+		$args[ $setting ] = get_field( $setting );
+	}
 
-	echo mai_get_icon( $atts );
+	echo mai_get_icon( $args );
 }
 
 add_filter( 'acf/load_field/key=field_5e3f4bcd978f9', 'mai_load_icon_choices' );
@@ -77,6 +72,7 @@ function mai_load_icon_choices( $field ) {
 	if ( 'acf-field-group' === get_post_type() ) {
 		return $field;
 	}
+
 	$field['choices']       = mai_get_icon_choices( 'light' );
 	$field['default_value'] = 'heart';
 
@@ -217,19 +213,19 @@ function mai_register_icon_field_groups() {
 					'return_format' => 'value',
 				],
 				[
-					'key'           => 'field_5e3f49e68c635',
-					'name'          => 'align',
-					'label'         => esc_html__( 'Align', 'mai-engine' ),
-					'type'          => 'button_group',
-					'choices'       => [
+					'key'               => 'field_5e3f49e68c635',
+					'name'              => 'align',
+					'label'             => esc_html__( 'Align', 'mai-engine' ),
+					'type'              => 'button_group',
+					'choices'           => [
 						'left'   => esc_html__( 'Left', 'mai-engine' ),
 						'center' => esc_html__( 'Center', 'mai-engine' ),
 						'right'  => esc_html__( 'Right', 'mai-engine' ),
 					],
-					'allow_null'    => 0,
-					'default_value' => '',
-					'layout'        => 'horizontal',
-					'return_format' => 'value',
+					'allow_null'        => 0,
+					'default_value'     => '',
+					'layout'            => 'horizontal',
+					'return_format'     => 'value',
 					'conditional_logic' => [
 						[
 							'field'    => 'field_5e3f49c18c634', // Display.
