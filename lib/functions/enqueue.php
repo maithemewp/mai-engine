@@ -12,7 +12,7 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-add_action('init', 'mai_genesis_style_trump');
+add_action( 'init', 'mai_genesis_style_trump' );
 /**
  * Description of expected behavior.
  *

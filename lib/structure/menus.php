@@ -113,24 +113,6 @@ function mai_replace_hash_with_void( $menu_item ) {
 	return $menu_item;
 }
 
-add_filter( 'wp_nav_menu_args', 'mai_footer_menu_depth' );
-/**
- * Reduces secondary navigation menu to one level depth.
- *
- * @since 2.2.3
- *
- * @param array $args Original menu options.
- *
- * @return array Menu options with depth set to 1.
- */
-function mai_footer_menu_depth( $args ) {
-	if ( 'footer' === $args['theme_location'] ) {
-		$args['depth'] = 1;
-	}
-
-	return $args;
-}
-
 add_filter( 'nav_menu_link_attributes', 'mai_nav_link_atts' );
 /**
  * Pass nav menu link attributes through attribute parser.
