@@ -20,7 +20,6 @@ return [
 	],
 	'theme-support' => [
 		'add' => [
-			'sticky-header',
 			'transparent-header',
 		],
 	],
