@@ -1,5 +1,15 @@
 :root {
-	--font-primary: montserrat, var(--font-stack);
+	--text-md: 18px;
+	--font-primary: hind, var(--font-stack);
 	--font-secondary: montserrat, var(--font-stack);
-	--border-radius: 0;
+	--h2-font-size: var(--text-xl);
+	--h3-font-size: var(--text-lg);
+	--button-font-size: var(--text-sm);
+	--button-font-family: var(--font-secondary);
+	--footer-credits-padding: 0;
+	--blockquote-border-left: 0;
+
+	@include mq(lg) {
+		--text-md: 20px;
+	}
 }

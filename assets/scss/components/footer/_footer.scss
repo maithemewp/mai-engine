@@ -21,7 +21,7 @@
 }
 
 .footer-credits {
-	padding: var(--spacing-lg) 0;
+	padding: var(--footer-credits-padding, (var(--spacing-lg) 0));
 	font-size: smaller;
 	text-align: var(--footer-credits-text-align, center);
 

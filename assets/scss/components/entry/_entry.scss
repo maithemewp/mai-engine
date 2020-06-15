@@ -17,7 +17,11 @@
 }
 
 .single-entry {
-	margin-bottom: var(--spacing-xxl);
+	margin-bottom: var(--single-entry-margin-bottom, var(--spacing-xxl));
+}
+
+.has-alignfull-first {
+	--single-entry-margin-bottom: 0;
 }
 
 [class*="has-image-left"],
