@@ -77,7 +77,7 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'has-transparent-header';
 	}
 
-	// Add alignfull class.
+	// Add alignfull first class.
 	if ( mai_has_alignfull_first() ) {
 		$classes[] = 'has-alignfull-first';
 	}

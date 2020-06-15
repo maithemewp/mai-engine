@@ -947,19 +947,20 @@ function mai_get_post_content( $post_slug_or_id ) {
 		return;
 	}
 
-	$loop = new WP_Query( array(
+	$loop = new WP_Query( [
 		'post_type'              => $post_type,
 		'post__in'               => [ $post_id ],
 		'posts_per_page'         => 1,
 		'no_found_rows'          => true,
 		'update_post_term_cache' => false,
 		'update_post_meta_cache' => false,
-	));
+	] );
 
 	ob_start();
-	if ( $loop->have_posts() ): while( $loop->have_posts() ): $loop->the_post();
+	if ( $loop->have_posts() ): while ( $loop->have_posts() ): $loop->the_post();
 		the_content();
-	endwhile; endif; wp_reset_postdata();
+	endwhile; endif;
+	wp_reset_postdata();
 	$content = ob_get_clean();
 
 	return $content;
@@ -1027,7 +1028,7 @@ function mai_get_menu( $menu, $args = '' ) {
 			switch ( trim( $args['display'] ) ) {
 				case 'list':
 					$atts['style'] = '--menu-display:block;--menu-item-link-padding:var(--spacing-xs) 0;';
-				break;
+					break;
 			}
 		}
 
@@ -1036,25 +1037,25 @@ function mai_get_menu( $menu, $args = '' ) {
 				switch ( trim( $args['align'] ) ) {
 					case 'left':
 						$atts['style'] = 'text-align:left;';
-					break;
+						break;
 					case 'center':
 						$atts['style'] = 'text-align:center;';
-					break;
+						break;
 					case 'right':
 						$atts['style'] = 'text-align:right;';
-					break;
+						break;
 				}
 			} else {
 				switch ( trim( $args['align'] ) ) {
 					case 'left':
 						$atts['style'] = '--menu-justify-content:flex-start;';
-					break;
+						break;
 					case 'center':
 						$atts['style'] = '--menu-justify-content:center;';
-					break;
+						break;
 					case 'right':
 						$atts['style'] = '--menu-justify-content:flex-end;';
-					break;
+						break;
 				}
 			}
 		}
@@ -1070,6 +1071,7 @@ function mai_get_menu( $menu, $args = '' ) {
 			]
 		);
 	}
+
 	return $html;
 }
 
@@ -1134,6 +1136,10 @@ function mai_get_icon( $args ) {
 		$attributes['style'] .= sprintf( '--icon-box-shadow:%s %s %s %s;', mai_get_unit_value( $args['x_offset'] ), mai_get_unit_value( $args['y_offset'] ), mai_get_unit_value( $args['blur'] ), $args['color_shadow'] );
 	}
 
+	if ( $args['color_text_shadow'] ) {
+		$attributes['style'] .= sprintf( '--icon-text-shadow:%s %s %s %s;', mai_get_unit_value( $args['text_shadow_x_offset'] ), mai_get_unit_value( $args['text_shadow_y_offset'] ), mai_get_unit_value( $args['text_shadow_blur'] ), $args['color_text_shadow'] );
+	}
+
 	if ( $args['border_width'] && $args['color_border'] ) {
 		$attributes['style'] .= sprintf( '--icon-border:%s solid %s;', mai_get_unit_value( $args['border_width'] ), mai_get_unit_value( $args['color_border'] ) );
 	}
@@ -1166,26 +1172,30 @@ function mai_get_icon( $args ) {
  */
 function mai_get_icon_default_args() {
 	return [
-		'style'            => 'light',
-		'icon'             => 'bolt',
-		'display'          => 'flex',
-		'align'            => 'center',
-		'size'             => '40',
-		'class'            => '',
-		'color_icon'       => 'currentColor',
-		'color_background' => '',
-		'color_border'     => '',
-		'color_shadow'     => '',
-		'margin_top'       => 0,
-		'margin_right'     => 0,
-		'margin_left'      => 0,
-		'margin_bottom'    => 0,
-		'padding'          => 0,
-		'border_width'     => 0,
-		'border_radius'    => '50%',
-		'x_offset'         => 0,
-		'y_offset'         => 0,
-		'blur'             => 0,
+		'style'                => 'light',
+		'icon'                 => 'bolt',
+		'display'              => 'flex',
+		'align'                => 'center',
+		'size'                 => '40',
+		'class'                => '',
+		'color_icon'           => 'currentColor',
+		'color_background'     => '',
+		'color_border'         => '',
+		'color_shadow'         => '',
+		'color_text_shadow'    => '',
+		'margin_top'           => 0,
+		'margin_right'         => 0,
+		'margin_left'          => 0,
+		'margin_bottom'        => 0,
+		'padding'              => 0,
+		'border_width'         => 0,
+		'border_radius'        => '50%',
+		'x_offset'             => 0,
+		'y_offset'             => 0,
+		'blur'                 => 0,
+		'text_shadow_x_offset' => 0,
+		'text_shadow_y_offset' => 0,
+		'text_shadow_blur'     => 0,
 	];
 }
 

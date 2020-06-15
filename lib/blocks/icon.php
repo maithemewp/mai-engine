@@ -281,9 +281,14 @@ function mai_register_icon_field_groups() {
 						],
 					],
 				],
+
+				/*
+				 * Box Shadow.
+				 */
+
 				[
 					'key'   => 'field_5e3f791235e3c',
-					'label' => esc_html__( 'Shadow', 'mai-engine' ),
+					'label' => esc_html__( 'Box Shadow', 'mai-engine' ),
 					'name'  => 'color_shadow',
 					'type'  => 'color_picker',
 				],
@@ -326,6 +331,61 @@ function mai_register_icon_field_groups() {
 						],
 					],
 				],
+
+				/*
+				 * Text Shadow.
+				 */
+
+				[
+					'key'   => 'color_text_shadow',
+					'label' => esc_html__( 'Text Shadow', 'mai-engine' ),
+					'name'  => 'color_text_shadow',
+					'type'  => 'color_picker',
+				],
+				[
+					'key'               => 'text_shadow_x_offset',
+					'label'             => esc_html__( 'X Offset', 'mai-engine' ),
+					'name'              => 'text_shadow_x_offset',
+					'type'              => 'number',
+					'default_value'     => 0,
+					'conditional_logic' => [
+						[
+							'field'    => 'color_text_shadow', // Shadow.
+							'operator' => '!=empty',
+						],
+					],
+				],
+				[
+					'key'               => 'text_shadow_y_offset',
+					'label'             => esc_html__( 'Y Offset', 'mai-engine' ),
+					'name'              => 'text_shadow_y_offset',
+					'type'              => 'number',
+					'default_value'     => 0,
+					'conditional_logic' => [
+						[
+							'field'    => 'color_text_shadow', // Shadow.
+							'operator' => '!=empty',
+						],
+					],
+				],
+				[
+					'key'               => 'text_shadow_blur',
+					'label'             => esc_html__( 'Blur', 'mai-engine' ),
+					'name'              => 'text_shadow_blur',
+					'type'              => 'number',
+					'default_value'     => 0,
+					'conditional_logic' => [
+						[
+							'field'    => 'color_text_shadow', // Shadow.
+							'operator' => '!=empty',
+						],
+					],
+				],
+
+				/*
+				 * Padding.
+				 */
+
 				[
 					'key'           => 'field_5e3f4bb49d74f',
 					'label'         => esc_html__( 'Padding', 'mai-engine' ),
