@@ -44,7 +44,7 @@ function mai_performance_customizer_settings() {
 		[
 			'type'     => 'checkbox',
 			'settings' => 'remove-menu-item-classes',
-			'label'    => esc_html__( 'Remove extra menu item classes', 'mai-engine' ),
+			'label'    => esc_html__( 'Remove menu item id and additional classes', 'mai-engine' ),
 			'section'  => $section_id,
 			'default'  => true,
 		]

@@ -158,37 +158,33 @@ function mai_first_last_menu_items( $items ) {
  */
 add_filter( 'walker_nav_menu_start_el', 'do_shortcode' );
 
-add_filter( 'nav_menu_css_class', 'mai_remove_menu_item_classes', 100 );
-add_filter( 'nav_menu_item_id', 'mai_remove_menu_item_classes', 100 );
-add_filter( 'page_css_class', 'mai_remove_menu_item_classes', 100 );
+add_filter( 'nav_menu_item_id', 'mai_remove_menu_item_classes' );
+add_filter( 'nav_menu_css_class', 'mai_remove_menu_item_classes' );
+add_filter( 'page_css_class', 'mai_remove_menu_item_classes' );
 /**
  * Remove unnecessary menu item classes.
  *
- * @since 1.0.0
+ * @since 0.3.12
  *
- * @param $classes
+ * @param array|string $attribute Classes or ID.
  *
  * @return array|string
  */
-function mai_remove_menu_item_classes( $classes ) {
-	if ( is_array( $classes ) && mai_get_option( 'remove-menu-item-classes', true ) ) {
-		$safelist = [
-			'menu-item',
-			'menu-item-first',
-			'menu-item-last',
-			'current-menu-item',
-		];
-
-		$classes = array_flip( $classes );
-
-		foreach ( $classes as $class => $index ) {
-			if ( ! in_array( $class, $safelist, true ) ) {
-				unset( $classes[ $class ] );
-			}
-		}
-
-		$classes = array_flip( $classes );
+function mai_remove_menu_item_classes( $attribute ) {
+	if ( ! mai_get_option( 'remove-menu-item-classes', true ) ) {
+		return $attribute;
 	}
 
-	return $classes;
+	if ( is_array( $attribute ) ) {
+		foreach( $attribute as $index => $class ) {
+			if ( ! mai_has_string( 'menu-item-', $class ) || in_array( $class, [ 'menu-item-first', 'menu-item-last' ]) ) {
+				continue;
+			}
+			unset( $attribute[ $index ] );
+		}
+	} elseif ( is_string( $attribute ) ) {
+		$attribute = mai_has_string( 'menu-item-', $attribute ) ? '' : $attribute;
+	}
+
+	return $attribute;
 }
