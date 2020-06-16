@@ -999,6 +999,8 @@ function mai_get_processed_content( $content ) {
 
 /**
  * Get the default read more text.
+ * This filter is run before any custom read more text is added via Customizer settings.
+ * If you want to filter after that, use `genesis_markup_entry-more-link_content` filter.
  *
  * @since 0.3.12
  *
