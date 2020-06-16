@@ -10,6 +10,11 @@
 	--link-text-decoration-hover: none;
 }
 
+.has-dark-header:not(.header-stuck) {
+	--title-area-color: var(--color-lightest);
+	--title-area-color-hover: var(--color-light);
+}
+
 .site-title {
 	margin: 0;
 	font-weight: var(--site-title-font-weight, var(--font-weight-heading));

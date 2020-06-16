@@ -3,14 +3,29 @@
 	--font-primary: hind, var(--font-stack);
 	--font-secondary: montserrat, var(--font-stack);
 	--shadow-opacity: 0.1;
+	--border-size: 2px;
 	--h2-font-size: var(--text-xl);
 	--h3-font-size: var(--text-lg);
 	--button-font-size: var(--text-sm);
 	--button-font-family: var(--font-secondary);
-	--footer-credits-padding: 0;
+	--input-placeholder-color: var(--color-medium);
 	--blockquote-border-left: 0;
+	--site-title-font-size: var(--text-md);
+	--menu-font-size: var(--text-sm);
+	--entry-title-font-size: var(--text-md);
+	--footer-credits-padding: 0;
 
 	@include mq(lg) {
 		--text-md: 20px;
 	}
+}
+
+.has-boxed {
+	--entry-border: 0;
+}
+
+.site-footer {
+	--link-color: currentColor;
+	--input-background-color: transparent;
+	--input-border: var(--border-size) var(--border-style) var(--color-medium);
 }
