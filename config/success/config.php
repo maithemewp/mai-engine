@@ -10,18 +10,25 @@
  */
 
 return [
-	'demos'         => [
+	'demos'          => [
 		// 'local'    => 3,
 		// 'coaching' => 4,
 		'agency' => 5,
 	],
-	'google-fonts'  => [
+	'google-fonts'   => [
 		'https://fonts.googleapis.com/css2?family=Hind&family=Montserrat:wght@700&display=swap',
 	],
-	'theme-support' => [
+	'theme-support'  => [
 		'add' => [
 			'transparent-header',
 		],
+	],
+	'page-header'    => [
+		'archive'          => '*',
+		'single'           => '*',
+		'background-color' => mai_get_color( 'darkest' ),
+		'image'            => '',
+		'text-color'       => 'light',
 	],
 	'widget-areas'   => [
 		'remove' => [

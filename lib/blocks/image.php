@@ -9,7 +9,6 @@
  * @license   GPL-2.0-or-later
  */
 
-
 add_filter( 'render_block', 'mai_render_image_block', 10, 2 );
 /**
  * Description of expected behavior.

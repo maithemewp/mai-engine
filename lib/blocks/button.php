@@ -9,7 +9,7 @@
  * @license   GPL-2.0-or-later
  */
 
-add_action( 'init', 'mai_register_button_styles' );
+add_action( 'init', 'mai_register_button_block_styles' );
 /**
  * Register additional button styles.
  *
@@ -17,7 +17,7 @@ add_action( 'init', 'mai_register_button_styles' );
  *
  * @return void
  */
-function mai_register_button_styles() {
+function mai_register_button_block_styles() {
 	$styles = [
 		'secondary',
 		'tertiary',
