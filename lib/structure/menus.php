@@ -176,8 +176,13 @@ function mai_remove_menu_item_classes( $attribute ) {
 	}
 
 	if ( is_array( $attribute ) ) {
+		$keepers = [
+			'menu-item-first',
+			'menu-item-last',
+			'menu-item-has-children',
+		];
 		foreach( $attribute as $index => $class ) {
-			if ( ! mai_has_string( 'menu-item-', $class ) || in_array( $class, [ 'menu-item-first', 'menu-item-last' ]) ) {
+			if ( ! mai_has_string( 'menu-item-', $class ) || in_array( $class, $keepers ) ) {
 				continue;
 			}
 			unset( $attribute[ $index ] );
