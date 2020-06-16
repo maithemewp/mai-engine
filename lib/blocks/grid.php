@@ -533,8 +533,7 @@ function mai_get_taxonomy_choices() {
 
 	$taxonomies = get_taxonomies(
 		[
-			'public'             => true,
-			'publicly_queryable' => true,
+			'public' => true,
 		],
 		'objects',
 		'or'
