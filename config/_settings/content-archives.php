@@ -194,7 +194,7 @@ return [
 		],
 		// TODO: This text should be filtered, same as the template that outputs it.
 		'input_attrs'     => [
-			'placeholder' => esc_html__( 'Read More', 'mai-engine' ),
+			'placeholder' => mai_get_more_link_default_text(),
 		],
 	],
 	[

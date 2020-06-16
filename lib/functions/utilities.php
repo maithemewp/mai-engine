@@ -998,6 +998,17 @@ function mai_get_processed_content( $content ) {
 }
 
 /**
+ * Get the default more link text.
+ *
+ * @since 0.3.12
+ *
+ * @return string
+ */
+function mai_get_more_link_default_text() {
+	return apply_filters( 'mai_more_link_text', esc_html__( 'Read More', 'mai-engine' ) );
+}
+
+/**
  * Get a menu.
  *
  * @since 0.3.3

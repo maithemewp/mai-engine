@@ -1053,8 +1053,7 @@ class Mai_Entry {
 			return;
 		}
 
-		// TODO: Where the heck is the best spot to filter this? I think we need a helper function cause this is the default everywhere.
-		$more_link_text = $this->args['more_link_text'] ? $this->args['more_link_text'] : __( 'Read More', 'mai-engine' );
+		$more_link_text = $this->args['more_link_text'] ? $this->args['more_link_text'] : mai_get_more_link_default_text();
 
 		// The link HTML.
 		$more_link = genesis_markup(

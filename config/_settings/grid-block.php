@@ -305,8 +305,7 @@ return [
 			],
 		],
 		'atts'       => [
-			// TODO: This text should be filtered, same as the template that outputs it.
-			'placeholder' => esc_html__( 'Read More', 'mai-engine' ),
+			'placeholder' => mai_get_more_link_default_text(),
 			'wrapper'     => [
 				'width' => '',
 				'class' => 'mai-grid-show-conditional',
