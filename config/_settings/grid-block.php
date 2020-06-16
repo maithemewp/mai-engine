@@ -1263,7 +1263,7 @@ return [
 		'default'    => 'date',
 		'choices'    => [
 			'name'   => esc_html__( 'Taxonomy', 'mai-engine' ),
-			'id'     => esc_html__( 'Name', 'mai-engine' ),
+			'id'     => esc_html__( 'Choice', 'mai-engine' ),
 			'parent' => esc_html__( 'Parent', 'mai-engine' ),
 		],
 		'conditions' => [
