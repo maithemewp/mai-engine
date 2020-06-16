@@ -1,5 +1,4 @@
 .sub-menu {
-	--list-margin: 0 !important;
 	--menu-item-width: 100%;
 	--menu-item-link-padding: var(--sub-menu-item-link-padding, var(--spacing-xs) var(--spacing-md));
 	--menu-item-link-color: var(--sub-menu-link-color, var(--color-darker));
@@ -36,6 +35,7 @@
 	white-space: var(--sub-sub-menu-white-space, normal);
 }
 
+.menu-list,
 .sidebar {
 	--sub-menu-position: static;
 	--sub-menu-display: block;

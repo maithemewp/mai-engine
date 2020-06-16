@@ -1013,6 +1013,11 @@ function mai_get_menu( $menu, $args = '' ) {
 		$menu_class = mai_add_classes( $args['class'], $menu_class );
 	}
 
+	$list = isset( $args['display'] ) && ( 'list' === $args['display'] );
+	if ( $list ) {
+		$menu_class = mai_add_classes( 'menu-list', $menu_class );
+	}
+
 	$html = wp_nav_menu( [
 		'container'   => 'ul',
 		'menu'        => $menu,
@@ -1022,41 +1027,25 @@ function mai_get_menu( $menu, $args = '' ) {
 	] );
 
 	if ( $html ) {
-		$atts = [];
+		$atts = [
+			'style' => '',
+		];
 
-		if ( isset( $args['display'] ) && $args['display'] ) {
-			switch ( trim( $args['display'] ) ) {
-				case 'list':
-					$atts['style'] = '--menu-display:block;--menu-item-link-padding:var(--spacing-xs) 0;';
-					break;
-			}
+		if ( $list ) {
+			$atts['style'] .= '--menu-display:block;--menu-item-link-padding:var(--spacing-xs) 0;';
 		}
 
 		if ( isset( $args['align'] ) && $args['align'] ) {
-			if ( isset( $args['display'] ) && 'list' === trim( $args['display'] ) ) {
-				switch ( trim( $args['align'] ) ) {
-					case 'left':
-						$atts['style'] = 'text-align:left;';
-						break;
-					case 'center':
-						$atts['style'] = 'text-align:center;';
-						break;
-					case 'right':
-						$atts['style'] = 'text-align:right;';
-						break;
-				}
-			} else {
-				switch ( trim( $args['align'] ) ) {
-					case 'left':
-						$atts['style'] = '--menu-justify-content:flex-start;';
-						break;
-					case 'center':
-						$atts['style'] = '--menu-justify-content:center;';
-						break;
-					case 'right':
-						$atts['style'] = '--menu-justify-content:flex-end;';
-						break;
-				}
+			switch ( trim( $args['align'] ) ) {
+				case 'left':
+					$atts['style'] .= '--menu-justify-content:flex-start;--menu-item-justify-content:flex-start;--menu-item-link-justify-content:flex-start;';
+					break;
+				case 'center':
+					$atts['style'] .= '--menu-justify-content:center;--menu-item-justify-content:center;--menu-item-link-justify-content:center;';
+					break;
+				case 'right':
+					$atts['style'] .= '--menu-justify-content:flex-end;--menu-item-justify-content:flex-end;--menu-item-link-justify-content:flex-end;';
+					break;
 			}
 		}
 		$html = genesis_markup(

@@ -16,7 +16,7 @@ ol,
 dl {
 	margin: var(--list-margin, var(--list-margin-top, 0) var(--list-margin-right, 0) var(--list-margin-bottom, var(--spacing-sm)) var(--list-margin-left, 0));
 	padding: var(--list-padding, 0);
-	list-style-position: var(--list-list-style-position, inside);
+	list-style-position: var(--list-style-position, inside);
 
 	ul,
 	ol,
@@ -34,7 +34,7 @@ li {
 .sidebar {
 
 	/* These are added to edistor.scss too */
-	--list-list-style-position: outside;
+	--list-style-position: outside;
 	--list-margin-left: var(--spacing-md);
 	--list-item-margin-bottom: var(--spacing-xs);
 }
