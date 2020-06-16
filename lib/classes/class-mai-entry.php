@@ -323,6 +323,10 @@ class Mai_Entry {
 				'context' => 'entry-image-link',
 				'echo'    => true,
 				'atts'    => $atts,
+				'params'  => [
+					'args'  => $this->args,
+					'entry' => $this->entry,
+				],
 			]
 		);
 
@@ -1135,6 +1139,10 @@ class Mai_Entry {
 			[
 				'open'    => '<div %s>',
 				'context' => 'adjacent-entry-pagination',
+				'params'  => [
+					'args'  => $this->args,
+					'entry' => $this->entry,
+				],
 			]
 		);
 
@@ -1146,6 +1154,10 @@ class Mai_Entry {
 				'context' => 'pagination-previous',
 				'content' => get_previous_post_link( '%link', $previous_post_text ),
 				'close'   => '</div>',
+				'params'  => [
+					'args'  => $this->args,
+					'entry' => $this->entry,
+				],
 			]
 		);
 
@@ -1157,6 +1169,10 @@ class Mai_Entry {
 				'context' => 'pagination-next',
 				'content' => get_next_post_link( '%link', $next_post_text ),
 				'close'   => '</div>',
+				'params'  => [
+					'args'  => $this->args,
+					'entry' => $this->entry,
+				],
 			]
 		);
 
@@ -1164,6 +1180,10 @@ class Mai_Entry {
 			[
 				'close'   => '</div>',
 				'context' => 'adjacent-entry-pagination',
+				'params'  => [
+					'args'  => $this->args,
+					'entry' => $this->entry,
+				],
 			]
 		);
 	}
