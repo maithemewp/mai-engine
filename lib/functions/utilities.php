@@ -1005,7 +1005,8 @@ function mai_get_processed_content( $content ) {
  * @return string
  */
 function mai_get_read_more_text() {
-	return apply_filters( 'mai_read_more', esc_html__( 'Read More', 'mai-engine' ) );
+	$text = apply_filters( 'mai_read_more_text', esc_html__( 'Read More', 'mai-engine' ) );
+	return sanitize_text_field( $text );
 }
 
 /**
