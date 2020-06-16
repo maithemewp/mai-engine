@@ -16,10 +16,7 @@ return [
 	| Genesis Settings
 	|--------------------------------------------------------------------------
 	|
-	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
-	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
-	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
-	|
+	| Genesis default settings.
 	*/
 
 	'genesis-settings' => [
@@ -40,10 +37,8 @@ return [
 	| Google Fonts
 	|--------------------------------------------------------------------------
 	|
-	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
-	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
-	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
-	|
+	| Google web fonts to be automatically enqueued. Use full URL from https://fonts.google.com/
+	| after choosing your fonts.
 	*/
 
 	'google-fonts' => [],
@@ -53,10 +48,8 @@ return [
 	| Image Sizes
 	|--------------------------------------------------------------------------
 	|
-	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
-	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
-	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
-	|
+	| Image sizes. When adding or modifying 'landscape', 'portrait', or 'square'
+	| you must use an aspect ratio, not actual dimensions.
 	*/
 
 	'image-sizes' => [
@@ -73,10 +66,7 @@ return [
 	| Page Layouts
 	|--------------------------------------------------------------------------
 	|
-	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
-	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
-	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
-	|
+	| Available page layouts.
 	*/
 
 	'page-layouts' => [
@@ -125,10 +115,8 @@ return [
 	| Site Layouts
 	|--------------------------------------------------------------------------
 	|
-	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
-	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
-	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
-	|
+	| Default site layouts. These can be overidden by via Customizer > Site Layouts,
+	| but these defaults are used when first activating the theme.
 	*/
 
 	'site-layouts' => [
@@ -144,10 +132,7 @@ return [
 	| Post Type Support
 	|--------------------------------------------------------------------------
 	|
-	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
-	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
-	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
-	|
+	| Add/remove post type support for various post types.
 	*/
 
 	'post-type-support' => [
@@ -164,10 +149,7 @@ return [
 	| Required Plugins
 	|--------------------------------------------------------------------------
 	|
-	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
-	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
-	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
-	|
+	| Required plugins to be installed during the plugins step in the setup wizard.
 	*/
 
 	'plugins' => [],
@@ -177,10 +159,7 @@ return [
 	| Responsive Menu
 	|--------------------------------------------------------------------------
 	|
-	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
-	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
-	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
-	|
+	| The responsive menu settings. You probably shouldn't mess with these.
 	*/
 
 	'responsive-menu' => [
@@ -224,10 +203,7 @@ return [
 	| Scripts and Styles
 	|--------------------------------------------------------------------------
 	|
-	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
-	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
-	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
-	|
+	| All of the scripts and styles to be added or removed.
 	*/
 
 	'scripts-and-styles' => [
@@ -382,10 +358,7 @@ return [
 	| Simple Social Icons
 	|--------------------------------------------------------------------------
 	|
-	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
-	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
-	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
-	|
+	| Default settings for Simple Social Icons plugin.
 	*/
 
 	'simple-social-icons' => [
@@ -404,10 +377,7 @@ return [
 	| Theme Support
 	|--------------------------------------------------------------------------
 	|
-	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
-	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
-	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
-	|
+	| Default theme supports. You probably shouldn't mess with these.
 	*/
 
 	'theme-support' => [
@@ -523,10 +493,8 @@ return [
 	| Page Header
 	|--------------------------------------------------------------------------
 	|
-	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
-	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
-	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
-	|
+	| The default page header settings. The can be overidden via Customizer settings,
+	| but this sets the default for when a theme is first activated.
 	*/
 
 	'page-header' => [
@@ -554,10 +522,7 @@ return [
 	| Custom functions
 	|--------------------------------------------------------------------------
 	|
-	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
-	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
-	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
-	|
+	| Default callable functions and filters to be run after_theme_setup.
 	*/
 
 	'custom-functions' => '__return_null',
@@ -567,10 +532,7 @@ return [
 	| Template Parts
 	|--------------------------------------------------------------------------
 	|
-	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
-	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
-	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
-	|
+	| Default template parts to be created and available for use.
 	*/
 
 	'template-parts' => [],
@@ -580,9 +542,7 @@ return [
 	| Widget Areas
 	|--------------------------------------------------------------------------
 	|
-	| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque
-	| venenatis augue eget lacinia. Suspendisse eros dui, fringilla si amet
-	| ante et, fringilla tristique just. In interdum vitae metus ut fiat.
+	| The available widget areas, including their output location.
 	|
 	*/
 
