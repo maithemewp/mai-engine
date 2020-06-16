@@ -305,7 +305,7 @@ return [
 			],
 		],
 		'atts'       => [
-			'placeholder' => mai_get_more_link_default_text(),
+			'placeholder' => mai_get_read_more_text(),
 			'wrapper'     => [
 				'width' => '',
 				'class' => 'mai-grid-show-conditional',

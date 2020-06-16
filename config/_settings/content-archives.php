@@ -192,9 +192,8 @@ return [
 				'value'    => 'more_link',
 			],
 		],
-		// TODO: This text should be filtered, same as the template that outputs it.
 		'input_attrs'     => [
-			'placeholder' => mai_get_more_link_default_text(),
+			'placeholder' => mai_get_read_more_text(),
 		],
 	],
 	[

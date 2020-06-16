@@ -998,14 +998,14 @@ function mai_get_processed_content( $content ) {
 }
 
 /**
- * Get the default more link text.
+ * Get the default read more text.
  *
  * @since 0.3.12
  *
  * @return string
  */
-function mai_get_more_link_default_text() {
-	return apply_filters( 'mai_more_link_text', esc_html__( 'Read More', 'mai-engine' ) );
+function mai_get_read_more_text() {
+	return apply_filters( 'mai_read_more', esc_html__( 'Read More', 'mai-engine' ) );
 }
 
 /**
