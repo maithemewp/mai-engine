@@ -4,9 +4,7 @@ namespace MaiSetupWizard;
 
 class ImportProvider extends AbstractServiceProvider {
 
-	public function add_hooks() {
-		\add_action( 'mai_setup_wizard_after_import', [ $this, 'after_import' ] );
-	}
+	public function add_hooks() {}
 
 	private function get_cache_dir() {
 		$theme = \mai_get_active_theme();
@@ -95,7 +93,7 @@ class ImportProvider extends AbstractServiceProvider {
 
 		$importer->import( $file );
 
-		\do_action( 'mai_setup_wizard_after_import' );
+		\do_action( 'mai_setup_wizard_after_import', $this->demo->get_chosen_demo() );
 
 		\wp_send_json_success( __( 'Finished importing content.xml file', 'mai-setup-wizard' ) );
 	}
@@ -348,82 +346,5 @@ class ImportProvider extends AbstractServiceProvider {
 		}
 
 		return $mods;
-	}
-
-	function after_import() {
-
-		// Set nav menu locations.
-		$menus     = \get_theme_support( 'genesis-menus' )[0];
-		$locations = [];
-
-		foreach ( $menus as $id => $name ) {
-			$name = 'Footer Menu' === $name ? $name : \str_replace( ' Menu', '', $name );
-			$menu = \get_term_by( 'name', $name, 'nav_menu' );
-
-			if ( $menu && isset( $menu->term_id ) ) {
-				$locations[ $id ] = $menu->term_id;
-			}
-		}
-
-		if ( ! empty( $locations ) ) {
-			\set_theme_mod( 'nav_menu_locations', $locations );
-		}
-
-		// Set static front page.
-		\update_option( 'show_on_front', 'page' );
-
-		// Trash default posts and pages.
-		$hello_world    = \get_page_by_path( 'hello-world', OBJECT, 'post' );
-		$sample_page    = \get_page_by_path( 'sample-page', OBJECT, 'page' );
-		$privacy_policy = \get_page_by_path( 'privacy-policy', OBJECT, 'page' );
-
-		if ( $hello_world && isset( $hello_world->ID ) ) {
-			\wp_delete_post( $hello_world->ID );
-		}
-
-		if ( $sample_page && isset( $sample_page->ID ) ) {
-			\wp_delete_post( $sample_page->ID );
-		}
-
-		if ( $privacy_policy && isset( $privacy_policy->ID ) ) {
-			\wp_delete_post( $privacy_policy->ID );
-		}
-
-		// Assign front page and posts page.
-		$home = \get_page_by_title( \apply_filters( 'mai_home_page_title', 'Home' ) );
-		$blog = \get_page_by_title( \apply_filters( 'mai_blog_page_title', 'Blog' ) );
-		$shop = \get_page_by_title( \apply_filters( 'mai_shop_page_title', 'Shop' ) );
-
-		if ( $home ) {
-			\update_option( 'page_on_front', $home->ID );
-		}
-
-		if ( $blog ) {
-			\update_option( 'page_for_posts', $blog->ID );
-		}
-
-		if ( $shop ) {
-			\update_option( 'woocommerce_shop_page_id', $shop->ID );
-		}
-
-		// Update WP Forms settings.
-		$wpforms = \get_option( 'wpforms_settings', [] );
-
-		if ( ! isset( $wpforms['disable-css'] ) ) {
-			$wpforms['disable-css'] = 2;
-
-			\update_option( 'wpforms_settings', $wpforms );
-		}
-
-		/**
-		 * WP Rewrite object.
-		 *
-		 * @var \WP_Rewrite $wp_rewrite WP Rewrite object.
-		 */
-		global $wp_rewrite;
-
-		// Update permalink structure.
-		$wp_rewrite->set_permalink_structure( '/%postname%/' );
-		$wp_rewrite->flush_rules();
 	}
 }

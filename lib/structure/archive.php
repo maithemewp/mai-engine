@@ -12,6 +12,9 @@
 // Enable shortcodes in archive description.
 add_filter( 'genesis_cpt_archive_intro_text_output', 'do_shortcode' );
 
+add_filter( 'excerpt_more', 'mai_read_more_ellipsis' );
+add_filter( 'get_the_content_more_link', 'mai_read_more_ellipsis' );
+add_filter( 'the_content_more_link', 'mai_read_more_ellipsis' );
 /**
  * Filter the excerpt and content "read more" string.
  *
@@ -26,9 +29,6 @@ add_filter( 'genesis_cpt_archive_intro_text_output', 'do_shortcode' );
  *
  * @return string
  */
-add_filter( 'excerpt_more', 'mai_read_more_ellipsis' );
-add_filter( 'get_the_content_more_link', 'mai_read_more_ellipsis' );
-add_filter( 'the_content_more_link', 'mai_read_more_ellipsis' );
 function mai_read_more_ellipsis( $more ) {
 	return mai_get_ellipsis();
 }

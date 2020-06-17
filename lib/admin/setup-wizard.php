@@ -97,11 +97,13 @@ add_filter( 'mai_setup_wizard_steps', 'mai_setup_wizard_welcome_step_description
 function mai_setup_wizard_welcome_step_description( $steps ) {
 	$text = __( 'Mai Theme Setup Wizard Page', 'mai-engine' );
 	$link = sprintf( '<a target="_blank" rel="noopener nofollow" href="https://bizbudding.com/mai-setup-wizard/">%s</a>', $text );
+
 	$steps['welcome']['description'] = sprintf( '%s %s %s',
 		__( 'Welcome to the Mai Setup Wizard! Enter your email address in the form below to receive automatic updates, share your environment information, win free swag, receive the latest news and get special offers. To learn more about providing your email and claiming your free goodies, visit the', 'mai-engine' ),
 		$link,
 		__( 'on BizBudding for all the details, terms and conditions of this program.', 'mai-engine' )
 	);
+
 	return $steps;
 }
 
@@ -119,11 +121,101 @@ function mai_setup_wizard_email_option( $email_address ) {
 	$message     = $email_address;
 	$headers     = [];
 	$attachments = [];
-	$filter      = function() use ( $email_address ) {
+	$filter      = function () use ( $email_address ) {
 		return $email_address;
 	};
 
 	add_filter( 'wp_mail_from', $filter );
 	wp_mail( $to, $subject, $message, $headers, $attachments );
 	remove_filter( 'wp_mail_from', $filter );
+}
+
+add_action( 'mai_setup_wizard_after_import', 'mai_after_setup_wizard_import' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param string $demo Chosen demo ID.
+ *
+ * @return void
+ */
+function mai_after_setup_wizard_import( $demo ) {
+
+	// Set nav menu locations.
+	$menus     = get_theme_support( 'genesis-menus' )[0];
+	$locations = [];
+
+	foreach ( $menus as $id => $name ) {
+		$name = 'Footer Menu' === $name ? $name : str_replace( ' Menu', '', $name );
+		$menu = get_term_by( 'name', $name, 'nav_menu' );
+
+		if ( $menu && isset( $menu->term_id ) ) {
+			$locations[ $id ] = $menu->term_id;
+		}
+	}
+
+	if ( ! empty( $locations ) ) {
+		set_theme_mod( 'nav_menu_locations', $locations );
+	}
+
+	// Set static front page.
+	update_option( 'show_on_front', 'page' );
+
+	// Trash default posts and pages.
+	$hello_world    = get_page_by_path( 'hello-world', OBJECT, 'post' );
+	$sample_page    = get_page_by_path( 'sample-page', OBJECT, 'page' );
+	$privacy_policy = get_page_by_path( 'privacy-policy', OBJECT, 'page' );
+
+	if ( $hello_world && isset( $hello_world->ID ) ) {
+		wp_delete_post( $hello_world->ID );
+	}
+
+	if ( $sample_page && isset( $sample_page->ID ) ) {
+		wp_delete_post( $sample_page->ID );
+	}
+
+	if ( $privacy_policy && isset( $privacy_policy->ID ) ) {
+		wp_delete_post( $privacy_policy->ID );
+	}
+
+	// Get front page title, e.g `Home - Reach Agency`.
+	$home = 'Home - ' . mai_convert_case( mai_get_active_theme() . ' ' . $demo, 'title' );
+
+	// Assign front page and posts page.
+	$front = get_page_by_title( $home );
+	$blog  = get_page_by_title( 'Blog' );
+	$shop  = get_page_by_title( 'Shop' );
+
+	if ( $front ) {
+		update_option( 'page_on_front', $front->ID );
+	}
+
+	if ( $blog ) {
+		update_option( 'page_for_posts', $blog->ID );
+	}
+
+	if ( $shop ) {
+		update_option( 'woocommerce_shop_page_id', $shop->ID );
+	}
+
+	// Update WP Forms settings.
+	$wpforms = get_option( 'wpforms_settings', [] );
+
+	if ( ! isset( $wpforms['disable-css'] ) ) {
+		$wpforms['disable-css'] = 2;
+
+		update_option( 'wpforms_settings', $wpforms );
+	}
+
+	/**
+	 * WP Rewrite object.
+	 *
+	 * @var WP_Rewrite $wp_rewrite WP Rewrite object.
+	 */
+	global $wp_rewrite;
+
+	// Update permalink structure.
+	$wp_rewrite->set_permalink_structure( '/%postname%/' );
+	$wp_rewrite->flush_rules();
 }
