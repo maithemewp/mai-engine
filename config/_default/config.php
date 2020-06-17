@@ -156,50 +156,6 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Responsive Menu
-	|--------------------------------------------------------------------------
-	|
-	| The responsive menu settings. You probably shouldn't mess with these.
-	*/
-
-	'responsive-menu' => [
-		'script' => [
-			'mainMenu'         => sprintf(
-				'<span class="menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
-				__( 'Menu', 'mai-engine' )
-			),
-			'menuIconClass'    => null,
-			'subMenuIconClass' => null,
-			'menuClasses'      => [
-				'combine' => [
-					'.nav-header-left',
-					'.nav-header-right',
-					'.nav-after-header',
-					'.mobile-menu .menu-header-menu-container',
-				],
-				'others'  => [],
-			],
-			'menuAnimation'    => [
-				'effect'   => 'fadeToggle',
-				'duration' => 'fast',
-				'easing'   => 'swing',
-			],
-			'subMenuAnimation' => [
-				'effect'   => 'slideToggle',
-				'duration' => 'fast',
-				'easing'   => 'swing',
-			],
-		],
-		'extras' => [
-			'media_query_width' => mai_get_breakpoint( 'md' ),
-			'css'               => '',
-			'enable_AMP'        => true,
-			'enable_non_AMP'    => true,
-		],
-	],
-
-	/*
-	|--------------------------------------------------------------------------
 	| Scripts and Styles
 	|--------------------------------------------------------------------------
 	|
@@ -535,7 +491,40 @@ return [
 	| Default template parts to be created and available for use.
 	*/
 
-	'template-parts' => [],
+	'template-parts' => [
+		[
+			'id'       => 'before-header',
+			'location' => 'genesis_before_header',
+			'default'  => '',
+		],
+		[
+			'id'       => 'header-left',
+			'location' => 'mai_header_left',
+			'default'  => '',
+		],
+		[
+			'id'       => 'header-right',
+			'location' => 'mai_header_right',
+			'default'  => '',
+		],
+		[
+			'id'       => 'before-footer',
+			'location' => 'genesis_footer',
+			'priority' => 5,
+			'default'  => '',
+		],
+		[
+			'id'       => 'footer',
+			'location' => 'genesis_footer',
+			'default'  => '',
+		],
+		[
+			'id'       => 'footer-credits',
+			'location' => 'genesis_footer',
+			'priority' => 12,
+			'default'  => '',
+		],
+	],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -547,79 +536,7 @@ return [
 	*/
 
 	'widget-areas' => [
-		'add'    => [
-			[
-				'id'          => 'before-header',
-				'name'        => __( 'Before Header', 'mai-engine' ),
-				'description' => __( 'The Before Header widget area.', 'mai-engine' ),
-				'location'    => 'genesis_before_header',
-			],
-			[
-				'id'          => 'header-left',
-				'name'        => __( 'Header Left', 'mai-engine' ),
-				'description' => __( 'The Header Left widget area.', 'mai-engine' ),
-				'location'    => 'mai_header_left',
-				'args'        => [
-					'before' => '<div class="header-widget-area">',
-					'after'  => '</div>',
-				],
-			],
-			[
-				'id'          => 'header-right',
-				'name'        => __( 'Header Right', 'mai-engine' ),
-				'description' => __( 'The Header Right widget area.', 'mai-engine' ),
-				'location'    => 'mai_header_right',
-				'args'        => [
-					'before' => '<div class="header-widget-area">',
-					'after'  => '</div>',
-				],
-			],
-			[
-				'id'          => 'sidebar',
-				'name'        => __( 'Sidebar', 'mai-engine' ),
-				'description' => __( 'The Sidebar widget area.', 'mai-engine' ),
-				'location'    => '',
-			],
-			[
-				'id'          => 'after-entry',
-				'name'        => __( 'After Entry', 'mai-engine' ),
-				'description' => __( 'The After Entry widget area.', 'mai-engine' ),
-				'location'    => '',
-			],
-			[
-				'id'          => 'mobile-menu',
-				'name'        => __( 'Mobile Menu', 'mai-engine' ),
-				'description' => __( 'The Mobile Menu widget area.', 'mai-engine' ),
-				'location'    => 'mai_after_header_wrap',
-			],
-			[
-				'id'          => 'before-footer',
-				'name'        => __( 'Before Footer', 'mai-engine' ),
-				'description' => __( 'The Before Footer widget area.', 'mai-engine' ),
-				'location'    => 'genesis_footer',
-				'priority'    => 5,
-			],
-			[
-				'id'          => 'footer',
-				'name'        => __( 'Footer', 'mai-engine' ),
-				'description' => __( 'The Footer widget area.', 'mai-engine' ),
-				'location'    => 'genesis_footer',
-			],
-			[
-				'id'          => 'footer-credits',
-				'name'        => __( 'Footer Credits', 'mai-engine' ),
-				'description' => __( 'The Footer Credits widget area.', 'mai-engine' ),
-				'location'    => 'genesis_footer',
-				'priority'    => 12,
-				'default'     => sprintf(
-					'%s [footer_copyright] · [footer_home_link] · %s · %s <a target="_blank" rel="nofollow noopener sponsored" href="https://bizbudding.com/mai-theme/">%s</a>',
-					__( 'Copyright', 'mai-engine' ),
-					__( 'All Rights Reserved', 'mai-engine' ),
-					__( 'Powered by', 'mai-engine' ),
-					__( 'Mai Theme', 'mai-engine' )
-				),
-			],
-		],
+		'add'    => [],
 		'remove' => [],
 	],
 ];
