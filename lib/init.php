@@ -53,8 +53,15 @@ function mai_get_engine_theme() {
 
 		if ( in_array( $current_theme, $engine_themes, true ) ) {
 			$theme = $current_theme;
+
 		} elseif ( current_theme_supports( 'mai-engine' ) ) {
-			$theme = 'default';
+			$theme_support = get_theme_support( 'mai-engine' )[0];
+
+			if ( in_array( $theme_support, $engine_themes, true ) ) {
+				$theme = $theme_support;
+			} else {
+				$theme = 'default';
+			}
 		}
 	}
 
