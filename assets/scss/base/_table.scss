@@ -1,7 +1,6 @@
 table {
 	width: 100%;
 	margin: var(--table-margin, var(--spacing-md) 0);
-	word-break: break-all;
 	border: var(--border);
 	border-radius: var(--table-border-radius, var(--border-radius));
 	border-collapse: collapse;
