@@ -25,10 +25,7 @@
 }
 
 .woocommerce-ordering {
-
-	@include mq(xs) {
-		margin-top: var(--row-gap);
-	}
+	margin-bottom: var(--row-gap);
 }
 
 .star-rating {
@@ -69,6 +66,7 @@
 
 	img {
 		width: 100%;
+		margin-bottom: var(--spacing-md);
 	}
 }
 

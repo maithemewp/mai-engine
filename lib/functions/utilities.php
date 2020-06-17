@@ -437,6 +437,22 @@ function mai_get_color_choices() {
 }
 
 /**
+ * Check if a color is light.
+ *
+ * @since 0.3.12
+ *
+ * @link https://aristath.github.io/ariColor/
+ *
+ * @param string $color  Any color string, including hex, rgb, rgba, etc.
+ *
+ * @return bool
+ */
+function mai_is_light_color( $color ) {
+	$color = ariColor::newColor( $color );
+	return $color->luminance >= 127;
+}
+
+/**
  * Returns a lighter version of a color.
  *
  * @since 0.3.0

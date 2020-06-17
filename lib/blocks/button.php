@@ -38,6 +38,7 @@ add_filter( 'render_block', 'mai_render_button_block', 10, 2 );
 /**
  * Add our button classes to the button link.
  * This allows us to only have CSS on button instead of wp-block-button__link.
+ * Remove default button wrapper class so we don't have to compete with core styles.
  *
  * @since   0.3.3
  *
@@ -55,14 +56,24 @@ function mai_render_button_block( $block_content, $block ) {
 
 	// Add button class to the button link.
 	if ( mai_has_string( 'is-style-secondary', $block_content ) ) {
+		$block_content = str_replace( ' is-style-secondary', '', $block_content );
 		$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link button button-secondary', $block_content );
 	} elseif ( mai_has_string( 'is-style-tertiary', $block_content ) ) {
+		$block_content = str_replace( ' is-style-tertiary', '', $block_content );
 		$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link button button-tertiary', $block_content );
 	} elseif ( mai_has_string( 'is-style-outline', $block_content ) ) {
+		$block_content = str_replace( ' is-style-outline', '', $block_content );
 		$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link button button-outline', $block_content );
+		$colors        = mai_get_colors();
+		if ( isset( $block['attrs']['textColor'] ) && isset( $colors[ $block['attrs']['textColor'] ] ) ) {
+			if ( mai_is_light_color( $colors[ $block['attrs']['textColor'] ] ) ) {
+				$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link has-light-button-text', $block_content );
+			}
+		}
 	} else {
 		$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link button', $block_content );
 	}
+
 
 	return $block_content;
 }

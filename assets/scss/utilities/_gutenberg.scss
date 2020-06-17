@@ -1,13 +1,15 @@
 @each $color-name, $color-value in $colors {
 
 	.has-#{ $color-name }-color {
-		color: var(--color-#{ $color-name }) !important;
+		color: var(--color-#{ $color-name });
 		--heading-color: var(--color-#{ $color-name });
 		--menu-item-link-color: var(--color-#{ $color-name });
+		--button-color: var(--color-#{ $color-name });
+		--button-color-hover: var(--color-lightest);
 	}
 
 	.has-#{ $color-name }-background-color {
-		background-color: var(--color-#{ $color-name }) !important;
+		background-color: var(--color-#{ $color-name });
 	}
 }
 

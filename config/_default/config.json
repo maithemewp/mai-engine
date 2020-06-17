@@ -23,7 +23,7 @@
     "radius": "4px"
   },
   "button": {
-    "overlay-color": "var(--color-lightest)",
+    "overlay-color": "var(--color-darkest)",
     "background-color": "var(--color-primary)",
     "color": "var(--color-lightest)",
     "border": "0",
