@@ -1,4 +1,17 @@
 <?php
+/**
+ * Mai Engine.
+ *
+ * @package   BizBudding\MaiEngine
+ * @link      https://bizbudding.com
+ * @author    BizBudding
+ * @copyright Copyright © 2020 BizBudding
+ * @license   GPL-2.0-or-later
+ */
+
+if ( ! apply_filters( 'mai_init_setup_wizard', true ) ) {
+	return;
+}
 
 add_filter( 'mai_setup_wizard_menu', 'mai_setup_wizard_menu', 10, 2 );
 /**
@@ -106,10 +119,11 @@ function mai_setup_wizard_email_option( $email_address ) {
 	$message     = $email_address;
 	$headers     = [];
 	$attachments = [];
-	$filter      = function( $email ) use ( $email_address ) {
+	$filter      = function() use ( $email_address ) {
 		return $email_address;
 	};
+
 	add_filter( 'wp_mail_from', $filter );
-	$sent = wp_mail( $to, $subject, $message, $headers, $attachments );
+	wp_mail( $to, $subject, $message, $headers, $attachments );
 	remove_filter( 'wp_mail_from', $filter );
 }
