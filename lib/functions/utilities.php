@@ -243,7 +243,7 @@ function mai_get_active_theme() {
 }
 
 /**
- * Description of expected behavior.
+ * Get all mai-engine options.
  *
  * @since 0.1.0
  *
@@ -268,7 +268,7 @@ function mai_get_options( $use_cache = true ) {
 }
 
 /**
- * Description of expected behavior.
+ * Get a single option from mai-engine array of options.
  *
  * @since 0.1.0
  *
@@ -285,7 +285,7 @@ function mai_get_option( $option, $default = false, $use_cache = true ) {
 }
 
 /**
- * Description of expected behavior.
+ * Update a single option from mai-engine array of options.
  *
  * @since 0.1.0
  *
@@ -304,7 +304,7 @@ function mai_update_option( $option, $value ) {
 }
 
 /**
- * Description of expected behavior.
+ * Get settings config file by name.
  *
  * @since 0.1.0
  *
@@ -357,7 +357,7 @@ function mai_get_color_palette() {
 }
 
 /**
- * Description of expected behavior.
+ * Get colors with key => value as name => color.
  *
  * @since 0.1.0
  *
@@ -378,7 +378,7 @@ function mai_get_colors() {
 }
 
 /**
- * Description of expected behavior.
+ * Get a single color value from the color palette name.
  *
  * @since 0.1.0
  *
@@ -393,9 +393,9 @@ function mai_get_color( $color = null ) {
 }
 
 /**
- * Description of expected behavior.
+ * Get color choices for Kirki.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return array
  */
@@ -416,16 +416,20 @@ function mai_get_color_choices() {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 2.0.0
  *
  * @return array
  */
 function mai_get_font_sizes() {
-	return [];
+	return [
+
+	];
 }
 
 /**
  * Check if a color is light.
+ * This helps with accessibility decisions to determine
+ * whether to use a light or dark background or text color.
  *
  * @since 2.0.0
  *
@@ -476,7 +480,7 @@ function mai_get_darker_color( $color, $amount = 5 ) {
 }
 
 /**
- * Description of expected behavior.
+ * Get breakpoints from initial site container width in config.
  *
  * @since 0.1.0
  *

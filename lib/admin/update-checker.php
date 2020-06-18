@@ -62,13 +62,25 @@ function mai_plugin_update_checker() {
 
 add_action( 'admin_init', 'mai_child_theme_update_checker' );
 /**
- * Description of expected behavior.
+ * Maybe check for child theme updates.
+ * Checkbox must be checked in Customizer > Theme Settings Updates
+ * to allow child theme updates.
+ *
+ * Only checks non-default engine themes, which is our premium themes.
  *
  * @since 1.0.0
  *
  * @return void
  */
 function mai_child_theme_update_checker() {
+	if ( ! current_user_can( 'install_plugins' ) ) {
+		return;
+	}
+
+	if ( ! class_exists( 'Puc_v4_Factory' ) ) {
+		return;
+	}
+
 	$enabled = genesis_get_option( 'mai_child_theme_updates' );
 
 	if ( ! $enabled ) {
@@ -78,14 +90,6 @@ function mai_child_theme_update_checker() {
 	$child_theme = mai_get_active_theme();
 
 	if ( 'default' === $child_theme ) {
-		return;
-	}
-
-	if ( ! current_user_can( 'install_plugins' ) ) {
-		return;
-	}
-
-	if ( ! class_exists( 'Puc_v4_Factory' ) ) {
 		return;
 	}
 
