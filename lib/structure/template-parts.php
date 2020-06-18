@@ -25,8 +25,8 @@ function mai_render_template_parts() {
 		$hook     = isset( $template_part['location'] ) ? $template_part['location'] : false;
 		$priority = isset( $template_part['priority'] ) ? $template_part['priority'] : 10;
 		$defaults = [
-			'before' => sprintf( '<div class="%s">', $id ),
-			'after'  => '</div>',
+			'before' => '',
+			'after'  => '',
 		];
 		$args     = isset( $template_part['args'] ) ? wp_parse_args( $template_part['args'], $defaults ) : $defaults;
 

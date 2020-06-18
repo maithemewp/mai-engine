@@ -327,35 +327,33 @@ function mai_get_variables() {
 	static $variables = null;
 
 	if ( is_null( $variables ) ) {
-		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		$defaults    = json_decode( file_get_contents( mai_get_dir() . 'config/_default/config.json' ), true );
-		$engine_file = mai_get_dir() . 'config/' . mai_get_active_theme() . '/config.json';
-		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		$engine_theme = is_readable( $engine_file ) ? json_decode( file_get_contents( $engine_file ), true ) : [];
-		$variables    = array_replace_recursive( $defaults, $engine_theme );
-		$custom_theme = mai_get_custom_theme_variables();
-		$variables    = $custom_theme ? array_replace_recursive( $variables, $custom_theme ) : $variables;
+		$variables = mai_get_config( 'custom-properties' );
 	}
 
 	return $variables;
 }
 
 /**
- * Description of expected behavior.
+ * Returns the color palette variables.
  *
  * @since 0.1.0
  *
- * @return array|mixed|null
+ * @return array
  */
-function mai_get_custom_theme_variables() {
-	static $variables = null;
+function mai_get_color_palette() {
+	$colors  = mai_get_colors();
+	$option  = mai_get_option( 'global-color-palette', [] );
+	$palette = [];
 
-	if ( is_null( $variables ) ) {
-		$file      = get_stylesheet_directory() . '/config.json';
-		$variables = is_readable( $file ) ? json_decode( file_get_contents( $file ), true ) : [];
+	foreach ( $colors as $name => $hex ) {
+		$palette[] = [
+			'name'  => mai_convert_case( $name, 'title' ),
+			'slug'  => mai_convert_case( $name, 'kebab' ),
+			'color' => isset( $option[ $name ] ) ? $option[ $name ] : $hex,
+		];
 	}
 
-	return $variables;
+	return $palette;
 }
 
 /**
@@ -395,29 +393,6 @@ function mai_get_color( $color = null ) {
 }
 
 /**
- * Returns the color palette variables.
- *
- * @since 0.1.0
- *
- * @return array
- */
-function mai_get_color_palette() {
-	$colors  = mai_get_colors();
-	$option  = mai_get_option( 'global-color-palette', [] );
-	$palette = [];
-
-	foreach ( $colors as $name => $hex ) {
-		$palette[] = [
-			'name'  => mai_convert_case( $name, 'title' ),
-			'slug'  => mai_convert_case( $name, 'kebab' ),
-			'color' => isset( $option[ $name ] ) ? $option[ $name ] : $hex,
-		];
-	}
-
-	return $palette;
-}
-
-/**
  * Description of expected behavior.
  *
  * @since 1.0.0
@@ -439,18 +414,30 @@ function mai_get_color_choices() {
 }
 
 /**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return array
+ */
+function mai_get_font_sizes() {
+	return [];
+}
+
+/**
  * Check if a color is light.
  *
  * @since 0.3.12
  *
- * @link https://aristath.github.io/ariColor/
+ * @link  https://aristath.github.io/ariColor/
  *
- * @param string $color  Any color string, including hex, rgb, rgba, etc.
+ * @param string $color Any color string, including hex, rgb, rgba, etc.
  *
  * @return bool
  */
 function mai_is_light_color( $color ) {
 	$color = ariColor::newColor( $color );
+
 	return $color->luminance >= 127;
 }
 
@@ -1026,6 +1013,7 @@ function mai_get_processed_content( $content ) {
  */
 function mai_get_read_more_text() {
 	$text = apply_filters( 'mai_read_more_text', esc_html__( 'Read More', 'mai-engine' ) );
+
 	return sanitize_text_field( $text );
 }
 

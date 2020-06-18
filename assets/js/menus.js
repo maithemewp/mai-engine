@@ -12,18 +12,7 @@
 	var mobileMenuWidget = document.querySelector( '.mobile-menu .widget' );
 	var menuToggle       = document.getElementsByClassName( 'menu-toggle' )[ 0 ];
 	var searchMenuItems  = document.querySelectorAll( '.menu-item.search' );
-	var mediaQuery       = window.matchMedia( '(max-width:' + localizedData.breakpoint + 'px)' );
 	var timeout          = false;
-
-	var addBodyClasses = function() {
-		if ( mediaQuery.matches ) {
-			body.classList.add( 'is-mobile' );
-			body.classList.remove( 'is-desktop' );
-		} else {
-			body.classList.remove( 'is-mobile' );
-			body.classList.add( 'is-desktop' );
-		}
-	};
 
 	var createMobileMenu = function() {
 		if ( mobileMenu ) {
@@ -196,22 +185,7 @@
 		}
 	};
 
-	var onResize = function() {
-		if ( timeout ) {
-			return;
-		}
-
-		timeout = true;
-
-		addBodyClasses();
-
-		setTimeout( function() {
-			timeout = false;
-		}, 100 );
-	};
-
 	var onReady = function() {
-		onResize();
 		createMobileMenu();
 		createMenuToggle();
 		cloneMenuItems();
@@ -219,7 +193,6 @@
 		createSubMenuToggles();
 		createSearchForm();
 
-		window.addEventListener( 'resize', onResize, false );
 		menuToggle.addEventListener( 'click', toggleMobileMenu, false );
 		searchMenuItems.forEach( function( searchMenuItem ) {
 			searchMenuItem.addEventListener( 'click', toggleSearchForm, false );
@@ -229,7 +202,6 @@
 				toggleSubMenu( event );
 			}
 		}, false );
-
 	};
 
 	return onReady();

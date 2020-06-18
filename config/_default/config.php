@@ -13,6 +13,50 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| Custom Properties
+	|--------------------------------------------------------------------------
+	|
+	| Default custom properties that are output by Kirki.
+	*/
+
+	'custom-properties' => [
+		'breakpoint' => 1200,
+		'colors'     => [
+			'primary'   => '#007bff',
+			'secondary' => '#6c757d',
+			'tertiary'  => '#fd7e14',
+			'success'   => '#28a745',
+			'danger'    => '#dc3545',
+			'warning'   => '#ffc107',
+			'info'      => '#42a2b8',
+			'darkest'   => '#2e3338',
+			'darker'    => '#5c6570',
+			'dark'      => '#8f98a3',
+			'medium'    => '#c7ccd1',
+			'light'     => '#e3e6e8',
+			'lighter'   => '#f1f2f4',
+			'lightest'  => '#ffffff',
+		],
+		'border'     => [
+			'width'  => '1px',
+			'style'  => 'solid',
+			'color'  => 'var(--color-light)',
+			'radius' => '4px',
+		],
+		'button'     => [
+			'overlay-color'    => 'var(--color-darkest)',
+			'background-color' => 'var(--color-primary)',
+			'color'            => 'var(--color-lightest)',
+			'border'           => '0',
+			'border-radius'    => 'var(--border-radius)',
+		],
+		'input'      => [
+			'border-radius' => 'var(--border-radius)',
+		],
+	],
+
+	/*
+	|--------------------------------------------------------------------------
 	| Genesis Settings
 	|--------------------------------------------------------------------------
 	|
@@ -178,7 +222,6 @@ return [
 				'localize' => [
 					'name' => 'maiMenuVars',
 					'data' => [
-						'breakpoint'    => mai_get_breakpoint(),
 						'ariaLabel'     => __( 'Mobile Menu', 'mai-engine' ),
 						'menuToggle'    => sprintf(
 							'<span class="menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
@@ -323,8 +366,8 @@ return [
 		'background_color_hover' => '',
 		'border_radius'          => 3,
 		'border_width'           => 0,
-		'icon_color'             => mai_get_color( 'heading' ),
-		'icon_color_hover'       => mai_get_color( 'primary' ),
+		'icon_color'             => 'heading',
+		'icon_color_hover'       => 'primary',
 		'size'                   => 40,
 	],
 
@@ -359,7 +402,6 @@ return [
 			'align-wide',
 			'automatic-feed-links',
 			'editor-styles',
-			'editor-color-palette'     => mai_get_color_palette(),
 			'genesis-accessibility'    => [
 				'404-page',
 				'headings',
@@ -456,7 +498,7 @@ return [
 	'page-header' => [
 		'archive'                 => [],
 		'single'                  => [],
-		'background-color'        => mai_get_color( 'medium' ),
+		'background-color'        => 'medium',
 		'image'                   => '',
 		'overlay-opacity'         => '0.5',
 		'text-color'              => 'dark',
@@ -466,7 +508,7 @@ return [
 		],
 		'text-align'              => '',
 		'divider'                 => '',
-		'divider-color'           => mai_get_color( 'lightest' ),
+		'divider-color'           => 'lightest',
 		'divider-flip-horizontal' => false,
 		'divider-flip-vertical'   => false,
 		'divider-overlay-opacity' => 0.5,

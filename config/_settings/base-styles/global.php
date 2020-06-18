@@ -10,9 +10,6 @@ foreach ( $color_default as $name => $hex ) {
 		'choice'   => $name,
 		'element'  => ':root',
 		'property' => "--color-$name",
-		'exclude'  => [
-			$hex,
-		],
 	];
 }
 

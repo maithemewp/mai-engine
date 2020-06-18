@@ -1,7 +1,7 @@
 .nav-header-left,
 .nav-header-right {
 	position: relative;
-	display: var(--nav-header-display, (flex));
+	display: var(--nav-header-display, none);
 	order: 2;
 	width: var(--nav-header-width, 100vw);
 	margin: var(--nav-header-margin, 0 -5vw);
@@ -17,8 +17,4 @@
 	z-index: 9;
 	display: var(--nav-header-display, (flex));
 	width: 100%;
-}
-
-.is-mobile {
-	--nav-header-display: none;
 }
