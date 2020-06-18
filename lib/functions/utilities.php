@@ -164,10 +164,12 @@ function mai_get_version() {
  */
 function mai_get_asset_version( $file ) {
 	$file = str_replace( mai_get_url(), mai_get_dir(), $file );
+
 	if ( mai_has_string( '/mai-fonts/', $file ) ) {
 		$file = mai_has_string( '/mai-fonts/', $file ) ? str_replace( WP_CONTENT_URL, WP_CONTENT_DIR, $file ) : $file;
 		$file = str_replace( '?display=swap', '', $file );
 	}
+
 	$version = mai_get_version();
 
 	if ( file_exists( $file ) && ( mai_has_string( mai_get_dir(), $file ) || mai_has_string( '/mai-fonts/', $file ) ) ) {

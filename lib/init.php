@@ -144,6 +144,7 @@ function mai_modify_genesis_defaults() {
 add_action( 'genesis_setup', 'mai_remove_genesis_default_widget_areas', 8 );
 /**
  * Remove Genesis default widget areas.
+ *
  * We'll re-register them via our config.
  *
  * @since 0.3.7
@@ -187,19 +188,20 @@ function mai_load_files() {
 		'functions/helpers',
 		'functions/utilities',
 		'functions/autoload',
-		'functions/layout',
-		'functions/images',
 		'functions/loop',
+		'functions/images',
+		'functions/grid',
+		'functions/layout',
 		'functions/setup',
 		'functions/enqueue',
 		'functions/markup',
 		'functions/entries',
-		'functions/grid',
 		'functions/widgets',
 		'functions/defaults',
 		'functions/plugins',
 		'functions/shortcodes',
 		'functions/templates',
+		'functions/deprecated',
 
 		// Structure.
 		'structure/amp',
@@ -256,6 +258,7 @@ function mai_load_files() {
 				'admin/child-theme-updater',
 				'admin/setup-wizard',
 				'admin/upgrade',
+				'admin/dependencies',
 			]
 		);
 	}

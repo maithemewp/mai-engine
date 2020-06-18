@@ -111,10 +111,7 @@ class FieldProvider extends AbstractServiceProvider {
 
 		foreach ( $demos as $demo ) {
 			foreach ( $demo['plugins'] as $plugin ) {
-				$id        = \strtolower( \str_replace( ' ', '-', $plugin['name'] ) );
-				$installed = \array_key_exists( $plugin['slug'], $installed_plugins );
-				$active    = \in_array( $plugin['slug'], $active_plugins, true );
-				$label     = ( $active ? __( ' (Active)', 'mai-setup-wizard' ) : ( $installed ? __( ' (Installed but not active)', 'mai-setup-wizard' ) : '' ) );
+				$id = \strtolower( \str_replace( ' ', '-', $plugin['name'] ) );
 
 				if ( \array_key_exists( $id, $fields ) ) {
 					$data_attr[] = $demo['id'];
@@ -176,7 +173,7 @@ class FieldProvider extends AbstractServiceProvider {
 				'content'    => __( 'View your site', 'mai-setup-wizard' ),
 				'attributes' => [
 					'class' => 'button button-primary button-hero',
-					'href' => \home_url(),
+					'href'  => \home_url(),
 				],
 			],
 		];
