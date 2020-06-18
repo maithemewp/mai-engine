@@ -508,6 +508,11 @@ return [
 			'default'  => '',
 		],
 		[
+			'id'      => 'after-entry',
+			'name'    => __( 'After Entry', 'mai-engine' ),
+			'default' => '',
+		],
+		[
 			'id'       => 'before-footer',
 			'location' => 'genesis_footer',
 			'priority' => 5,
@@ -536,7 +541,14 @@ return [
 	*/
 
 	'widget-areas' => [
-		'add'    => [],
+		'add'    => [
+			[
+				'id'          => 'sidebar',
+				'name'        => __( 'Sidebar', 'mai-engine' ),
+				'description' => __( 'The Sidebar widget area.', 'mai-engine' ),
+				'location'    => '',
+			],
+		],
 		'remove' => [],
 	],
 ];

@@ -30,48 +30,13 @@ return [
 		'image'            => '',
 		'text-color'       => 'light',
 	],
-	'widget-areas'   => [
-		'remove' => [
-			'before-header',
-			'header-left',
-			'header-right',
-			'before-footer',
-			'footer',
-			'footer-credits',
-		],
-	],
-	'template-parts' => [
+	'plugins' => [
 		[
-			'id'       => 'before-header',
-			'location' => 'genesis_before_header',
-			'default'  => '',
-		],
-		[
-			'id'       => 'header-left',
-			'location' => 'mai_header_left',
-			'default'  => '',
-		],
-		[
-			'id'       => 'header-right',
-			'location' => 'mai_header_right',
-			'default'  => '',
-		],
-		[
-			'id'       => 'before-footer',
-			'location' => 'genesis_footer',
-			'priority' => 5,
-			'default'  => '',
-		],
-		[
-			'id'       => 'footer',
-			'location' => 'genesis_footer',
-			'default'  => '',
-		],
-		[
-			'id'       => 'footer-credits',
-			'location' => 'genesis_footer',
-			'priority' => 12,
-			'default'  => '',
+			'name'  => 'Genesis eNews Extended',
+			'slug'  => 'genesis-enews-extended/plugin.php',
+			'uri'   => 'https://wordpress.org/plugins/genesis-enews-extended/',
+			'demos' => [ 'agency' ],
 		],
 	],
 ];
+
