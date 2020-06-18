@@ -164,7 +164,7 @@ add_filter( 'page_css_class', 'mai_remove_menu_item_classes' );
 /**
  * Remove unnecessary menu item classes.
  *
- * @since 0.3.12
+ * @since 2.0.0
  *
  * @param array|string $attribute Classes or ID.
  *

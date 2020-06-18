@@ -59,7 +59,7 @@ add_filter( 'acf/location/rule_match/mai_public_post_type', 'mai_acf_public_post
 /**
  * Show "Hide Elements" metabox on all public post types.
  *
- * @since 0.3.12
+ * @since 2.0.0
  *
  * @param bool   $result      Whether the rule matches.
  * @param array  $rule        The current rule you're matching. Includes 'param', 'operator' and 'value' parameters.
