@@ -185,23 +185,23 @@ function mai_load_files() {
 		'../vendor/autoload',
 
 		// Functions.
-		'functions/helpers',
-		'functions/utilities',
 		'functions/autoload',
-		'functions/loop',
-		'functions/images',
-		'functions/grid',
-		'functions/layout',
-		'functions/setup',
-		'functions/enqueue',
-		'functions/markup',
-		'functions/entries',
-		'functions/widgets',
 		'functions/defaults',
+		'functions/deprecated',
+		'functions/enqueue',
+		'functions/entries',
+		'functions/grid',
+		'functions/helpers',
+		'functions/images',
+		'functions/layout',
+		'functions/loop',
+		'functions/markup',
 		'functions/plugins',
+		'functions/setup',
 		'functions/shortcodes',
 		'functions/templates',
-		'functions/deprecated',
+		'functions/utilities',
+		'functions/widgets',
 
 		// Structure.
 		'structure/amp',
@@ -233,33 +233,33 @@ function mai_load_files() {
 		'blocks/social-links',
 
 		// Customizer.
-		'customize/setup',
-		'customize/logo',
 		'customize/beta-tester',
-		'customize/upsell',
+		'customize/logo',
 		'customize/loop',
 		'customize/page-header',
-		'customize/updates',
 		'customize/performance',
+		'customize/setup',
+		'customize/updates',
+		'customize/upsell',
 	];
 
 	if ( is_admin() ) {
 		$files = array_merge(
 			$files,
 			[
-				'admin/blog',
-				'admin/images',
-				'admin/settings',
-				'admin/term-image',
-				'admin/page-header',
-				'admin/hide-elements',
 				'admin/acf',
-				'admin/update-checker',
+				'admin/blog',
 				'admin/child-theme-updater',
-				'admin/setup-wizard',
-				'admin/upgrade',
 				'admin/dependencies',
 				'admin/editor',
+				'admin/hide-elements',
+				'admin/images',
+				'admin/page-header',
+				'admin/settings',
+				'admin/setup-wizard',
+				'admin/term-image',
+				'admin/update-checker',
+				'admin/upgrade',
 			]
 		);
 	}
