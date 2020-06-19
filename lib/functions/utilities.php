@@ -421,9 +421,38 @@ function mai_get_color_choices() {
  * @return array
  */
 function mai_get_font_sizes() {
-	return [
+	$font_sizes = [];
+	$config     = mai_get_variables()['text'];
+	$ratio      = $config['scale-ratio'];
+	$md         = $config['md'];
+	$sm         = $md / $ratio;
+	$xs         = $sm / $ratio;
+	$lg         = $md * $ratio;
+	$xl         = $lg * $ratio;
+	$xxl        = $xl * $ratio;
+	$xxxl       = $xxl * $ratio;
+	$xxxxl      = $xxxl * $ratio;
 
+	$scale = [
+		'xs'    => $xs,
+		'sm'    => $sm,
+		'md'    => $md,
+		'lg'    => $lg,
+		'xl'    => $xl,
+		'xxl'   => $xxl,
+		'xxxl'  => $xxxl,
+		'xxxxl' => $xxxxl,
 	];
+
+	foreach ( $scale as $slug => $size ) {
+		$font_sizes[] = [
+			'slug' => $slug,
+			'size' => $size,
+			'name' => strtoupper( $slug ),
+		];
+	}
+
+	return $font_sizes;
 }
 
 /**
@@ -593,6 +622,10 @@ function mai_get_page_header_image_id() {
 
 	} elseif ( mai_is_type_archive() ) {
 		if ( is_category() || is_tag() || is_tax() ) {
+
+			/**
+			 * @var WP_Query $wp_query
+			 */
 			global $wp_query;
 
 			$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();

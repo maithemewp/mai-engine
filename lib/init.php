@@ -259,6 +259,7 @@ function mai_load_files() {
 				'admin/setup-wizard',
 				'admin/upgrade',
 				'admin/dependencies',
+				'admin/editor',
 			]
 		);
 	}
