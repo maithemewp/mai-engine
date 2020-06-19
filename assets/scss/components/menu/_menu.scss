@@ -26,7 +26,7 @@
 }
 
 .menu-item-link {
-	display: var(--menu-item-link-display, flex);
+	display: var(--menu-item-link-display, (flex));
 	flex: 1;
 	align-items: center;
 	justify-content: var(--menu-item-link-justify-content, flex-start);
@@ -42,7 +42,7 @@
 	}
 
 	&.button {
-		--menu-item-link-color: var(--button-color, #{map_get($button, "color")});
+		--menu-item-link-color: var(--button-color, var(--color-lightest));
 	}
 }
 

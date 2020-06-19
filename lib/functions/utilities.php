@@ -208,10 +208,10 @@ function mai_get_asset_url( $file ) {
  * @return array
  */
 function mai_get_config( $sub_config = 'default' ) {
-	$config = require mai_get_dir() . 'config/_default/config.php';
+	$config = require mai_get_dir() . 'config/_default.php';
 	$theme  = mai_get_active_theme();
 	$theme  = ( 'default' === $theme ) ? '_default' : $theme;
-	$path   = mai_get_dir() . 'config/' . $theme . '/config.php';
+	$path   = mai_get_dir() . 'config/' . $theme . '.php';
 
 	if ( is_readable( $path ) ) {
 		$config = array_replace_recursive( $config, require $path );
@@ -313,7 +313,7 @@ function mai_update_option( $option, $value ) {
  * @return mixed
  */
 function mai_get_settings( $name ) {
-	return require mai_get_dir() . 'config/_settings/' . $name . '.php';
+	return require mai_get_dir() . 'config/settings/' . $name . '.php';
 }
 
 /**

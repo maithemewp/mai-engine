@@ -2,6 +2,8 @@ $all-buttons: append($all-buttons, ".button");
 $all-text-inputs: append($all-text-inputs, "select");
 $all-headings: (h1, h2, h3, h4, h5, h6, legend);
 
+$breakpoint: 1200;
+
 $breakpoints: (
 	xl: ($breakpoint / 1) * 1px,
 	lg: ($breakpoint / 1.2) * 1px,
@@ -29,7 +31,7 @@ $colors: (
 	white: var(--color-lightest), // Fallback for .has-white- classes.
 ) !default;
 
-$font-sizes: (
+$headings: (
 	h1: var(--text-xxxxl),
 	h2: var(--text-xxxl),
 	h3: var(--text-xxl),
@@ -50,17 +52,6 @@ $spacing: (
 	xxl: var(--spacing-xxl),
 	xxxl: var(--spacing-xxxl),
 	xxxxl: var(--spacing-xxxxl),
-) !default;
-
-$border: (
-	width: var(--border-size),
-	style: var(--border-style),
-	color: var(--border-color),
-	radius: var(--border-radius),
-) !default;
-
-$button: (
-	border-radius: var(--button-border-radius),
 ) !default;
 
 $button-styles: (

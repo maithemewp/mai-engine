@@ -4,13 +4,8 @@
 	--breakpoint-sm: calc(var(--breakpoint-xl) / 2);
 	--breakpoint-xs: calc(var(--breakpoint-xl) / 3);
 
-	--text-scale-ratio: 1.25;
-	--text-xxxxs: calc(var(--text-xxxs) / var(--text-scale-ratio));
-	--text-xxxs: calc(var(--text-xxs) / var(--text-scale-ratio));
-	--text-xxs: calc(var(--text-xs) / var(--text-scale-ratio));
 	--text-xs: calc(var(--text-sm) / var(--text-scale-ratio));
 	--text-sm: calc(var(--text-md) / var(--text-scale-ratio));
-	--text-md: 16px;
 	--text-lg: calc(var(--text-md) * var(--text-scale-ratio));
 	--text-xl: calc(var(--text-lg) * var(--text-scale-ratio));
 	--text-xxl: calc(var(--text-xl) * var(--text-scale-ratio));
@@ -19,27 +14,6 @@
 
 	--font-stack: system-ui, -apple-system, blinkmacsystemfont, helvetica, arial, sans-serif;
 	--font-code: consolas, monaco, monospace;
-	--font-primary: var(--font-stack);
-	--font-secondary: var(--font-stack);
-
-	--font-weight-hairline: 100;
-	--font-weight-extralight: 200;
-	--font-weight-light: 300;
-	--font-weight-regular: 400;
-	--font-weight-medium: 500;
-	--font-weight-semibold: 600;
-	--font-weight-bold: 700;
-	--font-weight-extrabold: 800;
-	--font-weight-black: 900;
-
-	--font-weight-body: var(--font-weight-regular);
-	--font-weight-heading: var(--font-weight-semibold);
-
-	--line-height: 1.5;
-	--line-height-heading: 1.2;
-
-	--letter-spacing-body: normal;
-	--letter-spacing-heading: var(--letter-spacing-body);
 
 	--spacing-scale-ratio: 1.5;
 	--spacing-xxxxs: calc(var(--spacing-xxxs) / var(--spacing-scale-ratio));
@@ -62,10 +36,7 @@
 	--sidebar-width: 30rem; // Google ads
 	--content-max-width: calc(var(--wrap-max-width) - var(--sidebar-width) - var(--column-gap));
 
-	--border-radius: #{map_get($border, "radius")};
-	--border-size: #{map_get($border, "width")};
-	--border-style: #{map_get($border, "style")};
-	--border-color: #{map_get($border, "color")};
+	--border-style: solid;
 	--border: var(--border-size) var(--border-style) var(--border-color);
 
 	--shadow-x: 0;
@@ -73,7 +44,7 @@
 	--shadow-blur: 1em;
 	--shadow-spread: 0;
 	--shadow-opacity: 0.5;
-	--shadow-color: #{hex_to_rgb(map_get($colors, "medium"))};
+	--shadow-color: var(--color-medium);
 	--shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-spread) rgba(var(--shadow-color), var(--shadow-opacity));
 
 	--transition-property: all;

@@ -27,6 +27,44 @@ return [
 	],
 	[
 		'type'     => 'slider',
+		'settings' => 'base-font-size',
+		'label'    => __( 'Base Font Size', 'mai-engine' ),
+		'default'  => mai_get_variables()['text']['md'],
+		'choices'  => [
+			'min'  => 10,
+			'max'  => 100,
+			'step' => 1,
+		],
+		'output'   => [
+			[
+				'element'       => ':root',
+				'property'      => '--text-md',
+				'value_pattern' => 'calc($px + 0.25vw)',
+			],
+		],
+	],
+	[
+		'type'     => 'slider',
+		'settings' => 'text-scale-ratio',
+		'label'    => __( 'Text Scale Ratio', 'mai-engine' ),
+		'default'  => mai_get_variables()['text']['scale-ratio'],
+		'choices'  => [
+			'min'  => 0,
+			'max'  => 3,
+			'step' => 0.1,
+		],
+		'output'   => [
+			[
+				'element'  => ':root',
+				'property' => '--text-scale-ratio',
+			],
+		],
+	],
+	[
+		'type' => 'divider',
+	],
+	[
+		'type'     => 'slider',
 		'settings' => 'border-width',
 		'label'    => __( 'Border width', 'mai-engine' ),
 		'default'  => mai_get_integer_value( mai_get_variables()['border']['width'] ),
@@ -38,7 +76,7 @@ return [
 		'output'   => [
 			[
 				'element'  => ':root',
-				'property' => '--border-width',
+				'property' => '--border-size',
 				'units'    => 'px',
 			],
 		],
@@ -58,6 +96,18 @@ return [
 				'element'  => ':root',
 				'property' => '--border-radius',
 				'units'    => 'px',
+			],
+		],
+	],
+	[
+		'type'     => 'color',
+		'settings' => 'border-color',
+		'label'    => __( 'Border Color', 'mai-customizer' ),
+		'default'  => mai_get_color( 'lightest' ),
+		'output'   => [
+			[
+				'element'  => ':root',
+				'property' => '--border-color',
 			],
 		],
 	],

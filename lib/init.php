@@ -37,7 +37,7 @@ function mai_get_engine_theme() {
 			$current_theme = basename( get_stylesheet_directory() );
 		}
 
-		$configs       = glob( dirname( __DIR__ ) . '/config/*', GLOB_ONLYDIR );
+		$configs       = glob( dirname( __DIR__ ) . '/config/*.php' );
 		$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $current_theme ) );
 		$engine_themes = [];
 

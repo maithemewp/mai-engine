@@ -37,21 +37,28 @@ return [
 			'lighter'   => '#f1f2f4',
 			'lightest'  => '#ffffff',
 		],
+		'text'       => [
+			'md'          => 16,
+			'scale-ratio' => 1.25,
+		],
+		'body'       => [
+			'font-family'    => 'sans-serif',
+			'font-weight'    => 'regular',
+			'line-height'    => 1.5,
+			'color'          => 'dark',
+			'text-transform' => 'none',
+			'letter-spacing' => 0,
+		],
+		'heading'    => [
+			'font-family'    => 'sans-serif',
+			'font-weight'    => 600,
+			'line-height'    => 1.2,
+			'color'          => 'darkest',
+			'text-transform' => 'none',
+		],
 		'border'     => [
 			'width'  => '1px',
-			'style'  => 'solid',
-			'color'  => 'var(--color-light)',
 			'radius' => '4px',
-		],
-		'button'     => [
-			'overlay-color'    => 'var(--color-darkest)',
-			'background-color' => 'var(--color-primary)',
-			'color'            => 'var(--color-lightest)',
-			'border'           => '0',
-			'border-radius'    => 'var(--border-radius)',
-		],
-		'input'      => [
-			'border-radius' => 'var(--border-radius)',
 		],
 	],
 
@@ -75,17 +82,6 @@ return [
 		'breadcrumb_404'        => 0,
 		'breadcrumb_attachment' => 0,
 	],
-
-	/*
-	|--------------------------------------------------------------------------
-	| Google Fonts
-	|--------------------------------------------------------------------------
-	|
-	| Google web fonts to be automatically enqueued. Use full URL from https://fonts.google.com/
-	| after choosing your fonts.
-	*/
-
-	'google-fonts' => [],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -275,18 +271,6 @@ return [
 			[
 				'handle' => mai_get_handle(),
 				'src'    => mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css',
-			],
-
-			// Fonts.
-			[
-				'handle'    => mai_get_handle() . '-google-fonts',
-				'src'       => content_url( 'mai-fonts/style.min.css?display=swap' ),
-				'editor'    => 'both',
-				'media'     => 'print',
-				'onload'    => "this.media='all'",
-				'condition' => function () {
-					return file_exists( WP_CONTENT_DIR . '/mai-fonts/style.min.css' );
-				},
 			],
 
 			// Customizer styles.

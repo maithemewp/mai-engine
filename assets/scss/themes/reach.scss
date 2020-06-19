@@ -1,6 +1,8 @@
+@import "default";
+
 :root {
-	--font-primary: karla, var(--font-stack);
-	--font-secondary: karla, var(--font-stack);
+	--font-body: karla, var(--font-stack);
+	--heading-font-family: karla, var(--font-stack);
 	--button-transform-hover: scale(1.05);
 	--input-border-radius: 9rem;
 	--site-header-border-bottom: 0;

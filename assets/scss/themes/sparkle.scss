@@ -1,6 +1,8 @@
+@import "default";
+
 :root {
-	--font-primary: "Work Sans", sans-serif;
-	--font-secondary: "Josefin Sans", sans-serif;
+	--font-body: "Work Sans", sans-serif;
+	--heading-font-family: "Josefin Sans", sans-serif;
 	--heading-text-transform: uppercase;
 	--button-primary-background: var(--color-darkest);
 	--button-secondary-background: var(--color-medium);
@@ -8,7 +10,7 @@
 	--text-scale-ratio: 1.125;
 	--border-color: var(--color-lighter);
 	--menu-font-size: var(--text-xs);
-	--menu-font-family: var(--font-secondary);
+	--menu-font-family: var(--heading-font-family);
 	--menu-item-link-color: var(--color-darkest);
 }
 

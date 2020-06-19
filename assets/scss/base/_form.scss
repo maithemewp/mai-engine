@@ -21,8 +21,8 @@ label {
 	line-height: var(--input-line-height, 1);
 	background-color: var(--input-background-color, #fff);
 	background-clip: padding-box; // Remove iOS box shadow
-	border: var(--input-border, var(--border-size) var(--border-style) rgba(0, 0, 0, 0.08));
-	border-radius: var(--input-border-radius, #{map_get($border, "radius")});
+	border: var(--input-border, (var(--border-size) var(--border-style) rgba(0, 0, 0, 0.08)));
+	border-radius: var(--input-border-radius, var(--border-radius));
 	outline: none;
 	box-shadow: var(--input-box-shadow, none);
 	transition: var(--input-transition, var(--transition));
@@ -47,7 +47,7 @@ input::placeholder {
 }
 
 textarea {
-	--input-line-height: var(--line-height);
+	--input-line-height: var(--line-height-body);
 	--input-border-radius: var(--border-radius);
 }
 

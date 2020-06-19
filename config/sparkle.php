@@ -9,56 +9,71 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 return [
-	'demos'            => [
-		'podcast' => 12,
-		'agency'  => 13,
+	'demos'             => [
+		'creative' => 2,
+		'fashion'  => 18,
 	],
-	'google-fonts'     => [
-		'https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap',
-	],
-	'theme-support'    => [
-		'add' => [
-			'transparent-header',
+	'custom-properties' => [
+		'colors' => [
+			'primary' => '#f98588',
+			'lighter' => '#fdf3f2',
+			'darkest' => '#000000',
+			'dark'    => '#7f7d7e',
+			'medium'  => '#f9f6f6',
+		],
+		'border' => [
+			'radius' => '1px',
 		],
 	],
-	'page-header'      => [
-		'archive'                 => '*',
-		'single'                  => '*',
-		'background-color'        => mai_get_color( 'primary' ),
-		'text-color'              => 'light',
-		'divider'                 => 'curve',
-		'divider-flip-horizontal' => false,
+	'google-fonts'      => [
+		'https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&family=Work+Sans:ital,wght@0,400;0,700;1,400&display=swap',
 	],
-	'plugins'          => [
+	'image-sizes'       => [
+		'add' => [
+			'portrait' => '3:4',
+		],
+	],
+	'theme-support'     => [
+		'add' => [
+			'boxed-container',
+			'sticky-header',
+		],
+	],
+	'archive-settings'  => [
+		'post',
+		'category',
+	],
+	'page-header'       => [
+		'single' => [ 'page' ],
+	],
+	'plugins'           => [
 		[
 			'name'  => 'Genesis Connect for WooCommerce',
 			'slug'  => 'genesis-connect-woocommerce/genesis-connect-woocommerce.php',
 			'uri'   => 'https://wordpress.org/plugins/genesis-connect-woocommerce/',
-			'demos' => [ 'agency' ],
+			'demos' => [ 'creative' ],
 		],
 		[
 			'name'  => 'Simple Social Icons',
 			'slug'  => 'simple-social-icons/simple-social-icons.php',
 			'uri'   => 'https://wordpress.org/plugins/simple-social-icons/',
-			'demos' => [ 'agency', 'podcast' ],
+			'demos' => [ 'creative' ],
 		],
 		[
 			'name'  => 'WP Forms Lite',
 			'slug'  => 'wpforms-lite/wpforms.php',
 			'uri'   => 'https://wordpress.org/plugins/wpforms-lite/',
-			'demos' => [ 'agency', 'podcast' ],
+			'demos' => [ 'creative', 'fashion' ],
 		],
 		[
 			'name'  => 'WooCommerce',
 			'slug'  => 'woocommerce/woocommerce.php',
 			'uri'   => 'https://wordpress.org/plugins/woocommerce/',
-			'demos' => [ 'agency' ],
+			'demos' => [ 'creative' ],
 		],
 	],
-	'custom-functions' => function () {
-		add_filter( 'mai_default_footer_credits', function ( $default ) {
-			return $default . mai_back_to_top_shortcode();
-		} );
-	},
 ];

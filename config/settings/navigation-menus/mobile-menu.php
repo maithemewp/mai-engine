@@ -8,5 +8,11 @@ return [
 		'settings'          => 'breakpoint',
 		'sanitize_callback' => 'absint',
 		'default'           => mai_get_breakpoint(),
+		'output'            => [
+			[
+				'element'  => ':root',
+				'property' => '--breakpoint-xl',
+			],
+		],
 	],
 ];

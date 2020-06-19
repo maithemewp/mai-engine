@@ -44,7 +44,7 @@ class Mai_Customizer_API {
 	 */
 	public function __construct() {
 		$this->handle  = mai_get_handle();
-		$this->configs = apply_filters( 'mai_customizer_configs', [ mai_get_dir() . 'config/_settings' ] );
+		$this->configs = apply_filters( 'mai_customizer_configs', [ mai_get_dir() . 'config/settings' ] );
 		$this->panels  = apply_filters( 'mai_customizer_panels', $this->get_panels() );
 	}
 
@@ -199,17 +199,6 @@ class Mai_Customizer_API {
 		// Set theme color palette for multicolor controls.
 		if ( isset( $field['type'] ) && 'multicolor' === $field['type'] ) {
 			$field['choices']['irisArgs']['palettes'] = mai_get_color_choices();
-		}
-
-		// Prevent output if value same as default.
-		if ( isset( $field['output'] ) ) {
-			foreach ( $field['output'] as $count => $output ) {
-				if ( ! isset( $output['exclude'] ) && isset( $field['default'] ) ) {
-					$field['output'][ $count ]['exclude'] = [
-						$field['default'],
-					];
-				}
-			}
 		}
 
 		// Automate editor CSS output for custom properties on root element.

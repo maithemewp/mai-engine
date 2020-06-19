@@ -2,7 +2,7 @@
 	margin: var(--title-area-margin, 0);
 	padding: var(--title-area-padding, var(--spacing-md)) 0 var(--title-area-padding, var(--spacing-md));
 	color: var(--title-area-color, var(--color-darkest));
-	line-height: var(--title-area-line-height, var(--line-height-heading));
+	line-height: var(--title-area-line-height, var(--heading-line-height));
 	text-align: var(--title-area-text-align, start);
 	transition: var(--title-area-transition, var(--transition));
 
@@ -19,7 +19,7 @@
 	margin: 0;
 	font-weight: var(--site-title-font-weight, var(--font-weight-heading));
 	font-size: var(--site-title-font-size, var(--text-xl));
-	font-family: var(--site-title-font-family, var(--font-secondary));
+	font-family: var(--site-title-font-family, var(--heading-font-family));
 }
 
 .site-title-link {

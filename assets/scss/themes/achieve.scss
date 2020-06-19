@@ -1,6 +1,8 @@
+@import "default";
+
 :root {
-	--font-primary: montserrat, var(--font-stack);
-	--font-secondary: montserrat, var(--font-stack);
+	--font-body: montserrat, var(--font-stack);
+	--heading-font-family: montserrat, var(--font-stack);
 	--border-radius: 0;
 }
 

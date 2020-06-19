@@ -1,6 +1,8 @@
+@import "default";
+
 :root {
-	--font-primary: "Open Sans", sans-serif;
-	--font-secondary: "Playfair Display", serif;
+	--font-body: "Open Sans", sans-serif;
+	--heading-font-family: "Playfair Display", serif;
 	--font-weight-body: var(--font-weight-light);
 	--body-background: #fcfcfc;
 	--border: 1px solid rgba(0, 0, 0, 0.06);

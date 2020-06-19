@@ -1,13 +1,13 @@
+@import "default";
+
 :root {
 	--text-md: 18px;
-	--font-primary: hind, var(--font-stack);
-	--font-secondary: montserrat, var(--font-stack);
 	--shadow-opacity: 0.1;
 	--border-size: 2px;
 	--h2-font-size: var(--text-xl);
 	--h3-font-size: var(--text-lg);
 	--button-font-size: var(--text-sm);
-	--button-font-family: var(--font-secondary);
+	--button-font-family: var(--heading-font-family);
 	--input-placeholder-color: var(--color-medium);
 	--blockquote-border-left: 0;
 	--site-title-font-size: var(--text-md);
