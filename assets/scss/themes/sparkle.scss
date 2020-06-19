@@ -1,13 +1,9 @@
 @import "default";
 
 :root {
-	--font-body: "Work Sans", sans-serif;
-	--heading-font-family: "Josefin Sans", sans-serif;
-	--heading-text-transform: uppercase;
 	--button-primary-background: var(--color-darkest);
 	--button-secondary-background: var(--color-medium);
 	--button-secondary-color: var(--color-darkest);
-	--text-scale-ratio: 1.125;
 	--border-color: var(--color-lighter);
 	--menu-font-size: var(--text-xs);
 	--menu-font-family: var(--heading-font-family);
@@ -143,5 +139,4 @@ body {
 	.wpforms-container.inline-fields .wpforms-submit {
 		height: 100%;
 	}
-
 }

@@ -18,19 +18,26 @@ return [
 		'fashion'  => 18,
 	],
 	'custom-properties' => [
-		'colors' => [
+		'colors'  => [
 			'primary' => '#f98588',
 			'lighter' => '#fdf3f2',
 			'darkest' => '#000000',
 			'dark'    => '#7f7d7e',
 			'medium'  => '#f9f6f6',
 		],
-		'border' => [
+		'text'    => [
+			'scale-ratio' => 1.125,
+		],
+		'body'    => [
+			'font-family' => 'Work Sans',
+		],
+		'heading' => [
+			'font-family'    => 'Josefin Sans',
+			'text-transform' => 'uppercase',
+		],
+		'border'  => [
 			'radius' => '1px',
 		],
-	],
-	'google-fonts'      => [
-		'https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&family=Work+Sans:ital,wght@0,400;0,700;1,400&display=swap',
 	],
 	'image-sizes'       => [
 		'add' => [
