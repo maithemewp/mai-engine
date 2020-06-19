@@ -26,7 +26,16 @@ return [
 			'dark'    => '#5f749e',
 			'lighter' => '#f7f8fa',
 		],
-		'border' => [
+		'text' => [
+			'scale-ratio' => 1.2,
+		],
+		'body'       => [
+			'font-family' => 'Karla',
+		],
+		'heading'    => [
+			'font-family' => 'Karla',
+		],
+		'border'     => [
 			'radius' => '100px',
 		],
 	],
