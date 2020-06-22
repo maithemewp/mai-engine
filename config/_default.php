@@ -51,6 +51,8 @@ return [
 		'heading-line-height'    => 1.2,
 		'heading-color'          => 'darkest',
 		'heading-text-transform' => 'none',
+		'input-border-radius'    => '4px',
+		'button-border-radius'   => '0',
 	],
 
 	/*
@@ -218,7 +220,9 @@ return [
 							'<span class="sub-menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
 							__( 'Sub Menu', 'mai-engine' )
 						),
-						'searchIcon'    => mai_get_svg_icon( 'search', 'regular', 'search-toggle-icon' ),
+						'searchIcon'    => mai_get_svg_icon( 'search', 'regular', [
+							'class' => 'search-toggle-icon',
+						] ),
 						'searchBox'     => ! defined( 'STYLESHEETPATH' ) ?:
 							get_search_form(
 								[

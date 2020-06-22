@@ -16,7 +16,7 @@ embed,
 iframe,
 object,
 video {
-	border-radius: 0.5em;
+	border-radius: var(--border-radius);
 }
 
 textarea {

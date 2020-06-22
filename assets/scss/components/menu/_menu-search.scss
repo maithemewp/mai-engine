@@ -5,9 +5,9 @@
 		top: 100%;
 		right: 0;
 		display: var(--menu-search-form-display, none);
-		padding: var(--spacing-md);
+		padding: var(--spacing-sm);
 		background-color: var(--color-lightest);
-		border-radius: var(--border-radius);
+		border-radius: var(--input-border-radius) var(--button-border-radius) var(--button-border-radius) var(--input-border-radius);
 		box-shadow: var(--shadow);
 	}
 
@@ -31,6 +31,6 @@
 }
 
 .search-toggle-icon {
-	width: 1em;
+	width: var(--search-toggle-icon-width, 1em);
 	fill: currentColor;
 }
