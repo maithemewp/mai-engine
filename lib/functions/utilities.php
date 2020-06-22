@@ -1298,11 +1298,11 @@ function mai_get_svg( $name, $class = '' ) {
  *
  * @param string $name  SVG name.
  * @param string $style SVG style.
- * @param string $class SVG classes.
+ * @param array  $atts  SVG HTML attributes.
  *
  * @return string
  */
-function mai_get_svg_icon( $name, $style = 'light', $class = '' ) {
+function mai_get_svg_icon( $name, $style = 'light', $atts = [] ) {
 	$file = mai_get_dir() . "assets/icons/svgs/$style/$name.svg";
 
 	if ( ! file_exists( $file ) ) {
@@ -1311,8 +1311,13 @@ function mai_get_svg_icon( $name, $style = 'light', $class = '' ) {
 
 	$svg = file_get_contents( $file );
 
-	if ( $class ) {
-		$svg = str_replace( '<svg', "<svg class='$class' ", $svg );
+	if ( $atts ) {
+		$dom = mai_get_dom_document( $svg );
+		$svgs = $dom->getElementsByTagName( 'svg' );
+		foreach ( $atts as $att => $value ) {
+			$svgs[0]->setAttribute( $att, $value );
+		}
+		$svg = $dom->saveHTML();
 	}
 
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
@@ -1331,6 +1336,30 @@ function mai_get_svg_icon( $name, $style = 'light', $class = '' ) {
  */
 function mai_get_svg_icon_url( $name, $style = 'light' ) {
 	return mai_get_url() . "assets/icons/svgs/$style/$name.svg";
+}
+
+/**
+ * Get DOMDocument object. expected behavior.
+ *
+ * @since 2.0.0
+ *
+ * @param string $html
+ *
+ * @return object
+ */
+function mai_get_dom_document( $html ) {
+	// Create the new document.
+	$dom = new DOMDocument;
+	// Modify state.
+	$libxml_previous_state = libxml_use_internal_errors( true );
+	// Load the content in the document HTML.
+	$dom->loadHTML( mb_convert_encoding( $html, 'HTML-ENTITIES', "UTF-8" ) );
+	// Handle errors.
+	libxml_clear_errors();
+	// Restore.
+	libxml_use_internal_errors( $libxml_previous_state );
+
+	return $dom;
 }
 
 /**
