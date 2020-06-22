@@ -29,6 +29,7 @@ return [
 		'type'     => 'slider',
 		'settings' => 'base-font-size',
 		'label'    => __( 'Base Font Size', 'mai-engine' ),
+		// TODO: Add description?
 		'default'  => mai_get_custom_property( 'text-md' ),
 		'choices'  => [
 			'min'  => 10,
@@ -47,6 +48,7 @@ return [
 		'type'     => 'slider',
 		'settings' => 'text-scale-ratio',
 		'label'    => __( 'Text Scale Ratio', 'mai-engine' ),
+		// TODO: Add description about what this does.
 		'default'  => mai_get_custom_property( 'text-scale-ratio' ),
 		'choices'  => [
 			'min'  => 0,
@@ -64,6 +66,7 @@ return [
 		'type'     => 'slider',
 		'settings' => 'text-responsive-scale',
 		'label'    => __( 'Text Responsive Scale', 'mai-engine' ),
+		// TODO: Add description about what this does.
 		'default'  => mai_get_custom_property( 'text-responsive-ratio' ),
 		'choices'  => [
 			'min'  => 0,
@@ -84,6 +87,7 @@ return [
 		'type'     => 'slider',
 		'settings' => 'border-width',
 		'label'    => __( 'Border width', 'mai-engine' ),
+		// TODO: Add description about what elements these settings generally affect.
 		'default'  => mai_get_integer_value( mai_get_custom_property( 'border-width' ) ),
 		'choices'  => [
 			'min'  => 0,
@@ -102,6 +106,7 @@ return [
 		'type'     => 'slider',
 		'settings' => 'border-radius',
 		'label'    => __( 'Border radius', 'mai-engine' ),
+		// TODO: Add description about what elements these settings generally affect. (entry borders, etc).
 		'default'  => mai_get_integer_value( mai_get_custom_property( 'border-radius' ) ),
 		'choices'  => [
 			'min'  => 0,
@@ -120,6 +125,7 @@ return [
 		'type'     => 'color',
 		'settings' => 'border-color',
 		'label'    => __( 'Border Color', 'mai-customizer' ),
+		// TODO: Add description about what elements these settings generally affect.
 		'default'  => mai_get_color( 'lightest' ),
 		'output'   => [
 			[
