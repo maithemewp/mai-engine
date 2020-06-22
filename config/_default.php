@@ -512,39 +512,32 @@ return [
 		[
 			'id'       => 'before-header',
 			'location' => 'genesis_before_header',
-			'default'  => '',
 		],
 		[
 			'id'       => 'header-left',
 			'location' => 'mai_header_left',
-			'default'  => '',
 		],
 		[
 			'id'       => 'header-right',
 			'location' => 'mai_header_right',
-			'default'  => '',
 		],
 		[
 			'id'      => 'after-entry',
 			'name'    => __( 'After Entry', 'mai-engine' ),
-			'default' => '',
 		],
 		[
 			'id'       => 'before-footer',
 			'location' => 'genesis_footer',
 			'priority' => 5,
-			'default'  => '',
 		],
 		[
 			'id'       => 'footer',
 			'location' => 'genesis_footer',
-			'default'  => '',
 		],
 		[
 			'id'       => 'footer-credits',
 			'location' => 'genesis_footer',
 			'priority' => 12,
-			'default'  => '',
 		],
 	],
 

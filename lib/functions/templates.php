@@ -159,29 +159,6 @@ function mai_get_template_part_by_slug( $slug ) {
 	return (int) array_shift( $posts );
 }
 
-add_action( 'admin_init', 'mai_create_default_template_parts' );
-/**
- * Description of expected behavior.
- *
- * @since 1.0.0
- *
- * @return void
- */
-function mai_create_default_template_parts() {
-	foreach ( mai_get_config( 'template-parts' ) as $default ) {
-		if ( ! mai_template_part_exists( $default['id'] ) ) {
-			wp_insert_post( [
-				'post_type'             => 'wp_template_part',
-				'post_status'           => 'publish',
-				'post_name'             => $default['id'],
-				'post_title'            => mai_convert_case( $default['id'], 'title' ),
-				'post_content'          => $default['default'],
-				'post_content_filtered' => '',
-			] );
-		}
-	}
-}
-
 add_filter( 'display_post_states', 'mai_template_part_post_state', 10, 2 );
 /**
  * Description of expected behavior.
