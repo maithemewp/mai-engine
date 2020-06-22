@@ -14,18 +14,12 @@
 	width: var(--sub-menu-width, 18rem);
 	margin: var(--sub-menu-margin, 0);
 	padding: var(--sub-menu-padding, var(--spacing-xxs) 0);
-	font-size: var(--sub-menu-font-size, 90%); /* 90% of whatever the menu is set to. */
+	font-size: var(--sub-menu-font-size, 0.9em); /* 90% of whatever the menu is set to. */
 	list-style-type: var(--sub-menu-list-style, none);
 	background: var(--sub-menu-background, var(--color-lightest));
 	border: var(--sub-menu-border, 0);
 	opacity: var(--sub-menu-opacity, 1);
-	animation: var(--sub-menu-animation, fadein 0.1s ease-in-out);
-
-	&.visible {
-		left: var(--sub-menu-visible-left, auto);
-		display: var(--sub-menu-visible-display, flex);
-		opacity: var(--sub-menu-visible-opacity, 1);
-	}
+	animation: var(--sub-menu-animation, none);
 }
 
 .sub-menu .sub-menu {

@@ -38,6 +38,7 @@
 	display: flex; /* can't be variable because 3rd level sub-menus will display too */
 	--sub-menu-opacity: 1;
 	--sub-menu-left: auto;
+	--sub-menu-animation: fadein 0.1s ease-in-out;
 }
 
 .mobile-menu-visible {
