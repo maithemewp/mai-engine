@@ -74,7 +74,7 @@
 }
 
 .cart-collaterals {
-	margin: var(--gutter) 0;
+	margin: var(--column-gap) 0;
 
 	@include mq(lg) {
 		display: flex;

@@ -6,7 +6,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	margin-bottom: var(--gutter);
+	margin-bottom: var(--column-gap);
 
 	p {
 		width: 100%;
@@ -14,7 +14,7 @@
 }
 
 .woocommerce-checkout-payment {
-	margin-top: var(--gutter);
+	margin-top: var(--column-gap);
 }
 
 .payment_method_stripe {
@@ -44,7 +44,7 @@
 		&-first {
 			float: left;
 			width: var(--one-half);
-			margin-right: var(--gutter);
+			margin-right: var(--column-gap);
 		}
 
 		&-last {
