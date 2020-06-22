@@ -1,10 +1,16 @@
 .wp-block {
 
 	&-columns {
-		flex-wrap: wrap;
 		margin-bottom: 0 !important; // Why the heck does WP add margin bottom here when we have spacer block?
 
+		@include mq(false, md) {
+			display: grid;
+			grid-gap: var(--column-gap);
+			grid-template-columns: 1fr;
+		}
+
 		@include mq(md) {
+			--wp-block-columns-display: flex;
 			flex-wrap: nowrap;
 		}
 	}
@@ -12,14 +18,22 @@
 	&-column {
 		flex: none;
 		width: 100%;
+		margin-left: 0;
+
+		@include mq(false, md) {
+
+			&:not(:first-child),
+			&:nth-child(2n) {
+				margin-left: 0; // Override WP default 2 columns margin.
+			}
+		}
 
 		@include mq(md) {
-			flex: auto;
-			width: auto;
+			flex: 0 1 auto;
 		}
 
 		@include mq(lg) {
-			margin-left: var(--gutter);
+			margin-left: var(--column-gap);
 
 			&:first-of-type {
 				margin-left: 0;
