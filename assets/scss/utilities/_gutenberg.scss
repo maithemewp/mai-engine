@@ -1,11 +1,9 @@
 @each $color-name, $color-value in $colors {
 
-	.has-#{ $color-name }-color {
+	.has-#{ $color-name }-color,
+	.has-#{ $color-name }-color:hover,
+	.has-#{ $color-name }-color:focus {
 		color: var(--color-#{ $color-name });
-		--heading-color: var(--color-#{ $color-name });
-		--menu-item-link-color: var(--color-#{ $color-name });
-		--button-color: var(--color-#{ $color-name });
-		--button-color-hover: var(--color-lightest);
 	}
 
 	.has-#{ $color-name }-background-color {

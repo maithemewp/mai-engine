@@ -43,6 +43,7 @@
 	text-transform: var(--button-text-transform, none);
 	text-decoration: var(--button-text-decoration, none);
 	overflow-wrap: var(--button-overflow-wrap, break-word);
+	background: var(--button-background, var(--color-primary));
 	border: var(--button-border, 0);
 	border-radius: var(--button-border-radius, var(--border-radius));
 	outline: var(--button-outline, (none));
@@ -54,20 +55,53 @@
 
 	&:hover,
 	&:focus {
+		--button-overlay-opacity: var(--button-overlay-opacity-hover, 0.2);
+		color: var(--button-color-hover, var(--color-lightest));
 		text-decoration: var(--button-text-decoration-hover, none);
+		background: var(--button-background-hover, var(--color-primary));
 		outline: var(--button-outline-hover, (none));
+		box-shadow: var(--button-box-shadow-hover, var(--button-box-shadow));
+		transform: var(--button-transform-hover, var(--button-transform, scale(1))); // Pseudo element z-index hack.
+	}
+
+	&::before {
+		position: absolute;
+		top: var(--button-overlay-positioning, 0);
+		right: var(--button-overlay-positioning, 0);
+		bottom: var(--button-overlay-positioning, 0);
+		left: var(--button-overlay-positioning, 0);
+		z-index: var(--button-overlay-z-index, -1);
+		display: var(--button-overlay-display, block);
+		background-color: var(--button-overlay-color, var(--color-darkest));
+		border-radius: var(--button-border-radius, var(--border-radius));
+		opacity: var(--button-overlay-opacity, 0);
+		transition: var(--transition);
+		content: "";
 	}
 }
 
 @mixin button-style($style) {
 
+	@if ("secondary" == $style) {
+		background: var(--color-secondary);
+
+		@include hover-focus {
+			background: var(--color-secondary);
+		}
+	}
+
 	@if ("tertiary" == $style) {
 		padding: var(--button-padding, (1em 0.5em));
 		color: var(--color-primary);
-		background: transparent !important;
+		background: transparent;
 
 		@include hover-focus {
 			color: var(--color-secondary);
+			background: transparent;
+		}
+
+		&::before {
+			display: none;
 		}
 
 		&::after {
@@ -78,8 +112,20 @@
 	}
 
 	@if ("outline" == $style) {
+		color: var(--color-primary);
 		line-height: calc(1em - 4px); // Makes height same as button with no border.
+		background: transparent;
 		border: 2px solid currentColor; // Same as Gutenberg default styles.
+
+		@include hover-focus {
+			color: var(--color-primary);
+			background: transparent;
+			border-color: currentColor;
+		}
+
+		&::before {
+			display: none;
+		}
 	}
 
 	@if ("small" == $style) {

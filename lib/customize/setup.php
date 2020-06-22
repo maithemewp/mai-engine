@@ -35,8 +35,6 @@ function mai_add_kirki_config() {
 			'option_type'       => 'option',
 			'option_name'       => $handle,
 			'gutenberg_support' => true,
-			'disable_loader'    => true,
-			'url_path'          => mai_get_url() . 'vendor/aristath/kirki',
 		]
 	);
 
@@ -47,6 +45,23 @@ function mai_add_kirki_config() {
 			'title'    => esc_html__( 'Theme Settings', 'mai-engine' ),
 		]
 	);
+}
+
+add_filter( 'kirki/config', 'mai_kirki_config' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param $config
+ *
+ * @return mixed
+ */
+function mai_kirki_config( $config ) {
+	$config['disable_loader'] = true;
+	$config['url_path']       = mai_get_url() . 'vendor/aristath/kirki';
+
+	return $config;
 }
 
 add_action( 'init', 'mai_register_customizer_api' );
