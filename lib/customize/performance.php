@@ -49,4 +49,37 @@ function mai_performance_customizer_settings() {
 			'default'  => true,
 		]
 	);
+
+	Kirki::add_field(
+		$config_id,
+		[
+			'type'     => 'checkbox',
+			'settings' => 'remove-template-classes',
+			'label'    => esc_html__( 'Remove additional page template body classes', 'mai-engine' ),
+			'section'  => $section_id,
+			'default'  => true,
+		]
+	);
+
+	Kirki::add_field(
+		$config_id,
+		[
+			'type'     => 'checkbox',
+			'settings' => 'disable-emojis',
+			'label'    => esc_html__( 'Disable emojis', 'mai-engine' ),
+			'section'  => $section_id,
+			'default'  => true,
+		]
+	);
+
+	Kirki::add_field(
+		$config_id,
+		[
+			'type'     => 'checkbox',
+			'settings' => 'remove-recent-comments-css',
+			'label'    => esc_html__( 'Remove recent comments CSS', 'mai-engine' ),
+			'section'  => $section_id,
+			'default'  => true,
+		]
+	);
 }
