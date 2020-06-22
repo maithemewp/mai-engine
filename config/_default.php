@@ -260,8 +260,8 @@ return [
 
 			// Styles.
 			[
-				'handle' => mai_get_handle(),
-				'src'    => mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css',
+				'handle'   => mai_get_handle(),
+				'src'      => mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css',
 			],
 
 			// Customizer styles.

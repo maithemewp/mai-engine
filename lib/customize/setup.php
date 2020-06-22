@@ -35,7 +35,8 @@ function mai_add_kirki_config() {
 			'option_type'       => 'option',
 			'option_name'       => $handle,
 			'gutenberg_support' => true,
-			'disable_output'    => false,
+			'disable_loader'    => true,
+			'url_path'          => mai_get_url() . 'vendor/aristath/kirki',
 		]
 	);
 
@@ -46,39 +47,6 @@ function mai_add_kirki_config() {
 			'title'    => esc_html__( 'Theme Settings', 'mai-engine' ),
 		]
 	);
-}
-
-add_filter( 'kirki_config', 'mai_disable_kirki_loader' );
-/**
- * Remove Kirki loader icon.
- *
- * @param array $config The configuration array.
- *
- * @return array
- */
-function mai_disable_kirki_loader( $config ) {
-	return wp_parse_args(
-		[
-			'disable_loader' => true,
-		],
-		$config
-	);
-}
-
-add_filter( 'kirki/config', 'mai_kirki_url', 100 );
-/**
- * Manually set the Kirki URL.
- *
- * @since 0.1.0
- *
- * @param array $config The configuration array.
- *
- * @return array
- */
-function mai_kirki_url( $config ) {
-	$config['url_path'] = mai_get_url() . 'vendor/aristath/kirki';
-
-	return $config;
 }
 
 add_action( 'init', 'mai_register_customizer_api' );

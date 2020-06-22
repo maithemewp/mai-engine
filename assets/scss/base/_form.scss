@@ -5,7 +5,7 @@ abbr[title] {
 label {
 	display: inline-block;
 	margin: var(--label-margin, 0 0 var(--spacing-xs));
-	font-weight: var(--label-font-weight, var(--font-weight-heading));
+	font-weight: var(--label-font-weight, var(--heading-font-weight));
 	font-size: var(--label-font-size, (smaller));
 
 	--input-font-size: smaller;

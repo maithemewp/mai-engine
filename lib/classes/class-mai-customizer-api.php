@@ -222,7 +222,7 @@ class Mai_Customizer_API {
 
 					foreach ( $args as $arg ) {
 						if ( isset( $output[ $arg ] ) ) {
-							$editor_output[ $arg ] = 'element' === $arg ? '.edit-post-visual-editor.editor-styles-wrapper' : $output[ $arg ];
+							$editor_output[ $arg ] = 'element' === $arg ? '.editor-styles-wrapper' : $output[ $arg ];
 						}
 					}
 

@@ -508,37 +508,22 @@ function mai_is_light_color( $color ) {
 }
 
 /**
- * Returns a lighter version of a color.
+ * Description of expected behavior.
  *
- * @since 0.3.0
+ * @since 1.0.0
  *
- * @param string $color  Any color string, including hex, rgb, rgba, etc.
- * @param int    $amount The percentage amount to change the color.
+ * @param        $color
+ * @param int    $amount
+ * @param string $light_or_dark
  *
  * @return string
  */
-function mai_get_lighter_color( $color, $amount = 5 ) {
+function mai_get_color_variant( $color, $light_or_dark = 'dark', $amount = 7 ) {
 	$color   = ariColor::newColor( $color );
-	$lighter = $color->getNew( 'lightness', $color->lightness + $amount );
+	$value   = 'dark' === $light_or_dark ? $color->lightness - $amount : $color->lightness + $amount;
+	$lighter = $color->getNew( 'lightness', $value );
 
 	return $lighter->toCSS( 'hex' );
-}
-
-/**
- * Returns a darker version of a color.
- *
- * @since 0.3.0
- *
- * @param string $color  Any color string, including hex, rgb, rgba, etc.
- * @param int    $amount The percentage amount to change the color.
- *
- * @return string
- */
-function mai_get_darker_color( $color, $amount = 5 ) {
-	$color  = ariColor::newColor( $color );
-	$darker = $color->getNew( 'lightness', $color->lightness - $amount );
-
-	return $darker->toCSS( 'hex' );
 }
 
 /**

@@ -313,6 +313,18 @@
 	min-width: 256px;
 }
 
+li.customize-control-kirki-color-palette .colors-wrapper {
+	padding: 10px 0;
+}
+
+li.customize-control-kirki-color-palette .colors-wrapper input:checked + label .color-palette-color {
+	box-shadow: 0px 3px 10px -2px #999aa0;
+	width: 110%;
+	height: 110%;
+	left: -5%;
+	top: -5%;
+}
+
 // Theme settings panel ordering.
 
 #customize-theme-controls #sub-accordion-panel-mai-engine {

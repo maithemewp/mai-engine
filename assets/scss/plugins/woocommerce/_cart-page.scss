@@ -6,7 +6,7 @@
 	width: 1em;
 	height: 1em;
 	color: var(--color-lightest);
-	font-weight: var(--font-weight-heading);
+	font-weight: var(--heading-font-weight);
 	background-color: var(--color-danger);
 	border-radius: var(--border-radius);
 
@@ -163,7 +163,7 @@
 				width: 25%;
 				margin-right: var(--spacing-md);
 				padding: 1.5em 1em;
-				font-weight: var(--font-weight-heading);
+				font-weight: var(--heading-font-weight);
 				font-size: smaller;
 				white-space: nowrap;
 				background-color: var(--color-lighter);

@@ -1,57 +1,103 @@
 <?php
 
+$button_elements = [
+	'.button',
+	'[type=button]',
+	'[type=reset]',
+	'[type=submit]',
+	'button',
+];
+
+$button_elements_hover = [];
+
+foreach ( $button_elements as $button_element ) {
+	$button_elements_hover[] = $button_element . ':hover';
+	$button_elements_hover[] = $button_element . ':focus';
+}
+
 return [
 	[
-		'type'     => 'color',
-		'settings' => 'overlay-color',
-		'label'    => __( 'Overlay Color', 'mai-customizer' ),
-		'default'  => mai_get_color( 'darkest' ),
-		'output'   => [
-			[
-				'element'  => ':root',
-				'property' => '--button-overlay-color',
-			],
+		'settings' => 'button-hover-color',
+		'label'    => __( 'Button Hover Color', 'mai-engine' ),
+		'type'     => 'radio-buttonset',
+		'default'  => 'dark',
+		'choices'  => [
+			'dark'  => __( 'Dark', 'mai-engine' ),
+			'light' => __( 'Light', 'mai-engine' ),
 		],
 	],
 	[
 		'type'     => 'color',
-		'settings' => 'background-color',
-		'label'    => __( 'Background Color', 'mai-customizer' ),
+		'settings' => 'primary-background',
+		'label'    => __( 'Primary Background', 'mai-customizer' ),
 		'default'  => mai_get_color( 'primary' ),
 		'output'   => [
 			[
-				'element'  => ':root',
-				'property' => '--button-overlay-color',
+				'element'       => $button_elements,
+				'property'      => 'background',
+				'value_pattern' => 'var(--button-background, $)',
+			],
+			[
+				'element'       => $button_elements_hover,
+				'property'      => 'background',
+				'value_pattern' => sprintf(
+					'var(--button-background-hover, %s)',
+					mai_get_color_variant( mai_get_option( 'buttons-primary-background', mai_get_color( 'primary' ) ), mai_get_option( 'buttons-hover-color', 'dark' ) )
+				),
 			],
 		],
 	],
 	[
 		'type'     => 'color',
-		'settings' => 'color',
-		'label'    => __( 'Text Color', 'mai-customizer' ),
-		'default'  => mai_get_color( 'lightest' ),
+		'settings' => 'secondary-background',
+		'label'    => __( 'Secondary Background', 'mai-customizer' ),
+		'default'  => mai_get_color( 'secondary' ),
 		'output'   => [
 			[
-				'element'  => ':root',
-				'property' => '--button-overlay-color',
+				'element'  => '.button-secondary',
+				'property' => 'background',
+			],
+			[
+				'element'       => [
+					'.button-secondary:hover',
+					'.button-secondary:focus',
+				],
+				'property'      => 'background',
+				'value_pattern' => sprintf(
+					'var(--button-background-hover, %s)',
+					mai_get_color_variant( mai_get_option( 'buttons-secondary-background', mai_get_color( 'secondary' ) ), mai_get_option( 'buttons-hover-color', 'dark' ) )
+				),
 			],
 		],
 	],
 	[
-		'type'     => 'slider',
-		'settings' => 'border-radius',
-		'label'    => __( 'Border radius', 'mai-engine' ),
-		'default'  => mai_get_integer_value( mai_get_custom_property( 'border-radius' ) ),
-		'choices'  => [
-			'min'  => 0,
-			'max'  => 100,
-			'step' => 1,
-		],
+		'type'     => 'color',
+		'settings' => 'outline-color',
+		'label'    => __( 'Outline Button Color', 'mai-customizer' ),
+		'default'  => mai_get_color( 'primary' ),
 		'output'   => [
 			[
-				'element'  => ':root',
-				'property' => '--button-border-radius',
-				'units'    => 'px',
+				'element'  => '.button-outline',
+				'property' => 'color',
+			],
+			[
+				'element'       => '.button-outline',
+				'property'      => 'background-color',
+				'value_pattern' => 'transparent',
+			],
+			[
+				'element'  => [
+					'.button-outline:hover',
+					'.button-outline:focus',
+				],
+				'property' => 'background-color',
+			],
+			[
+				'element'  => [
+					'.button-outline:hover',
+					'.button-outline:focus',
+				],
+				'property' => 'border-color',
 			],
 		],
 	],
