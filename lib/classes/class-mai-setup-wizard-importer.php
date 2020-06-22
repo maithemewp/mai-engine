@@ -150,6 +150,25 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 	 * @return void
 	 */
 	private function import_template_parts( $file ) {
+		$template_parts = mai_get_config( 'template-parts' );
+
+		foreach ( $template_parts as $template_part ) {
+			$post    = get_post( mai_get_template_part_by_slug( $template_part['id'] ) );
+			$options = get_option( $this->plugin->slug );
+
+			if ( isset( $options['theme'] ) && isset( $options['demo'] ) ) {
+				$theme_slug = $options['theme'];
+				$theme_name = mai_convert_case( $options['theme'], 'title' );
+				$demo_slug  = $options['demo'];
+				$demo_name  = mai_convert_case( $options['demo'], 'title' );
+
+				$post->post_title = $post->post_title . ' - ' . $theme_name . ' ' . $demo_name;
+				$post->post_name  = $post->post_name . '-' . $theme_slug . '-' . $demo_slug;
+
+				wp_update_post( $post );
+			}
+		}
+
 		$this->import_content( $file );
 	}
 

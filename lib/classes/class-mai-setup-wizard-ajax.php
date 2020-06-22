@@ -118,8 +118,9 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 		$demo  = isset( $field['value'] ) ? $field['value'] : false;
 
 		if ( $demo ) {
-			$options         = get_option( $this->plugin->slug, [] );
-			$options['demo'] = $demo;
+			$options          = get_option( $this->plugin->slug, [] );
+			$options['demo']  = $demo;
+			$options['theme'] = mai_get_active_theme();
 
 			update_option( $this->plugin->slug, $options );
 			wp_send_json_success( $demo . __( ' selected.', 'mai-setup-wizard' ) );
