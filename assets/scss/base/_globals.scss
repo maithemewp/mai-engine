@@ -39,7 +39,7 @@
 	--shadow-blur: 1em;
 	--shadow-spread: 0;
 	--shadow-opacity: 0.5;
-	--shadow-color: var(--color-medium);
+	--shadow-color: var(--color-medium-rgb); // Requires rgba so we can add opacity.
 	--shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-spread) rgba(var(--shadow-color), var(--shadow-opacity));
 
 	--transition-property: all;
