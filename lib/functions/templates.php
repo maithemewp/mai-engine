@@ -181,3 +181,26 @@ function mai_create_default_template_parts() {
 		}
 	}
 }
+
+add_filter( 'display_post_states', 'mai_template_part_post_state', 10, 2 );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param array   $states
+ * @param WP_Post $post
+ *
+ * @return mixed
+ */
+function mai_template_part_post_state( $states, $post ) {
+	$template_parts = mai_get_config( 'template-parts' );
+
+	foreach ( $template_parts as $template_part ) {
+		if ( $template_part['id'] === $post->post_name && $post->post_content ) {
+			$states[] = __( 'Active', 'mai-engine' );
+		}
+	}
+
+	return $states;
+}
