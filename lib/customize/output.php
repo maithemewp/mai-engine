@@ -13,7 +13,7 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_breakpoint_custom_properties' );
 /**
  * Output breakpoint custom property.
  *
- * @since 1.0.0
+ * @since 2.0.0
  *
  * @param $css
  *
@@ -24,6 +24,34 @@ function mai_add_breakpoint_custom_properties( $css ) {
 
 	foreach ( $breakpoints as $name => $size ) {
 		$css['global'][':root'][ '--breakpoint-' . $name ] = $size . 'px';
+	}
+
+	return $css;
+}
+
+add_filter( 'kirki_mai-engine_styles', 'mai_add_color_variant_css' );
+/**
+ * Add color variant styles to kirki output.
+ *
+ * @since 2.0.0
+ *
+ * @param array $css Kirki CSS output.
+ *
+ * @return array
+ */
+function mai_add_color_variant_css( $css ) {
+	$config = mai_get_config( 'custom-properties' );
+	foreach ( $config as $prop => $value ) {
+		if ( ! mai_has_string( 'color-', $prop ) ) {
+			continue;
+		}
+		$color = ariColor::newColor( $value );
+		$rgb   = [
+			$red = $color->red,
+			$green = $color->green,
+			$blue = $color->blue,
+		];
+		$css['global'][':root'][ '--' . $prop . '-rgb' ] = implode( ',', $rgb );
 	}
 
 	return $css;
