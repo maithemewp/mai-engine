@@ -16,27 +16,19 @@ return [
 		'agency' => 5,
 	],
 	'custom-properties' => [
-		'colors'  => [
-			'primary' => '#fb2056',
-			'warning' => '#ffce53',
-			'darkest' => '#232c39',
-			'medium'  => '#647585',
-			'light'   => '#eff1f3',
-			'lighter' => '#f6f7f8',
-		],
-		'body'    => [
-			'font-family'    => 'Hind',
-			'font-weight'    => 'regular',
-			'line-height'    => 1.5,
-			'color'          => 'dark',
-			'text-transform' => 'none',
-		],
-		'heading' => [
-			'font-family' => 'Montserrat',
-		],
-	],
-	'google-fonts'      => [
-		'https://fonts.googleapis.com/css2?family=Hind&family=Montserrat:wght@700&display=swap',
+		'color-primary'       => '#fb2056',
+		'color-warning'       => '#ffce53',
+		'color-darkest'       => '#232c39',
+		'color-medium'        => '#647585',
+		'color-light'         => '#eff1f3',
+		'color-lighter'       => '#f6f7f8',
+		'body-font-family'    => 'Hind',
+		'body-font-weight'    => 'regular',
+		'body-line-height'    => 1.5,
+		'body-color'          => 'dark',
+		'body-text-transform' => 'none',
+		'heading-font-family' => 'Montserrat',
+		'heading-font-weight' => 600,
 	],
 	'theme-support'     => [
 		'add' => [

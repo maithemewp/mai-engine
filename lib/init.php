@@ -236,6 +236,7 @@ function mai_load_files() {
 		'customize/beta-tester',
 		'customize/logo',
 		'customize/loop',
+		'customize/output',
 		'customize/page-header',
 		'customize/performance',
 		'customize/setup',

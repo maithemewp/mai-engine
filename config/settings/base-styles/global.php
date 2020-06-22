@@ -29,7 +29,7 @@ return [
 		'type'     => 'slider',
 		'settings' => 'base-font-size',
 		'label'    => __( 'Base Font Size', 'mai-engine' ),
-		'default'  => mai_get_variables()['text']['md'],
+		'default'  => mai_get_custom_property( 'text-md' ),
 		'choices'  => [
 			'min'  => 10,
 			'max'  => 100,
@@ -47,7 +47,7 @@ return [
 		'type'     => 'slider',
 		'settings' => 'text-scale-ratio',
 		'label'    => __( 'Text Scale Ratio', 'mai-engine' ),
-		'default'  => mai_get_variables()['text']['scale-ratio'],
+		'default'  => mai_get_custom_property( 'text-scale-ratio' ),
 		'choices'  => [
 			'min'  => 0,
 			'max'  => 3,
@@ -61,13 +61,30 @@ return [
 		],
 	],
 	[
+		'type'     => 'slider',
+		'settings' => 'text-responsive-scale',
+		'label'    => __( 'Text Responsive Scale', 'mai-engine' ),
+		'default'  => mai_get_custom_property( 'text-responsive-ratio' ),
+		'choices'  => [
+			'min'  => 0,
+			'max'  => 10,
+			'step' => 0.1,
+		],
+		'output'   => [
+			[
+				'element'  => ':root',
+				'property' => '--text-responsive-scale',
+			],
+		],
+	],
+	[
 		'type' => 'divider',
 	],
 	[
 		'type'     => 'slider',
 		'settings' => 'border-width',
 		'label'    => __( 'Border width', 'mai-engine' ),
-		'default'  => mai_get_integer_value( mai_get_variables()['border']['width'] ),
+		'default'  => mai_get_integer_value( mai_get_custom_property( 'border-width' ) ),
 		'choices'  => [
 			'min'  => 0,
 			'max'  => 10,
@@ -85,7 +102,7 @@ return [
 		'type'     => 'slider',
 		'settings' => 'border-radius',
 		'label'    => __( 'Border radius', 'mai-engine' ),
-		'default'  => mai_get_integer_value( mai_get_variables()['border']['radius'] ),
+		'default'  => mai_get_integer_value( mai_get_custom_property( 'border-radius' ) ),
 		'choices'  => [
 			'min'  => 0,
 			'max'  => 100,

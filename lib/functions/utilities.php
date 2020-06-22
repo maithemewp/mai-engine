@@ -321,16 +321,50 @@ function mai_get_settings( $name ) {
  *
  * @since 0.1.0
  *
+ * @param string $element Get all properties beginning with.
+ * @param bool   $remove_prefix
+ *
  * @return array
  */
-function mai_get_variables() {
-	static $variables = null;
+function mai_get_custom_properties( $element = '', $remove_prefix = false ) {
+	static $custom_properties = null;
 
-	if ( is_null( $variables ) ) {
-		$variables = mai_get_config( 'custom-properties' );
+	if ( is_null( $custom_properties ) ) {
+		$custom_properties = mai_get_config( 'custom-properties' );
 	}
 
-	return $variables;
+	if ( $element ) {
+		$prefixed = [];
+
+		foreach ( $custom_properties as $name => $value ) {
+			if ( false !== strpos( $name, $element . '-' ) ) {
+				$name = $remove_prefix ? str_replace( $element . '-', '', $name ) : $name;
+
+				$prefixed[ $name ] = $value;
+			}
+		}
+
+		return $prefixed;
+
+	} else {
+		return $custom_properties;
+	}
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param $name
+ * @param $default
+ *
+ * @return mixed|null
+ */
+function mai_get_custom_property( $name, $default = null ) {
+	$custom_properties = mai_get_custom_properties();
+
+	return isset( $custom_properties[ $name ] ) ? $custom_properties[ $name ] : $default;
 }
 
 /**
@@ -367,7 +401,7 @@ function mai_get_colors() {
 	static $colors = [];
 
 	if ( empty( $colors ) ) {
-		$colors = mai_get_variables()['colors'];
+		$colors = mai_get_custom_properties( 'color', true );
 
 		foreach ( $colors as $name => $hex ) {
 			$colors[ $name ] = $hex;
@@ -422,9 +456,8 @@ function mai_get_color_choices() {
  */
 function mai_get_font_sizes() {
 	$font_sizes = [];
-	$config     = mai_get_variables()['text'];
-	$ratio      = $config['scale-ratio'];
-	$md         = $config['md'];
+	$ratio      = mai_get_custom_property( 'text-scale-ratio' );
+	$md         = mai_get_custom_property( 'text-md' );
 	$sm         = $md / $ratio;
 	$xs         = $sm / $ratio;
 	$lg         = $md * $ratio;
@@ -519,7 +552,7 @@ function mai_get_breakpoints() {
 	static $breakpoints = [];
 
 	if ( empty( $breakpoints ) ) {
-		$breakpoint        = mai_get_variables()['breakpoint'];
+		$breakpoint        = mai_get_custom_property( 'breakpoint-xl' );
 		$breakpoints['xs'] = absint( $breakpoint / 3 );   // 400  (400 x 1)
 		$breakpoints['sm'] = absint( $breakpoint / 2 );   // 600  (400 x 1.5)
 		$breakpoints['md'] = absint( $breakpoint / 1.5 ); // 800  (400 x 2)

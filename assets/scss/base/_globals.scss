@@ -1,9 +1,4 @@
 @mixin custom-properties {
-	--breakpoint-lg: calc(var(--breakpoint-xl) / 1.2);
-	--breakpoint-md: calc(var(--breakpoint-xl) / 1.5);
-	--breakpoint-sm: calc(var(--breakpoint-xl) / 2);
-	--breakpoint-xs: calc(var(--breakpoint-xl) / 3);
-
 	--text-xs: calc(var(--text-sm) / var(--text-scale-ratio));
 	--text-sm: calc(var(--text-md) / var(--text-scale-ratio));
 	--text-lg: calc(var(--text-md) * var(--text-scale-ratio));

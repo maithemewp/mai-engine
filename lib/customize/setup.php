@@ -12,19 +12,8 @@
 // Disable kirki telemetry.
 add_filter( 'kirki_telemetry', '__return_false' );
 
-add_action( 'after_setup_theme', 'mai_kirki_filters' );
-/**
- * Add miscellaneous Kirki filters after setup.
- *
- * @since 0.1.0
- *
- * @return void
- */
-function mai_kirki_filters() {
-	$handle = mai_get_handle();
-
-	add_filter( "kirki_${handle}_webfonts_skip_hidden", '__return_false' );
-}
+// Skip hidden webfont choices.
+add_filter( "kirki_mai-engine_webfonts_skip_hidden", '__return_false' );
 
 add_action( 'after_setup_theme', 'mai_add_kirki_config' );
 /**

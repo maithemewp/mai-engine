@@ -1,6 +1,6 @@
 <?php
 
-$config  = mai_get_variables()['body'];
+$config  = mai_get_custom_properties( 'body', true );
 $default = [];
 $output  = [];
 
@@ -10,12 +10,6 @@ foreach ( $config as $key => $value ) {
 	} else {
 		$default[ $key ] = $value;
 	}
-
-	$output[] = [
-		'element'  => ':root',
-		'property' => '--body-' . $key,
-		'choice'   => $key,
-	];
 }
 
 return [

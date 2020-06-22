@@ -183,39 +183,6 @@ function mai_page_header_divider_class( $attr ) {
 	return $attr;
 }
 
-add_filter( 'genesis_attr_page-header', 'mai_add_page_header_content_type_css' );
-/**
- * Removes custom properties CSS output when they are the same as the defaults.
- * Skips defaults set in the child theme.
- *
- * @since 0.1.0
- *
- * @param array $attr Kirki CSS output.
- *
- * @return array
- */
-function mai_add_page_header_content_type_css( $attr ) {
-	$config  = mai_get_config( 'page-header' );
-	$args    = mai_get_template_args();
-	$color   = isset( $args['page-header-background-color'] ) && ! empty( $args['page-header-background-color'] ) ? $args['page-header-background-color'] : mai_get_option( 'page-header-background-color', $config['background-color'] );
-	$opacity = isset( $args['page-header-overlay-opacity'] ) && ! empty( $args['page-header-overlay-opacity'] ) ? $args['page-header-overlay-opacity'] : mai_get_option( 'page-header-overlay-opacity', $config['overlay-opacity'] );
-	$styles  = '';
-
-	if ( $color ) {
-		$styles .= "--page-header-background-color:{$color};";
-	}
-
-	if ( $opacity ) {
-		$styles .= "--page-header-overlay-opacity:{$opacity};";
-	}
-
-	if ( $styles ) {
-		$attr['style'] = $styles;
-	}
-
-	return $attr;
-}
-
 add_filter( 'genesis_structural_wrap-page-header', 'mai_page_header_divider', 10, 2 );
 /**
  * Description of expected behavior.

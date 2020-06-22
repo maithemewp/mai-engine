@@ -41,7 +41,7 @@ return [
 		'type'     => 'slider',
 		'settings' => 'border-radius',
 		'label'    => __( 'Border radius', 'mai-engine' ),
-		'default'  => mai_get_integer_value( mai_get_variables()['border']['radius'] ),
+		'default'  => mai_get_integer_value( mai_get_custom_property( 'border-radius' ) ),
 		'choices'  => [
 			'min'  => 0,
 			'max'  => 100,

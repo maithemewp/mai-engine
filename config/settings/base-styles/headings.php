@@ -1,7 +1,7 @@
 <?php
 
 
-$config  = mai_get_variables()['heading'];
+$config  = mai_get_custom_properties( 'heading', true );
 $default = [];
 $output  = [];
 

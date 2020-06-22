@@ -72,7 +72,7 @@ toolkit.extendConfig(
 			],
 			'menus': [
 				'./assets/js/menus.js',
-			]
+			],
 		},
 		css: {
 			basefontsize: 10,

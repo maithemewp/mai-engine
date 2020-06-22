@@ -18,26 +18,16 @@ return [
 		'fashion'  => 18,
 	],
 	'custom-properties' => [
-		'colors'  => [
-			'primary' => '#f98588',
-			'lighter' => '#fdf3f2',
-			'darkest' => '#000000',
-			'dark'    => '#7f7d7e',
-			'medium'  => '#f9f6f6',
-		],
-		'text'    => [
-			'scale-ratio' => 1.125,
-		],
-		'body'    => [
-			'font-family' => 'Work Sans',
-		],
-		'heading' => [
-			'font-family'    => 'Josefin Sans',
-			'text-transform' => 'uppercase',
-		],
-		'border'  => [
-			'radius' => '1px',
-		],
+		'color-primary'          => '#f98588',
+		'color-lighter'          => '#fdf3f2',
+		'color-darkest'          => '#000000',
+		'color-dark'             => '#7f7d7e',
+		'color-medium'           => '#f9f6f6',
+		'text-scale-ratio'       => 1.125,
+		'body-font-family'       => 'Work Sans',
+		'heading-font-family'    => 'Josefin Sans',
+		'heading-text-transform' => 'uppercase',
+		'border-radius'          => '1px',
 	],
 	'image-sizes'       => [
 		'add' => [

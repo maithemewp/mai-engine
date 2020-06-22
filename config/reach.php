@@ -15,32 +15,19 @@ return [
 		'agency'  => 13,
 	],
 	'custom-properties' => [
-		'breakpoint' => 1152,
-		'colors'     => [
-			'primary' => '#7b51ff',
-			'success' => '#00cd9e',
-			'warning' => '#ffc54e',
-			'danger'  => '#ff478f',
-			'info'    => '#0095ed',
-			'darkest' => '#4b657e',
-			'dark'    => '#5f749e',
-			'lighter' => '#f7f8fa',
-		],
-		'text' => [
-			'scale-ratio' => 1.2,
-		],
-		'body'       => [
-			'font-family' => 'Karla',
-		],
-		'heading'    => [
-			'font-family' => 'Karla',
-		],
-		'border'     => [
-			'radius' => '100px',
-		],
-	],
-	'google-fonts'      => [
-		'https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap',
+		'color-primary'       => '#7b51ff',
+		'color-success'       => '#00cd9e',
+		'color-warning'       => '#ffc54e',
+		'color-danger'        => '#ff478f',
+		'color-info'          => '#0095ed',
+		'color-darkest'       => '#4b657e',
+		'color-dark'          => '#5f749e',
+		'color-lighter'       => '#f7f8fa',
+		'text-scale-ratio'    => 1.2,
+		'body-font-family'    => 'Karla',
+		'heading-font-family' => 'Karla',
+		'heading-font-weight' => 700,
+		'border-radius'       => '100px',
 	],
 	'theme-support'     => [
 		'add' => [

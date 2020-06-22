@@ -15,28 +15,19 @@ defined( 'ABSPATH' ) || die;
 return [
 	'demos'             => [],
 	'custom-properties' => [
-		'colors' => [
-			'primary'   => '#067ccc',
-			'secondary' => '#6c757d',
-			'success'   => '#28a745',
-			'danger'    => '#dc3545',
-			'warning'   => '#ffc107',
-			'info'      => '#42a2b8',
-			'darkest'   => '#323232',
-			'dark'      => '#515151',
-			'medium'    => '#ebe9eb',
-			'lighter'   => '#f0f0f0',
-			'lightest'  => '#ffffff',
-		],
-		'fonts' => [
-			'body' => [
-				'font-family' => 'Open Sans',
-				'variant' => ''
-			],
-		],
-	],
-	'google-fonts'      => [
-		'https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Playfair+Display:wght@700&display=swap',
+		'color-primary'       => '#067ccc',
+		'color-secondary'     => '#6c757d',
+		'color-success'       => '#28a745',
+		'color-danger'        => '#dc3545',
+		'color-warning'       => '#ffc107',
+		'color-info'          => '#42a2b8',
+		'color-darkest'       => '#323232',
+		'color-dark'          => '#515151',
+		'color-medium'        => '#ebe9eb',
+		'color-lighter'       => '#f0f0f0',
+		'body-font-family'    => 'Open Sans',
+		'heading-font-family' => 'Playfair Display',
+		'heading-font-weight' => 700,
 	],
 	'theme-support'     => [
 		'add' => [

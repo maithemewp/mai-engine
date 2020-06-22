@@ -203,6 +203,7 @@ function mai_has_sidebar() {
 function mai_has_boxed_container() {
 	$boxed_container = current_theme_supports( 'boxed-container' );
 	$site_layouts    = mai_get_option( 'site-layouts' );
+
 	if ( $site_layouts && is_array( $site_layouts ) && isset( $site_layouts['default']['boxed-container'] ) ) {
 		$boxed_container = $site_layouts['default']['boxed-container'];
 	}
@@ -284,13 +285,16 @@ function mai_has_light_page_header() {
 
 	if ( ! mai_has_page_header() ) {
 		$has_light_page_header = false;
+
 	} else {
-		$args = mai_get_template_args();
+		$args   = mai_get_template_args();
+		$config = mai_get_config( 'page-header' );
 
 		if ( isset( $args['page-header-text-color'] ) && ! empty( $args['page-header-text-color'] ) ) {
 			$text_color = $args['page-header-text-color'];
+
 		} else {
-			$text_color = mai_get_option( 'page-header-text-color', 'dark' );
+			$text_color = mai_get_option( 'page-header-text-color', $config['text-color'] );
 		}
 
 		$has_light_page_header = 'light' !== $text_color;
