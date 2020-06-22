@@ -14,7 +14,13 @@ img {
 }
 
 figure {
+	display: table; // Make figure work with figcaption.
 	margin: 0;
+}
+
+figcaption {
+	display: table-caption; // Make captions respect width of the figure element.
+	caption-side: bottom;
 }
 
 iframe {
