@@ -1,129 +1,200 @@
 ( function( $ ) {
+
+	'use strict';
+
 	$( window ).on( 'popstate', function() {
 		location.reload( true );
 	} );
 
-	var getUrlParameter = function getUrlParameter( sParam ) {
-		var sPageURL      = window.location.search.substring( 1 ),
-			sURLVariables = sPageURL.split( '&' ),
-			sParameterName,
-			i;
+	var getUrlParameter = function( param ) {
+		var pageURL       = window.location.search.substring( 1 );
+		var parameters    = pageURL.split( '&' );
+		var parameterName = false;
 
-		for ( i = 0; i < sURLVariables.length; i ++ ) {
-			sParameterName = sURLVariables[ i ].split( '=' );
+		for ( var i = 0; i < parameters.length; i ++ ) {
+			parameterName = parameters[ i ].split( '=' );
 
-			if ( sParameterName[ 0 ] === sParam ) {
-				return sParameterName[ 1 ] === undefined ? true : decodeURIComponent( sParameterName[ 1 ] );
+			if ( parameterName[ 0 ] === param ) {
+				return parameterName[ 1 ] === undefined ? 'welcome' : decodeURIComponent( parameterName[ 1 ] );
 			}
 		}
 	};
 
-	var continue_button = $( '.mai-continue' );
-	var skip_button     = $( '.mai-skip' );
-	var step_param      = getUrlParameter( 'step' );
-	var current_step    = step_param ? $( '.mai-step-' + step_param ) : $( '.mai-step-welcome' );
+	var data  = typeof setupWizardData === 'undefined' ? [] : setupWizardData;
+	var steps = $( '.setup-wizard .step' );
+	var page  = getUrlParameter( 'page' );
 
-	current_step.addClass( 'current-step' );
-	current_step.fadeIn();
-
-	skip_button.click( function() {
-		var current_step = $( '.current-step' );
-
-		current_step.removeClass( 'is-error is-success' );
-
-		var next_step = current_step.next( '.mai-step' );
-
-		if ( ! current_step.next().hasClass( 'mai-step' ) ) {
-			next_step = $( '.mai-step-welcome' );
-		}
-
-		current_step.removeClass( 'current-step' );
-		next_step.addClass( 'current-step' );
-		current_step.delay( 500 ).fadeOut( 200 );
-		next_step.delay( 700 ).fadeIn( 200 );
-
-		var next_step_class = next_step.attr( 'class' ).replace( 'mai-step', '' ).replace( 'current-step', '' ).replace( ' ', '' ).replace( 'mai-step-', '' );
-
-		if ( $( '.mai-step-done' ).hasClass( 'current-step' ) ) {
-			continue_button.fadeOut();
-			skip_button.fadeOut();
-		}
-
-		var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname + '?page=mai-setup-wizard&step=' + next_step_class;
-		window.history.pushState( { path: newurl }, '', newurl );
-	} );
-
-	continue_button.click( function() {
-		$( this ).addClass( 'loading' );
-
-		var current_step = $( '.current-step' );
-
-		current_step.removeClass( 'is-error is-success' );
-
-		var next_step = current_step.next( '.mai-step' );
-
-		if ( ! current_step.next().hasClass( 'mai-step' ) ) {
-			next_step = $( '.mai-step-welcome' );
-		}
-
-		var current_step_class = current_step.attr( 'class' ).replace( 'mai-step', '' ).replace( 'current-step', '' ).replace( ' ', '' ).replace( 'mai-step-', '' );
-		var next_step_class    = next_step.attr( 'class' ).replace( 'mai-step', '' ).replace( 'current-step', '' ).replace( ' ', '' ).replace( 'mai-step-', '' );
-
-		var current_nav = $( '.current-nav' );
-		var next_nav    = current_nav.next( '.mai-nav' );
-
-		var email_address = $( '.mai-email-address' ).val();
-		var site_style    = $( 'input[name="mai-step-style"]:checked' ).val();
-		var plugins       = [];
-		var content       = [];
-
-		$( 'input[name="mai-step-plugins[]"]:checked' ).each( function( plugin ) {
-			plugins[ plugin ] = $( this ).val();
+	var hideOtherSteps = function( currentStepID, steps, speed = 300 ) {
+		steps.each( function() {
+			var step = $( this );
+			if ( step.attr( 'id' ) !== currentStepID ) {
+				step.fadeOut( speed );
+			} else {
+				setTimeout( function() {
+					step.fadeIn( speed );
+				}, speed );
+			}
 		} );
+	};
 
-		$( 'input[name="mai-step-content[]"]:checked' ).each( function( type ) {
-			content[ type ] = $( this ).val();
-		} );
+	hideOtherSteps( data.currentStep, steps, 0 );
 
-		var data = {
-			action: 'mai_setup_wizard',
-			current_step: current_step_class,
-			email_address: email_address,
-			site_style: site_style,
-			plugins: plugins,
-			content: content,
+	steps.each( function() {
+		var step = {
+			object: $( this ),
+			id: $( this ).attr( 'id' ),
+			submit: $( this ).find( '#submit' ),
+			skip: $( this ).find( '#skip' ),
+			previous: $( this ).find( '#previous' ),
+			next: $( this ).next( steps ),
+			prev: $( this ).prev( steps ),
 		};
 
-		$.post( ajaxurl, data, function( response ) {
+		step.submit.click( function() {
+			var fields      = $( '#' + step.id + ' input:enabled' );
+			var fields_type = fields.attr( 'type' ) ? fields.attr( 'type' ) : 'text';
+			var counter     = 0;
 
-			// Show error.
-			if ( response.hasOwnProperty( 'error' ) ) {
-				continue_button.removeClass( 'loading' );
-				current_step.addClass( 'is-error' );
-				console.log( 'Mai Setup Wizard: ' + response.error );
-				return;
+			if ( 'checkbox' === fields_type || 'radio' === fields_type ) {
+				fields = $( '#' + step.id + ' input:enabled:checked' );
 			}
 
-			// Update plugin list.
-			if ( response.hasOwnProperty( 'plugin_list' ) ) {
-				$( '.mai-step-plugins .mai-step-fields' ).empty().append( response.plugin_list );
-			}
+			step.submit.text( step.submit.attr( 'data-loading' ) );
 
-			current_step.addClass( 'is-success' );
+			$( '[data-status]' ).removeAttr( 'data-status' );
+			$( fields[ counter ] ).closest( 'li' ).attr( 'data-status', 'running' );
+			postAjax( step, fields, counter );
+		} );
 
-			current_step.removeClass( 'current-step' );
-			next_step.addClass( 'current-step' );
-			current_step.delay( 1000 ).fadeOut( 200 );
-			next_step.delay( 1400 ).fadeIn( 200 );
+		step.skip.click( function() {
+			$( '[data-status]' ).removeAttr( 'data-status' );
+			changeStep( step.next.attr( 'id' ) );
+		} );
 
-			current_nav.removeClass( 'current-nav' );
-			next_nav.addClass( 'current-nav' );
-
-			var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname + '?page=mai-setup-wizard&step=' + next_step_class;
-			window.history.pushState( { path: newurl }, '', newurl );
-
-			continue_button.delay(4000).removeClass( 'loading' );
+		step.previous.click( function() {
+			$( '[data-status]' ).removeAttr( 'data-status' );
+			changeStep( step.prev.attr( 'id' ) );
 		} );
 	} );
 
+	var postAjax = function( step, fields, counter ) {
+		$( fields[ counter ] ).closest( 'li' ).attr( 'data-status', 'running' );
+		$( fields[ counter - 1 ] ).closest( 'li' ).attr( 'data-status', 'complete' );
+
+		if ( counter >= fields.length ) {
+			setTimeout( function() {
+				changeStep( step.next.attr( 'id' ) );
+				step.submit.text( step.submit.attr( 'data-default' ) );
+			}, 1000 );
+
+			return;
+		}
+
+		var field_element = $( fields[ counter ] );
+		var attributes    = field_element[ 0 ].attributes;
+		var field         = {};
+
+		if ( 'object' === typeof attributes ) {
+			$.each( attributes, function() {
+				field[ this.name ] = this.value;
+			} );
+		}
+
+		field.value = field_element.val();
+
+		$.ajax( {
+			type: 'post',
+			dataType: 'json',
+			url: data.ajaxUrl,
+			timeout: 30000,
+			data: {
+				action: 'mai_setup_wizard_' + step.id,
+				counter: counter,
+				field: field,
+				nonce: data.nonce
+			},
+			success: function( response ) {
+				setTimeout( function() {
+					handleResponse( response, step, fields, counter, 'success' );
+				}, 1000 );
+			},
+			error: function( response ) {
+				setTimeout( function() {
+					handleResponse( response, step, fields, counter, 'error' );
+				}, 1000 );
+			}
+		} );
+	};
+
+	var handleResponse = function( response, step, fields, counter, type ) {
+		var success = response.hasOwnProperty( 'success' ) && response.success && 'success' === type;
+
+		if ( response.hasOwnProperty( 'status' ) && 'newAJAX' === response.status ) {
+			postAjax( step, fields, counter );
+
+			return;
+		}
+
+		if ( ! success && 'error' !== type ) {
+			if ( response.hasOwnProperty( 'data' ) ) {
+				$( '#' + step.id + ' .error' ).show().text( response.data );
+			}
+
+			step.submit.text( step.submit.attr( 'data-default' ) );
+
+			$( fields[ counter ] ).closest( 'li' ).removeAttr( 'data-status' );
+			console.log( response );
+			return;
+		}
+
+		console.log( response );
+
+		counter ++;
+
+		postAjax( step, fields, counter );
+	};
+
+	var changeStep = function( next_or_prev ) {
+		var newurl  = window.location.protocol + '//' + window.location.host + window.location.pathname + '?page=' + page + '&step=' + next_or_prev;
+		var current = $( '#' + next_or_prev );
+		var next    = current.next( steps );
+		var prev    = next.prev( steps );
+
+		if ( current.hasClass( 'step' ) && prev.hasClass( 'step' ) ) {
+			window.history.pushState( { path: newurl }, '', newurl );
+			hideOtherSteps( next_or_prev, steps );
+		}
+	};
+
+	var toggleChosenDemo = function( chosenDemo ) {
+		var elements = $( '[name="plugins"], [name="content"], [name="widgets"], [name="customizer"]' );
+
+		elements.each( function() {
+			var element  = $( this );
+			var demoAttr = element.attr( 'data-demo' );
+			var checked  = chosenDemo === demoAttr;
+			var disabled = chosenDemo !== demoAttr;
+			var hidden   = chosenDemo !== demoAttr;
+
+			element.attr( 'checked', checked );
+			element.prop( 'disabled', disabled );
+			element.closest( 'li' ).prop( 'hidden', hidden );
+		} );
+	};
+
+	var onClick = function() {
+		$( '[name="demo"]' ).click( function() {
+			toggleChosenDemo( $( this ).val() );
+		} );
+	};
+
+	var onReady = function() {
+		toggleChosenDemo( data.chosenDemo );
+		$( 'p.error, p.success' ).hide();
+
+		onClick();
+	};
+
+	return onReady();
 } )( jQuery );
+

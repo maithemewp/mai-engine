@@ -13,6 +13,59 @@ if ( ! apply_filters( 'mai_init_setup_wizard', true ) ) {
 	return;
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param string $service_provider
+ *
+ * @return array|Mai_Setup_Wizard_Service_Provider
+ */
+function mai_get_setup_wizard_instance( $service_provider = '' ) {
+	static $container = [];
+
+	if ( empty( $container ) ) {
+		$container = [
+			'plugin' => new Mai_Setup_Wizard( __FILE__ ),
+			'admin'  => new Mai_Setup_Wizard_Admin(),
+			'ajax'   => new Mai_Setup_Wizard_Ajax(),
+			'demo'   => new Mai_Setup_Wizard_Demos(),
+			'field'  => new Mai_Setup_Wizard_Fields(),
+			'import' => new Mai_Setup_Wizard_Importer(),
+			'step'   => new Mai_Setup_Wizard_Steps(),
+		];
+	}
+
+	return $service_provider && isset( $container[ $service_provider ] ) ? $container[ $service_provider ] : $container;
+}
+
+add_action( 'init', 'mai_setup_wizard_init' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function mai_setup_wizard_init() {
+	if ( ! is_admin() || ! apply_filters( 'mai_init_setup_wizard', true ) ) {
+		return;
+	}
+
+	$providers = mai_get_setup_wizard_instance();
+
+	foreach ( $providers as $name => $provider ) {
+		if ( method_exists( $providers[ $name ], 'register' ) ) {
+			$providers[ $name ]->register( $providers );
+		}
+
+		if ( method_exists( $providers[ $name ], 'add_hooks' ) ) {
+			$providers[ $name ]->add_hooks();
+		}
+	}
+}
+
 add_filter( 'mai_setup_wizard_menu', 'mai_setup_wizard_menu', 10, 2 );
 /**
  * Add setup wizard menu item.

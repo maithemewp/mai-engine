@@ -1,23 +1,47 @@
 <?php
+/**
+ * Mai Engine.
+ *
+ * @package   BizBudding\MaiEngine
+ * @link      https://bizbudding.com
+ * @author    BizBudding
+ * @copyright Copyright © 2020 BizBudding
+ * @license   GPL-2.0-or-later
+ */
 
-namespace MaiSetupWizard;
+/**
+ * Class Mai_Setup_Wizard_Importer
+ */
+class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 
-class ImportProvider extends AbstractServiceProvider {
-
-	public function add_hooks() {}
-
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string
+	 */
 	private function get_cache_dir() {
-		$theme = \mai_get_active_theme();
+		$theme = mai_get_active_theme();
 		$demo  = $this->demo->get_chosen_demo();
 
 		return WP_CONTENT_DIR . "/{$this->plugin->slug}/{$theme}/{$demo}/";
 	}
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param $content_type
+	 *
+	 * @return void
+	 */
 	public function import( $content_type ) {
 		$demo_id       = $this->demo->get_chosen_demo();
 		$demo          = $this->demo->get_demo( $demo_id );
 		$download_file = $demo[ $content_type ];
-		$import_file   = $this->get_cache_dir() . \basename( $download_file );
+		$import_file   = $this->get_cache_dir() . basename( $download_file );
 
 		$this->download_file( $download_file );
 
@@ -34,38 +58,47 @@ class ImportProvider extends AbstractServiceProvider {
 		}
 	}
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param $url
+	 *
+	 * @return void
+	 */
 	private function download_file( $url ) {
 		$demo = $this->demo->get_chosen_demo();
 		$dir  = $this->get_cache_dir();
-		$file = $dir . \basename( $url );
+		$file = $dir . basename( $url );
 
 		// Check if file was modified in the last hour.
-		if ( \file_exists( $file ) && \time() - \filemtime( $file ) < 3600 ) {
+		if ( file_exists( $file ) && time() - filemtime( $file ) < 3600 ) {
 			return;
 		}
 
 		include_once ABSPATH . 'wp-admin/includes/file.php';
-		\WP_Filesystem();
+		WP_Filesystem();
 		global $wp_filesystem;
 
-		if ( ! \is_dir( $dir ) ) {
-			\wp_mkdir_p( $dir );
+		if ( ! is_dir( $dir ) ) {
+			wp_mkdir_p( $dir );
 		}
 
 		if ( ! $demo ) {
-			\wp_send_json_error( __( 'No demo selected.', 'mai-setup-wizard' ) );
+			wp_send_json_error( __( 'No demo selected.', 'mai-setup-wizard' ) );
 		}
 
-		$response = \wp_remote_get( $url );
+		$response = wp_remote_get( $url );
 
 		if ( ! $response ) {
-			\wp_send_json_error( $url . __( ' could not be retrieved.', 'mai-setup-wizard' ) );
+			wp_send_json_error( $url . __( ' could not be retrieved.', 'mai-setup-wizard' ) );
 		}
 
-		$body = \wp_remote_retrieve_body( $response );
+		$body = wp_remote_retrieve_body( $response );
 
 		if ( ! $body ) {
-			\wp_send_json_error( $url . __( ' response body could not be retrived.', 'mai-setup-wizard' ) );
+			wp_send_json_error( $url . __( ' response body could not be retrived.', 'mai-setup-wizard' ) );
 		}
 
 		if ( $body ) {
@@ -73,42 +106,60 @@ class ImportProvider extends AbstractServiceProvider {
 		}
 	}
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param $file
+	 *
+	 * @return void
+	 */
 	private function import_content( $file ) {
-		if ( ! \class_exists( 'WP_Importer' ) ) {
+		if ( ! class_exists( 'WP_Importer' ) ) {
 			require_once ABSPATH . '/wp-admin/includes/class-wp-importer.php';
 		}
 
-		if ( ! \function_exists( 'wp_generate_attachment_metadata' ) ) {
+		if ( ! function_exists( 'wp_generate_attachment_metadata' ) ) {
 			require_once ABSPATH . '/wp-admin/includes/image.php';
 		}
 
-		if ( ! \function_exists( 'wp_read_audio_metadata' ) ) {
+		if ( ! function_exists( 'wp_read_audio_metadata' ) ) {
 			require_once ABSPATH . '/wp-admin/includes/media.php';
 		}
 
-		$logger   = new \ProteusThemes\WPContentImporter2\WPImporterLogger();
-		$importer = new \ProteusThemes\WPContentImporter2\Importer( [
+		$logger   = new ProteusThemes\WPContentImporter2\WPImporterLogger();
+		$importer = new ProteusThemes\WPContentImporter2\Importer( [
 			'fetch_attachments' => true,
 		], $logger );
 
 		$importer->import( $file );
 
-		\do_action( 'mai_setup_wizard_after_import', $this->demo->get_chosen_demo() );
+		do_action( 'mai_setup_wizard_after_import', $this->demo->get_chosen_demo() );
 
-		\wp_send_json_success( __( 'Finished importing content.xml file', 'mai-setup-wizard' ) );
+		wp_send_json_success( __( 'Finished importing content.xml file', 'mai-setup-wizard' ) );
 	}
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param $file
+	 *
+	 * @return void
+	 */
 	private function import_widgets( $file ) {
 		global $wp_registered_sidebars, $wp_registered_widget_controls;
 
-		if ( ! \file_exists( $file ) ) {
-			\wp_send_json_error( __( 'Import file could not be found. Please try again.', 'mai-setup-wizard' ) );
+		if ( ! file_exists( $file ) ) {
+			wp_send_json_error( __( 'Import file could not be found. Please try again.', 'mai-setup-wizard' ) );
 		}
 
-		$data = \json_decode( \file_get_contents( $file ) );
+		$data = json_decode( file_get_contents( $file ) );
 
-		if ( empty( $data ) || ! \is_object( $data ) ) {
-			\wp_send_json_error( __( 'Import data could not be read. Please try a different file.', 'mai-setup-wizard' ) );
+		if ( empty( $data ) || ! is_object( $data ) ) {
+			wp_send_json_error( __( 'Import data could not be read. Please try a different file.', 'mai-setup-wizard' ) );
 		}
 
 		$available_widgets   = [];
@@ -125,7 +176,7 @@ class ImportProvider extends AbstractServiceProvider {
 		}
 
 		foreach ( $available_widgets as $widget_data ) {
-			$widget_instances[ $widget_data['id_base'] ] = \get_option( 'widget_' . $widget_data['id_base'] );
+			$widget_instances[ $widget_data['id_base'] ] = get_option( 'widget_' . $widget_data['id_base'] );
 		}
 
 		foreach ( $data as $sidebar_id => $widgets ) {
@@ -143,7 +194,7 @@ class ImportProvider extends AbstractServiceProvider {
 				$sidebar_available    = false;
 				$use_sidebar_id       = 'wp_inactive_widgets';
 				$sidebar_message_type = 'error';
-				$sidebar_message      = \esc_html__( 'Widget area does not exist in theme (using Inactive)', 'mai-setup-wizard' );
+				$sidebar_message      = esc_html__( 'Widget area does not exist in theme (using Inactive)', 'mai-setup-wizard' );
 			}
 
 			$results[ $sidebar_id ]['name']         = ! empty( $wp_registered_sidebars[ $sidebar_id ]['name'] ) ? $wp_registered_sidebars[ $sidebar_id ]['name'] : $sidebar_id;
@@ -153,42 +204,42 @@ class ImportProvider extends AbstractServiceProvider {
 
 			foreach ( $widgets as $widget_instance_id => $widget ) {
 				$fail    = false;
-				$id_base = \preg_replace( '/-[0-9]+$/', '', $widget_instance_id );
-				$widget  = \json_decode( \wp_json_encode( $widget ), true );
+				$id_base = preg_replace( '/-[0-9]+$/', '', $widget_instance_id );
+				$widget  = json_decode( wp_json_encode( $widget ), true );
 
 				if ( ! $fail && ! isset( $available_widgets[ $id_base ] ) ) {
 					$fail                = true;
 					$widget_message_type = 'error';
-					$widget_message      = \esc_html__( 'Site does not support widget', 'mai-setup-wizard' );
+					$widget_message      = esc_html__( 'Site does not support widget', 'mai-setup-wizard' );
 				}
 
 				if ( ! $fail && isset( $widget_instances[ $id_base ] ) ) {
-					$sidebars_widgets        = \get_option( 'sidebars_widgets' );
+					$sidebars_widgets        = get_option( 'sidebars_widgets' );
 					$sidebar_widgets         = isset( $sidebars_widgets[ $use_sidebar_id ] ) ? $sidebars_widgets[ $use_sidebar_id ] : [];
 					$single_widget_instances = ! empty( $widget_instances[ $id_base ] ) ? $widget_instances[ $id_base ] : [];
 
 					foreach ( $single_widget_instances as $check_id => $check_widget ) {
-						if ( \in_array( "$id_base-$check_id", $sidebar_widgets, true ) && (array) $widget === $check_widget ) {
+						if ( in_array( "$id_base-$check_id", $sidebar_widgets, true ) && (array) $widget === $check_widget ) {
 							$fail                = true;
 							$widget_message_type = 'warning';
-							$widget_message      = \esc_html__( 'Widget already exists', 'mai-setup-wizard' );
+							$widget_message      = esc_html__( 'Widget already exists', 'mai-setup-wizard' );
 							break;
 						}
 					}
 				}
 
 				if ( ! $fail ) {
-					$single_widget_instances   = \get_option( 'widget_' . $id_base );
+					$single_widget_instances   = get_option( 'widget_' . $id_base );
 					$single_widget_instances   = ! empty( $single_widget_instances ) ? $single_widget_instances : [
 						'_multiwidget' => 1,
 					];
 					$single_widget_instances[] = $widget;
 
-					\end( $single_widget_instances );
+					end( $single_widget_instances );
 
-					$new_instance_id_number = \key( $single_widget_instances );
+					$new_instance_id_number = key( $single_widget_instances );
 
-					if ( '0' === \strval( $new_instance_id_number ) ) {
+					if ( '0' === strval( $new_instance_id_number ) ) {
 						$new_instance_id_number                             = 1;
 						$single_widget_instances[ $new_instance_id_number ] = $single_widget_instances[0];
 						unset( $single_widget_instances[0] );
@@ -200,9 +251,9 @@ class ImportProvider extends AbstractServiceProvider {
 						$single_widget_instances['_multiwidget'] = $multiwidget;
 					}
 
-					\update_option( 'widget_' . $id_base, $single_widget_instances );
+					update_option( 'widget_' . $id_base, $single_widget_instances );
 
-					$sidebars_widgets = \get_option( 'sidebars_widgets' );
+					$sidebars_widgets = get_option( 'sidebars_widgets' );
 
 					if ( ! $sidebars_widgets ) {
 						$sidebars_widgets = [];
@@ -212,14 +263,14 @@ class ImportProvider extends AbstractServiceProvider {
 
 					$sidebars_widgets[ $use_sidebar_id ][] = $new_instance_id;
 
-					\update_option( 'sidebars_widgets', $sidebars_widgets );
+					update_option( 'sidebars_widgets', $sidebars_widgets );
 
 					if ( $sidebar_available ) {
 						$widget_message_type = 'success';
-						$widget_message      = \esc_html__( 'Imported', 'mai-setup-wizard' );
+						$widget_message      = esc_html__( 'Imported', 'mai-setup-wizard' );
 					} else {
 						$widget_message_type = 'warning';
-						$widget_message      = \esc_html__( 'Imported to Inactive', 'mai-setup-wizard' );
+						$widget_message      = esc_html__( 'Imported to Inactive', 'mai-setup-wizard' );
 					}
 				}
 
@@ -230,40 +281,49 @@ class ImportProvider extends AbstractServiceProvider {
 			}
 		}
 
-		\do_action( 'mai_setup_wizard_after_import' );
+		do_action( 'mai_setup_wizard_after_import' );
 
-		\wp_send_json_success( __( 'Sucessfully imported widgets.', 'mai-setup-wizard' ) );
+		wp_send_json_success( __( 'Sucessfully imported widgets.', 'mai-setup-wizard' ) );
 	}
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param $file
+	 *
+	 * @return void
+	 */
 	private function import_customizer( $file ) {
 		global $wp_customize;
 
-		if ( ! \file_exists( $file ) ) {
-			\wp_send_json_error( __( 'Error importing settings! Please try again.', 'mai-setup-wizard' ) );
+		if ( ! file_exists( $file ) ) {
+			wp_send_json_error( __( 'Error importing settings! Please try again.', 'mai-setup-wizard' ) );
 		}
 
-		if ( ! \function_exists( 'wp_handle_upload' ) ) {
+		if ( ! function_exists( 'wp_handle_upload' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
 		}
 
-		if ( ! \class_exists( 'WP_Customize_Setting' ) ) {
+		if ( ! class_exists( 'WP_Customize_Setting' ) ) {
 			require ABSPATH . 'wp-includes/class-wp-customize-setting.php';
 		}
 
-		$template = \get_template();
-		$raw      = \file_get_contents( $file );
-		$data     = \unserialize( $raw );
+		$template = get_template();
+		$raw      = file_get_contents( $file );
+		$data     = unserialize( $raw );
 
-		if ( 'array' !== \gettype( $data ) ) {
-			\wp_send_json_error( __( 'Error importing settings! Please check that you uploaded a customizer export file.', 'mai-setup-wizard' ) );
+		if ( 'array' !== gettype( $data ) ) {
+			wp_send_json_error( __( 'Error importing settings! Please check that you uploaded a customizer export file.', 'mai-setup-wizard' ) );
 		}
 
 		if ( ! isset( $data['template'] ) || ! isset( $data['mods'] ) ) {
-			\wp_send_json_error( __( 'Error importing settings! Please check that you uploaded a customizer export file.', 'mai-setup-wizard' ) );
+			wp_send_json_error( __( 'Error importing settings! Please check that you uploaded a customizer export file.', 'mai-setup-wizard' ) );
 		}
 
 		if ( $data['template'] !== $template ) {
-			\wp_send_json_error( __( 'Error importing settings! The settings you uploaded are not for the current theme.', 'mai-setup-wizard' ) );
+			wp_send_json_error( __( 'Error importing settings! The settings you uploaded are not for the current theme.', 'mai-setup-wizard' ) );
 		}
 
 		if ( isset( $_REQUEST['import-images'] ) ) {
@@ -272,7 +332,7 @@ class ImportProvider extends AbstractServiceProvider {
 
 		if ( isset( $data['options'] ) ) {
 			foreach ( $data['options'] as $option_key => $option_value ) {
-				$option = new CustomizeSetting( $wp_customize, $option_key, [
+				$option = new Mai_Setup_Wizard_Customizer_Setting( $wp_customize, $option_key, [
 					'default'    => '',
 					'type'       => 'option',
 					'capability' => 'edit_theme_options',
@@ -282,65 +342,74 @@ class ImportProvider extends AbstractServiceProvider {
 			}
 		}
 
-		if ( \function_exists( 'wp_update_custom_css_post' ) && isset( $data['wp_css'] ) && '' !== $data['wp_css'] ) {
-			\wp_update_custom_css_post( $data['wp_css'] );
+		if ( function_exists( 'wp_update_custom_css_post' ) && isset( $data['wp_css'] ) && '' !== $data['wp_css'] ) {
+			wp_update_custom_css_post( $data['wp_css'] );
 		}
 
 		foreach ( $data['mods'] as $key => $val ) {
-			\set_theme_mod( $key, $val );
+			set_theme_mod( $key, $val );
 		}
 
-		\do_action( 'mai_setup_wizard_after_import' );
+		do_action( 'mai_setup_wizard_after_import' );
 
-		\wp_send_json_success( __( 'Sucessfully imported customizer.', 'mai-setup-wizard' ) );
+		wp_send_json_success( __( 'Sucessfully imported customizer.', 'mai-setup-wizard' ) );
 	}
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param $mods
+	 *
+	 * @return mixed
+	 */
 	private function import_customizer_images( $mods ) {
 		foreach ( $mods as $key => $val ) {
-			if ( ! is_string( $val ) || ! \preg_match( '/\.(jpg|jpeg|png|gif)/i', $val ) ) {
+			if ( ! is_string( $val ) || ! preg_match( '/\.(jpg|jpeg|png|gif)/i', $val ) ) {
 				continue;
 			}
 
-			if ( ! \function_exists( 'media_handle_sideload' ) ) {
+			if ( ! function_exists( 'media_handle_sideload' ) ) {
 				require_once( ABSPATH . 'wp-admin/includes/media.php' );
 				require_once( ABSPATH . 'wp-admin/includes/file.php' );
 				require_once( ABSPATH . 'wp-admin/includes/image.php' );
 			}
 
-			$data = new \stdClass();
+			$data = new stdClass();
 
 			if ( ! empty( $val ) ) {
-				\preg_match( '/[^\?]+\.(jpe?g|jpe|gif|png)\b/i', $val, $matches );
+				preg_match( '/[^\?]+\.(jpe?g|jpe|gif|png)\b/i', $val, $matches );
 				$file_array             = [];
-				$file_array['name']     = \basename( $matches[0] );
-				$file_array['tmp_name'] = \download_url( $val );
+				$file_array['name']     = basename( $matches[0] );
+				$file_array['tmp_name'] = download_url( $val );
 
-				if ( \is_wp_error( $file_array['tmp_name'] ) ) {
+				if ( is_wp_error( $file_array['tmp_name'] ) ) {
 					return $file_array['tmp_name'];
 				}
 
-				$id = \media_handle_sideload( $file_array, 0 );
+				$id = media_handle_sideload( $file_array, 0 );
 
-				if ( \is_wp_error( $id ) ) {
-					\unlink( $file_array['tmp_name'] );
+				if ( is_wp_error( $id ) ) {
+					unlink( $file_array['tmp_name'] );
 
 					return $id;
 				}
 
-				$meta                = \wp_get_attachment_metadata( $id );
+				$meta                = wp_get_attachment_metadata( $id );
 				$data->attachment_id = $id;
-				$data->url           = \wp_get_attachment_url( $id );
-				$data->thumbnail_url = \wp_get_attachment_thumb_url( $id );
+				$data->url           = wp_get_attachment_url( $id );
+				$data->thumbnail_url = wp_get_attachment_thumb_url( $id );
 				$data->height        = $meta['height'];
 				$data->width         = $meta['width'];
 			}
 
-			if ( ! \is_wp_error( $data ) ) {
+			if ( ! is_wp_error( $data ) ) {
 				$mods[ $key ] = $data->url;
 
 				if ( isset( $mods[ $key . '_data' ] ) ) {
 					$mods[ $key . '_data' ] = $data;
-					\update_post_meta( $data->attachment_id, '_wp_attachment_is_custom_header', \get_stylesheet() );
+					update_post_meta( $data->attachment_id, '_wp_attachment_is_custom_header', get_stylesheet() );
 				}
 			}
 		}

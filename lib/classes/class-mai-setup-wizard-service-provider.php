@@ -1,44 +1,63 @@
 <?php
+/**
+ * Mai Engine.
+ *
+ * @package   BizBudding\MaiEngine
+ * @link      https://bizbudding.com
+ * @author    BizBudding
+ * @copyright Copyright © 2020 BizBudding
+ * @license   GPL-2.0-or-later
+ */
 
-namespace MaiSetupWizard;
-
-abstract class AbstractServiceProvider implements ServiceProviderInterface {
+/**
+ * Class Mai_Setup_Wizard_Service_Provider
+ */
+abstract class Mai_Setup_Wizard_Service_Provider {
 
 	/**
-	 * @var Plugin $plugin
+	 * @var Mai_Setup_Wizard $plugin
 	 */
 	protected $plugin;
 
 	/**
-	 * @var DemoProvider $demo
+	 * @var Mai_Setup_Wizard_Demos $demo
 	 */
 	protected $demo;
 
 	/**
-	 * @var FieldProvider $field
+	 * @var Mai_Setup_Wizard_Fields $field
 	 */
 	protected $field;
 
 	/**
-	 * @var StepProvider $step
+	 * @var Mai_Setup_Wizard_Steps $step
 	 */
 	protected $step;
 
 	/**
-	 * @var AdminProvider $admin
+	 * @var Mai_Setup_Wizard_Admin $admin
 	 */
 	protected $admin;
 
 	/**
-	 * @var ImportProvider $import
+	 * @var Mai_Setup_Wizard_Importer $import
 	 */
 	protected $import;
 
 	/**
-	 * @var AjaxProvider $ajax
+	 * @var Mai_Setup_Wizard_Ajax $ajax
 	 */
 	protected $ajax;
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $container
+	 *
+	 * @return void
+	 */
 	public function register( $container = [] ) {
 		$this->plugin = isset( $container['plugin'] ) ? $container['plugin'] : '';
 		$this->demo   = isset( $container['demo'] ) ? $container['demo'] : '';

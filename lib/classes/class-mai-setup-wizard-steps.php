@@ -1,14 +1,42 @@
 <?php
+/**
+ * Mai Engine.
+ *
+ * @package   BizBudding\MaiEngine
+ * @link      https://bizbudding.com
+ * @author    BizBudding
+ * @copyright Copyright © 2020 BizBudding
+ * @license   GPL-2.0-or-later
+ */
 
-namespace MaiSetupWizard;
+/**
+ * Class Mai_Setup_Wizard_Steps
+ */
+class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 
-class StepProvider extends AbstractServiceProvider {
+	/**
+	 * @var array
+	 */
 	private $steps = [];
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
 	public function add_hooks() {
-		\add_action( 'init', [ $this, 'add_steps' ], 13 );
+		add_action( 'init', [ $this, 'add_steps' ], 13 );
 	}
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
 	public function add_steps() {
 		$steps = $this->get_default_steps();
 
@@ -16,27 +44,50 @@ class StepProvider extends AbstractServiceProvider {
 			$this->add_step( $step );
 		}
 
-		\usort( $this->steps, function ( $a, $b ) {
-			return \strcmp( $a['order'], $b['order'] );
+		usort( $this->steps, function ( $a, $b ) {
+			return strcmp( $a['order'], $b['order'] );
 		} );
 
 		return $this->steps;
 	}
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param $args
+	 *
+	 * @return void
+	 */
 	private function add_step( $args ) {
 		if ( isset( $args['id'] ) ) {
 			$args['fields'] = $this->field->get_fields( $args['id'] );
-			$args           = \wp_parse_args( $args, $this->get_default_args( $args['id'] ) );
+			$args           = wp_parse_args( $args, $this->get_default_args( $args['id'] ) );
 			$this->steps[]  = $args;
 		}
 	}
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
 	public function get_steps() {
 		return $this->steps;
 	}
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
 	private function get_default_steps() {
-		return \apply_filters( 'mai_setup_wizard_steps', [
+		return apply_filters( 'mai_setup_wizard_steps', [
 			'welcome' => $this->get_welcome_step(),
 			'demo'    => $this->get_demo_step(),
 			'plugins' => $this->get_plugins_step(),
@@ -45,6 +96,13 @@ class StepProvider extends AbstractServiceProvider {
 		] );
 	}
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
 	private function get_welcome_step() {
 		return [
 			'id'              => 'welcome',
@@ -60,11 +118,18 @@ class StepProvider extends AbstractServiceProvider {
 		];
 	}
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
 	private function get_demo_step() {
 		$step  = [];
 		$demos = $this->demo->get_demos();
 
-		if ( \is_array( $demos ) && \count( $demos ) > 1 ) {
+		if ( is_array( $demos ) && count( $demos ) > 1 ) {
 			$step = [
 				'id'              => 'demo',
 				'title'           => __( 'Site Style', 'mai-setup-wizard' ),
@@ -81,6 +146,13 @@ class StepProvider extends AbstractServiceProvider {
 		return $step;
 	}
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
 	private function get_plugins_step() {
 		$step = [];
 		$demo = $this->demo->get_demo( $this->demo->get_chosen_demo() );
@@ -102,6 +174,13 @@ class StepProvider extends AbstractServiceProvider {
 		return $step;
 	}
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
 	private function get_content_step() {
 		$step = [];
 		$demo = $this->demo->get_demo( $this->demo->get_chosen_demo() );
@@ -123,6 +202,13 @@ class StepProvider extends AbstractServiceProvider {
 		return $step;
 	}
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
 	private function get_done_step() {
 		return [
 			'id'            => 'done',
@@ -130,17 +216,26 @@ class StepProvider extends AbstractServiceProvider {
 			'description'   => __( 'Your theme has been all set up.', 'mai-setup-wizard' ),
 			'order'         => 50,
 			'continue_text' => __( 'View Your Site', 'mai-setup-wizard' ),
-			'continue_url'  => \get_home_url(),
+			'continue_url'  => get_home_url(),
 			'skip_text'     => __( 'Edit Your Site', 'mai-setup-wizard' ),
-			'skip_url'      => \get_admin_url(),
+			'skip_url'      => get_admin_url(),
 			'fields'        => $this->field->get_fields( 'done' ),
 		];
 	}
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param $id
+	 *
+	 * @return array
+	 */
 	private function get_default_args( $id ) {
-		$title = \ucwords( \str_replace( [ '-', '_' ], ' ', $id ) );
+		$title = ucwords( str_replace( [ '-', '_' ], ' ', $id ) );
 
-		return \apply_filters( 'mai_setup_wizard_step_defaults', [
+		return apply_filters( 'mai_setup_wizard_step_defaults', [
 			'title'           => $title,
 			'description'     => $title,
 			'order'           => 10,
@@ -155,6 +250,17 @@ class StepProvider extends AbstractServiceProvider {
 		] );
 	}
 
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param $step
+	 * @param $steps
+	 * @param $counter
+	 *
+	 * @return void
+	 */
 	public function render( $step, $steps, $counter ) {
 		?>
 		<form id="<?php echo $step['id']; ?>" class="step" action="javascript:void(0);">
@@ -164,15 +270,15 @@ class StepProvider extends AbstractServiceProvider {
 			<p class="success"><?php echo $step['success_message']; ?></p>
 			<?php if ( $step['fields'] ): ?>
 				<?php
-				$items = \sprintf(
+				$items = sprintf(
 					' class="items-%s"',
-					\count( $step['fields'] )
+					count( $step['fields'] )
 				);
 				?>
 				<ul<?php echo $items; ?>>
 					<?php
 					/**
-					 * @var FieldProvider $field
+					 * @var Mai_Setup_Wizard_Fields $field
 					 */
 					foreach ( $step['fields'] as $field ) : ?>
 						<li><?php echo $this->field->render( $field ); ?></li>
@@ -180,20 +286,20 @@ class StepProvider extends AbstractServiceProvider {
 				</ul>
 			<?php endif; ?>
 			<div>
-				<?php if ( 1 !== $counter && \apply_filters( 'mai_setup_wizard_previous', true ) ): ?>
+				<?php if ( 1 !== $counter && apply_filters( 'mai_setup_wizard_previous', true ) ): ?>
 					<a href="javascript:void(0)" id="previous" class="button">
-						<?php \esc_html_e( 'Previous', 'mai-setup-wizard' ); ?>
+						<?php esc_html_e( 'Previous', 'mai-setup-wizard' ); ?>
 					</a>
 				<?php endif; ?>
-				<?php $skip_target = \filter_var( $step['skip_url'], FILTER_VALIDATE_URL ) === false ? '' : ' target="_blank"'; ?>
-				<?php if ( $step['skip_text'] && $counter < \count( $steps ) ): ?>
+				<?php $skip_target = filter_var( $step['skip_url'], FILTER_VALIDATE_URL ) === false ? '' : ' target="_blank"'; ?>
+				<?php if ( $step['skip_text'] && $counter < count( $steps ) ): ?>
 					<a href="<?php echo $step['skip_url']; ?>" <?php echo $skip_target; ?>id="skip" class="button">
 						<?php echo $step['skip_text']; ?>
 					</a>
 				<?php endif; ?>
-				<?php if ( $counter < \count( $steps ) ): ?>
-					<?php $continue_target = \filter_var( $step['skip_url'], FILTER_VALIDATE_URL ) === false ? '' : ' target="_blank"'; ?>
-					<button href="<?php echo $step['continue_url']; ?>" <?php echo $continue_target; ?>id="submit" class="button-primary" data-default="<?php echo $step['continue_text']; ?>" data-loading="<?php \esc_attr_e( $step['loading_text'] ); ?>">
+				<?php if ( $counter < count( $steps ) ): ?>
+					<?php $continue_target = filter_var( $step['skip_url'], FILTER_VALIDATE_URL ) === false ? '' : ' target="_blank"'; ?>
+					<button href="<?php echo $step['continue_url']; ?>" <?php echo $continue_target; ?>id="submit" class="button-primary" data-default="<?php echo $step['continue_text']; ?>" data-loading="<?php esc_attr_e( $step['loading_text'] ); ?>">
 						<?php echo $step['continue_text']; ?>
 						<img src="https://www.cupraofficial.com/etc.clientlibs/seatComponents/components/login-component/clientlibs/resources/images/spinner.gif" alt="spinner" width="20">
 					</button>
@@ -202,12 +308,12 @@ class StepProvider extends AbstractServiceProvider {
 			<br>
 			<small>
 				<?php
-				\printf(
+				printf(
 					'%s %s %s %s',
 					__( 'Step', 'mai-setup-wizard' ),
 					$counter,
 					__( 'of', 'mai-setup-wizard' ),
-					\count( $steps )
+					count( $steps )
 				);
 				?>
 			</small>
