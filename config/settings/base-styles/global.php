@@ -40,7 +40,7 @@ return [
 			[
 				'element'       => ':root',
 				'property'      => '--text-md',
-				'value_pattern' => 'calc($px + 0.25vw)',
+				'value_pattern' => 'calc($ * 1px)',
 			],
 		],
 	],

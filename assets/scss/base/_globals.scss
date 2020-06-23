@@ -28,7 +28,7 @@
 	--row-gap: var(--spacing-md);
 	--column-gap: var(--spacing-md);
 	--wrap-max-width: var(--breakpoint-xl);
-	--sidebar-width: 30rem; // Google ads
+	--sidebar-width: 300px; // Google ads.
 	--content-max-width: calc(var(--wrap-max-width) - var(--sidebar-width) - var(--column-gap));
 
 	--border-style: solid;
