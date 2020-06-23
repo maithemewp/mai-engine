@@ -2,6 +2,7 @@
 	width: 100%;
 	max-width: var(--content-max-width);
 	margin: var(--content-margin, var(--content-margin-top, 0) var(--content-margin-sides, auto) var(--content-margin-bottom, var(--spacing-xxl)));
+	--inner-max-width: var(--content-max-width);
 
 	@include mq(lg) {
 		order: var(--content-order, 0);

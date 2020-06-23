@@ -11,29 +11,12 @@
 	&.alignfull {
 		padding-right: var(--side-spacing);
 		padding-left: var(--side-spacing);
-
-		@include mq(lg) {
-
-			.content-sidebar &,
-			.sidebar-content & {
-				--content-max-width: calc(100vw - var(--sidebar-width) - var(--content-sidebar-gap) - (var(--side-spacing) * 3));
-			}
-
-		}
-
-		@include mq(xl) {
-
-			.content-sidebar &,
-			.sidebar-content & {
-				--content-max-width: calc(var(--breakpoint-xl) - var(--sidebar-width) - var(--content-sidebar-gap) - var(--side-spacing));
-			}
-		}
 	}
 }
 
 .wp-block-cover__inner-container {
 	width: 100% !important;
-	max-width: var(--content-max-width) !important;
+	max-width: var(--inner-max-width, var(--breakpoint-xl));
 	margin-right: auto;
 	margin-left: auto;
 
