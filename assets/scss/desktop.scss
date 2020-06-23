@@ -22,6 +22,7 @@
 	--sub-menu-border: var(--border);
 	--sub-menu-opacity: 0;
 	--sub-menu-transition: opacity var(--transition-duration) var(--transition-timing-function);
+	--sub-menu-animation: fadein 0.1s ease-in-out;
 
 	--sub-menu-toggle-position: relative;
 	--sub-menu-toggle-display: none;
@@ -38,7 +39,6 @@
 	display: flex; /* can't be variable because 3rd level sub-menus will display too */
 	--sub-menu-opacity: 1;
 	--sub-menu-left: auto;
-	--sub-menu-animation: fadein 0.1s ease-in-out;
 }
 
 .mobile-menu-visible {
@@ -48,4 +48,15 @@
 .has-logo-center {
 	--title-area-margin: 0 auto;
 	--title-area-text-align: center;
+}
+
+@keyframes fadein {
+
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
 }

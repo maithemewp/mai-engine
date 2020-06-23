@@ -39,7 +39,13 @@ module.exports = function() {
 					sort: true,
 				} ),
 				autoprefix(),
-				cssnano( config.css.cssnano ),
+				cssnano( {
+					discardComments: {
+						removeAll: true
+					},
+					zindex: false,
+					reduceIdents: false,
+				} ),
 				combineSelectors,
 				discardDuplicates,
 				pxtorem( {
