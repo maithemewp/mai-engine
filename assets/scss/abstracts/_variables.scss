@@ -40,6 +40,17 @@ $headings: (
 	h6: var(--text-md),
 ) !default;
 
+$font-sizes: (
+	xxxxl: var(--text-xxxxl),
+	xxxl: var(--text-xxxl),
+	xxl: var(--text-xxl),
+	xl: var(--text-xl),
+	lg: var(--text-lg),
+	md: var(--text-md),
+	sm: var(--text-sm),
+	xs: var(--text-xs),
+) !default;
+
 $spacing: (
 	xxxxs: var(--spacing-xxxxs),
 	xxxs: var(--spacing-xxxs),

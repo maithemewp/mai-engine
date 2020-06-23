@@ -4,7 +4,7 @@
 	min-height: var(--body-min-height, 100vh);
 	min-height: -webkit-fill-available;
 	margin: 0;
-	font-size: var(--text-md);
+	font-size: var(--body-font-size, var(--text-md)); // Added --body-font-size so we can override body size without changing the scale itself.
 	background: var(--body-background, var(--color-lightest));
 }
 

@@ -11,9 +11,9 @@
 	}
 }
 
-@each $heading-name, $heading-value in $headings {
+@each $size-name, $size-value in $font-sizes {
 
-	.has-#{ $heading-name }-font-size {
-		font-size: #{ $heading-value };
+	.has-#{ $size-name }-font-size {
+		font-size: #{ $size-value };
 	}
 }
