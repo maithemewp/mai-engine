@@ -13,7 +13,12 @@ img {
 	border-radius: var(--image-border-radius, 0);
 }
 
-figure {
+/**
+ * Hopefully only images, embeds break.
+ * We may find other things that break with this,
+ * but it's super useful for captions.
+ */
+figure:not(.wp-block-embed) {
 	display: table; // Make figure work with figcaption.
 	margin: 0;
 }
