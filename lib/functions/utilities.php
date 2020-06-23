@@ -955,9 +955,11 @@ function mai_get_loop_content_type_choices( $archive = true ) {
 			 * Using reset() since we hit an error on a term archive that object_type array didn't start with [0].
 			 */
 			$post_type = reset( $taxonomy->object_type );
-			$post_type = get_post_type_object( $post_type );
-			if ( ! $post_type->_builtin && ! post_type_supports( $post_type->name, $feature ) ) {
-				unset( $choices[ $name ] );
+			if ( post_type_exists( $name ) ) {
+				$post_type = get_post_type_object( $post_type );
+				if ( ! $post_type->_builtin && ! post_type_supports( $post_type->name, $feature ) ) {
+					unset( $choices[ $name ] );
+				}
 			}
 		}
 	}
