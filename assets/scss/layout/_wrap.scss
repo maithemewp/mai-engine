@@ -1,9 +1,5 @@
 .wrap {
 	position: var(--wrap-position, unset);
-	display: var(--wrap-display, flex);
-	flex-wrap: var(--wrap-flex-wrap, wrap);
-	align-items: var(--wrap-align-items, flex-start);
-	justify-content: var(--wrap-justify-content, space-between);
 	width: var(--wrap-width, calc(100% - calc(var(--side-spacing) * 2)));
 	max-width: var(--wrap-max-width);
 	margin-right: auto;

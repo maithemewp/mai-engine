@@ -1,7 +1,7 @@
 ( function() {
 	var localizedData    = typeof maiMenuVars === 'undefined' ? {} : maiMenuVars;
 	var body             = document.getElementsByTagName( 'body' )[ 0 ];
-	var siteHeaderWrap   = document.querySelector( '.site-header > .wrap' );
+	var siteHeaderWrap   = document.querySelector( '.site-header-wrap' );
 	var navHeaderLeft    = document.getElementsByClassName( 'nav-header-left' )[ 0 ];
 	var navHeaderRight   = document.getElementsByClassName( 'nav-header-right' )[ 0 ];
 	var navAfterHeader   = document.getElementsByClassName( 'nav-after-header' )[ 0 ];

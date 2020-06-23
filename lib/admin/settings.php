@@ -13,7 +13,7 @@ add_action( 'admin_menu', 'mai_admin_menu_page', 0 );
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
@@ -32,7 +32,7 @@ function mai_admin_menu_page() {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
