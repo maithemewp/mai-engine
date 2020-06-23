@@ -42,10 +42,13 @@ function mai_render_admin_menu_page() {
 	echo '<div class="wrap">';
 	echo "<h1>$title</h1>";
 
+	$theme = mai_get_active_theme();
+	$theme = 'default' === $theme ? __( 'Theme', 'mai-engine' ) : mai_convert_case( $theme, 'title' );
+
 	echo sprintf(
 		'<p>%s %s.</p><h2>%s</h2>',
 		__( 'Hi! Thanks for choosing Mai', 'mai-engine' ),
-		mai_convert_case( mai_get_active_theme(), 'title' ),
+		$theme,
 		__( 'Quick Links', 'mai-engine' )
 	);
 
