@@ -325,16 +325,16 @@ li.customize-control-kirki-color-palette .colors-wrapper input:checked + label .
 	box-shadow: 0 3px 10px -2px #999aa0;
 }
 
-#customize-control-mai-engine-global-color-palette .repeater-row {
+#customize-control-mai-engine-color-palette .repeater-row {
 	background: none;
 	border: 0;
 }
 
-#customize-control-mai-engine-global-color-palette .repeater-row-header {
+#customize-control-mai-engine-color-palette .repeater-row-header {
 	display: none;
 }
 
-#customize-control-mai-engine-global-color-palette .repeater-row-content {
+#customize-control-mai-engine-color-palette .repeater-row-content {
 	position: relative;
 	display: flex;
 	align-items: center;
@@ -343,18 +343,18 @@ li.customize-control-kirki-color-palette .colors-wrapper input:checked + label .
 	background: none;
 }
 
-#customize-control-mai-engine-global-color-palette .repeater-field {
+#customize-control-mai-engine-color-palette .repeater-field {
 	flex: 1;
 	margin: 0;
 	padding: 0;
 	border: 0;
 }
 
-#customize-control-mai-engine-global-color-palette .wp-color-result {
+#customize-control-mai-engine-color-palette .wp-color-result {
 	margin: 0 6px 0 0 !important;
 }
 
-#customize-control-mai-engine-global-color-palette .repeater-row-remove {
+#customize-control-mai-engine-color-palette .repeater-row-remove {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -365,7 +365,7 @@ li.customize-control-kirki-color-palette .colors-wrapper input:checked + label .
 	text-indent: -999px;
 }
 
-#customize-control-mai-engine-global-color-palette .repeater-row-remove::before {
+#customize-control-mai-engine-color-palette .repeater-row-remove::before {
 	position: absolute;
 	top: -10px;
 	left: 4px;

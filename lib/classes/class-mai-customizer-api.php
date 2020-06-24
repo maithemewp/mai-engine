@@ -264,15 +264,15 @@ class Mai_Customizer_API {
 	 */
 	private function get_panels() {
 		return [
-			'base-styles'      => [
-				'global',
-				'body',
-				'headings',
-				'links',
-				'buttons',
-				'forms',
-				'blockquotes',
-			],
+			// 'base-styles'      => [
+			// 	'global',
+				// 'body',
+				// 'headings',
+				// 'links',
+				// 'buttons',
+				// 'forms',
+				// 'blockquotes',
+			// ],
 			'header'           => [
 				'site-header',
 				'title-area',

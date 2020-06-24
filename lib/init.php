@@ -234,6 +234,7 @@ function mai_load_files() {
 		'blocks/social-links',
 
 		// Customizer.
+		'customize/base-styles',
 		'customize/beta-tester',
 		'customize/logo',
 		'customize/loop',
