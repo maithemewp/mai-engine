@@ -318,11 +318,61 @@ li.customize-control-kirki-color-palette .colors-wrapper {
 }
 
 li.customize-control-kirki-color-palette .colors-wrapper input:checked + label .color-palette-color {
-	box-shadow: 0px 3px 10px -2px #999aa0;
+	top: -5%;
+	left: -5%;
 	width: 110%;
 	height: 110%;
-	left: -5%;
-	top: -5%;
+	box-shadow: 0 3px 10px -2px #999aa0;
+}
+
+#customize-control-mai-engine-global-color-palette .repeater-row {
+	background: none;
+	border: 0;
+}
+
+#customize-control-mai-engine-global-color-palette .repeater-row-header {
+	display: none;
+}
+
+#customize-control-mai-engine-global-color-palette .repeater-row-content {
+	position: relative;
+	display: flex;
+	align-items: center;
+	margin: 6px 0;
+	padding: 0;
+	background: none;
+}
+
+#customize-control-mai-engine-global-color-palette .repeater-field {
+	flex: 1;
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+#customize-control-mai-engine-global-color-palette .wp-color-result {
+	margin: 0 6px 0 0 !important;
+}
+
+#customize-control-mai-engine-global-color-palette .repeater-row-remove {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 30px;
+	height: 30px;
+	overflow: hidden;
+	text-decoration: none;
+	text-indent: -999px;
+}
+
+#customize-control-mai-engine-global-color-palette .repeater-row-remove::before {
+	position: absolute;
+	top: -10px;
+	left: 4px;
+	display: block;
+	font-size: 36px;
+	text-indent: 0;
+	content: "×";
 }
 
 // Theme settings panel ordering.
