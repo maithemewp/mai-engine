@@ -18,10 +18,10 @@ add_action( 'after_setup_theme', 'mai_do_deprecated_functionality', 4 );
  * @return void
  */
 function mai_do_deprecated_functionality() {
-	$first_version = mai_get_option( 'first-version', mai_get_version() );
+	$first_version = mai_get_option( 'first-version', '1.0.0' );
 
 	if ( version_compare( $first_version, '2.0.0', '<' ) ) {
-		add_filter( 'mai_widget-areas_config', 'mai_deprecated_widget_areas' );
+		add_filter( 'mai_config', 'mai_deprecated_2_0_0' );
 	}
 }
 
@@ -30,10 +30,17 @@ function mai_do_deprecated_functionality() {
  *
  * @since 1.0.0
  *
+ * @param array $config
+ *
  * @return array
  */
-function mai_deprecated_widget_areas() {
-	return [
+function mai_deprecated_2_0_0( $config ) {
+	$config['scripts-and-styles']['add'][] = [
+		'handle' => mai_get_handle() . '-deprecated',
+		'src'    => mai_get_url() . 'assets/css/deprecated/deprecated.min.css',
+	];
+
+	$config['widget-areas'] = [
 		'add'    => [
 			[
 				'id'          => 'before-header',
@@ -109,4 +116,6 @@ function mai_deprecated_widget_areas() {
 		],
 		'remove' => [],
 	];
+
+	return $config;
 }

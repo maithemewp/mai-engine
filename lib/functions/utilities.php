@@ -224,9 +224,9 @@ function mai_get_config( $sub_config = 'default' ) {
 		$config = array_replace_recursive( $config, require $child );
 	}
 
-	$configs[ $sub_config ] = isset( $config[ $sub_config ] ) ? $config[ $sub_config ] : [];
+	$config = apply_filters( 'mai_config', $config );
 
-	$configs = apply_filters( 'mai_config', $configs );
+	$configs[ $sub_config ] = isset( $config[ $sub_config ] ) ? $config[ $sub_config ] : [];
 
 	return apply_filters( "mai_{$sub_config}_config", $configs[ $sub_config ] );
 }
