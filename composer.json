@@ -19,6 +19,9 @@
   ],
   "require": {
     "php": ">=5.6",
+    "ext-dom": "*",
+    "ext-json": "*",
+    "ext-libxml": "*",
     "yahnis-elsts/plugin-update-checker": "^4.8",
     "advanced-custom-fields/advanced-custom-fields-pro": "*",
     "aristath/kirki": "*",
@@ -49,7 +52,6 @@
     },
     "sort-order": true
   },
-  "ext-json": "*",
   "minimum-stability": "dev",
   "prefer-stable": true,
   "scripts": {
