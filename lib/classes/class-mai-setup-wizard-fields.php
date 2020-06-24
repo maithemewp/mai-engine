@@ -221,13 +221,17 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 	private function get_content_fields() {
 		$fields        = [];
 		$demos         = $this->demo->get_demos();
-		$content_types = [ 'content', 'template_parts', 'customizer' ];
+		$content_types = [
+			'content'    => __( 'Content & Templates', 'mai-engine' ),
+			'customizer' => __( 'Customizer Settings', 'mai-engine' ),
+		];
 
 		foreach ( $demos as $demo ) {
-			foreach ( $content_types as $content_type ) {
+			foreach ( $content_types as $content_type => $name ) {
+
 				$fields[] = [
 					'id'         => $demo['id'] . '-' . $content_type,
-					'label'      => mai_convert_case( $content_type, 'title' ) . '<span class="progress"> &nbsp; <span>0</span>%</span>',
+					'label'      => $name . '<span class="progress"> &nbsp; <span>0</span>%</span>',
 					'element'    => 'input',
 					'attributes' => [
 						'value'     => $content_type,

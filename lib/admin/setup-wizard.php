@@ -105,7 +105,14 @@ function mai_setup_wizard_demos( $defaults ) {
 	}
 
 	foreach ( $demos as $demo => $id ) {
-		$demo_url = "https://demo.bizbudding.com/{$theme}-{$demo}/wp-content/uploads/sites/{$id}/mai-engine/";
+		$dev = defined('MAI_DEV') && MAI_DEV;
+
+		if ( $dev ) {
+			$upload_dir = wp_get_upload_dir();
+			$demo_url   = $upload_dir['baseurl'] . '/mai-engine/';
+		} else {
+			$demo_url = "https://demo.bizbudding.com/{$theme}-{$demo}/wp-content/uploads/sites/{$id}/mai-engine/";
+		}
 
 		foreach ( $config as $plugin ) {
 			if ( in_array( $demo, $plugin['demos'], true ) ) {
@@ -180,6 +187,38 @@ function mai_setup_wizard_email_option( $email_address ) {
 	add_filter( 'wp_mail_from', $filter );
 	wp_mail( $to, $subject, $message, $headers, $attachments );
 	remove_filter( 'wp_mail_from', $filter );
+}
+
+add_action( 'mai_setup_wizard_before_import', 'mai_before_setup_wizard_import' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param $demo
+ *
+ * @return void
+ */
+function mai_before_setup_wizard_import( $demo ) {
+	$template_parts = mai_get_config( 'template-parts' );
+
+	foreach ( $template_parts as $template_part ) {
+		$post    = get_post( mai_get_template_part_by_slug( $template_part['id'] ) );
+		$options = get_option( $this->plugin->slug );
+
+		if ( isset( $options['theme'] ) && isset( $options['demo'] ) ) {
+			$theme_slug = $options['theme'];
+			$theme_name = mai_convert_case( $options['theme'], 'title' );
+			$demo_slug  = $options['demo'];
+			$demo_name  = mai_convert_case( $options['demo'], 'title' );
+
+			$post->post_title = $post->post_title . ' - ' . $theme_name . ' ' . $demo_name;
+			$post->post_name  = $post->post_name . '-' . $theme_slug . '-' . $demo_slug;
+
+			wp_update_post( $post );
+		}
+	}
+
 }
 
 add_action( 'mai_setup_wizard_after_import', 'mai_after_setup_wizard_import' );

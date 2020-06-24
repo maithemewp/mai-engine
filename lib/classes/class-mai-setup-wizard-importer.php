@@ -49,10 +49,6 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 			$this->import_content( $import_file );
 		}
 
-		if ( 'template_parts' === $content_type ) {
-			$this->import_template_parts( $import_file );
-		}
-
 		if ( 'customizer' === $content_type ) {
 			$this->import_customizer( $import_file );
 		}
@@ -133,43 +129,13 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 			'fetch_attachments' => true,
 		], $logger );
 
+//		do_action( 'mai_setup_wizard_before_import', $this->demo->get_chosen_demo() );
+
 		$importer->import( $file );
 
 		do_action( 'mai_setup_wizard_after_import', $this->demo->get_chosen_demo() );
 
 		wp_send_json_success( __( 'Finished importing ', 'mai-setup-wizard' ) . basename( $file ) );
-	}
-
-	/**
-	 * Description of expected behavior.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param $file
-	 *
-	 * @return void
-	 */
-	private function import_template_parts( $file ) {
-		$template_parts = mai_get_config( 'template-parts' );
-
-		foreach ( $template_parts as $template_part ) {
-			$post    = get_post( mai_get_template_part_by_slug( $template_part['id'] ) );
-			$options = get_option( $this->plugin->slug );
-
-			if ( isset( $options['theme'] ) && isset( $options['demo'] ) ) {
-				$theme_slug = $options['theme'];
-				$theme_name = mai_convert_case( $options['theme'], 'title' );
-				$demo_slug  = $options['demo'];
-				$demo_name  = mai_convert_case( $options['demo'], 'title' );
-
-				$post->post_title = $post->post_title . ' - ' . $theme_name . ' ' . $demo_name;
-				$post->post_name  = $post->post_name . '-' . $theme_slug . '-' . $demo_slug;
-
-				wp_update_post( $post );
-			}
-		}
-
-		$this->import_content( $file );
 	}
 
 	/**

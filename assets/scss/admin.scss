@@ -154,7 +154,7 @@ li.toplevel_page_mai-theme {
 	height: 18px;
 	margin-left: 10px;
 	vertical-align: middle;
-	background-image: url(https://www.cupraofficial.com/etc.clientlibs/seatComponents/components/login-component/clientlibs/resources/images/spinner.gif);
+	background-image: url(../../img/spinner.gif);
 	background-position: center;
 	background-size: 18px;
 	visibility: hidden;
@@ -167,7 +167,7 @@ li.toplevel_page_mai-theme {
 }
 
 [data-status="complete"]::after {
-	background-image: url(https://pluspng.com/img-png/png-tick-png-check-correct-mark-success-tick-valid-yes-icon-download-svg-download-png-512.png);
+	background-image: url(../../img/tick.png);
 	visibility: visible;
 	filter: none;
 }
@@ -233,7 +233,7 @@ li.toplevel_page_mai-theme {
 	background-position: center;
 	background-size: 18px;
 	content: "";
-	background-image: url(https://pluspng.com/img-png/png-tick-png-check-correct-mark-success-tick-valid-yes-icon-download-svg-download-png-512.png);
+	background-image: url(../../img/tick.png);
 	visibility: hidden;
 }
 
