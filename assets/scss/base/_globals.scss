@@ -1,6 +1,10 @@
 @mixin custom-properties {
+	--text-base: 14px;
+	--text-responsive-ratio: 0.2vw;
+	--text-scale-ratio: 1.25;
 	--text-xs: calc(var(--text-sm) / var(--text-scale-ratio));
 	--text-sm: calc(var(--text-md) / var(--text-scale-ratio));
+	--text-md: calc(var(--text-base) + var(--text-responsive-ratio));
 	--text-lg: calc(var(--text-md) * var(--text-scale-ratio));
 	--text-xl: calc(var(--text-lg) * var(--text-scale-ratio));
 	--text-xxl: calc(var(--text-xl) * var(--text-scale-ratio));
