@@ -41,26 +41,35 @@ function mai_register_template_part_cpt() {
 	];
 
 	$args = [
-		'labels'             => $labels,
-		'description'        => __( 'Template parts to include in your theme.', 'mai-engine' ),
-		'public'             => false,
-		'publicly_queryable' => true,
-		'has_archive'        => false,
-		'show_ui'            => true,
-		'show_in_menu'       => 'themes.php',
-		'show_in_admin_bar'  => false,
-		'show_in_rest'       => true,
-		'rest_base'          => 'mai-engine',
-		'supports'           => [
+		'labels'            => $labels,
+		'description'       => __( 'Template parts to include in your templates.', 'mai-engine' ),
+		'public'            => false,
+		'has_archive'       => false,
+		'show_ui'           => true,
+		'show_in_menu'      => 'themes.php',
+		'show_in_admin_bar' => false,
+		'show_in_rest'      => true,
+		'rest_base'         => 'template-parts',
+		'map_meta_cap'      => true,
+		'supports'          => [
 			'title',
+			'slug',
 			'editor',
-			'thumbnail',
-			'amp',
 			'revisions',
+			'custom-fields',
 		],
 	];
 
+	$meta_args = [
+		'object_subtype' => 'wp_template_part',
+		'type'           => 'string',
+		'description'    => __( 'The theme that provided the template part, if any.', 'mai-engine' ),
+		'single'         => true,
+		'show_in_rest'   => true,
+	];
+
 	register_post_type( 'wp_template_part', $args );
+	register_meta( 'post', 'theme', $meta_args );
 }
 
 /**
