@@ -226,6 +226,8 @@ function mai_get_config( $sub_config = 'default' ) {
 
 	$configs[ $sub_config ] = isset( $config[ $sub_config ] ) ? $config[ $sub_config ] : [];
 
+	$configs = apply_filters( 'mai_config', $configs );
+
 	return apply_filters( "mai_{$sub_config}_config", $configs[ $sub_config ] );
 }
 
@@ -1086,11 +1088,13 @@ function mai_get_read_more_text() {
  */
 function mai_get_menu( $menu, $args = '' ) {
 	$menu_class = 'menu genesis-nav-menu';
+
 	if ( isset( $args['class'] ) && $args['class'] ) {
 		$menu_class = mai_add_classes( $args['class'], $menu_class );
 	}
 
 	$list = isset( $args['display'] ) && ( 'list' === $args['display'] );
+
 	if ( $list ) {
 		$menu_class = mai_add_classes( 'menu-list', $menu_class );
 	}
@@ -1292,7 +1296,6 @@ function mai_get_svg( $name, $class = '' ) {
 	return $svg;
 }
 
-
 /**
  * Description of expected behavior.
  *
@@ -1314,11 +1317,13 @@ function mai_get_svg_icon( $name, $style = 'light', $atts = [] ) {
 	$svg = file_get_contents( $file );
 
 	if ( $atts ) {
-		$dom = mai_get_dom_document( $svg );
+		$dom  = mai_get_dom_document( $svg );
 		$svgs = $dom->getElementsByTagName( 'svg' );
+
 		foreach ( $atts as $att => $value ) {
 			$svgs[0]->setAttribute( $att, $value );
 		}
+
 		$svg = $dom->saveHTML();
 	}
 
@@ -1350,14 +1355,19 @@ function mai_get_svg_icon_url( $name, $style = 'light' ) {
  * @return object
  */
 function mai_get_dom_document( $html ) {
+
 	// Create the new document.
 	$dom = new DOMDocument;
+
 	// Modify state.
 	$libxml_previous_state = libxml_use_internal_errors( true );
+
 	// Load the content in the document HTML.
 	$dom->loadHTML( mb_convert_encoding( $html, 'HTML-ENTITIES', "UTF-8" ) );
+
 	// Handle errors.
 	libxml_clear_errors();
+
 	// Restore.
 	libxml_use_internal_errors( $libxml_previous_state );
 
