@@ -51,8 +51,6 @@ function mai_register_template_part_cpt() {
 		'show_in_admin_bar'  => false,
 		'show_in_rest'       => true,
 		'rest_base'          => 'mai-engine',
-		'capability_type'    => [ 'wp_template_part', 'wp_template_parts' ],
-		'map_meta_cap'       => true,
 		'supports'           => [
 			'title',
 			'editor',
