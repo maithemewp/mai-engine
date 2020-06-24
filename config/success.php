@@ -22,6 +22,7 @@ return [
 		'color-medium'        => '#647585',
 		'color-light'         => '#eff1f3',
 		'color-lighter'       => '#f6f7f8',
+		'text-md'             => 18,
 		'body-font-family'    => 'Hind',
 		'body-font-weight'    => 'regular',
 		'body-line-height'    => 1.5,
