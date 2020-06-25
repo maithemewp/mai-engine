@@ -262,10 +262,18 @@ return [
 				],
 			],
 
+			// Block scripts.
+			[
+				'handle'   => mai_get_handle() . '-blocks',
+				'src'      => mai_get_url() . 'assets/js/min/blocks.js',
+				'deps'     => [ 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ],
+				'location' => 'editor',
+			],
+
 			// Styles.
 			[
-				'handle'   => mai_get_handle(),
-				'src'      => mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css',
+				'handle' => mai_get_handle(),
+				'src'    => mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css',
 			],
 
 			// Customizer styles.
@@ -526,8 +534,8 @@ return [
 			'location' => 'mai_header_right',
 		],
 		[
-			'id'      => 'after-entry',
-			'name'    => __( 'After Entry', 'mai-engine' ),
+			'id'   => 'after-entry',
+			'name' => __( 'After Entry', 'mai-engine' ),
 		],
 		[
 			'id'       => 'before-footer',
