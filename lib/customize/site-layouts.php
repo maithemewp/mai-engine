@@ -253,7 +253,3 @@ function mai_site_layouts_customizer_settings() {
 		]
 	);
 }
-
-// add_action( 'genesis_before', function() {
-// 	vd( get_option( 'mai-engine' ) );
-// });

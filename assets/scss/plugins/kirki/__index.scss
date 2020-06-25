@@ -335,13 +335,13 @@ li.customize-control-kirki-color-palette .colors-wrapper input:checked + label .
 }
 
 [id^="customize-control-mai-engine-site-layouts"][id$="-layout-divider"]:not(#customize-control-mai-engine-site-layouts-default-defaults-layout-divider) {
-	border-top: 1px dashed #b4b9be;
+	border-top: 1px dashed #ddd;
 }
 
 [id^="customize-control-mai-engine-site-layouts"][id$="-layout-divider"] ~ .customize-control-kirki-select {
 	margin: 0 !important;
 	padding: 0 0 16px 16px;
-	border-left: 1px dashed #b4b9be;
+	border-left: 1px dashed #ddd;
 }
 
 [id^="customize-control-mai-engine-site-layouts"][id$="-layout-divider"] ~ .customize-control-kirki-select .customize-control-title {
