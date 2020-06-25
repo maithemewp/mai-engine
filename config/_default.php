@@ -20,7 +20,7 @@ return [
 	*/
 
 	'custom-properties' => [
-		'breakpoint-xl'          => 1200,
+		'breakpoint-xl'          => 1200, // TODO: Should this be integer or px value?
 		'color-primary'          => '#007bff',
 		'color-secondary'        => '#6c757d',
 		'color-tertiary'         => '#fd7e14',
@@ -38,6 +38,8 @@ return [
 		'text-base'              => '16px',
 		'text-scale-ratio'       => 1.25,
 		'text-responsive-ratio'  => 1.25,
+		'spacing-base'           => '16px',
+		'spacing-scale-ratio'    => 1.5,
 		'border-width'           => '1px',
 		'border-radius'          => '4px',
 		'body-font-family'       => 'sans-serif',

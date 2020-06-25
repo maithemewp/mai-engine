@@ -11,8 +11,6 @@
 	--font-stack: system-ui, -apple-system, blinkmacsystemfont, helvetica, arial, sans-serif;
 	--font-code: consolas, monaco, monospace;
 
-	--spacing-base: 16px;
-	--spacing-scale-ratio: 1.5;
 	--spacing-xxxxs: calc(var(--spacing-xxxs) / var(--spacing-scale-ratio));
 	--spacing-xxxs: calc(var(--spacing-xxs) / var(--spacing-scale-ratio));
 	--spacing-xxs: calc(var(--spacing-xs) / var(--spacing-scale-ratio));
