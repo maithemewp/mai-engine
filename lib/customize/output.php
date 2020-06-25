@@ -61,36 +61,6 @@ function mai_add_breakpoint_custom_properties( $css ) {
 	return $css;
 }
 
-// add_filter( 'kirki_mai-engine_styles', 'mai_add_color_variant_css' );
-/**
- * Add color variant styles to kirki output.
- *
- * @since 2.0.0
- *
- * @param array $css Kirki CSS output.
- *
- * @return array
- */
-function mai_add_color_variant_css( $css ) {
-	$config = mai_get_config( 'custom-properties' );
-
-	foreach ( $config as $prop => $value ) {
-		if ( ! mai_has_string( 'color-', $prop ) ) {
-			continue;
-		}
-
-		$color = ariColor::newColor( $value );
-		$rgb   = [
-			$red = $color->red,
-			$green = $color->green,
-			$blue = $color->blue,
-		];
-		$css['global'][':root'][ '--' . $prop . '-rgb' ] = implode( ',', $rgb );
-	}
-
-	return $css;
-}
-
 add_filter( 'kirki_mai-engine_styles', 'mai_add_page_header_content_type_css' );
 /**
  * Add page header styles to kirki output.
