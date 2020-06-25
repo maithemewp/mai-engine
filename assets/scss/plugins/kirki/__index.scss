@@ -325,6 +325,34 @@ li.customize-control-kirki-color-palette .colors-wrapper input:checked + label .
 	box-shadow: 0 3px 10px -2px #999aa0;
 }
 
+#customize-control-mai-engine-boxed-container {
+	margin-bottom: 0 !important;
+}
+
+[id^="customize-control-mai-engine-site-layouts"][id$="-layout-divider"] {
+	margin: 0 !important;
+	padding: 16px 0 0 0;
+}
+
+[id^="customize-control-mai-engine-site-layouts"][id$="-layout-divider"]:not(#customize-control-mai-engine-site-layouts-default-defaults-layout-divider) {
+	border-top: 1px dashed #b4b9be;
+}
+
+[id^="customize-control-mai-engine-site-layouts"][id$="-layout-divider"] ~ .customize-control-kirki-select {
+	margin: 0 !important;
+	padding: 0 0 16px 16px;
+	border-left: 1px dashed #b4b9be;
+}
+
+[id^="customize-control-mai-engine-site-layouts"][id$="-layout-divider"] ~ .customize-control-kirki-select .customize-control-title {
+	font-weight: 400;
+	font-size: 13px; /* Customizer default body font size */
+}
+
+[id^="customize-control-mai-engine-site-layouts"][id$="-layout-divider"] ~ .customize-control-kirki-select .select2-container {
+	width: calc(100% - 16px) !important;
+}
+
 #customize-control-mai-engine-color-palette .repeater-row {
 	background: none;
 	border: 0;
