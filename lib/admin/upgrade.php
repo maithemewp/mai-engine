@@ -11,9 +11,9 @@
 
 add_action( 'admin_init', 'mai_do_upgrade' );
 /**
- * Description of expected behavior.
+ * Run setting upgrades during engine update.
  *
- * @since 1.0.0
+ * @since 0.2.0
  *
  * @return void
  */
