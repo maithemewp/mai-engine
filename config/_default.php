@@ -35,7 +35,7 @@ return [
 		'color-light'            => '#e3e6e8',
 		'color-lighter'          => '#f1f2f4',
 		'color-lightest'         => '#ffffff',
-		'text-md'                => 16,
+		'text-base'              => '16px',
 		'text-scale-ratio'       => 1.25,
 		'text-responsive-ratio'  => 1.25,
 		'border-width'           => '1px',
