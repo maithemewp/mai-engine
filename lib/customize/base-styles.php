@@ -97,6 +97,7 @@ function mai_base_styles_customizer_settings() {
 			'settings'     => 'color-palette',
 			'section'      => $section,
 			'label'        => esc_html__( 'Color palette', 'mai-engine' ),
+			'description'  => esc_html__( 'Provides the default choices for color pickers in blocks and Customizer settings.', 'mai-engine' ),
 			'row_label'    => [
 				'type'  => 'color',
 				'value' => esc_html__( 'Color', 'mai-engine' ),
