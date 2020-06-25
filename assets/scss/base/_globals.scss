@@ -1,7 +1,4 @@
 @mixin custom-properties {
-	--text-base: 14px;
-	--text-responsive-ratio: 0.2vw;
-	--text-scale-ratio: 1.25;
 	--text-xs: calc(var(--text-sm) / var(--text-scale-ratio));
 	--text-sm: calc(var(--text-md) / var(--text-scale-ratio));
 	--text-md: calc(var(--text-base) + var(--text-responsive-ratio));
@@ -14,13 +11,14 @@
 	--font-stack: system-ui, -apple-system, blinkmacsystemfont, helvetica, arial, sans-serif;
 	--font-code: consolas, monaco, monospace;
 
+	--spacing-base: 16px;
 	--spacing-scale-ratio: 1.5;
 	--spacing-xxxxs: calc(var(--spacing-xxxs) / var(--spacing-scale-ratio));
 	--spacing-xxxs: calc(var(--spacing-xxs) / var(--spacing-scale-ratio));
 	--spacing-xxs: calc(var(--spacing-xs) / var(--spacing-scale-ratio));
 	--spacing-xs: calc(var(--spacing-sm) / var(--spacing-scale-ratio));
 	--spacing-sm: calc(var(--spacing-md) / var(--spacing-scale-ratio));
-	--spacing-md: 16px;
+	--spacing-md: var(--spacing-base);
 	--spacing-lg: calc(var(--spacing-md) * var(--spacing-scale-ratio));
 	--spacing-xl: calc(var(--spacing-lg) * var(--spacing-scale-ratio));
 	--spacing-xxl: calc(var(--spacing-xl) * var(--spacing-scale-ratio));
@@ -43,7 +41,7 @@
 	--shadow-blur: 1em;
 	--shadow-spread: 0;
 	--shadow-opacity: 0.5;
-	--shadow-color: var(--color-medium-rgb); // Requires rgba so we can add opacity.
+	--shadow-color: var(--color-medium-rgb); // Requires rgb so we can add opacity.
 	--shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-spread) rgba(var(--shadow-color), var(--shadow-opacity));
 
 	--transition-property: all;
