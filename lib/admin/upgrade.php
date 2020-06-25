@@ -58,15 +58,22 @@ function mai_do_upgrade() {
 }
 
 /**
- * Description of expected behavior.
+ * Get data to upgrade during engine update.
  *
- * @since 1.0.0
+ * @since 0.2.0
  *
  * @param $version
  *
  * @return bool|mixed
  */
 function mai_get_upgrade_data( $version ) {
+
+	$boxed_container = current_theme_supports( 'boxed-container' );
+	$site_layouts    = mai_get_option( 'site-layouts' );
+	if ( $site_layouts && is_array( $site_layouts ) && isset( $site_layouts['default']['boxed-container'] ) ) {
+		$boxed_container = $site_layouts['default']['boxed-container'];
+	}
+
 	$data = [
 		'0.2.0' => [
 			'color-darkest'  => mai_get_option( 'color-dark' ),
@@ -74,6 +81,9 @@ function mai_get_upgrade_data( $version ) {
 			'color-medium'   => mai_get_option( 'color-muted' ),
 			'color-lighter'  => mai_get_option( 'color-light' ),
 			'color-lightest' => mai_get_option( 'color-white' ),
+		],
+		'2.0.0' => [
+			'boxed-container' => $boxed_container,
 		],
 	];
 

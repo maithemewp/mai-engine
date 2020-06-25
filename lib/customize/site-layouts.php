@@ -38,13 +38,11 @@ function mai_site_layouts_customizer_settings() {
 	\Kirki::add_field(
 		$handle,
 		[
-			'type'        => 'checkbox',
-			'settings'    => 'boxed-container',
-			'option_type' => 'option',
-			'option_name' => $options['default'],
-			'section'     => $section,
-			'label'       => __( 'Enable boxed site container', 'mai-engine' ),
-			'default'     => current_theme_supports( 'boxed-container' ),
+			'type'     => 'checkbox',
+			'settings' => 'boxed-container',
+			'section'  => $section,
+			'label'    => __( 'Enable boxed site container', 'mai-engine' ),
+			'default'  => current_theme_supports( 'boxed-container' ),
 		]
 	);
 
