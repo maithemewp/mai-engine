@@ -11,26 +11,22 @@
 
 add_action( 'init', 'mai_base_styles_customizer_settings' );
 /**
- * Add page header customizer fields.
- * This needs to be on 'init' so custom post types and custom taxonomies are available.
+ * Add base styles customizer settings.
  *
  * @since 0.3.0
  *
  * @return void
  */
 function mai_base_styles_customizer_settings() {
-	$handle          = mai_get_handle();
-	$section         = $handle . '-base-styless';
+	$handle  = mai_get_handle();
+	$section = $handle . '-base-styles';
 
 	$body_default = $heading_default = [
 		'font-family'    => '',
 		'variant'        => '',
-		// 'font-size'      => '', // Don't use, we have fluid scaling.
-		// 'line-height'    => '', // Don't use, we have fluid scaling.
 		'letter-spacing' => '',
 		'color'          => '',
 		'text-transform' => '',
-		// 'text-align'     => '', // Don't use, too aggressive.
 	];
 
 	foreach ( mai_get_custom_properties( 'body', true ) as $key => $value ) {
@@ -94,7 +90,6 @@ function mai_base_styles_customizer_settings() {
 		]
 	);
 
-
 	\Kirki::add_field(
 		$handle,
 		[
@@ -102,9 +97,9 @@ function mai_base_styles_customizer_settings() {
 			'settings'     => 'color-palette',
 			'section'      => $section,
 			'label'        => esc_html__( 'Color palette', 'mai-engine' ),
-			'row_label' => [
-				'type'     => 'color',
-				'value'    => esc_html__( 'Color', 'mai-engine' ),
+			'row_label'    => [
+				'type'  => 'color',
+				'value' => esc_html__( 'Color', 'mai-engine' ),
 			],
 			'button_label' => esc_html__( 'Add new color', 'mai-engine' ),
 			'fields'       => [
@@ -117,5 +112,78 @@ function mai_base_styles_customizer_settings() {
 		]
 	);
 
+	/*
+	 * Buttons
+	 */
+
+	$button_elements = [
+		'.button',
+		'[type=button]',
+		'[type=reset]',
+		'[type=submit]',
+		'button',
+	];
+
+	$button_elements_hover = [];
+
+	foreach ( $button_elements as $button_element ) {
+		$button_elements_hover[] = $button_element . ':hover';
+		$button_elements_hover[] = $button_element . ':focus';
+	}
+
+	\Kirki::add_field(
+		$handle,
+		[
+			'type'     => 'slider',
+			'settings' => 'button-border-radius',
+			'section'  => $section,
+			'label'    => __( 'Button border radius', 'mai-engine' ),
+			'default'  => mai_get_integer_value( mai_get_custom_property( 'button-border-radius' ) ),
+			'choices'  => [
+				'min'  => 0,
+				'max'  => 100,
+				'step' => 1,
+			],
+			'output'   => [
+				[
+					'element'  => ':root',
+					'property' => '--button-border-radius',
+					'units'    => 'px',
+				],
+			],
+		]
+	);
+
+	/*
+	 * Links
+	 */
+
+
+	/*
+	 * Inputs
+	 */
+
+	\Kirki::add_field(
+		$handle,
+		[
+			'type'     => 'slider',
+			'settings' => 'input-border-radius',
+			'section'  => $section,
+			'label'    => __( 'Input border radius', 'mai-engine' ),
+			'default'  => mai_get_integer_value( mai_get_custom_property( 'input-border-radius' ) ),
+			'choices'  => [
+				'min'  => 0,
+				'max'  => 100,
+				'step' => 1,
+			],
+			'output'   => [
+				[
+					'element'  => ':root',
+					'property' => '--input-border-radius',
+					'units'    => 'px',
+				],
+			],
+		]
+	);
 
 }

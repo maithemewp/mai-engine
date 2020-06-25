@@ -238,10 +238,13 @@ function mai_load_files() {
 		'customize/beta-tester',
 		'customize/logo',
 		'customize/loop',
+		'customize/menus',
 		'customize/output',
 		'customize/page-header',
 		'customize/performance',
 		'customize/setup',
+		'customize/site-header',
+		'customize/site-layouts',
 		'customize/updates',
 		'customize/upsell',
 	];

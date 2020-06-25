@@ -315,7 +315,7 @@ function mai_update_option( $option, $value ) {
  * @return mixed
  */
 function mai_get_settings( $name ) {
-	return require mai_get_dir() . 'config/settings/' . $name . '.php';
+	return require mai_get_dir() . 'lib/customize/' . $name . '.php';
 }
 
 /**

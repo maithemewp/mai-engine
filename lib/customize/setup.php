@@ -64,20 +64,6 @@ function mai_kirki_config( $config ) {
 	return $config;
 }
 
-add_action( 'init', 'mai_register_customizer_api' );
-/**
- * Setup the Customizer API.
- * This needs to be on 'init', and not 'after_setup_theme' so get_post_types() has all post_types available.
- *
- * @since 0.1.0
- *
- * @return void
- */
-function mai_register_customizer_api() {
-	$customizer_api = mai_get_instance( Mai_Customizer_API::class );
-	$customizer_api->add_panels();
-}
-
 add_action( 'customize_register', 'mai_handle_existing_customizer_sections' );
 /**
  * Move Genesis Customizer sections into our settings panel.
