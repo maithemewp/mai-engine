@@ -117,7 +117,14 @@ function mai_get_template_args() {
 	}
 
 	// Get defaults.
-	$config   = mai_get_settings( $settings );
+	$config = [];
+
+	if ( 'archive' === $context ) {
+		$config = mai_get_content_archive_settings();
+	} else if ( 'single' === $context ) {
+		$config = mai_get_single_content_settings();
+	}
+
 	$defaults = [ 'context' => $context ] + wp_list_pluck( $config, 'default', 'settings' );
 
 	foreach ( $defaults as $key => $value ) {
@@ -131,7 +138,7 @@ function mai_get_template_args() {
 	$args    = isset( $options[ $name ] ) ? $options[ $name ] : [];
 
 	// Remove settings with empty string, since that means use the default.
-	foreach( $args as $name => $value ) {
+	foreach ( $args as $name => $value ) {
 		// Skip header and footer meta, empty means empty.
 		if ( in_array( $name, [ 'header_meta', 'footer_meta' ] ) ) {
 			continue;
@@ -164,9 +171,13 @@ function mai_get_template_args() {
  * @return mixed
  */
 function mai_get_sanitized_entry_args( $args, $context ) {
+	$settings = [];
 
-	// Get settings. Cached so it's fine to get again.
-	$settings = mai_get_settings( $context );
+	if ( 'archive' === $context ) {
+		$settings = mai_get_content_archive_settings();
+	} else if ( 'single' === $context ) {
+		$settings = mai_get_single_content_settings();
+	}
 
 	// Bail if no settings.
 	if ( ! $settings ) {

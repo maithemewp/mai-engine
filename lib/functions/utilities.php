@@ -1391,7 +1391,7 @@ function mai_get_editor_localized_data() {
 
 	$palette  = array_values( $palette ); // Remove keys.
 	$data     = [ 'palette' => $palette ];
-	$settings = mai_get_settings( 'grid-block' );
+	$settings = mai_get_grid_block_settings();
 
 	foreach ( $settings as $key => $field ) {
 		if ( 'tab' === $field['type'] ) {

@@ -73,7 +73,7 @@ class Mai_Grid {
 	 */
 	public function get_settings() {
 		$settings = [];
-		$config   = mai_get_settings( 'grid-block' );
+		$config   = mai_get_grid_block_settings();
 
 		foreach ( $config as $key => $setting ) {
 
