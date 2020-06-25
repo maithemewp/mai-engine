@@ -41,10 +41,12 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_color_variant_css' );
  */
 function mai_add_color_variant_css( $css ) {
 	$config = mai_get_config( 'custom-properties' );
+
 	foreach ( $config as $prop => $value ) {
 		if ( ! mai_has_string( 'color-', $prop ) ) {
 			continue;
 		}
+		
 		$color = ariColor::newColor( $value );
 		$rgb   = [
 			$red = $color->red,

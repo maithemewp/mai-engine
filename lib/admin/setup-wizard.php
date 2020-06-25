@@ -105,7 +105,9 @@ function mai_setup_wizard_demos( $defaults ) {
 	}
 
 	foreach ( $demos as $demo => $id ) {
-		$dev = defined('MAI_DEV') && MAI_DEV;
+
+		// Allows us to test locally generated demo content.
+		$dev = defined( 'MAI_DEV' ) && MAI_DEV;
 
 		if ( $dev ) {
 			$upload_dir = wp_get_upload_dir();
@@ -195,7 +197,7 @@ add_action( 'mai_setup_wizard_before_import', 'mai_before_setup_wizard_import' )
  *
  * @since 1.0.0
  *
- * @param $demo
+ * @param string $demo Chosen demo ID.
  *
  * @return void
  */
@@ -208,17 +210,19 @@ function mai_before_setup_wizard_import( $demo ) {
 
 		if ( isset( $options['theme'] ) && isset( $options['demo'] ) ) {
 			$theme_slug = $options['theme'];
-			$theme_name = mai_convert_case( $options['theme'], 'title' );
+			$theme_name = mai_convert_case( $theme_slug, 'title' );
 			$demo_slug  = $options['demo'];
-			$demo_name  = mai_convert_case( $options['demo'], 'title' );
+			$demo_name  = mai_convert_case( $demo_slug, 'title' );
 
 			$post->post_title = $post->post_title . ' - ' . $theme_name . ' ' . $demo_name;
 			$post->post_name  = $post->post_name . '-' . $theme_slug . '-' . $demo_slug;
-
-			wp_update_post( $post );
+		} else {
+			$post->post_title = $post->post_title . ' - Backup';
+			$post->post_name  = $post->post_name . '-backup';
 		}
-	}
 
+		wp_update_post( $post );
+	}
 }
 
 add_action( 'mai_setup_wizard_after_import', 'mai_after_setup_wizard_import' );

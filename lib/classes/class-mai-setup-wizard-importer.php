@@ -129,7 +129,7 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 			'fetch_attachments' => true,
 		], $logger );
 
-//		do_action( 'mai_setup_wizard_before_import', $this->demo->get_chosen_demo() );
+		do_action( 'mai_setup_wizard_before_import', $this->demo->get_chosen_demo() );
 
 		$importer->import( $file );
 
