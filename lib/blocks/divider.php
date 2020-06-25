@@ -285,5 +285,4 @@ function mai_register_divider_field_groups() {
 		],
 		'description' => '',
 	] );
-
 }
