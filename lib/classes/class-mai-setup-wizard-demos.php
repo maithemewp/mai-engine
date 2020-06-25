@@ -17,7 +17,7 @@ class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 	/**
 	 * @var array
 	 */
-	public $demos = [];
+	public $all_demos = [];
 
 	/**
 	 * Description of expected behavior.
@@ -58,7 +58,7 @@ class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 		$args['id'] = strtolower( str_replace( ' ', '-', $args['name'] ) );
 		$args       = wp_parse_args( $args, $this->get_default_args( $args ) );
 
-		$this->demos[] = $args;
+		$this->all_demos[] = $args;
 	}
 
 	/**
@@ -83,7 +83,7 @@ class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 		$id   = $this->get_chosen_demo();
 		$demo = [];
 
-		foreach ( $this->demos as $demo_args ) {
+		foreach ( $this->all_demos as $demo_args ) {
 			if ( $id === $demo_args['id'] ) {
 				$demo = $demo_args;
 			}
@@ -102,7 +102,7 @@ class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 	public function get_demos() {
 		$demos = [];
 
-		foreach ( $this->demos as $demo ) {
+		foreach ( $this->all_demos as $demo ) {
 			$demos[] = $demo;
 		}
 
@@ -117,12 +117,12 @@ class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 	 * @return string
 	 */
 	public function get_chosen_demo() {
-		if ( ! $this->demos ) {
+		if ( ! $this->all_demos ) {
 			return '';
 		}
 
-		$options = get_option( $this->plugin->slug, [] );
-		$first   = reset( $this->demos );
+		$options = get_option( $this->slug, [] );
+		$first   = reset( $this->all_demos );
 
 		return isset( $options['demo'] ) ? $options['demo'] : $first['id'];
 	}

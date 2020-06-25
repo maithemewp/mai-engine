@@ -27,13 +27,12 @@ function mai_get_setup_wizard_instance( $service_provider = '' ) {
 
 	if ( empty( $container ) ) {
 		$container = [
-			'plugin' => new Mai_Setup_Wizard( __FILE__ ),
 			'admin'  => new Mai_Setup_Wizard_Admin(),
 			'ajax'   => new Mai_Setup_Wizard_Ajax(),
-			'demo'   => new Mai_Setup_Wizard_Demos(),
-			'field'  => new Mai_Setup_Wizard_Fields(),
+			'demos'  => new Mai_Setup_Wizard_Demos(),
+			'fields' => new Mai_Setup_Wizard_Fields(),
 			'import' => new Mai_Setup_Wizard_Importer(),
-			'step'   => new Mai_Setup_Wizard_Steps(),
+			'steps'  => new Mai_Setup_Wizard_Steps(),
 		];
 	}
 
@@ -123,12 +122,12 @@ function mai_setup_wizard_demos( $defaults ) {
 		}
 
 		$defaults[] = [
-			'name'       => ucwords( $demo ),
-			'content'    => $demo_url . 'content.xml',
-			'widgets'    => $demo_url . 'widgets.json',
-			'customizer' => $demo_url . 'customizer.dat',
-			'preview'    => "https://demo.bizbudding.com/{$theme}-{$demo}/",
-			'plugins'    => $plugins,
+			'name'           => ucwords( $demo ),
+			'content'        => $demo_url . 'content.xml',
+			'template_parts' => $demo_url . 'template-parts.xml',
+			'customizer'     => $demo_url . 'customizer.dat',
+			'preview'        => "https://demo.bizbudding.com/{$theme}-{$demo}/",
+			'plugins'        => $plugins,
 		];
 	}
 
@@ -191,34 +190,56 @@ function mai_setup_wizard_email_option( $email_address ) {
 	remove_filter( 'wp_mail_from', $filter );
 }
 
-add_action( 'mai_setup_wizard_before_import', 'mai_before_setup_wizard_import' );
+add_action( 'mai_setup_wizard_before_template_parts', 'mai_backup_template_parts' );
 /**
  * Description of expected behavior.
  *
  * @since 1.0.0
  *
- * @param string $demo Chosen demo ID.
- *
  * @return void
  */
-function mai_before_setup_wizard_import( $demo ) {
+function mai_backup_template_parts() {
 	$template_parts = mai_get_config( 'template-parts' );
+	$post_type      = 'wp_template_part';
+
+	if ( ! function_exists( 'post_exists' ) ) {
+		require_once( ABSPATH . 'wp-admin/includes/post.php' );
+	}
 
 	foreach ( $template_parts as $template_part ) {
 		$post    = get_post( mai_get_template_part_by_slug( $template_part['id'] ) );
-		$options = get_option( $this->plugin->slug );
+		$options = get_option( 'mai-setup-wizard' );
 
+		// Skip if post doesn't exist.
+		if ( ! $post ) {
+			continue;
+		}
+
+		// Skip backup if template part doesn't exist.
+		if ( ! post_exists( $post->post_title, '', '', $post_type ) ) {
+			continue;
+		}
+
+		// If the demo importer has been run previously, use old theme and demo names.
 		if ( isset( $options['theme'] ) && isset( $options['demo'] ) ) {
-			$theme_slug = $options['theme'];
-			$theme_name = mai_convert_case( $theme_slug, 'title' );
-			$demo_slug  = $options['demo'];
-			$demo_name  = mai_convert_case( $demo_slug, 'title' );
-
+			$theme_slug       = $options['theme'];
+			$theme_name       = mai_convert_case( $theme_slug, 'title' );
+			$demo_slug        = $options['demo'];
+			$demo_name        = mai_convert_case( $demo_slug, 'title' );
 			$post->post_title = $post->post_title . ' - ' . $theme_name . ' ' . $demo_name;
 			$post->post_name  = $post->post_name . '-' . $theme_slug . '-' . $demo_slug;
+
 		} else {
+
+			// If first time running importer, append "Backup".
 			$post->post_title = $post->post_title . ' - Backup';
 			$post->post_name  = $post->post_name . '-backup';
+
+			// At this point, there should be a theme and demo name available, but increment just to be safe.
+			if ( post_exists( $post->post_title, '', '', $post_type ) ) {
+				$post->post_title = $post->post_title . ' 2';
+				$post->post_name  = $post->post_name . '-2';
+			}
 		}
 
 		wp_update_post( $post );

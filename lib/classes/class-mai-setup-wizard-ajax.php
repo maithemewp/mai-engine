@@ -71,7 +71,7 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 	 * @return void
 	 */
 	public function step_welcome() {
-		check_ajax_referer( $this->plugin->slug, 'nonce' );
+		check_ajax_referer( $this->slug, 'nonce' );
 
 		$field         = $this->get_field();
 		$email_address = isset( $field['value'] ) ? sanitize_email( $field['value'] ) : false;
@@ -88,7 +88,7 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 
 		$email = apply_filters( 'mai_setup_wizard_email', [
 			'to'          => apply_filters( 'mai_setup_wizard_email_address', 'seothemeswp@gmail.com' ),
-			'subject'     => $this->plugin->name,
+			'subject'     => $this->name,
 			'message'     => $email_address,
 			'headers'     => [ 'Content-Type: text/html; charset=UTF-8' ],
 			'attachments' => [],
@@ -112,17 +112,17 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 	 * @return void
 	 */
 	public function step_demo() {
-		check_ajax_referer( $this->plugin->slug, 'nonce' );
+		check_ajax_referer( $this->slug, 'nonce' );
 
 		$field = $this->get_field();
 		$demo  = isset( $field['value'] ) ? $field['value'] : false;
 
 		if ( $demo ) {
-			$options          = get_option( $this->plugin->slug, [] );
+			$options          = get_option( $this->slug, [] );
 			$options['demo']  = $demo;
 			$options['theme'] = mai_get_active_theme();
 
-			update_option( $this->plugin->slug, $options );
+			update_option( $this->slug, $options );
 			wp_send_json_success( $demo . __( ' selected.', 'mai-setup-wizard' ) );
 
 		} else {
@@ -138,7 +138,7 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 	 * @return void
 	 */
 	public function step_plugins() {
-		check_ajax_referer( $this->plugin->slug, 'nonce' );
+		check_ajax_referer( $this->slug, 'nonce' );
 
 		$field = $this->get_field();
 		$slug  = isset( $field['value'] ) ? $field['value'] : false;
@@ -187,7 +187,7 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 	 * @return void
 	 */
 	public function step_content() {
-		check_ajax_referer( $this->plugin->slug, 'nonce' );
+		check_ajax_referer( $this->slug, 'nonce' );
 
 		$field        = $this->get_field();
 		$content_type = isset( $field['value'] ) ? $field['value'] : false;

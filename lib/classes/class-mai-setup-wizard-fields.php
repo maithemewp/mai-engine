@@ -17,7 +17,7 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 	/**
 	 * @var array
 	 */
-	public $fields = [];
+	public $all_fields = [];
 
 	/**
 	 * Description of expected behavior.
@@ -74,7 +74,7 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 				$field               = wp_parse_args( $field, $defaults );
 				$field['attributes'] = $attributes;
 
-				$this->fields[ $step ][ $field['id'] ] = $field;
+				$this->all_fields[ $step ][ $field['id'] ] = $field;
 			}
 		}
 	}
@@ -89,7 +89,7 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 	 * @return array|mixed
 	 */
 	public function get_fields( $step ) {
-		return isset( $this->fields[ $step ] ) ? $this->fields[ $step ] : [];
+		return isset( $this->all_fields[ $step ] ) ? $this->all_fields[ $step ] : [];
 	}
 
 	/**
@@ -138,8 +138,8 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 	 */
 	private function get_demo_fields() {
 		$fields = [];
-		$demos  = $this->demo->get_demos();
-		$chosen = $this->demo->get_chosen_demo();
+		$demos  = $this->demos->get_demos();
+		$chosen = $this->demos->get_chosen_demo();
 
 		/**
 		 * @var Mai_Setup_Wizard_Demos $demo
@@ -178,7 +178,7 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 	 */
 	private function get_plugins_fields() {
 		$fields = [];
-		$demos  = $this->demo->get_demos();
+		$demos  = $this->demos->get_demos();
 
 		foreach ( $demos as $demo ) {
 			foreach ( $demo['plugins'] as $plugin ) {
@@ -220,10 +220,11 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 	 */
 	private function get_content_fields() {
 		$fields        = [];
-		$demos         = $this->demo->get_demos();
+		$demos         = $this->demos->get_demos();
 		$content_types = [
-			'content'    => __( 'Content & Templates', 'mai-engine' ),
-			'customizer' => __( 'Customizer Settings', 'mai-engine' ),
+			'content'        => __( 'Content', 'mai-engine' ),
+			'template_parts' => __( 'Template Parts', 'mai-engine' ),
+			'customizer'     => __( 'Customizer Settings', 'mai-engine' ),
 		];
 
 		foreach ( $demos as $demo ) {

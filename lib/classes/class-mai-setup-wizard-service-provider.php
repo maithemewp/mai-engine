@@ -15,24 +15,29 @@
 abstract class Mai_Setup_Wizard_Service_Provider {
 
 	/**
-	 * @var Mai_Setup_Wizard $plugin
+	 * @var
 	 */
-	protected $plugin;
+	protected $name;
 
 	/**
-	 * @var Mai_Setup_Wizard_Demos $demo
+	 * @var
 	 */
-	protected $demo;
+	protected $slug;
 
 	/**
-	 * @var Mai_Setup_Wizard_Fields $field
+	 * @var Mai_Setup_Wizard_Demos $demos
 	 */
-	protected $field;
+	protected $demos;
 
 	/**
-	 * @var Mai_Setup_Wizard_Steps $step
+	 * @var Mai_Setup_Wizard_Fields $fields
 	 */
-	protected $step;
+	protected $fields;
+
+	/**
+	 * @var Mai_Setup_Wizard_Steps $steps
+	 */
+	protected $steps;
 
 	/**
 	 * @var Mai_Setup_Wizard_Admin $admin
@@ -59,10 +64,11 @@ abstract class Mai_Setup_Wizard_Service_Provider {
 	 * @return void
 	 */
 	public function register( $container = [] ) {
-		$this->plugin = isset( $container['plugin'] ) ? $container['plugin'] : '';
-		$this->demo   = isset( $container['demo'] ) ? $container['demo'] : '';
-		$this->field  = isset( $container['field'] ) ? $container['field'] : '';
-		$this->step   = isset( $container['step'] ) ? $container['step'] : '';
+		$this->slug   = 'mai-setup-wizard';
+		$this->name   = __( 'Mai Setup Wizard', 'mai-engine' );
+		$this->demos  = isset( $container['demos'] ) ? $container['demos'] : '';
+		$this->fields = isset( $container['fields'] ) ? $container['fields'] : '';
+		$this->steps  = isset( $container['steps'] ) ? $container['steps'] : '';
 		$this->admin  = isset( $container['admin'] ) ? $container['admin'] : '';
 		$this->import = isset( $container['import'] ) ? $container['import'] : '';
 		$this->ajax   = isset( $container['ajax'] ) ? $container['ajax'] : '';

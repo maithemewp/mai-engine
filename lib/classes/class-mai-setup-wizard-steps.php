@@ -17,7 +17,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 	/**
 	 * @var array
 	 */
-	private $steps = [];
+	private $all_steps = [];
 
 	/**
 	 * Description of expected behavior.
@@ -44,11 +44,11 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 			$this->add_step( $step );
 		}
 
-		usort( $this->steps, function ( $a, $b ) {
+		usort( $this->all_steps, function ( $a, $b ) {
 			return strcmp( $a['order'], $b['order'] );
 		} );
 
-		return $this->steps;
+		return $this->all_steps;
 	}
 
 	/**
@@ -62,9 +62,9 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 	 */
 	private function add_step( $args ) {
 		if ( isset( $args['id'] ) ) {
-			$args['fields'] = $this->field->get_fields( $args['id'] );
+			$args['fields'] = $this->fields->get_fields( $args['id'] );
 			$args           = wp_parse_args( $args, $this->get_default_args( $args['id'] ) );
-			$this->steps[]  = $args;
+			$this->all_steps[]  = $args;
 		}
 	}
 
@@ -76,7 +76,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 	 * @return array
 	 */
 	public function get_steps() {
-		return $this->steps;
+		return $this->all_steps;
 	}
 
 	/**
@@ -114,7 +114,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 			'continue_text'   => __( 'Yes please, sign me up!', 'mai-setup-wizard' ),
 			'loading_text'    => __( 'Sending...', 'mai-setup-wizard' ),
 			'skip_text'       => __( 'No thanks', 'mai-setup-wizard' ),
-			'fields'          => $this->field->get_fields( 'welcome' ),
+			'fields'          => $this->fields->get_fields( 'welcome' ),
 		];
 	}
 
@@ -127,7 +127,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 	 */
 	private function get_demo_step() {
 		$step  = [];
-		$demos = $this->demo->get_demos();
+		$demos = $this->demos->get_demos();
 
 		if ( is_array( $demos ) && count( $demos ) > 1 ) {
 			$step = [
@@ -139,7 +139,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 				'success_message' => __( 'Good choice!', 'mai-setup-wizard' ),
 				'continue_text'   => __( 'Continue', 'mai-setup-wizard' ),
 				'skip_text'       => false,
-				'fields'          => $this->field->get_fields( 'demo' ),
+				'fields'          => $this->fields->get_fields( 'demo' ),
 			];
 		}
 
@@ -155,7 +155,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 	 */
 	private function get_plugins_step() {
 		$step = [];
-		$demo = $this->demo->get_demo( $this->demo->get_chosen_demo() );
+		$demo = $this->demos->get_demo( $this->demos->get_chosen_demo() );
 
 		if ( isset( $demo['plugins'] ) && ! empty( $demo['plugins'] ) ) {
 			$step = [
@@ -167,7 +167,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 				'success_message' => __( 'Plugins successfully installed!', 'mai-setup-wizard' ),
 				'continue_text'   => __( 'Install Plugins', 'mai-setup-wizard' ),
 				'loading_text'    => __( 'Installing plugins...', 'mai-setup-wizard' ),
-				'fields'          => $this->field->get_fields( 'plugins' ),
+				'fields'          => $this->fields->get_fields( 'plugins' ),
 			];
 		}
 
@@ -183,7 +183,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 	 */
 	private function get_content_step() {
 		$step = [];
-		$demo = $this->demo->get_demo( $this->demo->get_chosen_demo() );
+		$demo = $this->demos->get_demo( $this->demos->get_chosen_demo() );
 
 		if ( isset( $demo['content'] ) && ! empty( $demo['content'] ) ) {
 			$step = [
@@ -195,7 +195,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 				'success_message' => __( 'Content successfully installed!', 'mai-setup-wizard' ),
 				'continue_text'   => __( 'Import Content', 'mai-setup-wizard' ),
 				'loading_text'    => __( 'Importing content...', 'mai-setup-wizard' ),
-				'fields'          => $this->field->get_fields( 'content' ),
+				'fields'          => $this->fields->get_fields( 'content' ),
 			];
 		}
 
@@ -219,7 +219,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 			'continue_url'  => get_home_url(),
 			'skip_text'     => __( 'Edit Your Site', 'mai-setup-wizard' ),
 			'skip_url'      => get_admin_url(),
-			'fields'        => $this->field->get_fields( 'done' ),
+			'fields'        => $this->fields->get_fields( 'done' ),
 		];
 	}
 
@@ -281,7 +281,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 					 * @var Mai_Setup_Wizard_Fields $field
 					 */
 					foreach ( $step['fields'] as $field ) : ?>
-						<li><?php echo $this->field->render( $field ); ?></li>
+						<li><?php echo $this->fields->render( $field ); ?></li>
 					<?php endforeach; ?>
 				</ul>
 			<?php endif; ?>

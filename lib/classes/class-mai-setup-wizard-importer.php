@@ -23,9 +23,9 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 	 */
 	private function get_cache_dir() {
 		$theme = mai_get_active_theme();
-		$demo  = $this->demo->get_chosen_demo();
+		$demo  = $this->demos->get_chosen_demo();
 
-		return WP_CONTENT_DIR . "/{$this->plugin->slug}/{$theme}/{$demo}/";
+		return WP_CONTENT_DIR . "/{$this->slug}/{$theme}/{$demo}/";
 	}
 
 	/**
@@ -38,8 +38,8 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 	 * @return void
 	 */
 	public function import( $content_type ) {
-		$demo_id       = $this->demo->get_chosen_demo();
-		$demo          = $this->demo->get_demo( $demo_id );
+		$demo_id       = $this->demos->get_chosen_demo();
+		$demo          = $this->demos->get_demo( $demo_id );
 		$download_file = $demo[ $content_type ];
 		$import_file   = $this->get_cache_dir() . basename( $download_file );
 
@@ -47,6 +47,10 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 
 		if ( 'content' === $content_type ) {
 			$this->import_content( $import_file );
+		}
+
+		if ( 'template_parts' === $content_type ) {
+			$this->import_template_parts( $import_file );
 		}
 
 		if ( 'customizer' === $content_type ) {
@@ -64,7 +68,7 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 	 * @return void
 	 */
 	private function download_file( $url ) {
-		$demo = $this->demo->get_chosen_demo();
+		$demo = $this->demos->get_chosen_demo();
 		$dir  = $this->get_cache_dir();
 		$file = $dir . basename( $url );
 
@@ -129,13 +133,34 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 			'fetch_attachments' => true,
 		], $logger );
 
-		do_action( 'mai_setup_wizard_before_import', $this->demo->get_chosen_demo() );
+		if ( ! did_action( 'mai_setup_wizard_before_import' ) ) {
+			do_action( 'mai_setup_wizard_before_import', $this->demos->get_chosen_demo() );
+		}
 
 		$importer->import( $file );
 
-		do_action( 'mai_setup_wizard_after_import', $this->demo->get_chosen_demo() );
+		if ( ! did_action( 'mai_setup_wizard_after_import' ) ) {
+			do_action( 'mai_setup_wizard_after_import', $this->demos->get_chosen_demo() );
+		}
 
 		wp_send_json_success( __( 'Finished importing ', 'mai-setup-wizard' ) . basename( $file ) );
+	}
+
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param $file
+	 *
+	 * @return void
+	 */
+	private function import_template_parts( $file ) {
+		do_action( 'mai_setup_wizard_before_template_parts' );
+
+		$this->import_content( $file );
+
+		do_action( 'mai_setup_wizard_after_template_parts' );
 	}
 
 	/**
@@ -202,7 +227,9 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 			set_theme_mod( $key, $val );
 		}
 
-		do_action( 'mai_setup_wizard_after_import' );
+		if ( ! did_action( 'mai_setup_wizard_after_import' ) ) {
+			do_action( 'mai_setup_wizard_after_import', $this->demos->get_chosen_demo() );
+		}
 
 		wp_send_json_success( __( 'Sucessfully imported customizer.', 'mai-setup-wizard' ) );
 	}

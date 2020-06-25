@@ -53,10 +53,10 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 			'mai_setup_wizard_menu',
 			[
 				'parent_slug' => 'themes.php',
-				'page_title'  => $this->plugin->name,
-				'menu_title'  => $this->plugin->name,
+				'page_title'  => $this->name,
+				'menu_title'  => $this->name,
 				'capability'  => 'manage_options',
-				'menu_slug'   => $this->plugin->slug,
+				'menu_slug'   => $this->slug,
 				'function'    => [ $this, 'render_admin_page' ],
 				'icon_url'    => '',
 				'position'    => null,
@@ -74,18 +74,18 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 	public function render_admin_page() {
 		?>
 		<div class="setup-wizard">
-			<h1><?php echo esc_html( $this->plugin->name ); ?></h1>
+			<h1><?php echo esc_html( $this->name ); ?></h1>
 			<?php
 			do_action( 'mai_setup_wizard_before_steps' );
 
-			$steps   = $this->step->get_steps();
+			$steps   = $this->steps->get_steps();
 			$counter = 1;
 
 			/**
 			 * @var Step $step
 			 */
 			foreach ( $steps as $step ) {
-				$this->step->render( $step, $steps, $counter );
+				$this->steps->render( $step, $steps, $counter );
 				$counter++;
 			}
 
@@ -134,10 +134,10 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 		}
 
 		$file = 'assets/js/setup-wizard.js';
-		$demo = $this->demo->get_chosen_demo();
+		$demo = $this->demos->get_chosen_demo();
 
 		wp_enqueue_script(
-			$this->plugin->slug,
+			$this->slug,
 			mai_get_url() . $file,
 			[ 'jquery' ],
 			$this->get_asset_version( $file ),
@@ -145,13 +145,13 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 		);
 
 		wp_localize_script(
-			$this->plugin->slug,
+			$this->slug,
 			'setupWizardData',
 			[
 				'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
 				'currentStep' => ( isset( $_GET['step'] ) ? esc_attr( $_GET['step'] ) : 'welcome' ),
 				'chosenDemo'  => $demo,
-				'nonce'       => wp_create_nonce( $this->plugin->slug ),
+				'nonce'       => wp_create_nonce( $this->slug ),
 			]
 		);
 	}
@@ -166,7 +166,7 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 	 * @return bool|int
 	 */
 	private function get_asset_version( $file ) {
-		$version = $this->plugin->version;
+		$version = mai_get_version();
 
 		if ( ( defined( 'WP_DEBUG' ) && true === WP_DEBUG ) || ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ) {
 			$version = filemtime( mai_get_dir() . $file );
