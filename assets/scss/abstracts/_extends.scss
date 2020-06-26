@@ -39,7 +39,7 @@
 	color: var(--button-color, var(--color-white));
 	font-weight: var(--button-font-weight, var(--heading-font-weight));
 	font-size: var(--button-font-size, var(--font-size-md));
-	font-family: var(--button-font-family, var(--body-font-family));
+	font-family: var(--button-font-family); // No fallback, always output by Kirki.
 	line-height: var(--button-line-height, 1);
 	letter-spacing: var(--button-letter-spacing, normal);
 	white-space: var(--button-white-space, normal);

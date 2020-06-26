@@ -34,7 +34,7 @@ function mai_typography_customizer_settings() {
 		$handle,
 		[
 			'type'     => 'number',
-			'settings' => 'font-base',
+			'settings' => 'font-size-base',
 			'section'  => $section,
 			'label'    => __( 'Base', 'mai-engine' ),
 			'default'  => $global_styles['font-sizes']['base'],
@@ -45,9 +45,10 @@ function mai_typography_customizer_settings() {
 			],
 			'output'   => [
 				[
-					'element'       => ':root',
-					'property'      => '--font-base',
-					'value_pattern' => 'calc($ * 1px)',
+					'element'  => ':root',
+					'property' => '--font-size-base',
+					'units'    => 'px',
+					'context'  => [ 'front', 'editor' ],
 				],
 			],
 		]
@@ -70,6 +71,7 @@ function mai_typography_customizer_settings() {
 				[
 					'element'  => ':root',
 					'property' => '--font-scale',
+					'context'  => [ 'front', 'editor' ],
 				],
 			],
 		]
@@ -101,11 +103,13 @@ function mai_typography_customizer_settings() {
 					'element'  => ':root',
 					'property' => '--font-body',
 					'choice'   => 'font-family',
+					'context'  => [ 'front', 'editor' ],
 				],
 				[
 					'element'  => ':root',
 					'property' => '--font-weight-body',
 					'choice'   => 'font-weight',
+					'context'  => [ 'front', 'editor' ],
 				],
 			],
 		]
@@ -124,14 +128,16 @@ function mai_typography_customizer_settings() {
 			],
 			'output'   => [
 				[
-					'element'  => ':root',
-					'property' => '--font-italic',
+					'element'  => 'i,em',
+					'property' => 'font-family',
 					'choice'   => 'font-family',
+					'context'  => [ 'front', 'editor' ],
 				],
 				[
-					'element'  => ':root',
-					'property' => '--font-weight-italic',
-					'choice'   => 'font-weight',
+					'element'  => 'i,em',
+					'property' => 'font-weight',
+					'choice'   => 'variant',
+					'context'  => [ 'front', 'editor' ],
 				],
 			],
 		]
@@ -150,14 +156,16 @@ function mai_typography_customizer_settings() {
 			],
 			'output'   => [
 				[
-					'element'  => ':root',
-					'property' => '--font-bold',
+					'element'  => 'bold,strong',
+					'property' => 'font-family',
 					'choice'   => 'font-family',
+					'context'  => [ 'front', 'editor' ],
 				],
 				[
-					'element'  => ':root',
-					'property' => '--font-weight-bold',
-					'choice'   => 'font-weight',
+					'element'  => 'bold,strong',
+					'property' => 'font-weight',
+					'choice'   => 'variant',
+					'context'  => [ 'front', 'editor' ],
 				],
 			],
 		]
@@ -179,11 +187,47 @@ function mai_typography_customizer_settings() {
 					'element'  => ':root',
 					'property' => '--font-heading',
 					'choice'   => 'font-family',
+					'context'  => [ 'front', 'editor' ],
 				],
 				[
 					'element'  => ':root',
 					'property' => '--font-weight-heading',
 					'choice'   => 'font-weight',
+					'context'  => [ 'front', 'editor' ],
+				],
+			],
+		]
+	);
+
+	\Kirki::add_field(
+		$handle,
+		[
+			'type'     => 'custom',
+			'settings' => 'typography-buttons-divider',
+			'section'  => $section,
+			'default'  => '<hr>',
+		]
+	);
+
+	\Kirki::add_field(
+		$handle,
+		[
+			'type'        => 'radio-buttonset',
+			'settings'    => 'button-font',
+			'label'       => __( 'Buttons', 'mai-engine' ),
+			'description' => __( 'Select which font buttons should use', 'mai-engine' ),
+			'section'     => $section,
+			'default'     => 'heading',
+			'choices'     => [
+				'body'    => __( 'Body', 'mai-engine' ),
+				'heading' => __( 'Heading', 'mai-engine' ),
+			],
+			'output'      => [
+				[
+					'element'       => ':root',
+					'property'      => '--button-font-family',
+					'value_pattern' => 'var(--font-$)',
+					'context'       => [ 'front', 'editor' ],
 				],
 			],
 		]
