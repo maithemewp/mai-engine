@@ -14,11 +14,11 @@ $breakpoints: (
 
 $headings: (
 	h1: var(--font-size-xxxxl),
-	h2: var(--font-size-xxxl),
-	h3: var(--font-size-xxl),
-	h4: var(--font-size-xl),
-	h5: var(--font-size-lg),
-	h6: var(--font-size-md),
+	h2: var(--font-size-xxl),
+	h3: var(--font-size-xl),
+	h4: var(--font-size-lg),
+	h5: var(--font-size-md),
+	h6: var(--font-size-base),
 ) !default;
 
 $font-sizes: (
