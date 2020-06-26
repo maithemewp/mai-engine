@@ -39,10 +39,6 @@
 	color: var(--color-heading);
 	font-size: var(--price-font-size, var(--font-size-xl));
 
-	del {
-		color: var(--color-dark);
-	}
-
 	ins {
 		text-decoration: none;
 	}

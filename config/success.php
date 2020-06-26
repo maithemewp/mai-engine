@@ -35,7 +35,7 @@ return [
 	'page-header'       => [
 		'archive'          => '*',
 		'single'           => '*',
-		'background-color' => 'darkest',
+		'background-color' => 'heading',
 		'image'            => '',
 		'text-color'       => 'light',
 	],

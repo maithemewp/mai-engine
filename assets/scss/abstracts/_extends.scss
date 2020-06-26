@@ -14,7 +14,7 @@
 
 @mixin heading {
 	margin: var(--heading-margin, var(--heading-margin-top, 0) var(--heading-margin-sides, 0) var(--heading-margin-bottom, var(--spacing-md)));
-	color: var(--color-heading); // No fallback, always output by Kirki.
+	color: var(--heading-color, var(--color-heading)); // No fallback, always output by Kirki.
 	font-weight: var(--font-weight-heading); // No fallback, always output by Kirki.
 	font-family: var(--font-heading); // No fallback, always output by Kirki.
 	line-height: var(--heading-line-height, 1.2);
