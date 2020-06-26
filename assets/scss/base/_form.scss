@@ -31,18 +31,17 @@ label {
 		border-color: var(--input-border-color-focus, var(--color-link));
 		outline: none;
 	}
+
+	&:disabled {
+		cursor: not-allowed;
+		opacity: 0.5;
+	}
 }
 
 ::placeholder,
 input::placeholder {
 	color: var(--input-placeholder-color, rgba(0, 0, 0, 0.3));
 	opacity: 1; // Firefox fix
-}
-
-:disabled,
-:disabled:hover {
-	--input-background-color: var(--color-medium);
-	--input-cursor: not-allowed;
 }
 
 textarea {
