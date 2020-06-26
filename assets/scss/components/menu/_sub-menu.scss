@@ -20,6 +20,13 @@
 	border: var(--sub-menu-border, 0);
 	opacity: var(--sub-menu-opacity, 1);
 	animation: var(--sub-menu-animation, none);
+
+	// Mobile menu JS adds .visible class.
+	&.visible {
+		left: var(--sub-menu-visible-left, auto);
+		display: var(--sub-menu-visible-display, flex);
+		opacity: var(--sub-menu-visible-opacity, 1);
+	}
 }
 
 .sub-menu .sub-menu {
