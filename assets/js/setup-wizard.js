@@ -24,7 +24,11 @@
 	var steps = $( '.setup-wizard .step' );
 	var page  = getUrlParameter( 'page' );
 
-	var hideOtherSteps = function( currentStepID, steps, speed = 300 ) {
+	var hideOtherSteps = function( currentStepID, steps, speed ) {
+		if ( speed !== undefined ) {
+			speed = 300;
+		}
+
 		steps.each( function() {
 			var step = $( this );
 			if ( step.attr( 'id' ) !== currentStepID ) {
@@ -197,4 +201,3 @@
 
 	return onReady();
 } )( jQuery );
-

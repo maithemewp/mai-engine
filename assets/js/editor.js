@@ -1,4 +1,4 @@
-jQuery( document ).ready( function( $ ) {
+( function( $ ) {
 
 	if ( 'object' !== typeof acf ) {
 		return;
@@ -99,10 +99,6 @@ jQuery( document ).ready( function( $ ) {
 		return acf.getField( keys.taxonomy ).val();
 	}
 
-} );
-
-jQuery( document ).ready( function( $ ) {
-
 	if ( 'object' !== typeof acf ) {
 		return;
 	}
@@ -154,4 +150,4 @@ jQuery( document ).ready( function( $ ) {
 
 	}
 
-} );
+} )( jQuery );
