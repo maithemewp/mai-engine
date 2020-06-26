@@ -38,7 +38,7 @@
 	padding: var(--button-padding, (1em 2em));
 	color: var(--button-color, var(--color-white));
 	font-weight: var(--button-font-weight, var(--heading-font-weight));
-	font-size: var(--button-font-size, var(--font-size-md));
+	font-size: var(--button-font-size, var(--font-size-base));
 	font-family: var(--button-font-family); // No fallback, always output by Kirki.
 	line-height: var(--button-line-height, 1);
 	letter-spacing: var(--button-letter-spacing, normal);
@@ -87,10 +87,10 @@
 @mixin button-style($style) {
 
 	@if ("secondary" == $style) {
-		background: var(--color-heading);
+		background: var(--color-button-secondary); // No fallback, always output by Kirki.
 
 		@include hover-focus {
-			background: var(--color-heading);
+			background: var(--color-button-secondary); // No fallback, always output by Kirki.
 		}
 	}
 

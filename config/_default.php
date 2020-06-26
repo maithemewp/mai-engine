@@ -20,26 +20,27 @@ return [
 	*/
 
 	'global-styles' => [
-		'breakpoint' => 1200,
-		'colors'     => [
-			'button'     => '#007bff',
-			'link'       => mai_get_color_variant( '#007bff', 'dark' ),
-			'heading'    => '#2e3338',
-			'body'       => '#8f98a3',
-			'background' => '#ffffff',
+		'breakpoint'   => 1200,
+		'colors'       => [
+			'link'             => mai_get_color_variant( '#007bff', 'dark' ),
+			'button'           => '#007bff',
+			'button-secondary' => '#8f98a3',
+			'heading'          => '#2e3338',
+			'body'             => '#8f98a3',
+			'background'       => '#ffffff',
 		],
-		'fonts'      => [
+		'fonts'        => [
 			'body'    => 'sans-serif',
 			'heading' => 'sans-serif',
 		],
-		'font-sizes' => [
+		'font-sizes'   => [
 			'base' => 16,
 		],
 		'font-weights' => [
 			'body'    => '400',
 			'heading' => '600',
 		],
-		'font-scale' => 1.25,
+		'font-scale'   => 1.25,
 	],
 
 	/*

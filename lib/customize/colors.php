@@ -36,13 +36,14 @@ function mai_colors_customizer_settings() {
 		'heading',
 		'link',
 		'button',
+		'button-secondary',
 	];
 
 	foreach ( $colors as $color ) {
 		$args             = [];
 		$args['type']     = 'color';
 		$args['settings'] = 'color-' . $color;
-		$args['label']    = ucwords( $color ) . __( ' Color', 'mai-engine' );
+		$args['label']    = mai_convert_case( $color, 'title' ) . __( ' Color', 'mai-engine' );
 		$args['default']  = $global_styles[ $color ];
 		$args['section']  = $section;
 		$args['choices']  = [

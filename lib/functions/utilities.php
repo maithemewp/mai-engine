@@ -366,9 +366,18 @@ function mai_get_color( $name = '' ) {
  */
 function mai_get_color_palette() {
 	$colors  = mai_get_colors();
+	$values  = [];
 	$palette = [];
 
 	foreach ( $colors as $name => $hex ) {
+
+		// Remove duplicate hex codes.
+		if ( in_array( $hex, $values, true ) ) {
+			continue;
+		}
+
+		$values[] = $hex;
+
 		$palette[] = [
 			'name'  => mai_convert_case( $name, 'title' ),
 			'slug'  => mai_convert_case( $name, 'kebab' ),
