@@ -31,20 +31,20 @@ function mai_colors_customizer_settings() {
 	);
 
 	$colors = [
-		'background',
-		'body',
-		'heading',
-		'link',
-		'button',
-		'button-secondary',
+		'background'       => 'lightest',
+		'body'             => 'dark',
+		'heading'          => 'darkest',
+		'link'             => 'primary',
+		'button'           => 'primary',
+		'button-secondary' => 'secondary',
 	];
 
-	foreach ( $colors as $color ) {
+	foreach ( $colors as $color => $original ) {
 		$args             = [];
 		$args['type']     = 'color';
 		$args['settings'] = 'color-' . $color;
 		$args['label']    = mai_convert_case( $color, 'title' ) . __( ' Color', 'mai-engine' );
-		$args['default']  = $global_styles[ $color ];
+		$args['default']  = mai_get_option( 'color-' . $original, $global_styles[ $color ] );
 		$args['section']  = $section;
 		$args['choices']  = [
 			'palettes' => mai_get_color_choices(),
