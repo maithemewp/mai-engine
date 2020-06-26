@@ -26,9 +26,6 @@ return [
 			'body'    => 'Hind',
 			'heading' => 'Montserrat',
 		],
-		'font-sizes' => [
-			'base' => 18,
-		],
 	],
 	'theme-support'     => [
 		'add' => [

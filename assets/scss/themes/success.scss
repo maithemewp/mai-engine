@@ -9,10 +9,6 @@
 	--menu-font-size: var(--font-size-sm);
 	--entry-title-font-size: var(--font-size-md);
 	--footer-credits-padding: 0;
-
-	@include mq(lg) {
-		--font-size-md: 20px;
-	}
 }
 
 .has-boxed {
