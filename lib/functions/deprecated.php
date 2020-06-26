@@ -18,7 +18,7 @@ add_action( 'after_setup_theme', 'mai_do_deprecated_functionality', 4 );
  * @return void
  */
 function mai_do_deprecated_functionality() {
-	$first_version = mai_get_option( 'first-version', '1.0.0' );
+	$first_version = mai_get_option( 'first-version', '2.0.0' );
 
 	if ( version_compare( $first_version, '2.0.0', '<' ) ) {
 		add_filter( 'mai_config', 'mai_deprecated_2_0_0' );

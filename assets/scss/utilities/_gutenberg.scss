@@ -1,16 +1,3 @@
-@each $color-name, $color-value in $colors {
-
-	.has-#{ $color-name }-color,
-	.has-#{ $color-name }-color:hover,
-	.has-#{ $color-name }-color:focus {
-		color: var(--color-#{ $color-name });
-	}
-
-	.has-#{ $color-name }-background-color {
-		background-color: var(--color-#{ $color-name });
-	}
-}
-
 @each $size-name, $size-value in $font-sizes {
 
 	.has-#{ $size-name }-font-size {

@@ -13,48 +13,33 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Custom Properties
+	| Global Styles
 	|--------------------------------------------------------------------------
 	|
-	| Default custom properties that are output by Kirki.
+	| Default global styles controlled by the theme.
 	*/
 
-	'custom-properties' => [
-		'breakpoint-xl'          => 1200, // TODO: Should this be integer or px value?
-		'color-primary'          => '#007bff',
-		'color-secondary'        => '#6c757d',
-		'color-tertiary'         => '#fd7e14',
-		'color-success'          => '#28a745',
-		'color-danger'           => '#dc3545',
-		'color-warning'          => '#ffc107',
-		'color-info'             => '#42a2b8',
-		'color-darkest'          => '#2e3338',
-		'color-darker'           => '#5c6570',
-		'color-dark'             => '#8f98a3',
-		'color-medium'           => '#c7ccd1',
-		'color-light'            => '#e3e6e8',
-		'color-lighter'          => '#f1f2f4',
-		'color-lightest'         => '#ffffff',
-		'text-base'              => '16px',
-		'text-scale-ratio'       => 1.25,
-		'text-responsive-ratio'  => 1.25,
-		'spacing-base'           => '16px',
-		'spacing-scale-ratio'    => 1.5,
-		'border-width'           => '1px',
-		'border-radius'          => '4px',
-		'body-font-family'       => 'sans-serif',
-		'body-font-weight'       => 'regular',
-		'body-line-height'       => 1.5,
-		'body-color'             => 'dark',
-		'body-text-transform'    => 'none',
-		'body-letter-spacing'    => 0,
-		'heading-font-family'    => 'sans-serif',
-		'heading-font-weight'    => 600,
-		'heading-line-height'    => 1.2,
-		'heading-color'          => 'darkest',
-		'heading-text-transform' => 'none',
-		'input-border-radius'    => '4px',
-		'button-border-radius'   => '0',
+	'global-styles' => [
+		'breakpoint' => 1200,
+		'colors'     => [
+			'button'     => '#007bff',
+			'link'       => mai_get_color_variant( '#007bff', 'dark' ),
+			'heading'    => '#2e3338',
+			'body'       => '#8f98a3',
+			'background' => '#ffffff',
+		],
+		'fonts'      => [
+			'body'    => 'sans-serif',
+			'heading' => 'sans-serif',
+		],
+		'font-sizes' => [
+			'base' => 16,
+		],
+		'font-weights' => [
+			'body'    => '400',
+			'heading' => '600',
+		],
+		'font-scale' => 1.25,
 	],
 
 	/*

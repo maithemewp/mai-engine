@@ -16,7 +16,7 @@
 	padding: var(--sub-menu-padding, var(--spacing-xxs) 0);
 	font-size: var(--sub-menu-font-size, 0.9em); /* 90% of whatever the menu is set to. */
 	list-style-type: var(--sub-menu-list-style, none);
-	background: var(--sub-menu-background, var(--color-lightest));
+	background: var(--sub-menu-background, var(--color-white));
 	border: var(--sub-menu-border, 0);
 	opacity: var(--sub-menu-opacity, 1);
 	animation: var(--sub-menu-animation, none);

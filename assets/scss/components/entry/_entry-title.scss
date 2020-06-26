@@ -1,6 +1,6 @@
 .entry-title {
 	margin: var(--entry-title-margin, 0 0 var(--entry-title-margin-bottom, var(--spacing-md)));
-	font-size: var(--entry-title-font-size, var(--text-xxxxl));
+	font-size: var(--entry-title-font-size, var(--font-size-xxxxl));
 
 	&:last-child {
 		--entry-title-margin: 0;
@@ -8,7 +8,7 @@
 }
 
 .entries {
-	--entry-title-font-size: var(--text-lg);
+	--entry-title-font-size: var(--font-size-lg);
 }
 
 .entry-title-link {
@@ -24,6 +24,6 @@
 }
 
 .is-archive {
-	--entry-title-font-size: var(--text-sm);
-	--entry-title-color: var(--color-darkest);
+	--entry-title-font-size: var(--font-size-sm);
+	--entry-title-color: var(--color-heading);
 }

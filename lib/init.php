@@ -234,8 +234,8 @@ function mai_load_files() {
 		'blocks/social-links',
 
 		// Customizer.
-		'customize/base-styles',
 		'customize/beta-tester',
+		'customize/colors',
 		'customize/content-archives',
 		'customize/logo',
 		'customize/loop',
@@ -247,6 +247,7 @@ function mai_load_files() {
 		'customize/single-content',
 		'customize/site-header',
 		'customize/site-layouts',
+		'customize/typography',
 		'customize/updates',
 		'customize/upsell',
 	];

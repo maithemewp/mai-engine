@@ -8,7 +8,7 @@
 	&:focus {
 		position: absolute;
 		padding: var(--spacing-md);
-		color: var(--color-lightest);
+		color: var(--color-white);
 		text-decoration: none;
 		background-color: var(--color-medium);
 
@@ -23,7 +23,7 @@
 		width: 0;
 		height: 0;
 		list-style: none;
-		background: var(--color-lightest);
+		background: var(--color-white);
 	}
 }
 

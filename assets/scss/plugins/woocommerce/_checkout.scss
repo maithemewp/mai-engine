@@ -110,7 +110,7 @@
 	&,
 	.select2-selection__rendered,
 	.select2-selection__arrow {
-		height: calc((var(--text-md) / var(--text-scale-ratio)) + var(--text-md) * 2);
-		line-height: calc((var(--text-md) / var(--text-scale-ratio)) + var(--text-md) * 2);
+		height: calc(var(--font-size-xs) + 2em);
+		line-height: calc(var(--font-size-xs) + 2em);
 	}
 }

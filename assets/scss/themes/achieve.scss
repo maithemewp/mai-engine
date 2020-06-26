@@ -1,21 +1,19 @@
 @import "default";
 
 :root {
-	--body-font-family: montserrat, var(--font-stack);
-	--heading-font-family: montserrat, var(--font-stack);
 	--border-radius: 0;
 }
 
 .nav-after-header {
-	background: var(--color-darkest);
+	background: var(--color-heading);
 
-	--menu-item-link-color: var(--color-lightest);
+	--menu-item-link-color: var(--color-white);
 }
 
 .site-footer {
-	--heading-color: var(--color-lightest);
+	--heading-color: var(--color-white);
 	--entry-title-color: var(--color-light);
-	--entry-title-font-size: var(--text-lg);
+	--entry-title-font-size: var(--font-size-lg);
 }
 
 .footer-credits {

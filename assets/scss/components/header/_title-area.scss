@@ -1,7 +1,7 @@
 .title-area {
 	margin: var(--title-area-margin, 0);
 	padding: var(--title-area-padding, var(--spacing-md)) 0 var(--title-area-padding, var(--spacing-md));
-	color: var(--title-area-color, var(--color-darkest));
+	color: var(--title-area-color, var(--color-heading));
 	line-height: var(--title-area-line-height, var(--heading-line-height));
 	text-align: var(--title-area-text-align, start);
 	transition: var(--title-area-transition, var(--transition));
@@ -11,24 +11,19 @@
 }
 
 .has-dark-header:not(.header-stuck) {
-	--title-area-color: var(--color-lightest);
+	--title-area-color: var(--color-white);
 	--title-area-color-hover: var(--color-light);
 }
 
 .site-title {
 	margin: 0;
 	font-weight: var(--site-title-font-weight, var(--heading-font-weight));
-	font-size: var(--site-title-font-size, var(--text-xl));
+	font-size: var(--site-title-font-size, var(--font-size-xl));
 	font-family: var(--site-title-font-family, var(--heading-font-family));
 }
 
 .site-title-link {
 	color: var(--title-area-color, currentColor);
-
-	&:hover,
-	&:focus {
-		color: var(--title-area-color-hover, var(--color-primary));
-	}
 }
 
 .site-description {

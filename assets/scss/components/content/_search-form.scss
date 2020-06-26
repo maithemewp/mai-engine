@@ -4,7 +4,7 @@
 
 .search-form-input {
 	min-width: 220px;
-	font-size: var(--text-md);
+	font-size: var(--font-size-md);
 	font-family: var(--body-font-family);
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
@@ -13,7 +13,7 @@
 .search-form-submit {
 	--button-margin: 0;
 	--button-padding: var(--spacing-md);
-	--button-font-size: var(--text-sm);
+	--button-font-size: var(--font-size-sm);
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
 }

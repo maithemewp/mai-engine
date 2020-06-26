@@ -8,13 +8,13 @@ body {
 }
 
 a {
-	color: var(--link-color, var(--color-primary));
+	color: var(--link-color); // No fallback, always output by Kirki.
 	text-decoration: var(--link-text-decoration, none);
 	transition: var(--link-transition, var(--transition));
 
 	&:hover,
 	&:focus {
-		color: var(--link-color-hover, var(--color-primary));
+		color: var(--link-color-hover, var(--link-color));
 		text-decoration: var(--link-text-decoration-hover, underline);
 		outline-color: var(--border-color);
 	}

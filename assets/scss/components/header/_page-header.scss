@@ -23,7 +23,7 @@
 }
 
 .has-dark-page-header {
-	--page-header-color: var(--color-lightest);
+	--page-header-color: var(--color-white);
 }
 
 .page-header-overlay {
@@ -52,7 +52,7 @@
 
 .page-header-description {
 	margin: var(--page-header-description-margin, 0 0 var(--spacing-md));
-	font-size: var(--page-header-font-size, var(--text-lg));
+	font-size: var(--page-header-font-size, var(--font-size-lg));
 
 	&:last-child {
 		--page-header-description-margin: 0;

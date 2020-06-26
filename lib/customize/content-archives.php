@@ -606,3 +606,29 @@ function mai_add_content_archive_settings() {
 		}
 	}
 }
+
+add_action( 'init', 'mai_customize_register_posts_per_page', 99 );
+/**
+ * Adds Posts Per Page option to Customizer > Theme Settings > Content Archives > Default.
+ * Saves/manages WP core option.
+ *
+ * @since 0.1.0
+ *
+ * @return void
+ */
+function mai_customize_register_posts_per_page() {
+	$handle = mai_get_handle();
+
+	\Kirki::add_field(
+		$handle,
+		[
+			'default'           => get_option( 'posts_per_page' ),
+			'label'             => __( 'Posts Per Page', 'mai-engine' ),
+			'section'           => $handle . '-content-archives-post',
+			'settings'          => 'posts_per_page',
+			'type'              => 'text',
+			'priority'          => 99,
+			'sanitize_callback' => 'absint',
+		]
+	);
+}

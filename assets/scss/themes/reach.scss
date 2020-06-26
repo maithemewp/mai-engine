@@ -20,13 +20,13 @@ video {
 }
 
 textarea {
-	--input-border-radius: var(--border-radius, calc(var(--text-md, 1em) * 2));
+	--input-border-radius: var(--border-radius, calc(var(--font-size-md, 1em) * 2));
 }
 
 .site-footer {
 	border: 0;
 
-	--link-color: var(--color-darkest);
+	--link-color: var(--color-heading);
 	--link-color-hover: var(--color-primary);
 }
 

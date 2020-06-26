@@ -1,3 +1,35 @@
+$colors: (
+	primary: var(--color-primary),
+	secondary: var(--color-secondary),
+	tertiary: var(--color-tertiary),
+	success: var(--color-success),
+	danger: var(--color-danger),
+	warning: var(--color-warning),
+	info: var(--color-info),
+	black: var(--color-heading), // Fallback for .has-black- classes.
+	darkest: var(--color-heading),
+	darker: var(--color-darker),
+	dark: var(--color-dark),
+	medium: var(--color-medium),
+	light: var(--color-light),
+	lighter: var(--color-lighter),
+	lightest: var(--color-white),
+	white: var(--color-white), // Fallback for .has-white- classes.
+) !default;
+
+@each $color-name, $color-value in $colors {
+
+	.has-#{ $color-name }-color,
+	.has-#{ $color-name }-color:hover,
+	.has-#{ $color-name }-color:focus {
+		color: var(--color-#{ $color-name });
+	}
+
+	.has-#{ $color-name }-background-color {
+		background-color: var(--color-#{ $color-name });
+	}
+}
+
 .before-header .wrap,
 .before-footer .wrap,
 .site-footer .wrap,
@@ -12,7 +44,7 @@
 	z-index: 11; /* 1 more than .site-header so sub-menus are on top. */
 	width: 100%;
 	min-height: calc(var(--spacing-md) * 2);
-	font-size: var(--text-sm);
+	font-size: var(--font-size-sm);
 	line-height: 1;
 	border-bottom: var(--border);
 
@@ -63,7 +95,7 @@
 
 .site-footer {
 	width: 100%;
-	background: var(--site-footer-background, var(--color-lightest));
+	background: var(--site-footer-background, var(--color-white));
 	border-top: var(--border);
 
 	--content-max-width: var(--breakpoint-xl);

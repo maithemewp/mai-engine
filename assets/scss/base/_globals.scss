@@ -1,27 +1,33 @@
 @mixin custom-properties {
-	--text-xs: calc(var(--text-sm) / var(--text-scale-ratio));
-	--text-sm: calc(var(--text-md) / var(--text-scale-ratio));
-	--text-md: calc(var(--text-base) + var(--text-responsive-ratio));
-	--text-lg: calc(var(--text-md) * var(--text-scale-ratio));
-	--text-xl: calc(var(--text-lg) * var(--text-scale-ratio));
-	--text-xxl: calc(var(--text-xl) * var(--text-scale-ratio));
-	--text-xxxl: calc(var(--text-xxl) * var(--text-scale-ratio));
-	--text-xxxxl: calc(var(--text-xxxl) * var(--text-scale-ratio));
+	--color-white: #fff;
+	--color-black: #000;
+
+	--font-size-xs: calc(var(--font-size-sm) / var(--font-scale));
+	--font-size-sm: calc(var(--font-size-md) / var(--font-scale));
+	--font-size-md: calc(var(--font-size-base) + var(--font-responsive-ratio));
+	--font-size-lg: calc(var(--font-size-md) * var(--font-scale));
+	--font-size-xl: calc(var(--font-size-lg) * var(--font-scale));
+	--font-size-xxl: calc(var(--font-size-xl) * var(--font-scale));
+	--font-size-xxxl: calc(var(--font-size-xxl) * var(--font-scale));
+	--font-size-xxxxl: calc(var(--font-size-xxxl) * var(--font-scale));
 
 	--font-stack: system-ui, -apple-system, blinkmacsystemfont, helvetica, arial, sans-serif;
 	--font-code: consolas, monaco, monospace;
 
-	--spacing-xxxxs: calc(var(--spacing-xxxs) / var(--spacing-scale-ratio));
-	--spacing-xxxs: calc(var(--spacing-xxs) / var(--spacing-scale-ratio));
-	--spacing-xxs: calc(var(--spacing-xs) / var(--spacing-scale-ratio));
-	--spacing-xs: calc(var(--spacing-sm) / var(--spacing-scale-ratio));
-	--spacing-sm: calc(var(--spacing-md) / var(--spacing-scale-ratio));
+	--spacing-base: var(--font-base);
+	--spacing-scale: 1.5;
+
+	--spacing-xxxxs: calc(var(--spacing-xxxs) / var(--spacing-scale));
+	--spacing-xxxs: calc(var(--spacing-xxs) / var(--spacing-scale));
+	--spacing-xxs: calc(var(--spacing-xs) / var(--spacing-scale));
+	--spacing-xs: calc(var(--spacing-sm) / var(--spacing-scale));
+	--spacing-sm: calc(var(--spacing-md) / var(--spacing-scale));
 	--spacing-md: var(--spacing-base);
-	--spacing-lg: calc(var(--spacing-md) * var(--spacing-scale-ratio));
-	--spacing-xl: calc(var(--spacing-lg) * var(--spacing-scale-ratio));
-	--spacing-xxl: calc(var(--spacing-xl) * var(--spacing-scale-ratio));
-	--spacing-xxxl: calc(var(--spacing-xxl) * var(--spacing-scale-ratio));
-	--spacing-xxxxl: calc(var(--spacing-xxxl) * var(--spacing-scale-ratio));
+	--spacing-lg: calc(var(--spacing-md) * var(--spacing-scale));
+	--spacing-xl: calc(var(--spacing-lg) * var(--spacing-scale));
+	--spacing-xxl: calc(var(--spacing-xl) * var(--spacing-scale));
+	--spacing-xxxl: calc(var(--spacing-xxl) * var(--spacing-scale));
+	--spacing-xxxxl: calc(var(--spacing-xxxl) * var(--spacing-scale));
 
 	--side-spacing: 4vw;
 
@@ -46,6 +52,9 @@
 	--transition-duration: 0.2s;
 	--transition-timing-function: ease;
 	--transition: var(--transition-property) var(--transition-duration) var(--transition-timing-function);
+
+	--border-width: 1px;
+	--border-radius: 4px;
 }
 
 :root {

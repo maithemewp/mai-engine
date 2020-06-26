@@ -323,34 +323,14 @@ function mai_get_settings( $name ) {
  *
  * @since 0.1.0
  *
- * @param string $element Get all properties beginning with.
- * @param bool   $remove_prefix
+ * @param string $key Key of styles to retrieve.
  *
- * @return array
+ * @return mixed
  */
-function mai_get_custom_properties( $element = '', $remove_prefix = false ) {
-	static $custom_properties = null;
+function mai_get_global_styles( $key = '' ) {
+	$global_styles = mai_get_config( 'global-styles' );
 
-	if ( is_null( $custom_properties ) ) {
-		$custom_properties = mai_get_config( 'custom-properties' );
-	}
-
-	if ( $element ) {
-		$prefixed = [];
-
-		foreach ( $custom_properties as $name => $value ) {
-			if ( false !== strpos( $name, $element . '-' ) ) {
-				$name = $remove_prefix ? str_replace( $element . '-', '', $name ) : $name;
-
-				$prefixed[ $name ] = $value;
-			}
-		}
-
-		return $prefixed;
-
-	} else {
-		return $custom_properties;
-	}
+	return mai_isset( $global_styles, $key, $global_styles );
 }
 
 /**
@@ -358,15 +338,23 @@ function mai_get_custom_properties( $element = '', $remove_prefix = false ) {
  *
  * @since 1.0.0
  *
- * @param $name
- * @param $default
- *
- * @return mixed|null
+ * @return mixed
  */
-function mai_get_custom_property( $name, $default = null ) {
-	$custom_properties = mai_get_custom_properties();
+function mai_get_colors() {
+	return mai_get_global_styles( 'colors' );
+}
 
-	return isset( $custom_properties[ $name ] ) ? $custom_properties[ $name ] : $default;
+/**
+ * Get a single color value from the color palette name.
+ *
+ * @since 0.1.0
+ *
+ * @param string $name Name of the color to get.
+ *
+ * @return string
+ */
+function mai_get_color( $name = '' ) {
+	return mai_isset( mai_get_colors(), $name, '' );
 }
 
 /**
@@ -378,54 +366,17 @@ function mai_get_custom_property( $name, $default = null ) {
  */
 function mai_get_color_palette() {
 	$colors  = mai_get_colors();
-	$option  = mai_get_option( 'global-color-palette', [] );
 	$palette = [];
 
 	foreach ( $colors as $name => $hex ) {
 		$palette[] = [
 			'name'  => mai_convert_case( $name, 'title' ),
 			'slug'  => mai_convert_case( $name, 'kebab' ),
-			'color' => isset( $option[ $name ] ) ? $option[ $name ] : $hex,
+			'color' => $hex,
 		];
 	}
 
 	return $palette;
-}
-
-/**
- * Get colors with key => value as name => color.
- *
- * @since 0.1.0
- *
- * @return array
- */
-function mai_get_colors() {
-	static $colors = [];
-
-	if ( empty( $colors ) ) {
-		$colors = mai_get_custom_properties( 'color', true );
-
-		foreach ( $colors as $name => $hex ) {
-			$colors[ $name ] = $hex;
-		}
-	}
-
-	return $colors;
-}
-
-/**
- * Get a single color value from the color palette name.
- *
- * @since 0.1.0
- *
- * @param string $color Name of the color to get.
- *
- * @return string
- */
-function mai_get_color( $color = null ) {
-	$colors = mai_get_colors();
-
-	return isset( $colors[ $color ] ) ? $colors[ $color ] : '';
 }
 
 /**
@@ -436,17 +387,7 @@ function mai_get_color( $color = null ) {
  * @return array
  */
 function mai_get_color_choices() {
-	static $choices = [];
-
-	if ( empty( $choices ) ) {
-		$palette = mai_get_color_palette();
-
-		foreach ( $palette as $color => $args ) {
-			$choices[] = $args['color'];
-		}
-	}
-
-	return $choices;
+	return array_values( array_unique( mai_get_colors() ) );
 }
 
 /**
@@ -457,21 +398,22 @@ function mai_get_color_choices() {
  * @return array
  */
 function mai_get_font_sizes() {
-	$font_sizes = [];
-	$ratio      = mai_get_custom_property( 'text-scale-ratio' );
-	$md         = mai_get_custom_property( 'text-md' );
-	$sm         = $md / $ratio;
-	$xs         = $sm / $ratio;
-	$lg         = $md * $ratio;
-	$xl         = $lg * $ratio;
-	$xxl        = $xl * $ratio;
-	$xxxl       = $xxl * $ratio;
-	$xxxxl      = $xxxl * $ratio;
+	$font_sizes    = [];
+	$global_styles = mai_get_global_styles();
+	$scale         = $global_styles['font-scale'];
+	$base          = $global_styles['font-sizes']['base'];
+	$sm            = $base / $scale;
+	$xs            = $sm / $scale;
+	$lg            = $base * $scale;
+	$xl            = $lg * $scale;
+	$xxl           = $xl * $scale;
+	$xxxl          = $xxl * $scale;
+	$xxxxl         = $xxxl * $scale;
 
 	$scale = [
 		'xs'    => $xs,
 		'sm'    => $sm,
-		'md'    => $md,
+		'md'    => $base,
 		'lg'    => $lg,
 		'xl'    => $xl,
 		'xxl'   => $xxl,
@@ -539,7 +481,7 @@ function mai_get_breakpoints() {
 	static $breakpoints = [];
 
 	if ( empty( $breakpoints ) ) {
-		$breakpoint        = mai_get_custom_property( 'breakpoint-xl' );
+		$breakpoint        = mai_get_global_styles( 'breakpoint' );
 		$breakpoints['xs'] = absint( $breakpoint / 3 );   // 400  (400 x 1)
 		$breakpoints['sm'] = absint( $breakpoint / 2 );   // 600  (400 x 1.5)
 		$breakpoints['md'] = absint( $breakpoint / 1.5 ); // 800  (400 x 2)

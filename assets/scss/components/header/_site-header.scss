@@ -3,7 +3,7 @@
 	top: var(--site-header-top, unset);
 	z-index: 10;
 	width: 100%;
-	background: var(--site-header-background, var(--color-lightest));
+	background: var(--site-header-background, var(--color-white));
 	border-bottom: var(--site-header-border-bottom, var(--border));
 	box-shadow: var(--site-header-box-shadow, unset);
 	transition: var(--transition);

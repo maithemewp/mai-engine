@@ -10,7 +10,7 @@
 
 body {
 	min-height: auto;
-	background: var(--color-lightest);
+	background: var(--color-white);
 	--list-style-position: outside;
 	--list-margin-left: var(--spacing-md);
 	--list-item-margin-bottom: var(--spacing-xs);
@@ -22,7 +22,7 @@ body {
 }
 
 p {
-	font-size: var(--text-md);
+	font-size: var(--font-size-md);
 }
 
 .wp-block {

@@ -41,7 +41,7 @@
 	justify-content: center;
 	width: 32px;
 	height: 32px;
-	background: var(--color-lightest);
+	background: var(--color-white);
 	border-radius: 50%;
 }
 
@@ -87,8 +87,8 @@
 
 		&.active a,
 		&.active a:focus {
-			--background: var(--color-lightest);
-			border-bottom-color: var(--color-lightest);
+			--background: var(--color-white);
+			border-bottom-color: var(--color-white);
 			outline: none;
 		}
 	}
@@ -128,7 +128,7 @@ form.cart {
 
 .product_meta {
 	margin-top: var(--row-gap);
-	font-size: var(--text-sm);
+	font-size: var(--font-size-sm);
 }
 
 .comment-form-rating {
@@ -142,7 +142,7 @@ form.cart {
 }
 
 .meta {
-	font-size: var(--text-sm);
+	font-size: var(--font-size-sm);
 }
 
 .related {
@@ -158,6 +158,6 @@ form.cart {
 	}
 
 	.woocommerce-loop-product__title {
-		font-size: var(--text-sm);
+		font-size: var(--font-size-sm);
 	}
 }

@@ -353,56 +353,6 @@ li.customize-control-kirki-color-palette .colors-wrapper input:checked + label .
 	width: calc(100% - 16px) !important;
 }
 
-#customize-control-mai-engine-color-palette .repeater-row {
-	background: none;
-	border: 0;
-}
-
-#customize-control-mai-engine-color-palette .repeater-row-header {
-	display: none;
-}
-
-#customize-control-mai-engine-color-palette .repeater-row-content {
-	position: relative;
-	display: flex;
-	align-items: center;
-	margin: 6px 0;
-	padding: 0;
-	background: none;
-}
-
-#customize-control-mai-engine-color-palette .repeater-field {
-	flex: 1;
-	margin: 0;
-	padding: 0;
-	border: 0;
-}
-
-#customize-control-mai-engine-color-palette .wp-color-result {
-	margin: 0 6px 0 0 !important;
-}
-
-#customize-control-mai-engine-color-palette .repeater-row-remove {
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 30px;
-	height: 30px;
-	overflow: hidden;
-	text-decoration: none;
-	text-indent: -999px;
-}
-
-#customize-control-mai-engine-color-palette .repeater-row-remove::before {
-	position: absolute;
-	top: -10px;
-	left: 4px;
-	display: block;
-	font-size: 36px;
-	text-indent: 0;
-	content: "×";
-}
-
 // Theme settings panel ordering.
 
 #customize-theme-controls #sub-accordion-panel-mai-engine {
@@ -417,13 +367,14 @@ li.customize-control-kirki-color-palette .colors-wrapper input:checked + label .
 $sections: (
 	section-genesis_updates,
 	section-mai-engine-performance,
-	section-mai-engine-base-styles,
+	section-mai-engine-colors,
+	section-mai-engine-typography,
 	section-mai-engine-site-layouts,
-	panel-mai-engine-content-archives,
-	panel-mai-engine-single-content,
 	section-mai-engine-site-header,
 	section-mai-engine-menus,
 	section-mai-engine-page-header,
+	panel-mai-engine-content-archives,
+	panel-mai-engine-single-content,
 	section-genesis_breadcrumbs,
 	section-genesis_comments,
 	section-genesis_scripts,

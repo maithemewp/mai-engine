@@ -9,38 +9,6 @@
  * @license   GPL-2.0-or-later
  */
 
-add_filter( 'kirki_mai-engine_styles', 'mai_add_custom_properties' );
-/**
- * Output custom properties.
- *
- * @since 2.0.0
- *
- * @param $css
- *
- * @return mixed
- */
-function mai_add_custom_properties( $css ) {
-	$config = mai_get_config( 'custom-properties' );
-
-	foreach ( $config as $prop => $value ) {
-		$css['global'][':root'][ '--' . $prop ] = $value;
-
-		// Add rgb to colors.
-		if ( mai_has_string( 'color-', $prop ) ) {
-			$color = ariColor::newColor( $value );
-			$rgb   = [
-				$red = $color->red,
-				$green = $color->green,
-				$blue = $color->blue,
-			];
-			$css['global'][':root'][ '--' . $prop . '-rgb' ] = implode( ',', $rgb );
-		}
-
-	}
-
-	return $css;
-}
-
 add_filter( 'kirki_mai-engine_styles', 'mai_add_breakpoint_custom_properties' );
 /**
  * Output breakpoint custom property.

@@ -30,7 +30,7 @@
 }
 
 .has-boxed {
-	--entry-background: var(--color-lightest);
+	--entry-background: var(--color-white);
 	--entry-border: var(--border);
 	--entry-box-shadow: var(--shadow);
 	--entry-overflow: hidden;
@@ -47,8 +47,8 @@
 }
 
 .has-image-background .has-image {
-	--entry-title-color: var(--color-lightest);
-	--entry-wrap-color: var(--color-lightest);
+	--entry-title-color: var(--color-white);
+	--entry-wrap-color: var(--color-white);
 	--entry-overlay-background: rgba(0, 0, 0, var(--entry-overlay-opacity, 0.6));
 
 	&:hover,

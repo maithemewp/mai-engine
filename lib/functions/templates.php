@@ -60,6 +60,7 @@ function mai_register_template_part_cpt() {
 		],
 	];
 
+	// TODO: Can we use this to check which theme set the template part instead of making backups?
 	$meta_args = [
 		'object_subtype' => 'wp_template_part',
 		'type'           => 'string',

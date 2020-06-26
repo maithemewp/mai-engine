@@ -90,35 +90,3 @@ function mai_handle_existing_customizer_sections( $wp_customize ) {
 	$wp_customize->remove_section( 'genesis_archives' );
 	$wp_customize->remove_section( 'genesis_footer' );
 }
-
-add_action( 'customize_register', 'mai_customize_register_posts_per_page', 99 );
-/**
- * Adds Posts Per Page option to Customizer > Theme Settings > Content Archives > Default.
- * Saves/manages WP core option.
- *
- * @since 0.1.0
- *
- * @param WP_Customize_Manager $wp_customize WP_Customize_Manager instance.
- *
- * @return void
- */
-function mai_customize_register_posts_per_page( $wp_customize ) {
-	$wp_customize->add_setting(
-		'posts_per_page',
-		[
-			'default'           => get_option( 'posts_per_page' ),
-			'type'              => 'option',
-			'sanitize_callback' => 'absint',
-		]
-	);
-	$wp_customize->add_control(
-		'posts_per_page',
-		[
-			'label'    => __( 'Posts Per Page', 'mai-engine' ),
-			'section'  => 'mai-engine-content-archives-post',
-			'settings' => 'posts_per_page',
-			'type'     => 'text',
-			'priority' => 99,
-		]
-	);
-}

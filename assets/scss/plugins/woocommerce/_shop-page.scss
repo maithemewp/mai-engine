@@ -36,8 +36,8 @@
 .price {
 	display: block;
 	margin-bottom: var(--price-margin-bottom, var(--spacing-md));
-	color: var(--color-darkest);
-	font-size: var(--price-font-size, var(--text-xl));
+	color: var(--color-heading);
+	font-size: var(--price-font-size, var(--font-size-xl));
 
 	del {
 		color: var(--color-dark);
@@ -49,7 +49,7 @@
 }
 
 .products {
-	--price-font-size: var(--text-md);
+	--price-font-size: var(--font-size-md);
 
 	&.related {
 		margin-top: var(--spacing-xxl);
@@ -76,7 +76,7 @@
 }
 
 .add_to_cart_button {
-	--button-color: var(--color-darkest);
+	--button-color: var(--color-heading);
 	--button-background: var(--color-medium);
 	margin-top: auto;
 	transition: none;
@@ -93,23 +93,18 @@
 	font-size: 0;
 
 	&::after {
-		font-size: calc(var(--text-md) / var(--text-scale-ratio));
+		font-size: var(--font-size-xs);
 	}
 }
 
 .added_to_cart {
 	align-self: flex-end;
-	margin-left: var(--spacing-md);
-	padding: var(--spacing-md) - 0.1rem;
-	color: var(--color-primary);
-	background: transparent;
-	border: var(--border-size) var(--border-style) var(--color-primary);
 
 	@include button;
 
 	&:hover,
 	&:focus {
-		color: var(--color-lightest);
+		color: var(--color-white);
 		background: var(--color-primary);
 	}
 }

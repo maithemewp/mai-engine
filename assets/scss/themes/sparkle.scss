@@ -2,9 +2,9 @@
 
 :root {
 	--border-color: var(--color-lighter);
-	--menu-font-size: var(--text-xs);
+	--menu-font-size: var(--font-size-xs);
 	--menu-font-family: var(--heading-font-family);
-	--menu-item-link-color: var(--color-darkest);
+	--menu-item-link-color: var(--color-heading);
 }
 
 body {
@@ -12,7 +12,7 @@ body {
 }
 
 .site-container {
-	background: var(--color-lightest);
+	background: var(--color-white);
 }
 
 .site-header,
@@ -25,7 +25,7 @@ body {
 }
 
 .nav-header {
-	font-size: var(--text-sm);
+	font-size: var(--font-size-sm);
 }
 
 .nav-after-header {
