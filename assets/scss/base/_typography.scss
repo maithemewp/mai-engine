@@ -65,7 +65,7 @@ blockquote {
 cite {
 	display: block;
 	font-weight: var(--cite-font-weight, bolder);
-	font-family: var(--cite-font-family, var(--heading-font-family));
+	font-family: var(--cite-font-family, var(--font-heading));
 	font-style: var(--cite-font-style, normal);
 }
 
