@@ -79,7 +79,7 @@
 		@include position(absolute, var(--spacing-md) null null var(--spacing-md));
 
 		&:checked + label {
-			background-color: rgba(var(--color-primary), var(--shadow-opacity));
+			background-color: rgba(var(--color-primary), 0.1);
 			border-color: var(--color-primary);
 		}
 	}

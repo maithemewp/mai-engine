@@ -21,16 +21,15 @@ label {
 	line-height: var(--input-line-height, 1);
 	background-color: var(--input-background-color, #fff);
 	background-clip: padding-box; // Remove iOS box shadow
-	border: var(--input-border, (var(--border-size) var(--border-style) rgba(0, 0, 0, 0.08)));
+	border: var(--input-border, var(--border));
 	border-radius: var(--input-border-radius, var(--border-radius));
 	outline: none;
 	box-shadow: var(--input-box-shadow, none);
 	transition: var(--input-transition, var(--transition));
 
 	&:focus {
+		border-color: var(--input-border-color-focus, var(--color-link));
 		outline: none;
-
-		--input-border: var(--input-border-focus, var(--border-size) var(--border-style) var(--color-primary));
 	}
 }
 

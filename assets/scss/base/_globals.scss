@@ -39,16 +39,8 @@
 	--sidebar-width: 300px; // Google ads.
 	--content-max-width: calc(var(--wrap-max-width) - var(--sidebar-width) - var(--column-gap));
 
-	--border-style: solid;
-	--border: var(--border-size) var(--border-style) var(--border-color);
-
-	--shadow-x: 0;
-	--shadow-y: 0.25em;
-	--shadow-blur: 1em;
-	--shadow-spread: 0;
-	--shadow-opacity: 0.5;
-	--shadow-color: var(--color-medium-rgb); // Requires rgb so we can add opacity.
-	--shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-spread) rgba(var(--shadow-color), var(--shadow-opacity));
+	--border: 2px solid rgba(0, 0, 0, 0.1);
+	--shadow: 0 0.25em 1em 0 rgba(0, 0, 0, 0.2);
 
 	--transition-property: all;
 	--transition-duration: 0.2s;
