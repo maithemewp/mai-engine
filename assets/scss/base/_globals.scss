@@ -2,9 +2,11 @@
 	--color-white: #fff;
 	--color-black: #000;
 
+	--font-scale-responsive: 0.25vw;
+
 	--font-size-xs: calc(var(--font-size-sm) / var(--font-scale));
 	--font-size-sm: calc(var(--font-size-md) / var(--font-scale));
-	--font-size-md: calc(var(--font-size-base) + var(--font-responsive-ratio));
+	--font-size-md: calc(var(--font-size-base) + var(--font-scale-responsive));
 	--font-size-lg: calc(var(--font-size-md) * var(--font-scale));
 	--font-size-xl: calc(var(--font-size-lg) * var(--font-scale));
 	--font-size-xxl: calc(var(--font-size-xl) * var(--font-scale));
@@ -14,7 +16,7 @@
 	--font-stack: system-ui, -apple-system, blinkmacsystemfont, helvetica, arial, sans-serif;
 	--font-code: consolas, monaco, monospace;
 
-	--spacing-base: var(--font-base);
+	--spacing-base: var(--font-size-base);
 	--spacing-scale: 1.5;
 
 	--spacing-xxxxs: calc(var(--spacing-xxxs) / var(--spacing-scale));
