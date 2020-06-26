@@ -14,21 +14,28 @@ return [
 		'podcast' => 12,
 		'agency'  => 13,
 	],
-	'custom-properties' => [
-		'color-primary'        => '#7b51ff',
-		'color-success'        => '#00cd9e',
-		'color-warning'        => '#ffc54e',
-		'color-danger'         => '#ff478f',
-		'color-info'           => '#0095ed',
-		'color-darkest'        => '#4b657e',
-		'color-dark'           => '#5f749e',
-		'color-lighter'        => '#f7f8fa',
-		'text-scale-ratio'     => 1.2,
-		'body-font-family'     => 'Karla',
-		'heading-font-family'  => 'Karla',
-		'heading-font-weight'  => 700,
-		'input-border-radius'  => '100px',
-		'button-border-radius' => '100px',
+	'global-styles' => [
+		'breakpoint'   => 1200,
+		'colors'       => [
+			'link'             => '#7b51ff',
+			'button'           => '#7b51ff',
+			'button-secondary' => '#8f98a3',
+			'heading'          => '#4b657e',
+			'body'             => '#5f749e',
+			'background'       => '#ffffff',
+		],
+		'fonts'        => [
+			'body'    => 'Karla',
+			'heading' => 'Karla',
+		],
+		'font-sizes'   => [
+			'base' => 16,
+		],
+		'font-weights' => [
+			'body'    => '400',
+			'heading' => '700',
+		],
+		'font-scale'   => 1.25,
 	],
 	'theme-support'     => [
 		'add' => [
@@ -38,7 +45,7 @@ return [
 	'page-header'       => [
 		'archive'                 => '*',
 		'single'                  => '*',
-		'background-color'        => 'primary',
+		'background-color'        => '#7b51ff',
 		'text-color'              => 'light',
 		'divider'                 => 'curve',
 		'divider-flip-horizontal' => false,

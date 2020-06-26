@@ -1,3 +1,16 @@
+:root {
+	--color-primary: var(--color-button);
+	--color-secondary: var(--color-button-secondary);
+	--color-tertiary: var(--color-button);
+	--color-darkest: var(--color-heading);
+	--color-darker: var(--color-heading);
+	--color-dark: var(--color-body);
+	--color-medium: var(--color-body);
+	--color-light: var(--color-shadow);
+	--color-lighter: var(--color-border);
+	--color-lightest: var(--color-white);
+}
+
 $colors: (
 	primary: var(--color-primary),
 	secondary: var(--color-secondary),

@@ -160,7 +160,7 @@ function mai_page_header_customizer_settings() {
 			'settings' => 'page-header-background-color',
 			'section'  => $section,
 			'label'    => esc_html__( 'Background/overlay color', 'mai-engine' ),
-			'default'  => mai_get_color( $config['background-color'] ),
+			'default'  => $config['background-color'],
 			'choices'  => [
 				'palettes' => mai_get_color_choices(),
 			],

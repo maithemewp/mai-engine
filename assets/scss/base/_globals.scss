@@ -1,6 +1,12 @@
 @mixin custom-properties {
 	--color-white: #fff;
 	--color-black: #000;
+	--color-success: limegreen;
+	--color-danger: orangered;
+	--color-warning: gold;
+	--color-info: dodgerblue;
+	--color-border: rgba(10, 20, 30, 0.05);
+	--color-shadow: rgba(10, 20, 30, 0.1);
 
 	--font-scale-responsive: 0.25vw;
 
@@ -39,8 +45,8 @@
 	--sidebar-width: 300px; // Google ads.
 	--content-max-width: calc(var(--wrap-max-width) - var(--sidebar-width) - var(--column-gap));
 
-	--border: 2px solid rgba(0, 0, 0, 0.1);
-	--shadow: 0 0.25em 1em 0 rgba(0, 0, 0, 0.2);
+	--border: 2px solid var(--color-border);
+	--shadow: 0 0.25em 1em 0 var(--color-shadow);
 
 	--transition-property: all;
 	--transition-duration: 0.2s;

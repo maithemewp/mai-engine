@@ -42,7 +42,7 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_page_header_content_type_css' );
 function mai_add_page_header_content_type_css( $css ) {
 	$config  = mai_get_config( 'page-header' );
 	$args    = mai_get_template_args();
-	$color   = isset( $args['page-header-background-color'] ) && ! empty( $args['page-header-background-color'] ) ? $args['page-header-background-color'] : mai_get_option( 'page-header-background-color', mai_get_color( $config['background-color'] ) );
+	$color   = isset( $args['page-header-background-color'] ) && ! empty( $args['page-header-background-color'] ) ? $args['page-header-background-color'] : mai_get_option( 'page-header-background-color',$config['background-color'] );
 	$opacity = isset( $args['page-header-overlay-opacity'] ) && ! empty( $args['page-header-overlay-opacity'] ) ? $args['page-header-overlay-opacity'] : mai_get_option( 'page-header-overlay-opacity', $config['overlay-opacity'] );
 
 	$css['global'][':root']['--page-header-background-color'] = $color;

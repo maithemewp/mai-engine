@@ -2,6 +2,9 @@
   "extends": [
     "stylelint-config-wordpress/scss",
     "stylelint-config-rational-order"
-  ]
+  ],
+  "rules": {
+    "color-named": true
+  }
 }
 
