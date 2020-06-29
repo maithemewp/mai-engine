@@ -380,7 +380,7 @@ class Mai_Entry {
 			'md' => 1,
 			'lg' => 1,
 		];
-		$columns     = ( 'single' === $this->context ) ? $single : array_reverse( $this->get_breakpoint_columns(), true ); // mobile first.
+		$columns     = ( 'single' === $this->context ) ? $single : array_reverse( mai_get_breakpoint_columns( $this->args ), true ); // mobile first.
 		$widths      = [];
 		foreach ( $columns as $break => $count ) {
 			switch ( $break ) {
@@ -439,7 +439,7 @@ class Mai_Entry {
 			'md' => 1,
 			'lg' => 1,
 		];
-		$columns     = ( 'single' === $this->context ) ? $single : array_reverse( $this->get_breakpoint_columns(), true ); // mobile first.
+		$columns     = ( 'single' === $this->context ) ? $single : array_reverse( mai_get_breakpoint_columns( $this->args ), true ); // mobile first.
 
 		foreach ( $columns as $break => $count ) {
 			switch ( $break ) {
@@ -504,65 +504,6 @@ class Mai_Entry {
 		}
 
 		return $class;
-	}
-
-	/**
-	 * Description of expected behavior.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @return array
-	 */
-	public function get_breakpoint_columns() {
-		$columns = [
-			'lg' => (int) $this->args['columns'],
-		];
-
-		if ( $this->args['columns_responsive'] ) {
-			$columns['md'] = (int) $this->args['columns_md'];
-			$columns['sm'] = (int) $this->args['columns_sm'];
-			$columns['xs'] = (int) $this->args['columns_xs'];
-		} else {
-			switch ( (int) $this->args['columns'] ) {
-				case 6:
-					$columns['md'] = 4;
-					$columns['sm'] = 3;
-					$columns['xs'] = 2;
-					break;
-				case 5:
-					$columns['md'] = 3;
-					$columns['sm'] = 2;
-					$columns['xs'] = 2;
-					break;
-				case 4:
-					$columns['md'] = 4;
-					$columns['sm'] = 2;
-					$columns['xs'] = 1;
-					break;
-				case 3:
-					$columns['md'] = 3;
-					$columns['sm'] = 1;
-					$columns['xs'] = 1;
-					break;
-				case 2:
-					$columns['md'] = 2;
-					$columns['sm'] = 2;
-					$columns['xs'] = 1;
-					break;
-				case 1:
-					$columns['md'] = 1;
-					$columns['sm'] = 1;
-					$columns['xs'] = 1;
-					break;
-				case 0: // Auto.
-					$columns['md'] = 0;
-					$columns['sm'] = 0;
-					$columns['xs'] = 0;
-					break;
-			}
-		}
-
-		return $columns;
 	}
 
 	/**

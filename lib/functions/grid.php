@@ -100,6 +100,14 @@ function mai_get_grid_show_choices() {
  */
 function mai_get_breakpoint_columns( $args ) {
 
+	$args = wp_parse_args( $args, [
+		'columns_responsive' => false,
+		'columns'            => 3,
+		'columns_md'         => 1,
+		'columns_sm'         => 1,
+		'columns_xs'         => 1,
+	] );
+
 	$columns = [
 		'lg' => $args['columns'],
 	];
