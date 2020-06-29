@@ -190,6 +190,7 @@ function mai_load_files() {
 		'functions/deprecated',
 		'functions/enqueue',
 		'functions/entries',
+		'functions/fonts',
 		'functions/grid',
 		'functions/helpers',
 		'functions/images',

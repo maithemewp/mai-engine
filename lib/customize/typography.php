@@ -25,7 +25,7 @@ function mai_typography_customizer_settings() {
 	\Kirki::add_section(
 		$section,
 		[
-			'title' => esc_html__( 'Typography', 'mai-engine' ),
+			'title' => __( 'Typography', 'mai-engine' ),
 			'panel' => $handle,
 		]
 	);
@@ -93,7 +93,7 @@ function mai_typography_customizer_settings() {
 			'type'     => 'typography',
 			'settings' => 'body-typography',
 			'section'  => $section,
-			'label'    => esc_html__( 'Body', 'mai-engine' ),
+			'label'    => __( 'Body', 'mai-engine' ),
 			'default'  => [
 				'font-family' => $global_styles['fonts']['body'],
 				'font-weight' => $global_styles['font-weights']['body'],
@@ -119,65 +119,9 @@ function mai_typography_customizer_settings() {
 		$handle,
 		[
 			'type'     => 'typography',
-			'settings' => 'italic-typography',
-			'section'  => $section,
-			'label'    => esc_html__( 'Italic', 'mai-engine' ),
-			'default'  => [
-				'font-family' => mai_get_option( 'font-body', $global_styles['fonts']['body'] ),
-				'variant'     => 'italic',
-			],
-			'output'   => [
-				[
-					'element'  => 'i,em',
-					'property' => 'font-family',
-					'choice'   => 'font-family',
-					'context'  => [ 'front', 'editor' ],
-				],
-				[
-					'element'  => 'i,em',
-					'property' => 'font-weight',
-					'choice'   => 'variant',
-					'context'  => [ 'front', 'editor' ],
-				],
-			],
-		]
-	);
-
-	\Kirki::add_field(
-		$handle,
-		[
-			'type'     => 'typography',
-			'settings' => 'bold-typography',
-			'section'  => $section,
-			'label'    => esc_html__( 'Bold', 'mai-engine' ),
-			'default'  => [
-				'font-family' => mai_get_option( 'font-body', $global_styles['fonts']['body'] ),
-				'variant'     => 'bold',
-			],
-			'output'   => [
-				[
-					'element'  => 'bold,strong',
-					'property' => 'font-family',
-					'choice'   => 'font-family',
-					'context'  => [ 'front', 'editor' ],
-				],
-				[
-					'element'  => 'bold,strong',
-					'property' => 'font-weight',
-					'choice'   => 'variant',
-					'context'  => [ 'front', 'editor' ],
-				],
-			],
-		]
-	);
-
-	\Kirki::add_field(
-		$handle,
-		[
-			'type'     => 'typography',
 			'settings' => 'heading-typography',
 			'section'  => $section,
-			'label'    => esc_html__( 'Heading', 'mai-engine' ),
+			'label'    => __( 'Heading', 'mai-engine' ),
 			'default'  => [
 				'font-family' => $global_styles['fonts']['heading'],
 				'font-weight' => $global_styles['font-weights']['heading'],
@@ -194,40 +138,6 @@ function mai_typography_customizer_settings() {
 					'property' => '--font-weight-heading',
 					'choice'   => 'font-weight',
 					'context'  => [ 'front', 'editor' ],
-				],
-			],
-		]
-	);
-
-	\Kirki::add_field(
-		$handle,
-		[
-			'type'     => 'custom',
-			'settings' => 'typography-buttons-divider',
-			'section'  => $section,
-			'default'  => '<hr>',
-		]
-	);
-
-	\Kirki::add_field(
-		$handle,
-		[
-			'type'        => 'radio-buttonset',
-			'settings'    => 'button-font',
-			'label'       => __( 'Buttons', 'mai-engine' ),
-			'description' => __( 'Select which font buttons should use', 'mai-engine' ),
-			'section'     => $section,
-			'default'     => 'heading',
-			'choices'     => [
-				'body'    => __( 'Body', 'mai-engine' ),
-				'heading' => __( 'Heading', 'mai-engine' ),
-			],
-			'output'      => [
-				[
-					'element'       => ':root',
-					'property'      => '--button-font-family',
-					'value_pattern' => 'var(--font-$)',
-					'context'       => [ 'front', 'editor' ],
 				],
 			],
 		]
