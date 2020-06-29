@@ -101,13 +101,13 @@ function mai_typography_customizer_settings() {
 			'output'   => [
 				[
 					'element'  => ':root',
-					'property' => '--font-body',
+					'property' => '--body-font-family',
 					'choice'   => 'font-family',
 					'context'  => [ 'front', 'editor' ],
 				],
 				[
 					'element'  => ':root',
-					'property' => '--font-weight-body',
+					'property' => '--body-font-weight',
 					'choice'   => 'font-weight',
 					'context'  => [ 'front', 'editor' ],
 				],
@@ -129,13 +129,13 @@ function mai_typography_customizer_settings() {
 			'output'   => [
 				[
 					'element'  => ':root',
-					'property' => '--font-heading',
+					'property' => '--heading-font-family',
 					'choice'   => 'font-family',
 					'context'  => [ 'front', 'editor' ],
 				],
 				[
 					'element'  => ':root',
-					'property' => '--font-weight-heading',
+					'property' => '--heading-font-weight',
 					'choice'   => 'font-weight',
 					'context'  => [ 'front', 'editor' ],
 				],

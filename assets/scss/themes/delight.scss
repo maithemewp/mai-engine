@@ -1,7 +1,7 @@
 @import "default";
 
 :root {
-	--font-weight-body: var(--font-weight-light);
+	--body-font-weight: var(--font-weight-light);
 	--border: 1px solid rgba(0, 0, 0, 0.06);
 	--shadow: 0 4px 24px rgba(0, 0, 0, 0.025);
 }
@@ -11,7 +11,7 @@ html {
 }
 
 .button-secondary {
-	--button-font-weight: var(--font-weight-body);
+	--button-font-weight: var(--body-font-weight);
 }
 
 .is-single {

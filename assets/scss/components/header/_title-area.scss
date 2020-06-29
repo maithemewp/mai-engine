@@ -19,7 +19,7 @@
 	margin: 0;
 	font-weight: var(--site-title-font-weight, var(--heading-font-weight));
 	font-size: var(--site-title-font-size, var(--font-size-xl));
-	font-family: var(--site-title-font-family, var(--font-heading));
+	font-family: var(--site-title-font-family, var(--heading-font-family));
 }
 
 .site-title-link {

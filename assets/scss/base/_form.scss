@@ -9,7 +9,7 @@ label {
 	font-size: var(--label-font-size, (smaller));
 
 	--input-font-size: smaller;
-	--input-font-weight: var(--font-weight-body);
+	--input-font-weight: var(--body-font-weight);
 }
 
 #{$all-text-inputs} {

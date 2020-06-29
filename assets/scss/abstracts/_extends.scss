@@ -5,9 +5,9 @@
 	min-height: -webkit-fill-available;
 	margin: 0;
 	color: var(--body-color); // No fallback, always output by Kirki.
-	font-weight: var(--font-weight-body); // No fallback, always output by Kirki.
+	font-weight: var(--body-font-weight); // No fallback, always output by Kirki.
 	font-size: var(--body-font-size, var(--font-size-md));
-	font-family: var(--font-body); // No fallback, always output by Kirki.
+	font-family: var(--body-font-family); // No fallback, always output by Kirki.
 	line-height: var(--body-line-height, 1.5);
 	background: var(--body-background-color); // No fallback, always output by Kirki.
 }
@@ -15,8 +15,8 @@
 @mixin heading {
 	margin: var(--heading-margin, var(--heading-margin-top, 0) var(--heading-margin-sides, 0) var(--heading-margin-bottom, var(--spacing-md)));
 	color: var(--heading-color); // No fallback, always output by Kirki.
-	font-weight: var(--font-weight-heading); // No fallback, always output by Kirki.
-	font-family: var(--font-heading); // No fallback, always output by Kirki.
+	font-weight: var(--heading-font-weight); // No fallback, always output by Kirki.
+	font-family: var(--heading-font-family); // No fallback, always output by Kirki.
 	line-height: var(--heading-line-height, 1.2);
 	letter-spacing: var(--heading-letter-spacing, unset);
 	text-transform: var(--heading-text-transform, unset);
