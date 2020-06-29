@@ -31,12 +31,12 @@ function mai_colors_customizer_settings() {
 	);
 
 	$colors = [
-		'background'       => 'lightest',
-		'body'             => 'dark',
-		'heading'          => 'darkest',
-		'link'             => 'primary',
-		'button'           => 'primary',
-		'button-secondary' => 'secondary',
+		'body-background'             => 'lightest',
+		'body'                        => 'dark',
+		'heading'                     => 'darkest',
+		'link'                        => 'primary',
+		'button-background'           => 'primary',
+		'button-secondary-background' => 'secondary',
 	];
 
 	foreach ( $colors as $color => $original ) {
@@ -52,7 +52,7 @@ function mai_colors_customizer_settings() {
 		$args['output']   = [
 			[
 				'element'  => ':root',
-				'property' => '--color-' . $color,
+				'property' => '--' . $color . '-color',
 				'context'  => [ 'front', 'editor' ],
 			],
 			[

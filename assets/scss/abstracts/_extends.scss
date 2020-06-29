@@ -9,7 +9,7 @@
 	font-size: var(--body-font-size, var(--font-size-md));
 	font-family: var(--font-body); // No fallback, always output by Kirki.
 	line-height: var(--body-line-height, 1.5);
-	background: var(--color-background); // No fallback, always output by Kirki.
+	background: var(--body-background-color); // No fallback, always output by Kirki.
 }
 
 @mixin heading {
@@ -47,7 +47,7 @@
 	text-transform: var(--button-text-transform, none);
 	text-decoration: var(--button-text-decoration, none);
 	overflow-wrap: var(--button-overflow-wrap, break-word);
-	background: var(--button-color); // No fallback, always output by Kirki.
+	background-color: var(--button-background-color); // No fallback, always output by Kirki.
 	border: var(--button-border, 0);
 	border-radius: var(--button-border-radius, var(--border-radius));
 	outline: var(--button-outline, (none));
@@ -62,7 +62,7 @@
 		--button-overlay-opacity: var(--button-overlay-opacity-hover, 0.2);
 		color: var(--button-color-hover, var(--color-white));
 		text-decoration: var(--button-text-decoration-hover, none);
-		background: var(--button-background-hover, var(--button-color));
+		background-color: var(--button-background-hover, var(--button-background-color));
 		outline: var(--button-outline-hover, (none));
 		box-shadow: var(--button-box-shadow-hover, var(--button-box-shadow));
 		transform: var(--button-transform-hover, var(--button-transform, scale(1))); // Pseudo element z-index hack.
@@ -87,10 +87,10 @@
 @mixin button-style($style) {
 
 	@if ("secondary" == $style) {
-		background: var(--button-color-secondary); // No fallback, always output by Kirki.
+		background-color: var(--button-secondary-background-color); // No fallback, always output by Kirki.
 
 		@include hover-focus {
-			background: var(--button-color-secondary); // No fallback, always output by Kirki.
+			background-color: var(--button-secondary-background-color); // No fallback, always output by Kirki.
 		}
 	}
 

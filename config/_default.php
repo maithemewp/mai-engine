@@ -22,12 +22,12 @@ return [
 	'global-styles' => [
 		'breakpoint'   => 1200,
 		'colors'       => [
-			'link'             => mai_get_color_variant( '#007bff', 'dark' ),
-			'button'           => '#007bff',
-			'button-secondary' => '#8f98a3',
-			'heading'          => '#2e3338',
-			'body'             => '#8f98a3',
-			'background'       => '#ffffff',
+			'link'                        => mai_get_color_variant( '#007bff', 'dark' ),
+			'button-background'           => '#007bff',
+			'button-secondary-background' => '#8f98a3',
+			'heading'                     => '#2e3338',
+			'body'                        => '#8f98a3',
+			'body-background'             => '#ffffff',
 		],
 		'fonts'        => [
 			'body'    => 'sans-serif',
