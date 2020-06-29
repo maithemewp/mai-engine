@@ -63,9 +63,9 @@ function mai_typography_customizer_settings() {
 			'label'    => __( 'Scale', 'mai-engine' ),
 			'default'  => $global_styles['font-scale'],
 			'choices'  => [
-				'min'  => 0,
-				'max'  => 3,
-				'step' => 0.1,
+				'min'  => 1,
+				'max'  => 2,
+				'step' => 0.01,
 			],
 			'output'   => [
 				[

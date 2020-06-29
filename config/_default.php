@@ -33,12 +33,12 @@ return [
 			'body'    => 'sans-serif',
 			'heading' => 'sans-serif',
 		],
-		'font-sizes'   => [
-			'base' => 16,
-		],
 		'font-weights' => [
 			'body'    => '400',
 			'heading' => '600',
+		],
+		'font-sizes'   => [
+			'base' => 16,
 		],
 		'font-scale'   => 1.25,
 	],
