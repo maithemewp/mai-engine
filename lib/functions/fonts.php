@@ -108,3 +108,33 @@ function mai_add_extra_google_fonts( $fonts ) {
 
 	return $fonts;
 }
+
+add_filter( 'kirki_mai-engine_styles', 'mai_add_fonts_custom_properties' );
+/**
+ * Output breakpoint custom property.
+ *
+ * @since 2.0.0
+ *
+ * @param $css
+ *
+ * @return mixed
+ */
+function mai_add_fonts_custom_properties( $css ) {
+	$font_families = mai_get_global_styles( 'fonts' );
+
+	foreach ( $font_families as $element => $font_family ) {
+		if ( 'body' !== $element && 'heading' !== $element ) {
+			$css['global'][':root'][ '--' . $element . '-font-family' ] = $font_family;
+		}
+	}
+
+	$font_weights = mai_get_global_styles( 'font-weights' );
+
+	foreach ( $font_weights as $element => $font_weight ) {
+		if ( 'body' !== $element && 'heading' !== $element ) {
+			$css['global'][':root'][ '--' . $element . '-font-weight' ] = $font_weight;
+		}
+	}
+
+	return $css;
+}
