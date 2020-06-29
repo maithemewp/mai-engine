@@ -66,3 +66,45 @@ function mai_add_body_font_variants( $fonts ) {
 	return $fonts;
 }
 
+add_filter( 'kirki/enqueue_google_fonts', 'mai_add_extra_google_fonts' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param $fonts
+ *
+ * @return mixed
+ */
+function mai_add_extra_google_fonts( $fonts ) {
+	$fonts_config = mai_get_global_styles( 'fonts' );
+	$font_weights = mai_get_global_styles( 'font-weights' );
+
+	foreach ( $fonts_config as $font ) {
+		if ( 'body' === $font || 'heading' === $font ) {
+			continue;
+		}
+
+		/**
+		 * @var Kirki_Fonts $kirki_fonts
+		 */
+		$kirki_fonts  = Kirki_Fonts::get_instance();
+		$google_fonts = $kirki_fonts::get_google_fonts();
+
+		if ( isset( $google_fonts[ $font ] ) ) {
+			$variants = $google_fonts[ $font ]['variants'];
+
+			if ( isset( $font_weights[ $font ] ) && isset( $variants[ $font_weights[ $font ] ] ) ) {
+				$fonts[ $font ] = [
+					$font_weights[ $font ],
+				];
+			} else {
+				$fonts[ $font ] = [
+					'regular',
+				];
+			}
+		}
+	}
+
+	return $fonts;
+}
