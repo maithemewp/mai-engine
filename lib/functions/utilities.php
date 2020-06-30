@@ -965,6 +965,7 @@ function mai_get_loop_content_type_choices( $archive = true ) {
 	$feature = $archive ? 'mai-archive-settings' : 'mai-single-settings';
 
 	foreach ( $choices as $name => $label ) {
+		// If type is a post type.
 		if ( post_type_exists( $name ) ) {
 			$post_type = get_post_type_object( $name );
 
@@ -972,15 +973,11 @@ function mai_get_loop_content_type_choices( $archive = true ) {
 				unset( $choices[ $name ] );
 			}
 
-		} elseif ( taxonomy_exists( $name ) ) {
-			$taxonomy = get_taxonomy( $name );
-			/**
-			 * If we have a tax, get the first one.
-			 * This is the simplest way to handle shared taxonomies.
-			 * Using reset() since we hit an error on a term archive that object_type array didn't start with [0].
-			 */
-			$post_type = reset( $taxonomy->object_type );
-			if ( post_type_exists( $name ) ) {
+		}
+		// If type is a taxonomy.
+		elseif ( taxonomy_exists( $name ) ) {
+			$post_type = mai_get_taxonomy_post_type( $name );
+			if ( $post_type ) {
 				$post_type = get_post_type_object( $post_type );
 				if ( ! $post_type->_builtin && ! post_type_supports( $post_type->name, $feature ) ) {
 					unset( $choices[ $name ] );
@@ -990,6 +987,30 @@ function mai_get_loop_content_type_choices( $archive = true ) {
 	}
 
 	return $choices;
+}
+
+/**
+ * Get the post type a taxonomy is registered to.
+ *
+ * If we have a tax, get the first one.
+ * This is the simplest way to handle shared taxonomies.
+ * Using reset() since we hit an error on a term archive that object_type array didn't start with [0].
+ *
+ * @since 2.0.0
+ *
+ * @param string $taxonomy The registered taxonomy name.
+ *
+ * @return string|false
+ */
+function mai_get_taxonomy_post_type( $taxonomy ) {
+	$taxonomy  = get_taxonomy( $taxonomy );
+	if ( $taxonomy ) {
+		$post_type = reset( $taxonomy->object_type );
+		if ( post_type_exists( $post_type ) ) {
+			return $post_type;
+		}
+	}
+	return false;
 }
 
 /**
