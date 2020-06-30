@@ -49,7 +49,8 @@ function mai_colors_customizer_settings() {
 			'section'  => $section,
 			'default'  => mai_get_option( 'color-' . $default, $defaults[ $element ] ),
 			'choices'  => [
-				'alpha' => true,
+				'alpha'    => true,
+				'palettes' => mai_get_color_choices(),
 			],
 			'output'   => [
 				[
@@ -72,18 +73,24 @@ function mai_colors_customizer_settings() {
 			'button_label' => __( 'Add New Color ', 'mai-engine' ),
 			'settings'     => 'custom-colors',
 			'default'      => [],
-			'row_label' => [
+			'row_label'    => [
 				'type'  => 'text',
 				'value' => __( 'Custom Color', 'mai-engine' ),
 			],
 			'fields'       => [
+				'slug'  => [
+					'type'    => 'text',
+					'label'   => '',
+					'default' => 'Custom',
+				],
 				'color' => [
 					'type'    => 'color',
 					'label'   => '',
 					'default' => '',
 					'alpha'   => true,
 					'choices' => [
-						'alpha' => true,
+						'alpha'    => true,
+						'palettes' => mai_get_color_choices(),
 					],
 				],
 			],

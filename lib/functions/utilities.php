@@ -411,7 +411,7 @@ function mai_get_color_choices() {
 	$color_palette = mai_get_editor_color_palette();
 
 	foreach ( $color_palette as $color ) {
-		$color_choices[ $color['slug'] ] = $color['color'];
+		$color_choices[] = $color['color'];
 	}
 
 	return $color_choices;
