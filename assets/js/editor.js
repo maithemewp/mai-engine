@@ -1,3 +1,27 @@
+const { __ } = wp.i18n;
+
+wp.domReady( () => {
+	wp.blocks.unregisterBlockStyle( 'core/button', 'fill' );
+	wp.blocks.unregisterBlockStyle( 'core/button', 'outline' );
+
+	wp.blocks.registerBlockStyle( 'core/button', {
+		name: 'primary',
+		label: __( 'Primary' )
+	} );
+	wp.blocks.registerBlockStyle( 'core/button', {
+		name: 'secondary',
+		label: __( 'Secondary' )
+	} );
+	wp.blocks.registerBlockStyle( 'core/button', {
+		name: 'outline',
+		label: __( 'Outline' )
+	} );
+	wp.blocks.registerBlockStyle( 'core/button', {
+		name: 'link',
+		label: __( 'Link' )
+	} );
+} );
+
 ( function( $ ) {
 
 	if ( 'object' !== typeof acf ) {

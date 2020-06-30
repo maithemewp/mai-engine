@@ -94,7 +94,24 @@
 		}
 	}
 
-	@if ("tertiary" == $style) {
+	@if ("outline" == $style) {
+		color: var(--button-color);
+		line-height: calc(1em - 4px); // Makes height same as button with no border.
+		background: transparent;
+		border: 2px solid currentColor; // Same as Gutenberg default styles.
+
+		@include hover-focus {
+			color: var(--button-color);
+			background: transparent;
+			border-color: currentColor;
+		}
+
+		&::before {
+			display: none;
+		}
+	}
+
+	@if ("link" == $style) {
 		padding: var(--button-padding, (1em 0.5em));
 		color: var(--link-color);
 		background: transparent;
@@ -112,23 +129,6 @@
 			display: inline-block;
 			margin-left: var(--spacing-xs);
 			content: "\2192";
-		}
-	}
-
-	@if ("outline" == $style) {
-		color: var(--button-color);
-		line-height: calc(1em - 4px); // Makes height same as button with no border.
-		background: transparent;
-		border: 2px solid currentColor; // Same as Gutenberg default styles.
-
-		@include hover-focus {
-			color: var(--button-color);
-			background: transparent;
-			border-color: currentColor;
-		}
-
-		&::before {
-			display: none;
 		}
 	}
 
