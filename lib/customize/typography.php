@@ -33,17 +33,18 @@ function mai_typography_customizer_settings() {
 	\Kirki::add_field(
 		$handle,
 		[
-			'type'     => 'number',
-			'settings' => 'font-size-base',
-			'section'  => $section,
-			'label'    => __( 'Base', 'mai-engine' ),
-			'default'  => $global_styles['font-sizes']['base'],
-			'choices'  => [
+			'type'        => 'number',
+			'settings'    => 'font-size-base',
+			'section'     => $section,
+			'label'       => __( 'Base', 'mai-engine' ),
+			'description' => __( 'Default: ', 'mai-engine' ) . $global_styles['font-sizes']['base'],
+			'default'     => $global_styles['font-sizes']['base'],
+			'choices'     => [
 				'min'  => 10,
 				'max'  => 100,
 				'step' => 1,
 			],
-			'output'   => [
+			'output'      => [
 				[
 					'element'  => ':root',
 					'property' => '--font-size-base',
@@ -57,17 +58,18 @@ function mai_typography_customizer_settings() {
 	\Kirki::add_field(
 		$handle,
 		[
-			'type'     => 'slider',
-			'settings' => 'font-scale',
-			'section'  => $section,
-			'label'    => __( 'Scale', 'mai-engine' ),
-			'default'  => $global_styles['font-scale'],
-			'choices'  => [
+			'type'        => 'slider',
+			'settings'    => 'font-scale',
+			'section'     => $section,
+			'label'       => __( 'Scale', 'mai-engine' ),
+			'description' => __( 'Default: ', 'mai-engine' ) . $global_styles['font-scale'],
+			'default'     => $global_styles['font-scale'],
+			'choices'     => [
 				'min'  => 1,
 				'max'  => 2,
 				'step' => 0.01,
 			],
-			'output'   => [
+			'output'      => [
 				[
 					'element'  => ':root',
 					'property' => '--font-scale',
@@ -90,15 +92,16 @@ function mai_typography_customizer_settings() {
 	\Kirki::add_field(
 		$handle,
 		[
-			'type'     => 'typography',
-			'settings' => 'body-typography',
-			'section'  => $section,
-			'label'    => __( 'Body', 'mai-engine' ),
-			'default'  => [
+			'type'        => 'typography',
+			'settings'    => 'body-typography',
+			'section'     => $section,
+			'label'       => __( 'Body', 'mai-engine' ),
+			'description' => __( 'Default: ', 'mai-engine' ) . mai_get_font_family( 'body' ) . ' ' . mai_get_font_weight( 'body' ),
+			'default'     => [
 				'font-family' => mai_get_font_family( 'body' ),
 				'font-weight' => mai_get_font_weight( 'body' ),
 			],
-			'output'   => [
+			'output'      => [
 				[
 					'element'  => ':root',
 					'property' => '--body-font-family',
@@ -118,15 +121,16 @@ function mai_typography_customizer_settings() {
 	\Kirki::add_field(
 		$handle,
 		[
-			'type'     => 'typography',
-			'settings' => 'heading-typography',
-			'section'  => $section,
-			'label'    => __( 'Heading', 'mai-engine' ),
-			'default'  => [
+			'type'        => 'typography',
+			'settings'    => 'heading-typography',
+			'section'     => $section,
+			'label'       => __( 'Heading', 'mai-engine' ),
+			'description' => __( 'Default: ', 'mai-engine' ) . mai_get_font_family( 'heading' ) . ' ' . mai_get_font_weight( 'heading' ),
+			'default'     => [
 				'font-family' => mai_get_font_family( 'heading' ),
 				'font-weight' => mai_get_font_weight( 'heading' ),
 			],
-			'output'   => [
+			'output'      => [
 				[
 					'element'  => ':root',
 					'property' => '--heading-font-family',
