@@ -97,13 +97,13 @@
 	}
 
 	@if ("outline" == $style) {
-		color: var(--button-color);
+		color: var(--button-background-color);
 		line-height: calc(1em - 4px); // Makes height same as button with no border.
 		background: transparent;
 		border: 2px solid currentColor; // Same as Gutenberg default styles.
 
 		@include hover-focus {
-			color: var(--button-color);
+			color: var(--button-background-color);
 			background: transparent;
 			border-color: currentColor;
 		}

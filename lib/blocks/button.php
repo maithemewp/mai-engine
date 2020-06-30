@@ -35,9 +35,9 @@ function mai_render_button_block( $block_content, $block ) {
 		$block_content = str_replace( ' is-style-secondary', '', $block_content );
 		$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link button button-secondary', $block_content );
 
-	} elseif ( mai_has_string( 'is-style-tertiary', $block_content ) ) {
-		$block_content = str_replace( ' is-style-tertiary', '', $block_content );
-		$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link button button-tertiary', $block_content );
+	} elseif ( mai_has_string( 'is-style-link', $block_content ) ) {
+		$block_content = str_replace( ' is-style-link', '', $block_content );
+		$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link button button-link', $block_content );
 
 	} elseif ( mai_has_string( 'is-style-outline', $block_content ) ) {
 		$block_content = str_replace( ' is-style-outline', '', $block_content );
