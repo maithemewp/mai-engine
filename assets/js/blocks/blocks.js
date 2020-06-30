@@ -1,1 +1,1 @@
-import './container-width';
+import './content-width';

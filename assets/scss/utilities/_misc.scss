@@ -49,7 +49,6 @@
 
 	.has-#{ $breakpoint-name }-content-width {
 		--content-max-width: var(--breakpoint-#{ $breakpoint-name });
-		--inner-max-width: var(--breakpoint-#{ $breakpoint-name });
 	}
 }
 

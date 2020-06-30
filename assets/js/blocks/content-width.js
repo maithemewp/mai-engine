@@ -18,20 +18,24 @@ const containerWidthOptions = [
 		value: '',
 	},
 	{
-		label: __( 'Narrow' ),
-		value: 'narrow',
+		label: __( 'Extra Small' ),
+		value: 'xs',
 	},
 	{
-		label: __( 'Standard' ),
-		value: 'standard',
+		label: __( 'Small' ),
+		value: 'sm',
 	},
 	{
-		label: __( 'Wide' ),
-		value: 'wide',
+		label: __( 'Medium' ),
+		value: 'md',
 	},
 	{
-		label: __( 'Full' ),
-		value: 'full-width',
+		label: __( 'Large' ),
+		value: 'lg',
+	},
+	{
+		label: __( 'Extra Large' ),
+		value: 'xl',
 	},
 ];
 
@@ -61,12 +65,12 @@ const addSpacingControlAttribute = ( settings, name ) => {
 	return settings;
 };
 
-addFilter( 'blocks.registerBlockType', 'mai-container-width/attribute/container-width', addSpacingControlAttribute );
+addFilter( 'blocks.registerBlockType', 'mai-content-width/attribute/content-width', addSpacingControlAttribute );
 
 /**
  * Create HOC to add spacing control to inspector controls of block.
  */
-const withContainerWidthControl = createHigherOrderComponent( ( BlockEdit ) => {
+const withContentWidthControl = createHigherOrderComponent( ( BlockEdit ) => {
 	return ( props ) => {
 		// Do nothing if it's another block than our defined ones.
 		if ( ! enableSpacingControlOnBlocks.includes( props.name ) ) {
@@ -79,7 +83,7 @@ const withContainerWidthControl = createHigherOrderComponent( ( BlockEdit ) => {
 
 		// add has-spacing-xy class to block
 		if ( spacing ) {
-			props.attributes.className = `${ spacing }-content`;
+			props.attributes.className = `has-${ spacing }-content-width`;
 		}
 
 		return (
@@ -87,7 +91,7 @@ const withContainerWidthControl = createHigherOrderComponent( ( BlockEdit ) => {
 				<BlockEdit {...props} />
 				<InspectorControls>
 					<PanelBody
-						title={__( 'Container Width' )}
+						title={__( 'Content Width' )}
 						initialOpen={true}
 					>
 						<SelectControl
@@ -105,6 +109,6 @@ const withContainerWidthControl = createHigherOrderComponent( ( BlockEdit ) => {
 			</Fragment>
 		);
 	};
-}, 'withContainerWidthControl' );
+}, 'withContentWidthControl' );
 
-addFilter( 'editor.BlockEdit', 'mai-container-width/with-container-width', withContainerWidthControl );
+addFilter( 'editor.BlockEdit', 'mai-content-width/with-content-width', withContentWidthControl );

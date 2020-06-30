@@ -20,7 +20,7 @@
 
 	&__inner-container {
 		width: 100% !important;
-		max-width: var(--inner-max-width, var(--breakpoint-xl));
+		max-width: var(--content-width, var(--breakpoint-xl));
 		margin-right: auto;
 		margin-left: auto;
 	}
