@@ -29,7 +29,45 @@ function mai_add_breakpoint_custom_properties( $css ) {
 	return $css;
 }
 
-add_filter( 'kirki_mai-engine_styles', 'mai_add_custom_color_custom_properties' );
+add_filter( 'kirki_mai-engine_styles', 'mai_add_colors_css' );
+/**
+ * Output named (non-element) color css.
+ *
+ * @since 2.0.0
+ *
+ * @param $css
+ *
+ * @return mixed
+ */
+function mai_add_colors_css( $css ) {
+	$defaults = mai_get_global_styles( 'colors' );
+	$colors   = array_diff_key( $defaults, array_flip(
+		[
+			'link',
+			'button',
+			'button-background',
+			'button-secondary',
+			'button-secondary-background',
+			'heading',
+			'body',
+			'body-background',
+		]
+	));
+
+	if ( $colors ) {
+		foreach ( $colors as $name => $color ) {
+			if ( $color ) {
+				$css['global'][':root'][ '--color-' . $name ] = $color;
+				$css['global'][ '.has-' . $name . '-color' ]['color'] = 'var( --color-' . $name . ')';
+				$css['global'][ '.has-' . $name . '-background-color' ]['background-color'] = 'var( --color-' . $name . ')';
+			}
+		}
+	}
+
+	return $css;
+}
+
+add_filter( 'kirki_mai-engine_styles', 'mai_add_custom_color_css' );
 /**
  * Output breakpoint custom property.
  *
@@ -39,7 +77,7 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_custom_color_custom_properties' 
  *
  * @return mixed
  */
-function mai_add_custom_color_custom_properties( $css ) {
+function mai_add_custom_color_css( $css ) {
 	$custom_colors = mai_get_option( 'custom-colors', [] );
 	$count         = 1;
 
