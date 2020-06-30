@@ -51,9 +51,9 @@ p {
 		@include button-style("secondary");
 	}
 
-	.is-style-tertiary & {
+	.is-style-link & {
 
-		@include button-style("tertiary");
+		@include button-style("link");
 	}
 
 	.is-style-outline & {
