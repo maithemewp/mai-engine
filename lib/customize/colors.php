@@ -36,16 +36,20 @@ function mai_colors_customizer_settings() {
 		'heading'                     => 'darkest',
 		'link'                        => 'primary',
 		'button-background'           => 'primary',
+		'button'                      => 'lightest',
 		'button-secondary-background' => 'secondary',
+		'button-secondary'            => 'lightest',
 	];
 
 	$defaults = mai_get_global_styles( 'colors' );
 
 	foreach ( $elements as $element => $default ) {
+		$label = mai_has_string( 'background', $element ) ? $element : $element . __( ' Text', 'mai-engine' );
+
 		$args = [
 			'type'     => 'color',
 			'settings' => $element . '-color',
-			'label'    => mai_convert_case( $element, 'title' ),
+			'label'    => mai_convert_case( $label, 'title' ),
 			'section'  => $section,
 			'default'  => mai_get_option( 'color-' . $default, $defaults[ $element ] ),
 			'choices'  => [

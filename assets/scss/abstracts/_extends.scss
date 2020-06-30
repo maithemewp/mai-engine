@@ -60,7 +60,7 @@
 	&:hover,
 	&:focus {
 		--button-overlay-opacity: var(--button-overlay-opacity-hover, 0.2);
-		color: var(--button-color-hover, var(--color-white));
+		color: var(--button-color, var(--color-white));
 		text-decoration: var(--button-text-decoration-hover, none);
 		background-color: var(--button-background-hover, var(--button-background-color));
 		outline: var(--button-outline-hover, (none));

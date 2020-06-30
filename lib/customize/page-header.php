@@ -272,7 +272,7 @@ function mai_page_header_customizer_settings() {
 			'section'         => $section,
 			'label'           => esc_html__( 'Divider color', 'mai-engine' ),
 			'description'     => esc_html__( 'This should match your body background color', 'mai-engine' ),
-			'default'         => mai_get_color( $config[ 'divider-color' ] ),
+			'default'         => mai_get_color( $config['divider-color'] ),
 			'choices'         => [
 				'palettes' => mai_get_color_choices(),
 			],
@@ -283,7 +283,7 @@ function mai_page_header_customizer_settings() {
 						'operator' => '!==',
 						'value'    => '',
 					],
-				]
+				],
 			],
 		]
 	);

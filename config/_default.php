@@ -23,7 +23,9 @@ return [
 		'breakpoint' => 1200,
 		'colors'     => [
 			'link'                        => '#007bff',
+			'button'                      => '#ffffff',
 			'button-background'           => '#007bff',
+			'button-secondary'            => '#ffffff',
 			'button-secondary-background' => '#8f98a3',
 			'heading'                     => '#2e3338',
 			'body'                        => '#8f98a3',
