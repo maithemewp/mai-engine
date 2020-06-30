@@ -202,7 +202,7 @@ function mai_has_sidebar() {
  */
 function mai_has_boxed_container() {
 	$default = current_theme_supports( 'boxed-container' );
-	return mai_get_option( 'site-layouts', $default );
+	return mai_get_option( 'boxed-container', $default );
 }
 
 /**
