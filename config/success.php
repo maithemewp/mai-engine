@@ -16,7 +16,6 @@ return [
 		'business' => 5,
 	],
 	'global-styles' => [
-		'breakpoint' => 1200,
 		'colors'     => [
 			'link'              => '#fb2056',
 			'button-background' => '#fb2056',

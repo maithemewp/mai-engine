@@ -3,10 +3,6 @@ body {
 	@include body;
 }
 
-.has-boxed-container {
-	--body-background: var(--color-lighter);
-}
-
 a {
 	color: var(--link-color); // No fallback, always output by Kirki.
 	text-decoration: var(--link-text-decoration, none);

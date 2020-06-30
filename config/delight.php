@@ -14,20 +14,18 @@ defined( 'ABSPATH' ) || die;
 
 return [
 	'demos'             => [],
-	'custom-properties' => [
-		'color-primary'       => '#067ccc',
-		'color-secondary'     => '#6c757d',
-		'color-success'       => '#28a745',
-		'color-danger'        => '#dc3545',
-		'color-warning'       => '#ffc107',
-		'color-info'          => '#42a2b8',
-		'color-darkest'       => '#323232',
-		'color-dark'          => '#515151',
-		'color-medium'        => '#ebe9eb',
-		'color-lighter'       => '#f0f0f0',
-		'body-font-family'    => 'Open Sans',
-		'heading-font-family' => 'Playfair Display',
-		'heading-font-weight' => 700,
+	'global-styles'     => [
+		'colors' => [
+			'link'                        => '#067ccc',
+			'button-background'           => '#067ccc',
+			'button-secondary-background' => '#6c757d',
+			'heading'                     => '#323232',
+			'body'                        => '#515151',
+		],
+		'fonts'  => [
+			'body'    => 'Open Sans:400',
+			'heading' => 'Playfair Display:700',
+		],
 	],
 	'theme-support'     => [
 		'add' => [

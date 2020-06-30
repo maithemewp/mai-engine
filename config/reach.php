@@ -10,39 +10,29 @@
  */
 
 return [
-	'demos'             => [
+	'demos'            => [
 		'podcast' => 12,
 		'agency'  => 13,
 	],
-	'global-styles' => [
-		'breakpoint'   => 1200,
-		'colors'       => [
-			'link'             => '#7b51ff',
-			'button'           => '#7b51ff',
-			'button-secondary' => '#8f98a3',
-			'heading'          => '#4b657e',
-			'body'             => '#5f749e',
-			'background'       => '#ffffff',
+	'global-styles'    => [
+		'colors' => [
+			'link'                        => '#7b51ff',
+			'button-background'           => '#7b51ff',
+			'button-secondary-background' => '#8f98a3',
+			'heading'                     => '#4b657e',
+			'body'                        => '#5f749e',
 		],
-		'fonts'        => [
-			'body'    => 'Karla',
-			'heading' => 'Karla',
+		'fonts'  => [
+			'body'    => 'Karla:400',
+			'heading' => 'Karla:700',
 		],
-		'font-sizes'   => [
-			'base' => 16,
-		],
-		'font-weights' => [
-			'body'    => '400',
-			'heading' => '700',
-		],
-		'font-scale'   => 1.25,
 	],
-	'theme-support'     => [
+	'theme-support'    => [
 		'add' => [
 			'transparent-header',
 		],
 	],
-	'page-header'       => [
+	'page-header'      => [
 		'archive'                 => '*',
 		'single'                  => '*',
 		'background-color'        => '#7b51ff',
@@ -50,7 +40,7 @@ return [
 		'divider'                 => 'curve',
 		'divider-flip-horizontal' => false,
 	],
-	'plugins'           => [
+	'plugins'          => [
 		[
 			'name'  => 'Genesis Connect for WooCommerce',
 			'slug'  => 'genesis-connect-woocommerce/genesis-connect-woocommerce.php',
@@ -76,7 +66,7 @@ return [
 			'demos' => [ 'agency' ],
 		],
 	],
-	'custom-functions'  => function () {
+	'custom-functions' => function () {
 		add_filter( 'mai_default_footer_credits', function ( $default ) {
 			return $default . mai_back_to_top_shortcode();
 		} );

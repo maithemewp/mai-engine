@@ -1,7 +1,7 @@
 @import "default";
 
 :root {
-	--border-color: var(--color-lighter);
+	--border-radius: 1px;
 	--menu-font-size: var(--font-size-xs);
 	--menu-font-family: var(--heading-font-family);
 	--menu-item-link-color: var(--heading-color);
@@ -13,7 +13,7 @@
 }
 
 .before-header {
-	background: var(--color-lighter);
+	background: var(--body-background-color);
 }
 
 .nav-header {

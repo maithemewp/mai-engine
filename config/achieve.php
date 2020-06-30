@@ -15,11 +15,15 @@ return [
 		'news' => 10,
 		// 'personal' => 11,
 	],
-	'custom-properties' => [
-		'color-primary'       => '#777777',
-		'color-darkest'       => '#000000',
-		'body-font-family'    => 'Montserrat',
-		'heading-font-family' => 'Montserrat',
-		'heading-font-weight' => 700,
+	'colors'            => [
+		'link'                        => '#777777',
+		'button-background'           => '#000000',
+		'button-secondary-background' => '#777777',
+		'heading'                     => '#000000',
+		'body'                        => '#777777',
+	],
+	'fonts'             => [
+		'body'    => 'Montserrat:400',
+		'heading' => 'Montserrat:700',
 	],
 ];
