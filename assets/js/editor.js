@@ -5,8 +5,8 @@ wp.domReady( () => {
 	wp.blocks.unregisterBlockStyle( 'core/button', 'outline' );
 
 	wp.blocks.registerBlockStyle( 'core/button', {
-		name: 'primary',
-		label: __( 'Primary' )
+		name: 'default',
+		label: __( 'Default' )
 	} );
 	wp.blocks.registerBlockStyle( 'core/button', {
 		name: 'secondary',

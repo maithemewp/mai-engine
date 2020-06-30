@@ -3,7 +3,7 @@
 const gulp    = require( 'gulp' ),
 	  config  = require( '../../config' ),
 	  plumber = require( 'gulp-plumber' ),
-	  uglify  = require( 'gulp-uglify' ),
+	  uglify  = require( 'gulp-uglify-es' ).default,
 	  rename  = require( 'gulp-rename' ),
 	  fs      = require( 'fs' ),
 	  notify  = require( 'gulp-notify' ),
