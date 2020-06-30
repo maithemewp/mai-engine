@@ -859,6 +859,7 @@ class Mai_Entry {
 		// Single needs the_content() directly, to parse_blocks and other filters.
 		if ( 'single' === $this->context ) {
 			the_content();
+
 		} else {
 
 			// Content.

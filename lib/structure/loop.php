@@ -11,7 +11,7 @@
 
 add_action( 'genesis_before_loop', 'mai_setup_loop' );
 /**
- * Description of expected behavior.
+ * Do the main loop.
  *
  * @since 1.0.0
  *
@@ -77,8 +77,7 @@ function mai_do_loop() {
 			 */
 			do_action( 'genesis_before_entry' );
 
-			global $post;
-			mai_do_entry( $post, $args );
+			mai_do_entry( get_post(), $args );
 
 			/**
 			 * Fires inside the standard loop, before the entry opening markup.
