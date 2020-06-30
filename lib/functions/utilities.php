@@ -319,9 +319,9 @@ function mai_get_settings( $name ) {
 }
 
 /**
- * Returns an array of the themes JSON variables.
+ * Returns the global styles from the config.
  *
- * @since 0.1.0
+ * @since 2.0.0
  *
  * @param string $key Key of styles to retrieve.
  *
@@ -334,11 +334,11 @@ function mai_get_global_styles( $key = '' ) {
 }
 
 /**
- * Description of expected behavior.
+ * Returns the array of colors from the global styles config.
  *
- * @since 1.0.0
+ * @since 2.0.0
  *
- * @return mixed
+ * @return array
  */
 function mai_get_colors() {
 	return mai_get_global_styles( 'colors' );
@@ -360,7 +360,7 @@ function mai_get_color( $name = '' ) {
 /**
  * Returns the color palette variables.
  *
- * @since 0.1.0
+ * @since 2.0.0
  *
  * @return array
  */
@@ -402,7 +402,7 @@ function mai_get_editor_color_palette() {
 /**
  * Get color choices for Kirki.
  *
- * @since 0.1.0
+ * @since 2.0.0
  *
  * @return array
  */
@@ -418,7 +418,7 @@ function mai_get_color_choices() {
 }
 
 /**
- * Description of expected behavior.
+ * Returns an array of font sizes based on the font scale.
  *
  * @since 2.0.0
  *
@@ -460,11 +460,11 @@ function mai_get_font_sizes() {
 }
 
 /**
- * Description of expected behavior.
+ * Returns the default font family for an element from the config.
  *
- * @since 1.0.0
+ * @since 2.0.0
  *
- * @param $element
+ * @param string $element Element to check.
  *
  * @return string
  */
@@ -475,11 +475,11 @@ function mai_get_font_family( $element ) {
 }
 
 /**
- * Description of expected behavior.
+ * Returns default font weights for an element from the config.
  *
- * @since 1.0.0
+ * @since 2.0.0
  *
- * @param $element
+ * @param string $element Element to check.
  *
  * @return array
  */
@@ -500,11 +500,11 @@ function mai_get_font_weights( $element ) {
 }
 
 /**
- * Description of expected behavior.
+ * Returns the default font weight for an element from the config.
  *
- * @since 1.0.0
+ * @since 2.0.0
  *
- * @param $element
+ * @param string $element Element to check.
  *
  * @return string
  */

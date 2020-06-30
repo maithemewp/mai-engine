@@ -16,7 +16,7 @@ add_filter( 'kirki/enqueue_google_fonts', 'mai_add_body_font_variants' );
 /**
  * Automatically load italic and bold variations of body font family.
  *
- * @since 1.0.0
+ * @since 2.0.0
  *
  * @param $fonts
  *
@@ -98,7 +98,7 @@ add_filter( 'kirki/enqueue_google_fonts', 'mai_add_extra_google_fonts' );
 /**
  * Load any other Google font families defined in the config.
  *
- * @since 1.0.0
+ * @since 2.0.0
  *
  * @param $fonts
  *
@@ -138,7 +138,7 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_fonts_custom_properties' );
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 2.0.0
  *
  * @param $css
  *

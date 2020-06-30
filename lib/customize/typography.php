@@ -11,9 +11,9 @@
 
 add_action( 'init', 'mai_typography_customizer_settings' );
 /**
- * Add base styles customizer settings.
+ * Add Customizer font settings.
  *
- * @since 0.3.0
+ * @since 2.0.0
  *
  * @return void
  */
