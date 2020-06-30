@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || die;
 
 add_filter( 'kirki/enqueue_google_fonts', 'mai_add_body_font_variants' );
 /**
- * Description of expected behavior.
+ * Automatically load italic and bold variations of body font family.
  *
  * @since 1.0.0
  *
@@ -23,52 +23,80 @@ add_filter( 'kirki/enqueue_google_fonts', 'mai_add_body_font_variants' );
  * @return mixed
  */
 function mai_add_body_font_variants( $fonts ) {
-	$default = mai_get_global_styles( 'fonts' )['body'];
-	$option  = mai_get_option( 'body-typography' );
-	$body    = mai_isset( $option, 'font-family', $default );
+	$default_family  = mai_get_font_family( 'body' );
+	$default_weights = mai_get_font_weights( 'body' );
+	$font_option     = mai_get_option( 'body-typography' );
+	$font_family     = mai_isset( $font_option, 'font-family', $default_family );
 
-	if ( is_string( $body ) && isset( $fonts[ $body ] ) ) {
+	// Return early if family not chosen.
+	if ( ! isset( $fonts[ $font_family ] ) ) {
+		return $fonts;
+	}
 
-		/**
-		 * @var Kirki_Fonts $kirki_fonts
-		 */
-		$kirki_fonts  = Kirki_Fonts::get_instance();
-		$google_fonts = $kirki_fonts::get_google_fonts();
+	/**
+	 * @var Kirki_Fonts $kirki_fonts
+	 */
+	$kirki_fonts  = Kirki_Fonts::get_instance();
+	$google_fonts = $kirki_fonts::get_google_fonts();
 
-		if ( isset( $google_fonts[ $body ] ) ) {
-			$variants       = $google_fonts[ $body ]['variants'];
-			$chosen_variant = $fonts[ $body ][0];
+	// Return early if not a Google font.
+	if ( ! isset( $google_fonts[ $font_family ] ) ) {
+		return $fonts;
+	}
 
-			// Load italic font variant.
-			if ( 'regular' !== $chosen_variant && isset( $variants[ $chosen_variant . 'italic' ] ) ) {
-				$fonts[ $body ][] = $chosen_variant . 'italic';
-			} else {
-				$fonts[ $body ][] = 'italic';
-			}
+	$variants = $google_fonts[ $font_family ]['variants'];
+	$chosen   = isset( $fonts[ $font_family ][0] ) ? $fonts[ $font_family ][0] : 'regular';
+	$italic   = 'italic';
 
-			// List or bold variants in order of least importance.
-			$bold_variants = [
-				'900',
-				'800',
-				'500',
-				'700',
-				'600',
-			];
+	if ( isset( $variants[ $chosen . 'italic' ] ) ) {
+		$italic = $chosen . 'italic';
 
-			foreach ( $bold_variants as $bold_variant ) {
-				if ( isset( $variants[ $bold_variant ] ) ) {
-					$fonts[ $body ][] = $bold_variant;
-				}
+	} else if ( ! empty( $default_weights ) ) {
+		foreach ( $default_weights as $weight ) {
+			if ( mai_has_string( 'italic', $weight ) ) {
+				$italic = $weight;
 			}
 		}
 	}
+
+	$fonts[ $font_family ][] = $italic;
+
+	/*
+	 * List bold variants in order of importance.
+	 * We try to use 600 first, if not available then try 700 and so on.
+	 */
+	$bold_variants = [
+		'600',
+		'700',
+		'500',
+		'800',
+		'900',
+	];
+
+	// Prioritize bold set in config (if it exists).
+	foreach ( $default_weights as $weight ) {
+		if ( in_array( $weight, $bold_variants, true ) ) {
+			$bold_variants = array_merge( [ $weight ], $bold_variants );
+		}
+	}
+
+	$bold = false;
+
+	// Check if variant is available for family.
+	foreach ( $bold_variants as $bold_variant ) {
+		if ( ! $bold && in_array( $bold_variant, $variants, true ) ) {
+			$bold = $bold_variant;
+		}
+	}
+
+	$fonts[ $font_family ][] = $bold;
 
 	return $fonts;
 }
 
 add_filter( 'kirki/enqueue_google_fonts', 'mai_add_extra_google_fonts' );
 /**
- * Description of expected behavior.
+ * Load any other Google font families defined in the config.
  *
  * @since 1.0.0
  *
@@ -78,12 +106,10 @@ add_filter( 'kirki/enqueue_google_fonts', 'mai_add_extra_google_fonts' );
  */
 function mai_add_extra_google_fonts( $fonts ) {
 	$fonts_config = mai_get_global_styles( 'fonts' );
-	$font_weights = mai_get_global_styles( 'font-weights' );
 
-	foreach ( $fonts_config as $font ) {
-		if ( 'body' === $font || 'heading' === $font ) {
-			continue;
-		}
+	foreach ( $fonts_config as $element => $args ) {
+		$font_family  = mai_get_font_family( $element );
+		$font_weights = mai_get_font_weights( $element );
 
 		/**
 		 * @var Kirki_Fonts $kirki_fonts
@@ -91,50 +117,19 @@ function mai_add_extra_google_fonts( $fonts ) {
 		$kirki_fonts  = Kirki_Fonts::get_instance();
 		$google_fonts = $kirki_fonts::get_google_fonts();
 
-		if ( isset( $google_fonts[ $font ] ) ) {
-			$variants = $google_fonts[ $font ]['variants'];
+		// Return early if not a Google Font.
+		if ( ! isset( $google_fonts[ $font_family ] ) ) {
+			return $fonts;
+		}
 
-			if ( isset( $font_weights[ $font ] ) && isset( $variants[ $font_weights[ $font ] ] ) ) {
-				$fonts[ $font ] = [
-					$font_weights[ $font ],
-				];
-			} else {
-				$fonts[ $font ] = [
-					'regular',
-				];
+		$variants = $google_fonts[ $font_family ]['variants'];
+
+		foreach ( $font_weights as $font_weight ) {
+			if ( in_array( $font_weight, $variants, true ) ) {
+				$fonts[ $font_family ][] = $font_weight;
 			}
 		}
 	}
 
 	return $fonts;
-}
-
-add_filter( 'kirki_mai-engine_styles', 'mai_add_fonts_custom_properties' );
-/**
- * Output breakpoint custom property.
- *
- * @since 2.0.0
- *
- * @param $css
- *
- * @return mixed
- */
-function mai_add_fonts_custom_properties( $css ) {
-	$font_families = mai_get_global_styles( 'fonts' );
-
-	foreach ( $font_families as $element => $font_family ) {
-		if ( 'body' !== $element && 'heading' !== $element ) {
-			$css['global'][':root'][ '--' . $element . '-font-family' ] = $font_family;
-		}
-	}
-
-	$font_weights = mai_get_global_styles( 'font-weights' );
-
-	foreach ( $font_weights as $element => $font_weight ) {
-		if ( 'body' !== $element && 'heading' !== $element ) {
-			$css['global'][':root'][ '--' . $element . '-font-weight' ] = $font_weight;
-		}
-	}
-
-	return $css;
 }

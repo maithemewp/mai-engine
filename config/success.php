@@ -23,8 +23,8 @@ return [
 			'heading'           => '#232c39',
 		],
 		'fonts'      => [
-			'body'    => 'Hind',
-			'heading' => 'Montserrat',
+			'body'    => 'Hind:400',
+			'heading' => 'Montserrat:600',
 		],
 	],
 	'theme-support' => [

@@ -20,8 +20,8 @@ return [
 	*/
 
 	'global-styles' => [
-		'breakpoint'   => 1200,
-		'colors'       => [
+		'breakpoint' => 1200,
+		'colors'     => [
 			'link'                        => '#007bff',
 			'button-background'           => '#007bff',
 			'button-secondary-background' => '#8f98a3',
@@ -29,18 +29,14 @@ return [
 			'body'                        => '#8f98a3',
 			'body-background'             => '#ffffff',
 		],
-		'fonts'        => [
-			'body'    => 'sans-serif',
-			'heading' => 'sans-serif',
+		'fonts'      => [
+			'body'    => 'sans-serif:400',
+			'heading' => 'sans-serif:600',
 		],
-		'font-weights' => [
-			'body'    => '400',
-			'heading' => '600',
-		],
-		'font-sizes'   => [
+		'font-sizes' => [
 			'base' => 16,
 		],
-		'font-scale'   => 1.25,
+		'font-scale' => 1.25,
 	],
 
 	/*

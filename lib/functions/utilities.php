@@ -460,7 +460,53 @@ function mai_get_font_sizes() {
 }
 
 /**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param $element
+ *
+ * @return string
+ */
+function mai_get_font_family( $element ) {
+	$fonts = mai_get_global_styles( 'fonts' );
+
+	return explode( ':', $fonts[ $element ] )[0];
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param $element
+ *
+ * @return array
+ */
+function mai_get_font_weights( $element ) {
+	$fonts   = mai_get_global_styles( 'fonts' );
+	$weights = explode( ',', explode( ':', $fonts[ $element ] )[1] );
+
+	// Use 400 as fallback if no weights set.
+	return empty( $weights ) ? [ '400' ] : $weights;
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param $element
+ *
+ * @return string
+ */
+function mai_get_font_weight( $element ) {
+	return mai_get_font_weights( $element )[0];
+}
+
+/**
  * Check if a color is light.
+ *
  * This helps with accessibility decisions to determine
  * whether to use a light or dark background or text color.
  *

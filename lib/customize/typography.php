@@ -95,8 +95,8 @@ function mai_typography_customizer_settings() {
 			'section'  => $section,
 			'label'    => __( 'Body', 'mai-engine' ),
 			'default'  => [
-				'font-family' => $global_styles['fonts']['body'],
-				'font-weight' => $global_styles['font-weights']['body'],
+				'font-family' => mai_get_font_family( 'body' ),
+				'font-weight' => mai_get_font_weight( 'body' ),
 			],
 			'output'   => [
 				[
@@ -123,8 +123,8 @@ function mai_typography_customizer_settings() {
 			'section'  => $section,
 			'label'    => __( 'Heading', 'mai-engine' ),
 			'default'  => [
-				'font-family' => $global_styles['fonts']['heading'],
-				'font-weight' => $global_styles['font-weights']['heading'],
+				'font-family' => mai_get_font_family( 'heading' ),
+				'font-weight' => mai_get_font_weight( 'heading' ),
 			],
 			'output'   => [
 				[
