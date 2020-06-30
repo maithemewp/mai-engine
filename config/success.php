@@ -18,8 +18,8 @@ return [
 	'global-styles' => [
 		'breakpoint' => 1200,
 		'colors'     => [
+			'link'              => '#fb2056',
 			'button-background' => '#fb2056',
-			'link'              => mai_get_color_variant( '#fb2056', 'dark' ),
 			'heading'           => '#232c39',
 		],
 		'fonts'      => [

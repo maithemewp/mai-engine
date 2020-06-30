@@ -353,6 +353,46 @@ li.customize-control-kirki-color-palette .colors-wrapper input:checked + label .
 	width: calc(100% - 16px) !important;
 }
 
+// Repeater field.
+
+#customize-control-mai-engine-custom-colors {
+
+	.repeater-row {
+		margin: 0;
+		padding: 0.8rem 0;
+		background: transparent;
+		border: 0;
+	}
+
+	.repeater-row-header {
+		padding: 0 0 0.5rem;
+		background: transparent;
+		border: 0;
+		cursor: default;
+		pointer-events: none;
+	}
+
+	.repeater-row-label {
+		font-size: 14px;
+		cursor: default;
+	}
+
+	.repeater-minimize {
+		display: none;
+	}
+
+	.repeater-row-content {
+		padding: 0;
+		background: transparent;
+	}
+
+	.repeater-field {
+		margin-bottom: 0;
+		padding-bottom: 0.5rem;
+		border: 0;
+	}
+}
+
 // Theme settings panel ordering.
 
 #customize-theme-controls #sub-accordion-panel-mai-engine {

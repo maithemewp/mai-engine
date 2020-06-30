@@ -22,7 +22,7 @@ return [
 	'global-styles' => [
 		'breakpoint'   => 1200,
 		'colors'       => [
-			'link'                        => mai_get_color_variant( '#007bff', 'dark' ),
+			'link'                        => '#007bff',
 			'button-background'           => '#007bff',
 			'button-secondary-background' => '#8f98a3',
 			'heading'                     => '#2e3338',

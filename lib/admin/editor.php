@@ -18,7 +18,7 @@ add_action( 'after_setup_theme', 'mai_add_editor_color_palette' );
  * @return void
  */
 function mai_add_editor_color_palette() {
-	add_theme_support( 'editor-color-palette', mai_get_color_palette() );
+	add_theme_support( 'editor-color-palette', mai_get_editor_color_palette() );
 }
 
 add_action( 'after_setup_theme', 'mai_add_editor_font_sizes' );

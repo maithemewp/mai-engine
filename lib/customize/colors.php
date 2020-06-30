@@ -18,19 +18,19 @@ add_action( 'init', 'mai_colors_customizer_settings' );
  * @return void
  */
 function mai_colors_customizer_settings() {
-	$handle        = mai_get_handle();
-	$section       = $handle . '-colors';
-	$global_styles = mai_get_colors();
+	$handle  = mai_get_handle();
+	$section = $handle . '-colors';
 
 	\Kirki::add_section(
 		$section,
 		[
-			'title' => esc_html__( 'Colors', 'mai-engine' ),
+			'title' => __( 'Colors', 'mai-engine' ),
 			'panel' => $handle,
 		]
 	);
 
-	$colors = [
+	// Get original colors for backwards compatibility.
+	$elements = [
 		'body-background'             => 'lightest',
 		'body'                        => 'dark',
 		'heading'                     => 'darkest',
@@ -39,34 +39,54 @@ function mai_colors_customizer_settings() {
 		'button-secondary-background' => 'secondary',
 	];
 
-	foreach ( $colors as $color => $original ) {
-		$args             = [];
-		$args['type']     = 'color';
-		$args['settings'] = 'color-' . $color;
-		$args['label']    = mai_convert_case( $color, 'title' ) . __( ' Color', 'mai-engine' );
-		$args['default']  = mai_get_option( 'color-' . $original, $global_styles[ $color ] );
-		$args['section']  = $section;
-		$args['choices']  = [
-			'palettes' => mai_get_color_choices(),
-		];
-		$args['output']   = [
-			[
-				'element'  => ':root',
-				'property' => '--' . $color . '-color',
-				'context'  => [ 'front', 'editor' ],
+	$defaults = mai_get_global_styles( 'colors' );
+
+	foreach ( $elements as $element => $default ) {
+		$args = [
+			'type'     => 'color',
+			'settings' => $element . '-color',
+			'label'    => mai_convert_case( $element, 'title' ),
+			'section'  => $section,
+			'default'  => mai_get_option( 'color-' . $default, $defaults[ $element ] ),
+			'choices'  => [
+				'alpha' => true,
 			],
-			[
-				'element'  => '.has-' . $color . '-color',
-				'property' => 'color',
-				'context'  => [ 'front', 'editor' ],
-			],
-			[
-				'element'  => '.has-' . $color . '-background-color',
-				'property' => 'background-color',
-				'context'  => [ 'front', 'editor' ],
+			'output'   => [
+				[
+					'element'  => ':root',
+					'property' => '--' . $element . '-color',
+					'context'  => [ 'front', 'editor' ],
+				],
 			],
 		];
 
 		\Kirki::add_field( $handle, $args );
 	}
+
+	\Kirki::add_field(
+		$handle,
+		[
+			'type'         => 'repeater',
+			'label'        => '', // No label.
+			'section'      => $section,
+			'button_label' => __( 'Add New Color ', 'mai-engine' ),
+			'settings'     => 'custom-colors',
+			'default'      => [],
+			'row_label' => [
+				'type'  => 'text',
+				'value' => __( 'Custom Color', 'mai-engine' ),
+			],
+			'fields'       => [
+				'color' => [
+					'type'    => 'color',
+					'label'   => '',
+					'default' => '',
+					'alpha'   => true,
+					'choices' => [
+						'alpha' => true,
+					],
+				],
+			],
+		]
+	);
 }

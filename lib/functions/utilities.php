@@ -364,10 +364,20 @@ function mai_get_color( $name = '' ) {
  *
  * @return array
  */
-function mai_get_color_palette() {
+function mai_get_editor_color_palette() {
 	$colors  = mai_get_colors();
+	$custom  = mai_get_option( 'custom-colors', [] );
 	$values  = [];
 	$palette = [];
+	$count   = 1;
+
+	foreach ( $custom as $args ) {
+		if ( isset( $args['color'] ) ) {
+			$colors[ 'custom-' . $count ] = $args['color'];
+		}
+
+		$count++;
+	}
 
 	foreach ( $colors as $name => $hex ) {
 
@@ -378,10 +388,11 @@ function mai_get_color_palette() {
 
 		$values[] = $hex;
 
+		// Add color.
 		$palette[] = [
-			'name'  => mai_convert_case( $name, 'title' ),
+			'name'  => '', // No label, defaults to "Color code: #123456".
 			'slug'  => mai_convert_case( $name, 'kebab' ),
-			'color' => $hex,
+			'color' => mai_get_option( $name . '-color', $hex ),
 		];
 	}
 
@@ -396,7 +407,14 @@ function mai_get_color_palette() {
  * @return array
  */
 function mai_get_color_choices() {
-	return array_values( array_unique( mai_get_colors() ) );
+	$color_choices = [];
+	$color_palette = mai_get_editor_color_palette();
+
+	foreach ( $color_palette as $color ) {
+		$color_choices[ $color['slug'] ] = $color['color'];
+	}
+
+	return $color_choices;
 }
 
 /**
@@ -1333,7 +1351,7 @@ function mai_get_dom_document( $html ) {
  * @return array
  */
 function mai_get_editor_localized_data() {
-	$palette = mai_get_color_palette();
+	$palette = mai_get_editor_color_palette();
 	$palette = wp_list_pluck( $palette, 'color', 'slug' );
 
 	unset( $palette['black'] ); // Too many for iris picker, we need to remove some.
