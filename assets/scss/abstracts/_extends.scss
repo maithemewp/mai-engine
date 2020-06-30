@@ -87,9 +87,11 @@
 @mixin button-style($style) {
 
 	@if ("secondary" == $style) {
+		color: var(--button-secondary-color); // No fallback, always output by Kirki.
 		background-color: var(--button-secondary-background-color); // No fallback, always output by Kirki.
 
 		@include hover-focus {
+			color: var(--button-secondary-color); // No fallback, always output by Kirki.
 			background-color: var(--button-secondary-background-color); // No fallback, always output by Kirki.
 		}
 	}
