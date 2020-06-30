@@ -78,11 +78,6 @@ function mai_colors_customizer_settings() {
 				'value' => __( 'Custom Color', 'mai-engine' ),
 			],
 			'fields'       => [
-				'slug'  => [
-					'type'    => 'text',
-					'label'   => '',
-					'default' => 'Custom',
-				],
 				'color' => [
 					'type'    => 'color',
 					'label'   => '',
