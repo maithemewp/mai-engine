@@ -133,3 +133,24 @@ function mai_add_extra_google_fonts( $fonts ) {
 
 	return $fonts;
 }
+
+add_filter( 'kirki_mai-engine_styles', 'mai_add_fonts_custom_properties' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param $css
+ *
+ * @return mixed
+ */
+function mai_add_fonts_custom_properties( $css ) {
+	$fonts = mai_get_global_styles( 'fonts' );
+
+	foreach ( $fonts as $element => $string ) {
+		$css['global'][':root'][ '--' . $element . '-font-family' ] = mai_get_font_family( $element );
+		$css['global'][':root'][ '--' . $element . '-font-weight' ] = mai_get_font_weight( $element );
+	}
+
+	return $css;
+}
