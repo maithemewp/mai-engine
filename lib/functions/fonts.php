@@ -148,6 +148,10 @@ function mai_add_fonts_custom_properties( $css ) {
 	$fonts = mai_get_global_styles( 'fonts' );
 
 	foreach ( $fonts as $element => $string ) {
+		if ( 'body' === $element || 'heading' === $element ) {
+			continue;
+		}
+
 		$css['global'][':root'][ '--' . $element . '-font-family' ] = mai_get_font_family( $element );
 		$css['global'][':root'][ '--' . $element . '-font-weight' ] = mai_get_font_weight( $element );
 	}
