@@ -484,11 +484,19 @@ function mai_get_font_family( $element ) {
  * @return array
  */
 function mai_get_font_weights( $element ) {
-	$fonts   = mai_get_global_styles( 'fonts' );
-	$weights = explode( ',', explode( ':', $fonts[ $element ] )[1] );
+	$fallback = [ 'regular' ];
+	$fonts    = mai_get_global_styles( 'fonts' );
+	$string   = explode( ':', $fonts[ $element ] );
+	$weights  = isset( $string[1] ) ? explode( ',', $string[1] ) : $fallback;
 
-	// Use 400 as fallback if no weights set.
-	return empty( $weights ) ? [ '400' ] : $weights;
+	// Convert 400 to regular for Kirki compatibility.
+	foreach ( $weights as $index => $weight ) {
+		if ( '400' === $weight ) {
+			$weights[ $index ] = 'regular';
+		}
+	}
+
+	return $weights;
 }
 
 /**
