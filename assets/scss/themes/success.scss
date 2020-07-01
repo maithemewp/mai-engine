@@ -13,8 +13,10 @@
 	--entry-border: 0;
 }
 
-.site-footer {
+.has-heading-background-color {
 	--link-color: currentColor;
+	--heading-color: var(--color-body);
 	--input-background-color: transparent;
-	--input-border: var(--border-size) var(--border-style) var(--color-medium);
+	--input-placeholder-color: var(--body-color);
+	--input-border: 2px solid var(--body-color);
 }
