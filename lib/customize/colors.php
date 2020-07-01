@@ -31,20 +31,19 @@ function mai_colors_customizer_settings() {
 
 	// Get original colors for backwards compatibility.
 	$elements = [
-		'body-background'             => 'lightest',
-		'body'                        => 'dark',
-		'heading'                     => 'darkest',
-		'link'                        => 'primary',
-		'button-background'           => 'primary',
-		'button'                      => 'lightest',
-		'button-secondary-background' => 'secondary',
-		'button-secondary'            => 'lightest',
+		'background' => 'lightest',
+		'body'       => 'dark',
+		'heading'    => 'darkest',
+		'link'       => 'primary',
+		'primary'    => 'primary',
+		'secondary'  => 'secondary',
 	];
 
 	$defaults = mai_get_global_styles( 'colors' );
 
 	foreach ( $elements as $element => $default ) {
-		$label = mai_has_string( 'background', $element ) ? $element : $element . __( ' Text', 'mai-engine' );
+		$buttons = [ 'primary', 'secondary', ];
+		$label   = in_array( $element, $buttons, true ) ? __( 'Button ', 'mai-engine' ) . $element : $element;
 
 		$args = [
 			'type'     => 'color',
@@ -61,6 +60,18 @@ function mai_colors_customizer_settings() {
 					'element'  => ':root',
 					'property' => '--' . $element . '-color',
 					'context'  => [ 'front', 'editor' ],
+				],
+				[
+					'element'       => '.has-' . $element . '-color',
+					'property'      => 'color',
+					'value_pattern' => 'var(--' . $element . '-color)',
+					'context'       => [ 'front', 'editor' ],
+				],
+				[
+					'element'       => '.has-' . $element . '-background-color',
+					'property'      => 'background-color',
+					'value_pattern' => 'var(--' . $element . '-color)',
+					'context'       => [ 'front', 'editor' ],
 				],
 			],
 		];

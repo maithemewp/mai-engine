@@ -13,33 +13,33 @@
 defined( 'ABSPATH' ) || die;
 
 return [
-	'demos'             => [],
-	'global-styles'     => [
+	'demos'         => [],
+	'global-styles' => [
 		'colors' => [
-			'link'                        => '#067ccc',
-			'button-background'           => '#067ccc',
-			'button-secondary-background' => '#6c757d',
-			'heading'                     => '#323232',
-			'body'                        => '#515151',
+			'link'      => '#067ccc',
+			'primary'   => '#067ccc',
+			'secondary' => '#6c757d',
+			'heading'   => '#323232',
+			'body'      => '#515151',
 		],
 		'fonts'  => [
 			'body'    => 'Open Sans:400',
 			'heading' => 'Playfair Display:700',
 		],
 	],
-	'theme-support'     => [
+	'theme-support' => [
 		'add' => [
 			'sticky-header',
 		],
 	],
-	'image-sizes'       => [
+	'image-sizes'   => [
 		'add' => [
 			'landscape' => '4:3',
 			'portrait'  => '3:4',
 			'square'    => '1:1',
 		],
 	],
-	'page-header'       => [
+	'page-header'   => [
 		'archive' => [ 'category', 'product', 'post' ],
 		'single'  => [ 'page', 'post' ],
 	],

@@ -16,11 +16,11 @@ return [
 	],
 	'global-styles'    => [
 		'colors' => [
-			'link'                        => '#7b51ff',
-			'button-background'           => '#7b51ff',
-			'button-secondary-background' => '#8f98a3',
-			'heading'                     => '#4b657e',
-			'body'                        => '#5f749e',
+			'link'      => '#7b51ff',
+			'primary'   => '#7b51ff',
+			'secondary' => '#8f98a3',
+			'heading'   => '#4b657e',
+			'body'      => '#5f749e',
 		],
 		'fonts'  => [
 			'body'    => 'Karla:400',

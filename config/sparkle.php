@@ -24,11 +24,11 @@ return [
 	],
 	'global-styles'     => [
 		'colors'     => [
-			'body-background'   => '#fdf3f2',
-			'button-background' => '#f98588',
-			'link'              => '#f98588',
-			'heading'           => '#000000',
-			'body'              => '#7f7d7e',
+			'background' => '#fdf3f2',
+			'primary'    => '#f98588',
+			'link'       => '#f98588',
+			'heading'    => '#000000',
+			'body'       => '#7f7d7e',
 		],
 		'fonts'      => [
 			'body'    => 'Work Sans:400',

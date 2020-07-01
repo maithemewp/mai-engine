@@ -22,16 +22,14 @@ return [
 	'global-styles' => [
 		'breakpoint' => 1200,
 		'colors'     => [
-			'black'                       => '#000000',
-			'white'                       => '#ffffff',
-			'body-background'             => '#ffffff',
-			'body'                        => '#8f98a3',
-			'heading'                     => '#2e3338',
-			'link'                        => '#007bff',
-			'button-background'           => '#007bff',
-			'button'                      => '#ffffff',
-			'button-secondary-background' => '#8f98a3',
-			'button-secondary'            => '#ffffff',
+			'black'      => '#000000',
+			'white'      => '#ffffff',
+			'background' => '#ffffff',
+			'body'       => '#8f98a3',
+			'heading'    => '#2e3338',
+			'link'       => '#007bff',
+			'primary'    => '#007bff', // Button primary.
+			'secondary'  => '#8f98a3', // Button secondary.
 		],
 		'fonts'      => [
 			'body'    => 'sans-serif:400',

@@ -16,12 +16,12 @@ return [
 		'business' => 5,
 	],
 	'global-styles' => [
-		'colors'     => [
-			'link'              => '#fb2056',
-			'button-background' => '#fb2056',
-			'heading'           => '#232c39',
+		'colors' => [
+			'link'    => '#fb2056',
+			'primary' => '#fb2056',
+			'heading' => '#232c39',
 		],
-		'fonts'      => [
+		'fonts'  => [
 			'body'    => 'Hind:400',
 			'heading' => 'Montserrat:600',
 			'button'  => 'Montserrat:600',

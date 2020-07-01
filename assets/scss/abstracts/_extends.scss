@@ -36,7 +36,7 @@
 	width: auto;
 	margin: var(--button-margin, 0);
 	padding: var(--button-padding, (1em 2em));
-	color: var(--button-color, var(--color-white));
+	color: var(--button-color); // No fallback, always output by Kirki.
 	font-weight: var(--button-font-weight, var(--heading-font-weight));
 	font-size: var(--button-font-size, var(--font-size-base));
 	font-family: var(--button-font-family); // No fallback, always output by Kirki.
@@ -47,7 +47,7 @@
 	text-transform: var(--button-text-transform, none);
 	text-decoration: var(--button-text-decoration, none);
 	overflow-wrap: var(--button-overflow-wrap, break-word);
-	background-color: var(--button-background-color); // No fallback, always output by Kirki.
+	background: var(--button-background-color, var(--primary-color)); // No fallback, always output by Kirki.
 	border: var(--button-border, 0);
 	border-radius: var(--button-border-radius, var(--border-radius));
 	outline: var(--button-outline, (none));
@@ -60,9 +60,9 @@
 	&:hover,
 	&:focus {
 		--button-overlay-opacity: var(--button-overlay-opacity-hover, 0.2);
-		color: var(--button-color, var(--color-white));
+		color: var(--button-color-hover, var(--button-color));
 		text-decoration: var(--button-text-decoration-hover, none);
-		background-color: var(--button-background-hover, var(--button-background-color));
+		background: var(--button-background-hover, var(--primary-color));
 		outline: var(--button-outline-hover, (none));
 		box-shadow: var(--button-box-shadow-hover, var(--button-box-shadow));
 		transform: var(--button-transform-hover, var(--button-transform, scale(1))); // Pseudo element z-index hack.
@@ -88,22 +88,22 @@
 
 	@if ("secondary" == $style) {
 		color: var(--button-secondary-color); // No fallback, always output by Kirki.
-		background-color: var(--button-secondary-background-color); // No fallback, always output by Kirki.
+		background: var(--button-secondary-background-color, var(--secondary-color)); // No fallback, always output by Kirki.
 
 		@include hover-focus {
 			color: var(--button-secondary-color); // No fallback, always output by Kirki.
-			background-color: var(--button-secondary-background-color); // No fallback, always output by Kirki.
+			background: var(--button-secondary-background-color, var(--secondary-color)); // No fallback, always output by Kirki.
 		}
 	}
 
 	@if ("outline" == $style) {
-		color: var(--button-background-color);
+		color: var(--button-background-color, var(--primary-color));
 		line-height: calc(1em - 4px); // Makes height same as button with no border.
 		background: transparent;
 		border: 2px solid currentColor; // Same as Gutenberg default styles.
 
 		@include hover-focus {
-			color: var(--button-background-color);
+			color: var(--button-background-color, var(--secondary-color));
 			background: transparent;
 			border-color: currentColor;
 		}

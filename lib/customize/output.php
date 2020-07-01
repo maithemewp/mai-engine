@@ -44,21 +44,19 @@ function mai_add_colors_css( $css ) {
 	$colors   = array_diff_key( $defaults, array_flip(
 		[
 			'link',
-			'button',
-			'button-background',
-			'button-secondary',
-			'button-secondary-background',
+			'primary',
+			'secondary',
 			'heading',
 			'body',
-			'body-background',
+			'background',
 		]
-	));
+	) );
 
 	if ( $colors ) {
 		foreach ( $colors as $name => $color ) {
 			if ( $color ) {
-				$css['global'][':root'][ '--color-' . $name ] = $color;
-				$css['global'][ '.has-' . $name . '-color' ]['color'] = 'var( --color-' . $name . ')';
+				$css['global'][':root'][ '--color-' . $name ]                               = $color;
+				$css['global'][ '.has-' . $name . '-color' ]['color']                       = 'var( --color-' . $name . ')';
 				$css['global'][ '.has-' . $name . '-background-color' ]['background-color'] = 'var( --color-' . $name . ')';
 			}
 		}
@@ -73,7 +71,7 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_custom_color_css' );
  *
  * @since 2.0.0
  *
- * @param $css
+ * @param array $css Kirki CSS array.
  *
  * @return mixed
  */
@@ -91,6 +89,34 @@ function mai_add_custom_color_css( $css ) {
 
 			$count++;
 		}
+	}
+
+	return $css;
+}
+
+add_filter( 'kirki_mai-engine_styles', 'mai_add_button_text_colors' );
+/**
+ * Output breakpoint custom property.
+ *
+ * @since 2.0.0
+ *
+ * @param $css
+ *
+ * @return mixed
+ */
+function mai_add_button_text_colors( $css ) {
+	$buttons = [
+		'primary'   => '',
+		'secondary' => 'secondary-',
+	];
+
+	foreach ( $buttons as $button => $suffix ) {
+		$color   = mai_get_option( $button . '-color', mai_get_color( $button ) );
+		$light   = mai_is_light_color( $color );
+		$heading = mai_get_option( 'heading-color', mai_get_color( 'heading' ) );
+		$text    = $light ? $heading : mai_get_color( 'white' );
+
+		$css['global'][':root'][ '--button-' . $suffix . 'color' ] = $text;
 	}
 
 	return $css;

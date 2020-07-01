@@ -10,19 +10,19 @@
  */
 
 return [
-	'demos'             => [
+	'demos'  => [
 		// 'law'      => 9,
 		'news' => 10,
 		// 'personal' => 11,
 	],
-	'colors'            => [
-		'link'                        => '#777777',
-		'button-background'           => '#000000',
-		'button-secondary-background' => '#777777',
-		'heading'                     => '#000000',
-		'body'                        => '#777777',
+	'colors' => [
+		'link'      => '#777777',
+		'primary'   => '#000000',
+		'secondary' => '#777777',
+		'heading'   => '#000000',
+		'body'      => '#777777',
 	],
-	'fonts'             => [
+	'fonts'  => [
 		'body'    => 'Montserrat:400',
 		'heading' => 'Montserrat:700',
 	],
