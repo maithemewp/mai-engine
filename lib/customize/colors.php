@@ -51,10 +51,6 @@ function mai_colors_customizer_settings() {
 			'label'    => mai_convert_case( $label, 'title' ),
 			'section'  => $section,
 			'default'  => mai_get_option( 'color-' . $default, $defaults[ $element ] ),
-			'choices'  => [
-				'alpha'    => true,
-				'palettes' => mai_get_color_choices(),
-			],
 			'output'   => [
 				[
 					'element'  => ':root',

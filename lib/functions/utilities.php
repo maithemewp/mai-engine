@@ -428,7 +428,7 @@ function mai_get_color_choices() {
 		$color_choices[] = $color['color'];
 	}
 
-	return $color_choices;
+	return array_flip( array_flip( $color_choices ) );
 }
 
 /**
@@ -543,7 +543,7 @@ function mai_get_font_weight( $element ) {
 function mai_is_light_color( $color ) {
 	$color = ariColor::newColor( $color );
 
-	return $color->luminance >= 127;
+	return $color->luminance > apply_filters( 'mai_contrast_ratio', 150 );
 }
 
 /**
