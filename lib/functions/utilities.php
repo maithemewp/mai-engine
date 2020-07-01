@@ -380,19 +380,16 @@ function mai_get_editor_color_palette() {
 		$count++;
 	}
 
-	// Sort colors by saturation (grayscale to colors).
-	$saturation = [];
+	// Sort colors by lightness.
+	$sorted = [];
 
 	foreach ( $colors as $name => $hex ) {
-		$saturation[ $name ] = ariColor::newColor( $hex )->saturation;
+		$sorted[ $name ] = ariColor::newColor( $hex )->lightness;
 	}
 
-	asort( $saturation );
+	asort( $sorted );
 
-	// Reverse so that colors are before grayscale.
-	$order = array_reverse( $saturation );
-
-	foreach ( $order as $name => $saturation ) {
+	foreach ( $sorted as $name => $lightness ) {
 		$hex = $colors[ $name ];
 
 		// Remove duplicate hex codes.
