@@ -54,19 +54,19 @@ function mai_colors_customizer_settings() {
 			'output'   => [
 				[
 					'element'  => ':root',
-					'property' => '--' . $element . '-color',
+					'property' => '--color-' . $element,
 					'context'  => [ 'front', 'editor' ],
 				],
 				[
 					'element'       => '.has-' . $element . '-color',
 					'property'      => 'color',
-					'value_pattern' => 'var(--' . $element . '-color)',
+					'value_pattern' => 'var(--color-' . $element . ')',
 					'context'       => [ 'front', 'editor' ],
 				],
 				[
 					'element'       => '.has-' . $element . '-background-color',
 					'property'      => 'background-color',
-					'value_pattern' => 'var(--' . $element . '-color)',
+					'value_pattern' => 'var(--color-' . $element . ')',
 					'context'       => [ 'front', 'editor' ],
 				],
 			],

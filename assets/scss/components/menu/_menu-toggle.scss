@@ -26,7 +26,7 @@
 	right: auto;
 	bottom: auto;
 	margin: auto;
-	color: var(--menu-toggle-color, var(--heading-color));
+	color: var(--menu-toggle-color, var(--color-heading));
 	background: var(--menu-toggle-icon-background, currentColor);
 	transition: var(--menu-toggle-transition, background 0s 0.2s);
 

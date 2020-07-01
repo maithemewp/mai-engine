@@ -4,7 +4,7 @@
 	--border-radius: 1px;
 	--menu-font-size: var(--font-size-xs);
 	--menu-font-family: var(--heading-font-family);
-	--menu-item-link-color: var(--heading-color);
+	--menu-item-link-color: var(--color-heading);
 }
 
 .site-header,
@@ -13,7 +13,7 @@
 }
 
 .before-header {
-	background: var(--body-background-color);
+	background: var(--color-background);
 }
 
 .nav-header {

@@ -28,7 +28,7 @@ label {
 	transition: var(--input-transition, var(--transition));
 
 	&:focus {
-		border-color: var(--input-border-color-focus, var(--link-color));
+		border-color: var(--input-border-color-focus, var(--color-link));
 		outline: none;
 	}
 

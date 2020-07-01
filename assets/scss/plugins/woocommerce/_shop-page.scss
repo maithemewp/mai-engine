@@ -36,7 +36,7 @@
 .price {
 	display: block;
 	margin-bottom: var(--price-margin-bottom, var(--spacing-md));
-	color: var(--heading-color);
+	color: var(--color-heading);
 	font-size: var(--price-font-size, var(--font-size-xl));
 
 	ins {
@@ -72,7 +72,7 @@
 }
 
 .add_to_cart_button {
-	--button-color: var(--heading-color);
+	--button-color: var(--color-heading);
 	--button-background: var(--color-medium);
 	margin-top: auto;
 	transition: none;

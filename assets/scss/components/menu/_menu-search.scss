@@ -20,12 +20,12 @@
 	--button-overlay-display: none;
 	margin: 0;
 	padding: var(--menu-item-link-padding, (var(--spacing-sm) var(--spacing-xxs)));
-	color: var(--menu-item-link-color, var(--heading-color));
+	color: var(--menu-item-link-color, var(--color-heading));
 	background: transparent;
 
 	&:hover,
 	&:focus {
-		color: var(--menu-item-link-color-hover, var(--link-color));
+		color: var(--menu-item-link-color-hover, var(--color-link));
 		background: transparent;
 	}
 }

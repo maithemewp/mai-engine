@@ -70,11 +70,8 @@
 	margin-bottom: var(--spacing-xl);
 }
 
-
 .comment-reply-link {
-	--button-background: var(--color-medium);
-	--button-color: var(--body-color);
-	--button-padding: 0.75em 1em;
-	--button-font-size: var(--font-size-xs);
-}
 
+	@include button-style("secondary");
+	@include button-style("small");
+}

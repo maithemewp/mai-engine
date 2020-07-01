@@ -1,7 +1,7 @@
 .sub-menu {
 	--menu-item-width: 100%;
 	--menu-item-link-padding: var(--sub-menu-item-link-padding, var(--spacing-xs) var(--spacing-md));
-	--menu-item-link-color: var(--sub-menu-link-color, var(--body-color));
+	--menu-item-link-color: var(--sub-menu-link-color, var(--color-body));
 	--menu-item-link-color-hover: var(--sub-menu-link-color-hover, var(--color-primary));
 
 	position: var(--sub-menu-position, relative);

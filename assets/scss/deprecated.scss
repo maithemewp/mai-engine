@@ -1,11 +1,11 @@
 :root {
-	--color-primary: var(--button-background-color);
-	--color-secondary: var(--button-secondary-background-color);
-	--color-tertiary: var(--button-background-color);
-	--color-darkest: var(--heading-color);
-	--color-darker: var(--heading-color);
-	--color-dark: var(--body-color);
-	--color-medium: var(--body-color);
+	--color-primary: var(--color-primary);
+	--color-secondary: var(--color-secondary);
+	--color-tertiary: var(--color-primary);
+	--color-darkest: var(--color-heading);
+	--color-darker: var(--color-heading);
+	--color-dark: var(--color-body);
+	--color-medium: var(--color-body);
 	--color-light: var(--color-shadow);
 	--color-lighter: var(--color-border);
 	--color-lightest: var(--color-white);
@@ -19,8 +19,8 @@ $colors: (
 	danger: var(--color-danger),
 	warning: var(--color-warning),
 	info: var(--color-info),
-	black: var(--heading-color), // Fallback for .has-black- classes.
-	darkest: var(--heading-color),
+	black: var(--color-heading), // Fallback for .has-black- classes.
+	darkest: var(--color-heading),
 	darker: var(--color-darker),
 	dark: var(--color-dark),
 	medium: var(--color-medium),

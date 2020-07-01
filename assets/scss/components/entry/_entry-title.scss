@@ -13,7 +13,7 @@
 
 .entry-title-link {
 	display: block;
-	color: var(--entry-title-color, var(--body-color));
+	color: var(--entry-title-color, var(--color-body));
 	text-decoration: var(--entry-title-text-decoration, none);
 
 	&:hover,
@@ -25,5 +25,5 @@
 
 .is-archive {
 	--entry-title-font-size: var(--font-size-sm);
-	--entry-title-color: var(--heading-color);
+	--entry-title-color: var(--color-heading);
 }

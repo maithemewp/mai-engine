@@ -32,13 +32,13 @@
 	justify-content: var(--menu-item-link-justify-content, flex-start);
 	width: var(--menu-item-link-width, 100%);
 	padding: var(--menu-item-link-padding, (var(--spacing-sm) var(--spacing-xxs)));
-	color: var(--menu-item-link-color, var(--heading-color));
+	color: var(--menu-item-link-color, var(--color-heading));
 	text-decoration: none;
 
 	&-current,
 	&:hover,
 	&:focus {
-		color: var(--menu-item-link-color-hover, var(--link-color));
+		color: var(--menu-item-link-color-hover, var(--color-link));
 	}
 
 	&.button {
