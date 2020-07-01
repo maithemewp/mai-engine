@@ -19,10 +19,6 @@ add_action( 'after_setup_theme', 'mai_setup', 5 );
  */
 function mai_setup() {
 
-	// Get active theme.
-	$active_theme = mai_get_active_theme();
-	$handle       = mai_get_handle();
-
 	// Get setup configs.
 	$custom_functions  = mai_get_config( 'custom-functions' );
 	$theme_support     = mai_get_config( 'theme-support' );
@@ -34,8 +30,10 @@ function mai_setup() {
 	// Add theme textdomain.
 	load_child_theme_textdomain( genesis_get_theme_handle(), mai_get_dir() . '/assets/lang' );
 
+	$plugin_dir = basename( mai_get_dir() );
+
 	// Add editor styles (uri).
-	add_editor_style( "../../plugins/$handle/assets/css/editor/editor.min.css" );
+	add_editor_style( "../../plugins/$plugin_dir/assets/css/editor/editor.min.css" );
 
 	// Add custom functionality.
 	is_callable( $custom_functions ) ? $custom_functions() : null;
