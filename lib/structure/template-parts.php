@@ -11,9 +11,9 @@
 
 add_action( 'genesis_before', 'mai_render_template_parts' );
 /**
- * Display widget areas defined in config.
+ * Display template parts defined in config.
  *
- * @since 0.1.0
+ * @since 2.0.0
  *
  * @return void
  */
@@ -24,11 +24,10 @@ function mai_render_template_parts() {
 		$id       = $template_part['id'];
 		$hook     = isset( $template_part['location'] ) ? $template_part['location'] : false;
 		$priority = isset( $template_part['priority'] ) ? $template_part['priority'] : 10;
-		$defaults = [
+		$args     = wp_parse_args( $template_part, [
 			'before' => '',
 			'after'  => '',
-		];
-		$args     = isset( $template_part['args'] ) ? wp_parse_args( $template_part['args'], $defaults ) : $defaults;
+		] );
 
 		if ( $hook && ! mai_is_element_hidden( mai_convert_case( $id ) ) ) {
 			add_action(

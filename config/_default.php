@@ -539,6 +539,12 @@ return [
 			'location' => 'genesis_footer',
 			'priority' => 12,
 		],
+		[
+			'id'       => 'mobile_menu',
+			'location' => 'mai_after_header_wrap',
+			'before'   => '<div class="mobile-menu"><div class="wrap">',
+			'after'    => '</div></div>',
+		],
 	],
 
 	/*

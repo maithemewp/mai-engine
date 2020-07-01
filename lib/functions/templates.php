@@ -11,9 +11,9 @@
 
 add_action( 'init', 'mai_register_template_part_cpt' );
 /**
- * Description of expected behavior.
+ * Register template part post type.
  *
- * @since 1.0.0
+ * @since 2.0.0
  *
  * @return void
  */
@@ -76,7 +76,7 @@ function mai_register_template_part_cpt() {
 /**
  * Renders the template part with the given slug.
  *
- * @since 0.1.0
+ * @since 2.0.0
  *
  * @global WP_Post $post   Current WordPress post object.
  *
@@ -126,7 +126,7 @@ function mai_render_template_part( $slug, array $args = [] ) {
 /**
  * Checks whether the template part with the given slug exists.
  *
- * @since 0.1.0
+ * @since 2.0.0
  *
  * @param string $slug Template part slug.
  *
@@ -141,7 +141,7 @@ function mai_template_part_exists( $slug ) {
 /**
  * Gets a template part ID by its slug.
  *
- * @since 0.1.0
+ * @since 2.0.0
  *
  * @param string $slug Template part slug.
  *
@@ -169,9 +169,9 @@ function mai_get_template_part_by_slug( $slug ) {
 
 add_filter( 'display_post_states', 'mai_template_part_post_state', 10, 2 );
 /**
- * Description of expected behavior.
+ * Display active template parts.
  *
- * @since 1.0.0
+ * @since 2.0.0
  *
  * @param array   $states
  * @param WP_Post $post
