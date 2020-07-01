@@ -268,6 +268,7 @@ function mai_load_files() {
 				'admin/settings',
 				'admin/setup-wizard',
 				'admin/term-image',
+				'admin/template-parts',
 				'admin/update-checker',
 				'admin/upgrade',
 			]
