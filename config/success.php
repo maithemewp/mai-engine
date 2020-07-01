@@ -21,7 +21,7 @@ return [
 			'primary'   => '#fb2056',
 			'secondary' => '#8693a6',
 			'heading'   => '#232c39',
-			'light'     => '#f6f7f8',
+			'alt'       => '#f6f7f8',
 		],
 		'fonts'  => [
 			'body'    => 'Hind:400',
@@ -50,4 +50,3 @@ return [
 		],
 	],
 ];
-

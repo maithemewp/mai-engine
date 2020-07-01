@@ -539,8 +539,9 @@ function mai_get_font_weight( $element ) {
  */
 function mai_is_light_color( $color ) {
 	$color = ariColor::newColor( $color );
+	$limit = mai_get_global_styles( 'contrast-limit' );
 
-	return $color->luminance > apply_filters( 'mai_contrast_ratio', 150 );
+	return $color->luminance > $limit;
 }
 
 /**

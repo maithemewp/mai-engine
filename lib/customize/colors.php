@@ -29,9 +29,13 @@ function mai_colors_customizer_settings() {
 		]
 	);
 
-	// Get original colors for backwards compatibility.
-	$elements = [
+	/*
+	 * Get original colors for backwards compatibility.
+	 * Separate array so we can remove easily in future.
+	 */
+	$original = [
 		'background' => 'lightest',
+		'alt'        => 'lighter',
 		'body'       => 'dark',
 		'heading'    => 'darkest',
 		'link'       => 'primary',
@@ -39,34 +43,41 @@ function mai_colors_customizer_settings() {
 		'secondary'  => 'secondary',
 	];
 
+	$colors = [
+		'background' => __( 'Background', 'mai-engine' ),
+		'alt'        => __( 'Background Alt', 'mai-engine' ),
+		'body'       => __( 'Body', 'mai-engine' ),
+		'heading'    => __( 'Heading', 'mai-engine' ),
+		'link'       => __( 'Link', 'mai-engine' ),
+		'primary'    => __( 'Button Primary', 'mai-engine' ),
+		'secondary'  => __( 'Button Secondary', 'mai-engine' ),
+	];
+
 	$defaults = mai_get_global_styles( 'colors' );
 
-	foreach ( $elements as $element => $default ) {
-		$buttons = [ 'primary', 'secondary', ];
-		$label   = in_array( $element, $buttons, true ) ? __( 'Button ', 'mai-engine' ) . $element : $element;
-
+	foreach ( $colors as $id => $label ) {
 		$args = [
 			'type'     => 'color',
-			'settings' => $element . '-color',
-			'label'    => mai_convert_case( $label, 'title' ),
+			'settings' => $id . '-color',
+			'label'    => $label,
 			'section'  => $section,
-			'default'  => mai_get_option( 'color-' . $default, $defaults[ $element ] ),
+			'default'  => mai_get_option( 'color-' . $original[ $id ], $defaults[ $id ] ),
 			'output'   => [
 				[
 					'element'  => ':root',
-					'property' => '--color-' . $element,
+					'property' => '--color-' . $id,
 					'context'  => [ 'front', 'editor' ],
 				],
 				[
-					'element'       => '.has-' . $element . '-color',
+					'element'       => '.has-' . $id . '-color',
 					'property'      => 'color',
-					'value_pattern' => 'var(--color-' . $element . ')',
+					'value_pattern' => 'var(--color-' . $id . ')',
 					'context'       => [ 'front', 'editor' ],
 				],
 				[
-					'element'       => '.has-' . $element . '-background-color',
+					'element'       => '.has-' . $id . '-background-color',
 					'property'      => 'background-color',
-					'value_pattern' => 'var(--color-' . $element . ')',
+					'value_pattern' => 'var(--color-' . $id . ')',
 					'context'       => [ 'front', 'editor' ],
 				],
 			],

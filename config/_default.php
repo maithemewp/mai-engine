@@ -20,25 +20,27 @@ return [
 	*/
 
 	'global-styles' => [
-		'breakpoint' => 1200,
-		'colors'     => [
+		'breakpoint'     => 1200,
+		'colors'         => [
 			'black'      => '#000000',
 			'white'      => '#ffffff',
 			'background' => '#ffffff',
-			'body'       => '#8f98a3',
-			'heading'    => '#2e3338',
+			'alt'        => '#f8f9fa',
+			'body'       => '#6c747d',
+			'heading'    => '#343a40',
 			'link'       => '#007bff',
 			'primary'    => '#007bff', // Button primary.
-			'secondary'  => '#8f98a3', // Button secondary.
+			'secondary'  => '#6c747d', // Button secondary.
 		],
-		'fonts'      => [
+		'fonts'          => [
 			'body'    => 'sans-serif:400',
 			'heading' => 'sans-serif:600',
 		],
-		'font-sizes' => [
+		'font-sizes'     => [
 			'base' => 16,
 		],
-		'font-scale' => 1.25,
+		'font-scale'     => 1.25,
+		'contrast-limit' => 255 / 2,
 	],
 
 	/*
