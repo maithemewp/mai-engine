@@ -20,6 +20,7 @@ return [
 			'link'    => '#fb2056',
 			'primary' => '#fb2056',
 			'heading' => '#232c39',
+			'light'   => '#f6f7f8',
 		],
 		'fonts'  => [
 			'body'    => 'Hind:400',
