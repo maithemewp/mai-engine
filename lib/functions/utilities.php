@@ -371,6 +371,7 @@ function mai_get_editor_color_palette() {
 	$palette = [];
 	$count   = 1;
 
+	// Add custom colors from options.
 	foreach ( $custom as $args ) {
 		if ( isset( $args['color'] ) ) {
 			$colors[ 'custom-' . $count ] = $args['color'];
@@ -379,7 +380,20 @@ function mai_get_editor_color_palette() {
 		$count++;
 	}
 
+	// Sort colors by saturation (grayscale to colors).
+	$saturation = [];
+
 	foreach ( $colors as $name => $hex ) {
+		$saturation[ $name ] = ariColor::newColor( $hex )->saturation;
+	}
+
+	asort( $saturation );
+
+	// Reverse so that colors are before grayscale.
+	$order = array_reverse( $saturation );
+
+	foreach ( $order as $name => $saturation ) {
+		$hex = $colors[ $name ];
 
 		// Remove duplicate hex codes.
 		if ( in_array( $hex, $values, true ) ) {
@@ -973,8 +987,7 @@ function mai_get_loop_content_type_choices( $archive = true ) {
 				unset( $choices[ $name ] );
 			}
 
-		}
-		// If type is a taxonomy.
+		} // If type is a taxonomy.
 		elseif ( taxonomy_exists( $name ) ) {
 			$post_type = mai_get_taxonomy_post_type( $name );
 			if ( $post_type ) {
@@ -1003,13 +1016,14 @@ function mai_get_loop_content_type_choices( $archive = true ) {
  * @return string|false
  */
 function mai_get_taxonomy_post_type( $taxonomy ) {
-	$taxonomy  = get_taxonomy( $taxonomy );
+	$taxonomy = get_taxonomy( $taxonomy );
 	if ( $taxonomy ) {
 		$post_type = reset( $taxonomy->object_type );
 		if ( post_type_exists( $post_type ) ) {
 			return $post_type;
 		}
 	}
+
 	return false;
 }
 
