@@ -163,16 +163,10 @@ function mai_get_version() {
  * @return string
  */
 function mai_get_asset_version( $file ) {
-	$file = str_replace( mai_get_url(), mai_get_dir(), $file );
-
-	if ( mai_has_string( '/mai-fonts/', $file ) ) {
-		$file = mai_has_string( '/mai-fonts/', $file ) ? str_replace( WP_CONTENT_URL, WP_CONTENT_DIR, $file ) : $file;
-		$file = str_replace( '?display=swap', '', $file );
-	}
-
+	$file    = str_replace( mai_get_url(), mai_get_dir(), $file );
 	$version = mai_get_version();
 
-	if ( file_exists( $file ) && ( mai_has_string( mai_get_dir(), $file ) || mai_has_string( '/mai-fonts/', $file ) ) ) {
+	if ( file_exists( $file ) && ( mai_has_string( mai_get_dir(), $file ) ) ) {
 		$version .= '.' . date( 'njYHi', filemtime( $file ) );
 	}
 
@@ -340,21 +334,34 @@ function mai_get_global_styles( $key = '' ) {
  *
  * @return array
  */
-function mai_get_colors() {
+function mai_get_default_colors() {
 	return mai_get_global_styles( 'colors' );
 }
 
 /**
- * Get a single color value from the color palette name.
+ * Returns a single color hex value from the config.
  *
- * @since 0.1.0
+ * @since 2.0.0
  *
  * @param string $name Name of the color to get.
  *
  * @return string
  */
-function mai_get_color( $name = '' ) {
-	return mai_isset( mai_get_colors(), $name, '' );
+function mai_get_default_color( $name ) {
+	return mai_isset( mai_get_default_colors(), $name, '' );
+}
+
+/**
+ * Returns a color option value with config default fallback.
+ *
+ * @since 2.0.0
+ *
+ * @param string $name Name of the color to get.
+ *
+ * @return string
+ */
+function mai_get_color( $name ) {
+	return mai_get_option( 'color-' . $name, mai_get_default_color( $name ) );
 }
 
 /**
@@ -365,7 +372,7 @@ function mai_get_color( $name = '' ) {
  * @return array
  */
 function mai_get_editor_color_palette() {
-	$colors  = mai_get_colors();
+	$colors  = mai_get_default_colors();
 	$custom  = mai_get_option( 'custom-colors', [] );
 	$values  = [];
 	$palette = [];
@@ -403,7 +410,7 @@ function mai_get_editor_color_palette() {
 		$palette[] = [
 			'name'  => '', // No label, defaults to "Color code: #123456".
 			'slug'  => mai_convert_case( $name, 'kebab' ),
-			'color' => mai_get_option( $name . '-color', $hex ),
+			'color' => mai_get_color( $name ),
 		];
 	}
 
@@ -426,101 +433,6 @@ function mai_get_color_choices() {
 	}
 
 	return array_flip( array_flip( $color_choices ) );
-}
-
-/**
- * Returns an array of font sizes based on the font scale.
- *
- * @since 2.0.0
- *
- * @return array
- */
-function mai_get_font_sizes() {
-	$font_sizes    = [];
-	$global_styles = mai_get_global_styles();
-	$scale         = $global_styles['font-scale'];
-	$base          = $global_styles['font-sizes']['base'];
-	$sm            = $base / $scale;
-	$xs            = $sm / $scale;
-	$lg            = $base * $scale;
-	$xl            = $lg * $scale;
-	$xxl           = $xl * $scale;
-	$xxxl          = $xxl * $scale;
-	$xxxxl         = $xxxl * $scale;
-
-	$scale = [
-		'xs'    => $xs,
-		'sm'    => $sm,
-		'md'    => $base,
-		'lg'    => $lg,
-		'xl'    => $xl,
-		'xxl'   => $xxl,
-		'xxxl'  => $xxxl,
-		'xxxxl' => $xxxxl,
-	];
-
-	foreach ( $scale as $slug => $size ) {
-		$font_sizes[] = [
-			'slug' => $slug,
-			'size' => $size,
-			'name' => strtoupper( $slug ),
-		];
-	}
-
-	return $font_sizes;
-}
-
-/**
- * Returns the default font family for an element from the config.
- *
- * @since 2.0.0
- *
- * @param string $element Element to check.
- *
- * @return string
- */
-function mai_get_font_family( $element ) {
-	$fonts = mai_get_global_styles( 'fonts' );
-
-	return explode( ':', $fonts[ $element ] )[0];
-}
-
-/**
- * Returns default font weights for an element from the config.
- *
- * @since 2.0.0
- *
- * @param string $element Element to check.
- *
- * @return array
- */
-function mai_get_font_weights( $element ) {
-	$fallback = [ 'regular' ];
-	$fonts    = mai_get_global_styles( 'fonts' );
-	$string   = explode( ':', $fonts[ $element ] );
-	$weights  = isset( $string[1] ) ? explode( ',', $string[1] ) : $fallback;
-
-	// Convert 400 to regular for Kirki compatibility.
-	foreach ( $weights as $index => $weight ) {
-		if ( '400' === $weight ) {
-			$weights[ $index ] = 'regular';
-		}
-	}
-
-	return $weights;
-}
-
-/**
- * Returns the default font weight for an element from the config.
- *
- * @since 2.0.0
- *
- * @param string $element Element to check.
- *
- * @return string
- */
-function mai_get_font_weight( $element ) {
-	return mai_get_font_weights( $element )[0];
 }
 
 /**

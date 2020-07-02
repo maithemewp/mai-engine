@@ -96,10 +96,10 @@ function mai_typography_customizer_settings() {
 			'settings'    => 'body-typography',
 			'section'     => $section,
 			'label'       => __( 'Body', 'mai-engine' ),
-			'description' => __( 'Default: ', 'mai-engine' ) . mai_get_font_family( 'body' ) . ' ' . mai_get_font_weight( 'body' ),
+			'description' => __( 'Default: ', 'mai-engine' ) . mai_get_default_font_family( 'body' ) . ' ' . mai_get_default_font_weight( 'body' ),
 			'default'     => [
-				'font-family' => mai_get_font_family( 'body' ),
-				'font-weight' => mai_get_font_weight( 'body' ),
+				'font-family' => mai_get_default_font_family( 'body' ),
+				'font-weight' => mai_get_default_font_weight( 'body' ),
 			],
 			'output'      => [
 				[
@@ -125,10 +125,10 @@ function mai_typography_customizer_settings() {
 			'settings'    => 'heading-typography',
 			'section'     => $section,
 			'label'       => __( 'Heading', 'mai-engine' ),
-			'description' => __( 'Default: ', 'mai-engine' ) . mai_get_font_family( 'heading' ) . ' ' . mai_get_font_weight( 'heading' ),
+			'description' => __( 'Default: ', 'mai-engine' ) . mai_get_default_font_family( 'heading' ) . ' ' . mai_get_default_font_weight( 'heading' ),
 			'default'     => [
-				'font-family' => mai_get_font_family( 'heading' ),
-				'font-weight' => mai_get_font_weight( 'heading' ),
+				'font-family' => mai_get_default_font_family( 'heading' ),
+				'font-weight' => mai_get_default_font_weight( 'heading' ),
 			],
 			'output'      => [
 				[
