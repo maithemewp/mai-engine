@@ -49,7 +49,7 @@ function mai_default_social_styles( $defaults ) {
 	// Allow config to set colors by name.
 	foreach ( $args as $key => $value ) {
 		if ( in_array( $key, $color_settings, true ) ) {
-			$colors = array_keys( mai_get_colors() );
+			$colors = array_keys( mai_get_default_colors() );
 
 			if ( in_array( $value, $colors, true ) ) {
 				$args[ $key ] = mai_get_color( $value );

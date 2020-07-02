@@ -139,6 +139,7 @@ function mai_get_template_args() {
 
 	if ( 'archive' === $context ) {
 		$config = mai_get_content_archive_settings();
+
 	} else if ( 'single' === $context ) {
 		$config = mai_get_single_content_settings();
 	}
@@ -157,10 +158,12 @@ function mai_get_template_args() {
 
 	// Remove settings with empty string, since that means use the default.
 	foreach ( $args as $name => $value ) {
+
 		// Skip header and footer meta, empty means empty.
 		if ( in_array( $name, [ 'header_meta', 'footer_meta' ] ) ) {
 			continue;
 		}
+
 		if ( is_null( $value ) || '' === $value ) {
 			unset( $args[ $name ] );
 		}
@@ -173,9 +176,23 @@ function mai_get_template_args() {
 	$args = apply_filters( 'mai_template_args', $args, $context );
 
 	// Sanitize.
-	$args = mai_get_sanitized_entry_args( $args, $settings );
+	return mai_get_sanitized_entry_args( $args, $settings );
+}
 
-	return $args;
+/**
+ * Returns a single template arg.
+ *
+ * @since 2.0.0
+ *
+ * @param string $name    Name of arg to get.
+ * @param mixed  $default Default value.
+ *
+ * @return mixed
+ */
+function mai_get_template_arg( $name, $default = null ) {
+	$args = mai_get_template_args();
+
+	return isset( $args[ $name ] ) ? $args[ $name ] : $default;
 }
 
 /**

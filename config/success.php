@@ -37,9 +37,10 @@ return [
 	'page-header'   => [
 		'archive'          => '*',
 		'single'           => '*',
-		'background-color' => '#232c39',
 		'image'            => '',
+		'background-color' => 'heading',
 		'text-color'       => 'light',
+		'divider-color'    => 'white',
 	],
 	'plugins'       => [
 		[

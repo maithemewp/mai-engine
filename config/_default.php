@@ -25,7 +25,7 @@ return [
 			'black'      => '#000000',
 			'white'      => '#ffffff',
 			'background' => '#ffffff',
-			'alt'        => '#f8f9fa',
+			'alt'        => '#f8f9fa', // Background alt.
 			'body'       => '#6c747d',
 			'heading'    => '#343a40',
 			'link'       => '#007bff',
@@ -473,9 +473,9 @@ return [
 	'page-header' => [
 		'archive'                 => [],
 		'single'                  => [],
-		'background-color'        => 'medium',
+		'background-color'        => 'alt',
 		'image'                   => '',
-		'overlay-opacity'         => '0.5',
+		'overlay-opacity'         => 0.5,
 		'text-color'              => 'dark',
 		'spacing'                 => [
 			'top'    => '10vw',
@@ -483,7 +483,7 @@ return [
 		],
 		'text-align'              => '',
 		'divider'                 => '',
-		'divider-color'           => 'lightest',
+		'divider-color'           => 'white',
 		'divider-flip-horizontal' => false,
 		'divider-flip-vertical'   => false,
 		'divider-overlay-opacity' => 0.5,

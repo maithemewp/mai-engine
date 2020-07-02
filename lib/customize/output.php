@@ -111,7 +111,7 @@ function mai_add_button_text_colors( $css ) {
 	];
 
 	foreach ( $buttons as $button => $suffix ) {
-		$color  = mai_get_option( $button . '-color', mai_get_color( $button ) );
+		$color  = mai_get_color( $button );
 		$darker = mai_get_color_variant( $color, 'dark', 40 );
 		$text   = mai_is_light_color( $color ) ? $darker : mai_get_color( 'white' );
 
@@ -125,20 +125,29 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_page_header_content_type_css' );
 /**
  * Add page header styles to kirki output.
  *
- * @since 0.1.0
+ * @since 2.0.0
  *
  * @param array $css Kirki CSS output.
  *
  * @return array
  */
 function mai_add_page_header_content_type_css( $css ) {
-	$config  = mai_get_config( 'page-header' );
-	$args    = mai_get_template_args();
-	$color   = isset( $args['page-header-background-color'] ) && ! empty( $args['page-header-background-color'] ) ? $args['page-header-background-color'] : mai_get_option( 'page-header-background-color', $config['background-color'] );
-	$opacity = isset( $args['page-header-overlay-opacity'] ) && ! empty( $args['page-header-overlay-opacity'] ) ? $args['page-header-overlay-opacity'] : mai_get_option( 'page-header-overlay-opacity', $config['overlay-opacity'] );
+	$config = mai_get_config( 'page-header' );
 
-	$css['global'][':root']['--page-header-background-color'] = $color;
-	$css['global'][':root']['--page-header-overlay-opacity']  = $opacity;
+	$settings = [
+		'page-header-background-color' => mai_get_color( $config['background-color'] ),
+		'page-header-overlay-opacity'  => (string) $config['overlay-opacity'],
+	];
+
+	foreach ( $settings as $id => $default ) {
+		$global   = mai_get_option( $id, $default );
+		$template = mai_get_template_arg( $id, false );
+		$value    = $template ? $template : $global;
+
+		if ( $value ) {
+			$css['global'][':root'][ '--' . $id ] = $value;
+		}
+	}
 
 	return $css;
 }
