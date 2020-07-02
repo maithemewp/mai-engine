@@ -58,7 +58,7 @@ function mai_colors_customizer_settings() {
 	foreach ( $colors as $id => $label ) {
 		$args = [
 			'type'     => 'color',
-			'settings' => $id . '-color',
+			'settings' => 'color-' . $id,
 			'label'    => $label,
 			'section'  => $section,
 			'default'  => mai_get_option( 'color-' . $original[ $id ], $defaults[ $id ] ),

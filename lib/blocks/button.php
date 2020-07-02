@@ -42,7 +42,7 @@ function mai_render_button_block( $block_content, $block ) {
 	} elseif ( mai_has_string( 'is-style-outline', $block_content ) ) {
 		$block_content = str_replace( ' is-style-outline', '', $block_content );
 		$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link button button-outline', $block_content );
-		$colors        = mai_get_colors();
+		$colors        = mai_get_default_colors();
 
 		if ( isset( $block['attrs']['textColor'] ) && isset( $colors[ $block['attrs']['textColor'] ] ) ) {
 			if ( mai_is_light_color( $colors[ $block['attrs']['textColor'] ] ) ) {

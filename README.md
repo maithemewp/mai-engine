@@ -175,7 +175,7 @@ h1 {
 To access the JSON variables with PHP, use the following helper function:
 
 ```php
-mai_get_color( 'primary' );
+mai_get_default_color( 'primary' );
 ```
 
 This will check the currently active child themes config for the variable, and if it's not found will use the default config variable.

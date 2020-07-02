@@ -124,7 +124,7 @@ function mai_get_divider( $atts = [] ) {
 	$atts['color']            = trim( $atts['color'] );
 	$atts['color']            = $atts['color'] ?: 'transparent';
 
-	$colors     = array_flip( mai_get_colors() );
+	$colors     = array_flip( mai_get_default_colors() );
 	$attributes = [
 		'class' => sprintf( 'mai-divider mai-divider-%s', $atts['style'] ),
 		'style' => '',
