@@ -161,7 +161,6 @@ function mai_page_header_entry_attr( $atts ) {
 	return $atts;
 }
 
-
 add_filter( 'genesis_attr_page-header-overlay', 'mai_page_header_divider_class', 10, 1 );
 /**
  * The setting is for text color, so the class is the reverse.
@@ -204,18 +203,40 @@ function mai_page_header_divider( $output, $original_output ) {
 	if ( 'close' === $original_output ) {
 		$args = [
 			'style'           => $style,
-			'color'           => mai_get_option( 'page-header-divider-color', mai_get_color( 'lightest' ) ),
+			'color'           => mai_get_option( 'page-header-divider-color', mai_get_color( 'white' ) ),
 			'flip_horizontal' => mai_get_option( 'page-header-divider-flip-horizontal', mai_get_config( 'page-header' )['divider-flip-horizontal'] ),
 			'flip_vertical'   => mai_get_option( 'page-header-divider-flip-vertical', mai_get_config( 'page-header' )['divider-flip-vertical'] ),
 			'height'          => 'md',
 			'class'           => 'page-header-divider',
-			'align'           =>'full',
+			'align'           => 'full',
 		];
 
 		$output .= mai_get_divider( $args );
 	}
 
 	return $output;
+}
+
+add_filter( 'genesis_attr_page-header', 'mai_add_page_header_attributes' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 2.0.0
+ *
+ * @param $attr
+ *
+ * @return mixed
+ */
+function mai_add_page_header_attributes( $attr ) {
+	$divider = mai_get_option( 'page-header-divider', mai_get_config( 'page-header' )['divider'] );
+
+	if ( $divider ) {
+		$attr['class'] .= ' has-divider';
+	}
+
+	$attr['role'] = 'banner';
+
+	return $attr;
 }
 
 /**
@@ -228,7 +249,7 @@ function mai_page_header_divider( $output, $original_output ) {
 function mai_do_page_header() {
 	genesis_markup(
 		[
-			'open'    => '<section %s role="banner">',
+			'open'    => '<section %s>',
 			'context' => 'page-header',
 		]
 	);
