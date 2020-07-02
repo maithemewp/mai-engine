@@ -40,7 +40,7 @@ return [
 			'base' => 16,
 		],
 		'font-scale'     => 1.25,
-		'contrast-limit' => 255 / 2,
+		'contrast-limit' => 160,
 	],
 
 	/*

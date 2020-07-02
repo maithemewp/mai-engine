@@ -111,10 +111,9 @@ function mai_add_button_text_colors( $css ) {
 	];
 
 	foreach ( $buttons as $button => $suffix ) {
-		$color   = mai_get_option( $button . '-color', mai_get_color( $button ) );
-		$light   = mai_is_light_color( $color );
-		$heading = mai_get_option( 'heading-color', mai_get_color( 'heading' ) );
-		$text    = $light ? $heading : mai_get_color( 'white' );
+		$color  = mai_get_option( $button . '-color', mai_get_color( $button ) );
+		$darker = mai_get_color_variant( $color, 'dark', 40 );
+		$text   = mai_is_light_color( $color ) ? $darker : mai_get_color( 'white' );
 
 		$css['global'][':root'][ '--button-' . $suffix . 'color' ] = $text;
 	}
