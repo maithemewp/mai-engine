@@ -13,11 +13,26 @@ const enableSpacingControlOnBlocks = [
 ];
 
 const sizeScale = [
-	'xs',
-	'sm',
-	'md',
-	'lg',
-	'xl',
+	{
+		label: __( 'XS', 'mai-engine' ),
+		value: 'xs',
+	},
+	{
+		label: __( 'SM', 'mai-engine' ),
+		value: 'sm',
+	},
+	{
+		label: __( 'MD', 'mai-engine' ),
+		value: 'md',
+	},
+	{
+		label: __( 'LG', 'mai-engine' ),
+		value: 'lg',
+	},
+	{
+		label: __( 'XL', 'mai-engine' ),
+		value: 'xl',
+	},
 ];
 
 /**
@@ -39,21 +54,21 @@ const addSpacingControlAttribute = ( settings, name ) => {
 	settings.attributes = assign( settings.attributes, {
 		contentWidth: {
 			type: 'string',
-			default: sizeScale[ 2 ].value,
+			default: '',
 		},
 	} );
 
 	settings.attributes = assign( settings.attributes, {
 		verticalSpacingTop: {
 			type: 'string',
-			default: sizeScale[ 2 ].value,
+			default: 'md',
 		},
 	} );
 
 	settings.attributes = assign( settings.attributes, {
 		verticalSpacingBottom: {
 			type: 'string',
-			default: sizeScale[ 2 ].value,
+			default: 'md',
 		},
 	} );
 
@@ -75,44 +90,36 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 			);
 		}
 
+		if ( ! props.attributes.className ) {
+			props.attributes.className = '';
+		}
+
+		// Clear all of our classes so we're not compiling various class names.
+		sizeScale.map( sizeInfo => {
+			props.attributes.className.replace( `has-${sizeInfo.value}-content-width`, '' );
+			props.attributes.className.replace( `has-${sizeInfo.value}-padding-top`, '' );
+			props.attributes.className.replace( `has-${sizeInfo.value}-padding-bottom`, '' );
+		} );
+
 		const { contentWidth, verticalSpacingTop, verticalSpacingBottom } = props.attributes;
 
-		// Here's where we actually add the classes.
-		if ( contentWidth ) {
-			sizeScale.map( size => {
-				props.attributes.className.replace( `has-${size}-content-width`, '' );
-			} );
+		// Start new class string.
+		let newClasses = '';
 
-			props.attributes.className = ` has-${contentWidth}-content-width`;
-		} else {
-			sizeScale.map( size => {
-				props.attributes.className.replace( `has-${size}-content-width`, '' );
-			} );
+		if ( contentWidth ) {
+			newClasses += ` has-${contentWidth}-content-width`;
 		}
 
 		if ( verticalSpacingTop ) {
-			sizeScale.map( size => {
-				props.attributes.className.replace( `has-${size}-vertical-spacing-top`, '' );
-			} );
-
-			props.attributes.className += ` has-${verticalSpacingTop}-padding-top`;
-		} else {
-			sizeScale.map( size => {
-				props.attributes.className.replace( `has-${size}-vertical-spacing-top`, '' );
-			} );
+			newClasses += ` has-${verticalSpacingTop}-padding-top`;
 		}
 
 		if ( verticalSpacingBottom ) {
-			sizeScale.map( size => {
-				props.attributes.className.replace( `has-${size}-vertical-spacing-bottom`, '' );
-			} );
-
-			props.attributes.className += ` has-${verticalSpacingBottom}-padding-bottom`;
-		} else {
-			sizeScale.map( size => {
-				props.attributes.className.replace( `has-${size}-vertical-spacing-bottom`, '' );
-			} );
+			newClasses += ` has-${verticalSpacingBottom}-padding-bottom`;
 		}
+
+		// Set our new classes.
+		props.attributes.className = newClasses.trim();
 
 		return (
 			<Fragment>
@@ -125,20 +132,21 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 					>
 						<ButtonGroup mode="radio" data-chosen={contentWidth}>
 							<p>{__( 'Content Width', 'mai-engine' )}</p>
-							{sizeScale.map( item => (
+							{sizeScale.map( sizeInfo => (
 								<Button
 									onClick={() => {
 										props.setAttributes( {
-											contentWidth: item,
+											contentWidth: sizeInfo.value,
 										} );
 									}}
-									data-checked={contentWidth === item}
-									value={item}
-									key={item}
-									isSecondary={contentWidth !== item}
-									isPrimary={contentWidth === item}
+									data-checked={contentWidth === sizeInfo.value}
+									value={sizeInfo.value}
+									key={`content-width-${sizeInfo.value}`}
+									index={sizeInfo.value}
+									isSecondary={contentWidth !== sizeInfo.value}
+									isPrimary={contentWidth === sizeInfo.value}
 								>
-									{item}
+									{sizeInfo.label}
 								</Button>
 							) )}
 						</ButtonGroup>
@@ -152,20 +160,21 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 						<p>&nbsp;</p>
 						<ButtonGroup mode="radio" data-chosen={verticalSpacingTop}>
 							<p>{__( 'Top Spacing', 'mai-engine' )}</p>
-							{sizeScale.map( item => (
+							{sizeScale.map( sizeInfo => (
 								<Button
 									onClick={() => {
 										props.setAttributes( {
-											verticalSpacingTop: item,
+											verticalSpacingTop: sizeInfo.value,
 										} );
 									}}
-									data-checked={verticalSpacingTop === item}
-									value={item}
-									key={item}
-									isSecondary={verticalSpacingTop !== item}
-									isPrimary={verticalSpacingTop === item}
+									data-checked={verticalSpacingTop === sizeInfo.value}
+									value={sizeInfo.value}
+									key={`vertical-space-top-${sizeInfo.value}`}
+									index={sizeInfo.value}
+									isSecondary={verticalSpacingTop !== sizeInfo.value}
+									isPrimary={verticalSpacingTop === sizeInfo.value}
 								>
-									{item}
+									{sizeInfo.label}
 								</Button>
 							) )}
 						</ButtonGroup>
@@ -179,20 +188,21 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 						<p>&nbsp;</p>
 						<ButtonGroup mode="radio" data-chosen={verticalSpacingBottom}>
 							<p>{__( 'Bottom Spacing', 'mai-engine' )}</p>
-							{sizeScale.map( item => (
+							{sizeScale.map( sizeInfo => (
 								<Button
 									onClick={() => {
 										props.setAttributes( {
-											verticalSpacingBottom: item,
+											verticalSpacingBottom: sizeInfo.value,
 										} );
 									}}
-									data-checked={verticalSpacingBottom === item}
-									value={item}
-									key={item}
-									isSecondary={verticalSpacingBottom !== item}
-									isPrimary={verticalSpacingBottom === item}
+									data-checked={verticalSpacingBottom === sizeInfo.value}
+									value={sizeInfo.value}
+									key={`vertical-space-bottom-${sizeInfo.value}`}
+									index={sizeInfo.value}
+									isSecondary={verticalSpacingBottom !== sizeInfo.value}
+									isPrimary={verticalSpacingBottom === sizeInfo.value}
 								>
-									{item}
+									{sizeInfo.label}
 								</Button>
 							) )}
 						</ButtonGroup>
