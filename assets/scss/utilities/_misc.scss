@@ -75,9 +75,8 @@
 	}
 
 	.has-#{ $spacing-name }-padding {
-		padding: var(--spacing-#{ $spacing-name }) !important;
+		padding: var(--spacing-#{ $spacing-name }) 0 !important;
 	}
-
 }
 
 .has-overlap {

@@ -1,1 +1,1 @@
-import './content-width';
+import './layout-settings';
