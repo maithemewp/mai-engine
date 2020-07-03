@@ -1,9 +1,8 @@
 import assign from 'lodash.assign';
-import classnames from 'classnames';
 
 const { __ }                             = wp.i18n;
 const { createHigherOrderComponent }     = wp.compose;
-const { Fragment, useState }             = wp.element;
+const { Fragment }                       = wp.element;
 const { InspectorControls }              = wp.editor;
 const { addFilter }                      = wp.hooks;
 const { PanelBody, Button, ButtonGroup } = wp.components;
@@ -56,29 +55,6 @@ const addSpacingControlAttribute = ( settings, name ) => {
 
 addFilter( 'blocks.registerBlockType', 'mai-engine/attribute/content-width', addSpacingControlAttribute );
 
-const LayoutButtonGroup = ( { label, defaultValue, last } ) => {
-	const [ checked, setChecked ] = useState( defaultValue );
-
-	return (
-		<ButtonGroup mode="radio" data-chosen={checked} label={__( 'Content Width' )}>
-			<p>{label}</p>
-			{sizeScale.map( item => (
-				<Button
-					onClick={() => setChecked( item )}
-					data-checked={checked === item}
-					value={item}
-					key={item}
-					isSecondary={checked !== item}
-					isPrimary={checked === item}
-				>
-					{item}
-				</Button>
-			) )}
-			{last === true ? null : ( <p>&nbsp;</p> )}
-		</ButtonGroup>
-	);
-};
-
 /**
  * Create HOC to add contentWidth control to inspector controls of block.
  */
@@ -97,18 +73,26 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 		// Here's where we actually add the classes.
 		if ( contentWidth ) {
 			sizeScale.map( size => {
-				props.attributes.className.replace(`has-${size}-content-width`, '')
+				props.attributes.className.replace( `has-${size}-content-width`, '' );
 			} );
 
 			props.attributes.className = ` has-${contentWidth}-content-width`;
+		} else {
+			sizeScale.map( size => {
+				props.attributes.className.replace( `has-${size}-content-width`, '' );
+			} );
 		}
 
 		if ( verticalSpacing ) {
 			sizeScale.map( size => {
-				props.attributes.className.replace(`has-${size}-vertical-spacing`, '')
+				props.attributes.className.replace( `has-${size}-vertical-spacing`, '' );
 			} );
 
 			props.attributes.className += ` has-${verticalSpacing}-padding`;
+		} else {
+			sizeScale.map( size => {
+				props.attributes.className.replace( `has-${size}-vertical-spacing`, '' );
+			} );
 		}
 
 		return (
@@ -118,6 +102,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 					<PanelBody
 						title={__( 'Layout' )}
 						initialOpen={true}
+						className={'mai-layout-settings'}
 					>
 						<ButtonGroup mode="radio" data-chosen={contentWidth}>
 							<p>{__( 'Content Width' )}</p>
@@ -138,6 +123,13 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 								</Button>
 							) )}
 						</ButtonGroup>
+						<Button isDestructive isSmall isLink onClick={() => {
+							props.setAttributes( {
+								contentWidth: null,
+							} );
+						}}>
+							Clear
+						</Button>
 						<p>&nbsp;</p>
 						<ButtonGroup mode="radio" data-chosen={verticalSpacing}>
 							<p>{__( 'Vertical Spacing' )}</p>
@@ -158,6 +150,13 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 								</Button>
 							) )}
 						</ButtonGroup>
+						<Button isDestructive isSmall isLink onClick={() => {
+							props.setAttributes( {
+								verticalSpacing: null,
+							} );
+						}}>
+							Clear
+						</Button>
 					</PanelBody>
 				</InspectorControls>
 			</Fragment>

@@ -264,3 +264,9 @@ li.toplevel_page_mai-theme {
 
 [data-status="running"] .progress {}
 
+/**
+ * Block layout settings.
+ */
+[data-checked]:first-of-type {
+	border-radius: 3px 0 0 3px !important;
+}
