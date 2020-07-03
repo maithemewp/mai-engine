@@ -44,7 +44,14 @@ const addSpacingControlAttribute = ( settings, name ) => {
 	} );
 
 	settings.attributes = assign( settings.attributes, {
-		verticalSpacing: {
+		verticalSpacingTop: {
+			type: 'string',
+			default: sizeScale[ 2 ].value,
+		},
+	} );
+
+	settings.attributes = assign( settings.attributes, {
+		verticalSpacingBottom: {
 			type: 'string',
 			default: sizeScale[ 2 ].value,
 		},
@@ -53,7 +60,7 @@ const addSpacingControlAttribute = ( settings, name ) => {
 	return settings;
 };
 
-addFilter( 'blocks.registerBlockType', 'mai-engine/attribute/content-width', addSpacingControlAttribute );
+addFilter( 'blocks.registerBlockType', 'mai-engine/attribute/layout-settings', addSpacingControlAttribute );
 
 /**
  * Create HOC to add contentWidth control to inspector controls of block.
@@ -68,7 +75,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 			);
 		}
 
-		const { contentWidth, verticalSpacing } = props.attributes;
+		const { contentWidth, verticalSpacingTop, verticalSpacingBottom } = props.attributes;
 
 		// Here's where we actually add the classes.
 		if ( contentWidth ) {
@@ -83,15 +90,27 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 			} );
 		}
 
-		if ( verticalSpacing ) {
+		if ( verticalSpacingTop ) {
 			sizeScale.map( size => {
-				props.attributes.className.replace( `has-${size}-vertical-spacing`, '' );
+				props.attributes.className.replace( `has-${size}-vertical-spacing-top`, '' );
 			} );
 
-			props.attributes.className += ` has-${verticalSpacing}-padding`;
+			props.attributes.className += ` has-${verticalSpacingTop}-padding-top`;
 		} else {
 			sizeScale.map( size => {
-				props.attributes.className.replace( `has-${size}-vertical-spacing`, '' );
+				props.attributes.className.replace( `has-${size}-vertical-spacing-top`, '' );
+			} );
+		}
+
+		if ( verticalSpacingBottom ) {
+			sizeScale.map( size => {
+				props.attributes.className.replace( `has-${size}-vertical-spacing-bottom`, '' );
+			} );
+
+			props.attributes.className += ` has-${verticalSpacingBottom}-padding-bottom`;
+		} else {
+			sizeScale.map( size => {
+				props.attributes.className.replace( `has-${size}-vertical-spacing-bottom`, '' );
 			} );
 		}
 
@@ -100,12 +119,12 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 				<BlockEdit {...props} />
 				<InspectorControls>
 					<PanelBody
-						title={__( 'Layout' )}
+						title={__( 'Layout', 'mai-engine' )}
 						initialOpen={true}
 						className={'mai-layout-settings'}
 					>
 						<ButtonGroup mode="radio" data-chosen={contentWidth}>
-							<p>{__( 'Content Width' )}</p>
+							<p>{__( 'Content Width', 'mai-engine' )}</p>
 							{sizeScale.map( item => (
 								<Button
 									onClick={() => {
@@ -128,23 +147,23 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 								contentWidth: null,
 							} );
 						}}>
-							Clear
+							{__( 'Clear', 'mai-engine' )}
 						</Button>
 						<p>&nbsp;</p>
-						<ButtonGroup mode="radio" data-chosen={verticalSpacing}>
-							<p>{__( 'Vertical Spacing' )}</p>
+						<ButtonGroup mode="radio" data-chosen={verticalSpacingTop}>
+							<p>{__( 'Top Spacing', 'mai-engine' )}</p>
 							{sizeScale.map( item => (
 								<Button
 									onClick={() => {
 										props.setAttributes( {
-											verticalSpacing: item,
+											verticalSpacingTop: item,
 										} );
 									}}
-									data-checked={verticalSpacing === item}
+									data-checked={verticalSpacingTop === item}
 									value={item}
 									key={item}
-									isSecondary={verticalSpacing !== item}
-									isPrimary={verticalSpacing === item}
+									isSecondary={verticalSpacingTop !== item}
+									isPrimary={verticalSpacingTop === item}
 								>
 									{item}
 								</Button>
@@ -152,10 +171,37 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 						</ButtonGroup>
 						<Button isDestructive isSmall isLink onClick={() => {
 							props.setAttributes( {
-								verticalSpacing: null,
+								verticalSpacingTop: null,
 							} );
 						}}>
-							Clear
+							{__( 'Clear', 'mai-engine' )}
+						</Button>
+						<p>&nbsp;</p>
+						<ButtonGroup mode="radio" data-chosen={verticalSpacingBottom}>
+							<p>{__( 'Bottom Spacing', 'mai-engine' )}</p>
+							{sizeScale.map( item => (
+								<Button
+									onClick={() => {
+										props.setAttributes( {
+											verticalSpacingBottom: item,
+										} );
+									}}
+									data-checked={verticalSpacingBottom === item}
+									value={item}
+									key={item}
+									isSecondary={verticalSpacingBottom !== item}
+									isPrimary={verticalSpacingBottom === item}
+								>
+									{item}
+								</Button>
+							) )}
+						</ButtonGroup>
+						<Button isDestructive isSmall isLink onClick={() => {
+							props.setAttributes( {
+								verticalSpacingBottom: null,
+							} );
+						}}>
+							{__( 'Clear', 'mai-engine' )}
 						</Button>
 					</PanelBody>
 				</InspectorControls>
@@ -164,4 +210,4 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 	};
 }, 'withLayoutControls' );
 
-addFilter( 'editor.BlockEdit', 'mai-engine/with-content-width', withLayoutControls );
+addFilter( 'editor.BlockEdit', 'mai-engine/with-layout-settings', withLayoutControls );
