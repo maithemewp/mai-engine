@@ -24,7 +24,7 @@ add_action( 'after_setup_theme', 'mai_do_deprecated_functionality', 4 );
  */
 function mai_do_deprecated_functionality() {
 	$has_deprecated_sidebar = false;
-	$deprecated_sidebars     = [
+	$deprecated_sidebars    = [
 		'before-header',
 		'header-left',
 		'header-right',
