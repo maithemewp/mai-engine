@@ -81,7 +81,7 @@ function mai_add_custom_color_css( $css ) {
 
 	foreach ( $custom_colors as $custom_color ) {
 		if ( isset( $custom_color['color'] ) ) {
-			$css['global'][':root'][ '--custom-color-' . $count ] = $custom_color['color'];
+			$css['global'][':root'][ '--color-custom-' . $count ] = $custom_color['color'];
 
 			$css['global'][ '.has-custom-' . $count . '-color' ]['color'] = $custom_color['color'];
 
