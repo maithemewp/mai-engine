@@ -11,9 +11,9 @@
 
 add_action( 'after_setup_theme', 'mai_do_deprecated_functionality', 4 );
 /**
- * Description of expected behavior.
+ * Run deprecated functionality on older installs.
  *
- * @since 1.0.0
+ * @since 2.0.0
  *
  * @return void
  */
@@ -26,7 +26,7 @@ function mai_do_deprecated_functionality() {
 }
 
 /**
- * Description of expected behavior.
+ * Run functionality deprecated since 2.0.0.
  *
  * @since 2.0.0
  *
