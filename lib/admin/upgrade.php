@@ -18,37 +18,45 @@ add_action( 'admin_init', 'mai_do_upgrade' );
  * @return void
  */
 function mai_do_upgrade() {
-	$plugin_version = mai_get_version();
-	$db_version     = mai_get_option( 'db-version', '0.0.0' );
-
-	// Return early if at latest.
-	if ( $plugin_version !== $db_version ) {
-		return;
-	}
-
 	// Set first version.
 	if ( false === mai_get_option( 'first-version', false ) ) {
 		mai_update_option( 'first-version', $plugin_version );
 	}
 
+	$plugin_version = mai_get_version();
+	$db_version     = mai_get_option( 'db-version', '0.0.0' );
+
+	// Return early if at latest.
+	if ( $plugin_version === $db_version ) {
+		return;
+	}
+
 	// Run the upgrade if data to upgrade.
-	$data    = mai_get_upgrade_data( $plugin_version );
+	$data    = mai_get_upgrade_data();
 	$options = mai_get_options();
 
 	if ( $data ) {
 
-		// Add default values for new options.
-		foreach ( $data as $new_key => $new_value ) {
+		foreach ( $data as $upgrade_version => $values ) {
 
-			// Must use isset instead of true/false.
-			if ( ! isset( $options[ $new_key ] ) ) {
-				mai_update_option( $new_key, $new_value );
+			// Skip if older data.
+			if ( version_compare( $db_version, $upgrade_version, '>' ) ) {
+				continue;
 			}
 
-			// Handle nested options.
-			if ( is_array( $new_value ) && isset( $options[ $new_key ] ) ) {
-				$new_value = array_replace_recursive( $new_value, $options[ $new_key ] );
-				mai_update_option( $new_key, $new_value );
+			// Add default values for new options.
+			foreach ( $values as $new_key => $new_value ) {
+
+				// Must use isset instead of true/false.
+				if ( ! isset( $options[ $new_key ] ) ) {
+					mai_update_option( $new_key, $new_value );
+				}
+
+				// Handle nested options.
+				if ( is_array( $new_value ) && isset( $options[ $new_key ] ) ) {
+					$new_value = array_replace_recursive( $new_value, $options[ $new_key ] );
+					mai_update_option( $new_key, $new_value );
+				}
 			}
 		}
 	}
@@ -62,11 +70,9 @@ function mai_do_upgrade() {
  *
  * @since 0.2.0
  *
- * @param $version
- *
  * @return bool|mixed
  */
-function mai_get_upgrade_data( $version ) {
+function mai_get_upgrade_data() {
 
 	$boxed_container = current_theme_supports( 'boxed-container' );
 	$site_layouts    = mai_get_option( 'site-layouts' );
@@ -87,5 +93,5 @@ function mai_get_upgrade_data( $version ) {
 		],
 	];
 
-	return isset( $data[ $version ] ) ? $data[ $version ] : false;
+	return $data;
 }

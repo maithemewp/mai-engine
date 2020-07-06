@@ -28,7 +28,7 @@ function mai_do_deprecated_functionality() {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 2.0.0
  *
  * @param array $config
  *
