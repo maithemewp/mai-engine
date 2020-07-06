@@ -13,16 +13,41 @@ add_action( 'after_setup_theme', 'mai_do_deprecated_functionality', 4 );
 /**
  * Run deprecated functionality on older installs.
  *
+ * `first-version` was not set correctly pre-2.0.0
+ * so we need to do checks for active sidebars.
+ *
+ * @link https://github.com/maithemewp/mai-engine/issues/170
+ *
  * @since 2.0.0
  *
  * @return void
  */
 function mai_do_deprecated_functionality() {
-	$first_version = mai_get_option( 'first-version', '2.0.0' );
+	$has_deprecated_sidebar = false;
+	$deprecated_sidebars     = [
+		'before-header',
+		'header-left',
+		'header-right',
+		'sidebar',
+		'after-entry',
+		'mobile-menu',
+		'before-footer',
+		'footer',
+		'footer-credits',
+	];
 
-	if ( version_compare( $first_version, '2.0.0', '<' ) ) {
-		add_filter( 'mai_config', 'mai_deprecated_2_0_0' );
+	foreach ( $deprecated_sidebars as $sidebar ) {
+		if ( is_active_sidebar( $sidebar ) ) {
+			$has_deprecated_sidebar = true;
+		}
+		break;
 	}
+
+	if ( ! $has_deprecated_sidebar ) {
+		return;
+	}
+
+	add_filter( 'mai_config', 'mai_deprecated_2_0_0' );
 }
 
 /**

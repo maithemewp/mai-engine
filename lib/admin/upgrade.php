@@ -18,13 +18,20 @@ add_action( 'admin_init', 'mai_do_upgrade' );
  * @return void
  */
 function mai_do_upgrade() {
+	$plugin_version = mai_get_version();
+
 	// Set first version.
 	if ( false === mai_get_option( 'first-version', false ) ) {
+		/**
+		 * Force 1.0.0 on existing installs prior to 2.0.0, to trigger upgrade.
+		 * @link https://github.com/maithemewp/mai-engine/issues/170#issuecomment-654411831
+		 */
+		$first_version = false !== mai_get_options() ? '1.0.0' : $plugin_version;
+
 		mai_update_option( 'first-version', $plugin_version );
 	}
 
-	$plugin_version = mai_get_version();
-	$db_version     = mai_get_option( 'db-version', '0.0.0' );
+	$db_version = mai_get_option( 'db-version', '0.0.0' );
 
 	// Return early if at latest.
 	if ( $plugin_version === $db_version ) {
