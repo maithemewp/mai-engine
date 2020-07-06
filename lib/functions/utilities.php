@@ -328,6 +328,23 @@ function mai_get_global_styles( $key = '' ) {
 }
 
 /**
+ * Get the colors from Customizer, with fallback to config.
+ *
+ * @since 2.0.0
+ *
+ * @return array
+ */
+function mai_get_colors() {
+	$colors   = [];
+	$defaults = mai_get_default_colors();
+	foreach ( $defaults as $name => $color ) {
+		$colors[ $name ] = mai_get_color( $name );
+	}
+
+	return array_merge( $colors, mai_get_custom_colors() );
+}
+
+/**
  * Returns the array of colors from the global styles config.
  *
  * @since 2.0.0
@@ -352,6 +369,28 @@ function mai_get_default_color( $name ) {
 }
 
 /**
+ * Get custom colors as set in Customizer.
+ *
+ * @since 2.0.0
+ *
+ * @return array
+ */
+function mai_get_custom_colors() {
+	static $colors = null;
+	if ( ! is_null( $colors ) ) {
+		return $colors;
+	}
+	$colors  = [];
+	$options = mai_get_option( 'custom-colors', [] );
+	$count   = 1;
+	foreach( $options as $index => $option ) {
+		$colors[ 'custom-' . $count ] = $option['color'];
+		$count++;
+	}
+	return $colors;
+}
+
+/**
  * Returns a color option value with config default fallback.
  *
  * @since 2.0.0
@@ -361,6 +400,10 @@ function mai_get_default_color( $name ) {
  * @return string
  */
 function mai_get_color( $name ) {
+	$custom = mai_get_custom_colors();
+	if ( isset( $custom[ $name ] ) ) {
+		return $custom[ $name ];
+	}
 	return mai_get_option( 'color-' . $name, mai_get_default_color( $name ) );
 }
 
@@ -372,20 +415,12 @@ function mai_get_color( $name ) {
  * @return array
  */
 function mai_get_editor_color_palette() {
-	$colors  = mai_get_default_colors();
-	$custom  = mai_get_option( 'custom-colors', [] );
+	$colors  = mai_get_colors();
 	$values  = [];
 	$palette = [];
-	$count   = 1;
 
-	// Add custom colors from options.
-	foreach ( $custom as $args ) {
-		if ( isset( $args['color'] ) ) {
-			$colors[ 'custom-' . $count ] = $args['color'];
-		}
-
-		$count++;
-	}
+	// Remove empty custom colors.
+	$colors = array_filter( $colors );
 
 	// Sort colors by lightness.
 	$sorted = [];
@@ -410,7 +445,7 @@ function mai_get_editor_color_palette() {
 		$palette[] = [
 			'name'  => '', // No label, defaults to "Color code: #123456".
 			'slug'  => mai_convert_case( $name, 'kebab' ),
-			'color' => mai_get_color( $name ),
+			'color' => $hex,
 		];
 	}
 

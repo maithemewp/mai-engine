@@ -65,7 +65,7 @@ function mai_do_divider_block( $block, $content = '', $is_preview = false, $post
 }
 
 /**
- * Description of expected behavior.
+ * Echo a divider.
  *
  * @since 0.3.0
  *
@@ -78,7 +78,7 @@ function mai_do_divider( $atts ) {
 }
 
 /**
- * Description of expected behavior.
+ * Get a divider.
  *
  * @since 0.3.0
  *
@@ -93,7 +93,7 @@ function mai_get_divider( $atts = [] ) {
 		'flip_horizontal'  => false,
 		'flip_vertical'    => false,
 		'background_color' => 'transparent',
-		'color'            => mai_get_color( 'primary' ),
+		'color'            => mai_get_color( 'alt' ),
 		'align'            => 'full',
 		'class'            => '',
 	] );

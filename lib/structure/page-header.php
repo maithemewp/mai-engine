@@ -184,7 +184,7 @@ function mai_page_header_divider_class( $attr ) {
 
 add_filter( 'genesis_structural_wrap-page-header', 'mai_page_header_divider', 10, 2 );
 /**
- * Description of expected behavior.
+ * Display the page header divider.
  *
  * @since 0.1.0
  *
@@ -203,7 +203,7 @@ function mai_page_header_divider( $output, $original_output ) {
 	if ( 'close' === $original_output ) {
 		$args = [
 			'style'           => $style,
-			'color'           => mai_get_option( 'page-header-divider-color', mai_get_color( 'white' ) ),
+			'color'           => mai_get_option( 'page-header-divider-color', mai_get_color( 'alt' ) ),
 			'flip_horizontal' => mai_get_option( 'page-header-divider-flip-horizontal', mai_get_config( 'page-header' )['divider-flip-horizontal'] ),
 			'flip_vertical'   => mai_get_option( 'page-header-divider-flip-vertical', mai_get_config( 'page-header' )['divider-flip-vertical'] ),
 			'height'          => 'md',
@@ -219,7 +219,7 @@ function mai_page_header_divider( $output, $original_output ) {
 
 add_filter( 'genesis_attr_page-header', 'mai_add_page_header_attributes' );
 /**
- * Description of expected behavior.
+ * Add page header attributes.
  *
  * @since 2.0.0
  *

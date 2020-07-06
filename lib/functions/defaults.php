@@ -35,8 +35,8 @@ add_filter( 'simple_social_default_styles', 'mai_default_social_styles' );
  * @return array Modified social style defaults.
  */
 function mai_default_social_styles( $defaults ) {
-	$args = mai_get_config( 'simple-social-icons' );
-
+	$args           = mai_get_config( 'simple-social-icons' );
+	$colors         = array_keys( mai_get_colors() );
 	$color_settings = [
 		'border_color',
 		'border_color_hover',
@@ -48,12 +48,8 @@ function mai_default_social_styles( $defaults ) {
 
 	// Allow config to set colors by name.
 	foreach ( $args as $key => $value ) {
-		if ( in_array( $key, $color_settings, true ) ) {
-			$colors = array_keys( mai_get_default_colors() );
-
-			if ( in_array( $value, $colors, true ) ) {
-				$args[ $key ] = mai_get_color( $value );
-			}
+		if ( in_array( $key, $color_settings, true ) && in_array( $value, $colors, true ) ) {
+			$args[ $key ] = mai_get_color( $value );
 		}
 	}
 

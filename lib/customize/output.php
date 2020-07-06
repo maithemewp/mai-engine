@@ -96,7 +96,7 @@ function mai_add_custom_color_css( $css ) {
 
 add_filter( 'kirki_mai-engine_styles', 'mai_add_button_text_colors' );
 /**
- * Output breakpoint custom property.
+ * Output button text custom property.
  *
  * @since 2.0.0
  *

@@ -13,7 +13,7 @@ add_action( 'after_setup_theme', 'mai_add_editor_color_palette' );
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
@@ -25,7 +25,7 @@ add_action( 'after_setup_theme', 'mai_add_editor_font_sizes' );
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
