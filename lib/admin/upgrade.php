@@ -53,15 +53,12 @@ function mai_do_upgrade() {
 
 			// Add default values for new options.
 			foreach ( $values as $new_key => $new_value ) {
-
 				// Must use isset instead of true/false.
 				if ( ! isset( $options[ $new_key ] ) ) {
-					mai_update_option( $new_key, $new_value );
-				}
-
-				// Handle nested options.
-				if ( is_array( $new_value ) && isset( $options[ $new_key ] ) ) {
-					$new_value = array_replace_recursive( $new_value, $options[ $new_key ] );
+					// Handle nested options.
+					if ( is_array( $new_value ) ) {
+						$new_value = array_replace_recursive( $new_value, $options[ $new_key ] );
+					}
 					mai_update_option( $new_key, $new_value );
 				}
 			}
