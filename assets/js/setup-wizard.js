@@ -32,7 +32,7 @@
 		steps.each( function() {
 			var step = $( this );
 			if ( step.attr( 'id' ) !== currentStepID ) {
-				step.fadeOut( speed );
+				step.fadeOut( 0 );
 			} else {
 				setTimeout( function() {
 					step.fadeIn( speed );
