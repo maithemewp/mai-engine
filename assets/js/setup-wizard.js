@@ -171,7 +171,7 @@
 	};
 
 	var toggleChosenDemo = function( chosenDemo ) {
-		var elements = $( '[name="plugins"], [name="content"], [name="widgets"], [name="customizer"]' );
+		var elements = $( '[name="plugins"], [name="content"], [name="templates"], [name="customizer"]' );
 
 		elements.each( function() {
 			var element  = $( this );
