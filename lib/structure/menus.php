@@ -143,8 +143,10 @@ add_filter( 'wp_nav_menu_objects', 'mai_first_last_menu_items' );
  * @return array
  */
 function mai_first_last_menu_items( $items ) {
-	$items[ array_key_first( $items ) ]->classes[]                 = 'menu-item-first';
-	$items[ count( $items ) ]->classes[] = 'menu-item-last';
+	if ( $items ) {
+		$items[ array_key_first( $items ) ]->classes[] = 'menu-item-first';
+		$items[ count( $items ) ]->classes[]           = 'menu-item-last';
+	}
 
 	return $items;
 }
