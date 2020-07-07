@@ -211,6 +211,11 @@ function mai_backup_template_parts() {
 			continue;
 		}
 
+		// Delete empty template parts.
+		if ( ! $post->post_content ) {
+			wp_delete_post( $post->ID );
+		}
+
 		// If the demo importer has been run previously, use old theme and demo names.
 		if ( isset( $options['theme'] ) && isset( $options['demo'] ) ) {
 			$theme_slug       = $options['theme'];
