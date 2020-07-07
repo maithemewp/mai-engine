@@ -29,8 +29,6 @@ function mai_do_upgrade() {
 		 * @link https://github.com/maithemewp/mai-engine/issues/170#issuecomment-654411831
 		 */
 		$first_version = false !== mai_get_options() ? '1.0.0' : $plugin_version;
-
-		mai_update_option( 'first-version', $first_version );
 	}
 
 	$db_version = mai_get_option( 'db-version', '0.0.0' );
@@ -40,34 +38,12 @@ function mai_do_upgrade() {
 		return;
 	}
 
-	// Run the upgrade if data to upgrade.
-	$data    = mai_get_upgrade_data( $plugin_version );
-	$options = mai_get_options();
+	if ( version_compare( $db_version, '0.2.0', '<' ) ) {
+		mai_upgrade_0_2_0();
+	}
 
-	if ( $data ) {
-
-		foreach ( $data as $upgrade_version => $values ) {
-
-			// Skip if older data.
-			if ( version_compare( $db_version, $upgrade_version, '>' ) ) {
-				continue;
-			}
-
-			// Add default values for new options.
-			foreach ( $values as $new_key => $new_value ) {
-
-				// Must use isset instead of true/false.
-				if ( ! isset( $options[ $new_key ] ) ) {
-
-					// Handle nested options.
-					if ( is_array( $new_value ) ) {
-						$new_value = array_replace_recursive( $new_value, $options[ $new_key ] );
-					}
-
-					mai_update_option( $new_key, $new_value );
-				}
-			}
-		}
+	if ( version_compare( $db_version, '2.0.1', '<' ) ) {
+		mai_upgrade_2_0_1();
 	}
 
 	// Update database version after upgrade.
@@ -75,21 +51,14 @@ function mai_do_upgrade() {
 }
 
 /**
- * Get data to upgrade during engine update.
+ * Upgrade function for 0.2.0.
  *
- * @since 2.0.0
+ * @since 0.2.0
  *
- * @param string $plugin_version Current plugin version.
- *
- * @return array
+ * @return void
  */
-function mai_get_upgrade_data( $plugin_version ) {
-	$data = [];
-
-	/*
-	 * 0.2.0.
-	 */
-	$data['0.2.0'] = [
+function mai_upgrade_0_2_0() {
+	$data = [
 		'color-darkest'  => mai_get_option( 'color-dark' ),
 		'color-dark'     => mai_get_option( 'color-medium' ),
 		'color-medium'   => mai_get_option( 'color-muted' ),
@@ -97,9 +66,17 @@ function mai_get_upgrade_data( $plugin_version ) {
 		'color-lightest' => mai_get_option( 'color-white' ),
 	];
 
-	/*
-	 * 2.0.0.
-	 */
+	mai_update_data( $data );
+}
+
+/**
+ * Upgrade function for 2.0.1.
+ *
+ * @since 2.0.1
+ *
+ * @return void
+ */
+function mai_upgrade_2_0_1() {
 	$boxed_container = current_theme_supports( 'boxed-container' );
 	$site_layouts    = mai_get_option( 'site-layouts' );
 
@@ -107,10 +84,15 @@ function mai_get_upgrade_data( $plugin_version ) {
 		$boxed_container = $site_layouts['default']['boxed-container'];
 	}
 
+	/**
+	 * The very first installs of Mai Engine already have a 'boxed-container' setting saved, but unused.
+	 * We need to manually override this one without an isset() check.
+	 */
+	mai_update_option( 'boxed-container', $boxed_container );
+
 	$colors = mai_get_default_colors();
 
-	$data['2.0.0'] = [
-		'boxed-container'  => $boxed_container,
+	$data = [
 		'color-background' => mai_get_option( 'lightest', $colors['background'] ),
 		'color-alt'        => mai_get_option( 'lighter', $colors['alt'] ),
 		'color-body'       => mai_get_option( 'dark', $colors['body'] ),
@@ -120,6 +102,36 @@ function mai_get_upgrade_data( $plugin_version ) {
 		'color-secondary'  => mai_get_option( 'secondary', $colors['secondary'] ),
 	];
 
-	// Only return the data for the current upgrade.
-	return isset( $data[ $plugin_version ] ) ? $data[ $plugin_version ] : [];
+	mai_update_data( $data );
+}
+
+/**
+ * Update data during engine update.
+ *
+ * @since 2.0.0
+ *
+ * @return array
+ */
+function mai_update_data( $data = [] ) {
+
+	// Run the upgrade if data to upgrade.
+	$options = mai_get_options();
+
+	if ( $data ) {
+
+		// Add default values for new options.
+		foreach ( $data as $new_key => $new_value ) {
+
+			// Must use isset instead of true/false.
+			if ( ! isset( $options[ $new_key ] ) ) {
+
+				// Handle nested options.
+				if ( is_array( $new_value ) ) {
+					$new_value = array_replace_recursive( $new_value, $options[ $new_key ] );
+				}
+
+				mai_update_option( $new_key, $new_value );
+			}
+		}
+	}
 }
