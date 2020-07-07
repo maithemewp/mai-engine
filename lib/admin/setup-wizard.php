@@ -104,16 +104,7 @@ function mai_setup_wizard_demos( $defaults ) {
 	}
 
 	foreach ( $demos as $demo => $id ) {
-
-		// Allows us to test locally generated demo content.
-		$dev = defined( 'MAI_DEV' ) && MAI_DEV;
-
-		if ( $dev ) {
-			$upload_dir = wp_get_upload_dir();
-			$demo_url   = $upload_dir['baseurl'] . '/mai-engine/';
-		} else {
-			$demo_url = "https://demo.bizbudding.com/{$theme}-{$demo}/wp-content/uploads/sites/{$id}/mai-engine/";
-		}
+		$demo_url = "https://demo.bizbudding.com/{$theme}-{$demo}/wp-content/uploads/sites/{$id}/mai-engine/";
 
 		foreach ( $config as $plugin ) {
 			if ( in_array( $demo, $plugin['demos'], true ) ) {
@@ -122,12 +113,12 @@ function mai_setup_wizard_demos( $defaults ) {
 		}
 
 		$defaults[] = [
-			'name'           => ucwords( $demo ),
-			'content'        => $demo_url . 'content.xml',
-			'template_parts' => $demo_url . 'template-parts.xml',
-			'customizer'     => $demo_url . 'customizer.dat',
-			'preview'        => "https://demo.bizbudding.com/{$theme}-{$demo}/",
-			'plugins'        => $plugins,
+			'name'       => ucwords( $demo ),
+			'content'    => $demo_url . 'content.xml',
+			'templates'  => $demo_url . 'template-parts.xml',
+			'customizer' => $demo_url . 'customizer.dat',
+			'preview'    => "https://demo.bizbudding.com/{$theme}-{$demo}/",
+			'plugins'    => $plugins,
 		];
 	}
 

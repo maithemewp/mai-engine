@@ -49,7 +49,7 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 			$this->import_content( $import_file );
 		}
 
-		if ( 'template_parts' === $content_type ) {
+		if ( 'templates' === $content_type ) {
 			$this->import_template_parts( $import_file );
 		}
 
@@ -86,19 +86,19 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 		}
 
 		if ( ! $demo ) {
-			wp_send_json_error( __( 'No demo selected.', 'mai-setup-wizard' ) );
+			wp_send_json_error( __( 'No demo selected.', 'mai-engine' ) );
 		}
 
 		$response = wp_remote_get( $url );
 
 		if ( ! $response ) {
-			wp_send_json_error( $url . __( ' could not be retrieved.', 'mai-setup-wizard' ) );
+			wp_send_json_error( $url . __( ' could not be retrieved.', 'mai-engine' ) );
 		}
 
 		$body = wp_remote_retrieve_body( $response );
 
 		if ( ! $body ) {
-			wp_send_json_error( $url . __( ' response body could not be retrieved.', 'mai-setup-wizard' ) );
+			wp_send_json_error( $url . __( ' response body could not be retrieved.', 'mai-engine' ) );
 		}
 
 		if ( $body ) {
@@ -143,7 +143,7 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 			do_action( 'mai_setup_wizard_after_import', $this->demos->get_chosen_demo() );
 		}
 
-		wp_send_json_success( __( 'Finished importing ', 'mai-setup-wizard' ) . basename( $file ) );
+		wp_send_json_success( __( 'Finished importing ', 'mai-engine' ) . basename( $file ) );
 	}
 
 	/**
@@ -176,7 +176,7 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 		global $wp_customize;
 
 		if ( ! file_exists( $file ) ) {
-			wp_send_json_error( __( 'Error importing settings! Please try again.', 'mai-setup-wizard' ) );
+			wp_send_json_error( __( 'Error importing settings! Please try again.', 'mai-engine' ) );
 		}
 
 		if ( ! function_exists( 'wp_handle_upload' ) ) {
@@ -192,15 +192,15 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 		$data     = unserialize( $raw );
 
 		if ( 'array' !== gettype( $data ) ) {
-			wp_send_json_error( __( 'Error importing settings! Please check that you uploaded a customizer export file.', 'mai-setup-wizard' ) );
+			wp_send_json_error( __( 'Error importing settings! Please check that you uploaded a customizer export file.', 'mai-engine' ) );
 		}
 
 		if ( ! isset( $data['template'] ) || ! isset( $data['mods'] ) ) {
-			wp_send_json_error( __( 'Error importing settings! Please check that you uploaded a customizer export file.', 'mai-setup-wizard' ) );
+			wp_send_json_error( __( 'Error importing settings! Please check that you uploaded a customizer export file.', 'mai-engine' ) );
 		}
 
 		if ( $data['template'] !== $template ) {
-			wp_send_json_error( __( 'Error importing settings! The settings you uploaded are not for the current theme.', 'mai-setup-wizard' ) );
+			wp_send_json_error( __( 'Error importing settings! The settings you uploaded are not for the current theme.', 'mai-engine' ) );
 		}
 
 		if ( isset( $_REQUEST['import-images'] ) ) {
@@ -231,7 +231,7 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 			do_action( 'mai_setup_wizard_after_import', $this->demos->get_chosen_demo() );
 		}
 
-		wp_send_json_success( __( 'Sucessfully imported customizer.', 'mai-setup-wizard' ) );
+		wp_send_json_success( __( 'Sucessfully imported customizer.', 'mai-engine' ) );
 	}
 
 	/**

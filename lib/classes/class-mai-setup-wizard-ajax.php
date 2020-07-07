@@ -77,11 +77,11 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 		$email_address = isset( $field['value'] ) ? sanitize_email( $field['value'] ) : false;
 
 		if ( ! $email_address ) {
-			wp_send_json_error( __( 'Email address can not be empty.', 'mai-setup-wizard' ) );
+			wp_send_json_error( __( 'Email address can not be empty.', 'mai-engine' ) );
 		}
 
 		if ( ! is_email( $email_address ) ) {
-			wp_send_json_error( __( 'Please enter a valid email address.', 'mai-setup-wizard' ) );
+			wp_send_json_error( __( 'Please enter a valid email address.', 'mai-engine' ) );
 		}
 
 		do_action( 'mai_setup_wizard_email_submit', $email_address );
@@ -98,10 +98,10 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 		if ( $email['send'] ) {
 			wp_mail( ...array_values( $email ) );
 
-			wp_send_json_success( __( 'Email address sent.', 'mai-setup-wizard' ) );
+			wp_send_json_success( __( 'Email address sent.', 'mai-engine' ) );
 		}
 
-		wp_send_json_success( __( 'Email entered but not sent.', 'mai-setup-wizard' ) );
+		wp_send_json_success( __( 'Email entered but not sent.', 'mai-engine' ) );
 	}
 
 	/**
@@ -123,10 +123,10 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 			$options['theme'] = mai_get_active_theme();
 
 			update_option( $this->slug, $options );
-			wp_send_json_success( $demo . __( ' selected.', 'mai-setup-wizard' ) );
+			wp_send_json_success( $demo . __( ' selected.', 'mai-engine' ) );
 
 		} else {
-			wp_send_json_error( __( 'No demo selected.', 'mai-setup-wizard' ) );
+			wp_send_json_error( __( 'No demo selected.', 'mai-engine' ) );
 		}
 	}
 
@@ -144,7 +144,7 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 		$slug  = isset( $field['value'] ) ? $field['value'] : false;
 
 		if ( ! $slug ) {
-			wp_send_json_success( __( 'No plugins selected.', 'mai-setup-wizard' ) );
+			wp_send_json_success( __( 'No plugins selected.', 'mai-engine' ) );
 		}
 
 		set_time_limit( apply_filters( 'mai_setup_wizard_time_limit', 300 ) );
@@ -161,20 +161,20 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 			);
 
 			if ( is_wp_error( $plugin ) ) {
-				wp_send_json_error( __( 'Error object from API communication for plugin ', 'mai-setup-wizard' ) . $slug );
+				wp_send_json_error( __( 'Error object from API communication for plugin ', 'mai-engine' ) . $slug );
 			}
 
 			$upgrader  = new Plugin_Upgrader( new WP_Upgrader_Skin() );
 			$installed = $upgrader->install( $plugin->download_link );
 
 			if ( is_wp_error( $installed ) ) {
-				wp_send_json_error( __( 'Error installing ', 'mai-setup-wizard' ) . $slug );
+				wp_send_json_error( __( 'Error installing ', 'mai-engine' ) . $slug );
 			}
 		}
 
 		activate_plugin( $slug, false, false, true );
 
-		$message = __( 'Installed ', 'mai-setup-wizard' ) . $slug;
+		$message = __( 'Installed ', 'mai-engine' ) . $slug;
 
 		wp_send_json_success( $message );
 	}
@@ -193,7 +193,7 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 		$content_type = isset( $field['value'] ) ? $field['value'] : false;
 
 		if ( ! $content_type ) {
-			wp_send_json_error( __( 'No field value.', 'mai-setup-wizard' ) );
+			wp_send_json_error( __( 'No field value.', 'mai-engine' ) );
 		}
 
 		set_time_limit( apply_filters( 'mai_setup_wizard_time_limit', 300 ) );

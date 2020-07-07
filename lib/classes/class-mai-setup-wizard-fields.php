@@ -123,7 +123,7 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 				'element'    => 'input',
 				'attributes' => [
 					'type'        => 'email',
-					'placeholder' => __( 'Email address', 'mai-setup-wizard' ),
+					'placeholder' => __( 'Email address', 'mai-engine' ),
 				],
 			],
 		];
@@ -151,7 +151,7 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 					'<h4>%s</h4>&nbsp;<a href="%s" target="_blank" class="button">%s</a>',
 					$demo['name'],
 					$demo['preview'],
-					__( 'Preview', 'mai-setup-wizard' )
+					__( 'Preview', 'mai-engine' )
 				),
 				'img'        => [
 					'src'   => $demo['screenshot'],
@@ -195,7 +195,7 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 						$plugin['name'],
 						'',
 						$plugin['uri'],
-						__( ' View details', 'mai-setup-wizard' )
+						__( ' View details', 'mai-engine' )
 					),
 					'attributes' => [
 						'value'     => $plugin['slug'],
@@ -222,9 +222,9 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 		$fields        = [];
 		$demos         = $this->demos->get_demos();
 		$content_types = [
-			'content'        => __( 'Content', 'mai-engine' ),
-			'template_parts' => __( 'Template Parts', 'mai-engine' ),
-			'customizer'     => __( 'Customizer Settings', 'mai-engine' ),
+			'content'    => __( 'Content', 'mai-engine' ),
+			'templates'  => __( 'Template Parts', 'mai-engine' ),
+			'customizer' => __( 'Customizer Settings', 'mai-engine' ),
 		];
 
 		foreach ( $demos as $demo ) {
@@ -260,7 +260,7 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 			[
 				'id'         => 'view',
 				'element'    => 'a',
-				'content'    => __( 'View your site', 'mai-setup-wizard' ),
+				'content'    => __( 'View your site', 'mai-engine' ),
 				'attributes' => [
 					'class' => 'button button-primary button-hero',
 					'href'  => home_url(),

@@ -106,14 +106,14 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 	private function get_welcome_step() {
 		return [
 			'id'              => 'welcome',
-			'title'           => __( 'Welcome', 'mai-setup-wizard' ),
-			'description'     => __( 'Welcome to the Mai Setup Wizard! Enter your email address in the form below to receive automatic updates, latest news and special offers.', 'mai-setup-wizard' ),
+			'title'           => __( 'Welcome', 'mai-engine' ),
+			'description'     => __( 'Welcome to the Mai Setup Wizard! Enter your email address in the form below to receive automatic updates, latest news and special offers.', 'mai-engine' ),
 			'order'           => 10,
-			'error_message'   => __( 'Please enter a valid email address.', 'mai-setup-wizard' ),
-			'success_message' => __( 'Success!', 'mai-setup-wizard' ),
-			'continue_text'   => __( 'Yes please, sign me up!', 'mai-setup-wizard' ),
-			'loading_text'    => __( 'Sending...', 'mai-setup-wizard' ),
-			'skip_text'       => __( 'No thanks', 'mai-setup-wizard' ),
+			'error_message'   => __( 'Please enter a valid email address.', 'mai-engine' ),
+			'success_message' => __( 'Success!', 'mai-engine' ),
+			'continue_text'   => __( 'Yes please, sign me up!', 'mai-engine' ),
+			'loading_text'    => __( 'Sending...', 'mai-engine' ),
+			'skip_text'       => __( 'No thanks', 'mai-engine' ),
 			'fields'          => $this->fields->get_fields( 'welcome' ),
 		];
 	}
@@ -132,12 +132,12 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 		if ( is_array( $demos ) && count( $demos ) > 1 ) {
 			$step = [
 				'id'              => 'demo',
-				'title'           => __( 'Site Style', 'mai-setup-wizard' ),
-				'description'     => __( 'Please select your site style below (required).', 'mai-setup-wizard' ),
+				'title'           => __( 'Site Style', 'mai-engine' ),
+				'description'     => __( 'Please select your site style below (required).', 'mai-engine' ),
 				'order'           => 20,
-				'error_message'   => __( 'Please select a site style to continue.', 'mai-setup-wizard' ),
-				'success_message' => __( 'Good choice!', 'mai-setup-wizard' ),
-				'continue_text'   => __( 'Continue', 'mai-setup-wizard' ),
+				'error_message'   => __( 'Please select a site style to continue.', 'mai-engine' ),
+				'success_message' => __( 'Good choice!', 'mai-engine' ),
+				'continue_text'   => __( 'Continue', 'mai-engine' ),
 				'skip_text'       => false,
 				'fields'          => $this->fields->get_fields( 'demo' ),
 			];
@@ -160,13 +160,13 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 		if ( isset( $demo['plugins'] ) && ! empty( $demo['plugins'] ) ) {
 			$step = [
 				'id'              => 'plugins',
-				'title'           => __( 'Recommended Plugins', 'mai-setup-wizard' ),
-				'description'     => __( 'The following plugins will be installed and activated.', 'mai-setup-wizard' ),
+				'title'           => __( 'Recommended Plugins', 'mai-engine' ),
+				'description'     => __( 'The following plugins will be installed and activated.', 'mai-engine' ),
 				'order'           => 30,
-				'error_message'   => __( 'Plugins could not be installed.', 'mai-setup-wizard' ),
-				'success_message' => __( 'Plugins successfully installed!', 'mai-setup-wizard' ),
-				'continue_text'   => __( 'Install Plugins', 'mai-setup-wizard' ),
-				'loading_text'    => __( 'Installing plugins...', 'mai-setup-wizard' ),
+				'error_message'   => __( 'Plugins could not be installed.', 'mai-engine' ),
+				'success_message' => __( 'Plugins successfully installed!', 'mai-engine' ),
+				'continue_text'   => __( 'Install Plugins', 'mai-engine' ),
+				'loading_text'    => __( 'Installing plugins...', 'mai-engine' ),
 				'fields'          => $this->fields->get_fields( 'plugins' ),
 			];
 		}
@@ -188,13 +188,13 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 		if ( isset( $demo['content'] ) && ! empty( $demo['content'] ) ) {
 			$step = [
 				'id'              => 'content',
-				'title'           => __( 'Content', 'mai-setup-wizard' ),
-				'description'     => __( 'Select which content you would like to import. Please note that this step can take up to 5 minutes.', 'mai-setup-wizard' ),
+				'title'           => __( 'Content', 'mai-engine' ),
+				'description'     => __( 'Select which content you would like to import. Please note that this step can take up to 5 minutes.', 'mai-engine' ),
 				'order'           => 40,
-				'error_message'   => __( 'Content could not be installed.', 'mai-setup-wizard' ),
-				'success_message' => __( 'Content successfully installed!', 'mai-setup-wizard' ),
-				'continue_text'   => __( 'Import Content', 'mai-setup-wizard' ),
-				'loading_text'    => __( 'Importing content...', 'mai-setup-wizard' ),
+				'error_message'   => __( 'Content could not be installed.', 'mai-engine' ),
+				'success_message' => __( 'Content successfully installed!', 'mai-engine' ),
+				'continue_text'   => __( 'Import Content', 'mai-engine' ),
+				'loading_text'    => __( 'Importing content...', 'mai-engine' ),
 				'fields'          => $this->fields->get_fields( 'content' ),
 			];
 		}
@@ -212,12 +212,12 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 	private function get_done_step() {
 		return [
 			'id'            => 'done',
-			'title'         => __( 'Done', 'mai-setup-wizard' ),
-			'description'   => __( 'Your theme has been all set up.', 'mai-setup-wizard' ),
+			'title'         => __( 'Done', 'mai-engine' ),
+			'description'   => __( 'Your theme has been all set up.', 'mai-engine' ),
 			'order'         => 50,
-			'continue_text' => __( 'View Your Site', 'mai-setup-wizard' ),
+			'continue_text' => __( 'View Your Site', 'mai-engine' ),
 			'continue_url'  => get_home_url(),
-			'skip_text'     => __( 'Edit Your Site', 'mai-setup-wizard' ),
+			'skip_text'     => __( 'Edit Your Site', 'mai-engine' ),
 			'skip_url'      => get_admin_url(),
 			'fields'        => $this->fields->get_fields( 'done' ),
 		];
@@ -241,10 +241,10 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 			'order'           => 10,
 			'error_message'   => false,
 			'success_message' => false,
-			'continue_text'   => __( 'Continue', 'mai-setup-wizard' ),
+			'continue_text'   => __( 'Continue', 'mai-engine' ),
 			'continue_url'    => 'javascript:void(0)',
-			'loading_text'    => __( 'Loading...', 'mai-setup-wizard' ),
-			'skip_text'       => __( 'Skip this step', 'mai-setup-wizard' ),
+			'loading_text'    => __( 'Loading...', 'mai-engine' ),
+			'skip_text'       => __( 'Skip this step', 'mai-engine' ),
 			'skip_url'        => 'javascript:void(0)',
 			'ajax_callback'   => "mai_setup_wizard_ajax_step_{$id}",
 		] );
@@ -288,7 +288,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 			<div>
 				<?php if ( 1 !== $counter && apply_filters( 'mai_setup_wizard_previous', true ) ): ?>
 					<a href="javascript:void(0)" id="previous" class="button">
-						<?php esc_html_e( 'Previous', 'mai-setup-wizard' ); ?>
+						<?php esc_html_e( 'Previous', 'mai-engine' ); ?>
 					</a>
 				<?php endif; ?>
 				<?php $skip_target = filter_var( $step['skip_url'], FILTER_VALIDATE_URL ) === false ? '' : ' target="_blank"'; ?>
@@ -310,9 +310,9 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 				<?php
 				printf(
 					'%s %s %s %s',
-					__( 'Step', 'mai-setup-wizard' ),
+					__( 'Step', 'mai-engine' ),
 					$counter,
-					__( 'of', 'mai-setup-wizard' ),
+					__( 'of', 'mai-engine' ),
 					count( $steps )
 				);
 				?>

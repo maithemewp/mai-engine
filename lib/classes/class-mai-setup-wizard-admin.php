@@ -92,7 +92,7 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 			do_action( 'mai_setup_wizard_after_steps' );
 			?>
 			<p>
-				<a href="<?php echo admin_url(); ?>"><?php esc_html_e( 'Return to dashboard', 'mai-setup-wizard' ); ?></a>
+				<a href="<?php echo admin_url(); ?>"><?php esc_html_e( 'Return to dashboard', 'mai-engine' ); ?></a>
 			</p>
 		</div>
 		<?php

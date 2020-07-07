@@ -13,63 +13,63 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: config/_default.php:95
+#: config/_default.php:97
 msgid "Standard Content"
 msgstr ""
 
-#: config/_default.php:102
+#: config/_default.php:104
 msgid "Narrow Content"
 msgstr ""
 
-#: config/_default.php:108
+#: config/_default.php:110
 msgid "Wide Content"
 msgstr ""
 
-#: config/_default.php:114
+#: config/_default.php:116
 msgid "Content, Sidebar"
 msgstr ""
 
-#: config/_default.php:120
+#: config/_default.php:122
 msgid "Sidebar, Content"
 msgstr ""
 
-#: config/_default.php:200, lib/functions/deprecated.php:85
+#: config/_default.php:202, lib/functions/deprecated.php:110
 msgid "Mobile Menu"
 msgstr ""
 
-#: config/_default.php:203
+#: config/_default.php:205
 msgid "Menu"
 msgstr ""
 
-#: config/_default.php:207
+#: config/_default.php:209
 msgid "Sub Menu"
 msgstr ""
 
-#: config/_default.php:215
+#: config/_default.php:217
 msgid "Menu Search"
 msgstr ""
 
-#: config/_default.php:396
+#: config/_default.php:398
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/_default.php:397
+#: config/_default.php:399
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/_default.php:398, lib/admin/hide-elements.php:106
+#: config/_default.php:400, lib/admin/hide-elements.php:106
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default.php:524, lib/functions/deprecated.php:79
+#: config/_default.php:526, lib/functions/deprecated.php:104
 msgid "After Entry"
 msgstr ""
 
-#: config/_default.php:555, lib/functions/deprecated.php:73
+#: config/_default.php:563, lib/functions/deprecated.php:98
 msgid "Sidebar"
 msgstr ""
 
-#: config/_default.php:556, lib/functions/deprecated.php:74
+#: config/_default.php:564, lib/functions/deprecated.php:99
 msgid "The Sidebar widget area."
 msgstr ""
 
@@ -93,7 +93,7 @@ msgstr ""
 msgid "Select elements to hide on this page."
 msgstr ""
 
-#: lib/admin/hide-elements.php:92, lib/functions/deprecated.php:47
+#: lib/admin/hide-elements.php:92, lib/functions/deprecated.php:72
 msgid "Before Header"
 msgstr ""
 
@@ -129,15 +129,15 @@ msgstr ""
 msgid "Featured Image"
 msgstr ""
 
-#: lib/admin/hide-elements.php:122, lib/functions/deprecated.php:91
+#: lib/admin/hide-elements.php:122, lib/functions/deprecated.php:116
 msgid "Before Footer"
 msgstr ""
 
-#: lib/admin/hide-elements.php:126, lib/functions/deprecated.php:98
+#: lib/admin/hide-elements.php:126, lib/functions/deprecated.php:123
 msgid "Footer"
 msgstr ""
 
-#: lib/admin/hide-elements.php:130, lib/functions/deprecated.php:104
+#: lib/admin/hide-elements.php:130, lib/functions/deprecated.php:129
 msgid "Footer Credits"
 msgstr ""
 
@@ -185,7 +185,7 @@ msgstr ""
 msgid "Cover"
 msgstr ""
 
-#: lib/admin/page-header.php:56, lib/admin/term-image.php:51, lib/functions/grid.php:79, lib/functions/loop.php:354, lib/functions/loop.php:426
+#: lib/admin/page-header.php:56, lib/admin/term-image.php:51, lib/functions/grid.php:79, lib/functions/loop.php:389, lib/functions/loop.php:461
 msgid "Image"
 msgstr ""
 
@@ -193,7 +193,7 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: lib/admin/settings.php:22, lib/admin/settings.php:23, lib/functions/deprecated.php:113
+#: lib/admin/settings.php:22, lib/admin/settings.php:23, lib/functions/deprecated.php:138
 msgid "Mai Theme"
 msgstr ""
 
@@ -229,15 +229,15 @@ msgstr ""
 msgid "Setup Wizard"
 msgstr ""
 
-#: lib/admin/setup-wizard.php:158
+#: lib/admin/setup-wizard.php:149
 msgid "Mai Theme Setup Wizard Page"
 msgstr ""
 
-#: lib/admin/setup-wizard.php:162
+#: lib/admin/setup-wizard.php:153
 msgid "Welcome to the Mai Setup Wizard! Enter your email address in the form below to receive automatic updates, share your environment information, win free swag, receive the latest news and get special offers. To learn more about providing your email and claiming your free goodies, visit the"
 msgstr ""
 
-#: lib/admin/setup-wizard.php:164
+#: lib/admin/setup-wizard.php:155
 msgid "on BizBudding for all the details, terms and conditions of this program."
 msgstr ""
 
@@ -381,7 +381,7 @@ msgstr ""
 msgid "Right Full"
 msgstr ""
 
-#: lib/blocks/grid.php:804, lib/blocks/icon.php:267, lib/customize/content-archives.php:84
+#: lib/blocks/grid.php:804, lib/blocks/icon.php:267, lib/customize/colors.php:47, lib/customize/content-archives.php:84
 msgid "Background"
 msgstr ""
 
@@ -401,7 +401,7 @@ msgstr ""
 msgid "One Half"
 msgstr ""
 
-#: lib/blocks/grid.php:940, lib/customize/content-archives.php:149, lib/customize/single-content.php:60, lib/functions/grid.php:81, lib/functions/loop.php:357, lib/functions/loop.php:429
+#: lib/blocks/grid.php:940, lib/customize/content-archives.php:149, lib/customize/single-content.php:60, lib/functions/grid.php:81, lib/functions/loop.php:392, lib/functions/loop.php:464
 msgid "Header Meta"
 msgstr ""
 
@@ -417,7 +417,7 @@ msgstr ""
 msgid "More Link Text"
 msgstr ""
 
-#: lib/blocks/grid.php:1018, lib/customize/content-archives.php:202, lib/customize/single-content.php:74, lib/functions/grid.php:85, lib/functions/loop.php:364, lib/functions/loop.php:435
+#: lib/blocks/grid.php:1018, lib/customize/content-archives.php:202, lib/customize/single-content.php:74, lib/functions/grid.php:85, lib/functions/loop.php:399, lib/functions/loop.php:470
 msgid "Footer Meta"
 msgstr ""
 
@@ -661,7 +661,7 @@ msgstr ""
 msgid "Order By"
 msgstr ""
 
-#: lib/blocks/grid.php:1835, lib/blocks/grid.php:2119, lib/functions/grid.php:80, lib/functions/loop.php:356, lib/functions/loop.php:428
+#: lib/blocks/grid.php:1835, lib/blocks/grid.php:2119, lib/functions/grid.php:80, lib/functions/loop.php:391, lib/functions/loop.php:463
 msgid "Title"
 msgstr ""
 
@@ -893,7 +893,67 @@ msgstr ""
 msgid "Edit the currently saved block."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-fields.php:225, lib/functions/grid.php:83, lib/functions/loop.php:360, lib/functions/loop.php:432
+#: lib/classes/class-mai-setup-wizard-admin.php:95
+msgid "Return to dashboard"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:80
+msgid "Email address can not be empty."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:84, lib/classes/class-mai-setup-wizard-steps.php:112
+msgid "Please enter a valid email address."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:101
+msgid "Email address sent."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:104
+msgid "Email entered but not sent."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:129, lib/classes/class-mai-setup-wizard-importer.php:89
+msgid "No demo selected."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:126
+msgid " selected."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:147
+msgid "No plugins selected."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:164
+msgid "Error object from API communication for plugin "
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:171
+msgid "Error installing "
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:177
+msgid "Installed "
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:196
+msgid "No field value."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-fields.php:126
+msgid "Email address"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-fields.php:154
+msgid "Preview"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-fields.php:198
+msgid " View details"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-fields.php:225, lib/classes/class-mai-setup-wizard-steps.php:191, lib/functions/grid.php:83, lib/functions/loop.php:395, lib/functions/loop.php:467
 msgid "Content"
 msgstr ""
 
@@ -905,8 +965,164 @@ msgstr ""
 msgid "Customizer Settings"
 msgstr ""
 
+#: lib/classes/class-mai-setup-wizard-fields.php:263
+msgid "View your site"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-importer.php:95
+msgid " could not be retrieved."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-importer.php:101
+msgid " response body could not be retrieved."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-importer.php:146
+msgid "Finished importing "
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-importer.php:179
+msgid "Error importing settings! Please try again."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-importer.php:195, lib/classes/class-mai-setup-wizard-importer.php:199
+msgid "Error importing settings! Please check that you uploaded a customizer export file."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-importer.php:203
+msgid "Error importing settings! The settings you uploaded are not for the current theme."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-importer.php:234
+msgid "Sucessfully imported customizer."
+msgstr ""
+
 #: lib/classes/class-mai-setup-wizard-service-provider.php:68
 msgid "Mai Setup Wizard"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:109
+msgid "Welcome"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:110
+msgid "Welcome to the Mai Setup Wizard! Enter your email address in the form below to receive automatic updates, latest news and special offers."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:113
+msgid "Success!"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:114
+msgid "Yes please, sign me up!"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:115
+msgid "Sending..."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:116
+msgid "No thanks"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:135
+msgid "Site Style"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:136
+msgid "Please select your site style below (required)."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:138
+msgid "Please select a site style to continue."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:139
+msgid "Good choice!"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:140, lib/classes/class-mai-setup-wizard-steps.php:244
+msgid "Continue"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:163
+msgid "Recommended Plugins"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:164
+msgid "The following plugins will be installed and activated."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:166
+msgid "Plugins could not be installed."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:167
+msgid "Plugins successfully installed!"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:168
+msgid "Install Plugins"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:169
+msgid "Installing plugins..."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:192
+msgid "Select which content you would like to import. Please note that this step can take up to 5 minutes."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:194
+msgid "Content could not be installed."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:195
+msgid "Content successfully installed!"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:196
+msgid "Import Content"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:197
+msgid "Importing content..."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:215
+msgid "Done"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:216
+msgid "Your theme has been all set up."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:218
+msgid "View Your Site"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:220
+msgid "Edit Your Site"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:246
+msgid "Loading..."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:247
+msgid "Skip this step"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:291
+msgid "Previous"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:313
+msgid "Step"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:315
+msgid "of"
 msgstr ""
 
 #: lib/customize/beta-tester.php:29
@@ -921,15 +1137,35 @@ msgstr ""
 msgid "Colors"
 msgstr ""
 
-#: lib/customize/colors.php:47
-msgid " Text"
+#: lib/customize/colors.php:48
+msgid "Background Alt"
 msgstr ""
 
-#: lib/customize/colors.php:77
+#: lib/customize/colors.php:49, lib/customize/typography.php:98
+msgid "Body"
+msgstr ""
+
+#: lib/customize/colors.php:50, lib/customize/typography.php:127
+msgid "Heading"
+msgstr ""
+
+#: lib/customize/colors.php:51
+msgid "Link"
+msgstr ""
+
+#: lib/customize/colors.php:52
+msgid "Button Primary"
+msgstr ""
+
+#: lib/customize/colors.php:53
+msgid "Button Secondary"
+msgstr ""
+
+#: lib/customize/colors.php:95
 msgid "Add New Color "
 msgstr ""
 
-#: lib/customize/colors.php:82
+#: lib/customize/colors.php:100
 msgid "Custom Color"
 msgstr ""
 
@@ -961,7 +1197,7 @@ msgstr ""
 msgid "Page header text color"
 msgstr ""
 
-#: lib/customize/content-archives.php:515, lib/customize/single-content.php:133, lib/functions/utilities.php:867
+#: lib/customize/content-archives.php:515, lib/customize/single-content.php:133, lib/functions/utilities.php:826
 msgid "Default"
 msgstr ""
 
@@ -1173,19 +1409,19 @@ msgstr ""
 msgid "Miscellaneous"
 msgstr ""
 
-#: lib/customize/site-layouts.php:206, lib/functions/utilities.php:940
+#: lib/customize/site-layouts.php:206, lib/functions/utilities.php:899
 msgid "Search Results"
 msgstr ""
 
-#: lib/customize/site-layouts.php:220, lib/functions/utilities.php:941
+#: lib/customize/site-layouts.php:220, lib/functions/utilities.php:900
 msgid "Author Archives"
 msgstr ""
 
-#: lib/customize/site-layouts.php:234, lib/functions/utilities.php:942
+#: lib/customize/site-layouts.php:234, lib/functions/utilities.php:901
 msgid "Date Archives"
 msgstr ""
 
-#: lib/customize/site-layouts.php:248, lib/functions/utilities.php:946
+#: lib/customize/site-layouts.php:248, lib/functions/utilities.php:905
 msgid "404"
 msgstr ""
 
@@ -1205,14 +1441,6 @@ msgstr ""
 msgid "Scale"
 msgstr ""
 
-#: lib/customize/typography.php:98
-msgid "Body"
-msgstr ""
-
-#: lib/customize/typography.php:127
-msgid "Heading"
-msgstr ""
-
 #: lib/customize/updates.php:26
 msgid "Check For Mai Theme Updates"
 msgstr ""
@@ -1225,63 +1453,63 @@ msgstr ""
 msgid "Customize more now!"
 msgstr ""
 
-#: lib/functions/deprecated.php:48
+#: lib/functions/deprecated.php:73
 msgid "The Before Header widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:53
+#: lib/functions/deprecated.php:78
 msgid "Header Left"
 msgstr ""
 
-#: lib/functions/deprecated.php:54
+#: lib/functions/deprecated.php:79
 msgid "The Header Left widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:63
+#: lib/functions/deprecated.php:88
 msgid "Header Right"
 msgstr ""
 
-#: lib/functions/deprecated.php:64
+#: lib/functions/deprecated.php:89
 msgid "The Header Right widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:80
+#: lib/functions/deprecated.php:105
 msgid "The After Entry widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:86
+#: lib/functions/deprecated.php:111
 msgid "The Mobile Menu widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:92
+#: lib/functions/deprecated.php:117
 msgid "The Before Footer widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:99
+#: lib/functions/deprecated.php:124
 msgid "The Footer widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:105
+#: lib/functions/deprecated.php:130
 msgid "The Footer Credits widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:110
+#: lib/functions/deprecated.php:135
 msgid "Copyright"
 msgstr ""
 
-#: lib/functions/deprecated.php:111
+#: lib/functions/deprecated.php:136
 msgid "All Rights Reserved"
 msgstr ""
 
-#: lib/functions/deprecated.php:112
+#: lib/functions/deprecated.php:137
 msgid "Powered by"
 msgstr ""
 
-#: lib/functions/grid.php:82, lib/functions/loop.php:359
+#: lib/functions/grid.php:82, lib/functions/loop.php:394
 msgid "Excerpt"
 msgstr ""
 
-#: lib/functions/grid.php:84, lib/functions/loop.php:362
+#: lib/functions/grid.php:84, lib/functions/loop.php:397
 msgid "Read More link"
 msgstr ""
 
@@ -1329,19 +1557,19 @@ msgstr ""
 msgid "Custom"
 msgstr ""
 
-#: lib/functions/loop.php:431
+#: lib/functions/loop.php:466
 msgid "Manual Excerpts"
 msgstr ""
 
-#: lib/functions/loop.php:437
+#: lib/functions/loop.php:472
 msgid "Author Box"
 msgstr ""
 
-#: lib/functions/loop.php:438
+#: lib/functions/loop.php:473
 msgid "After Entry Widget Area"
 msgstr ""
 
-#: lib/functions/loop.php:439
+#: lib/functions/loop.php:474
 msgid "Previous/Next Entry Nav"
 msgstr ""
 
@@ -1451,30 +1679,30 @@ msgstr ""
 msgid "Active"
 msgstr ""
 
-#: lib/functions/utilities.php:784
+#: lib/functions/utilities.php:743
 msgid "Not found, error 404"
 msgstr ""
 
-#: lib/functions/utilities.php:772
+#: lib/functions/utilities.php:731
 msgid "Archives for "
 msgstr ""
 
-#: lib/functions/utilities.php:763, lib/functions/utilities.php:838
+#: lib/functions/utilities.php:722, lib/functions/utilities.php:797
 msgid "Search results for: "
 msgstr ""
 
-#: lib/functions/utilities.php:730
+#: lib/functions/utilities.php:689
 msgid "Latest Posts"
 msgstr ""
 
-#: lib/functions/utilities.php:903
+#: lib/functions/utilities.php:862
 msgid "Post"
 msgstr ""
 
-#: lib/functions/utilities.php:907
+#: lib/functions/utilities.php:866
 msgid "Page"
 msgstr ""
 
-#: lib/functions/utilities.php:1097
+#: lib/functions/utilities.php:1077
 msgid "Read More"
 msgstr ""
