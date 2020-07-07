@@ -55,10 +55,10 @@ function mai_get_engine_theme() {
 			$theme = $current_theme;
 
 		} elseif ( current_theme_supports( 'mai-engine' ) ) {
-			$theme_support = get_theme_support( 'mai-engine' )[0];
-
-			if ( in_array( $theme_support, $engine_themes, true ) ) {
-				$theme = $theme_support;
+			// Custom themes can load a specific theme default via `add_theme_support( 'mai-engine', 'success' );`
+			$theme_support = get_theme_support( 'mai-engine' );
+			if ( $theme_support && is_array( $theme_support ) && in_array( $theme_support[0], $engine_themes, true ) ) {
+				$theme = $theme_support[0];
 			} else {
 				$theme = 'default';
 			}
