@@ -268,6 +268,10 @@ add_filter( 'kirki_enqueue_google_fonts', 'mai_add_extra_google_fonts', 99 );
  * @return mixed
  */
 function mai_add_extra_google_fonts( $fonts ) {
+	// Convert to strings for later comparison.
+	foreach ( $fonts as $family => $weights ) {
+		$fonts[ $family ] = array_map( 'strval', $weights );
+	}
 	$fonts_config = mai_get_global_styles( 'fonts' );
 
 	foreach ( $fonts_config as $element => $args ) {
@@ -288,6 +292,8 @@ function mai_add_extra_google_fonts( $fonts ) {
 		$variants = $google_fonts[ $font_family ]['variants'];
 
 		foreach ( $font_weights as $font_weight ) {
+
+			// Skip if config weight is not a variant in this family.
 			if ( ! in_array( $font_weight, $variants, true ) ) {
 				continue;
 			}
@@ -297,12 +303,19 @@ function mai_add_extra_google_fonts( $fonts ) {
 				continue;
 			}
 
-			// Prevent both regular and 400.
-			$font_weight = 'regular' === $font_weight ? '400' : $font_weight;
-
 			$fonts[ $font_family ][] = (string) $font_weight;
-			$fonts[ $font_family ]   = array_unique( $fonts[ $font_family ] );
 		}
+	}
+
+	foreach ( $fonts as $font_family => $font_weights ) {
+		// If we have 400 and regular, remove 400. Kikri uses regular.
+		if ( count( array_intersect( $font_weights, [ '400', 'regular' ] ) ) > 1 ) {
+			$index = array_search( '400', $font_weights );
+			unset( $fonts[ $font_family ][ $index ] );
+		}
+
+		// Remove any leftover duplicates.
+		$fonts[ $font_family ] = array_unique( $fonts[ $font_family ] );
 	}
 
 	return $fonts;
