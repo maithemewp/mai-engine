@@ -40,3 +40,26 @@ function mai_create_template_parts( $current_screen ) {
 		wp_insert_post( $args );
 	}
 }
+
+add_filter( 'display_post_states', 'mai_template_part_post_state', 10, 2 );
+/**
+ * Display active template parts.
+ *
+ * @since 2.0.0
+ *
+ * @param array   $states Array of post states.
+ * @param WP_Post $post   Post object.
+ *
+ * @return mixed
+ */
+function mai_template_part_post_state( $states, $post ) {
+	$template_parts = mai_get_config( 'template-parts' );
+
+	foreach ( $template_parts as $template_part ) {
+		if ( $template_part['id'] === $post->post_name && $post->post_content ) {
+			$states[] = __( 'Active', 'mai-engine' );
+		}
+	}
+
+	return $states;
+}
