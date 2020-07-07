@@ -254,6 +254,8 @@ function mai_add_body_font_variants( $fonts ) {
 	// Remove duplicates.
 	$fonts[ $font_family ] = array_flip( array_flip( $fonts[ $font_family ] ) );
 
+	var_dump( $fonts );
+
 	return $fonts;
 }
 
@@ -271,12 +273,6 @@ function mai_add_extra_google_fonts( $fonts ) {
 	$fonts_config = mai_get_global_styles( 'fonts' );
 
 	foreach ( $fonts_config as $element => $args ) {
-
-		// Handled by Kirki Customizer settings.
-		if ( 'body' === $element || 'heading' === $element ) {
-			continue;
-		}
-
 		$font_family  = mai_get_default_font_family( $element );
 		$font_weights = mai_get_default_font_weights( $element );
 
@@ -303,7 +299,11 @@ function mai_add_extra_google_fonts( $fonts ) {
 				continue;
 			}
 
-			$fonts[ $font_family ][] = $font_weight;
+			// Prevent both regular and 400.
+			$font_weight = 'regular' === $font_weight ? '400' : $font_weight;
+
+			$fonts[ $font_family ][] = (string) $font_weight;
+			$fonts[ $font_family ]   = array_unique( $fonts[ $font_family ] );
 		}
 	}
 
@@ -312,13 +312,13 @@ function mai_add_extra_google_fonts( $fonts ) {
 
 add_filter( 'kirki_mai-engine_styles', 'mai_add_fonts_custom_properties' );
 /**
- * Description of expected behavior.
+ * Add typography settings custom properties to Kirki output.
  *
  * @since 2.0.0
  *
- * @param $css
+ * @param array $css Kirki CSS output array.
  *
- * @return mixed
+ * @return array
  */
 function mai_add_fonts_custom_properties( $css ) {
 	$fonts            = mai_get_global_styles( 'fonts' );
