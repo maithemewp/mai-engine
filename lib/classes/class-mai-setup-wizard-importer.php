@@ -133,15 +133,11 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 			'fetch_attachments' => true,
 		], $logger );
 
-		if ( ! did_action( 'mai_setup_wizard_before_import' ) ) {
-			do_action( 'mai_setup_wizard_before_import', $this->demos->get_chosen_demo() );
-		}
+		do_action( 'mai_setup_wizard_before_import', $this->demos->get_chosen_demo() );
 
 		$importer->import( $file );
 
-		if ( ! did_action( 'mai_setup_wizard_after_import' ) ) {
-			do_action( 'mai_setup_wizard_after_import', $this->demos->get_chosen_demo() );
-		}
+		do_action( 'mai_setup_wizard_after_import', $this->demos->get_chosen_demo() );
 
 		wp_send_json_success( __( 'Finished importing ', 'mai-engine' ) . basename( $file ) );
 	}
@@ -156,11 +152,30 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 	 * @return void
 	 */
 	private function import_template_parts( $file ) {
+		if ( ! class_exists( 'WP_Importer' ) ) {
+			require_once ABSPATH . '/wp-admin/includes/class-wp-importer.php';
+		}
+
+		if ( ! function_exists( 'wp_generate_attachment_metadata' ) ) {
+			require_once ABSPATH . '/wp-admin/includes/image.php';
+		}
+
+		if ( ! function_exists( 'wp_read_audio_metadata' ) ) {
+			require_once ABSPATH . '/wp-admin/includes/media.php';
+		}
+
+		$logger   = new ProteusThemes\WPContentImporter2\WPImporterLogger();
+		$importer = new ProteusThemes\WPContentImporter2\Importer( [
+			'fetch_attachments' => true,
+		], $logger );
+
 		do_action( 'mai_setup_wizard_before_template_parts' );
 
-		$this->import_content( $file );
+		$importer->import( $file );
 
 		do_action( 'mai_setup_wizard_after_template_parts' );
+
+		wp_send_json_success( __( 'Finished importing ', 'mai-engine' ) . basename( $file ) );
 	}
 
 	/**

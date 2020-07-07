@@ -227,7 +227,7 @@ add_filter( 'kirki_enqueue_google_fonts', 'mai_add_body_font_variants', 99 );
  *
  * @since 2.0.0
  *
- * @param $fonts
+ * @param array $fonts All fonts to be enqueued.
  *
  * @return mixed
  */
@@ -263,7 +263,7 @@ add_filter( 'kirki_enqueue_google_fonts', 'mai_add_extra_google_fonts', 99 );
  *
  * @since 2.0.0
  *
- * @param $fonts
+ * @param array $fonts All Google Fonts to be enqueued.
  *
  * @return mixed
  */

@@ -199,7 +199,6 @@ function mai_backup_template_parts() {
 
 	foreach ( $template_parts as $template_part ) {
 		$post    = get_post( mai_get_template_part_by_slug( $template_part['id'] ) );
-		$options = get_option( 'mai-setup-wizard' );
 
 		// Skip if post doesn't exist.
 		if ( ! $post ) {
@@ -214,7 +213,11 @@ function mai_backup_template_parts() {
 		// Delete empty template parts.
 		if ( ! $post->post_content ) {
 			wp_delete_post( $post->ID );
+
+			continue;
 		}
+
+		$options = get_option( 'mai-setup-wizard' );
 
 		// If the demo importer has been run previously, use old theme and demo names.
 		if ( isset( $options['theme'] ) && isset( $options['demo'] ) ) {
@@ -238,7 +241,12 @@ function mai_backup_template_parts() {
 			}
 		}
 
-		wp_update_post( $post );
+		// Delete original.
+		wp_delete_post( $post );
+
+		// Create backup post.
+		$post->ID = 0;
+		wp_insert_post( $post );
 	}
 }
 
