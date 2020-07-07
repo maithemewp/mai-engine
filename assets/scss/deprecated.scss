@@ -106,6 +106,17 @@ $colors: (
 	}
 }
 
+@include mq(lg) {
+
+	.header-left {
+		--widget-margin: 0 var(--spacing-md) 0 0;
+	}
+
+	.header-right {
+		--widget-margin: 0 0 0 var(--spacing-md);
+	}
+}
+
 .site-footer {
 	width: 100%;
 	background: var(--site-footer-background, var(--color-white));
