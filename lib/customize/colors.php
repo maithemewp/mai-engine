@@ -53,7 +53,7 @@ function mai_colors_customizer_settings() {
 		'secondary'  => __( 'Button Secondary', 'mai-engine' ),
 	];
 
-	$defaults = mai_get_global_styles( 'colors' );
+	$defaults = mai_get_default_colors();
 
 	foreach ( $colors as $id => $label ) {
 		$args = [
