@@ -254,8 +254,6 @@ function mai_add_body_font_variants( $fonts ) {
 	// Remove duplicates.
 	$fonts[ $font_family ] = array_flip( array_flip( $fonts[ $font_family ] ) );
 
-	var_dump( $fonts );
-
 	return $fonts;
 }
 
