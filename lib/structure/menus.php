@@ -79,22 +79,6 @@ function mai_after_header_menu() {
 	);
 }
 
-add_action( 'genesis_footer', 'mai_footer_menu' );
-/**
- * Description of expected behavior.
- *
- * @since 0.1.0
- *
- * @return void
- */
-function mai_footer_menu() {
-	genesis_nav_menu(
-		[
-			'theme_location' => 'footer',
-		]
-	);
-}
-
 add_filter( 'walker_nav_menu_start_el', 'mai_replace_hash_with_void', 999 );
 /**
  * Replace # links with JavaScript void.
