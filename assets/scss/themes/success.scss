@@ -1,6 +1,7 @@
 @import "default";
 
 :root {
+	--border: 2px solid var(--color-border);
 	--input-placeholder-color: var(--color-medium);
 	--blockquote-border-left: 0;
 	--site-title-font-size: var(--font-size-md);

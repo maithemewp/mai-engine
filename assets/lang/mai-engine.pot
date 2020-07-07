@@ -241,6 +241,10 @@ msgstr ""
 msgid "on BizBudding for all the details, terms and conditions of this program."
 msgstr ""
 
+#: lib/admin/template-parts.php:60
+msgid "Active"
+msgstr ""
+
 #: lib/blocks/divider.php:25, lib/blocks/divider.php:212
 msgid "Mai Divider"
 msgstr ""
@@ -897,47 +901,47 @@ msgstr ""
 msgid "Return to dashboard"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:80
+#: lib/classes/class-mai-setup-wizard-ajax.php:97
 msgid "Email address can not be empty."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:84, lib/classes/class-mai-setup-wizard-steps.php:112
+#: lib/classes/class-mai-setup-wizard-ajax.php:101, lib/classes/class-mai-setup-wizard-steps.php:112
 msgid "Please enter a valid email address."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:101
+#: lib/classes/class-mai-setup-wizard-ajax.php:118
 msgid "Email address sent."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:104
+#: lib/classes/class-mai-setup-wizard-ajax.php:121
 msgid "Email entered but not sent."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:129, lib/classes/class-mai-setup-wizard-importer.php:89
+#: lib/classes/class-mai-setup-wizard-ajax.php:143, lib/classes/class-mai-setup-wizard-importer.php:89
 msgid "No demo selected."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:126
+#: lib/classes/class-mai-setup-wizard-ajax.php:140
 msgid " selected."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:147
+#: lib/classes/class-mai-setup-wizard-ajax.php:161
 msgid "No plugins selected."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:164
+#: lib/classes/class-mai-setup-wizard-ajax.php:178
 msgid "Error object from API communication for plugin "
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:171
+#: lib/classes/class-mai-setup-wizard-ajax.php:185
 msgid "Error installing "
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:177
+#: lib/classes/class-mai-setup-wizard-ajax.php:191
 msgid "Installed "
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:196
+#: lib/classes/class-mai-setup-wizard-ajax.php:210
 msgid "No field value."
 msgstr ""
 
@@ -977,23 +981,23 @@ msgstr ""
 msgid " response body could not be retrieved."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:146
+#: lib/classes/class-mai-setup-wizard-importer.php:142, lib/classes/class-mai-setup-wizard-importer.php:178
 msgid "Finished importing "
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:179
+#: lib/classes/class-mai-setup-wizard-importer.php:194
 msgid "Error importing settings! Please try again."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:195, lib/classes/class-mai-setup-wizard-importer.php:199
+#: lib/classes/class-mai-setup-wizard-importer.php:210, lib/classes/class-mai-setup-wizard-importer.php:214
 msgid "Error importing settings! Please check that you uploaded a customizer export file."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:203
+#: lib/classes/class-mai-setup-wizard-importer.php:218
 msgid "Error importing settings! The settings you uploaded are not for the current theme."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:234
+#: lib/classes/class-mai-setup-wizard-importer.php:249
 msgid "Sucessfully imported customizer."
 msgstr ""
 
@@ -1673,10 +1677,6 @@ msgstr ""
 
 #: lib/functions/templates.php:67
 msgid "The theme that provided the template part, if any."
-msgstr ""
-
-#: lib/functions/templates.php:186
-msgid "Active"
 msgstr ""
 
 #: lib/functions/utilities.php:743
