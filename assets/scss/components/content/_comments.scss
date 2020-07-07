@@ -24,6 +24,8 @@
 
 		&:last-child {
 			margin-bottom: calc(var(--spacing-xl) * -1 - 1px); /* make all child comments flush to bottom, over border as well */
+			border-right: 0;
+			border-bottom: 0;
 		}
 	}
 }
