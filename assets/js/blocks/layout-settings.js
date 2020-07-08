@@ -77,6 +77,15 @@ const addSpacingControlAttribute = ( settings, name ) => {
 
 addFilter( 'blocks.registerBlockType', 'mai-engine/attribute/layout-settings', addSpacingControlAttribute );
 
+// Filter out spacing css classes to preserve other additional classes
+const removeFromClassName = ( className, classArray ) => {
+	return ( className || '' ).split( ' ' )
+		.filter( classString => ! classArray.includes( classString ) )
+		.join( ' ' )
+		.replace( /\s+/g, ' ' ) // Remove superfluous whitespace
+		.trim();
+};
+
 /**
  * Create HOC to add contentWidth control to inspector controls of block.
  */
@@ -90,36 +99,51 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 			);
 		}
 
-		if ( ! props.attributes.className ) {
-			props.attributes.className = '';
-		}
-
-		// Clear all of our classes so we're not compiling various class names.
-		sizeScale.map( sizeInfo => {
-			props.attributes.className.replace( `has-${sizeInfo.value}-content-width`, '' );
-			props.attributes.className.replace( `has-${sizeInfo.value}-padding-top`, '' );
-			props.attributes.className.replace( `has-${sizeInfo.value}-padding-bottom`, '' );
-		} );
-
 		const { contentWidth, verticalSpacingTop, verticalSpacingBottom } = props.attributes;
 
-		// Start new class string.
-		let newClasses = '';
+		const layoutSettings = [
+			{
+				name: 'content-width',
+				value: contentWidth,
+				classes: [
+					'has-xs-content-width',
+					'has-sm-content-width',
+					'has-md-content-width',
+					'has-lg-content-width',
+					'has-xl-content-width',
+				]
+			},
+			{
+				name: 'padding-top',
+				value: verticalSpacingTop,
+				classes: [
+					'has-xs-padding-top',
+					'has-sm-padding-top',
+					'has-md-padding-top',
+					'has-lg-padding-top',
+					'has-xl-padding-top',
+				]
+			},
+			{
+				name: 'padding-bottom',
+				value: verticalSpacingBottom,
+				classes: [
+					'has-xs-padding-bottom',
+					'has-sm-padding-bottom',
+					'has-md-padding-bottom',
+					'has-lg-padding-bottom',
+					'has-xl-padding-bottom',
+				]
+			},
+		];
 
-		if ( contentWidth ) {
-			newClasses += ` has-${contentWidth}-content-width`;
-		}
+		layoutSettings.map( setting => {
+			const existingClasses = removeFromClassName( props.attributes.className, setting.classes );
 
-		if ( verticalSpacingTop ) {
-			newClasses += ` has-${verticalSpacingTop}-padding-top`;
-		}
-
-		if ( verticalSpacingBottom ) {
-			newClasses += ` has-${verticalSpacingBottom}-padding-bottom`;
-		}
-
-		// Set our new classes.
-		props.attributes.className = newClasses.trim();
+			props.attributes.className = setting.value ?
+				`has-${ setting.value }-${ setting.name } ${ existingClasses }` :
+				existingClasses;
+		} );
 
 		return (
 			<Fragment>
