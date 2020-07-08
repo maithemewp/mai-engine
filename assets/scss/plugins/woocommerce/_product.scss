@@ -77,7 +77,7 @@
 			margin-bottom: -1px;
 			padding: var(--spacing-xs) var(--spacing-md);
 			color: var(--color-body);
-			background-color: var(--background, var(--color-alt));
+			background-color: var(--color-alt);
 			border: var(--border);
 		}
 
@@ -87,7 +87,7 @@
 
 		&.active a,
 		&.active a:focus {
-			--background: var(--color-white);
+			background-color: var(--color-white);
 			border-bottom-color: var(--color-white);
 			outline: none;
 		}

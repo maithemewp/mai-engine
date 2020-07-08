@@ -453,6 +453,25 @@ function mai_get_editor_color_palette() {
 }
 
 /**
+ * Get color element names for settings.
+ *
+ * @since 2.0.0
+ *
+ * @return array
+ */
+function mai_get_color_elements() {
+	return [
+		'background' => __( 'Background', 'mai-engine' ),
+		'alt'        => __( 'Background Alt', 'mai-engine' ),
+		'body'       => __( 'Body', 'mai-engine' ),
+		'heading'    => __( 'Heading', 'mai-engine' ),
+		'link'       => __( 'Link', 'mai-engine' ),
+		'primary'    => __( 'Button Primary', 'mai-engine' ),
+		'secondary'  => __( 'Button Secondary', 'mai-engine' ),
+	];
+}
+
+/**
  * Get color choices for Kirki.
  *
  * @since 2.0.0

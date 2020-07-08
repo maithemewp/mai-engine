@@ -29,15 +29,7 @@ function mai_colors_customizer_settings() {
 		]
 	);
 
-	$colors = [
-		'background' => __( 'Background', 'mai-engine' ),
-		'alt'        => __( 'Background Alt', 'mai-engine' ),
-		'body'       => __( 'Body', 'mai-engine' ),
-		'heading'    => __( 'Heading', 'mai-engine' ),
-		'link'       => __( 'Link', 'mai-engine' ),
-		'primary'    => __( 'Button Primary', 'mai-engine' ),
-		'secondary'  => __( 'Button Secondary', 'mai-engine' ),
-	];
+	$colors = mai_get_color_elements();
 
 	foreach ( $colors as $id => $label ) {
 		$args = [
@@ -45,7 +37,7 @@ function mai_colors_customizer_settings() {
 			'settings' => 'color-' . $id,
 			'label'    => $label,
 			'section'  => $section,
-			'default'  => mai_get_color( $id ),
+			'default'  => mai_get_default_color( $id ),
 			'output'   => [
 				[
 					'element'  => ':root',

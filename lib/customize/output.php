@@ -29,7 +29,7 @@ function mai_add_breakpoint_custom_properties( $css ) {
 	return $css;
 }
 
-add_filter( 'kirki_mai-engine_styles', 'mai_add_colors_css' );
+add_filter( 'kirki_mai-engine_styles', 'mai_add_additional_colors_css' );
 /**
  * Output named (non-element) color css.
  *
@@ -39,18 +39,10 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_colors_css' );
  *
  * @return mixed
  */
-function mai_add_colors_css( $css ) {
+function mai_add_additional_colors_css( $css ) {
 	$defaults = mai_get_global_styles( 'colors' );
-	$colors   = array_diff_key( $defaults, array_flip(
-		[
-			'link',
-			'primary',
-			'secondary',
-			'heading',
-			'body',
-			'background',
-		]
-	) );
+	// Exclude settings out put by Kirki.
+	$colors   = array_diff_key( $defaults, mai_get_color_elements() );
 
 	if ( $colors ) {
 		foreach ( $colors as $name => $color ) {
