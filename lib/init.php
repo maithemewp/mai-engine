@@ -259,7 +259,6 @@ function mai_load_files() {
 			[
 				'admin/acf',
 				'admin/blog',
-				'admin/child-theme-updater',
 				'admin/dependencies',
 				'admin/editor',
 				'admin/hide-elements',
