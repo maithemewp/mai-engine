@@ -11,18 +11,16 @@
 
 add_filter( 'render_block', 'mai_render_image_block', 10, 2 );
 /**
- * Description of expected behavior.
+ * Add lazy loading to image blocks.
  *
  * @since 1.0.0
  *
- * @param $block_content
- * @param $block
+ * @param string $block_content Block HTML markup.
+ * @param array  $block         Block data.
  *
  * @return string
  */
 function mai_render_image_block( $block_content, $block ) {
-
-	// Bail if not an image block.
 	if ( 'core/image' !== $block['blockName'] ) {
 		return $block_content;
 	}
