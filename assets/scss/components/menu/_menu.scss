@@ -95,3 +95,8 @@
 	--menu-item-margin: 0 0 var(--spacing-md);
 	--menu-item-link-padding: 0;
 }
+
+.no-js {
+	--menu-item-display: inline-flex;
+	--menu-item-width: auto;
+}

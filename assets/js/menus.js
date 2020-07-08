@@ -1,5 +1,5 @@
 ( function() {
-	var localizedData    = typeof maiMenuVars === 'undefined' ? {} : maiMenuVars;
+	var maiMenuData      = typeof maiMenuVars === 'undefined' ? {} : maiMenuVars;
 	var body             = document.getElementsByTagName( 'body' )[ 0 ];
 	var siteHeaderWrap   = document.querySelector( '.site-header-wrap' );
 	var navHeaderLeft    = document.getElementsByClassName( 'nav-header-left' )[ 0 ];
@@ -21,7 +21,7 @@
 
 		mobileMenu = document.createElement( 'div' );
 		mobileMenu.setAttribute( 'class', 'mobile-menu' );
-		mobileMenu.setAttribute( 'aria-label', localizedData.ariaLabel );
+		mobileMenu.setAttribute( 'aria-label', maiMenuData.ariaLabel );
 		mobileMenu.setAttribute( 'itemscope', '' );
 		mobileMenu.setAttribute( 'itemtype', 'https://schema.org/SiteNavigationElement' );
 		mobileMenuWrap = document.createElement( 'div' );
@@ -41,7 +41,7 @@
 		menuToggle.setAttribute( 'class', 'menu-toggle' );
 		menuToggle.setAttribute( 'aria-expanded', 'false' );
 		menuToggle.setAttribute( 'aria-pressed', 'false' );
-		menuToggle.innerHTML = localizedData.menuToggle;
+		menuToggle.innerHTML = maiMenuData.menuToggle;
 		siteHeaderWrap.appendChild( menuToggle );
 	};
 
@@ -52,7 +52,7 @@
 			subMenuToggle.setAttribute( 'class', 'sub-menu-toggle' );
 			subMenuToggle.setAttribute( 'aria-expanded', 'false' );
 			subMenuToggle.setAttribute( 'aria-pressed', 'false' );
-			subMenuToggle.innerHTML = localizedData.subMenuToggle;
+			subMenuToggle.innerHTML = maiMenuData.subMenuToggle;
 			subMenu.parentNode.insertBefore( subMenuToggle, subMenu );
 		} );
 	};
