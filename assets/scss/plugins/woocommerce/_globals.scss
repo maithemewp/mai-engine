@@ -21,12 +21,15 @@
 .woocommerce-error,
 .woocommerce-message {
 	position: relative;
-	margin-bottom: var(--row-gap);
+	margin: 0 0 var(--row-gap);
 	padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) var(--spacing-lg);
 	overflow: hidden;
 	font-size: smaller;
 	border: var(--border);
 	border-left: none;
+	--list-style-type: none;
+	--list-margin: 0;
+	--list-item-margin: 0;
 
 	&::before {
 		position: absolute;
