@@ -19,6 +19,10 @@ add_action( 'current_screen', 'mai_create_template_parts' );
  * @return void
  */
 function mai_create_template_parts( $current_screen ) {
+	if ( wp_doing_ajax() ) {
+		return;
+	}
+
 	if ( 'edit-wp_template_part' !== $current_screen->id ) {
 		return;
 	}
