@@ -81,19 +81,17 @@
 	}
 }
 
-.added {
-	align-self: flex-start;
-	padding: var(--spacing-md);
-	font-size: 0;
-
-	&::after {
-		font-size: var(--font-size-xs);
-	}
+.added,
+.added:hover,
+.added:focus {
+	margin: auto auto var(--spacing-xs);
+	font-size: 80%;
+	background: var(--button-secondary-background, var(--color-secondary));
+	color: var(--button-secondary-color); // Color contrast automatically generated.
+	--button-opacity: 0.5;
 }
 
 .added_to_cart {
-	align-self: flex-end;
-
 	@include button;
 
 	&:hover,
