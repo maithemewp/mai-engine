@@ -9,22 +9,15 @@
  * @license   GPL-2.0-or-later
  */
 
-// Prevent direct file access.
-defined( 'ABSPATH' ) || die;
-
 return [
-	'demos'             => [
+	'demos'            => [
 		'creative' => 2,
 		'fashion'  => 18,
 	],
-	'custom-properties' => [
-		'color-medium'           => '#f9f6f6',
-		'heading-text-transform' => 'uppercase',
-		'border-radius'          => '1px',
-	],
-	'global-styles'     => [
+	'global-styles'    => [
 		'colors'     => [
 			'background' => '#fdf3f2',
+			'alt'        => '#fdf3f2',
 			'primary'    => '#f98588',
 			'link'       => '#f98588',
 			'heading'    => '#000000',
@@ -36,25 +29,25 @@ return [
 		],
 		'font-scale' => 1.125,
 	],
-	'image-sizes'       => [
+	'image-sizes'      => [
 		'add' => [
 			'portrait' => '3:4',
 		],
 	],
-	'theme-support'     => [
+	'theme-support'    => [
 		'add' => [
 			'boxed-container',
 			'sticky-header',
 		],
 	],
-	'archive-settings'  => [
+	'archive-settings' => [
 		'post',
 		'category',
 	],
-	'page-header'       => [
+	'page-header'      => [
 		'single' => [ 'page' ],
 	],
-	'plugins'           => [
+	'plugins'          => [
 		[
 			'name'  => 'Genesis Connect for WooCommerce',
 			'slug'  => 'genesis-connect-woocommerce/genesis-connect-woocommerce.php',
