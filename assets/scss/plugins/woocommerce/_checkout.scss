@@ -22,7 +22,6 @@
 	label {
 
 		img {
-			max-width: calc(var(--spacing-lg) * #{$minor-third});
 			margin-right: var(--spacing-xs);
 		}
 	}
@@ -41,16 +40,6 @@
 			border-radius: var(--border-radius);
 		}
 
-		&-first {
-			float: left;
-			width: var(--one-half);
-			margin-right: var(--column-gap);
-		}
-
-		&-last {
-			float: right;
-			width: var(--one-half);
-		}
 	}
 }
 
