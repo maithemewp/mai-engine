@@ -9,10 +9,13 @@
  * @license   GPL-2.0-or-later
  */
 
+// Allow shortcodes in nav menu items.
+add_filter( 'walker_nav_menu_start_el', 'do_shortcode' );
+
 add_filter( 'genesis_attr_nav-header-left', 'mai_header_nav_class' );
 add_filter( 'genesis_attr_nav-header-right', 'mai_header_nav_class' );
 /**
- * Description of expected behavior.
+ * Adds nav-header left and right classes.
  *
  * @since 0.1.0
  *
@@ -28,7 +31,7 @@ function mai_header_nav_class( $atts ) {
 
 add_action( 'mai_header_left', 'mai_header_left_menu', 15 );
 /**
- * Description of expected behavior.
+ * Displays header left nav menu.
  *
  * @since 0.1.0
  *
@@ -44,7 +47,7 @@ function mai_header_left_menu() {
 
 add_action( 'mai_header_right', 'mai_header_right_menu' );
 /**
- * Description of expected behavior.
+ * Displays header right menu.
  *
  * @since 0.1.0
  *
@@ -120,29 +123,20 @@ add_filter( 'wp_nav_menu_objects', 'mai_first_last_menu_items' );
 /**
  * Adds first and last classes to menu items for cleaner styling.
  *
- * @since 0.1.0
+ * @since 2.0.1
  *
  * @param array $items The menu items, sorted by each menu item's menu order.
  *
  * @return array
  */
 function mai_first_last_menu_items( $items ) {
-	if ( $items ) {
-		$items[ array_key_first( $items ) ]->classes[] = 'menu-item-first';
-		$items[ count( $items ) ]->classes[]           = 'menu-item-last';
+	if ( ! empty( $items ) ) {
+		$items[ array_keys( $items )[0] ]->classes[] = 'menu-item-first';
+		$items[ count( $items ) ]->classes[]         = 'menu-item-last';
 	}
 
 	return $items;
 }
-
-/**
- * Allow shortcodes in nav menu items.
- *
- * @since 0.1.0
- *
- * @return string
- */
-add_filter( 'walker_nav_menu_start_el', 'do_shortcode' );
 
 add_filter( 'nav_menu_item_id', 'mai_remove_menu_item_classes' );
 add_filter( 'nav_menu_css_class', 'mai_remove_menu_item_classes' );
@@ -167,12 +161,15 @@ function mai_remove_menu_item_classes( $attribute ) {
 			'menu-item-last',
 			'menu-item-has-children',
 		];
-		foreach( $attribute as $index => $class ) {
+
+		foreach ( $attribute as $index => $class ) {
 			if ( ! mai_has_string( 'menu-item-', $class ) || in_array( $class, $keepers ) ) {
 				continue;
 			}
+
 			unset( $attribute[ $index ] );
 		}
+
 	} elseif ( is_string( $attribute ) ) {
 		$attribute = mai_has_string( 'menu-item-', $attribute ) ? '' : $attribute;
 	}
