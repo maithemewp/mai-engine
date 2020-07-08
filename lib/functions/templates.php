@@ -43,10 +43,12 @@ function mai_register_template_part_cpt() {
 	$args = [
 		'labels'             => $labels,
 		'description'        => __( 'Template parts to include in your templates.', 'mai-engine' ),
-		'publicly_queryable' => true,
+		'public'             => false,
 		'has_archive'        => false,
+		'rewrite'            => false,
 		'show_ui'            => true,
 		'show_in_menu'       => 'themes.php',
+		'show_in_nav_menus'  => false,
 		'show_in_admin_bar'  => false,
 		'show_in_rest'       => true,
 		'rest_base'          => 'template-parts',
