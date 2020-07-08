@@ -40,7 +40,7 @@ function mai_create_template_parts( $current_screen ) {
 			'post_title'  => mai_convert_case( $template_part['id'], 'title' ),
 			'post_name'   => $template_part['id'],
 			'post_status' => 'publish',
-			'menu_order'  => mai_isset( $template_part['menu_order'], 0 ),
+			'menu_order'  => mai_isset( $template_part, 'menu_order', 0 ),
 		];
 
 		wp_insert_post( $args );
