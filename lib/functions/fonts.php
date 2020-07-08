@@ -320,33 +320,3 @@ function mai_add_extra_google_fonts( $fonts ) {
 
 	return $fonts;
 }
-
-add_filter( 'kirki_mai-engine_styles', 'mai_add_fonts_custom_properties' );
-/**
- * Add typography settings custom properties to Kirki output.
- *
- * @since 2.0.0
- *
- * @param array $css Kirki CSS output array.
- *
- * @return array
- */
-function mai_add_fonts_custom_properties( $css ) {
-	$fonts            = mai_get_global_styles( 'fonts' );
-	$font_weight_bold = mai_get_bold_variant( 'body' );
-
-	if ( $font_weight_bold ) {
-		$css['global'][':root']['--font-weight-bold'] = $font_weight_bold;
-	}
-
-	foreach ( $fonts as $element => $string ) {
-		if ( 'body' === $element || 'heading' === $element ) {
-			continue;
-		}
-
-		$css['global'][':root'][ '--' . $element . '-font-family' ] = mai_get_default_font_family( $element );
-		$css['global'][':root'][ '--' . $element . '-font-weight' ] = mai_get_default_font_weight( $element );
-	}
-
-	return $css;
-}

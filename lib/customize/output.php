@@ -121,6 +121,40 @@ function mai_add_button_text_colors( $css ) {
 	return $css;
 }
 
+add_filter( 'kirki_mai-engine_styles', 'mai_add_fonts_custom_properties' );
+/**
+ * Add typography settings custom properties to Kirki output.
+ *
+ * @since 2.0.0
+ *
+ * @param array $css Kirki CSS output array.
+ *
+ * @return array
+ */
+function mai_add_fonts_custom_properties( $css ) {
+	$global_styles    = mai_get_global_styles();
+	$fonts            = $global_styles['fonts'];
+	$font_weight_bold = mai_get_bold_variant( 'body' );
+
+	$css['global'][':root']['--font-size-base'] = $global_styles['font-sizes']['base'] . 'px';
+	$css['global'][':root']['--font-scale']     = (string) $global_styles['font-scale'];
+
+	if ( $font_weight_bold ) {
+		$css['global'][':root']['--font-weight-bold'] = $font_weight_bold;
+	}
+
+	foreach ( $fonts as $element => $string ) {
+		if ( 'body' === $element || 'heading' === $element ) {
+			continue;
+		}
+
+		$css['global'][':root'][ '--' . $element . '-font-family' ] = mai_get_default_font_family( $element );
+		$css['global'][':root'][ '--' . $element . '-font-weight' ] = mai_get_default_font_weight( $element );
+	}
+
+	return $css;
+}
+
 add_filter( 'kirki_mai-engine_styles', 'mai_add_page_header_content_type_css' );
 /**
  * Add page header styles to kirki output.

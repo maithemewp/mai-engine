@@ -33,65 +33,6 @@ function mai_typography_customizer_settings() {
 	\Kirki::add_field(
 		$handle,
 		[
-			'type'        => 'number',
-			'settings'    => 'font-size-base',
-			'section'     => $section,
-			'label'       => __( 'Base', 'mai-engine' ),
-			'description' => __( 'Default: ', 'mai-engine' ) . $global_styles['font-sizes']['base'],
-			'default'     => $global_styles['font-sizes']['base'],
-			'choices'     => [
-				'min'  => 10,
-				'max'  => 100,
-				'step' => 1,
-			],
-			'output'      => [
-				[
-					'element'  => ':root',
-					'property' => '--font-size-base',
-					'units'    => 'px',
-					'context'  => [ 'front', 'editor' ],
-				],
-			],
-		]
-	);
-
-	\Kirki::add_field(
-		$handle,
-		[
-			'type'        => 'slider',
-			'settings'    => 'font-scale',
-			'section'     => $section,
-			'label'       => __( 'Scale', 'mai-engine' ),
-			'description' => __( 'Default: ', 'mai-engine' ) . $global_styles['font-scale'],
-			'default'     => $global_styles['font-scale'],
-			'choices'     => [
-				'min'  => 1,
-				'max'  => 2,
-				'step' => 0.01,
-			],
-			'output'      => [
-				[
-					'element'  => ':root',
-					'property' => '--font-scale',
-					'context'  => [ 'front', 'editor' ],
-				],
-			],
-		]
-	);
-
-	\Kirki::add_field(
-		$handle,
-		[
-			'type'     => 'custom',
-			'settings' => 'typography-base-divider',
-			'section'  => $section,
-			'default'  => '<hr>',
-		]
-	);
-
-	\Kirki::add_field(
-		$handle,
-		[
 			'type'        => 'typography',
 			'settings'    => 'body-typography',
 			'section'     => $section,

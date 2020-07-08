@@ -37,7 +37,7 @@ return [
 			'heading' => 'sans-serif:600',
 		],
 		'font-sizes'     => [
-			'base' => 14,
+			'base' => 16,
 		],
 		'font-scale'     => 1.25,
 		'contrast-limit' => 160,
