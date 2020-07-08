@@ -40,6 +40,7 @@ function mai_create_template_parts( $current_screen ) {
 			'post_title'  => mai_convert_case( $template_part['id'], 'title' ),
 			'post_name'   => $template_part['id'],
 			'post_status' => 'publish',
+			'menu_order'  => mai_isset( $template_part['menu_order'], 0 ),
 		];
 
 		wp_insert_post( $args );
@@ -67,4 +68,61 @@ function mai_template_part_post_state( $states, $post ) {
 	}
 
 	return $states;
+}
+
+/**
+ * Add slug column to Template Parts.
+ * Inserts as second to last item.
+ *
+ * @since 2.0.0
+ *
+ * @param array $column_array The existing post type columns.
+ *
+ * @return array
+ */
+add_filter( 'manage_wp_template_part_posts_columns', 'mai_template_part_add_slug_column' );
+function mai_template_part_add_slug_column( $column_array ) {
+	$new_column = [
+		'slug' => __( 'Slug', 'mai-engine' ),
+	];
+
+	$columns = count( $column_array );
+	$offset  = count( $column_array ) > 1 ? count( $column_array ) - 1 : count( $column_array );
+
+	return array_slice( $column_array, 0, $offset, true ) + $new_column + array_slice( $column_array, $offset, null, true );
+}
+
+/**
+ * Populate template part slug column with actual slug.
+ *
+ * @since 2.0.0
+ *
+ * @return void
+ */
+add_action( 'manage_posts_custom_column', 'mai_template_part_add_slug', 10, 2 );
+function mai_template_part_add_slug( $column_name, $post_id ) {
+	if ( 'slug' === $column_name ) {
+		echo get_post_field( 'post_name', $post_id );
+	}
+}
+
+/**
+ * Reorder template part admin list.
+ *
+ * @since 2.0.0
+ *
+ * @return void
+ */
+add_action( 'pre_get_posts', 'mai_template_parts_order' );
+function mai_template_parts_order( $query ) {
+	if ( ! is_admin() ) {
+		return;
+	}
+
+	if ( ! $query->is_main_query() ) {
+		return;
+	}
+
+	$query->set( 'orderby', 'menu_order' );
+	$query->set( 'order', 'ASC' );
 }

@@ -59,6 +59,7 @@ function mai_register_template_part_cpt() {
 			'editor',
 			'revisions',
 			'custom-fields',
+			'page-attributes',
 		],
 	];
 
