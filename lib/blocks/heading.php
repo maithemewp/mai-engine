@@ -11,13 +11,17 @@
 
 add_action( 'init', 'mai_register_heading_styles' );
 /**
- * Description of expected behavior.
+ * Add sub heading custom style.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
 function mai_register_heading_styles() {
+	if ( ! function_exists( 'register_block_style' ) ) {
+		return;
+	}
+
 	register_block_style(
 		'core/heading',
 		[

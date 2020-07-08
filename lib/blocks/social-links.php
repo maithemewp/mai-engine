@@ -11,13 +11,17 @@
 
 add_action( 'init', 'mai_register_social_icon_block_styles' );
 /**
- * Register additional button styles.
+ * Register social links no background style.
  *
  * @since 0.3.0
  *
  * @return void
  */
 function mai_register_social_icon_block_styles() {
+	if ( ! function_exists( 'register_block_style' ) ) {
+		return;
+	}
+
 	register_block_style(
 		'core/social-links',
 		[
