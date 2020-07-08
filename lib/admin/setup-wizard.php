@@ -190,9 +190,6 @@ add_action( 'mai_setup_wizard_before_template_parts', 'mai_backup_template_parts
  * @return void
  */
 function mai_backup_template_parts() {
-	// Auto-creation of templates was breaking things.
-	remove_action( 'current_screen', 'mai_create_template_parts' );
-
 	$template_parts = mai_get_config( 'template-parts' );
 	$post_type      = 'wp_template_part';
 
@@ -307,6 +304,7 @@ function mai_after_setup_wizard_import( $demo ) {
 
 	// Assign front page and posts page.
 	$front = get_page_by_title( $home );
+	$front = $front ?: get_page_by_title( 'Home' ); // Fallback if no home with demo name.
 	$blog  = get_page_by_title( 'Blog' );
 	$shop  = get_page_by_title( 'Shop' );
 

@@ -19,7 +19,8 @@ add_action( 'current_screen', 'mai_create_template_parts' );
  * @return void
  */
 function mai_create_template_parts( $current_screen ) {
-	if ( wp_doing_ajax() ) {
+	// Bail if running in setup wizard.
+	if ( did_action( 'mai_setup_wizard_before_steps' ) ) {
 		return;
 	}
 
