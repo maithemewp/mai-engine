@@ -13,7 +13,7 @@
 defined( 'ABSPATH' ) || die();
 
 /**
- * Description of expected behavior.
+ * Get the active engine theme. Defaults to the default theme.
  *
  * @since 0.1.0
  *
@@ -22,50 +22,101 @@ defined( 'ABSPATH' ) || die();
 function mai_get_engine_theme() {
 	static $theme = null;
 
-	if ( is_null( $theme ) ) {
+	if ( ! is_null( $theme ) ) {
+		return $theme;
+	}
+
+	$engine_themes = mai_get_engine_themes();
+
+	if ( current_theme_supports( 'mai-engine' ) ) {
+		// Custom themes can load a specific theme default via `add_theme_support( 'mai-engine', 'success' );`
+		$theme_support = get_theme_support( 'mai-engine' );
+		if ( $theme_support && is_array( $theme_support ) && in_array( $theme_support[0], $engine_themes, true ) ) {
+			$theme = $theme_support[0];
+		}
+	}
+
+	if ( ! $theme ) {
 		$current_theme = defined( 'CHILD_THEME_NAME' ) ? CHILD_THEME_NAME : null;
 
-		if ( ! $current_theme ) {
-			$current_theme = wp_get_theme()->get( 'Name' );
-		}
+		if ( $current_theme ) {
+			$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $current_theme ) );
 
-		if ( ! $current_theme ) {
-			$current_theme = wp_get_theme()->get( 'TextDomain' );
-		}
-
-		if ( ! $current_theme ) {
-			$current_theme = basename( get_stylesheet_directory() );
-		}
-
-		$configs       = glob( dirname( __DIR__ ) . '/config/*.php' );
-		$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $current_theme ) );
-		$engine_themes = [];
-
-		foreach ( $configs as $index => $config ) {
-			$base = basename( $config, '.php' );
-
-			if ( in_array( $base, [ '_default', '_settings' ] ) ) {
-				continue;
-			}
-
-			$engine_themes[] = $base;
-		}
-
-		if ( in_array( $current_theme, $engine_themes, true ) ) {
-			$theme = $current_theme;
-
-		} elseif ( current_theme_supports( 'mai-engine' ) ) {
-			// Custom themes can load a specific theme default via `add_theme_support( 'mai-engine', 'success' );`
-			$theme_support = get_theme_support( 'mai-engine' );
-			if ( $theme_support && is_array( $theme_support ) && in_array( $theme_support[0], $engine_themes, true ) ) {
-				$theme = $theme_support[0];
-			} else {
-				$theme = 'default';
+			if ( in_array( $current_theme, $engine_themes, true ) ) {
+				$theme = $current_theme;
 			}
 		}
 	}
 
+	if ( ! $theme ) {
+		$current_theme = wp_get_theme()->get( 'Name' );
+
+		if ( $current_theme ) {
+			$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $current_theme ) );
+
+			if ( in_array( $current_theme, $engine_themes, true ) ) {
+				$theme = $current_theme;
+			}
+		}
+	}
+
+	if ( ! $theme ) {
+		$current_theme = wp_get_theme()->get( 'TextDomain' );
+
+		if ( $current_theme ) {
+			$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $current_theme ) );
+
+			if ( in_array( $current_theme, $engine_themes, true ) ) {
+				$theme = $current_theme;
+			}
+		}
+	}
+
+	if ( ! $theme ) {
+		$current_theme = basename( get_stylesheet_directory() );
+
+		if ( $current_theme ) {
+			$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $current_theme ) );
+
+			if ( in_array( $current_theme, $engine_themes, true ) ) {
+				$theme = $current_theme;
+			}
+		}
+	}
+
+	$theme = $theme ?: 'default';
+
 	return $theme;
+}
+
+/**
+ * Get available engine themes.
+ *
+ * @since 2.0.0
+ *
+ * @return void
+ */
+function mai_get_engine_themes() {
+	static $themes = null;
+
+	if ( ! is_null( $themes ) ) {
+		return $themes;
+	}
+
+	$configs = glob( dirname( __DIR__ ) . '/config/*.php' );
+	$themes  = [];
+
+	foreach ( $configs as $index => $config ) {
+		$base = basename( $config, '.php' );
+
+		if ( in_array( $base, [ '_default', '_settings' ] ) ) {
+			continue;
+		}
+
+		$themes[] = $base;
+	}
+
+	return $themes;
 }
 
 /**
@@ -166,7 +217,7 @@ add_action( 'after_setup_theme', 'mai_load_files', 0 );
 function mai_load_files() {
 	$deactivate = true;
 
-	if ( function_exists( 'genesis' ) && mai_get_engine_theme() ) {
+	if ( function_exists( 'genesis' ) && current_theme_supports( 'mai-engine' ) ) {
 		$deactivate = false;
 	}
 
