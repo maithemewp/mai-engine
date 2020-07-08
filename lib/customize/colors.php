@@ -29,20 +29,6 @@ function mai_colors_customizer_settings() {
 		]
 	);
 
-	/*
-	 * Get original colors for backwards compatibility.
-	 * Separate array so we can remove easily in future.
-	 */
-	$original = [
-		'background' => 'lightest',
-		'alt'        => 'lighter',
-		'body'       => 'dark',
-		'heading'    => 'darkest',
-		'link'       => 'primary',
-		'primary'    => 'primary',
-		'secondary'  => 'secondary',
-	];
-
 	$colors = [
 		'background' => __( 'Background', 'mai-engine' ),
 		'alt'        => __( 'Background Alt', 'mai-engine' ),
@@ -53,15 +39,13 @@ function mai_colors_customizer_settings() {
 		'secondary'  => __( 'Button Secondary', 'mai-engine' ),
 	];
 
-	$defaults = mai_get_default_colors();
-
 	foreach ( $colors as $id => $label ) {
 		$args = [
 			'type'     => 'color',
 			'settings' => 'color-' . $id,
 			'label'    => $label,
 			'section'  => $section,
-			'default'  => mai_get_option( 'color-' . $original[ $id ], $defaults[ $id ] ),
+			'default'  => mai_get_color( $id ),
 			'output'   => [
 				[
 					'element'  => ':root',
