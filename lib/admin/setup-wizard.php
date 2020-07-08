@@ -190,6 +190,9 @@ add_action( 'mai_setup_wizard_before_template_parts', 'mai_backup_template_parts
  * @return void
  */
 function mai_backup_template_parts() {
+	// Auto-creation of templates was breaking things.
+	remove_action( 'current_screen', 'mai_create_template_parts' );
+
 	$template_parts = mai_get_config( 'template-parts' );
 	$post_type      = 'wp_template_part';
 
@@ -198,7 +201,7 @@ function mai_backup_template_parts() {
 	}
 
 	foreach ( $template_parts as $template_part ) {
-		$post    = get_post( mai_get_template_part_by_slug( $template_part['id'] ) );
+		$post = get_post( mai_get_template_part_by_slug( $template_part['id'] ) );
 
 		// Skip if post doesn't exist.
 		if ( ! $post ) {
