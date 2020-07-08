@@ -194,16 +194,13 @@ add_filter( 'genesis_structural_wrap-page-header', 'mai_page_header_divider', 10
  * @return string
  */
 function mai_page_header_divider( $output, $original_output ) {
-	$style = mai_get_option( 'page-header-divider', mai_get_config( 'page-header' )['divider'] );
+	$config = mai_get_config( 'page-header' );
+	$style  = mai_get_option( 'page-header-divider', $config['divider'] );
 
-	if ( ! $style ) {
-		return $output;
-	}
-
-	if ( 'close' === $original_output ) {
+	if ( $style && 'close' === $original_output ) {
 		$args = [
 			'style'           => $style,
-			'color'           => mai_get_option( 'page-header-divider-color', mai_get_color( 'alt' ) ),
+			'color'           => mai_get_option( 'page-header-divider-color', mai_get_color( $config['divider-color'] ) ),
 			'flip_horizontal' => mai_get_option( 'page-header-divider-flip-horizontal', mai_get_config( 'page-header' )['divider-flip-horizontal'] ),
 			'flip_vertical'   => mai_get_option( 'page-header-divider-flip-vertical', mai_get_config( 'page-header' )['divider-flip-vertical'] ),
 			'height'          => 'md',
