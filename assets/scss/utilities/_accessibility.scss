@@ -10,7 +10,7 @@
 		padding: var(--spacing-md);
 		color: var(--color-white);
 		text-decoration: none;
-		background-color: var(--color-medium);
+		background-color: var(--color-body);
 
 		@include hide-visually(unhide);
 	}
