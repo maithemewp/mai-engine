@@ -32,6 +32,7 @@ return [
 	'theme-support' => [
 		'add' => [
 			'transparent-header',
+			'sticky-header',
 		],
 	],
 	'page-header'   => [

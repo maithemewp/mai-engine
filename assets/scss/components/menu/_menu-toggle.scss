@@ -68,6 +68,6 @@
 	--menu-toggle-line-after-transition: top 0.2s 0s, transform 0.2s 0.2s;
 }
 
-.has-dark-header {
+.has-dark-header:not(.header-stuck) {
 	--menu-toggle-color: var(--color-white);
 }
