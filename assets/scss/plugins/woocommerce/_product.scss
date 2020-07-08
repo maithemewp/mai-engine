@@ -77,12 +77,12 @@
 			margin-bottom: -1px;
 			padding: var(--spacing-xs) var(--spacing-md);
 			color: var(--color-body);
-			background-color: var(--background, var(--color-lighter));
+			background-color: var(--background, var(--color-alt));
 			border: var(--border);
 		}
 
 		&:not(.active) a {
-			border-color: var(--color-lighter);
+			border-color: var(--color-alt);
 		}
 
 		&.active a,

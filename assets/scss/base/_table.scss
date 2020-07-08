@@ -10,7 +10,7 @@ table {
 th {
 	font-weight: var(--table-header-font-weight, var(--heading-font-weight));
 	font-size: var(--table-header-font-size, (smaller));
-	background-color: var(--table-header-background-color, var(--color-lighter));
+	background-color: var(--table-header-background-color, var(--color-alt));
 }
 
 th,

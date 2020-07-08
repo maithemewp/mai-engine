@@ -54,7 +54,7 @@
 
 .has-dark-header:not(.header-stuck) {
 	--menu-item-link-color: var(--color-white);
-	--menu-item-link-color-hover: var(--color-light);
+	--menu-item-link-color-hover: var(--color-white);
 }
 
 .menu-item-has-children > a::after {
