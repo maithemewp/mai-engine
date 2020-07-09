@@ -191,9 +191,8 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 				$fields[] = [
 					'id'         => $demo['id'] . '-' . $id,
 					'label'      => sprintf(
-						'%s&nbsp;<strong>%s</strong>&nbsp;<a href="%s" target="_blank">%s</a>',
+						'&nbsp;<strong>%s</strong>&nbsp;<a href="%s" target="_blank">%s</a>',
 						$plugin['name'],
-						'',
 						$plugin['uri'],
 						__( ' View details', 'mai-engine' )
 					),
@@ -230,7 +229,7 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 				__( 'Template Parts', 'mai-engine' ),
 				__( 'Our block-based replacement for widgets.', 'mai-engine' ),
 				__( 'Requires "Content" in order to import images.', 'mai-engine' ),
-				__( 'Will move any existing template parts into the trash.', 'mai-engine' ),
+				__( 'Moves any existing template parts into the trash.', 'mai-engine' ),
 			),
 			'customizer' => sprintf( '<strong>%s</strong> <ul class="step-description"><li>%s</li></ul>',
 				__( 'Customizer Settings', 'mai-engine' ),

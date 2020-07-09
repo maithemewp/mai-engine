@@ -11,8 +11,8 @@
 
 return [
 	'demos'            => [
-		'podcast' => 12,
 		'agency'  => 13,
+		'podcast' => 12,
 	],
 	'global-styles'    => [
 		'colors' => [

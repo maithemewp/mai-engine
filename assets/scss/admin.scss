@@ -95,7 +95,7 @@ li.toplevel_page_mai-theme {
 	margin: 0 auto;
 }
 
-.step {
+.setup-wizard > form {
 	width: 100%;
 	max-width: 660px;
 	margin: 0 auto;
@@ -105,33 +105,18 @@ li.toplevel_page_mai-theme {
 	box-shadow: 0 1px 6px #e1e1e1;
 }
 
-.setup-wizard .wrap .wrap {
-	margin: 1em auto;
-}
-
 .setup-wizard h2 {
 	font-size: 2em;
 }
 
 .setup-wizard input[type="email"] {
 	width: 100%;
+	max-width: 260px;
 	padding: 8px 16px;
-}
-
-.setup-wizard ul {
-	display: block;
-	max-width: 300px;
-	margin: 24px auto 36px;
-	text-align: left;
-}
-
-.setup-wizard li {
-	margin-bottom: 24px;
 }
 
 .setup-wizard label {
 	position: relative;
-	display: block;
 }
 
 .setup-wizard input[type="checkbox"] {
@@ -140,61 +125,10 @@ li.toplevel_page_mai-theme {
 	right: calc(100% + 4px);
 }
 
-.setup-wizard .label {
-	display: block;
-	align-items: unset;
-}
-
-.setup-wizard .label strong {
-	display: block;
-	margin-bottom: 8px;
-	font-size: 1.2em;
-}
-
-.setup-wizard .step-description {
-	display: block;
-	list-style: disc;
-	width: 100%;
-	margin: 4px 0 0 16px;
-}
-
-.setup-wizard .step-description li {
-	margin-bottom: 8px;
-}
-
-.setup-wizard #done ul {
-	text-align: center;
-}
-
-.setup-wizard #submit {
-	display: block;
-	margin: 0 auto 24px;
-	padding: 6px 24px;
-	font-size: 1.2em;
-}
-
 .error,
 .success {
 	margin-bottom: 0;
 	font-style: italic;
-}
-
-#previous {
-	/*display: none;*/
-}
-
-#submit {
-	display: inline-flex;
-	align-items: center;
-}
-
-#submit img {
-	display: none;
-	margin-left: 5px;
-}
-
-#submit.is-running img {
-	display: inline-block;
 }
 
 .label {
@@ -202,11 +136,11 @@ li.toplevel_page_mai-theme {
 	align-items: center;
 }
 
-[data-status] {
+[data-status] > label {
 	position: relative;
 }
 
-[data-status]::after {
+[data-status] > label::after {
 	position: absolute;
 	top: 0;
 	left: calc(100% + 10px);
@@ -223,14 +157,27 @@ li.toplevel_page_mai-theme {
 	content: "";
 }
 
-[data-status="running"]::after {
+[data-status="running"] > label::after {
 	visibility: visible;
 }
 
-[data-status="complete"]::after {
+[data-status="complete"] > label::after {
 	background-image: url(../../img/tick.png);
 	visibility: visible;
 	filter: none;
+}
+
+.progress {
+	display: none;
+}
+
+[data-status="running"] .progress {}
+
+/**
+ * Block layout settings.
+ */
+[data-checked]:first-of-type {
+	border-radius: 3px 0 0 3px !important;
 }
 
 #demo ul {
@@ -319,15 +266,60 @@ li.toplevel_page_mai-theme {
 	transition: 0.2s ease;
 }
 
-.progress {
-	display: none;
+#plugins ul {
+	display: block;
+	margin: 36px auto;
 }
 
-[data-status="running"] .progress {}
+#content ul {
+	display: block;
+	max-width: 300px;
+	margin: 36px auto;
+	text-align: left;
+}
 
-/**
- * Block layout settings.
- */
-[data-checked]:first-of-type {
-	border-radius: 3px 0 0 3px !important;
+#content li {
+	margin-bottom: 24px;
+}
+
+#content label {
+	display: block;
+}
+
+#content .label {
+	display: block;
+	align-items: unset;
+}
+
+#content .label strong {
+	display: block;
+	margin-bottom: 8px;
+	font-size: 1.2em;
+}
+
+#content .step-description {
+	display: block;
+	list-style: disc;
+	width: 100%;
+	margin: 4px 0 0 16px;
+}
+
+#content .step-description li {
+	margin-bottom: 8px;
+}
+
+#submit {
+	display: block;
+	margin: 0 auto 24px;
+	padding: 6px 24px;
+	font-size: 1.2em;
+}
+
+#submit img {
+	display: none;
+	margin-left: 5px;
+}
+
+#submit.is-running img {
+	display: inline-block;
 }
