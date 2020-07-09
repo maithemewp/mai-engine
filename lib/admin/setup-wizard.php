@@ -65,6 +65,34 @@ function mai_setup_wizard_init() {
 	}
 }
 
+add_action( 'init', 'mai_reset_setup_wizard_options' );
+/**
+ * Resets setup wizard options.
+ *
+ * @since 2.0.0
+ *
+ * @return void
+ */
+function mai_reset_setup_wizard_options() {
+	$slug    = 'mai-setup-wizard';
+	$options = get_option( $slug );
+
+	if ( isset( $options['demo'] ) ) {
+		$options['previous-demo'] = $options['demo'];
+		unset( $options['demo'] );
+		update_option( $slug, $options );
+	}
+
+	if ( isset( $options['theme'] ) ) {
+		$options['previous-theme'] = $options['theme'];
+		unset( $options['theme'] );
+		update_option( $slug, $options );
+	}
+
+	// Delete importer transients.
+	delete_transient( 'pt_importer_data' );
+}
+
 add_filter( 'mai_setup_wizard_menu', 'mai_setup_wizard_menu', 10, 2 );
 /**
  * Add setup wizard menu item.
@@ -115,7 +143,7 @@ function mai_setup_wizard_demos( $defaults ) {
 		$defaults[] = [
 			'name'       => ucwords( $demo ),
 			'content'    => $demo_url . 'content.xml',
-			'templates'  => $demo_url . 'template-parts.xml',
+			'templates'  => $demo_url . 'template-parts.json',
 			'customizer' => $demo_url . 'customizer.dat',
 			'preview'    => "https://demo.bizbudding.com/{$theme}-{$demo}/",
 			'plugins'    => $plugins,
@@ -181,55 +209,6 @@ function mai_setup_wizard_email_option( $email_address ) {
 	add_filter( 'wp_mail_from', $filter );
 	wp_mail( $to, $subject, $message, $headers, $attachments );
 	remove_filter( 'wp_mail_from', $filter );
-}
-
-add_action( 'mai_setup_wizard_before_template_parts', 'mai_backup_template_parts' );
-/**
- * Backs up existing template parts before importing new ones.
- *
- * @since 2.0.1
- *
- * @return void
- */
-function mai_backup_template_parts() {
-
-	// Delete importer transients.
-	delete_transient( 'pt_importer_data' );
-
-	$posts = get_posts( [ 'post_type' => 'wp_template_part' ] );
-
-	foreach ( $posts as $post ) {
-		$previous = substr( $post->post_name, strrpos( $post->post_name, '-' ) );
-		$previous = str_replace( 'backup', '', $previous );
-
-		if ( is_numeric( $previous ) ) {
-			$increment  = abs( (int) $previous ) + 1;
-			$post_title = str_replace( $previous, $increment, $post->post_title );
-			$post_name  = str_replace( $previous, $increment, $post->post_name );
-
-		} else if ( mai_has_string( 'backup', $post->post_name ) ) {
-			$post_title = $post->post_title . ' 1';
-			$post_name  = $post->post_name . '-1';
-
-		} else {
-			$post_title = $post->post_title . ' - Backup';
-			$post_name  = $post->post_name . '-backup';
-		}
-
-		// Delete original.
-		wp_delete_post( $post->ID, true );
-
-		// Create backup post.
-		$backup = [
-			'post_title'   => $post_title,
-			'post_name'    => $post_name,
-			'post_content' => $post->post_content,
-			'post_status'  => 'publish',
-			'post_type'    => 'wp_template_part',
-		];
-
-		 wp_insert_post( $backup );
-	}
 }
 
 add_action( 'mai_setup_wizard_after_import', 'mai_after_setup_wizard_import' );

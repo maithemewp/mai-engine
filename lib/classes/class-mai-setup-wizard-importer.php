@@ -107,15 +107,15 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Runs the WP Content Importer v2.
+	 * Description of expected behavior.
 	 *
-	 * @since 2.0.1
+	 * @since 1.0.0
 	 *
-	 * @param string $file Absolute path to xml file.
+	 * @param string $file Path to xml file.
 	 *
-	 * @return bool
+	 * @return void
 	 */
-	private function importer( $file ) {
+	private function import_content( $file ) {
 		if ( ! class_exists( 'WP_Importer' ) ) {
 			require_once ABSPATH . '/wp-admin/includes/class-wp-importer.php';
 		}
@@ -133,22 +133,9 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 			'fetch_attachments' => true,
 		], $logger );
 
-		return $importer->import( $file );
-	}
-
-	/**
-	 * Description of expected behavior.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $file Path to xml file.
-	 *
-	 * @return void
-	 */
-	private function import_content( $file ) {
 		do_action( 'mai_setup_wizard_before_import', $this->demos->get_chosen_demo() );
 
-		if ( $this->importer( $file ) ) {
+		if ( $importer->import( $file ) ) {
 			do_action( 'mai_setup_wizard_after_import', $this->demos->get_chosen_demo() );
 			wp_send_json_success( __( 'Finished importing ', 'mai-engine' ) . $file );
 
@@ -169,13 +156,27 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 	private function import_template_parts( $file ) {
 		do_action( 'mai_setup_wizard_before_template_parts' );
 
-		if ( $this->importer( $file ) ) {
-			do_action( 'mai_setup_wizard_after_template_parts', $this->demos->get_chosen_demo() );
-			wp_send_json_success( __( 'Finished importing ', 'mai-engine' ) . $file );
+		$raw  = file_get_contents( $file );
+		$data = json_decode( $raw, true );
 
-		} else {
-			wp_send_json_error( __( 'Failed importing ', 'mai-engine' ) . $file );
+		if ( ! is_array( $data ) || 'array' !== gettype( $data ) ) {
+			wp_send_json_error( __( 'Something went wrong downloading template part data. Please contact BizBudding support for assistance.', 'mai-engine' ) );
 		}
+
+		foreach ( $data as $index => $post ) {
+			$existing = get_page_by_path( $post['post_name'], ARRAY_A, 'wp_template_part' );
+
+			if ( $existing ) {
+				wp_trash_post( $existing['ID'] );
+			}
+
+			$post['ID'] = 0;
+			wp_insert_post( $post );
+		}
+
+		do_action( 'mai_setup_wizard_after_template_parts', $this->demos->get_chosen_demo() );
+
+		wp_send_json_success( __( 'Finished importing ', 'mai-engine' ) . $file );
 	}
 
 	/**

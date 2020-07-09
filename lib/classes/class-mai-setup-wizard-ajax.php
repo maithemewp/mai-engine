@@ -64,23 +64,6 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Add theme and demo data.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @param string $demo_id Optional.
-	 *
-	 * @return void
-	 */
-	private function update_data( $demo_id = '' ) {
-		$options          = get_option( $this->slug, [] );
-		$options['demo']  = $demo_id ? $demo_id : $this->demos->get_chosen_demo();
-		$options['theme'] = mai_get_active_theme();
-
-		update_option( $this->slug, $options );
-	}
-
-	/**
 	 * Description of expected behavior.
 	 *
 	 * @since 1.0.0
@@ -135,7 +118,11 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 		$demo  = isset( $field['value'] ) ? $field['value'] : $this->demos->get_default_demo();
 
 		if ( $demo ) {
-			$this->update_data( $demo );
+			$options          = get_option( $this->slug, [] );
+			$options['demo']  = $demo;
+			$options['theme'] = mai_get_active_theme();
+
+			update_option( $this->slug, $options );
 
 			wp_send_json_success( $demo . __( ' selected.', 'mai-engine' ) );
 
@@ -212,8 +199,12 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 
 		set_time_limit( apply_filters( 'mai_setup_wizard_time_limit', 300 ) );
 
-		$this->import->import( $field['value'] );
+		$options          = get_option( $this->slug, [] );
+		$options['demo']  = $this->demos->get_chosen_demo();
+		$options['theme'] = mai_get_active_theme();
 
-		$this->update_data();
+		update_option( $this->slug, $options );
+
+		$this->import->import( $field['value'] );
 	}
 }
