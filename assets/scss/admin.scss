@@ -109,8 +109,68 @@ li.toplevel_page_mai-theme {
 	margin: 1em auto;
 }
 
+.setup-wizard h2 {
+	font-size: 2em;
+}
+
+.setup-wizard input[type="email"] {
+	width: 100%;
+	padding: 8px 16px;
+}
+
 .setup-wizard ul {
-	display: inline-block;
+	display: block;
+	max-width: 300px;
+	margin: 24px auto 36px;
+	text-align: left;
+}
+
+.setup-wizard li {
+	margin-bottom: 24px;
+}
+
+.setup-wizard label {
+	position: relative;
+	display: block;
+}
+
+.setup-wizard input[type="checkbox"] {
+	position: absolute;
+	top: 6px;
+	right: calc(100% + 4px);
+}
+
+.setup-wizard .label {
+	display: block;
+	align-items: unset;
+}
+
+.setup-wizard .label strong {
+	display: block;
+	margin-bottom: 8px;
+	font-size: 1.2em;
+}
+
+.setup-wizard .step-description {
+	display: block;
+	list-style: disc;
+	width: 100%;
+	margin: 4px 0 0 16px;
+}
+
+.setup-wizard .step-description li {
+	margin-bottom: 8px;
+}
+
+.setup-wizard #done ul {
+	text-align: center;
+}
+
+.setup-wizard #submit {
+	display: block;
+	margin: 0 auto 24px;
+	padding: 6px 24px;
+	font-size: 1.2em;
 }
 
 .error,

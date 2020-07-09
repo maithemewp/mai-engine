@@ -189,7 +189,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 			$step = [
 				'id'              => 'content',
 				'title'           => __( 'Content', 'mai-engine' ),
-				'description'     => __( 'Select which content you would like to import. Please note that this step can take up to 5 minutes.', 'mai-engine' ),
+				'description'     => sprintf( '<p>%s</p><p><strong>%s</strong></p>', __( 'Select which content you would like to import.', 'mai-engine' ), __( 'Please note that this step can take up to 5 minutes.', 'mai-engine' ) ),
 				'order'           => 40,
 				'error_message'   => __( 'Content could not be installed.', 'mai-engine' ),
 				'success_message' => __( 'Content successfully installed!', 'mai-engine' ),
@@ -285,7 +285,14 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 					<?php endforeach; ?>
 				</ul>
 			<?php endif; ?>
-			<div>
+			<div class="setup-wizard-buttons">
+				<?php if ( $counter < count( $steps ) ): ?>
+					<?php $continue_target = filter_var( $step['skip_url'], FILTER_VALIDATE_URL ) === false ? '' : ' target="_blank"'; ?>
+					<button href="<?php echo $step['continue_url']; ?>" <?php echo $continue_target; ?>id="submit" class="button-primary" data-default="<?php echo $step['continue_text']; ?>" data-loading="<?php esc_attr_e( $step['loading_text'] ); ?>">
+						<?php echo $step['continue_text']; ?>
+						<img src="<?php echo mai_get_url() . 'assets/img/spinner.gif'; ?>" alt="spinner" width="20">
+					</button>
+				<?php endif; ?>
 				<?php if ( 1 !== $counter && apply_filters( 'mai_setup_wizard_previous', true ) ): ?>
 					<a href="javascript:void(0)" id="previous" class="button">
 						<?php esc_html_e( 'Previous', 'mai-engine' ); ?>
@@ -296,13 +303,6 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 					<a href="<?php echo $step['skip_url']; ?>" <?php echo $skip_target; ?>id="skip" class="button">
 						<?php echo $step['skip_text']; ?>
 					</a>
-				<?php endif; ?>
-				<?php if ( $counter < count( $steps ) ): ?>
-					<?php $continue_target = filter_var( $step['skip_url'], FILTER_VALIDATE_URL ) === false ? '' : ' target="_blank"'; ?>
-					<button href="<?php echo $step['continue_url']; ?>" <?php echo $continue_target; ?>id="submit" class="button-primary" data-default="<?php echo $step['continue_text']; ?>" data-loading="<?php esc_attr_e( $step['loading_text'] ); ?>">
-						<?php echo $step['continue_text']; ?>
-						<img src="<?php echo mai_get_url() . 'assets/img/spinner.gif'; ?>" alt="spinner" width="20">
-					</button>
 				<?php endif; ?>
 			</div>
 			<br>

@@ -222,9 +222,20 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 		$fields        = [];
 		$demos         = $this->demos->get_demos();
 		$content_types = [
-			'content'    => __( 'Content', 'mai-engine' ),
-			'templates'  => __( 'Template Parts', 'mai-engine' ),
-			'customizer' => __( 'Customizer Settings', 'mai-engine' ),
+			'content'    => sprintf( '<strong>%s</strong> <ul class="step-description"><li>%s</li></ul>',
+				__( 'Content', 'mai-engine' ),
+				__( 'Posts, pages, and menus.' )
+			),
+			'templates'  => sprintf( '<strong>%s</strong> <ul class="step-description"><li>%s</li><li>%s</li><li>%s</li></ul>',
+				__( 'Template Parts', 'mai-engine' ),
+				__( 'Our block-based replacement for widgets.', 'mai-engine' ),
+				__( 'Requires "Content" in order to import images.', 'mai-engine' ),
+				__( 'Will move any existing template parts into the trash.', 'mai-engine' ),
+			),
+			'customizer' => sprintf( '<strong>%s</strong> <ul class="step-description"><li>%s</li></ul>',
+				__( 'Customizer Settings', 'mai-engine' ),
+				__( 'Layout, archive/single settings, colors, etc.' )
+			),
 		];
 
 		foreach ( $demos as $demo ) {
