@@ -208,6 +208,7 @@ li.toplevel_page_mai-theme {
 
 [data-status]::after {
 	position: absolute;
+	top: 0;
 	left: calc(100% + 10px);
 	display: inline-block;
 	width: 18px;
