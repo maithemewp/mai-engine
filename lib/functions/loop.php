@@ -61,11 +61,21 @@ function mai_has_custom_loop() {
 			return true;
 		}
 
+		// All core WP post types and taxonomies use our custom loop.
 		$post_types = get_post_types( [ '_builtin' => true, 'public' => true ] );
 		$taxonomies = get_taxonomies( [ '_builtin' => true, 'public' => true ] );
 
 		if ( isset( $post_types[ $name ] ) || isset( $taxonomies[ $name ] ) ) {
 			return true;
+		}
+
+		// Check taxonomy post type.
+		if ( taxonomy_exists( $name ) ) {
+			$post_type = mai_get_taxonomy_post_type( $name );
+
+			if ( $post_type && in_array( $post_type, $types, true ) ) {
+				return true;
+			}
 		}
 
 		$other_types = [ 'author', 'date', 'search', '404-page' ];
@@ -79,7 +89,7 @@ function mai_has_custom_loop() {
 }
 
 /**
- * Description of expected behavior.
+ * Get the settings args for a content type.
  *
  * @since  0.1.0
  *
@@ -100,15 +110,23 @@ function mai_get_template_args() {
 		$name     = mai_get_archive_args_name();
 		$context  = 'archive';
 		$settings = 'content-archives';
-
-		// Use post as fallback for archives. This happens on category/tag/etc archives when they don't have loop settings.
-		if ( ! in_array( $name, mai_get_option( 'archive-settings', mai_get_config( 'archive-settings' ) ), true ) ) {
-			$name = 'post';
-		}
 	} elseif ( mai_is_type_single() ) {
 		$name     = mai_get_singular_args_name();
 		$context  = 'single';
 		$settings = 'single-content';
+	}
+
+	// Get taxonomy's post type as fallback.
+	if ( taxonomy_exists( $name ) && ! in_array( $name, mai_get_option( $context . '-settings', mai_get_config( $context . '-settings' ) ), true ) ) {
+		$post_type = mai_get_taxonomy_post_type( $name );
+		if ( $post_type ) {
+			$name = $post_type;
+		}
+	}
+
+	// Get fallback for archives. This happens on category/tag/etc archives when they don't have custom loop settings.
+	if ( mai_is_type_archive() && ! in_array( $name, mai_get_option( 'archive-settings', mai_get_config( 'archive-settings' ) ), true ) ) {
+		$name = 'post';
 	}
 
 	// Bail if no data.
@@ -117,7 +135,15 @@ function mai_get_template_args() {
 	}
 
 	// Get defaults.
-	$config   = mai_get_settings( $settings );
+	$config = [];
+
+	if ( 'archive' === $context ) {
+		$config = mai_get_content_archive_settings();
+
+	} else if ( 'single' === $context ) {
+		$config = mai_get_single_content_settings();
+	}
+
 	$defaults = [ 'context' => $context ] + wp_list_pluck( $config, 'default', 'settings' );
 
 	foreach ( $defaults as $key => $value ) {
@@ -131,11 +157,13 @@ function mai_get_template_args() {
 	$args    = isset( $options[ $name ] ) ? $options[ $name ] : [];
 
 	// Remove settings with empty string, since that means use the default.
-	foreach( $args as $name => $value ) {
+	foreach ( $args as $name => $value ) {
+
 		// Skip header and footer meta, empty means empty.
 		if ( in_array( $name, [ 'header_meta', 'footer_meta' ] ) ) {
 			continue;
 		}
+
 		if ( is_null( $value ) || '' === $value ) {
 			unset( $args[ $name ] );
 		}
@@ -148,9 +176,23 @@ function mai_get_template_args() {
 	$args = apply_filters( 'mai_template_args', $args, $context );
 
 	// Sanitize.
-	$args = mai_get_sanitized_entry_args( $args, $settings );
+	return mai_get_sanitized_entry_args( $args, $settings );
+}
 
-	return $args;
+/**
+ * Returns a single template arg.
+ *
+ * @since 2.0.0
+ *
+ * @param string $name    Name of arg to get.
+ * @param mixed  $default Default value.
+ *
+ * @return mixed
+ */
+function mai_get_template_arg( $name, $default = null ) {
+	$args = mai_get_template_args();
+
+	return isset( $args[ $name ] ) ? $args[ $name ] : $default;
 }
 
 /**
@@ -164,9 +206,13 @@ function mai_get_template_args() {
  * @return mixed
  */
 function mai_get_sanitized_entry_args( $args, $context ) {
+	$settings = [];
 
-	// Get settings. Cached so it's fine to get again.
-	$settings = mai_get_settings( $context );
+	if ( 'archive' === $context ) {
+		$settings = mai_get_content_archive_settings();
+	} else if ( 'single' === $context ) {
+		$settings = mai_get_single_content_settings();
+	}
 
 	// Bail if no settings.
 	if ( ! $settings ) {

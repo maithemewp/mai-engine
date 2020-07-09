@@ -7,12 +7,11 @@
 @import "components/blocks/_index";
 @import "components/entry/_index";
 @import "utilities/_index";
-@import "config";
 
 body {
 	min-height: auto;
-	background: var(--color-lightest);
-	--list-list-style-position: outside;
+	background: var(--color-white);
+	--list-style-position: outside;
 	--list-margin-left: var(--spacing-md);
 	--list-item-margin-bottom: var(--spacing-xs);
 }
@@ -23,7 +22,7 @@ body {
 }
 
 p {
-	font-size: var(--text-md);
+	font-size: var(--font-size-md);
 }
 
 .wp-block {
@@ -52,9 +51,9 @@ p {
 		@include button-style("secondary");
 	}
 
-	.is-style-tertiary & {
+	.is-style-link & {
 
-		@include button-style("tertiary");
+		@include button-style("link");
 	}
 
 	.is-style-outline & {

@@ -12,19 +12,8 @@
 // Disable kirki telemetry.
 add_filter( 'kirki_telemetry', '__return_false' );
 
-add_action( 'after_setup_theme', 'mai_kirki_filters' );
-/**
- * Add miscellaneous Kirki filters after setup.
- *
- * @since 0.1.0
- *
- * @return void
- */
-function mai_kirki_filters() {
-	$handle = mai_get_handle();
-
-	add_filter( "kirki_${handle}_webfonts_skip_hidden", '__return_false' );
-}
+// Skip hidden webfont choices.
+add_filter( "kirki_mai-engine_webfonts_skip_hidden", '__return_false' );
 
 add_action( 'after_setup_theme', 'mai_add_kirki_config' );
 /**
@@ -46,7 +35,6 @@ function mai_add_kirki_config() {
 			'option_type'       => 'option',
 			'option_name'       => $handle,
 			'gutenberg_support' => true,
-			'disable_output'    => false,
 		]
 	);
 
@@ -59,51 +47,21 @@ function mai_add_kirki_config() {
 	);
 }
 
-add_filter( 'kirki_config', 'mai_disable_kirki_loader' );
+add_filter( 'kirki/config', 'mai_kirki_config' );
 /**
- * Remove Kirki loader icon.
+ * Description of expected behavior.
  *
- * @param array $config The configuration array.
+ * @since 1.0.0
  *
- * @return array
+ * @param $config
+ *
+ * @return mixed
  */
-function mai_disable_kirki_loader( $config ) {
-	return wp_parse_args(
-		[
-			'disable_loader' => true,
-		],
-		$config
-	);
-}
-
-add_filter( 'kirki/config', 'mai_kirki_url', 100 );
-/**
- * Manually set the Kirki URL.
- *
- * @since 0.1.0
- *
- * @param array $config The configuration array.
- *
- * @return array
- */
-function mai_kirki_url( $config ) {
-	$config['url_path'] = mai_get_url() . 'vendor/aristath/kirki';
+function mai_kirki_config( $config ) {
+	$config['disable_loader'] = true;
+	$config['url_path']       = mai_get_url() . 'vendor/aristath/kirki';
 
 	return $config;
-}
-
-add_action( 'init', 'mai_register_customizer_api' );
-/**
- * Setup the Customizer API.
- * This needs to be on 'init', and not 'after_setup_theme' so get_post_types() has all post_types available.
- *
- * @since 0.1.0
- *
- * @return void
- */
-function mai_register_customizer_api() {
-	$customizer_api = mai_get_instance( Mai_Customizer_API::class );
-	$customizer_api->add_panels();
 }
 
 add_action( 'customize_register', 'mai_handle_existing_customizer_sections' );
@@ -131,36 +89,4 @@ function mai_handle_existing_customizer_sections( $wp_customize ) {
 	$wp_customize->remove_section( 'genesis_single' );
 	$wp_customize->remove_section( 'genesis_archives' );
 	$wp_customize->remove_section( 'genesis_footer' );
-}
-
-add_action( 'customize_register', 'mai_customize_register_posts_per_page', 99 );
-/**
- * Adds Posts Per Page option to Customizer > Theme Settings > Content Archives > Default.
- * Saves/manages WP core option.
- *
- * @since 0.1.0
- *
- * @param WP_Customize_Manager $wp_customize WP_Customize_Manager instance.
- *
- * @return void
- */
-function mai_customize_register_posts_per_page( $wp_customize ) {
-	$wp_customize->add_setting(
-		'posts_per_page',
-		[
-			'default'           => get_option( 'posts_per_page' ),
-			'type'              => 'option',
-			'sanitize_callback' => 'absint',
-		]
-	);
-	$wp_customize->add_control(
-		'posts_per_page',
-		[
-			'label'    => __( 'Posts Per Page', 'mai-engine' ),
-			'section'  => 'mai-engine-content-archives-post',
-			'settings' => 'posts_per_page',
-			'type'     => 'text',
-			'priority' => 99,
-		]
-	);
 }

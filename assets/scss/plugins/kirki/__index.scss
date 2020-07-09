@@ -313,6 +313,87 @@
 	min-width: 256px;
 }
 
+li.customize-control-kirki-color-palette .colors-wrapper {
+	padding: 10px 0;
+}
+
+li.customize-control-kirki-color-palette .colors-wrapper input:checked + label .color-palette-color {
+	top: -5%;
+	left: -5%;
+	width: 110%;
+	height: 110%;
+	box-shadow: 0 3px 10px -2px #999aa0;
+}
+
+#customize-control-mai-engine-boxed-container {
+	margin-bottom: 0 !important;
+}
+
+[id^="customize-control-mai-engine-site-layouts"][id$="-layout-divider"] {
+	margin: 0 !important;
+	padding: 16px 0 0 0;
+}
+
+[id^="customize-control-mai-engine-site-layouts"][id$="-layout-divider"]:not(#customize-control-mai-engine-site-layouts-default-defaults-layout-divider) {
+	border-top: 1px dashed #ddd;
+}
+
+[id^="customize-control-mai-engine-site-layouts"][id$="-layout-divider"] ~ .customize-control-kirki-select {
+	margin: 0 !important;
+	padding: 0 0 16px 16px;
+	border-left: 1px dashed #ddd;
+}
+
+[id^="customize-control-mai-engine-site-layouts"][id$="-layout-divider"] ~ .customize-control-kirki-select .customize-control-title {
+	font-weight: 400;
+	font-size: 13px; /* Customizer default body font size */
+}
+
+[id^="customize-control-mai-engine-site-layouts"][id$="-layout-divider"] ~ .customize-control-kirki-select .select2-container {
+	width: calc(100% - 16px) !important;
+}
+
+// Repeater field.
+
+#customize-control-mai-engine-custom-colors {
+
+	.repeater-row {
+		margin: 0;
+		padding: 0.8rem 0;
+		background: transparent;
+		border: 0;
+	}
+
+	.repeater-row-header {
+		padding: 0 0 0.5rem;
+		background: transparent;
+		border: 0;
+		cursor: default;
+		pointer-events: none;
+	}
+
+	.repeater-row-label {
+		font-size: 14px;
+		cursor: default;
+	}
+
+	.repeater-minimize {
+		display: none;
+	}
+
+	.repeater-row-content {
+		display: block;
+		padding: 0;
+		background: transparent;
+	}
+
+	.repeater-field {
+		margin-bottom: 0;
+		padding-bottom: 0.5rem;
+		border: 0;
+	}
+}
+
 // Theme settings panel ordering.
 
 #customize-theme-controls #sub-accordion-panel-mai-engine {
@@ -326,17 +407,16 @@
 
 $sections: (
 	section-genesis_updates,
-	section-mai-engine-color-palette,
-	panel-mai-engine-site-layouts,
+	section-mai-engine-performance,
+	section-mai-engine-colors,
+	section-mai-engine-typography,
+	section-mai-engine-site-layouts,
+	section-mai-engine-site-header,
+	section-mai-engine-menus,
+	section-mai-engine-page-header,
 	panel-mai-engine-content-archives,
 	panel-mai-engine-single-content,
-	panel-mai-engine-base-styles,
-	panel-mai-engine-header,
-	panel-mai-engine-navigation-menus,
-	section-mai-engine-page-header,
 	section-genesis_breadcrumbs,
-	panel-mai-engine-content-area,
-	panel-mai-engine-footer,
 	section-genesis_comments,
 	section-genesis_scripts,
 );

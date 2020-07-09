@@ -6,8 +6,8 @@
 	left: -0.5em;
 	z-index: 1;
 	padding: var(--spacing-xs) var(--spacing-md);
-	color: var(--color-lightest);
-	font-weight: var(--font-weight-heading);
+	color: var(--color-white);
+	font-weight: var(--heading-font-weight);
 	font-size: small;
 	background: var(--color-primary);
 	border-radius: var(--border-radius);
@@ -21,12 +21,15 @@
 .woocommerce-error,
 .woocommerce-message {
 	position: relative;
-	margin-bottom: var(--row-gap);
+	margin: 0 0 var(--row-gap);
 	padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) var(--spacing-lg);
 	overflow: hidden;
 	font-size: smaller;
 	border: var(--border);
 	border-left: none;
+	--list-style-type: none;
+	--list-margin: 0;
+	--list-item-margin: 0;
 
 	&::before {
 		position: absolute;
@@ -51,11 +54,6 @@
 
 .woocommerce-message {
 	--border-left-color: var(--color-success);
-
-	&--info {
-		background-color: var(--color-success);
-		border-color: var(--color-success);
-	}
 }
 
 .woocommerce-error {

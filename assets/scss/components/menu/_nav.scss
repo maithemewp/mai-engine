@@ -15,10 +15,6 @@
 
 .nav-after-header {
 	z-index: 9;
-	display: var(--nav-header-display, (flex));
+	display: var(--nav-header-display, none);
 	width: 100%;
-}
-
-.is-mobile {
-	--nav-header-display: none;
 }

@@ -323,6 +323,10 @@ class Mai_Entry {
 				'context' => 'entry-image-link',
 				'echo'    => true,
 				'atts'    => $atts,
+				'params'  => [
+					'args'  => $this->args,
+					'entry' => $this->entry,
+				],
 			]
 		);
 
@@ -376,7 +380,7 @@ class Mai_Entry {
 			'md' => 1,
 			'lg' => 1,
 		];
-		$columns     = ( 'single' === $this->context ) ? $single : array_reverse( $this->get_breakpoint_columns(), true ); // mobile first.
+		$columns     = ( 'single' === $this->context ) ? $single : array_reverse( mai_get_breakpoint_columns( $this->args ), true ); // mobile first.
 		$widths      = [];
 		foreach ( $columns as $break => $count ) {
 			switch ( $break ) {
@@ -435,7 +439,7 @@ class Mai_Entry {
 			'md' => 1,
 			'lg' => 1,
 		];
-		$columns     = ( 'single' === $this->context ) ? $single : array_reverse( $this->get_breakpoint_columns(), true ); // mobile first.
+		$columns     = ( 'single' === $this->context ) ? $single : array_reverse( mai_get_breakpoint_columns( $this->args ), true ); // mobile first.
 
 		foreach ( $columns as $break => $count ) {
 			switch ( $break ) {
@@ -500,65 +504,6 @@ class Mai_Entry {
 		}
 
 		return $class;
-	}
-
-	/**
-	 * Description of expected behavior.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @return array
-	 */
-	public function get_breakpoint_columns() {
-		$columns = [
-			'lg' => (int) $this->args['columns'],
-		];
-
-		if ( $this->args['columns_responsive'] ) {
-			$columns['md'] = (int) $this->args['columns_md'];
-			$columns['sm'] = (int) $this->args['columns_sm'];
-			$columns['xs'] = (int) $this->args['columns_xs'];
-		} else {
-			switch ( (int) $this->args['columns'] ) {
-				case 6:
-					$columns['md'] = 4;
-					$columns['sm'] = 3;
-					$columns['xs'] = 2;
-					break;
-				case 5:
-					$columns['md'] = 3;
-					$columns['sm'] = 2;
-					$columns['xs'] = 2;
-					break;
-				case 4:
-					$columns['md'] = 4;
-					$columns['sm'] = 2;
-					$columns['xs'] = 1;
-					break;
-				case 3:
-					$columns['md'] = 3;
-					$columns['sm'] = 1;
-					$columns['xs'] = 1;
-					break;
-				case 2:
-					$columns['md'] = 2;
-					$columns['sm'] = 2;
-					$columns['xs'] = 1;
-					break;
-				case 1:
-					$columns['md'] = 1;
-					$columns['sm'] = 1;
-					$columns['xs'] = 1;
-					break;
-				case 0: // Auto.
-					$columns['md'] = 0;
-					$columns['sm'] = 0;
-					$columns['xs'] = 0;
-					break;
-			}
-		}
-
-		return $columns;
 	}
 
 	/**
@@ -914,6 +859,7 @@ class Mai_Entry {
 		// Single needs the_content() directly, to parse_blocks and other filters.
 		if ( 'single' === $this->context ) {
 			the_content();
+
 		} else {
 
 			// Content.
@@ -1049,8 +995,7 @@ class Mai_Entry {
 			return;
 		}
 
-		// TODO: Where the heck is the best spot to filter this? I think we need a helper function cause this is the default everywhere.
-		$more_link_text = $this->args['more_link_text'] ? $this->args['more_link_text'] : __( 'Read More', 'mai-engine' );
+		$more_link_text = $this->args['more_link_text'] ? $this->args['more_link_text'] : mai_get_read_more_text();
 
 		// The link HTML.
 		$more_link = genesis_markup(
@@ -1135,6 +1080,10 @@ class Mai_Entry {
 			[
 				'open'    => '<div %s>',
 				'context' => 'adjacent-entry-pagination',
+				'params'  => [
+					'args'  => $this->args,
+					'entry' => $this->entry,
+				],
 			]
 		);
 
@@ -1146,6 +1095,10 @@ class Mai_Entry {
 				'context' => 'pagination-previous',
 				'content' => get_previous_post_link( '%link', $previous_post_text ),
 				'close'   => '</div>',
+				'params'  => [
+					'args'  => $this->args,
+					'entry' => $this->entry,
+				],
 			]
 		);
 
@@ -1157,6 +1110,10 @@ class Mai_Entry {
 				'context' => 'pagination-next',
 				'content' => get_next_post_link( '%link', $next_post_text ),
 				'close'   => '</div>',
+				'params'  => [
+					'args'  => $this->args,
+					'entry' => $this->entry,
+				],
 			]
 		);
 
@@ -1164,6 +1121,10 @@ class Mai_Entry {
 			[
 				'close'   => '</div>',
 				'context' => 'adjacent-entry-pagination',
+				'params'  => [
+					'args'  => $this->args,
+					'entry' => $this->entry,
+				],
 			]
 		);
 	}

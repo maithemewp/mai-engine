@@ -1,0 +1,15 @@
+@import "default";
+
+:root {
+	--border-radius: 0;
+}
+
+.nav-after-header {
+	background: var(--color-heading);
+
+	--menu-item-link-color: var(--color-white);
+}
+
+.footer-credits {
+	padding: 0;
+}

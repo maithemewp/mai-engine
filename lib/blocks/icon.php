@@ -11,7 +11,7 @@
 
 add_action( 'acf/init', 'mai_register_icon_block' );
 /**
- * Description of expected behavior.
+ * Register Mai Icon block.
  *
  * @since 0.1.0
  *
@@ -29,6 +29,9 @@ function mai_register_icon_block() {
 				'keywords'        => [ 'icon' ],
 				'icon'            => 'heart',
 				'mode'            => 'preview',
+				'supports'        => [
+					'align' => false,
+				],
 			]
 		);
 	}
@@ -39,28 +42,21 @@ function mai_register_icon_block() {
  *
  * @since 0.1.0
  *
- * @param array  $block      The block settings and attributes.
- * @param string $content    The block inner HTML (empty).
- * @param bool   $is_preview True during AJAX preview.
- * @param int    $post_id    The post ID this block is saved to.
- *
  * @return void
  */
-function mai_do_icon_block( $block, $content = '', $is_preview = false, $post_id = 0 ) {
-	$atts = [
-		'style' => get_field( 'style' ),
-		'icon'  => get_field( 'icon' ),
-	];
+function mai_do_icon_block() {
+	$args     = [];
+	$settings = array_keys( mai_get_icon_default_args() );
 
-	foreach ( mai_get_icon_default_args() as $param => $default ) {
-		$atts[ $param ] = get_field( $param ) ?: $default;
+	foreach ( $settings as $setting ) {
+		$args[ $setting ] = get_field( $setting );
 	}
 
-	echo mai_get_icon( $atts );
+	echo mai_get_icon( $args );
 }
 
-add_filter( 'acf/load_field/key=field_5e3f4bcd978f9', 'mai_load_icon_choices' );
-add_filter( 'acf/load_field/key=field_5e3f4bcd867e8', 'mai_load_icon_brand_choices' );
+add_filter( 'acf/load_field/key=mai_icon_choice', 'mai_load_icon_choices' );
+add_filter( 'acf/load_field/key=mai_icon_brand_choices', 'mai_load_icon_brand_choices' );
 /**
  * Load the icon field, getting choices from our icons directory.
  * Uses sprite for performance of loading choices in the field.
@@ -72,10 +68,12 @@ add_filter( 'acf/load_field/key=field_5e3f4bcd867e8', 'mai_load_icon_brand_choic
  * @return array
  */
 function mai_load_icon_choices( $field ) {
+
 	// Bail if editing the field group.
 	if ( 'acf-field-group' === get_post_type() ) {
 		return $field;
 	}
+
 	$field['choices']       = mai_get_icon_choices( 'light' );
 	$field['default_value'] = 'heart';
 
@@ -92,6 +90,7 @@ function mai_load_icon_choices( $field ) {
  * @return mixed
  */
 function mai_load_icon_brand_choices( $field ) {
+
 	// Bail if editing the field group.
 	if ( 'acf-field-group' === get_post_type() ) {
 		return $field;
@@ -119,7 +118,12 @@ function mai_get_icon_choices( $style ) {
 
 	foreach ( glob( $dir . '/*.svg' ) as $file ) {
 		$name             = basename( $file, '.svg' );
-		$choices[ $name ] = sprintf( '<svg class="mai-icon-svg"><use xlink:href="%s.svg#%s"></use></svg><span class="mai-icon-name">%s</span>', $url, $name, $name );
+		$choices[ $name ] = sprintf(
+			'<svg class="mai-icon-svg"><use xlink:href="%s.svg#%s"></use></svg><span class="mai-icon-name">%s</span>',
+			$url,
+			$name,
+			$name
+		);
 	}
 
 	return $choices;
@@ -140,17 +144,17 @@ function mai_register_icon_field_groups() {
 
 	acf_add_local_field_group(
 		[
-			'key'         => 'group_5e3f491031be8',
+			'key'         => 'mai_icon',
 			'title'       => esc_html__( 'Icon', 'mai-engine' ),
 			'fields'      => [
 				[
-					'key'   => 'field_5df14557d58dg',
+					'key'   => 'mai_icon_tab',
 					'name'  => 'icon_tab',
 					'label' => esc_html__( 'Icon', 'mai-engine' ),
 					'type'  => 'tab',
 				],
 				[
-					'key'     => 'field_5e3f49758c633',
+					'key'     => 'mai_icon_style',
 					'name'    => 'style',
 					'label'   => esc_html__( 'Style', 'mai-engine' ),
 					'type'    => 'button_group',
@@ -163,16 +167,17 @@ function mai_register_icon_field_groups() {
 					],
 				],
 				[
-					'key'               => 'field_5e3f4bcd978f9',
+					'key'               => 'mai_icon_choice',
 					'name'              => 'icon',
 					'label'             => esc_html__( 'Icon', 'mai-engine' ),
 					'type'              => 'select',
+					'default'           => 'heart',
 					'multiple'          => 0,
 					'ui'                => 1,
 					'ajax'              => 1,
 					'conditional_logic' => [
 						[
-							'field'    => 'field_5e3f49758c633', // Style.
+							'field'    => 'mai_icon_style', // Style.
 							'operator' => '!=',
 							'value'    => 'brands',
 						],
@@ -182,7 +187,7 @@ function mai_register_icon_field_groups() {
 					],
 				],
 				[
-					'key'               => 'field_5e3f4bcd867e8',
+					'key'               => 'mai_icon_brand_choices',
 					'name'              => 'icon',
 					'label'             => esc_html__( 'Icon (Brands)', 'mai-engine' ),
 					'type'              => 'select',
@@ -191,7 +196,7 @@ function mai_register_icon_field_groups() {
 					'ajax'              => 1,
 					'conditional_logic' => [
 						[
-							'field'    => 'field_5e3f49758c633', // Style.
+							'field'    => 'mai_icon_style', // Style.
 							'operator' => '==',
 							'value'    => 'brands',
 						],
@@ -201,36 +206,43 @@ function mai_register_icon_field_groups() {
 					],
 				],
 				[
-					'key'           => 'field_5e3f49c18c634',
+					'key'           => 'mai_icon_display',
 					'name'          => 'display',
 					'label'         => esc_html__( 'Display', 'mai-engine' ),
 					'type'          => 'button_group',
 					'default_value' => 'block',
 					'choices'       => [
-						'inline-block' => esc_html__( 'Inline', 'mai-engine' ),
 						'block'        => esc_html__( 'Block', 'mai-engine' ),
+						'inline-block' => esc_html__( 'Inline', 'mai-engine' ),
 					],
 					'allow_null'    => 0,
 					'layout'        => 'horizontal',
 					'return_format' => 'value',
 				],
 				[
-					'key'           => 'field_5e3f49e68c635',
-					'name'          => 'align',
-					'label'         => esc_html__( 'Align', 'mai-engine' ),
-					'type'          => 'button_group',
-					'choices'       => [
+					'key'               => 'mai_icon_align',
+					'name'              => 'align',
+					'label'             => esc_html__( 'Align', 'mai-engine' ),
+					'type'              => 'button_group',
+					'choices'           => [
 						'left'   => esc_html__( 'Left', 'mai-engine' ),
 						'center' => esc_html__( 'Center', 'mai-engine' ),
 						'right'  => esc_html__( 'Right', 'mai-engine' ),
 					],
-					'allow_null'    => 0,
-					'default_value' => '',
-					'layout'        => 'horizontal',
-					'return_format' => 'value',
+					'allow_null'        => 0,
+					'default_value'     => '',
+					'layout'            => 'horizontal',
+					'return_format'     => 'value',
+					'conditional_logic' => [
+						[
+							'field'    => 'mai_icon_display', // Display.
+							'operator' => '==',
+							'value'    => 'block',
+						],
+					],
 				],
 				[
-					'key'           => 'field_5e3f4a0f8c636',
+					'key'           => 'mai_icon_size',
 					'name'          => 'size',
 					'label'         => esc_html__( 'Size', 'mai-engine' ),
 					'instructions'  => esc_html__( 'Use 0 for theme default', 'mai-engine' ),
@@ -239,31 +251,31 @@ function mai_register_icon_field_groups() {
 					'append'        => 'px',
 				],
 				[
-					'key'   => 'field_5df16678e67ef',
+					'key'   => 'mai_icon_style_tab',
 					'name'  => 'style_tab',
 					'label' => esc_html__( 'Styles', 'mai-engine' ),
 					'type'  => 'tab',
 				],
 				[
-					'key'   => 'field_5e3f4a368c637',
+					'key'   => 'mai_icon_color',
 					'label' => esc_html__( 'Icon Color', 'mai-engine' ),
 					'name'  => 'color_icon',
 					'type'  => 'color_picker',
 				],
 				[
-					'key'   => 'field_5e3f4a4a8c638',
+					'key'   => 'mai_icon_background',
 					'label' => esc_html__( 'Background', 'mai-engine' ),
 					'name'  => 'color_background',
 					'type'  => 'color_picker',
 				],
 				[
-					'key'   => 'field_5e3f4a558c639',
+					'key'   => 'mai_icon_border_color',
 					'label' => esc_html__( 'Border Color', 'mai-engine' ),
 					'name'  => 'color_border',
 					'type'  => 'color_picker',
 				],
 				[
-					'key'               => 'field_5e3f4ac78c642',
+					'key'               => 'mai_icon_border_width',
 					'label'             => esc_html__( 'Border Width', 'mai-engine' ),
 					'name'              => 'border_width',
 					'type'              => 'number',
@@ -271,58 +283,118 @@ function mai_register_icon_field_groups() {
 					'append'            => 'px',
 					'conditional_logic' => [
 						[
-							'field'    => 'field_5e3f4a558c639', // Border Color.
+							'field'    => 'mai_icon_border_color', // Border Color.
 							'operator' => '!=empty',
 						],
 					],
 				],
+
+				/*
+				 * Box Shadow.
+				 */
+
 				[
-					'key'   => 'field_5e3f791235e3c',
-					'label' => esc_html__( 'Shadow', 'mai-engine' ),
+					'key'   => 'mai_icon_shadow',
+					'label' => esc_html__( 'Box Shadow', 'mai-engine' ),
 					'name'  => 'color_shadow',
 					'type'  => 'color_picker',
 				],
 				[
-					'key'               => 'field_5e3f4b188c644',
+					'key'               => 'mai_icon_x_offset',
 					'label'             => esc_html__( 'X Offset', 'mai-engine' ),
 					'name'              => 'x_offset',
 					'type'              => 'number',
 					'default_value'     => 0,
 					'conditional_logic' => [
 						[
-							'field'    => 'field_5e3f791235e3c', // Shadow.
+							'field'    => 'mai_icon_shadow', // Shadow.
 							'operator' => '!=empty',
 						],
 					],
 				],
 				[
-					'key'               => 'field_5e3f4b2c8c645',
+					'key'               => 'mai_icon_y_offset',
 					'label'             => esc_html__( 'Y Offset', 'mai-engine' ),
 					'name'              => 'y_offset',
 					'type'              => 'number',
 					'default_value'     => 0,
 					'conditional_logic' => [
 						[
-							'field'    => 'field_5e3f791235e3c', // Shadow.
+							'field'    => 'mai_icon_shadow', // Shadow.
 							'operator' => '!=empty',
 						],
 					],
 				],
 				[
-					'key'               => 'field_5e3f4b3e8c647',
+					'key'               => 'mai_icon_blur',
 					'label'             => esc_html__( 'Blur', 'mai-engine' ),
 					'name'              => 'blur',
 					'type'              => 'number',
 					'default_value'     => 0,
 					'conditional_logic' => [
 						[
-							'field'    => 'field_5e3f791235e3c', // Shadow.
+							'field'    => 'mai_icon_shadow', // Shadow.
+							'operator' => '!=empty',
+						],
+					],
+				],
+
+				/*
+				 * Text Shadow.
+				 */
+
+				[
+					'key'   => 'color_text_shadow',
+					'label' => esc_html__( 'Text Shadow', 'mai-engine' ),
+					'name'  => 'color_text_shadow',
+					'type'  => 'color_picker',
+				],
+				[
+					'key'               => 'text_shadow_x_offset',
+					'label'             => esc_html__( 'X Offset', 'mai-engine' ),
+					'name'              => 'text_shadow_x_offset',
+					'type'              => 'number',
+					'default_value'     => 0,
+					'conditional_logic' => [
+						[
+							'field'    => 'color_text_shadow', // Shadow.
 							'operator' => '!=empty',
 						],
 					],
 				],
 				[
-					'key'           => 'field_5e3f4bb49d74f',
+					'key'               => 'text_shadow_y_offset',
+					'label'             => esc_html__( 'Y Offset', 'mai-engine' ),
+					'name'              => 'text_shadow_y_offset',
+					'type'              => 'number',
+					'default_value'     => 0,
+					'conditional_logic' => [
+						[
+							'field'    => 'color_text_shadow', // Shadow.
+							'operator' => '!=empty',
+						],
+					],
+				],
+				[
+					'key'               => 'text_shadow_blur',
+					'label'             => esc_html__( 'Blur', 'mai-engine' ),
+					'name'              => 'text_shadow_blur',
+					'type'              => 'number',
+					'default_value'     => 0,
+					'conditional_logic' => [
+						[
+							'field'    => 'color_text_shadow', // Shadow.
+							'operator' => '!=empty',
+						],
+					],
+				],
+
+				/*
+				 * Spacing.
+				 */
+
+				[
+					'key'           => 'mai_icon_padding',
 					'label'         => esc_html__( 'Padding', 'mai-engine' ),
 					'name'          => 'padding',
 					'type'          => 'number',
@@ -330,13 +402,13 @@ function mai_register_icon_field_groups() {
 					'append'        => 'px',
 				],
 				[
-					'key'   => 'field_5e3f5b7g9d74b',
+					'key'   => 'mai_icon_margin',
 					'label' => esc_html__( 'Margin', 'mai-engine' ),
 					'name'  => 'margin_message',
 					'type'  => 'message',
 				],
 				[
-					'key'           => 'field_5e3f4a6f8c63a',
+					'key'           => 'mai_icon_margin_top',
 					'label'         => esc_html__( 'Top', 'mai-engine' ),
 					'name'          => 'margin_top',
 					'type'          => 'number',
@@ -344,7 +416,7 @@ function mai_register_icon_field_groups() {
 					'append'        => 'px',
 				],
 				[
-					'key'           => 'field_5e3f4a928c63c',
+					'key'           => 'mai_icon_margin_bottom',
 					'label'         => esc_html__( 'Bottom', 'mai-engine' ),
 					'name'          => 'margin_bottom',
 					'type'          => 'number',
@@ -352,7 +424,7 @@ function mai_register_icon_field_groups() {
 					'append'        => 'px',
 				],
 				[
-					'key'           => 'field_5e3f4a998c63d',
+					'key'           => 'mai_icon_margin_left',
 					'label'         => esc_html__( 'Left', 'mai-engine' ),
 					'name'          => 'margin_left',
 					'type'          => 'number',
@@ -360,7 +432,7 @@ function mai_register_icon_field_groups() {
 					'append'        => 'px',
 				],
 				[
-					'key'           => 'field_5e3f4a898c63b',
+					'key'           => 'mai_icon_margin_right',
 					'label'         => esc_html__( 'Right', 'mai-engine' ),
 					'name'          => 'margin_right',
 					'type'          => 'number',
@@ -368,7 +440,7 @@ function mai_register_icon_field_groups() {
 					'append'        => 'px',
 				],
 				[
-					'key'           => 'field_5e3f4b0a8c643',
+					'key'           => 'mai_icon_round_corners',
 					'label'         => esc_html__( 'Round Corners', 'mai-engine' ),
 					'instructions'  => esc_html__( 'Accepts any unit value (%, px, etc.) and shorthand (0 16 0 16). Use 0px for square.', 'mai-theme' ),
 					'name'          => 'border_radius',

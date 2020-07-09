@@ -116,23 +116,29 @@
 
 .acf-block-panel .acf-block-fields div.acf-field[data-name="x_offset"],
 .acf-block-panel .acf-block-fields div.acf-field[data-name="y_offset"],
-.acf-block-panel .acf-block-fields div.acf-field[data-name="blur"] {
+.acf-block-panel .acf-block-fields div.acf-field[data-name="blur"],
+.acf-block-panel .acf-block-fields div.acf-field[data-name="text_shadow_x_offset"],
+.acf-block-panel .acf-block-fields div.acf-field[data-name="text_shadow_y_offset"],
+.acf-block-panel .acf-block-fields div.acf-field[data-name="text_shadow_blur"] {
 	float: left !important;
 	clear: none !important;
 	max-width: calc(33.333333% - 16px) !important;
 	margin-top: 0 !important;
 }
 
-.acf-block-panel .acf-block-fields div.acf-field[data-name="x_offset"] {
+.acf-block-panel .acf-block-fields div.acf-field[data-name="x_offset"],
+.acf-block-panel .acf-block-fields div.acf-field[data-name="text_shadow_x_offset"] {
 	margin-right: 0;
 }
 
-.acf-block-panel .acf-block-fields div.acf-field[data-name="y_offset"] {
+.acf-block-panel .acf-block-fields div.acf-field[data-name="y_offset"],
+.acf-block-panel .acf-block-fields div.acf-field[data-name="text_shadow_y_offset"] {
 	margin-right: 8px;
 	margin-left: 8px;
 }
 
-.acf-block-panel .acf-block-fields div.acf-field[data-name="blur"] {
+.acf-block-panel .acf-block-fields div.acf-field[data-name="blur"],
+.acf-block-panel .acf-block-fields div.acf-field[data-name="text_shadow_blur"] {
 	margin-left: 0;
 }
 

@@ -59,35 +59,3 @@ function mai_plugin_update_checker() {
 		}
 	);
 }
-
-add_action( 'admin_init', 'mai_child_theme_update_checker' );
-/**
- * Description of expected behavior.
- *
- * @since 1.0.0
- *
- * @return void
- */
-function mai_child_theme_update_checker() {
-	$child_theme = mai_get_active_theme();
-
-	if ( 'default' === $child_theme ) {
-		return;
-	}
-
-	if ( ! current_user_can( 'install_plugins' ) ) {
-		return;
-	}
-
-	if ( ! class_exists( 'Puc_v4_Factory' ) ) {
-		return;
-	}
-
-	$updater = Puc_v4_Factory::buildUpdateChecker(
-		"https://github.com/maithemewp/mai-$child_theme",
-		get_stylesheet_directory() . '/functions.php',
-		"mai-$child_theme"
-	);
-
-	$updater->setBranch( 'master' );
-}

@@ -23,6 +23,10 @@ li.toplevel_page_mai-theme {
 	}
 }
 
+/**
+ * Setup Wizard.
+ */
+
 .setup-wizard {
 	--color-primary: #2cb563;
 
@@ -59,4 +63,263 @@ li.toplevel_page_mai-theme {
 		border-color: var(--color-primary) !important;
 	}
 
+}
+
+.setup-wizard {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 99999;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	align-content: center;
+	justify-content: center;
+	width: 100vw;
+	height: 100vh;
+	text-align: center;
+	background: #f1f1f1;
+}
+
+.setup-wizard h1 {
+	width: 100%;
+	margin-bottom: 1em;
+}
+
+.setup-wizard > p {
+	width: 100%;
+}
+
+.setup-wizard > .wrap {
+	width: 100%;
+	margin: 0 auto;
+}
+
+.setup-wizard > form {
+	width: 100%;
+	max-width: 660px;
+	margin: 0 auto;
+	padding: 2em 3em 3em;
+	background: #fff;
+	border-radius: 4px;
+	box-shadow: 0 1px 6px #e1e1e1;
+}
+
+.setup-wizard h2 {
+	font-size: 2em;
+}
+
+.setup-wizard input[type="email"] {
+	width: 100%;
+	max-width: 260px;
+	padding: 8px 16px;
+}
+
+.setup-wizard label {
+	position: relative;
+}
+
+.setup-wizard input[type="checkbox"] {
+	position: absolute;
+	top: 6px;
+	right: calc(100% + 4px);
+}
+
+.error,
+.success {
+	margin-bottom: 0;
+	font-style: italic;
+}
+
+.label {
+	display: inline-flex;
+	align-items: center;
+}
+
+[data-status] > label {
+	position: relative;
+}
+
+[data-status] > label::after {
+	position: absolute;
+	top: 0;
+	left: calc(100% + 10px);
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	margin-left: 10px;
+	vertical-align: middle;
+	background-image: url(../../img/spinner.gif);
+	background-position: center;
+	background-size: 18px;
+	visibility: hidden;
+	filter: brightness(0.5);
+	content: "";
+}
+
+[data-status="running"] > label::after {
+	visibility: visible;
+}
+
+[data-status="complete"] > label::after {
+	background-image: url(../../img/tick.png);
+	visibility: visible;
+	filter: none;
+}
+
+.progress {
+	display: none;
+}
+
+[data-status="running"] .progress {}
+
+/**
+ * Block layout settings.
+ */
+[data-checked]:first-of-type {
+	border-radius: 3px 0 0 3px !important;
+}
+
+#demo ul {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin-top: 3em;
+}
+
+#demo li {
+	margin: 0 0.75em 1.5em;
+}
+
+#demo label {
+	display: flex;
+	flex-wrap: wrap;
+	width: 200px;
+	margin: 0;
+	text-align: center;
+	background: #fafafa;
+	outline: 1px solid #e8e8e8;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+#demo label:focus-within {
+	outline: 1px solid #007cba;
+}
+
+#demo input {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+#demo img {
+	pointer-events: none;
+	cursor: pointer;
+	/*outline: 3px solid #eee;*/
+}
+
+#demo input:checked + img {
+	/*outline: 3px solid #007cba;*/
+}
+
+#demo h4 {
+	position: relative;
+}
+
+#demo [data-status]:after {
+	display: none;
+}
+
+#demo h4::after {
+	position: absolute;
+	left: calc(100% + 5px);
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	vertical-align: middle;
+	background-position: center;
+	background-size: 18px;
+	content: "";
+	background-image: url(../../img/tick.png);
+	visibility: hidden;
+}
+
+#demo input:checked ~ span h4::after {
+	visibility: visible;
+}
+
+#demo .label {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	padding: 0 1em;
+	border-top: 1px solid #e8e8e8;
+}
+
+#demo label:hover a {
+	opacity: 1;
+}
+
+#demo .label a {
+	opacity: 0;
+	transition: 0.2s ease;
+}
+
+#plugins ul {
+	display: block;
+	margin: 36px auto;
+}
+
+#content ul {
+	display: block;
+	max-width: 300px;
+	margin: 36px auto;
+	text-align: left;
+}
+
+#content li {
+	margin-bottom: 24px;
+}
+
+#content label {
+	display: block;
+}
+
+#content .label {
+	display: block;
+	align-items: unset;
+}
+
+#content .label strong {
+	display: block;
+	margin-bottom: 8px;
+	font-size: 1.2em;
+}
+
+#content .step-description {
+	display: block;
+	list-style: disc;
+	width: 100%;
+	margin: 4px 0 0 16px;
+}
+
+#content .step-description li {
+	margin-bottom: 8px;
+}
+
+#submit {
+	display: block;
+	margin: 0 auto 24px;
+	padding: 6px 24px;
+	font-size: 1.2em;
+}
+
+#submit img {
+	display: none;
+	margin-left: 5px;
+}
+
+#submit.is-running img {
+	display: inline-block;
 }

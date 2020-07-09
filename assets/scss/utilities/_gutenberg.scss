@@ -1,19 +1,6 @@
-@each $color-name, $color-value in $colors {
+@each $size-name, $size-value in $font-sizes {
 
-	.has-#{ $color-name }-color {
-		color: var(--color-#{ $color-name }) !important;
-		--heading-color: var(--color-#{ $color-name });
-		--menu-item-link-color: var(--color-#{ $color-name });
-	}
-
-	.has-#{ $color-name }-background-color {
-		background-color: var(--color-#{ $color-name }) !important;
-	}
-}
-
-@each $font-size-name, $font-size-value in $font-sizes {
-
-	.has-#{ $font-size-name }-font-size {
-		font-size: #{ $font-size-value };
+	.has-#{ $size-name }-font-size {
+		font-size: #{ $size-value };
 	}
 }

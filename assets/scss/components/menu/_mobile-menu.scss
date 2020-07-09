@@ -12,7 +12,7 @@
 	max-height: 100vh;
 	padding: var(--spacing-md) 0;
 	overflow-y: auto;
-	background: var(--mobile-menu-background, var(--site-header-background, var(--color-lightest)));
+	background: var(--mobile-menu-background, var(--site-header-background, var(--color-white)));
 	border-bottom: var(--border);
 	animation: var(--mobile-menu-animation, none);
 
@@ -22,17 +22,16 @@
 }
 
 .has-dark-header {
+	--mobile-menu-background: var(--color-white);
 
 	.mobile-menu {
-		--mobile-menu-background: var(--color-lightest);
-		--menu-item-link-color: var(--color-darkest);
-		--menu-item-link-color-hover: var(--color-primary);
+		--menu-item-link-color: var(--color-heading);
 	}
 }
 
 .mobile-menu-visible {
 	--mobile-menu-display: block;
-	--mobile-menu-background: var(--color-lightest);
+	--mobile-menu-background: var(--color-white);
 	--mobile-menu-animation: standardmenu 0.3s ease-in-out;
 }
 

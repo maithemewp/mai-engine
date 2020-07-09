@@ -1,11 +1,22 @@
 
+ul {
+	list-style-type: var(--list-style-type, var(--unordered-list-style-type, disc));
+}
+
+ol {
+	list-style-type: var(--list-style-type, var(--ordered-list-style-type, decimal));
+}
+
+dl {
+	list-style-type: var(--list-style-type, var(--definition-list-style-type, unset));
+}
+
 ul,
 ol,
 dl {
 	margin: var(--list-margin, var(--list-margin-top, 0) var(--list-margin-right, 0) var(--list-margin-bottom, var(--spacing-sm)) var(--list-margin-left, 0));
 	padding: var(--list-padding, 0);
-	list-style-position: var(--list-list-style-position, inside);
-	list-style-type: var(--list-style-type, initial);
+	list-style-position: var(--list-style-position, inside);
 
 	ul,
 	ol,
@@ -23,7 +34,7 @@ li {
 .sidebar {
 
 	/* These are added to edistor.scss too */
-	--list-list-style-position: outside;
+	--list-style-position: outside;
 	--list-margin-left: var(--spacing-md);
 	--list-item-margin-bottom: var(--spacing-xs);
 }
@@ -34,5 +45,5 @@ dt {
 }
 
 dt {
-	font-weight: var(--description-term-font-weight, var(--font-weight-heading));
+	font-weight: var(--description-term-font-weight, var(--heading-font-weight));
 }

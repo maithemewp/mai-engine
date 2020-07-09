@@ -9,10 +9,13 @@
  * @license   GPL-2.0-or-later
  */
 
+// Allow shortcodes in nav menu items.
+add_filter( 'walker_nav_menu_start_el', 'do_shortcode' );
+
 add_filter( 'genesis_attr_nav-header-left', 'mai_header_nav_class' );
 add_filter( 'genesis_attr_nav-header-right', 'mai_header_nav_class' );
 /**
- * Description of expected behavior.
+ * Adds nav-header left and right classes.
  *
  * @since 0.1.0
  *
@@ -28,7 +31,7 @@ function mai_header_nav_class( $atts ) {
 
 add_action( 'mai_header_left', 'mai_header_left_menu', 15 );
 /**
- * Description of expected behavior.
+ * Displays header left nav menu.
  *
  * @since 0.1.0
  *
@@ -44,7 +47,7 @@ function mai_header_left_menu() {
 
 add_action( 'mai_header_right', 'mai_header_right_menu' );
 /**
- * Description of expected behavior.
+ * Displays header right menu.
  *
  * @since 0.1.0
  *
@@ -79,22 +82,6 @@ function mai_after_header_menu() {
 	);
 }
 
-add_action( 'genesis_footer', 'mai_footer_menu' );
-/**
- * Description of expected behavior.
- *
- * @since 0.1.0
- *
- * @return void
- */
-function mai_footer_menu() {
-	genesis_nav_menu(
-		[
-			'theme_location' => 'footer',
-		]
-	);
-}
-
 add_filter( 'walker_nav_menu_start_el', 'mai_replace_hash_with_void', 999 );
 /**
  * Replace # links with JavaScript void.
@@ -113,24 +100,6 @@ function mai_replace_hash_with_void( $menu_item ) {
 	return $menu_item;
 }
 
-add_filter( 'wp_nav_menu_args', 'mai_footer_menu_depth' );
-/**
- * Reduces secondary navigation menu to one level depth.
- *
- * @since 2.2.3
- *
- * @param array $args Original menu options.
- *
- * @return array Menu options with depth set to 1.
- */
-function mai_footer_menu_depth( $args ) {
-	if ( 'footer' === $args['theme_location'] ) {
-		$args['depth'] = 1;
-	}
-
-	return $args;
-}
-
 add_filter( 'nav_menu_link_attributes', 'mai_nav_link_atts' );
 /**
  * Pass nav menu link attributes through attribute parser.
@@ -144,7 +113,7 @@ add_filter( 'nav_menu_link_attributes', 'mai_nav_link_atts' );
  * @return array
  */
 function mai_nav_link_atts( $atts ) {
-	$atts['class']  = 'menu-item-link';
+	$atts['class'] = 'menu-item-link';
 	$atts['class'] .= $atts['aria-current'] ? ' menu-item-link-current' : '';
 
 	return $atts;
@@ -154,24 +123,56 @@ add_filter( 'wp_nav_menu_objects', 'mai_first_last_menu_items' );
 /**
  * Adds first and last classes to menu items for cleaner styling.
  *
- * @since 0.1.0
+ * @since 2.0.1
  *
- * @param object $items The menu items, sorted by each menu item's menu order.
+ * @param array $items The menu items, sorted by each menu item's menu order.
  *
- * @return string
+ * @return array
  */
 function mai_first_last_menu_items( $items ) {
-	$items[1]->classes[]                 = 'menu-item-first';
-	$items[ count( $items ) ]->classes[] = 'menu-item-last';
+	if ( ! empty( $items ) ) {
+		$items[ array_keys( $items )[0] ]->classes[] = 'menu-item-first';
+		$items[ count( $items ) ]->classes[]         = 'menu-item-last';
+	}
 
 	return $items;
 }
 
+add_filter( 'nav_menu_item_id', 'mai_remove_menu_item_classes' );
+add_filter( 'nav_menu_css_class', 'mai_remove_menu_item_classes' );
+add_filter( 'page_css_class', 'mai_remove_menu_item_classes' );
 /**
- * Allow shortcodes in nav menu items.
+ * Remove unnecessary menu item classes.
  *
- * @since 0.1.0
+ * @since 2.0.0
  *
- * @return string|HTML
+ * @param array|string $attribute Classes or ID.
+ *
+ * @return array|string
  */
-add_filter( 'walker_nav_menu_start_el', 'do_shortcode' );
+function mai_remove_menu_item_classes( $attribute ) {
+	if ( ! mai_get_option( 'remove-menu-item-classes', true ) ) {
+		return $attribute;
+	}
+
+	if ( is_array( $attribute ) ) {
+		$keepers = [
+			'menu-item-first',
+			'menu-item-last',
+			'menu-item-has-children',
+		];
+
+		foreach ( $attribute as $index => $class ) {
+			if ( ! mai_has_string( 'menu-item-', $class ) || in_array( $class, $keepers ) ) {
+				continue;
+			}
+
+			unset( $attribute[ $index ] );
+		}
+
+	} elseif ( is_string( $attribute ) ) {
+		$attribute = mai_has_string( 'menu-item-', $attribute ) ? '' : $attribute;
+	}
+
+	return $attribute;
+}

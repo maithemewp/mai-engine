@@ -5,6 +5,7 @@ const gulp              = require( 'gulp' ),
 	  plumber           = require( 'gulp-plumber' ),
 	  sourcemap         = require( 'gulp-sourcemaps' ),
 	  sass              = require( 'gulp-sass' ),
+	  bourbon           = require( 'bourbon' ).includePaths,
 	  normalize         = require( 'node-normalize-scss' ).includePaths,
 	  postcss           = require( 'gulp-postcss' ),
 	  mqpacker          = require( 'css-mqpacker' ),
@@ -12,7 +13,6 @@ const gulp              = require( 'gulp' ),
 	  cssnano           = require( 'cssnano' ),
 	  pxtorem           = require( 'postcss-pxtorem' ),
 	  fs                = require( 'fs' ),
-	  sassVars          = require( 'gulp-sass-vars' ),
 	  notify            = require( 'gulp-notify' ),
 	  map               = require( 'lodash.map' ),
 	  rename            = require( 'gulp-rename' ),
@@ -59,16 +59,12 @@ module.exports = function() {
 			return './assets/scss/plugins/' + stylesheet + '/__index.scss';
 		};
 
-		let themeVars = function() {
-			return require( '../../../config/_default/config.json' );
-		};
-
 		return gulp.src( fileSrc() )
-			.pipe( sassVars( themeVars(), { verbose: false } ) )
 			.pipe( plumber() )
 			.pipe( rename( stylesheet + '.min.scss' ) )
 			.pipe( sass.sync( {
 				outputStyle: 'compressed',
+				includePaths: [].concat( bourbon )
 			} ) )
 			.pipe( postcss( getPostProcessors( stylesheet ) ) )
 			.pipe( gulp.dest( './assets/css/plugins/' ) )

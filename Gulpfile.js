@@ -39,7 +39,6 @@ toolkit.extendConfig(
 			images: './assets/img/**/*',
 			scss: [ './assets/scss/**/*.scss', './config/**/*.scss' ],
 			css: [ './assets/css/**/*.css', '!./assets/css/min/*.css', '!node_modules/**' ],
-			js: [ './assets/js/**/*.js', '!node_modules/**' ],
 			json: [ '**/*.json', '!node_modules/**' ],
 			i18n: './assets/lang/',
 			svg: [
@@ -53,26 +52,6 @@ toolkit.extendConfig(
 			images: './assets/img/',
 			js: './assets/js/min/',
 			svg: './assets/svg/'
-		},
-		js: {
-			'editor': [
-				'./assets/js/editor.js',
-			],
-			'customizer': [
-				'./assets/js/customizer.js',
-			],
-			'setup-wizard': [
-				'./assets/js/setup-wizard.js',
-			],
-			'global': [
-				'./assets/js/global.js',
-			],
-			'header': [
-				'./assets/js/header.js',
-			],
-			'menus': [
-				'./assets/js/menus.js',
-			]
 		},
 		css: {
 			basefontsize: 10,

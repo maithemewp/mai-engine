@@ -52,15 +52,32 @@ function mai_get_widget_count( $widget_area_id ) {
  */
 function mai_get_widget_area_default_content( $location ) {
 	static $widget_areas = [];
+
 	if ( isset( $widget_areas[ $location ] ) ) {
 		return $widget_areas[ $location ];
 	}
+
 	$areas = mai_get_config( 'widget-areas' )['add'];
+
 	foreach ( $areas as $area ) {
 		$widget_areas[ $area['id'] ] = isset( $area['default'] ) ? $area['default'] : '';
 	}
+
 	if ( ! isset( $widget_areas[ $location ] ) ) {
 		$widget_areas[ $location ] = '';
 	}
+
 	return $widget_areas[ $location ];
+}
+
+add_action( 'widgets_init', 'mai_register_reusable_block_widget' );
+/**
+ * Register the widget.
+ *
+ * @since 0.1.0
+ *
+ * @return void
+ */
+function mai_register_reusable_block_widget() {
+	register_widget( 'Mai_Reusable_Block_Widget' );
 }

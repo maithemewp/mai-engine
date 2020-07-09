@@ -1,6 +1,5 @@
 .mai-icon {
 	display: var(--icon-display);
-	margin: var(--icon-margin);
 	text-align: var(--icon-align);
 
 	@include clearfix();
@@ -16,16 +15,17 @@
 }
 
 .mai-icon-wrap {
-	display: block;
+	display: inline-block;
 	width: calc(var(--icon-size) + (var(--icon-padding) * 2));
 	height: calc(var(--icon-size) + (var(--icon-padding) * 2));
-	margin: auto;
+	margin: var(--icon-margin);
 	padding: var(--icon-padding);
 	text-align: center;
 	background-color: var(--icon-background);
 	border: var(--icon-border, unset);
 	border-radius: var(--icon-border-radius, unset);
 	box-shadow: var(--icon-box-shadow, unset);
+	filter: drop-shadow(var(--icon-text-shadow, unset));
 }
 
 :root {

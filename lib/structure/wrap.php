@@ -40,3 +40,21 @@ function mai_structural_wrap_hooks() {
 		);
 	}
 }
+
+/**
+ * Convert to site-header-wrap class.
+ *
+ * @since 2.0.0
+ *
+ * @param string $output   The wrap HTML.
+ * @param string $original Whether it's open or closing wrap.
+ *
+ * @return string
+ */
+add_filter( 'genesis_structural_wrap-header', 'mai_site_header_row_class', 10, 2 );
+function mai_site_header_row_class( $output, $original ) {
+	if ( 'open' !== $original ) {
+		return $output;
+	}
+	return str_replace( 'class="wrap', 'class="site-header-wrap', $output );
+}

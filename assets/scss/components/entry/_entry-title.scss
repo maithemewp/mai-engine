@@ -1,19 +1,15 @@
 .entry-title {
 	margin: var(--entry-title-margin, 0 0 var(--entry-title-margin-bottom, var(--spacing-md)));
-	font-size: var(--entry-title-font-size, var(--text-xxxxl));
+	font-size: var(--entry-title-font-size, var(--font-size-xxxxl));
 
 	&:last-child {
 		--entry-title-margin: 0;
 	}
 }
 
-.entries {
-	--entry-title-font-size: var(--text-lg);
-}
-
 .entry-title-link {
 	display: block;
-	color: var(--entry-title-color, var(--color-darker));
+	color: var(--entry-title-color, var(--color-body));
 	text-decoration: var(--entry-title-text-decoration, none);
 
 	&:hover,
@@ -23,7 +19,8 @@
 	}
 }
 
-.is-archive {
-	--entry-title-font-size: var(--text-sm);
-	--entry-title-color: var(--color-darkest);
+// Archives and grid block.
+.entries {
+	--entry-title-font-size: var(--font-size-lg);
+	--entry-title-color: var(--color-heading);
 }

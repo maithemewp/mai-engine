@@ -19,11 +19,13 @@
   ],
   "require": {
     "php": ">=5.6",
+    "ext-dom": "*",
+    "ext-json": "*",
+    "ext-libxml": "*",
     "yahnis-elsts/plugin-update-checker": "^4.8",
     "advanced-custom-fields/advanced-custom-fields-pro": "*",
     "aristath/kirki": "*",
-    "proteusthemes/wp-content-importer-v2": "^2.1",
-    "maithemewp/mai-setup-wizard": "dev-master"
+    "proteusthemes/wp-content-importer-v2": "^2.1"
   },
   "require-dev": {
     "php": "^5.6|^7",
@@ -50,7 +52,6 @@
     },
     "sort-order": true
   },
-  "ext-json": "*",
   "minimum-stability": "dev",
   "prefer-stable": true,
   "scripts": {

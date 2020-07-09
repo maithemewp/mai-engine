@@ -1,7 +1,6 @@
 table {
 	width: 100%;
 	margin: var(--table-margin, var(--spacing-md) 0);
-	word-break: break-all;
 	border: var(--border);
 	border-radius: var(--table-border-radius, var(--border-radius));
 	border-collapse: collapse;
@@ -9,9 +8,9 @@ table {
 }
 
 th {
-	font-weight: var(--table-header-font-weight, var(--font-weight-heading));
+	font-weight: var(--table-header-font-weight, var(--heading-font-weight));
 	font-size: var(--table-header-font-size, (smaller));
-	background-color: var(--table-header-background-color, var(--color-lighter));
+	background-color: var(--table-header-background-color, var(--color-alt));
 }
 
 th,

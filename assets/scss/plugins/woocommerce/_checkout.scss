@@ -6,7 +6,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	margin-bottom: var(--gutter);
+	margin-bottom: var(--column-gap);
 
 	p {
 		width: 100%;
@@ -14,18 +14,18 @@
 }
 
 .woocommerce-checkout-payment {
-	margin-top: var(--gutter);
+	margin-top: var(--spacing-xl);
+	padding: var(--spacing-md) var(--spacing-md) var(--spacing-lg);
+	border: var(--border);
+	border-radius: var(--border-radius);
+}
+
+.wc_payment_methods {
+	--list-margin: 0;
+	--list-item-margin: 0 0 var(--spacing-xl) 0;
 }
 
 .payment_method_stripe {
-
-	label {
-
-		img {
-			max-width: calc(var(--spacing-lg) * #{$minor-third});
-			margin-right: var(--spacing-xs);
-		}
-	}
 
 	.woocommerce-validated {
 		display: flex;
@@ -33,25 +33,19 @@
 	}
 
 	.form-row {
-
-		> div {
-			margin-bottom: var(--spacing-md);
-			padding: var(--spacing-md);
-			border: var(--border);
-			border-radius: var(--border-radius);
-		}
-
-		&-first {
-			float: left;
-			width: var(--one-half);
-			margin-right: var(--gutter);
-		}
-
-		&-last {
-			float: right;
-			width: var(--one-half);
-		}
+		margin-bottom: var(--spacing-md);
 	}
+
+	.wc-stripe-elements-field,
+	.wc-stripe-iban-element-field {
+		padding: var(--input-padding, var(--spacing-md));
+		border: var(--border);
+		border-radius: var(--border-radius);
+		background-color: var(--input-background-color, var(--color-white));
+		color: var(--input-color, currentColor);
+		line-height: var(--input-line-height, 1);
+	}
+
 }
 
 .payment_method_paypal {
@@ -61,7 +55,6 @@
 		img {
 			display: block;
 			max-width: var(--spacing-xl);
-			margin-bottom: var(--spacing-md);
 		}
 	}
 }
@@ -77,23 +70,18 @@
 	> input {
 
 		@include position(absolute, var(--spacing-md) null null var(--spacing-md));
-
-		&:checked + label {
-			background-color: rgba(var(--color-primary), var(--shadow-opacity));
-			border-color: var(--color-primary);
-		}
 	}
 
 	label[for*="payment_method"] {
-		display: inline-block;
+		display: flex;
+		align-items: center;
 		width: 100%;
-		margin-bottom: var(--spacing-md);
-		padding-left: calc(var(--column-gap) * 2);
+		font-size: var(--font-size-md);
 
 		@include heading;
 
 		img {
-			margin-top: var(--spacing-md);
+			margin-left: var(--spacing-xxxs) !important;
 		}
 	}
 }
@@ -110,7 +98,7 @@
 	&,
 	.select2-selection__rendered,
 	.select2-selection__arrow {
-		height: calc((var(--text-md) / var(--text-scale-ratio)) + var(--text-md) * 2);
-		line-height: calc((var(--text-md) / var(--text-scale-ratio)) + var(--text-md) * 2);
+		height: calc(var(--font-size-xs) + 2em);
+		line-height: calc(var(--font-size-xs) + 2em);
 	}
 }

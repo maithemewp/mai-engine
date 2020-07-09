@@ -11,7 +11,7 @@
 
 add_action( 'genesis_before_loop', 'mai_setup_loop' );
 /**
- * Description of expected behavior.
+ * Do the main loop.
  *
  * @since 1.0.0
  *
@@ -51,8 +51,8 @@ function mai_setup_loop() {
  * @return void
  */
 function mai_do_loop() {
-	$archive = mai_is_type_archive();
 	$args    = mai_get_template_args();
+	$archive = ( 'archive' === $args['context'] );
 
 	if ( have_posts() ) {
 
@@ -77,8 +77,7 @@ function mai_do_loop() {
 			 */
 			do_action( 'genesis_before_entry' );
 
-			global $post;
-			mai_do_entry( $post, $args );
+			mai_do_entry( get_post(), $args );
 
 			/**
 			 * Fires inside the standard loop, before the entry opening markup.
@@ -155,7 +154,7 @@ function mai_archive_posts_per_page( $query ) {
 	if ( ! isset( $args['posts_per_page'] ) || ( empty( $args['posts_per_page'] ) && '0' !== $args['posts_per_page'] ) ) {
 		return;
 	}
-	// TODO: Hide posts if posts_per_page is 0?
+
 	// Set posts per page.
 	$query->set( 'posts_per_page', $args['posts_per_page'] );
 }

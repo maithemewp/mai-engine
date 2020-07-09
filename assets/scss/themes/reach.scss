@@ -1,0 +1,61 @@
+@import "default";
+
+:root {
+	--button-transform-hover: scale(1.05);
+	--site-header-border-bottom: 0;
+	--page-header-border-bottom: 0;
+	--content-sidebar-wrap-margin-top: var(--spacing-xxl);
+	--site-footer-background: var(--color-alt);
+}
+
+.has-boxed {
+	--entry-border: 0;
+}
+
+embed,
+iframe,
+object,
+video {
+	border-radius: var(--border-radius);
+}
+
+textarea {
+	--input-border-radius: var(--border-radius, calc(var(--font-size-md, 1em) * 2));
+}
+
+.site-footer {
+	border: 0;
+
+	--link-color: var(--color-heading);
+	--link-color-hover: var(--color-primary);
+}
+
+.before-footer {
+	border: 0;
+
+	@include mq(lg) {
+		--wrap-flex-wrap: nowrap;
+		--widget-margin: 0;
+	}
+}
+
+.footer-credits {
+	--footer-credits-text-align: left;
+}
+
+.logos {
+
+	img {
+		padding: 0 1em;
+		opacity: 0.5;
+	}
+}
+
+.site-container .wpforms-container.inline-fields {
+	margin-bottom: 0;
+	overflow: visible;
+
+	--input-border: 0;
+	--input-border-focus: 0;
+	--input-box-shadow: var(--shadow);
+}

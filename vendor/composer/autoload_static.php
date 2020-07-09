@@ -7,7 +7,6 @@ namespace Composer\Autoload;
 class ComposerStaticInitb109c82834b5632899cf4c449109f709
 {
     public static $files = array (
-        'bac9754b41a0e1a9006aca89fa437612' => __DIR__ . '/..' . '/maithemewp/mai-setup-wizard/mai-setup-wizard.php',
         '241d2b5b9c1e680c0770b006b0271156' => __DIR__ . '/..' . '/yahnis-elsts/plugin-update-checker/load-v4p9.php',
     );
 

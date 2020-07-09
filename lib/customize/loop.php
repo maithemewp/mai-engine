@@ -23,7 +23,6 @@ function mai_archive_settings_customizer_settings() {
 	$section = $handle . '-content-archives';
 	$choices = mai_get_loop_content_type_choices( $archive = true );
 	$default = mai_get_config( 'archive-settings' );
-	$link    = mai_get_customizer_link( $section, 'panel' );
 
 	\Kirki::add_section(
 		$section,
@@ -47,17 +46,17 @@ function mai_archive_settings_customizer_settings() {
 		]
 	);
 
-	Kirki::add_field(
+	\Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'custom',
 			'settings'    => 'archive-settings-refresh',
 			'section'     => $section,
 			'label'       => esc_html__( 'Refresh after updating!', 'mai-engine' ),
-			'description' => esc_html__( 'In order to show/hide panels for the updated values you must reload the Customizer after saving any changes.', 'mai-engine' ),
-			'default'     => sprintf( '<a href="%s" class="button button-primary">%s</a>', $link, esc_html__( 'Refresh Now', 'mai-engine' ) ),
+			'description' => sprintf( '<p>%s</p>', esc_html__( 'In order to show/hide panels for the updated values you must reload the Customizer after saving any changes.', 'mai-engine' ) ),
 		]
 	);
+
 }
 
 add_action( 'init', 'mai_single_settings_customizer_settings' );
@@ -74,7 +73,6 @@ function mai_single_settings_customizer_settings() {
 	$section = $handle . '-single-content';
 	$choices = mai_get_loop_content_type_choices( $archive = false );
 	$default = mai_get_config( 'single-settings' );
-	$link    = mai_get_customizer_link( $section, 'panel' );
 
 	\Kirki::add_section(
 		$section,
@@ -98,15 +96,16 @@ function mai_single_settings_customizer_settings() {
 		]
 	);
 
-	Kirki::add_field(
+
+	\Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'custom',
 			'settings'    => 'single-settings-refresh',
 			'section'     => $section,
 			'label'       => esc_html__( 'Refresh after updating!', 'mai-engine' ),
-			'description' => esc_html__( 'In order to show/hide panels for the updated values you must reload the Customizer after saving any changes.', 'mai-engine' ),
-			'default'     => sprintf( '<a href="%s" class="button button-primary">%s</a>', $link, esc_html__( 'Refresh Now', 'mai-engine' ) ),
+			'description' => sprintf( '<p>%s</p>', esc_html__( 'In order to show/hide panels for the updated values you must reload the Customizer after saving any changes.', 'mai-engine' ) ),
 		]
 	);
+
 }

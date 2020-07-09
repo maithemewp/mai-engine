@@ -13,7 +13,7 @@ add_action( 'acf/init', 'mai_add_hide_elements_metabox' );
 /**
  * Add Hide Elements metabox.
  *
- * Choices added later via acf/load_field filter so
+ * Location and choices added later via acf filters so
  * get_post_types() and other functions are available.
  *
  * @since 0.3.0
@@ -21,21 +21,6 @@ add_action( 'acf/init', 'mai_add_hide_elements_metabox' );
  * @return void
  */
 function mai_add_hide_elements_metabox() {
-
-	$post_types = get_post_types( [ 'public' => true ] );
-	unset( $post_types['attachment'] );
-	$locations  = [];
-
-	foreach ( $post_types as $post_type ) {
-		$locations[] = [
-			[
-				'param'    => 'post_type',
-				'operator' => '==',
-				'value'    => $post_type,
-			],
-		];
-	}
-
 	acf_add_local_field_group(
 		[
 			'key'                   => 'hide_elements',
@@ -47,7 +32,15 @@ function mai_add_hide_elements_metabox() {
 			'hide_on_screen'        => '',
 			'active'                => true,
 			'description'           => '',
-			'location'              => $locations,
+			'location'              => [
+				[
+					[
+						'param'    => 'mai_public_post_type',
+						'operator' => '==', // Currently unused.
+						'value'    => true, // Currently unused.
+					]
+				]
+			],
 			'fields'                => [
 				[
 					'key'           => 'hide_elements',
@@ -62,9 +55,26 @@ function mai_add_hide_elements_metabox() {
 	);
 }
 
+add_filter( 'acf/location/rule_match/mai_public_post_type', 'mai_acf_public_post_type_rule_match', 10, 4 );
+/**
+ * Show "Hide Elements" metabox on all public post types.
+ *
+ * @since 2.0.0
+ *
+ * @param bool   $result      Whether the rule matches.
+ * @param array  $rule        The current rule you're matching. Includes 'param', 'operator' and 'value' parameters.
+ * @param string $screen      The current screen.
+ * @param array  $field_group Data about the current edit screen (post_id, page_template...).
+ *
+ * @return bool $match
+ */
+function mai_acf_public_post_type_rule_match( $result, $rule, $screen, $field_group ) {
+	return isset( $screen['post_type'] ) && in_array( $screen['post_type'], get_post_types( [ 'public' => true ] ) );
+}
+
 add_filter( 'acf/load_field/key=hide_elements', 'mai_load_hide_elements_field' );
 /**
- * Load hide_elements choices.
+ * Load "Hide Elements" metabox choices.
  *
  * @since 0.3.3
  *

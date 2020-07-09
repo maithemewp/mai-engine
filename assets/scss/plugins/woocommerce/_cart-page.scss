@@ -5,14 +5,14 @@
 	justify-content: center;
 	width: 1em;
 	height: 1em;
-	color: var(--color-lightest);
-	font-weight: var(--font-weight-heading);
+	color: var(--color-white);
+	font-weight: var(--heading-font-weight);
 	background-color: var(--color-danger);
 	border-radius: var(--border-radius);
 
 	&:hover,
 	&:focus {
-		color: var(--color-lightest);
+		color: var(--color-white);
 		text-decoration: none;
 		background-color: var(--color-danger);
 	}
@@ -55,7 +55,7 @@
 .coupon {
 	display: flex;
 	align-items: center;
-	font-size: var(--text-sm);
+	font-size: var(--font-size-sm);
 
 	label {
 
@@ -74,7 +74,7 @@
 }
 
 .cart-collaterals {
-	margin: var(--gutter) 0;
+	margin: var(--column-gap) 0;
 
 	@include mq(lg) {
 		display: flex;
@@ -163,10 +163,10 @@
 				width: 25%;
 				margin-right: var(--spacing-md);
 				padding: 1.5em 1em;
-				font-weight: var(--font-weight-heading);
+				font-weight: var(--heading-font-weight);
 				font-size: smaller;
 				white-space: nowrap;
-				background-color: var(--color-lighter);
+				background-color: var(--color-alt);
 				border-right: var(--border);
 			}
 		}

@@ -13,3 +13,7 @@
 .header-right {
 	justify-content: flex-end;
 }
+
+.no-js {
+	--header-section-display: flex;
+}

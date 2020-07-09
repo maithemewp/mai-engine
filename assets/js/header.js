@@ -13,6 +13,7 @@
 	var hasTransparent = body.classList.contains( 'has-transparent-header' );
 	var hasPageHeader  = body.classList.contains( 'has-page-header' );
 	var hasCoverBlock  = body.classList.contains( 'has-alignfull-first' );
+	var breakpointSm   = window.getComputedStyle( document.documentElement ).getPropertyValue( '--breakpoint-sm' );
 	var firstElement   = hasCoverBlock ? document.getElementsByClassName( 'wp-block-cover__inner-container' )[ 0 ] : siteInner.firstChild;
 	var timeout        = false;
 
@@ -22,8 +23,13 @@
 	var isTop = new IntersectionObserver( function( tracker ) {
 		if ( tracker[ 0 ].isIntersecting ) {
 			body.classList.remove( 'header-stuck' );
+
 		} else {
-			body.classList.add( 'header-stuck' );
+			var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+
+			if ( viewportWidth > parseInt( breakpointSm, 10 ) ) {
+				body.classList.add( 'header-stuck' );
+			}
 		}
 	}, { threshold: [ 0, 1 ] } );
 

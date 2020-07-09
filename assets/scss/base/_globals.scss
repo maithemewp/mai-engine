@@ -1,102 +1,58 @@
 @mixin custom-properties {
-	--color-primary: #{map_get($colors, "primary")};
-	--color-secondary: #{map_get($colors, "secondary")};
-	--color-tertiary: #{map_get($colors, "tertiary")};
-	--color-success: #{map_get($colors, "success")};
-	--color-danger: #{map_get($colors, "danger")};
-	--color-warning: #{map_get($colors, "warning")};
-	--color-info: #{map_get($colors, "info")};
+	--color-success: limegreen;
+	--color-danger: orangered;
+	--color-warning: gold;
+	--color-info: dodgerblue;
+	--color-border: rgba(10, 20, 30, 0.05);
+	--color-shadow: rgba(10, 20, 30, 0.1);
 
-	--color-darkest: #{map_get($colors, "darkest")};
-	--color-darker: #{map_get($colors, "darker")};
-	--color-dark: #{map_get($colors, "dark")};
-	--color-medium: #{map_get($colors, "medium")};
-	--color-light: #{map_get($colors, "light")};
-	--color-lighter: #{map_get($colors, "lighter")};
-	--color-lightest: #{map_get($colors, "lightest")};
+	--font-scale-responsive: 0.15vw;
 
-	--breakpoint-xl: #{map_get($breakpoints, xl)};
-	--breakpoint-lg: calc(var(--breakpoint-xl) / 1.2);
-	--breakpoint-md: calc(var(--breakpoint-xl) / 1.5);
-	--breakpoint-sm: calc(var(--breakpoint-xl) / 2);
-	--breakpoint-xs: calc(var(--breakpoint-xl) / 3);
-
-	--text-scale-ratio: 1.25;
-	--text-xxxxs: calc(var(--text-xxxs) / var(--text-scale-ratio));
-	--text-xxxs: calc(var(--text-xxs) / var(--text-scale-ratio));
-	--text-xxs: calc(var(--text-xs) / var(--text-scale-ratio));
-	--text-xs: calc(var(--text-sm) / var(--text-scale-ratio));
-	--text-sm: calc(var(--text-md) / var(--text-scale-ratio));
-	--text-md: 16px;
-	--text-lg: calc(var(--text-md) * var(--text-scale-ratio));
-	--text-xl: calc(var(--text-lg) * var(--text-scale-ratio));
-	--text-xxl: calc(var(--text-xl) * var(--text-scale-ratio));
-	--text-xxxl: calc(var(--text-xxl) * var(--text-scale-ratio));
-	--text-xxxxl: calc(var(--text-xxxl) * var(--text-scale-ratio));
+	--font-size-xs: calc(var(--font-size-sm) / var(--font-scale));
+	--font-size-sm: calc(var(--font-size-md) / var(--font-scale));
+	--font-size-md: calc(var(--font-size-base) + var(--font-scale-responsive));
+	--font-size-lg: calc(var(--font-size-md) * var(--font-scale));
+	--font-size-xl: calc(var(--font-size-lg) * var(--font-scale));
+	--font-size-xxl: calc(var(--font-size-xl) * var(--font-scale));
+	--font-size-xxxl: calc(var(--font-size-xxl) * var(--font-scale));
+	--font-size-xxxxl: calc(var(--font-size-xxxl) * var(--font-scale));
 
 	--font-stack: system-ui, -apple-system, blinkmacsystemfont, helvetica, arial, sans-serif;
 	--font-code: consolas, monaco, monospace;
-	--font-primary: var(--font-stack);
-	--font-secondary: var(--font-stack);
 
-	--font-weight-hairline: 100;
-	--font-weight-extralight: 200;
-	--font-weight-light: 300;
-	--font-weight-regular: 400;
-	--font-weight-medium: 500;
-	--font-weight-semibold: 600;
-	--font-weight-bold: 700;
-	--font-weight-extrabold: 800;
-	--font-weight-black: 900;
+	--spacing-base: var(--font-size-base);
+	--spacing-scale: 1.5;
 
-	--font-weight-body: var(--font-weight-regular);
-	--font-weight-heading: var(--font-weight-semibold);
-
-	--line-height: 1.5;
-	--line-height-heading: 1.2;
-
-	--letter-spacing-body: normal;
-	--letter-spacing-heading: var(--letter-spacing-body);
-
-	--spacing-scale-ratio: 1.5;
-	--spacing-xxxxs: calc(var(--spacing-xxxs) / var(--spacing-scale-ratio));
-	--spacing-xxxs: calc(var(--spacing-xxs) / var(--spacing-scale-ratio));
-	--spacing-xxs: calc(var(--spacing-xs) / var(--spacing-scale-ratio));
-	--spacing-xs: calc(var(--spacing-sm) / var(--spacing-scale-ratio));
-	--spacing-sm: calc(var(--spacing-md) / var(--spacing-scale-ratio));
-	--spacing-md: 16px;
-	--spacing-lg: calc(var(--spacing-md) * var(--spacing-scale-ratio));
-	--spacing-xl: calc(var(--spacing-lg) * var(--spacing-scale-ratio));
-	--spacing-xxl: calc(var(--spacing-xl) * var(--spacing-scale-ratio));
-	--spacing-xxxl: calc(var(--spacing-xxl) * var(--spacing-scale-ratio));
-	--spacing-xxxxl: calc(var(--spacing-xxxl) * var(--spacing-scale-ratio));
+	--spacing-xxxxs: calc(var(--spacing-xxxs) / var(--spacing-scale));
+	--spacing-xxxs: calc(var(--spacing-xxs) / var(--spacing-scale));
+	--spacing-xxs: calc(var(--spacing-xs) / var(--spacing-scale));
+	--spacing-xs: calc(var(--spacing-sm) / var(--spacing-scale));
+	--spacing-sm: calc(var(--spacing-md) / var(--spacing-scale));
+	--spacing-md: var(--spacing-base);
+	--spacing-lg: calc(var(--spacing-md) * var(--spacing-scale));
+	--spacing-xl: calc(var(--spacing-lg) * var(--spacing-scale));
+	--spacing-xxl: calc(var(--spacing-xl) * var(--spacing-scale));
+	--spacing-xxxl: calc(var(--spacing-xxl) * var(--spacing-scale));
+	--spacing-xxxxl: calc(var(--spacing-xxxl) * var(--spacing-scale));
 
 	--side-spacing: 4vw;
 
 	--row-gap: var(--spacing-md);
 	--column-gap: var(--spacing-md);
 	--wrap-max-width: var(--breakpoint-xl);
-	--sidebar-width: 30rem; // Google ads
-	--content-max-width: calc(var(--wrap-max-width) - var(--sidebar-width) - var(--column-gap));
+	--sidebar-width: 300px; // Google ads.
+	--content-max-width: var(--breakpoint-xl);
 
-	--border-radius: #{map_get($border, "radius")};
-	--border-size: #{map_get($border, "width")};
-	--border-style: #{map_get($border, "style")};
-	--border-color: #{map_get($border, "color")};
-	--border: var(--border-size) var(--border-style) var(--border-color);
-
-	--shadow-x: 0;
-	--shadow-y: 0.25em;
-	--shadow-blur: 1em;
-	--shadow-spread: 0;
-	--shadow-opacity: 0.5;
-	--shadow-color: #{hex_to_rgb(map_get($colors, "medium"))};
-	--shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-spread) rgba(var(--shadow-color), var(--shadow-opacity));
+	--border-width: 1px;
+	--border: var(--border-width) solid var(--color-border);
+	--border-radius: 4px;
+	--shadow: 0 0.25em 1em 0 var(--color-shadow);
 
 	--transition-property: all;
 	--transition-duration: 0.2s;
 	--transition-timing-function: ease;
 	--transition: var(--transition-property) var(--transition-duration) var(--transition-timing-function);
+
 }
 
 :root {

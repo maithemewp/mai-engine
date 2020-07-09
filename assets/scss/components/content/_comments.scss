@@ -20,28 +20,25 @@
 
 	.comment {
 		--shadow: none;
-		margin-right: calc(var(--spacing-xl) * -1 - 1px); /* make all child comments flush to right, over border as well */
+		margin-right: calc(var(--spacing-xl) * -1 - var(--border-width)); /* make all child comments flush to right, over border as well */
 
 		&:last-child {
-			margin-bottom: calc(var(--spacing-xl) * -1 - 1px); /* make all child comments flush to bottom, over border as well */
+			margin-bottom: calc(var(--spacing-xl) * -1 - var(--border-width)); /* make all child comments flush to bottom, over border as well */
+			border-width: var(--border-width) 0 0 var(--border-width);
 		}
 	}
 }
 
 .comment-header {
 	display: flex;
-	margin-bottom: var(--spacing-md);
-}
-
-.comment-author,
-.comment-meta {
-	margin-bottom: 0;
+	flex-wrap: wrap;
 }
 
 .comment-author {
 	display: flex;
 	place-items: center;
-	font-family: var(--font-secondary);
+	margin-right: auto;
+	font-family: var(--heading-font-family);
 
 	.avatar {
 		margin-right: var(--spacing-sm);
@@ -49,8 +46,7 @@
 }
 
 .comment-meta {
-	margin-left: auto;
-	font-size: var(--text-xs);
+	font-size: var(--font-size-xs);
 }
 
 .comment-content {
@@ -70,11 +66,8 @@
 	margin-bottom: var(--spacing-xl);
 }
 
-
 .comment-reply-link {
-	--button-background: var(--color-medium);
-	--button-color: var(--color-darker);
-	--button-padding: 0.75em 1em;
-	--button-font-size: var(--text-xs);
-}
 
+	@include button-style("secondary");
+	@include button-style("small");
+}

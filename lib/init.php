@@ -13,7 +13,7 @@
 defined( 'ABSPATH' ) || die();
 
 /**
- * Description of expected behavior.
+ * Get the active engine theme. Defaults to the default theme.
  *
  * @since 0.1.0
  *
@@ -22,43 +22,103 @@ defined( 'ABSPATH' ) || die();
 function mai_get_engine_theme() {
 	static $theme = null;
 
-	if ( is_null( $theme ) ) {
-		$current_theme = defined( 'CHILD_THEME_NAME' ) ? CHILD_THEME_NAME : null;
+	if ( ! is_null( $theme ) ) {
+		return $theme;
+	}
 
-		if ( ! $current_theme ) {
-			$current_theme = wp_get_theme()->get( 'Name' );
-		}
+	$engine_themes = mai_get_engine_themes();
 
-		if ( ! $current_theme ) {
-			$current_theme = wp_get_theme()->get( 'TextDomain' );
-		}
 
-		if ( ! $current_theme ) {
-			$current_theme = basename( get_stylesheet_directory() );
-		}
+	if ( current_theme_supports( 'mai-engine' ) ) {
+		// Custom themes can load a specific theme default via `add_theme_support( 'mai-engine', 'success' );`
+		$theme_support = get_theme_support( 'mai-engine' );
 
-		$configs       = glob( dirname( __DIR__ ) . '/config/*', GLOB_ONLYDIR );
-		$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $current_theme ) );
-		$engine_themes = [];
-
-		foreach ( $configs as $index => $config ) {
-			$base = basename( $config, '.php' );
-
-			if ( in_array( $base, [ '_default', '_settings' ] ) ) {
-				continue;
-			}
-
-			$engine_themes[] = $base;
-		}
-
-		if ( in_array( $current_theme, $engine_themes, true ) ) {
-			$theme = $current_theme;
-		} elseif ( current_theme_supports( 'mai-engine' ) ) {
-			$theme = 'default';
+		if ( $theme_support && is_array( $theme_support ) && in_array( $theme_support[0], $engine_themes, true ) ) {
+			$theme = $theme_support[0];
 		}
 	}
 
+	if ( ! $theme ) {
+		$current_theme = defined( 'CHILD_THEME_NAME' ) ? CHILD_THEME_NAME : null;
+
+		if ( $current_theme ) {
+			$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $current_theme ) );
+
+			if ( in_array( $current_theme, $engine_themes, true ) ) {
+				$theme = $current_theme;
+			}
+		}
+	}
+
+	if ( ! $theme ) {
+		$current_theme = wp_get_theme()->get( 'Name' );
+
+		if ( $current_theme ) {
+			$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $current_theme ) );
+
+			if ( in_array( $current_theme, $engine_themes, true ) ) {
+				$theme = $current_theme;
+			}
+		}
+	}
+
+	if ( ! $theme ) {
+		$current_theme = wp_get_theme()->get( 'TextDomain' );
+
+		if ( $current_theme ) {
+			$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $current_theme ) );
+
+			if ( in_array( $current_theme, $engine_themes, true ) ) {
+				$theme = $current_theme;
+			}
+		}
+	}
+
+	if ( ! $theme ) {
+		$current_theme = basename( get_stylesheet_directory() );
+
+		if ( $current_theme ) {
+			$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $current_theme ) );
+
+			if ( in_array( $current_theme, $engine_themes, true ) ) {
+				$theme = $current_theme;
+			}
+		}
+	}
+
+	$theme = $theme ?: 'default';
+
 	return $theme;
+}
+
+/**
+ * Get available engine themes.
+ *
+ * @since 2.0.0
+ *
+ * @return void
+ */
+function mai_get_engine_themes() {
+	static $themes = null;
+
+	if ( ! is_null( $themes ) ) {
+		return $themes;
+	}
+
+	$configs = glob( dirname( __DIR__ ) . '/config/*.php' );
+	$themes  = [];
+
+	foreach ( $configs as $index => $config ) {
+		$base = basename( $config, '.php' );
+
+		if ( in_array( $base, [ '_default', '_settings' ] ) ) {
+			continue;
+		}
+
+		$themes[] = $base;
+	}
+
+	return $themes;
 }
 
 /**
@@ -137,6 +197,7 @@ function mai_modify_genesis_defaults() {
 add_action( 'genesis_setup', 'mai_remove_genesis_default_widget_areas', 8 );
 /**
  * Remove Genesis default widget areas.
+ *
  * We'll re-register them via our config.
  *
  * @since 0.3.7
@@ -158,7 +219,7 @@ add_action( 'after_setup_theme', 'mai_load_files', 0 );
 function mai_load_files() {
 	$deactivate = true;
 
-	if ( function_exists( 'genesis' ) && mai_get_engine_theme() ) {
+	if ( function_exists( 'genesis' ) && current_theme_supports( 'mai-engine' ) ) {
 		$deactivate = false;
 	}
 
@@ -177,23 +238,28 @@ function mai_load_files() {
 		'../vendor/autoload',
 
 		// Functions.
-		'functions/helpers',
-		'functions/utilities',
 		'functions/autoload',
-		'functions/layout',
-		'functions/images',
-		'functions/loop',
-		'functions/setup',
-		'functions/enqueue',
-		'functions/markup',
-		'functions/entries',
-		'functions/grid',
-		'functions/widgets',
 		'functions/defaults',
+		'functions/deprecated',
+		'functions/enqueue',
+		'functions/entries',
+		'functions/fonts',
+		'functions/grid',
+		'functions/helpers',
+		'functions/images',
+		'functions/layout',
+		'functions/loop',
+		'functions/markup',
+		'functions/performance',
 		'functions/plugins',
+		'functions/setup',
 		'functions/shortcodes',
+		'functions/templates',
+		'functions/utilities',
+		'functions/widgets',
 
 		// Structure.
+		'structure/amp',
 		'structure/archive',
 		'structure/breadcrumbs',
 		'structure/comments',
@@ -207,6 +273,7 @@ function mai_load_files() {
 		'structure/search-form',
 		'structure/sidebar',
 		'structure/single',
+		'structure/template-parts',
 		'structure/widget-areas',
 		'structure/wrap',
 
@@ -218,33 +285,44 @@ function mai_load_files() {
 		'blocks/heading',
 		'blocks/icon',
 		'blocks/image',
-
-		// Widgets.
-		'widgets/reusable-block',
+		'blocks/paragraph',
+		'blocks/social-links',
 
 		// Customizer.
-		'customize/setup',
-		'customize/logo',
 		'customize/beta-tester',
-		'customize/upsell',
+		'customize/colors',
+		'customize/content-archives',
+		'customize/logo',
 		'customize/loop',
+		'customize/menus',
+		'customize/output',
 		'customize/page-header',
+		'customize/performance',
+		'customize/setup',
+		'customize/single-content',
+		'customize/site-header',
+		'customize/site-layouts',
+		'customize/typography',
+		'customize/updates',
+		'customize/upsell',
 	];
 
 	if ( is_admin() ) {
 		$files = array_merge(
 			$files,
 			[
-				'admin/blog',
-				'admin/images',
-				'admin/settings',
-				'admin/term-image',
-				'admin/page-header',
-				'admin/hide-elements',
 				'admin/acf',
-				'admin/update-checker',
-				'admin/child-theme-updater',
+				'admin/blog',
+				'admin/dependencies',
+				'admin/editor',
+				'admin/hide-elements',
+				'admin/images',
+				'admin/page-header',
+				'admin/settings',
 				'admin/setup-wizard',
+				'admin/term-image',
+				'admin/template-parts',
+				'admin/update-checker',
 				'admin/upgrade',
 			]
 		);

@@ -13,9 +13,9 @@
 	@include button-style("secondary");
 }
 
-.button-tertiary {
+.button-link {
 
-	@include button-style("tertiary");
+	@include button-style("link");
 }
 
 .button-outline {

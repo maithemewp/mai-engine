@@ -2,20 +2,16 @@
 /**
  * Mai Engine.
  *
- * This is the plugin's bootstrap file. It is responsible for providing the plugin
- * meta information that WordPress needs, preparing the environment so that it's
- * ready to execute our code and kick off our composition root (Plugin class).
- *
  * Plugin Name:       Mai Engine
- * Plugin URI:        https: //github.com/maithemewp/mai-engine/
- * GitHub Plugin URI: https: //github.com/maithemewp/mai-engine/
+ * Plugin URI:        https://github.com/maithemewp/mai-engine/
+ * GitHub Plugin URI: https://github.com/maithemewp/mai-engine/
  * Description:       The required plugin to power Mai child themes.
- * Version:           0.3.11.1
+ * Version:           2.0.1
  * Author:            BizBudding Inc.
- * Author URI:        https: //bizbudding.com/
+ * Author URI:        https://bizbudding.com/
  * Text Domain:       mai-engine
  * License:           GPL-2.0-or-later
- * License URI:       http:  //www.gnu.org/licenses/gpl-3.0.txt
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path:       /assets/lang
  *
  * @package   BizBudding\MaiEngine

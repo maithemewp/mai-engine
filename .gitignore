@@ -2,6 +2,7 @@
 .git
 .env
 .npmrc
+.cache
 *.lock
 *lock.json
 *.zip

@@ -38,23 +38,21 @@ add_filter( 'body_class', 'mai_body_classes' );
  * @return array
  */
 function mai_body_classes( $classes ) {
-	// Remove unnecessary page template classes.
-	$template  = get_page_template_slug();
-	$basename  = basename( $template, '.php' );
-	$directory = str_replace( [ '/', basename( $template ) ], '', $template );
-	$classes   = array_diff(
-		$classes,
-		[
-			'page-template',
-			'page-template-' . $basename,
-			'page-template-' . $directory,
-			'page-template-' . $directory . $basename . '-php',
-		]
-	);
 
-	// Add simple template name.
-	if ( $basename ) {
-		$classes[] = 'template-' . $basename;
+	// Remove unnecessary page template classes.
+	if ( mai_get_option( 'remove-template-classes', true ) ) {
+		$template  = get_page_template_slug();
+		$basename  = basename( $template, '.php' );
+		$directory = str_replace( [ '/', basename( $template ) ], '', $template );
+		$classes   = array_diff(
+			$classes,
+			[
+				'page-template',
+				'page-template-' . $basename,
+				'page-template-' . $directory,
+				'page-template-' . $directory . $basename . '-php',
+			]
+		);
 	}
 
 	// Add boxed container class.
@@ -77,7 +75,7 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'has-transparent-header';
 	}
 
-	// Add alignfull class.
+	// Add alignfull first class.
 	if ( mai_has_alignfull_first() ) {
 		$classes[] = 'has-alignfull-first';
 	}
@@ -107,6 +105,9 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'is-archive';
 	}
 
+	// Always assume no-js.
+	$classes[] = 'no-js';
+
 	return $classes;
 }
 
@@ -125,4 +126,3 @@ function mai_back_to_top_anchor( $attr ) {
 
 	return $attr;
 }
-

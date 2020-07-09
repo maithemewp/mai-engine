@@ -1,0 +1,23 @@
+@import "default";
+
+:root {
+	--border-width: 2px;
+	--input-placeholder-color: var(--color-alt);
+	--blockquote-border-left: 0;
+	--site-title-font-size: var(--font-size-md);
+	--menu-font-size: var(--font-size-sm);
+	--entry-title-font-size: var(--font-size-md);
+	--footer-credits-padding: 0;
+}
+
+.has-boxed {
+	--entry-border: 0;
+}
+
+.has-heading-background-color {
+	--link-color: currentColor;
+	--heading-color: var(--color-body);
+	--input-background-color: transparent;
+	--input-placeholder-color: var(--color-body);
+	--input-border: 2px solid var(--color-body);
+}

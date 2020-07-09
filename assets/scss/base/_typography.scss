@@ -3,20 +3,16 @@ body {
 	@include body;
 }
 
-.has-boxed-container {
-	--body-background: var(--color-lighter);
-}
-
 a {
-	color: var(--link-color, var(--color-primary));
+	color: var(--link-color, var(--color-link));
 	text-decoration: var(--link-text-decoration, none);
 	transition: var(--link-transition, var(--transition));
 
 	&:hover,
 	&:focus {
-		color: var(--link-color-hover, var(--color-primary));
+		color: var(--link-color-hover, var(--color-link));
 		text-decoration: var(--link-text-decoration-hover, underline);
-		outline-color: var(--border-color);
+		outline-color: var(--color-body);
 	}
 }
 
@@ -40,7 +36,7 @@ p {
 hr {
 	clear: both;
 	width: 100%;
-	margin: var(--horizontal-rule-margin, 0 auto var(--spacing-md));
+	margin: var(--horizontal-rule-margin, (0 auto var(--spacing-md)));
 }
 
 b,
@@ -64,9 +60,9 @@ blockquote {
 
 cite {
 	display: block;
-	font-weight: var(--cite-font-weight, normal);
-	font-family: var(--cite-font-family, bolder);
-	font-style: var(--cite-font-style, var(--font-secondary));
+	font-weight: var(--cite-font-weight, bolder);
+	font-family: var(--cite-font-family, var(--heading-font-family));
+	font-style: var(--cite-font-style, normal);
 }
 
 pre,
@@ -76,7 +72,7 @@ samp {
 	padding: var(--code-padding, (0.05em 0.5em));
 	font-size: var(--code-font-size, (90%));
 	font-family: var(--code-font-family, var(--font-code));
-	background: var(--code-background, var(--color-lighter));
+	background: var(--code-background, var(--color-alt));
 	border-radius: var(--code-border-radius, var(--border-radius));
 }
 

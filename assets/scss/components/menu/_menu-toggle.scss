@@ -26,7 +26,7 @@
 	right: auto;
 	bottom: auto;
 	margin: auto;
-	color: var(--menu-toggle-color, var(--color-darkest));
+	color: var(--menu-toggle-color, var(--color-heading));
 	background: var(--menu-toggle-icon-background, currentColor);
 	transition: var(--menu-toggle-transition, background 0s 0.2s);
 
@@ -68,6 +68,6 @@
 	--menu-toggle-line-after-transition: top 0.2s 0s, transform 0.2s 0.2s;
 }
 
-.has-dark-header {
-	--menu-toggle-color: var(--color-lightest);
+.has-dark-header:not(.header-stuck) {
+	--menu-toggle-color: var(--color-white);
 }

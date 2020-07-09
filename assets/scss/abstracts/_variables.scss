@@ -2,6 +2,8 @@ $all-buttons: append($all-buttons, ".button");
 $all-text-inputs: append($all-text-inputs, "select");
 $all-headings: (h1, h2, h3, h4, h5, h6, legend);
 
+$breakpoint: 1200;
+
 $breakpoints: (
 	xl: ($breakpoint / 1) * 1px,
 	lg: ($breakpoint / 1.2) * 1px,
@@ -10,32 +12,24 @@ $breakpoints: (
 	xs: ($breakpoint / 3) * 1px,
 ) !default;
 
-$colors: (
-	primary: var(--color-primary),
-	secondary: var(--color-secondary),
-	tertiary: var(--color-tertiary),
-	success: var(--color-success),
-	danger: var(--color-danger),
-	warning: var(--color-warning),
-	info: var(--color-info),
-	black: var(--color-darkest), // Fallback for .has-black- classes.
-	darkest: var(--color-darkest),
-	darker: var(--color-darker),
-	dark: var(--color-dark),
-	medium: var(--color-medium),
-	light: var(--color-light),
-	lighter: var(--color-lighter),
-	lightest: var(--color-lightest),
-	white: var(--color-lightest), // Fallback for .has-white- classes.
+$headings: (
+	h1: var(--font-size-xxxxl),
+	h2: var(--font-size-xxl),
+	h3: var(--font-size-xl),
+	h4: var(--font-size-lg),
+	h5: var(--font-size-md),
+	h6: var(--font-size-base),
 ) !default;
 
 $font-sizes: (
-	h1: var(--text-xxxxl),
-	h2: var(--text-xxxl),
-	h3: var(--text-xxl),
-	h4: var(--text-xl),
-	h5: var(--text-lg),
-	h6: var(--text-md),
+	xxxxl: var(--font-size-xxxxl),
+	xxxl: var(--font-size-xxxl),
+	xxl: var(--font-size-xxl),
+	xl: var(--font-size-xl),
+	lg: var(--font-size-lg),
+	md: var(--font-size-md),
+	sm: var(--font-size-sm),
+	xs: var(--font-size-xs),
 ) !default;
 
 $spacing: (
@@ -52,20 +46,9 @@ $spacing: (
 	xxxxl: var(--spacing-xxxxl),
 ) !default;
 
-$border: (
-	width: var(--border-size),
-	style: var(--border-style),
-	color: var(--border-color),
-	radius: var(--border-radius),
-) !default;
-
-$button: (
-	border-radius: var(--button-border-radius),
-) !default;
-
 $button-styles: (
 	secondary,
-	tertiary,
+	link,
 	outline,
 ) !default;
 

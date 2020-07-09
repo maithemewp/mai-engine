@@ -160,7 +160,7 @@ function mai_page_header_customizer_settings() {
 			'settings' => 'page-header-background-color',
 			'section'  => $section,
 			'label'    => esc_html__( 'Background/overlay color', 'mai-engine' ),
-			'default'  => $config['background-color'],
+			'default'  => mai_get_color( $config['background-color'] ),
 			'choices'  => [
 				'palettes' => mai_get_color_choices(),
 			],
@@ -272,8 +272,9 @@ function mai_page_header_customizer_settings() {
 			'section'         => $section,
 			'label'           => esc_html__( 'Divider color', 'mai-engine' ),
 			'description'     => esc_html__( 'This should match your body background color', 'mai-engine' ),
-			'default'         => $config[ 'divider-color' ],
+			'default'         => mai_get_color( $config['divider-color'] ),
 			'choices'         => [
+				'alpha'    => true,
 				'palettes' => mai_get_color_choices(),
 			],
 			'active_callback' => [
@@ -283,7 +284,7 @@ function mai_page_header_customizer_settings() {
 						'operator' => '!==',
 						'value'    => '',
 					],
-				]
+				],
 			],
 		]
 	);

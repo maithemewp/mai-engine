@@ -163,14 +163,10 @@ function mai_get_version() {
  * @return string
  */
 function mai_get_asset_version( $file ) {
-	$file = str_replace( mai_get_url(), mai_get_dir(), $file );
-	if ( mai_has_string( '/mai-fonts/', $file ) ) {
-		$file = mai_has_string( '/mai-fonts/', $file ) ? str_replace( WP_CONTENT_URL, WP_CONTENT_DIR, $file ) : $file;
-		$file = str_replace( '?display=swap', '', $file );
-	}
+	$file    = str_replace( mai_get_url(), mai_get_dir(), $file );
 	$version = mai_get_version();
 
-	if ( file_exists( $file ) && ( mai_has_string( mai_get_dir(), $file ) || mai_has_string( '/mai-fonts/', $file ) ) ) {
+	if ( file_exists( $file ) && ( mai_has_string( mai_get_dir(), $file ) ) ) {
 		$version .= '.' . date( 'njYHi', filemtime( $file ) );
 	}
 
@@ -206,10 +202,10 @@ function mai_get_asset_url( $file ) {
  * @return array
  */
 function mai_get_config( $sub_config = 'default' ) {
-	$config = require mai_get_dir() . 'config/_default/config.php';
+	$config = require mai_get_dir() . 'config/_default.php';
 	$theme  = mai_get_active_theme();
 	$theme  = ( 'default' === $theme ) ? '_default' : $theme;
-	$path   = mai_get_dir() . 'config/' . $theme . '/config.php';
+	$path   = mai_get_dir() . 'config/' . $theme . '.php';
 
 	if ( is_readable( $path ) ) {
 		$config = array_replace_recursive( $config, require $path );
@@ -221,6 +217,8 @@ function mai_get_config( $sub_config = 'default' ) {
 	if ( is_readable( $child ) ) {
 		$config = array_replace_recursive( $config, require $child );
 	}
+
+	$config = apply_filters( 'mai_config', $config );
 
 	$configs[ $sub_config ] = isset( $config[ $sub_config ] ) ? $config[ $sub_config ] : [];
 
@@ -241,7 +239,7 @@ function mai_get_active_theme() {
 }
 
 /**
- * Description of expected behavior.
+ * Get all mai-engine options.
  *
  * @since 0.1.0
  *
@@ -266,7 +264,7 @@ function mai_get_options( $use_cache = true ) {
 }
 
 /**
- * Description of expected behavior.
+ * Get a single option from mai-engine array of options.
  *
  * @since 0.1.0
  *
@@ -283,7 +281,7 @@ function mai_get_option( $option, $default = false, $use_cache = true ) {
 }
 
 /**
- * Description of expected behavior.
+ * Update a single option from mai-engine array of options.
  *
  * @since 0.1.0
  *
@@ -302,7 +300,7 @@ function mai_update_option( $option, $value ) {
 }
 
 /**
- * Description of expected behavior.
+ * Get settings config file by name.
  *
  * @since 0.1.0
  *
@@ -311,104 +309,143 @@ function mai_update_option( $option, $value ) {
  * @return mixed
  */
 function mai_get_settings( $name ) {
-	return require mai_get_dir() . 'config/_settings/' . $name . '.php';
+	return require mai_get_dir() . 'lib/customize/' . $name . '.php';
 }
 
 /**
- * Returns an array of the themes JSON variables.
+ * Returns the global styles from the config.
  *
- * @since 0.1.0
+ * @since 2.0.0
  *
- * @return array
+ * @param string $key Key of styles to retrieve.
+ *
+ * @return mixed
  */
-function mai_get_variables() {
-	static $variables = null;
+function mai_get_global_styles( $key = '' ) {
+	$global_styles = mai_get_config( 'global-styles' );
 
-	if ( is_null( $variables ) ) {
-		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		$defaults    = json_decode( file_get_contents( mai_get_dir() . 'config/_default/config.json' ), true );
-		$engine_file = mai_get_dir() . 'config/' . mai_get_active_theme() . '/config.json';
-		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		$engine_theme = is_readable( $engine_file ) ? json_decode( file_get_contents( $engine_file ), true ) : [];
-		$variables    = array_replace_recursive( $defaults, $engine_theme );
-		$custom_theme = mai_get_custom_theme_variables();
-		$variables    = $custom_theme ? array_replace_recursive( $variables, $custom_theme ) : $variables;
-	}
-
-	return $variables;
+	return mai_isset( $global_styles, $key, $global_styles );
 }
 
 /**
- * Description of expected behavior.
+ * Get the colors from Customizer, with fallback to config.
  *
- * @since 0.1.0
- *
- * @return array|mixed|null
- */
-function mai_get_custom_theme_variables() {
-	static $variables = null;
-
-	if ( is_null( $variables ) ) {
-		$file      = get_stylesheet_directory() . '/config.json';
-		$variables = is_readable( $file ) ? json_decode( file_get_contents( $file ), true ) : [];
-	}
-
-	return $variables;
-}
-
-/**
- * Description of expected behavior.
- *
- * @since 0.1.0
+ * @since 2.0.0
  *
  * @return array
  */
 function mai_get_colors() {
-	static $colors = [];
-
-	if ( empty( $colors ) ) {
-		$colors = mai_get_variables()['colors'];
-
-		foreach ( $colors as $name => $hex ) {
-			$colors[ $name ] = $hex;
-		}
+	$colors   = [];
+	$defaults = mai_get_default_colors();
+	foreach ( $defaults as $name => $color ) {
+		$colors[ $name ] = mai_get_color( $name );
 	}
 
+	return array_merge( $colors, mai_get_custom_colors() );
+}
+
+/**
+ * Returns the array of colors from the global styles config.
+ *
+ * @since 2.0.0
+ *
+ * @return array
+ */
+function mai_get_default_colors() {
+	return mai_get_global_styles( 'colors' );
+}
+
+/**
+ * Returns a single color hex value from the config.
+ *
+ * @since 2.0.0
+ *
+ * @param string $name Name of the color to get.
+ *
+ * @return string
+ */
+function mai_get_default_color( $name ) {
+	return mai_isset( mai_get_default_colors(), $name, '' );
+}
+
+/**
+ * Get custom colors as set in Customizer.
+ *
+ * @since 2.0.0
+ *
+ * @return array
+ */
+function mai_get_custom_colors() {
+	static $colors = null;
+	if ( ! is_null( $colors ) ) {
+		return $colors;
+	}
+	$colors  = [];
+	$options = mai_get_option( 'custom-colors', [] );
+	$count   = 1;
+	foreach( $options as $index => $option ) {
+		$colors[ 'custom-' . $count ] = $option['color'];
+		$count++;
+	}
 	return $colors;
 }
 
 /**
- * Description of expected behavior.
+ * Returns a color option value with config default fallback.
  *
- * @since 0.1.0
+ * @since 2.0.0
  *
- * @param string $color Name of the color to get.
+ * @param string $name Name of the color to get.
  *
  * @return string
  */
-function mai_get_color( $color = null ) {
-	$colors = mai_get_colors();
-
-	return isset( $colors[ $color ] ) ? $colors[ $color ] : '';
+function mai_get_color( $name ) {
+	$custom = mai_get_custom_colors();
+	if ( isset( $custom[ $name ] ) ) {
+		return $custom[ $name ];
+	}
+	return mai_get_option( 'color-' . $name, mai_get_default_color( $name ) );
 }
 
 /**
  * Returns the color palette variables.
  *
- * @since 0.1.0
+ * @since 2.0.0
  *
  * @return array
  */
-function mai_get_color_palette() {
+function mai_get_editor_color_palette() {
 	$colors  = mai_get_colors();
-	$option  = mai_get_option( 'global-color-palette', [] );
+	$values  = [];
 	$palette = [];
 
+	// Remove empty custom colors.
+	$colors = array_filter( $colors );
+
+	// Sort colors by lightness.
+	$sorted = [];
+
 	foreach ( $colors as $name => $hex ) {
+		$sorted[ $name ] = ariColor::newColor( $hex )->lightness;
+	}
+
+	asort( $sorted );
+
+	foreach ( $sorted as $name => $lightness ) {
+		$hex = $colors[ $name ];
+
+		// Remove duplicate hex codes.
+		if ( in_array( $hex, $values, true ) ) {
+			continue;
+		}
+
+		$values[] = $hex;
+
+		// Add color.
 		$palette[] = [
-			'name'  => mai_convert_case( $name, 'title' ),
+			'name'  => '', // No label, defaults to "Color code: #123456".
 			'slug'  => mai_convert_case( $name, 'kebab' ),
-			'color' => isset( $option[ $name ] ) ? $option[ $name ] : $hex,
+			'color' => $hex,
 		];
 	}
 
@@ -416,62 +453,84 @@ function mai_get_color_palette() {
 }
 
 /**
- * Description of expected behavior.
+ * Get color element names for settings.
  *
- * @since 1.0.0
+ * @since 2.0.0
+ *
+ * @return array
+ */
+function mai_get_color_elements() {
+	return [
+		'background' => __( 'Background', 'mai-engine' ),
+		'alt'        => __( 'Background Alt', 'mai-engine' ),
+		'body'       => __( 'Body', 'mai-engine' ),
+		'heading'    => __( 'Heading', 'mai-engine' ),
+		'link'       => __( 'Link', 'mai-engine' ),
+		'primary'    => __( 'Button Primary', 'mai-engine' ),
+		'secondary'  => __( 'Button Secondary', 'mai-engine' ),
+	];
+}
+
+/**
+ * Get color choices for Kirki.
+ *
+ * @since 2.0.0
  *
  * @return array
  */
 function mai_get_color_choices() {
-	static $choices = [];
+	$color_choices = [];
+	$color_palette = mai_get_editor_color_palette();
 
-	if ( empty( $choices ) ) {
-		$palette = mai_get_color_palette();
-
-		foreach ( $palette as $color => $args ) {
-			$choices[] = $args['color'];
-		}
+	foreach ( $color_palette as $color ) {
+		$color_choices[] = $color['color'];
 	}
 
-	return $choices;
+	return array_flip( array_flip( $color_choices ) );
 }
 
 /**
- * Returns a lighter version of a color.
+ * Check if a color is light.
  *
- * @since 0.3.0
+ * This helps with accessibility decisions to determine
+ * whether to use a light or dark background or text color.
  *
- * @param string $color  Any color string, including hex, rgb, rgba, etc.
- * @param int    $amount The percentage amount to change the color.
+ * @since 2.0.0
+ *
+ * @link  https://aristath.github.io/ariColor/
+ *
+ * @param string $color Any color string, including hex, rgb, rgba, etc.
+ *
+ * @return bool
+ */
+function mai_is_light_color( $color ) {
+	$color = ariColor::newColor( $color );
+	$limit = mai_get_global_styles( 'contrast-limit' );
+
+	return $color->luminance > $limit;
+}
+
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param        $color
+ * @param int    $amount
+ * @param string $light_or_dark
  *
  * @return string
  */
-function mai_get_lighter_color( $color, $amount = 5 ) {
+function mai_get_color_variant( $color, $light_or_dark = 'dark', $amount = 7 ) {
 	$color   = ariColor::newColor( $color );
-	$lighter = $color->getNew( 'lightness', $color->lightness + $amount );
+	$value   = 'dark' === $light_or_dark ? $color->lightness - $amount : $color->lightness + $amount;
+	$lighter = $color->getNew( 'lightness', $value );
 
 	return $lighter->toCSS( 'hex' );
 }
 
 /**
- * Returns a darker version of a color.
- *
- * @since 0.3.0
- *
- * @param string $color  Any color string, including hex, rgb, rgba, etc.
- * @param int    $amount The percentage amount to change the color.
- *
- * @return string
- */
-function mai_get_darker_color( $color, $amount = 5 ) {
-	$color  = ariColor::newColor( $color );
-	$darker = $color->getNew( 'lightness', $color->lightness - $amount );
-
-	return $darker->toCSS( 'hex' );
-}
-
-/**
- * Description of expected behavior.
+ * Get breakpoints from initial site container width in config.
  *
  * @since 0.1.0
  *
@@ -481,7 +540,7 @@ function mai_get_breakpoints() {
 	static $breakpoints = [];
 
 	if ( empty( $breakpoints ) ) {
-		$breakpoint        = mai_get_variables()['breakpoint'];
+		$breakpoint        = mai_get_global_styles( 'breakpoint' );
 		$breakpoints['xs'] = absint( $breakpoint / 3 );   // 400  (400 x 1)
 		$breakpoints['sm'] = absint( $breakpoint / 2 );   // 600  (400 x 1.5)
 		$breakpoints['md'] = absint( $breakpoint / 1.5 ); // 800  (400 x 2)
@@ -584,6 +643,10 @@ function mai_get_page_header_image_id() {
 
 	} elseif ( mai_is_type_archive() ) {
 		if ( is_category() || is_tag() || is_tax() ) {
+
+			/**
+			 * @var WP_Query $wp_query
+			 */
 			global $wp_query;
 
 			$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
@@ -880,6 +943,7 @@ function mai_get_loop_content_type_choices( $archive = true ) {
 	$feature = $archive ? 'mai-archive-settings' : 'mai-single-settings';
 
 	foreach ( $choices as $name => $label ) {
+		// If type is a post type.
 		if ( post_type_exists( $name ) ) {
 			$post_type = get_post_type_object( $name );
 
@@ -887,22 +951,44 @@ function mai_get_loop_content_type_choices( $archive = true ) {
 				unset( $choices[ $name ] );
 			}
 
-		} elseif ( taxonomy_exists( $name ) ) {
-			$taxonomy = get_taxonomy( $name );
-			/**
-			 * If we have a tax, get the first one.
-			 * This is the simplest way to handle shared taxonomies.
-			 * Using reset() since we hit an error on a term archive that object_type array didn't start with [0].
-			 */
-			$post_type = reset( $taxonomy->object_type );
-			$post_type = get_post_type_object( $post_type );
-			if ( ! $post_type->_builtin && ! post_type_supports( $post_type->name, $feature ) ) {
-				unset( $choices[ $name ] );
+		} // If type is a taxonomy.
+		elseif ( taxonomy_exists( $name ) ) {
+			$post_type = mai_get_taxonomy_post_type( $name );
+			if ( $post_type ) {
+				$post_type = get_post_type_object( $post_type );
+				if ( ! $post_type->_builtin && ! post_type_supports( $post_type->name, $feature ) ) {
+					unset( $choices[ $name ] );
+				}
 			}
 		}
 	}
 
 	return $choices;
+}
+
+/**
+ * Get the post type a taxonomy is registered to.
+ *
+ * If we have a tax, get the first one.
+ * This is the simplest way to handle shared taxonomies.
+ * Using reset() since we hit an error on a term archive that object_type array didn't start with [0].
+ *
+ * @since 2.0.0
+ *
+ * @param string $taxonomy The registered taxonomy name.
+ *
+ * @return string|false
+ */
+function mai_get_taxonomy_post_type( $taxonomy ) {
+	$taxonomy = get_taxonomy( $taxonomy );
+	if ( $taxonomy ) {
+		$post_type = reset( $taxonomy->object_type );
+		if ( post_type_exists( $post_type ) ) {
+			return $post_type;
+		}
+	}
+
+	return false;
 }
 
 /**
@@ -947,19 +1033,20 @@ function mai_get_post_content( $post_slug_or_id ) {
 		return;
 	}
 
-	$loop = new WP_Query( array(
+	$loop = new WP_Query( [
 		'post_type'              => $post_type,
 		'post__in'               => [ $post_id ],
 		'posts_per_page'         => 1,
 		'no_found_rows'          => true,
 		'update_post_term_cache' => false,
 		'update_post_meta_cache' => false,
-	));
+	] );
 
 	ob_start();
-	if ( $loop->have_posts() ): while( $loop->have_posts() ): $loop->the_post();
+	if ( $loop->have_posts() ): while ( $loop->have_posts() ): $loop->the_post();
 		the_content();
-	endwhile; endif; wp_reset_postdata();
+	endwhile; endif;
+	wp_reset_postdata();
 	$content = ob_get_clean();
 
 	return $content;
@@ -997,6 +1084,21 @@ function mai_get_processed_content( $content ) {
 }
 
 /**
+ * Get the default read more text.
+ * This filter is run before any custom read more text is added via Customizer settings.
+ * If you want to filter after that, use `genesis_markup_entry-more-link_content` filter.
+ *
+ * @since 2.0.0
+ *
+ * @return string
+ */
+function mai_get_read_more_text() {
+	$text = apply_filters( 'mai_read_more_text', esc_html__( 'Read More', 'mai-engine' ) );
+
+	return sanitize_text_field( $text );
+}
+
+/**
  * Get a menu.
  *
  * @since 0.3.3
@@ -1008,8 +1110,15 @@ function mai_get_processed_content( $content ) {
  */
 function mai_get_menu( $menu, $args = '' ) {
 	$menu_class = 'menu genesis-nav-menu';
+
 	if ( isset( $args['class'] ) && $args['class'] ) {
 		$menu_class = mai_add_classes( $args['class'], $menu_class );
+	}
+
+	$list = isset( $args['display'] ) && ( 'list' === $args['display'] );
+
+	if ( $list ) {
+		$menu_class = mai_add_classes( 'menu-list', $menu_class );
 	}
 
 	$html = wp_nav_menu( [
@@ -1021,41 +1130,25 @@ function mai_get_menu( $menu, $args = '' ) {
 	] );
 
 	if ( $html ) {
-		$atts = [];
+		$atts = [
+			'style' => '',
+		];
 
-		if ( isset( $args['display'] ) && $args['display'] ) {
-			switch ( trim( $args['display'] ) ) {
-				case 'list':
-					$atts['style'] = '--menu-display:block;--menu-item-link-padding:var(--spacing-xs) 0;';
-				break;
-			}
+		if ( $list ) {
+			$atts['style'] .= '--menu-display:block;--menu-item-link-padding:var(--spacing-xs) 0;';
 		}
 
 		if ( isset( $args['align'] ) && $args['align'] ) {
-			if ( isset( $args['display'] ) && 'list' === trim( $args['display'] ) ) {
-				switch ( trim( $args['align'] ) ) {
-					case 'left':
-						$atts['style'] = 'text-align:left;';
+			switch ( trim( $args['align'] ) ) {
+				case 'left':
+					$atts['style'] .= '--menu-justify-content:flex-start;--menu-item-justify-content:flex-start;--menu-item-link-justify-content:flex-start;';
 					break;
-					case 'center':
-						$atts['style'] = 'text-align:center;';
+				case 'center':
+					$atts['style'] .= '--menu-justify-content:center;--menu-item-justify-content:center;--menu-item-link-justify-content:center;';
 					break;
-					case 'right':
-						$atts['style'] = 'text-align:right;';
+				case 'right':
+					$atts['style'] .= '--menu-justify-content:flex-end;--menu-item-justify-content:flex-end;--menu-item-link-justify-content:flex-end;';
 					break;
-				}
-			} else {
-				switch ( trim( $args['align'] ) ) {
-					case 'left':
-						$atts['style'] = '--menu-justify-content:flex-start;';
-					break;
-					case 'center':
-						$atts['style'] = '--menu-justify-content:center;';
-					break;
-					case 'right':
-						$atts['style'] = '--menu-justify-content:flex-end;';
-					break;
-				}
 			}
 		}
 		$html = genesis_markup(
@@ -1070,6 +1163,7 @@ function mai_get_menu( $menu, $args = '' ) {
 			]
 		);
 	}
+
 	return $html;
 }
 
@@ -1134,6 +1228,10 @@ function mai_get_icon( $args ) {
 		$attributes['style'] .= sprintf( '--icon-box-shadow:%s %s %s %s;', mai_get_unit_value( $args['x_offset'] ), mai_get_unit_value( $args['y_offset'] ), mai_get_unit_value( $args['blur'] ), $args['color_shadow'] );
 	}
 
+	if ( $args['color_text_shadow'] ) {
+		$attributes['style'] .= sprintf( '--icon-text-shadow:%s %s %s %s;', mai_get_unit_value( $args['text_shadow_x_offset'] ), mai_get_unit_value( $args['text_shadow_y_offset'] ), mai_get_unit_value( $args['text_shadow_blur'] ), $args['color_text_shadow'] );
+	}
+
 	if ( $args['border_width'] && $args['color_border'] ) {
 		$attributes['style'] .= sprintf( '--icon-border:%s solid %s;', mai_get_unit_value( $args['border_width'] ), mai_get_unit_value( $args['color_border'] ) );
 	}
@@ -1166,26 +1264,30 @@ function mai_get_icon( $args ) {
  */
 function mai_get_icon_default_args() {
 	return [
-		'style'            => 'light',
-		'icon'             => 'bolt',
-		'display'          => 'flex',
-		'align'            => 'center',
-		'size'             => '40',
-		'class'            => '',
-		'color_icon'       => 'currentColor',
-		'color_background' => '',
-		'color_border'     => '',
-		'color_shadow'     => '',
-		'margin_top'       => 0,
-		'margin_right'     => 0,
-		'margin_left'      => 0,
-		'margin_bottom'    => 0,
-		'padding'          => 0,
-		'border_width'     => 0,
-		'border_radius'    => '50%',
-		'x_offset'         => 0,
-		'y_offset'         => 0,
-		'blur'             => 0,
+		'style'                => 'light',
+		'icon'                 => 'bolt',
+		'display'              => 'flex',
+		'align'                => 'center',
+		'size'                 => '40',
+		'class'                => '',
+		'color_icon'           => 'currentColor',
+		'color_background'     => '',
+		'color_border'         => '',
+		'color_shadow'         => '',
+		'color_text_shadow'    => '',
+		'margin_top'           => 0,
+		'margin_right'         => 0,
+		'margin_left'          => 0,
+		'margin_bottom'        => 0,
+		'padding'              => 0,
+		'border_width'         => 0,
+		'border_radius'        => '50%',
+		'x_offset'             => 0,
+		'y_offset'             => 0,
+		'blur'                 => 0,
+		'text_shadow_x_offset' => 0,
+		'text_shadow_y_offset' => 0,
+		'text_shadow_blur'     => 0,
 	];
 }
 
@@ -1216,7 +1318,6 @@ function mai_get_svg( $name, $class = '' ) {
 	return $svg;
 }
 
-
 /**
  * Description of expected behavior.
  *
@@ -1224,11 +1325,11 @@ function mai_get_svg( $name, $class = '' ) {
  *
  * @param string $name  SVG name.
  * @param string $style SVG style.
- * @param string $class SVG classes.
+ * @param array  $atts  SVG HTML attributes.
  *
  * @return string
  */
-function mai_get_svg_icon( $name, $style = 'light', $class = '' ) {
+function mai_get_svg_icon( $name, $style = 'light', $atts = [] ) {
 	$file = mai_get_dir() . "assets/icons/svgs/$style/$name.svg";
 
 	if ( ! file_exists( $file ) ) {
@@ -1237,8 +1338,15 @@ function mai_get_svg_icon( $name, $style = 'light', $class = '' ) {
 
 	$svg = file_get_contents( $file );
 
-	if ( $class ) {
-		$svg = str_replace( '<svg', "<svg class='$class' ", $svg );
+	if ( $atts ) {
+		$dom  = mai_get_dom_document( $svg );
+		$svgs = $dom->getElementsByTagName( 'svg' );
+
+		foreach ( $atts as $att => $value ) {
+			$svgs[0]->setAttribute( $att, $value );
+		}
+
+		$svg = $dom->saveHTML();
 	}
 
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
@@ -1260,6 +1368,35 @@ function mai_get_svg_icon_url( $name, $style = 'light' ) {
 }
 
 /**
+ * Get DOMDocument object. expected behavior.
+ *
+ * @since 2.0.0
+ *
+ * @param string $html
+ *
+ * @return object
+ */
+function mai_get_dom_document( $html ) {
+
+	// Create the new document.
+	$dom = new DOMDocument;
+
+	// Modify state.
+	$libxml_previous_state = libxml_use_internal_errors( true );
+
+	// Load the content in the document HTML.
+	$dom->loadHTML( mb_convert_encoding( $html, 'HTML-ENTITIES', "UTF-8" ) );
+
+	// Handle errors.
+	libxml_clear_errors();
+
+	// Restore.
+	libxml_use_internal_errors( $libxml_previous_state );
+
+	return $dom;
+}
+
+/**
  * Description of expected behavior.
  *
  * @since 0.1.0
@@ -1267,7 +1404,7 @@ function mai_get_svg_icon_url( $name, $style = 'light' ) {
  * @return array
  */
 function mai_get_editor_localized_data() {
-	$palette = mai_get_color_palette();
+	$palette = mai_get_editor_color_palette();
 	$palette = wp_list_pluck( $palette, 'color', 'slug' );
 
 	unset( $palette['black'] ); // Too many for iris picker, we need to remove some.
@@ -1276,7 +1413,7 @@ function mai_get_editor_localized_data() {
 
 	$palette  = array_values( $palette ); // Remove keys.
 	$data     = [ 'palette' => $palette ];
-	$settings = mai_get_settings( 'grid-block' );
+	$settings = mai_get_grid_block_settings();
 
 	foreach ( $settings as $key => $field ) {
 		if ( 'tab' === $field['type'] ) {

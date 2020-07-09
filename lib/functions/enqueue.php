@@ -12,10 +12,21 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-// Remove default child theme stylesheet.
-remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
+add_action( 'init', 'mai_genesis_style_trump' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function mai_genesis_style_trump() {
+	if ( mai_get_option( 'genesis-style-trump', true ) ) {
+		remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
+		add_action( 'get_footer', 'mai_enqueue_child_theme_stylesheet' );
+	}
+}
 
-add_action( 'get_footer', 'mai_enqueue_child_theme_stylesheet' );
 /**
  * Genesis style trump, and cache bust when stylesheet is updated.
  *
@@ -35,6 +46,33 @@ function mai_enqueue_child_theme_stylesheet() {
 		false,
 		$version
 	);
+}
+
+add_action( 'genesis_before', 'mai_js_nojs_script', 1 );
+/**
+ * Echo out the script that changes 'no-js' class to 'js'.
+ *
+ * Adds a script on the genesis_before hook which immediately changes the
+ * class to js if JavaScript is enabled. This is how WP does things on
+ * the back end, to allow different styles for the same elements
+ * depending if JavaScript is active or not.
+ *
+ * Outputting the script immediately also reduces a flash of incorrectly
+ * styled content, as the page does not load with no-js styles, then
+ * switch to js once everything has finished loading.
+ *
+ * @since  1.0.0
+ *
+ * @return void
+ */
+function mai_js_nojs_script() {
+	echo <<<EOT
+<script>
+//<![CDATA[
+(function(){var c = document.body.classList;c.remove('no-js');c.add('js')})();
+//]]>
+</script>
+EOT;
 }
 
 add_action( 'wp_enqueue_scripts', 'mai_enqueue_assets' );
@@ -223,64 +261,3 @@ function mai_async_scripts( $url ) {
 
 	return $url;
 }
-
-add_action( 'admin_init', 'mai_download_google_fonts' );
-/**
- * Download google fonts locally.
- *
- * Note: Can't use `add_query_arg` because of
- * multiple "family" args required by the Google API.
- * Note: `esc_url` breaks the API call as well.
- *
- * @since 0.3.4
- *
- * @return void
- */
-function mai_download_google_fonts() {
-	$config = mai_get_config( 'google-fonts' );
-
-	if ( $config && is_array( $config ) ) {
-		$downloader = mai_get_instance( Mai_Fonts_Downloader::class );
-
-		foreach ( $config as $url ) {
-			$downloader->get_styles( $url );
-		}
-	}
-}
-
-add_action( 'wp_enqueue_scripts', 'mai_google_fonts_fallback' );
-add_action( 'enqueue_block_editor_assets', 'mai_google_fonts_fallback' );
-/**
- * Fallback to enqueue google fonts from google CDN.
- *
- * @since 0.3.4
- *
- * @return void
- */
-function mai_google_fonts_fallback() {
-	$config = mai_get_config( 'google-fonts' );
-
-	if ( ! $config ) {
-		return;
-	}
-
-	$local_css = WP_CONTENT_DIR . '/mai-fonts/style.min.css';
-
-	if ( ! file_exists( $local_css ) ) {
-		$handle = mai_get_handle() . '-google-fonts';
-
-		foreach ( $config as $index => $url ) {
-			if ( $index > 0 ) {
-				$handle .= '-' . ( $index + 1 ); // Start with mai-engine-google-fonts-2.
-			}
-
-			wp_register_style(
-				$handle,
-				$url
-			);
-
-			wp_enqueue_style( $handle );
-		}
-	}
-}
-

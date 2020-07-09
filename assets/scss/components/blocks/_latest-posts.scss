@@ -6,9 +6,9 @@
 	}
 
 	li > a {
-		color: var(--color-darkest);
-		font-weight: var(--font-weight-semibold);
-		font-family: var(--font-secondary);
-		line-height: var(--line-height-heading);
+		color: var(--color-heading);
+		font-weight: var(--heading-font-weight);
+		font-family: var(--heading-font-family);
+		line-height: var(--heading-line-height);
 	}
 }
