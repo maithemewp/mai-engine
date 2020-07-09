@@ -9,12 +9,14 @@
  * @license   GPL-2.0-or-later
  */
 
-add_action( 'current_screen', 'mai_create_template_parts' );
+//add_action( 'current_screen', 'mai_create_template_parts' );
 /**
  * Create default template parts if they don't exist.
  * Only runs on main template part admin list.
  *
  * @since 2.0.0
+ *
+ * @param WP_Screen $current_screen Current WP_Screen object.
  *
  * @return void
  */
@@ -56,7 +58,7 @@ add_filter( 'display_post_states', 'mai_template_part_post_state', 10, 2 );
  * @param array   $states Array of post states.
  * @param WP_Post $post   Post object.
  *
- * @return mixed
+ * @return array
  */
 function mai_template_part_post_state( $states, $post ) {
 	$template_parts = mai_get_config( 'template-parts' );
@@ -70,6 +72,7 @@ function mai_template_part_post_state( $states, $post ) {
 	return $states;
 }
 
+add_filter( 'manage_wp_template_part_posts_columns', 'mai_template_part_add_slug_column' );
 /**
  * Add slug column to Template Parts.
  * Inserts as second to last item.
@@ -80,40 +83,43 @@ function mai_template_part_post_state( $states, $post ) {
  *
  * @return array
  */
-add_filter( 'manage_wp_template_part_posts_columns', 'mai_template_part_add_slug_column' );
 function mai_template_part_add_slug_column( $column_array ) {
 	$new_column = [
 		'slug' => __( 'Slug', 'mai-engine' ),
 	];
 
-	$columns = count( $column_array );
 	$offset  = count( $column_array ) > 1 ? count( $column_array ) - 1 : count( $column_array );
 
 	return array_slice( $column_array, 0, $offset, true ) + $new_column + array_slice( $column_array, $offset, null, true );
 }
 
+add_action( 'manage_posts_custom_column', 'mai_template_part_add_slug', 10, 2 );
 /**
  * Populate template part slug column with actual slug.
  *
  * @since 2.0.0
  *
+ * @param string $column_name The name of the column to display.
+ * @param int    $post_id     The current post ID.
+ *
  * @return void
  */
-add_action( 'manage_posts_custom_column', 'mai_template_part_add_slug', 10, 2 );
 function mai_template_part_add_slug( $column_name, $post_id ) {
 	if ( 'slug' === $column_name ) {
 		echo get_post_field( 'post_name', $post_id );
 	}
 }
 
+add_action( 'pre_get_posts', 'mai_template_parts_order' );
 /**
  * Reorder template part admin list.
  *
  * @since 2.0.0
  *
+ * @param WP_Query $query Current WordPress query object.
+ *
  * @return void
  */
-add_action( 'pre_get_posts', 'mai_template_parts_order' );
 function mai_template_parts_order( $query ) {
 	if ( ! is_admin() ) {
 		return;

@@ -63,7 +63,7 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $url
+	 * @param string $url Path to xml file.
 	 *
 	 * @return void
 	 */
@@ -107,15 +107,15 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Runs the WP Content Importer v2.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.1
 	 *
-	 * @param $file
+	 * @param string $file Absolute path to xml file.
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	private function import_content( $file ) {
+	private function importer( $file ) {
 		if ( ! class_exists( 'WP_Importer' ) ) {
 			require_once ABSPATH . '/wp-admin/includes/class-wp-importer.php';
 		}
@@ -133,13 +133,7 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 			'fetch_attachments' => true,
 		], $logger );
 
-		do_action( 'mai_setup_wizard_before_import', $this->demos->get_chosen_demo() );
-
-		$importer->import( $file );
-
-		do_action( 'mai_setup_wizard_after_import', $this->demos->get_chosen_demo() );
-
-		wp_send_json_success( __( 'Finished importing ', 'mai-engine' ) . basename( $file ) );
+		return $importer->import( $file );
 	}
 
 	/**
@@ -147,35 +141,41 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $file
+	 * @param string $file Path to xml file.
+	 *
+	 * @return void
+	 */
+	private function import_content( $file ) {
+		do_action( 'mai_setup_wizard_before_import', $this->demos->get_chosen_demo() );
+
+		if ( $this->importer( $file ) ) {
+			do_action( 'mai_setup_wizard_after_import', $this->demos->get_chosen_demo() );
+			wp_send_json_success( __( 'Finished importing ', 'mai-engine' ) . $file );
+
+		} else {
+			wp_send_json_error( __( 'Failed importing ', 'mai-engine' ) . $file );
+		}
+	}
+
+	/**
+	 * Description of expected behavior.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $file Path to xml file.
 	 *
 	 * @return void
 	 */
 	private function import_template_parts( $file ) {
-		if ( ! class_exists( 'WP_Importer' ) ) {
-			require_once ABSPATH . '/wp-admin/includes/class-wp-importer.php';
-		}
-
-		if ( ! function_exists( 'wp_generate_attachment_metadata' ) ) {
-			require_once ABSPATH . '/wp-admin/includes/image.php';
-		}
-
-		if ( ! function_exists( 'wp_read_audio_metadata' ) ) {
-			require_once ABSPATH . '/wp-admin/includes/media.php';
-		}
-
-		$logger   = new ProteusThemes\WPContentImporter2\WPImporterLogger();
-		$importer = new ProteusThemes\WPContentImporter2\Importer( [
-			'fetch_attachments' => true,
-		], $logger );
-
 		do_action( 'mai_setup_wizard_before_template_parts' );
 
-		$importer->import( $file );
+		if ( $this->importer( $file ) ) {
+			do_action( 'mai_setup_wizard_after_template_parts', $this->demos->get_chosen_demo() );
+			wp_send_json_success( __( 'Finished importing ', 'mai-engine' ) . $file );
 
-		do_action( 'mai_setup_wizard_after_template_parts' );
-
-		wp_send_json_success( __( 'Finished importing ', 'mai-engine' ) . basename( $file ) );
+		} else {
+			wp_send_json_error( __( 'Failed importing ', 'mai-engine' ) . $file );
+		}
 	}
 
 	/**

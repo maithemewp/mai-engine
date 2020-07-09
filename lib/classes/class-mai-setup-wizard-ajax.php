@@ -132,7 +132,7 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 		check_ajax_referer( $this->slug, 'nonce' );
 
 		$field = $this->get_field();
-		$demo  = isset( $field['value'] ) ? $field['value'] : false;
+		$demo  = isset( $field['value'] ) ? $field['value'] : $this->demos->get_default_demo();
 
 		if ( $demo ) {
 			$this->update_data( $demo );

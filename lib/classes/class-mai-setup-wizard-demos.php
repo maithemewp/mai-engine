@@ -110,9 +110,22 @@ class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns the id of the first demo in the array.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.1
+	 *
+	 * @return string
+	 */
+	public function get_default_demo() {
+		$first = reset( $this->all_demos );
+
+		return $first['id'];
+	}
+
+	/**
+	 * Returns the chosen demo, falls back to default demo.
+	 *
+	 * @since 2.0.1
 	 *
 	 * @return string
 	 */
@@ -122,9 +135,8 @@ class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 		}
 
 		$options = get_option( $this->slug, [] );
-		$first   = reset( $this->all_demos );
 
-		return isset( $options['demo'] ) ? $options['demo'] : $first['id'];
+		return isset( $options['demo'] ) ? $options['demo'] : $this->get_default_demo();
 	}
 
 	/**

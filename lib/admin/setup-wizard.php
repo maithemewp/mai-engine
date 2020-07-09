@@ -14,7 +14,7 @@ if ( ! apply_filters( 'mai_init_setup_wizard', true ) ) {
 }
 
 /**
- * Description of expected behavior.
+ * Returns the setup wizard shared instance, or a service provider instance.
  *
  * @since 1.0.0
  *
@@ -41,7 +41,7 @@ function mai_get_setup_wizard_instance( $service_provider = '' ) {
 
 add_action( 'init', 'mai_setup_wizard_init' );
 /**
- * Description of expected behavior.
+ * Registers setup wizard service providers and adds hooks.
  *
  * @since 1.0.0
  *
@@ -160,9 +160,11 @@ function mai_setup_wizard_welcome_step_description( $steps ) {
 
 add_action( 'mai_setup_wizard_email_submit', 'mai_setup_wizard_email_option' );
 /**
- * Send email to subcribe user.
+ * Send email to subscribe user.
  *
  * @since 0.3.0
+ *
+ * @param string $email_address Email address.
  *
  * @return void
  */
@@ -183,78 +185,58 @@ function mai_setup_wizard_email_option( $email_address ) {
 
 add_action( 'mai_setup_wizard_before_template_parts', 'mai_backup_template_parts' );
 /**
- * Description of expected behavior.
+ * Backs up existing template parts before importing new ones.
  *
- * @since 1.0.0
+ * @since 2.0.1
  *
  * @return void
  */
 function mai_backup_template_parts() {
-	$template_parts = mai_get_config( 'template-parts' );
-	$post_type      = 'wp_template_part';
 
-	if ( ! function_exists( 'post_exists' ) ) {
-		require_once( ABSPATH . 'wp-admin/includes/post.php' );
-	}
+	// Delete importer transients.
+	delete_transient( 'pt_importer_data' );
 
-	foreach ( $template_parts as $template_part ) {
-		$post = get_post( mai_get_template_part_by_slug( $template_part['id'] ) );
+	$posts = get_posts( [ 'post_type' => 'wp_template_part' ] );
 
-		// Skip if post doesn't exist.
-		if ( ! $post ) {
-			continue;
-		}
+	foreach ( $posts as $post ) {
+		$previous = substr( $post->post_name, strrpos( $post->post_name, '-' ) );
+		$previous = str_replace( 'backup', '', $previous );
 
-		// Skip backup if template part doesn't exist.
-		if ( ! post_exists( $post->post_title, '', '', $post_type ) ) {
-			continue;
-		}
+		if ( is_numeric( $previous ) ) {
+			$increment  = abs( (int) $previous ) + 1;
+			$post_title = str_replace( $previous, $increment, $post->post_title );
+			$post_name  = str_replace( $previous, $increment, $post->post_name );
 
-		// Delete empty template parts.
-		if ( ! $post->post_content ) {
-			wp_delete_post( $post->ID );
-
-			continue;
-		}
-
-		$options = get_option( 'mai-setup-wizard' );
-
-		// If the demo importer has been run previously, use old theme and demo names.
-		if ( isset( $options['theme'] ) && isset( $options['demo'] ) ) {
-			$theme_slug       = $options['theme'];
-			$theme_name       = mai_convert_case( $theme_slug, 'title' );
-			$demo_slug        = $options['demo'];
-			$demo_name        = mai_convert_case( $demo_slug, 'title' );
-			$post->post_title = $post->post_title . ' - ' . $theme_name . ' ' . $demo_name;
-			$post->post_name  = $post->post_name . '-' . $theme_slug . '-' . $demo_slug;
+		} else if ( mai_has_string( 'backup', $post->post_name ) ) {
+			$post_title = $post->post_title . ' 1';
+			$post_name  = $post->post_name . '-1';
 
 		} else {
-
-			// If first time running importer, append "Backup".
-			$post->post_title = $post->post_title . ' - Backup';
-			$post->post_name  = $post->post_name . '-backup';
-
-			// At this point, there should be a theme and demo name available, but increment just to be safe.
-			if ( post_exists( $post->post_title, '', '', $post_type ) ) {
-				$post->post_title = $post->post_title . ' 2';
-				$post->post_name  = $post->post_name . '-2';
-			}
+			$post_title = $post->post_title . ' - Backup';
+			$post_name  = $post->post_name . '-backup';
 		}
 
 		// Delete original.
-		wp_delete_post( $post );
+		wp_delete_post( $post->ID, true );
 
 		// Create backup post.
-		$post->ID = 0;
-		wp_insert_post( $post );
+		$backup = [
+			'post_title'   => $post_title,
+			'post_name'    => $post_name,
+			'post_content' => $post->post_content,
+			'post_status'  => 'publish',
+			'post_type'    => 'wp_template_part',
+		];
+
+		 wp_insert_post( $backup );
 	}
 }
 
 add_action( 'mai_setup_wizard_after_import', 'mai_after_setup_wizard_import' );
 /**
- * Description of expected behavior.
+ * Configures site settings after demo content is imported.
  *
- * @since 1.0.0
+ * @since 2.0.1
  *
  * @param string $demo Chosen demo ID.
  *
