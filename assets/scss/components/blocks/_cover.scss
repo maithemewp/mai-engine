@@ -5,7 +5,8 @@
 	min-height: 0;
 
 	&.has-background:not(.alignfull) {
-		padding: var(--spacing-xl) var(--spacing-lg);
+		padding-right: var(--spacing-lg);
+		padding-left: var(--spacing-lg);
 	}
 
 	&.alignfull {

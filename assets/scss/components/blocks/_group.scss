@@ -8,11 +8,6 @@
 		padding-left: var(--side-spacing);
 	}
 
-	&.has-background {
-		padding-top: 0;
-		padding-bottom: 0;
-	}
-
 	&.has-background:not(.alignfull) {
 		padding-right: var(--spacing-lg);
 		padding-left: var(--spacing-lg);
