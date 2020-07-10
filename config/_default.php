@@ -483,6 +483,7 @@ return [
 		],
 		'text-align'              => '',
 		'divider'                 => '',
+		'divider-height'          => 'md',
 		'divider-color'           => 'white',
 		'divider-flip-horizontal' => false,
 		'divider-flip-vertical'   => false,

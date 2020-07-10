@@ -1,16 +1,9 @@
 .wp-block-group {
-	--divider-z-index: -1;
-
 	position: relative; // so negative margins inside will work.
 
 	&.alignfull {
 		padding-right: var(--side-spacing);
 		padding-left: var(--side-spacing);
-	}
-
-	&.has-background {
-		padding-top: 0;
-		padding-bottom: 0;
 	}
 
 	&.has-background:not(.alignfull) {

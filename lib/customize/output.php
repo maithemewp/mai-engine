@@ -48,8 +48,9 @@ function mai_add_additional_colors_css( $css ) {
 		foreach ( $colors as $name => $color ) {
 			if ( $color ) {
 				$css['global'][':root'][ '--color-' . $name ]                               = $color;
-				$css['global'][ '.has-' . $name . '-color' ]['color']                       = 'var( --color-' . $name . ')';
-				$css['global'][ '.has-' . $name . '-background-color' ]['background-color'] = 'var( --color-' . $name . ')';
+				$css['global'][ '.has-' . $name . '-color' ]['color']                       = 'var(--color-' . $name . ')';
+				$css['global'][ '.has-' . $name . '-color' ]['--heading-color']             = 'var(--color-' . $name . ')';
+				$css['global'][ '.has-' . $name . '-background-color' ]['background-color'] = 'var(--color-' . $name . ')';
 			}
 		}
 	}
@@ -103,9 +104,8 @@ function mai_add_button_text_colors( $css ) {
 	];
 
 	foreach ( $buttons as $button => $suffix ) {
-		$color  = mai_get_color( $button );
-		$darker = mai_get_color_variant( $color, 'dark', 40 );
-		$text   = mai_is_light_color( $color ) ? $darker : mai_get_color( 'white' );
+		$color = mai_get_color( $button );
+		$text  = mai_is_light_color( $color ) ? mai_get_color_variant( $color, 'dark', 60 ) : mai_get_color( 'white' );
 
 		$css['global'][':root'][ '--button-' . $suffix . 'color' ] = $text;
 	}
@@ -173,6 +173,16 @@ function mai_add_page_header_content_type_css( $css ) {
 		if ( $value ) {
 			$css['global'][':root'][ '--' . $id ] = $value;
 		}
+	}
+
+	$spacing = mai_get_option( 'page-header-spacing', $config['spacing'] );
+
+	if ( isset( $spacing['top'] ) ) {
+		$css['global'][':root'][ '--page-header-padding-top' ] = mai_get_unit_value( $spacing['top'] );
+	}
+
+	if ( isset( $spacing['bottom'] ) ) {
+		$css['global'][':root'][ '--page-header-padding-bottom' ] = mai_get_unit_value( $spacing['bottom'] );
 	}
 
 	return $css;

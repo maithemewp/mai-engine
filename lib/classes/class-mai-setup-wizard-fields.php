@@ -221,17 +221,20 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 		$fields        = [];
 		$demos         = $this->demos->get_demos();
 		$content_types = [
-			'content'    => sprintf( '<strong>%s</strong> <ul class="step-description"><li>%s</li></ul>',
+			'content'    => sprintf(
+				'<strong>%s</strong> <ul class="step-description"><li>%s</li></ul>',
 				__( 'Content', 'mai-engine' ),
 				__( 'Posts, pages, and menus.' )
 			),
-			'templates'  => sprintf( '<strong>%s</strong> <ul class="step-description"><li>%s</li><li>%s</li><li>%s</li></ul>',
+			'templates'  => sprintf(
+				'<strong>%s</strong> <ul class="step-description"><li>%s</li><li>%s</li><li>%s</li></ul>',
 				__( 'Template Parts', 'mai-engine' ),
 				__( 'Our block-based replacement for widgets.', 'mai-engine' ),
 				__( 'Requires "Content" in order to import images.', 'mai-engine' ),
-				__( 'Moves any existing template parts into the trash.', 'mai-engine' ),
+				__( 'Moves any existing template parts into the trash.', 'mai-engine' )
 			),
-			'customizer' => sprintf( '<strong>%s</strong> <ul class="step-description"><li>%s</li></ul>',
+			'customizer' => sprintf(
+				'<strong>%s</strong> <ul class="step-description"><li>%s</li></ul>',
 				__( 'Customizer Settings', 'mai-engine' ),
 				__( 'Layout, archive/single settings, colors, etc.' )
 			),

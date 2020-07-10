@@ -1,31 +1,30 @@
 .wp-block-cover {
-	--divider-z-index: -1;
-
 	position: relative; // so negative margins inside will work.
 	min-height: 0;
 
 	&.has-background:not(.alignfull) {
-		padding: var(--spacing-xl) var(--spacing-lg);
+		padding-right: var(--spacing-lg);
+		padding-left: var(--spacing-lg);
 	}
 
 	&.alignfull {
 		padding-right: var(--side-spacing);
 		padding-left: var(--side-spacing);
 	}
-}
 
-.wp-block-cover__inner-container {
-	width: 100% !important;
-	max-width: var(--content-max-width, var(--breakpoint-xl));
-	margin-right: auto;
-	margin-left: auto;
+	&__inner-container {
+		width: 100% !important;
+		max-width: var(--content-max-width, var(--breakpoint-xl));
+		margin-right: auto;
+		margin-left: auto;
 
-	.content-sidebar & {
-		margin-right: 0;
-	}
+		.content-sidebar & {
+			margin-right: 0;
+		}
 
-	.sidebar-content & {
-		margin-left: 0;
+		.sidebar-content & {
+			margin-left: 0;
+		}
 	}
 }
 

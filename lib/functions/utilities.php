@@ -1397,20 +1397,15 @@ function mai_get_dom_document( $html ) {
 }
 
 /**
- * Description of expected behavior.
+ * Localize data for editor JS.
  *
  * @since 0.1.0
  *
  * @return array
  */
 function mai_get_editor_localized_data() {
-	$palette = mai_get_editor_color_palette();
-	$palette = wp_list_pluck( $palette, 'color', 'slug' );
-
-	unset( $palette['black'] ); // Too many for iris picker, we need to remove some.
-	unset( $palette['white'] );
-	unset( $palette['light'] );
-
+	$palette  = mai_get_editor_color_palette();
+	$palette  = wp_list_pluck( $palette, 'color', 'slug' );
 	$palette  = array_values( $palette ); // Remove keys.
 	$data     = [ 'palette' => $palette ];
 	$settings = mai_get_grid_block_settings();

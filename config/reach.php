@@ -39,38 +39,16 @@ return [
 		'background-color'        => 'primary',
 		'text-color'              => 'light',
 		'divider'                 => 'curve',
+		'divider-height'          => 'sm',
 		'divider-color'           => 'white',
 		'divider-flip-horizontal' => false,
 	],
 	'plugins'          => [
 		[
-			'name'  => 'Genesis Connect for WooCommerce',
-			'slug'  => 'genesis-connect-woocommerce/genesis-connect-woocommerce.php',
-			'uri'   => 'https://wordpress.org/plugins/genesis-connect-woocommerce/',
-			'demos' => [ 'agency' ],
-		],
-		[
-			'name'  => 'Simple Social Icons',
-			'slug'  => 'simple-social-icons/simple-social-icons.php',
-			'uri'   => 'https://wordpress.org/plugins/simple-social-icons/',
+			'name'  => 'Genesis eNews Extended',
+			'slug'  => 'genesis-enews-extended/plugin.php',
+			'uri'   => 'https://wordpress.org/plugins/genesis-enews-extended/',
 			'demos' => [ 'agency', 'podcast' ],
-		],
-		[
-			'name'  => 'WP Forms Lite',
-			'slug'  => 'wpforms-lite/wpforms.php',
-			'uri'   => 'https://wordpress.org/plugins/wpforms-lite/',
-			'demos' => [ 'agency', 'podcast' ],
-		],
-		[
-			'name'  => 'WooCommerce',
-			'slug'  => 'woocommerce/woocommerce.php',
-			'uri'   => 'https://wordpress.org/plugins/woocommerce/',
-			'demos' => [ 'agency' ],
 		],
 	],
-	'custom-functions' => function () {
-		add_filter( 'mai_default_footer_credits', function ( $default ) {
-			return $default . mai_back_to_top_shortcode();
-		} );
-	},
 ];
