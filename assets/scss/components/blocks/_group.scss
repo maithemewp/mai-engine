@@ -1,6 +1,4 @@
 .wp-block-group {
-	--divider-z-index: -1;
-
 	position: relative; // so negative margins inside will work.
 
 	&.alignfull {
