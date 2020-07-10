@@ -39,6 +39,7 @@ return [
 		'background-color'        => 'primary',
 		'text-color'              => 'light',
 		'divider'                 => 'curve',
+		'divider-height'          => 'sm',
 		'divider-color'           => 'white',
 		'divider-flip-horizontal' => false,
 	],

@@ -201,9 +201,9 @@ function mai_page_header_divider( $output, $original_output ) {
 		$args = [
 			'style'           => $style,
 			'color'           => mai_get_option( 'page-header-divider-color', mai_get_color( $config['divider-color'] ) ),
-			'flip_horizontal' => mai_get_option( 'page-header-divider-flip-horizontal', mai_get_config( 'page-header' )['divider-flip-horizontal'] ),
-			'flip_vertical'   => mai_get_option( 'page-header-divider-flip-vertical', mai_get_config( 'page-header' )['divider-flip-vertical'] ),
-			'height'          => 'md',
+			'flip_horizontal' => mai_get_option( 'page-header-divider-flip-horizontal', $config['divider-flip-horizontal'] ),
+			'flip_vertical'   => mai_get_option( 'page-header-divider-flip-vertical', $config['divider-flip-vertical'] ),
+			'height'          => mai_get_option( 'page-header-divider-height', $config['divider-height'] ),
 			'class'           => 'page-header-divider',
 			'align'           => 'full',
 		];
