@@ -1045,13 +1045,20 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_after_entry() {
-		genesis_widget_area(
-			'after-entry',
-			[
-				'before' => '<div class="after-entry widget-area">',
-				'after'  => '</div>',
-			]
-		);
+		if ( mai_template_part_exists( 'after-entry' ) ) {
+			mai_render_template_part( 'after-entry' );
+		}
+
+		// Deprecated for < 2.0.0.
+		if ( ! is_active_sidebar( 'after-entry' ) ) {
+			genesis_widget_area(
+				'after-entry',
+				[
+					'before' => '<div class="after-entry widget-area">',
+					'after'  => '</div>',
+				]
+			);
+		}
 	}
 
 	/**
