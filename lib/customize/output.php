@@ -48,8 +48,9 @@ function mai_add_additional_colors_css( $css ) {
 		foreach ( $colors as $name => $color ) {
 			if ( $color ) {
 				$css['global'][':root'][ '--color-' . $name ]                               = $color;
-				$css['global'][ '.has-' . $name . '-color' ]['color']                       = 'var( --color-' . $name . ')';
-				$css['global'][ '.has-' . $name . '-background-color' ]['background-color'] = 'var( --color-' . $name . ')';
+				$css['global'][ '.has-' . $name . '-color' ]['color']                       = 'var(--color-' . $name . ')';
+				$css['global'][ '.has-' . $name . '-color' ]['--heading-color']             = 'var(--color-' . $name . ')';
+				$css['global'][ '.has-' . $name . '-background-color' ]['background-color'] = 'var(--color-' . $name . ')';
 			}
 		}
 	}
