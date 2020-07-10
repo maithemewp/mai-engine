@@ -17,7 +17,7 @@ return [
 	'global-styles'    => [
 		'colors'     => [
 			'background' => '#fdf3f2',
-			'alt'        => '#fdf3f2',
+			'alt'        => '#faf7f6',
 			'primary'    => '#f98588',
 			'link'       => '#f98588',
 			'heading'    => '#000000',
