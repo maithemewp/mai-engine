@@ -12,9 +12,9 @@
 	var hasSticky      = body.classList.contains( 'has-sticky-header' );
 	var hasTransparent = body.classList.contains( 'has-transparent-header' );
 	var hasPageHeader  = body.classList.contains( 'has-page-header' );
-	var hasCoverBlock  = body.classList.contains( 'has-alignfull-first' );
+	var hasAlignFull   = body.classList.contains( 'has-alignfull-first' );
 	var breakpointSm   = window.getComputedStyle( document.documentElement ).getPropertyValue( '--breakpoint-sm' );
-	var firstElement   = hasCoverBlock ? document.getElementsByClassName( 'wp-block-cover__inner-container' )[ 0 ] : siteInner.firstChild;
+	var firstElement   = hasAlignFull ? document.querySelectorAll( '.entry-content > .alignfull' )[0] : siteInner.firstChild;
 	var timeout        = false;
 
 	/**
@@ -44,17 +44,22 @@
 		timeout = true;
 
 		var firstElementStyles = getComputedStyle( firstElement );
-		var paddingBottom      = firstElementStyles.getPropertyValue( 'padding-bottom' );
-		var headerHeight       = siteHeader.offsetHeight;
 
-		headerHeight += beforeHeader ? beforeHeader.offsetHeight : 0;
+		// Clear inline styles before recalculating.
+		firstElement.style.removeProperty( 'padding-top' );
+
+		var paddingTop   = firstElementStyles.getPropertyValue( 'padding-top' );
+		var headerHeight = siteHeader.offsetHeight;
+
+		console.log( paddingTop );
+
 		headerHeight += navAfterHeader ? navAfterHeader.offsetHeight : 0;
 
-		if ( hasSticky || hasCoverBlock || hasPageHeader ) {
+		if ( hasSticky || hasAlignFull || hasPageHeader ) {
 			siteInner.style.marginTop = '-' + headerHeight + 'px';
 		}
 
-		firstElement.style.paddingTop = parseInt( headerHeight ) + parseInt( paddingBottom ) + 'px';
+		firstElement.setAttribute( 'style', 'padding-top: ' + ( parseInt( headerHeight ) + parseInt( paddingTop ) ) + 'px !important' );
 
 		setTimeout( function() {
 			timeout = false;
