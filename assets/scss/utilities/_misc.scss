@@ -86,6 +86,13 @@
 
 // TODO: Add ratio scaling?
 // Padding scale matches Mai Theme v1 sections for now.
+.has-no-padding-top {
+	padding-top: 0 !important;
+}
+
+.has-no-padding-bottom {
+	padding-bottom: 0 !important;
+}
 
 .has-xs-padding-top {
 	padding-top: calc(1rem + 1vw) !important;

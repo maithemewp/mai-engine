@@ -35,6 +35,16 @@ const sizeScale = [
 	},
 ];
 
+const spacingSizeScale = [
+	{
+		label: __( 'None', 'mai-engine' ),
+		value: 'no',
+	},
+	...sizeScale
+];
+
+console.log( spacingSizeScale );
+
 /**
  * Add layout control attribute to block.
  *
@@ -184,7 +194,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 						<p>&nbsp;</p>
 						<ButtonGroup mode="radio" data-chosen={verticalSpacingTop}>
 							<p>{__( 'Top Spacing', 'mai-engine' )}</p>
-							{sizeScale.map( sizeInfo => (
+							{spacingSizeScale.map( sizeInfo => (
 								<Button
 									onClick={() => {
 										props.setAttributes( {
@@ -212,7 +222,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 						<p>&nbsp;</p>
 						<ButtonGroup mode="radio" data-chosen={verticalSpacingBottom}>
 							<p>{__( 'Bottom Spacing', 'mai-engine' )}</p>
-							{sizeScale.map( sizeInfo => (
+							{spacingSizeScale.map( sizeInfo => (
 								<Button
 									onClick={() => {
 										props.setAttributes( {
