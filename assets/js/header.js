@@ -51,8 +51,6 @@
 		var paddingTop   = firstElementStyles.getPropertyValue( 'padding-top' );
 		var headerHeight = siteHeader.offsetHeight;
 
-		console.log( paddingTop );
-
 		headerHeight += navAfterHeader ? navAfterHeader.offsetHeight : 0;
 
 		if ( hasSticky || hasAlignFull || hasPageHeader ) {
