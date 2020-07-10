@@ -1,9 +1,5 @@
 .site-container {
-	display: flex;
 	flex: 1;
-	flex-direction: column;
-	flex-wrap: wrap;
-	justify-content: flex-start;
 	width: 100%;
 	max-width: var(--site-container-max-width, unset);
 	margin: var(--site-container-margin, unset);
