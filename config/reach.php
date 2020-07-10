@@ -51,9 +51,4 @@ return [
 			'demos' => [ 'agency', 'podcast' ],
 		],
 	],
-	'custom-functions' => function () {
-		add_filter( 'mai_default_footer_credits', function ( $default ) {
-			return $default . mai_back_to_top_shortcode();
-		} );
-	},
 ];

@@ -41,35 +41,6 @@ function mai_get_widget_count( $widget_area_id ) {
 	return $widget_count;
 }
 
-/**
- * Get a widget area's default content.
- *
- * @since 0.3.3
- *
- * @param string $location The widget area location id.
- *
- * @return string  The widget area content.
- */
-function mai_get_widget_area_default_content( $location ) {
-	static $widget_areas = [];
-
-	if ( isset( $widget_areas[ $location ] ) ) {
-		return $widget_areas[ $location ];
-	}
-
-	$areas = mai_get_config( 'widget-areas' )['add'];
-
-	foreach ( $areas as $area ) {
-		$widget_areas[ $area['id'] ] = isset( $area['default'] ) ? $area['default'] : '';
-	}
-
-	if ( ! isset( $widget_areas[ $location ] ) ) {
-		$widget_areas[ $location ] = '';
-	}
-
-	return $widget_areas[ $location ];
-}
-
 add_action( 'widgets_init', 'mai_register_reusable_block_widget' );
 /**
  * Register the widget.

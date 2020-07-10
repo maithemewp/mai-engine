@@ -1045,7 +1045,7 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_after_entry() {
-		if ( mai_template_part_exists( 'after-entry' ) ) {
+		if ( mai_template_part_exists( 'after-entry' ) && ! mai_is_element_hidden( 'after_entry' ) ) {
 			mai_render_template_part( 'after-entry' );
 		}
 
