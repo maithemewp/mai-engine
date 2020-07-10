@@ -220,20 +220,20 @@ add_filter( 'genesis_attr_page-header', 'mai_add_page_header_attributes' );
  *
  * @since 2.0.0
  *
- * @param $attr
+ * @param $attributes
  *
  * @return mixed
  */
-function mai_add_page_header_attributes( $attr ) {
+function mai_add_page_header_attributes( $attributes ) {
 	$divider = mai_get_option( 'page-header-divider', mai_get_config( 'page-header' )['divider'] );
 
 	if ( $divider ) {
-		$attr['class'] .= ' has-divider';
+		$attributes['class'] .= ' has-divider';
 	}
 
-	$attr['role'] = 'banner';
+	$attributes['role'] = 'banner';
 
-	return $attr;
+	return $attributes;
 }
 
 /**

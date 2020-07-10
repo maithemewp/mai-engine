@@ -18,7 +18,7 @@
 
 	> .wrap {
 		z-index: 2;
-		padding: var(--page-header-padding, (10vw 0));
+		padding: var(--page-header-padding, var(--page-header-padding-top, 10vw) var(--page-header-padding-sides, 0) var(--page-header-padding-bottom, 10vw));
 	}
 }
 

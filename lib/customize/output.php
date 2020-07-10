@@ -175,5 +175,15 @@ function mai_add_page_header_content_type_css( $css ) {
 		}
 	}
 
+	$spacing = mai_get_option( 'page-header-spacing', $config['spacing'] );
+
+	if ( isset( $spacing['top'] ) ) {
+		$css['global'][':root'][ '--page-header-padding-top' ] = mai_get_unit_value( $spacing['top'] );
+	}
+
+	if ( isset( $spacing['bottom'] ) ) {
+		$css['global'][':root'][ '--page-header-padding-bottom' ] = mai_get_unit_value( $spacing['bottom'] );
+	}
+
 	return $css;
 }
