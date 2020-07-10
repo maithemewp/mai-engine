@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.1.0 (7/9/20)
+## 2.1.0 (7/10/20)
 * Added: "None" setting to Group/Cover block spacing settings.
 * Fixed: Page Header spacing settings not working in some instances.
 * Fixed: Mai Divider not displaying correctly when used inside a Group or Cover block.
