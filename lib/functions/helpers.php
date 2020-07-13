@@ -154,26 +154,67 @@ function mai_sidebar_has_widget( $sidebar, $widget ) {
  * @return bool
  */
 function mai_has_alignfull_first() {
-	static $has_cover_block = null;
+	static $has_alignfull_first = null;
 
-	if ( is_null( $has_cover_block ) ) {
-		$has_cover_block = false;
+	if ( is_null( $has_alignfull_first ) ) {
+		$has_alignfull_first = false;
 
 		if ( ! mai_is_type_single() || ! has_blocks() ) {
-			return $has_cover_block;
+			return $has_alignfull_first;
 		}
 
 		$post_object = get_post( get_the_ID() );
 		$blocks      = (array) parse_blocks( $post_object->post_content );
-		$block_name  = isset( $blocks[0]['blockName'] ) ? $blocks[0]['blockName'] : '';
-		$align       = isset( $blocks[0]['attrs']['align'] ) ? $blocks[0]['attrs']['align'] : '';
+		$first       = $blocks[0];
+		$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
+		$align       = isset( $first['attrs']['align'] ) ? $first['attrs']['align'] : '';
 
 		if ( in_array( $block_name, [ 'core/cover', 'core/group' ] ) && ( 'full' === $align ) ) {
-			$has_cover_block = true;
+			$has_alignfull_first = true;
 		}
 	}
 
-	return $has_cover_block;
+	return $has_alignfull_first;
+}
+
+/**
+ * Checks if first block is a cover or dark background group block aligned full.
+ *
+ * @since 2.1.1
+ *
+ * @return bool
+ */
+function mai_has_dark_alignfull_first() {
+	static $has_dark_alignfull_first = null;
+
+	if ( is_null( $has_dark_alignfull_first ) ) {
+		$has_dark_alignfull_first = false;
+
+		if ( ! mai_is_type_single() || ! has_blocks() ) {
+			return $has_dark_alignfull_first;
+		}
+
+		$post_object = get_post( get_the_ID() );
+		$blocks      = (array) parse_blocks( $post_object->post_content );
+		$first       = $blocks[0];
+		$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
+		$align       = isset( $first['attrs']['align'] ) ? $first['attrs']['align'] : '';
+
+		if ( 'full' === $align ) {
+			if ( 'core/group' === $block_name ) {
+				if ( isset( $first['attrs']['backgroundColor'] ) ) {
+					$colors                   = mai_get_colors();
+					$color                    = isset( $colors[ $first['attrs']['backgroundColor'] ] ) ? $colors[ $first['attrs']['backgroundColor'] ]: $first['attrs']['backgroundColor'];
+					$has_dark_alignfull_first = ! mai_is_light_color( $color );
+				}
+			} elseif ( 'core/cover' === $block_name ) {
+				// TODO: Having cover first doesn't necessarily mean it's a light header.
+				$has_dark_alignfull_first = true;
+			}
+		}
+	}
+
+	return $has_dark_alignfull_first;
 }
 
 /**
@@ -236,7 +277,7 @@ function mai_has_transparent_header() {
 }
 
 /**
- * Check of the page has a light site header.
+ * Check of the page has a light site header background.
  *
  * @since 0.3.0
  *
@@ -256,7 +297,7 @@ function mai_has_light_site_header() {
 			$has_light_site_header = mai_has_light_page_header();
 		} else {
 			// TODO: Having alignfull first doesn't necessarily mean it's a light header.
-			$has_light_site_header = ! mai_has_alignfull_first();
+			$has_light_site_header = ! mai_has_dark_alignfull_first();
 		}
 	}
 
@@ -264,7 +305,7 @@ function mai_has_light_site_header() {
 }
 
 /**
- * Check of the page has a light page header.
+ * Check of the page has a light page header background.
  *
  * @since 0.3.0
  *
