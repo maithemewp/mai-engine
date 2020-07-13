@@ -82,7 +82,7 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 			$counter = 1;
 
 			/**
-			 * @var Step $step
+			 * @var Mai_Setup_Wizard_Steps $step
 			 */
 			foreach ( $steps as $step ) {
 				$this->steps->render( $step, $steps, $counter );

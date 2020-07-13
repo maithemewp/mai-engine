@@ -41,19 +41,20 @@ function mai_register_template_part_cpt() {
 	];
 
 	$args = [
-		'labels'             => $labels,
-		'description'        => __( 'Template parts to include in your templates.', 'mai-engine' ),
-		'public'             => false,
-		'has_archive'        => false,
-		'rewrite'            => false,
-		'show_ui'            => true,
-		'show_in_menu'       => 'themes.php',
-		'show_in_nav_menus'  => false,
-		'show_in_admin_bar'  => false,
-		'show_in_rest'       => true,
-		'rest_base'          => 'template-parts',
-		'map_meta_cap'       => true,
-		'supports'           => [
+		'labels'            => $labels,
+		'description'       => __( 'Template parts to include in your templates.', 'mai-engine' ),
+		'public'            => false,
+		'has_archive'       => false,
+		'rewrite'           => false,
+		'show_ui'           => true,
+		'show_in_menu'      => 'themes.php',
+		'show_in_nav_menus' => false,
+		'show_in_admin_bar' => false,
+		'show_in_rest'      => true,
+		'rest_base'         => 'template-parts',
+		'map_meta_cap'      => true,
+		'can_export'        => false,
+		'supports'          => [
 			'title',
 			'slug',
 			'editor',
@@ -151,7 +152,7 @@ function mai_template_part_exists( $slug ) {
  * @return int Template part ID, or 0 if not found.
  */
 function mai_get_template_part_by_slug( $slug ) {
-	$posts = get_posts(
+	$id = get_posts(
 		[
 			'fields'                 => 'ids',
 			'posts_per_page'         => 1,
@@ -163,9 +164,15 @@ function mai_get_template_part_by_slug( $slug ) {
 		]
 	);
 
-	if ( empty( $posts ) ) {
+	if ( empty( $id ) ) {
 		return 0;
 	}
 
-	return (int) array_shift( $posts );
+	$post = get_post( $id );
+
+	if ( ! $post || ! $post->post_content ) {
+		return 0;
+	}
+
+	return (int) array_shift( $id );
 }
