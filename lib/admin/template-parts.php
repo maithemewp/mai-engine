@@ -9,7 +9,7 @@
  * @license   GPL-2.0-or-later
  */
 
-//add_action( 'current_screen', 'mai_create_template_parts' );
+add_action( 'current_screen', 'mai_create_template_parts' );
 /**
  * Create default template parts if they don't exist.
  * Only runs on main template part admin list.
@@ -21,11 +21,6 @@
  * @return void
  */
 function mai_create_template_parts( $current_screen ) {
-	// Bail if running in setup wizard.
-	if ( did_action( 'mai_setup_wizard_before_steps' ) ) {
-		return;
-	}
-
 	if ( 'edit-wp_template_part' !== $current_screen->id ) {
 		return;
 	}
