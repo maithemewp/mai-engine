@@ -1,6 +1,5 @@
 .wp-block-image {
-	margin-top: var(--spacing-lg);
-	margin-bottom: var(--spacing-lg);
+	margin: var(--spacing-lg) auto;
 
 	&.alignleft {
 		margin-right: var(--spacing-md);
