@@ -25,7 +25,7 @@
 	--site-header-background: transparent;
 }
 
-.has-dark-header:not(.header-stuck) {
+.has-dark-header:not(.header-stuck) .title-area {
 	--link-color-hover: var(--color-white); // Site title hover.
 }
 
