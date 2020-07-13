@@ -8,7 +8,7 @@
 	font-weight: var(--body-font-weight); // No fallback, always output by Kirki.
 	font-size: var(--body-font-size, var(--font-size-md));
 	font-family: var(--body-font-family); // No fallback, always output by Kirki.
-	line-height: var(--body-line-height, 1.5);
+	line-height: var(--body-line-height, 1.625); // Perfect fourth.
 	background: var(--body-background-color, var(--color-background));
 }
 
@@ -17,7 +17,7 @@
 	color: var(--heading-color, var(--color-heading));
 	font-weight: var(--heading-font-weight); // No fallback, always output by Kirki.
 	font-family: var(--heading-font-family); // No fallback, always output by Kirki.
-	line-height: var(--heading-line-height, 1.2);
+	line-height: var(--heading-line-height, 1.219); // Perfect fourth.
 	letter-spacing: var(--heading-letter-spacing, unset);
 	text-transform: var(--heading-text-transform, unset);
 
