@@ -61,7 +61,7 @@ function mai_body_classes( $classes ) {
 	}
 
 	// Add before class.
-	if ( is_active_sidebar( 'before-header' ) || mai_template_part_exists( 'before-header' ) ) {
+	if ( mai_has_template_part( 'before-header' ) || is_active_sidebar( 'before-header' ) ) {
 		$classes[] = 'has-before-header';
 	}
 
@@ -87,8 +87,8 @@ function mai_body_classes( $classes ) {
 	$classes[] = mai_has_page_header() ? 'has-page-header' : 'no-page-header';
 	$classes[] = mai_has_light_page_header() ? 'has-light-page-header' : 'has-dark-page-header';
 
-	$header_left  = has_nav_menu( 'header-left' ) || is_active_sidebar( 'header-left' ) || mai_template_part_exists( 'header-left' );
-	$header_right = has_nav_menu( 'header-right' ) || is_active_sidebar( 'header-right' ) || mai_template_part_exists( 'header-right' );
+	$header_left  = has_nav_menu( 'header-left' ) || mai_has_template_part( 'header-left' ) || is_active_sidebar( 'header-left' );
+	$header_right = has_nav_menu( 'header-right' ) || mai_has_template_part( 'header-right' ) || is_active_sidebar( 'header-right' );
 
 	// Add logo classes.
 	if ( ( $header_left && $header_right ) || ( ! $header_right && ! $header_right ) ) {

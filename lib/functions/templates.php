@@ -128,6 +128,23 @@ function mai_render_template_part( $slug, array $args = [] ) {
 }
 
 /**
+ * Checks whether the template part exists and has content.
+ *
+ * @since 2.1.1
+ *
+ * @param string $slug Template part slug.
+ *
+ * @return bool True if the template part exists and has content, false otherwise.
+ */
+function mai_has_template_part( $slug ) {
+	$id = mai_get_template_part_by_slug( $slug );
+	if ( $id ) {
+		return ! empty( get_post_field( 'post_content', $id ) );
+	}
+	return false;
+}
+
+/**
  * Checks whether the template part with the given slug exists.
  *
  * @since 2.0.0
