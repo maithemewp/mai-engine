@@ -1,15 +1,3 @@
-var menuButtons = document.querySelectorAll( '.menu-item.button' );
-
-[].forEach.call( menuButtons, function( menuButton ) {
-	menuButton.childNodes.forEach( function( childElement ) {
-		if ( 'menu-item-link' === childElement.className ) {
-			childElement.classList.add( 'button' );
-		}
-	} );
-
-	menuButton.classList.remove( 'button' );
-} );
-
 function hide( element ) {
 	var el = document.getElementsByClassName( element )[ 0 ];
 
@@ -65,3 +53,4 @@ document.addEventListener( 'click', function( event ) {
 		hide( 'modal' );
 	}
 } );
+

@@ -60,8 +60,20 @@ function mai_do_header() {
 	remove_filter( 'genesis_attr_nav-menu', 'mai_nav_header_attributes', 10, 3 );
 }
 
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @param array  $attributes
+ * @param string $context
+ * @param array  $params
+ *
+ * @return mixed
+ */
 function mai_nav_header_attributes( $attributes, $context, $params ) {
 	$attributes['class'] .= ' nav-header';
+
 	return $attributes;
 }
 
@@ -98,6 +110,13 @@ function mai_site_title_link( $default ) {
 }
 
 add_action( 'mai_before_title_area', 'mai_do_header_left' );
+/**
+ * Description of expected behavior.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
 function mai_do_header_left() {
 	if ( ! is_active_sidebar( 'header-left' ) && ! has_nav_menu( 'header-left' ) ) {
 		return;
@@ -164,7 +183,7 @@ function mai_do_header_right() {
  *
  * @since   0.3.0
  *
- * @param   array  $attributes  Current attributes.
+ * @param   array $attributes Current attributes.
  *
  * @return  array  The modified attributes.
  */
@@ -174,27 +193,30 @@ function mai_hide_site_title( $attributes ) {
 		return $attributes;
 	}
 	$attributes['class'] .= ' screen-reader-text';
+
 	return $attributes;
 }
 
+add_filter( 'genesis_attr_site-description', 'mai_hide_site_description' );
 /**
  * Hide site description if using a logo.
  *
  * Adds class for screen readers to site description.
  * This will keep the site description markup but will not have any visual presence on the page.
  *
- * @since   0.3.0
+ * @since  0.3.0
  *
- * @param   array  $attributes  Current attributes.
+ * @param  array $attributes Current attributes.
  *
- * @return  array  The modified attributes.
+ * @return array  The modified attributes.
  */
-add_filter( 'genesis_attr_site-description', 'mai_hide_site_description' );
 function mai_hide_site_description( $attributes ) {
 	if ( ! has_custom_logo() ) {
 		return $attributes;
 	}
+
 	$attributes['class'] .= ' screen-reader-text';
+
 	return $attributes;
 }
 
