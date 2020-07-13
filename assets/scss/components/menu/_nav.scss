@@ -14,7 +14,8 @@
 }
 
 .nav-after-header {
+	position: relative;
 	z-index: 9;
-	display: var(--nav-header-display, none);
+	display: var(--nav-after-header-display, none);
 	width: 100%;
 }
