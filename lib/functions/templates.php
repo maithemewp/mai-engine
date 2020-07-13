@@ -77,6 +77,40 @@ function mai_register_template_part_cpt() {
 	register_meta( 'post', 'theme', $meta_args );
 }
 
+add_action( 'admin_bar_menu', 'mai_add_admin_bar_links', 999 );
+/**
+ * Add links to toolbar.
+ *
+ * @since 2.1.1
+ *
+ * @return void
+ */
+function mai_add_admin_bar_links( $wp_admin_bar ) {
+	if ( is_admin() ) {
+		return;
+	}
+
+	$wp_admin_bar->add_node( [
+		'id'     => 'template-parts',
+		'parent' => 'site-name',
+		'title'  => __( 'Template Parts', 'mai-engine' ),
+		'href'   => admin_url( 'edit.php?post_type=wp_template_part' ),
+		'meta'   => [
+			'title' => __( 'Edit Template Parts', 'mai-engine' ),
+		],
+	] );
+
+	$wp_admin_bar->add_node( [
+		'id'     => 'reusable-blocks',
+		'parent' => 'site-name',
+		'title'  => __( 'Reusable Blocks', 'mai-engine' ),
+		'href'   => admin_url( 'edit.php?post_type=wp_block' ),
+		'meta'   => [
+			'title' => __( 'Edit Reusable Blocks', 'mai-engine' ),
+		],
+	] );
+}
+
 /**
  * Renders the template part with the given slug.
  *
