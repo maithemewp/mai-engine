@@ -69,6 +69,11 @@
 	border-left: 0;
 	transform: var(--sub-menu-toggle-transform, rotate(45deg));
 	content: "";
+
+	// 3rd level menu items.
+	.menu-item-has-children > a:after {
+		rotate: -90deg;
+	}
 }
 
 .sub-menu {
