@@ -65,9 +65,10 @@ function mai_setup_wizard_init() {
 	}
 }
 
+add_action( 'after_switch_theme', 'mai_reset_setup_wizard_options' );
 add_action( 'mai_setup_wizard_after_import_all_content', 'mai_reset_setup_wizard_options' );
 /**
- * Resets setup wizard options after content is imported.
+ * Resets setup wizard options after swithing themes or after content is imported.
  *
  * @since 2.0.0
  *
