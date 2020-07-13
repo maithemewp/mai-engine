@@ -1,7 +1,10 @@
-.wp-social-link {
+.wp-block-social-links {
 
-	.is-style-no-background & {
-		color: currentColor;
-		background-color: transparent !important;
+	&.is-style-no-background {
+
+		.wp-social-link {
+			color: currentColor;
+			background-color: transparent;
+		}
 	}
 }
