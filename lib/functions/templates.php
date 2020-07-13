@@ -187,7 +187,7 @@ function mai_get_template_part_by_slug( $slug ) {
 
 	$post = get_post( $id );
 
-	if ( ! $post || ! $post->post_content ) {
+	if ( ! $post ) {
 		return 0;
 	}
 
