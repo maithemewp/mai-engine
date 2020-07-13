@@ -28,7 +28,6 @@ function mai_get_engine_theme() {
 
 	$engine_themes = mai_get_engine_themes();
 
-
 	if ( current_theme_supports( 'mai-engine' ) ) {
 		// Custom themes can load a specific theme default via `add_theme_support( 'mai-engine', 'success' );`
 		$theme_support = get_theme_support( 'mai-engine' );
@@ -96,7 +95,7 @@ function mai_get_engine_theme() {
  *
  * @since 2.0.0
  *
- * @return void
+ * @return array
  */
 function mai_get_engine_themes() {
 	static $themes = null;
@@ -282,6 +281,7 @@ function mai_load_files() {
 		'blocks/cover',
 		'blocks/divider',
 		'blocks/grid',
+		'blocks/group',
 		'blocks/heading',
 		'blocks/icon',
 		'blocks/image',
