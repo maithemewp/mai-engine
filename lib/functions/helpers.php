@@ -232,7 +232,7 @@ function mai_has_transparent_header() {
 	$option  = mai_get_option( 'site-header-transparent', $default );
 	$hidden  = mai_is_element_hidden( 'transparent_header' );
 
-	return $option && ! $hidden;
+	return $option && ! $hidden && ( mai_has_page_header() || mai_has_alignfull_first() );
 }
 
 /**
