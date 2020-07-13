@@ -21,16 +21,16 @@ add_action( 'current_screen', 'mai_create_template_parts' );
  * @return void
  */
 function mai_create_template_parts( $current_screen ) {
-	// Bail if running in setup wizard.
-	if ( did_action( 'mai_setup_wizard_before_steps' ) ) {
+	if ( wp_doing_ajax() ) {
 		return;
 	}
 
-	if ( 'edit-wp_template_part' !== $current_screen->id ) {
+	if ( ('post_type' !== $current_screen->post_type ) && ( 'edit-wp_template_part' !== $current_screen->id ) ) {
 		return;
 	}
 
-	$template_parts = mai_get_config( 'template-parts' );
+	$templates_created = 0;
+	$template_parts    = mai_get_config( 'template-parts' );
 
 	foreach ( $template_parts as $template_part ) {
 		if ( mai_template_part_exists( $template_part['id'] ) ) {
@@ -46,6 +46,20 @@ function mai_create_template_parts( $current_screen ) {
 		];
 
 		wp_insert_post( $args );
+
+		$templates_created++;
+	}
+
+	if ( $templates_created ) {
+		add_action( 'admin_notices', function() use ( $templates_created ) {
+			echo '<div class="notice notice-success">';
+				if ( 1 === $templates_created ) {
+					printf( '<p>%s %s</p>', $templates_created, __( 'default template part created.', 'mai-engine' ) );
+				} else {
+					printf( '<p>%s %s</p>', $templates_created, __( 'default template parts created.', 'mai-engine' ) );
+				}
+			echo '</div>';
+		});
 	}
 }
 
