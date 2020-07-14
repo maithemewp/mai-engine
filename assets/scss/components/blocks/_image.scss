@@ -7,12 +7,13 @@
 
 	&.alignright {
 		margin-left: var(--spacing-md);
-
 	}
 
-	figcaption {
-		font-size: var(--caption-font-size, var(--font-size-xs));
-		text-align: var(--caption-text-align, start);
-	}
+}
 
+// We need default element and to override WP.
+figcaption,
+.wp-block-image figcaption {
+	font-size: var(--caption-font-size, var(--font-size-xs));
+	text-align: var(--caption-text-align, start);
 }

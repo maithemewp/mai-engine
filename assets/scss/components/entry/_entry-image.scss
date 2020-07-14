@@ -5,7 +5,7 @@
 	order: var(--entry-image-link-order, unset);
 	max-width: var(--image-width, unset);
 	margin: var(--entry-image-link-margin, var(--entry-image-link-margin-top, 0) var(--entry-image-link-margin-right, 0) var(--entry-image-link-margin-bottom, var(--spacing-lg)) var(--entry-image-link-margin-left, 0));
-	line-height: 0;
+	line-height: var(--entry-image-line-height, unset);
 
 	&::before {
 		display: var(--entry-image-link-before-display, none);
@@ -19,6 +19,17 @@
 	&:last-child {
 		margin-bottom: 0;
 	}
+
+	figcaption {
+		display: table-caption;
+		caption-side: bottom;
+		margin-top: 0.5em; // Matches WP core.
+		margin-bottom: 1em; // Matches WP core.
+	}
+}
+
+.entry-image-single {
+	--entry-image-link-display: table; // For captions.
 }
 
 .entry-image {

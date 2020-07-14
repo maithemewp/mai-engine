@@ -302,14 +302,23 @@ class Mai_Entry {
 			return;
 		}
 
+		$atts = [
+			'class' => 'entry-image-link',
+		];
+
+		if ( 'single' === $this->context ) {
+			$atts['class'] .= ' entry-image-single';
+		}
+
 		// TODO: Is this the best way to handle non-linked featured images?
 		// We'll need this later for Mai Favorites when we can disable links in grid.
-		$wrap = ( 'single' === $this->context ) || ( 'background' === $this->args['image_position'] ) ? 'span' : 'a';
-		$atts = ( 'single' === $this->context ) || ( 'background' === $this->args['image_position'] ) ? [] : [
-			'href'        => $this->url,
-			'aria-hidden' => 'true',
-			'tabindex'    => '-1',
-		];
+		$wrap = ( 'single' === $this->context ) || ( 'background' === $this->args['image_position'] ) ? 'figure' : 'a';
+
+		if ( ( 'single' === $this->context ) || ( 'background' === $this->args['image_position'] ) ) {
+			$atts['href']        = $this->url;
+			$atts['aria-hidden'] = 'true';
+			$atts['tabindex']    = '-1';
+		}
 
 		// This filter overrides href.
 		remove_filter( 'genesis_attr_entry-image-link', 'genesis_attributes_entry_image_link' );
@@ -356,6 +365,13 @@ class Mai_Entry {
 		$image = wp_get_attachment_image( $image_id, $size, false, [ 'class' => "entry-image size-{$size}", 'loading' => 'lazy' ] );
 		remove_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 5 );
 		remove_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
+
+		if ( 'single' === $this->context ) {
+			$caption = wp_get_attachment_caption( $image_id );
+			if ( $caption ) {
+				$image .= sprintf( '<figcaption>%s</figcaption>', $caption );
+			}
+		}
 
 		return $image;
 	}
