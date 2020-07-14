@@ -198,7 +198,7 @@ function mai_template_part_exists( $slug ) {
 /**
  * Gets a template part ID by its slug.
  *
- * @since 2.0.0
+ * @since 2.1.1
  *
  * @param string $slug Template part slug.
  *

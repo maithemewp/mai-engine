@@ -10,6 +10,16 @@
  */
 
 /**
+ * Always show the site title and description.
+ * It's hidden screen-reader-text class if a custom logo is used.
+ *
+ * @since 0.3.0
+ *
+ * @return bool
+ */
+add_filter( 'theme_mod_header_text', '__return_true' );
+
+/**
  * Remove the default Genesis header.
  * This has too much code related to header-right
  * so let's just build our own.
@@ -175,8 +185,9 @@ function mai_do_header_right() {
 	);
 }
 
+add_filter( 'genesis_attr_site-title', 'mai_hide_site_title' );
 /**
- * Hide site title if using a logo.
+ * Hides site title if using a logo.
  *
  * Adds class for screen readers to site title.
  * This will keep the site title markup but will not have any visual presence on the page.
@@ -187,7 +198,6 @@ function mai_do_header_right() {
  *
  * @return  array  The modified attributes.
  */
-add_filter( 'genesis_attr_site-title', 'mai_hide_site_title' );
 function mai_hide_site_title( $attributes ) {
 	if ( ! has_custom_logo() ) {
 		return $attributes;
@@ -199,7 +209,7 @@ function mai_hide_site_title( $attributes ) {
 
 add_filter( 'genesis_attr_site-description', 'mai_hide_site_description' );
 /**
- * Hide site description if using a logo.
+ * Hides site description if using a logo.
  *
  * Adds class for screen readers to site description.
  * This will keep the site description markup but will not have any visual presence on the page.
@@ -219,13 +229,3 @@ function mai_hide_site_description( $attributes ) {
 
 	return $attributes;
 }
-
-/**
- * Always show the site title and description.
- * It's hidden screen-reader-text class if a custom logo is used.
- *
- * @since 0.3.0
- *
- * @return bool
- */
-add_filter( 'theme_mod_header_text', '__return_true' );

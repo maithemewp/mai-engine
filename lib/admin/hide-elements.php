@@ -38,8 +38,8 @@ function mai_add_hide_elements_metabox() {
 						'param'    => 'mai_public_post_type',
 						'operator' => '==', // Currently unused.
 						'value'    => true, // Currently unused.
-					]
-				]
+					],
+				],
 			],
 			'fields'                => [
 				[
@@ -57,14 +57,14 @@ function mai_add_hide_elements_metabox() {
 
 add_filter( 'acf/location/rule_match/mai_public_post_type', 'mai_acf_public_post_type_rule_match', 10, 4 );
 /**
- * Show "Hide Elements" metabox on all public post types.
+ * Shows "Hide Elements" metabox on all public post types.
  *
  * @since 2.0.0
  *
- * @param bool   $result      Whether the rule matches.
- * @param array  $rule        The current rule you're matching. Includes 'param', 'operator' and 'value' parameters.
- * @param string $screen      The current screen.
- * @param array  $field_group Data about the current edit screen (post_id, page_template...).
+ * @param bool      $result      Whether the rule matches.
+ * @param array     $rule        The current rule you're matching. Includes 'param', 'operator' and 'value' parameters.
+ * @param WP_Screen $screen      The current screen.
+ * @param array     $field_group Data about the current edit screen (post_id, page_template...).
  *
  * @return bool $match
  */
@@ -74,7 +74,7 @@ function mai_acf_public_post_type_rule_match( $result, $rule, $screen, $field_gr
 
 add_filter( 'acf/load_field/key=hide_elements', 'mai_load_hide_elements_field' );
 /**
- * Load "Hide Elements" metabox choices.
+ * Loads "Hide Elements" metabox choices.
  *
  * @since 0.3.3
  *
@@ -83,7 +83,6 @@ add_filter( 'acf/load_field/key=hide_elements', 'mai_load_hide_elements_field' )
  * @return array
  */
 function mai_load_hide_elements_field( $field ) {
-
 	$field['choices'] = [];
 	$post_type        = mai_get_admin_post_type();
 	$page_header      = mai_get_option( 'page-header-single', mai_get_config( 'page-header' )['single'] );
@@ -106,11 +105,11 @@ function mai_load_hide_elements_field( $field ) {
 		$field['choices']['after_header'] = __( 'After Header Menu', 'mai-engine' );
 	}
 
-	if ( $page_header &&  ( '*' === $page_header || ( is_array( $page_header ) && in_array( $post_type, $page_header ) ) ) ) {
+	if ( $page_header && ( '*' === $page_header || ( is_array( $page_header ) && in_array( $post_type, $page_header ) ) ) ) {
 		$field['choices']['page_header'] = __( 'Page Header', 'mai-engine' );
 	}
 
-	if ( ( 'page' === $post_type && genesis_get_option( 'breadcrumb_page' ) ) || (  'page' !== $post_type && genesis_get_option( 'breadcrumb_single' ) ) ) {
+	if ( ( 'page' === $post_type && genesis_get_option( 'breadcrumb_page' ) ) || ( 'page' !== $post_type && genesis_get_option( 'breadcrumb_single' ) ) ) {
 		$field['choices']['breadcrumbs'] = __( 'Breadcrumbs', 'mai-engine' );
 	}
 

@@ -33,3 +33,23 @@ function mai_no_sidebar() {
 	remove_all_actions( 'genesis_after_sidebar_alt_widget_area' );
 	add_filter( 'genesis_markup_sidebar-secondary_close', '__return_false' );
 }
+
+add_filter( 'genesis_skip_links_output', 'mai_remove_sidebar_skip_link' );
+/**
+ * Removes the sidebar skip link if not on page.
+ *
+ * @since 2.1.1
+ *
+ * @param array $links Skip links.
+ *
+ * @return array
+ */
+function mai_remove_sidebar_skip_link( $links ) {
+	$layout = mai_site_layout();
+
+	if ( 'sidebar-content' !== $layout || 'content-sidebar' !== $layout ) {
+		unset( $links['genesis-sidebar-primary'] );
+	}
+
+	return $links;
+}

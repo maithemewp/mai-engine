@@ -11,7 +11,7 @@
 
 add_action( 'admin_menu', 'mai_admin_menu_page', 0 );
 /**
- * Description of expected behavior.
+ * Registers plugin admin menu page.
  *
  * @since 0.1.0
  *
@@ -30,7 +30,7 @@ function mai_admin_menu_page() {
 }
 
 /**
- * Description of expected behavior.
+ * Renders admin settings page markup.
  *
  * @since 0.1.0
  *
@@ -65,7 +65,7 @@ function mai_render_admin_menu_page() {
 
 add_action( 'admin_menu', 'mai_show_reusable_blocks_admin_menu' );
 /**
- * Expose Reusable Blocks UI in backend.
+ * Exposes Reusable Blocks UI in backend.
  *
  * @link  https://www.billerickson.net/reusable-blocks-accessible-in-wordpress-admin-area
  *
