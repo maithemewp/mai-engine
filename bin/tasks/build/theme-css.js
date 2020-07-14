@@ -2,24 +2,23 @@
 
 const gulp              = require( 'gulp' ),
 	  config            = require( '../../config' ),
-	  plumber           = require( 'gulp-plumber' ),
-	  sourcemap         = require( 'gulp-sourcemaps' ),
-	  sass              = require( 'gulp-sass' ),
-	  bourbon           = require( 'bourbon' ).includePaths,
-	  normalize         = require( 'node-normalize-scss' ).includePaths,
-	  postcss           = require( 'gulp-postcss' ),
-	  bulksass          = require( 'gulp-sass-bulk-import' ),
-	  mqpacker          = require( 'css-mqpacker' ),
 	  autoprefix        = require( 'autoprefixer' ),
+	  bourbon           = require( 'bourbon' ).includePaths,
+	  mqpacker          = require( 'css-mqpacker' ),
 	  cssnano           = require( 'cssnano' ),
-	  pxtorem           = require( 'postcss-pxtorem' ),
-	  notify            = require( 'gulp-notify' ),
-	  map               = require( 'lodash.map' ),
-	  rename            = require( 'gulp-rename' ),
 	  fs                = require( 'fs' ),
 	  gulpif            = require( 'gulp-if' ),
+	  notify            = require( 'gulp-notify' ),
+	  plumber           = require( 'gulp-plumber' ),
+	  postcss           = require( 'gulp-postcss' ),
+	  rename            = require( 'gulp-rename' ),
+	  sourcemap         = require( 'gulp-sourcemaps' ),
+	  sass              = require( 'gulp-sass' ),
+	  bulksass          = require( 'gulp-sass-bulk-import' ),
+	  map               = require( 'lodash.map' ),
 	  combineSelectors  = require( 'postcss-combine-duplicated-selectors' ),
-	  discardDuplicates = require( 'postcss-discard-duplicates' );
+	  discardDuplicates = require( 'postcss-discard-duplicates' ),
+	  pxtorem           = require( 'postcss-pxtorem' );
 
 module.exports = function() {
 	return map( fs.readdirSync( './assets/scss/themes/' ), function( stylesheet ) {
@@ -32,7 +31,7 @@ module.exports = function() {
 			.pipe( gulpif( config.css.sourcemaps, sourcemap.init() ) )
 			.pipe( sass.sync( {
 				outputStyle: 'compressed',
-				includePaths: [].concat( bourbon ).concat( normalize )
+				includePaths: [].concat( bourbon )
 			} ) )
 			.pipe( postcss( [
 				mqpacker( {

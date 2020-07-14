@@ -19,12 +19,6 @@ toolkit.extendConfig(
 			scss: './.stylelintscssrc',
 			csscomb: './.csscomb.json',
 		},
-		bump: {
-			files: [
-				'./package.json',
-				'./composer.json'
-			]
-		},
 		messages: {
 			css: 'Stylesheet compiled and saved: <%= file.relative %>',
 			i18n: 'Translation file generated.',

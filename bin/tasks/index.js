@@ -3,7 +3,6 @@
 const sequence = require( 'gulp-sequence' );
 
 module.exports = {
-
 	'browser-sync': [ require( './browser-sync' ) ],
 
 	'build:plugin-css': [ require( './build/plugin-css' ) ],
@@ -39,7 +38,6 @@ module.exports = {
 
 	'lint': [ sequence( 'lint:style', 'lint:php', 'lint:js' ) ],
 
-	'bump': [ require( './bump' ) ],
 	'watch': [ require( './watch' ) ],
 	'serve': [ [ 'browser-sync', 'watch' ] ],
 	'default': [ [ 'build', 'serve' ] ],
