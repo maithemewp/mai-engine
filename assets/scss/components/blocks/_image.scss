@@ -1,7 +1,5 @@
 .wp-block-image {
 	margin-top: 1em; // Match core margin-bottom: 1em.
-	margin-inline-start: 0;
-	margin-inline-end: 0;
 
 	&.alignleft {
 		margin-right: var(--spacing-md);
@@ -9,6 +7,16 @@
 
 	&.alignright {
 		margin-left: var(--spacing-md);
+
+	}
+
+	&.aligncenter {
+		--caption-text-align: center;
+	}
+
+	figcaption {
+		font-size: var(--caption-font-size, var(--font-size-xs));
+		text-align: var(--caption-text-align, left);
 	}
 
 }
