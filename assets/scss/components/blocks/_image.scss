@@ -10,13 +10,9 @@
 
 	}
 
-	&.aligncenter {
-		--caption-text-align: center;
-	}
-
 	figcaption {
 		font-size: var(--caption-font-size, var(--font-size-xs));
-		text-align: var(--caption-text-align, left);
+		text-align: var(--caption-text-align, start);
 	}
 
 }
