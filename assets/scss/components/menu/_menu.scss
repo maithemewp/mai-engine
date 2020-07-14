@@ -29,6 +29,7 @@
 	padding: var(--menu-item-link-padding, (var(--spacing-sm) var(--spacing-xxs)));
 	color: var(--menu-item-link-color, var(--color-heading));
 	text-decoration: var(--menu-item-link-text-decoration, none);
+	text-underline-offset: var(--menu-item-link-text-decoration-offset, var(--spacing-xs)); // Not all browsers support this yet.
 
 	&-current,
 	&:hover,
@@ -70,7 +71,7 @@
 
 	// 3rd level menu items.
 	.menu-item-has-children > a::after {
-		transform: rotate(-90deg);
+		transform: rotate(-45deg);
 	}
 }
 
