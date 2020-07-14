@@ -172,9 +172,11 @@ function mai_render_template_part( $slug, array $args = [] ) {
  */
 function mai_has_template_part( $slug ) {
 	$id = mai_get_template_part_by_slug( $slug );
+
 	if ( $id ) {
 		return ! empty( get_post_field( 'post_content', $id ) );
 	}
+
 	return false;
 }
 
@@ -216,12 +218,6 @@ function mai_get_template_part_by_slug( $slug ) {
 	);
 
 	if ( empty( $id ) ) {
-		return 0;
-	}
-
-	$post = get_post( $id );
-
-	if ( ! $post ) {
 		return 0;
 	}
 
