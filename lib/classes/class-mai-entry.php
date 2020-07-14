@@ -1036,8 +1036,8 @@ class Mai_Entry {
 		// The wrap with the link.
 		genesis_markup(
 			[
-				'open'    => '<p %s>',
-				'close'   => '</p>',
+				'open'    => '<div %s>',
+				'close'   => '</div>',
 				'content' => $more_link,
 				'context' => 'entry-more',
 				'atts'    => [

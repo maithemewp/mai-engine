@@ -251,6 +251,26 @@ function mai_get_content_archive_settings() {
 					[
 						'setting'  => 'image_position',
 						'operator' => '==',
+						'value'    => 'left-top',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'right-top',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'left-bottom',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'right-bottom',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
 						'value'    => 'left-full',
 					],
 					[

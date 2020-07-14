@@ -34,7 +34,7 @@ p {
 	&:last-child {
 
 		@include mq(md) {
-			margin: 0;
+			--paragraph-margin: 0;
 		}
 	}
 }

@@ -61,7 +61,7 @@
 	display: flex;
 	flex: 1; /* 1 1 100% breaks image-left/right-full */
 	flex-direction: column;
-	justify-content: var(--align-text-vertical, center);
+	justify-content: var(--align-text-vertical);
 	padding: var(--entry-wrap-padding, 0);
 	color: var(--entry-wrap-color, unset);
 	transition: all 0.3s ease-in-out;

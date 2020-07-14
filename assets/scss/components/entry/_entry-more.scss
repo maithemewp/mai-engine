@@ -7,8 +7,12 @@
 
 	&:last-child {
 
+		.has-boxed[style*="--align-text-vertical:unset;"] & {
+			--entry-more-margin: auto 0 0;
+		}
+
 		.entry-more-link {
-			margin-bottom: 0;
+			--entry-more-link-margin: 0;
 		}
 	}
 }
