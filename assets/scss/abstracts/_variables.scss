@@ -1,5 +1,6 @@
 $all-buttons: append($all-buttons, ".button");
 $all-text-inputs: append($all-text-inputs, "select");
+$all-text-inputs: append($all-text-inputs, "optgroup");
 $all-headings: (h1, h2, h3, h4, h5, h6, legend);
 
 $breakpoint: 1200;

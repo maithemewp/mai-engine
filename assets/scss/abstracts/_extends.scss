@@ -3,7 +3,6 @@
 	flex-direction: column;
 	min-height: var(--body-min-height, 100vh);
 	min-height: -webkit-fill-available;
-	margin: 0;
 	color: var(--body-color, var(--color-body));
 	font-weight: var(--body-font-weight); // No fallback, always output by Kirki.
 	font-size: var(--body-font-size, var(--font-size-md));

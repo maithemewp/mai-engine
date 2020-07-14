@@ -37,7 +37,7 @@
 }
 
 .has-boxed:not([class*="has-image-left-full"]):not([class*="has-image-right-full"]) {
-	--entry-padding: var(--spacing-lg); /* must be a single value for use in calc() full "full" images */
+	--entry-padding: var(--spacing-lg); /* Must be a single value for use in calc() full "full" images */
 }
 
 .has-image-background,
@@ -117,6 +117,4 @@
 		--image-width: 100%;
 		--entry-flex-wrap: wrap;
 	}
-
 }
-
