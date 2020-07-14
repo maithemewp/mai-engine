@@ -54,9 +54,9 @@ function mai_create_template_parts( $current_screen ) {
 		add_action( 'admin_notices', function() use ( $templates_created ) {
 			echo '<div class="notice notice-success">';
 				if ( 1 === $templates_created ) {
-					printf( '<p>%s %s</p>', $templates_created, __( 'default template part created.', 'mai-engine' ) );
+					printf( '<p>%s %s</p>', $templates_created, __( 'default template part automatically created.', 'mai-engine' ) );
 				} else {
-					printf( '<p>%s %s</p>', $templates_created, __( 'default template parts created.', 'mai-engine' ) );
+					printf( '<p>%s %s</p>', $templates_created, __( 'default template parts automatically created.', 'mai-engine' ) );
 				}
 			echo '</div>';
 		});
