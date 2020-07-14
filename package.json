@@ -43,7 +43,6 @@
     "gulp-rtlcss": "^1.0.0",
     "gulp-sass": "^4.1.0",
     "gulp-sass-bulk-import": "^1.0.1",
-    "gulp-sequence": "^1.0.0",
     "gulp-sourcemaps": "^2.4.1",
     "gulp-stylelint": "^7.0.0",
     "gulp-uglify-es": "^2.0.0",
