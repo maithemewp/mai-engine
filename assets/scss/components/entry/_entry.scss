@@ -114,7 +114,10 @@
 @include mq(false, sm) {
 
 	.has-image-stack {
+		--entry-flex-direction: column;
+		--entry-flex-wrap: nowrap;
 		--image-width: 100%;
-		--entry-flex-wrap: wrap;
+		--entry-image-link-flex: 1 1 100%;
+		--entry-image-link-order: -1;
 	}
 }
