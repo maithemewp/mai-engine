@@ -1,4 +1,4 @@
-( function( $ ) {
+jQuery( document ).ready( function( $ ) {
 
 	// Get the sortable elements.
 	var $sortables = $( '.kirki-sortable-item[data-value^="genesis_"]' );
@@ -34,4 +34,4 @@
 		$sortables.toggleClass( 'mai-sortable-expanded' );
 	} );
 
-} )( jQuery );
+} );
