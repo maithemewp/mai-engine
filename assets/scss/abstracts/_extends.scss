@@ -135,6 +135,7 @@
 
 	@if ("small" == $style) {
 		font-size: var(--font-size-sm);
+		padding: 0.8em 1.25em; // Major third.
 	}
 
 	@if ("large" == $style) {
