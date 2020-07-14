@@ -19,9 +19,7 @@ module.exports = {
 	'build:js': [ [ 'build:scripts', 'build:blocks' ] ],
 	'build:images': [ require( './build/images' ) ],
 	'build:svg': [ require( './build/svg' ) ],
-	'build:i18n:potgen': [ require( './build/i18n' ) ],
-	'build:i18n:potomo': [ require( './build/potomo' ) ],
-	'build:i18n': [ [ 'build:i18n:potgen', 'build:i18n:potomo' ] ],
+	'build:i18n': [ require( './build/i18n' ) ],
 	'build': [ [ 'build:css', 'build:js', 'build:images', 'build:svg', 'build:i18n' ] ],
 	'build:styleguide': [ require( './build/styleguide' ) ],
 
