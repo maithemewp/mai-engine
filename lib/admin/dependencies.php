@@ -46,3 +46,49 @@ function mai_engine_plugin_dependencies( $dependencies ) {
 
 	return $dependencies;
 }
+
+add_action( 'after_setup_theme', 'mai_deactivate_bundled_plugins' );
+/**
+ * Deactivate plugins that are bundled as dependencies.
+ *
+ * @since 2.1.1
+ *
+ * @return void
+ */
+function mai_deactivate_bundled_plugins() {
+	$plugins = [
+		'advanced-custom-fields/acf.php',
+		'advanced-custom-fields-master/acf.php',
+		'advanced-custom-fields-pro/acf.php',
+		'advanced-custom-fields-pro-master/acf.php',
+		'kirki/kirki.php',
+		'kirki-master/kirki.php',
+	];
+
+	$deactivated = [];
+
+	foreach ( $plugins as $plugin ) {
+		if ( is_plugin_active( $plugin ) ) {
+			deactivate_plugins( $plugin );
+			$deactivated[] = $plugin;
+		}
+	}
+
+	if ( isset( $_GET['activate'] ) && sanitize_text_field( $_GET['activate'] ) ) {
+		add_action( 'admin_notices', function () use ( $deactivated ) {
+			echo '<style>.acf-deactivated + .updated{display:none}</style>';
+			echo '<div class="notice notice-warning acf-deactivated">';
+			foreach ( $deactivated as $plugin ) {
+				$plugin_dir  = explode( DIRECTORY_SEPARATOR, $plugin );
+				$plugin_name = mai_convert_case( $plugin_dir[0], 'title' );
+
+				printf(
+					'<p>%s %s</p>',
+					$plugin_name,
+					__( ' is bundled with Mai Engine and has been deactivated.', 'mai-engine' )
+				);
+			}
+			echo '</div>';
+		} );
+	}
+}

@@ -311,7 +311,6 @@ function mai_load_files() {
 		$files = array_merge(
 			$files,
 			[
-				'admin/acf',
 				'admin/blog',
 				'admin/dependencies',
 				'admin/editor',
@@ -337,10 +336,6 @@ function mai_load_files() {
 	}
 
 	foreach ( $files as $file ) {
-		$filename = __DIR__ . "/$file.php";
-
-		if ( is_readable( $filename ) ) {
-			require_once $filename;
-		}
+		require_once __DIR__ . "/$file.php";
 	}
 }
