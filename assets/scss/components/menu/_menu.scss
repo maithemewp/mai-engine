@@ -36,19 +36,24 @@
 	&:focus {
 		color: var(--menu-item-link-color-hover, var(--color-link));
 		text-decoration: var(--menu-item-link-text-decoration-hover, none);
+
+		> span {
+			filter: var(--menu-item-name-filter-hover, unset);
+		}
 	}
 
 	> span {
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		transition: var(--transition);
 	}
 }
 
 .has-dark-header:not(.header-stuck) {
 	--menu-item-link-color: var(--color-white);
 	--menu-item-link-color-hover: var(--color-white);
-	--menu-item-link-text-decoration-hover: underline;
+	--menu-item-name-filter-hover: brightness(0.8);
 }
 
 .menu-item-has-children {
