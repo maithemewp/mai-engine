@@ -1,4 +1,6 @@
 .sidebar {
+	font-size: var(--sidebar-font-size, var(--font-size-sm));
+
 	--widget-margin-bottom: var(--spacing-xl);
 	--entry-title-margin-bottom: var(--spacing-xxs);
 	--paragraph-margin: 0 0 var(--spacing-xs);
