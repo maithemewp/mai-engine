@@ -9,9 +9,6 @@
 	line-height: var(--menu-line-height, 1.219); // Perfect fourth.
 	columns: var(--menu-columns, auto);
 	list-style-type: none;
-
-	--link-text-decoration: none;
-	--link-text-decoration-hover: none;
 }
 
 .menu-item {
@@ -31,48 +28,49 @@
 	width: var(--menu-item-link-width, 100%);
 	padding: var(--menu-item-link-padding, (var(--spacing-sm) var(--spacing-xxs)));
 	color: var(--menu-item-link-color, var(--color-heading));
-	text-decoration: none;
+	text-decoration: var(--menu-item-link-text-decoration, none);
 
 	&-current,
 	&:hover,
 	&:focus {
 		color: var(--menu-item-link-color-hover, var(--color-link));
+		text-decoration: var(--menu-item-link-text-decoration-hover, none);
 	}
 
-	&.button {
-		--menu-item-link-color: var(--button-color, var(--color-white));
+	> span {
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
-}
-
-.menu-item-link > span {
-	display: flex;
-	align-items: center;
-	justify-content: center;
 }
 
 .has-dark-header:not(.header-stuck) {
 	--menu-item-link-color: var(--color-white);
 	--menu-item-link-color-hover: var(--color-white);
+	--menu-item-link-text-decoration-hover: underline;
 }
 
-.menu-item-has-children > a::after {
-	display: var(--menu-item-dropdown-toggle, inline-block);
-	width: 6px;
-	height: 6px;
-	margin-top: var(--menu-item-dropdown-margin-top, -6px);
-	margin-left: var(--menu-item-dropdown-margin-left, var(--spacing-xs));
-	border-color: currentColor;
-	border-style: solid;
-	border-top: 0;
-	border-right-width: 1px;
-	border-bottom-width: 1px;
-	border-left: 0;
-	transform: var(--sub-menu-toggle-transform, rotate(45deg));
-	content: "";
+.menu-item-has-children {
+
+	> a::after {
+		display: var(--menu-item-dropdown-toggle, inline-block);
+		width: 6px;
+		height: 6px;
+		margin-top: var(--menu-item-dropdown-margin-top, -6px);
+		margin-left: var(--menu-item-dropdown-margin-left, var(--spacing-xs));
+		border-color: currentColor;
+		border-style: solid;
+		border-top: 0;
+		border-right-width: 1px;
+		border-bottom-width: 1px;
+		border-left: 0;
+		transform: var(--sub-menu-toggle-transform, rotate(45deg));
+		content: "";
+	}
 
 	// 3rd level menu items.
-	.menu-item-has-children > a:after {
-		rotate: -90deg;
+	.menu-item-has-children > a::after {
+		transform: rotate(-90deg);
 	}
 }
 
