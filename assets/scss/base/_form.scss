@@ -17,7 +17,7 @@ label {
 	width: var(--input-width, 100%);
 	margin: var(--input-margin, 0);
 	padding: var(--input-padding, var(--spacing-md));
-	color: var(--input-color, currentColor);
+	color: var(--input-color, var(--color-body));
 	line-height: var(--input-line-height, 1);
 	background-color: var(--input-background-color, var(--color-white));
 	background-clip: padding-box; // Remove iOS box shadow.
