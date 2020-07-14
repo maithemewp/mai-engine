@@ -16,6 +16,12 @@ a {
 	}
 }
 
+.has-dark-background {
+	--link-color: currentColor;
+	--link-color-hover: currentColor;
+	--link-text-decoration: underline;
+}
+
 p {
 	width: var(--paragraph-width, auto);
 	margin: var(--paragraph-margin, 0 0 var(--spacing-md));
@@ -70,7 +76,7 @@ code,
 kbd,
 samp {
 	padding: var(--code-padding, (0.05em 0.5em));
-	font-size: var(--code-font-size, (90%));
+	font-size: var(--code-font-size, (0.9em));
 	font-family: var(--code-font-family, var(--font-code));
 	background: var(--code-background, var(--color-alt));
 	border-radius: var(--code-border-radius, var(--border-radius));

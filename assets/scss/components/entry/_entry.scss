@@ -1,17 +1,17 @@
 .entry {
 	position: var(--entry-position, static);
-	display: var(--entry-display, flex);
-	flex: var(--entry-flex, 1 1 calc((100% / var(--columns)) - var(--column-gap)));
+	display: var(--entry-display, (flex));
+	flex: var(--entry-flex, (1 1 calc((100% / var(--columns)) - var(--column-gap))));
 	flex-direction: var(--entry-flex-direction, column);
 	flex-wrap: var(--entry-flex-wrap, nowrap);
 	width: 100%;
-	max-width: var(--entry-max-width, calc((100% / var(--columns)) - var(--column-gap)));
+	max-width: var(--entry-max-width, (calc((100% / var(--columns)) - var(--column-gap))));
 	margin: var(--entry-margin, 0);
 	padding: var(--entry-padding, 0); /* must be a single value for use in calc() full "full" images */
 	overflow: var(--entry-overflow, unset);
 	text-align: var(--align-text);
-	background: var(--entry-background, unset);
-	border: var(--entry-border, unset);
+	background: var(--entry-background, (unset));
+	border: var(--entry-border, 0);
 	border-radius: var(--border-radius);
 	box-shadow: var(--entry-box-shadow, unset);
 }
@@ -37,7 +37,7 @@
 }
 
 .has-boxed:not([class*="has-image-left-full"]):not([class*="has-image-right-full"]) {
-	--entry-padding: var(--spacing-lg); /* must be a single value for use in calc() full "full" images */
+	--entry-padding: var(--spacing-lg); /* Must be a single value for use in calc() full "full" images */
 }
 
 .has-image-background,
@@ -47,7 +47,7 @@
 }
 
 .has-image-background .has-image {
-	--entry-title-color: var(--color-white);
+	--entry-title-link-color: var(--color-white);
 	--entry-wrap-color: var(--color-white);
 	--entry-overlay-background: rgba(0, 0, 0, var(--entry-overlay-opacity, 0.6));
 
@@ -61,7 +61,7 @@
 	display: flex;
 	flex: 1; /* 1 1 100% breaks image-left/right-full */
 	flex-direction: column;
-	justify-content: var(--align-text-vertical, center);
+	justify-content: var(--align-text-vertical);
 	padding: var(--entry-wrap-padding, 0);
 	color: var(--entry-wrap-color, unset);
 	transition: all 0.3s ease-in-out;
@@ -78,12 +78,13 @@
 
 .entries {
 	// Can't apply left/right margin because it overrides alignwide/alignfull.
-	margin-bottom: var(--entries-margin-top, var(--spacing-md));
+	margin-bottom: var(--entries-margin-bottom, var(--spacing-md));
 
+	--entry-image-line-height: 0;
 	--entry-meta-margin: 0 0 var(--spacing-md) 0;
 
 	&:last-child {
-		--entries-margin-top: 0;
+		--entries-margin-bottom: 0;
 	}
 }
 
@@ -114,9 +115,10 @@
 @include mq(false, sm) {
 
 	.has-image-stack {
+		--entry-flex-direction: column;
+		--entry-flex-wrap: nowrap;
 		--image-width: 100%;
-		--entry-flex-wrap: wrap;
+		--entry-image-link-flex: 1 1 100%;
+		--entry-image-link-order: -1;
 	}
-
 }
-

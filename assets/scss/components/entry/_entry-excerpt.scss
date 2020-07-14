@@ -2,15 +2,15 @@
 	display: block;
 	width: 100%;
 	margin: var(--entry-excerpt-margin, 0 0 var(--spacing-md));
-	font-size: var(--entry-excerpt-font-size, .9em);
+	font-size: var(--entry-excerpt-font-size, (0.9em));
 
 	&:last-child {
-		--entry-excerpt-margin: 0;
+		margin-bottom: 0;
 	}
 }
 
 .entry-excerpt-single {
+	font-style: italic;
 	--entry-excerpt-margin: 0 0 var(--spacing-xl);
 	--entry-excerpt-font-size: var(--font-size-lg);
-	font-style: italic;
 }

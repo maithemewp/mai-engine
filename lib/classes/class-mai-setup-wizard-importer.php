@@ -56,6 +56,8 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 		if ( 'customizer' === $content_type ) {
 			$this->import_customizer( $import_file );
 		}
+
+		do_action( 'mai_setup_wizard_after_import_all_content', $this->demos->get_chosen_demo() );
 	}
 
 	/**

@@ -14,10 +14,12 @@ add_filter( 'render_block', 'mai_render_cover_block', 10, 2 );
  * Convert cover block to inline image with custom srcset.
  * Changes inline styles to CSS custom properties for use in CSS.
  *
- * @param   string $block_content The existing block content.
- * @param   object $block         The cover block object.
+ * @since 0.1.0
  *
- * @return  string|HTML  The modified block HTML.
+ * @param  string $block_content The existing block content.
+ * @param  object $block         The cover block object.
+ *
+ * @return string
  */
 function mai_render_cover_block( $block_content, $block ) {
 
@@ -65,10 +67,10 @@ function mai_render_cover_block( $block_content, $block ) {
  *
  * @since 0.1.0
  *
- * @param   string $block_content The existing block content.
- * @param   int    $image_id      The cover block image ID.
+ * @param string $block_content The existing block content.
+ * @param int    $image_id      The cover block image ID.
  *
- * @return  string|HTML  The modified block HTML.
+ * @return string
  */
 function mai_add_cover_block_image( $block_content, $image_id ) {
 

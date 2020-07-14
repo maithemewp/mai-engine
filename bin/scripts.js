@@ -1,7 +1,7 @@
 'use strict';
 
 const gulp    = require( 'gulp' ),
-	  config  = require( '../../config' ),
+	  config  = require( './config' ),
 	  plumber = require( 'gulp-plumber' ),
 	  uglify  = require( 'gulp-uglify-es' ).default,
 	  rename  = require( 'gulp-rename' ),
@@ -9,7 +9,11 @@ const gulp    = require( 'gulp' ),
 	  notify  = require( 'gulp-notify' ),
 	  map     = require( 'lodash.map' );
 
-module.exports = function() {
+module.exports.blocks = function() {
+	return require( 'child_process' ).exec( 'npm run blocks' );
+};
+
+module.exports.js = function() {
 	const dir   = './assets/js/';
 	const files = fs.readdirSync( dir ).filter( function( file ) {
 		if ( file.indexOf( '.js' ) > + 1 ) return file;

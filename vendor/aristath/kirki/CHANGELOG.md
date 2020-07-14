@@ -1,3 +1,14 @@
+## 3.1.4 - July 11, 2020
+
+* Tweak: Updated Google-Fonts lists.
+* Tweak: Tooltip styling.
+* Fixed: Error in the WordPress customizer with WordPress 5.5.
+
+## 3.1.3 - May 19, 2020
+
+* Tweak: Updated Google-Fonts lists.
+* Tweak: Slightly tweaked some of the default control styles.
+
 ## 3.1.2 - 2020-04-20
 
 ### Fixed

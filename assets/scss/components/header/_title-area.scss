@@ -10,8 +10,16 @@
 	--link-text-decoration-hover: none;
 }
 
+.has-sticky-header {
+	--title-area-transition: all 250ms ease-in-out;
+}
+
 .has-dark-header:not(.header-stuck) {
 	--title-area-color: var(--color-white);
+
+	.title-area {
+		--link-color-hover: var(--color-white); // Site title hover.
+	}
 }
 
 .site-title {

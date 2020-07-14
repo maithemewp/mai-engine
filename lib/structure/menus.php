@@ -12,18 +12,19 @@
 // Allow shortcodes in nav menu items.
 add_filter( 'walker_nav_menu_start_el', 'do_shortcode' );
 
-add_filter( 'genesis_attr_nav-header-left', 'mai_header_nav_class' );
-add_filter( 'genesis_attr_nav-header-right', 'mai_header_nav_class' );
+add_filter( 'genesis_attr_nav-header-left', 'mai_add_header_nav_attributes' );
+add_filter( 'genesis_attr_nav-header-right', 'mai_add_header_nav_attributes' );
 /**
  * Adds nav-header left and right classes.
  *
- * @since 0.1.0
+ * @since 2.1.1
  *
  * @param array $atts Element attributes.
  *
- * @return mixed
+ * @return array
  */
-function mai_header_nav_class( $atts ) {
+function mai_add_header_nav_attributes( $atts ) {
+	$atts['id']    = $atts['class'];
 	$atts['class'] = 'nav-header ' . $atts['class'];
 
 	return $atts;
@@ -70,7 +71,6 @@ add_action( 'genesis_after_header', 'mai_after_header_menu' );
  * @return void
  */
 function mai_after_header_menu() {
-
 	if ( is_singular() && mai_is_element_hidden( 'after_header' ) ) {
 		return;
 	}
@@ -80,6 +80,22 @@ function mai_after_header_menu() {
 			'theme_location' => 'after-header',
 		]
 	);
+}
+
+add_filter( 'genesis_attr_nav-after-header', 'mai_add_after_header_nav_id' );
+/**
+ * Adds ID to after header nav for skip link anchor.
+ *
+ * @since 2.1.1
+ *
+ * @param array $atts Element attributes.
+ *
+ * @return array
+ */
+function mai_add_after_header_nav_id( $atts ) {
+	$atts['id'] = $atts['class'];
+
+	return $atts;
 }
 
 add_filter( 'walker_nav_menu_start_el', 'mai_replace_hash_with_void', 999 );
@@ -175,4 +191,30 @@ function mai_remove_menu_item_classes( $attribute ) {
 	}
 
 	return $attribute;
+}
+
+add_filter( 'genesis_skip_links_output', 'mai_add_nav_skip_links' );
+/**
+ * Adds navigation menu skip links.
+ *
+ * @since 2.1.1
+ *
+ * @param array $links Skip links.
+ *
+ * @return array
+ */
+function mai_add_nav_skip_links( $links ) {
+	if ( has_nav_menu( 'header-left' ) ) {
+		$links['nav-header-left'] = __( 'Skip to header left navigation', 'mai-engine' );
+	}
+
+	if ( has_nav_menu( 'header-right' ) ) {
+		$links['nav-header-right'] = __( 'Skip to header right navigation', 'mai-engine' );
+	}
+
+	if ( has_nav_menu( 'after-header' ) ) {
+		$links['nav-after-header'] = __( 'Skip to after header navigation', 'mai-engine' );
+	}
+
+	return $links;
 }

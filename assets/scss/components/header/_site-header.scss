@@ -25,12 +25,7 @@
 	--site-header-background: transparent;
 }
 
-.has-dark-header:not(.header-stuck) {
-	--link-color-hover: var(--color-white); // Site title hover.
-}
-
 .has-sticky-header {
-	--title-area-transition: all 250ms ease-in-out;
 
 	@include mq(sm) {
 		--site-header-position: sticky;

@@ -1,17 +1,38 @@
-# Copyright (C) 2020 mai-engine 1.0.0
-# This file is distributed under the same license as the mai-engine 1.0.0 package.
+# Copyright (C) 2020 BizBudding Inc.
+# This file is distributed under the same license as the Mai Engine plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: mai-engine 1.0.0\n"
+"Project-Id-Version: Mai Engine 2.1.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Basepath: ..\n"
-"X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.js\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"POT-Creation-Date: 2020-07-14T11:30:16+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.1.0\n"
+"X-Domain: mai-engine\n"
+
+#. Plugin Name of the plugin
+msgid "Mai Engine"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://github.com/maithemewp/mai-engine/"
+msgstr ""
+
+#. Description of the plugin
+msgid "The required plugin to power Mai child themes."
+msgstr ""
+
+#. Author of the plugin
+msgid "BizBudding Inc."
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://bizbudding.com/"
+msgstr ""
 
 #: config/_default.php:97
 msgid "Standard Content"
@@ -33,7 +54,8 @@ msgstr ""
 msgid "Sidebar, Content"
 msgstr ""
 
-#: config/_default.php:202, lib/functions/deprecated.php:110
+#: config/_default.php:202
+#: lib/functions/deprecated.php:110
 msgid "Mobile Menu"
 msgstr ""
 
@@ -57,195 +79,202 @@ msgstr ""
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/_default.php:400, lib/admin/hide-elements.php:106
+#: config/_default.php:400
+#: lib/admin/hide-elements.php:105
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default.php:526, lib/functions/deprecated.php:104
+#: config/_default.php:537
+#: lib/admin/hide-elements.php:121
+#: lib/functions/deprecated.php:104
 msgid "After Entry"
 msgstr ""
 
-#: config/_default.php:563, lib/functions/deprecated.php:98
+#: config/_default.php:572
+#: lib/functions/deprecated.php:98
 msgid "Sidebar"
 msgstr ""
 
-#: config/_default.php:564, lib/functions/deprecated.php:99
+#: config/_default.php:573
+#: lib/functions/deprecated.php:99
 msgid "The Sidebar widget area."
 msgstr ""
 
-#: lib/init.php:92
-msgid "Your theme does not support the "
+#: lib/blocks/icon.php:25
+msgid "Mai Icon"
 msgstr ""
 
-#: lib/init.php:94
-msgid " plugin. As a result, "
+#: lib/blocks/icon.php:26
+msgid "A custom icon block."
 msgstr ""
 
-#: lib/init.php:96
-msgid " has been deactivated."
+#: lib/blocks/icon.php:148
+#: lib/blocks/icon.php:153
+#: lib/blocks/icon.php:172
+msgid "Icon"
 msgstr ""
 
-#: lib/admin/hide-elements.php:27
-msgid "Hide Elements"
+#: lib/blocks/icon.php:159
+#: lib/blocks/divider.php:216
+msgid "Style"
 msgstr ""
 
-#: lib/admin/hide-elements.php:49
-msgid "Select elements to hide on this page."
+#: lib/blocks/icon.php:163
+#: lib/customize/single-content.php:134
+#: lib/customize/content-archives.php:516
+#: lib/customize/page-header.php:196
+msgid "Light"
 msgstr ""
 
-#: lib/admin/hide-elements.php:92, lib/functions/deprecated.php:72
-msgid "Before Header"
+#: lib/blocks/icon.php:164
+msgid "Regular"
 msgstr ""
 
-#: lib/admin/hide-elements.php:95, lib/customize/site-header.php:27
-msgid "Site Header"
+#: lib/blocks/icon.php:165
+msgid "Solid"
 msgstr ""
 
-#: lib/admin/hide-elements.php:98
-msgid "Sticky Header"
+#: lib/blocks/icon.php:166
+msgid "Brands"
 msgstr ""
 
-#: lib/admin/hide-elements.php:102
-msgid "Transparent Header"
+#: lib/blocks/icon.php:192
+msgid "Icon (Brands)"
 msgstr ""
 
-#: lib/admin/hide-elements.php:110, lib/admin/page-header.php:50, lib/customize/page-header.php:57
-msgid "Page Header"
+#: lib/blocks/icon.php:211
+#: lib/blocks/grid.php:715
+msgid "Display"
 msgstr ""
 
-#: lib/admin/hide-elements.php:114
-msgid "Breadcrumbs"
+#: lib/blocks/icon.php:215
+msgid "Block"
 msgstr ""
 
-#: lib/admin/hide-elements.php:117
-msgid "Entry Title"
+#: lib/blocks/icon.php:216
+msgid "Inline"
 msgstr ""
 
-#: lib/admin/hide-elements.php:118
-msgid "Entry Excerpt"
+#: lib/blocks/icon.php:225
+msgid "Align"
 msgstr ""
 
-#: lib/admin/hide-elements.php:119, lib/admin/term-image.php:46
-msgid "Featured Image"
+#: lib/blocks/icon.php:228
+#: lib/blocks/icon.php:428
+#: lib/customize/menus.php:54
+#: lib/customize/content-archives.php:423
+msgid "Left"
 msgstr ""
 
-#: lib/admin/hide-elements.php:122, lib/functions/deprecated.php:116
-msgid "Before Footer"
+#: lib/blocks/icon.php:229
+#: lib/blocks/grid.php:797
+#: lib/blocks/grid.php:1049
+#: lib/blocks/grid.php:1381
+#: lib/customize/menus.php:55
+#: lib/customize/content-archives.php:77
+#: lib/customize/content-archives.php:223
+#: lib/customize/content-archives.php:424
+#: lib/customize/page-header.php:128
+msgid "Center"
 msgstr ""
 
-#: lib/admin/hide-elements.php:126, lib/functions/deprecated.php:123
-msgid "Footer"
+#: lib/blocks/icon.php:230
+#: lib/blocks/icon.php:436
+#: lib/customize/menus.php:56
+#: lib/customize/content-archives.php:425
+msgid "Right"
 msgstr ""
 
-#: lib/admin/hide-elements.php:130, lib/functions/deprecated.php:129
-msgid "Footer Credits"
+#: lib/blocks/icon.php:247
+msgid "Size"
 msgstr ""
 
-#: lib/admin/images.php:30
-msgid "Landscape (Small)"
+#: lib/blocks/icon.php:248
+msgid "Use 0 for theme default"
 msgstr ""
 
-#: lib/admin/images.php:31
-msgid "Landscape (Medium)"
+#: lib/blocks/icon.php:256
+msgid "Styles"
 msgstr ""
 
-#: lib/admin/images.php:32
-msgid "Landscape (Large)"
+#: lib/blocks/icon.php:261
+msgid "Icon Color"
 msgstr ""
 
-#: lib/admin/images.php:33
-msgid "Portrait (Small)"
+#: lib/blocks/icon.php:267
+#: lib/blocks/grid.php:804
+#: lib/functions/utilities.php:464
+#: lib/customize/content-archives.php:84
+msgid "Background"
 msgstr ""
 
-#: lib/admin/images.php:34
-msgid "Portrait (Medium)"
+#: lib/blocks/icon.php:273
+msgid "Border Color"
 msgstr ""
 
-#: lib/admin/images.php:35
-msgid "Portrait (Large)"
+#: lib/blocks/icon.php:279
+msgid "Border Width"
 msgstr ""
 
-#: lib/admin/images.php:36
-msgid "Square (Small)"
+#: lib/blocks/icon.php:298
+msgid "Box Shadow"
 msgstr ""
 
-#: lib/admin/images.php:37
-msgid "Square (Medium)"
+#: lib/blocks/icon.php:304
+#: lib/blocks/icon.php:354
+msgid "X Offset"
 msgstr ""
 
-#: lib/admin/images.php:38
-msgid "Square (Large)"
+#: lib/blocks/icon.php:317
+#: lib/blocks/icon.php:367
+msgid "Y Offset"
 msgstr ""
 
-#: lib/admin/images.php:39
-msgid "Tiny"
+#: lib/blocks/icon.php:330
+#: lib/blocks/icon.php:380
+msgid "Blur"
 msgstr ""
 
-#: lib/admin/images.php:40
-msgid "Cover"
+#: lib/blocks/icon.php:348
+msgid "Text Shadow"
 msgstr ""
 
-#: lib/admin/page-header.php:56, lib/admin/term-image.php:51, lib/functions/grid.php:79, lib/functions/loop.php:389, lib/functions/loop.php:461
-msgid "Image"
+#: lib/blocks/icon.php:398
+msgid "Padding"
 msgstr ""
 
-#: lib/admin/page-header.php:65
-msgid "Description"
+#: lib/blocks/icon.php:406
+msgid "Margin"
 msgstr ""
 
-#: lib/admin/settings.php:22, lib/admin/settings.php:23, lib/functions/deprecated.php:138
-msgid "Mai Theme"
+#: lib/blocks/icon.php:412
+#: lib/blocks/grid.php:1069
+#: lib/blocks/grid.php:1408
+#: lib/customize/content-archives.php:235
+#: lib/customize/content-archives.php:443
+#: lib/customize/page-header.php:97
+msgid "Top"
 msgstr ""
 
-#: lib/admin/settings.php:46
-msgid "Theme"
+#: lib/blocks/icon.php:420
+#: lib/blocks/grid.php:1071
+#: lib/blocks/grid.php:1410
+#: lib/customize/content-archives.php:237
+#: lib/customize/content-archives.php:445
+#: lib/customize/page-header.php:98
+msgid "Bottom"
 msgstr ""
 
-#: lib/admin/settings.php:50
-msgid "Hi! Thanks for choosing Mai"
+#: lib/blocks/icon.php:444
+msgid "Round Corners"
 msgstr ""
 
-#: lib/admin/settings.php:52
-msgid "Quick Links"
+#: lib/blocks/icon.php:449
+msgid "50%"
 msgstr ""
 
-#: lib/admin/settings.php:57
-msgid "Support"
-msgstr ""
-
-#: lib/admin/settings.php:58
-msgid "BizBudding"
-msgstr ""
-
-#: lib/admin/settings.php:59
-msgid "Theme Demos"
-msgstr ""
-
-#: lib/admin/settings.php:77
-msgid "Reusable Blocks"
-msgstr ""
-
-#: lib/admin/setup-wizard.php:81
-msgid "Setup Wizard"
-msgstr ""
-
-#: lib/admin/setup-wizard.php:149
-msgid "Mai Theme Setup Wizard Page"
-msgstr ""
-
-#: lib/admin/setup-wizard.php:153
-msgid "Welcome to the Mai Setup Wizard! Enter your email address in the form below to receive automatic updates, share your environment information, win free swag, receive the latest news and get special offers. To learn more about providing your email and claiming your free goodies, visit the"
-msgstr ""
-
-#: lib/admin/setup-wizard.php:155
-msgid "on BizBudding for all the details, terms and conditions of this program."
-msgstr ""
-
-#: lib/admin/template-parts.php:60
-msgid "Active"
-msgstr ""
-
-#: lib/blocks/divider.php:25, lib/blocks/divider.php:212
+#: lib/blocks/divider.php:25
+#: lib/blocks/divider.php:212
 msgid "Mai Divider"
 msgstr ""
 
@@ -253,27 +282,28 @@ msgstr ""
 msgid "A custom divider block."
 msgstr ""
 
-#: lib/blocks/divider.php:216, lib/blocks/icon.php:159
-msgid "Style"
-msgstr ""
-
-#: lib/blocks/divider.php:220, lib/customize/page-header.php:212
+#: lib/blocks/divider.php:220
+#: lib/customize/page-header.php:212
 msgid "Angle"
 msgstr ""
 
-#: lib/blocks/divider.php:221, lib/customize/page-header.php:213
+#: lib/blocks/divider.php:221
+#: lib/customize/page-header.php:213
 msgid "Curve"
 msgstr ""
 
-#: lib/blocks/divider.php:222, lib/customize/page-header.php:216
+#: lib/blocks/divider.php:222
+#: lib/customize/page-header.php:216
 msgid "Wave"
 msgstr ""
 
-#: lib/blocks/divider.php:223, lib/customize/page-header.php:214
+#: lib/blocks/divider.php:223
+#: lib/customize/page-header.php:214
 msgid "Point"
 msgstr ""
 
-#: lib/blocks/divider.php:224, lib/customize/page-header.php:215
+#: lib/blocks/divider.php:224
+#: lib/customize/page-header.php:215
 msgid "Round"
 msgstr ""
 
@@ -282,22 +312,37 @@ msgid "Height"
 msgstr ""
 
 #: lib/blocks/divider.php:233
+#: lib/customize/page-header.php:230
+#: assets/js/blocks/layout-settings.js:17
+#: assets/js/min/blocks.js:655
 msgid "XS"
 msgstr ""
 
 #: lib/blocks/divider.php:234
+#: lib/customize/page-header.php:231
+#: assets/js/blocks/layout-settings.js:21
+#: assets/js/min/blocks.js:659
 msgid "SM"
 msgstr ""
 
 #: lib/blocks/divider.php:235
+#: lib/customize/page-header.php:232
+#: assets/js/blocks/layout-settings.js:25
+#: assets/js/min/blocks.js:663
 msgid "MD"
 msgstr ""
 
 #: lib/blocks/divider.php:236
+#: lib/customize/page-header.php:233
+#: assets/js/blocks/layout-settings.js:29
+#: assets/js/min/blocks.js:667
 msgid "LG"
 msgstr ""
 
 #: lib/blocks/divider.php:237
+#: lib/customize/page-header.php:234
+#: assets/js/blocks/layout-settings.js:33
+#: assets/js/min/blocks.js:671
 msgid "XL"
 msgstr ""
 
@@ -313,7 +358,12 @@ msgstr ""
 msgid "Color"
 msgstr ""
 
-#: lib/blocks/grid.php:29, lib/blocks/grid.php:197
+#: lib/blocks/heading.php:29
+msgid "Subheading"
+msgstr ""
+
+#: lib/blocks/grid.php:29
+#: lib/blocks/grid.php:197
 msgid "Mai Post Grid"
 msgstr ""
 
@@ -321,7 +371,8 @@ msgstr ""
 msgid "Display posts/pages/cpts in various layouts."
 msgstr ""
 
-#: lib/blocks/grid.php:47, lib/blocks/grid.php:215
+#: lib/blocks/grid.php:47
+#: lib/blocks/grid.php:215
 msgid "Mai Term Grid"
 msgstr ""
 
@@ -329,11 +380,9 @@ msgstr ""
 msgid "Display categories/tags/terms in various layouts."
 msgstr ""
 
-#: lib/blocks/grid.php:715, lib/blocks/icon.php:211
-msgid "Display"
-msgstr ""
-
-#: lib/blocks/grid.php:722, lib/customize/content-archives.php:16, lib/customize/single-content.php:16
+#: lib/blocks/grid.php:722
+#: lib/customize/single-content.php:16
+#: lib/customize/content-archives.php:16
 msgid "Show"
 msgstr ""
 
@@ -341,179 +390,232 @@ msgstr ""
 msgid "Show/hide and re-order elements."
 msgstr ""
 
-#: lib/blocks/grid.php:739, lib/customize/content-archives.php:36, lib/customize/single-content.php:25
+#: lib/blocks/grid.php:739
+#: lib/customize/single-content.php:25
+#: lib/customize/content-archives.php:36
 msgid "Image Orientation"
 msgstr ""
 
-#: lib/blocks/grid.php:762, lib/customize/content-archives.php:51, lib/customize/single-content.php:40
+#: lib/blocks/grid.php:762
+#: lib/customize/single-content.php:40
+#: lib/customize/content-archives.php:51
 msgid "Image Size"
 msgstr ""
 
-#: lib/blocks/grid.php:790, lib/customize/content-archives.php:71
+#: lib/blocks/grid.php:790
+#: lib/customize/content-archives.php:71
 msgid "Image Position"
 msgstr ""
 
-#: lib/blocks/grid.php:796, lib/customize/content-archives.php:76
+#: lib/blocks/grid.php:796
+#: lib/customize/content-archives.php:76
 msgid "Full"
 msgstr ""
 
-#: lib/blocks/grid.php:797, lib/blocks/grid.php:1049, lib/blocks/grid.php:1381, lib/blocks/icon.php:229, lib/customize/content-archives.php:77, lib/customize/content-archives.php:223, lib/customize/content-archives.php:424, lib/customize/menus.php:55, lib/customize/page-header.php:128
-msgid "Center"
-msgstr ""
-
-#: lib/blocks/grid.php:798, lib/customize/content-archives.php:78
+#: lib/blocks/grid.php:798
+#: lib/customize/content-archives.php:78
 msgid "Left Top"
 msgstr ""
 
-#: lib/blocks/grid.php:799, lib/customize/content-archives.php:79
+#: lib/blocks/grid.php:799
+#: lib/customize/content-archives.php:79
 msgid "Left Middle"
 msgstr ""
 
-#: lib/blocks/grid.php:800, lib/customize/content-archives.php:80
+#: lib/blocks/grid.php:800
+#: lib/customize/content-archives.php:80
 msgid "Left Full"
 msgstr ""
 
-#: lib/blocks/grid.php:801, lib/customize/content-archives.php:81
+#: lib/blocks/grid.php:801
+#: lib/customize/content-archives.php:81
 msgid "Right Top"
 msgstr ""
 
-#: lib/blocks/grid.php:802, lib/customize/content-archives.php:82
+#: lib/blocks/grid.php:802
+#: lib/customize/content-archives.php:82
 msgid "Right Middle"
 msgstr ""
 
-#: lib/blocks/grid.php:803, lib/customize/content-archives.php:83
+#: lib/blocks/grid.php:803
+#: lib/customize/content-archives.php:83
 msgid "Right Full"
 msgstr ""
 
-#: lib/blocks/grid.php:804, lib/blocks/icon.php:267, lib/customize/colors.php:47, lib/customize/content-archives.php:84
-msgid "Background"
-msgstr ""
-
-#: lib/blocks/grid.php:823, lib/customize/content-archives.php:96
+#: lib/blocks/grid.php:823
+#: lib/customize/content-archives.php:96
 msgid "Image Width"
 msgstr ""
 
-#: lib/blocks/grid.php:829, lib/customize/content-archives.php:101
+#: lib/blocks/grid.php:829
+#: lib/customize/content-archives.php:101
 msgid "One Fourth"
 msgstr ""
 
-#: lib/blocks/grid.php:830, lib/customize/content-archives.php:102
+#: lib/blocks/grid.php:830
+#: lib/customize/content-archives.php:102
 msgid "One Third"
 msgstr ""
 
-#: lib/blocks/grid.php:831, lib/customize/content-archives.php:103
+#: lib/blocks/grid.php:831
+#: lib/customize/content-archives.php:103
 msgid "One Half"
 msgstr ""
 
-#: lib/blocks/grid.php:940, lib/customize/content-archives.php:149, lib/customize/single-content.php:60, lib/functions/grid.php:81, lib/functions/loop.php:392, lib/functions/loop.php:464
+#: lib/blocks/grid.php:940
+#: lib/functions/grid.php:81
+#: lib/functions/loop.php:392
+#: lib/functions/loop.php:464
+#: lib/customize/single-content.php:60
+#: lib/customize/content-archives.php:149
 msgid "Header Meta"
 msgstr ""
 
-#: lib/blocks/grid.php:963, lib/customize/content-archives.php:163
+#: lib/blocks/grid.php:963
+#: lib/customize/content-archives.php:163
 msgid "Content Limit"
 msgstr ""
 
-#: lib/blocks/grid.php:964, lib/customize/content-archives.php:164
+#: lib/blocks/grid.php:964
+#: lib/customize/content-archives.php:164
 msgid "Limit the number of characters shown for the content or excerpt. Use 0 for no limit."
 msgstr ""
 
-#: lib/blocks/grid.php:995, lib/customize/content-archives.php:185
+#: lib/blocks/grid.php:995
+#: lib/customize/content-archives.php:185
 msgid "More Link Text"
 msgstr ""
 
-#: lib/blocks/grid.php:1018, lib/customize/content-archives.php:202, lib/customize/single-content.php:74, lib/functions/grid.php:85, lib/functions/loop.php:399, lib/functions/loop.php:470
+#: lib/blocks/grid.php:1018
+#: lib/functions/grid.php:85
+#: lib/functions/loop.php:399
+#: lib/functions/loop.php:470
+#: lib/customize/single-content.php:74
+#: lib/customize/content-archives.php:202
 msgid "Footer Meta"
 msgstr ""
 
-#: lib/blocks/grid.php:1041, lib/customize/content-archives.php:216
+#: lib/blocks/grid.php:1041
+#: lib/customize/content-archives.php:216
 msgid "Align Text"
 msgstr ""
 
-#: lib/blocks/grid.php:1047, lib/blocks/grid.php:1068, lib/blocks/grid.php:1379, lib/blocks/grid.php:1407, lib/customize/content-archives.php:221, lib/customize/content-archives.php:234, lib/customize/content-archives.php:422, lib/customize/content-archives.php:442
+#: lib/blocks/grid.php:1047
+#: lib/blocks/grid.php:1068
+#: lib/blocks/grid.php:1379
+#: lib/blocks/grid.php:1407
+#: lib/customize/content-archives.php:221
+#: lib/customize/content-archives.php:234
+#: lib/customize/content-archives.php:422
+#: lib/customize/content-archives.php:442
+#: assets/js/blocks/layout-settings.js:192
+#: assets/js/blocks/layout-settings.js:220
+#: assets/js/blocks/layout-settings.js:248
+#: assets/js/min/blocks.js:830
+#: assets/js/min/blocks.js:858
+#: assets/js/min/blocks.js:886
 msgid "Clear"
 msgstr ""
 
-#: lib/blocks/grid.php:1048, lib/blocks/grid.php:1380, lib/customize/content-archives.php:222, lib/customize/page-header.php:127
+#: lib/blocks/grid.php:1048
+#: lib/blocks/grid.php:1380
+#: lib/customize/content-archives.php:222
+#: lib/customize/page-header.php:127
 msgid "Start"
 msgstr ""
 
-#: lib/blocks/grid.php:1050, lib/blocks/grid.php:1382, lib/customize/content-archives.php:224, lib/customize/page-header.php:129
+#: lib/blocks/grid.php:1050
+#: lib/blocks/grid.php:1382
+#: lib/customize/content-archives.php:224
+#: lib/customize/page-header.php:129
 msgid "End"
 msgstr ""
 
-#: lib/blocks/grid.php:1062, lib/customize/content-archives.php:229
+#: lib/blocks/grid.php:1062
+#: lib/customize/content-archives.php:229
 msgid "Align Text (vertical)"
 msgstr ""
 
-#: lib/blocks/grid.php:1069, lib/blocks/grid.php:1408, lib/blocks/icon.php:412, lib/customize/content-archives.php:235, lib/customize/content-archives.php:443, lib/customize/page-header.php:97
-msgid "Top"
-msgstr ""
-
-#: lib/blocks/grid.php:1070, lib/blocks/grid.php:1409, lib/customize/content-archives.php:236, lib/customize/content-archives.php:444
+#: lib/blocks/grid.php:1070
+#: lib/blocks/grid.php:1409
+#: lib/customize/content-archives.php:236
+#: lib/customize/content-archives.php:444
 msgid "Middle"
 msgstr ""
 
-#: lib/blocks/grid.php:1071, lib/blocks/grid.php:1410, lib/blocks/icon.php:420, lib/customize/content-archives.php:237, lib/customize/content-archives.php:445, lib/customize/page-header.php:98
-msgid "Bottom"
-msgstr ""
-
-#: lib/blocks/grid.php:1169, lib/customize/content-archives.php:271
+#: lib/blocks/grid.php:1169
+#: lib/customize/content-archives.php:271
 msgid "Stack Image"
 msgstr ""
 
-#: lib/blocks/grid.php:1175, lib/customize/content-archives.php:307
+#: lib/blocks/grid.php:1175
+#: lib/customize/content-archives.php:307
 msgid "Stack image and content on mobile"
 msgstr ""
 
-#: lib/blocks/grid.php:1254, lib/customize/content-archives.php:343
+#: lib/blocks/grid.php:1254
+#: lib/customize/content-archives.php:343
 msgid "Boxed"
 msgstr ""
 
-#: lib/blocks/grid.php:1260, lib/customize/content-archives.php:350
+#: lib/blocks/grid.php:1260
+#: lib/customize/content-archives.php:350
 msgid "Display boxed styling"
 msgstr ""
 
 #: lib/blocks/grid.php:1270
+#: assets/js/blocks/layout-settings.js:163
+#: assets/js/min/blocks.js:801
 msgid "Layout"
 msgstr ""
 
-#: lib/blocks/grid.php:1277, lib/customize/content-archives.php:357
+#: lib/blocks/grid.php:1277
+#: lib/customize/content-archives.php:357
 msgid "Columns (desktop)"
 msgstr ""
 
-#: lib/blocks/grid.php:1299, lib/customize/content-archives.php:365
+#: lib/blocks/grid.php:1299
+#: lib/customize/content-archives.php:365
 msgid "Custom responsive columns"
 msgstr ""
 
-#: lib/blocks/grid.php:1304, lib/customize/content-archives.php:372
+#: lib/blocks/grid.php:1304
+#: lib/customize/content-archives.php:372
 msgid "Columns (lg tablets)"
 msgstr ""
 
-#: lib/blocks/grid.php:1327, lib/customize/content-archives.php:387
+#: lib/blocks/grid.php:1327
+#: lib/customize/content-archives.php:387
 msgid "Columns (sm tablets)"
 msgstr ""
 
-#: lib/blocks/grid.php:1350, lib/customize/content-archives.php:402
+#: lib/blocks/grid.php:1350
+#: lib/customize/content-archives.php:402
 msgid "Columns (mobile)"
 msgstr ""
 
-#: lib/blocks/grid.php:1373, lib/customize/content-archives.php:417
+#: lib/blocks/grid.php:1373
+#: lib/customize/content-archives.php:417
 msgid "Align Columns"
 msgstr ""
 
-#: lib/blocks/grid.php:1401, lib/customize/content-archives.php:437
+#: lib/blocks/grid.php:1401
+#: lib/customize/content-archives.php:437
 msgid "Align Columns (vertical)"
 msgstr ""
 
-#: lib/blocks/grid.php:1429, lib/customize/content-archives.php:457
+#: lib/blocks/grid.php:1429
+#: lib/customize/content-archives.php:457
 msgid "Column Gap"
 msgstr ""
 
-#: lib/blocks/grid.php:1437, lib/customize/content-archives.php:464
+#: lib/blocks/grid.php:1437
+#: lib/customize/content-archives.php:464
 msgid "Row Gap"
 msgstr ""
 
-#: lib/blocks/grid.php:1450, lib/blocks/grid.php:2009
+#: lib/blocks/grid.php:1450
+#: lib/blocks/grid.php:2009
 msgid "Entries"
 msgstr ""
 
@@ -521,7 +623,8 @@ msgstr ""
 msgid "Post Type"
 msgstr ""
 
-#: lib/blocks/grid.php:1476, lib/blocks/grid.php:1966
+#: lib/blocks/grid.php:1476
+#: lib/blocks/grid.php:1966
 msgid "Get Entries By"
 msgstr ""
 
@@ -529,7 +632,8 @@ msgstr ""
 msgid "Default Query"
 msgstr ""
 
-#: lib/blocks/grid.php:1483, lib/blocks/grid.php:1973
+#: lib/blocks/grid.php:1483
+#: lib/blocks/grid.php:1973
 msgid "Choice"
 msgstr ""
 
@@ -537,7 +641,10 @@ msgstr ""
 msgid "Taxonomy/Meta"
 msgstr ""
 
-#: lib/blocks/grid.php:1485, lib/blocks/grid.php:1752, lib/blocks/grid.php:1974, lib/blocks/grid.php:2058
+#: lib/blocks/grid.php:1485
+#: lib/blocks/grid.php:1752
+#: lib/blocks/grid.php:1974
+#: lib/blocks/grid.php:2058
 msgid "Parent"
 msgstr ""
 
@@ -553,11 +660,14 @@ msgstr ""
 msgid "Taxonomies"
 msgstr ""
 
-#: lib/blocks/grid.php:1539, lib/blocks/grid.php:1642
+#: lib/blocks/grid.php:1539
+#: lib/blocks/grid.php:1642
 msgid "Add Condition"
 msgstr ""
 
-#: lib/blocks/grid.php:1543, lib/blocks/grid.php:1952, lib/blocks/grid.php:1972
+#: lib/blocks/grid.php:1543
+#: lib/blocks/grid.php:1952
+#: lib/blocks/grid.php:1972
 msgid "Taxonomy"
 msgstr ""
 
@@ -581,11 +691,13 @@ msgstr ""
 msgid "Taxonomies Relation"
 msgstr ""
 
-#: lib/blocks/grid.php:1602, lib/blocks/grid.php:1708
+#: lib/blocks/grid.php:1602
+#: lib/blocks/grid.php:1708
 msgid "And"
 msgstr ""
 
-#: lib/blocks/grid.php:1603, lib/blocks/grid.php:1709
+#: lib/blocks/grid.php:1603
+#: lib/blocks/grid.php:1709
 msgid "Or"
 msgstr ""
 
@@ -641,35 +753,47 @@ msgstr ""
 msgid "Meta Keys Relation"
 msgstr ""
 
-#: lib/blocks/grid.php:1747, lib/blocks/grid.php:2053
+#: lib/blocks/grid.php:1747
+#: lib/blocks/grid.php:2053
 msgid "Show children of current entry"
 msgstr ""
 
-#: lib/blocks/grid.php:1781, lib/blocks/grid.php:1985
+#: lib/blocks/grid.php:1781
+#: lib/blocks/grid.php:1985
 msgid "Number of Entries"
 msgstr ""
 
-#: lib/blocks/grid.php:1782, lib/blocks/grid.php:1986
+#: lib/blocks/grid.php:1782
+#: lib/blocks/grid.php:1986
 msgid "Use 0 to show all."
 msgstr ""
 
-#: lib/blocks/grid.php:1805, lib/blocks/grid.php:2089
+#: lib/blocks/grid.php:1805
+#: lib/blocks/grid.php:2089
 msgid "Offset"
 msgstr ""
 
-#: lib/blocks/grid.php:1806, lib/blocks/grid.php:2090
+#: lib/blocks/grid.php:1806
+#: lib/blocks/grid.php:2090
 msgid "Skip this number of entries."
 msgstr ""
 
-#: lib/blocks/grid.php:1829, lib/blocks/grid.php:2113
+#: lib/blocks/grid.php:1829
+#: lib/blocks/grid.php:2113
 msgid "Order By"
 msgstr ""
 
-#: lib/blocks/grid.php:1835, lib/blocks/grid.php:2119, lib/functions/grid.php:80, lib/functions/loop.php:391, lib/functions/loop.php:463
+#: lib/blocks/grid.php:1835
+#: lib/blocks/grid.php:2119
+#: lib/functions/grid.php:80
+#: lib/functions/loop.php:391
+#: lib/functions/loop.php:463
 msgid "Title"
 msgstr ""
 
-#: lib/blocks/grid.php:1836, lib/blocks/grid.php:2120
+#: lib/blocks/grid.php:1836
+#: lib/blocks/grid.php:2120
+#: lib/admin/template-parts.php:102
 msgid "Slug"
 msgstr ""
 
@@ -701,35 +825,43 @@ msgstr ""
 msgid "Meta key"
 msgstr ""
 
-#: lib/blocks/grid.php:1881, lib/blocks/grid.php:2142
+#: lib/blocks/grid.php:1881
+#: lib/blocks/grid.php:2142
 msgid "Order"
 msgstr ""
 
-#: lib/blocks/grid.php:1887, lib/blocks/grid.php:2148
+#: lib/blocks/grid.php:1887
+#: lib/blocks/grid.php:2148
 msgid "Ascending"
 msgstr ""
 
-#: lib/blocks/grid.php:1888, lib/blocks/grid.php:2149
+#: lib/blocks/grid.php:1888
+#: lib/blocks/grid.php:2149
 msgid "Descending"
 msgstr ""
 
-#: lib/blocks/grid.php:1904, lib/blocks/grid.php:2165
+#: lib/blocks/grid.php:1904
+#: lib/blocks/grid.php:2165
 msgid "Exclude Entries"
 msgstr ""
 
-#: lib/blocks/grid.php:1905, lib/blocks/grid.php:2166
+#: lib/blocks/grid.php:1905
+#: lib/blocks/grid.php:2166
 msgid "Hide specific entries. Choose all that apply."
 msgstr ""
 
-#: lib/blocks/grid.php:1929, lib/blocks/grid.php:2193
+#: lib/blocks/grid.php:1929
+#: lib/blocks/grid.php:2193
 msgid "Exclude"
 msgstr ""
 
-#: lib/blocks/grid.php:1935, lib/blocks/grid.php:2202
+#: lib/blocks/grid.php:1935
+#: lib/blocks/grid.php:2202
 msgid "Exclude displayed"
 msgstr ""
 
-#: lib/blocks/grid.php:1936, lib/blocks/grid.php:2203
+#: lib/blocks/grid.php:1936
+#: lib/blocks/grid.php:2203
 msgid "Exclude current"
 msgstr ""
 
@@ -749,124 +881,159 @@ msgstr ""
 msgid "Exclude terms with no posts"
 msgstr ""
 
-#: lib/blocks/heading.php:25
-msgid "Subheading"
-msgstr ""
-
-#: lib/blocks/icon.php:25
-msgid "Mai Icon"
-msgstr ""
-
-#: lib/blocks/icon.php:26
-msgid "A custom icon block."
-msgstr ""
-
-#: lib/blocks/icon.php:148, lib/blocks/icon.php:153, lib/blocks/icon.php:172
-msgid "Icon"
-msgstr ""
-
-#: lib/blocks/icon.php:163, lib/customize/content-archives.php:516, lib/customize/page-header.php:196, lib/customize/single-content.php:134
-msgid "Light"
-msgstr ""
-
-#: lib/blocks/icon.php:164
-msgid "Regular"
-msgstr ""
-
-#: lib/blocks/icon.php:165
-msgid "Solid"
-msgstr ""
-
-#: lib/blocks/icon.php:166
-msgid "Brands"
-msgstr ""
-
-#: lib/blocks/icon.php:192
-msgid "Icon (Brands)"
-msgstr ""
-
-#: lib/blocks/icon.php:215
-msgid "Block"
-msgstr ""
-
-#: lib/blocks/icon.php:216
-msgid "Inline"
-msgstr ""
-
-#: lib/blocks/icon.php:225
-msgid "Align"
-msgstr ""
-
-#: lib/blocks/icon.php:228, lib/blocks/icon.php:428, lib/customize/content-archives.php:423, lib/customize/menus.php:54
-msgid "Left"
-msgstr ""
-
-#: lib/blocks/icon.php:230, lib/blocks/icon.php:436, lib/customize/content-archives.php:425, lib/customize/menus.php:56
-msgid "Right"
-msgstr ""
-
-#: lib/blocks/icon.php:247
-msgid "Size"
-msgstr ""
-
-#: lib/blocks/icon.php:248
-msgid "Use 0 for theme default"
-msgstr ""
-
-#: lib/blocks/icon.php:256
-msgid "Styles"
-msgstr ""
-
-#: lib/blocks/icon.php:261
-msgid "Icon Color"
-msgstr ""
-
-#: lib/blocks/icon.php:273
-msgid "Border Color"
-msgstr ""
-
-#: lib/blocks/icon.php:279
-msgid "Border Width"
-msgstr ""
-
-#: lib/blocks/icon.php:298
-msgid "Box Shadow"
-msgstr ""
-
-#: lib/blocks/icon.php:304, lib/blocks/icon.php:354
-msgid "X Offset"
-msgstr ""
-
-#: lib/blocks/icon.php:317, lib/blocks/icon.php:367
-msgid "Y Offset"
-msgstr ""
-
-#: lib/blocks/icon.php:330, lib/blocks/icon.php:380
-msgid "Blur"
-msgstr ""
-
-#: lib/blocks/icon.php:348
-msgid "Text Shadow"
-msgstr ""
-
-#: lib/blocks/icon.php:398
-msgid "Padding"
-msgstr ""
-
-#: lib/blocks/icon.php:406
-msgid "Margin"
-msgstr ""
-
-#: lib/blocks/icon.php:444
-msgid "Round Corners"
-msgstr ""
-
-#: lib/blocks/icon.php:449
-msgid "50%"
-msgstr ""
-
-#: lib/blocks/social-links.php:25
+#: lib/blocks/social-links.php:29
 msgid "No Background"
+msgstr ""
+
+#: lib/init.php:144
+msgid "Your theme does not support the "
+msgstr ""
+
+#: lib/init.php:146
+msgid " plugin. As a result, "
+msgstr ""
+
+#: lib/init.php:148
+msgid " has been deactivated."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-admin.php:95
+msgid "Return to dashboard"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:80
+msgid "Email address can not be empty."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:84
+#: lib/classes/class-mai-setup-wizard-steps.php:112
+msgid "Please enter a valid email address."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:101
+msgid "Email address sent."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:104
+msgid "Email entered but not sent."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:127
+msgid " selected."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:130
+#: lib/classes/class-mai-setup-wizard-importer.php:91
+msgid "No demo selected."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:148
+msgid "No plugins selected."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:165
+msgid "Error object from API communication for plugin "
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:172
+msgid "Error installing "
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:178
+msgid "Installed "
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-ajax.php:197
+msgid "No field value."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-service-provider.php:68
+msgid "Mai Setup Wizard"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-importer.php:97
+msgid " could not be retrieved."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-importer.php:103
+msgid " response body could not be retrieved."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-importer.php:142
+#: lib/classes/class-mai-setup-wizard-importer.php:181
+msgid "Finished importing "
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-importer.php:145
+msgid "Failed importing "
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-importer.php:165
+msgid "Something went wrong downloading template part data. Please contact BizBudding support for assistance."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-importer.php:197
+msgid "Error importing settings! Please try again."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-importer.php:213
+#: lib/classes/class-mai-setup-wizard-importer.php:217
+msgid "Error importing settings! Please check that you uploaded a customizer export file."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-importer.php:221
+msgid "Error importing settings! The settings you uploaded are not for the current theme."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-importer.php:252
+msgid "Sucessfully imported customizer."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-fields.php:126
+msgid "Email address"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-fields.php:154
+msgid "Preview"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-fields.php:197
+msgid " View details"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-fields.php:226
+#: lib/classes/class-mai-setup-wizard-steps.php:191
+#: lib/functions/grid.php:83
+#: lib/functions/loop.php:395
+#: lib/functions/loop.php:467
+msgid "Content"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-fields.php:231
+#: lib/functions/templates.php:22
+#: lib/functions/templates.php:30
+#: lib/functions/templates.php:96
+msgid "Template Parts"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-fields.php:232
+msgid "Our block-based replacement for widgets."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-fields.php:233
+msgid "Requires \"Content\" in order to import images."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-fields.php:234
+msgid "Moves any existing template parts into the trash."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-fields.php:238
+msgid "Customizer Settings"
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-fields.php:276
+msgid "View your site"
 msgstr ""
 
 #: lib/classes/class-mai-reusable-block-widget.php:20
@@ -881,10 +1048,6 @@ msgstr ""
 msgid "Title:"
 msgstr ""
 
-#: lib/classes/class-mai-reusable-block-widget.php:86
-msgid "No saved reusable blocks yet."
-msgstr ""
-
 #: lib/classes/class-mai-reusable-block-widget.php:76
 msgid "Select from saved Reusable Blocks:"
 msgstr ""
@@ -893,116 +1056,12 @@ msgstr ""
 msgid "Select Reusable Block"
 msgstr ""
 
+#: lib/classes/class-mai-reusable-block-widget.php:86
+msgid "No saved reusable blocks yet."
+msgstr ""
+
 #: lib/classes/class-mai-reusable-block-widget.php:91
 msgid "Edit the currently saved block."
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-admin.php:95
-msgid "Return to dashboard"
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-ajax.php:97
-msgid "Email address can not be empty."
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-ajax.php:101, lib/classes/class-mai-setup-wizard-steps.php:112
-msgid "Please enter a valid email address."
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-ajax.php:118
-msgid "Email address sent."
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-ajax.php:121
-msgid "Email entered but not sent."
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-ajax.php:143, lib/classes/class-mai-setup-wizard-importer.php:89
-msgid "No demo selected."
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-ajax.php:140
-msgid " selected."
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-ajax.php:161
-msgid "No plugins selected."
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-ajax.php:178
-msgid "Error object from API communication for plugin "
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-ajax.php:185
-msgid "Error installing "
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-ajax.php:191
-msgid "Installed "
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-ajax.php:210
-msgid "No field value."
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-fields.php:126
-msgid "Email address"
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-fields.php:154
-msgid "Preview"
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-fields.php:198
-msgid " View details"
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-fields.php:225, lib/classes/class-mai-setup-wizard-steps.php:191, lib/functions/grid.php:83, lib/functions/loop.php:395, lib/functions/loop.php:467
-msgid "Content"
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-fields.php:226, lib/functions/templates.php:22, lib/functions/templates.php:30
-msgid "Template Parts"
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-fields.php:227
-msgid "Customizer Settings"
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-fields.php:263
-msgid "View your site"
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-importer.php:95
-msgid " could not be retrieved."
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-importer.php:101
-msgid " response body could not be retrieved."
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-importer.php:142, lib/classes/class-mai-setup-wizard-importer.php:178
-msgid "Finished importing "
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-importer.php:194
-msgid "Error importing settings! Please try again."
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-importer.php:210, lib/classes/class-mai-setup-wizard-importer.php:214
-msgid "Error importing settings! Please check that you uploaded a customizer export file."
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-importer.php:218
-msgid "Error importing settings! The settings you uploaded are not for the current theme."
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-importer.php:249
-msgid "Sucessfully imported customizer."
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-service-provider.php:68
-msgid "Mai Setup Wizard"
 msgstr ""
 
 #: lib/classes/class-mai-setup-wizard-steps.php:109
@@ -1045,7 +1104,8 @@ msgstr ""
 msgid "Good choice!"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:140, lib/classes/class-mai-setup-wizard-steps.php:244
+#: lib/classes/class-mai-setup-wizard-steps.php:140
+#: lib/classes/class-mai-setup-wizard-steps.php:244
 msgid "Continue"
 msgstr ""
 
@@ -1074,7 +1134,11 @@ msgid "Installing plugins..."
 msgstr ""
 
 #: lib/classes/class-mai-setup-wizard-steps.php:192
-msgid "Select which content you would like to import. Please note that this step can take up to 5 minutes."
+msgid "Select which content you would like to import."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-steps.php:192
+msgid "Please note that this step can take up to 5 minutes."
 msgstr ""
 
 #: lib/classes/class-mai-setup-wizard-steps.php:194
@@ -1117,7 +1181,7 @@ msgstr ""
 msgid "Skip this step"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:291
+#: lib/classes/class-mai-setup-wizard-steps.php:298
 msgid "Previous"
 msgstr ""
 
@@ -1129,468 +1193,191 @@ msgstr ""
 msgid "of"
 msgstr ""
 
-#: lib/customize/beta-tester.php:29
-msgid "Mai Beta Tester"
+#: lib/admin/settings.php:22
+#: lib/admin/settings.php:23
+#: lib/functions/deprecated.php:138
+msgid "Mai Theme"
 msgstr ""
 
-#: lib/customize/beta-tester.php:30
-msgid "Check this box to enable beta updates of all Mai plugins and add-ons."
+#: lib/admin/settings.php:46
+msgid "Theme"
 msgstr ""
 
-#: lib/customize/colors.php:27
-msgid "Colors"
+#: lib/admin/settings.php:50
+msgid "Hi! Thanks for choosing Mai"
 msgstr ""
 
-#: lib/customize/colors.php:48
-msgid "Background Alt"
+#: lib/admin/settings.php:52
+msgid "Quick Links"
 msgstr ""
 
-#: lib/customize/colors.php:49, lib/customize/typography.php:98
-msgid "Body"
+#: lib/admin/settings.php:57
+msgid "Support"
 msgstr ""
 
-#: lib/customize/colors.php:50, lib/customize/typography.php:127
-msgid "Heading"
+#: lib/admin/settings.php:58
+msgid "BizBudding"
 msgstr ""
 
-#: lib/customize/colors.php:51
-msgid "Link"
+#: lib/admin/settings.php:59
+msgid "Theme Demos"
 msgstr ""
 
-#: lib/customize/colors.php:52
-msgid "Button Primary"
+#: lib/admin/settings.php:77
+#: lib/functions/templates.php:106
+msgid "Reusable Blocks"
 msgstr ""
 
-#: lib/customize/colors.php:53
-msgid "Button Secondary"
+#: lib/admin/template-parts.php:57
+msgid "default template part created."
 msgstr ""
 
-#: lib/customize/colors.php:95
-msgid "Add New Color "
+#: lib/admin/template-parts.php:59
+msgid "default template parts created."
 msgstr ""
 
-#: lib/customize/colors.php:100
-msgid "Custom Color"
+#: lib/admin/template-parts.php:82
+msgid "Active"
 msgstr ""
 
-#: lib/customize/content-archives.php:17, lib/customize/single-content.php:17
-msgid "Show/hide and re-order entry elements. Click \"Toggle Hooks\" to show Genesis hooks."
+#: lib/admin/term-image.php:46
+#: lib/admin/hide-elements.php:118
+msgid "Featured Image"
 msgstr ""
 
-#: lib/customize/content-archives.php:471, lib/customize/content-archives.php:626
-msgid "Posts Per Page"
+#: lib/admin/term-image.php:51
+#: lib/admin/page-header.php:56
+#: lib/functions/grid.php:79
+#: lib/functions/loop.php:389
+#: lib/functions/loop.php:461
+msgid "Image"
 msgstr ""
 
-#: lib/customize/content-archives.php:472
-msgid "Sticky posts are not included in count."
+#: lib/admin/setup-wizard.php:110
+msgid "Setup Wizard"
 msgstr ""
 
-#: lib/customize/content-archives.php:482, lib/customize/single-content.php:93
-msgid "Page Header default image"
+#: lib/admin/setup-wizard.php:178
+msgid "Mai Theme Setup Wizard Page"
 msgstr ""
 
-#: lib/customize/content-archives.php:492, lib/customize/page-header.php:162, lib/customize/single-content.php:110
-msgid "Background/overlay color"
+#: lib/admin/setup-wizard.php:182
+msgid "Welcome to the Mai Setup Wizard! Enter your email address in the form below to receive automatic updates, share your environment information, win free swag, receive the latest news and get special offers. To learn more about providing your email and claiming your free goodies, visit the"
 msgstr ""
 
-#: lib/customize/content-archives.php:499, lib/customize/page-header.php:177, lib/customize/single-content.php:117
-msgid "The background color opacity when page header has an image"
+#: lib/admin/setup-wizard.php:184
+msgid "on BizBudding for all the details, terms and conditions of this program."
 msgstr ""
 
-#: lib/customize/content-archives.php:511, lib/customize/single-content.php:129
-msgid "Page header text color"
+#: lib/admin/dependencies.php:88
+msgid " is bundled with Mai Engine and has been deactivated."
 msgstr ""
 
-#: lib/customize/content-archives.php:515, lib/customize/single-content.php:133, lib/functions/utilities.php:826
-msgid "Default"
+#: lib/admin/hide-elements.php:27
+msgid "Hide Elements"
 msgstr ""
 
-#: lib/customize/content-archives.php:517, lib/customize/page-header.php:197, lib/customize/single-content.php:135
-msgid "Dark"
+#: lib/admin/hide-elements.php:49
+msgid "Select elements to hide on this page."
 msgstr ""
 
-#: lib/customize/logo.php:26
-msgid "Logo Width"
+#: lib/admin/hide-elements.php:91
+#: lib/functions/deprecated.php:72
+msgid "Before Header"
 msgstr ""
 
-#: lib/customize/logo.php:35, lib/customize/logo.php:69
-msgid "Desktop"
+#: lib/admin/hide-elements.php:94
+#: lib/customize/site-header.php:27
+msgid "Site Header"
 msgstr ""
 
-#: lib/customize/logo.php:36, lib/customize/logo.php:70
-msgid "Mobile / Sticky"
+#: lib/admin/hide-elements.php:97
+msgid "Sticky Header"
 msgstr ""
 
-#: lib/customize/logo.php:36, lib/customize/logo.php:70
-msgid "Mobile"
+#: lib/admin/hide-elements.php:101
+msgid "Transparent Header"
 msgstr ""
 
-#: lib/customize/logo.php:60
-msgid "Logo Spacing"
+#: lib/admin/hide-elements.php:109
+#: lib/admin/page-header.php:50
+#: lib/customize/page-header.php:57
+msgid "Page Header"
 msgstr ""
 
-#: lib/customize/loop.php:30, lib/customize/loop.php:80
-msgid "Enable Content Types"
+#: lib/admin/hide-elements.php:113
+msgid "Breadcrumbs"
 msgstr ""
 
-#: lib/customize/loop.php:42
-msgid "Archive content types"
+#: lib/admin/hide-elements.php:116
+msgid "Entry Title"
 msgstr ""
 
-#: lib/customize/loop.php:43
-msgid "Custom post types must support \"mai-archive-settings\" to be available here."
+#: lib/admin/hide-elements.php:117
+msgid "Entry Excerpt"
 msgstr ""
 
-#: lib/customize/loop.php:55, lib/customize/loop.php:106
-msgid "Refresh after updating!"
+#: lib/admin/hide-elements.php:125
+#: lib/functions/deprecated.php:116
+msgid "Before Footer"
 msgstr ""
 
-#: lib/customize/loop.php:56, lib/customize/loop.php:107
-msgid "In order to show/hide panels for the updated values you must reload the Customizer after saving any changes."
+#: lib/admin/hide-elements.php:129
+#: lib/functions/deprecated.php:123
+msgid "Footer"
 msgstr ""
 
-#: lib/customize/loop.php:92
-msgid "Single content types"
+#: lib/admin/hide-elements.php:133
+#: lib/functions/deprecated.php:129
+msgid "Footer Credits"
 msgstr ""
 
-#: lib/customize/loop.php:93
-msgid "Custom post types must support \"mai-single-settings\" to be available here."
+#: lib/admin/page-header.php:65
+msgid "Description"
 msgstr ""
 
-#: lib/customize/menus.php:27
-msgid "Menus"
+#: lib/admin/images.php:30
+msgid "Landscape (Small)"
 msgstr ""
 
-#: lib/customize/menus.php:37
-msgid "Mobile Menu Breakpoint"
+#: lib/admin/images.php:31
+msgid "Landscape (Medium)"
 msgstr ""
 
-#: lib/customize/menus.php:39
-msgid "The largest screen width at which the mobile menu becomes active, in pixels."
+#: lib/admin/images.php:32
+msgid "Landscape (Large)"
 msgstr ""
 
-#: lib/customize/menus.php:51
-msgid "Alignment"
+#: lib/admin/images.php:33
+msgid "Portrait (Small)"
 msgstr ""
 
-#: lib/customize/page-header.php:68
-msgid "Enable on singular content"
+#: lib/admin/images.php:34
+msgid "Portrait (Medium)"
 msgstr ""
 
-#: lib/customize/page-header.php:69
-msgid "These settings can be overridden on a per post basis."
+#: lib/admin/images.php:35
+msgid "Portrait (Large)"
 msgstr ""
 
-#: lib/customize/page-header.php:81
-msgid "Enable on content archives"
+#: lib/admin/images.php:36
+msgid "Square (Small)"
 msgstr ""
 
-#: lib/customize/page-header.php:93
-msgid "Vertical Spacing"
+#: lib/admin/images.php:37
+msgid "Square (Medium)"
 msgstr ""
 
-#: lib/customize/page-header.php:94
-msgid "Accepts all unit values (px, rem, em, vw, etc)."
+#: lib/admin/images.php:38
+msgid "Square (Large)"
 msgstr ""
 
-#: lib/customize/page-header.php:124
-msgid "Text Alignment"
+#: lib/admin/images.php:39
+msgid "Tiny"
 msgstr ""
 
-#: lib/customize/page-header.php:147
-msgid "Default image"
-msgstr ""
-
-#: lib/customize/page-header.php:148
-msgid "This can be overridden on a per post basis."
-msgstr ""
-
-#: lib/customize/page-header.php:176
-msgid "Overlay opacity"
-msgstr ""
-
-#: lib/customize/page-header.php:192
-msgid "Default text color"
-msgstr ""
-
-#: lib/customize/page-header.php:208
-msgid "Divider style"
-msgstr ""
-
-#: lib/customize/page-header.php:211
-msgid "None"
-msgstr ""
-
-#: lib/customize/page-header.php:227
-msgid "Flip divider horizontally"
-msgstr ""
-
-#: lib/customize/page-header.php:255
-msgid "Flip divider vertically"
-msgstr ""
-
-#: lib/customize/page-header.php:273
-msgid "Divider color"
-msgstr ""
-
-#: lib/customize/page-header.php:274
-msgid "This should match your body background color"
-msgstr ""
-
-#: lib/customize/performance.php:26
-msgid "Performance"
-msgstr ""
-
-#: lib/customize/performance.php:36
-msgid "Load child theme stylesheet in footer"
-msgstr ""
-
-#: lib/customize/performance.php:47
-msgid "Remove menu item id and additional classes"
-msgstr ""
-
-#: lib/customize/performance.php:58
-msgid "Remove additional page template body classes"
-msgstr ""
-
-#: lib/customize/performance.php:69
-msgid "Disable emojis"
-msgstr ""
-
-#: lib/customize/performance.php:80
-msgid "Remove recent comments CSS"
-msgstr ""
-
-#: lib/customize/setup.php:45
-msgid "Theme Settings"
-msgstr ""
-
-#: lib/customize/single-content.php:102
-msgid "Use featured image as page header image"
-msgstr ""
-
-#: lib/customize/site-header.php:38
-msgid "Enable sticky header?"
-msgstr ""
-
-#: lib/customize/site-header.php:49
-msgid "Enable transparent header?"
-msgstr ""
-
-#: lib/customize/site-layouts.php:33
-msgid "Site Layouts"
-msgstr ""
-
-#: lib/customize/site-layouts.php:44
-msgid "Enable boxed site container"
-msgstr ""
-
-#: lib/customize/site-layouts.php:57
-msgid "Defaults"
-msgstr ""
-
-#: lib/customize/site-layouts.php:69
-msgid "Site Default"
-msgstr ""
-
-#: lib/customize/site-layouts.php:83
-msgid "Content Archives"
-msgstr ""
-
-#: lib/customize/site-layouts.php:97
-msgid "Single Content"
-msgstr ""
-
-#: lib/customize/site-layouts.php:129
-msgid "Single"
-msgstr ""
-
-#: lib/customize/site-layouts.php:145
-msgid "Archive"
-msgstr ""
-
-#: lib/customize/site-layouts.php:194
-msgid "Miscellaneous"
-msgstr ""
-
-#: lib/customize/site-layouts.php:206, lib/functions/utilities.php:899
-msgid "Search Results"
-msgstr ""
-
-#: lib/customize/site-layouts.php:220, lib/functions/utilities.php:900
-msgid "Author Archives"
-msgstr ""
-
-#: lib/customize/site-layouts.php:234, lib/functions/utilities.php:901
-msgid "Date Archives"
-msgstr ""
-
-#: lib/customize/site-layouts.php:248, lib/functions/utilities.php:905
-msgid "404"
-msgstr ""
-
-#: lib/customize/typography.php:28
-msgid "Typography"
-msgstr ""
-
-#: lib/customize/typography.php:39
-msgid "Base"
-msgstr ""
-
-#: lib/customize/typography.php:40, lib/customize/typography.php:65, lib/customize/typography.php:99, lib/customize/typography.php:128
-msgid "Default: "
-msgstr ""
-
-#: lib/customize/typography.php:64
-msgid "Scale"
-msgstr ""
-
-#: lib/customize/updates.php:26
-msgid "Check For Mai Theme Updates"
-msgstr ""
-
-#: lib/customize/updates.php:27
-msgid "By checking this box, you allow Mai Engine to periodically check for Mai Theme updates. Update requests send information about your site including software and theme data, as well as the site’s URL and locale. See the privacy policy for more details. Please note that updating your child theme may override any customizations that you have made inside the theme files. Customizer settings will not be affected."
-msgstr ""
-
-#: lib/customize/upsell.php:36
-msgid "Customize more now!"
-msgstr ""
-
-#: lib/functions/deprecated.php:73
-msgid "The Before Header widget area."
-msgstr ""
-
-#: lib/functions/deprecated.php:78
-msgid "Header Left"
-msgstr ""
-
-#: lib/functions/deprecated.php:79
-msgid "The Header Left widget area."
-msgstr ""
-
-#: lib/functions/deprecated.php:88
-msgid "Header Right"
-msgstr ""
-
-#: lib/functions/deprecated.php:89
-msgid "The Header Right widget area."
-msgstr ""
-
-#: lib/functions/deprecated.php:105
-msgid "The After Entry widget area."
-msgstr ""
-
-#: lib/functions/deprecated.php:111
-msgid "The Mobile Menu widget area."
-msgstr ""
-
-#: lib/functions/deprecated.php:117
-msgid "The Before Footer widget area."
-msgstr ""
-
-#: lib/functions/deprecated.php:124
-msgid "The Footer widget area."
-msgstr ""
-
-#: lib/functions/deprecated.php:130
-msgid "The Footer Credits widget area."
-msgstr ""
-
-#: lib/functions/deprecated.php:135
-msgid "Copyright"
-msgstr ""
-
-#: lib/functions/deprecated.php:136
-msgid "All Rights Reserved"
-msgstr ""
-
-#: lib/functions/deprecated.php:137
-msgid "Powered by"
-msgstr ""
-
-#: lib/functions/grid.php:82, lib/functions/loop.php:394
-msgid "Excerpt"
-msgstr ""
-
-#: lib/functions/grid.php:84, lib/functions/loop.php:397
-msgid "Read More link"
-msgstr ""
-
-#: lib/functions/grid.php:241
-msgid "1"
-msgstr ""
-
-#: lib/functions/grid.php:242
-msgid "2"
-msgstr ""
-
-#: lib/functions/grid.php:243
-msgid "3"
-msgstr ""
-
-#: lib/functions/grid.php:244
-msgid "4"
-msgstr ""
-
-#: lib/functions/grid.php:245
-msgid "5"
-msgstr ""
-
-#: lib/functions/grid.php:246
-msgid "6"
-msgstr ""
-
-#: lib/functions/grid.php:247
-msgid "Auto"
-msgstr ""
-
-#: lib/functions/images.php:206
-msgid "Landscape"
-msgstr ""
-
-#: lib/functions/images.php:207
-msgid "Portrait"
-msgstr ""
-
-#: lib/functions/images.php:208
-msgid "Square"
-msgstr ""
-
-#: lib/functions/images.php:217
-msgid "Custom"
-msgstr ""
-
-#: lib/functions/loop.php:466
-msgid "Manual Excerpts"
-msgstr ""
-
-#: lib/functions/loop.php:472
-msgid "Author Box"
-msgstr ""
-
-#: lib/functions/loop.php:473
-msgid "After Entry Widget Area"
-msgstr ""
-
-#: lib/functions/loop.php:474
-msgid "Previous/Next Entry Nav"
-msgstr ""
-
-#: lib/functions/plugins.php:169
-msgid "Go to page"
-msgstr ""
-
-#: lib/functions/plugins.php:175, lib/structure/pagination.php:85
-msgid "← Previous"
-msgstr ""
-
-#: lib/functions/plugins.php:200, lib/structure/pagination.php:97
-msgid "Next →"
-msgstr ""
-
-#: lib/functions/plugins.php:257
-msgid "Theme Dependency"
+#: lib/admin/images.php:40
+msgid "Cover"
 msgstr ""
 
 #: lib/functions/shortcodes.php:52
@@ -1675,34 +1462,565 @@ msgstr ""
 msgid "Template parts to include in your templates."
 msgstr ""
 
-#: lib/functions/templates.php:67
+#: lib/functions/templates.php:71
 msgid "The theme that provided the template part, if any."
 msgstr ""
 
-#: lib/functions/utilities.php:743
-msgid "Not found, error 404"
+#: lib/functions/templates.php:99
+msgid "Edit Template Parts"
 msgstr ""
 
-#: lib/functions/utilities.php:731
-msgid "Archives for "
+#: lib/functions/templates.php:109
+msgid "Edit Reusable Blocks"
 msgstr ""
 
-#: lib/functions/utilities.php:722, lib/functions/utilities.php:797
-msgid "Search results for: "
+#: lib/functions/plugins.php:169
+msgid "Go to page"
 msgstr ""
 
-#: lib/functions/utilities.php:689
+#: lib/functions/plugins.php:175
+#: lib/structure/pagination.php:85
+msgid "← Previous"
+msgstr ""
+
+#: lib/functions/plugins.php:200
+#: lib/structure/pagination.php:97
+msgid "Next →"
+msgstr ""
+
+#: lib/functions/plugins.php:257
+msgid "Theme Dependency"
+msgstr ""
+
+#: lib/functions/grid.php:82
+#: lib/functions/loop.php:394
+msgid "Excerpt"
+msgstr ""
+
+#: lib/functions/grid.php:84
+#: lib/functions/loop.php:397
+msgid "Read More link"
+msgstr ""
+
+#: lib/functions/grid.php:241
+msgid "1"
+msgstr ""
+
+#: lib/functions/grid.php:242
+msgid "2"
+msgstr ""
+
+#: lib/functions/grid.php:243
+msgid "3"
+msgstr ""
+
+#: lib/functions/grid.php:244
+msgid "4"
+msgstr ""
+
+#: lib/functions/grid.php:245
+msgid "5"
+msgstr ""
+
+#: lib/functions/grid.php:246
+msgid "6"
+msgstr ""
+
+#: lib/functions/grid.php:247
+msgid "Auto"
+msgstr ""
+
+#: lib/functions/utilities.php:465
+msgid "Background Alt"
+msgstr ""
+
+#: lib/functions/utilities.php:466
+#: lib/customize/typography.php:39
+msgid "Body"
+msgstr ""
+
+#: lib/functions/utilities.php:467
+#: lib/customize/typography.php:68
+msgid "Heading"
+msgstr ""
+
+#: lib/functions/utilities.php:468
+msgid "Link"
+msgstr ""
+
+#: lib/functions/utilities.php:469
+msgid "Button Primary"
+msgstr ""
+
+#: lib/functions/utilities.php:470
+msgid "Button Secondary"
+msgstr ""
+
+#: lib/functions/utilities.php:708
 msgid "Latest Posts"
 msgstr ""
 
-#: lib/functions/utilities.php:862
+#: lib/functions/utilities.php:741
+#: lib/functions/utilities.php:816
+msgid "Search results for: "
+msgstr ""
+
+#: lib/functions/utilities.php:750
+msgid "Archives for "
+msgstr ""
+
+#: lib/functions/utilities.php:762
+msgid "Not found, error 404"
+msgstr ""
+
+#: lib/functions/utilities.php:845
+#: lib/customize/single-content.php:133
+#: lib/customize/content-archives.php:515
+msgid "Default"
+msgstr ""
+
+#: lib/functions/utilities.php:881
 msgid "Post"
 msgstr ""
 
-#: lib/functions/utilities.php:866
+#: lib/functions/utilities.php:885
 msgid "Page"
 msgstr ""
 
-#: lib/functions/utilities.php:1077
+#: lib/functions/utilities.php:918
+#: lib/customize/site-layouts.php:206
+msgid "Search Results"
+msgstr ""
+
+#: lib/functions/utilities.php:919
+#: lib/customize/site-layouts.php:220
+msgid "Author Archives"
+msgstr ""
+
+#: lib/functions/utilities.php:920
+#: lib/customize/site-layouts.php:234
+msgid "Date Archives"
+msgstr ""
+
+#: lib/functions/utilities.php:924
+#: lib/customize/site-layouts.php:248
+msgid "404"
+msgstr ""
+
+#: lib/functions/utilities.php:1096
 msgid "Read More"
+msgstr ""
+
+#: lib/functions/loop.php:466
+msgid "Manual Excerpts"
+msgstr ""
+
+#: lib/functions/loop.php:472
+msgid "Author Box"
+msgstr ""
+
+#: lib/functions/loop.php:473
+msgid "After Entry Template Part"
+msgstr ""
+
+#: lib/functions/loop.php:474
+msgid "Previous/Next Entry Nav"
+msgstr ""
+
+#: lib/functions/images.php:206
+msgid "Landscape"
+msgstr ""
+
+#: lib/functions/images.php:207
+msgid "Portrait"
+msgstr ""
+
+#: lib/functions/images.php:208
+msgid "Square"
+msgstr ""
+
+#: lib/functions/images.php:217
+msgid "Custom"
+msgstr ""
+
+#: lib/functions/deprecated.php:73
+msgid "The Before Header widget area."
+msgstr ""
+
+#: lib/functions/deprecated.php:78
+msgid "Header Left"
+msgstr ""
+
+#: lib/functions/deprecated.php:79
+msgid "The Header Left widget area."
+msgstr ""
+
+#: lib/functions/deprecated.php:88
+msgid "Header Right"
+msgstr ""
+
+#: lib/functions/deprecated.php:89
+msgid "The Header Right widget area."
+msgstr ""
+
+#: lib/functions/deprecated.php:105
+msgid "The After Entry widget area."
+msgstr ""
+
+#: lib/functions/deprecated.php:111
+msgid "The Mobile Menu widget area."
+msgstr ""
+
+#: lib/functions/deprecated.php:117
+msgid "The Before Footer widget area."
+msgstr ""
+
+#: lib/functions/deprecated.php:124
+msgid "The Footer widget area."
+msgstr ""
+
+#: lib/functions/deprecated.php:130
+msgid "The Footer Credits widget area."
+msgstr ""
+
+#: lib/functions/deprecated.php:135
+msgid "Copyright"
+msgstr ""
+
+#: lib/functions/deprecated.php:136
+msgid "All Rights Reserved"
+msgstr ""
+
+#: lib/functions/deprecated.php:137
+msgid "Powered by"
+msgstr ""
+
+#: lib/structure/menus.php:208
+msgid "Skip to header left navigation"
+msgstr ""
+
+#: lib/structure/menus.php:212
+msgid "Skip to header right navigation"
+msgstr ""
+
+#: lib/structure/menus.php:216
+msgid "Skip to after header navigation"
+msgstr ""
+
+#: lib/structure/footer.php:46
+msgid "Skip to site footer"
+msgstr ""
+
+#: lib/customize/colors.php:27
+msgid "Colors"
+msgstr ""
+
+#: lib/customize/colors.php:71
+msgid "Add New Color "
+msgstr ""
+
+#: lib/customize/colors.php:76
+msgid "Custom Color"
+msgstr ""
+
+#: lib/customize/single-content.php:17
+#: lib/customize/content-archives.php:17
+msgid "Show/hide and re-order entry elements. Click \"Toggle Hooks\" to show Genesis hooks."
+msgstr ""
+
+#: lib/customize/single-content.php:93
+#: lib/customize/content-archives.php:482
+msgid "Page Header default image"
+msgstr ""
+
+#: lib/customize/single-content.php:102
+msgid "Use featured image as page header image"
+msgstr ""
+
+#: lib/customize/single-content.php:110
+#: lib/customize/content-archives.php:492
+#: lib/customize/page-header.php:162
+msgid "Background/overlay color"
+msgstr ""
+
+#: lib/customize/single-content.php:117
+#: lib/customize/content-archives.php:499
+#: lib/customize/page-header.php:177
+msgid "The background color opacity when page header has an image"
+msgstr ""
+
+#: lib/customize/single-content.php:129
+#: lib/customize/content-archives.php:511
+msgid "Page header text color"
+msgstr ""
+
+#: lib/customize/single-content.php:135
+#: lib/customize/content-archives.php:517
+#: lib/customize/page-header.php:197
+msgid "Dark"
+msgstr ""
+
+#: lib/customize/typography.php:28
+msgid "Typography"
+msgstr ""
+
+#: lib/customize/typography.php:40
+#: lib/customize/typography.php:69
+msgid "Default: "
+msgstr ""
+
+#: lib/customize/site-layouts.php:33
+msgid "Site Layouts"
+msgstr ""
+
+#: lib/customize/site-layouts.php:44
+msgid "Enable boxed site container"
+msgstr ""
+
+#: lib/customize/site-layouts.php:57
+msgid "Defaults"
+msgstr ""
+
+#: lib/customize/site-layouts.php:69
+msgid "Site Default"
+msgstr ""
+
+#: lib/customize/site-layouts.php:83
+msgid "Content Archives"
+msgstr ""
+
+#: lib/customize/site-layouts.php:97
+msgid "Single Content"
+msgstr ""
+
+#: lib/customize/site-layouts.php:129
+msgid "Single"
+msgstr ""
+
+#: lib/customize/site-layouts.php:145
+msgid "Archive"
+msgstr ""
+
+#: lib/customize/site-layouts.php:194
+msgid "Miscellaneous"
+msgstr ""
+
+#: lib/customize/upsell.php:36
+msgid "Customize more now!"
+msgstr ""
+
+#: lib/customize/site-header.php:38
+msgid "Enable sticky header?"
+msgstr ""
+
+#: lib/customize/site-header.php:49
+msgid "Enable transparent header?"
+msgstr ""
+
+#: lib/customize/menus.php:27
+msgid "Menus"
+msgstr ""
+
+#: lib/customize/menus.php:37
+msgid "Mobile Menu Breakpoint"
+msgstr ""
+
+#: lib/customize/menus.php:39
+msgid "The largest screen width at which the mobile menu becomes active, in pixels."
+msgstr ""
+
+#: lib/customize/menus.php:51
+msgid "Alignment"
+msgstr ""
+
+#: lib/customize/logo.php:26
+msgid "Logo Width"
+msgstr ""
+
+#: lib/customize/logo.php:35
+#: lib/customize/logo.php:69
+msgid "Desktop"
+msgstr ""
+
+#: lib/customize/logo.php:36
+#: lib/customize/logo.php:70
+msgid "Mobile / Sticky"
+msgstr ""
+
+#: lib/customize/logo.php:36
+#: lib/customize/logo.php:70
+msgid "Mobile"
+msgstr ""
+
+#: lib/customize/logo.php:60
+msgid "Logo Spacing"
+msgstr ""
+
+#: lib/customize/content-archives.php:471
+#: lib/customize/content-archives.php:626
+msgid "Posts Per Page"
+msgstr ""
+
+#: lib/customize/content-archives.php:472
+msgid "Sticky posts are not included in count."
+msgstr ""
+
+#: lib/customize/setup.php:45
+msgid "Theme Settings"
+msgstr ""
+
+#: lib/customize/updates.php:26
+msgid "Check For Mai Theme Updates"
+msgstr ""
+
+#: lib/customize/updates.php:27
+msgid "By checking this box, you allow Mai Engine to periodically check for Mai Theme updates. Update requests send information about your site including software and theme data, as well as the site’s URL and locale. See the privacy policy for more details. Please note that updating your child theme may override any customizations that you have made inside the theme files. Customizer settings will not be affected."
+msgstr ""
+
+#: lib/customize/performance.php:26
+msgid "Performance"
+msgstr ""
+
+#: lib/customize/performance.php:36
+msgid "Load child theme stylesheet in footer"
+msgstr ""
+
+#: lib/customize/performance.php:47
+msgid "Remove menu item id and additional classes"
+msgstr ""
+
+#: lib/customize/performance.php:58
+msgid "Remove additional page template body classes"
+msgstr ""
+
+#: lib/customize/performance.php:69
+msgid "Disable emojis"
+msgstr ""
+
+#: lib/customize/performance.php:80
+msgid "Remove recent comments CSS"
+msgstr ""
+
+#: lib/customize/loop.php:30
+#: lib/customize/loop.php:80
+msgid "Enable Content Types"
+msgstr ""
+
+#: lib/customize/loop.php:42
+msgid "Archive content types"
+msgstr ""
+
+#: lib/customize/loop.php:43
+msgid "Custom post types must support \"mai-archive-settings\" to be available here."
+msgstr ""
+
+#: lib/customize/loop.php:55
+#: lib/customize/loop.php:106
+msgid "Refresh after updating!"
+msgstr ""
+
+#: lib/customize/loop.php:56
+#: lib/customize/loop.php:107
+msgid "In order to show/hide panels for the updated values you must reload the Customizer after saving any changes."
+msgstr ""
+
+#: lib/customize/loop.php:92
+msgid "Single content types"
+msgstr ""
+
+#: lib/customize/loop.php:93
+msgid "Custom post types must support \"mai-single-settings\" to be available here."
+msgstr ""
+
+#: lib/customize/page-header.php:68
+msgid "Enable on singular content"
+msgstr ""
+
+#: lib/customize/page-header.php:69
+msgid "These settings can be overridden on a per post basis."
+msgstr ""
+
+#: lib/customize/page-header.php:81
+msgid "Enable on content archives"
+msgstr ""
+
+#: lib/customize/page-header.php:93
+msgid "Vertical Spacing"
+msgstr ""
+
+#: lib/customize/page-header.php:94
+msgid "Accepts all unit values (px, rem, em, vw, etc)."
+msgstr ""
+
+#: lib/customize/page-header.php:124
+msgid "Text Alignment"
+msgstr ""
+
+#: lib/customize/page-header.php:147
+msgid "Default image"
+msgstr ""
+
+#: lib/customize/page-header.php:148
+msgid "This can be overridden on a per post basis."
+msgstr ""
+
+#: lib/customize/page-header.php:176
+msgid "Overlay opacity"
+msgstr ""
+
+#: lib/customize/page-header.php:192
+msgid "Default text color"
+msgstr ""
+
+#: lib/customize/page-header.php:208
+msgid "Divider style"
+msgstr ""
+
+#: lib/customize/page-header.php:211
+#: assets/js/blocks/layout-settings.js:40
+#: assets/js/min/blocks.js:678
+msgid "None"
+msgstr ""
+
+#: lib/customize/page-header.php:227
+msgid "Divider height"
+msgstr ""
+
+#: lib/customize/page-header.php:252
+msgid "Flip divider horizontally"
+msgstr ""
+
+#: lib/customize/page-header.php:280
+msgid "Flip divider vertically"
+msgstr ""
+
+#: lib/customize/page-header.php:298
+msgid "Divider color"
+msgstr ""
+
+#: lib/customize/page-header.php:299
+msgid "This should match your body background color"
+msgstr ""
+
+#: lib/customize/beta-tester.php:29
+msgid "Mai Beta Tester"
+msgstr ""
+
+#: lib/customize/beta-tester.php:30
+msgid "Check this box to enable beta updates of all Mai plugins and add-ons."
+msgstr ""
+
+#: assets/js/blocks/layout-settings.js:168
+#: assets/js/min/blocks.js:806
+msgid "Content Width"
+msgstr ""
+
+#: assets/js/blocks/layout-settings.js:196
+#: assets/js/min/blocks.js:834
+msgid "Top Spacing"
+msgstr ""
+
+#: assets/js/blocks/layout-settings.js:224
+#: assets/js/min/blocks.js:862
+msgid "Bottom Spacing"
 msgstr ""

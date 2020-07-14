@@ -41,19 +41,20 @@ function mai_register_template_part_cpt() {
 	];
 
 	$args = [
-		'labels'             => $labels,
-		'description'        => __( 'Template parts to include in your templates.', 'mai-engine' ),
-		'public'             => false,
-		'has_archive'        => false,
-		'rewrite'            => false,
-		'show_ui'            => true,
-		'show_in_menu'       => 'themes.php',
-		'show_in_nav_menus'  => false,
-		'show_in_admin_bar'  => false,
-		'show_in_rest'       => true,
-		'rest_base'          => 'template-parts',
-		'map_meta_cap'       => true,
-		'supports'           => [
+		'labels'            => $labels,
+		'description'       => __( 'Template parts to include in your templates.', 'mai-engine' ),
+		'public'            => false,
+		'has_archive'       => false,
+		'rewrite'           => false,
+		'show_ui'           => true,
+		'show_in_menu'      => 'themes.php',
+		'show_in_nav_menus' => false,
+		'show_in_admin_bar' => false,
+		'show_in_rest'      => true,
+		'rest_base'         => 'template-parts',
+		'map_meta_cap'      => true,
+		'can_export'        => false,
+		'supports'          => [
 			'title',
 			'slug',
 			'editor',
@@ -74,6 +75,40 @@ function mai_register_template_part_cpt() {
 
 	register_post_type( 'wp_template_part', $args );
 	register_meta( 'post', 'theme', $meta_args );
+}
+
+add_action( 'admin_bar_menu', 'mai_add_admin_bar_links', 999 );
+/**
+ * Add links to toolbar.
+ *
+ * @since 2.1.1
+ *
+ * @return void
+ */
+function mai_add_admin_bar_links( $wp_admin_bar ) {
+	if ( is_admin() ) {
+		return;
+	}
+
+	$wp_admin_bar->add_node( [
+		'id'     => 'template-parts',
+		'parent' => 'site-name',
+		'title'  => __( 'Template Parts', 'mai-engine' ),
+		'href'   => admin_url( 'edit.php?post_type=wp_template_part' ),
+		'meta'   => [
+			'title' => __( 'Edit Template Parts', 'mai-engine' ),
+		],
+	] );
+
+	$wp_admin_bar->add_node( [
+		'id'     => 'reusable-blocks',
+		'parent' => 'site-name',
+		'title'  => __( 'Reusable Blocks', 'mai-engine' ),
+		'href'   => admin_url( 'edit.php?post_type=wp_block' ),
+		'meta'   => [
+			'title' => __( 'Edit Reusable Blocks', 'mai-engine' ),
+		],
+	] );
 }
 
 /**
@@ -127,6 +162,25 @@ function mai_render_template_part( $slug, array $args = [] ) {
 }
 
 /**
+ * Checks whether the template part exists and has content.
+ *
+ * @since 2.1.1
+ *
+ * @param string $slug Template part slug.
+ *
+ * @return bool True if the template part exists and has content, false otherwise.
+ */
+function mai_has_template_part( $slug ) {
+	$id = mai_get_template_part_by_slug( $slug );
+
+	if ( $id ) {
+		return ! empty( get_post_field( 'post_content', $id ) );
+	}
+
+	return false;
+}
+
+/**
  * Checks whether the template part with the given slug exists.
  *
  * @since 2.0.0
@@ -144,14 +198,14 @@ function mai_template_part_exists( $slug ) {
 /**
  * Gets a template part ID by its slug.
  *
- * @since 2.0.0
+ * @since 2.1.1
  *
  * @param string $slug Template part slug.
  *
  * @return int Template part ID, or 0 if not found.
  */
 function mai_get_template_part_by_slug( $slug ) {
-	$posts = get_posts(
+	$id = get_posts(
 		[
 			'fields'                 => 'ids',
 			'posts_per_page'         => 1,
@@ -163,9 +217,9 @@ function mai_get_template_part_by_slug( $slug ) {
 		]
 	);
 
-	if ( empty( $posts ) ) {
+	if ( empty( $id ) ) {
 		return 0;
 	}
 
-	return (int) array_shift( $posts );
+	return (int) array_shift( $id );
 }

@@ -148,7 +148,7 @@ class Mai_Entry {
 		// Check if extra wrap is needed.
 		$has_wrap = false;
 		if ( 'single' !== $this->context ) {
-			$has_wrap = in_array( 'image', $this->args['show'], true ) && ( in_array( $this->args['image_position'], [ 'background' ], true ) || mai_has_string( 'left', $this->args['image_position'] ) || mai_has_string( 'right', $this->args['image_position'] ) );
+			$has_wrap = in_array( 'image', $this->args['show'], true ) && ( in_array( $this->args['image_position'], [ 'background' ], true ) || mai_has_string( [ 'left', 'right' ], $this->args['image_position'] ) );
 		}
 
 		// If we have inner wrap.
@@ -302,14 +302,23 @@ class Mai_Entry {
 			return;
 		}
 
+		$atts = [
+			'class' => 'entry-image-link',
+		];
+
+		if ( 'single' === $this->context ) {
+			$atts['class'] .= ' entry-image-single';
+		}
+
 		// TODO: Is this the best way to handle non-linked featured images?
 		// We'll need this later for Mai Favorites when we can disable links in grid.
-		$wrap = ( 'single' === $this->context ) || ( 'background' === $this->args['image_position'] ) ? 'span' : 'a';
-		$atts = ( 'single' === $this->context ) || ( 'background' === $this->args['image_position'] ) ? [] : [
-			'href'        => $this->url,
-			'aria-hidden' => 'true',
-			'tabindex'    => '-1',
-		];
+		$wrap = ( 'single' === $this->context ) || ( 'background' === $this->args['image_position'] ) ? 'figure' : 'a';
+
+		if ( ( 'single' === $this->context ) || ( 'background' === $this->args['image_position'] ) ) {
+			$atts['href']        = $this->url;
+			$atts['aria-hidden'] = 'true';
+			$atts['tabindex']    = '-1';
+		}
 
 		// This filter overrides href.
 		remove_filter( 'genesis_attr_entry-image-link', 'genesis_attributes_entry_image_link' );
@@ -356,6 +365,13 @@ class Mai_Entry {
 		$image = wp_get_attachment_image( $image_id, $size, false, [ 'class' => "entry-image size-{$size}", 'loading' => 'lazy' ] );
 		remove_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 5 );
 		remove_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
+
+		if ( 'single' === $this->context ) {
+			$caption = wp_get_attachment_caption( $image_id );
+			if ( $caption ) {
+				$image .= sprintf( '<figcaption>%s</figcaption>', $caption );
+			}
+		}
 
 		return $image;
 	}
@@ -1020,8 +1036,8 @@ class Mai_Entry {
 		// The wrap with the link.
 		genesis_markup(
 			[
-				'open'    => '<p %s>',
-				'close'   => '</p>',
+				'open'    => '<div %s>',
+				'close'   => '</div>',
 				'content' => $more_link,
 				'context' => 'entry-more',
 				'atts'    => [
@@ -1045,7 +1061,7 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_after_entry() {
-		if ( mai_template_part_exists( 'after-entry' ) && ! mai_is_element_hidden( 'after_entry' ) ) {
+		if ( mai_has_template_part( 'after-entry' ) && ! mai_is_element_hidden( 'after_entry' ) ) {
 			mai_render_template_part( 'after-entry' );
 		}
 

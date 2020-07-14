@@ -1,6 +1,5 @@
 .wp-block-image {
-	margin-top: var(--spacing-lg);
-	margin-bottom: var(--spacing-lg);
+	margin-top: 1em; // Match core margin-bottom: 1em.
 
 	&.alignleft {
 		margin-right: var(--spacing-md);
@@ -10,4 +9,11 @@
 		margin-left: var(--spacing-md);
 	}
 
+}
+
+// We need default element and to override WP.
+figcaption,
+.wp-block-image figcaption {
+	font-size: var(--caption-font-size, var(--font-size-xs));
+	text-align: var(--caption-text-align, start);
 }

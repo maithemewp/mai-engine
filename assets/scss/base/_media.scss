@@ -13,12 +13,6 @@ img {
 	border-radius: var(--image-border-radius, 0);
 }
 
-figcaption {
-	display: table-caption; // Make captions respect width of the figure element.
-	caption-side: bottom;
-	width: auto;
-}
-
 iframe {
 	border: 0;
 }

@@ -49,22 +49,34 @@
 .has-boxed-container {
 
 	@include mq(lg) {
+		--alignfull-max-width: var(--breakpoint-xl);
+		--alignfull-margin-right: auto;
+		--alignfull-margin-left: auto;
 
 		&.content-sidebar,
 		&.sidebar-content {
-			--alignfull-margin-right: calc(var(--side-spacing) * -1);
-			--alignfull-margin-left: calc(var(--side-spacing) * -1);
+
+			.content {
+				--alignfull-margin-right: calc(var(--side-spacing) * -1);
+				--alignfull-margin-left: calc(var(--side-spacing) * -1);
+			}
 		}
 
 		&.narrow-content,
 		&.standard-content {
-			--alignfull-margin-right: calc((var(--site-container-max-width) - var(--content-max-width)) * -0.5);
-			--alignfull-margin-left: calc((var(--site-container-max-width) - var(--content-max-width)) * -0.5);
+
+			.content {
+				--alignfull-margin-right: calc((var(--site-container-max-width) - var(--content-max-width)) * -0.5);
+				--alignfull-margin-left: calc((var(--site-container-max-width) - var(--content-max-width)) * -0.5);
+			}
 		}
 
 		&.wide-content {
-			--alignfull-margin-right: calc((var(--site-container-max-width) - var(--content-max-width)) - var(--side-spacing));
-			--alignfull-margin-left: calc((var(--site-container-max-width) - var(--content-max-width)) - var(--side-spacing));
+
+			.content {
+				--alignfull-margin-right: calc((var(--site-container-max-width) - var(--content-max-width)) - var(--side-spacing));
+				--alignfull-margin-left: calc((var(--site-container-max-width) - var(--content-max-width)) - var(--side-spacing));
+			}
 		}
 	}
 }

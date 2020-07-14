@@ -61,7 +61,7 @@ function mai_body_classes( $classes ) {
 	}
 
 	// Add before class.
-	if ( ! is_active_sidebar( 'header-before' ) ) {
+	if ( mai_has_template_part( 'before-header' ) || is_active_sidebar( 'before-header' ) ) {
 		$classes[] = 'has-before-header';
 	}
 
@@ -84,11 +84,14 @@ function mai_body_classes( $classes ) {
 	$classes[] = mai_has_light_site_header() ? 'has-light-header' : 'has-dark-header';
 
 	// Add page header classes.
-	$classes[] = mai_has_page_header() ? 'has-page-header' : 'no-page-header';
-	$classes[] = mai_has_light_page_header() ? 'has-light-page-header' : 'has-dark-page-header';
+	$has_page_header = mai_has_page_header();
+	$classes[]       = $has_page_header ? 'has-page-header' : 'no-page-header';
+	if ( $has_page_header ) {
+		$classes[] = mai_has_light_page_header() ? 'has-light-page-header' : 'has-dark-page-header';
+	}
 
-	$header_left  = has_nav_menu( 'header-left' ) || is_active_sidebar( 'header-left' );
-	$header_right = has_nav_menu( 'header-right' ) || is_active_sidebar( 'header-right' );
+	$header_left  = has_nav_menu( 'header-left' ) || mai_has_template_part( 'header-left' ) || is_active_sidebar( 'header-left' );
+	$header_right = has_nav_menu( 'header-right' ) || mai_has_template_part( 'header-right' ) || is_active_sidebar( 'header-right' );
 
 	// Add logo classes.
 	if ( ( $header_left && $header_right ) || ( ! $header_right && ! $header_right ) ) {

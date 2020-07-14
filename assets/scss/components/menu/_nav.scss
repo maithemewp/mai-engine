@@ -2,7 +2,6 @@
 .nav-header-right {
 	position: relative;
 	display: var(--nav-header-display, (flex));
-	order: 2;
 	width: var(--nav-header-width, 100vw);
 	margin: var(--nav-header-margin, 0 -5vw);
 	padding: var(--nav-header-padding, (var(--spacing-md) 5vw));
@@ -14,7 +13,8 @@
 }
 
 .nav-after-header {
+	position: relative;
 	z-index: 9;
-	display: var(--nav-header-display, none);
+	display: var(--nav-after-header-display, none);
 	width: 100%;
 }

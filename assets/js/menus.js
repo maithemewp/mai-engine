@@ -12,7 +12,6 @@
 	var mobileMenuWidget = document.querySelector( '.mobile-menu .widget' );
 	var menuToggle       = document.getElementsByClassName( 'menu-toggle' )[ 0 ];
 	var searchMenuItems  = document.querySelectorAll( '.menu-item.search' );
-	var timeout          = false;
 
 	var createMobileMenu = function() {
 		if ( mobileMenu ) {
@@ -185,6 +184,42 @@
 		}
 	};
 
+	var switchMenuButtonClasses = function() {
+		var menuButtons   = document.querySelectorAll( '.menu-item.button' );
+		var buttonClasses = [
+			'button-secondary',
+			'button-outline',
+			'button-link',
+			'button-white',
+			'button-small',
+			'button-large',
+		];
+
+		menuButtons.forEach( function( menuButton ) {
+			var buttonClassesToAdd = [];
+
+			buttonClasses.forEach( function( buttonClass ) {
+				if ( menuButton.classList.contains( buttonClass ) ) {
+					menuButton.classList.remove( buttonClass );
+					buttonClassesToAdd.push( buttonClass );
+				}
+			} );
+
+			menuButton.childNodes.forEach( function( childElement ) {
+				if ( 'menu-item-link' === childElement.className ) {
+					childElement.classList.add( 'button' );
+					childElement.classList.remove( 'menu-item-link' );
+
+					buttonClassesToAdd.forEach( function( buttonClass ) {
+						childElement.classList.add( buttonClass );
+					} );
+				}
+			} );
+
+			menuButton.classList.remove( 'button' );
+		} );
+	};
+
 	var onReady = function() {
 		createMobileMenu();
 		createMenuToggle();
@@ -192,6 +227,7 @@
 		addMenuItemClasses();
 		createSubMenuToggles();
 		createSearchForm();
+		switchMenuButtonClasses();
 
 		menuToggle.addEventListener( 'click', toggleMobileMenu, false );
 		searchMenuItems.forEach( function( searchMenuItem ) {
