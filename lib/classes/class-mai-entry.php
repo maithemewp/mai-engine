@@ -148,7 +148,7 @@ class Mai_Entry {
 		// Check if extra wrap is needed.
 		$has_wrap = false;
 		if ( 'single' !== $this->context ) {
-			$has_wrap = in_array( 'image', $this->args['show'], true ) && ( in_array( $this->args['image_position'], [ 'background' ], true ) || mai_has_string( 'left', $this->args['image_position'] ) || mai_has_string( 'right', $this->args['image_position'] ) );
+			$has_wrap = in_array( 'image', $this->args['show'], true ) && ( in_array( $this->args['image_position'], [ 'background' ], true ) || mai_has_string( [ 'left', 'right' ], $this->args['image_position'] ) );
 		}
 
 		// If we have inner wrap.

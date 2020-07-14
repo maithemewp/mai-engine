@@ -52,16 +52,25 @@ function mai_debug( $data, $function = 's', $hook = 'after_setup_theme', $priori
 }
 
 /**
- * Description of expected behavior.
+ * Check if a string contains at least one specified string.
  *
  * @since 0.1.0
+ * @since 2.1.1 Added array support in needle.
  *
- * @param string $needle   String to check for.
- * @param string $haystack String to check in.
+ * @param string|array $needle   String or array of strings to check for.
+ * @param string       $haystack String to check in.
  *
  * @return string
  */
 function mai_has_string( $needle, $haystack ) {
+	if ( is_array( $needle ) ) {
+		foreach ( $needle as $string ) {
+			if ( false !== strpos( $haystack, $string ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
 	return false !== strpos( $haystack, $needle );
 }
 

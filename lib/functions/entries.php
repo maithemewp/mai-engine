@@ -48,7 +48,7 @@ function mai_do_entries_open( $args ) {
 
 		} else {
 
-			if ( mai_has_string( 'left', $args['image_position'] ) || mai_has_string( 'right', $args['image_position'] ) ) {
+			if ( mai_has_string( [ 'left', 'right' ], $args['image_position'] ) ) {
 
 				// Image width.
 				switch ( $args['image_width'] ) {
@@ -79,7 +79,7 @@ function mai_do_entries_open( $args ) {
 	$attributes['style'] .= sprintf( '--align-columns:%s;', ! empty( $args['align_columns'] ) ? mai_get_flex_align( $args['align_columns'] ) : 'unset' );
 	$attributes['style'] .= sprintf( '--align-columns-vertical:%s;', ! empty( $args['align_columns_vertical'] ) ? mai_get_flex_align( $args['align_columns_vertical'] ) : 'unset' );
 	$attributes['style'] .= sprintf( '--align-text:%s;', mai_get_align_text( $args['align_text'] ) );
-	$attributes['style'] .= sprintf( '--align-text-vertical:%s;', mai_get_align_text( $args['align_text_vertical'] ) );
+	$attributes['style'] .= sprintf( '--align-text-vertical:%s;', mai_has_string( [ 'left', 'right', 'background' ], $args['image_position'] ) ? mai_get_align_text( $args['align_text_vertical'] ) : 'unset' );
 
 	genesis_markup(
 		[
@@ -96,7 +96,7 @@ function mai_do_entries_open( $args ) {
 	$wrap_class = 'entries-wrap';
 
 	// Add image stack class to entries-wrap so it intercepts the inline variable so we don't need overly specific CSS.
-	if ( $args['image_stack'] && in_array( 'image', $args['show'], true ) && $args['image_position'] && ( mai_has_string( 'left', $args['image_position'] ) || mai_has_string( 'right', $args['image_position'] ) ) ) {
+	if ( $args['image_stack'] && in_array( 'image', $args['show'], true ) && $args['image_position'] && mai_has_string( [ 'left', 'right' ], $args['image_position'] ) ) {
 		$wrap_class .= ' has-image-stack';
 	}
 
