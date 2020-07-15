@@ -69,8 +69,10 @@ function mai_has_string( $needle, $haystack ) {
 				return true;
 			}
 		}
+
 		return false;
 	}
+
 	return false !== strpos( $haystack, $needle );
 }
 
@@ -158,7 +160,7 @@ function mai_sidebar_has_widget( $sidebar, $widget ) {
 /**
  * Checks if first block is cover or group block aligned full.
  *
- * @since 0.1.0
+ * @since 2.1.2
  *
  * @return bool
  */
@@ -169,6 +171,10 @@ function mai_has_alignfull_first() {
 		$has_alignfull_first = false;
 
 		if ( ! mai_is_type_single() || ! has_blocks() ) {
+			return $has_alignfull_first;
+		}
+
+		if ( ! mai_is_element_hidden( 'entry-title' ) ) {
 			return $has_alignfull_first;
 		}
 
@@ -213,7 +219,7 @@ function mai_has_dark_alignfull_first() {
 			if ( 'core/group' === $block_name ) {
 				if ( isset( $first['attrs']['backgroundColor'] ) ) {
 					$colors                   = mai_get_colors();
-					$color                    = isset( $colors[ $first['attrs']['backgroundColor'] ] ) ? $colors[ $first['attrs']['backgroundColor'] ]: $first['attrs']['backgroundColor'];
+					$color                    = isset( $colors[ $first['attrs']['backgroundColor'] ] ) ? $colors[ $first['attrs']['backgroundColor'] ] : $first['attrs']['backgroundColor'];
 					$has_dark_alignfull_first = ! mai_is_light_color( $color );
 				}
 			} elseif ( 'core/cover' === $block_name ) {
@@ -252,6 +258,7 @@ function mai_has_sidebar() {
  */
 function mai_has_boxed_container() {
 	$default = current_theme_supports( 'boxed-container' );
+
 	return mai_get_option( 'boxed-container', $default );
 }
 
