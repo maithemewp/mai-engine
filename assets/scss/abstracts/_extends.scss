@@ -34,12 +34,12 @@
 	display: inline-block;
 	width: auto;
 	margin: var(--button-margin, 0);
-	padding: var(--button-padding, (1em 2em));
+	padding: var(--button-padding, (0.9em 2em));
 	color: var(--button-color); // Color contrast automatically generated.
 	font-weight: var(--button-font-weight, var(--heading-font-weight));
 	font-size: var(--button-font-size, var(--font-size-base));
 	font-family: var(--button-font-family); // No fallback, always output by Kirki.
-	line-height: var(--button-line-height, 1);
+	line-height: var(--button-line-height, 1.1);
 	letter-spacing: var(--button-letter-spacing, normal);
 	white-space: var(--button-white-space, normal);
 	text-align: var(--button-text-align, center);
@@ -113,7 +113,7 @@
 	}
 
 	@if ("link" == $style) {
-		padding: var(--button-padding, (1em 0.5em));
+		padding: var(--button-padding, (0.9em 0.5em));
 		color: var(--button-link-color, var(--color-link));
 		background: transparent;
 
@@ -134,8 +134,8 @@
 	}
 
 	@if ("small" == $style) {
+		padding: 0.7em 1.25em;
 		font-size: var(--font-size-sm);
-		padding: 0.8em 1.25em; // Major third.
 	}
 
 	@if ("large" == $style) {
