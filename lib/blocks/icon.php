@@ -52,6 +52,12 @@ function mai_do_icon_block() {
 		$args[ $setting ] = get_field( $setting );
 	}
 
+	// Swap for brand.
+	if ( 'brands' === $args['style'] ) {
+		$args['icon'] = $args['icon_brand'];
+		unset( $args['icon_brand'] );
+	}
+
 	echo mai_get_icon( $args );
 }
 
@@ -74,16 +80,15 @@ function mai_load_icon_choices( $field ) {
 		return $field;
 	}
 
-	$field['choices']       = mai_get_icon_choices( 'light' );
-	$field['default_value'] = 'heart';
+	$field['choices'] = mai_get_icon_choices( 'light' );
 
 	return $field;
 }
 
 /**
- * Add icon branch choices.
+ * Add icon brand choices.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param array $field Field args.
  *
@@ -96,8 +101,7 @@ function mai_load_icon_brand_choices( $field ) {
 		return $field;
 	}
 
-	$field['choices']       = mai_get_icon_choices( 'brands' );
-	$field['default_value'] = 'WordPress';
+	$field['choices'] = mai_get_icon_choices( 'brands' );
 
 	return $field;
 }
@@ -142,6 +146,8 @@ function mai_register_icon_field_group() {
 		return;
 	}
 
+	$defaults = mai_get_icon_default_args();
+
 	acf_add_local_field_group(
 		[
 			'key'         => 'mai_icon',
@@ -154,12 +160,12 @@ function mai_register_icon_field_group() {
 					'type'  => 'tab',
 				],
 				[
-					'key'     => 'mai_icon_style',
-					'name'    => 'style',
-					'label'   => esc_html__( 'Style', 'mai-engine' ),
-					'type'    => 'button_group',
-					'default' => 'light',
-					'choices' => [
+					'key'           => 'mai_icon_style',
+					'name'          => 'style',
+					'label'         => esc_html__( 'Style', 'mai-engine' ),
+					'type'          => 'button_group',
+					'default_value' => $defaults['style'],
+					'choices'       => [
 						'light'   => esc_html__( 'Light', 'mai-engine' ),
 						'regular' => esc_html__( 'Regular', 'mai-engine' ),
 						'solid'   => esc_html__( 'Solid', 'mai-engine' ),
@@ -171,7 +177,7 @@ function mai_register_icon_field_group() {
 					'name'              => 'icon',
 					'label'             => esc_html__( 'Icon', 'mai-engine' ),
 					'type'              => 'select',
-					'default'           => 'heart',
+					'default_value'     => $defaults['icon'],
 					'multiple'          => 0,
 					'ui'                => 1,
 					'ajax'              => 1,
@@ -188,9 +194,10 @@ function mai_register_icon_field_group() {
 				],
 				[
 					'key'               => 'mai_icon_brand_choices',
-					'name'              => 'icon',
+					'name'              => 'icon_brand',
 					'label'             => esc_html__( 'Icon (Brands)', 'mai-engine' ),
 					'type'              => 'select',
+					'default_value'     => $defaults['icon_brand'],
 					'multiple'          => 0,
 					'ui'                => 1,
 					'ajax'              => 1,
@@ -210,7 +217,7 @@ function mai_register_icon_field_group() {
 					'name'          => 'display',
 					'label'         => esc_html__( 'Display', 'mai-engine' ),
 					'type'          => 'button_group',
-					'default_value' => 'block',
+					'default_value' => $defaults['display'],
 					'choices'       => [
 						'block'        => esc_html__( 'Block', 'mai-engine' ),
 						'inline-block' => esc_html__( 'Inline', 'mai-engine' ),
@@ -230,7 +237,7 @@ function mai_register_icon_field_group() {
 						'right'  => esc_html__( 'Right', 'mai-engine' ),
 					],
 					'allow_null'        => 0,
-					'default_value'     => 'center',
+					'default_value'     => $defaults['align'],
 					'layout'            => 'horizontal',
 					'return_format'     => 'value',
 					'conditional_logic' => [

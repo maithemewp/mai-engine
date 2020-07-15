@@ -1272,7 +1272,8 @@ function mai_get_icon_default_args() {
 	return [
 		'style'                => 'light',
 		'icon'                 => 'bolt',
-		'display'              => 'flex',
+		'icon_brand'           => 'wordpress-simple',
+		'display'              => 'block',
 		'align'                => 'center',
 		'size'                 => '40',
 		'class'                => '',
