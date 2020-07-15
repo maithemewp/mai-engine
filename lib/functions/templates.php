@@ -83,6 +83,8 @@ add_action( 'admin_bar_menu', 'mai_add_admin_bar_links', 999 );
  *
  * @since 2.1.1
  *
+ * @param WP_Admin_Bar $wp_admin_bar Admin bar object.
+ *
  * @return void
  */
 function mai_add_admin_bar_links( $wp_admin_bar ) {
@@ -112,114 +114,93 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
 }
 
 /**
- * Renders the template part with the given slug.
+ * Returns a static array of all template part data.
  *
- * @since 2.0.0
+ * @since 2.1.2
  *
- * @global WP_Post $post   Current WordPress post object.
- *
- * @param string   $slug   Template part slug.
- * @param array    $args   {
- *                         Optional. Additional rendering arguments.
- *
- * @type string    $before Additional markup to render before the template part. Default empty string.
- * @type string    $after  Additional markup to render after the template part. Default empty string.
- * }
+ * @return array
  */
-function mai_render_template_part( $slug, array $args = [] ) {
-	global $post;
+function mai_get_template_parts() {
+	static $template_parts = [];
 
-	$id = mai_get_template_part_by_slug( $slug );
-
-	if ( empty( $id ) ) {
-		return;
+	if ( empty( $template_parts ) ) {
+		$template_parts = get_posts(
+			[
+				'numberposts' => -1,
+				'post_type'   => 'wp_template_part',
+				'post_status' => 'publish',
+			]
+		);
 	}
 
-	$args = wp_parse_args(
-		$args,
-		[
-			'before' => '',
-			'after'  => '',
-		]
-	);
-
-	// Save original post to restore it later.
-	$orig_post = $post;
-
-	// Set up template part and render its content.
-	$post = get_post( $id );
-	setup_postdata( $post );
-
-	if ( '' !== $post->post_content && 'publish' === $post->post_status ) {
-		echo $args['before']; // phpcs:ignore WordPress.Security.EscapeOutput
-		the_content();
-		echo $args['after']; // phpcs:ignore WordPress.Security.EscapeOutput
-	}
-
-	// Restore original post.
-	$post = $orig_post;
-	setup_postdata( $post );
-}
-
-/**
- * Checks whether the template part exists and has content.
- *
- * @since 2.1.1
- *
- * @param string $slug Template part slug.
- *
- * @return bool True if the template part exists and has content, false otherwise.
- */
-function mai_has_template_part( $slug ) {
-	$id = mai_get_template_part_by_slug( $slug );
-
-	if ( $id ) {
-		return ! empty( get_post_field( 'post_content', $id ) );
-	}
-
-	return false;
-}
-
-/**
- * Checks whether the template part with the given slug exists.
- *
- * @since 2.0.0
- *
- * @param string $slug Template part slug.
- *
- * @return bool True if the template part exists, false otherwise.
- */
-function mai_template_part_exists( $slug ) {
-	$id = mai_get_template_part_by_slug( $slug );
-
-	return ! empty( $id );
+	return $template_parts;
 }
 
 /**
  * Gets a template part ID by its slug.
  *
- * @since 2.1.1
+ * @since 2.1.2
  *
  * @param string $slug Template part slug.
  *
- * @return int Template part ID, or 0 if not found.
+ * @return null|WP_Post
  */
-function mai_get_template_part_by_slug( $slug ) {
-	$id = get_posts(
-		[
-			'fields'                 => 'ids',
-			'posts_per_page'         => 1,
-			'post_type'              => 'wp_template_part',
-			'post_status'            => 'any',
-			'name'                   => $slug,
-			'update_post_meta_cache' => false,
-			'update_post_term_cache' => false,
-		]
-	);
+function mai_get_template_part( $slug ) {
+	static $template_parts = [];
 
-	if ( empty( $id ) ) {
-		return 0;
+	if ( ! array_key_exists( $slug, $template_parts ) ) {
+		$template_parts[ $slug ] = null;
+		$all_template_parts      = mai_get_template_parts();
+
+		/**
+		 * @var WP_Post $template_part Post object.
+		 */
+		foreach ( $all_template_parts as $template_part ) {
+			if ( $slug === $template_part->post_name ) {
+				$template_parts[ $slug ] = $template_part;
+			}
+		}
 	}
 
-	return (int) array_shift( $id );
+	return $template_parts[ $slug ];
 }
+
+/**
+ * Checks whether the template part exists and has content.
+ *
+ * @since 2.1.2
+ *
+ * @param string $slug Template part slug.
+ *
+ * @return bool
+ */
+function mai_has_template_part( $slug ) {
+	$template_part = mai_get_template_part( $slug );
+
+	return $template_part && $template_part->post_content;
+}
+
+/**
+ * Renders the template part with the given slug.
+ *
+ * No need to check for post_content or post_status, all checks
+ * are handled in helper functions.
+ *
+ * @since 2.1.2
+ *
+ * @param string $slug   Template part slug.
+ * @param string $before Before content markup.
+ * @param string $after  After content markup.
+ *
+ * @return void
+ */
+function mai_render_template_part( $slug, $before = '', $after = '' ) {
+	$template_part = mai_get_template_part( $slug );
+
+	if ( $template_part ) {
+		echo $before;
+		echo apply_filters( 'the_content', $template_part->post_content );
+		echo $after;
+	}
+}
+

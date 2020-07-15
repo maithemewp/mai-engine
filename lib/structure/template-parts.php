@@ -13,7 +13,7 @@ add_action( 'genesis_before', 'mai_render_template_parts' );
 /**
  * Display template parts defined in config.
  *
- * @since 2.0.0
+ * @since 2.1.2
  *
  * @return void
  */
@@ -24,16 +24,14 @@ function mai_render_template_parts() {
 		$id       = $template_part['id'];
 		$hook     = isset( $template_part['location'] ) ? $template_part['location'] : false;
 		$priority = isset( $template_part['priority'] ) ? $template_part['priority'] : 10;
-		$args     = wp_parse_args( $template_part, [
-			'before' => '',
-			'after'  => '',
-		] );
+		$before   = isset( $template_part['before'] ) ? $template_part['before'] : '';
+		$after    = isset( $template_part['after'] ) ? $template_part['after'] : '';
 
 		if ( $hook && ! mai_is_element_hidden( mai_convert_case( $id ) ) ) {
 			add_action(
 				$hook,
-				function () use ( $id, $args ) {
-					mai_render_template_part( $id, $args );
+				function () use ( $id, $before, $after ) {
+					mai_render_template_part( $id, $before, $after );
 				},
 				$priority
 			);
