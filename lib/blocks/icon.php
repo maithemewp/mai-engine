@@ -81,7 +81,7 @@ function mai_load_icon_choices( $field ) {
 }
 
 /**
- * Description of expected behavior.
+ * Add icon branch choices.
  *
  * @since 1.0.0
  *
@@ -103,7 +103,7 @@ function mai_load_icon_brand_choices( $field ) {
 }
 
 /**
- * Description of expected behavior.
+ * Get icon svg choices.
  *
  * @since 1.0.0
  *
@@ -129,15 +129,15 @@ function mai_get_icon_choices( $style ) {
 	return $choices;
 }
 
-add_action( 'acf/init', 'mai_register_icon_field_groups' );
+add_action( 'acf/init', 'mai_register_icon_field_group' );
 /**
- * Description of expected behavior.
+ * Register icon block field group.
  *
  * @since 1.0.0
  *
  * @return void
  */
-function mai_register_icon_field_groups() {
+function mai_register_icon_field_group() {
 	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
 		return;
 	}
