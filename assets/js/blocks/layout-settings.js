@@ -237,7 +237,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 						}}>
 							{__( 'Clear', 'mai-engine' )}
 						</Button>
-						&nbsp;
+						<p>&nbsp;</p>
 						<ButtonGroup mode="radio" data-chosen={verticalSpacingBottom}>
 							<p>{__( 'Bottom Spacing', 'mai-engine' )}</p>
 							{sizeScale.map( sizeInfo => (
@@ -265,7 +265,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 						}}>
 							{__( 'Clear', 'mai-engine' )}
 						</Button>
-						&nbsp;
+						<p>&nbsp;</p>
 						<ButtonGroup mode="radio" data-chosen={verticalSpacingLeft}>
 							<p>{__( 'Left Spacing', 'mai-engine' )}</p>
 							{sizeScale.map( sizeInfo => (
@@ -293,7 +293,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 						}}>
 							{__( 'Clear', 'mai-engine' )}
 						</Button>
-						&nbsp;
+						<p>&nbsp;</p>
 						<ButtonGroup mode="radio" data-chosen={verticalSpacingRight}>
 							<p>{__( 'Right Spacing', 'mai-engine' )}</p>
 							{sizeScale.map( sizeInfo => (
