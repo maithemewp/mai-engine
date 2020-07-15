@@ -1,0 +1,33 @@
+.wp-block-quote {
+	margin: 0 0 1em 0;
+	padding-left: 1em;
+	border-left: var(--border);
+
+	cite,
+	footer,
+	&__citation {
+		position: relative;
+		margin-top: 1em;
+
+		@include caption();
+	}
+
+	&.has-text-align-right,
+	&.has-text-align-right {
+		padding-right: 1em;
+		padding-left: 0;
+		border-right: var(--border);
+		border-left: none;
+	}
+
+	&.has-text-align-center,
+	&.has-text-align-center {
+		padding-left: 0;
+		border: none;
+	}
+
+	&.is-style-large,
+	&.is-large {
+		border: none;
+	}
+}

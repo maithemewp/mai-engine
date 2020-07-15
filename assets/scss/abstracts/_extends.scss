@@ -147,3 +147,9 @@
 		opacity: 0.5;
 	}
 }
+
+@mixin caption() {
+	color: var(--caption-color, var(--color-body));
+	font-size: var(--caption-font-size, var(--font-size-xs));
+	text-align: var(--caption-text-align, (center));
+}

@@ -324,6 +324,7 @@ return [
 		],
 		'remove' => [
 			'simple-social-icons-font',
+			'wp-block-library-theme',
 		],
 	],
 

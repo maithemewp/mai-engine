@@ -1,0 +1,23 @@
+.wp-block-table {
+	border-collapse: collapse;
+
+	thead {
+		border-bottom: var(--border);
+	}
+
+	tfoot {
+		border-top: var(--border);
+	}
+
+	td,
+	th {
+		padding: 0.5em;
+		word-break: normal;
+		border: var(--border);
+	}
+
+	figcaption {
+
+		@include caption();
+	}
+}
