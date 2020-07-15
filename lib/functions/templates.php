@@ -124,6 +124,8 @@ function mai_get_template_parts() {
 	static $template_parts = [];
 
 	if ( empty( $template_parts ) ) {
+		$slugs          = [];
+		$config         = mai_get_config( 'template-parts' );
 		$template_parts = get_posts(
 			[
 				'numberposts' => -1,
@@ -131,6 +133,16 @@ function mai_get_template_parts() {
 				'post_status' => 'publish',
 			]
 		);
+
+		foreach ( $config as $template_part ) {
+			$slugs[] = $template_part['id'];
+		}
+
+		foreach ( $template_parts as $index => $template_part ) {
+			if ( ! in_array( $template_part->post_name, $slugs, true ) ) {
+				unset( $template_parts[ $index ] );
+			}
+		}
 	}
 
 	return $template_parts;
