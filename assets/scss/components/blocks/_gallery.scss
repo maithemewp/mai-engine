@@ -8,3 +8,8 @@
 		align-self: center;
 	}
 }
+
+.blocks-gallery-caption {
+
+	@include caption();
+}

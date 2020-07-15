@@ -1,4 +1,9 @@
 .wp-block-embed {
 	display: block;
 	margin: var(--spacing-md) auto;
+
+	figcaption {
+
+		@include caption();
+	}
 }

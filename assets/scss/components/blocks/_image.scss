@@ -14,6 +14,6 @@
 // We need default element and to override WP.
 figcaption,
 .wp-block-image figcaption {
-	font-size: var(--caption-font-size, var(--font-size-xs));
-	text-align: var(--caption-text-align, start);
+
+	@include caption();
 }

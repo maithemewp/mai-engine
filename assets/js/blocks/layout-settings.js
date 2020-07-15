@@ -35,16 +35,6 @@ const sizeScale = [
 	},
 ];
 
-const spacingSizeScale = [
-	{
-		label: __( 'None', 'mai-engine' ),
-		value: 'no',
-	},
-	...sizeScale
-];
-
-console.log( spacingSizeScale );
-
 /**
  * Add layout control attribute to block.
  *
@@ -109,7 +99,13 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 			);
 		}
 
-		const { contentWidth, verticalSpacingTop, verticalSpacingBottom } = props.attributes;
+		const {
+				  contentWidth,
+				  verticalSpacingTop,
+				  verticalSpacingBottom,
+				  verticalSpacingLeft,
+				  verticalSpacingRight,
+			  } = props.attributes;
 
 		const layoutSettings = [
 			{
@@ -143,6 +139,28 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 					'has-md-padding-bottom',
 					'has-lg-padding-bottom',
 					'has-xl-padding-bottom',
+				]
+			},
+			{
+				name: 'padding-left',
+				value: verticalSpacingLeft,
+				classes: [
+					'has-xs-padding-left',
+					'has-sm-padding-left',
+					'has-md-padding-left',
+					'has-lg-padding-left',
+					'has-xl-padding-left',
+				]
+			},
+			{
+				name: 'padding-right',
+				value: verticalSpacingRight,
+				classes: [
+					'has-xs-padding-right',
+					'has-sm-padding-right',
+					'has-md-padding-right',
+					'has-lg-padding-right',
+					'has-xl-padding-right',
 				]
 			},
 		];
@@ -194,7 +212,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 						<p>&nbsp;</p>
 						<ButtonGroup mode="radio" data-chosen={verticalSpacingTop}>
 							<p>{__( 'Top Spacing', 'mai-engine' )}</p>
-							{spacingSizeScale.map( sizeInfo => (
+							{sizeScale.map( sizeInfo => (
 								<Button
 									onClick={() => {
 										props.setAttributes( {
@@ -222,7 +240,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 						<p>&nbsp;</p>
 						<ButtonGroup mode="radio" data-chosen={verticalSpacingBottom}>
 							<p>{__( 'Bottom Spacing', 'mai-engine' )}</p>
-							{spacingSizeScale.map( sizeInfo => (
+							{sizeScale.map( sizeInfo => (
 								<Button
 									onClick={() => {
 										props.setAttributes( {
@@ -243,6 +261,62 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 						<Button isDestructive isSmall isLink onClick={() => {
 							props.setAttributes( {
 								verticalSpacingBottom: null,
+							} );
+						}}>
+							{__( 'Clear', 'mai-engine' )}
+						</Button>
+						<p>&nbsp;</p>
+						<ButtonGroup mode="radio" data-chosen={verticalSpacingLeft}>
+							<p>{__( 'Left Spacing', 'mai-engine' )}</p>
+							{sizeScale.map( sizeInfo => (
+								<Button
+									onClick={() => {
+										props.setAttributes( {
+											verticalSpacingLeft: sizeInfo.value,
+										} );
+									}}
+									data-checked={verticalSpacingLeft === sizeInfo.value}
+									value={sizeInfo.value}
+									key={`vertical-space-left-${sizeInfo.value}`}
+									index={sizeInfo.value}
+									isSecondary={verticalSpacingLeft !== sizeInfo.value}
+									isPrimary={verticalSpacingLeft === sizeInfo.value}
+								>
+									{sizeInfo.label}
+								</Button>
+							) )}
+						</ButtonGroup>
+						<Button isDestructive isSmall isLink onClick={() => {
+							props.setAttributes( {
+								verticalSpacingLeft: null,
+							} );
+						}}>
+							{__( 'Clear', 'mai-engine' )}
+						</Button>
+						<p>&nbsp;</p>
+						<ButtonGroup mode="radio" data-chosen={verticalSpacingRight}>
+							<p>{__( 'Right Spacing', 'mai-engine' )}</p>
+							{sizeScale.map( sizeInfo => (
+								<Button
+									onClick={() => {
+										props.setAttributes( {
+											verticalSpacingRight: sizeInfo.value,
+										} );
+									}}
+									data-checked={verticalSpacingRight === sizeInfo.value}
+									value={sizeInfo.value}
+									key={`vertical-space-right-${sizeInfo.value}`}
+									index={sizeInfo.value}
+									isSecondary={verticalSpacingRight !== sizeInfo.value}
+									isPrimary={verticalSpacingRight === sizeInfo.value}
+								>
+									{sizeInfo.label}
+								</Button>
+							) )}
+						</ButtonGroup>
+						<Button isDestructive isSmall isLink onClick={() => {
+							props.setAttributes( {
+								verticalSpacingRight: null,
 							} );
 						}}>
 							{__( 'Clear', 'mai-engine' )}

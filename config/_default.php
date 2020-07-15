@@ -242,7 +242,7 @@ return [
 			[
 				'handle'   => mai_get_handle() . '-editor',
 				'src'      => mai_get_asset_url( 'editor.js' ),
-				'deps'     => [ 'jquery' ],
+				'deps'     => [ 'jquery', 'jquery-ui-sortable' ],
 				'location' => 'editor',
 				'localize' => [
 					'name' => 'maiEditorVars',
@@ -324,6 +324,7 @@ return [
 		],
 		'remove' => [
 			'simple-social-icons-font',
+			'wp-block-library-theme',
 		],
 	],
 

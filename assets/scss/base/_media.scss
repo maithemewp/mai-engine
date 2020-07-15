@@ -17,6 +17,11 @@ iframe {
 	border: 0;
 }
 
+figure {
+	margin-inline-start: 0; // Chrome user agent override.
+	margin-inline-end: 0; // Chrome user agent override.
+}
+
 .has-rounded-image {
 	--image-border-radius: 9999px;
 }

@@ -1215,10 +1215,16 @@ function mai_get_icon( $args ) {
 	// Build inline styles.
 	$attributes['style'] .= sprintf( '--icon-display:%s;', $args['display'] );
 	$attributes['style'] .= sprintf( '--icon-align:%s;', $args['align'] );
-	$attributes['style'] .= sprintf( '--icon-size:%s;', mai_get_unit_value( $args['size'] ) );
-	$attributes['style'] .= sprintf( '--icon-color:%s;', $args['color_icon'] );
 	$attributes['style'] .= sprintf( '--icon-margin:%s %s %s %s;', mai_get_unit_value( $args['margin_top'] ), mai_get_unit_value( $args['margin_right'] ), mai_get_unit_value( $args['margin_bottom'] ), mai_get_unit_value( $args['margin_left'] ) );
 	$attributes['style'] .= sprintf( '--icon-padding:%s;', mai_get_unit_value( $args['padding'] ) );
+
+	if ( $args['size'] ) {
+		$attributes['style'] .= sprintf( '--icon-size:%s;', mai_get_unit_value( $args['size'] ) );
+	}
+
+	if ( $args['color_icon'] ) {
+		$attributes['style'] .= sprintf( '--icon-color:%s;', $args['color_icon'] );
+	}
 
 	if ( $args['color_background'] ) {
 		$attributes['style'] .= sprintf( '--icon-background:%s;', $args['color_background'] );
@@ -1266,7 +1272,8 @@ function mai_get_icon_default_args() {
 	return [
 		'style'                => 'light',
 		'icon'                 => 'bolt',
-		'display'              => 'flex',
+		'icon_brand'           => 'wordpress-simple',
+		'display'              => 'block',
 		'align'                => 'center',
 		'size'                 => '40',
 		'class'                => '',

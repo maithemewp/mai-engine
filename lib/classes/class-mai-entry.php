@@ -302,6 +302,10 @@ class Mai_Entry {
 			return;
 		}
 
+		// TODO: Is this the best way to handle non-linked featured images?
+		// We'll need this later for Mai Favorites when we can disable links in grid.
+		$wrap = ( 'single' === $this->context ) || ( 'background' === $this->args['image_position'] ) ? 'figure' : 'a';
+
 		$atts = [
 			'class' => 'entry-image-link',
 		];
@@ -310,11 +314,7 @@ class Mai_Entry {
 			$atts['class'] .= ' entry-image-single';
 		}
 
-		// TODO: Is this the best way to handle non-linked featured images?
-		// We'll need this later for Mai Favorites when we can disable links in grid.
-		$wrap = ( 'single' === $this->context ) || ( 'background' === $this->args['image_position'] ) ? 'figure' : 'a';
-
-		if ( ( 'single' === $this->context ) || ( 'background' === $this->args['image_position'] ) ) {
+		if ( ( 'single' !== $this->context ) && ( 'background' !== $this->args['image_position'] ) ) {
 			$atts['href']        = $this->url;
 			$atts['aria-hidden'] = 'true';
 			$atts['tabindex']    = '-1';

@@ -6,9 +6,9 @@
 		padding-left: var(--side-spacing);
 	}
 
-	&.has-background:not(.alignfull) {
-		padding-right: var(--spacing-lg);
-		padding-left: var(--spacing-lg);
+	&.has-background {
+		margin-top: 0;
+		margin-bottom: 0;
 	}
 
 	&__inner-container {

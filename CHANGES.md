@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.2.0 (7/15/20)
+* Added: New left and right spacing settings on group and cover blocks.
+* Changed: More performant template part query.
+* Changed: Remove core block library theme CSS and include only necessary styling inside Mai Engine.
+* Changed: Slightly larger line height on buttons.
+* Changed: Mai Grid blocks are no longer clickable in the editor.
+* Changed: Mai Icon now defaults to center alignment when adding a new instance.
+* Fixed: Transparent header when entry title is not hidden.
+* Fixed: Mai Icon defaults now work when adding a new block.
+* Fixed: Mai Icon selected icon was too large in select field.
+* Fixed: Mobile menu JS error in some scenarios.
+* Fixed: Image block default margins, mostly a Chrome user agent override.
+
 ## 2.1.1 (7/14/20)
 * Added: Template Parts and Reusable Blocks links to Toolbar > {Site Title} dropdown menu.
 * Changed: Automatically create default template parts so users know what is available.

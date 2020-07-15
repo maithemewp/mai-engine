@@ -34,7 +34,7 @@ wp.domReady( () => {
 		return args;
 	} );
 
-	var icons = [ 'field_5e3f4bcd978f9', 'field_5e3f4bcd867e8' ];
+	var icons = [ 'mai_icon_choices', 'mai_icon_brand_choices' ];
 	var post  = maiEditorVars.post;
 	var term  = maiEditorVars.term;
 	var user  = maiEditorVars.user;
@@ -43,7 +43,7 @@ wp.domReady( () => {
 
 		// If Mai Icon or Icon (Brands) select field.
 		if ( icons.includes( data.field_key ) ) {
-			data.style = acf.getField( 'field_5e3f49758c633' ).val(); // Style.
+			data.style = acf.getField( 'mai_icon_style' ).val(); // Style.
 		}
 
 		// Mai Post Grid.
@@ -123,10 +123,6 @@ wp.domReady( () => {
 		return acf.getField( keys.taxonomy ).val();
 	}
 
-	if ( 'object' !== typeof acf ) {
-		return;
-	}
-
 	/**
 	 *  Initialize the field.
 	 *
@@ -150,8 +146,7 @@ wp.domReady( () => {
 			create: function( event, ui ) {
 				$( this ).find( 'li' ).append( '<span class="mai-acf-sortable-handle"><i class="dashicons dashicons-menu"></i></span>' );
 			},
-			stop: function( event, ui ) {
-			},
+			stop: function( event, ui ) {},
 			update: function( event, ui ) {
 				$( this ).find( 'input[type="checkbox"]' ).trigger( 'change' );
 			}
@@ -169,8 +164,8 @@ wp.domReady( () => {
 		*  - append: on new DOM elements appended via repeater field or other AJAX calls
 		*/
 
-		acf.add_action( 'ready_field/key=field_5e441d93d6236', initialize_sortable_field );
-		acf.add_action( 'append_field/key=field_5e441d93d6236', initialize_sortable_field );
+		acf.add_action( 'ready_field/key=mai_grid_block_show', initialize_sortable_field );
+		acf.add_action( 'append_field/key=mai_grid_block_show', initialize_sortable_field );
 
 	}
 

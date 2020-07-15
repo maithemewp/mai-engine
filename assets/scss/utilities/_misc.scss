@@ -84,58 +84,35 @@
 	}
 }
 
-// TODO: Add ratio scaling?
-// Padding scale matches Mai Theme v1 sections for now.
-.has-no-padding-top {
-	padding-top: 0 !important;
-}
-
-.has-no-padding-bottom {
-	padding-bottom: 0 !important;
-}
-
-.has-xs-padding-top {
-	padding-top: calc(1rem + 1vw) !important;
-}
-
-.has-xs-padding-bottom {
-	padding-bottom: calc(1rem + 1vw) !important;
-}
-
-.has-sm-padding-top {
-	padding-top: calc(1em + 1.953vw) !important;
-}
-
-.has-sm-padding-bottom {
-	padding-bottom: calc(1em + 1.953vw) !important;
-}
-
-.has-md-padding-top {
-	padding-top: calc(1rem + 3.815vw) !important;
-}
-
-.has-md-padding-bottom {
-	padding-bottom: calc(1rem + 3.815vw) !important;
-}
-
-.has-lg-padding-top {
-	padding-top: calc(1rem + 7.451vw) !important;
-}
-
-.has-lg-padding-bottom {
-	padding-bottom: calc(1rem + 7.451vw) !important;
-}
-
-.has-xl-padding-top {
-	padding-top: calc(1rem + 14.552vw) !important;
-}
-
-.has-xl-padding-bottom {
-	padding-bottom: calc(1rem + 14.552vw) !important;
-}
-
 .has-overlap {
 	position: relative;
 	z-index: 2;
 	overflow: visible;
+}
+
+// TODO: Use custom properties?
+$padding_scale: (
+	no: 0,
+	xs: 0.5em,
+	sm: 2em,
+	md: calc(1rem + 4vw),
+	lg: calc(1rem + 8vw),
+	xl: calc(1rem + 16vw),
+) !default;
+
+$padding_settings: (
+	top,
+	bottom,
+	left,
+	right,
+) !default;
+
+@each $padding-name, $padding-size in $padding_scale {
+
+	@each $padding-setting in $padding_settings {
+
+		.has-#{ $padding-name }-padding-#{ $padding-setting } {
+			padding-#{ $padding-setting }: $padding-size;
+		}
+	}
 }

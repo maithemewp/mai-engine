@@ -69,8 +69,10 @@ function mai_has_string( $needle, $haystack ) {
 				return true;
 			}
 		}
+
 		return false;
 	}
+
 	return false !== strpos( $haystack, $needle );
 }
 
@@ -172,6 +174,10 @@ function mai_has_alignfull_first() {
 			return $has_alignfull_first;
 		}
 
+		if ( ! mai_is_element_hidden( 'entry-title' ) && mai_has_page_header() ) {
+			return $has_alignfull_first;
+		}
+
 		$post_object = get_post( get_the_ID() );
 		$blocks      = (array) parse_blocks( $post_object->post_content );
 		$first       = $blocks[0];
@@ -213,7 +219,7 @@ function mai_has_dark_alignfull_first() {
 			if ( 'core/group' === $block_name ) {
 				if ( isset( $first['attrs']['backgroundColor'] ) ) {
 					$colors                   = mai_get_colors();
-					$color                    = isset( $colors[ $first['attrs']['backgroundColor'] ] ) ? $colors[ $first['attrs']['backgroundColor'] ]: $first['attrs']['backgroundColor'];
+					$color                    = isset( $colors[ $first['attrs']['backgroundColor'] ] ) ? $colors[ $first['attrs']['backgroundColor'] ] : $first['attrs']['backgroundColor'];
 					$has_dark_alignfull_first = ! mai_is_light_color( $color );
 				}
 			} elseif ( 'core/cover' === $block_name ) {
@@ -252,6 +258,7 @@ function mai_has_sidebar() {
  */
 function mai_has_boxed_container() {
 	$default = current_theme_supports( 'boxed-container' );
+
 	return mai_get_option( 'boxed-container', $default );
 }
 

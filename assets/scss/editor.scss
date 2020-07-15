@@ -61,3 +61,7 @@ p {
 		@include button-style("outline");
 	}
 }
+
+.mai-grid a {
+	pointer-events: none;
+}
