@@ -14,7 +14,7 @@
 	var searchMenuItems  = document.querySelectorAll( '.menu-item.search' );
 
 	var createMobileMenu = function() {
-		if ( mobileMenu ) {
+		if ( mobileMenu && mobileMenuList !== null ) {
 			return;
 		}
 
