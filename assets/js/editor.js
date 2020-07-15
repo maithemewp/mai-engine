@@ -22,7 +22,7 @@ wp.domReady( () => {
 	} );
 } );
 
-( function( $ ) {
+jQuery( document ).ready( function( $ ) {
 
 	if ( 'object' !== typeof acf ) {
 		return;
@@ -123,10 +123,6 @@ wp.domReady( () => {
 		return acf.getField( keys.taxonomy ).val();
 	}
 
-	if ( 'object' !== typeof acf ) {
-		return;
-	}
-
 	/**
 	 *  Initialize the field.
 	 *
@@ -150,8 +146,7 @@ wp.domReady( () => {
 			create: function( event, ui ) {
 				$( this ).find( 'li' ).append( '<span class="mai-acf-sortable-handle"><i class="dashicons dashicons-menu"></i></span>' );
 			},
-			stop: function( event, ui ) {
-			},
+			stop: function( event, ui ) {},
 			update: function( event, ui ) {
 				$( this ).find( 'input[type="checkbox"]' ).trigger( 'change' );
 			}
@@ -169,9 +164,9 @@ wp.domReady( () => {
 		*  - append: on new DOM elements appended via repeater field or other AJAX calls
 		*/
 
-		acf.add_action( 'ready_field/key=field_5e441d93d6236', initialize_sortable_field );
-		acf.add_action( 'append_field/key=field_5e441d93d6236', initialize_sortable_field );
+		acf.add_action( 'ready_field/key=mai_grid_block_show', initialize_sortable_field );
+		acf.add_action( 'append_field/key=mai_grid_block_show', initialize_sortable_field );
 
 	}
 
-} )( jQuery );
+});
