@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.2.1 (7/15/20)
+* Changed: Entry titles should be lg instead of xl on archives and grid blocks, as a default.
+
 ## 2.2.0 (7/15/20)
 * Added: New left and right spacing settings on group and cover blocks.
 * Changed: More performant template part query.
