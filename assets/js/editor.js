@@ -22,7 +22,7 @@ wp.domReady( () => {
 	} );
 } );
 
-jQuery( document ).ready( function( $ ) {
+( function( $ ) {
 
 	if ( 'object' !== typeof acf ) {
 		return;
@@ -34,7 +34,7 @@ jQuery( document ).ready( function( $ ) {
 		return args;
 	} );
 
-	var icons = [ 'field_5e3f4bcd978f9', 'field_5e3f4bcd867e8' ];
+	var icons = [ 'mai_icon_choices', 'mai_icon_brand_choices' ];
 	var post  = maiEditorVars.post;
 	var term  = maiEditorVars.term;
 	var user  = maiEditorVars.user;
@@ -43,7 +43,7 @@ jQuery( document ).ready( function( $ ) {
 
 		// If Mai Icon or Icon (Brands) select field.
 		if ( icons.includes( data.field_key ) ) {
-			data.style = acf.getField( 'field_5e3f49758c633' ).val(); // Style.
+			data.style = acf.getField( 'mai_icon_style' ).val(); // Style.
 		}
 
 		// Mai Post Grid.
@@ -169,4 +169,4 @@ jQuery( document ).ready( function( $ ) {
 
 	}
 
-});
+} )( jQuery );

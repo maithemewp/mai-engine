@@ -55,7 +55,7 @@ function mai_do_icon_block() {
 	echo mai_get_icon( $args );
 }
 
-add_filter( 'acf/load_field/key=mai_icon_choice', 'mai_load_icon_choices' );
+add_filter( 'acf/load_field/key=mai_icon_choices', 'mai_load_icon_choices' );
 add_filter( 'acf/load_field/key=mai_icon_brand_choices', 'mai_load_icon_brand_choices' );
 /**
  * Load the icon field, getting choices from our icons directory.
@@ -167,7 +167,7 @@ function mai_register_icon_field_groups() {
 					],
 				],
 				[
-					'key'               => 'mai_icon_choice',
+					'key'               => 'mai_icon_choices',
 					'name'              => 'icon',
 					'label'             => esc_html__( 'Icon', 'mai-engine' ),
 					'type'              => 'select',
