@@ -245,10 +245,9 @@ function mai_register_icon_field_groups() {
 					'key'           => 'mai_icon_size',
 					'name'          => 'size',
 					'label'         => esc_html__( 'Size', 'mai-engine' ),
-					'instructions'  => esc_html__( 'Use 0 for theme default', 'mai-engine' ),
-					'type'          => 'number',
-					'default_value' => 0,
-					'append'        => 'px',
+					'instructions'  => esc_html__( 'Accepts all unit values (px, rem, em, vw, etc). Leave empty for theme default.', 'mai-engine' ),
+					'type'          => 'text',
+					'default_value' => '',
 				],
 				[
 					'key'   => 'mai_icon_style_tab',
