@@ -68,6 +68,6 @@
     "images": "gulp images",
     "clearCache": "gulp clearCache",
     "translate": "gulp translate",
-    "blocks": "parcel build assets/js/blocks/blocks.js -d assets/js/min"
+    "blocks": "parcel build assets/js/blocks/blocks.js -d assets/js/min --no-cache"
   }
 }
