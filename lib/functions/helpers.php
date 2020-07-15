@@ -160,7 +160,7 @@ function mai_sidebar_has_widget( $sidebar, $widget ) {
 /**
  * Checks if first block is cover or group block aligned full.
  *
- * @since 2.1.2
+ * @since 0.1.0
  *
  * @return bool
  */

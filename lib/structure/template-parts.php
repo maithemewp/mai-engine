@@ -13,7 +13,7 @@ add_action( 'genesis_before', 'mai_render_template_parts' );
 /**
  * Display template parts defined in config.
  *
- * @since 2.1.2
+ * @since 2.0.1
  *
  * @return void
  */

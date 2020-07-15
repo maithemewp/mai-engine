@@ -116,7 +116,7 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
 /**
  * Returns a static array of all template part data.
  *
- * @since 2.1.2
+ * @since 2.0.1
  *
  * @return array
  */
@@ -151,7 +151,7 @@ function mai_get_template_parts() {
 /**
  * Gets a template part ID by its slug.
  *
- * @since 2.1.2
+ * @since 2.0.1
  *
  * @param string $slug Template part slug.
  *
@@ -180,7 +180,7 @@ function mai_get_template_part( $slug ) {
 /**
  * Checks whether the template part exists and has content.
  *
- * @since 2.1.2
+ * @since 2.0.1
  *
  * @param string $slug Template part slug.
  *
@@ -198,7 +198,7 @@ function mai_has_template_part( $slug ) {
  * No need to check for post_content or post_status, all checks
  * are handled in helper functions.
  *
- * @since 2.1.2
+ * @since 2.0.1
  *
  * @param string $slug   Template part slug.
  * @param string $before Before content markup.
