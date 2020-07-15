@@ -230,7 +230,7 @@ function mai_register_icon_field_groups() {
 						'right'  => esc_html__( 'Right', 'mai-engine' ),
 					],
 					'allow_null'        => 0,
-					'default_value'     => '',
+					'default_value'     => 'center',
 					'layout'            => 'horizontal',
 					'return_format'     => 'value',
 					'conditional_logic' => [
