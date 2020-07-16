@@ -4,7 +4,7 @@
 	flex: var(--entry-flex, (1 1 calc((100% / var(--columns)) - var(--column-gap))));
 	flex-direction: var(--entry-flex-direction, column);
 	flex-wrap: var(--entry-flex-wrap, nowrap);
-	width: 100%;
+	width: var(--entry-width, auto); /* allows "auto" columns in grid and archives */
 	max-width: var(--entry-max-width, (calc((100% / var(--columns)) - var(--column-gap))));
 	margin: var(--entry-margin, 0);
 	padding: var(--entry-padding, 0); /* must be a single value for use in calc() full "full" images */
