@@ -21,3 +21,9 @@
 		text-decoration: var(--entry-title-text-decoration-hover, var(--link-text-decoration-hover, underline));
 	}
 }
+
+.has-boxed {
+	// Force dark incase these entries are inside has-dark-background.
+	--entry-title-link-color: var(--color-heading);
+	--entry-title-link-color-hover: var(--color-link);
+}
