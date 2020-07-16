@@ -124,7 +124,8 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
 function mai_get_template_parts() {
 	static $template_parts = [];
 
-	if ( empty( $template_parts ) ) {
+	// Always run query in admin so mai_template_part_exists() doesn't break when auto creating default template parts.
+	if ( is_admin() || empty( $template_parts ) ) {
 		$config = mai_get_config( 'template-parts' );
 		$slugs  = wp_list_pluck( $config, 'id' );
 
