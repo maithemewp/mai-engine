@@ -46,17 +46,6 @@
 	--entry-wrap-padding: var(--spacing-lg);
 }
 
-.has-image-background .has-image {
-	--entry-title-link-color: var(--color-white);
-	--entry-wrap-color: var(--color-white);
-	--entry-overlay-background: rgba(0, 0, 0, var(--entry-overlay-opacity, 0.6));
-
-	&:hover,
-	&:focus {
-		--entry-overlay-background: var(--entry-overlay-hover-background, rgba(0, 0, 0, var(--entry-overlay-opacity, var(--entry-overlay-hover-opacity, 0.8))));
-	}
-}
-
 .entry-wrap {
 	display: flex;
 	flex: 1; /* 1 1 100% breaks image-left/right-full */
