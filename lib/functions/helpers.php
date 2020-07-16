@@ -174,7 +174,11 @@ function mai_has_alignfull_first() {
 			return $has_alignfull_first;
 		}
 
-		if ( ! mai_is_element_hidden( 'entry-title' ) && mai_has_page_header() ) {
+		if ( ! mai_is_element_hidden( 'page_header' ) ) {
+			return $has_alignfull_first;
+		}
+
+		if ( ! mai_is_element_hidden( 'entry_title' ) && mai_is_element_hidden( 'page_header' ) ) {
 			return $has_alignfull_first;
 		}
 
