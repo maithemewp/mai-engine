@@ -174,7 +174,11 @@ function mai_has_alignfull_first() {
 			return $has_alignfull_first;
 		}
 
-		if ( ! mai_is_element_hidden( 'entry-title' ) && mai_has_page_header() ) {
+		if ( mai_has_page_header() ) {
+			return $has_alignfull_first;
+		}
+
+		if ( ! mai_is_element_hidden( 'entry_title' ) ) {
 			return $has_alignfull_first;
 		}
 
@@ -218,9 +222,7 @@ function mai_has_dark_alignfull_first() {
 		if ( 'full' === $align ) {
 			if ( 'core/group' === $block_name ) {
 				if ( isset( $first['attrs']['backgroundColor'] ) ) {
-					$colors                   = mai_get_colors();
-					$color                    = isset( $colors[ $first['attrs']['backgroundColor'] ] ) ? $colors[ $first['attrs']['backgroundColor'] ] : $first['attrs']['backgroundColor'];
-					$has_dark_alignfull_first = ! mai_is_light_color( $color );
+					$has_dark_alignfull_first = ! mai_is_light_color( $first['attrs']['backgroundColor'] );
 				}
 			} elseif ( 'core/cover' === $block_name ) {
 				// TODO: Having cover first doesn't necessarily mean it's a light header.

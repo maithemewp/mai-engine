@@ -51,6 +51,15 @@
 }
 
 .has-dark-header:not(.header-stuck) {
+
+	.site-header {
+		--menu-item-link-color: var(--color-white);
+		--menu-item-link-color-hover: var(--color-white);
+		--menu-item-name-filter-hover: brightness(0.8);
+	}
+}
+
+.has-dark-background {
 	--menu-item-link-color: var(--color-white);
 	--menu-item-link-color-hover: var(--color-white);
 	--menu-item-name-filter-hover: brightness(0.8);

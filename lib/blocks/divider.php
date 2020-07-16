@@ -149,22 +149,22 @@ function mai_get_divider( $atts = [] ) {
 	if ( $atts['height'] ) {
 		switch ( $atts['height'] ) {
 			case 'xs':
-				$height = '1rem';
+				$height = '2vw';
 				break;
 			case 'sm':
-				$height = '2rem';
+				$height = '4vw';
 				break;
 			case 'md':
-				$height = '4rem';
+				$height = '8vw';
 				break;
 			case 'lg':
-				$height = '6rem';
+				$height = '16vw';
 				break;
 			case 'xl':
-				$height = '8rem';
+				$height = '32vw';
 				break;
 			default:
-				$height = '4rem';
+				$height = '8vw';
 		}
 		$attributes['style'] .= sprintf( '--divider-height:%s;', $height );
 	}

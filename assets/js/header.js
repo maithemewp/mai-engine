@@ -49,7 +49,7 @@
 		firstElement.style.removeProperty( 'padding-top' );
 
 		var paddingTop   = firstElementStyles.getPropertyValue( 'padding-top' );
-		var headerHeight = siteHeader.offsetHeight;
+		var headerHeight = siteHeader ? siteHeader.offsetHeight : 0;
 
 		headerHeight += navAfterHeader ? navAfterHeader.offsetHeight : 0;
 

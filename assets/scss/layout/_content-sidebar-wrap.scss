@@ -1,5 +1,6 @@
 .content-sidebar-wrap {
 	--content-sidebar-gap: calc(var(--column-gap) * 3); /* needed for alignfull calculations */
+
 	display: grid;
 	grid-template-columns: var(--content-sidebar-wrap-columns, 1fr);
 	width: calc(100% - calc(var(--side-spacing) * 2));

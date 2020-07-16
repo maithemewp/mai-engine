@@ -1,36 +1,36 @@
 .content {
 	width: 100%;
-	max-width: var(--content-max-width);
+	max-width: var(--content-max-width); // Default set in global.
 	margin: var(--content-margin, var(--content-margin-top, 0) var(--content-margin-sides, auto) var(--content-margin-bottom, var(--spacing-xxl)));
-
-	.full-content & {
-		--content-max-width: 100%;
-	}
-
-	.wide-content & {
-		--content-max-width: var(--breakpoint-xl);
-	}
-
-	.standard-content & {
-		--content-max-width: var(--breakpoint-md);
-	}
-
-	.narrow-content & {
-		--content-max-width: var(--breakpoint-sm);
-	}
-
-	.content-sidebar &,
-	.sidebar-content & {
-		--content-max-width: var(--breakpoint-lg);
-
-	}
 
 	@include mq(lg) {
 		order: var(--content-order, 0);
 	}
 }
 
-.sidebar-content {
+// TODO: Is this used?
+.has-full-content {
+	--content-max-width: 100%;
+}
+
+.has-wide-content {
+	--content-max-width: var(--breakpoint-xl);
+}
+
+.has-standard-content {
+	--content-max-width: var(--breakpoint-md);
+}
+
+.has-narrow-content {
+	--content-max-width: var(--breakpoint-sm);
+}
+
+.has-content-sidebar,
+.has-sidebar-content {
+	--content-max-width: var(--breakpoint-lg);
+}
+
+.has-sidebar-content {
 	--content-order: 1;
 }
 

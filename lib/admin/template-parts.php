@@ -31,18 +31,18 @@ function mai_create_template_parts( $current_screen ) {
 
 	$templates_created = 0;
 	$template_parts    = mai_get_config( 'template-parts' );
-
 	foreach ( $template_parts as $template_part ) {
-		if ( mai_get_template_part( $template_part['id'] ) ) {
+		if ( mai_template_part_exists( $template_part['id'] ) ) {
 			continue;
 		}
 
 		$args = [
-			'post_type'   => 'wp_template_part',
-			'post_title'  => mai_convert_case( $template_part['id'], 'title' ),
-			'post_name'   => $template_part['id'],
-			'post_status' => 'publish',
-			'menu_order'  => mai_isset( $template_part, 'menu_order', 0 ),
+			'post_type'    => 'wp_template_part',
+			'post_name'    => $template_part['id'],
+			'post_status'  => 'publish',
+			'post_title'   => mai_convert_case( $template_part['id'], 'title' ),
+			'post_content' => mai_isset( $template_part, 'default', '' ),
+			'menu_order'   => mai_isset( $template_part, 'menu_order', 0 ),
 		];
 
 		wp_insert_post( $args );
