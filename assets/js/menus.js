@@ -13,6 +13,10 @@
 	var menuToggle       = document.getElementsByClassName( 'menu-toggle' )[ 0 ];
 	var searchMenuItems  = document.querySelectorAll( '.menu-item.search' );
 
+	if ( ! siteHeaderWrap ) {
+		return;
+	}
+
 	var createMobileMenu = function() {
 		if ( mobileMenu && mobileMenuList !== null ) {
 			return;
