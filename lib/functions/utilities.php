@@ -1125,6 +1125,20 @@ function mai_get_menu( $menu, $args = '' ) {
 		'container'   => 'ul',
 		'menu'        => $menu,
 		'menu_class'  => $menu_class,
+		'link_before' => genesis_markup(
+			[
+				'open'      => '<span %s>',
+				'context'   => 'nav-link-wrap',
+				'echo'      => false,
+			]
+		),
+		'link_after'  => genesis_markup(
+			[
+				'close'     => '</span>',
+				'context'   => 'nav-link-wrap',
+				'echo'      => false,
+			]
+		),
 		'echo'        => false,
 		'fallback_cb' => '',
 	] );
