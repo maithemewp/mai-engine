@@ -158,11 +158,13 @@ function mai_enqueue_assets() {
 	}
 }
 
+add_action( 'admin_enqueue_scripts', 'mai_deregister_scripts_and_styles', 9 );
 add_action( 'wp_enqueue_scripts', 'mai_deregister_scripts_and_styles', 15 );
 /**
- * Deregister scripts.
+ * Deregister scripts and styles.
  *
- * @since 0.1.0
+ * @since 2.2.1 Added to admin_enqueue_scripts hook.
+ * @since 0.1.0 Added.
  *
  * @return void
  */

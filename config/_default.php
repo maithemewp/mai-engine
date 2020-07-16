@@ -321,6 +321,13 @@ return [
 					return class_exists( 'WooCommerce' );
 				},
 			],
+
+			// Remove block library theme CSS in editor.
+			[
+				'handle'   => 'wp-block-library-theme',
+				'src'      => '',
+				'location' => 'editor',
+			],
 		],
 		'remove' => [
 			'simple-social-icons-font',
