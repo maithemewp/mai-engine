@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.2.2 (7/16/20)
+* Changed: Group and cover blocks no longer have top and bottom default spacing set when adding a new instance of the block.
+* Changed: Grid and archive entries now have gradient overlays with background image position when aligning text vertically.
+* Changed: Add default footer credits text on new installs when footer credit template part is first created.
+* Fixed: Divider not full width when used in Page Header with some configurations.
+* Fixed: Default inner content width when using group and cover blocks in template parts.
+* Fixed: Transparent header throwing a JS error if site header was hidden.
+* Fixed: Template parts unintentionally showing socical icons and other 3rd part content that uses `the_content` filter.
+* Fixed: Menu links when displaying a menu in a dark background group block.
+* Fixed: Some color CSS not being output correctly.
+* Fixed: Mai Grid block with boxed entry was showing white titles when inside a dark background group block.
+* Fixed: Mai Grid block not working when columns were set to auto.
+
 ## 2.2.1 (7/15/20)
 * Changed: Entry titles should be lg instead of xl on archives and grid blocks, as a default.
 
