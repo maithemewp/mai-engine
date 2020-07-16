@@ -3,31 +3,30 @@
 	max-width: var(--content-max-width);
 	margin: var(--content-margin, var(--content-margin-top, 0) var(--content-margin-sides, auto) var(--content-margin-bottom, var(--spacing-xxl)));
 
-	.full-content & {
-		--content-max-width: 100%;
-	}
-
-	.wide-content & {
-		--content-max-width: var(--breakpoint-xl);
-	}
-
-	.standard-content & {
-		--content-max-width: var(--breakpoint-md);
-	}
-
-	.narrow-content & {
-		--content-max-width: var(--breakpoint-sm);
-	}
-
-	.content-sidebar &,
-	.sidebar-content & {
-		--content-max-width: var(--breakpoint-lg);
-
-	}
-
 	@include mq(lg) {
 		order: var(--content-order, 0);
 	}
+}
+
+.full-content {
+	--content-max-width: 100%;
+}
+
+.wide-content {
+	--content-max-width: var(--breakpoint-xl);
+}
+
+.standard-content {
+	--content-max-width: var(--breakpoint-md);
+}
+
+.narrow-content {
+	--content-max-width: var(--breakpoint-sm);
+}
+
+.content-sidebar,
+.sidebar-content {
+	--content-max-width: var(--breakpoint-lg);
 }
 
 .sidebar-content {
