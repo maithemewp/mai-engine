@@ -33,7 +33,8 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_additional_colors_css' );
 /**
  * Output named (non-element) color css.
  *
- * @since 2.0.0
+ * @since 2.2.1 Added important rules for button hover state.
+ * @since 2.0.0 Added.
  *
  * @param $css
  *
@@ -41,6 +42,7 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_additional_colors_css' );
  */
 function mai_add_additional_colors_css( $css ) {
 	$defaults = mai_get_global_styles( 'colors' );
+
 	// Exclude settings out put by Kirki.
 	$colors   = array_diff_key( $defaults, mai_get_color_elements() );
 
@@ -48,9 +50,9 @@ function mai_add_additional_colors_css( $css ) {
 		foreach ( $colors as $name => $color ) {
 			if ( $color ) {
 				$css['global'][':root'][ '--color-' . $name ]                               = $color;
-				$css['global'][ '.has-' . $name . '-color' ]['color']                       = 'var(--color-' . $name . ')';
+				$css['global'][ '.has-' . $name . '-color' ]['color']                       = 'var(--color-' . $name . ') !important';
 				$css['global'][ '.has-' . $name . '-color' ]['--heading-color']             = 'var(--color-' . $name . ')';
-				$css['global'][ '.has-' . $name . '-background-color' ]['background-color'] = 'var(--color-' . $name . ')';
+				$css['global'][ '.has-' . $name . '-background-color' ]['background-color'] = 'var(--color-' . $name . ') !important';
 			}
 		}
 	}
@@ -89,7 +91,7 @@ function mai_add_custom_color_css( $css ) {
 
 add_filter( 'kirki_mai-engine_styles', 'mai_add_button_text_colors' );
 /**
- * Output button text custom property.
+ * Output contrast button text custom property.
  *
  * @since 2.0.0
  *
