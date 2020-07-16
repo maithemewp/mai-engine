@@ -187,8 +187,21 @@ function mai_get_template_part( $slug ) {
  * @return bool
  */
 function mai_has_template_part( $slug ) {
-	$template_part = mai_get_template_part( $slug );
-	return (bool) $template_part;
+	return mai_template_part_exists( $slug ) && mai_get_template_part( $slug );
+}
+
+/**
+ * Checks whether the template part exists.
+ *
+ * @since 2.2.2
+ *
+ * @param string $slug Template part slug.
+ *
+ * @return bool
+ */
+function mai_template_part_exists( $slug ) {
+	$template_parts = mai_get_template_parts();
+	return isset( $template_parts[ $slug ] );
 }
 
 /**

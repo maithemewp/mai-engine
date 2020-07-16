@@ -31,9 +31,8 @@ function mai_create_template_parts( $current_screen ) {
 
 	$templates_created = 0;
 	$template_parts    = mai_get_config( 'template-parts' );
-
 	foreach ( $template_parts as $template_part ) {
-		if ( mai_get_template_part( $template_part['id'] ) ) {
+		if ( mai_template_part_exists( $template_part['id'] ) ) {
 			continue;
 		}
 
