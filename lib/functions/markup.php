@@ -129,3 +129,20 @@ function mai_back_to_top_anchor( $attr ) {
 
 	return $attr;
 }
+
+add_filter( 'genesis_attr_content', 'mai_add_content_classes' );
+/**
+ * Add layout classes to the content wrap.
+ *
+ * @since 2.2.2
+ *
+ * @param array $attr Element attributes.
+ *
+ * @return array
+ */
+function mai_add_content_classes( $attr ) {
+	$layout        = 'has-' . genesis_site_layout();
+	$attr['class'] = mai_add_classes( $layout, $attr['class'] );
+
+	return $attr;
+}

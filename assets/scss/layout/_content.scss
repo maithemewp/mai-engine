@@ -8,28 +8,28 @@
 	}
 }
 
-.full-content {
+.has-full-content {
 	--content-max-width: 100%;
 }
 
-.wide-content {
+.has-wide-content {
 	--content-max-width: var(--breakpoint-xl);
 }
 
-.standard-content {
+.has-standard-content {
 	--content-max-width: var(--breakpoint-md);
 }
 
-.narrow-content {
+.has-narrow-content {
 	--content-max-width: var(--breakpoint-sm);
 }
 
-.content-sidebar,
-.sidebar-content {
+.has-content-sidebar,
+.has-sidebar-content {
 	--content-max-width: var(--breakpoint-lg);
 }
 
-.sidebar-content {
+.has-sidebar-content {
 	--content-order: 1;
 }
 
