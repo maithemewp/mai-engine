@@ -3,21 +3,9 @@
 	z-index: var(--divider-z-index, 1);
 	display: block;
 	width: var(--divider-width, var(--alignfull-width, auto));
-	height: var(--divider-height, calc(4rem + 4vw));
+	height: var(--divider-height);
 	margin-bottom: -1px; // Chrome half pixel fix.
 	background: var(--divider-background-color, transparent);
-
-	@include mq(md) {
-		height: calc(var(--divider-height) * 2);
-	}
-
-	@include mq(lg) {
-		height: calc(var(--divider-height) * 3);
-	}
-
-	@include mq(xl) {
-		height: calc(var(--divider-height) * 4);
-	}
 }
 
 .wp-block-cover,
