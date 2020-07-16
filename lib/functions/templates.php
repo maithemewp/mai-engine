@@ -114,9 +114,10 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
 }
 
 /**
- * Returns a static array of all template part data.
+ * Returns a static array of all template part content, keyed by slug.
  *
  * @since 2.0.1
+ * @since 2.2.2 Now returns an array of template part content content keyed by slug instead of an array of WP_Post objects.
  *
  * @return array
  */
@@ -124,57 +125,56 @@ function mai_get_template_parts() {
 	static $template_parts = [];
 
 	if ( empty( $template_parts ) ) {
-		$slugs          = [];
-		$config         = mai_get_config( 'template-parts' );
-		$template_parts = get_posts(
-			[
-				'numberposts' => -1,
-				'post_type'   => 'wp_template_part',
-				'post_status' => 'publish',
-			]
-		);
+		$config = mai_get_config( 'template-parts' );
+		$slugs  = wp_list_pluck( $config, 'id' );
 
-		foreach ( $config as $template_part ) {
-			$slugs[] = $template_part['id'];
-		}
+		if ( $slugs ) {
 
-		foreach ( $template_parts as $index => $template_part ) {
-			if ( ! in_array( $template_part->post_name, $slugs, true ) ) {
-				unset( $template_parts[ $index ] );
+			$posts = new WP_Query(
+				[
+					'post_type'              => 'wp_template_part',
+					'post_status'            => 'publish',
+					'post_name__in'          => $slugs,
+					'no_found_rows'          => true,
+					'update_post_meta_cache' => false,
+					'update_post_term_cache' => false,
+				]
+			);
+
+			if ( $posts->have_posts() ) {
+				while ( $posts->have_posts() ) : $posts->the_post();
+					global $post;
+
+					ob_start();
+					the_content();
+					$content = ob_get_clean();
+
+					$template_parts[ $post->post_name ] = $content;
+
+				endwhile;
+
 			}
+			wp_reset_postdata();
 		}
+
 	}
 
 	return $template_parts;
 }
 
 /**
- * Gets a template part ID by its slug.
+ * Gets a template part content by its slug.
  *
  * @since 2.0.1
+ * @since 2.2.2 Returns the template part content instead of ID.
  *
  * @param string $slug Template part slug.
  *
- * @return null|WP_Post
+ * @return string
  */
 function mai_get_template_part( $slug ) {
-	static $template_parts = [];
-
-	if ( ! array_key_exists( $slug, $template_parts ) ) {
-		$template_parts[ $slug ] = null;
-		$all_template_parts      = mai_get_template_parts();
-
-		/**
-		 * @var WP_Post $template_part Post object.
-		 */
-		foreach ( $all_template_parts as $template_part ) {
-			if ( $slug === $template_part->post_name ) {
-				$template_parts[ $slug ] = $template_part;
-			}
-		}
-	}
-
-	return $template_parts[ $slug ];
+	$template_parts = mai_get_template_parts();
+	return isset( $template_parts[ $slug ] ) ? $template_parts[ $slug ] : '';
 }
 
 /**
@@ -188,15 +188,11 @@ function mai_get_template_part( $slug ) {
  */
 function mai_has_template_part( $slug ) {
 	$template_part = mai_get_template_part( $slug );
-
-	return $template_part && $template_part->post_content;
+	return (bool) $template_part;
 }
 
 /**
  * Renders the template part with the given slug.
- *
- * No need to check for post_content or post_status, all checks
- * are handled in helper functions.
  *
  * @since 2.0.1
  *
@@ -211,7 +207,7 @@ function mai_render_template_part( $slug, $before = '', $after = '' ) {
 
 	if ( $template_part ) {
 		echo $before;
-		echo apply_filters( 'the_content', $template_part->post_content );
+		echo $template_part;
 		echo $after;
 	}
 }
