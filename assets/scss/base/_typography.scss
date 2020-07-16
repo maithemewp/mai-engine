@@ -13,6 +13,7 @@ a {
 		color: var(--link-color-hover, var(--color-link));
 		text-decoration: var(--link-text-decoration-hover, underline);
 		outline-color: var(--color-body);
+		filter: var(--link-filter-hover, unset);
 	}
 }
 
@@ -20,6 +21,7 @@ a {
 	--link-color: currentColor;
 	--link-color-hover: currentColor;
 	--link-text-decoration: underline;
+	--link-filter-hover: brightness(0.8);
 }
 
 p {
