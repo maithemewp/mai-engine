@@ -13,12 +13,10 @@
 .has-image-background {
 
 	&[style*="--align-text-vertical:flex-start"] .has-image {
-		--entry-overlay-background-direction: to top;
 		--entry-overlay-color-end: transparent;
 	}
 
 	&[style*="--align-text-vertical:flex-end"] .has-image {
-		--entry-overlay-background-direction: to bottom;
 		--entry-overlay-color-start: transparent;
 	}
 
@@ -30,7 +28,7 @@
 		--entry-title-text-decoration-hover: none;
 		--entry-wrap-color: var(--color-white);
 		--entry-overlay-background: linear-gradient(
-			var(--entry-overlay-background-direction, center),
+			var(--entry-overlay-background-direction, to bottom),
 			var(--entry-overlay-color-start, var(--color-black)) 0%,
 			var(--entry-overlay-color-end, var(--color-black)) 100%
 		);
