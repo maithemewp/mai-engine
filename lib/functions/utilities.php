@@ -496,17 +496,18 @@ function mai_get_color_choices() {
  * whether to use a light or dark background or text color.
  *
  * @since 2.0.0
+ * @since 2.2.2 Allow colors by name.
  *
  * @link  https://aristath.github.io/ariColor/
  *
- * @param string $color Any color string, including hex, rgb, rgba, etc.
+ * @param string $color Any color string, including config or settings color names, hex, rgb, rgba, etc.
  *
  * @return bool
  */
 function mai_is_light_color( $color ) {
-	$color = ariColor::newColor( $color );
-	$limit = mai_get_global_styles( 'contrast-limit' );
-
+	$color  = mai_get_color_value( $color );
+	$color  = ariColor::newColor( $color );
+	$limit  = mai_get_global_styles( 'contrast-limit' );
 	return $color->luminance > $limit;
 }
 
@@ -514,6 +515,7 @@ function mai_is_light_color( $color ) {
  * Description of expected behavior.
  *
  * @since 1.0.0
+ * @since 2.2.2 Allow colors by name.
  *
  * @param        $color
  * @param int    $amount
@@ -522,11 +524,27 @@ function mai_is_light_color( $color ) {
  * @return string
  */
 function mai_get_color_variant( $color, $light_or_dark = 'dark', $amount = 7 ) {
+	$color   = mai_get_color_value( $color );
 	$color   = ariColor::newColor( $color );
 	$value   = 'dark' === $light_or_dark ? $color->lightness - $amount : $color->lightness + $amount;
 	$lighter = $color->getNew( 'lightness', $value );
 
 	return $lighter->toCSS( 'hex' );
+}
+
+/**
+ * Get a color value from any color name.
+ * If not in our stored colors by name, returns original color.
+ *
+ * @since 2.2.2
+ *
+ * @param string $color by name or hex, rgb, etc.
+ *
+ * @return string
+ */
+function mai_get_color_value( $color ) {
+	$colors = mai_get_colors();
+	return mai_isset( $colors, $color, $color);
 }
 
 /**

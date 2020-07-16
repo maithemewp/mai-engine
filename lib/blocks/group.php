@@ -28,9 +28,7 @@ function mai_render_group_block( $block_content, $block ) {
 	if ( isset( $block['attrs']['backgroundColor'] ) ) {
 		$light_or_dark = mai_is_light_color( $block['attrs']['backgroundColor'] ) ? 'light' : 'dark';
 		$block_content = str_replace( ' has-background ', " has-$light_or_dark-background has-background ", $block_content );
-	}
-
-	if ( isset( $block['attrs']['customBackgroundColor'] ) ) {
+	} elseif ( isset( $block['attrs']['customBackgroundColor'] ) ) {
 		$light_or_dark = mai_is_light_color( $block['attrs']['customBackgroundColor'] ) ? 'light' : 'dark';
 		$block_content = str_replace( ' has-background ', " has-$light_or_dark-background has-background ", $block_content );
 	}
