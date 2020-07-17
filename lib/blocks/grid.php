@@ -734,6 +734,35 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
+		'mai_grid_block_title_size'   => [
+			'name'       => 'title_size',
+			'label'      => esc_html__( 'Title Size', 'mai-engine' ),
+			'block'      => [ 'post', 'term', 'user' ],
+			'type'       => 'button_group',
+			'sanitize'   => 'esc_html',
+			'default'    => 'lg',
+			'choices'    => [
+				'sm'  => esc_html__( 'SM', 'mai-engine' ),
+				'md'  => esc_html__( 'MD', 'mai-engine' ),
+				'lg'  => esc_html__( 'LG', 'mai-engine' ),
+				'xl'  => esc_html__( 'XL', 'mai-engine' ),
+				'xxl' => esc_html__( 'XXL', 'mai-engine' ),
+			],
+			'atts'     => [
+				'wrapper' => [
+					'width' => '',
+					'class' => 'mai-grid-button-group',
+					'id'    => '',
+				],
+			],
+			'conditions' => [
+				[
+					'field'    => 'mai_grid_block_show',
+					'operator' => '==',
+					'value'    => 'title',
+				],
+			],
+		],
 		'mai_grid_block_image_orientation'   => [
 			'name'       => 'image_orientation',
 			'label'      => esc_html__( 'Image Orientation', 'mai-engine' ),
@@ -747,13 +776,6 @@ function mai_get_grid_block_settings() {
 					'field'    => 'mai_grid_block_show',
 					'operator' => '==',
 					'value'    => 'image',
-				],
-			],
-			'atts'       => [
-				'wrapper' => [
-					'width' => '',
-					'class' => 'mai-grid-show-conditional',
-					'id'    => '',
 				],
 			],
 		],
@@ -775,13 +797,6 @@ function mai_get_grid_block_settings() {
 					'field'    => 'mai_grid_block_image_orientation',
 					'operator' => '==',
 					'value'    => 'custom',
-				],
-			],
-			'atts'       => [
-				'wrapper' => [
-					'width' => '',
-					'class' => 'mai-grid-show-conditional',
-					'id'    => '',
 				],
 			],
 		],
@@ -808,13 +823,6 @@ function mai_get_grid_block_settings() {
 					'field'    => 'mai_grid_block_show',
 					'operator' => '==',
 					'value'    => 'image',
-				],
-			],
-			'atts'       => [
-				'wrapper' => [
-					'width' => '',
-					'class' => 'mai-grid-show-conditional',
-					'id'    => '',
 				],
 			],
 		],
@@ -950,13 +958,6 @@ function mai_get_grid_block_settings() {
 					'value'    => 'header_meta',
 				],
 			],
-			'atts'       => [
-				'wrapper' => [
-					'width' => '',
-					'class' => 'mai-grid-show-conditional',
-					'id'    => '',
-				],
-			],
 		],
 		'mai_grid_block_content_limit'       => [
 			'name'       => 'content_limit',
@@ -982,13 +983,6 @@ function mai_get_grid_block_settings() {
 					],
 				],
 			],
-			'atts'       => [
-				'wrapper' => [
-					'width' => '',
-					'class' => 'mai-grid-show-conditional',
-					'id'    => '',
-				],
-			],
 		],
 		'mai_grid_block_more_link_text'      => [
 			'name'       => 'more_link_text',
@@ -1006,11 +1000,6 @@ function mai_get_grid_block_settings() {
 			],
 			'atts'       => [
 				'placeholder' => mai_get_read_more_text(),
-				'wrapper'     => [
-					'width' => '',
-					'class' => 'mai-grid-show-conditional',
-					'id'    => '',
-				],
 			],
 		],
 		'mai_grid_block_footer_meta'         => [
@@ -1026,13 +1015,6 @@ function mai_get_grid_block_settings() {
 					'field'    => 'mai_grid_block_show',
 					'operator' => '==',
 					'value'    => 'footer_meta',
-				],
-			],
-			'atts'       => [
-				'wrapper' => [
-					'width' => '',
-					'class' => 'mai-grid-show-conditional',
-					'id'    => '',
 				],
 			],
 		],

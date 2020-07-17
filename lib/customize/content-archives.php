@@ -32,6 +32,29 @@ function mai_get_content_archive_settings() {
 			'choices'     => mai_get_archive_show_choices(),
 		],
 		[
+			'settings'        => 'title_size',
+			'label'           => esc_html__( 'Title Size', 'mai-engine' ),
+			'type'            => 'radio-buttonset',
+			'sanitize'        => 'esc_html',
+			'default'         => 'lg',
+			'choices'         => [
+				'sm'  => esc_html__( 'SM', 'mai-engine' ),
+				'md'  => esc_html__( 'MD', 'mai-engine' ),
+				'lg'  => esc_html__( 'LG', 'mai-engine' ),
+				'xl'  => esc_html__( 'XL', 'mai-engine' ),
+				'xxl' => esc_html__( 'XXL', 'mai-engine' ),
+			],
+			'active_callback' => [
+				[
+					[
+						'setting'  => 'show',
+						'operator' => 'contains',
+						'value'    => 'title',
+					],
+				],
+			],
+		],
+		[
 			'settings'        => 'image_orientation',
 			'label'           => esc_html__( 'Image Orientation', 'mai-engine' ),
 			'type'            => 'select',

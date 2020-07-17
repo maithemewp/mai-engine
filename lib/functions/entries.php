@@ -31,6 +31,11 @@ function mai_do_entries_open( $args ) {
 		$attributes['class'] .= ' has-boxed';
 	}
 
+	// Title size.
+	if ( $args['title_size'] ) {
+		$attributes['style'] .= sprintf( '--entry-title-font-size:var(--font-size-%s);', $args['title_size'] );
+	}
+
 	// Image position.
 	if ( in_array( 'image', $args['show'], true ) && $args['image_position'] ) {
 		$attributes['class'] .= ' has-image-' . $args['image_position'];
