@@ -9,6 +9,7 @@
 	font-family: var(--body-font-family); // No fallback, always output by Kirki.
 	line-height: var(--body-line-height, 1.625); // Perfect fourth.
 	background: var(--body-background-color, var(--color-background));
+	overflow-x: hidden; // Prevent horizontal scrollbars.
 }
 
 @mixin heading {
