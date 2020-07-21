@@ -39,7 +39,7 @@ function mai_do_cover_group_block_settings( $block_content, $block ) {
 		$dom = mai_get_dom_document( $block_content );
 
 		/**
-		 * @var DOMElement $first_block The block inner-container.
+		 * @var DOMElement $first_block The block container.
 		 */
 		$first_block = $dom->childNodes && isset( $dom->childNodes[0] ) ? $dom->childNodes[0] : false;
 
@@ -77,23 +77,23 @@ function mai_do_cover_group_block_settings( $block_content, $block ) {
 			], '', $classes );
 
 			if ( $width ) {
-				$classes .= sprintf( ' has-%s-content-width', $width );
+				$classes = mai_add_classes( sprintf( 'has-%s-content-width', $width ), $classes );
 			}
 
 			if ( $top ) {
-				$classes .= sprintf( ' has-%s-padding-top', $top );
+				$classes = mai_add_classes( sprintf( 'has-%s-padding-top', $top ), $classes );
 			}
 
 			if ( $bottom ) {
-				$classes .= sprintf( ' has-%s-padding-bottom', $bottom );
+				$classes = mai_add_classes( sprintf( 'has-%s-padding-bottom', $bottom ), $classes );
 			}
 
 			if ( $left ) {
-				$classes .= sprintf( ' has-%s-padding-left', $left );
+				$classes = mai_add_classes( sprintf( 'has-%s-padding-left', $left ), $classes );
 			}
 
 			if ( $right ) {
-				$classes .= sprintf( ' has-%s-padding-right', $right );
+				$classes = mai_add_classes( sprintf( 'has-%s-padding-right', $right ), $classes );
 			}
 
 			$first_block->setAttribute( 'class', $classes );
@@ -131,14 +131,14 @@ function mai_do_heading_block_settings( $block_content, $block ) {
 		$dom = mai_get_dom_document( $block_content );
 
 		/**
-		 * @var DOMElement $first_block The block inner-container.
+		 * @var DOMElement $first_block The block container.
 		 */
 		$first_block = $dom->childNodes && isset( $dom->childNodes[0] ) ? $dom->childNodes[0] : false;
 
 		if ( $first_block ) {
 
-			$classes     = $first_block->getAttribute( 'class' );
-			$classes    .= sprintf( ' has-%s-font-size', $size );
+			$classes = $first_block->getAttribute( 'class' );
+			$classes = mai_add_classes( sprintf( 'has-%s-font-size', $size ), $classes );
 
 			$first_block->setAttribute( 'class', $classes );
 

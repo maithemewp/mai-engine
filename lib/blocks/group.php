@@ -25,12 +25,32 @@ function mai_render_group_block( $block_content, $block ) {
 		return $block_content;
 	}
 
+	$light_or_dark = false;
+
 	if ( isset( $block['attrs']['backgroundColor'] ) ) {
 		$light_or_dark = mai_is_light_color( $block['attrs']['backgroundColor'] ) ? 'light' : 'dark';
-		$block_content = str_replace( ' has-background ', " has-$light_or_dark-background has-background ", $block_content );
 	} elseif ( isset( $block['attrs']['customBackgroundColor'] ) ) {
 		$light_or_dark = mai_is_light_color( $block['attrs']['customBackgroundColor'] ) ? 'light' : 'dark';
-		$block_content = str_replace( ' has-background ', " has-$light_or_dark-background has-background ", $block_content );
+	}
+
+	if ( $light_or_dark ) {
+
+		$dom = mai_get_dom_document( $block_content );
+
+		/**
+		 * @var DOMElement $first_block The group block container.
+		 */
+		$first_block = $dom->childNodes && isset( $dom->childNodes[0] ) ? $dom->childNodes[0] : false;
+
+		if ( $first_block ) {
+
+			$classes = $first_block->getAttribute( 'class' );
+			$classes = mai_add_classes( sprintf( 'has-%s-background', $light_or_dark ), $classes );
+
+			$first_block->setAttribute( 'class', $classes );
+
+			$block_content = $dom->saveHTML();
+		}
 	}
 
 	return $block_content;
