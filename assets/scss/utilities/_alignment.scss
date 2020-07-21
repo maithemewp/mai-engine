@@ -41,6 +41,10 @@
 	margin-left: var(--alignfull-margin-left, calc(50% - 50vw));
 }
 
+.content {
+	--alignfull-width: auto;
+}
+
 .alignvertical {
 	align-content: center;
 	align-items: center;
