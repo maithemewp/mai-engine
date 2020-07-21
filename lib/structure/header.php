@@ -73,7 +73,7 @@ function mai_do_header() {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param array  $attributes
  * @param string $context
@@ -105,9 +105,23 @@ function mai_maybe_hide_site_header() {
 	remove_action( 'genesis_header', 'genesis_header_markup_close', 15 );
 }
 
+add_filter( 'genesis_site_title_wrap', 'mai_remove_site_title_h1' );
+/**
+ * Removes h1 site title wrap.
+ *
+ * @since 2.3.0
+ *
+ * @param string The existing wrap element.
+ *
+ * @return string
+ */
+function mai_remove_site_title_h1( $wrap ) {
+	return 'p';
+}
+
 add_filter( 'genesis_markup_site-title_content', 'mai_site_title_link' );
 /**
- * Description of expected behavior.
+ * Add site-title-link class.
  *
  * @since 0.1.0
  *
@@ -121,9 +135,9 @@ function mai_site_title_link( $default ) {
 
 add_action( 'mai_before_title_area', 'mai_do_header_left' );
 /**
- * Description of expected behavior.
+ * Adds header left section.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */

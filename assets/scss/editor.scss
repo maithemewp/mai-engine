@@ -35,7 +35,41 @@ p {
 	&[data-align="full"] {
 		max-width: none;
 	}
+
 }
+
+@each $breakpoint-name, $breakpoint-size in $breakpoints {
+
+	.wp-block[data-content-width="#{ $breakpoint-name }"] {
+
+		div div > .wp-block-cover,
+		div > .wp-block-group {
+			--content-max-width: var(--breakpoint-#{ $breakpoint-name });
+		}
+	}
+}
+
+@each $padding-name, $padding-size in $padding_scale {
+
+	@each $padding-setting in $padding_settings {
+
+		.wp-block[data-spacing-#{ $padding-setting }="#{ $padding-name }"] {
+
+			div div > .wp-block-cover > .wp-block-cover__inner-container,
+			div > .wp-block-group > .wp-block-group__inner-container {
+				padding-#{ $padding-setting }: $padding-size;
+			}
+		}
+	}
+}
+
+@each $size-name, $size-value in $font-sizes {
+
+	.wp-block[data-font-size="#{ $size-name }"] > .rich-text {
+		font-size: #{ $size-value };
+	}
+}
+
 
 .wp-block-button__link {
 

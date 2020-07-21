@@ -171,15 +171,6 @@ li.toplevel_page_mai-theme {
 	display: none;
 }
 
-[data-status="running"] .progress {}
-
-/**
- * Block layout settings.
- */
-[data-checked]:first-of-type {
-	border-radius: 3px 0 0 3px !important;
-}
-
 #demo ul {
 	display: flex;
 	flex-wrap: wrap;
@@ -308,18 +299,29 @@ li.toplevel_page_mai-theme {
 	margin-bottom: 8px;
 }
 
-#submit {
-	display: block;
-	margin: 0 auto 24px;
-	padding: 6px 24px;
-	font-size: 1.2em;
+.setup-wizard {
+
+	#submit {
+		display: block;
+		margin: 0 auto 24px;
+		padding: 6px 24px;
+		font-size: 1.2em;
+
+		&.is-running img {
+			display: inline-block;
+		}
+
+		img {
+			display: none;
+			margin-left: 5px;
+		}
+	}
 }
 
-#submit img {
-	display: none;
-	margin-left: 5px;
-}
+/**
+ * Block layout settings.
+ */
 
-#submit.is-running img {
-	display: inline-block;
+[data-checked]:first-of-type {
+	border-radius: 3px 0 0 3px !important;
 }

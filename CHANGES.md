@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.3.0 (7/21/20)
+* Added: Title size setting to Mai Grid blocks and Content Archive settings.
+* Added: Size setting to core Heading block.
+* Changed: Use chosen heading color for overlays to keep consistent styling.
+* Changed: Removed default bottom margin on Mai Grid and archive entries.
+* Changed: Remove border radius on entries if column or row gap is 0.
+* Fixed: Inability to sort posts in the Dashboard.
+* Fixed: Horizontal scrollbars shown in some scenarios when using full aligned blocks on a page.
+* Fixed: Duplicate h1's on homepage. Site title is no longer an h1, ever.
+* Fixed: Submit buttons being styled unexpectedly in the Dashboard.
+
 ## 2.2.2 (7/16/20)
 * Changed: Group and cover blocks no longer have top and bottom default spacing set when adding a new instance of the block.
 * Changed: Grid and archive entries now have gradient overlays with background image position when aligning text vertically.

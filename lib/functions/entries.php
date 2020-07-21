@@ -31,6 +31,11 @@ function mai_do_entries_open( $args ) {
 		$attributes['class'] .= ' has-boxed';
 	}
 
+	// Title size.
+	if ( $args['title_size'] ) {
+		$attributes['style'] .= sprintf( '--entry-title-font-size:var(--font-size-%s);', $args['title_size'] );
+	}
+
 	// Image position.
 	if ( in_array( 'image', $args['show'], true ) && $args['image_position'] ) {
 		$attributes['class'] .= ' has-image-' . $args['image_position'];
@@ -80,6 +85,11 @@ function mai_do_entries_open( $args ) {
 	$attributes['style'] .= sprintf( '--align-columns-vertical:%s;', ! empty( $args['align_columns_vertical'] ) ? mai_get_flex_align( $args['align_columns_vertical'] ) : 'unset' );
 	$attributes['style'] .= sprintf( '--align-text:%s;', mai_get_align_text( $args['align_text'] ) );
 	$attributes['style'] .= sprintf( '--align-text-vertical:%s;', mai_has_string( [ 'left', 'right', 'background' ], $args['image_position'] ) ? mai_get_align_text( $args['align_text_vertical'] ) : 'unset' );
+
+	// Remove border radius if no row or column gap.
+	if ( in_array( '0', [ $args['row_gap'], $args['column_gap'] ] ) ) {
+		$attributes['style'] .= '--border-radius:0;';
+	}
 
 	genesis_markup(
 		[

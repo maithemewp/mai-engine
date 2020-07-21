@@ -143,6 +143,12 @@ function mai_template_parts_order( $query ) {
 		return;
 	}
 
+	$screen = get_current_screen();
+
+	if ( ! $screen || ( 'edit-wp_template_part' !== $screen->id ) ) {
+		return;
+	}
+
 	$query->set( 'orderby', 'menu_order' );
 	$query->set( 'order', 'ASC' );
 }
