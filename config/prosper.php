@@ -13,7 +13,7 @@ return [
 			'heading'   => '#2a3139',
 			'link'      => '#0072ff',
 			'primary'   => '#009cff',
-			'secondary' => '#00c6ff',
+			'secondary' => '#c6cace',
 		],
 		'fonts'  => [
 			'body'    => 'Nunito Sans:400,700',
@@ -32,6 +32,18 @@ return [
 					'slug'     => 'corporate',
 				],
 			],
+		],
+	],
+	'page-header'   => [
+		'archive'          => '*',
+		'single'           => '*',
+		'image'            => '',
+		'background-color' => 'heading',
+		'text-color'       => 'light',
+		'divider-color'    => 'white',
+		'spacing'          => [
+			'top'    => '5vw',
+			'bottom' => '5vw',
 		],
 	],
 ];
