@@ -38,8 +38,14 @@ function mai_add_blocks_settings_classes( $block_content, $block ) {
 		$query  = sprintf( '//div[starts-with(@class,"wp-block-%s ")]', $name ); // Needs space so it doesn't target inner_container too.
 		$blocks = $xpath->query( $query );
 
-		if ( $blocks ) {
-			$classes = $blocks[0]->getAttribute( 'class' );
+		if ( $blocks && isset( $blocks[0] ) ) {
+
+			/**
+			 * @var DOMElement $first_block The block inner-container.
+			 */
+			$first_block = $blocks[0];
+
+			$classes = $first_block->getAttribute( 'class' );
 
 			// Remove classes left from old regex.
 			$classes = str_replace( [
@@ -90,7 +96,7 @@ function mai_add_blocks_settings_classes( $block_content, $block ) {
 				$classes .= sprintf( ' has-%s-padding-right', $right );
 			}
 
-			$blocks[0]->setAttribute( 'class', $classes );
+			$first_block->setAttribute( 'class', $classes );
 
 			$block_content = $dom->saveHTML();
 		}
@@ -98,4 +104,3 @@ function mai_add_blocks_settings_classes( $block_content, $block ) {
 
 	return $block_content;
 }
-

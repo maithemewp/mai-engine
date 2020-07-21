@@ -106,7 +106,9 @@ function mai_add_cover_block_image( $block_content, $image_id ) {
 		return $block_content;
 	}
 
-	// Loop through, though we know it's one.
+	/**
+	 * @var DOMElement $block.
+	 */
 	foreach ( $cover_blocks as $block ) {
 
 		// Build the HTML node.
