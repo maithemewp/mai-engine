@@ -15,9 +15,9 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_breakpoint_custom_properties' );
  *
  * @since 2.0.0
  *
- * @param $css
+ * @param array $css Kirki CSS.
  *
- * @return mixed
+ * @return array
  */
 function mai_add_breakpoint_custom_properties( $css ) {
 	$breakpoints = mai_get_breakpoints();
@@ -36,15 +36,15 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_additional_colors_css' );
  * @since 2.2.1 Added important rules for button hover state.
  * @since 2.0.0 Added.
  *
- * @param $css
+ * @param array $css Kirki CSS.
  *
- * @return mixed
+ * @return array
  */
 function mai_add_additional_colors_css( $css ) {
 	$defaults = mai_get_global_styles( 'colors' );
 
 	// Exclude settings out put by Kirki.
-	$colors   = array_diff_key( $defaults, mai_get_color_elements() );
+	$colors = array_diff_key( $defaults, mai_get_color_elements() );
 
 	if ( $colors ) {
 		foreach ( $colors as $name => $color ) {
@@ -68,7 +68,7 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_custom_color_css' );
  *
  * @param array $css Kirki CSS array.
  *
- * @return mixed
+ * @return array
  */
 function mai_add_custom_color_css( $css ) {
 	$custom_colors = mai_get_option( 'custom-colors', [] );
@@ -95,9 +95,9 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_button_text_colors' );
  *
  * @since 2.0.0
  *
- * @param $css
+ * @param array $css Kirki CSS.
  *
- * @return mixed
+ * @return array
  */
 function mai_add_button_text_colors( $css ) {
 	$buttons = [
@@ -180,11 +180,31 @@ function mai_add_page_header_content_type_css( $css ) {
 	$spacing = mai_get_option( 'page-header-spacing', $config['spacing'] );
 
 	if ( isset( $spacing['top'] ) ) {
-		$css['global'][':root'][ '--page-header-padding-top' ] = mai_get_unit_value( $spacing['top'] );
+		$css['global'][':root']['--page-header-padding-top'] = mai_get_unit_value( $spacing['top'] );
 	}
 
 	if ( isset( $spacing['bottom'] ) ) {
-		$css['global'][':root'][ '--page-header-padding-bottom' ] = mai_get_unit_value( $spacing['bottom'] );
+		$css['global'][':root']['--page-header-padding-bottom'] = mai_get_unit_value( $spacing['bottom'] );
+	}
+
+	return $css;
+}
+
+add_filter( 'kirki_mai-engine_styles', 'mai_add_extra_custom_properties' );
+/**
+ * Add any other custom properties defined in config to output.
+ *
+ * @since 2.0.0
+ *
+ * @param array $css Kirki CSS array.
+ *
+ * @return mixed
+ */
+function mai_add_extra_custom_properties( $css ) {
+	$extra = mai_get_global_styles( 'extra' );
+
+	foreach ( $extra as $property => $value ) {
+		$css['global'][':root'][ '--' . $property ] = $value;
 	}
 
 	return $css;

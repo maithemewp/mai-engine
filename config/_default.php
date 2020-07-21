@@ -41,6 +41,9 @@ return [
 		],
 		'font-scale'     => 1.25,
 		'contrast-limit' => 160,
+		'extra'          => [
+			'border-radius' => '4px',
+		],
 	],
 
 	/*

@@ -63,6 +63,10 @@ function mai_get_font_sizes() {
 function mai_get_default_font_family( $element ) {
 	$fonts = mai_get_global_styles( 'fonts' );
 
+	if ( ! mai_has_string( ':', $fonts[ $element ] ) ) {
+		return $fonts[ $element ];
+	}
+
 	return explode( ':', $fonts[ $element ] )[0];
 }
 
