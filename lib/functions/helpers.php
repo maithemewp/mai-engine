@@ -516,6 +516,9 @@ function mai_sanitize( $value, $function = 'esc_html', $allow_null = false ) {
 		return $value;
 	}
 
+	// Force a useable sanitization function.
+	$function = is_callable( $function ) ? $function : 'esc_html';
+
 	// If array, escape and return it.
 	if ( is_array( $value ) ) {
 		$escaped = [];
