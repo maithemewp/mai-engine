@@ -1187,9 +1187,12 @@ function mai_get_svg_icon_url( $name, $style = 'light' ) {
 }
 
 /**
- * Get DOMDocument object. expected behavior.
+ * Get DOMDocument object.
+ *
+ * @access private.
  *
  * @since 2.0.0
+ * @since 2.2.3 Remove wraps to only return the html passed.
  *
  * @param string $html
  *
@@ -1205,6 +1208,12 @@ function mai_get_dom_document( $html ) {
 
 	// Load the content in the document HTML.
 	$dom->loadHTML( mb_convert_encoding( $html, 'HTML-ENTITIES', "UTF-8" ) );
+
+	// Remove <!DOCTYPE.
+	$dom->removeChild( $dom->doctype );
+
+	// Remove <html><body></body></html>.
+	$dom->replaceChild( $dom->firstChild->firstChild->firstChild, $dom->firstChild );
 
 	// Handle errors.
 	libxml_clear_errors();
