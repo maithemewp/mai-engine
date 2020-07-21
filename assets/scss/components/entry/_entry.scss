@@ -12,7 +12,7 @@
 	text-align: var(--align-text);
 	background: var(--entry-background, (unset));
 	border: var(--entry-border, 0);
-	border-radius: var(--border-radius);
+	border-radius: var(--entry-border-radius, var(--border-radius));
 	box-shadow: var(--entry-box-shadow, unset);
 }
 
