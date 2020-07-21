@@ -10,20 +10,22 @@
  */
 
 return [
-	'demos'  => [
+	'demos'         => [
 		// 'law'      => 9,
 		'news' => 10,
 		// 'personal' => 11,
 	],
-	'colors' => [
-		'link'      => '#777777',
-		'primary'   => '#000000',
-		'secondary' => '#777777',
-		'heading'   => '#000000',
-		'body'      => '#777777',
-	],
-	'fonts'  => [
-		'body'    => 'Montserrat:400',
-		'heading' => 'Montserrat:700',
+	'global-styles' => [
+		'colors' => [
+			'link'      => '#777777',
+			'primary'   => '#000000',
+			'secondary' => '#777777',
+			'heading'   => '#000000',
+			'body'      => '#777777',
+		],
+		'fonts'  => [
+			'body'    => 'Montserrat:400',
+			'heading' => 'Montserrat:700',
+		],
 	],
 ];
