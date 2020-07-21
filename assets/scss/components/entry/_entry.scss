@@ -66,9 +66,6 @@
 }
 
 .entries {
-	// Can't apply left/right margin because it overrides alignwide/alignfull.
-	margin-bottom: var(--entries-margin-bottom, var(--spacing-md));
-
 	--entry-image-line-height: 0;
 	--entry-meta-margin: 0 0 var(--spacing-md) 0;
 
