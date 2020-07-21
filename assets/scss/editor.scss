@@ -43,7 +43,7 @@ p {
 	.wp-block[data-content-width="#{ $breakpoint-name }"] {
 
 		div div > .wp-block-cover,
-		div div > .wp-block-group {
+		div > .wp-block-group {
 			--content-max-width: var(--breakpoint-#{ $breakpoint-name });
 		}
 	}
@@ -56,7 +56,7 @@ p {
 		.wp-block[data-spacing-#{ $padding-setting }="#{ $padding-name }"] {
 
 			div div > .wp-block-cover > .wp-block-cover__inner-container,
-			div div > .wp-block-group > .wp-block-group__inner-container {
+			div > .wp-block-group > .wp-block-group__inner-container {
 				padding-#{ $padding-setting }: $padding-size;
 			}
 		}
