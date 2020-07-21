@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.2.3 (TBD)
+
 ## 2.2.2 (7/16/20)
 * Changed: Group and cover blocks no longer have top and bottom default spacing set when adding a new instance of the block.
 * Changed: Grid and archive entries now have gradient overlays with background image position when aligning text vertically.

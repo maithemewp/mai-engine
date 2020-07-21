@@ -285,6 +285,7 @@ function mai_load_files() {
 		'blocks/heading',
 		'blocks/icon',
 		'blocks/image',
+		'blocks/settings',
 		'blocks/paragraph',
 		'blocks/social-links',
 

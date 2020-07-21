@@ -91,22 +91,7 @@
 }
 
 // TODO: Use custom properties?
-$padding_scale: (
-	no: 0,
-	xs: 0.5em,
-	sm: 2em,
-	md: calc(1rem + 4vw),
-	lg: calc(1rem + 8vw),
-	xl: calc(1rem + 16vw),
-) !default;
-
-$padding_settings: (
-	top,
-	bottom,
-	left,
-	right,
-) !default;
-
+// If so, update editor.scss to match.
 @each $padding-name, $padding-size in $padding_scale {
 
 	@each $padding-setting in $padding_settings {
