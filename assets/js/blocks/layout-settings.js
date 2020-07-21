@@ -50,7 +50,7 @@ const addSpacingControlAttribute = ( settings, name ) => {
 		return settings;
 	}
 
-	// Use Lodash's assign to gracefully handle if attributes are undefined
+	// Use Lodash's assign to gracefully handle if attributes are undefined.
 	settings.attributes = assign( settings.attributes, {
 		contentWidth: {
 			type: 'string',
@@ -93,12 +93,12 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 		}
 
 		const {
-				  contentWidth,
-				  verticalSpacingTop,
-				  verticalSpacingBottom,
-				  verticalSpacingLeft,
-				  verticalSpacingRight,
-			  } = props.attributes;
+				contentWidth,
+				verticalSpacingTop,
+				verticalSpacingBottom,
+				verticalSpacingLeft,
+				verticalSpacingRight,
+			} = props.attributes;
 
 		return (
 			<Fragment>
@@ -262,7 +262,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 
 addFilter( 'editor.BlockEdit', 'mai-engine/with-layout-settings', withLayoutControls );
 
-const editClassNames = createHigherOrderComponent( ( BlockListBlock ) => {
+const addLayoutAttributes = createHigherOrderComponent( ( BlockListBlock ) => {
 	return ( props ) => {
 
 		// Do nothing if it's another block than our defined ones.
@@ -284,6 +284,6 @@ const editClassNames = createHigherOrderComponent( ( BlockListBlock ) => {
 			}/>
 		);
 	};
-}, 'editClassNames' );
+}, 'addLayoutAttributes' );
 
-addFilter( 'editor.BlockListBlock', 'mai-engine/editClassNames', editClassNames );
+addFilter( 'editor.BlockListBlock', 'mai-engine/addLayoutAttributes', addLayoutAttributes );

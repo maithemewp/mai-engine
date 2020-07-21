@@ -63,6 +63,14 @@ p {
 	}
 }
 
+@each $size-name, $size-value in $font-sizes {
+
+	.wp-block[data-font-size="#{ $size-name }"] > .rich-text {
+		font-size: #{ $size-value };
+	}
+}
+
+
 .wp-block-button__link {
 
 	@include button();

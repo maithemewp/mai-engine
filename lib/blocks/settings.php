@@ -9,7 +9,7 @@
  * @license   GPL-2.0-or-later
  */
 
-add_filter( 'render_block', 'mai_add_blocks_settings_classes', 10, 2 );
+add_filter( 'render_block', 'mai_do_cover_group_block_settings', 10, 2 );
 /**
  * Dynamically adds classes based on our custom attributes.
  *
@@ -20,7 +20,11 @@ add_filter( 'render_block', 'mai_add_blocks_settings_classes', 10, 2 );
  *
  * @return string
  */
-function mai_add_blocks_settings_classes( $block_content, $block ) {
+function mai_do_cover_group_block_settings( $block_content, $block ) {
+	if ( is_admin() ) {
+		return $block_content;
+	}
+
 	if ( ! in_array( $block['blockName'], [ 'core/cover', 'core/group' ] ) ) {
 		return $block_content;
 	}
@@ -32,18 +36,14 @@ function mai_add_blocks_settings_classes( $block_content, $block ) {
 	$right  = mai_isset( $block['attrs'], 'verticalSpacingRight', '' );
 
 	if ( $width || $top || $bottom || $left || $right ) {
-		$dom    = mai_get_dom_document( $block_content );
-		$xpath  = new \DOMXpath( $dom );
-		$name   = str_replace( 'core/', '', $block['blockName'] );
-		$query  = sprintf( '//div[starts-with(@class,"wp-block-%s ")]', $name ); // Needs space so it doesn't target inner_container too.
-		$blocks = $xpath->query( $query );
+		$dom = mai_get_dom_document( $block_content );
 
-		if ( $blocks && isset( $blocks[0] ) ) {
+		/**
+		 * @var DOMElement $first_block The block inner-container.
+		 */
+		$first_block = $dom->childNodes && isset( $dom->childNodes[0] ) ? $dom->childNodes[0] : false;
 
-			/**
-			 * @var DOMElement $first_block The block inner-container.
-			 */
-			$first_block = $blocks[0];
+		if ( $first_block ) {
 
 			$classes = $first_block->getAttribute( 'class' );
 
@@ -95,6 +95,50 @@ function mai_add_blocks_settings_classes( $block_content, $block ) {
 			if ( $right ) {
 				$classes .= sprintf( ' has-%s-padding-right', $right );
 			}
+
+			$first_block->setAttribute( 'class', $classes );
+
+			$block_content = $dom->saveHTML();
+		}
+	}
+
+	return $block_content;
+}
+
+add_filter( 'render_block', 'mai_do_heading_block_settings', 10, 2 );
+/**
+ * Dynamically adds classes based on our custom attributes.
+ *
+ * @since 2.2.3
+ *
+ * @param string $block_content The existing block content.
+ * @param array  $block         The button block object.
+ *
+ * @return string
+ */
+function mai_do_heading_block_settings( $block_content, $block ) {
+	if ( is_admin() ) {
+		return $block_content;
+	}
+
+	if ( ! in_array( $block['blockName'], [ 'core/heading' ] ) ) {
+		return $block_content;
+	}
+
+	$size  = mai_isset( $block['attrs'], 'fontSize', '' );
+
+	if ( $size ) {
+		$dom = mai_get_dom_document( $block_content );
+
+		/**
+		 * @var DOMElement $first_block The block inner-container.
+		 */
+		$first_block = $dom->childNodes && isset( $dom->childNodes[0] ) ? $dom->childNodes[0] : false;
+
+		if ( $first_block ) {
+
+			$classes     = $first_block->getAttribute( 'class' );
+			$classes    .= sprintf( ' has-%s-font-size', $size );
 
 			$first_block->setAttribute( 'class', $classes );
 
