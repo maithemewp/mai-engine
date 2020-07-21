@@ -13,7 +13,7 @@ add_filter( 'render_block', 'mai_do_cover_group_block_settings', 10, 2 );
 /**
  * Dynamically adds classes based on our custom attributes.
  *
- * @since 2.2.3
+ * @since 2.3.0
  *
  * @param string $block_content The existing block content.
  * @param array  $block         The button block object.
@@ -109,7 +109,7 @@ add_filter( 'render_block', 'mai_do_heading_block_settings', 10, 2 );
 /**
  * Dynamically adds classes based on our custom attributes.
  *
- * @since 2.2.3
+ * @since 2.3.0
  *
  * @param string $block_content The existing block content.
  * @param array  $block         The button block object.

@@ -1192,7 +1192,7 @@ function mai_get_svg_icon_url( $name, $style = 'light' ) {
  * @access private.
  *
  * @since 2.0.0
- * @since 2.2.3 Remove wraps to only return the html passed.
+ * @since 2.3.0 Remove wraps to only return the html passed.
  *
  * @param string $html
  *

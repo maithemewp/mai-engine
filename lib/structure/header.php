@@ -109,7 +109,7 @@ add_filter( 'genesis_site_title_wrap', 'mai_remove_site_title_h1' );
 /**
  * Removes h1 site title wrap.
  *
- * @since 2.2.3
+ * @since 2.3.0
  *
  * @param string The existing wrap element.
  *
