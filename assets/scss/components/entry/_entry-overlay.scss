@@ -5,9 +5,9 @@
 	z-index: 0;
 	width: 100%;
 	height: 100%;
-	background: var(--entry-overlay-background, unset);
-	transition: var(--transition);
+	background: var(--entry-overlay-background, transparent);
 	opacity: var(--entry-overlay-opacity, 0.6);
+	transition: var(--transition);
 }
 
 .has-image-background {
@@ -20,7 +20,6 @@
 		--entry-overlay-color-start: transparent;
 	}
 
-
 	.has-image {
 		--entry-title-link-color: var(--color-white);
 		--entry-title-link-color-hover: var(--color-white);
@@ -29,8 +28,8 @@
 		--entry-wrap-color: var(--color-white);
 		--entry-overlay-background: linear-gradient(
 			var(--entry-overlay-background-direction, to bottom),
-			var(--entry-overlay-color-start, var(--color-black)) 0%,
-			var(--entry-overlay-color-end, var(--color-black)) 100%
+			var(--entry-overlay-color-start, var(--color-heading)) 0%,
+			var(--entry-overlay-color-end, var(--color-heading)) 100%
 		);
 
 		&:hover,
@@ -38,5 +37,4 @@
 			--entry-overlay-opacity: var(--entry-overlay-hover-opacity, 0.8);
 		}
 	}
-
 }

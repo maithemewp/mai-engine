@@ -20,7 +20,7 @@ return [
 			'heading' => 'Nunito Sans:700',
 		],
 		'extra'  => [
-			'border-radius' => '9rem',
+			'button-border-radius' => '100px',
 		],
 	],
 	'theme-support' => [
