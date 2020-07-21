@@ -40,9 +40,12 @@ p {
 
 @each $breakpoint-name, $breakpoint-size in $breakpoints {
 
-	.wp-block[data-content-width="#{ $breakpoint-name }"] .wp-block-cover,
-	.wp-block[data-content-width="#{ $breakpoint-name }"] .wp-block-group {
-		--content-max-width: var(--breakpoint-#{ $breakpoint-name });
+	.wp-block[data-content-width="#{ $breakpoint-name }"] {
+
+		div div > .wp-block-cover,
+		div div > .wp-block-group {
+			--content-max-width: var(--breakpoint-#{ $breakpoint-name });
+		}
 	}
 }
 
@@ -50,9 +53,12 @@ p {
 
 	@each $padding-setting in $padding_settings {
 
-		.wp-block[data-spacing-#{ $padding-setting }="#{ $padding-name }"] .wp-block-cover__inner-container,
-		.wp-block[data-spacing-#{ $padding-setting }="#{ $padding-name }"] .wp-block-group__inner-container {
-			padding-#{ $padding-setting }: $padding-size;
+		.wp-block[data-spacing-#{ $padding-setting }="#{ $padding-name }"] {
+
+			div div > .wp-block-cover > .wp-block-cover__inner-container,
+			div div > .wp-block-group > .wp-block-group__inner-container {
+				padding-#{ $padding-setting }: $padding-size;
+			}
 		}
 	}
 }

@@ -9,7 +9,7 @@ const { PanelBody, Button, ButtonGroup } = wp.components;
 
 const enableSpacingControlOnBlocks = [
 	'core/cover',
-	'core/group',
+	'core/group'
 ];
 
 const sizeScale = [
@@ -93,35 +93,12 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 		}
 
 		const {
-			contentWidth,
-			verticalSpacingTop,
-			verticalSpacingBottom,
-			verticalSpacingLeft,
-			verticalSpacingRight,
-		} = props.attributes;
-
-		const layoutSettings = [
-			{
-				name: 'content-width',
-				value: contentWidth,
-			},
-			{
-				name: 'padding-top',
-				value: verticalSpacingTop,
-			},
-			{
-				name: 'padding-bottom',
-				value: verticalSpacingBottom,
-			},
-			{
-				name: 'padding-left',
-				value: verticalSpacingLeft,
-			},
-			{
-				name: 'padding-right',
-				value: verticalSpacingRight,
-			},
-		];
+				  contentWidth,
+				  verticalSpacingTop,
+				  verticalSpacingBottom,
+				  verticalSpacingLeft,
+				  verticalSpacingRight,
+			  } = props.attributes;
 
 		return (
 			<Fragment>
@@ -304,7 +281,7 @@ const editClassNames = createHigherOrderComponent( ( BlockListBlock ) => {
 					'data-spacing-left': props.attributes.verticalSpacingLeft,
 					'data-spacing-right': props.attributes.verticalSpacingRight,
 				}
-			} />
+			}/>
 		);
 	};
 }, 'editClassNames' );
