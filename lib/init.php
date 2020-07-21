@@ -238,6 +238,7 @@ function mai_load_files() {
 
 		// Functions.
 		'functions/autoload',
+		'functions/colors',
 		'functions/defaults',
 		'functions/deprecated',
 		'functions/enqueue',
