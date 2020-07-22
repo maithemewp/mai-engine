@@ -296,16 +296,19 @@ class Mai_Grid {
 				$tax_query = [];
 				if ( $this->args['taxonomies'] ) {
 					foreach ( $this->args['taxonomies'] as $taxo ) {
+						$taxonomy = mai_isset( $taxo, 'taxonomy', '' );
+						$terms    = mai_isset( $taxo, 'terms', '' );
+						$operator = mai_isset( $taxo, 'operator', '' );
 						// Skip if we don't have all the tax query args.
-						if ( ! isset( $taxo['taxonomy'] ) || ! ( $taxo['taxonomy'] && $taxo['taxonomy'] && $taxo['taxonomy'] ) ) {
+						if ( ! ( $taxonomy && $terms && $operator ) ) {
 							continue;
 						}
 						// Set the value.
 						$tax_query[] = [
-							'taxonomy' => $taxo['taxonomy'],
+							'taxonomy' => $taxonomy,
 							'field'    => 'id',
-							'terms'    => $taxo['terms'],
-							'operator' => $taxo['operator'],
+							'terms'    => $terms,
+							'operator' => $operator,
 						];
 					}
 
@@ -323,6 +326,44 @@ class Mai_Grid {
 						}
 					}
 				}
+
+				$meta_query = [];
+				if ( $this->args['meta_keys'] ) {
+					foreach ( $this->args['meta_keys'] as $meta ) {
+						$key     = mai_isset( $meta, 'meta_key', '' );
+						$compare = mai_isset( $meta, 'meta_compare', '' );
+						$value   = mai_isset( $meta, 'meta_value', '' );
+
+						// Skip if we don't have the meta query args.
+						if ( ! ( $key && $compare ) ) {
+							continue;
+						}
+
+						// Skip if no meta value, only if compare is not exists/not exists.
+						if ( ! $value && ! in_array( $compare, [ 'EXISTS', 'NOT EXISTS' ] ) ) {
+							continue;
+						}
+
+						$meta_query_args = [
+							'key'     => $key,
+							'compare' => $compare,
+						];
+
+						if ( ! in_array( $compare, [ 'EXISTS', 'NOT EXISTS' ] ) ) {
+							$meta_query_args['value'] = $value;
+						}
+
+						$meta_query[] = $meta_query_args;
+					}
+
+					// If we have meta query values.
+					if ( $meta_query ) {
+
+						$query_args['meta_query'] = $meta_query;
+					}
+				}
+
+				vd( $query_args );
 
 				break;
 		}
