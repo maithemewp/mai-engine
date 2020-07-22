@@ -18,6 +18,7 @@
 
 .has-image-background {
 	--entry-flex-direction: row;
+	--entry-overflow: hidden; /* for border radius on absolute positioned image. */
 }
 
 .single-entry {
