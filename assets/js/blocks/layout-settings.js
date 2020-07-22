@@ -51,6 +51,10 @@ const addSpacingControlAttribute = ( settings, name ) => {
 	}
 
 	// Use Lodash's assign to gracefully handle if attributes are undefined.
+	/**
+	 * TODO: These should be named spacingTop not verticalSpacingTop since left/right aren't vertical.
+	 * I wonder if it's too late to change and safely deprecate?
+	 */
 	settings.attributes = assign( settings.attributes, {
 		contentWidth: {
 			type: 'string',
