@@ -43,7 +43,6 @@ function mai_render_group_block( $block_content, $block ) {
 		$first_block = $dom->childNodes && isset( $dom->childNodes[0] ) ? $dom->childNodes[0] : false;
 
 		if ( $first_block ) {
-
 			$classes = $first_block->getAttribute( 'class' );
 			$classes = mai_add_classes( sprintf( 'has-%s-background', $light_or_dark ), $classes );
 

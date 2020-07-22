@@ -22,7 +22,6 @@ function mai_register_grid_blocks() {
 		return;
 	}
 
-	// Mai Post Grid.
 	acf_register_block_type(
 		[
 			'name'            => 'mai-post-grid',

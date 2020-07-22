@@ -246,6 +246,7 @@ function mai_load_files() {
 		'functions/fonts',
 		'functions/grid',
 		'functions/helpers',
+		'functions/icons',
 		'functions/images',
 		'functions/layout',
 		'functions/loop',
