@@ -144,6 +144,10 @@ function mai_posts_nav() {
 	genesis_posts_nav();
 	$pagination = ob_get_clean();
 
+	if ( ! $pagination ) {
+		return;
+	}
+
 	$dom = mai_get_dom_document( $pagination );
 
 	/**
