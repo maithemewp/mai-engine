@@ -43,12 +43,4 @@ return [
 		'text-color'       => 'light',
 		'divider-color'    => 'white',
 	],
-	'plugins'       => [
-		[
-			'name'  => 'Genesis eNews Extended',
-			'slug'  => 'genesis-enews-extended/plugin.php',
-			'uri'   => 'https://wordpress.org/plugins/genesis-enews-extended/',
-			'demos' => [ 'agency' ],
-		],
-	],
 ];
