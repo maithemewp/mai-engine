@@ -96,6 +96,17 @@ function mai_isset( $array, $key, $default = false ) {
 }
 
 /**
+ * Check if a size is a valid size value.
+ *
+ * @since 2.3.1
+ *
+ * @return bool
+ */
+function mai_is_valid_size( $size ) {
+	return in_array( $size, [ 'xxxxs', 'xxxs', 'xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', 'xxl', 'xxxl', 'xxxxl' ] );
+}
+
+/**
  * Check if were on any type of singular page.
  *
  * @since 0.1.0

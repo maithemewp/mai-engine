@@ -35,11 +35,11 @@ function mai_do_entries_open( $args ) {
 	$spacing_top    = mai_isset( $args, 'spacing_top', '' );
 	$spacing_bottom = mai_isset( $args, 'spacing_bottom', '' );
 
-	if ( $spacing_top ) {
+	if ( $spacing_top && mai_is_valid_size( $spacing_top ) ) {
 		$attributes['class'] .= sprintf( ' has-%s-padding-top', esc_html( $spacing_top ) );
 	}
 
-	if ( $spacing_bottom ) {
+	if ( $spacing_bottom && mai_is_valid_size( $spacing_bottom ) ) {
 		$attributes['class'] .= sprintf( ' has-%s-padding-bottom', esc_html( $spacing_bottom ) );
 	}
 
@@ -86,20 +86,36 @@ function mai_do_entries_open( $args ) {
 	// Get the columns breakpoint array.
 	$columns = mai_get_breakpoint_columns( $args );
 
-	// Global styles.
 	$attributes['style'] .= sprintf( '--columns-lg:%s;', $columns['lg'] );
 	$attributes['style'] .= sprintf( '--columns-md:%s;', $columns['md'] );
 	$attributes['style'] .= sprintf( '--columns-sm:%s;', $columns['sm'] );
 	$attributes['style'] .= sprintf( '--columns-xs:%s;', $columns['xs'] );
-	$attributes['style'] .= sprintf( '--column-gap:%s;', mai_get_unit_value( $args['column_gap'] ) );
-	$attributes['style'] .= sprintf( '--row-gap:%s;', mai_get_unit_value( $args['row_gap'] ) );
+
+	// Get column gap, deprecating old text field values.
+	if ( $args['column_gap'] ) {
+		$column_gap = mai_is_valid_size( $args['column_gap' ] ) ? $args['column_gap' ] : 'lg';
+		$column_gap = sprintf( 'var(--spacing-%s)', $column_gap );
+	} else {
+		$column_gap = '0px'; // px needed for calculations.
+	}
+
+	// Get row gap, deprecating old text field values.
+	if ( $args['row_gap'] ) {
+		$row_gap = mai_is_valid_size( $args['row_gap' ] ) ? $args['row_gap' ] : 'lg';
+		$row_gap = sprintf( 'var(--spacing-%s)', $row_gap );
+	} else {
+		$row_gap = '0px'; // px needed for calculations.
+	}
+
+	$attributes['style'] .= sprintf( '--column-gap:%s;', $column_gap );
+	$attributes['style'] .= sprintf( '--row-gap:%s;', $row_gap );
 	$attributes['style'] .= sprintf( '--align-columns:%s;', ! empty( $args['align_columns'] ) ? mai_get_flex_align( $args['align_columns'] ) : 'unset' );
 	$attributes['style'] .= sprintf( '--align-columns-vertical:%s;', ! empty( $args['align_columns_vertical'] ) ? mai_get_flex_align( $args['align_columns_vertical'] ) : 'unset' );
 	$attributes['style'] .= sprintf( '--align-text:%s;', mai_get_align_text( $args['align_text'] ) );
 	$attributes['style'] .= sprintf( '--align-text-vertical:%s;', mai_has_string( [ 'left', 'right', 'background' ], $args['image_position'] ) ? mai_get_align_text( $args['align_text_vertical'] ) : 'unset' );
 
 	// Remove border radius if no row or column gap.
-	if ( in_array( '0', [ $args['row_gap'], $args['column_gap'] ], true ) ) {
+	if ( in_array( '0', [ $args['row_gap'], $column_gap ], true ) ) {
 		$attributes['style'] .= '--border-radius:0;';
 	}
 

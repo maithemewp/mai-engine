@@ -12,7 +12,7 @@
 /**
  * Returns content archive settings.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return array
  */
@@ -45,11 +45,11 @@ function mai_get_content_archive_settings() {
 			'sanitize'        => 'esc_html',
 			'default'         => 'lg',
 			'choices'         => [
-				'sm'  => esc_html__( 'SM', 'mai-engine' ),
-				'md'  => esc_html__( 'MD', 'mai-engine' ),
-				'lg'  => esc_html__( 'LG', 'mai-engine' ),
-				'xl'  => esc_html__( 'XL', 'mai-engine' ),
-				'xxl' => esc_html__( 'XXL', 'mai-engine' ),
+				'sm'  => esc_html__( 'XS', 'mai-engine' ),
+				'md'  => esc_html__( 'SM', 'mai-engine' ),
+				'lg'  => esc_html__( 'MD', 'mai-engine' ),
+				'xl'  => esc_html__( 'LG', 'mai-engine' ),
+				'xxl' => esc_html__( 'XL', 'mai-engine' ),
 			],
 			'active_callback' => [
 				[
@@ -505,16 +505,32 @@ function mai_get_content_archive_settings() {
 		[
 			'settings' => 'column_gap',
 			'label'    => esc_html__( 'Column Gap', 'mai-engine' ),
-			'type'     => 'text',
+			'type'     => 'radio-buttonset',
 			'sanitize' => 'esc_html',
-			'default'  => '36px',
+			'default'  => 'xl',
+			'choices'  => [
+				''     => esc_html__( 'None', 'mai-engine' ),
+				'md'   => esc_html__( 'XS', 'mai-engine' ), // Values mapped to a spacing sizes, labels kept consistent.
+				'lg'   => esc_html__( 'SM', 'mai-engine' ),
+				'xl'   => esc_html__( 'MD', 'mai-engine' ),
+				'xxl'  => esc_html__( 'LG', 'mai-engine' ),
+				'xxxl' => esc_html__( 'XL', 'mai-engine' ),
+			],
 		],
 		[
 			'settings' => 'row_gap',
 			'label'    => esc_html__( 'Row Gap', 'mai-engine' ),
-			'type'     => 'text',
+			'type'     => 'radio-buttonset',
 			'sanitize' => 'esc_html',
-			'default'  => '64px',
+			'default'  => 'xl',
+			'choices'  => [
+				''     => esc_html__( 'None', 'mai-engine' ),
+				'md'   => esc_html__( 'XS', 'mai-engine' ), // Values mapped to a spacing sizes, labels kept consistent.
+				'lg'   => esc_html__( 'SM', 'mai-engine' ),
+				'xl'   => esc_html__( 'MD', 'mai-engine' ),
+				'xxl'  => esc_html__( 'LG', 'mai-engine' ),
+				'xxxl' => esc_html__( 'XL', 'mai-engine' ),
+			],
 		],
 		[
 			'settings'    => 'posts_per_page',
@@ -573,9 +589,9 @@ function mai_get_content_archive_settings() {
 
 add_action( 'init', 'mai_add_content_archive_settings' );
 /**
- * Description of expected behavior.
+ * Add content archive customizer settings.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */

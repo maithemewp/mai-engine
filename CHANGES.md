@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.3.1 (TBD)
+
 ## 2.3.0 (7/21/20)
 * Added: Title size setting to Mai Grid blocks and Content Archive settings.
 * Added: Size setting to core Heading block.
