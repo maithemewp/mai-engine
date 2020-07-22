@@ -142,20 +142,34 @@ function mai_posts_nav() {
 
 	ob_start();
 	genesis_posts_nav();
+	$pagination = ob_get_clean();
 
-	$pagination = str_replace(
-		[
-			'active" ><a href',
-			'active"><a href',
-			'<a href',
-		],
-		[
-			'active" ><a class="button" href',
-			'active"><a class="button" href',
-			'<a class="button button-secondary" href',
-		],
-		ob_get_clean()
-	);
+	$dom = mai_get_dom_document( $pagination );
+
+	/**
+	 * The pagination container.
+	 *
+	 * @var DOMElement $container The group block container.
+	 */
+	$container = $dom->childNodes && isset( $dom->childNodes[0] ) ? $dom->childNodes[0] : false; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+
+	if ( $container ) {
+		$lis = $container->getElementsByTagName( 'li' );
+		if ( $lis ) {
+			foreach ( $lis as $li ) {
+				$active = mai_has_string( 'active', $li->getAttribute( 'class' ) );
+				$links  = $li->getElementsByTagName( 'a' );
+				if ( $links ) {
+					foreach ( $links as $link ) {
+						$classes = $link->getAttribute( 'class' );
+						$classes = mai_add_classes( $active ? 'button button-small' : 'button button-secondary button-small', $classes );
+						$link->setAttribute( 'class', $classes );
+					}
+				}
+			}
+		}
+		$pagination = $dom->saveHTML();
+	}
 
 	echo $pagination;
 }
