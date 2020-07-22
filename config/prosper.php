@@ -23,17 +23,6 @@ return [
 			'button-border-radius' => '100px',
 		],
 	],
-	'theme-support' => [
-		'add' => [
-			'editor-gradient-presets' => [
-				[
-					'name'     => __( 'Corporate', 'mai-engine' ),
-					'gradient' => 'linear-gradient(135deg,#00c6ff 0%,#0072ff 100%)',
-					'slug'     => 'corporate',
-				],
-			],
-		],
-	],
 	'page-header'   => [
 		'archive'          => '*',
 		'single'           => '*',

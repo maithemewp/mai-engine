@@ -25,6 +25,19 @@ p {
 	font-size: var(--font-size-md);
 }
 
+.alignfull {
+	width: 100%;
+	max-width: 100%;
+	margin-right: 0;
+	margin-left: 0;
+}
+
+.wp-block-cover__inner-container,
+.wp-block-group__inner-container {
+	width: var(--breakpoint-xl);
+	max-width: 90%;
+}
+
 .wp-block {
 	max-width: var(--breakpoint-lg);
 
@@ -35,7 +48,16 @@ p {
 	&[data-align="full"] {
 		max-width: none;
 	}
+}
 
+.block-editor-block-list__layout {
+
+	> [data-type="core/group"],
+	> [data-type="core/cover"],
+	> [data-type="acf/mai-post-grid"] {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
 }
 
 @each $breakpoint-name, $breakpoint-size in $breakpoints {
@@ -55,8 +77,8 @@ p {
 
 		.wp-block[data-spacing-#{ $padding-setting }="#{ $padding-name }"] {
 
-			div div > .wp-block-cover > .wp-block-cover__inner-container,
-			div > .wp-block-group > .wp-block-group__inner-container {
+			div div > .wp-block-cover,
+			div > .wp-block-group {
 				padding-#{ $padding-setting }: $padding-size;
 			}
 		}
@@ -69,7 +91,6 @@ p {
 		font-size: #{ $size-value };
 	}
 }
-
 
 .wp-block-button__link {
 
