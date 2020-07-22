@@ -55,7 +55,7 @@ function mai_do_deprecated_functionality() {
  *
  * @since 2.0.0
  *
- * @param array $config
+ * @param array $config Theme config.
  *
  * @return array
  */

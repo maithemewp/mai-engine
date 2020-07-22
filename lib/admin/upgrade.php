@@ -110,7 +110,9 @@ function mai_upgrade_2_0_1() {
  *
  * @since 2.0.0
  *
- * @return array
+ * @param array $data Data array.
+ *
+ * @return void
  */
 function mai_update_data( $data = [] ) {
 

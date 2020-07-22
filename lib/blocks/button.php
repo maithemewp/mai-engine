@@ -49,7 +49,6 @@ function mai_render_button_block( $block_content, $block ) {
 				$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link has-light-button-text', $block_content );
 			}
 		}
-
 	} else {
 		$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link button', $block_content );
 	}

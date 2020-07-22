@@ -25,7 +25,7 @@ function mai_create_template_parts( $current_screen ) {
 		return;
 	}
 
-	if ( ('post_type' !== $current_screen->post_type ) && ( 'edit-wp_template_part' !== $current_screen->id ) ) {
+	if ( ( 'post_type' !== $current_screen->post_type ) && ( 'edit-wp_template_part' !== $current_screen->id ) ) {
 		return;
 	}
 
@@ -51,15 +51,18 @@ function mai_create_template_parts( $current_screen ) {
 	}
 
 	if ( $templates_created ) {
-		add_action( 'admin_notices', function() use ( $templates_created ) {
-			echo '<div class="notice notice-success">';
+		add_action(
+			'admin_notices',
+			function() use ( $templates_created ) {
+				echo '<div class="notice notice-success">';
 				if ( 1 === $templates_created ) {
 					printf( '<p>%s %s</p>', $templates_created, __( 'default template part automatically created.', 'mai-engine' ) );
 				} else {
 					printf( '<p>%s %s</p>', $templates_created, __( 'default template parts automatically created.', 'mai-engine' ) );
 				}
-			echo '</div>';
-		});
+				echo '</div>';
+			}
+		);
 	}
 }
 
@@ -102,7 +105,7 @@ function mai_template_part_add_slug_column( $column_array ) {
 		'slug' => __( 'Slug', 'mai-engine' ),
 	];
 
-	$offset  = count( $column_array ) > 1 ? count( $column_array ) - 1 : count( $column_array );
+	$offset = count( $column_array ) > 1 ? count( $column_array ) - 1 : count( $column_array );
 
 	return array_slice( $column_array, 0, $offset, true ) + $new_column + array_slice( $column_array, $offset, null, true );
 }

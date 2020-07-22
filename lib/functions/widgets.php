@@ -29,10 +29,10 @@ function mai_get_widget_count( $widget_area_id ) {
 	 */
 	global $_wp_sidebars_widgets;
 
-	$_wp_sidebars_widgets = ! empty( $_wp_sidebars_widgets ) ? $_wp_sidebars_widgets : get_option( 'sidebars_widgets', [] );
+	$wp_sidebars_widgets = ! empty( $_wp_sidebars_widgets ) ? $_wp_sidebars_widgets : get_option( 'sidebars_widgets', [] );
 
-	if ( isset( $_wp_sidebars_widgets[ $widget_area_id ] ) ) {
-		$widget_count = count( $_wp_sidebars_widgets[ $widget_area_id ] );
+	if ( isset( $wp_sidebars_widgets[ $widget_area_id ] ) ) {
+		$widget_count = count( $wp_sidebars_widgets[ $widget_area_id ] );
 
 	} else {
 		$widget_count = 0;

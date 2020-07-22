@@ -35,7 +35,8 @@ function mai_genesis_style_trump() {
  * @return void
  */
 function mai_enqueue_child_theme_stylesheet() {
-	$version = sprintf( '%s.%s',
+	$version = sprintf(
+		'%s.%s',
 		genesis_get_theme_version(),
 		date( 'njYHi', filemtime( get_stylesheet_directory() . '/style.css' ) )
 	);
@@ -146,13 +147,18 @@ function mai_enqueue_assets() {
 			}
 
 			if ( $onload ) {
-				add_filter( 'style_loader_tag', function ( $html, $handle ) use ( $asset ) {
-					if ( $handle === $asset['handle'] ) {
-						$html = str_replace( '>', ' onload="' . $asset['onload'] . '">', $html );
-					}
+				add_filter(
+					'style_loader_tag',
+					function ( $html, $handle ) use ( $asset ) {
+						if ( $handle === $asset['handle'] ) {
+							$html = str_replace( '>', ' onload="' . $asset['onload'] . '">', $html );
+						}
 
-					return $html;
-				}, 11, 2 );
+						return $html;
+					},
+					11,
+					2
+				);
 			}
 		}
 	}
@@ -231,6 +237,8 @@ add_action( 'wp_head', 'mai_enqueue_desktop_styles' );
 /**
  * Load desktop styles only at breakpoint set in Customizer.
  *
+ * Can't be in config because it uses default breakpoint which is also set in config file.
+ *
  * @since 0.3.5
  *
  * @return void
@@ -252,7 +260,7 @@ add_filter( 'clean_url', 'mai_async_scripts', 11, 1 );
  *
  * @since 0.3.4
  *
- * @param $url
+ * @param string $url URL to check.
  *
  * @return mixed|string
  */

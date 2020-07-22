@@ -10,11 +10,11 @@
  */
 
 return [
-	'demos'            => [
+	'demos'         => [
 		'agency'  => 13,
 		'podcast' => 12,
 	],
-	'global-styles'    => [
+	'global-styles' => [
 		'colors' => [
 			'alt'       => '#f7f8fa',
 			'link'      => '#7b51ff',
@@ -28,12 +28,12 @@ return [
 			'heading' => 'Karla:700',
 		],
 	],
-	'theme-support'    => [
+	'theme-support' => [
 		'add' => [
 			'transparent-header',
 		],
 	],
-	'page-header'      => [
+	'page-header'   => [
 		'archive'                 => '*',
 		'single'                  => '*',
 		'background-color'        => 'primary',
@@ -43,7 +43,7 @@ return [
 		'divider-color'           => 'white',
 		'divider-flip-horizontal' => false,
 	],
-	'plugins'          => [
+	'plugins'       => [
 		[
 			'name'  => 'Genesis eNews Extended',
 			'slug'  => 'genesis-enews-extended/plugin.php',

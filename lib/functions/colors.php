@@ -205,14 +205,14 @@ function mai_is_light_color( $color ) {
 }
 
 /**
- * Description of expected behavior.
+ * Returns light or dark variant of a color.
  *
- * @since 1.0.0
  * @since 2.2.2 Allow colors by name.
+ * @since 1.0.0
  *
- * @param        $color
- * @param int    $amount
- * @param string $light_or_dark
+ * @param string $color         Color name.
+ * @param string $light_or_dark Light or dark variant.
+ * @param int    $amount        Amount to darken/lighten
  *
  * @return string
  */

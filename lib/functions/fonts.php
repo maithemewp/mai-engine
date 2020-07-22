@@ -166,10 +166,10 @@ function mai_get_italic_variant( $element ) {
 	if ( isset( $variants[ $regular_weight . 'italic' ] ) ) {
 		$italic = $regular_weight . 'italic';
 
-	} else if ( isset( $variants['italic'] ) ) {
+	} elseif ( isset( $variants['italic'] ) ) {
 		$italic = 'italic';
 
-	} else if ( ! empty( $default_weights ) ) {
+	} elseif ( ! empty( $default_weights ) ) {
 		foreach ( $default_weights as $weight ) {
 			if ( mai_has_string( 'i', $weight ) ) {
 				$italic = $weight;
@@ -283,7 +283,9 @@ function mai_add_extra_google_fonts( $fonts ) {
 		$font_weights = mai_get_default_font_weights( $element );
 
 		/**
-		 * @var Kirki_Fonts $kirki_fonts
+		 * Kirki Fonts.
+		 *
+		 * @var Kirki_Fonts $kirki_fonts Kirki fonts.
 		 */
 		$kirki_fonts  = Kirki_Fonts::get_instance();
 		$google_fonts = $kirki_fonts::get_google_fonts();
@@ -312,9 +314,10 @@ function mai_add_extra_google_fonts( $fonts ) {
 	}
 
 	foreach ( $fonts as $font_family => $font_weights ) {
+
 		// If we have 400 and regular, remove 400. Kikri uses regular.
 		if ( count( array_intersect( $font_weights, [ '400', 'regular' ] ) ) > 1 ) {
-			$index = array_search( '400', $font_weights );
+			$index = array_search( '400', $font_weights, true );
 			unset( $fonts[ $font_family ][ $index ] );
 		}
 

@@ -67,7 +67,7 @@ function mai_do_header() {
 	);
 
 	do_action( 'mai_after_title_area' );
-	remove_filter( 'genesis_attr_nav-menu', 'mai_nav_header_attributes', 10, 3 );
+	remove_filter( 'genesis_attr_nav-menu', 'mai_nav_header_attributes' );
 }
 
 /**
@@ -75,13 +75,11 @@ function mai_do_header() {
  *
  * @since 0.1.0
  *
- * @param array  $attributes
- * @param string $context
- * @param array  $params
+ * @param array $attributes Header attributes.
  *
  * @return mixed
  */
-function mai_nav_header_attributes( $attributes, $context, $params ) {
+function mai_nav_header_attributes( $attributes ) {
 	$attributes['class'] .= ' nav-header';
 
 	return $attributes;
@@ -111,11 +109,9 @@ add_filter( 'genesis_site_title_wrap', 'mai_remove_site_title_h1' );
  *
  * @since 2.3.0
  *
- * @param string The existing wrap element.
- *
  * @return string
  */
-function mai_remove_site_title_h1( $wrap ) {
+function mai_remove_site_title_h1() {
 	return 'p';
 }
 

@@ -9,10 +9,11 @@
  * @license   GPL-2.0-or-later
  */
 
-
 add_action( 'init', 'mai_performance_customizer_settings' );
 /**
  * Add logo customizer settings.
+ *
+ * @since 1.0.0
  *
  * @return  void
  */

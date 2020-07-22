@@ -15,12 +15,14 @@
 class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 
 	/**
+	 * All fields.
+	 *
 	 * @var array
 	 */
 	public $all_fields = [];
 
 	/**
-	 * Description of expected behavior.
+	 * Add hooks.
 	 *
 	 * @since 1.0.0
 	 *
@@ -31,32 +33,35 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns default fields.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $id
+	 * @param string $id Field ID.
 	 *
 	 * @return array
 	 */
 	private function get_defaults( $id ) {
-		return apply_filters( 'mai_setup_wizard_field_defaults', [
-			'element'    => 'input',
-			'content'    => '',
-			'label'      => false,
-			'img'        => false,
-			'order'      => 10,
-			'attributes' => [
-				'id'      => $id,
-				'name'    => $id,
-				'type'    => 'text',
-				'checked' => false,
-			],
-		] );
+		return apply_filters(
+			'mai_setup_wizard_field_defaults',
+			[
+				'element'    => 'input',
+				'content'    => '',
+				'label'      => false,
+				'img'        => false,
+				'order'      => 10,
+				'attributes' => [
+					'id'      => $id,
+					'name'    => $id,
+					'type'    => 'text',
+					'checked' => false,
+				],
+			]
+		);
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Adds a field.
 	 *
 	 * @since 1.0.0
 	 *
@@ -80,37 +85,40 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns all fields.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $step
+	 * @param string $step Step ID.
 	 *
-	 * @return array|mixed
+	 * @return array
 	 */
 	public function get_fields( $step ) {
 		return isset( $this->all_fields[ $step ] ) ? $this->all_fields[ $step ] : [];
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns default fields for a step.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @return array
 	 */
 	private function get_default_fields() {
-		return apply_filters( 'mai_setup_wizard_fields', [
-			'welcome' => $this->get_welcome_fields(),
-			'demo'    => $this->get_demo_fields(),
-			'plugins' => $this->get_plugins_fields(),
-			'content' => $this->get_content_fields(),
-			'done'    => $this->get_done_fields(),
-		] );
+		return apply_filters(
+			'mai_setup_wizard_fields',
+			[
+				'welcome' => $this->get_welcome_fields(),
+				'demo'    => $this->get_demo_fields(),
+				'plugins' => $this->get_plugins_fields(),
+				'content' => $this->get_content_fields(),
+				'done'    => $this->get_done_fields(),
+			]
+		);
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns welcome step fields.
 	 *
 	 * @since 1.0.0
 	 *
@@ -130,7 +138,7 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns demo step fields.
 	 *
 	 * @since 1.0.0
 	 *
@@ -142,7 +150,9 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 		$chosen = $this->demos->get_chosen_demo();
 
 		/**
-		 * @var Mai_Setup_Wizard_Demos $demo
+		 * Demo objects.
+		 *
+		 * @var Mai_Setup_Wizard_Demos $demo Demo object.
 		 */
 		foreach ( $demos as $demo ) {
 			$fields[] = [
@@ -170,7 +180,7 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns plugin step fields.
 	 *
 	 * @since 1.0.0
 	 *
@@ -211,7 +221,7 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns content step fields.
 	 *
 	 * @since 1.0.0
 	 *
@@ -262,7 +272,7 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns done step fields.
 	 *
 	 * @since 1.0.0
 	 *
@@ -283,11 +293,11 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Renders field markup.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $field
+	 * @param array $field Field array.
 	 *
 	 * @return string
 	 */

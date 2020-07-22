@@ -21,7 +21,7 @@ add_action( 'init', 'mai_archive_settings_customizer_settings' );
 function mai_archive_settings_customizer_settings() {
 	$handle  = mai_get_handle();
 	$section = $handle . '-content-archives';
-	$choices = mai_get_loop_content_type_choices( $archive = true );
+	$choices = mai_get_loop_content_type_choices( true );
 	$default = mai_get_config( 'archive-settings' );
 
 	\Kirki::add_section(
@@ -71,7 +71,7 @@ add_action( 'init', 'mai_single_settings_customizer_settings' );
 function mai_single_settings_customizer_settings() {
 	$handle  = mai_get_handle();
 	$section = $handle . '-single-content';
-	$choices = mai_get_loop_content_type_choices( $archive = false );
+	$choices = mai_get_loop_content_type_choices( false );
 	$default = mai_get_config( 'single-settings' );
 
 	\Kirki::add_section(
@@ -95,7 +95,6 @@ function mai_single_settings_customizer_settings() {
 			'choices'     => $choices,
 		]
 	);
-
 
 	\Kirki::add_field(
 		$handle,

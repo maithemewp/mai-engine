@@ -100,13 +100,16 @@ function mai_get_grid_show_choices() {
  */
 function mai_get_breakpoint_columns( $args ) {
 
-	$args = wp_parse_args( $args, [
-		'columns_responsive' => false,
-		'columns'            => 3,
-		'columns_md'         => 1,
-		'columns_sm'         => 1,
-		'columns_xs'         => 1,
-	] );
+	$args = wp_parse_args(
+		$args,
+		[
+			'columns_responsive' => false,
+			'columns'            => 3,
+			'columns_md'         => 1,
+			'columns_sm'         => 1,
+			'columns_xs'         => 1,
+		]
+	);
 
 	$columns = [
 		'lg' => $args['columns'],
@@ -172,20 +175,20 @@ function mai_get_align_text( $alignment ) {
 	switch ( $alignment ) {
 		case 'start':
 			$value = 'start';
-		break;
+			break;
 		case 'top':
 			$value = 'flex-start';
-		break;
+			break;
 		case 'center':
 		case 'middle':
 			$value = 'center';
-		break;
+			break;
 		case 'end':
 			$value = 'end';
-		break;
+			break;
 		case 'bottom':
 			$value = 'flex-end';
-		break;
+			break;
 		default:
 			$value = 'unset';
 	}

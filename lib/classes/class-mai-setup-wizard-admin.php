@@ -15,7 +15,7 @@
 class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 
 	/**
-	 * Description of expected behavior.
+	 * Adds hooks.
 	 *
 	 * @since 1.0.0
 	 *
@@ -27,7 +27,7 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Adds the menu page.
 	 *
 	 * @since 1.0.0
 	 *
@@ -37,17 +37,24 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 		$args = $this->get_menu_defaults();
 
 		if ( isset( $args['parent_slug'] ) && $args['parent_slug'] ) {
-			unset ( $args['icon_url'] );
+			unset( $args['icon_url'] );
 
 			add_submenu_page( ...array_values( $args ) );
 
 		} else {
-			unset ( $args['parent_slug'] );
+			unset( $args['parent_slug'] );
 
 			add_menu_page( ...array_values( $args ) );
 		}
 	}
 
+	/**
+	 * Returns menu defaults.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
 	private function get_menu_defaults() {
 		return apply_filters(
 			'mai_setup_wizard_menu',
@@ -65,7 +72,7 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Renders admin page markup.
 	 *
 	 * @since 1.0.0
 	 *
@@ -82,7 +89,9 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 			$counter = 1;
 
 			/**
-			 * @var Mai_Setup_Wizard_Steps $step
+			 * Steps.
+			 *
+			 * @var Mai_Setup_Wizard_Steps $step Step object.
 			 */
 			foreach ( $steps as $step ) {
 				$this->steps->render( $step, $steps, $counter );
@@ -98,6 +107,13 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 		<?php
 	}
 
+	/**
+	 * Checks if were on the setup wizard page.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return bool
+	 */
 	private function is_setup_wizard_screen() {
 		$base = false;
 
@@ -120,7 +136,7 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Loads setup wizard scripts.
 	 *
 	 * @since 1.0.0
 	 *
@@ -128,8 +144,6 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 	 */
 	public function load_scripts() {
 		if ( ! $this->is_setup_wizard_screen() ) {
-			print_r( $this->is_setup_wizard_screen() );
-
 			return;
 		}
 
@@ -157,11 +171,11 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns modified time asset version.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $file
+	 * @param string $file Path to file.
 	 *
 	 * @return bool|int
 	 */

@@ -11,7 +11,7 @@
 
 add_action( 'admin_init', 'mai_plugin_update_checker' );
 /**
- * Description of expected behavior.
+ * Initialize plugin update checker.
  *
  * @since 0.1.0
  *
@@ -42,14 +42,9 @@ function mai_plugin_update_checker() {
 	// Set the branch.
 	$updater->setBranch( $branch );
 
-	// Allow tokens to be used to bypass GitHub rate limit.
-	// if ( defined( 'MAI_UPDATER_TOKEN' ) ) {
-	// $updater->setAuthentication( MAI_UPDATER_TOKEN );
-	// }
-
 	// Add icons for Dashboard > Updates screen.
 	$updater->addResultFilter(
-		function ( $info, $response = null ) {
+		function ( $info ) {
 			$info->icons = [
 				'1x' => mai_get_url() . 'assets/img/icon-128x128.png',
 				'2x' => mai_get_url() . 'assets/img/icon-256x256.png',

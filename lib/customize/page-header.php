@@ -22,8 +22,8 @@ function mai_page_header_customizer_settings() {
 	$handle          = mai_get_handle();
 	$section         = $handle . '-page-header';
 	$config          = mai_get_config( 'page-header' );
-	$archives        = mai_get_content_type_choices( $archive = true );
-	$singles         = mai_get_content_type_choices( $archive = false );
+	$archives        = mai_get_content_type_choices( true );
+	$singles         = mai_get_content_type_choices( false );
 	$archive_default = [];
 	$single_default  = [];
 

@@ -29,7 +29,7 @@ function mai_get_engine_theme() {
 	$engine_themes = mai_get_engine_themes();
 
 	if ( current_theme_supports( 'mai-engine' ) ) {
-		// Custom themes can load a specific theme default via `add_theme_support( 'mai-engine', 'success' );`
+		// Custom themes can load a specific theme default via `add_theme_support( 'mai-engine', 'success' );`.
 		$theme_support = get_theme_support( 'mai-engine' );
 
 		if ( $theme_support && is_array( $theme_support ) && in_array( $theme_support[0], $engine_themes, true ) ) {
@@ -110,7 +110,7 @@ function mai_get_engine_themes() {
 	foreach ( $configs as $index => $config ) {
 		$base = basename( $config, '.php' );
 
-		if ( in_array( $base, [ '_default', '_settings' ] ) ) {
+		if ( in_array( $base, [ '_default', '_settings' ], true ) ) {
 			continue;
 		}
 
@@ -307,14 +307,12 @@ function mai_load_files() {
 		'customize/site-layouts',
 		'customize/typography',
 		'customize/updates',
-		'customize/upsell',
 	];
 
 	if ( is_admin() ) {
 		$files = array_merge(
 			$files,
 			[
-				'admin/blog',
 				'admin/dependencies',
 				'admin/editor',
 				'admin/hide-elements',

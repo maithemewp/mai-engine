@@ -15,12 +15,14 @@
 class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 
 	/**
+	 * All steps.
+	 *
 	 * @var array
 	 */
 	private $all_steps = [];
 
 	/**
-	 * Description of expected behavior.
+	 * Adds hooks.
 	 *
 	 * @since 1.0.0
 	 *
@@ -44,32 +46,35 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 			$this->add_step( $step );
 		}
 
-		usort( $this->all_steps, function ( $a, $b ) {
-			return strcmp( $a['order'], $b['order'] );
-		} );
+		usort(
+			$this->all_steps,
+			function ( $a, $b ) {
+				return strcmp( $a['order'], $b['order'] );
+			}
+		);
 
 		return $this->all_steps;
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Adds a step.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $args
+	 * @param array $args Step arguments.
 	 *
 	 * @return void
 	 */
 	private function add_step( $args ) {
 		if ( isset( $args['id'] ) ) {
-			$args['fields'] = $this->fields->get_fields( $args['id'] );
-			$args           = wp_parse_args( $args, $this->get_default_args( $args['id'] ) );
-			$this->all_steps[]  = $args;
+			$args['fields']    = $this->fields->get_fields( $args['id'] );
+			$args              = wp_parse_args( $args, $this->get_default_args( $args['id'] ) );
+			$this->all_steps[] = $args;
 		}
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns all steps.
 	 *
 	 * @since 1.0.0
 	 *
@@ -80,24 +85,27 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns default steps.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @return array
 	 */
 	private function get_default_steps() {
-		return apply_filters( 'mai_setup_wizard_steps', [
-			'welcome' => $this->get_welcome_step(),
-			'demo'    => $this->get_demo_step(),
-			'plugins' => $this->get_plugins_step(),
-			'content' => $this->get_content_step(),
-			'done'    => $this->get_done_step(),
-		] );
+		return apply_filters(
+			'mai_setup_wizard_steps',
+			[
+				'welcome' => $this->get_welcome_step(),
+				'demo'    => $this->get_demo_step(),
+				'plugins' => $this->get_plugins_step(),
+				'content' => $this->get_content_step(),
+				'done'    => $this->get_done_step(),
+			]
+		);
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns welcome step.
 	 *
 	 * @since 1.0.0
 	 *
@@ -119,7 +127,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns demo step.
 	 *
 	 * @since 1.0.0
 	 *
@@ -147,7 +155,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns plugins step.
 	 *
 	 * @since 1.0.0
 	 *
@@ -175,7 +183,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns content step.
 	 *
 	 * @since 1.0.0
 	 *
@@ -203,7 +211,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns done step.
 	 *
 	 * @since 1.0.0
 	 *
@@ -224,40 +232,43 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns default step arguments.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $id
+	 * @param string $id Step id.
 	 *
 	 * @return array
 	 */
 	private function get_default_args( $id ) {
 		$title = ucwords( str_replace( [ '-', '_' ], ' ', $id ) );
 
-		return apply_filters( 'mai_setup_wizard_step_defaults', [
-			'title'           => $title,
-			'description'     => $title,
-			'order'           => 10,
-			'error_message'   => false,
-			'success_message' => false,
-			'continue_text'   => __( 'Continue', 'mai-engine' ),
-			'continue_url'    => 'javascript:void(0)',
-			'loading_text'    => __( 'Loading...', 'mai-engine' ),
-			'skip_text'       => __( 'Skip this step', 'mai-engine' ),
-			'skip_url'        => 'javascript:void(0)',
-			'ajax_callback'   => "mai_setup_wizard_ajax_step_{$id}",
-		] );
+		return apply_filters(
+			'mai_setup_wizard_step_defaults',
+			[
+				'title'           => $title,
+				'description'     => $title,
+				'order'           => 10,
+				'error_message'   => false,
+				'success_message' => false,
+				'continue_text'   => __( 'Continue', 'mai-engine' ),
+				'continue_url'    => 'javascript:void(0)',
+				'loading_text'    => __( 'Loading...', 'mai-engine' ),
+				'skip_text'       => __( 'Skip this step', 'mai-engine' ),
+				'skip_url'        => 'javascript:void(0)',
+				'ajax_callback'   => "mai_setup_wizard_ajax_step_{$id}",
+			]
+		);
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Renders step markup.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $step
-	 * @param $steps
-	 * @param $counter
+	 * @param string $step    Step ID.
+	 * @param array  $steps   All steps.
+	 * @param int    $counter Counter increment.
 	 *
 	 * @return void
 	 */
@@ -268,7 +279,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 			<p><?php echo $step['description']; ?></p>
 			<p class="error"><?php echo $step['error_message']; ?></p>
 			<p class="success"><?php echo $step['success_message']; ?></p>
-			<?php if ( $step['fields'] ): ?>
+			<?php if ( $step['fields'] ) : ?>
 				<?php
 				$items = sprintf(
 					' class="items-%s"',
@@ -280,26 +291,27 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 					/**
 					 * @var Mai_Setup_Wizard_Fields $field
 					 */
-					foreach ( $step['fields'] as $field ) : ?>
+					foreach ( $step['fields'] as $field ) :
+						?>
 						<li><?php echo $this->fields->render( $field ); ?></li>
 					<?php endforeach; ?>
 				</ul>
 			<?php endif; ?>
 			<div class="setup-wizard-buttons">
-				<?php if ( $counter < count( $steps ) ): ?>
+				<?php if ( $counter < count( $steps ) ) : ?>
 					<?php $continue_target = filter_var( $step['skip_url'], FILTER_VALIDATE_URL ) === false ? '' : ' target="_blank"'; ?>
 					<button href="<?php echo $step['continue_url']; ?>" <?php echo $continue_target; ?>id="submit" class="button-primary" data-default="<?php echo $step['continue_text']; ?>" data-loading="<?php esc_attr_e( $step['loading_text'] ); ?>">
 						<?php echo $step['continue_text']; ?>
 						<img src="<?php echo mai_get_url() . 'assets/img/spinner.gif'; ?>" alt="spinner" width="20">
 					</button>
 				<?php endif; ?>
-				<?php if ( 1 !== $counter && apply_filters( 'mai_setup_wizard_previous', true ) ): ?>
+				<?php if ( 1 !== $counter && apply_filters( 'mai_setup_wizard_previous', true ) ) : ?>
 					<a href="javascript:void(0)" id="previous" class="button">
 						<?php esc_html_e( 'Previous', 'mai-engine' ); ?>
 					</a>
 				<?php endif; ?>
 				<?php $skip_target = filter_var( $step['skip_url'], FILTER_VALIDATE_URL ) === false ? '' : ' target="_blank"'; ?>
-				<?php if ( $step['skip_text'] && $counter < count( $steps ) ): ?>
+				<?php if ( $step['skip_text'] && $counter < count( $steps ) ) : ?>
 					<a href="<?php echo $step['skip_url']; ?>" <?php echo $skip_target; ?>id="skip" class="button">
 						<?php echo $step['skip_text']; ?>
 					</a>

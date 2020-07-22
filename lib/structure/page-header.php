@@ -168,7 +168,7 @@ add_filter( 'genesis_attr_page-header-overlay', 'mai_page_header_divider_class',
  *
  * @since 0.3.0
  *
- * @param $attr
+ * @param array $attr Divider attributes.
  *
  * @return array
  */
@@ -188,8 +188,8 @@ add_filter( 'genesis_structural_wrap-page-header', 'mai_page_header_divider', 10
  *
  * @since 0.1.0
  *
- * @param $output
- * @param $original_output
+ * @param string $output          HTML output.
+ * @param string $original_output Original HTML.
  *
  * @return string
  */
@@ -220,7 +220,7 @@ add_filter( 'genesis_attr_page-header', 'mai_add_page_header_attributes' );
  *
  * @since 2.0.0
  *
- * @param $attributes
+ * @param array $attributes Page header element attributes.
  *
  * @return mixed
  */
@@ -309,7 +309,9 @@ function mai_get_page_header_image_id() {
 		if ( is_category() || is_tag() || is_tax() ) {
 
 			/**
-			 * @var WP_Query $wp_query
+			 * Query.
+			 *
+			 * @var WP_Query $wp_query Query object.
 			 */
 			global $wp_query;
 
@@ -344,7 +346,6 @@ function mai_get_page_header_image_id() {
 	if ( ! $image_id && mai_get_config( 'page-header' )['image'] ) {
 		$image_id = mai_get_option( 'page-header-image' );
 	}
-
 
 	$image_id = apply_filters( 'mai_page_header_image', $image_id );
 

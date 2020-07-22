@@ -20,11 +20,11 @@ add_action( 'init', 'mai_site_layouts_customizer_settings' );
 function mai_site_layouts_customizer_settings() {
 	$handle  = mai_get_handle();
 	$name    = 'site-layouts';
-	$section = sprintf( '%s-%s', $handle, $name  );
-	$options  = [
-		'default' => sprintf( '%s[%s][default]', $handle, $name  ),
-		'archive' => sprintf( '%s[%s][archive]', $handle, $name  ),
-		'single'  => sprintf( '%s[%s][single]', $handle, $name  ),
+	$section = sprintf( '%s-%s', $handle, $name );
+	$options = [
+		'default' => sprintf( '%s[%s][default]', $handle, $name ),
+		'archive' => sprintf( '%s[%s][archive]', $handle, $name ),
+		'single'  => sprintf( '%s[%s][single]', $handle, $name ),
 	];
 
 	\Kirki::add_section(
@@ -67,7 +67,7 @@ function mai_site_layouts_customizer_settings() {
 			'option_name' => $options['default'],
 			'section'     => $section,
 			'label'       => __( 'Site Default', 'mai-engine' ),
-			'default'     => isset( $layouts['default']['site'] ) && ! empty( $layouts['default']['site'] ) ? $layouts['default']['site']: 'standard-content',
+			'default'     => isset( $layouts['default']['site'] ) && ! empty( $layouts['default']['site'] ) ? $layouts['default']['site'] : 'standard-content',
 			'choices'     => mai_get_site_layout_choices(),
 		]
 	);
@@ -81,7 +81,7 @@ function mai_site_layouts_customizer_settings() {
 			'option_name' => $options['default'],
 			'section'     => $section,
 			'label'       => __( 'Content Archives', 'mai-engine' ),
-			'default'     => isset( $layouts['default']['archive'] ) && ! empty( $layouts['default']['archive'] ) ? $layouts['default']['archive']: 'wide-content',
+			'default'     => isset( $layouts['default']['archive'] ) && ! empty( $layouts['default']['archive'] ) ? $layouts['default']['archive'] : 'wide-content',
 			'choices'     => mai_get_site_layout_choices(),
 		]
 	);
@@ -95,7 +95,7 @@ function mai_site_layouts_customizer_settings() {
 			'option_name' => $options['default'],
 			'section'     => $section,
 			'label'       => __( 'Single Content', 'mai-engine' ),
-			'default'     => isset( $layouts['default']['single'] ) && ! empty( $layouts['default']['single'] ) ? $layouts['default']['single']: '',
+			'default'     => isset( $layouts['default']['single'] ) && ! empty( $layouts['default']['single'] ) ? $layouts['default']['single'] : '',
 			'choices'     => mai_get_site_layout_choices(),
 		]
 	);
@@ -127,7 +127,7 @@ function mai_site_layouts_customizer_settings() {
 				'option_name' => $options['single'],
 				'section'     => $section,
 				'label'       => esc_html__( 'Single', 'mai-engine' ),
-				'default'     => isset( $layouts['single'][ $name ] ) && ! empty( $layouts['single'][ $name ] ) ? $layouts['single'][ $name ]: '',
+				'default'     => isset( $layouts['single'][ $name ] ) && ! empty( $layouts['single'][ $name ] ) ? $layouts['single'][ $name ] : '',
 				'choices'     => mai_get_site_layout_choices(),
 			]
 		);
@@ -143,7 +143,7 @@ function mai_site_layouts_customizer_settings() {
 					'option_name' => $options['archive'],
 					'section'     => $section,
 					'label'       => esc_html__( 'Archive', 'mai-engine' ),
-					'default'     => isset( $layouts['archive'][ $name ] ) && ! empty( $layouts['archive'][ $name ] ) ? $layouts['archive'][ $name ]: '',
+					'default'     => isset( $layouts['archive'][ $name ] ) && ! empty( $layouts['archive'][ $name ] ) ? $layouts['archive'][ $name ] : '',
 					'choices'     => mai_get_site_layout_choices(),
 				]
 			);
@@ -174,13 +174,12 @@ function mai_site_layouts_customizer_settings() {
 						'option_name' => $options['archive'],
 						'section'     => $section,
 						'label'       => $taxonomy->label,
-						'default'     => isset( $layouts['archive'][ $taxo_name ] ) && ! empty( $layouts['archive'][ $taxo_name ] ) ? $layouts['archive'][ $taxo_name ]: '',
+						'default'     => isset( $layouts['archive'][ $taxo_name ] ) && ! empty( $layouts['archive'][ $taxo_name ] ) ? $layouts['archive'][ $taxo_name ] : '',
 						'choices'     => mai_get_site_layout_choices(),
 					]
 				);
 			}
 		}
-
 	}
 
 	\Kirki::add_field(
@@ -204,7 +203,7 @@ function mai_site_layouts_customizer_settings() {
 			'option_name' => $options['archive'],
 			'section'     => $section,
 			'label'       => esc_html__( 'Search Results', 'mai-engine' ),
-			'default'     => isset( $layouts['archive']['search'] ) && ! empty( $layouts['archive']['search'] ) ? $layouts['archive']['search']: '',
+			'default'     => isset( $layouts['archive']['search'] ) && ! empty( $layouts['archive']['search'] ) ? $layouts['archive']['search'] : '',
 			'choices'     => mai_get_site_layout_choices(),
 		]
 	);
@@ -218,7 +217,7 @@ function mai_site_layouts_customizer_settings() {
 			'option_name' => $options['archive'],
 			'section'     => $section,
 			'label'       => esc_html__( 'Author Archives', 'mai-engine' ),
-			'default'     => isset( $layouts['archive']['author'] ) && ! empty( $layouts['archive']['author'] ) ? $layouts['archive']['author']: '',
+			'default'     => isset( $layouts['archive']['author'] ) && ! empty( $layouts['archive']['author'] ) ? $layouts['archive']['author'] : '',
 			'choices'     => mai_get_site_layout_choices(),
 		]
 	);
@@ -232,7 +231,7 @@ function mai_site_layouts_customizer_settings() {
 			'option_name' => $options['archive'],
 			'section'     => $section,
 			'label'       => esc_html__( 'Date Archives', 'mai-engine' ),
-			'default'     => isset( $layouts['archive']['date'] ) && ! empty( $layouts['archive']['date'] ) ? $layouts['archive']['date']: '',
+			'default'     => isset( $layouts['archive']['date'] ) && ! empty( $layouts['archive']['date'] ) ? $layouts['archive']['date'] : '',
 			'choices'     => mai_get_site_layout_choices(),
 		]
 	);
@@ -246,7 +245,7 @@ function mai_site_layouts_customizer_settings() {
 			'option_name' => $options['single'],
 			'section'     => $section,
 			'label'       => esc_html__( '404', 'mai-engine' ),
-			'default'     => isset( $layouts['single']['404-page'] ) && ! empty( $layouts['single']['404-page'] ) ? $layouts['single']['404-page']: '',
+			'default'     => isset( $layouts['single']['404-page'] ) && ! empty( $layouts['single']['404-page'] ) ? $layouts['single']['404-page'] : '',
 			'choices'     => mai_get_site_layout_choices(),
 		]
 	);

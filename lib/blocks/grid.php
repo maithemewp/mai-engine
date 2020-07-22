@@ -9,6 +9,19 @@
  * @license   GPL-2.0-or-later
  */
 
+// Mai Post Grid.
+add_filter( 'acf/load_field/key=mai_grid_block_show', 'mai_acf_load_show', 10, 1 );
+add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_in', 'mai_acf_get_posts', 10, 1 );
+add_filter( 'acf/load_field/key=mai_grid_block_tax_terms', 'mai_acf_load_terms', 10, 1 );
+add_filter( 'acf/prepare_field/key=mai_grid_block_tax_terms', 'mai_acf_prepare_terms', 10, 1 );
+add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_parent_in', 'mai_acf_get_post_parents', 10, 1 );
+add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_not_in', 'mai_acf_get_posts', 10, 1 );
+
+// Mai Term Grid.
+add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_include', 'mai_acf_get_terms', 10, 1 );
+add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_exclude', 'mai_acf_get_terms', 10, 1 );
+add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_parent', 'mai_acf_get_term_parents', 10, 1 );
+
 add_action( 'acf/init', 'mai_register_grid_blocks' );
 /**
  * Register Mai Grid blocks.
@@ -277,6 +290,7 @@ function mai_get_acf_field_data( $key, $field ) {
 
 	// Maybe add default.
 	if ( isset( $field['default'] ) ) {
+
 		/**
 		 * This needs default_value instead of default.
 		 *
@@ -304,44 +318,6 @@ function mai_get_acf_field_data( $key, $field ) {
 
 	return $data;
 }
-
-/*
- * Mai Post Grid
- */
-
-// Show 'show'.
-add_filter( 'acf/load_field/key=mai_grid_block_show', 'mai_acf_load_show', 10, 1 );
-
-// Posts 'post__in'.
-add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_in', 'mai_acf_get_posts', 10, 1 );
-
-// Terms 'terms' sub field.
-add_filter( 'acf/load_field/key=mai_grid_block_tax_terms', 'mai_acf_load_terms', 10, 1 );
-add_filter( 'acf/prepare_field/key=mai_grid_block_tax_terms', 'mai_acf_prepare_terms', 10, 1 );
-
-// Parent 'post_parent__in'.
-add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_parent_in', 'mai_acf_get_post_parents', 10, 1 );
-
-// Exclude Entries 'post__not_in'.
-add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_not_in', 'mai_acf_get_posts', 10, 1 );
-
-/*
- * Mai Term Grid
- */
-
-// Include Entries 'include'.
-add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_include', 'mai_acf_get_terms', 10, 1 );
-
-// Exclude Entries 'exclude'.
-add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_exclude', 'mai_acf_get_terms', 10, 1 );
-
-// Parent 'parent'.
-add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_parent', 'mai_acf_get_term_parents', 10, 1 );
-/*
- * Mai User Grid
- */
-
-// TODO: Will we need/have these? Maybe rely on select field.
 
 /**
  * Description of expected behavior.
@@ -668,9 +644,12 @@ function mai_get_taxonomy_choices_from_post_types( $post_types = [] ) {
  */
 function mai_get_term_choices_from_taxonomy( $taxonomy = '' ) {
 	$choices = [];
-	$terms   = get_terms( $taxonomy, [
-		'hide_empty' => false,
-	] );
+	$terms   = get_terms(
+		$taxonomy,
+		[
+			'hide_empty' => false,
+		]
+	);
 
 	if ( ! $terms ) {
 		return $choices;
@@ -709,14 +688,14 @@ function mai_get_acf_request( $request ) {
  */
 function mai_get_grid_block_settings() {
 	return [
-		'mai_grid_block_display_tab'         => [
+		'mai_grid_block_display_tab'              => [
 			'name'    => 'display_tab',
 			'label'   => esc_html__( 'Display', 'mai-engine' ),
 			'block'   => [ 'post', 'term', 'user' ],
 			'type'    => 'tab',
 			'default' => '',
 		],
-		'mai_grid_block_show'                => [
+		'mai_grid_block_show'                     => [
 			'name'     => 'show',
 			'label'    => esc_html__( 'Show', 'mai-engine' ),
 			'desc'     => esc_html__( 'Show/hide and re-order elements.', 'mai-engine' ),
@@ -733,7 +712,7 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_title_size'   => [
+		'mai_grid_block_title_size'               => [
 			'name'       => 'title_size',
 			'label'      => esc_html__( 'Title Size', 'mai-engine' ),
 			'block'      => [ 'post', 'term', 'user' ],
@@ -747,7 +726,7 @@ function mai_get_grid_block_settings() {
 				'xl'  => esc_html__( 'XL', 'mai-engine' ),
 				'xxl' => esc_html__( 'XXL', 'mai-engine' ),
 			],
-			'atts'     => [
+			'atts'       => [
 				'wrapper' => [
 					'width' => '',
 					'class' => 'mai-grid-button-group',
@@ -762,7 +741,7 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_image_orientation'   => [
+		'mai_grid_block_image_orientation'        => [
 			'name'       => 'image_orientation',
 			'label'      => esc_html__( 'Image Orientation', 'mai-engine' ),
 			'block'      => [ 'post', 'term', 'user' ],
@@ -778,7 +757,7 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_image_size'          => [
+		'mai_grid_block_image_size'               => [
 			'name'       => 'image_size',
 			'label'      => esc_html__( 'Image Size', 'mai-engine' ),
 			'block'      => [ 'post', 'term', 'user' ],
@@ -799,7 +778,7 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_image_position'      => [
+		'mai_grid_block_image_position'           => [
 			'name'       => 'image_position',
 			'label'      => esc_html__( 'Image Position', 'mai-engine' ),
 			'block'      => [ 'post', 'term', 'user' ],
@@ -825,7 +804,7 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_image_width'         => [
+		'mai_grid_block_image_width'              => [
 			'name'       => 'image_width',
 			'label'      => esc_html__( 'Image Width', 'mai-engine' ),
 			'block'      => [ 'post', 'term', 'user' ],
@@ -942,7 +921,7 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_header_meta'         => [
+		'mai_grid_block_header_meta'              => [
 			'name'       => 'header_meta',
 			'label'      => esc_html__( 'Header Meta', 'mai-engine' ),
 			'block'      => [ 'post', 'term', 'user' ],
@@ -958,7 +937,7 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_content_limit'       => [
+		'mai_grid_block_content_limit'            => [
 			'name'       => 'content_limit',
 			'label'      => esc_html__( 'Content Limit', 'mai-engine' ),
 			'desc'       => esc_html__( 'Limit the number of characters shown for the content or excerpt. Use 0 for no limit.', 'mai-engine' ),
@@ -983,7 +962,7 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_more_link_text'      => [
+		'mai_grid_block_more_link_text'           => [
 			'name'       => 'more_link_text',
 			'label'      => esc_html__( 'More Link Text', 'mai-engine' ),
 			'block'      => [ 'post', 'term', 'user' ],
@@ -1001,7 +980,7 @@ function mai_get_grid_block_settings() {
 				'placeholder' => mai_get_read_more_text(),
 			],
 		],
-		'mai_grid_block_footer_meta'         => [
+		'mai_grid_block_footer_meta'              => [
 			'name'       => 'footer_meta',
 			'label'      => esc_html__( 'Footer Meta', 'mai-engine' ),
 			'block'      => [ 'post', 'term', 'user' ],
@@ -1017,7 +996,7 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_align_text'          => [
+		'mai_grid_block_align_text'               => [
 			'name'     => 'align_text',
 			'label'    => esc_html__( 'Align Text', 'mai-engine' ),
 			'block'    => [ 'post', 'term', 'user' ],
@@ -1038,7 +1017,7 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_align_text_vertical' => [
+		'mai_grid_block_align_text_vertical'      => [
 			'name'       => 'align_text_vertical',
 			'label'      => esc_html__( 'Align Text (vertical)', 'mai-engine' ),
 			'block'      => [ 'post', 'term', 'user' ],
@@ -1145,7 +1124,7 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_image_stack'         => [
+		'mai_grid_block_image_stack'              => [
 			'name'       => 'image_stack',
 			'label'      => esc_html__( 'Stack Image', 'mai-engine' ),
 			'block'      => [ 'post', 'term', 'user' ],
@@ -1230,7 +1209,7 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_boxed'               => [
+		'mai_grid_block_boxed'                    => [
 			'name'     => 'boxed',
 			'label'    => esc_html__( 'Boxed', 'mai-engine' ),
 			'block'    => [ 'post', 'term', 'user' ],
@@ -1246,14 +1225,14 @@ function mai_get_grid_block_settings() {
 		 * Layout
 		 */
 
-		'mai_grid_block_layout_tab'             => [
+		'mai_grid_block_layout_tab'               => [
 			'name'    => 'layout_tab',
 			'label'   => esc_html__( 'Layout', 'mai-engine' ),
 			'block'   => [ 'post', 'term', 'user' ],
 			'type'    => 'tab',
 			'default' => '',
 		],
-		'mai_grid_block_columns'                => [
+		'mai_grid_block_columns'                  => [
 			'name'     => 'columns',
 			'label'    => esc_html__( 'Columns (desktop)', 'mai-engine' ),
 			'block'    => [ 'post', 'term', 'user' ],
@@ -1269,7 +1248,7 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_columns_responsive'     => [
+		'mai_grid_block_columns_responsive'       => [
 			'name'     => 'columns_responsive',
 			'label'    => '',
 			'block'    => [ 'post', 'term', 'user' ],
@@ -1280,7 +1259,7 @@ function mai_get_grid_block_settings() {
 				'message' => esc_html__( 'Custom responsive columns', 'mai-engine' ),
 			],
 		],
-		'mai_grid_block_columns_md'             => [
+		'mai_grid_block_columns_md'               => [
 			'name'       => 'columns_md',
 			'label'      => esc_html__( 'Columns (lg tablets)', 'mai-engine' ),
 			'block'      => [ 'post', 'term', 'user' ],
@@ -1303,7 +1282,7 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_columns_sm'             => [
+		'mai_grid_block_columns_sm'               => [
 			'name'       => 'columns_sm',
 			'label'      => esc_html__( 'Columns (sm tablets)', 'mai-engine' ),
 			'block'      => [ 'post', 'term', 'user' ],
@@ -1326,7 +1305,7 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_columns_xs'             => [
+		'mai_grid_block_columns_xs'               => [
 			'name'       => 'columns_xs',
 			'label'      => esc_html__( 'Columns (mobile)', 'mai-engine' ),
 			'block'      => [ 'post', 'term', 'user' ],
@@ -1349,7 +1328,7 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_align_columns'          => [
+		'mai_grid_block_align_columns'            => [
 			'name'       => 'align_columns',
 			'label'      => esc_html__( 'Align Columns', 'mai-engine' ),
 			'block'      => [ 'post', 'term', 'user' ],
@@ -1377,7 +1356,7 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_align_columns_vertical' => [
+		'mai_grid_block_align_columns_vertical'   => [
 			'name'       => 'align_columns_vertical',
 			'label'      => esc_html__( 'Align Columns (vertical)', 'mai-engine' ),
 			'block'      => [ 'post', 'term', 'user' ],
@@ -1405,7 +1384,7 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_column_gap'             => [
+		'mai_grid_block_column_gap'               => [
 			'name'     => 'column_gap',
 			'label'    => esc_html__( 'Column Gap', 'mai-engine' ),
 			'block'    => [ 'post', 'term', 'user' ],
@@ -1413,7 +1392,7 @@ function mai_get_grid_block_settings() {
 			'sanitize' => 'esc_html',
 			'default'  => '24px',
 		],
-		'mai_grid_block_row_gap'                => [
+		'mai_grid_block_row_gap'                  => [
 			'name'     => 'row_gap',
 			'label'    => esc_html__( 'Row Gap', 'mai-engine' ),
 			'block'    => [ 'post', 'term', 'user' ],
@@ -1426,7 +1405,7 @@ function mai_get_grid_block_settings() {
 		 * Entries
 		 */
 
-		'mai_grid_block_entries_tab' => [
+		'mai_grid_block_entries_tab'              => [
 			'name'    => 'entries_tab',
 			'label'   => esc_html__( 'Entries', 'mai-engine' ),
 			'block'   => [ 'post', 'term', 'user' ],
@@ -1928,7 +1907,7 @@ function mai_get_grid_block_settings() {
 		 * Terms
 		 */
 
-		'mai_grid_block_taxonomy'         => [
+		'mai_grid_block_taxonomy'                 => [
 			'name'     => 'taxonomy',
 			'label'    => esc_html__( 'Taxonomy', 'mai-engine' ),
 			'block'    => [ 'term' ],
@@ -1942,7 +1921,7 @@ function mai_get_grid_block_settings() {
 				'ajax'     => 0,
 			],
 		],
-		'mai_grid_block_tax_query_by'     => [
+		'mai_grid_block_tax_query_by'             => [
 			'name'       => 'query_by',
 			'label'      => esc_html__( 'Get Entries By', 'mai-engine' ),
 			'block'      => [ 'term' ],
@@ -1961,7 +1940,7 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_tax_number'       => [
+		'mai_grid_block_tax_number'               => [
 			'name'       => 'number',
 			'label'      => esc_html__( 'Number of Entries', 'mai-engine' ),
 			'desc'       => esc_html__( 'Use 0 to show all.', 'mai-engine' ),
@@ -1985,7 +1964,7 @@ function mai_get_grid_block_settings() {
 				'min'         => 0,
 			],
 		],
-		'mai_grid_block_tax_include'      => [
+		'mai_grid_block_tax_include'              => [
 			'name'       => 'include',
 			'label'      => esc_html__( 'Entries', 'mai-engine' ),
 			'desc'       => esc_html__( 'Show specific entries. Choose all that apply. If empty, Grid will get entries by date.', 'mai-engine' ),
@@ -2012,7 +1991,7 @@ function mai_get_grid_block_settings() {
 				'multiple'   => 1,
 			],
 		],
-		'mai_grid_block_current_children' => [
+		'mai_grid_block_current_children'         => [
 			'name'       => 'current_children',
 			'label'      => '',
 			'block'      => [ 'term' ],
@@ -2034,7 +2013,7 @@ function mai_get_grid_block_settings() {
 				'message' => esc_html__( 'Show children of current entry', 'mai-engine' ),
 			],
 		],
-		'mai_grid_block_tax_parent'       => [
+		'mai_grid_block_tax_parent'               => [
 			'name'       => 'parent',
 			'label'      => esc_html__( 'Parent', 'mai-engine' ),
 			'block'      => [ 'term' ],
@@ -2065,7 +2044,7 @@ function mai_get_grid_block_settings() {
 				'multiple'   => 0, // WP_Term_Query only allows 1.
 			],
 		],
-		'mai_grid_block_tax_offset'       => [
+		'mai_grid_block_tax_offset'               => [
 			'name'       => 'offset',
 			'label'      => esc_html__( 'Offset', 'mai-engine' ),
 			'desc'       => esc_html__( 'Skip this number of entries.', 'mai-engine' ),
@@ -2089,7 +2068,7 @@ function mai_get_grid_block_settings() {
 				'min'         => 0,
 			],
 		],
-		'mai_grid_block_tax_orderby'      => [
+		'mai_grid_block_tax_orderby'              => [
 			'name'       => 'orderby',
 			'label'      => esc_html__( 'Order By', 'mai-engine' ),
 			'block'      => [ 'term' ],
@@ -2118,7 +2097,7 @@ function mai_get_grid_block_settings() {
 				'ajax' => 1,
 			],
 		],
-		'mai_grid_block_tax_order'        => [
+		'mai_grid_block_tax_order'                => [
 			'name'       => 'order',
 			'label'      => esc_html__( 'Order', 'mai-engine' ),
 			'block'      => [ 'term' ],
@@ -2141,7 +2120,7 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_tax_exclude'      => [
+		'mai_grid_block_tax_exclude'              => [
 			'name'       => 'exclude',
 			'label'      => esc_html__( 'Exclude Entries', 'mai-engine' ),
 			'desc'       => esc_html__( 'Hide specific entries. Choose all that apply.', 'mai-engine' ),
@@ -2169,7 +2148,7 @@ function mai_get_grid_block_settings() {
 			],
 		],
 		// TODO: Shoud these be separate fields? We can then have desc text and easier to check when building query.
-		'mai_grid_block_tax_excludes'     => [
+		'mai_grid_block_tax_excludes'             => [
 			'name'       => 'excludes',
 			'label'      => esc_html__( 'Exclude', 'mai-engine' ),
 			'block'      => [ 'term' ],

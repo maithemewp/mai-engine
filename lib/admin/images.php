@@ -44,7 +44,7 @@ function mai_get_media_chooser_sizes( $sizes ) {
 		return $sizes;
 	}
 
-	foreach( $_wp_additional_image_sizes as $name => $sizes_array ) {
+	foreach ( $_wp_additional_image_sizes as $name => $sizes_array ) {
 		if ( ! isset( $keepers[ $name ] ) ) {
 			continue;
 		}

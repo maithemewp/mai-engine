@@ -23,54 +23,18 @@ add_filter( 'genesis_markup_archive-pagination_content', 'mai_archive_pagination
  * @param string $content The existing content.
  * @param array  $args    The genesis_markup() element args.
  *
- * @return string|HTML
+ * @return string
  */
 function mai_archive_pagination_wrap( $content, $args ) {
 	if ( $args['open'] ) {
 		$content = '<div class="wrap">' . $content;
 	}
+
 	if ( $args['close'] ) {
 		$content .= '</div>';
 	}
+
 	return $content;
-}
-
-// add_filter( 'genesis_markup_open', 'mai_entry_pagination_wrap_open', 10, 2 );
-/**
- * Outputs the opening pagination wrap markup.
- *
- * @since 0.1.0
- *
- * @param string $open Opening markup.
- * @param array  $args Markup args.
- *
- * @return string
- */
-function mai_entry_pagination_wrap_open( $open, $args ) {
-	if ( 'archive-pagination' === $args['context'] ) {
-		$open .= '<div class="wrap">';
-	}
-
-	return $open;
-}
-
-// add_filter( 'genesis_markup_close', 'mai_entry_pagination_wrap_close', 10, 2 );
-/**
- * Outputs the closing pagination wrap markup.
- *
- * @since 0.1.0
- *
- * @param string $close Closing markup.
- * @param array  $args  Markup args.
- *
- * @return string
- */
-function mai_entry_pagination_wrap_close( $close, $args ) {
-	if ( 'archive-pagination' === $args['context'] ) {
-		$close .= '</div>';
-	}
-
-	return $close;
 }
 
 add_filter( 'genesis_prev_link_text', 'mai_previous_page_link' );
@@ -148,7 +112,15 @@ function mai_adjacent_entry_link_thumbnail( $output, $format, $link, $post, $adj
 
 	if ( $show_image && $image_id ) {
 		add_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
-		$image = wp_get_attachment_image( $image_id, 'tiny', false, [ 'class' => 'adjacent-entry-image', 'loading' => 'lazy' ] );
+		$image = wp_get_attachment_image(
+			$image_id,
+			'tiny',
+			false,
+			[
+				'class'   => 'adjacent-entry-image',
+				'loading' => 'lazy',
+			]
+		);
 		remove_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
 	}
 

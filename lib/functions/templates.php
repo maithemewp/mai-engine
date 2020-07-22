@@ -92,25 +92,29 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
 		return;
 	}
 
-	$wp_admin_bar->add_node( [
-		'id'     => 'template-parts',
-		'parent' => 'site-name',
-		'title'  => __( 'Template Parts', 'mai-engine' ),
-		'href'   => admin_url( 'edit.php?post_type=wp_template_part' ),
-		'meta'   => [
-			'title' => __( 'Edit Template Parts', 'mai-engine' ),
-		],
-	] );
+	$wp_admin_bar->add_node(
+		[
+			'id'     => 'template-parts',
+			'parent' => 'site-name',
+			'title'  => __( 'Template Parts', 'mai-engine' ),
+			'href'   => admin_url( 'edit.php?post_type=wp_template_part' ),
+			'meta'   => [
+				'title' => __( 'Edit Template Parts', 'mai-engine' ),
+			],
+		]
+	);
 
-	$wp_admin_bar->add_node( [
-		'id'     => 'reusable-blocks',
-		'parent' => 'site-name',
-		'title'  => __( 'Reusable Blocks', 'mai-engine' ),
-		'href'   => admin_url( 'edit.php?post_type=wp_block' ),
-		'meta'   => [
-			'title' => __( 'Edit Reusable Blocks', 'mai-engine' ),
-		],
-	] );
+	$wp_admin_bar->add_node(
+		[
+			'id'     => 'reusable-blocks',
+			'parent' => 'site-name',
+			'title'  => __( 'Reusable Blocks', 'mai-engine' ),
+			'href'   => admin_url( 'edit.php?post_type=wp_block' ),
+			'meta'   => [
+				'title' => __( 'Edit Reusable Blocks', 'mai-engine' ),
+			],
+		]
+	);
 }
 
 /**
@@ -143,7 +147,8 @@ function mai_get_template_parts() {
 			);
 
 			if ( $posts->have_posts() ) {
-				while ( $posts->have_posts() ) : $posts->the_post();
+				while ( $posts->have_posts() ) :
+					$posts->the_post();
 					global $post;
 
 					ob_start();
@@ -157,7 +162,6 @@ function mai_get_template_parts() {
 			}
 			wp_reset_postdata();
 		}
-
 	}
 
 	return $template_parts;

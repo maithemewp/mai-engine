@@ -26,7 +26,7 @@ function mai_register_social_icon_block_styles() {
 		'core/social-links',
 		[
 			'name'  => 'no-background',
-			'label' => __('No Background', 'mai-engine'),
+			'label' => __( 'No Background', 'mai-engine' ),
 		]
 	);
 }

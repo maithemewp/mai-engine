@@ -117,5 +117,5 @@ function mai_content_width() {
 
 	$width = mai_isset( $breakpoints, $layout, 'md' );
 
-	$GLOBALS['content_width'] = mai_get_breakpoint( $width);
+	$GLOBALS['content_width'] = mai_get_breakpoint( $width );
 }

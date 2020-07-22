@@ -24,7 +24,7 @@ function mai_is_in_dev_mode() {
 }
 
 /**
- * Description of expected behavior.
+ * Helper function for debugging.
  *
  * @since 0.3.0
  *
@@ -40,22 +40,26 @@ function mai_debug( $data, $function = 's', $hook = 'after_setup_theme', $priori
 		return;
 	}
 
-	add_action( $hook, function () use ( $data, $function ) {
-		if ( function_exists( $function ) ) {
-			$function( $data );
-		} else {
-			echo '<pre style="margin:1em;padding:1em;background:#222;color:#eee;font-size:small">';
-			is_array( $data ) ? print_r( $data ) : var_dump( $data );
-			echo '</pre>';
-		}
-	}, $priority );
+	add_action(
+		$hook,
+		function () use ( $data, $function ) {
+			if ( function_exists( $function ) ) {
+				$function( $data );
+			} else {
+				echo '<pre style="margin:1em;padding:1em;background:#222;color:#eee;font-size:small">';
+				is_array( $data ) ? print_r( $data ) : var_dump( $data ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions
+				echo '</pre>';
+			}
+		},
+		$priority
+	);
 }
 
 /**
  * Check if a string contains at least one specified string.
  *
- * @since 0.1.0
  * @since 2.1.1 Added array support in needle.
+ * @since 0.1.0
  *
  * @param string|array $needle   String or array of strings to check for.
  * @param string       $haystack String to check in.
@@ -81,9 +85,9 @@ function mai_has_string( $needle, $haystack ) {
  *
  * @since 0.3.0
  *
- * @param array  $array
- * @param string $key
- * @param mixed  $default
+ * @param array  $array   Haystack.
+ * @param string $key     Needle.
+ * @param mixed  $default Default value to return.
  *
  * @return mixed
  */
@@ -96,7 +100,7 @@ function mai_isset( $array, $key, $default = false ) {
  *
  * @since 0.1.0
  *
- * @param bool $use_cache
+ * @param bool $use_cache Whether to use static caching or not.
  *
  * @return bool
  */
@@ -118,7 +122,7 @@ function mai_is_type_single( $use_cache = false ) {
  *
  * @since 0.1.0
  *
- * @param bool $use_cache
+ * @param bool $use_cache Whether to use static cache.
  *
  * @return bool
  */
@@ -138,9 +142,9 @@ function mai_is_type_archive( $use_cache = false ) {
 /**
  * Checks if given sidebar contains a certain widget.
  *
- * @since  0.1.0
+ * @since 0.1.0
  *
- * @uses   $sidebars_widgets
+ * @uses  $sidebars_widgets
  *
  * @param string $sidebar Name of sidebar, e.g `primary`.
  * @param string $widget  Widget ID to check, e.g `custom_html`.
@@ -188,7 +192,7 @@ function mai_has_alignfull_first() {
 		$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
 		$align       = isset( $first['attrs']['align'] ) ? $first['attrs']['align'] : '';
 
-		if ( in_array( $block_name, [ 'core/cover', 'core/group' ] ) && ( 'full' === $align ) ) {
+		if ( in_array( $block_name, [ 'core/cover', 'core/group' ], true ) && ( 'full' === $align ) ) {
 			$has_alignfull_first = true;
 		}
 	}
@@ -385,11 +389,11 @@ function mai_has_page_header() {
 	}
 
 	if ( mai_is_type_archive() ) {
-		$has_page_header = in_array( mai_get_archive_args_name(), mai_get_page_header_types( 'archive' ) );
+		$has_page_header = in_array( mai_get_archive_args_name(), mai_get_page_header_types( 'archive' ), true );
 	}
 
 	if ( mai_is_type_single() ) {
-		$has_page_header = in_array( mai_get_singular_args_name(), mai_get_page_header_types( 'single' ) );
+		$has_page_header = in_array( mai_get_singular_args_name(), mai_get_page_header_types( 'single' ), true );
 
 		if ( genesis_entry_header_hidden_on_current_page() ) {
 			$has_page_header = false;
@@ -415,14 +419,21 @@ function mai_has_page_header() {
 function mai_get_page_header_types( $context ) {
 	$config   = mai_get_config( 'page-header' );
 	$settings = mai_get_option( 'page-header-' . $context );
-	$single   = array_merge( array_values( get_post_types( [ 'public' => true ] ) ), [
-		'404-page',
-	] );
-	$archive  = array_merge( $single, array_values( get_taxonomies( [ 'public' => true ] ) ), [
-		'search',
-		'author',
-		'date',
-	] );
+	$single   = array_merge(
+		array_values( get_post_types( [ 'public' => true ] ) ),
+		[
+			'404-page',
+		]
+	);
+	$archive  = array_merge(
+		$single,
+		array_values( get_taxonomies( [ 'public' => true ] ) ),
+		[
+			'search',
+			'author',
+			'date',
+		]
+	);
 	$default  = [
 		'archive' => $archive,
 		'single'  => $single,
@@ -459,7 +470,7 @@ function mai_has_page_header_support_callback( $control ) {
 	$type    = str_replace( $handle . '[' . $types[ $context ] . '][', '', $name );
 	$type    = str_replace( ']', '', $type );
 
-	return in_array( $type, mai_get_page_header_types( $context ) );
+	return in_array( $type, mai_get_page_header_types( $context ), true );
 }
 
 /**
@@ -664,8 +675,8 @@ function mai_add_classes( $new, $existing = '' ) {
  *
  * @since 0.3.0
  *
- * @param string $class Class name.
- * @param mixed  $args  Passed args.
+ * @param string $class   Class name.
+ * @param mixed  ...$args Passed args.
  *
  * @return object
  */

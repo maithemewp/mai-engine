@@ -15,41 +15,57 @@
 abstract class Mai_Setup_Wizard_Service_Provider {
 
 	/**
-	 * @var
+	 * Name.
+	 *
+	 * @var string
 	 */
 	protected $name;
 
 	/**
-	 * @var
+	 * Slug.
+	 *
+	 * @var string
 	 */
 	protected $slug;
 
 	/**
+	 * Demos.
+	 *
 	 * @var Mai_Setup_Wizard_Demos $demos
 	 */
 	protected $demos;
 
 	/**
+	 * Fields.
+	 *
 	 * @var Mai_Setup_Wizard_Fields $fields
 	 */
 	protected $fields;
 
 	/**
+	 * Steps.
+	 *
 	 * @var Mai_Setup_Wizard_Steps $steps
 	 */
 	protected $steps;
 
 	/**
+	 * Admin.
+	 *
 	 * @var Mai_Setup_Wizard_Admin $admin
 	 */
 	protected $admin;
 
 	/**
+	 * Importer.
+	 *
 	 * @var Mai_Setup_Wizard_Importer $import
 	 */
 	protected $import;
 
 	/**
+	 * Ajax.
+	 *
 	 * @var Mai_Setup_Wizard_Ajax $ajax
 	 */
 	protected $ajax;
@@ -57,11 +73,11 @@ abstract class Mai_Setup_Wizard_Service_Provider {
 	/**
 	 * Register service providers and properties.
 	 *
-	 * @param array $container Container
+	 * @since 1.0.0
+	 *
+	 * @param array $container Container.
 	 *
 	 * @return void
-	 *
-	 * @since 1.0.0
 	 */
 	public function register( $container = [] ) {
 		$this->slug   = 'mai-setup-wizard';

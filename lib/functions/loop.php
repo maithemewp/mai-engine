@@ -62,8 +62,18 @@ function mai_has_custom_loop() {
 		}
 
 		// All core WP post types and taxonomies use our custom loop.
-		$post_types = get_post_types( [ '_builtin' => true, 'public' => true ] );
-		$taxonomies = get_taxonomies( [ '_builtin' => true, 'public' => true ] );
+		$post_types = get_post_types(
+			[
+				'_builtin' => true,
+				'public'   => true,
+			]
+		);
+		$taxonomies = get_taxonomies(
+			[
+				'_builtin' => true,
+				'public'   => true,
+			]
+		);
 
 		if ( isset( $post_types[ $name ] ) || isset( $taxonomies[ $name ] ) ) {
 			return true;
@@ -140,7 +150,7 @@ function mai_get_template_args() {
 	if ( 'archive' === $context ) {
 		$config = mai_get_content_archive_settings();
 
-	} else if ( 'single' === $context ) {
+	} elseif ( 'single' === $context ) {
 		$config = mai_get_single_content_settings();
 	}
 
@@ -160,7 +170,7 @@ function mai_get_template_args() {
 	foreach ( $args as $name => $value ) {
 
 		// Skip header and footer meta, empty means empty.
-		if ( in_array( $name, [ 'header_meta', 'footer_meta' ] ) ) {
+		if ( in_array( $name, [ 'header_meta', 'footer_meta' ], true ) ) {
 			continue;
 		}
 
@@ -210,7 +220,7 @@ function mai_get_sanitized_entry_args( $args, $context ) {
 
 	if ( 'archive' === $context ) {
 		$settings = mai_get_content_archive_settings();
-	} else if ( 'single' === $context ) {
+	} elseif ( 'single' === $context ) {
 		$settings = mai_get_single_content_settings();
 	}
 
@@ -278,7 +288,6 @@ function mai_get_archive_args_name() {
 					$name = $object->taxonomy;
 				}
 			}
-
 		} elseif ( is_post_type_archive() ) {
 			$name = get_query_var( 'post_type' );
 
@@ -289,7 +298,6 @@ function mai_get_archive_args_name() {
 					$name = $object->name;
 				}
 			}
-
 		} elseif ( is_search() ) {
 			$name = 'search';
 

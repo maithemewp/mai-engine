@@ -41,6 +41,7 @@ function mai_structural_wrap_hooks() {
 	}
 }
 
+add_filter( 'genesis_structural_wrap-header', 'mai_site_header_row_class', 10, 2 );
 /**
  * Convert to site-header-wrap class.
  *
@@ -51,10 +52,10 @@ function mai_structural_wrap_hooks() {
  *
  * @return string
  */
-add_filter( 'genesis_structural_wrap-header', 'mai_site_header_row_class', 10, 2 );
 function mai_site_header_row_class( $output, $original ) {
-	if ( 'open' !== $original ) {
-		return $output;
+	if ( 'open' === $original ) {
+		$output = str_replace( 'class="wrap', 'class="site-header-wrap', $output );
 	}
-	return str_replace( 'class="wrap', 'class="site-header-wrap', $output );
+
+	return $output;
 }

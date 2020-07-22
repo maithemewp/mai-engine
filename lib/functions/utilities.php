@@ -405,12 +405,12 @@ function mai_get_unit_value( $value, $fallback = 'px' ) {
  *
  * @since 0.1.0
  *
- * @param $string
+ * @param string $string String to check.
  *
  * @return int
  */
 function mai_get_integer_value( $string ) {
-	return (int) preg_replace( "/[^0-9.]/", "", $string );
+	return (int) preg_replace( '/[^0-9.]/', '', $string );
 }
 
 /**
@@ -464,10 +464,13 @@ function mai_get_content_type_choices( $archive = false ) {
 		$choices['page'] = esc_html__( 'Page', 'mai-engine' );
 	}
 
-	$post_types = get_post_types( [
-		'public'   => true,
-		'_builtin' => false,
-	], 'objects' );
+	$post_types = get_post_types(
+		[
+			'public'   => true,
+			'_builtin' => false,
+		],
+		'objects'
+	);
 
 	if ( $post_types ) {
 		foreach ( $post_types as $name => $post_type ) {
@@ -533,7 +536,6 @@ function mai_get_loop_content_type_choices( $archive = true ) {
 			if ( ! $post_type->_builtin && ! post_type_supports( $post_type->name, $feature ) ) {
 				unset( $choices[ $name ] );
 			}
-
 		} elseif ( taxonomy_exists( $name ) ) {
 
 			$post_type = mai_get_taxonomy_post_type( $name );
@@ -604,7 +606,8 @@ function mai_get_ellipsis() {
  * @return string
  */
 function mai_get_post_content( $post_slug_or_id ) {
-	$post_id = $post_type = false;
+	$post_id   = false;
+	$post_type = false;
 
 	if ( is_numeric( $post_slug_or_id ) ) {
 		$post_id   = $post_slug_or_id;
@@ -623,14 +626,16 @@ function mai_get_post_content( $post_slug_or_id ) {
 		return '';
 	}
 
-	$loop = new WP_Query( [
-		'post_type'              => $post_type,
-		'post__in'               => [ $post_id ],
-		'posts_per_page'         => 1,
-		'no_found_rows'          => true,
-		'update_post_term_cache' => false,
-		'update_post_meta_cache' => false,
-	] );
+	$loop = new WP_Query(
+		[
+			'post_type'              => $post_type,
+			'post__in'               => [ $post_id ],
+			'posts_per_page'         => 1,
+			'no_found_rows'          => true,
+			'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+		]
+	);
 
 	ob_start();
 
@@ -647,21 +652,23 @@ function mai_get_post_content( $post_slug_or_id ) {
 }
 
 /**
- * A big ol' helper/cleanup function to
- * enabled embeds inside the shortcodes and
+ * A big ol' helper/cleanup function to enabled embeds inside the shortcodes and
  * keep the shorcodes from causing extra p's and br's.
  *
  * Most of the order comes from /wp-includes/default-filters.php
  *
- * @since  0.3.0
+ * @since 0.3.0
  *
- * @param  string $content The unprocessed content.
+ * @param string $content The unprocessed content.
  *
- * @return string  The processed content.
+ * @return string
  */
 function mai_get_processed_content( $content ) {
+
 	/**
-	 * @var WP_Embed $wp_embed
+	 * Embed.
+	 *
+	 * @var WP_Embed $wp_embed Embed object.
 	 */
 	global $wp_embed;
 
@@ -716,27 +723,29 @@ function mai_get_menu( $menu, $args = [] ) {
 		$menu_class = mai_add_classes( 'menu-list', $menu_class );
 	}
 
-	$html = wp_nav_menu( [
-		'container'   => 'ul',
-		'menu'        => $menu,
-		'menu_class'  => $menu_class,
-		'link_before' => genesis_markup(
-			[
-				'open'    => '<span %s>',
-				'context' => 'nav-link-wrap',
-				'echo'    => false,
-			]
-		),
-		'link_after'  => genesis_markup(
-			[
-				'close'   => '</span>',
-				'context' => 'nav-link-wrap',
-				'echo'    => false,
-			]
-		),
-		'echo'        => false,
-		'fallback_cb' => '',
-	] );
+	$html = wp_nav_menu(
+		[
+			'container'   => 'ul',
+			'menu'        => $menu,
+			'menu_class'  => $menu_class,
+			'link_before' => genesis_markup(
+				[
+					'open'    => '<span %s>',
+					'context' => 'nav-link-wrap',
+					'echo'    => false,
+				]
+			),
+			'link_after'  => genesis_markup(
+				[
+					'close'   => '</span>',
+					'context' => 'nav-link-wrap',
+					'echo'    => false,
+				]
+			),
+			'echo'        => false,
+			'fallback_cb' => '',
+		]
+	);
 
 	if ( $html ) {
 		$atts = [
@@ -789,19 +798,19 @@ function mai_get_menu( $menu, $args = [] ) {
 function mai_get_dom_document( $html ) {
 
 	// Create the new document.
-	$dom = new DOMDocument;
+	$dom = new DOMDocument();
 
 	// Modify state.
 	$libxml_previous_state = libxml_use_internal_errors( true );
 
 	// Load the content in the document HTML.
-	$dom->loadHTML( mb_convert_encoding( $html, 'HTML-ENTITIES', "UTF-8" ) );
+	$dom->loadHTML( mb_convert_encoding( $html, 'HTML-ENTITIES', 'UTF-8' ) );
 
 	// Remove <!DOCTYPE.
 	$dom->removeChild( $dom->doctype );
 
 	// Remove <html><body></body></html>.
-	$dom->replaceChild( $dom->firstChild->firstChild->firstChild, $dom->firstChild );
+	$dom->replaceChild( $dom->firstChild->firstChild->firstChild, $dom->firstChild ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 
 	// Handle errors.
 	libxml_clear_errors();
@@ -840,7 +849,6 @@ function mai_get_editor_localized_data() {
 				foreach ( $field['atts']['sub_fields'] as $sub_key => $sub_field ) {
 					$data[ $type ][ $sub_field['name'] ] = $sub_key;
 				}
-
 			} else {
 				$data[ $type ][ $field['name'] ] = $key;
 			}

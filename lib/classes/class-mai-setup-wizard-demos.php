@@ -15,12 +15,14 @@
 class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 
 	/**
+	 * All demos.
+	 *
 	 * @var array
 	 */
 	public $all_demos = [];
 
 	/**
-	 * Description of expected behavior.
+	 * Adds hooks.
 	 *
 	 * @since 1.0.0
 	 *
@@ -31,7 +33,7 @@ class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Adds all demos.
 	 *
 	 * @since 1.0.0
 	 *
@@ -46,11 +48,11 @@ class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Adds a single demo.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $args
+	 * @param array $args Demo arguments.
 	 *
 	 * @return void
 	 */
@@ -62,22 +64,13 @@ class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns a single demo.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $key
+	 * @param string $key Demo ID.
 	 *
 	 * @return array
-	 */
-	/**
-	 * Description of expected behavior.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $key
-	 *
-	 * @return array|mixed
 	 */
 	public function get_demo( $key = '' ) {
 		$id   = $this->get_chosen_demo();
@@ -93,7 +86,7 @@ class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns all demos.
 	 *
 	 * @since 1.0.0
 	 *
@@ -140,36 +133,39 @@ class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns default demo arguments.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $args
+	 * @param array $args Custom arguments.
 	 *
 	 * @return array
 	 */
 	private function get_default_args( $args ) {
-		return apply_filters( 'mai_setup_wizard_demo_defaults', [
-			'content'    => false,
-			'widgets'    => false,
-			'customizer' => false,
-			'preview'    => false,
-			'plugins'    => [],
-			'screenshot' => isset( $args['screenshot'] ) ? $args['screenshot'] : $this->get_screenshot( $args['preview'] ),
-		] );
+		return apply_filters(
+			'mai_setup_wizard_demo_defaults',
+			[
+				'content'    => false,
+				'widgets'    => false,
+				'customizer' => false,
+				'preview'    => false,
+				'plugins'    => [],
+				'screenshot' => isset( $args['screenshot'] ) ? $args['screenshot'] : $this->get_screenshot( $args['preview'] ),
+			]
+		);
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns a demo screenshot.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $url
+	 * @param string $url Screenshot URL.
 	 *
 	 * @return string
 	 */
 	private function get_screenshot( $url ) {
-		$url       = urlencode( $url );
+		$url       = rawurlencode( $url );
 		$params    = [
 			'w' => 400,
 			'h' => 300,
@@ -183,8 +179,11 @@ class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 
 			if ( 200 === wp_remote_retrieve_response_code( $response ) ) {
 				$image_data = wp_remote_retrieve_body( $response );
+
 				if ( $image_data && is_string( $image_data ) ) {
-					$src = $data_uri = 'data:image/jpeg;base64,' . base64_encode( $image_data );
+					$data_uri = 'data:image/jpeg;base64,' . base64_encode( $image_data );
+					$src      = $data_uri;
+
 					set_transient( $cache_key, $data_uri, DAY_IN_SECONDS );
 				}
 			}

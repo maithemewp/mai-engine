@@ -88,9 +88,9 @@ function mai_get_icon( $args ) {
 	}
 
 	if ( $args['border_radius'] ) {
-		$radius              = explode( ' ', trim( $args['border_radius'] ) );
-		$radius              = array_map( 'mai_get_unit_value', $radius );
-		$radius              = array_filter( $radius );
+		$radius               = explode( ' ', trim( $args['border_radius'] ) );
+		$radius               = array_map( 'mai_get_unit_value', $radius );
+		$radius               = array_filter( $radius );
 		$attributes['style'] .= sprintf( '--icon-border-radius:%s;', implode( ' ', $radius ) );
 	}
 
@@ -198,6 +198,8 @@ function mai_get_svg_icon( $name, $style = 'light', $atts = [] ) {
 		foreach ( $atts as $att => $value ) {
 
 			/**
+			 * DOM Element.
+			 *
 			 * @var DOMElement $first_svg First dom element.
 			 */
 			$first_svg = isset( $svgs[0] ) ? $svgs[0] : null;

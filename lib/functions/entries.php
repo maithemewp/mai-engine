@@ -41,14 +41,14 @@ function mai_do_entries_open( $args ) {
 		$attributes['class'] .= ' has-image-' . $args['image_position'];
 
 		if ( in_array( $args['image_position'], [ 'background', 'left-full', 'right-full' ], true ) ) {
-			$aspect_ratio        = mai_has_image_orientiation( $args['image_orientation'] ) ? mai_get_orientation_aspect_ratio( $args['image_orientation'] ) : mai_get_image_aspect_ratio( $args['image_size'] );
+			$aspect_ratio         = mai_has_image_orientiation( $args['image_orientation'] ) ? mai_get_orientation_aspect_ratio( $args['image_orientation'] ) : mai_get_image_aspect_ratio( $args['image_size'] );
 			$attributes['style'] .= sprintf( '--aspect-ratio:%s;', $aspect_ratio );
 		}
 
 		if ( 'custom' === $args['image_orientation'] ) {
 
-			$image_sizes         = mai_get_available_image_sizes();
-			$image_size          = $image_sizes[ $args['image_size'] ];
+			$image_sizes          = mai_get_available_image_sizes();
+			$image_size           = $image_sizes[ $args['image_size'] ];
 			$attributes['style'] .= sprintf( '--image-width:%spx;', $image_size['width'] );
 
 		} else {
@@ -87,7 +87,7 @@ function mai_do_entries_open( $args ) {
 	$attributes['style'] .= sprintf( '--align-text-vertical:%s;', mai_has_string( [ 'left', 'right', 'background' ], $args['image_position'] ) ? mai_get_align_text( $args['align_text_vertical'] ) : 'unset' );
 
 	// Remove border radius if no row or column gap.
-	if ( in_array( '0', [ $args['row_gap'], $args['column_gap'] ] ) ) {
+	if ( in_array( '0', [ $args['row_gap'], $args['column_gap'] ], true ) ) {
 		$attributes['style'] .= '--border-radius:0;';
 	}
 

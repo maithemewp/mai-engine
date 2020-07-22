@@ -116,7 +116,6 @@ class Mai_Entry {
 			'class' => 'entry',
 		];
 
-
 		if ( 'term' === $this->type ) {
 			$atts['class'] .= sprintf( ' term-%s type-%s %s-%s', $this->entry->term_id, $this->entry->taxonomy, $this->entry->taxonomy, $this->entry->slug );
 		}
@@ -147,8 +146,13 @@ class Mai_Entry {
 
 		// Check if extra wrap is needed.
 		$has_wrap = false;
+
 		if ( 'single' !== $this->context ) {
-			$has_wrap = in_array( 'image', $this->args['show'], true ) && ( in_array( $this->args['image_position'], [ 'background' ], true ) || mai_has_string( [ 'left', 'right' ], $this->args['image_position'] ) );
+			$show_image       = in_array( 'image', $this->args['show'], true );
+			$image_background = in_array( $this->args['image_position'], [ 'background' ], true );
+			$image_left_right = mai_has_string( [ 'left', 'right' ], $this->args['image_position'] );
+
+			$has_wrap = $show_image && ( $image_background || $image_left_right );
 		}
 
 		// If we have inner wrap.
@@ -174,7 +178,6 @@ class Mai_Entry {
 			if ( ( 'single' !== $this->context ) && ( 'background' === $this->args['image_position'] ) ) {
 				printf( '<a href="%s" class="entry-overlay"></a>', $this->url );
 			}
-
 		}
 
 		// Loop through our elements.
@@ -362,7 +365,15 @@ class Mai_Entry {
 		add_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
 		add_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 5 );
 		$size  = $this->get_image_size();
-		$image = wp_get_attachment_image( $image_id, $size, false, [ 'class' => "entry-image size-{$size}", 'loading' => 'lazy' ] );
+		$image = wp_get_attachment_image(
+			$image_id,
+			$size,
+			false,
+			[
+				'class'   => "entry-image size-{$size}",
+				'loading' => 'lazy',
+			]
+		);
 		remove_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 5 );
 		remove_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
 
@@ -401,25 +412,25 @@ class Mai_Entry {
 		foreach ( $columns as $break => $count ) {
 			switch ( $break ) {
 				case 'xs':
-					$max_width   = $this->breakpoints['sm'];
-					$widths[]    = floor( $max_width / $count );
-				break;
+					$max_width = $this->breakpoints['sm'];
+					$widths[]  = floor( $max_width / $count );
+					break;
 				case 'sm':
-					$min_width   = $this->breakpoints['sm'];
-					$max_width   = $this->breakpoints['md'];
-					$widths[]    = floor( $max_width / $count );
+					$min_width = $this->breakpoints['sm'];
+					$max_width = $this->breakpoints['md'];
+					$widths[]  = floor( $max_width / $count );
 					break;
 				case 'md':
-					$min_width   = $this->breakpoints['md'];
-					$max_width   = $this->breakpoints['lg'];
-					$container   = $has_sidebar ? $max_width * 2 / 3 : $max_width;
-					$widths[]    = floor( $container / $count );
+					$min_width = $this->breakpoints['md'];
+					$max_width = $this->breakpoints['lg'];
+					$container = $has_sidebar ? $max_width * 2 / 3 : $max_width;
+					$widths[]  = floor( $container / $count );
 					break;
 				case 'lg':
-					$min_width   = $this->breakpoints['lg'];
-					$container   = $this->breakpoints['xl'];
-					$container   = $has_sidebar ? $container * 2 / 3 : $container;
-					$widths[]    = floor( $container / $count );
+					$min_width = $this->breakpoints['lg'];
+					$container = $this->breakpoints['xl'];
+					$container = $has_sidebar ? $container * 2 / 3 : $container;
+					$widths[]  = floor( $container / $count );
 					break;
 			}
 		}
@@ -861,9 +872,7 @@ class Mai_Entry {
 		genesis_markup(
 			[
 				'open'    => '<div %s>',
-				// 'close'   => '</div>',
 				'context' => 'entry-content',
-				// 'content' => $content,
 				'echo'    => true,
 				'params'  => [
 					'args'  => $this->args,

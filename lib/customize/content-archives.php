@@ -9,6 +9,13 @@
  * @license   GPL-2.0-or-later
  */
 
+/**
+ * Returns content archive settings.
+ *
+ * @since 1.0.0
+ *
+ * @return array
+ */
 function mai_get_content_archive_settings() {
 	return [
 		[
