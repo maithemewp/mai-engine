@@ -16,6 +16,10 @@
 	box-shadow: var(--entry-box-shadow, unset);
 }
 
+.has-image-background {
+	--entry-flex-direction: row;
+}
+
 .single-entry {
 	margin-bottom: var(--single-entry-margin-bottom, var(--spacing-xxl));
 }

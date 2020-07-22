@@ -27,7 +27,7 @@ function mai_do_entries_open( $args ) {
 	];
 
 	// Boxed.
-	if ( $args['boxed'] ) {
+	if ( $args['boxed'] && ! ( in_array( 'image', $args['show'], true ) && ( 'background' === $args['image_position'] ) ) ) {
 		$attributes['class'] .= ' has-boxed';
 	}
 

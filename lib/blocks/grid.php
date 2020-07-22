@@ -1210,14 +1210,28 @@ function mai_get_grid_block_settings() {
 			],
 		],
 		'mai_grid_block_boxed'                    => [
-			'name'     => 'boxed',
-			'label'    => esc_html__( 'Boxed', 'mai-engine' ),
-			'block'    => [ 'post', 'term', 'user' ],
-			'type'     => 'true_false',
-			'sanitize' => 'mai_sanitize_bool',
-			'default'  => 1,
-			'atts'     => [
-				'message' => esc_html__( 'Display boxed styling', 'mai-engine' ),
+			'name'        => 'boxed',
+			'label'       => esc_html__( 'Boxed', 'mai-engine' ),
+			'block'       => [ 'post', 'term', 'user' ],
+			'type'        => 'true_false',
+			'sanitize'    => 'mai_sanitize_bool',
+			'default'     => 1,
+			'atts'        => [
+				'message'    => esc_html__( 'Display boxed styling', 'mai-engine' ),
+			],
+			'conditions'  => [
+				[
+					[
+						'field'    => 'mai_grid_block_show',
+						'operator' => '==',
+						'value'    => 'image',
+					],
+					[
+						'field'    => 'mai_grid_block_image_position',
+						'operator' => '!=',
+						'value'    => 'background',
+					],
+				],
 			],
 		],
 

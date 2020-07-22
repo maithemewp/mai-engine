@@ -83,16 +83,12 @@
 	--entry-image-link-order: 1;
 }
 
-.has-image-background .entry-image-link,
-.has-image-background .entry-wrap {
+.has-image-background .entry-image-link {
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-}
-
-.has-image-background .entry-image-link {
 	-o-object-fit: cover;
 	object-fit: cover;
 }
