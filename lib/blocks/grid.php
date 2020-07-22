@@ -1652,6 +1652,11 @@ function mai_get_grid_block_settings() {
 								'operator' => '!=',
 								'value'    => 'EXISTS',
 							],
+							[
+								'field'    => 'mai_grid_block_post_meta_compare',
+								'operator' => '!=',
+								'value'    => 'NOT EXISTS',
+							],
 						],
 					],
 				],
