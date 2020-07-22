@@ -136,11 +136,11 @@
 
 	@if ("small" == $style) {
 		padding: 0.7em 1.25em;
-		font-size: var(--font-size-sm);
+		font-size: 0.75em; /* default buttons use font-base so can't use scale */
 	}
 
 	@if ("large" == $style) {
-		font-size: var(--font-size-lg);
+		font-size: 1.25em; /* default buttons use font-base so can't use scale */
 	}
 
 	@if ("disabled" == $style) {
