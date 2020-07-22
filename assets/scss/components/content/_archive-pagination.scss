@@ -1,9 +1,6 @@
 .archive-pagination {
 	width: 100%;
-	padding: var(--pagination-padding, var(--spacing-xxl) 0 var(--spacing-xl));
-
-	--button-font-size: smaller;
-	--button-padding: 1em;
+	padding: var(--pagination-padding, var(--spacing-xl) 0);
 
 	ul {
 		display: var(--archive-pagination-ul-display, block);
