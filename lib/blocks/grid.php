@@ -1959,30 +1959,6 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_tax_number'               => [
-			'name'       => 'number',
-			'label'      => esc_html__( 'Number of Entries', 'mai-engine' ),
-			'desc'       => esc_html__( 'Use 0 to show all.', 'mai-engine' ),
-			'block'      => [ 'term' ],
-			'type'       => 'number',
-			'sanitize'   => 'absint',
-			'default'    => 12,
-			'conditions' => [
-				[
-					'field'    => 'mai_grid_block_taxonomy',
-					'operator' => '!=empty',
-				],
-				[
-					'field'    => 'mai_grid_block_tax_query_by',
-					'operator' => '!=',
-					'value'    => 'id',
-				],
-			],
-			'atts'       => [
-				'placeholder' => 12,
-				'min'         => 0,
-			],
-		],
 		'mai_grid_block_tax_include'              => [
 			'name'       => 'include',
 			'label'      => esc_html__( 'Entries', 'mai-engine' ),
@@ -2061,6 +2037,30 @@ function mai_get_grid_block_settings() {
 				'save_terms' => 0,
 				'load_terms' => 0,
 				'multiple'   => 0, // WP_Term_Query only allows 1.
+			],
+		],
+		'mai_grid_block_tax_number'               => [
+			'name'       => 'number',
+			'label'      => esc_html__( 'Number of Entries', 'mai-engine' ),
+			'desc'       => esc_html__( 'Use 0 to show all.', 'mai-engine' ),
+			'block'      => [ 'term' ],
+			'type'       => 'number',
+			'sanitize'   => 'absint',
+			'default'    => 12,
+			'conditions' => [
+				[
+					'field'    => 'mai_grid_block_taxonomy',
+					'operator' => '!=empty',
+				],
+				[
+					'field'    => 'mai_grid_block_tax_query_by',
+					'operator' => '!=',
+					'value'    => 'id',
+				],
+			],
+			'atts'       => [
+				'placeholder' => 12,
+				'min'         => 0,
 			],
 		],
 		'mai_grid_block_tax_offset'               => [

@@ -76,9 +76,9 @@ class Mai_Grid {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Get the grid settings.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 *
 	 * @return array
 	 */
@@ -105,9 +105,9 @@ class Mai_Grid {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Get default settings.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 *
 	 * @return array
 	 */
@@ -116,7 +116,7 @@ class Mai_Grid {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Get sanitized args.
 	 *
 	 * @since 0.1.0
 	 *
@@ -189,7 +189,7 @@ class Mai_Grid {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Renders the grid entries.
 	 *
 	 * @since 0.1.0
 	 *
@@ -252,7 +252,7 @@ class Mai_Grid {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Get post query args.
 	 *
 	 * @since 0.1.0
 	 *
@@ -410,18 +410,21 @@ class Mai_Grid {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Get the term query args.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 *
 	 * @return array
 	 */
 	public function get_term_query_args() {
 		$query_args = [
 			'taxonomy' => $this->args['taxonomy'],
-			'number'   => $this->args['number'],
 			'offset'   => $this->args['offset'],
 		];
+
+		if ( 'id' !== $this->args['query_by'] ) {
+			$query_args['number'] = $this->args['number'];
+		}
 
 		// Handle query_by.
 		switch ( $this->args['query_by'] ) {
