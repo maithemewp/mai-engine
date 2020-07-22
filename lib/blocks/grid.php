@@ -1414,6 +1414,52 @@ function mai_get_grid_block_settings() {
 			'sanitize' => 'esc_html',
 			'default'  => '24px',
 		],
+		'mai_grid_block_spacing_top'               => [
+			'name'     => 'spacing_top',
+			'label'    => esc_html__( 'Top Spacing', 'mai-engine' ),
+			'block'    => [ 'post', 'term', 'user' ],
+			'type'     => 'button_group',
+			'sanitize' => 'esc_html',
+			'default'    => '',
+			'choices'    => [
+				''   => esc_html__( 'Clear', 'mai-engine' ),
+				'xs' => esc_html__( 'XS', 'mai-engine' ),
+				'sm' => esc_html__( 'SM', 'mai-engine' ),
+				'md' => esc_html__( 'MD', 'mai-engine' ),
+				'lg' => esc_html__( 'LG', 'mai-engine' ),
+				'xl' => esc_html__( 'XL', 'mai-engine' ),
+			],
+			'atts'       => [
+				'wrapper' => [
+					'width' => '',
+					'class' => 'mai-grid-button-group mai-grid-button-group-clear',
+					'id'    => '',
+				],
+			],
+		],
+		'mai_grid_block_spacing_bottom'                  => [
+			'name'     => 'spacing_bottom',
+			'label'    => esc_html__( 'Bottom Spacing', 'mai-engine' ),
+			'block'    => [ 'post', 'term', 'user' ],
+			'type'     => 'button_group',
+			'sanitize' => 'esc_html',
+			'default'    => '',
+			'choices'    => [
+				''   => esc_html__( 'Clear', 'mai-engine' ),
+				'xs' => esc_html__( 'XS', 'mai-engine' ),
+				'sm' => esc_html__( 'SM', 'mai-engine' ),
+				'md' => esc_html__( 'MD', 'mai-engine' ),
+				'lg' => esc_html__( 'LG', 'mai-engine' ),
+				'xl' => esc_html__( 'XL', 'mai-engine' ),
+			],
+			'atts'       => [
+				'wrapper' => [
+					'width' => '',
+					'class' => 'mai-grid-button-group mai-grid-button-group-clear',
+					'id'    => '',
+				],
+			],
+		],
 
 		/*
 		 * Entries

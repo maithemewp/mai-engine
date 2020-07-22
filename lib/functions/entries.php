@@ -31,6 +31,18 @@ function mai_do_entries_open( $args ) {
 		$attributes['class'] .= ' has-boxed';
 	}
 
+	// Spacing. Only for grid blocks, so check if set and sanitize.
+	$spacing_top    = mai_isset( $args, 'spacing_top', '' );
+	$spacing_bottom = mai_isset( $args, 'spacing_bottom', '' );
+
+	if ( $spacing_top ) {
+		$attributes['class'] .= sprintf( ' has-%s-padding-top', esc_html( $spacing_top ) );
+	}
+
+	if ( $spacing_bottom ) {
+		$attributes['class'] .= sprintf( ' has-%s-padding-bottom', esc_html( $spacing_bottom ) );
+	}
+
 	// Title size.
 	if ( $args['title_size'] ) {
 		$attributes['style'] .= sprintf( '--entry-title-font-size:var(--font-size-%s);', $args['title_size'] );

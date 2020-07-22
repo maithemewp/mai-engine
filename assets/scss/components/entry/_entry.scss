@@ -70,6 +70,9 @@
 }
 
 .entries {
+	padding-top: var(--entries-padding-top, 0); /* Using padding so spacing settings can match has-{size}-padding-top. */
+	padding-bottom: var(--entries-padding-bottom, var(--spacing-md)); /* Using padding so spacing settings can match has-{size}-padding-bottom. */
+
 	--entry-image-line-height: 0;
 	--entry-meta-margin: 0 0 var(--spacing-md) 0;
 
