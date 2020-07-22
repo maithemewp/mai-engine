@@ -11,6 +11,10 @@ img {
 	height: auto;
 	vertical-align: top;
 	border-radius: var(--image-border-radius, 0);
+
+	&.aligncenter {
+		display: block;
+	}
 }
 
 iframe {
