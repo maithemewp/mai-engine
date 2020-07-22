@@ -23,9 +23,6 @@ module.exports = {
 	'build:i18n': [ require( './i18n' ) ],
 
 	'build': [ [ 'build:css', 'build:js', 'build:img', 'build:i18n' ] ],
-
-	'browser-sync': [ require( './browser-sync' ) ],
 	'watch': [ require( './watch' ) ],
-	'serve': [ [ 'browser-sync', 'watch' ] ],
-	'default': [ [ 'build', 'serve' ] ],
+	'default': [ [ 'build', 'watch' ] ],
 };
