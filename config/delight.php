@@ -10,34 +10,41 @@
  */
 
 return [
-	'demos'         => [],
-	'global-styles' => [
-		'colors' => [
-			'link'      => '#067ccc',
-			'primary'   => '#067ccc',
-			'secondary' => '#6c757d',
-			'heading'   => '#323232',
-			'body'      => '#515151',
+	'demos'          => [],
+	'global-styles'  => [
+		'colors'        => [
+			'link'         => '#067ccc',
+			'primary'      => '#067ccc',
+			'secondary'    => '#6c757d',
+			'heading'      => '#323232',
+			'body'         => '#515151',
 		],
-		'fonts'  => [
-			'body'    => 'Open Sans:400',
-			'heading' => 'Playfair Display:700',
+		'fonts'         => [
+			'body'         => 'Open Sans:300',
+			'heading'      => 'Playfair Display:700',
 		],
+		'font-sizes'    => [
+		// 	'base'         => 15,
+		],
+		'font-scale'     => 1.2,
 	],
-	'theme-support' => [
-		'add' => [
+	'theme-support'  => [
+		'add'           => [
 			'sticky-header',
 		],
 	],
-	'image-sizes'   => [
-		'add' => [
-			'landscape' => '4:3',
-			'portrait'  => '3:4',
-			'square'    => '1:1',
+	'image-sizes'    => [
+		'add'           => [
+			'landscape'    => '4:3',
+			'portrait'     => '3:4',
 		],
 	],
-	'page-header'   => [
-		'archive' => [ 'category', 'product', 'post' ],
-		'single'  => [ 'page', 'post' ],
+	'page-header'    => [
+		'archive'         => [ 'category', 'product', 'post' ],
+		'single'          => [ 'page', 'post' ],
+		'overlay-opacity' => '0.1',
 	],
+	'extra'          => [
+		'border-radius' => '2px',
+	]
 ];
