@@ -23,6 +23,9 @@ module.exports = {
 	'build:i18n': [ require( './i18n' ) ],
 
 	'build': [ [ 'build:css', 'build:js', 'build:img', 'build:i18n' ] ],
+
+	'create': [ require( './create' ) ],
+
 	'watch': [ require( './watch' ) ],
 	'default': [ [ 'build', 'watch' ] ],
 };

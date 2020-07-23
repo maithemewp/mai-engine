@@ -56,7 +56,8 @@
     "stylelint": "^9.10.1",
     "stylelint-config-rational-order": "^0.1.2",
     "stylelint-config-recommended-scss": "^3.2.0",
-    "stylelint-config-wordpress": "^13.0.0"
+    "stylelint-config-wordpress": "^13.0.0",
+    "yargs": "^15.4.1"
   },
   "scripts": {
     "start": "gulp",
