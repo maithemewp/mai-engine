@@ -75,6 +75,27 @@ vendor/**/*.json
 `;
 };
 
+const configPhp = function() {
+	return `<?php
+/**
+ * Mai Engine.
+ *
+ * @package   BizBudding\\MaiEngine
+ * @link      https://bizbudding.com
+ * @author    BizBudding
+ * @copyright Copyright © 2020 BizBudding
+ * @license   GPL-2.0-or-later
+ */
+
+return [];
+`;
+};
+
+const themeScss = function() {
+	return `@import "default";
+`;
+};
+
 const genesisVersion = function() {
 	let version = '3.3.2';
 
@@ -114,16 +135,26 @@ module.exports = function() {
 		namespace: `BizBudding\\Mai${capitalized}`,
 		slug: `mai-${argv.name}`,
 		dir: `../../themes/mai-${argv.name}`,
+		config: `./config/${argv.name}.php`,
+		scss: `./assets/scss/themes/${argv.name}.scss`,
 		templateVersion: genesisVersion(),
 	};
+
+	if ( ! fs.existsSync( theme.config ) ) {
+		fs.writeFileSync( theme.config, configPhp() );
+		console.log( ansiColors.green, 'Success: Created theme PHP config file.' );
+	}
+
+	if ( ! fs.existsSync( theme.scss ) ) {
+		fs.writeFileSync( theme.scss, themeScss() );
+		console.log( ansiColors.green, 'Success: Created theme SCSS file.' );
+	}
 
 	if ( fs.existsSync( theme.dir ) ) {
 		return console.log( ansiColors.red, `Error: "${theme.dir}" directory already exists.` );
 	}
 
 	if ( ! fs.existsSync( theme.dir ) ) {
-		console.log( ansiColors.blue, 'Creating theme directory and files...' );
-
 		fs.mkdirSync( theme.dir );
 		fs.writeFileSync( theme.dir + '/style.css', styleCss( theme ) );
 		fs.writeFileSync( theme.dir + '/functions.php', functionsPhp( theme ) );
