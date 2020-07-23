@@ -189,11 +189,7 @@ function mai_has_alignfull_first() {
 			return $has_alignfull_first;
 		}
 
-		if ( mai_has_page_header() ) {
-			return $has_alignfull_first;
-		}
-
-		if ( ! mai_is_element_hidden( 'entry_title' ) ) {
+		if ( ! mai_has_page_header() && ! mai_is_element_hidden( 'entry_title' ) ) {
 			return $has_alignfull_first;
 		}
 
