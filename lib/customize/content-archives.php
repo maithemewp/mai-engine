@@ -246,9 +246,8 @@ function mai_get_content_archive_settings() {
 			'label'    => esc_html__( 'Align Text', 'mai-engine' ),
 			'type'     => 'radio-buttonset',
 			'sanitize' => 'esc_html',
-			'default'  => '',
+			'default'  => 'start',
 			'choices'  => [
-				''       => esc_html__( 'Clear', 'mai-engine' ),
 				'start'  => esc_html__( 'Start', 'mai-engine' ),
 				'center' => esc_html__( 'Center', 'mai-engine' ),
 				'end'    => esc_html__( 'End', 'mai-engine' ),
@@ -261,7 +260,7 @@ function mai_get_content_archive_settings() {
 			'sanitize'        => 'esc_html',
 			'default'         => '',
 			'choices'         => [
-				''       => esc_html__( 'Clear', 'mai-engine' ),
+				''       => esc_html__( 'Default', 'mai-engine' ),
 				'top'    => esc_html__( 'Top', 'mai-engine' ),
 				'middle' => esc_html__( 'Middle', 'mai-engine' ),
 				'bottom' => esc_html__( 'Bottom', 'mai-engine' ),
@@ -403,6 +402,32 @@ function mai_get_content_archive_settings() {
 			'default'  => true,
 		],
 		[
+			'settings'        => 'border_radius',
+			'label'           => esc_html__( 'Border Radius', 'mai-engine' ),
+			'description'     => esc_html__( 'Leave empty for theme default. Accepts all unit values (px, rem, em, vw, etc).', 'mai-engine' ),
+			'block'           => [ 'post', 'term', 'user' ],
+			'type'            => 'text',
+			'sanitize'        => 'esc_html',
+			'default'         => '',
+			'input_attrs'     => [
+				'placeholder' => isset( mai_get_global_styles( 'extra' )['border-radius'] ) ? mai_get_global_styles( 'extra' )['border-radius'] : '4px',
+			],
+			'active_callback' => [
+				[
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'background',
+					],
+					[
+						'setting'  => 'boxed',
+						'operator' => '==',
+						'value'    => true,
+					],
+				],
+			],
+		],
+		[
 			'settings' => 'columns',
 			'label'    => esc_html__( 'Columns (desktop)', 'mai-engine' ),
 			'type'     => 'radio-buttonset',
@@ -467,12 +492,11 @@ function mai_get_content_archive_settings() {
 			'label'           => esc_html__( 'Align Columns', 'mai-engine' ),
 			'type'            => 'radio-buttonset',
 			'sanitize'        => 'esc_html',
-			'default'         => '',
+			'default'         => 'left',
 			'choices'         => [
-				''       => esc_html__( 'Clear', 'mai-engine' ),
-				'left'   => esc_html__( 'Left', 'mai-engine' ),
+				'left'   => esc_html__( 'Start', 'mai-engine' ),
 				'center' => esc_html__( 'Center', 'mai-engine' ),
-				'right'  => esc_html__( 'Right', 'mai-engine' ),
+				'right'  => esc_html__( 'End', 'mai-engine' ),
 			],
 			'active_callback' => [
 				[
@@ -489,7 +513,7 @@ function mai_get_content_archive_settings() {
 			'sanitize'        => 'esc_html',
 			'default'         => '',
 			'choices'         => [
-				''       => esc_html__( 'Clear', 'mai-engine' ),
+				''       => esc_html__( 'Full', 'mai-engine' ),
 				'top'    => esc_html__( 'Top', 'mai-engine' ),
 				'middle' => esc_html__( 'Middle', 'mai-engine' ),
 				'bottom' => esc_html__( 'Bottom', 'mai-engine' ),

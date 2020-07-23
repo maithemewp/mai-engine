@@ -22,8 +22,8 @@ add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_include', 'mai_acf
 add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_exclude', 'mai_acf_get_terms', 10, 1 );
 add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_parent', 'mai_acf_get_term_parents', 10, 1 );
 
-add_filter( 'acf/load_field/key=mai_grid_block_column_gap', 'mai_acf_load_gap', 10, 1 );
-add_filter( 'acf/load_field/key=mai_grid_block_row_gap', 'mai_acf_load_gap', 10, 1 );
+add_filter( 'acf/prepare_field/key=mai_grid_block_column_gap', 'mai_acf_load_gap', 10, 1 );
+add_filter( 'acf/prepare_field/key=mai_grid_block_row_gap', 'mai_acf_load_gap', 10, 1 );
 
 add_action( 'acf/init', 'mai_register_grid_blocks' );
 /**
@@ -75,7 +75,7 @@ function mai_register_grid_blocks() {
 }
 
 /**
- * Description of expected behavior.
+ * Renders a post grid block.
  *
  * @since 0.1.0
  *
@@ -92,7 +92,7 @@ function mai_do_post_grid_block( $block, $content = '', $is_preview = false, $po
 }
 
 /**
- * Description of expected behavior.
+ * Renders a term grid block.
  *
  * @since 0.1.0
  *
@@ -109,7 +109,7 @@ function mai_do_term_grid_block( $block, $content = '', $is_preview = false, $po
 }
 
 /**
- * Description of expected behavior.
+ * Renders a grid block.
  *
  * @since 0.1.0
  *
@@ -137,11 +137,11 @@ function mai_do_grid_block( $type, $block, $content = '', $is_preview = false, $
 }
 
 /**
- * Description of expected behavior.
+ * Gets the grid values by grid type.
  *
  * @since 0.1.0
  *
- * @param string $type Field type.
+ * @param string $type Grid type. post/term/user.
  *
  * @return array
  */
@@ -244,7 +244,7 @@ function mai_register_grid_field_groups() {
 }
 
 /**
- * Description of expected behavior.
+ * Gets ACF field data and prepares it for field registration.
  *
  * @since 0.1.0
  *
@@ -323,7 +323,7 @@ function mai_get_acf_field_data( $key, $field ) {
 }
 
 /**
- * Description of expected behavior.
+ * Loads the "Show" field.
  *
  * @since 0.1.0
  *
@@ -348,7 +348,7 @@ function mai_acf_load_show( $field ) {
 }
 
 /**
- * Description of expected behavior.
+ * Gets chosen post type for use in other field filters.
  *
  * @since 0.1.0
  *
@@ -666,9 +666,8 @@ function mai_get_term_choices_from_taxonomy( $taxonomy = '' ) {
 }
 
 /**
- * Sets the default gap.
- * This helps deprecate the old text field values, so the default is set correctly
- * for existing block instances.
+ * Sets the default gap if existing value is not a valid size.
+ * This helps deprecate the old text field values, so the default is set correctly for existing block instances.
  *
  * @since 2.3.1
  *
@@ -677,14 +676,15 @@ function mai_get_term_choices_from_taxonomy( $taxonomy = '' ) {
  * @return array
  */
 function mai_acf_load_gap( $field ) {
-	if ( is_null( $field['value'] ) ) {
+	if ( $field['value'] && ! mai_is_valid_size( $field['value'] ) ) {
 		$field['value'] = $field['default_value'];
 	}
+
 	return $field;
 }
 
 /**
- * Description of expected behavior.
+ * Gets an ACF request, checking nonce and value.
  *
  * @since 0.1.0
  *
@@ -701,9 +701,9 @@ function mai_get_acf_request( $request ) {
 }
 
 /**
- * Description of expected behavior.
+ * Gets the grid block settings array.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return array
  */
@@ -1023,9 +1023,8 @@ function mai_get_grid_block_settings() {
 			'block'    => [ 'post', 'term', 'user' ],
 			'type'     => 'button_group',
 			'sanitize' => 'esc_html',
-			'default'  => '',
+			'default'  => 'start',
 			'choices'  => [
-				''       => esc_html__( 'Clear', 'mai-engine' ),
 				'start'  => esc_html__( 'Start', 'mai-engine' ),
 				'center' => esc_html__( 'Center', 'mai-engine' ),
 				'end'    => esc_html__( 'End', 'mai-engine' ),
@@ -1033,7 +1032,7 @@ function mai_get_grid_block_settings() {
 			'atts'     => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group mai-grid-button-group-clear',
+					'class' => 'mai-grid-button-group',
 					'id'    => '',
 				],
 			],
@@ -1046,7 +1045,7 @@ function mai_get_grid_block_settings() {
 			'sanitize'   => 'esc_html',
 			'default'    => '',
 			'choices'    => [
-				''       => esc_html__( 'Clear', 'mai-engine' ),
+				''       => esc_html__( 'Default', 'mai-engine' ),
 				'top'    => esc_html__( 'Top', 'mai-engine' ),
 				'middle' => esc_html__( 'Middle', 'mai-engine' ),
 				'bottom' => esc_html__( 'Bottom', 'mai-engine' ),
@@ -1140,7 +1139,7 @@ function mai_get_grid_block_settings() {
 			'atts'       => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group mai-grid-button-group-clear',
+					'class' => 'mai-grid-button-group',
 					'id'    => '',
 				],
 			],
@@ -1251,6 +1250,34 @@ function mai_get_grid_block_settings() {
 						'field'    => 'mai_grid_block_image_position',
 						'operator' => '!=',
 						'value'    => 'background',
+					],
+				],
+			],
+		],
+		'mai_grid_block_border_radius'                  => [
+			'name'         => 'border_radius',
+			'label'        => esc_html__( 'Border Radius', 'mai-engine' ),
+			'desc'         => esc_html__( 'Leave empty for theme default. Accepts all unit values (px, rem, em, vw, etc).', 'mai-engine' ),
+			'block'        => [ 'post', 'term', 'user' ],
+			'type'         => 'text',
+			'sanitize'     => 'esc_html',
+			'default'      => '',
+			'input_attrs'  => [
+				'placeholder' => isset( mai_get_global_styles( 'extra' )['border-radius'] ) ? mai_get_global_styles( 'extra' )['border-radius']: '4px',
+			],
+			'conditions'   => [
+				[
+					[
+						'field'      => 'mai_grid_block_image_position',
+						'operator'   => '==',
+						'value'      => 'background',
+					],
+				],
+				[
+					[
+						'field'      => 'mai_grid_block_boxed',
+						'operator'   => '==',
+						'value'      => 1,
 					],
 				],
 			],
@@ -1369,9 +1396,8 @@ function mai_get_grid_block_settings() {
 			'block'      => [ 'post', 'term', 'user' ],
 			'type'       => 'button_group',
 			'sanitize'   => 'esc_html',
-			'default'    => '',
+			'default'    => 'start',
 			'choices'    => [
-				''       => esc_html__( 'Clear', 'mai-engine' ),
 				'start'  => esc_html__( 'Start', 'mai-engine' ),
 				'center' => esc_html__( 'Center', 'mai-engine' ),
 				'end'    => esc_html__( 'End', 'mai-engine' ),
@@ -1386,7 +1412,7 @@ function mai_get_grid_block_settings() {
 			'atts'       => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group mai-grid-button-group-clear',
+					'class' => 'mai-grid-button-group',
 					'id'    => '',
 				],
 			],
@@ -1399,7 +1425,7 @@ function mai_get_grid_block_settings() {
 			'sanitize'   => 'esc_html',
 			'default'    => '',
 			'choices'    => [
-				''       => esc_html__( 'Clear', 'mai-engine' ),
+				''       => esc_html__( 'Full', 'mai-engine' ),
 				'top'    => esc_html__( 'Top', 'mai-engine' ),
 				'middle' => esc_html__( 'Middle', 'mai-engine' ),
 				'bottom' => esc_html__( 'Bottom', 'mai-engine' ),
@@ -1414,7 +1440,7 @@ function mai_get_grid_block_settings() {
 			'atts'       => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group mai-grid-button-group-clear',
+					'class' => 'mai-grid-button-group',
 					'id'    => '',
 				],
 			],

@@ -12,7 +12,7 @@
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param array $args Grid args.
  *
@@ -25,7 +25,7 @@ function mai_do_post_grid( $args ) {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param array $args Grid args.
  *
@@ -38,7 +38,7 @@ function mai_do_term_grid( $args ) {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param array $args Grid args.
  *
@@ -51,7 +51,7 @@ function mai_do_user_grid( $args ) {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param string $type Grid type.
  * @param array  $args Grid args.
@@ -67,7 +67,7 @@ function mai_do_grid( $type, $args = [] ) {
 /**
  * Description of expected behavior.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return array
  */
@@ -125,37 +125,37 @@ function mai_get_breakpoint_columns( $args ) {
 				$columns['md'] = 4;
 				$columns['sm'] = 3;
 				$columns['xs'] = 2;
-				break;
+			break;
 			case 5:
 				$columns['md'] = 3;
 				$columns['sm'] = 2;
 				$columns['xs'] = 2;
-				break;
+			break;
 			case 4:
 				$columns['md'] = 4;
 				$columns['sm'] = 2;
 				$columns['xs'] = 1;
-				break;
+			break;
 			case 3:
 				$columns['md'] = 3;
 				$columns['sm'] = 1;
 				$columns['xs'] = 1;
-				break;
+			break;
 			case 2:
 				$columns['md'] = 2;
 				$columns['sm'] = 2;
 				$columns['xs'] = 1;
-				break;
+			break;
 			case 1:
 				$columns['md'] = 1;
 				$columns['sm'] = 1;
 				$columns['xs'] = 1;
-				break;
+			break;
 			case 0: // Auto.
 				$columns['md'] = 0;
 				$columns['sm'] = 0;
 				$columns['xs'] = 0;
-				break;
+			break;
 		}
 	}
 
@@ -163,7 +163,7 @@ function mai_get_breakpoint_columns( $args ) {
 }
 
 /**
- * Description of expected behavior.
+ * Get the text align value from a setting value.
  *
  * @since 0.1.0
  *
@@ -174,21 +174,23 @@ function mai_get_breakpoint_columns( $args ) {
 function mai_get_align_text( $alignment ) {
 	switch ( $alignment ) {
 		case 'start':
+		case 'left':
 			$value = 'start';
-			break;
+		break;
 		case 'top':
 			$value = 'flex-start';
 			break;
 		case 'center':
 		case 'middle':
 			$value = 'center';
-			break;
+		break;
 		case 'end':
+		case 'right':
 			$value = 'end';
-			break;
+		break;
 		case 'bottom':
 			$value = 'flex-end';
-			break;
+		break;
 		default:
 			$value = 'unset';
 	}
@@ -197,7 +199,7 @@ function mai_get_align_text( $alignment ) {
 }
 
 /**
- * Description of expected behavior.
+ * Get the flexbox property value from a setting value.
  *
  * @since 0.1.0
  *
@@ -208,17 +210,19 @@ function mai_get_align_text( $alignment ) {
 function mai_get_flex_align( $value ) {
 	switch ( $value ) {
 		case 'start':
+		case 'left':
 		case 'top':
 			$return = 'flex-start';
-			break;
+		break;
 		case 'center':
 		case 'middle':
 			$return = 'center';
-			break;
+		break;
+		case 'end':
 		case 'right':
 		case 'bottom':
 			$return = 'flex-end';
-			break;
+		break;
 		default:
 			$return = 'unset';
 	}
@@ -227,9 +231,9 @@ function mai_get_flex_align( $value ) {
 }
 
 /**
- * Description of expected behavior.
+ * Get columns choices for settings.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return array
  */

@@ -114,9 +114,9 @@ function mai_do_entries_open( $args ) {
 	$attributes['style'] .= sprintf( '--align-text:%s;', mai_get_align_text( $args['align_text'] ) );
 	$attributes['style'] .= sprintf( '--align-text-vertical:%s;', mai_has_string( [ 'left', 'right', 'background' ], $args['image_position'] ) ? mai_get_align_text( $args['align_text_vertical'] ) : 'unset' );
 
-	// Remove border radius if no row or column gap.
-	if ( in_array( '0px', [ $column_gap, $row_gap ], true ) ) {
-		$attributes['style'] .= '--border-radius:0;';
+	// Border radius.
+	if ( '' !== $args['border_radius'] && ( ( 'background' === $args['image_position'] ) || $args['boxed'] ) ) {
+		$attributes['style'] .= sprintf( '--border-radius:%s;', mai_get_unit_value( $args['border_radius'] ) );
 	}
 
 	genesis_markup(

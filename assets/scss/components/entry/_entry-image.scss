@@ -84,6 +84,8 @@
 }
 
 .has-image-background .entry-image-link {
+	--entry-image-link-margin: 0;
+
 	position: absolute;
 	top: 0;
 	left: 0;

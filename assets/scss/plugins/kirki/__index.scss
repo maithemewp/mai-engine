@@ -109,9 +109,12 @@
 	content: url(data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M14.83%204.89l1.34.94-5.81%208.38H9.02L5.78%209.67l1.34-1.25%202.57%202.4z%27%20fill%3D%27%231e8cbe%27%2F%3E%3C%2Fsvg%3E);
 }
 
-/* boxed styling heading */
-#customize-control-mai_archive_post-boxed_heading.customize-control.customize-control-kirki-custom {
-	margin-bottom: -6px;
+/* Standalone heading styling */
+#customize-control-mai-engine-content-archives-post-boxed_heading,
+#customize-control-mai-engine-content-archives-post-boxed_heading .customize-control-title,
+#customize-control-mai-engine-content-archives-post-image_stack_heading,
+#customize-control-mai-engine-content-archives-post-image_stack_heading .customize-control-title {
+	margin-bottom: 0;
 }
 
 /* Kirki responsive columns container */
@@ -166,13 +169,6 @@
 	border: 1px solid #9fa7ae;
 }
 
-.customize-control.customize-control-kirki-radio-buttonset[id$="align_text"] .buttonset,
-.customize-control.customize-control-kirki-radio-buttonset[id$="align_text_vertical"] .buttonset,
-.customize-control.customize-control-kirki-radio-buttonset[id$="align_columns"] .buttonset,
-.customize-control.customize-control-kirki-radio-buttonset[id$="align_columns_vertical"] .buttonset {
-	position: relative;
-}
-
 .customize-control.customize-control-kirki-radio-buttonset[id$="image_width"] .switch-label,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_text"] .switch-label,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_text_vertical"] .switch-label,
@@ -181,22 +177,7 @@
 	flex: 1;
 }
 
-.customize-control.customize-control-kirki-radio-buttonset[id$="align_text"] .switch-label:first-of-type,
-.customize-control.customize-control-kirki-radio-buttonset[id$="align_text_vertical"] .switch-label:first-of-type,
-.customize-control.customize-control-kirki-radio-buttonset[id$="align_columns"] .switch-label:first-of-type,
-.customize-control.customize-control-kirki-radio-buttonset[id$="align_columns_vertical"] .switch-label:first-of-type {
-	position: absolute;
-	right: 0;
-	bottom: 100%;
-	padding: 6px 12px;
-	color: #008dd4 !important;
-	font-size: 11px;
-	text-transform: uppercase;
-	background: transparent !important;
-	border: transparent;
-}
-
-.customize-control.customize-control-kirki-radio-buttonset[id$="columns"] .switch-label:first-of-type,
+.customize-control.customize-control-kirki-radio-buttonset[id$="-columns"] .switch-label:first-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_md"] .switch-label:first-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_sm"] .switch-label:first-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_xs"] .switch-label:first-of-type {
@@ -206,38 +187,33 @@
 .customize-control.customize-control-kirki-radio-buttonset[id$="page-header-text-align"] .switch-label:first-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="title_size"] .switch-label:first-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="image_width"] .switch-label:first-of-type,
-.customize-control.customize-control-kirki-radio-buttonset[id$="columns"] .switch-label:nth-of-type(2),
+.customize-control.customize-control-kirki-radio-buttonset[id$="-columns"] .switch-label:nth-of-type(2),
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_md"] .switch-label:nth-of-type(2),
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_sm"] .switch-label:nth-of-type(2),
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_xs"] .switch-label:nth-of-type(2),
-.customize-control.customize-control-kirki-radio-buttonset[id$="align_text"] .switch-label:nth-of-type(2),
-.customize-control.customize-control-kirki-radio-buttonset[id$="align_text_vertical"] .switch-label:nth-of-type(2),
-.customize-control.customize-control-kirki-radio-buttonset[id$="align_columns"] .switch-label:nth-of-type(2),
-.customize-control.customize-control-kirki-radio-buttonset[id$="align_columns_vertical"] .switch-label:nth-of-type(2) {
+.customize-control.customize-control-kirki-radio-buttonset[id$="align_text"] .switch-label:first-of-type,
+.customize-control.customize-control-kirki-radio-buttonset[id$="align_text_vertical"] .switch-label:first-of-type,
+.customize-control.customize-control-kirki-radio-buttonset[id$="align_columns"] .switch-label:first-of-type,
+.customize-control.customize-control-kirki-radio-buttonset[id$="align_columns_vertical"] .switch-label:first-of-type,
+.customize-control.customize-control-kirki-radio-buttonset[id$="column_gap"] .switch-label:first-of-type,
+.customize-control.customize-control-kirki-radio-buttonset[id$="row_gap"] .switch-label:first-of-type {
 	border-radius: 3px 0 0 3px;
 }
 
 .customize-control.customize-control-kirki-radio-buttonset[id$="page-header-text-align"] .switch-label:last-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="title_size"] .switch-label:last-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="image_width"] .switch-label:last-of-type,
-.customize-control.customize-control-kirki-radio-buttonset[id$="columns"] .switch-label:first-of-type,
+.customize-control.customize-control-kirki-radio-buttonset[id$="-columns"] .switch-label:first-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_md"] .switch-label:first-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_sm"] .switch-label:first-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="columns_xs"] .switch-label:first-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_text"] .switch-label:last-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_text_vertical"] .switch-label:last-of-type,
 .customize-control.customize-control-kirki-radio-buttonset[id$="align_columns"] .switch-label:last-of-type,
-.customize-control.customize-control-kirki-radio-buttonset[id$="align_columns_vertical"] .switch-label:last-of-type {
+.customize-control.customize-control-kirki-radio-buttonset[id$="align_columns_vertical"] .switch-label:last-of-type,
+.customize-control.customize-control-kirki-radio-buttonset[id$="column_gap"] .switch-label:last-of-type,
+.customize-control.customize-control-kirki-radio-buttonset[id$="row_gap"] .switch-label:last-of-type {
 	border-radius: 0 3px 3px 0;
-}
-
-.customize-control.customize-control-kirki-radio-buttonset[id$="align_text"] .switch-label:first-of-type:hover,
-.customize-control.customize-control-kirki-radio-buttonset[id$="align_text_vertical"] .switch-label:first-of-type:hover,
-.customize-control.customize-control-kirki-radio-buttonset[id$="align_columns"] .switch-label:first-of-type:hover,
-.customize-control.customize-control-kirki-radio-buttonset[id$="align_columns_vertical"] .switch-label:first-of-type:hover {
-	text-decoration: underline !important;
-	outline: none !important;
-	box-shadow: none !important;
 }
 
 .customize-control.customize-control-kirki-dimensions .wrapper {
