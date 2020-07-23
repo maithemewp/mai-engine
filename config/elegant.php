@@ -23,12 +23,14 @@ return [
 			'secondary' => '#006cff', // Blue.
 		],
 		'fonts'  => [
-			'body'    => 'Roboto:300',
+			'body'    => 'Roboto:300,500',
 			'heading' => 'Playfair Display:400',
 		],
 		'extra'  => [
 			'font-scale'           => '1.29',
+			'heading-line-height'  => '1.4',
 			'button-border-radius' => '100px',
+			'menu-font-size'       => 'var(--font-size-sm)',
 		],
 	],
 	'theme-support' => [
@@ -41,6 +43,18 @@ return [
 					'slug'     => 'studio',
 				],
 			],
+		],
+	],
+	'page-header'   => [
+		'archive'          => '*',
+		'single'           => '*',
+		'image'            => '',
+		'background-color' => 'primary',
+		'text-color'       => 'light',
+		'divider-color'    => 'white',
+		'spacing'          => [
+			'top'    => '5vw',
+			'bottom' => '5vw',
 		],
 	],
 ];
