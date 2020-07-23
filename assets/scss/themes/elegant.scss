@@ -1,0 +1,5 @@
+@import "default";
+
+.has-studio-gradient-background {
+	background: -webkit-radial-gradient(left top, circle cover, var(--color-primary) 15%, var(--color-secondary) 50%, var(--color-link) 85%);
+}
