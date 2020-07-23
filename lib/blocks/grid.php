@@ -1491,50 +1491,15 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
-		'mai_grid_block_spacing_top'               => [
-			'name'     => 'spacing_top',
-			'label'    => esc_html__( 'Top Spacing', 'mai-engine' ),
+		'mai_grid_block_remove_spacing'           => [
+			'name'     => 'remove_spacing',
+			'label'    => '',
 			'block'    => [ 'post', 'term', 'user' ],
-			'type'     => 'button_group',
-			'sanitize' => 'esc_html',
-			'default'    => '',
-			'choices'    => [
-				''   => esc_html__( 'None', 'mai-engine' ),
-				'xs' => esc_html__( 'XS', 'mai-engine' ),
-				'sm' => esc_html__( 'SM', 'mai-engine' ),
-				'md' => esc_html__( 'MD', 'mai-engine' ),
-				'lg' => esc_html__( 'LG', 'mai-engine' ),
-				'xl' => esc_html__( 'XL', 'mai-engine' ),
-			],
-			'atts'       => [
-				'wrapper' => [
-					'width' => '',
-					'class' => 'mai-grid-button-group',
-					'id'    => '',
-				],
-			],
-		],
-		'mai_grid_block_spacing_bottom'                  => [
-			'name'     => 'spacing_bottom',
-			'label'    => esc_html__( 'Bottom Spacing', 'mai-engine' ),
-			'block'    => [ 'post', 'term', 'user' ],
-			'type'     => 'button_group',
-			'sanitize' => 'esc_html',
-			'default'    => '',
-			'choices'    => [
-				''   => esc_html__( 'None', 'mai-engine' ),
-				'xs' => esc_html__( 'XS', 'mai-engine' ),
-				'sm' => esc_html__( 'SM', 'mai-engine' ),
-				'md' => esc_html__( 'MD', 'mai-engine' ),
-				'lg' => esc_html__( 'LG', 'mai-engine' ),
-				'xl' => esc_html__( 'XL', 'mai-engine' ),
-			],
-			'atts'       => [
-				'wrapper' => [
-					'width' => '',
-					'class' => 'mai-grid-button-group',
-					'id'    => '',
-				],
+			'type'     => 'true_false',
+			'sanitize' => 'mai_sanitize_bool',
+			'default'  => '',
+			'atts'     => [
+				'message' => esc_html__( 'Remove bottom spacing', 'mai-engine' ),
 			],
 		],
 
