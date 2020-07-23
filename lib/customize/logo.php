@@ -13,7 +13,7 @@ add_action( 'init', 'mai_logo_customizer_settings' );
 /**
  * Add logo customizer settings.
  *
- * @since 2.3.0 Added hide site title and tagline settings.
+ * @since 2.3.0 Added show tagline setting.
  *
  * @return  void
  */
@@ -24,45 +24,11 @@ function mai_logo_customizer_settings() {
 		$config_id,
 		[
 			'type'     => 'checkbox',
-			'settings' => 'hide-site-title',
-			'label'    => esc_html__( 'Hide Site Title', 'mai-engine' ),
+			'settings' => 'show-tagline',
+			'label'    => esc_html__( 'Show Tagline', 'mai-engine' ),
 			'section'  => 'title_tagline',
 			'priority' => 30,
-			'default'  => false,
-			'output'   => [
-				[
-					'element'       => ':root',
-					'property'      => '--site-title-display',
-					'value_pattern' => 'none',
-					'exclude'       => [
-						false,
-						0,
-					],
-				],
-			],
-		]
-	);
-
-	Kirki::add_field(
-		$config_id,
-		[
-			'type'     => 'checkbox',
-			'settings' => 'hide-tagline',
-			'label'    => esc_html__( 'Hide Tagline', 'mai-engine' ),
-			'section'  => 'title_tagline',
-			'priority' => 30,
-			'default'  => false,
-			'output'   => [
-				[
-					'element'       => ':root',
-					'property'      => '--site-description-display',
-					'value_pattern' => 'none',
-					'exclude'       => [
-						false,
-						0,
-					],
-				],
-			],
+			'default'  => true,
 		]
 	);
 

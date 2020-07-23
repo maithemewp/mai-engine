@@ -202,17 +202,16 @@ add_filter( 'genesis_attr_site-title', 'mai_hide_site_title' );
  * Adds class for screen readers to site title.
  * This will keep the site title markup but will not have any visual presence on the page.
  *
- * @since   0.3.0
+ * @since 0.3.0
  *
- * @param   array $attributes Current attributes.
+ * @param array $attributes Current attributes.
  *
- * @return  array  The modified attributes.
+ * @return array The modified attributes.
  */
 function mai_hide_site_title( $attributes ) {
-	if ( ! has_custom_logo() ) {
-		return $attributes;
+	if ( has_custom_logo() ) {
+		$attributes['class'] .= ' screen-reader-text';
 	}
-	$attributes['class'] .= ' screen-reader-text';
 
 	return $attributes;
 }
@@ -224,18 +223,19 @@ add_filter( 'genesis_attr_site-description', 'mai_hide_site_description' );
  * Adds class for screen readers to site description.
  * This will keep the site description markup but will not have any visual presence on the page.
  *
- * @since  0.3.0
+ * @since 2.3.0 Added check for show_tagline option.
+ * @since 0.3.0
  *
- * @param  array $attributes Current attributes.
+ * @param array $attributes Current attributes.
  *
- * @return array  The modified attributes.
+ * @return array The modified attributes.
  */
 function mai_hide_site_description( $attributes ) {
-	if ( ! has_custom_logo() ) {
-		return $attributes;
-	}
+	$show = mai_get_option( 'show-tagline', true );
 
-	$attributes['class'] .= ' screen-reader-text';
+	if ( has_custom_logo() || ! $show ) {
+		$attributes['class'] .= ' screen-reader-text';
+	}
 
 	return $attributes;
 }

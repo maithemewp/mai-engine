@@ -89,4 +89,6 @@ function mai_handle_existing_customizer_sections( $wp_customize ) {
 	$wp_customize->remove_section( 'genesis_single' );
 	$wp_customize->remove_section( 'genesis_archives' );
 	$wp_customize->remove_section( 'genesis_footer' );
+
+	$wp_customize->get_setting( 'custom_logo' )->transport = 'refresh';
 }
