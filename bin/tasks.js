@@ -24,7 +24,9 @@ module.exports = {
 
 	'build': [ [ 'build:css', 'build:js', 'build:img', 'build:i18n' ] ],
 
-	'create': [ require( './create' ) ],
+	'create:theme': [ require( './create' ) ],
+
+	'create': [ [ 'create:theme', 'build:css' ] ],
 
 	'watch': [ require( './watch' ) ],
 	'default': [ [ 'build', 'watch' ] ],
