@@ -529,6 +529,8 @@ return [
 			'id'         => 'before-header',
 			'location'   => 'genesis_before_header',
 			'menu_order' => 5,
+			'before'     => '<div class="before-header">',
+			'after'      => '</div>',
 		],
 		[
 			'id'         => 'header-left',
