@@ -496,7 +496,7 @@ return [
 			'top'    => '10vw',
 			'bottom' => '10vw',
 		],
-		'text-align'              => '',
+		'text-align'              => 'center',
 		'divider'                 => '',
 		'divider-height'          => 'md',
 		'divider-color'           => 'white',
