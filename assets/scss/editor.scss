@@ -62,13 +62,12 @@ p {
 
 @each $breakpoint-name, $breakpoint-size in $breakpoints {
 
-	.wp-block[data-content-width="#{ $breakpoint-name }"] {
-
-		div div > .wp-block-cover,
-		div > .wp-block-group {
-			--content-max-width: var(--breakpoint-#{ $breakpoint-name });
-		}
+	// We don't need to worry about nested block here, since their content should never be larger than the parent.
+	.wp-block[data-content-width="#{ $breakpoint-name }"] .wp-block-cover__inner-container,
+	.wp-block[data-content-width="#{ $breakpoint-name }"] .wp-block-group__inner-container {
+		max-width: var(--breakpoint-#{ $breakpoint-name });
 	}
+
 }
 
 @each $padding-setting in $padding_settings {
