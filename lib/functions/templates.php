@@ -151,11 +151,21 @@ function mai_get_template_parts() {
 
 			if ( $posts->have_posts() ) {
 				while ( $posts->have_posts() ) : $posts->the_post();
-					global $post;
+					global $post, $wp_embed;
 
-					ob_start();
-					the_content();
-					$content = ob_get_clean();
+					$content = get_the_content();
+
+					if ( $content ) {
+						$content = $wp_embed->autoembed( $content );              // WP runs priority 8.
+						$content = $wp_embed->run_shortcode( $content );          // WP runs priority 8.
+						$content = do_blocks( $content );                         // WP runs priority 9.
+						$content = wptexturize( $content );                       // WP runs priority 10.
+						$content = wpautop( $content );                           // WP runs priority 10.
+						$content = shortcode_unautop( $content );                 // WP runs priority 10.
+						$content = wp_make_content_images_responsive( $content ); // WP runs priority 10.
+						$content = do_shortcode( $content );                      // WP runs priority 11.
+						$content = convert_smilies( $content );                   // WP runs priority 20.
+					}
 
 					$template_parts[ $post->post_status ][ $post->post_name ] = $content;
 
