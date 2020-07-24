@@ -189,8 +189,43 @@ function mai_has_alignfull_first() {
 			return $has_alignfull_first;
 		}
 
-		if ( ! mai_has_page_header() && ! mai_is_element_hidden( 'entry_title' ) ) {
-			return $has_alignfull_first;
+		// TODO: What happens if ! mai_has_custom_loop() ?
+		$args = mai_get_template_args();
+
+		// Check if elements shown before 'content' are hidden.
+		if ( $args && isset( $args['show'] ) && $args['show'] ) {
+			foreach ( $args['show'] as $element ) {
+				if ( 'content' !== $element ) {
+					// Bail if a hook. We could still hit an issue with social links, etc. displaying.
+					if ( mai_has_string( 'genesis_', $element ) ) {
+						continue;
+					}
+
+					if ( 'image' === $element ) {
+						if ( get_post_thumbnail_id() && ! mai_is_element_hidden( 'featured_image' ) ) {
+							return $has_alignfull_first;
+						}
+					} elseif ( 'title' === $element ) {
+						if ( ! mai_has_page_header() && ! mai_is_element_hidden( 'entry_title' ) ) {
+							return $has_alignfull_first;
+						}
+					} elseif ( 'excerpt' === $element ) {
+						if ( get_the_excerpt() && ! mai_is_element_hidden( 'entry_excerpt' ) ) {
+							return $has_alignfull_first;
+						}
+					} elseif ( 'header_meta' === $element ) {
+						if ( isset( $args['header_meta'] ) && $args['header_meta'] ) {
+							return $has_alignfull_first;
+						}
+					} elseif ( ! mai_is_element_hidden( $element ) ) {
+						return $has_alignfull_first;
+					}
+
+				} else {
+					// Stop checking once we hit content.
+					break;
+				}
+			}
 		}
 
 		$post_object = get_post( get_the_ID() );
@@ -302,6 +337,7 @@ function mai_has_transparent_header() {
 	$option  = mai_get_option( 'site-header-transparent', $default );
 	$hidden  = mai_is_element_hidden( 'transparent_header' );
 
+	// return $option && ! $hidden;
 	return $option && ! $hidden && ( mai_has_page_header() || mai_has_alignfull_first() );
 }
 
