@@ -15,16 +15,13 @@ add_action( 'current_screen', 'mai_create_template_parts' );
  * Only runs on main template part admin list.
  *
  * @since 2.0.0
+ * @since 2.3.1 Removed unnecesarry wp_doing_ajax() call since solving https://github.com/maithemewp/mai-engine/issues/251.
  *
  * @param WP_Screen $current_screen Current WP_Screen object.
  *
  * @return void
  */
 function mai_create_template_parts( $current_screen ) {
-	if ( wp_doing_ajax() ) {
-		return;
-	}
-
 	if ( ( 'post_type' !== $current_screen->post_type ) && ( 'edit-wp_template_part' !== $current_screen->id ) ) {
 		return;
 	}
@@ -81,7 +78,7 @@ function mai_template_part_post_state( $states, $post ) {
 	$template_parts = mai_get_config( 'template-parts' );
 
 	foreach ( $template_parts as $template_part ) {
-		if ( $template_part['id'] === $post->post_name && $post->post_content ) {
+		if ( $template_part['id'] === $post->post_name && 'publish' === $post->post_status && $post->post_content ) {
 			$states[] = __( 'Active', 'mai-engine' );
 		}
 	}

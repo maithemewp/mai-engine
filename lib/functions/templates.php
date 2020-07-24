@@ -122,24 +122,27 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
  *
  * @since 2.0.1
  * @since 2.2.2 Now returns an array of template part content content keyed by slug instead of an array of WP_Post objects.
+ * @since 2.3.1 Removed the is_admin() check since this was finally solved https://github.com/maithemewp/mai-engine/issues/251.
+ *              Changed return values to check and use post status.
  *
  * @return array
  */
 function mai_get_template_parts() {
-	static $template_parts = [];
+	static $template_parts = null;
 
-	// Always run query in admin so mai_template_part_exists() doesn't break when auto creating default template parts.
-	if ( is_admin() || empty( $template_parts ) ) {
-		$config = mai_get_config( 'template-parts' );
-		$slugs  = wp_list_pluck( $config, 'id' );
+	if ( is_null( $template_parts ) ) {
+		$template_part = [];
+		$config        = mai_get_config( 'template-parts' );
+		$slugs         = wp_list_pluck( $config, 'id' );
 
 		if ( $slugs ) {
 
 			$posts = new WP_Query(
 				[
 					'post_type'              => 'wp_template_part',
-					'post_status'            => 'publish',
+					'post_status'            => 'any',
 					'post_name__in'          => $slugs,
+					'posts_per_page'         => 500, // Force a high number. Without setting this, it uses the WP posts_per_page setting, which could break things.
 					'no_found_rows'          => true,
 					'update_post_meta_cache' => false,
 					'update_post_term_cache' => false,
@@ -147,15 +150,14 @@ function mai_get_template_parts() {
 			);
 
 			if ( $posts->have_posts() ) {
-				while ( $posts->have_posts() ) :
-					$posts->the_post();
+				while ( $posts->have_posts() ) : $posts->the_post();
 					global $post;
 
 					ob_start();
 					the_content();
 					$content = ob_get_clean();
 
-					$template_parts[ $post->post_name ] = $content;
+					$template_parts[ $post->post_status ][ $post->post_name ] = $content;
 
 				endwhile;
 
@@ -164,7 +166,22 @@ function mai_get_template_parts() {
 		}
 	}
 
-	return $template_parts;
+	$return = [];
+
+	if ( is_admin() ) {
+		foreach ( $template_parts as $status => $parts ) {
+			$return = array_merge( $return, $parts );
+		}
+	} else {
+		$return = isset( $template_parts[ 'publish' ] ) ? $template_parts[ 'publish' ] : [];
+
+		if ( current_user_can( 'manage_options' ) ) {
+			$private = isset( $template_parts[ 'private' ] ) ? $template_parts[ 'private' ] : [];
+			$return  = array_merge( $return, $private );
+		}
+	}
+
+	return $return;
 }
 
 /**
