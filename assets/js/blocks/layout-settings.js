@@ -37,7 +37,7 @@ const sizeScale = [
 
 const contentSizeScale = [
 	{
-		label: __( 'DFLT', 'mai-engine' ),
+		label: __( 'Auto', 'mai-engine' ),
 		value: '',
 	},
 	...sizeScale
@@ -112,8 +112,6 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 				<BlockEdit {...props} />
 			);
 		}
-
-		console.log( props.attributes );
 
 		const {
 				contentWidth,
