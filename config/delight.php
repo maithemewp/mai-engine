@@ -15,7 +15,7 @@ return [
 		'colors'        => [
 			'link'         => '#067ccc',
 			'primary'      => '#067ccc',
-			'secondary'    => '#6c757d',
+			'secondary'    => '#ebe9eb',
 			'heading'      => '#323232',
 			'body'         => '#515151',
 		],
@@ -24,7 +24,7 @@ return [
 			'heading'      => 'Playfair Display:700',
 		],
 		'font-sizes'    => [
-		// 	'base'         => 15,
+			'base'         => 15,
 		],
 		'font-scale'     => 1.2,
 	],

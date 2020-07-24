@@ -17,10 +17,6 @@ html {
 	-moz-osx-font-smoothing: unset;
 }
 
-.button-secondary {
-	--button-font-weight: var(--body-font-weight);
-}
-
 .is-single {
 
 	&:not(.home) .content > .entry {
@@ -33,6 +29,8 @@ html {
 
 .nav-after-header {
 	--menu-item-link-color: var(--color-white);
+	--menu-font-size: 0.8em;
+
 	letter-spacing: 0.1rem;
 	text-transform: uppercase;
 	background-color: var(--color-heading);
