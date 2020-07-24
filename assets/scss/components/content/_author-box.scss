@@ -3,7 +3,7 @@
 	grid-column-gap: var(--spacing-lg);
 	grid-template-rows: 1fr;
 	grid-template-columns: auto 1fr;
-	margin: 0 0 var(--spacing-xxl);
+	margin: var(--spacing-lg) 0 ;
 	padding: var(--spacing-xl);
 	border: var(--border);
 	border-radius: var(--border-radius);
