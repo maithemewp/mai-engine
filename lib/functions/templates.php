@@ -133,11 +133,11 @@ function mai_get_template_parts() {
 	if ( is_null( $template_parts ) ) {
 		$template_part = [];
 		$config        = mai_get_config( 'template-parts' );
-		$slugs         = wp_list_pluck( $config, 'id' );
+		$slugs         = $config ? wp_list_pluck( $config, 'id' ) : [];
 
 		if ( $slugs ) {
 
-			$posts = new WP_Query(
+			$posts = get_posts(
 				[
 					'post_type'              => 'wp_template_part',
 					'post_status'            => 'any',
@@ -149,11 +149,11 @@ function mai_get_template_parts() {
 				]
 			);
 
-			if ( $posts->have_posts() ) {
-				while ( $posts->have_posts() ) : $posts->the_post();
-					global $post, $wp_embed;
+			if ( $posts ) {
+				foreach ( $posts as $post ) {
+					global $wp_embed;
 
-					$content = get_the_content();
+					$content = $post->post_content;
 
 					if ( $content ) {
 						$content = $wp_embed->autoembed( $content );              // WP runs priority 8.
@@ -168,26 +168,25 @@ function mai_get_template_parts() {
 					}
 
 					$template_parts[ $post->post_status ][ $post->post_name ] = $content;
-
-				endwhile;
-
+				}
 			}
-			wp_reset_postdata();
 		}
 	}
 
 	$return = [];
 
-	if ( is_admin() ) {
-		foreach ( $template_parts as $status => $parts ) {
-			$return = array_merge( $return, $parts );
-		}
-	} else {
-		$return = isset( $template_parts[ 'publish' ] ) ? $template_parts[ 'publish' ] : [];
+	if ( $template_parts ) {
+		if ( is_admin() ) {
+			foreach ( $template_parts as $status => $parts ) {
+				$return = array_merge( $return, $parts );
+			}
+		} else {
+			$return = isset( $template_parts[ 'publish' ] ) ? $template_parts[ 'publish' ] : [];
 
-		if ( current_user_can( 'manage_options' ) ) {
-			$private = isset( $template_parts[ 'private' ] ) ? $template_parts[ 'private' ] : [];
-			$return  = array_merge( $return, $private );
+			if ( current_user_can( 'manage_options' ) ) {
+				$private = isset( $template_parts[ 'private' ] ) ? $template_parts[ 'private' ] : [];
+				$return  = array_merge( $return, $private );
+			}
 		}
 	}
 

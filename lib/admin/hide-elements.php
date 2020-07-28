@@ -68,7 +68,8 @@ add_filter( 'acf/location/rule_match/mai_public_post_type', 'mai_acf_public_post
  * @return bool
  */
 function mai_acf_public_post_type_rule_match( $result, $rule, $screen ) {
-	return isset( $screen['post_type'] ) && in_array( $screen['post_type'], get_post_types( [ 'public' => true ] ), true );
+	$post_types = get_post_types( [ 'public' => true ] );
+	return $post_types && isset( $screen['post_type'] ) && isset( $post_types[ $screen['post_type'] ] );
 }
 
 add_filter( 'acf/load_field/key=hide_elements', 'mai_load_hide_elements_field' );
