@@ -6,6 +6,7 @@
 	width: 100%;
 	margin: 0;
 	font-size: var(--menu-font-size, var(--font-size-md));
+	font-family: var(--menu-font-family, inherit);
 	line-height: var(--menu-line-height, 1.219); // Perfect fourth.
 	columns: var(--menu-columns, auto);
 	list-style-type: none;

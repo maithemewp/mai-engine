@@ -28,6 +28,9 @@ return [
 			'heading' => 'Montserrat:600',
 			'button'  => 'Montserrat:600',
 		],
+		'extra'  => [
+			'menu-font-family' => 'Montserrat',
+		],
 	],
 	'theme-support' => [
 		'add' => [
