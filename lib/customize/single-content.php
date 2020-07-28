@@ -91,8 +91,9 @@ function mai_get_single_content_settings() {
 			],
 		],
 		[
-			'type'    => 'divider',
-			'default' => '<hr>',
+			'type'     => 'custom',
+			'settings' => 'single-content-field-divider',
+			'default'  => '<hr>',
 		],
 		[
 			'type'            => 'image',

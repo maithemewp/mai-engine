@@ -568,6 +568,11 @@ function mai_get_content_archive_settings() {
 			],
 		],
 		[
+			'type'     => 'custom',
+			'settings' => 'content-archives-field-divider',
+			'default'  => '<hr>',
+		],
+		[
 			'settings'        => 'page-header-image',
 			'label'           => __( 'Page Header default image', 'mai-engine' ),
 			'type'            => 'image',
