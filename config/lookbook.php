@@ -28,6 +28,7 @@ return [
 		],
 		'extra'  => [
 			'border-radius'    => '0',
+			'body-line-height' => '1.875',
 			'menu-font-family' => 'var(--heading-font-family)',
 		],
 	],
