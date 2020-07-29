@@ -1,40 +1,4 @@
 <?php
-
-add_action( 'genesis_before_loop', function() {
-
-	// if ( current_user_can( 'manage_options' ) ) {
-	// 	if ( function_exists( 'vd' ) ) {
-	// 		$meta = get_post_meta( get_the_ID(), 'dpsp_share_options', true );
-	// 		vd( $meta );
-	// 	}
-	// }
-
-	$args = array(
-		'post_type'      => 'post',
-		'post_status'    => 'publish',
-		'posts_per_page' => 50,
-		'offset'         => 0,
-	);
-
-	$posts = new WP_Query( $args );
-
-	if ( $posts->have_posts() ) {
-
-		while ( $posts->have_posts() ) : $posts->the_post();
-			$meta = get_post_meta( get_the_ID(), 'dpsp_share_options', true );
-			if ( $meta['custom_description'] ) {
-				vd( get_the_ID() );
-				vd( $meta );
-			}
-		endwhile;
-
-	} // if
-	wp_reset_postdata();
-
-});
-
-
-
 /**
  * Mai Engine.
  *
