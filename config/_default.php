@@ -227,7 +227,7 @@ return [
 				'src'       => mai_get_asset_url( 'header.js' ),
 				'async'     => true,
 				'condition' => function () {
-					return mai_has_sticky_header() || mai_has_transparent_header();
+					return mai_has_sticky_header_enabled() || mai_has_transparent_header_enabled();
 				},
 			],
 

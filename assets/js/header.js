@@ -7,13 +7,15 @@
 	var skipLink       = document.getElementsByClassName( 'genesis-skip-link' )[ 0 ];
 	var beforeHeader   = document.getElementsByClassName( 'before-header' )[ 0 ];
 	var siteHeader     = document.getElementsByClassName( 'site-header' )[ 0 ];
+	var pageHeader     = document.getElementsByClassName( 'page-header' )[ 0 ];
 	var navAfterHeader = document.getElementsByClassName( 'nav-after-header' )[ 0 ];
 	var siteInner      = document.getElementsByClassName( 'site-inner' )[ 0 ];
-	var hasSticky      = body.classList.contains( 'has-sticky-header' );
-	var hasTransparent = body.classList.contains( 'has-transparent-header' );
-	var hasPageHeader  = body.classList.contains( 'has-page-header' );
-	var hasAlignFull   = body.classList.contains( 'has-alignfull-first' );
 	var breakpointSm   = window.getComputedStyle( document.documentElement ).getPropertyValue( '--breakpoint-sm' );
+	var hasSticky      = siteHeader && body.classList.contains( 'has-sticky-header' );
+	var hasTransparent = siteHeader && body.classList.contains( 'has-transparent-header-enabled' );
+	var hasPageHeader  = pageHeader && body.classList.contains( 'has-page-header' );
+	var hasAlignFull   = 0 !== document.querySelectorAll( '.content-sidebar-wrap > .content > .entry > .entry-content > .alignfull:first-child' ).length;
+	var hasBreadcrumbs = 0 !== document.getElementsByClassName( 'breadcrumb' ).length;
 	var firstElement   = hasAlignFull ? document.querySelectorAll( '.entry-content > .alignfull' )[0] : siteInner.firstChild;
 	var timeout        = false;
 
@@ -53,7 +55,7 @@
 
 		headerHeight += navAfterHeader ? navAfterHeader.offsetHeight : 0;
 
-		if ( hasSticky || hasAlignFull || hasPageHeader ) {
+		if ( hasSticky || hasPageHeader || hasAlignFull ) {
 			siteInner.style.marginTop = '-' + headerHeight + 'px';
 		}
 
@@ -70,6 +72,23 @@
 		}
 
 		if ( hasTransparent ) {
+			if ( ! ( hasPageHeader || hasAlignFull ) || ! hasPageHeader && ( hasAlignFull && hasBreadcrumbs ) ) {
+				return;
+			}
+
+			body.classList.add( 'has-transparent-header' );
+
+			var dark = false;
+			if ( hasPageHeader ) {
+				dark = body.classList.contains( 'has-dark-page-header' );
+			} else if ( hasAlignFull ) {
+				dark = firstElement.classList.contains( 'wp-block-cover' ) || ( firstElement.classList.contains( 'wp-block-group' ) && firstElement.classList.contains( 'has-dark-background' ) );
+			}
+
+			if ( dark ) {
+				body.classList.add( 'has-dark-header' );
+			}
+
 			window.addEventListener( 'resize', siteInnerMargin, false );
 			siteInnerMargin();
 		}

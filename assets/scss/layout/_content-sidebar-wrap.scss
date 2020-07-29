@@ -5,14 +5,20 @@
 	grid-template-columns: var(--content-sidebar-wrap-columns, 1fr);
 	width: calc(100% - calc(var(--side-spacing) * 2));
 	max-width: var(--wrap-max-width);
-	margin: var(--content-sidebar-wrap-margin, var(--content-sidebar-wrap-margin-top, var(--spacing-xl)) auto var(--content-sidebar-wrap-margin-bottom, var(--spacing-xl)));
+	margin: var(--content-sidebar-wrap-margin-top, var(--spacing-xxl)) auto var(--content-sidebar-wrap-margin-bottom, var(--spacing-xxl));
 	column-gap: var(--content-sidebar-gap);
+
+	> .content > .entry > .alignfull:first-child,
+	> .content > .entry > .entry-content > .alignfull:first-child {
+		margin-top: calc(var(--content-sidebar-wrap-margin-top, var(--spacing-xxl) * -1));
+	}
+
+	> .content > .entry > .alignfull:last-child,
+	> .content > .entry > .entry-content > .alignfull:last-child {
+		margin-bottom: calc(var(--content-sidebar-wrap-margin-bottom, var(--spacing-xxl) * -1));
+	}
 }
 
-.has-alignfull-first {
-	--content-sidebar-wrap-margin-top: 0;
-	--content-sidebar-wrap-margin-bottom: 0;
-}
 
 .content-sidebar {
 

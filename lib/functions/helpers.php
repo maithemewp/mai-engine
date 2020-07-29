@@ -173,114 +173,6 @@ function mai_sidebar_has_widget( $sidebar, $widget ) {
 }
 
 /**
- * Checks if first block is cover or group block aligned full.
- *
- * @since 0.1.0
- *
- * @return bool
- */
-function mai_has_alignfull_first() {
-	static $has_alignfull_first = null;
-
-	if ( is_null( $has_alignfull_first ) ) {
-		$has_alignfull_first = false;
-
-		if ( ! mai_is_type_single() || ! has_blocks() ) {
-			return $has_alignfull_first;
-		}
-
-		// TODO: What happens if ! mai_has_custom_loop() ?
-		$args = mai_get_template_args();
-
-		// Check if elements shown before 'content' are hidden.
-		if ( $args && isset( $args['show'] ) && $args['show'] ) {
-			foreach ( $args['show'] as $element ) {
-				if ( 'content' !== $element ) {
-					// Bail if a hook. We could still hit an issue with social links, etc. displaying.
-					if ( mai_has_string( 'genesis_', $element ) ) {
-						continue;
-					}
-
-					if ( 'image' === $element ) {
-						if ( get_post_thumbnail_id() && ! mai_is_element_hidden( 'featured_image' ) ) {
-							return $has_alignfull_first;
-						}
-					} elseif ( 'title' === $element ) {
-						if ( ! mai_has_page_header() && ! mai_is_element_hidden( 'entry_title' ) ) {
-							return $has_alignfull_first;
-						}
-					} elseif ( 'excerpt' === $element ) {
-						if ( get_the_excerpt() && ! mai_is_element_hidden( 'entry_excerpt' ) ) {
-							return $has_alignfull_first;
-						}
-					} elseif ( 'header_meta' === $element ) {
-						if ( isset( $args['header_meta'] ) && $args['header_meta'] ) {
-							return $has_alignfull_first;
-						}
-					} elseif ( ! mai_is_element_hidden( $element ) ) {
-						return $has_alignfull_first;
-					}
-
-				} else {
-					// Stop checking once we hit content.
-					break;
-				}
-			}
-		}
-
-		$post_object = get_post( get_the_ID() );
-		$blocks      = (array) parse_blocks( $post_object->post_content );
-		$first       = $blocks[0];
-		$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
-		$align       = isset( $first['attrs']['align'] ) ? $first['attrs']['align'] : '';
-
-		if ( in_array( $block_name, [ 'core/cover', 'core/group' ], true ) && ( 'full' === $align ) ) {
-			$has_alignfull_first = true;
-		}
-	}
-
-	return $has_alignfull_first;
-}
-
-/**
- * Checks if first block is a cover or dark background group block aligned full.
- *
- * @since 2.1.1
- *
- * @return bool
- */
-function mai_has_dark_alignfull_first() {
-	static $has_dark_alignfull_first = null;
-
-	if ( is_null( $has_dark_alignfull_first ) ) {
-		$has_dark_alignfull_first = false;
-
-		if ( ! mai_is_type_single() || ! has_blocks() ) {
-			return $has_dark_alignfull_first;
-		}
-
-		$post_object = get_post( get_the_ID() );
-		$blocks      = (array) parse_blocks( $post_object->post_content );
-		$first       = $blocks[0];
-		$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
-		$align       = isset( $first['attrs']['align'] ) ? $first['attrs']['align'] : '';
-
-		if ( 'full' === $align ) {
-			if ( 'core/group' === $block_name ) {
-				if ( isset( $first['attrs']['backgroundColor'] ) ) {
-					$has_dark_alignfull_first = ! mai_is_light_color( $first['attrs']['backgroundColor'] );
-				}
-			} elseif ( 'core/cover' === $block_name ) {
-				// TODO: Having cover first doesn't necessarily mean it's a light header.
-				$has_dark_alignfull_first = true;
-			}
-		}
-	}
-
-	return $has_dark_alignfull_first;
-}
-
-/**
  * Checks if current page has a sidebar.
  *
  * @since 0.1.0
@@ -311,62 +203,25 @@ function mai_has_boxed_container() {
 }
 
 /**
- * Checks if site has sticky header.
+ * Checks if site has sticky header enabled.
  *
  * @since 0.1.0
  *
  * @return bool
  */
-function mai_has_sticky_header() {
-	$default = current_theme_supports( 'sticky-header' );
-	$option  = mai_get_option( 'site-header-sticky', $default );
-	$hidden  = mai_is_element_hidden( 'sticky_header' );
-
-	return $option && ! $hidden;
+function mai_has_sticky_header_enabled() {
+	return mai_get_option( 'site-header-sticky', current_theme_supports( 'sticky-header' ) );
 }
 
 /**
- * Check if site has transparent header.
+ * Check if site has transparent header enabled.
  *
  * @since 0.1.0
  *
  * @return bool
  */
-function mai_has_transparent_header() {
-	$default = current_theme_supports( 'transparent-header' );
-	$option  = mai_get_option( 'site-header-transparent', $default );
-	$hidden  = mai_is_element_hidden( 'transparent_header' );
-
-	// return $option && ! $hidden;
-	return $option && ! $hidden && ( mai_has_page_header() || mai_has_alignfull_first() );
-}
-
-/**
- * Check of the page has a light site header background.
- *
- * @since 0.3.0
- *
- * @return bool
- */
-function mai_has_light_site_header() {
-	static $has_light_site_header = null;
-
-	if ( ! is_null( $has_light_site_header ) ) {
-		return $has_light_site_header;
-	}
-
-	$has_light_site_header = true;
-
-	if ( mai_has_transparent_header() ) {
-		if ( mai_has_page_header() ) {
-			$has_light_site_header = mai_has_light_page_header();
-		} else {
-			// TODO: Having alignfull first doesn't necessarily mean it's a light header.
-			$has_light_site_header = ! mai_has_dark_alignfull_first();
-		}
-	}
-
-	return $has_light_site_header;
+function mai_has_transparent_header_enabled() {
+	return mai_get_option( 'site-header-transparent', current_theme_supports( 'transparent-header' ) );
 }
 
 /**

@@ -66,22 +66,14 @@ function mai_body_classes( $classes ) {
 	}
 
 	// Add sticky header class.
-	if ( mai_has_sticky_header() ) {
+	if ( mai_has_sticky_header_enabled() && ! mai_is_element_hidden( 'sticky_header' ) ) {
 		$classes[] = 'has-sticky-header';
 	}
 
 	// Add transparent header class.
-	if ( mai_has_transparent_header() ) {
-		$classes[] = 'has-transparent-header';
+	if ( mai_has_transparent_header_enabled() && ! mai_is_element_hidden( 'transparent_header' ) ) {
+		$classes[] = 'has-transparent-header-enabled';
 	}
-
-	// Add alignfull first class.
-	if ( mai_has_alignfull_first() ) {
-		$classes[] = 'has-alignfull-first';
-	}
-
-	// Add site header shade class.
-	$classes[] = mai_has_light_site_header() ? 'has-light-header' : 'has-dark-header';
 
 	// Add page header classes.
 	$has_page_header = mai_has_page_header();
