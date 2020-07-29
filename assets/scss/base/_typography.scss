@@ -58,9 +58,13 @@ i {
 }
 
 blockquote {
-	margin: var(--blockquote-margin, (var(--spacing-md) auto));
-	padding: var(--spacing-md);
+	margin: var(--blockquote-margin, (1em auto));
+	padding: var(--blockquote-padding, 1em);
+	font-family: var(--blockquote-font-family, inherit);
 	font-style: var(--blockquote-font-style, italic);
+	border-top: var(--blockquote-border-top, 0);
+	border-right: var(--blockquote-border-right, 0);
+	border-bottom: var(--blockquote-border-bottom, 0);
 	border-left: var(--blockquote-border-left, var(--border));
 
 	--paragraph-padding: (var(--row-gap) 0);

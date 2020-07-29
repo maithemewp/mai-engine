@@ -1,7 +1,4 @@
 .wp-block-quote {
-	margin: 0 0 1em 0;
-	padding-left: 1em;
-	border-left: var(--border);
 
 	cite,
 	footer,
@@ -17,17 +14,26 @@
 		padding-right: 1em;
 		padding-left: 0;
 		border-right: var(--border);
-		border-left: none;
+		border-left: 0;
 	}
 
 	&.has-text-align-center,
 	&.has-text-align-center {
 		padding-left: 0;
-		border: none;
 	}
 
 	&.is-style-large,
 	&.is-large {
-		border: none;
+		padding: var(--blockquote-padding, 1em);
+
+		p {
+			font-style: var(--blockquote-font-style, italic);
+		}
+
+		cite,
+		footer {
+			font-size: var(--caption-font-size, var(--font-size-xs));
+			text-align: inherit;
+		}
 	}
 }
