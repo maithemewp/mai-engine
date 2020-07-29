@@ -244,7 +244,7 @@ add_action( 'wp_head', 'mai_enqueue_desktop_styles' );
  * @return void
  */
 function mai_enqueue_desktop_styles() {
-	$file       = 'assets/css/desktop/desktop.min.css';
+	$file       = 'assets/css/desktop.min.css';
 	$path       = mai_get_dir() . $file;
 	$url        = mai_get_url() . $file;
 	$breakpoint = mai_get_option( 'mobile-menu-breakpoint', mai_get_breakpoint() );

@@ -37,7 +37,20 @@ const pxtoremConfig = pxtorem( {
 	media_query: config.css.remmediaquery,
 } );
 
-module.exports.theme = function() {
+module.exports.main = function() {
+	return gulp.src( './assets/scss/main.scss' )
+		.pipe( plumber() )
+		.pipe( rename( 'main.min.scss' ) )
+		.pipe( sass.sync( {
+			outputStyle: 'compressed',
+			includePaths: [].concat( bourbon )
+		} ) )
+		.pipe( postcss( postProcessors ) )
+		.pipe( gulp.dest( './assets/css/' ) )
+		.pipe( notify( { message: config.messages.css } ) );
+};
+
+module.exports.themes = function() {
 	return map( fs.readdirSync( './assets/scss/themes/' ), function( stylesheet ) {
 		return gulp.src( './assets/scss/themes/' + stylesheet )
 			.pipe( bulksass() )
@@ -85,11 +98,11 @@ module.exports.editor = function() {
 			includePaths: [].concat( bourbon )
 		} ) )
 		.pipe( postcss( postProcessors ) )
-		.pipe( gulp.dest( './assets/css/editor/' ) )
+		.pipe( gulp.dest( './assets/css/' ) )
 		.pipe( notify( { message: config.messages.css } ) );
 };
 
-module.exports.plugin = function() {
+module.exports.plugins = function() {
 	let plugins = function() {
 		return fs.readdirSync( './assets/scss/plugins/' );
 	};
@@ -130,7 +143,7 @@ module.exports.desktop = function() {
 			outputStyle: 'compressed',
 		} ) )
 		.pipe( postcss( postProcessors ) )
-		.pipe( gulp.dest( './assets/css/desktop/' ) )
+		.pipe( gulp.dest( './assets/css/' ) )
 		.pipe( notify( { message: config.messages.css } ) );
 };
 
@@ -142,7 +155,7 @@ module.exports.deprecated = function() {
 			outputStyle: 'compressed',
 		} ) )
 		.pipe( postcss( postProcessors ) )
-		.pipe( gulp.dest( './assets/css/deprecated/' ) )
+		.pipe( gulp.dest( './assets/css/' ) )
 		.pipe( notify( { message: config.messages.css } ) );
 };
 
@@ -154,6 +167,6 @@ module.exports.admin = function() {
 			outputStyle: 'compressed',
 		} ) )
 		.pipe( postcss( postProcessors ) )
-		.pipe( gulp.dest( './assets/css/admin/' ) )
+		.pipe( gulp.dest( './assets/css/' ) )
 		.pipe( notify( { message: config.messages.css } ) );
 };

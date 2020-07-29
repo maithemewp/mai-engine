@@ -259,10 +259,23 @@ return [
 				'location' => 'editor',
 			],
 
-			// Styles.
+			// Main styles.
 			[
 				'handle' => mai_get_handle(),
+				'src'    => mai_get_url() . 'assets/css/main.min.css',
+			],
+
+			// Theme specific styles.
+			[
+				'handle' => mai_get_handle() . '-theme',
 				'src'    => mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css',
+			],
+
+			// Admin styles.
+			[
+				'handle'   => mai_get_handle() . '-admin',
+				'src'      => mai_get_url() . 'assets/css/admin.min.css',
+				'location' => 'admin',
 			],
 
 			// Customizer styles.
@@ -270,13 +283,6 @@ return [
 				'handle'   => mai_get_handle() . '-kirki',
 				'src'      => mai_get_url() . 'assets/css/plugins/kirki.min.css',
 				'location' => 'customizer',
-			],
-
-			// Admin styles.
-			[
-				'handle'   => mai_get_handle() . '-admin',
-				'src'      => mai_get_url() . 'assets/css/admin/admin.min.css',
-				'location' => 'admin',
 			],
 
 			// ACF styles.

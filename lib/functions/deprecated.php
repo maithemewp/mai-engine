@@ -62,7 +62,7 @@ function mai_do_deprecated_functionality() {
 function mai_deprecated_2_0_0( $config ) {
 	$config['scripts-and-styles']['add'][] = [
 		'handle' => mai_get_handle() . '-deprecated',
-		'src'    => mai_get_url() . 'assets/css/deprecated/deprecated.min.css',
+		'src'    => mai_get_url() . 'assets/css/deprecated.min.css',
 	];
 
 	$config['widget-areas'] = [
