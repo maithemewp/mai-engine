@@ -130,9 +130,6 @@ function mai_add_fonts_custom_properties( $css ) {
 	$fonts            = $global_styles['fonts'];
 	$font_weight_bold = mai_get_bold_variant( 'body' );
 
-	$css['global'][':root']['--font-size-base'] = $global_styles['font-sizes']['base'] . 'px';
-	$css['global'][':root']['--font-scale']     = (string) $global_styles['font-scale'];
-
 	if ( $font_weight_bold ) {
 		$css['global'][':root']['--font-weight-bold'] = $font_weight_bold;
 	}
