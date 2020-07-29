@@ -45,11 +45,12 @@ function mai_get_content_archive_settings() {
 			'sanitize'        => 'esc_html',
 			'default'         => 'lg',
 			'choices'         => [
-				'sm'  => esc_html__( 'XS', 'mai-engine' ),
-				'md'  => esc_html__( 'SM', 'mai-engine' ),
-				'lg'  => esc_html__( 'MD', 'mai-engine' ),
-				'xl'  => esc_html__( 'LG', 'mai-engine' ),
-				'xxl' => esc_html__( 'XL', 'mai-engine' ),
+				// Match $headings in assets/scss/abstracts/_variables.scss.
+				'md'    => esc_html__( 'XS', 'mai-engine' ),
+				'lg'    => esc_html__( 'SM', 'mai-engine' ),
+				'xl'    => esc_html__( 'MD', 'mai-engine' ),
+				'xxl'   => esc_html__( 'LG', 'mai-engine' ),
+				'xxxxl' => esc_html__( 'XL', 'mai-engine' ),
 			],
 			'active_callback' => [
 				[
@@ -104,6 +105,7 @@ function mai_get_content_archive_settings() {
 			'default'         => 'full',
 			'choices'         => [
 				'full'         => esc_html__( 'Full', 'mai-engine' ),
+				'wide'         => esc_html__( 'Wide', 'mai-engine' ),
 				'center'       => esc_html__( 'Center', 'mai-engine' ),
 				'left-top'     => esc_html__( 'Left Top', 'mai-engine' ),
 				'left-middle'  => esc_html__( 'Left Middle', 'mai-engine' ),

@@ -317,6 +317,10 @@ class Mai_Entry {
 			$atts['class'] .= ' entry-image-single';
 		}
 
+		if ( 'wide' === $this->args['image_position'] && '1' === $this->args['columns'] ) {
+			$atts['class'] .= ' alignwide';
+		}
+
 		if ( ( 'single' !== $this->context ) && ( 'background' !== $this->args['image_position'] ) ) {
 			$atts['href']        = $this->url;
 			$atts['aria-hidden'] = 'true';

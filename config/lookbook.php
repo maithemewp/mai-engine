@@ -27,6 +27,7 @@ return [
 			'heading' => 'Playfair Display:400',
 		],
 		'extra'  => [
+			'border-radius'    => '0',
 			'menu-font-family' => 'var(--heading-font-family)',
 		],
 	],
