@@ -271,6 +271,7 @@ function mai_load_files() {
 		'structure/menus',
 		'structure/page-header',
 		'structure/pagination',
+		'structure/post',
 		'structure/search-form',
 		'structure/sidebar',
 		'structure/single',
