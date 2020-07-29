@@ -17,17 +17,17 @@
  * @return array
  */
 function mai_get_font_sizes() {
-	$font_sizes    = [];
-	$global_styles = mai_get_global_styles();
-	$scale         = $global_styles['font-scale'];
-	$base          = $global_styles['font-sizes']['base'];
-	$sm            = $base / $scale;
-	$xs            = $sm / $scale;
-	$lg            = $base * $scale;
-	$xl            = $lg * $scale;
-	$xxl           = $xl * $scale;
-	$xxxl          = $xxl * $scale;
-	$xxxxl         = $xxxl * $scale;
+	$sizes  = [];
+	$config = mai_get_global_styles()['extra'];
+	$scale  = isset( $config['font-scale'] ) ? (int) $config['font-scale'] : 1.25;
+	$base   = isset( $config['font-size-base'] ) ? (int) $config['font-size-base'] : 16;
+	$sm     = $base / $scale;
+	$xs     = $sm / $scale;
+	$lg     = $base * $scale;
+	$xl     = $lg * $scale;
+	$xxl    = $xl * $scale;
+	$xxxl   = $xxl * $scale;
+	$xxxxl  = $xxxl * $scale;
 
 	$scale = [
 		'xs'    => $xs,
@@ -41,14 +41,14 @@ function mai_get_font_sizes() {
 	];
 
 	foreach ( $scale as $slug => $size ) {
-		$font_sizes[] = [
+		$sizes[] = [
 			'slug' => $slug,
 			'size' => $size,
 			'name' => strtoupper( $slug ),
 		];
 	}
 
-	return $font_sizes;
+	return $sizes;
 }
 
 /**

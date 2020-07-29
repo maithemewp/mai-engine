@@ -30,10 +30,12 @@ function mai_setup() {
 	// Add theme textdomain.
 	load_child_theme_textdomain( genesis_get_theme_handle(), mai_get_dir() . '/assets/lang' );
 
-	$plugin_dir = basename( mai_get_dir() );
+	$plugin_dir   = basename( mai_get_dir() );
+	$active_theme = mai_get_active_theme();
 
 	// Add editor styles (uri).
-	add_editor_style( "../../plugins/$plugin_dir/assets/css/editor/editor.min.css" );
+	add_editor_style( "../../plugins/$plugin_dir/assets/css/editor.min.css" );
+	add_editor_style( "../../plugins/$plugin_dir/assets/css/themes/$active_theme.min.css" );
 
 	// Add custom functionality.
 	is_callable( $custom_functions ) ? $custom_functions() : null;
