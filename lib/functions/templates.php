@@ -14,6 +14,7 @@ add_action( 'init', 'mai_register_template_part_cpt' );
  * Register template part post type.
  *
  * @since 2.0.0
+ * @since 2.3.1 Changed can_export to true.
  *
  * @return void
  */
