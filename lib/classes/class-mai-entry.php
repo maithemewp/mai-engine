@@ -317,7 +317,7 @@ class Mai_Entry {
 			$atts['class'] .= ' entry-image-single';
 		}
 
-		if ( 'wide' === $this->args['image_position'] && '1' === $this->args['columns'] ) {
+		if ( ( 'single' !== $this->context ) && ( 'wide' === $this->args['image_position'] ) && ( '1' === $this->args['columns'] ) ) {
 			$atts['class'] .= ' alignwide';
 		}
 
