@@ -15,7 +15,7 @@ return [
 		'fashion'  => 18,
 	],
 	'global-styles'    => [
-		'colors'     => [
+		'colors' => [
 			'background' => '#fdf3f2',
 			'alt'        => '#faf7f6',
 			'primary'    => '#f98588',
@@ -23,11 +23,19 @@ return [
 			'heading'    => '#000000',
 			'body'       => '#7f7d7e',
 		],
-		'fonts'      => [
+		'fonts'  => [
 			'body'    => 'Work Sans:400',
 			'heading' => 'Josefin Sans:600',
 		],
-		'font-scale' => 1.125,
+		'extra'  => [
+			'font-scale'             => '1.125',
+			'border-radius'          => '1px',
+			'color-medium'           => '#f9f9f9',
+			'heading-text-transform' => 'uppercase',
+			'menu-font-size'         => 'var(--font-size-xs)',
+			'menu-font-family'       => 'var(--heading-font-family)',
+			'menu-item-link-color'   => 'var(--color-heading)',
+		],
 	],
 	'image-sizes'      => [
 		'add' => [

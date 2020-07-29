@@ -1,14 +1,5 @@
 @import "default";
 
-:root {
-	--border-radius: 1px;
-	--color-medium: #f9f9f9;
-	--heading-text-transform: uppercase;
-	--menu-font-size: var(--font-size-xs);
-	--menu-font-family: var(--heading-font-family);
-	--menu-item-link-color: var(--color-heading);
-}
-
 .site-header,
 .site-inner {
 	box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.02);

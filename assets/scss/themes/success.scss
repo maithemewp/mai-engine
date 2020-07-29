@@ -1,13 +1,5 @@
 @import "default";
 
-:root {
-	--border-width: 2px;
-	--blockquote-border-left: 0;
-	--site-title-font-size: var(--font-size-md);
-	--menu-font-size: var(--font-size-sm);
-	--footer-credits-padding: 0;
-}
-
 .has-boxed {
 	--entry-border: 0;
 }
