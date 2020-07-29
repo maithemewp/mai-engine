@@ -257,6 +257,13 @@ function mai_register_icon_field_group() {
 					'default_value' => '',
 				],
 				[
+					'key'           => 'mai_icon_link',
+					'name'          => 'link',
+					'label'         => esc_html__( 'Link', 'mai-engine' ),
+					'type'          => 'url',
+					'default_value' => '',
+				],
+				[
 					'key'   => 'mai_icon_style_tab',
 					'name'  => 'style_tab',
 					'label' => esc_html__( 'Styles', 'mai-engine' ),

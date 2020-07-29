@@ -52,56 +52,60 @@ function mai_get_icon( $args ) {
 	}
 
 	// Get it started.
-	$attributes = [
+	$atts = [
 		'class' => $class,
 		'style' => '',
 	];
 
 	// Build inline styles.
-	$attributes['style'] .= sprintf( '--icon-display:%s;', $args['display'] );
-	$attributes['style'] .= sprintf( '--icon-align:%s;', $args['align'] );
-	$attributes['style'] .= sprintf( '--icon-margin:%s %s %s %s;', mai_get_unit_value( $args['margin_top'] ), mai_get_unit_value( $args['margin_right'] ), mai_get_unit_value( $args['margin_bottom'] ), mai_get_unit_value( $args['margin_left'] ) );
-	$attributes['style'] .= sprintf( '--icon-padding:%s;', mai_get_unit_value( $args['padding'] ) );
+	$atts['style'] .= sprintf( 'display:%s;', $args['display'] );
+	$atts['style'] .= sprintf( 'text-align:%s;', $args['align'] );
+	$atts['style'] .= sprintf( '--icon-margin:%s %s %s %s;', mai_get_unit_value( $args['margin_top'] ), mai_get_unit_value( $args['margin_right'] ), mai_get_unit_value( $args['margin_bottom'] ), mai_get_unit_value( $args['margin_left'] ) );
+	$atts['style'] .= sprintf( '--icon-padding:%s;', mai_get_unit_value( $args['padding'] ) );
 
 	if ( $args['size'] ) {
-		$attributes['style'] .= sprintf( '--icon-size:%s;', mai_get_unit_value( $args['size'] ) );
+		$atts['style'] .= sprintf( '--icon-size:%s;', mai_get_unit_value( $args['size'] ) );
 	}
 
 	if ( $args['color_icon'] ) {
-		$attributes['style'] .= sprintf( '--icon-color:%s;', $args['color_icon'] );
+		$atts['style'] .= sprintf( '--icon-color:%s;', $args['color_icon'] );
 	}
 
 	if ( $args['color_background'] ) {
-		$attributes['style'] .= sprintf( '--icon-background:%s;', $args['color_background'] );
+		$atts['style'] .= sprintf( '--icon-background:%s;', $args['color_background'] );
 	}
 
 	if ( $args['color_shadow'] ) {
-		$attributes['style'] .= sprintf( '--icon-box-shadow:%s %s %s %s;', mai_get_unit_value( $args['x_offset'] ), mai_get_unit_value( $args['y_offset'] ), mai_get_unit_value( $args['blur'] ), $args['color_shadow'] );
+		$atts['style'] .= sprintf( '--icon-box-shadow:%s %s %s %s;', mai_get_unit_value( $args['x_offset'] ), mai_get_unit_value( $args['y_offset'] ), mai_get_unit_value( $args['blur'] ), $args['color_shadow'] );
 	}
 
 	if ( $args['color_text_shadow'] ) {
-		$attributes['style'] .= sprintf( '--icon-text-shadow:%s %s %s %s;', mai_get_unit_value( $args['text_shadow_x_offset'] ), mai_get_unit_value( $args['text_shadow_y_offset'] ), mai_get_unit_value( $args['text_shadow_blur'] ), $args['color_text_shadow'] );
+		$atts['style'] .= sprintf( '--icon-text-shadow:%s %s %s %s;', mai_get_unit_value( $args['text_shadow_x_offset'] ), mai_get_unit_value( $args['text_shadow_y_offset'] ), mai_get_unit_value( $args['text_shadow_blur'] ), $args['color_text_shadow'] );
 	}
 
 	if ( $args['border_width'] && $args['color_border'] ) {
-		$attributes['style'] .= sprintf( '--icon-border:%s solid %s;', mai_get_unit_value( $args['border_width'] ), mai_get_unit_value( $args['color_border'] ) );
+		$atts['style'] .= sprintf( '--icon-border:%s solid %s;', mai_get_unit_value( $args['border_width'] ), mai_get_unit_value( $args['color_border'] ) );
 	}
 
 	if ( $args['border_radius'] ) {
-		$radius               = explode( ' ', trim( $args['border_radius'] ) );
-		$radius               = array_map( 'mai_get_unit_value', $radius );
-		$radius               = array_filter( $radius );
-		$attributes['style'] .= sprintf( '--icon-border-radius:%s;', implode( ' ', $radius ) );
+		$radius        = explode( ' ', trim( $args['border_radius'] ) );
+		$radius        = array_map( 'mai_get_unit_value', $radius );
+		$radius        = array_filter( $radius );
+		$atts['style'] .= sprintf( '--icon-border-radius:%s;', implode( ' ', $radius ) );
 	}
+
+	$link   = $args['link'] && ! is_admin() ? esc_url( $args['link'] ) : 'javascript:void(0)';
+	$open   = $args['link'] ? '<a href="' . $link . '" %s>' : '<span %s>';
+	$close  = $args['link'] ? '</a>' : '</span>';
 
 	return genesis_markup(
 		[
-			'open'    => '<span %s><span class="mai-icon-wrap">',
-			'close'   => '</span></span>',
+			'open'    => $open . '<span class="mai-icon-wrap">',
+			'close'   => '</span>' . $close,
 			'content' => $svg,
 			'context' => 'mai-icon',
 			'echo'    => false,
-			'atts'    => $attributes,
+			'atts'    => $atts,
 		]
 	);
 }
@@ -121,6 +125,8 @@ function mai_get_icon_default_args() {
 		'display'              => 'block',
 		'align'                => 'center',
 		'size'                 => '40',
+		'link'                 => '',
+		'link_target'          => false,
 		'class'                => '',
 		'color_icon'           => 'currentColor',
 		'color_background'     => '',
