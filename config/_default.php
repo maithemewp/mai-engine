@@ -19,8 +19,9 @@ return [
 	| Default global styles controlled by the theme.
 	*/
 
-	'global-styles'       => [
+	'global-styles' => [
 		'breakpoint'     => 1200,
+		'contrast-limit' => 160,
 		'colors'         => [
 			'black'      => '#000000',
 			'white'      => '#ffffff',
@@ -36,14 +37,7 @@ return [
 			'body'    => 'sans-serif:400',
 			'heading' => 'sans-serif:600',
 		],
-		'font-sizes'     => [
-			'base' => 16,
-		],
-		'font-scale'     => 1.25,
-		'contrast-limit' => 160,
-		'extra'          => [
-			'border-radius' => '4px',
-		],
+		'extra'          => [],
 	],
 
 	/*
@@ -54,7 +48,7 @@ return [
 	| Genesis default settings.
 	*/
 
-	'genesis-settings'    => [
+	'genesis-settings' => [
 		'avatar_size'           => 48,
 		'blog_cat_num'          => 12,
 		'breadcrumb_home'       => 0,
@@ -76,7 +70,7 @@ return [
 	| you must use an aspect ratio, not actual dimensions.
 	*/
 
-	'image-sizes'         => [
+	'image-sizes' => [
 		'add'    => [
 			'cover'     => [ 1600, 900, true ],
 			'landscape' => '4:3',
@@ -93,7 +87,7 @@ return [
 	| Available page layouts.
 	*/
 
-	'page-layouts'        => [
+	'page-layouts' => [
 		'add'    => [
 			[
 				'id'      => 'standard-content',
@@ -143,7 +137,7 @@ return [
 	| but these defaults are used when first activating the theme.
 	*/
 
-	'site-layouts'        => [
+	'site-layouts' => [
 		'default' => [
 			'site'    => 'standard-content',
 			'archive' => 'wide-content',
@@ -159,7 +153,7 @@ return [
 	| Add/remove post type support for various post types.
 	*/
 
-	'post-type-support'   => [
+	'post-type-support' => [
 		'add'    => [
 			'excerpt'         => [ 'page' ],
 			'genesis-layouts' => [ 'product' ],
@@ -176,7 +170,7 @@ return [
 	| Required plugins to be installed during the plugins step in the setup wizard.
 	*/
 
-	'plugins'             => [],
+	'plugins' => [],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -186,7 +180,7 @@ return [
 	| All of the scripts and styles to be added or removed.
 	*/
 
-	'scripts-and-styles'  => [
+	'scripts-and-styles' => [
 		'add'    => [
 
 			// Scripts.
@@ -369,7 +363,7 @@ return [
 	| Default theme supports. You probably shouldn't mess with these.
 	*/
 
-	'theme-support'       => [
+	'theme-support' => [
 		'add'    => [
 
 			// Genesis defaults.
@@ -467,11 +461,11 @@ return [
 	| 3. '404-page' for 404.
 	*/
 
-	'archive-settings'    => [
+	'archive-settings' => [
 		'post',
 	],
 
-	'single-settings'     => [
+	'single-settings' => [
 		'page',
 		'post',
 	],
@@ -485,7 +479,7 @@ return [
 	| but this sets the default for when a theme is first activated.
 	*/
 
-	'page-header'         => [
+	'page-header' => [
 		'archive'                 => [],
 		'single'                  => [],
 		'background-color'        => 'alt',
@@ -514,7 +508,7 @@ return [
 	| Default callable functions and filters to be run after_theme_setup.
 	*/
 
-	'custom-functions'    => '__return_null',
+	'custom-functions' => '__return_null',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -524,7 +518,7 @@ return [
 	| Default template parts to be created and available for use.
 	*/
 
-	'template-parts'      => [
+	'template-parts' => [
 		[
 			'id'         => 'before-header',
 			'location'   => 'genesis_before_header',
@@ -587,7 +581,7 @@ return [
 	|
 	*/
 
-	'widget-areas'        => [
+	'widget-areas' => [
 		'add'    => [
 			[
 				'id'          => 'sidebar',
