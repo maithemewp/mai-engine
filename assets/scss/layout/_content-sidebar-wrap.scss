@@ -1,21 +1,21 @@
 .content-sidebar-wrap {
+	--content-sidebar-wrap-margin-top: var(--spacing-xxl); /* set now so we can remove margin for alignfull */
+	--content-sidebar-wrap-margin-bottom: var(--spacing-xxxl); /* set now so we can remove margin for alignfull */
 	--content-sidebar-gap: calc(var(--column-gap) * 3); /* needed for alignfull calculations */
 
 	display: grid;
 	grid-template-columns: var(--content-sidebar-wrap-columns, 1fr);
 	width: calc(100% - calc(var(--side-spacing) * 2));
 	max-width: var(--wrap-max-width);
-	margin: var(--content-sidebar-wrap-margin-top, var(--spacing-xxl)) auto var(--content-sidebar-wrap-margin-bottom, var(--spacing-xxl));
+	margin: var(--content-sidebar-wrap-margin-top) auto var(--content-sidebar-wrap-margin-bottom);
 	column-gap: var(--content-sidebar-gap);
 
-	> .content > .entry > .alignfull:first-child,
-	> .content > .entry > .entry-content > .alignfull:first-child {
+	> .content > .entry > .entry-wrap > .entry-content:first-child > .alignfull:first-child {
 		margin-top: calc(var(--content-sidebar-wrap-margin-top, var(--spacing-xxl) * -1));
 	}
 
-	> .content > .entry > .alignfull:last-child,
-	> .content > .entry > .entry-content > .alignfull:last-child {
-		margin-bottom: calc(var(--content-sidebar-wrap-margin-bottom, var(--spacing-xxl) * -1));
+	> .content > .entry > .entry-wrap > .entry-content > .alignfull:last-child {
+		margin-bottom: calc(var(--content-sidebar-wrap-margin-bottom, var(--spacing-xxxl) * -1));
 	}
 }
 

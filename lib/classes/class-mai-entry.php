@@ -144,52 +144,36 @@ class Mai_Entry {
 			remove_filter( 'post_class', [ $this, 'single_entry_class' ] );
 		}
 
-		// Check if extra wrap is needed.
-		$has_wrap = false;
+		$image_first = 'image' === array_shift( $this->args['show'] );
 
-		if ( 'single' !== $this->context ) {
-			$show_image       = in_array( 'image', $this->args['show'], true );
-			$image_background = in_array( $this->args['image_position'], [ 'background' ], true );
-			$image_left_right = mai_has_string( [ 'left', 'right' ], $this->args['image_position'] );
-
-			$has_wrap = $show_image && ( $image_background || $image_left_right );
-		}
-
-		// Always output entry wrap if image is first element.
-		if ( 'image' === $this->args['show'][0] ) {
-			$has_wrap = true;
-		}
-
-		// If we have inner wrap.
-		if ( $has_wrap ) {
-
-			// Image outside inner wrap.
+		// Image outside inner wrap if first element.
+		if ( $image_first ) {
 			$this->do_image();
+		}
 
-			// Inner open.
-			genesis_markup(
-				[
-					'open'    => '<div %s>',
-					'context' => 'entry-wrap',
-					'echo'    => true,
-					'params'  => [
-						'args'  => $this->args,
-						'entry' => $this->entry,
-					],
-				]
-			);
+		// Inner open.
+		genesis_markup(
+			[
+				'open'    => '<div %s>',
+				'context' => 'entry-wrap',
+				'echo'    => true,
+				'params'  => [
+					'args'  => $this->args,
+					'entry' => $this->entry,
+				],
+			]
+		);
 
-			// Overlay link.
-			if ( ( 'single' !== $this->context ) && ( 'background' === $this->args['image_position'] ) ) {
-				printf( '<a href="%s" class="entry-overlay"></a>', $this->url );
-			}
+		// Overlay link.
+		if ( ( 'single' !== $this->context ) && ( 'background' === $this->args['image_position'] ) ) {
+			printf( '<a href="%s" class="entry-overlay"></a>', $this->url );
 		}
 
 		// Loop through our elements.
 		foreach ( (array) $this->args['show'] as $element ) {
 
 			// Skip image is left or right, skip.
-			if ( ( 'image' === $element ) && $has_wrap ) {
+			if ( ( 'image' === $element ) && $image_first ) {
 				continue;
 			}
 
@@ -200,22 +184,18 @@ class Mai_Entry {
 			}
 		}
 
-		// If we have inner wrap.
-		if ( $has_wrap ) {
-
-			// Inner close.
-			genesis_markup(
-				[
-					'close'   => '</div>',
-					'context' => 'entry-inner',
-					'echo'    => true,
-					'params'  => [
-						'args'  => $this->args,
-						'entry' => $this->entry,
-					],
-				]
-			);
-		}
+		// Inner close.
+		genesis_markup(
+			[
+				'close'   => '</div>',
+				'context' => 'entry-inner',
+				'echo'    => true,
+				'params'  => [
+					'args'  => $this->args,
+					'entry' => $this->entry,
+				],
+			]
+		);
 
 		// Close.
 		genesis_markup(

@@ -21,14 +21,6 @@
 	--entry-overflow: hidden; /* for border radius on absolute positioned image. */
 }
 
-.single-entry {
-	margin-bottom: var(--single-entry-margin-bottom, var(--spacing-xxl));
-}
-
-.has-alignfull-first {
-	--single-entry-margin-bottom: 0;
-}
-
 [class*="has-image-left"],
 [class*="has-image-right"] {
 	--entry-flex-direction: row;
@@ -56,6 +48,7 @@
 	flex: 1; /* 1 1 100% breaks image-left/right-full */
 	flex-direction: column;
 	justify-content: var(--align-text-vertical);
+	width: var(--entry-wrap-width, 100%);
 	margin: var(--entry-wrap-margin, (0 auto));
 	padding: var(--entry-wrap-padding, 0);
 	color: var(--entry-wrap-color, (inherit));
