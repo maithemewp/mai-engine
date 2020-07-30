@@ -36,7 +36,7 @@
 
 
 @include mq(md) {
-	.no-sidebar .entries[style*="--columns-md:1;"].has-image-full .entry-archive.has-image-first {
+	.no-sidebar .entries[style*="--columns-md:1;"].has-image-full:not(.has-boxed) .entry-archive.has-image-first {
 		--entry-wrap-margin: -8em auto 0;
 		--entry-wrap-padding: 4em 8em;
 		--entry-wrap-background: var(--color-background);
@@ -51,7 +51,7 @@
 }
 
 @include mq(lg) {
-	.no-sidebar .entries[style*="--columns-lg:1;"].has-image-full .entry-archive.has-image-first {
+	.no-sidebar .entries[style*="--columns-lg:1;"].has-image-full:not(.has-boxed) .entry-archive.has-image-first {
 		--entry-wrap-margin: -8em auto 0;
 		--entry-wrap-padding: 4em 8em;
 		--entry-wrap-background: var(--color-background);
