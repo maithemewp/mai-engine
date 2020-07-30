@@ -26,18 +26,6 @@ return [
 			'body'    => 'sans-serif',
 			'heading' => 'DM Serif Display:400',
 		],
-		'extra'  => [
-			'font-size-base'              => '14px',
-			'font-scale'                  => '1.3',
-			'border-radius'               => '0',
-			'body-line-height'            => '1.75',
-			'heading-line-height'         => '1.1',
-			'button-overlay-color'        => 'var(--color-white)',
-			'content-sidebar-wrap-margin' => 'var(--spacing-xxxl) auto',
-			'site-header-border-bottom'   => '0',
-			'menu-font-size'              => 'var(--font-size-base)',
-			'sub-menu-background'         => 'var(--color-heading)',
-		],
 	],
 	'theme-support' => [
 		'add' => [

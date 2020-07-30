@@ -26,12 +26,6 @@ return [
 			'body'    => 'Roboto:300,500',
 			'heading' => 'Playfair Display:400',
 		],
-		'extra'  => [
-			'font-scale'           => '1.29',
-			'heading-line-height'  => '1.4',
-			'button-border-radius' => '100px',
-			'menu-font-size'       => 'var(--font-size-sm)',
-		],
 	],
 	'theme-support' => [
 		'add' => [

@@ -27,8 +27,5 @@ return [
 			'body'    => 'Montserrat:400',
 			'heading' => 'Montserrat:700',
 		],
-		'extra'  => [
-			'border-radius' => '0',
-		],
 	],
 ];

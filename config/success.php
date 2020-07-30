@@ -28,14 +28,6 @@ return [
 			'heading' => 'Montserrat:600',
 			'button'  => 'Montserrat:600',
 		],
-		'extra'  => [
-			'border-width'           => '2px',
-			'blockquote-border-left' => '0',
-			'site-title-font-size'   => 'var(--font-size-md)',
-			'menu-font-family'       => 'var(--heading-font-family)',
-			'menu-font-size'         => 'var(--font-size-sm)',
-			'footer-credits-padding' => '0',
-		],
 	],
 	'theme-support' => [
 		'add' => [

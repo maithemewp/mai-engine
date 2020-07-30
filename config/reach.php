@@ -27,13 +27,6 @@ return [
 			'body'    => 'Karla:400',
 			'heading' => 'Karla:700',
 		],
-		'extra'  => [
-			'button-transform-hover'          => 'scale(1.05)',
-			'site-header-border-bottom'       => '0',
-			'page-header-border-bottom'       => '0',
-			'content-sidebar-wrap-margin-top' => 'var(--spacing-xxl)',
-			'site-footer-background'          => 'var(--color-alt)',
-		],
 	],
 	'theme-support' => [
 		'add' => [

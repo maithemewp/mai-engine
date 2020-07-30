@@ -1,5 +1,17 @@
 @import "../abstracts/_index";
 
+:root {
+	--border-radius: 0;
+	--body-line-height: 1.875;
+	--blockquote-font-family: var(--heading-font-family);
+	--blockquote-font-style: normal;
+	--blockquote-border-top: var(--border);
+	--blockquote-border-bottom: var(--border);
+	--blockquote-border-left: 0;
+	--cite-font-family: var(--body-font-family);
+	--menu-font-family: var(--heading-font-family);
+}
+
 .has-image-first {
 	--entry-wrap-margin: -2em auto 0;
 	--entry-wrap-padding: 2em;

@@ -19,9 +19,6 @@ return [
 			'body'    => 'Nunito Sans:400,700',
 			'heading' => 'Nunito Sans:700',
 		],
-		'extra'  => [
-			'button-border-radius' => '100px',
-		],
 	],
 	'theme-support' => [
 		'add' => [
