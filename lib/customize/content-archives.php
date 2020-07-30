@@ -96,7 +96,6 @@ function mai_get_content_archive_settings() {
 			'default'         => $defaults['image_position'],
 			'choices'         => [
 				'full'         => __( 'Full', 'mai-engine' ),
-				'wide'         => __( 'Wide', 'mai-engine' ),
 				'center'       => __( 'Center', 'mai-engine' ),
 				'left-top'     => __( 'Left Top', 'mai-engine' ),
 				'left-middle'  => __( 'Left Middle', 'mai-engine' ),

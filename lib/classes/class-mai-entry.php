@@ -84,7 +84,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Renders the entry.
 	 *
 	 * @since 0.1.0
 	 *
@@ -92,12 +92,8 @@ class Mai_Entry {
 	 */
 	public function render() {
 
-		// Remove post attributes filter for term/user grid.
-		if ( 'post' !== $this->type ) {
-			remove_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
-		} elseif ( in_array( 'image', (array) $this->args['show'], true ) ) {
-			add_filter( 'post_class', [ $this, 'has_image_class' ] );
-		}
+		// Remove post attributes.
+		remove_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
 
 		// Wrap.
 		switch ( $this->type ) {
@@ -113,17 +109,50 @@ class Mai_Entry {
 		}
 
 		$atts = [
-			'class' => 'entry',
+			'class' => sprintf( 'entry entry-%s', 'block' === $this->context ? 'grid' : $this->context ),
 		];
 
+		// Get elements without Genesis hooks.
+		$elements = [];
+
+		foreach ( (array) $this->args['show'] as $item ) {
+			if ( mai_has_string( 'genesis_', $item ) ) {
+				continue;
+			}
+
+			$elements[] = $item;
+		}
+
+		$image_first = isset( $elements[0] ) && ( 'image' === $elements[0] );
+
+		// Has image classes.
+		if ( in_array( 'image', $this->args['show'], true ) ) {
+			if ( $this->get_image_id() ) {
+				$atts['class'] .= ' has-image';
+
+				if ( $image_first && ! mai_is_element_hidden( 'featured_image' ) ) {
+					$atts['class'] .= ' has-image-first';
+				}
+			}
+		}
+
+		// Add atts from `genesis_attributes_entry` but only when we need it.
+		if ( 'post' === $this->type ) {
+			$atts['class']      = mai_add_classes( implode( ' ', get_post_class() ), $atts['class'] );
+			$atts['aria-label'] = the_title_attribute(
+				[
+					'echo' => false,
+				]
+			);
+		}
+
+		// Term classes.
 		if ( 'term' === $this->type ) {
 			$atts['class'] .= sprintf( ' term-%s type-%s %s-%s', $this->entry->term_id, $this->entry->taxonomy, $this->entry->taxonomy, $this->entry->slug );
 		}
 
-		// Add single-entry class.
-		if ( ( 'post' === $this->type ) && ( 'single' === $this->context ) ) {
-			add_filter( 'post_class', [ $this, 'single_entry_class' ] );
-		}
+		// Remove duplicate classes.
+		$atts['class'] = implode( ' ', array_unique( explode( ' ', $atts['class'] ) ) );
 
 		// Open.
 		genesis_markup(
@@ -138,13 +167,6 @@ class Mai_Entry {
 				],
 			]
 		);
-
-		// Remove single-entry class filter.
-		if ( ( 'post' === $this->type ) && ( 'single' === $this->context ) ) {
-			remove_filter( 'post_class', [ $this, 'single_entry_class' ] );
-		}
-
-		$image_first = 'image' === array_shift( $this->args['show'] );
 
 		// Image outside inner wrap if first element.
 		if ( $image_first ) {
@@ -170,7 +192,7 @@ class Mai_Entry {
 		}
 
 		// Loop through our elements.
-		foreach ( (array) $this->args['show'] as $element ) {
+		foreach ( $this->args['show'] as $element ) {
 
 			// Skip image is left or right, skip.
 			if ( ( 'image' === $element ) && $image_first ) {
@@ -211,16 +233,18 @@ class Mai_Entry {
 		);
 
 		// Add back post attributes for other entries.
-		if ( 'post' !== $this->type ) {
-			add_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
-		} elseif ( in_array( 'image', (array) $this->args['show'], true ) ) {
+		add_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
+		// if ( 'post' !== $this->type ) {
+		// 	add_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
+		// } elseif ( in_array( 'image', $this->args['show'], true ) ) {
+		if ( in_array( 'image', $this->args['show'], true ) ) {
 			remove_filter( 'post_class', [ $this, 'has_image_class' ] );
 		}
 
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Gets the entry ID.
 	 *
 	 * @since 0.1.0
 	 *
@@ -245,7 +269,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Gets the entry URL.
 	 *
 	 * @since 0.1.0
 	 *
@@ -270,7 +294,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Render the image.
 	 *
 	 * @since 0.1.0
 	 *
@@ -302,10 +326,6 @@ class Mai_Entry {
 			$atts['class'] .= ' entry-image-single';
 		}
 
-		if ( 'single' !== $this->context && ( isset( $this->args['image_position'] ) && 'wide' === $this->args['image_position'] ) && ( '1' === $this->args['columns'] ) ) {
-			$atts['class'] .= ' alignwide';
-		}
-
 		if ( ( 'single' !== $this->context ) && ( 'background' !== $this->args['image_position'] ) ) {
 			$atts['href']        = $this->url;
 			$atts['aria-hidden'] = 'true';
@@ -335,7 +355,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Gets the image HTML.
 	 *
 	 * @since 0.1.0
 	 *
@@ -493,39 +513,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Add single-entry class.
-	 *
-	 * @since 0.3.2
-	 *
-	 * @param array $class Classes.
-	 *
-	 * @return array
-	 */
-	public function single_entry_class( $class ) {
-		$class[] = 'single-entry';
-
-		return $class;
-	}
-
-	/**
-	 * Description of expected behavior.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @param array $class Classes.
-	 *
-	 * @return array
-	 */
-	public function has_image_class( $class ) {
-		if ( $this->get_image_id() ) {
-			$class[] = 'has-image';
-		}
-
-		return $class;
-	}
-
-	/**
-	 * Description of expected behavior.
+	 * Gets the image ID.
 	 *
 	 * @since 0.1.0
 	 *
@@ -572,7 +560,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Gets the image size.
 	 *
 	 * @since 0.1.0
 	 *
@@ -594,7 +582,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Gets the image size by columns.
 	 *
 	 * @since 0.1.0
 	 *
@@ -983,7 +971,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Render the more link.
 	 *
 	 * @since 0.1.0
 	 *
@@ -1054,7 +1042,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Render the after entry template part.
 	 *
 	 * @since 0.1.0
 	 *
@@ -1078,7 +1066,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Render the author box.
 	 *
 	 * @since 0.1.0
 	 *
@@ -1090,7 +1078,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Render adjacent entry nav.
 	 * Can't use genesis_adjacent_entry_nav() because it checks for post_type support.
 	 *
 	 * @since 0.1.0
@@ -1160,7 +1148,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Backwards compatibility for Genesis hooks.
 	 *
 	 * @since 0.1.0
 	 *
@@ -1171,7 +1159,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Backwards compatibility for Genesis hooks.
 	 *
 	 * @since 0.1.0
 	 *
@@ -1182,7 +1170,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Backwards compatibility for Genesis hooks.
 	 *
 	 * @since 0.1.0
 	 *
@@ -1193,7 +1181,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Backwards compatibility for Genesis hooks.
 	 *
 	 * @since 0.1.0
 	 *

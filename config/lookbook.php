@@ -25,6 +25,7 @@ return [
 		'fonts'  => [
 			'body'    => 'Lato:400',
 			'heading' => 'Playfair Display:400',
+			'menu'    => 'Playfair Display:700',
 		],
 	],
 	'theme-support' => [
