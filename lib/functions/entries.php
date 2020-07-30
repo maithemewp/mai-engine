@@ -10,7 +10,7 @@
  */
 
 /**
- * Description of expected behavior.
+ * Render the entries opening markup.
  *
  * @since 0.1.0
  *
@@ -154,7 +154,7 @@ function mai_do_entries_open( $args ) {
 }
 
 /**
- * Description of expected behavior.
+ * Render the entries closing markup.
  *
  * @since 0.1.0
  *
@@ -187,7 +187,7 @@ function mai_do_entries_close( $args ) {
 }
 
 /**
- * Echo a grid entry.
+ * Render a grid entry.
  *
  * @since 0.1.0
  *
