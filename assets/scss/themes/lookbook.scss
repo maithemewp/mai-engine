@@ -1,1 +1,12 @@
+@import "../abstracts/_index";
 
+.has-image-first {
+	--entry-wrap-margin: -2em auto 0;
+	--entry-wrap-padding: 2em;
+	--entry-wrap-background: var(--color-background);
+
+	@include mq(md) {
+		--entry-wrap-margin: -8em auto 0;
+		--entry-wrap-padding: 8em;
+	}
+}

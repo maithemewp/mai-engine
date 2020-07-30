@@ -155,6 +155,11 @@ class Mai_Entry {
 			$has_wrap = $show_image && ( $image_background || $image_left_right );
 		}
 
+		// Always output entry wrap if image is first element.
+		if ( 'image' === $this->args['show'][0] ) {
+			$has_wrap = true;
+		}
+
 		// If we have inner wrap.
 		if ( $has_wrap ) {
 
@@ -317,7 +322,7 @@ class Mai_Entry {
 			$atts['class'] .= ' entry-image-single';
 		}
 
-		if ( ( 'single' !== $this->context ) && ( 'wide' === $this->args['image_position'] ) && ( '1' === $this->args['columns'] ) ) {
+		if ( 'single' !== $this->context && ( isset( $this->args['image_position'] ) && 'wide' === $this->args['image_position'] ) && ( '1' === $this->args['columns'] ) ) {
 			$atts['class'] .= ' alignwide';
 		}
 

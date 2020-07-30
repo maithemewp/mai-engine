@@ -46,14 +46,14 @@ function mai_do_entries_open( $args ) {
 		$attributes['class'] .= ' has-image-' . $args['image_position'];
 
 		if ( in_array( $args['image_position'], [ 'background', 'left-full', 'right-full' ], true ) ) {
-			$aspect_ratio         = mai_has_image_orientiation( $args['image_orientation'] ) ? mai_get_orientation_aspect_ratio( $args['image_orientation'] ) : mai_get_image_aspect_ratio( $args['image_size'] );
+			$aspect_ratio        = mai_has_image_orientiation( $args['image_orientation'] ) ? mai_get_orientation_aspect_ratio( $args['image_orientation'] ) : mai_get_image_aspect_ratio( $args['image_size'] );
 			$attributes['style'] .= sprintf( '--aspect-ratio:%s;', $aspect_ratio );
 		}
 
 		if ( 'custom' === $args['image_orientation'] ) {
 
-			$image_sizes          = mai_get_available_image_sizes();
-			$image_size           = $image_sizes[ $args['image_size'] ];
+			$image_sizes         = mai_get_available_image_sizes();
+			$image_size          = $image_sizes[ $args['image_size'] ];
 			$attributes['style'] .= sprintf( '--image-width:%spx;', $image_size['width'] );
 
 		} else {
@@ -86,7 +86,7 @@ function mai_do_entries_open( $args ) {
 
 	// Get column gap, deprecating old text field values.
 	if ( $args['column_gap'] ) {
-		$column_gap = mai_is_valid_size( $args['column_gap' ] ) ? $args['column_gap' ] : 'lg';
+		$column_gap = mai_is_valid_size( $args['column_gap'] ) ? $args['column_gap'] : 'lg';
 		$column_gap = sprintf( 'var(--spacing-%s)', $column_gap );
 	} else {
 		$column_gap = '0px'; // px needed for calculations.
@@ -94,7 +94,7 @@ function mai_do_entries_open( $args ) {
 
 	// Get row gap, deprecating old text field values.
 	if ( $args['row_gap'] ) {
-		$row_gap = mai_is_valid_size( $args['row_gap' ] ) ? $args['row_gap' ] : 'lg';
+		$row_gap = mai_is_valid_size( $args['row_gap'] ) ? $args['row_gap'] : 'lg';
 		$row_gap = sprintf( 'var(--spacing-%s)', $row_gap );
 	} else {
 		$row_gap = '0px'; // px needed for calculations.
@@ -105,7 +105,11 @@ function mai_do_entries_open( $args ) {
 	$attributes['style'] .= sprintf( '--align-columns:%s;', ! empty( $args['align_columns'] ) ? mai_get_flex_align( $args['align_columns'] ) : 'unset' );
 	$attributes['style'] .= sprintf( '--align-columns-vertical:%s;', ! empty( $args['align_columns_vertical'] ) ? mai_get_flex_align( $args['align_columns_vertical'] ) : 'unset' );
 	$attributes['style'] .= sprintf( '--align-text:%s;', mai_get_align_text( $args['align_text'] ) );
-	$attributes['style'] .= sprintf( '--align-text-vertical:%s;', mai_has_string( [ 'left', 'right', 'background' ], $args['image_position'] ) ? mai_get_align_text( $args['align_text_vertical'] ) : 'unset' );
+	$attributes['style'] .= sprintf( '--align-text-vertical:%s;', mai_has_string( [
+		'left',
+		'right',
+		'background',
+	], $args['image_position'] ) ? mai_get_align_text( $args['align_text_vertical'] ) : 'unset' );
 
 	// Border radius.
 	if ( '' !== $args['border_radius'] && ( ( 'background' === $args['image_position'] ) || $args['boxed'] ) ) {
@@ -127,7 +131,10 @@ function mai_do_entries_open( $args ) {
 	$wrap_class = 'entries-wrap';
 
 	// Add image stack class to entries-wrap so it intercepts the inline variable so we don't need overly specific CSS.
-	if ( $args['image_stack'] && in_array( 'image', $args['show'], true ) && $args['image_position'] && mai_has_string( [ 'left', 'right' ], $args['image_position'] ) ) {
+	if ( $args['image_stack'] && in_array( 'image', $args['show'], true ) && $args['image_position'] && mai_has_string( [
+			'left',
+			'right',
+		], $args['image_position'] ) ) {
 		$wrap_class .= ' has-image-stack';
 	}
 

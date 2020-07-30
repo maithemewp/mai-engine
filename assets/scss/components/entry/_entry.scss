@@ -56,8 +56,10 @@
 	flex: 1; /* 1 1 100% breaks image-left/right-full */
 	flex-direction: column;
 	justify-content: var(--align-text-vertical);
+	margin: var(--entry-wrap-margin, (0 auto));
 	padding: var(--entry-wrap-padding, 0);
-	color: var(--entry-wrap-color, unset);
+	color: var(--entry-wrap-color, (inherit));
+	background: var(--entry-wrap-background, transparent);
 	transition: all 0.3s ease-in-out;
 
 	> *:not(.entry-overlay) {
