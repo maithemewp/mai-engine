@@ -53,5 +53,11 @@ function mai_render_button_block( $block_content, $block ) {
 		$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link button', $block_content );
 	}
 
+	// Wrap additional lines in span for styling.
+	if ( mai_has_string( '<br>', $block_content ) ) {
+		$block_content = str_replace( '<br>', '<br><span>', $block_content );
+		$block_content = str_replace( '</a>', '</span></a>', $block_content );
+	}
+
 	return $block_content;
 }
