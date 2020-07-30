@@ -100,6 +100,13 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'is-archive';
 	}
 
+	// Sidebar.
+	if ( mai_has_string( 'sidebar', genesis_site_layout() ) ) {
+		$classes[] = 'has-sidebar';
+	} else {
+		$classes[] = 'no-sidebar';
+	}
+
 	// Always assume no-js.
 	$classes[] = 'no-js';
 
