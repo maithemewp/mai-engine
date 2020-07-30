@@ -92,8 +92,7 @@ return [];
 };
 
 const themeScss = function() {
-	return `@import "default";
-`;
+	return ``;
 };
 
 const genesisVersion = function() {
