@@ -68,8 +68,8 @@ function mai_site_layout( $use_cache = true ) {
 		}
 
 		if ( isset( $name, $context ) ) {
-			if ( isset( $layouts[ $context . '-' . $name ] ) && ! empty( $layouts[ $context . '-' . $name ] ) ) {
-				$site_layout = $layouts[ $context . '-' . $name ];
+			if ( isset( $layouts[ $context ][ $name ] ) && ! empty( $layouts[ $context ][ $name ] ) ) {
+				$site_layout = $layouts[ $context ][ $name ];
 			}
 		}
 
