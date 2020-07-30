@@ -173,7 +173,7 @@ li.toplevel_page_mai-theme {
 	height: 18px;
 	margin-left: 10px;
 	vertical-align: middle;
-	background-image: url(../../img/spinner.gif);
+	background-image: url(../img/spinner.gif);
 	background-position: center;
 	background-size: 18px;
 	visibility: hidden;
@@ -186,7 +186,7 @@ li.toplevel_page_mai-theme {
 }
 
 [data-status="complete"] > label::after {
-	background-image: url(../../img/tick.png);
+	background-image: url(../img/tick.png);
 	visibility: visible;
 	filter: none;
 }
