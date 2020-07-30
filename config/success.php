@@ -26,7 +26,6 @@ return [
 		'fonts'  => [
 			'body'    => 'Hind:400',
 			'heading' => 'Montserrat:600',
-			'button'  => 'Montserrat:600',
 		],
 	],
 	'theme-support' => [
