@@ -56,7 +56,7 @@ function mai_site_layout( $use_cache = true ) {
 
 	// Maybe use layout via mai customizer settings.
 	if ( ! $site_layout ) {
-		$layouts = wp_parse_args( mai_get_option( 'site-layouts', [] ), mai_get_config( 'site-layouts' ) );
+		$layouts = wp_parse_args( mai_get_option( 'site-layouts', [] ), mai_get_config( 'settings' )['site-layout'] );
 
 		if ( mai_is_type_archive() ) {
 			$name    = mai_get_archive_args_name();
@@ -68,8 +68,8 @@ function mai_site_layout( $use_cache = true ) {
 		}
 
 		if ( isset( $name, $context ) ) {
-			if ( isset( $layouts[ $context ][ $name ] ) && ! empty( $layouts[ $context ][ $name ] ) ) {
-				$site_layout = $layouts[ $context ][ $name ];
+			if ( isset( $layouts[ $context . '-' . $name ] ) && ! empty( $layouts[ $context . '-' . $name ] ) ) {
+				$site_layout = $layouts[ $context . '-' . $name ];
 			}
 		}
 

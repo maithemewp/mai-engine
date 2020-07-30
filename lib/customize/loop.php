@@ -22,7 +22,6 @@ function mai_archive_settings_customizer_settings() {
 	$handle  = mai_get_handle();
 	$section = $handle . '-content-archives';
 	$choices = mai_get_loop_content_type_choices( true );
-	$default = mai_get_config( 'archive-settings' );
 
 	\Kirki::add_section(
 		$section,
@@ -41,7 +40,7 @@ function mai_archive_settings_customizer_settings() {
 			'section'     => $section,
 			'label'       => __( 'Archive content types', 'mai-engine' ),
 			'description' => __( 'Custom post types must support "mai-archive-settings" to be available here.', 'mai-engine' ),
-			'default'     => $default,
+			'default'     => mai_get_config( 'settings' )['content-archives']['enable'],
 			'choices'     => $choices,
 		]
 	);
@@ -56,7 +55,6 @@ function mai_archive_settings_customizer_settings() {
 			'description' => sprintf( '<p>%s</p>', esc_html__( 'In order to show/hide panels for the updated values you must reload the Customizer after saving any changes.', 'mai-engine' ) ),
 		]
 	);
-
 }
 
 add_action( 'init', 'mai_single_settings_customizer_settings' );
@@ -72,7 +70,6 @@ function mai_single_settings_customizer_settings() {
 	$handle  = mai_get_handle();
 	$section = $handle . '-single-content';
 	$choices = mai_get_loop_content_type_choices( false );
-	$default = mai_get_config( 'single-settings' );
 
 	\Kirki::add_section(
 		$section,
@@ -91,7 +88,7 @@ function mai_single_settings_customizer_settings() {
 			'section'     => $section,
 			'label'       => __( 'Single content types', 'mai-engine' ),
 			'description' => __( 'Custom post types must support "mai-single-settings" to be available here.', 'mai-engine' ),
-			'default'     => $default,
+			'default'     => mai_get_config( 'settings' )['single-content']['enable'],
 			'choices'     => $choices,
 		]
 	);
@@ -106,5 +103,4 @@ function mai_single_settings_customizer_settings() {
 			'description' => sprintf( '<p>%s</p>', esc_html__( 'In order to show/hide panels for the updated values you must reload the Customizer after saving any changes.', 'mai-engine' ) ),
 		]
 	);
-
 }

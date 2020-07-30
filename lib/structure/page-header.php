@@ -194,7 +194,7 @@ add_filter( 'genesis_structural_wrap-page-header', 'mai_page_header_divider', 10
  * @return string
  */
 function mai_page_header_divider( $output, $original_output ) {
-	$config = mai_get_config( 'page-header' );
+	$config = mai_get_config( 'settings' )['page-header'];
 	$style  = mai_get_option( 'page-header-divider', $config['divider'] );
 
 	if ( $style && 'close' === $original_output ) {
@@ -225,7 +225,8 @@ add_filter( 'genesis_attr_page-header', 'mai_add_page_header_attributes' );
  * @return mixed
  */
 function mai_add_page_header_attributes( $attributes ) {
-	$divider = mai_get_option( 'page-header-divider', mai_get_config( 'page-header' )['divider'] );
+	$default = mai_get_config( 'settings' )['page-header']['divider'];
+	$divider = mai_get_option( 'page-header-divider', $default );
 
 	if ( $divider ) {
 		$attributes['class'] .= ' has-divider';
@@ -343,7 +344,7 @@ function mai_get_page_header_image_id() {
 		$image_id = mai_get_option( 'page-header-image' );
 	}
 
-	if ( ! $image_id && mai_get_config( 'page-header' )['image'] ) {
+	if ( ! $image_id && mai_get_config( 'settings' )['page-header']['image'] ) {
 		$image_id = mai_get_option( 'page-header-image' );
 	}
 

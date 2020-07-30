@@ -243,7 +243,7 @@ function mai_has_light_page_header() {
 
 	} else {
 		$args   = mai_get_template_args();
-		$config = mai_get_config( 'page-header' );
+		$config = mai_get_config( 'settings' )['page-header'];
 
 		if ( isset( $args['page-header-text-color'] ) && ! empty( $args['page-header-text-color'] ) ) {
 			$text_color = $args['page-header-text-color'];
@@ -272,7 +272,7 @@ function mai_has_page_header() {
 		return $has_page_header;
 	}
 
-	$config = mai_get_config( 'page-header' );
+	$config = mai_get_config( 'settings' )['page-header'];
 
 	if ( is_string( $config ) && '*' === $config ) {
 		$has_page_header = true;
@@ -315,7 +315,7 @@ function mai_has_page_header() {
  * @return string|array May be * for all or array of types.
  */
 function mai_get_page_header_types( $context ) {
-	$config   = mai_get_config( 'page-header' );
+	$config   = mai_get_config( 'settings' )['page-header'];
 	$settings = mai_get_option( 'page-header-' . $context );
 	$single   = array_merge(
 		array_values( get_post_types( [ 'public' => true ] ) ),

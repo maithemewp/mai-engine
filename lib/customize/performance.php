@@ -11,8 +11,9 @@
 
 add_action( 'init', 'mai_performance_customizer_settings' );
 /**
- * Add logo customizer settings.
+ * Add performance customizer settings.
  *
+ * @since 2.3.1 Moved defaults to config.
  * @since 1.0.0
  *
  * @return  void
@@ -20,6 +21,7 @@ add_action( 'init', 'mai_performance_customizer_settings' );
 function mai_performance_customizer_settings() {
 	$config_id  = mai_get_handle();
 	$section_id = $config_id . '-performance';
+	$defaults   = mai_get_config( 'settings' )['performance'];
 
 	\Kirki::add_section(
 		$section_id,
@@ -36,7 +38,7 @@ function mai_performance_customizer_settings() {
 			'settings' => 'genesis-style-trump',
 			'label'    => esc_html__( 'Load child theme stylesheet in footer', 'mai-engine' ),
 			'section'  => $section_id,
-			'default'  => true,
+			'default'  => $defaults['genesis-style-trump'],
 		]
 	);
 
@@ -47,7 +49,7 @@ function mai_performance_customizer_settings() {
 			'settings' => 'remove-menu-item-classes',
 			'label'    => esc_html__( 'Remove menu item id and additional classes', 'mai-engine' ),
 			'section'  => $section_id,
-			'default'  => true,
+			'default'  => $defaults['remove-menu-item-classes'],
 		]
 	);
 
@@ -58,7 +60,7 @@ function mai_performance_customizer_settings() {
 			'settings' => 'remove-template-classes',
 			'label'    => esc_html__( 'Remove additional page template body classes', 'mai-engine' ),
 			'section'  => $section_id,
-			'default'  => true,
+			'default'  => $defaults['remove-template-classes'],
 		]
 	);
 
@@ -69,7 +71,7 @@ function mai_performance_customizer_settings() {
 			'settings' => 'disable-emojis',
 			'label'    => esc_html__( 'Disable emojis', 'mai-engine' ),
 			'section'  => $section_id,
-			'default'  => true,
+			'default'  => $defaults['disable-emojis'],
 		]
 	);
 
@@ -80,7 +82,7 @@ function mai_performance_customizer_settings() {
 			'settings' => 'remove-recent-comments-css',
 			'label'    => esc_html__( 'Remove recent comments CSS', 'mai-engine' ),
 			'section'  => $section_id,
-			'default'  => true,
+			'default'  => $defaults['remove-recent-comments-css'],
 		]
 	);
 }

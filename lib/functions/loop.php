@@ -47,12 +47,14 @@ function mai_get_content_limit( $content, $limit ) {
  */
 function mai_has_custom_loop() {
 	if ( mai_is_type_archive() ) {
-		$name  = mai_get_archive_args_name();
-		$types = mai_get_option( 'archive-settings', mai_get_config( 'archive-settings' ) );
+		$name     = mai_get_archive_args_name();
+		$defaults = mai_get_config( 'settings' )['content-archives']['enable'];
+		$types    = mai_get_option( 'archive-settings', $defaults );
 
 	} elseif ( mai_is_type_single() ) {
-		$name  = mai_get_singular_args_name();
-		$types = mai_get_option( 'single-settings', mai_get_config( 'single-settings' ) );
+		$name     = mai_get_singular_args_name();
+		$defaults = mai_get_config( 'settings' )['single-content']['enable'];
+		$types    = mai_get_option( 'single-settings', $defaults );
 	}
 
 	if ( isset( $name, $types ) ) {
@@ -115,6 +117,7 @@ function mai_get_template_args() {
 	$name     = '';
 	$context  = '';
 	$settings = '';
+	$default  = '';
 
 	if ( mai_is_type_archive() ) {
 		$name     = mai_get_archive_args_name();
@@ -126,8 +129,12 @@ function mai_get_template_args() {
 		$settings = 'single-content';
 	}
 
+	if ( $settings ) {
+		$default = mai_get_config( 'settings' )[ $settings ]['enable'];
+	}
+
 	// Get taxonomy's post type as fallback.
-	if ( taxonomy_exists( $name ) && ! in_array( $name, mai_get_option( $context . '-settings', mai_get_config( $context . '-settings' ) ), true ) ) {
+	if ( taxonomy_exists( $name ) && ! in_array( $name, mai_get_option( $context . '-settings', $default ), true ) ) {
 		$post_type = mai_get_taxonomy_post_type( $name );
 		if ( $post_type ) {
 			$name = $post_type;
@@ -135,7 +142,7 @@ function mai_get_template_args() {
 	}
 
 	// Get fallback for archives. This happens on category/tag/etc archives when they don't have custom loop settings.
-	if ( mai_is_type_archive() && ! in_array( $name, mai_get_option( 'archive-settings', mai_get_config( 'archive-settings' ) ), true ) ) {
+	if ( mai_is_type_archive() && ! in_array( $name, mai_get_option( 'archive-settings', mai_get_config( 'settings' )['content-archives']['enable'] ), true ) ) {
 		$name = 'post';
 	}
 

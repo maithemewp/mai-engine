@@ -42,27 +42,6 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Genesis Settings
-	|--------------------------------------------------------------------------
-	|
-	| Genesis default settings.
-	*/
-
-	'genesis-settings' => [
-		'avatar_size'           => 48,
-		'blog_cat_num'          => 12,
-		'breadcrumb_home'       => 0,
-		'breadcrumb_front_page' => 0,
-		'breadcrumb_posts_page' => 0,
-		'breadcrumb_single'     => 0,
-		'breadcrumb_page'       => 0,
-		'breadcrumb_archive'    => 0,
-		'breadcrumb_404'        => 0,
-		'breadcrumb_attachment' => 0,
-	],
-
-	/*
-	|--------------------------------------------------------------------------
 	| Image Sizes
 	|--------------------------------------------------------------------------
 	|
@@ -125,23 +104,6 @@ return [
 			'content-sidebar-sidebar',
 			'sidebar-sidebar-content',
 			'sidebar-content-sidebar',
-		],
-	],
-
-	/*
-	|--------------------------------------------------------------------------
-	| Site Layouts
-	|--------------------------------------------------------------------------
-	|
-	| Default site layouts. These can be overidden by via Customizer > Site Layouts,
-	| but these defaults are used when first activating the theme.
-	*/
-
-	'site-layouts' => [
-		'default' => [
-			'site'    => 'standard-content',
-			'archive' => 'wide-content',
-			'single'  => '',
 		],
 	],
 
@@ -344,25 +306,6 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Simple Social Icons
-	|--------------------------------------------------------------------------
-	|
-	| Default settings for Simple Social Icons plugin.
-	*/
-
-	'simple-social-icons' => [
-		'alignment'              => 'alignleft',
-		'background_color'       => '',
-		'background_color_hover' => '',
-		'border_radius'          => 3,
-		'border_width'           => 0,
-		'icon_color'             => 'heading',
-		'icon_color_hover'       => 'primary',
-		'size'                   => 40,
-	],
-
-	/*
-	|--------------------------------------------------------------------------
 	| Theme Support
 	|--------------------------------------------------------------------------
 	|
@@ -440,70 +383,6 @@ return [
 		'remove' => [
 			'genesis-footer-widgets',
 		],
-	],
-
-	/*
-	|--------------------------------------------------------------------------
-	| Archive & Single Settings Content Types
-	|--------------------------------------------------------------------------
-	|
-	| Enable (archive/single) settings for content types.
-	| This is only for defaults when activating the theme.
-	| These can be added/removed via:
-	| Customizer > Theme Settings > Content Archives
-	| or
-	| Customizer > Theme Settings > Single Content
-	|
-	| Archive can be any of the following:
-	| 1. any post_type name as long as the post type is public and has an archive,
-	| 2. any public taxonomy name,
-	| 3. 'search' for search results,
-	| 4. 'author' for author archives,
-	| 5. 'date' for date archives.
-	|
-	| Single can be any of the following:
-	| 1. any public post_type name,
-	| 2. any public taxonomy name,
-	| 3. '404-page' for 404.
-	*/
-
-	'archive-settings' => [
-		'post',
-	],
-
-	'single-settings' => [
-		'page',
-		'post',
-	],
-
-	/*
-	|--------------------------------------------------------------------------
-	| Page Header
-	|--------------------------------------------------------------------------
-	|
-	| The default page header settings. The can be overidden via Customizer settings,
-	| but this sets the default for when a theme is first activated.
-	*/
-
-	'page-header' => [
-		'archive'                 => [],
-		'single'                  => [],
-		'background-color'        => 'alt',
-		'image'                   => '',
-		'overlay-opacity'         => 0.5,
-		'text-color'              => 'dark',
-		'spacing'                 => [
-			'top'    => '10vw',
-			'bottom' => '10vw',
-		],
-		'text-align'              => 'center',
-		'divider'                 => '',
-		'divider-height'          => 'md',
-		'divider-color'           => 'white',
-		'divider-flip-horizontal' => false,
-		'divider-flip-vertical'   => false,
-		'divider-overlay-opacity' => 0.5,
-		'divider-text-align'      => '',
 	],
 
 	/*
@@ -597,5 +476,133 @@ return [
 			],
 		],
 		'remove' => [],
+	],
+
+	/*
+	|--------------------------------------------------------------------------
+	| Settings defaults.
+	|--------------------------------------------------------------------------
+	|
+	| Default values for Customizer settings.
+	|
+	*/
+
+	'settings' => [
+		'site-layout'      => [
+			'site'    => 'standard-content',
+			'archive' => 'wide-content',
+			'single'  => '',
+			'search'  => '',
+			'author'  => '',
+			'date'    => '',
+			'404'     => '',
+		],
+		'single-content'   => [
+			'enable'                       => [ 'page', 'post' ],
+			'show'                         => 'mai_get_single_show_defaults',
+			'image_orientation'            => 'landscape',
+			'image_size'                   => 'landscape-md',
+			'header_meta'                  => 'mai_get_header_meta_default',
+			'footer_meta'                  => 'mai_get_footer_meta_default',
+			'page-header-image'            => '',
+			'page-header-featured'         => false,
+			'page-header-background-color' => '',
+			'page-header-overlay-opacity'  => '',
+			'page-header-text-color'       => '',
+		],
+		'content-archives' => [
+			'enable'                       => [ 'post' ],
+			'show'                         => [
+				'image',
+				'genesis_entry_header',
+				'title',
+				'header_meta',
+				'genesis_before_entry_content',
+				'excerpt',
+				'genesis_entry_content',
+				'more_link',
+				'genesis_after_entry_content',
+				'genesis_entry_footer',
+			],
+			'title_size'                   => 'lg',
+			'image_orientation'            => 'landscape',
+			'image_size'                   => 'landscape-md',
+			'image_position'               => 'full',
+			'image_width'                  => 'third',
+			'header_meta'                  => 'mai_get_header_meta_default',
+			'content_limit'                => 0,
+			'more_link_text'               => '',
+			'footer_meta'                  => 'mai_get_footer_meta_default',
+			'align_text'                   => 'start',
+			'align_text_vertical'          => '',
+			'image_stack_heading'          => '',
+			'image_stack'                  => true,
+			'boxed_heading'                => '',
+			'boxed'                        => true,
+			'border_radius'                => '',
+			'columns'                      => '3',
+			'columns_responsive'           => '',
+			'columns_md'                   => '1',
+			'columns_sm'                   => '1',
+			'columns_xs'                   => '1',
+			'align_columns'                => 'left',
+			'align_columns_vertical'       => '',
+			'column_gap'                   => 'xl',
+			'row_gap'                      => 'xl',
+			'posts_per_page'               => '',
+			'page-header-image'            => '',
+			'page-header-background-color' => '',
+			'page-header-overlay-opacity'  => '',
+			'page-header-text-color'       => '',
+		],
+		'page-header'      => [
+			'archive'                 => [],
+			'single'                  => [],
+			'background-color'        => 'alt',
+			'image'                   => '',
+			'overlay-opacity'         => 0.5,
+			'text-color'              => 'dark',
+			'spacing'                 => [
+				'top'    => '10vw',
+				'bottom' => '10vw',
+			],
+			'text-align'              => 'center',
+			'divider'                 => '',
+			'divider-height'          => 'md',
+			'divider-color'           => 'white',
+			'divider-flip-horizontal' => false,
+			'divider-flip-vertical'   => false,
+			'divider-overlay-opacity' => 0.5,
+			'divider-text-align'      => '',
+		],
+		'performance'      => [
+			'genesis-style-trump'        => true,
+			'remove-menu-item-classes'   => true,
+			'remove-template-classes'    => true,
+			'disable-emojis'             => true,
+			'remove-recent-comments-css' => true,
+		],
+		'genesis' => [
+			'avatar_size'           => 48,
+			'blog_cat_num'          => 12,
+			'breadcrumb_home'       => 0,
+			'breadcrumb_front_page' => 0,
+			'breadcrumb_posts_page' => 0,
+			'breadcrumb_single'     => 0,
+			'breadcrumb_page'       => 0,
+			'breadcrumb_archive'    => 0,
+			'breadcrumb_404'        => 0,
+			'breadcrumb_attachment' => 0,
+		],
+		'simple-social-icons' => [
+			'alignment'              => 'alignleft',
+			'background_color'       => '',
+			'background_color_hover' => '',
+			'border_radius'          => 3,
+			'border_width'           => 0,
+			'icon_color'             => 'heading',
+			'icon_color_hover'       => 'primary',
+			'size'                   => 40,
+		],
 	],
 ];

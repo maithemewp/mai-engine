@@ -157,7 +157,7 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_page_header_content_type_css' );
  * @return array
  */
 function mai_add_page_header_content_type_css( $css ) {
-	$config = mai_get_config( 'page-header' );
+	$config = mai_get_config( 'settings' )['page-header'];
 
 	$settings = [
 		'page-header-background-color' => mai_get_color( $config['background-color'] ),

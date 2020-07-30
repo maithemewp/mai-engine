@@ -18,10 +18,10 @@ add_action( 'after_switch_theme', 'mai_default_theme_settings' );
  * @return void
  */
 function mai_default_theme_settings() {
-	$settings = mai_get_config( 'genesis-settings' );
+	$defaults = mai_get_config( 'settings' )['genesis'];
 
-	genesis_update_settings( $settings );
-	update_option( 'posts_per_page', $settings['blog_cat_num'] );
+	genesis_update_settings( $defaults );
+	update_option( 'posts_per_page', $defaults['blog_cat_num'] );
 }
 
 add_filter( 'simple_social_default_styles', 'mai_default_social_styles' );
@@ -32,10 +32,10 @@ add_filter( 'simple_social_default_styles', 'mai_default_social_styles' );
  *
  * @param array $defaults Social style defaults.
  *
- * @return array Modified social style defaults.
+ * @return array
  */
 function mai_default_social_styles( $defaults ) {
-	$args           = mai_get_config( 'simple-social-icons' );
+	$args           = mai_get_config( 'settings' )['simple-social-icons'];
 	$colors         = array_keys( mai_get_colors() );
 	$color_settings = [
 		'border_color',
