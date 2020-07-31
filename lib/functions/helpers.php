@@ -310,7 +310,7 @@ function mai_has_page_header() {
  *
  * @since 0.1.0
  *
- * @param string $context Archive or single.
+ * @param string $context 'archive' or 'single'.
  *
  * @return string|array May be * for all or array of types.
  */

@@ -16,7 +16,7 @@
 	var hasPageHeader  = pageHeader && body.classList.contains( 'has-page-header' );
 	var hasAlignFull   = 0 !== document.querySelectorAll( '.content-sidebar-wrap > .content > .entry > .entry-wrap > .entry-content > .alignfull:first-child' ).length;
 	var hasBreadcrumbs = 0 !== document.getElementsByClassName( 'breadcrumb' ).length;
-	var firstElement   = hasAlignFull ? document.querySelectorAll( '.entry-content > .alignfull' )[0] : siteInner.firstChild;
+	var firstElement   = hasPageHeader ? pageHeader : hasAlignFull ? document.querySelectorAll( '.entry-content > .alignfull' )[0] : siteInner.firstChild;
 	var timeout        = false;
 
 	/**
@@ -59,7 +59,7 @@
 			siteInner.style.marginTop = '-' + headerHeight + 'px';
 		}
 
-		firstElement.setAttribute( 'style', 'padding-top: ' + ( parseInt( headerHeight ) + parseInt( paddingTop ) ) + 'px !important' );
+		firstElement.setAttribute( 'style', 'padding-top:' + ( parseInt( headerHeight ) + parseInt( paddingTop ) ) + 'px !important' );
 
 		setTimeout( function() {
 			timeout = false;

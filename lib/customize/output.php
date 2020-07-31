@@ -157,6 +157,11 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_page_header_content_type_css' );
  * @return array
  */
 function mai_add_page_header_content_type_css( $css ) {
+	$types = array_merge( mai_get_page_header_types( 'archive' ), mai_get_page_header_types( 'single' ) );
+	if ( empty( $types ) ) {
+		return $css;
+	}
+
 	$config = mai_get_config( 'settings' )['page-header'];
 
 	$settings = [
@@ -175,14 +180,11 @@ function mai_add_page_header_content_type_css( $css ) {
 	}
 
 	$spacing = mai_get_option( 'page-header-spacing', $config['spacing'] );
+	$top     = isset( $spacing['top'] ) && '' !== $spacing['top'] ? $spacing['top'] : $config['spacing']['top'];
+	$bottom  = isset( $spacing['bottom'] ) && '' !== $spacing['bottom'] ? $spacing['bottom'] : $config['spacing']['bottom'];
 
-	if ( isset( $spacing['top'] ) ) {
-		$css['global'][':root']['--page-header-padding-top'] = mai_get_unit_value( $spacing['top'] );
-	}
-
-	if ( isset( $spacing['bottom'] ) ) {
-		$css['global'][':root']['--page-header-padding-bottom'] = mai_get_unit_value( $spacing['bottom'] );
-	}
+	$css['global'][':root']['--page-header-padding-top']    = mai_get_unit_value( $top );
+	$css['global'][':root']['--page-header-padding-bottom'] = mai_get_unit_value( $bottom );
 
 	return $css;
 }
