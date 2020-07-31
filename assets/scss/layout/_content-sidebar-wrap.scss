@@ -11,11 +11,11 @@
 	column-gap: var(--content-sidebar-gap);
 
 	> .content > .entry > .entry-wrap > .entry-content:first-child > .alignfull:first-child {
-		margin-top: calc(var(--content-sidebar-wrap-margin-top, var(--spacing-xxl) * -1));
+		margin-top: calc(var(--content-sidebar-wrap-margin-top) * -1);
 	}
 
 	> .content > .entry > .entry-wrap > .entry-content > .alignfull:last-child {
-		margin-bottom: calc(var(--content-sidebar-wrap-margin-bottom, var(--spacing-xxxl) * -1));
+		margin-bottom: calc(var(--content-sidebar-wrap-margin-bottom) * -1);
 	}
 }
 
