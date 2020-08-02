@@ -3,7 +3,7 @@
 	flex: var(--entry-image-link-flex, initial);
 	align-self: var(--entry-image-link-align, unset);
 	order: var(--entry-image-link-order, unset);
-	max-width: var(--image-width, unset);
+	max-width: var(--entry-image-link-max-width, unset);
 	margin: var(--entry-image-link-margin, var(--entry-image-link-margin-top, 0) var(--entry-image-link-margin-right, 0) var(--entry-image-link-margin-bottom, var(--spacing-lg)) var(--entry-image-link-margin-left, 0));
 	line-height: var(--entry-image-line-height, unset);
 
@@ -53,7 +53,7 @@
 .has-image-left-full,
 .has-image-right-full {
 	--entry-image-link-display: flex;
-	--entry-image-link-flex: 1 1 var(--image-width);
+	--entry-image-link-flex: 1 1 var(--entry-image-link-max-width);
 	--entry-image-link-before-display: block;
 	--entry-image-object-fit: cover;
 	--entry-image-width: 100%;

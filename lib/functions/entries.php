@@ -54,7 +54,7 @@ function mai_do_entries_open( $args ) {
 
 			$image_sizes         = mai_get_available_image_sizes();
 			$image_size          = $image_sizes[ $args['image_size'] ];
-			$attributes['style'] .= sprintf( '--image-width:%spx;', $image_size['width'] );
+			$attributes['style'] .= sprintf( '--entry-image-link-max-width:%spx;', $image_size['width'] );
 
 		} else {
 
@@ -63,13 +63,13 @@ function mai_do_entries_open( $args ) {
 				// Image width.
 				switch ( $args['image_width'] ) {
 					case 'half':
-						$attributes['style'] .= sprintf( '--image-width:%s;', '50%' );
+						$attributes['style'] .= sprintf( '--entry-image-link-max-width:%s;', '50%' );
 						break;
 					case 'third':
-						$attributes['style'] .= sprintf( '--image-width:%s;', '33.33333333%' );
+						$attributes['style'] .= sprintf( '--entry-image-link-max-width:%s;', '33.33333333%' );
 						break;
 					case 'fourth':
-						$attributes['style'] .= sprintf( '--image-width:%s;', '25%' );
+						$attributes['style'] .= sprintf( '--entry-image-link-max-width:%s;', '25%' );
 						break;
 				}
 			}
