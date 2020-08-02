@@ -256,17 +256,17 @@ return [
 
 			// Plugin styles.
 			[
-				'handle'    => mai_get_handle() . '-amp',
-				'src'       => mai_get_url() . 'assets/css/plugins/amp.min.css',
-				'condition' => function () {
-					return genesis_is_amp();
-				},
-			],
-			[
 				'handle'    => mai_get_handle() . '-atomic-blocks',
 				'src'       => mai_get_url() . 'assets/css/plugins/atomic-blocks.min.css',
 				'condition' => function () {
 					return function_exists( 'atomic_blocks_main_plugin_file' );
+				},
+			],
+			[
+				'handle'    => mai_get_handle() . '-facetwp',
+				'src'       => mai_get_url() . 'assets/css/plugins/facetwp.min.css',
+				'condition' => function () {
+					return class_exists( 'FacetWP' );
 				},
 			],
 			[
@@ -488,7 +488,18 @@ return [
 	*/
 
 	'settings' => [
-		'site-layout'      => [
+		'logo'                => [
+			'show-tagline' => true,
+			'logo-width'   => [
+				'desktop' => '180px',
+				'mobile'  => '120px',
+			],
+			'logo-spacing' => [
+				'desktop' => '36px',
+				'mobile'  => '16px',
+			],
+		],
+		'site-layout'         => [
 			'site'    => 'standard-content',
 			'archive' => 'wide-content',
 			'single'  => '',
@@ -497,7 +508,7 @@ return [
 			'date'    => '',
 			'404'     => '',
 		],
-		'single-content'   => [
+		'single-content'      => [
 			'enable'                       => [ 'page', 'post' ],
 			'show'                         => 'mai_get_single_show_defaults',
 			'image_orientation'            => 'landscape',
@@ -510,7 +521,7 @@ return [
 			'page-header-overlay-opacity'  => '',
 			'page-header-text-color'       => '',
 		],
-		'content-archives' => [
+		'content-archives'    => [
 			'enable'                       => [ 'post' ],
 			'show'                         => [
 				'image',
@@ -555,7 +566,7 @@ return [
 			'page-header-overlay-opacity'  => '',
 			'page-header-text-color'       => '',
 		],
-		'page-header'      => [
+		'page-header'         => [
 			'archive'                 => [],
 			'single'                  => [],
 			'background-color'        => 'alt',
@@ -575,14 +586,14 @@ return [
 			'divider-overlay-opacity' => 0.5,
 			'divider-text-align'      => '',
 		],
-		'performance'      => [
+		'performance'         => [
 			'genesis-style-trump'        => true,
 			'remove-menu-item-classes'   => true,
 			'remove-template-classes'    => true,
 			'disable-emojis'             => true,
 			'remove-recent-comments-css' => true,
 		],
-		'genesis' => [
+		'genesis'             => [
 			'avatar_size'           => 48,
 			'blog_cat_num'          => 12,
 			'breadcrumb_home'       => 0,
