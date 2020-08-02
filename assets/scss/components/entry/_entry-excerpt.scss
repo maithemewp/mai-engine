@@ -3,6 +3,7 @@
 	width: 100%;
 	margin: var(--entry-excerpt-margin, 0 0 var(--entry-excerpt-margin-bottom, var(--spacing-md)));
 	font-size: var(--entry-excerpt-font-size, (0.9em));
+	font-family: var(--entry-excerpt-font-family, inherit);
 
 	&:last-child {
 		--entry-excerpt-margin-bottom: 0;
@@ -10,7 +11,6 @@
 }
 
 .entry-excerpt-single {
-	font-style: italic;
 	--entry-excerpt-margin-bottom: var(--spacing-xl);
 	--entry-excerpt-font-size: var(--font-size-lg);
 }

@@ -12,9 +12,7 @@
 		display: inline-block;
 	}
 
+	a {
+		padding: var(--pagination-link-padding, 1em);
+	}
 }
-
-.facetwp-pager + ul {
-	display: none;
-}
-
