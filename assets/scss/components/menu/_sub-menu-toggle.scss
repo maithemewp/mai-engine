@@ -2,9 +2,8 @@
 	display: var(--sub-menu-toggle-display, (flex));
 	align-items: center;
 	justify-content: center;
-	width: 3em;
 	height: auto;
-	margin: 0;
+	margin: var(--sub-menu-toggle-margin, 0);
 	padding: 1em;
 	background: transparent;
 

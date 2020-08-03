@@ -21,17 +21,17 @@
 	position: relative;
 	display: var(--menu-item-display, (flex));
 	flex-wrap: var(--menu-item-flex-wrap, wrap);
-	justify-content: var(--menu-item-justify-content, space-between);
+	justify-content: var(--menu-item-justify-content, flex-start);
 	width: var(--menu-item-width, 100%);
 	margin: var(--menu-item-margin, (0 auto));
 }
 
 .menu-item-link {
 	display: var(--menu-item-link-display, (flex));
-	flex: 1;
 	align-items: center;
 	justify-content: var(--menu-item-link-justify-content, flex-start);
 	width: var(--menu-item-link-width, 100%);
+	max-width: var(--menu-item-link-max-width, 100%);
 	padding: var(--menu-item-link-padding, (var(--spacing-sm) var(--spacing-xxs)));
 	color: var(--menu-item-link-color, var(--color-heading));
 
