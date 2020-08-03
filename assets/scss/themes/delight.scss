@@ -1,10 +1,9 @@
 :root {
 	--font-scale: 1.2;
 	--font-size-base: 15px;
+	--body-background-color: #fcfcfc;
 	--body-font-weight: var(--font-weight-light);
-	--shadow: 0 4px 24px rgba(0, 0, 0, 0.025);
-	--page-header-overlay: transparent;
-	--page-header-overlay-opacity: 1;
+	--shadow: 0 4px 24px 12px rgba(0, 0, 0, 0.025);
 	--page-header-inner-background: rgba(255, 255, 255, 0.9);
 	--page-header-inner-max-width: 800px;
 	--page-header-inner-padding: var(--spacing-xl) var(--spacing-xl);
@@ -23,14 +22,25 @@ html {
 		--entry-padding: calc(8px + 2vw);
 		--entry-border: var(--border);
 		--entry-box-shadow: var(--shadow);
+
+		> .entry-image-link {
+			--entry-image-link-margin-left: calc(var(--entry-padding) * -1);
+			--entry-image-link-margin-right: calc(var(--entry-padding) * -1);
+			--entry-image-border-radius: 0;
+		}
+
+		> .entry-image-link:first-child {
+			--entry-image-border-radius: var(--border-radius) var(--border-radius) 0 0;
+			--entry-image-link-margin-top: calc(var(--entry-padding) * -1);
+		}
 	}
 }
 
 .nav-after-header {
 	--menu-item-link-color: var(--color-white);
 	--menu-font-size: 0.8em;
+	--menu-letter-spacing: 0.1rem;
+	--menu-text-transform: uppercase;
 
-	letter-spacing: 0.1rem;
-	text-transform: uppercase;
 	background-color: var(--color-heading);
 }
