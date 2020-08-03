@@ -162,21 +162,16 @@ function mai_add_page_header_content_type_css( $css ) {
 		return $css;
 	}
 
-	$config = mai_get_config( 'settings' )['page-header'];
+	$config  = mai_get_config( 'settings' )['page-header'];
+	$color   = mai_get_template_arg( 'page-header-background-color', mai_get_option( 'page-header-background-color', mai_get_color( $config['background-color'] ) ) );
+	$opacity = mai_get_template_arg( 'page-header-overlay-opacity', mai_get_option( 'page-header-overlay-opacity', (string) $config['overlay-opacity'] ) );
 
-	$settings = [
-		'page-header-background-color' => mai_get_color( $config['background-color'] ),
-		'page-header-overlay-opacity'  => (string) $config['overlay-opacity'],
-	];
+	if ( $color ) {
+		$css['global'][':root'][ '--page-header-background-color' ] = $color;
+	}
 
-	foreach ( $settings as $id => $default ) {
-		$global   = mai_get_option( $id, $default );
-		$template = mai_get_template_arg( $id, false );
-		$value    = $template ? $template : $global;
-
-		if ( $value ) {
-			$css['global'][':root'][ '--' . $id ] = $value;
-		}
+	if ( '' !== $opacity ) {
+		$css['global'][':root'][ '--page-header-overlay-opacity' ] = (string) $opacity;
 	}
 
 	$spacing = mai_get_option( 'page-header-spacing', $config['spacing'] );

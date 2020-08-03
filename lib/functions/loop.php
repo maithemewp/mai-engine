@@ -189,6 +189,19 @@ function mai_get_template_args() {
 	// Parse args.
 	$args = wp_parse_args( $args, $defaults );
 
+	// Remove settings with empty string, again.
+	foreach ( $args as $name => $value ) {
+
+		// Skip header and footer meta, empty means empty.
+		if ( in_array( $name, [ 'header_meta', 'footer_meta' ], true ) ) {
+			continue;
+		}
+
+		if ( is_null( $value ) || '' === $value ) {
+			unset( $args[ $name ] );
+		}
+	}
+
 	// Allow devs to filter.
 	$args = apply_filters( 'mai_template_args', $args, $context );
 

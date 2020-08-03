@@ -592,6 +592,9 @@ function mai_get_content_archive_settings() {
 				'step' => 0.01,
 			],
 			'active_callback' => 'mai_has_page_header_support_callback',
+			'sanitize_callback' => function( $value ) {
+				return (float) $value; // Remove trailing zeros.
+			},
 		],
 		[
 			'settings'        => 'page-header-text-color',

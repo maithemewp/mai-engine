@@ -36,9 +36,11 @@ return [
 		],
 	],
 	'page-header'   => [
-		'archive'         => [ 'category', 'product', 'post' ],
-		'single'          => [ 'page', 'post' ],
-		'overlay-opacity' => '0.1',
+		'archive'          => [ 'category', 'product', 'post' ],
+		'single'           => [ 'page', 'post' ],
+		'background-color' => '',
+		'image'            => '',
+		'overlay-opacity'  => '0',
 	],
 	'extra'         => [
 		'border-radius' => '2px',
