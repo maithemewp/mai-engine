@@ -151,37 +151,40 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 		$load = true;
 	}
 
-	if ( $load && is_callable( $condition ) && $condition() ) {
-		$register( $handle, $src, $deps, $ver, $last_arg );
-		$enqueue( $handle );
+	if ( ! $load || ! is_callable( $condition ) || ! $condition() ) {
+		return;
+	}
 
-		if ( $inline ) {
-			wp_add_inline_style( $handle, mai_minify_css( $inline ) );
+	$register( $handle, $src, $deps, $ver, $last_arg );
+	$enqueue( $handle );
+
+	if ( $inline ) {
+		wp_add_inline_style( $handle, mai_minify_css( $inline ) );
+	}
+
+	if ( ! empty( $localize ) ) {
+		if ( is_callable( $localize['data'] ) ) {
+			$localize_data = call_user_func( $localize['data'] );
+		} else {
+			$localize_data = $localize['data'];
 		}
 
-		if ( ! empty( $localize ) ) {
-			if ( is_callable( $localize['data'] ) ) {
-				$localize_data = call_user_func( $localize['data'] );
-			} else {
-				$localize_data = $localize['data'];
-			}
-			wp_localize_script( $handle, $localize['name'], $localize_data );
-		}
+		wp_localize_script( $handle, $localize['name'], $localize_data );
+	}
 
-		if ( $onload ) {
-			add_filter(
-				'style_loader_tag',
-				function ( $html, $original_handle ) use ( $args, $handle ) {
-					if ( $original_handle === $handle ) {
-						$html = str_replace( '>', ' onload="' . $args['onload'] . '">', $html );
-					}
+	if ( $onload ) {
+		add_filter(
+			'style_loader_tag',
+			function ( $html, $original_handle ) use ( $args, $handle ) {
+				if ( $original_handle === $handle ) {
+					$html = str_replace( '>', ' onload="' . $args['onload'] . '">', $html );
+				}
 
-					return $html;
-				},
-				11,
-				2
-			);
-		}
+				return $html;
+			},
+			11,
+			2
+		);
 	}
 }
 
@@ -204,6 +207,7 @@ function mai_deregister_asset( $handle ) {
 	$wp_styles->remove( $handle );
 }
 
+add_action( 'wp_enqueue_scripts', 'mai_remove_block_library_theme_css' );
 add_action( 'admin_enqueue_scripts', 'mai_remove_block_library_theme_css', 9 );
 /**
  * Remove block library theme CSS from admin.
@@ -213,7 +217,6 @@ add_action( 'admin_enqueue_scripts', 'mai_remove_block_library_theme_css', 9 );
  * @return void
  */
 function mai_remove_block_library_theme_css() {
-	mai_enqueue_asset( 'wp-block-library-theme', [ 'src' => '', 'location' => 'editor' ], 'style' );
 	mai_deregister_asset( 'wp-block-library-theme' );
 }
 
@@ -291,7 +294,7 @@ add_filter( 'clean_url', 'mai_async_scripts', 11, 1 );
  *
  * @param string $url URL to check.
  *
- * @return mixed|string
+ * @return string
  */
 function mai_async_scripts( $url ) {
 	if ( strpos( $url, '#async' ) !== false ) {

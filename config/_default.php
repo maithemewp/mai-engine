@@ -196,6 +196,7 @@ return [
 			],
 		],
 		'blocks'     => [
+			'src'      => mai_get_url() . 'assets/js/min/blocks.js',
 			'deps'     => [ 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ],
 			'location' => 'editor',
 		],
@@ -247,6 +248,11 @@ return [
 			'condition' => function () {
 				return class_exists( 'WooCommerce' );
 			},
+		],
+		'wp-block-library-theme' => [
+			'handle'   => 'wp-block-library-theme',
+			'src'      => '',
+			'location' => 'editor',
 		],
 	],
 
