@@ -713,6 +713,10 @@ function mai_get_read_more_text() {
  * @return string
  */
 function mai_get_menu( $menu, $args = [] ) {
+	if ( ! is_nav_menu( $menu ) ) {
+		return;
+	}
+
 	$menu_class = 'menu genesis-nav-menu';
 
 	if ( isset( $args['class'] ) && $args['class'] ) {
