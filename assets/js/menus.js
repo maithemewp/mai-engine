@@ -91,7 +91,7 @@
 	};
 
 	var cloneMenuItems = function() {
-		if ( mobileMenu ) {
+		if ( mobileMenu.classList.contains( 'template-part' ) ) {
 			return;
 		}
 

@@ -360,7 +360,7 @@ return [
 			'id'         => 'before-header',
 			'location'   => 'genesis_before_header',
 			'menu_order' => 5,
-			'before'     => '<div class="before-header">',
+			'before'     => '<div class="before-header template-part">',
 			'after'      => '</div>',
 		],
 		[
@@ -376,7 +376,7 @@ return [
 		[
 			'id'         => 'mobile-menu',
 			'location'   => 'mai_after_header_wrap',
-			'before'     => '<div class="mobile-menu"><div class="wrap">',
+			'before'     => '<div class="mobile-menu template-part"><div class="wrap">',
 			'after'      => '</div></div>',
 			'menu_order' => 20,
 		],
