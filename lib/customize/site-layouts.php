@@ -69,7 +69,7 @@ function mai_site_layouts_customizer_settings() {
 			'option_name' => $options['default'],
 			'section'     => $section,
 			'label'       => __( 'Site Default', 'mai-engine' ),
-			'default'     => $defaults['site'],
+			'default'     => $defaults['default']['site'],
 			'choices'     => mai_get_site_layout_choices(),
 		]
 	);
@@ -83,7 +83,7 @@ function mai_site_layouts_customizer_settings() {
 			'option_name' => $options['default'],
 			'section'     => $section,
 			'label'       => __( 'Content Archives', 'mai-engine' ),
-			'default'     => $defaults['archive'],
+			'default'     => $defaults['default']['archive'],
 			'choices'     => mai_get_site_layout_choices(),
 		]
 	);
@@ -97,7 +97,7 @@ function mai_site_layouts_customizer_settings() {
 			'option_name' => $options['default'],
 			'section'     => $section,
 			'label'       => __( 'Single Content', 'mai-engine' ),
-			'default'     => $defaults['single'],
+			'default'     => $defaults['default']['single'],
 			'choices'     => mai_get_site_layout_choices(),
 		]
 	);
@@ -128,7 +128,7 @@ function mai_site_layouts_customizer_settings() {
 				'option_name' => $options['single'],
 				'section'     => $section,
 				'label'       => __( 'Single', 'mai-engine' ),
-				'default'     => isset( $defaults[ 'single-' . $name ] ) ? $defaults[ 'single-' . $name ] : '',
+				'default'     => isset( $defaults['single'][ $name ] ) ? $defaults['single'][ $name ] : '',
 				'choices'     => mai_get_site_layout_choices(),
 			]
 		);
@@ -144,7 +144,7 @@ function mai_site_layouts_customizer_settings() {
 					'option_name' => $options['archive'],
 					'section'     => $section,
 					'label'       => __( 'Archive', 'mai-engine' ),
-					'default'     => isset( $defaults[ 'archive-' . $name ] ) ? $defaults[ 'archive-' . $name ] : '',
+					'default'     => isset( $defaults['archive'][ $name ] ) ? $defaults['archive'][ $name ] : '',
 					'choices'     => mai_get_site_layout_choices(),
 				]
 			);
@@ -173,7 +173,7 @@ function mai_site_layouts_customizer_settings() {
 						'option_name' => $options['archive'],
 						'section'     => $section,
 						'label'       => $taxonomy->label,
-						'default'     => isset( $defaults[ 'archive-' . $taxo_name ] ) ? $defaults[ 'archive-' . $taxo_name ] : '',
+						'default'     => isset( $defaults['archive'][ $taxo_name ] ) ? $defaults['archive'][ $taxo_name ] : '',
 						'choices'     => mai_get_site_layout_choices(),
 					]
 				);
@@ -202,7 +202,7 @@ function mai_site_layouts_customizer_settings() {
 			'option_name' => $options['archive'],
 			'section'     => $section,
 			'label'       => __( 'Search Results', 'mai-engine' ),
-			'default'     => $defaults['search'],
+			'default'     => $defaults['archive']['search'],
 			'choices'     => mai_get_site_layout_choices(),
 		]
 	);
@@ -216,7 +216,7 @@ function mai_site_layouts_customizer_settings() {
 			'option_name' => $options['archive'],
 			'section'     => $section,
 			'label'       => __( 'Author Archives', 'mai-engine' ),
-			'default'     => $defaults['author'],
+			'default'     => $defaults['archive']['author'],
 			'choices'     => mai_get_site_layout_choices(),
 		]
 	);
@@ -230,7 +230,7 @@ function mai_site_layouts_customizer_settings() {
 			'option_name' => $options['archive'],
 			'section'     => $section,
 			'label'       => __( 'Date Archives', 'mai-engine' ),
-			'default'     => $defaults['date'],
+			'default'     => $defaults['archive']['date'],
 			'choices'     => mai_get_site_layout_choices(),
 		]
 	);
@@ -244,7 +244,7 @@ function mai_site_layouts_customizer_settings() {
 			'option_name' => $options['single'],
 			'section'     => $section,
 			'label'       => __( '404', 'mai-engine' ),
-			'default'     => $defaults['404-page'],
+			'default'     => $defaults['single']['404-page'],
 			'choices'     => mai_get_site_layout_choices(),
 		]
 	);

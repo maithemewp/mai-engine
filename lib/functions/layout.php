@@ -78,7 +78,7 @@ function mai_site_layout( $use_cache = true ) {
 		}
 
 		if ( ! $site_layout ) {
-			$site_layout = $layouts['site'];
+			$site_layout = $layouts['default']['site'];
 		}
 	}
 

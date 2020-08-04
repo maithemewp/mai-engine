@@ -42,10 +42,14 @@ return [
 			],
 		],
 		'site-layout'      => [
-			'site'    => 'wide-content',
-			'archive' => 'wide-content',
-			'search'  => 'wide-content',
-			'single'  => 'wide-content',
+			'default'  => [
+				'site'    => 'wide-content',
+				'archive' => 'wide-content',
+				'single'  => 'wide-content',
+			],
+			'archive'  => [
+				'search'  => 'wide-content',
+			],
 		],
 		'single-content'   => [
 			'image_orientation' => 'custom',

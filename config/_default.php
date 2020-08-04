@@ -451,14 +451,25 @@ return [
 				'mobile'  => '16px',
 			],
 		],
-		'site-layout'         => [
-			'site'     => 'standard-content',
-			'archive'  => '',
-			'single'   => '',
-			'search'   => '',
-			'author'   => '',
-			'date'     => '',
-			'404-page' => '',
+		'site-layout' => [
+			'default'    => [
+				'site'      => 'standard-content',
+				'archive'   => '',
+				'single'    => '',
+			],
+			'archive'    => [
+				'post'      => '',
+				'category'  => '',
+				'post_tag'  => '',
+				'search'    => '',
+				'author'    => '',
+				'date'      => '',
+			],
+			'single'     => [
+				'page'      => '',
+				'post'      => '',
+				'404-page'  => '',
+			],
 		],
 		'single-content'      => [
 			'enable'                       => [ 'page', 'post' ],
