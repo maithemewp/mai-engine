@@ -6,13 +6,14 @@
 	var body           = document.getElementsByTagName( 'body' )[ 0 ];
 	var skipLink       = document.getElementsByClassName( 'genesis-skip-link' )[ 0 ];
 	var beforeHeader   = document.getElementsByClassName( 'before-header' )[ 0 ];
-	var siteHeader     = document.getElementsByClassName( 'site-header' )[ 0 ];
+	var header         = document.getElementsByClassName( 'site-header' )[ 0 ];
+	var headerHeight   = header ? header.offsetHeight: 0;
 	var pageHeader     = document.getElementsByClassName( 'page-header' )[ 0 ];
 	var navAfterHeader = document.getElementsByClassName( 'nav-after-header' )[ 0 ];
 	var siteInner      = document.getElementsByClassName( 'site-inner' )[ 0 ];
 	var breakpointSm   = window.getComputedStyle( document.documentElement ).getPropertyValue( '--breakpoint-sm' );
-	var hasSticky      = siteHeader && body.classList.contains( 'has-sticky-header' );
-	var hasTransparent = siteHeader && body.classList.contains( 'has-transparent-header-enabled' );
+	var hasSticky      = header && body.classList.contains( 'has-sticky-header' );
+	var hasTransparent = header && body.classList.contains( 'has-transparent-header-enabled' );
 	var hasPageHeader  = pageHeader && body.classList.contains( 'has-page-header' );
 	var hasAlignFull   = 0 !== document.querySelectorAll( '.content-sidebar-wrap > .content > .entry > .entry-wrap > .entry-content:first-child > .alignfull:first-child' ).length;
 	var hasBreadcrumbs = 0 !== document.getElementsByClassName( 'breadcrumb' ).length;
@@ -51,19 +52,21 @@
 		firstElement.style.removeProperty( 'padding-top' );
 
 		var paddingTop   = firstElementStyles.getPropertyValue( 'padding-top' );
-		var headerHeight = siteHeader ? siteHeader.offsetHeight : 0;
+		var headerHeight = header ? header.offsetHeight : 0;
 
 		headerHeight += navAfterHeader ? navAfterHeader.offsetHeight : 0;
 
-		if ( hasSticky || hasPageHeader || hasAlignFull ) {
-			siteInner.style.marginTop = '-' + headerHeight + 'px';
-		}
-
-		firstElement.setAttribute( 'style', 'padding-top:' + ( parseInt( headerHeight ) + parseInt( paddingTop ) ) + 'px !important' );
+		firstElement.style.setProperty( 'padding-top', parseInt( headerHeight ) + parseInt( paddingTop ) + 'px', 'important' );
 
 		setTimeout( function() {
 			timeout = false;
 		}, 100 );
+	};
+
+	var	setHeaderHeight = function() {
+		var root = document.documentElement;
+
+		root.style.setProperty( '--header-height', headerHeight + 'px' );
 	};
 
 	var onReady = function() {
@@ -92,6 +95,9 @@
 			window.addEventListener( 'resize', siteInnerMargin, false );
 			siteInnerMargin();
 		}
+
+		window.addEventListener( 'resize', setHeaderHeight, false );
+		setHeaderHeight();
 	};
 
 	return onReady();

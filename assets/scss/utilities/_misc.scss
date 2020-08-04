@@ -101,3 +101,7 @@
 		}
 	}
 }
+
+[id] {
+	scroll-margin-top: var(--header-height, 120px);
+}

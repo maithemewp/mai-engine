@@ -1,16 +1,9 @@
 ( function() {
+	let root           = document.documentElement;
+	let scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
 
-	var scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
-	var inlineWidth    = '--scrollbar-width:' + scrollBarWidth + 'px;';
-	var body           = document.getElementsByTagName( 'body' )[ 0 ];
-	var inlineStyles   = body.getAttribute( 'style' );
-
-	inlineStyles = inlineStyles ? inlineStyles + inlineWidth : inlineWidth;
-
-	body.setAttribute( 'style', inlineStyles );
-
+	root.style.setProperty( '--scrollbar-width', scrollBarWidth + 'px' );
 } )();
-
 
 function hide( element ) {
 	var el = document.getElementsByClassName( element )[ 0 ];
