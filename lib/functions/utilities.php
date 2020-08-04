@@ -775,6 +775,9 @@ function mai_get_menu( $menu, $args = [] ) {
 					break;
 			}
 		}
+
+		$atts['itemtype'] = 'https://schema.org/SiteNavigationElement';
+
 		$html = genesis_markup(
 			[
 				'open'    => '<nav %s>',

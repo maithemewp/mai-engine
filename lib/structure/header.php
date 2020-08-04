@@ -71,7 +71,7 @@ function mai_do_header() {
 }
 
 /**
- * Description of expected behavior.
+ * Add nav-header class to menus added via `mai_get_menu()` function, including `[mai_menu]` shortcode.
  *
  * @since 0.1.0
  *
@@ -81,6 +81,7 @@ function mai_do_header() {
  */
 function mai_nav_header_attributes( $attributes ) {
 	$attributes['class'] .= ' nav-header';
+	$atts['itemtype']     = 'https://schema.org/SiteNavigationElement';
 
 	return $attributes;
 }

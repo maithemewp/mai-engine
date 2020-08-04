@@ -24,8 +24,9 @@ add_filter( 'genesis_attr_nav-header-right', 'mai_add_header_nav_attributes' );
  * @return array
  */
 function mai_add_header_nav_attributes( $atts ) {
-	$atts['id']    = $atts['class'];
-	$atts['class'] = 'nav-header ' . $atts['class'];
+	$atts['id']       = $atts['class'];
+	$atts['class']    = 'nav-header ' . $atts['class'];
+	$atts['itemtype'] = 'https://schema.org/SiteNavigationElement';
 
 	return $atts;
 }
