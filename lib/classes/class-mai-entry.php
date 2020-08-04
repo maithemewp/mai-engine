@@ -999,7 +999,7 @@ class Mai_Entry {
 			return;
 		}
 
-		$more_link_text = $this->args['more_link_text'] ? $this->args['more_link_text'] : mai_get_read_more_text();
+		$more_link_text = isset( $this->args['more_link_text'] ) && $this->args['more_link_text'] ? $this->args['more_link_text'] : mai_get_read_more_text();
 
 		// The link HTML.
 		$more_link = genesis_markup(

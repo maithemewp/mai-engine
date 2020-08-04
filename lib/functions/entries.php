@@ -112,7 +112,7 @@ function mai_do_entries_open( $args ) {
 	], $args['image_position'] ) ? mai_get_align_text( $args['align_text_vertical'] ) : 'unset' );
 
 	// Border radius.
-	if ( '' !== $args['border_radius'] && ( ( 'background' === $args['image_position'] ) || $args['boxed'] ) ) {
+	if ( isset( $args['border_radius'] ) && '' !== $args['border_radius'] && ( ( 'background' === $args['image_position'] ) || $args['boxed'] ) ) {
 		$attributes['style'] .= sprintf( '--border-radius:%s;', mai_get_unit_value( $args['border_radius'] ) );
 	}
 
