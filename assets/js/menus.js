@@ -18,7 +18,7 @@
 	}
 
 	var createMobileMenu = function() {
-		if ( mobileMenu && mobileMenuList !== null ) {
+		if ( mobileMenu ) {
 			return;
 		}
 
@@ -27,12 +27,19 @@
 		mobileMenu.setAttribute( 'aria-label', maiMenuData.ariaLabel );
 		mobileMenu.setAttribute( 'itemscope', '' );
 		mobileMenu.setAttribute( 'itemtype', 'https://schema.org/SiteNavigationElement' );
-		mobileMenuWrap = document.createElement( 'div' );
-		mobileMenuWrap.setAttribute( 'class', 'wrap' );
-		mobileMenuList = document.createElement( 'ul' );
-		mobileMenuList.setAttribute( 'class', 'menu' );
-		mobileMenu.appendChild( mobileMenuWrap );
-		mobileMenuWrap.appendChild( mobileMenuList );
+
+		if ( ! mobileMenuWrap ) {
+			mobileMenuWrap = document.createElement( 'div' );
+			mobileMenuWrap.setAttribute( 'class', 'wrap' );
+			mobileMenu.appendChild( mobileMenuWrap );
+		}
+
+		if ( ! mobileMenuList ) {
+			mobileMenuList = document.createElement( 'ul' );
+			mobileMenuList.setAttribute( 'class', 'menu' );
+			mobileMenuWrap.appendChild( mobileMenuList );
+		}
+
 		siteHeaderWrap.parentNode.insertBefore( mobileMenu, null );
 	};
 
@@ -107,7 +114,7 @@
 
 				menuItem.setAttribute( 'id', lastClass );
 
-				if ( null === mobileMenuList.querySelector( '#' + lastClass ) && ! menuItem.classList.contains( 'search' ) ) {
+				if ( mobileMenuList && null === mobileMenuList.querySelector( '#' + lastClass ) && ! menuItem.classList.contains( 'search' ) ) {
 					menuItem.removeAttribute( 'id' );
 					mobileMenuList.appendChild( menuItem );
 				}
