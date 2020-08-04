@@ -46,7 +46,7 @@ function mai_do_entries_open( $args ) {
 		$attributes['class'] .= ' has-image-' . $args['image_position'];
 
 		if ( in_array( $args['image_position'], [ 'background', 'left-full', 'right-full' ], true ) ) {
-			$aspect_ratio        = mai_has_image_orientiation( $args['image_orientation'] ) ? mai_get_orientation_aspect_ratio( $args['image_orientation'] ) : mai_get_image_aspect_ratio( $args['image_size'] );
+			$aspect_ratio        = mai_has_image_orientiation( $args['image_orientation'] ) ? mai_get_aspect_ratio_from_orientation( $args['image_orientation'] ) : mai_get_image_aspect_ratio( $args['image_size'] );
 			$attributes['style'] .= sprintf( '--aspect-ratio:%s;', $aspect_ratio );
 		}
 

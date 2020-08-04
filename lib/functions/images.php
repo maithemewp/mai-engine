@@ -10,15 +10,15 @@
  */
 
 /**
- * Description of expected behavior.
+ * Gets aspect ratio from orientation.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param string $orientation Orientation type.
  *
  * @return bool|mixed
  */
-function mai_get_orientation_aspect_ratio( $orientation ) {
+function mai_get_aspect_ratio_from_orientation( $orientation ) {
 	$image_sizes = mai_get_config( 'image-sizes' );
 
 	if ( isset( $image_sizes['add'][ $orientation ] ) ) {
@@ -29,9 +29,9 @@ function mai_get_orientation_aspect_ratio( $orientation ) {
 }
 
 /**
- * Description of expected behavior.
+ * Gets aspect ration from a registered image width/height.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param string $image_size Image size to get.
  *
@@ -172,9 +172,9 @@ function mai_get_cover_image_html( $image_id, $atts = [] ) {
 }
 
 /**
- * Description of expected behavior.
+ * Gets the image size choices.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return array
  */
@@ -192,9 +192,9 @@ function mai_get_image_size_choices() {
 }
 
 /**
- * Description of expected behavior.
+ * Gets the image orientation choices.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return array
  */
@@ -225,7 +225,7 @@ function mai_get_image_orientation_choices() {
 }
 
 /**
- * Description of expected behavior.
+ * Gets the image size from an aspect ratio.
  *
  * @since 0.1.0
  *
@@ -239,7 +239,7 @@ function mai_get_image_sizes_from_aspect_ratio( $size = 'md', $ratio = '16:9' ) 
 	$x           = $ratio[0];
 	$y           = $ratio[1];
 	$breakpoints = mai_get_breakpoints();
-	$width       = isset( $breakpoints[ $size ] ) ? (int) mai_get_breakpoint( $size ) : (int) $size;
+	$width       = isset( $breakpoints[ $size ] ) ? (int) mai_get_breakpoint( $size ) : 0;
 	$height      = $width / $x * $y;
 
 	return [ $width, $height, true ];

@@ -43,7 +43,7 @@ function mai_setup() {
 	// Add theme supports.
 	array_walk(
 		$theme_support['add'],
-		function ( $value, $key ) {
+		function( $value, $key ) {
 			is_int( $key ) ? add_theme_support( $value ) : add_theme_support( $key, $value );
 		}
 	);
@@ -51,7 +51,7 @@ function mai_setup() {
 	// Remove theme supports.
 	array_walk(
 		$theme_support['remove'],
-		function ( $name ) {
+		function( $name ) {
 			remove_theme_support( $name );
 		}
 	);
@@ -59,7 +59,7 @@ function mai_setup() {
 	// Add post type supports.
 	array_walk(
 		$post_type_support['add'],
-		function ( $post_types, $feature ) {
+		function( $post_types, $feature ) {
 			foreach ( $post_types as $post_type ) {
 				add_post_type_support( $post_type, $feature );
 			}
@@ -69,7 +69,7 @@ function mai_setup() {
 	// Remove post type supports.
 	array_walk(
 		$post_type_support['remove'],
-		function ( $feature, $post_type ) {
+		function( $feature, $post_type ) {
 			remove_post_type_support( $post_type, $feature );
 		}
 	);
@@ -77,7 +77,7 @@ function mai_setup() {
 	// Add image sizes.
 	array_walk(
 		$image_sizes['add'],
-		function ( $args, $name ) {
+		function( $args, $name ) {
 			if ( is_array( $args ) ) {
 				add_image_size( $name, $args[0], $args[1], $args[2] );
 
@@ -96,7 +96,7 @@ function mai_setup() {
 	// Remove image sizes.
 	array_walk(
 		$image_sizes['remove'],
-		function ( $name ) {
+		function( $name ) {
 			remove_image_size( $name );
 		}
 	);
@@ -104,7 +104,7 @@ function mai_setup() {
 	// Add page layouts.
 	array_walk(
 		$page_layouts['add'],
-		function ( $args ) {
+		function( $args ) {
 			genesis_register_layout( $args['id'], $args );
 		}
 	);
@@ -112,7 +112,7 @@ function mai_setup() {
 	// Remove page layouts.
 	array_walk(
 		$page_layouts['remove'],
-		function ( $name ) {
+		function( $name ) {
 			genesis_unregister_layout( $name );
 		}
 	);
@@ -120,7 +120,7 @@ function mai_setup() {
 	// Add widget areas.
 	array_walk(
 		$widget_areas['add'],
-		function ( $widget_area ) {
+		function( $widget_area ) {
 			genesis_register_widget_area( $widget_area );
 		}
 	);
@@ -128,7 +128,7 @@ function mai_setup() {
 	// Remove widget areas.
 	array_walk(
 		$widget_areas['remove'],
-		function ( $id ) {
+		function( $id ) {
 			unregister_sidebar( $id );
 		}
 	);
