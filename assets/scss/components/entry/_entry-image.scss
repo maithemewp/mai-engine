@@ -6,6 +6,8 @@
 	max-width: var(--entry-image-link-max-width, unset);
 	margin: var(--entry-image-link-margin, var(--entry-image-link-margin-top, 0) var(--entry-image-link-margin-right, 0) var(--entry-image-link-margin-bottom, var(--spacing-lg)) var(--entry-image-link-margin-left, 0));
 	line-height: var(--entry-image-line-height, unset);
+	border: var(--entry-image-link-border, 0);
+	box-shadow: var(--entry-image-link-box-shadow, none);
 
 	&::before {
 		display: var(--entry-image-link-before-display, none);
