@@ -244,7 +244,7 @@ function mai_site_layouts_customizer_settings() {
 			'option_name' => $options['single'],
 			'section'     => $section,
 			'label'       => __( '404', 'mai-engine' ),
-			'default'     => $defaults['404'],
+			'default'     => $defaults['404-page'],
 			'choices'     => mai_get_site_layout_choices(),
 		]
 	);
