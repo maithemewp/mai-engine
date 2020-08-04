@@ -57,24 +57,24 @@ function mai_site_layout( $use_cache = true ) {
 		$settings = mai_get_option( 'site-layouts', [] );
 		$defaults = mai_get_config( 'settings' )['site-layout'];
 		$layouts  = wp_parse_args( $settings, $defaults );
-		$name     = null;
 		$context  = null;
+		$name     = null;
 
 		if ( mai_is_type_archive() ) {
 			$context = 'archive';
-			$name    = 'archive-' . mai_get_archive_args_name();
+			$name    = mai_get_archive_args_name();
 
 		} elseif ( mai_is_type_single() ) {
 			$context = 'single';
-			$name    = 'single-' . mai_get_singular_args_name();
+			$name    = mai_get_singular_args_name();
 		}
 
-		if ( ! $site_layout && isset( $layouts[ $name ] ) && $layouts[ $name ] ) {
-			$site_layout = $layouts[ $name ];
+		if ( $context && $name && isset( $layouts[ $context ][ $name ] ) && $layouts[ $context ][ $name ] ) {
+			$site_layout = $layouts[ $context ][ $name ];
 		}
 
-		if ( ! $site_layout && $context && $layouts[ $context ] ) {
-			$site_layout = $layouts[ $context ];
+		if ( ! $site_layout && $name && isset( $layouts['default'][ $name ] ) && $layouts['default'][ $name ] ) {
+			$site_layout = $layouts['default'][ $name ];
 		}
 
 		if ( ! $site_layout ) {
