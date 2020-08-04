@@ -4,7 +4,7 @@
 	align-self: var(--entry-image-link-align, unset);
 	order: var(--entry-image-link-order, unset);
 	max-width: var(--entry-image-link-max-width, unset);
-	margin: var(--entry-image-link-margin, var(--entry-image-link-margin-top, 0) var(--entry-image-link-margin-right, 0) var(--entry-image-link-margin-bottom, var(--spacing-lg)) var(--entry-image-link-margin-left, 0));
+	margin: var(--entry-image-link-margin, var(--entry-image-link-margin-top, 0) var(--entry-image-link-margin-right, 0) var(--entry-image-link-margin-bottom, var(--spacing-md)) var(--entry-image-link-margin-left, 0));
 	line-height: var(--entry-image-line-height, unset);
 	border: var(--entry-image-link-border, 0);
 	box-shadow: var(--entry-image-link-box-shadow, none);
@@ -32,6 +32,7 @@
 
 .entry-image-single {
 	--entry-image-link-display: table; // For captions.
+	--entry-image-link-margin-bottom: var(--spacing-lg);
 }
 
 .entry-image {
