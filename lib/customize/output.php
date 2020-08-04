@@ -106,8 +106,11 @@ function mai_add_button_text_colors( $css ) {
 	];
 
 	foreach ( $buttons as $button => $suffix ) {
-		$color = mai_get_color( $button );
-		$text  = mai_is_light_color( $color ) ? mai_get_color_variant( $color, 'dark', 60 ) : mai_get_color( 'white' );
+		$color   = mai_get_color( $button );
+		$text    = mai_is_light_color( $color ) ? mai_get_color_variant( $color, 'dark', 60 ) : mai_get_color( 'white' );
+		$white   = mai_get_color( 'white' );
+		$heading = mai_get_color( 'heading' );
+		$text    = $white === $color ? $heading : $text;
 
 		$css['global'][':root'][ '--button-' . $suffix . 'color' ] = $text;
 	}
@@ -167,11 +170,11 @@ function mai_add_page_header_content_type_css( $css ) {
 	$opacity = mai_get_template_arg( 'page-header-overlay-opacity', mai_get_option( 'page-header-overlay-opacity', (string) $config['overlay-opacity'] ) );
 
 	if ( $color ) {
-		$css['global'][':root'][ '--page-header-background-color' ] = $color;
+		$css['global'][':root']['--page-header-background-color'] = $color;
 	}
 
 	if ( '' !== $opacity ) {
-		$css['global'][':root'][ '--page-header-overlay-opacity' ] = (string) $opacity;
+		$css['global'][':root']['--page-header-overlay-opacity'] = (string) $opacity;
 	}
 
 	$spacing = mai_get_option( 'page-header-spacing', $config['spacing'] );
