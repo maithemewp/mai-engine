@@ -32,17 +32,21 @@ return [
 	'image-sizes'   => [
 		'add' => [
 			'landscape' => '4:3',
-			'portrait'  => '3:4',
 		],
 	],
 	'page-header'   => [
-		'archive'          => [ 'category', 'product', 'post' ],
+		'archive'          => [ 'post', 'category', 'product', 'product_cat' ],
 		'single'           => [ 'page', 'post' ],
 		'background-color' => '',
 		'image'            => '',
 		'overlay-opacity'  => '0',
 	],
-	'extra'         => [
-		'border-radius' => '2px',
+	'settings' => [
+		'site-layout' => [
+			'default'    => [
+				'site'      => 'standard-content',
+				'archive'   => 'wide-content',
+			],
+		],
 	],
 ];
