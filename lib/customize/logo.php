@@ -41,7 +41,7 @@ function mai_logo_customizer_settings() {
 			'label'    => esc_html__( 'Logo Width', 'mai-engine' ),
 			'section'  => 'title_tagline',
 			'priority' => 60,
-			'default'  => $defaults['logo-width'],
+			'default'  => $defaults['width'],
 			'choices'  => [
 				'labels' => [
 					'desktop' => esc_html__( 'Desktop', 'mai-engine' ),
@@ -72,7 +72,7 @@ function mai_logo_customizer_settings() {
 			'label'    => esc_html__( 'Logo Spacing', 'mai-engine' ),
 			'section'  => 'title_tagline',
 			'priority' => 60,
-			'default'  => $defaults['logo-spacing'],
+			'default'  => $defaults['spacing'],
 			'choices'  => [
 				'labels' => [
 					'desktop' => esc_html__( 'Desktop', 'mai-engine' ),

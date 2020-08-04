@@ -442,11 +442,11 @@ return [
 	'settings' => [
 		'logo'                => [
 			'show-tagline' => true,
-			'logo-width'   => [
+			'width'        => [
 				'desktop' => '180px',
 				'mobile'  => '120px',
 			],
-			'logo-spacing' => [
+			'spacing'      => [
 				'desktop' => '36px',
 				'mobile'  => '16px',
 			],

@@ -66,6 +66,7 @@ blockquote {
 	border-right: var(--blockquote-border-right, 0);
 	border-bottom: var(--blockquote-border-bottom, 0);
 	border-left: var(--blockquote-border-left, var(--border));
+	box-shadow: var(--blockquote-box-shadow, none);
 
 	--paragraph-padding: (var(--row-gap) 0);
 }

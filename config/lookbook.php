@@ -37,7 +37,7 @@ return [
 	'settings'      => [
 		'logo'             => [
 			'show-tagline' => false,
-			'logo-spacing' => [
+			'spacing'      => [
 				'desktop' => '20px',
 			],
 		],

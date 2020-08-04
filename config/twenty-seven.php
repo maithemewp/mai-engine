@@ -14,16 +14,17 @@ return [
 		'default' => 55,
 	],
 	'global-styles' => [
-		'breakpoint' => 800,
-		'colors'     => [
+		'breakpoint'     => 800,
+		'contrast-limit' => 200,
+		'colors'         => [
 			'link'      => '#a74165',
 			'primary'   => '#ffffff',
-			'secondary' => '#272727',
+			'secondary' => '#ffffff',
 			'heading'   => '#272727',
 			'body'      => '#272727',
 			'alt'       => '#e5e5e5',
 		],
-		'fonts'      => [
+		'fonts'          => [
 			'body'    => 'Inter:400',
 			'heading' => 'Inter:400',
 		],
@@ -38,8 +39,33 @@ return [
 		],
 	],
 	'settings'      => [
+		'logo'             => [
+			'width' => [
+				'desktop' => '60px',
+				'mobile'  => '60px',
+			],
+		],
+		'single-content'   => [
+			'enable' => [ 'post' ],
+			'show'   => [
+				'genesis_entry_header',
+				'title',
+				'header_meta',
+				'footer_meta',
+				'excerpt',
+				'image',
+				'genesis_before_entry_content',
+				'content',
+				'genesis_entry_content',
+				'genesis_after_entry_content',
+				'genesis_entry_footer',
+			],
+		],
 		'content-archives' => [
-			'boxed' => false,
+			'boxed'             => false,
+			'columns'           => '1',
+			'image_orientation' => 'custom',
+			'image_size'        => 'large',
 		],
 	],
 ];
