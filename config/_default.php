@@ -213,7 +213,7 @@ return [
 	'styles' => [
 		'main'                   => [],
 		'theme'                  => [
-			'src' => mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css',
+			'src' => 'default' !== mai_get_active_theme() ? mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css' : '',
 		],
 		'admin'                  => [
 			'location' => 'admin',
