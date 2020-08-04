@@ -13,7 +13,7 @@
 	padding: var(--spacing-md) 0;
 	overflow-y: auto;
 	background: var(--mobile-menu-background, var(--site-header-background, var(--color-white)));
-	border-bottom: var(--border);
+	border-bottom: var(--mobile-menu-border-bottom, var(--border));
 	animation: var(--mobile-menu-animation, none);
 
 	// Prevent sub-menu-toggle from wrapping to it's own line.
