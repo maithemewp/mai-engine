@@ -24,12 +24,15 @@
 
 .content-sidebar-wrap {
 
-	.content-sidebar &,
-	.sidebar-content & {
-		--alignfull-margin-right: 0;
-		--alignfull-margin-left: 0;
-		--alignwide-margin-right: 0;
-		--alignwide-margin-left: 0;
+	@include mq(lg) {
+
+		.content-sidebar &,
+		.sidebar-content & {
+			--alignfull-margin-right: 0;
+			--alignfull-margin-left: 0;
+			--alignwide-margin-right: 0;
+			--alignwide-margin-left: 0;
+		}
 	}
 }
 
