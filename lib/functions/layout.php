@@ -69,14 +69,17 @@ function mai_site_layout( $use_cache = true ) {
 			$name    = mai_get_singular_args_name();
 		}
 
+		// Context by content name.
 		if ( $context && $name && isset( $layouts[ $context ][ $name ] ) && $layouts[ $context ][ $name ] ) {
 			$site_layout = $layouts[ $context ][ $name ];
 		}
 
-		if ( ! $site_layout && $name && isset( $layouts['default'][ $name ] ) && $layouts['default'][ $name ] ) {
-			$site_layout = $layouts['default'][ $name ];
+		// Context default.
+		if ( ! $site_layout && $context && isset( $layouts['default'][ $context ] ) && $layouts['default'][ $context ] ) {
+			$site_layout = $layouts['default'][ $context ];
 		}
 
+		// Site default.
 		if ( ! $site_layout ) {
 			$site_layout = $layouts['default']['site'];
 		}
