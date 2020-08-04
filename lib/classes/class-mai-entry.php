@@ -123,7 +123,7 @@ class Mai_Entry {
 			$elements[] = $item;
 		}
 
-		$image_first = isset( $elements[0] ) && ( 'image' === $elements[0] );
+		$image_first = ( isset( $elements[0] ) && ( 'image' === $elements[0] ) ) || ( isset( $this->args['image_position'] ) && mai_has_string( [ 'left', 'right' ], $this->args['image_position'] ) );
 
 		// Has image classes.
 		if ( in_array( 'image', $this->args['show'], true ) ) {
