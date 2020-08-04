@@ -136,171 +136,117 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Scripts and Styles
+	| Scripts
 	|--------------------------------------------------------------------------
 	|
-	| All of the scripts and styles to be added or removed.
+	| All of the scripts to be added or removed.
 	*/
 
-	'scripts-and-styles' => [
-		'add'    => [
-
-			// Scripts.
-			[
-				'handle' => mai_get_handle() . '-global',
-				'src'    => mai_get_asset_url( 'global.js' ),
-				'async'  => true,
-			],
-			[
-				'handle'   => mai_get_handle() . '-menus',
-				'src'      => mai_get_asset_url( 'menus.js' ),
-				'async'    => true,
-				'localize' => [
-					'name' => 'maiMenuVars',
-					'data' => [
-						'ariaLabel'     => __( 'Mobile Menu', 'mai-engine' ),
-						'menuToggle'    => sprintf(
-							'<span class="menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
-							__( 'Menu', 'mai-engine' )
-						),
-						'subMenuToggle' => sprintf(
-							'<span class="sub-menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
-							__( 'Sub Menu', 'mai-engine' )
-						),
-						'searchIcon'    => mai_get_svg_icon(
-							'search',
-							'regular',
+	'scripts' => [
+		'global'     => [
+			'async' => true,
+		],
+		'menus'      => [
+			'async'    => true,
+			'localize' => [
+				'name' => 'maiMenuVars',
+				'data' => [
+					'ariaLabel'     => __( 'Mobile Menu', 'mai-engine' ),
+					'menuToggle'    => sprintf(
+						'<span class="menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
+						__( 'Menu', 'mai-engine' )
+					),
+					'subMenuToggle' => sprintf(
+						'<span class="sub-menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
+						__( 'Sub Menu', 'mai-engine' )
+					),
+					'searchIcon'    => mai_get_svg_icon(
+						'search',
+						'regular',
+						[
+							'class' => 'search-toggle-icon',
+						]
+					),
+					'searchBox'     => ! defined( 'STYLESHEETPATH' ) ?:
+						get_search_form(
 							[
-								'class' => 'search-toggle-icon',
+								'aria_label' => esc_html__( 'Menu Search', 'mai-engine' ),
+								'echo'       => false,
 							]
 						),
-						'searchBox'     => ! defined( 'STYLESHEETPATH' ) ?:
-							get_search_form(
-								[
-									'aria_label' => esc_html__( 'Menu Search', 'mai-engine' ),
-									'echo'       => false,
-								]
-							),
-					],
 				],
-			],
-			[
-				'handle'    => mai_get_handle() . '-header',
-				'src'       => mai_get_asset_url( 'header.js' ),
-				'async'     => true,
-				'condition' => function () {
-					return mai_has_sticky_header_enabled() || mai_has_transparent_header_enabled();
-				},
-			],
-
-			// Customizer scripts.
-			[
-				'handle'   => mai_get_handle() . '-customizer',
-				'src'      => mai_get_asset_url( 'customizer.js' ),
-				'deps'     => [ 'jquery' ],
-				'location' => 'customizer',
-			],
-
-			// Editor scripts.
-			[
-				'handle'   => mai_get_handle() . '-editor',
-				'src'      => mai_get_asset_url( 'editor.js' ),
-				'deps'     => [ 'jquery', 'jquery-ui-sortable' ],
-				'location' => 'editor',
-				'localize' => [
-					'name' => 'maiEditorVars',
-					'data' => 'mai_get_editor_localized_data',
-				],
-			],
-
-			// Block scripts.
-			[
-				'handle'   => mai_get_handle() . '-blocks',
-				'src'      => mai_get_url() . 'assets/js/min/blocks.js',
-				'deps'     => [ 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ],
-				'location' => 'editor',
-			],
-
-			// Main styles.
-			[
-				'handle' => mai_get_handle(),
-				'src'    => mai_get_url() . 'assets/css/main.min.css',
-			],
-
-			// Theme specific styles.
-			[
-				'handle' => mai_get_handle() . '-theme',
-				'src'    => mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css',
-			],
-
-			// Admin styles.
-			[
-				'handle'   => mai_get_handle() . '-admin',
-				'src'      => mai_get_url() . 'assets/css/admin.min.css',
-				'location' => 'admin',
-			],
-
-			// Customizer styles.
-			[
-				'handle'   => mai_get_handle() . '-kirki',
-				'src'      => mai_get_url() . 'assets/css/plugins/kirki.min.css',
-				'location' => 'customizer',
-			],
-
-			// ACF styles.
-			[
-				'handle'   => mai_get_handle() . '-advanced-custom-fields',
-				'src'      => mai_get_url() . 'assets/css/plugins/advanced-custom-fields.min.css',
-				'location' => 'editor',
-			],
-
-			// Plugin styles.
-			[
-				'handle'    => mai_get_handle() . '-atomic-blocks',
-				'src'       => mai_get_url() . 'assets/css/plugins/atomic-blocks.min.css',
-				'condition' => function () {
-					return function_exists( 'atomic_blocks_main_plugin_file' );
-				},
-			],
-			[
-				'handle'    => mai_get_handle() . '-facetwp',
-				'src'       => mai_get_url() . 'assets/css/plugins/facetwp.min.css',
-				'condition' => function () {
-					return class_exists( 'FacetWP' );
-				},
-			],
-			[
-				'handle'    => mai_get_handle() . '-seo-slider',
-				'src'       => mai_get_url() . 'assets/css/plugins/seo-slider.min.css',
-				'condition' => function () {
-					return defined( 'SEO_SLIDER_VERSION' );
-				},
-			],
-			[
-				'handle'    => mai_get_handle() . '-simple-social-icons',
-				'src'       => mai_get_url() . 'assets/css/plugins/simple-social-icons.min.css',
-				'condition' => function () {
-					return class_exists( 'Simple_Social_Icons_Widget' );
-				},
-			],
-			[
-				'handle'    => mai_get_handle() . '-woocommerce',
-				'src'       => mai_get_url() . 'assets/css/plugins/woocommerce.min.css',
-				'condition' => function () {
-					return class_exists( 'WooCommerce' );
-				},
-			],
-
-			// Remove block library theme CSS in editor.
-			[
-				'handle'   => 'wp-block-library-theme',
-				'src'      => '',
-				'location' => 'editor',
 			],
 		],
-		'remove' => [
-			'simple-social-icons-font',
-			'wp-block-library-theme',
+		'header'     => [
+			'async'     => true,
+			'condition' => function () {
+				return mai_has_sticky_header_enabled() || mai_has_transparent_header_enabled();
+			},
+		],
+		'customizer' => [
+			'deps'     => [ 'jquery' ],
+			'location' => 'customizer',
+		],
+		'editor'     => [
+			'deps'     => [ 'jquery', 'jquery-ui-sortable' ],
+			'location' => 'editor',
+			'localize' => [
+				'name' => 'maiEditorVars',
+				'data' => 'mai_get_editor_localized_data',
+			],
+		],
+		'blocks'     => [
+			'deps'     => [ 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ],
+			'location' => 'editor',
+		],
+	],
+
+	/*
+	|--------------------------------------------------------------------------
+	| Styles.
+	|--------------------------------------------------------------------------
+	|
+	| All of the styles to be added or removed.
+	*/
+
+	'styles' => [
+		'main'                   => [],
+		'theme'                  => [
+			'src' => mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css',
+		],
+		'admin'                  => [
+			'location' => 'admin',
+		],
+		'kirki'                  => [
+			'location' => 'customizer',
+		],
+		'advanced-custom-fields' => [
+			'location' => 'editor',
+		],
+		'atomic-blocks'          => [
+			'condition' => function () {
+				return function_exists( 'atomic_blocks_main_plugin_file' );
+			},
+		],
+		'facetwp'                => [
+			'condition' => function () {
+				return class_exists( 'FacetWP' );
+			},
+		],
+		'seo-slider'             => [
+			'condition' => function () {
+				return defined( 'SEO_SLIDER_VERSION' );
+			},
+		],
+		'simple-social-icons'    => [
+			'condition' => function () {
+				return class_exists( 'Simple_Social_Icons_Widget' );
+			},
+		],
+		'woocommerce'            => [
+			'condition' => function () {
+				return class_exists( 'WooCommerce' );
+			},
 		],
 	],
 

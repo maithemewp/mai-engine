@@ -83,109 +83,138 @@ add_action( 'customize_controls_enqueue_scripts', 'mai_enqueue_assets' );
 /**
  * Register and enqueue all scripts and styles.
  *
- * @since 0.1.0
+ * @since 2.3.1 Separate mai_enqueue_asset function.
+ * @since 1.0.0
  *
  * @return void
  */
 function mai_enqueue_assets() {
-	$assets         = mai_get_config( 'scripts-and-styles' )['add'];
-	$current_screen = function_exists( 'get_current_screen' ) ? get_current_screen() : false;
+	$scripts = mai_get_config( 'scripts' );
+	$styles  = mai_get_config( 'styles' );
 
-	foreach ( $assets as $asset ) {
-		if ( ! isset( $asset['handle'] ) || ! isset( $asset['src'] ) ) {
-			continue;
-		}
+	foreach ( $scripts as $handle => $args ) {
+		mai_enqueue_asset( $handle, $args, 'script' );
+	}
 
-		$handle    = $asset['handle'];
-		$src       = $asset['src'] . ( isset( $asset['async'] ) && $asset['async'] ? '#async' : '' );
-		$type      = false !== strpos( $src, '.js' ) ? 'script' : 'style';
-		$deps      = isset( $asset['deps'] ) ? $asset['deps'] : [];
-		$ver       = isset( $asset['ver'] ) ? $asset['ver'] : mai_get_asset_version( $asset['src'] );
-		$media     = isset( $asset['media'] ) ? $asset['media'] : 'all';
-		$in_footer = isset( $asset['in_footer'] ) ? $asset['in_footer'] : true;
-		$condition = isset( $asset['condition'] ) ? $asset['condition'] : '__return_true';
-		$location  = isset( $asset['location'] ) ? is_array( $asset['location'] ) ? $asset['location'] : [ $asset['location'] ] : [ 'public' ];
-		$localize  = isset( $asset['localize'] ) ? $asset['localize'] : [];
-		$inline    = isset( $asset['inline'] ) ? $asset['inline'] : false;
-		$onload    = isset( $asset['onload'] ) ? $asset['onload'] : false;
-		$last_arg  = 'style' === $type ? $media : $in_footer;
-		$register  = "wp_register_$type";
-		$enqueue   = "wp_enqueue_$type";
-		$load      = false;
+	foreach ( $styles as $handle => $args ) {
+		mai_enqueue_asset( $handle, $args, 'style' );
+	}
+}
 
-		if ( in_array( 'public', $location, true ) && ! is_admin() ) {
+/**
+ * Register and enqueue script or style.
+ *
+ * @since 2.3.1
+ *
+ * @param string $handle Asset handle.
+ * @param array  $args   Asset args.
+ * @param string $type   Asset type.
+ *
+ * @return void
+ */
+function mai_enqueue_asset( $handle, $args, $type ) {
+	$suffix    = 'script' === $type ? '.js' : '.css';
+	$src       = isset( $args['src'] ) ? $args['src'] : mai_get_asset_url( $handle . $suffix );
+	$handle    = isset( $args['handle'] ) ? $args['handle'] : mai_get_handle() . '-' . $handle;
+	$src       = isset( $args['async'] ) ? $src . '#async' : $src;
+	$deps      = isset( $args['deps'] ) ? $args['deps'] : [];
+	$ver       = isset( $args['ver'] ) ? $args['ver'] : mai_get_asset_version( $src );
+	$media     = isset( $args['media'] ) ? $args['media'] : 'all';
+	$in_footer = isset( $args['in_footer'] ) ? $args['in_footer'] : true;
+	$condition = isset( $args['condition'] ) ? $args['condition'] : '__return_true';
+	$location  = isset( $args['location'] ) ? is_array( $args['location'] ) ? $args['location'] : [ $args['location'] ] : [ 'public' ];
+	$localize  = isset( $args['localize'] ) ? $args['localize'] : [];
+	$inline    = isset( $args['inline'] ) ? $args['inline'] : false;
+	$onload    = isset( $args['onload'] ) ? $args['onload'] : false;
+	$last_arg  = 'style' === $type ? $media : $in_footer;
+	$register  = "wp_register_$type";
+	$enqueue   = "wp_enqueue_$type";
+	$load      = false;
+
+	if ( in_array( 'public', $location, true ) && ! is_admin() ) {
+		$load = true;
+	}
+
+	if ( in_array( 'admin', $location, true ) && is_admin() && ! is_customize_preview() ) {
+		$load = true;
+	}
+
+	if ( in_array( 'editor', $location, true ) ) {
+		$current_screen = function_exists( 'get_current_screen' ) ? get_current_screen() : false;
+
+		if ( $current_screen && method_exists( $current_screen, 'is_block_editor' ) && $current_screen->is_block_editor() ) {
 			$load = true;
 		}
+	}
 
-		if ( in_array( 'admin', $location, true ) && is_admin() && ! is_customize_preview() ) {
-			$load = true;
+	if ( in_array( 'customizer', $location, true ) && is_customize_preview() && ! did_action( 'genesis_meta' ) ) {
+		$load = true;
+	}
+
+	if ( $load && is_callable( $condition ) && $condition() ) {
+		$register( $handle, $src, $deps, $ver, $last_arg );
+		$enqueue( $handle );
+
+		if ( $inline ) {
+			wp_add_inline_style( $handle, mai_minify_css( $inline ) );
 		}
 
-		if ( in_array( 'editor', $location, true ) && $current_screen && method_exists( $current_screen, 'is_block_editor' ) && $current_screen->is_block_editor() ) {
-			$load = true;
-		}
-
-		if ( in_array( 'customizer', $location, true ) && is_customize_preview() && ! did_action( 'genesis_meta' ) ) {
-			$load = true;
-		}
-
-		if ( $load && is_callable( $condition ) && $condition() ) {
-			$register( $handle, $src, $deps, $ver, $last_arg );
-			$enqueue( $handle );
-
-			if ( $inline ) {
-				wp_add_inline_style( $handle, mai_minify_css( $inline ) );
+		if ( ! empty( $localize ) ) {
+			if ( is_callable( $localize['data'] ) ) {
+				$localize_data = call_user_func( $localize['data'] );
+			} else {
+				$localize_data = $localize['data'];
 			}
+			wp_localize_script( $handle, $localize['name'], $localize_data );
+		}
 
-			if ( ! empty( $localize ) ) {
-				if ( is_callable( $localize['data'] ) ) {
-					$localize_data = call_user_func( $localize['data'] );
-				} else {
-					$localize_data = $localize['data'];
-				}
-				wp_localize_script( $handle, $localize['name'], $localize_data );
-			}
+		if ( $onload ) {
+			add_filter(
+				'style_loader_tag',
+				function ( $html, $original_handle ) use ( $args, $handle ) {
+					if ( $original_handle === $handle ) {
+						$html = str_replace( '>', ' onload="' . $args['onload'] . '">', $html );
+					}
 
-			if ( $onload ) {
-				add_filter(
-					'style_loader_tag',
-					function ( $html, $handle ) use ( $asset ) {
-						if ( $handle === $asset['handle'] ) {
-							$html = str_replace( '>', ' onload="' . $asset['onload'] . '">', $html );
-						}
-
-						return $html;
-					},
-					11,
-					2
-				);
-			}
+					return $html;
+				},
+				11,
+				2
+			);
 		}
 	}
 }
 
-add_action( 'admin_enqueue_scripts', 'mai_deregister_scripts_and_styles', 9 );
-add_action( 'wp_enqueue_scripts', 'mai_deregister_scripts_and_styles', 15 );
 /**
- * Deregister scripts and styles.
+ * Deregister script or style.
  *
- * @since 2.2.1 Added to admin_enqueue_scripts hook.
- * @since 0.1.0 Added.
+ * @since 2.3.1
+ *
+ * @param string $handle Asset handle.
  *
  * @return void
  */
-function mai_deregister_scripts_and_styles() {
+function mai_deregister_asset( $handle ) {
 	global $wp_styles;
 
-	$assets = mai_get_config( 'scripts-and-styles' )['remove'];
+	wp_deregister_script( $handle );
+	wp_deregister_style( $handle );
+	wp_dequeue_script( $handle );
+	wp_dequeue_style( $handle );
+	$wp_styles->remove( $handle );
+}
 
-	foreach ( $assets as $asset ) {
-		wp_deregister_script( $asset );
-		wp_deregister_style( $asset );
-		wp_dequeue_script( $asset );
-		wp_dequeue_style( $asset );
-		$wp_styles->remove( $asset );
-	}
+add_action( 'admin_enqueue_scripts', 'mai_remove_block_library_theme_css', 9 );
+/**
+ * Remove block library theme CSS from admin.
+ *
+ * @since 2.3.1
+ *
+ * @return void
+ */
+function mai_remove_block_library_theme_css() {
+	mai_enqueue_asset( 'wp-block-library-theme', [ 'src' => '', 'location' => 'editor' ], 'style' );
+	mai_deregister_asset( 'wp-block-library-theme' );
 }
 
 add_filter( 'block_editor_settings', 'mai_remove_noto_serif_editor_styles' );

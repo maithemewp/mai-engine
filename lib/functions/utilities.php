@@ -174,11 +174,12 @@ function mai_get_asset_version( $file ) {
 }
 
 /**
- * Description of expected behavior.
- *
+ * Returns minified version of asset if in dev mode.
+ *z
+ * @since 2.3.1 Removed min dir if CSS file. Always return minified CSS.
  * @since 0.1.0
  *
- * @param string $file File base name.
+ * @param string $file File base name (relative to type directory).
  *
  * @return string
  */
@@ -187,9 +188,10 @@ function mai_get_asset_url( $file ) {
 	$name    = str_replace( [ '.js', '.css' ], '', $file );
 	$uri     = mai_get_url();
 	$default = "${uri}assets/${type}/${name}.${type}";
-	$min     = "${uri}assets/${type}/min/${name}.min.${type}";
+	$dir     = 'js' === $type ? '/min/' : '/';
+	$min     = "${uri}assets/${type}${dir}${name}.min.${type}";
 
-	return mai_is_in_dev_mode() ? $default : $min;
+	return mai_is_in_dev_mode() && 'js' === $type ? $default : $min;
 }
 
 /**

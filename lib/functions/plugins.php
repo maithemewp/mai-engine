@@ -9,6 +9,18 @@
  * @license   GPL-2.0-or-later
  */
 
+add_action( 'wp_enqueue_scripts', 'mai_remove_simple_social_icons_css', 15 );
+/**
+ * Remove Simple Social Icons CSS.
+ *
+ * @since 2.3.1
+ *
+ * @return void
+ */
+function mai_remove_simple_social_icons_css() {
+	mai_deregister_asset( 'simple-social-icons-font' );
+}
+
 add_filter( 'wpforms_settings_defaults', 'mai_wpforms_default_css' );
 /**
  * Set the default WP Forms styling to "Base styling only".
