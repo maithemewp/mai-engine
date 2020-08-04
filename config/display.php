@@ -14,7 +14,7 @@ return [
 		'agency' => 23,
 	],
 	'global-styles' => [
-		'colors'         => [
+		'colors' => [
 			'link'      => '#1ced8a',
 			'primary'   => '#1ced8a',
 			'secondary' => '#ffffff',
@@ -22,15 +22,19 @@ return [
 			'body'      => '#a8afb6',
 			'alt'       => '#1b1e20',
 		],
-		'fonts'          => [
+		'fonts'  => [
 			'body'    => 'Hind:400',
 			'heading' => 'Poppins:700',
 		],
 	],
 	'theme-support' => [
 		'add' => [
-			'sticky-header',
 			'transparent-header',
+		],
+	],
+	'settings'      => [
+		'logo' => [
+			'show-tagline' => false,
 		],
 	],
 ];

@@ -1,17 +1,3 @@
-.wp-social-link {
-
-	&,
-	a,
-	svg {
-		width: var(--social-link-width, 1.5em);
-		height: var(--social-link-height, 1em);
-	}
-
-	@include hover-focus {
-		transform: scale(var(--social-link-transform-hover, 1.2));
-	}
-}
-
 .wp-block-social-links {
 	margin: 0;
 
