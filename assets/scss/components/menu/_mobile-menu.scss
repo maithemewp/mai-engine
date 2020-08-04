@@ -16,17 +16,6 @@
 	border-bottom: var(--mobile-menu-border-bottom, var(--border));
 	animation: var(--mobile-menu-animation, none);
 
-	// Prevent sub-menu-toggle from wrapping to it's own line.
-	.menu-item-has-children {
-		--menu-item-link-max-width: calc(100% - 3em); // Minus sub-menu-toggle width.
-	}
-
-	// Move sub menu toggle next to menu item text on larger screens.
-	@include mq(md) {
-		--menu-item-link-width: auto;
-		--sub-menu-toggle-margin: 0 auto 0 0;
-	}
-
 	.menu-item.search {
 		display: none;
 	}

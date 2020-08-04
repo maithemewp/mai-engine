@@ -30,10 +30,11 @@
 	display: var(--menu-item-link-display, (flex));
 	align-items: center;
 	justify-content: var(--menu-item-link-justify-content, flex-start);
-	width: var(--menu-item-link-width, 100%);
+	width: var(--menu-item-link-width, auto);
 	max-width: var(--menu-item-link-max-width, 100%);
 	padding: var(--menu-item-link-padding, (var(--spacing-sm) var(--spacing-xxs)));
 	color: var(--menu-item-link-color, var(--color-heading));
+	text-align: var(--menu-item-link-text-align, start);
 
 	&-current,
 	&:hover,
@@ -46,6 +47,7 @@
 		}
 	}
 
+	// Mostly for use with mai_icon in menu item label.
 	> span {
 		display: flex;
 		align-items: center;
@@ -75,7 +77,6 @@
 		display: var(--menu-item-dropdown-toggle, inline-block);
 		width: 6px;
 		height: 6px;
-		margin-top: var(--menu-item-dropdown-margin-top, -6px);
 		margin-left: var(--menu-item-dropdown-margin-left, var(--spacing-xs));
 		border-color: currentColor;
 		border-style: solid;
