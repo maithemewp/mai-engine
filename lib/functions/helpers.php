@@ -315,15 +315,15 @@ function mai_has_page_header() {
  * @return string|array May be * for all or array of types.
  */
 function mai_get_page_header_types( $context ) {
-	$config   = mai_get_config( 'settings' )['page-header'];
-	$settings = mai_get_option( 'page-header-' . $context );
-	$single   = array_merge(
+	$types  = [];
+	$config = mai_get_config( 'settings' )['page-header'];
+	$single = array_merge(
 		array_values( get_post_types( [ 'public' => true ] ) ),
 		[
 			'404-page',
 		]
 	);
-	$archive  = array_merge(
+	$archive = array_merge(
 		$single,
 		array_values( get_taxonomies( [ 'public' => true ] ) ),
 		[
@@ -332,20 +332,18 @@ function mai_get_page_header_types( $context ) {
 			'date',
 		]
 	);
-	$default  = [
+	$default = [
 		'archive' => $archive,
 		'single'  => $single,
 	];
 
 	if ( '*' === $config || isset( $config[ $context ] ) && '*' === $config[ $context ] ) {
 		$types = $default[ $context ];
-	}
-
-	if ( isset( $config[ $context ] ) && is_array( $config[ $context ] ) ) {
+	} elseif ( isset( $config[ $context ] ) && is_array( $config[ $context ] ) ) {
 		$types = $config[ $context ];
 	}
 
-	return $settings ? $settings : $types;
+	return mai_get_option( 'page-header-' . $context, $types );
 }
 
 /**
