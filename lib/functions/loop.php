@@ -279,7 +279,7 @@ function mai_get_sanitized_entry_args( $args, $context ) {
 }
 
 /**
- * Get the name to be used in the main args function/helpers.
+ * Gets the archive content type name to be used in the main args function/helpers.
  *
  * @since 0.1.0
  *
@@ -336,7 +336,7 @@ function mai_get_archive_args_name() {
 }
 
 /**
- * Description of expected behavior.
+ * Gets the singular content type name to be used in the main args function/helpers.
  *
  * @since 0.1.0
  *
@@ -349,9 +349,9 @@ function mai_get_singular_args_name() {
 }
 
 /**
- * Description of expected behavior.
+ * Gets the header meta default content.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param string $name Post type name.
  *
@@ -368,9 +368,9 @@ function mai_get_header_meta_default( $name = 'post' ) {
 }
 
 /**
- * Description of expected behavior.
+ * Gets the footer meta default content.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param string $name Taxonomy name.
  *
@@ -403,9 +403,9 @@ function mai_get_footer_meta_default( $name ) {
 }
 
 /**
- * Description of expected behavior.
+ * Gets the "Show" choices for archive content.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return array
  */
@@ -433,9 +433,9 @@ function mai_get_archive_show_choices() {
 }
 
 /**
- * Description of expected behavior.
+ * Gets the "Show" defaults for a content type.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param string $name Post type name.
  *
@@ -475,9 +475,9 @@ function mai_get_single_show_defaults( $name = 'post' ) {
 }
 
 /**
- * Description of expected behavior.
+ * Gets the "Show" choices for single content.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return array
  */
