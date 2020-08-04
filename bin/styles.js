@@ -122,7 +122,7 @@ module.exports.plugins = function() {
 				includePaths: [].concat( bourbon )
 			} ) )
 			.pipe( postcss( postProcessors ) )
-			.pipe( gulp.dest( './assets/css/plugins/' ) )
+			.pipe( gulp.dest( './assets/css/' ) )
 			.pipe( notify( { message: config.messages.css } ) );
 	} );
 };
