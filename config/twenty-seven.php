@@ -15,7 +15,6 @@ return [
 	],
 	'global-styles' => [
 		'breakpoint'     => 800,
-		'contrast-limit' => 200,
 		'colors'         => [
 			'link'      => '#a74165',
 			'primary'   => '#ffffff',
