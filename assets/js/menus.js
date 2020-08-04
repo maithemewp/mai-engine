@@ -91,6 +91,10 @@
 	};
 
 	var cloneMenuItems = function() {
+		if ( mobileMenu ) {
+			return;
+		}
+
 		if ( mobileMenuWidget ) {
 			return;
 		}

@@ -372,18 +372,6 @@ function mai_has_page_header_support_callback( $control ) {
 }
 
 /**
- * Check is after header menu is active.
- * Need this as it's own function for customizer fields.
- *
- * @since 0.1.0
- *
- * @return bool
- */
-function mai_has_after_header_menu() {
-	return has_nav_menu( 'after-header' );
-}
-
-/**
  * Quick and dirty way to mostly minify CSS.
  *
  * @since  0.1.0

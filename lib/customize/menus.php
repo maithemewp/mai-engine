@@ -48,7 +48,7 @@ function mai_menus_customizer_settings() {
 			'type'            => 'radio-buttonset',
 			'settings'        => 'after-header-menu-alignment',
 			'section'         => $section,
-			'label'           => __( 'Alignment', 'mai-engine' ),
+			'label'           => __( 'After Header Menu Alignment', 'mai-engine' ),
 			'default'         => 'flex-start',
 			'choices'         => [
 				'flex-start' => __( 'Left', 'mai-engine' ),
@@ -61,7 +61,9 @@ function mai_menus_customizer_settings() {
 					'property' => '--menu-justify-content',
 				],
 			],
-			'active_callback' => 'mai_has_after_header_menu',
+			'active_callback' => function() {
+				return has_nav_menu( 'after-header' );
+			},
 		]
 	);
 }
