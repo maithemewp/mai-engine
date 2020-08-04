@@ -501,7 +501,7 @@ return [
 		],
 		'site-layout'         => [
 			'site'    => 'standard-content',
-			'archive' => 'wide-content',
+			'archive' => '',
 			'single'  => '',
 			'search'  => '',
 			'author'  => '',

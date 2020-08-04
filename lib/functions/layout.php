@@ -51,45 +51,35 @@ function mai_site_layout( $use_cache = true ) {
 
 	} elseif ( is_author() ) {
 		$site_layout = get_the_author_meta( 'layout', (int) get_query_var( 'author' ) );
-
 	}
 
-	// Maybe use layout via mai customizer settings.
 	if ( ! $site_layout ) {
-		$layouts = wp_parse_args( mai_get_option( 'site-layouts', [] ), mai_get_config( 'settings' )['site-layout'] );
+		$settings = mai_get_option( 'site-layouts', [] );
+		$defaults = mai_get_config( 'settings' )['site-layout'];
+		$layouts  = wp_parse_args( $settings, $defaults );
+		$name     = null;
+		$context  = null;
 
 		if ( mai_is_type_archive() ) {
-			$name    = mai_get_archive_args_name();
 			$context = 'archive';
+			$name    = 'archive-' . mai_get_archive_args_name();
 
 		} elseif ( mai_is_type_single() ) {
-			$name    = mai_get_singular_args_name();
 			$context = 'single';
+			$name    = 'single-' . mai_get_singular_args_name();
 		}
 
-		if ( isset( $name, $context ) ) {
-			if ( isset( $layouts[ $context ][ $name ] ) && ! empty( $layouts[ $context ][ $name ] ) ) {
-				$site_layout = $layouts[ $context ][ $name ];
-			}
+		if ( ! $site_layout && isset( $layouts[ $name ] ) && $layouts[ $name ] ) {
+			$site_layout = $layouts[ $name ];
 		}
 
-		if ( ! $site_layout && isset( $context ) ) {
-			if ( isset( $layouts['default'][ $context ] ) && ! empty( $layouts['default'][ $context ] ) ) {
-				$site_layout = $layouts['default'][ $context ];
-			}
+		if ( ! $site_layout && $context && $layouts[ $context ] ) {
+			$site_layout = $layouts[ $context ];
 		}
-	}
 
-	// Use site default.
-	if ( ! $site_layout ) {
-		if ( isset( $layouts['default']['site'] ) && ! empty( $layouts['default']['site'] ) ) {
-			$site_layout = $layouts['default']['site'];
+		if ( ! $site_layout ) {
+			$site_layout = $layouts['site'];
 		}
-	}
-
-	// Hard-code fallback. This should never happen.
-	if ( ! $site_layout ) {
-		$site_layout = 'standard-content';
 	}
 
 	return $site_layout;
