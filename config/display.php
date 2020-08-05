@@ -10,10 +10,10 @@
  */
 
 return [
-	'demos'         => [
+	'demos'            => [
 		'agency' => 23,
 	],
-	'global-styles' => [
+	'global-styles'    => [
 		'colors' => [
 			'link'      => '#1ced8a',
 			'primary'   => '#1ced8a',
@@ -24,16 +24,16 @@ return [
 		],
 		'fonts'  => [
 			'body'    => 'Hind:400',
-			'heading' => 'Poppins:700',
+			'heading' => 'Poppins:700,600',
 		],
 	],
-	'theme-support' => [
+	'theme-support'    => [
 		'add' => [
 			'sticky-header',
 			'transparent-header',
 		],
 	],
-	'settings'      => [
+	'settings'         => [
 		'logo'             => [
 			'show-tagline' => false,
 		],
@@ -85,4 +85,21 @@ return [
 			'divider-color'    => 'white',
 		],
 	],
+	'custom-functions' => function () {
+
+		// Remove posts in Portfolio category from blog.
+		// TODO: Should this be added to all themes?
+		add_filter( 'pre_get_posts', function ( $query ) {
+			/**
+			 * @var WP_Query $query WordPress query object.
+			 */
+			if ( $query->is_home ) {
+				$id = get_cat_ID( 'portfolio' );
+
+				$query->set( 'cat', '-' . $id );
+			}
+
+			return $query;
+		} );
+	},
 ];
