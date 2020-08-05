@@ -60,5 +60,29 @@ function mai_render_button_block( $block_content, $block ) {
 		$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link button', $block_content );
 	}
 
+	if ( isset( $block['attrs']['borderRadius'] ) ) {
+		$dom = mai_get_dom_document( $block_content );
+
+		/**
+		 * The group block container.
+		 *
+		 * @var DOMElement $first_block The group block container.
+		 */
+		$first_block = $dom->childNodes && isset( $dom->childNodes[0] ) ? $dom->childNodes[0] : false; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+
+		$buttons = $dom->getElementsByTagName( 'a' );
+
+		if ( $buttons ) {
+			foreach ( $buttons as $button ) {
+				$style = $button->getAttribute( 'style' );
+				$style = str_replace( 'border-radius', '--border-radius', $style );
+
+				$button->setAttribute( 'style', $style );
+			}
+		}
+
+		$block_content = $dom->saveHTML();
+	}
+
 	return $block_content;
 }
