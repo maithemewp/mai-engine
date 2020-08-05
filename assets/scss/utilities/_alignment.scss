@@ -1,4 +1,4 @@
-@include mq(lg) {
+@include mq(md) {
 
 	.alignleft {
 		float: left;
@@ -13,6 +13,9 @@
 
 		@include clearfix;
 	}
+}
+
+@include mq(lg) {
 
 	.alignwide {
 		width: var(--alignwide-width, auto);
