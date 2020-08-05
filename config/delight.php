@@ -51,5 +51,8 @@ return [
 			'image'            => '',
 			'overlay-opacity'  => '0',
 		],
+		'content-archives'    => [
+			'title_size' => 'md',
+		],
 	],
 ];
