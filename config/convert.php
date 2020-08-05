@@ -27,12 +27,14 @@ return [
 			'heading' => 'Source Sans Pro:700',
 		],
 	],
-	'page-header'   => [
-		'archive'          => '*',
-		'single'           => '*',
-		'image'            => '',
-		'background-color' => 'primary',
-		'text-color'       => 'light',
-		'divider-color'    => 'white',
+	'settings'      => [
+		'page-header' => [
+			'archive'          => '*',
+			'single'           => '*',
+			'image'            => '',
+			'background-color' => 'primary',
+			'text-color'       => 'light',
+			'divider-color'    => 'white',
+		],
 	],
 ];

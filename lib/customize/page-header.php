@@ -27,12 +27,16 @@ function mai_page_header_customizer_settings() {
 	$archive  = mai_get_content_type_choices( true );
 
 	if ( '*' === $defaults['single'] ) {
+		$defaults['single'] = [];
+
 		foreach ( $single as $name => $object ) {
 			$defaults['single'][] = $name;
 		}
 	}
 
 	if ( '*' === $defaults['archive'] ) {
+		$defaults['archive'] = [];
+
 		foreach ( $archive as $name => $object ) {
 			$defaults['archive'][] = $name;
 		}

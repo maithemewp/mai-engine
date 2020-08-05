@@ -34,12 +34,14 @@ return [
 			'sticky-header',
 		],
 	],
-	'page-header'   => [
-		'archive'          => '*',
-		'single'           => '*',
-		'image'            => '',
-		'background-color' => 'heading',
-		'text-color'       => 'light',
-		'divider-color'    => 'white',
+	'settings'      => [
+		'page-header' => [
+			'archive'          => '*',
+			'single'           => '*',
+			'image'            => '',
+			'background-color' => 'heading',
+			'text-color'       => 'light',
+			'divider-color'    => 'white',
+		],
 	],
 ];

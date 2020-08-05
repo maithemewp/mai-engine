@@ -17,9 +17,9 @@ return [
 		'colors' => [
 			'link'      => '#1ced8a',
 			'primary'   => '#1ced8a',
-			'secondary' => '#ffffff',
+			'secondary' => '#141618',
 			'heading'   => '#141618',
-			'body'      => '#a8afb6',
+			'body'      => '#5a636b',
 			'alt'       => '#1b1e20',
 		],
 		'fonts'  => [
@@ -29,12 +29,60 @@ return [
 	],
 	'theme-support' => [
 		'add' => [
+			'sticky-header',
 			'transparent-header',
 		],
 	],
 	'settings'      => [
-		'logo' => [
+		'logo'             => [
 			'show-tagline' => false,
+		],
+		'site-layout'      => [
+			'default' => [
+				'site'    => 'standard-content',
+				'archive' => 'wide-content',
+				'single'  => 'narrow-content',
+			],
+		],
+		'single-content'   => [
+			'enable' => [ 'post' ],
+			'show'   => [
+				'genesis_entry_header',
+				'title',
+				'header_meta',
+				'excerpt',
+				'image',
+				'genesis_before_entry_content',
+				'content',
+				'genesis_entry_content',
+				'genesis_after_entry_content',
+				'footer_meta',
+				'genesis_entry_footer',
+			],
+		],
+		'content-archives' => [
+			'image_orientation'   => 'custom',
+			'image_size'          => 'large',
+			'image_position'      => 'background',
+			'align_text_vertical' => 'bottom',
+			'show'                => [
+				'image',
+				'genesis_entry_header',
+				'footer_meta',
+				'title',
+				'genesis_before_entry_content',
+				'genesis_entry_content',
+				'genesis_after_entry_content',
+				'genesis_entry_footer',
+			],
+		],
+		'page-header'      => [
+			'archive'          => '*',
+			'single'           => [ 'page' ],
+			'image'            => '',
+			'background-color' => 'heading',
+			'text-color'       => 'light',
+			'divider-color'    => 'white',
 		],
 	],
 ];

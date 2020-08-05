@@ -39,16 +39,18 @@ return [
 			],
 		],
 	],
-	'page-header'   => [
-		'archive'          => '*',
-		'single'           => '*',
-		'image'            => '',
-		'background-color' => 'primary',
-		'text-color'       => 'light',
-		'divider-color'    => 'white',
-		'spacing'          => [
-			'top'    => '5vw',
-			'bottom' => '5vw',
+	'settings'      => [
+		'page-header' => [
+			'archive'          => '*',
+			'single'           => '*',
+			'image'            => '',
+			'background-color' => 'primary',
+			'text-color'       => 'light',
+			'divider-color'    => 'white',
+			'spacing'          => [
+				'top'    => '5vw',
+				'bottom' => '5vw',
+			],
 		],
 	],
 ];

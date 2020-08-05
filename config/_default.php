@@ -283,7 +283,7 @@ return [
 			'genesis-customizer-seo-settings',
 			'genesis-auto-updates',
 
-			// Custom.
+			// Engine.
 			'align-wide',
 			'automatic-feed-links',
 			'editor-styles',
