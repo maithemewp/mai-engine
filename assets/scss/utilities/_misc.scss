@@ -103,5 +103,9 @@
 }
 
 [id] {
-	scroll-margin-top: var(--header-height, 120px);
+	scroll-margin-top: var(--scroll-margin-top, 0);
+}
+
+.has-sticky-header {
+	--scroll-margin-top: var(--header-shrunk-height, var(--header-height, 0));
 }

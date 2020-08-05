@@ -3,6 +3,7 @@
 	/**
 	 * Global variables.
 	 */
+	var root           = document.documentElement;
 	var body           = document.getElementsByTagName( 'body' )[ 0 ];
 	var skipLink       = document.getElementsByClassName( 'genesis-skip-link' )[ 0 ];
 	var beforeHeader   = document.getElementsByClassName( 'before-header' )[ 0 ];
@@ -27,12 +28,21 @@
 		if ( tracker[ 0 ].isIntersecting ) {
 			body.classList.remove( 'header-stuck' );
 
+			setTimeout( function() {
+				root.style.setProperty( '--header-height', ( header ? header.offsetHeight : 0 ) + 'px' );
+			}, 500 );
+
 		} else {
 			var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
 			if ( viewportWidth > parseInt( breakpointSm, 10 ) ) {
 				body.classList.add( 'header-stuck' );
+
+				setTimeout( function() {
+					root.style.setProperty( '--header-shrunk-height', ( header ? header.offsetHeight : 0 ) + 'px' );
+				}, 500 );
 			}
+
 		}
 	}, { threshold: [ 0, 1 ] } );
 
@@ -64,9 +74,7 @@
 	};
 
 	var	setHeaderHeight = function() {
-		var root = document.documentElement;
-
-		root.style.setProperty( '--header-height', headerHeight + 'px' );
+		root.style.setProperty( '--header-height', ( header ? header.offsetHeight : 0 ) + 'px' );
 	};
 
 	var onReady = function() {
