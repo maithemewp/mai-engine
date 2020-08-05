@@ -20,6 +20,7 @@
  * @link  https://github.com/studiopress/genesis/blob/master/lib/structure/post.php
  */
 function mai_do_entries_open( $args ) {
+
 	// Start the attributes.
 	$attributes = [
 		'class' => mai_add_classes( 'entries', isset( $args['class'] ) ? $args['class'] : '' ),
@@ -102,16 +103,24 @@ function mai_do_entries_open( $args ) {
 
 	$attributes['style'] .= sprintf( '--column-gap:%s;', $column_gap );
 	$attributes['style'] .= sprintf( '--row-gap:%s;', $row_gap );
-	$attributes['style'] .= sprintf( '--align-columns:%s;', ! empty( $args['align_columns'] ) ? mai_get_flex_align( $args['align_columns'] ) : 'unset' );
-	$attributes['style'] .= sprintf( '--align-columns-vertical:%s;', ! empty( $args['align_columns_vertical'] ) ? mai_get_flex_align( $args['align_columns_vertical'] ) : 'unset' );
 	$attributes['style'] .= sprintf( '--align-text:%s;', mai_get_align_text( $args['align_text'] ) );
-	$attributes['style'] .= sprintf( '--align-text-vertical:%s;', mai_has_string( [
-		'left',
-		'right',
-		'background',
-	], $args['image_position'] ) ? mai_get_align_text( $args['align_text_vertical'] ) : 'unset' );
 
-	// Border radius.
+	if ( isset( $args['align_columns'] ) && $args['align_columns'] ) {
+		$attributes['style'] .= sprintf( '--align-columns:%s;', mai_get_flex_align( $args['align_columns'] ) );
+	}
+
+	if ( isset( $args['align_columns_vertical'] ) && $args['align_columns_vertical'] ) {
+		$attributes['style'] .= sprintf( '--align-columns-vertical:%s;', mai_get_flex_align( $args['align_columns_vertical'] ) );
+	}
+
+	if ( isset( $args['align_text_vertical'] ) && in_array( $args['image_position'], [
+			'left',
+			'right',
+			'background',
+		], true ) ) {
+		$attributes['style'] .= sprintf( '--align-text-vertical:%s;', mai_get_align_text( $args['align_text_vertical'] ) );
+	}
+
 	if ( isset( $args['border_radius'] ) && '' !== $args['border_radius'] && ( ( 'background' === $args['image_position'] ) || $args['boxed'] ) ) {
 		$attributes['style'] .= sprintf( '--border-radius:%s;', mai_get_unit_value( $args['border_radius'] ) );
 	}
