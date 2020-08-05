@@ -81,7 +81,7 @@ function mai_do_header() {
  */
 function mai_nav_header_attributes( $attributes ) {
 	$attributes['class'] .= ' nav-header';
-	$atts['itemtype']     = 'https://schema.org/SiteNavigationElement';
+	$atts['itemtype']    = 'https://schema.org/SiteNavigationElement';
 
 	return $attributes;
 }
@@ -232,7 +232,8 @@ add_filter( 'genesis_attr_site-description', 'mai_hide_site_description' );
  * @return array The modified attributes.
  */
 function mai_hide_site_description( $attributes ) {
-	$show = mai_get_option( 'show-tagline', true );
+	$default = mai_get_config( 'settings' )['logo']['show-tagline'];
+	$show    = mai_get_option( 'show-tagline', $default );
 
 	if ( has_custom_logo() || ! $show ) {
 		$attributes['class'] .= ' screen-reader-text';
