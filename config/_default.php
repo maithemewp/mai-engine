@@ -25,13 +25,13 @@ return [
 		'colors'         => [
 			'black'      => '#000000',
 			'white'      => '#ffffff',
-			'background' => '#ffffff',
+			'background' => '#ffffff', // Body background.
 			'alt'        => '#f8f9fa', // Background alt.
-			'body'       => '#6c747d',
-			'heading'    => '#343a40',
-			'link'       => '#007bff',
-			'primary'    => '#007bff', // Button primary.
-			'secondary'  => '#6c747d', // Button secondary.
+			'body'       => '#6c747d', // Body text color.
+			'heading'    => '#343a40', // Heading text color.
+			'link'       => '#007bff', // Link color.
+			'primary'    => '#007bff', // Button primary background color.
+			'secondary'  => '#6c747d', // Button secondary background color.
 		],
 		'fonts'          => [
 			'body'    => 'sans-serif:400',

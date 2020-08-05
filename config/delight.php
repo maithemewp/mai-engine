@@ -13,11 +13,13 @@ return [
 	'demos'              => [],
 	'global-styles'      => [
 		'colors'            => [
-			'link'             => '#067ccc',
-			'primary'          => '#067ccc',
-			'secondary'        => '#ebe9eb',
-			'heading'          => '#323232',
-			'body'             => '#515151',
+			'background' => '#fcfcfc',
+			'alt'        => '#f0f0f0',
+			'body'       => '#515151',
+			'heading'    => '#323232',
+			'link'       => '#067ccc',
+			'primary'    => '#067ccc',
+			'secondary'  => '#ebe9eb',
 		],
 		'fonts'             => [
 			'body'             => 'Open Sans:300',
