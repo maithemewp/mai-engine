@@ -124,6 +124,7 @@ class Mai_Entry {
 		}
 
 		$image_first = ( isset( $elements[0] ) && ( 'image' === $elements[0] ) ) || ( isset( $this->args['image_position'] ) && mai_has_string( [ 'left', 'right' ], $this->args['image_position'] ) );
+		$image_only  = ( 1 === count( $elements ) && ( 'image' === $elements[0] ) );
 
 		// Has image classes.
 		if ( in_array( 'image', $this->args['show'], true ) ) {
@@ -133,6 +134,10 @@ class Mai_Entry {
 				if ( $image_first && ! mai_is_element_hidden( 'featured_image' ) ) {
 					$atts['class'] .= ' has-image-first';
 				}
+			}
+
+			if ( $image_only ) {
+				$atts['class'] .= ' has-image-only';
 			}
 		}
 
@@ -173,18 +178,23 @@ class Mai_Entry {
 			$this->do_image();
 		}
 
-		// Inner open.
-		genesis_markup(
-			[
-				'open'    => '<div %s>',
-				'context' => 'entry-wrap',
-				'echo'    => true,
-				'params'  => [
-					'args'  => $this->args,
-					'entry' => $this->entry,
-				],
-			]
-		);
+		if ( ! $image_only ) {
+
+			// Inner open.
+			genesis_markup(
+				[
+					'open'    => '<div %s>',
+					'context' => 'entry-wrap',
+					'echo'    => true,
+					'params'  => [
+						'args'  => $this->args,
+						'entry' => $this->entry,
+					],
+				]
+			);
+
+		}
+
 
 		// Overlay link.
 		if ( ( 'single' !== $this->context ) && ( 'background' === $this->args['image_position'] ) ) {
@@ -206,18 +216,22 @@ class Mai_Entry {
 			}
 		}
 
-		// Inner close.
-		genesis_markup(
-			[
-				'close'   => '</div>',
-				'context' => 'entry-inner',
-				'echo'    => true,
-				'params'  => [
-					'args'  => $this->args,
-					'entry' => $this->entry,
-				],
-			]
-		);
+		if ( ! $image_only ) {
+
+			// Inner close.
+			genesis_markup(
+				[
+					'close'   => '</div>',
+					'context' => 'entry-inner',
+					'echo'    => true,
+					'params'  => [
+						'args'  => $this->args,
+						'entry' => $this->entry,
+					],
+				]
+			);
+
+		}
 
 		// Close.
 		genesis_markup(
