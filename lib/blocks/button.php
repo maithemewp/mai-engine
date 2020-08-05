@@ -60,24 +60,38 @@ function mai_render_button_block( $block_content, $block ) {
 		$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link button', $block_content );
 	}
 
-	if ( isset( $block['attrs']['borderRadius'] ) ) {
-		$dom = mai_get_dom_document( $block_content );
+	$has_small  = isset( $block['attrs']['className'] ) && mai_has_string( 'button-small', $block['attrs']['className'] );
+	$has_large  = isset( $block['attrs']['className'] ) && mai_has_string( 'button-large', $block['attrs']['className'] );
+	$has_radius = isset( $block['attrs']['borderRadius'] );
 
-		/**
-		 * The group block container.
-		 *
-		 * @var DOMElement $first_block The group block container.
-		 */
-		$first_block = $dom->childNodes && isset( $dom->childNodes[0] ) ? $dom->childNodes[0] : false; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+	if ( $has_small || $has_large || $has_radius ) {
+		$block_content = $has_small ? str_replace( 'button-small', '', $block_content ) : $block_content;
+		$block_content = $has_large ? str_replace( 'button-large', '', $block_content ) : $block_content;
 
+		$dom     = mai_get_dom_document( $block_content );
 		$buttons = $dom->getElementsByTagName( 'a' );
 
 		if ( $buttons ) {
 			foreach ( $buttons as $button ) {
-				$style = $button->getAttribute( 'style' );
-				$style = str_replace( 'border-radius', '--border-radius', $style );
+				if ( $has_small || $has_large ) {
+					$classes = $button->getAttribute( 'class' );
 
-				$button->setAttribute( 'style', $style );
+					if ( $has_small ) {
+						$classes .= ' button-small';
+					}
+
+					if ( $has_large ) {
+						$classes .= ' button-large';
+					}
+
+					$button->setAttribute( 'class', $classes );
+				}
+
+				if ( $has_radius ) {
+					$style = str_replace( 'border-radius', '--border-radius', $style );
+
+					$button->setAttribute( 'style', $style );
+				}
 			}
 		}
 
