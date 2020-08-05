@@ -348,9 +348,7 @@ function mai_get_page_header_image_id() {
 		$image_id = mai_get_config( 'settings' )['page-header']['image'];
 	}
 
-	$image_id = apply_filters( 'mai_page_header_image', $image_id );
-
-	return $image_id;
+	return apply_filters( 'mai_page_header_image', $image_id );
 }
 
 /**
@@ -428,9 +426,7 @@ function mai_get_page_header_title() {
 		$title = apply_filters( 'genesis_404_entry_title', esc_html__( 'Not found, error 404', 'mai-engine' ) );
 	}
 
-	$title = apply_filters( 'mai_page_header_title', $title );
-
-	return $title;
+	return apply_filters( 'mai_page_header_title', $title );
 }
 
 /**
@@ -447,11 +443,11 @@ function mai_get_page_header_description() {
 		return $description;
 	}
 
-	if ( is_singular() ) {
-		$description = get_post_meta( get_the_ID(), 'page_header_description', true );
-
-	} elseif ( is_front_page() ) {
+	if ( is_front_page() ) {
 		$description = '';
+
+	} elseif ( is_singular() ) {
+		$description = get_post_meta( get_the_ID(), 'page_header_description', true );
 
 	} elseif ( is_home() ) {
 		$description = get_post_meta( get_option( 'page_for_posts' ), 'page_header_description', true );
@@ -495,7 +491,5 @@ function mai_get_page_header_description() {
 		$description = '';
 	}
 
-	$description = apply_filters( 'mai_page_header_description', $description );
-
-	return $description;
+	return apply_filters( 'mai_page_header_description', $description );
 }
