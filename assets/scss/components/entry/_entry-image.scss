@@ -27,6 +27,10 @@
 	}
 }
 
+.has-image-only {
+	--entry-image-link-margin-bottom: 0;
+}
+
 .entry-image-single {
 	--entry-image-link-margin-bottom: var(--spacing-lg);
 }
