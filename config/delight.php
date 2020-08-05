@@ -34,6 +34,7 @@ return [
 	'image-sizes'        => [
 		'add'               => [
 			'landscape'        => '4:3',
+			'square'           => '1:1',
 		],
 	],
 	'settings'           => [

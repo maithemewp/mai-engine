@@ -49,3 +49,31 @@ html {
 
 	background-color: var(--color-heading);
 }
+
+.wp-block-quote {
+	position: relative;
+
+	--blockquote-font-family: var(--heading-font);
+	--blockquote-border-top: 0;
+	--blockquote-border-right: 0;
+	--blockquote-border-bottom: 0;
+	--blockquote-border-left: 0;
+
+	> * {
+		position: relative;
+		z-index: 1;
+	}
+}
+
+.wp-block-quote:before {
+	content: "\201C";
+	position: absolute;
+	top: calc(var(--spacing-xxl) * -1);
+	left: calc(var(--spacing-xxl) * -1);
+	font-family: var(--heading-font-family);
+	font-size: 12em;
+	line-height: 1;
+	color: var(--color-body);
+	opacity: 0.1;
+	z-index: 0;
+}
