@@ -444,13 +444,15 @@ function mai_get_page_header_description() {
 	}
 
 	if ( is_front_page() ) {
-		$description = '';
+		$static_home = get_option( 'page_on_front' );
+		$description = $static_home ? get_post_meta( $static_home, 'page_header_description', true ) : '';
 
 	} elseif ( is_singular() ) {
 		$description = get_post_meta( get_the_ID(), 'page_header_description', true );
 
 	} elseif ( is_home() ) {
-		$description = get_post_meta( get_option( 'page_for_posts' ), 'page_header_description', true );
+		$static_blog = get_option( 'page_for_posts' );
+		$description = $static_blog ? get_post_meta( $static_blog, 'page_header_description', true ) : '';
 
 	} elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
 		$description = get_post_meta( wc_get_page_id( 'shop' ), 'page_header_description', true );
