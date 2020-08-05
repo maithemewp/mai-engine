@@ -30,7 +30,7 @@
 
 			setTimeout( function() {
 				root.style.setProperty( '--header-height', ( header ? header.offsetHeight : 0 ) + 'px' );
-			}, 500 );
+			}, 300 ); // 100ms longer than transition duration. TODO: Use config value localized?
 
 		} else {
 			var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
@@ -40,7 +40,7 @@
 
 				setTimeout( function() {
 					root.style.setProperty( '--header-shrunk-height', ( header ? header.offsetHeight : 0 ) + 'px' );
-				}, 500 );
+				}, 300 ); // 100ms longer than transition duration. TODO: Use config value localized?
 			}
 
 		}
