@@ -1,11 +1,15 @@
 .wp-block-quote {
+	--cite-font-size: var(--font-size-xs);
 
 	cite,
 	footer,
 	&__citation {
 		position: relative;
 		margin-top: 1em;
+	}
 
+	footer,
+	&__citation {
 		@include caption();
 	}
 
@@ -26,11 +30,12 @@
 	&.is-large {
 		padding: var(--blockquote-padding, 1em);
 
+		--cite-font-size: var(--font-size-md);
+
 		p {
 			font-style: var(--blockquote-font-style, italic);
 		}
 
-		cite,
 		footer {
 			font-size: var(--caption-font-size, var(--font-size-xs));
 			text-align: inherit;

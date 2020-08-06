@@ -5,12 +5,13 @@
 	border-bottom: var(--border);
 	border-left: 0;
 
+	--cite-font-size: var(--font-size-xs);
+
 	&.aligncenter {
 		margin-top: var(--spacing-md);
 		margin-bottom: var(--spacing-md);
 	}
 
-	cite,
 	footer,
 	&__citation {
 
