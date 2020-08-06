@@ -8,10 +8,9 @@
 	overflow: hidden;
 	color: var(--page-header-color, var(--color-body));
 	text-align: var(--page-header-text-align, center);
-	background-color: var(--page-header-background-color, var(--color-alt));
+	background: var(--page-header-background, var(--color-alt));
 	border-bottom: var(--page-header-border-bottom, var(--border));
 
-	--color: currentColor;
 	--heading-color: currentColor;
 	--wrap-position: relative;
 	--wrap-justify-content: var(--page-header-text-align, center);
@@ -53,14 +52,14 @@
 	max-width: var(--page-header-inner-max-width, var(--breakpoint-sm));
 	margin: var(--pade-header-inner-margin, (0 auto));
 	padding: var(--page-header-inner-padding, 0);
-	background: var(--page-header-inner-background, unset);
-	border: var(--page-header-inner-border, unset);
-	border-radius: var(--page-header-inner-border-radius, unset);
-	box-shadow: var(--page-header-inner-box-shadow, unset);
+	background: var(--page-header-inner-background, transparent);
+	border: var(--page-header-inner-border, 0);
+	border-radius: var(--page-header-inner-border-radius, var(--border-radius));
+	box-shadow: var(--page-header-inner-box-shadow, none);
 }
 
 .page-header-description {
-	margin: var(--page-header-description-margin, 0 0 var(--spacing-md));
+	margin: var(--page-header-description-margin, 0 0 1em);
 	font-size: var(--page-header-font-size, var(--font-size-lg));
 
 	&:last-child {

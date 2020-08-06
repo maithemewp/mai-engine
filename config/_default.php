@@ -535,7 +535,7 @@ return [
 			'background-color'        => 'alt',
 			'image'                   => '',
 			'overlay-opacity'         => 0.5,
-			'text-color'              => 'dark',
+			'text-color'              => 'heading',
 			'spacing'                 => [
 				'top'    => '10vw',
 				'bottom' => '10vw',
