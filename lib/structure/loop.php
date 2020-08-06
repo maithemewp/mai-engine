@@ -38,6 +38,9 @@ function mai_setup_loop() {
 	remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_close', 15 );
 	remove_action( 'genesis_entry_footer', 'genesis_post_meta' );
 
+	remove_action( 'genesis_before_loop', 'genesis_do_author_box_archive', 15 );
+	remove_action( 'genesis_after_entry', 'genesis_do_author_box_single', 8 );
+
 	// Swap loop.
 	remove_action( 'genesis_loop', 'genesis_do_loop' );
 	add_action( 'genesis_loop', 'mai_do_loop' );
