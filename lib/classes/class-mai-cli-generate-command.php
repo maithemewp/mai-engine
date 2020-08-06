@@ -17,6 +17,10 @@ class Mai_Cli_Generate_Command {
 	/**
 	 * Default function to run.
 	 *
+	 * Remember to use URL parameter when on multisite. E.g:
+	 *
+	 * `wp mai generate --url=demo.bizbudding.com/example`
+	 *
 	 * @since 1.0.0
 	 *
 	 * @param array $args Passed arguments.
