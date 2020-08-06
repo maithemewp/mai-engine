@@ -1,1 +1,1 @@
-:root{--border-radius:0}.nav-after-header{background:var(--color-heading);--menu-item-link-color:var(--color-white)}.footer-credits{padding:0}
+:root{--border-radius:0;--menu-font-size:var(--font-size-sm)}.nav-after-header{background:var(--color-heading);--menu-item-link-color:var(--color-white)}

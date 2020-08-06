@@ -17,15 +17,21 @@ return [
 	],
 	'global-styles' => [
 		'colors' => [
-			'link'      => '#777777',
-			'primary'   => '#000000',
+			'link'      => '#2386dd',
+			'primary'   => '#191919',
 			'secondary' => '#777777',
-			'heading'   => '#000000',
+			'heading'   => '#242424',
 			'body'      => '#777777',
+			'alt'       => '#eeeeee',
 		],
 		'fonts'  => [
-			'body'    => 'Montserrat:400',
-			'heading' => 'Montserrat:700',
+			'body'    => 'Roboto:400',
+			'heading' => 'Roboto Slab:700',
+		],
+	],
+	'settings'      => [
+		'logo' => [
+			'show-tagline' => false,
 		],
 	],
 ];
