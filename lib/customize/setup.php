@@ -13,7 +13,7 @@
 add_filter( 'kirki_telemetry', '__return_false' );
 
 // Skip hidden webfont choices.
-add_filter( "kirki_mai-engine_webfonts_skip_hidden", '__return_false' );
+add_filter( 'kirki_mai-engine_webfonts_skip_hidden', '__return_false' );
 
 add_action( 'after_setup_theme', 'mai_add_kirki_config' );
 /**
@@ -49,13 +49,13 @@ function mai_add_kirki_config() {
 
 add_filter( 'kirki/config', 'mai_kirki_config' );
 /**
- * Description of expected behavior.
+ * Modifies kirki config defaults.
  *
  * @since 1.0.0
  *
- * @param $config
+ * @param array $config Kirki config.
  *
- * @return mixed
+ * @return array
  */
 function mai_kirki_config( $config ) {
 	$config['disable_loader'] = true;
@@ -89,4 +89,6 @@ function mai_handle_existing_customizer_sections( $wp_customize ) {
 	$wp_customize->remove_section( 'genesis_single' );
 	$wp_customize->remove_section( 'genesis_archives' );
 	$wp_customize->remove_section( 'genesis_footer' );
+
+	$wp_customize->get_setting( 'custom_logo' )->transport = 'refresh';
 }

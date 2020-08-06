@@ -174,11 +174,12 @@ function mai_get_asset_version( $file ) {
 }
 
 /**
- * Description of expected behavior.
- *
+ * Returns minified version of asset if in dev mode.
+ *z
+ * @since 2.4.0 Removed min dir if CSS file. Always return minified CSS.
  * @since 0.1.0
  *
- * @param string $file File base name.
+ * @param string $file File base name (relative to type directory).
  *
  * @return string
  */
@@ -187,9 +188,10 @@ function mai_get_asset_url( $file ) {
 	$name    = str_replace( [ '.js', '.css' ], '', $file );
 	$uri     = mai_get_url();
 	$default = "${uri}assets/${type}/${name}.${type}";
-	$min     = "${uri}assets/${type}/min/${name}.min.${type}";
+	$dir     = 'js' === $type ? '/min/' : '/';
+	$min     = "${uri}assets/${type}${dir}${name}.min.${type}";
 
-	return mai_is_in_dev_mode() ? $default : $min;
+	return mai_is_in_dev_mode() && 'js' === $type ? $default : $min;
 }
 
 /**
@@ -228,7 +230,7 @@ function mai_get_config( $sub_config = 'default' ) {
 /**
  * Returns the active theme key.
  *
- * Checks multiple places to find a match.
+ * Wrapper function for mai_get_engine_theme.
  *
  * @since 0.1.0
  *
@@ -362,7 +364,7 @@ function mai_get_breakpoints() {
 function mai_get_breakpoint( $size = 'lg', $suffix = '' ) {
 	$breakpoints = mai_get_breakpoints();
 
-	return mai_get_option( 'mobile-menu-breakpoint', $breakpoints[ $size ] ) . $suffix;
+	return $breakpoints[ $size ] . $suffix;
 }
 
 /**
@@ -405,231 +407,12 @@ function mai_get_unit_value( $value, $fallback = 'px' ) {
  *
  * @since 0.1.0
  *
- * @param $string
+ * @param string $string String to check.
  *
  * @return int
  */
 function mai_get_integer_value( $string ) {
-	return (int) preg_replace( "/[^0-9.]/", "", $string );
-}
-
-/**
- * Get the page header image ID.
- *
- * @since 0.3.0
- *
- * @return mixed
- */
-function mai_get_page_header_image_id() {
-	static $image_id = null;
-
-	if ( ! is_null( $image_id ) ) {
-		return $image_id;
-	}
-
-	if ( mai_is_type_single() ) {
-		$image_id = get_post_meta( get_the_ID(), 'page_header_image', true );
-
-	} elseif ( is_front_page() ) {
-		$image_id = '';
-
-		if ( 'page' === get_option( 'show_on_front' ) ) {
-			$image_id = get_post_meta( get_option( 'page_on_front' ), 'page_header_image', true );
-		}
-	} elseif ( is_home() ) {
-		$image_id = get_post_meta( get_option( 'page_for_posts' ), 'page_header_image', true );
-
-	} elseif ( mai_is_type_archive() ) {
-		if ( is_category() || is_tag() || is_tax() ) {
-
-			/**
-			 * @var WP_Query $wp_query
-			 */
-			global $wp_query;
-
-			$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
-
-			if ( $term ) {
-				$image_id = get_term_meta( $term->term_id, 'page_header_image', true );
-			}
-		}
-	}
-
-	if ( ! $image_id ) {
-		$args = mai_get_template_args();
-
-		if ( isset( $args['page-header-image'] ) && ! empty( $args['page-header-image'] ) ) {
-			$image_id = $args['page-header-image'];
-		}
-	}
-
-	if ( ! $image_id && is_singular() ) {
-		$args = mai_get_template_args();
-
-		if ( isset( $args['page-header-featured'] ) && $args['page-header-featured'] ) {
-			$image_id = get_post_thumbnail_id();
-		}
-	}
-
-	if ( ! $image_id && mai_get_option( 'page-header-image' ) ) {
-		$image_id = mai_get_option( 'page-header-image' );
-	}
-
-	if ( ! $image_id && mai_get_config( 'page-header' )['image'] ) {
-		$image_id = mai_get_option( 'page-header-image' );
-	}
-
-
-	$image_id = apply_filters( 'mai_page_header_image', $image_id );
-
-	return $image_id;
-}
-
-/**
- * Get the page header title.
- *
- * @since 0.3.0
- *
- * @return string
- */
-function mai_get_page_header_title() {
-	static $title = null;
-
-	if ( ! is_null( $title ) ) {
-		return $title;
-	}
-
-	if ( is_singular() ) {
-		$title = get_the_title();
-
-	} elseif ( is_front_page() ) {
-		$title = apply_filters( 'genesis_latest_posts_title', esc_html__( 'Latest Posts', 'mai-engine' ) );
-
-	} elseif ( is_home() ) {
-		$title = get_the_title( get_option( 'page_for_posts' ) );
-
-	} elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
-		$title = get_the_title( wc_get_page_id( 'shop' ) );
-
-	} elseif ( is_post_type_archive() && genesis_has_post_type_archive_support( mai_get_post_type() ) ) {
-		$title = genesis_get_cpt_option( 'headline' );
-
-		if ( ! $title ) {
-			$title = post_type_archive_title( '', false );
-		}
-	} elseif ( is_category() || is_tag() || is_tax() ) {
-
-		/**
-		 * WP Query.
-		 *
-		 * @var WP_Query $wp_query WP Query object.
-		 */
-		global $wp_query;
-
-		$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
-
-		if ( $term ) {
-			$title = get_term_meta( $term->term_id, 'headline', true );
-
-			if ( ! $title ) {
-				$title = $term->name;
-			}
-		}
-	} elseif ( is_search() ) {
-		$title = apply_filters( 'genesis_search_title_text', esc_html__( 'Search results for: ', 'mai-engine' ) . get_search_query() );
-
-	} elseif ( is_author() ) {
-		$title = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
-
-		if ( ! $title ) {
-			$title = get_the_author_meta( 'display_name', (int) get_query_var( 'author' ) );
-		}
-	} elseif ( is_date() ) {
-		$title = __( 'Archives for ', 'mai-engine' );
-
-		if ( is_day() ) {
-			$title .= get_the_date();
-
-		} elseif ( is_month() ) {
-			$title .= single_month_title( ' ', false );
-
-		} elseif ( is_year() ) {
-			$title .= get_query_var( 'year' );
-		}
-	} elseif ( is_404() ) {
-		$title = apply_filters( 'genesis_404_entry_title', esc_html__( 'Not found, error 404', 'mai-engine' ) );
-	}
-
-	$title = apply_filters( 'mai_page_header_title', $title );
-
-	return $title;
-}
-
-/**
- * Get the page header description.
- *
- * @since 0.3.0
- *
- * @return string
- */
-function mai_get_page_header_description() {
-	static $description = null;
-
-	if ( ! is_null( $description ) ) {
-		return $description;
-	}
-
-	if ( is_singular() ) {
-		$description = get_post_meta( get_the_ID(), 'page_header_description', true );
-
-	} elseif ( is_front_page() ) {
-		$description = '';
-
-	} elseif ( is_home() ) {
-		$description = get_post_meta( get_option( 'page_for_posts' ), 'page_header_description', true );
-
-	} elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
-		$description = get_post_meta( wc_get_page_id( 'shop' ), 'page_header_description', true );
-
-	} elseif ( is_post_type_archive() && genesis_has_post_type_archive_support( mai_get_post_type() ) ) {
-		$description = genesis_get_cpt_option( 'intro_text' );
-		$description = apply_filters( 'genesis_cpt_archive_intro_text_output', $description ? $description : '' );
-
-	} elseif ( is_category() || is_tag() || is_tax() ) {
-
-		/**
-		 * WP Query.
-		 *
-		 * @var WP_Query $wp_query WP Query object.
-		 */
-		global $wp_query;
-
-		$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
-
-		if ( $term ) {
-			$description = get_term_meta( $term->term_id, 'page_header_description', true );
-			$description = apply_filters( 'genesis_term_intro_text_output', $description ? $description : '' );
-		}
-	} elseif ( is_search() ) {
-		$description = apply_filters( 'genesis_search_title_text', esc_html__( 'Search results for: ', 'mai-engine' ) . get_search_query() );
-
-	} elseif ( is_author() ) {
-		$description = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
-		$description = apply_filters( 'genesis_author_intro_text_output', $description ? $description : '' );
-
-		if ( ! $description ) {
-			$description = get_the_author_meta( 'display_name', (int) get_query_var( 'author' ) );
-		}
-	} elseif ( is_date() ) {
-
-		$description = '';
-	} elseif ( is_404() ) {
-		$description = '';
-	}
-
-	$description = apply_filters( 'mai_page_header_description', $description );
-
-	return $description;
+	return (int) preg_replace( '/[^0-9.]/', '', $string );
 }
 
 /**
@@ -683,17 +466,22 @@ function mai_get_content_type_choices( $archive = false ) {
 		$choices['page'] = esc_html__( 'Page', 'mai-engine' );
 	}
 
-	$post_types = get_post_types( [
-		'public'   => true,
-		'_builtin' => false,
-	], 'objects' );
+	$post_types = get_post_types(
+		[
+			'public'   => true,
+			'_builtin' => false,
+		],
+		'objects'
+	);
 
 	if ( $post_types ) {
 		foreach ( $post_types as $name => $post_type ) {
+
 			// Skip post types without archives.
 			if ( $archive && ! (bool) $post_type->has_archive ) {
 				continue;
 			}
+
 			$choices[ $name ] = $post_type->label;
 		}
 	}
@@ -717,6 +505,7 @@ function mai_get_content_type_choices( $archive = false ) {
 			'author' => __( 'Author Archives', 'mai-engine' ),
 			'date'   => __( 'Date Archives', 'mai-engine' ),
 		];
+
 	} else {
 		$choices += [
 			'404-page' => __( '404', 'mai-engine' ),
@@ -741,6 +530,7 @@ function mai_get_loop_content_type_choices( $archive = true ) {
 	$feature = $archive ? 'mai-archive-settings' : 'mai-single-settings';
 
 	foreach ( $choices as $name => $label ) {
+
 		// If type is a post type.
 		if ( post_type_exists( $name ) ) {
 			$post_type = get_post_type_object( $name );
@@ -748,12 +538,14 @@ function mai_get_loop_content_type_choices( $archive = true ) {
 			if ( ! $post_type->_builtin && ! post_type_supports( $post_type->name, $feature ) ) {
 				unset( $choices[ $name ] );
 			}
+		} elseif ( taxonomy_exists( $name ) ) {
 
-		} // If type is a taxonomy.
-		elseif ( taxonomy_exists( $name ) ) {
 			$post_type = mai_get_taxonomy_post_type( $name );
+
+			// If type is a taxonomy.
 			if ( $post_type ) {
 				$post_type = get_post_type_object( $post_type );
+
 				if ( ! $post_type->_builtin && ! post_type_supports( $post_type->name, $feature ) ) {
 					unset( $choices[ $name ] );
 				}
@@ -779,8 +571,10 @@ function mai_get_loop_content_type_choices( $archive = true ) {
  */
 function mai_get_taxonomy_post_type( $taxonomy ) {
 	$taxonomy = get_taxonomy( $taxonomy );
+
 	if ( $taxonomy ) {
 		$post_type = reset( $taxonomy->object_type );
+
 		if ( post_type_exists( $post_type ) ) {
 			return $post_type;
 		}
@@ -790,8 +584,9 @@ function mai_get_taxonomy_post_type( $taxonomy ) {
 }
 
 /**
- * Get the read more ellipses.
- * Filtered so devs can change.
+ * Get the read more ellipses. Filtered so devs can change.
+ *
+ * @since 1.0.0
  *
  * @return string;
  */
@@ -801,6 +596,7 @@ function mai_get_ellipsis() {
 
 /**
  * Get post content by slug or ID.
+ *
  * Great for displaying reusable blocks in areas that are not block enabled.
  *
  * Switched from get_post_field to WP_Query so blocks are parsed and shortcodes are rendered better.
@@ -812,7 +608,8 @@ function mai_get_ellipsis() {
  * @return string
  */
 function mai_get_post_content( $post_slug_or_id ) {
-	$post_id = $post_type = false;
+	$post_id   = false;
+	$post_type = false;
 
 	if ( is_numeric( $post_slug_or_id ) ) {
 		$post_id   = $post_slug_or_id;
@@ -828,44 +625,52 @@ function mai_get_post_content( $post_slug_or_id ) {
 	}
 
 	if ( ! ( $post_id && $post_type ) ) {
-		return;
+		return '';
 	}
 
-	$loop = new WP_Query( [
-		'post_type'              => $post_type,
-		'post__in'               => [ $post_id ],
-		'posts_per_page'         => 1,
-		'no_found_rows'          => true,
-		'update_post_term_cache' => false,
-		'update_post_meta_cache' => false,
-	] );
+	$loop = new WP_Query(
+		[
+			'post_type'              => $post_type,
+			'post__in'               => [ $post_id ],
+			'posts_per_page'         => 1,
+			'no_found_rows'          => true,
+			'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+		]
+	);
 
 	ob_start();
-	if ( $loop->have_posts() ): while ( $loop->have_posts() ): $loop->the_post();
-		the_content();
-	endwhile; endif;
-	wp_reset_postdata();
-	$content = ob_get_clean();
 
-	return $content;
+	if ( $loop->have_posts() ) {
+		while ( $loop->have_posts() ) {
+			$loop->the_post();
+			the_content();
+		}
+	}
+
+	wp_reset_postdata();
+
+	return ob_get_clean();
 }
 
 /**
- * A big ol' helper/cleanup function to
- * enabled embeds inside the shortcodes and
+ * A big ol' helper/cleanup function to enabled embeds inside the shortcodes and
  * keep the shorcodes from causing extra p's and br's.
  *
  * Most of the order comes from /wp-includes/default-filters.php
  *
- * @since  0.3.0
+ * @since 0.3.0
  *
- * @param  string $content The unprocessed content.
+ * @param string $content The unprocessed content.
  *
- * @return string  The processed content.
+ * @return string
  */
 function mai_get_processed_content( $content ) {
+
 	/**
-	 * @var WP_Embed $wp_embed
+	 * Embed.
+	 *
+	 * @var WP_Embed $wp_embed Embed object.
 	 */
 	global $wp_embed;
 
@@ -883,6 +688,7 @@ function mai_get_processed_content( $content ) {
 
 /**
  * Get the default read more text.
+ *
  * This filter is run before any custom read more text is added via Customizer settings.
  * If you want to filter after that, use `genesis_markup_entry-more-link_content` filter.
  *
@@ -906,7 +712,11 @@ function mai_get_read_more_text() {
  *
  * @return string
  */
-function mai_get_menu( $menu, $args = '' ) {
+function mai_get_menu( $menu, $args = [] ) {
+	if ( ! is_nav_menu( $menu ) ) {
+		return;
+	}
+
 	$menu_class = 'menu genesis-nav-menu';
 
 	if ( isset( $args['class'] ) && $args['class'] ) {
@@ -919,27 +729,29 @@ function mai_get_menu( $menu, $args = '' ) {
 		$menu_class = mai_add_classes( 'menu-list', $menu_class );
 	}
 
-	$html = wp_nav_menu( [
-		'container'   => 'ul',
-		'menu'        => $menu,
-		'menu_class'  => $menu_class,
-		'link_before' => genesis_markup(
-			[
-				'open'      => '<span %s>',
-				'context'   => 'nav-link-wrap',
-				'echo'      => false,
-			]
-		),
-		'link_after'  => genesis_markup(
-			[
-				'close'     => '</span>',
-				'context'   => 'nav-link-wrap',
-				'echo'      => false,
-			]
-		),
-		'echo'        => false,
-		'fallback_cb' => '',
-	] );
+	$html = wp_nav_menu(
+		[
+			'container'   => 'ul',
+			'menu'        => $menu,
+			'menu_class'  => $menu_class,
+			'link_before' => genesis_markup(
+				[
+					'open'    => '<span %s>',
+					'context' => 'nav-link-wrap',
+					'echo'    => false,
+				]
+			),
+			'link_after'  => genesis_markup(
+				[
+					'close'   => '</span>',
+					'context' => 'nav-link-wrap',
+					'echo'    => false,
+				]
+			),
+			'echo'        => false,
+			'fallback_cb' => '',
+		]
+	);
 
 	if ( $html ) {
 		$atts = [
@@ -953,16 +765,19 @@ function mai_get_menu( $menu, $args = '' ) {
 		if ( isset( $args['align'] ) && $args['align'] ) {
 			switch ( trim( $args['align'] ) ) {
 				case 'left':
-					$atts['style'] .= '--menu-justify-content:flex-start;--menu-item-justify-content:flex-start;--menu-item-link-justify-content:flex-start;';
-					break;
+					$atts['style'] .= '--menu-justify-content:flex-start;--menu-item-justify-content:flex-start;--menu-item-link-justify-content:flex-start;--menu-item-link-text-align:start;';
+				break;
 				case 'center':
-					$atts['style'] .= '--menu-justify-content:center;--menu-item-justify-content:center;--menu-item-link-justify-content:center;';
-					break;
+					$atts['style'] .= '--menu-justify-content:center;--menu-item-justify-content:center;--menu-item-link-justify-content:center;--menu-item-link-text-align:center;';
+				break;
 				case 'right':
-					$atts['style'] .= '--menu-justify-content:flex-end;--menu-item-justify-content:flex-end;--menu-item-link-justify-content:flex-end;';
-					break;
+					$atts['style'] .= '--menu-justify-content:flex-end;--menu-item-justify-content:flex-end;--menu-item-link-justify-content:flex-end;--menu-item-link-text-align:end;';
+				break;
 			}
 		}
+
+		$atts['itemtype'] = 'https://schema.org/SiteNavigationElement';
+
 		$html = genesis_markup(
 			[
 				'open'    => '<nav %s>',
@@ -980,240 +795,30 @@ function mai_get_menu( $menu, $args = '' ) {
 }
 
 /**
- * Description of expected behavior.
- *
- * @since 0.1.0
- *
- * @param array $args Icon args.
- *
- * @return null|string
- */
-function mai_get_icon( $args ) {
-	static $id = 0;
-
-	$id++;
-
-	$args = shortcode_atts(
-		mai_get_icon_default_args(),
-		$args,
-		'mai_icon'
-	);
-
-	$args = array_map(
-		'esc_html',
-		$args
-	);
-
-	$svg = mai_get_svg_icon( $args['icon'], $args['style'] );
-
-	if ( ! $svg ) {
-		return '';
-	}
-
-	// Build classes.
-	$class = sprintf( 'mai-icon mai-icon-%s', $id );
-
-	// Add custom classes.
-	if ( ! empty( $args['class'] ) ) {
-		$class .= ' ' . esc_attr( $args['class'] );
-	}
-
-	// Get it started.
-	$attributes = [
-		'class' => $class,
-		'style' => '',
-	];
-
-	// Build inline styles.
-	$attributes['style'] .= sprintf( '--icon-display:%s;', $args['display'] );
-	$attributes['style'] .= sprintf( '--icon-align:%s;', $args['align'] );
-	$attributes['style'] .= sprintf( '--icon-margin:%s %s %s %s;', mai_get_unit_value( $args['margin_top'] ), mai_get_unit_value( $args['margin_right'] ), mai_get_unit_value( $args['margin_bottom'] ), mai_get_unit_value( $args['margin_left'] ) );
-	$attributes['style'] .= sprintf( '--icon-padding:%s;', mai_get_unit_value( $args['padding'] ) );
-
-	if ( $args['size'] ) {
-		$attributes['style'] .= sprintf( '--icon-size:%s;', mai_get_unit_value( $args['size'] ) );
-	}
-
-	if ( $args['color_icon'] ) {
-		$attributes['style'] .= sprintf( '--icon-color:%s;', $args['color_icon'] );
-	}
-
-	if ( $args['color_background'] ) {
-		$attributes['style'] .= sprintf( '--icon-background:%s;', $args['color_background'] );
-	}
-
-	if ( $args['color_shadow'] ) {
-		$attributes['style'] .= sprintf( '--icon-box-shadow:%s %s %s %s;', mai_get_unit_value( $args['x_offset'] ), mai_get_unit_value( $args['y_offset'] ), mai_get_unit_value( $args['blur'] ), $args['color_shadow'] );
-	}
-
-	if ( $args['color_text_shadow'] ) {
-		$attributes['style'] .= sprintf( '--icon-text-shadow:%s %s %s %s;', mai_get_unit_value( $args['text_shadow_x_offset'] ), mai_get_unit_value( $args['text_shadow_y_offset'] ), mai_get_unit_value( $args['text_shadow_blur'] ), $args['color_text_shadow'] );
-	}
-
-	if ( $args['border_width'] && $args['color_border'] ) {
-		$attributes['style'] .= sprintf( '--icon-border:%s solid %s;', mai_get_unit_value( $args['border_width'] ), mai_get_unit_value( $args['color_border'] ) );
-	}
-
-	if ( $args['border_radius'] ) {
-		$radius              = explode( ' ', trim( $args['border_radius'] ) );
-		$radius              = array_map( 'mai_get_unit_value', $radius );
-		$radius              = array_filter( $radius );
-		$attributes['style'] .= sprintf( '--icon-border-radius:%s;', implode( ' ', $radius ) );
-	}
-
-	return genesis_markup(
-		[
-			'open'    => '<span %s><span class="mai-icon-wrap">',
-			'close'   => '</span></span>',
-			'content' => $svg,
-			'context' => 'mai-icon',
-			'echo'    => false,
-			'atts'    => $attributes,
-		]
-	);
-}
-
-/**
- * Helper function that returns list of shortcode attributes.
- *
- * @since 0.1.0
- *
- * @return array
- */
-function mai_get_icon_default_args() {
-	return [
-		'style'                => 'light',
-		'icon'                 => 'bolt',
-		'icon_brand'           => 'wordpress-simple',
-		'display'              => 'block',
-		'align'                => 'center',
-		'size'                 => '40',
-		'class'                => '',
-		'color_icon'           => 'currentColor',
-		'color_background'     => '',
-		'color_border'         => '',
-		'color_shadow'         => '',
-		'color_text_shadow'    => '',
-		'margin_top'           => 0,
-		'margin_right'         => 0,
-		'margin_left'          => 0,
-		'margin_bottom'        => 0,
-		'padding'              => 0,
-		'border_width'         => 0,
-		'border_radius'        => '50%',
-		'x_offset'             => 0,
-		'y_offset'             => 0,
-		'blur'                 => 0,
-		'text_shadow_x_offset' => 0,
-		'text_shadow_y_offset' => 0,
-		'text_shadow_blur'     => 0,
-	];
-}
-
-/**
- * Description of expected behavior.
- *
- * @since 0.2.0
- *
- * @param string $name  SVG name.
- * @param string $class SVG class name.
- *
- * @return string
- */
-function mai_get_svg( $name, $class = '' ) {
-	$file = mai_get_dir() . "assets/svg/$name.svg";
-
-	if ( ! file_exists( $file ) ) {
-		return '';
-	}
-
-	$svg = file_get_contents( $file );
-
-	if ( $class ) {
-		$svg = str_replace( '<svg', "<svg class='$class' ", $svg );
-	}
-
-	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-	return $svg;
-}
-
-/**
- * Description of expected behavior.
- *
- * @since 0.1.0
- *
- * @param string $name  SVG name.
- * @param string $style SVG style.
- * @param array  $atts  SVG HTML attributes.
- *
- * @return string
- */
-function mai_get_svg_icon( $name, $style = 'light', $atts = [] ) {
-	$file = mai_get_dir() . "assets/icons/svgs/$style/$name.svg";
-
-	if ( ! file_exists( $file ) ) {
-		return '';
-	}
-
-	$svg = file_get_contents( $file );
-
-	if ( $atts ) {
-		$dom  = mai_get_dom_document( $svg );
-		$svgs = $dom->getElementsByTagName( 'svg' );
-
-		foreach ( $atts as $att => $value ) {
-			$svgs[0]->setAttribute( $att, $value );
-		}
-
-		$svg = $dom->saveHTML();
-	}
-
-	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-	return $svg;
-}
-
-/**
- * Description of expected behavior.
- *
- * @since 0.1.0
- *
- * @param string $name  SVG name.
- * @param string $style SVG style.
- *
- * @return string
- */
-function mai_get_svg_icon_url( $name, $style = 'light' ) {
-	return mai_get_url() . "assets/icons/svgs/$style/$name.svg";
-}
-
-/**
  * Get DOMDocument object.
  *
- * @access private.
+ * @since  2.0.0
+ * @since  2.3.0 Remove wraps to only return the html passed.
  *
- * @since 2.0.0
- * @since 2.3.0 Remove wraps to only return the html passed.
+ * @param string $html Any given HTML string.
  *
- * @param string $html
- *
- * @return object
+ * @return DOMDocument
  */
 function mai_get_dom_document( $html ) {
-
 	// Create the new document.
-	$dom = new DOMDocument;
+	$dom = new DOMDocument();
 
 	// Modify state.
 	$libxml_previous_state = libxml_use_internal_errors( true );
 
 	// Load the content in the document HTML.
-	$dom->loadHTML( mb_convert_encoding( $html, 'HTML-ENTITIES', "UTF-8" ) );
+	$dom->loadHTML( mb_convert_encoding( $html, 'HTML-ENTITIES', 'UTF-8' ) );
 
 	// Remove <!DOCTYPE.
 	$dom->removeChild( $dom->doctype );
 
 	// Remove <html><body></body></html>.
-	$dom->replaceChild( $dom->firstChild->firstChild->firstChild, $dom->firstChild );
+	$dom->replaceChild( $dom->firstChild->firstChild->firstChild, $dom->firstChild ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 
 	// Handle errors.
 	libxml_clear_errors();
@@ -1247,6 +852,7 @@ function mai_get_editor_localized_data() {
 			if ( ! in_array( $type, $field['block'], true ) ) {
 				continue;
 			}
+
 			if ( isset( $field['atts']['sub_fields'] ) ) {
 				foreach ( $field['atts']['sub_fields'] as $sub_key => $sub_field ) {
 					$data[ $type ][ $sub_field['name'] ] = $sub_key;

@@ -1,11 +1,11 @@
 .site-header {
 	position: var(--site-header-position, relative);
-	top: var(--site-header-top, unset);
+	top: var(--site-header-top, auto);
 	z-index: 10;
 	width: 100%;
 	background: var(--site-header-background, var(--color-white));
 	border-bottom: var(--site-header-border-bottom, var(--border));
-	box-shadow: var(--site-header-box-shadow, unset);
+	box-shadow: var(--site-header-box-shadow, none);
 	transition: var(--transition);
 }
 

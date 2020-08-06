@@ -39,7 +39,7 @@ function mai_engine_plugin_dependencies( $dependencies ) {
 		$plugin_demos = count( $plugin['demos'] );
 
 		if ( $total_demos === $plugin_demos && ! is_plugin_active( $plugin['slug'] ) ) {
-			$plugin['host'] = isset( $plugin['host'] ) ? $plugin['host'] : 'wordpress';
+			$plugin['host'] = isset( $plugin['host'] ) ? $plugin['host'] : 'WordPress';
 			$dependencies[] = $plugin;
 		}
 	}
@@ -74,21 +74,24 @@ function mai_deactivate_bundled_plugins() {
 		}
 	}
 
-	if ( isset( $_GET['activate'] ) && sanitize_text_field( $_GET['activate'] ) ) {
-		add_action( 'admin_notices', function () use ( $deactivated ) {
-			echo '<style>.acf-deactivated + .updated{display:none}</style>';
-			echo '<div class="notice notice-warning acf-deactivated">';
-			foreach ( $deactivated as $plugin ) {
-				$plugin_dir  = explode( DIRECTORY_SEPARATOR, $plugin );
-				$plugin_name = mai_convert_case( $plugin_dir[0], 'title' );
+	if ( $deactivated && isset( $_GET['activate'] ) && sanitize_text_field( $_GET['activate'] ) ) {
+		add_action(
+			'admin_notices',
+			function () use ( $deactivated ) {
+				echo '<style>.acf-deactivated + .updated{display:none}</style>';
+				echo '<div class="notice notice-warning acf-deactivated">';
+				foreach ( $deactivated as $plugin ) {
+					$plugin_dir  = explode( DIRECTORY_SEPARATOR, $plugin );
+					$plugin_name = mai_convert_case( $plugin_dir[0], 'title' );
 
-				printf(
-					'<p>%s %s</p>',
-					$plugin_name,
-					__( ' is bundled with Mai Engine and has been deactivated.', 'mai-engine' )
-				);
+					printf(
+						'<p>%s %s</p>',
+						$plugin_name,
+						__( ' is bundled with Mai Engine and has been deactivated.', 'mai-engine' )
+					);
+				}
+				echo '</div>';
 			}
-			echo '</div>';
-		} );
+		);
 	}
 }

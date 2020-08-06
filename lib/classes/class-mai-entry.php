@@ -84,7 +84,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Renders the entry.
 	 *
 	 * @since 0.1.0
 	 *
@@ -92,12 +92,8 @@ class Mai_Entry {
 	 */
 	public function render() {
 
-		// Remove post attributes filter for term/user grid.
-		if ( 'post' !== $this->type ) {
-			remove_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
-		} elseif ( in_array( 'image', (array) $this->args['show'], true ) ) {
-			add_filter( 'post_class', [ $this, 'has_image_class' ] );
-		}
+		// Remove post attributes.
+		remove_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
 
 		// Wrap.
 		switch ( $this->type ) {
@@ -113,18 +109,55 @@ class Mai_Entry {
 		}
 
 		$atts = [
-			'class' => 'entry',
+			'class' => sprintf( 'entry entry-%s', 'block' === $this->context ? 'grid' : $this->context ),
 		];
 
+		// Get elements without Genesis hooks.
+		$elements = [];
 
+		foreach ( (array) $this->args['show'] as $item ) {
+			if ( mai_has_string( 'genesis_', $item ) ) {
+				continue;
+			}
+
+			$elements[] = $item;
+		}
+
+		$image_first = ( isset( $elements[0] ) && ( 'image' === $elements[0] ) ) || ( isset( $this->args['image_position'] ) && mai_has_string( [ 'left', 'right' ], $this->args['image_position'] ) );
+		$image_only  = ( 1 === count( $elements ) && ( 'image' === $elements[0] ) );
+
+		// Has image classes.
+		if ( in_array( 'image', $this->args['show'], true ) ) {
+			if ( $this->get_image_id() ) {
+				$atts['class'] .= ' has-image';
+
+				if ( $image_first && ! mai_is_element_hidden( 'featured_image' ) ) {
+					$atts['class'] .= ' has-image-first';
+				}
+			}
+
+			if ( $image_only ) {
+				$atts['class'] .= ' has-image-only';
+			}
+		}
+
+		// Add atts from `genesis_attributes_entry` but only when we need it.
+		if ( 'post' === $this->type ) {
+			$atts['class']      = mai_add_classes( implode( ' ', get_post_class() ), $atts['class'] );
+			$atts['aria-label'] = the_title_attribute(
+				[
+					'echo' => false,
+				]
+			);
+		}
+
+		// Term classes.
 		if ( 'term' === $this->type ) {
 			$atts['class'] .= sprintf( ' term-%s type-%s %s-%s', $this->entry->term_id, $this->entry->taxonomy, $this->entry->taxonomy, $this->entry->slug );
 		}
 
-		// Add single-entry class.
-		if ( ( 'post' === $this->type ) && ( 'single' === $this->context ) ) {
-			add_filter( 'post_class', [ $this, 'single_entry_class' ] );
-		}
+		// Remove duplicate classes.
+		$atts['class'] = implode( ' ', array_unique( explode( ' ', $atts['class'] ) ) );
 
 		// Open.
 		genesis_markup(
@@ -140,22 +173,12 @@ class Mai_Entry {
 			]
 		);
 
-		// Remove single-entry class filter.
-		if ( ( 'post' === $this->type ) && ( 'single' === $this->context ) ) {
-			remove_filter( 'post_class', [ $this, 'single_entry_class' ] );
-		}
-
-		// Check if extra wrap is needed.
-		$has_wrap = false;
-		if ( 'single' !== $this->context ) {
-			$has_wrap = in_array( 'image', $this->args['show'], true ) && ( in_array( $this->args['image_position'], [ 'background' ], true ) || mai_has_string( [ 'left', 'right' ], $this->args['image_position'] ) );
-		}
-
-		// If we have inner wrap.
-		if ( $has_wrap ) {
-
-			// Image outside inner wrap.
+		// Image outside inner wrap if first element.
+		if ( $image_first ) {
 			$this->do_image();
+		}
+
+		if ( ! $image_only ) {
 
 			// Inner open.
 			genesis_markup(
@@ -170,18 +193,19 @@ class Mai_Entry {
 				]
 			);
 
-			// Overlay link.
-			if ( ( 'single' !== $this->context ) && ( 'background' === $this->args['image_position'] ) ) {
-				printf( '<a href="%s" class="entry-overlay"></a>', $this->url );
-			}
+		}
 
+
+		// Overlay link.
+		if ( ( 'single' !== $this->context ) && ( 'background' === $this->args['image_position'] ) ) {
+			printf( '<a href="%s" class="entry-overlay"></a>', $this->url );
 		}
 
 		// Loop through our elements.
-		foreach ( (array) $this->args['show'] as $element ) {
+		foreach ( $this->args['show'] as $element ) {
 
 			// Skip image is left or right, skip.
-			if ( ( 'image' === $element ) && $has_wrap ) {
+			if ( ( 'image' === $element ) && $image_first ) {
 				continue;
 			}
 
@@ -192,8 +216,7 @@ class Mai_Entry {
 			}
 		}
 
-		// If we have inner wrap.
-		if ( $has_wrap ) {
+		if ( ! $image_only ) {
 
 			// Inner close.
 			genesis_markup(
@@ -207,6 +230,7 @@ class Mai_Entry {
 					],
 				]
 			);
+
 		}
 
 		// Close.
@@ -223,16 +247,18 @@ class Mai_Entry {
 		);
 
 		// Add back post attributes for other entries.
-		if ( 'post' !== $this->type ) {
-			add_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
-		} elseif ( in_array( 'image', (array) $this->args['show'], true ) ) {
+		add_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
+		// if ( 'post' !== $this->type ) {
+		// 	add_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
+		// } elseif ( in_array( 'image', $this->args['show'], true ) ) {
+		if ( in_array( 'image', $this->args['show'], true ) ) {
 			remove_filter( 'post_class', [ $this, 'has_image_class' ] );
 		}
 
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Gets the entry ID.
 	 *
 	 * @since 0.1.0
 	 *
@@ -257,7 +283,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Gets the entry URL.
 	 *
 	 * @since 0.1.0
 	 *
@@ -282,7 +308,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Render the image.
 	 *
 	 * @since 0.1.0
 	 *
@@ -343,7 +369,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Gets the image HTML.
 	 *
 	 * @since 0.1.0
 	 *
@@ -362,7 +388,15 @@ class Mai_Entry {
 		add_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
 		add_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 5 );
 		$size  = $this->get_image_size();
-		$image = wp_get_attachment_image( $image_id, $size, false, [ 'class' => "entry-image size-{$size}", 'loading' => 'lazy' ] );
+		$image = wp_get_attachment_image(
+			$image_id,
+			$size,
+			false,
+			[
+				'class'   => "entry-image size-{$size}",
+				'loading' => 'lazy',
+			]
+		);
 		remove_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 5 );
 		remove_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
 
@@ -398,31 +432,33 @@ class Mai_Entry {
 		];
 		$columns     = ( 'single' === $this->context ) ? $single : array_reverse( mai_get_breakpoint_columns( $this->args ), true ); // mobile first.
 		$widths      = [];
+
 		foreach ( $columns as $break => $count ) {
 			switch ( $break ) {
 				case 'xs':
-					$max_width   = $this->breakpoints['sm'];
-					$widths[]    = floor( $max_width / $count );
-				break;
+					$max_width = $this->breakpoints['sm'];
+					$widths[]  = $count ? floor( $max_width / $count ) : $max_width;
+					break;
 				case 'sm':
-					$min_width   = $this->breakpoints['sm'];
-					$max_width   = $this->breakpoints['md'];
-					$widths[]    = floor( $max_width / $count );
+					$min_width = $this->breakpoints['sm'];
+					$max_width = $this->breakpoints['md'];
+					$widths[]  = $count ? floor( $max_width / $count ) : $max_width;
 					break;
 				case 'md':
-					$min_width   = $this->breakpoints['md'];
-					$max_width   = $this->breakpoints['lg'];
-					$container   = $has_sidebar ? $max_width * 2 / 3 : $max_width;
-					$widths[]    = floor( $container / $count );
+					$min_width = $this->breakpoints['md'];
+					$max_width = $this->breakpoints['lg'];
+					$container = $has_sidebar ? $max_width * 2 / 3 : $max_width;
+					$widths[]  = $count ? floor( $container / $count ) : $container;
 					break;
 				case 'lg':
-					$min_width   = $this->breakpoints['lg'];
-					$container   = $this->breakpoints['xl'];
-					$container   = $has_sidebar ? $container * 2 / 3 : $container;
-					$widths[]    = floor( $container / $count );
+					$min_width = $this->breakpoints['lg'];
+					$container = $this->breakpoints['xl'];
+					$container = $has_sidebar ? $container * 2 / 3 : $container;
+					$widths[]  = $count ? floor( $container / $count ) : $container;
 					break;
 			}
 		}
+
 		if ( $widths ) {
 			$size = absint( max( $widths ) );
 		}
@@ -461,27 +497,27 @@ class Mai_Entry {
 			switch ( $break ) {
 				case 'xs':
 					$max_width   = $this->breakpoints['sm'] - 1;
-					$width       = floor( $max_width / $count );
+					$width       = $count ? floor( $max_width / $count ) : $max_width;
 					$new_sizes[] = "(max-width:{$max_width}px) {$width}px";
 					break;
 				case 'sm':
 					$min_width   = $this->breakpoints['sm'];
 					$max_width   = $this->breakpoints['md'] - 1;
-					$width       = floor( $max_width / $count );
+					$width       = $count ? floor( $max_width / $count ) : $max_width;
 					$new_sizes[] = "(min-width:{$min_width}px) and (max-width: {$max_width}px) {$width}px";
 					break;
 				case 'md':
 					$min_width   = $this->breakpoints['md'];
 					$max_width   = $this->breakpoints['lg'] - 1;
 					$container   = $has_sidebar ? $max_width * 2 / 3 : $max_width;
-					$width       = floor( $container / $count );
+					$width       = $count ? floor( $container / $count ) : $container;
 					$new_sizes[] = "(min-width:{$min_width}px) and (max-width: {$max_width}px) {$width}px";
 					break;
 				case 'lg':
 					$min_width   = $this->breakpoints['lg'];
 					$container   = $this->breakpoints['xl'];
 					$container   = $has_sidebar ? $container * 2 / 3 : $container;
-					$width       = floor( $container / $count );
+					$width       = $count ? floor( $container / $count ) : $container;
 					$new_sizes[] = "(min-width:{$min_width}px) {$width}px";
 					break;
 			}
@@ -491,39 +527,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Add single-entry class.
-	 *
-	 * @since 0.3.2
-	 *
-	 * @param array $class Classes.
-	 *
-	 * @return array
-	 */
-	public function single_entry_class( $class ) {
-		$class[] = 'single-entry';
-
-		return $class;
-	}
-
-	/**
-	 * Description of expected behavior.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @param array $class Classes.
-	 *
-	 * @return array
-	 */
-	public function has_image_class( $class ) {
-		if ( $this->get_image_id() ) {
-			$class[] = 'has-image';
-		}
-
-		return $class;
-	}
-
-	/**
-	 * Description of expected behavior.
+	 * Gets the image ID.
 	 *
 	 * @since 0.1.0
 	 *
@@ -570,7 +574,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Gets the image size.
 	 *
 	 * @since 0.1.0
 	 *
@@ -592,7 +596,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Gets the image size by columns.
 	 *
 	 * @since 0.1.0
 	 *
@@ -861,9 +865,7 @@ class Mai_Entry {
 		genesis_markup(
 			[
 				'open'    => '<div %s>',
-				// 'close'   => '</div>',
 				'context' => 'entry-content',
-				// 'content' => $content,
 				'echo'    => true,
 				'params'  => [
 					'args'  => $this->args,
@@ -983,7 +985,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Render the more link.
 	 *
 	 * @since 0.1.0
 	 *
@@ -1011,7 +1013,7 @@ class Mai_Entry {
 			return;
 		}
 
-		$more_link_text = $this->args['more_link_text'] ? $this->args['more_link_text'] : mai_get_read_more_text();
+		$more_link_text = isset( $this->args['more_link_text'] ) && $this->args['more_link_text'] ? $this->args['more_link_text'] : mai_get_read_more_text();
 
 		// The link HTML.
 		$more_link = genesis_markup(
@@ -1054,7 +1056,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Render the after entry template part.
 	 *
 	 * @since 0.1.0
 	 *
@@ -1078,7 +1080,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Render the author box.
 	 *
 	 * @since 0.1.0
 	 *
@@ -1090,7 +1092,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Render adjacent entry nav.
 	 * Can't use genesis_adjacent_entry_nav() because it checks for post_type support.
 	 *
 	 * @since 0.1.0
@@ -1160,7 +1162,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Backwards compatibility for Genesis hooks.
 	 *
 	 * @since 0.1.0
 	 *
@@ -1171,7 +1173,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Backwards compatibility for Genesis hooks.
 	 *
 	 * @since 0.1.0
 	 *
@@ -1182,7 +1184,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Backwards compatibility for Genesis hooks.
 	 *
 	 * @since 0.1.0
 	 *
@@ -1193,7 +1195,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Backwards compatibility for Genesis hooks.
 	 *
 	 * @since 0.1.0
 	 *

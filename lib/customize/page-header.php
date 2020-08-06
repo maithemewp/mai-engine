@@ -14,40 +14,31 @@ add_action( 'init', 'mai_page_header_customizer_settings' );
  * Add page header customizer fields.
  * This needs to be on 'init' so custom post types and custom taxonomies are available.
  *
+ * @since 2.4.0 Moved defaults to config.
  * @since 0.3.0
  *
  * @return void
  */
 function mai_page_header_customizer_settings() {
-	$handle          = mai_get_handle();
-	$section         = $handle . '-page-header';
-	$config          = mai_get_config( 'page-header' );
-	$archives        = mai_get_content_type_choices( $archive = true );
-	$singles         = mai_get_content_type_choices( $archive = false );
-	$archive_default = [];
-	$single_default  = [];
+	$handle   = mai_get_handle();
+	$section  = $handle . '-page-header';
+	$defaults = mai_get_config( 'settings' )['page-header'];
+	$single   = mai_get_content_type_choices( false );
+	$archive  = mai_get_content_type_choices( true );
 
-	if ( isset( $config['archive'] ) && ! empty( $config['archive'] && is_array( $config['archive'] ) ) ) {
-		$archive_default = $config['archive'];
-	}
+	if ( '*' === $defaults['single'] ) {
+		$defaults['single'] = [];
 
-	if ( isset( $config['single'] ) && ! empty( $config['single'] && is_array( $config['single'] ) ) ) {
-		$single_default = $config['single'];
-	}
-
-	if ( $archives ) {
-		foreach ( $archives as $name => $object ) {
-			if ( ( '*' === $config ) || ( isset( $config['archive'] ) && '*' === $config['archive'] ) ) {
-				$archive_default[] = $name;
-			}
+		foreach ( $single as $name => $object ) {
+			$defaults['single'][] = $name;
 		}
 	}
 
-	if ( $singles ) {
-		foreach ( $singles as $name => $object ) {
-			if ( ( '*' === $config ) || ( isset( $config['single'] ) && '*' === $config['single'] ) ) {
-				$single_default[] = $name;
-			}
+	if ( '*' === $defaults['archive'] ) {
+		$defaults['archive'] = [];
+
+		foreach ( $archive as $name => $object ) {
+			$defaults['archive'][] = $name;
 		}
 	}
 
@@ -67,8 +58,8 @@ function mai_page_header_customizer_settings() {
 			'section'     => $section,
 			'label'       => __( 'Enable on singular content', 'mai-engine' ),
 			'description' => __( 'These settings can be overridden on a per post basis.', 'mai-engine' ),
-			'default'     => $single_default,
-			'choices'     => $singles,
+			'default'     => $defaults['single'],
+			'choices'     => $single,
 		]
 	);
 
@@ -79,8 +70,8 @@ function mai_page_header_customizer_settings() {
 			'settings' => 'page-header-archive',
 			'section'  => $section,
 			'label'    => __( 'Enable on content archives', 'mai-engine' ),
-			'default'  => $archive_default,
-			'choices'  => $archives,
+			'default'  => $defaults['archive'],
+			'choices'  => $archive,
 		]
 	);
 
@@ -92,7 +83,7 @@ function mai_page_header_customizer_settings() {
 			'section'     => $section,
 			'label'       => __( 'Vertical Spacing', 'mai-engine' ),
 			'description' => __( 'Accepts all unit values (px, rem, em, vw, etc).', 'mai-engine' ),
-			'default'     => $config['spacing'],
+			'default'     => $defaults['spacing'],
 			'choices'     => [
 				'top'    => __( 'Top', 'mai-engine' ),
 				'bottom' => __( 'Bottom', 'mai-engine' ),
@@ -122,7 +113,7 @@ function mai_page_header_customizer_settings() {
 			'settings' => 'page-header-text-align',
 			'section'  => $section,
 			'label'    => __( 'Text Alignment', 'mai-engine' ),
-			'default'  => $config['text-align'],
+			'default'  => $defaults['text-align'],
 			'choices'  => [
 				'start'  => __( 'Start', 'mai-engine' ),
 				'center' => __( 'Center', 'mai-engine' ),
@@ -146,7 +137,7 @@ function mai_page_header_customizer_settings() {
 			'section'     => $section,
 			'label'       => __( 'Default image', 'mai-engine' ),
 			'description' => __( 'This can be overridden on a per post basis.', 'mai-engine' ),
-			'default'     => $config['image'],
+			'default'     => $defaults['image'],
 			'choices'     => [
 				'save_as' => 'id',
 			],
@@ -159,8 +150,8 @@ function mai_page_header_customizer_settings() {
 			'type'     => 'color',
 			'settings' => 'page-header-background-color',
 			'section'  => $section,
-			'label'    => esc_html__( 'Background/overlay color', 'mai-engine' ),
-			'default'  => mai_get_color( $config['background-color'] ),
+			'label'    => __( 'Background/overlay color', 'mai-engine' ),
+			'default'  => mai_get_color( $defaults['background-color'] ),
 			'choices'  => [
 				'palettes' => mai_get_color_choices(),
 			],
@@ -174,8 +165,8 @@ function mai_page_header_customizer_settings() {
 			'settings'    => 'page-header-overlay-opacity',
 			'section'     => $section,
 			'label'       => __( 'Overlay opacity', 'mai-engine' ),
-			'description' => esc_html__( 'The background color opacity when page header has an image', 'mai-engine' ),
-			'default'     => $config['overlay-opacity'],
+			'description' => __( 'The background color opacity when page header has an image', 'mai-engine' ),
+			'default'     => $defaults['overlay-opacity'],
 			'choices'     => [
 				'min'  => 0,
 				'max'  => 1,
@@ -189,9 +180,9 @@ function mai_page_header_customizer_settings() {
 		[
 			'settings' => 'page-header-text-color',
 			'section'  => $section,
-			'label'    => esc_html__( 'Default text color', 'mai-engine' ),
+			'label'    => __( 'Default text color', 'mai-engine' ),
 			'type'     => 'radio-buttonset',
-			'default'  => $config['text-color'],
+			'default'  => $defaults['text-color'],
 			'choices'  => [
 				'light' => __( 'Light', 'mai-engine' ),
 				'dark'  => __( 'Dark', 'mai-engine' ),
@@ -206,7 +197,7 @@ function mai_page_header_customizer_settings() {
 			'settings' => 'page-header-divider',
 			'section'  => $section,
 			'label'    => __( 'Divider style', 'mai-engine' ),
-			'default'  => $config['divider'],
+			'default'  => $defaults['divider'],
 			'choices'  => [
 				''      => __( 'None', 'mai-engine' ),
 				'angle' => __( 'Angle', 'mai-engine' ),
@@ -225,7 +216,7 @@ function mai_page_header_customizer_settings() {
 			'settings'        => 'page-header-divider-height',
 			'section'         => $section,
 			'label'           => __( 'Divider height', 'mai-engine' ),
-			'default'         => $config['divider-height'],
+			'default'         => $defaults['divider-height'],
 			'choices'         => [
 				'xs' => __( 'XS', 'mai-engine' ),
 				'sm' => __( 'SM', 'mai-engine' ),
@@ -250,7 +241,7 @@ function mai_page_header_customizer_settings() {
 			'settings'        => 'page-header-divider-flip-horizontal',
 			'section'         => $section,
 			'label'           => __( 'Flip divider horizontally', 'mai-engine' ),
-			'default'         => $config['divider-flip-horizontal'],
+			'default'         => $defaults['divider-flip-horizontal'],
 			'active_callback' => [
 				[
 					'setting'  => 'page-header-divider',
@@ -278,7 +269,7 @@ function mai_page_header_customizer_settings() {
 			'settings'        => 'page-header-divider-flip-vertical',
 			'section'         => $section,
 			'label'           => __( 'Flip divider vertically', 'mai-engine' ),
-			'default'         => $config['divider-flip-vertical'],
+			'default'         => $defaults['divider-flip-vertical'],
 			'active_callback' => [
 				[
 					'setting'  => 'page-header-divider',
@@ -295,9 +286,9 @@ function mai_page_header_customizer_settings() {
 			'type'            => 'color',
 			'settings'        => 'page-header-divider-color',
 			'section'         => $section,
-			'label'           => esc_html__( 'Divider color', 'mai-engine' ),
-			'description'     => esc_html__( 'This should match your body background color', 'mai-engine' ),
-			'default'         => mai_get_color( $config['divider-color'] ),
+			'label'           => __( 'Divider color', 'mai-engine' ),
+			'description'     => __( 'This should match your body background color', 'mai-engine' ),
+			'default'         => mai_get_color( $defaults['divider-color'] ),
 			'choices'         => [
 				'alpha'    => true,
 				'palettes' => mai_get_color_choices(),

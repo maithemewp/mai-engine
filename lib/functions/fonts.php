@@ -17,17 +17,17 @@
  * @return array
  */
 function mai_get_font_sizes() {
-	$font_sizes    = [];
-	$global_styles = mai_get_global_styles();
-	$scale         = $global_styles['font-scale'];
-	$base          = $global_styles['font-sizes']['base'];
-	$sm            = $base / $scale;
-	$xs            = $sm / $scale;
-	$lg            = $base * $scale;
-	$xl            = $lg * $scale;
-	$xxl           = $xl * $scale;
-	$xxxl          = $xxl * $scale;
-	$xxxxl         = $xxxl * $scale;
+	$sizes  = [];
+	$config = mai_get_global_styles()['extra'];
+	$scale  = isset( $config['font-scale'] ) ? (int) $config['font-scale'] : 1.25;
+	$base   = isset( $config['font-size-base'] ) ? (int) $config['font-size-base'] : 16;
+	$sm     = $base / $scale;
+	$xs     = $sm / $scale;
+	$lg     = $base * $scale;
+	$xl     = $lg * $scale;
+	$xxl    = $xl * $scale;
+	$xxxl   = $xxl * $scale;
+	$xxxxl  = $xxxl * $scale;
 
 	$scale = [
 		'xs'    => $xs,
@@ -41,14 +41,14 @@ function mai_get_font_sizes() {
 	];
 
 	foreach ( $scale as $slug => $size ) {
-		$font_sizes[] = [
+		$sizes[] = [
 			'slug' => $slug,
 			'size' => $size,
 			'name' => strtoupper( $slug ),
 		];
 	}
 
-	return $font_sizes;
+	return $sizes;
 }
 
 /**
@@ -166,10 +166,10 @@ function mai_get_italic_variant( $element ) {
 	if ( isset( $variants[ $regular_weight . 'italic' ] ) ) {
 		$italic = $regular_weight . 'italic';
 
-	} else if ( isset( $variants['italic'] ) ) {
+	} elseif ( isset( $variants['italic'] ) ) {
 		$italic = 'italic';
 
-	} else if ( ! empty( $default_weights ) ) {
+	} elseif ( ! empty( $default_weights ) ) {
 		foreach ( $default_weights as $weight ) {
 			if ( mai_has_string( 'i', $weight ) ) {
 				$italic = $weight;
@@ -283,7 +283,9 @@ function mai_add_extra_google_fonts( $fonts ) {
 		$font_weights = mai_get_default_font_weights( $element );
 
 		/**
-		 * @var Kirki_Fonts $kirki_fonts
+		 * Kirki Fonts.
+		 *
+		 * @var Kirki_Fonts $kirki_fonts Kirki fonts.
 		 */
 		$kirki_fonts  = Kirki_Fonts::get_instance();
 		$google_fonts = $kirki_fonts::get_google_fonts();
@@ -312,9 +314,10 @@ function mai_add_extra_google_fonts( $fonts ) {
 	}
 
 	foreach ( $fonts as $font_family => $font_weights ) {
+
 		// If we have 400 and regular, remove 400. Kikri uses regular.
 		if ( count( array_intersect( $font_weights, [ '400', 'regular' ] ) ) > 1 ) {
-			$index = array_search( '400', $font_weights );
+			$index = array_search( '400', $font_weights, true );
 			unset( $fonts[ $font_family ][ $index ] );
 		}
 

@@ -24,7 +24,7 @@ function mai_is_in_dev_mode() {
 }
 
 /**
- * Description of expected behavior.
+ * Helper function for debugging.
  *
  * @since 0.3.0
  *
@@ -40,22 +40,26 @@ function mai_debug( $data, $function = 's', $hook = 'after_setup_theme', $priori
 		return;
 	}
 
-	add_action( $hook, function () use ( $data, $function ) {
-		if ( function_exists( $function ) ) {
-			$function( $data );
-		} else {
-			echo '<pre style="margin:1em;padding:1em;background:#222;color:#eee;font-size:small">';
-			is_array( $data ) ? print_r( $data ) : var_dump( $data );
-			echo '</pre>';
-		}
-	}, $priority );
+	add_action(
+		$hook,
+		function () use ( $data, $function ) {
+			if ( function_exists( $function ) ) {
+				$function( $data );
+			} else {
+				echo '<pre style="margin:1em;padding:1em;background:#222;color:#eee;font-size:small">';
+				is_array( $data ) ? print_r( $data ) : var_dump( $data ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions
+				echo '</pre>';
+			}
+		},
+		$priority
+	);
 }
 
 /**
  * Check if a string contains at least one specified string.
  *
- * @since 0.1.0
  * @since 2.1.1 Added array support in needle.
+ * @since 0.1.0
  *
  * @param string|array $needle   String or array of strings to check for.
  * @param string       $haystack String to check in.
@@ -81,9 +85,9 @@ function mai_has_string( $needle, $haystack ) {
  *
  * @since 0.3.0
  *
- * @param array  $array
- * @param string $key
- * @param mixed  $default
+ * @param array  $array   Haystack.
+ * @param string $key     Needle.
+ * @param mixed  $default Default value to return.
  *
  * @return mixed
  */
@@ -92,11 +96,22 @@ function mai_isset( $array, $key, $default = false ) {
 }
 
 /**
+ * Check if a size is a valid size value.
+ *
+ * @since 2.4.0
+ *
+ * @return bool
+ */
+function mai_is_valid_size( $size ) {
+	return in_array( $size, [ 'xxxxs', 'xxxs', 'xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', 'xxl', 'xxxl', 'xxxxl' ] );
+}
+
+/**
  * Check if were on any type of singular page.
  *
  * @since 0.1.0
  *
- * @param bool $use_cache
+ * @param bool $use_cache Whether to use static caching or not.
  *
  * @return bool
  */
@@ -118,7 +133,7 @@ function mai_is_type_single( $use_cache = false ) {
  *
  * @since 0.1.0
  *
- * @param bool $use_cache
+ * @param bool $use_cache Whether to use static cache.
  *
  * @return bool
  */
@@ -138,9 +153,9 @@ function mai_is_type_archive( $use_cache = false ) {
 /**
  * Checks if given sidebar contains a certain widget.
  *
- * @since  0.1.0
+ * @since 0.1.0
  *
- * @uses   $sidebars_widgets
+ * @uses  $sidebars_widgets
  *
  * @param string $sidebar Name of sidebar, e.g `primary`.
  * @param string $widget  Widget ID to check, e.g `custom_html`.
@@ -155,83 +170,6 @@ function mai_sidebar_has_widget( $sidebar, $widget ) {
 	}
 
 	return false;
-}
-
-/**
- * Checks if first block is cover or group block aligned full.
- *
- * @since 0.1.0
- *
- * @return bool
- */
-function mai_has_alignfull_first() {
-	static $has_alignfull_first = null;
-
-	if ( is_null( $has_alignfull_first ) ) {
-		$has_alignfull_first = false;
-
-		if ( ! mai_is_type_single() || ! has_blocks() ) {
-			return $has_alignfull_first;
-		}
-
-		if ( mai_has_page_header() ) {
-			return $has_alignfull_first;
-		}
-
-		if ( ! mai_is_element_hidden( 'entry_title' ) ) {
-			return $has_alignfull_first;
-		}
-
-		$post_object = get_post( get_the_ID() );
-		$blocks      = (array) parse_blocks( $post_object->post_content );
-		$first       = $blocks[0];
-		$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
-		$align       = isset( $first['attrs']['align'] ) ? $first['attrs']['align'] : '';
-
-		if ( in_array( $block_name, [ 'core/cover', 'core/group' ] ) && ( 'full' === $align ) ) {
-			$has_alignfull_first = true;
-		}
-	}
-
-	return $has_alignfull_first;
-}
-
-/**
- * Checks if first block is a cover or dark background group block aligned full.
- *
- * @since 2.1.1
- *
- * @return bool
- */
-function mai_has_dark_alignfull_first() {
-	static $has_dark_alignfull_first = null;
-
-	if ( is_null( $has_dark_alignfull_first ) ) {
-		$has_dark_alignfull_first = false;
-
-		if ( ! mai_is_type_single() || ! has_blocks() ) {
-			return $has_dark_alignfull_first;
-		}
-
-		$post_object = get_post( get_the_ID() );
-		$blocks      = (array) parse_blocks( $post_object->post_content );
-		$first       = $blocks[0];
-		$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
-		$align       = isset( $first['attrs']['align'] ) ? $first['attrs']['align'] : '';
-
-		if ( 'full' === $align ) {
-			if ( 'core/group' === $block_name ) {
-				if ( isset( $first['attrs']['backgroundColor'] ) ) {
-					$has_dark_alignfull_first = ! mai_is_light_color( $first['attrs']['backgroundColor'] );
-				}
-			} elseif ( 'core/cover' === $block_name ) {
-				// TODO: Having cover first doesn't necessarily mean it's a light header.
-				$has_dark_alignfull_first = true;
-			}
-		}
-	}
-
-	return $has_dark_alignfull_first;
 }
 
 /**
@@ -265,61 +203,25 @@ function mai_has_boxed_container() {
 }
 
 /**
- * Checks if site has sticky header.
+ * Checks if site has sticky header enabled.
  *
  * @since 0.1.0
  *
  * @return bool
  */
-function mai_has_sticky_header() {
-	$default = current_theme_supports( 'sticky-header' );
-	$option  = mai_get_option( 'site-header-sticky', $default );
-	$hidden  = mai_is_element_hidden( 'sticky_header' );
-
-	return $option && ! $hidden;
+function mai_has_sticky_header_enabled() {
+	return mai_get_option( 'site-header-sticky', current_theme_supports( 'sticky-header' ) );
 }
 
 /**
- * Check if site has transparent header.
+ * Check if site has transparent header enabled.
  *
  * @since 0.1.0
  *
  * @return bool
  */
-function mai_has_transparent_header() {
-	$default = current_theme_supports( 'transparent-header' );
-	$option  = mai_get_option( 'site-header-transparent', $default );
-	$hidden  = mai_is_element_hidden( 'transparent_header' );
-
-	return $option && ! $hidden && ( mai_has_page_header() || mai_has_alignfull_first() );
-}
-
-/**
- * Check of the page has a light site header background.
- *
- * @since 0.3.0
- *
- * @return bool
- */
-function mai_has_light_site_header() {
-	static $has_light_site_header = null;
-
-	if ( ! is_null( $has_light_site_header ) ) {
-		return $has_light_site_header;
-	}
-
-	$has_light_site_header = true;
-
-	if ( mai_has_transparent_header() ) {
-		if ( mai_has_page_header() ) {
-			$has_light_site_header = mai_has_light_page_header();
-		} else {
-			// TODO: Having alignfull first doesn't necessarily mean it's a light header.
-			$has_light_site_header = ! mai_has_dark_alignfull_first();
-		}
-	}
-
-	return $has_light_site_header;
+function mai_has_transparent_header_enabled() {
+	return mai_get_option( 'site-header-transparent', current_theme_supports( 'transparent-header' ) );
 }
 
 /**
@@ -341,7 +243,7 @@ function mai_has_light_page_header() {
 
 	} else {
 		$args   = mai_get_template_args();
-		$config = mai_get_config( 'page-header' );
+		$config = mai_get_config( 'settings' )['page-header'];
 
 		if ( isset( $args['page-header-text-color'] ) && ! empty( $args['page-header-text-color'] ) ) {
 			$text_color = $args['page-header-text-color'];
@@ -370,7 +272,7 @@ function mai_has_page_header() {
 		return $has_page_header;
 	}
 
-	$config = mai_get_config( 'page-header' );
+	$config = mai_get_config( 'settings' )['page-header'];
 
 	if ( is_string( $config ) && '*' === $config ) {
 		$has_page_header = true;
@@ -385,11 +287,11 @@ function mai_has_page_header() {
 	}
 
 	if ( mai_is_type_archive() ) {
-		$has_page_header = in_array( mai_get_archive_args_name(), mai_get_page_header_types( 'archive' ) );
+		$has_page_header = in_array( mai_get_archive_args_name(), mai_get_page_header_types( 'archive' ), true );
 	}
 
 	if ( mai_is_type_single() ) {
-		$has_page_header = in_array( mai_get_singular_args_name(), mai_get_page_header_types( 'single' ) );
+		$has_page_header = in_array( mai_get_singular_args_name(), mai_get_page_header_types( 'single' ), true );
 
 		if ( genesis_entry_header_hidden_on_current_page() ) {
 			$has_page_header = false;
@@ -408,35 +310,40 @@ function mai_has_page_header() {
  *
  * @since 0.1.0
  *
- * @param string $context Archive or single.
+ * @param string $context 'archive' or 'single'.
  *
  * @return string|array May be * for all or array of types.
  */
 function mai_get_page_header_types( $context ) {
-	$config   = mai_get_config( 'page-header' );
-	$settings = mai_get_option( 'page-header-' . $context );
-	$single   = array_merge( array_values( get_post_types( [ 'public' => true ] ) ), [
-		'404-page',
-	] );
-	$archive  = array_merge( $single, array_values( get_taxonomies( [ 'public' => true ] ) ), [
-		'search',
-		'author',
-		'date',
-	] );
-	$default  = [
+	$types  = [];
+	$config = mai_get_config( 'settings' )['page-header'];
+	$single = array_merge(
+		array_values( get_post_types( [ 'public' => true ] ) ),
+		[
+			'404-page',
+		]
+	);
+	$archive = array_merge(
+		$single,
+		array_values( get_taxonomies( [ 'public' => true ] ) ),
+		[
+			'search',
+			'author',
+			'date',
+		]
+	);
+	$default = [
 		'archive' => $archive,
 		'single'  => $single,
 	];
 
 	if ( '*' === $config || isset( $config[ $context ] ) && '*' === $config[ $context ] ) {
 		$types = $default[ $context ];
-	}
-
-	if ( isset( $config[ $context ] ) && is_array( $config[ $context ] ) ) {
+	} elseif ( isset( $config[ $context ] ) && is_array( $config[ $context ] ) ) {
 		$types = $config[ $context ];
 	}
 
-	return $settings ? $settings : $types;
+	return mai_get_option( 'page-header-' . $context, $types );
 }
 
 /**
@@ -459,19 +366,7 @@ function mai_has_page_header_support_callback( $control ) {
 	$type    = str_replace( $handle . '[' . $types[ $context ] . '][', '', $name );
 	$type    = str_replace( ']', '', $type );
 
-	return in_array( $type, mai_get_page_header_types( $context ) );
-}
-
-/**
- * Check is after header menu is active.
- * Need this as it's own function for customizer fields.
- *
- * @since 0.1.0
- *
- * @return bool
- */
-function mai_has_after_header_menu() {
-	return has_nav_menu( 'after-header' );
+	return in_array( $type, mai_get_page_header_types( $context ), true );
 }
 
 /**
@@ -664,8 +559,8 @@ function mai_add_classes( $new, $existing = '' ) {
  *
  * @since 0.3.0
  *
- * @param string $class Class name.
- * @param mixed  $args  Passed args.
+ * @param string $class   Class name.
+ * @param mixed  ...$args Passed args.
  *
  * @return object
  */

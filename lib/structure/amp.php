@@ -30,6 +30,13 @@ function mai_amp_structure() {
 	add_action( 'genesis_after_footer', 'mai_do_amp_menu_sidebar' );
 }
 
+/**
+ * Render AMP menu toggle button.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
 function mai_do_amp_menu_toggle() {
 	?>
 	<button role="button" on="tap:amp-menu.toggle" tabindex="0" class="amp-menu-toggle">☰</button>
@@ -49,32 +56,34 @@ function mai_do_amp_menu_sidebar() {
 		<button role="button" aria-label="close sidebar" on="tap:amp-menu.toggle" tabindex="0" class="amp-menu-close">✕
 		</button>
 		<ul class="amp-menu">
-		<?php
+			<?php
 
-		$items = [];
-		$menus = [
-			wp_get_nav_menu_items( 'header-left' ),
-			wp_get_nav_menu_items( 'header-right' ),
-			wp_get_nav_menu_items( 'after-header' ),
-		];
+			$items = [];
+			$menus = [
+				wp_get_nav_menu_items( 'header-left' ),
+				wp_get_nav_menu_items( 'header-right' ),
+				wp_get_nav_menu_items( 'after-header' ),
+			];
 
-		foreach ( $menus as $menu ) {
-			if ( ! empty( $menu ) ) {
-				$items = array_merge_recursive( $items, $menu );
+			foreach ( $menus as $menu ) {
+				if ( ! empty( $menu ) ) {
+					$items = array_merge_recursive( $items, $menu );
+				}
 			}
-		}
 
-		/**
-		 * @var WP_Post $item
-		 */
-		foreach ($items as $item) {
-			printf(
-				'<li class="amp-menu-item"><a href="%s">%s</a></li>',
-				$item->url,
-				$item->title
-			);
-		}
-		?>
+			/**
+			 * Post.
+			 *
+			 * @var WP_Post $item Post object.
+			 */
+			foreach ( $items as $item ) {
+				printf(
+					'<li class="amp-menu-item"><a href="%s">%s</a></li>',
+					$item->url,
+					$item->title
+				);
+			}
+			?>
 		</ul>
 	</amp-sidebar>
 	<?php

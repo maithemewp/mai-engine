@@ -10,34 +10,49 @@
  */
 
 return [
-	'demos'         => [],
-	'global-styles' => [
-		'colors' => [
-			'link'      => '#067ccc',
-			'primary'   => '#067ccc',
-			'secondary' => '#6c757d',
-			'heading'   => '#323232',
-			'body'      => '#515151',
+	'demos'              => [],
+	'global-styles'      => [
+		'colors'            => [
+			'background' => '#fcfcfc',
+			'alt'        => '#f0f0f0',
+			'body'       => '#515151',
+			'heading'    => '#323232',
+			'link'       => '#067ccc',
+			'primary'    => '#067ccc',
+			'secondary'  => '#ebe9eb',
 		],
-		'fonts'  => [
-			'body'    => 'Open Sans:400',
-			'heading' => 'Playfair Display:700',
+		'fonts'             => [
+			'body'             => 'Open Sans:300',
+			'heading'          => 'Playfair Display:700',
 		],
 	],
-	'theme-support' => [
-		'add' => [
+	'theme-support'      => [
+		'add'               => [
 			'sticky-header',
 		],
 	],
-	'image-sizes'   => [
-		'add' => [
-			'landscape' => '4:3',
-			'portrait'  => '3:4',
-			'square'    => '1:1',
+	'image-sizes'        => [
+		'add'               => [
+			'landscape'        => '4:3',
+			'square'           => '1:1',
 		],
 	],
-	'page-header'   => [
-		'archive' => [ 'category', 'product', 'post' ],
-		'single'  => [ 'page', 'post' ],
+	'settings'           => [
+		'site-layout'       => [
+			'default'          => [
+				'site'            => 'standard-content',
+				'archive'         => 'wide-content',
+			],
+		],
+		'page-header'       => [
+			'archive'          => [ 'post', 'category', 'product', 'product_cat' ],
+			'single'           => [ 'page', 'post' ],
+			'background-color' => '',
+			'image'            => '',
+			'overlay-opacity'  => '0',
+		],
+		'content-archives'    => [
+			'title_size' => 'md',
+		],
 	],
 ];

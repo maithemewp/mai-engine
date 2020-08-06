@@ -107,7 +107,9 @@ function mai_add_cover_block_image( $block_content, $image_id ) {
 	}
 
 	/**
-	 * @var DOMElement $block.
+	 * Block DOM element.
+	 *
+	 * @var DOMElement $block Block DOM element.
 	 */
 	foreach ( $cover_blocks as $block ) {
 

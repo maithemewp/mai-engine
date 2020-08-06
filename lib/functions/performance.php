@@ -32,9 +32,9 @@ function mai_disable_emojis() {
 /**
  * Filter function used to remove the tinymce emoji plugin.
  *
- * @param array $plugins
+ * @param array $plugins TinyMCE plugins.
  *
- * @return array Difference betwen the two arrays
+ * @return array
  */
 function mai_disable_emojis_tinymce( $plugins ) {
 	if ( is_array( $plugins ) ) {
@@ -53,8 +53,9 @@ function mai_disable_emojis_tinymce( $plugins ) {
  * @return array Difference betwen the two arrays.
  */
 function mai_disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
-	if ( 'dns-prefetch' == $relation_type ) {
-		/** This filter is documented in wp-includes/formatting.php */
+	if ( 'dns-prefetch' === $relation_type ) {
+
+		// This filter is documented in wp-includes/formatting.php.
 		$emoji_svg_url = apply_filters( 'emoji_svg_url', 'https://s.w.org/images/core/emoji/2/svg/' );
 
 		$urls = array_diff( $urls, [ $emoji_svg_url ] );
@@ -63,7 +64,7 @@ function mai_disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
 	return $urls;
 }
 
-add_action('widgets_init', 'mai_remove_recent_comments_style');
+add_action( 'widgets_init', 'mai_remove_recent_comments_style' );
 /**
  * Description of expected behavior.
  *
@@ -77,5 +78,6 @@ function mai_remove_recent_comments_style() {
 	}
 
 	global $wp_widget_factory;
-	remove_action('wp_head', array($wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style'));
+
+	remove_action( 'wp_head', array( $wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style' ) );
 }

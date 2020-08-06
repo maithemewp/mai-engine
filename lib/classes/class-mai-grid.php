@@ -11,6 +11,7 @@
 
 /**
  * Instantiate a grid.
+ *
  * Use render() method to display.
  */
 class Mai_Grid {
@@ -43,8 +44,18 @@ class Mai_Grid {
 	 */
 	protected $args;
 
-	// All displayed items incase exclude_displayed is true in any instance of grid.
+	/**
+	 * Incase exclude_displayed is true in any instance of grid.
+	 *
+	 * @var array
+	 */
 	public static $existing_post_ids = [];
+
+	/**
+	 * Incase exclude_displayed is true in any instance of grid.
+	 *
+	 * @var array
+	 */
 	public static $existing_term_ids = [];
 
 	/**
@@ -65,9 +76,9 @@ class Mai_Grid {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Get the grid settings.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 *
 	 * @return array
 	 */
@@ -94,9 +105,9 @@ class Mai_Grid {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Get default settings.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 *
 	 * @return array
 	 */
@@ -105,7 +116,7 @@ class Mai_Grid {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Get sanitized args.
 	 *
 	 * @since 0.1.0
 	 *
@@ -120,11 +131,14 @@ class Mai_Grid {
 
 		// Sanitize.
 		foreach ( $args as $name => $value ) {
+
 			// Has sub fields.
 			if ( isset( $this->settings[ $name ]['atts']['sub_fields'] ) ) {
 				$sub_fields_values = [];
+
 				if ( $value && is_array( $value ) ) {
 					$sub_fields_config = array_column( $this->settings[ $name ]['atts']['sub_fields'], 'sanitize', 'name' );
+
 					foreach ( $value as $sub_field_index => $sub_field_row ) {
 						foreach ( $sub_field_row as $sub_field_name => $sub_field_value ) {
 							$sub_fields_values[ $sub_field_index ][ $sub_field_name ] = mai_sanitize( $sub_field_value, $sub_fields_config[ $sub_field_name ] );
@@ -132,7 +146,9 @@ class Mai_Grid {
 					}
 				}
 				$args[ $name ] = $sub_fields_values;
+
 			} else {
+
 				// Standard field check.
 				$sanitize      = isset( $this->settings[ $name ] ) ? $this->settings[ $name ]['sanitize'] : 'esc_html';
 				$args[ $name ] = mai_sanitize( $value, $sanitize );
@@ -143,7 +159,7 @@ class Mai_Grid {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Renders the grid.
 	 *
 	 * @since 0.1.0
 	 *
@@ -173,7 +189,7 @@ class Mai_Grid {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Renders the grid entries.
 	 *
 	 * @since 0.1.0
 	 *
@@ -186,11 +202,13 @@ class Mai_Grid {
 				if ( $query_args['post_type'] ) {
 					$posts = new WP_Query( $query_args );
 					if ( $posts->have_posts() ) {
-						while ( $posts->have_posts() ) :
+						while ( $posts->have_posts() ) {
 							$posts->the_post();
 
 							/**
-							 * @var WP_Post $post
+							 * Post object.
+							 *
+							 * @var WP_Post $post Post object.
 							 */
 							global $post;
 
@@ -198,7 +216,7 @@ class Mai_Grid {
 
 							// Add this post to the existing post IDs.
 							self::$existing_post_ids[] = get_the_ID();
-						endwhile;
+						}
 
 						// Clear duplicate IDs.
 						self::$existing_post_ids = array_unique( self::$existing_post_ids );
@@ -206,14 +224,18 @@ class Mai_Grid {
 					wp_reset_postdata();
 				}
 				break;
+
 			case 'term':
 				$query_args = $this->get_term_query_args();
 				if ( $query_args['taxonomy'] ) {
 					$term_query = new WP_Term_Query( $query_args );
+
 					if ( ! empty( $term_query->terms ) ) {
 
 						/**
-						 * @var WP_Term $term
+						 * Terms.
+						 *
+						 * @var WP_Term $term Term object.
 						 */
 						foreach ( $term_query->terms as $term ) {
 							mai_do_entry( $term, $this->args );
@@ -226,14 +248,11 @@ class Mai_Grid {
 					}
 				}
 				break;
-			case 'user':
-				// TODO.
-				break;
 		}
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Get post query args.
 	 *
 	 * @since 0.1.0
 	 *
@@ -255,35 +274,41 @@ class Mai_Grid {
 				if ( $this->args['current_children'] ) {
 					if ( is_singular() ) {
 						$post_id = get_the_ID();
+
 					} elseif ( is_admin() ) {
 						$post_id = isset( $_REQUEST['post_id'] ) ? absint( $_REQUEST['post_id'] ) : false;
 					}
+
 					if ( isset( $post_id ) && $post_id ) {
 						$query_args['post_parent__in'] = [ $post_id ];
 					}
 				} else {
 					$query_args['post_parent__in'] = $this->args['post_parent__in'];
 				}
-				break;
+			break;
+
 			case 'id':
 				// Empty array returns all posts, array(-1) prevents this.
 				$query_args['post__in'] = $this->args['post__in'] ?: [ -1 ];
 				$query_args['orderby']  = 'post__in';
-				break;
+			break;
 			case 'tax_meta':
 				$tax_query = [];
 				if ( $this->args['taxonomies'] ) {
 					foreach ( $this->args['taxonomies'] as $taxo ) {
+						$taxonomy = mai_isset( $taxo, 'taxonomy', '' );
+						$terms    = mai_isset( $taxo, 'terms', '' );
+						$operator = mai_isset( $taxo, 'operator', '' );
 						// Skip if we don't have all the tax query args.
-						if ( ! isset( $taxo['taxonomy'] ) || ! ( $taxo['taxonomy'] && $taxo['taxonomy'] && $taxo['taxonomy'] ) ) {
+						if ( ! ( $taxonomy && $terms && $operator ) ) {
 							continue;
 						}
 						// Set the value.
 						$tax_query[] = [
-							'taxonomy' => $taxo['taxonomy'],
+							'taxonomy' => $taxonomy,
 							'field'    => 'id',
-							'terms'    => $taxo['terms'],
-							'operator' => $taxo['operator'],
+							'terms'    => $terms,
+							'operator' => $operator,
 						];
 					}
 
@@ -302,12 +327,49 @@ class Mai_Grid {
 					}
 				}
 
-				break;
+				$meta_query = [];
+				if ( $this->args['meta_keys'] ) {
+					foreach ( $this->args['meta_keys'] as $meta ) {
+						$key     = mai_isset( $meta, 'meta_key', '' );
+						$compare = mai_isset( $meta, 'meta_compare', '' );
+						$value   = mai_isset( $meta, 'meta_value', '' );
+
+						// Skip if we don't have the meta query args.
+						if ( ! ( $key && $compare ) ) {
+							continue;
+						}
+
+						// Skip if no meta value, only if compare is not exists/not exists.
+						if ( ! $value && ! in_array( $compare, [ 'EXISTS', 'NOT EXISTS' ] ) ) {
+							continue;
+						}
+
+						$meta_query_args = [
+							'key'     => $key,
+							'compare' => $compare,
+						];
+
+						if ( ! in_array( $compare, [ 'EXISTS', 'NOT EXISTS' ] ) ) {
+							$meta_query_args['value'] = $value;
+						}
+
+						$meta_query[] = $meta_query_args;
+					}
+
+					// If we have meta query values.
+					if ( $meta_query ) {
+
+						$query_args['meta_query'] = $meta_query;
+					}
+				}
+
+			break;
 		}
 
 		// Orderby.
 		if ( $this->args['orderby'] && 'id' !== $this->args['query_by'] ) {
 			$query_args['orderby'] = $this->args['orderby'];
+
 			if ( 'meta_value_num' === $this->args['orderby'] ) {
 
 				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
@@ -329,13 +391,14 @@ class Mai_Grid {
 		if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'] ) && ! empty( self::$existing_post_ids ) ) {
 			if ( isset( $query_args['post__not_in'] ) ) {
 				$query_args['post__not_in'] = array_push( $query_args['post__not_in'], self::$existing_post_ids );
+
 			} else {
 				$query_args['post__not_in'] = self::$existing_post_ids;
 			}
 		}
 
 		// Exclude current.
-		if ( is_singular() && $this->args['excludes'] && in_array( 'exclude_current', $this->args['excludes'] ) ) {
+		if ( is_singular() && $this->args['excludes'] && in_array( 'exclude_current', $this->args['excludes'], true ) ) {
 			if ( isset( $query_args['post__not_in'] ) ) {
 				$query_args['post__not_in'][] = get_the_ID();
 			} else {
@@ -347,29 +410,32 @@ class Mai_Grid {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Get the term query args.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 *
 	 * @return array
 	 */
 	public function get_term_query_args() {
 		$query_args = [
 			'taxonomy' => $this->args['taxonomy'],
-			'number'   => $this->args['number'],
 			'offset'   => $this->args['offset'],
 		];
+
+		if ( 'id' !== $this->args['query_by'] ) {
+			$query_args['number'] = $this->args['number'];
+		}
 
 		// Handle query_by.
 		switch ( $this->args['query_by'] ) {
 			case 'name':
 				// Nothing, "Taxonomy" name is the default.
-				break;
+			break;
 			case 'id':
 				$query_args['include'] = $this->args['include'];
 				$query_args['orderby'] = 'include';
 				$query_args['order']   = 'DESC';
-				break;
+			break;
 			case 'parent':
 				if ( $this->args['current_children'] ) {
 					if ( is_category() || is_tag() || is_tax() ) {
@@ -381,7 +447,7 @@ class Mai_Grid {
 				} else {
 					$query_args['parent'] = $this->args['parent'];
 				}
-				break;
+			break;
 		}
 
 		// Orderby.
@@ -400,14 +466,14 @@ class Mai_Grid {
 		}
 
 		// Exclude terms with no posts.
-		if ( $this->args['excludes'] && in_array( 'hide_empty', $this->args['excludes'] ) ) {
+		if ( $this->args['excludes'] && in_array( 'hide_empty', $this->args['excludes'], true ) ) {
 			$query_args['hide_empty'] = true;
 		} else {
 			$query_args['hide_empty'] = false;
 		}
 
 		// Exclude displayed.
-		if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'] ) && ! empty( self::$existing_term_ids ) ) {
+		if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'], true ) && ! empty( self::$existing_term_ids ) ) {
 			if ( isset( $query_args['exclude'] ) ) {
 				$query_args['exclude'] = array_push( $query_args['exclude'], self::$existing_term_ids );
 			} else {
@@ -426,5 +492,4 @@ class Mai_Grid {
 
 		return apply_filters( 'mai_term_grid_query_args', $query_args );
 	}
-
 }

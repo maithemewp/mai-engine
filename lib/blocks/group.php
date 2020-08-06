@@ -38,12 +38,13 @@ function mai_render_group_block( $block_content, $block ) {
 		$dom = mai_get_dom_document( $block_content );
 
 		/**
+		 * The group block container.
+		 *
 		 * @var DOMElement $first_block The group block container.
 		 */
-		$first_block = $dom->childNodes && isset( $dom->childNodes[0] ) ? $dom->childNodes[0] : false;
+		$first_block = $dom->childNodes && isset( $dom->childNodes[0] ) ? $dom->childNodes[0] : false; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 
 		if ( $first_block ) {
-
 			$classes = $first_block->getAttribute( 'class' );
 			$classes = mai_add_classes( sprintf( 'has-%s-background', $light_or_dark ), $classes );
 

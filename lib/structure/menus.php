@@ -24,8 +24,9 @@ add_filter( 'genesis_attr_nav-header-right', 'mai_add_header_nav_attributes' );
  * @return array
  */
 function mai_add_header_nav_attributes( $atts ) {
-	$atts['id']    = $atts['class'];
-	$atts['class'] = 'nav-header ' . $atts['class'];
+	$atts['id']       = $atts['class'];
+	$atts['class']    = 'nav-header ' . $atts['class'];
+	$atts['itemtype'] = 'https://schema.org/SiteNavigationElement';
 
 	return $atts;
 }
@@ -129,7 +130,7 @@ add_filter( 'nav_menu_link_attributes', 'mai_nav_link_atts' );
  * @return array
  */
 function mai_nav_link_atts( $atts ) {
-	$atts['class'] = 'menu-item-link';
+	$atts['class']  = 'menu-item-link';
 	$atts['class'] .= $atts['aria-current'] ? ' menu-item-link-current' : '';
 
 	return $atts;
@@ -179,13 +180,12 @@ function mai_remove_menu_item_classes( $attribute ) {
 		];
 
 		foreach ( $attribute as $index => $class ) {
-			if ( ! mai_has_string( 'menu-item-', $class ) || in_array( $class, $keepers ) ) {
+			if ( ! mai_has_string( 'menu-item-', $class ) || in_array( $class, $keepers, true ) ) {
 				continue;
 			}
 
 			unset( $attribute[ $index ] );
 		}
-
 	} elseif ( is_string( $attribute ) ) {
 		$attribute = mai_has_string( 'menu-item-', $attribute ) ? '' : $attribute;
 	}

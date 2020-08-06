@@ -26,7 +26,6 @@ return [
 		'fonts'  => [
 			'body'    => 'Hind:400',
 			'heading' => 'Montserrat:600',
-			'button'  => 'Montserrat:600',
 		],
 	],
 	'theme-support' => [
@@ -35,20 +34,14 @@ return [
 			'sticky-header',
 		],
 	],
-	'page-header'   => [
-		'archive'          => '*',
-		'single'           => '*',
-		'image'            => '',
-		'background-color' => 'heading',
-		'text-color'       => 'light',
-		'divider-color'    => 'white',
-	],
-	'plugins'       => [
-		[
-			'name'  => 'Genesis eNews Extended',
-			'slug'  => 'genesis-enews-extended/plugin.php',
-			'uri'   => 'https://wordpress.org/plugins/genesis-enews-extended/',
-			'demos' => [ 'agency' ],
+	'settings'      => [
+		'page-header' => [
+			'archive'          => '*',
+			'single'           => '*',
+			'image'            => '',
+			'background-color' => 'heading',
+			'text-color'       => 'light',
+			'divider-color'    => 'white',
 		],
 	],
 ];

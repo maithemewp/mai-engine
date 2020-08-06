@@ -1,9 +1,10 @@
 .wp-block-group {
 	position: relative; // so negative margins inside will work.
+	padding: var(--group-block-padding-top, 0) var(--group-block-padding-right, 0) var(--group-block-padding-bottom, 0) var(--group-block-padding-left, 0);
 
 	&.alignfull {
-		padding-right: var(--side-spacing);
-		padding-left: var(--side-spacing);
+		--group-block-padding-right: var(--side-spacing);
+		--group-block-padding-left: var(--side-spacing);
 	}
 
 	&.has-background {

@@ -15,15 +15,19 @@ add_filter( 'genesis_markup_search-form-submit_open', 'mai_search_form_submit_op
  *
  * @since 1.0.0
  *
- * @param $open_html
+ * @param string $open_html Opening HTML.
  *
  * @return mixed
  */
 function mai_search_form_submit_open( $open_html ) {
 	if ( $open_html ) {
-		$open_html .= mai_get_svg_icon( 'search', 'regular', [
-			'class' => 'search-form-submit-icon',
-		] );
+		$open_html .= mai_get_svg_icon(
+			'search',
+			'regular',
+			[
+				'class' => 'search-form-submit-icon',
+			]
+		);
 	}
 
 	return str_replace(
@@ -39,7 +43,7 @@ add_filter( 'genesis_markup_search-form-submit_close', 'mai_search_form_submit_c
  *
  * @since 1.0.0
  *
- * @param $close_html
+ * @param string $close_html Closing HTML.
  *
  * @return mixed
  */

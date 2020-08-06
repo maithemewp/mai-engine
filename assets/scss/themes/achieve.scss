@@ -1,7 +1,24 @@
-@import "default";
+@import "../abstracts/_index";
 
 :root {
+	--color-border: rgba(0, 0, 0, 0.06);
 	--border-radius: 0;
+	--blockquote-border-left: 0;
+	--caption-font-size: smaller;
+	--caption-color: var(--color-heading);
+	--menu-font-size: var(--font-size-sm);
+	--breadcrumb-font-size: small;
+	--page-header-inner-max-width: 100%;
+	--content-sidebar-wrap-margin-top: 1em;
+	--content-sidebar-wrap-margin-bottom: 2em;
+}
+
+.has-boxed {
+	--entry-border: 0;
+}
+
+.site-header {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .nav-after-header {
@@ -10,6 +27,16 @@
 	--menu-item-link-color: var(--color-white);
 }
 
-.footer-credits {
-	padding: 0;
+.page-header-title {
+	font-size: var(--font-size-xxl);
+}
+
+.has-page-header .content {
+
+	@include mq(md) {
+		padding: 2em;
+		background: var(--color-white);
+		border: var(--border);
+		border-radius: var(--border-radius);
+	}
 }

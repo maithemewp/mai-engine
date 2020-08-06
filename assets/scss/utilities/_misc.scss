@@ -71,16 +71,23 @@
 		margin-bottom: var(--spacing-#{ $spacing-name }) !important;
 	}
 
-	.has--#{ $spacing-name }-margin-top {
-		margin-top: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
-	}
-
-	.has--#{ $spacing-name }-margin-bottom {
-		margin-bottom: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
-	}
-
 	.has-#{ $spacing-name }-padding {
 		padding: var(--spacing-#{ $spacing-name }) !important;
+	}
+}
+
+@include mq(md) {
+
+	@each $spacing-name, $spacing-size in $spacing {
+
+		.has--#{ $spacing-name }-margin-top {
+			margin-top: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
+		}
+
+		.has--#{ $spacing-name }-margin-bottom {
+			margin-bottom: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
+		}
+
 	}
 }
 
@@ -100,4 +107,12 @@
 			padding-#{ $padding-setting }: $padding-size;
 		}
 	}
+}
+
+[id] {
+	scroll-margin-top: var(--scroll-margin-top, 0);
+}
+
+.has-sticky-header {
+	--scroll-margin-top: var(--header-shrunk-height, var(--header-height, 0));
 }

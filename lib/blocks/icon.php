@@ -183,7 +183,7 @@ function mai_register_icon_field_group() {
 					'ajax'              => 1,
 					'conditional_logic' => [
 						[
-							'field'    => 'mai_icon_style', // Style.
+							'field'    => 'mai_icon_style',
 							'operator' => '!=',
 							'value'    => 'brands',
 						],
@@ -203,7 +203,7 @@ function mai_register_icon_field_group() {
 					'ajax'              => 1,
 					'conditional_logic' => [
 						[
-							'field'    => 'mai_icon_style', // Style.
+							'field'    => 'mai_icon_style',
 							'operator' => '==',
 							'value'    => 'brands',
 						],
@@ -242,7 +242,7 @@ function mai_register_icon_field_group() {
 					'return_format'     => 'value',
 					'conditional_logic' => [
 						[
-							'field'    => 'mai_icon_display', // Display.
+							'field'    => 'mai_icon_display',
 							'operator' => '==',
 							'value'    => 'block',
 						],
@@ -254,6 +254,13 @@ function mai_register_icon_field_group() {
 					'label'         => esc_html__( 'Size', 'mai-engine' ),
 					'instructions'  => esc_html__( 'Accepts all unit values (px, rem, em, vw, etc). Leave empty for theme default.', 'mai-engine' ),
 					'type'          => 'text',
+					'default_value' => '',
+				],
+				[
+					'key'           => 'mai_icon_link',
+					'name'          => 'link',
+					'label'         => esc_html__( 'Link', 'mai-engine' ),
+					'type'          => 'url',
 					'default_value' => '',
 				],
 				[
@@ -289,7 +296,7 @@ function mai_register_icon_field_group() {
 					'append'            => 'px',
 					'conditional_logic' => [
 						[
-							'field'    => 'mai_icon_border_color', // Border Color.
+							'field'    => 'mai_icon_border_color',
 							'operator' => '!=empty',
 						],
 					],
@@ -313,7 +320,7 @@ function mai_register_icon_field_group() {
 					'default_value'     => 0,
 					'conditional_logic' => [
 						[
-							'field'    => 'mai_icon_shadow', // Shadow.
+							'field'    => 'mai_icon_shadow',
 							'operator' => '!=empty',
 						],
 					],
@@ -326,7 +333,7 @@ function mai_register_icon_field_group() {
 					'default_value'     => 0,
 					'conditional_logic' => [
 						[
-							'field'    => 'mai_icon_shadow', // Shadow.
+							'field'    => 'mai_icon_shadow',
 							'operator' => '!=empty',
 						],
 					],
@@ -339,7 +346,7 @@ function mai_register_icon_field_group() {
 					'default_value'     => 0,
 					'conditional_logic' => [
 						[
-							'field'    => 'mai_icon_shadow', // Shadow.
+							'field'    => 'mai_icon_shadow',
 							'operator' => '!=empty',
 						],
 					],
@@ -363,7 +370,7 @@ function mai_register_icon_field_group() {
 					'default_value'     => 0,
 					'conditional_logic' => [
 						[
-							'field'    => 'color_text_shadow', // Shadow.
+							'field'    => 'color_text_shadow',
 							'operator' => '!=empty',
 						],
 					],
@@ -376,7 +383,7 @@ function mai_register_icon_field_group() {
 					'default_value'     => 0,
 					'conditional_logic' => [
 						[
-							'field'    => 'color_text_shadow', // Shadow.
+							'field'    => 'color_text_shadow',
 							'operator' => '!=empty',
 						],
 					],
@@ -389,7 +396,7 @@ function mai_register_icon_field_group() {
 					'default_value'     => 0,
 					'conditional_logic' => [
 						[
-							'field'    => 'color_text_shadow', // Shadow.
+							'field'    => 'color_text_shadow',
 							'operator' => '!=empty',
 						],
 					],
@@ -468,5 +475,4 @@ function mai_register_icon_field_group() {
 			'description' => '',
 		]
 	);
-
 }

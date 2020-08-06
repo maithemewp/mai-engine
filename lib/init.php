@@ -29,7 +29,7 @@ function mai_get_engine_theme() {
 	$engine_themes = mai_get_engine_themes();
 
 	if ( current_theme_supports( 'mai-engine' ) ) {
-		// Custom themes can load a specific theme default via `add_theme_support( 'mai-engine', 'success' );`
+		// Custom themes can load a specific theme default via `add_theme_support( 'mai-engine', 'success' );`.
 		$theme_support = get_theme_support( 'mai-engine' );
 
 		if ( $theme_support && is_array( $theme_support ) && in_array( $theme_support[0], $engine_themes, true ) ) {
@@ -110,7 +110,7 @@ function mai_get_engine_themes() {
 	foreach ( $configs as $index => $config ) {
 		$base = basename( $config, '.php' );
 
-		if ( in_array( $base, [ '_default', '_settings' ] ) ) {
+		if ( in_array( $base, [ '_default', '_settings' ], true ) ) {
 			continue;
 		}
 
@@ -246,6 +246,7 @@ function mai_load_files() {
 		'functions/fonts',
 		'functions/grid',
 		'functions/helpers',
+		'functions/icons',
 		'functions/images',
 		'functions/layout',
 		'functions/loop',
@@ -270,6 +271,7 @@ function mai_load_files() {
 		'structure/menus',
 		'structure/page-header',
 		'structure/pagination',
+		'structure/post',
 		'structure/search-form',
 		'structure/sidebar',
 		'structure/single',
@@ -306,14 +308,12 @@ function mai_load_files() {
 		'customize/site-layouts',
 		'customize/typography',
 		'customize/updates',
-		'customize/upsell',
 	];
 
 	if ( is_admin() ) {
 		$files = array_merge(
 			$files,
 			[
-				'admin/blog',
 				'admin/dependencies',
 				'admin/editor',
 				'admin/hide-elements',
@@ -339,5 +339,10 @@ function mai_load_files() {
 
 	foreach ( $files as $file ) {
 		require_once __DIR__ . "/$file.php";
+	}
+
+	// Load CLI command.
+	if ( defined( 'WP_CLI' ) && WP_CLI ) {
+		WP_CLI::add_command( 'mai generate', 'Mai_Cli_Generate_Command' );
 	}
 }

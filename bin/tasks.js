@@ -1,14 +1,15 @@
 'use strict';
 
 module.exports = {
-	'build:plugin-css': [ require( './styles' ).plugin ],
 	'build:admin-css': [ require( './styles' ).admin ],
-	'build:desktop-css': [ require( './styles' ).desktop ],
-	'build:theme-css': [ require( './styles' ).theme ],
-	'build:editor-css': [ require( './styles' ).editor ],
 	'build:deprecated-css': [ require( './styles' ).deprecated ],
+	'build:desktop-css': [ require( './styles' ).desktop ],
+	'build:editor-css': [ require( './styles' ).editor ],
+	'build:main-css': [ require( './styles' ).main ],
+	'build:plugin-css': [ require( './styles' ).plugins ],
+	'build:theme-css': [ require( './styles' ).themes ],
 
-	'build:css': [ [ 'build:theme-css', 'build:desktop-css', 'build:plugin-css', 'build:admin-css', 'build:editor-css', 'build:deprecated-css' ] ],
+	'build:css': [ [ 'build:main-css', 'build:theme-css', 'build:desktop-css', 'build:plugin-css', 'build:admin-css', 'build:editor-css', 'build:deprecated-css' ] ],
 
 	'build:blocks': [ require( './scripts' ).blocks ],
 	'build:scripts': [ require( './scripts' ).js ],
@@ -24,8 +25,10 @@ module.exports = {
 
 	'build': [ [ 'build:css', 'build:js', 'build:img', 'build:i18n' ] ],
 
-	'browser-sync': [ require( './browser-sync' ) ],
+	'create:theme': [ require( './create' ) ],
+
+	'create': [ [ 'create:theme', 'build:css' ] ],
+
 	'watch': [ require( './watch' ) ],
-	'serve': [ [ 'browser-sync', 'watch' ] ],
-	'default': [ [ 'build', 'serve' ] ],
+	'default': [ [ 'build', 'watch' ] ],
 };

@@ -12,13 +12,14 @@
 add_filter( 'genesis_customizer_theme_settings_config', 'mai_customizer_update_child_theme_settings', 5 );
 /**
  * Filter the Genesis Theme Settings customizer panel settings and add our new beta update setting.
+ *
  * Allows all Mai plugins to be updated to beta releases.
  *
- * @since   2.0.0
+ * @since 2.0.0
  *
- * @param   array  The existing customizer config.
+ * @param array $config The existing customizer config.
  *
- * @return  array  The modified config.
+ * @return array The modified config.
  */
 function mai_customizer_update_child_theme_settings( $config ) {
 	if ( isset( $config['genesis']['sections']['genesis_updates']['controls'] ) ) {

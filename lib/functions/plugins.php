@@ -9,6 +9,18 @@
  * @license   GPL-2.0-or-later
  */
 
+add_action( 'wp_enqueue_scripts', 'mai_remove_simple_social_icons_css', 15 );
+/**
+ * Remove Simple Social Icons CSS.
+ *
+ * @since 2.4.0
+ *
+ * @return void
+ */
+function mai_remove_simple_social_icons_css() {
+	mai_deregister_asset( 'simple-social-icons-font' );
+}
+
 add_filter( 'wpforms_settings_defaults', 'mai_wpforms_default_css' );
 /**
  * Set the default WP Forms styling to "Base styling only".
@@ -41,7 +53,7 @@ add_filter( 'wpforms_frontend_form_data', 'mai_wpforms_default_button_class' );
 function mai_wpforms_default_button_class( $data ) {
 	if ( isset( $data['settings']['submit_class'] ) && ! mai_has_string( 'button', $data['settings']['submit_class'] ) ) {
 		$data['settings']['submit_class'] .= ' button';
-		$data['settings']['submit_class'] = trim( $data['settings']['submit_class'] );
+		$data['settings']['submit_class']  = trim( $data['settings']['submit_class'] );
 	}
 
 	return $data;
@@ -53,20 +65,17 @@ add_filter( 'woocommerce_enqueue_styles', 'mai_dequeue_woocommerce_styles' );
  *
  * @since 0.1.0
  *
- * @param $enqueue_styles
+ * @param array $enqueue_styles Woo styles.
  *
  * @return mixed
  */
 function mai_dequeue_woocommerce_styles( $enqueue_styles ) {
 	$styles = [
 		'general',
-		// 'layout',
-		// 'smallscreen',
-		// 'blocks',
 	];
 
 	foreach ( $styles as $style ) {
-		unset( $enqueue_styles["woocommerce-$style"] );
+		unset( $enqueue_styles[ "woocommerce-$style" ] );
 	}
 
 	return $enqueue_styles;
@@ -78,7 +87,7 @@ add_filter( 'woocommerce_style_smallscreen_breakpoint', 'mai_woocommerce_breakpo
  *
  * @since 0.1.0
  *
- * @return string Pixel width of the theme's breakpoint.
+ * @return string
  */
 function mai_woocommerce_breakpoint() {
 	$breakpoint      = 'md';
@@ -109,6 +118,10 @@ add_filter( 'genesis_attr_entries', 'mai_add_facetwp_template_class', 10, 3 );
  * Add facetwp-template class to archives.
  *
  * @since 0.2.0
+ *
+ * @param array  $attributes FacetWP template attributes.
+ * @param string $context    Template context.
+ * @param array  $args       Template args.
  *
  * @return array
  */
@@ -158,7 +171,7 @@ add_filter( 'facetwp_pager_html', 'mai_facetwp_genesis_pager', 10, 2 );
  * @link  https://gist.github.com/mgibbs189/69176ef41fa4e26d1419
  *
  * @param string $output The pager HTML.
- * @param array   The current query args.
+ * @param array  $params The current query args.
  *
  * @return string
  */
@@ -218,7 +231,7 @@ add_filter( 'genesis_markup_archive-pagination_content', 'mai_facetwp_archive_pa
  * @param string $content The existing content.
  * @param array  $args    The genesis_markup() element args.
  *
- * @return string|HTML
+ * @return string
  */
 function mai_facetwp_archive_pagination( $content, $args ) {
 	if ( ! function_exists( 'facetwp_display' ) ) {

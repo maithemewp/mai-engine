@@ -69,7 +69,7 @@ function mai_do_divider_block( $block, $content = '', $is_preview = false, $post
  *
  * @since 0.3.0
  *
- * @param $atts
+ * @param array $atts Divider attributes.
  *
  * @return void
  */
@@ -82,21 +82,24 @@ function mai_do_divider( $atts ) {
  *
  * @since 0.3.0
  *
- * @param array $atts
+ * @param array $atts Divider attributes.
  *
  * @return string
  */
 function mai_get_divider( $atts = [] ) {
-	$atts = wp_parse_args( $atts, [
-		'style'            => 'angle',
-		'height'           => 'md',
-		'flip_horizontal'  => false,
-		'flip_vertical'    => false,
-		'background_color' => 'transparent',
-		'color'            => mai_get_color( 'alt' ),
-		'align'            => 'full',
-		'class'            => '',
-	] );
+	$atts = wp_parse_args(
+		$atts,
+		[
+			'style'            => 'angle',
+			'height'           => 'md',
+			'flip_horizontal'  => false,
+			'flip_vertical'    => false,
+			'background_color' => 'transparent',
+			'color'            => mai_get_color( 'alt' ),
+			'align'            => 'full',
+			'class'            => '',
+		]
+	);
 
 	$atts = [
 		'style'            => esc_html( $atts['style'] ),
@@ -109,7 +112,7 @@ function mai_get_divider( $atts = [] ) {
 		'class'            => sanitize_html_class( $atts['class'] ),
 	];
 
-	$flipping_horizontal = $atts['flip_horizontal'] && ! in_array( $atts['style'], [ 'point', 'round' ] );
+	$flipping_horizontal = $atts['flip_horizontal'] && ! in_array( $atts['style'], [ 'point', 'round' ], true );
 	$flipping_vertical   = $atts['flip_vertical'];
 	$file_name           = 'divider-' . $atts['style'];
 
@@ -183,8 +186,8 @@ function mai_get_divider( $atts = [] ) {
 
 	return genesis_markup(
 		[
-			'open'    => "<div %s>",
-			'close'   => "</div>",
+			'open'    => '<div %s>',
+			'close'   => '</div>',
 			'content' => $file,
 			'context' => 'mai-divider',
 			'echo'    => false,
@@ -207,82 +210,84 @@ function mai_register_divider_field_groups() {
 		return;
 	}
 
-	acf_add_local_field_group( [
-		'key'         => 'mai_divider',
-		'title'       => esc_html__( 'Mai Divider', 'mai-engine' ),
-		'fields'      => [
-			[
-				'key'     => 'mai_divider_style',
-				'label'   => esc_html__( 'Style', 'mai-engine' ),
-				'name'    => 'style',
-				'type'    => 'radio',
-				'choices' => [
-					'angle' => esc_html__( 'Angle', 'mai-engine' ),
-					'curve' => esc_html__( 'Curve', 'mai-engine' ),
-					'wave'  => esc_html__( 'Wave', 'mai-engine' ),
-					'point' => esc_html__( 'Point', 'mai-engine' ),
-					'round' => esc_html__( 'Round', 'mai-engine' ),
+	acf_add_local_field_group(
+		[
+			'key'         => 'mai_divider',
+			'title'       => esc_html__( 'Mai Divider', 'mai-engine' ),
+			'fields'      => [
+				[
+					'key'     => 'mai_divider_style',
+					'label'   => esc_html__( 'Style', 'mai-engine' ),
+					'name'    => 'style',
+					'type'    => 'radio',
+					'choices' => [
+						'angle' => esc_html__( 'Angle', 'mai-engine' ),
+						'curve' => esc_html__( 'Curve', 'mai-engine' ),
+						'wave'  => esc_html__( 'Wave', 'mai-engine' ),
+						'point' => esc_html__( 'Point', 'mai-engine' ),
+						'round' => esc_html__( 'Round', 'mai-engine' ),
+					],
 				],
-			],
-			[
-				'key'           => 'mai_divider_height',
-				'label'         => esc_html__( 'Height', 'mai-engine' ),
-				'name'          => 'height',
-				'type'          => 'button_group',
-				'choices'       => [
-					'xs' => esc_html__( 'XS', 'mai-engine' ),
-					'sm' => esc_html__( 'SM', 'mai-engine' ),
-					'md' => esc_html__( 'MD', 'mai-engine' ),
-					'lg' => esc_html__( 'LG', 'mai-engine' ),
-					'xl' => esc_html__( 'XL', 'mai-engine' ),
+				[
+					'key'           => 'mai_divider_height',
+					'label'         => esc_html__( 'Height', 'mai-engine' ),
+					'name'          => 'height',
+					'type'          => 'button_group',
+					'choices'       => [
+						'xs' => esc_html__( 'XS', 'mai-engine' ),
+						'sm' => esc_html__( 'SM', 'mai-engine' ),
+						'md' => esc_html__( 'MD', 'mai-engine' ),
+						'lg' => esc_html__( 'LG', 'mai-engine' ),
+						'xl' => esc_html__( 'XL', 'mai-engine' ),
+					],
+					'default_value' => 'md',
 				],
-				'default_value' => 'md',
-			],
-			[
-				'key'               => 'mai_divider_flip_horizontal',
-				'label'             => esc_html__( 'Flip Horizontally', 'mai-engine' ),
-				'name'              => 'flip_horizontal',
-				'type'              => 'true_false',
-				'ui'                => 1,
-				'conditional_logic' => [
-					[
+				[
+					'key'               => 'mai_divider_flip_horizontal',
+					'label'             => esc_html__( 'Flip Horizontally', 'mai-engine' ),
+					'name'              => 'flip_horizontal',
+					'type'              => 'true_false',
+					'ui'                => 1,
+					'conditional_logic' => [
 						[
-							'field'    => 'mai_divider_style',
-							'operator' => '!=',
-							'value'    => 'point',
-						],
-						[
-							'field'    => 'mai_divider_style',
-							'operator' => '!=',
-							'value'    => 'round',
+							[
+								'field'    => 'mai_divider_style',
+								'operator' => '!=',
+								'value'    => 'point',
+							],
+							[
+								'field'    => 'mai_divider_style',
+								'operator' => '!=',
+								'value'    => 'round',
+							],
 						],
 					],
 				],
-			],
-			[
-				'key'   => 'mai_divider_flip_vertical',
-				'label' => esc_html__( 'Flip Vertically', 'mai-engine' ),
-				'name'  => 'flip_vertical',
-				'type'  => 'true_false',
-				'ui'    => 1,
-			],
-			[
-				'key'           => 'mai_divider_color',
-				'label'         => esc_html__( 'Color', 'mai-engine' ),
-				'name'          => 'color',
-				'type'          => 'color_picker',
-				'default_value' => '#ffffff',
-			],
-		],
-		'location'    => [
-			[
 				[
-					'param'    => 'block',
-					'operator' => '==',
-					'value'    => 'acf/mai-divider',
+					'key'   => 'mai_divider_flip_vertical',
+					'label' => esc_html__( 'Flip Vertically', 'mai-engine' ),
+					'name'  => 'flip_vertical',
+					'type'  => 'true_false',
+					'ui'    => 1,
+				],
+				[
+					'key'           => 'mai_divider_color',
+					'label'         => esc_html__( 'Color', 'mai-engine' ),
+					'name'          => 'color',
+					'type'          => 'color_picker',
+					'default_value' => '#ffffff',
 				],
 			],
-		],
-		'description' => '',
-	] );
+			'location'    => [
+				[
+					[
+						'param'    => 'block',
+						'operator' => '==',
+						'value'    => 'acf/mai-divider',
+					],
+				],
+			],
+			'description' => '',
+		]
+	);
 }

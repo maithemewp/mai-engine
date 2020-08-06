@@ -1,17 +1,23 @@
-@import "default";
-
 :root {
+	--font-scale: 1.2;
+	--font-size-base: 15px;
+	--body-background-color: #fcfcfc;
 	--body-font-weight: var(--font-weight-light);
-	--border: 1px solid rgba(0, 0, 0, 0.06);
-	--shadow: 0 4px 24px rgba(0, 0, 0, 0.025);
+	--border-radius: 2px;
+	--shadow: 0 4px 24px 12px rgba(0, 0, 0, 0.025);
+	--page-header-inner-background: rgba(255, 255, 255, 0.9);
+	--page-header-inner-max-width: 800px;
+	--page-header-inner-padding: var(--spacing-xl) var(--spacing-xl);
+	--page-header-inner-border-radius: var(--border-radius);
+	--page-header-inner-box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
 html {
 	-moz-osx-font-smoothing: unset;
 }
 
-.button-secondary {
-	--button-font-weight: var(--body-font-weight);
+.wp-block-cover .wp-block-group.has-white-background-color {
+	background-color: rgba(255, 255, 255, 0.9) !important;
 }
 
 .is-single {
@@ -21,22 +27,53 @@ html {
 		--entry-padding: calc(8px + 2vw);
 		--entry-border: var(--border);
 		--entry-box-shadow: var(--shadow);
+
+		> .entry-image-link {
+			--entry-image-link-margin-left: calc(var(--entry-padding) * -1);
+			--entry-image-link-margin-right: calc(var(--entry-padding) * -1);
+			--entry-image-border-radius: 0;
+		}
+
+		> .entry-image-link:first-child {
+			--entry-image-border-radius: var(--border-radius) var(--border-radius) 0 0;
+			--entry-image-link-margin-top: calc(var(--entry-padding) * -1);
+		}
 	}
 }
 
 .nav-after-header {
 	--menu-item-link-color: var(--color-white);
-	font-size: 0.9em;
-	letter-spacing: 0.1rem;
-	text-transform: uppercase;
+	--menu-font-size: 0.8em;
+	--menu-letter-spacing: 0.1rem;
+	--menu-text-transform: uppercase;
+
 	background-color: var(--color-heading);
 }
 
-.page-header {
-	--page-header-overlay: transparent;
-	--page-header-overlay-opacity: 1;
-	--page-header-inner-background: rgba(255, 255, 255, 0.9);
-	--page-header-inner-max-width: 800px;
-	--page-header-inner-padding: var(--spacing-lg) var(--spacing-xl);
-	--page-header-inner-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+.wp-block-quote {
+	position: relative;
+
+	--blockquote-font-family: var(--heading-font);
+	--blockquote-border-top: 0;
+	--blockquote-border-right: 0;
+	--blockquote-border-bottom: 0;
+	--blockquote-border-left: 0;
+
+	> * {
+		position: relative;
+		z-index: 1;
+	}
+}
+
+.wp-block-quote:before {
+	content: "\201C";
+	position: absolute;
+	top: calc(var(--spacing-xxl) * -1);
+	left: calc(var(--spacing-xxl) * -1);
+	font-family: var(--heading-font-family);
+	font-size: 12em;
+	line-height: 1;
+	color: currentColor;
+	opacity: 0.1;
+	z-index: 0;
 }

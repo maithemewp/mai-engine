@@ -37,7 +37,37 @@ const pxtoremConfig = pxtorem( {
 	media_query: config.css.remmediaquery,
 } );
 
-module.exports.theme = function() {
+module.exports.main = function() {
+	return gulp.src( './assets/scss/main.scss' )
+		.pipe( plumber() )
+		.pipe( rename( 'main.min.scss' ) )
+		.pipe( sass.sync( {
+			outputStyle: 'compressed',
+			includePaths: [].concat( bourbon )
+		} ) )
+		.pipe( postcss( postProcessors ) )
+		.pipe( gulp.dest( './assets/css/' ) )
+		.pipe( notify( { message: config.messages.css } ) );
+};
+
+module.exports.editor = function() {
+	postProcessors.push( remtopx( {
+		rootValue: config.css.basefontsize
+	} ) );
+
+	return gulp.src( './assets/scss/editor.scss' )
+		.pipe( plumber() )
+		.pipe( rename( 'editor.min.scss' ) )
+		.pipe( sass.sync( {
+			outputStyle: 'compressed',
+			includePaths: [].concat( bourbon )
+		} ) )
+		.pipe( postcss( postProcessors ) )
+		.pipe( gulp.dest( './assets/css/' ) )
+		.pipe( notify( { message: config.messages.css } ) );
+};
+
+module.exports.themes = function() {
 	return map( fs.readdirSync( './assets/scss/themes/' ), function( stylesheet ) {
 		return gulp.src( './assets/scss/themes/' + stylesheet )
 			.pipe( bulksass() )
@@ -72,37 +102,10 @@ module.exports.theme = function() {
 	} );
 };
 
-module.exports.editor = function() {
-	postProcessors.push( remtopx( {
-		rootValue: config.css.basefontsize
-	} ) );
-
-	return gulp.src( './assets/scss/editor.scss' )
-		.pipe( plumber() )
-		.pipe( rename( 'editor.min.scss' ) )
-		.pipe( sass.sync( {
-			outputStyle: 'compressed',
-			includePaths: [].concat( bourbon )
-		} ) )
-		.pipe( postcss( postProcessors ) )
-		.pipe( gulp.dest( './assets/css/editor/' ) )
-		.pipe( notify( { message: config.messages.css } ) );
-};
-
-module.exports.plugin = function() {
-	let plugins = function() {
-		return fs.readdirSync( './assets/scss/plugins/' );
-	};
-
-	let stylesheets = [];
-
-	plugins().forEach( function( plugin ) {
-		stylesheets.push( plugin );
-	} );
-
-	return map( stylesheets, function( stylesheet ) {
+module.exports.plugins = function() {
+	return map( fs.readdirSync( './assets/scss/plugins/' ), function( stylesheet ) {
 		let fileSrc = function() {
-			return './assets/scss/plugins/' + stylesheet + '/__index.scss';
+			return './assets/scss/plugins/' + stylesheet;
 		};
 
 		if ( stylesheet !== 'advanced-custom-fields' && stylesheet !== 'kirki' ) {
@@ -111,13 +114,15 @@ module.exports.plugin = function() {
 
 		return gulp.src( fileSrc() )
 			.pipe( plumber() )
-			.pipe( rename( stylesheet + '.min.scss' ) )
+			.pipe( rename( {
+				suffix: '.min'
+			} ) )
 			.pipe( sass.sync( {
 				outputStyle: 'compressed',
 				includePaths: [].concat( bourbon )
 			} ) )
 			.pipe( postcss( postProcessors ) )
-			.pipe( gulp.dest( './assets/css/plugins/' ) )
+			.pipe( gulp.dest( './assets/css/' ) )
 			.pipe( notify( { message: config.messages.css } ) );
 	} );
 };
@@ -130,7 +135,7 @@ module.exports.desktop = function() {
 			outputStyle: 'compressed',
 		} ) )
 		.pipe( postcss( postProcessors ) )
-		.pipe( gulp.dest( './assets/css/desktop/' ) )
+		.pipe( gulp.dest( './assets/css/' ) )
 		.pipe( notify( { message: config.messages.css } ) );
 };
 
@@ -142,7 +147,7 @@ module.exports.deprecated = function() {
 			outputStyle: 'compressed',
 		} ) )
 		.pipe( postcss( postProcessors ) )
-		.pipe( gulp.dest( './assets/css/deprecated/' ) )
+		.pipe( gulp.dest( './assets/css/' ) )
 		.pipe( notify( { message: config.messages.css } ) );
 };
 
@@ -154,6 +159,6 @@ module.exports.admin = function() {
 			outputStyle: 'compressed',
 		} ) )
 		.pipe( postcss( postProcessors ) )
-		.pipe( gulp.dest( './assets/css/admin/' ) )
+		.pipe( gulp.dest( './assets/css/' ) )
 		.pipe( notify( { message: config.messages.css } ) );
 };

@@ -36,7 +36,7 @@ p {
 	&:last-child {
 
 		@include mq(md) {
-			--paragraph-margin: 0;
+			margin: 0;
 		}
 	}
 }
@@ -58,10 +58,15 @@ i {
 }
 
 blockquote {
-	margin: var(--blockquote-margin, (var(--spacing-md) auto));
-	padding: var(--spacing-md);
+	margin: var(--blockquote-margin, (1em auto));
+	padding: var(--blockquote-padding, 1em);
+	font-family: var(--blockquote-font-family, inherit);
 	font-style: var(--blockquote-font-style, italic);
+	border-top: var(--blockquote-border-top, 0);
+	border-right: var(--blockquote-border-right, 0);
+	border-bottom: var(--blockquote-border-bottom, 0);
 	border-left: var(--blockquote-border-left, var(--border));
+	box-shadow: var(--blockquote-box-shadow, none);
 
 	--paragraph-padding: (var(--row-gap) 0);
 }
@@ -70,6 +75,7 @@ cite {
 	display: block;
 	font-weight: var(--cite-font-weight, bolder);
 	font-family: var(--cite-font-family, var(--heading-font-family));
+	font-size: var(--cite-font-size, normal);
 	font-style: var(--cite-font-style, normal);
 }
 

@@ -21,8 +21,38 @@ body {
 	@include heading;
 }
 
+.wp-block-cover-image p:not(.has-text-color),
+.wp-block-cover-image h1:not(.has-text-color),
+.wp-block-cover-image h2:not(.has-text-color),
+.wp-block-cover-image h3:not(.has-text-color),
+.wp-block-cover-image h4:not(.has-text-color),
+.wp-block-cover-image h5:not(.has-text-color),
+.wp-block-cover-image h6:not(.has-text-color),
+.wp-block-cover p:not(.has-text-color),
+.wp-block-cover h1:not(.has-text-color),
+.wp-block-cover h2:not(.has-text-color),
+.wp-block-cover h3:not(.has-text-color),
+.wp-block-cover h4:not(.has-text-color),
+.wp-block-cover h5:not(.has-text-color),
+.wp-block-cover h6:not(.has-text-color) {
+	color: var(--heading-color,var(--color-heading)); // Override WP in admin, using our default heading styles.
+}
+
 p {
 	font-size: var(--font-size-md);
+}
+
+.alignfull {
+	width: 100%;
+	max-width: 100%;
+	margin-right: 0;
+	margin-left: 0;
+}
+
+.wp-block-cover__inner-container,
+.wp-block-group__inner-container {
+	width: var(--breakpoint-xl);
+	max-width: 90%;
 }
 
 .wp-block {
@@ -35,18 +65,35 @@ p {
 	&[data-align="full"] {
 		max-width: none;
 	}
+}
 
+.block-editor-block-list__layout {
+
+	> [data-type="core/group"],
+	> [data-type="core/cover"],
+	> [data-type="acf/mai-post-grid"] {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
 }
 
 @each $breakpoint-name, $breakpoint-size in $breakpoints {
 
-	.wp-block[data-content-width="#{ $breakpoint-name }"] {
-
-		div div > .wp-block-cover,
-		div > .wp-block-group {
-			--content-max-width: var(--breakpoint-#{ $breakpoint-name });
-		}
+	// We don't need to worry about nested block here, since their content should never be larger than the parent.
+	.wp-block[data-content-width="#{ $breakpoint-name }"] .wp-block-cover__inner-container,
+	.wp-block[data-content-width="#{ $breakpoint-name }"] .wp-block-group__inner-container {
+		max-width: var(--breakpoint-#{ $breakpoint-name });
 	}
+
+}
+
+@each $padding-setting in $padding_settings {
+
+	.wp-block[data-spacing-#{ $padding-setting }] {
+		--cover-block-padding-#{ $padding-setting }: 0;
+		--group-block-padding-#{ $padding-setting }: 0;
+	}
+
 }
 
 @each $padding-name, $padding-size in $padding_scale {
@@ -54,13 +101,12 @@ p {
 	@each $padding-setting in $padding_settings {
 
 		.wp-block[data-spacing-#{ $padding-setting }="#{ $padding-name }"] {
-
-			div div > .wp-block-cover > .wp-block-cover__inner-container,
-			div > .wp-block-group > .wp-block-group__inner-container {
-				padding-#{ $padding-setting }: $padding-size;
-			}
+			--cover-block-padding-#{ $padding-setting }: #{ $padding-size };
+			--group-block-padding-#{ $padding-setting }: #{ $padding-size };
 		}
+
 	}
+
 }
 
 @each $size-name, $size-value in $font-sizes {
@@ -70,8 +116,8 @@ p {
 	}
 }
 
-
-.wp-block-button__link {
+.wp-block-button__link,
+.wp-block .button {
 
 	@include button();
 
@@ -99,3 +145,4 @@ p {
 .mai-grid a {
 	pointer-events: none;
 }
+

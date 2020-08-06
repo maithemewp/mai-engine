@@ -12,7 +12,7 @@ module.exports = {
 		base: './',
 		php: [ '**/*.php', '!vendor/**' ],
 		images: './assets/img/**/*',
-		scss: [ './assets/scss/**/*.scss', './config/**/*.scss' ],
+		scss: [ './assets/scss/**/*.scss' ],
 		css: [ './assets/css/**/*.css', '!./assets/css/min/*.css', '!node_modules/**' ],
 		json: [ '**/*.json', '!node_modules/**' ],
 		i18n: './assets/lang/',

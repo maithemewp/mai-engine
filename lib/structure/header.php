@@ -67,22 +67,21 @@ function mai_do_header() {
 	);
 
 	do_action( 'mai_after_title_area' );
-	remove_filter( 'genesis_attr_nav-menu', 'mai_nav_header_attributes', 10, 3 );
+	remove_filter( 'genesis_attr_nav-menu', 'mai_nav_header_attributes' );
 }
 
 /**
- * Description of expected behavior.
+ * Add nav-header class to menus added via `mai_get_menu()` function, including `[mai_menu]` shortcode.
  *
  * @since 0.1.0
  *
- * @param array  $attributes
- * @param string $context
- * @param array  $params
+ * @param array $attributes Header attributes.
  *
  * @return mixed
  */
-function mai_nav_header_attributes( $attributes, $context, $params ) {
+function mai_nav_header_attributes( $attributes ) {
 	$attributes['class'] .= ' nav-header';
+	$atts['itemtype']    = 'https://schema.org/SiteNavigationElement';
 
 	return $attributes;
 }
@@ -111,11 +110,9 @@ add_filter( 'genesis_site_title_wrap', 'mai_remove_site_title_h1' );
  *
  * @since 2.3.0
  *
- * @param string The existing wrap element.
- *
  * @return string
  */
-function mai_remove_site_title_h1( $wrap ) {
+function mai_remove_site_title_h1() {
 	return 'p';
 }
 
@@ -206,17 +203,16 @@ add_filter( 'genesis_attr_site-title', 'mai_hide_site_title' );
  * Adds class for screen readers to site title.
  * This will keep the site title markup but will not have any visual presence on the page.
  *
- * @since   0.3.0
+ * @since 0.3.0
  *
- * @param   array $attributes Current attributes.
+ * @param array $attributes Current attributes.
  *
- * @return  array  The modified attributes.
+ * @return array The modified attributes.
  */
 function mai_hide_site_title( $attributes ) {
-	if ( ! has_custom_logo() ) {
-		return $attributes;
+	if ( has_custom_logo() ) {
+		$attributes['class'] .= ' screen-reader-text';
 	}
-	$attributes['class'] .= ' screen-reader-text';
 
 	return $attributes;
 }
@@ -228,18 +224,20 @@ add_filter( 'genesis_attr_site-description', 'mai_hide_site_description' );
  * Adds class for screen readers to site description.
  * This will keep the site description markup but will not have any visual presence on the page.
  *
- * @since  0.3.0
+ * @since 2.3.0 Added check for show_tagline option.
+ * @since 0.3.0
  *
- * @param  array $attributes Current attributes.
+ * @param array $attributes Current attributes.
  *
- * @return array  The modified attributes.
+ * @return array The modified attributes.
  */
 function mai_hide_site_description( $attributes ) {
-	if ( ! has_custom_logo() ) {
-		return $attributes;
-	}
+	$default = mai_get_config( 'settings' )['logo']['show-tagline'];
+	$show    = mai_get_option( 'show-tagline', $default );
 
-	$attributes['class'] .= ' screen-reader-text';
+	if ( has_custom_logo() || ! $show ) {
+		$attributes['class'] .= ' screen-reader-text';
+	}
 
 	return $attributes;
 }

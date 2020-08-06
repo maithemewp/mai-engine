@@ -1,3 +1,10 @@
+( function() {
+	let root           = document.documentElement;
+	let scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+	root.style.setProperty( '--scrollbar-width', scrollBarWidth + 'px' );
+} )();
+
 function hide( element ) {
 	var el = document.getElementsByClassName( element )[ 0 ];
 

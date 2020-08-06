@@ -3,9 +3,11 @@
 	flex: var(--entry-image-link-flex, initial);
 	align-self: var(--entry-image-link-align, unset);
 	order: var(--entry-image-link-order, unset);
-	max-width: var(--image-width, unset);
-	margin: var(--entry-image-link-margin, var(--entry-image-link-margin-top, 0) var(--entry-image-link-margin-right, 0) var(--entry-image-link-margin-bottom, var(--spacing-lg)) var(--entry-image-link-margin-left, 0));
+	max-width: var(--entry-image-link-max-width, unset);
+	margin: var(--entry-image-link-margin, var(--entry-image-link-margin-top, 0) var(--entry-image-link-margin-right, 0) var(--entry-image-link-margin-bottom, var(--spacing-md)) var(--entry-image-link-margin-left, 0));
 	line-height: var(--entry-image-line-height, unset);
+	border: var(--entry-image-link-border, 0);
+	box-shadow: var(--entry-image-link-box-shadow, none);
 
 	&::before {
 		display: var(--entry-image-link-before-display, none);
@@ -21,15 +23,16 @@
 	}
 
 	figcaption {
-		display: table-caption;
-		caption-side: bottom;
 		margin-top: 0.5em; // Matches WP core.
-		margin-bottom: 1em; // Matches WP core.
 	}
 }
 
+.has-image-only {
+	--entry-image-link-margin-bottom: 0;
+}
+
 .entry-image-single {
-	--entry-image-link-display: table; // For captions.
+	--entry-image-link-margin-bottom: var(--spacing-lg);
 }
 
 .entry-image {
@@ -53,7 +56,7 @@
 .has-image-left-full,
 .has-image-right-full {
 	--entry-image-link-display: flex;
-	--entry-image-link-flex: 1 1 var(--image-width);
+	--entry-image-link-flex: 1 1 var(--entry-image-link-max-width);
 	--entry-image-link-before-display: block;
 	--entry-image-object-fit: cover;
 	--entry-image-width: 100%;
@@ -83,18 +86,14 @@
 	--entry-image-link-order: 1;
 }
 
-.has-image-background .entry-image-link,
-.has-image-background .entry-wrap {
+.has-image-background .entry-image-link {
+	--entry-image-link-margin: 0;
+
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-}
-
-.has-image-background .entry-image-link {
-	-o-object-fit: cover;
-	object-fit: cover;
 }
 
 .has-boxed.has-image-full,
@@ -117,6 +116,7 @@
 
 .has-image-background {
 	--entry-position: relative;
+	--entry-image-object-fit: cover;
 
 	.entry::before {
 		display: block;

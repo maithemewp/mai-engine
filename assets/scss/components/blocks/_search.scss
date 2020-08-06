@@ -1,11 +1,16 @@
 .wp-block-search {
 
-	.wp-block-search__label {
+	&.aligncenter {
+		justify-content: center;
+		text-align: center;
+	}
+
+	&__label {
 		flex: 1 1 100%;
 		font-weight: var(--font-weight-bold);
 	}
 
-	.wp-block-search__input {
+	&__input {
 		flex: 1 1 200px;
 	}
 }

@@ -40,8 +40,8 @@ label {
 
 ::placeholder,
 input::placeholder {
-	color: var(--input-placeholder-color, rgba(0, 0, 0, 0.3));
-	opacity: 1; // Firefox fix
+	color: var(--input-placeholder-color, var(--color-body));
+	opacity: 0.5; // Firefox requires opacity to stay consistent.
 }
 
 textarea {

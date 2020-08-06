@@ -4,6 +4,10 @@
 	align-items: center;
 
 	--heading-margin: 0;
+
+	p:last-of-type {
+		margin-bottom: 0;
+	}
 }
 
 .header-left {

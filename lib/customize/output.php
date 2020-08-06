@@ -106,8 +106,11 @@ function mai_add_button_text_colors( $css ) {
 	];
 
 	foreach ( $buttons as $button => $suffix ) {
-		$color = mai_get_color( $button );
-		$text  = mai_is_light_color( $color ) ? mai_get_color_variant( $color, 'dark', 60 ) : mai_get_color( 'white' );
+		$color   = mai_get_color( $button );
+		$text    = mai_is_light_color( $color ) ? mai_get_color_variant( $color, 'dark', 60 ) : mai_get_color( 'white' );
+		$white   = mai_get_color( 'white' );
+		$heading = mai_get_color( 'heading' );
+		$text    = $white === $color ? $heading : $text;
 
 		$css['global'][':root'][ '--button-' . $suffix . 'color' ] = $text;
 	}
@@ -129,9 +132,6 @@ function mai_add_fonts_custom_properties( $css ) {
 	$global_styles    = mai_get_global_styles();
 	$fonts            = $global_styles['fonts'];
 	$font_weight_bold = mai_get_bold_variant( 'body' );
-
-	$css['global'][':root']['--font-size-base'] = $global_styles['font-sizes']['base'] . 'px';
-	$css['global'][':root']['--font-scale']     = (string) $global_styles['font-scale'];
 
 	if ( $font_weight_bold ) {
 		$css['global'][':root']['--font-weight-bold'] = $font_weight_bold;
@@ -160,32 +160,34 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_page_header_content_type_css' );
  * @return array
  */
 function mai_add_page_header_content_type_css( $css ) {
-	$config = mai_get_config( 'page-header' );
+	$types = array_merge( mai_get_page_header_types( 'archive' ), mai_get_page_header_types( 'single' ) );
+	if ( empty( $types ) ) {
+		return $css;
+	}
 
-	$settings = [
-		'page-header-background-color' => mai_get_color( $config['background-color'] ),
-		'page-header-overlay-opacity'  => (string) $config['overlay-opacity'],
-	];
+	$config     = mai_get_config( 'settings' )['page-header'];
+	$text       = mai_get_template_arg( 'page-header-text-color', mai_get_option( 'page-header-text-color', mai_get_color( $config['text-color'] ) ) );
+	$background = mai_get_template_arg( 'page-header-background', mai_get_option( 'page-header-background', mai_get_color( $config['background-color'] ) ) );
+	$opacity    = mai_get_template_arg( 'page-header-overlay-opacity', mai_get_option( 'page-header-overlay-opacity', (string) $config['overlay-opacity'] ) );
 
-	foreach ( $settings as $id => $default ) {
-		$global   = mai_get_option( $id, $default );
-		$template = mai_get_template_arg( $id, false );
-		$value    = $template ? $template : $global;
+	if ( $text ) {
+		$css['global'][':root']['--page-header-color'] = $text;
+	}
 
-		if ( $value ) {
-			$css['global'][':root'][ '--' . $id ] = $value;
-		}
+	if ( $background ) {
+		$css['global'][':root']['--page-header-background'] = $background;
+	}
+
+	if ( '' !== $opacity ) {
+		$css['global'][':root']['--page-header-overlay-opacity'] = (string) $opacity;
 	}
 
 	$spacing = mai_get_option( 'page-header-spacing', $config['spacing'] );
+	$top     = isset( $spacing['top'] ) && '' !== $spacing['top'] ? $spacing['top'] : $config['spacing']['top'];
+	$bottom  = isset( $spacing['bottom'] ) && '' !== $spacing['bottom'] ? $spacing['bottom'] : $config['spacing']['bottom'];
 
-	if ( isset( $spacing['top'] ) ) {
-		$css['global'][':root']['--page-header-padding-top'] = mai_get_unit_value( $spacing['top'] );
-	}
-
-	if ( isset( $spacing['bottom'] ) ) {
-		$css['global'][':root']['--page-header-padding-bottom'] = mai_get_unit_value( $spacing['bottom'] );
-	}
+	$css['global'][':root']['--page-header-padding-top']    = mai_get_unit_value( $top );
+	$css['global'][':root']['--page-header-padding-bottom'] = mai_get_unit_value( $bottom );
 
 	return $css;
 }

@@ -13,7 +13,7 @@
 	padding: var(--spacing-md) 0;
 	overflow-y: auto;
 	background: var(--mobile-menu-background, var(--site-header-background, var(--color-white)));
-	border-bottom: var(--border);
+	border-bottom: var(--mobile-menu-border-bottom, var(--border));
 	animation: var(--mobile-menu-animation, none);
 
 	.menu-item.search {
@@ -22,12 +22,7 @@
 }
 
 .has-dark-header {
-	--mobile-menu-background: var(--color-white);
-
-	.mobile-menu {
-		--menu-item-link-color: var(--color-heading);
-		--menu-item-link-color-hover: var(--color-link);
-	}
+	--mobile-menu-background: var(--color-heading);
 }
 
 .mobile-menu-visible {

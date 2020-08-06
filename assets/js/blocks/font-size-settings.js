@@ -1,11 +1,11 @@
 import assign from 'lodash.assign';
 
-const { __ }                             = wp.i18n;
-const { createHigherOrderComponent }     = wp.compose;
-const { Fragment }                       = wp.element;
-const { InspectorControls }              = wp.blockEditor;
-const { addFilter }                      = wp.hooks;
-const { PanelBody, Button, ButtonGroup } = wp.components;
+const { __ }                         = wp.i18n;
+const { createHigherOrderComponent } = wp.compose;
+const { Fragment }                   = wp.element;
+const { InspectorControls }          = wp.blockEditor;
+const { addFilter }                  = wp.hooks;
+const { PanelBody, BaseControl, ButtonGroup, Button } = wp.components;
 
 const enableFontSizeControlOnBlocks = [
 	'core/heading',
@@ -19,6 +19,10 @@ const enableFontSizeControlOnBlocks = [
  * If this doesn't make sense we can change labels without breaking the actual size used.
  */
 const sizeScale = [
+	{
+		label: __( 'Auto', 'mai-engine' ),
+		value: '',
+	},
 	{
 		label: __( 'SM', 'mai-engine' ),
 		value: 'lg',
@@ -83,8 +87,8 @@ const withFontSizeControls = createHigherOrderComponent( ( BlockEdit ) => {
 		}
 
 		const {
-				  fontSize,
-			  } = props.attributes;
+				fontSize,
+			} = props.attributes;
 
 		return (
 			<Fragment>
@@ -95,34 +99,32 @@ const withFontSizeControls = createHigherOrderComponent( ( BlockEdit ) => {
 						initialOpen={false}
 						className={'mai-font-size-setting'}
 					>
-						<ButtonGroup mode="radio" data-chosen={fontSize}>
-							<p>{__( 'Size', 'mai-engine' )}</p>
-							{sizeScale.map( sizeInfo => (
-								<Button
-									onClick={() => {
-										props.setAttributes( {
-											fontSize: sizeInfo.value,
-										} );
-									}}
-									data-checked={fontSize === sizeInfo.value}
-									value={sizeInfo.value}
-									key={`font-size-${sizeInfo.value}`}
-									index={sizeInfo.value}
-									isSecondary={fontSize !== sizeInfo.value}
-									isPrimary={fontSize === sizeInfo.value}
-								>
-									{sizeInfo.label}
-								</Button>
-							) )}
-						</ButtonGroup>
-						<Button isDestructive isSmall isLink onClick={() => {
-							props.setAttributes( {
-								fontSize: null,
-							} );
-						}}>
-							{__( 'Clear', 'mai-engine' )}
-						</Button>
-						<p/>
+						<BaseControl
+							id="mai-content-width"
+							label={__( 'Size', 'mai-engine' )}
+						>
+							<div>
+								<ButtonGroup mode="radio" data-chosen={fontSize}>
+									{sizeScale.map( sizeInfo => (
+										<Button
+											onClick={() => {
+												props.setAttributes( {
+													fontSize: sizeInfo.value,
+												} );
+											}}
+											data-checked={fontSize === sizeInfo.value}
+											value={sizeInfo.value}
+											key={`font-size-${sizeInfo.value}`}
+											index={sizeInfo.value}
+											isSecondary={fontSize !== sizeInfo.value}
+											isPrimary={fontSize === sizeInfo.value}
+										>
+											{sizeInfo.label}
+										</Button>
+									) )}
+								</ButtonGroup>
+							</div>
+						</BaseControl>
 					</PanelBody>
 				</InspectorControls>
 			</Fragment>

@@ -17,15 +17,55 @@ return [
 	],
 	'global-styles' => [
 		'colors' => [
-			'link'      => '#777777',
-			'primary'   => '#000000',
-			'secondary' => '#777777',
-			'heading'   => '#000000',
-			'body'      => '#777777',
+			'link'       => '#2386dd',
+			'primary'    => '#191919',
+			'secondary'  => '#777777',
+			'heading'    => '#242424',
+			'body'       => '#777777',
+			'alt'        => '#eeeeee',
+			'background' => '#fcfcfc',
 		],
 		'fonts'  => [
-			'body'    => 'Montserrat:400',
-			'heading' => 'Montserrat:700',
+			'body'    => 'Roboto:400',
+			'heading' => 'Roboto Slab:700',
+		],
+	],
+	'theme-support' => [
+		'add' => [
+			'sticky-header',
+		],
+	],
+	'settings'      => [
+		'logo'             => [
+			'show-tagline' => false,
+		],
+		'site-layout'      => [
+			'default' => [
+				'site' => 'wide-content',
+			],
+			'single'  => [
+				'post' => 'content-sidebar',
+			],
+		],
+		'page-header'      => [
+			'single'     => [ 'post', 'page' ],
+			'archive'    => [ 'post' ],
+			'text-align' => 'start',
+			'spacing'    => [
+				'top'    => '2em',
+				'bottom' => '2em',
+			],
+		],
+		'content-archives' => [],
+		'genesis'          => [
+			'breadcrumb_front_page' => 0,
+			'breadcrumb_home'       => 1,
+			'breadcrumb_posts_page' => 1,
+			'breadcrumb_single'     => 1,
+			'breadcrumb_page'       => 1,
+			'breadcrumb_archive'    => 1,
+			'breadcrumb_404'        => 1,
+			'breadcrumb_attachment' => 1,
 		],
 	],
 ];

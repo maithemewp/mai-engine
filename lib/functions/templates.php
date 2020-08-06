@@ -14,6 +14,7 @@ add_action( 'init', 'mai_register_template_part_cpt' );
  * Register template part post type.
  *
  * @since 2.0.0
+ * @since 2.4.0 Changed can_export to true.
  *
  * @return void
  */
@@ -53,7 +54,7 @@ function mai_register_template_part_cpt() {
 		'show_in_rest'      => true,
 		'rest_base'         => 'template-parts',
 		'map_meta_cap'      => true,
-		'can_export'        => false,
+		'can_export'        => true,
 		'supports'          => [
 			'title',
 			'slug',
@@ -92,25 +93,29 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
 		return;
 	}
 
-	$wp_admin_bar->add_node( [
-		'id'     => 'template-parts',
-		'parent' => 'site-name',
-		'title'  => __( 'Template Parts', 'mai-engine' ),
-		'href'   => admin_url( 'edit.php?post_type=wp_template_part' ),
-		'meta'   => [
-			'title' => __( 'Edit Template Parts', 'mai-engine' ),
-		],
-	] );
+	$wp_admin_bar->add_node(
+		[
+			'id'     => 'template-parts',
+			'parent' => 'site-name',
+			'title'  => __( 'Template Parts', 'mai-engine' ),
+			'href'   => admin_url( 'edit.php?post_type=wp_template_part' ),
+			'meta'   => [
+				'title' => __( 'Edit Template Parts', 'mai-engine' ),
+			],
+		]
+	);
 
-	$wp_admin_bar->add_node( [
-		'id'     => 'reusable-blocks',
-		'parent' => 'site-name',
-		'title'  => __( 'Reusable Blocks', 'mai-engine' ),
-		'href'   => admin_url( 'edit.php?post_type=wp_block' ),
-		'meta'   => [
-			'title' => __( 'Edit Reusable Blocks', 'mai-engine' ),
-		],
-	] );
+	$wp_admin_bar->add_node(
+		[
+			'id'     => 'reusable-blocks',
+			'parent' => 'site-name',
+			'title'  => __( 'Reusable Blocks', 'mai-engine' ),
+			'href'   => admin_url( 'edit.php?post_type=wp_block' ),
+			'meta'   => [
+				'title' => __( 'Edit Reusable Blocks', 'mai-engine' ),
+			],
+		]
+	);
 }
 
 /**
@@ -118,49 +123,75 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
  *
  * @since 2.0.1
  * @since 2.2.2 Now returns an array of template part content content keyed by slug instead of an array of WP_Post objects.
+ * @since 2.4.0 Removed the is_admin() check since this was finally solved https://github.com/maithemewp/mai-engine/issues/251.
+ *              Changed return values to check and use post status.
  *
  * @return array
  */
 function mai_get_template_parts() {
-	static $template_parts = [];
+	static $template_parts = null;
 
-	// Always run query in admin so mai_template_part_exists() doesn't break when auto creating default template parts.
-	if ( is_admin() || empty( $template_parts ) ) {
-		$config = mai_get_config( 'template-parts' );
-		$slugs  = wp_list_pluck( $config, 'id' );
+	if ( is_null( $template_parts ) ) {
+		$template_part = [];
+		$config        = mai_get_config( 'template-parts' );
+		$slugs         = $config ? wp_list_pluck( $config, 'id' ) : [];
 
 		if ( $slugs ) {
 
-			$posts = new WP_Query(
+			$posts = get_posts(
 				[
 					'post_type'              => 'wp_template_part',
-					'post_status'            => 'publish',
+					'post_status'            => 'any',
 					'post_name__in'          => $slugs,
+					'posts_per_page'         => 500, // Force a high number. Without setting this, it uses the WP posts_per_page setting, which could break things.
 					'no_found_rows'          => true,
 					'update_post_meta_cache' => false,
 					'update_post_term_cache' => false,
 				]
 			);
 
-			if ( $posts->have_posts() ) {
-				while ( $posts->have_posts() ) : $posts->the_post();
-					global $post;
+			if ( $posts ) {
+				foreach ( $posts as $post ) {
+					global $wp_embed;
 
-					ob_start();
-					the_content();
-					$content = ob_get_clean();
+					$content = $post->post_content;
 
-					$template_parts[ $post->post_name ] = $content;
+					if ( $content ) {
+						$content = $wp_embed->autoembed( $content );              // WP runs priority 8.
+						$content = $wp_embed->run_shortcode( $content );          // WP runs priority 8.
+						$content = do_blocks( $content );                         // WP runs priority 9.
+						$content = wptexturize( $content );                       // WP runs priority 10.
+						$content = wpautop( $content );                           // WP runs priority 10.
+						$content = shortcode_unautop( $content );                 // WP runs priority 10.
+						$content = wp_make_content_images_responsive( $content ); // WP runs priority 10.
+						$content = do_shortcode( $content );                      // WP runs priority 11.
+						$content = convert_smilies( $content );                   // WP runs priority 20.
+					}
 
-				endwhile;
-
+					$template_parts[ $post->post_status ][ $post->post_name ] = $content;
+				}
 			}
-			wp_reset_postdata();
 		}
-
 	}
 
-	return $template_parts;
+	$return = [];
+
+	if ( $template_parts ) {
+		if ( is_admin() ) {
+			foreach ( $template_parts as $status => $parts ) {
+				$return = array_merge( $return, $parts );
+			}
+		} else {
+			$return = isset( $template_parts[ 'publish' ] ) ? $template_parts[ 'publish' ] : [];
+
+			if ( current_user_can( 'manage_options' ) ) {
+				$private = isset( $template_parts[ 'private' ] ) ? $template_parts[ 'private' ] : [];
+				$return  = array_merge( $return, $private );
+			}
+		}
+	}
+
+	return $return;
 }
 
 /**

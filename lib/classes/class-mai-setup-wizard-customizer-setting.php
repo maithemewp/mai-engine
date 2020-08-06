@@ -15,11 +15,11 @@
 class Mai_Setup_Wizard_Customizer_Setting extends WP_Customize_Setting {
 
 	/**
-	 * Description of expected behavior.
+	 * Import setting used by Mai_Setup_Wizard_Importer.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $value
+	 * @param mixed $value Value to update.
 	 *
 	 * @return void
 	 */

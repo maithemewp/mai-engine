@@ -1,11 +1,11 @@
 import assign from 'lodash.assign';
 
-const { __ }                             = wp.i18n;
-const { createHigherOrderComponent }     = wp.compose;
-const { Fragment }                       = wp.element;
-const { InspectorControls }              = wp.blockEditor;
-const { addFilter }                      = wp.hooks;
-const { PanelBody, Button, ButtonGroup } = wp.components;
+const { __ }                         = wp.i18n;
+const { createHigherOrderComponent } = wp.compose;
+const { Fragment }                   = wp.element;
+const { InspectorControls }          = wp.blockEditor;
+const { addFilter }                  = wp.hooks;
+const { PanelBody, BaseControl, ButtonGroup, Button } = wp.components;
 
 const enableSpacingControlOnBlocks = [
 	'core/cover',
@@ -35,6 +35,22 @@ const sizeScale = [
 	},
 ];
 
+const contentSizeScale = [
+	{
+		label: __( 'Auto', 'mai-engine' ),
+		value: '',
+	},
+	...sizeScale
+];
+
+const spacingSizeScale = [
+	{
+		label: __( 'None', 'mai-engine' ),
+		value: '',
+	},
+	...sizeScale
+];
+
 /**
  * Add layout control attribute to block.
  *
@@ -50,7 +66,12 @@ const addSpacingControlAttribute = ( settings, name ) => {
 		return settings;
 	}
 
-	// Use Lodash's assign to gracefully handle if attributes are undefined.
+	/**
+	 * Use Lodash's assign to gracefully handle if attributes are undefined.
+	 *
+	 * TODO: These should be named verticalSpacingTop not verticalSpacingTop since left/right aren't vertical.
+	 * I wonder if it's too late to change and safely deprecate?
+	 */
 	settings.attributes = assign( settings.attributes, {
 		contentWidth: {
 			type: 'string',
@@ -109,150 +130,142 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 						initialOpen={false}
 						className={'mai-layout-settings'}
 					>
-						<ButtonGroup mode="radio" data-chosen={contentWidth}>
-							<p>{__( 'Content Width', 'mai-engine' )}</p>
-							{sizeScale.map( sizeInfo => (
-								<Button
-									onClick={() => {
-										props.setAttributes( {
-											contentWidth: sizeInfo.value,
-										} );
-									}}
-									data-checked={contentWidth === sizeInfo.value}
-									value={sizeInfo.value}
-									key={`content-width-${sizeInfo.value}`}
-									index={sizeInfo.value}
-									isSecondary={contentWidth !== sizeInfo.value}
-									isPrimary={contentWidth === sizeInfo.value}
-								>
-									{sizeInfo.label}
-								</Button>
-							) )}
-						</ButtonGroup>
-						<Button isDestructive isSmall isLink onClick={() => {
-							props.setAttributes( {
-								contentWidth: null,
-							} );
-						}}>
-							{__( 'Clear', 'mai-engine' )}
-						</Button>
+						<BaseControl
+							id="mai-content-width"
+							label={__( 'Content Width', 'mai-engine' )}
+						>
+							<div>
+								<ButtonGroup mode="radio" data-chosen={contentWidth}>
+									{contentSizeScale.map( sizeInfo => (
+										<Button
+											onClick={() => {
+												props.setAttributes( {
+													contentWidth: sizeInfo.value,
+												} );
+											}}
+											data-checked={contentWidth === sizeInfo.value}
+											value={sizeInfo.value}
+											key={`content-width-${sizeInfo.value}`}
+											index={sizeInfo.value}
+											isSecondary={contentWidth !== sizeInfo.value}
+											isPrimary={contentWidth === sizeInfo.value}
+										>
+											{sizeInfo.label}
+										</Button>
+									) )}
+								</ButtonGroup>
+							</div>
+						</BaseControl>
 					</PanelBody>
 					<PanelBody
 						title={__( 'Spacing', 'mai-engine' )}
 						initialOpen={false}
 						className={'mai-spacing-settings'}
 					>
-						<ButtonGroup mode="radio" data-chosen={verticalSpacingTop}>
-							<p>{__( 'Top', 'mai-engine' )}</p>
-							{sizeScale.map( sizeInfo => (
-								<Button
-									onClick={() => {
-										props.setAttributes( {
-											verticalSpacingTop: sizeInfo.value,
-										} );
-									}}
-									data-checked={verticalSpacingTop === sizeInfo.value}
-									value={sizeInfo.value}
-									key={`vertical-space-top-${sizeInfo.value}`}
-									index={sizeInfo.value}
-									isSecondary={verticalSpacingTop !== sizeInfo.value}
-									isPrimary={verticalSpacingTop === sizeInfo.value}
-								>
-									{sizeInfo.label}
-								</Button>
-							) )}
-						</ButtonGroup>
-						<Button isDestructive isSmall isLink onClick={() => {
-							props.setAttributes( {
-								verticalSpacingTop: null,
-							} );
-						}}>
-							{__( 'Clear', 'mai-engine' )}
-						</Button>
-						<p/>
-						<ButtonGroup mode="radio" data-chosen={verticalSpacingBottom}>
-							<p>{__( 'Bottom', 'mai-engine' )}</p>
-							{sizeScale.map( sizeInfo => (
-								<Button
-									onClick={() => {
-										props.setAttributes( {
-											verticalSpacingBottom: sizeInfo.value,
-										} );
-									}}
-									data-checked={verticalSpacingBottom === sizeInfo.value}
-									value={sizeInfo.value}
-									key={`vertical-space-bottom-${sizeInfo.value}`}
-									index={sizeInfo.value}
-									isSecondary={verticalSpacingBottom !== sizeInfo.value}
-									isPrimary={verticalSpacingBottom === sizeInfo.value}
-								>
-									{sizeInfo.label}
-								</Button>
-							) )}
-						</ButtonGroup>
-						<Button isDestructive isSmall isLink onClick={() => {
-							props.setAttributes( {
-								verticalSpacingBottom: null,
-							} );
-						}}>
-							{__( 'Clear', 'mai-engine' )}
-						</Button>
-						<p/>
-						<ButtonGroup mode="radio" data-chosen={verticalSpacingLeft}>
-							<p>{__( 'Left', 'mai-engine' )}</p>
-							{sizeScale.map( sizeInfo => (
-								<Button
-									onClick={() => {
-										props.setAttributes( {
-											verticalSpacingLeft: sizeInfo.value,
-										} );
-									}}
-									data-checked={verticalSpacingLeft === sizeInfo.value}
-									value={sizeInfo.value}
-									key={`vertical-space-left-${sizeInfo.value}`}
-									index={sizeInfo.value}
-									isSecondary={verticalSpacingLeft !== sizeInfo.value}
-									isPrimary={verticalSpacingLeft === sizeInfo.value}
-								>
-									{sizeInfo.label}
-								</Button>
-							) )}
-						</ButtonGroup>
-						<Button isDestructive isSmall isLink onClick={() => {
-							props.setAttributes( {
-								verticalSpacingLeft: null,
-							} );
-						}}>
-							{__( 'Clear', 'mai-engine' )}
-						</Button>
-						<p/>
-						<ButtonGroup mode="radio" data-chosen={verticalSpacingRight}>
-							<p>{__( 'Right', 'mai-engine' )}</p>
-							{sizeScale.map( sizeInfo => (
-								<Button
-									onClick={() => {
-										props.setAttributes( {
-											verticalSpacingRight: sizeInfo.value,
-										} );
-									}}
-									data-checked={verticalSpacingRight === sizeInfo.value}
-									value={sizeInfo.value}
-									key={`vertical-space-right-${sizeInfo.value}`}
-									index={sizeInfo.value}
-									isSecondary={verticalSpacingRight !== sizeInfo.value}
-									isPrimary={verticalSpacingRight === sizeInfo.value}
-								>
-									{sizeInfo.label}
-								</Button>
-							) )}
-						</ButtonGroup>
-						<Button isDestructive isSmall isLink onClick={() => {
-							props.setAttributes( {
-								verticalSpacingRight: null,
-							} );
-						}}>
-							{__( 'Clear', 'mai-engine' )}
-						</Button>
+						<BaseControl
+							id="mai-spacing-top"
+							label={__( 'Top', 'mai-engine' )}
+						>
+							<div>
+								<ButtonGroup mode="radio" data-chosen={verticalSpacingTop}>
+									{spacingSizeScale.map( sizeInfo => (
+										<Button
+										onClick={() => {
+											props.setAttributes( {
+												verticalSpacingTop: sizeInfo.value,
+											} );
+										}}
+										data-checked={verticalSpacingTop === sizeInfo.value}
+										value={sizeInfo.value}
+										key={`vertical-space-top-${sizeInfo.value}`}
+										index={sizeInfo.value}
+										isSecondary={verticalSpacingTop !== sizeInfo.value}
+										isPrimary={verticalSpacingTop === sizeInfo.value}
+										>
+											{sizeInfo.label}
+										</Button>
+									) )}
+								</ButtonGroup>
+							</div>
+						</BaseControl>
+						<BaseControl
+							id="mai-spacing-bottom"
+							label={__( 'Bottom', 'mai-engine' )}
+						>
+							<div>
+								<ButtonGroup mode="radio" data-chosen={verticalSpacingBottom}>
+									{spacingSizeScale.map( sizeInfo => (
+										<Button
+											onClick={() => {
+												props.setAttributes( {
+													verticalSpacingBottom: sizeInfo.value,
+												} );
+											}}
+											data-checked={verticalSpacingBottom === sizeInfo.value}
+											value={sizeInfo.value}
+											key={`vertical-space-bottom-${sizeInfo.value}`}
+											index={sizeInfo.value}
+											isSecondary={verticalSpacingBottom !== sizeInfo.value}
+											isPrimary={verticalSpacingBottom === sizeInfo.value}
+										>
+											{sizeInfo.label}
+										</Button>
+									) )}
+								</ButtonGroup>
+							</div>
+						</BaseControl>
+						<BaseControl
+							id="mai-spacing-left"
+							label={__( 'Left', 'mai-engine' )}
+						>
+							<div>
+								<ButtonGroup mode="radio" data-chosen={verticalSpacingLeft}>
+									{spacingSizeScale.map( sizeInfo => (
+										<Button
+											onClick={() => {
+												props.setAttributes( {
+													verticalSpacingLeft: sizeInfo.value,
+												} );
+											}}
+											data-checked={verticalSpacingLeft === sizeInfo.value}
+											value={sizeInfo.value}
+											key={`vertical-space-left-${sizeInfo.value}`}
+											index={sizeInfo.value}
+											isSecondary={verticalSpacingLeft !== sizeInfo.value}
+											isPrimary={verticalSpacingLeft === sizeInfo.value}
+										>
+											{sizeInfo.label}
+										</Button>
+									) )}
+								</ButtonGroup>
+							</div>
+						</BaseControl>
+						<BaseControl
+							id="mai-spacing-right"
+							label={__( 'Right', 'mai-engine' )}
+						>
+							<div>
+								<ButtonGroup mode="radio" data-chosen={verticalSpacingRight}>
+									{spacingSizeScale.map( sizeInfo => (
+										<Button
+											onClick={() => {
+												props.setAttributes( {
+													verticalSpacingRight: sizeInfo.value,
+												} );
+											}}
+											data-checked={verticalSpacingRight === sizeInfo.value}
+											value={sizeInfo.value}
+											key={`vertical-space-right-${sizeInfo.value}`}
+											index={sizeInfo.value}
+											isSecondary={verticalSpacingRight !== sizeInfo.value}
+											isPrimary={verticalSpacingRight === sizeInfo.value}
+										>
+											{sizeInfo.label}
+										</Button>
+									) )}
+								</ButtonGroup>
+							</div>
+						</BaseControl>
 					</PanelBody>
 				</InspectorControls>
 			</Fragment>

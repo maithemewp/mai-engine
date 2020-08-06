@@ -9,40 +9,39 @@
  * @license   GPL-2.0-or-later
  */
 
+/**
+ * Returns content archive settings.
+ *
+ * @since 2.4.0 Moved defaults to config.
+ * @since 0.1.0
+ *
+ * @return array
+ */
 function mai_get_content_archive_settings() {
+	$defaults = mai_get_config( 'settings' )['content-archives'];
+
 	return [
 		[
 			'settings'    => 'show',
-			'label'       => esc_html__( 'Show', 'mai-engine' ),
-			'description' => esc_html__( 'Show/hide and re-order entry elements. Click "Toggle Hooks" to show Genesis hooks.', 'mai-engine' ),
+			'label'       => __( 'Show', 'mai-engine' ),
+			'description' => __( 'Show/hide and re-order entry elements. Click "Toggle Hooks" to show Genesis hooks.', 'mai-engine' ),
 			'type'        => 'sortable',
 			'sanitize'    => 'esc_html',
-			'default'     => [
-				'image',
-				'genesis_entry_header',
-				'title',
-				'header_meta',
-				'genesis_before_entry_content',
-				'excerpt',
-				'genesis_entry_content',
-				'more_link',
-				'genesis_after_entry_content',
-				'genesis_entry_footer',
-			],
+			'default'     => $defaults['show'],
 			'choices'     => mai_get_archive_show_choices(),
 		],
 		[
 			'settings'        => 'title_size',
-			'label'           => esc_html__( 'Title Size', 'mai-engine' ),
+			'label'           => __( 'Title Size', 'mai-engine' ),
 			'type'            => 'radio-buttonset',
 			'sanitize'        => 'esc_html',
-			'default'         => 'lg',
+			'default'         => $defaults['title_size'],
 			'choices'         => [
-				'sm'  => esc_html__( 'SM', 'mai-engine' ),
-				'md'  => esc_html__( 'MD', 'mai-engine' ),
-				'lg'  => esc_html__( 'LG', 'mai-engine' ),
-				'xl'  => esc_html__( 'XL', 'mai-engine' ),
-				'xxl' => esc_html__( 'XXL', 'mai-engine' ),
+				'md'    => __( 'XS', 'mai-engine' ),
+				'lg'    => __( 'SM', 'mai-engine' ),
+				'xl'    => __( 'MD', 'mai-engine' ),
+				'xxl'   => __( 'LG', 'mai-engine' ),
+				'xxxxl' => __( 'XL', 'mai-engine' ),
 			],
 			'active_callback' => [
 				[
@@ -56,10 +55,10 @@ function mai_get_content_archive_settings() {
 		],
 		[
 			'settings'        => 'image_orientation',
-			'label'           => esc_html__( 'Image Orientation', 'mai-engine' ),
+			'label'           => __( 'Image Orientation', 'mai-engine' ),
 			'type'            => 'select',
 			'sanitize'        => 'esc_html',
-			'default'         => 'landscape',
+			'default'         => $defaults['image_orientation'],
 			'choices'         => mai_get_image_orientation_choices(),
 			'active_callback' => [
 				[
@@ -71,10 +70,10 @@ function mai_get_content_archive_settings() {
 		],
 		[
 			'settings'        => 'image_size',
-			'label'           => esc_html__( 'Image Size', 'mai-engine' ),
+			'label'           => __( 'Image Size', 'mai-engine' ),
 			'type'            => 'select',
 			'sanitize'        => 'esc_html',
-			'default'         => 'landscape-md',
+			'default'         => $defaults['image_size'],
 			'choices'         => mai_get_image_size_choices(),
 			'active_callback' => [
 				[
@@ -91,20 +90,20 @@ function mai_get_content_archive_settings() {
 		],
 		[
 			'settings'        => 'image_position',
-			'label'           => esc_html__( 'Image Position', 'mai-engine' ),
+			'label'           => __( 'Image Position', 'mai-engine' ),
 			'type'            => 'select',
 			'sanitize'        => 'esc_html',
-			'default'         => 'full',
+			'default'         => $defaults['image_position'],
 			'choices'         => [
-				'full'         => esc_html__( 'Full', 'mai-engine' ),
-				'center'       => esc_html__( 'Center', 'mai-engine' ),
-				'left-top'     => esc_html__( 'Left Top', 'mai-engine' ),
-				'left-middle'  => esc_html__( 'Left Middle', 'mai-engine' ),
-				'left-full'    => esc_html__( 'Left Full', 'mai-engine' ),
-				'right-top'    => esc_html__( 'Right Top', 'mai-engine' ),
-				'right-middle' => esc_html__( 'Right Middle', 'mai-engine' ),
-				'right-full'   => esc_html__( 'Right Full', 'mai-engine' ),
-				'background'   => esc_html__( 'Background', 'mai-engine' ),
+				'full'         => __( 'Full', 'mai-engine' ),
+				'center'       => __( 'Center', 'mai-engine' ),
+				'left-top'     => __( 'Left Top', 'mai-engine' ),
+				'left-middle'  => __( 'Left Middle', 'mai-engine' ),
+				'left-full'    => __( 'Left Full', 'mai-engine' ),
+				'right-top'    => __( 'Right Top', 'mai-engine' ),
+				'right-middle' => __( 'Right Middle', 'mai-engine' ),
+				'right-full'   => __( 'Right Full', 'mai-engine' ),
+				'background'   => __( 'Background', 'mai-engine' ),
 			],
 			'active_callback' => [
 				[
@@ -116,14 +115,14 @@ function mai_get_content_archive_settings() {
 		],
 		[
 			'settings'        => 'image_width',
-			'label'           => esc_html__( 'Image Width', 'mai-engine' ),
+			'label'           => __( 'Image Width', 'mai-engine' ),
 			'type'            => 'radio-buttonset',
 			'sanitize'        => 'esc_html',
-			'default'         => 'third',
+			'default'         => $defaults['image_width'],
 			'choices'         => [
-				'fourth' => esc_html__( 'One Fourth', 'mai-engine' ),
-				'third'  => esc_html__( 'One Third', 'mai-engine' ),
-				'half'   => esc_html__( 'One Half', 'mai-engine' ),
+				'fourth' => __( 'One Fourth', 'mai-engine' ),
+				'third'  => __( 'One Third', 'mai-engine' ),
+				'half'   => __( 'One Half', 'mai-engine' ),
 			],
 			'active_callback' => [
 				[
@@ -169,10 +168,10 @@ function mai_get_content_archive_settings() {
 		],
 		[
 			'settings'        => 'header_meta',
-			'label'           => esc_html__( 'Header Meta', 'mai-engine' ),
+			'label'           => __( 'Header Meta', 'mai-engine' ),
 			'type'            => 'text',
 			'sanitize'        => 'wp_kses_post',
-			'default'         => 'mai_get_header_meta_default',
+			'default'         => $defaults['header_meta'],
 			'active_callback' => [
 				[
 					'setting'  => 'show',
@@ -183,11 +182,11 @@ function mai_get_content_archive_settings() {
 		],
 		[
 			'settings'        => 'content_limit',
-			'label'           => esc_html__( 'Content Limit', 'mai-engine' ),
-			'description'     => esc_html__( 'Limit the number of characters shown for the content or excerpt. Use 0 for no limit.', 'mai-engine' ),
+			'label'           => __( 'Content Limit', 'mai-engine' ),
+			'description'     => __( 'Limit the number of characters shown for the content or excerpt. Use 0 for no limit.', 'mai-engine' ),
 			'type'            => 'text',
 			'sanitize'        => 'absint',
-			'default'         => 0,
+			'default'         => $defaults['content_limit'],
 			'active_callback' => [
 				[
 					[
@@ -205,10 +204,10 @@ function mai_get_content_archive_settings() {
 		],
 		[
 			'settings'        => 'more_link_text',
-			'label'           => esc_html__( 'More Link Text', 'mai-engine' ),
+			'label'           => __( 'More Link Text', 'mai-engine' ),
 			'type'            => 'text',
 			'sanitize'        => 'esc_attr', // We may want to add icons/spans and HTML in here.
-			'default'         => '',
+			'default'         => $defaults['more_link_text'],
 			'active_callback' => [
 				[
 					'setting'  => 'show',
@@ -222,10 +221,10 @@ function mai_get_content_archive_settings() {
 		],
 		[
 			'settings'        => 'footer_meta',
-			'label'           => esc_html__( 'Footer Meta', 'mai-engine' ),
+			'label'           => __( 'Footer Meta', 'mai-engine' ),
 			'type'            => 'text',
 			'sanitize'        => 'wp_kses_post',
-			'default'         => 'mai_get_footer_meta_default',
+			'default'         => $defaults['footer_meta'],
 			'active_callback' => [
 				[
 					'setting'  => 'show',
@@ -236,28 +235,27 @@ function mai_get_content_archive_settings() {
 		],
 		[
 			'settings' => 'align_text',
-			'label'    => esc_html__( 'Align Text', 'mai-engine' ),
+			'label'    => __( 'Align Text', 'mai-engine' ),
 			'type'     => 'radio-buttonset',
 			'sanitize' => 'esc_html',
-			'default'  => '',
+			'default'  => $defaults['align_text'],
 			'choices'  => [
-				''       => esc_html__( 'Clear', 'mai-engine' ),
-				'start'  => esc_html__( 'Start', 'mai-engine' ),
-				'center' => esc_html__( 'Center', 'mai-engine' ),
-				'end'    => esc_html__( 'End', 'mai-engine' ),
+				'start'  => __( 'Start', 'mai-engine' ),
+				'center' => __( 'Center', 'mai-engine' ),
+				'end'    => __( 'End', 'mai-engine' ),
 			],
 		],
 		[
 			'settings'        => 'align_text_vertical',
-			'label'           => esc_html__( 'Align Text (vertical)', 'mai-engine' ),
+			'label'           => __( 'Align Text (vertical)', 'mai-engine' ),
 			'type'            => 'radio-buttonset',
 			'sanitize'        => 'esc_html',
-			'default'         => '',
+			'default'         => $defaults['align_text_vertical'],
 			'choices'         => [
-				''       => esc_html__( 'Clear', 'mai-engine' ),
-				'top'    => esc_html__( 'Top', 'mai-engine' ),
-				'middle' => esc_html__( 'Middle', 'mai-engine' ),
-				'bottom' => esc_html__( 'Bottom', 'mai-engine' ),
+				''       => __( 'Default', 'mai-engine' ),
+				'top'    => __( 'Top', 'mai-engine' ),
+				'middle' => __( 'Middle', 'mai-engine' ),
+				'bottom' => __( 'Bottom', 'mai-engine' ),
 			],
 			'active_callback' => [
 				[
@@ -311,10 +309,10 @@ function mai_get_content_archive_settings() {
 		],
 		[
 			'settings'        => 'image_stack_heading',
-			'label'           => esc_html__( 'Stack Image', 'mai-engine' ),
+			'label'           => __( 'Stack Image', 'mai-engine' ),
 			'type'            => 'custom',
 			'sanitize'        => 'esc_html',
-			'default'         => '',
+			'default'         => $defaults['image_stack_heading'],
 			'active_callback' => [
 				[
 					[
@@ -347,10 +345,10 @@ function mai_get_content_archive_settings() {
 		],
 		[
 			'settings'        => 'image_stack',
-			'label'           => esc_html__( 'Stack image and content on mobile', 'mai-engine' ),
+			'label'           => __( 'Stack image and content on mobile', 'mai-engine' ),
 			'type'            => 'checkbox',
 			'sanitize'        => 'mai_sanitize_bool',
-			'default'         => true,
+			'default'         => $defaults['image_stack'],
 			'active_callback' => [
 				[
 					[
@@ -383,39 +381,65 @@ function mai_get_content_archive_settings() {
 		],
 		[
 			'settings' => 'boxed_heading',
-			'label'    => esc_html__( 'Boxed', 'mai-engine' ),
+			'label'    => __( 'Boxed', 'mai-engine' ),
 			'type'     => 'custom',
 			'sanitize' => 'esc_html',
-			'default'  => '',
+			'default'  => $defaults['boxed_heading'],
 		],
 		[
 			'settings' => 'boxed',
-			'label'    => esc_html__( 'Display boxed styling', 'mai-engine' ),
+			'label'    => __( 'Display boxed styling', 'mai-engine' ),
 			'type'     => 'checkbox',
 			'sanitize' => 'mai_sanitize_bool',
-			'default'  => true,
+			'default'  => $defaults['boxed'],
+		],
+		[
+			'settings'        => 'border_radius',
+			'label'           => __( 'Border Radius', 'mai-engine' ),
+			'description'     => __( 'Leave empty for theme default. Accepts all unit values (px, rem, em, vw, etc).', 'mai-engine' ),
+			'block'           => [ 'post', 'term', 'user' ],
+			'type'            => 'text',
+			'sanitize'        => 'esc_html',
+			'default'         => $defaults['border_radius'],
+			'input_attrs'     => [
+				'placeholder' => isset( mai_get_global_styles( 'extra' )['border-radius'] ) ? mai_get_global_styles( 'extra' )['border-radius'] : '4px',
+			],
+			'active_callback' => [
+				[
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'background',
+					],
+					[
+						'setting'  => 'boxed',
+						'operator' => '==',
+						'value'    => true,
+					],
+				],
+			],
 		],
 		[
 			'settings' => 'columns',
-			'label'    => esc_html__( 'Columns (desktop)', 'mai-engine' ),
+			'label'    => __( 'Columns (desktop)', 'mai-engine' ),
 			'type'     => 'radio-buttonset',
 			'sanitize' => 'esc_html',
-			'default'  => '3',
+			'default'  => $defaults['columns'],
 			'choices'  => mai_get_columns_choices(),
 		],
 		[
 			'settings' => 'columns_responsive',
-			'label'    => esc_html__( 'Custom responsive columns', 'mai-engine' ),
+			'label'    => __( 'Custom responsive columns', 'mai-engine' ),
 			'type'     => 'checkbox',
 			'sanitize' => 'mai_sanitize_bool',
-			'default'  => '',
+			'default'  => $defaults['columns_responsive'],
 		],
 		[
 			'settings'        => 'columns_md',
-			'label'           => esc_html__( 'Columns (lg tablets)', 'mai-engine' ),
+			'label'           => __( 'Columns (lg tablets)', 'mai-engine' ),
 			'type'            => 'radio-buttonset',
 			'sanitize'        => 'esc_html',
-			'default'         => '1',
+			'default'         => $defaults['columns_md'],
 			'choices'         => mai_get_columns_choices(),
 			'active_callback' => [
 				[
@@ -427,10 +451,10 @@ function mai_get_content_archive_settings() {
 		],
 		[
 			'settings'        => 'columns_sm',
-			'label'           => esc_html__( 'Columns (sm tablets)', 'mai-engine' ),
+			'label'           => __( 'Columns (sm tablets)', 'mai-engine' ),
 			'type'            => 'radio-buttonset',
 			'sanitize'        => 'esc_html',
-			'default'         => '1',
+			'default'         => $defaults['columns_sm'],
 			'choices'         => mai_get_columns_choices(),
 			'active_callback' => [
 				[
@@ -442,10 +466,10 @@ function mai_get_content_archive_settings() {
 		],
 		[
 			'settings'        => 'columns_xs',
-			'label'           => esc_html__( 'Columns (mobile)', 'mai-engine' ),
+			'label'           => __( 'Columns (mobile)', 'mai-engine' ),
 			'type'            => 'radio-buttonset',
 			'sanitize'        => 'esc_html',
-			'default'         => '1',
+			'default'         => $defaults['columns_xs'],
 			'choices'         => mai_get_columns_choices(),
 			'active_callback' => [
 				[
@@ -457,15 +481,14 @@ function mai_get_content_archive_settings() {
 		],
 		[
 			'settings'        => 'align_columns',
-			'label'           => esc_html__( 'Align Columns', 'mai-engine' ),
+			'label'           => __( 'Align Columns', 'mai-engine' ),
 			'type'            => 'radio-buttonset',
 			'sanitize'        => 'esc_html',
-			'default'         => '',
+			'default'         => $defaults['align_columns'],
 			'choices'         => [
-				''       => esc_html__( 'Clear', 'mai-engine' ),
-				'left'   => esc_html__( 'Left', 'mai-engine' ),
-				'center' => esc_html__( 'Center', 'mai-engine' ),
-				'right'  => esc_html__( 'Right', 'mai-engine' ),
+				'left'   => __( 'Start', 'mai-engine' ),
+				'center' => __( 'Center', 'mai-engine' ),
+				'right'  => __( 'End', 'mai-engine' ),
 			],
 			'active_callback' => [
 				[
@@ -477,15 +500,15 @@ function mai_get_content_archive_settings() {
 		],
 		[
 			'settings'        => 'align_columns_vertical',
-			'label'           => esc_html__( 'Align Columns (vertical)', 'mai-engine' ),
+			'label'           => __( 'Align Columns (vertical)', 'mai-engine' ),
 			'type'            => 'radio-buttonset',
 			'sanitize'        => 'esc_html',
-			'default'         => '',
+			'default'         => $defaults['align_columns_vertical'],
 			'choices'         => [
-				''       => esc_html__( 'Clear', 'mai-engine' ),
-				'top'    => esc_html__( 'Top', 'mai-engine' ),
-				'middle' => esc_html__( 'Middle', 'mai-engine' ),
-				'bottom' => esc_html__( 'Bottom', 'mai-engine' ),
+				''       => __( 'Full', 'mai-engine' ),
+				'top'    => __( 'Top', 'mai-engine' ),
+				'middle' => __( 'Middle', 'mai-engine' ),
+				'bottom' => __( 'Bottom', 'mai-engine' ),
 			],
 			'active_callback' => [
 				[
@@ -497,34 +520,55 @@ function mai_get_content_archive_settings() {
 		],
 		[
 			'settings' => 'column_gap',
-			'label'    => esc_html__( 'Column Gap', 'mai-engine' ),
-			'type'     => 'text',
+			'label'    => __( 'Column Gap', 'mai-engine' ),
+			'type'     => 'radio-buttonset',
 			'sanitize' => 'esc_html',
-			'default'  => '36px',
+			'default'  => $defaults['column_gap'],
+			'choices'  => [
+				''     => __( 'None', 'mai-engine' ),
+				'md'   => __( 'XS', 'mai-engine' ), // Values mapped to a spacing sizes, labels kept consistent.
+				'lg'   => __( 'SM', 'mai-engine' ),
+				'xl'   => __( 'MD', 'mai-engine' ),
+				'xxl'  => __( 'LG', 'mai-engine' ),
+				'xxxl' => __( 'XL', 'mai-engine' ),
+			],
 		],
 		[
 			'settings' => 'row_gap',
-			'label'    => esc_html__( 'Row Gap', 'mai-engine' ),
-			'type'     => 'text',
+			'label'    => __( 'Row Gap', 'mai-engine' ),
+			'type'     => 'radio-buttonset',
 			'sanitize' => 'esc_html',
-			'default'  => '64px',
+			'default'  => $defaults['row_gap'],
+			'choices'  => [
+				''     => __( 'None', 'mai-engine' ),
+				'md'   => __( 'XS', 'mai-engine' ), // Values mapped to a spacing sizes, labels kept consistent.
+				'lg'   => __( 'SM', 'mai-engine' ),
+				'xl'   => __( 'MD', 'mai-engine' ),
+				'xxl'  => __( 'LG', 'mai-engine' ),
+				'xxxl' => __( 'XL', 'mai-engine' ),
+			],
 		],
 		[
 			'settings'    => 'posts_per_page',
-			'label'       => esc_html__( 'Posts Per Page', 'mai-engine' ),
-			'description' => esc_html__( 'Sticky posts are not included in count.', 'mai-engine' ),
+			'label'       => __( 'Posts Per Page', 'mai-engine' ),
+			'description' => __( 'Sticky posts are not included in count.', 'mai-engine' ),
 			'type'        => 'text',
 			'sanitize'    => 'esc_html', // Can't absint cause empty string means to use default.
-			'default'     => '',
+			'default'     => $defaults['posts_per_page'],
 			'input_attrs' => [
 				'placeholder' => get_option( 'posts_per_page' ),
 			],
 		],
 		[
+			'type'     => 'custom',
+			'settings' => 'content-archives-field-divider',
+			'default'  => '<hr>',
+		],
+		[
 			'settings'        => 'page-header-image',
 			'label'           => __( 'Page Header default image', 'mai-engine' ),
 			'type'            => 'image',
-			'default'         => '',
+			'default'         => $defaults['page-header-image'],
 			'choices'         => [
 				'save_as' => 'id',
 			],
@@ -532,28 +576,31 @@ function mai_get_content_archive_settings() {
 		],
 		[
 			'settings'        => 'page-header-background-color',
-			'label'           => esc_html__( 'Background/overlay color', 'mai-engine' ),
+			'label'           => __( 'Background/overlay color', 'mai-engine' ),
 			'type'            => 'color',
-			'default'         => '',
+			'default'         => $defaults['page-header-background-color'],
 			'active_callback' => 'mai_has_page_header_support_callback',
 		],
 		[
 			'settings'        => 'page-header-overlay-opacity',
-			'label'           => esc_html__( 'The background color opacity when page header has an image', 'mai-engine' ),
+			'label'           => __( 'The background color opacity when page header has an image', 'mai-engine' ),
 			'type'            => 'slider',
-			'default'         => '',
+			'default'         => $defaults['page-header-overlay-opacity'],
 			'choices'         => [
 				'min'  => 0,
 				'max'  => 1,
 				'step' => 0.01,
 			],
 			'active_callback' => 'mai_has_page_header_support_callback',
+			'sanitize_callback' => function( $value ) {
+				return (float) $value; // Remove trailing zeros.
+			},
 		],
 		[
 			'settings'        => 'page-header-text-color',
-			'label'           => esc_html__( 'Page header text color', 'mai-engine' ),
+			'label'           => __( 'Page header text color', 'mai-engine' ),
 			'type'            => 'radio-buttonset',
-			'default'         => '',
+			'default'         => $defaults['page-header-text-color'],
 			'choices'         => [
 				''      => __( 'Default', 'mai-engine' ),
 				'light' => __( 'Light', 'mai-engine' ),
@@ -566,16 +613,17 @@ function mai_get_content_archive_settings() {
 
 add_action( 'init', 'mai_add_content_archive_settings' );
 /**
- * Description of expected behavior.
+ * Add content archive customizer settings.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
 function mai_add_content_archive_settings() {
 	$handle   = mai_get_handle();
 	$panel    = 'content-archives';
-	$sections = mai_get_option( 'archive-settings', mai_get_config( 'archive-settings' ), false );
+	$defaults = mai_get_config( 'settings' )['content-archives']['enable'];
+	$sections = mai_get_option( 'archive-settings', $defaults, false );
 
 	\Kirki::add_panel(
 		"{$handle}-{$panel}",

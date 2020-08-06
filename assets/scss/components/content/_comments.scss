@@ -1,5 +1,6 @@
 .entry-comments {
-	margin-bottom: var(--spacing-xxl);
+	max-width: var(--comments-max-width, none);
+	margin: var(--comments-margin, (var(--spacing-xxl) auto));
 }
 
 .comment-list {
@@ -63,7 +64,8 @@
 
 .comment-respond {
 	width: 100%;
-	margin-bottom: var(--spacing-xl);
+	max-width: var(--comments-max-width, none);
+	margin: var(--comments-margin, (var(--spacing-xxl) auto));
 }
 
 .comment-reply-link {

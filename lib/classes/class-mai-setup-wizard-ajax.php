@@ -15,7 +15,7 @@
 class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 
 	/**
-	 * Description of expected behavior.
+	 * Adds hooks.
 	 *
 	 * @since 1.0.0
 	 *
@@ -30,7 +30,7 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Returns the  sanitized field value passed from ajax.
 	 *
 	 * @since 1.0.0
 	 *
@@ -41,11 +41,11 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Sanitizes passed field.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $field
+	 * @param mixed $field Unsanitized field value.
 	 *
 	 * @return array
 	 */
@@ -64,7 +64,7 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Welcome step ajax.
 	 *
 	 * @since 1.0.0
 	 *
@@ -86,14 +86,18 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 
 		do_action( 'mai_setup_wizard_email_submit', $email_address );
 
-		$email = apply_filters( 'mai_setup_wizard_email', [
-			'to'          => apply_filters( 'mai_setup_wizard_email_address', 'seothemeswp@gmail.com' ),
-			'subject'     => $this->name,
-			'message'     => $email_address,
-			'headers'     => [ 'Content-Type: text/html; charset=UTF-8' ],
-			'attachments' => [],
-			'send'        => false,
-		], $email_address );
+		$email = apply_filters(
+			'mai_setup_wizard_email',
+			[
+				'to'          => apply_filters( 'mai_setup_wizard_email_address', 'seothemeswp@gmail.com' ),
+				'subject'     => $this->name,
+				'message'     => $email_address,
+				'headers'     => [ 'Content-Type: text/html; charset=UTF-8' ],
+				'attachments' => [],
+				'send'        => false,
+			],
+			$email_address
+		);
 
 		if ( $email['send'] ) {
 			wp_mail( ...array_values( $email ) );
@@ -105,7 +109,7 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Demo step ajax.
 	 *
 	 * @since 1.0.0
 	 *
@@ -132,7 +136,7 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Plugin step ajax.
 	 *
 	 * @since 1.0.0
 	 *
@@ -181,7 +185,7 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Content step ajax.
 	 *
 	 * @since 1.0.0
 	 *

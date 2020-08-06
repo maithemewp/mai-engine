@@ -1,5 +1,7 @@
-@import "default";
+:root {
+	--button-border-radius: 100px;
+}
 
 .has-corporate-gradient-background {
-	background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%);
+	background: linear-gradient(to bottom right, var(--color-primary) 0%, var(--color-link) 100%);
 }

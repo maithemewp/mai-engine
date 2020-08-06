@@ -1,6 +1,5 @@
 .mai-icon {
-	display: var(--icon-display);
-	text-align: var(--icon-align);
+	line-height: 0;
 
 	@include clearfix();
 

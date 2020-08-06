@@ -9,7 +9,17 @@
  * @license   GPL-2.0-or-later
  */
 
+/**
+ * Returns single content settings.
+ *
+ * @since 2.4.0 Moved defaults to config.
+ * @since 1.0.0
+ *
+ * @return array
+ */
 function mai_get_single_content_settings() {
+	$defaults = mai_get_config( 'settings' )['single-content'];
+
 	return [
 		[
 			'settings'    => 'show',
@@ -17,7 +27,7 @@ function mai_get_single_content_settings() {
 			'description' => esc_html__( 'Show/hide and re-order entry elements. Click "Toggle Hooks" to show Genesis hooks.', 'mai-engine' ),
 			'type'        => 'sortable',
 			'sanitize'    => 'esc_html',
-			'default'     => 'mai_get_single_show_defaults',
+			'default'     => $defaults['show'],
 			'choices'     => 'mai_get_single_show_choices',
 		],
 		[
@@ -25,7 +35,7 @@ function mai_get_single_content_settings() {
 			'label'           => esc_html__( 'Image Orientation', 'mai-engine' ),
 			'type'            => 'select',
 			'sanitize'        => 'esc_html',
-			'default'         => 'landscape',
+			'default'         => $defaults['image_orientation'],
 			'choices'         => mai_get_image_orientation_choices(),
 			'active_callback' => [
 				[
@@ -40,7 +50,7 @@ function mai_get_single_content_settings() {
 			'label'           => esc_html__( 'Image Size', 'mai-engine' ),
 			'type'            => 'select',
 			'sanitize'        => 'esc_html',
-			'default'         => 'landscape-md',
+			'default'         => $defaults['image_size'],
 			'choices'         => mai_get_image_size_choices(),
 			'active_callback' => [
 				[
@@ -60,7 +70,7 @@ function mai_get_single_content_settings() {
 			'label'           => esc_html__( 'Header Meta', 'mai-engine' ),
 			'type'            => 'text',
 			'sanitize'        => 'wp_kses_post',
-			'default'         => 'mai_get_header_meta_default',
+			'default'         => $defaults['header_meta'],
 			'active_callback' => [
 				[
 					'setting'  => 'show',
@@ -74,7 +84,7 @@ function mai_get_single_content_settings() {
 			'label'           => esc_html__( 'Footer Meta', 'mai-engine' ),
 			'type'            => 'text',
 			'sanitize'        => 'wp_kses_post',
-			'default'         => 'mai_get_footer_meta_default',
+			'default'         => $defaults['footer_meta'],
 			'active_callback' => [
 				[
 					'setting'  => 'show',
@@ -84,14 +94,15 @@ function mai_get_single_content_settings() {
 			],
 		],
 		[
-			'type'    => 'divider',
-			'default' => '<hr>',
+			'type'     => 'custom',
+			'settings' => 'single-content-field-divider',
+			'default'  => '<hr>',
 		],
 		[
 			'type'            => 'image',
 			'settings'        => 'page-header-image',
 			'label'           => __( 'Page Header default image', 'mai-engine' ),
-			'default'         => '',
+			'default'         => $defaults['page-header-image'],
 			'choices'         => [
 				'save_as' => 'id',
 			],
@@ -102,21 +113,21 @@ function mai_get_single_content_settings() {
 			'label'           => esc_html__( 'Use featured image as page header image', 'mai-engine' ),
 			'type'            => 'checkbox',
 			'sanitize'        => 'mai_sanitize_bool',
-			'default'         => false,
+			'default'         => $defaults['page-header-featured'],
 			'active_callback' => 'mai_has_page_header_support_callback',
 		],
 		[
 			'settings'        => 'page-header-background-color',
 			'label'           => esc_html__( 'Background/overlay color', 'mai-engine' ),
 			'type'            => 'color',
-			'default'         => '',
+			'default'         => $defaults['page-header-background-color'],
 			'active_callback' => 'mai_has_page_header_support_callback',
 		],
 		[
 			'settings'        => 'page-header-overlay-opacity',
 			'label'           => esc_html__( 'The background color opacity when page header has an image', 'mai-engine' ),
 			'type'            => 'slider',
-			'default'         => '',
+			'default'         => $defaults['page-header-overlay-opacity'],
 			'choices'         => [
 				'min'  => 0,
 				'max'  => 1,
@@ -128,7 +139,7 @@ function mai_get_single_content_settings() {
 			'settings'        => 'page-header-text-color',
 			'label'           => esc_html__( 'Page header text color', 'mai-engine' ),
 			'type'            => 'radio-buttonset',
-			'default'         => '',
+			'default'         => $defaults['page-header-text-color'],
 			'choices'         => [
 				''      => __( 'Default', 'mai-engine' ),
 				'light' => __( 'Light', 'mai-engine' ),
@@ -150,7 +161,8 @@ add_action( 'init', 'mai_add_single_content_settings' );
 function mai_add_single_content_settings() {
 	$handle   = mai_get_handle();
 	$panel    = 'single-content';
-	$sections = mai_get_option( 'single-settings', mai_get_config( 'single-settings' ), false );
+	$defaults = mai_get_config( 'settings' )['single-content']['enable'];
+	$sections = mai_get_option( 'single-settings', $defaults, false );
 
 	\Kirki::add_panel(
 		"{$handle}-{$panel}",

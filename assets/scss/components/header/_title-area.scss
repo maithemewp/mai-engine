@@ -23,7 +23,8 @@
 }
 
 .site-title {
-	margin: 0;
+	display: var(--site-title-display, block);
+	margin: var(--site-title-margin, 0);
 	font-weight: var(--site-title-font-weight, var(--heading-font-weight));
 	font-size: var(--site-title-font-size, var(--font-size-xl));
 	font-family: var(--site-title-font-family, var(--heading-font-family));
@@ -34,6 +35,7 @@
 }
 
 .site-description {
+	display: var(--site-description-display, block);
 	margin: 0;
 	font-size: var(--site-description-font-size, (smaller));
 }

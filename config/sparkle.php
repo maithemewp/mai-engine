@@ -10,12 +10,12 @@
  */
 
 return [
-	'demos'            => [
+	'demos'         => [
 		'creative' => 2,
 		'fashion'  => 18,
 	],
-	'global-styles'    => [
-		'colors'     => [
+	'global-styles' => [
+		'colors' => [
 			'background' => '#fdf3f2',
 			'alt'        => '#faf7f6',
 			'primary'    => '#f98588',
@@ -23,31 +23,31 @@ return [
 			'heading'    => '#000000',
 			'body'       => '#7f7d7e',
 		],
-		'fonts'      => [
+		'fonts'  => [
 			'body'    => 'Work Sans:400',
 			'heading' => 'Josefin Sans:600',
 		],
-		'font-scale' => 1.125,
 	],
-	'image-sizes'      => [
+	'image-sizes'   => [
 		'add' => [
 			'portrait' => '3:4',
 		],
 	],
-	'theme-support'    => [
+	'theme-support' => [
 		'add' => [
 			'boxed-container',
 			'sticky-header',
 		],
 	],
-	'archive-settings' => [
-		'post',
-		'category',
+	'settings'      => [
+		'content-archives' => [
+			'enable' => [ 'post', 'category' ],
+		],
+		'page-header'      => [
+			'single' => [ 'page' ],
+		],
 	],
-	'page-header'      => [
-		'single' => [ 'page' ],
-	],
-	'plugins'          => [
+	'plugins'       => [
 		[
 			'name'  => 'Genesis Connect for WooCommerce',
 			'slug'  => 'genesis-connect-woocommerce/genesis-connect-woocommerce.php',

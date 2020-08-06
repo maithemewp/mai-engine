@@ -31,19 +31,23 @@ function mai_do_upgrade() {
 		$first_version = false !== mai_get_options() ? '1.0.0' : $plugin_version;
 	}
 
-	$db_version = mai_get_option( 'db-version', '0.0.0' );
+	$db_version = mai_get_option( 'db-version', false );
 
 	// Return early if at latest.
 	if ( $plugin_version === $db_version ) {
 		return;
 	}
 
-	if ( version_compare( $db_version, '0.2.0', '<' ) ) {
-		mai_upgrade_0_2_0();
-	}
+	// Only run upgrades if we have an existing version.
+	if ( $db_version ) {
 
-	if ( version_compare( $db_version, '2.0.1', '<' ) ) {
-		mai_upgrade_2_0_1();
+		if ( version_compare( $db_version, '0.2.0', '<' ) ) {
+			mai_upgrade_0_2_0();
+		}
+
+		if ( version_compare( $db_version, '2.0.1', '<' ) ) {
+			mai_upgrade_2_0_1();
+		}
 	}
 
 	// Update database version after upgrade.
@@ -110,7 +114,9 @@ function mai_upgrade_2_0_1() {
  *
  * @since 2.0.0
  *
- * @return array
+ * @param array $data Data array.
+ *
+ * @return void
  */
 function mai_update_data( $data = [] ) {
 

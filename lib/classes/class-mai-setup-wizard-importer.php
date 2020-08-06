@@ -15,7 +15,7 @@
 class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 
 	/**
-	 * Description of expected behavior.
+	 * Returns path to cache directory.
 	 *
 	 * @since 1.0.0
 	 *
@@ -29,11 +29,11 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Passes import info to content type methods.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $content_type
+	 * @param string $content_type Content type.
 	 *
 	 * @return void
 	 */
@@ -61,11 +61,11 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Downloads content files.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $url Path to xml file.
+	 * @param string $url Path to file.
 	 *
 	 * @return void
 	 */
@@ -109,7 +109,7 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Imports content.xml file.
 	 *
 	 * @since 1.0.0
 	 *
@@ -131,9 +131,12 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 		}
 
 		$logger   = new ProteusThemes\WPContentImporter2\WPImporterLogger();
-		$importer = new ProteusThemes\WPContentImporter2\Importer( [
-			'fetch_attachments' => true,
-		], $logger );
+		$importer = new ProteusThemes\WPContentImporter2\Importer(
+			[
+				'fetch_attachments' => true,
+			],
+			$logger
+		);
 
 		do_action( 'mai_setup_wizard_before_import', $this->demos->get_chosen_demo() );
 
@@ -147,11 +150,11 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Imports template parts JSON.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $file Path to xml file.
+	 * @param string $file Path to JSON file.
 	 *
 	 * @return void
 	 */
@@ -182,11 +185,11 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Imports customizer DAT file.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $file
+	 * @param string $file Path to DAT file.
 	 *
 	 * @return void
 	 */
@@ -227,11 +230,15 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 
 		if ( isset( $data['options'] ) ) {
 			foreach ( $data['options'] as $option_key => $option_value ) {
-				$option = new Mai_Setup_Wizard_Customizer_Setting( $wp_customize, $option_key, [
-					'default'    => '',
-					'type'       => 'option',
-					'capability' => 'edit_theme_options',
-				] );
+				$option = new Mai_Setup_Wizard_Customizer_Setting(
+					$wp_customize,
+					$option_key,
+					[
+						'default'    => '',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
+					]
+				);
 
 				$option->import( $option_value );
 			}
@@ -253,11 +260,11 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Imports images in customizer file.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $mods
+	 * @param array $mods Theme mods.
 	 *
 	 * @return mixed
 	 */
@@ -268,9 +275,9 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 			}
 
 			if ( ! function_exists( 'media_handle_sideload' ) ) {
-				require_once( ABSPATH . 'wp-admin/includes/media.php' );
-				require_once( ABSPATH . 'wp-admin/includes/file.php' );
-				require_once( ABSPATH . 'wp-admin/includes/image.php' );
+				require_once ABSPATH . 'wp-admin/includes/media.php';
+				require_once ABSPATH . 'wp-admin/includes/file.php';
+				require_once ABSPATH . 'wp-admin/includes/image.php';
 			}
 
 			$data = new stdClass();

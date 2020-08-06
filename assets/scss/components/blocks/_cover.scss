@@ -1,15 +1,16 @@
 .wp-block-cover {
 	position: relative; // so negative margins inside will work.
 	min-height: 0;
+	padding: var(--cover-block-padding-top, 0) var(--cover-block-padding-right, 0) var(--cover-block-padding-bottom, 0) var(--cover-block-padding-left, 0);
 
 	&.has-background:not(.alignfull) {
-		padding-right: var(--spacing-lg);
-		padding-left: var(--spacing-lg);
+		--cover-block-padding-right: var(--spacing-lg);
+		--cover-block-padding-left: var(--spacing-lg);
 	}
 
 	&.alignfull {
-		padding-right: var(--side-spacing);
-		padding-left: var(--side-spacing);
+		--cover-block-padding-right: var(--side-spacing);
+		--cover-block-padding-left: var(--side-spacing);
 	}
 
 	&__inner-container {

@@ -61,15 +61,16 @@ add_filter( 'acf/location/rule_match/mai_public_post_type', 'mai_acf_public_post
  *
  * @since 2.0.0
  *
- * @param bool      $result      Whether the rule matches.
- * @param array     $rule        The current rule you're matching. Includes 'param', 'operator' and 'value' parameters.
- * @param WP_Screen $screen      The current screen.
- * @param array     $field_group Data about the current edit screen (post_id, page_template...).
+ * @param bool      $result Whether the rule matches.
+ * @param array     $rule   Current rule to match (param, operator, value).
+ * @param WP_Screen $screen The current screen.
  *
- * @return bool $match
+ * @return bool
  */
-function mai_acf_public_post_type_rule_match( $result, $rule, $screen, $field_group ) {
-	return isset( $screen['post_type'] ) && in_array( $screen['post_type'], get_post_types( [ 'public' => true ] ) );
+function mai_acf_public_post_type_rule_match( $result, $rule, $screen ) {
+	$post_types = get_post_types( [ 'public' => true ] );
+
+	return $post_types && isset( $screen['post_type'] ) && isset( $post_types[ $screen['post_type'] ] );
 }
 
 add_filter( 'acf/load_field/key=hide_elements', 'mai_load_hide_elements_field' );
@@ -85,7 +86,8 @@ add_filter( 'acf/load_field/key=hide_elements', 'mai_load_hide_elements_field' )
 function mai_load_hide_elements_field( $field ) {
 	$field['choices'] = [];
 	$post_type        = mai_get_admin_post_type();
-	$page_header      = mai_get_option( 'page-header-single', mai_get_config( 'page-header' )['single'] );
+	$default          = mai_get_config( 'settings' )['page-header']['single'];
+	$page_header      = mai_get_option( 'page-header-single', $default );
 
 	if ( mai_has_template_part( 'before-header' ) || is_active_sidebar( 'before-header' ) ) {
 		$field['choices']['before_header'] = __( 'Before Header', 'mai-engine' );
@@ -105,7 +107,7 @@ function mai_load_hide_elements_field( $field ) {
 		$field['choices']['after_header'] = __( 'After Header Menu', 'mai-engine' );
 	}
 
-	if ( $page_header && ( '*' === $page_header || ( is_array( $page_header ) && in_array( $post_type, $page_header ) ) ) ) {
+	if ( $page_header && ( '*' === $page_header || ( is_array( $page_header ) && in_array( $post_type, $page_header, true ) ) ) ) {
 		$field['choices']['page_header'] = __( 'Page Header', 'mai-engine' );
 	}
 

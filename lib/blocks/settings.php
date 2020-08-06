@@ -25,7 +25,7 @@ function mai_do_cover_group_block_settings( $block_content, $block ) {
 		return $block_content;
 	}
 
-	if ( ! in_array( $block['blockName'], [ 'core/cover', 'core/group' ] ) ) {
+	if ( ! in_array( $block['blockName'], [ 'core/cover', 'core/group' ], true ) ) {
 		return $block_content;
 	}
 
@@ -39,42 +39,48 @@ function mai_do_cover_group_block_settings( $block_content, $block ) {
 		$dom = mai_get_dom_document( $block_content );
 
 		/**
+		 * The block container.
+		 *
 		 * @var DOMElement $first_block The block container.
 		 */
-		$first_block = $dom->childNodes && isset( $dom->childNodes[0] ) ? $dom->childNodes[0] : false;
+		$first_block = $dom->childNodes && isset( $dom->childNodes[0] ) ? $dom->childNodes[0] : false; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 
 		if ( $first_block ) {
 
 			$classes = $first_block->getAttribute( 'class' );
 
 			// Remove classes left from old regex.
-			$classes = str_replace( [
-				'has-xs-content-width',
-				'has-sm-content-width',
-				'has-md-content-width',
-				'has-lg-content-width',
-				'has-xl-content-width',
-				'has-xs-padding-top',
-				'has-sm-padding-top',
-				'has-md-padding-top',
-				'has-lg-padding-top',
-				'has-xl-padding-top',
-				'has-xs-padding-bottom',
-				'has-sm-padding-bottom',
-				'has-md-padding-bottom',
-				'has-lg-padding-bottom',
-				'has-xl-padding-bottom',
-				'has-xs-padding-left',
-				'has-sm-padding-left',
-				'has-md-padding-left',
-				'has-lg-padding-left',
-				'has-xl-padding-left',
-				'has-xs-padding-right',
-				'has-sm-padding-right',
-				'has-md-padding-right',
-				'has-lg-padding-right',
-				'has-xl-padding-right',
-			], '', $classes );
+			$classes = str_replace(
+				[
+					'has-xs-content-width',
+					'has-sm-content-width',
+					'has-md-content-width',
+					'has-lg-content-width',
+					'has-xl-content-width',
+					'has-xs-padding-top',
+					'has-sm-padding-top',
+					'has-md-padding-top',
+					'has-lg-padding-top',
+					'has-xl-padding-top',
+					'has-xs-padding-bottom',
+					'has-sm-padding-bottom',
+					'has-md-padding-bottom',
+					'has-lg-padding-bottom',
+					'has-xl-padding-bottom',
+					'has-xs-padding-left',
+					'has-sm-padding-left',
+					'has-md-padding-left',
+					'has-lg-padding-left',
+					'has-xl-padding-left',
+					'has-xs-padding-right',
+					'has-sm-padding-right',
+					'has-md-padding-right',
+					'has-lg-padding-right',
+					'has-xl-padding-right',
+				],
+				'',
+				$classes
+			);
 
 			if ( $width ) {
 				$classes = mai_add_classes( sprintf( 'has-%s-content-width', $width ), $classes );
@@ -121,19 +127,21 @@ function mai_do_heading_block_settings( $block_content, $block ) {
 		return $block_content;
 	}
 
-	if ( ! in_array( $block['blockName'], [ 'core/heading' ] ) ) {
+	if ( ! in_array( $block['blockName'], [ 'core/heading' ], true ) ) {
 		return $block_content;
 	}
 
-	$size  = mai_isset( $block['attrs'], 'fontSize', '' );
+	$size = mai_isset( $block['attrs'], 'fontSize', '' );
 
 	if ( $size ) {
 		$dom = mai_get_dom_document( $block_content );
 
 		/**
+		 * The block container.
+		 *
 		 * @var DOMElement $first_block The block container.
 		 */
-		$first_block = $dom->childNodes && isset( $dom->childNodes[0] ) ? $dom->childNodes[0] : false;
+		$first_block = $dom->childNodes && isset( $dom->childNodes[0] ) ? $dom->childNodes[0] : false; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 
 		if ( $first_block ) {
 

@@ -21,7 +21,7 @@ add_filter( 'genesis_attr_site-footer', 'mai_add_site_footer_id' );
  *
  * @since 2.1.0
  *
- * @param $attr
+ * @param array $attr Site footer attributes.
  *
  * @return mixed
  */

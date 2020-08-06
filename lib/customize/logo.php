@@ -13,10 +13,25 @@ add_action( 'init', 'mai_logo_customizer_settings' );
 /**
  * Add logo customizer settings.
  *
+ * @since 2.3.0 Added show tagline setting.
+ *
  * @return  void
  */
 function mai_logo_customizer_settings() {
 	$config_id = mai_get_handle();
+	$defaults  = mai_get_config( 'settings' )['logo'];
+
+	Kirki::add_field(
+		$config_id,
+		[
+			'type'     => 'checkbox',
+			'settings' => 'show-tagline',
+			'label'    => esc_html__( 'Show Tagline', 'mai-engine' ),
+			'section'  => 'title_tagline',
+			'priority' => 30,
+			'default'  => $defaults['show-tagline'],
+		]
+	);
 
 	Kirki::add_field(
 		$config_id,
@@ -26,14 +41,11 @@ function mai_logo_customizer_settings() {
 			'label'    => esc_html__( 'Logo Width', 'mai-engine' ),
 			'section'  => 'title_tagline',
 			'priority' => 60,
-			'default'  => [
-				'desktop' => '180px',
-				'mobile'  => '120px',
-			],
+			'default'  => $defaults['width'],
 			'choices'  => [
 				'labels' => [
 					'desktop' => esc_html__( 'Desktop', 'mai-engine' ),
-					'mobile'  => mai_has_sticky_header() ? esc_html__( 'Mobile / Sticky', 'mai-engine' ) : esc_html__( 'Mobile', 'mai-engine' ),
+					'mobile'  => mai_has_sticky_header_enabled() ? esc_html__( 'Mobile / Sticky', 'mai-engine' ) : esc_html__( 'Mobile', 'mai-engine' ),
 				],
 			],
 			'output'   => [
@@ -60,14 +72,11 @@ function mai_logo_customizer_settings() {
 			'label'    => esc_html__( 'Logo Spacing', 'mai-engine' ),
 			'section'  => 'title_tagline',
 			'priority' => 60,
-			'default'  => [
-				'desktop' => '36px',
-				'mobile'  => '16px',
-			],
+			'default'  => $defaults['spacing'],
 			'choices'  => [
 				'labels' => [
 					'desktop' => esc_html__( 'Desktop', 'mai-engine' ),
-					'mobile'  => mai_has_sticky_header() ? esc_html__( 'Mobile / Sticky', 'mai-engine' ) : esc_html__( 'Mobile', 'mai-engine' ),
+					'mobile'  => mai_has_sticky_header_enabled() ? esc_html__( 'Mobile / Sticky', 'mai-engine' ) : esc_html__( 'Mobile', 'mai-engine' ),
 				],
 			],
 			'output'   => [

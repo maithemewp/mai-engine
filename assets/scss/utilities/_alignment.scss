@@ -1,4 +1,4 @@
-@include mq(lg) {
+@include mq(md) {
 
 	.alignleft {
 		float: left;
@@ -13,6 +13,9 @@
 
 		@include clearfix;
 	}
+}
+
+@include mq(lg) {
 
 	.alignwide {
 		width: var(--alignwide-width, auto);
@@ -24,21 +27,24 @@
 
 .content-sidebar-wrap {
 
-	.content-sidebar &,
-	.sidebar-content & {
-		--alignfull-margin-right: 0;
-		--alignfull-margin-left: 0;
-		--alignwide-margin-right: 0;
-		--alignwide-margin-left: 0;
+	@include mq(lg) {
+
+		.content-sidebar &,
+		.sidebar-content & {
+			--alignfull-margin-right: 0;
+			--alignfull-margin-left: 0;
+			--alignwide-margin-right: 0;
+			--alignwide-margin-left: 0;
+		}
 	}
 }
 
 .alignfull {
 	clear: both;
-	width: var(--alignfull-width, 100vw);
-	max-width: var(--alignfull-max-width, 100vw);
-	margin-right: var(--alignfull-margin-right, calc(50% - 50vw));
-	margin-left: var(--alignfull-margin-left, calc(50% - 50vw));
+	width: var(--alignfull-width, calc(100vw - var(--scrollbar-width, 0px)));
+	max-width: var(--alignfull-max-width, calc(100vw - var(--scrollbar-width, 0px)));
+	margin-right: var(--alignfull-margin-right, calc(50% - (50vw - (var(--scrollbar-width, 0px) / 2))));
+	margin-left: var(--alignfull-margin-left, calc(50% - (50vw - (var(--scrollbar-width, 0px) / 2))));
 }
 
 .content {

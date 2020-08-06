@@ -47,12 +47,14 @@ function mai_get_content_limit( $content, $limit ) {
  */
 function mai_has_custom_loop() {
 	if ( mai_is_type_archive() ) {
-		$name  = mai_get_archive_args_name();
-		$types = mai_get_option( 'archive-settings', mai_get_config( 'archive-settings' ) );
+		$name     = mai_get_archive_args_name();
+		$defaults = mai_get_config( 'settings' )['content-archives']['enable'];
+		$types    = mai_get_option( 'archive-settings', $defaults );
 
 	} elseif ( mai_is_type_single() ) {
-		$name  = mai_get_singular_args_name();
-		$types = mai_get_option( 'single-settings', mai_get_config( 'single-settings' ) );
+		$name     = mai_get_singular_args_name();
+		$defaults = mai_get_config( 'settings' )['single-content']['enable'];
+		$types    = mai_get_option( 'single-settings', $defaults );
 	}
 
 	if ( isset( $name, $types ) ) {
@@ -62,8 +64,18 @@ function mai_has_custom_loop() {
 		}
 
 		// All core WP post types and taxonomies use our custom loop.
-		$post_types = get_post_types( [ '_builtin' => true, 'public' => true ] );
-		$taxonomies = get_taxonomies( [ '_builtin' => true, 'public' => true ] );
+		$post_types = get_post_types(
+			[
+				'_builtin' => true,
+				'public'   => true,
+			]
+		);
+		$taxonomies = get_taxonomies(
+			[
+				'_builtin' => true,
+				'public'   => true,
+			]
+		);
 
 		if ( isset( $post_types[ $name ] ) || isset( $taxonomies[ $name ] ) ) {
 			return true;
@@ -105,6 +117,7 @@ function mai_get_template_args() {
 	$name     = '';
 	$context  = '';
 	$settings = '';
+	$default  = '';
 
 	if ( mai_is_type_archive() ) {
 		$name     = mai_get_archive_args_name();
@@ -116,8 +129,12 @@ function mai_get_template_args() {
 		$settings = 'single-content';
 	}
 
+	if ( $settings ) {
+		$default = mai_get_config( 'settings' )[ $settings ]['enable'];
+	}
+
 	// Get taxonomy's post type as fallback.
-	if ( taxonomy_exists( $name ) && ! in_array( $name, mai_get_option( $context . '-settings', mai_get_config( $context . '-settings' ) ), true ) ) {
+	if ( taxonomy_exists( $name ) && ! in_array( $name, mai_get_option( $context . '-settings', $default ), true ) ) {
 		$post_type = mai_get_taxonomy_post_type( $name );
 		if ( $post_type ) {
 			$name = $post_type;
@@ -125,7 +142,7 @@ function mai_get_template_args() {
 	}
 
 	// Get fallback for archives. This happens on category/tag/etc archives when they don't have custom loop settings.
-	if ( mai_is_type_archive() && ! in_array( $name, mai_get_option( 'archive-settings', mai_get_config( 'archive-settings' ) ), true ) ) {
+	if ( mai_is_type_archive() && ! in_array( $name, mai_get_option( 'archive-settings', mai_get_config( 'settings' )['content-archives']['enable'] ), true ) ) {
 		$name = 'post';
 	}
 
@@ -140,7 +157,7 @@ function mai_get_template_args() {
 	if ( 'archive' === $context ) {
 		$config = mai_get_content_archive_settings();
 
-	} else if ( 'single' === $context ) {
+	} elseif ( 'single' === $context ) {
 		$config = mai_get_single_content_settings();
 	}
 
@@ -160,7 +177,7 @@ function mai_get_template_args() {
 	foreach ( $args as $name => $value ) {
 
 		// Skip header and footer meta, empty means empty.
-		if ( in_array( $name, [ 'header_meta', 'footer_meta' ] ) ) {
+		if ( in_array( $name, [ 'header_meta', 'footer_meta' ], true ) ) {
 			continue;
 		}
 
@@ -171,6 +188,19 @@ function mai_get_template_args() {
 
 	// Parse args.
 	$args = wp_parse_args( $args, $defaults );
+
+	// Remove settings with empty string, again.
+	foreach ( $args as $name => $value ) {
+
+		// Skip header and footer meta, empty means empty.
+		if ( in_array( $name, [ 'header_meta', 'footer_meta' ], true ) ) {
+			continue;
+		}
+
+		if ( is_null( $value ) || '' === $value ) {
+			unset( $args[ $name ] );
+		}
+	}
 
 	// Allow devs to filter.
 	$args = apply_filters( 'mai_template_args', $args, $context );
@@ -210,7 +240,7 @@ function mai_get_sanitized_entry_args( $args, $context ) {
 
 	if ( 'archive' === $context ) {
 		$settings = mai_get_content_archive_settings();
-	} else if ( 'single' === $context ) {
+	} elseif ( 'single' === $context ) {
 		$settings = mai_get_single_content_settings();
 	}
 
@@ -249,7 +279,7 @@ function mai_get_sanitized_entry_args( $args, $context ) {
 }
 
 /**
- * Get the name to be used in the main args function/helpers.
+ * Gets the archive content type name to be used in the main args function/helpers.
  *
  * @since 0.1.0
  *
@@ -278,7 +308,6 @@ function mai_get_archive_args_name() {
 					$name = $object->taxonomy;
 				}
 			}
-
 		} elseif ( is_post_type_archive() ) {
 			$name = get_query_var( 'post_type' );
 
@@ -289,7 +318,6 @@ function mai_get_archive_args_name() {
 					$name = $object->name;
 				}
 			}
-
 		} elseif ( is_search() ) {
 			$name = 'search';
 
@@ -308,7 +336,7 @@ function mai_get_archive_args_name() {
 }
 
 /**
- * Description of expected behavior.
+ * Gets the singular content type name to be used in the main args function/helpers.
  *
  * @since 0.1.0
  *
@@ -321,9 +349,9 @@ function mai_get_singular_args_name() {
 }
 
 /**
- * Description of expected behavior.
+ * Gets the header meta default content.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param string $name Post type name.
  *
@@ -340,9 +368,9 @@ function mai_get_header_meta_default( $name = 'post' ) {
 }
 
 /**
- * Description of expected behavior.
+ * Gets the footer meta default content.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param string $name Taxonomy name.
  *
@@ -375,9 +403,9 @@ function mai_get_footer_meta_default( $name ) {
 }
 
 /**
- * Description of expected behavior.
+ * Gets the "Show" choices for archive content.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return array
  */
@@ -405,9 +433,9 @@ function mai_get_archive_show_choices() {
 }
 
 /**
- * Description of expected behavior.
+ * Gets the "Show" defaults for a content type.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param string $name Post type name.
  *
@@ -447,9 +475,9 @@ function mai_get_single_show_defaults( $name = 'post' ) {
 }
 
 /**
- * Description of expected behavior.
+ * Gets the "Show" choices for single content.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return array
  */

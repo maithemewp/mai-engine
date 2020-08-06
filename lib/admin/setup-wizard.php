@@ -18,7 +18,7 @@ if ( ! apply_filters( 'mai_init_setup_wizard', true ) ) {
  *
  * @since 1.0.0
  *
- * @param string $service_provider
+ * @param string $service_provider Optionally retrieve a single service provider.
  *
  * @return array|Mai_Setup_Wizard_Service_Provider
  */
@@ -100,7 +100,7 @@ add_filter( 'mai_setup_wizard_menu', 'mai_setup_wizard_menu', 10, 2 );
  *
  * @since 0.3.0
  *
- * @param array $args
+ * @param array $args Setup wizard admin menu args.
  *
  * @return array
  */
@@ -118,7 +118,7 @@ add_filter( 'mai_setup_wizard_demos', 'mai_setup_wizard_demos', 15, 1 );
  *
  * @since 0.3.0
  *
- * @param $defaults
+ * @param array $defaults Setup wizard default demos.
  *
  * @return array
  */
@@ -172,13 +172,16 @@ add_filter( 'mai_setup_wizard_steps', 'mai_setup_wizard_welcome_step_description
  *
  * @since 0.3.0
  *
+ * @param array $steps Default setup wizard steps.
+ *
  * @return string
  */
 function mai_setup_wizard_welcome_step_description( $steps ) {
 	$text = __( 'Mai Theme Setup Wizard Page', 'mai-engine' );
 	$link = sprintf( '<a target="_blank" rel="noopener nofollow" href="https://bizbudding.com/mai-setup-wizard/">%s</a>', $text );
 
-	$steps['welcome']['description'] = sprintf( '%s %s %s',
+	$steps['welcome']['description'] = sprintf(
+		'%s %s %s',
 		__( 'Welcome to the Mai Setup Wizard! Enter your email address in the form below to receive automatic updates, share your environment information, win free swag, receive the latest news and get special offers. To learn more about providing your email and claiming your free goodies, visit the', 'mai-engine' ),
 		$link,
 		__( 'on BizBudding for all the details, terms and conditions of this program.', 'mai-engine' )
