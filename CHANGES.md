@@ -1,8 +1,5 @@
 # Changelog
 
-## 2.4.1 (8/6/20)
-* Fixed: Site layouts not falling back correctly in some configurations.
-
 ## 2.4.0 (8/6/20)
 * Added: Mai Grid blocks now have a setting to remove bottom spacing.
 * Added: Top level template parts now have a div wrap with the template part name.
@@ -13,6 +10,7 @@
 * Added: Template Parts editor background styles to show transparency.
 * Added: Template Parts can now be exported by WP exporter.
 * Added: New has-sidebar or no-sidebar body class.
+* Changed: Require a default site layout in customizer.
 * Changed: Customizer setting defaults are now config based.
 * Changed: Row and Column Gap settings are now a scale (sm, md, lg, etc.) instead of a text field for layout and design consistency.
 * Changed: Default container margins and main container elements to make full width section layouts easier to remove margin.
@@ -30,6 +28,7 @@
 * Changed: Add itemtype schema to nav menus when using `[mai_menu]` shortcode or helper function.
 * Changed: Sub menu toggle icon now correctly scales with menu font size.
 * Changed: Remove default margin on separator block.
+* Fixed: Site layouts not falling back correctly in some configurations.
 * Fixed: Mobile menu displaying duplicate or overlapping menus when using Mobile Menu template part.
 * Fixed: Archive/Single layout settings not working correctly on post types.
 * Fixed: Template Parts auto creating unintentionally when posts per page is set less than 8.
