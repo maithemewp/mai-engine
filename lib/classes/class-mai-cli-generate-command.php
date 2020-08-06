@@ -171,6 +171,6 @@ class Mai_Cli_Generate_Command {
 		update_option( 'page_on_front', $home->ID );
 		update_option( 'page_for_posts', $blog->ID );
 
-		WP_CLI::log( __( 'Udpated options.', 'mai-engine' ) );
+		WP_CLI::log( __( 'Updated options.', 'mai-engine' ) );
 	}
 }
