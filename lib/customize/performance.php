@@ -13,7 +13,7 @@ add_action( 'init', 'mai_performance_customizer_settings' );
 /**
  * Add performance customizer settings.
  *
- * @since 2.3.1 Moved defaults to config.
+ * @since 2.4.0 Moved defaults to config.
  * @since 1.0.0
  *
  * @return  void

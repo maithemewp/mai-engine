@@ -1,6 +1,64 @@
 # Changelog
 
-## 2.3.1 (TBD)
+## 2.4.0 (8/6/20)
+* Added: Mai Grid blocks now have a setting to remove bottom spacing.
+* Added: Top level template parts now have a div wrap with the template part name.
+* Added: Show tagline setting in Site Identity customizer panel.
+* Added: Link/URL field to Mai Icon block.
+* Added: CSS only anchor link slow scroll, and scroll offset when sticky header is enabled.
+* Added: Template Parts now respect Private post status for logged in admins. This is a great way to test before making them live/published.
+* Added: Template Parts editor background styles to show transparency.
+* Added: Template Parts can now be exported by WP exporter.
+* Added: New has-sidebar or no-sidebar body class.
+* Changed: Customizer setting defaults are now config based.
+* Changed: Row and Column Gap settings are now a scale (sm, md, lg, etc.) instead of a text field for layout and design consistency.
+* Changed: Default container margins and main container elements to make full width section layouts easier to remove margin.
+* Changed: Font size when button-small class is used on buttons.
+* Changed: Archive pagination buttons are now smaller by default.
+* Changed: Remove border radius on entries when either row/column gap are 0.
+* Changed: Replace clear link on many customizer settings with None/Default/Auto button.
+* Changed: Center author bio on bio.
+* Changed: Better default quote styling.
+* Changed: Better dropcap default styling.
+* Changed: Remove unecessary post classes.
+* Changed: Added entry-wrap div on entries for more flexible and consitent styling.
+* Changed: Use heading color setting as text color for white buttons.
+* Changed: Align full/wide tweaks on mobile when layout has a sidebar.
+* Changed: Add itemtype schema to nav menus when using `[mai_menu]` shortcode or helper function.
+* Changed: Sub menu toggle icon now correctly scales with menu font size.
+* Changed: Remove default margin on separator block.
+* Fixed: Mobile menu displaying duplicate or overlapping menus when using Mobile Menu template part.
+* Fixed: Archive/Single layout settings not working correctly on post types.
+* Fixed: Template Parts auto creating unintentionally when posts per page is set less than 8.
+* Fixed: Stop using the_content filter in template parts as some plugins incorrectly use the filter and add content to the template.
+* Fixed: Border radius on entries when Image Position is Background.
+* Fixed: Mai Post Grid meta queries not working correctly with some configurations.
+* Fixed: Mai Post Grid meta value field not hidden compare is exists or not exists.
+* Fixed: Mai Term Grid showing all terms when choosing terms and choices are empty.
+* Fixed: Mai Grid block images when columns are set to Auto.
+* Fixed: Mai Grid block not hiding Boxed setting when Image Position is Background.
+* Fixed: Mai Grid block skewing background images on mobile.
+* Fixed: Mai Grid block content overlapping image on mobile when stacking image/content is checked.
+* Fixed: Mai Grid block image is always first on mobile if stacking, whether image position is left or right.
+* Fixed: Safari desktop/iOS scrollbar causing horizontal scroll with alignfull blocks.
+* Fixed: Fallback image not working correctly on page header in some configurations.
+* Fixed: Allow page header overlay opacity to be 0.
+* Fixed: Center aligned images not correctly centering.
+* Fixed: Mobile menu and `[mai_menu]` shortcode styling tweaks.
+* Fixed: `[mai_menu]` incorrectly showing a default menu when id is not a valid menu value.
+* Fixed: Block container CSS tweaks in the editor.
+* Fixed: Button border radius not working on hover when using a custom border radius.
+* Fixed: Header gap when using transparent header and refreshing the page when already scrolled down and going back to top.
+* Fixed: Default button styles in editor.
+* Fixed: Nested group spacing settings overriding each other in editor.
+* Fixed: Image size chooser incorrectly showing custom image sizes as the same size.
+* Fixed: Transparent header not working correctly in some scenarios of hidden elements and header settings.
+* Fixed: Adjacent entry pagination adding top margin incorrectly.
+* Fixed: Input placeholder text getting lost on dark backgrounds.
+* Fixed: Center aligned search block.
+* Fixed: Cite elements not respecting color setting when in a group block.
+* Fixed: WooCommerce onsale badge size.
+* Fixed: Empty admin notice showing when deactivating some plugins.
 
 ## 2.3.0 (7/21/20)
 * Added: Title size setting to Mai Grid blocks and Content Archive settings.

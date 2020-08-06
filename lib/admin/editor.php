@@ -41,7 +41,7 @@ add_action( 'edit_form_after_title', 'mai_add_editor_on_posts_page' );
  * in the admin when editing this page, otherwise default editor will show. This
  * is a bit hacky and I wish Gutenberg didn't do this.
  *
- * @since 2.3.1 Moved to editor.php file.
+ * @since 2.4.0 Moved to editor.php file.
  * @since 0.1.0
  *
  * @param WP_Post $post Post object.

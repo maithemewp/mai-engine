@@ -15,7 +15,7 @@ add_action( 'current_screen', 'mai_create_template_parts' );
  * Only runs on main template part admin list.
  *
  * @since 2.0.0
- * @since 2.3.1 Removed unnecesarry wp_doing_ajax() call since solving https://github.com/maithemewp/mai-engine/issues/251.
+ * @since 2.4.0 Removed unnecesarry wp_doing_ajax() call since solving https://github.com/maithemewp/mai-engine/issues/251.
  *
  * @param WP_Screen $current_screen Current WP_Screen object.
  *

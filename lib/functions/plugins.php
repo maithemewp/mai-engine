@@ -13,7 +13,7 @@ add_action( 'wp_enqueue_scripts', 'mai_remove_simple_social_icons_css', 15 );
 /**
  * Remove Simple Social Icons CSS.
  *
- * @since 2.3.1
+ * @since 2.4.0
  *
  * @return void
  */

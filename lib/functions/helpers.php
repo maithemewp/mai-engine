@@ -98,7 +98,7 @@ function mai_isset( $array, $key, $default = false ) {
 /**
  * Check if a size is a valid size value.
  *
- * @since 2.3.1
+ * @since 2.4.0
  *
  * @return bool
  */

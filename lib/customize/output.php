@@ -166,7 +166,7 @@ function mai_add_page_header_content_type_css( $css ) {
 	}
 
 	$config     = mai_get_config( 'settings' )['page-header'];
-	$text      = mai_get_template_arg( 'page-header-text-color', mai_get_option( 'page-header-text-color', mai_get_color( $config['text-color'] ) ) );
+	$text       = mai_get_template_arg( 'page-header-text-color', mai_get_option( 'page-header-text-color', mai_get_color( $config['text-color'] ) ) );
 	$background = mai_get_template_arg( 'page-header-background', mai_get_option( 'page-header-background', mai_get_color( $config['background-color'] ) ) );
 	$opacity    = mai_get_template_arg( 'page-header-overlay-opacity', mai_get_option( 'page-header-overlay-opacity', (string) $config['overlay-opacity'] ) );
 

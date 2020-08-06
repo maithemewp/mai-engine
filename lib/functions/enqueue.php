@@ -83,7 +83,7 @@ add_action( 'customize_controls_enqueue_scripts', 'mai_enqueue_assets' );
 /**
  * Register and enqueue all scripts and styles.
  *
- * @since 2.3.1 Separate mai_enqueue_asset function.
+ * @since 2.4.0 Separate mai_enqueue_asset function.
  * @since 1.0.0
  *
  * @return void
@@ -104,7 +104,7 @@ function mai_enqueue_assets() {
 /**
  * Register and enqueue script or style.
  *
- * @since 2.3.1
+ * @since 2.4.0
  *
  * @param string $handle Asset handle.
  * @param array  $args   Asset args.
@@ -191,7 +191,7 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 /**
  * Deregister script or style.
  *
- * @since 2.3.1
+ * @since 2.4.0
  *
  * @param string $handle Asset handle.
  *
@@ -212,7 +212,7 @@ add_action( 'admin_enqueue_scripts', 'mai_remove_block_library_theme_css', 9 );
 /**
  * Remove block library theme CSS from admin.
  *
- * @since 2.3.1
+ * @since 2.4.0
  *
  * @return void
  */

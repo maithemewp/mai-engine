@@ -179,7 +179,7 @@ function mai_get_svg( $name, $class = '' ) {
 /**
  * Returns an SVG string.
  *
- * @since 2.3.1 Added check for dom element.
+ * @since 2.4.0 Added check for dom element.
  * @since 0.1.0
  *
  * @param string $name  SVG name.

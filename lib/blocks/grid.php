@@ -669,7 +669,7 @@ function mai_get_term_choices_from_taxonomy( $taxonomy = '' ) {
  * Sets the default gap if existing value is not a valid size.
  * This helps deprecate the old text field values, so the default is set correctly for existing block instances.
  *
- * @since 2.3.1
+ * @since 2.4.0
  *
  * @param array $field The existing field.
  *

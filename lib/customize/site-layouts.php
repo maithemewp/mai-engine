@@ -13,7 +13,7 @@ add_action( 'init', 'mai_site_layouts_customizer_settings' );
 /**
  * Add base styles customizer settings.
  *
- * @since 2.3.1 Moved defaults to config.
+ * @since 2.4.0 Moved defaults to config.
  * @since 0.3.0
  *
  * @return void

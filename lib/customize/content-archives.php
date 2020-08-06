@@ -12,7 +12,7 @@
 /**
  * Returns content archive settings.
  *
- * @since 2.3.1 Moved defaults to config.
+ * @since 2.4.0 Moved defaults to config.
  * @since 0.1.0
  *
  * @return array

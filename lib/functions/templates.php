@@ -14,7 +14,7 @@ add_action( 'init', 'mai_register_template_part_cpt' );
  * Register template part post type.
  *
  * @since 2.0.0
- * @since 2.3.1 Changed can_export to true.
+ * @since 2.4.0 Changed can_export to true.
  *
  * @return void
  */
@@ -123,7 +123,7 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
  *
  * @since 2.0.1
  * @since 2.2.2 Now returns an array of template part content content keyed by slug instead of an array of WP_Post objects.
- * @since 2.3.1 Removed the is_admin() check since this was finally solved https://github.com/maithemewp/mai-engine/issues/251.
+ * @since 2.4.0 Removed the is_admin() check since this was finally solved https://github.com/maithemewp/mai-engine/issues/251.
  *              Changed return values to check and use post status.
  *
  * @return array

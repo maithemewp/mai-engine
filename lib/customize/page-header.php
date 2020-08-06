@@ -14,7 +14,7 @@ add_action( 'init', 'mai_page_header_customizer_settings' );
  * Add page header customizer fields.
  * This needs to be on 'init' so custom post types and custom taxonomies are available.
  *
- * @since 2.3.1 Moved defaults to config.
+ * @since 2.4.0 Moved defaults to config.
  * @since 0.3.0
  *
  * @return void
