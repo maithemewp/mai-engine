@@ -73,7 +73,7 @@ html {
 	font-family: var(--heading-font-family);
 	font-size: 12em;
 	line-height: 1;
-	color: var(--color-body);
+	color: currentColor;
 	opacity: 0.1;
 	z-index: 0;
 }
