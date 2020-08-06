@@ -70,7 +70,7 @@ function mai_site_layouts_customizer_settings() {
 			'section'     => $section,
 			'label'       => __( 'Site Default', 'mai-engine' ),
 			'default'     => $defaults['default']['site'],
-			'choices'     => mai_get_site_layout_choices(),
+			'choices'     => genesis_get_layouts_for_customizer(),
 		]
 	);
 

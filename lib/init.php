@@ -190,7 +190,7 @@ add_action( 'genesis_init', 'mai_modify_genesis_defaults', 5 );
 function mai_modify_genesis_defaults() {
 	remove_action( 'genesis_init', 'genesis_theme_support' );
 	add_filter( 'genesis_initial_layouts', '__return_empty_array' );
-	add_theme_support( 'genesis-breadcrumbs' );
+	add_theme_support( 'genesis-breadcrumbs' ); // TODO: This is in config already right?
 }
 
 add_action( 'genesis_setup', 'mai_remove_genesis_default_widget_areas', 8 );
