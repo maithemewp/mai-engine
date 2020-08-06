@@ -74,7 +74,7 @@ function mai_deactivate_bundled_plugins() {
 		}
 	}
 
-	if ( isset( $_GET['activate'] ) && sanitize_text_field( $_GET['activate'] ) ) {
+	if ( $deactivated && isset( $_GET['activate'] ) && sanitize_text_field( $_GET['activate'] ) ) {
 		add_action(
 			'admin_notices',
 			function () use ( $deactivated ) {
