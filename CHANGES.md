@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.4.1 (8/6/20)
+* Fixed: Site layouts not falling back correctly in some configurations.
+
 ## 2.4.0 (8/6/20)
 * Added: Mai Grid blocks now have a setting to remove bottom spacing.
 * Added: Top level template parts now have a div wrap with the template part name.
