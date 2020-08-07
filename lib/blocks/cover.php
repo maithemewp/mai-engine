@@ -68,7 +68,7 @@ function mai_render_cover_block( $block_content, $block ) {
  * @since 0.1.0
  *
  * @param string $block_content The existing block content.
- * @param int    $image_id      The cover block image ID.
+ * @param mixed  $image_id      The cover block image ID or URL.
  *
  * @return string
  */
