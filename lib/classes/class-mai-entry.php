@@ -186,6 +186,9 @@ class Mai_Entry {
 					'open'    => '<div %s>',
 					'context' => 'entry-wrap',
 					'echo'    => true,
+					'atts'    => [
+						'class' => sprintf( 'entry-wrap entry-wrap-%s', 'block' === $this->context ? 'grid' : $this->context ),
+					],
 					'params'  => [
 						'args'  => $this->args,
 						'entry' => $this->entry,
@@ -204,7 +207,7 @@ class Mai_Entry {
 		// Loop through our elements.
 		foreach ( $this->args['show'] as $element ) {
 
-			// Skip image is left or right, skip.
+			// Skip image is first, skip.
 			if ( ( 'image' === $element ) && $image_first ) {
 				continue;
 			}

@@ -53,6 +53,9 @@
 	padding: var(--entry-wrap-padding, 0);
 	color: var(--entry-wrap-color, (inherit));
 	background: var(--entry-wrap-background, transparent);
+	border: var(--entry-wrap-border, unset);
+	border-radius: var(--entry-wrap-border-radius, unset);
+	box-shadow: var(--entry-wrap-box-shadow, unset);
 	transition: all 0.3s ease-in-out;
 
 	> *:not(.entry-overlay) {

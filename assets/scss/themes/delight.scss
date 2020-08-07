@@ -20,24 +20,21 @@ html {
 	background-color: rgba(255, 255, 255, 0.9) !important;
 }
 
-.is-single {
+body:not(.has-alignfull-first) .entry-wrap-single {
+	--entry-wrap-background: var(--color-white);
+	--entry-wrap-padding: calc(8px + 2vw);
+	--entry-wrap-border: var(--border);
+	--entry-wrap-box-shadow: var(--shadow);
 
-	&:not(.home) .content > .entry {
-		--entry-background: var(--color-white);
-		--entry-padding: calc(8px + 2vw);
-		--entry-border: var(--border);
-		--entry-box-shadow: var(--shadow);
+	> .entry-image-link {
+		--entry-image-link-margin-left: calc(var(--entry-padding) * -1);
+		--entry-image-link-margin-right: calc(var(--entry-padding) * -1);
+		--entry-image-border-radius: 0;
+	}
 
-		> .entry-image-link {
-			--entry-image-link-margin-left: calc(var(--entry-padding) * -1);
-			--entry-image-link-margin-right: calc(var(--entry-padding) * -1);
-			--entry-image-border-radius: 0;
-		}
-
-		> .entry-image-link:first-child {
-			--entry-image-border-radius: var(--border-radius) var(--border-radius) 0 0;
-			--entry-image-link-margin-top: calc(var(--entry-padding) * -1);
-		}
+	> .entry-image-link:first-child {
+		--entry-image-border-radius: var(--border-radius) var(--border-radius) 0 0;
+		--entry-image-link-margin-top: calc(var(--entry-padding) * -1);
 	}
 }
 
