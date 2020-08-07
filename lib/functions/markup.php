@@ -90,6 +90,11 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'has-logo-center';
 	}
 
+	// Add alignfull first class.
+	if ( mai_has_alignfull_first() ) {
+		$classes[] = 'has-alignfull-first';
+	}
+
 	// Add single type class.
 	if ( mai_is_type_single() ) {
 		$classes[] = 'is-single';
