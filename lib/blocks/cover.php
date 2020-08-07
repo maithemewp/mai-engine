@@ -73,22 +73,6 @@ function mai_render_cover_block( $block_content, $block ) {
  * @return string
  */
 function mai_add_cover_block_image( $block_content, $image_id ) {
-
-	// Create the new document.
-	$dom = new DOMDocument();
-
-	// Modify state.
-	$libxml_previous_state = libxml_use_internal_errors( true );
-
-	// Load the content in the document HTML.
-	$dom->loadHTML( mb_convert_encoding( $block_content, 'HTML-ENTITIES', 'UTF-8' ) );
-
-	// Handle errors.
-	libxml_clear_errors();
-
-	// Restore.
-	libxml_use_internal_errors( $libxml_previous_state );
-
 	// Get image HTML.
 	$image_html = mai_get_cover_image_html( $image_id, [ 'class' => 'wp-cover-block__image' ] );
 
@@ -97,30 +81,25 @@ function mai_add_cover_block_image( $block_content, $image_id ) {
 		return $block_content;
 	}
 
-	// Get cover blocks by class. Checks if class contains `wp-block-cover` but not as part of another class, like `wp-block-cover__inner-container`.
-	$xpath        = new DOMXPath( $dom );
-	$cover_blocks = $xpath->query( "//div[contains(concat(' ', normalize-space(@class), ' '), ' wp-block-cover ')]" );
-
-	// Bail if none.
-	if ( ! $cover_blocks->length ) {
-		return $block_content;
-	}
+	$dom = mai_get_dom_document( $block_content );
 
 	/**
-	 * Block DOM element.
+	 * The group block container.
 	 *
-	 * @var DOMElement $block Block DOM element.
+	 * @var DOMElement $first_block The group block container.
 	 */
-	foreach ( $cover_blocks as $block ) {
+	$first_block = mai_get_dom_first_child( $dom );
 
+	if ( $first_block ) {
 		// Build the HTML node.
 		$fragment = $dom->createDocumentFragment();
 		$fragment->appendXml( $image_html );
 
 		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-		$block->insertBefore( $fragment, $block->firstChild );
+		$first_block->insertBefore( $fragment, $first_block->firstChild );
+
+		$block_content = $dom->saveHTML();
 	}
 
-	// Save the new content.
-	return $dom->saveHTML();
+	return $block_content;
 }

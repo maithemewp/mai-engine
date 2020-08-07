@@ -795,7 +795,7 @@ function mai_get_menu( $menu, $args = [] ) {
 }
 
 /**
- * Get DOMDocument object.
+ * Gets DOMDocument object.
  *
  * @since  2.0.0
  * @since  2.3.0 Remove wraps to only return the html passed.
@@ -827,6 +827,24 @@ function mai_get_dom_document( $html ) {
 	libxml_use_internal_errors( $libxml_previous_state );
 
 	return $dom;
+}
+
+/**
+ * Gets a DOMDocument first child element.
+ *
+ * @since TBD.
+ *
+ * @var DOMDocument The dom document object.
+ *
+ * @return DOMElement $first_block The group block container.
+ */
+function mai_get_dom_first_child( $dom ) {
+	/**
+	 * The group block container.
+	 *
+	 * @var DOMElement $first_block The group block container.
+	 */
+	return $dom->childNodes && isset( $dom->childNodes[0] ) ? $dom->childNodes[0] : false; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 }
 
 /**

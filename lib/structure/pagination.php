@@ -155,7 +155,7 @@ function mai_posts_nav() {
 	 *
 	 * @var DOMElement $container The group block container.
 	 */
-	$container = $dom->childNodes && isset( $dom->childNodes[0] ) ? $dom->childNodes[0] : false; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+	$container = mai_get_dom_first_child( $dom );
 
 	if ( $container ) {
 		$lis = $container->getElementsByTagName( 'li' );
