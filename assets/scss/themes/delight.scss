@@ -10,6 +10,8 @@
 	--page-header-inner-padding: var(--spacing-xl) var(--spacing-xl);
 	--page-header-inner-border-radius: var(--border-radius);
 	--page-header-inner-box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+	--entry-meta-font-size: var(--font-size-xs);
+	--avatar-border-radius: 50%;
 }
 
 html {
@@ -20,24 +22,6 @@ html {
 	background-color: rgba(255, 255, 255, 0.9) !important;
 }
 
-body:not(.has-alignfull-first) .entry-wrap-single {
-	--entry-wrap-background: var(--color-white);
-	--entry-wrap-padding: calc(8px + 2vw);
-	--entry-wrap-border: var(--border);
-	--entry-wrap-box-shadow: var(--shadow);
-
-	> .entry-image-link {
-		--entry-image-link-margin-left: calc(var(--entry-padding) * -1);
-		--entry-image-link-margin-right: calc(var(--entry-padding) * -1);
-		--entry-image-border-radius: 0;
-	}
-
-	> .entry-image-link:first-child {
-		--entry-image-border-radius: var(--border-radius) var(--border-radius) 0 0;
-		--entry-image-link-margin-top: calc(var(--entry-padding) * -1);
-	}
-}
-
 .nav-after-header {
 	--menu-item-link-color: var(--color-white);
 	--menu-font-size: 0.8em;
@@ -45,6 +29,27 @@ body:not(.has-alignfull-first) .entry-wrap-single {
 	--menu-text-transform: uppercase;
 
 	background-color: var(--color-heading);
+}
+
+.entry-image-single:first-child {
+	--entry-image-link-margin-bottom: -6px;
+
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	box-shadow: var(--shadow);
+}
+
+body:not(.has-alignfull-first) .entry-wrap-single {
+	margin-bottom: var(--spacing-xxl);
+	padding: calc(8px + 2vw);
+	background: var(--color-white);
+	border: var(--border);
+	box-shadow: var(--shadow);
+}
+
+.entry-meta {
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
 }
 
 .wp-block-quote {
