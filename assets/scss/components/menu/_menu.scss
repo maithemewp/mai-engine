@@ -81,7 +81,7 @@
 		display: var(--menu-item-dropdown-toggle, inline-block);
 		width: 6px;
 		height: 6px;
-		margin: -0.5em 0 0 var(--menu-item-dropdown-margin-left, var(--spacing-xs));
+		margin-left: var(--menu-item-dropdown-margin-left, var(--spacing-xs));
 		border-color: currentColor;
 		border-style: solid;
 		border-top: 0;
