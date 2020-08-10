@@ -37,9 +37,9 @@
 	margin: var(--button-margin, 0);
 	padding: var(--button-padding, (0.9em 2em));
 	color: var(--button-color); // Color contrast automatically generated.
-	font-weight: var(--button-font-weight, var(--heading-font-weight));
+	font-weight: var(--button-font-weight, var(--body-font-weight));
 	font-size: var(--button-font-size, var(--font-size-base));
-	font-family: var(--button-font-family, var(--heading-font-family));
+	font-family: var(--button-font-family, var(--body-font-family));
 	line-height: var(--button-line-height, 1.1);
 	letter-spacing: var(--button-letter-spacing, normal);
 	white-space: var(--button-white-space, normal);
