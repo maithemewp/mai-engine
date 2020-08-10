@@ -114,7 +114,7 @@ function mai_do_page_header_title() {
 			[
 				'open'    => '<h1 %s itemprop="headline">',
 				'close'   => '</h1>',
-				'content' => $title,
+				'content' => $title, // TODO: Sanitize this?
 				'context' => 'page-header-title',
 			]
 		);
@@ -137,7 +137,7 @@ function mai_do_page_header_description() {
 			[
 				'open'    => '<div %s itemprop="description">',
 				'close'   => '</div>',
-				'content' => wpautop( $description ),
+				'content' => mai_get_processed_content( $description ),
 				'context' => 'page-header-description',
 			]
 		);

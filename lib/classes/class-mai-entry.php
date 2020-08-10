@@ -124,7 +124,7 @@ class Mai_Entry {
 		}
 
 		$image_first = ( isset( $elements[0] ) && ( 'image' === $elements[0] ) ) || ( isset( $this->args['image_position'] ) && mai_has_string( [ 'left', 'right' ], $this->args['image_position'] ) );
-		$image_only  = ( 1 === count( $elements ) && ( 'image' === $elements[0] ) );
+		$image_only  = ( isset( $elements[0] ) && 'image' === $elements[0] ) && ( 1 === count( $elements ) );
 
 		// Has image classes.
 		if ( in_array( 'image', $this->args['show'], true ) ) {
@@ -180,12 +180,15 @@ class Mai_Entry {
 
 		if ( ! $image_only ) {
 
-			// Inner open.
+			// Entry wrap open.
 			genesis_markup(
 				[
 					'open'    => '<div %s>',
 					'context' => 'entry-wrap',
 					'echo'    => true,
+					'atts'    => [
+						'class' => sprintf( 'entry-wrap entry-wrap-%s', 'block' === $this->context ? 'grid' : $this->context ),
+					],
 					'params'  => [
 						'args'  => $this->args,
 						'entry' => $this->entry,
@@ -201,11 +204,27 @@ class Mai_Entry {
 			printf( '<a href="%s" class="entry-overlay"></a>', $this->url );
 		}
 
+		$outside_elements = [];
+
+		if ( ! $image_only && ( 'single' === $this->context ) ) {
+			foreach ( $this->args['show'] as $index => $element ) {
+				if ( mai_has_string( 'genesis_', $element ) ) {
+					$outside_elements = array_slice( $elements, $index, null, false );
+				} else {
+					$outside_elements[] = $element;
+				}
+			}
+		}
+
 		// Loop through our elements.
 		foreach ( $this->args['show'] as $element ) {
 
-			// Skip image is left or right, skip.
+			// Skip image is first, skip.
 			if ( ( 'image' === $element ) && $image_first ) {
+				continue;
+			}
+
+			if ( in_array( $element, $outside_elements ) ) {
 				continue;
 			}
 
@@ -218,11 +237,11 @@ class Mai_Entry {
 
 		if ( ! $image_only ) {
 
-			// Inner close.
+			// Entry wrap close.
 			genesis_markup(
 				[
 					'close'   => '</div>',
-					'context' => 'entry-inner',
+					'context' => 'entry-wrap',
 					'echo'    => true,
 					'params'  => [
 						'args'  => $this->args,
@@ -231,6 +250,14 @@ class Mai_Entry {
 				]
 			);
 
+			// Loop through our outside elements.
+			foreach ( $outside_elements as $element ) {
+				// Output the element if a method exists.
+				$method = "do_{$element}";
+				if ( method_exists( $this, $method ) ) {
+					$this->$method();
+				}
+			}
 		}
 
 		// Close.

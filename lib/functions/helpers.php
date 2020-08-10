@@ -151,6 +151,37 @@ function mai_is_type_archive( $use_cache = false ) {
 }
 
 /**
+ * Checks if first block is cover or group block aligned full.
+ *
+ * @since 0.1.0
+ *
+ * @return bool
+ */
+function mai_has_alignfull_first() {
+	static $has_alignfull_first = null;
+
+	if ( is_null( $has_alignfull_first ) ) {
+		$has_alignfull_first = false;
+
+		if ( ! mai_is_type_single() || ! has_blocks() ) {
+			return $has_alignfull_first;
+		}
+
+		$post_object = get_post( get_the_ID() );
+		$blocks      = (array) parse_blocks( $post_object->post_content );
+		$first       = $blocks[0];
+		$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
+		$align       = isset( $first['attrs']['align'] ) ? $first['attrs']['align'] : '';
+
+		if ( in_array( $block_name, [ 'core/cover', 'core/group' ] ) && ( 'full' === $align ) ) {
+			$has_alignfull_first = true;
+		}
+	}
+
+	return $has_alignfull_first;
+}
+
+/**
  * Checks if given sidebar contains a certain widget.
  *
  * @since 0.1.0

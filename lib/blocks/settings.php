@@ -43,7 +43,7 @@ function mai_do_cover_group_block_settings( $block_content, $block ) {
 		 *
 		 * @var DOMElement $first_block The block container.
 		 */
-		$first_block = $dom->childNodes && isset( $dom->childNodes[0] ) ? $dom->childNodes[0] : false; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+		$first_block = mai_get_dom_first_child( $dom );
 
 		if ( $first_block ) {
 
@@ -141,7 +141,7 @@ function mai_do_heading_block_settings( $block_content, $block ) {
 		 *
 		 * @var DOMElement $first_block The block container.
 		 */
-		$first_block = $dom->childNodes && isset( $dom->childNodes[0] ) ? $dom->childNodes[0] : false; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+		$first_block = mai_get_dom_first_child( $dom );
 
 		if ( $first_block ) {
 

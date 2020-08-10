@@ -122,53 +122,86 @@ function mai_has_image_orientiation( $orientation ) {
  * Get cover image HTML by ID,
  * with srcset for our registered image sizes.
  *
- * @param   int   $image_id The image ID.
+ * @param   mixed $image_id The image ID or URL.
  * @param   array $atts     Any image attributes to add to the attachment.
  *
  * @return  string  The image markup.
  */
 function mai_get_cover_image_html( $image_id, $atts = [] ) {
+	$html = '';
 
 	// Setup atts.
 	$atts = wp_parse_args(
 		$atts,
 		[
-			'sizes' => '100vw',
+			'sizes'   => '100vw',
+			'loading' => 'lazy', // Add native lazy loading.
 		]
 	);
 
-	// Build srcset array.
-	$image_sizes = mai_get_available_image_sizes();
-	$srcset      = [];
-	$sizes       = [
-		'landscape-sm',
-		'landscape-md',
-		'landscape-lg',
-		'cover',
-	];
-
-	foreach ( $sizes as $size ) {
-		if ( ! isset( $image_sizes[ $size ] ) ) {
-			continue;
-		}
-
-		$url = wp_get_attachment_image_url( $image_id, $size );
-
-		if ( ! $url ) {
-			continue;
-		}
-
-		$srcset[] = sprintf( '%s %sw', $url, $image_sizes[ $size ]['width'] );
+	// Bail if not an image id or url.
+	if ( ! ( is_numeric( $image_id ) || filter_var( $image_id, FILTER_VALIDATE_URL ) ) ) {
+		return;
 	}
 
-	// Convert to string.
-	$atts['srcset'] = implode( ',', $srcset );
+	if ( is_numeric( $image_id ) ) {
+		// Build srcset array.
+		$image_sizes = mai_get_available_image_sizes();
+		$srcset      = [];
+		$sizes       = [
+			'landscape-sm',
+			'landscape-md',
+			'landscape-lg',
+			'cover',
+		];
 
-	// Add native lazy loading.
-	$atts['loading'] = 'lazy';
+		foreach ( $sizes as $size ) {
+			if ( ! isset( $image_sizes[ $size ] ) ) {
+				continue;
+			}
 
-	// Get the image HTML.
-	return wp_get_attachment_image( $image_id, 'cover', false, $atts );
+			$url = '';
+
+			if ( is_numeric( $image_id ) ) {
+				$url = wp_get_attachment_image_url( $image_id, $size );
+			} elseif ( filter_var( $image_id, FILTER_VALIDATE_URL) ) {
+				$url = $image_id;
+			}
+
+			if ( ! $url ) {
+				continue;
+			}
+
+			$srcset[] = sprintf( '%s %sw', $url, $image_sizes[ $size ]['width'] );
+		}
+
+		// Convert to string.
+		$atts['srcset'] = implode( ',', $srcset );
+
+		// Get the image HTML.
+		$html .= wp_get_attachment_image( $image_id, 'cover', false, $atts );
+
+	} elseif ( filter_var( $image_id, FILTER_VALIDATE_URL ) ) {
+
+		$output = '';
+
+		foreach ( $atts as $key => $value ) {
+
+			if ( ! $value ) {
+				continue;
+			}
+
+			if ( true === $value ) {
+				$output .= esc_html( $key ) . ' ';
+			} else {
+				$output .= sprintf( '%s="%s" ', esc_html( $key ), esc_attr( $value ) );
+			}
+		}
+
+		$html = sprintf( '<img src="%s"%s>', $image_id, $output );
+	}
+
+	return $html;
 }
 
 /**
