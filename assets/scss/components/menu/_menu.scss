@@ -22,6 +22,10 @@
 	justify-content: var(--menu-item-justify-content, flex-start);
 	width: var(--menu-item-width, 100%);
 	margin: var(--menu-item-margin, (0 auto));
+
+	&.search {
+		z-index: 12; // 1 above sticky site-header.
+	}
 }
 
 .menu-item-link {
@@ -77,7 +81,7 @@
 		display: var(--menu-item-dropdown-toggle, inline-block);
 		width: 6px;
 		height: 6px;
-		margin-left: var(--menu-item-dropdown-margin-left, var(--spacing-xs));
+		margin: -0.5em 0 0 var(--menu-item-dropdown-margin-left, var(--spacing-xs));
 		border-color: currentColor;
 		border-style: solid;
 		border-top: 0;
