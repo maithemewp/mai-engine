@@ -832,7 +832,7 @@ function mai_get_dom_document( $html ) {
 /**
  * Gets a DOMDocument first child element.
  *
- * @since TBD.
+ * @since 2.4.1.
  *
  * @var DOMDocument The dom document object.
  *

@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.4.1 (8/10/20)
+* Added: New entry-wrap-{context} class for simpler CSS targeting.
+* Added: Custom property for avatar border-radius.
+* Changed: Single entry elements after all Genesis hooks are now outside of the entry-wrap.
+* Changed: Revert buttons to use body font family/weight again.
+* Fixed: Added back has-alignfull-first body class for simpler CSS targeting.
+* Fixed: Duplicate cover images when nesting Cover block.
+* Fixed: Remove menu item underline when a menu is in a template part.
+* Fixed: Search icon in menu getting cut off in Before Header template part.
+* Fixed: Page Header background color not working when a page header image is used.
+* Fixed: Page Header description now processes the content so you can use curly quotes, shortcodes, HTML, etc.
+
 ## 2.4.0 (8/6/20)
 * Added: Mai Grid blocks now have a setting to remove bottom spacing.
 * Added: Top level template parts now have a div wrap with the template part name.
