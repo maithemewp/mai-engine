@@ -162,10 +162,20 @@
 	margin-top: auto;
 	transition: none;
 
+	@include button();
+	@include button-style(secondary);
+	@include button-style(small);
+
 	&::after {
 		display: inline-flex;
 		font-size: 0;
 	}
+}
+
+.button.product_type_simple {
+	margin-top: 1em;
+
+	@include button-style(small);
 }
 
 .added,
