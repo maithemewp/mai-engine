@@ -6,6 +6,13 @@ The required plugin to power Mai themes.
 
 Mai Engine makes use of two package managers, NPM for JavaScript and Composer for PHP packages.
 
+### Handy CLI commands
+
+**Important:** Remember to specify the `--url` parameter if on multisite. E.g `--url=demo.bizbudding.com/success-business`.
+
+- `wp mai generate` - Generates starter content for a site (Home page etc).
+- `wp option delete 'mai-engine'` - Deletes all setting options.
+
 ### Setup the development environment
 
 1. Clone this repository into your WordPress site's `plugins` directory.
