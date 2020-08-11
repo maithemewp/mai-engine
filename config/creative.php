@@ -10,6 +10,9 @@
  */
 
 return [
+	'demos'         => [
+		'portfolio' => 59,
+	],
 	'global-styles' => [
 		'colors' => [
 			'alt'       => '#f5f5f5',
