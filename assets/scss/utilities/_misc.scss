@@ -3,6 +3,11 @@
 	clear: both;
 }
 
+.inline {
+	--input-display: inline-block;
+	--input-width: auto;
+}
+
 .has-shadow {
 	box-shadow: var(--shadow);
 }
