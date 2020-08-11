@@ -18,8 +18,8 @@
 	font-weight: var(--heading-font-weight); // No fallback, always output by Kirki.
 	font-family: var(--heading-font-family); // No fallback, always output by Kirki.
 	line-height: var(--heading-line-height, 1.219); // Perfect fourth.
-	letter-spacing: var(--heading-letter-spacing, unset);
-	text-transform: var(--heading-text-transform, unset);
+	letter-spacing: var(--heading-letter-spacing, normal);
+	text-transform: var(--heading-text-transform, none);
 
 	&:last-child {
 		margin-bottom: 0;
