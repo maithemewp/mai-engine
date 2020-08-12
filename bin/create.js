@@ -12,7 +12,7 @@ const styleCss = function( theme ) {
  * Description:      ${theme.name} child theme for the Genesis Framework.
  * Author:           BizBudding
  * Author URI:       https://bizbudding.com/
- * Version:          1.0.0
+ * Version:          2.0.0
  * Text Domain:      ${theme.slug}
  * Template:         genesis
  * Template Version: ${theme.templateVersion}
