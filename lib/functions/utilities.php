@@ -154,7 +154,7 @@ function mai_get_version() {
 }
 
 /**
- * Description of expected behavior.
+ * Returns asset version with filetime.
  *
  * @since 0.1.0
  *
@@ -175,7 +175,7 @@ function mai_get_asset_version( $file ) {
 
 /**
  * Returns minified version of asset if in dev mode.
- *z
+ *
  *
  * @since 2.4.0 Removed min dir if CSS file. Always return minified CSS.
  * @since 0.1.0
@@ -681,7 +681,7 @@ function mai_get_processed_content( $content ) {
 	$content = wptexturize( $content );              // WP runs priority 10.
 	$content = wpautop( $content );                  // WP runs priority 10.
 	$content = shortcode_unautop( $content );        // WP runs priority 10.
-	$content = wp_filter_content_tags( $content );   // WP runs priority 10.
+	$content = function_exists( 'wp_filter_content_tags' ) ? wp_filter_content_tags( $content ) : wp_make_content_images_responsive( $content ); // WP runs priority 10. WP 5.5 with fallback.
 	$content = do_shortcode( $content );             // WP runs priority 11.
 	$content = convert_smilies( $content );          // WP runs priority 20.
 

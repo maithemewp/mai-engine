@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.4.2 TBD
+
 ## 2.4.1 (8/10/20)
 * Added: New entry-wrap-{context} class for simpler CSS targeting.
 * Added: Custom property for avatar border-radius.
