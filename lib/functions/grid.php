@@ -223,6 +223,9 @@ function mai_get_flex_align( $value ) {
 		case 'bottom':
 			$return = 'flex-end';
 		break;
+		case 'between':
+			$return = 'space-between';
+		break;
 		default:
 			$return = 'unset';
 	}
