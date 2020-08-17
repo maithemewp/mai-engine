@@ -66,6 +66,14 @@
 	padding: 0 !important;
 }
 
+.has-auto-margin-left {
+	margin-left: auto !important;
+}
+
+.has-auto-margin-right {
+	margin-right: auto !important;
+}
+
 @each $spacing-name, $spacing-size in $spacing {
 
 	.has-#{ $spacing-name }-margin-top {
@@ -89,11 +97,20 @@
 			margin-top: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
 		}
 
+		.has--#{ $spacing-name }-margin-right {
+			margin-right: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
+		}
+
 		.has--#{ $spacing-name }-margin-bottom {
 			margin-bottom: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
 		}
 
+		.has--#{ $spacing-name }-margin-left {
+			margin-left: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
+		}
+
 	}
+
 }
 
 .has-overlap {
