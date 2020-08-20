@@ -1,6 +1,8 @@
 # Changelog
 
 ## 2.4.2 TBD
+* Added: Updated Google Font list in Typography customizer fields via Kirki.
+* Changed: Updated ACF Pro to 5.9.0.
 
 ## 2.4.1 (8/10/20)
 * Added: New entry-wrap-{context} class for simpler CSS targeting.

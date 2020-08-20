@@ -3,7 +3,6 @@
 // vars
 $active = $license ? true : false;
 $nonce = $active ? 'deactivate_pro_licence' : 'activate_pro_licence';
-$input = $active ? 'password' : 'text';
 $button = $active ? __('Deactivate License', 'acf') : __('Activate License', 'acf');
 $readonly = $active ? 1 : 0;
 
@@ -33,7 +32,7 @@ $readonly = $active ? 1 : 0;
 							
 							// render field
 							acf_render_field(array(
-								'type'		=> $input,
+								'type'		=> 'text',
 								'name'		=> 'acf_pro_licence',
 								'value'		=> str_repeat('*', strlen($license)),
 								'readonly'	=> $readonly
