@@ -35,7 +35,7 @@ body {
 .wp-block-cover h4:not(.has-text-color),
 .wp-block-cover h5:not(.has-text-color),
 .wp-block-cover h6:not(.has-text-color) {
-	color: var(--heading-color,var(--color-heading)); // Override WP in admin, using our default heading styles.
+	color: var(--heading-color, var(--color-heading)); // Override WP in admin, using our default heading styles.
 }
 
 p {
@@ -80,38 +80,34 @@ p {
 @each $breakpoint-name, $breakpoint-size in $breakpoints {
 
 	// We don't need to worry about nested block here, since their content should never be larger than the parent.
-	.wp-block[data-content-width="#{ $breakpoint-name }"] .wp-block-cover__inner-container,
-	.wp-block[data-content-width="#{ $breakpoint-name }"] .wp-block-group__inner-container {
+	[data-content-width="#{ $breakpoint-name }"] .wp-block-cover__inner-container,
+	[data-content-width="#{ $breakpoint-name }"] .wp-block-group__inner-container {
 		max-width: var(--breakpoint-#{ $breakpoint-name });
 	}
-
 }
 
 @each $padding-setting in $padding_settings {
 
-	.wp-block[data-spacing-#{ $padding-setting }] {
+	[data-spacing-#{ $padding-setting }] {
 		--cover-block-padding-#{ $padding-setting }: 0;
 		--group-block-padding-#{ $padding-setting }: 0;
 	}
-
 }
 
 @each $padding-name, $padding-size in $padding_scale {
 
 	@each $padding-setting in $padding_settings {
 
-		.wp-block[data-spacing-#{ $padding-setting }="#{ $padding-name }"] {
+		[data-spacing-#{ $padding-setting }="#{ $padding-name }"] {
 			--cover-block-padding-#{ $padding-setting }: #{ $padding-size };
 			--group-block-padding-#{ $padding-setting }: #{ $padding-size };
 		}
-
 	}
-
 }
 
 @each $size-name, $size-value in $font-sizes {
 
-	.wp-block[data-font-size="#{ $size-name }"] > .rich-text {
+	[data-font-size="#{ $size-name }"] > .rich-text {
 		font-size: #{ $size-value };
 	}
 }
