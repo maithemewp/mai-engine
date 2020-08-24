@@ -678,6 +678,7 @@ function mai_get_processed_content( $content ) {
 
 	$content = $wp_embed->autoembed( $content );     // WP runs priority 8.
 	$content = $wp_embed->run_shortcode( $content ); // WP runs priority 8.
+	$content = do_blocks( $content );                // WP runs priority 9.
 	$content = wptexturize( $content );              // WP runs priority 10.
 	$content = wpautop( $content );                  // WP runs priority 10.
 	$content = shortcode_unautop( $content );        // WP runs priority 10.
