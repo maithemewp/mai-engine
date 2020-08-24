@@ -13,7 +13,7 @@ add_action( 'genesis_before_loop', 'mai_setup_loop' );
 /**
  * Do the main loop.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
@@ -61,8 +61,6 @@ function mai_do_loop() {
 
 		/**
 		 * Fires inside the standard loop, before the while() block.
-		 *
-		 * @since 2.1.0
 		 */
 		do_action( 'genesis_before_while' );
 
@@ -75,8 +73,6 @@ function mai_do_loop() {
 
 			/**
 			 * Fires inside the standard loop, before the entry opening markup.
-			 *
-			 * @since 2.0.0
 			 */
 			do_action( 'genesis_before_entry' );
 
@@ -84,8 +80,6 @@ function mai_do_loop() {
 
 			/**
 			 * Fires inside the standard loop, before the entry opening markup.
-			 *
-			 * @since 2.0.0
 			 */
 			do_action( 'genesis_after_entry' );
 		}
@@ -96,16 +90,12 @@ function mai_do_loop() {
 
 		/**
 		 * Fires inside the standard loop, after the while() block.
-		 *
-		 * @since 0.1.0
 		 */
 		do_action( 'genesis_after_endwhile' );
 	} else {
 
 		/**
 		 * Fires inside the standard loop when they are no posts to show.
-		 *
-		 * @since 0.1.0
 		 */
 		do_action( 'genesis_loop_else' );
 	}
