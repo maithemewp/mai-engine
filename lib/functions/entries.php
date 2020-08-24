@@ -113,11 +113,11 @@ function mai_do_entries_open( $args ) {
 		$attributes['style'] .= sprintf( '--align-columns-vertical:%s;', mai_get_flex_align( $args['align_columns_vertical'] ) );
 	}
 
-	if ( isset( $args['align_text_vertical'] ) && in_array( $args['image_position'], [
-			'left',
-			'right',
-			'background',
-		], true ) ) {
+	if ( isset( $args['align_text_vertical'] ) && mai_has_string( [
+		'left',
+		'right',
+		'background',
+	], $args['image_position'] ) ) {
 		$attributes['style'] .= sprintf( '--align-text-vertical:%s;', mai_get_align_text( $args['align_text_vertical'] ) );
 	}
 
