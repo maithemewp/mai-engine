@@ -1,12 +1,18 @@
 @import "abstracts/_index";
 @import "base/globals";
 @import "base/heading";
-@import "base/html";
 @import "base/list";
 @import "base/typography";
 @import "components/blocks/_index";
 @import "components/entry/_index";
 @import "utilities/_index";
+
+html {
+	font-size: 100%; // 16px browser default.
+	scroll-behavior: var(--scroll-behavior, smooth);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
 
 body {
 	min-height: auto;
