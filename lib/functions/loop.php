@@ -155,10 +155,10 @@ function mai_get_template_args() {
 	$config = [];
 
 	if ( 'archive' === $context ) {
-		$config = mai_get_content_archive_settings();
+		$config = mai_get_content_archive_settings( $name );
 
 	} elseif ( 'single' === $context ) {
-		$config = mai_get_single_content_settings();
+		$config = mai_get_single_content_settings( $name );
 	}
 
 	$defaults = [ 'context' => $context ] + wp_list_pluck( $config, 'default', 'settings' );
@@ -203,10 +203,10 @@ function mai_get_template_args() {
 	}
 
 	// Allow devs to filter.
-	$args = apply_filters( 'mai_template_args', $args, $context );
+	$args = apply_filters( 'mai_template_args', $args, $context, $name );
 
 	// Sanitize.
-	return mai_get_sanitized_entry_args( $args, $settings );
+	return mai_get_sanitized_entry_args( $args, $settings, $name );
 }
 
 /**
@@ -229,19 +229,21 @@ function mai_get_template_arg( $name, $default = null ) {
  * Description of expected behavior.
  *
  * @since 0.1.0
+ * @since 2.4.2 Added $name param.
  *
  * @param array  $args    Entry args.
- * @param string $context The args context..
+ * @param string $context The args context.
+ * @param string $name    The content type name.
  *
  * @return mixed
  */
-function mai_get_sanitized_entry_args( $args, $context ) {
+function mai_get_sanitized_entry_args( $args, $context, $name = 'post' ) {
 	$settings = [];
 
 	if ( 'archive' === $context ) {
-		$settings = mai_get_content_archive_settings();
+		$settings = mai_get_content_archive_settings( $name );
 	} elseif ( 'single' === $context ) {
-		$settings = mai_get_single_content_settings();
+		$settings = mai_get_single_content_settings( $name );
 	}
 
 	// Bail if no settings.
@@ -427,48 +429,6 @@ function mai_get_archive_show_choices() {
 			'footer_meta'                  => esc_html__( 'Footer Meta', 'mai-engine' ),
 			'genesis_entry_footer'         => 'genesis_entry_footer',
 		];
-	}
-
-	return $choices;
-}
-
-/**
- * Gets the "Show" defaults for a content type.
- *
- * @since 0.1.0
- *
- * @param string $name Post type name.
- *
- * @return array|null
- */
-function mai_get_single_show_defaults( $name = 'post' ) {
-	static $choices = null;
-
-	if ( is_null( $choices ) ) {
-		$choices = [
-			'image',
-			'genesis_entry_header',
-			'title',
-			'header_meta',
-			'genesis_before_entry_content',
-			'excerpt',
-			'content',
-			'genesis_entry_content',
-			'genesis_after_entry_content',
-			'footer_meta',
-			'genesis_entry_footer',
-			'author_box',
-			'after_entry',
-			'adjacent_entry_nav',
-		];
-	}
-
-	if ( 'post' !== $name ) {
-		$choices = array_flip( $choices );
-		unset( $choices['author_box'] );
-		unset( $choices['after_entry'] );
-		unset( $choices['adjacent_entry_nav'] );
-		$choices = array_flip( $choices );
 	}
 
 	return $choices;

@@ -12,13 +12,15 @@
 /**
  * Returns single content settings.
  *
- * @since 2.4.0 Moved defaults to config.
  * @since 1.0.0
+ * @since 2.4.0 Moved defaults to config.
+ * @since 2.4.2 Added $name param.
  *
  * @return array
  */
-function mai_get_single_content_settings() {
+function mai_get_single_content_settings( $name = 'post' ) {
 	$defaults = mai_get_config( 'settings' )['single-content'];
+	$defaults = isset( $defaults[ $name ] ) ? $defaults[ $name ] : $defaults[ 'post' ];
 
 	return [
 		[
@@ -152,9 +154,9 @@ function mai_get_single_content_settings() {
 
 add_action( 'init', 'mai_add_single_content_settings' );
 /**
- * Description of expected behavior.
+ * Adds single content settings.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
@@ -181,7 +183,7 @@ function mai_add_single_content_settings() {
 			]
 		);
 
-		$settings = mai_get_single_content_settings();
+		$settings = mai_get_single_content_settings( $section );
 
 		foreach ( $settings as $field ) {
 			$settings         = isset( $field['settings'] ) ? $field['settings'] : '';
