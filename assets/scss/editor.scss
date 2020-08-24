@@ -12,7 +12,8 @@ body {
 	min-height: auto;
 	background: var(--color-white);
 	--list-style-position: outside;
-	--list-margin-left: var(--spacing-md);
+	--list-margin-left: var(--spacing-xl);
+	--list-margin-bottom: var(--spacing-lg);
 	--list-item-margin-bottom: var(--spacing-xs);
 }
 
