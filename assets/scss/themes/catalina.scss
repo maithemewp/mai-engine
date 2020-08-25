@@ -1,6 +1,7 @@
 @import "../abstracts/_index";
 
 :root {
+	--color-border: var(--color-heading);
 	--font-size-base: 14px;
 	--font-scale: 1.3;
 	--border-radius: 0;
@@ -8,10 +9,21 @@
 	--heading-line-height: 1.1;
 	--button-padding: 0.9em 1.5em;
 	--button-overlay-color: var(--color-white);
+	--blockquote-padding: 1.5em 0;
+	--blockquote-font-size: var(--font-size-xl);
+	--blockquote-font-style: normal;
+	--blockquote-border-top: var(--border);
+	--blockquote-border-bottom: var(--border);
+	--blockquote-border-left: 0;
+	--blockquote-font-family: var(--heading-font-family);
+	--cite-font-weight: var(--body-font-weight);
+	--cite-font-family: var(--body-font-family);
+	--cite-font-size: 1em;
 	--content-sidebar-wrap-margin: var(--spacing-xxxl) auto;
 	--site-header-border-bottom: 0;
 	--menu-font-size: var(--font-size-base);
 	--sub-menu-background: var(--color-heading);
+	--entry-title-font-size: var(--font-size-xxxl);
 
 	@include mq(lg) {
 		--nav-header-margin: auto;
@@ -21,4 +33,16 @@
 .sub-menu {
 	--menu-item-link-color: var(--color-white);
 	--menu-item-link-color-hover: var(--color-secondary);
+}
+
+.sub-menu .menu-item-link-current,
+.sub-menu .menu-item-link:focus,
+.sub-menu .menu-item-link:hover {
+	color: var(--color-white);
+	background-color: var(--color-secondary);
+}
+
+.entry-title,
+.entry-meta {
+	text-align: center;
 }
