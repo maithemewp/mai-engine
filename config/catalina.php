@@ -10,10 +10,10 @@
  */
 
 return [
-	'demos'         => [
+	'demos'            => [
 		'default' => 51,
 	],
-	'global-styles' => [
+	'global-styles'    => [
 		'colors' => [
 			'link'      => '#000000',
 			'primary'   => '#000000',
@@ -27,9 +27,30 @@ return [
 			'heading' => 'DM Serif Display:400',
 		],
 	],
-	'theme-support' => [
+	'theme-support'    => [
 		'add' => [
 			'sticky-header',
 		],
 	],
+	'settings'         => [
+		'logo'           => [
+			'show-tagline' => false,
+		],
+		'single-content' => [
+			'image_size' => 'cover',
+		],
+	],
+	'custom-functions' => function () {
+		add_filter( 'genesis_attr_entry-more', function ( $atts ) {
+			$atts['class'] = 'entry-more' . ( is_admin() ? ' wp-block-button' : '' );
+
+			return $atts;
+		} );
+
+		add_filter( 'genesis_attr_entry-more-link', function ( $atts ) {
+			$atts['class'] = 'entry-more-link has-xl-margin-top ' . ( is_admin() ? 'wp-block-button__link' : 'button' );
+
+			return $atts;
+		} );
+	},
 ];
