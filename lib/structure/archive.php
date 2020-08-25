@@ -41,12 +41,12 @@ add_filter( 'genesis_author_box_gravatar_size', 'mai_author_box_gravatar' );
  *
  * @param int $size Original icon size.
  *
- * @return int Modified icon size.
+ * @return int
  */
 function mai_author_box_gravatar( $size ) {
 	$image_sizes = mai_get_available_image_sizes();
 
-	return isset( $image_sizes['tiny']['width'] ) ? $image_sizes['tiny']['width'] : 80;
+	return isset( $image_sizes['tiny']['width'] ) ? $image_sizes['tiny']['width'] : $size;
 }
 
 add_action( 'genesis_archive_title_descriptions', 'mai_do_blog_description' );
