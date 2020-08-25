@@ -1,4 +1,9 @@
 body {
+	display: flex;
+	flex-direction: column;
+	min-height: var(--body-min-height, 100vh);
+	min-height: -webkit-fill-available;
+	overflow-x: hidden; // Prevent horizontal scrollbars.
 
 	@include body;
 }

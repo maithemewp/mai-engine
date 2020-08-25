@@ -21,11 +21,13 @@ body {
 	--list-margin-left: var(--spacing-xl);
 	--list-margin-bottom: var(--spacing-lg);
 	--list-item-margin-bottom: var(--spacing-xs);
+
+	@include body();
 }
 
 .editor-post-title__block .editor-post-title__input {
 
-	@include heading;
+	@include heading();
 }
 
 .wp-block-cover-image p:not(.has-text-color),
