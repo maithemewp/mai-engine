@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Remove unused body classes added by Genesis.
+remove_filter( 'body_class', 'genesis_header_body_classes' );
+
 add_filter( 'language_attributes', 'mai_admin_bar_showing' );
 /**
  * Add class to html element for styling.
