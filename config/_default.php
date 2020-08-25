@@ -213,7 +213,10 @@ return [
 	'styles' => [
 		'main'                   => [],
 		'theme'                  => [
-			'src' => 'default' !== mai_get_active_theme() ? mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css' : '',
+			'src'  => 'default' !== mai_get_active_theme() ? mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css' : '',
+			'deps' => [
+				'mai-engine-desktop',
+			],
 		],
 		'admin'                  => [
 			'location' => 'admin',
@@ -451,29 +454,29 @@ return [
 				'mobile'  => '16px',
 			],
 		],
-		'site-layout' => [
-			'default'    => [
-				'site'      => 'standard-content',
-				'archive'   => '',
-				'single'    => '',
+		'site-layout'         => [
+			'default' => [
+				'site'    => 'standard-content',
+				'archive' => '',
+				'single'  => '',
 			],
-			'archive'    => [
-				'post'      => '',
-				'category'  => '',
-				'post_tag'  => '',
-				'search'    => '',
-				'author'    => '',
-				'date'      => '',
+			'archive' => [
+				'post'     => '',
+				'category' => '',
+				'post_tag' => '',
+				'search'   => '',
+				'author'   => '',
+				'date'     => '',
 			],
-			'single'     => [
-				'page'      => '',
-				'post'      => '',
-				'404-page'  => '',
+			'single'  => [
+				'page'     => '',
+				'post'     => '',
+				'404-page' => '',
 			],
 		],
 		'single-content'      => [
-			'enable'                       => [ 'page', 'post' ],
-			'page'                         => [
+			'enable' => [ 'page', 'post' ],
+			'page'   => [
 				'show'                         => [
 					'genesis_entry_header',
 					'title',
@@ -495,7 +498,7 @@ return [
 				'page-header-overlay-opacity'  => '',
 				'page-header-text-color'       => '',
 			],
-			'post'                         => [
+			'post'   => [
 				'show'                         => [
 					'genesis_entry_header',
 					'title',
@@ -521,8 +524,8 @@ return [
 			],
 		],
 		'content-archives'    => [
-			'enable'                       => [ 'post' ],
-			'post'                         => [
+			'enable' => [ 'post' ],
+			'post'   => [
 				'show'                         => [
 					'image',
 					'genesis_entry_header',

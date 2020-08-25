@@ -176,7 +176,6 @@ function mai_get_asset_version( $file ) {
 /**
  * Returns minified version of asset if in dev mode.
  *
- *
  * @since 2.4.0 Removed min dir if CSS file. Always return minified CSS.
  * @since 0.1.0
  *

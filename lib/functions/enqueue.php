@@ -265,25 +265,30 @@ EOT;
 	wp_add_inline_style( mai_get_handle(), mai_minify_css( $css ) );
 }
 
-add_action( 'wp_head', 'mai_enqueue_desktop_styles' );
+add_action( 'wp_enqueue_scripts', 'mai_enqueue_desktop_styles' );
 /**
  * Load desktop styles only at breakpoint set in Customizer.
  *
  * Can't be in config because it uses default breakpoint which is also set in config file.
  *
+ * @since 2.4.2 Use wp_enqueue_style to correct load priority.
  * @since 0.3.5
  *
  * @return void
  */
 function mai_enqueue_desktop_styles() {
-	$file       = 'assets/css/desktop.min.css';
-	$path       = mai_get_dir() . $file;
-	$url        = mai_get_url() . $file;
-	$breakpoint = mai_get_option( 'mobile-menu-breakpoint', mai_get_breakpoint() );
+	$style = [
+		'handle' => mai_get_handle() . '-desktop',
+		'src'    => mai_get_url() . 'assets/css/desktop.min.css',
+		'deps'   => [],
+		'ver'    => mai_get_asset_version( mai_get_url() . 'assets/css/desktop.min.css' ),
+		'media'  => sprintf(
+			'(min-width:%spx)',
+			mai_get_option( 'mobile-menu-breakpoint', mai_get_breakpoint() )
+		),
+	];
 
-	if ( file_exists( $path ) && $breakpoint ) {
-		printf( '<link id="mai-desktop-styles" href="%s" rel="stylesheet" media="screen and (min-width: %spx)" rel="preload">', $url, $breakpoint );
-	}
+	wp_enqueue_style( ...array_values( $style ) );
 }
 
 add_filter( 'clean_url', 'mai_async_scripts', 11, 1 );
