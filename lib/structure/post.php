@@ -35,3 +35,35 @@ function mai_remove_post_classes( $classes, $class, $post_id ) {
 		]
 	);
 }
+
+add_filter( 'genesis_attr_entry-meta-before-content', 'mai_entry_meta_before_content_atts' );
+/**
+ * Add before-content class to entry meta.
+ *
+ * @since 1.0.0
+ *
+ * @param array $atts Element attributes.
+ *
+ * @return array
+ */
+function mai_entry_meta_before_content_atts( $atts ) {
+	$atts['class'] .= ' before-content';
+
+	return $atts;
+}
+
+add_filter( 'genesis_attr_entry-meta-after-content', 'mai_entry_meta_after_content_atts' );
+/**
+ * Add after-content class to entry meta.
+ *
+ * @since 1.0.0
+ *
+ * @param array $atts Element attributes.
+ *
+ * @return array
+ */
+function mai_entry_meta_after_content_atts( $atts ) {
+	$atts['class'] .= ' after-content';
+
+	return $atts;
+}
