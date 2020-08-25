@@ -1,7 +1,7 @@
 @import "../abstracts/_index";
 
 :root {
-	--font-scale: 1.3;
+	--font-scale: 1.2;
 	--border-radius: 0;
 	--body-line-height: 1.875;
 	--button-padding: 1.2em 2.4em;
@@ -29,11 +29,35 @@
 	--menu-letter-spacing: 0.5px;
 	--menu-text-transform: uppercase;
 	--menu-item-link-color-hover: var(--color-body);
+	--menu-toggle-line-width: 24px;
+	--menu-toggle-line-spacing: 6px;
 	--entry-title-link-color-hover: var(--color-link);
 	--entry-meta-font-size: var(--font-size-xs);
 	--entry-excerpt-font-size: 1.2em;
 	--entry-excerpt-font-family: var(--heading-font-family);
 	--comments-max-width: var(--breakpoint-sm);
+	--archive-description-max-width: var(--breakpoint-sm);
+	--archive-description-text-align: center;
+	--archive-description-margin: 3em auto;
+	--archive-title-font-size: var(--font-size-lg);
+	--archive-title-font-weight: var(--font-weight-bold);
+
+	@include mq(md) {
+		--font-scale: 1.3;
+	}
+}
+
+.single-post,
+.is-archive {
+	--content-sidebar-wrap-margin-top: 0;
+}
+
+.menu-toggle {
+	color: var(--color-body);
+
+	@include hover-focus {
+		color: var(--color-body);
+	}
 }
 
 .nav-header-left {
@@ -42,10 +66,6 @@
 
 .nav-header-right {
 	margin-right: auto;
-}
-
-.entry-meta {
-	text-transform: uppercase;
 }
 
 .menu-item-link span {
@@ -58,6 +78,19 @@
 .entry-content a:not([class]) {
 	border-bottom: 1px solid var(--color-link);
 	box-shadow: inset 0 -5px 0 0 var(--color-link);
+}
+
+.entry-meta {
+	text-transform: uppercase;
+}
+
+.entry-meta.after-content {
+	margin-top: 2em;
+	padding-top: 2em;
+	font-size: var(--font-size-base);
+	text-align: left;
+	text-transform: capitalize;
+	border-top: var(--border);
 }
 
 .entry-meta a:not(.button),
@@ -74,15 +107,25 @@
 	text-align: center;
 }
 
+.page .entry-title {
+	font-size: var(--font-size-xxl);
+	text-align: left;
+}
+
+.page .entry-title::after,
 .entry-excerpt::after {
 	display: block;
 	width: 2.5%;
-	margin: 1em auto;
+	margin: 1em 0;
 	border-bottom: 1px solid #000;
 	content: "";
 }
 
-@include mq(md) {
+.entry-excerpt::after {
+	margin: 1em auto;
+}
+
+@include mq(lg) {
 
 	.no-sidebar .entry-single.has-image-first,
 	.no-sidebar [style*="--columns-md:1;"].has-image-full:not(.has-boxed) .has-image-first {
