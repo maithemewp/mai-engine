@@ -122,7 +122,7 @@ function mai_is_type_single( $use_cache = false ) {
 		return $is_type_single;
 
 	} else {
-		$is_type_single = is_front_page() || is_single() || is_page() || is_404() || is_attachment() || is_singular();
+		$is_type_single = ( is_front_page() || is_single() || is_page() || is_404() || is_attachment() || is_singular() ) && ! is_home();
 	}
 
 	return $is_type_single;
@@ -346,9 +346,9 @@ function mai_has_page_header() {
  * @return string|array May be * for all or array of types.
  */
 function mai_get_page_header_types( $context ) {
-	$types  = [];
-	$config = mai_get_config( 'settings' )['page-header'];
-	$single = array_merge(
+	$types   = [];
+	$config  = mai_get_config( 'settings' )['page-header'];
+	$single  = array_merge(
 		array_values( get_post_types( [ 'public' => true ] ) ),
 		[
 			'404-page',

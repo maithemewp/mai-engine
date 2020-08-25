@@ -123,7 +123,10 @@ class Mai_Entry {
 			$elements[] = $item;
 		}
 
-		$image_first = ( isset( $elements[0] ) && ( 'image' === $elements[0] ) ) || ( isset( $this->args['image_position'] ) && mai_has_string( [ 'left', 'right' ], $this->args['image_position'] ) );
+		$image_first = ( isset( $elements[0] ) && ( 'image' === $elements[0] ) ) || ( isset( $this->args['image_position'] ) && mai_has_string( [
+					'left',
+					'right',
+				], $this->args['image_position'] ) );
 		$image_only  = ( isset( $elements[0] ) && 'image' === $elements[0] ) && ( 1 === count( $elements ) );
 
 		// Has image classes.
@@ -341,7 +344,6 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_image() {
-
 		if ( ( 'single' === $this->context ) && mai_is_element_hidden( 'featured_image' ) ) {
 			return;
 		}
@@ -423,8 +425,8 @@ class Mai_Entry {
 				'loading' => 'lazy',
 			]
 		);
-		remove_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 5 );
-		remove_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
+		remove_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ] );
+		remove_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ] );
 
 		if ( 'single' === $this->context ) {
 			$caption = wp_get_attachment_caption( $image_id );
@@ -442,12 +444,9 @@ class Mai_Entry {
 	 *
 	 * @since 0.3.3
 	 *
-	 * @param int   $size       The max width.
-	 * @param array $size_array The array of width and height values.
-	 *
 	 * @return int
 	 */
-	public function srcset_max_image_width( $size, $size_array ) {
+	public function srcset_max_image_width() {
 		$size        = 1600; // Max theme image size.
 		$has_sidebar = mai_has_sidebar();
 		$single      = [
@@ -456,7 +455,7 @@ class Mai_Entry {
 			'md' => 1,
 			'lg' => 1,
 		];
-		$columns     = ( 'single' === $this->context ) ? $single : array_reverse( mai_get_breakpoint_columns( $this->args ), true ); // mobile first.
+		$columns     = ( 'single' === $this->context ) ? $single : array_reverse( mai_get_breakpoint_columns( $this->args ), true ); // Mobile first.
 		$widths      = [];
 
 		foreach ( $columns as $break => $count ) {
@@ -466,18 +465,15 @@ class Mai_Entry {
 					$widths[]  = $count ? floor( $max_width / $count ) : $max_width;
 					break;
 				case 'sm':
-					$min_width = $this->breakpoints['sm'];
 					$max_width = $this->breakpoints['md'];
 					$widths[]  = $count ? floor( $max_width / $count ) : $max_width;
 					break;
 				case 'md':
-					$min_width = $this->breakpoints['md'];
 					$max_width = $this->breakpoints['lg'];
 					$container = $has_sidebar ? $max_width * 2 / 3 : $max_width;
 					$widths[]  = $count ? floor( $container / $count ) : $container;
 					break;
 				case 'lg':
-					$min_width = $this->breakpoints['lg'];
 					$container = $this->breakpoints['xl'];
 					$container = $has_sidebar ? $container * 2 / 3 : $container;
 					$widths[]  = $count ? floor( $container / $count ) : $container;
@@ -497,18 +493,11 @@ class Mai_Entry {
 	 *
 	 * @since 0.1.0
 	 *
-	 * @param string       $sizes         A source size value for use in a 'sizes' attribute.
-	 * @param array|string $size          Requested size. Image size or array of width and height values
-	 *                                    in pixels (in that order).
-	 * @param string|null  $image_src     The URL to the image file or null.
-	 * @param array|null   $image_meta    The image meta data as returned by wp_get_attachment_metadata() or null.
-	 * @param int          $attachment_id Image attachment ID of the original image or 0.
+	 * @todo  Handle 0/auto columns.
 	 *
 	 * @return string
 	 */
-	public function calculate_image_sizes( $sizes, $size, $image_src, $image_meta, $attachment_id ) {
-		// TODO: handle 0/auto columns.
-
+	public function calculate_image_sizes() {
 		$new_sizes   = [];
 		$has_sidebar = mai_has_sidebar();
 		$single      = [
@@ -517,7 +506,7 @@ class Mai_Entry {
 			'md' => 1,
 			'lg' => 1,
 		];
-		$columns     = ( 'single' === $this->context ) ? $single : array_reverse( mai_get_breakpoint_columns( $this->args ), true ); // mobile first.
+		$columns     = ( 'single' === $this->context ) ? $single : array_reverse( mai_get_breakpoint_columns( $this->args ), true ); // Mobile first.
 
 		foreach ( $columns as $break => $count ) {
 			switch ( $break ) {
@@ -569,6 +558,7 @@ class Mai_Entry {
 				break;
 			case 'term':
 				$key = 'featured_image';
+
 				// We need to check each term because a grid archive can show multiple taxonomies.
 				if ( class_exists( 'WooCommerce' ) && 'block' === $this->context && 'term' === $this->type ) {
 					$term = get_term( $this->id );
@@ -579,8 +569,8 @@ class Mai_Entry {
 				$image_id = get_term_meta( $this->id, $key, true );
 				break;
 			case 'user':
-				$image_id = get_user_meta( $this->id, 'featured_image', true ); // TODO.
-				// $image_id = $image_id ? $image_id : fallback to avatar?      // TODO.
+				$image_id = get_user_meta( $this->id, 'featured_image', true );
+				// TODO: $image_id = $image_id ? $image_id : fallback to avatar?
 				break;
 			default:
 				$image_id = 0;
@@ -681,7 +671,6 @@ class Mai_Entry {
 	 * @return  void
 	 */
 	public function do_title() {
-
 		if ( ( 'single' === $this->context ) && ( mai_is_element_hidden( 'entry_title' ) || ( mai_has_page_header() && apply_filters( 'mai_entry_title_in_page_header', true ) ) ) ) {
 			return;
 		}
@@ -817,7 +806,8 @@ class Mai_Entry {
 			return;
 		}
 
-		// title output is left unescaped to accommodate trusted user input. See https://codex.wordpress.org/Function_Reference/the_title#Security_considerations.
+		// Title output is left unescaped to accommodate trusted user input.
+		// See https://codex.wordpress.org/Function_Reference/the_title#Security_considerations.
 		echo $output;
 	}
 
@@ -826,12 +816,11 @@ class Mai_Entry {
 	 *
 	 * Initially based off of genesis_do_post_content().
 	 *
+	 * @since 0.1.0
+	 *
 	 * @return  void
 	 */
 	public function do_excerpt() {
-		$excerpt = '';
-
-		// Excerpt.
 		switch ( $this->type ) {
 			case 'post':
 				if ( 'single' === $this->context ) {
@@ -884,10 +873,11 @@ class Mai_Entry {
 	 *
 	 * Initially based off of genesis_do_post_content().
 	 *
-	 * @return  void
+	 * @since 0.1.0
+	 *
+	 * @return void
 	 */
 	public function do_content() {
-
 		genesis_markup(
 			[
 				'open'    => '<div %s>',
@@ -946,6 +936,10 @@ class Mai_Entry {
 	 * Display the header meta.
 	 *
 	 * Initially based off genesis_post_info().
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
 	 */
 	public function do_header_meta() {
 
@@ -980,6 +974,10 @@ class Mai_Entry {
 	 * Display the footer meta.
 	 *
 	 * Initially based off genesis_post_meta().
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
 	 */
 	public function do_footer_meta() {
 
@@ -1078,7 +1076,6 @@ class Mai_Entry {
 				],
 			]
 		);
-
 	}
 
 	/**
@@ -1110,15 +1107,17 @@ class Mai_Entry {
 	 *
 	 * @since 0.1.0
 	 *
+	 * @todo  Output should be escaped.
+	 *
 	 * @return void
 	 */
 	public function do_author_box() {
-		// TODO: Output should be escaped.
 		echo genesis_get_author_box( 'single' );
 	}
 
 	/**
 	 * Render adjacent entry nav.
+	 *
 	 * Can't use genesis_adjacent_entry_nav() because it checks for post_type support.
 	 *
 	 * @since 0.1.0
@@ -1126,7 +1125,6 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_adjacent_entry_nav() {
-
 		genesis_markup(
 			[
 				'open'    => '<div %s>',
