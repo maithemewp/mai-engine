@@ -1,3 +1,10 @@
 .archive-description {
-	margin-bottom: var(--spacing-xl);
+	max-width: var(--archive-description-max-width, none);
+	margin: var(--archive-description-margin, (0 auto var(--spacing-xl)));
+	text-align: var(--archive-description-text-align, (auto));
+}
+
+.archive-title {
+	font-weight: var(--archive-title-font-weight, var(--heading-font-weight));
+	font-size: var(--archive-title-font-size, var(--font-size-xxxxl));
 }
