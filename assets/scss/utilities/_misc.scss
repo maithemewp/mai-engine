@@ -41,6 +41,15 @@
 	content: "";
 }
 
+.is-full-height {
+	min-height: calc(100vh - (var(--content-sidebar-wrap-margin-top) + var(--content-sidebar-wrap-margin-bottom)));
+}
+
+// TODO: Maybe add z index scale.
+.z-index-1 {
+	z-index: 1;
+}
+
 .has-no-margin-top {
 	margin-top: 0 !important;
 }
