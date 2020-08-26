@@ -2,6 +2,7 @@
 
 :root {
 	--color-border: var(--color-heading);
+	--shadow: none;
 	--font-size-base: 14px;
 	--font-scale: 1.3;
 	--border-radius: 0;
@@ -21,9 +22,15 @@
 	--cite-font-size: 1em;
 	--content-sidebar-wrap-margin: var(--spacing-xxxl) auto;
 	--site-header-border-bottom: 0;
+	--site-title-font-size: var(--font-size-lg);
 	--menu-font-size: var(--font-size-base);
 	--sub-menu-background: var(--color-heading);
 	--entry-title-font-size: var(--font-size-xxxl);
+	--drop-cap-font-family: var(--heading-font-family);
+	--drop-cap-line-height: 0.9;
+	--archive-description-margin: 1em 0 3em;
+	--archive-title-font-size: var(--font-size-xl);
+	--comment-border: 0;
 
 	@include mq(lg) {
 		--nav-header-margin: auto;
@@ -42,7 +49,7 @@
 	background-color: var(--color-secondary);
 }
 
-.entry-title,
-.entry-meta {
+.single .entry-title,
+.single .entry-meta {
 	text-align: center;
 }

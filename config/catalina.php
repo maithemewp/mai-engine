@@ -33,11 +33,36 @@ return [
 		],
 	],
 	'settings'         => [
-		'logo'           => [
+		'logo'             => [
 			'show-tagline' => false,
 		],
-		'single-content' => [
+		'site-layout' => [
+			'default' => [
+				'site'    => 'standard-content',
+				'archive' => 'narrow-content',
+				'single'  => 'narrow-content',
+			],
+		],
+		'single-content'   => [
 			'image_size' => 'cover',
+		],
+		'content-archives' => [
+			'enable' => [ 'post' ],
+			'post'   => [
+				'boxed'      => false,
+				'columns'    => '1',
+				'title_size' => 'xxl',
+				'show'       => [
+					'genesis_entry_header',
+					'title',
+					'header_meta',
+					'genesis_before_entry_content',
+					'content',
+					'genesis_entry_content',
+					'genesis_after_entry_content',
+					'genesis_entry_footer',
+				],
+			],
 		],
 	],
 	'custom-functions' => function () {

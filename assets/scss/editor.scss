@@ -88,7 +88,8 @@ p {
 
 @each $breakpoint-name, $breakpoint-size in $breakpoints {
 
-	// We don't need to worry about nested block here, since their content should never be larger than the parent.
+	// We don't need to worry about nested block here,
+	// since their content should never be larger than the parent.
 	[data-content-width="#{ $breakpoint-name }"] .wp-block-cover__inner-container,
 	[data-content-width="#{ $breakpoint-name }"] .wp-block-group__inner-container {
 		max-width: var(--breakpoint-#{ $breakpoint-name });
