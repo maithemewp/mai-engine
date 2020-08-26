@@ -807,6 +807,7 @@ function mai_get_menu( $menu, $args = [] ) {
  * @return DOMDocument
  */
 function mai_get_dom_document( $html ) {
+
 	// Create the new document.
 	$dom = new DOMDocument();
 
