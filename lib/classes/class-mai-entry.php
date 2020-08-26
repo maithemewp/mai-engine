@@ -1087,7 +1087,7 @@ class Mai_Entry {
 	 */
 	public function do_after_entry() {
 		if ( mai_has_template_part( 'after-entry' ) && ! mai_is_element_hidden( 'after_entry' ) ) {
-			mai_render_template_part( 'after-entry' );
+			mai_render_template_part( 'after-entry', '<div class="after-entry template-part">', '</div>' );
 		}
 
 		// Deprecated for < 2.0.0.

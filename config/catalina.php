@@ -36,7 +36,7 @@ return [
 		'logo'             => [
 			'show-tagline' => false,
 		],
-		'site-layout' => [
+		'site-layout'      => [
 			'default' => [
 				'site'    => 'standard-content',
 				'archive' => 'narrow-content',
@@ -45,6 +45,22 @@ return [
 		],
 		'single-content'   => [
 			'image_size' => 'cover',
+			'post'       => [
+				'show' => [
+					'genesis_entry_header',
+					'title',
+					'header_meta',
+					'image',
+					'genesis_before_entry_content',
+					'excerpt',
+					'content',
+					'genesis_entry_content',
+					'genesis_after_entry_content',
+					'footer_meta',
+					'genesis_entry_footer',
+					'after_entry'
+				],
+			],
 		],
 		'content-archives' => [
 			'enable' => [ 'post' ],
