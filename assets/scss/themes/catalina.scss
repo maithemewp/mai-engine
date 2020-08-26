@@ -31,6 +31,7 @@
 	--archive-description-margin: 1em 0 3em;
 	--archive-title-font-size: var(--font-size-xl);
 	--comment-border: 0;
+	--after-entry-text-align: center;
 
 	@include mq(lg) {
 		--nav-header-margin: auto;
