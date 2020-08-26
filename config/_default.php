@@ -511,6 +511,7 @@ return [
 					'genesis_after_entry_content',
 					'footer_meta',
 					'genesis_entry_footer',
+					'after_entry'
 				],
 				'image_orientation'            => 'landscape',
 				'image_size'                   => 'landscape-md',
