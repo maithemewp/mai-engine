@@ -386,6 +386,8 @@ return [
 		[
 			'id'         => 'after-entry',
 			'name'       => __( 'After Entry', 'mai-engine' ),
+			'location'   => 'genesis_after_entry',
+			'priority'   => 5,
 			'menu_order' => 25,
 		],
 		[
