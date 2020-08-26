@@ -58,6 +58,7 @@ blockquote {
 	font-size: var(--blockquote-font-size, (1em));
 	font-family: var(--blockquote-font-family, inherit);
 	font-style: var(--blockquote-font-style, italic);
+	font-weight: var(--blockquote-font-weight, normal);
 	line-height: var(--blockquote-line-height, normal);
 	text-align: var(--blockquote-text-align, inherit);
 	border-top: var(--blockquote-border-top, 0);
