@@ -79,3 +79,34 @@ function mai_do_blog_description() {
 
 	echo wp_kses_post( $content );
 }
+
+add_action( 'genesis_before_loop', 'mai_do_term_description', 18 );
+/**
+ * Add term description before custom taxonomy loop, but after archive title/description.
+ * Archive title/description is priority 15 in Genesis.
+ *
+ * This is the core WP term description, not the Genesis Intro Text.
+ * Genesis Intro Text is in page header or before this.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_do_term_description() {
+	if ( ! ( is_category() || is_tag() || is_tax() ) ) {
+		return;
+	}
+
+	// Bail if not the first page.
+	if ( 0 !== absint( get_query_var( 'paged' ) ) ) {
+		return;
+	}
+
+	$description = apply_filters( 'mai_term_description', term_description() );
+
+	if ( ! $description ) {
+		return;
+	}
+
+	printf( '<div class="term-description">%s</div>', mai_get_processed_content( $description ) );
+}
