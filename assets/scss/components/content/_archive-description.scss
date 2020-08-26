@@ -8,3 +8,7 @@
 	font-weight: var(--archive-title-font-weight, var(--heading-font-weight));
 	font-size: var(--archive-title-font-size, var(--font-size-xxxxl));
 }
+
+.term-description {
+	margin: var(--term-description-margin, (0 auto var(--spacing-xl)));
+}
