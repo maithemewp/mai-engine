@@ -41,6 +41,14 @@
 	content: "";
 }
 
+.is-boxed {
+	margin: 0 0 var(--spacing-md);
+	padding: var(--spacing-xl);
+	border: var(--border);
+	border-radius: var(--border-radius);
+	box-shadow: var(--shadow);
+}
+
 .is-full-height {
 	min-height: calc(100vh - (var(--content-sidebar-wrap-margin-top) + var(--content-sidebar-wrap-margin-bottom)));
 }
@@ -48,6 +56,10 @@
 // TODO: Maybe add z index scale.
 .z-index-1 {
 	z-index: 1;
+}
+
+.full-width {
+	width: 100%;
 }
 
 .has-no-margin-top {
