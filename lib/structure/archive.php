@@ -88,7 +88,7 @@ add_action( 'genesis_before_loop', 'mai_do_term_description', 18 );
  * This is the core WP term description, not the Genesis Intro Text.
  * Genesis Intro Text is in page header or before this.
  *
- * @since TBD
+ * @since 2.4.2
  *
  * @return void
  */
