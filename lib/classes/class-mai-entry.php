@@ -99,11 +99,11 @@ class Mai_Entry {
 		switch ( $this->type ) {
 			case 'post':
 				$wrap = 'article';
-				break;
+			break;
 			case 'term':
 			case 'user':
 				$wrap = 'div';
-				break;
+			break;
 			default:
 				$wrap = 'div';
 		}
@@ -297,13 +297,13 @@ class Mai_Entry {
 		switch ( $this->type ) {
 			case 'post':
 				$entry_id = $this->entry->ID;
-				break;
+			break;
 			case 'term':
 				$entry_id = $this->entry->term_id;
-				break;
+			break;
 			case 'user':
 				$entry_id = $this->entry->ID;
-				break;
+			break;
 			default:
 				$entry_id = 0;
 		}
@@ -322,13 +322,13 @@ class Mai_Entry {
 		switch ( $this->type ) {
 			case 'post':
 				$url = get_permalink( $this->id );
-				break;
+			break;
 			case 'term':
 				$url = get_term_link( $this->id );
-				break;
+			break;
 			case 'user':
 				$url = get_author_posts_url( $this->id );
-				break;
+			break;
 			default:
 				$url = '';
 		}
@@ -464,21 +464,21 @@ class Mai_Entry {
 				case 'xs':
 					$max_width = $this->breakpoints['sm'];
 					$widths[]  = $count ? floor( $max_width / $count ) : $max_width;
-					break;
+				break;
 				case 'sm':
 					$max_width = $this->breakpoints['md'];
 					$widths[]  = $count ? floor( $max_width / $count ) : $max_width;
-					break;
+				break;
 				case 'md':
 					$max_width = $this->breakpoints['lg'];
 					$container = $has_sidebar ? $max_width * 2 / 3 : $max_width;
 					$widths[]  = $count ? floor( $container / $count ) : $container;
-					break;
+				break;
 				case 'lg':
 					$container = $this->breakpoints['xl'];
 					$container = $has_sidebar ? $container * 2 / 3 : $container;
 					$widths[]  = $count ? floor( $container / $count ) : $container;
-					break;
+				break;
 			}
 		}
 
@@ -515,27 +515,27 @@ class Mai_Entry {
 					$max_width   = $this->breakpoints['sm'] - 1;
 					$width       = $count ? floor( $max_width / $count ) : $max_width;
 					$new_sizes[] = "(max-width:{$max_width}px) {$width}px";
-					break;
+				break;
 				case 'sm':
 					$min_width   = $this->breakpoints['sm'];
 					$max_width   = $this->breakpoints['md'] - 1;
 					$width       = $count ? floor( $max_width / $count ) : $max_width;
 					$new_sizes[] = "(min-width:{$min_width}px) and (max-width: {$max_width}px) {$width}px";
-					break;
+				break;
 				case 'md':
 					$min_width   = $this->breakpoints['md'];
 					$max_width   = $this->breakpoints['lg'] - 1;
 					$container   = $has_sidebar ? $max_width * 2 / 3 : $max_width;
 					$width       = $count ? floor( $container / $count ) : $container;
 					$new_sizes[] = "(min-width:{$min_width}px) and (max-width: {$max_width}px) {$width}px";
-					break;
+				break;
 				case 'lg':
 					$min_width   = $this->breakpoints['lg'];
 					$container   = $this->breakpoints['xl'];
 					$container   = $has_sidebar ? $container * 2 / 3 : $container;
 					$width       = $count ? floor( $container / $count ) : $container;
 					$new_sizes[] = "(min-width:{$min_width}px) {$width}px";
-					break;
+				break;
 			}
 		}
 
@@ -556,7 +556,7 @@ class Mai_Entry {
 				if ( ! $image_id && ( 'single' !== $this->context ) ) {
 					$image_id = genesis_get_image_id( 0, $this->id );
 				}
-				break;
+			break;
 			case 'term':
 				$key = 'featured_image';
 
@@ -568,11 +568,11 @@ class Mai_Entry {
 					}
 				}
 				$image_id = get_term_meta( $this->id, $key, true );
-				break;
+			break;
 			case 'user':
 				$image_id = get_user_meta( $this->id, 'featured_image', true );
 				// TODO: $image_id = $image_id ? $image_id : fallback to avatar?
-				break;
+			break;
 			default:
 				$image_id = 0;
 		}
@@ -604,7 +604,7 @@ class Mai_Entry {
 			case 'square':
 				$image_size = $this->get_image_size_by_cols();
 				$image_size = sprintf( '%s-%s', $this->args['image_orientation'], $image_size );
-				break;
+			break;
 			default:
 				$image_size = $this->args['image_size'];
 		}
@@ -644,7 +644,7 @@ class Mai_Entry {
 							$image_size = 'md';
 						}
 					}
-					break;
+				break;
 				case 2:
 					if ( $fw_content ) {
 						if ( $img_aligned ) {
@@ -655,7 +655,7 @@ class Mai_Entry {
 					} else {
 						$image_size = 'sm';
 					}
-					break;
+				break;
 				default:
 					$image_size = 'sm';
 			}
@@ -729,17 +729,17 @@ class Mai_Entry {
 					$link  = true;
 				}
 
-				break;
+			break;
 			case 'term':
 				$wrap  = 'h3'; // Only blocks use this function for terms.
 				$title = $this->entry->name;
 				$link  = true;
-				break;
+			break;
 			case 'user':
 				$wrap  = 'h3'; // Only blocks use this function for users.
 				$title = ''; // TODO: Add title.
 				$link  = true;
-				break;
+			break;
 			default:
 				$title = '';
 		}
@@ -830,13 +830,13 @@ class Mai_Entry {
 				} else {
 					$excerpt = get_the_excerpt();
 				}
-				break;
+			break;
 			case 'term':
 				$excerpt = get_term_meta( $this->id, 'intro_text', true );
-				break;
+			break;
 			case 'user':
 				$excerpt = ''; // TODO (possibly not an option for users).
-				break;
+			break;
 			default:
 				$excerpt = '';
 		}
@@ -901,13 +901,13 @@ class Mai_Entry {
 			switch ( $this->type ) {
 				case 'post':
 					$content = strip_shortcodes( get_the_content( null, false, $this->entry ) );
-					break;
+				break;
 				case 'term':
 					$content = term_description( $this->id );
-					break;
+				break;
 				case 'user':
 					$content = get_the_author_meta( 'description', $this->id );
-					break;
+				break;
 				default:
 					$content = '';
 			}
@@ -1022,13 +1022,13 @@ class Mai_Entry {
 		switch ( $this->type ) {
 			case 'post':
 				$href = get_the_permalink( $this->entry );
-				break;
+			break;
 			case 'term':
 				$href = get_term_link( $this->entry );
-				break;
+			break;
 			case 'user':
 				$href = ''; // TODO.
-				break;
+			break;
 			default:
 				$href = '';
 		}
@@ -1038,7 +1038,29 @@ class Mai_Entry {
 			return;
 		}
 
-		$more_link_text = isset( $this->args['more_link_text'] ) && $this->args['more_link_text'] ? $this->args['more_link_text'] : mai_get_read_more_text();
+		$more_link_text  = isset( $this->args['more_link_text'] ) && $this->args['more_link_text'] ? $this->args['more_link_text'] : mai_get_read_more_text();
+
+		// Screen reader text title.
+		switch ( $this->type ) {
+			case 'post':
+				// Not a block.
+				if ( 'block' !== $this->context ) {
+					$title = get_the_title();
+				} else {
+					$title = get_the_title( $this->entry );
+				}
+			break;
+			case 'term':
+				$title = $this->entry->name;
+			break;
+			case 'user':
+				$title = ''; // TODO: Add title.
+			break;
+			default:
+				$title = '';
+		}
+
+		$more_link_text .= $title ? sprintf( '<span class="screen-reader-text">%s</span>', $title ) : '';
 
 		// The link HTML.
 		$more_link = genesis_markup(
