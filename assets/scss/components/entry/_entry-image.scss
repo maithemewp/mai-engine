@@ -27,12 +27,8 @@
 	}
 }
 
-.has-image-only {
-	--entry-image-link-margin-bottom: 0;
-}
-
 .entry-image-single {
-	--entry-image-link-margin-bottom: var(--spacing-lg);
+	margin-bottom: var(--entry-image-single-margin-bottom, 2em);
 }
 
 .entry-image {
@@ -41,6 +37,10 @@
 	height: var(--entry-image-height, inherit);
 	object-fit: var(--entry-image-object-fit, unset);
 	border-radius: var(--entry-image-border-radius, var(--border-radius));
+}
+
+.has-image-only {
+	--entry-image-link-margin-bottom: 0;
 }
 
 .has-image-center {
