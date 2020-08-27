@@ -694,14 +694,13 @@ function mai_get_processed_content( $content ) {
  * This filter is run before any custom read more text is added via Customizer settings.
  * If you want to filter after that, use `genesis_markup_entry-more-link_content` filter.
  *
+ * @since 2.4.2 Move default text to config.
  * @since 2.0.0
  *
  * @return string
  */
 function mai_get_read_more_text() {
-	$text = apply_filters( 'mai_read_more_text', esc_html__( 'Read More', 'mai-engine' ) );
-
-	return sanitize_text_field( $text );
+	return esc_html( apply_filters( 'mai_read_more_text', mai_get_config( 'settings' )['content-archives']['more_link_text'] ) );
 }
 
 /**

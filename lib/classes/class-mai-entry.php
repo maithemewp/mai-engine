@@ -415,6 +415,7 @@ class Mai_Entry {
 
 		add_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
 		add_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 5 );
+
 		$size  = $this->get_image_size();
 		$image = wp_get_attachment_image(
 			$image_id,
