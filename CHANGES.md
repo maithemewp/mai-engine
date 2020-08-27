@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.4.2 TBD
+## 2.4.2 (8/27/20)
 * Added: Updated Google Font list in Typography customizer fields via Kirki.
 * Added: Before and after content HTML classes to entry meta.
 * Added: Screen reader text title to read more links.
