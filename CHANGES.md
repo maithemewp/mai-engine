@@ -2,7 +2,28 @@
 
 ## 2.4.2 TBD
 * Added: Updated Google Font list in Typography customizer fields via Kirki.
+* Added: Before and after content HTML classes to entry meta.
+* Added: Screen reader text title to read more links.
 * Changed: Updated ACF Pro to 5.9.0.
+* Changed: Updated Kirki.
+* Changed: Updated the updater.
+* Changed: More default left margin on lists in content.
+* Changed: Remove unused body classes added from Genesis.
+* Changed: After Entry template part is displayed by default if there is content in the template part.
+* Fixed: Some site layout settings where not working in some configurations.
+* Fixed: Button controls scrolling out of view when editing some blocks.
+* Fixed: Spacing settings not showing spacing on blocks in editor.
+* Fixed: Spacing and content width setting sizing in editor to fit changes in WP 5.5.
+* Fixed: Deprecated `wp_make_content_images_responsive()` in WP 5.5.
+* Fixed: Make sure theme CSS is loaded after all engine CSS.
+* Fixed: Default submenu dropdown caret alignment was off.
+* Fixed: Align center vertically wasn't working correctly in some configurations of grid/archives.
+* Fixed: Mai Grid blocks where not full width if nested in other blocks in some scenarios.
+* Fixed: Better handling and consistent display of category/term description and intro text, including when page header is enabled.
+* Fixed: Author box spacing.
+* Fixed: Avatar was not using default size if unmodified.
+* Fixed: WooCommerce default button styling now matches the theme better.
+* Fixed: WooCommerce gallery image layout and styling tweaks.
 
 ## 2.4.1 (8/10/20)
 * Added: New entry-wrap-{context} class for simpler CSS targeting.
