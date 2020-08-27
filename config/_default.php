@@ -511,7 +511,7 @@ return [
 					'genesis_after_entry_content',
 					'footer_meta',
 					'genesis_entry_footer',
-					'after_entry'
+					'after_entry',
 				],
 				'image_orientation'            => 'landscape',
 				'image_size'                   => 'landscape-md',
@@ -525,8 +525,9 @@ return [
 			],
 		],
 		'content-archives'    => [
-			'enable' => [ 'post' ],
-			'post'   => [
+			'enable'         => [ 'post' ],
+			'more_link_text' => __( 'Read more', 'mai-engine' ),
+			'post'           => [
 				'show'                         => [
 					'image',
 					'genesis_entry_header',
