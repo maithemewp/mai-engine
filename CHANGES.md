@@ -17,6 +17,7 @@
 * Fixed: Deprecated `wp_make_content_images_responsive()` in WP 5.5.
 * Fixed: Make sure theme CSS is loaded after all engine CSS.
 * Fixed: Default submenu dropdown caret alignment was off.
+* Fixed: Visible menu's menu items were not wrapping on mobile.
 * Fixed: Align center vertically wasn't working correctly in some configurations of grid/archives.
 * Fixed: Mai Grid blocks where not full width if nested in other blocks in some scenarios.
 * Fixed: Better handling and consistent display of category/term description and intro text, including when page header is enabled.
