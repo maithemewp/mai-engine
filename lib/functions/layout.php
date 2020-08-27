@@ -55,17 +55,21 @@ function mai_site_layout( $use_cache = true ) {
 
 	if ( ! $site_layout ) {
 		$layouts  = [];
-		$settings = mai_get_option( 'site-layouts', [] );
 		$defaults = mai_get_config( 'settings' )['site-layout'];
+		$settings = mai_get_option( 'site-layouts', [] );
 
-		foreach ( $defaults as $context => $default ) {
-			foreach ( $default as $index => $setting ) {
-				$layouts[ $context ][ $index ] = isset( $settings[ $context ][ $index ] ) && ! empty( $settings[ $context ][ $index ] ) ? $settings[ $context ][ $index ] : $defaults[ $context ][ $index ];
-			}
+		// Remove empty values from settings, so wp_parse_args works correctly.
+		foreach ( $settings as $context => $values ) {
+			$settings[ $context ] = array_filter( $settings[ $context ] );
 		}
 
-		$context  = null;
-		$name     = null;
+		// Loop through defaults, and parse settings if available.
+		foreach ( $defaults as $context => $default ) {
+			$layouts[ $context ] = isset( $settings[ $context ] ) ? wp_parse_args( $settings[ $context ], $defaults[ $context ] ) : $defaults[ $context ];
+		}
+
+		$context = null;
+		$name    = null;
 
 		if ( mai_is_type_archive() ) {
 			$context = 'archive';

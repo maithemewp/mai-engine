@@ -12,13 +12,15 @@
 /**
  * Returns content archive settings.
  *
- * @since 2.4.0 Moved defaults to config.
  * @since 0.1.0
+ * @since 2.4.0 Moved defaults to config.
+ * @since 2.4.2 Added $name param.
  *
  * @return array
  */
-function mai_get_content_archive_settings() {
+function mai_get_content_archive_settings( $name = 'post' ) {
 	$defaults = mai_get_config( 'settings' )['content-archives'];
+	$defaults = isset( $defaults[ $name ] ) ? $defaults[ $name ] : $defaults[ 'post' ];
 
 	return [
 		[
@@ -642,7 +644,7 @@ function mai_add_content_archive_settings() {
 			]
 		);
 
-		$settings = mai_get_content_archive_settings();
+		$settings = mai_get_content_archive_settings( $section );
 
 		foreach ( $settings as $field ) {
 			if ( 'post' === $section && 'posts_per_page' === $field['settings'] ) {

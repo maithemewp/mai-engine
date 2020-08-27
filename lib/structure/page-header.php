@@ -32,22 +32,35 @@ function mai_page_header_setup() {
 
 	remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
 	remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
+
+
+	remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_headline', 10, 3 );
+
+	if ( is_category() || is_tag() || is_tax() ) {
+		$description = get_term_meta( get_queried_object_id(), 'page_header_description', true );
+		$intro_text  = get_term_meta( get_queried_object_id(), 'intro_text', true );
+		$intro_text  = apply_filters( 'genesis_term_intro_text_output', $intro_text ?: '' );
+
+		if ( ! $description && $intro_text ) {
+			// Remove archive-description wrap and intro text if intro text is used in page header.
+			remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_open', 5 );
+			remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_intro_text', 12 );
+			remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_close', 15 );
+		} elseif ( ! $intro_text ) {
+			// Remove archive-description wrap if no intro text is displayed.
+			remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_intro_text', 12 );
+			remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_close', 15 );
+		}
+	}
+
 	remove_action( 'genesis_before_loop', 'genesis_do_posts_page_heading' );
-	remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_open', 5 );
-	remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_close', 15 );
-	remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_intro_text', 12 );
 	remove_action( 'genesis_before_loop', 'genesis_do_date_archive_title' );
 	remove_action( 'genesis_before_loop', 'genesis_do_blog_template_heading' );
-	remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
 	remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
 	remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
 	remove_action( 'genesis_before_loop', 'genesis_do_search_title' );
 	remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_title', 5 );
 	remove_action( 'woocommerce_before_shop_loop', 'woocommerce_result_count', 20 );
-
-	remove_filter( 'genesis_term_intro_text_output', 'wpautop' );
-	remove_filter( 'genesis_author_intro_text_output', 'wpautop' );
-	remove_filter( 'genesis_cpt_archive_intro_text_output', 'wpautop' );
 
 	add_filter( 'woocommerce_show_page_title', '__return_null' );
 	add_filter( 'genesis_search_title_output', '__return_false' );
@@ -474,6 +487,7 @@ function mai_get_page_header_description() {
 
 		if ( $term ) {
 			$description = get_term_meta( $term->term_id, 'page_header_description', true );
+			$description = $description ? $description : get_term_meta( $term->term_id, 'intro_text', true ); // Fallback to intro text.
 			$description = apply_filters( 'genesis_term_intro_text_output', $description ? $description : '' );
 		}
 	} elseif ( is_search() ) {

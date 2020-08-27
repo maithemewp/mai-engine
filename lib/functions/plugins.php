@@ -101,7 +101,7 @@ function mai_woocommerce_breakpoint() {
 		$breakpoint = 'lg';
 	}
 
-	return mai_get_breakpoint( $breakpoint );
+	return mai_get_unit_value( mai_get_breakpoint( $breakpoint ), 'px' );
 }
 
 /**

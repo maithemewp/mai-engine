@@ -144,6 +144,14 @@
 	}
 }
 
+.woocommerce-product-gallery__wrapper {
+	margin: 0;
+}
+
+.woocommerce-product-gallery__image {
+	width: 100%;
+}
+
 .woocommerce-LoopProduct-link {
 	width: 100%;
 
@@ -162,10 +170,20 @@
 	margin-top: auto;
 	transition: none;
 
+	@include button();
+	@include button-style(secondary);
+	@include button-style(small);
+
 	&::after {
 		display: inline-flex;
 		font-size: 0;
 	}
+}
+
+.button.product_type_simple {
+	margin-top: 1em;
+
+	@include button-style(small);
 }
 
 .added,

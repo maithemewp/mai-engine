@@ -34,46 +34,72 @@ return [
 			'sticky-header',
 		],
 	],
+	'scripts'       => [
+		'menus' => [
+			'localize' => [
+				'data' => [
+					'menuToggle' => sprintf(
+						'<span class="menu-toggle-icon"></span> &nbsp; %s',
+						__( 'Menu', 'mai-engine' )
+					),
+				],
+			],
+		],
+	],
 	'settings'      => [
 		'logo'             => [
 			'show-tagline' => false,
 			'spacing'      => [
-				'desktop' => '20px',
+				'desktop' => '25px',
 			],
 		],
 		'site-layout'      => [
-			'default'  => [
-				'site'    => 'wide-content',
+			'default' => [
+				'site'    => 'standard-content',
 				'archive' => 'wide-content',
 				'single'  => 'wide-content',
 			],
-			'archive'  => [
-				'search'  => 'wide-content',
-			],
 		],
 		'single-content'   => [
-			'image_orientation' => 'custom',
-			'image_size'        => 'cover',
+			'post' => [
+				'show'                         => [
+					'genesis_entry_header',
+					'image',
+					'header_meta',
+					'title',
+					'excerpt',
+					'genesis_before_entry_content',
+					'content',
+					'genesis_entry_content',
+					'genesis_after_entry_content',
+					'footer_meta',
+					'genesis_entry_footer',
+				],
+				'image_orientation' => 'custom',
+				'image_size'        => 'cover',
+			],
 		],
 		'content-archives' => [
-			'show'              => [
-				'image',
-				'genesis_entry_header',
-				'header_meta',
-				'title',
-				'excerpt',
-				'genesis_before_entry_content',
-				'content',
-				'genesis_entry_content',
-				'genesis_after_entry_content',
-				'footer_meta',
-				'genesis_entry_footer',
+			'post' => [
+				'show'              => [
+					'image',
+					'genesis_entry_header',
+					'header_meta',
+					'title',
+					'excerpt',
+					'genesis_before_entry_content',
+					'content',
+					'genesis_entry_content',
+					'genesis_after_entry_content',
+					'footer_meta',
+					'genesis_entry_footer',
+				],
+				'image_orientation' => 'custom',
+				'image_size'        => 'cover',
+				'title_size'        => 'xxxxl',
+				'boxed'             => false,
+				'columns'           => '1',
 			],
-			'image_orientation' => 'custom',
-			'image_size'        => 'cover',
-			'title_size'        => 'xxxxl',
-			'boxed'             => false,
-			'columns'           => '1',
 		],
 	],
 ];

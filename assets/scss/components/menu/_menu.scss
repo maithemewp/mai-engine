@@ -20,8 +20,8 @@
 	display: var(--menu-item-display, (flex));
 	flex-wrap: var(--menu-item-flex-wrap, wrap);
 	justify-content: var(--menu-item-justify-content, flex-start);
-	width: var(--menu-item-width, 100%);
-	margin: var(--menu-item-margin, (0 auto));
+	width: var(--menu-item-width, auto);
+	margin: var(--menu-item-margin, 0);
 
 	&.search {
 		z-index: 12; // 1 above sticky site-header.
@@ -34,7 +34,7 @@
 	justify-content: var(--menu-item-link-justify-content, flex-start);
 	width: var(--menu-item-link-width, auto);
 	max-width: var(--menu-item-link-max-width, 100%);
-	padding: var(--menu-item-link-padding, (var(--spacing-sm) var(--spacing-xxs)));
+	padding: var(--menu-item-link-padding, (var(--spacing-sm) var(--spacing-sm)));
 	color: var(--menu-item-link-color, var(--color-heading));
 	text-align: var(--menu-item-link-text-align, start);
 	text-decoration: var(--menu-text-decoration, none);
@@ -81,7 +81,7 @@
 		display: var(--menu-item-dropdown-toggle, inline-block);
 		width: 6px;
 		height: 6px;
-		margin: -0.5em 0 0 var(--menu-item-dropdown-margin-left, var(--spacing-xs));
+		margin-left: var(--menu-item-dropdown-margin-left, var(--spacing-xs));
 		border-color: currentColor;
 		border-style: solid;
 		border-top: 0;

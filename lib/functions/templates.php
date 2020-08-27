@@ -121,77 +121,64 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
 /**
  * Returns a static array of all template part content, keyed by slug.
  *
+ * @since 2.4.2 Simplify function, remove use of wp_make_content_images_responsive.
+ * @since 2.4.0 Removed the is_admin() check since this was finally solved
+ *        https://github.com/maithemewp/mai-engine/issues/251. Changed return values to check and use post status.
+ * @since 2.2.2 Now returns an array of template part content content keyed by slug instead of an array of WP_Post
+ *        objects.
  * @since 2.0.1
- * @since 2.2.2 Now returns an array of template part content content keyed by slug instead of an array of WP_Post objects.
- * @since 2.4.0 Removed the is_admin() check since this was finally solved https://github.com/maithemewp/mai-engine/issues/251.
- *              Changed return values to check and use post status.
  *
  * @return array
  */
 function mai_get_template_parts() {
-	static $template_parts = null;
+	static $template_parts = [];
 
-	if ( is_null( $template_parts ) ) {
-		$template_part = [];
-		$config        = mai_get_config( 'template-parts' );
-		$slugs         = $config ? wp_list_pluck( $config, 'id' ) : [];
+	if ( ! empty( $template_parts ) ) {
+		return $template_parts;
+	}
 
-		if ( $slugs ) {
+	$config = mai_get_config( 'template-parts' );
+	$slugs  = $config ? wp_list_pluck( $config, 'id' ) : [];
+	$posts  = [];
 
-			$posts = get_posts(
-				[
-					'post_type'              => 'wp_template_part',
-					'post_status'            => 'any',
-					'post_name__in'          => $slugs,
-					'posts_per_page'         => 500, // Force a high number. Without setting this, it uses the WP posts_per_page setting, which could break things.
-					'no_found_rows'          => true,
-					'update_post_meta_cache' => false,
-					'update_post_term_cache' => false,
-				]
-			);
+	if ( ! empty( $slugs ) ) {
+		$query = get_posts(
+			[
+				'post_type'              => 'wp_template_part',
+				'post_status'            => 'any',
+				'post_name__in'          => $slugs,
+				'posts_per_page'         => 500,
+				// Force a high number. Without setting this, it uses the WP posts_per_page setting, which could break things.
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			]
+		);
 
-			if ( $posts ) {
-				foreach ( $posts as $post ) {
-					global $wp_embed;
+		foreach ( $query as $post ) {
+			$content = $post->post_content ? mai_get_processed_content( $post->post_content ) : '';
 
-					$content = $post->post_content;
-
-					if ( $content ) {
-						$content = $wp_embed->autoembed( $content );              // WP runs priority 8.
-						$content = $wp_embed->run_shortcode( $content );          // WP runs priority 8.
-						$content = do_blocks( $content );                         // WP runs priority 9.
-						$content = wptexturize( $content );                       // WP runs priority 10.
-						$content = wpautop( $content );                           // WP runs priority 10.
-						$content = shortcode_unautop( $content );                 // WP runs priority 10.
-						$content = wp_make_content_images_responsive( $content ); // WP runs priority 10.
-						$content = do_shortcode( $content );                      // WP runs priority 11.
-						$content = convert_smilies( $content );                   // WP runs priority 20.
-					}
-
-					$template_parts[ $post->post_status ][ $post->post_name ] = $content;
-				}
-			}
+			$posts[ $post->post_status ][ $post->post_name ] = $content;
 		}
 	}
 
-	$return = [];
-
-	if ( $template_parts ) {
+	if ( ! empty( $posts ) ) {
 		if ( is_admin() ) {
-			foreach ( $template_parts as $status => $parts ) {
-				$return = array_merge( $return, $parts );
+			foreach ( $posts as $status => $parts ) {
+				$template_parts = array_merge( $template_parts, $parts );
 			}
+
 		} else {
-			$return = isset( $template_parts[ 'publish' ] ) ? $template_parts[ 'publish' ] : [];
+			$template_parts = isset( $posts['publish'] ) ? $posts['publish'] : [];
 
 			if ( current_user_can( 'manage_options' ) ) {
-				$private = isset( $template_parts[ 'private' ] ) ? $template_parts[ 'private' ] : [];
-				$return  = array_merge( $return, $private );
+				$private        = isset( $posts['private'] ) ? $posts['private'] : [];
+				$template_parts = array_merge( $template_parts, $private );
 			}
 		}
 	}
 
-	return $return;
+	return $template_parts;
 }
 
 /**
@@ -206,6 +193,7 @@ function mai_get_template_parts() {
  */
 function mai_get_template_part( $slug ) {
 	$template_parts = mai_get_template_parts();
+
 	return isset( $template_parts[ $slug ] ) ? $template_parts[ $slug ] : '';
 }
 
@@ -233,6 +221,7 @@ function mai_has_template_part( $slug ) {
  */
 function mai_template_part_exists( $slug ) {
 	$template_parts = mai_get_template_parts();
+
 	return isset( $template_parts[ $slug ] );
 }
 

@@ -386,3 +386,53 @@ function acf_did( $name ) {
 		return false;
 	}
 }
+
+/**
+ * Returns the length of a string that has been submitted via $_POST.
+ *
+ * Uses the following process:
+ * 1. Unslash the string because posted values will be slashed.
+ * 2. Decode special characters because wp_kses() will normalize entities.
+ * 3. Treat line-breaks as a single character instead of two.
+ * 4. Use mb_strlen() to accomodate special characters.
+ * 
+ * @date	04/06/2020
+ * @since	5.9.0
+ *
+ * @param	string $str The string to review.
+ * @return	int
+ */
+function acf_strlen( $str ) {
+	return mb_strlen( str_replace("\r\n", "\n", wp_specialchars_decode( wp_unslash( $str ) ) ) );
+}
+
+/**
+ * Returns a value with default fallback.
+ *
+ * @date	6/4/20
+ * @since	5.9.0
+ *
+ * @param	mixed $value The value.
+ * @param	mixed $default_value The default value.
+ * @return	mixed
+ */
+function acf_with_default( $value, $default_value ) {
+	return $value ? $value : $default_value;
+}
+
+/**
+ * Returns the current priority of a running action.
+ *
+ * @date	14/07/2020
+ * @since	5.9.0
+ *
+ * @param	string $action The action name.
+ * @return	int|bool
+ */
+function acf_doing_action( $action ) {
+	global $wp_filter;
+	if( isset( $wp_filter[ $action ] ) ) {
+		return $wp_filter[ $action ]->current_priority();
+	}
+	return false;
+}

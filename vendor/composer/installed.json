@@ -1,28 +1,28 @@
 [
     {
         "name": "advanced-custom-fields/advanced-custom-fields-pro",
-        "version": "5.8.11",
-        "version_normalized": "5.8.11.0",
+        "version": "5.9.0",
+        "version_normalized": "5.9.0.0",
         "dist": {
             "type": "zip",
-            "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download&t=5.8.11"
+            "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download&t=5.9.0"
         },
         "type": "library",
         "installation-source": "dist"
     },
     {
         "name": "aristath/kirki",
-        "version": "3.1.4",
-        "version_normalized": "3.1.4.0",
+        "version": "3.1.5",
+        "version_normalized": "3.1.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/kirki-framework/kirki.git",
-            "reference": "25d4fc4297b431a254a86ff8036134e5a0a80010"
+            "reference": "e26eb051a0e6f89e6f54efbb3873e53debcab626"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/kirki-framework/kirki/zipball/25d4fc4297b431a254a86ff8036134e5a0a80010",
-            "reference": "25d4fc4297b431a254a86ff8036134e5a0a80010",
+            "url": "https://api.github.com/repos/kirki-framework/kirki/zipball/e26eb051a0e6f89e6f54efbb3873e53debcab626",
+            "reference": "e26eb051a0e6f89e6f54efbb3873e53debcab626",
             "shasum": ""
         },
         "require": {
@@ -37,7 +37,7 @@
             "phpunit/phpunit": "*",
             "wp-coding-standards/wpcs": "*"
         },
-        "time": "2020-07-11T12:08:46+00:00",
+        "time": "2020-08-10T09:19:59+00:00",
         "type": "library",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -116,29 +116,29 @@
     },
     {
         "name": "yahnis-elsts/plugin-update-checker",
-        "version": "v4.9",
-        "version_normalized": "4.9.0.0",
+        "version": "v4.10",
+        "version_normalized": "4.10.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/YahnisElsts/plugin-update-checker.git",
-            "reference": "28f29c940cc22754aff85a99645e3c0a51c097e8"
+            "reference": "0edd15f67822464af8a23285ce367b30d515a855"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/YahnisElsts/plugin-update-checker/zipball/28f29c940cc22754aff85a99645e3c0a51c097e8",
-            "reference": "28f29c940cc22754aff85a99645e3c0a51c097e8",
+            "url": "https://api.github.com/repos/YahnisElsts/plugin-update-checker/zipball/0edd15f67822464af8a23285ce367b30d515a855",
+            "reference": "0edd15f67822464af8a23285ce367b30d515a855",
             "shasum": ""
         },
         "require": {
             "ext-json": "*",
             "php": ">=5.2.0"
         },
-        "time": "2020-02-07T11:07:19+00:00",
+        "time": "2020-08-21T11:36:45+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
             "files": [
-                "load-v4p9.php"
+                "load-v4p10.php"
             ]
         },
         "notification-url": "https://packagist.org/downloads/",

@@ -8,11 +8,11 @@
 }
 
 .comment {
-	margin: 0 0 var(--spacing-md);
-	padding: var(--spacing-xl);
-	border: var(--border);
-	border-radius: var(--border-radius);
-	box-shadow: var(--shadow);
+	margin: var(--comment-margin, 0 0 var(--spacing-md));
+	padding: var(--comment-padding, var(--spacing-xl));
+	border: var(--comment-border, var(--border));
+	border-radius: var(--comment-border-radius, var(--border-radius));
+	box-shadow: var(--comment-box-shadow, var(--shadow));
 
 	.children {
 		margin: var(--spacing-lg) 0 0;
@@ -20,11 +20,11 @@
 	}
 
 	.comment {
-		--shadow: none;
-		margin-right: calc(var(--spacing-xl) * -1 - var(--border-width)); /* make all child comments flush to right, over border as well */
+		margin-right: calc(var(--spacing-xl) * -1 - var(--border-width)); /* Make all child comments flush to right, over border as well */
+		box-shadow: none;
 
 		&:last-child {
-			margin-bottom: calc(var(--spacing-xl) * -1 - var(--border-width)); /* make all child comments flush to bottom, over border as well */
+			margin-bottom: calc(var(--spacing-xl) * -1 - var(--border-width)); /* Make all child comments flush to bottom, over border as well */
 			border-width: var(--border-width) 0 0 var(--border-width);
 		}
 	}

@@ -1,8 +1,3 @@
-body {
-
-	@include body;
-}
-
 a {
 	color: var(--link-color, var(--color-link));
 	text-decoration: var(--link-text-decoration, none);
@@ -60,8 +55,12 @@ i {
 blockquote {
 	margin: var(--blockquote-margin, (1em auto));
 	padding: var(--blockquote-padding, 1em);
+	font-size: var(--blockquote-font-size, (1em));
 	font-family: var(--blockquote-font-family, inherit);
 	font-style: var(--blockquote-font-style, italic);
+	font-weight: var(--blockquote-font-weight, normal);
+	line-height: var(--blockquote-line-height, normal);
+	text-align: var(--blockquote-text-align, inherit);
 	border-top: var(--blockquote-border-top, 0);
 	border-right: var(--blockquote-border-right, 0);
 	border-bottom: var(--blockquote-border-bottom, 0);

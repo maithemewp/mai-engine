@@ -154,7 +154,7 @@ function mai_get_version() {
 }
 
 /**
- * Description of expected behavior.
+ * Returns asset version with filetime.
  *
  * @since 0.1.0
  *
@@ -175,7 +175,7 @@ function mai_get_asset_version( $file ) {
 
 /**
  * Returns minified version of asset if in dev mode.
- *z
+ *
  * @since 2.4.0 Removed min dir if CSS file. Always return minified CSS.
  * @since 0.1.0
  *
@@ -657,8 +657,9 @@ function mai_get_post_content( $post_slug_or_id ) {
  * A big ol' helper/cleanup function to enabled embeds inside the shortcodes and
  * keep the shorcodes from causing extra p's and br's.
  *
- * Most of the order comes from /wp-includes/default-filters.php
+ * Most of the order comes from /wp-includes/default-filters.php.
  *
+ * @since 2.4.2 Remove use of wp_make_content_images_responsive.
  * @since 0.3.0
  *
  * @param string $content The unprocessed content.
@@ -674,14 +675,15 @@ function mai_get_processed_content( $content ) {
 	 */
 	global $wp_embed;
 
-	$content = $wp_embed->autoembed( $content );              // WP runs priority 8.
-	$content = $wp_embed->run_shortcode( $content );          // WP runs priority 8.
-	$content = wptexturize( $content );                       // WP runs priority 10.
-	$content = wpautop( $content );                           // WP runs priority 10.
-	$content = shortcode_unautop( $content );                 // WP runs priority 10.
-	$content = wp_make_content_images_responsive( $content ); // WP runs priority 10.
-	$content = do_shortcode( $content );                      // WP runs priority 11.
-	$content = convert_smilies( $content );                   // WP runs priority 20.
+	$content = $wp_embed->autoembed( $content );     // WP runs priority 8.
+	$content = $wp_embed->run_shortcode( $content ); // WP runs priority 8.
+	$content = do_blocks( $content );                // WP runs priority 9.
+	$content = wptexturize( $content );              // WP runs priority 10.
+	$content = wpautop( $content );                  // WP runs priority 10.
+	$content = shortcode_unautop( $content );        // WP runs priority 10.
+	$content = function_exists( 'wp_filter_content_tags' ) ? wp_filter_content_tags( $content ) : wp_make_content_images_responsive( $content ); // WP runs priority 10. WP 5.5 with fallback.
+	$content = do_shortcode( $content );             // WP runs priority 11.
+	$content = convert_smilies( $content );          // WP runs priority 20.
 
 	return $content;
 }
@@ -692,14 +694,13 @@ function mai_get_processed_content( $content ) {
  * This filter is run before any custom read more text is added via Customizer settings.
  * If you want to filter after that, use `genesis_markup_entry-more-link_content` filter.
  *
+ * @since 2.4.2 Move default text to config.
  * @since 2.0.0
  *
  * @return string
  */
 function mai_get_read_more_text() {
-	$text = apply_filters( 'mai_read_more_text', esc_html__( 'Read More', 'mai-engine' ) );
-
-	return sanitize_text_field( $text );
+	return esc_html( apply_filters( 'mai_read_more_text', mai_get_config( 'settings' )['content-archives']['more_link_text'] ) );
 }
 
 /**
@@ -766,13 +767,13 @@ function mai_get_menu( $menu, $args = [] ) {
 			switch ( trim( $args['align'] ) ) {
 				case 'left':
 					$atts['style'] .= '--menu-justify-content:flex-start;--menu-item-justify-content:flex-start;--menu-item-link-justify-content:flex-start;--menu-item-link-text-align:start;';
-				break;
+					break;
 				case 'center':
 					$atts['style'] .= '--menu-justify-content:center;--menu-item-justify-content:center;--menu-item-link-justify-content:center;--menu-item-link-text-align:center;';
-				break;
+					break;
 				case 'right':
 					$atts['style'] .= '--menu-justify-content:flex-end;--menu-item-justify-content:flex-end;--menu-item-link-justify-content:flex-end;--menu-item-link-text-align:end;';
-				break;
+					break;
 			}
 		}
 
@@ -805,6 +806,7 @@ function mai_get_menu( $menu, $args = [] ) {
  * @return DOMDocument
  */
 function mai_get_dom_document( $html ) {
+
 	// Create the new document.
 	$dom = new DOMDocument();
 

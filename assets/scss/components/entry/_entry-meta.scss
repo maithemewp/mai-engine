@@ -7,6 +7,6 @@
 	font-size: var(--entry-meta-font-size, var(--font-size-sm));
 
 	&:last-child {
-		--entry-meta-margin: 0;
+		margin: 0;
 	}
 }

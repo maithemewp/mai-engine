@@ -8,7 +8,7 @@
       "type": "package",
       "package": {
         "name": "advanced-custom-fields/advanced-custom-fields-pro",
-        "version": "5.8.11",
+        "version": "5.9.0",
         "type": "library",
         "dist": {
           "type": "zip",
@@ -22,7 +22,7 @@
     "ext-dom": "*",
     "ext-json": "*",
     "ext-libxml": "*",
-    "yahnis-elsts/plugin-update-checker": "^4.8",
+    "yahnis-elsts/plugin-update-checker": "^4.10",
     "advanced-custom-fields/advanced-custom-fields-pro": "*",
     "aristath/kirki": "*",
     "proteusthemes/wp-content-importer-v2": "^2.1"

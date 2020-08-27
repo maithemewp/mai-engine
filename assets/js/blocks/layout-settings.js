@@ -150,7 +150,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 											isSecondary={contentWidth !== sizeInfo.value}
 											isPrimary={contentWidth === sizeInfo.value}
 										>
-											{sizeInfo.label}
+											<small>{sizeInfo.label}</small>
 										</Button>
 									) )}
 								</ButtonGroup>
@@ -182,7 +182,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 										isSecondary={verticalSpacingTop !== sizeInfo.value}
 										isPrimary={verticalSpacingTop === sizeInfo.value}
 										>
-											{sizeInfo.label}
+											<small>{sizeInfo.label}</small>
 										</Button>
 									) )}
 								</ButtonGroup>
@@ -208,7 +208,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 											isSecondary={verticalSpacingBottom !== sizeInfo.value}
 											isPrimary={verticalSpacingBottom === sizeInfo.value}
 										>
-											{sizeInfo.label}
+											<small>{sizeInfo.label}</small>
 										</Button>
 									) )}
 								</ButtonGroup>
@@ -234,7 +234,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 											isSecondary={verticalSpacingLeft !== sizeInfo.value}
 											isPrimary={verticalSpacingLeft === sizeInfo.value}
 										>
-											{sizeInfo.label}
+											<small>{sizeInfo.label}</small>
 										</Button>
 									) )}
 								</ButtonGroup>
@@ -260,7 +260,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 											isSecondary={verticalSpacingRight !== sizeInfo.value}
 											isPrimary={verticalSpacingRight === sizeInfo.value}
 										>
-											{sizeInfo.label}
+											<small>{sizeInfo.label}</small>
 										</Button>
 									) )}
 								</ButtonGroup>

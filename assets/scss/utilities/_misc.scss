@@ -3,6 +3,11 @@
 	clear: both;
 }
 
+.inline {
+	--input-display: inline-block;
+	--input-width: auto;
+}
+
 .has-shadow {
 	box-shadow: var(--shadow);
 }
@@ -36,6 +41,27 @@
 	content: "";
 }
 
+.is-boxed {
+	margin: 0 0 var(--spacing-md);
+	padding: var(--spacing-xl);
+	border: var(--border);
+	border-radius: var(--border-radius);
+	box-shadow: var(--shadow);
+}
+
+.is-full-height {
+	min-height: calc(100vh - (var(--content-sidebar-wrap-margin-top) + var(--content-sidebar-wrap-margin-bottom)));
+}
+
+// TODO: Maybe add z index scale.
+.z-index-1 {
+	z-index: 1;
+}
+
+.full-width {
+	width: 100%;
+}
+
 .has-no-margin-top {
 	margin-top: 0 !important;
 }
@@ -61,6 +87,14 @@
 	padding: 0 !important;
 }
 
+.has-auto-margin-left {
+	margin-left: auto !important;
+}
+
+.has-auto-margin-right {
+	margin-right: auto !important;
+}
+
 @each $spacing-name, $spacing-size in $spacing {
 
 	.has-#{ $spacing-name }-margin-top {
@@ -84,11 +118,20 @@
 			margin-top: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
 		}
 
+		.has--#{ $spacing-name }-margin-right {
+			margin-right: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
+		}
+
 		.has--#{ $spacing-name }-margin-bottom {
 			margin-bottom: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
 		}
 
+		.has--#{ $spacing-name }-margin-left {
+			margin-left: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
+		}
+
 	}
+
 }
 
 .has-overlap {

@@ -11,8 +11,8 @@
 
 return [
 	'demos'         => [
-		// 'law'      => 9,
-		'news' => 10,
+		'law'      => 9,
+		// 'news'     => 10,
 		// 'personal' => 11,
 	],
 	'global-styles' => [
@@ -56,7 +56,6 @@ return [
 				'bottom' => '2em',
 			],
 		],
-		'content-archives' => [],
 		'genesis'          => [
 			'breadcrumb_front_page' => 0,
 			'breadcrumb_home'       => 1,
