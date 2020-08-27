@@ -40,7 +40,10 @@ return [
 			'default' => [
 				'site'    => 'standard-content',
 				'archive' => 'narrow-content',
-				'single'  => 'narrow-content',
+				'single'  => 'standard-content',
+			],
+			'single'  => [
+				'post' => 'narrow-content',
 			],
 		],
 		'single-content'   => [

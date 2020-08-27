@@ -59,11 +59,11 @@ function mai_site_layout( $use_cache = true ) {
 		$defaults = mai_get_config( 'settings' )['site-layout'];
 
 		foreach ( $defaults as $context => $values ) {
-			$layouts[ $context ] = wp_parse_args( $settings[ $context ], $defaults );
+			$layouts[ $context ] = isset( $settings[ $context ] ) ? $settings[ $context ] : $defaults[ $context ];
 		}
 
-		$context  = null;
-		$name     = null;
+		$context = null;
+		$name    = null;
 
 		if ( mai_is_type_archive() ) {
 			$context = 'archive';
