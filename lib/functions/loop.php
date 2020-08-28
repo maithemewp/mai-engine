@@ -174,15 +174,15 @@ function mai_get_template_args() {
 	$args    = isset( $options[ $name ] ) ? $options[ $name ] : [];
 
 	// Remove settings with empty string, since that means use the default.
-	foreach ( $args as $name => $value ) {
+	foreach ( $args as $key => $value ) {
 
 		// Skip header and footer meta, empty means empty.
-		if ( in_array( $name, [ 'header_meta', 'footer_meta' ], true ) ) {
+		if ( in_array( $key, [ 'header_meta', 'footer_meta' ], true ) ) {
 			continue;
 		}
 
 		if ( is_null( $value ) || '' === $value ) {
-			unset( $args[ $name ] );
+			unset( $args[ $key ] );
 		}
 	}
 
@@ -190,15 +190,15 @@ function mai_get_template_args() {
 	$args = wp_parse_args( $args, $defaults );
 
 	// Remove settings with empty string, again.
-	foreach ( $args as $name => $value ) {
+	foreach ( $args as $key => $value ) {
 
 		// Skip header and footer meta, empty means empty.
-		if ( in_array( $name, [ 'header_meta', 'footer_meta' ], true ) ) {
+		if ( in_array( $key, [ 'header_meta', 'footer_meta' ], true ) ) {
 			continue;
 		}
 
 		if ( is_null( $value ) || '' === $value ) {
-			unset( $args[ $name ] );
+			unset( $args[ $key ] );
 		}
 	}
 
@@ -260,20 +260,20 @@ function mai_get_sanitized_entry_args( $args, $context, $name = 'post' ) {
 	$sanitize = wp_list_pluck( $settings, 'sanitize', 'name' );
 
 	// Sanitize.
-	foreach ( $args as $name => $value ) {
+	foreach ( $args as $key => $value ) {
 		// Skip if not set.
-		if ( ! isset( $sanitize[ $name ] ) ) {
+		if ( ! isset( $sanitize[ $key ] ) ) {
 			continue;
 		}
-		$function = $sanitize[ $name ];
+		$function = $sanitize[ $key ];
 		if ( is_array( $value ) ) {
 			$escaped = [];
 			foreach ( $value as $key => $val ) {
 				$escaped[ $key ] = $function( $val );
 			}
-			$args[ $name ] = $escaped;
+			$args[ $key ] = $escaped;
 		} else {
-			$args[ $name ] = $function( $value );
+			$args[ $key ] = $function( $value );
 		}
 	}
 
@@ -397,8 +397,8 @@ function mai_get_footer_meta_default( $name ) {
 
 	$default = '';
 
-	foreach ( $taxonomies as $name => $taxonomy ) {
-		$default .= '[post_terms taxonomy="' . $name . '" before="' . $taxonomy->labels->singular_name . ': "]';
+	foreach ( $taxonomies as $tax_name => $taxonomy ) {
+		$default .= '[post_terms taxonomy="' . $tax_name . '" before="' . $taxonomy->labels->singular_name . ': "]';
 	}
 
 	return $default;
