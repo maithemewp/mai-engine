@@ -206,17 +206,17 @@
 	}
 }
 
-.product {
+.product-single {
 	// Don't override properties because nested grid/entries break.
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 	max-width: 100%;
 	justify-content: space-between;
-}
 
-.product > * {
-	flex: var(--flex, 1 1 100%);
+	> * {
+		flex: var(--flex, 1 1 100%);
+	}
 }
 
 .woocommerce-product-gallery,

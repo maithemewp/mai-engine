@@ -105,6 +105,37 @@ function mai_woocommerce_breakpoint() {
 }
 
 /**
+ * Filter single product post_class.
+ * Make sure it's only run on the main product entry wrap.
+ *
+ * @since TBD
+ *
+ * @param array $classes The existing classes.
+ *
+ * @return array
+ */
+add_action( 'woocommerce_before_single_product', function() {
+	add_filter( 'post_class', 'mai_woocommerce_product_single_class' );
+});
+add_action( 'woocommerce_before_single_product_summary', function() {
+	remove_filter( 'post_class', 'mai_woocommerce_product_single_class' );
+});
+
+/**
+ * Adds product single class.
+ *
+ * @since TBD
+ *
+ * @param array $classes The existing classes.
+ *
+ * @return array
+ */
+function mai_woocommerce_product_single_class( $classes ) {
+	$classes[] = 'product-single';
+	return $classes;
+}
+
+/**
  * Trim zeros in price decimals.
  *
  * @since 0.1.0
