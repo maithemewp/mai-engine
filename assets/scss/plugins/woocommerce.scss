@@ -388,6 +388,7 @@ form.cart {
 .woocommerce-checkout-payment {
 	margin-top: var(--spacing-xl);
 	padding: var(--spacing-md) var(--spacing-md) var(--spacing-lg);
+	background: var(--color-alt);
 	border: var(--border);
 	border-radius: var(--border-radius);
 }
@@ -466,6 +467,15 @@ form.cart {
 			margin-left: var(--spacing-xxxs) !important;
 		}
 	}
+}
+
+.woocommerce-terms-and-conditions-wrapper {
+	margin-bottom: var(--spacing-md);
+}
+
+.woocommerce-privacy-policy-text {
+	font-size: var(--font-size-xs);
+	margin-bottom: var(--spacing-md);
 }
 
 .place-order {
