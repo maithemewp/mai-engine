@@ -393,8 +393,10 @@ form.cart {
 }
 
 .wc_payment_methods {
+	--list-style-type: none;
 	--list-margin: 0;
 	--list-item-margin: 0 0 var(--spacing-xl) 0;
+	--sub-list-margin: 0;
 }
 
 .payment_method_stripe {
@@ -440,14 +442,16 @@ form.cart {
 	justify-content: space-between;
 
 	> input {
-
-		@include position(absolute, var(--spacing-md) null null var(--spacing-md));
+		position: absolute;
+		top: 0.25em;
+		left: 0;
 	}
 
 	label[for*="payment_method"] {
 		display: flex;
 		align-items: center;
 		width: 100%;
+		margin-left: var(--spacing-xl) !important;
 		font-size: var(--font-size-md);
 
 		@include heading;
