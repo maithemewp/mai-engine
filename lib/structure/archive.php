@@ -102,6 +102,11 @@ function mai_do_term_description() {
 		return;
 	}
 
+	// Bail if a Woo taxo. Description is already output by Woo.
+	if ( class_exists( 'WooCommerce' ) && function_exists( 'is_product_taxonomy' ) && is_product_taxonomy() ) {
+		return;
+	}
+
 	$description = apply_filters( 'mai_term_description', term_description() );
 
 	if ( ! $description ) {
