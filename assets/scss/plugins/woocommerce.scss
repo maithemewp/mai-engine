@@ -207,10 +207,11 @@
 }
 
 .product {
-	--entry-display: flex;
-	--entry-flex-direction: row;
-	--entry-flex-wrap: wrap;
-	--entry-max-width: 100%;
+	// Don't override properties because nested grid/entries break.
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	max-width: 100%;
 	justify-content: space-between;
 }
 
