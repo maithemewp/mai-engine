@@ -1,5 +1,27 @@
 @import "../abstracts/_index";
 
+.woocommerce-store-notice,
+p.demo_store {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	margin: 0;
+	width: 100%;
+	font-size: 1em;
+	padding: var(--spacing-md) 0;
+	text-align: center;
+	background: var(--button-background, var(--color-primary));
+	color: var(--button-color);
+	z-index: 99998;
+	box-shadow: var(--shadow);
+	display: none;
+
+	.admin-bar & {
+		top: 32px;
+	}
+}
+
 .onsale {
 	position: absolute;
 	top: -0.5em;
