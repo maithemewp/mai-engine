@@ -156,6 +156,10 @@ p.demo_store {
 .products {
 	--price-font-size: var(--font-size-md);
 
+	ul.& {
+		--list-style-type: none;
+	}
+
 	&.related {
 		margin-top: var(--spacing-xxl);
 	}
