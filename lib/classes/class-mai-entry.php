@@ -843,7 +843,7 @@ class Mai_Entry {
 
 		// Limit.
 		if ( $excerpt && isset( $this->args['content_limit'] ) && $this->args['content_limit'] > 0 ) {
-			$excerpt  = mai_get_content_limit( $excerpt, $this->args['content_limit'] );
+			$excerpt = mai_get_content_limit( $excerpt, $this->args['content_limit'] );
 		}
 
 		if ( ! $excerpt ) {
