@@ -416,7 +416,7 @@ function mai_get_integer_value( $string ) {
 }
 
 /**
- * Description of expected behavior.
+ * Gets site layout choices.
  *
  * @since 0.1.0
  *

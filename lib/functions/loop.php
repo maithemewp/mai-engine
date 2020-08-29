@@ -16,12 +16,13 @@
  *
  * @since 0.1.0
  *
- * @param string $content The content to limit.
- * @param int    $limit   The maximum number of characters to return.
+ * @param string $content  The content to limit.
+ * @param int    $limit    The maximum number of characters to return.
+ * @param bool   $ellipsis Wether to add an ellipsis or not.
  *
  * @return string
  */
-function mai_get_content_limit( $content, $limit ) {
+function mai_get_content_limit( $content, $limit, $ellipsis = true ) {
 
 	// Strip tags and shortcodes so the content truncation count is done correctly.
 	$content = strip_tags( strip_shortcodes( $content ), apply_filters( 'get_the_content_limit_allowedtags', '<script>,<style>' ) );
@@ -30,12 +31,50 @@ function mai_get_content_limit( $content, $limit ) {
 	$content = trim( preg_replace( '#<(s(cript|tyle)).*?</\1>#si', '', $content ) );
 
 	// Truncate $content to $limit.
-	$content = genesis_truncate_phrase( $content, $limit );
-
-	// Add ellipses.
-	$content .= mai_get_ellipsis();
+	$content = mai_get_truncated_text( $content, $limit, $ellipsis );
 
 	return $content;
+}
+
+/**
+ * Return a phrase shortened in length to a maximum number of characters.
+ *
+ * Result will be truncated at the last white space in the original string. In this function the word separator is a
+ * single space. Other white space characters (like newlines and tabs) are ignored.
+ *
+ * If the first `$max_characters` of the string does not contain a space character, an empty string will be returned.
+ *
+ * Originally taken `from genesis_truncate_phrase()`.
+ *
+ * @since TBD
+ *
+ * @param string $text           A string to be shortened.
+ * @param int    $max_characters The maximum number of characters to return.
+ * @param bool   $ellipsis       Add an ellipsis to truncated text.
+ *
+ * @return string Truncated string. Empty string if `$max_characters` is falsy.
+ */
+function mai_get_truncated_text( $text, $max_characters, $ellipsis = true ) {
+
+	if ( ! $max_characters ) {
+		return '';
+	}
+
+	$text = trim( $text );
+
+	if ( mb_strlen( $text ) > $max_characters ) {
+
+		// Truncate $text to $max_characters + 1.
+		$text = mb_substr( $text, 0, $max_characters + 1 );
+
+		// Truncate to the last space in the truncated string.
+		$text_trim = trim( mb_substr( $text, 0, mb_strrpos( $text, ' ' ) ) );
+
+		$text  = empty( $text_trim ) ? $text : $text_trim;
+		$text .= $ellipsis ? mai_get_ellipsis() : '';
+	}
+
+	return $text;
 }
 
 /**
