@@ -185,7 +185,7 @@ class Mai_Grid {
 			return;
 		}
 
-		if ( 'term' === $this->type && ( ! $this->query || ! $term_query->terms ) ) {
+		if ( 'term' === $this->type && ( ! $this->query || ! $this->query->terms ) ) {
 			return;
 		}
 
