@@ -276,6 +276,7 @@ function mai_add_extra_google_fonts( $fonts ) {
 	foreach ( $fonts as $family => $weights ) {
 		$fonts[ $family ] = array_map( 'strval', $weights );
 	}
+
 	$fonts_config = mai_get_global_styles( 'fonts' );
 
 	foreach ( $fonts_config as $element => $args ) {
@@ -292,7 +293,7 @@ function mai_add_extra_google_fonts( $fonts ) {
 
 		// Return early if not a Google Font.
 		if ( ! isset( $google_fonts[ $font_family ] ) ) {
-			return $fonts;
+			continue;
 		}
 
 		$variants = $google_fonts[ $font_family ]['variants'];
