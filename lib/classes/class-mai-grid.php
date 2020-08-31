@@ -181,11 +181,11 @@ class Mai_Grid {
 
 		$this->query = $this->get_query();
 
-		if ( 'post' === $this->type && ! $this->query->have_posts() ) {
+		if ( 'post' === $this->type && ( ! $this->query || ! $this->query->have_posts() ) ) {
 			return;
 		}
 
-		if ( 'term' === $this->type && ! $term_query->terms ) {
+		if ( 'term' === $this->type && ( ! $this->query || ! $term_query->terms ) ) {
 			return;
 		}
 
