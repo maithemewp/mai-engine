@@ -156,10 +156,6 @@ p.demo_store {
 .products {
 	--price-font-size: var(--font-size-md);
 
-	&ul {
-		--list-style-type: none;
-	}
-
 	&.related {
 		margin-top: var(--spacing-xxl);
 	}
@@ -168,6 +164,10 @@ p.demo_store {
 		flex-direction: column;
 		text-align: center;
 	}
+}
+
+ul.products {
+	--list-style-type: none;
 }
 
 .woocommerce-product-gallery__wrapper {
