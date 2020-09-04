@@ -1,5 +1,34 @@
 @import "../abstracts/_index";
 
+// Fix for https://github.com/maithemewp/mai-engine/issues/323.
+.woocommerce img,
+.woocommerce-page img {
+	height: inherit;
+	max-width: inherit;
+}
+
+.woocommerce-store-notice,
+p.demo_store {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	margin: 0;
+	width: 100%;
+	font-size: 1em;
+	padding: var(--spacing-md) 0;
+	text-align: center;
+	background: var(--button-background, var(--color-primary));
+	color: var(--button-color);
+	z-index: 99998;
+	box-shadow: var(--shadow);
+	display: none;
+
+	.admin-bar & {
+		top: 32px;
+	}
+}
+
 .onsale {
 	position: absolute;
 	top: -0.5em;
@@ -144,6 +173,10 @@
 	}
 }
 
+ul.products {
+	--list-style-type: none;
+}
+
 .woocommerce-product-gallery__wrapper {
 	margin: 0;
 }
@@ -206,16 +239,17 @@
 	}
 }
 
-.product {
-	--entry-display: flex;
-	--entry-flex-direction: row;
-	--entry-flex-wrap: wrap;
-	--entry-max-width: 100%;
+.product-single {
+	// Don't override properties because nested grid/entries break.
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	max-width: 100%;
 	justify-content: space-between;
-}
 
-.product > * {
-	flex: var(--flex, 1 1 100%);
+	> * {
+		flex: var(--flex, 1 1 100%);
+	}
 }
 
 .woocommerce-product-gallery,
@@ -388,13 +422,22 @@ form.cart {
 .woocommerce-checkout-payment {
 	margin-top: var(--spacing-xl);
 	padding: var(--spacing-md) var(--spacing-md) var(--spacing-lg);
+	background: var(--color-alt);
 	border: var(--border);
 	border-radius: var(--border-radius);
 }
 
 .wc_payment_methods {
+	--list-style-type: none;
 	--list-margin: 0;
-	--list-item-margin: 0 0 var(--spacing-xl) 0;
+	--list-item-margin: 0 0 var(--spacing-lg) 0;
+	--sub-list-margin: 0;
+}
+
+.payment_box {
+	--list-item-margin: 0;
+	width: 100%;
+	margin-left: var(--spacing-xl);
 }
 
 .payment_method_stripe {
@@ -440,14 +483,16 @@ form.cart {
 	justify-content: space-between;
 
 	> input {
-
-		@include position(absolute, var(--spacing-md) null null var(--spacing-md));
+		position: absolute;
+		top: 0.25em;
+		left: 0;
 	}
 
 	label[for*="payment_method"] {
 		display: flex;
 		align-items: center;
 		width: 100%;
+		margin-left: var(--spacing-xl) !important;
 		font-size: var(--font-size-md);
 
 		@include heading;
@@ -456,6 +501,15 @@ form.cart {
 			margin-left: var(--spacing-xxxs) !important;
 		}
 	}
+}
+
+.woocommerce-terms-and-conditions-wrapper {
+	margin-bottom: var(--spacing-md);
+}
+
+.woocommerce-privacy-policy-text {
+	font-size: var(--font-size-xs);
+	margin-bottom: var(--spacing-md);
 }
 
 .place-order {

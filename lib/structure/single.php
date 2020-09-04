@@ -18,32 +18,6 @@ add_filter( 'edit_post_link', '__return_empty_string' );
 // Remove author 'says' text.
 add_filter( 'comment_author_says_text', '__return_empty_string' );
 
-add_filter( 'post_class', 'mai_single_post_class' );
-/**
- * Add column class to single posts.
- *
- * @since 0.1.0
- *
- * @param array $classes Array of post classes.
- *
- * @return array
- */
-function mai_single_post_class( $classes ) {
-	if ( ! mai_is_type_single() ) {
-		return $classes;
-	}
-
-	if ( class_exists( 'WooCommerce' ) && is_woocommerce() ) {
-		return $classes;
-	}
-
-	if ( did_action( 'genesis_before_sidebar_widget_area' ) ) {
-		return $classes;
-	}
-
-	return $classes;
-}
-
 add_filter( 'genesis_markup_entry-title_content', 'mai_feature_posts_widget_entry_title_link' );
 /**
  * Description of expected behavior.

@@ -2,6 +2,10 @@
 
 	@include button();
 
+	&:visited {
+		@include button();
+	}
+
 	&:disabled {
 
 		@include button-style("disabled");
@@ -11,16 +15,29 @@
 .button-secondary {
 
 	@include button-style("secondary");
+
+
+	&:visited {
+		@include button-style("secondary");
+	}
 }
 
 .button-link {
 
 	@include button-style("link");
+
+	&:visited {
+		@include button-style("link");
+	}
 }
 
 .button-outline {
 
 	@include button-style("outline");
+
+	&:visited {
+		@include button-style("outline");
+	}
 }
 
 .button-small {

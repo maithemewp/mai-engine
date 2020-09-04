@@ -52,7 +52,9 @@
 	opacity: var(--button-opacity, 1);
 	transition: var(--button-transition, var(--transition));
 
+	// Ordered via https://css-tricks.com/snippets/css/link-pseudo-classes-in-order/
 	&:hover,
+	&:active,
 	&:focus {
 		--button-overlay-opacity: var(--button-overlay-opacity-hover, 0.2);
 		color: var(--button-color-hover, var(--button-color)); // Color contrast automatically generated.

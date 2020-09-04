@@ -117,6 +117,67 @@ function mai_replace_hash_with_void( $menu_item ) {
 	return $menu_item;
 }
 
+add_filter( 'nav_menu_css_class', 'mai_nav_menu_buttons', 10, 4 );
+/**
+ * Moves menu item button classes to the actual menu item links.
+ *
+ * @since 2.4.3
+ *
+ * @param string[] $classes Array of the CSS classes that are applied to the menu item's `<li>` element.
+ * @param WP_Post  $item    The current menu item.
+ * @param stdClass $args    An object of wp_nav_menu() arguments.
+ * @param int      $depth   Depth of menu item. Used for padding.
+ *
+ * @return array
+ */
+function mai_nav_menu_buttons( $classes, $item, $args, $depth ) {
+	$buttons = array_intersect( $classes, [
+		'button',
+		'button-secondary',
+		'button-outline',
+		'button-link',
+		'button-white',
+		'button-small',
+		'button-large',
+	] );
+
+	if ( ! $buttons ) {
+		return $classes;
+	}
+
+	$id = $item->ID;
+
+	/**
+	 * Adds button classes to menu item link.
+	 * @param array $atts {
+	 *     The HTML attributes applied to the menu item's `<a>` element, empty strings are ignored.
+	 *
+	 *     @type string $title        Title attribute.
+	 *     @type string $target       Target attribute.
+	 *     @type string $rel          The rel attribute.
+	 *     @type string $href         The href attribute.
+	 *     @type string $aria_current The aria-current attribute.
+	 * }
+	 * @param WP_Post  $item  The current menu item.
+	 * @param stdClass $args  An object of wp_nav_menu() arguments.
+	 * @param int      $depth Depth of menu item. Used for padding.
+	 *
+	 * @return array
+	 */
+	add_filter( 'nav_menu_link_attributes', function( $atts, $item, $args, $depth ) use ( $id, $buttons ) {
+		if ( $id !== $item->ID ) {
+			return $atts;
+		}
+		$atts['class'] = mai_add_classes( $buttons, $atts['class'] );
+		return $atts;
+	}, 10, 4 );
+
+	// Remove button classes from menu item.
+	$classes = array_diff( $classes, $buttons );
+
+	return $classes;
+}
+
 add_filter( 'nav_menu_link_attributes', 'mai_nav_link_atts' );
 /**
  * Pass nav menu link attributes through attribute parser.

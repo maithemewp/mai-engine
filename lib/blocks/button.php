@@ -88,6 +88,7 @@ function mai_render_button_block( $block_content, $block ) {
 				}
 
 				if ( $has_radius ) {
+					$style = $button->getAttribute( 'style' );
 					$style = str_replace( 'border-radius', '--border-radius', $style );
 
 					$button->setAttribute( 'style', $style );

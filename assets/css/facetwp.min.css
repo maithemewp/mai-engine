@@ -1,1 +1,1 @@
-.facetwp-pager+ul{display:none}
+.facetwp-pager+ul,.facetwp-pager:empty{display:none}

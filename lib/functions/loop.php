@@ -16,12 +16,13 @@
  *
  * @since 0.1.0
  *
- * @param string $content The content to limit.
- * @param int    $limit   The maximum number of characters to return.
+ * @param string $content  The content to limit.
+ * @param int    $limit    The maximum number of characters to return.
+ * @param bool   $ellipsis Wether to add an ellipsis or not.
  *
  * @return string
  */
-function mai_get_content_limit( $content, $limit ) {
+function mai_get_content_limit( $content, $limit, $ellipsis = true ) {
 
 	// Strip tags and shortcodes so the content truncation count is done correctly.
 	$content = strip_tags( strip_shortcodes( $content ), apply_filters( 'get_the_content_limit_allowedtags', '<script>,<style>' ) );
@@ -30,12 +31,50 @@ function mai_get_content_limit( $content, $limit ) {
 	$content = trim( preg_replace( '#<(s(cript|tyle)).*?</\1>#si', '', $content ) );
 
 	// Truncate $content to $limit.
-	$content = genesis_truncate_phrase( $content, $limit );
-
-	// Add ellipses.
-	$content .= mai_get_ellipsis();
+	$content = mai_get_truncated_text( $content, $limit, $ellipsis );
 
 	return $content;
+}
+
+/**
+ * Return a phrase shortened in length to a maximum number of characters.
+ *
+ * Result will be truncated at the last white space in the original string. In this function the word separator is a
+ * single space. Other white space characters (like newlines and tabs) are ignored.
+ *
+ * If the first `$max_characters` of the string does not contain a space character, an empty string will be returned.
+ *
+ * Originally taken `from genesis_truncate_phrase()`.
+ *
+ * @since 2.4.3
+ *
+ * @param string $text           A string to be shortened.
+ * @param int    $max_characters The maximum number of characters to return.
+ * @param bool   $ellipsis       Add an ellipsis to truncated text.
+ *
+ * @return string Truncated string. Empty string if `$max_characters` is falsy.
+ */
+function mai_get_truncated_text( $text, $max_characters, $ellipsis = true ) {
+
+	if ( ! $max_characters ) {
+		return '';
+	}
+
+	$text = trim( $text );
+
+	if ( mb_strlen( $text ) > $max_characters ) {
+
+		// Truncate $text to $max_characters + 1.
+		$text = mb_substr( $text, 0, $max_characters + 1 );
+
+		// Truncate to the last space in the truncated string.
+		$text_trim = trim( mb_substr( $text, 0, mb_strrpos( $text, ' ' ) ) );
+
+		$text  = empty( $text_trim ) ? $text : $text_trim;
+		$text .= $ellipsis ? mai_get_ellipsis() : '';
+	}
+
+	return $text;
 }
 
 /**
@@ -174,15 +213,15 @@ function mai_get_template_args() {
 	$args    = isset( $options[ $name ] ) ? $options[ $name ] : [];
 
 	// Remove settings with empty string, since that means use the default.
-	foreach ( $args as $name => $value ) {
+	foreach ( $args as $key => $value ) {
 
 		// Skip header and footer meta, empty means empty.
-		if ( in_array( $name, [ 'header_meta', 'footer_meta' ], true ) ) {
+		if ( in_array( $key, [ 'header_meta', 'footer_meta' ], true ) ) {
 			continue;
 		}
 
 		if ( is_null( $value ) || '' === $value ) {
-			unset( $args[ $name ] );
+			unset( $args[ $key ] );
 		}
 	}
 
@@ -190,15 +229,15 @@ function mai_get_template_args() {
 	$args = wp_parse_args( $args, $defaults );
 
 	// Remove settings with empty string, again.
-	foreach ( $args as $name => $value ) {
+	foreach ( $args as $key => $value ) {
 
 		// Skip header and footer meta, empty means empty.
-		if ( in_array( $name, [ 'header_meta', 'footer_meta' ], true ) ) {
+		if ( in_array( $key, [ 'header_meta', 'footer_meta' ], true ) ) {
 			continue;
 		}
 
 		if ( is_null( $value ) || '' === $value ) {
-			unset( $args[ $name ] );
+			unset( $args[ $key ] );
 		}
 	}
 
@@ -260,20 +299,20 @@ function mai_get_sanitized_entry_args( $args, $context, $name = 'post' ) {
 	$sanitize = wp_list_pluck( $settings, 'sanitize', 'name' );
 
 	// Sanitize.
-	foreach ( $args as $name => $value ) {
+	foreach ( $args as $key => $value ) {
 		// Skip if not set.
-		if ( ! isset( $sanitize[ $name ] ) ) {
+		if ( ! isset( $sanitize[ $key ] ) ) {
 			continue;
 		}
-		$function = $sanitize[ $name ];
+		$function = $sanitize[ $key ];
 		if ( is_array( $value ) ) {
 			$escaped = [];
 			foreach ( $value as $key => $val ) {
 				$escaped[ $key ] = $function( $val );
 			}
-			$args[ $name ] = $escaped;
+			$args[ $key ] = $escaped;
 		} else {
-			$args[ $name ] = $function( $value );
+			$args[ $key ] = $function( $value );
 		}
 	}
 
@@ -397,8 +436,8 @@ function mai_get_footer_meta_default( $name ) {
 
 	$default = '';
 
-	foreach ( $taxonomies as $name => $taxonomy ) {
-		$default .= '[post_terms taxonomy="' . $name . '" before="' . $taxonomy->labels->singular_name . ': "]';
+	foreach ( $taxonomies as $tax_name => $taxonomy ) {
+		$default .= '[post_terms taxonomy="' . $tax_name . '" before="' . $taxonomy->labels->singular_name . ': "]';
 	}
 
 	return $default;

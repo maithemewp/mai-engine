@@ -94,14 +94,22 @@ function mai_get_icon( $args ) {
 		$atts['style'] .= sprintf( '--icon-border-radius:%s;', implode( ' ', $radius ) );
 	}
 
-	$link   = $args['link'] && ! is_admin() ? esc_url( $args['link'] ) : 'javascript:void(0)';
-	$open   = $args['link'] ? '<a href="' . $link . '" %s>' : '<span %s>';
-	$close  = $args['link'] ? '</a>' : '</span>';
+	$tag = 'span';
+
+	if ( $args['link'] && ! is_admin() ) {
+		$tag          = 'a';
+		$atts['href'] = esc_url( $args['link'] );
+
+		if ( $args['link_target'] ) {
+			$atts['target'] = '_blank';
+			$atts['rel']    = 'noopener nofollow';
+		}
+	}
 
 	return genesis_markup(
 		[
-			'open'    => $open . '<span class="mai-icon-wrap">',
-			'close'   => '</span>' . $close,
+			'open'    => "<{$tag} %s>" . '<span class="mai-icon-wrap">',
+			'close'   => '</span>' . "</{$tag}>",
 			'content' => $svg,
 			'context' => 'mai-icon',
 			'echo'    => false,
@@ -126,7 +134,7 @@ function mai_get_icon_default_args() {
 		'align'                => 'center',
 		'size'                 => '40',
 		'link'                 => '',
-		'link_target'          => false,
+		'link_target'          => '',
 		'class'                => '',
 		'color_icon'           => 'currentColor',
 		'color_background'     => '',

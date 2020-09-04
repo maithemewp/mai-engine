@@ -85,9 +85,9 @@ add_filter( 'acf/load_field/key=hide_elements', 'mai_load_hide_elements_field' )
  */
 function mai_load_hide_elements_field( $field ) {
 	$field['choices'] = [];
-	$post_type        = mai_get_admin_post_type();
-	$default          = mai_get_config( 'settings' )['page-header']['single'];
-	$page_header      = mai_get_option( 'page-header-single', $default );
+	$post_type   = mai_get_admin_post_type();
+	$default     = mai_get_config( 'settings' )['page-header']['single'];
+	$page_header = mai_get_option( 'page-header-single', $default );
 
 	if ( mai_has_template_part( 'before-header' ) || is_active_sidebar( 'before-header' ) ) {
 		$field['choices']['before_header'] = __( 'Before Header', 'mai-engine' );

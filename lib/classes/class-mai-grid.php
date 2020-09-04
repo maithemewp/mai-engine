@@ -45,6 +45,13 @@ class Mai_Grid {
 	protected $args;
 
 	/**
+	 * Query.
+	 *
+	 * @var $query
+	 */
+	protected $query;
+
+	/**
 	 * Incase exclude_displayed is true in any instance of grid.
 	 *
 	 * @var array
@@ -172,6 +179,16 @@ class Mai_Grid {
 			return;
 		}
 
+		$this->query = $this->get_query();
+
+		if ( 'post' === $this->type && ( ! $this->query || ! $this->query->have_posts() ) ) {
+			return;
+		}
+
+		if ( 'term' === $this->type && ( ! $this->query || ! $this->query->terms ) ) {
+			return;
+		}
+
 		// Grid specific classes. Didn't use mai_add_classes() because I want mai-grid first.
 		$this->args['class'] = isset( $this->args['class'] ) ? $this->args['class'] : '';
 		$this->args['class'] = 'mai-grid ' . $this->args['class'];
@@ -189,6 +206,36 @@ class Mai_Grid {
 	}
 
 	/**
+	 * Gets the query.
+	 *
+	 * @since 2.4.3
+	 *
+	 * @return false|WP_Query|WP_Term_Query
+	 */
+	public function get_query() {
+		$this->query = false;
+
+		switch ( $this->args['type'] ) {
+			case 'post':
+				$query_args = $this->get_post_query_args();
+				if ( $query_args['post_type'] ) {
+					$this->query = new WP_Query( $query_args );
+					wp_reset_postdata();
+				}
+				break;
+
+			case 'term':
+				$query_args = $this->get_term_query_args();
+				if ( $query_args['taxonomy'] ) {
+					$this->query = new WP_Term_Query( $query_args );
+				}
+				break;
+		}
+
+		return $this->query;
+	}
+
+	/**
 	 * Renders the grid entries.
 	 *
 	 * @since 0.1.0
@@ -200,7 +247,7 @@ class Mai_Grid {
 			case 'post':
 				$query_args = $this->get_post_query_args();
 				if ( $query_args['post_type'] ) {
-					$posts = new WP_Query( $query_args );
+					$posts = $this->query;
 					if ( $posts->have_posts() ) {
 						while ( $posts->have_posts() ) {
 							$posts->the_post();
@@ -228,7 +275,7 @@ class Mai_Grid {
 			case 'term':
 				$query_args = $this->get_term_query_args();
 				if ( $query_args['taxonomy'] ) {
-					$term_query = new WP_Term_Query( $query_args );
+					$term_query = $this->query;
 
 					if ( ! empty( $term_query->terms ) ) {
 

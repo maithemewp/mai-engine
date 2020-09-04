@@ -10,7 +10,17 @@
  */
 
 return [
-	'demos'                   => [],
+	'demos'                   => [
+		'recipes'                => 6,
+	],
+	'plugins'                 => [
+		[
+			'name'                  => 'WP Forms Lite',
+			'slug'                  => 'wpforms-lite/wpforms.php',
+			'uri'                   => 'https://wordpress.org/plugins/wpforms-lite/',
+			'demos'                 => [ 'recipes' ],
+		],
+	],
 	'global-styles'           => [
 		'colors'                 => [
 			'background'            => '#fcfcfc',
@@ -54,7 +64,7 @@ return [
 		'content-archives'       => [
 			'post'                  => [
 				'title_size'           => 'md',
-				'columns' => 4,
+				'columns'              => 4,
 			],
 		],
 		'single-content'         => [

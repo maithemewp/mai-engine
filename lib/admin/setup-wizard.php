@@ -149,6 +149,7 @@ function mai_setup_wizard_demos( $defaults ) {
 			'preview'    => "https://demo.bizbudding.com/{$theme}-{$demo}/",
 			'plugins'    => $plugins,
 		];
+
 	}
 
 	return $defaults;

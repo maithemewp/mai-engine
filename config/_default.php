@@ -404,8 +404,8 @@ return [
 			'location'   => 'genesis_footer',
 			'priority'   => 12,
 			'menu_order' => 40,
-			'default'    => '<!-- wp:group {"backgroundColor":"white","className":"has-xs-padding-bottom has-xs-padding-top has-lg-content-width","contentWidth":"lg","verticalSpacingTop":"xs","verticalSpacingBottom":"xs"} -->
-			<div class="wp-block-group"><div class="wp-block-group__inner-container"><!-- wp:paragraph {"align":"center","fontSize":"sm"} -->
+			'default'    => '<!-- wp:group {"align":"full","verticalSpacingTop":"xs","verticalSpacingBottom":"xs"} -->
+			<div class="wp-block-group alignfull"><div class="wp-block-group__inner-container"><!-- wp:paragraph {"align":"center","fontSize":"sm"} -->
 			<p class="has-text-align-center has-sm-font-size">Copyright [footer_copyright] · [footer_home_link] · All Rights Reserved · Powered by <a rel="noreferrer noopener" target="_blank" href="https://bizbudding.com/mai-theme/">Mai Theme</a></p>
 			<!-- /wp:paragraph --></div></div>
 			<!-- /wp:group -->',
