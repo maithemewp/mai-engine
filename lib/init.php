@@ -207,6 +207,18 @@ function mai_remove_genesis_default_widget_areas() {
 	remove_action( 'genesis_setup', 'genesis_register_default_widget_areas' );
 }
 
+/**
+ * Load default favicon.
+ *
+ * @since TBD
+ *
+ * @return string
+ */
+add_filter( 'genesis_pre_load_favicon', 'mai_default_favicon' );
+function mai_default_favicon( $favicon ) {
+	return mai_get_url() . 'assets/img/icon-256x256.png';
+}
+
 add_action( 'after_setup_theme', 'mai_load_files', 0 );
 /**
  * Load mai-engine files, or deactivate if active theme is not supported.
