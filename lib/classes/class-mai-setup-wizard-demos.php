@@ -128,8 +128,18 @@ class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 		}
 
 		$options = get_option( $this->slug, [] );
+		$active  = mai_get_active_theme();
+		$current = isset( $options['theme'] ) ? $options['theme'] : '';
 
-		return isset( $options['demo'] ) ? $options['demo'] : $this->get_default_demo();
+		/**
+		 * Make sure the saved value is for the current theme.
+		 * Some testing showed an old value stored differently than the active theme.
+		 */
+		if ( $current && ( $active === $current ) && isset( $options['demo'] ) ) {
+			return $options['demo'];
+		}
+
+		return $this->get_default_demo();
 	}
 
 	/**
