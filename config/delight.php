@@ -10,7 +10,9 @@
  */
 
 return [
-	'demos'                   => [],
+	'demos'                   => [
+		'recipes' => 6,
+	],
 	'global-styles'           => [
 		'colors'                 => [
 			'background'            => '#fcfcfc',
