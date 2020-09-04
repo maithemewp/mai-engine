@@ -152,6 +152,120 @@
 	}
 }
 
+@include mq(false, sm) {
+
+	.hidden-xs {
+		display: none;
+		visibility: hidden;
+	}
+}
+
+@include mq(sm, md) {
+
+	.hidden-sm {
+		display: none;
+		visibility: hidden;
+	}
+}
+
+@include mq(md, lg) {
+
+	.hidden-md {
+		display: none;
+		visibility: hidden;
+	}
+}
+
+@include mq(lg, xl) {
+
+	.hidden-lg {
+		display: none;
+		visibility: hidden;
+	}
+}
+
+@include mq(xs) {
+
+	.hidden-xs-up {
+		display: none;
+		visibility: hidden;
+	}
+}
+
+@include mq(sm) {
+
+	.hidden-sm-up {
+		display: none;
+		visibility: hidden;
+	}
+}
+
+@include mq(md) {
+
+	.hidden-md-up {
+		display: none;
+		visibility: hidden;
+	}
+}
+
+@include mq(lg) {
+
+	.hidden-lg-up {
+		display: none;
+		visibility: hidden;
+	}
+}
+
+@include mq(xl) {
+
+	.hidden-xl-up {
+		display: none;
+		visibility: hidden;
+	}
+}
+
+//
+
+@include mq(false, xs) {
+
+	.hidden-xs-down {
+		display: none;
+		visibility: hidden;
+	}
+}
+
+@include mq(false, sm) {
+
+	.hidden-sm-down {
+		display: none;
+		visibility: hidden;
+	}
+}
+
+@include mq(false, md) {
+
+	.hidden-md-down {
+		display: none;
+		visibility: hidden;
+	}
+}
+
+@include mq(false, lg) {
+
+	.hidden-lg-down {
+		display: none;
+		visibility: hidden;
+	}
+}
+
+@include mq(false, xl) {
+
+	.hidden-xl-down {
+		display: none;
+		visibility: hidden;
+	}
+}
+
 [id] {
 	scroll-margin-top: var(--scroll-margin-top, 0);
 }
