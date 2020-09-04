@@ -210,7 +210,7 @@ function mai_remove_genesis_default_widget_areas() {
 /**
  * Load default favicon.
  *
- * @since TBD
+ * @since 2.4.3
  *
  * @return string
  */

@@ -108,7 +108,7 @@ function mai_woocommerce_breakpoint() {
  * Filter single product post_class.
  * Make sure it's only run on the main product entry wrap.
  *
- * @since TBD
+ * @since 2.4.3
  *
  * @param array $classes The existing classes.
  *
@@ -124,7 +124,7 @@ add_action( 'woocommerce_before_single_product_summary', function() {
 /**
  * Adds product single class.
  *
- * @since TBD
+ * @since 2.4.3
  *
  * @param array $classes The existing classes.
  *

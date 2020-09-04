@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.4.3 (9/4/20)
+* Added: New helper utility classes for hidden-{breakpoint}, hidden-{breakpoint}-up, and hidden-{breakpoint}-down to hide elements at various breakpoints.
+* Added: Now use Mai Theme icon as favicon if none set in Customizer.
+* Added: Mai Icon now has a setting to open links in new window.
+* Changed: Deprecated heading font size settings now that they are in WP core.
+* Fixed: Buttons not working correctly/efficiently when adding button classes to menu items.
+* Fixed: Author box not 100% width of container in some scenarios.
+* Fixed: Default footer credits template part showing a warning/error when trying to edit the text.
+* Fixed: Ellipsis was showing on content/excerpts even when text is not truncated.
+* Fixed: Mai Grid markup was being output even if no entries matched the query.
+* Fixed: Breadcrumbs not matching content side spacing.
+* Fixed: Custom button border radius not working in some instances.
+* Fixed: WooCommerce checkout page, and payment gateway layout and styling.
+* Fixed: WooCommerce product grid showing list styles.
+* Fixed: Entries wrap not taking up full width of the container.
+* Fixed: Mai Grid entry layout being affected by WooCommerce CSS when a grid is used on a product page.
+* Fixed: Duplicate term descriptions showing on some WooCommerce taxonomy archives.
+* Fixed: Better visited button default styling.
+* Fixed: WooCommerce store notice now matches theme styling.
+
 ## 2.4.2 (8/27/20)
 * Added: Updated Google Font list in Typography customizer fields via Kirki.
 * Added: Before and after content HTML classes to entry meta.

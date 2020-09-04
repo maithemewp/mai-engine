@@ -46,7 +46,7 @@ function mai_get_content_limit( $content, $limit, $ellipsis = true ) {
  *
  * Originally taken `from genesis_truncate_phrase()`.
  *
- * @since TBD
+ * @since 2.4.3
  *
  * @param string $text           A string to be shortened.
  * @param int    $max_characters The maximum number of characters to return.

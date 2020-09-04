@@ -121,7 +121,7 @@ add_filter( 'nav_menu_css_class', 'mai_nav_menu_buttons', 10, 4 );
 /**
  * Moves menu item button classes to the actual menu item links.
  *
- * @since TBD
+ * @since 2.4.3
  *
  * @param string[] $classes Array of the CSS classes that are applied to the menu item's `<li>` element.
  * @param WP_Post  $item    The current menu item.

@@ -208,7 +208,7 @@ class Mai_Grid {
 	/**
 	 * Gets the query.
 	 *
-	 * @since TBD
+	 * @since 2.4.3
 	 *
 	 * @return false|WP_Query|WP_Term_Query
 	 */
