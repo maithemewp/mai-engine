@@ -23,7 +23,7 @@ label {
 	line-height: var(--input-line-height, 1);
 	background-color: var(--input-background-color, var(--color-white));
 	background-clip: padding-box; // Remove iOS box shadow.
-	border: var(--input-border, var(--border));
+	border: var(--input-border, 1px solid rgba(0, 0, 0, 0.1));
 	border-radius: var(--input-border-radius, var(--border-radius));
 	outline: none;
 	box-shadow: var(--input-box-shadow, none);
