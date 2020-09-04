@@ -1,5 +1,12 @@
 @import "../abstracts/_index";
 
+// Fix for https://github.com/maithemewp/mai-engine/issues/323.
+.woocommerce img,
+.woocommerce-page img {
+	height: inherit;
+	max-width: inherit;
+}
+
 .woocommerce-store-notice,
 p.demo_store {
 	position: absolute;
