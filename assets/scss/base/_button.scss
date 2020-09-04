@@ -12,22 +12,32 @@
 	}
 }
 
-.button-secondary,
-.button-secondary:visited {
+.button-secondary {
 
 	@include button-style("secondary");
+
+
+	&:visited {
+		@include button-style("secondary");
+	}
 }
 
-.button-link,
-.button-link:visited {
+.button-link {
 
 	@include button-style("link");
+
+	&:visited {
+		@include button-style("link");
+	}
 }
 
-.button-outline,
-.button-outline:visited {
+.button-outline {
 
 	@include button-style("outline");
+
+	&:visited {
+		@include button-style("outline");
+	}
 }
 
 .button-small {
