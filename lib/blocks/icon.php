@@ -264,6 +264,19 @@ function mai_register_icon_field_group() {
 					'default_value' => '',
 				],
 				[
+					'key'               => 'mai_icon_link_target',
+					'name'              => 'link_target',
+					'label'             => '',
+					'message'           => esc_html__( 'Open link in new window', 'mai-engine' ),
+					'type'              => 'true_false',
+					'conditional_logic' => [
+						[
+							'field'    => 'mai_icon_link',
+							'operator' => '!=empty',
+						],
+					],
+				],
+				[
 					'key'   => 'mai_icon_style_tab',
 					'name'  => 'style_tab',
 					'label' => esc_html__( 'Styles', 'mai-engine' ),
