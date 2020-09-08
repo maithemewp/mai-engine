@@ -9,6 +9,11 @@
  * @license   GPL-2.0-or-later
  */
 
+// Remove Genesis Connect for WooCommerce intro text fallback.
+add_action( 'genesis_before', function() {
+	remove_filter( 'genesis_term_intro_text_output', 'genesiswooc_term_intro_text_output' );
+});
+
 // Enable shortcodes in archive description.
 add_filter( 'genesis_cpt_archive_intro_text_output', 'do_shortcode' );
 
