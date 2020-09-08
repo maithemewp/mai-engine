@@ -172,6 +172,10 @@ p.demo_store {
 		flex-direction: column;
 		text-align: center;
 	}
+
+	.count {
+		background-color: transparent;
+	}
 }
 
 ul.products {
@@ -195,9 +199,10 @@ ul.products {
 	}
 }
 
+.woocommerce-loop-category__title,
 .woocommerce-loop-product__title {
 	margin-bottom: var(--spacing-xxs);
-	font-size: var(--heading-3-font-size);
+	font-size: var(--product-title-font-size, var(--font-size-lg));
 }
 
 .add_to_cart_button {
@@ -389,6 +394,7 @@ form.cart {
 }
 
 .related {
+	--product-title-font-size: var(--font-size-sm);
 	--price-margin-bottom: var(--row-gap);
 
 	.entry {
@@ -398,10 +404,6 @@ form.cart {
 
 	img {
 		margin-bottom: var(--row-gap);
-	}
-
-	.woocommerce-loop-product__title {
-		font-size: var(--font-size-sm);
 	}
 }
 
