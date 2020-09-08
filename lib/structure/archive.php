@@ -102,11 +102,6 @@ function mai_do_term_description() {
 		return;
 	}
 
-	// Bail if a Woo taxo. Description is already output by Woo. Can't use is_product_taxonomy() because it incluces custom taxos on produts.
-	if ( class_exists( 'WooCommerce' ) && is_tax( [ 'product_cat', 'product_tag' ] ) ) {
-		return;
-	}
-
 	$description = apply_filters( 'mai_term_description', term_description() );
 
 	if ( ! $description ) {
