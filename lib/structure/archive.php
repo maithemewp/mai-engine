@@ -71,7 +71,7 @@ function mai_do_blog_description() {
 	}
 
 	// If not the first page.
-	if ( 0 !== absint( get_query_var( 'paged' ) ) ) {
+	if ( is_paged() ) {
 		return;
 	}
 
@@ -103,7 +103,7 @@ function mai_do_term_description() {
 	}
 
 	// Bail if not the first page.
-	if ( 0 !== absint( get_query_var( 'paged' ) ) ) {
+	if ( is_paged() ) {
 		return;
 	}
 
