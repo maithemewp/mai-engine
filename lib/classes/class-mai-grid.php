@@ -475,8 +475,11 @@ class Mai_Grid {
 
 		// Handle query_by.
 		switch ( $this->args['query_by'] ) {
+			// "Taxonomy" name is the default in WP_Term_Query.
 			case 'name':
-				// Nothing, "Taxonomy" name is the default.
+				// Top level terms only.
+				// TODO: Add a setting to show child terms too.
+				$query_args['parent'] = 0;
 			break;
 			case 'id':
 				$query_args['include'] = $this->args['include'];
