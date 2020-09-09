@@ -67,7 +67,7 @@ function mai_register_grid_blocks() {
 			'mode'            => 'preview',
 			'render_callback' => 'mai_do_term_grid_block',
 			'supports'        => [
-				'align'  => [ 'wide' ],
+				'align'  => [ 'wide', 'full' ],
 				'ancher' => true,
 			],
 		]
