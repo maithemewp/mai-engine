@@ -36,7 +36,7 @@ p.demo_store {
 	right: auto;
 	bottom: auto;
 	left: -0.5em;
-	z-index: 1;
+	z-index: 2; // On top for archive and singular.
 	padding: var(--spacing-xxxs) var(--spacing-sm);
 	color: var(--color-white);
 	font-weight: var(--heading-font-weight);
@@ -247,6 +247,7 @@ ul.products {
 
 .product-single {
 	// Don't override properties because nested grid/entries break.
+	position: relative;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
