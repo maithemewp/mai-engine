@@ -565,7 +565,7 @@ return [
 				'align_columns_vertical'       => '',
 				'column_gap'                   => 'xl',
 				'row_gap'                      => 'xl',
-				'posts_per_page'               => '',
+				'posts_per_page'               => '24',
 				'page-header-image'            => '',
 				'page-header-background-color' => '',
 				'page-header-overlay-opacity'  => '',
