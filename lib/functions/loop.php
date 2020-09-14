@@ -209,14 +209,15 @@ function mai_get_template_args() {
 	}
 
 	// Get args.
-	$options = mai_get_option( $settings, [] );
-	$args    = isset( $options[ $name ] ) ? $options[ $name ] : [];
+	$options   = mai_get_option( $settings, [] );
+	$args      = isset( $options[ $name ] ) ? $options[ $name ] : [];
+	$skip_empy = [ 'header_meta', 'footer_meta', 'column_gap', 'row_gap' ];
 
 	// Remove settings with empty string, since that means use the default.
 	foreach ( $args as $key => $value ) {
 
-		// Skip header and footer meta, empty means empty.
-		if ( in_array( $key, [ 'header_meta', 'footer_meta' ], true ) ) {
+		// Skip some keys, empty means empty.
+		if ( in_array( $key, $skip_empy, true ) ) {
 			continue;
 		}
 
@@ -232,7 +233,7 @@ function mai_get_template_args() {
 	foreach ( $args as $key => $value ) {
 
 		// Skip header and footer meta, empty means empty.
-		if ( in_array( $key, [ 'header_meta', 'footer_meta' ], true ) ) {
+		if ( in_array( $key, $skip_empy, true ) ) {
 			continue;
 		}
 
