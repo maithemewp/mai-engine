@@ -21,7 +21,8 @@ function mai_default_theme_settings() {
 	$defaults = mai_get_config( 'settings' )['genesis'];
 
 	genesis_update_settings( $defaults );
-	update_option( 'posts_per_page', $defaults['blog_cat_num'] );
+
+	update_option( 'posts_per_page', absint( mai_get_config( 'settings' )['content-archives']['post']['posts_per_page'] ) );
 }
 
 add_filter( 'simple_social_default_styles', 'mai_default_social_styles' );
