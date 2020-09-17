@@ -592,6 +592,7 @@ return [
 			'divider-overlay-opacity' => 0.5,
 			'divider-text-align'      => '',
 		],
+		'after-header-menu-alignment' => 'flex-start',
 		'performance'         => [
 			'genesis-style-trump'        => true,
 			'remove-menu-item-classes'   => true,
