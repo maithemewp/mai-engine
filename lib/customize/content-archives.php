@@ -705,8 +705,8 @@ function mai_add_content_archive_settings() {
  * Saves/manages WP core option.
  *
  * @since 0.1.0
- * @since TBD Changed to customize_register hook and use default API to register field,
- *               So it can be saved directly to the core posts_per_page option.
+ * @since 2.4.4 Changed to customize_register hook and use default API to register field,
+ *              So it can be saved directly to the core posts_per_page option.
  *
  * @param WP_Customize_Manager $wp_customize WP_Customize_Manager instance.
  *
