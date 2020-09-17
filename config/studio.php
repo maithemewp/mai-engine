@@ -11,45 +11,46 @@
 
 return [
 	'demos'         => [
-		'agency'  => 52,
+		'studio' => 52,
 	],
-	// 'global-styles' => [
-	// 	'colors' => [
-	// 		'alt'       => '#f7f8fa',
-	// 		'link'      => '#7b51ff',
-	// 		'primary'   => '#7b51ff',
-	// 		'secondary' => '#8f98a3',
-	// 		'heading'   => '#4b657e',
-	// 		'body'      => '#5f749e',
-	// 	],
-	// 	'fonts'  => [
-	// 		'body'    => 'Karla:400',
-	// 		'heading' => 'Karla:700',
-	// 	],
-	// ],
-	// 'theme-support' => [
-	// 	'add' => [
-	// 		'transparent-header',
-	// 	],
-	// ],
-	// 'settings'      => [
-	// 	'page-header' => [
-	// 		'archive'                 => '*',
-	// 		'single'                  => '*',
-	// 		'background-color'        => 'primary',
-	// 		'text-color'              => 'light',
-	// 		'divider'                 => 'curve',
-	// 		'divider-height'          => 'sm',
-	// 		'divider-color'           => 'white',
-	// 		'divider-flip-horizontal' => false,
-	// 	],
-	// ],
-	// 'plugins'       => [
-	// 	[
-	// 		'name'  => 'Genesis eNews Extended',
-	// 		'slug'  => 'genesis-enews-extended/plugin.php',
-	// 		'uri'   => 'https://wordpress.org/plugins/genesis-enews-extended/',
-	// 		'demos' => [ 'agency', 'podcast' ],
-	// 	],
-	// ],
+	'global-styles' => [
+		'colors' => [
+			'alt'       => '#f6f7f8',
+			'body'      => '#393e4b',
+			'heading'   => '#393e4b',
+			'link'      => '#0cb4ce', // Cyan.
+			'primary'   => '#6442ff', // Purple.
+			'secondary' => '#006cff', // Blue.
+		],
+		'fonts'  => [
+			'body'    => 'Roboto:300,500',
+			'heading' => 'Playfair Display:400',
+		],
+	],
+	'theme-support' => [
+		'add' => [
+			'transparent-header',
+			'editor-gradient-presets' => [
+				[
+					'name'     => __( 'Studio', 'mai-engine' ),
+					'gradient' => '-webkit-radial-gradient(left top, circle cover, var(--color-primary) 15%, var(--color-secondary) 50%, var(--color-link) 85%)',
+					'slug'     => 'studio',
+				],
+			],
+		],
+	],
+	'settings'      => [
+		'page-header' => [
+			'archive'          => '*',
+			'single'           => '*',
+			'image'            => '',
+			'background-color' => 'primary',
+			'text-color'       => 'light',
+			'divider-color'    => 'white',
+			'spacing'          => [
+				'top'    => '5vw',
+				'bottom' => '5vw',
+			],
+		],
+	],
 ];
