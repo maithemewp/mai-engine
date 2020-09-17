@@ -21,7 +21,7 @@ add_action( 'init', 'mai_site_layouts_customizer_settings' );
 function mai_site_layouts_customizer_settings() {
 	$handle   = mai_get_handle();
 	$name     = 'site-layouts';
-	$defaults = mai_get_config( 'settings' )['site-layout'];
+	$defaults = mai_get_config( 'settings' )['site-layouts'];
 	$section  = sprintf( '%s-%s', $handle, $name );
 	$options  = [
 		'default' => sprintf( '%s[%s][default]', $handle, $name ),

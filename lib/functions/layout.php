@@ -55,7 +55,7 @@ function mai_site_layout( $use_cache = true ) {
 
 	if ( ! $site_layout ) {
 		$layouts  = [];
-		$defaults = mai_get_config( 'settings' )['site-layout'];
+		$defaults = mai_get_config( 'settings' )['site-layouts'];
 		$settings = mai_get_option( 'site-layouts', [] );
 
 		// Remove empty values from settings, so wp_parse_args works correctly.
