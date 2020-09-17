@@ -50,7 +50,7 @@ return [
 		],
 	],
 	'settings'                => [
-		'site-layout'            => [
+		'site-layouts'            => [
 			'default'               => [
 				'site'                 => 'standard-content',
 				'archive'              => 'wide-content',

@@ -454,7 +454,7 @@ return [
 				'mobile'  => '16px',
 			],
 		],
-		'site-layout'         => [
+		'site-layouts'         => [
 			'default' => [
 				'site'    => 'standard-content',
 				'archive' => '',

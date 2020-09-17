@@ -39,7 +39,7 @@ return [
 		'logo'             => [
 			'show-tagline' => false,
 		],
-		'site-layout'      => [
+		'site-layouts'      => [
 			'default' => [
 				'site' => 'wide-content',
 			],
