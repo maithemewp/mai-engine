@@ -36,7 +36,7 @@ return [
 		'logo'             => [
 			'show-tagline' => false,
 		],
-		'site-layout'      => [
+		'site-layouts'      => [
 			'default' => [
 				'site'    => 'standard-content',
 				'archive' => 'narrow-content',

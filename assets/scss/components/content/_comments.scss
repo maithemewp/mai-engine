@@ -52,6 +52,10 @@
 
 .comment-content {
 	margin-bottom: var(--spacing-md);
+
+	a {
+		word-break: break-all;
+	}
 }
 
 .comment-reply {

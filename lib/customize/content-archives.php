@@ -700,28 +700,37 @@ function mai_add_content_archive_settings() {
 	}
 }
 
-add_action( 'init', 'mai_customize_register_posts_per_page', 99 );
 /**
  * Adds Posts Per Page option to Customizer > Theme Settings > Content Archives > Default.
  * Saves/manages WP core option.
  *
  * @since 0.1.0
+ * @since 2.4.4 Changed to customize_register hook and use default API to register field,
+ *              So it can be saved directly to the core posts_per_page option.
+ *
+ * @param WP_Customize_Manager $wp_customize WP_Customize_Manager instance.
  *
  * @return void
  */
-function mai_customize_register_posts_per_page() {
+add_action( 'customize_register', 'mai_customize_register_posts_per_page', 999 );
+function mai_customize_register_posts_per_page( $wp_customize ) {
 	$handle = mai_get_handle();
 
-	\Kirki::add_field(
-		$handle,
+	$wp_customize->add_setting(
+		'posts_per_page',
 		[
-			'default'           => get_option( 'posts_per_page' ),
-			'label'             => __( 'Posts Per Page', 'mai-engine' ),
-			'section'           => $handle . '-content-archives-post',
-			'settings'          => 'posts_per_page',
-			'type'              => 'text',
-			'priority'          => 99,
+			'default'           => absint( get_option( 'posts_per_page' ) ),
+			'type'              => 'option',
 			'sanitize_callback' => 'absint',
+		]
+	);
+	$wp_customize->add_control(
+		'posts_per_page',
+		[
+			'label'    => __( 'Posts Per Page', 'mai-engine' ),
+			'section'  => $handle . '-content-archives-post',
+			'settings' => 'posts_per_page',
+			'type'     => 'text',
 		]
 	);
 }

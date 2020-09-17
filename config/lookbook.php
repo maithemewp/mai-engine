@@ -53,7 +53,7 @@ return [
 				'desktop' => '25px',
 			],
 		],
-		'site-layout'      => [
+		'site-layouts'      => [
 			'default' => [
 				'site'    => 'standard-content',
 				'archive' => 'wide-content',

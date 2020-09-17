@@ -41,7 +41,7 @@ return [
 				'desktop'        => '300px',
 			],
 		],
-		'site-layout'      => [
+		'site-layouts'      => [
 			'default'         => [
 				'site'           => 'content-sidebar',
 			],

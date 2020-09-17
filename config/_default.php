@@ -454,7 +454,7 @@ return [
 				'mobile'  => '16px',
 			],
 		],
-		'site-layout'         => [
+		'site-layouts'         => [
 			'default' => [
 				'site'    => 'standard-content',
 				'archive' => '',
@@ -565,7 +565,7 @@ return [
 				'align_columns_vertical'       => '',
 				'column_gap'                   => 'xl',
 				'row_gap'                      => 'xl',
-				'posts_per_page'               => '',
+				'posts_per_page'               => '24',
 				'page-header-image'            => '',
 				'page-header-background-color' => '',
 				'page-header-overlay-opacity'  => '',
@@ -592,6 +592,7 @@ return [
 			'divider-overlay-opacity' => 0.5,
 			'divider-text-align'      => '',
 		],
+		'after-header-menu-alignment' => 'flex-start',
 		'performance'         => [
 			'genesis-style-trump'        => true,
 			'remove-menu-item-classes'   => true,

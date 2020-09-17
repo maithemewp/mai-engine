@@ -12,13 +12,15 @@
 return [
 	'demos'                   => [
 		'recipes'                => 6,
+		'travel'                 => 7,
+		// 'home'                   => 8,
 	],
 	'plugins'                 => [
 		[
 			'name'                  => 'WP Forms Lite',
 			'slug'                  => 'wpforms-lite/wpforms.php',
 			'uri'                   => 'https://wordpress.org/plugins/wpforms-lite/',
-			'demos'                 => [ 'recipes' ],
+			'demos'                 => [ 'recipes', 'travel' ],
 		],
 	],
 	'global-styles'           => [
@@ -48,7 +50,7 @@ return [
 		],
 	],
 	'settings'                => [
-		'site-layout'            => [
+		'site-layouts'            => [
 			'default'               => [
 				'site'                 => 'standard-content',
 				'archive'              => 'wide-content',

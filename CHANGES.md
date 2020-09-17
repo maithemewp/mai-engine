@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.4.4 (9/17/20)
+* Added: Support for Mai Delight Travel demo.
+* Added: Support for Mai Studio Agency demo.
+* Changed: Mai Term Grid only shows top level terms as the default.
+* Fixed: Removed link button side padding if it's the first button.
+* Fixed: Better check for paginated archives.
+* Fixed: List styles in term descriptions.
+* Fixed: Make sure links in comments wrap.
+* Fixed: Align Full option was missing from Mai Term Grid.
+* Fixed: Column gap wasn't working when set to None in some instances.
+* Fixed: Search icon in menu was wrongly inheriting border and box shadow in some themes.
+* Fixed: Posts per page now set to the theme default when activating the theme.
+* Fixed: Typo in page header CSS custom properties.
+* Fixed: WooCommerce Sale badge was missing on single product pages in some instances.
+* Fixed: WooCommerce My Account navigation links weren't taking up full container width.
+* Fixed: Duplicate category descriptions displaying on WooCommerce category archives in some instances.
+* Fixed: WooCommerce shop title size and product count styling.
+
 ## 2.4.3 (9/4/20)
 * Added: New helper utility classes for hidden-{breakpoint}, hidden-{breakpoint}-up, and hidden-{breakpoint}-down to hide elements at various breakpoints.
 * Added: Now use Mai Theme icon as favicon if none set in Customizer.

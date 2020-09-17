@@ -9,6 +9,11 @@
  * @license   GPL-2.0-or-later
  */
 
+// Remove Genesis Connect for WooCommerce intro text fallback.
+add_action( 'genesis_before', function() {
+	remove_filter( 'genesis_term_intro_text_output', 'genesiswooc_term_intro_text_output' );
+});
+
 // Enable shortcodes in archive description.
 add_filter( 'genesis_cpt_archive_intro_text_output', 'do_shortcode' );
 
@@ -66,7 +71,7 @@ function mai_do_blog_description() {
 	}
 
 	// If not the first page.
-	if ( 0 !== absint( get_query_var( 'paged' ) ) ) {
+	if ( is_paged() ) {
 		return;
 	}
 
@@ -98,12 +103,7 @@ function mai_do_term_description() {
 	}
 
 	// Bail if not the first page.
-	if ( 0 !== absint( get_query_var( 'paged' ) ) ) {
-		return;
-	}
-
-	// Bail if a Woo taxo. Description is already output by Woo. Can't use is_product_taxonomy() because it incluces custom taxos on produts.
-	if ( class_exists( 'WooCommerce' ) && is_tax( [ 'product_cat', 'product_tag' ] ) ) {
+	if ( is_paged() ) {
 		return;
 	}
 

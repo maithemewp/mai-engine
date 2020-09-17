@@ -1,11 +1,12 @@
 @import "../abstracts/_index";
 
 // Fix for https://github.com/maithemewp/mai-engine/issues/323.
-.woocommerce img,
-.woocommerce-page img {
-	height: inherit;
-	max-width: inherit;
-}
+// Breaks single product images.
+// .woocommerce img,
+// .woocommerce-page img {
+// 	height: inherit;
+// 	max-width: inherit;
+// }
 
 .woocommerce-store-notice,
 p.demo_store {
@@ -35,7 +36,7 @@ p.demo_store {
 	right: auto;
 	bottom: auto;
 	left: -0.5em;
-	z-index: 1;
+	z-index: 2; // On top for archive and singular.
 	padding: var(--spacing-xxxs) var(--spacing-sm);
 	color: var(--color-white);
 	font-weight: var(--heading-font-weight);
@@ -171,6 +172,10 @@ p.demo_store {
 		flex-direction: column;
 		text-align: center;
 	}
+
+	.count {
+		background-color: transparent;
+	}
 }
 
 ul.products {
@@ -194,9 +199,10 @@ ul.products {
 	}
 }
 
+.woocommerce-loop-category__title,
 .woocommerce-loop-product__title {
 	margin-bottom: var(--spacing-xxs);
-	font-size: var(--heading-3-font-size);
+	font-size: var(--product-title-font-size, var(--font-size-lg));
 }
 
 .add_to_cart_button {
@@ -241,6 +247,7 @@ ul.products {
 
 .product-single {
 	// Don't override properties because nested grid/entries break.
+	position: relative;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -388,6 +395,7 @@ form.cart {
 }
 
 .related {
+	--product-title-font-size: var(--font-size-sm);
 	--price-margin-bottom: var(--row-gap);
 
 	.entry {
@@ -397,10 +405,6 @@ form.cart {
 
 	img {
 		margin-bottom: var(--row-gap);
-	}
-
-	.woocommerce-loop-product__title {
-		font-size: var(--font-size-sm);
 	}
 }
 
@@ -741,6 +745,10 @@ form.cart {
 	ul {
 		--list-margin: 0;
 		--list-style-type: none;
+	}
+
+	a {
+		display: block;
 	}
 }
 
