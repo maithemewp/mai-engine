@@ -11,7 +11,7 @@
 
 return [
 	'demos'         => [
-		'studio' => 52,
+		'agency' => 52,
 	],
 	'global-styles' => [
 		'colors' => [
