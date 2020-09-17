@@ -49,7 +49,7 @@ function mai_menus_customizer_settings() {
 			'settings'        => 'after-header-menu-alignment',
 			'section'         => $section,
 			'label'           => __( 'After Header Menu Alignment', 'mai-engine' ),
-			'default'         => mai_get_config( 'settings' )['flex-start'],
+			'default'         => mai_get_config( 'settings' )['after-header-menu-alignment'],
 			'choices'         => [
 				'flex-start' => __( 'Left', 'mai-engine' ),
 				'center'     => __( 'Center', 'mai-engine' ),
