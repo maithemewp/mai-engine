@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.4.5 (9/18/20)
+* Fixed: WooCommerce cart layout was broken on extra small mobile devices.
+
 ## 2.4.4 (9/17/20)
 * Added: Support for Mai Delight Travel demo.
 * Added: Support for Mai Studio Agency demo.
