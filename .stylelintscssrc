@@ -4,7 +4,7 @@
     "stylelint-config-rational-order"
   ],
   "rules": {
-    "color-named": true
+    "color-named": always-where-possible
   }
 }
 

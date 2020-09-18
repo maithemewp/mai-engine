@@ -12,18 +12,18 @@
 p.demo_store {
 	position: absolute;
 	top: 0;
-	left: 0;
 	right: 0;
-	margin: 0;
+	left: 0;
+	z-index: 99998;
+	display: none;
 	width: 100%;
-	font-size: 1em;
+	margin: 0;
 	padding: var(--spacing-md) 0;
+	color: var(--button-color);
+	font-size: 1em;
 	text-align: center;
 	background: var(--button-background, var(--color-primary));
-	color: var(--button-color);
-	z-index: 99998;
 	box-shadow: var(--shadow);
-	display: none;
 
 	.admin-bar & {
 		top: 32px;
@@ -229,13 +229,14 @@ ul.products {
 .added:hover,
 .added:focus {
 	margin: auto auto var(--spacing-xs);
+	color: var(--button-secondary-color); // Color contrast automatically generated.
 	font-size: 80%;
 	background: var(--button-secondary-background, var(--color-secondary));
-	color: var(--button-secondary-color); // Color contrast automatically generated.
 	--button-opacity: 0.5;
 }
 
 .added_to_cart {
+
 	@include button;
 
 	&:hover,
@@ -251,8 +252,8 @@ ul.products {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	max-width: 100%;
 	justify-content: space-between;
+	max-width: 100%;
 
 	> * {
 		flex: var(--flex, 1 1 100%);
@@ -305,8 +306,8 @@ ul.products {
 		width: 1px;
 		height: 1px;
 		overflow: hidden;
-		color: #333;
-		background: #fff;
+		color: var(--color-heading);
+		background: var(--color-white);
 		border: 0;
 		clip: rect(0, 0, 0, 0);
 	}
@@ -369,10 +370,6 @@ ul.products {
 
 form.cart {
 	margin-top: var(--row-gap);
-}
-
-.quantity {
-	float: left;
 }
 
 .product_meta {
@@ -458,11 +455,11 @@ form.cart {
 	.wc-stripe-elements-field,
 	.wc-stripe-iban-element-field {
 		padding: var(--input-padding, var(--spacing-md));
-		border: var(--border);
-		border-radius: var(--border-radius);
-		background-color: var(--input-background-color, var(--color-white));
 		color: var(--input-color, currentColor);
 		line-height: var(--input-line-height, 1);
+		background-color: var(--input-background-color, var(--color-white));
+		border: var(--border);
+		border-radius: var(--border-radius);
 	}
 
 }
@@ -512,8 +509,8 @@ form.cart {
 }
 
 .woocommerce-privacy-policy-text {
-	font-size: var(--font-size-xs);
 	margin-bottom: var(--spacing-md);
+	font-size: var(--font-size-xs);
 }
 
 .place-order {
@@ -563,6 +560,7 @@ form.cart {
 }
 
 .quantity {
+	float: left;
 
 	.input-text {
 		max-width: 72px;
@@ -630,51 +628,22 @@ form.cart {
 	width: 100%;
 }
 
-@include mq(false, sm) {
+@include mq(false, md) {
 
 	.woocommerce-cart-form {
 
-		table,
-		thead,
-		tbody,
-		th,
-		td,
-		tr {
-			display: block;
+		.shop_table {
+			border-right: 0;
+			border-left: 0;
 		}
 
-		thead tr {
-			position: absolute;
-			top: -9999px;
-			left: -9999px;
-		}
-
-		td {
-			position: relative;
-			display: flex;
-			align-content: center;
-			align-items: center;
-			padding: 0;
+		td:not(.product-thumbnail) {
 			border: var(--border);
 			border-bottom: 0;
 		}
 
 		.actions {
-			display: flex;
-			flex-direction: column;
-			padding: 1em;
 			overflow: hidden;
-			border-bottom: var(--border);
-
-			.button {
-				float: none;
-				padding: var(--spacing-md);
-			}
-
-			> .button {
-				order: -1;
-				margin-bottom: 1em;
-			}
 		}
 
 		.coupon {
@@ -687,8 +656,65 @@ form.cart {
 			}
 		}
 
+	}
+
+}
+
+@include mq(false, sm) {
+
+	.woocommerce-cart-form {
+
+		table,
+		thead,
+		tbody,
+		th,
+		tr {
+			display: block;
+		}
+
+		.shop_table {
+			border: none;
+		}
+
+		thead tr {
+			position: absolute;
+			top: -9999px;
+			left: -9999px;
+		}
+
+		td:not(.product-thumbnail) {
+			position: relative;
+			display: flex !important; // Overide Woo's display: block;.
+			align-content: center;
+			align-items: center;
+			padding: 0;
+
+			&.product-remove {
+				padding: var(--spacing-md);
+			}
+
+			&.actions {
+				display: flex;
+				flex-direction: column;
+				padding: 1em;
+				overflow: hidden;
+				border-bottom: var(--border);
+
+				.button {
+					float: none;
+					padding: var(--spacing-md);
+				}
+
+				> .button {
+					order: -1;
+					margin-bottom: 1em;
+				}
+			}
+		}
+
 		.cart_item {
 			margin: var(--row-gap) 0;
+			border-top: var(--border);
 			border-bottom: var(--border);
 
 			td::before {
@@ -706,33 +732,6 @@ form.cart {
 			}
 		}
 
-		.product-remove::before {
-			content: "Delete";
-		}
-
-		.product-thumbnail::before {
-			content: "Image";
-		}
-
-		.product-name::before {
-			content: "Product";
-		}
-
-		.product-price::before {
-			content: "Price";
-		}
-
-		.product-quantity::before {
-			content: "Quantity";
-		}
-
-		.product-subtotal::before {
-			content: "Subtotal";
-		}
-
-		.product-total::before {
-			content: "Total";
-		}
 	}
 }
 
