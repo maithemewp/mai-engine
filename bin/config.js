@@ -29,7 +29,7 @@ module.exports = {
 		svg: './assets/svg/'
 	},
 	css: {
-		basefontsize: 10,
+		basefontsize: 16,
 		sourcemaps: false,
 		remmediaquery: false,
 		remreplace: true,
