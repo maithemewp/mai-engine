@@ -1,5 +1,7 @@
 :root {
-	--font-scale: 1.333;
+	// --color-black: #222;
+	--font-size-base: 14px;
+	// --font-scale: 1.333;
 	// --border: 1px solid #aba9a9;
 	--border-radius: 0;
 	// --button-text-transform: uppercase;
@@ -15,7 +17,7 @@
 }
 
 .nav-header {
-	--menu-font-size: var(--font-size-sm);
+	--menu-font-size: var(--font-size-base);
 	--menu-font-weight: bold;
 	--menu-item-link-color: var(--color-white);
 }
@@ -23,9 +25,9 @@
 .is-style-subheading {
 	font-style: italic;
 
-	--heading-color: var(--color-heading);
-	--heading-font-family: georgia;
-	--heading-font-weight: normal;
+	--heading-color: var(--color-black);
+	--heading-font-family: var(--subheading-font-family);
+	--heading-font-weight: var(--subheading-font-weight);
 	--heading-text-transform: normal;
 	--heading-letter-spacing: 0;
 }

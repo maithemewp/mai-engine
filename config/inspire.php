@@ -18,14 +18,17 @@ return [
 			// 'link'           => '#b0cdbd',
 			'primary'        => '#002627',
 			'secondary'      => '#894b32',
-			'heading'        => '#042525',
+			'heading'        => '#002627',
 			'body'           => '#252323',
 			// 'alt'            => '#f5f5f5',
 			// 'custom-color-1' => '#545454',
+			'black'           => '#222222',
+
 		],
 		'fonts'  => [
 			'body'        => 'Lato:400',
 			'heading'     => 'Playfair Display:900',
+			'subheading'  => 'Playfair Display:500italic',
 			// 'entry-title' => 'Playfair Display:400',
 		],
 	],
