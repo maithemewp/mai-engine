@@ -134,7 +134,7 @@ class Mai_Entry {
 			if ( $this->get_image_id() ) {
 				$atts['class'] .= ' has-image';
 
-				if ( $image_first && ! mai_is_element_hidden( 'featured_image' ) ) {
+				if ( $image_first && ! ( ( 'single' === $this->context ) && mai_is_element_hidden( 'featured_image', $this->id ) ) ) {
 					$atts['class'] .= ' has-image-first';
 				}
 			}
@@ -344,7 +344,7 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_image() {
-		if ( ( 'single' === $this->context ) && mai_is_element_hidden( 'featured_image' ) ) {
+		if ( ( 'single' === $this->context ) && mai_is_element_hidden( 'featured_image', $this->id ) ) {
 			return;
 		}
 
@@ -672,7 +672,7 @@ class Mai_Entry {
 	 * @return  void
 	 */
 	public function do_title() {
-		if ( ( 'single' === $this->context ) && ( mai_is_element_hidden( 'entry_title' ) || ( mai_has_page_header() && apply_filters( 'mai_entry_title_in_page_header', true ) ) ) ) {
+		if ( ( 'single' === $this->context ) && ( mai_is_element_hidden( 'entry_title', $this->id ) || ( mai_has_page_header() && apply_filters( 'mai_entry_title_in_page_header', true ) ) ) ) {
 			return;
 		}
 
@@ -826,7 +826,7 @@ class Mai_Entry {
 			case 'post':
 				if ( 'single' === $this->context ) {
 					// Manual excerpts only, on single posts.
-					$excerpt = has_excerpt() && ! mai_is_element_hidden( 'entry_excerpt' ) ? get_the_excerpt() : '';
+					$excerpt = has_excerpt() && ! mai_is_element_hidden( 'entry_excerpt', $this->id ) ? get_the_excerpt() : '';
 				} else {
 					$excerpt = get_the_excerpt();
 				}
@@ -1109,7 +1109,7 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_after_entry() {
-		if ( mai_has_template_part( 'after-entry' ) && ! mai_is_element_hidden( 'after_entry' ) ) {
+		if ( mai_has_template_part( 'after-entry' ) && ! mai_is_element_hidden( 'after_entry', $this->id ) ) {
 			mai_render_template_part( 'after-entry', '<div class="after-entry template-part">', '</div>' );
 		}
 

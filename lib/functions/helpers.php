@@ -497,18 +497,24 @@ function mai_sanitize_bool( $value ) {
  * Description of expected behavior.
  *
  * @since 0.3.0
+ * @since TBD Add $post_id to use outside of the loop.
  *
  * @param bool $element Element to check.
+ * @param int  $post_id The post ID.
  *
  * @return mixed
  */
-function mai_is_element_hidden( $element ) {
-	if ( ! is_singular() ) {
+function mai_is_element_hidden( $element, $post_id = '' ) {
+	if ( ! is_singular() && ! $post_id ) {
 		return false;
 	}
 
+	if ( ! $post_id ) {
+		$post_id = get_the_ID();
+	}
+
 	// Can't be static, entry-title breaks.
-	$elements = get_post_meta( get_the_ID(), 'hide_elements', true );
+	$elements = get_post_meta( $post_id, 'hide_elements', true );
 
 	return in_array( $element, (array) $elements, true );
 }
