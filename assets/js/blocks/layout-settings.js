@@ -126,7 +126,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 				<BlockEdit {...props} />
 				<InspectorControls>
 					<PanelBody
-						title={__( 'Layout', 'mai-engine' )}
+						title={__( 'Content Width', 'mai-engine' )}
 						initialOpen={false}
 						className={'mai-layout-settings'}
 					>

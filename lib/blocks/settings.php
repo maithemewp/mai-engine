@@ -110,3 +110,43 @@ function mai_do_cover_group_block_settings( $block_content, $block ) {
 
 	return $block_content;
 }
+
+add_filter( 'render_block', 'mai_do_max_width_settings', 10, 2 );
+/**
+ * Dynamically adds classes based on our custom attributes.
+ *
+ * @since TBD
+ *
+ * @param string $block_content The existing block content.
+ * @param array  $block         The button block object.
+ *
+ * @return string
+ */
+function mai_do_max_width_settings( $block_content, $block ) {
+	if ( ! in_array( $block['blockName'], [ 'core/paragraph', 'core/heading' ], true ) ) {
+		return $block_content;
+	}
+
+	$width  = mai_isset( $block['attrs'], 'maxWidth', '' );
+
+	if ( $width ) {
+		$dom = mai_get_dom_document( $block_content );
+
+		/**
+		 * The block container.
+		 *
+		 * @var DOMElement $first_block The block container.
+		 */
+		$first_block = mai_get_dom_first_child( $dom );
+
+		if ( $first_block ) {
+			$classes = mai_add_classes( sprintf( 'has-%s-max-width', $width ), $first_block->getAttribute( 'class' ) );
+
+			$first_block->setAttribute( 'class', $classes );
+
+			$block_content = $dom->saveHTML();
+		}
+	}
+
+	return $block_content;
+}
