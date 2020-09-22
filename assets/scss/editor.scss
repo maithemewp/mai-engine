@@ -88,7 +88,12 @@ p {
 
 @each $breakpoint-name, $breakpoint-size in $breakpoints {
 
-	[data-max-width="#{ $breakpoint-name }"] {
+	h1[data-max-width="#{ $breakpoint-name }"],
+	h2[data-max-width="#{ $breakpoint-name }"],
+	h3[data-max-width="#{ $breakpoint-name }"],
+	h4[data-max-width="#{ $breakpoint-name }"],
+	h5[data-max-width="#{ $breakpoint-name }"],
+	h6[data-max-width="#{ $breakpoint-name }"] {
 		max-width: var(--breakpoint-#{ $breakpoint-name });
 	}
 
@@ -100,11 +105,13 @@ p {
 	}
 }
 
-@each $padding-setting in $padding_settings {
+@each $margin-name, $margin-size in $spacing {
 
-	[data-spacing-#{ $padding-setting }] {
-		--cover-block-padding-#{ $padding-setting }: 0;
-		--group-block-padding-#{ $padding-setting }: 0;
+	@each $margin-setting in $margin_settings {
+
+		[data-spacing-#{ $margin-setting }="#{ $margin-name }"] {
+			--heading-margin-#{ $margin-setting }: #{ $margin-size };
+		}
 	}
 }
 

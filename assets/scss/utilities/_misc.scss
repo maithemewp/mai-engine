@@ -110,20 +110,24 @@
 	}
 }
 
+@each $spacing-name, $spacing-size in $spacing {
+
+	.has--#{ $spacing-name }-margin-top {
+		margin-top: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
+	}
+
+	.has--#{ $spacing-name }-margin-bottom {
+		margin-bottom: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
+	}
+
+}
+
 @include mq(md) {
 
 	@each $spacing-name, $spacing-size in $spacing {
 
-		.has--#{ $spacing-name }-margin-top {
-			margin-top: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
-		}
-
 		.has--#{ $spacing-name }-margin-right {
 			margin-right: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
-		}
-
-		.has--#{ $spacing-name }-margin-bottom {
-			margin-bottom: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
 		}
 
 		.has--#{ $spacing-name }-margin-left {
