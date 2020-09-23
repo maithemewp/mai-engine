@@ -1,0 +1,11 @@
+.sidebar {
+
+	.enews {
+		--input-margin: 0 0 var(--spacing-sm);
+
+		input[type="submit"] {
+			display: block;
+			width: 100%;
+		}
+	}
+}
