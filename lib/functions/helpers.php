@@ -393,7 +393,7 @@ function mai_has_page_header_support_callback( $control ) {
 	];
 	$handle  = mai_get_handle();
 	$name    = $control->option_name;
-	$context = mai_has_string( 'archive', $name ) ? 'archive' : 'single';
+	$context = mai_has_string( 'archives', $name ) ? 'archive' : 'single';
 	$type    = str_replace( $handle . '[' . $types[ $context ] . '][', '', $name );
 	$type    = str_replace( ']', '', $type );
 
