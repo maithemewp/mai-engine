@@ -25,7 +25,6 @@
 .is-style-subheading {
 	font-style: italic;
 
-	--heading-color: var(--color-black);
 	--heading-font-family: var(--subheading-font-family);
 	--heading-font-weight: var(--subheading-font-weight);
 	--heading-text-transform: normal;
@@ -39,7 +38,7 @@
 		.entry-wrap > :first-child {
 			width: 100%;
 			max-width: calc(100% - var(--spacing-xl));
-			margin-top: calc(var(--spacing-xxxl) * -1);
+			margin-top: calc(var(--spacing-xxl) * -1);
 			margin-right: auto;
 			margin-left: auto;
 			padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md);

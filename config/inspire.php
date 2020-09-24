@@ -15,7 +15,7 @@ return [
 	],
 	'global-styles'    => [
 		'colors' => [
-			// 'link'           => '#b0cdbd',
+			'link'           => '#894b32',
 			'primary'        => '#002627',
 			'secondary'      => '#894b32',
 			'heading'        => '#002627',
