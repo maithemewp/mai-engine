@@ -10,44 +10,90 @@
  */
 
 return [
-	'demos'            => [
-		// 'default' => 51,
+	'demos'             => [
+		// 'default'       => 51,
 	],
-	'global-styles'    => [
-		'colors' => [
-			'link'           => '#b0cdbd',
-			'primary'        => '#b0cdbd',
-			'secondary'      => '#f5f5f5',
-			'heading'        => '#173821',
-			'body'           => '#173821',
-			'alt'            => '#f5f5f5',
-			'custom-color-1' => '#545454',
+	'global-styles'     => [
+		'colors'           => [
+			'link'            => '#b0cdbd',
+			'primary'         => '#b0cdbd',
+			'secondary'       => '#f5f5f5',
+			'heading'         => '#173821',
+			'body'            => '#173821',
+			'alt'             => '#f5f5f5',
+			'custom-color-1'  => '#545454',
 		],
-		'fonts'  => [
-			'body'        => 'Lato:400',
-			'heading'     => 'Lato:700',
-			'entry-title' => 'Playfair Display:400',
-		],
-	],
-	'image-sizes'         => [
-		'add' => [
-			'landscape' => '16:9',
-			'square'    => '1:1',
+		'fonts'            => [
+			'body'            => 'Lato:400',
+			'heading'         => 'Lato:700',
+			'entry-title'     => 'Playfair Display:400',
 		],
 	],
-	'custom-functions' => function() {
-		add_action( 'init', function() {
-			/**
-			 * Register block style
-			 */
-			register_block_style(
-				'core/heading',
-				array(
-					'name'         => 'boxed-heading',
-					'label'        => __( 'Boxed Heading', 'mai-engine' ),
-					// 'style_handle' => 'prefix-stylesheet',
-				)
-			);
-		});
-	},
+	'image-sizes'       => [
+		'add'              => [
+			'landscape'       => '16:9',
+			'square'          => '1:1',
+		],
+	],
+	'settings'          => [
+		'content-archives' => [
+			'post'            => [
+				'show'           => [
+					'genesis_entry_header',
+					'header_meta',
+					'title',
+					'image',
+					'genesis_before_entry_content',
+					'excerpt',
+					'genesis_entry_content',
+					'more_link',
+					'genesis_after_entry_content',
+					'genesis_entry_footer',
+				],
+				'title_size'     => 'xxl',
+				'columns'        => '1',
+				'row_gap'        => 'xxxl',
+			],
+		],
+		'site-layouts'     => [
+			'default'         => [
+				'site'           => 'content-sidebar',
+			],
+			'single'          => [
+				'page'           => 'standard-content',
+			],
+		],
+		'single-content'   => [
+			'post'            => [
+				'show'           => [
+					'genesis_entry_header',
+					'header_meta',
+					'title',
+					'image',
+					'genesis_before_entry_content',
+					'excerpt',
+					'content',
+					'genesis_entry_content',
+					'genesis_after_entry_content',
+					'footer_meta',
+					'genesis_entry_footer',
+					'after_entry',
+				],
+			],
+		],
+	],
+	'plugins'           => [
+		[
+			'name'            => 'Genesis eNews Extended',
+			'slug'            => 'genesis-enews-extended/plugin.php',
+			'uri'             => 'https://wordpress.org/plugins/genesis-enews-extended/',
+			'demos'           => [],
+		],
+		[
+			'name'            => 'WooCommerce',
+			'slug'            => 'woocommerce/woocommerce.php',
+			'uri'             => 'https://wordpress.org/plugins/woocommerce/',
+			'demos'           => [],
+		],
+	],
 ];

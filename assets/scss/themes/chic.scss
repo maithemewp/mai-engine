@@ -1,4 +1,5 @@
 :root {
+	--font-size-base: 15px;
 	--font-scale: 1.125;
 	--border: 1px solid #aba9a9;
 	--border-radius: 0;
@@ -36,6 +37,13 @@
 
 	.wrap {
 		margin-top: var(--spacing-lg);
+		border: var(--border);
+	}
+}
+
+.site-footer {
+
+	.menu {
 		border: var(--border);
 	}
 }
@@ -148,3 +156,12 @@ h6.has-background {
 		margin-bottom: var(--spacing-xxl);
 	}
 }
+
+.entries-archive.has-image-full {
+
+	.entry-meta.before-content,
+	.entry-title {
+		text-align: center;
+	}
+}
+
