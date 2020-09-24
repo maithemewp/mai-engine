@@ -93,8 +93,6 @@ const addLayoutControlAttribute = ( settings, name ) => {
 		} );
 	}
 
-	console.log( settings.attributes );
-
 	return settings;
 };
 
@@ -144,34 +142,6 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 					value: '',
 				},
 				...layoutSizeScale,
-				{
-					label: __( 'XS Overlap', 'mai-engine' ),
-					value: '-xs',
-				},
-				{
-					label: __( 'SM Overlap', 'mai-engine' ),
-					value: '-sm',
-				},
-				{
-					label: __( 'MD Overlap', 'mai-engine' ),
-					value: '-md',
-				},
-				{
-					label: __( 'LG Overlap', 'mai-engine' ),
-					value: '-lg',
-				},
-				{
-					label: __( 'XL Overlap', 'mai-engine' ),
-					value: '-xl',
-				},
-				{
-					label: __( 'XXL Overlap', 'mai-engine' ),
-					value: '-xxl',
-				},
-				{
-					label: __( 'XXXL Overlap', 'mai-engine' ),
-					value: '-xxxl',
-				},
 			];
 
 			const {
