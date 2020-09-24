@@ -14,6 +14,7 @@ add_filter( 'post_class', 'mai_remove_post_classes', 10, 3 );
  * Remove unnecessary post classes.
  *
  * @since 2.3.0
+ * @since TBD Remove dtype-{post_type} from here. We often need that for styling.
  *
  * @param string[] $classes A string of post class names.
  * @param string[] $class   An array of additional class names added to the post.
