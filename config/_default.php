@@ -237,6 +237,11 @@ return [
 				return class_exists( 'FacetWP' );
 			},
 		],
+		'genesis-enews-extended' => [
+			'condition' => function () {
+				return class_exists( 'BJGK_Genesis_ENews_Extended' );
+			},
+		],
 		'seo-slider'             => [
 			'condition' => function () {
 				return defined( 'SEO_SLIDER_VERSION' );
