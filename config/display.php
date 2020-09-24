@@ -89,21 +89,4 @@ return [
 			'divider-color'        => 'white',
 		],
 	],
-	'custom-functions'       => function () {
-
-		// Remove posts in Portfolio category from blog.
-		// TODO:                   Should this be added to all themes?
-		add_filter( 'pre_get_posts', function ( $query ) {
-			/**
-			 * @var WP_Query $query WordPress query object.
-			 */
-			if ( $query->is_home ) {
-				$id                    = get_cat_ID( 'portfolio' );
-
-				$query->set( 'cat', '-' . $id );
-			}
-
-			return $query;
-		} );
-	},
 ];
