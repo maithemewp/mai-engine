@@ -29,7 +29,6 @@ function mai_remove_post_classes( $classes, $class, $post_id ) {
 			'has-post-thumbnail',
 			'category-uncategorized',
 			'post-' . $post_id,
-			'type-' . get_post_type( $post_id ),
 			'status-' . get_post_status( $post_id ),
 			'format-' . ( get_post_format( $post_id ) ? get_post_format( $post_id ) : 'standard' ),
 		]
