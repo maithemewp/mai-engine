@@ -11,7 +11,7 @@
 
 return [
 	'demos'             => [
-		// 'default'       => 51,
+		'blog'             => 60,
 	],
 	'global-styles'     => [
 		'colors'           => [
@@ -51,6 +51,7 @@ return [
 					'genesis_entry_footer',
 				],
 				'title_size'     => 'xxl',
+				'boxed'          => false,
 				'columns'        => '1',
 				'row_gap'        => 'xxxl',
 			],

@@ -52,5 +52,11 @@ return [
 				'bottom' => '5vw',
 			],
 		],
+		'content-archives' => [
+			'post' => [
+				'page-header-overlay-opacity' => '0.9',
+				'content_limit'               => '136',
+			],
+		],
 	],
 ];
