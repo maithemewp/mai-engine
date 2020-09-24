@@ -27,6 +27,10 @@ function mai_do_entries_open( $args ) {
 		'style' => '',
 	];
 
+	// Context..
+	$context             = 'block' === $args['context'] ? 'grid' : $args['context'];
+	$attributes['class'] = mai_add_classes( 'entries-' . $context, $attributes['class'] );
+
 	// Boxed.
 	if ( $args['boxed'] && ! ( in_array( 'image', $args['show'], true ) && ( 'background' === $args['image_position'] ) ) ) {
 		$attributes['class'] .= ' has-boxed';
