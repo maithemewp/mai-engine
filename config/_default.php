@@ -389,26 +389,34 @@ return [
 			'menu_order' => 20,
 		],
 		[
+			'id'         => 'after-header',
+			'location'   => 'genesis_after_header',
+			'priority'   => 8,
+			'menu_order' => 25,
+			'before'     => '<div class="after-header template-part">',
+			'after'      => '</div>',
+		],
+		[
 			'id'         => 'after-entry',
 			'name'       => __( 'After Entry', 'mai-engine' ),
-			'menu_order' => 25,
+			'menu_order' => 30,
 		],
 		[
 			'id'         => 'before-footer',
 			'location'   => 'genesis_footer',
 			'priority'   => 5,
-			'menu_order' => 30,
+			'menu_order' => 35,
 		],
 		[
 			'id'         => 'footer',
 			'location'   => 'genesis_footer',
-			'menu_order' => 35,
+			'menu_order' => 40,
 		],
 		[
 			'id'         => 'footer-credits',
 			'location'   => 'genesis_footer',
 			'priority'   => 12,
-			'menu_order' => 40,
+			'menu_order' => 45,
 			'default'    => '<!-- wp:group {"align":"full","verticalSpacingTop":"xs","verticalSpacingBottom":"xs"} -->
 			<div class="wp-block-group alignfull"><div class="wp-block-group__inner-container"><!-- wp:paragraph {"align":"center","fontSize":"sm"} -->
 			<p class="has-text-align-center has-sm-font-size">Copyright [footer_copyright] · [footer_home_link] · All Rights Reserved · Powered by <a rel="noreferrer noopener" target="_blank" href="https://bizbudding.com/mai-theme/">Mai Theme</a></p>
