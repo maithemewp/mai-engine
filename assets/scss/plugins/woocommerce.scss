@@ -650,6 +650,20 @@ form.cart {
 		.shop_table {
 			border-right: 0;
 			border-left: 0;
+
+			// Originally for WooCommerce Product Add-ons, but could be anything.
+			--list-margin: 0;
+			--list-padding: var(--spacing-sm);
+		}
+
+		td {
+			flex-wrap: wrap;
+
+			// Originally for WooCommerce Product Add-ons, but could be anything.
+			> *:not(.remove) {
+				flex: 1 1 auto;
+				padding: var(--spacing-md);
+			}
 		}
 
 		td:not(.product-thumbnail) {
