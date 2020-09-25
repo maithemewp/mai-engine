@@ -115,7 +115,7 @@ add_filter( 'render_block', 'mai_do_block_max_width_settings', 10, 2 );
 /**
  * Dynamically adds classes based on our custom attributes.
  *
- * @since TBD
+ * @since 2.5.0
  *
  * @param string $block_content The existing block content.
  * @param array  $block         The button block object.
@@ -159,7 +159,7 @@ add_filter( 'render_block', 'mai_do_block_spacing_settings', 10, 2 );
 /**
  * Dynamically adds classes based on our custom attributes.
  *
- * @since TBD
+ * @since 2.5.0
  *
  * @param string $block_content The existing block content.
  * @param array  $block         The button block object.

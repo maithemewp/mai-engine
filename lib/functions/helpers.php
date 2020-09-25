@@ -497,7 +497,7 @@ function mai_sanitize_bool( $value ) {
  * Description of expected behavior.
  *
  * @since 0.3.0
- * @since TBD Add $post_id to use outside of the loop.
+ * @since 2.5.0 Add $post_id to use outside of the loop.
  *
  * @param bool $element Element to check.
  * @param int  $post_id The post ID.
