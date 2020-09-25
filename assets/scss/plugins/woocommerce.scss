@@ -215,6 +215,7 @@ ul.products {
 .woocommerce-loop-product__title {
 	margin-bottom: var(--spacing-xxs);
 	font-size: var(--product-title-font-size, var(--font-size-lg));
+	transition: var(--transition);
 }
 
 .add_to_cart_button {
