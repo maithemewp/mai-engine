@@ -40,9 +40,9 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			'default'         => $defaults['title_size'],
 			'choices'         => [
 				'md'    => __( 'XS', 'mai-engine' ),
-				'lg'    => __( 'SM', 'mai-engine' ),
-				'xl'    => __( 'MD', 'mai-engine' ),
-				'xxl'   => __( 'LG', 'mai-engine' ),
+				'lg'    => __( 'S', 'mai-engine' ),
+				'xl'    => __( 'M', 'mai-engine' ),
+				'xxl'   => __( 'L', 'mai-engine' ),
 				'xxxxl' => __( 'XL', 'mai-engine' ),
 			],
 			'active_callback' => [
@@ -529,9 +529,9 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			'choices'  => [
 				''     => __( 'None', 'mai-engine' ),
 				'md'   => __( 'XS', 'mai-engine' ), // Values mapped to a spacing sizes, labels kept consistent.
-				'lg'   => __( 'SM', 'mai-engine' ),
-				'xl'   => __( 'MD', 'mai-engine' ),
-				'xxl'  => __( 'LG', 'mai-engine' ),
+				'lg'   => __( 'S', 'mai-engine' ),
+				'xl'   => __( 'M', 'mai-engine' ),
+				'xxl'  => __( 'L', 'mai-engine' ),
 				'xxxl' => __( 'XL', 'mai-engine' ),
 			],
 		],
@@ -544,9 +544,9 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			'choices'  => [
 				''     => __( 'None', 'mai-engine' ),
 				'md'   => __( 'XS', 'mai-engine' ), // Values mapped to a spacing sizes, labels kept consistent.
-				'lg'   => __( 'SM', 'mai-engine' ),
-				'xl'   => __( 'MD', 'mai-engine' ),
-				'xxl'  => __( 'LG', 'mai-engine' ),
+				'lg'   => __( 'S', 'mai-engine' ),
+				'xl'   => __( 'M', 'mai-engine' ),
+				'xxl'  => __( 'L', 'mai-engine' ),
 				'xxxl' => __( 'XL', 'mai-engine' ),
 			],
 		],

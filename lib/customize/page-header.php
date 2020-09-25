@@ -219,9 +219,9 @@ function mai_page_header_customizer_settings() {
 			'default'         => $defaults['divider-height'],
 			'choices'         => [
 				'xs' => __( 'XS', 'mai-engine' ),
-				'sm' => __( 'SM', 'mai-engine' ),
-				'md' => __( 'MD', 'mai-engine' ),
-				'lg' => __( 'LG', 'mai-engine' ),
+				'sm' => __( 'S', 'mai-engine' ),
+				'md' => __( 'M', 'mai-engine' ),
+				'lg' => __( 'L', 'mai-engine' ),
 				'xl' => __( 'XL', 'mai-engine' ),
 			],
 			'active_callback' => [
