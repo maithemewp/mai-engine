@@ -159,10 +159,15 @@ p.demo_store {
 	ins {
 		text-decoration: none;
 	}
+
+	del {
+		color: inherit;
+		opacity: 0.5;
+	}
 }
 
 .products {
-	--price-font-size: var(--font-size-md);
+	--price-font-size: var(--font-size-sm);
 
 	&.related {
 		margin-top: var(--spacing-xxl);
@@ -191,7 +196,14 @@ ul.products {
 }
 
 .woocommerce-LoopProduct-link {
+	--link-text-decoration-hover: none;
+
 	width: 100%;
+
+	&:hover,
+	&:focus {
+		--heading-color: var(--color-primary);
+	}
 
 	img {
 		width: 100%;
