@@ -103,7 +103,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 	return ( props ) => {
 		if ( enableLayoutSettingsBlocks.includes( props.name ) ) {
 
-			const layoutSizeScale = [
+			const sizeScale = [
 				{
 					label: __( 'XS', 'mai-engine' ),
 					value: 'xs',
@@ -141,14 +141,41 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 						<PanelBody
 							title={__( 'Content Width', 'mai-engine' )}
 							initialOpen={false}
-							className={'mai-width-settings'}
+							className={'mai-content-width-settings'}
 						>
-							<SelectControl
+							<BaseControl
+								id="mai-content-width"
 								label={__( 'Max Width', 'mai-engine' )}
-								value={contentWidth}
-								options={sizeScale}
-								onChange={( size ) => { props.setAttributes( { contentWidth : size } ) }}
-							/>
+							>
+								<div>
+									<ButtonGroup mode="radio" data-chosen={contentWidth}>
+										{sizeScale.map( sizeInfo => (
+											<Button
+											onClick={() => {
+												props.setAttributes( {
+													contentWidth: sizeInfo.value,
+												} );
+											}}
+											data-checked={contentWidth === sizeInfo.value}
+											value={sizeInfo.value}
+											key={`mai-content-width-${sizeInfo.value}`}
+											index={sizeInfo.value}
+											isSecondary={contentWidth !== sizeInfo.value}
+											isPrimary={contentWidth === sizeInfo.value}
+											>
+												<small>{sizeInfo.label}</small>
+											</Button>
+										) )}
+									</ButtonGroup>
+									<Button isDestructive isSmall isLink onClick={() => {
+										props.setAttributes( {
+											contentWidth: null,
+										} );
+									}}>
+										{__( 'Clear', 'mai-engine' )}
+									</Button>
+								</div>
+							</BaseControl>
 						</PanelBody>
 						<PanelBody
 							title={__( 'Spacing', 'mai-engine' )}
@@ -170,7 +197,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 											}}
 											data-checked={verticalSpacingTop === sizeInfo.value}
 											value={sizeInfo.value}
-											key={`vertical-space-top-${sizeInfo.value}`}
+											key={`mai-vertical-space-top-${sizeInfo.value}`}
 											index={sizeInfo.value}
 											isSecondary={verticalSpacingTop !== sizeInfo.value}
 											isPrimary={verticalSpacingTop === sizeInfo.value}
@@ -203,7 +230,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 												}}
 												data-checked={verticalSpacingBottom === sizeInfo.value}
 												value={sizeInfo.value}
-												key={`vertical-space-bottom-${sizeInfo.value}`}
+												key={`mai-vertical-space-bottom-${sizeInfo.value}`}
 												index={sizeInfo.value}
 												isSecondary={verticalSpacingBottom !== sizeInfo.value}
 												isPrimary={verticalSpacingBottom === sizeInfo.value}
@@ -236,7 +263,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 												}}
 												data-checked={verticalSpacingLeft === sizeInfo.value}
 												value={sizeInfo.value}
-												key={`vertical-space-left-${sizeInfo.value}`}
+												key={`mai-vertical-space-left-${sizeInfo.value}`}
 												index={sizeInfo.value}
 												isSecondary={verticalSpacingLeft !== sizeInfo.value}
 												isPrimary={verticalSpacingLeft === sizeInfo.value}
@@ -269,7 +296,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 												}}
 												data-checked={verticalSpacingRight === sizeInfo.value}
 												value={sizeInfo.value}
-												key={`vertical-space-right-${sizeInfo.value}`}
+												key={`mai-vertical-space-right-${sizeInfo.value}`}
 												index={sizeInfo.value}
 												isSecondary={verticalSpacingRight !== sizeInfo.value}
 												isPrimary={verticalSpacingRight === sizeInfo.value}
@@ -316,7 +343,7 @@ const withMaxWidthControls = createHigherOrderComponent( ( BlockEdit ) => {
 
 		if ( enableMaxWidthSettingsBlocks.includes( props.name ) ) {
 
-			const maxWidthSizeScale = [
+			const sizeScale = [
 				{
 					label: __( 'XS', 'mai-engine' ),
 					value: 'xs',
@@ -348,16 +375,43 @@ const withMaxWidthControls = createHigherOrderComponent( ( BlockEdit ) => {
 					<BlockEdit {...props} />
 					<InspectorControls>
 						<PanelBody
-							title={__( 'Max Width', 'mai-engine' )}
+							title={__( 'Width', 'mai-engine' )}
 							initialOpen={false}
 							className={'mai-width-settings'}
 						>
-							<SelectControl
-								label={__( 'Width', 'mai-engine' )}
-								value={maxWidth}
-								options={maxWidthSizeScale}
-								onChange={( size ) => { props.setAttributes( { maxWidth : size } ) }}
-							/>
+							<BaseControl
+								id="mai-width"
+								label={__( 'Max Width', 'mai-engine' )}
+							>
+								<div>
+									<ButtonGroup mode="radio" data-chosen={maxWidth}>
+										{sizeScale.map( sizeInfo => (
+											<Button
+											onClick={() => {
+												props.setAttributes( {
+													maxWidth: sizeInfo.value,
+												} );
+											}}
+											data-checked={maxWidth === sizeInfo.value}
+											value={sizeInfo.value}
+											key={`mai-width-${sizeInfo.value}`}
+											index={sizeInfo.value}
+											isSecondary={maxWidth !== sizeInfo.value}
+											isPrimary={maxWidth === sizeInfo.value}
+											>
+												<small>{sizeInfo.label}</small>
+											</Button>
+										) )}
+									</ButtonGroup>
+									<Button isDestructive isSmall isLink onClick={() => {
+										props.setAttributes( {
+											maxWidth: null,
+										} );
+									}}>
+										{__( 'Clear', 'mai-engine' )}
+									</Button>
+								</div>
+							</BaseControl>
 						</PanelBody>
 					</InspectorControls>
 				</Fragment>
@@ -448,7 +502,7 @@ const withSpacingControls = createHigherOrderComponent( ( BlockEdit ) => {
 											}}
 											data-checked={spacingTop === sizeInfo.value}
 											value={sizeInfo.value}
-											key={`space-top-${sizeInfo.value}`}
+											key={`mai-space-top-${sizeInfo.value}`}
 											index={sizeInfo.value}
 											isSecondary={spacingTop !== sizeInfo.value}
 											isPrimary={spacingTop === sizeInfo.value}
@@ -481,7 +535,7 @@ const withSpacingControls = createHigherOrderComponent( ( BlockEdit ) => {
 											}}
 											data-checked={spacingBottom === sizeInfo.value}
 											value={sizeInfo.value}
-											key={`space-top-${sizeInfo.value}`}
+											key={`mai-space-top-${sizeInfo.value}`}
 											index={sizeInfo.value}
 											isSecondary={spacingBottom !== sizeInfo.value}
 											isPrimary={spacingBottom === sizeInfo.value}

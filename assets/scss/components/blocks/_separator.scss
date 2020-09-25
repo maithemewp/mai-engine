@@ -1,5 +1,5 @@
 .wp-block-separator {
-	margin: 0 auto;
+	margin: var(--separator-block-margin-top, 0) auto var(--separator-block-margin-bottom, 0);
 	border: none;
 	border-bottom: var(--border);
 
