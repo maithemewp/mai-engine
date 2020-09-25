@@ -345,7 +345,9 @@ ul.products {
 		}
 
 		&:not(.active) a {
-			border-color: var(--color-alt);
+			border-top-color: var(--color-alt);
+			border-right-color: var(--color-alt);
+			border-left-color: var(--color-alt);
 		}
 
 		&.active a,
@@ -578,7 +580,7 @@ form.cart {
 	.input-text {
 		max-width: 72px;
 		margin: 0 var(--spacing-md) 0 0;
-		padding: calc(var(--spacing-md) - 2px);
+		padding: calc(0.9em - 2px); // Input padding minus 2px.
 	}
 }
 
