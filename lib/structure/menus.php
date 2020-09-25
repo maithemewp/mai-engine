@@ -72,7 +72,7 @@ add_action( 'genesis_after_header', 'mai_after_header_menu' );
  * @return void
  */
 function mai_after_header_menu() {
-	if ( is_singular() && mai_is_element_hidden( 'after_header' ) ) {
+	if ( is_singular() && mai_is_element_hidden( 'after_header_menu' ) ) {
 		return;
 	}
 
