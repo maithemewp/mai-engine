@@ -154,7 +154,7 @@ p.demo_store {
 	display: block;
 	margin-bottom: var(--price-margin-bottom, var(--spacing-md));
 	color: var(--color-heading);
-	font-size: var(--price-font-size, var(--font-size-xl));
+	font-size: var(--price-font-size, var(--font-size-lg));
 
 	ins {
 		text-decoration: none;
@@ -579,7 +579,7 @@ form.cart {
 
 	.input-text {
 		max-width: 72px;
-		margin: 0 var(--spacing-md) 0 0;
+		margin: 0 var(--spacing-sm) 0 0;
 		padding: calc(0.9em - 2px); // Input padding minus 2px.
 	}
 }
