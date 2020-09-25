@@ -5,9 +5,9 @@
 	justify-content: var(--menu-justify-content, flex-start);
 	width: 100%;
 	margin: 0;
+	font-weight: var(--menu-font-weight, inherit);
 	font-size: var(--menu-font-size, var(--font-size-md));
 	font-family: var(--menu-font-family, inherit);
-	font-weight: var(--menu-font-weight, inherit);
 	line-height: var(--menu-line-height, 1.219); // Perfect fourth.
 	letter-spacing: var(--menu-letter-spacing, normal);
 	text-transform: var(--menu-text-transform, normal);
@@ -22,6 +22,17 @@
 	justify-content: var(--menu-item-justify-content, flex-start);
 	width: var(--menu-item-width, auto);
 	margin: var(--menu-item-margin, 0);
+
+	&-button {
+
+		&:not(.menu-item-first) {
+			margin-left: var(--spacing-sm);
+		}
+
+		&:not(.menu-item-last) {
+			margin-right: var(--spacing-sm);
+		}
+	}
 
 	&.search {
 		z-index: 12; // 1 above sticky site-header.
