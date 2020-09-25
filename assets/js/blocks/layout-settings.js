@@ -5,8 +5,7 @@ const { createHigherOrderComponent } = wp.compose;
 const { Fragment }                   = wp.element;
 const { InspectorControls }          = wp.blockEditor;
 const { addFilter }                  = wp.hooks;
-const { PanelBody, BaseControl, SelectControl } = wp.components;
-
+const { PanelBody, BaseControl, ButtonGroup, Button } = wp.components;
 
 const enableLayoutSettingsBlocks = [
 	'core/cover',
@@ -23,7 +22,6 @@ const enableSpacingSettingsBlocks = [
 	'core/paragraph',
 	'core/separator',
 ];
-
 
 /**
  * Add layout control attributes to block.
@@ -111,37 +109,21 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 					value: 'xs',
 				},
 				{
-					label: __( 'SM', 'mai-engine' ),
+					label: __( 'S', 'mai-engine' ),
 					value: 'sm',
 				},
 				{
-					label: __( 'MD', 'mai-engine' ),
+					label: __( 'M', 'mai-engine' ),
 					value: 'md',
 				},
 				{
-					label: __( 'LG', 'mai-engine' ),
+					label: __( 'L', 'mai-engine' ),
 					value: 'lg',
 				},
 				{
 					label: __( 'XL', 'mai-engine' ),
 					value: 'xl',
 				},
-			];
-
-			const contentWidthSizeScale = [
-				{
-					label: __( 'Auto', 'mai-engine' ),
-					value: '',
-				},
-				...layoutSizeScale,
-			];
-
-			const spacingSizeScale = [
-				{
-					label: __( 'None', 'mai-engine' ),
-					value: '',
-				},
-				...layoutSizeScale,
 			];
 
 			const {
@@ -164,7 +146,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 							<SelectControl
 								label={__( 'Max Width', 'mai-engine' )}
 								value={contentWidth}
-								options={contentWidthSizeScale}
+								options={sizeScale}
 								onChange={( size ) => { props.setAttributes( { contentWidth : size } ) }}
 							/>
 						</PanelBody>
@@ -173,31 +155,138 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 							initialOpen={false}
 							className={'mai-spacing-settings'}
 						>
-							<SelectControl
+							<BaseControl
+								id="mai-vertical-spacing-top"
 								label={__( 'Top', 'mai-engine' )}
-								value={verticalSpacingTop}
-								options={spacingSizeScale}
-								onChange={( size ) => { props.setAttributes( { verticalSpacingTop : size } ) }}
-							/>
-							<SelectControl
+							>
+								<div>
+									<ButtonGroup mode="radio" data-chosen={verticalSpacingTop}>
+										{sizeScale.map( sizeInfo => (
+											<Button
+											onClick={() => {
+												props.setAttributes( {
+													verticalSpacingTop: sizeInfo.value,
+												} );
+											}}
+											data-checked={verticalSpacingTop === sizeInfo.value}
+											value={sizeInfo.value}
+											key={`vertical-space-top-${sizeInfo.value}`}
+											index={sizeInfo.value}
+											isSecondary={verticalSpacingTop !== sizeInfo.value}
+											isPrimary={verticalSpacingTop === sizeInfo.value}
+											>
+												<small>{sizeInfo.label}</small>
+											</Button>
+										) )}
+									</ButtonGroup>
+									<Button isDestructive isSmall isLink onClick={() => {
+										props.setAttributes( {
+											verticalSpacingTop: null,
+										} );
+									}}>
+										{__( 'Clear', 'mai-engine' )}
+									</Button>
+								</div>
+							</BaseControl>
+							<BaseControl
+								id="mai-vertical-spacing-bottom"
 								label={__( 'Bottom', 'mai-engine' )}
-								value={verticalSpacingBottom}
-								options={spacingSizeScale}
-								onChange={( size ) => { props.setAttributes( { verticalSpacingBottom : size } ) }}
-							/>
-							<SelectControl
+							>
+								<div>
+									<ButtonGroup mode="radio" data-chosen={verticalSpacingBottom}>
+										{sizeScale.map( sizeInfo => (
+											<Button
+												onClick={() => {
+													props.setAttributes( {
+														verticalSpacingBottom: sizeInfo.value,
+													} );
+												}}
+												data-checked={verticalSpacingBottom === sizeInfo.value}
+												value={sizeInfo.value}
+												key={`vertical-space-bottom-${sizeInfo.value}`}
+												index={sizeInfo.value}
+												isSecondary={verticalSpacingBottom !== sizeInfo.value}
+												isPrimary={verticalSpacingBottom === sizeInfo.value}
+											>
+												<small>{sizeInfo.label}</small>
+											</Button>
+										) )}
+									</ButtonGroup>
+									<Button isDestructive isSmall isLink onClick={() => {
+										props.setAttributes( {
+											verticalSpacingBottom: null,
+										} );
+									}}>
+										{__( 'Clear', 'mai-engine' )}
+									</Button>
+								</div>
+							</BaseControl>
+							<BaseControl
+								id="mai-vertical-spacing-left"
 								label={__( 'Left', 'mai-engine' )}
-								value={verticalSpacingLeft}
-								options={spacingSizeScale}
-								onChange={( size ) => { props.setAttributes( { verticalSpacingLeft : size } ) }}
-							/>
-							<SelectControl
+							>
+								<div>
+									<ButtonGroup mode="radio" data-chosen={verticalSpacingLeft}>
+										{sizeScale.map( sizeInfo => (
+											<Button
+												onClick={() => {
+													props.setAttributes( {
+														verticalSpacingLeft: sizeInfo.value,
+													} );
+												}}
+												data-checked={verticalSpacingLeft === sizeInfo.value}
+												value={sizeInfo.value}
+												key={`vertical-space-left-${sizeInfo.value}`}
+												index={sizeInfo.value}
+												isSecondary={verticalSpacingLeft !== sizeInfo.value}
+												isPrimary={verticalSpacingLeft === sizeInfo.value}
+											>
+												<small>{sizeInfo.label}</small>
+											</Button>
+										) )}
+									</ButtonGroup>
+									<Button isDestructive isSmall isLink onClick={() => {
+										props.setAttributes( {
+											verticalSpacingLeft: null,
+										} );
+									}}>
+										{__( 'Clear', 'mai-engine' )}
+									</Button>
+								</div>
+							</BaseControl>
+							<BaseControl
+								id="mai-vertical-spacing-right"
 								label={__( 'Right', 'mai-engine' )}
-								value={verticalSpacingRight}
-								options={spacingSizeScale}
-								onChange={( size ) => { props.setAttributes( { verticalSpacingRight : size } ) }}
-							/>
-							<p><em>{__( 'Note: Left and Right overlap settings are only applied on larger screens.', 'mai-engine' )}</em></p>
+							>
+								<div>
+									<ButtonGroup mode="radio" data-chosen={verticalSpacingRight}>
+										{sizeScale.map( sizeInfo => (
+											<Button
+												onClick={() => {
+													props.setAttributes( {
+														verticalSpacingRight: sizeInfo.value,
+													} );
+												}}
+												data-checked={verticalSpacingRight === sizeInfo.value}
+												value={sizeInfo.value}
+												key={`vertical-space-right-${sizeInfo.value}`}
+												index={sizeInfo.value}
+												isSecondary={verticalSpacingRight !== sizeInfo.value}
+												isPrimary={verticalSpacingRight === sizeInfo.value}
+											>
+												<small>{sizeInfo.label}</small>
+											</Button>
+										) )}
+									</ButtonGroup>
+									<Button isDestructive isSmall isLink onClick={() => {
+										props.setAttributes( {
+											verticalSpacingRight: null,
+										} );
+									}}>
+										{__( 'Clear', 'mai-engine' )}
+									</Button>
+								</div>
+							</BaseControl>
 						</PanelBody>
 					</InspectorControls>
 				</Fragment>
@@ -229,23 +318,19 @@ const withMaxWidthControls = createHigherOrderComponent( ( BlockEdit ) => {
 
 			const maxWidthSizeScale = [
 				{
-					label: __( 'Auto', 'mai-engine' ),
-					value: '',
-				},
-				{
 					label: __( 'XS', 'mai-engine' ),
 					value: 'xs',
 				},
 				{
-					label: __( 'SM', 'mai-engine' ),
+					label: __( 'S', 'mai-engine' ),
 					value: 'sm',
 				},
 				{
-					label: __( 'MD', 'mai-engine' ),
+					label: __( 'M', 'mai-engine' ),
 					value: 'md',
 				},
 				{
-					label: __( 'LG', 'mai-engine' ),
+					label: __( 'L', 'mai-engine' ),
 					value: 'lg',
 				},
 				{
@@ -303,11 +388,7 @@ const withSpacingControls = createHigherOrderComponent( ( BlockEdit ) => {
 		if ( enableSpacingSettingsBlocks.includes( props.name ) ) {
 
 			// Values mapped to a spacing sizes, labels kept consistent. Matches grid/archive column and row gap.
-			const spacingSizeScale = [
-				{
-					label: __( 'Auto', 'mai-engine' ),
-					value: '',
-				},
+			const sizeScale = [
 				{
 					label: __( 'XXS', 'mai-engine' ),
 					value: 'sm',
@@ -317,15 +398,15 @@ const withSpacingControls = createHigherOrderComponent( ( BlockEdit ) => {
 					value: 'md',
 				},
 				{
-					label: __( 'SM', 'mai-engine' ),
+					label: __( 'S', 'mai-engine' ),
 					value: 'lg',
 				},
 				{
-					label: __( 'MD', 'mai-engine' ),
+					label: __( 'M', 'mai-engine' ),
 					value: 'xl',
 				},
 				{
-					label: __( 'LG', 'mai-engine' ),
+					label: __( 'L', 'mai-engine' ),
 					value: 'xxl',
 				},
 				{
@@ -352,18 +433,72 @@ const withSpacingControls = createHigherOrderComponent( ( BlockEdit ) => {
 							initialOpen={false}
 							className={'mai-spacing-settings'}
 						>
-							<SelectControl
+							<BaseControl
+								id="mai-spacing-top"
 								label={__( 'Top', 'mai-engine' )}
-								value={spacingTop}
-								options={spacingSizeScale}
-								onChange={( size ) => { props.setAttributes( { spacingTop : size } ) }}
-							/>
-							<SelectControl
+							>
+								<div>
+									<ButtonGroup mode="radio" data-chosen={spacingTop}>
+										{sizeScale.map( sizeInfo => (
+											<Button
+											onClick={() => {
+												props.setAttributes( {
+													spacingTop: sizeInfo.value,
+												} );
+											}}
+											data-checked={spacingTop === sizeInfo.value}
+											value={sizeInfo.value}
+											key={`space-top-${sizeInfo.value}`}
+											index={sizeInfo.value}
+											isSecondary={spacingTop !== sizeInfo.value}
+											isPrimary={spacingTop === sizeInfo.value}
+											>
+												<small><small>{sizeInfo.label}</small></small>
+											</Button>
+										) )}
+									</ButtonGroup>
+									<Button isDestructive isSmall isLink onClick={() => {
+										props.setAttributes( {
+											spacingTop: null,
+										} );
+									}}>
+										{__( 'Clear', 'mai-engine' )}
+									</Button>
+								</div>
+							</BaseControl>
+							<BaseControl
+								id="mai-spacing-bottom"
 								label={__( 'Bottom', 'mai-engine' )}
-								value={spacingBottom}
-								options={spacingSizeScale}
-								onChange={( size ) => { props.setAttributes( { spacingBottom : size } ) }}
-							/>
+							>
+								<div>
+									<ButtonGroup mode="radio" data-chosen={spacingBottom}>
+										{sizeScale.map( sizeInfo => (
+											<Button
+											onClick={() => {
+												props.setAttributes( {
+													spacingBottom: sizeInfo.value,
+												} );
+											}}
+											data-checked={spacingBottom === sizeInfo.value}
+											value={sizeInfo.value}
+											key={`space-top-${sizeInfo.value}`}
+											index={sizeInfo.value}
+											isSecondary={spacingBottom !== sizeInfo.value}
+											isPrimary={spacingBottom === sizeInfo.value}
+											>
+												<small><small>{sizeInfo.label}</small></small>
+											</Button>
+										) )}
+									</ButtonGroup>
+									<Button isDestructive isSmall isLink onClick={() => {
+										props.setAttributes( {
+											spacingBottom: null,
+										} );
+									}}>
+										{__( 'Clear', 'mai-engine' )}
+									</Button>
+								</div>
+							</BaseControl>
 						</PanelBody>
 					</InspectorControls>
 				</Fragment>
