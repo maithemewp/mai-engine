@@ -47,13 +47,20 @@ $spacing: (
 	xxxxl: var(--spacing-xxxxl),
 ) !default;
 
+$margin_settings: (
+	top,
+	bottom,
+	left,
+	right,
+) !default;
+
 $padding_scale: (
 	no: 0,
 	xs: 0.5em,
 	sm: 2em,
-	md: calc(1rem + 4vw),
-	lg: calc(1rem + 8vw),
-	xl: calc(1rem + 16vw),
+	md: calc(2rem + 2vw),
+	lg: calc(4rem + 4vw),
+	xl: calc(8rem + 8vw),
 ) !default;
 
 $padding_settings: (

@@ -154,15 +154,20 @@ p.demo_store {
 	display: block;
 	margin-bottom: var(--price-margin-bottom, var(--spacing-md));
 	color: var(--color-heading);
-	font-size: var(--price-font-size, var(--font-size-xl));
+	font-size: var(--price-font-size, var(--font-size-lg));
 
 	ins {
 		text-decoration: none;
 	}
+
+	del {
+		color: inherit;
+		opacity: 0.5;
+	}
 }
 
 .products {
-	--price-font-size: var(--font-size-md);
+	--price-font-size: var(--font-size-sm);
 
 	&.related {
 		margin-top: var(--spacing-xxl);
@@ -191,7 +196,14 @@ ul.products {
 }
 
 .woocommerce-LoopProduct-link {
+	--link-text-decoration-hover: none;
+
 	width: 100%;
+
+	&:hover,
+	&:focus {
+		--heading-color: var(--color-primary);
+	}
 
 	img {
 		width: 100%;
@@ -203,6 +215,7 @@ ul.products {
 .woocommerce-loop-product__title {
 	margin-bottom: var(--spacing-xxs);
 	font-size: var(--product-title-font-size, var(--font-size-lg));
+	transition: var(--transition);
 }
 
 .add_to_cart_button {
@@ -332,7 +345,9 @@ ul.products {
 		}
 
 		&:not(.active) a {
-			border-color: var(--color-alt);
+			border-top-color: var(--color-alt);
+			border-right-color: var(--color-alt);
+			border-left-color: var(--color-alt);
 		}
 
 		&.active a,
@@ -564,8 +579,8 @@ form.cart {
 
 	.input-text {
 		max-width: 72px;
-		margin: 0 var(--spacing-md) 0 0;
-		padding: calc(var(--spacing-md) - 2px);
+		margin: 0 var(--spacing-sm) 0 0;
+		padding: calc(0.9em - 2px); // Input padding minus 2px.
 	}
 }
 
@@ -635,6 +650,20 @@ form.cart {
 		.shop_table {
 			border-right: 0;
 			border-left: 0;
+
+			// Originally for WooCommerce Product Add-ons, but could be anything.
+			--list-margin: 0;
+			--list-padding: var(--spacing-sm);
+		}
+
+		td {
+			flex-wrap: wrap;
+
+			// Originally for WooCommerce Product Add-ons, but could be anything.
+			> *:not(.remove) {
+				flex: 1 1 auto;
+				padding: var(--spacing-md);
+			}
 		}
 
 		td:not(.product-thumbnail) {

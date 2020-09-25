@@ -96,7 +96,7 @@ class Mai_Reusable_Block_Widget extends WP_Widget {
 
 			while ( $blocks->have_posts() ) {
 				$blocks->the_post();
-				$selected = ( get_the_ID() === $block_selected ) ? 'selected="selected"' : '';
+				$selected = ( get_the_ID() === (int) $block_selected ) ? 'selected="selected"' : '';
 				printf( '<option value="%s" %s>%s</option>', get_the_ID(), $selected, get_the_title() );
 			}
 			echo '</select>';

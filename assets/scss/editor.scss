@@ -30,6 +30,10 @@ body {
 	@include heading();
 }
 
+p {
+	font-size: var(--font-size-md);
+}
+
 .wp-block-cover-image p:not(.has-text-color),
 .wp-block-cover-image h1:not(.has-text-color),
 .wp-block-cover-image h2:not(.has-text-color),
@@ -45,10 +49,6 @@ body {
 .wp-block-cover h5:not(.has-text-color),
 .wp-block-cover h6:not(.has-text-color) {
 	color: var(--heading-color, var(--color-heading)); // Override WP in admin, using our default heading styles.
-}
-
-p {
-	font-size: var(--font-size-md);
 }
 
 .alignfull {
@@ -88,6 +88,11 @@ p {
 
 @each $breakpoint-name, $breakpoint-size in $breakpoints {
 
+	[data-type="core/heading"][data-max-width="#{ $breakpoint-name }"],
+	[data-type="core/paragraph"][data-max-width="#{ $breakpoint-name }"] {
+		max-width: var(--breakpoint-#{ $breakpoint-name });
+	}
+
 	// We don't need to worry about nested block here,
 	// since their content should never be larger than the parent.
 	[data-content-width="#{ $breakpoint-name }"] .wp-block-cover__inner-container,
@@ -96,11 +101,14 @@ p {
 	}
 }
 
-@each $padding-setting in $padding_settings {
+@each $margin-name, $margin-size in $spacing {
 
-	[data-spacing-#{ $padding-setting }] {
-		--cover-block-padding-#{ $padding-setting }: 0;
-		--group-block-padding-#{ $padding-setting }: 0;
+	@each $margin-setting in $margin_settings {
+
+		[data-spacing-#{ $margin-setting }="#{ $margin-name }"] {
+			--heading-margin-#{ $margin-setting }: #{ $margin-size };
+			--separator-block-margin-#{ $margin-setting }: #{ $margin-size };
+		}
 	}
 }
 

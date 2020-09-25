@@ -14,6 +14,7 @@ add_filter( 'post_class', 'mai_remove_post_classes', 10, 3 );
  * Remove unnecessary post classes.
  *
  * @since 2.3.0
+ * @since 2.5.0 Removed type-{post_type} from here. We often need that for styling.
  *
  * @param string[] $classes A string of post class names.
  * @param string[] $class   An array of additional class names added to the post.
@@ -29,7 +30,6 @@ function mai_remove_post_classes( $classes, $class, $post_id ) {
 			'has-post-thumbnail',
 			'category-uncategorized',
 			'post-' . $post_id,
-			'type-' . get_post_type( $post_id ),
 			'status-' . get_post_status( $post_id ),
 			'format-' . ( get_post_format( $post_id ) ? get_post_format( $post_id ) : 'standard' ),
 		]

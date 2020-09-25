@@ -393,7 +393,7 @@ function mai_has_page_header_support_callback( $control ) {
 	];
 	$handle  = mai_get_handle();
 	$name    = $control->option_name;
-	$context = mai_has_string( 'archive', $name ) ? 'archive' : 'single';
+	$context = mai_has_string( 'archives', $name ) ? 'archive' : 'single';
 	$type    = str_replace( $handle . '[' . $types[ $context ] . '][', '', $name );
 	$type    = str_replace( ']', '', $type );
 
@@ -497,18 +497,24 @@ function mai_sanitize_bool( $value ) {
  * Description of expected behavior.
  *
  * @since 0.3.0
+ * @since 2.5.0 Add $post_id to use outside of the loop.
  *
  * @param bool $element Element to check.
+ * @param int  $post_id The post ID.
  *
  * @return mixed
  */
-function mai_is_element_hidden( $element ) {
-	if ( ! is_singular() ) {
+function mai_is_element_hidden( $element, $post_id = '' ) {
+	if ( ! is_singular() && ! $post_id ) {
 		return false;
 	}
 
+	if ( ! $post_id ) {
+		$post_id = get_the_ID();
+	}
+
 	// Can't be static, entry-title breaks.
-	$elements = get_post_meta( get_the_ID(), 'hide_elements', true );
+	$elements = get_post_meta( $post_id, 'hide_elements', true );
 
 	return in_array( $element, (array) $elements, true );
 }

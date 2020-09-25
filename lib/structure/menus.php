@@ -72,7 +72,7 @@ add_action( 'genesis_after_header', 'mai_after_header_menu' );
  * @return void
  */
 function mai_after_header_menu() {
-	if ( is_singular() && mai_is_element_hidden( 'after_header' ) ) {
+	if ( is_singular() && mai_is_element_hidden( 'after_header_menu' ) ) {
 		return;
 	}
 
@@ -122,6 +122,7 @@ add_filter( 'nav_menu_css_class', 'mai_nav_menu_buttons', 10, 4 );
  * Moves menu item button classes to the actual menu item links.
  *
  * @since 2.4.3
+ * @since 2.5.0 Added has-menu-button class.
  *
  * @param string[] $classes Array of the CSS classes that are applied to the menu item's `<li>` element.
  * @param WP_Post  $item    The current menu item.
@@ -175,6 +176,9 @@ function mai_nav_menu_buttons( $classes, $item, $args, $depth ) {
 	// Remove button classes from menu item.
 	$classes = array_diff( $classes, $buttons );
 
+	// Add menu item button.
+	$classes[] = 'menu-item-button';
+
 	return $classes;
 }
 
@@ -223,6 +227,7 @@ add_filter( 'page_css_class', 'mai_remove_menu_item_classes' );
  * Remove unnecessary menu item classes.
  *
  * @since 2.0.0
+ * @since 2.5.0 Added menu-item-button to keepers.
  *
  * @param array|string $attribute Classes or ID.
  *
@@ -238,6 +243,7 @@ function mai_remove_menu_item_classes( $attribute ) {
 			'menu-item-first',
 			'menu-item-last',
 			'menu-item-has-children',
+			'menu-item-button',
 		];
 
 		foreach ( $attribute as $index => $class ) {

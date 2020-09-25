@@ -7,137 +7,150 @@ const { InspectorControls }          = wp.blockEditor;
 const { addFilter }                  = wp.hooks;
 const { PanelBody, BaseControl, ButtonGroup, Button } = wp.components;
 
-const enableSpacingControlOnBlocks = [
+const enableLayoutSettingsBlocks = [
 	'core/cover',
-	'core/group'
+	'core/group',
 ];
 
-const sizeScale = [
-	{
-		label: __( 'XS', 'mai-engine' ),
-		value: 'xs',
-	},
-	{
-		label: __( 'SM', 'mai-engine' ),
-		value: 'sm',
-	},
-	{
-		label: __( 'MD', 'mai-engine' ),
-		value: 'md',
-	},
-	{
-		label: __( 'LG', 'mai-engine' ),
-		value: 'lg',
-	},
-	{
-		label: __( 'XL', 'mai-engine' ),
-		value: 'xl',
-	},
+const enableMaxWidthSettingsBlocks = [
+	'core/heading',
+	'core/paragraph',
 ];
 
-const contentSizeScale = [
-	{
-		label: __( 'Auto', 'mai-engine' ),
-		value: '',
-	},
-	...sizeScale
-];
-
-const spacingSizeScale = [
-	{
-		label: __( 'None', 'mai-engine' ),
-		value: '',
-	},
-	...sizeScale
+const enableSpacingSettingsBlocks = [
+	'core/heading',
+	'core/paragraph',
+	'core/separator',
 ];
 
 /**
- * Add layout control attribute to block.
+ * Add layout control attributes to block.
  *
  * @param {object} settings Current block settings.
  * @param {string} name Name of block.
  *
  * @returns {object} Modified block settings.
  */
-const addSpacingControlAttribute = ( settings, name ) => {
-
-	// Do nothing if it's another block than our defined ones.
-	if ( ! enableSpacingControlOnBlocks.includes( name ) ) {
-		return settings;
+const addLayoutControlAttribute = ( settings, name ) => {
+	if ( enableLayoutSettingsBlocks.includes( name ) ) {
+		/**
+		 * Use Lodash's assign to gracefully handle if attributes are undefined.
+		 *
+		 * TODO: These should be named spacingTop not verticalSpacingTop since left/right aren't vertical.
+		 * I wonder if it's too late to change and safely deprecate?
+		 */
+		settings.attributes = assign( settings.attributes, {
+			contentWidth: {
+				type: 'string',
+				default: '',
+			},
+			verticalSpacingTop: {
+				type: 'string',
+				default: '',
+			},
+			verticalSpacingBottom: {
+				type: 'string',
+				default: '',
+			},
+			verticalSpacingLeft: {
+				type: 'string',
+				default: '',
+			},
+			verticalSpacingRight: {
+				type: 'string',
+				default: '',
+			},
+		} );
 	}
 
-	/**
-	 * Use Lodash's assign to gracefully handle if attributes are undefined.
-	 *
-	 * TODO: These should be named verticalSpacingTop not verticalSpacingTop since left/right aren't vertical.
-	 * I wonder if it's too late to change and safely deprecate?
-	 */
-	settings.attributes = assign( settings.attributes, {
-		contentWidth: {
-			type: 'string',
-			default: '',
-		},
-		verticalSpacingTop: {
-			type: 'string',
-			default: '',
-		},
-		verticalSpacingBottom: {
-			type: 'string',
-			default: '',
-		},
-		verticalSpacingLeft: {
-			type: 'string',
-			default: '',
-		},
-		verticalSpacingRight: {
-			type: 'string',
-			default: '',
-		},
-	} );
+	if ( enableMaxWidthSettingsBlocks.includes( name ) ) {
+		/**
+		 * Use Lodash's assign to gracefully handle if attributes are undefined.
+		 */
+		settings.attributes = assign( settings.attributes, {
+			maxWidth: {
+				type: 'string',
+				default: '',
+			},
+		} );
+	}
+
+	if ( enableSpacingSettingsBlocks.includes( name ) ) {
+		/**
+		 * Use Lodash's assign to gracefully handle if attributes are undefined.
+		 */
+		settings.attributes = assign( settings.attributes, {
+			spacingTop: {
+				type: 'string',
+				default: '',
+			},
+			spacingBottom: {
+				type: 'string',
+				default: '',
+			},
+		} );
+	}
 
 	return settings;
 };
 
-addFilter( 'blocks.registerBlockType', 'mai-engine/attribute/layout-settings', addSpacingControlAttribute );
+addFilter( 'blocks.registerBlockType', 'mai-engine/attribute/layout-settings', addLayoutControlAttribute );
 
 /**
  * Create HOC to add contentWidth control to inspector controls of block.
  */
 const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 	return ( props ) => {
+		if ( enableLayoutSettingsBlocks.includes( props.name ) ) {
 
-		// Do nothing if it's another block than our defined ones.
-		if ( ! enableSpacingControlOnBlocks.includes( props.name ) ) {
+			const sizeScale = [
+				{
+					label: __( 'XS', 'mai-engine' ),
+					value: 'xs',
+				},
+				{
+					label: __( 'S', 'mai-engine' ),
+					value: 'sm',
+				},
+				{
+					label: __( 'M', 'mai-engine' ),
+					value: 'md',
+				},
+				{
+					label: __( 'L', 'mai-engine' ),
+					value: 'lg',
+				},
+				{
+					label: __( 'XL', 'mai-engine' ),
+					value: 'xl',
+				},
+			];
+
+			const {
+					contentWidth,
+					verticalSpacingTop,
+					verticalSpacingBottom,
+					verticalSpacingLeft,
+					verticalSpacingRight,
+				} = props.attributes;
+
 			return (
-				<BlockEdit {...props} />
-			);
-		}
-
-		const {
-				contentWidth,
-				verticalSpacingTop,
-				verticalSpacingBottom,
-				verticalSpacingLeft,
-				verticalSpacingRight,
-			} = props.attributes;
-
-		return (
-			<Fragment>
-				<BlockEdit {...props} />
-				<InspectorControls>
-					<PanelBody
-						title={__( 'Layout', 'mai-engine' )}
-						initialOpen={false}
-						className={'mai-layout-settings'}
-					>
-						<BaseControl
-							id="mai-content-width"
-							label={__( 'Content Width', 'mai-engine' )}
+				<Fragment>
+					<BlockEdit {...props} />
+					<InspectorControls>
+						<PanelBody
+							title={__( 'Content Width', 'mai-engine' )}
+							initialOpen={false}
+							className={'mai-content-width-settings'}
 						>
-							<div>
-								<ButtonGroup mode="radio" data-chosen={contentWidth}>
-									{contentSizeScale.map( sizeInfo => (
-										<Button
+							<BaseControl
+								id="mai-content-width"
+								label={__( 'Max Width', 'mai-engine' )}
+							>
+								<div>
+									<ButtonGroup mode="radio" data-chosen={contentWidth}>
+										{sizeScale.map( sizeInfo => (
+											<Button
 											onClick={() => {
 												props.setAttributes( {
 													contentWidth: sizeInfo.value,
@@ -145,158 +158,450 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 											}}
 											data-checked={contentWidth === sizeInfo.value}
 											value={sizeInfo.value}
-											key={`content-width-${sizeInfo.value}`}
+											key={`mai-content-width-${sizeInfo.value}`}
 											index={sizeInfo.value}
 											isSecondary={contentWidth !== sizeInfo.value}
 											isPrimary={contentWidth === sizeInfo.value}
-										>
-											<small>{sizeInfo.label}</small>
-										</Button>
-									) )}
-								</ButtonGroup>
-							</div>
-						</BaseControl>
-					</PanelBody>
-					<PanelBody
-						title={__( 'Spacing', 'mai-engine' )}
-						initialOpen={false}
-						className={'mai-spacing-settings'}
-					>
-						<BaseControl
-							id="mai-spacing-top"
-							label={__( 'Top', 'mai-engine' )}
+											>
+												<small>{sizeInfo.label}</small>
+											</Button>
+										) )}
+									</ButtonGroup>
+									<Button isDestructive isSmall isLink onClick={() => {
+										props.setAttributes( {
+											contentWidth: null,
+										} );
+									}}>
+										{__( 'Clear', 'mai-engine' )}
+									</Button>
+								</div>
+							</BaseControl>
+						</PanelBody>
+						<PanelBody
+							title={__( 'Spacing', 'mai-engine' )}
+							initialOpen={false}
+							className={'mai-spacing-settings'}
 						>
-							<div>
-								<ButtonGroup mode="radio" data-chosen={verticalSpacingTop}>
-									{spacingSizeScale.map( sizeInfo => (
-										<Button
-										onClick={() => {
-											props.setAttributes( {
-												verticalSpacingTop: sizeInfo.value,
-											} );
-										}}
-										data-checked={verticalSpacingTop === sizeInfo.value}
-										value={sizeInfo.value}
-										key={`vertical-space-top-${sizeInfo.value}`}
-										index={sizeInfo.value}
-										isSecondary={verticalSpacingTop !== sizeInfo.value}
-										isPrimary={verticalSpacingTop === sizeInfo.value}
-										>
-											<small>{sizeInfo.label}</small>
-										</Button>
-									) )}
-								</ButtonGroup>
-							</div>
-						</BaseControl>
-						<BaseControl
-							id="mai-spacing-bottom"
-							label={__( 'Bottom', 'mai-engine' )}
-						>
-							<div>
-								<ButtonGroup mode="radio" data-chosen={verticalSpacingBottom}>
-									{spacingSizeScale.map( sizeInfo => (
-										<Button
+							<BaseControl
+								id="mai-vertical-spacing-top"
+								label={__( 'Top', 'mai-engine' )}
+							>
+								<div>
+									<ButtonGroup mode="radio" data-chosen={verticalSpacingTop}>
+										{sizeScale.map( sizeInfo => (
+											<Button
 											onClick={() => {
 												props.setAttributes( {
-													verticalSpacingBottom: sizeInfo.value,
+													verticalSpacingTop: sizeInfo.value,
 												} );
 											}}
-											data-checked={verticalSpacingBottom === sizeInfo.value}
+											data-checked={verticalSpacingTop === sizeInfo.value}
 											value={sizeInfo.value}
-											key={`vertical-space-bottom-${sizeInfo.value}`}
+											key={`mai-vertical-space-top-${sizeInfo.value}`}
 											index={sizeInfo.value}
-											isSecondary={verticalSpacingBottom !== sizeInfo.value}
-											isPrimary={verticalSpacingBottom === sizeInfo.value}
-										>
-											<small>{sizeInfo.label}</small>
-										</Button>
-									) )}
-								</ButtonGroup>
-							</div>
-						</BaseControl>
-						<BaseControl
-							id="mai-spacing-left"
-							label={__( 'Left', 'mai-engine' )}
-						>
-							<div>
-								<ButtonGroup mode="radio" data-chosen={verticalSpacingLeft}>
-									{spacingSizeScale.map( sizeInfo => (
-										<Button
-											onClick={() => {
-												props.setAttributes( {
-													verticalSpacingLeft: sizeInfo.value,
-												} );
-											}}
-											data-checked={verticalSpacingLeft === sizeInfo.value}
-											value={sizeInfo.value}
-											key={`vertical-space-left-${sizeInfo.value}`}
-											index={sizeInfo.value}
-											isSecondary={verticalSpacingLeft !== sizeInfo.value}
-											isPrimary={verticalSpacingLeft === sizeInfo.value}
-										>
-											<small>{sizeInfo.label}</small>
-										</Button>
-									) )}
-								</ButtonGroup>
-							</div>
-						</BaseControl>
-						<BaseControl
-							id="mai-spacing-right"
-							label={__( 'Right', 'mai-engine' )}
-						>
-							<div>
-								<ButtonGroup mode="radio" data-chosen={verticalSpacingRight}>
-									{spacingSizeScale.map( sizeInfo => (
-										<Button
-											onClick={() => {
-												props.setAttributes( {
-													verticalSpacingRight: sizeInfo.value,
-												} );
-											}}
-											data-checked={verticalSpacingRight === sizeInfo.value}
-											value={sizeInfo.value}
-											key={`vertical-space-right-${sizeInfo.value}`}
-											index={sizeInfo.value}
-											isSecondary={verticalSpacingRight !== sizeInfo.value}
-											isPrimary={verticalSpacingRight === sizeInfo.value}
-										>
-											<small>{sizeInfo.label}</small>
-										</Button>
-									) )}
-								</ButtonGroup>
-							</div>
-						</BaseControl>
-					</PanelBody>
-				</InspectorControls>
-			</Fragment>
-		);
-	};
-}, 'withLayoutControls' );
-
-addFilter( 'editor.BlockEdit', 'mai-engine/with-layout-settings', withLayoutControls );
-
-const addLayoutAttributes = createHigherOrderComponent( ( BlockListBlock ) => {
-	return ( props ) => {
-
-		// Do nothing if it's another block than our defined ones.
-		if ( ! enableSpacingControlOnBlocks.includes( props.name ) ) {
-			return (
-				<BlockListBlock {...props} />
+											isSecondary={verticalSpacingTop !== sizeInfo.value}
+											isPrimary={verticalSpacingTop === sizeInfo.value}
+											>
+												<small>{sizeInfo.label}</small>
+											</Button>
+										) )}
+									</ButtonGroup>
+									<Button isDestructive isSmall isLink onClick={() => {
+										props.setAttributes( {
+											verticalSpacingTop: null,
+										} );
+									}}>
+										{__( 'Clear', 'mai-engine' )}
+									</Button>
+								</div>
+							</BaseControl>
+							<BaseControl
+								id="mai-vertical-spacing-bottom"
+								label={__( 'Bottom', 'mai-engine' )}
+							>
+								<div>
+									<ButtonGroup mode="radio" data-chosen={verticalSpacingBottom}>
+										{sizeScale.map( sizeInfo => (
+											<Button
+												onClick={() => {
+													props.setAttributes( {
+														verticalSpacingBottom: sizeInfo.value,
+													} );
+												}}
+												data-checked={verticalSpacingBottom === sizeInfo.value}
+												value={sizeInfo.value}
+												key={`mai-vertical-space-bottom-${sizeInfo.value}`}
+												index={sizeInfo.value}
+												isSecondary={verticalSpacingBottom !== sizeInfo.value}
+												isPrimary={verticalSpacingBottom === sizeInfo.value}
+											>
+												<small>{sizeInfo.label}</small>
+											</Button>
+										) )}
+									</ButtonGroup>
+									<Button isDestructive isSmall isLink onClick={() => {
+										props.setAttributes( {
+											verticalSpacingBottom: null,
+										} );
+									}}>
+										{__( 'Clear', 'mai-engine' )}
+									</Button>
+								</div>
+							</BaseControl>
+							<BaseControl
+								id="mai-vertical-spacing-left"
+								label={__( 'Left', 'mai-engine' )}
+							>
+								<div>
+									<ButtonGroup mode="radio" data-chosen={verticalSpacingLeft}>
+										{sizeScale.map( sizeInfo => (
+											<Button
+												onClick={() => {
+													props.setAttributes( {
+														verticalSpacingLeft: sizeInfo.value,
+													} );
+												}}
+												data-checked={verticalSpacingLeft === sizeInfo.value}
+												value={sizeInfo.value}
+												key={`mai-vertical-space-left-${sizeInfo.value}`}
+												index={sizeInfo.value}
+												isSecondary={verticalSpacingLeft !== sizeInfo.value}
+												isPrimary={verticalSpacingLeft === sizeInfo.value}
+											>
+												<small>{sizeInfo.label}</small>
+											</Button>
+										) )}
+									</ButtonGroup>
+									<Button isDestructive isSmall isLink onClick={() => {
+										props.setAttributes( {
+											verticalSpacingLeft: null,
+										} );
+									}}>
+										{__( 'Clear', 'mai-engine' )}
+									</Button>
+								</div>
+							</BaseControl>
+							<BaseControl
+								id="mai-vertical-spacing-right"
+								label={__( 'Right', 'mai-engine' )}
+							>
+								<div>
+									<ButtonGroup mode="radio" data-chosen={verticalSpacingRight}>
+										{sizeScale.map( sizeInfo => (
+											<Button
+												onClick={() => {
+													props.setAttributes( {
+														verticalSpacingRight: sizeInfo.value,
+													} );
+												}}
+												data-checked={verticalSpacingRight === sizeInfo.value}
+												value={sizeInfo.value}
+												key={`mai-vertical-space-right-${sizeInfo.value}`}
+												index={sizeInfo.value}
+												isSecondary={verticalSpacingRight !== sizeInfo.value}
+												isPrimary={verticalSpacingRight === sizeInfo.value}
+											>
+												<small>{sizeInfo.label}</small>
+											</Button>
+										) )}
+									</ButtonGroup>
+									<Button isDestructive isSmall isLink onClick={() => {
+										props.setAttributes( {
+											verticalSpacingRight: null,
+										} );
+									}}>
+										{__( 'Clear', 'mai-engine' )}
+									</Button>
+								</div>
+							</BaseControl>
+						</PanelBody>
+					</InspectorControls>
+				</Fragment>
 			);
 		}
 
 		return (
-			<BlockListBlock {...props} wrapperProps={
-				{
-					'data-content-width': props.attributes.contentWidth,
-					'data-spacing-top': props.attributes.verticalSpacingTop,
-					'data-spacing-bottom': props.attributes.verticalSpacingBottom,
-					'data-spacing-left': props.attributes.verticalSpacingLeft,
-					'data-spacing-right': props.attributes.verticalSpacingRight,
-				}
-			}/>
+			<BlockEdit {...props} />
 		);
 	};
-}, 'addLayoutAttributes' );
 
-addFilter( 'editor.BlockListBlock', 'mai-engine/addLayoutAttributes', addLayoutAttributes );
+}, 'withLayoutControls' );
+
+addFilter( 'editor.BlockEdit', 'mai-engine/with-layout-settings', withLayoutControls );
+
+
+/**********************
+ * Max Width Settings *
+ **********************/
+
+
+/**
+ * Create HOC to add maxWidth control to inspector controls of block.
+ */
+const withMaxWidthControls = createHigherOrderComponent( ( BlockEdit ) => {
+	return ( props ) => {
+
+		if ( enableMaxWidthSettingsBlocks.includes( props.name ) ) {
+
+			const sizeScale = [
+				{
+					label: __( 'XS', 'mai-engine' ),
+					value: 'xs',
+				},
+				{
+					label: __( 'S', 'mai-engine' ),
+					value: 'sm',
+				},
+				{
+					label: __( 'M', 'mai-engine' ),
+					value: 'md',
+				},
+				{
+					label: __( 'L', 'mai-engine' ),
+					value: 'lg',
+				},
+				{
+					label: __( 'XL', 'mai-engine' ),
+					value: 'xl',
+				},
+			];
+
+			const {
+					maxWidth,
+				} = props.attributes;
+
+			return (
+				<Fragment>
+					<BlockEdit {...props} />
+					<InspectorControls>
+						<PanelBody
+							title={__( 'Width', 'mai-engine' )}
+							initialOpen={false}
+							className={'mai-width-settings'}
+						>
+							<BaseControl
+								id="mai-width"
+								label={__( 'Max Width', 'mai-engine' )}
+							>
+								<div>
+									<ButtonGroup mode="radio" data-chosen={maxWidth}>
+										{sizeScale.map( sizeInfo => (
+											<Button
+											onClick={() => {
+												props.setAttributes( {
+													maxWidth: sizeInfo.value,
+												} );
+											}}
+											data-checked={maxWidth === sizeInfo.value}
+											value={sizeInfo.value}
+											key={`mai-width-${sizeInfo.value}`}
+											index={sizeInfo.value}
+											isSecondary={maxWidth !== sizeInfo.value}
+											isPrimary={maxWidth === sizeInfo.value}
+											>
+												<small>{sizeInfo.label}</small>
+											</Button>
+										) )}
+									</ButtonGroup>
+									<Button isDestructive isSmall isLink onClick={() => {
+										props.setAttributes( {
+											maxWidth: null,
+										} );
+									}}>
+										{__( 'Clear', 'mai-engine' )}
+									</Button>
+								</div>
+							</BaseControl>
+						</PanelBody>
+					</InspectorControls>
+				</Fragment>
+			);
+		}
+
+		return (
+			<BlockEdit {...props} />
+		);
+	};
+
+}, 'withMaxWidthControls' );
+
+addFilter( 'editor.BlockEdit', 'mai-engine/with-max-width-settings', withMaxWidthControls );
+
+
+/*****************************
+ * Spacing Settings (margin) *
+ *****************************/
+
+
+/**
+ * Create HOC to add maxWidth control to inspector controls of block.
+ */
+const withSpacingControls = createHigherOrderComponent( ( BlockEdit ) => {
+	return ( props ) => {
+
+		if ( enableSpacingSettingsBlocks.includes( props.name ) ) {
+
+			// Values mapped to a spacing sizes, labels kept consistent. Matches grid/archive column and row gap.
+			const sizeScale = [
+				{
+					label: __( 'XXS', 'mai-engine' ),
+					value: 'sm',
+				},
+				{
+					label: __( 'XS', 'mai-engine' ),
+					value: 'md',
+				},
+				{
+					label: __( 'S', 'mai-engine' ),
+					value: 'lg',
+				},
+				{
+					label: __( 'M', 'mai-engine' ),
+					value: 'xl',
+				},
+				{
+					label: __( 'L', 'mai-engine' ),
+					value: 'xxl',
+				},
+				{
+					label: __( 'XL', 'mai-engine' ),
+					value: 'xxxl',
+				},
+				{
+					label: __( 'XXL', 'mai-engine' ),
+					value: 'xxxxl',
+				},
+			];
+
+			const {
+					spacingTop,
+					spacingBottom,
+				} = props.attributes;
+
+			return (
+				<Fragment>
+					<BlockEdit {...props} />
+					<InspectorControls>
+						<PanelBody
+							title={__( 'Spacing', 'mai-engine' )}
+							initialOpen={false}
+							className={'mai-spacing-settings'}
+						>
+							<BaseControl
+								id="mai-spacing-top"
+								label={__( 'Top', 'mai-engine' )}
+							>
+								<div>
+									<ButtonGroup mode="radio" data-chosen={spacingTop}>
+										{sizeScale.map( sizeInfo => (
+											<Button
+											onClick={() => {
+												props.setAttributes( {
+													spacingTop: sizeInfo.value,
+												} );
+											}}
+											data-checked={spacingTop === sizeInfo.value}
+											value={sizeInfo.value}
+											key={`mai-space-top-${sizeInfo.value}`}
+											index={sizeInfo.value}
+											isSecondary={spacingTop !== sizeInfo.value}
+											isPrimary={spacingTop === sizeInfo.value}
+											>
+												<small><small>{sizeInfo.label}</small></small>
+											</Button>
+										) )}
+									</ButtonGroup>
+									<Button isDestructive isSmall isLink onClick={() => {
+										props.setAttributes( {
+											spacingTop: null,
+										} );
+									}}>
+										{__( 'Clear', 'mai-engine' )}
+									</Button>
+								</div>
+							</BaseControl>
+							<BaseControl
+								id="mai-spacing-bottom"
+								label={__( 'Bottom', 'mai-engine' )}
+							>
+								<div>
+									<ButtonGroup mode="radio" data-chosen={spacingBottom}>
+										{sizeScale.map( sizeInfo => (
+											<Button
+											onClick={() => {
+												props.setAttributes( {
+													spacingBottom: sizeInfo.value,
+												} );
+											}}
+											data-checked={spacingBottom === sizeInfo.value}
+											value={sizeInfo.value}
+											key={`mai-space-top-${sizeInfo.value}`}
+											index={sizeInfo.value}
+											isSecondary={spacingBottom !== sizeInfo.value}
+											isPrimary={spacingBottom === sizeInfo.value}
+											>
+												<small><small>{sizeInfo.label}</small></small>
+											</Button>
+										) )}
+									</ButtonGroup>
+									<Button isDestructive isSmall isLink onClick={() => {
+										props.setAttributes( {
+											spacingBottom: null,
+										} );
+									}}>
+										{__( 'Clear', 'mai-engine' )}
+									</Button>
+								</div>
+							</BaseControl>
+						</PanelBody>
+					</InspectorControls>
+				</Fragment>
+			);
+		}
+
+		return (
+			<BlockEdit {...props} />
+		);
+	};
+
+}, 'withSpacingControls' );
+
+addFilter( 'editor.BlockEdit', 'mai-engine/with-spacing-settings', withSpacingControls );
+
+
+const addCustomAttributes = createHigherOrderComponent( ( BlockListBlock ) => {
+	return ( props ) => {
+
+		const wrapperProps = {};
+
+		if ( enableLayoutSettingsBlocks.includes( props.name ) ) {
+			wrapperProps['data-content-width']  = props.attributes.contentWidth;
+			wrapperProps['data-spacing-top']    = props.attributes.verticalSpacingTop;
+			wrapperProps['data-spacing-bottom'] = props.attributes.verticalSpacingBottom;
+			wrapperProps['data-spacing-left']   = props.attributes.verticalSpacingLeft;
+			wrapperProps['data-spacing-right']  = props.attributes.verticalSpacingRight;
+		}
+
+		if ( enableMaxWidthSettingsBlocks.includes( props.name ) ) {
+			wrapperProps['data-max-width']  = props.attributes.maxWidth;
+		}
+
+		if ( enableSpacingSettingsBlocks.includes( props.name ) ) {
+			wrapperProps['data-spacing-top']    = props.attributes.spacingTop;
+			wrapperProps['data-spacing-bottom'] = props.attributes.spacingBottom;
+		}
+
+		if ( wrapperProps ) {
+			return (
+				<BlockListBlock {...props} wrapperProps={wrapperProps}/>
+			);
+		}
+
+		return (
+			<BlockListBlock {...props}/>
+		);
+	};
+
+}, 'addCustomAttributes' );
+
+addFilter( 'editor.BlockListBlock', 'mai-engine/add-custom-attributes', addCustomAttributes );

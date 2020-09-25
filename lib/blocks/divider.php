@@ -235,9 +235,9 @@ function mai_register_divider_field_groups() {
 					'type'          => 'button_group',
 					'choices'       => [
 						'xs' => esc_html__( 'XS', 'mai-engine' ),
-						'sm' => esc_html__( 'SM', 'mai-engine' ),
-						'md' => esc_html__( 'MD', 'mai-engine' ),
-						'lg' => esc_html__( 'LG', 'mai-engine' ),
+						'sm' => esc_html__( 'S', 'mai-engine' ),
+						'md' => esc_html__( 'M', 'mai-engine' ),
+						'lg' => esc_html__( 'L', 'mai-engine' ),
 						'xl' => esc_html__( 'XL', 'mai-engine' ),
 					],
 					'default_value' => 'md',

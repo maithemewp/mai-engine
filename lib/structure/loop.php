@@ -94,10 +94,12 @@ function mai_do_loop() {
 		do_action( 'genesis_after_endwhile' );
 	} else {
 
-		/**
-		 * Fires inside the standard loop when they are no posts to show.
-		 */
-		do_action( 'genesis_loop_else' );
+		if ( $archive ) {
+			/**
+			 * Fires inside the standard loop when they are no posts to show.
+			 */
+			do_action( 'genesis_loop_else' );
+		}
 	}
 }
 

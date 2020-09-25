@@ -742,9 +742,9 @@ function mai_get_grid_block_settings() {
 			'default'    => 'lg',
 			'choices'    => [
 				'sm'  => esc_html__( 'XS', 'mai-engine' ),
-				'md'  => esc_html__( 'SM', 'mai-engine' ),
-				'lg'  => esc_html__( 'MD', 'mai-engine' ),
-				'xl'  => esc_html__( 'LG', 'mai-engine' ),
+				'md'  => esc_html__( 'S', 'mai-engine' ),
+				'lg'  => esc_html__( 'M', 'mai-engine' ),
+				'xl'  => esc_html__( 'L', 'mai-engine' ),
 				'xxl' => esc_html__( 'XL', 'mai-engine' ),
 			],
 			'atts'       => [
@@ -1455,9 +1455,9 @@ function mai_get_grid_block_settings() {
 			'choices'  => [
 				''     => esc_html__( 'None', 'mai-engine' ),
 				'md'   => esc_html__( 'XS', 'mai-engine' ), // Values mapped to a spacing sizes, labels kept consistent.
-				'lg'   => esc_html__( 'SM', 'mai-engine' ),
-				'xl'   => esc_html__( 'MD', 'mai-engine' ),
-				'xxl'  => esc_html__( 'LG', 'mai-engine' ),
+				'lg'   => esc_html__( 'S', 'mai-engine' ),
+				'xl'   => esc_html__( 'M', 'mai-engine' ),
+				'xxl'  => esc_html__( 'L', 'mai-engine' ),
 				'xxxl' => esc_html__( 'XL', 'mai-engine' ),
 			],
 			'atts'     => [
@@ -1478,9 +1478,9 @@ function mai_get_grid_block_settings() {
 			'choices'  => [
 				''     => esc_html__( 'None', 'mai-engine' ),
 				'md'   => esc_html__( 'XS', 'mai-engine' ), // Values mapped to a spacing sizes, labels kept consistent.
-				'lg'   => esc_html__( 'SM', 'mai-engine' ),
-				'xl'   => esc_html__( 'MD', 'mai-engine' ),
-				'xxl'  => esc_html__( 'LG', 'mai-engine' ),
+				'lg'   => esc_html__( 'S', 'mai-engine' ),
+				'xl'   => esc_html__( 'M', 'mai-engine' ),
+				'xxl'  => esc_html__( 'L', 'mai-engine' ),
 				'xxxl' => esc_html__( 'XL', 'mai-engine' ),
 			],
 			'atts'     => [

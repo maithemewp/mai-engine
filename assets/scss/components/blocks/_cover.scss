@@ -11,6 +11,16 @@
 	&.alignfull {
 		--cover-block-padding-right: var(--side-spacing);
 		--cover-block-padding-left: var(--side-spacing);
+
+		.wp-block-cover {
+			--cover-block-padding-right: 0;
+			--cover-block-padding-left: 0;
+		}
+
+		.wp-block-group {
+			--group-block-padding-right: 0;
+			--group-block-padding-left: 0;
+		}
 	}
 
 	&__inner-container {

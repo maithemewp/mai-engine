@@ -8,7 +8,7 @@ const fs           = require( 'fs' ),
 const styleCss = function( theme ) {
 	return `/**
  * Theme Name:       ${theme.name}
- * Theme URI:        https://bizbudding.com/themes/${theme.slug}/
+ * Theme URI:        https://bizbudding.com/products/${theme.slug}-theme/
  * Description:      ${theme.name} child theme for the Genesis Framework.
  * Author:           BizBudding
  * Author URI:       https://bizbudding.com/

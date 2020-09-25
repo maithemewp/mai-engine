@@ -89,11 +89,8 @@ function mai_load_hide_elements_field( $field ) {
 	$default     = mai_get_config( 'settings' )['page-header']['single'];
 	$page_header = mai_get_option( 'page-header-single', $default );
 
-	if ( mai_has_template_part( 'before-header' ) || is_active_sidebar( 'before-header' ) ) {
-		$field['choices']['before_header'] = __( 'Before Header', 'mai-engine' );
-	}
-
-	$field['choices']['site_header'] = __( 'Site Header', 'mai-engine' );
+	$field['choices']['before_header'] = __( 'Before Header', 'mai-engine' );
+	$field['choices']['site_header']   = __( 'Site Header', 'mai-engine' );
 
 	if ( mai_get_option( 'site-header-sticky', current_theme_supports( 'sticky-header' ) ) ) {
 		$field['choices']['sticky_header'] = __( 'Sticky Header', 'mai-engine' );
@@ -103,37 +100,17 @@ function mai_load_hide_elements_field( $field ) {
 		$field['choices']['transparent_header'] = __( 'Transparent Header', 'mai-engine' );
 	}
 
-	if ( has_nav_menu( 'after-header' ) ) {
-		$field['choices']['after_header'] = __( 'After Header Menu', 'mai-engine' );
-	}
-
-	if ( $page_header && ( '*' === $page_header || ( is_array( $page_header ) && in_array( $post_type, $page_header, true ) ) ) ) {
-		$field['choices']['page_header'] = __( 'Page Header', 'mai-engine' );
-	}
-
-	if ( ( 'page' === $post_type && genesis_get_option( 'breadcrumb_page' ) ) || ( 'page' !== $post_type && genesis_get_option( 'breadcrumb_single' ) ) ) {
-		$field['choices']['breadcrumbs'] = __( 'Breadcrumbs', 'mai-engine' );
-	}
-
-	$field['choices']['entry_title']    = __( 'Entry Title', 'mai-engine' );
-	$field['choices']['entry_excerpt']  = __( 'Entry Excerpt', 'mai-engine' );
-	$field['choices']['featured_image'] = __( 'Featured Image', 'mai-engine' );
-
-	if ( mai_has_template_part( 'after-entry' ) || is_active_sidebar( 'after-footer' ) ) {
-		$field['choices']['after_entry'] = __( 'After Entry', 'mai-engine' );
-	}
-
-	if ( mai_has_template_part( 'before-footer' ) || is_active_sidebar( 'before-footer' ) ) {
-		$field['choices']['before_footer'] = __( 'Before Footer', 'mai-engine' );
-	}
-
-	if ( mai_has_template_part( 'footer' ) || is_active_sidebar( 'footer' ) ) {
-		$field['choices']['footer'] = __( 'Footer', 'mai-engine' );
-	}
-
-	if ( mai_has_template_part( 'footer-credits' ) || is_active_sidebar( 'footer-credits' ) ) {
-		$field['choices']['footer_credits'] = __( 'Footer Credits', 'mai-engine' );
-	}
+	$field['choices']['after_header_menu'] = __( 'After Header Menu', 'mai-engine' );
+	$field['choices']['after_header']      = __( 'After Header', 'mai-engine' );
+	$field['choices']['page_header']       = __( 'Page Header', 'mai-engine' );
+	$field['choices']['breadcrumbs']       = __( 'Breadcrumbs', 'mai-engine' );
+	$field['choices']['entry_title']       = __( 'Entry Title', 'mai-engine' );
+	$field['choices']['entry_excerpt']     = __( 'Entry Excerpt', 'mai-engine' );
+	$field['choices']['featured_image']    = __( 'Featured Image', 'mai-engine' );
+	$field['choices']['after_entry']       = __( 'After Entry', 'mai-engine' );
+	$field['choices']['before_footer']     = __( 'Before Footer', 'mai-engine' );
+	$field['choices']['footer']            = __( 'Footer', 'mai-engine' );
+	$field['choices']['footer_credits']    = __( 'Footer Credits', 'mai-engine' );
 
 	return $field;
 }

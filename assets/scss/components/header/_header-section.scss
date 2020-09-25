@@ -2,6 +2,7 @@
 	display: var(--header-section-display, none);
 	flex: 1;
 	align-items: center;
+	justify-content: var(--header-section-justify-content, unset);
 
 	--heading-margin: 0;
 
@@ -11,11 +12,11 @@
 }
 
 .header-left {
-	justify-content: flex-start;
+	--header-section-justify-content: flex-start;
 }
 
 .header-right {
-	justify-content: flex-end;
+	--header-section-justify-content: flex-end;
 }
 
 .no-js {

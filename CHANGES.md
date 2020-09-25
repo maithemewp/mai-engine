@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.5.0 (9/25/20)
+* Added: New After Header template part.
+* Added: New Spacing settings to Heading, Paragraph, and Separator blocks.
+* Added: New Width settings to Heading and Paragraph blocks.
+* Added: The ability to align a menu item left or right with has-auto-margin-left/right.
+* Changed: Hide Elements now show all available settings, even if those elements aren't currently displaying.
+* Changed: Spacing settings (padding) now scales down slightly less on mobile.
+* Changed: Sizing button group labels are now S/M/L instead of SM/MD/LG.
+* Changed: Button menu items now have the same spacing as regular non-button menu items.
+* Fixed: Some scss calculations converting px to rem with wrong base font size.
+* Fixed: More thorough and lightweight background cover images.
+* Fixed: Mai Reusable Block widget wasn't showing the saved value when refreshing the page.
+* Fixed: Removed extra padding on Group and Cover blocks when they are nested.
+* Fixed: Even more refinded WooCommerce styling to match the theme.
+* Fixed: WooCommerce cart layout issues with some add-ons like WooCommerce Product Add-ons.
+
 ## 2.4.5 (9/18/20)
 * Fixed: WooCommerce cart layout was broken on extra small mobile devices.
 
