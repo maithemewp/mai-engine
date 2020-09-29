@@ -123,6 +123,8 @@ function mai_get_editor_color_palette() {
 
 	asort( $sorted );
 
+	$elements = mai_get_color_elements();
+
 	foreach ( $sorted as $name => $lightness ) {
 		$hex = $colors[ $name ];
 
@@ -135,7 +137,7 @@ function mai_get_editor_color_palette() {
 
 		// Add color.
 		$palette[] = [
-			'name'  => '', // No label, defaults to "Color code: #123456".
+			'name'  => mai_isset( $elements , $name, mai_convert_case( $name, 'title' ) ),
 			'slug'  => mai_convert_case( $name, 'kebab' ),
 			'color' => $hex,
 		];
