@@ -46,7 +46,7 @@ function mai_add_page_header_metabox() {
 	}
 
 	$field_group_data = [
-		'key'      => 'page_header_metabox',
+		'key'      => 'page_header_field_group',
 		'title'    => esc_html__( 'Page Header', 'mai-engine' ),
 		'location' => $locations ?: false,
 		'position' => 'side',
