@@ -175,6 +175,11 @@ function mai_get_svg( $name, $class = '' ) {
 	}
 
 	$svg = file_get_contents( $file );
+	$url = wp_parse_url( home_url() );
+
+	if ( 'https' === $url['scheme'] ) {
+		$svg = str_replace( 'http', 'https', $svg );
+	}
 
 	if ( $class ) {
 		$svg = str_replace( '<svg', "<svg class='$class' ", $svg );
@@ -204,6 +209,11 @@ function mai_get_svg_icon( $name, $style = 'light', $atts = [] ) {
 	}
 
 	$svg = file_get_contents( $file );
+	$url = wp_parse_url( home_url() );
+
+	if ( 'https' === $url['scheme'] ) {
+		$svg = str_replace( 'http', 'https', $svg );
+	}
 
 	if ( $atts ) {
 		$dom  = mai_get_dom_document( $svg );
