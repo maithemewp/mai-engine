@@ -34,8 +34,8 @@ html {
 .entry-image-single:first-child {
 	--entry-image-link-margin-bottom: -6px;
 
-	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
 	box-shadow: var(--shadow);
 }
 
@@ -48,8 +48,8 @@ body:not(.has-alignfull-first) .entry-wrap-single {
 }
 
 .entry-meta {
-	text-transform: uppercase;
 	letter-spacing: 0.5px;
+	text-transform: uppercase;
 }
 
 .wp-block-quote {
@@ -66,15 +66,16 @@ body:not(.has-alignfull-first) .entry-wrap-single {
 	}
 }
 
-.wp-block-quote:before {
-	content: "\201C";
+.wp-block-quote::before {
 	position: absolute;
 	top: calc(var(--spacing-xxl) * -1);
 	left: calc(var(--spacing-xxl) * -1);
-	font-family: var(--heading-font-family);
-	font-size: 12em;
-	line-height: 1;
-	color: currentColor;
-	opacity: 0.1;
 	z-index: 0;
+	width: 100%;
+	color: currentColor;
+	font-size: 12em;
+	font-family: var(--heading-font-family);
+	line-height: 1;
+	opacity: 0.1;
+	content: "\201C";
 }
