@@ -398,7 +398,6 @@ return [
 		],
 		[
 			'id'         => 'after-entry',
-			'name'       => __( 'After Entry', 'mai-engine' ),
 			'menu_order' => 30,
 		],
 		[
