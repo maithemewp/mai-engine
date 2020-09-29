@@ -68,14 +68,16 @@ body:not(.has-alignfull-first) .entry-wrap-single {
 
 .wp-block-quote::before {
 	position: absolute;
-	top: calc(var(--spacing-xxl) * -1);
-	left: calc(var(--spacing-xxl) * -1);
+	top: calc(var(--spacing-lg) * -1);
+	left: calc(var(--spacing-xl) * -1);
 	z-index: 0;
-	width: 100%;
-	color: currentColor;
-	font-size: 12em;
-	font-family: var(--heading-font-family);
-	line-height: 1;
+	width: 100px;
+	height: 100px;
+	background: currentColor;
+	mask-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 80" x="0px" y="0px"><path d="M62,39.2185a14.4095,14.4095,0,1,1-28.8189,0c0-22.8976,20.0571-27.8483,26.2044-28.82a2.2672,2.2672,0,0,1,1.1972,4.3423c-2.7345,1.1147-11.5891,5.11-11.8068,10.1169A14.3406,14.3406,0,0,1,62,39.2185ZM29.4016,14.7409a2.2669,2.2669,0,0,0-1.1972-4.3423C22.0571,11.37,2,16.3209,2,39.2185A14.4095,14.4095,0,1,0,17.5947,24.8578C17.8125,19.8511,26.6671,15.8556,29.4016,14.7409Z"/></svg>');
+	mask-position: center;
+	mask-repeat: no-repeat;
+	mask-size: contain;
 	opacity: 0.1;
-	content: "\201C";
+	content: "";
 }
