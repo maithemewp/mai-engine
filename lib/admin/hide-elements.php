@@ -23,7 +23,7 @@ add_action( 'acf/init', 'mai_add_hide_elements_metabox' );
 function mai_add_hide_elements_metabox() {
 	acf_add_local_field_group(
 		[
-			'key'                   => 'hide_elements',
+			'key'                   => 'hide_elements_field_group',
 			'title'                 => __( 'Hide Elements', 'mai-engine' ),
 			'menu_order'            => 10,
 			'position'              => 'side',

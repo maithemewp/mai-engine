@@ -150,7 +150,7 @@ function mai_register_icon_field_group() {
 
 	acf_add_local_field_group(
 		[
-			'key'         => 'mai_icon',
+			'key'         => 'mai_icon_field_group',
 			'title'       => esc_html__( 'Icon', 'mai-engine' ),
 			'fields'      => [
 				[
