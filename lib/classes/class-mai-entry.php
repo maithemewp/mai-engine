@@ -551,6 +551,8 @@ class Mai_Entry {
 
 		$columns = $is_single ? $single_cols : array_reverse( mai_get_breakpoint_columns( $this->args ), true ); // Mobile first.
 
+		// TODO: Add retina support?
+
 		foreach ( $columns as $break => $count ) {
 			switch ( $break ) {
 				case 'xs':
