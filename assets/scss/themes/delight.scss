@@ -5,11 +5,6 @@
 	--body-font-weight: var(--font-weight-light);
 	--border-radius: 2px;
 	--shadow: 0 4px 24px 12px rgba(0, 0, 0, 0.025);
-	--page-header-inner-background: rgba(255, 255, 255, 0.9);
-	--page-header-inner-max-width: 800px;
-	--page-header-inner-padding: var(--spacing-xl) var(--spacing-xl);
-	--page-header-inner-border-radius: var(--border-radius);
-	--page-header-inner-box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 	--entry-meta-font-size: var(--font-size-xs);
 	--avatar-border-radius: 50%;
 }
@@ -29,6 +24,14 @@ html {
 	--menu-text-transform: uppercase;
 
 	background-color: var(--color-heading);
+}
+
+.page-header-inner:not(:empty) {
+	--page-header-inner-background: rgba(255, 255, 255, 0.9);
+	--page-header-inner-max-width: 800px;
+	--page-header-inner-padding: var(--spacing-xl) var(--spacing-xl);
+	--page-header-inner-border-radius: var(--border-radius);
+	--page-header-inner-box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
 .entry-image-single:first-child {
