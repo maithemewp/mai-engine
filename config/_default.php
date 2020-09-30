@@ -391,7 +391,7 @@ return [
 		[
 			'id'         => 'after-header',
 			'location'   => 'genesis_after_header',
-			'priority'   => 8,
+			'priority'   => 12,
 			'menu_order' => 25,
 			'before'     => '<div class="after-header template-part">',
 			'after'      => '</div>',

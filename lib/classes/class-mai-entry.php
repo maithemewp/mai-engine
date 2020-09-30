@@ -450,8 +450,8 @@ class Mai_Entry {
 	public function srcset_max_image_width() {
 		$size        = 1600; // Max theme image size.
 		$has_sidebar = mai_has_sidebar();
-		$img_aligned = mai_has_string( ['left', 'right'], $this->args['image_position'] );
 		$is_single   = 'single' === $this->context;
+		$img_aligned = ! $is_single && mai_has_string( ['left', 'right'], $this->args['image_position'] );
 		$img_widths  = [
 			'fourth' => 4,
 			'third'  => 3,
@@ -529,8 +529,8 @@ class Mai_Entry {
 	public function calculate_image_sizes() {
 		$new_sizes   = [];
 		$has_sidebar = mai_has_sidebar();
-		$img_aligned = mai_has_string( ['left', 'right'], $this->args['image_position'] );
 		$is_single   = 'single' === $this->context;
+		$img_aligned = ! $is_single && mai_has_string( ['left', 'right'], $this->args['image_position'] );
 		$img_widths  = [
 			'fourth' => 4,
 			'third'  => 3,
