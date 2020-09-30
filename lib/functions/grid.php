@@ -159,6 +159,8 @@ function mai_get_breakpoint_columns( $args ) {
 		}
 	}
 
+	$columns = array_map( 'absint', $columns );
+
 	return $columns;
 }
 

@@ -450,34 +450,62 @@ class Mai_Entry {
 	public function srcset_max_image_width() {
 		$size        = 1600; // Max theme image size.
 		$has_sidebar = mai_has_sidebar();
-		$single      = [
-			'xs' => 1,
-			'sm' => 1,
-			'md' => 1,
-			'lg' => 1,
+		$img_aligned = mai_has_string( ['left', 'right'], $this->args['image_position'] );
+		$is_single   = 'single' === $this->context;
+		$img_widths  = [
+			'fourth' => 4,
+			'third'  => 3,
+			'half'   => 2,
 		];
-		$columns     = ( 'single' === $this->context ) ? $single : array_reverse( mai_get_breakpoint_columns( $this->args ), true ); // Mobile first.
-		$widths      = [];
+		$single_cols = [
+			'xs'     => 1,
+			'sm'     => 1,
+			'md'     => 1,
+			'lg'     => 1,
+		];
+		$image_cols = [
+			'xs'     => ! $is_single && $img_aligned && ! $this->args['image_stack'] ? $img_widths[ $this->args['image_width'] ] : 1,
+			'sm'     => ! $is_single && $img_aligned ? $img_widths[ $this->args['image_width'] ] : 1,
+			'md'     => ! $is_single && $img_aligned ? $img_widths[ $this->args['image_width'] ] : 1,
+			'lg'     => ! $is_single && $img_aligned ? $img_widths[ $this->args['image_width'] ] : 1,
+		];
+
+		$columns = $is_single ? $single_cols : array_reverse( mai_get_breakpoint_columns( $this->args ), true ); // Mobile first.
+		$widths  = [];
 
 		foreach ( $columns as $break => $count ) {
 			switch ( $break ) {
 				case 'xs':
 					$max_width = $this->breakpoints['sm'];
-					$widths[]  = $count ? floor( $max_width / $count ) : $max_width;
+					$max_width = $max_width / $columns['xs'];
+					$width     = $count ? floor( $max_width / $count ) : $max_width;
+					$width     = $width / $image_cols['xs'];
+					$widths[]  = $width;
 				break;
 				case 'sm':
 					$max_width = $this->breakpoints['md'];
-					$widths[]  = $count ? floor( $max_width / $count ) : $max_width;
+					$max_width = $max_width / $columns['sm'];
+					$width     = $count ? floor( $max_width / $count ) : $max_width;
+					$width     = $width / $image_cols['sm'];
+					$widths[]  = $width;
 				break;
 				case 'md':
 					$max_width = $this->breakpoints['lg'];
 					$container = $has_sidebar ? $max_width * 2 / 3 : $max_width;
-					$widths[]  = $count ? floor( $container / $count ) : $container;
+					$container = $container / $columns['md'];
+					$container = $container / $image_cols['md'];
+					$width     = $count ? floor( $container / $count ) : $container;
+					$width     = $width / $image_cols['md'];
+					$widths[]  = $width;
 				break;
 				case 'lg':
 					$container = $this->breakpoints['xl'];
 					$container = $has_sidebar ? $container * 2 / 3 : $container;
-					$widths[]  = $count ? floor( $container / $count ) : $container;
+					$container = $container / $columns['lg'];
+					$container = $container / $image_cols['lg'];
+					$width     = $count ? floor( $container / $count ) : $container;
+					$width     = $width / $image_cols['lg'];
+					$widths[]  = $width;
 				break;
 			}
 		}
@@ -501,40 +529,61 @@ class Mai_Entry {
 	public function calculate_image_sizes() {
 		$new_sizes   = [];
 		$has_sidebar = mai_has_sidebar();
-		$single      = [
-			'xs' => 1,
-			'sm' => 1,
-			'md' => 1,
-			'lg' => 1,
+		$img_aligned = mai_has_string( ['left', 'right'], $this->args['image_position'] );
+		$is_single   = 'single' === $this->context;
+		$img_widths  = [
+			'fourth' => 4,
+			'third'  => 3,
+			'half'   => 2,
 		];
-		$columns     = ( 'single' === $this->context ) ? $single : array_reverse( mai_get_breakpoint_columns( $this->args ), true ); // Mobile first.
+		$single_cols = [
+			'xs'     => 1,
+			'sm'     => 1,
+			'md'     => 1,
+			'lg'     => 1,
+		];
+		$image_cols = [
+			'xs'     => ! $is_single && $img_aligned && ! $this->args['image_stack'] ? $img_widths[ $this->args['image_width'] ] : 1,
+			'sm'     => ! $is_single && $img_aligned ? $img_widths[ $this->args['image_width'] ] : 1,
+			'md'     => ! $is_single && $img_aligned ? $img_widths[ $this->args['image_width'] ] : 1,
+			'lg'     => ! $is_single && $img_aligned ? $img_widths[ $this->args['image_width'] ] : 1,
+		];
+
+		$columns = $is_single ? $single_cols : array_reverse( mai_get_breakpoint_columns( $this->args ), true ); // Mobile first.
 
 		foreach ( $columns as $break => $count ) {
 			switch ( $break ) {
 				case 'xs':
 					$max_width   = $this->breakpoints['sm'] - 1;
+					$max_width   = $max_width / $columns['xs'];
 					$width       = $count ? floor( $max_width / $count ) : $max_width;
+					$width       = $width / $image_cols['xs'];
 					$new_sizes[] = "(max-width:{$max_width}px) {$width}px";
 				break;
 				case 'sm':
 					$min_width   = $this->breakpoints['sm'];
 					$max_width   = $this->breakpoints['md'] - 1;
+					$max_width   = $max_width / $columns['sm'];
 					$width       = $count ? floor( $max_width / $count ) : $max_width;
+					$width       = $width / $image_cols['sm'];
 					$new_sizes[] = "(min-width:{$min_width}px) and (max-width: {$max_width}px) {$width}px";
 				break;
 				case 'md':
 					$min_width   = $this->breakpoints['md'];
 					$max_width   = $this->breakpoints['lg'] - 1;
 					$container   = $has_sidebar ? $max_width * 2 / 3 : $max_width;
+					$container   = $container / $columns['md'];
 					$width       = $count ? floor( $container / $count ) : $container;
+					$width       = $width / $image_cols['md'];
 					$new_sizes[] = "(min-width:{$min_width}px) and (max-width: {$max_width}px) {$width}px";
 				break;
 				case 'lg':
 					$min_width   = $this->breakpoints['lg'];
 					$container   = $this->breakpoints['xl'];
 					$container   = $has_sidebar ? $container * 2 / 3 : $container;
+					$container   = $container / $columns['lg'];
+					$width       = $width / $image_cols['lg'];
 					$width       = $count ? floor( $container / $count ) : $container;
-					$new_sizes[] = "(min-width:{$min_width}px) {$width}px";
 				break;
 			}
 		}
@@ -626,7 +675,7 @@ class Mai_Entry {
 		if ( 'single' === $this->context ) {
 			$image_size = $fw_content ? 'lg' : 'md';
 		} else {
-			$img_aligned = in_array( $this->args['image_position'], [ 'left', 'right' ], true );
+			$img_aligned = mai_has_string( ['left', 'right'], $this->args['image_position'] );
 
 			// Archive or block.
 			switch ( $this->args['columns'] ) {
