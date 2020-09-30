@@ -8,9 +8,9 @@
 	var skipLink       = document.getElementsByClassName( 'genesis-skip-link' )[ 0 ];
 	var beforeHeader   = document.getElementsByClassName( 'before-header' )[ 0 ];
 	var header         = document.getElementsByClassName( 'site-header' )[ 0 ];
-	var headerHeight   = header ? header.offsetHeight: 0;
-	var pageHeader     = document.getElementsByClassName( 'page-header' )[ 0 ];
+	var afterHeader    = document.getElementsByClassName( 'after-header' )[ 0 ];
 	var navAfterHeader = document.getElementsByClassName( 'nav-after-header' )[ 0 ];
+	var pageHeader     = document.getElementsByClassName( 'page-header' )[ 0 ];
 	var siteInner      = document.getElementsByClassName( 'site-inner' )[ 0 ];
 	var breakpointSm   = window.getComputedStyle( document.documentElement ).getPropertyValue( '--breakpoint-sm' );
 	var hasSticky      = header && body.classList.contains( 'has-sticky-header' );
@@ -22,7 +22,7 @@
 	var timeout        = false;
 
 	/**
-	 * Sticky header.
+	 * Sticky and transparent header.
 	 */
 	var isTop = new IntersectionObserver( function( tracker ) {
 		if ( tracker[ 0 ].isIntersecting ) {
@@ -61,12 +61,14 @@
 		// Clear inline styles before recalculating.
 		firstElement.style.removeProperty( 'padding-top' );
 
-		var paddingTop   = firstElementStyles.getPropertyValue( 'padding-top' );
-		var headerHeight = header ? header.offsetHeight : 0;
+		var headerHeight         = parseInt( header ? header.offsetHeight : 0 );
+		var afterHeaderHeight    = parseInt( afterHeader ? afterHeader.offsetHeight : 0 );
+		var navAfterHeaderHeight = parseInt( navAfterHeader ? navAfterHeader.offsetHeight : 0 );
+		var paddingTop           = parseInt( firstElementStyles.getPropertyValue( 'padding-top' ) );
 
-		headerHeight += navAfterHeader ? navAfterHeader.offsetHeight : 0;
+		firstElement.style.setProperty( 'padding-top', headerHeight + afterHeaderHeight + navAfterHeaderHeight + paddingTop + 'px', 'important' );
 
-		firstElement.style.setProperty( 'padding-top', parseInt( headerHeight ) + parseInt( paddingTop ) + 'px', 'important' );
+		root.style.setProperty( '--after-header-height', afterHeaderHeight + navAfterHeaderHeight + 'px' );
 
 		setTimeout( function() {
 			timeout = false;
@@ -75,6 +77,10 @@
 
 	var	setHeaderHeight = function() {
 		root.style.setProperty( '--header-height', ( header ? header.offsetHeight : 0 ) + 'px' );
+	};
+
+	var setAfterHeaderHeight = function() {
+		root.style.setProperty( '--after-header-height', ( afterHeader ? afterHeader.offsetHeight : 0 ) + 'px' );
 	};
 
 	var onReady = function() {
