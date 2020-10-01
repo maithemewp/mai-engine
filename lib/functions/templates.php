@@ -171,7 +171,7 @@ function mai_get_template_parts() {
 		} else {
 			$template_parts = isset( $posts['publish'] ) ? $posts['publish'] : [];
 
-			if ( current_user_can( 'manage_options' ) ) {
+			if ( current_user_can( 'edit_posts' ) ) {
 				$private        = isset( $posts['private'] ) ? $posts['private'] : [];
 				$template_parts = array_merge( $template_parts, $private );
 			}
