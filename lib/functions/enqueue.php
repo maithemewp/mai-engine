@@ -271,8 +271,8 @@ add_action( 'wp_enqueue_scripts', 'mai_enqueue_desktop_styles' );
  *
  * Can't be in config because it uses default breakpoint which is also set in config file.
  *
- * @since 2.4.2 Use wp_enqueue_style to correct load priority.
  * @since 0.3.5
+ * @since 2.4.2 Use wp_enqueue_style to correct load priority.
  *
  * @return void
  */
@@ -283,7 +283,7 @@ function mai_enqueue_desktop_styles() {
 		'deps'   => [],
 		'ver'    => mai_get_asset_version( mai_get_url() . 'assets/css/desktop.min.css' ),
 		'media'  => sprintf(
-			'(min-width:%spx)',
+			'only screen and (min-width:%spx)',
 			mai_get_option( 'mobile-menu-breakpoint', mai_get_breakpoint() )
 		),
 	];

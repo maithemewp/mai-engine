@@ -42,6 +42,11 @@ function mai_plugin_update_checker() {
 	// Set the branch.
 	$updater->setBranch( $branch );
 
+	// Maybe set github api token.
+	if ( defined( 'MAI_GITHUB_API_TOKEN' ) ) {
+		$updater->setAuthentication( MAI_GITHUB_API_TOKEN );
+	}
+
 	// Add icons for Dashboard > Updates screen.
 	$updater->addResultFilter(
 		function ( $info ) {

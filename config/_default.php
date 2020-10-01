@@ -391,14 +391,13 @@ return [
 		[
 			'id'         => 'after-header',
 			'location'   => 'genesis_after_header',
-			'priority'   => 8,
+			'priority'   => 12,
 			'menu_order' => 25,
 			'before'     => '<div class="after-header template-part">',
 			'after'      => '</div>',
 		],
 		[
 			'id'         => 'after-entry',
-			'name'       => __( 'After Entry', 'mai-engine' ),
 			'menu_order' => 30,
 		],
 		[

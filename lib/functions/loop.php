@@ -129,7 +129,7 @@ function mai_has_custom_loop() {
 			}
 		}
 
-		$other_types = [ 'author', 'date', 'search', '404-page' ];
+		$other_types = [ 'author', 'date', 'search' ];
 
 		if ( in_array( $name, $other_types, true ) ) {
 			return true;

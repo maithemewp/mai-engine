@@ -505,11 +505,6 @@ function mai_get_content_type_choices( $archive = false ) {
 			'author' => __( 'Author Archives', 'mai-engine' ),
 			'date'   => __( 'Date Archives', 'mai-engine' ),
 		];
-
-	} else {
-		$choices += [
-			'404-page' => __( '404', 'mai-engine' ),
-		];
 	}
 
 	return $choices;

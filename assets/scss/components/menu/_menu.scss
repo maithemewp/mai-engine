@@ -13,6 +13,9 @@
 	text-transform: var(--menu-text-transform, normal);
 	columns: var(--menu-columns, auto);
 	list-style-type: none;
+
+	--link-text-decoration: var(--menu-item-link-text-decoration, none);
+	--link-text-decoration-hover: var(--menu-item-link-text-decoration-hover, none);
 }
 
 .menu-item {
@@ -48,19 +51,6 @@
 	padding: var(--menu-item-link-padding, (var(--spacing-sm) var(--spacing-sm)));
 	color: var(--menu-item-link-color, var(--color-heading));
 	text-align: var(--menu-item-link-text-align, start);
-	text-decoration: var(--menu-text-decoration, none);
-	text-underline-offset: var(--menu-text-decoration-offset, var(--spacing-xs)); // Not all browsers support this yet.
-
-	&-current,
-	&:hover,
-	&:focus {
-		color: var(--menu-item-link-color-hover, var(--color-link));
-		text-decoration: var(--menu-text-decoration-hover, none);
-
-		> span {
-			filter: var(--menu-item-name-filter-hover, unset);
-		}
-	}
 
 	// Mostly for use with mai_icon in menu item label.
 	> span {
@@ -68,6 +58,20 @@
 		align-items: center;
 		justify-content: center;
 		transition: var(--transition);
+	}
+
+	&-current,
+	&:hover,
+	&:focus {
+		color: var(--menu-item-link-color-hover, var(--menu-item-link-color, var(--color-link)));
+
+		> span {
+			filter: var(--menu-item-name-filter-hover, unset);
+		}
+	}
+
+	&[class*="button"] {
+		--menu-item-link-color: var(--button-color);
 	}
 }
 

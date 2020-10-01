@@ -73,6 +73,10 @@
 
 	--entry-image-line-height: 0;
 	--entry-meta-margin: 0 0 var(--spacing-md) 0;
+
+	&.alignfull {
+		--entries-wrap-max-width: calc(100% + var(--column-gap));
+	}
 }
 
 .entries-wrap {
@@ -81,7 +85,7 @@
 	align-items: var(--align-columns-vertical, unset);
 	justify-content: var(--align-columns);
 	width: calc(100% + var(--column-gap));
-	max-width: 100vw;
+	max-width: var(--entries-wrap-max-width, 100vw);
 	margin: calc(var(--row-gap) * -0.5) calc(var(--column-gap) * -0.5);
 
 	--entry-margin: calc(var(--row-gap) / 2) calc(var(--column-gap) / 2);

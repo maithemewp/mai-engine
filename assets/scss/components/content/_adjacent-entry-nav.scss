@@ -1,6 +1,8 @@
 .adjacent-entry-pagination {
 	--image-border-radius: var(--border-radius);
 	--link-color: var(--color-heading);
+	--link-text-decoration: none;
+	--link-text-decoration-hover: none;
 
 	display: grid;
 	grid-gap: var(--spacing-md);

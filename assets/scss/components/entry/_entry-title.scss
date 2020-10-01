@@ -13,8 +13,8 @@
 
 	&:hover,
 	&:focus {
-		color: var(--entry-title-link-color-hover, var(--link-color-hover,var(--color-link)));
-		text-decoration: var(--entry-title-text-decoration-hover, var(--link-text-decoration-hover, underline));
+		color: var(--entry-title-link-color-hover, var(--link-color-hover, var(--color-link)));
+		text-decoration: var(--entry-title-text-decoration-hover, var(--entry-title-text-decoration, none));
 	}
 }
 

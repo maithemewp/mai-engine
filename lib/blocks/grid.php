@@ -208,7 +208,7 @@ function mai_register_grid_field_groups() {
 
 	acf_add_local_field_group(
 		[
-			'key'      => 'mai_post_grid',
+			'key'      => 'mai_post_grid_field_group',
 			'title'    => __( 'Mai Post Grid', 'mai-engine' ),
 			'fields'   => $post_grid,
 			'location' => [
@@ -226,7 +226,7 @@ function mai_register_grid_field_groups() {
 
 	acf_add_local_field_group(
 		[
-			'key'      => 'mai_term_grid',
+			'key'      => 'mai_term_grid_field_group',
 			'title'    => __( 'Mai Term Grid', 'mai-engine' ),
 			'fields'   => $term_grid,
 			'location' => [

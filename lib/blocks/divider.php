@@ -212,7 +212,7 @@ function mai_register_divider_field_groups() {
 
 	acf_add_local_field_group(
 		[
-			'key'         => 'mai_divider',
+			'key'         => 'mai_divider_field_group',
 			'title'       => esc_html__( 'Mai Divider', 'mai-engine' ),
 			'fields'      => [
 				[
