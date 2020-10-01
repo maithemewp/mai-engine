@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.5.1 (10/1/20)
+* Changed: After Header template part now displays after the After Header Menu location.
+* Changed: Color palette now shows the actual color setting name instead of the hex code.
+* Changed: Grid/entry images now use more thorough logic to build srcset and size image attributes, for even better performance.
+* Changed: All svg icons now use https for xmlns attribute.
+* Changed: Remove underline when hovering entry title links and adjacent entry navigation.
+* Changed: Much cleaner WooCommerce account navigation styling.
+* Fixed: After Header template part now works with transparent header.
+* Fixed: Timeout error when trying to view revisions.
+* Fixed: Transparent header was showing a gap when after header navigation was displaying.
+* Fixed: Menu item button color was not inheriting button color.
+* Fixed: Mai Divider would sometimes show a small gap in Chrome/Firefox.
+* Fixed: Mai Grid blocks had a side gap when set to Align Full.
+* Fixed: Mai Delight blockquote quote was cut off in Safari in some instances.
+* Fixed: Mai Delight page header only shows transparent white box if there is content in it.
+* Fixed: 404 pages were displaying posts unintentionally in some instances.
+
 ## 2.5.0 (9/25/20)
 * Added: New After Header template part.
 * Added: New Spacing settings to Heading, Paragraph, and Separator blocks.

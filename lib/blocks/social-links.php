@@ -13,7 +13,7 @@ add_filter( 'render_block', 'mai_render_social_links_block', 10, 2 );
 /**
  * Convert social xmlns links to https.
  *
- * @since TBD.
+ * @since 2.5.1.
  *
  * @param  string $block_content The existing block content.
  * @param  object $block         The cover block object.
