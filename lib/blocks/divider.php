@@ -11,7 +11,7 @@
 
 add_action( 'acf/init', 'mai_register_divider_block' );
 /**
- * Description of expected behavior.
+ * Register Mai Divider block..
  *
  * @since 0.1.0
  *
