@@ -152,6 +152,7 @@ function mai_get_template_parts() {
 				'no_found_rows'          => true,
 				'update_post_meta_cache' => false,
 				'update_post_term_cache' => false,
+				'suppress_filters'       => false, // https://github.com/10up/Engineering-Best-Practices/issues/116
 			]
 		);
 
