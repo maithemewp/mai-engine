@@ -12,3 +12,8 @@
 .term-description {
 	margin: var(--term-description-margin, (0 auto var(--spacing-xl)));
 }
+
+// This is for Mai Archive Pages plugin.
+.archive-page-content {
+	margin: var(--archive-page-content-margin, (0 auto var(--spacing-xl)));
+}
