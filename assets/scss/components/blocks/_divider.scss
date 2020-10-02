@@ -5,14 +5,7 @@
 	width: var(--divider-width, var(--alignfull-width, auto));
 	height: var(--divider-height);
 	background: var(--divider-background-color, transparent);
-	transform: translateY(var(--divider-translateY, 1px)); // Browser sub-pixel fix.
-
-	.wp-block-cover + &,
-	.wp-block-group + &,
-	.wp-block-cover__inner-container &:first-child,
-	.wp-block-group__inner-container &:first-child {
-		--divider-translateY: -1px;
-	}
+	transform: scaleY(1.025);
 }
 
 .wp-block-cover,

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.5.2 (10/2/20)
+* Changed: Editors can now edit template parts.
+* Changed: Slightly more performant query when getting template parts.
+* Fixed: More thorough fix for Mai Divider gap issue.
+
 ## 2.5.1 (10/1/20)
 * Changed: After Header template part now displays after the After Header Menu location.
 * Changed: Color palette now shows the actual color setting name instead of the hex code.

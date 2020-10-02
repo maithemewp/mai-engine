@@ -182,7 +182,21 @@ function mai_get_svg( $name, $class = '' ) {
 	}
 
 	if ( $class ) {
-		$svg = str_replace( '<svg', "<svg class='$class' ", $svg );
+		$dom  = mai_get_dom_document( $svg );
+		$svgs = $dom->getElementsByTagName( 'svg' );
+
+		/**
+		 * DOM Element.
+		 *
+		 * @var DOMElement $first_svg First dom element.
+		 */
+		$first_svg = isset( $svgs[0] ) ? $svgs[0] : null;
+
+		if ( $first_svg ) {
+			$classes = mai_add_classes( $class, $first_svg->getAttribute( 'class' ) );
+			$first_svg->setAttribute( 'class', $classes );
+			$svg = $dom->saveHTML();
+		}
 	}
 
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
