@@ -123,6 +123,16 @@ p {
 	}
 }
 
+@each $spacing-name, $spacing-size in $margin {
+
+	@each $margin-setting in $margin_settings {
+
+		[data-margin-#{ $margin-setting }="#{ $spacing-name }"] {
+			margin-#{ $margin-setting }: calc(#{ $spacing-size } * -1) !important;
+		}
+	}
+}
+
 @each $size-name, $size-value in $font-sizes {
 
 	[data-font-size="#{ $size-name }"] > .rich-text {

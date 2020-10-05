@@ -110,6 +110,7 @@
 	}
 }
 
+// This is in editor.scss too, for block settings.
 @each $spacing-name, $spacing-size in $spacing {
 
 	.has--#{ $spacing-name }-margin-top {
@@ -119,7 +120,6 @@
 	.has--#{ $spacing-name }-margin-bottom {
 		margin-bottom: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
 	}
-
 }
 
 @include mq(md) {
@@ -133,9 +133,7 @@
 		.has--#{ $spacing-name }-margin-left {
 			margin-left: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
 		}
-
 	}
-
 }
 
 .has-overlap {

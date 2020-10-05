@@ -47,6 +47,22 @@ $spacing: (
 	xxxxl: var(--spacing-xxxxl),
 ) !default;
 
+// For Margin block settings.
+$margin: (
+	md: var(--spacing-md),
+	lg: var(--spacing-lg),
+	xl: var(--spacing-xl),
+	xxl: var(--spacing-xxl),
+	xxxl: var(--spacing-xxxl),
+	xxxxl: var(--spacing-xxxxl),
+	-md: var(--spacing-md),
+	-lg: var(--spacing-lg),
+	-xl: var(--spacing-xl),
+	-xxl: var(--spacing-xxl),
+	-xxxl: var(--spacing-xxxl),
+	-xxxxl: var(--spacing-xxxxl),
+) !default;
+
 $margin_settings: (
 	top,
 	bottom,

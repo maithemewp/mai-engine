@@ -5,7 +5,7 @@ const { createHigherOrderComponent } = wp.compose;
 const { Fragment }                   = wp.element;
 const { InspectorControls }          = wp.blockEditor;
 const { addFilter }                  = wp.hooks;
-const { PanelBody, BaseControl, ButtonGroup, Button } = wp.components;
+const { PanelBody, BaseControl, ButtonGroup, Button, SelectControl } = wp.components;
 
 const enableLayoutSettingsBlocks = [
 	'core/cover',
@@ -22,6 +22,13 @@ const enableSpacingSettingsBlocks = [
 	'core/paragraph',
 	'core/separator',
 ];
+
+const enableMarginSettingsBlocks = [
+	'core/image',
+	'core/cover',
+	'core/group',
+];
+
 
 /**
  * Add layout control attributes to block.
@@ -91,13 +98,37 @@ const addLayoutControlAttribute = ( settings, name ) => {
 		} );
 	}
 
+	if ( enableMarginSettingsBlocks.includes( name ) ) {
+		/**
+		 * Use Lodash's assign to gracefully handle if attributes are undefined.
+		 */
+		settings.attributes = assign( settings.attributes, {
+			marginTop: {
+				type: 'string',
+				default: '',
+			},
+			marginBottom: {
+				type: 'string',
+				default: '',
+			},
+			marginLeft: {
+				type: 'string',
+				default: '',
+			},
+			marginRight: {
+				type: 'string',
+				default: '',
+			},
+		} );
+	}
+
 	return settings;
 };
 
 addFilter( 'blocks.registerBlockType', 'mai-engine/attribute/layout-settings', addLayoutControlAttribute );
 
 /**
- * Create HOC to add contentWidth control to inspector controls of block.
+ * Create HOC to add contentWidth and Spacing controls to inspector controls of block.
  */
 const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 	return ( props ) => {
@@ -429,12 +460,12 @@ addFilter( 'editor.BlockEdit', 'mai-engine/with-max-width-settings', withMaxWidt
 
 
 /*****************************
- * Spacing Settings (margin) *
+ * Spacing Settings (padding) *
  *****************************/
 
 
 /**
- * Create HOC to add maxWidth control to inspector controls of block.
+ * Create HOC to add SpacingTop and SpacingBottom controls to inspector controls of block.
  */
 const withSpacingControls = createHigherOrderComponent( ( BlockEdit ) => {
 	return ( props ) => {
@@ -568,6 +599,150 @@ const withSpacingControls = createHigherOrderComponent( ( BlockEdit ) => {
 
 addFilter( 'editor.BlockEdit', 'mai-engine/with-spacing-settings', withSpacingControls );
 
+/*******************
+ * Margin Settings *
+ *******************/
+
+/**
+ * Create HOC to add Margin controls to inspector controls of block.
+ */
+const withMarginControls = createHigherOrderComponent( ( BlockEdit ) => {
+	return ( props ) => {
+
+		if ( enableMarginSettingsBlocks.includes( props.name ) ) {
+
+			// Values mapped to a spacing sizes, labels kept consistent. Matches grid/archive column and row gap.
+			const sizeScale = [
+				{
+					label: __( 'Default', 'mai-engine' ),
+					value: '',
+				},
+				{
+					label: __( 'XS', 'mai-engine' ),
+					value: 'md',
+				},
+				{
+					label: __( 'S', 'mai-engine' ),
+					value: 'lg',
+				},
+				{
+					label: __( 'M', 'mai-engine' ),
+					value: 'xl',
+				},
+				{
+					label: __( 'L', 'mai-engine' ),
+					value: 'xxl',
+				},
+				{
+					label: __( 'XL', 'mai-engine' ),
+					value: 'xxxl',
+				},
+				{
+					label: __( 'XXL', 'mai-engine' ),
+					value: 'xxxxl',
+				},
+				{
+					label: __( 'XS Overlap', 'mai-engine' ),
+					value: '-md',
+				},
+				{
+					label: __( 'S Overlap', 'mai-engine' ),
+					value: '-lg',
+				},
+				{
+					label: __( 'M Overlap', 'mai-engine' ),
+					value: '-xl',
+				},
+				{
+					label: __( 'L Overlap', 'mai-engine' ),
+					value: '-xxl',
+				},
+				{
+					label: __( 'XL Overlap', 'mai-engine' ),
+					value: '-xxxl',
+				},
+				{
+					label: __( 'XXL Overlap', 'mai-engine' ),
+					value: '-xxxxl',
+				},
+			];
+
+			const {
+					marginTop,
+					marginBottom,
+					marginLeft,
+					marginRight,
+				} = props.attributes;
+
+			return (
+				<Fragment>
+					<BlockEdit {...props} />
+					<InspectorControls>
+						<PanelBody
+							title={__( 'Margin', 'mai-engine' )}
+							initialOpen={false}
+							className={'mai-margin-settings'}
+						>
+							<SelectControl
+								label={ __( 'Top', 'mai-engine' ) }
+								value={ marginTop }
+								onChange={ ( marginTop ) => {
+									props.setAttributes( {
+										marginTop: marginTop,
+									} );
+								}}
+								options={ sizeScale }
+							/>
+							<SelectControl
+								label={ __( 'Bottom', 'mai-engine' ) }
+								value={ marginBottom }
+								onChange={ ( marginBottom ) => {
+									props.setAttributes( {
+										marginBottom: marginBottom,
+									} );
+								}}
+								options={ sizeScale }
+							/>
+							<SelectControl
+								label={ __( 'Left', 'mai-engine' ) }
+								value={ marginLeft }
+								onChange={ ( marginLeft ) => {
+									props.setAttributes( {
+										marginLeft: marginLeft,
+									} );
+								}}
+								options={ sizeScale }
+							/>
+							<SelectControl
+								label={ __( 'Right', 'mai-engine' ) }
+								value={ marginRight }
+								onChange={ ( marginRight ) => {
+									props.setAttributes( {
+										marginRight: marginRight,
+									} );
+								}}
+								options={ sizeScale }
+							/>
+							<p>{ __( 'Left/Right Overlap settings are disabled on smaller screens.', 'mai-engine' ) }</p>
+						</PanelBody>
+					</InspectorControls>
+				</Fragment>
+			);
+		}
+
+		return (
+			<BlockEdit {...props} />
+		);
+	};
+
+}, 'withMarginControls' );
+
+addFilter( 'editor.BlockEdit', 'mai-engine/with-margin-settings', withMarginControls );
+
+
+/**********************************
+ * Block attributes (editor only) *
+ **********************************/
 
 const addCustomAttributes = createHigherOrderComponent( ( BlockListBlock ) => {
 	return ( props ) => {
@@ -589,6 +764,11 @@ const addCustomAttributes = createHigherOrderComponent( ( BlockListBlock ) => {
 		if ( enableSpacingSettingsBlocks.includes( props.name ) ) {
 			wrapperProps['data-spacing-top']    = props.attributes.spacingTop;
 			wrapperProps['data-spacing-bottom'] = props.attributes.spacingBottom;
+		}
+
+		if ( enableMarginSettingsBlocks.includes( props.name ) ) {
+			wrapperProps['data-margin-top']    = props.attributes.marginTop;
+			wrapperProps['data-margin-bottom'] = props.attributes.marginBottom;
 		}
 
 		if ( wrapperProps ) {
