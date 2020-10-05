@@ -300,8 +300,9 @@ function mai_load_files() {
 		'blocks/heading',
 		'blocks/icon',
 		'blocks/image',
-		'blocks/settings',
 		'blocks/paragraph',
+		'blocks/search',
+		'blocks/settings',
 		'blocks/social-links',
 
 		// Customizer.
