@@ -108,7 +108,7 @@ function mai_get_available_image_orientations() {
  *
  * @since  0.1.0
  *
- * @param string $orientation Orientation type.
+ * @param  string $orientation Orientation type.
  *
  * @return bool
  */
@@ -122,12 +122,16 @@ function mai_has_image_orientiation( $orientation ) {
  * Get cover image HTML by ID,
  * with srcset for our registered image sizes.
  *
- * @param   mixed $image_id The image ID or URL.
- * @param   array $atts     Any image attributes to add to the attachment.
+ * @since  2.0.0
+ * @since  TBD Added $max_width parameter.
  *
- * @return  string  The image markup.
+ * @param  mixed      $image_id  The image ID or URL.
+ * @param  array      $atts      Any image attributes to add to the attachment.
+ * @param  string|int $max_width The image max width. Either '100vw' or an integer pixel value.
+ *
+ * @return string  The image markup.
  */
-function mai_get_cover_image_html( $image_id, $atts = [] ) {
+function mai_get_cover_image_html( $image_id, $atts = [], $max_width = '100vw' ) {
 	$html = '';
 
 	// Setup atts.
@@ -144,11 +148,14 @@ function mai_get_cover_image_html( $image_id, $atts = [] ) {
 		return;
 	}
 
+	$full = '100vw' === $max_width;
+
 	if ( is_numeric( $image_id ) ) {
 		// Build srcset array.
-		$image_sizes = mai_get_available_image_sizes();
-		$srcset      = [];
-		$sizes       = [
+		$image_sizes    = mai_get_available_image_sizes();
+		$max_image_size = 'cover';
+		$srcset         = [];
+		$sizes          = [
 			'landscape-sm',
 			'landscape-md',
 			'landscape-lg',
@@ -163,7 +170,10 @@ function mai_get_cover_image_html( $image_id, $atts = [] ) {
 			$url = '';
 
 			if ( is_numeric( $image_id ) ) {
-				$url = wp_get_attachment_image_url( $image_id, $size );
+				if ( $full || ( $image_sizes[ $size ]['width'] <= (int) $max_width ) ) {
+					$url            = wp_get_attachment_image_url( $image_id, $size );
+					$max_image_size = $size;
+				}
 			} elseif ( filter_var( $image_id, FILTER_VALIDATE_URL) ) {
 				$url = $image_id;
 			}
@@ -179,7 +189,7 @@ function mai_get_cover_image_html( $image_id, $atts = [] ) {
 		$atts['srcset'] = implode( ',', $srcset );
 
 		// Get the image HTML.
-		$html .= wp_get_attachment_image( $image_id, 'cover', false, $atts );
+		$html .= wp_get_attachment_image( $image_id, $max_image_size, false, $atts );
 
 	} elseif ( filter_var( $image_id, FILTER_VALIDATE_URL ) ) {
 
@@ -198,6 +208,7 @@ function mai_get_cover_image_html( $image_id, $atts = [] ) {
 			}
 		}
 
+		// TODO: Use `<figure>`?
 		$html = sprintf( '<img src="%s"%s>', $image_id, $output );
 	}
 

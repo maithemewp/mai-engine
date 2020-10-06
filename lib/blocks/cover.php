@@ -11,7 +11,8 @@
 
 add_filter( 'render_block', 'mai_render_cover_block', 10, 2 );
 /**
- * Convert cover block to inline image with custom srcset.
+ * Convert non fixed background cover block to inline image with custom srcset.
+ * Convert fixed background to responsive image sizes.
  * Changes inline styles to CSS custom properties for use in CSS.
  *
  * @since 0.1.0
@@ -70,57 +71,30 @@ function mai_render_cover_block( $block_content, $block ) {
 			$style = str_replace( 'background-position', '--object-position', $style );
 			$style = str_replace( 'style=""', '', $style ); // Some scenarios will leave an empty style attribute.
 
-			// Add cover image as HTML.
-			$block_content = mai_add_cover_block_image( $block_content, $image_id );
+			// Check alignment.
+			$align = mai_isset( $block['attrs'], 'align', '' );
+			$full  = $align && in_array( $align, [ 'full', 'wide' ] );
+
+			// Get image HTML.
+			$image_html = mai_get_cover_image_html( $image_id,
+				[
+					'class' => 'wp-cover-block__image',
+				],
+				$full ? '100vw' : mai_get_breakpoint( 'xl' ),
+			);
+
+			if ( $image_html ) {
+
+				// Build the HTML node.
+				$fragment = $dom->createDocumentFragment();
+				$fragment->appendXml( $image_html );
+
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				$first_block->insertBefore( $fragment, $first_block->firstChild );
+			}
 		}
 
 		$first_block->setAttribute( 'style', $style );
-
-		$block_content = $dom->saveHTML();
-	}
-
-	return $block_content;
-}
-
-/**
- * Add cover block image as inline element,
- * instead of using a background-image inline style.
- * Adds custom srcset to the image element.
- *
- * TODO: Use <figure>?
- *
- * @since 0.1.0
- *
- * @param string $block_content The existing block content.
- * @param mixed  $image_id      The cover block image ID or URL.
- *
- * @return string
- */
-function mai_add_cover_block_image( $block_content, $image_id ) {
-	// Get image HTML.
-	$image_html = mai_get_cover_image_html( $image_id, [ 'class' => 'wp-cover-block__image' ] );
-
-	// Bail if no image.
-	if ( ! $image_html ) {
-		return $block_content;
-	}
-
-	$dom = mai_get_dom_document( $block_content );
-
-	/**
-	 * The cover block container.
-	 *
-	 * @var DOMElement $first_block The cover block container.
-	 */
-	$first_block = mai_get_dom_first_child( $dom );
-
-	if ( $first_block ) {
-		// Build the HTML node.
-		$fragment = $dom->createDocumentFragment();
-		$fragment->appendXml( $image_html );
-
-		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-		$first_block->insertBefore( $fragment, $first_block->firstChild );
 
 		$block_content = $dom->saveHTML();
 	}
