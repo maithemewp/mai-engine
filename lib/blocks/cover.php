@@ -28,32 +28,56 @@ function mai_render_cover_block( $block_content, $block ) {
 		return $block_content;
 	}
 
-	// Return early if using parallax.
-	if ( isset( $block['attrs']['hasParallax'] ) && $block['attrs']['hasParallax'] ) {
+	$image_id  = mai_isset( $block['attrs'], 'id', false );
+	$image_url = mai_isset( $block['attrs'], 'url', false );
+
+	if ( ! ( $image_id && $image_url ) ) {
 		return $block_content;
 	}
 
-	// Get the image ID.
-	$image_id = isset( $block['attrs']['id'] ) ? $block['attrs']['id'] : false;
+	$dom = mai_get_dom_document( $block_content );
 
-	// Bail if no image ID.
-	if ( ! $image_id ) {
-		return $block_content;
+	/**
+	 * The group block container.
+	 *
+	 * @var DOMElement $first_block The group block container.
+	 */
+	$first_block = mai_get_dom_first_child( $dom );
+
+	if ( $first_block ) {
+
+		$style = $first_block->getAttribute( 'style' );
+
+		// Strip background-image inline CSS.
+		$style = str_replace( sprintf( 'background-image:url(%s);', $image_url ), '', $style ); // With semicolon.
+		$style = str_replace( sprintf( 'background-image:url(%s)', $image_url ) , '', $style ); // Some cover blocks only have one inline style, so no semicolon.
+
+		if ( mai_isset( $block['attrs'], 'hasParallax', false ) ) {
+
+			$sizes = [
+				'lg' => wp_get_attachment_image_url( $image_id, 'cover' ),
+				'md' => wp_get_attachment_image_url( $image_id, 'landscape-lg' ),
+				'sm' => wp_get_attachment_image_url( $image_id, 'landscape-md' ),
+			];
+
+			foreach ( $sizes as $size => $url ) {
+				$style = sprintf( '--background-image-%s:url(%s);', $size, $url ) . $style;
+			}
+
+		} else {
+
+			// Convert inline style to css properties.
+			$style = str_replace( 'background-position', '--object-position', $style );
+			$style = str_replace( 'style=""', '', $style ); // Some scenarios will leave an empty style attribute.
+
+			// Add cover image as HTML.
+			$block_content = mai_add_cover_block_image( $block_content, $image_id );
+		}
+
+		$first_block->setAttribute( 'style', $style );
+
+		$block_content = $dom->saveHTML();
 	}
-
-	// Get the image URL.
-	$image_url = isset( $block['attrs']['url'] ) ? $block['attrs']['url'] : false;
-
-	// Strip background-image inline CSS.
-	if ( $image_url ) {
-		$block_content = str_replace( sprintf( 'background-image:url(%s);', $image_url ), '', $block_content );
-		$block_content = str_replace( sprintf( 'background-image:url(%s)', $image_url ), '', $block_content ); // Some cover blocks only have one inline style, so no semicolon.
-	}
-
-	// Convert inline style to css properties.
-	$block_content = str_replace( 'background-position', '--object-position', $block_content );
-	$block_content = str_replace( 'style=""', '', $block_content ); // Some scenarios will leave an empty style attribute.
-	$block_content = mai_add_cover_block_image( $block_content, $image_id );
 
 	return $block_content;
 }
@@ -84,9 +108,9 @@ function mai_add_cover_block_image( $block_content, $image_id ) {
 	$dom = mai_get_dom_document( $block_content );
 
 	/**
-	 * The group block container.
+	 * The cover block container.
 	 *
-	 * @var DOMElement $first_block The group block container.
+	 * @var DOMElement $first_block The cover block container.
 	 */
 	$first_block = mai_get_dom_first_child( $dom );
 

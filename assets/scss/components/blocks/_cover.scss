@@ -23,6 +23,18 @@
 		}
 	}
 
+	&.has-parallax {
+		background-image: var(--cover-block-background-image, var(--background-image-sm));
+
+		@include mq(sm) {
+			--cover-block-background-image: var(--background-image-md);
+		}
+
+		@include mq(md) {
+			--cover-block-background-image: var(--background-image-lg);
+		}
+	}
+
 	&__inner-container {
 		width: 100% !important;
 		max-width: var(--content-max-width, var(--breakpoint-xl));

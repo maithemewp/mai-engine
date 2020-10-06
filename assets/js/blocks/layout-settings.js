@@ -723,7 +723,7 @@ const withMarginControls = createHigherOrderComponent( ( BlockEdit ) => {
 								}}
 								options={ sizeScale }
 							/>
-							<p>{ __( 'Left/Right Overlap settings are disabled on smaller screens.', 'mai-engine' ) }</p>
+							<p><em>{ __( 'Note: Left/right overlap settings are disabled on smaller screens.', 'mai-engine' ) }</em></p>
 						</PanelBody>
 					</InspectorControls>
 				</Fragment>
