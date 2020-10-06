@@ -1,7 +1,6 @@
 .site-inner {
 	width: 100%;
 	margin: var(--site-inner-margin, 0 auto);
-	transform: var(--site-inner-transform, unset);
 
 	@include mq(lg) {
 		display: flex;
@@ -12,5 +11,4 @@
 
 .has-transparent-header {
 	--site-inner-margin: calc((var(--header-height, 0) + var(--after-header-height, 0)) * -1) auto 0;
-	--site-inner-transform: translateY(-1px); // // Browser sub-pixel fix.
 }
