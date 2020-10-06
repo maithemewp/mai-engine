@@ -477,35 +477,29 @@ class Mai_Entry {
 			switch ( $break ) {
 				case 'xs':
 					$max_width = $this->breakpoints['sm'];
-					$max_width = $max_width / $columns['xs'];
-					$width     = $count ? floor( $max_width / $count ) : $max_width;
+					$width     = $max_width / $columns['xs'];
 					$width     = $width / $image_cols['xs'];
-					$widths[]  = $width;
+					$widths[]  = floor( $width );
 				break;
 				case 'sm':
 					$max_width = $this->breakpoints['md'];
-					$max_width = $max_width / $columns['sm'];
-					$width     = $count ? floor( $max_width / $count ) : $max_width;
+					$width     = $max_width / $columns['sm'];
 					$width     = $width / $image_cols['sm'];
-					$widths[]  = $width;
+					$widths[]  = floor( $width );
 				break;
 				case 'md':
 					$max_width = $this->breakpoints['lg'];
-					$container = $has_sidebar ? $max_width * 2 / 3 : $max_width;
-					$container = $container / $columns['md'];
-					$container = $container / $image_cols['md'];
-					$width     = $count ? floor( $container / $count ) : $container;
+					$width     = $has_sidebar ? $max_width * 2 / 3 : $max_width;
+					$width     = $width / $columns['md'];
 					$width     = $width / $image_cols['md'];
-					$widths[]  = $width;
+					$widths[]  = floor( $width );
 				break;
 				case 'lg':
-					$container = $this->breakpoints['xl'];
-					$container = $has_sidebar ? $container * 2 / 3 : $container;
-					$container = $container / $columns['lg'];
-					$container = $container / $image_cols['lg'];
-					$width     = $count ? floor( $container / $count ) : $container;
+					$max_width = $this->breakpoints['xl'];
+					$width     = $has_sidebar ? $max_width * 2 / 3 : $max_width;
+					$width     = $width / $columns['lg'];
 					$width     = $width / $image_cols['lg'];
-					$widths[]  = $width;
+					$widths[]  = floor( $width );
 				break;
 			}
 		}
@@ -557,35 +551,32 @@ class Mai_Entry {
 			switch ( $break ) {
 				case 'xs':
 					$max_width   = $this->breakpoints['sm'] - 1;
-					$max_width   = $max_width / $columns['xs'];
-					$width       = $count ? floor( $max_width / $count ) : $max_width;
+					$width       = $max_width / $columns['xs'];
 					$width       = $width / $image_cols['xs'];
 					$new_sizes[] = "(max-width:{$max_width}px) {$width}px";
 				break;
 				case 'sm':
 					$min_width   = $this->breakpoints['sm'];
 					$max_width   = $this->breakpoints['md'] - 1;
-					$max_width   = $max_width / $columns['sm'];
-					$width       = $count ? floor( $max_width / $count ) : $max_width;
+					$width       = $max_width / $columns['sm'];
 					$width       = $width / $image_cols['sm'];
 					$new_sizes[] = "(min-width:{$min_width}px) and (max-width: {$max_width}px) {$width}px";
 				break;
 				case 'md':
 					$min_width   = $this->breakpoints['md'];
 					$max_width   = $this->breakpoints['lg'] - 1;
-					$container   = $has_sidebar ? $max_width * 2 / 3 : $max_width;
-					$container   = $container / $columns['md'];
-					$width       = $count ? floor( $container / $count ) : $container;
+					$width       = $has_sidebar ? $max_width * 2 / 3 : $max_width;
+					$width       = $width / $columns['md'];
 					$width       = $width / $image_cols['md'];
 					$new_sizes[] = "(min-width:{$min_width}px) and (max-width: {$max_width}px) {$width}px";
 				break;
 				case 'lg':
 					$min_width   = $this->breakpoints['lg'];
-					$container   = $this->breakpoints['xl'];
-					$container   = $has_sidebar ? $container * 2 / 3 : $container;
-					$container   = $container / $columns['lg'];
+					$width       = $this->breakpoints['xl'];
+					$width       = $has_sidebar ? $width * 2 / 3 : $width;
+					$width       = $width / $columns['lg'];
 					$width       = $width / $image_cols['lg'];
-					$width       = $count ? floor( $container / $count ) : $container;
+					$new_sizes[] = "(min-width:{$min_width}px) {$width}px";
 				break;
 			}
 		}
