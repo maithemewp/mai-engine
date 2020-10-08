@@ -825,6 +825,91 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
+		'mai_grid_block_image_alternate'           => [
+			'name'       => 'image_alternate',
+			'label'      => '',
+			'block'      => [ 'post', 'term', 'user' ],
+			'type'       => 'true_false',
+			'sanitize'   => 'mai_sanitize_bool',
+			'default'    => '',
+			'atts'       => [
+				'message' => esc_html__( 'Display images alternating', 'mai-engine' ),
+			],
+			'conditions' => [
+				[
+					[
+						'field'    => 'mai_grid_block_show',
+						'operator' => '==',
+						'value'    => 'image',
+					],
+					[
+						'field'    => 'mai_grid_block_image_position',
+						'operator' => '==',
+						'value'    => 'left-top',
+					],
+				],
+				[
+					[
+						'field'    => 'mai_grid_block_show',
+						'operator' => '==',
+						'value'    => 'image',
+					],
+					[
+						'field'    => 'mai_grid_block_image_position',
+						'operator' => '==',
+						'value'    => 'left-middle',
+					],
+				],
+				[
+					[
+						'field'    => 'mai_grid_block_show',
+						'operator' => '==',
+						'value'    => 'image',
+					],
+					[
+						'field'    => 'mai_grid_block_image_position',
+						'operator' => '==',
+						'value'    => 'left-full',
+					],
+				],
+				[
+					[
+						'field'    => 'mai_grid_block_show',
+						'operator' => '==',
+						'value'    => 'image',
+					],
+					[
+						'field'    => 'mai_grid_block_image_position',
+						'operator' => '==',
+						'value'    => 'right-top',
+					],
+				],
+				[
+					[
+						'field'    => 'mai_grid_block_show',
+						'operator' => '==',
+						'value'    => 'image',
+					],
+					[
+						'field'    => 'mai_grid_block_image_position',
+						'operator' => '==',
+						'value'    => 'right-middle',
+					],
+				],
+				[
+					[
+						'field'    => 'mai_grid_block_show',
+						'operator' => '==',
+						'value'    => 'image',
+					],
+					[
+						'field'    => 'mai_grid_block_image_position',
+						'operator' => '==',
+						'value'    => 'right-full',
+					],
+				],
+			],
+		],
 		'mai_grid_block_image_width'              => [
 			'name'       => 'image_width',
 			'label'      => esc_html__( 'Image Width', 'mai-engine' ),

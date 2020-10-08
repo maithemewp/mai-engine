@@ -116,6 +116,93 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			],
 		],
 		[
+			'settings'        => 'image_alternate_heading',
+			'label'           => __( 'Images Alternating', 'mai-engine' ),
+			'type'            => 'custom',
+			'active_callback' => [
+				[
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'left-top',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'left-middle',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'left-full',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'right-top',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'right-middle',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'right-full',
+					],
+				],
+			],
+		],
+		[
+			'settings'        => 'image_alternate',
+			'label'           => __( 'Display images alternating', 'mai-engine' ),
+			'type'            => 'checkbox',
+			'sanitize'        => 'mai_sanitize_bool',
+			'default'         => $defaults['image_alternate'],
+			'active_callback' => [
+				[
+					[
+						'setting'  => 'show',
+						'operator' => 'contains',
+						'value'    => 'image',
+					],
+				],
+				[
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'left-top',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'left-middle',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'left-full',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'right-top',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'right-middle',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'right-full',
+					],
+				],
+			],
+		],
+		[
 			'settings'        => 'image_width',
 			'label'           => __( 'Image Width', 'mai-engine' ),
 			'type'            => 'radio-buttonset',
@@ -313,8 +400,6 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			'settings'        => 'image_stack_heading',
 			'label'           => __( 'Stack Image', 'mai-engine' ),
 			'type'            => 'custom',
-			'sanitize'        => 'esc_html',
-			'default'         => $defaults['image_stack_heading'],
 			'active_callback' => [
 				[
 					[
@@ -385,8 +470,6 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			'settings' => 'boxed_heading',
 			'label'    => __( 'Boxed', 'mai-engine' ),
 			'type'     => 'custom',
-			'sanitize' => 'esc_html',
-			'default'  => $defaults['boxed_heading'],
 		],
 		[
 			'settings' => 'boxed',
