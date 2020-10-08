@@ -101,8 +101,16 @@
 		margin-top: var(--spacing-#{ $spacing-name }) !important;
 	}
 
+	.has-#{ $spacing-name }-margin-right {
+		margin-right: var(--spacing-#{ $spacing-name }) !important;
+	}
+
 	.has-#{ $spacing-name }-margin-bottom {
 		margin-bottom: var(--spacing-#{ $spacing-name }) !important;
+	}
+
+	.has-#{ $spacing-name }-margin-left {
+		margin-left: var(--spacing-#{ $spacing-name }) !important;
 	}
 
 	.has-#{ $spacing-name }-padding {
