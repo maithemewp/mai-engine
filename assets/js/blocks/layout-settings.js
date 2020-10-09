@@ -769,6 +769,8 @@ const addCustomAttributes = createHigherOrderComponent( ( BlockListBlock ) => {
 		if ( enableMarginSettingsBlocks.includes( props.name ) ) {
 			wrapperProps['data-margin-top']    = props.attributes.marginTop;
 			wrapperProps['data-margin-bottom'] = props.attributes.marginBottom;
+			wrapperProps['data-margin-left']   = props.attributes.marginLeft;
+			wrapperProps['data-margin-right']  = props.attributes.marginRight;
 		}
 
 		if ( wrapperProps ) {
