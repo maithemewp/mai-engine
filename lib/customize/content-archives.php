@@ -84,9 +84,9 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 					'value'    => 'image',
 				],
 				[
+					'value'    => 'custom',
 					'setting'  => 'image_orientation',
 					'operator' => '==',
-					'value'    => 'custom',
 				],
 			],
 		],
@@ -116,9 +116,10 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			],
 		],
 		[
+			'type'            => 'custom',
 			'settings'        => 'image_alternate_heading',
 			'label'           => __( 'Images Alternating', 'mai-engine' ),
-			'type'            => 'custom',
+			'default'         => '',
 			'active_callback' => [
 				[
 					[
@@ -397,9 +398,10 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			],
 		],
 		[
+			'type'            => 'custom',
 			'settings'        => 'image_stack_heading',
 			'label'           => __( 'Stack Image', 'mai-engine' ),
-			'type'            => 'custom',
+			'default'         => '',
 			'active_callback' => [
 				[
 					[
@@ -468,8 +470,9 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 		],
 		[
 			'settings' => 'boxed_heading',
-			'label'    => __( 'Boxed', 'mai-engine' ),
 			'type'     => 'custom',
+			'label'    => __( 'Boxed', 'mai-engine' ),
+			'default'  => '',
 		],
 		[
 			'settings' => 'boxed',
