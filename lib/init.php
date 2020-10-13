@@ -195,7 +195,7 @@ function mai_modify_genesis_defaults() {
 
 add_action( 'genesis_setup', 'mai_remove_genesis_default_widget_areas', 8 );
 /**
- * Remove Genesis default widget areas.
+ * Removes Genesis default widget areas.
  *
  * We'll re-register them via our config.
  *
