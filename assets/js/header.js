@@ -29,8 +29,8 @@
 			body.classList.remove( 'header-stuck' );
 
 			setTimeout( function() {
-				root.style.setProperty( '--header-height', ( header ? header.offsetHeight : 0 ) + 'px' );
-			}, 300 ); // 100ms longer than transition duration. TODO: Use config value localized?
+				setHeaderHeight();
+			}, 250 ); // 50ms longer than transition duration. TODO: Use config value localized?
 
 		} else {
 			var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
@@ -39,7 +39,7 @@
 				body.classList.add( 'header-stuck' );
 
 				setTimeout( function() {
-					root.style.setProperty( '--header-shrunk-height', ( header ? header.offsetHeight : 0 ) + 'px' );
+					root.style.setProperty( '--header-shrunk-height', ( header ? Math.floor( header.offsetHeight ) : 0 ) + 'px' );
 				}, 300 ); // 100ms longer than transition duration. TODO: Use config value localized?
 			}
 
@@ -61,10 +61,10 @@
 		// Clear inline styles before recalculating.
 		firstElement.style.removeProperty( 'padding-top' );
 
-		var headerHeight         = parseInt( header ? header.offsetHeight : 0 );
-		var afterHeaderHeight    = parseInt( afterHeader ? afterHeader.offsetHeight : 0 );
-		var navAfterHeaderHeight = parseInt( navAfterHeader ? navAfterHeader.offsetHeight : 0 );
-		var paddingTop           = parseInt( firstElementStyles.getPropertyValue( 'padding-top' ) );
+		var headerHeight         = Math.floor( parseInt( header ? header.offsetHeight : 0 ) );
+		var afterHeaderHeight    = Math.floor( parseInt( afterHeader ? afterHeader.offsetHeight : 0 ) );
+		var navAfterHeaderHeight = Math.floor( parseInt( navAfterHeader ? navAfterHeader.offsetHeight : 0 ) );
+		var paddingTop           = Math.floor( parseInt( firstElementStyles.getPropertyValue( 'padding-top' ) ) );
 
 		firstElement.style.setProperty( 'padding-top', headerHeight + afterHeaderHeight + navAfterHeaderHeight + paddingTop + 'px', 'important' );
 
@@ -76,11 +76,7 @@
 	};
 
 	var	setHeaderHeight = function() {
-		root.style.setProperty( '--header-height', ( header ? header.offsetHeight : 0 ) + 'px' );
-	};
-
-	var setAfterHeaderHeight = function() {
-		root.style.setProperty( '--after-header-height', ( afterHeader ? afterHeader.offsetHeight : 0 ) + 'px' );
+		root.style.setProperty( '--header-height', ( header ? Math.floor( header.offsetHeight ) : 0 ) + 'px' );
 	};
 
 	var onReady = function() {
@@ -99,7 +95,7 @@
 			if ( hasPageHeader ) {
 				dark = body.classList.contains( 'has-dark-page-header' );
 			} else if ( hasAlignFull ) {
-				dark = firstElement.classList.contains( 'wp-block-cover' ) || ( firstElement.classList.contains( 'wp-block-group' ) && firstElement.classList.contains( 'has-dark-background' ) );
+				dark = firstElement.classList.contains( 'wp-block-cover' ) && ! firstElement.classList.contains( 'has-light-background' ) || ( firstElement.classList.contains( 'wp-block-group' ) && firstElement.classList.contains( 'has-dark-background' ) );
 			}
 
 			if ( dark ) {
