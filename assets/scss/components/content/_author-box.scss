@@ -2,10 +2,12 @@
 	width: 100%;
 	margin: var(--spacing-xl) auto;
 	padding: var(--spacing-xl);
+	color: var(--author-box-color, unset);
 	text-align: var(--author-box-text-align, center);
-	border: var(--border);
-	border-radius: var(--border-radius);
-	box-shadow: var(--shadow);
+	background: var(--author-box-background, unset);
+	border: var(--author-box-border, var(--border));
+	border-radius: var(--author-box-border-radius, var(--border-radius));
+	box-shadow: var(--author-box-shadow, var(--shadow));
 
 	.avatar {
 		margin-bottom: var(--spacing-md);

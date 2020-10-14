@@ -73,11 +73,8 @@ blockquote {
 }
 
 cite {
-	display: block;
-	font-weight: var(--cite-font-weight, bolder);
-	font-size: var(--cite-font-size, normal);
-	font-family: var(--cite-font-family, var(--heading-font-family));
-	font-style: var(--cite-font-style, normal);
+
+	@include cite();
 }
 
 pre,

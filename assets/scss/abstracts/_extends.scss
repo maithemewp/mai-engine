@@ -159,3 +159,11 @@
 	font-size: var(--caption-font-size, var(--font-size-xs));
 	text-align: var(--caption-text-align, (center));
 }
+
+@mixin cite() {
+	color: var(--cite-color, var(--color-body));
+	font-weight: var(--cite-font-weight, bolder);
+	font-size: var(--cite-font-size, 0.8em);
+	font-family: var(--cite-font-family, var(--heading-font-family));
+	font-style: var(--cite-font-style, normal);
+}
