@@ -38,7 +38,9 @@
 			if ( trackerWidth !== tracker[ 0 ].rootBounds.width ) {
 				setTimeout( function() {
 					setHeaderHeight();
-					siteInnerMargin();
+					if ( hasTransparent ) {
+						siteInnerMargin();
+					}
 				}, duration );
 			}
 
@@ -66,7 +68,6 @@
 		}
 
 		headerTimeout = window.requestAnimationFrame( function() {
-			console.log( 'debounced' );
 			root.style.setProperty( '--header-height', ( header ? Math.ceil( header.offsetHeight ) : 0 ) + 'px' );
 		});
 	};
