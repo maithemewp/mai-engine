@@ -1,17 +1,6 @@
 :root {
-	// --color-black: #222;
 	--font-size-base: 14px;
-	// --font-scale: 1.333;
-	// --border: 1px solid #aba9a9;
 	--border-radius: 0;
-	// --button-text-transform: uppercase;
-	// --button-letter-spacing: 2px;
-	// --button-small-font-size: 0.65em;
-	// --menu-font-size: var(--font-size-xs);
-	// --menu-font-weight: var(--heading-font-weight);
-	// --menu-letter-spacing: 2px;
-	// --menu-text-transform: uppercase;
-	// --entry-meta-font-size: 0.6em;
 	--site-header-background: var(--color-primary);
 	--title-area-color: var(--color-white);
 }
@@ -45,4 +34,11 @@
 			background-color: var(--color-white);
 		}
 	}
+}
+
+.archive-pagination {
+	--button-secondary-background: var(--color-alt);
+	--button-secondary-background-hover: var(--color-alt);
+	--button-secondary-color: var(--color-body);
+	--button-secondary-color-hover: var(--color-body);
 }
