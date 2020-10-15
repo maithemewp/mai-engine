@@ -289,7 +289,7 @@ add_filter( 'plugin_action_links_mai-engine/mai-engine.php', 'mai_change_plugin_
 /**
  * Change plugin dependency text.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param array $actions Plugin action links.
  *
@@ -298,7 +298,7 @@ add_filter( 'plugin_action_links_mai-engine/mai-engine.php', 'mai_change_plugin_
 function mai_change_plugin_dependency_text( $actions ) {
 	$actions['required-plugin'] = sprintf(
 		'<span class="network_active">%s</span>',
-		__( 'Theme Dependency', 'mai-engine' )
+		__( 'Mai Theme Dependency', 'mai-engine' )
 	);
 
 	return $actions;
@@ -308,7 +308,7 @@ add_filter( 'mai_plugin_dependencies', 'mai_require_genesis_connect', 10, 1 );
 /**
  * Recommend Genesis Connect if WooCommerce or EDD installed.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param array $plugins List of plugin dependencies.
  *
@@ -321,16 +321,6 @@ function mai_require_genesis_connect( $plugins ) {
 			'host'     => 'wordpress',
 			'slug'     => 'genesis-connect-woocommerce/genesis-connect-woocommerce.php',
 			'uri'      => 'https://wordpress.org/plugins/genesis-connect-woocommerce/',
-			'optional' => true,
-		];
-	}
-
-	if ( class_exists( 'Easy_Digital_Downloads' ) ) {
-		$plugins[] = [
-			'name'     => 'Genesis Connect for EDD',
-			'host'     => 'wordpress',
-			'slug'     => 'easy-digital-downloads/easy-digital-downloads.php',
-			'uri'      => 'https://wordpress.org/plugins/easy-digital-downloads/',
 			'optional' => true,
 		];
 	}

@@ -18,7 +18,7 @@ add_filter( 'mai_plugin_dependencies', 'mai_engine_plugin_dependencies' );
  * Workaround is to only recommend plugins required by all demos.
  * Uses the WP Dependency Installer filter in the child theme.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param array $dependencies Plugin dependencies.
  *
@@ -74,7 +74,7 @@ function mai_deactivate_bundled_plugins() {
 		}
 	}
 
-	if ( $deactivated && isset( $_GET['activate'] ) && sanitize_text_field( $_GET['activate'] ) ) {
+	if ( $deactivated ) {
 		add_action(
 			'admin_notices',
 			function () use ( $deactivated ) {
