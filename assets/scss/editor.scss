@@ -47,16 +47,8 @@ p {
 	max-width: 90%;
 }
 
-.wp-block {
+.wp-block:not([data-align="full"]):not([data-align="wide"]) {
 	max-width: var(--breakpoint-lg);
-
-	&[data-align="wide"] {
-		max-width: var(--breakpoint);
-	}
-
-	&[data-align="full"] {
-		max-width: none;
-	}
 }
 
 .block-editor-block-list__layout {
