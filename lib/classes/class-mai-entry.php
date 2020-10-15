@@ -1004,9 +1004,9 @@ class Mai_Entry {
 
 		genesis_markup(
 			[
-				'open'    => '<p %s>',
-				'close'   => '</p>',
-				'content' => genesis_strip_p_tags( $header_meta ),
+				'open'    => '<div %s>',
+				'close'   => '</div>',
+				'content' => $header_meta,
 				'context' => 'entry-meta-before-content',
 				'echo'    => true,
 				'params'  => [
@@ -1042,9 +1042,9 @@ class Mai_Entry {
 
 		genesis_markup(
 			[
-				'open'    => '<p %s>',
-				'close'   => '</p>',
-				'content' => genesis_strip_p_tags( $footer_meta ),
+				'open'    => '<div %s>',
+				'close'   => '</div>',
+				'content' => $footer_meta,
 				'context' => 'entry-meta-after-content',
 				'echo'    => true,
 				'params'  => [
