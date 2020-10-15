@@ -36,6 +36,10 @@ p {
 			--paragraph-margin-bottom: 0;
 		}
 	}
+
+	&.has-background {
+		--paragraph-padding: var(--spacing-lg) var(--spacing-xl);
+	}
 }
 
 hr {
