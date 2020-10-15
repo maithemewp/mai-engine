@@ -30,7 +30,31 @@ function mai_site_layout( $use_cache = true ) {
 		return esc_attr( $site_layout );
 	}
 
-	if ( is_singular() || ( is_home() && ! genesis_is_root_page() ) ) {
+	if ( is_admin() ) {
+		global $pagenow;
+
+		$site_layout = 'wide-content';
+
+		if ( 'post.php' !== $pagenow ) {
+			return $site_layout;
+		}
+
+		$post_id = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
+
+		if ( ! $post_id ) {
+			return $site_layout;
+		}
+
+		$single_layout = genesis_get_custom_field( '_genesis_layout', $post_id );
+
+		if ( $single_layout ) {
+			$site_layout = $single_layout;
+			return $single_layout;
+		}
+
+		$name = get_post_type( $post_id );
+
+	} elseif ( is_singular() || ( is_home() && ! genesis_is_root_page() ) ) {
 		$post_id     = is_home() ? get_option( 'page_for_posts' ) : null;
 		$site_layout = genesis_get_custom_field( '_genesis_layout', $post_id );
 
@@ -69,15 +93,18 @@ function mai_site_layout( $use_cache = true ) {
 		}
 
 		$context = null;
-		$name    = null;
 
-		if ( mai_is_type_archive() ) {
-			$context = 'archive';
-			$name    = mai_get_archive_args_name();
+		if ( ! $name ) {
+			$name = null;
 
-		} elseif ( mai_is_type_single() ) {
-			$context = 'single';
-			$name    = mai_get_singular_args_name();
+			if ( mai_is_type_archive() ) {
+				$context = 'archive';
+				$name    = mai_get_archive_args_name();
+
+			} elseif ( mai_is_type_single() ) {
+				$context = 'single';
+				$name    = mai_get_singular_args_name();
+			}
 		}
 
 		// Context by content name.
