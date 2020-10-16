@@ -30,6 +30,8 @@ function mai_site_layout( $use_cache = true ) {
 		return esc_attr( $site_layout );
 	}
 
+	$name = null;
+
 	if ( is_admin() ) {
 		global $pagenow;
 
@@ -95,8 +97,6 @@ function mai_site_layout( $use_cache = true ) {
 		$context = null;
 
 		if ( ! $name ) {
-			$name = null;
-
 			if ( mai_is_type_archive() ) {
 				$context = 'archive';
 				$name    = mai_get_archive_args_name();
