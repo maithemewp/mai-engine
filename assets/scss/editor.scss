@@ -43,12 +43,13 @@ p {
 
 .wp-block-cover__inner-container,
 .wp-block-group__inner-container {
-	width: var(--breakpoint-xl);
+	width: var(--wp-block-max-width, var(--breakpoint-xl));
 	max-width: 90%;
 }
 
+// Overridden in admin.scss.
 .wp-block:not([data-align="full"]):not([data-align="wide"]) {
-	max-width: var(--breakpoint-lg);
+	max-width: var(--wp-block-max-width, var(--breakpoint-lg));
 }
 
 .block-editor-block-list__layout {
@@ -65,14 +66,14 @@ p {
 
 	[data-type="core/heading"][data-max-width="#{ $breakpoint-name }"],
 	[data-type="core/paragraph"][data-max-width="#{ $breakpoint-name }"] {
-		max-width: var(--breakpoint-#{ $breakpoint-name });
+		--wp-block-max-width: var(--breakpoint-#{ $breakpoint-name });
 	}
 
 	// We don't need to worry about nested block here,
 	// since their content should never be larger than the parent.
 	[data-content-width="#{ $breakpoint-name }"] .wp-block-cover__inner-container,
 	[data-content-width="#{ $breakpoint-name }"] .wp-block-group__inner-container {
-		max-width: var(--breakpoint-#{ $breakpoint-name });
+		--wp-block-max-width: var(--breakpoint-#{ $breakpoint-name });
 	}
 }
 
