@@ -175,11 +175,7 @@ function mai_get_svg( $name, $class = '' ) {
 	}
 
 	$svg = file_get_contents( $file );
-	$url = wp_parse_url( home_url() );
-
-	if ( 'https' === $url['scheme'] ) {
-		$svg = str_replace( 'http', 'https', $svg );
-	}
+	$svg = mai_convert_svg_xmlns( $svg );
 
 	if ( $class ) {
 		$dom  = mai_get_dom_document( $svg );
@@ -223,11 +219,7 @@ function mai_get_svg_icon( $name, $style = 'light', $atts = [] ) {
 	}
 
 	$svg = file_get_contents( $file );
-	$url = wp_parse_url( home_url() );
-
-	if ( 'https' === $url['scheme'] ) {
-		$svg = str_replace( 'http', 'https', $svg );
-	}
+	$svg = mai_convert_svg_xmlns( $svg );
 
 	if ( $atts ) {
 		$dom  = mai_get_dom_document( $svg );
@@ -255,7 +247,7 @@ function mai_get_svg_icon( $name, $style = 'light', $atts = [] ) {
 }
 
 /**
- * Description of expected behavior.
+ * Gets an svg icon url.
  *
  * @since 0.1.0
  *
@@ -266,4 +258,43 @@ function mai_get_svg_icon( $name, $style = 'light', $atts = [] ) {
  */
 function mai_get_svg_icon_url( $name, $style = 'light' ) {
 	return mai_get_url() . "assets/icons/svgs/$style/$name.svg";
+}
+
+/**
+ * Converts an svg xmlns attribute to https if the site uses https.
+ *
+ * @since TBD
+ *
+ * @access private
+ *
+ * @param string $svg The svg HTML.
+ *
+ * @return string
+ */
+function mai_convert_svg_xmlns( $svg ) {
+	static $url = null;
+
+	if ( is_null( $url ) ) {
+		$url = wp_parse_url( home_url() );
+	}
+
+	if ( ! mai_is_https() ) {
+		return $svg;
+	}
+
+	$dom   = mai_get_dom_document( $svg );
+	$first = mai_get_dom_first_child( $dom );
+
+	if ( $first ) {
+		$xmlns = $first->attributes->getNamedItem( 'xmlns' );
+		$xmlns = $xmlns->value;
+
+		if ( $xmlns ) {
+			$xmlns = str_replace( 'http:', 'https:', $xmlns );
+			$first->setAttribute( 'xmlns', $xmlns );
+			$svg = $dom->saveHTML();
+		}
+	}
+
+	return $svg;
 }
