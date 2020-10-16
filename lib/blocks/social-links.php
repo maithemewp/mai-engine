@@ -21,16 +21,32 @@ add_filter( 'render_block', 'mai_render_social_links_block', 10, 2 );
  * @return string
  */
 function mai_render_social_links_block( $block_content, $block ) {
-
 	// Bail if not a social-link block.
 	if ( 'core/social-link' !== $block['blockName'] ) {
 		return $block_content;
 	}
 
-	$url = wp_parse_url( home_url() );
+	// Bail if link is empty.
+	if ( ! $block_content ) {
+		return $block_content;
+	}
 
-	if ( 'https' === $url['scheme'] ) {
-		$block_content = str_replace( 'http', 'https', $block_content );
+	if ( mai_is_https() ) {
+		$dom = mai_get_dom_document( $block_content );
+
+		$svgs = $dom->getElementsByTagName( 'svg' );
+		$svg  = $svgs->item(0);
+
+		if ( $svg ) {
+			$xmlns = $svg->attributes->getNamedItem( 'xmlns' );
+			$xmlns = $xmlns->value;
+
+			if ( $xmlns ) {
+				$xmlns = str_replace( 'http:', 'https:', $xmlns );
+				$svg->setAttribute( 'xmlns', $xmlns );
+				$block_content = $dom->saveHTML();
+			}
+		}
 	}
 
 	return $block_content;
