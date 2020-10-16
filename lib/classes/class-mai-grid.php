@@ -452,7 +452,7 @@ class Mai_Grid {
 			}
 		}
 
-		return apply_filters( 'mai_post_grid_query_args', $query_args );
+		return apply_filters( 'mai_post_grid_query_args', $query_args, $this->args );
 	}
 
 	/**
@@ -539,6 +539,6 @@ class Mai_Grid {
 			}
 		}
 
-		return apply_filters( 'mai_term_grid_query_args', $query_args );
+		return apply_filters( 'mai_term_grid_query_args', $query_args, $this->args );
 	}
 }
