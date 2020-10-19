@@ -44,7 +44,6 @@ p {
 .wp-block-cover__inner-container,
 .wp-block-group__inner-container {
 	width: var(--wp-block-max-width, var(--breakpoint-xl));
-	max-width: 90%;
 }
 
 // Overridden in admin.scss.
