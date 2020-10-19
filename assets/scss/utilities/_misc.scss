@@ -12,6 +12,11 @@
 	box-shadow: var(--shadow);
 }
 
+.is-sticky {
+	position: sticky;
+	top: var(--scroll-margin-top, calc(var(--site-header-top, 0) + var(--spacing-lg)));
+}
+
 .is-circle,
 .is-square {
 	display: grid;
@@ -281,5 +286,5 @@
 }
 
 .has-sticky-header {
-	--scroll-margin-top: var(--header-shrunk-height, var(--header-height, 0));
+	--scroll-margin-top: calc(var(--header-shrunk-height, var(--header-height, 0)) + var(--spacing-md));
 }
