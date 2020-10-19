@@ -1,5 +1,6 @@
 .wp-block-group {
 	position: relative; // so negative margins inside will work.
+	z-index: 0; // so negative margins work with overlay.
 	padding: var(--group-block-padding-top, 0) var(--group-block-padding-right, 0) var(--group-block-padding-bottom, 0) var(--group-block-padding-left, 0);
 
 	&.alignfull {

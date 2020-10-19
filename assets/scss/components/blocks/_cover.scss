@@ -1,5 +1,6 @@
 .wp-block-cover {
 	position: relative; // so negative margins inside will work.
+	z-index: 0; // so negative margins work with overlay.
 	min-height: 0;
 	padding: var(--cover-block-padding-top, 0) var(--cover-block-padding-right, 0) var(--cover-block-padding-bottom, 0) var(--cover-block-padding-left, 0);
 
