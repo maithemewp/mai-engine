@@ -2,7 +2,7 @@
 	position: relative; // so negative margins inside will work.
 	z-index: 0; // so negative margins work with overlay.
 	min-height: 0;
-	padding: var(--cover-block-padding-top, 0) var(--cover-block-padding-right, 0) var(--cover-block-padding-bottom, 0) var(--cover-block-padding-left, 0);
+	padding: var(--cover-block-padding-top, 0.05px) var(--cover-block-padding-right, 0.05px) var(--cover-block-padding-bottom, 0.05px) var(--cover-block-padding-left, 0.05px); // 0.05px prevents margin collapsing.
 
 	&.has-background:not(.alignfull) {
 		--cover-block-padding-right: var(--spacing-lg);
