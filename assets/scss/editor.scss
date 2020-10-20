@@ -103,6 +103,16 @@ p {
 	@each $margin-setting in $margin_settings {
 
 		[data-margin-#{ $margin-setting }="#{ $spacing-name }"] {
+			margin-#{ $margin-setting }: #{ $spacing-size } !important;
+		}
+	}
+}
+
+@each $spacing-name, $spacing-size in $negative_margin {
+
+	@each $margin-setting in $margin_settings {
+
+		[data-margin-#{ $margin-setting }="#{ $spacing-name }"] {
 			margin-#{ $margin-setting }: calc(#{ $spacing-size } * -1) !important;
 		}
 	}

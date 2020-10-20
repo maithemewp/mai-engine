@@ -56,6 +56,9 @@ $margin: (
 	xxl: var(--spacing-xxl),
 	xxxl: var(--spacing-xxxl),
 	xxxxl: var(--spacing-xxxxl),
+) !default;
+
+$negative_margin: (
 	-md: var(--spacing-md),
 	-lg: var(--spacing-lg),
 	-xl: var(--spacing-xl),
