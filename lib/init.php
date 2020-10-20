@@ -212,13 +212,17 @@ function mai_remove_genesis_default_widget_areas() {
  *
  * @since 2.4.3
  * @since TBD Changed function name to avoid clash when switching from v1 to v2.
+ * @since TBD Check mai_get_url() function exists. We saw this run too early and fail.
  * @link  https://github.com/maithemewp/mai-engine/issues/361
  *
  * @return string
  */
 add_filter( 'genesis_pre_load_favicon', 'mai_load_default_favicon' );
 function mai_load_default_favicon( $favicon ) {
-	return mai_get_url() . 'assets/img/icon-256x256.png';
+	if ( function_exists( 'mai_get_url' ) ) {
+		return mai_get_url() . 'assets/img/icon-256x256.png';
+	}
+	return $favicon;
 }
 
 add_action( 'after_setup_theme', 'mai_load_files', 0 );
