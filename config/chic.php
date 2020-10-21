@@ -79,6 +79,8 @@ return [
 					'footer_meta',
 					'genesis_entry_footer',
 					'after_entry',
+					'author_box',
+					'adjacent_entry_nav',
 				],
 			],
 		],
