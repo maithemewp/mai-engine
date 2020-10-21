@@ -76,6 +76,10 @@ add_filter( 'display_post_states', 'mai_template_part_post_state', 10, 2 );
  * @return array
  */
 function mai_template_part_post_state( $states, $post ) {
+	if ( 'wp_template_part' !== $post->post_type ) {
+		return $states;
+	}
+
 	$template_parts = mai_get_config( 'template-parts' );
 
 	foreach ( $template_parts as $template_part ) {
