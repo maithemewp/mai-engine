@@ -1,7 +1,7 @@
 .after-entry {
 	margin: var(--after-entry-margin, (var(--spacing-xxl) 0 var(--spacing-xl)));
-	padding: var(--after-entry-padding, var(--spacing-xl));
+	padding: var(--after-entry-padding, 0);
 	text-align: var(--after-entry-text-align, inherit);
-	border: var(--after-entry-border, var(--border));
-	box-shadow: var(--after-entry-box-shadow, var(--shadow));
+	border: var(--after-entry-border, 0);
+	box-shadow: var(--after-entry-box-shadow, 0);
 }
