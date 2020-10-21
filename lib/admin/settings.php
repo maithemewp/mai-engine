@@ -63,6 +63,30 @@ function mai_render_admin_menu_page() {
 	echo '</div>';
 }
 
+/**
+ * Add docs and support admin submenu items.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+add_action( 'admin_menu', 'mai_admin_menu_subpages', 12 );
+function mai_admin_menu_subpages() {
+	global $submenu;
+
+	$submenu['mai-theme'][] = [
+		__( 'Documentation', 'mai-engine' ),
+		'edit_posts',
+		'https://docs.bizbudding.com/',
+	];
+
+	$submenu['mai-theme'][] = [
+		__( 'Support', 'mai-engine' ),
+		'edit_posts',
+		'https://docs.bizbudding.com/support/',
+	];
+}
+
 add_action( 'admin_menu', 'mai_show_reusable_blocks_admin_menu' );
 /**
  * Exposes Reusable Blocks UI in backend.
