@@ -8,6 +8,14 @@
 	--input-width: auto;
 }
 
+.has-border {
+	border: var(--border);
+}
+
+.has-radius {
+	border-radius: var(--radius);
+}
+
 .has-shadow {
 	box-shadow: var(--shadow);
 }
