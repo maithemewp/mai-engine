@@ -91,7 +91,7 @@ add_filter( 'woocommerce_style_smallscreen_breakpoint', 'mai_woocommerce_breakpo
  */
 function mai_woocommerce_breakpoint() {
 	$breakpoint      = 'md';
-	$current         = mai_site_layout( false );
+	$current         = mai_site_layout();
 	$sidebar_layouts = [
 		'content-sidebar',
 		'sidebar-content',
