@@ -10,7 +10,7 @@
  */
 
 /**
- * Description of expected behavior.
+ * Renders a post grid.
  *
  * @since 0.1.0
  *
@@ -23,7 +23,7 @@ function mai_do_post_grid( $args ) {
 }
 
 /**
- * Description of expected behavior.
+ * Renders a term grid.
  *
  * @since 0.1.0
  *
@@ -36,7 +36,7 @@ function mai_do_term_grid( $args ) {
 }
 
 /**
- * Description of expected behavior.
+ * Renders a user grid.
  *
  * @since 0.1.0
  *
@@ -49,7 +49,7 @@ function mai_do_user_grid( $args ) {
 }
 
 /**
- * Description of expected behavior.
+ * Renders a grid.
  *
  * @since 0.1.0
  *
@@ -65,7 +65,7 @@ function mai_do_grid( $type, $args = [] ) {
 }
 
 /**
- * Description of expected behavior.
+ * Gets choices for Show field in grid blocks.
  *
  * @since 0.1.0
  *
