@@ -27,7 +27,7 @@ function mai_genesis_style_trump() {
 	if ( mai_get_option( 'genesis-style-trump', true ) ) {
 		add_action( 'get_footer', 'mai_enqueue_child_theme_stylesheet' );
 	} else {
-		add_action( 'wp_enqueue_scripts', 'mai_enqueue_child_theme_stylesheet' , 999 );
+		add_action( 'wp_enqueue_scripts', 'mai_enqueue_child_theme_stylesheet', 999 );
 	}
 }
 
@@ -66,7 +66,7 @@ add_action( 'genesis_before', 'mai_js_nojs_script', 1 );
  * styled content, as the page does not load with no-js styles, then
  * switch to js once everything has finished loading.
  *
- * @since  1.0.0
+ * @since  0.1.0
  *
  * @return void
  */
@@ -88,7 +88,7 @@ add_action( 'customize_controls_enqueue_scripts', 'mai_enqueue_assets' );
  * Register and enqueue all scripts and styles.
  *
  * @since 2.4.0 Separate mai_enqueue_asset function.
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
