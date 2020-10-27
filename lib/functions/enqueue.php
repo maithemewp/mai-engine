@@ -14,21 +14,25 @@ defined( 'ABSPATH' ) || die;
 
 add_action( 'init', 'mai_genesis_style_trump' );
 /**
- * Description of expected behavior.
+ * Loads theme stylesheet.
  *
- * @since 1.0.0
+ * @since 0.1.0
+ * @since TBD Load child theme stylesheet after all engine styles if no style trump.
  *
  * @return void
  */
 function mai_genesis_style_trump() {
+	remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
+
 	if ( mai_get_option( 'genesis-style-trump', true ) ) {
-		remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
 		add_action( 'get_footer', 'mai_enqueue_child_theme_stylesheet' );
+	} else {
+		add_action( 'wp_enqueue_scripts', 'mai_enqueue_child_theme_stylesheet' , 999 );
 	}
 }
 
 /**
- * Genesis style trump, and cache bust when stylesheet is updated.
+ * Adds cache busting when stylesheet is updated.
  *
  * @since 0.1.0
  *
