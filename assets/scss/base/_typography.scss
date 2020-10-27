@@ -2,6 +2,7 @@ a {
 	color: var(--link-color, var(--color-link));
 	text-decoration: var(--link-text-decoration, none);
 	text-underline-offset: var(--link-text-decoration-offset, var(--spacing-xs)); // Not all browsers support this yet.
+	word-break: var(--link-word-break, break-word);
 	transition: var(--link-transition, var(--transition));
 
 	&:hover,
