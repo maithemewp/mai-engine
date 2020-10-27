@@ -9,7 +9,7 @@
  * max-width + 160 (admin menu width) + 280 (block editor sidebar width) + 60px (extra).
  */
 
-.edit-post-visual-editor__post-title-wrapper .editor-post-title,
+.edit-post-visual-editor__post-title-wrapper,
 .block-editor-block-list__layout.is-root-container {
 	padding-right: var(--spacing-lg);
 	padding-left: var(--spacing-lg);
