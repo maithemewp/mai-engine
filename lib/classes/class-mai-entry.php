@@ -64,6 +64,13 @@ class Mai_Entry {
 	protected $breakpoints;
 
 	/**
+	 * Link.
+	 *
+	 * @var $link_entry
+	 */
+	protected $link_entry;
+
+	/**
 	 * Mai_Entry constructor.
 	 *
 	 * @since 0.1.0
@@ -81,6 +88,7 @@ class Mai_Entry {
 		$this->id          = $this->get_id();
 		$this->url         = $this->get_url();
 		$this->breakpoints = mai_get_breakpoints();
+		$this->link_entry  = apply_filters( 'mai_link_entry', $this->link_entry, $this->args, $this->entry );
 	}
 
 	/**
@@ -206,7 +214,7 @@ class Mai_Entry {
 		}
 
 		// Overlay link.
-		if ( ( 'single' !== $this->context ) && ( 'background' === $this->args['image_position'] ) ) {
+		if ( $this->link_entry && ( 'background' === $this->args['image_position'] ) ) {
 			printf( '<a href="%s" class="entry-overlay"></a>', $this->url );
 		}
 
@@ -230,14 +238,18 @@ class Mai_Entry {
 				continue;
 			}
 
+			// Skip if an outside element.
 			if ( in_array( $element, $outside_elements ) ) {
 				continue;
 			}
 
-			// Output the element if a method exists.
-			$method = "do_{$element}";
+			// Output the element if a method or function exists.
+			$method   = "do_{$element}";
+			$function = "mai_do_{$element}";
 			if ( method_exists( $this, $method ) ) {
 				$this->$method();
+			} elseif ( function_exists( $function ) ) {
+				$function( $this->entry, $this->args );
 			}
 		}
 
@@ -360,11 +372,9 @@ class Mai_Entry {
 			return;
 		}
 
-		// TODO: Is this the best way to handle non-linked featured images?
-		// We'll need this later for Mai Favorites when we can disable links in grid.
-		$wrap = ( 'single' === $this->context ) || ( 'background' === $this->args['image_position'] ) ? 'figure' : 'a';
-
-		$atts = [
+		$link_image = $this->link_entry && ( 'background' !== $this->args['image_position'] );
+		$wrap       = $link_image ? 'a' : 'figure';
+		$atts       = [
 			'class' => 'entry-image-link',
 		];
 
@@ -372,7 +382,7 @@ class Mai_Entry {
 			$atts['class'] .= ' entry-image-single';
 		}
 
-		if ( ( 'single' !== $this->context ) && ( 'background' !== $this->args['image_position'] ) ) {
+		if ( $link_image ) {
 			$atts['href']        = $this->url;
 			$atts['aria-hidden'] = 'true';
 			$atts['tabindex']    = '-1';
@@ -718,11 +728,9 @@ class Mai_Entry {
 	 * @return  void
 	 */
 	public function do_title() {
-		if ( ( 'single' === $this->context ) && ( mai_is_element_hidden( 'entry_title', $this->id ) || ( mai_has_page_header() && apply_filters( 'mai_entry_title_in_page_header', true ) ) ) ) {
+		if ( ( 'single' === $this->context ) && ( mai_is_element_hidden( 'entry_title', $this->id ) || ( mai_has_page_header() && apply_filters( 'mai_entry_title_in_page_header', true, $this->args, $this->entry ) ) ) ) {
 			return;
 		}
-
-		$link = false;
 
 		// Title.
 		switch ( $this->type ) {
@@ -764,27 +772,20 @@ class Mai_Entry {
 					 */
 					$wrap = apply_filters( 'genesis_entry_title_wrap', $wrap );
 
-					// Link it, if necessary.
-					if ( ( 'archive' === $this->context ) && apply_filters( 'genesis_link_post_title', true ) ) {
-						$link = true;
-					}
 				} else {
 					// Block.
 					$wrap  = 'h3';
 					$title = get_the_title( $this->entry );
-					$link  = true;
 				}
 
 			break;
 			case 'term':
 				$wrap  = 'h3'; // Only blocks use this function for terms.
 				$title = $this->entry->name;
-				$link  = true;
 			break;
 			case 'user':
 				$wrap  = 'h3'; // Only blocks use this function for users.
 				$title = ''; // TODO: Add title.
-				$link  = true;
 			break;
 			default:
 				$title = '';
@@ -796,7 +797,7 @@ class Mai_Entry {
 		}
 
 		// If linking.
-		if ( $link ) {
+		if ( $this->link_entry ) {
 			// This filter overrides href.
 			remove_filter( 'genesis_attr_entry-title-link', 'genesis_attributes_entry_title_link' );
 			$title = genesis_markup(
@@ -826,7 +827,7 @@ class Mai_Entry {
 		 *
 		 * @param  string $wrap The wrapping element (h1, h2, p, etc.).
 		 */
-		$wrap = apply_filters( 'mai_entry_title_wrap', $wrap, $this->args );
+		$wrap = apply_filters( 'mai_entry_title_wrap', $wrap, $this->args, $this->entry );
 
 		// Build the output.
 		$output = genesis_markup(
@@ -989,7 +990,6 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_header_meta() {
-
 		// Bail if none.
 		if ( ! isset( $this->args['header_meta'] ) || ! $this->args['header_meta'] ) {
 			return;
@@ -1063,6 +1063,9 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_more_link() {
+		if ( ! $this->link_entry ) {
+			return;
+		}
 
 		// Link.
 		switch ( $this->type ) {
