@@ -78,6 +78,46 @@ function mai_register_template_part_cpt() {
 	register_meta( 'post', 'theme', $meta_args );
 }
 
+add_action( 'admin_bar_menu', 'mai_add_admin_bar_links', 999 );
+/**
+ * Add links to toolbar.
+ *
+ * @since 2.1.1
+ *
+ * @param WP_Admin_Bar $wp_admin_bar Admin bar object.
+ *
+ * @return void
+ */
+function mai_add_admin_bar_links( $wp_admin_bar ) {
+	if ( is_admin() ) {
+		return;
+	}
+
+	$wp_admin_bar->add_node(
+		[
+			'id'     => 'template-parts',
+			'parent' => 'site-name',
+			'title'  => __( 'Template Parts', 'mai-engine' ),
+			'href'   => admin_url( 'edit.php?post_type=wp_template_part' ),
+			'meta'   => [
+				'title' => __( 'Edit Template Parts', 'mai-engine' ),
+			],
+		]
+	);
+
+	$wp_admin_bar->add_node(
+		[
+			'id'     => 'reusable-blocks',
+			'parent' => 'site-name',
+			'title'  => __( 'Reusable Blocks', 'mai-engine' ),
+			'href'   => admin_url( 'edit.php?post_type=wp_block' ),
+			'meta'   => [
+				'title' => __( 'Edit Reusable Blocks', 'mai-engine' ),
+			],
+		]
+	);
+}
+
 /**
  * Returns a static array of all template part content, keyed by slug.
  *
@@ -97,25 +137,11 @@ function mai_get_template_parts() {
 		return $template_parts;
 	}
 
-	$slugs = array_keys( mai_get_config( 'template-parts' ) );
-	$posts = [];
+	$posts   = [];
+	$objects = mai_get_template_part_objects();
 
-	if ( ! empty( $slugs ) ) {
-		$query = get_posts(
-			[
-				'post_type'              => 'wp_template_part',
-				'post_status'            => 'any',
-				'post_name__in'          => $slugs,
-				'posts_per_page'         => 500,
-				// Force a high number. Without setting this, it uses the WP posts_per_page setting, which could break things.
-				'no_found_rows'          => true,
-				'update_post_meta_cache' => false,
-				'update_post_term_cache' => false,
-				'suppress_filters'       => false, // https://github.com/10up/Engineering-Best-Practices/issues/116
-			]
-		);
-
-		foreach ( $query as $post ) {
+	if ( $objects ) {
+		foreach ( $objects as $post ) {
 			$content = $post->post_content ? mai_get_processed_content( $post->post_content ) : '';
 
 			$posts[ $post->post_status ][ $post->post_name ] = $content;
@@ -155,6 +181,93 @@ function mai_get_template_part( $slug ) {
 	$template_parts = mai_get_template_parts();
 
 	return isset( $template_parts[ $slug ] ) ? $template_parts[ $slug ] : '';
+}
+
+/**
+ * Returns an array of existing template part IDs.
+ *
+ * @since TBD
+ *
+ * @return array
+ */
+function mai_get_template_part_ids() {
+	static $template_parts = [];
+
+	if ( ! empty( $template_parts ) ) {
+		return $template_parts;
+	}
+
+	$ids     = [];
+	$objects = mai_get_template_part_objects();
+
+	if ( $objects ) {
+		foreach ( $objects as $post ) {
+			$ids[ $post->post_name ] = $post->ID;
+		}
+	}
+
+	$template_parts = $ids;
+
+	return $ids;
+}
+
+/**
+ * Returns a template part ID from slug.
+ *
+ * @since TBD
+ *
+ * @param string $slug The template part slug.
+ *
+ * @return array
+ */
+function mai_get_template_part_id( $slug ) {
+	$template_parts = mai_get_template_part_ids();
+
+	return isset( $template_parts[ $slug ] ) ? $template_parts[ $slug ] : 0;
+}
+
+/**
+ * Returns an array of template parts.
+ * Slugs must exist in the config.
+ *
+ * @since TBD
+ *
+ * @return array
+ */
+function mai_get_template_part_objects() {
+	static $template_parts = [];
+
+	if ( ! empty( $template_parts ) ) {
+		return $template_parts;
+	}
+
+	$slugs = array_keys( mai_get_config( 'template-parts' ) );
+	$posts = [];
+
+	if ( ! empty( $slugs ) ) {
+		$query = get_posts(
+			[
+				'post_type'              => 'wp_template_part',
+				'post_status'            => 'any',
+				'post_name__in'          => $slugs,
+				'posts_per_page'         => 500,
+				// Force a high number. Without setting this, it uses the WP posts_per_page setting, which could break things.
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'suppress_filters'       => false, // https://github.com/10up/Engineering-Best-Practices/issues/116
+			]
+		);
+
+		foreach ( $query as $post ) {
+
+			$posts[] = $post;
+		}
+	}
+
+	$template_parts = $posts;
+
+	return $template_parts;
 }
 
 /**
@@ -260,22 +373,10 @@ function mai_import_template_parts( $skip_existing = true ) {
 	$config   = mai_get_config( 'template-parts' );
 
 	foreach ( $config as $slug => $template_part ) {
-		if ( mai_template_part_exists( $slug ) ) {
-			continue;
-		}
+		$result = mai_import_template_part( $slug );
 
-		$create[] = $slug;
-	}
-
-	if ( ! $create ) {
-		return $imported;
-	}
-
-	foreach ( $create as $slug ) {
-		$post_id = mai_import_template_part( $slug );
-
-		if ( $post_id ) {
-			$imported[ $post_id ] = $slug;
+		if ( $result['id'] ) {
+			$imported[ $result['id']] = $slug;
 		}
 	}
 
@@ -284,68 +385,37 @@ function mai_import_template_parts( $skip_existing = true ) {
 
 /**
  * Imports a template part from the demo.
- * Optionally trash an existing template part if it exists.
  *
  * @access private
  *
  * @since TBD
  *
- * @param string $slug           The template part slug to import.
- * @param bool   $trash_existing Whether to trash or update an existing template part.
+ * @param string $slug  The template part slug to import.
+ * @param bool   $force Forces the import by trashing an existing template part with the same slug.
  *
  * @return array
  */
-function mai_import_template_part( $slug, $trash_existing = true ) {
+function mai_import_template_part( $slug, $force ) {
 	$template_parts = mai_get_template_parts_from_demo();
 
 	if ( ! ( $template_parts && isset( $template_parts[ $slug ] ) && $template_parts[ $slug ] ) ) {
 		return [
 			'id'      => false,
-			'message' => __( 'Sorry, no template part availabe for this theme.', 'mai-engine' ),
+			'message' => __( 'Sorry, no template part available for this theme.', 'mai-engine' ),
+		];
+	}
+
+	if ( ! $force && mai_template_part_exists( $slug ) ) {
+		return [
+			'id'      => false,
+			'message' => sprintf( '%s "%s" %s', __( 'Sorry, ', 'mai-engine' ), mai_convert_case( $slug, 'title' ), __( 'template part already exists', 'mai-engine' ) ),
 		];
 	}
 
 	if ( mai_template_part_exists( $slug ) ) {
-		$existing = get_posts(
-			[
-				'post_type'              => 'wp_template_part',
-				'post_status'            => 'any',
-				'name'                   => $slug,
-				'posts_per_page'         => 1,
-				'no_found_rows'          => true,
-				'update_post_meta_cache' => false,
-				'update_post_term_cache' => false,
-				'suppress_filters'       => false,
-			]
-		);
-
-		if ( $existing ) {
-
-			if ( $trash_existing ) {
-
-				wp_trash_post( $existing[0] );
-
-			} else {
-
-				$post_id = wp_update_post(
-					[
-						'ID'           => $existing[0]->ID,
-						'post_content' => mai_localize_blocks( $template_parts[ $slug ] ),
-					]
-				);
-
-				if ( is_wp_error( $post_id ) ) {
-					return [
-						'id'      => false,
-						'message' => $post_id->get_error_message(),
-					];
-				}
-
-				return [
-					'id'      => $post_id,
-					'message' => '',
-				];
-			}
+		$id = mai_get_template_part_id( $slug );
+		if ( $id ) {
+			wp_trash_post( $id );
 		}
 	}
 
@@ -357,7 +427,7 @@ function mai_import_template_part( $slug, $trash_existing = true ) {
 			'post_status'  => 'publish',
 			'post_title'   => mai_convert_case( $slug, 'title' ),
 			'post_content' => mai_localize_blocks( $template_parts[ $slug ] ),
-			'menu_order'   => mai_isset( $config, 'menu_order', 0 ),
+			'menu_order'   => isset( $config[ $slug ]['menu_order'] ) ? $config[ $slug ]['menu_order'] : 0,
 		]
 	);
 
