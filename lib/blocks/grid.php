@@ -336,13 +336,16 @@ function mai_acf_load_show( $field ) {
 	// Get existing values, which are sorted correctly, without infinite loop.
 	remove_filter( 'acf/load_field/key=mai_grid_block_show', 'mai_acf_load_show' );
 
-	$existing = get_field( 'show' );
 	$defaults = $field['choices'];
+	$existing = get_field( 'show' );
+
+	// Make sure only valid choices are used.
+	$existing = $existing ? array_intersect_key( array_flip( $existing ), $defaults ) : [];
 
 	add_filter( 'acf/load_field/key=mai_grid_block_show', 'mai_acf_load_show' );
 
 	// If we have existing values, reorder them.
-	$field['choices'] = $existing ? array_merge( array_flip( $existing ), $defaults ) : $field['choices'];
+	$field['choices'] = $existing ? array_merge( $existing, $defaults ) : $field['choices'];
 
 	return $field;
 }

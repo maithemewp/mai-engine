@@ -37,7 +37,6 @@ function mai_render_cover_block( $block_content, $block ) {
 	}
 
 	$dom = mai_get_dom_document( $block_content );
-
 	/**
 	 * The group block container.
 	 *
