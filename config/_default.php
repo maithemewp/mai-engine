@@ -364,63 +364,54 @@ return [
 	*/
 
 	'template-parts' => [
-		[
-			'id'         => 'before-header',
+		'before-header' => [
 			'location'   => 'genesis_before_header',
 			'menu_order' => 5,
 			'before'     => '<div class="before-header template-part">',
 			'after'      => '</div>',
 		],
-		[
-			'id'         => 'header-left',
+		'header-left' => [
 			'location'   => 'mai_header_left',
 			'menu_order' => 10,
 		],
-		[
-			'id'         => 'header-right',
+		'header-right' => [
 			'location'   => 'mai_header_right',
 			'menu_order' => 15,
 		],
-		[
-			'id'         => 'mobile-menu',
+		'mobile-menu' => [
 			'location'   => 'mai_after_header_wrap',
 			'before'     => '<div class="mobile-menu template-part"><div class="wrap">',
 			'after'      => '</div></div>',
 			'menu_order' => 20,
 		],
-		[
-			'id'         => 'after-header',
+		'after-header' => [
 			'location'   => 'genesis_after_header',
 			'priority'   => 12,
 			'menu_order' => 25,
 			'before'     => '<div class="after-header template-part">',
 			'after'      => '</div>',
 		],
-		[
-			'id'         => 'after-entry',
+		'after-entry' => [
 			'menu_order' => 30,
 		],
-		[
-			'id'         => 'before-footer',
+		'before-footer' => [
 			'location'   => 'genesis_footer',
 			'priority'   => 5,
 			'menu_order' => 35,
 		],
-		[
-			'id'         => 'footer',
+		'footer' => [
 			'location'   => 'genesis_footer',
 			'menu_order' => 40,
 		],
-		[
-			'id'         => 'footer-credits',
+		'footer-credits' => [
 			'location'   => 'genesis_footer',
 			'priority'   => 12,
 			'menu_order' => 45,
 			'default'    => '<!-- wp:group {"align":"full","verticalSpacingTop":"xs","verticalSpacingBottom":"xs"} -->
-			<div class="wp-block-group alignfull"><div class="wp-block-group__inner-container"><!-- wp:paragraph {"align":"center","fontSize":"sm"} -->
-			<p class="has-text-align-center has-sm-font-size">Copyright [footer_copyright] · [footer_home_link] · All Rights Reserved · Powered by <a rel="noreferrer noopener" target="_blank" href="https://bizbudding.com/mai-theme/">Mai Theme</a></p>
-			<!-- /wp:paragraph --></div></div>
-			<!-- /wp:group -->',
+				<div class="wp-block-group alignfull"><div class="wp-block-group__inner-container"><!-- wp:paragraph {"align":"center","fontSize":"sm"} -->
+				<p class="has-text-align-center has-sm-font-size">Copyright [footer_copyright] · [footer_home_link] · All Rights Reserved · Powered by <a rel="noreferrer noopener" target="_blank" href="https://bizbudding.com/mai-theme/">Mai Theme</a></p>
+				<!-- /wp:paragraph --></div></div>
+				<!-- /wp:group -->',
 		],
 	],
 

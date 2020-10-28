@@ -23,6 +23,9 @@ function mai_default_theme_settings() {
 	genesis_update_settings( $defaults );
 
 	update_option( 'posts_per_page', absint( mai_get_config( 'settings' )['content-archives']['post']['posts_per_page'] ) );
+
+	// Prime the cache for template parts.
+	mai_get_template_parts_from_demo();
 }
 
 add_filter( 'simple_social_default_styles', 'mai_default_social_styles' );
