@@ -24,8 +24,30 @@ function mai_default_theme_settings() {
 
 	update_option( 'posts_per_page', absint( mai_get_config( 'settings' )['content-archives']['post']['posts_per_page'] ) );
 
-	// Prime the cache for template parts.
-	mai_get_template_parts_from_demo();
+	// Import existing template parts.
+	$template_parts = mai_import_template_parts();
+
+	if ( $template_parts ) {
+
+		// Adds admin notice. May not display if redirected to setup wizard.
+		add_action( 'admin_notices', function() use ( $template_parts ) {
+			$template_parts = mai_create_template_parts();
+
+			if ( ! $template_parts ) {
+				return;
+			}
+
+			$count = count( $template_parts );
+
+			if ( 1 === $count ) {
+				$message = printf( '%s %s', $count, __( 'default template part automatically created.', 'mai-engine' ) );
+			} else {
+				$message = printf( '%s %s', $count, __( 'default template parts automatically created.', 'mai-engine' ) );
+			}
+
+			printf( '<div class="notice notice-success">%s</div>', esc_html( $message ) );
+		});
+	}
 }
 
 add_filter( 'simple_social_default_styles', 'mai_default_social_styles' );

@@ -367,7 +367,7 @@ function mai_create_template_parts() {
  *
  * @return string
  */
-function mai_import_template_parts( $skip_existing = true ) {
+function mai_import_template_parts() {
 	$create   = [];
 	$imported = [];
 	$config   = mai_get_config( 'template-parts' );
@@ -395,7 +395,7 @@ function mai_import_template_parts( $skip_existing = true ) {
  *
  * @return array
  */
-function mai_import_template_part( $slug, $force ) {
+function mai_import_template_part( $slug, $force = false ) {
 	$template_parts = mai_get_template_parts_from_demo();
 
 	if ( ! ( $template_parts && isset( $template_parts[ $slug ] ) && $template_parts[ $slug ] ) ) {
@@ -405,17 +405,21 @@ function mai_import_template_part( $slug, $force ) {
 		];
 	}
 
-	if ( ! $force && mai_template_part_exists( $slug ) ) {
-		return [
-			'id'      => false,
-			'message' => sprintf( '%s "%s" %s', __( 'Sorry, ', 'mai-engine' ), mai_convert_case( $slug, 'title' ), __( 'template part already exists', 'mai-engine' ) ),
-		];
-	}
-
 	if ( mai_template_part_exists( $slug ) ) {
-		$id = mai_get_template_part_id( $slug );
-		if ( $id ) {
-			wp_trash_post( $id );
+
+		if ( $force ) {
+			$id = mai_get_template_part_id( $slug );
+
+			if ( $id ) {
+				wp_trash_post( $id );
+			}
+
+		} else {
+
+			return [
+				'id'      => false,
+				'message' => sprintf( '%s "%s" %s', __( 'Sorry, ', 'mai-engine' ), mai_convert_case( $slug, 'title' ), __( 'template part already exists', 'mai-engine' ) ),
+			];
 		}
 	}
 
