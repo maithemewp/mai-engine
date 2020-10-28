@@ -337,6 +337,7 @@ function mai_load_files() {
 				'admin/editor',
 				'admin/hide-elements',
 				'admin/images',
+				'admin/notices',
 				'admin/page-header',
 				'admin/settings',
 				'admin/setup-wizard',
