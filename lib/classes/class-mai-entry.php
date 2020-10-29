@@ -372,7 +372,7 @@ class Mai_Entry {
 			return;
 		}
 
-		$link_image = $this->link_entry && ( 'background' !== $this->args['image_position'] );
+		$link_image = $this->link_entry && ( 'single' !== $this->context ) && ( 'background' !== $this->args['image_position'] );
 		$wrap       = $link_image ? 'a' : 'figure';
 		$atts       = [
 			'class' => 'entry-image-link',
