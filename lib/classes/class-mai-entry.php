@@ -88,7 +88,7 @@ class Mai_Entry {
 		$this->id          = $this->get_id();
 		$this->url         = $this->get_url();
 		$this->breakpoints = mai_get_breakpoints();
-		$this->link_entry  = apply_filters( 'mai_link_entry', $this->link_entry, $this->args, $this->entry );
+		$this->link_entry  = apply_filters( 'mai_link_entry', true, $this->args, $this->entry );
 	}
 
 	/**
