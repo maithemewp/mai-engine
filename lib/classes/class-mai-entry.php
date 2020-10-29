@@ -214,7 +214,7 @@ class Mai_Entry {
 		}
 
 		// Overlay link.
-		if ( $this->link_entry && ( 'background' === $this->args['image_position'] ) ) {
+		if ( $this->link_entry && ( 'single' !== $this->context ) && ( 'background' === $this->args['image_position'] ) ) {
 			printf( '<a href="%s" class="entry-overlay"></a>', $this->url );
 		}
 
