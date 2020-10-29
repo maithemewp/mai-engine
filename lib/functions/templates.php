@@ -119,7 +119,7 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
 }
 
 /**
- * Returns a static array of all template part content, keyed by slug.
+ * Returns an array of all template part content, keyed by slug.
  *
  * @since 2.0.1
  * @since 2.2.2 Now returns an array of template part content content keyed by slug instead of an array of WP_Post
@@ -131,14 +131,9 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
  * @return array
  */
 function mai_get_template_parts() {
-	static $template_parts = [];
-
-	if ( ! empty( $template_parts ) ) {
-		return $template_parts;
-	}
-
-	$posts   = [];
-	$objects = mai_get_template_part_objects();
+	$template_parts = [];
+	$posts          = [];
+	$objects        = mai_get_template_part_objects();
 
 	if ( $objects ) {
 		foreach ( $objects as $post ) {
@@ -191,14 +186,9 @@ function mai_get_template_part( $slug ) {
  * @return array
  */
 function mai_get_template_part_ids() {
-	static $template_parts = [];
-
-	if ( ! empty( $template_parts ) ) {
-		return $template_parts;
-	}
-
-	$ids     = [];
-	$objects = mai_get_template_part_objects();
+	$template_parts = [];
+	$ids            = [];
+	$objects        = mai_get_template_part_objects();
 
 	if ( $objects ) {
 		foreach ( $objects as $post ) {
@@ -235,14 +225,15 @@ function mai_get_template_part_id( $slug ) {
  * @return array
  */
 function mai_get_template_part_objects() {
-	static $template_parts = [];
+	static $template_parts = null;
 
-	if ( ! empty( $template_parts ) ) {
+	if ( ! is_null( $template_parts ) ) {
 		return $template_parts;
 	}
 
-	$slugs = array_keys( mai_get_config( 'template-parts' ) );
-	$posts = [];
+	$template_parts = [];
+	$slugs          = array_keys( mai_get_config( 'template-parts' ) );
+	$posts          = [];
 
 	if ( ! empty( $slugs ) ) {
 		$query = get_posts(
@@ -261,11 +252,9 @@ function mai_get_template_part_objects() {
 
 		foreach ( $query as $post ) {
 
-			$posts[] = $post;
+			$template_parts[] = $post;
 		}
 	}
-
-	$template_parts = $posts;
 
 	return $template_parts;
 }
@@ -365,15 +354,18 @@ function mai_create_template_parts() {
  *
  * @since TBD
  *
+ * @param false|string $force If 'always', forces the import by trashing an existing template part.
+ *                            If 'empty', forces the import by trashing an existing template that has no content.
+ *
  * @return string
  */
-function mai_import_template_parts() {
+function mai_import_template_parts( $force = false ) {
 	$create   = [];
 	$imported = [];
 	$config   = mai_get_config( 'template-parts' );
 
 	foreach ( $config as $slug => $template_part ) {
-		$result = mai_import_template_part( $slug );
+		$result = mai_import_template_part( $slug, $force );
 
 		if ( $result['id'] ) {
 			$imported[ $result['id']] = $slug;
@@ -390,8 +382,9 @@ function mai_import_template_parts() {
  *
  * @since TBD
  *
- * @param string $slug  The template part slug to import.
- * @param bool   $force Forces the import by trashing an existing template part with the same slug.
+ * @param string       $slug  The template part slug to import.
+ * @param false|string $force If 'always', forces the import by trashing an existing template part.
+ *                            If 'empty', forces the import by trashing an existing template that has no content.
  *
  * @return array
  */
@@ -411,7 +404,20 @@ function mai_import_template_part( $slug, $force = false ) {
 			$id = mai_get_template_part_id( $slug );
 
 			if ( $id ) {
-				wp_trash_post( $id );
+				switch ( $force ) {
+					case 'always':
+						wp_trash_post( $id );
+					break;
+					case 'empty':
+						if ( mai_has_template_part( $slug ) ) {
+							return [
+								'id'      => false,
+								'message' => __( 'Sorry, this template part is already in use.', 'mai-engine' ),
+							];
+						}
+						wp_trash_post( $id );
+					break;
+				}
 			}
 
 		} else {
@@ -695,10 +701,21 @@ function mai_get_new_image_from_url( $image_url, $filename = '' ) {
 	return false;
 }
 
+/**
+ * Gets template parts content from the demo.
+ * Caches via a transient.
+ *
+ * Requires Mai Demo Exporter plugin to be active on the demo site.
+ *
+ * @since TBD
+ *
+ * @return array
+ */
 function mai_get_template_parts_from_demo() {
 	if ( false === ( $template_parts = get_transient( 'mai_demo_template_parts' ) ) ) {
-		$config = mai_get_config( 'template-parts' );
-		$demos  = apply_filters( 'mai_setup_wizard_demos', [] );
+		$template_parts = [];
+		$config         = mai_get_config( 'template-parts' );
+		$demos          = apply_filters( 'mai_setup_wizard_demos', [] );
 
 		if ( $demos ) {
 			$demo = array_shift( $demos );
@@ -710,15 +727,18 @@ function mai_get_template_parts_from_demo() {
 				if ( ! is_wp_error( $request ) ) {
 					$body  = wp_remote_retrieve_body( $request );
 					$data  = json_decode( $body );
-					$parts = wp_list_pluck( $data, 'content_raw', 'slug' );
 
-					if ( $parts ) {
-						foreach ( $config as $slug => $args ) {
-							if ( ! isset( $parts[ $slug ] ) ) {
-								continue;
+					if ( $data ) {
+						$parts = wp_list_pluck( $data, 'content_raw', 'slug' );
+
+						if ( $parts ) {
+							foreach ( $config as $slug => $args ) {
+								if ( ! isset( $parts[ $slug ] ) ) {
+									continue;
+								}
+
+								$template_parts[ $slug ] = $parts[ $slug ];
 							}
-
-							$template_parts[ $slug ] = $parts[ $slug ];
 						}
 					}
 				}

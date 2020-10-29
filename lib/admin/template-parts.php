@@ -58,9 +58,9 @@ function mai_maybe_create_template_parts( $current_screen ) {
 		$count = count( $template_parts );
 
 		if ( 1 === $count ) {
-			$message = printf( '%s %s', $count, __( 'default template part automatically created.', 'mai-engine' ) );
+			$message = sprintf( '%s %s', $count, __( 'default template part automatically created.', 'mai-engine' ) );
 		} else {
-			$message = printf( '%s %s', $count, __( 'default template parts automatically created.', 'mai-engine' ) );
+			$message = sprintf( '%s %s', $count, __( 'default template parts automatically created.', 'mai-engine' ) );
 		}
 	}
 
@@ -117,7 +117,7 @@ function mai_template_parts_import_row_action( $actions, $post ) {
 	);
 
 	if ( ! $script ) {
-		$notice = __( 'Warning! Importing will overwrite the existing template part.', 'mai-engine' );
+		$notice = __( 'Warning! Importing will move the existing template part to the trash.', 'mai-engine' );
 		$script = '<script type="text/javascript">
 			function maiImportConfirmation() {
 				if ( ! window.confirm( "' . esc_html( $notice ) . '" ) ) {
@@ -259,4 +259,55 @@ function mai_template_parts_admin_notice() {
 			__( 'Template Parts', 'mai-engine' ),
 		);
 	});
+}
+
+add_action( 'after_switch_theme', 'mai_default_theme_template_parts' );
+/**
+ * Sets demo template parts on theme switch.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_default_theme_template_parts() {
+
+	delete_transient( 'mai_demo_template_parts' );
+
+	$notices = [];
+
+	// Import existing template parts. Skips existing template parts with content.
+	$template_parts = mai_import_template_parts( 'empty' );
+
+	if ( $template_parts ) {
+		$count = count( $template_parts );
+
+		if ( 1 === $count ) {
+			$notices[] = printf( '%s %s', $count, __( 'default template part imported successfully.', 'mai-engine' ) );
+		} else {
+			$notices[] = printf( '%s %s', $count, __( 'default template parts imported successfully.', 'mai-engine' ) );
+		}
+
+	}
+
+	// Create default template parts.
+	$template_parts = mai_create_template_parts();
+
+	if ( $template_parts ) {
+		$count = count( $template_parts );
+
+		if ( 1 === $count ) {
+			$notices[] = printf( '%s %s', $count, __( 'default template part automatically created.', 'mai-engine' ) );
+		} else {
+			$notices[] = printf( '%s %s', $count, __( 'default template parts automatically created.', 'mai-engine' ) );
+		}
+	}
+
+	if ( $notices ) {
+		// Adds admin notice(s). May not display if redirected to setup wizard.
+		add_action( 'admin_notices', function() use ( $notices ) {
+			foreach ( $notices as $notice ) {
+				printf( '<div class="notice notice-success">%s</div>', esc_html( $notice ) );
+			}
+		});
+	}
 }

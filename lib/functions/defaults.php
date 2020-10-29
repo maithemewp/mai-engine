@@ -11,7 +11,7 @@
 
 add_action( 'after_switch_theme', 'mai_default_theme_settings' );
 /**
- * Set default theme settings on theme activation.
+ * Sets default theme settings on theme activation.
  *
  * @since 0.1.0
  *
@@ -23,31 +23,6 @@ function mai_default_theme_settings() {
 	genesis_update_settings( $defaults );
 
 	update_option( 'posts_per_page', absint( mai_get_config( 'settings' )['content-archives']['post']['posts_per_page'] ) );
-
-	// Import existing template parts.
-	$template_parts = mai_import_template_parts();
-
-	if ( $template_parts ) {
-
-		// Adds admin notice. May not display if redirected to setup wizard.
-		add_action( 'admin_notices', function() use ( $template_parts ) {
-			$template_parts = mai_create_template_parts();
-
-			if ( ! $template_parts ) {
-				return;
-			}
-
-			$count = count( $template_parts );
-
-			if ( 1 === $count ) {
-				$message = printf( '%s %s', $count, __( 'default template part automatically created.', 'mai-engine' ) );
-			} else {
-				$message = printf( '%s %s', $count, __( 'default template parts automatically created.', 'mai-engine' ) );
-			}
-
-			printf( '<div class="notice notice-success">%s</div>', esc_html( $message ) );
-		});
-	}
 }
 
 add_filter( 'simple_social_default_styles', 'mai_default_social_styles' );
