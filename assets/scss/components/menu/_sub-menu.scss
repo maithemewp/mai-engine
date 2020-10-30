@@ -19,6 +19,7 @@
 	list-style-type: var(--sub-menu-list-style, none);
 	background: var(--sub-menu-background, var(--color-white));
 	border: var(--sub-menu-border, 0);
+	border-radius: var(--sub-menu-border-radius, 0);
 	opacity: var(--sub-menu-opacity, 1);
 	animation: var(--sub-menu-animation, none);
 
