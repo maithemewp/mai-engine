@@ -1331,6 +1331,13 @@ function mai_get_grid_block_settings() {
 				[
 					[
 						'field'    => 'mai_grid_block_show',
+						'operator' => '!=',
+						'value'    => 'image',
+					],
+				],
+				[
+					[
+						'field'    => 'mai_grid_block_show',
 						'operator' => '==',
 						'value'    => 'image',
 					],
