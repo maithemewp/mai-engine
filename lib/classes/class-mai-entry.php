@@ -71,6 +71,13 @@ class Mai_Entry {
 	protected $link_entry;
 
 	/**
+	 * Image size.
+	 *
+	 * @var $image_size
+	 */
+	protected $image_size;
+
+	/**
 	 * Mai_Entry constructor.
 	 *
 	 * @since 0.1.0
@@ -89,6 +96,7 @@ class Mai_Entry {
 		$this->url         = $this->get_url();
 		$this->breakpoints = mai_get_breakpoints();
 		$this->link_entry  = apply_filters( 'mai_link_entry', true, $this->args, $this->entry );
+		$this->image_size  = $this->get_image_size();
 	}
 
 	/**
@@ -430,13 +438,12 @@ class Mai_Entry {
 		add_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
 		add_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 5 );
 
-		$size  = $this->get_image_size();
 		$image = wp_get_attachment_image(
 			$image_id,
-			$size,
+			$this->image_size,
 			false,
 			[
-				'class'   => "entry-image size-{$size}",
+				'class'   => "entry-image size-{$this->image_size}",
 				'loading' => 'lazy',
 			]
 		);
@@ -485,6 +492,7 @@ class Mai_Entry {
 		];
 
 		$columns = $is_single ? $single_cols : array_reverse( mai_get_breakpoint_columns( $this->args ), true ); // Mobile first.
+		$columns = $this->get_image_breakpoint_columns( $columns );
 		$widths  = [];
 
 		foreach ( $columns as $break => $count ) {
@@ -558,6 +566,7 @@ class Mai_Entry {
 		];
 
 		$columns = $is_single ? $single_cols : array_reverse( mai_get_breakpoint_columns( $this->args ), true ); // Mobile first.
+		$columns = $this->get_image_breakpoint_columns( $columns );
 
 		// TODO: Add retina support?
 
@@ -718,6 +727,28 @@ class Mai_Entry {
 		}
 
 		return $image_size;
+	}
+
+	/**
+	 * Gets a reasonable column count when a breakpoint has a 0 (Auto) value.
+	 *
+	 * @param array $columns The existing columns.
+	 *
+	 * @return array
+	 */
+	public function get_image_breakpoint_columns( $columns ) {
+		$image_sizes = mai_get_available_image_sizes();
+		$fallback    = isset( $image_sizes[ $this->image_size ]['width'] ) ? absint( $this->breakpoints['xl'] / $image_sizes[ $this->image_size ]['width'] ) : 1;
+
+		foreach ( $columns as $break => $count ) {
+			if ( 0 !== $count ) {
+				continue;
+			}
+
+			$columns[ $break ] = $fallback;
+		}
+
+		return $columns;
 	}
 
 	/**
