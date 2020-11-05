@@ -190,7 +190,7 @@ function mai_get_italic_variant( $element ) {
  * @return string
  */
 function mai_get_bold_variant( $element ) {
-	$bold            = '';
+	$bold            = '700'; // Need default for instances where Google Fonts are not used in Customizer.
 	$kirki_fonts     = Kirki_Fonts::get_instance();
 	$google_fonts    = $kirki_fonts::get_google_fonts();
 	$font_family     = mai_get_font_family( $element );
@@ -211,8 +211,6 @@ function mai_get_bold_variant( $element ) {
 			$bold_variants = array_merge( [ $weight ], $bold_variants );
 		}
 	}
-
-	vd( $bold_variants );
 
 	// Reverse variants so the highest priority is looped through last.
 	$bold_variants = array_reverse( array_unique( $bold_variants ) );
