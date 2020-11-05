@@ -205,12 +205,14 @@ function mai_get_bold_variant( $element ) {
 
 	// Prioritize bold weights set in config (if it exists).
 	foreach ( $default_weights as $weight ) {
-		if ( in_array( (int) $weight, $bold_variants, true ) ) {
+		if ( in_array( (string) $weight, $bold_variants, true ) ) {
 
 			// If any exist in the config, move them to the top of the array.
 			$bold_variants = array_merge( [ $weight ], $bold_variants );
 		}
 	}
+
+	vd( $bold_variants );
 
 	// Reverse variants so the highest priority is looped through last.
 	$bold_variants = array_reverse( array_unique( $bold_variants ) );
