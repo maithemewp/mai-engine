@@ -82,7 +82,7 @@ function mai_do_blog_description() {
 		return;
 	}
 
-	echo wp_kses_post( $content );
+	printf( '<div class="blog-description">%s</div>', wp_kses_post( $description ) );
 }
 
 add_action( 'genesis_before_loop', 'mai_do_term_description', 18 );
