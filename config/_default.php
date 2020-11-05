@@ -365,27 +365,27 @@ return [
 
 	'template-parts' => [
 		'before-header' => [
-			'location'   => 'genesis_before_header',
+			'hook'       => 'genesis_before_header',
 			'menu_order' => 5,
 			'before'     => '<div class="before-header template-part">',
 			'after'      => '</div>',
 		],
 		'header-left' => [
-			'location'   => 'mai_header_left',
+			'hook'       => 'mai_header_left',
 			'menu_order' => 10,
 		],
 		'header-right' => [
-			'location'   => 'mai_header_right',
+			'hook'       => 'mai_header_right',
 			'menu_order' => 15,
 		],
 		'mobile-menu' => [
-			'location'   => 'mai_after_header_wrap',
+			'hook'       => 'mai_after_header_wrap',
 			'before'     => '<div class="mobile-menu template-part"><div class="wrap">',
 			'after'      => '</div></div>',
 			'menu_order' => 20,
 		],
 		'after-header' => [
-			'location'   => 'genesis_after_header',
+			'hook'       => 'genesis_after_header',
 			'priority'   => 12,
 			'menu_order' => 25,
 			'before'     => '<div class="after-header template-part">',
@@ -395,16 +395,16 @@ return [
 			'menu_order' => 30,
 		],
 		'before-footer' => [
-			'location'   => 'genesis_footer',
+			'hook'       => 'genesis_footer',
 			'priority'   => 5,
 			'menu_order' => 35,
 		],
 		'footer' => [
-			'location'   => 'genesis_footer',
+			'hook'       => 'genesis_footer',
 			'menu_order' => 40,
 		],
 		'footer-credits' => [
-			'location'   => 'genesis_footer',
+			'hook'       => 'genesis_footer',
 			'priority'   => 12,
 			'menu_order' => 45,
 			'default'    => '<!-- wp:group {"align":"full","verticalSpacingTop":"xs","verticalSpacingBottom":"xs"} -->
