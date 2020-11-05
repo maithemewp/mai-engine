@@ -169,8 +169,18 @@ function mai_nav_menu_buttons( $classes, $item, $args, $depth ) {
 		if ( $id !== $item->ID ) {
 			return $atts;
 		}
+
+		static $done = [];
+
+		if ( in_array( $id, $done ) ) {
+			return $atts;
+		}
+
+		$done[]        = $item->ID;
 		$atts['class'] = mai_add_classes( $buttons, $atts['class'] );
+
 		return $atts;
+
 	}, 10, 4 );
 
 	// Remove button classes from menu item.
