@@ -54,7 +54,7 @@ function mai_author_box_gravatar( $size ) {
 	return isset( $image_sizes['tiny']['width'] ) ? $image_sizes['tiny']['width'] : $size;
 }
 
-add_action( 'genesis_archive_title_descriptions', 'mai_do_blog_description' );
+add_action( 'genesis_before_loop', 'mai_do_blog_description', 18 );
 /**
  * Output the static blog page content before the posts.
  *
