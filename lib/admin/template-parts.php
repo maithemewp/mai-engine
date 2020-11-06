@@ -254,7 +254,7 @@ function mai_widgets_template_parts_admin_notice( $screen ) {
 	add_action( 'admin_notices', function() {
 		printf(
 			'<div class="notice notice-warning is-dismissible"><p>%s <a href="%s">%s</a>.</p></div>',
-			__( 'Mai Theme uses block based widget areas called "Template Parts".', 'mai-engine' ),
+			__( 'Mai Theme uses block-based widget areas called "Template Parts".', 'mai-engine' ),
 			admin_url( 'edit.php?post_type=wp_template_part' ),
 			__( 'Edit template parts now', 'mai-engine' ),
 		);
