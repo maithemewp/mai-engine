@@ -754,10 +754,6 @@ function mai_get_menu( $menu, $args = [] ) {
 			'style' => '',
 		];
 
-		if ( $list ) {
-			$atts['style'] .= '--menu-display:block;--menu-item-link-padding:var(--spacing-xs) 0;';
-		}
-
 		if ( isset( $args['align'] ) && $args['align'] ) {
 			switch ( trim( $args['align'] ) ) {
 				case 'left':

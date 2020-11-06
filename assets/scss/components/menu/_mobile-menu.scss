@@ -1,9 +1,9 @@
 .mobile-menu {
 	--menu-item-width: 100%;
+	--menu-item-link-flex: 1;
 	--wrap-display: block;
 	--button-overlay-display: none;
 	--sub-menu-margin: 0 0 var(--spacing-md) var(--spacing-xxs);
-	--sub-menu-padding: 0;
 
 	position: absolute;
 	top: 100%;
@@ -17,8 +17,16 @@
 	border-bottom: var(--mobile-menu-border-bottom, var(--border));
 	animation: var(--mobile-menu-animation, none);
 
-	.menu-item.search {
+	@include mq(false, sm) {
+		--sub-menu-toggle-margin: 0 0 0 auto;
+	}
+
+	.menu-item-search {
 		display: none;
+	}
+
+	.menu-item-button {
+		--menu-item-margin: var(--spacing-sm) 0;
 	}
 }
 

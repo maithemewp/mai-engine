@@ -1,9 +1,9 @@
 .sub-menu {
 	--menu-item-width: 100%;
 	--menu-item-link-width: 100%;
-	--menu-item-link-padding: var(--sub-menu-item-link-padding, var(--spacing-xs) var(--spacing-md));
 	--menu-item-link-color: var(--sub-menu-link-color, var(--color-body));
 	--menu-item-link-color-hover: var(--sub-menu-link-color-hover, var(--color-primary));
+	--menu-item-link-padding: var(--spacing-sm) var(--spacing-md);
 
 	position: var(--sub-menu-position, relative);
 	top: var(--sub-menu-top, 100%);
@@ -34,7 +34,6 @@
 .sub-menu .sub-menu {
 	top: var(--sub-sub-menu-top, auto);
 	left: var(--sub-sub-menu-left, auto);
-	margin-left: var(--sub-sub-menu-margin-left, auto);
 	white-space: var(--sub-sub-menu-white-space, normal);
 }
 
@@ -43,18 +42,17 @@
 	--sub-menu-position: static;
 	--sub-menu-display: block;
 	--sub-menu-width: auto;
-	--sub-menu-margin: 0 0 0 var(--spacing-md);
+	--sub-menu-margin: 0 0 0 var(--spacing-lg);
+	--sub-menu-padding: 0;
 	--sub-menu-background: none;
 	--sub-menu-list-style: disc;
-	--sub-menu-item-link-padding: var(--spacing-xs) var(--spacing-xxs);
 	--sub-menu-border: none;
 	--sub-menu-opacity: 1;
 
 	.sub-menu {
 		--menu-item-display: list-item;
-		--menu-item-margin: var(--spacing-sm) 0 0;
-		--menu-item-link-display: inline;
-		--menu-item-link-padding: var(--spacing-xs) var(--spacing-xxs);
+		--menu-item-link-padding: var(--spacing-xs) 0;
+
 		text-align: start;
 	}
 }
