@@ -92,4 +92,74 @@ function mai_typography_customizer_settings() {
 			],
 		]
 	);
+
+	\Kirki::add_field(
+		$handle,
+		[
+			'type'        => 'switch',
+			'settings'    => 'flush-typography',
+			'label'       => __( 'Flush local fonts', 'mai-engine' ),
+			'description' => __( 'Warning: This will delete the entire /wp-content/fonts/ directory and all of it\'s contents. Enable this setting if your Google fonts are not loading correctly.', 'mai-engine' ),
+			'section'     => $section,
+			'transport'   => 'postMessage',
+			'choices' => [
+				'on'  => __( 'Flush once', 'kirki' ),
+				'off' => __( 'No', 'kirki' )
+			]
+		]
+	);
+}
+
+
+add_action( 'init', 'mai_typography_flush_local_fonts' );
+/**
+ * Deletes `/wp-content/fonts/` directory to allow Kirki to rebuild.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_typography_flush_local_fonts() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	$flush = mai_get_option( 'flush-typography' );
+
+	if ( ! $flush ) {
+		return;
+	}
+
+	$dir = WP_CONTENT_DIR . '/fonts';
+
+	// From get_local_files_from_css() in class-kirki-fonts-downloader.php.
+	if ( ! file_exists( $dir ) ) {
+		return;
+	}
+
+	$files = new RecursiveIteratorIterator(
+		new RecursiveDirectoryIterator(
+			$dir,
+			RecursiveDirectoryIterator::SKIP_DOTS
+		),
+		RecursiveIteratorIterator::CHILD_FIRST
+	);
+
+	if ( $files ) {
+		foreach ( $files as $file ) {
+			if ( $file->isDir() ) {
+				rmdir( $file->getRealPath() );
+			} else {
+				unlink( $file->getRealPath() );
+			}
+		}
+	}
+
+	rmdir( $dir );
+
+	// Set option back to false.
+	mai_update_option( 'flush-typography', 0 );
+
+	// Delete stored Kirki font data.
+	delete_option( 'kirki_downloaded_font_files' );
 }
