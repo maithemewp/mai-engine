@@ -236,6 +236,10 @@ add_filter( 'kirki_enqueue_google_fonts', 'mai_add_body_font_variants', 99 );
  * @return mixed
  */
 function mai_add_body_font_variants( $fonts ) {
+	if ( ! $fonts ) {
+		return $fonts;
+	}
+
 	$font_family = mai_get_font_family( 'body' );
 
 	// Return early if body font family not chosen.
@@ -272,6 +276,10 @@ add_filter( 'kirki_enqueue_google_fonts', 'mai_add_extra_google_fonts', 99 );
  * @return mixed
  */
 function mai_add_extra_google_fonts( $fonts ) {
+	if ( ! $fonts ) {
+		return $fonts;
+	}
+
 	// Convert to strings for later comparison.
 	foreach ( $fonts as $family => $weights ) {
 		$fonts[ $family ] = array_map( 'strval', $weights );
