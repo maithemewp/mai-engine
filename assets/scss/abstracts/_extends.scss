@@ -22,11 +22,11 @@
 	}
 
 	&:last-child {
-		margin-bottom: 0;
+		--heading-margin-bottom: 0;
 	}
 
 	.entry-content > &:not(:first-child) {
-		margin-top: var(--spacing-xxl);
+		--heading-margin-top: var(--spacing-xxl);
 	}
 }
 

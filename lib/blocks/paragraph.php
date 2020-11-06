@@ -14,6 +14,7 @@ add_action( 'init', 'mai_register_paragraph_styles' );
  * Add sub paragraph custom style.
  *
  * @since 0.1.0
+ * @since TBD Added heading block style.
  *
  * @return void
  */
@@ -21,6 +22,14 @@ function mai_register_paragraph_styles() {
 	if ( ! function_exists( 'register_block_style' ) ) {
 		return;
 	}
+
+	register_block_style(
+		'core/paragraph',
+		[
+			'name'  => 'heading',
+			'label' => __( 'Heading', 'mai-engine' ),
+		]
+	);
 
 	register_block_style(
 		'core/paragraph',
