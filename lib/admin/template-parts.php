@@ -26,7 +26,8 @@ function mai_maybe_create_template_parts( $current_screen ) {
 	$redirect  = admin_url( 'edit.php?post_type=wp_template_part' );
 	$message   = '';
 
-	if ( wp_verify_nonce( filter_var( $_REQUEST['mai_import_nonce'], FILTER_SANITIZE_STRING ), 'mai_import_nonce' )
+	if ( isset( $_REQUEST['mai_import_nonce'] )
+		&& wp_verify_nonce( filter_var( $_REQUEST['mai_import_nonce'], FILTER_SANITIZE_STRING ), 'mai_import_nonce' )
 		&& ( 'mai_import' === filter_input( INPUT_GET, 'mai_action', FILTER_SANITIZE_STRING ) )
 		&& ( 'wp_template_part' === filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) )
 		&& ( $slug = filter_input( INPUT_GET, 'mai_slug', FILTER_SANITIZE_STRING ) )
