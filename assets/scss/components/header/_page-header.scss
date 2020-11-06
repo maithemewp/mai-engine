@@ -9,7 +9,6 @@
 	color: var(--page-header-color, var(--color-body));
 	text-align: var(--page-header-text-align, center);
 	background: var(--page-header-background, var(--color-alt));
-	border-bottom: var(--page-header-border-bottom, var(--border));
 
 	--heading-color: currentColor;
 	--wrap-position: relative;
@@ -24,10 +23,6 @@
 
 .has-dark-page-header {
 	--page-header-color: var(--color-white);
-}
-
-.has-divider {
-	--page-header-border-bottom: 0;
 }
 
 .page-header-overlay {
