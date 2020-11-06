@@ -401,6 +401,31 @@ function mai_has_page_header_support_callback( $control ) {
 }
 
 /**
+ * Gets page header opacity, with fallbacks.
+ *
+ * @since  TBD
+ *
+ * @return float
+ */
+function mai_get_page_header_overlay_opacity() {
+	$opacity = (float) mai_get_template_arg( 'page-header-overlay-opacity' );
+
+	if ( '' !== $opacity && $opacity < 1 ) {
+		return $opacity;
+	}
+
+	if ( '' === $opacity || 1.0 === $opacity ) {
+		$opacity = (float) mai_get_option( 'page-header-background-color' );
+
+		if ( '' !== $opacity && $opacity < 1 ) {
+			return $opacity;
+		}
+	}
+
+	return (float) $config['overlay-opacity'];
+}
+
+/**
  * Quick and dirty way to mostly minify CSS.
  *
  * @since  0.1.0

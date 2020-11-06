@@ -168,9 +168,9 @@ function mai_add_page_header_content_type_css( $css ) {
 	}
 
 	$config     = mai_get_config( 'settings' )['page-header'];
-	$text       = mai_get_template_arg( 'page-header-text-color', mai_get_option( 'page-header-text-color', mai_get_color( $config['text-color'] ) ) );
-	$background = mai_get_template_arg( 'page-header-background-color', mai_get_option( 'page-header-background-color', mai_get_color( $config['background-color'] ) ) );
-	$opacity    = mai_get_template_arg( 'page-header-overlay-opacity', mai_get_option( 'page-header-overlay-opacity', (string) $config['overlay-opacity'] ) );
+	$text       = (string) mai_get_template_arg( 'page-header-text-color', mai_get_option( 'page-header-text-color', mai_get_color( $config['text-color'] ) ) );
+	$background = (string) mai_get_template_arg( 'page-header-background-color', mai_get_option( 'page-header-background-color', mai_get_color( $config['background-color'] ) ) );
+	$opacity    = (string) mai_get_page_header_overlay_opacity();
 
 	if ( $text ) {
 		$css['global'][':root']['--page-header-color'] = $text;
@@ -181,7 +181,7 @@ function mai_add_page_header_content_type_css( $css ) {
 	}
 
 	if ( '' !== $opacity ) {
-		$css['global'][':root']['--page-header-overlay-opacity'] = (string) $opacity;
+		$css['global'][':root']['--page-header-overlay-opacity'] = $opacity;
 	}
 
 	$spacing = mai_get_option( 'page-header-spacing', $config['spacing'] );

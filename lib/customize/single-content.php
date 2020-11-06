@@ -25,8 +25,8 @@ function mai_get_single_content_settings( $name = 'post' ) {
 	return [
 		[
 			'settings'    => 'show',
-			'label'       => esc_html__( 'Show', 'mai-engine' ),
-			'description' => esc_html__( 'Show/hide and re-order entry elements. Click "Toggle Hooks" to show Genesis hooks.', 'mai-engine' ),
+			'label'       => __( 'Show', 'mai-engine' ),
+			'description' => __( 'Show/hide and re-order entry elements. Click "Toggle Hooks" to show Genesis hooks.', 'mai-engine' ),
 			'type'        => 'sortable',
 			'sanitize'    => 'esc_html',
 			'default'     => $defaults['show'],
@@ -34,7 +34,7 @@ function mai_get_single_content_settings( $name = 'post' ) {
 		],
 		[
 			'settings'        => 'image_orientation',
-			'label'           => esc_html__( 'Image Orientation', 'mai-engine' ),
+			'label'           => __( 'Image Orientation', 'mai-engine' ),
 			'type'            => 'select',
 			'sanitize'        => 'esc_html',
 			'default'         => $defaults['image_orientation'],
@@ -49,7 +49,7 @@ function mai_get_single_content_settings( $name = 'post' ) {
 		],
 		[
 			'settings'        => 'image_size',
-			'label'           => esc_html__( 'Image Size', 'mai-engine' ),
+			'label'           => __( 'Image Size', 'mai-engine' ),
 			'type'            => 'select',
 			'sanitize'        => 'esc_html',
 			'default'         => $defaults['image_size'],
@@ -69,7 +69,7 @@ function mai_get_single_content_settings( $name = 'post' ) {
 		],
 		[
 			'settings'        => 'header_meta',
-			'label'           => esc_html__( 'Header Meta', 'mai-engine' ),
+			'label'           => __( 'Header Meta', 'mai-engine' ),
 			'type'            => 'text',
 			'sanitize'        => 'wp_kses_post',
 			'default'         => $defaults['header_meta'],
@@ -83,7 +83,7 @@ function mai_get_single_content_settings( $name = 'post' ) {
 		],
 		[
 			'settings'        => 'footer_meta',
-			'label'           => esc_html__( 'Footer Meta', 'mai-engine' ),
+			'label'           => __( 'Footer Meta', 'mai-engine' ),
 			'type'            => 'text',
 			'sanitize'        => 'wp_kses_post',
 			'default'         => $defaults['footer_meta'],
@@ -112,7 +112,7 @@ function mai_get_single_content_settings( $name = 'post' ) {
 		],
 		[
 			'settings'        => 'page-header-featured',
-			'label'           => esc_html__( 'Use featured image as page header image', 'mai-engine' ),
+			'label'           => __( 'Use featured image as page header image', 'mai-engine' ),
 			'type'            => 'checkbox',
 			'sanitize'        => 'mai_sanitize_bool',
 			'default'         => $defaults['page-header-featured'],
@@ -120,14 +120,15 @@ function mai_get_single_content_settings( $name = 'post' ) {
 		],
 		[
 			'settings'        => 'page-header-background-color',
-			'label'           => esc_html__( 'Background/overlay color', 'mai-engine' ),
+			'label'           => __( 'Background/overlay color', 'mai-engine' ),
 			'type'            => 'color',
 			'default'         => $defaults['page-header-background-color'],
 			'active_callback' => 'mai_has_page_header_support_callback',
 		],
 		[
 			'settings'        => 'page-header-overlay-opacity',
-			'label'           => esc_html__( 'The background color opacity when page header has an image', 'mai-engine' ),
+			'label'           => __( 'Overlay opacity', 'mai-engine' ),
+			'description'     => __( 'The background color opacity when page header has an image. Use 0 for none, and 1 for theme default.', 'mai-engine' ),
 			'type'            => 'slider',
 			'default'         => $defaults['page-header-overlay-opacity'],
 			'choices'         => [
@@ -139,7 +140,7 @@ function mai_get_single_content_settings( $name = 'post' ) {
 		],
 		[
 			'settings'        => 'page-header-text-color',
-			'label'           => esc_html__( 'Page header text color', 'mai-engine' ),
+			'label'           => __( 'Page header text color', 'mai-engine' ),
 			'type'            => 'radio-buttonset',
 			'default'         => $defaults['page-header-text-color'],
 			'choices'         => [

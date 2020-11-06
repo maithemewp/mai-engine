@@ -165,7 +165,7 @@ function mai_page_header_customizer_settings() {
 			'settings'    => 'page-header-overlay-opacity',
 			'section'     => $section,
 			'label'       => __( 'Overlay opacity', 'mai-engine' ),
-			'description' => __( 'The background color opacity when page header has an image', 'mai-engine' ),
+			'description' => __( 'The background color opacity when page header has an image. Use 0 for none, and 1 for theme default.', 'mai-engine' ),
 			'default'     => $defaults['overlay-opacity'],
 			'choices'     => [
 				'min'  => 0,

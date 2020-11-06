@@ -671,7 +671,8 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 		],
 		[
 			'settings'        => 'page-header-overlay-opacity',
-			'label'           => __( 'The background color opacity when page header has an image', 'mai-engine' ),
+			'label'           => __( 'Overlay opacity', 'mai-engine' ),
+			'description'     => __( 'The background color opacity when page header has an image. Use 0 for none, and 1 for theme default.', 'mai-engine' ),
 			'type'            => 'slider',
 			'default'         => $defaults['page-header-overlay-opacity'],
 			'choices'         => [
