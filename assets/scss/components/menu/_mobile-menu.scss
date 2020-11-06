@@ -32,6 +32,10 @@
 
 .has-dark-header {
 	--mobile-menu-background: var(--color-heading);
+
+	.mobile-menu {
+		--menu-item-link-color: var(--color-white);
+	}
 }
 
 .mobile-menu-visible {

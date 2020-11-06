@@ -20,19 +20,15 @@
 .sub-menu-toggle-icon {
 	width: 0.4em;
 	height: 0.4em;
-	margin-top: var(--sub-menu-toggle-icon-margin-top, -0.15em);
 	border-color: var(--menu-item-link-color, var(--color-heading));
 	border-style: solid;
 	border-top: 0;
 	border-right-width: 2px;
 	border-bottom-width: 2px;
 	border-left: 0;
-	// transform: var(--sub-menu-toggle-transform, translate(-0.2em) rotate(45deg));
 	transform: var(--sub-menu-toggle-transform, rotate(45deg));
 }
 
 .active {
-	--sub-menu-toggle-icon-margin-top: 0.15em;
-	// --sub-menu-toggle-transform: translate(0.2em) rotate(-135deg);
 	--sub-menu-toggle-transform: rotate(-135deg);
 }
