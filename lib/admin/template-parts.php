@@ -238,6 +238,29 @@ function mai_template_parts_order( $query ) {
 	$query->set( 'order', 'ASC' );
 }
 
+add_action( 'current_screen', 'mai_widgets_template_parts_admin_notice' );
+/**
+ * Adds admin notice for template parts to widgets screen.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_widgets_template_parts_admin_notice( $screen ) {
+	if ( 'widgets' !== $screen->id ) {
+		return;
+	}
+
+	add_action( 'admin_notices', function() {
+		printf(
+			'<div class="notice notice-warning is-dismissible"><p>%s <a href="%s">%s</a>.</p></div>',
+			__( 'Mai Theme uses block based widget areas called "Template Parts".', 'mai-engine' ),
+			admin_url( 'edit.php?post_type=wp_template_part' ),
+			__( 'Edit template parts now', 'mai-engine' ),
+		);
+	});
+}
+
 add_action( 'load-edit.php', 'mai_template_parts_admin_notice' );
 /**
  * Adds admin notice to template parts.
