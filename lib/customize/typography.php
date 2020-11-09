@@ -42,7 +42,7 @@ function mai_typography_customizer_settings() {
 			'description' => __( 'Default: ', 'mai-engine' ) . $body_font_family . ' ' . $body_font_weight,
 			'default'     => [
 				'font-family' => $body_font_family,
-				'font-weight' => $body_font_weight,
+				'variant'     => $body_font_weight,
 			],
 			'output'      => [
 				[
@@ -74,7 +74,7 @@ function mai_typography_customizer_settings() {
 			'description' => __( 'Default: ', 'mai-engine' ) . $heading_font_family . ' ' . $heading_font_weight,
 			'default'     => [
 				'font-family' => $heading_font_family,
-				'font-weight' => $heading_font_weight,
+				'variant'     => $heading_font_weight,
 			],
 			'output'      => [
 				[

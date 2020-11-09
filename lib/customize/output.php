@@ -157,6 +157,11 @@ function mai_add_body_font_variants( $fonts ) {
 	// Remove duplicates.
 	$fonts[ $font_family ] = array_flip( array_flip( $fonts[ $font_family ] ) );
 
+	// Make all variants strings.
+	foreach ( $fonts as $name => $variants ) {
+		$fonts[ $name ] = array_map( 'strval', $variants );
+	}
+
 	return $fonts;
 }
 
