@@ -188,7 +188,7 @@ return [
 			'location' => 'customizer',
 		],
 		'editor'     => [
-			'deps'     => [ 'jquery', 'jquery-ui-sortable' ],
+			'deps'     => [ 'jquery', 'jquery-ui-sortable', 'wp-blocks', 'wp-dom' ],
 			'location' => 'editor',
 			'localize' => [
 				'name' => 'maiEditorVars',

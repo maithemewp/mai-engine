@@ -1,24 +1,22 @@
-const { __ } = wp.i18n;
-
 wp.domReady( () => {
-	wp.blocks.unregisterBlockStyle( 'core/button', 'fill' );
-	wp.blocks.unregisterBlockStyle( 'core/button', 'outline' );
+	wp.blocks.unregisterBlockStyle(
+		'core/button',
+		[ 'outline', 'squared', 'fill' ]
+	);
 
-	wp.blocks.registerBlockStyle( 'core/button', {
-		name: 'primary',
-		label: __( 'Primary' )
-	} );
 	wp.blocks.registerBlockStyle( 'core/button', {
 		name: 'secondary',
-		label: __( 'Secondary' )
+		label: maiEditorVars.secondary
 	} );
+
 	wp.blocks.registerBlockStyle( 'core/button', {
 		name: 'outline',
-		label: __( 'Outline' )
+		label: maiEditorVars.outline
 	} );
+
 	wp.blocks.registerBlockStyle( 'core/button', {
 		name: 'link',
-		label: __( 'Link' )
+		label: maiEditorVars.link
 	} );
 } );
 
@@ -34,74 +32,74 @@ wp.domReady( () => {
 		return args;
 	} );
 
-	var maiIcons = [ 'mai_icon_choices', 'mai_icon_brand_choices' ];
-	var maiPost  = maiEditorVars.post;
-	var maiTerm  = maiEditorVars.term;
-	// var maiUser  = maiEditorVars.user;
+	var icons = [ 'mai_icon_choices', 'mai_icon_brand_choices' ];
+	var post  = maiEditorVars.post;
+	var term  = maiEditorVars.term;
+	// var user  = maiEditorVars.user;
 
 	acf.addFilter( 'select2_ajax_data', function( data, args, $input, field, instance ) {
 
 		// If Mai Icon or Icon (Brands) select field.
-		if ( maiIcons.includes( data.field_key ) ) {
+		if ( icons.includes( data.field_key ) ) {
 			data.style = acf.getField( 'mai_icon_style' ).val(); // Style.
 		}
 
 		// Mai Post Grid.
-		if ( Object.values( maiPost ).includes( data.field_key ) ) {
+		if ( Object.values( post ).includes( data.field_key ) ) {
 
 			// Bail if the post_type field.
-			if ( maiPost.post_type === data.field_key ) {
+			if ( post.post_type === data.field_key ) {
 				return data;
 			}
 
 			// If Posts/Entries field.
-			if ( maiPost.post__in === data.field_key ) {
-				data.post_type = getPostType( $input, maiPost );
+			if ( post.post__in === data.field_key ) {
+				data.post_type = getPostType( $input, post );
 			}
 
 			// If Exclude Entries field.
-			if ( maiPost.post__not_in === data.field_key ) {
-				data.post_type = getPostType( $input, maiPost );
+			if ( post.post__not_in === data.field_key ) {
+				data.post_type = getPostType( $input, post );
 			}
 
 			// If Taxonomy field.
-			if ( maiPost.taxonomy === data.field_key ) {
-				data.post_type = getPostType( $input, maiPost );
+			if ( post.taxonomy === data.field_key ) {
+				data.post_type = getPostType( $input, post );
 			}
 
 			// If Terms field.
-			if ( maiPost.terms === data.field_key ) {
-				data.taxonomy = getRowTaxonomy( $input, maiPost );
+			if ( post.terms === data.field_key ) {
+				data.taxonomy = getRowTaxonomy( $input, post );
 			}
 
 			// If Parent field
-			if ( maiPost.post_parent__in === data.field_key ) {
-				data.post_type = getPostType( $input, maiPost );
+			if ( post.post_parent__in === data.field_key ) {
+				data.post_type = getPostType( $input, post );
 			}
 
 		}
 
 		// Mai Term Grid.
-		if ( Object.values( maiTerm ).includes( data.field_key ) ) {
+		if ( Object.values( term ).includes( data.field_key ) ) {
 
 			// Bail if the taxonomy field.
-			if ( maiTerm.taxonomy === data.field_key ) {
+			if ( term.taxonomy === data.field_key ) {
 				return data;
 			}
 
 			// If Terms/Entries field.
-			if ( maiTerm.include === data.field_key ) {
-				data.taxonomy = getTaxonomy( $input, maiTerm );
+			if ( term.include === data.field_key ) {
+				data.taxonomy = getTaxonomy( $input, term );
 			}
 
 			// If Exclude Entries field.
-			if ( maiTerm.exclude === data.field_key ) {
-				data.taxonomy = getTaxonomy( $input, maiTerm );
+			if ( term.exclude === data.field_key ) {
+				data.taxonomy = getTaxonomy( $input, term );
 			}
 
 			// If Parent field.
-			if ( maiTerm.parent === data.field_key ) {
-				data.taxonomy = getTaxonomy( $input, maiTerm );
+			if ( term.parent === data.field_key ) {
+				data.taxonomy = getTaxonomy( $input, term );
 			}
 
 		}

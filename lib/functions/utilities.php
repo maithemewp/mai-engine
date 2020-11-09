@@ -871,7 +871,14 @@ function mai_get_editor_localized_data() {
 	$palette  = mai_get_editor_color_palette();
 	$palette  = wp_list_pluck( $palette, 'color', 'slug' );
 	$palette  = array_values( $palette ); // Remove keys.
-	$data     = [ 'palette' => $palette ];
+	$data     = [
+		'palette'   => $palette,
+		'primary'   => __( 'Primary', 'mai-engine' ),
+		'secondary' => __( 'Secondary', 'mai-engine' ),
+		'outline'   => __( 'Outline', 'mai-engine' ),
+		'link'      => __( 'Link', 'mai-engine' ),
+	];
+
 	$settings = mai_get_grid_block_settings();
 
 	foreach ( $settings as $key => $field ) {
