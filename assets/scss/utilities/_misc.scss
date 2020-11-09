@@ -22,7 +22,7 @@
 
 .is-sticky {
 	position: sticky;
-	top: var(--scroll-margin-top, calc(var(--site-header-top, 0px) + var(--spacing-lg))); // Requires 0px value fallback. 0 breaks this.
+	top: var(--scroll-margin-top, calc(var(--body-top) + var(--spacing-lg)));
 }
 
 .is-circle,

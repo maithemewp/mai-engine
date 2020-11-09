@@ -29,7 +29,7 @@
 
 	@include mq(sm) {
 		--site-header-position: sticky;
-		--site-header-top: 0;
+		--site-header-top: var(--body-top);
 	}
 }
 
