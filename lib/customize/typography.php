@@ -12,8 +12,13 @@
 add_action( 'init', 'mai_typography_customizer_settings' );
 /**
  * Add Customizer font settings.
+ * Font weights don't work in output so using undocumented `css_vars`.
+ *
+ * @link https://github.com/kirki-framework/kirki/issues/2019
+ * @link https://github.com/kirki-framework/kirki/issues/1561
  *
  * @since 2.0.0
+ * @since TBD Changed to css_vars for custom property output.
  *
  * @return void
  */
