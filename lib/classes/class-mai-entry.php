@@ -860,6 +860,14 @@ class Mai_Entry {
 		 */
 		$wrap = apply_filters( 'mai_entry_title_wrap', $wrap, $this->args, $this->entry );
 
+		$atts = [
+			'class' => 'entry-title',
+		];
+
+		if ( 'single' === $this->context ) {
+			$atts['class'] .= ' entry-title-single';
+		}
+
 		// Build the output.
 		$output = genesis_markup(
 			[
@@ -868,6 +876,7 @@ class Mai_Entry {
 				'content' => $title,
 				'context' => 'entry-title',
 				'echo'    => false,
+				'atts'    => $atts,
 				'params'  => [
 					'wrap'  => $wrap,
 					'args'  => $this->args,
