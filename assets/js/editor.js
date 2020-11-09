@@ -34,74 +34,74 @@ wp.domReady( () => {
 		return args;
 	} );
 
-	var icons = [ 'mai_icon_choices', 'mai_icon_brand_choices' ];
-	var post  = maiEditorVars.post;
-	var term  = maiEditorVars.term;
-	var user  = maiEditorVars.user;
+	var maiIcons = [ 'mai_icon_choices', 'mai_icon_brand_choices' ];
+	var maiPost  = maiEditorVars.post;
+	var maiTerm  = maiEditorVars.term;
+	// var maiUser  = maiEditorVars.user;
 
 	acf.addFilter( 'select2_ajax_data', function( data, args, $input, field, instance ) {
 
 		// If Mai Icon or Icon (Brands) select field.
-		if ( icons.includes( data.field_key ) ) {
+		if ( maiIcons.includes( data.field_key ) ) {
 			data.style = acf.getField( 'mai_icon_style' ).val(); // Style.
 		}
 
 		// Mai Post Grid.
-		if ( Object.values( post ).includes( data.field_key ) ) {
+		if ( Object.values( maiPost ).includes( data.field_key ) ) {
 
 			// Bail if the post_type field.
-			if ( post.post_type === data.field_key ) {
+			if ( maiPost.post_type === data.field_key ) {
 				return data;
 			}
 
 			// If Posts/Entries field.
-			if ( post.post__in === data.field_key ) {
-				data.post_type = getPostType( $input, post );
+			if ( maiPost.post__in === data.field_key ) {
+				data.post_type = getPostType( $input, maiPost );
 			}
 
 			// If Exclude Entries field.
-			if ( post.post__not_in === data.field_key ) {
-				data.post_type = getPostType( $input, post );
+			if ( maiPost.post__not_in === data.field_key ) {
+				data.post_type = getPostType( $input, maiPost );
 			}
 
 			// If Taxonomy field.
-			if ( post.taxonomy === data.field_key ) {
-				data.post_type = getPostType( $input, post );
+			if ( maiPost.taxonomy === data.field_key ) {
+				data.post_type = getPostType( $input, maiPost );
 			}
 
 			// If Terms field.
-			if ( post.terms === data.field_key ) {
-				data.taxonomy = getRowTaxonomy( $input, post );
+			if ( maiPost.terms === data.field_key ) {
+				data.taxonomy = getRowTaxonomy( $input, maiPost );
 			}
 
 			// If Parent field
-			if ( post.post_parent__in === data.field_key ) {
-				data.post_type = getPostType( $input, post );
+			if ( maiPost.post_parent__in === data.field_key ) {
+				data.post_type = getPostType( $input, maiPost );
 			}
 
 		}
 
 		// Mai Term Grid.
-		if ( Object.values( term ).includes( data.field_key ) ) {
+		if ( Object.values( maiTerm ).includes( data.field_key ) ) {
 
 			// Bail if the taxonomy field.
-			if ( term.taxonomy === data.field_key ) {
+			if ( maiTerm.taxonomy === data.field_key ) {
 				return data;
 			}
 
 			// If Terms/Entries field.
-			if ( term.include === data.field_key ) {
-				data.taxonomy = getTaxonomy( $input, term );
+			if ( maiTerm.include === data.field_key ) {
+				data.taxonomy = getTaxonomy( $input, maiTerm );
 			}
 
 			// If Exclude Entries field.
-			if ( term.exclude === data.field_key ) {
-				data.taxonomy = getTaxonomy( $input, term );
+			if ( maiTerm.exclude === data.field_key ) {
+				data.taxonomy = getTaxonomy( $input, maiTerm );
 			}
 
 			// If Parent field.
-			if ( term.parent === data.field_key ) {
-				data.taxonomy = getTaxonomy( $input, term );
+			if ( maiTerm.parent === data.field_key ) {
+				data.taxonomy = getTaxonomy( $input, maiTerm );
 			}
 
 		}
