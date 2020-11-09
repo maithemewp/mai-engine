@@ -143,15 +143,20 @@ function mai_add_body_font_variants( $fonts ) {
 	}
 
 	// Set variants if they exist.
-	$italic = mai_get_italic_variant( 'body' );
-	$bold   = mai_get_bold_variant( 'body' );
+	$bold        = mai_get_bold_variant( 'body' );
+	$italic      = mai_get_italic_variant( 'body' );
+	$bold_italic = mai_get_bold_italic_variant( 'body' );
+
+	if ( $bold ) {
+		$fonts[ $font_family ][] = $bold;
+	}
 
 	if ( $italic ) {
 		$fonts[ $font_family ][] = $italic;
 	}
 
-	if ( $bold ) {
-		$fonts[ $font_family ][] = $bold;
+	if ( $bold_italic ) {
+		$fonts[ $font_family ][] = $bold_italic;
 	}
 
 	// Remove duplicates.

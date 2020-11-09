@@ -141,43 +141,37 @@ function mai_get_font_weight( $element ) {
 }
 
 /**
- * Returns the best match italic variant of a given element.
+ * Returns the bold italic variant of a given element.
  *
- * @since 2.0.0
+ * @since TBD
  *
  * @param string $element Element to check.
  *
  * @return string
  */
-function mai_get_italic_variant( $element ) {
-	$italic          = '';
-	$kirki_fonts     = Kirki_Fonts::get_instance();
-	$google_fonts    = $kirki_fonts::get_google_fonts();
-	$font_family     = mai_get_font_family( $element );
-	$regular_weight  = mai_get_font_weight( $element );
-	$default_weights = mai_get_default_font_weights( $element );
+function mai_get_bold_italic_variant( $element ) {
+	$bold = mai_get_bold_variant( $element );
+
+	if ( ! $bold ) {
+		return;
+	}
+
+	$kirki_fonts  = Kirki_Fonts::get_instance();
+	$google_fonts = $kirki_fonts::get_google_fonts();
+	$font_family  = mai_get_font_family( $element );
 
 	if ( ! isset( $google_fonts[ $font_family ] ) ) {
-		return $italic;
+		return;
 	}
 
 	$variants = array_flip( $google_fonts[ $font_family ]['variants'] );
+	$variant  = $bold . 'italic';
 
-	if ( isset( $variants[ $regular_weight . 'italic' ] ) ) {
-		$italic = $regular_weight . 'italic';
-
-	} elseif ( isset( $variants['italic'] ) ) {
-		$italic = 'italic';
-
-	} elseif ( ! empty( $default_weights ) ) {
-		foreach ( $default_weights as $weight ) {
-			if ( mai_has_string( 'i', $weight ) ) {
-				$italic = $weight;
-			}
-		}
+	if ( ! isset( $variants[ $variant ] ) ) {
+		return;
 	}
 
-	return $italic;
+	return $variant;
 }
 
 /**
@@ -223,4 +217,44 @@ function mai_get_bold_variant( $element ) {
 	}
 
 	return $bold;
+}
+
+/**
+ * Returns the best match italic variant of a given element.
+ *
+ * @since 2.0.0
+ *
+ * @param string $element Element to check.
+ *
+ * @return string
+ */
+function mai_get_italic_variant( $element ) {
+	$italic          = '';
+	$kirki_fonts     = Kirki_Fonts::get_instance();
+	$google_fonts    = $kirki_fonts::get_google_fonts();
+	$font_family     = mai_get_font_family( $element );
+	$regular_weight  = mai_get_font_weight( $element );
+	$default_weights = mai_get_default_font_weights( $element );
+
+	if ( ! isset( $google_fonts[ $font_family ] ) ) {
+		return $italic;
+	}
+
+	$variants = array_flip( $google_fonts[ $font_family ]['variants'] );
+
+	if ( isset( $variants[ $regular_weight . 'italic' ] ) ) {
+		$italic = $regular_weight . 'italic';
+
+	} elseif ( isset( $variants['italic'] ) ) {
+		$italic = 'italic';
+
+	} elseif ( ! empty( $default_weights ) ) {
+		foreach ( $default_weights as $weight ) {
+			if ( mai_has_string( 'i', $weight ) ) {
+				$italic = $weight;
+			}
+		}
+	}
+
+	return $italic;
 }
