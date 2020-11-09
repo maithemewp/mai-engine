@@ -957,11 +957,23 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_content() {
-		genesis_markup(
+		$open = genesis_markup(
 			[
 				'open'    => '<div %s>',
 				'context' => 'entry-content',
-				'echo'    => true,
+				'echo'    => false,
+				'params'  => [
+					'args'  => $this->args,
+					'entry' => $this->entry,
+				],
+			]
+		);
+
+		$close = genesis_markup(
+			[
+				'close'   => '</div>',
+				'context' => 'entry-content',
+				'echo'    => false,
 				'params'  => [
 					'args'  => $this->args,
 					'entry' => $this->entry,
@@ -971,7 +983,9 @@ class Mai_Entry {
 
 		// Single needs the_content() directly, to parse_blocks and other filters.
 		if ( 'single' === $this->context ) {
+			echo $open;
 			the_content();
+			echo $close;
 
 		} else {
 
@@ -995,20 +1009,15 @@ class Mai_Entry {
 				$content = mai_get_content_limit( $content, $this->args['content_limit'] );
 			}
 
+			if ( ! $content ) {
+				return;
+			}
+
+			echo $open;
 			echo $content;
+			echo $close;
 		}
 
-		genesis_markup(
-			[
-				'close'   => '</div>',
-				'context' => 'entry-content',
-				'echo'    => true,
-				'params'  => [
-					'args'  => $this->args,
-					'entry' => $this->entry,
-				],
-			]
-		);
 	}
 
 	/**
