@@ -62,12 +62,14 @@ i {
 blockquote {
 	margin: var(--blockquote-margin, (1em auto));
 	padding: var(--blockquote-padding, 1em);
+	color: var(--blockquote-color, unset);
 	font-weight: var(--blockquote-font-weight, normal);
 	font-size: var(--blockquote-font-size, (1em));
 	font-family: var(--blockquote-font-family, inherit);
 	font-style: var(--blockquote-font-style, italic);
 	line-height: var(--blockquote-line-height, normal);
 	text-align: var(--blockquote-text-align, inherit);
+	background: var(--blockquote-background, unset);
 	border-top: var(--blockquote-border-top, 0);
 	border-right: var(--blockquote-border-right, 0);
 	border-bottom: var(--blockquote-border-bottom, 0);
