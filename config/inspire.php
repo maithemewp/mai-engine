@@ -22,7 +22,7 @@ return [
 			'secondary' => '#894b32',
 			'heading'   => '#002627',
 			'body'      => '#252323',
-			// 'alt'    => '#e6e0ce',
+			'alt'       => '#e9e8e3',
 			'black'     => '#222222',
 		],
 		'fonts' => [
