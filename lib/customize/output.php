@@ -122,7 +122,7 @@ function mai_add_button_text_colors( $css ) {
 
 add_filter( 'kirki_enqueue_google_fonts', 'mai_add_body_font_variants', 99 );
 /**
- * Automatically load italic and bold variations of body font family.
+ * Loads italic and bold variations of body font family.
  *
  * @since 2.0.0
  *
@@ -263,9 +263,8 @@ function mai_add_fonts_custom_properties( $css ) {
 		$css['global'][':root']['--font-weight-bold'] = $font_weight_bold;
 	}
 
-
 	foreach ( $fonts as $element => $string ) {
-		if ( 'body' === $element || 'heading' === $element ) {
+		if ( in_array( $element, [ 'body', 'heading' ] ) ) {
 			continue;
 		}
 

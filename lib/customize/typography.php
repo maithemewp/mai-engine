@@ -44,19 +44,9 @@ function mai_typography_customizer_settings() {
 				'font-family' => $body_font_family,
 				'variant'     => $body_font_weight,
 			],
-			'output'      => [
-				[
-					'element'  => ':root',
-					'property' => '--body-font-family',
-					'choice'   => 'font-family',
-					'context'  => [ 'front', 'editor' ],
-				],
-				[
-					'element'  => ':root',
-					'property' => '--body-font-weight',
-					'choice'   => 'font-weight',
-					'context'  => [ 'front', 'editor' ],
-				],
+			'css_vars'    => [
+				[ '--body-font-family', '$', 'font-family' ],
+				[ '--body-font-weight', '$', 'variant' ],
 			],
 		]
 	);
@@ -76,19 +66,9 @@ function mai_typography_customizer_settings() {
 				'font-family' => $heading_font_family,
 				'variant'     => $heading_font_weight,
 			],
-			'output'      => [
-				[
-					'element'  => ':root',
-					'property' => '--heading-font-family',
-					'choice'   => 'font-family',
-					'context'  => [ 'front', 'editor' ],
-				],
-				[
-					'element'  => ':root',
-					'property' => '--heading-font-weight',
-					'choice'   => 'font-weight',
-					'context'  => [ 'front', 'editor' ],
-				],
+			'css_vars'    => [
+				[ '--heading-font-family', '$', 'font-family' ],
+				[ '--heading-font-weight', '$', 'variant' ],
 			],
 		]
 	);
