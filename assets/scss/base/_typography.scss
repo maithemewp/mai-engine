@@ -1,7 +1,7 @@
 a {
 	color: var(--link-color, var(--color-link));
 	text-decoration: var(--link-text-decoration, none);
-	text-underline-offset: var(--link-text-decoration-offset, var(--spacing-xs)); // Not all browsers support this yet.
+	text-underline-offset: var(--link-text-decoration-offset, var(--spacing-xxs)); // Not all browsers support this yet.
 	word-break: var(--link-word-break, break-word);
 	transition: var(--link-transition, var(--transition));
 
@@ -9,7 +9,7 @@ a {
 	&:focus {
 		color: var(--link-color-hover, var(--color-link));
 		text-decoration: var(--link-text-decoration-hover, underline);
-		text-underline-offset: var(--link-text-decoration-offset-hover, var(--link-text-decoration-offset, var(--spacing-xs)));
+		text-underline-offset: var(--link-text-decoration-offset-hover, var(--link-text-decoration-offset, var(--spacing-xxs)));
 		outline-color: var(--color-body);
 		filter: var(--link-filter-hover, unset);
 	}
