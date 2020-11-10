@@ -1,7 +1,7 @@
 .author-box {
 	width: 100%;
-	margin: var(--spacing-xl) auto;
-	padding: var(--spacing-xl);
+	margin: var(--author-box-margin, var(--spacing-xl) auto);
+	padding: var(--author-box-padding, var(--spacing-xl));
 	color: var(--author-box-color, unset);
 	text-align: var(--author-box-text-align, center);
 	background: var(--author-box-background, unset);
@@ -10,20 +10,21 @@
 	box-shadow: var(--author-box-shadow, var(--shadow));
 
 	.avatar {
+		margin: var(--author-box-avatar-margin, 0 0 var(--spacing-md));
 		margin-bottom: var(--spacing-md);
 	}
 
 	@include mq(sm) {
 		--author-box-text-align: start;
+		--author-box-avatar-margin: 0;
 
 		display: grid;
-		grid-column-gap: var(--spacing-lg);
+		grid-column-gap: var(--author-box-grid-column-gap, var(--spacing-lg));
 		grid-template-rows: 1fr;
 		grid-template-columns: auto 1fr;
 
 		.avatar {
 			grid-row: 1/all;
-			margin: 0;
 		}
 
 		> *:not(.avatar) {

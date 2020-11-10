@@ -74,14 +74,30 @@ return [
 		 *
 		 * @since TBD
 		 *
-		 * @param   array  The existing body classes.
+		 * @param array $classes The existing body classes.
 		 *
-		 * @return  array  Modified classes.
+		 * @return array Modified classes.
 		 */
 		add_filter( 'body_class', 'mai_inspire_body_class' );
 		function mai_inspire_body_class( $classes ) {
 			$classes[] = 'has-dark-header';
 			return $classes;
+		}
+
+		add_filter( 'genesis_author_box_gravatar_size', 'mai_inspire_author_box_gravatar' );
+		/**
+		 * Use thumbnail image size for author box avatar.
+		 *
+		 * @since TBD
+		 *
+		 * @param int $size The existing size.
+		 *
+		 * @return int
+		 */
+		function mai_inspire_author_box_gravatar( $size ) {
+			$image_sizes = mai_get_available_image_sizes();
+
+			return isset( $image_sizes['thumbnail']['width'] ) ? $image_sizes['thumbnail']['width'] : $size;
 		}
 	},
 ];
