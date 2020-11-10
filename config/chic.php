@@ -36,6 +36,14 @@ return [
 		],
 	],
 	'settings'          => [
+		'site-layouts'     => [
+			'default'         => [
+				'site'           => 'content-sidebar',
+			],
+			'single'          => [
+				'page'           => 'standard-content',
+			],
+		],
 		'content-archives' => [
 			'post'            => [
 				'show'           => [
@@ -54,14 +62,6 @@ return [
 				'boxed'          => false,
 				'columns'        => '1',
 				'row_gap'        => 'xxxl',
-			],
-		],
-		'site-layouts'     => [
-			'default'         => [
-				'site'           => 'content-sidebar',
-			],
-			'single'          => [
-				'page'           => 'standard-content',
 			],
 		],
 		'single-content'   => [
