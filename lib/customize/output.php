@@ -261,20 +261,32 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_fonts_custom_properties' );
  */
 function mai_add_fonts_custom_properties( $css ) {
 	$font_weight_bold = mai_get_bold_variant( 'body' );
-	$global_styles    = mai_get_global_styles();
-	$fonts            = $global_styles['fonts'];
+	$fonts_config     = mai_get_global_styles( 'fonts' );
 
 	if ( $font_weight_bold ) {
 		$css['global'][':root']['--font-weight-bold'] = $font_weight_bold;
 	}
 
-	foreach ( $fonts as $element => $string ) {
-		if ( in_array( $element, [ 'body', 'heading' ] ) ) {
-			continue;
-		}
+	unset( $fonts_config['body'] );
+	unset( $fonts_config['heading'] );
 
-		$css['global'][':root'][ '--' . $element . '-font-family' ] = mai_get_default_font_family( $element );
-		$css['global'][':root'][ '--' . $element . '-font-weight' ] = mai_get_default_font_weight( $element );
+	if ( $fonts_config ) {
+		foreach ( $fonts_config as $element => $string ) {
+			$css['global'][':root'][ '--' . $element . '-font-family' ] = mai_get_default_font_family( $element );
+			$css['global'][':root'][ '--' . $element . '-font-weight' ] = mai_get_default_font_weight( $element );
+		}
+	}
+
+	// Add font style if italic is used as the default.
+	$body_weight    = mai_get_font_weight( 'body' );
+	$heading_weight = mai_get_font_weight( 'heading' );
+
+	if ( mai_has_string( 'italic', $body_weight ) ) {
+		$css['global'][':root'][ '--body-font-style' ] = 'italic';
+	}
+
+	if ( mai_has_string( 'italic', $heading_weight ) ) {
+		$css['global'][':root'][ '--heading-font-style' ] = 'italic';
 	}
 
 	return $css;

@@ -240,6 +240,11 @@ function mai_get_italic_variant( $element ) {
 		return $italic;
 	}
 
+	// Bail if regular weight is already italic.
+	if ( mai_has_string( 'italic', $regular_weight ) ) {
+		return $italic;
+	}
+
 	$variants = array_flip( $google_fonts[ $font_family ]['variants'] );
 
 	if ( isset( $variants[ $regular_weight . 'italic' ] ) ) {
