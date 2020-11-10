@@ -95,7 +95,8 @@ class Mai_Entry {
 		$this->id          = $this->get_id();
 		$this->url         = $this->get_url();
 		$this->breakpoints = mai_get_breakpoints();
-		$this->link_entry  = apply_filters( 'mai_link_entry', true, $this->args, $this->entry );
+		$this->link_entry  = ( 'single' !== $this->context );
+		$this->link_entry  = apply_filters( 'mai_link_entry', $this->link_entry, $this->args, $this->entry );
 		$this->image_size  = $this->get_image_size();
 	}
 
@@ -222,7 +223,7 @@ class Mai_Entry {
 		}
 
 		// Overlay link.
-		if ( $this->link_entry && ( 'single' !== $this->context ) && ( 'background' === $this->args['image_position'] ) ) {
+		if ( $this->link_entry && ( 'background' === $this->args['image_position'] ) ) {
 			printf( '<a href="%s" class="entry-overlay"></a>', $this->url );
 		}
 
@@ -380,7 +381,7 @@ class Mai_Entry {
 			return;
 		}
 
-		$link_image = $this->link_entry && ( 'single' !== $this->context ) && ( 'background' !== $this->args['image_position'] );
+		$link_image = $this->link_entry && ( 'background' !== $this->args['image_position'] );
 		$wrap       = $link_image ? 'a' : 'figure';
 		$atts       = [
 			'class' => 'entry-image-link',
@@ -1136,7 +1137,7 @@ class Mai_Entry {
 			return;
 		}
 
-		$more_link_text  = isset( $this->args['more_link_text'] ) && $this->args['more_link_text'] ? $this->args['more_link_text'] : mai_get_read_more_text();
+		$more_link_text = isset( $this->args['more_link_text'] ) && $this->args['more_link_text'] ? $this->args['more_link_text'] : mai_get_read_more_text();
 
 		// Screen reader text title.
 		switch ( $this->type ) {
