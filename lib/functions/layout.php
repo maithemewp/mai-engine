@@ -17,7 +17,7 @@ add_filter( 'genesis_site_layout', 'mai_site_layout' );
  * Use Mai Engine layout.
  *
  * @since 0.1.0
- * @since TBD Removed $use_cache param since it's no longer necessary.
+ * @since 2.6.0 Removed $use_cache param since it's no longer necessary.
  *
  * @return string
  */
@@ -129,7 +129,7 @@ add_action( 'template_redirect', 'mai_content_width' );
  * Filter the content width based on the user selected layout.
  *
  * @since 0.1.0
- * @since TBD Change to template_redirect since after_setup_theme was too early for mai_site_layout() function.
+ * @since 2.6.0 Change to template_redirect since after_setup_theme was too early for mai_site_layout() function.
  *
  * @return void
  */

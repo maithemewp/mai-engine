@@ -13,7 +13,7 @@ add_filter( 'render_block', 'mai_render_search_block', 10, 2 );
 /**
  * Add our button classes to the search button.
  *
- * @since  TBD
+ * @since  2.6.0
  *
  * @param  string $block_content The existing block content.
  * @param  object $block         The button block object.

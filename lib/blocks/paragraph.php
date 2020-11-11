@@ -14,7 +14,7 @@ add_action( 'init', 'mai_register_paragraph_styles' );
  * Add paragraph custom styles.
  *
  * @since 0.1.0
- * @since TBD Added heading block style.
+ * @since 2.6.0 Added heading block style.
  *
  * @return void
  */

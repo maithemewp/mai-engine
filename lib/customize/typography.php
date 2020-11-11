@@ -18,7 +18,7 @@ add_action( 'init', 'mai_typography_customizer_settings' );
  * @link https://github.com/kirki-framework/kirki/issues/1561
  *
  * @since 2.0.0
- * @since TBD Changed to css_vars for custom property output.
+ * @since 2.6.0 Changed to css_vars for custom property output.
  *
  * @return void
  */
@@ -100,7 +100,7 @@ add_action( 'init', 'mai_typography_flush_local_fonts' );
 /**
  * Deletes `/wp-content/fonts/` directory to allow Kirki to rebuild.
  *
- * @since TBD
+ * @since 2.6.0
  *
  * @return void
  */

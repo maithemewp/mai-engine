@@ -72,7 +72,7 @@ return [
 		/**
 		 * Add custom body class.
 		 *
-		 * @since TBD
+		 * @since 2.6.0
 		 *
 		 * @param array $classes The existing body classes.
 		 *
@@ -88,7 +88,7 @@ return [
 		/**
 		 * Use thumbnail image size for author box avatar.
 		 *
-		 * @since TBD
+		 * @since 2.6.0
 		 *
 		 * @param int $size The existing size.
 		 *

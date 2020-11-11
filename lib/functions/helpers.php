@@ -403,7 +403,7 @@ function mai_has_page_header_support_callback( $control ) {
 /**
  * Gets page header opacity, with fallbacks.
  *
- * @since  TBD
+ * @since  2.6.0
  *
  * @return float
  */

@@ -123,7 +123,7 @@ function mai_has_image_orientiation( $orientation ) {
  * with srcset for our registered image sizes.
  *
  * @since  2.0.0
- * @since  TBD Added $max_width parameter.
+ * @since  2.6.0 Added $max_width parameter.
  *
  * @param  mixed      $image_id  The image ID or URL.
  * @param  array      $atts      Any image attributes to add to the attachment.

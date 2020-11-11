@@ -143,7 +143,7 @@ function mai_get_font_weight( $element ) {
 /**
  * Returns the bold italic variant of a given element.
  *
- * @since TBD
+ * @since 2.6.0
  *
  * @param string $element Element to check.
  *

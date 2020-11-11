@@ -13,7 +13,7 @@ add_filter( 'admin_body_class', 'mai_admin_body_classes' );
 /**
  * Add additional classes to the body element.
  *
- * @since TBD
+ * @since 2.6.0
  *
  * @param array $classes Body classes.
  *

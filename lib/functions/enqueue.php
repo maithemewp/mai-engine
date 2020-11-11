@@ -17,7 +17,7 @@ add_action( 'init', 'mai_genesis_style_trump' );
  * Loads theme stylesheet.
  *
  * @since 0.1.0
- * @since TBD Load child theme stylesheet after all engine styles if no style trump.
+ * @since 2.6.0 Load child theme stylesheet after all engine styles if no style trump.
  *
  * @return void
  */

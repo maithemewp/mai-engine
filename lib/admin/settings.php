@@ -99,7 +99,7 @@ function mai_render_admin_menu_page() {
 /**
  * Add docs and support admin submenu items.
  *
- * @since TBD
+ * @since 2.6.0
  *
  * @return void
  */

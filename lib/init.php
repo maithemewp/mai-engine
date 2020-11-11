@@ -211,8 +211,8 @@ function mai_remove_genesis_default_widget_areas() {
  * Load default favicon.
  *
  * @since 2.4.3
- * @since TBD Changed function name to avoid clash when switching from v1 to v2.
- * @since TBD Check mai_get_url() function exists. We saw this run too early and fail.
+ * @since 2.6.0 Changed function name to avoid clash when switching from v1 to v2.
+ * @since 2.6.0 Check mai_get_url() function exists. We saw this run too early and fail.
  * @link  https://github.com/maithemewp/mai-engine/issues/361
  *
  * @return string

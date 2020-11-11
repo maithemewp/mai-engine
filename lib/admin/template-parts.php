@@ -7,7 +7,7 @@ add_action( 'current_screen', 'mai_maybe_create_template_parts' );
  *
  * @since 2.0.0
  * @since 2.4.0 Removed unnecesarry wp_doing_ajax() call since solving https://github.com/maithemewp/mai-engine/issues/251.
- * @since TBD Imports template parts from the demo via REST API when action link is clicked.
+ * @since 2.6.0 Imports template parts from the demo via REST API when action link is clicked.
  *
  * @param WP_Screen $current_screen Current WP_Screen object.
  *
@@ -75,7 +75,7 @@ add_filter( 'post_row_actions', 'mai_template_parts_import_row_action', 10, 2 );
 /**
  * Adds row action to import a template part from the demo if it exists.
  *
- * @since TBD
+ * @since 2.6.0
  *
  * @param array   $actions The existing options.
  * @param WP_Post $post    The current post.
@@ -242,7 +242,7 @@ add_action( 'current_screen', 'mai_widgets_template_parts_admin_notice' );
 /**
  * Adds admin notice for template parts to widgets screen.
  *
- * @since TBD
+ * @since 2.6.0
  *
  * @return void
  */
@@ -265,7 +265,7 @@ add_action( 'load-edit.php', 'mai_template_parts_admin_notice' );
 /**
  * Adds admin notice to template parts.
  *
- * @since TBD
+ * @since 2.6.0
  *
  * @return void
  */
@@ -289,7 +289,7 @@ add_action( 'after_switch_theme', 'mai_default_theme_template_parts' );
 /**
  * Sets demo template parts on theme switch.
  *
- * @since TBD
+ * @since 2.6.0
  *
  * @return void
  */

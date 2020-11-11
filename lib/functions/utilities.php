@@ -877,7 +877,7 @@ function mai_get_dom_first_child( $dom ) {
 /**
  * Checks if the current site scheme is https.
  *
- * @since TBD
+ * @since 2.6.0
  *
  * @access private
  *

@@ -263,7 +263,7 @@ function mai_get_svg_icon_url( $name, $style = 'light' ) {
 /**
  * Converts an svg xmlns attribute to https if the site uses https.
  *
- * @since TBD
+ * @since 2.6.0
  *
  * @access private
  *

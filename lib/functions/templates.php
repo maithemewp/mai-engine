@@ -181,7 +181,7 @@ function mai_get_template_part( $slug ) {
 /**
  * Returns an array of existing template part IDs.
  *
- * @since TBD
+ * @since 2.6.0
  *
  * @return array
  */
@@ -204,7 +204,7 @@ function mai_get_template_part_ids() {
 /**
  * Returns a template part ID from slug.
  *
- * @since TBD
+ * @since 2.6.0
  *
  * @param string $slug The template part slug.
  *
@@ -220,7 +220,7 @@ function mai_get_template_part_id( $slug ) {
  * Returns an array of template parts.
  * Slugs must exist in the config.
  *
- * @since TBD
+ * @since 2.6.0
  *
  * @return array
  */
@@ -313,7 +313,7 @@ function mai_render_template_part( $slug, $before = '', $after = '' ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.6.0
  *
  * @return array
  */
@@ -352,7 +352,7 @@ function mai_create_template_parts() {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.6.0
  *
  * @param false|string $force If 'always', forces the import by trashing an existing template part.
  *                            If 'empty', forces the import by trashing an existing template that has no content.
@@ -380,7 +380,7 @@ function mai_import_template_parts( $force = false ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.6.0
  *
  * @param string       $slug  The template part slug to import.
  * @param false|string $force If 'always', forces the import by trashing an existing template part.
@@ -459,7 +459,7 @@ function mai_import_template_part( $slug, $force = false ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.6.0
  *
  * @param string $content The existing content.
  *
@@ -645,7 +645,7 @@ function mai_localize_blocks( $content ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.6.0
  *
  * @param string $filename The image filename/slug.
  *
@@ -677,7 +677,7 @@ function mai_get_existing_attachment_from_filename( $filename ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.6.0
  *
  * @param string $image_url The image url.
  * @param string $filename  The image filename/slug.
@@ -707,7 +707,7 @@ function mai_get_new_image_from_url( $image_url, $filename = '' ) {
  *
  * Requires Mai Demo Exporter plugin to be active on the demo site.
  *
- * @since TBD
+ * @since 2.6.0
  *
  * @return array
  */
