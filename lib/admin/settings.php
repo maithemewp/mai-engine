@@ -9,15 +9,18 @@
  * @license   GPL-2.0-or-later
  */
 
-add_action( 'admin_menu', 'mai_admin_menu_page', 0 );
+add_action( 'admin_menu', 'mai_admin_menu_pages', 0 );
 /**
- * Registers plugin admin menu page.
+ * Registers plugin admin menu pages.
+ * Exposes Reusable Blocks UI in backend.
+ *
+ * @link  https://www.billerickson.net/reusable-blocks-accessible-in-wordpress-admin-area
  *
  * @since 0.1.0
  *
  * @return void
  */
-function mai_admin_menu_page() {
+function mai_admin_menu_pages() {
 	add_menu_page(
 		esc_html__( 'Mai Theme', 'mai-engine' ),
 		esc_html__( 'Mai Theme', 'mai-engine' ),
@@ -26,6 +29,36 @@ function mai_admin_menu_page() {
 		'mai_render_admin_menu_page',
 		mai_get_url() . 'assets/svg/mai-icon-white.svg',
 		59
+	);
+
+	add_submenu_page(
+		'mai-theme',
+		esc_html__( 'Template Parts', 'mai-engine' ),
+		esc_html__( 'Template Parts', 'mai-engine' ),
+		'edit_posts',
+		'edit.php?post_type=wp_template_part',
+		'',
+		null
+	);
+
+	add_submenu_page(
+		'mai-theme',
+		esc_html__( 'Reusable Blocks', 'mai-engine' ),
+		esc_html__( 'Reusable Blocks', 'mai-engine' ),
+		'edit_posts',
+		'edit.php?post_type=wp_block',
+		'',
+		null
+	);
+
+	add_submenu_page(
+		'themes.php',
+		esc_html__( 'Reusable Blocks', 'mai-engine' ),
+		esc_html__( 'Reusable Blocks', 'mai-engine' ),
+		'edit_posts',
+		'edit.php?post_type=wp_block',
+		'',
+		22
 	);
 }
 
@@ -63,26 +96,26 @@ function mai_render_admin_menu_page() {
 	echo '</div>';
 }
 
-add_action( 'admin_menu', 'mai_show_reusable_blocks_admin_menu' );
 /**
- * Exposes Reusable Blocks UI in backend.
+ * Add docs and support admin submenu items.
  *
- * @link  https://www.billerickson.net/reusable-blocks-accessible-in-wordpress-admin-area
- *
- * @since 0.1.0
+ * @since 2.6.0
  *
  * @return void
  */
-function mai_show_reusable_blocks_admin_menu() {
-	$title = esc_html__( 'Reusable Blocks', 'mai-engine' );
+add_action( 'admin_menu', 'mai_admin_menu_subpages', 12 );
+function mai_admin_menu_subpages() {
+	global $submenu;
 
-	add_submenu_page(
-		'themes.php',
-		$title,
-		$title,
+	$submenu['mai-theme'][] = [
+		__( 'Documentation', 'mai-engine' ),
 		'edit_posts',
-		'edit.php?post_type=wp_block',
-		'',
-		22
-	);
+		'https://docs.bizbudding.com/',
+	];
+
+	$submenu['mai-theme'][] = [
+		__( 'Support', 'mai-engine' ),
+		'edit_posts',
+		'https://docs.bizbudding.com/support/',
+	];
 }

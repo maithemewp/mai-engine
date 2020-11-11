@@ -1,5 +1,64 @@
 # Changelog
 
+## 2.6.0 (11/11/20)
+* Added: Documentation and Support links under Mai Theme Dashboard menu.
+* Added: Also added Template Parts and Reusable Blocks link under Mai Theme Dashboard menu, leaving them under Appearance as well.
+* Added: Margin settings, inclucing Overlap, to Group/Cover/Image blocks.
+* Added: Heading and Subheading block styles to the Paragraph block.
+* Added: Alternating images setting to Mai Post/Term Grid blocks.
+* Added: The block editor now respects content width of chosen layout. Page refresh required when changing the layout in the editor itself.
+* Added: New has-light-background helper class to force dark text on Cover block when using light images.
+* Added: New has-{size}-margin-left/right helper classes.
+* Added: New is-sticky helper class.
+* Added: New has-border and has-border-radius helper classes.
+* Added: New "Import From Demo" link in Template Parts to automatically import invidiual template parts from the demo.
+* Added: New "Flush local fonts"
+* Added: SVG's now work as logos when using a plugin or code to enable SVG uploads.
+* Added: Dismissable admin notice on Widgets screen to get to Template Parts.
+* Changed: WP toolbar is now fixed positioned on large screens, and uses default positioning from WP.
+* Changed: WP core Columns block now uses core breakpoints for responsive behavior.
+* Changed: Search block now uses secondary button color.
+* Changed: More refined cite/caption CSS styling.
+* Changed: Submenus now inherit default border-radius from the theme.
+* Changed: Entry meta wrap is now a div instead of span, so you can do more with Header/Footer meta Customizer fields.
+* Changed: Remove unecessary EDD dependency plugin when using Easy Digital Downloads.
+* Changed: Now passing all `$args` to grid query args PHP filters.
+* Changed: Remove unecessary styling on After Entry template part.
+* Changed: Load child theme stylesheet last when "Load in footer" is not on in Customizer.
+* Changed: Update ACF Pro to 5.9.3.
+* Changed: More efficient image loading when using "Auto" columns in Mai Post/Term Grid blocks.
+* Changed: Template Parts uses a new structure in config.php.
+* Changed: Simplified menu and submenu CSS.
+* Changed: Page Header overlay now allows 0 for overlay, or 1 to use default/fallback overlay.
+* Changed: Removed unecessary border bottom on page header.
+* Changed: Added top spacing on button block wrap and entry read more link to match paragraph bottom spacing and line height.
+* Changed: Added more button margin to the main entry title on singular content.
+* Fixed: Social links block breaking links (adding an extra s in httpss) in some instances.
+* Fixed: Bold and italic and sometimes default font weights and variants not loading correctly in some instances.
+* Fixed: Google fonts still being loaded even when none are used in Customizer.
+* Fixed: Links and headings with long words not wrapping on smaller screens.
+* Fixed: More refined transparent/fixed header JS to fix various glitches when resizing/scrolling in some instances.
+* Fixed: Fixed background image on Cover block not working when transparent header was enabled.
+* Fixed: More performant/efficient background cover image.
+* Fixed: More srcset/performance improvements for entry images.
+* Fixed: Margin default causing issues on Heading block in some scenarios.
+* Fixed: Mobile menu links not visible when using a dark background and sticky header at certain screen widths.
+* Fixed: Unecessary :visited styles for buttons.
+* Fixed: Button classes being duplicated when multiple menus are on a page.
+* Fixed: Search and date archives not using choice in Site Layouts.
+* Fixed: PHP error when using Exclude Displayed setting in Mai Post Grid block in some scenarios.
+* Fixed: Fatal error when switching directly from a v1 to v2 theme.
+* Fixed: Wide align causing content to get cut off in the editor on smaller screens.
+* Fixed: Paragraph block padding when setting a background color.
+* Fixed: Structured data error with page-header itemref.
+* Fixed: Allow menu search icon to work in Before Header template part.
+* Fixed: Menu item buttons now use menu font size.
+* Fixed: Make sure "Active" post state only shows on Template Parts.
+* Fixed: Entry content margins being when nesting entries in some scenarios.
+* Fixed: Grid "Display boxed styling" is now available even if not showing images.
+* Fixed: Blog description not showing when Page Header was using on the blog archive.
+* Fixed: Body and heading Google fonts can now use italic as the default style.
+
 ## 2.5.2 (10/2/20)
 * Changed: Editors can now edit template parts.
 * Changed: Slightly more performant query when getting template parts.

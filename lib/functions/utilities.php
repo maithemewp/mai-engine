@@ -210,14 +210,48 @@ function mai_get_config( $sub_config = 'default' ) {
 	$path   = mai_get_dir() . 'config/' . $theme . '.php';
 
 	if ( is_readable( $path ) ) {
-		$config = array_replace_recursive( $config, require $path );
+		$new    = require $path;
+		$config = array_replace_recursive( $config, $new );
+		if ( isset( $new['settings']['content-archives'] ) ) {
+			foreach ( $new['settings']['content-archives'] as $key => $settings ) {
+				if ( ! ( isset( $new['settings']['content-archives'][ $key ]['show'] ) && isset( $config['settings']['content-archives'][ $key ]['show'] ) ) ) {
+					continue;
+				}
+				$config['settings']['content-archives'][ $key ]['show'] = $new['settings']['content-archives'][ $key ]['show'];
+			}
+		}
+		if ( isset( $new['settings']['single-content'] ) ) {
+			foreach ( $new['settings']['single-content'] as $key => $settings ) {
+				if ( ! ( isset( $new['settings']['single-content'][ $key ]['show'] ) && isset( $config['settings']['single-content'][ $key ]['show'] ) ) ) {
+					continue;
+				}
+				$config['settings']['single-content'][ $key ]['show'] = $new['settings']['single-content'][ $key ]['show'];
+			}
+		}
 	}
 
 	// Allow users to override from within actual child theme.
 	$child = get_stylesheet_directory() . '/config.php';
 
 	if ( is_readable( $child ) ) {
-		$config = array_replace_recursive( $config, require $child );
+		$new    = require $child;
+		$config = array_replace_recursive( $config, $new );
+		if ( isset( $new['settings']['content-archives'] ) ) {
+			foreach ( $new['settings']['content-archives'] as $key => $settings ) {
+				if ( ! ( isset( $new['settings']['content-archives'][ $key ]['show'] ) ) && isset( $config['settings']['content-archives'][ $key ]['show'] ) ) {
+					continue;
+				}
+				$config['settings']['content-archives'][ $key ]['show'] = $new['settings']['content-archives'][ $key ]['show'];
+			}
+		}
+		if ( isset( $new['settings']['single-content'] ) ) {
+			foreach ( $new['settings']['single-content'] as $key => $settings ) {
+				if ( ! ( isset( $new['settings']['single-content'][ $key ]['show'] ) ) && isset( $config['settings']['single-content'][ $key ]['show'] ) ) {
+					continue;
+				}
+				$config['settings']['single-content'][ $key ]['show'] = $new['settings']['single-content'][ $key ]['show'];
+			}
+		}
 	}
 
 	$config = apply_filters( 'mai_config', $config );
@@ -754,10 +788,6 @@ function mai_get_menu( $menu, $args = [] ) {
 			'style' => '',
 		];
 
-		if ( $list ) {
-			$atts['style'] .= '--menu-display:block;--menu-item-link-padding:var(--spacing-xs) 0;';
-		}
-
 		if ( isset( $args['align'] ) && $args['align'] ) {
 			switch ( trim( $args['align'] ) ) {
 				case 'left':
@@ -845,6 +875,26 @@ function mai_get_dom_first_child( $dom ) {
 }
 
 /**
+ * Checks if the current site scheme is https.
+ *
+ * @since 2.6.0
+ *
+ * @access private
+ *
+ * @return bool
+ */
+function mai_is_https() {
+	static $https = null;
+
+	if ( is_null( $https ) ) {
+		$url   = wp_parse_url( home_url() );
+		$https = 'https' === $url['scheme'];
+	}
+
+	return $https;
+}
+
+/**
  * Localize data for editor JS.
  *
  * @since 0.1.0
@@ -855,7 +905,14 @@ function mai_get_editor_localized_data() {
 	$palette  = mai_get_editor_color_palette();
 	$palette  = wp_list_pluck( $palette, 'color', 'slug' );
 	$palette  = array_values( $palette ); // Remove keys.
-	$data     = [ 'palette' => $palette ];
+	$data     = [
+		'palette'   => $palette,
+		'primary'   => __( 'Primary', 'mai-engine' ),
+		'secondary' => __( 'Secondary', 'mai-engine' ),
+		'outline'   => __( 'Outline', 'mai-engine' ),
+		'link'      => __( 'Link', 'mai-engine' ),
+	];
+
 	$settings = mai_get_grid_block_settings();
 
 	foreach ( $settings as $key => $field ) {

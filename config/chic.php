@@ -36,6 +36,14 @@ return [
 		],
 	],
 	'settings'          => [
+		'site-layouts'     => [
+			'default'         => [
+				'site'           => 'content-sidebar',
+			],
+			'single'          => [
+				'page'           => 'standard-content',
+			],
+		],
 		'content-archives' => [
 			'post'            => [
 				'show'           => [
@@ -56,14 +64,6 @@ return [
 				'row_gap'        => 'xxxl',
 			],
 		],
-		'site-layouts'     => [
-			'default'         => [
-				'site'           => 'content-sidebar',
-			],
-			'single'          => [
-				'page'           => 'standard-content',
-			],
-		],
 		'single-content'   => [
 			'post'            => [
 				'show'           => [
@@ -79,6 +79,8 @@ return [
 					'footer_meta',
 					'genesis_entry_footer',
 					'after_entry',
+					'author_box',
+					'adjacent_entry_nav',
 				],
 			],
 		],

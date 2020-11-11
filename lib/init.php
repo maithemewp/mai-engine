@@ -195,7 +195,7 @@ function mai_modify_genesis_defaults() {
 
 add_action( 'genesis_setup', 'mai_remove_genesis_default_widget_areas', 8 );
 /**
- * Remove Genesis default widget areas.
+ * Removes Genesis default widget areas.
  *
  * We'll re-register them via our config.
  *
@@ -211,12 +211,18 @@ function mai_remove_genesis_default_widget_areas() {
  * Load default favicon.
  *
  * @since 2.4.3
+ * @since 2.6.0 Changed function name to avoid clash when switching from v1 to v2.
+ * @since 2.6.0 Check mai_get_url() function exists. We saw this run too early and fail.
+ * @link  https://github.com/maithemewp/mai-engine/issues/361
  *
  * @return string
  */
-add_filter( 'genesis_pre_load_favicon', 'mai_default_favicon' );
-function mai_default_favicon( $favicon ) {
-	return mai_get_url() . 'assets/img/icon-256x256.png';
+add_filter( 'genesis_pre_load_favicon', 'mai_load_default_favicon' );
+function mai_load_default_favicon( $favicon ) {
+	if ( function_exists( 'mai_get_url' ) ) {
+		return mai_get_url() . 'assets/img/icon-256x256.png';
+	}
+	return $favicon;
 }
 
 add_action( 'after_setup_theme', 'mai_load_files', 0 );
@@ -300,8 +306,9 @@ function mai_load_files() {
 		'blocks/heading',
 		'blocks/icon',
 		'blocks/image',
-		'blocks/settings',
 		'blocks/paragraph',
+		'blocks/search',
+		'blocks/settings',
 		'blocks/social-links',
 
 		// Customizer.
@@ -330,6 +337,7 @@ function mai_load_files() {
 				'admin/editor',
 				'admin/hide-elements',
 				'admin/images',
+				'admin/notices',
 				'admin/page-header',
 				'admin/settings',
 				'admin/setup-wizard',

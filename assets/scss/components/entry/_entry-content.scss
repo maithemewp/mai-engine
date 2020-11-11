@@ -2,6 +2,6 @@
 	margin: var(--entry-content-margin, 0 0 var(--entry-content-margin-bottom, var(--spacing-md)));
 
 	&:last-child {
-		--entry-content-margin-bottom: 0;
+		margin-bottom: 0;
 	}
 }

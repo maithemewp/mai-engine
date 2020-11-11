@@ -51,19 +51,28 @@ function mai_do_entries_open( $args ) {
 		$attributes['class'] .= ' has-image-' . $args['image_position'];
 
 		if ( in_array( $args['image_position'], [ 'background', 'left-full', 'right-full' ], true ) ) {
-			$aspect_ratio        = mai_has_image_orientiation( $args['image_orientation'] ) ? mai_get_aspect_ratio_from_orientation( $args['image_orientation'] ) : mai_get_image_aspect_ratio( $args['image_size'] );
+			$aspect_ratio         = mai_has_image_orientiation( $args['image_orientation'] ) ? mai_get_aspect_ratio_from_orientation( $args['image_orientation'] ) : mai_get_image_aspect_ratio( $args['image_size'] );
 			$attributes['style'] .= sprintf( '--aspect-ratio:%s;', $aspect_ratio );
 		}
 
 		if ( 'custom' === $args['image_orientation'] ) {
 
-			$image_sizes         = mai_get_available_image_sizes();
-			$image_size          = $image_sizes[ $args['image_size'] ];
+			$image_sizes          = mai_get_available_image_sizes();
+			$image_size           = $image_sizes[ $args['image_size'] ];
 			$attributes['style'] .= sprintf( '--entry-image-link-max-width:%spx;', $image_size['width'] );
 
 		} else {
 
 			if ( mai_has_string( [ 'left', 'right' ], $args['image_position'] ) ) {
+
+				// Image alternating.
+				if ( $args['image_alternate'] ) {
+					if ( mai_has_string( 'left', $args['image_position'] ) ) {
+						$attributes['class'] .= ' has-image-odd-first';
+					} elseif ( mai_has_string( 'right', $args['image_position'] ) ) {
+						$attributes['class'] .= ' has-image-even-first';
+					}
+				}
 
 				// Image width.
 				switch ( $args['image_width'] ) {

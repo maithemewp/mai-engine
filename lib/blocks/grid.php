@@ -336,13 +336,16 @@ function mai_acf_load_show( $field ) {
 	// Get existing values, which are sorted correctly, without infinite loop.
 	remove_filter( 'acf/load_field/key=mai_grid_block_show', 'mai_acf_load_show' );
 
-	$existing = get_field( 'show' );
 	$defaults = $field['choices'];
+	$existing = get_field( 'show' );
+
+	// Make sure only valid choices are used.
+	$existing = $existing ? array_intersect_key( array_flip( $existing ), $defaults ) : [];
 
 	add_filter( 'acf/load_field/key=mai_grid_block_show', 'mai_acf_load_show' );
 
 	// If we have existing values, reorder them.
-	$field['choices'] = $existing ? array_merge( array_flip( $existing ), $defaults ) : $field['choices'];
+	$field['choices'] = $existing ? array_merge( $existing, $defaults ) : $field['choices'];
 
 	return $field;
 }
@@ -825,6 +828,91 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
+		'mai_grid_block_image_alternate'           => [
+			'name'       => 'image_alternate',
+			'label'      => '',
+			'block'      => [ 'post', 'term', 'user' ],
+			'type'       => 'true_false',
+			'sanitize'   => 'mai_sanitize_bool',
+			'default'    => '',
+			'atts'       => [
+				'message' => esc_html__( 'Display images alternating', 'mai-engine' ),
+			],
+			'conditions' => [
+				[
+					[
+						'field'    => 'mai_grid_block_show',
+						'operator' => '==',
+						'value'    => 'image',
+					],
+					[
+						'field'    => 'mai_grid_block_image_position',
+						'operator' => '==',
+						'value'    => 'left-top',
+					],
+				],
+				[
+					[
+						'field'    => 'mai_grid_block_show',
+						'operator' => '==',
+						'value'    => 'image',
+					],
+					[
+						'field'    => 'mai_grid_block_image_position',
+						'operator' => '==',
+						'value'    => 'left-middle',
+					],
+				],
+				[
+					[
+						'field'    => 'mai_grid_block_show',
+						'operator' => '==',
+						'value'    => 'image',
+					],
+					[
+						'field'    => 'mai_grid_block_image_position',
+						'operator' => '==',
+						'value'    => 'left-full',
+					],
+				],
+				[
+					[
+						'field'    => 'mai_grid_block_show',
+						'operator' => '==',
+						'value'    => 'image',
+					],
+					[
+						'field'    => 'mai_grid_block_image_position',
+						'operator' => '==',
+						'value'    => 'right-top',
+					],
+				],
+				[
+					[
+						'field'    => 'mai_grid_block_show',
+						'operator' => '==',
+						'value'    => 'image',
+					],
+					[
+						'field'    => 'mai_grid_block_image_position',
+						'operator' => '==',
+						'value'    => 'right-middle',
+					],
+				],
+				[
+					[
+						'field'    => 'mai_grid_block_show',
+						'operator' => '==',
+						'value'    => 'image',
+					],
+					[
+						'field'    => 'mai_grid_block_image_position',
+						'operator' => '==',
+						'value'    => 'right-full',
+					],
+				],
+			],
+		],
 		'mai_grid_block_image_width'              => [
 			'name'       => 'image_width',
 			'label'      => esc_html__( 'Image Width', 'mai-engine' ),
@@ -1240,6 +1328,13 @@ function mai_get_grid_block_settings() {
 				'message'    => esc_html__( 'Display boxed styling', 'mai-engine' ),
 			],
 			'conditions'  => [
+				[
+					[
+						'field'    => 'mai_grid_block_show',
+						'operator' => '!=',
+						'value'    => 'image',
+					],
+				],
 				[
 					[
 						'field'    => 'mai_grid_block_show',

@@ -82,8 +82,18 @@
 	--entry-image-link-margin: 0 0 0 var(--column-gap);
 }
 
-[class*="has-image-right"] {
+[class*="has-image-right-"] {
 	--entry-image-link-order: 1;
+}
+
+.has-image-odd-first .entry:nth-child(even) {
+	--entry-image-link-order: 2;
+	--entry-image-link-margin: 0 0 0 var(--column-gap);
+}
+
+.has-image-even-first .entry:nth-child(odd) {
+	--entry-image-link-order: -1;
+	--entry-image-link-margin: 0 var(--column-gap) 0 0;
 }
 
 .has-boxed.has-image-full,

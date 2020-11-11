@@ -1,4 +1,6 @@
 body {
+	--body-top: 0px; // Requires 0px value. 0 breaks this when it's used in calc() in some instances.
+
 	display: flex;
 	flex-direction: column;
 	min-height: var(--body-min-height, 100vh);
@@ -6,4 +8,12 @@ body {
 	overflow-x: hidden; // Prevent horizontal scrollbars.
 
 	@include body;
+
+	@media only screen and (min-width: 545px) and (max-width: 782px) {
+		--body-top: 46px;
+	}
+
+	@media only screen and (min-width: 783px) {
+		--body-top: 32px;
+	}
 }

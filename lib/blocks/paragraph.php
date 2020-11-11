@@ -9,6 +9,37 @@
  * @license   GPL-2.0-or-later
  */
 
+add_action( 'init', 'mai_register_paragraph_styles' );
+/**
+ * Add paragraph custom styles.
+ *
+ * @since 0.1.0
+ * @since 2.6.0 Added heading block style.
+ *
+ * @return void
+ */
+function mai_register_paragraph_styles() {
+	if ( ! function_exists( 'register_block_style' ) ) {
+		return;
+	}
+
+	register_block_style(
+		'core/paragraph',
+		[
+			'name'  => 'heading',
+			'label' => __( 'Heading', 'mai-engine' ),
+		]
+	);
+
+	register_block_style(
+		'core/paragraph',
+		[
+			'name'  => 'subheading',
+			'label' => __( 'Subheading', 'mai-engine' ),
+		]
+	);
+}
+
 add_filter( 'render_block', 'mai_render_paragraph_block', 10, 2 );
 /**
  * Remove empty paragraph block markup.

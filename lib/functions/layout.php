@@ -17,20 +17,44 @@ add_filter( 'genesis_site_layout', 'mai_site_layout' );
  * Use Mai Engine layout.
  *
  * @since 0.1.0
- *
- * @param bool $use_cache Whether to use memoization or not.
+ * @since 2.6.0 Removed $use_cache param since it's no longer necessary.
  *
  * @return string
  */
-function mai_site_layout( $use_cache = true ) {
+function mai_site_layout() {
 	static $site_layout = null;
 
-	// Cache option added to prevent $GLOBALS['content_width'] breaking.
-	if ( ! is_null( $site_layout ) && $use_cache ) {
+	if ( ! is_null( $site_layout ) ) {
 		return esc_attr( $site_layout );
 	}
 
-	if ( is_singular() || ( is_home() && ! genesis_is_root_page() ) ) {
+	$name = null;
+
+	if ( is_admin() ) {
+		global $pagenow;
+
+		$site_layout = 'wide-content';
+
+		if ( 'post.php' !== $pagenow ) {
+			return $site_layout;
+		}
+
+		$post_id = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
+
+		if ( ! $post_id ) {
+			return $site_layout;
+		}
+
+		$single_layout = genesis_get_custom_field( '_genesis_layout', $post_id );
+
+		if ( $single_layout ) {
+			$site_layout = $single_layout;
+			return $single_layout;
+		}
+
+		$name = get_post_type( $post_id );
+
+	} elseif ( is_singular() || ( is_home() && ! genesis_is_root_page() ) ) {
 		$post_id     = is_home() ? get_option( 'page_for_posts' ) : null;
 		$site_layout = genesis_get_custom_field( '_genesis_layout', $post_id );
 
@@ -69,15 +93,16 @@ function mai_site_layout( $use_cache = true ) {
 		}
 
 		$context = null;
-		$name    = null;
 
-		if ( mai_is_type_archive() ) {
-			$context = 'archive';
-			$name    = mai_get_archive_args_name();
+		if ( ! $name ) {
+			if ( mai_is_type_archive() ) {
+				$context = 'archive';
+				$name    = mai_get_archive_args_name();
 
-		} elseif ( mai_is_type_single() ) {
-			$context = 'single';
-			$name    = mai_get_singular_args_name();
+			} elseif ( mai_is_type_single() ) {
+				$context = 'single';
+				$name    = mai_get_singular_args_name();
+			}
 		}
 
 		// Context by content name.
@@ -99,16 +124,17 @@ function mai_site_layout( $use_cache = true ) {
 	return $site_layout;
 }
 
-add_action( 'after_setup_theme', 'mai_content_width' );
+add_action( 'template_redirect', 'mai_content_width' );
 /**
  * Filter the content width based on the user selected layout.
  *
- * @since 1.0.0
+ * @since 0.1.0
+ * @since 2.6.0 Change to template_redirect since after_setup_theme was too early for mai_site_layout() function.
  *
  * @return void
  */
 function mai_content_width() {
-	$layout = mai_site_layout( false );
+	global $GLOBALS;
 
 	// Taken from assets/scss/layout/_content.scss.
 	$breakpoints = [
@@ -119,7 +145,7 @@ function mai_content_width() {
 		'narrow-content'   => 'sm',
 	];
 
-	$width = mai_isset( $breakpoints, $layout, 'md' );
+	$width = mai_isset( $breakpoints, mai_site_layout(), 'md' );
 
 	$GLOBALS['content_width'] = mai_get_breakpoint( $width );
 }

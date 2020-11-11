@@ -34,23 +34,6 @@ p {
 	font-size: var(--font-size-md);
 }
 
-.wp-block-cover-image p:not(.has-text-color),
-.wp-block-cover-image h1:not(.has-text-color),
-.wp-block-cover-image h2:not(.has-text-color),
-.wp-block-cover-image h3:not(.has-text-color),
-.wp-block-cover-image h4:not(.has-text-color),
-.wp-block-cover-image h5:not(.has-text-color),
-.wp-block-cover-image h6:not(.has-text-color),
-.wp-block-cover p:not(.has-text-color),
-.wp-block-cover h1:not(.has-text-color),
-.wp-block-cover h2:not(.has-text-color),
-.wp-block-cover h3:not(.has-text-color),
-.wp-block-cover h4:not(.has-text-color),
-.wp-block-cover h5:not(.has-text-color),
-.wp-block-cover h6:not(.has-text-color) {
-	color: var(--heading-color, var(--color-heading)); // Override WP in admin, using our default heading styles.
-}
-
 .alignfull {
 	width: 100%;
 	max-width: 100%;
@@ -60,20 +43,12 @@ p {
 
 .wp-block-cover__inner-container,
 .wp-block-group__inner-container {
-	width: var(--breakpoint-xl);
-	max-width: 90%;
+	width: var(--wp-block-max-width, var(--breakpoint-xl));
 }
 
-.wp-block {
-	max-width: var(--breakpoint-lg);
-
-	&[data-align="wide"] {
-		max-width: var(--breakpoint);
-	}
-
-	&[data-align="full"] {
-		max-width: none;
-	}
+// Overridden in admin.scss.
+.wp-block:not([data-align="full"]):not([data-align="wide"]) {
+	max-width: var(--wp-block-max-width, var(--breakpoint-lg));
 }
 
 .block-editor-block-list__layout {
@@ -90,14 +65,14 @@ p {
 
 	[data-type="core/heading"][data-max-width="#{ $breakpoint-name }"],
 	[data-type="core/paragraph"][data-max-width="#{ $breakpoint-name }"] {
-		max-width: var(--breakpoint-#{ $breakpoint-name });
+		--wp-block-max-width: var(--breakpoint-#{ $breakpoint-name });
 	}
 
 	// We don't need to worry about nested block here,
 	// since their content should never be larger than the parent.
 	[data-content-width="#{ $breakpoint-name }"] .wp-block-cover__inner-container,
 	[data-content-width="#{ $breakpoint-name }"] .wp-block-group__inner-container {
-		max-width: var(--breakpoint-#{ $breakpoint-name });
+		--wp-block-max-width: var(--breakpoint-#{ $breakpoint-name });
 	}
 }
 
@@ -119,6 +94,26 @@ p {
 		[data-spacing-#{ $padding-setting }="#{ $padding-name }"] {
 			--cover-block-padding-#{ $padding-setting }: #{ $padding-size };
 			--group-block-padding-#{ $padding-setting }: #{ $padding-size };
+		}
+	}
+}
+
+@each $spacing-name, $spacing-size in $margin {
+
+	@each $margin-setting in $margin_settings {
+
+		[data-margin-#{ $margin-setting }="#{ $spacing-name }"] {
+			margin-#{ $margin-setting }: #{ $spacing-size } !important;
+		}
+	}
+}
+
+@each $spacing-name, $spacing-size in $negative_margin {
+
+	@each $margin-setting in $margin_settings {
+
+		[data-margin-#{ $margin-setting }="#{ $spacing-name }"] {
+			margin-#{ $margin-setting }: calc(#{ $spacing-size } * -1) !important;
 		}
 	}
 }

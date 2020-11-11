@@ -29,5 +29,5 @@
 }
 
 :focus {
-	outline: var(--border);
+	outline: var(--focus-outline, var(--border));
 }

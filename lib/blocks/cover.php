@@ -11,7 +11,8 @@
 
 add_filter( 'render_block', 'mai_render_cover_block', 10, 2 );
 /**
- * Convert cover block to inline image with custom srcset.
+ * Convert non fixed background cover block to inline image with custom srcset.
+ * Convert fixed background to responsive image sizes.
  * Changes inline styles to CSS custom properties for use in CSS.
  *
  * @since 0.1.0
@@ -28,61 +29,14 @@ function mai_render_cover_block( $block_content, $block ) {
 		return $block_content;
 	}
 
-	// Return early if using parallax.
-	if ( isset( $block['attrs']['hasParallax'] ) && $block['attrs']['hasParallax'] ) {
-		return $block_content;
-	}
+	$image_id  = mai_isset( $block['attrs'], 'id', false );
+	$image_url = mai_isset( $block['attrs'], 'url', false );
 
-	// Get the image ID.
-	$image_id = isset( $block['attrs']['id'] ) ? $block['attrs']['id'] : false;
-
-	// Bail if no image ID.
-	if ( ! $image_id ) {
-		return $block_content;
-	}
-
-	// Get the image URL.
-	$image_url = isset( $block['attrs']['url'] ) ? $block['attrs']['url'] : false;
-
-	// Strip background-image inline CSS.
-	if ( $image_url ) {
-		$block_content = str_replace( sprintf( 'background-image:url(%s);', $image_url ), '', $block_content );
-		$block_content = str_replace( sprintf( 'background-image:url(%s)', $image_url ), '', $block_content ); // Some cover blocks only have one inline style, so no semicolon.
-	}
-
-	// Convert inline style to css properties.
-	$block_content = str_replace( 'background-position', '--object-position', $block_content );
-	$block_content = str_replace( 'style=""', '', $block_content ); // Some scenarios will leave an empty style attribute.
-	$block_content = mai_add_cover_block_image( $block_content, $image_id );
-
-	return $block_content;
-}
-
-/**
- * Add cover block image as inline element,
- * instead of using a background-image inline style.
- * Adds custom srcset to the image element.
- *
- * TODO: Use <figure>?
- *
- * @since 0.1.0
- *
- * @param string $block_content The existing block content.
- * @param mixed  $image_id      The cover block image ID or URL.
- *
- * @return string
- */
-function mai_add_cover_block_image( $block_content, $image_id ) {
-	// Get image HTML.
-	$image_html = mai_get_cover_image_html( $image_id, [ 'class' => 'wp-cover-block__image' ] );
-
-	// Bail if no image.
-	if ( ! $image_html ) {
+	if ( ! ( $image_id && $image_url ) ) {
 		return $block_content;
 	}
 
 	$dom = mai_get_dom_document( $block_content );
-
 	/**
 	 * The group block container.
 	 *
@@ -91,12 +45,55 @@ function mai_add_cover_block_image( $block_content, $image_id ) {
 	$first_block = mai_get_dom_first_child( $dom );
 
 	if ( $first_block ) {
-		// Build the HTML node.
-		$fragment = $dom->createDocumentFragment();
-		$fragment->appendXml( $image_html );
 
-		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-		$first_block->insertBefore( $fragment, $first_block->firstChild );
+		$style = $first_block->getAttribute( 'style' );
+
+		// Strip background-image inline CSS.
+		$style = str_replace( sprintf( 'background-image:url(%s);', $image_url ), '', $style ); // With semicolon.
+		$style = str_replace( sprintf( 'background-image:url(%s)', $image_url ) , '', $style ); // Some cover blocks only have one inline style, so no semicolon.
+
+		if ( mai_isset( $block['attrs'], 'hasParallax', false ) ) {
+
+			$sizes = [
+				'lg' => wp_get_attachment_image_url( $image_id, 'cover' ),
+				'md' => wp_get_attachment_image_url( $image_id, 'landscape-lg' ),
+				'sm' => wp_get_attachment_image_url( $image_id, 'landscape-md' ),
+			];
+
+			foreach ( $sizes as $size => $url ) {
+				$style = sprintf( '--background-image-%s:url(%s);', $size, $url ) . $style;
+			}
+
+		} else {
+
+			// Convert inline style to css properties.
+			$style = str_replace( 'background-position', '--object-position', $style );
+			$style = str_replace( 'style=""', '', $style ); // Some scenarios will leave an empty style attribute.
+
+			// Check alignment.
+			$align = mai_isset( $block['attrs'], 'align', '' );
+			$full  = $align && in_array( $align, [ 'full', 'wide' ] );
+
+			// Get image HTML.
+			$image_html = mai_get_cover_image_html( $image_id,
+				[
+					'class' => 'wp-cover-block__image',
+				],
+				$full ? '100vw' : mai_get_breakpoint( 'xl' ),
+			);
+
+			if ( $image_html ) {
+
+				// Build the HTML node.
+				$fragment = $dom->createDocumentFragment();
+				$fragment->appendXml( $image_html );
+
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				$first_block->insertBefore( $fragment, $first_block->firstChild );
+			}
+		}
+
+		$first_block->setAttribute( 'style', $style );
 
 		$block_content = $dom->saveHTML();
 	}

@@ -8,8 +8,21 @@
 	--input-width: auto;
 }
 
+.has-border {
+	border: var(--border);
+}
+
+.has-border-radius {
+	border-radius: var(--border-radius);
+}
+
 .has-shadow {
 	box-shadow: var(--shadow);
+}
+
+.is-sticky {
+	position: sticky;
+	top: var(--scroll-margin-top, calc(var(--body-top) + var(--spacing-lg)));
 }
 
 .is-circle,
@@ -101,8 +114,16 @@
 		margin-top: var(--spacing-#{ $spacing-name }) !important;
 	}
 
+	.has-#{ $spacing-name }-margin-right {
+		margin-right: var(--spacing-#{ $spacing-name }) !important;
+	}
+
 	.has-#{ $spacing-name }-margin-bottom {
 		margin-bottom: var(--spacing-#{ $spacing-name }) !important;
+	}
+
+	.has-#{ $spacing-name }-margin-left {
+		margin-left: var(--spacing-#{ $spacing-name }) !important;
 	}
 
 	.has-#{ $spacing-name }-padding {
@@ -110,6 +131,7 @@
 	}
 }
 
+// This is in editor.scss too, for block settings.
 @each $spacing-name, $spacing-size in $spacing {
 
 	.has--#{ $spacing-name }-margin-top {
@@ -119,7 +141,6 @@
 	.has--#{ $spacing-name }-margin-bottom {
 		margin-bottom: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
 	}
-
 }
 
 @include mq(md) {
@@ -133,9 +154,7 @@
 		.has--#{ $spacing-name }-margin-left {
 			margin-left: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
 		}
-
 	}
-
 }
 
 .has-overlap {
@@ -275,5 +294,5 @@
 }
 
 .has-sticky-header {
-	--scroll-margin-top: var(--header-shrunk-height, var(--header-height, 0));
+	--scroll-margin-top: calc(var(--header-shrunk-height, var(--header-height, 0px)) + var(--spacing-md)); // Requires 0px value fallback. 0 breaks this.
 }

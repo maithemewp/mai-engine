@@ -1,5 +1,6 @@
 .entry-more {
 	margin: var(--entry-more-margin, 0);
+	padding-top: var(--spacing-xxs);
 
 	&-link {
 		margin: var(--entry-more-link-margin, 0 0 var(--spacing-md));

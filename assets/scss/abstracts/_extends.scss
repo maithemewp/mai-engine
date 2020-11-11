@@ -3,25 +3,32 @@
 	font-weight: var(--body-font-weight); // No fallback, always output by Kirki.
 	font-size: var(--body-font-size, var(--font-size-md));
 	font-family: var(--body-font-family); // No fallback, always output by Kirki.
+	font-style: var(--body-font-style, normal);
 	line-height: var(--body-line-height, 1.625); // Perfect fourth.
 	background: var(--body-background-color, var(--color-background));
 }
 
 @mixin heading {
-	margin: var(--heading-margin, var(--heading-margin-top, 0) var(--heading-margin-sides, 0) var(--heading-margin-bottom, var(--spacing-md)));
+	margin-top: var(--heading-margin-top, 0);
+	margin-bottom: var(--heading-margin-bottom, var(--spacing-md));
 	color: var(--heading-color, var(--color-heading));
 	font-weight: var(--heading-font-weight); // No fallback, always output by Kirki.
 	font-family: var(--heading-font-family); // No fallback, always output by Kirki.
+	font-style: var(--heading-font-style, normal);
 	line-height: var(--heading-line-height, 1.219); // Perfect fourth.
 	letter-spacing: var(--heading-letter-spacing, normal);
 	text-transform: var(--heading-text-transform, none);
 
+	@include mq(false, md) {
+		word-break: var(--heading-word-break, break-word);
+	}
+
 	&:last-child {
-		margin-bottom: 0;
+		--heading-margin-bottom: 0;
 	}
 
 	.entry-content > &:not(:first-child) {
-		margin-top: var(--spacing-xxl);
+		--heading-margin-top: var(--spacing-xxl);
 	}
 }
 
@@ -157,4 +164,12 @@
 	color: var(--caption-color, var(--color-body));
 	font-size: var(--caption-font-size, var(--font-size-xs));
 	text-align: var(--caption-text-align, (center));
+}
+
+@mixin cite() {
+	color: var(--cite-color, var(--color-body));
+	font-weight: var(--cite-font-weight, bolder);
+	font-size: var(--cite-font-size, 0.8em);
+	font-family: var(--cite-font-family, var(--heading-font-family));
+	font-style: var(--cite-font-style, normal);
 }

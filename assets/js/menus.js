@@ -77,6 +77,7 @@
 			var button = document.createElement( 'button' );
 			var search = document.createElement( 'div' );
 
+			item.classList.add( 'menu-item-search' );
 			button.setAttribute( 'class', 'search-toggle' );
 			button.setAttribute( 'aria-expanded', 'false' );
 			button.setAttribute( 'aria-pressed', 'false' );

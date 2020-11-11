@@ -4,7 +4,8 @@
 	align-items: center;
 	justify-content: var(--header-section-justify-content, unset);
 
-	--heading-margin: 0;
+	--heading-margin-top: 0;
+	--heading-margin-bottom: 0;
 
 	p:last-of-type {
 		margin-bottom: 0;

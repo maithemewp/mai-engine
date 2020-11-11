@@ -34,7 +34,7 @@ add_filter( 'body_class', 'mai_body_classes' );
 /**
  * Add additional classes to the body element.
  *
- * @since  0.1.0
+ * @since 0.1.0
  *
  * @param array $classes Body classes.
  *

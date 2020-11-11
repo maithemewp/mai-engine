@@ -20,7 +20,6 @@
 .sub-menu-toggle-icon {
 	width: 0.4em;
 	height: 0.4em;
-	margin-top: var(--sub-menu-toggle-icon-margin-top, -0.2em);
 	border-color: var(--menu-item-link-color, var(--color-heading));
 	border-style: solid;
 	border-top: 0;
@@ -31,6 +30,5 @@
 }
 
 .active {
-	--sub-menu-toggle-icon-margin-top: 0.2em;
 	--sub-menu-toggle-transform: rotate(-135deg);
 }

@@ -64,6 +64,20 @@ class Mai_Entry {
 	protected $breakpoints;
 
 	/**
+	 * Link.
+	 *
+	 * @var $link_entry
+	 */
+	protected $link_entry;
+
+	/**
+	 * Image size.
+	 *
+	 * @var $image_size
+	 */
+	protected $image_size;
+
+	/**
 	 * Mai_Entry constructor.
 	 *
 	 * @since 0.1.0
@@ -81,6 +95,9 @@ class Mai_Entry {
 		$this->id          = $this->get_id();
 		$this->url         = $this->get_url();
 		$this->breakpoints = mai_get_breakpoints();
+		$this->link_entry  = ( 'single' !== $this->context );
+		$this->link_entry  = apply_filters( 'mai_link_entry', $this->link_entry, $this->args, $this->entry );
+		$this->image_size  = $this->get_image_size();
 	}
 
 	/**
@@ -123,13 +140,17 @@ class Mai_Entry {
 			$elements[] = $item;
 		}
 
-		$image_first = ( isset( $elements[0] ) && ( 'image' === $elements[0] ) ) || ( isset( $this->args['image_position'] ) && mai_has_string( [
-					'left',
-					'right',
-				], $this->args['image_position'] ) );
-		$image_only  = ( isset( $elements[0] ) && 'image' === $elements[0] ) && ( 1 === count( $elements ) );
+		$image_first = ( isset( $elements[0] ) && ( 'image' === $elements[0] ) ) || ( isset( $this->args['image_position'] ) && mai_has_string(
+			[
+				'left',
+				'right',
+			],
+			$this->args['image_position'] )
+		);
 
-		// Has image classes.
+		$image_only = ( isset( $elements[0] ) && 'image' === $elements[0] ) && ( 1 === count( $elements ) );
+
+		// Add image classes.
 		if ( in_array( 'image', $this->args['show'], true ) ) {
 			if ( $this->get_image_id() ) {
 				$atts['class'] .= ' has-image';
@@ -202,7 +223,7 @@ class Mai_Entry {
 		}
 
 		// Overlay link.
-		if ( ( 'single' !== $this->context ) && ( 'background' === $this->args['image_position'] ) ) {
+		if ( $this->link_entry && ( 'background' === $this->args['image_position'] ) ) {
 			printf( '<a href="%s" class="entry-overlay"></a>', $this->url );
 		}
 
@@ -226,14 +247,18 @@ class Mai_Entry {
 				continue;
 			}
 
+			// Skip if an outside element.
 			if ( in_array( $element, $outside_elements ) ) {
 				continue;
 			}
 
-			// Output the element if a method exists.
-			$method = "do_{$element}";
+			// Output the element if a method or function exists.
+			$method   = "do_{$element}";
+			$function = "mai_do_{$element}";
 			if ( method_exists( $this, $method ) ) {
 				$this->$method();
+			} elseif ( function_exists( $function ) ) {
+				$function( $this->entry, $this->args );
 			}
 		}
 
@@ -356,11 +381,9 @@ class Mai_Entry {
 			return;
 		}
 
-		// TODO: Is this the best way to handle non-linked featured images?
-		// We'll need this later for Mai Favorites when we can disable links in grid.
-		$wrap = ( 'single' === $this->context ) || ( 'background' === $this->args['image_position'] ) ? 'figure' : 'a';
-
-		$atts = [
+		$link_image = $this->link_entry && ( 'background' !== $this->args['image_position'] );
+		$wrap       = $link_image ? 'a' : 'figure';
+		$atts       = [
 			'class' => 'entry-image-link',
 		];
 
@@ -368,7 +391,7 @@ class Mai_Entry {
 			$atts['class'] .= ' entry-image-single';
 		}
 
-		if ( ( 'single' !== $this->context ) && ( 'background' !== $this->args['image_position'] ) ) {
+		if ( $link_image ) {
 			$atts['href']        = $this->url;
 			$atts['aria-hidden'] = 'true';
 			$atts['tabindex']    = '-1';
@@ -416,13 +439,12 @@ class Mai_Entry {
 		add_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
 		add_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 5 );
 
-		$size  = $this->get_image_size();
 		$image = wp_get_attachment_image(
 			$image_id,
-			$size,
+			$this->image_size,
 			false,
 			[
-				'class'   => "entry-image size-{$size}",
+				'class'   => "entry-image size-{$this->image_size}",
 				'loading' => 'lazy',
 			]
 		);
@@ -471,41 +493,36 @@ class Mai_Entry {
 		];
 
 		$columns = $is_single ? $single_cols : array_reverse( mai_get_breakpoint_columns( $this->args ), true ); // Mobile first.
+		$columns = $this->get_image_breakpoint_columns( $columns );
 		$widths  = [];
 
 		foreach ( $columns as $break => $count ) {
 			switch ( $break ) {
 				case 'xs':
 					$max_width = $this->breakpoints['sm'];
-					$max_width = $max_width / $columns['xs'];
-					$width     = $count ? floor( $max_width / $count ) : $max_width;
+					$width     = $max_width / $columns['xs'];
 					$width     = $width / $image_cols['xs'];
-					$widths[]  = $width;
+					$widths[]  = floor( $width );
 				break;
 				case 'sm':
 					$max_width = $this->breakpoints['md'];
-					$max_width = $max_width / $columns['sm'];
-					$width     = $count ? floor( $max_width / $count ) : $max_width;
+					$width     = $max_width / $columns['sm'];
 					$width     = $width / $image_cols['sm'];
-					$widths[]  = $width;
+					$widths[]  = floor( $width );
 				break;
 				case 'md':
 					$max_width = $this->breakpoints['lg'];
-					$container = $has_sidebar ? $max_width * 2 / 3 : $max_width;
-					$container = $container / $columns['md'];
-					$container = $container / $image_cols['md'];
-					$width     = $count ? floor( $container / $count ) : $container;
+					$width     = $has_sidebar ? $max_width * 2 / 3 : $max_width;
+					$width     = $width / $columns['md'];
 					$width     = $width / $image_cols['md'];
-					$widths[]  = $width;
+					$widths[]  = floor( $width );
 				break;
 				case 'lg':
-					$container = $this->breakpoints['xl'];
-					$container = $has_sidebar ? $container * 2 / 3 : $container;
-					$container = $container / $columns['lg'];
-					$container = $container / $image_cols['lg'];
-					$width     = $count ? floor( $container / $count ) : $container;
+					$max_width = $this->breakpoints['xl'];
+					$width     = $has_sidebar ? $max_width * 2 / 3 : $max_width;
+					$width     = $width / $columns['lg'];
 					$width     = $width / $image_cols['lg'];
-					$widths[]  = $width;
+					$widths[]  = floor( $width );
 				break;
 			}
 		}
@@ -550,6 +567,7 @@ class Mai_Entry {
 		];
 
 		$columns = $is_single ? $single_cols : array_reverse( mai_get_breakpoint_columns( $this->args ), true ); // Mobile first.
+		$columns = $this->get_image_breakpoint_columns( $columns );
 
 		// TODO: Add retina support?
 
@@ -557,35 +575,32 @@ class Mai_Entry {
 			switch ( $break ) {
 				case 'xs':
 					$max_width   = $this->breakpoints['sm'] - 1;
-					$max_width   = $max_width / $columns['xs'];
-					$width       = $count ? floor( $max_width / $count ) : $max_width;
+					$width       = $max_width / $columns['xs'];
 					$width       = $width / $image_cols['xs'];
 					$new_sizes[] = "(max-width:{$max_width}px) {$width}px";
 				break;
 				case 'sm':
 					$min_width   = $this->breakpoints['sm'];
 					$max_width   = $this->breakpoints['md'] - 1;
-					$max_width   = $max_width / $columns['sm'];
-					$width       = $count ? floor( $max_width / $count ) : $max_width;
+					$width       = $max_width / $columns['sm'];
 					$width       = $width / $image_cols['sm'];
 					$new_sizes[] = "(min-width:{$min_width}px) and (max-width: {$max_width}px) {$width}px";
 				break;
 				case 'md':
 					$min_width   = $this->breakpoints['md'];
 					$max_width   = $this->breakpoints['lg'] - 1;
-					$container   = $has_sidebar ? $max_width * 2 / 3 : $max_width;
-					$container   = $container / $columns['md'];
-					$width       = $count ? floor( $container / $count ) : $container;
+					$width       = $has_sidebar ? $max_width * 2 / 3 : $max_width;
+					$width       = $width / $columns['md'];
 					$width       = $width / $image_cols['md'];
 					$new_sizes[] = "(min-width:{$min_width}px) and (max-width: {$max_width}px) {$width}px";
 				break;
 				case 'lg':
 					$min_width   = $this->breakpoints['lg'];
-					$container   = $this->breakpoints['xl'];
-					$container   = $has_sidebar ? $container * 2 / 3 : $container;
-					$container   = $container / $columns['lg'];
+					$width       = $this->breakpoints['xl'];
+					$width       = $has_sidebar ? $width * 2 / 3 : $width;
+					$width       = $width / $columns['lg'];
 					$width       = $width / $image_cols['lg'];
-					$width       = $count ? floor( $container / $count ) : $container;
+					$new_sizes[] = "(min-width:{$min_width}px) {$width}px";
 				break;
 			}
 		}
@@ -716,6 +731,28 @@ class Mai_Entry {
 	}
 
 	/**
+	 * Gets a reasonable column count when a breakpoint has a 0 (Auto) value.
+	 *
+	 * @param array $columns The existing columns.
+	 *
+	 * @return array
+	 */
+	public function get_image_breakpoint_columns( $columns ) {
+		$image_sizes = mai_get_available_image_sizes();
+		$fallback    = isset( $image_sizes[ $this->image_size ]['width'] ) ? absint( $this->breakpoints['xl'] / $image_sizes[ $this->image_size ]['width'] ) : 1;
+
+		foreach ( $columns as $break => $count ) {
+			if ( 0 !== $count ) {
+				continue;
+			}
+
+			$columns[ $break ] = $fallback;
+		}
+
+		return $columns;
+	}
+
+	/**
 	 * Display the post content.
 	 *
 	 * Initially based off of genesis_do_post_title().
@@ -723,11 +760,9 @@ class Mai_Entry {
 	 * @return  void
 	 */
 	public function do_title() {
-		if ( ( 'single' === $this->context ) && ( mai_is_element_hidden( 'entry_title', $this->id ) || ( mai_has_page_header() && apply_filters( 'mai_entry_title_in_page_header', true ) ) ) ) {
+		if ( ( 'single' === $this->context ) && ( mai_is_element_hidden( 'entry_title', $this->id ) || ( mai_has_page_header() && apply_filters( 'mai_entry_title_in_page_header', true, $this->args, $this->entry ) ) ) ) {
 			return;
 		}
-
-		$link = false;
 
 		// Title.
 		switch ( $this->type ) {
@@ -769,27 +804,20 @@ class Mai_Entry {
 					 */
 					$wrap = apply_filters( 'genesis_entry_title_wrap', $wrap );
 
-					// Link it, if necessary.
-					if ( ( 'archive' === $this->context ) && apply_filters( 'genesis_link_post_title', true ) ) {
-						$link = true;
-					}
 				} else {
 					// Block.
 					$wrap  = 'h3';
 					$title = get_the_title( $this->entry );
-					$link  = true;
 				}
 
 			break;
 			case 'term':
 				$wrap  = 'h3'; // Only blocks use this function for terms.
 				$title = $this->entry->name;
-				$link  = true;
 			break;
 			case 'user':
 				$wrap  = 'h3'; // Only blocks use this function for users.
 				$title = ''; // TODO: Add title.
-				$link  = true;
 			break;
 			default:
 				$title = '';
@@ -801,7 +829,7 @@ class Mai_Entry {
 		}
 
 		// If linking.
-		if ( $link ) {
+		if ( $this->link_entry ) {
 			// This filter overrides href.
 			remove_filter( 'genesis_attr_entry-title-link', 'genesis_attributes_entry_title_link' );
 			$title = genesis_markup(
@@ -831,7 +859,15 @@ class Mai_Entry {
 		 *
 		 * @param  string $wrap The wrapping element (h1, h2, p, etc.).
 		 */
-		$wrap = apply_filters( 'mai_entry_title_wrap', $wrap, $this->args );
+		$wrap = apply_filters( 'mai_entry_title_wrap', $wrap, $this->args, $this->entry );
+
+		$atts = [
+			'class' => 'entry-title',
+		];
+
+		if ( 'single' === $this->context ) {
+			$atts['class'] .= ' entry-title-single';
+		}
 
 		// Build the output.
 		$output = genesis_markup(
@@ -841,6 +877,7 @@ class Mai_Entry {
 				'content' => $title,
 				'context' => 'entry-title',
 				'echo'    => false,
+				'atts'    => $atts,
 				'params'  => [
 					'wrap'  => $wrap,
 					'args'  => $this->args,
@@ -930,11 +967,23 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_content() {
-		genesis_markup(
+		$open = genesis_markup(
 			[
 				'open'    => '<div %s>',
 				'context' => 'entry-content',
-				'echo'    => true,
+				'echo'    => false,
+				'params'  => [
+					'args'  => $this->args,
+					'entry' => $this->entry,
+				],
+			]
+		);
+
+		$close = genesis_markup(
+			[
+				'close'   => '</div>',
+				'context' => 'entry-content',
+				'echo'    => false,
 				'params'  => [
 					'args'  => $this->args,
 					'entry' => $this->entry,
@@ -944,7 +993,9 @@ class Mai_Entry {
 
 		// Single needs the_content() directly, to parse_blocks and other filters.
 		if ( 'single' === $this->context ) {
+			echo $open;
 			the_content();
+			echo $close;
 
 		} else {
 
@@ -968,20 +1019,15 @@ class Mai_Entry {
 				$content = mai_get_content_limit( $content, $this->args['content_limit'] );
 			}
 
+			if ( ! $content ) {
+				return;
+			}
+
+			echo $open;
 			echo $content;
+			echo $close;
 		}
 
-		genesis_markup(
-			[
-				'close'   => '</div>',
-				'context' => 'entry-content',
-				'echo'    => true,
-				'params'  => [
-					'args'  => $this->args,
-					'entry' => $this->entry,
-				],
-			]
-		);
 	}
 
 	/**
@@ -994,7 +1040,6 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_header_meta() {
-
 		// Bail if none.
 		if ( ! isset( $this->args['header_meta'] ) || ! $this->args['header_meta'] ) {
 			return;
@@ -1009,9 +1054,9 @@ class Mai_Entry {
 
 		genesis_markup(
 			[
-				'open'    => '<p %s>',
-				'close'   => '</p>',
-				'content' => genesis_strip_p_tags( $header_meta ),
+				'open'    => '<div %s>',
+				'close'   => '</div>',
+				'content' => $header_meta,
 				'context' => 'entry-meta-before-content',
 				'echo'    => true,
 				'params'  => [
@@ -1047,9 +1092,9 @@ class Mai_Entry {
 
 		genesis_markup(
 			[
-				'open'    => '<p %s>',
-				'close'   => '</p>',
-				'content' => genesis_strip_p_tags( $footer_meta ),
+				'open'    => '<div %s>',
+				'close'   => '</div>',
+				'content' => $footer_meta,
 				'context' => 'entry-meta-after-content',
 				'echo'    => true,
 				'params'  => [
@@ -1068,6 +1113,9 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_more_link() {
+		if ( ! $this->link_entry ) {
+			return;
+		}
 
 		// Link.
 		switch ( $this->type ) {
@@ -1089,7 +1137,7 @@ class Mai_Entry {
 			return;
 		}
 
-		$more_link_text  = isset( $this->args['more_link_text'] ) && $this->args['more_link_text'] ? $this->args['more_link_text'] : mai_get_read_more_text();
+		$more_link_text = isset( $this->args['more_link_text'] ) && $this->args['more_link_text'] ? $this->args['more_link_text'] : mai_get_read_more_text();
 
 		// Screen reader text title.
 		switch ( $this->type ) {

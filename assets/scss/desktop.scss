@@ -18,6 +18,7 @@
 	--sub-menu-margin: 0 0 0 calc(0 - var(--spacing-md));
 	--sub-menu-background-color: var(--color-white);
 	--sub-menu-border: var(--border);
+	--sub-menu-border-radius: var(--border-radius);
 	--sub-menu-opacity: 0;
 	--sub-menu-transition: opacity var(--transition-duration) var(--transition-timing-function);
 	--sub-menu-animation: fadein 0.2s ease-in-out;
@@ -27,7 +28,6 @@
 
 	--sub-sub-menu-top: -1px;
 	--sub-sub-menu-left: 100%;
-	--sub-sub-menu-margin-left: 0;
 }
 
 .menu-item:hover > .sub-menu,

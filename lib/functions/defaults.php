@@ -11,7 +11,7 @@
 
 add_action( 'after_switch_theme', 'mai_default_theme_settings' );
 /**
- * Set default theme settings on theme activation.
+ * Sets default theme settings on theme activation.
  *
  * @since 0.1.0
  *

@@ -1,5 +1,4 @@
 .wp-block-quote {
-	--cite-font-size: small;
 
 	cite,
 	footer,
@@ -10,7 +9,8 @@
 
 	footer,
 	&__citation {
-		@include caption();
+
+		@include cite();
 	}
 
 	&.has-text-align-right,
@@ -28,19 +28,17 @@
 
 	&.is-style-large,
 	&.is-large {
-		margin-right: var(--alignwide-margin-right, calc(25% - 25vw));
-		margin-left: var(--alignwide-margin-left, calc(25% - 25vw));
+		margin: var(--blockquote-margin, 1em auto);
 		padding: var(--blockquote-padding, 1em);
 
-		--cite-font-size: var(--font-size-md);
-
 		p {
+			font-size: var(--blockquote-font-size-large, var(--font-size-xl));
 			font-style: var(--blockquote-font-style, italic);
 		}
 
 		cite {
 
-			@include caption();
+			@include cite();
 		}
 
 		footer {

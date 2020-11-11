@@ -1,24 +1,22 @@
-const { __ } = wp.i18n;
-
 wp.domReady( () => {
-	wp.blocks.unregisterBlockStyle( 'core/button', 'fill' );
-	wp.blocks.unregisterBlockStyle( 'core/button', 'outline' );
+	wp.blocks.unregisterBlockStyle(
+		'core/button',
+		[ 'outline', 'squared', 'fill' ]
+	);
 
-	wp.blocks.registerBlockStyle( 'core/button', {
-		name: 'primary',
-		label: __( 'Primary' )
-	} );
 	wp.blocks.registerBlockStyle( 'core/button', {
 		name: 'secondary',
-		label: __( 'Secondary' )
+		label: maiEditorVars.secondary
 	} );
+
 	wp.blocks.registerBlockStyle( 'core/button', {
 		name: 'outline',
-		label: __( 'Outline' )
+		label: maiEditorVars.outline
 	} );
+
 	wp.blocks.registerBlockStyle( 'core/button', {
 		name: 'link',
-		label: __( 'Link' )
+		label: maiEditorVars.link
 	} );
 } );
 
@@ -37,7 +35,7 @@ wp.domReady( () => {
 	var icons = [ 'mai_icon_choices', 'mai_icon_brand_choices' ];
 	var post  = maiEditorVars.post;
 	var term  = maiEditorVars.term;
-	var user  = maiEditorVars.user;
+	// var user  = maiEditorVars.user;
 
 	acf.addFilter( 'select2_ajax_data', function( data, args, $input, field, instance ) {
 

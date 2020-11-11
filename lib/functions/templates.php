@@ -119,44 +119,24 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
 }
 
 /**
- * Returns a static array of all template part content, keyed by slug.
+ * Returns an array of all template part content, keyed by slug.
  *
- * @since 2.4.2 Simplify function, remove use of wp_make_content_images_responsive.
+ * @since 2.0.1
+ * @since 2.2.2 Now returns an array of template part content content keyed by slug instead of an array of WP_Post
  * @since 2.4.0 Removed the is_admin() check since this was finally solved
  *        https://github.com/maithemewp/mai-engine/issues/251. Changed return values to check and use post status.
- * @since 2.2.2 Now returns an array of template part content content keyed by slug instead of an array of WP_Post
  *        objects.
- * @since 2.0.1
+ * @since 2.4.2 Simplify function, remove use of wp_make_content_images_responsive.
  *
  * @return array
  */
 function mai_get_template_parts() {
-	static $template_parts = [];
+	$template_parts = [];
+	$posts          = [];
+	$objects        = mai_get_template_part_objects();
 
-	if ( ! empty( $template_parts ) ) {
-		return $template_parts;
-	}
-
-	$config = mai_get_config( 'template-parts' );
-	$slugs  = $config ? wp_list_pluck( $config, 'id' ) : [];
-	$posts  = [];
-
-	if ( ! empty( $slugs ) ) {
-		$query = get_posts(
-			[
-				'post_type'              => 'wp_template_part',
-				'post_status'            => 'any',
-				'post_name__in'          => $slugs,
-				'posts_per_page'         => 500,
-				// Force a high number. Without setting this, it uses the WP posts_per_page setting, which could break things.
-				'no_found_rows'          => true,
-				'update_post_meta_cache' => false,
-				'update_post_term_cache' => false,
-				'suppress_filters'       => false, // https://github.com/10up/Engineering-Best-Practices/issues/116
-			]
-		);
-
-		foreach ( $query as $post ) {
+	if ( $objects ) {
+		foreach ( $objects as $post ) {
 			$content = $post->post_content ? mai_get_processed_content( $post->post_content ) : '';
 
 			$posts[ $post->post_status ][ $post->post_name ] = $content;
@@ -199,6 +179,87 @@ function mai_get_template_part( $slug ) {
 }
 
 /**
+ * Returns an array of existing template part IDs.
+ *
+ * @since 2.6.0
+ *
+ * @return array
+ */
+function mai_get_template_part_ids() {
+	$template_parts = [];
+	$ids            = [];
+	$objects        = mai_get_template_part_objects();
+
+	if ( $objects ) {
+		foreach ( $objects as $post ) {
+			$ids[ $post->post_name ] = $post->ID;
+		}
+	}
+
+	$template_parts = $ids;
+
+	return $ids;
+}
+
+/**
+ * Returns a template part ID from slug.
+ *
+ * @since 2.6.0
+ *
+ * @param string $slug The template part slug.
+ *
+ * @return array
+ */
+function mai_get_template_part_id( $slug ) {
+	$template_parts = mai_get_template_part_ids();
+
+	return isset( $template_parts[ $slug ] ) ? $template_parts[ $slug ] : 0;
+}
+
+/**
+ * Returns an array of template parts.
+ * Slugs must exist in the config.
+ *
+ * @since 2.6.0
+ *
+ * @return array
+ */
+function mai_get_template_part_objects() {
+	static $template_parts = null;
+
+	if ( ! is_null( $template_parts ) ) {
+		return $template_parts;
+	}
+
+	$template_parts = [];
+	$slugs          = array_keys( mai_get_config( 'template-parts' ) );
+	$posts          = [];
+
+	if ( ! empty( $slugs ) ) {
+		$query = get_posts(
+			[
+				'post_type'              => 'wp_template_part',
+				'post_status'            => 'any',
+				'post_name__in'          => $slugs,
+				'posts_per_page'         => 500,
+				// Force a high number. Without setting this, it uses the WP posts_per_page setting, which could break things.
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'suppress_filters'       => false, // https://github.com/10up/Engineering-Best-Practices/issues/116
+			]
+		);
+
+		foreach ( $query as $post ) {
+
+			$template_parts[] = $post;
+		}
+	}
+
+	return $template_parts;
+}
+
+/**
  * Checks whether the template part exists and has content.
  *
  * @since 2.0.1
@@ -222,7 +283,6 @@ function mai_has_template_part( $slug ) {
  */
 function mai_template_part_exists( $slug ) {
 	$template_parts = mai_get_template_parts();
-
 	return isset( $template_parts[ $slug ] );
 }
 
@@ -247,3 +307,446 @@ function mai_render_template_part( $slug, $before = '', $after = '' ) {
 	}
 }
 
+/**
+ * Creates default template parts from config.
+ * Skips existing template parts.
+ *
+ * @access private
+ *
+ * @since 2.6.0
+ *
+ * @return array
+ */
+function mai_create_template_parts() {
+	$created = [];
+
+	foreach ( mai_get_config( 'template-parts' ) as $slug => $template_part ) {
+		if ( mai_template_part_exists( $slug ) ) {
+			continue;
+		}
+
+		$post_id = wp_insert_post(
+			[
+				'post_type'    => 'wp_template_part',
+				'post_name'    => $slug,
+				'post_status'  => 'publish',
+				'post_title'   => mai_convert_case( $slug, 'title' ),
+				'post_content' => mai_isset( $template_part, 'default', '' ),
+				'menu_order'   => mai_isset( $template_part, 'menu_order', 0 ),
+			]
+		);
+
+		if ( is_wp_error( $post_id ) ) {
+			continue;
+		}
+
+		$created[ $post_id ] = $slug;
+	}
+
+	return $created;
+}
+
+/**
+ * Imports template parts from the demo.
+ * Skips existing template parts.
+ *
+ * @access private
+ *
+ * @since 2.6.0
+ *
+ * @param false|string $force If 'always', forces the import by trashing an existing template part.
+ *                            If 'empty', forces the import by trashing an existing template that has no content.
+ *
+ * @return string
+ */
+function mai_import_template_parts( $force = false ) {
+	$create   = [];
+	$imported = [];
+	$config   = mai_get_config( 'template-parts' );
+
+	foreach ( $config as $slug => $template_part ) {
+		$result = mai_import_template_part( $slug, $force );
+
+		if ( $result['id'] ) {
+			$imported[ $result['id']] = $slug;
+		}
+	}
+
+	return $imported;
+}
+
+/**
+ * Imports a template part from the demo.
+ *
+ * @access private
+ *
+ * @since 2.6.0
+ *
+ * @param string       $slug  The template part slug to import.
+ * @param false|string $force If 'always', forces the import by trashing an existing template part.
+ *                            If 'empty', forces the import by trashing an existing template that has no content.
+ *
+ * @return array
+ */
+function mai_import_template_part( $slug, $force = false ) {
+	$template_parts = mai_get_template_parts_from_demo();
+
+	if ( ! ( $template_parts && isset( $template_parts[ $slug ] ) && $template_parts[ $slug ] ) ) {
+		return [
+			'id'      => false,
+			'message' => __( 'Sorry, no template part available for this theme.', 'mai-engine' ),
+		];
+	}
+
+	if ( mai_template_part_exists( $slug ) ) {
+
+		if ( $force ) {
+			$id = mai_get_template_part_id( $slug );
+
+			if ( $id ) {
+				switch ( $force ) {
+					case 'always':
+						wp_trash_post( $id );
+					break;
+					case 'empty':
+						if ( mai_has_template_part( $slug ) ) {
+							return [
+								'id'      => false,
+								'message' => __( 'Sorry, this template part is already in use.', 'mai-engine' ),
+							];
+						}
+						wp_trash_post( $id );
+					break;
+				}
+			}
+
+		} else {
+
+			return [
+				'id'      => false,
+				'message' => sprintf( '%s "%s" %s', __( 'Sorry, ', 'mai-engine' ), mai_convert_case( $slug, 'title' ), __( 'template part already exists', 'mai-engine' ) ),
+			];
+		}
+	}
+
+	$config  = mai_get_config( 'template-parts' );
+	$post_id = wp_insert_post(
+		[
+			'post_type'    => 'wp_template_part',
+			'post_name'    => $slug,
+			'post_status'  => 'publish',
+			'post_title'   => mai_convert_case( $slug, 'title' ),
+			'post_content' => mai_localize_blocks( $template_parts[ $slug ] ),
+			'menu_order'   => isset( $config[ $slug ]['menu_order'] ) ? $config[ $slug ]['menu_order'] : 0,
+		]
+	);
+
+	if ( is_wp_error( $post_id ) ) {
+		return [
+			'id'      => false,
+			'message' => $post_id->get_error_message(),
+		];
+	}
+
+	return [
+		'id'      => $post_id,
+		'message' => '',
+	];
+}
+
+/**
+ * Imports images locally to the site.
+ *
+ * @access private
+ *
+ * @since 2.6.0
+ *
+ * @param string $content The existing content.
+ *
+ * @return string
+ */
+function mai_localize_blocks( $content ) {
+	$blocks = parse_blocks( $content );
+
+	if ( ! $blocks ) {
+		return $content;
+	}
+
+	$replace_urls = [];
+
+	foreach ( $blocks as $index => $block ) {
+		if ( 'core/cover' === $block['blockName'] ) {
+			$image_id  = $block['attrs']['id'];
+			$image_url = $block['attrs']['url'];
+
+			// Skip if already a local image.
+			if ( mai_has_string( home_url(), $image_url	) ) {
+				continue;
+			}
+
+			if ( $image_id && $image_url ) {
+				$path_parts = pathinfo( $image_url );
+				$existing   = mai_get_existing_attachment_from_filename( $path_parts['filename'] );
+
+				if ( $existing ) {
+					$new_id  = $existing;
+					$new_url = wp_get_attachment_url( $existing );
+
+					$blocks[ $index ]['attrs']['id']  = $new_id;
+					$blocks[ $index ]['attrs']['url'] = $new_url;
+
+					$replace_urls[ $image_url ] = $new_url;
+
+				} else {
+
+					$new_id  = mai_get_new_image_from_url( $image_url, $path_parts['filename'] );
+
+					if ( $new_id  ) {
+						$new_url = wp_get_attachment_url( $new_id );
+
+						$blocks[ $index ]['attrs']['id']  = $new_id;
+						$blocks[ $index ]['attrs']['url'] = $new_url;
+
+						$replace_urls[ $image_url ] = $new_url;
+					}
+				}
+
+				$blocks[ $index ] = filter_block_kses( $blocks[ $index ], 'post' );
+			}
+
+		} elseif ( 'core/image' === $block['blockName'] ) {
+			$image_id   = $block['attrs']['id'];
+			$image_size = $block['attrs']['sizeSlug'];
+			$image_url  = false;
+
+			if ( $image_id ) {
+				$dom = mai_get_dom_document( $blocks[ $index ]['innerHTML'] );
+				$img = $dom->getElementsByTagName( 'img' )->item(0);
+
+				if ( $img ) {
+					$image_url = $img->getAttribute( 'src' );
+				}
+
+				if ( $image_url ) {
+					// Skip if already a local image.
+					if ( mai_has_string( home_url(), $image_url	) ) {
+						continue;
+					}
+
+					$path_parts = pathinfo( $image_url );
+					$filename   = $path_parts['filename'];
+					$filename   = preg_replace( '/(\d+)x(\d+)$/', '', $filename ); // Filename without sizes.
+					$existing   = mai_get_existing_attachment_from_filename( $filename );
+
+					if ( $existing ) {
+						$new_id  = $existing;
+						$new_img = wp_get_attachment_image_src( $existing, $image_size ? $image_size : 'full' );
+						$new_url = $new_img[0];
+
+						$blocks[ $index ]['attrs']['id']  = $new_id;
+
+						$replace_urls[ $image_url ] = $new_url;
+
+					} else {
+
+						$new_id  = mai_get_new_image_from_url( $image_url, $path_parts['filename'] );
+
+						if ( $new_id  ) {
+							$new_img = wp_get_attachment_image_src( $new_id, $image_size ? $image_size : 'full' );
+							$new_url = $new_img[0];
+
+							$blocks[ $index ]['attrs']['id']  = $new_id;
+
+							$replace_urls[ $image_url ] = $new_url;
+						}
+					}
+
+					$blocks[ $index ] = filter_block_kses( $blocks[ $index ], 'post' );
+				}
+			}
+
+		} elseif ( 'core/media-text' === $block['blockName'] ) {
+			$media_id   = $block['attrs']['mediaId'];
+			$media_type = $block['attrs']['mediaType'];
+
+			if ( 'image' !== $media_type ) {
+				continue;
+			}
+
+			if ( $image_id ) {
+				$dom = mai_get_dom_document( $blocks[ $index ]['innerHTML'] );
+				$img = $dom->getElementsByTagName( 'img' )->item(0);
+
+				if ( $img ) {
+					$image_url = $img->getAttribute( 'src' );
+				}
+
+				if ( $image_url ) {
+					// Skip if already a local image.
+					if ( mai_has_string( home_url(), $image_url	) ) {
+						continue;
+					}
+
+					$path_parts = pathinfo( $image_url );
+					$filename   = $path_parts['filename'];
+					$filename   = preg_replace( '/(\d+)x(\d+)$/', '', $filename ); // Filename without sizes.
+					$existing   = mai_get_existing_attachment_from_filename( $filename );
+
+					if ( $existing ) {
+						$new_id  = $existing;
+						$new_img = wp_get_attachment_image_src( $existing, 'large' );
+						$new_url = $new_img[0];
+
+						$blocks[ $index ]['attrs']['id']  = $new_id;
+
+						$img->setAttribute( 'src', $new_url );
+
+						$replace_urls[ $image_url ] = $new_url;
+
+					} else {
+
+						$new_id  = mai_get_new_image_from_url( $image_url, $path_parts['filename'] );
+
+						if ( $new_id  ) {
+							$new_img = wp_get_attachment_image_src( $existing, 'large' );
+							$new_url = $new_img[0];
+
+							$blocks[ $index ]['attrs']['id']  = $new_id;
+
+							$img->setAttribute( 'src', $new_url );
+
+							$replace_urls[ $image_url ] = $new_url;
+						}
+					}
+
+					$blocks[ $index ]['innerHTML'] = $dom->saveHTML();
+
+					$blocks[ $index ] = filter_block_kses( $blocks[ $index ], 'post' );
+				}
+			}
+		}
+	}
+
+	if ( $replace_urls ) {
+		$blocks = serialize_blocks( $blocks );
+
+		foreach ( $replace_urls as $old => $new ) {
+			$blocks = str_replace( $old, $new, $blocks );
+		}
+
+		return $blocks;
+	}
+
+	return $content;
+}
+
+/**
+ * Gets existing attachment from attachment filename.
+ *
+ * @access private
+ *
+ * @since 2.6.0
+ *
+ * @param string $filename The image filename/slug.
+ *
+ * @return int|false
+ */
+function mai_get_existing_attachment_from_filename( $filename ) {
+	$existing = get_posts(
+		[
+			'post_type'              => 'attachment',
+			'post_status'            => 'any',
+			'name'                   => $filename,
+			'posts_per_page'         => 1,
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+			'suppress_filters'       => false,
+		]
+	);
+
+	if ( $existing ) {
+		return $existing[0]->ID;
+	}
+
+	return false;
+}
+
+/**
+ * Imports an image from an external URL.
+ *
+ * @access private
+ *
+ * @since 2.6.0
+ *
+ * @param string $image_url The image url.
+ * @param string $filename  The image filename/slug.
+ *
+ * @return int|false
+ */
+function mai_get_new_image_from_url( $image_url, $filename = '' ) {
+	if ( ! function_exists( 'media_sideload_image' ) ) {
+		require_once( ABSPATH . 'wp-admin/includes/media.php' );
+		require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		require_once( ABSPATH . 'wp-admin/includes/image.php' );
+	}
+
+	// Create attachment.
+	$new_id = media_sideload_image( $image_url, 0, $filename, 'id' );
+
+	if ( $new_id && ! is_wp_error( $new_id ) ) {
+		return $new_id;
+	}
+
+	return false;
+}
+
+/**
+ * Gets template parts content from the demo.
+ * Caches via a transient.
+ *
+ * Requires Mai Demo Exporter plugin to be active on the demo site.
+ *
+ * @since 2.6.0
+ *
+ * @return array
+ */
+function mai_get_template_parts_from_demo() {
+	if ( false === ( $template_parts = get_transient( 'mai_demo_template_parts' ) ) ) {
+		$template_parts = [];
+		$config         = mai_get_config( 'template-parts' );
+		$demos          = apply_filters( 'mai_setup_wizard_demos', [] );
+
+		if ( $demos ) {
+			$demo = array_shift( $demos );
+
+			if ( $demo && $demo['preview'] && $demo['preview'] ) {
+				$url     = sprintf( '%s/wp-json/wp/v2/template-parts', untrailingslashit( $demo['preview'] ) );
+				$request = wp_remote_get( $url );
+
+				if ( ! is_wp_error( $request ) ) {
+					$body  = wp_remote_retrieve_body( $request );
+					$data  = json_decode( $body );
+
+					if ( $data ) {
+						$parts = wp_list_pluck( $data, 'content_raw', 'slug' );
+
+						if ( $parts ) {
+							foreach ( $config as $slug => $args ) {
+								if ( ! isset( $parts[ $slug ] ) ) {
+									continue;
+								}
+
+								$template_parts[ $slug ] = $parts[ $slug ];
+							}
+						}
+					}
+				}
+			}
+		}
+
+		set_transient( 'mai_demo_template_parts', $template_parts, HOUR_IN_SECONDS );
+	}
+
+	return $template_parts;
+}

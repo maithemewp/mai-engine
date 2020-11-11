@@ -1,7 +1,8 @@
 $all-buttons: append($all-buttons, ".button");
+$all-buttons: append($all-buttons, ".button:visited");
 $all-text-inputs: append($all-text-inputs, "select");
 $all-text-inputs: append($all-text-inputs, "optgroup");
-$all-headings: (h1, h2, h3, h4, h5, h6, legend);
+$all-headings: (h1, h2, h3, h4, h5, h6, legend, ".is-style-heading", ".is-style-subheading");
 
 $breakpoint: 1200;
 
@@ -45,6 +46,25 @@ $spacing: (
 	xxl: var(--spacing-xxl),
 	xxxl: var(--spacing-xxxl),
 	xxxxl: var(--spacing-xxxxl),
+) !default;
+
+// For Margin block settings.
+$margin: (
+	md: var(--spacing-md),
+	lg: var(--spacing-lg),
+	xl: var(--spacing-xl),
+	xxl: var(--spacing-xxl),
+	xxxl: var(--spacing-xxxl),
+	xxxxl: var(--spacing-xxxxl),
+) !default;
+
+$negative_margin: (
+	-md: var(--spacing-md),
+	-lg: var(--spacing-lg),
+	-xl: var(--spacing-xl),
+	-xxl: var(--spacing-xxl),
+	-xxxl: var(--spacing-xxxl),
+	-xxxxl: var(--spacing-xxxxl),
 ) !default;
 
 $margin_settings: (

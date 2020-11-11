@@ -9,6 +9,31 @@
  * @license   GPL-2.0-or-later
  */
 
+add_filter( 'admin_body_class', 'mai_admin_body_classes' );
+/**
+ * Add additional classes to the body element.
+ *
+ * @since 2.6.0
+ *
+ * @param array $classes Body classes.
+ *
+ * @return array
+ */
+function mai_admin_body_classes( $classes ) {
+	// Layout.
+	$layout  = genesis_site_layout();
+	$classes = mai_add_classes( $layout, $classes );
+
+	// Sidebar.
+	if ( mai_has_string( 'sidebar', $layout ) ) {
+		$classes = mai_add_classes( 'has-sidebar', $classes );
+	} else {
+		$classes = mai_add_classes( 'no-sidebar', $classes );
+	}
+
+	return $classes;
+}
+
 add_action( 'after_setup_theme', 'mai_add_editor_color_palette' );
 /**
  * Description of expected behavior.

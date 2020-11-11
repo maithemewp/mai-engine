@@ -1,14 +1,15 @@
 a {
 	color: var(--link-color, var(--color-link));
 	text-decoration: var(--link-text-decoration, none);
-	text-underline-offset: var(--link-text-decoration-offset, var(--spacing-xs)); // Not all browsers support this yet.
+	text-underline-offset: var(--link-text-decoration-offset, var(--spacing-xxs)); // Not all browsers support this yet.
+	word-break: var(--link-word-break, break-word);
 	transition: var(--link-transition, var(--transition));
 
 	&:hover,
 	&:focus {
 		color: var(--link-color-hover, var(--color-link));
 		text-decoration: var(--link-text-decoration-hover, underline);
-		text-underline-offset: var(--link-text-decoration-offset-hover, var(--link-text-decoration-offset, var(--spacing-xs)));
+		text-underline-offset: var(--link-text-decoration-offset-hover, var(--link-text-decoration-offset, var(--spacing-xxs)));
 		outline-color: var(--color-body);
 		filter: var(--link-filter-hover, unset);
 	}
@@ -23,7 +24,7 @@ a {
 
 p {
 	width: var(--paragraph-width, auto);
-	margin: var(--paragraph-margin, 0 0 var(--spacing-md));
+	margin: var(--paragraph-margin, 0 0 var(--paragraph-margin-bottom, var(--spacing-md)));
 	padding: var(--paragraph-padding, 0);
 
 	&:empty {
@@ -33,8 +34,12 @@ p {
 	&:last-child {
 
 		@include mq(md) {
-			margin: 0;
+			--paragraph-margin-bottom: 0;
 		}
+	}
+
+	&.has-background {
+		--paragraph-padding: var(--spacing-lg) var(--spacing-xl);
 	}
 }
 
@@ -57,12 +62,14 @@ i {
 blockquote {
 	margin: var(--blockquote-margin, (1em auto));
 	padding: var(--blockquote-padding, 1em);
+	color: var(--blockquote-color, unset);
 	font-weight: var(--blockquote-font-weight, normal);
 	font-size: var(--blockquote-font-size, (1em));
 	font-family: var(--blockquote-font-family, inherit);
 	font-style: var(--blockquote-font-style, italic);
 	line-height: var(--blockquote-line-height, normal);
 	text-align: var(--blockquote-text-align, inherit);
+	background: var(--blockquote-background, unset);
 	border-top: var(--blockquote-border-top, 0);
 	border-right: var(--blockquote-border-right, 0);
 	border-bottom: var(--blockquote-border-bottom, 0);
@@ -73,11 +80,8 @@ blockquote {
 }
 
 cite {
-	display: block;
-	font-weight: var(--cite-font-weight, bolder);
-	font-size: var(--cite-font-size, normal);
-	font-family: var(--cite-font-family, var(--heading-font-family));
-	font-style: var(--cite-font-style, normal);
+
+	@include cite();
 }
 
 pre,

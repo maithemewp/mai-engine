@@ -437,8 +437,7 @@ class Mai_Grid {
 		// Exclude displayed.
 		if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'] ) && ! empty( self::$existing_post_ids ) ) {
 			if ( isset( $query_args['post__not_in'] ) ) {
-				$query_args['post__not_in'] = array_push( $query_args['post__not_in'], self::$existing_post_ids );
-
+				$query_args['post__not_in'] = array_merge( $query_args['post__not_in'], self::$existing_post_ids );
 			} else {
 				$query_args['post__not_in'] = self::$existing_post_ids;
 			}
@@ -453,7 +452,7 @@ class Mai_Grid {
 			}
 		}
 
-		return apply_filters( 'mai_post_grid_query_args', $query_args );
+		return apply_filters( 'mai_post_grid_query_args', $query_args, $this->args );
 	}
 
 	/**
@@ -540,6 +539,6 @@ class Mai_Grid {
 			}
 		}
 
-		return apply_filters( 'mai_term_grid_query_args', $query_args );
+		return apply_filters( 'mai_term_grid_query_args', $query_args, $this->args );
 	}
 }

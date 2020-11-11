@@ -188,7 +188,7 @@ return [
 			'location' => 'customizer',
 		],
 		'editor'     => [
-			'deps'     => [ 'jquery', 'jquery-ui-sortable' ],
+			'deps'     => [ 'jquery', 'jquery-ui-sortable', 'wp-blocks', 'wp-dom' ],
 			'location' => 'editor',
 			'localize' => [
 				'name' => 'maiEditorVars',
@@ -364,63 +364,54 @@ return [
 	*/
 
 	'template-parts' => [
-		[
-			'id'         => 'before-header',
-			'location'   => 'genesis_before_header',
+		'before-header' => [
+			'hook'       => 'genesis_before_header',
 			'menu_order' => 5,
 			'before'     => '<div class="before-header template-part">',
 			'after'      => '</div>',
 		],
-		[
-			'id'         => 'header-left',
-			'location'   => 'mai_header_left',
+		'header-left' => [
+			'hook'       => 'mai_header_left',
 			'menu_order' => 10,
 		],
-		[
-			'id'         => 'header-right',
-			'location'   => 'mai_header_right',
+		'header-right' => [
+			'hook'       => 'mai_header_right',
 			'menu_order' => 15,
 		],
-		[
-			'id'         => 'mobile-menu',
-			'location'   => 'mai_after_header_wrap',
+		'mobile-menu' => [
+			'hook'       => 'mai_after_header_wrap',
 			'before'     => '<div class="mobile-menu template-part"><div class="wrap">',
 			'after'      => '</div></div>',
 			'menu_order' => 20,
 		],
-		[
-			'id'         => 'after-header',
-			'location'   => 'genesis_after_header',
+		'after-header' => [
+			'hook'       => 'genesis_after_header',
 			'priority'   => 12,
 			'menu_order' => 25,
 			'before'     => '<div class="after-header template-part">',
 			'after'      => '</div>',
 		],
-		[
-			'id'         => 'after-entry',
+		'after-entry' => [
 			'menu_order' => 30,
 		],
-		[
-			'id'         => 'before-footer',
-			'location'   => 'genesis_footer',
+		'before-footer' => [
+			'hook'       => 'genesis_footer',
 			'priority'   => 5,
 			'menu_order' => 35,
 		],
-		[
-			'id'         => 'footer',
-			'location'   => 'genesis_footer',
+		'footer' => [
+			'hook'       => 'genesis_footer',
 			'menu_order' => 40,
 		],
-		[
-			'id'         => 'footer-credits',
-			'location'   => 'genesis_footer',
+		'footer-credits' => [
+			'hook'       => 'genesis_footer',
 			'priority'   => 12,
 			'menu_order' => 45,
 			'default'    => '<!-- wp:group {"align":"full","verticalSpacingTop":"xs","verticalSpacingBottom":"xs"} -->
-			<div class="wp-block-group alignfull"><div class="wp-block-group__inner-container"><!-- wp:paragraph {"align":"center","fontSize":"sm"} -->
-			<p class="has-text-align-center has-sm-font-size">Copyright [footer_copyright] · [footer_home_link] · All Rights Reserved · Powered by <a rel="noreferrer noopener" target="_blank" href="https://bizbudding.com/mai-theme/">Mai Theme</a></p>
-			<!-- /wp:paragraph --></div></div>
-			<!-- /wp:group -->',
+				<div class="wp-block-group alignfull"><div class="wp-block-group__inner-container"><!-- wp:paragraph {"align":"center","fontSize":"sm"} -->
+				<p class="has-text-align-center has-sm-font-size">Copyright [footer_copyright] · [footer_home_link] · All Rights Reserved · Powered by <a rel="noreferrer noopener" target="_blank" href="https://bizbudding.com/mai-theme/">Mai Theme</a></p>
+				<!-- /wp:paragraph --></div></div>
+				<!-- /wp:group -->',
 		],
 	],
 
@@ -524,6 +515,8 @@ return [
 					'footer_meta',
 					'genesis_entry_footer',
 					'after_entry',
+					'author_box',
+					'adjacent_entry_nav',
 				],
 				'image_orientation'            => 'landscape',
 				'image_size'                   => 'landscape-md',
@@ -556,6 +549,7 @@ return [
 				'image_orientation'            => 'landscape',
 				'image_size'                   => 'landscape-md',
 				'image_position'               => 'full',
+				'image_alternate'              => false,
 				'image_width'                  => 'third',
 				'header_meta'                  => 'mai_get_header_meta_default',
 				'content_limit'                => 0,
@@ -563,9 +557,7 @@ return [
 				'footer_meta'                  => 'mai_get_footer_meta_default',
 				'align_text'                   => 'start',
 				'align_text_vertical'          => '',
-				'image_stack_heading'          => '',
 				'image_stack'                  => true,
-				'boxed_heading'                => '',
 				'boxed'                        => true,
 				'border_radius'                => '',
 				'columns'                      => '3',

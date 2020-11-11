@@ -6,6 +6,10 @@
 	}
 }
 
+.entry-title-single {
+	margin-bottom: var(--entry-title-single-margin-bottom, var(--spacing-xl));
+}
+
 .entry-title-link {
 	display: var(--entry-title-link-display, block);
 	color: var(--entry-title-link-color, currentColor);

@@ -20,21 +20,22 @@ add_action( 'genesis_before', 'mai_render_template_parts' );
 function mai_render_template_parts() {
 	$template_parts = mai_get_config( 'template-parts' );
 
-	foreach ( $template_parts as $template_part ) {
-		$id       = $template_part['id'];
-		$hook     = isset( $template_part['location'] ) ? $template_part['location'] : false;
-		$priority = isset( $template_part['priority'] ) ? $template_part['priority'] : 10;
-		$before   = isset( $template_part['before'] ) ? $template_part['before'] : '';
-		$after    = isset( $template_part['after'] ) ? $template_part['after'] : '';
+	foreach ( $template_parts as $slug => $template_part ) {
+		$hook      = isset( $template_part['hook'] ) ? $template_part['hook'] : false;
+		$priority  = isset( $template_part['priority'] ) ? $template_part['priority'] : 10;
+		$condition = isset( $template_part['condition'] ) ? $template_part['condition'] : '';
+		$before    = isset( $template_part['before'] ) ? $template_part['before'] : '';
+		$after     = isset( $template_part['after'] ) ? $template_part['after'] : '';
 
-		if ( $hook && ! mai_is_element_hidden( mai_convert_case( $id ) ) ) {
-			add_action(
-				$hook,
-				function () use ( $id, $before, $after ) {
-					mai_render_template_part( $id, $before, $after );
-				},
-				$priority
-			);
+		if ( $hook && ! mai_is_element_hidden( mai_convert_case( $slug ) ) ) {
+
+			if ( $condition && is_callable( $condition ) && ! $condition() ) {
+				continue;
+			}
+
+			add_action( $hook, function() use ( $slug, $before, $after ) {
+				mai_render_template_part( $slug, $before, $after );
+			}, $priority );
 		}
 	}
 }

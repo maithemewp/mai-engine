@@ -9,6 +9,10 @@
 	font-size: var(--archive-title-font-size, var(--font-size-xxxxl));
 }
 
+.blog-description {
+	margin: var(--blog-description-margin, (0 auto var(--spacing-xl)));
+}
+
 .term-description {
 	margin: var(--term-description-margin, (0 auto var(--spacing-xl)));
 }

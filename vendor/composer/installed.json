@@ -1,11 +1,11 @@
 [
     {
         "name": "advanced-custom-fields/advanced-custom-fields-pro",
-        "version": "5.9.0",
-        "version_normalized": "5.9.0.0",
+        "version": "5.9.3",
+        "version_normalized": "5.9.3.0",
         "dist": {
             "type": "zip",
-            "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download&t=5.9.0"
+            "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download&t=5.9.3"
         },
         "type": "library",
         "installation-source": "dist"
