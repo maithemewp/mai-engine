@@ -784,7 +784,11 @@ function mai_get_menu( $menu, $args = [] ) {
 	);
 
 	if ( $html ) {
-		$atts = [
+
+		$object = wp_get_nav_menu_object( $menu );
+		$class  = $object ? 'nav-' .  $object->slug : '';
+		$atts   = [
+			'class' => $class,
 			'style' => '',
 		];
 
