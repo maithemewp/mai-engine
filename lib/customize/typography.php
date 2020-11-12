@@ -45,13 +45,14 @@ function mai_typography_customizer_settings() {
 			'section'     => $section,
 			'label'       => __( 'Body', 'mai-engine' ),
 			'description' => __( 'Default: ', 'mai-engine' ) . $body_font_family . ' ' . $body_font_weight,
+			'choices'     => [
+				'fonts'   => [
+					'standard' => [ 'serif', 'sans-serif', 'monospace' ],
+				],
+			],
 			'default'     => [
 				'font-family' => $body_font_family,
 				'variant'     => $body_font_weight,
-			],
-			'css_vars'    => [
-				[ '--body-font-family', '$', 'font-family' ],
-				[ '--body-font-weight', '$', 'variant' ],
 			],
 		]
 	);
@@ -67,13 +68,14 @@ function mai_typography_customizer_settings() {
 			'section'     => $section,
 			'label'       => __( 'Heading', 'mai-engine' ),
 			'description' => __( 'Default: ', 'mai-engine' ) . $heading_font_family . ' ' . $heading_font_weight,
+			'choices'     => [
+				'fonts'   => [
+					'standard' => [ 'serif', 'sans-serif', 'monospace' ],
+				],
+			],
 			'default'     => [
 				'font-family' => $heading_font_family,
 				'variant'     => $heading_font_weight,
-			],
-			'css_vars'    => [
-				[ '--heading-font-family', '$', 'font-family' ],
-				[ '--heading-font-weight', '$', 'variant' ],
 			],
 		]
 	);

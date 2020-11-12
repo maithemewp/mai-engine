@@ -34,6 +34,14 @@
 	--menu-item-link-color: var(--color-white);
 }
 
+.nav-header .button {
+	--button-background: var(--color-white);
+	--button-color: var(--color-heading);
+	--button-background-hover: var(--color-white);
+	--button-color-hover: var(--color-secondary);
+	--button-overlay-display: none;
+}
+
 .is-style-subheading {
 	font-style: italic;
 
@@ -81,8 +89,14 @@
 	margin-left: -12px;
 }
 
+.wp-block-image {
+
+	&.has-overlap img {
+		width: 100%;
+	}
+}
+
 blockquote {
-	--blockquote-padding: 0;
 	--blockquote-font-size: var(--font-size-lg);
 	--blockquote-border-top: 0;
 	--blockquote-border-right: 0;
@@ -108,4 +122,14 @@ blockquote {
 			content: "\2014";
 		}
 	}
+}
+
+.wp-block-pullquote blockquote::before {
+	margin: auto;
+}
+
+.entry-content > .wp-block-quote,
+.entry-content > .wp-block-pullquote {
+	--blockquote-padding: var(--spacing-xl);
+	--blockquote-background: var(--color-alt);
 }

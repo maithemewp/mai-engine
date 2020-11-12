@@ -120,8 +120,9 @@ function mai_get_default_font_weight( $element ) {
 function mai_get_font_family( $element ) {
 	$default = mai_get_default_font_family( $element );
 	$option  = mai_get_option( $element . '-typography' );
+	$family  = mai_isset( $option, 'font-family', $default );
 
-	return mai_isset( $option, 'font-family', $default );
+	return $family ?: 'unset';
 }
 
 /**

@@ -1,13 +1,9 @@
 .wp-block-pullquote {
-	margin-top: var(--spacing-lg);
-	margin-bottom: var(--spacing-lg);
-	border-top: var(--border);
-	border-bottom: var(--border);
-	border-left: 0;
+	margin: 0;
+	padding: 0;
 
-	&.aligncenter {
-		margin-top: var(--spacing-md);
-		margin-bottom: var(--spacing-md);
+	p {
+		font-size: var(--blockquote-font-size, 1em); // Override WP styles.
 	}
 
 	footer,

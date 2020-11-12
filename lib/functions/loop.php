@@ -175,6 +175,7 @@ function mai_get_template_args() {
 	// Get taxonomy's post type as fallback.
 	if ( taxonomy_exists( $name ) && ! in_array( $name, mai_get_option( $context . '-settings', $default ), true ) ) {
 		$post_type = mai_get_taxonomy_post_type( $name );
+
 		if ( $post_type ) {
 			$name = $post_type;
 		}

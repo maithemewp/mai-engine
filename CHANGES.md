@@ -1,7 +1,13 @@
 # Changelog
 
+## 2.6.2 (11/12/20)
+* Changed: Added has-overlap class to any block that uses overlap margin settings.
+* Fixed: Better default Pullquote block styles on front end and editor.
+* Fixed: Page Header overlay fallbacks not working correctly in some instances.
+* Fixed: Better default font CSS when use standard (non-Google) fonts in Customizer.
+
 ## 2.6.1 (11/11/20)
-* Added: Nav menu slug to menu wrap when using `[mai_menu]` shortcode.
+* Changed: Nav menu slug to menu wrap when using `[mai_menu]` shortcode.
 * Fixed: Sticky header not sticking to top when logged out.
 * Fixed: Syntax error warnings when debugging is on.
 

@@ -12,8 +12,8 @@
 return [
 	'demos' => [
 		'home-garden'   => 35,
-		// 'health-beauty' => 36,
-		// 'travel'        => 37,
+		'health-beauty' => 36,
+		'travel'        => 37,
 	],
 	'global-styles' => [
 		'colors' => [
@@ -62,9 +62,11 @@ return [
 		],
 		'content-archives' => [
 			'post' => [
-				'boxed'   => false,
-				'columns' => 2,
-				'row_gap' => 'xxxl',
+				'boxed'             => false,
+				'columns'           => 2,
+				'row_gap'           => 'xxxl',
+				'image_orientation' => 'square',
+				'align_text'        => 'center',
 			],
 		],
 	],

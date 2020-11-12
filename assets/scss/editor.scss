@@ -51,6 +51,20 @@ p {
 	max-width: var(--wp-block-max-width, var(--breakpoint-lg));
 }
 
+[data-type="core/pullquote"][data-align="left"],
+[data-type="core/pullquote"][data-align="right"] {
+	max-width: 290px; // Match WP core front end styles.
+	overflow: hidden;
+}
+
+[data-type="core/pullquote"][data-align="left"] {
+	float: left;
+}
+
+[data-type="core/pullquote"][data-align="right"] {
+	float: right;
+}
+
 .block-editor-block-list__layout {
 
 	> [data-type="core/group"],

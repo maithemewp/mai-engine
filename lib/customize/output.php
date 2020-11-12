@@ -260,11 +260,21 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_fonts_custom_properties' );
  * @return array
  */
 function mai_add_fonts_custom_properties( $css ) {
-	$font_weight_bold = mai_get_bold_variant( 'body' );
-	$fonts_config     = mai_get_global_styles( 'fonts' );
+	$body_font_family    = mai_get_font_family( 'body' );
+	$font_weight_bold    = mai_get_bold_variant( 'body' );
+	$heading_font_family = mai_get_font_family( 'heading' );
+	$fonts_config        = mai_get_global_styles( 'fonts' );
+
+	if ( $body_font_family ) {
+		$css['global'][':root']['--body-font-family'] = $body_font_family;
+	}
 
 	if ( $font_weight_bold ) {
 		$css['global'][':root']['--font-weight-bold'] = $font_weight_bold;
+	}
+
+	if ( $heading_font_family ) {
+		$css['global'][':root']['--heading-font-family'] = $heading_font_family;
 	}
 
 	unset( $fonts_config['body'] );
