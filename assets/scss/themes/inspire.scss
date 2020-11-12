@@ -82,7 +82,6 @@
 }
 
 blockquote {
-	--blockquote-padding: 0;
 	--blockquote-font-size: var(--font-size-lg);
 	--blockquote-border-top: 0;
 	--blockquote-border-right: 0;
@@ -108,4 +107,14 @@ blockquote {
 			content: "\2014";
 		}
 	}
+}
+
+.wp-block-pullquote blockquote::before {
+	margin: auto;
+}
+
+.entry-content > .wp-block-quote,
+.entry-content > .wp-block-pullquote {
+	--blockquote-padding: var(--spacing-xl);
+	--blockquote-background: var(--color-alt);
 }
