@@ -8,6 +8,9 @@ body {
 	overflow-x: hidden; // Prevent horizontal scrollbars.
 
 	@include body;
+}
+
+.admin-bar {
 
 	@media only screen and (min-width: 545px) and (max-width: 782px) {
 		--body-top: 46px;

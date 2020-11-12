@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.6.1 (11/11/20)
+* Added: Nav menu slug to menu wrap when using `[mai_menu]` shortcode.
+* Fixed: Sticky header not sticking to top when logged out.
+* Fixed: Syntax error warnings when debugging is on.
+
 ## 2.6.0 (11/11/20)
 * Added: Documentation and Support links under Mai Theme Dashboard menu.
 * Added: Also added Template Parts and Reusable Blocks link under Mai Theme Dashboard menu, leaving them under Appearance as well.
