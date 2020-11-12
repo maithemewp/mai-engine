@@ -1,8 +1,8 @@
 @mixin body {
 	color: var(--body-color, var(--color-body));
-	font-weight: var(--body-font-weight); // No fallback, always output by Kirki.
+	font-weight: var(--body-font-weight, unset);
 	font-size: var(--body-font-size, var(--font-size-md));
-	font-family: var(--body-font-family); // No fallback, always output by Kirki.
+	font-family: var(--body-font-family, unset);
 	font-style: var(--body-font-style, normal);
 	line-height: var(--body-line-height, 1.625); // Perfect fourth.
 	background: var(--body-background-color, var(--color-background));
@@ -12,8 +12,8 @@
 	margin-top: var(--heading-margin-top, 0);
 	margin-bottom: var(--heading-margin-bottom, var(--spacing-md));
 	color: var(--heading-color, var(--color-heading));
-	font-weight: var(--heading-font-weight); // No fallback, always output by Kirki.
-	font-family: var(--heading-font-family); // No fallback, always output by Kirki.
+	font-weight: var(--heading-font-weight, unset);
+	font-family: var(--heading-font-family, unset);
 	font-style: var(--heading-font-style, normal);
 	line-height: var(--heading-line-height, 1.219); // Perfect fourth.
 	letter-spacing: var(--heading-letter-spacing, normal);

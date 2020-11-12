@@ -90,7 +90,7 @@ kbd,
 samp {
 	padding: var(--code-padding, (0.05em 0.5em));
 	font-size: var(--code-font-size, (0.9em));
-	font-family: var(--code-font-family, var(--font-code));
+	font-family: var(--code-font-family);
 	background: var(--code-background, var(--color-alt));
 	border-radius: var(--code-border-radius, var(--border-radius));
 }

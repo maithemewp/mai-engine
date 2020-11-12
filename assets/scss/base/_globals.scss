@@ -19,8 +19,8 @@
 	--font-size-xxxl: calc(var(--font-size-xxl) * var(--font-scale));
 	--font-size-xxxxl: calc(var(--font-size-xxxl) * var(--font-scale));
 
-	--font-stack: system-ui, -apple-system, blinkmacsystemfont, helvetica, arial, sans-serif;
-	--font-code: consolas, monaco, monospace;
+	--system-font-family: -apple-system, blinkmacsystemfont, "Segoe UI", roboto, oxygen-sans, ubuntu, cantarell, "Helvetica Neue", sans-serif;
+	--code-font-family: consolas, monaco, monospace;
 
 	--spacing-base: 16px;
 	--spacing-scale: 1.5;
