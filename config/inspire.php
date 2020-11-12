@@ -62,9 +62,10 @@ return [
 		],
 		'content-archives' => [
 			'post' => [
-				'boxed'   => false,
-				'columns' => 2,
-				'row_gap' => 'xxxl',
+				'boxed'             => false,
+				'columns'           => 2,
+				'row_gap'           => 'xxxl',
+				'image_orientation' => 'square',
 			],
 		],
 	],
