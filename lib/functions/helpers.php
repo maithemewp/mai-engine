@@ -408,21 +408,21 @@ function mai_has_page_header_support_callback( $control ) {
  * @return float
  */
 function mai_get_page_header_overlay_opacity() {
-	$opacity = (float) mai_get_template_arg( 'page-header-overlay-opacity' );
+	$opacity = mai_get_template_arg( 'page-header-overlay-opacity' );
 
-	if ( '' !== $opacity && $opacity < 1 ) {
+	if ( null !== $opacity && floatval( $opacity ) < 1 ) {
 		return $opacity;
 	}
 
-	if ( '' === $opacity || 1.0 === $opacity ) {
-		$opacity = (float) mai_get_option( 'page-header-background-color' );
+	if ( null === $opacity || 1.0 === floatval( $opacity ) ) {
+		$opacity = mai_get_option( 'page-header-overlay-opacity' );
 
-		if ( '' !== $opacity && $opacity < 1 ) {
+		if ( null !== $opacity && floatval( $opacity ) < 1 ) {
 			return $opacity;
 		}
 	}
 
-	return (float) $config['overlay-opacity'];
+	return floatval( mai_get_config( 'settings' )['page-header']['overlay-opacity'] );
 }
 
 /**
