@@ -3,6 +3,7 @@
 .env
 .npmrc
 .cache
+.vscode
 *.lock
 *lock.json
 *.zip

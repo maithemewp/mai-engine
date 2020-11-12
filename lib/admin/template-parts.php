@@ -109,7 +109,7 @@ function mai_template_parts_import_row_action( $actions, $post ) {
 			'mai_action' => 'mai_import',
 			'mai_slug'   => $post->post_name,
 		],
-		$admin_url,
+		$admin_url
 	);
 
 	$html = sprintf( '<a href="%s" onclick="return maiImportConfirmation()">%s</a>',
@@ -256,7 +256,7 @@ function mai_widgets_template_parts_admin_notice( $screen ) {
 			'<div class="notice notice-warning is-dismissible"><p>%s <a href="%s">%s</a>.</p></div>',
 			__( 'Mai Theme uses "Template Parts" (block-based widget areas).', 'mai-engine' ),
 			admin_url( 'edit.php?post_type=wp_template_part' ),
-			__( 'Edit template parts now', 'mai-engine' ),
+			__( 'Edit template parts now', 'mai-engine' )
 		);
 	});
 }
@@ -280,7 +280,7 @@ function mai_template_parts_admin_notice() {
 		printf(
 			'<div class="notice notice-success is-dismissible"><p>%s <a target="_blank" href="https://docs.bizbudding.com/docs/template-parts/">%s</a>.</p></div>',
 			__( 'View documentation for', 'mai-engine' ),
-			__( 'Template Parts', 'mai-engine' ),
+			__( 'Template Parts', 'mai-engine' )
 		);
 	});
 }

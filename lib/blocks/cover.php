@@ -79,7 +79,7 @@ function mai_render_cover_block( $block_content, $block ) {
 				[
 					'class' => 'wp-cover-block__image',
 				],
-				$full ? '100vw' : mai_get_breakpoint( 'xl' ),
+				$full ? '100vw' : mai_get_breakpoint( 'xl' )
 			);
 
 			if ( $image_html ) {
