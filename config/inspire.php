@@ -66,6 +66,7 @@ return [
 				'columns'           => 2,
 				'row_gap'           => 'xxxl',
 				'image_orientation' => 'square',
+				'align_text'        => 'center',
 			],
 		],
 	],
