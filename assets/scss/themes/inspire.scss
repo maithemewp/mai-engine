@@ -81,6 +81,13 @@
 	margin-left: -12px;
 }
 
+.wp-block-image {
+
+	&.has-overlap img {
+		width: 100%;
+	}
+}
+
 blockquote {
 	--blockquote-font-size: var(--font-size-lg);
 	--blockquote-border-top: 0;
