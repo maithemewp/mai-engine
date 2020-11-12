@@ -245,6 +245,7 @@ function mai_do_block_margin_settings( $block_content, $block ) {
 
 		if ( $first_block ) {
 			$classes = $first_block->getAttribute( 'class' );
+			$classes = mai_add_classes( sprintf( 'has-overlap', $top ), $classes );
 
 			if ( $top ) {
 				$classes = mai_add_classes( sprintf( 'has-%s-margin-top', $top ), $classes );
