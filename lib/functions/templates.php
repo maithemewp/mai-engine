@@ -131,6 +131,12 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
  * @return array
  */
 function mai_get_template_parts() {
+	static $template_parts = null;
+
+	if ( ! is_null( $template_parts ) ) {
+		return $template_parts;
+	}
+
 	$template_parts = [];
 	$posts          = [];
 	$objects        = mai_get_template_part_objects();
