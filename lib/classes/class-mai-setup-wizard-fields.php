@@ -159,7 +159,7 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 				'id'         => $demo['id'],
 				'label'      => sprintf(
 					'<h4>%s</h4>&nbsp;<a href="%s" target="_blank" class="button">%s</a>',
-					$demo['name'],
+					mai_convert_case( $demo['name'], 'title' ),
 					$demo['preview'],
 					__( 'Preview', 'mai-engine' )
 				),

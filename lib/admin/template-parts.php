@@ -65,6 +65,10 @@ function mai_maybe_create_template_parts( $current_screen ) {
 		}
 	}
 
+	if ( ! $message ) {
+		return;
+	}
+
 	$redirect = add_query_arg( 'mai_notice', urlencode( esc_html( $message ) ), $redirect );
 
 	wp_safe_redirect( $redirect );

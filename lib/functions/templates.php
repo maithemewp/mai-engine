@@ -247,6 +247,7 @@ function mai_get_template_part_objects() {
 				'post_type'              => 'wp_template_part',
 				'post_status'            => 'any',
 				'post_name__in'          => $slugs,
+				'posts_per_page'         => count( $slugs ),
 				'no_found_rows'          => true,
 				'update_post_meta_cache' => false,
 				'update_post_term_cache' => false,
