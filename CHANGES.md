@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.6.3.1 (11/13/20)
+* Fixed: Force update to show.
+
 ## 2.6.3 (11/13/20)
 * Added: Much more performance template parts query.
 * Changed: Reorganized font custom properties for easier overriding when customizing CSS.
