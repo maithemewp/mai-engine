@@ -131,6 +131,12 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
  * @return array
  */
 function mai_get_template_parts() {
+	static $template_parts = null;
+
+	if ( ! is_null( $template_parts ) ) {
+		return $template_parts;
+	}
+
 	$template_parts = [];
 	$posts          = [];
 	$objects        = mai_get_template_part_objects();
@@ -231,30 +237,28 @@ function mai_get_template_part_objects() {
 		return $template_parts;
 	}
 
-	$template_parts = [];
-	$slugs          = array_keys( mai_get_config( 'template-parts' ) );
-	$posts          = [];
+	$slugs = array_keys( mai_get_config( 'template-parts' ) );
+	$posts = [];
 
 	if ( ! empty( $slugs ) ) {
+
 		$query = get_posts(
 			[
 				'post_type'              => 'wp_template_part',
 				'post_status'            => 'any',
 				'post_name__in'          => $slugs,
-				'posts_per_page'         => 500,
-				// Force a high number. Without setting this, it uses the WP posts_per_page setting, which could break things.
 				'no_found_rows'          => true,
 				'update_post_meta_cache' => false,
 				'update_post_term_cache' => false,
 				'suppress_filters'       => false, // https://github.com/10up/Engineering-Best-Practices/issues/116
 			]
 		);
-
 		foreach ( $query as $post ) {
-
-			$template_parts[] = $post;
+			$posts[] = $post;
 		}
 	}
+
+	$template_parts = $posts;
 
 	return $template_parts;
 }

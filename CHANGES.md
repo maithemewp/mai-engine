@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.6.3 (11/13/20)
+* Added: Much more performance template parts query.
+* Changed: Reorganized font custom properties for easier overriding when customizing CSS.
+* Changed: All font custom properties now output manually in the same function.
+* Fixed: Submenu alignment when centering menus in `[mai_menu]` shortcode.
+
 ## 2.6.2 (11/12/20)
 * Changed: Added has-overlap class to any block that uses overlap margin settings.
 * Fixed: Better default Pullquote block styles on front end and editor.

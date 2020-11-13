@@ -78,6 +78,13 @@ class Mai_Entry {
 	protected $image_size;
 
 	/**
+	 * Image ID.
+	 *
+	 * @var $image_id
+	 */
+	protected $image_id;
+
+	/**
 	 * Mai_Entry constructor.
 	 *
 	 * @since 0.1.0
@@ -98,6 +105,7 @@ class Mai_Entry {
 		$this->link_entry  = ( 'single' !== $this->context );
 		$this->link_entry  = apply_filters( 'mai_link_entry', $this->link_entry, $this->args, $this->entry );
 		$this->image_size  = $this->get_image_size();
+		$this->image_id    = $this->get_image_id();
 	}
 
 	/**
@@ -152,7 +160,7 @@ class Mai_Entry {
 
 		// Add image classes.
 		if ( in_array( 'image', $this->args['show'], true ) ) {
-			if ( $this->get_image_id() ) {
+			if ( $this->image_id ) {
 				$atts['class'] .= ' has-image';
 
 				if ( $image_first && ! ( ( 'single' === $this->context ) && mai_is_element_hidden( 'featured_image', $this->id ) ) ) {
@@ -429,7 +437,7 @@ class Mai_Entry {
 	public function get_image() {
 
 		// Get the image ID.
-		$image_id = $this->get_image_id();
+		$image_id = $this->image_id;
 
 		// Bail if no image ID.
 		if ( ! $image_id ) {

@@ -795,13 +795,22 @@ function mai_get_menu( $menu, $args = [] ) {
 		if ( isset( $args['align'] ) && $args['align'] ) {
 			switch ( trim( $args['align'] ) ) {
 				case 'left':
-					$atts['style'] .= '--menu-justify-content:flex-start;--menu-item-justify-content:flex-start;--menu-item-link-justify-content:flex-start;--menu-item-link-text-align:start;';
+					$atts['style'] .= '--menu-justify-content:flex-start;--menu-item-justify-content:flex-start;';
+					if ( $list ) {
+						$atts['style'] .= '--menu-item-link-justify-content:flex-start;--menu-item-link-text-align:start;';
+					}
 					break;
 				case 'center':
-					$atts['style'] .= '--menu-justify-content:center;--menu-item-justify-content:center;--menu-item-link-justify-content:center;--menu-item-link-text-align:center;';
+					$atts['style'] .= '--menu-justify-content:center;--menu-item-justify-content:center;';
+					if ( $list ) {
+						$atts['style'] .= '--menu-item-link-justify-content:center;--menu-item-link-text-align:center;';
+					}
 					break;
 				case 'right':
-					$atts['style'] .= '--menu-justify-content:flex-end;--menu-item-justify-content:flex-end;--menu-item-link-justify-content:flex-end;--menu-item-link-text-align:end;';
+					$atts['style'] .= '--menu-justify-content:flex-end;--menu-item-justify-content:flex-end;';
+					if ( $list ) {
+						$atts['style'] .= '--menu-item-link-justify-content:flex-end;--menu-item-link-text-align:end;';
+					}
 					break;
 			}
 		}

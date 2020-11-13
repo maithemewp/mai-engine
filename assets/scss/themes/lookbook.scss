@@ -6,7 +6,7 @@
 	--body-line-height: 1.875;
 	--button-padding: 1.2em 2.4em;
 	--button-font-size: 0.7em;
-	--button-font-weight: var(--font-weight-bold);
+	--button-font-weight: var(--body-font-weight-bold);
 	--button-text-transform: uppercase;
 	--button-overlay-color: var(--color-white);
 	--link-color: var(--color-body);
@@ -19,11 +19,11 @@
 	--blockquote-border-left: 0;
 	--cite-font-family: var(--body-font-family);
 	--label-font-size: 1em;
-	--label-font-weight: var(--font-weight-bold);
+	--label-font-weight: var(--body-font-weight-bold);
 	--site-header-border-bottom: 0;
 	--site-title-margin: 0 0.5em;
 	--site-title-font-size: var(--font-size-lg);
-	--site-title-font-weight: var(--font-weight-bold);
+	--site-title-font-weight: var(--body-font-weight-bold);
 	--menu-font-family: var(--heading-font-family);
 	--menu-font-size: var(--font-size-sm);
 	--menu-letter-spacing: 0.5px;
@@ -40,7 +40,7 @@
 	--archive-description-text-align: center;
 	--archive-description-margin: 3em auto;
 	--archive-title-font-size: var(--font-size-lg);
-	--archive-title-font-weight: var(--font-weight-bold);
+	--archive-title-font-weight: var(--body-font-weight-bold);
 
 	@include mq(md) {
 		--font-scale: 1.3;
