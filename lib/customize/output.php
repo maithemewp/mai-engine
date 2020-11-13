@@ -9,26 +9,6 @@
  * @license   GPL-2.0-or-later
  */
 
-add_filter( 'kirki_mai-engine_styles', 'mai_add_breakpoint_custom_properties' );
-/**
- * Output breakpoint custom property.
- *
- * @since 2.0.0
- *
- * @param array $css Kirki CSS.
- *
- * @return array
- */
-function mai_add_breakpoint_custom_properties( $css ) {
-	$breakpoints = mai_get_breakpoints();
-
-	foreach ( $breakpoints as $name => $size ) {
-		$css['global'][':root'][ '--breakpoint-' . $name ] = $size . 'px';
-	}
-
-	return $css;
-}
-
 add_filter( 'kirki_mai-engine_styles', 'mai_add_additional_colors_css' );
 /**
  * Output named (non-element) color css.
@@ -116,6 +96,30 @@ function mai_add_button_text_colors( $css ) {
 
 		$css['global'][':root'][ '--button-' . $suffix . 'color' ] = $text;
 	}
+
+	return $css;
+}
+
+add_filter( 'kirki_mai-engine_styles', 'mai_add_breakpoint_custom_properties' );
+/**
+ * Output breakpoint custom property.
+ *
+ * @since 2.0.0
+ *
+ * @param array $css Kirki CSS.
+ *
+ * @return array
+ */
+function mai_add_breakpoint_custom_properties( $css ) {
+	$props       = [];
+	$breakpoints = mai_get_breakpoints();
+
+	foreach ( $breakpoints as $name => $size ) {
+		$props[ '--breakpoint-' . $name ] = $size . 'px';
+	}
+
+	// Add breakpoints to beginning of array cause that's how Mike likes to see them.
+	$css['global'][':root'] = array_merge( $props, $css['global'][':root'] );
 
 	return $css;
 }
@@ -261,20 +265,44 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_fonts_custom_properties' );
  */
 function mai_add_fonts_custom_properties( $css ) {
 	$body_font_family    = mai_get_font_family( 'body' );
-	$font_weight_bold    = mai_get_bold_variant( 'body' );
+	$body_font_weight    = mai_get_font_weight( 'body' );
+	$body_font_bold      = mai_get_bold_variant( 'body' );
 	$heading_font_family = mai_get_font_family( 'heading' );
+	$heading_font_weight = mai_get_font_weight( 'heading' );
 	$fonts_config        = mai_get_global_styles( 'fonts' );
 
 	if ( $body_font_family ) {
 		$css['global'][':root']['--body-font-family'] = $body_font_family;
 	}
 
-	if ( $font_weight_bold ) {
-		$css['global'][':root']['--font-weight-bold'] = $font_weight_bold;
+	if ( $body_font_weight ) {
+		$body_weight = in_array( $body_font_weight, [ 'regular', 'italic' ] ) ? '400' : $body_font_weight; // Could only be italic.
+		$body_weight = str_replace( 'italic', '', $body_weight ); // Could be 300italic.
+
+		$css['global'][':root']['--body-font-weight'] = $body_weight;
+	}
+
+	if ( $body_font_bold ) {
+		$css['global'][':root']['--body-font-weight-bold'] = $body_font_bold;
+	}
+
+	if ( mai_has_string( 'italic', $body_font_weight ) ) {
+		$css['global'][':root'][ '--body-font-style' ] = 'italic';
 	}
 
 	if ( $heading_font_family ) {
 		$css['global'][':root']['--heading-font-family'] = $heading_font_family;
+	}
+
+	if ( $heading_font_weight ) {
+		$heading_weight = in_array( $heading_font_weight, [ 'regular', 'italic' ] ) ? '400' : $heading_font_weight; // Could only be italic.
+		$heading_weight = str_replace( 'italic', '', $heading_weight ); // Could be 300italic.
+
+		$css['global'][':root']['--heading-font-weight'] = $heading_weight;
+	}
+
+	if ( mai_has_string( 'italic', $heading_font_weight ) ) {
+		$css['global'][':root'][ '--heading-font-style' ] = 'italic';
 	}
 
 	unset( $fonts_config['body'] );
@@ -282,27 +310,24 @@ function mai_add_fonts_custom_properties( $css ) {
 
 	if ( $fonts_config ) {
 		foreach ( $fonts_config as $element => $string ) {
-			$css['global'][':root'][ '--' . $element . '-font-family' ] = mai_get_default_font_family( $element );
-			$css['global'][':root'][ '--' . $element . '-font-weight' ] = mai_get_default_font_weight( $element );
+			$extra_font_family = mai_get_default_font_family( $element );
+			$extra_font_weight = mai_get_default_font_weight( $element );
+			$extra_weight      = in_array( $extra_font_weight, [ 'regular', 'italic' ] ) ? '400' : $extra_font_weight; // Could only be italic.
+			$extra_weight      = str_replace( 'italic', '', $extra_weight ); // Could be 300italic.
+
+			$css['global'][':root'][ '--' . $element . '-font-family' ] = $extra_font_family;
+			$css['global'][':root'][ '--' . $element . '-font-weight' ] = $extra_weight;
+
+			if ( mai_has_string( 'italic', $extra_font_weight ) ) {
+				$css['global'][':root'][ '--' . $element . '-font-style' ] = 'italic';
+			}
 		}
-	}
-
-	// Add font style if italic is used as the default.
-	$body_weight    = mai_get_font_weight( 'body' );
-	$heading_weight = mai_get_font_weight( 'heading' );
-
-	if ( mai_has_string( 'italic', $body_weight ) ) {
-		$css['global'][':root'][ '--body-font-style' ] = 'italic';
-	}
-
-	if ( mai_has_string( 'italic', $heading_weight ) ) {
-		$css['global'][':root'][ '--heading-font-style' ] = 'italic';
 	}
 
 	return $css;
 }
 
-add_filter( 'kirki_mai-engine_styles', 'mai_add_page_header_content_type_css' );
+add_filter( 'kirki_mai-engine_styles', 'mai_add_page_header_content_type_css', 12 );
 /**
  * Add page header styles to kirki output.
  *
@@ -342,6 +367,12 @@ function mai_add_page_header_content_type_css( $css ) {
 	$css['global'][':root']['--page-header-padding-top']    = mai_get_unit_value( $top );
 	$css['global'][':root']['--page-header-padding-bottom'] = mai_get_unit_value( $bottom );
 
+	$text_align = mai_get_option( 'page-header-text-align', $config['text-align'] );
+
+	if ( $text_align ) {
+		$css['global'][':root']['--page-header-text-align'] = esc_html( $text_align );
+	}
+
 	return $css;
 }
 
@@ -362,5 +393,11 @@ function mai_add_extra_custom_properties( $css ) {
 		$css['global'][':root'][ '--' . $property ] = $value;
 	}
 
+	return $css;
+}
+
+// add_filter( 'kirki_mai-engine_styles', 'mai_sort_custom_properties' );
+function mai_sort_custom_properties( $css ) {
+	ksort( $css['global'][':root'] );
 	return $css;
 }

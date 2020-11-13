@@ -88,18 +88,6 @@ function mai_page_header_customizer_settings() {
 				'top'    => __( 'Top', 'mai-engine' ),
 				'bottom' => __( 'Bottom', 'mai-engine' ),
 			],
-			'output'      => [
-				[
-					'choice'   => 'top',
-					'element'  => ':root',
-					'property' => '--page-header-padding-top',
-				],
-				[
-					'choice'   => 'bottom',
-					'element'  => ':root',
-					'property' => '--page-header-padding-bottom',
-				],
-			],
 			'input_attrs' => [
 				'placeholder' => '10vw',
 			],
@@ -118,13 +106,6 @@ function mai_page_header_customizer_settings() {
 				'start'  => __( 'Start', 'mai-engine' ),
 				'center' => __( 'Center', 'mai-engine' ),
 				'end'    => __( 'End', 'mai-engine' ),
-			],
-			'output'   => [
-				[
-					'choice'   => [ 'start', 'center', 'end' ],
-					'element'  => ':root',
-					'property' => '--page-header-text-align',
-				],
 			],
 		]
 	);
