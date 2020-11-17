@@ -64,3 +64,8 @@
 	object-fit: cover;
 	object-position: var(--object-position, 50%);
 }
+
+.has-light-background .wp-block-cover__inner-container {
+	--body-color: var(--color-body);
+	--heading-color: var(--color-heading);
+}
