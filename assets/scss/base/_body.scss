@@ -3,7 +3,7 @@ body {
 
 	display: flex;
 	flex-direction: column;
-	min-height: var(--body-min-height, 100vh);
+	min-height: var(--body-min-height, calc(100vh - var(--body-top)));
 	min-height: -webkit-fill-available;
 	overflow-x: hidden; // Prevent horizontal scrollbars.
 
