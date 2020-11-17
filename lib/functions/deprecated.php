@@ -67,14 +67,12 @@ function mai_deprecated_2_0_0( $config ) {
 
 	$config['widget-areas'] = [
 		'add'    => [
-			[
-				'id'          => 'before-header',
+			'before-header' => [
 				'name'        => __( 'Before Header', 'mai-engine' ),
 				'description' => __( 'The Before Header widget area.', 'mai-engine' ),
 				'location'    => 'genesis_before_header',
 			],
-			[
-				'id'          => 'header-left',
+			'header-left' => [
 				'name'        => __( 'Header Left', 'mai-engine' ),
 				'description' => __( 'The Header Left widget area.', 'mai-engine' ),
 				'location'    => 'mai_header_left',
@@ -83,8 +81,7 @@ function mai_deprecated_2_0_0( $config ) {
 					'after'  => '</div>',
 				],
 			],
-			[
-				'id'          => 'header-right',
+			'header-right' => [
 				'name'        => __( 'Header Right', 'mai-engine' ),
 				'description' => __( 'The Header Right widget area.', 'mai-engine' ),
 				'location'    => 'mai_header_right',
@@ -93,39 +90,33 @@ function mai_deprecated_2_0_0( $config ) {
 					'after'  => '</div>',
 				],
 			],
-			[
-				'id'          => 'sidebar',
+			'sidebar' => [
 				'name'        => __( 'Sidebar', 'mai-engine' ),
 				'description' => __( 'The Sidebar widget area.', 'mai-engine' ),
 				'location'    => '',
 			],
-			[
-				'id'          => 'after-entry',
+			'after-entry' => [
 				'name'        => __( 'After Entry', 'mai-engine' ),
 				'description' => __( 'The After Entry widget area.', 'mai-engine' ),
 				'location'    => '',
 			],
-			[
-				'id'          => 'mobile-menu',
+			'mobile-menu' => [
 				'name'        => __( 'Mobile Menu', 'mai-engine' ),
 				'description' => __( 'The Mobile Menu widget area.', 'mai-engine' ),
 				'location'    => 'mai_after_header_wrap',
 			],
-			[
-				'id'          => 'before-footer',
+			'before-footer' => [
 				'name'        => __( 'Before Footer', 'mai-engine' ),
 				'description' => __( 'The Before Footer widget area.', 'mai-engine' ),
 				'location'    => 'genesis_footer',
 				'priority'    => 5,
 			],
-			[
-				'id'          => 'footer',
+			'footer' => [
 				'name'        => __( 'Footer', 'mai-engine' ),
 				'description' => __( 'The Footer widget area.', 'mai-engine' ),
 				'location'    => 'genesis_footer',
 			],
-			[
-				'id'          => 'footer-credits',
+			'footer-credits' => [
 				'name'        => __( 'Footer Credits', 'mai-engine' ),
 				'description' => __( 'The Footer Credits widget area.', 'mai-engine' ),
 				'location'    => 'genesis_footer',

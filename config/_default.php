@@ -426,8 +426,7 @@ return [
 
 	'widget-areas' => [
 		'add'    => [
-			[
-				'id'          => 'sidebar',
+			'sidebar' => [
 				'name'        => __( 'Sidebar', 'mai-engine' ),
 				'description' => __( 'The Sidebar widget area.', 'mai-engine' ),
 				'location'    => '',

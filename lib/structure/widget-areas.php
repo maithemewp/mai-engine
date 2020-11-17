@@ -21,9 +21,7 @@ function mai_widget_areas() {
 	$widget_areas = mai_get_config( 'widget-areas' )['add'];
 	$removed      = mai_get_config( 'widget-areas' )['remove'];
 
-	foreach ( $widget_areas as $widget_area ) {
-		$id = $widget_area['id'];
-
+	foreach ( $widget_areas as $id => $widget_area ) {
 		if ( in_array( $id, $removed, true ) ) {
 			continue;
 		}
