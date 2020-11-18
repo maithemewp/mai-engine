@@ -1,3 +1,11 @@
 .avatar {
 	border-radius: var(--avatar-border-radius, var(--border-radius));
 }
+
+.mai-avatar {
+	display: var(--avatar-display);
+	max-width: var(--avatar-max-width);
+	margin: var(--avatar-margin);
+	overflow: hidden;
+	border-radius: var(--avatar-border-radius, 50%);
+}

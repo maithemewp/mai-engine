@@ -834,6 +834,85 @@ function mai_get_menu( $menu, $args = [] ) {
 }
 
 /**
+ * Gets a user avatar.
+ *
+ * @since TBD
+ *
+ * @param int|string The user ID or 'current'.
+ * @param int|string The avatar size. Accepts integer or unit value; 20px, 1em, etc.
+ *
+ * @return string
+ */
+function mai_get_avatar( $args ) {
+	$args       = wp_parse_args( $args, mai_get_avatar_default_args() );
+	$args['id'] = 'current' === $args['id'] ? mai_get_author_id() : $args['id'];
+	$avatar     = get_avatar( $args['id'], absint( $args['size'] ) );
+
+	if ( ! $avatar ) {
+		return;
+	}
+
+	$atts = [
+		'class' => 'mai-avatar',
+		'style' => '',
+	];
+
+	// Build inline styles.
+	$atts['style'] .= sprintf( '--avatar-display:%s;', $args['display'] );
+	$atts['style'] .= sprintf( '--avatar-max-width:%s;', mai_get_unit_value( $args['size'] ) );
+	$atts['style'] .= sprintf( '--avatar-margin:%s %s %s %s;', mai_get_unit_value( $args['margin_top'] ), mai_get_unit_value( $args['margin_right'] ), mai_get_unit_value( $args['margin_bottom'] ), mai_get_unit_value( $args['margin_left'] ) );
+
+	return genesis_markup(
+		[
+			'open'    => "<span %s>",
+			'close'   => '</span>',
+			'content' => $avatar,
+			'context' => 'avatar',
+			'atts'    => $atts,
+			'echo'    => false,
+		]
+	);
+}
+
+/**
+ * Gets list of icon shortcode attributes.
+ *
+ * @since TBD
+ *
+ * @return array
+ */
+function mai_get_avatar_default_args() {
+	return [
+		'id'            => 'current',
+		'size'          => mai_get_image_width( 'tiny' ) / 2, // Half of the tiny size.
+		'display'       => in_the_loop() ? 'inline-block' : 'block',
+		'margin_top'    => 0,
+		'margin_right'  => in_the_loop() ? 'var(--spacing-xs)' : 0,
+		'margin_bottom' => 0,
+		'margin_left'   => 0,
+	];
+}
+
+/**
+ * Gets an entry author ID.
+ *
+ * @since TBD
+ *
+ * @return int|false
+ */
+function mai_get_author_id() {
+	$author_id = false;
+
+	if ( is_author() && ! in_the_loop() ) {
+		$author_id = get_query_var( 'author' );
+	} else {
+		$author_id = get_the_author_meta( 'ID' );
+	}
+
+	return $author_id;
+}
+
+/**
  * Gets DOMDocument object.
  *
  * @since  2.0.0

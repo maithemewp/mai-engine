@@ -138,36 +138,34 @@ function mai_menu_shortcode( $atts ) {
 	return mai_get_menu( $atts['id'], $atts );
 }
 
+add_shortcode( 'mai_avatar', 'mai_avatar_shortcode' );
 /**
- * Shortcode to get cart total.
+ * Display an author avatar.
  *
  * @since TBD
  *
  * @return string
  */
-add_shortcode( 'mai_cart_total', 'mai_get_cart_total_link' );
-function mai_get_cart_total_link() {
-	if ( ! function_exists( 'wc_get_cart_url' ) ) {
-		return '';
-	}
-	return sprintf( '<a class="mai-cart-link is-circle" href="%s" title="%s"><span class="mai-cart-total">%s</span></a>',
-		wc_get_cart_url(),
-		__( 'View your shopping cart', 'mai-engine' ),
-		WC()->cart->get_cart_contents_count()
+function mai_avatar_shortcode( $atts ) {
+	$atts = shortcode_atts(
+		mai_get_avatar_default_args(),
+		$atts,
+		'mai_avatar'
 	);
+
+	return mai_get_avatar( $atts );
 }
 
+add_shortcode( 'mai_cart_total', 'mai_cart_total_shortcode' );
 /**
- * Ajax update cart contents total.
+ * Display the cart total.
+ *
+ * @uses WooCommerce
  *
  * @since TBD
  *
- * @param array $fragments The existing fragment elements to update.
- *
- * @return array
+ * @return string
  */
-add_filter( 'woocommerce_add_to_cart_fragments', 'mai_cart_total_fragment' );
-function mai_cart_total_fragment( $fragments ) {
-	$fragments['a.mai-cart-link'] = mai_get_cart_total_link();
-	return $fragments;
+function mai_cart_total_shortcode() {
+	return mai_get_cart_total_link();
 }

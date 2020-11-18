@@ -327,3 +327,36 @@ function mai_require_genesis_connect( $plugins ) {
 
 	return $plugins;
 }
+
+/**
+ * Ajax update cart contents total.
+ *
+ * @since TBD
+ *
+ * @param array $fragments The existing fragment elements to update.
+ *
+ * @return array
+ */
+add_filter( 'woocommerce_add_to_cart_fragments', 'mai_cart_total_fragment' );
+function mai_cart_total_fragment( $fragments ) {
+	$fragments['a.mai-cart-link'] = mai_get_cart_total_link();
+	return $fragments;
+}
+
+/**
+ * Gets a cart total link that is ajax updated when new products are added to cart.
+ *
+ * @since TBD
+ *
+ * @return string
+ */
+function mai_get_cart_total_link() {
+	if ( ! function_exists( 'wc_get_cart_url' ) ) {
+		return '';
+	}
+	return sprintf( '<a class="mai-cart-link is-circle" href="%s" title="%s"><span class="mai-cart-total">%s</span></a>',
+		wc_get_cart_url(),
+		__( 'View your shopping cart', 'mai-engine' ),
+		WC()->cart->get_cart_contents_count()
+	);
+}

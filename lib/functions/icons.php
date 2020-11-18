@@ -125,7 +125,7 @@ function mai_get_icon( $args ) {
 }
 
 /**
- * Helper function that returns list of shortcode attributes.
+ * Gets list of icon shortcode attributes.
  *
  * @since 0.1.0
  *

@@ -49,9 +49,9 @@ add_filter( 'genesis_author_box_gravatar_size', 'mai_author_box_gravatar' );
  * @return int
  */
 function mai_author_box_gravatar( $size ) {
-	$image_sizes = mai_get_available_image_sizes();
+	$tiny = mai_get_image_width( 'tiny' );
 
-	return isset( $image_sizes['tiny']['width'] ) ? $image_sizes['tiny']['width'] : $size;
+	return $tiny ?: $size;
 }
 
 add_action( 'genesis_before_loop', 'mai_do_blog_description', 18 );
