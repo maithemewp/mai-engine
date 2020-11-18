@@ -40,6 +40,12 @@
 	&.search {
 		z-index: 12; // 1 above sticky site-header.
 	}
+
+	.mai-cart-link {
+		position: absolute;
+		top: var(--spacing-xxs);
+		right: var(--spacing-xxs);
+	}
 }
 
 .menu-item-link {

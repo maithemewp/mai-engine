@@ -27,7 +27,7 @@ body {
 
 .editor-post-title__block .editor-post-title__input {
 
-	@include heading();
+	@include heading;
 }
 
 p {
