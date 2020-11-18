@@ -137,3 +137,36 @@ function mai_menu_shortcode( $atts ) {
 
 	return mai_get_menu( $atts['id'], $atts );
 }
+
+/**
+ * Shortcode to get cart total.
+ *
+ * @since TBD
+ *
+ * @return string
+ */
+add_shortcode( 'mai_cart_total', 'mai_get_cart_total_link' );
+function mai_get_cart_total_link() {
+	if ( ! function_exists( 'wc_get_cart_url' ) ) {
+		return '';
+	}
+	return sprintf( '<a class="mai-cart-link is-circle" href="%s" title="%s"><span class="mai-cart-total">%s</span></a>',
+		wc_get_cart_url(),
+		__( 'View your shopping cart', 'mai-engine' ),
+		WC()->cart->get_cart_contents_count()
+	);
+}
+
+/**
+ * Ajax update cart contents total.
+ *
+ * @since TBD
+ *
+ * @param array $fragments The existing fragment elements to update.
+ *
+ * @return array
+ */
+add_filter( 'woocommerce_add_to_cart_fragments', function( $fragments ) {
+	$fragments['a.mai-cart-link'] = mai_get_cart_total_link();
+	return $fragments;
+});
