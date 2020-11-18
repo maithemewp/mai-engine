@@ -40,7 +40,7 @@
 
 .is-circle,
 .is-square {
-	display: grid;
+	display: inline-grid;
 	padding: 0 !important;
 
 	> :first-child {
