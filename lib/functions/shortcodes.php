@@ -166,7 +166,8 @@ function mai_get_cart_total_link() {
  *
  * @return array
  */
-add_filter( 'woocommerce_add_to_cart_fragments', function( $fragments ) {
+add_filter( 'woocommerce_add_to_cart_fragments', 'mai_cart_total_fragment' );
+function mai_cart_total_fragment( $fragments ) {
 	$fragments['a.mai-cart-link'] = mai_get_cart_total_link();
 	return $fragments;
-});
+}
