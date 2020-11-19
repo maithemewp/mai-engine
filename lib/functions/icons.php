@@ -118,7 +118,7 @@ function mai_get_icon( $args ) {
 	);
 
 	if ( $args['cart_total'] ) {
-		$icon .= mai_get_cart_total_link();
+		$icon .= mai_get_cart_total();
 	}
 
 	return $icon;

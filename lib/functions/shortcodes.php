@@ -167,5 +167,5 @@ add_shortcode( 'mai_cart_total', 'mai_cart_total_shortcode' );
  * @return string
  */
 function mai_cart_total_shortcode() {
-	return mai_get_cart_total_link();
+	return mai_get_cart_total();
 }
