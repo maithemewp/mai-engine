@@ -834,6 +834,26 @@ function mai_get_menu( $menu, $args = [] ) {
 }
 
 /**
+ * Returns menu items by menu location slug.
+ *
+ * @since TBD
+ *
+ * @param string $location The menu location slug
+ *
+ * @return array
+ */
+function mai_get_menu_items_by_location( $location ) {
+	$menu_items = [];
+	$locations  = get_nav_menu_locations();
+	if ( $locations && isset( $locations[ $location ] ) && $locations[ $location ] ) {
+		$menu       = get_term( $locations[ $location ] );
+		$menu_items = $menu ? wp_get_nav_menu_items( $menu->term_id ) : $menu_items;
+	}
+
+	return $menu_items;
+}
+
+/**
  * Gets a user avatar.
  *
  * @since TBD

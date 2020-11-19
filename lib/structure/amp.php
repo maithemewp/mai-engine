@@ -11,9 +11,10 @@
 
 add_action( 'genesis_before', 'mai_amp_structure' );
 /**
- * Add all our AMP code here. Avoids multiple genesis_is_amp() calls.
+ * Adds all AMP code here.
+ * Avoids multiple genesis_is_amp() calls.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
@@ -33,58 +34,144 @@ function mai_amp_structure() {
 /**
  * Render AMP menu toggle button.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
 function mai_do_amp_menu_toggle() {
-	?>
-	<button role="button" on="tap:amp-menu.toggle" tabindex="0" class="amp-menu-toggle">☰</button>
-	<?php
+	$menu = mai_get_amp_menu();
+	if ( ! $menu ) {
+		return;
+	}
+	echo '<button role="button" on="tap:amp-menu.toggle" tabindex="0" class="amp-menu-toggle has-xs-padding" style="--button-padding:0.5em;' . mai_get_amp_button_styles() . '">';
+		echo mai_get_icon(
+			[
+				'icon'  => 'bars',
+				'style' => 'light',
+				'size'  => '2em',
+			]
+		);
+	echo '</button>';
 }
 
 /**
- * Description of expected behavior.
+ * Renders AMP menu.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
 function mai_do_amp_menu_sidebar() {
-	?>
-	<amp-sidebar id="amp-menu" layout="nodisplay" side="left">
-		<button role="button" aria-label="close sidebar" on="tap:amp-menu.toggle" tabindex="0" class="amp-menu-close">✕
-		</button>
-		<ul class="amp-menu">
-			<?php
+	echo mai_get_amp_menu();
+}
 
-			$items = [];
-			$menus = [
-				wp_get_nav_menu_items( 'header-left' ),
-				wp_get_nav_menu_items( 'header-right' ),
-				wp_get_nav_menu_items( 'after-header' ),
-			];
+/**
+ * Returns AMP menu HTML.
+ *
+ * @since TBD
+ *
+ * @return string
+ */
+function mai_get_amp_menu() {
+	static $amp_menu = null;
 
-			foreach ( $menus as $menu ) {
-				if ( ! empty( $menu ) ) {
-					$items = array_merge_recursive( $items, $menu );
+	if ( ! is_null( $amp_menu ) ) {
+		return $amp_menu;
+	}
+
+	$inner = '';
+	$items = '';
+	$menus = [
+		'header-left',
+		'header-right',
+		'after-header',
+	];
+	foreach ( $menus as $menu ) {
+		if ( ! has_nav_menu( $menu ) ) {
+			continue;
+		}
+
+		$menu_items = mai_get_menu_items_by_location( $menu );
+
+		if ( ! $menu_items ) {
+			continue;
+		}
+
+		$opened = false;
+
+		foreach ( $menu_items as $item ) {
+
+			$classes = array_flip( $item->classes );
+
+			if ( isset( $classes['search'] ) ) {
+				continue;
+			}
+
+			if ( 0 === (int) $item->menu_item_parent ) {
+				if ( $opened ) {
+					$inner .= '</ul>';
+					$opened = false;
 				}
-			}
 
-			/**
-			 * Post.
-			 *
-			 * @var WP_Post $item Post object.
-			 */
-			foreach ( $items as $item ) {
-				printf(
-					'<li class="amp-menu-item"><a href="%s">%s</a></li>',
-					$item->url,
-					$item->title
-				);
+				$inner .= mai_get_amp_menu_item( $item );
+
+			} else {
+				if ( ! $opened ) {
+					$inner .= '<ul style="font-size: 0.9em;--sub-list-margin:var(--spacing-xs) 0 var(--spacing-xs) var(--spacing-sm);--list-padding:0;">';
+					$opened = true;
+				}
+
+				$inner .= mai_get_amp_menu_item( $item );
 			}
-			?>
-		</ul>
-	</amp-sidebar>
-	<?php
+		}
+	}
+
+	if ( ! $inner ) {
+		return $amp_menu;
+	}
+
+	$amp_menu .= '<amp-sidebar id="amp-menu" layout="nodisplay" side="right">';
+		$amp_menu .= '<button role="button" aria-label="close sidebar" on="tap:amp-menu.toggle" tabindex="0" class="amp-menu-close" style="--button-padding:var(--spacing-lg);' . mai_get_amp_button_styles() . '">';
+			$amp_menu .= mai_get_icon(
+				[
+					'icon'  => 'times',
+					'style' => 'light',
+					'size'  => '2em',
+				]
+			);
+		$amp_menu .= '</button>';
+		$amp_menu .= '<ul class="amp-menu" style="--list-style-type:none;--list-padding:0 var(--spacing-lg) var(--spacing-lg);--list-item-margin:0 0 var(--spacing-xs);--link-color:var(--color-body);">';
+			$amp_menu .= $inner;
+		$amp_menu .= '</ul>';
+	$amp_menu .= '</amp-sidebar>';
+
+	return $amp_menu;
+}
+
+/**
+ * Returns menu items by meny location slug.
+ *
+ * @since TBD
+ *
+ * @param string $location The menu location slug
+ *
+ * @return string
+ */
+function mai_get_amp_menu_item( WP_Post $item ) {
+	return sprintf(
+		'<li class="amp-menu-item"><a href="%s">%s</a></li>',
+		esc_url( $item->url ),
+		esc_html( $item->title )
+	);
+}
+
+/**
+ * Returns AMP button inline styles.
+ *
+ * @since TBD
+ *
+ * @return string
+ */
+function mai_get_amp_button_styles() {
+	return '--button-color:var(--menu-item-link-color,var(--color-heading));--button-color-hover:var(--button-color);--button-background:transparent;--button-background-hover:transparent;--button-border:0;--button-box-shadow:0;--button-overlay-display:none;';
 }
