@@ -21,6 +21,10 @@ add_filter( 'render_block', 'mai_render_search_block', 10, 2 );
  * @return string The modified block HTML.
  */
 function mai_render_search_block( $block_content, $block ) {
+	if ( ! $block_content ) {
+		return $block_content;
+	}
+
 	// Bail if not a search block.
 	if ( 'core/search' !== $block['blockName'] ) {
 		return $block_content;

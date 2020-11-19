@@ -21,6 +21,10 @@ add_filter( 'render_block', 'mai_do_cover_group_block_settings', 10, 2 );
  * @return string
  */
 function mai_do_cover_group_block_settings( $block_content, $block ) {
+	if ( ! $block_content ) {
+		return $block_content;
+	}
+
 	if ( is_admin() ) {
 		return $block_content;
 	}
@@ -123,6 +127,10 @@ add_filter( 'render_block', 'mai_do_block_max_width_settings', 10, 2 );
  * @return string
  */
 function mai_do_block_max_width_settings( $block_content, $block ) {
+	if ( ! $block_content ) {
+		return $block_content;
+	}
+
 	if ( is_admin() ) {
 		return $block_content;
 	}
@@ -167,6 +175,10 @@ add_filter( 'render_block', 'mai_do_block_spacing_settings', 10, 2 );
  * @return string
  */
 function mai_do_block_spacing_settings( $block_content, $block ) {
+	if ( ! $block_content ) {
+		return $block_content;
+	}
+
 	if ( is_admin() ) {
 		return $block_content;
 	}
@@ -220,6 +232,10 @@ add_filter( 'render_block', 'mai_do_block_margin_settings', 10, 2 );
  * @return string
  */
 function mai_do_block_margin_settings( $block_content, $block ) {
+	if ( ! $block_content ) {
+		return $block_content;
+	}
+
 	if ( is_admin() ) {
 		return $block_content;
 	}

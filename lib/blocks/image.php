@@ -21,11 +21,15 @@ add_filter( 'render_block', 'mai_render_image_block', 10, 2 );
  * @return string
  */
 function mai_render_image_block( $block_content, $block ) {
+	if ( ! $block_content ) {
+		return $block_content;
+	}
+
 	if ( 'core/image' !== $block['blockName'] ) {
 		return $block_content;
 	}
 
-	if ( apply_filters( 'mai_lazy_load_image_block', true ) ) {
+	if ( apply_filters( 'mai_lazy_load_image_block', true, $block ) ) {
 		$block_content = str_replace( '<img ', '<img loading="lazy" ', $block_content );
 	}
 

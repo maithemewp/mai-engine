@@ -55,6 +55,10 @@ add_filter( 'render_block', 'mai_render_paragraph_block', 10, 2 );
  * @return string
  */
 function mai_render_paragraph_block( $block_content, $block ) {
+	if ( ! $block_content ) {
+		return $block_content;
+	}
+
 	if ( 'core/paragraph' === $block['blockName'] && 9 === strlen( $block_content ) ) {
 		$block_content = '';
 	}
