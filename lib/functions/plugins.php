@@ -354,6 +354,10 @@ function mai_get_cart_total_link() {
 	if ( ! function_exists( 'wc_get_cart_url' ) ) {
 		return '';
 	}
+	$cart = WC()->cart;
+	if ( ! $cart ) {
+		return;
+	}
 	return sprintf( '<a class="mai-cart-link is-circle" href="%s" title="%s"><span class="mai-cart-total">%s</span></a>',
 		wc_get_cart_url(),
 		__( 'View your shopping cart', 'mai-engine' ),
