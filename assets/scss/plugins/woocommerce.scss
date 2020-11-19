@@ -836,7 +836,7 @@ form.cart {
 	line-height: 0;
 }
 
-.mai-cart-total {
+.mai-cart-total:not(:empty) {
 	padding: var(--cart-total-padding, var(--spacing-xxs));
 	color: var(--cart-total-color, white);
 	font-size: var(--cart-total-font-size, var(--font-size-sm));
