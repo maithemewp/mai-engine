@@ -626,12 +626,12 @@ form.cart {
 	align-content: center;
 	align-items: center;
 	justify-content: center;
-	width: 1em;
-	height: 1em;
+	width: 1.125em;
+	height: 1.125em;
 	color: var(--color-white);
 	font-weight: var(--heading-font-weight);
-	background-color: var(--color-danger);
-	border-radius: var(--border-radius);
+	background-color: var(--color-body);
+	border-radius: 50%;
 
 	&:hover,
 	&:focus {
@@ -639,10 +639,18 @@ form.cart {
 		text-decoration: none;
 		background-color: var(--color-danger);
 	}
+
+	svg {
+		width: 0.5em;
+		fill: currentColor;
+	}
 }
 
 .quantity {
-	float: left;
+
+	.summary & {
+		float: left;
+	}
 
 	.input-text {
 		max-width: 72px;
@@ -727,11 +735,17 @@ form.cart {
 			--list-padding: var(--spacing-sm);
 		}
 
+		.quantity {
+			float: right;
+			margin-left: auto;
+		}
+
 		td {
 			flex-wrap: wrap;
+			overflow: hidden;
 
 			// Originally for WooCommerce Product Add-ons, but could be anything.
-			> *:not(.remove) {
+			> *:not(.remove):not(.quantity) {
 				flex: 1 1 auto;
 				padding: var(--spacing-md);
 			}
@@ -743,6 +757,7 @@ form.cart {
 		}
 
 		.actions {
+			width: 100%;
 			overflow: hidden;
 		}
 
