@@ -20,6 +20,12 @@
 	margin-left: auto;
 }
 
+.header-spacer {
+	display: var(--header-spacer-display, none);
+	height: var(--header-spacer-height, 0);
+	transition: var(--title-area-transition, var(--transition));
+}
+
 .has-transparent-header:not(.header-stuck) {
 	--site-header-border-bottom: none;
 	--site-header-background: transparent;

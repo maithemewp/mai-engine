@@ -59,3 +59,22 @@ function mai_site_header_row_class( $output, $original ) {
 
 	return $output;
 }
+
+add_filter( 'genesis_markup_site-header_close', 'mai_header_spacer', 10, 2 );
+/**
+ * Add header spacer element.
+ *
+ * @since TBD
+ *
+ * @param string $close HTML tag being processed by the API.
+ * @param array  $args  Array with markup arguments.
+ *
+ * @return string
+ */
+function mai_header_spacer( $close, $args ) {
+	if ( ! $args['close'] ) {
+		return $close;
+	}
+
+	return $close . '<span class="header-spacer"></span>';
+}
