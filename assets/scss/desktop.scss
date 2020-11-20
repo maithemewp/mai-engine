@@ -1,5 +1,4 @@
 :root {
-	--header-spacer-display: block;
 	--title-area-padding: var(--title-area-padding-desktop) 0;
 
 	--menu-item-link-padding: var(--spacing-md) var(--spacing-md);
@@ -39,10 +38,6 @@
 	display: flex; /* can't be variable because 3rd level sub-menus will display too */
 	--sub-menu-opacity: 1;
 	--sub-menu-left: auto;
-}
-
-.header-stuck {
-	--header-spacer-height: calc((var(--title-area-padding-desktop, 0) - var(--title-area-padding-mobile, 0)) * 2);
 }
 
 .mobile-menu-visible {

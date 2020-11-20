@@ -82,13 +82,13 @@ function mai_logo_customizer_settings() {
 			'output'   => [
 				[
 					'choice'   => 'mobile',
-					'element'  => [ ':root' ],
+					'element'  => ':root',
 					'property' => '--title-area-padding-mobile',
 				],
 				[
 					'choice'      => 'desktop',
 					'element'     => ':root',
-					'property' => '--title-area-padding-desktop',
+					'property'    => '--title-area-padding-desktop',
 					'media_query' => sprintf( '@media (min-width: %spx)', mai_get_breakpoint( 'lg' ) ),
 				],
 			],

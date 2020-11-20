@@ -307,5 +307,5 @@
 }
 
 .has-sticky-header {
-	--scroll-margin-top: calc(var(--header-shrunk-height, var(--header-height, 0px)) + var(--spacing-md)); // Requires 0px value fallback. 0 breaks this.
+	--scroll-margin-top: calc(var(--header-height, 0px) + var(--spacing-lg)); // Requires 0px value fallback. 0 breaks this.
 }

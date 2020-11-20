@@ -7,155 +7,139 @@
 	var body           = document.getElementsByTagName( 'body' )[ 0 ];
 	var skipLink       = document.getElementsByClassName( 'genesis-skip-link' )[ 0 ];
 	var beforeHeader   = document.getElementsByClassName( 'before-header' )[ 0 ];
-	var header         = document.getElementsByClassName( 'site-header' )[ 0 ];
+	var header         = document.getElementsByTagName( 'header' )[ 0 ];
 	var afterHeader    = document.getElementsByClassName( 'after-header' )[ 0 ];
 	var navAfterHeader = document.getElementsByClassName( 'nav-after-header' )[ 0 ];
 	var pageHeader     = document.getElementsByClassName( 'page-header' )[ 0 ];
-	var siteInner      = document.getElementsByClassName( 'site-inner' )[ 0 ];
 	var breakpointSm   = window.getComputedStyle( document.documentElement ).getPropertyValue( '--breakpoint-sm' );
 	var hasSticky      = header && body.classList.contains( 'has-sticky-header' );
+	var hasTransparent = header && body.classList.contains( 'has-transparent-header' );
 	var hasPageHeader  = pageHeader && body.classList.contains( 'has-page-header' );
-	var hasAlignFull   = 0 !== document.querySelectorAll( '.entry-wrap-single > .entry-content:first-child > .alignfull:first-child' ).length;
-	var hasBreadcrumbs = 0 !== document.getElementsByClassName( 'breadcrumb' ).length;
-	var hasTransparent = header && body.classList.contains( 'has-transparent-header-enabled' ) && ( hasPageHeader || ( hasAlignFull && ! hasBreadcrumbs ));
-	var firstElement   = hasPageHeader ? pageHeader : hasAlignFull ? document.querySelectorAll( '.entry-wrap-single > .entry-content:first-child > .alignfull:first-child' )[0] : siteInner.firstChild;
-	var headerTimeout  = false;
-	var shrunkTimeout  = false;
-	var innerTimeout   = false;
-	var trackerWidth   = 0;
-	var hasShrunk      = false;
+	var headerStyles   = getComputedStyle( header );
+	var duration       = parseFloat( headerStyles.getPropertyValue( 'transition-duration' ) ) * 1000;
+	var alignFullEl    = false;
+	var firstElement   = false;
+
+	if ( hasPageHeader ) {
+		alignFullEl = pageHeader;
+	} else {
+		if ( body.classList.contains( 'is-single' ) ) {
+			firstElement = document.querySelectorAll( '#genesis-content > .entry-single:first-child > .entry-wrap-single:first-child > .entry-content:first-child > :not(:empty):first-of-type' )[0];
+		} else if ( body.classList.contains( 'is-archive' ) ) {
+			// Not tested much since we don't have blocks on archives yet.
+			firstElement = document.querySelectorAll( '#genesis-content > :not(:empty):first-of-type' )[0];
+		}
+		alignFullEl = firstElement && firstElement.classList.contains( 'alignfull' ) ? firstElement : alignFullEl;
+	}
 
 	/**
 	 * Sticky and transparent header.
 	 */
 	var isTop = new IntersectionObserver( function( tracker ) {
-
-		var headerStyles = getComputedStyle( header );
-		var duration     = parseFloat( headerStyles.getPropertyValue( 'transition-duration' ) ) * 1000 + 50; // Needed to add time to make sure transition was fully done.
-
 		if ( tracker[ 0 ].isIntersecting ) {
 			body.classList.remove( 'header-stuck' );
-
-			if ( trackerWidth !== tracker[ 0 ].rootBounds.width ) {
-				setTimeout( function() {
-					setHeaderHeight();
-					if ( hasTransparent ) {
-						siteInnerMargin();
-					}
-				}, duration );
-			}
 
 		} else {
 			var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
 			if ( viewportWidth > parseInt( breakpointSm, 10 ) ) {
 				body.classList.add( 'header-stuck' );
-
-				if ( ! hasShrunk || ( trackerWidth !== tracker[ 0 ].rootBounds.width ) ) {
-					setTimeout( function() {
-						setHeaderShrunkHeight();
-						hasShrunk = true;
-					}, duration );
-				}
 			}
 		}
+	}, {
+		// rootMargin: root.style.marginTop,
+		threshold:[ 0, 1 ],
+	});
 
-		trackerWidth = tracker[ 0 ].rootBounds.width;
-
-	}, { threshold: [ 0, 1 ] } );
-
-	var	setHeaderHeight = function() {
-		if ( headerTimeout ) {
-			window.cancelAnimationFrame( headerTimeout );
-		}
-
-		headerTimeout = window.requestAnimationFrame( function() {
-			root.style.setProperty( '--header-height', ( header ? Math.ceil( header.offsetHeight ) : 0 ) + 'px' );
+	var beforeHeaderResize = new ResizeObserver(items => {
+		items.forEach(item => {
+			root.style.setProperty( '--before-header-height', Math.ceil( item.contentRect.height ) + 'px' );
 		});
-	};
+	});
 
-	var	setHeaderShrunkHeight = function() {
-		if ( shrunkTimeout ) {
-			window.cancelAnimationFrame( shrunkTimeout );
-		}
-
-		shrunkTimeout = window.requestAnimationFrame( function() {
-			root.style.setProperty( '--header-shrunk-height', ( header ? Math.ceil( header.offsetHeight ) : 0 ) + 'px' );
+	var headerWidth     = 0;
+	var headerFullSet   = 0;
+	var headerShrunkSet = 0;
+	var headerResize    = new ResizeObserver(items => {
+		items.forEach(item => {
+			if ( item.contentRect.width !== headerWidth || ! headerFullSet || ! headerShrunkSet ) {
+				if ( ! body.classList.contains( 'header-stuck' ) ) {
+					root.style.setProperty( '--header-height-full', Math.ceil( item.contentRect.height ) + 'px' );
+					setTimeout( function() {
+						root.style.setProperty( '--header-height-full', Math.ceil( item.contentRect.height ) + 'px' );
+						headerFullSet = 1;
+					}, duration );
+				} else {
+					root.style.setProperty( '--header-height-shrunk', Math.ceil( item.contentRect.height ) + 'px' );
+					setTimeout( function() {
+						root.style.setProperty( '--header-height-shrunk', Math.ceil( item.contentRect.height ) + 'px' );
+						headerShrunkSet = 1;
+					}, duration );
+				}
+				headerWidth = item.contentRect.width;
+			}
+			root.style.setProperty( '--header-height', Math.ceil( item.contentRect.height ) + 'px' );
 		});
-	};
+	});
 
-	var siteInnerMargin = function() {
-		if ( innerTimeout ) {
-			window.cancelAnimationFrame( innerTimeout );
-		}
-
-		innerTimeout = window.requestAnimationFrame( function() {
-			var firstElementStyles = getComputedStyle( firstElement );
-
-			// Clear inline styles before recalculating.
-			firstElement.style.removeProperty( 'padding-top' );
-
-			var headerHeight         = parseInt( header ? header.offsetHeight : 0 );
-			var afterHeaderHeight    = parseInt( afterHeader ? afterHeader.offsetHeight : 0 );
-			var navAfterHeaderHeight = parseInt( navAfterHeader ? navAfterHeader.offsetHeight : 0 );
-			var paddingTop           = parseInt( firstElementStyles.getPropertyValue( 'padding-top' ) );
-
-			root.style.setProperty( '--after-header-height', Math.ceil( afterHeaderHeight + navAfterHeaderHeight ) + 'px' );
-
-			firstElement.style.setProperty( 'padding-top', Math.ceil( headerHeight + afterHeaderHeight + navAfterHeaderHeight + paddingTop ) + 'px', 'important' );
+	var afterHeaderResize = new ResizeObserver(items => {
+		items.forEach(item => {
+			root.style.setProperty( '--after-header-height', Math.ceil( item.contentRect.height ) + 'px' );
 		});
-	};
+	});
 
-	var setHeaderHeightResize = function() {
-		setHeaderHeight();
-		setTimeout( function() {
-			setHeaderHeight();
-		}, 250 );
-	};
-
-	var setHeaderShrunkHeightResize = function() {
-		setHeaderShrunkHeight();
-		setTimeout( function() {
-			setHeaderShrunkHeight();
-		}, 250 );
-	};
-
-	var siteInnerMarginResize = function() {
-		siteInnerMargin();
-		setTimeout( function() {
-			siteInnerMargin();
-		}, 250 );
-	};
+	var navAfterHeaderResize = new ResizeObserver(items => {
+		items.forEach(item => {
+			root.style.setProperty( '--nav-after-header-height', Math.ceil( item.contentRect.height ) + 'px' );
+		});
+	});
 
 	var onReady = function() {
-		setHeaderHeight();
+		// Must be before IntersectionObserver so headerFullResize fires before header-stuck class is added.
+		if ( beforeHeader ) {
+			beforeHeaderResize.observe( beforeHeader );
+		}
 
-		window.addEventListener( 'resize', setHeaderHeightResize, false );
-		window.addEventListener( 'resize', setHeaderShrunkHeightResize, false );
+		if ( header ) {
+			headerResize.observe( header );
+		}
+
+		if ( afterHeader ) {
+			afterHeaderResize.observe( afterHeader );
+		}
+
+		if ( navAfterHeader ) {
+			navAfterHeaderResize.observe( navAfterHeader );
+		}
 
 		if ( hasSticky ) {
 			isTop.observe( beforeHeader ? beforeHeader : skipLink );
 		}
 
-		if ( hasTransparent ) {
-			body.classList.add( 'has-transparent-header' );
+		if ( alignFullEl ) {
+			if ( ! hasPageHeader ) {
+				// This is only for styling content containers when the first block is alignfull.
+				body.classList.add( 'has-alignfull-first' );
+				// This is added to page-header in PHP.
+				alignFullEl.classList.add( 'is-alignfull-first' );
+			}
+		}
 
+		if ( hasTransparent ) {
 			var dark = false;
-			if ( hasPageHeader ) {
+
+			if ( pageHeader && body.classList.contains( 'has-page-header' ) ) {
 				dark = body.classList.contains( 'has-dark-page-header' );
-			} else if ( hasAlignFull ) {
-				dark = firstElement.classList.contains( 'wp-block-cover' ) && ! firstElement.classList.contains( 'has-light-background' ) || ( firstElement.classList.contains( 'wp-block-group' ) && firstElement.classList.contains( 'has-dark-background' ) );
+			} else if ( alignFullEl ) {
+				dark = alignFullEl.classList.contains( 'wp-block-cover' ) && ! alignFullEl.classList.contains( 'has-light-background' ) || ( alignFullEl.classList.contains( 'wp-block-group' ) && alignFullEl.classList.contains( 'has-dark-background' ) );
 			}
 
 			if ( dark ) {
 				body.classList.add( 'has-dark-header' );
 			}
-
-			siteInnerMargin();
-
-			window.addEventListener( 'resize', siteInnerMarginResize, false );
 		}
 	};
 
 	return onReady();
+
 } )();

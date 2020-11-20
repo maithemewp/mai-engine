@@ -21,9 +21,20 @@
 }
 
 .header-spacer {
-	display: var(--header-spacer-display, none);
-	height: var(--header-spacer-height, 0);
+	display: block;
+	height: var(--header-spacer-height, 0px); // Needs px for smoother transition.
 	transition: var(--title-area-transition, var(--transition));
+}
+
+.has-transparent-header {
+	// Need px value for calc().
+	--header-height-full-fallback: calc(var(--header-height, 0px) + (var(--title-area-padding-desktop, 0px) - var(--title-area-padding-mobile, 0px)));
+	--transparent-header-offset: calc(var(--header-height-full, var(--header-height-full-fallback)) + var(--after-header-height, 0px) + var(--nav-after-header-height, 0px));
+	--site-inner-margin-top: calc(var(--transparent-header-offset, 0px) * -1);
+
+	.is-alignfull-first {
+		padding-top: var(--transparent-header-offset, 0);
+	}
 }
 
 .has-transparent-header:not(.header-stuck) {
@@ -37,12 +48,14 @@
 		--site-header-position: sticky;
 		--site-header-top: var(--body-top);
 	}
-}
 
-.header-stuck {
+	&.header-stuck {
+		// Need px value for transition.
+		--header-spacer-height: calc((var(--title-area-padding-desktop, 0px) - var(--title-area-padding-mobile, 0px)) * 2);
 
-	@include mq(sm) {
-		--site-header-box-shadow: 0 0 24px rgba(0, 0, 0, 0.07);
+		@include mq(sm) {
+			--site-header-box-shadow: 0 0 24px rgba(0, 0, 0, 0.07);
+		}
 	}
 }
 
