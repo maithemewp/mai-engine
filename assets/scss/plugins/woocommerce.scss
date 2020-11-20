@@ -379,10 +379,10 @@ ul.products {
 
 .woocommerce-tabs {
 	width: 100%;
-	margin: 0 0 var(--row-gap);
+	margin: 0 0 var(--spacing-lg);
 	overflow: hidden;
 
-	// hide Description heading when it is the only tab.
+	// Hides description heading when it is the only tab.
 	> .wc-tab:first-of-type:last-of-type > h2:first-child {
 		position: absolute;
 		width: 1px;
