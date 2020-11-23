@@ -163,10 +163,10 @@ function mai_get_version() {
  * @return string
  */
 function mai_get_asset_version( $file ) {
-	$file    = str_replace( mai_get_url(), mai_get_dir(), $file );
+	$file    = str_replace( content_url(), WP_CONTENT_DIR, $file );
 	$version = mai_get_version();
 
-	if ( file_exists( $file ) && ( mai_has_string( mai_get_dir(), $file ) ) ) {
+	if ( file_exists( $file ) ) {
 		$version .= '.' . date( 'njYHi', filemtime( $file ) );
 	}
 
