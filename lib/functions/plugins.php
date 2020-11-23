@@ -371,5 +371,7 @@ function mai_get_cart_total() {
 	if ( ! $cart ) {
 		return;
 	}
-	return sprintf( '<span class="mai-cart-total-wrap is-circle"><span class="mai-cart-total">%s</span></span>', WC()->cart->get_cart_contents_count() );
+	$total = WC()->cart->get_cart_contents_count();
+	$total = $total ?: '';
+	return sprintf( '<span class="mai-cart-total-wrap is-circle"><span class="mai-cart-total">%s</span></span>', $total );
 }
