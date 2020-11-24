@@ -24,18 +24,12 @@
 		alignFullEl = pageHeader;
 	} else {
 		if ( body.classList.contains( 'is-single' ) ) {
-			var first = document.querySelectorAll( '#genesis-content > .entry-single:first-child > .entry-wrap-single:first-child > .entry-content:first-child > :not(:empty):first-of-type' );
-			if ( first ) {
-				firstElement = first;
-			}
+			firstElement = document.querySelectorAll( '#genesis-content > .entry-single:first-child > .entry-wrap-single:first-child > .entry-content:first-child > :not(:empty):first-of-type' );
 		} else if ( body.classList.contains( 'is-archive' ) ) {
 			// Not tested much since we don't have blocks on archives yet.
-			var first = document.querySelectorAll( '#genesis-content > :not(:empty):first-of-type' );
-			if ( first ) {
-				firstElement = first;
-			}
+			firstElement = document.querySelectorAll( '#genesis-content > :not(:empty):first-of-type' );
 		}
-		alignFullEl = firstElement && firstElement.classList.contains( 'alignfull' ) ? firstElement : alignFullEl;
+		alignFullEl = firstElement && firstElement.length && firstElement.classList.contains( 'alignfull' ) ? firstElement : alignFullEl;
 	}
 
 	/**
