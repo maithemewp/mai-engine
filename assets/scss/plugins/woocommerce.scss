@@ -663,7 +663,7 @@ form.cart {
 }
 
 .actions {
-	--coupon-input-width: 160px;
+	--input-width: 160px;
 	--input-margin: var(--spacing-xs);
 	--input-padding: calc(0.8em - 2px) 1.2em; // Match button top/bottom padding - 2px for border.
 	--input-font-size: var(--font-size-sm);
@@ -699,7 +699,7 @@ form.cart {
 	}
 
 	.input-text {
-		width: var(--coupon-input-width) !important;
+		width: var(--input-width) !important;
 	}
 
 	.button {
@@ -778,7 +778,7 @@ form.cart {
 			width: 100%;
 
 			.input-text {
-				--coupon-input-width: auto;
+				--input-width: auto;
 
 				flex: 1 1 0;
 			}
