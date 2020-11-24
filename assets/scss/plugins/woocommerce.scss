@@ -502,13 +502,16 @@ form.cart {
 
 .woocommerce-form-coupon {
 	display: flex;
-	flex-wrap: wrap;
 	align-items: center;
 	margin-bottom: var(--column-gap);
 
 	p {
 		width: 100%;
 	}
+}
+
+.woocommerce-cart-form {
+	--link-color: var(--color-heading);
 }
 
 .woocommerce-checkout-payment {
@@ -660,7 +663,15 @@ form.cart {
 }
 
 .actions {
-	padding: var(--spacing-lg);
+	--coupon-input-width: 160px;
+	--input-margin: var(--spacing-xs);
+	--input-padding: calc(0.8em - 2px) 1.2em; // Match button top/bottom padding - 2px for border.
+	--input-font-size: var(--font-size-sm);
+	--button-padding: 0.8em 1.2em;
+	--button-margin: var(--spacing-xs);
+	--button-font-size: var(--font-size-sm);
+
+	padding: var(--spacing-sm);
 
 	.button {
 
@@ -677,7 +688,9 @@ form.cart {
 
 .coupon {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
+	order: 9;
 	font-size: var(--font-size-sm);
 
 	label {
@@ -685,13 +698,13 @@ form.cart {
 		@include hide-visually();
 	}
 
-	input {
-		width: 120px !important;
-		margin: 0;
+	.input-text {
+		width: auto !important;
+		min-width: var(--coupon-input-width) !important;
 	}
 
 	.button {
-		margin-left: 1em;
+		width: auto !important;
 		white-space: nowrap;
 	}
 }
@@ -745,8 +758,7 @@ form.cart {
 			overflow: hidden;
 
 			// Originally for WooCommerce Product Add-ons, but could be anything.
-			> *:not(.remove):not(.quantity) {
-				flex: 1 1 auto;
+			> *:not(.remove):not(.quantity):not(.button):not(.coupon) {
 				padding: var(--spacing-md);
 			}
 		}
@@ -757,6 +769,7 @@ form.cart {
 		}
 
 		.actions {
+			display: flex !important;
 			width: 100%;
 			overflow: hidden;
 		}
@@ -766,8 +779,9 @@ form.cart {
 			width: 100%;
 
 			.input-text {
+				--coupon-input-width: auto;
+
 				flex: 1;
-				width: auto !important;
 			}
 		}
 
@@ -809,20 +823,12 @@ form.cart {
 			}
 
 			&.actions {
-				display: flex;
-				flex-direction: column;
 				padding: 1em;
 				overflow: hidden;
 				border-bottom: var(--border);
 
 				.button {
-					float: none;
-					padding: var(--spacing-md);
-				}
-
-				> .button {
-					order: -1;
-					margin-bottom: 1em;
+					float: none !important;
 				}
 			}
 		}
