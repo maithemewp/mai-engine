@@ -778,8 +778,6 @@ form.cart {
 			width: 100%;
 
 			.input-text {
-				--input-width: auto;
-
 				flex: 1 1 0;
 			}
 
@@ -787,9 +785,7 @@ form.cart {
 				flex: 0 1 0;
 			}
 		}
-
 	}
-
 }
 
 @include mq(false, sm) {
@@ -855,7 +851,6 @@ form.cart {
 				border-right: var(--border);
 			}
 		}
-
 	}
 }
 
