@@ -35,7 +35,7 @@
 
 .is-sticky {
 	position: sticky;
-	top: var(--scroll-margin-top, calc(var(--body-top) + var(--spacing-lg)));
+	top: var(--scroll-margin-top); // Respects sticky header height.
 }
 
 .is-circle,
@@ -303,9 +303,9 @@
 }
 
 [id] {
-	scroll-margin-top: var(--scroll-margin-top, 0);
+	scroll-margin-top: var(--scroll-margin-top);
 }
 
 .has-sticky-header {
-	--scroll-margin-top: calc(var(--body-top, 0px) + var(--header-height, 0px) + var(--spacing-lg)); // Requires 0px value fallback. 0 breaks this.
+	--scroll-margin-top: calc(var(--body-top) + var(--header-height, 0px) + var(--spacing-lg)); // Requires 0px value fallback. 0 breaks this.
 }
