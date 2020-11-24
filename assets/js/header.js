@@ -15,8 +15,8 @@
 	var hasSticky      = header && body.classList.contains( 'has-sticky-header' );
 	var hasTransparent = header && body.classList.contains( 'has-transparent-header' );
 	var hasPageHeader  = pageHeader && body.classList.contains( 'has-page-header' );
-	var headerStyles   = getComputedStyle( header );
-	var duration       = parseFloat( headerStyles.getPropertyValue( 'transition-duration' ) ) * 1000;
+	var headerStyles   = header ? getComputedStyle( header ) : false;
+	var duration       = header ? parseFloat( headerStyles.getPropertyValue( 'transition-duration' ) ) * 1000 : false;
 	var alignFullEl    = false;
 	var firstElement   = false;
 
