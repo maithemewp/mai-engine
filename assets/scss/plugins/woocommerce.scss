@@ -691,6 +691,7 @@ form.cart {
 	flex-wrap: wrap;
 	align-items: center;
 	order: 9;
+	padding: 0 !important;
 
 	label {
 
@@ -698,8 +699,7 @@ form.cart {
 	}
 
 	.input-text {
-		width: auto !important;
-		min-width: var(--coupon-input-width) !important;
+		width: var(--coupon-input-width) !important;
 	}
 
 	.button {
@@ -780,7 +780,11 @@ form.cart {
 			.input-text {
 				--coupon-input-width: auto;
 
-				flex: 1;
+				flex: 1 1 0;
+			}
+
+			.button {
+				flex: 0 1 0;
 			}
 		}
 
