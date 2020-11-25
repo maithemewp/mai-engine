@@ -118,8 +118,12 @@
 
 		if ( alignFullEl ) {
 			if ( ! hasPageHeader ) {
-				// This is only for styling content containers when the first block is alignfull.
+				/**
+				 * This is only for styling content containers when the first block is full aligned.
+				 * This is likely added via PHP, the JS is a fallback.
+				 */
 				body.classList.add( 'has-alignfull-first' );
+
 				// This is added to page-header in PHP.
 				alignFullEl.classList.add( 'is-alignfull-first' );
 			}
