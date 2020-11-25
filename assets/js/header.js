@@ -29,7 +29,7 @@
 			// Not tested much since we don't have blocks on archives yet.
 			firstElement = document.querySelectorAll( '#genesis-content > :not(:empty):first-of-type' );
 		}
-		alignFullEl = firstElement && firstElement[0].classList.contains( 'alignfull' ) ? firstElement[0] : alignFullEl;
+		alignFullEl = firstElement && firstElement.length && firstElement[0].classList.contains( 'alignfull' ) ? firstElement[0] : alignFullEl;
 	}
 
 	/**
