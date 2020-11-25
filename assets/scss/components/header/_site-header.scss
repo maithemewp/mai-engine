@@ -32,8 +32,10 @@
 	--transparent-header-offset: calc(var(--header-height-full, var(--header-height-full-fallback)) + var(--after-header-height, 0px) + var(--nav-after-header-height, 0px));
 	--site-inner-margin-top: calc(var(--transparent-header-offset, 0px) * -1);
 
-	.is-alignfull-first {
-		padding-top: var(--transparent-header-offset, 0);
+	.is-alignfull-first.page-header > .wrap,
+	.is-alignfull-first.wp-block-cover > div[class*="__inner-container"],
+	.is-alignfull-first.wp-block-group > div[class*="__inner-container"] {
+		margin-top: var(--transparent-header-offset, 0);
 	}
 }
 
