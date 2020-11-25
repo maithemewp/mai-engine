@@ -53,7 +53,7 @@ p.demo_store {
 .woocommerce-error,
 .woocommerce-message {
 	position: relative;
-	margin: 0 0 var(--row-gap);
+	margin: 0 0 var(--spacing-xxl);
 	padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) var(--spacing-lg);
 	overflow: hidden;
 	font-size: smaller;
@@ -108,9 +108,9 @@ p.demo_store {
 		width: 100%;
 	}
 
-	.woocommerce .col2-set .col-2,
-	.woocommerce-page .col2-set .col-2 {
-		margin-top: var(--spacing-lg);
+	.woocommerce .col2-set .col-1,
+	.woocommerce-page .col2-set .col-1 {
+		margin-bottom: var(--spacing-lg);
 	}
 
 }
@@ -165,7 +165,7 @@ p.demo_store {
 	--price-font-size: var(--font-size-sm);
 
 	&.related {
-		margin-top: var(--spacing-xxl);
+		margin-bottom: var(--spacing-xxl);
 	}
 
 	.product {
@@ -221,7 +221,7 @@ ul.products {
 }
 
 .button.product_type_simple {
-	margin-top: 1em;
+	margin-bottom: 1em;
 
 	@include button-style(small);
 }
@@ -379,10 +379,10 @@ ul.products {
 
 .woocommerce-tabs {
 	width: 100%;
-	margin: 0 0 var(--row-gap);
+	margin: 0 0 var(--spacing-lg);
 	overflow: hidden;
 
-	// hide Description heading when it is the only tab.
+	// Hides description heading when it is the only tab.
 	> .wc-tab:first-of-type:last-of-type > h2:first-child {
 		position: absolute;
 		width: 1px;
@@ -456,20 +456,20 @@ ul.products {
 }
 
 .woocommerce-product-details__short-description {
-	margin-top: var(--row-gap);
+	margin-bottom: var(--row-gap);
 }
 
 form.cart {
-	margin-top: var(--row-gap);
+	margin-bottom: var(--row-gap);
 }
 
 .product_meta {
-	margin-top: var(--spacing-xl);
+	margin-bottom: var(--spacing-xl);
 	font-size: var(--font-size-sm);
 }
 
 .comment-form-rating {
-	margin-top: var(--row-gap);
+	margin-bottom: var(--row-gap);
 }
 
 .review {
@@ -502,7 +502,6 @@ form.cart {
 
 .woocommerce-form-coupon {
 	display: flex;
-	flex-wrap: wrap;
 	align-items: center;
 	margin-bottom: var(--column-gap);
 
@@ -511,8 +510,12 @@ form.cart {
 	}
 }
 
+.woocommerce-cart-form {
+	--link-color: var(--color-heading);
+}
+
 .woocommerce-checkout-payment {
-	margin-top: var(--spacing-xl);
+	margin-bottom: var(--spacing-xl);
 	padding: var(--spacing-md) var(--spacing-md) var(--spacing-lg);
 	background: var(--color-alt);
 	border: var(--border);
@@ -626,12 +629,12 @@ form.cart {
 	align-content: center;
 	align-items: center;
 	justify-content: center;
-	width: 1em;
-	height: 1em;
+	width: 1.125em;
+	height: 1.125em;
 	color: var(--color-white);
 	font-weight: var(--heading-font-weight);
-	background-color: var(--color-danger);
-	border-radius: var(--border-radius);
+	background-color: var(--color-body);
+	border-radius: 50%;
 
 	&:hover,
 	&:focus {
@@ -639,10 +642,18 @@ form.cart {
 		text-decoration: none;
 		background-color: var(--color-danger);
 	}
+
+	svg {
+		width: 0.5em;
+		fill: currentColor;
+	}
 }
 
 .quantity {
-	float: left;
+
+	.summary & {
+		float: left;
+	}
 
 	.input-text {
 		max-width: 72px;
@@ -652,7 +663,15 @@ form.cart {
 }
 
 .actions {
-	padding: var(--spacing-lg);
+	--input-width: 160px;
+	--input-margin: var(--spacing-xs);
+	--input-padding: calc(0.8em - 2px) 1.2em; // Match button top/bottom padding - 2px for border.
+	--input-font-size: var(--font-size-sm);
+	--button-padding: 0.8em 1.2em;
+	--button-margin: var(--spacing-xs);
+	--button-font-size: var(--font-size-sm);
+
+	padding: var(--spacing-sm);
 
 	.button {
 
@@ -669,21 +688,22 @@ form.cart {
 
 .coupon {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
-	font-size: var(--font-size-sm);
+	order: 9;
+	padding: 0 !important;
 
 	label {
 
 		@include hide-visually();
 	}
 
-	input {
-		width: 120px !important;
-		margin: 0;
+	.input-text {
+		width: var(--input-width) !important;
 	}
 
 	.button {
-		margin-left: 1em;
+		width: auto !important;
 		white-space: nowrap;
 	}
 }
@@ -698,7 +718,11 @@ form.cart {
 }
 
 .cart_totals {
-	margin-top: var(--spacing-md);
+	margin-bottom: var(--spacing-md);
+
+	.shop_table {
+		margin-bottom: var(--spacing-md);
+	}
 
 	@include mq(false, sm) {
 		float: none !important;
@@ -723,12 +747,17 @@ form.cart {
 			--list-padding: var(--spacing-sm);
 		}
 
+		.quantity {
+			float: right;
+			margin-left: auto;
+		}
+
 		td {
 			flex-wrap: wrap;
+			overflow: hidden;
 
 			// Originally for WooCommerce Product Add-ons, but could be anything.
-			> *:not(.remove) {
-				flex: 1 1 auto;
+			> *:not(.remove):not(.quantity):not(.button):not(.coupon) {
 				padding: var(--spacing-md);
 			}
 		}
@@ -739,6 +768,8 @@ form.cart {
 		}
 
 		.actions {
+			display: flex !important;
+			width: 100%;
 			overflow: hidden;
 		}
 
@@ -747,13 +778,14 @@ form.cart {
 			width: 100%;
 
 			.input-text {
-				flex: 1;
-				width: auto !important;
+				flex: 1 1 0;
+			}
+
+			.button {
+				flex: 0 1 0;
 			}
 		}
-
 	}
-
 }
 
 @include mq(false, sm) {
@@ -790,20 +822,12 @@ form.cart {
 			}
 
 			&.actions {
-				display: flex;
-				flex-direction: column;
 				padding: 1em;
 				overflow: hidden;
 				border-bottom: var(--border);
 
 				.button {
-					float: none;
-					padding: var(--spacing-md);
-				}
-
-				> .button {
-					order: -1;
-					margin-bottom: 1em;
+					float: none !important;
 				}
 			}
 		}
@@ -827,7 +851,6 @@ form.cart {
 				border-right: var(--border);
 			}
 		}
-
 	}
 }
 
@@ -836,7 +859,7 @@ form.cart {
 	line-height: 0;
 }
 
-.mai-cart-total {
+.mai-cart-total:not(:empty) {
 	padding: var(--cart-total-padding, var(--spacing-xxs));
 	color: var(--cart-total-color, white);
 	font-size: var(--cart-total-font-size, var(--font-size-sm));
@@ -975,7 +998,7 @@ form.cart {
 		--star-rating-right: var(--spacing-xs);
 
 		.meta {
-			margin-top: var(--spacing-md);
+			margin-bottom: var(--spacing-md);
 		}
 	}
 }

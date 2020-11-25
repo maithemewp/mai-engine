@@ -238,7 +238,8 @@ add_filter( 'genesis_attr_page-header', 'mai_add_page_header_attributes' );
  * @return mixed
  */
 function mai_add_page_header_attributes( $attributes ) {
-	$attributes['id'] = 'page-header';
+	$attributes['id']     = 'page-header';
+	$attributes['class'] .= ' is-alignfull-first';
 
 	$default = mai_get_config( 'settings' )['page-header']['divider'];
 	$divider = mai_get_option( 'page-header-divider', $default );

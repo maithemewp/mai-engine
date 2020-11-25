@@ -73,9 +73,8 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'has-sticky-header';
 	}
 
-	// Add transparent header class.
-	if ( mai_has_transparent_header_enabled() && ! mai_is_element_hidden( 'transparent_header' ) ) {
-		$classes[] = 'has-transparent-header-enabled';
+	if ( mai_has_transparent_header() ) {
+		$classes[] = 'has-transparent-header';
 	}
 
 	// Add page header classes.
@@ -91,11 +90,6 @@ function mai_body_classes( $classes ) {
 	// Add logo classes.
 	if ( ( $header_left && $header_right ) || ( ! $header_right && ! $header_right ) ) {
 		$classes[] = 'has-logo-center';
-	}
-
-	// Add alignfull first class.
-	if ( mai_has_alignfull_first() ) {
-		$classes[] = 'has-alignfull-first';
 	}
 
 	// Add single type class.

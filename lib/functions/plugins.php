@@ -144,6 +144,19 @@ function mai_woocommerce_product_single_class( $classes ) {
  */
 add_filter( 'woocommerce_price_trim_zeros', '__return_true' );
 
+add_filter( 'woocommerce_cart_item_remove_link', 'mai_woocommerce_cart_item_remove_icon' );
+/**
+ * Replaces cart item remove link x with an svg.
+ *
+ * @since TBD
+ *
+ * @return string
+ */
+function mai_woocommerce_cart_item_remove_icon( $link ) {
+	$svg = mai_get_svg_icon( 'times', 'light' );
+	return str_replace( '&times;', $svg, $link );
+}
+
 add_filter( 'genesis_attr_entries', 'mai_add_facetwp_template_class', 10, 3 );
 /**
  * Add facetwp-template class to archives.
@@ -358,7 +371,7 @@ function mai_get_cart_total() {
 	if ( ! $cart ) {
 		return;
 	}
-	return sprintf( '<span class="mai-cart-total-wrap is-circle"><span class="mai-cart-total">%s</span></span>',
-		WC()->cart->get_cart_contents_count()
-	);
+	$total = WC()->cart->get_cart_contents_count();
+	$total = $total ?: '';
+	return sprintf( '<span class="mai-cart-total-wrap is-circle"><span class="mai-cart-total">%s</span></span>', $total );
 }

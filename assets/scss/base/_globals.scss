@@ -52,7 +52,7 @@
 
 	--transition-property: all;
 	--transition-duration: 0.2s;
-	--transition-timing-function: ease;
+	--transition-timing-function: ease-in-out;
 	--transition: var(--transition-property) var(--transition-duration) var(--transition-timing-function);
 
 	--content-sidebar-wrap-margin-top: var(--spacing-xxl);

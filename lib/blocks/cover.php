@@ -23,6 +23,9 @@ add_filter( 'render_block', 'mai_render_cover_block', 10, 2 );
  * @return string
  */
 function mai_render_cover_block( $block_content, $block ) {
+	if ( ! $block_content ) {
+		return $block_content;
+	}
 
 	// Bail if not a cover block.
 	if ( 'core/cover' !== $block['blockName'] ) {

@@ -22,12 +22,11 @@
 		margin-top: 0;
 		margin-bottom: 0;
 	}
+}
 
-	&__inner-container {
-		width: 100% !important;
-		max-width: var(--content-max-width, var(--breakpoint-xl));
-		margin-right: auto;
-		margin-left: auto;
-	}
-
+.wp-block-group__inner-container {
+	width: 100% !important;
+	max-width: var(--content-max-width, var(--breakpoint-xl));
+	margin-right: auto;
+	margin-left: auto;
 }

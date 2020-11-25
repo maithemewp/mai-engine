@@ -1,5 +1,6 @@
 body {
 	--body-top: 0px; // Requires 0px value. 0 breaks this when it's used in calc() in some instances.
+	--scroll-margin-top: calc(var(--body-top) + var(--spacing-lg));
 
 	display: flex;
 	flex-direction: column;

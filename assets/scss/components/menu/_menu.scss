@@ -78,6 +78,7 @@
 	}
 
 	&[class*="button"] {
+		--menu-item-link-flex: 0 1 auto; // Mostly for buttons in mobile menu.
 		--menu-item-link-color: var(--button-color);
 		--menu-item-link-color-hover: var(--button-color-hover);
 		--button-font-size: var(--menu-font-size, var(--font-size-md));

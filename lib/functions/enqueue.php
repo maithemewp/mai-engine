@@ -120,9 +120,9 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 	$suffix    = 'script' === $type ? '.js' : '.css';
 	$src       = isset( $args['src'] ) ? $args['src'] : mai_get_asset_url( $handle . $suffix );
 	$handle    = isset( $args['handle'] ) ? $args['handle'] : mai_get_handle() . '-' . $handle;
-	$src       = isset( $args['async'] ) ? $src . '#async' : $src;
 	$deps      = isset( $args['deps'] ) ? $args['deps'] : [];
 	$ver       = isset( $args['ver'] ) ? $args['ver'] : mai_get_asset_version( $src );
+	$src       = isset( $args['async'] ) ? $src . '#async' : $src; // I think this needs to be after $ver so #async doesn't mess with url.
 	$media     = isset( $args['media'] ) ? $args['media'] : 'all';
 	$in_footer = isset( $args['in_footer'] ) ? $args['in_footer'] : true;
 	$condition = isset( $args['condition'] ) ? $args['condition'] : '__return_true';

@@ -21,6 +21,10 @@ add_filter( 'render_block', 'mai_render_group_block', 10, 2 );
  * @return string
  */
 function mai_render_group_block( $block_content, $block ) {
+	if ( ! $block_content ) {
+		return $block_content;
+	}
+
 	if ( 'core/group' !== $block['blockName'] ) {
 		return $block_content;
 	}

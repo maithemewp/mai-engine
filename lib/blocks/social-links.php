@@ -21,13 +21,12 @@ add_filter( 'render_block', 'mai_render_social_links_block', 10, 2 );
  * @return string
  */
 function mai_render_social_links_block( $block_content, $block ) {
-	// Bail if not a social-link block.
-	if ( 'core/social-link' !== $block['blockName'] ) {
+	if ( ! $block_content ) {
 		return $block_content;
 	}
 
-	// Bail if link is empty.
-	if ( ! $block_content ) {
+	// Bail if not a social-link block.
+	if ( 'core/social-link' !== $block['blockName'] ) {
 		return $block_content;
 	}
 

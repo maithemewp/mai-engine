@@ -105,7 +105,12 @@
 				return;
 			}
 
-			var navMenuClone = navMenu.querySelector( '.menu' ).cloneNode( true );
+			var menu = navMenu.querySelector( '.menu' );
+			if ( ! menu ) {
+				return;
+			}
+
+			var navMenuClone = menu.cloneNode( true );
 			navMenuClone.setAttribute( 'id', navMenu.getAttribute( 'id' ) + '-clone' );
 
 			Array.from( navMenuClone.children ).forEach( function( menuItem ) {

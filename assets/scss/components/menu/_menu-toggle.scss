@@ -26,7 +26,7 @@
 	right: auto;
 	bottom: auto;
 	margin: auto;
-	color: var(--menu-toggle-color, var(--color-heading));
+	color: var(--menu-toggle-color, var(--menu-item-link-color, var(--color-heading)));
 	background: var(--menu-toggle-icon-background, currentColor);
 	transition: var(--menu-toggle-transition, background 0s 0.2s);
 
@@ -66,8 +66,4 @@
 	--menu-toggle-line-after-transform: rotate(-45deg);
 	--menu-toggle-line-before-transition: top 0.2s 0s, transform 0.2s 0.2s;
 	--menu-toggle-line-after-transition: top 0.2s 0s, transform 0.2s 0.2s;
-}
-
-.has-dark-header:not(.header-stuck) {
-	--menu-toggle-color: var(--color-white);
 }
