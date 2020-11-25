@@ -15,7 +15,11 @@
 	--link-text-decoration-hover: none;
 }
 
-.has-sticky-header {
+.has-sticky-header:not(.header-stuck) {
+	--title-area-transition: all 75ms ease-in-out;
+}
+
+.has-sticky-header.header-stuck {
 	--title-area-transition: all 250ms ease-in-out;
 }
 
