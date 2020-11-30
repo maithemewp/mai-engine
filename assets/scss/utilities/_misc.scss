@@ -1,7 +1,3 @@
-:target {
-	scroll-margin-top: var(--scroll-margin-top);
-}
-
 .clear, // WooCommerce and likely other plugins.
 .clearfix {
 	clear: both;
@@ -304,8 +300,4 @@
 		display: none;
 		visibility: hidden;
 	}
-}
-
-.has-sticky-header {
-	--scroll-margin-top: calc(var(--body-top) + var(--header-height, 0px) + var(--spacing-lg)); // Requires 0px value fallback. 0 breaks this.
 }
