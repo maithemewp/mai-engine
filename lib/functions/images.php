@@ -47,7 +47,7 @@ function mai_get_image_aspect_ratio( $image_size ) {
 /**
  * Gets an image width by size name.
  *
- * @since TBD
+ * @since 2.7.0
  *
  * @param string $image_size The image size name.
  *

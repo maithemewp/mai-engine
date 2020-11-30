@@ -21,3 +21,11 @@ body {
 		--body-top: 32px;
 	}
 }
+
+:target {
+	scroll-margin-top: var(--scroll-margin-top);
+}
+
+.has-sticky-header {
+	--scroll-margin-top: calc(var(--body-top) + var(--header-height, 0px) + var(--spacing-lg)); // Requires 0px value fallback. 0 breaks this.
+}

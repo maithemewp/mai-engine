@@ -142,7 +142,7 @@ add_shortcode( 'mai_avatar', 'mai_avatar_shortcode' );
 /**
  * Display an author avatar.
  *
- * @since TBD
+ * @since 2.7.0
  *
  * @return string
  */
@@ -162,7 +162,7 @@ add_shortcode( 'mai_cart_total', 'mai_cart_total_shortcode' );
  *
  * @uses WooCommerce
  *
- * @since TBD
+ * @since 2.7.0
  *
  * @return string
  */

@@ -154,7 +154,6 @@ function mai_is_type_archive( $use_cache = false ) {
  * Checks if first block is cover or group block aligned full.
  *
  * @since 0.1.0
- * @since TBD Unused. Class added via JS.
  *
  * @return bool
  */
@@ -170,12 +169,15 @@ function mai_has_alignfull_first() {
 
 		$post_object = get_post( get_the_ID() );
 		$blocks      = (array) parse_blocks( $post_object->post_content );
-		$first       = $blocks[0];
-		$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
-		$align       = isset( $first['attrs']['align'] ) ? $first['attrs']['align'] : '';
+		$first       = reset( $blocks );
 
-		if ( in_array( $block_name, [ 'core/cover', 'core/group' ] ) && ( 'full' === $align ) ) {
-			$has_alignfull_first = true;
+		if ( $first ) {
+			$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
+			$align       = isset( $first['attrs']['align'] ) ? $first['attrs']['align'] : '';
+
+			if ( in_array( $block_name, [ 'core/cover', 'core/group' ] ) && ( 'full' === $align ) ) {
+				$has_alignfull_first = true;
+			}
 		}
 	}
 
@@ -259,7 +261,7 @@ function mai_has_transparent_header_enabled() {
 /**
  * Checks if site has transparent header.
  *
- * @since TBD
+ * @since 0.1.0
  *
  * @return bool
  */
@@ -368,7 +370,7 @@ function mai_has_page_header() {
  * Checks if breadcrumbs are displayed.
  * Mostly taken from genesis_do_breadcrumbs().
  *
- * @since TBD
+ * @since 2.7.0
  *
  * @return bool
  */

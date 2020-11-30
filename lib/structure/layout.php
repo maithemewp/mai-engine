@@ -77,11 +77,13 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'has-transparent-header';
 	}
 
-	// Add page header classes.
+	// Add page header or alignfull-first classes.
 	$has_page_header = mai_has_page_header();
 	$classes[]       = $has_page_header ? 'has-page-header' : 'no-page-header';
 	if ( $has_page_header ) {
 		$classes[] = mai_has_light_page_header() ? 'has-light-page-header' : 'has-dark-page-header';
+	} elseif ( mai_has_alignfull_first() ) {
+		$classes[] = 'has-alignfull-first';
 	}
 
 	$header_left  = has_nav_menu( 'header-left' ) || mai_has_template_part( 'header-left' ) || is_active_sidebar( 'header-left' );

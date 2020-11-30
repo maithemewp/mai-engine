@@ -68,7 +68,7 @@ function mai_do_amp_menu_sidebar() {
 /**
  * Returns AMP menu HTML.
  *
- * @since TBD
+ * @since 2.7.0
  *
  * @return string
  */
@@ -151,7 +151,7 @@ function mai_get_amp_menu() {
 /**
  * Returns menu items by meny location slug.
  *
- * @since TBD
+ * @since 2.7.0
  *
  * @param string $location The menu location slug
  *
@@ -168,7 +168,7 @@ function mai_get_amp_menu_item( WP_Post $item ) {
 /**
  * Returns AMP button inline styles.
  *
- * @since TBD
+ * @since 2.7.0
  *
  * @return string
  */

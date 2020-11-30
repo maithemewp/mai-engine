@@ -836,7 +836,7 @@ function mai_get_menu( $menu, $args = [] ) {
 /**
  * Returns menu items by menu location slug.
  *
- * @since TBD
+ * @since 2.7.0
  *
  * @param string $location The menu location slug
  *
@@ -856,7 +856,7 @@ function mai_get_menu_items_by_location( $location ) {
 /**
  * Gets a user avatar.
  *
- * @since TBD
+ * @since 2.7.0
  *
  * @param int|string The user ID or 'current'.
  * @param int|string The avatar size. Accepts integer or unit value; 20px, 1em, etc.
@@ -897,7 +897,7 @@ function mai_get_avatar( $args ) {
 /**
  * Gets list of icon shortcode attributes.
  *
- * @since TBD
+ * @since 2.7.0
  *
  * @return array
  */
@@ -916,7 +916,7 @@ function mai_get_avatar_default_args() {
 /**
  * Gets an entry author ID.
  *
- * @since TBD
+ * @since 2.7.0
  *
  * @return int|false
  */
