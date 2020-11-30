@@ -223,8 +223,17 @@ add_filter( 'wp_nav_menu_objects', 'mai_first_last_menu_items' );
  */
 function mai_first_last_menu_items( $items ) {
 	if ( ! empty( $items ) ) {
-		$items[ array_keys( $items )[0] ]->classes[] = 'menu-item-first';
-		$items[ count( $items ) ]->classes[]         = 'menu-item-last';
+		$top_level = [];
+		foreach ( $items as $index => $item ) {
+			if ( $item->menu_item_parent > 0 ) {
+				continue;
+			}
+			$top_level[ $index ] = $item;
+		}
+		if ( $top_level ) {
+			$items[ array_key_first( $top_level ) ]->classes[] = 'menu-item-first';
+			$items[ array_key_last( $top_level ) ]->classes[]  = 'menu-item-last';
+		}
 	}
 
 	return $items;

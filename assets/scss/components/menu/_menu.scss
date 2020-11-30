@@ -40,6 +40,12 @@
 	&.search {
 		z-index: 12; // 1 above sticky site-header.
 	}
+
+	.mai-cart-total-wrap {
+		position: var(--cart-total-position, absolute);
+		top: var(--spacing-xxs);
+		right: var(--spacing-xxs);
+	}
 }
 
 .menu-item-link {
@@ -72,8 +78,9 @@
 	}
 
 	&[class*="button"] {
+		--menu-item-link-flex: 0 1 auto; // Mostly for buttons in mobile menu.
 		--menu-item-link-color: var(--button-color);
-		--menu-item-link-color-hover: var(--button-color-hover);
+		--menu-item-link-color-hover: var(--button-color-hover, var(--button-color));
 		--button-font-size: var(--menu-font-size, var(--font-size-md));
 	}
 }
@@ -84,6 +91,10 @@
 		--menu-item-link-color: var(--color-white);
 		--menu-item-link-color-hover: var(--color-white);
 		--menu-item-name-filter-hover: brightness(0.8);
+
+		.sub-menu {
+			--menu-item-name-filter-hover: brightness(1);
+		}
 	}
 }
 

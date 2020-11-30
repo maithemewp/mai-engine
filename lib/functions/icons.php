@@ -106,7 +106,7 @@ function mai_get_icon( $args ) {
 		}
 	}
 
-	return genesis_markup(
+	$icon = genesis_markup(
 		[
 			'open'    => "<{$tag} %s>" . '<span class="mai-icon-wrap">',
 			'close'   => '</span>' . "</{$tag}>",
@@ -116,10 +116,16 @@ function mai_get_icon( $args ) {
 			'atts'    => $atts,
 		]
 	);
+
+	if ( $args['cart_total'] ) {
+		$icon .= mai_get_cart_total();
+	}
+
+	return $icon;
 }
 
 /**
- * Helper function that returns list of shortcode attributes.
+ * Gets list of icon shortcode attributes.
  *
  * @since 0.1.0
  *
@@ -135,6 +141,7 @@ function mai_get_icon_default_args() {
 		'size'                 => '40',
 		'link'                 => '',
 		'link_target'          => '',
+		'cart_total'           => false,
 		'class'                => '',
 		'color_icon'           => 'currentColor',
 		'color_background'     => '',

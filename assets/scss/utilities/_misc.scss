@@ -8,6 +8,19 @@
 	--input-width: auto;
 }
 
+.has-light-background h1:not(.has-text-color),
+.has-light-background h2:not(.has-text-color),
+.has-light-background h3:not(.has-text-color),
+.has-light-background h4:not(.has-text-color),
+.has-light-background h5:not(.has-text-color),
+.has-light-background h6:not(.has-text-color) {
+	color: var(--heading-color, var(--color-heading)); // Override block-library styles.
+}
+
+.has-light-background p:not(.has-text-color) {
+	color: var(--body-color, var(--color-body)); // Override block-library styles.
+}
+
 .has-border {
 	border: var(--border);
 }
@@ -22,12 +35,12 @@
 
 .is-sticky {
 	position: sticky;
-	top: var(--scroll-margin-top, calc(var(--body-top) + var(--spacing-lg)));
+	top: var(--scroll-margin-top); // Respects sticky header height.
 }
 
 .is-circle,
 .is-square {
-	display: grid;
+	display: inline-grid;
 	padding: 0 !important;
 
 	> :first-child {
@@ -287,12 +300,4 @@
 		display: none;
 		visibility: hidden;
 	}
-}
-
-[id] {
-	scroll-margin-top: var(--scroll-margin-top, 0);
-}
-
-.has-sticky-header {
-	--scroll-margin-top: calc(var(--header-shrunk-height, var(--header-height, 0px)) + var(--spacing-md)); // Requires 0px value fallback. 0 breaks this.
 }

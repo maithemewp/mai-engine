@@ -1,9 +1,10 @@
 body {
 	--body-top: 0px; // Requires 0px value. 0 breaks this when it's used in calc() in some instances.
+	--scroll-margin-top: calc(var(--body-top) + var(--spacing-lg));
 
 	display: flex;
 	flex-direction: column;
-	min-height: var(--body-min-height, 100vh);
+	min-height: var(--body-min-height, calc(100vh - var(--body-top)));
 	min-height: -webkit-fill-available;
 	overflow-x: hidden; // Prevent horizontal scrollbars.
 
@@ -19,4 +20,12 @@ body {
 	@media only screen and (min-width: 783px) {
 		--body-top: 32px;
 	}
+}
+
+:target {
+	scroll-margin-top: var(--scroll-margin-top);
+}
+
+.has-sticky-header {
+	--scroll-margin-top: calc(var(--body-top) + var(--header-height, 0px) + var(--spacing-lg)); // Requires 0px value fallback. 0 breaks this.
 }

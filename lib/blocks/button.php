@@ -24,6 +24,9 @@ add_filter( 'render_block', 'mai_render_button_block', 10, 2 );
  * @return string The modified block HTML.
  */
 function mai_render_button_block( $block_content, $block ) {
+	if ( ! $block_content ) {
+		return $block_content;
+	}
 
 	// Bail if not a button block.
 	if ( 'core/button' !== $block['blockName'] ) {

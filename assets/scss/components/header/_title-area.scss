@@ -1,6 +1,11 @@
+:root,
+.header-stuck {
+	--title-area-padding: var(--title-area-padding-mobile) 0;
+}
+
 .title-area {
 	margin: var(--title-area-margin, 0);
-	padding: var(--title-area-padding, var(--spacing-md)) 0 var(--title-area-padding, var(--spacing-md));
+	padding: var(--title-area-padding, var(--spacing-md) 0);
 	color: var(--title-area-color, var(--color-heading));
 	line-height: var(--title-area-line-height, var(--heading-line-height));
 	text-align: var(--title-area-text-align, start);
@@ -10,7 +15,11 @@
 	--link-text-decoration-hover: none;
 }
 
-.has-sticky-header {
+.has-sticky-header:not(.header-stuck) {
+	--title-area-transition: all 75ms ease-in-out;
+}
+
+.has-sticky-header.header-stuck {
 	--title-area-transition: all 250ms ease-in-out;
 }
 

@@ -3,10 +3,18 @@
 }
 
 .entry-meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: var(--entry-meta-justify-content, flex-start);
 	margin: var(--entry-meta-margin, 0 0 var(--spacing-xl) 0);
 	font-size: var(--entry-meta-font-size, var(--font-size-sm));
 
 	&:last-child {
 		margin: 0;
+	}
+
+	> *:not(:first-child) {
+		margin-left: var(--entry-meta-gap, var(--spacing-xxxs));
 	}
 }

@@ -163,10 +163,10 @@ function mai_get_version() {
  * @return string
  */
 function mai_get_asset_version( $file ) {
-	$file    = str_replace( mai_get_url(), mai_get_dir(), $file );
+	$file    = str_replace( content_url(), WP_CONTENT_DIR, $file );
 	$version = mai_get_version();
 
-	if ( file_exists( $file ) && ( mai_has_string( mai_get_dir(), $file ) ) ) {
+	if ( file_exists( $file ) ) {
 		$version .= '.' . date( 'njYHi', filemtime( $file ) );
 	}
 
@@ -831,6 +831,105 @@ function mai_get_menu( $menu, $args = [] ) {
 	}
 
 	return $html;
+}
+
+/**
+ * Returns menu items by menu location slug.
+ *
+ * @since 2.7.0
+ *
+ * @param string $location The menu location slug
+ *
+ * @return array
+ */
+function mai_get_menu_items_by_location( $location ) {
+	$menu_items = [];
+	$locations  = get_nav_menu_locations();
+	if ( $locations && isset( $locations[ $location ] ) && $locations[ $location ] ) {
+		$menu       = get_term( $locations[ $location ] );
+		$menu_items = $menu ? wp_get_nav_menu_items( $menu->term_id ) : $menu_items;
+	}
+
+	return $menu_items;
+}
+
+/**
+ * Gets a user avatar.
+ *
+ * @since 2.7.0
+ *
+ * @param int|string The user ID or 'current'.
+ * @param int|string The avatar size. Accepts integer or unit value; 20px, 1em, etc.
+ *
+ * @return string
+ */
+function mai_get_avatar( $args ) {
+	$args       = wp_parse_args( $args, mai_get_avatar_default_args() );
+	$args['id'] = 'current' === $args['id'] ? mai_get_author_id() : $args['id'];
+	$avatar     = get_avatar( $args['id'], absint( $args['size'] ) );
+
+	if ( ! $avatar ) {
+		return;
+	}
+
+	$atts = [
+		'class' => 'mai-avatar',
+		'style' => '',
+	];
+
+	// Build inline styles.
+	$atts['style'] .= sprintf( '--avatar-display:%s;', $args['display'] );
+	$atts['style'] .= sprintf( '--avatar-max-width:%s;', mai_get_unit_value( $args['size'] ) );
+	$atts['style'] .= sprintf( '--avatar-margin:%s %s %s %s;', mai_get_unit_value( $args['margin_top'] ), mai_get_unit_value( $args['margin_right'] ), mai_get_unit_value( $args['margin_bottom'] ), mai_get_unit_value( $args['margin_left'] ) );
+
+	return genesis_markup(
+		[
+			'open'    => "<span %s>",
+			'close'   => '</span>',
+			'content' => $avatar,
+			'context' => 'avatar',
+			'atts'    => $atts,
+			'echo'    => false,
+		]
+	);
+}
+
+/**
+ * Gets list of icon shortcode attributes.
+ *
+ * @since 2.7.0
+ *
+ * @return array
+ */
+function mai_get_avatar_default_args() {
+	return [
+		'id'            => 'current',
+		'size'          => mai_get_image_width( 'tiny' ) / 2, // Half of the tiny size.
+		'display'       => in_the_loop() ? 'inline-block' : 'block',
+		'margin_top'    => 0,
+		'margin_right'  => in_the_loop() ? 'var(--spacing-xs)' : 0,
+		'margin_bottom' => 0,
+		'margin_left'   => 0,
+	];
+}
+
+/**
+ * Gets an entry author ID.
+ *
+ * @since 2.7.0
+ *
+ * @return int|false
+ */
+function mai_get_author_id() {
+	$author_id = false;
+
+	if ( is_author() && ! in_the_loop() ) {
+		$author_id = get_query_var( 'author' );
+	} else {
+		$author_id = get_the_author_meta( 'ID' );
+	}
+
+	return $author_id;
 }
 
 /**

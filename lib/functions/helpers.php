@@ -169,12 +169,15 @@ function mai_has_alignfull_first() {
 
 		$post_object = get_post( get_the_ID() );
 		$blocks      = (array) parse_blocks( $post_object->post_content );
-		$first       = $blocks[0];
-		$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
-		$align       = isset( $first['attrs']['align'] ) ? $first['attrs']['align'] : '';
+		$first       = reset( $blocks );
 
-		if ( in_array( $block_name, [ 'core/cover', 'core/group' ] ) && ( 'full' === $align ) ) {
-			$has_alignfull_first = true;
+		if ( $first ) {
+			$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
+			$align       = isset( $first['attrs']['align'] ) ? $first['attrs']['align'] : '';
+
+			if ( in_array( $block_name, [ 'core/cover', 'core/group' ] ) && ( 'full' === $align ) ) {
+				$has_alignfull_first = true;
+			}
 		}
 	}
 
@@ -245,7 +248,7 @@ function mai_has_sticky_header_enabled() {
 }
 
 /**
- * Check if site has transparent header enabled.
+ * Checks if site has transparent header enabled.
  *
  * @since 0.1.0
  *
@@ -253,6 +256,33 @@ function mai_has_sticky_header_enabled() {
  */
 function mai_has_transparent_header_enabled() {
 	return mai_get_option( 'site-header-transparent', current_theme_supports( 'transparent-header' ) );
+}
+
+/**
+ * Checks if site has transparent header.
+ *
+ * @since 0.1.0
+ *
+ * @return bool
+ */
+function mai_has_transparent_header() {
+	if ( ! mai_has_transparent_header_enabled() ) {
+		return false;
+	}
+	if ( mai_is_element_hidden( 'transparent_header' ) ) {
+		return false;
+	}
+	// var hasTransparent = header && body.classList.contains( 'has-transparent-header-enabled' ) && ( hasPageHeader || ( hasAlignFull && ! hasBreadcrumbs ));
+	if ( mai_is_element_hidden( 'site_header' ) ) {
+		return false;
+	}
+	if ( ! mai_has_transparent_header_enabled() ) {
+		return false;
+	}
+	if ( ! ( mai_has_page_header() || ( mai_has_alignfull_first() && mai_is_element_hidden( 'entry_title' ) && ! mai_has_breadcrumbs() ) ) ) {
+		return false;
+	}
+	return true;
 }
 
 /**
@@ -334,6 +364,39 @@ function mai_has_page_header() {
 	}
 
 	return $has_page_header;
+}
+
+/**
+ * Checks if breadcrumbs are displayed.
+ * Mostly taken from genesis_do_breadcrumbs().
+ *
+ * @since 2.7.0
+ *
+ * @return bool
+ */
+function mai_has_breadcrumbs() {
+	/**
+	 * Do not output breadcrumbs if filter returns true.
+	 *
+	 * @since 3.1.0 Genesis
+	 *
+	 * @param bool $breadcrumbs_hidden True to hide breadcrumbs, false to show them.
+	 */
+	$genesis_breadcrumbs_hidden = apply_filters( 'genesis_do_breadcrumbs', genesis_breadcrumbs_hidden_on_current_page() );
+
+	if ( $genesis_breadcrumbs_hidden ) {
+		return false;
+	}
+
+	if ( genesis_breadcrumbs_disabled_on_current_page() ) {
+		return false;
+	}
+
+	if ( mai_is_element_hidden( 'breadcrumbs' ) ) {
+		return false;
+	}
+
+	return true;
 }
 
 /**

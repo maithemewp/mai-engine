@@ -34,7 +34,8 @@
 	--menu-item-link-color: var(--color-white);
 }
 
-.nav-header .button {
+.nav-header .button,
+.mobile-menu .button {
 	--button-background: var(--color-white);
 	--button-color: var(--color-heading);
 	--button-background-hover: var(--color-white);

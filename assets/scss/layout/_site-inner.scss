@@ -1,14 +1,10 @@
 .site-inner {
 	width: 100%;
-	margin: var(--site-inner-margin, 0 auto);
+	margin: var(--site-inner-margin, var(--site-inner-margin-top, 0) auto var(--site-inner-margin-bottom, 0));
 
 	@include mq(lg) {
 		display: flex;
 		flex: 1;
 		flex-direction: column;
 	}
-}
-
-.has-transparent-header {
-	--site-inner-margin: calc((var(--header-height, 0) + var(--after-header-height, 0)) * -1) auto 0;
 }

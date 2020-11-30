@@ -73,16 +73,17 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'has-sticky-header';
 	}
 
-	// Add transparent header class.
-	if ( mai_has_transparent_header_enabled() && ! mai_is_element_hidden( 'transparent_header' ) ) {
-		$classes[] = 'has-transparent-header-enabled';
+	if ( mai_has_transparent_header() ) {
+		$classes[] = 'has-transparent-header';
 	}
 
-	// Add page header classes.
+	// Add page header or alignfull-first classes.
 	$has_page_header = mai_has_page_header();
 	$classes[]       = $has_page_header ? 'has-page-header' : 'no-page-header';
 	if ( $has_page_header ) {
 		$classes[] = mai_has_light_page_header() ? 'has-light-page-header' : 'has-dark-page-header';
+	} elseif ( mai_has_alignfull_first() ) {
+		$classes[] = 'has-alignfull-first';
 	}
 
 	$header_left  = has_nav_menu( 'header-left' ) || mai_has_template_part( 'header-left' ) || is_active_sidebar( 'header-left' );
@@ -91,11 +92,6 @@ function mai_body_classes( $classes ) {
 	// Add logo classes.
 	if ( ( $header_left && $header_right ) || ( ! $header_right && ! $header_right ) ) {
 		$classes[] = 'has-logo-center';
-	}
-
-	// Add alignfull first class.
-	if ( mai_has_alignfull_first() ) {
-		$classes[] = 'has-alignfull-first';
 	}
 
 	// Add single type class.

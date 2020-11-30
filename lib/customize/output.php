@@ -395,9 +395,3 @@ function mai_add_extra_custom_properties( $css ) {
 
 	return $css;
 }
-
-// add_filter( 'kirki_mai-engine_styles', 'mai_sort_custom_properties' );
-function mai_sort_custom_properties( $css ) {
-	ksort( $css['global'][':root'] );
-	return $css;
-}

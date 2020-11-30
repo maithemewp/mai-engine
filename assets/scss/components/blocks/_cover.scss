@@ -35,21 +35,13 @@
 			--cover-block-background-image: var(--background-image-lg);
 		}
 	}
+}
 
-	&__inner-container {
-		width: 100% !important;
-		max-width: var(--content-max-width, var(--breakpoint-xl));
-		margin-right: auto;
-		margin-left: auto;
-
-		.content-sidebar & {
-			margin-right: 0;
-		}
-
-		.sidebar-content & {
-			margin-left: 0;
-		}
-	}
+.wp-block-cover__inner-container {
+	width: 100% !important;
+	max-width: var(--content-max-width, var(--breakpoint-xl));
+	margin-right: auto;
+	margin-left: auto;
 }
 
 .wp-cover-block__image {
@@ -63,4 +55,9 @@
 	height: 100%;
 	object-fit: cover;
 	object-position: var(--object-position, 50%);
+}
+
+.has-light-background .wp-block-cover__inner-container {
+	--body-color: var(--color-body);
+	--heading-color: var(--color-heading);
 }

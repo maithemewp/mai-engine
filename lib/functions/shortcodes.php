@@ -137,3 +137,35 @@ function mai_menu_shortcode( $atts ) {
 
 	return mai_get_menu( $atts['id'], $atts );
 }
+
+add_shortcode( 'mai_avatar', 'mai_avatar_shortcode' );
+/**
+ * Display an author avatar.
+ *
+ * @since 2.7.0
+ *
+ * @return string
+ */
+function mai_avatar_shortcode( $atts ) {
+	$atts = shortcode_atts(
+		mai_get_avatar_default_args(),
+		$atts,
+		'mai_avatar'
+	);
+
+	return mai_get_avatar( $atts );
+}
+
+add_shortcode( 'mai_cart_total', 'mai_cart_total_shortcode' );
+/**
+ * Display the cart total.
+ *
+ * @uses WooCommerce
+ *
+ * @since 2.7.0
+ *
+ * @return string
+ */
+function mai_cart_total_shortcode() {
+	return mai_get_cart_total();
+}

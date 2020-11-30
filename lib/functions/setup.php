@@ -120,7 +120,8 @@ function mai_setup() {
 	// Add widget areas.
 	array_walk(
 		$widget_areas['add'],
-		function( $widget_area ) {
+		function( $widget_area, $id ) {
+			$widget_area['id'] = $id;
 			genesis_register_widget_area( $widget_area );
 		}
 	);

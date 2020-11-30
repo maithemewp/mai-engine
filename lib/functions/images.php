@@ -45,6 +45,20 @@ function mai_get_image_aspect_ratio( $image_size ) {
 }
 
 /**
+ * Gets an image width by size name.
+ *
+ * @since 2.7.0
+ *
+ * @param string $image_size The image size name.
+ *
+ * @return string
+ */
+function mai_get_image_width( $image_size ) {
+	$sizes = mai_get_available_image_sizes();
+	return isset( $sizes[ $image_size ]['width'] ) ? $sizes[ $image_size ]['width'] : 0;
+}
+
+/**
  * Get a combined list of default and custom registered image sizes.
  *
  * Originally taken from CMB2. Static variable added here.
