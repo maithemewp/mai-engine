@@ -1,3 +1,7 @@
+:target {
+	scroll-margin-top: var(--scroll-margin-top);
+}
+
 .clear, // WooCommerce and likely other plugins.
 .clearfix {
 	clear: both;
@@ -300,10 +304,6 @@
 		display: none;
 		visibility: hidden;
 	}
-}
-
-[id] {
-	scroll-margin-top: var(--scroll-margin-top);
 }
 
 .has-sticky-header {

@@ -1,6 +1,6 @@
 ( function() {
-	let root           = document.documentElement;
-	let scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+	var root           = document.documentElement;
+	var scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
 
 	root.style.setProperty( '--scrollbar-width', scrollBarWidth + 'px' );
 } )();
