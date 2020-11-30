@@ -64,7 +64,7 @@ add_filter( 'genesis_markup_site-header_close', 'mai_header_spacer', 10, 2 );
 /**
  * Add header spacer element.
  *
- * @since TBD
+ * @since 2.7.0
  *
  * @param string $close HTML tag being processed by the API.
  * @param array  $args  Array with markup arguments.

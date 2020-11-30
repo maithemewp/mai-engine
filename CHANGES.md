@@ -1,5 +1,26 @@
 # Changelog
 
+## 2.7.0 (11/30/20)
+* Added: New `cart_total="true"` parameter for `[mai_icon]` shortcode to display current cart total over an icon (great for menu items).
+* Added: New `[mai_cart_total]` shortcode to display current cart total.
+* Added: New `[mai_avatar]` shortcode for use in Header/Footer meta fields on single/archive content or in Mai Grid blocks.
+* Added: Better default styling for WooCommerce reviews.
+* Added: Latest icons from Font Awesome Pro.
+* Changed: Widget Areas config syntax now uses id for the array key.
+* Changed: Logo spacing value output now output separate properties.
+* Changed: Much more thorough and performant header JS.
+* Changed: Header/logo shrink animation is now faster when scrolling back to top.
+* Fixed: Header jank when shrinking/scrolling in some instances.
+* Fixed: Bold font weight not loading or displaying correctly in some instances.
+* Fixed: AMP menu not displaying at all, or without styling in some instances.
+* Fixed: WooCommerce star ratings not displaying correctly.
+* Fixed: Error when using spacing or content width settings on a block without content.
+* Fixed: More thorough handling of has-light-background helper class.
+* Fixed: Body min-height now accounts for admin bar.
+* Fixed: Error with first/last menu item class when the first or last item has child menu items.
+* Fixed: Cover block inner content aligning incorrectly on layouts with a sidebar.
+* Fixed: Menu hover colors when using a dark, transparent header.
+
 ## 2.6.3.1 (11/13/20)
 * Fixed: Force update to show.
 

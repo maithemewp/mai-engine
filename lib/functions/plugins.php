@@ -148,7 +148,7 @@ add_filter( 'woocommerce_cart_item_remove_link', 'mai_woocommerce_cart_item_remo
 /**
  * Replaces cart item remove link x with an svg.
  *
- * @since TBD
+ * @since 2.7.0
  *
  * @return string
  */
@@ -344,7 +344,7 @@ function mai_require_genesis_connect( $plugins ) {
 /**
  * Ajax update cart contents total.
  *
- * @since TBD
+ * @since 2.7.0
  *
  * @param array $fragments The existing fragment elements to update.
  *
@@ -359,7 +359,7 @@ function mai_cart_total_fragment( $fragments ) {
 /**
  * Gets a cart total that is ajax updated when new products are added to cart.
  *
- * @since TBD
+ * @since 2.7.0
  *
  * @return string
  */
