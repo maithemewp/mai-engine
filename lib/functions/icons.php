@@ -13,7 +13,7 @@
 defined( 'ABSPATH' ) || die;
 
 /**
- * Description of expected behavior.
+ * Gets an icon.
  *
  * @since 0.1.0
  *
@@ -22,10 +22,6 @@ defined( 'ABSPATH' ) || die;
  * @return null|string
  */
 function mai_get_icon( $args ) {
-	static $id = 0;
-
-	$id++;
-
 	$args = shortcode_atts(
 		mai_get_icon_default_args(),
 		$args,
@@ -44,7 +40,7 @@ function mai_get_icon( $args ) {
 	}
 
 	// Build classes.
-	$class = sprintf( 'mai-icon mai-icon-%s', $id );
+	$class = sprintf( 'mai-icon mai-icon-%s', $args['icon'] );
 
 	// Add custom classes.
 	if ( ! empty( $args['class'] ) ) {
