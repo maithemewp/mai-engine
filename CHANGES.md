@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.7.1 (12/1/20)
+* Fixed: Removed PHP 7.3+ function.
+
 ## 2.7.0 (11/30/20)
 * Added: New `cart_total="true"` parameter for `[mai_icon]` shortcode to display current cart total over an icon (great for menu items).
 * Added: New `[mai_cart_total]` shortcode to display current cart total.

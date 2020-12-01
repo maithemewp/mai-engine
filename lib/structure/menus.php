@@ -231,8 +231,9 @@ function mai_first_last_menu_items( $items ) {
 			$top_level[ $index ] = $item;
 		}
 		if ( $top_level ) {
-			$items[ array_key_first( $top_level ) ]->classes[] = 'menu-item-first';
-			$items[ array_key_last( $top_level ) ]->classes[]  = 'menu-item-last';
+			$keys = array_keys( $top_level );
+			$items[ reset( $keys ) ]->classes[] = 'menu-item-first';
+			$items[ end( $keys ) ]->classes[]  = 'menu-item-last';
 		}
 	}
 
