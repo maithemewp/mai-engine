@@ -148,23 +148,23 @@ h6.has-background {
 
 .entry-single {
 
-	.entry-meta.before-content,
-	h1.entry-title {
-		text-align: center;
-	}
-
 	.entry-meta.before-content {
+		--entry-meta-justify-content: center;
 		margin-bottom: var(--spacing-sm);
 	}
 
 	h1.entry-title {
 		margin-bottom: var(--spacing-xxl);
+		text-align: center;
 	}
 }
 
 .entries-archive.has-image-full {
 
-	.entry-meta.before-content,
+	.entry-meta.before-content {
+		--entry-meta-justify-content: center;
+	}
+
 	.entry-title {
 		text-align: center;
 	}
