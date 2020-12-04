@@ -1,8 +1,3 @@
-.entry-terms {
-	display: block;
-	flex: 1 1 100%;
-}
-
 .entry-meta {
 	display: flex;
 	flex-wrap: wrap;
@@ -14,8 +9,13 @@
 	&:last-child {
 		margin: 0;
 	}
+}
 
-	> *:not(:first-child) {
-		margin-left: var(--entry-meta-gap, var(--spacing-xxxs));
-	}
+.entry-meta-before-content > *:not(:first-child) {
+	margin-left: var(--entry-meta-gap, var(--spacing-xxxs));
+}
+
+.entry-terms {
+	display: block;
+	flex: 1 1 100%;
 }
