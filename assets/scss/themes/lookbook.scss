@@ -86,7 +86,7 @@
 	text-transform: uppercase;
 }
 
-.entry-meta.after-content {
+.entry-meta-after-content {
 	margin-top: 2em;
 	padding-top: 2em;
 	font-size: var(--font-size-base);
@@ -110,8 +110,8 @@
 .entry-single:not(.type-page) {
 
 	h1.entry-title,
-	.entry-meta.before-content,
-	.entry-meta.after-content,
+	.entry-meta-before-content,
+	.entry-meta-after-content,
 	.entry-excerpt-single {
 		text-align: center;
 	}
@@ -121,8 +121,8 @@
 .entries-archive.has-image-full {
 
 	.entry-title,
-	.entry-meta.before-content,
-	.entry-meta.after-content,
+	.entry-meta-before-content,
+	.entry-meta-after-content,
 	.entry-excerpt {
 		text-align: center;
 	}
