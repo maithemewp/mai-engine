@@ -34,6 +34,16 @@ p {
 	font-size: var(--font-size-md);
 }
 
+.has-dark-background {
+	--heading-color: var(--color-white);
+	--body-color: var(--color-white);
+}
+
+.has-light-background {
+	--heading-color: var(--color-heading);
+	--body-color: var(--color-body);
+}
+
 .alignfull {
 	width: 100%;
 	max-width: 100%;

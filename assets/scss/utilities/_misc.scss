@@ -8,37 +8,40 @@
 	--input-width: auto;
 }
 
-// Start crazy CSS to override WP core.
+// Start crazy CSS to override block-library styles.
 // This is really only here for nested cover/group blocks.
+// .has-light-background .has-dark-background {
+.has-dark-background {
+	--heading-color: var(--color-white);
+	--body-color: var(--color-white);
+}
+
+// .has-dark-background .has-light-background {
+.has-light-background {
+	--heading-color: var(--color-heading);
+	--body-color: var(--color-body);
+}
 
 .has-dark-background h1:not(.has-text-color),
 .has-dark-background h2:not(.has-text-color),
 .has-dark-background h3:not(.has-text-color),
 .has-dark-background h4:not(.has-text-color),
-.has-dark-background h5:not(.has-text-color) {
-	--heading-color: var(--color-white);
-	color: var(--heading-color);
-}
-
-.has-dark-background p:not(.has-text-color) {
-	--body-color: var(--color-white);
-	color: var(--body-color);
-}
-
+.has-dark-background h5:not(.has-text-color),
 .has-light-background h1:not(.has-text-color),
 .has-light-background h2:not(.has-text-color),
 .has-light-background h3:not(.has-text-color),
 .has-light-background h4:not(.has-text-color),
 .has-light-background h5:not(.has-text-color),
 .has-light-background h6:not(.has-text-color) {
-	color: var(--heading-color, var(--color-heading)); // Override block-library styles.
+	color: var(--heading-color);
 }
 
+.has-dark-background p:not(.has-text-color),
 .has-light-background p:not(.has-text-color) {
-	color: var(--body-color, var(--color-body)); // Override block-library styles.
+	color: var(--body-color);
 }
 
-// End crazy CSS to override WP core.
+// End crazy CSS to override block-library styles.
 
 .has-border {
 	border: var(--border);
