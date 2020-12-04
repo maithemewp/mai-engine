@@ -494,7 +494,7 @@ function mai_get_page_header_description() {
 			$description = apply_filters( 'genesis_term_intro_text_output', $description ? $description : '' );
 		}
 	} elseif ( is_search() ) {
-		$description = apply_filters( 'genesis_search_title_text', esc_html__( 'Search results for: ', 'mai-engine' ) . get_search_query() );
+		$description = '';
 
 	} elseif ( is_author() ) {
 		$description = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
