@@ -124,6 +124,22 @@ function mai_add_breakpoint_custom_properties( $css ) {
 	return $css;
 }
 
+add_filter( 'kirki_mai-engine_styles', 'mai_add_title_area_custom_properties' );
+/**
+ * Outputs title area custom properties.
+ *
+ * @since TBD
+ *
+ * @param array $css Kirki CSS.
+ *
+ * @return array
+ */
+function mai_add_title_area_custom_properties( $css ) {
+	$css['global'][':root']['--header-shrink-offset'] = mai_get_unit_value( mai_get_header_shrink_offset() );
+
+	return $css;
+}
+
 add_filter( 'kirki_enqueue_google_fonts', 'mai_add_body_font_variants', 99 );
 /**
  * Loads italic and bold variations of body font family.
