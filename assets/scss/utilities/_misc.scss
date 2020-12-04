@@ -8,6 +8,22 @@
 	--input-width: auto;
 }
 
+// Start crazy CSS to override WP core.
+
+.has-dark-background h1:not(.has-text-color),
+.has-dark-background h2:not(.has-text-color),
+.has-dark-background h3:not(.has-text-color),
+.has-dark-background h4:not(.has-text-color),
+.has-dark-background h5:not(.has-text-color) {
+	--heading-color: var(--color-white);
+	color: var(--heading-color);
+}
+
+.has-dark-background p:not(.has-text-color) {
+	--body-color: var(--color-white);
+	color: var(--body-color);
+}
+
 .has-light-background h1:not(.has-text-color),
 .has-light-background h2:not(.has-text-color),
 .has-light-background h3:not(.has-text-color),
@@ -20,6 +36,8 @@
 .has-light-background p:not(.has-text-color) {
 	color: var(--body-color, var(--color-body)); // Override block-library styles.
 }
+
+// End crazy CSS to override WP core.
 
 .has-border {
 	border: var(--border);
