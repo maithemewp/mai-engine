@@ -115,7 +115,7 @@ function mai_render_admin_menu_page() {
 				'link'  => 'https://bizbudding.com/products/mai-effects/',
 				'image' => sprintf( '%s/mai-effects.jpg', $image_base ),
 				'title' => __( 'Mai Effects', 'mai-engine' ),
-				'desc'  => __( 'Coming soon! Add stand-out fadein animation effects, once only possible with developer intervention! Make your page header and sections pop.', 'mai-engine' ),
+				'desc'  => __( '<strong>Coming soon for v2!</strong><br />Add stand-out fadein animation effects, once only possible with developer intervention! Make your page header and sections pop.', 'mai-engine' ),
 				'hide'  => class_exists( 'Mai_Effects' ),
 			],
 			[
@@ -135,7 +135,7 @@ function mai_render_admin_menu_page() {
 				}
 
 				echo '<li class="mai-plugin">';
-					echo '<a class="mai-plugin-image-link" href="%s">';
+					printf( '<a class="mai-plugin-image-link" href="%s">', $plugin['link'] );
 						printf( '<img class="mai-plugin-image" src="%s" alt="%s %s">', $plugin['image'], $plugin['title'], __( 'product image', 'mai-theme' ) );
 					echo '</a>';
 					echo '<div class="mai-plugin-content">';
