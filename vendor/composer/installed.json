@@ -12,17 +12,17 @@
     },
     {
         "name": "aristath/kirki",
-        "version": "3.1.5",
-        "version_normalized": "3.1.5.0",
+        "version": "3.1.6",
+        "version_normalized": "3.1.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/kirki-framework/kirki.git",
-            "reference": "e26eb051a0e6f89e6f54efbb3873e53debcab626"
+            "reference": "b678315bc09f1fd782e809dd5b2ce0647a6770ae"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/kirki-framework/kirki/zipball/e26eb051a0e6f89e6f54efbb3873e53debcab626",
-            "reference": "e26eb051a0e6f89e6f54efbb3873e53debcab626",
+            "url": "https://api.github.com/repos/kirki-framework/kirki/zipball/b678315bc09f1fd782e809dd5b2ce0647a6770ae",
+            "reference": "b678315bc09f1fd782e809dd5b2ce0647a6770ae",
             "shasum": ""
         },
         "require": {
@@ -37,7 +37,7 @@
             "phpunit/phpunit": "*",
             "wp-coding-standards/wpcs": "*"
         },
-        "time": "2020-08-10T09:19:59+00:00",
+        "time": "2020-12-07T12:09:11+00:00",
         "type": "library",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -61,6 +61,16 @@
         "keywords": [
             "customizer",
             "wordpress"
+        ],
+        "funding": [
+            {
+                "url": "https://aristath.github.io/donate",
+                "type": "custom"
+            },
+            {
+                "url": "https://github.com/aristath",
+                "type": "github"
+            }
         ]
     },
     {
