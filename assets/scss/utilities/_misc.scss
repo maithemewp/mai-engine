@@ -10,13 +10,12 @@
 
 // Start crazy CSS to override block-library styles.
 // This is really only here for nested cover/group blocks.
-// .has-light-background .has-dark-background {
+
 .has-dark-background {
 	--heading-color: var(--color-white);
 	--body-color: var(--color-white);
 }
 
-// .has-dark-background .has-light-background {
 .has-light-background {
 	--heading-color: var(--color-heading);
 	--body-color: var(--color-body);
