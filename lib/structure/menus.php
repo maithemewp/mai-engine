@@ -205,8 +205,9 @@ add_filter( 'nav_menu_link_attributes', 'mai_nav_link_atts' );
  * @return array
  */
 function mai_nav_link_atts( $atts ) {
-	$atts['class']  = 'menu-item-link';
+	$atts['class'] .= ' menu-item-link';
 	$atts['class'] .= $atts['aria-current'] ? ' menu-item-link-current' : '';
+	$atts['class']  = trim( $atts['class'] );
 
 	return $atts;
 }
