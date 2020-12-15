@@ -142,7 +142,7 @@ function mai_woocommerce_product_single_class( $classes ) {
  *
  * @return bool
  */
-add_filter( 'woocommerce_price_trim_zeros', '__return_true' );
+add_filter( 'woocommerce_price_trim_zeros', '__return_true', 8 );
 
 add_filter( 'woocommerce_cart_item_remove_link', 'mai_woocommerce_cart_item_remove_icon' );
 /**
