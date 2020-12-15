@@ -453,9 +453,47 @@ body.post-type-wp_template_part .editor-post-title__block:not(.is-focus-mode).is
 /**
  * Add-ons Page.
  */
+
+.mai-plugin-pack-cta {
+	padding: 36px;
+	color: #334b61;
+	font-size: 1.625em;
+	text-align: center;
+	background-color: #bcda83;
+}
+
+.mai-plugin-pack-cta svg {
+	display: block;
+	width: 36px;
+	margin: 0 auto 24px;
+	fill: currentColor;
+}
+
+.mai-plugin-pack-cta p {
+	font-size: 17px;
+}
+
+.mai-plugin-pack-cta-button {
+	padding: 10px 24px !important;
+	color: white !important;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	background: #334b61 !important;
+	border: 0 !important;
+}
+
+.mai-plugin-pack-cta-inner {
+	max-width: 600px;
+	margin: auto;
+}
+
+.mai-plugin-pack-cta-inner > * {
+	color: currentColor;
+}
+
 .mai-plugins {
 	display: grid;
-	grid-gap: 36px;
+	grid-gap: 24px;
 	grid-template-columns: repeat(var(--mai-plugin-columns, 1), 1fr);
 }
 
@@ -510,6 +548,7 @@ body.post-type-wp_template_part .editor-post-title__block:not(.is-focus-mode).is
 }
 
 .mai-plugin-title-link {
+	color: #334b61;
 	font-size: 20px;
 	text-decoration: none;
 }
@@ -522,4 +561,19 @@ body.post-type-wp_template_part .editor-post-title__block:not(.is-focus-mode).is
 
 .mai-plugin-more-link-wrap {
 	margin: auto 0 0;
+}
+
+.mai-plugin-more-link {
+	padding: 6px 18px !important;
+	color: var(--mai-plugin-more-link-color, #334b61) !important;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	background: var(--mai-plugin-more-link-background, #bcda83) !important;
+	border: 0 !important;
+	transition: all 0.3s ease-in-out;
+}
+
+.mai-plugin-more-link:hover,
+.mai-plugin-more-link:focus {
+	--mai-plugin-more-link-background: #a7ce5c;
 }
