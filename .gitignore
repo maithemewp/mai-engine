@@ -22,4 +22,4 @@ vendor/composer/xdebug-handler
 !vendor/wpackagist-plugin
 !vendor/maithemewp
 !vendor/proteusthemes
-
+!vendor/wptrt

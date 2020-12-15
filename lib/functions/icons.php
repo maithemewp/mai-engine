@@ -161,7 +161,7 @@ function mai_get_icon_default_args() {
 }
 
 /**
- * Description of expected behavior.
+ * Gets an svg from assets.
  *
  * @since 0.2.0
  *

@@ -187,6 +187,10 @@ return [
 			'deps'     => [ 'jquery' ],
 			'location' => 'customizer',
 		],
+		'wptrt-customize-section-button' => [
+			'src'      => mai_get_url() . 'vendor/wptrt/customize-section-button/public/js/customize-controls.js',
+			'location' => 'customizer',
+		],
 		'editor'     => [
 			'deps'     => [ 'jquery', 'jquery-ui-sortable', 'wp-blocks', 'wp-dom' ],
 			'location' => 'editor',
@@ -222,6 +226,10 @@ return [
 			'location' => 'admin',
 		],
 		'kirki'                  => [
+			'location' => 'customizer',
+		],
+		'wptrt-customize-section-button' => [
+			'src'      => mai_get_url() . 'vendor/wptrt/customize-section-button/public/css/customize-controls.css',
 			'location' => 'customizer',
 		],
 		'advanced-custom-fields' => [

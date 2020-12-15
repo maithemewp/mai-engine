@@ -312,6 +312,7 @@ function mai_load_files() {
 		'blocks/social-links',
 
 		// Customizer.
+		'customize/plugins',
 		'customize/beta-tester',
 		'customize/colors',
 		'customize/content-archives',
