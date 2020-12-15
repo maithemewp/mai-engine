@@ -173,7 +173,7 @@ function mai_render_admin_menu_page() {
 
 				foreach ( $premium_plugins as $plugin ) {
 					if ( $plugin['hide'] ) {
-						// continue;
+						continue;
 					}
 
 					mai_do_plugin_list_item_html( $plugin );
@@ -189,7 +189,7 @@ function mai_render_admin_menu_page() {
 
 				foreach ( $free_plugins as $plugin ) {
 					if ( $plugin['hide'] ) {
-						// continue;
+						continue;
 					}
 
 					mai_do_plugin_list_item_html( $plugin );
@@ -201,9 +201,19 @@ function mai_render_admin_menu_page() {
 	echo '</div>';
 }
 
+/**
+ * Displays the plugin list item HTML.
+ *
+ * @access private
+ * @since TBD
+ *
+ * @param array $plugin The plugin data.
+ *
+ * @return void
+ */
 function mai_do_plugin_list_item_html( $plugin ) {
 	echo '<li class="mai-plugin">';
-		printf( '<a class="mai-plugin-image-link" href="%s">', $plugin['link'] );
+		printf( '<a class="mai-plugin-image-link" href="%s" target="_blank" rel="noopener nofollow">', $plugin['link'] );
 			printf( '<img class="mai-plugin-image" src="%s" alt="%s %s">', $plugin['image'], $plugin['title'], __( 'product image', 'mai-theme' ) );
 		echo '</a>';
 		echo '<div class="mai-plugin-content">';
