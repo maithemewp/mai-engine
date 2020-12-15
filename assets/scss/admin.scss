@@ -114,34 +114,6 @@
 }
 
 /**
- * Admin menu icon.
- */
-li.toplevel_page_mai-theme {
-
-	.dashicons-before {
-		background-image: url(../svg/mai-icon-white.svg);
-		background-repeat: no-repeat;
-		background-position: center;
-		background-size: 18px;
-		opacity: 0.6;
-	}
-
-	.opensub &,
-	&:hover,
-	&:focus {
-
-		.dashicons-before {
-			background-image: url(../svg/mai-icon-hover.svg);
-			opacity: 1;
-		}
-	}
-
-	img {
-		display: none;
-	}
-}
-
-/**
  * Block layout settings.
  */
 

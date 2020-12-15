@@ -1,0 +1,7 @@
+<svg width="600px" height="600px" viewBox="0 0 600 600" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<g stroke="none" fill="none">
+		<g fill="currentColor" fill-rule="nonzero">
+			<path d="M300,0 C465.685,0 600,134.315 600,300 C600,465.686 465.685,600 300,600 C134.314,600 0,465.686 0,300 C0,134.315 134.314,0 300,0 Z M460,140 L300,300 L140,140 L140,460 L460,460 L460,140 Z" id="mark"></path>
+		</g>
+	</g>
+</svg>
