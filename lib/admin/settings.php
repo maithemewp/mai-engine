@@ -94,7 +94,7 @@ function mai_render_admin_menu_page() {
 				</svg>
 				<h3><?php echo __( 'Save over $240 on all plugins!', 'mai-engine' ); ?></h3>
 				<p><?php echo __( 'Extend the functionality of your Mai Theme powered website with the Mai Theme Plugin Pack. Designed to work seamlessly with Mai Theme so you can launch and grow your website quickly. <strong><em>Valid on unlimited sites.</strong></em>', 'mai-engine' ); ?></p>
-				<a class="button mai-plugin-pack-cta-button" href="https://bizbudding.com/products/mai-theme-plugin-pack/?utm_source=engine&utm_medium=dashboard&utm_campaign=mt-plugins"><?php echo __( 'View The Plugin Pack', 'mai-engine' ); ?></a>
+				<a class="button mai-plugin-pack-cta-button" href="https://bizbudding.com/products/mai-theme-plugin-pack/?utm_source=engine&utm_medium=dashboard&utm_campaign=mai-theme-plugin-pack"><?php echo __( 'View The Plugin Pack', 'mai-engine' ); ?></a>
 			</div>
 		</div>
 		<?php
@@ -102,42 +102,42 @@ function mai_render_admin_menu_page() {
 		$image_base      = sprintf( '%s/assets/img', untrailingslashit( mai_get_url() ) );
 		$premium_plugins = [
 			[
-				'link'  => 'https://bizbudding.com/products/mai-archive-pages/?utm_source=engine&utm_medium=dashboard&utm_campaign=mt-plugins',
+				'link'  => 'https://bizbudding.com/products/mai-archive-pages/?utm_source=engine&utm_medium=dashboard&utm_campaign=mai-archive-pages',
 				'image' => sprintf( '%s/mai-archive-pages.jpg', $image_base ),
 				'title' => __( 'Mai Archive Pages', 'mai-engine' ),
 				'desc'  => __( 'Build robust and SEO-friendly archive page intro content with blocks.', 'mai-engine' ),
 				'hide'  => class_exists( 'Mai_Archive_Pages_Plugin' ),
 			],
 			[
-				'link'  => 'https://bizbudding.com/products/mai-favorites/?utm_source=engine&utm_medium=dashboard&utm_campaign=mt-plugins',
+				'link'  => 'https://bizbudding.com/products/mai-favorites/?utm_source=engine&utm_medium=dashboard&utm_campaign=mai-favorites',
 				'image' => sprintf( '%s/mai-favorites.jpg', $image_base ),
 				'title' => __( 'Mai Favorites', 'mai-engine' ),
 				'desc'  => __( 'Easily and beautifully display collections of your favorite external things (affiliate products, recommendations, etc.) with the Mai Post Grid block.', 'mai-engine' ),
 				'hide'  => class_exists( 'Mai_Favorites_Setup' ),
 			],
 			[
-				'link'  => 'https://bizbudding.com/products/mai-testimonials/?utm_source=engine&utm_medium=dashboard&utm_campaign=mt-plugins',
+				'link'  => 'https://bizbudding.com/products/mai-testimonials/?utm_source=engine&utm_medium=dashboard&utm_campaign=mai-testimonials',
 				'image' => sprintf( '%s/mai-testimonials.jpg', $image_base ),
 				'title' => __( 'Mai Testimonials', 'mai-engine' ),
 				'desc'  => __( 'Show off all the great things your customers/clients have to say about you. Manage your testimonials in one place, and easily hide them with the Mai Post Grid block.', 'mai-engine' ),
 				'hide'  => class_exists( 'Mai_Testimonials' ),
 			],
 			[
-				'link'  => 'https://bizbudding.com/products/mai-ads-extra-content/?utm_source=engine&utm_medium=dashboard&utm_campaign=mt-plugins',
+				'link'  => 'https://bizbudding.com/products/mai-ads-extra-content/?utm_source=engine&utm_medium=dashboard&utm_campaign=mai-ads-extra-content',
 				'image' => sprintf( '%s/mai-ads.jpg', $image_base ),
 				'title' => __( 'Mai Ads & Extra Content', 'mai-engine' ),
 				'desc'  => __( 'Boost your sales with display ads or content across a multitude of areas on your site all from one simple-to-manage spot. Pairs perfectly with the lead generation tool, ConvertFlow, for embedding targeted, dynamic CTAs.', 'mai-engine' ),
 				'hide'  => class_exists( 'Mai_AEC' ),
 			],
 			[
-				'link'  => 'https://bizbudding.com/products/mai-effects/?utm_source=engine&utm_medium=dashboard&utm_campaign=mt-plugins',
+				'link'  => 'https://bizbudding.com/products/mai-effects/?utm_source=engine&utm_medium=dashboard&utm_campaign=mai-effects',
 				'image' => sprintf( '%s/mai-effects.jpg', $image_base ),
 				'title' => __( 'Mai Effects', 'mai-engine' ),
 				'desc'  => __( '<strong>Coming soon for v2!</strong><br />Add stand-out fadein animation effects, once only possible with developer intervention! Make your page header and sections pop.', 'mai-engine' ),
 				'hide'  => class_exists( 'Mai_Effects' ),
 			],
 			// [
-			// 	'link'  => 'https://bizbudding.com/products/mai-accordion/?utm_source=engine&utm_medium=dashboard&utm_campaign=mt-plugins',
+			// 	'link'  => 'https://bizbudding.com/products/mai-accordion/?utm_source=engine&utm_medium=dashboard&utm_campaign=mai-accordion',
 			// 	'image' => sprintf( '%s/mai-accordion.jpg', $image_base ),
 			// 	'title' => __( 'Mai Accordion', 'mai-engine' ),
 			// 	'desc'  => __( 'Create custom accordion block for content toggles, transcripts, FAQ’s, and more. Super fast and easy to use. No Javascript means no slowing down your pages.', 'mai-engine' ),
@@ -146,14 +146,14 @@ function mai_render_admin_menu_page() {
 		];
 		$free_plugins = [
 			[
-				'link'  => 'https://bizbudding.com/products/mai-display-taxonomy/?utm_source=engine&utm_medium=dashboard&utm_campaign=mt-plugins',
+				'link'  => 'https://bizbudding.com/products/mai-display-taxonomy/?utm_source=engine&utm_medium=dashboard&utm_campaign=mai-display-taxonomy',
 				'image' => sprintf( '%s/mai-display-taxonomy.jpg', $image_base ),
 				'title' => __( 'Mai Display Taxonomy', 'mai-engine' ),
 				'desc'  => __( 'A utility plugin that creates a private, backend-only “Display” taxonomy for use with the Mai Post Grid block to have total control over your grid content in various areas of your website.', 'mai-engine' ),
 				'hide'  => class_exists( 'Mai_Display_Taxonomy' ),
 			],
 			[
-				'link'  => 'https://bizbudding.com/products/mai-config-generator/?utm_source=engine&utm_medium=dashboard&utm_campaign=mt-plugins',
+				'link'  => 'https://bizbudding.com/products/mai-config-generator/?utm_source=engine&utm_medium=dashboard&utm_campaign=mai-config-generator',
 				'image' => sprintf( '%s/mai-config-generator.jpg', $image_base ),
 				'title' => __( 'Mai Config Generator', 'mai-engine' ),
 				'desc'  => __( 'A developer-focused plugin to generate config.php content for setting defaults in a custom Mai Theme. If you install your custom theme, or site managers change any of the Customizer settings, the defaults will now come from this config.', 'mai-engine' ),
