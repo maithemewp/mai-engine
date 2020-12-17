@@ -487,7 +487,7 @@ class Mai_Grid {
 			case 'id':
 				$query_args['include'] = $this->args['include'];
 				$query_args['orderby'] = 'include';
-				$query_args['order']   = 'DESC';
+				$query_args['order']   = 'ASC';
 			break;
 			case 'parent':
 				if ( $this->args['current_children'] ) {
