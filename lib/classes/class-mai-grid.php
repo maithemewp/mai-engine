@@ -418,7 +418,7 @@ class Mai_Grid {
 		}
 
 		// Orderby.
-		if ( $this->args['orderby'] && 'id' !== $this->args['query_by'] ) {
+		if ( $this->args['orderby'] && ( 'id' !== $this->args['query_by'] ) ) {
 			$query_args['orderby'] = $this->args['orderby'];
 
 			if ( 'meta_value_num' === $this->args['orderby'] ) {
@@ -504,17 +504,17 @@ class Mai_Grid {
 		}
 
 		// Orderby.
-		if ( $this->args['orderby'] && 'id' !== $this->args['query_by'] ) {
+		if ( $this->args['orderby'] && ( 'id' !== $this->args['query_by'] ) ) {
 			$query_args['orderby'] = $this->args['orderby'];
 		}
 
 		// Order.
-		if ( $this->args['order'] && 'id' !== $this->args['query_by'] ) {
+		if ( $this->args['order'] && ( 'id' !== $this->args['query_by'] ) ) {
 			$query_args['order'] = $this->args['order'];
 		}
 
 		// Exclude.
-		if ( $this->args['exclude'] && 'id' !== $this->args['query_by'] ) {
+		if ( $this->args['exclude'] && ( 'id' !== $this->args['query_by'] ) ) {
 			$query_args['exclude'] = $this->args['exclude'];
 		}
 
