@@ -52,8 +52,7 @@
 	}
 
 	&.header-stuck {
-		// Need px value for transition.
-		--header-spacer-height: calc((var(--title-area-padding-desktop, 0px) - var(--title-area-padding-mobile, 0px)) * 2);
+		--header-spacer-height: var(--header-shrink-offset);
 
 		@include mq(sm) {
 			--site-header-box-shadow: 0 0 24px rgba(0, 0, 0, 0.07);

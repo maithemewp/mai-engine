@@ -9,7 +9,6 @@
 
 html {
 	font-size: 100%; // 16px browser default.
-	scroll-behavior: var(--scroll-behavior, smooth);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
@@ -32,6 +31,16 @@ body {
 
 p {
 	font-size: var(--font-size-md);
+}
+
+.has-dark-background {
+	--heading-color: var(--color-white);
+	--body-color: var(--color-white);
+}
+
+.has-light-background {
+	--heading-color: var(--color-heading);
+	--body-color: var(--color-body);
 }
 
 .alignfull {

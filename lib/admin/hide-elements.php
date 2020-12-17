@@ -104,9 +104,11 @@ function mai_load_hide_elements_field( $field ) {
 	$field['choices']['after_header']      = __( 'After Header', 'mai-engine' );
 	$field['choices']['page_header']       = __( 'Page Header', 'mai-engine' );
 	$field['choices']['breadcrumbs']       = __( 'Breadcrumbs', 'mai-engine' );
-	$field['choices']['entry_title']       = __( 'Entry Title', 'mai-engine' );
-	$field['choices']['entry_excerpt']     = __( 'Entry Excerpt', 'mai-engine' );
 	$field['choices']['featured_image']    = __( 'Featured Image', 'mai-engine' );
+	$field['choices']['entry_title']       = __( 'Entry Title', 'mai-engine' );
+	$field['choices']['header_meta']       = __( 'Header Meta', 'mai-engine' );
+	$field['choices']['entry_excerpt']     = __( 'Entry Excerpt', 'mai-engine' );
+	$field['choices']['footer_meta']       = __( 'Footer Meta', 'mai-engine' );
 	$field['choices']['after_entry']       = __( 'After Entry', 'mai-engine' );
 	$field['choices']['before_footer']     = __( 'Before Footer', 'mai-engine' );
 	$field['choices']['footer']            = __( 'Footer', 'mai-engine' );

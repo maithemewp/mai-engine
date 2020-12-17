@@ -38,7 +38,6 @@ function mai_render_group_block( $block_content, $block ) {
 	}
 
 	if ( $light_or_dark ) {
-
 		$dom = mai_get_dom_document( $block_content );
 
 		/**

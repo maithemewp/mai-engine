@@ -1,5 +1,26 @@
 # Changelog
 
+## 2.8.0 (12/17/20)
+* Added: Header and footer meta options added to Hide Elements metabox.
+* Added: PHP filter for `mai_adjacent_entry_nav_taxonomy` to allow adjacent entry nav to show previous/next post in same taxonomy.
+* Added: Dashboard menu item to show what Mai Plugins are available.
+* Added: More Google fonts available via Kirki update.
+* Added: Mai Plugins button link in Customizer.
+* Changed: Entry meta before/after-content classes now more element specific.
+* Changed: WooCommerce trim zeros filter runs early now, so filters on the default priority override our default.
+* Changed: Dashboard menu icon SVG now more efficient and no longer flashes on hover.
+* Changed: Updated pot file for translations.
+* Fixed: Shrink header now buttery smooth even when logo shrinks on scroll.
+* Fixed: Duplicate search results text in page header.
+* Fixed: Mai Post Grid get entries by choice not allowing more than 12 entries.
+* Fixed: Mai Term Grid get entries by choice reversing display order.
+* Fixed: More thorough has-light/dark-background color CSS.
+* Fixed: WooCommerce zoom magnifying glass still showing behind our custom icon.
+* Fixed: No longer override menu-item-link classes being filtered by other plugins.
+* Fixed: Full align blocks in WooCommerce product descriptions being cut off.
+* Fixed: Error when WP_Widget_Recent_Comments is no longer available when a plugin (Perfmatters) or custom code removes it altogether.
+* Fixed: Anchor links not going to correct location due to conflict with scroll-behavoir CSS.
+
 ## 2.7.1 (12/1/20)
 * Fixed: Removed PHP 7.3+ function.
 

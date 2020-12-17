@@ -29,7 +29,6 @@ const enableMarginSettingsBlocks = [
 	'core/group',
 ];
 
-
 /**
  * Add layout control attributes to block.
  *
@@ -743,6 +742,7 @@ addFilter( 'editor.BlockEdit', 'mai-engine/with-margin-settings', withMarginCont
 /**********************************
  * Block attributes (editor only) *
  **********************************/
+
 
 const addCustomAttributes = createHigherOrderComponent( ( BlockListBlock ) => {
 	return ( props ) => {

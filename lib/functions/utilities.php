@@ -718,7 +718,7 @@ function mai_get_processed_content( $content ) {
 }
 
 /**
- * Get the default read more text.
+ * Gets the default read more text.
  *
  * This filter is run before any custom read more text is added via Customizer settings.
  * If you want to filter after that, use `genesis_markup_entry-more-link_content` filter.
@@ -730,6 +730,55 @@ function mai_get_processed_content( $content ) {
  */
 function mai_get_read_more_text() {
 	return esc_html( apply_filters( 'mai_read_more_text', mai_get_config( 'settings' )['content-archives']['more_link_text'] ) );
+}
+
+/**
+ * Gets the header shrink offset.
+ *
+ * @since 2.8.0
+ *
+ * @return int
+ */
+function mai_get_header_shrink_offset() {
+	static $offset = null;
+
+	if ( ! is_null( $offset ) ) {
+		return $offset;
+	}
+
+	$offset             = 0;
+	$config             = mai_get_config( 'settings' )['logo'];
+	$customizer_spacing = mai_get_option( 'logo-spacing', $config['spacing'] );
+	$customizer_spacing = array_map( 'intval', $customizer_spacing );
+	$desktop_spacing    = $customizer_spacing['desktop'];
+	$shrunk_spacing     = $customizer_spacing['mobile'];
+	$spacing_difference = ceil( ( $desktop_spacing - $shrunk_spacing) * 2 );
+	$logo_id            = get_theme_mod( 'custom_logo' );
+
+	if ( ! $logo_id ) {
+		$offset = $spacing_difference;
+		return $offset;
+	}
+
+	$source = wp_get_attachment_image_src( $logo_id, 'full' );
+
+	if ( ! $source ) {
+		$offset = $spacing_difference;
+		return $offset;
+	}
+
+	$source_width       = $source[1];
+	$source_height      = $source[2];
+	$customizer_widths  = mai_get_option( 'logo-width', $config['width'] );
+	$customizer_widths  = array_map( 'intval', $customizer_widths );
+	$desktop_width      = $customizer_widths['desktop'];
+	$desktop_height     = ( $desktop_width / $source_width ) * $source_height;
+	$shrunk_width       = $customizer_widths['mobile'];
+	$shrunk_height      = ( $shrunk_width / $desktop_width ) * $desktop_height;
+	$height_difference  = ceil( $desktop_height - $shrunk_height );
+	$offset             = $height_difference + $spacing_difference;
+
+	return $offset;
 }
 
 /**
