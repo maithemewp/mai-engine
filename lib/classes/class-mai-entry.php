@@ -1048,6 +1048,10 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_header_meta() {
+		if ( mai_is_element_hidden( 'header_meta', $this->id ) ) {
+			return;
+		}
+
 		// Bail if none.
 		if ( ! isset( $this->args['header_meta'] ) || ! $this->args['header_meta'] ) {
 			return;
@@ -1085,6 +1089,9 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_footer_meta() {
+		if ( mai_is_element_hidden( 'footer_meta', $this->id ) ) {
+			return;
+		}
 
 		// Bail if none.
 		if ( ! isset( $this->args['footer_meta'] ) || ! $this->args['footer_meta'] ) {
