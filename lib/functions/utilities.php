@@ -735,7 +735,7 @@ function mai_get_read_more_text() {
 /**
  * Gets the header shrink offset.
  *
- * @since TBD
+ * @since 2.8.0
  *
  * @return int
  */

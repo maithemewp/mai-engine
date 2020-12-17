@@ -15,7 +15,7 @@ add_action( 'customize_register', 'mai_plugins_customizer_upsell' );
 /**
  * Add upsell for Mai Plugins to customizer settings.
  *
- * @since TBD
+ * @since 2.8.0
  *
  * @return void
  */

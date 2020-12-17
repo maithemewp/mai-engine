@@ -1,6 +1,6 @@
 # Changelog
 
-## TBD ()
+## 2.8.0 (12/17/20)
 * Added: Header and footer meta options added to Hide Elements metabox.
 * Added: PHP filter for `mai_adjacent_entry_nav_taxonomy` to allow adjacent entry nav to show previous/next post in same taxonomy.
 * Added: Dashboard menu item to show what Mai Plugins are available.

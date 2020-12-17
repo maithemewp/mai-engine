@@ -205,7 +205,7 @@ function mai_render_admin_menu_page() {
  * Displays the plugin list item HTML.
  *
  * @access private
- * @since TBD
+ * @since 2.8.0
  *
  * @param array $plugin The plugin data.
  *

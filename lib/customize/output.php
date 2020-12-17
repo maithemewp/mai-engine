@@ -128,7 +128,7 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_title_area_custom_properties' );
 /**
  * Outputs title area custom properties.
  *
- * @since TBD
+ * @since 2.8.0
  *
  * @param array $css Kirki CSS.
  *
