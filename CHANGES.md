@@ -1,6 +1,7 @@
 # Changelog
 
 ## TBD ()
+* Added: Header and footer meta options added to Hide Elements metabox.
 * Added: PHP filter for `mai_adjacent_entry_nav_taxonomy` to allow adjacent entry nav to show previous/next post in same taxonomy.
 * Added: Dashboard menu item to show what Mai Plugins are available.
 * Added: More Google fonts available via Kirki update.
@@ -12,6 +13,7 @@
 * Fixed: Shrink header now buttery smooth even when logo shrinks on scroll.
 * Fixed: Duplicate search results text in page header.
 * Fixed: Mai Post Grid get entries by choice not allowing more than 12 entries.
+* Fixed: Mai Term Grid get entries by choice reversing display order.
 * Fixed: More thorough has-light/dark-background color CSS.
 * Fixed: WooCommerce zoom magnifying glass still showing behind our custom icon.
 * Fixed: No longer override menu-item-link classes being filtered by other plugins.
