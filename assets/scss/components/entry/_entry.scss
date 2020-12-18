@@ -89,13 +89,16 @@
 	margin: calc(var(--row-gap) * -0.5) calc(var(--column-gap) * -0.5);
 
 	--entry-margin: calc(var(--row-gap) / 2) calc(var(--column-gap) / 2);
-	--columns: var(--columns-xs);
 
-	@include mq(sm) {
+	@include mq(false, sm) {
+		--columns: var(--columns-xs);
+	}
+
+	@include mq(sm, md) {
 		--columns: var(--columns-sm);
 	}
 
-	@include mq(md) {
+	@include mq(md, lg) {
 		--columns: var(--columns-md);
 	}
 
