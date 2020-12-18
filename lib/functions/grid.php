@@ -99,7 +99,6 @@ function mai_get_grid_show_choices() {
  * @return array
  */
 function mai_get_breakpoint_columns( $args ) {
-
 	$args = wp_parse_args(
 		$args,
 		[
@@ -138,7 +137,7 @@ function mai_get_breakpoint_columns( $args ) {
 			break;
 			case 3:
 				$columns['md'] = 3;
-				$columns['sm'] = 1;
+				$columns['sm'] = mai_is_type_archive() ? 2 : 1;
 				$columns['xs'] = 1;
 			break;
 			case 2:
