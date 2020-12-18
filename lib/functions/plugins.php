@@ -104,6 +104,49 @@ function mai_woocommerce_breakpoint() {
 	return mai_get_unit_value( mai_get_breakpoint( $breakpoint ), 'px' );
 }
 
+add_filter( 'woocommerce_product_loop_start', 'mai_product_loop_start_columns' );
+/**
+ * Adds column count as inline custom properties.
+ *
+ * @since TBD
+ *
+ * @param array $html The existing loop start HTML.
+ *
+ * @return string
+ */
+function mai_product_loop_start_columns( $html ) {
+
+	$count = wc_get_loop_prop( 'columns' );
+
+	if ( ! is_numeric( $count ) ) {
+		return $html;
+	}
+
+	$dom   = mai_get_dom_document( $html );
+	$first = mai_get_dom_first_child( $dom );
+
+	if ( ! $first ) {
+		return $html;
+	}
+
+	// Get the columns breakpoint array.
+	$columns = mai_get_breakpoint_columns(
+		[
+			'columns' => $count,
+		]
+	);
+
+	$style  = $first->getAttribute( 'style' );
+	$style .= sprintf( '--columns-xs:%s;', $columns['xs'] );
+	$style .= sprintf( '--columns-sm:%s;', $columns['sm'] );
+	$style .= sprintf( '--columns-md:%s;', $columns['md'] );
+	$style .= sprintf( '--columns-lg:%s;', $columns['lg'] );
+
+	$first->setAttribute( 'style', $style );
+
+	return str_replace( '</ul>', '', $dom->saveHTML() );
+}
+
 /**
  * Filter single product post_class.
  * Make sure it's only run on the main product entry wrap.

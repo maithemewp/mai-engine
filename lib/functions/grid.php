@@ -156,6 +156,10 @@ function mai_get_breakpoint_columns( $args ) {
 				$columns['sm'] = 0;
 				$columns['xs'] = 0;
 			break;
+			default:
+				$columns['md'] = 4;
+				$columns['sm'] = 2;
+				$columns['xs'] = 1;
 		}
 	}
 

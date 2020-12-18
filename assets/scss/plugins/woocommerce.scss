@@ -179,13 +179,61 @@ p.demo_store {
 }
 
 ul.products {
+	--entry-max-width: 100%;
 	--list-style-type: none;
+
+	@include mq(false, sm) {
+		--columns: var(--columns-xs);
+	}
+
+	@include mq(sm, md) {
+		--columns: var(--columns-sm);
+	}
+
+	@include mq(md, lg) {
+		--columns: var(--columns-md);
+	}
+
+	@include mq(lg) {
+		--columns: var(--columns-lg);
+	}
+
+	display: grid;
+	grid-gap: var(--spacing-xl) var(--spacing-lg);
+	grid-template-columns: repeat(var(--columns, 1), 1fr);
+
+	.woocommerce &::before,
+	.woocommerce-page &::before {
+		display: none;
+	}
+
+	.woocommerce & li.product,
+	.woocommerce-page & li.product {
+		float: none !important;
+		width: var(--product-width, 100%) !important;
+		margin: var(--product-margin, 0) !important;
+		padding: var(--product-padding, 0) !important;
+		border: var(--product-border, 0);
+		border-radius: var(--product-border-radius, 0);
+		box-shadow: var(--product-box-shadow, 0);
+	}
+
+	.price {
+		margin-top: auto;
+	}
+
+	.button {
+		margin: auto 0 0;
+	}
 }
 
 .woocommerce-LoopProduct-link {
 	--link-text-decoration: none;
 	--link-text-decoration-hover: none;
 
+	display: flex;
+	flex: 1;
+	flex-direction: column;
 	width: 100%;
 
 	&:hover,
