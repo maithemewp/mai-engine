@@ -34,7 +34,8 @@
 	@include position(absolute, 0 0 0 0);
 }
 
-.page-header-image {
+.page-header-image,
+.page-header-image img { // Added img for plugins that convert to picture/source and change our markup.
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
