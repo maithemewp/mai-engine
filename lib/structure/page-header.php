@@ -188,7 +188,7 @@ add_filter( 'genesis_attr_page-header-overlay', 'mai_page_header_divider_class',
 function mai_page_header_divider_class( $attr ) {
 	$option = mai_get_option( 'page-header-divider', 'none' );
 
-	if ( 'none' !== $option ) {
+	if ( $option ) {
 		$attr['class'] .= " has-$option-divider";
 	}
 
