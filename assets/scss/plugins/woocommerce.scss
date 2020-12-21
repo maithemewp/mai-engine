@@ -182,19 +182,19 @@ ul.products {
 	--entry-max-width: 100%;
 	--list-style-type: none;
 
-	@include mq(false, sm) {
+	@include mq(false, xs) {
 		--columns: var(--columns-xs);
 	}
 
-	@include mq(sm, md) {
+	@include mq(xs, sm) {
 		--columns: var(--columns-sm);
 	}
 
-	@include mq(md, lg) {
+	@include mq(sm, md) {
 		--columns: var(--columns-md);
 	}
 
-	@include mq(lg) {
+	@include mq(md) {
 		--columns: var(--columns-lg);
 	}
 
@@ -207,23 +207,30 @@ ul.products {
 		display: none;
 	}
 
-	.woocommerce & li.product,
-	.woocommerce-page & li.product {
-		float: none !important;
-		width: var(--product-width, 100%) !important;
-		margin: var(--product-margin, 0) !important;
-		padding: var(--product-padding, 0) !important;
-		border: var(--product-border, 0);
-		border-radius: var(--product-border-radius, 0);
-		box-shadow: var(--product-box-shadow, 0);
-	}
-
 	.price {
 		margin-top: auto;
 	}
+}
+
+li.product {
+	float: none !important;
+	width: var(--product-width, 100%) !important;
+	margin: var(--product-margin, 0) !important;
+	padding: var(--product-padding, 0) !important;
+	border: var(--product-border, 0);
+	border-radius: var(--product-border-radius, 0);
+	box-shadow: var(--product-box-shadow, 0);
+	transition: none;
 
 	.button {
-		margin: auto 0 0;
+
+		@include button-style(secondary);
+		@include button-style(small);
+	}
+
+	&::after {
+		display: inline-flex;
+		font-size: 0;
 	}
 }
 
@@ -252,26 +259,6 @@ ul.products {
 	margin-bottom: var(--spacing-xxs);
 	font-size: var(--product-title-font-size, var(--font-size-lg));
 	transition: var(--transition);
-}
-
-.add_to_cart_button {
-	margin-top: auto;
-	transition: none;
-
-	@include button();
-	@include button-style(secondary);
-	@include button-style(small);
-
-	&::after {
-		display: inline-flex;
-		font-size: 0;
-	}
-}
-
-.button.product_type_simple {
-	margin-bottom: 1em;
-
-	@include button-style(small);
 }
 
 .added,
