@@ -147,6 +147,23 @@ function mai_product_loop_start_columns( $html ) {
 	return str_replace( '</ul>', '', $dom->saveHTML() );
 }
 
+add_filter( 'woocommerce_pagination_args', 'mai_woocommerce_pagination_previous_next_text' );
+/**
+ * Changes the adjacent entry previous and next link text.
+ *
+ * @since TBD
+ *
+ * @param array $args The pagination args.
+ *
+ * @return array
+ */
+function mai_woocommerce_pagination_previous_next_text( $args ) {
+	$args['prev_text'] = esc_html__( '← Previous', 'mai-engine' );
+	$args['next_text'] = esc_html__( 'Next →', 'mai-engine' );
+
+	return $args;
+}
+
 /**
  * Filter single product post_class.
  * Make sure it's only run on the main product entry wrap.

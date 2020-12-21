@@ -261,6 +261,23 @@ li.product {
 	transition: var(--transition);
 }
 
+.woocommerce-pagination {
+
+	a {
+
+		@include button;
+		@include button-style("secondary");
+		@include button-style("small");
+	}
+
+	.current {
+
+		@include button;
+		@include button-style("primary");
+		@include button-style("small");
+	}
+}
+
 .added,
 .added:hover,
 .added:focus {

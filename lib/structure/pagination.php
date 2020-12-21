@@ -63,7 +63,7 @@ function mai_next_page_link() {
 
 add_filter( 'genesis_markup_pagination-previous_content', 'mai_previous_pagination_text' );
 /**
- * Changes the previous link arrow icon.
+ * Changes the adjacent entry previous link arrow icon.
  *
  * @since 0.1.0
  *
