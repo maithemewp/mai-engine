@@ -11,7 +11,7 @@
 
 add_shortcode( 'mai_icon', 'mai_icon_shortcode' );
 /**
- * Render the icon shortcode.
+ * Dipslays an icon.
  *
  * @since 0.3.0
  *
@@ -25,7 +25,7 @@ function mai_icon_shortcode( $atts ) {
 
 add_shortcode( 'mai_search_form', 'mai_search_form_shortcode' );
 /**
- * Adds search form shortcode.
+ * Displays a search form.
  *
  * @since 0.3.0
  *
@@ -37,7 +37,7 @@ function mai_search_form_shortcode() {
 
 add_shortcode( 'mai_back_to_top', 'mai_back_to_top_shortcode' );
 /**
- * Add [mai_back_to_top] shortcode.
+ * Displays a back to top link.
  *
  * @since 0.3.0
  *
@@ -80,7 +80,7 @@ function mai_back_to_top_shortcode( $atts = [] ) {
 
 add_shortcode( 'mai_content', 'mai_content_shortcode' );
 /**
- * Display a reusable block via a shortcode.
+ * Displays a reusable block via a shortcode.
  * 'id' can be a slug or ID.
  *
  * Examples:
@@ -111,7 +111,7 @@ function mai_content_shortcode( $atts = [] ) {
 
 add_shortcode( 'mai_menu', 'mai_menu_shortcode' );
 /**
- * Display a menu.
+ * Displays a menu.
  *
  * @since 0.3.3
  *
@@ -140,7 +140,7 @@ function mai_menu_shortcode( $atts ) {
 
 add_shortcode( 'mai_avatar', 'mai_avatar_shortcode' );
 /**
- * Display an author avatar.
+ * Displays an author avatar.
  *
  * @since 2.7.0
  *
@@ -158,7 +158,7 @@ function mai_avatar_shortcode( $atts ) {
 
 add_shortcode( 'mai_cart_total', 'mai_cart_total_shortcode' );
 /**
- * Display the cart total.
+ * Displays the cart total.
  *
  * @uses WooCommerce
  *
@@ -168,4 +168,40 @@ add_shortcode( 'mai_cart_total', 'mai_cart_total_shortcode' );
  */
 function mai_cart_total_shortcode() {
 	return mai_get_cart_total();
+}
+
+add_shortcode( 'mai_price', 'mai_price_shortcode' );
+/**
+ * Displays the WooCommerce product price.
+ *
+ * @uses WooCommerce
+ *
+ * @since TBD
+ *
+ * @return string
+ */
+function mai_price_shortcode() {
+	if ( ! class_exists( 'WooCommerce' ) ) {
+		return;
+	}
+
+	$atts = shortcode_atts(
+		[
+			'id' => null,
+		],
+		$atts,
+		'mai_price'
+	);
+
+	if ( ! $atts[ 'id' ] ) {
+		$atts['id'] = get_the_ID();
+	}
+
+	$product = wc_get_product( $atts['id'] );
+
+	if ( ! $product ) {
+		return;
+	}
+
+	return $product->get_price_html();
 }
