@@ -1039,6 +1039,34 @@ class Mai_Entry {
 	}
 
 	/**
+	 * Display the custom content.
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	public function do_custom_content() {
+		if ( ! $this->args['custom_content'] ) {
+			return;
+		}
+
+		genesis_markup(
+			[
+				'open'    => '<div %s>',
+				'close'   => '</div>',
+				'content' => mai_get_processed_content( $this->args['custom_content'] ),
+				'context' => 'entry-custom-content',
+				'echo'    => true,
+				'params'  => [
+					'args'  => $this->args,
+					'entry' => $this->entry,
+				],
+			]
+		);
+	}
+
+
+	/**
 	 * Display the header meta.
 	 *
 	 * Initially based off genesis_post_info().
