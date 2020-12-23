@@ -597,6 +597,8 @@ return [
 				'top'    => '10vw',
 				'bottom' => '10vw',
 			],
+			'content-width'           => 'md',
+			'content-align'           => 'center',
 			'text-align'              => 'center',
 			'divider'                 => '',
 			'divider-height'          => 'md',

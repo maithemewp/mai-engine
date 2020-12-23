@@ -383,6 +383,18 @@ function mai_add_page_header_content_type_css( $css ) {
 	$css['global'][':root']['--page-header-padding-top']    = mai_get_unit_value( $top );
 	$css['global'][':root']['--page-header-padding-bottom'] = mai_get_unit_value( $bottom );
 
+	$content_width = mai_get_option( 'page-header-content-width', $config['content-width'] );
+
+	if ( $content_width ) {
+		$css['global'][':root']['--page-header-inner-max-width'] = sprintf( 'var(--breakpoint-%s)', esc_html( $content_width ));
+	}
+
+	$content_align = mai_get_option( 'page-header-content-align', $config['content-align'] );
+
+	if ( $content_align ) {
+		$css['global'][':root']['--page-header-justify-content'] = esc_html( $content_align );
+	}
+
 	$text_align = mai_get_option( 'page-header-text-align', $config['text-align'] );
 
 	if ( $text_align ) {
