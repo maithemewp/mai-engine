@@ -516,6 +516,10 @@ form.cart {
 .product_meta {
 	margin-bottom: var(--spacing-xl);
 	font-size: var(--font-size-sm);
+
+	> span {
+		display: block;
+	}
 }
 
 .comment-form-rating {
