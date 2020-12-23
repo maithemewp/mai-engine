@@ -5,3 +5,11 @@
 		margin-bottom: 0;
 	}
 }
+
+.entry-custom-content {
+	margin: var(--entry-custom-content-margin, 0 0 var(--entry-custom-content-margin-bottom, var(--spacing-md)));
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
