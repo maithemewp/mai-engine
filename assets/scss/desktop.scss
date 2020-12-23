@@ -1,12 +1,14 @@
 :root {
+	--site-header-wrap-flex-wrap: nowrap;
+	--header-section-order: 0;
 	--title-area-padding: var(--title-area-padding-desktop) 0;
-
-	--menu-item-link-padding: var(--spacing-md) var(--spacing-md);
 
 	--nav-header-width: auto;
 	--nav-header-margin: 0;
 	--nav-header-padding: 0;
 	--nav-header-background-color: transparent;
+
+	--menu-item-link-padding: var(--spacing-md) var(--spacing-md);
 
 	--nav-after-header-display: flex;
 
