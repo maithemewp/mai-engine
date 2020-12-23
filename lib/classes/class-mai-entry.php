@@ -103,7 +103,7 @@ class Mai_Entry {
 		$this->url         = $this->get_url();
 		$this->breakpoints = mai_get_breakpoints();
 		$this->link_entry  = ( 'single' !== $this->context );
-		$this->link_entry  = apply_filters( 'mai_link_entry', $this->link_entry, $this->args, $this->entry );
+		$this->link_entry  = apply_filters( 'mai_link_entry', (bool)  $this->link_entry, $this->args, $this->entry );
 		$this->image_size  = $this->get_image_size();
 		$this->image_id    = $this->get_image_id();
 	}
