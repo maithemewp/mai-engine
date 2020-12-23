@@ -9,7 +9,7 @@
  * @license   GPL-2.0-or-later
  */
 
-add_action( 'admin_menu', 'mai_admin_menu_pages', 0 );
+add_action( 'admin_menu', 'mai_admin_menu_pages' );
 /**
  * Registers plugin admin menu pages.
  * Exposes Reusable Blocks UI in backend.
@@ -28,7 +28,7 @@ function mai_admin_menu_pages() {
 		'mai-theme',
 		'mai_render_admin_menu_page',
 		'data:image/svg+xml;base64,' . base64_encode( file_get_contents( mai_get_dir() . 'assets/svg/admin-menu-icon.svg' ) ),
-		59
+		58.994 // Genesis menu is 58.996.
 	);
 
 	// Changes first menu name. Otherwise above has Mai Theme as the first child too.
@@ -49,7 +49,7 @@ function mai_admin_menu_pages() {
 		'edit_posts',
 		'edit.php?post_type=wp_template_part',
 		'',
-		null
+		10
 	);
 
 	add_submenu_page(
@@ -59,7 +59,7 @@ function mai_admin_menu_pages() {
 		'edit_posts',
 		'edit.php?post_type=wp_block',
 		'',
-		null
+		20
 	);
 
 	add_submenu_page(
