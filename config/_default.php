@@ -608,6 +608,8 @@ return [
 			'divider-overlay-opacity' => 0.5,
 			'divider-text-align'      => '',
 		],
+		'header-left-menu-alignment'  => 'flex-start',
+		'header-right-menu-alignment' => 'flex-end',
 		'after-header-menu-alignment' => 'flex-start',
 		'performance'         => [
 			'genesis-style-trump'        => true,

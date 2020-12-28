@@ -101,5 +101,8 @@ return [
 				'columns'           => '1',
 			],
 		],
+		'header-left-menu-alignment'  => 'flex-end',
+		'header-right-menu-alignment' => 'flex-start',
+		'after-header-menu-alignment' => 'center',
 	],
 ];
