@@ -47,7 +47,7 @@
 }
 
 .has-logo-center {
-	--title-area-margin: 0 auto;
+	--title-area-margin: 0 var(--spacing-lg);
 	--title-area-text-align: center;
 }
 
