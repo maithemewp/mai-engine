@@ -151,7 +151,7 @@ p {
 .wp-block-button__link,
 .wp-block .button {
 
-	@include button();
+	@include button(true);
 
 	&:active,
 	&:visited {

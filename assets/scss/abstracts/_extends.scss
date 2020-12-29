@@ -32,7 +32,7 @@
 	}
 }
 
-@mixin button {
+@mixin button($is_admin: false) {
 	position: relative;
 	display: inline-block;
 	width: var(--button-width, auto);
@@ -70,6 +70,14 @@
 		outline: var(--button-outline-hover, var(--button-outline, none));
 		box-shadow: var(--button-box-shadow-hover, var(--button-box-shadow, none));
 		transform: var(--button-transform-hover, var(--button-transform, none));
+	}
+
+	// Disable background color on hover.
+	@if ($is_admin) {
+
+		@include hover-focus {
+			--button-background-hover: var(--button-background, var(--color-primary));
+		}
 	}
 }
 
@@ -131,7 +139,6 @@
 		color: var(--button-color);
 		background: var(--button-background);
 		border-color: currentColor;
-		pointer-events: auto;
 	}
 }
 
