@@ -153,6 +153,12 @@ p {
 
 	@include button(true);
 
+	// Default block style preview.
+	.is-style-default & {
+
+		@include button(true);
+	}
+
 	&:active,
 	&:visited {
 		color: var(--button-color-hover, var(--button-color));
