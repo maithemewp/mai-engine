@@ -21,8 +21,8 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_additional_colors_css' );
  * @return array
  */
 function mai_add_additional_colors_css( $css ) {
-	$defaults = mai_get_global_styles( 'colors' );
-	$shades   = [
+	$colors = mai_get_colors();
+	$shades = [
 		'primary',
 		'secondary',
 		'link'
@@ -30,9 +30,9 @@ function mai_add_additional_colors_css( $css ) {
 
 	// Add lighter and darker variants of primary and secondary colors.
 	foreach ( $shades as $shade ) {
-		if ( mai_isset( $defaults, $shade, '' ) ) {
-			$light = mai_get_color_variant( $defaults[ $shade ], 'light', 10 );
-			$dark  = mai_get_color_variant( $defaults[ $shade ], 'dark', 10 );
+		if ( mai_isset( $colors, $shade, '' ) ) {
+			$light = mai_get_color_variant( $colors[ $shade ], 'light', 10 );
+			$dark  = mai_get_color_variant( $colors[ $shade ], 'dark', 10 );
 
 			if ( $light ) {
 				$css['global'][':root'][ '--color-' . $shade . '-light' ] = $light;
@@ -45,7 +45,7 @@ function mai_add_additional_colors_css( $css ) {
 	}
 
 	// Exclude settings output by Kirki.
-	$colors = array_diff_key( $defaults, mai_get_color_elements() );
+	$colors = array_diff_key( $colors, mai_get_color_elements() );
 
 	if ( $colors ) {
 		foreach ( $colors as $name => $color ) {
