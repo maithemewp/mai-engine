@@ -7,7 +7,7 @@ a {
 
 	&:hover,
 	&:focus {
-		color: var(--link-color-hover, var(--color-link));
+		color: var(--link-color-hover, var(--color-link-dark, var(--link-color, var(--color-link))));
 		text-decoration: var(--link-text-decoration-hover, underline);
 		text-underline-offset: var(--link-text-decoration-offset-hover, var(--link-text-decoration-offset, var(--spacing-xxs)));
 		outline-color: var(--color-body);

@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-12-28T20:05:13+00:00\n"
+"POT-Creation-Date: 2020-12-29T18:39:56+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -219,7 +219,7 @@ msgid "Accepts all unit values (px, rem, em, vw, etc). Leave empty for theme def
 msgstr ""
 
 #: lib/blocks/icon.php:268
-#: lib/functions/colors.php:162
+#: lib/functions/colors.php:166
 #: lib/functions/utilities.php:1074
 msgid "Link"
 msgstr ""
@@ -238,7 +238,7 @@ msgstr ""
 
 #: lib/blocks/icon.php:299
 #: lib/blocks/grid.php:821
-#: lib/functions/colors.php:158
+#: lib/functions/colors.php:162
 #: lib/customize/content-archives.php:108
 msgid "Background"
 msgstr ""
@@ -323,7 +323,7 @@ msgid "50%"
 msgstr ""
 
 #: lib/blocks/paragraph.php:30
-#: lib/functions/colors.php:161
+#: lib/functions/colors.php:165
 #: lib/customize/typography.php:69
 msgid "Heading"
 msgstr ""
@@ -1689,20 +1689,20 @@ msgstr ""
 msgid "Back to top"
 msgstr ""
 
-#: lib/functions/colors.php:159
+#: lib/functions/colors.php:163
 msgid "Background Alt"
 msgstr ""
 
-#: lib/functions/colors.php:160
+#: lib/functions/colors.php:164
 #: lib/customize/typography.php:46
 msgid "Body"
 msgstr ""
 
-#: lib/functions/colors.php:163
+#: lib/functions/colors.php:167
 msgid "Button Primary"
 msgstr ""
 
-#: lib/functions/colors.php:164
+#: lib/functions/colors.php:168
 msgid "Button Secondary"
 msgstr ""
 

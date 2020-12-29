@@ -160,17 +160,17 @@ p {
 
 	.is-style-secondary & {
 
-		@include button-style("secondary");
+		@include button-style("secondary", true);
 	}
 
 	.is-style-link & {
 
-		@include button-style("link");
+		@include button-style("link", true);
 	}
 
 	.is-style-outline & {
 
-		@include button-style("outline");
+		@include button-style("outline", true);
 	}
 }
 
