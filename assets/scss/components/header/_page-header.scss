@@ -18,7 +18,7 @@
 	z-index: 2;
 	display: flex;
 	flex-direction: column;
-	justify-content: var(--page-header-justify-content, center);
+	align-items: var(--page-header-justify-content, center);
 	padding: var(--page-header-padding, var(--page-header-padding-top) var(--page-header-padding-sides, 0) var(--page-header-padding-bottom));
 }
 

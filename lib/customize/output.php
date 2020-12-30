@@ -413,13 +413,13 @@ function mai_add_page_header_content_type_css( $css ) {
 	$content_align = mai_get_option( 'page-header-content-align', $config['content-align'] );
 
 	if ( $content_align ) {
-		$css['global'][':root']['--page-header-justify-content'] = esc_html( $content_align );
+		$css['global'][':root']['--page-header-justify-content'] = mai_get_flex_align( esc_html( $content_align ) );
 	}
 
 	$text_align = mai_get_option( 'page-header-text-align', $config['text-align'] );
 
 	if ( $text_align ) {
-		$css['global'][':root']['--page-header-text-align'] = esc_html( $text_align );
+		$css['global'][':root']['--page-header-text-align'] = mai_get_align_text( esc_html( $text_align ) );
 	}
 
 	return $css;
