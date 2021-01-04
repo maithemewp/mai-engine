@@ -1,5 +1,42 @@
 # Changelog
 
+## 2.9.0 (1/4/21)
+* Added: Page header content width setting to change the max width of the content in the page header.
+* Added: Header left and right menu alignment settings. Now you can align left, right, or center, independently, without extra code.
+* Added: Custom content field now available for Mai Post/Term Grid and Single/Archive Content settings.
+* Added: [mai_price] shortcode to display a product's price in Mai Post Grid or anywhere else you want it.
+* Added: Automatically generate dark/light custom properties for primary, secondary, and link colors.
+* Changed: Button hover styles no longer use psuedo-element overlay for darkening the color and use auto-generated darker shade color.
+* Changed: In order to match front end button styles in the editor, button hover color changes are not present in the editor.
+* Changed: Mai Theme admin menu item order.
+* Fixed: Extra side spacing on Mai Post Grid block on mobile in some instances.
+* Fixed: Logo not centering in some instances when no header left or right menu is set.
+* Fixed: Lists not indented in the editor to match the front end.
+* Fixed: WooCommerce shop pagination now matches theme archive pagination styling.
+* Fixed: Page header image not covering full container when using some image optimization plugins.
+* Fixed: Mai Inspire Author box author image not centered correctly on mobile.
+
+## 2.8.0 (12/17/20)
+* Added: Header and footer meta options added to Hide Elements metabox.
+* Added: PHP filter for `mai_adjacent_entry_nav_taxonomy` to allow adjacent entry nav to show previous/next post in same taxonomy.
+* Added: Dashboard menu item to show what Mai Plugins are available.
+* Added: More Google fonts available via Kirki update.
+* Added: Mai Plugins button link in Customizer.
+* Changed: Entry meta before/after-content classes now more element specific.
+* Changed: WooCommerce trim zeros filter runs early now, so filters on the default priority override our default.
+* Changed: Dashboard menu icon SVG now more efficient and no longer flashes on hover.
+* Changed: Updated pot file for translations.
+* Fixed: Shrink header now buttery smooth even when logo shrinks on scroll.
+* Fixed: Duplicate search results text in page header.
+* Fixed: Mai Post Grid get entries by choice not allowing more than 12 entries.
+* Fixed: Mai Term Grid get entries by choice reversing display order.
+* Fixed: More thorough has-light/dark-background color CSS.
+* Fixed: WooCommerce zoom magnifying glass still showing behind our custom icon.
+* Fixed: No longer override menu-item-link classes being filtered by other plugins.
+* Fixed: Full align blocks in WooCommerce product descriptions being cut off.
+* Fixed: Error when WP_Widget_Recent_Comments is no longer available when a plugin (Perfmatters) or custom code removes it altogether.
+* Fixed: Anchor links not going to correct location due to conflict with scroll-behavoir CSS.
+
 ## 2.7.1 (12/1/20)
 * Fixed: Removed PHP 7.3+ function.
 

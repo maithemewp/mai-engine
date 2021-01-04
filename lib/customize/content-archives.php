@@ -293,6 +293,20 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			],
 		],
 		[
+			'settings'        => 'custom_content',
+			'label'           => __( 'Custom Content', 'mai-engine' ),
+			'type'            => 'textarea',
+			'sanitize'        => 'wp_kses_post',
+			'default'         => $defaults['custom_content'],
+			'active_callback' => [
+				[
+					'setting'  => 'show',
+					'operator' => 'contains',
+					'value'    => 'custom_content',
+				],
+			],
+		],
+		[
 			'settings'        => 'more_link_text',
 			'label'           => __( 'More Link Text', 'mai-engine' ),
 			'type'            => 'text',

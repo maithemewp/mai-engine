@@ -9,10 +9,6 @@
 	background: var(--nav-header-background, none);
 }
 
-.nav-header-right {
-	--menu-justify-content: flex-end;
-}
-
 .nav-after-header {
 	position: relative;
 	z-index: 9;

@@ -66,9 +66,9 @@ function mai_disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
 
 add_action( 'widgets_init', 'mai_remove_recent_comments_style' );
 /**
- * Description of expected behavior.
+ * Removes recent comments widget CSS.
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @return void
  */
@@ -79,5 +79,10 @@ function mai_remove_recent_comments_style() {
 
 	global $wp_widget_factory;
 
-	remove_action( 'wp_head', array( $wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style' ) );
+	// Perfmatters and other plugins may remove this altogether.
+	if ( ! isset( $wp_widget_factory->widgets['WP_Widget_Recent_Comments'] ) ) {
+		return;
+	}
+
+	remove_action( 'wp_head', [ $wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style' ] );
 }

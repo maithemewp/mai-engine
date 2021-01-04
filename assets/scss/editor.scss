@@ -9,7 +9,6 @@
 
 html {
 	font-size: 100%; // 16px browser default.
-	scroll-behavior: var(--scroll-behavior, smooth);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
@@ -17,9 +16,9 @@ html {
 body {
 	min-height: auto;
 	background: var(--color-white);
+
 	--list-style-position: outside;
-	--list-margin-left: var(--spacing-xl);
-	--list-margin-bottom: var(--spacing-lg);
+	--list-padding: 0 0 var(--spacing-lg) var(--spacing-xl); // Adds list indent/spacing without affecting block layout.
 	--list-item-margin-bottom: var(--spacing-xs);
 
 	@include body();
@@ -32,6 +31,16 @@ body {
 
 p {
 	font-size: var(--font-size-md);
+}
+
+.has-dark-background {
+	--heading-color: var(--color-white);
+	--body-color: var(--color-white);
+}
+
+.has-light-background {
+	--heading-color: var(--color-heading);
+	--body-color: var(--color-body);
 }
 
 .alignfull {
@@ -142,7 +151,13 @@ p {
 .wp-block-button__link,
 .wp-block .button {
 
-	@include button();
+	@include button(true);
+
+	// Default block style preview.
+	.is-style-default & {
+
+		@include button(true);
+	}
 
 	&:active,
 	&:visited {
@@ -151,17 +166,17 @@ p {
 
 	.is-style-secondary & {
 
-		@include button-style("secondary");
+		@include button-style("secondary", true);
 	}
 
 	.is-style-link & {
 
-		@include button-style("link");
+		@include button-style("link", true);
 	}
 
 	.is-style-outline & {
 
-		@include button-style("outline");
+		@include button-style("outline", true);
 	}
 }
 

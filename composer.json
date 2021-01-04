@@ -25,7 +25,8 @@
     "yahnis-elsts/plugin-update-checker": "^4.10",
     "advanced-custom-fields/advanced-custom-fields-pro": "*",
     "aristath/kirki": "*",
-    "proteusthemes/wp-content-importer-v2": "^2.1"
+    "proteusthemes/wp-content-importer-v2": "^2.1",
+    "wptrt/customize-section-button": "^1.0"
   },
   "require-dev": {
     "php": "^5.6|^7",

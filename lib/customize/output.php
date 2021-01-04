@@ -11,7 +11,7 @@
 
 add_filter( 'kirki_mai-engine_styles', 'mai_add_additional_colors_css' );
 /**
- * Output named (non-element) color css.
+ * Outputs named (non-element) color css.
  *
  * @since 2.2.1 Added important rules for button hover state.
  * @since 2.0.0 Added.
@@ -21,10 +21,31 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_additional_colors_css' );
  * @return array
  */
 function mai_add_additional_colors_css( $css ) {
-	$defaults = mai_get_global_styles( 'colors' );
+	$colors = mai_get_colors();
+	$shades = [
+		'primary',
+		'secondary',
+		'link'
+	];
 
-	// Exclude settings out put by Kirki.
-	$colors = array_diff_key( $defaults, mai_get_color_elements() );
+	// Add lighter and darker variants of primary and secondary colors.
+	foreach ( $shades as $shade ) {
+		if ( mai_isset( $colors, $shade, '' ) ) {
+			$light = mai_get_color_variant( $colors[ $shade ], 'light', 10 );
+			$dark  = mai_get_color_variant( $colors[ $shade ], 'dark', 10 );
+
+			if ( $light ) {
+				$css['global'][':root'][ '--color-' . $shade . '-light' ] = $light;
+			}
+
+			if ( $dark ) {
+				$css['global'][':root'][ '--color-' . $shade . '-dark' ] = $dark;
+			}
+		}
+	}
+
+	// Exclude settings output by Kirki.
+	$colors = array_diff_key( $colors, mai_get_color_elements() );
 
 	if ( $colors ) {
 		foreach ( $colors as $name => $color ) {
@@ -44,7 +65,7 @@ function mai_add_additional_colors_css( $css ) {
 
 add_filter( 'kirki_mai-engine_styles', 'mai_add_custom_color_css' );
 /**
- * Output breakpoint custom property.
+ * Outputs breakpoint custom property.
  *
  * @since 2.0.0
  *
@@ -73,7 +94,7 @@ function mai_add_custom_color_css( $css ) {
 
 add_filter( 'kirki_mai-engine_styles', 'mai_add_button_text_colors' );
 /**
- * Output contrast button text custom property.
+ * Outputs contrast button text custom property.
  *
  * @since 2.0.0
  *
@@ -102,7 +123,7 @@ function mai_add_button_text_colors( $css ) {
 
 add_filter( 'kirki_mai-engine_styles', 'mai_add_breakpoint_custom_properties' );
 /**
- * Output breakpoint custom property.
+ * Outputs breakpoint custom property.
  *
  * @since 2.0.0
  *
@@ -120,6 +141,22 @@ function mai_add_breakpoint_custom_properties( $css ) {
 
 	// Add breakpoints to beginning of array cause that's how Mike likes to see them.
 	$css['global'][':root'] = array_merge( $props, $css['global'][':root'] );
+
+	return $css;
+}
+
+add_filter( 'kirki_mai-engine_styles', 'mai_add_title_area_custom_properties' );
+/**
+ * Outputs title area custom properties.
+ *
+ * @since 2.8.0
+ *
+ * @param array $css Kirki CSS.
+ *
+ * @return array
+ */
+function mai_add_title_area_custom_properties( $css ) {
+	$css['global'][':root']['--header-shrink-offset'] = mai_get_unit_value( mai_get_header_shrink_offset() );
 
 	return $css;
 }
@@ -176,7 +213,7 @@ function mai_add_body_font_variants( $fonts ) {
 
 add_filter( 'kirki_enqueue_google_fonts', 'mai_add_extra_google_fonts', 99 );
 /**
- * Load any other Google font families defined in the config.
+ * Loads any other Google font families defined in the config.
  *
  * @since 2.0.0
  *
@@ -255,7 +292,7 @@ function mai_add_extra_google_fonts( $fonts ) {
 
 add_filter( 'kirki_mai-engine_styles', 'mai_add_fonts_custom_properties' );
 /**
- * Add typography settings custom properties to Kirki output.
+ * Adds typography settings custom properties to Kirki output.
  *
  * @since 2.0.0
  *
@@ -329,7 +366,7 @@ function mai_add_fonts_custom_properties( $css ) {
 
 add_filter( 'kirki_mai-engine_styles', 'mai_add_page_header_content_type_css', 12 );
 /**
- * Add page header styles to kirki output.
+ * Adds page header styles to kirki output.
  *
  * @since 2.0.0
  *
@@ -367,10 +404,22 @@ function mai_add_page_header_content_type_css( $css ) {
 	$css['global'][':root']['--page-header-padding-top']    = mai_get_unit_value( $top );
 	$css['global'][':root']['--page-header-padding-bottom'] = mai_get_unit_value( $bottom );
 
+	$content_width = mai_get_option( 'page-header-content-width', $config['content-width'] );
+
+	if ( $content_width ) {
+		$css['global'][':root']['--page-header-inner-max-width'] = sprintf( 'var(--breakpoint-%s)', esc_html( $content_width ));
+	}
+
+	$content_align = mai_get_option( 'page-header-content-align', $config['content-align'] );
+
+	if ( $content_align ) {
+		$css['global'][':root']['--page-header-justify-content'] = mai_get_flex_align( esc_html( $content_align ) );
+	}
+
 	$text_align = mai_get_option( 'page-header-text-align', $config['text-align'] );
 
 	if ( $text_align ) {
-		$css['global'][':root']['--page-header-text-align'] = esc_html( $text_align );
+		$css['global'][':root']['--page-header-text-align'] = mai_get_align_text( esc_html( $text_align ) );
 	}
 
 	return $css;
@@ -378,7 +427,7 @@ function mai_add_page_header_content_type_css( $css ) {
 
 add_filter( 'kirki_mai-engine_styles', 'mai_add_extra_custom_properties' );
 /**
- * Add any other custom properties defined in config to output.
+ * Add sany other custom properties defined in config to output.
  *
  * @since 2.0.0
  *

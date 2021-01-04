@@ -1,6 +1,7 @@
 @import "../abstracts/_index";
 
 :root {
+	--button-transform: scale(1);
 	--button-transform-hover: scale(1.05);
 	--site-header-border-bottom: 0;
 	--button-font-family: var(--heading-font-family);

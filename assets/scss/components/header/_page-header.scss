@@ -11,14 +11,15 @@
 	background: var(--page-header-background, var(--color-alt));
 
 	--heading-color: currentColor;
-	--wrap-position: relative;
-	--wrap-justify-content: var(--page-header-text-align, center);
 	--alignfull-width: 100%;
+}
 
-	> .wrap {
-		z-index: 2;
-		padding: var(--page-header-padding, var(--page-header-padding-top) var(--page-header-padding-sides, 0) var(--page-header-padding-bottom));
-	}
+.page-header-wrap {
+	z-index: 2;
+	display: flex;
+	flex-direction: column;
+	align-items: var(--page-header-justify-content, center);
+	padding: var(--page-header-padding, var(--page-header-padding-top) var(--page-header-padding-sides, 0) var(--page-header-padding-bottom));
 }
 
 .has-dark-page-header {
@@ -34,7 +35,8 @@
 	@include position(absolute, 0 0 0 0);
 }
 
-.page-header-image {
+.page-header-image,
+.page-header-image img { // Added img for plugins that convert to picture/source and change our markup.
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
@@ -45,7 +47,7 @@
 .page-header-inner {
 	width: 100%;
 	max-width: var(--page-header-inner-max-width, var(--breakpoint-sm));
-	margin: var(--page-header-inner-margin, (0 auto));
+	margin: var(--page-header-inner-margin, 0);
 	padding: var(--page-header-inner-padding, 0);
 	background: var(--page-header-inner-background, transparent);
 	border: var(--page-header-inner-border, 0);

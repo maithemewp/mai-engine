@@ -46,6 +46,56 @@ function mai_menus_customizer_settings() {
 		$handle,
 		[
 			'type'            => 'radio-buttonset',
+			'settings'        => 'header-left-menu-alignment',
+			'section'         => $section,
+			'label'           => __( 'Header Left Menu Alignment', 'mai-engine' ),
+			'default'         => mai_get_config( 'settings' )['header-left-menu-alignment'],
+			'choices'         => [
+				'flex-start' => __( 'Left', 'mai-engine' ),
+				'center'     => __( 'Center', 'mai-engine' ),
+				'flex-end'   => __( 'Right', 'mai-engine' ),
+			],
+			'output'          => [
+				[
+					'element'  => '.header-left',
+					'property' => '--menu-justify-content',
+				],
+			],
+			'active_callback' => function() {
+				return has_nav_menu( 'header-left' );
+			},
+		]
+	);
+
+	\Kirki::add_field(
+		$handle,
+		[
+			'type'            => 'radio-buttonset',
+			'settings'        => 'header-right-menu-alignment',
+			'section'         => $section,
+			'label'           => __( 'Header Right Menu Alignment', 'mai-engine' ),
+			'default'         => mai_get_config( 'settings' )['header-right-menu-alignment'],
+			'choices'         => [
+				'flex-start' => __( 'Left', 'mai-engine' ),
+				'center'     => __( 'Center', 'mai-engine' ),
+				'flex-end'   => __( 'Right', 'mai-engine' ),
+			],
+			'output'          => [
+				[
+					'element'  => '.header-right',
+					'property' => '--menu-justify-content',
+				],
+			],
+			'active_callback' => function() {
+				return has_nav_menu( 'header-right' );
+			},
+		]
+	);
+
+	\Kirki::add_field(
+		$handle,
+		[
+			'type'            => 'radio-buttonset',
 			'settings'        => 'after-header-menu-alignment',
 			'section'         => $section,
 			'label'           => __( 'After Header Menu Alignment', 'mai-engine' ),

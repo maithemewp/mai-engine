@@ -76,13 +76,14 @@ function mai_get_grid_show_choices() {
 
 	if ( is_null( $choices ) ) {
 		$choices = [
-			'image'       => esc_html__( 'Image', 'mai-engine' ),
-			'title'       => esc_html__( 'Title', 'mai-engine' ),
-			'header_meta' => esc_html__( 'Header Meta', 'mai-engine' ),
-			'excerpt'     => esc_html__( 'Excerpt', 'mai-engine' ),
-			'content'     => esc_html__( 'Content', 'mai-engine' ),
-			'more_link'   => esc_html__( 'Read More link', 'mai-engine' ),
-			'footer_meta' => esc_html__( 'Footer Meta', 'mai-engine' ),
+			'image'          => esc_html__( 'Image', 'mai-engine' ),
+			'title'          => esc_html__( 'Title', 'mai-engine' ),
+			'header_meta'    => esc_html__( 'Header Meta', 'mai-engine' ),
+			'excerpt'        => esc_html__( 'Excerpt', 'mai-engine' ),
+			'content'        => esc_html__( 'Content', 'mai-engine' ),
+			'custom_content' => esc_html__( 'Custom Content', 'mai-engine' ),
+			'more_link'      => esc_html__( 'Read More link', 'mai-engine' ),
+			'footer_meta'    => esc_html__( 'Footer Meta', 'mai-engine' ),
 		];
 	}
 
@@ -99,7 +100,6 @@ function mai_get_grid_show_choices() {
  * @return array
  */
 function mai_get_breakpoint_columns( $args ) {
-
 	$args = wp_parse_args(
 		$args,
 		[
@@ -138,7 +138,7 @@ function mai_get_breakpoint_columns( $args ) {
 			break;
 			case 3:
 				$columns['md'] = 3;
-				$columns['sm'] = 1;
+				$columns['sm'] = mai_is_type_archive() ? 2 : 1;
 				$columns['xs'] = 1;
 			break;
 			case 2:
@@ -156,6 +156,10 @@ function mai_get_breakpoint_columns( $args ) {
 				$columns['sm'] = 0;
 				$columns['xs'] = 0;
 			break;
+			default:
+				$columns['md'] = 4;
+				$columns['sm'] = 2;
+				$columns['xs'] = 1;
 		}
 	}
 

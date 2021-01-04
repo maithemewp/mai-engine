@@ -50,6 +50,8 @@
 }
 
 .custom-logo-link {
+	--link-transition: var(--title-area-transition, var(--transition));
+
 	display: flex;
 	align-items: center;
 	max-width: var(--custom-logo-width, 18rem);

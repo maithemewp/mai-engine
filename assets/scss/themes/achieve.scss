@@ -18,7 +18,7 @@
 }
 
 .site-header {
-	border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+	--site-header-border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .nav-after-header {
@@ -27,16 +27,16 @@
 	--menu-item-link-color: var(--color-white);
 }
 
-.page-header-title {
-	font-size: var(--font-size-xxl);
+.page-header {
+	--h1-font-size: var(--font-size-xxl);
 }
 
 .has-page-header .content {
 
 	@include mq(md) {
-		padding: 2em;
-		background: var(--color-white);
-		border: var(--border);
-		border-radius: var(--border-radius);
+		padding: var(--content-padding, 2em);
+		background: var(--content-background, var(--color-white));
+		border: var(--content-border, var(--border));
+		border-radius: var(--content-border-radius, var(--border-radius));
 	}
 }

@@ -187,6 +187,10 @@ return [
 			'deps'     => [ 'jquery' ],
 			'location' => 'customizer',
 		],
+		'wptrt-customize-section-button' => [
+			'src'      => mai_get_url() . 'vendor/wptrt/customize-section-button/public/js/customize-controls.js',
+			'location' => 'customizer',
+		],
 		'editor'     => [
 			'deps'     => [ 'jquery', 'jquery-ui-sortable', 'wp-blocks', 'wp-dom' ],
 			'location' => 'editor',
@@ -222,6 +226,10 @@ return [
 			'location' => 'admin',
 		],
 		'kirki'                  => [
+			'location' => 'customizer',
+		],
+		'wptrt-customize-section-button' => [
+			'src'      => mai_get_url() . 'vendor/wptrt/customize-section-button/public/css/customize-controls.css',
 			'location' => 'customizer',
 		],
 		'advanced-custom-fields' => [
@@ -494,6 +502,7 @@ return [
 				'image_size'                   => 'landscape-md',
 				'header_meta'                  => '',
 				'footer_meta'                  => '',
+				'custom_content'               => '',
 				'page-header-image'            => '',
 				'page-header-featured'         => false,
 				'page-header-background-color' => '',
@@ -521,6 +530,7 @@ return [
 				'image_size'                   => 'landscape-md',
 				'header_meta'                  => 'mai_get_header_meta_default',
 				'footer_meta'                  => 'mai_get_footer_meta_default',
+				'custom_content'               => '',
 				'page-header-image'            => '',
 				'page-header-featured'         => false,
 				'page-header-background-color' => '',
@@ -552,6 +562,7 @@ return [
 				'image_width'                  => 'third',
 				'header_meta'                  => 'mai_get_header_meta_default',
 				'content_limit'                => 0,
+				'custom_content'               => '',
 				'more_link_text'               => '',
 				'footer_meta'                  => 'mai_get_footer_meta_default',
 				'align_text'                   => 'start',
@@ -586,6 +597,8 @@ return [
 				'top'    => '10vw',
 				'bottom' => '10vw',
 			],
+			'content-width'           => 'md',
+			'content-align'           => 'center',
 			'text-align'              => 'center',
 			'divider'                 => '',
 			'divider-height'          => 'md',
@@ -595,6 +608,8 @@ return [
 			'divider-overlay-opacity' => 0.5,
 			'divider-text-align'      => '',
 		],
+		'header-left-menu-alignment'  => 'flex-start',
+		'header-right-menu-alignment' => 'flex-end',
 		'after-header-menu-alignment' => 'flex-start',
 		'performance'         => [
 			'genesis-style-trump'        => true,

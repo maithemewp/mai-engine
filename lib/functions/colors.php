@@ -111,6 +111,10 @@ function mai_get_editor_color_palette() {
 	$values  = [];
 	$palette = [];
 
+	if ( ! class_exists( 'ariColor' ) ) {
+		return $palette;
+	}
+
 	// Remove empty custom colors.
 	$colors = array_filter( $colors );
 
@@ -199,6 +203,10 @@ function mai_get_color_choices() {
  * @return bool
  */
 function mai_is_light_color( $color ) {
+	if ( ! class_exists( 'ariColor' ) ) {
+		return false;
+	}
+
 	$color = mai_get_color_value( $color );
 	$color = ariColor::newColor( $color );
 	$limit = mai_get_global_styles( 'contrast-limit' );
@@ -219,12 +227,16 @@ function mai_is_light_color( $color ) {
  * @return string
  */
 function mai_get_color_variant( $color, $light_or_dark = 'dark', $amount = 7 ) {
+	if ( ! class_exists( 'ariColor' ) ) {
+		return $color;
+	}
+
 	$color   = mai_get_color_value( $color );
 	$color   = ariColor::newColor( $color );
 	$value   = 'dark' === $light_or_dark ? $color->lightness - $amount : $color->lightness + $amount;
-	$lighter = $color->getNew( 'lightness', $value );
+	$variant = $color->getNew( 'lightness', $value );
 
-	return $lighter->toCSS( 'hex' );
+	return $variant->toCSS( 'hex' );
 }
 
 /**

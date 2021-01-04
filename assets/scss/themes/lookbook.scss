@@ -8,7 +8,6 @@
 	--button-font-size: 0.7em;
 	--button-font-weight: var(--body-font-weight-bold);
 	--button-text-transform: uppercase;
-	--button-overlay-color: var(--color-white);
 	--link-color: var(--color-body);
 	--link-color-hover: var(--color-body);
 	--link-text-decoration-hover: none;
@@ -62,12 +61,10 @@
 
 .header-left {
 	--header-section-justify-content: flex-end;
-	--menu-justify-content: flex-end;
 }
 
 .header-right {
 	--header-section-justify-content: flex-start;
-	--menu-justify-content: flex-start;
 }
 
 .menu-item-link span {
@@ -86,7 +83,7 @@
 	text-transform: uppercase;
 }
 
-.entry-meta.after-content {
+.entry-meta-after-content {
 	margin-top: 2em;
 	padding-top: 2em;
 	font-size: var(--font-size-base);
@@ -110,8 +107,8 @@
 .entry-single:not(.type-page) {
 
 	h1.entry-title,
-	.entry-meta.before-content,
-	.entry-meta.after-content,
+	.entry-meta-before-content,
+	.entry-meta-after-content,
 	.entry-excerpt-single {
 		text-align: center;
 	}
@@ -121,8 +118,8 @@
 .entries-archive.has-image-full {
 
 	.entry-title,
-	.entry-meta.before-content,
-	.entry-meta.after-content,
+	.entry-meta-before-content,
+	.entry-meta-after-content,
 	.entry-excerpt {
 		text-align: center;
 	}

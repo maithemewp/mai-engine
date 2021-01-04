@@ -103,7 +103,7 @@ class Mai_Entry {
 		$this->url         = $this->get_url();
 		$this->breakpoints = mai_get_breakpoints();
 		$this->link_entry  = ( 'single' !== $this->context );
-		$this->link_entry  = apply_filters( 'mai_link_entry', $this->link_entry, $this->args, $this->entry );
+		$this->link_entry  = apply_filters( 'mai_link_entry', (bool)  $this->link_entry, $this->args, $this->entry );
 		$this->image_size  = $this->get_image_size();
 		$this->image_id    = $this->get_image_id();
 	}
@@ -1039,6 +1039,34 @@ class Mai_Entry {
 	}
 
 	/**
+	 * Display the custom content.
+	 *
+	 * @since 1/4/21
+	 *
+	 * @return void
+	 */
+	public function do_custom_content() {
+		if ( ! $this->args['custom_content'] ) {
+			return;
+		}
+
+		genesis_markup(
+			[
+				'open'    => '<div %s>',
+				'close'   => '</div>',
+				'content' => mai_get_processed_content( $this->args['custom_content'] ),
+				'context' => 'entry-custom-content',
+				'echo'    => true,
+				'params'  => [
+					'args'  => $this->args,
+					'entry' => $this->entry,
+				],
+			]
+		);
+	}
+
+
+	/**
 	 * Display the header meta.
 	 *
 	 * Initially based off genesis_post_info().
@@ -1048,6 +1076,10 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_header_meta() {
+		if ( ( 'single' === $this->context ) && mai_is_element_hidden( 'header_meta', $this->id ) ) {
+			return;
+		}
+
 		// Bail if none.
 		if ( ! isset( $this->args['header_meta'] ) || ! $this->args['header_meta'] ) {
 			return;
@@ -1085,6 +1117,9 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_footer_meta() {
+		if ( ( 'single' === $this->context ) && mai_is_element_hidden( 'footer_meta', $this->id ) ) {
+			return;
+		}
 
 		// Bail if none.
 		if ( ! isset( $this->args['footer_meta'] ) || ! $this->args['footer_meta'] ) {
@@ -1255,6 +1290,18 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_adjacent_entry_nav() {
+		$taxonomy       = apply_filters( 'mai_adjacent_entry_nav_taxonomy', '', $this->entry, $this->args );
+		$prev_post_text = '<span class="screen-reader-text">' . esc_html__( 'Previous Post:', 'genesis' ) . ' </span><span class="adjacent-post-link">&#xAB; %image %title</span>';
+		$next_post_text = '<span class="screen-reader-text">' . esc_html__( 'Next Post:', 'genesis' ) . ' </span><span class="adjacent-post-link">%title %image &#xBB;</span>';
+
+		if ( $taxonomy ) {
+			$prev_post_link = get_previous_post_link( '%link', $prev_post_text, true, '', $taxonomy );
+			$next_post_link = get_next_post_link( '%link', $prev_post_text, true, '', $taxonomy );
+		} else {
+			$prev_post_link = get_previous_post_link( '%link', $prev_post_text );
+			$next_post_link = get_next_post_link( '%link', $next_post_text );
+		}
+
 		genesis_markup(
 			[
 				'open'    => '<div %s>',
@@ -1266,13 +1313,11 @@ class Mai_Entry {
 			]
 		);
 
-		$previous_post_text = '<span class="screen-reader-text">' . esc_html__( 'Previous Post:', 'genesis' ) . ' </span><span class="adjacent-post-link">&#xAB; %image %title</span>';
-
 		genesis_markup(
 			[
 				'open'    => '<div %s>',
 				'context' => 'pagination-previous',
-				'content' => get_previous_post_link( '%link', $previous_post_text ),
+				'content' => $prev_post_link,
 				'close'   => '</div>',
 				'params'  => [
 					'args'  => $this->args,
@@ -1281,13 +1326,12 @@ class Mai_Entry {
 			]
 		);
 
-		$next_post_text = '<span class="screen-reader-text">' . esc_html__( 'Next Post:', 'genesis' ) . ' </span><span class="adjacent-post-link">%title %image &#xBB;</span>';
 
 		genesis_markup(
 			[
 				'open'    => '<div %s>',
 				'context' => 'pagination-next',
-				'content' => get_next_post_link( '%link', $next_post_text ),
+				'content' => $next_post_link,
 				'close'   => '</div>',
 				'params'  => [
 					'args'  => $this->args,
@@ -1310,6 +1354,10 @@ class Mai_Entry {
 
 	/**
 	 * Backwards compatibility for Genesis hooks.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
 	 */
 	public function do_genesis_entry_header() {
 		do_action( 'genesis_entry_header' );

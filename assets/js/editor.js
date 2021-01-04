@@ -76,7 +76,6 @@ wp.domReady( () => {
 			if ( post.post_parent__in === data.field_key ) {
 				data.post_type = getPostType( $input, post );
 			}
-
 		}
 
 		// Mai Term Grid.
@@ -101,7 +100,6 @@ wp.domReady( () => {
 			if ( term.parent === data.field_key ) {
 				data.taxonomy = getTaxonomy( $input, term );
 			}
-
 		}
 
 		return data;

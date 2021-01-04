@@ -11,6 +11,10 @@ class ComposerStaticInitb109c82834b5632899cf4c449109f709
     );
 
     public static $prefixLengthsPsr4 = array (
+        'W' => 
+        array (
+            'WPTRT\\Customize\\Section\\' => 24,
+        ),
         'P' => 
         array (
             'ProteusThemes\\WPContentImporter2\\' => 33,
@@ -18,6 +22,10 @@ class ComposerStaticInitb109c82834b5632899cf4c449109f709
     );
 
     public static $prefixDirsPsr4 = array (
+        'WPTRT\\Customize\\Section\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wptrt/customize-section-button/src',
+        ),
         'ProteusThemes\\WPContentImporter2\\' => 
         array (
             0 => __DIR__ . '/..' . '/proteusthemes/wp-content-importer-v2/src',
