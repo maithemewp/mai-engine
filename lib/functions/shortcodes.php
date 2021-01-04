@@ -176,7 +176,7 @@ add_shortcode( 'mai_price', 'mai_price_shortcode' );
  *
  * @uses WooCommerce
  *
- * @since TBD
+ * @since 1/4/21
  *
  * @return string
  */

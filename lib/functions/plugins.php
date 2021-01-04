@@ -108,7 +108,7 @@ add_filter( 'woocommerce_product_loop_start', 'mai_product_loop_start_columns' )
 /**
  * Adds column count as inline custom properties.
  *
- * @since TBD
+ * @since 1/4/21
  *
  * @param array $html The existing loop start HTML.
  *
@@ -151,7 +151,7 @@ add_filter( 'woocommerce_pagination_args', 'mai_woocommerce_pagination_previous_
 /**
  * Changes the adjacent entry previous and next link text.
  *
- * @since TBD
+ * @since 1/4/21
  *
  * @param array $args The pagination args.
  *

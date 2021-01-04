@@ -199,7 +199,7 @@ add_filter( 'genesis_structural_wrap-page-header', 'mai_page_header_wrap_class',
 /**
  * Adds page-header-wrap class.
  *
- * @since TBD
+ * @since 1/4/21
  *
  * @param string $output          HTML output.
  * @param string $original_output Original HTML.
