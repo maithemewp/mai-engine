@@ -188,11 +188,30 @@ add_filter( 'genesis_attr_page-header-overlay', 'mai_page_header_divider_class',
 function mai_page_header_divider_class( $attr ) {
 	$option = mai_get_option( 'page-header-divider', 'none' );
 
-	if ( 'none' !== $option ) {
+	if ( $option ) {
 		$attr['class'] .= " has-$option-divider";
 	}
 
 	return $attr;
+}
+
+add_filter( 'genesis_structural_wrap-page-header', 'mai_page_header_wrap_class', 10, 2 );
+/**
+ * Adds page-header-wrap class.
+ *
+ * @since 1/4/21
+ *
+ * @param string $output          HTML output.
+ * @param string $original_output Original HTML.
+ *
+ * @return string
+ */
+function mai_page_header_wrap_class( $output, $original_output ) {
+	if ( 'open' === $original_output ) {
+		$output = str_replace( '"wrap"', '"page-header-wrap wrap"', $output );
+	}
+
+	return $output;
 }
 
 add_filter( 'genesis_structural_wrap-page-header', 'mai_page_header_divider', 10, 2 );

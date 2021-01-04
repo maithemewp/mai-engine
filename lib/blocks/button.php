@@ -33,69 +33,135 @@ function mai_render_button_block( $block_content, $block ) {
 		return $block_content;
 	}
 
-	// Wrap additional lines in span for styling.
-	if ( mai_has_string( '<br>', $block_content ) ) {
-		$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link button button-large', $block_content );
-		$block_content = str_replace( '<br>', '<br><span class="wp-block-button__line">', $block_content );
-		$block_content = str_replace( '</a>', '</span></a>', $block_content );
-	}
+	$is_style     = isset( $block['attrs']['className'] ) && mai_has_string( 'is-style-', $block['attrs']['className'] );
+	$is_secondary = $is_style && mai_has_string( 'is-style-secondary', $block['attrs']['className'] );
+	$is_outline   = $is_style && mai_has_string( 'is-style-outline', $block['attrs']['className'] );
+	$is_link      = $is_style && mai_has_string( 'is-style-link', $block['attrs']['className'] );
+	$is_small     = isset( $block['attrs']['className'] ) && mai_has_string( 'button-small', $block['attrs']['className'] );
+	$is_large     = isset( $block['attrs']['className'] ) && mai_has_string( 'button-large', $block['attrs']['className'] );
 
 	// Add button class to the button link.
-	if ( mai_has_string( 'is-style-secondary', $block_content ) ) {
+	if ( $is_secondary ) {
+		$type          = 'secondary';
 		$block_content = str_replace( ' is-style-secondary', '', $block_content );
 		$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link button button-secondary', $block_content );
 
-	} elseif ( mai_has_string( 'is-style-link', $block_content ) ) {
+	} elseif ( $is_link ) {
+		$type          = 'link';
 		$block_content = str_replace( ' is-style-link', '', $block_content );
 		$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link button button-link', $block_content );
 
-	} elseif ( mai_has_string( 'is-style-outline', $block_content ) ) {
+	} elseif ( $is_outline ) {
+		$type          = 'outline';
 		$block_content = str_replace( ' is-style-outline', '', $block_content );
 		$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link button button-outline', $block_content );
-		$colors        = mai_get_default_colors();
 
-		if ( isset( $block['attrs']['textColor'] ) && isset( $colors[ $block['attrs']['textColor'] ] ) ) {
-			if ( mai_is_light_color( $colors[ $block['attrs']['textColor'] ] ) ) {
-				$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link has-light-button-text', $block_content );
-			}
-		}
 	} else {
+		$type          = 'primary';
 		$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link button', $block_content );
 	}
 
-	$has_small  = isset( $block['attrs']['className'] ) && mai_has_string( 'button-small', $block['attrs']['className'] );
-	$has_large  = isset( $block['attrs']['className'] ) && mai_has_string( 'button-large', $block['attrs']['className'] );
-	$has_radius = isset( $block['attrs']['borderRadius'] );
+	if ( $is_small ) {
+		$block_content = str_replace( 'button-small', '', $block_content );
+	}
 
-	if ( $has_small || $has_large || $has_radius ) {
-		$block_content = $has_small ? str_replace( 'button-small', '', $block_content ) : $block_content;
-		$block_content = $has_large ? str_replace( 'button-large', '', $block_content ) : $block_content;
+	if ( $is_large ) {
+		$block_content = str_replace( 'button-large', '', $block_content );
+	}
 
+	$color           = '';
+	$color_name      = '';
+	$background      = '';
+	$background_name = '';
+	$radius          = '';
+
+	if ( isset( $block['attrs']['textColor'] ) ) {
+		$color      = mai_get_color_value( $block['attrs']['textColor'] );
+		$color_name = $block['attrs']['textColor'];
+
+	} elseif ( isset( $block['attrs']['style']['color']['text'] ) ) {
+		$color = mai_get_color_value( $block['attrs']['style']['color']['text'] );
+	}
+
+	if ( isset( $block['attrs']['backgroundColor'] ) ) {
+		$background      = mai_get_color_value( $block['attrs']['backgroundColor'] );
+		$background_name = $block['attrs']['backgroundColor'];
+
+	} elseif ( isset( $block['attrs']['style']['color']['background'] ) ) {
+		$background = mai_get_color_value( $block['attrs']['style']['color']['background'] );
+	}
+
+	if ( isset( $block['attrs']['borderRadius'] ) ) {
+		$radius = mai_get_unit_value( $block['attrs']['borderRadius'] );
+	}
+
+	if ( $color || $background || $radius || $is_small || $is_large ) {
 		$dom     = mai_get_dom_document( $block_content );
+		$wraps   = $dom->getElementsByTagName( 'div' );
 		$buttons = $dom->getElementsByTagName( 'a' );
+
+		if ( $wraps ) {
+			$prefix = ( 'primary' === $type ) ? '--button' : sprintf( '--button-%s', $type );
+
+			foreach ( $wraps as $wrap ) {
+				$style = $wrap->getAttribute( 'style' );
+			}
+
+			if ( '' !== $color ) {
+				$style .= sprintf( '%s-color:%s;', $prefix, $color );
+
+				if ( $is_outline && mai_is_light_color( $color ) ) {
+					// For white or light colored outline buttons, change text dark on hover.
+					$style .= sprintf( '%s-color-hover:%s;', $prefix, 'rgba(0,0,0,0.8)' );
+				}
+			}
+
+			if ( '' !== $background ) {
+				$style .= sprintf( '%s-background:%s;', $prefix, $background );
+				$style .= sprintf( '%s-background-hover:%s;', $prefix, mai_get_color_variant( $background, 'dark', 10 ) );
+			}
+
+			if ( '' !== $radius ) {
+				$style .= sprintf( '--button-border-radius:%s;', $radius );
+			}
+
+			if ( $style ) {
+				$wrap->setAttribute( 'style', trim( $style ) );
+			} else {
+				$wrap->removeAttribute( 'style' );
+			}
+		}
 
 		if ( $buttons ) {
 			foreach ( $buttons as $button ) {
-				if ( $has_small || $has_large ) {
-					$classes = $button->getAttribute( 'class' );
+				$style   = ''; // Clear default inline styles.
+				$classes = $button->getAttribute( 'class' );
+				$classes = str_replace( 'has-text-color', '', $classes );
+				$classes = str_replace( 'has-background', '', $classes );
 
-					if ( $has_small ) {
-						$classes .= ' button-small';
-					}
-
-					if ( $has_large ) {
-						$classes .= ' button-large';
-					}
-
-					$button->setAttribute( 'class', $classes );
+				if ( $color_name ) {
+					$classes = str_replace( sprintf( 'has-%s-color', $color_name ), '', $classes );
 				}
 
-				if ( $has_radius ) {
-					$style = $button->getAttribute( 'style' );
-					$style = str_replace( 'border-radius', '--border-radius', $style );
-
-					$button->setAttribute( 'style', $style );
+				if ( $background_name ) {
+					$classes = str_replace( sprintf( 'has-%s-background', $background_name ), '', $classes );
 				}
+
+				if ( $is_small ) {
+					$classes .= ' button-small';
+				}
+
+				if ( $is_large ) {
+					$classes .= ' button-large';
+				}
+
+				if ( $style ) {
+					$button->setAttribute( 'style', trim( $style ) );
+				} else {
+					$button->removeAttribute( 'style' );
+				}
+
+				$button->setAttribute( 'class', trim( $classes ) );
 			}
 		}
 

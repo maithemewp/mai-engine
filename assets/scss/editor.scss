@@ -16,9 +16,9 @@ html {
 body {
 	min-height: auto;
 	background: var(--color-white);
+
 	--list-style-position: outside;
-	--list-margin-left: var(--spacing-xl);
-	--list-margin-bottom: var(--spacing-lg);
+	--list-padding: 0 0 var(--spacing-lg) var(--spacing-xl); // Adds list indent/spacing without affecting block layout.
 	--list-item-margin-bottom: var(--spacing-xs);
 
 	@include body();
@@ -151,7 +151,13 @@ p {
 .wp-block-button__link,
 .wp-block .button {
 
-	@include button();
+	@include button(true);
+
+	// Default block style preview.
+	.is-style-default & {
+
+		@include button(true);
+	}
 
 	&:active,
 	&:visited {
@@ -160,17 +166,17 @@ p {
 
 	.is-style-secondary & {
 
-		@include button-style("secondary");
+		@include button-style("secondary", true);
 	}
 
 	.is-style-link & {
 
-		@include button-style("link");
+		@include button-style("link", true);
 	}
 
 	.is-style-outline & {
 
-		@include button-style("outline");
+		@include button-style("outline", true);
 	}
 }
 

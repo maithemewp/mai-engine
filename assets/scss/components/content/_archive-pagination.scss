@@ -1,4 +1,7 @@
-.archive-pagination {
+.archive-pagination,
+.woocommerce-pagination {
+	--button-padding: var(--pagination-link-padding, 1em);
+
 	width: 100%;
 	padding: var(--pagination-padding, var(--spacing-xl) 0);
 
@@ -10,9 +13,5 @@
 
 	li {
 		display: inline-block;
-	}
-
-	a {
-		padding: var(--pagination-link-padding, 1em);
 	}
 }

@@ -179,13 +179,68 @@ p.demo_store {
 }
 
 ul.products {
+	--entry-max-width: 100%;
 	--list-style-type: none;
+
+	@include mq(false, xs) {
+		--columns: var(--columns-xs);
+	}
+
+	@include mq(xs, sm) {
+		--columns: var(--columns-sm);
+	}
+
+	@include mq(sm, md) {
+		--columns: var(--columns-md);
+	}
+
+	@include mq(md) {
+		--columns: var(--columns-lg);
+	}
+
+	display: grid;
+	grid-gap: var(--spacing-xl) var(--spacing-lg);
+	grid-template-columns: repeat(var(--columns, 1), 1fr);
+
+	.woocommerce &::before,
+	.woocommerce-page &::before {
+		display: none;
+	}
+
+	.price {
+		margin-top: auto;
+	}
+}
+
+li.product {
+	float: none !important;
+	width: var(--product-width, 100%) !important;
+	margin: var(--product-margin, 0) !important;
+	padding: var(--product-padding, 0) !important;
+	border: var(--product-border, 0);
+	border-radius: var(--product-border-radius, 0);
+	box-shadow: var(--product-box-shadow, 0);
+	transition: none;
+
+	.button {
+
+		@include button-style(secondary);
+		@include button-style(small);
+	}
+
+	&::after {
+		display: inline-flex;
+		font-size: 0;
+	}
 }
 
 .woocommerce-LoopProduct-link {
 	--link-text-decoration: none;
 	--link-text-decoration-hover: none;
 
+	display: flex;
+	flex: 1;
+	flex-direction: column;
 	width: 100%;
 
 	&:hover,
@@ -206,24 +261,21 @@ ul.products {
 	transition: var(--transition);
 }
 
-.add_to_cart_button {
-	margin-top: auto;
-	transition: none;
+.woocommerce-pagination {
 
-	@include button();
-	@include button-style(secondary);
-	@include button-style(small);
+	a {
 
-	&::after {
-		display: inline-flex;
-		font-size: 0;
+		@include button;
+		@include button-style("secondary");
+		@include button-style("small");
 	}
-}
 
-.button.product_type_simple {
-	margin-bottom: 1em;
+	.current {
 
-	@include button-style(small);
+		@include button;
+		@include button-style("primary");
+		@include button-style("small");
+	}
 }
 
 .added,
@@ -464,6 +516,10 @@ form.cart {
 .product_meta {
 	margin-bottom: var(--spacing-xl);
 	font-size: var(--font-size-sm);
+
+	> span {
+		display: block;
+	}
 }
 
 .comment-form-rating {

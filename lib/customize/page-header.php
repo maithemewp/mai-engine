@@ -98,6 +98,40 @@ function mai_page_header_customizer_settings() {
 		$handle,
 		[
 			'type'     => 'radio-buttonset',
+			'settings' => 'page-header-content-width',
+			'section'  => $section,
+			'label'    => __( 'Content Width', 'mai-engine' ),
+			'default'  => $defaults['content-width'],
+			'choices'  => [
+				'xs' => __( 'XS', 'mai-engine' ),
+				'sm' => __( 'S', 'mai-engine' ),
+				'md' => __( 'M', 'mai-engine' ),
+				'lg' => __( 'L', 'mai-engine' ),
+				'xl' => __( 'XL', 'mai-engine' ),
+			],
+		]
+	);
+
+	\Kirki::add_field(
+		$handle,
+		[
+			'type'     => 'radio-buttonset',
+			'settings' => 'page-header-content-align',
+			'section'  => $section,
+			'label'    => __( 'Content Alignment', 'mai-engine' ),
+			'default'  => $defaults['content-align'],
+			'choices'  => [
+				'start'  => __( 'Start', 'mai-engine' ),
+				'center' => __( 'Center', 'mai-engine' ),
+				'end'    => __( 'End', 'mai-engine' ),
+			],
+		]
+	);
+
+	\Kirki::add_field(
+		$handle,
+		[
+			'type'     => 'radio-buttonset',
 			'settings' => 'page-header-text-align',
 			'section'  => $section,
 			'label'    => __( 'Text Alignment', 'mai-engine' ),

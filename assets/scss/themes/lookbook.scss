@@ -8,7 +8,6 @@
 	--button-font-size: 0.7em;
 	--button-font-weight: var(--body-font-weight-bold);
 	--button-text-transform: uppercase;
-	--button-overlay-color: var(--color-white);
 	--link-color: var(--color-body);
 	--link-color-hover: var(--color-body);
 	--link-text-decoration-hover: none;
@@ -62,12 +61,10 @@
 
 .header-left {
 	--header-section-justify-content: flex-end;
-	--menu-justify-content: flex-end;
 }
 
 .header-right {
 	--header-section-justify-content: flex-start;
-	--menu-justify-content: flex-start;
 }
 
 .menu-item-link span {

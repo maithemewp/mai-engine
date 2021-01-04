@@ -41,16 +41,22 @@ function mai_register_icon_block() {
  * Callback function to render the Icon block.
  *
  * @since 0.1.0
+ * @param array  $block      The block settings and attributes.
+ * @param string $content    The block inner HTML (empty).
+ * @param bool   $is_preview True during AJAX preview.
+ * @param int    $post_id    The post ID this block is saved to.
  *
  * @return void
  */
-function mai_do_icon_block() {
+function mai_do_icon_block( $block, $content = '', $is_preview = false, $post_id = 0 ) {
 	$args     = [];
 	$settings = array_keys( mai_get_icon_default_args() );
 
 	foreach ( $settings as $setting ) {
 		$args[ $setting ] = get_field( $setting );
 	}
+
+	$args['class'] = isset( $block['className'] ) && ! empty( $block['className'] ) ? sanitize_html_class( $block['className'] ) : '';
 
 	// Swap for brand.
 	if ( 'brands' === $args['style'] ) {

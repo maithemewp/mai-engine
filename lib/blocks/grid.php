@@ -1046,6 +1046,21 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
+		'mai_grid_block_custom_content'            => [
+			'name'       => 'custom_content',
+			'label'      => esc_html__( 'Custom Content', 'mai-engine' ),
+			'block'      => [ 'post', 'term', 'user' ],
+			'type'       => 'textarea',
+			'sanitize'   => 'wp_kses_post',
+			'default'    => '',
+			'conditions' => [
+				[
+					'field'    => 'mai_grid_block_show',
+					'operator' => '==',
+					'value'    => 'custom_content',
+				],
+			],
+		],
 		'mai_grid_block_content_limit'            => [
 			'name'       => 'content_limit',
 			'label'      => esc_html__( 'Content Limit', 'mai-engine' ),
