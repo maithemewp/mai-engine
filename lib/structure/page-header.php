@@ -383,7 +383,9 @@ function mai_get_page_header_image_id() {
 		$image_id = mai_get_config( 'settings' )['page-header']['image'];
 	}
 
-	return apply_filters( 'mai_page_header_image', $image_id );
+	$image_id = apply_filters( 'mai_page_header_image', $image_id );
+
+	return $image_id;
 }
 
 /**
