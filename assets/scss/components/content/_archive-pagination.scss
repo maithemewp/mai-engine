@@ -1,5 +1,6 @@
 .archive-pagination,
 .woocommerce-pagination {
+	--wrap-width: 100%;
 	--button-padding: var(--pagination-link-padding, 1em);
 
 	width: 100%;
@@ -13,5 +14,24 @@
 
 	li {
 		display: inline-block;
+	}
+}
+
+.archive-pagination-prev-next-wrap {
+	display: grid;
+	grid-gap: var(--spacing-md);
+	grid-template-columns: 1fr 1fr;
+}
+
+.archive-pagination-prev-next {
+
+	.pagination-previous {
+		grid-column: 1;
+		text-align: var(--pagination-previous-text-align, end);
+	}
+
+	.pagination-next {
+		grid-column: 2;
+		text-align: var(--pagination-next-text-align, start);
 	}
 }
