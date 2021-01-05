@@ -813,7 +813,7 @@ function mai_add_content_archive_settings() {
 }
 
 /**
- * Adds Posts Per Page option to Customizer > Theme Settings > Content Archives > Default.
+ * Adds Posts Per Page option to Customizer > Theme Settings > Content Archives > Post.
  * Saves/manages WP core option.
  *
  * @since 0.1.0
