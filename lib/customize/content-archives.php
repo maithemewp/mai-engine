@@ -651,6 +651,17 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			],
 		],
 		[
+			'settings'    => 'posts_nav',
+			'label'       => __( 'Entry Pagination Type', 'mai-engine' ),
+			'type'        => 'radio-buttonset',
+			'sanitize'    => 'esc_html',
+			'default'     => $defaults['posts_nav'],
+			'choices'     => [
+				'numeric'   => __( 'Numeric', 'mai-engine' ),
+				'prev-next' => __( 'Previous / Next', 'mai-engine' ),
+			],
+		],
+		[
 			'settings'    => 'posts_per_page',
 			'label'       => __( 'Posts Per Page', 'mai-engine' ),
 			'description' => __( 'Sticky posts are not included in count.', 'mai-engine' ),
