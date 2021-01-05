@@ -580,6 +580,7 @@ return [
 				'column_gap'                   => 'xl',
 				'row_gap'                      => 'xl',
 				'posts_per_page'               => '24',
+				'posts_nav'                    => 'numeric',
 				'page-header-image'            => '',
 				'page-header-background-color' => '',
 				'page-header-overlay-opacity'  => '',
