@@ -13,7 +13,7 @@ add_filter( 'genesis_pre_get_option_posts_nav', 'mai_genesis_posts_nav' );
 /**
  * Uses mai-engine config/setting for posts_nav.
  *
- * @since TBD
+ * @since 2.9.1
  *
  * @param string $value The existing option value.
  *
@@ -58,7 +58,7 @@ add_filter( 'genesis_attr_archive-pagination', 'mai_archive_pagination_type' );
 /**
  * Adds archive pagination type class.
  *
- * @since TBD
+ * @since 2.9.1
  *
  * @return array
  */
@@ -150,7 +150,7 @@ add_filter( 'genesis_markup_pagination-next_content', 'mai_adjacent_entry', 10, 
 /**
  * Adds classes to adjacent entry nav elements.
  *
- * @since TBD
+ * @since 2.9.1
  *
  * @param string $content Content being passed through Markup API.
  * @param array  $args  Array with markup arguments.

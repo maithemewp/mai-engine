@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.9.1 (1/5/21)
+* Added: Entry Pagination Type setting to Content Archives panel in the Customizer to choose whether to use numeric or previous/next pagination on archives.
+* Changed: Restructured pagination CSS to be more lightweight.
+
 ## 2.9.0 (1/4/21)
 * Added: Page header content width setting to change the max width of the content in the page header.
 * Added: Header left and right menu alignment settings. Now you can align left, right, or center, independently, without extra code.
