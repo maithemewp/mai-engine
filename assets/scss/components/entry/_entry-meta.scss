@@ -4,6 +4,10 @@
 	white-space: pre-wrap; // Preserve white-space (spaces) in text/content.
 	text-align: var(--entry-meta-text-align, start);
 
+	> * {
+		vertical-align: middle;
+	}
+
 	&:last-child {
 		margin: 0;
 	}
