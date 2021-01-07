@@ -138,7 +138,7 @@ function mai_do_entries_open( $args ) {
 		$attributes['style'] .= sprintf( '--border-radius:%s;', mai_get_unit_value( $args['border_radius'] ) );
 	}
 
-	$attributes['style'] .= sprintf( '--entry-meta-justify-content:%s;', mai_get_flex_align( $args['align_text'] ) );
+	$attributes['style'] .= sprintf( '--entry-meta-text-align:%s;', mai_get_align_text( $args['align_text'] ) );
 
 	genesis_markup(
 		[
