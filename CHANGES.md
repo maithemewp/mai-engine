@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.9.2 (1/7/21)
+* Added: Custom content option to Hide Elements metabox.
+* Added: Links to shortcode documentation related to Header/Footer Meta fields.
+* Added: Support for search block button inside setting.
+* Added: `mai_get_option{$name}` filter for developers to manipulate option values.
+* Changed: Header/Footer Meta text fields are now larger textarea fields for easier editing.
+* Changed: Updated pot file for translations.
+* Fixed: Entry meta not preserving whitespace in between elements.
+* Fixed: Anchor link scroll margin top now uses shrunk header height if applicable.
+* Fixed: Page header image filter not updating cached variable correctly.
+* Fixed: WooCommerce cart styling when cross-sells are displaying.
+
 ## 2.9.1 (1/5/21)
 * Added: Entry Pagination Type setting to Content Archives panel in the Customizer to choose whether to use numeric or previous/next pagination on archives.
 * Changed: Restructured pagination CSS to be more lightweight.

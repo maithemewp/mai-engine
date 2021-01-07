@@ -1132,7 +1132,7 @@ function mai_get_admin_post_type() {
 /**
  * Gets the header/footer meta setting description.
  *
- * @since TBD
+ * @since 2.9.2
  *
  * @return string
  */
