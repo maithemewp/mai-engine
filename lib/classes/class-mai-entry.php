@@ -1046,6 +1046,10 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_custom_content() {
+		if ( ( 'single' === $this->context ) && mai_is_element_hidden( 'custom_content', $this->id ) ) {
+			return;
+		}
+
 		if ( ! $this->args['custom_content'] ) {
 			return;
 		}
