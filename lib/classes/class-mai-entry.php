@@ -1085,7 +1085,7 @@ class Mai_Entry {
 			return;
 		}
 
-		// Run shortcodes.
+		$header_meta = wp_kses_post( $this->args['header_meta'] );
 		$header_meta = do_shortcode( $this->args['header_meta'] );
 
 		if ( ! $header_meta ) {
@@ -1126,7 +1126,7 @@ class Mai_Entry {
 			return;
 		}
 
-		// Run shortcodes.
+		$footer_meta = wp_kses_post( $this->args['footer_meta'] );
 		$footer_meta = do_shortcode( $this->args['footer_meta'] );
 
 		if ( ! $footer_meta ) {
