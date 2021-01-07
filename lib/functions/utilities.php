@@ -312,8 +312,9 @@ function mai_get_options( $use_cache = true ) {
  */
 function mai_get_option( $option, $default = false, $use_cache = true ) {
 	$options = mai_get_options( $use_cache );
+	$value   = isset( $options[ $option ] ) ? $options[ $option ] : $default;
 
-	return isset( $options[ $option ] ) ? $options[ $option ] : $default;
+	return apply_filters( "mai_get_option_{$option}", $value );
 }
 
 /**
