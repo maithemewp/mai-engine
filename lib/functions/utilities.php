@@ -312,8 +312,9 @@ function mai_get_options( $use_cache = true ) {
  */
 function mai_get_option( $option, $default = false, $use_cache = true ) {
 	$options = mai_get_options( $use_cache );
+	$value   = isset( $options[ $option ] ) ? $options[ $option ] : $default;
 
-	return isset( $options[ $option ] ) ? $options[ $option ] : $default;
+	return apply_filters( "mai_get_option_{$option}", $value );
 }
 
 /**
@@ -1126,4 +1127,20 @@ function mai_get_admin_post_type() {
 	}
 
 	return null;
+}
+
+/**
+ * Gets the header/footer meta setting description.
+ *
+ * @since 2.9.2
+ *
+ * @return string
+ */
+function mai_get_entry_meta_setting_description() {
+	return sprintf( '%s <a href="https://studiopress.github.io/genesis/basics/genesis-shortcodes/" target="_blank" rel="noopener nofollow">%s</a> %s <a href="https://docs.bizbudding.com/kb/shortcodes/" target="_blank" rel="noopener nofollow">%s</a>.',
+		__( 'View available shortcodes from', 'mai-engine' ),
+		__( 'Genesis', 'mai-engine' ),
+		__( 'and', 'mai-engine' ),
+		__( 'Mai Theme', 'mai-engine' )
+	);
 }

@@ -1,15 +1,15 @@
-# Copyright (C) 2020 BizBudding
+# Copyright (C) 2021 BizBudding
 # This file is distributed under the same license as the Mai Engine plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.8.0\n"
+"Project-Id-Version: Mai Engine 2.9.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-12-29T19:03:15+00:00\n"
+"POT-Creation-Date: 2021-01-06T21:13:57+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -133,7 +133,7 @@ msgstr ""
 
 #: lib/blocks/icon.php:175
 #: lib/customize/single-content.php:162
-#: lib/customize/content-archives.php:709
+#: lib/customize/content-archives.php:720
 #: lib/customize/page-header.php:202
 msgid "Light"
 msgstr ""
@@ -671,7 +671,7 @@ msgstr ""
 #: lib/functions/utilities.php:460
 #: lib/customize/single-content.php:161
 #: lib/customize/content-archives.php:359
-#: lib/customize/content-archives.php:708
+#: lib/customize/content-archives.php:719
 #: assets/js/blocks/layout-settings.js:616
 #: assets/js/min/blocks.js:1254
 msgid "Default"
@@ -1810,13 +1810,13 @@ msgstr ""
 
 #: lib/functions/plugins.php:161
 #: lib/functions/plugins.php:292
-#: lib/structure/pagination.php:49
+#: lib/structure/pagination.php:200
 msgid "← Previous"
 msgstr ""
 
 #: lib/functions/plugins.php:162
 #: lib/functions/plugins.php:317
-#: lib/structure/pagination.php:61
+#: lib/structure/pagination.php:212
 msgid "Next →"
 msgstr ""
 
@@ -2001,19 +2001,19 @@ msgstr ""
 msgid "Skip to site footer"
 msgstr ""
 
-#: lib/structure/page-header.php:407
+#: lib/structure/page-header.php:409
 msgid "Latest Posts"
 msgstr ""
 
-#: lib/structure/page-header.php:440
+#: lib/structure/page-header.php:442
 msgid "Search results for: "
 msgstr ""
 
-#: lib/structure/page-header.php:449
+#: lib/structure/page-header.php:451
 msgid "Archives for "
 msgstr ""
 
-#: lib/structure/page-header.php:461
+#: lib/structure/page-header.php:463
 msgid "Not found, error 404"
 msgstr ""
 
@@ -2035,7 +2035,7 @@ msgid "Show/hide and re-order entry elements. Click \"Toggle Hooks\" to show Gen
 msgstr ""
 
 #: lib/customize/single-content.php:120
-#: lib/customize/content-archives.php:671
+#: lib/customize/content-archives.php:682
 msgid "Page Header default image"
 msgstr ""
 
@@ -2044,30 +2044,30 @@ msgid "Use featured image as page header image"
 msgstr ""
 
 #: lib/customize/single-content.php:137
-#: lib/customize/content-archives.php:681
+#: lib/customize/content-archives.php:692
 #: lib/customize/page-header.php:168
 msgid "Background/overlay color"
 msgstr ""
 
 #: lib/customize/single-content.php:144
-#: lib/customize/content-archives.php:688
+#: lib/customize/content-archives.php:699
 #: lib/customize/page-header.php:182
 msgid "Overlay opacity"
 msgstr ""
 
 #: lib/customize/single-content.php:145
-#: lib/customize/content-archives.php:689
+#: lib/customize/content-archives.php:700
 #: lib/customize/page-header.php:183
 msgid "The background color opacity when page header has an image. Use 0 for none, and 1 for theme default."
 msgstr ""
 
 #: lib/customize/single-content.php:157
-#: lib/customize/content-archives.php:704
+#: lib/customize/content-archives.php:715
 msgid "Page header text color"
 msgstr ""
 
 #: lib/customize/single-content.php:163
-#: lib/customize/content-archives.php:710
+#: lib/customize/content-archives.php:721
 #: lib/customize/page-header.php:203
 msgid "Dark"
 msgstr ""
@@ -2197,11 +2197,23 @@ msgid "Images Alternating"
 msgstr ""
 
 #: lib/customize/content-archives.php:655
-#: lib/customize/content-archives.php:831
+msgid "Entry Pagination Type"
+msgstr ""
+
+#: lib/customize/content-archives.php:660
+msgid "Numeric"
+msgstr ""
+
+#: lib/customize/content-archives.php:661
+msgid "Previous / Next"
+msgstr ""
+
+#: lib/customize/content-archives.php:666
+#: lib/customize/content-archives.php:842
 msgid "Posts Per Page"
 msgstr ""
 
-#: lib/customize/content-archives.php:656
+#: lib/customize/content-archives.php:667
 msgid "Sticky posts are not included in count."
 msgstr ""
 

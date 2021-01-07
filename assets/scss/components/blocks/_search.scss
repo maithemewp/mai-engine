@@ -14,3 +14,14 @@
 		flex: 1 1 200px;
 	}
 }
+
+.wp-block-search__inside-wrapper {
+
+	.wp-block-search__input {
+		padding-right: calc(var(--spacing-lg) * -1);
+	}
+
+	.wp-block-search__button {
+		margin-left: calc(var(--spacing-lg) * -1);
+	}
+}

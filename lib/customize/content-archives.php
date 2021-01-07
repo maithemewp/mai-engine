@@ -259,7 +259,8 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 		[
 			'settings'        => 'header_meta',
 			'label'           => __( 'Header Meta', 'mai-engine' ),
-			'type'            => 'text',
+			'description'     => mai_get_entry_meta_setting_description(),
+			'type'            => 'textarea',
 			'sanitize'        => 'wp_kses_post',
 			'default'         => $defaults['header_meta'],
 			'active_callback' => [
@@ -326,7 +327,8 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 		[
 			'settings'        => 'footer_meta',
 			'label'           => __( 'Footer Meta', 'mai-engine' ),
-			'type'            => 'text',
+			'description'     => mai_get_entry_meta_setting_description(),
+			'type'            => 'textarea',
 			'sanitize'        => 'wp_kses_post',
 			'default'         => $defaults['footer_meta'],
 			'active_callback' => [
@@ -813,7 +815,7 @@ function mai_add_content_archive_settings() {
 }
 
 /**
- * Adds Posts Per Page option to Customizer > Theme Settings > Content Archives > Default.
+ * Adds Posts Per Page option to Customizer > Theme Settings > Content Archives > Post.
  * Saves/manages WP core option.
  *
  * @since 0.1.0
