@@ -149,7 +149,7 @@ h6.has-background {
 .entry-single {
 
 	.entry-meta-before-content {
-		--entry-meta-justify-content: center;
+		--entry-meta-text-align: center;
 		margin-bottom: var(--spacing-sm);
 	}
 
@@ -162,7 +162,7 @@ h6.has-background {
 .entries-archive.has-image-full {
 
 	.entry-meta-before-content {
-		--entry-meta-justify-content: center;
+		--entry-meta-text-align: center;
 	}
 
 	.entry-title {

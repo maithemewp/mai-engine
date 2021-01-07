@@ -102,8 +102,8 @@ class Mai_Entry {
 		$this->id          = $this->get_id();
 		$this->url         = $this->get_url();
 		$this->breakpoints = mai_get_breakpoints();
-		$this->link_entry  = ( 'single' !== $this->context );
-		$this->link_entry  = apply_filters( 'mai_link_entry', (bool)  $this->link_entry, $this->args, $this->entry );
+		$link_entry        = ( 'single' !== $this->context );
+		$this->link_entry  = apply_filters( 'mai_link_entry', (bool) $link_entry, $this->args, $this->entry );
 		$this->image_size  = $this->get_image_size();
 		$this->image_id    = $this->get_image_id();
 	}
@@ -1046,6 +1046,10 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_custom_content() {
+		if ( ( 'single' === $this->context ) && mai_is_element_hidden( 'custom_content', $this->id ) ) {
+			return;
+		}
+
 		if ( ! $this->args['custom_content'] ) {
 			return;
 		}
@@ -1085,7 +1089,7 @@ class Mai_Entry {
 			return;
 		}
 
-		// Run shortcodes.
+		$header_meta = wp_kses_post( $this->args['header_meta'] );
 		$header_meta = do_shortcode( $this->args['header_meta'] );
 
 		if ( ! $header_meta ) {
@@ -1126,7 +1130,7 @@ class Mai_Entry {
 			return;
 		}
 
-		// Run shortcodes.
+		$footer_meta = wp_kses_post( $this->args['footer_meta'] );
 		$footer_meta = do_shortcode( $this->args['footer_meta'] );
 
 		if ( ! $footer_meta ) {

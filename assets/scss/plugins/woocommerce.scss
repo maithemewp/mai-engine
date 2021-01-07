@@ -180,6 +180,7 @@ p.demo_store {
 
 ul.products {
 	--entry-max-width: 100%;
+	--list-margin-left: 0;
 	--list-style-type: none;
 
 	@include mq(false, xs) {
@@ -764,11 +765,6 @@ form.cart {
 
 .cart-collaterals {
 	margin: var(--column-gap) 0;
-
-	@include mq(lg) {
-		display: flex;
-		justify-content: flex-end;
-	}
 }
 
 .cart_totals {

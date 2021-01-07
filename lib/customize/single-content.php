@@ -70,7 +70,8 @@ function mai_get_single_content_settings( $name = 'post' ) {
 		[
 			'settings'        => 'header_meta',
 			'label'           => __( 'Header Meta', 'mai-engine' ),
-			'type'            => 'text',
+			'description'     => mai_get_entry_meta_setting_description(),
+			'type'            => 'textarea',
 			'sanitize'        => 'wp_kses_post',
 			'default'         => $defaults['header_meta'],
 			'active_callback' => [
@@ -84,7 +85,8 @@ function mai_get_single_content_settings( $name = 'post' ) {
 		[
 			'settings'        => 'footer_meta',
 			'label'           => __( 'Footer Meta', 'mai-engine' ),
-			'type'            => 'text',
+			'description'     => mai_get_entry_meta_setting_description(),
+			'type'            => 'textarea',
 			'sanitize'        => 'wp_kses_post',
 			'default'         => $defaults['footer_meta'],
 			'active_callback' => [
