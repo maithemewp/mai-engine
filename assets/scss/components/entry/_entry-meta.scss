@@ -5,7 +5,7 @@
 	justify-content: var(--entry-meta-justify-content, flex-start);
 	margin: var(--entry-meta-margin, 0 0 var(--spacing-xl) 0);
 	font-size: var(--entry-meta-font-size, var(--font-size-sm));
-	white-space: pre-wrap; // Preserve white-space (spaces) in text/content.
+	white-space: pre; // Preserve white-space (spaces) in text/content.
 
 	&:last-child {
 		margin: 0;
