@@ -1034,10 +1034,13 @@ function mai_get_grid_block_settings() {
 			'name'       => 'header_meta',
 			'label'      => esc_html__( 'Header Meta', 'mai-engine' ),
 			'block'      => [ 'post', 'term', 'user' ],
-			'type'       => 'text',
+			'type'       => 'textarea',
 			'sanitize'   => 'wp_kses_post',
 			// TODO: this should be different, or empty depending on the post type?
 			'default'    => '[post_date] [post_author_posts_link before="by "]',
+			'atts'       => [
+				'rows' => 3,
+			],
 			'conditions' => [
 				[
 					'field'    => 'mai_grid_block_show',
@@ -1053,6 +1056,9 @@ function mai_get_grid_block_settings() {
 			'type'       => 'textarea',
 			'sanitize'   => 'wp_kses_post',
 			'default'    => '',
+			'atts'       => [
+				'rows' => 3,
+			],
 			'conditions' => [
 				[
 					'field'    => 'mai_grid_block_show',
@@ -1108,10 +1114,13 @@ function mai_get_grid_block_settings() {
 			'name'       => 'footer_meta',
 			'label'      => esc_html__( 'Footer Meta', 'mai-engine' ),
 			'block'      => [ 'post', 'term', 'user' ],
-			'type'       => 'text',
+			'type'       => 'textarea',
 			'sanitize'   => 'wp_kses_post',
 			// TODO: this should be different, or empty depending on the post type?
 			'default'    => '[post_categories]',
+			'atts'       => [
+				'rows' => 3,
+			],
 			'conditions' => [
 				[
 					'field'    => 'mai_grid_block_show',
