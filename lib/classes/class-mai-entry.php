@@ -102,8 +102,7 @@ class Mai_Entry {
 		$this->id          = $this->get_id();
 		$this->url         = $this->get_url();
 		$this->breakpoints = mai_get_breakpoints();
-		$link_entry        = ( 'single' !== $this->context );
-		$this->link_entry  = apply_filters( 'mai_link_entry', (bool) $link_entry, $this->args, $this->entry );
+		$this->link_entry  = apply_filters( 'mai_link_entry', (bool) ! $this->args['disable_entry_link'], $this->args, $this->entry );
 		$this->image_size  = $this->get_image_size();
 		$this->image_id    = $this->get_image_id();
 	}
@@ -136,6 +135,13 @@ class Mai_Entry {
 		$atts = [
 			'class' => sprintf( 'entry entry-%s', 'block' === $this->context ? 'grid' : $this->context ),
 		];
+
+		// Add entry link class.
+		if ( $this->link_entry ) {
+			$atts['class'] .= ' has-entry-link';
+		} else {
+			$atts['class'] .= ' no-entry-link';
+		}
 
 		// Get elements without Genesis hooks.
 		$elements = [];
@@ -230,9 +236,32 @@ class Mai_Entry {
 
 		}
 
-		// Overlay link.
-		if ( $this->link_entry && ( 'background' === $this->args['image_position'] ) ) {
-			printf( '<a href="%s" class="entry-overlay"></a>', $this->url );
+		// Overlay.
+		if ( isset( $this->args['image_position'] ) && ( 'background' === $this->args['image_position'] ) ) {
+			$overlay_wrap = 'span';
+			$overlay_atts = [
+				'class' => 'entry-overlay',
+			];
+
+			if ( $this->link_entry ) {
+				$overlay_wrap           = 'a';
+				$overlay_atts['href']   = $this->url;
+				$overlay_atts['class'] .= ' entry-overlay-link';
+			}
+
+			genesis_markup(
+				[
+					'open'    => "<{$overlay_wrap} %s>",
+					'close'   => "</{$overlay_wrap}>",
+					'context' => 'entry-overlay',
+					'echo'    => true,
+					'atts'    => $overlay_atts,
+					'params'  => [
+						'args'  => $this->args,
+						'entry' => $this->entry,
+					],
+				]
+			);
 		}
 
 		$outside_elements = [];

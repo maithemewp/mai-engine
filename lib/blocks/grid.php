@@ -2386,5 +2386,16 @@ function mai_get_grid_block_settings() {
 				],
 			],
 		],
+		'mai_grid_block_disable_entry_link'             => [
+			'name'       => 'disable_entry_link',
+			'label'      => esc_html__( 'Disable', 'mai-engine' ),
+			'block'      => [ 'post', 'term', 'user' ],
+			'type'       => 'true_false',
+			'sanitize'   => 'mai_sanitize_bool',
+			'default'    => '',
+			'atts'       => [
+				'message' => esc_html__( 'Disable entry links', 'mai-engine' ),
+			],
+		],
 	];
 }

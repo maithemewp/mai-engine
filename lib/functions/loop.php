@@ -243,6 +243,9 @@ function mai_get_template_args() {
 		}
 	}
 
+	// Disable entry link on single.
+	$args['disable_entry_link'] = ( 'single' === $context );
+
 	// Allow devs to filter.
 	$args = apply_filters( 'mai_template_args', $args, $context, $name );
 
