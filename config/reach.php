@@ -48,6 +48,7 @@ return [
 	'plugins'       => [
 		[
 			'name'  => 'Genesis eNews Extended',
+			'host'  => 'wordpress',
 			'slug'  => 'genesis-enews-extended/plugin.php',
 			'uri'   => 'https://wordpress.org/plugins/genesis-enews-extended/',
 			'demos' => [ 'agency', 'podcast' ],
