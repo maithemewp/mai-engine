@@ -205,3 +205,34 @@ function mai_price_shortcode() {
 
 	return $product->get_price_html();
 }
+
+add_filter( 'genesis_post_terms_shortcode', 'mai_post_terms_shortcode_classes', 10, 3 );
+/**
+ * Adds taxonomy name as class to entry-terms wrap.
+ *
+ * @since TBD
+ *
+ * @param string $output The rendered HTML.
+ * @param array $terms   The term link HTML.
+ * @param array $atts    The shortcode attributes.
+ *
+ * @return string
+ */
+function mai_post_terms_shortcode_classes( $output, $terms, $atts ) {
+	if ( ! $output ) {
+		return $output;
+	}
+
+	if ( ! ( isset( $atts['taxonomy'] ) || $atts['taxonomy'] ) ) {
+		return $output;
+	}
+
+	$dom     = mai_get_dom_document( $output );
+	$first   = mai_get_dom_first_child( $dom );
+	$classes = $first->getAttribute( 'class' );
+	$classes = mai_add_classes( sprintf( 'entry-terms-%s', sanitize_html_class( $atts['taxonomy'] ) ), $classes );
+	$first->setAttribute( 'class', $classes );
+	$output  = trim( $dom->saveHTML() );
+
+	return $output;
+}
