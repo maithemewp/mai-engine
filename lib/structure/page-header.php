@@ -518,12 +518,9 @@ function mai_get_page_header_description() {
 		$description = '';
 
 	} elseif ( is_author() ) {
-		$description = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
+		$description = get_the_author_meta( 'intro_text', (int) get_query_var( 'author' ) );
 		$description = apply_filters( 'genesis_author_intro_text_output', $description ? $description : '' );
 
-		if ( ! $description ) {
-			$description = get_the_author_meta( 'display_name', (int) get_query_var( 'author' ) );
-		}
 	} elseif ( is_date() ) {
 
 		$description = '';
