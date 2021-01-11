@@ -207,6 +207,29 @@ function mai_remove_genesis_default_widget_areas() {
 	remove_action( 'genesis_setup', 'genesis_register_default_widget_areas' );
 }
 
+add_filter( 'genesis_theme_settings_menu_ops', 'mai_genesis_theme_settings_menu_ops' );
+/**
+ * Makes room for our Mai Theme admin menu.
+ * These only worked when the value was a string.
+ *
+ * @since TBD
+ *
+ * @param array $options The existing options from Genesis.
+ *
+ * @return array
+ */
+function mai_genesis_theme_settings_menu_ops( $options ) {
+	if ( isset( $options['main_menu']['sep']['sep_position'] ) ) {
+		$options['main_menu']['sep']['sep_position'] = '58.994';
+	}
+
+	if ( isset( $options['main_menu']['position'] ) ) {
+		$options['main_menu']['position'] = '58.996';
+	}
+
+	return $options;
+}
+
 /**
  * Load default favicon.
  *
