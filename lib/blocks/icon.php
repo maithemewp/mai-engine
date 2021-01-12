@@ -181,7 +181,7 @@ function mai_register_icon_field_group() {
 				[
 					'key'               => 'mai_icon_choices',
 					'name'              => 'icon',
-					'label'             => esc_html__( 'Icon', 'mai-engine' ),
+					'label'             => esc_html__( 'Icon', 'mai-engine' ) . sprintf( ' (%s <a href="https://fontawesome.com/icons?d=gallery">Font Awesome</a>)', __( 'full search via', 'mai-engine' ) ),
 					'type'              => 'select',
 					'default_value'     => $defaults['icon'],
 					'multiple'          => 0,
