@@ -48,6 +48,7 @@
 	text-align: var(--button-text-align, center);
 	text-transform: var(--button-text-transform, none);
 	text-decoration: var(--button-text-decoration, none);
+	word-break: var(--button-word-break, normal);
 	overflow-wrap: var(--button-overflow-wrap, break-word);
 	background: var(--button-background, var(--color-primary));
 	border: var(--button-border, 0);
