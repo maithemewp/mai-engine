@@ -435,3 +435,22 @@ function mai_get_cart_total() {
 	$total = $total ?: '';
 	return sprintf( '<span class="mai-cart-total-wrap is-circle"><span class="mai-cart-total">%s</span></span>', $total );
 }
+
+/**
+ * Removes genesis meta from all course content.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+add_action( 'genesis_meta', 'mai_learndash_remove_meta' );
+function mai_learndash_remove_meta() {
+	if ( ! class_exists( 'SFWD_LMS' ) ) {
+		return;
+	}
+	$learndash_cpts = [ 'sfwd-courses', 'sfwd-lessons', 'sfwd-quiz', 'sfwd-topic', 'sfwd-certificates' ];
+	foreach ( $learndash_cpts as $cpt ) {
+		remove_post_type_support( $cpt, 'genesis-entry-meta-before-content' );
+		remove_post_type_support( $cpt, 'genesis-entry-meta-after-content' );
+	}
+}
