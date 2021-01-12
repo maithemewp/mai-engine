@@ -21,8 +21,7 @@
 function mai_get_content_archive_settings( $name = 'post' ) {
 	$defaults = mai_get_config( 'settings' )['content-archives'];
 	$defaults = isset( $defaults[ $name ] ) ? $defaults[ $name ] : $defaults[ 'post' ];
-
-	return [
+	$settings = [
 		[
 			'settings'    => 'show',
 			'label'       => __( 'Show', 'mai-engine' ),
@@ -725,6 +724,8 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			'active_callback' => 'mai_has_page_header_support_callback',
 		],
 	];
+
+	return apply_filters( 'mai_content_archive_settings', $settings, $name );
 }
 
 add_action( 'init', 'mai_add_content_archive_settings' );
