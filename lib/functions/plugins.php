@@ -436,20 +436,54 @@ function mai_get_cart_total() {
 	return sprintf( '<span class="mai-cart-total-wrap is-circle"><span class="mai-cart-total">%s</span></span>', $total );
 }
 
-add_action( 'init', 'mai_learndash_support' );
+add_filter( 'mai_settings_config', 'mai_learndash_settings_config' );
 /**
- * Adds archive/single content settings for courses.
+ * Adds learndash courses to default enabled archive and single settings.
  *
  * @since TBD
  *
- * @return void
+ * @param array The existing config.
+ *
+ * @return array
  */
-function mai_learndash_support() {
+function mai_learndash_settings_config( $config ) {
 	if ( ! class_exists( 'SFWD_LMS' ) ) {
-		return;
+		return $config;
 	}
 
-	add_post_type_support( 'sfwd-courses', [ 'mai-archive-settings', 'mai-single-settings' ] );
+	$config['content-archives']['enable'][] = 'sfwd-courses';
+	$config['single-content']['enable'][]   = 'sfwd-courses';
+
+	return $config;
+}
+
+add_filter( 'mai_content_archive_settings', 'mai_learndash_course_archive_settings', 10, 2 );
+/**
+ * Adds learndash courses to default archive settings.
+ *
+ * @since TBD
+ *
+ * @param array $settings The existing settings.
+ * @param string $name    The content type name.
+ *
+ * @return array
+ */
+function mai_learndash_course_archive_settings( $settings, $name ) {
+	if ( ! class_exists( 'SFWD_LMS' ) ) {
+		return $settings;
+	}
+
+	if ( 'sfwd-courses' === $name ) {
+		foreach ( $settings as $index => $setting ) {
+			if ( 'posts_per_page' !== $setting['settings'] ) {
+				continue;
+			}
+
+			unset( $settings[ $index ] );
+		}
+	}
+
+	return $settings;
 }
 
 add_filter( 'mai_archive_args_name', 'mai_learndash_course_settings_name', 8 );
@@ -468,7 +502,7 @@ function mai_learndash_course_settings_name( $name ) {
 		return $name;
 	}
 
-	$learndash_cpts = array_flip( [ 'sfwd-lessons', 'sfwd-topic', 'sfwd-quiz', 'sfwd-certificates' ] );
+	$learndash_cpts = array_flip( [ 'sfwd-courses', 'sfwd-lessons', 'sfwd-topic', 'sfwd-quiz', 'sfwd-certificates' ] );
 
 	if ( isset( $learndash_cpts[ $name ] ) ) {
 		return 'sfwd-courses';
