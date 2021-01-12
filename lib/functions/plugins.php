@@ -436,21 +436,63 @@ function mai_get_cart_total() {
 	return sprintf( '<span class="mai-cart-total-wrap is-circle"><span class="mai-cart-total">%s</span></span>', $total );
 }
 
+add_action( 'init', 'mai_learndash_support' );
 /**
- * Removes genesis meta from all course content.
+ * Adds archive/single content settings for courses.
  *
  * @since TBD
  *
  * @return void
  */
-add_action( 'genesis_meta', 'mai_learndash_remove_meta' );
-function mai_learndash_remove_meta() {
+function mai_learndash_support() {
 	if ( ! class_exists( 'SFWD_LMS' ) ) {
 		return;
 	}
-	$learndash_cpts = [ 'sfwd-courses', 'sfwd-lessons', 'sfwd-quiz', 'sfwd-topic', 'sfwd-certificates' ];
-	foreach ( $learndash_cpts as $cpt ) {
-		remove_post_type_support( $cpt, 'genesis-entry-meta-before-content' );
-		remove_post_type_support( $cpt, 'genesis-entry-meta-after-content' );
+
+	add_post_type_support( 'sfwd-courses', [ 'mai-archive-settings', 'mai-single-settings' ] );
+}
+
+add_filter( 'mai_archive_args_name', 'mai_learndash_course_settings_name', 8 );
+add_filter( 'mai_single_args_name', 'mai_learndash_course_settings_name', 8 );
+/**
+ * Uses course single/archive content settings for lessons, topics, quizes, and certificates.
+ *
+ * @since TBD
+ *
+ * @param string $name The args name.
+ *
+ * @return string
+ */
+function mai_learndash_course_settings_name( $name ) {
+	if ( ! class_exists( 'SFWD_LMS' ) ) {
+		return $name;
 	}
+
+	$learndash_cpts = array_flip( [ 'sfwd-lessons', 'sfwd-topic', 'sfwd-quiz', 'sfwd-certificates' ] );
+
+	if ( isset( $learndash_cpts[ $name ] ) ) {
+		return 'sfwd-courses';
+	}
+
+	return $name;
+}
+
+add_filter( 'learndash_previous_post_link', 'mai_learndash_adjacent_post_link', 10, 4 );
+add_filter( 'learndash_next_post_link', 'mai_learndash_adjacent_post_link', 10, 4 );
+/**
+ * Adds button classes to adjacent post links on LearnDash content.
+ *
+ * @since TBD
+ *
+ * @param string $link      The link HTML.
+ * @param string $permalink The link uri.
+ * @param string $link_name The link text.
+ * @param WP_Post $post     The adjacent post object.
+ *
+ * @since TBD
+ */
+function mai_learndash_adjacent_post_link( $link, $permalink, $link_name, $post ) {
+	$link = str_replace( 'prev-link', 'prev-link button button-secondary button-small', $link );
+	$link = str_replace( 'next-link', 'next-link button button-secondary button-small', $link );
+	return $link;
 }

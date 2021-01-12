@@ -250,6 +250,11 @@ return [
 				return class_exists( 'BJGK_Genesis_ENews_Extended' );
 			},
 		],
+		'learndash' => [
+			'condition' => function () {
+				return class_exists( 'SFWD_LMS' );
+			},
+		],
 		'seo-slider'             => [
 			'condition' => function () {
 				return defined( 'SEO_SLIDER_VERSION' );
