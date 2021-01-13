@@ -308,7 +308,7 @@ class Mai_Grid {
 	public function get_post_query_args() {
 		$post_status  = is_user_logged_in() && current_user_can( 'edit_posts' ) ? [ 'publish', 'private' ] : 'publish';
 		$per_page     = ( 0 === $this->args['posts_per_page'] ) ? -1 : $this->args['posts_per_page'];
-		$per_page     = ( 'id' === $this->args['query_by'] ) ? count( $this->args['post__in'] ) : $per_page;
+		$per_page     = ( 'id' === $this->args['query_by'] ) ? count( (array) $this->args['post__in'] ) : $per_page;
 		$query_args   = [
 			'post_type'           => $this->args['post_type'],
 			'posts_per_page'      => $per_page,

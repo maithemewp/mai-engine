@@ -192,10 +192,18 @@ function mai_add_single_content_settings() {
 	);
 
 	foreach ( $sections as $section ) {
+		if ( post_type_exists( $section ) && $post_type = get_post_type_object( $section ) ) {
+			$title = $post_type->labels->singular_name;
+		} elseif ( taxonomy_exists( $section ) && $taxonomy = get_taxonomy( $section ) ) {
+			$title = $taxonomy->label;
+		} else {
+			$title = mai_convert_case( $section, 'title' );
+		}
+
 		Kirki::add_section(
 			"{$handle}-{$panel}-{$section}",
 			[
-				'title' => get_post_type_object( $section )->labels->singular_name,
+				'title' => $title,
 				'panel' => "{$handle}-{$panel}",
 			]
 		);
@@ -251,4 +259,3 @@ function mai_add_single_content_settings() {
 		}
 	}
 }
-
