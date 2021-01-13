@@ -246,6 +246,7 @@ return [
 			},
 		],
 		'genesis-enews-extended' => [
+			'location'  => [ 'public', 'editor' ],
 			'condition' => function () {
 				return class_exists( 'BJGK_Genesis_ENews_Extended' );
 			},

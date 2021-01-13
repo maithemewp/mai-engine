@@ -10,18 +10,9 @@
 	flex-wrap: var(--enews-flex-wrap, wrap);
 }
 
-.enews-1-field {
-	--button-padding: 0.5em 1em;
-	--button-margin: 0 0 0 -1px; // Overlap border.
-	--button-white-space: nowrap;
-
-	.enews-form {
-		display: flex;
-	}
-}
-
 .is-inline-form {
 	--button-margin: 0;
+	--button-padding: 0.5em 1em;
 	--button-white-space: nowrap;
 
 	.enews-fname,

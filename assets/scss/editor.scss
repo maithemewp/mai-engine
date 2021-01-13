@@ -1,4 +1,5 @@
 @import "abstracts/_index";
+@import "base/form";
 @import "base/globals";
 @import "base/heading";
 @import "base/list";
@@ -148,6 +149,7 @@ p {
 	}
 }
 
+input[type="submit"],
 .wp-block-button__link,
 .wp-block .button {
 
