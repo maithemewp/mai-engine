@@ -2,6 +2,7 @@
 
 ## 2.10.0 (TBD)
 * Added: LearnDash support! Courses and course content (lessons/topics/etc.) now have their own Content Archives and Single Content settings.
+* Added: LearnDash content now inherits theme styling.
 * Added: Disable entry links setting to Mai Post/Term Grid blocks.
 * Added: Link to search Font Awesome icons in Mai Icon block settings.
 * Added: Forms/inputs in the editor use the front-end styling.
