@@ -3,7 +3,8 @@
 }
 
 .search-form-input {
-	min-width: 220px;
+	width: auto;
+	max-width: var(--search-input-max-width, 320px);
 	font-size: var(--font-size-md);
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;

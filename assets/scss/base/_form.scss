@@ -43,6 +43,7 @@ label {
 ::placeholder,
 input::placeholder {
 	color: var(--input-placeholder-color, var(--color-body));
+	font-size: var(--font-size-base);
 	opacity: 0.5; // Firefox requires opacity to stay consistent.
 }
 
