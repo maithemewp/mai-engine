@@ -1,11 +1,81 @@
-.sidebar {
+@import "../abstracts/_index";
 
-	.enews {
-		--input-margin: 0 0 var(--spacing-sm);
+.enews {
+	--input-margin: 0 0 var(--spacing-sm);
+}
 
-		input[type="submit"] {
-			display: block;
-			width: 100%;
+.enews-form {
+	display: flex;
+	flex-direction: var(--enews-flex-direction, column);
+	flex-wrap: var(--enews-flex-wrap, wrap);
+}
+
+.enews-1-field {
+	--button-padding: 0.5em 1em;
+	--button-margin: 0 0 0 -1px; // Overlap border.
+	--button-white-space: nowrap;
+
+	.enews-form {
+		display: flex;
+	}
+}
+
+.is-inline-form {
+	--button-margin: 0;
+	--button-white-space: nowrap;
+
+	.enews-fname,
+	.enews-lname,
+	.enews-email {
+		flex: 1 1 var(--input-width);
+		min-width: 0;
+	}
+
+	.enews-submit {
+		flex: 0 1 var(--button-width);
+	}
+
+	.enews-form {
+
+		br {
+			display: none;
+		}
+	}
+
+	.enews-1-field {
+		--enews-flex-direction: row;
+		--enews-flex-wrap: nowrap;
+		--input-width: auto;
+		--input-margin: 0 calc(var(--spacing-sm) * -1) 0 0;
+		--button-margin: 0 0 0 calc(var(--spacing-sm) * -1);
+		--button-width: auto;
+
+		.enews-email {
+			padding-right: var(--spacing-xl);
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+	}
+
+	@include mq(sm) {
+
+		.enews-2-fields {
+			--enews-flex-direction: row;
+			--enews-flex-wrap: nowrap;
+			--input-width: auto;
+			--input-margin: 0 var(--spacing-sm) 0 0;
+			--button-width: auto;
+		}
+	}
+
+	@include mq(md) {
+
+		.enews-3-fields {
+			--enews-flex-direction: row;
+			--enews-flex-wrap: nowrap;
+			--input-width: auto;
+			--input-margin: 0 var(--spacing-sm) 0 0;
+			--button-width: auto;
 		}
 	}
 }
