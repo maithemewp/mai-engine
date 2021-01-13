@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.10.0 (TBD)
+* Added: LearnDash support! Courses and course content (lessons/topics/etc.) now have their own Content Archives and Single Content settings.
+* Added: Disable entry links setting to Mai Post/Term Grid blocks.
+* Added: Link to search Font Awesome icons in Mai Icon block settings.
+* Added: Forms/inputs in the editor use the front-end styling.
+* Added: New built in styling for soon to be released update to Genesis eNews Extended plugin.
+* Changed: Default button word-break is now normal.
+* Changed: Header and footer meta fields are now text areas with more room for editing multi-line entry meta.
+* Changed: Admin menu location to make sure it's always next to Genesis.
+* Changed: Customizer content settings now use post type label for panel names.
+* Fixed: Edge-case bug where unused default template parts would get created in the database.
+* Fixed: Author archive intro text and description displaying incorrectly or not at all in some configurations.
+* Fixed: Entry read more links not aligning to the bottom when no images are displayed.
+
 ## 2.9.2 (1/7/21)
 * Added: Custom content option to Hide Elements metabox.
 * Added: Links to shortcode documentation related to Header/Footer Meta fields.
