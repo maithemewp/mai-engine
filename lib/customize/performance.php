@@ -23,7 +23,7 @@ function mai_performance_customizer_settings() {
 	$section_id = $config_id . '-performance';
 	$defaults   = mai_get_config( 'settings' )['performance'];
 
-	\Kirki::add_section(
+	Kirki::add_section(
 		$section_id,
 		[
 			'title' => __( 'Performance', 'mai-engine' ),

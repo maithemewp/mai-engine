@@ -26,7 +26,7 @@ function mai_typography_customizer_settings() {
 	$handle  = mai_get_handle();
 	$section = $handle . '-typography';
 
-	\Kirki::add_section(
+	Kirki::add_section(
 		$section,
 		[
 			'title' => __( 'Typography', 'mai-engine' ),
@@ -37,7 +37,7 @@ function mai_typography_customizer_settings() {
 	$body_font_family = mai_get_default_font_family( 'body' );
 	$body_font_weight = mai_get_default_font_weight( 'body' );
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'typography',
@@ -60,7 +60,7 @@ function mai_typography_customizer_settings() {
 	$heading_font_family = mai_get_default_font_family( 'heading' );
 	$heading_font_weight = mai_get_default_font_weight( 'heading' );
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'typography',
@@ -80,7 +80,7 @@ function mai_typography_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'switch',

@@ -21,7 +21,7 @@ function mai_site_header_customizer_settings() {
 	$handle  = mai_get_handle();
 	$section = $handle . '-site-header';
 
-	\Kirki::add_section(
+	Kirki::add_section(
 		$section,
 		[
 			'title' => esc_html__( 'Site Header', 'mai-engine' ),
@@ -29,7 +29,7 @@ function mai_site_header_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'     => 'checkbox',
@@ -40,7 +40,7 @@ function mai_site_header_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'     => 'checkbox',
