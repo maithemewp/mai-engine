@@ -904,6 +904,11 @@ form.cart {
 	}
 }
 
+.woocommerce-order-details,
+.woocommerce-customer-details {
+	margin-bottom: var(--spacing-xl);
+}
+
 .mai-cart-total-wrap {
 	overflow: hidden;
 	line-height: 0;
