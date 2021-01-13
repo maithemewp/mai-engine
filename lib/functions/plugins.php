@@ -455,7 +455,7 @@ function mai_learndash_add_settings( $post_types ) {
 		return $post_types;
 	}
 
-	$post_types[] = 'portfolio';
+	$post_types[] = 'sfwd-courses';
 
 	return $post_types;
 }
