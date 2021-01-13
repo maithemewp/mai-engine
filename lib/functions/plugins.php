@@ -427,39 +427,43 @@ function mai_get_cart_total() {
 	if ( ! function_exists( 'WC' ) ) {
 		return '';
 	}
+
 	$cart = WC()->cart;
 	if ( ! $cart ) {
 		return;
 	}
+
 	$total = WC()->cart->get_cart_contents_count();
 	$total = $total ?: '';
+
 	return sprintf( '<span class="mai-cart-total-wrap is-circle"><span class="mai-cart-total">%s</span></span>', $total );
 }
 
-add_filter( 'mai_settings_config', 'mai_learndash_settings_config' );
+add_filter( 'mai_get_option_archive-settings', 'mai_learndash_add_settings' );
+add_filter( 'mai_get_option_single-settings', 'mai_learndash_add_settings' );
 /**
- * Adds learndash courses to default enabled archive and single settings.
+ * Forces learndash courses post type to use archive/single settings.
  *
  * @since TBD
  *
- * @param array The existing config.
+ * @param array $post_type The post types to for loop settings.
  *
  * @return array
  */
-function mai_learndash_settings_config( $config ) {
+function mai_learndash_add_settings( $post_types ) {
 	if ( ! class_exists( 'SFWD_LMS' ) ) {
-		return $config;
+		return $post_types;
 	}
 
-	$config['content-archives']['enable'][] = 'sfwd-courses';
-	$config['single-content']['enable'][]   = 'sfwd-courses';
+	$post_types[] = 'portfolio';
 
-	return $config;
+	return $post_types;
 }
 
 add_filter( 'mai_content_archive_settings', 'mai_learndash_course_archive_settings', 10, 2 );
 /**
- * Adds learndash courses to default archive settings.
+ * Removes posts_per_page setting from courses,
+ * since learndash has it's own settings for this.
  *
  * @since TBD
  *
