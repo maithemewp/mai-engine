@@ -183,7 +183,7 @@ function mai_add_single_content_settings() {
 	$defaults = mai_get_config( 'settings' )['single-content']['enable'];
 	$sections = mai_get_option( 'single-settings', $defaults, false );
 
-	\Kirki::add_panel(
+	Kirki::add_panel(
 		"{$handle}-{$panel}",
 		[
 			'title' => mai_convert_case( $panel, 'title' ),
@@ -192,10 +192,10 @@ function mai_add_single_content_settings() {
 	);
 
 	foreach ( $sections as $section ) {
-		\Kirki::add_section(
+		Kirki::add_section(
 			"{$handle}-{$panel}-{$section}",
 			[
-				'title' => mai_convert_case( $section, 'title' ),
+				'title' => get_post_type_object( $section )->labels->singular_name,
 				'panel' => "{$handle}-{$panel}",
 			]
 		);
@@ -247,7 +247,7 @@ function mai_add_single_content_settings() {
 				}
 			}
 
-			\Kirki::add_field( $handle, $field );
+			Kirki::add_field( $handle, $field );
 		}
 	}
 }
