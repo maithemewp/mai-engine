@@ -182,6 +182,42 @@ input[type="submit"],
 	}
 }
 
+.wp-block-search {
+
+	.wp-block[data-align="left"] & {
+		justify-content: flex-start;
+	}
+
+	.wp-block[data-align="center"] & {
+		justify-content: center;
+	}
+
+	.wp-block[data-align="right"] & {
+		justify-content: flex-end;
+	}
+
+	.wp-block-search__button {
+		height: auto !important;
+
+		@include button(true);
+		@include button-style("secondary", true);
+
+		&.has-icon {
+			position: relative;
+			height: 100%;
+
+			svg {
+				position: absolute;
+				top: calc(50% - 12px);
+				left: calc(50% - 12px);
+				width: 24px;
+				height: 24px;
+				fill: currentColor;
+			}
+		}
+	}
+}
+
 .mai-grid a {
 	pointer-events: none;
 }

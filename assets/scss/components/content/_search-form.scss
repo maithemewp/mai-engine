@@ -3,19 +3,14 @@
 }
 
 .search-form-input {
-	width: auto;
-	max-width: var(--search-input-max-width, 320px);
-	font-size: var(--font-size-md);
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
 }
 
 .search-form-submit {
-	--button-margin: 0;
-	--button-padding: var(--spacing-md);
+	--button-margin: var(--search-button-margin, 0 0 0 var(--search-button-margin-left, calc(var(--spacing-lg) * -1)));
+	--button-padding: 0.75em 1.25em;
 	--button-font-size: var(--font-size-sm);
-	border-top-left-radius: 0;
-	border-bottom-left-radius: 0;
 }
 
 .search-form-submit-icon {
