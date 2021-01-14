@@ -717,6 +717,17 @@ form.cart {
 	}
 }
 
+.order-actions {
+
+	.button {
+		--button-padding: 1em 1.2em;
+		--button-font-size: var(--font-size-xs);
+		--button-white-space: nowrap;
+
+		@include button-style("secondary");
+	}
+}
+
 .actions {
 	--input-width: 160px;
 	--input-margin: var(--spacing-xs);
