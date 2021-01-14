@@ -12,9 +12,9 @@
 	justify-content: var(--align-columns);
 	width: calc(100% + var(--column-gap));
 	max-width: var(--entries-wrap-max-width, calc(100% + var(--column-gap)));
-	margin: calc(var(--row-gap) * -0.5) calc(var(--column-gap) * -0.5);
+	margin: calc(var(--row-gap) * -1) 0 0 calc(var(--column-gap) * -1);
 
-	--entry-margin: calc(var(--row-gap) * 0.5) calc(var(--column-gap) * 0.5);
+	--entry-margin: var(--row-gap) 0 0 var(--column-gap);
 
 	@include mq(false, sm) {
 		--columns: var(--columns-xs);
