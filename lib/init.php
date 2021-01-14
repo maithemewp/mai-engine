@@ -300,6 +300,7 @@ function mai_load_files() {
 		'functions/widgets',
 
 		// Structure.
+		'structure/404-page',
 		'structure/amp',
 		'structure/archive',
 		'structure/breadcrumbs',

@@ -427,6 +427,9 @@ return [
 				<!-- /wp:paragraph --></div></div>
 				<!-- /wp:group -->',
 		],
+		'404-page' => [
+			'menu_order' => 60,
+		],
 	],
 
 	/*
