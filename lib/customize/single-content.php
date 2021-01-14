@@ -19,10 +19,14 @@
  * @return array
  */
 function mai_get_single_content_settings( $name = 'post' ) {
+	static $settings = null;
+	if ( ! is_null( $settings ) ) {
+		return $settings;
+	}
+
 	$defaults = mai_get_config( 'settings' )['single-content'];
 	$defaults = isset( $defaults[ $name ] ) ? $defaults[ $name ] : $defaults[ 'post' ];
-
-	return [
+	$settings = [
 		[
 			'settings'    => 'show',
 			'label'       => __( 'Show', 'mai-engine' ),
@@ -167,6 +171,10 @@ function mai_get_single_content_settings( $name = 'post' ) {
 			'active_callback' => 'mai_has_page_header_support_callback',
 		],
 	];
+
+	$settings = apply_filters( 'mai_single_content_settings', $settings, $name );
+
+	return $settings;
 }
 
 add_action( 'init', 'mai_add_single_content_settings' );

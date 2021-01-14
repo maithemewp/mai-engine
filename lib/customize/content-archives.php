@@ -19,6 +19,11 @@
  * @return array
  */
 function mai_get_content_archive_settings( $name = 'post' ) {
+	static $settings = null;
+	if ( ! is_null( $settings ) ) {
+		return $settings;
+	}
+
 	$defaults = mai_get_config( 'settings' )['content-archives'];
 	$defaults = isset( $defaults[ $name ] ) ? $defaults[ $name ] : $defaults[ 'post' ];
 	$settings = [
@@ -725,7 +730,9 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 		],
 	];
 
-	return apply_filters( 'mai_content_archive_settings', $settings, $name );
+	$settings = apply_filters( 'mai_content_archive_settings', $settings, $name );
+
+	return $settings;
 }
 
 add_action( 'init', 'mai_add_content_archive_settings' );
