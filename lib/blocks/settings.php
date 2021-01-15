@@ -261,7 +261,21 @@ function mai_do_block_margin_settings( $block_content, $block ) {
 
 		if ( $first_block ) {
 			$classes = $first_block->getAttribute( 'class' );
-			$classes = mai_add_classes( sprintf( 'has-overlap', $top ), $classes );
+			$overlap = false;
+
+			if ( mai_has_string( '-', $top ) ) {
+				$overlap = true;
+			} elseif ( mai_has_string( '-', $right ) ) {
+				$overlap = true;
+			} elseif ( mai_has_string( '-', $bottom ) ) {
+				$overlap = true;
+			} elseif ( mai_has_string( '-', $left ) ) {
+				$overlap = true;
+			}
+
+			if ( $overlap ) {
+				$classes = mai_add_classes( 'has-overlap', $classes );
+			}
 
 			if ( $top ) {
 				$classes = mai_add_classes( sprintf( 'has-%s-margin-top', $top ), $classes );
