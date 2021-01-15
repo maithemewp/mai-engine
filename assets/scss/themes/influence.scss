@@ -1,4 +1,5 @@
 :root {
+	--font-scale: 1.125; // Major second.
 	--border-radius: 0;
 	--heading-text-transform: uppercase;
 	--heading-letter-spacing: 1px;
@@ -30,4 +31,8 @@
 	--menu-font-weight: var(--heading-font-weight);
 	--menu-font-size: var(--font-size-sm);
 	--menu-text-transform: uppercase;
+}
+
+.entry-title-single {
+	text-align: center;
 }
