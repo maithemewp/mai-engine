@@ -236,3 +236,59 @@ function mai_post_terms_shortcode_classes( $output, $terms, $atts ) {
 
 	return $output;
 }
+
+/**
+ * Add inline custom properties to native/classic WP galleries.
+ *
+ * @since   TBD
+ *
+ * @param   string        $output  Shortcode output.
+ * @param   string        $tag     Shortcode name.
+ * @param   array|string  $attr    Shortcode attributes array or empty string.
+ * @param   array         $m       Regular expression match array.
+ *
+ * @return  string  The gallery HTML.
+ */
+add_filter( 'do_shortcode_tag', 'mai_gallery_shortcode_tag', 10, 4 );
+function mai_gallery_shortcode_tag( $output, $tag, $atts, $m ) {
+	if ( 'gallery' !== $tag ) {
+		return $output;
+	}
+
+	// Bail if not a default gallery. This fixes compatibility with Jetpack galleries.
+	if ( isset( $atts['type'] ) && ! in_array( $atts['type'], [ 'default', 'thumbnails' ] ) ) {
+		return $output;
+	}
+
+	// Make sure we have a columns value. Would not be set if 3 as per WP core.
+	$atts = wp_parse_args( $atts,
+		[
+			'columns' => 3,
+		]
+	);
+
+	$dom   = mai_get_dom_document( $output );
+	$first = mai_get_dom_first_child( $dom );
+
+	if ( ! $first ) {
+		return $output;
+	}
+
+	$style   = $first->getAttribute( 'style' );
+	$columns = mai_get_breakpoint_columns(
+		[
+			'columns' => $atts['columns'],
+		]
+	);
+	$columns = array_reverse( $columns, true ); // Mobile first.
+
+	foreach ( $columns as $break => $column ) {
+		$style .= sprintf( '--gallery-columns-%s:%s;', $break, $column );
+	}
+
+	$first->setAttribute( 'style', $style );
+
+	$output = $dom->saveHTML();
+
+	return $output;
+}

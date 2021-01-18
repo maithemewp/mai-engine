@@ -1,0 +1,28 @@
+.gallery {
+	--gallery-columns: var(--gallery-columns-xs, 2);
+
+	display: grid;
+	grid-gap: var(--gallery-grid-gap, var(--spacing-lg));
+	grid-template-columns: repeat(var(--gallery-columns), 1fr);
+}
+
+@media only screen and (min-width: 400px) {
+
+	.gallery {
+		--gallery-columns: var(--gallery-columns-sm);
+	}
+}
+
+@media only screen and (min-width: 600px) {
+
+	.gallery {
+		--gallery-columns: var(--gallery-columns-md);
+	}
+}
+
+@media only screen and (min-width: 1000px) {
+
+	.gallery {
+		--gallery-columns: var(--gallery-columns-lg);
+	}
+}
