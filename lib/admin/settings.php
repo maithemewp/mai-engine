@@ -61,6 +61,16 @@ function mai_admin_menu_pages() {
 		'',
 		20
 	);
+
+	add_submenu_page(
+		'themes.php',
+		esc_html__( 'Reusable Blocks', 'mai-engine' ),
+		esc_html__( 'Reusable Blocks', 'mai-engine' ),
+		'edit_posts',
+		'edit.php?post_type=wp_block',
+		'',
+		22
+	);
 }
 
 /**
