@@ -280,6 +280,7 @@ function mai_load_files() {
 		// Functions.
 		'functions/autoload',
 		'functions/colors',
+		'functions/columns',
 		'functions/defaults',
 		'functions/deprecated',
 		'functions/enqueue',
@@ -323,6 +324,7 @@ function mai_load_files() {
 
 		// Blocks.
 		'blocks/button',
+		'blocks/columns',
 		'blocks/cover',
 		'blocks/divider',
 		'blocks/grid',
