@@ -82,6 +82,8 @@ function mai_columns_get_flex( $size ) {
 /**
  * Gets max width value from column size.
  *
+ * @since TBD
+ *
  * @param string|int $size The size from column setting.
  *
  * @return string|false
