@@ -44,7 +44,8 @@
 	margin-left: auto;
 }
 
-.wp-cover-block__image {
+.wp-cover-block__image,
+.wp-cover-block__image img { // Added img for plugins that convert to picture/source and change our markup.
 	position: absolute;
 	top: 0;
 	right: 0;
