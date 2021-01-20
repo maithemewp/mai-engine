@@ -753,7 +753,7 @@ function mai_get_grid_block_settings() {
 			'atts'       => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group',
+					'class' => 'mai-acf-button-group',
 					'id'    => '',
 				],
 			],
@@ -1144,7 +1144,7 @@ function mai_get_grid_block_settings() {
 			'atts'     => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group',
+					'class' => 'mai-acf-button-group',
 					'id'    => '',
 				],
 			],
@@ -1251,7 +1251,7 @@ function mai_get_grid_block_settings() {
 			'atts'       => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group',
+					'class' => 'mai-acf-button-group',
 					'id'    => '',
 				],
 			],
@@ -1424,7 +1424,7 @@ function mai_get_grid_block_settings() {
 			'atts'     => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group',
+					'class' => 'mai-acf-button-group',
 					'id'    => '',
 				],
 			],
@@ -1458,7 +1458,7 @@ function mai_get_grid_block_settings() {
 			'atts'       => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group mai-grid-nested-columns mai-grid-nested-columns-first',
+					'class' => 'mai-acf-button-group mai-grid-nested-columns mai-grid-nested-columns-first',
 					'id'    => '',
 				],
 			],
@@ -1481,7 +1481,7 @@ function mai_get_grid_block_settings() {
 			'atts'       => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group mai-grid-nested-columns',
+					'class' => 'mai-acf-button-group mai-grid-nested-columns',
 					'id'    => '',
 				],
 			],
@@ -1504,7 +1504,7 @@ function mai_get_grid_block_settings() {
 			'atts'       => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group mai-grid-nested-columns mai-grid-nested-columns-last',
+					'class' => 'mai-acf-button-group mai-grid-nested-columns mai-grid-nested-columns-last',
 					'id'    => '',
 				],
 			],
@@ -1531,7 +1531,7 @@ function mai_get_grid_block_settings() {
 			'atts'       => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group',
+					'class' => 'mai-acf-button-group',
 					'id'    => '',
 				],
 			],
@@ -1559,7 +1559,7 @@ function mai_get_grid_block_settings() {
 			'atts'       => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group',
+					'class' => 'mai-acf-button-group',
 					'id'    => '',
 				],
 			],
@@ -1582,7 +1582,7 @@ function mai_get_grid_block_settings() {
 			'atts'     => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group',
+					'class' => 'mai-acf-button-group',
 					'id'    => '',
 				],
 			],
@@ -1605,7 +1605,7 @@ function mai_get_grid_block_settings() {
 			'atts'     => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group',
+					'class' => 'mai-acf-button-group',
 					'id'    => '',
 				],
 			],

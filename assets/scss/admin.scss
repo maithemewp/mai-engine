@@ -21,26 +21,11 @@
 }
 
 // Wide Content (Default).
-@media only screen and (max-width: 1219px) {
-
-	.edit-post-layout:not(.is-sidebar-opened) .editor-post-title__block,
-	.edit-post-layout:not(.is-sidebar-opened) .is-root-container > .wp-block {
-		// --wp-block-max-width: 95%;
-	}
-}
 
 @media only screen and (min-width: 1220px) {
 
 	.edit-post-layout:not(.is-sidebar-opened) {
 		--wp-block-max-width: var(--breakpoint-lg);
-	}
-}
-
-@media only screen and (max-width: 1499px) {
-
-	.edit-post-layout.is-sidebar-opened .editor-post-title__block,
-	.edit-post-layout.is-sidebar-opened .is-root-container > .wp-block {
-		// --wp-block-max-width: 95%;
 	}
 }
 
@@ -51,27 +36,10 @@
 	}
 }
 
-// Standard Content.
-@media only screen and (max-width: 1019px) {
-
-	.standard-content .edit-post-layout:not(.is-sidebar-opened) .editor-post-title__block,
-	.standard-content .edit-post-layout:not(.is-sidebar-opened) .is-root-container > .wp-block {
-		// --wp-block-max-width: 95%;
-	}
-}
-
 @media only screen and (min-width: 1020px) {
 
 	.standard-content .edit-post-layout:not(.is-sidebar-opened) {
 		--wp-block-max-width: var(--breakpoint-md);
-	}
-}
-
-@media only screen and (max-width: 1299px) {
-
-	.standard-content .edit-post-layout.is-sidebar-opened .editor-post-title__block,
-	.standard-content .edit-post-layout.is-sidebar-opened .is-root-container > .wp-block {
-		// --wp-block-max-width: 95%;
 	}
 }
 
@@ -83,26 +51,11 @@
 }
 
 // Narrow Content.
-@media only screen and (max-width: 819px) {
-
-	.narrow-content .edit-post-layout:not(.is-sidebar-opened) .editor-post-title__block,
-	.narrow-content .edit-post-layout:not(.is-sidebar-opened) .is-root-container > .wp-block {
-		// --wp-block-max-width: 95%;
-	}
-}
 
 @media only screen and (min-width: 820px) {
 
 	.narrow-content .edit-post-layout:not(.is-sidebar-opened) {
 		--wp-block-max-width: var(--breakpoint-sm);
-	}
-}
-
-@media only screen and (max-width: 1079px) {
-
-	.narrow-content .edit-post-layout.is-sidebar-opened .editor-post-title__block,
-	.narrow-content .edit-post-layout.is-sidebar-opened .is-root-container > .wp-block {
-		// --wp-block-max-width: 95%;
 	}
 }
 

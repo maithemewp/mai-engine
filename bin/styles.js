@@ -127,6 +127,18 @@ module.exports.plugins = function() {
 	} );
 };
 
+module.exports.admin = function() {
+	return gulp.src( './assets/scss/admin.scss' )
+		.pipe( plumber() )
+		.pipe( rename( 'admin.min.scss' ) )
+		.pipe( sass.sync( {
+			outputStyle: 'compressed',
+		} ) )
+		.pipe( postcss( postProcessors ) )
+		.pipe( gulp.dest( './assets/css/' ) )
+		.pipe( notify( { message: config.messages.css } ) );
+};
+
 module.exports.desktop = function() {
 	return gulp.src( './assets/scss/desktop.scss' )
 		.pipe( plumber() )
@@ -139,22 +151,22 @@ module.exports.desktop = function() {
 		.pipe( notify( { message: config.messages.css } ) );
 };
 
-module.exports.deprecated = function() {
-	return gulp.src( './assets/scss/deprecated.scss' )
+module.exports.desktop = function() {
+	return gulp.src( './assets/scss/columns.scss' )
 		.pipe( plumber() )
-		.pipe( rename( 'deprecated.min.scss' ) )
+		.pipe( rename( 'columns.min.scss' ) )
 		.pipe( sass.sync( {
 			outputStyle: 'compressed',
 		} ) )
-		.pipe( postcss( postProcessors ) )
+		// .pipe( postcss( postProcessors ) ) // This was changing 100% in max-width to just 1.
 		.pipe( gulp.dest( './assets/css/' ) )
 		.pipe( notify( { message: config.messages.css } ) );
 };
 
-module.exports.admin = function() {
-	return gulp.src( './assets/scss/admin.scss' )
+module.exports.deprecated = function() {
+	return gulp.src( './assets/scss/deprecated.scss' )
 		.pipe( plumber() )
-		.pipe( rename( 'admin.min.scss' ) )
+		.pipe( rename( 'deprecated.min.scss' ) )
 		.pipe( sass.sync( {
 			outputStyle: 'compressed',
 		} ) )

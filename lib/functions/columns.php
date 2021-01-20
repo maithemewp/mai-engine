@@ -22,7 +22,6 @@ function mai_columns_get_args( $i = null ) {
 			'columns' => get_field( 'columns' ),
 		];
 
-
 		if ( 'custom' === $cache[ $i ]['columns'] ) {
 			$arrangements = [
 				'lg' => get_field( 'arrangement' ),
@@ -33,6 +32,7 @@ function mai_columns_get_args( $i = null ) {
 
 			foreach ( $arrangements as $break => $arrangement ) {
 				$break_arrangment = [];
+
 				foreach ( $arrangement as $columns ) {
 					$cache[ $i ]['arrangements'][ $break ][] = $columns['columns'];
 				}
