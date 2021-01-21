@@ -244,6 +244,58 @@
 	border-radius: 0 0 0 3px;
 }
 
+/* Mai Columns arrangement tab svgs */
+
+.acf-field-mai-columns-columns,
+.acf-field-mai-columns-arrangement-message {
+	margin-bottom: 0 !important;
+}
+
+.acf-field-mai-columns-arrangement-message + .acf-tab-wrap > .acf-tab-group {
+	display: flex;
+	justify-content: space-between;
+	padding-top: 2px;
+	border-top: none !important;
+}
+
+.acf-field-mai-columns-arrangement-message + .acf-tab-wrap > .acf-tab-group > li {
+	flex: 1;
+	max-width: calc(25% - 0.75em);
+	margin: 0;
+}
+
+.acf-field-mai-columns-arrangement-message.acf-hidden + .acf-tab-wrap > .acf-tab-group {
+	border: none !important;
+}
+
+.acf-tab-button[data-key="mai_columns_arrangement_tab"],
+.acf-tab-button[data-key="mai_columns_arrangement_md_tab"],
+.acf-tab-button[data-key="mai_columns_arrangement_sm_tab"],
+.acf-tab-button[data-key="mai_columns_arrangement_xs_tab"] {
+	padding-top: 8px;
+	padding-right: 4px;
+	padding-left: 4px;
+	line-height: 1;
+	text-align: center;
+}
+
+.acf-tab-button[data-key="mai_columns_arrangement_tab"] svg,
+.acf-tab-button[data-key="mai_columns_arrangement_md_tab"] svg,
+.acf-tab-button[data-key="mai_columns_arrangement_sm_tab"] svg,
+.acf-tab-button[data-key="mai_columns_arrangement_xs_tab"] svg {
+	max-height: 20px;
+	fill: #444;
+}
+
+.acf-field-mai-columns-arrangement-message ~ .acf-field-mai-columns-xs-arrangement + .acf-tab-wrap > .acf-tab-group {
+	padding: 0;
+	border-top: 0;
+}
+
+.acf-field-mai-columns-arrangement-message.acf-hidden ~ .acf-field-mai-columns-xs-arrangement + .acf-tab-wrap > .acf-tab-group {
+	border: 0;
+}
+
 /* ACF button group. */
 
 .acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group .acf-button-group {
