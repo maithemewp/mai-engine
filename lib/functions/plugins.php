@@ -360,7 +360,7 @@ add_filter( 'wp_dependency_required_row_meta', '__return_false' );
 add_filter( 'network_admin_plugin_action_links_mai-engine/mai-engine.php', 'mai_change_plugin_dependency_text', 100 );
 add_filter( 'plugin_action_links_mai-engine/mai-engine.php', 'mai_change_plugin_dependency_text', 100 );
 /**
- * Change plugin dependency text.
+ * Changes plugin dependency text.
  *
  * @since 0.1.0
  *
@@ -379,7 +379,7 @@ function mai_change_plugin_dependency_text( $actions ) {
 
 add_filter( 'mai_plugin_dependencies', 'mai_require_genesis_connect', 10, 1 );
 /**
- * Recommend Genesis Connect if WooCommerce or EDD installed.
+ * Recommend Genesis Connect if WooCommerce is installed.
  *
  * @since 0.1.0
  *
