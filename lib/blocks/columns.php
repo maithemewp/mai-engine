@@ -246,15 +246,15 @@ function mai_register_columns_field_groups() {
 		'1/5'   => __( '1/5', 'mai-engine' ),
 		'1/4'   => __( '1/4', 'mai-engine' ),
 		'1/3'   => __( '1/3', 'mai-engine' ),
-		'1/2'   => __( '1/2', 'mai-engine' ),
-		'2/3'   => __( '2/3', 'mai-engine' ),
-		'2/5'   => __( '2/5', 'mai-engine' ),
-		'3/4'   => __( '3/4', 'mai-engine' ),
-		'3/5'   => __( '3/5', 'mai-engine' ),
 		'3/8'   => __( '3/8', 'mai-engine' ),
+		'2/5'   => __( '2/5', 'mai-engine' ),
+		'1/2'   => __( '1/2', 'mai-engine' ),
+		'3/5'   => __( '3/5', 'mai-engine' ),
+		'5/8'   => __( '5/8', 'mai-engine' ),
+		'2/3'   => __( '2/3', 'mai-engine' ),
+		'3/4'   => __( '3/4', 'mai-engine' ),
 		'4/5'   => __( '4/5', 'mai-engine' ),
 		'5/6'   => __( '5/6', 'mai-engine' ),
-		'5/8'   => __( '5/8', 'mai-engine' ),
 		'7/8'   => __( '7/8', 'mai-engine' ),
 		'11/12' => __( '11/12', 'mai-engine' ),
 		'full'  => __( 'Full Width', 'mai-engine' ),
@@ -272,16 +272,44 @@ function mai_register_columns_field_groups() {
 				'name'              => 'columns',
 				'type'              => 'select',
 				'choices'           => [
-					1                  => '1',
-					2                  => '2',
-					3                  => '3',
-					4                  => '4',
-					5                  => '5',
-					6                  => '6',
-					0                  => __( 'Auto', 'mai-engine' ),
-					'custom'           => __( 'Custom', 'mai-engine' ),
+					1        => '1',
+					2        => '2',
+					3        => '3',
+					4        => '4',
+					5        => '5',
+					6        => '6',
+					0        => __( 'Auto', 'mai-engine' ),
+					'custom' => __( 'Custom', 'mai-engine' ),
 				],
 				'default_value'     => 2,
+			],
+			[
+				'key'               => 'mai_columns_arrangement_message',
+				'label'             => __( 'Responsive Arrangements', 'mai-engine' ),
+				'type'              => 'message',
+				'conditional_logic' => [
+					[
+						[
+							'field'          => 'mai_columns_columns',
+							'operator'       => '==',
+							'value'          => 'custom',
+						],
+					],
+				],
+			],
+			[
+				'key'               => 'mai_columns_arrangement_tab',
+				'label'             => mai_get_svg_icon( 'desktop', 'light' ),
+				'type'              => 'tab',
+				'conditional_logic' => [
+					[
+						[
+							'field'          => 'mai_columns_columns',
+							'operator'       => '==',
+							'value'          => 'custom',
+						],
+					],
+				],
 			],
 			[
 				'key'               => 'mai_columns_arrangement',
@@ -309,6 +337,20 @@ function mai_register_columns_field_groups() {
 						'type'            => 'select',
 						'choices'         => $column_choices,
 						'default_value'   => '1/3',
+					],
+				],
+			],
+			[
+				'key'               => 'mai_columns_arrangement_md_tab',
+				'label'             => mai_get_svg_icon( 'laptop', 'light' ),
+				'type'              => 'tab',
+				'conditional_logic' => [
+					[
+						[
+							'field'          => 'mai_columns_columns',
+							'operator'       => '==',
+							'value'          => 'custom',
+						],
 					],
 				],
 			],
@@ -342,6 +384,20 @@ function mai_register_columns_field_groups() {
 				],
 			],
 			[
+				'key'               => 'mai_columns_arrangement_sm_tab',
+				'label'             => mai_get_svg_icon( 'tablet', 'light' ),
+				'type'              => 'tab',
+				'conditional_logic' => [
+					[
+						[
+							'field'          => 'mai_columns_columns',
+							'operator'       => '==',
+							'value'          => 'custom',
+						],
+					],
+				],
+			],
+			[
 				'key'               => 'mai_columns_sm_arrangement',
 				'label'             => __( 'Arrangement (sm tablets)', 'mai-engine' ) . '<br /><em><small>' . sprintf( 'Screens %spx to %spx', mai_get_breakpoint( 'xs' ), ( (int) mai_get_breakpoint( 'sm' ) - 1 ) ) . '</small></em>',
 				'name'              => 'arrangement_sm',
@@ -367,6 +423,20 @@ function mai_register_columns_field_groups() {
 						'type'            => 'select',
 						'choices'         => $column_choices,
 						'default_value'   => '1/2',
+					],
+				],
+			],
+			[
+				'key'               => 'mai_columns_arrangement_xs_tab',
+				'label'             => mai_get_svg_icon( 'mobile', 'light' ),
+				'type'              => 'tab',
+				'conditional_logic' => [
+					[
+						[
+							'field'          => 'mai_columns_columns',
+							'operator'       => '==',
+							'value'          => 'custom',
+						],
 					],
 				],
 			],
@@ -397,6 +467,14 @@ function mai_register_columns_field_groups() {
 						'choices'         => $column_choices,
 						'default_value'   => 'full',
 					],
+				],
+			],
+			[
+				'key'               => 'mai_columns_arrangement_closing_tab',
+				'type'              => 'tab',
+				'endpoint'          => 1,
+				'wrapper'           => [
+					'class'            => 'mai-columns-closing-tab',
 				],
 			],
 			[
