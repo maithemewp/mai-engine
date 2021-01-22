@@ -58,7 +58,7 @@ function mai_register_columns_blocks() {
 			'render_callback' => 'mai_do_column_block',
 			'category'        => 'layout',
 			'keywords'        => [],
-			'icon'            => mai_get_svg_icon( 'columns', 'light' ),
+			'icon'            => mai_get_svg_icon( 'rectangle-portrait', 'light' ),
 			'parent'          => [ 'acf/mai-columns' ],
 			'supports'        => [
 				'align' => false,
