@@ -653,6 +653,11 @@ form.cart {
 	}
 }
 
+.woocommerce-shipping-methods {
+	--list-margin: 0;
+	--list-style-type: none;
+}
+
 .woocommerce-terms-and-conditions-wrapper {
 	margin-bottom: var(--spacing-md);
 }
