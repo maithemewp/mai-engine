@@ -25,7 +25,7 @@ function mai_register_columns_blocks() {
 	acf_register_block_type(
 		[
 			'name'            => 'mai-columns',
-			'title'           => __( __( 'Mai Columns', 'mai-engine' ), 'mai-engine' ),
+			'title'           => __( 'Mai Columns', 'mai-engine' ) . ' (' . __( 'beta', 'mai-engine' ) . ')',
 			'description'     => __( 'A custom columns block.', 'mai-engine' ),
 			'render_callback' => 'mai_do_columns_block',
 			'category'        => 'layout',
@@ -53,7 +53,7 @@ function mai_register_columns_blocks() {
 	acf_register_block_type(
 		[
 			'name'            => 'mai-column',
-			'title'           => __( __( 'Mai Column', 'mai-engine' ), 'mai-engine' ),
+			'title'           => __( 'Mai Column', 'mai-engine' ) . ' (' . __( 'beta', 'mai-engine' ) . ')',
 			'description'     => __( 'A custom column block.', 'mai-engine' ),
 			'render_callback' => 'mai_do_column_block',
 			'category'        => 'layout',
