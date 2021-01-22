@@ -173,8 +173,8 @@ class Mai_Columns {
 	}
 
 	function get_attributes( $attributes ) {
-		$column_gap = $this->args['column_gap'] ? sprintf( 'var(--spacing-%s)', $this->args['column_gap'] ) : 0;
-		$row_gap    = $this->args['row_gap'] ? sprintf( 'var(--spacing-%s)', $this->args['row_gap'] ) : 0;
+		$column_gap = $this->args['column_gap'] ? sprintf( 'var(--spacing-%s)', $this->args['column_gap'] ) : '0px'; // Needs 0px for calc().
+		$row_gap    = $this->args['row_gap'] ? sprintf( 'var(--spacing-%s)', $this->args['row_gap'] ) : '0px'; // Needs 0px for calc().
 
 		$attributes['style'] .= sprintf( '--column-gap:%s;', $column_gap  );
 		$attributes['style'] .= sprintf( '--row-gap:%s;', $row_gap );
