@@ -1,43 +1,23 @@
 <?php
 
-add_action( 'current_screen', 'mai_maybe_create_template_parts' );
+add_action( 'admin_post_mai_import_template_part_action', 'mai_import_template_part_action' );
 /**
- * Creates default template parts if they don't exist.
- * Only runs on main template part admin list.
+ * Listener for importing a specific template part.
  *
- * @since 2.0.0
- * @since 2.4.0 Removed unnecesarry wp_doing_ajax() call since solving https://github.com/maithemewp/mai-engine/issues/251.
- * @since 2.6.0 Imports template parts from the demo via REST API when action link is clicked.
- *
- * @param WP_Screen $current_screen Current WP_Screen object.
+ * @since TBD
  *
  * @return void
  */
-function mai_maybe_create_template_parts( $current_screen ) {
-	if ( ( 'wp_template_part' !== $current_screen->post_type ) && ( 'edit-wp_template_part' !== $current_screen->id ) ) {
-		return;
-	}
+function mai_import_template_part_action() {
+	$referrer = check_admin_referer( 'mai_import_template_part_action', 'mai_import_template_part_nonce' );
+	$nonce    = filter_input( INPUT_GET, 'mai_import_template_part_nonce', FILTER_SANITIZE_STRING );
+	$action   = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
+	$slug     = filter_input( INPUT_GET, 'slug', FILTER_SANITIZE_STRING );
 
-	if ( ! current_user_can( 'edit_posts' ) ) {
-		return;
-	}
+	if ( current_user_can( 'edit_theme_options' ) && $referrer && $nonce && $action && $slug && wp_verify_nonce( $nonce, $action ) ) {
 
-	$is_import = false;
-	$redirect  = admin_url( 'edit.php?post_type=wp_template_part' );
-	$message   = '';
-
-	if ( isset( $_REQUEST['mai_import_nonce'] )
-		&& wp_verify_nonce( filter_var( $_REQUEST['mai_import_nonce'], FILTER_SANITIZE_STRING ), 'mai_import_nonce' )
-		&& ( 'mai_import' === filter_input( INPUT_GET, 'mai_action', FILTER_SANITIZE_STRING ) )
-		&& ( 'wp_template_part' === filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) )
-		&& ( $slug = filter_input( INPUT_GET, 'mai_slug', FILTER_SANITIZE_STRING ) )
-		&& $slug ) {
-
-		$is_import = true;
-	}
-
-	if ( $is_import ) {
-		$result = mai_import_template_part( $slug, true );
+		$redirect = admin_url( 'edit.php?post_type=wp_template_part' );
+		$result   = mai_import_template_part( $slug, true );
 
 		if ( ! $result['id'] ) {
 			if ( $result['message'] ) {
@@ -48,31 +28,135 @@ function mai_maybe_create_template_parts( $current_screen ) {
 			$message = sprintf( '"%s" %s', mai_convert_case( $slug, 'title' ), __( 'template part imported successfully!', 'mai-engine' ) );
 		}
 
+		if ( $message ) {
+			$redirect = add_query_arg( 'mai_notice', urlencode( esc_html( $message ) ), $redirect );
+		}
+
+		wp_safe_redirect( $redirect );
+		exit;
+
 	} else {
-
-		$template_parts = mai_create_template_parts();
-
-		if ( ! $template_parts ) {
-			return;
-		}
-
-		$count = count( $template_parts );
-
-		if ( 1 === $count ) {
-			$message = sprintf( '%s %s', $count, __( 'default template part automatically created.', 'mai-engine' ) );
-		} else {
-			$message = sprintf( '%s %s', $count, __( 'default template parts automatically created.', 'mai-engine' ) );
-		}
+		wp_die(
+			__( 'Template Parts failed to generate.', 'mai-engine' ),
+			__( 'Error', 'mai-engine' ), array(
+				'link_url'  => admin_url( 'edit.php?post_type=wp_template_part' ),
+				'link_text' => __( 'Go back.', 'mai-engine' ),
+		) );
 	}
+}
 
-	if ( ! $message ) {
+add_action( 'admin_post_mai_generate_template_parts_action', 'mai_generate_template_parts_action' );
+/**
+ * Listener for generating default template parts.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_generate_template_parts_action() {
+	$referrer = check_admin_referer( 'mai_generate_template_parts_action', 'mai_generate_template_parts_nonce' );
+	$nonce    = filter_input( INPUT_GET, 'mai_generate_template_parts_nonce', FILTER_SANITIZE_STRING );
+	$action   = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
+
+	if ( current_user_can( 'edit_theme_options' ) && $referrer && $nonce && $action && wp_verify_nonce( $nonce, $action ) ) {
+		$redirect       = admin_url( 'edit.php?post_type=wp_template_part' );
+		$template_parts = mai_create_template_parts();
+		$count          = count( $template_parts );
+
+		switch ( $count ) {
+			case 0:
+				$message = __( 'Sorry, no template parts are available.', 'mai-engine' );
+			break;
+			case 1:
+				$message = sprintf( '%s %s', $count, __( 'default template parts successfully created.', 'mai-engine' ) );
+			break;
+			default:
+				$message = sprintf( '%s %s', $count, __( 'default template parts successfully created.', 'mai-engine' ) );
+		}
+
+
+		if ( $message ) {
+			$redirect = add_query_arg( 'mai_notice', urlencode( esc_html( $message ) ), $redirect );
+		}
+
+		wp_safe_redirect( $redirect );
+		exit;
+
+	} else {
+		wp_die(
+			__( 'Template Parts failed to generate.', 'mai-engine' ),
+			__( 'Error', 'mai-engine' ), array(
+				'link_url'  => admin_url( 'edit.php?post_type=wp_template_part' ),
+				'link_text' => __( 'Go back.', 'mai-engine' ),
+		) );
+	}
+}
+
+add_action( 'load-edit.php', 'mai_template_parts_admin_notice' );
+/**
+ * Adds admin notice to template parts.
+ *
+ * @since 2.6.0
+ *
+ * @return void
+ */
+function mai_template_parts_admin_notice() {
+	$screen = get_current_screen();
+
+	if ( 'wp_template_part' !== $screen->post_type ) {
 		return;
 	}
 
-	$redirect = add_query_arg( 'mai_notice', urlencode( esc_html( $message ) ), $redirect );
+	add_action( 'admin_notices', function() {
+		printf(
+			'<div class="notice notice-success is-dismissible"><p>%s <a target="_blank" href="https://docs.bizbudding.com/docs/template-parts/">%s</a>.</p></div>',
+			__( 'View documentation for', 'mai-engine' ),
+			__( 'Template Parts', 'mai-engine' )
+		);
+	});
 
-	wp_safe_redirect( $redirect );
-	exit;
+	$config = mai_get_config( 'template-parts' );
+
+	if ( ! $config ) {
+		return;
+	}
+
+	$slugs     = array_keys( $config );
+	$count     = count( $slugs );
+	$existing  = mai_get_template_part_objects();
+	$existing  = wp_list_pluck( $existing, 'post_name' );
+	$intersect = count( array_intersect( $slugs, $existing ) );
+
+	// Bail if we have the right amount.
+	if ( $count === $intersect ) {
+		return;
+	}
+
+	$available = ( $count - $intersect );
+
+	// Bail if none available.
+	if ( ! $available ) {
+		return;
+	}
+
+	add_action( 'admin_notices', function() use ( $available ) {
+
+		if ( 1 === $available ) {
+			$notice = sprintf( '%s %s', $available, __( 'default Template Part needs to be created.', 'mai-engine' ) );
+		} else {
+			$notice = sprintf( '%s %s', $available, __( 'default Template Parts need to be created.', 'mai-engine' ) );
+		}
+
+		$generate_url = add_query_arg( [ 'action' => 'mai_generate_template_parts_action' ], admin_url( 'admin-post.php' ) );
+		$generate_url = wp_nonce_url( $generate_url, 'mai_generate_template_parts_action', 'mai_generate_template_parts_nonce' );
+		$button       = sprintf( '<a class="button button-primary" href="%s">%s</a>', $generate_url, __( 'Generate Now', 'mai-engine' ) );
+
+		printf(
+			'<div class="notice notice-warning"><p>%s</p><p>%s</p></div>',
+			$notice,
+			$button
+		);
+	});
 }
 
 add_filter( 'post_row_actions', 'mai_template_parts_import_row_action', 10, 2 );
@@ -91,7 +175,7 @@ function mai_template_parts_import_row_action( $actions, $post ) {
 		return $actions;
 	}
 
-	if ( ! current_user_can( 'delete_post', $post->ID ) ) {
+	if ( ! ( current_user_can( 'edit_theme_options' ) && current_user_can( 'delete_post', $post->ID ) ) ) {
 		return;
 	}
 
@@ -107,19 +191,15 @@ function mai_template_parts_import_row_action( $actions, $post ) {
 
 	static $script = false;
 
-	$admin_url  = admin_url( 'edit.php?post_type=wp_template_part' );
 	$import_url = add_query_arg(
 		[
-			'mai_action' => 'mai_import',
-			'mai_slug'   => $post->post_name,
+			'action' => 'mai_import_template_part_action',
+			'slug'   => $post->post_name,
 		],
-		$admin_url
+		admin_url( 'admin-post.php' )
 	);
-
-	$html = sprintf( '<a href="%s" onclick="return maiImportConfirmation()">%s</a>',
-		wp_nonce_url( $import_url, 'mai_import_nonce', 'mai_import_nonce' ),
-		__( 'Import From Demo', 'mai-engine' )
-	);
+	$import_url = wp_nonce_url( $import_url, 'mai_import_template_part_action', 'mai_import_template_part_nonce' );
+	$html       = sprintf( '<a href="%s" onclick="return maiImportConfirmation()">%s</a>', $import_url, __( 'Import From Demo', 'mai-engine' ) );
 
 	if ( ! $script ) {
 		$notice = __( 'Warning! Importing will move the existing template part to the trash.', 'mai-engine' );
@@ -242,53 +322,6 @@ function mai_template_parts_order( $query ) {
 	$query->set( 'order', 'ASC' );
 }
 
-add_action( 'current_screen', 'mai_widgets_template_parts_admin_notice' );
-/**
- * Adds admin notice for template parts to widgets screen.
- *
- * @since 2.6.0
- *
- * @return void
- */
-function mai_widgets_template_parts_admin_notice( $screen ) {
-	if ( 'widgets' !== $screen->id ) {
-		return;
-	}
-
-	add_action( 'admin_notices', function() {
-		printf(
-			'<div class="notice notice-warning is-dismissible"><p>%s <a href="%s">%s</a>.</p></div>',
-			__( 'Mai Theme uses "Template Parts" (block-based widget areas).', 'mai-engine' ),
-			admin_url( 'edit.php?post_type=wp_template_part' ),
-			__( 'Edit template parts now', 'mai-engine' )
-		);
-	});
-}
-
-add_action( 'load-edit.php', 'mai_template_parts_admin_notice' );
-/**
- * Adds admin notice to template parts.
- *
- * @since 2.6.0
- *
- * @return void
- */
-function mai_template_parts_admin_notice() {
-	$screen = get_current_screen();
-
-	if ( 'wp_template_part' !== $screen->post_type ) {
-		return;
-	}
-
-	add_action( 'admin_notices', function() {
-		printf(
-			'<div class="notice notice-success is-dismissible"><p>%s <a target="_blank" href="https://docs.bizbudding.com/docs/template-parts/">%s</a>.</p></div>',
-			__( 'View documentation for', 'mai-engine' ),
-			__( 'Template Parts', 'mai-engine' )
-		);
-	});
-}
-
 add_action( 'after_switch_theme', 'mai_default_theme_template_parts' );
 /**
  * Sets demo template parts on theme switch.
@@ -310,9 +343,9 @@ function mai_default_theme_template_parts() {
 		$count = count( $template_parts );
 
 		if ( 1 === $count ) {
-			$notices[] = printf( '%s %s', $count, __( 'default template part imported successfully.', 'mai-engine' ) );
+			$notices[] = sprintf( '%s %s', $count, __( 'default template part imported successfully.', 'mai-engine' ) );
 		} else {
-			$notices[] = printf( '%s %s', $count, __( 'default template parts imported successfully.', 'mai-engine' ) );
+			$notices[] = sprintf( '%s %s', $count, __( 'default template parts imported successfully.', 'mai-engine' ) );
 		}
 
 	}
@@ -324,9 +357,9 @@ function mai_default_theme_template_parts() {
 		$count = count( $template_parts );
 
 		if ( 1 === $count ) {
-			$notices[] = printf( '%s %s', $count, __( 'default template part automatically created.', 'mai-engine' ) );
+			$notices[] = sprintf( '%s %s', $count, __( 'default template part automatically created.', 'mai-engine' ) );
 		} else {
-			$notices[] = printf( '%s %s', $count, __( 'default template parts automatically created.', 'mai-engine' ) );
+			$notices[] = sprintf( '%s %s', $count, __( 'default template parts automatically created.', 'mai-engine' ) );
 		}
 	}
 
@@ -338,4 +371,27 @@ function mai_default_theme_template_parts() {
 			}
 		});
 	}
+}
+
+add_action( 'current_screen', 'mai_widgets_template_parts_admin_notice' );
+/**
+ * Adds admin notice for template parts to widgets screen.
+ *
+ * @since 2.6.0
+ *
+ * @return void
+ */
+function mai_widgets_template_parts_admin_notice( $screen ) {
+	if ( 'widgets' !== $screen->id ) {
+		return;
+	}
+
+	add_action( 'admin_notices', function() {
+		printf(
+			'<div class="notice notice-warning is-dismissible"><p>%s <a href="%s">%s</a>.</p></div>',
+			__( 'Mai Theme uses "Template Parts" (block-based widget areas).', 'mai-engine' ),
+			admin_url( 'edit.php?post_type=wp_template_part' ),
+			__( 'Edit template parts now', 'mai-engine' )
+		);
+	});
 }
