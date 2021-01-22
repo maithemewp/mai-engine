@@ -52,6 +52,8 @@ class Mai_Columns {
 				'align'                  => '',
 				'align_columns'          => 'start',
 				'align_columns_vertical' => '',
+				'margin_top'             => '',
+				'margin_bottom'          => '',
 				'arrangements'           => [],
 				'preview'                => false,
 			]
@@ -60,9 +62,11 @@ class Mai_Columns {
 		$args['class']                  = esc_html( $args['class'] );
 		$args['column_gap']             = esc_html( $args['column_gap'] );
 		$args['row_gap']                = esc_html( $args['row_gap'] );
-		$args['align']                  = esc_html( $args['align'] );
+		$args['align']                  = sanitize_html_class( $args['align'] );
 		$args['align_columns']          = esc_html( $args['align_columns'] );
 		$args['align_columns_vertical'] = esc_html( $args['align_columns_vertical'] );
+		$args['margin_top']             = sanitize_html_class( $args['margin_top'] );
+		$args['margin_bottom']          = sanitize_html_class( $args['margin_bottom'] );
 		$args['arrangements']           = mai_array_map_recursive( 'esc_html', $args['arrangements'] );
 		$args['preview']                = mai_sanitize_bool( $args['preview'] );
 
@@ -88,7 +92,15 @@ class Mai_Columns {
 		}
 
 		if ( in_array( $this->args['align'], [ 'full', 'wide' ] ) ) {
-			$attributes['class'] .= ' align' . $this->args['align'];
+			$attributes['class'] = mai_add_classes( 'align' . $this->args['align'], $attributes['class'] );
+		}
+
+		if ( $this->args['margin_top'] ) {
+			$attributes['class'] = mai_add_classes( sprintf( 'has-%s-margin-top', $this->args['margin_top'] ), $attributes['class'] );
+		}
+
+		if ( $this->args['margin_bottom'] ) {
+			$attributes['class'] = mai_add_classes( sprintf( 'has-%s-margin-bottom', $this->args['margin_bottom'] ), $attributes['class'] );
 		}
 
 		if ( $this->args['preview'] ) {
@@ -159,6 +171,7 @@ class Mai_Columns {
 		} else {
 
 			foreach ( array_reverse( $this->args['arrangements'] ) as $break => $columns ) {
+
 				if ( $flex = mai_columns_get_flex( $columns ) ) {
 					$attributes['style'] .= sprintf( '--flex-%s:%s;', $break, $flex );
 				}

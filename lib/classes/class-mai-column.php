@@ -38,17 +38,19 @@ class Mai_Column {
 	function get_sanitized_args( $args ) {
 		$args = wp_parse_args( $args,
 			[
-				'class'      => '',
-				'spacing'    => '',
-				'background' => '',
-				'preview'    => false,
+				'class'                 => '',
+				'align_column_vertical' => 'start',
+				'spacing'               => '',
+				'background'            => '',
+				'preview'               => false,
 			]
 		);
 
-		$args['class']      = esc_html( $args['class'] );
-		$args['spacing']    = esc_html( $args['spacing'] );
-		$args['background'] = esc_html( $args['background'] );
-		$args['preview']    = mai_sanitize_bool( $args['preview'] );
+		$args['class']                 = esc_html( $args['class'] );
+		$args['align_column_vertical'] = esc_html( $args['align_column_vertical'] );
+		$args['spacing']               = esc_html( $args['spacing'] );
+		$args['background']            = esc_html( $args['background'] );
+		$args['preview']               = mai_sanitize_bool( $args['preview'] );
 
 		return $args;
 	}
@@ -68,6 +70,10 @@ class Mai_Column {
 
 		if ( $this->args['class'] ) {
 			$attributes['class'] = mai_add_classes( $this->args['class'], $attributes['class'] );
+		}
+
+		if ( $this->args['align_column_vertical'] ) {
+			$attributes['style'] .= sprintf( '--justify-content:%s;', mai_get_flex_align( $this->args['align_column_vertical'] ) );
 		}
 
 		if ( $this->args['spacing'] ) {

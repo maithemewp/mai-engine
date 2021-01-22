@@ -8,7 +8,10 @@
 }
 
 .mai-column {
+	display: flex;
 	flex: var(--flex, var(--flex-xs, 1 0 100%));
+	flex-direction: column;
+	justify-content: var(--justify-content, flex-start);
 	max-width: calc(var(--max-width, var(--max-width-xs, 100%)) - var(--column-gap));
 	margin: var(--row-gap) 0 0 var(--column-gap);
 }

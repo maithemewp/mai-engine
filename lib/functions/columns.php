@@ -39,12 +39,18 @@ function mai_columns_get_args( $i = null ) {
 			}
 
 		} else {
-			$cache[ $i ]['arrangements'] = mai_get_breakpoint_columns(
+			$columns = mai_get_breakpoint_columns(
 				[
 					'columns_responsive' => false,
 					'columns'            => $cache[ $i ]['columns'],
 				]
 			);
+
+			foreach ( $columns as $break => $column ) {
+				if ( 0 === $column ) {
+					$cache[ $i ]['arrangements'][ $break ] = 'auto';
+				}
+			}
 		}
 	}
 

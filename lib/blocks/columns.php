@@ -92,6 +92,8 @@ function mai_do_columns_block( $block, $content = '', $is_preview = false, $post
 	$args[ $instance ]['align']                  = $block['align'];
 	$args[ $instance ]['align_columns']          = get_field( 'align_columns' );
 	$args[ $instance ]['align_columns_vertical'] = get_field( 'align_columns_vertical' );
+	$args[ $instance ]['margin_top']             = get_field( 'margin_top' );
+	$args[ $instance ]['margin_bottom']          = get_field( 'margin_bottom' );
 
 	$columns = new Mai_Columns( $instance, $args[ $instance ] );
 	$columns->render();
@@ -113,10 +115,11 @@ function mai_do_columns_block( $block, $content = '', $is_preview = false, $post
  */
 function mai_do_column_block( $block, $content = '', $is_preview = false, $post_id = 0 ) {
 	$args = [
-		'preview'    => $is_preview,
-		'class'      => isset( $block['className'] ) ? $block['className']: '',
-		'spacing'    => get_field( 'spacing' ),
-		'background' => get_field( 'background' ),
+		'preview'               => $is_preview,
+		'class'                 => isset( $block['className'] ) ? $block['className']: '',
+		'align_column_vertical' => get_field( 'align_column_vertical' ),
+		'spacing'               => get_field( 'spacing' ),
+		'background'            => get_field( 'background' ),
 	];
 
 	$columns = new Mai_Column( $args );
@@ -272,14 +275,14 @@ function mai_register_columns_field_groups() {
 				'name'              => 'columns',
 				'type'              => 'select',
 				'choices'           => [
-					1        => '1',
-					2        => '2',
-					3        => '3',
-					4        => '4',
-					5        => '5',
-					6        => '6',
-					0        => __( 'Auto', 'mai-engine' ),
-					'custom' => __( 'Custom', 'mai-engine' ),
+					1                  => '1',
+					2                  => '2',
+					3                  => '3',
+					4                  => '4',
+					5                  => '5',
+					6                  => '6',
+					0                  => __( 'Auto', 'mai-engine' ),
+					'custom'           => __( 'Custom', 'mai-engine' ),
 				],
 				'default_value'     => 2,
 			],
@@ -515,14 +518,14 @@ function mai_register_columns_field_groups() {
 				'choices'           => [
 					''                 => __( 'None', 'mai-engine' ),
 					'md'               => __( 'XS', 'mai-engine' ),
-					'lg'               => __( 'SM', 'mai-engine' ),
-					'xl'               => __( 'MD', 'mai-engine' ),
-					'xxl'              => __( 'LG', 'mai-engine' ),
+					'lg'               => __( 'S', 'mai-engine' ),
+					'xl'               => __( 'M', 'mai-engine' ),
+					'xxl'              => __( 'L', 'mai-engine' ),
 					'xxxl'             => __( 'XL', 'mai-engine' ),
 				],
 				'default_value'     => 'xl',
 				'wrapper'           => [
-					'class'            => 'mai-acf-button-group',
+					'class'            => 'mai-acf-button-group mai-acf-button-group-small',
 				],
 			],
 			[
@@ -533,14 +536,52 @@ function mai_register_columns_field_groups() {
 				'choices'           => [
 					''                 => __( 'None', 'mai-engine' ),
 					'md'               => __( 'XS', 'mai-engine' ),
-					'lg'               => __( 'SM', 'mai-engine' ),
-					'xl'               => __( 'MD', 'mai-engine' ),
-					'xxl'              => __( 'LG', 'mai-engine' ),
+					'lg'               => __( 'S', 'mai-engine' ),
+					'xl'               => __( 'M', 'mai-engine' ),
+					'xxl'              => __( 'L', 'mai-engine' ),
 					'xxxl'             => __( 'XL', 'mai-engine' ),
 				],
 				'default_value'     => 'xl',
 				'wrapper'           => [
-					'class'            => 'mai-acf-button-group',
+					'class'            => 'mai-acf-button-group mai-acf-button-group-small',
+				],
+			],
+			[
+				'key'               => 'mai_columns_margin_top',
+				'label'             => __( 'Top Margin', 'mai-engine' ),
+				'name'              => 'margin_top',
+				'type'              => 'button_group',
+				'choices'           => [
+					''                 => __( 'None', 'mai-engine' ),
+					'md'               => __( 'XS', 'mai-engine' ),
+					'lg'               => __( 'S', 'mai-engine' ),
+					'xl'               => __( 'M', 'mai-engine' ),
+					'xxl'              => __( 'L', 'mai-engine' ),
+					'xxxl'             => __( 'XL', 'mai-engine' ),
+					'xxxxl'            => __( 'XXL', 'mai-engine' ),
+				],
+				'default_value'     => '',
+				'wrapper'           => [
+					'class'            => 'mai-acf-button-group mai-acf-button-group-small',
+				],
+			],
+			[
+				'key'               => 'mai_columns_margin_bottom',
+				'label'             => __( 'Bottom Margin', 'mai-engine' ),
+				'name'              => 'margin_bottom',
+				'type'              => 'button_group',
+				'choices'           => [
+					''                 => __( 'None', 'mai-engine' ),
+					'md'               => __( 'XS', 'mai-engine' ),
+					'lg'               => __( 'S', 'mai-engine' ),
+					'xl'               => __( 'M', 'mai-engine' ),
+					'xxl'              => __( 'L', 'mai-engine' ),
+					'xxxl'             => __( 'XL', 'mai-engine' ),
+					'xxxxl'            => __( 'XXL', 'mai-engine' ),
+				],
+				'default_value'     => '',
+				'wrapper'           => [
+					'class'            => 'mai-acf-button-group mai-acf-button-group-small',
 				],
 			],
 		],
@@ -559,6 +600,21 @@ function mai_register_columns_field_groups() {
 		'key'         => 'mai_column_field_group',
 		'title'       => __( 'Mai Column', 'mai-engine' ),
 		'fields'      => [
+			[
+				'key'               => 'mai_column_align_column_vertical',
+				'label'             => __( 'Align Content (vertical)', 'mai-engine' ),
+				'name'              => 'align_column_vertical',
+				'type'              => 'button_group',
+				'choices'           => [
+					'start'            => __( 'Top', 'mai-engine' ),
+					'middle'           => __( 'Middle', 'mai-engine' ),
+					'end'              => __( 'Bottom', 'mai-engine' ),
+				],
+				'default_value'     => 'start',
+				'wrapper'           => [
+					'class'            => 'mai-acf-button-group',
+				],
+			],
 			[
 				'key'       => 'mai_column_spacing',
 				'label'     => __( 'Spacing', 'mai-engine' ),
