@@ -3,11 +3,14 @@
 	max-width: var(--wrap-max-width);
 	margin: var(--content-sidebar-wrap-margin-top) auto var(--content-sidebar-wrap-margin-bottom);
 
-	.content-sidebar &,
-	.sidebar-content & {
-		display: grid;
-		grid-template-columns: var(--content-sidebar-wrap-columns, 1fr);
-		column-gap: var(--content-sidebar-gap);
+	@include mq(lg) {
+
+		.content-sidebar &,
+		.sidebar-content & {
+			display: grid;
+			grid-template-columns: var(--content-sidebar-wrap-columns, 1fr);
+			column-gap: var(--content-sidebar-gap);
+		}
 	}
 
 	> .content > .entry > .entry-wrap > .entry-content:first-child > .alignfull:first-child {
