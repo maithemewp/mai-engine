@@ -401,6 +401,38 @@ function mai_require_genesis_connect( $plugins ) {
 	return $plugins;
 }
 
+add_action( 'admin_bar_menu', 'mai_woocommerce_edit_shop_link', 90 );
+/**
+ * Adds toolbar link to edit the shop page when view the shop archive.
+ *
+ * @since TBD
+ *
+ * @param object $wp_admin_bar
+ *
+ * @return void
+ */
+function mai_woocommerce_edit_shop_link( $wp_admin_bar ) {
+	if ( is_admin() ) {
+		return;
+	}
+
+	if ( ! ( class_exists( 'WooCommerce' ) && function_exists( 'is_shop' ) && is_shop() ) ) {
+		return;
+	}
+
+	$page_id = get_option( 'woocommerce_shop_page_id' );
+
+	if ( ! $page_id ) {
+		return;
+	}
+
+	$wp_admin_bar->add_node( [
+		'id'    => 'mai-woocommerce-shop-page',
+		'title' => '<span class="ab-icon dashicons dashicons-edit" style="margin-top:2px;"></span><span class="ab-label">' . __( 'Edit Page', 'mai-engine' ) . '</span>',
+		'href'  => get_edit_post_link( $page_id, false ),
+	] );
+}
+
 /**
  * Ajax update cart contents total.
  *
