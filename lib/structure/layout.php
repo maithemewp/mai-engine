@@ -77,12 +77,15 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'has-transparent-header';
 	}
 
-	// Add page header or alignfull-first classes.
+	// Add page header classes.
 	$has_page_header = mai_has_page_header();
 	$classes[]       = $has_page_header ? 'has-page-header' : 'no-page-header';
 	if ( $has_page_header ) {
 		$classes[] = mai_has_light_page_header() ? 'has-light-page-header' : 'has-dark-page-header';
-	} elseif ( mai_has_alignfull_first() ) {
+	}
+
+	// Add or alignfull class.
+	if ( mai_has_alignfull_first() ) {
 		$classes[] = 'has-alignfull-first';
 	}
 
