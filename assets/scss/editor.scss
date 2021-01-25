@@ -600,8 +600,3 @@ input[type="submit"],
 	max-width: 100%;
 	margin: auto 16px;
 }
-
-.wp-block[data-type="acf/mai-columns"].is-selected .wp-block[data-type="acf/mai-column"],
-.wp-block[data-type="acf/mai-columns"].has-child-selected .wp-block[data-type="acf/mai-column"] {
-	border: 2px dashed #e0e0e0;
-}

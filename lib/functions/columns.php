@@ -31,8 +31,6 @@ function mai_columns_get_args( $i = null ) {
 			];
 
 			foreach ( $arrangements as $break => $arrangement ) {
-				$break_arrangment = [];
-
 				foreach ( $arrangement as $columns ) {
 					$cache[ $i ]['arrangements'][ $break ][] = $columns['columns'];
 				}
@@ -47,9 +45,7 @@ function mai_columns_get_args( $i = null ) {
 			);
 
 			foreach ( $columns as $break => $column ) {
-				if ( 0 === $column ) {
-					$cache[ $i ]['arrangements'][ $break ] = 'auto';
-				}
+				$cache[ $i ]['arrangements'][ $break ] = 0 === $column ? 'auto' : $column;
 			}
 		}
 	}

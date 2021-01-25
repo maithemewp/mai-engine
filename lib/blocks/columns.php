@@ -161,7 +161,13 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 		return $block_content;
 	}
 
-	$args     = $args[ $instance ];
+	$args = $args[ $instance ];
+
+	if ( ! isset( $args['arrangements'] ) ) {
+		return $block_content;
+	}
+
+
 	$xpath    = new DOMXPath( $dom );
 	$elements = $xpath->query( '//div[contains(@class, "mai-columns-wrap")]//div[contains(@class, "mai-column")]' );
 

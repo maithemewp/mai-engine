@@ -95,10 +95,18 @@ class Mai_Column {
 				'open'    => '<div %s>',
 				'close'   => '</div>',
 				'context' => 'mai-column',
-				'content' => '<InnerBlocks />',
+				'content' => $this->get_inner_blocks(),
 				'echo'    => true,
 				'atts'    => $attributes,
 			]
 		);
+	}
+
+	function get_inner_blocks() {
+		$template = [
+			[ 'core/paragraph', [], [] ],
+		];
+
+		return sprintf( '<InnerBlocks template="%s" />', esc_attr( wp_json_encode( $template ) ) );
 	}
 }
