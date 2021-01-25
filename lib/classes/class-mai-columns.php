@@ -149,35 +149,21 @@ class Mai_Columns {
 	}
 
 	function get_admin_attributes( $attributes ) {
-		if ( 'custom' === $this->args['columns'] ) {
+		foreach ( array_reverse( $this->args['arrangements'] ) as $break => $arrangement ) {
+			$index    = 0;
+			$elements = $this->get_mapped_admin_elements( $arrangement );
 
-			foreach ( array_reverse( $this->args['arrangements'] ) as $break => $arrangement ) {
-				$index    = 0;
-				$elements = $this->get_mapped_admin_elements( $arrangement );
-
-				foreach ( $elements as $index => $columns ) {
-					$index++;
-
-					if ( $flex = mai_columns_get_flex( $columns ) ) {
-						$attributes['style'] .= sprintf( '--flex-%s-%s:%s;', $break, $index, $flex );
-					}
-
-					if ( $max_width = mai_columns_get_max_width( $columns ) ) {
-						$attributes['style'] .= sprintf( '--max-width-%s-%s:%s;', $break, $index, $max_width );
-					}
-				}
-			}
-
-		} else {
-
-			foreach ( array_reverse( $this->args['arrangements'] ) as $break => $columns ) {
+			foreach ( $elements as $index => $columns ) {
+				$index++;
 
 				if ( $flex = mai_columns_get_flex( $columns ) ) {
-					$attributes['style'] .= sprintf( '--flex-%s:%s;', $break, $flex );
+					$attributes['style'] .= sprintf( '--flex-%s:%s;', $break, $flex ); // Fallback for nested.
+					$attributes['style'] .= sprintf( '--flex-%s-%s:%s;', $break, $index, $flex );
 				}
 
 				if ( $max_width = mai_columns_get_max_width( $columns ) ) {
-					$attributes['style'] .= sprintf( '--max-width-%s:%s;', $break, $max_width );
+					$attributes['style'] .= sprintf( '--max-width-%s:%s;', $break, $max_width ); // Fallback for nested.
+					$attributes['style'] .= sprintf( '--max-width-%s-%s:%s;', $break, $index, $max_width );
 				}
 			}
 		}

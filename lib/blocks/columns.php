@@ -167,11 +167,10 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 		return $block_content;
 	}
 
-
 	$xpath    = new DOMXPath( $dom );
-	$elements = $xpath->query( '//div[contains(@class, "mai-columns-wrap")]//div[contains(@class, "mai-column")]' );
+	$elements = $xpath->query( 'div[contains(concat(" ", normalize-space(@class), " "), " mai-columns-wrap ")]/div[contains(concat(" ", normalize-space(@class), " "), " mai-column ")]' );
 
-	if ( ! ( $elements->length ) ) {
+	if ( ! $elements->length ) {
 		return $block_content;
 	}
 
@@ -183,6 +182,8 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 
 			foreach ( $elements as $element ) {
 				$style = $element->getAttribute( 'style' );
+
+				$element->setAttribute( 'data-instance', $instance );
 
 				// If only 1 size for this breakpoint, all the columns get the same max width.
 				if ( 1 === $total_arrangements ) {

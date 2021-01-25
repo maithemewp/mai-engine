@@ -60,12 +60,12 @@ function mai_columns_get_args( $i = null ) {
  *
  * @since TBD
  *
- * @param string|false $size
+ * @param string $size
  *
  */
 function mai_columns_get_flex( $size ) {
 	if ( ! in_array( $size, [ 'auto', 'fill', 'full' ] ) ) {
-		return false;
+		return '1 0 100%';
 	}
 
 	switch ( $size ) {
@@ -88,7 +88,7 @@ function mai_columns_get_flex( $size ) {
  *
  * @param string|int $size The size from column setting.
  *
- * @return string|false
+ * @return string
  */
 function mai_columns_get_max_width( $size ) {
 	if ( mai_has_string( '/', $size ) ) {
@@ -99,5 +99,5 @@ function mai_columns_get_max_width( $size ) {
 		return ( $size ? (100 / (int) $size) : '100' ) . '%';
 	}
 
-	return false;
+	return '100%';
 }
