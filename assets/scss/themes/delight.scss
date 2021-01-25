@@ -42,7 +42,7 @@ html {
 	box-shadow: var(--shadow);
 }
 
-body:not(.has-alignfull-first) .entry-wrap-single {
+body:not(.has-page-header):not(.has-alignfull-first) .entry-wrap-single {
 	margin-bottom: var(--spacing-xxl);
 	padding: calc(8px + 2vw);
 	background: var(--color-white);
