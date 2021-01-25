@@ -28,7 +28,6 @@ html {
 
 .page-header-inner:not(:empty) {
 	--page-header-inner-background: rgba(255, 255, 255, 0.9);
-	--page-header-inner-max-width: 800px;
 	--page-header-inner-padding: var(--spacing-xl) var(--spacing-xl);
 	--page-header-inner-border-radius: var(--border-radius);
 	--page-header-inner-box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
@@ -42,7 +41,7 @@ html {
 	box-shadow: var(--shadow);
 }
 
-body:not(.has-page-header):not(.has-alignfull-first) .entry-wrap-single {
+body:not(.has-alignfull-first) .entry-wrap-single {
 	margin-bottom: var(--spacing-xxl);
 	padding: calc(8px + 2vw);
 	background: var(--color-white);
