@@ -13,7 +13,7 @@ add_action( 'acf/init', 'mai_register_columns_blocks' );
 /**
  * Registers the columns blocks.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @return void
  */
@@ -72,7 +72,7 @@ function mai_register_columns_blocks() {
 /**
  * Callback function to render the block.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @param array  $block      The block settings and attributes.
  * @param string $content    The block inner HTML (empty).
@@ -104,7 +104,7 @@ function mai_do_columns_block( $block, $content = '', $is_preview = false, $post
 /**
  * Callback function to render the column block.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @param array  $block      The block settings and attributes.
  * @param string $content    The block inner HTML (empty).
@@ -133,7 +133,7 @@ add_filter( 'render_block', 'mai_render_mai_columns_block', 10, 2 );
 /**
  * Adds inline custom properties for custom column arrangments.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @param string $block_content The existing block content.
  * @param object $block         The columns block object.
@@ -243,7 +243,7 @@ add_action( 'acf/init', 'mai_register_columns_field_groups' );
 /**
  * Register Mai Columns block field group.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @return void
  */

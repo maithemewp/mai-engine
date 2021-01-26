@@ -31,7 +31,7 @@ class Mai_Columns {
 	/**
 	 * Mai_Columns constructor.
 	 *
-	 * @since TBD
+	 * @since 2.10.0
 	 *
 	 * @param array $columns_block.
 	 * @param bool  $columns_preview If in admin.
@@ -76,7 +76,7 @@ class Mai_Columns {
 	/**
 	 * Renders the columns.
 	 *
-	 * @since TBD
+	 * @since 2.10.0
 	 *
 	 * @return void
 	 */

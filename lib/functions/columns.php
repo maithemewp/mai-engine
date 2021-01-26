@@ -4,7 +4,7 @@
  * Gets formatted columns args from block settings
  * and caches value so it can be pulled use by the individual columns.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @param int $i The columns block instance.
  *
@@ -58,7 +58,7 @@ function mai_columns_get_args( $i = null ) {
  * If size is a percentage the default is already declared via CSS
  * so function returns false.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @param string $size
  *
@@ -84,7 +84,7 @@ function mai_columns_get_flex( $size ) {
 /**
  * Gets max width value from column size.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @param string|int $size The size from column setting.
  *

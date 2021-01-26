@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.10.0 (TBD)
+## 2.10.0 (1/26/21)
 * Added: Mai Columns block! Super powerful responsive controls. This is marked as beta while we confirm settings and controls. Let us know how you like it.
 * Added: LearnDash support! Courses and course content (lessons/topics/etc.) now have their own Content Archives and Single Content settings.
 * Added: LearnDash content now inherits theme styling.

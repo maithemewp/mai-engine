@@ -405,7 +405,7 @@ add_action( 'admin_bar_menu', 'mai_woocommerce_edit_shop_link', 90 );
 /**
  * Adds toolbar link to edit the shop page when view the shop archive.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @param object $wp_admin_bar
  *
@@ -476,7 +476,7 @@ add_filter( 'mai_get_option_single-settings', 'mai_learndash_add_settings' );
 /**
  * Forces learndash courses post type to use archive/single settings.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @param array $post_type The post types to for loop settings.
  *
@@ -497,7 +497,7 @@ add_filter( 'mai_content_archive_settings', 'mai_learndash_course_archive_settin
  * Removes posts_per_page setting from courses,
  * since learndash has it's own settings for this.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @param array $settings The existing settings.
  * @param string $name    The content type name.
@@ -527,7 +527,7 @@ add_filter( 'mai_single_args_name', 'mai_learndash_course_settings_name', 8 );
 /**
  * Uses course single/archive content settings for lessons, topics, quizes, and certificates.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @param string $name The args name.
  *
@@ -552,14 +552,14 @@ add_filter( 'learndash_next_post_link', 'mai_learndash_adjacent_post_link', 10, 
 /**
  * Adds button classes to adjacent post links on LearnDash content.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @param string $link      The link HTML.
  * @param string $permalink The link uri.
  * @param string $link_name The link text.
  * @param WP_Post $post     The adjacent post object.
  *
- * @since TBD
+ * @since 2.10.0
  */
 function mai_learndash_adjacent_post_link( $link, $permalink, $link_name, $post ) {
 	$link = str_replace( 'prev-link', 'prev-link button button-secondary button-small', $link );

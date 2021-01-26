@@ -4,7 +4,7 @@ add_action( 'admin_post_mai_import_template_part_action', 'mai_import_template_p
 /**
  * Listener for importing a specific template part.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @return void
  */
@@ -49,7 +49,7 @@ add_action( 'admin_post_mai_generate_template_parts_action', 'mai_generate_templ
 /**
  * Listener for generating default template parts.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @return void
  */

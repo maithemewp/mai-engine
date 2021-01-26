@@ -212,7 +212,7 @@ add_filter( 'genesis_theme_settings_menu_ops', 'mai_genesis_theme_settings_menu_
  * Makes room for our Mai Theme admin menu.
  * These only worked when the value was a string.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @param array $options The existing options from Genesis.
  *

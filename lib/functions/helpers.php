@@ -584,7 +584,7 @@ function mai_sanitize_bool( $value ) {
 /**
  * Converts a fraction to a percentage.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @param string $fraction The fraction.
  *
@@ -600,7 +600,7 @@ function mai_fraction_to_percent( $fraction ) {
  *
  * @access private This may change at some point so don't use outside of the engine.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @param callable $func  The function name map.
  * @param array    $array The array being sanitized/filtered.

@@ -257,7 +257,7 @@ function mai_get_template_args() {
 /**
  * Checks if a loop has custom settings.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @param string $name The content type name.
  *

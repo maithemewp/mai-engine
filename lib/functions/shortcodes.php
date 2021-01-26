@@ -210,7 +210,7 @@ add_filter( 'genesis_post_terms_shortcode', 'mai_post_terms_shortcode_classes', 
 /**
  * Adds taxonomy name as class to entry-terms wrap.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @param string $output The rendered HTML.
  * @param array $terms   The term link HTML.
@@ -240,7 +240,7 @@ function mai_post_terms_shortcode_classes( $output, $terms, $atts ) {
 /**
  * Add inline custom properties to native/classic WP galleries.
  *
- * @since   TBD
+ * @since   2.10.0
  *
  * @param   string        $output  Shortcode output.
  * @param   string        $tag     Shortcode name.

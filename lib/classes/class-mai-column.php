@@ -24,7 +24,7 @@ class Mai_Column {
 	/**
 	 * Mai_Column constructor.
 	 *
-	 * @since TBD
+	 * @since 2.10.0
 	 *
 	 * @param array $block
 	 * @param bool  $preview
@@ -64,7 +64,7 @@ class Mai_Column {
 	/**
 	 * Renders the columns.
 	 *
-	 * @since TBD
+	 * @since 2.10.0
 	 *
 	 * @return void
 	 */

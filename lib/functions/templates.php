@@ -227,7 +227,7 @@ function mai_get_template_part_id( $slug ) {
  * Slugs must exist in the config.
  *
  * @since 2.6.0
- * @since TBD Changes `posts_per_page` value from `count( $slugs )` to 500
+ * @since 2.10.0 Changes `posts_per_page` value from `count( $slugs )` to 500
  *              since WP seems to allow draft posts with the same slug as an existing post.
  *
  * @return array

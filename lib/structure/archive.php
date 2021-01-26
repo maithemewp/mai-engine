@@ -59,7 +59,7 @@ add_filter( 'genesis_attr_author-archive-description', 'mai_attributes_archive_d
 /**
  * Removes possible conflicting class names.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @param array $attributes Existing attributes for the author description element.
  *
@@ -76,7 +76,7 @@ add_action( 'genesis_before_loop', 'mai_do_archives_description', 18 );
 /**
  * Adds single hook for the archives description output.
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @return void
  */
@@ -228,7 +228,7 @@ function mai_do_author_description() {
 add_action( 'mai_archives_description', 'mai_do_author_archive_author_box' );
 /**
  *
- * @since TBD
+ * @since 2.10.0
  *
  * @return void
  */
