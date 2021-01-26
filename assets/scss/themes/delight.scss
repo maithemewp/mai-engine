@@ -31,6 +31,10 @@ html {
 	--page-header-inner-padding: var(--spacing-xl) var(--spacing-xl);
 	--page-header-inner-border-radius: var(--border-radius);
 	--page-header-inner-box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+
+	.has-dark-page-header & {
+		--page-header-inner-background: rgba(0, 0, 0, 0.7);
+	}
 }
 
 .entry-image-single:first-child {
