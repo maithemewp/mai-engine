@@ -222,7 +222,6 @@ input[type="submit"],
 	pointer-events: none;
 }
 
-
 /* .mai-columns-wrap */
 .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout {
 	--flex-fallback: 1 0 100%;
@@ -427,7 +426,7 @@ input[type="submit"],
 	--max-width: var(--max-width-24);
 }
 
-@media only screen and (min-width: 400px) and (max-width: 599px) {
+@include mq(sm, md) {
 
 	/* .mai-columns-wrap */
 	.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout {
@@ -483,7 +482,7 @@ input[type="submit"],
 	}
 }
 
-@media only screen and (min-width: 600px) and (max-width: 799px) {
+@include mq(md, lg) {
 
 	/* .mai-columns-wrap */
 	.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout {
@@ -539,7 +538,7 @@ input[type="submit"],
 	}
 }
 
-@media only screen and (min-width: 800px) {
+@include mq(lg) {
 
 	/* .mai-columns-wrap */
 	.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout {

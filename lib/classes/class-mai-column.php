@@ -42,6 +42,9 @@ class Mai_Column {
 				'align_column_vertical' => 'start',
 				'spacing'               => '',
 				'background'            => '',
+				'first_xs'              => false,
+				'first_sm'              => false,
+				'first_md'              => false,
 				'preview'               => false,
 			]
 		);
@@ -50,6 +53,9 @@ class Mai_Column {
 		$args['align_column_vertical'] = esc_html( $args['align_column_vertical'] );
 		$args['spacing']               = esc_html( $args['spacing'] );
 		$args['background']            = esc_html( $args['background'] );
+		$args['first_xs']              = mai_sanitize_bool( $args['first_xs'] );
+		$args['first_sm']              = mai_sanitize_bool( $args['first_sm'] );
+		$args['first_md']              = mai_sanitize_bool( $args['first_md'] );
 		$args['preview']               = mai_sanitize_bool( $args['preview'] );
 
 		return $args;
@@ -88,6 +94,18 @@ class Mai_Column {
 			} else {
 				$attributes['style'] .= sprintf( 'background:%s !important;', $this->args['background'] );
 			}
+		}
+
+		if ( $this->args['first_xs'] ) {
+			$attributes['style'] .= '--order-xs:-1;';
+		}
+
+		if ( $this->args['first_sm'] ) {
+			$attributes['style'] .= '--order-sm:-1;';
+		}
+
+		if ( $this->args['first_md'] ) {
+			$attributes['style'] .= '--order-md:-1;';
 		}
 
 		genesis_markup(

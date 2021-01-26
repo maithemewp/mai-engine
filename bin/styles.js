@@ -157,6 +157,7 @@ module.exports.desktop = function() {
 		.pipe( rename( 'columns.min.scss' ) )
 		.pipe( sass.sync( {
 			outputStyle: 'compressed',
+			includePaths: [].concat( bourbon )
 		} ) )
 		// .pipe( postcss( postProcessors ) ) // This was changing 100% in max-width to just 1.
 		.pipe( gulp.dest( './assets/css/' ) )

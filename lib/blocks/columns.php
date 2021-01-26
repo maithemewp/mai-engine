@@ -120,6 +120,9 @@ function mai_do_column_block( $block, $content = '', $is_preview = false, $post_
 		'align_column_vertical' => get_field( 'align_column_vertical' ),
 		'spacing'               => get_field( 'spacing' ),
 		'background'            => get_field( 'background' ),
+		'first_xs'              => get_field( 'first_xs' ),
+		'first_sm'              => get_field( 'first_sm' ),
+		'first_md'              => get_field( 'first_md' ),
 	];
 
 	$columns = new Mai_Column( $args );
@@ -644,6 +647,27 @@ function mai_register_columns_field_groups() {
 				'label'     => __( 'Background Color', 'mai-engine' ),
 				'name'      => 'background',
 				'type'      => 'color_picker',
+			],
+			[
+				'key'               => 'mai_columns_first_xs',
+				'name'              => 'first_xs',
+				'label'             => '',
+				'message'           => esc_html__( 'Show first on mobile', 'mai-engine' ),
+				'type'              => 'true_false',
+			],
+			[
+				'key'               => 'mai_columns_first_sm',
+				'name'              => 'first_sm',
+				'label'             => '',
+				'message'           => esc_html__( 'Show first on small tablets', 'mai-engine' ),
+				'type'              => 'true_false',
+			],
+			[
+				'key'               => 'mai_columns_first_md',
+				'name'              => 'first_md',
+				'label'             => '',
+				'message'           => esc_html__( 'Show first on large tablets', 'mai-engine' ),
+				'type'              => 'true_false',
 			],
 		],
 		'location'    => [
