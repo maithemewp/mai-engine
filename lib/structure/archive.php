@@ -54,7 +54,41 @@ function mai_author_box_gravatar( $size ) {
 	return $tiny ?: $size;
 }
 
-add_action( 'genesis_before_loop', 'mai_do_blog_description', 18 );
+add_filter( 'genesis_attr_taxonomy-archive-description', 'mai_attributes_archive_description' );
+add_filter( 'genesis_attr_author-archive-description', 'mai_attributes_archive_description' );
+/**
+ * Removes possible conflicting class names.
+ *
+ * @since 2.10.0
+ *
+ * @param array $attributes Existing attributes for the author description element.
+ *
+ * @return array
+ */
+function mai_attributes_archive_description( $attributes ) {
+	$attributes['class'] = str_replace( ' taxonomy-description', '' ,$attributes['class'] );
+	$attributes['class'] = str_replace( ' author-description', '', $attributes['class'] );
+
+	return $attributes;
+}
+
+add_action( 'genesis_before_loop', 'mai_do_archives_description', 18 );
+/**
+ * Adds single hook for the archives description output.
+ *
+ * @since 2.10.0
+ *
+ * @return void
+ */
+function mai_do_archives_description() {
+	if ( ! mai_is_type_archive() ) {
+		return;
+	}
+
+	do_action( 'mai_archives_description' );
+}
+
+add_action( 'mai_archives_description', 'mai_do_blog_description' );
 /**
  * Output the static blog page content before the posts.
  *
@@ -75,17 +109,29 @@ function mai_do_blog_description() {
 		return;
 	}
 
-	$content = apply_filters( 'the_content', get_post( $posts_page )->post_content );
+	$description = apply_filters( 'the_content', get_post( $posts_page )->post_content );
+	$description = wp_kses_post( $description );
 
-	// Bail if no content.
-	if ( empty( $content ) ) {
+	// Bail if no description.
+	if ( empty( $description ) ) {
 		return;
 	}
 
-	printf( '<div class="blog-description">%s</div>', wp_kses_post( $content ) );
+	genesis_markup(
+		[
+			'open'    => '<div %s>',
+			'close'   => '</div>',
+			'context' => 'archives-description',
+			'content' => mai_get_processed_content( $description ),
+			'echo'    => true,
+			'atts'    => [
+				'class' => 'archives-description blog-description',
+			],
+		]
+	);
 }
 
-add_action( 'genesis_before_loop', 'mai_do_term_description', 18 );
+add_action( 'mai_archives_description', 'mai_do_term_description' );
 /**
  * Add term description before custom taxonomy loop, but after archive title/description.
  * Archive title/description is priority 15 in Genesis.
@@ -108,10 +154,101 @@ function mai_do_term_description() {
 	}
 
 	$description = apply_filters( 'mai_term_description', term_description() );
+	$description = wp_kses_post( $description );
 
 	if ( ! $description ) {
 		return;
 	}
 
-	printf( '<div class="term-description">%s</div>', mai_get_processed_content( $description ) );
+	genesis_markup(
+		[
+			'open'    => '<div %s>',
+			'close'   => '</div>',
+			'context' => 'archives-description',
+			'content' => mai_get_processed_content( $description ),
+			'echo'    => true,
+			'atts'    => [
+				'class' => 'archives-description term-description',
+			],
+		]
+	);
+}
+
+add_action( 'mai_archives_description', 'mai_do_author_description' );
+/**
+ * Add author description before custom taxonomy loop, but after archive title/description.
+ * Archive title/description is priority 15 in Genesis.
+ *
+ * This is the core WP author description, not the Genesis Intro Text.
+ * Genesis Intro Text is in page header or before this.
+ *
+ * @since 2.4.2
+ *
+ * @return void
+ */
+function mai_do_author_description() {
+	if ( ! is_author() ) {
+		return;
+	}
+
+	// Bail if not the first page.
+	if ( is_paged() ) {
+		return;
+	}
+
+	$description = '';
+
+	// Bail if author box is enabled.
+	if ( get_the_author_meta( 'genesis_author_box_archive', get_query_var( 'author' ) ) ) {
+		return;
+	}
+
+	$description = get_the_author_meta( 'description' );
+	$description = apply_filters( 'mai_author_description', $description );
+	$description = wp_kses_post( $description );
+
+	if ( ! $description ) {
+		return;
+	}
+
+	genesis_markup(
+		[
+			'open'    => '<div %s>',
+			'close'   => '</div>',
+			'context' => 'archives-description',
+			'content' => mai_get_processed_content( $description ),
+			'echo'    => true,
+			'atts'    => [
+				'class' => 'archives-description author-description',
+			],
+		]
+	);
+}
+
+add_action( 'mai_archives_description', 'mai_do_author_archive_author_box' );
+/**
+ *
+ * @since 2.10.0
+ *
+ * @return void
+ */
+function mai_do_author_archive_author_box() {
+	if ( ! is_author() ) {
+		return;
+	}
+
+	// Bail if not the first page.
+	if ( is_paged() ) {
+		return;
+	}
+
+	// Bail if author box is not enabled.
+	if ( ! get_the_author_meta( 'genesis_author_box_archive', get_query_var( 'author' ) ) ) {
+		return;
+	}
+
+	global $authordata;
+	$authordata = is_object( $authordata ) ? $authordata : get_userdata( get_query_var( 'author' ) );
+
+	echo genesis_get_author_box_by_user( $authordata->ID );
 }

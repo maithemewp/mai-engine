@@ -19,10 +19,14 @@
  * @return array
  */
 function mai_get_single_content_settings( $name = 'post' ) {
+	static $settings = null;
+	if ( ! is_null( $settings ) ) {
+		return $settings;
+	}
+
 	$defaults = mai_get_config( 'settings' )['single-content'];
 	$defaults = isset( $defaults[ $name ] ) ? $defaults[ $name ] : $defaults[ 'post' ];
-
-	return [
+	$settings = [
 		[
 			'settings'    => 'show',
 			'label'       => __( 'Show', 'mai-engine' ),
@@ -167,6 +171,10 @@ function mai_get_single_content_settings( $name = 'post' ) {
 			'active_callback' => 'mai_has_page_header_support_callback',
 		],
 	];
+
+	$settings = apply_filters( 'mai_single_content_settings', $settings, $name );
+
+	return $settings;
 }
 
 add_action( 'init', 'mai_add_single_content_settings' );
@@ -183,7 +191,7 @@ function mai_add_single_content_settings() {
 	$defaults = mai_get_config( 'settings' )['single-content']['enable'];
 	$sections = mai_get_option( 'single-settings', $defaults, false );
 
-	\Kirki::add_panel(
+	Kirki::add_panel(
 		"{$handle}-{$panel}",
 		[
 			'title' => mai_convert_case( $panel, 'title' ),
@@ -192,10 +200,18 @@ function mai_add_single_content_settings() {
 	);
 
 	foreach ( $sections as $section ) {
-		\Kirki::add_section(
+		if ( post_type_exists( $section ) && $post_type = get_post_type_object( $section ) ) {
+			$title = $post_type->labels->singular_name;
+		} elseif ( taxonomy_exists( $section ) && $taxonomy = get_taxonomy( $section ) ) {
+			$title = $taxonomy->label;
+		} else {
+			$title = mai_convert_case( $section, 'title' );
+		}
+
+		Kirki::add_section(
 			"{$handle}-{$panel}-{$section}",
 			[
-				'title' => mai_convert_case( $section, 'title' ),
+				'title' => $title,
 				'panel' => "{$handle}-{$panel}",
 			]
 		);
@@ -247,8 +263,7 @@ function mai_add_single_content_settings() {
 				}
 			}
 
-			\Kirki::add_field( $handle, $field );
+			Kirki::add_field( $handle, $field );
 		}
 	}
 }
-

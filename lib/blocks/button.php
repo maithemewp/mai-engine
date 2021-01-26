@@ -118,7 +118,10 @@ function mai_render_button_block( $block_content, $block ) {
 
 			if ( '' !== $background ) {
 				$style .= sprintf( '%s-background:%s;', $prefix, $background );
-				$style .= sprintf( '%s-background-hover:%s;', $prefix, mai_get_color_variant( $background, 'dark', 10 ) );
+
+				if ( ! $is_outline ) {
+					$style .= sprintf( '%s-background-hover:%s;', $prefix, mai_get_color_variant( $background, 'dark', 10 ) );
+				}
 			}
 
 			if ( '' !== $radius ) {

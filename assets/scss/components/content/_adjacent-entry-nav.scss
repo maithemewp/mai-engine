@@ -11,10 +11,12 @@
 
 	.pagination-previous {
 		--adjacent-entry-link-inner-justify-content: flex-start;
+		--adjacent-entry-link-text-align: start;
 	}
 
 	.pagination-next {
 		--adjacent-entry-link-inner-justify-content: flex-end;
+		--adjacent-entry-link-text-align: end;
 	}
 }
 
@@ -24,6 +26,7 @@
 	justify-content: var(--adjacent-entry-link-inner-justify-content, normal);
 	height: 100%;
 	padding: var(--adjacent-entry-link-inner-padding, var(--spacing-lg));
+	text-align: var(--adjacent-entry-link-text-align);
 	border: var(--border);
 	border-radius: var(--border-radius);
 	box-shadow: var(--shadow);

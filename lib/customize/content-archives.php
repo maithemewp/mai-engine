@@ -19,10 +19,14 @@
  * @return array
  */
 function mai_get_content_archive_settings( $name = 'post' ) {
+	static $settings = null;
+	if ( ! is_null( $settings ) ) {
+		return $settings;
+	}
+
 	$defaults = mai_get_config( 'settings' )['content-archives'];
 	$defaults = isset( $defaults[ $name ] ) ? $defaults[ $name ] : $defaults[ 'post' ];
-
-	return [
+	$settings = [
 		[
 			'settings'    => 'show',
 			'label'       => __( 'Show', 'mai-engine' ),
@@ -725,6 +729,10 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			'active_callback' => 'mai_has_page_header_support_callback',
 		],
 	];
+
+	$settings = apply_filters( 'mai_content_archive_settings', $settings, $name );
+
+	return $settings;
 }
 
 add_action( 'init', 'mai_add_content_archive_settings' );
@@ -741,7 +749,7 @@ function mai_add_content_archive_settings() {
 	$defaults = mai_get_config( 'settings' )['content-archives']['enable'];
 	$sections = mai_get_option( 'archive-settings', $defaults, false );
 
-	\Kirki::add_panel(
+	Kirki::add_panel(
 		"{$handle}-{$panel}",
 		[
 			'title' => mai_convert_case( $panel, 'title' ),
@@ -750,10 +758,18 @@ function mai_add_content_archive_settings() {
 	);
 
 	foreach ( $sections as $section ) {
-		\Kirki::add_section(
+		if ( post_type_exists( $section ) && $post_type = get_post_type_object( $section ) ) {
+			$title = $post_type->label;
+		} elseif ( taxonomy_exists( $section ) && $taxonomy = get_taxonomy( $section ) ) {
+			$title = $taxonomy->label;
+		} else {
+			$title = mai_convert_case( $section, 'title' );
+		}
+
+		Kirki::add_section(
 			"{$handle}-{$panel}-{$section}",
 			[
-				'title' => mai_convert_case( $section, 'title' ),
+				'title' => $title,
 				'panel' => "{$handle}-{$panel}",
 			]
 		);
@@ -809,7 +825,7 @@ function mai_add_content_archive_settings() {
 				}
 			}
 
-			\Kirki::add_field( $handle, $field );
+			Kirki::add_field( $handle, $field );
 		}
 	}
 }

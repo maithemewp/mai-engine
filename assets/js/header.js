@@ -17,6 +17,7 @@
 	var hasPageHeader  = pageHeader && body.classList.contains( 'has-page-header' );
 	var headerStyles   = header ? getComputedStyle( header ) : false;
 	var duration       = header ? parseFloat( headerStyles.getPropertyValue( 'transition-duration' ) ) * 1000 : false;
+	var alignFullFirst = false;
 	var alignFullEl    = false;
 	var firstElement   = false;
 
@@ -29,7 +30,9 @@
 			// Not tested much since we don't have blocks on archives yet.
 			firstElement = document.querySelectorAll( '#genesis-content > :not(:empty):first-of-type' );
 		}
-		alignFullEl = firstElement && firstElement.length && firstElement[0].classList.contains( 'alignfull' ) ? firstElement[0] : alignFullEl;
+		firstElement   = firstElement && firstElement.length && firstElement[0].classList.contains( 'alignfull' ) ? firstElement[0] : false;
+		alignFullFirst = firstElement;
+		alignFullEl    =  alignFullFirst ? firstElement : alignFullEl;
 	}
 
 	/**
@@ -116,17 +119,17 @@
 			isTop.observe( beforeHeader ? beforeHeader : skipLink );
 		}
 
-		if ( alignFullEl ) {
-			if ( ! hasPageHeader ) {
-				/**
-				 * This is only for styling content containers when the first block is full aligned.
-				 * This is likely added via PHP, the JS is a fallback.
-				 */
-				body.classList.add( 'has-alignfull-first' );
+		if ( alignFullFirst ) {
+			/**
+			 * This is only for styling content containers when the first block is full aligned.
+			 * This is likely added via PHP, the JS is a fallback.
+			 */
+			body.classList.add( 'has-alignfull-first' );
+		}
 
-				// This is added to page-header in PHP.
-				alignFullEl.classList.add( 'is-alignfull-first' );
-			}
+		if ( alignFullEl ) {
+			// This is added to page-header in PHP.
+			alignFullEl.classList.add( 'is-alignfull-first' );
 		}
 
 		if ( hasTransparent ) {

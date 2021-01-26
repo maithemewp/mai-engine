@@ -43,6 +43,7 @@ label {
 ::placeholder,
 input::placeholder {
 	color: var(--input-placeholder-color, var(--color-body));
+	font-size: var(--font-size-base);
 	opacity: 0.5; // Firefox requires opacity to stay consistent.
 }
 
@@ -72,6 +73,10 @@ input[type="color"] {
 }
 
 input[type="search"] {
+	width: auto;
+	min-width: var(--search-input-min-width, 256px);
+	max-width: var(--search-input-max-width, 320px);
+	font-size: var(--font-size-md);
 	-webkit-appearance: none;
 
 	&::-webkit-search-cancel-button,
@@ -82,7 +87,7 @@ input[type="search"] {
 
 fieldset {
 	min-width: 0;
-	margin: 0;
+	margin: 0 0 var(--spacing-lg);
 	padding: 0.01em 0 0 0;
 	border: 0;
 

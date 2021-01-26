@@ -73,33 +73,33 @@
 	border-top: 1px solid #e2e4e7;
 }
 
-.acf-block-panel .acf-block-fields div.acf-field[data-name="margin_top"] .acf-label label,
-.acf-block-panel .acf-block-fields div.acf-field[data-name="margin_bottom"] .acf-label label,
-.acf-block-panel .acf-block-fields div.acf-field[data-name="margin_left"] .acf-label label,
-.acf-block-panel .acf-block-fields div.acf-field[data-name="margin_right"] .acf-label label {
+.acf-block-panel .acf-block-fields div.acf-field-number[data-name="margin_top"] .acf-label label,
+.acf-block-panel .acf-block-fields div.acf-field-number[data-name="margin_bottom"] .acf-label label,
+.acf-block-panel .acf-block-fields div.acf-field-number[data-name="margin_left"] .acf-label label,
+.acf-block-panel .acf-block-fields div.acf-field-number[data-name="margin_right"] .acf-label label {
 	font-weight: 400;
 }
 
-.acf-block-panel .acf-block-fields div.acf-field[data-name="margin_top"],
-.acf-block-panel .acf-block-fields div.acf-field[data-name="margin_bottom"],
-.acf-block-panel .acf-block-fields div.acf-field[data-name="margin_left"],
-.acf-block-panel .acf-block-fields div.acf-field[data-name="margin_right"] {
+.acf-block-panel .acf-block-fields div.acf-field-number[data-name="margin_top"],
+.acf-block-panel .acf-block-fields div.acf-field-number[data-name="margin_bottom"],
+.acf-block-panel .acf-block-fields div.acf-field-number[data-name="margin_left"],
+.acf-block-panel .acf-block-fields div.acf-field-number[data-name="margin_right"] {
 	clear: none !important;
 	max-width: calc(50% - 32px) !important;
 }
 
-.acf-block-panel .acf-block-fields div.acf-field[data-name="margin_top"],
-.acf-block-panel .acf-block-fields div.acf-field[data-name="margin_left"] {
+.acf-block-panel .acf-block-fields div.acf-field-number[data-name="margin_top"],
+.acf-block-panel .acf-block-fields div.acf-field-number[data-name="margin_left"] {
 	float: left !important;
 }
 
-.acf-block-panel .acf-block-fields div.acf-field[data-name="margin_bottom"],
-.acf-block-panel .acf-block-fields div.acf-field[data-name="margin_right"] {
+.acf-block-panel .acf-block-fields div.acf-field-number[data-name="margin_bottom"],
+.acf-block-panel .acf-block-fields div.acf-field-number[data-name="margin_right"] {
 	float: right !important;
 }
 
-.acf-block-panel .acf-block-fields div.acf-field[data-name="margin_left"],
-.acf-block-panel .acf-block-fields div.acf-field[data-name="margin_right"] {
+.acf-block-panel .acf-block-fields div.acf-field-number[data-name="margin_left"],
+.acf-block-panel .acf-block-fields div.acf-field-number[data-name="margin_right"] {
 	margin-top: 0 !important;
 }
 
@@ -244,58 +244,110 @@
 	border-radius: 0 0 0 3px;
 }
 
+/* Mai Columns arrangement tab svgs */
+
+.acf-field-mai-columns-columns,
+.acf-field-mai-columns-arrangement-message {
+	margin-bottom: 0 !important;
+}
+
+.acf-field-mai-columns-arrangement-message + .acf-tab-wrap > .acf-tab-group {
+	display: flex;
+	justify-content: space-between;
+	padding-top: 2px;
+	border-top: none !important;
+}
+
+.acf-field-mai-columns-arrangement-message + .acf-tab-wrap > .acf-tab-group > li {
+	flex: 1;
+	max-width: calc(25% - 0.75em);
+	margin: 0;
+}
+
+.acf-field-mai-columns-arrangement-message.acf-hidden + .acf-tab-wrap > .acf-tab-group {
+	border: none !important;
+}
+
+.acf-tab-button[data-key="mai_columns_arrangement_tab"],
+.acf-tab-button[data-key="mai_columns_arrangement_md_tab"],
+.acf-tab-button[data-key="mai_columns_arrangement_sm_tab"],
+.acf-tab-button[data-key="mai_columns_arrangement_xs_tab"] {
+	padding-top: 8px;
+	padding-right: 4px;
+	padding-left: 4px;
+	line-height: 1;
+	text-align: center;
+}
+
+.acf-tab-button[data-key="mai_columns_arrangement_tab"] svg,
+.acf-tab-button[data-key="mai_columns_arrangement_md_tab"] svg,
+.acf-tab-button[data-key="mai_columns_arrangement_sm_tab"] svg,
+.acf-tab-button[data-key="mai_columns_arrangement_xs_tab"] svg {
+	max-height: 20px;
+	fill: #444;
+}
+
+.acf-field-mai-columns-arrangement-message ~ .acf-field-mai-columns-xs-arrangement + .acf-tab-wrap > .acf-tab-group {
+	padding: 0;
+	border-top: 0;
+}
+
+.acf-field-mai-columns-arrangement-message.acf-hidden ~ .acf-field-mai-columns-xs-arrangement + .acf-tab-wrap > .acf-tab-group {
+	border: 0;
+}
+
 /* ACF button group. */
 
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group .acf-button-group {
+.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group .acf-button-group {
 	display: -webkit-box;
 	display: flex;
 }
 
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear {
+.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear {
 	position: relative;
 }
 
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear .acf-button-group {
-	flex-wrap: wrap;
-}
-
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear .acf-button-group > .acf-label {
+.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group > .acf-label {
 	padding-right: 54px;
 }
 
 /* Matches .components-button.is-small in core. */
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear .acf-button-group label:first-child,
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear .acf-button-group label:first-child:hover,
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear .acf-button-group label:first-child:focus {
+.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child,
+.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:hover,
+.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:focus {
 	flex: 0;
 	order: 99;
 	font-size: 11px;
+	text-decoration: underline;
 	background: transparent;
 	border: transparent;
-	text-decoration: underline;
 }
 
 /* Matches .components-button.is-small in core. */
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear .acf-button-group label:first-child {
+.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child {
 	color: #d94f4f;
 }
 
 /* Matches .components-button.is-small in core. */
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear .acf-button-group label:first-child:hover,
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear .acf-button-group label:first-child:focus {
+.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:hover,
+.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:focus {
 	color: #00a0d2 !important;
 	background: transparent !important;
 	border: transparent !important;
 	text-decoration: underline !important;
 }
 
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear .acf-button-group label:nth-child(2) {
+.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:nth-child(2) {
 	border-radius: 3px 0 0 3px;
 }
 
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear .acf-button-group label:first-child:hover,
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-grid-button-group-clear .acf-button-group label:first-child:focus {
+.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:hover,
+.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:focus {
 	color: #016087;
 	background: #f3f5f6;
 	border-color: #0071a1;
+}
+
+.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-small .acf-button-group label {
+	font-size: 11px;
 }

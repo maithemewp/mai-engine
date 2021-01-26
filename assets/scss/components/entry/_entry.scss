@@ -1,6 +1,41 @@
+.entries {
+	margin-bottom: var(--entries-margin-bottom, var(--spacing-lg));
+
+	--entry-image-line-height: 0;
+	--entry-meta-margin: 0 0 var(--spacing-md) 0;
+}
+
+.entries-wrap {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: var(--align-columns-vertical, unset);
+	justify-content: var(--align-columns);
+	width: calc(100% + var(--column-gap));
+	max-width: var(--entries-wrap-max-width, calc(100% + var(--column-gap)));
+	margin: calc(var(--row-gap) * -1) 0 0 calc(var(--column-gap) * -1);
+
+	--entry-margin: var(--row-gap) 0 0 var(--column-gap);
+
+	@include mq(false, sm) {
+		--columns: var(--columns-xs);
+	}
+
+	@include mq(sm, md) {
+		--columns: var(--columns-sm);
+	}
+
+	@include mq(md, lg) {
+		--columns: var(--columns-md);
+	}
+
+	@include mq(lg) {
+		--columns: var(--columns-lg);
+	}
+}
+
 .entry {
 	position: var(--entry-position, static);
-	display: var(--entry-display, (flex));
+	display: var(--entry-display, flex);
 	flex: var(--entry-flex, 1 1 calc((100% / var(--columns)) - var(--column-gap)));
 	flex-direction: var(--entry-flex-direction, column);
 	flex-wrap: var(--entry-flex-wrap, nowrap);
@@ -10,7 +45,7 @@
 	padding: var(--entry-padding, 0); /* must be a single value for use in calc() full "full" images */
 	overflow: var(--entry-overflow, unset);
 	text-align: var(--align-text);
-	background: var(--entry-background, (unset));
+	background: var(--entry-background, unset);
 	border: var(--entry-border, 0);
 	border-radius: var(--entry-border-radius, var(--border-radius));
 	box-shadow: var(--entry-box-shadow, unset);
@@ -49,9 +84,9 @@
 	flex-direction: column;
 	justify-content: var(--align-text-vertical);
 	width: var(--entry-wrap-width, 100%);
-	margin: var(--entry-wrap-margin, (0 auto));
+	margin: var(--entry-wrap-margin, 0 auto);
 	padding: var(--entry-wrap-padding, 0);
-	color: var(--entry-wrap-color, (inherit));
+	color: var(--entry-wrap-color, inherit);
 	background: var(--entry-wrap-background, transparent);
 	border: var(--entry-wrap-border, unset);
 	border-radius: var(--entry-wrap-border-radius, unset);
@@ -66,41 +101,6 @@
 .widget {
 	--entry-width: 100%;
 	--entry-wrap-padding: 0;
-}
-
-.entries {
-	margin-bottom: var(--entries-margin-bottom, var(--spacing-lg));
-
-	--entry-image-line-height: 0;
-	--entry-meta-margin: 0 0 var(--spacing-md) 0;
-}
-
-.entries-wrap {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: var(--align-columns-vertical, unset);
-	justify-content: var(--align-columns);
-	width: calc(100% + var(--column-gap));
-	max-width: var(--entries-wrap-max-width, calc(100% + var(--column-gap)));
-	margin: calc(var(--row-gap) * -0.5) calc(var(--column-gap) * -0.5);
-
-	--entry-margin: calc(var(--row-gap) * 0.5) calc(var(--column-gap) * 0.5);
-
-	@include mq(false, sm) {
-		--columns: var(--columns-xs);
-	}
-
-	@include mq(sm, md) {
-		--columns: var(--columns-sm);
-	}
-
-	@include mq(md, lg) {
-		--columns: var(--columns-md);
-	}
-
-	@include mq(lg) {
-		--columns: var(--columns-lg);
-	}
 }
 
 @include mq(false, sm) {

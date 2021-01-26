@@ -1,10 +1,17 @@
 .content-sidebar-wrap {
-	display: grid;
-	grid-template-columns: var(--content-sidebar-wrap-columns, 1fr);
 	width: calc(100% - calc(var(--side-spacing) * 2));
 	max-width: var(--wrap-max-width);
 	margin: var(--content-sidebar-wrap-margin-top) auto var(--content-sidebar-wrap-margin-bottom);
-	column-gap: var(--content-sidebar-gap);
+
+	@include mq(lg) {
+
+		.content-sidebar &,
+		.sidebar-content & {
+			display: grid;
+			grid-template-columns: var(--content-sidebar-wrap-columns, 1fr);
+			column-gap: var(--content-sidebar-gap);
+		}
+	}
 
 	> .content > .entry > .entry-wrap > .entry-content:first-child > .alignfull:first-child {
 		margin-top: calc((var(--content-sidebar-wrap-margin-top) * -1) - 1px); // One more px to handle sub-pixel rendering.
@@ -14,7 +21,6 @@
 		margin-bottom: calc((var(--content-sidebar-wrap-margin-bottom) * -1) - 1px); // One more px to handle sub-pixel rendering.
 	}
 }
-
 
 .content-sidebar {
 

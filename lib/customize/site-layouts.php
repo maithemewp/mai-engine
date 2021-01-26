@@ -29,7 +29,7 @@ function mai_site_layouts_customizer_settings() {
 		'single'  => sprintf( '%s[%s][single]', $handle, $name ),
 	];
 
-	\Kirki::add_section(
+	Kirki::add_section(
 		$section,
 		[
 			'title' => __( 'Site Layouts', 'mai-engine' ),
@@ -37,7 +37,7 @@ function mai_site_layouts_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'     => 'checkbox',
@@ -48,7 +48,7 @@ function mai_site_layouts_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'custom',
@@ -60,7 +60,7 @@ function mai_site_layouts_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'select',
@@ -74,7 +74,7 @@ function mai_site_layouts_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'select',
@@ -88,7 +88,7 @@ function mai_site_layouts_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'select',
@@ -107,7 +107,7 @@ function mai_site_layouts_customizer_settings() {
 
 	foreach ( $post_types as $name => $post_type ) {
 
-		\Kirki::add_field(
+		Kirki::add_field(
 			$handle,
 			[
 				'type'        => 'custom',
@@ -119,7 +119,7 @@ function mai_site_layouts_customizer_settings() {
 			]
 		);
 
-		\Kirki::add_field(
+		Kirki::add_field(
 			$handle,
 			[
 				'type'        => 'select',
@@ -135,7 +135,7 @@ function mai_site_layouts_customizer_settings() {
 
 		if ( 'post' === $name || $post_type->has_archive ) {
 
-			\Kirki::add_field(
+			Kirki::add_field(
 				$handle,
 				[
 					'type'        => 'select',
@@ -164,7 +164,7 @@ function mai_site_layouts_customizer_settings() {
 
 		if ( $taxonomies ) {
 			foreach ( $taxonomies as $taxo_name => $taxonomy ) {
-				\Kirki::add_field(
+				Kirki::add_field(
 					$handle,
 					[
 						'type'        => 'select',
@@ -181,7 +181,7 @@ function mai_site_layouts_customizer_settings() {
 		}
 	}
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'custom',
@@ -193,7 +193,7 @@ function mai_site_layouts_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'select',
@@ -207,7 +207,7 @@ function mai_site_layouts_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'select',
@@ -221,7 +221,7 @@ function mai_site_layouts_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'select',
@@ -235,7 +235,7 @@ function mai_site_layouts_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'select',

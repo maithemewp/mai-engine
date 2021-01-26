@@ -1,3 +1,4 @@
+.page-description, // WooCommerce shop page.
 .archive-description {
 	max-width: var(--archive-description-max-width, none);
 	margin: var(--archive-description-margin, (0 auto var(--spacing-xl)));
@@ -9,17 +10,8 @@
 	font-size: var(--archive-title-font-size, var(--font-size-xxxxl));
 }
 
-.blog-description {
-	margin: var(--blog-description-margin, (0 auto var(--spacing-xl)));
-}
-
-.term-description {
-	margin: var(--term-description-margin, (0 auto var(--spacing-xl)));
-}
-
-// WooCommerce shop page.
-.page-description {
-	margin: var(--page-description-margin, (0 auto var(--spacing-xl)));
+.archives-description {
+	margin: var(--archives-description-margin, (0 auto var(--spacing-xl)));
 }
 
 // This is for Mai Archive Pages plugin.

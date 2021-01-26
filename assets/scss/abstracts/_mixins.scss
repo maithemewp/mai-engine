@@ -3,16 +3,16 @@
 
 	@if ($min) {
 		$min: map_get($breakpoints, $min);
-		$query: "(min-width: #{$min})";
+		$query: "only screen and (min-width: #{$min})";
 	}
 
 	@if ($max) {
 		$max: map_get($breakpoints, $max) - 1;
-		$query: "(max-width: #{$max})";
+		$query: "only screen and (max-width: #{$max})";
 	}
 
 	@if ($min and $max) {
-		$query: "(min-width: #{$min} ) and (max-width: #{$max})";
+		$query: "only screen and (min-width: #{$min} ) and (max-width: #{$max})";
 	}
 
 	@media #{$query} {

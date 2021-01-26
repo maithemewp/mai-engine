@@ -138,7 +138,7 @@ function mai_archive_posts_per_page( $query ) {
 	}
 
 	// Bail if not an explicited supported loop.
-	if ( ! in_array( mai_get_archive_args_name(), mai_get_option( 'archive-settings', mai_get_config( 'settings' )['content-archives']['enable'] ), true ) ) {
+	if ( ! mai_has_custom_loop_settings( mai_get_archive_args_name() ) ) {
 		return;
 	}
 

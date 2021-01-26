@@ -28,7 +28,7 @@ add_action( 'after_setup_theme', 'mai_add_kirki_config' );
 function mai_add_kirki_config() {
 	$handle = mai_get_handle();
 
-	\Kirki::add_config(
+	Kirki::add_config(
 		$handle,
 		[
 			'capability'        => 'edit_theme_options',
@@ -38,7 +38,7 @@ function mai_add_kirki_config() {
 		]
 	);
 
-	\Kirki::add_panel(
+	Kirki::add_panel(
 		$handle,
 		[
 			'priority' => 150,

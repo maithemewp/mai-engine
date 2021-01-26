@@ -653,6 +653,11 @@ form.cart {
 	}
 }
 
+.woocommerce-shipping-methods {
+	--list-margin: 0;
+	--list-style-type: none;
+}
+
 .woocommerce-terms-and-conditions-wrapper {
 	margin-bottom: var(--spacing-md);
 }
@@ -714,6 +719,17 @@ form.cart {
 		max-width: 72px;
 		margin: 0 var(--spacing-sm) 0 0;
 		padding: calc(0.9em - 2px); // Input padding minus 2px.
+	}
+}
+
+.order-actions {
+
+	.button {
+		--button-padding: 1em 1.2em;
+		--button-font-size: var(--font-size-xs);
+		--button-white-space: nowrap;
+
+		@include button-style("secondary");
 	}
 }
 
@@ -902,6 +918,11 @@ form.cart {
 			}
 		}
 	}
+}
+
+.woocommerce-order-details,
+.woocommerce-customer-details {
+	margin-bottom: var(--spacing-xl);
 }
 
 .mai-cart-total-wrap {
@@ -1141,4 +1162,8 @@ p.stars {
 			content: "\e020";
 		}
 	}
+}
+
+.woocommerce-form-login {
+	max-width: var(--breakpoint-xs);
 }

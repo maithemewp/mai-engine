@@ -30,7 +30,23 @@ function mai_render_search_block( $block_content, $block ) {
 		return $block_content;
 	}
 
-	$block_content = str_replace( 'wp-block-search__button', 'wp-block-search__button button-secondary', $block_content );
+	$dom = mai_get_dom_document( $block_content );
+
+	/**
+	 * The search block container.
+	 *
+	 * @var DOMElement $first_block The search block container.
+	 */
+	$first_block = mai_get_dom_first_child( $dom );
+
+	if ( $first_block ) {
+		$classes = $first_block->getAttribute( 'class' );
+		$classes = mai_add_classes( 'button-secondary', $classes );
+
+		$first_block->setAttribute( 'class', $classes );
+
+		$block_content = $dom->saveHTML();
+	}
 
 	return $block_content;
 }

@@ -205,3 +205,90 @@ function mai_price_shortcode() {
 
 	return $product->get_price_html();
 }
+
+add_filter( 'genesis_post_terms_shortcode', 'mai_post_terms_shortcode_classes', 10, 3 );
+/**
+ * Adds taxonomy name as class to entry-terms wrap.
+ *
+ * @since 2.10.0
+ *
+ * @param string $output The rendered HTML.
+ * @param array $terms   The term link HTML.
+ * @param array $atts    The shortcode attributes.
+ *
+ * @return string
+ */
+function mai_post_terms_shortcode_classes( $output, $terms, $atts ) {
+	if ( ! $output ) {
+		return $output;
+	}
+
+	if ( ! ( isset( $atts['taxonomy'] ) || $atts['taxonomy'] ) ) {
+		return $output;
+	}
+
+	$dom     = mai_get_dom_document( $output );
+	$first   = mai_get_dom_first_child( $dom );
+	$classes = $first->getAttribute( 'class' );
+	$classes = mai_add_classes( sprintf( 'entry-terms-%s', sanitize_html_class( $atts['taxonomy'] ) ), $classes );
+	$first->setAttribute( 'class', $classes );
+	$output  = trim( $dom->saveHTML() );
+
+	return $output;
+}
+
+/**
+ * Add inline custom properties to native/classic WP galleries.
+ *
+ * @since   2.10.0
+ *
+ * @param   string        $output  Shortcode output.
+ * @param   string        $tag     Shortcode name.
+ * @param   array|string  $attr    Shortcode attributes array or empty string.
+ * @param   array         $m       Regular expression match array.
+ *
+ * @return  string  The gallery HTML.
+ */
+add_filter( 'do_shortcode_tag', 'mai_gallery_shortcode_tag', 10, 4 );
+function mai_gallery_shortcode_tag( $output, $tag, $atts, $m ) {
+	if ( 'gallery' !== $tag ) {
+		return $output;
+	}
+
+	// Bail if not a default gallery. This fixes compatibility with Jetpack galleries.
+	if ( isset( $atts['type'] ) && ! in_array( $atts['type'], [ 'default', 'thumbnails' ] ) ) {
+		return $output;
+	}
+
+	// Make sure we have a columns value. Would not be set if 3 as per WP core.
+	$atts = wp_parse_args( $atts,
+		[
+			'columns' => 3,
+		]
+	);
+
+	$dom   = mai_get_dom_document( $output );
+	$first = mai_get_dom_first_child( $dom );
+
+	if ( ! $first ) {
+		return $output;
+	}
+
+	$style   = $first->getAttribute( 'style' );
+	$columns = mai_get_breakpoint_columns(
+		[
+			'columns' => $atts['columns'],
+		]
+	);
+	$columns = array_reverse( $columns, true ); // Mobile first.
+
+	foreach ( $columns as $break => $column ) {
+		$style .= sprintf( '--gallery-columns-%s:%s;', $break, $column );
+	}
+
+	$first->setAttribute( 'style', $style );
+
+	$output = $dom->saveHTML();
+
+	return $output;
+}

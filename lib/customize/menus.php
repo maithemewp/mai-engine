@@ -21,7 +21,7 @@ function mai_menus_customizer_settings() {
 	$handle  = mai_get_handle();
 	$section = $handle . '-menus';
 
-	\Kirki::add_section(
+	Kirki::add_section(
 		$section,
 		[
 			'title' => esc_html__( 'Menus', 'mai-engine' ),
@@ -29,7 +29,7 @@ function mai_menus_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'              => 'text',
@@ -42,7 +42,7 @@ function mai_menus_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'            => 'radio-buttonset',
@@ -67,7 +67,7 @@ function mai_menus_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'            => 'radio-buttonset',
@@ -92,7 +92,7 @@ function mai_menus_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'            => 'radio-buttonset',

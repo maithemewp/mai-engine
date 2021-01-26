@@ -246,8 +246,14 @@ return [
 			},
 		],
 		'genesis-enews-extended' => [
+			'location'  => [ 'public', 'editor' ],
 			'condition' => function () {
 				return class_exists( 'BJGK_Genesis_ENews_Extended' );
+			},
+		],
+		'learndash' => [
+			'condition' => function () {
+				return class_exists( 'SFWD_LMS' );
 			},
 		],
 		'seo-slider'             => [
@@ -420,6 +426,9 @@ return [
 				<p class="has-text-align-center has-sm-font-size">Copyright [footer_copyright] · [footer_home_link] · All Rights Reserved · Powered by <a rel="noreferrer noopener" target="_blank" href="https://bizbudding.com/mai-theme/">Mai Theme</a></p>
 				<!-- /wp:paragraph --></div></div>
 				<!-- /wp:group -->',
+		],
+		'404-page' => [
+			'menu_order' => 60,
 		],
 	],
 
