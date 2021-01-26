@@ -1,5 +1,36 @@
 # Changelog
 
+## 2.10.0 (1/26/21)
+* Added: Mai Columns block! Super powerful responsive controls. This is marked as beta while we confirm settings and controls. Let us know how you like it.
+* Added: LearnDash support! Courses and course content (lessons/topics/etc.) now have their own Content Archives and Single Content settings.
+* Added: LearnDash content now inherits theme styling.
+* Added: 404 Page template part.
+* Added: Disable entry links setting to Mai Post/Term Grid blocks.
+* Added: Link to search Font Awesome icons in Mai Icon block settings.
+* Added: Forms/inputs in the editor use the front-end styling.
+* Added: Support for native galleries in classic editor for older sites.
+* Added: New built in styling for soon to be released update to Genesis eNews Extended plugin.
+* Added: Edit page link to WooCommerce shop page on the front end.
+* Added: Full support and styling for search block button location settings.
+* Changed: Template Parts no longer auto-generate when you trash/delete or visit Template Parts list on the Dashboard. You have to manually initiate via a "Generate Now" button any time default template parts are available and not yet created.
+* Changed: Default button word-break is now normal.
+* Changed: Header and footer meta fields are now text areas with more room for editing multi-line entry meta.
+* Changed: Admin menu location to make sure it's always next to Genesis.
+* Changed: Customizer content settings now use post type label for panel names.
+* Changed: WooCommerce login form no longer takes full width of it's container.
+* Changed: has-alignfull-first class is now added regardless of whether the page header is displaying on the page.
+* Fixed: Edge-case bug where unused default template parts would get created in the database.
+* Fixed: Author archive intro text and description displaying incorrectly or not at all in some configurations.
+* Fixed: Entry read more links not aligning to the bottom when no images are displayed.
+* Fixed: Cover block image positioning when using plugins that provide custom lazy load solutions.
+* Fixed: Text align on adjacent entry navigation in some instances.
+* Fixed: Outline button hover not working when a custom background color was set.
+* Fixed: Horizontal scroll in some instances (google ads) from sidebar layouts using CSS grid when not necessary (on mobile).
+* Fixed: Page header content width not working on Mai Delight.
+* Fixed: Page header text color now transitions the inner container background color on Mai Delight.
+* Fixed: Page header and cover block image position on WooCommerce pages.
+* Fixed: WooCommerce shipping method list styling.
+
 ## 2.9.2 (1/7/21)
 * Added: Custom content option to Hide Elements metabox.
 * Added: Links to shortcode documentation related to Header/Footer Meta fields.

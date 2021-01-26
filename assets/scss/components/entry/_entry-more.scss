@@ -9,8 +9,9 @@
 	&:last-child {
 
 		.has-boxed[style*="--align-text-vertical:unset;"] &,
+		.has-boxed:not(.has-image) &,
 		.has-boxed.has-image-full & {
-			margin: auto 0 0;
+			--entry-more-margin: auto 0 0;
 		}
 
 		.entry-more-link {

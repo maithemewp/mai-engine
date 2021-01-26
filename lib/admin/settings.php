@@ -24,11 +24,11 @@ function mai_admin_menu_pages() {
 	add_menu_page(
 		esc_html__( 'Mai Theme', 'mai-engine' ),
 		esc_html__( 'Mai Theme', 'mai-engine' ),
-		'manage_options',
+		'edit_posts',
 		'mai-theme',
 		'mai_render_admin_menu_page',
 		'data:image/svg+xml;base64,' . base64_encode( file_get_contents( mai_get_dir() . 'assets/svg/admin-menu-icon.svg' ) ),
-		58.994 // Genesis menu is 58.996.
+		'58.995' // This only works as a string for some reason.
 	);
 
 	// Changes first menu name. Otherwise above has Mai Theme as the first child too.

@@ -12,34 +12,33 @@
 
 .has-image-background {
 
+	.has-image {
+		--entry-overlay-background: linear-gradient(var(--entry-overlay-background-direction, to bottom), var(--entry-overlay-color-start, var(--color-heading)) 0%, var(--entry-overlay-color-end, var(--color-heading)) 100%);
+		--entry-wrap-color: var(--color-white);
+
+		&.no-entry-link {
+			--heading-color: var(--color-white);
+		}
+
+		&.has-entry-link {
+			--entry-title-link-color: var(--color-white);
+			--entry-title-link-color-hover: var(--color-white);
+			--entry-title-text-decoration: none;
+			--entry-title-text-decoration-hover: none;
+
+			&:hover,
+			&:focus {
+				--entry-overlay-opacity: var(--entry-overlay-hover-opacity, 0.8);
+				--entry-overlay-background: linear-gradient(var(--entry-overlay-hover-background-direction, var(--entry-overlay-background-direction, to bottom)), var(--entry-overlay-hover-color-start, var(--entry-overlay-color-start, var(--color-heading))) 0%, var(--entry-overlay-hover-color-end, var(--entry-overlay-color-end, var(--color-heading))) 100%);
+			}
+		}
+	}
+
 	&[style*="--align-text-vertical:flex-start"] .has-image {
 		--entry-overlay-color-end: transparent;
 	}
 
 	&[style*="--align-text-vertical:flex-end"] .has-image {
 		--entry-overlay-color-start: transparent;
-	}
-
-	.has-image {
-		--entry-title-link-color: var(--color-white);
-		--entry-title-link-color-hover: var(--color-white);
-		--entry-title-text-decoration: none;
-		--entry-title-text-decoration-hover: none;
-		--entry-wrap-color: var(--color-white);
-		--entry-overlay-background: linear-gradient(
-			var(--entry-overlay-background-direction, to bottom),
-			var(--entry-overlay-color-start, var(--color-heading)) 0%,
-			var(--entry-overlay-color-end, var(--color-heading)) 100%
-		);
-
-		&:hover,
-		&:focus {
-			--entry-overlay-opacity: var(--entry-overlay-hover-opacity, 0.8);
-			--entry-overlay-background: linear-gradient(
-				var(--entry-overlay-hover-background-direction, var(--entry-overlay-background-direction, to bottom)),
-				var(--entry-overlay-hover-color-start, var(--entry-overlay-color-start, var(--color-heading))) 0%,
-				var(--entry-overlay-hover-color-end, var(--entry-overlay-color-end, var(--color-heading))) 100%
-			);
-		}
 	}
 }

@@ -582,7 +582,37 @@ function mai_sanitize_bool( $value ) {
 }
 
 /**
- * Description of expected behavior.
+ * Converts a fraction to a percentage.
+ *
+ * @since 2.10.0
+ *
+ * @param string $fraction The fraction.
+ *
+ * @return void
+ */
+function mai_fraction_to_percent( $fraction ) {
+	$numbers = explode( '/', $fraction );
+	return ( round( (int) $numbers[0] / (int) $numbers[1], 6 ) * 100 ) . '%';
+}
+
+/**
+ * Maps an array recursively.
+ *
+ * @access private This may change at some point so don't use outside of the engine.
+ *
+ * @since 2.10.0
+ *
+ * @param callable $func  The function name map.
+ * @param array    $array The array being sanitized/filtered.
+ *
+ * @return array
+ */
+function mai_array_map_recursive( callable $func, array $array ) {
+	return filter_var( $array, FILTER_CALLBACK, [ 'options' => $func ] );
+}
+
+/**
+ * Checks if element is hidden on a post.
  *
  * @since 0.3.0
  * @since 2.5.0 Add $post_id to use outside of the loop.

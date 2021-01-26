@@ -50,24 +50,21 @@ return [
 	'plugins'       => [
 		[
 			'name'  => 'Genesis Connect for WooCommerce',
+			'host'  => 'wordpress',
 			'slug'  => 'genesis-connect-woocommerce/genesis-connect-woocommerce.php',
 			'uri'   => 'https://wordpress.org/plugins/genesis-connect-woocommerce/',
 			'demos' => [ 'creative' ],
 		],
 		[
-			'name'  => 'Simple Social Icons',
-			'slug'  => 'simple-social-icons/simple-social-icons.php',
-			'uri'   => 'https://wordpress.org/plugins/simple-social-icons/',
-			'demos' => [ 'creative' ],
-		],
-		[
 			'name'  => 'WP Forms Lite',
+			'host'  => 'wordpress',
 			'slug'  => 'wpforms-lite/wpforms.php',
 			'uri'   => 'https://wordpress.org/plugins/wpforms-lite/',
 			'demos' => [ 'creative', 'fashion' ],
 		],
 		[
 			'name'  => 'WooCommerce',
+			'host'  => 'wordpress',
 			'slug'  => 'woocommerce/woocommerce.php',
 			'uri'   => 'https://wordpress.org/plugins/woocommerce/',
 			'demos' => [ 'creative' ],

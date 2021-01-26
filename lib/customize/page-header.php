@@ -42,7 +42,7 @@ function mai_page_header_customizer_settings() {
 		}
 	}
 
-	\Kirki::add_section(
+	Kirki::add_section(
 		$section,
 		[
 			'title' => __( 'Page Header', 'mai-engine' ),
@@ -50,7 +50,7 @@ function mai_page_header_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'multicheck',
@@ -63,7 +63,7 @@ function mai_page_header_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'     => 'multicheck',
@@ -75,7 +75,7 @@ function mai_page_header_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'dimensions',
@@ -94,7 +94,7 @@ function mai_page_header_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'     => 'radio-buttonset',
@@ -112,7 +112,7 @@ function mai_page_header_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'     => 'radio-buttonset',
@@ -128,7 +128,7 @@ function mai_page_header_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'     => 'radio-buttonset',
@@ -144,7 +144,7 @@ function mai_page_header_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'image',
@@ -159,7 +159,7 @@ function mai_page_header_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'     => 'color',
@@ -173,7 +173,7 @@ function mai_page_header_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'slider',
@@ -190,7 +190,7 @@ function mai_page_header_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'settings' => 'page-header-text-color',
@@ -205,7 +205,7 @@ function mai_page_header_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'     => 'select',
@@ -224,7 +224,7 @@ function mai_page_header_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'            => 'radio-buttonset',
@@ -249,7 +249,7 @@ function mai_page_header_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'            => 'toggle',
@@ -277,7 +277,7 @@ function mai_page_header_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'            => 'toggle',
@@ -295,7 +295,7 @@ function mai_page_header_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'            => 'color',

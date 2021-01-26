@@ -4,11 +4,6 @@
 	overflow: hidden;
 	--widget-flex: 0 1 auto;
 
-	.before-header &,
-	.before-header &:not(:first-of-type) {
-		// --widget-margin: var(--spacing-xs) var(--spacing-sm);
-	}
-
 	svg {
 
 		&[class^="social-"],

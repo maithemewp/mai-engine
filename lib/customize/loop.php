@@ -23,7 +23,7 @@ function mai_archive_settings_customizer_settings() {
 	$section = $handle . '-content-archives';
 	$choices = mai_get_loop_content_type_choices( true );
 
-	\Kirki::add_section(
+	Kirki::add_section(
 		$section,
 		[
 			'title'    => __( 'Enable Content Types', 'mai-engine' ),
@@ -32,7 +32,7 @@ function mai_archive_settings_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'multicheck',
@@ -45,7 +45,7 @@ function mai_archive_settings_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'custom',
@@ -71,7 +71,7 @@ function mai_single_settings_customizer_settings() {
 	$section = $handle . '-single-content';
 	$choices = mai_get_loop_content_type_choices( false );
 
-	\Kirki::add_section(
+	Kirki::add_section(
 		$section,
 		[
 			'title'    => __( 'Enable Content Types', 'mai-engine' ),
@@ -80,7 +80,7 @@ function mai_single_settings_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'multicheck',
@@ -93,7 +93,7 @@ function mai_single_settings_customizer_settings() {
 		]
 	);
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'        => 'custom',

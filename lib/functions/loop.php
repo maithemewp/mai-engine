@@ -182,9 +182,10 @@ function mai_get_template_args() {
 	}
 
 	// Get fallback for archives. This happens on category/tag/etc archives when they don't have custom loop settings.
-	if ( mai_is_type_archive() && ! in_array( $name, mai_get_option( 'archive-settings', mai_get_config( 'settings' )['content-archives']['enable'] ), true ) ) {
+	if ( mai_is_type_archive() && ! mai_has_custom_loop_settings( $name ) ) {
 		$name = 'post';
 	}
+
 
 	// Bail if no data.
 	if ( ! ( $name && $context ) ) {
@@ -243,11 +244,27 @@ function mai_get_template_args() {
 		}
 	}
 
+	// Disable entry link on single.
+	$args['disable_entry_link'] = ( 'single' === $context );
+
 	// Allow devs to filter.
 	$args = apply_filters( 'mai_template_args', $args, $context, $name );
 
 	// Sanitize.
 	return mai_get_sanitized_entry_args( $args, $settings, $name );
+}
+
+/**
+ * Checks if a loop has custom settings.
+ *
+ * @since 2.10.0
+ *
+ * @param string $name The content type name.
+ *
+ * @return bool
+ */
+function mai_has_custom_loop_settings( $name ) {
+	return in_array( $name , mai_get_option( 'archive-settings', mai_get_config( 'settings' )['content-archives']['enable'] ), true );
 }
 
 /**

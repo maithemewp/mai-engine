@@ -753,7 +753,7 @@ function mai_get_grid_block_settings() {
 			'atts'       => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group',
+					'class' => 'mai-acf-button-group',
 					'id'    => '',
 				],
 			],
@@ -1034,10 +1034,13 @@ function mai_get_grid_block_settings() {
 			'name'       => 'header_meta',
 			'label'      => esc_html__( 'Header Meta', 'mai-engine' ),
 			'block'      => [ 'post', 'term', 'user' ],
-			'type'       => 'text',
+			'type'       => 'textarea',
 			'sanitize'   => 'wp_kses_post',
 			// TODO: this should be different, or empty depending on the post type?
 			'default'    => '[post_date] [post_author_posts_link before="by "]',
+			'atts'       => [
+				'rows' => 3,
+			],
 			'conditions' => [
 				[
 					'field'    => 'mai_grid_block_show',
@@ -1053,6 +1056,9 @@ function mai_get_grid_block_settings() {
 			'type'       => 'textarea',
 			'sanitize'   => 'wp_kses_post',
 			'default'    => '',
+			'atts'       => [
+				'rows' => 3,
+			],
 			'conditions' => [
 				[
 					'field'    => 'mai_grid_block_show',
@@ -1108,10 +1114,13 @@ function mai_get_grid_block_settings() {
 			'name'       => 'footer_meta',
 			'label'      => esc_html__( 'Footer Meta', 'mai-engine' ),
 			'block'      => [ 'post', 'term', 'user' ],
-			'type'       => 'text',
+			'type'       => 'textarea',
 			'sanitize'   => 'wp_kses_post',
 			// TODO: this should be different, or empty depending on the post type?
 			'default'    => '[post_categories]',
+			'atts'       => [
+				'rows' => 3,
+			],
 			'conditions' => [
 				[
 					'field'    => 'mai_grid_block_show',
@@ -1135,7 +1144,7 @@ function mai_get_grid_block_settings() {
 			'atts'     => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group',
+					'class' => 'mai-acf-button-group',
 					'id'    => '',
 				],
 			],
@@ -1242,7 +1251,7 @@ function mai_get_grid_block_settings() {
 			'atts'       => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group',
+					'class' => 'mai-acf-button-group',
 					'id'    => '',
 				],
 			],
@@ -1415,7 +1424,7 @@ function mai_get_grid_block_settings() {
 			'atts'     => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group',
+					'class' => 'mai-acf-button-group',
 					'id'    => '',
 				],
 			],
@@ -1449,7 +1458,7 @@ function mai_get_grid_block_settings() {
 			'atts'       => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group mai-grid-nested-columns mai-grid-nested-columns-first',
+					'class' => 'mai-acf-button-group mai-grid-nested-columns mai-grid-nested-columns-first',
 					'id'    => '',
 				],
 			],
@@ -1472,7 +1481,7 @@ function mai_get_grid_block_settings() {
 			'atts'       => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group mai-grid-nested-columns',
+					'class' => 'mai-acf-button-group mai-grid-nested-columns',
 					'id'    => '',
 				],
 			],
@@ -1495,7 +1504,7 @@ function mai_get_grid_block_settings() {
 			'atts'       => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group mai-grid-nested-columns mai-grid-nested-columns-last',
+					'class' => 'mai-acf-button-group mai-grid-nested-columns mai-grid-nested-columns-last',
 					'id'    => '',
 				],
 			],
@@ -1522,7 +1531,7 @@ function mai_get_grid_block_settings() {
 			'atts'       => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group',
+					'class' => 'mai-acf-button-group',
 					'id'    => '',
 				],
 			],
@@ -1550,7 +1559,7 @@ function mai_get_grid_block_settings() {
 			'atts'       => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group',
+					'class' => 'mai-acf-button-group',
 					'id'    => '',
 				],
 			],
@@ -1573,7 +1582,7 @@ function mai_get_grid_block_settings() {
 			'atts'     => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group',
+					'class' => 'mai-acf-button-group',
 					'id'    => '',
 				],
 			],
@@ -1596,7 +1605,7 @@ function mai_get_grid_block_settings() {
 			'atts'     => [
 				'wrapper' => [
 					'width' => '',
-					'class' => 'mai-grid-button-group',
+					'class' => 'mai-acf-button-group',
 					'id'    => '',
 				],
 			],
@@ -2384,6 +2393,17 @@ function mai_get_grid_block_settings() {
 					'field'    => 'mai_grid_block_taxonomy',
 					'operator' => '!=empty',
 				],
+			],
+		],
+		'mai_grid_block_disable_entry_link'             => [
+			'name'       => 'disable_entry_link',
+			'label'      => esc_html__( 'Disable', 'mai-engine' ),
+			'block'      => [ 'post', 'term', 'user' ],
+			'type'       => 'true_false',
+			'sanitize'   => 'mai_sanitize_bool',
+			'default'    => '',
+			'atts'       => [
+				'message' => esc_html__( 'Disable entry links', 'mai-engine' ),
 			],
 		],
 	];

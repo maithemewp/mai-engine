@@ -37,5 +37,21 @@ return [
 		],
 	],
 	'settings' => [],
+	'plugins'           => [
+		[
+			'name'            => 'Genesis eNews Extended',
+			'host'            => 'wordpress',
+			'slug'            => 'genesis-enews-extended/plugin.php',
+			'uri'             => 'https://wordpress.org/plugins/genesis-enews-extended/',
+			'demos'           => [],
+		],
+		[
+			'name'            => 'Widget Shortcode',
+			'host'            => 'wordpress',
+			'slug'            => 'widget-shortcode/init.php',
+			'uri'             => 'https://wordpress.org/plugins/widget-shortcode/',
+			'demos'           => [],
+		],
+	],
 	'custom-functions' => [],
 ];

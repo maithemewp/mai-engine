@@ -15,14 +15,6 @@ return [
 		'travel'                 => 7,
 		// 'home'                   => 8,
 	],
-	'plugins'                 => [
-		[
-			'name'                  => 'WP Forms Lite',
-			'slug'                  => 'wpforms-lite/wpforms.php',
-			'uri'                   => 'https://wordpress.org/plugins/wpforms-lite/',
-			'demos'                 => [ 'recipes', 'travel' ],
-		],
-	],
 	'global-styles'           => [
 		'colors'                 => [
 			'background'            => '#fcfcfc',
@@ -88,6 +80,15 @@ return [
 				],
 				'page-header-featured' => '1',
 			],
+		],
+	],
+	'plugins'                 => [
+		[
+			'name'                  => 'WP Forms Lite',
+			'host'                  => 'wordpress',
+			'slug'                  => 'wpforms-lite/wpforms.php',
+			'uri'                   => 'https://wordpress.org/plugins/wpforms-lite/',
+			'demos'                 => [ 'recipes', 'travel' ],
 		],
 	],
 ];

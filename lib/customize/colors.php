@@ -21,7 +21,7 @@ function mai_colors_customizer_settings() {
 	$handle  = mai_get_handle();
 	$section = $handle . '-colors';
 
-	\Kirki::add_section(
+	Kirki::add_section(
 		$section,
 		[
 			'title' => __( 'Colors', 'mai-engine' ),
@@ -59,10 +59,10 @@ function mai_colors_customizer_settings() {
 			],
 		];
 
-		\Kirki::add_field( $handle, $args );
+		Kirki::add_field( $handle, $args );
 	}
 
-	\Kirki::add_field(
+	Kirki::add_field(
 		$handle,
 		[
 			'type'         => 'repeater',

@@ -55,7 +55,7 @@
 }
 
 .is-sticky {
-	position: sticky;
+	position: sticky !important;
 	top: var(--scroll-margin-top); // Respects sticky header height.
 }
 
