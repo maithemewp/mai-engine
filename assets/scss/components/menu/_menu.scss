@@ -39,6 +39,12 @@
 
 	&.search {
 		z-index: 12; // 1 above sticky site-header.
+		text-indent: -9999px;
+
+		> .menu-item-link::before {
+			min-width: 1em;
+			content: "";
+		}
 	}
 
 	.mai-cart-total-wrap {
