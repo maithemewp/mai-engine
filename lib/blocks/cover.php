@@ -32,7 +32,7 @@ function mai_render_cover_block( $block_content, $block ) {
 		return $block_content;
 	}
 
-	$image_id  = mai_isset( $block['attrs'], 'id', false );
+	$image_id  = apply_filters( 'mai_cover_block_image_id', mai_isset( $block['attrs'], 'id', false ), $block );
 	$image_url = mai_isset( $block['attrs'], 'url', false );
 
 	if ( ! ( $image_id && $image_url ) ) {
