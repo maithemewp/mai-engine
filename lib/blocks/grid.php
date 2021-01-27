@@ -1751,6 +1751,23 @@ function mai_get_grid_block_settings() {
 							'multiple' => 1,
 						],
 					],
+					'mai_grid_block_tax_terms_current' => [
+						'name'       => 'current',
+						'label'      => '',
+						'block'      => [ 'post' ],
+						'type'       => 'true_false',
+						'sanitize'   => 'sanitize_bool',
+						'default'    => '',
+						'atts'       => [
+							'message' => sprintf( '%s <a target="_blank" href="#">%s</a>', esc_html__( 'Use current', 'mai-engine' ), mai_get_svg_icon( 'info-circle', 'solid', [ 'style' => 'width:18px;height:18px;vertical-align:middle;margin:-2px 0 0 4px;fill:currentColor;' ] ) ),
+						],
+						'conditions' => [
+							[
+								'field'    => 'mai_grid_block_tax_taxonomy',
+								'operator' => '!=empty',
+							],
+						],
+					],
 					'mai_grid_block_tax_operator' => [
 						'name'       => 'operator',
 						'label'      => esc_html__( 'Operator', 'mai-engine' ),

@@ -346,12 +346,36 @@ class Mai_Grid {
 				if ( $this->args['taxonomies'] ) {
 					foreach ( $this->args['taxonomies'] as $taxo ) {
 						$taxonomy = mai_isset( $taxo, 'taxonomy', '' );
-						$terms    = mai_isset( $taxo, 'terms', '' );
+						$terms    = mai_isset( $taxo, 'terms', [] );
+						$current  = mai_isset( $taxo, 'current', false );
 						$operator = mai_isset( $taxo, 'operator', '' );
+
 						// Skip if we don't have all the tax query args.
-						if ( ! ( $taxonomy && $terms && $operator ) ) {
+						if ( ! ( $taxonomy && ( $terms || $current ) && $operator ) ) {
 							continue;
 						}
+
+						// Get current archive or entry terms.
+						if ( $current ) {
+							if ( ! is_admin() ) {
+								if ( is_category() || is_tag() || is_tax() ) {
+									$terms[] = get_queried_object_id();
+								} elseif ( is_singular() ) {
+									$entry_terms = wp_get_post_terms( get_the_ID(), $taxonomy );
+									if ( ! is_wp_error( $entry_terms ) ) {
+										foreach ( $entry_terms as $entry_term ) {
+											$terms[] = $entry_term->term_id;
+										}
+									}
+								}
+							}
+						}
+
+						// Bail if no terms.
+						if ( ! $terms ) {
+							continue;
+						}
+
 						// Set the value.
 						$tax_query[] = [
 							'taxonomy' => $taxonomy,
