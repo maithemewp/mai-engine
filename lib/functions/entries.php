@@ -56,10 +56,15 @@ function mai_do_entries_open( $args ) {
 		}
 
 		if ( 'custom' === $args['image_orientation'] ) {
+			if ( mai_has_string( 'alignfull', $args['class'] ) || mai_has_string( 'alignwide', $args['class'] ) ) {
+				$image_width = 'unset';
+			} else {
+				$image_sizes = mai_get_available_image_sizes();
+				$image_size  = $image_sizes[ $args['image_size'] ];
+				$image_width = $image_size['width'] . 'px';
+			}
 
-			$image_sizes          = mai_get_available_image_sizes();
-			$image_size           = $image_sizes[ $args['image_size'] ];
-			$attributes['style'] .= sprintf( '--entry-image-link-max-width:%spx;', $image_size['width'] );
+			$attributes['style'] .= sprintf( '--entry-image-link-max-width:%s;', $image_width );
 
 		} else {
 
