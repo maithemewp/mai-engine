@@ -266,9 +266,24 @@ return [
 				return class_exists( 'Simple_Social_Icons_Widget' );
 			},
 		],
-		'woocommerce'            => [
+		'woocommerce-global'     => [
 			'condition' => function () {
 				return class_exists( 'WooCommerce' );
+			},
+		],
+		'woocommerce-products'   => [
+			'condition' => function () {
+				return class_exists( 'WooCommerce' ) && ( is_shop() || is_product_taxonomy() || is_product() || is_cart() );
+			},
+		],
+		'woocommerce-cart'       => [
+			'condition' => function () {
+				return class_exists( 'WooCommerce' ) && ( is_cart() || is_checkout() );
+			},
+		],
+		'woocommerce-account'    => [
+			'condition' => function () {
+				return class_exists( 'WooCommerce' ) && is_account_page();
 			},
 		],
 		'wp-block-library-theme' => [
