@@ -629,58 +629,27 @@ function mai_get_ellipsis() {
  *
  * Great for displaying reusable blocks in areas that are not block enabled.
  *
- * Switched from get_post_field to WP_Query so blocks are parsed and shortcodes are rendered better.
- *
  * @since 0.3.0
+ * @since N/A   Switched from get_post_field to WP_Query so blocks are parsed and shortcodes are rendered better.
+ * @since TBD   Switched from WP_Query to mai_get_processed_content() to avoid conflicts with is_main_query().
  *
  * @param int|string $post_slug_or_id The post slug or ID.
  *
  * @return string
  */
 function mai_get_post_content( $post_slug_or_id ) {
-	$post_id   = false;
-	$post_type = false;
-
 	if ( is_numeric( $post_slug_or_id ) ) {
-		$post_id   = $post_slug_or_id;
-		$post_type = get_post_type( $post_id );
+		$post = get_post( $post_slug_or_id );
 
 	} else {
 		$post = get_page_by_path( $post_slug_or_id, OBJECT, 'wp_block' );
-
-		if ( $post ) {
-			$post_id   = $post->ID;
-			$post_type = $post->post_type;
-		}
 	}
 
-	if ( ! ( $post_id && $post_type ) ) {
-		return '';
+	if ( ! $post ) {
+		return;
 	}
 
-	$loop = new WP_Query(
-		[
-			'post_type'              => $post_type,
-			'post__in'               => [ $post_id ],
-			'posts_per_page'         => 1,
-			'no_found_rows'          => true,
-			'update_post_term_cache' => false,
-			'update_post_meta_cache' => false,
-		]
-	);
-
-	ob_start();
-
-	if ( $loop->have_posts() ) {
-		while ( $loop->have_posts() ) {
-			$loop->the_post();
-			the_content();
-		}
-	}
-
-	wp_reset_postdata();
-
-	return ob_get_clean();
+	return mai_get_processed_content( $post->post_content );
 }
 
 /**
