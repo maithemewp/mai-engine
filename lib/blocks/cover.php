@@ -86,7 +86,6 @@ function mai_render_cover_block( $block_content, $block ) {
 			);
 
 			if ( $image_html ) {
-
 				// Build the HTML node.
 				$fragment = $dom->createDocumentFragment();
 				$fragment->appendXml( $image_html );
