@@ -218,6 +218,31 @@
 	}
 }
 
+.woocommerce-shipping-methods {
+
+	li {
+		display: grid;
+		grid-column-gap: var(--spacing-sm);
+		grid-template-rows: 1fr;
+		grid-template-columns: auto 1fr;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		> .shipping_method {
+			grid-row: 1/1;
+			margin: 0;
+		}
+
+		> *:not(.shipping_method) {
+			grid-column-start: 2;
+			margin: 0;
+		}
+	}
+
+}
+
 .woocommerce-checkout-payment {
 	margin-bottom: var(--spacing-xl);
 	padding: var(--spacing-md) var(--spacing-md) var(--spacing-lg);
@@ -233,10 +258,50 @@
 	--sub-list-margin: 0;
 }
 
+.woocommerce-PaymentMethod,
+.wc_payment_method {
+	display: grid;
+	grid-column-gap: var(--spacing-md);
+	grid-template-rows: 1fr;
+	grid-template-columns: auto 1fr;
+
+	> .input-radio {
+		grid-row: 1/1;
+		margin: 0;
+	}
+
+	> *:not(.input-radio) {
+		grid-column-start: 2;
+	}
+
+	label[for*="payment_method"] {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		margin: 0;
+		color: var(--heading-color, var(--color-heading));
+		font-weight: var(--heading-font-weight, unset);
+		font-size: var(--font-size-md);
+		font-family: var(--heading-font-family);
+		font-style: var(--heading-font-style, normal);
+		line-height: var(--heading-line-height, 1.219);
+		letter-spacing: var(--heading-letter-spacing, normal);
+		text-transform: var(--heading-text-transform, none);
+
+		> * {
+			margin-left: var(--spacing-sm);
+		}
+
+		img {
+			max-width: 200px;
+		}
+	}
+}
+
 .payment_box {
 	--list-item-margin: 0;
 	width: 100%;
-	margin-left: var(--spacing-xl);
+	margin: var(--spacing-md) 0;
 }
 
 .payment_method_stripe {
@@ -258,47 +323,6 @@
 		background-color: var(--input-background-color, var(--color-white));
 		border: var(--border);
 		border-radius: var(--border-radius);
-	}
-
-}
-
-.payment_method_paypal {
-
-	label {
-
-		img {
-			display: block;
-			max-width: var(--spacing-xl);
-		}
-	}
-}
-
-.woocommerce-PaymentMethod,
-.wc_payment_method {
-	position: relative;
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	justify-content: space-between;
-
-	> input {
-		position: absolute;
-		top: 0.25em;
-		left: 0;
-	}
-
-	label[for*="payment_method"] {
-		display: flex;
-		align-items: center;
-		width: 100%;
-		margin-left: var(--spacing-xl) !important;
-		font-size: var(--font-size-md);
-
-		@include heading;
-
-		img {
-			margin-left: var(--spacing-xxxs) !important;
-		}
 	}
 }
 
