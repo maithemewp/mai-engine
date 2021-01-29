@@ -76,6 +76,19 @@ module.exports.blocks = function() {
 		.pipe( notify( { message: config.messages.css } ) );
 };
 
+module.exports.utilities = function() {
+	return gulp.src( './assets/scss/utilities.scss' )
+		.pipe( plumber() )
+		.pipe( rename( 'utilities.min.scss' ) )
+		.pipe( sass.sync( {
+			outputStyle: 'compressed',
+			includePaths: [].concat( bourbon )
+		} ) )
+		.pipe( postcss( postProcessors ) )
+		.pipe( gulp.dest( './assets/css/' ) )
+		.pipe( notify( { message: config.messages.css } ) );
+};
+
 module.exports.footer = function() {
 	return gulp.src( './assets/scss/footer.scss' )
 		.pipe( plumber() )

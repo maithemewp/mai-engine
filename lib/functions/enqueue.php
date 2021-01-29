@@ -161,7 +161,7 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 
 	$register( $handle, $src, $deps, $ver, $last_arg );
 
-	if ( ! $in_footer ) {
+	if ( ! $in_footer || is_admin() ) {
 		$enqueue( $handle );
 	} else {
 		// In footer, just before default for theme style.css

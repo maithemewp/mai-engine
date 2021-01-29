@@ -12,8 +12,9 @@ module.exports = {
 	'build:main-css': [ require( './styles' ).main ],
 	'build:plugin-css': [ require( './styles' ).plugins ],
 	'build:theme-css': [ require( './styles' ).themes ],
+	'build:utilities-css': [ require( './styles' ).utilities ],
 
-	'build:css': [ [ 'build:admin-css', 'build:blocks-css', 'build:columns-css', 'build:deprecated-css', 'build:desktop-css', 'build:editor-css', 'build:footer-css', 'build:header-css', 'build:main-css', 'build:plugin-css', 'build:theme-css' ] ],
+	'build:css': [ [ 'build:admin-css', 'build:blocks-css', 'build:columns-css', 'build:deprecated-css', 'build:desktop-css', 'build:editor-css', 'build:footer-css', 'build:header-css', 'build:main-css', 'build:plugin-css', 'build:theme-css', 'build:utilities-css' ] ],
 
 	'build:blocks': [ require( './scripts' ).blocks ],
 	'build:scripts': [ require( './scripts' ).js ],
