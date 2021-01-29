@@ -18,8 +18,10 @@ function mai_columns_get_args( $i = null ) {
 			return $cache[ $i ];
 		}
 
+		$columns = get_field( 'columns' );
+
 		$cache[ $i ] = [
-			'columns' => get_field( 'columns' ),
+			'columns' => $columns ?: 2,
 		];
 
 		if ( 'custom' === $cache[ $i ]['columns'] ) {
