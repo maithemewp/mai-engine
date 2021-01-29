@@ -134,6 +134,10 @@ p.demo_store {
 	}
 }
 
+.shop_table {
+	--table-margin: var(--spacing-md) 0 var(--spacing-xl);
+}
+
 .mai-cart-total-wrap {
 	overflow: hidden;
 	line-height: 0;
