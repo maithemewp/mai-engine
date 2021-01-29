@@ -55,6 +55,7 @@
 		// Overrides WP core styles.
 		.wp-block-search__inside-wrapper {
 			padding: var(--input-padding, 0.9em) !important;
+			background: var(--input-background-color, var(--color-white));
 			border: var(--input-border, 1px solid rgba(0, 0, 0, 0.1)) !important;
 			border-radius: var(--input-border-radius, var(--border-radius)) !important;
 
