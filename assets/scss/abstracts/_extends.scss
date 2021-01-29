@@ -139,7 +139,7 @@
 	@if ($is_admin) {
 		color: var(--button-color);
 		background: var(--button-background);
-		border-color: currentColor;
+		border-color: var(--button-border, currentColor);
 	}
 }
 
