@@ -56,7 +56,7 @@ function mai_do_entries_open( $args ) {
 		}
 
 		if ( 'custom' === $args['image_orientation'] ) {
-			if ( mai_has_string( 'alignfull', $args['class'] ) || mai_has_string( 'alignwide', $args['class'] ) ) {
+			if ( isset( $args['class'] ) && ( mai_has_string( 'alignfull', $args['class'] ) || mai_has_string( 'alignwide', $args['class'] ) ) ) {
 				$image_width = 'unset';
 			} else {
 				$image_sizes = mai_get_available_image_sizes();
