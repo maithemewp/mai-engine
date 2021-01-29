@@ -42,7 +42,7 @@
 	width: var(--entry-width, auto); /* allows "auto" columns in grid and archives */
 	max-width: var(--entry-max-width, calc((100% / var(--columns, 1)) - var(--column-gap)));
 	margin: var(--entry-margin, 0);
-	padding: var(--entry-padding, 0); /* must be a single value for use in calc() full "full" images */
+	padding: var(--entry-padding, 0);
 	overflow: var(--entry-overflow, unset);
 	text-align: var(--align-text);
 	background: var(--entry-background, unset);
@@ -69,7 +69,7 @@
 }
 
 .has-boxed:not([class*="has-image-left-full"]):not([class*="has-image-right-full"]) {
-	--entry-padding: var(--spacing-lg); /* Must be a single value for use in calc() full "full" images */
+	--entry-wrap-padding: var(--spacing-lg); /* Must be a single value for use in calc() full "full" images */
 }
 
 .has-image-background,
@@ -114,7 +114,7 @@
 		// Needs to be more specific to intercept alternating images.
 		.entry-image-link {
 			--entry-image-link-order: -1;
-			--entry-image-link-margin: 0 0 var(--spacing-md) 0;
+			--entry-image-link-margin: 0;
 		}
 	}
 }
