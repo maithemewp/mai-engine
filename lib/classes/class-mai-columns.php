@@ -184,7 +184,7 @@ class Mai_Columns {
 	}
 
 	function get_mapped_admin_elements( $arrangement ) {
-		$total_arrangements = count( $arrangement );
+		$total_arrangements = count( (array) $arrangement );
 		$count              = 0;
 		$elements           = [];
 		for ( $i = 0; $i < 12; $i++ ) {
