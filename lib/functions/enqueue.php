@@ -124,7 +124,7 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 	$ver       = isset( $args['ver'] ) ? $args['ver'] : mai_get_asset_version( $src );
 	$src       = isset( $args['async'] ) ? $src . '#async' : $src; // I think this needs to be after $ver so #async doesn't mess with url.
 	$media     = isset( $args['media'] ) ? $args['media'] : 'all';
-	$in_footer = isset( $args['in_footer'] ) ? $args['in_footer'] : true;
+	$in_footer = isset( $args['in_footer'] ) ? $args['in_footer'] : ( 'script' === $type ); // Default to true if script, false if style.
 	$condition = isset( $args['condition'] ) ? $args['condition'] : '__return_true';
 	$location  = isset( $args['location'] ) ? is_array( $args['location'] ) ? $args['location'] : [ $args['location'] ] : [ 'public' ];
 	$localize  = isset( $args['localize'] ) ? $args['localize'] : [];
@@ -160,7 +160,15 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 	}
 
 	$register( $handle, $src, $deps, $ver, $last_arg );
-	$enqueue( $handle );
+
+	if ( ! $in_footer ) {
+		$enqueue( $handle );
+	} else {
+		// In footer, just before default for theme style.css
+		add_action( 'get_footer', function() use ( $enqueue, $handle ) {
+			$enqueue( $handle );
+		}, 9 );
+	}
 
 	if ( $inline ) {
 		wp_add_inline_style( $handle, mai_minify_css( $inline ) );

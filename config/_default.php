@@ -215,27 +215,36 @@ return [
 	*/
 
 	'styles' => [
-		'main'                   => [],
-		'theme'                  => [
+		'main'                           => [],
+		'header'                         => [
+			'condition' => function () {
+				return ! mai_is_element_hidden( 'transparent_header' );
+			},
+		],
+		'blocks'                         => [],
+		'theme'                          => [
 			'src'  => 'default' !== mai_get_active_theme() ? mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css' : '',
 			'deps' => [
 				'mai-engine-desktop',
 			],
 		],
-		'admin'                  => [
+		'footer'                         => [
+			'in_footer' => true,
+		],
+		'admin'                          => [
 			'location' => 'admin',
 		],
-		'kirki'                  => [
+		'kirki'                          => [
 			'location' => 'customizer',
 		],
 		'wptrt-customize-section-button' => [
 			'src'      => mai_get_url() . 'vendor/wptrt/customize-section-button/public/css/customize-controls.css',
 			'location' => 'customizer',
 		],
-		'advanced-custom-fields' => [
+		'advanced-custom-fields'         => [
 			'location' => 'editor',
 		],
-		'atomic-blocks'          => [
+		'atomic-blocks'                  => [
 			'condition' => function () {
 				return function_exists( 'atomic_blocks_main_plugin_file' );
 			},

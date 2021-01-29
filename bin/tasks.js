@@ -2,14 +2,18 @@
 
 module.exports = {
 	'build:admin-css': [ require( './styles' ).admin ],
+	'build:blocks-css': [ require( './styles' ).blocks ],
+	'build:columns-css': [ require( './styles' ).columns ],
 	'build:deprecated-css': [ require( './styles' ).deprecated ],
 	'build:desktop-css': [ require( './styles' ).desktop ],
 	'build:editor-css': [ require( './styles' ).editor ],
+	'build:footer-css': [ require( './styles' ).footer ],
+	'build:header-css': [ require( './styles' ).header ],
 	'build:main-css': [ require( './styles' ).main ],
 	'build:plugin-css': [ require( './styles' ).plugins ],
 	'build:theme-css': [ require( './styles' ).themes ],
 
-	'build:css': [ [ 'build:main-css', 'build:theme-css', 'build:desktop-css', 'build:plugin-css', 'build:admin-css', 'build:editor-css', 'build:deprecated-css' ] ],
+	'build:css': [ [ 'build:admin-css', 'build:blocks-css', 'build:columns-css', 'build:deprecated-css', 'build:desktop-css', 'build:editor-css', 'build:footer-css', 'build:header-css', 'build:main-css', 'build:plugin-css', 'build:theme-css' ] ],
 
 	'build:blocks': [ require( './scripts' ).blocks ],
 	'build:scripts': [ require( './scripts' ).js ],
