@@ -45,6 +45,13 @@ class Mai_Grid {
 	protected $args;
 
 	/**
+	 * Query Args.
+	 *
+	 * @var $query_args
+	 */
+	protected $query_args;
+
+	/**
 	 * Query.
 	 *
 	 * @var $query
@@ -75,11 +82,12 @@ class Mai_Grid {
 	 * @return void
 	 */
 	public function __construct( $args ) {
-		$args['context'] = 'block'; // Required for Mai_Entry.
-		$this->type      = isset( $args['type'] ) ? $args['type'] : 'post';
-		$this->settings  = $this->get_settings();
-		$this->defaults  = $this->get_defaults();
-		$this->args      = $this->get_sanitized_args( $args );
+		$args['context']  = 'block'; // Required for Mai_Entry.
+		$this->type       = isset( $args['type'] ) ? $args['type'] : 'post';
+		$this->settings   = $this->get_settings();
+		$this->defaults   = $this->get_defaults();
+		$this->args       = $this->get_sanitized_args( $args );
+		$this->query_args = [];
 	}
 
 	/**
@@ -217,17 +225,21 @@ class Mai_Grid {
 
 		switch ( $this->args['type'] ) {
 			case 'post':
-				$query_args = $this->get_post_query_args();
-				if ( $query_args['post_type'] ) {
-					$this->query = new WP_Query( $query_args );
+				$this->query_args = $this->get_post_query_args();
+				if ( $this->query_args['post_type'] ) {
+					$this->query = new WP_Query( $this->query_args );
+					// Cache featured images.
+					if ( in_array( 'image', $this->args['show'] ) ) {
+						update_post_thumbnail_cache( $this->query );
+					}
 					wp_reset_postdata();
 				}
 				break;
 
 			case 'term':
-				$query_args = $this->get_term_query_args();
-				if ( $query_args['taxonomy'] ) {
-					$this->query = new WP_Term_Query( $query_args );
+				$this->query_args = $this->get_term_query_args();
+				if ( $this->query_args['taxonomy'] ) {
+					$this->query = new WP_Term_Query( $this->query_args );
 				}
 				break;
 		}
@@ -245,8 +257,7 @@ class Mai_Grid {
 	public function do_grid_entries() {
 		switch ( $this->args['type'] ) {
 			case 'post':
-				$query_args = $this->get_post_query_args();
-				if ( $query_args['post_type'] ) {
+				if ( $this->query_args['post_type'] ) {
 					$posts = $this->query;
 					if ( $posts->have_posts() ) {
 						while ( $posts->have_posts() ) {
@@ -273,8 +284,7 @@ class Mai_Grid {
 				break;
 
 			case 'term':
-				$query_args = $this->get_term_query_args();
-				if ( $query_args['taxonomy'] ) {
+				if ( $this->query_args['taxonomy'] ) {
 					$term_query = $this->query;
 
 					if ( ! empty( $term_query->terms ) ) {
