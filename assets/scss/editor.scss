@@ -34,6 +34,10 @@ p {
 	font-size: var(--font-size-md);
 }
 
+.block-editor-plain-text {
+	color: var(--color-body); /* Overrides WP core styles. Mostly for dark backgrounds when the text is changed to white. */
+}
+
 .has-dark-background {
 	--heading-color: var(--color-white);
 	--body-color: var(--color-white);

@@ -48,7 +48,7 @@ input::placeholder {
 }
 
 textarea {
-	--input-line-height: var(--line-height-body);
+	--input-line-height: var(--body-line-height, 1.625);
 	--input-border-radius: var(--border-radius);
 }
 
