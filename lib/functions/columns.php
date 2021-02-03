@@ -34,7 +34,9 @@ function mai_columns_get_args( $i = null ) {
 
 			foreach ( $arrangements as $break => $arrangement ) {
 				foreach ( $arrangement as $columns ) {
-					$cache[ $i ]['arrangements'][ $break ][] = $columns['columns'];
+					if ( isset( $columns['columns'] ) ) {
+						$cache[ $i ]['arrangements'][ $break ][] = $columns['columns'];
+					}
 				}
 			}
 
