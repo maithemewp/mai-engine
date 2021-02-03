@@ -110,6 +110,7 @@
 		--entry-flex-wrap: nowrap;
 		--entry-image-link-max-width: 100%;
 		--entry-image-link-flex: initial;
+		--entry-image-link-before-display: none;
 
 		// Needs to be more specific to intercept alternating images.
 		.entry-image-link {
