@@ -465,26 +465,29 @@ class Mai_Grid {
 			$query_args['order'] = $this->args['order'];
 		}
 
-		// Exclude entries.
-		if ( ( 'title' !== $this->args['query_by'] ) && $this->args['post__not_in'] ) {
-			$query_args['post__not_in'] = $this->args['post__not_in'];
-		}
-
-		// Exclude displayed.
-		if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'] ) && ! empty( self::$existing_post_ids ) ) {
-			if ( isset( $query_args['post__not_in'] ) ) {
-				$query_args['post__not_in'] = array_merge( $query_args['post__not_in'], self::$existing_post_ids );
-			} else {
-				$query_args['post__not_in'] = self::$existing_post_ids;
+		// Exclude. If not getting entries by choice.
+		if ( 'id' !== $this->args['query_by'] ) {
+			// Exclude entries.
+			if ( $this->args['post__not_in'] ) {
+				$query_args['post__not_in'] = $this->args['post__not_in'];
 			}
-		}
 
-		// Exclude current.
-		if ( is_singular() && $this->args['excludes'] && in_array( 'exclude_current', $this->args['excludes'], true ) ) {
-			if ( isset( $query_args['post__not_in'] ) ) {
-				$query_args['post__not_in'][] = get_the_ID();
-			} else {
-				$query_args['post__not_in'] = [ get_the_ID() ];
+			// Exclude displayed.
+			if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'] ) && ! empty( self::$existing_post_ids ) ) {
+				if ( isset( $query_args['post__not_in'] ) ) {
+					$query_args['post__not_in'] = array_merge( $query_args['post__not_in'], self::$existing_post_ids );
+				} else {
+					$query_args['post__not_in'] = self::$existing_post_ids;
+				}
+			}
+
+			// Exclude current.
+			if ( is_singular() && $this->args['excludes'] && in_array( 'exclude_current', $this->args['excludes'], true ) ) {
+				if ( isset( $query_args['post__not_in'] ) ) {
+					$query_args['post__not_in'][] = get_the_ID();
+				} else {
+					$query_args['post__not_in'] = [ get_the_ID() ];
+				}
 			}
 		}
 

@@ -2143,6 +2143,11 @@ function mai_get_grid_block_settings() {
 					'field'    => 'mai_grid_block_post_type',
 					'operator' => '!=empty',
 				],
+				[
+					'field'    => 'mai_grid_block_query_by',
+					'operator' => '!=',
+					'value'    => 'id',
+				],
 			],
 		],
 
