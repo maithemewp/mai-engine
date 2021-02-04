@@ -699,7 +699,8 @@ function mai_get_processed_content( $content ) {
  * @return string
  */
 function mai_get_read_more_text() {
-	return esc_html( apply_filters( 'mai_read_more_text', mai_get_config( 'settings' )['content-archives']['more_link_text'] ) );
+	$text = apply_filters( 'mai_read_more_text', mai_get_config( 'settings' )['content-archives']['more_link_text'] );
+	return $text;
 }
 
 /**
