@@ -423,6 +423,7 @@ function mai_get_post_type() {
  * If only a number value, use the fallback..
  *
  * @since 0.1.0
+ * @since TBD Change intval to casting as int to allow negative numbers.
  *
  * @param  string $value    The value. Could be integer 24 or with type 24px, 2rem, etc.
  * @param  string $fallback The fallback unit value.
@@ -431,7 +432,7 @@ function mai_get_post_type() {
  */
 function mai_get_unit_value( $value, $fallback = 'px' ) {
 	if ( empty( $value ) || is_numeric( $value ) ) {
-		return sprintf( '%s%s', intval( $value ), $fallback );
+		return sprintf( '%s%s', (int) $value, $fallback );
 	}
 
 	return trim( $value );
