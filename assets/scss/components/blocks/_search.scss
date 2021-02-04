@@ -1,5 +1,6 @@
 .wp-block-search {
 	display: flex;
+	flex-wrap: wrap;
 
 	--search-input-max-width: 100%;
 	--button-margin: 0 0 0 var(--search-button-margin-left, calc(var(--spacing-xl) * -1));
