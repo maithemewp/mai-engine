@@ -187,6 +187,7 @@ input[type="submit"],
 }
 
 .wp-block-search {
+	display: block;
 
 	.wp-block[data-align="left"] & {
 		justify-content: flex-start;
