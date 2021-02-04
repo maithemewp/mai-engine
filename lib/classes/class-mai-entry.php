@@ -1242,7 +1242,7 @@ class Mai_Entry {
 			[
 				'open'    => '<a %s>',
 				'close'   => '</a>',
-				'content' => $more_link_text,
+				'content' => do_shortcode( $more_link_text ),
 				'context' => 'entry-more-link',
 				'echo'    => false,
 				'atts'    => [
