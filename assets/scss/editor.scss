@@ -604,3 +604,17 @@ input[type="submit"],
 	max-width: 100%;
 	margin: auto 16px;
 }
+
+// Mai Accordion.
+
+.wp-block[data-type="acf/mai-accordion-item"] {
+	margin-bottom: var(--row-gap);
+}
+
+.wp-block[data-type="acf/mai-accordion-item"] .mai-accordion-item {
+	margin-bottom: 0;
+}
+
+.wp-block[data-type="acf/mai-accordion-item"] + .wp-block[data-type="acf/mai-accordion-item"] {
+	margin-top: 0;
+}
