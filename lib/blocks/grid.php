@@ -1097,7 +1097,7 @@ function mai_get_grid_block_settings() {
 			'label'      => esc_html__( 'More Link Text', 'mai-engine' ),
 			'block'      => [ 'post', 'term', 'user' ],
 			'type'       => 'text',
-			'sanitize'   => 'esc_attr', // We may want to add icons/spans and HTML in here.
+			'sanitize'   => 'wp_kses_post', // We may want to add icons/spans and HTML in here.
 			'default'    => '',
 			'conditions' => [
 				[

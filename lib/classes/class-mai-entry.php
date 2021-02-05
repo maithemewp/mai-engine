@@ -1214,6 +1214,7 @@ class Mai_Entry {
 		}
 
 		$more_link_text = isset( $this->args['more_link_text'] ) && $this->args['more_link_text'] ? $this->args['more_link_text'] : mai_get_read_more_text();
+		$more_link_text = do_shortcode( $more_link_text );
 
 		// Screen reader text title.
 		switch ( $this->type ) {
@@ -1242,7 +1243,7 @@ class Mai_Entry {
 			[
 				'open'    => '<a %s>',
 				'close'   => '</a>',
-				'content' => do_shortcode( $more_link_text ),
+				'content' => $more_link_text,
 				'context' => 'entry-more-link',
 				'echo'    => false,
 				'atts'    => [

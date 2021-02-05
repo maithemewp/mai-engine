@@ -315,7 +315,7 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			'settings'        => 'more_link_text',
 			'label'           => __( 'More Link Text', 'mai-engine' ),
 			'type'            => 'text',
-			'sanitize'        => 'esc_attr', // We may want to add icons/spans and HTML in here.
+			'sanitize'        => 'wp_kses_post', // We may want to add icons/spans and HTML in here.
 			'default'         => $defaults['more_link_text'],
 			'active_callback' => [
 				[
