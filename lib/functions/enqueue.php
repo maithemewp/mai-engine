@@ -314,8 +314,10 @@ add_filter( 'clean_url', 'mai_async_scripts', 11, 1 );
  * @return string
  */
 function mai_async_scripts( $url ) {
-	if ( strpos( $url, '#async' ) !== false ) {
-		$url = str_replace( '#async', '', $url ) . "' async='async";
+	if ( is_admin() ) {
+		return str_replace( '#async', '', $url );
+	} elseif ( ! is_admin() && mai_has_string( '#async', $url ) ) {
+		return str_replace( '#async', '', $url ) . "' async='async";
 	}
 
 	return $url;
