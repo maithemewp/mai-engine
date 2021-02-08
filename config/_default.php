@@ -215,17 +215,25 @@ return [
 	*/
 
 	'styles' => [
-		'main'                           => [],
+		'main'                           => [
+			'async' => true,
+		],
 		'header'                         => [
+			'async'     => true,
 			'condition' => function () {
 				return ! mai_is_element_hidden( 'transparent_header' );
 			},
 		],
-		'blocks'                         => [],
-		'utilities'                      => [],
+		'blocks'                         => [
+			'async' => true,
+		],
+		'utilities'                      => [
+			'async' => true,
+		],
 		'theme'                          => [
-			'src'  => 'default' !== mai_get_active_theme() ? mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css' : '',
-			'deps' => [
+			'async' => mai_get_option( 'genesis-style-trump', true ),
+			'src'   => 'default' !== mai_get_active_theme() ? mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css' : '',
+			'deps'  => [
 				'mai-engine-desktop',
 			],
 		],
@@ -246,52 +254,62 @@ return [
 			'location' => 'editor',
 		],
 		'atomic-blocks'                  => [
+			'async'     => true,
 			'condition' => function () {
 				return function_exists( 'atomic_blocks_main_plugin_file' );
 			},
 		],
 		'facetwp'                => [
+			'async'     => true,
 			'condition' => function () {
 				return class_exists( 'FacetWP' );
 			},
 		],
 		'genesis-enews-extended' => [
+			'async'     => true,
 			'location'  => [ 'public', 'editor' ],
 			'condition' => function () {
 				return class_exists( 'BJGK_Genesis_ENews_Extended' );
 			},
 		],
 		'learndash' => [
+			'async'     => true,
 			'condition' => function () {
 				return class_exists( 'SFWD_LMS' );
 			},
 		],
 		'seo-slider'             => [
+			'async'     => true,
 			'condition' => function () {
 				return defined( 'SEO_SLIDER_VERSION' );
 			},
 		],
 		'simple-social-icons'    => [
+			'async'     => true,
 			'condition' => function () {
 				return class_exists( 'Simple_Social_Icons_Widget' );
 			},
 		],
 		'woocommerce-global'     => [
+			'async'     => true,
 			'condition' => function () {
 				return class_exists( 'WooCommerce' );
 			},
 		],
 		'woocommerce-products'   => [
+			'async'     => true,
 			'condition' => function () {
 				return class_exists( 'WooCommerce' ) && ( is_shop() || is_product_taxonomy() || is_product() || is_cart() );
 			},
 		],
 		'woocommerce-cart'       => [
+			'async'     => true,
 			'condition' => function () {
 				return class_exists( 'WooCommerce' ) && ( is_cart() || is_checkout() );
 			},
 		],
 		'woocommerce-account'    => [
+			'async'     => true,
 			'condition' => function () {
 				return class_exists( 'WooCommerce' ) && is_account_page();
 			},

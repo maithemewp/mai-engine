@@ -122,7 +122,7 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 	$handle    = isset( $args['handle'] ) ? $args['handle'] : mai_get_handle() . '-' . $handle;
 	$deps      = isset( $args['deps'] ) ? $args['deps'] : [];
 	$ver       = isset( $args['ver'] ) ? $args['ver'] : mai_get_asset_version( $src );
-	$src       = isset( $args['async'] ) ? $src . '#async' : $src; // I think this needs to be after $ver so #async doesn't mess with url.
+	$src       = isset( $args['async'] ) && $args['async'] ? $src . '#async' : $src; // I think this needs to be after $ver so #async doesn't mess with url.
 	$media     = isset( $args['media'] ) ? $args['media'] : 'all';
 	$in_footer = isset( $args['in_footer'] ) ? $args['in_footer'] : ( 'script' === $type ); // Default to true if script, false if style.
 	$condition = isset( $args['condition'] ) ? $args['condition'] : '__return_true';
@@ -318,6 +318,8 @@ function mai_async_scripts( $url ) {
 		return str_replace( '#async', '', $url );
 	} elseif ( ! is_admin() && mai_has_string( '#async', $url ) ) {
 		return str_replace( '#async', '', $url ) . "' async='async";
+	}elseif ( mai_has_string( '/wp-includes/css/dist/block-library/style.css', $url ) ) {
+		return $url . "' async='async";
 	}
 
 	return $url;
