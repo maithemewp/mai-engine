@@ -1,6 +1,7 @@
 .wp-block-search {
 	display: flex;
 	flex-wrap: wrap;
+	margin: var(--search-block-margin, 0);
 
 	--search-input-max-width: 100%;
 	--button-margin: 0 0 0 var(--search-button-margin-left, calc(var(--spacing-xl) * -1));
@@ -77,4 +78,8 @@
 			}
 		}
 	}
+}
+
+.entry-content {
+	--search-block-margin: 0 0 var(--spacing-md);
 }
