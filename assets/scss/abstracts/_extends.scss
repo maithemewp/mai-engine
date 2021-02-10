@@ -36,6 +36,7 @@
 	position: relative;
 	display: inline-flex;
 	align-items: center;
+	justify-content: center;
 	width: var(--button-width, auto);
 	margin: var(--button-margin, 0);
 	padding: var(--button-padding, 0.9em 2em);
