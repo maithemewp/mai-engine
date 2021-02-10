@@ -39,7 +39,7 @@ html {
 }
 
 .entry-image-single:first-child {
-	--entry-image-link-margin: calc(var(--entry-spacing) * -1) calc(var(--entry-spacing) * -1) -6px;
+	--entry-image-link-margin: calc(var(--entry-spacing) * -1) calc(var(--entry-spacing) * -1) var(--spacing-lg);
 	--entry-image-border-radius: var(--border-radius) var(--border-radius) 0 0;
 	--entry-image-link-box-shadow: var(--shadow);
 }
