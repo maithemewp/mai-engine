@@ -59,7 +59,7 @@
 
 .custom-logo {
 	display: block;
-	width: 100vw; // For svg logos.
+	width: var(--viewport-width); // For svg logos.
 	max-width: 100%; // Because 100vw width is crazy.
 	transition: var(--title-area-transition, var(--transition));
 }

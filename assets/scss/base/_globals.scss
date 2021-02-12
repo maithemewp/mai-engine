@@ -45,6 +45,8 @@
 	--sidebar-width: 300px; // Google ads.
 	--content-max-width: var(--breakpoint-xl);
 
+	--viewport-width: calc(100vw - var(--scrollbar-width, 0px)); // Needs px value for calculations.
+
 	--border-radius: 4px;
 	--border-width: 1px;
 	--border: var(--border-width) solid var(--color-border);

@@ -3,7 +3,7 @@
 	position: relative;
 	display: var(--nav-header-display, (flex));
 	flex-grow: 1;
-	width: var(--nav-header-width, 100vw);
+	width: var(--nav-header-width, var(--viewport-width));
 	margin: var(--nav-header-margin, 0 -5vw);
 	padding: var(--nav-header-padding, (var(--spacing-md) 5vw));
 	background: var(--nav-header-background, none);

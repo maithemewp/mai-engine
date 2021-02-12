@@ -1,5 +1,5 @@
 html {
-	max-width: 100vw;
+	max-width: var(--viewport-width);
 	font-size: 100%; // 16px browser default.
 
 	-webkit-font-smoothing: antialiased;
