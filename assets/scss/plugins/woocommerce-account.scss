@@ -51,7 +51,7 @@
 .woocommerce-orders-table__cell-order-actions {
 
 	.button {
-		--button-padding: 1em 1.2em;
+		--button-padding: 0.8em 1em; // 1em barely fits 3 buttons on wide content.
 		--button-font-size: var(--font-size-xs);
 		--button-white-space: nowrap;
 
