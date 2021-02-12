@@ -56,6 +56,10 @@
 		--button-white-space: nowrap;
 
 		@include button-style("secondary");
+
+		&:not(:first-child) {
+			margin-left: var(--spacing-xs);
+		}
 	}
 }
 
