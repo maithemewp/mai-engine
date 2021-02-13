@@ -1145,8 +1145,13 @@ function mai_get_updater_icons() {
  * @return string
  */
 function mai_get_logo_icon_1x() {
+	static $icon = null;
+	if ( ! is_null( $icon ) ) {
+		return $icon;
+	}
 	$file = 'assets/img/icon-128x128.png';
-	return file_exists( mai_get_dir() . $file ) ? mai_get_url() . $file : '';
+	$icon = file_exists( mai_get_dir() . $file ) ? mai_get_url() . $file : '';
+	return $icon;
 }
 
 /**
@@ -1157,6 +1162,11 @@ function mai_get_logo_icon_1x() {
  * @return string
  */
 function mai_get_logo_icon_2x() {
+	static $icon = null;
+	if ( ! is_null( $icon ) ) {
+		return $icon;
+	}
 	$file = 'assets/img/icon-256x256.png';
-	return file_exists( mai_get_dir() . $file ) ? mai_get_url() . $file : '';
+	$icon = file_exists( mai_get_dir() . $file ) ? mai_get_url() . $file : '';
+	return $icon;
 }
