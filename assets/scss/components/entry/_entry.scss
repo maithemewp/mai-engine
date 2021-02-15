@@ -48,7 +48,7 @@
 	margin: var(--entry-margin, 0);
 	padding: var(--entry-padding, 0);
 	overflow: var(--entry-overflow, unset);
-	text-align: var(--align-text);
+	text-align: var(--entry-text-align, inherit);
 	background: var(--entry-background, unset);
 	border: var(--entry-border, 0);
 	border-radius: var(--entry-border-radius, var(--border-radius));
