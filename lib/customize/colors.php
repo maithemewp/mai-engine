@@ -38,6 +38,9 @@ function mai_colors_customizer_settings() {
 			'label'    => $label,
 			'section'  => $section,
 			'default'  => mai_get_default_color( $id ),
+			'choices'  => [
+				'palettes' => mai_get_color_choices(),
+			],
 			'output'   => [
 				[
 					'element'  => ':root',
