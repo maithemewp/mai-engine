@@ -28,7 +28,9 @@
 }
 
 .has-image-background,
-.has-boxed {
+.has-boxed .has-image-first,
+[class*="has-image-left-"],
+[class*="has-image-right-"] {
 	--entry-image-link-margin-bottom: 0;
 }
 

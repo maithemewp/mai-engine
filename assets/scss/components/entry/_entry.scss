@@ -48,7 +48,7 @@
 	margin: var(--entry-margin, 0);
 	padding: var(--entry-padding, 0);
 	overflow: var(--entry-overflow, unset);
-	text-align: var(--entry-text-align, inherit);
+	text-align: var(--align-text, inherit);
 	background: var(--entry-background, unset);
 	border: var(--entry-border, 0);
 	border-radius: var(--entry-border-radius, var(--border-radius));
@@ -119,7 +119,10 @@
 		// Needs to be more specific to intercept alternating images.
 		.entry-image-link {
 			--entry-image-link-order: -1;
-			--entry-image-link-margin: 0;
+		}
+
+		.entries-wrap:not(.has-boxed) & {
+			--entry-image-link-margin: 0 0 var(--spacing-md);
 		}
 	}
 }
