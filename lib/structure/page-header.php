@@ -329,17 +329,23 @@ function mai_get_page_header_image_id() {
 		return $image_id;
 	}
 
-	if ( mai_is_type_single() ) {
-		$image_id = get_post_meta( get_the_ID(), 'page_header_image', true );
+	$post_id = false;
 
-	} elseif ( is_front_page() ) {
-		$image_id = '';
+	if ( is_singular() ) {
+		$post_id  = get_the_ID();
+		$image_id = get_post_meta( $post_id, 'page_header_image', true );
 
-		if ( 'page' === get_option( 'show_on_front' ) ) {
-			$image_id = get_post_meta( get_option( 'page_on_front' ), 'page_header_image', true );
+	} elseif ( is_front_page() && 'page' === get_option( 'show_on_front' ) ) {
+		$post_id = get_option( 'page_on_front' );
+		if ( $post_id ) {
+			$image_id = get_post_meta( $post_id, 'page_header_image', true );
 		}
+
 	} elseif ( is_home() ) {
-		$image_id = get_post_meta( get_option( 'page_for_posts' ), 'page_header_image', true );
+		$post_id = get_option( 'page_for_posts' );
+		if ( $post_id ) {
+			$image_id = get_post_meta( $post_id, 'page_header_image', true );
+		}
 
 	} elseif ( mai_is_type_archive() ) {
 		if ( is_category() || is_tag() || is_tax() ) {
@@ -367,11 +373,12 @@ function mai_get_page_header_image_id() {
 		}
 	}
 
-	if ( ! $image_id && is_singular() ) {
+	// We can't use is_home() to check for featured image because the args return archive settings.
+	if ( ! $image_id && $post_id && ( is_singular() || is_front_page() ) ) {
 		$args = mai_get_template_args();
 
 		if ( isset( $args['page-header-featured'] ) && $args['page-header-featured'] ) {
-			$image_id = get_post_thumbnail_id();
+			$image_id = get_post_thumbnail_id( $post_id );
 		}
 	}
 
