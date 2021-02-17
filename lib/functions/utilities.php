@@ -238,7 +238,7 @@ function mai_get_config( $sub_config = 'default' ) {
 		$config = array_replace_recursive( $config, $new );
 		if ( isset( $new['settings']['content-archives'] ) ) {
 			foreach ( $new['settings']['content-archives'] as $key => $settings ) {
-				if ( ! ( isset( $new['settings']['content-archives'][ $key ]['show'] ) ) && isset( $config['settings']['content-archives'][ $key ]['show'] ) ) {
+				if ( ! ( isset( $new['settings']['content-archives'][ $key ]['show'] ) && isset( $config['settings']['content-archives'][ $key ]['show'] ) ) ) {
 					continue;
 				}
 				$config['settings']['content-archives'][ $key ]['show'] = $new['settings']['content-archives'][ $key ]['show'];
@@ -246,7 +246,7 @@ function mai_get_config( $sub_config = 'default' ) {
 		}
 		if ( isset( $new['settings']['single-content'] ) ) {
 			foreach ( $new['settings']['single-content'] as $key => $settings ) {
-				if ( ! ( isset( $new['settings']['single-content'][ $key ]['show'] ) ) && isset( $config['settings']['single-content'][ $key ]['show'] ) ) {
+				if ( ! ( isset( $new['settings']['single-content'][ $key ]['show'] ) && isset( $config['settings']['single-content'][ $key ]['show'] ) ) ) {
 					continue;
 				}
 				$config['settings']['single-content'][ $key ]['show'] = $new['settings']['single-content'][ $key ]['show'];
