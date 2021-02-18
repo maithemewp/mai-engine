@@ -5,8 +5,19 @@
   "license": "gpl-2.0-or-later",
   "repositories": [
     {
-      "type": "composer",
-      "url": "https://pivvenit.github.io/acf-composer-bridge/composer/v3/library/"
+      "type": "package",
+      "package": {
+        "name": "advanced-custom-fields/advanced-custom-fields-pro",
+        "version": "5.9.5",
+        "dist": {
+          "type": "zip",
+          "url": "https://connect.advancedcustomfields.com/index.php?a=download&p=pro&k={%PLUGIN_ACF_KEY}&t={%VERSION}"
+        },
+        "require": {
+          "composer/installers": "^1.4",
+          "ffraenz/private-composer-installer": "^5.0"
+        }
+      }
     }
   ],
   "require": {
@@ -15,10 +26,10 @@
     "ext-json": "*",
     "ext-libxml": "*",
     "yahnis-elsts/plugin-update-checker": "^4.10",
-    "advanced-custom-fields/advanced-custom-fields-pro": "^5.9",
     "aristath/kirki": "*",
     "proteusthemes/wp-content-importer-v2": "^2.1",
-    "wptrt/customize-section-button": "^1.0"
+    "wptrt/customize-section-button": "^1.0",
+    "advanced-custom-fields/advanced-custom-fields-pro": "*"
   },
   "require-dev": {
     "php": "^5.6|^7",
