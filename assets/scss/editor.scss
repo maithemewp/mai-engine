@@ -187,7 +187,6 @@ input[type="submit"],
 }
 
 .wp-block-search {
-	display: block;
 
 	.wp-block[data-align="left"] & {
 		justify-content: flex-start;
@@ -199,6 +198,14 @@ input[type="submit"],
 
 	.wp-block[data-align="right"] & {
 		justify-content: flex-end;
+	}
+
+	.wp-block-search__input {
+		width: auto;
+		min-width: var(--search-input-min-width, 256px);
+		max-width: var(--search-input-max-width, 320px);
+		font-size: var(--font-size-md);
+		-webkit-appearance: none;
 	}
 
 	.wp-block-search__button {
