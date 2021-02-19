@@ -52,6 +52,7 @@ hr {
 b,
 strong {
 	font-weight: var(--strong-font-weight, var(--body-font-weight-bold));
+	word-wrap: break-word;
 }
 
 em,
