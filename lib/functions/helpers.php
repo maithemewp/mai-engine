@@ -685,7 +685,7 @@ function mai_convert_case( $string, $case = 'snake' ) {
 		'dot'      => strtolower( implode( '.', $pieces ) ),
 	];
 
-	return $cases[ $case ];
+	return isset( $cases[ $case ] ) ? $cases[ $case ] : $string;
 }
 
 /**
