@@ -20,6 +20,12 @@ defined( 'ABSPATH' ) || die;
  * @return array
  */
 function mai_get_colors() {
+	static $colors = null;
+
+	if ( ! is_null( $colors ) ) {
+		return $colors;
+	}
+
 	$colors   = [];
 	$defaults = mai_get_default_colors();
 
@@ -27,7 +33,9 @@ function mai_get_colors() {
 		$colors[ $name ] = mai_get_color( $name );
 	}
 
-	return array_merge( $colors, mai_get_custom_colors() );
+	$colors = array_merge( $colors, mai_get_custom_colors() );
+
+	return $colors;
 }
 
 /**
