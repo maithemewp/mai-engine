@@ -195,15 +195,45 @@ function mai_get_asset_url( $file ) {
 }
 
 /**
- * Returns the active child theme's config.
+ * Returns the active child theme's sub config.
  *
  * @since 0.1.0
+ * @since TBD Add static caching of sub_config.
  *
  * @param string $sub_config Name of config to get.
  *
  * @return array
  */
 function mai_get_config( $sub_config = 'default' ) {
+	static $config = null;
+
+	if ( is_array( $config ) && isset( $config[ $sub_config ] ) ) {
+		return $config[ $sub_config ];
+	}
+
+	$config                = mai_get_full_config();
+	$config[ $sub_config ] = isset( $config[ $sub_config ] ) ? $config[ $sub_config ] : [];
+	$config[ $sub_config ] = apply_filters( "mai_{$sub_config}_config", $config[ $sub_config ] );
+
+	return $config[ $sub_config ];
+}
+
+/**
+ * Returns the active child theme's full config.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @return array
+ */
+function mai_get_full_config() {
+	static $config = null;
+
+	if ( ! is_null( $config ) ) {
+		return $config;
+	}
+
 	$config = require mai_get_dir() . 'config/_default.php';
 	$theme  = mai_get_active_theme();
 	$theme  = ( 'default' === $theme ) ? '_default' : $theme;
@@ -256,9 +286,7 @@ function mai_get_config( $sub_config = 'default' ) {
 
 	$config = apply_filters( 'mai_config', $config );
 
-	$configs[ $sub_config ] = isset( $config[ $sub_config ] ) ? $config[ $sub_config ] : [];
-
-	return apply_filters( "mai_{$sub_config}_config", $configs[ $sub_config ] );
+	return $config;
 }
 
 /**
