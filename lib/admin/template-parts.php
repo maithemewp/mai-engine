@@ -322,6 +322,24 @@ function mai_template_parts_order( $query ) {
 	$query->set( 'order', 'ASC' );
 }
 
+/**
+ * Clears the transient on post type save/update.
+ *
+ * @since TBD
+ *
+ * @param int $post_id The template part ID.
+ *
+ * @return void
+ */
+add_action( 'save_post_wp_template_part', 'mai_save_template_part_delete_transient' );
+function mai_save_template_part_delete_transient( $post_id ) {
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	delete_transient( 'mai_template_parts' );
+}
+
 add_action( 'after_switch_theme', 'mai_default_theme_template_parts' );
 /**
  * Sets demo template parts on theme switch.

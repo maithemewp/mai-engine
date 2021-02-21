@@ -19,9 +19,14 @@
  * @return array
  */
 function mai_get_single_content_settings( $name = 'post' ) {
-	static $settings = null;
-	if ( ! is_null( $settings ) ) {
-		return $settings;
+	static $single_settings = null;
+
+	if ( is_array( $single_settings ) && isset( $single_settings[ $name ] ) ) {
+		return $single_settings[ $name ];
+	}
+
+	if ( ! is_array( $single_settings ) ) {
+		$single_settings = [];
 	}
 
 	$defaults = mai_get_config( 'settings' )['single-content'];
@@ -172,9 +177,9 @@ function mai_get_single_content_settings( $name = 'post' ) {
 		],
 	];
 
-	$settings = apply_filters( 'mai_single_content_settings', $settings, $name );
+	$single_settings[ $name ] = apply_filters( 'mai_single_content_settings', $settings, $name );
 
-	return $settings;
+	return $single_settings[ $name ];
 }
 
 add_action( 'init', 'mai_add_single_content_settings' );

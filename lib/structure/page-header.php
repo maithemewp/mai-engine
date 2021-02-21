@@ -470,7 +470,9 @@ function mai_get_page_header_title() {
 		$title = apply_filters( 'genesis_404_entry_title', esc_html__( 'Not found, error 404', 'mai-engine' ) );
 	}
 
-	return apply_filters( 'mai_page_header_title', $title );
+	$title = apply_filters( 'mai_page_header_title', $title );
+
+	return $title;
 }
 
 /**
@@ -535,5 +537,7 @@ function mai_get_page_header_description() {
 		$description = '';
 	}
 
-	return apply_filters( 'mai_page_header_description', $description );
+	$description = apply_filters( 'mai_page_header_description', $description );
+
+	return $description;
 }

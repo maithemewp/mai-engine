@@ -171,14 +171,11 @@ function mai_get_icon_default_args() {
  * @return string
  */
 function mai_get_svg( $name, $class = '' ) {
-	$file = mai_get_dir() . "assets/svg/$name.svg";
+	$svg = mai_get_svg_file( $name );
 
-	if ( ! file_exists( $file ) ) {
+	if ( ! $svg ) {
 		return '';
 	}
-
-	$svg = file_get_contents( $file );
-	$svg = mai_convert_svg_xmlns( $svg );
 
 	if ( $class ) {
 		$dom  = mai_get_dom_document( $svg );
@@ -215,14 +212,11 @@ function mai_get_svg( $name, $class = '' ) {
  * @return string
  */
 function mai_get_svg_icon( $name, $style = 'light', $atts = [] ) {
-	$file = mai_get_dir() . "assets/icons/svgs/$style/$name.svg";
+	$svg = mai_get_svg_icon_file( $name, $style );
 
-	if ( ! file_exists( $file ) ) {
+	if ( ! $svg ) {
 		return '';
 	}
-
-	$svg = file_get_contents( $file );
-	$svg = mai_convert_svg_xmlns( $svg );
 
 	if ( $atts ) {
 		$dom  = mai_get_dom_document( $svg );
@@ -247,6 +241,67 @@ function mai_get_svg_icon( $name, $style = 'light', $atts = [] ) {
 
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 	return $svg;
+}
+
+/**
+ * Gets an svg file. Cached so the same file is never fetched twice on the same page.
+ *
+ * @since TBD
+ *
+ * @param string $name The svg file name.
+ *
+ * @return string
+ */
+function mai_get_svg_file( $name ) {
+	static $files = null;
+
+	if ( is_array( $files ) && isset( $files[ $name ] ) ) {
+		return $files[ $name ];
+	}
+
+	$file = mai_get_dir() . "assets/svg/$name.svg";
+
+	if ( ! file_exists( $file ) ) {
+		$files[ $name ] = '';
+		return $files[ $name ];
+	}
+
+	$svg            = file_get_contents( $file );
+	$svg            = mai_convert_svg_xmlns( $svg );
+	$files[ $name ] = $svg;
+
+	return $files[ $name ];
+}
+
+/**
+ * Gets an svg icon file. Cached so the same file is never fetched twice on the same page.
+ *
+ * @since TBD
+ *
+ * @param string $name  The svg file name.
+ * @param string $style The svg style.
+ *
+ * @return string
+ */
+function mai_get_svg_icon_file( $name, $style = 'light' ) {
+	static $files = null;
+
+	if ( is_array( $files ) && isset( $files[ $style ][ $name ] ) ) {
+		return $files[ $style ][ $name ];
+	}
+
+	$file = mai_get_dir() . "assets/icons/svgs/$style/$name.svg";
+
+	if ( ! file_exists( $file ) ) {
+		$files[ $style ][ $name ] = '';
+		return $files[ $style ][ $name ];
+	}
+
+	$svg                      = file_get_contents( $file );
+	$svg                      = mai_convert_svg_xmlns( $svg );
+	$files[ $style ][ $name ] = $svg;
+
+	return $files[ $style ][ $name ];
 }
 
 /**
@@ -275,12 +330,6 @@ function mai_get_svg_icon_url( $name, $style = 'light' ) {
  * @return string
  */
 function mai_convert_svg_xmlns( $svg ) {
-	static $url = null;
-
-	if ( is_null( $url ) ) {
-		$url = wp_parse_url( home_url() );
-	}
-
 	if ( ! mai_is_https() ) {
 		return $svg;
 	}

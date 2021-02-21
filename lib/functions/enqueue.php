@@ -318,7 +318,7 @@ function mai_async_scripts( $url ) {
 		return str_replace( '#async', '', $url );
 	} elseif ( ! is_admin() && mai_has_string( '#async', $url ) ) {
 		return str_replace( '#async', '', $url ) . "' async='async";
-	}elseif ( mai_has_string( '/wp-includes/css/dist/block-library/style.css', $url ) ) {
+	} elseif ( mai_has_string( '/wp-includes/css/dist/block-library/style.css', $url ) ) {
 		return $url . "' async='async";
 	}
 

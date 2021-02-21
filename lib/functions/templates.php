@@ -243,21 +243,36 @@ function mai_get_template_part_objects() {
 	$posts = [];
 
 	if ( ! empty( $slugs ) ) {
+		$transient = 'mai_template_parts';
 
-		$query = get_posts(
-			[
-				'post_type'              => 'wp_template_part',
-				'post_status'            => 'any',
-				'post_name__in'          => $slugs,
-				'posts_per_page'         => 500,
-				'no_found_rows'          => true,
-				'update_post_meta_cache' => false,
-				'update_post_term_cache' => false,
-				'suppress_filters'       => false, // https://github.com/10up/Engineering-Best-Practices/issues/116
-			]
-		);
-		foreach ( $query as $post ) {
-			$posts[] = $post;
+		if ( false === ( $parts = get_transient( $transient ) ) ) {
+
+			$query = new WP_Query(
+				[
+					'post_type'              => 'wp_template_part',
+					'post_status'            => 'any',
+					'post_name__in'          => $slugs,
+					'posts_per_page'         => 500,
+					'no_found_rows'          => true,
+					'update_post_meta_cache' => false,
+					'update_post_term_cache' => false,
+					'suppress_filters'       => false, // https://github.com/10up/Engineering-Best-Practices/issues/116
+				]
+			);
+
+			if ( $query->have_posts() ) {
+				while ( $query->have_posts() ) : $query->the_post();
+					global $post;
+					$parts[] = $post;
+				endwhile;
+			}
+
+			wp_reset_postdata();
+
+			// Set transient, and expire after 8 hours.
+			set_transient( $transient, $parts, 8 * HOUR_IN_SECONDS );
+
+			$posts = $parts;
 		}
 	}
 

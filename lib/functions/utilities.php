@@ -39,9 +39,11 @@ function mai_get_dir() {
 function mai_get_url() {
 	static $url = null;
 
-	if ( is_null( $url ) ) {
-		$url = trailingslashit( plugins_url( basename( mai_get_dir() ) ) );
+	if ( ! is_null( $url ) ) {
+		return $url;
 	}
+
+	$url = trailingslashit( plugins_url( basename( mai_get_dir() ) ) );
 
 	return $url;
 }
@@ -56,11 +58,13 @@ function mai_get_url() {
 function mai_get_base() {
 	static $base = null;
 
-	if ( is_null( $base ) ) {
-		$dir  = basename( dirname( dirname( __DIR__ ) ) );
-		$file = mai_get_handle() . '.php';
-		$base = $dir . DIRECTORY_SEPARATOR . $file;
+	if ( ! is_null( $base ) ) {
+		return $base;
 	}
+
+	$dir  = basename( dirname( dirname( __DIR__ ) ) );
+	$file = mai_get_handle() . '.php';
+	$base = $dir . DIRECTORY_SEPARATOR . $file;
 
 	return $base;
 }
@@ -299,7 +303,15 @@ function mai_get_full_config() {
  * @return string
  */
 function mai_get_active_theme() {
-	return apply_filters( 'mai_active_theme', mai_get_engine_theme() );
+	static $theme = null;
+
+	if ( ! is_null( $theme ) ) {
+		return $theme;
+	}
+
+	$theme = apply_filters( 'mai_active_theme', mai_get_engine_theme() );
+
+	return $theme;
 }
 
 /**
@@ -339,10 +351,18 @@ function mai_get_options( $use_cache = true ) {
  * @return mixed
  */
 function mai_get_option( $option, $default = false, $use_cache = true ) {
-	$options = mai_get_options( $use_cache );
-	$value   = isset( $options[ $option ] ) ? $options[ $option ] : $default;
+	static $values = null;
 
-	return apply_filters( "mai_get_option_{$option}", $value );
+	if ( $use_cache && is_array( $values ) && isset( $values[ $option ] ) ) {
+		return $values[ $option ];
+	}
+
+	$values            = [];
+	$options           = mai_get_options( $use_cache );
+	$value             = isset( $options[ $option ] ) ? $options[ $option ] : $default;
+	$values[ $option ] = apply_filters( "mai_get_option_{$option}", $value );
+
+	return $values[ $option ];
 }
 
 /**
@@ -374,7 +394,19 @@ function mai_update_option( $option, $value ) {
  * @return mixed
  */
 function mai_get_settings( $name ) {
-	return require mai_get_dir() . 'lib/customize/' . $name . '.php';
+	static $settings = null;
+
+	if ( is_array( $settings ) && isset( $settings[ $name ] ) ) {
+		return $settings[ $name ];
+	}
+
+	if ( ! is_array( $settings ) ) {
+		$settings = [];
+	}
+
+	$settings[ $name ] = require mai_get_dir() . 'lib/customize/' . $name . '.php';
+
+	return $settings[ $name ];
 }
 
 /**
@@ -387,9 +419,20 @@ function mai_get_settings( $name ) {
  * @return mixed
  */
 function mai_get_global_styles( $key = '' ) {
-	$global_styles = mai_get_config( 'global-styles' );
+	static $styles = null;
 
-	return mai_isset( $global_styles, $key, $global_styles );
+	if ( is_array( $styles ) && isset( $styles[ $key ] ) ) {
+		return $styles[ $key ];
+	}
+
+	if ( ! is_array( $styles ) ) {
+		$styles = [];
+	}
+
+	$global_styles  = mai_get_config( 'global-styles' );
+	$styles[ $key ] = mai_isset( $global_styles, $key, $global_styles );
+
+	return $styles[ $key ];
 }
 
 /**
@@ -487,7 +530,15 @@ function mai_get_integer_value( $string ) {
  * @return array
  */
 function mai_get_site_layout_choices() {
-	return [ '' => esc_html__( 'Default', 'mai-engine' ) ] + genesis_get_layouts_for_customizer();
+	static $choices = null;
+
+	if ( ! is_null( $choices ) ) {
+		return $choices;
+	}
+
+	$choices = [ '' => esc_html__( 'Default', 'mai-engine' ) ] + genesis_get_layouts_for_customizer();
+
+	return $choices;
 }
 
 /**
@@ -513,22 +564,22 @@ function mai_get_customizer_link( $name, $type = 'section', $url = '' ) {
 }
 
 /**
- * Get content type choices for Kirki.
+ * Get content type archive choices for Kirki.
  *
- * @since 0.2.0
- *
- * @param bool $archive Whether archive or single content type choices.
+ * @since TBD
  *
  * @return array
  */
-function mai_get_content_type_choices( $archive = false ) {
+function mai_get_content_type_archive_choices() {
+	static $choices = null;
+
+	if ( ! is_null( $choices ) ) {
+		return $choices;
+	}
+
 	$choices = [
 		'post' => esc_html__( 'Post', 'mai-engine' ),
 	];
-
-	if ( ! $archive ) {
-		$choices['page'] = esc_html__( 'Page', 'mai-engine' );
-	}
 
 	$post_types = get_post_types(
 		[
@@ -540,9 +591,8 @@ function mai_get_content_type_choices( $archive = false ) {
 
 	if ( $post_types ) {
 		foreach ( $post_types as $name => $post_type ) {
-
 			// Skip post types without archives.
-			if ( $archive && ! (bool) $post_type->has_archive ) {
+			if ( ! (bool) $post_type->has_archive ) {
 				continue;
 			}
 
@@ -550,25 +600,59 @@ function mai_get_content_type_choices( $archive = false ) {
 		}
 	}
 
-	if ( $archive ) {
-		$taxonomies = get_taxonomies( [ 'public' => true ], 'objects' );
+	$taxonomies = get_taxonomies( [ 'public' => true ], 'objects' );
 
-		// Remove taxonomies we don't want.
-		unset( $taxonomies['post_format'] );
-		unset( $taxonomies['product_shipping_class'] );
-		unset( $taxonomies['yst_prominent_words'] );
+	// Remove taxonomies we don't want.
+	unset( $taxonomies['post_format'] );
+	unset( $taxonomies['product_shipping_class'] );
+	unset( $taxonomies['yst_prominent_words'] );
 
-		if ( $taxonomies ) {
-			foreach ( $taxonomies as $name => $taxonomy ) {
-				$choices[ $name ] = $taxonomy->label;
-			}
+	if ( $taxonomies ) {
+		foreach ( $taxonomies as $name => $taxonomy ) {
+			$choices[ $name ] = $taxonomy->label;
 		}
+	}
 
-		$choices += [
-			'search' => __( 'Search Results', 'mai-engine' ),
-			'author' => __( 'Author Archives', 'mai-engine' ),
-			'date'   => __( 'Date Archives', 'mai-engine' ),
-		];
+	$choices += [
+		'search' => __( 'Search Results', 'mai-engine' ),
+		'author' => __( 'Author Archives', 'mai-engine' ),
+		'date'   => __( 'Date Archives', 'mai-engine' ),
+	];
+
+	return $choices;
+}
+
+/**
+ * Get content type single choices for Kirki.
+ *
+ * @since TBD
+ *
+ * @return array
+ */
+function mai_get_content_type_single_choices() {
+	static $choices = null;
+
+	if ( ! is_null( $choices ) ) {
+		return $choices;
+	}
+
+	$choices = [
+		'post' => esc_html__( 'Post', 'mai-engine' ),
+		'page' => esc_html__( 'Page', 'mai-engine' ),
+	];
+
+	$post_types = get_post_types(
+		[
+			'public'   => true,
+			'_builtin' => false,
+		],
+		'objects'
+	);
+
+	if ( $post_types ) {
+		foreach ( $post_types as $name => $post_type ) {
+			$choices[ $name ] = $post_type->label;
+		}
 	}
 
 	return $choices;
@@ -585,8 +669,13 @@ function mai_get_content_type_choices( $archive = false ) {
  * @return array
  */
 function mai_get_loop_content_type_choices( $archive = true ) {
-	$choices = mai_get_content_type_choices( $archive );
-	$feature = $archive ? 'mai-archive-settings' : 'mai-single-settings';
+	if ( $archive ) {
+		$choices = mai_get_content_type_archive_choices();
+		$feature = 'mai-archive-settings';
+	} else {
+		$choices = mai_get_content_type_single_choices();
+		$feature = 'mai-single-settings';
+	}
 
 	foreach ( $choices as $name => $label ) {
 
@@ -629,17 +718,29 @@ function mai_get_loop_content_type_choices( $archive = true ) {
  * @return string|false
  */
 function mai_get_taxonomy_post_type( $taxonomy ) {
-	$taxonomy = get_taxonomy( $taxonomy );
+	static $post_types = null;
 
-	if ( $taxonomy ) {
-		$post_type = reset( $taxonomy->object_type );
+	if ( is_array( $post_types ) && isset( $post_types[ $taxonomy ] ) ) {
+		return $post_types[ $taxonomy ];
+	}
+
+	if ( ! is_array( $post_types ) ) {
+		$post_types = [];
+	}
+
+	$taxo = get_taxonomy( $taxonomy );
+
+	if ( $taxo ) {
+		$post_type = reset( $taxo->object_type );
 
 		if ( post_type_exists( $post_type ) ) {
-			return $post_type;
+			$post_types[ $taxonomy ] = $post_type;
 		}
 	}
 
-	return false;
+	$post_types[ $taxonomy ] = false;
+
+	return $post_types[ $taxonomy ];
 }
 
 /**
@@ -650,7 +751,15 @@ function mai_get_taxonomy_post_type( $taxonomy ) {
  * @return string;
  */
 function mai_get_ellipsis() {
-	return apply_filters( 'mai_read_more_ellipses', ' &hellip;' );
+	static $ellipsis = null;
+
+	if ( ! is_null( $ellipsis ) ) {
+		return $ellipsis;
+	}
+
+	$ellipsis = apply_filters( 'mai_read_more_ellipses', ' &hellip;' );
+
+	return $ellipsis;
 }
 
 /**
@@ -728,7 +837,14 @@ function mai_get_processed_content( $content ) {
  * @return string
  */
 function mai_get_read_more_text() {
+	static $text = null;
+
+	if ( ! is_null( $text ) ) {
+		return $text;
+	}
+
 	$text = apply_filters( 'mai_read_more_text', mai_get_config( 'settings' )['content-archives']['more_link_text'] );
+
 	return $text;
 }
 
@@ -892,14 +1008,24 @@ function mai_get_menu( $menu, $args = [] ) {
  * @return array
  */
 function mai_get_menu_items_by_location( $location ) {
-	$menu_items = [];
-	$locations  = get_nav_menu_locations();
-	if ( $locations && isset( $locations[ $location ] ) && $locations[ $location ] ) {
-		$menu       = get_term( $locations[ $location ] );
-		$menu_items = $menu ? wp_get_nav_menu_items( $menu->term_id ) : $menu_items;
+	static $menu_items = null;
+
+	if ( is_array( $menu_items ) && isset( $menu_items[ $location ] ) ) {
+		return $menu_items[ $location ];
 	}
 
-	return $menu_items;
+	if ( ! is_array( $menu_items ) ) {
+		$menu_items = [];
+	}
+
+	$items = [];
+	$locations = get_nav_menu_locations();
+	if ( $locations && isset( $locations[ $location ] ) && $locations[ $location ] ) {
+		$menu                    = get_term( $locations[ $location ] );
+		$menu_items[ $location ] = $menu && ! is_wp_error( $menu ) ? wp_get_nav_menu_items( $menu->term_id ) : $items;
+	}
+
+	return $menu_items[ $location ];
 }
 
 /**
@@ -951,7 +1077,13 @@ function mai_get_avatar( $args ) {
  * @return array
  */
 function mai_get_avatar_default_args() {
-	return [
+	static $args = null;
+
+	if ( ! is_null( $args ) ) {
+		return $args;
+	}
+
+	$args = [
 		'id'            => 'current',
 		'size'          => mai_get_image_width( 'tiny' ) / 2, // Half of the tiny size.
 		'display'       => in_the_loop() ? 'inline-block' : 'block',
@@ -960,6 +1092,8 @@ function mai_get_avatar_default_args() {
 		'margin_bottom' => 0,
 		'margin_left'   => 0,
 	];
+
+	return $args;
 }
 
 /**
@@ -970,6 +1104,12 @@ function mai_get_avatar_default_args() {
  * @return int|false
  */
 function mai_get_author_id() {
+	static $author_id = false;
+
+	if ( ! is_null( $author_id ) ) {
+		return $author_id;
+	}
+
 	$author_id = false;
 
 	if ( is_author() && ! in_the_loop() ) {
@@ -1047,10 +1187,12 @@ function mai_get_dom_first_child( $dom ) {
 function mai_is_https() {
 	static $https = null;
 
-	if ( is_null( $https ) ) {
-		$url   = wp_parse_url( home_url() );
-		$https = 'https' === $url['scheme'];
+	if ( ! is_null( $https ) ) {
+		return $https;
 	}
+
+	$url   = wp_parse_url( home_url() );
+	$https = 'https' === $url['scheme'];
 
 	return $https;
 }

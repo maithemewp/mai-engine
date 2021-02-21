@@ -20,7 +20,15 @@ defined( 'ABSPATH' ) || die;
  * @return string
  */
 function mai_is_in_dev_mode() {
-	return genesis_is_in_dev_mode() || defined( 'WP_DEBUG' ) && WP_DEBUG;
+	static $dev_mode = null;
+
+	if ( ! is_null( $dev_mode ) ) {
+		return $dev_mode;
+	}
+
+	$dev_mode = genesis_is_in_dev_mode() || defined( 'WP_DEBUG' ) && WP_DEBUG;
+
+	return $dev_mode;
 }
 
 /**
@@ -231,9 +239,16 @@ function mai_has_sidebar() {
  * @return bool
  */
 function mai_has_boxed_container() {
-	$default = current_theme_supports( 'boxed-container' );
+	static $has_boxed = null;
 
-	return mai_get_option( 'boxed-container', $default );
+	if ( ! is_null( $has_boxed ) ) {
+		return $has_boxed;
+	}
+
+	$default   = current_theme_supports( 'boxed-container' );
+	$has_boxed = mai_get_option( 'boxed-container', $default );
+
+	return $has_boxed;
 }
 
 /**
@@ -244,7 +259,15 @@ function mai_has_boxed_container() {
  * @return bool
  */
 function mai_has_sticky_header_enabled() {
-	return mai_get_option( 'site-header-sticky', current_theme_supports( 'sticky-header' ) );
+	static $sticky = null;
+
+	if ( ! is_null( $sticky ) ) {
+		return $sticky;
+	}
+
+	$sticky = mai_get_option( 'site-header-sticky', current_theme_supports( 'sticky-header' ) );
+
+	return $sticky;
 }
 
 /**
@@ -255,7 +278,15 @@ function mai_has_sticky_header_enabled() {
  * @return bool
  */
 function mai_has_transparent_header_enabled() {
-	return mai_get_option( 'site-header-transparent', current_theme_supports( 'transparent-header' ) );
+	static $transparent = null;
+
+	if ( ! is_null( $transparent ) ) {
+		return $transparent;
+	}
+
+	$transparent = mai_get_option( 'site-header-transparent', current_theme_supports( 'transparent-header' ) );
+
+	return $transparent;
 }
 
 /**
@@ -266,23 +297,40 @@ function mai_has_transparent_header_enabled() {
  * @return bool
  */
 function mai_has_transparent_header() {
-	if ( ! mai_has_transparent_header_enabled() ) {
-		return false;
+	static $transparent = null;
+
+	if ( ! is_null( $transparent ) ) {
+		return $transparent;
 	}
+
+	if ( ! mai_has_transparent_header_enabled() ) {
+		$transparent = false;
+		return $transparent;
+	}
+
 	if ( mai_is_element_hidden( 'transparent_header' ) ) {
-		return false;
+		$transparent = false;
+		return $transparent;
 	}
-	// var hasTransparent = header && body.classList.contains( 'has-transparent-header-enabled' ) && ( hasPageHeader || ( hasAlignFull && ! hasBreadcrumbs ));
+
 	if ( mai_is_element_hidden( 'site_header' ) ) {
-		return false;
+		$transparent = false;
+		return $transparent;
 	}
+
 	if ( ! mai_has_transparent_header_enabled() ) {
-		return false;
+		$transparent = false;
+		return $transparent;
 	}
+
 	if ( ! ( mai_has_page_header() || ( mai_has_alignfull_first() && mai_is_element_hidden( 'entry_title' ) && ! mai_has_breadcrumbs() ) ) ) {
-		return false;
+		$transparent = false;
+		return $transparent;
 	}
-	return true;
+
+	$transparent = true;
+
+	return $transparent;
 }
 
 /**
@@ -375,6 +423,12 @@ function mai_has_page_header() {
  * @return bool
  */
 function mai_has_breadcrumbs() {
+	static $breadcrumbs = null;
+
+	if ( ! is_null( $breadcrumbs ) ) {
+		return $breadcrumbs;
+	}
+
 	/**
 	 * Do not output breadcrumbs if filter returns true.
 	 *
@@ -385,18 +439,23 @@ function mai_has_breadcrumbs() {
 	$genesis_breadcrumbs_hidden = apply_filters( 'genesis_do_breadcrumbs', genesis_breadcrumbs_hidden_on_current_page() );
 
 	if ( $genesis_breadcrumbs_hidden ) {
-		return false;
+		$breadcrumbs = false;
+		return $breadcrumbs;
 	}
 
 	if ( genesis_breadcrumbs_disabled_on_current_page() ) {
-		return false;
+		$breadcrumbs = false;
+		return $breadcrumbs;
 	}
 
 	if ( mai_is_element_hidden( 'breadcrumbs' ) ) {
-		return false;
+		$breadcrumbs = false;
+		return $breadcrumbs;
 	}
 
-	return true;
+	$breadcrumbs = true;
+
+	return $breadcrumbs;
 }
 
 /**
@@ -409,6 +468,12 @@ function mai_has_breadcrumbs() {
  * @return string|array May be * for all or array of types.
  */
 function mai_get_page_header_types( $context ) {
+	static $types = null;
+
+	if ( is_array( $types ) && isset( $types[ $context ] ) ) {
+		return $types[ $context ];
+	}
+
 	$types   = [];
 	$config  = mai_get_config( 'settings' )['page-header'];
 	$single  = array_merge(
@@ -437,7 +502,9 @@ function mai_get_page_header_types( $context ) {
 		$types = $config[ $context ];
 	}
 
-	return mai_get_option( 'page-header-' . $context, $types );
+	$types[ $context ] = mai_get_option( 'page-header-' . $context, $types );
+
+	return $types[ $context ];
 }
 
 /**
@@ -471,6 +538,12 @@ function mai_has_page_header_support_callback( $control ) {
  * @return float
  */
 function mai_get_page_header_overlay_opacity() {
+	static $opacity = null;
+
+	if ( ! is_null( $opacity ) ) {
+		return $opacity;
+	}
+
 	$opacity = mai_get_template_arg( 'page-header-overlay-opacity' );
 
 	if ( null !== $opacity && floatval( $opacity ) < 1 ) {
@@ -485,7 +558,9 @@ function mai_get_page_header_overlay_opacity() {
 		}
 	}
 
-	return floatval( mai_get_config( 'settings' )['page-header']['overlay-opacity'] );
+	$opacity = floatval( mai_get_config( 'settings' )['page-header']['overlay-opacity'] );
+
+	return $opacity;
 }
 
 /**
