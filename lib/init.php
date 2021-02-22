@@ -391,5 +391,9 @@ function mai_load_files() {
 	// Load CLI command.
 	if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		WP_CLI::add_command( 'mai generate', 'Mai_Cli_Generate_Command' );
+		WP_CLI::add_command( 'mai flush', function() {
+			$message = mai_typography_flush_local_fonts();
+			WP_CLI::success( $message );
+		});
 	}
 }

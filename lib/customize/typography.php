@@ -98,7 +98,7 @@ function mai_typography_customizer_settings() {
 }
 
 
-add_action( 'init', 'mai_typography_flush_local_fonts' );
+add_action( 'init', 'mai_typography_maybe_flush_local_fonts' );
 /**
  * Deletes `/wp-content/fonts/` directory to allow Kirki to rebuild.
  *
@@ -106,7 +106,7 @@ add_action( 'init', 'mai_typography_flush_local_fonts' );
  *
  * @return void
  */
-function mai_typography_flush_local_fonts() {
+function mai_typography_maybe_flush_local_fonts() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
@@ -117,11 +117,22 @@ function mai_typography_flush_local_fonts() {
 		return;
 	}
 
+	mai_typography_flush_local_fonts();
+}
+
+/**
+ * Flushes local font files.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_typography_flush_local_fonts() {
 	$dir = WP_CONTENT_DIR . '/fonts';
 
 	// From get_local_files_from_css() in class-kirki-fonts-downloader.php.
 	if ( ! file_exists( $dir ) ) {
-		return;
+		return sprintf( '%s %s', $dir, __( 'does not exist.', 'mai-engine' ) );
 	}
 
 	$files = new RecursiveIteratorIterator(
@@ -149,4 +160,6 @@ function mai_typography_flush_local_fonts() {
 
 	// Delete stored Kirki font data.
 	delete_option( 'kirki_downloaded_font_files' );
+
+	return __( 'Fonts flushed successfully', 'mai-engine' );
 }
