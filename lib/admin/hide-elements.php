@@ -111,6 +111,7 @@ function mai_load_hide_elements_field( $field ) {
 	$field['choices']['custom_content']    = __( 'Custom Content', 'mai-engine' );
 	$field['choices']['footer_meta']       = __( 'Footer Meta', 'mai-engine' );
 	$field['choices']['after_entry']       = __( 'After Entry', 'mai-engine' );
+	$field['choices']['author_box']        = __( 'Author Box', 'mai-engine' );
 	$field['choices']['before_footer']     = __( 'Before Footer', 'mai-engine' );
 	$field['choices']['footer']            = __( 'Footer', 'mai-engine' );
 	$field['choices']['footer_credits']    = __( 'Footer Credits', 'mai-engine' );

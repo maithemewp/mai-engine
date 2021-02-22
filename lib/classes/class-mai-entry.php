@@ -1311,6 +1311,10 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_author_box() {
+		if ( ( 'single' === $this->context ) && mai_is_element_hidden( 'author_box', $this->id ) ) {
+			return;
+		}
+
 		echo genesis_get_author_box( 'single' );
 	}
 
