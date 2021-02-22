@@ -202,7 +202,7 @@ input[type="submit"],
 
 	.wp-block-search__input {
 		width: auto;
-		min-width: var(--search-input-min-width, 256px);
+		min-width: var(--search-input-min-width, 0);
 		max-width: var(--search-input-max-width, 320px);
 		font-size: var(--font-size-md);
 		-webkit-appearance: none;
