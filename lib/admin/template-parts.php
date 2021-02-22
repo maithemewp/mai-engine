@@ -123,7 +123,7 @@ function mai_template_parts_admin_notice() {
 
 	$slugs     = array_keys( $config );
 	$count     = count( $slugs );
-	$existing  = mai_get_template_part_objects();
+	$existing  = mai_get_template_part_objects( false );
 	$existing  = wp_list_pluck( $existing, 'post_name' );
 	$intersect = count( array_intersect( $slugs, $existing ) );
 

@@ -229,10 +229,13 @@ function mai_get_template_part_id( $slug ) {
  * @since 2.6.0
  * @since 2.10.0 Changes `posts_per_page` value from `count( $slugs )` to 500
  *              since WP seems to allow draft posts with the same slug as an existing post.
+ * @since TBD Added transient and $use_transient param.
+ *
+ * @param bool $use_transient Whether to use cache for fetching.
  *
  * @return array
  */
-function mai_get_template_part_objects() {
+function mai_get_template_part_objects( $use_transient = true ) {
 	static $template_parts = null;
 
 	if ( ! is_null( $template_parts ) ) {
@@ -245,7 +248,7 @@ function mai_get_template_part_objects() {
 	if ( ! empty( $slugs ) ) {
 		$transient = 'mai_template_parts';
 
-		if ( false === ( $parts = get_transient( $transient ) ) ) {
+		if ( ! $use_transient || false === ( $parts = get_transient( $transient ) ) ) {
 
 			$query = new WP_Query(
 				[
