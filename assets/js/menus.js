@@ -86,6 +86,13 @@
 			item.innerHTML   = '';
 			search.innerHTML = maiMenuVars.searchBox;
 
+			var input = search.querySelector( '.search-form-input' );
+
+			if ( input ) {
+				// Remove id. Multiple search forms were using duplicate id's. We don't need them here at all.
+				input.removeAttribute( 'id' );
+			}
+
 			item.append( button );
 			item.append( search.firstChild );
 		} );
