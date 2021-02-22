@@ -187,18 +187,12 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 	}
 
 	if ( $onload ) {
-		add_filter(
-			'style_loader_tag',
-			function ( $html, $original_handle ) use ( $args, $handle ) {
-				if ( $original_handle === $handle ) {
-					$html = str_replace( '>', ' onload="' . $args['onload'] . '">', $html );
-				}
-
-				return $html;
-			},
-			11,
-			2
-		);
+		add_filter( 'style_loader_tag', function ( $html, $original_handle ) use ( $args, $handle ) {
+			if ( $original_handle === $handle ) {
+				$html = str_replace( '>', ' onload="' . $args['onload'] . '">', $html );
+			}
+			return $html;
+		}, 11, 2 );
 	}
 }
 
