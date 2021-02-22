@@ -159,9 +159,11 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 		return;
 	}
 
-	if ( $src ) {
-		$register( $handle, $src, $deps, $ver, $last_arg );
+	if ( '' === $src ) {
+		$src = false;
 	}
+
+	$register( $handle, $src, $deps, $ver, $last_arg );
 
 	if ( ! $in_footer || is_admin() ) {
 		$enqueue( $handle );
