@@ -202,24 +202,28 @@ function mai_get_asset_url( $file ) {
  * Returns the active child theme's sub config.
  *
  * @since 0.1.0
- * @since TBD Add static caching of sub_config.
+ * @since TBD Add static caching.
  *
  * @param string $sub_config Name of config to get.
  *
  * @return array
  */
-function mai_get_config( $sub_config = 'default' ) {
-	static $config = null;
+function mai_get_config( $sub_config ) {
+	static $configs = null;
 
-	if ( is_array( $config ) && isset( $config[ $sub_config ] ) ) {
-		return $config[ $sub_config ];
+	if ( is_array( $configs ) && isset( $configs[ $sub_config ] ) ) {
+		return $configs[ $sub_config ];
 	}
 
-	$config                = mai_get_full_config();
-	$config[ $sub_config ] = isset( $config[ $sub_config ] ) ? $config[ $sub_config ] : [];
-	$config[ $sub_config ] = apply_filters( "mai_{$sub_config}_config", $config[ $sub_config ] );
+	if ( ! is_array( $configs ) ) {
+		$configs = [];
+	}
 
-	return $config[ $sub_config ];
+	$config                 = mai_get_full_config();
+	$value                  = isset( $config[ $sub_config ] ) ? $config[ $sub_config ] : [];
+	$configs[ $sub_config ] = apply_filters( "mai_{$sub_config}_config", $value );
+
+	return $configs[ $sub_config ];
 }
 
 /**
