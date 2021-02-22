@@ -248,8 +248,9 @@ function mai_get_template_part_objects( $use_transient = true ) {
 	if ( ! empty( $slugs ) ) {
 		$transient = 'mai_template_parts';
 
-		if ( ! $use_transient || false === ( $parts = get_transient( $transient ) ) ) {
+		if ( ! ( $use_transient && $parts = get_transient( $transient ) ) ) {
 
+			$parts = [];
 			$query = new WP_Query(
 				[
 					'post_type'              => 'wp_template_part',
@@ -272,11 +273,11 @@ function mai_get_template_part_objects( $use_transient = true ) {
 
 			wp_reset_postdata();
 
-			// Set transient, and expire after 8 hours.
-			set_transient( $transient, $parts, 8 * HOUR_IN_SECONDS );
-
-			$posts = $parts;
+			// Set transient, and expire after 1 hour.
+			set_transient( $transient, $parts, 1 * HOUR_IN_SECONDS );
 		}
+
+		$posts = $parts;
 	}
 
 	$template_parts = $posts;
