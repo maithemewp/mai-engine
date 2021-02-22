@@ -10,7 +10,7 @@
 	box-shadow: var(--author-box-shadow, var(--shadow));
 
 	.avatar {
-		margin: var(--author-box-avatar-margin, 0 0 var(--spacing-md));
+		margin: var(--author-box-avatar-margin, 0 auto var(--spacing-md));
 		margin-bottom: var(--spacing-md);
 	}
 
