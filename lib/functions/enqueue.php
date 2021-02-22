@@ -122,7 +122,7 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 	$handle    = isset( $args['handle'] ) ? $args['handle'] : mai_get_handle() . '-' . $handle;
 	$deps      = isset( $args['deps'] ) ? $args['deps'] : [];
 	$ver       = isset( $args['ver'] ) ? $args['ver'] : mai_get_asset_version( $src );
-	$src       = isset( $args['async'] ) && $args['async'] ? $src . '#async' : $src; // I think this needs to be after $ver so #async doesn't mess with url.
+	$src       = isset( $args['async'] ) && $args['async'] && $src ? $src . '#async' : $src; // I think this needs to be after $ver so #async doesn't mess with url.
 	$media     = isset( $args['media'] ) ? $args['media'] : 'all';
 	$in_footer = isset( $args['in_footer'] ) ? $args['in_footer'] : ( 'script' === $type ); // Default to true if script, false if style.
 	$condition = isset( $args['condition'] ) ? $args['condition'] : '__return_true';
@@ -159,7 +159,9 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 		return;
 	}
 
-	$register( $handle, $src, $deps, $ver, $last_arg );
+	if ( $src ) {
+		$register( $handle, $src, $deps, $ver, $last_arg );
+	}
 
 	if ( ! $in_footer || is_admin() ) {
 		$enqueue( $handle );

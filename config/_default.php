@@ -231,11 +231,14 @@ return [
 			'async' => true,
 		],
 		'theme'                          => [
-			'async' => mai_get_option( 'genesis-style-trump', true ),
-			'src'   => 'default' !== mai_get_active_theme() ? mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css' : '',
-			'deps'  => [
+			'async'     => mai_get_option( 'genesis-style-trump', true ),
+			'src'       => 'default' !== mai_get_active_theme() ? mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css' : '',
+			'deps'      => [
 				'mai-engine-desktop',
 			],
+			'condition' => function() {
+				return 'default' !== mai_get_active_theme();
+			},
 		],
 		'footer'                         => [
 			'in_footer' => true,
