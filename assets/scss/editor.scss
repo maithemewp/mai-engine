@@ -18,6 +18,7 @@ body {
 	min-height: auto;
 	background: var(--color-white);
 
+	--body-background-color: var(--color-white);
 	--list-style-position: outside;
 	--list-padding: 0 0 var(--spacing-lg) var(--spacing-xl); // Adds list indent/spacing without affecting block layout.
 	--list-item-margin-bottom: var(--spacing-xs);
