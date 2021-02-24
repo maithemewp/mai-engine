@@ -45,6 +45,7 @@ return [
 			'single'           => '*',
 			'image'            => '',
 			'background-color' => 'primary',
+			'overlay-opacity'  => '0.9',
 			'text-color'       => 'light',
 			'divider-color'    => 'white',
 			'spacing'          => [
