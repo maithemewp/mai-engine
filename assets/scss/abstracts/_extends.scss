@@ -110,6 +110,7 @@
 		--button-background-hover: var(--button-link-background-hover, transparent);
 		--button-padding: var(--button-link-padding, 0.9em 0.5em);
 		--button-border: 0;
+		--button-box-shadow: 0;
 
 		&::after {
 			display: var(--button-link-after-display, inline-block);
