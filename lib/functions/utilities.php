@@ -732,7 +732,8 @@ function mai_get_taxonomy_post_type( $taxonomy ) {
 		$post_types = [];
 	}
 
-	$taxo = get_taxonomy( $taxonomy );
+	$post_types[ $taxonomy ] = false;
+	$taxo                    = get_taxonomy( $taxonomy );
 
 	if ( $taxo ) {
 		$post_type = reset( $taxo->object_type );
@@ -741,8 +742,6 @@ function mai_get_taxonomy_post_type( $taxonomy ) {
 			$post_types[ $taxonomy ] = $post_type;
 		}
 	}
-
-	$post_types[ $taxonomy ] = false;
 
 	return $post_types[ $taxonomy ];
 }
