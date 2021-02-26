@@ -1125,6 +1125,151 @@ function mai_get_author_id() {
 }
 
 /**
+ * Gets a star rating.
+ *
+ * @since TBD
+ *
+ * @param array $args The rating args.
+ *
+ * @return string
+ */
+function mai_get_rating( $args ) {
+	$args = shortcode_atts( [
+		'value' => 5,
+		'total' => 5,
+		'size'  => '1em',
+		'color' => 'gold',
+		'align' => '',
+	], $args, 'mai_rating' );
+
+	$args = [
+		'value' => floatval( $args['value'] ),
+		'total' => absint( $args['total'] ),
+		'size'  => esc_html( $args['size'] ),
+		'color' => mai_get_color_value( $args['color'] ),
+		'align' => esc_html( $args['align'] ),
+	];
+
+	$attr = [
+		'class' => 'mai-rating',
+		'style' => '',
+	];
+
+	if ( $args['align'] ) {
+		$attr['style'] .= sprintf( '--mai-rating-justify-content:%s;', mai_get_flex_align( $args['align'] ) );
+	}
+
+	$split  = explode( '.', $args['value'] );
+	$half   = isset( $split[1] ) && $split[1];
+	$rating = floor( $args['value'] );
+	$total  = $args['total'];
+	$star   = mai_get_icon(
+		[
+			'icon'       => 'star',
+			'style'      => 'solid',
+			'size'       => $args['size'],
+			'color_icon' => $args['color'],
+			'class'      => 'mai-rating-icon',
+		]
+	);
+
+	$html = genesis_markup(
+		[
+			'open'    => '<ul %s>',
+			'context' => 'mai-rating',
+			'echo'    => false,
+			'atts'    => $attr,
+			'params'  => [
+				'args' => $args,
+			],
+		]
+	);
+
+		$count = 1;
+		for ( $rating = 1; $rating <= $args['value']; $rating++ ) {
+			$html .= genesis_markup(
+				[
+					'open'    => '<li %s>',
+					'close'   => '</li>',
+					'context' => 'mai-rating-item',
+					'content' => $star,
+					'echo'    => false,
+					'params'  => [
+						'args' => $args,
+					],
+				]
+			);
+			$count++;
+		}
+
+		if ( $count < $total ) {
+			if ( $half ) {
+				$half = mai_get_icon(
+					[
+						'icon'       => 'star-half-alt',
+						'style'      => 'solid',
+						'size'       => $args['size'],
+						'color_icon' => $args['color'],
+						'class'      => 'mai-rating-icon',
+					]
+				);
+				$html .= genesis_markup(
+					[
+						'open'    => '<li %s>',
+						'close'   => '</li>',
+						'context' => 'mai-rating-item',
+						'content' => $half,
+						'echo'    => false,
+						'params'  => [
+							'args' => $args,
+						],
+					]
+				);
+				$count++;
+			}
+
+			if ( $count < $total ) {
+				$empty = mai_get_icon(
+					[
+						'icon'       => 'star',
+						'style'      => 'light',
+						'size'       => $args['size'],
+						'color_icon' => $args['color'],
+						'class'      => 'mai-rating-icon',
+					]
+				);
+				for ( $count; $count <= $total; $count++ ) {
+					$html .= genesis_markup(
+						[
+							'open'    => '<li %s>',
+							'close'   => '</li>',
+							'context' => 'mai-rating-item',
+							'content' => $empty,
+							'echo'    => false,
+							'params'  => [
+								'args' => $args,
+							],
+						]
+					);
+				}
+			}
+		}
+
+	$html .= genesis_markup(
+		[
+			'close'   => '</ul>',
+			'context' => 'mai-rating',
+			'echo'    => false,
+			'params'  => [
+				'args' => $args,
+			],
+		]
+	);
+
+	return $html;
+}
+
+/**
  * Gets DOMDocument object.
  *
  * @since  2.0.0
