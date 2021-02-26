@@ -143,9 +143,7 @@ function mai_get_template_parts() {
 
 	if ( $objects ) {
 		foreach ( $objects as $post ) {
-			$content = $post->post_content ? mai_get_processed_content( $post->post_content ) : '';
-
-			$posts[ $post->post_status ][ $post->post_name ] = $content;
+			$posts[ $post->post_status ][ $post->post_name ] = $post->post_content ?: '';
 		}
 	}
 
@@ -328,7 +326,7 @@ function mai_render_template_part( $slug, $before = '', $after = '' ) {
 
 	if ( $template_part ) {
 		echo $before;
-		echo $template_part;
+		echo mai_get_processed_content( $template_part );
 		echo $after;
 	}
 }

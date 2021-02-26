@@ -140,7 +140,6 @@ class Mai_Grid {
 	 * @return array
 	 */
 	public function get_sanitized_args( $args ) {
-
 		// Parse args.
 		$args = wp_parse_args( $args, $this->defaults );
 
@@ -210,7 +209,6 @@ class Mai_Grid {
 
 		// Close.
 		mai_do_entries_close( $this->args );
-
 	}
 
 	/**
@@ -221,16 +219,16 @@ class Mai_Grid {
 	 * @return false|WP_Query|WP_Term_Query
 	 */
 	public function get_query() {
-		$this->query = false;
+		$query = false;
 
 		switch ( $this->args['type'] ) {
 			case 'post':
 				$this->query_args = $this->get_post_query_args();
 				if ( $this->query_args['post_type'] ) {
-					$this->query = new WP_Query( $this->query_args );
+					$query = new WP_Query( $this->query_args );
 					// Cache featured images.
 					if ( in_array( 'image', $this->args['show'] ) ) {
-						update_post_thumbnail_cache( $this->query );
+						update_post_thumbnail_cache( $query );
 					}
 					wp_reset_postdata();
 				}
@@ -239,12 +237,12 @@ class Mai_Grid {
 			case 'term':
 				$this->query_args = $this->get_term_query_args();
 				if ( $this->query_args['taxonomy'] ) {
-					$this->query = new WP_Term_Query( $this->query_args );
+					$query = new WP_Term_Query( $this->query_args );
 				}
 				break;
 		}
 
-		return $this->query;
+		return $query;
 	}
 
 	/**
