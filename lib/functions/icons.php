@@ -68,7 +68,7 @@ function mai_get_icon( $args ) {
 	}
 
 	if ( $args['color_background'] ) {
-		$atts['style'] .= sprintf( '--icon-background:%s;', mai_get_color( $args['color_background'] ) );
+		$atts['style'] .= sprintf( '--icon-background:%s;', mai_get_color_value( $args['color_background'] ) );
 	}
 
 	if ( $args['color_shadow'] ) {
