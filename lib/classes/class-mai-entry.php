@@ -1061,7 +1061,7 @@ class Mai_Entry {
 			}
 
 			echo $open;
-			echo $content;
+			echo apply_filters( 'mai_entry_content', $content, $this->args, $this->entry );
 			echo $close;
 		}
 
