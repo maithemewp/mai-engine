@@ -16,6 +16,7 @@ defined( 'ABSPATH' ) || die;
  * Gets an icon.
  *
  * @since 0.1.0
+ * @since TBD Added width and height attributes to svg.
  *
  * @param array $args Icon args.
  *
@@ -28,12 +29,31 @@ function mai_get_icon( $args ) {
 		'mai_icon'
 	);
 
+	if ( is_numeric( $args['size'] ) ) {
+		$args['width'] = $args['size'];
+		$args['height'] = $args['size'];
+	} elseif ( mai_has_string( 'px', $args['size'] ) ) {
+		$size = trim( str_replace( 'px', '', $args['size'] ) );
+		$args['width']  = $size;
+		$args['height'] = $size;
+	} elseif ( mai_has_string( 'em', $args['size'] ) ) {
+		$size = (int) trim( str_replace( 'em', '', $args['size'] ) );
+		if ( $size ) {
+			$size = $size * 16;
+			$args['width']  = $size;
+			$args['height'] = $size;
+		}
+	}
+
 	$args = array_map(
 		'esc_html',
 		$args
 	);
 
-	$svg = mai_get_svg_icon( $args['icon'], $args['style'] );
+	$svg = mai_get_svg_icon( $args['icon'], $args['style'], [
+		'width'  => $args['width'],
+		'height' => $args['height'],
+	] );
 
 	if ( ! $svg ) {
 		return '';
@@ -124,6 +144,7 @@ function mai_get_icon( $args ) {
  * Gets list of icon shortcode attributes.
  *
  * @since 0.1.0
+ * @since TBD Added width and height args.
  *
  * @return array
  */
@@ -135,6 +156,8 @@ function mai_get_icon_default_args() {
 		'display'              => 'block',
 		'align'                => 'center',
 		'size'                 => '40',
+		'width'                => '40',
+		'height'               => '40',
 		'link'                 => '',
 		'link_target'          => '',
 		'cart_total'           => false,
@@ -202,8 +225,9 @@ function mai_get_svg( $name, $class = '' ) {
 /**
  * Returns an SVG string.
  *
- * @since 2.4.0 Added check for dom element.
  * @since 0.1.0
+ * @since 2.4.0 Added check for dom element.
+ * @since TBD Added default width and height attributes.
  *
  * @param string $name  SVG name.
  * @param string $style SVG style.
@@ -216,6 +240,14 @@ function mai_get_svg_icon( $name, $style = 'light', $atts = [] ) {
 
 	if ( ! $svg ) {
 		return '';
+	}
+
+	if ( ! isset( $atts['width'] ) ) {
+		$atts['width'] = '24';
+	}
+
+	if ( ! isset( $atts['height'] ) ) {
+		$atts['height'] = '24';
 	}
 
 	if ( $atts ) {
