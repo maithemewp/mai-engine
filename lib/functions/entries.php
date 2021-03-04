@@ -60,7 +60,7 @@ function mai_do_entries_open( $args ) {
 				$image_width = 'unset';
 			} else {
 				$image_sizes = mai_get_available_image_sizes();
-				$image_size  = $image_sizes[ $args['image_size'] ];
+				$image_size  = isset( $image_sizes[ $args['image_size'] ] ) ? $image_sizes[ $args['image_size'] ] : $image_sizes['landscape-md'];
 				$image_width = $image_size['width'] . 'px';
 			}
 
