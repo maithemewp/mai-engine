@@ -203,7 +203,7 @@ module.exports.desktop = function() {
 		.pipe( notify( { message: config.messages.css } ) );
 };
 
-module.exports.desktop = function() {
+module.exports.columns = function() {
 	return gulp.src( './assets/scss/columns.scss' )
 		.pipe( plumber() )
 		.pipe( rename( 'columns.min.scss' ) )
