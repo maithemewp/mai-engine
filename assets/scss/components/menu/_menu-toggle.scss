@@ -3,7 +3,7 @@
 	display: var(--menu-toggle-display, (flex));
 	align-items: center;
 	justify-content: center;
-	order: 1;
+	order: var(--menu-toggle-order, unset);
 	min-height: 2em;
 	margin: 0;
 	padding: var(--menu-toggle-padding, 0);
@@ -17,6 +17,10 @@
 	&:focus {
 		outline: var(--border);
 	}
+}
+
+.no-js .menu-toggle {
+	--menu-toggle-display: none;
 }
 
 .menu-toggle-icon {

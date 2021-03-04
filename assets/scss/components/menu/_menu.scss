@@ -54,6 +54,10 @@
 	}
 }
 
+.no-js .menu-item.search {
+	--menu-item-display: none;
+}
+
 .menu-item-link {
 	display: var(--menu-item-link-display, (flex));
 	flex: var(--menu-item-link-flex, unset);

@@ -29,30 +29,15 @@ function mai_get_icon( $args ) {
 		'mai_icon'
 	);
 
-	if ( is_numeric( $args['size'] ) ) {
-		$args['width'] = $args['size'];
-		$args['height'] = $args['size'];
-	} elseif ( mai_has_string( 'px', $args['size'] ) ) {
-		$size = trim( str_replace( 'px', '', $args['size'] ) );
-		$args['width']  = $size;
-		$args['height'] = $size;
-	} elseif ( mai_has_string( 'em', $args['size'] ) ) {
-		$size = (int) trim( str_replace( 'em', '', $args['size'] ) );
-		if ( $size ) {
-			$size = $size * 16;
-			$args['width']  = $size;
-			$args['height'] = $size;
-		}
-	}
-
 	$args = array_map(
 		'esc_html',
 		$args
 	);
 
-	$svg = mai_get_svg_icon( $args['icon'], $args['style'], [
-		'width'  => $args['width'],
-		'height' => $args['height'],
+	$size = mai_get_width_height_attribute( $args['size'] );
+	$svg  = mai_get_svg_icon( $args['icon'], $args['style'], [
+		'width'  => $size,
+		'height' => $size,
 	] );
 
 	if ( ! $svg ) {
@@ -144,20 +129,18 @@ function mai_get_icon( $args ) {
  * Gets list of icon shortcode attributes.
  *
  * @since 0.1.0
- * @since TBD Added width and height args.
+ * @since TBD Added filter.
  *
  * @return array
  */
 function mai_get_icon_default_args() {
-	return [
+	$defaults = [
 		'style'                => 'light',
 		'icon'                 => 'bolt',
 		'icon_brand'           => 'wordpress-simple',
 		'display'              => 'block',
 		'align'                => 'center',
 		'size'                 => '40',
-		'width'                => '40',
-		'height'               => '40',
 		'link'                 => '',
 		'link_target'          => '',
 		'cart_total'           => false,
@@ -181,6 +164,8 @@ function mai_get_icon_default_args() {
 		'text_shadow_y_offset' => 0,
 		'text_shadow_blur'     => 0,
 	];
+	$defaults = apply_filters( 'mai_icon_defaults', $defaults );
+	return $defaults;
 }
 
 /**

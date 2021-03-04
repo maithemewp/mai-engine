@@ -1270,6 +1270,63 @@ function mai_get_rating( $args ) {
 }
 
 /**
+ * Gets a search form.
+ * Available default args:
+ * [
+ *    'label',        // Hidden.
+ *    'placeholder',  // Defaults to "Search site".
+ *    'input_value',  // Defaults to the search query.
+ *    'submit_value', // Defaults to search icon. Uses this value for screen-reader-text.
+ * ]
+ *
+ * @since TBD
+ *
+ * @param array $args The search form args.
+ *
+ * @return string
+ */
+function mai_get_search_form( $args = [] ) {
+	if ( ! class_exists( 'Genesis_Search_Form' ) ) {
+		return get_search_form( false );
+	}
+
+	$searchform = new Genesis_Search_Form( $args );
+	return $searchform->get_form();
+}
+
+/**
+ * Gets a search icon with form for menu items
+ * and mobile header.
+ *
+ * @since TBD
+ *
+ * @access private The params may change in a future date.
+ *
+ * @param string $title     The toggle icon screen reader text.
+ * @param string $icon_size The size of the icon.
+ *
+ * @return string
+ */
+function mai_get_search_icon_form( $title = '', $icon_size = '16' ) {
+	$icon = mai_get_svg_icon( 'search', 'regular',
+		[
+			'class'  => 'search-toggle-icon',
+			'width'  => mai_get_width_height_attribute( $icon_size ),
+			'height' => mai_get_width_height_attribute( $icon_size ),
+		]
+	);
+
+	$html = sprintf( '<button class="search-toggle" aria-expanded="false" aria-pressed="false"><span class="screen-reader-text">%s</span>%s</button>',
+		esc_html( $title ?: __( 'Search', 'mai-engine' ) ),
+		$icon
+	);
+
+	$html .= mai_get_search_form();
+
+	return $html;
+}
+
+/**
  * Gets DOMDocument object.
  *
  * @since  2.0.0

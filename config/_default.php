@@ -152,28 +152,10 @@ return [
 				'name' => 'maiMenuVars',
 				'data' => [
 					'ariaLabel'     => __( 'Mobile Menu', 'mai-engine' ),
-					'menuToggle'    => sprintf(
-						'<span class="menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
-						__( 'Menu', 'mai-engine' )
-					),
 					'subMenuToggle' => sprintf(
 						'<span class="sub-menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
 						__( 'Sub Menu', 'mai-engine' )
 					),
-					'searchIcon'    => mai_get_svg_icon(
-						'search',
-						'regular',
-						[
-							'class' => 'search-toggle-icon',
-						]
-					),
-					'searchBox'     => ! defined( 'STYLESHEETPATH' ) ?:
-						get_search_form(
-							[
-								'aria_label' => esc_html__( 'Menu Search', 'mai-engine' ),
-								'echo'       => false,
-							]
-						),
 				],
 			],
 		],
@@ -519,6 +501,11 @@ return [
 				'mobile'  => '16px',
 			],
 		],
+		'site-header-mobile'   => [
+			'title_area',
+			'menu_toggle',
+		],
+		'site-header-mobile-content' => '',
 		'site-layouts'         => [
 			'default' => [
 				'site'    => 'standard-content',

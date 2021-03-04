@@ -73,7 +73,7 @@ input[type="color"] {
 }
 
 input[type="search"] {
-	width: auto;
+	width: var(--search-input-width, auto);
 	min-width: var(--search-input-min-width, 0);
 	max-width: var(--search-input-max-width, 320px);
 	font-size: var(--font-size-md);

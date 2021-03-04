@@ -40,12 +40,133 @@ add_action( 'genesis_header', 'mai_do_header' );
  */
 function mai_do_header() {
 	add_filter( 'genesis_attr_nav-menu', 'mai_nav_header_attributes', 10, 3 );
+
+	mai_do_header_left();
+
+	$elements = mai_get_option( 'site-header-mobile', mai_get_config( 'settings')['site-header-mobile'] );
+
+	if ( $elements ) {
+
+		$filter = function( $defaults ) {
+			$defaults['size'] = '1.5em';
+			return $defaults;
+		};
+
+		add_filter( 'mai_icon_defaults', $filter );
+
+		$sections = [];
+		$left     = [];
+		$right    = [];
+		$flipped  = array_flip( $elements );
+
+		if ( isset( $flipped['title_area'] ) ) {
+			$left     = array_slice( $elements, 0, $flipped['title_area'] );
+			$right    = array_slice( $elements, $flipped['title_area'] + 1 );
+			$elements = array_values( array_diff( $elements, $left, $right ) );
+		}
+
+		if ( $left ) {
+			genesis_markup(
+				[
+					'open'    => '<div %s>',
+					'context' => 'header-left-mobile',
+					'echo'    => true,
+					'atts'    => [
+						'class' => 'header-section-mobile header-left-mobile'
+					]
+				]
+			);
+			foreach( $left as $index => $element ) {
+				$function = "mai_do_{$element}";
+				if ( function_exists( $function ) ) {
+					$function();
+				}
+			}
+			genesis_markup(
+				[
+					'close'   => '</div>',
+					'context' => 'header-left-mobile',
+					'echo'    => true,
+				]
+			);
+		}
+
+		if ( $elements ) {
+			foreach( $elements as $index => $element ) {
+				$function = "mai_do_{$element}";
+				if ( function_exists( $function ) ) {
+					$function();
+				}
+			}
+		}
+
+		if ( $right ) {
+			genesis_markup(
+				[
+					'open'    => '<div %s>',
+					'context' => 'header-right-mobile',
+					'echo'    => true,
+					'atts'    => [
+						'class' => 'header-section-mobile header-right-mobile'
+					]
+				]
+			);
+			foreach( $right as $index => $element ) {
+				$function = "mai_do_{$element}";
+				if ( function_exists( $function ) ) {
+					$function();
+				}
+			}
+			genesis_markup(
+				[
+					'close'   => '</div>',
+					'context' => 'header-right-mobile',
+					'echo'    => true,
+				]
+			);
+		}
+
+		remove_filter( 'mai_icon_defaults', $filter );
+	}
+
+	mai_do_header_right();
+
+	remove_filter( 'genesis_attr_nav-menu', 'mai_nav_header_attributes' );
+}
+
+/**
+ * Displays title area.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_do_title_area() {
 	do_action( 'mai_before_title_area' );
+
+	$class    = 'title-area';
+	$elements = mai_get_option( 'site-header-mobile', mai_get_config( 'settings')['site-header-mobile'] );
+
+	if ( $elements ) {
+		$first = 'title_area' === reset( $elements );
+		$last  = 'title_area' === end( $elements );
+		if ( $first ) {
+			$class .= ' title-area-first';
+		}
+		if ( $last ) {
+			$class .= ' title-area-last';
+		}
+	}
 
 	genesis_markup(
 		[
 			'open'    => '<div %s>',
 			'context' => 'title-area',
+			'atts'    => [
+				'class' => $class,
+			]
 		]
 	);
 
@@ -67,7 +188,86 @@ function mai_do_header() {
 	);
 
 	do_action( 'mai_after_title_area' );
-	remove_filter( 'genesis_attr_nav-menu', 'mai_nav_header_attributes' );
+}
+
+/**
+ * Displays mobile menu toggle.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_do_menu_toggle() {
+	$text = sprintf( '<span class="screen-reader-text">%s</span>', __( 'Menu', 'mai-engine' ) );
+	$text = apply_filters( 'mai_menu_toggle_text', $text );
+
+	genesis_markup(
+		[
+			'open'    => '<button %s>',
+			'close'   => '</button>',
+			'context' => 'menu-toggle',
+			'content' => sprintf( '<span class="menu-toggle-icon"></span>%s', $text ),
+			'atts'    => [
+				'class'         => 'menu-toggle',
+				'aria-expanded' => false,
+				'aria-pressed'  => false,
+			],
+		]
+	);
+}
+
+/**
+ * Displays mobile header search icon and form.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_do_header_search() {
+	genesis_markup(
+		[
+			'open'    => '<div %s>',
+			'close'   => '</div>',
+			'context' => 'header-search',
+			'content' => mai_get_search_icon_form( __( 'Header Search', 'mai-engine' ), 24 ),
+			'echo'    => true,
+			'atts'    => [
+				'class' => 'header-search search-icon-form',
+			]
+		]
+	);
+}
+
+/**
+ * Displays mobile header custom content.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_do_header_content() {
+	$content = mai_get_option( 'site-header-mobile-content', mai_get_config( 'settings')['site-header-mobile-content'] );
+	$content = trim( $content );
+
+	if ( ! $content ) {
+		return;
+	}
+
+	genesis_markup(
+		[
+			'open'    => '<div %s>',
+			'close'   => '</div>',
+			'context' => 'header-content',
+			'content' => do_shortcode( $content ),
+			'echo'    => true,
+		]
+	);
 }
 
 /**
@@ -130,7 +330,7 @@ function mai_site_title_link( $default ) {
 	return str_replace( '<a', '<a class="site-title-link" ', $default );
 }
 
-add_action( 'mai_before_title_area', 'mai_do_header_left' );
+// add_action( 'mai_before_title_area', 'mai_do_header_left' );
 /**
  * Adds header left section.
  *
@@ -163,7 +363,7 @@ function mai_do_header_left() {
 	);
 }
 
-add_action( 'mai_after_title_area', 'mai_do_header_right' );
+// add_action( 'mai_after_title_area', 'mai_do_header_right' );
 /**
  * Adds header right section.
  *

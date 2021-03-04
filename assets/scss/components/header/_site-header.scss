@@ -10,10 +10,10 @@
 }
 
 .site-header-wrap {
-	display: var(--site-header-wrap-display, (flex));
+	display: var(--site-header-wrap-display, flex);
 	flex-wrap: var(--site-header-wrap-flex-wrap, wrap);
 	align-items: var(--site-header-wrap-align-items, center);
-	justify-content: var(--site-header-wrap-justify-content, space-between);
+	justify-content: var(--site-header-wrap-justify-content, var(--site-header-wrap-justify-content-mobile, unset));
 	width: var(--site-header-wrap-width, (calc(100% - calc(var(--side-spacing) * 2))));
 	max-width: var(--site-header-wrap-max-width, var(--wrap-max-width));
 	margin-right: auto;

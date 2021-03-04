@@ -803,3 +803,32 @@ function mai_get_instance( $class, ...$args ) {
 
 	return $classes[ $class ];
 }
+
+/**
+ * Gets width or height attribute value from CSS values.
+ *
+ * @since TBD
+ *
+ * @param $value The existing value. May be numeric, px, rem, or em.
+ *
+ * @return int
+ */
+function mai_get_width_height_attribute( $value, $fallback = false ) {
+	if ( is_numeric( $value ) ) {
+		return $value;
+	}
+	// Pixel values.
+	elseif ( mai_has_string( 'px', $value ) ) {
+		$size = trim( str_replace( 'px', '', $value ) );
+		return $size;
+	}
+	// Rem or em values.
+	elseif ( mai_has_string( 'em', $value ) ) {
+		$size = filter_var( $value, FILTER_SANITIZE_NUMBER_INT );
+		if ( $size ) {
+			$size = absint( $size ) * 16;
+			return $size;
+		}
+	}
+	return $fallback ? absint( $fallback ) : absint( filter_var( $value, FILTER_SANITIZE_NUMBER_INT ) );
+}

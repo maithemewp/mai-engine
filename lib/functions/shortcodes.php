@@ -31,8 +31,8 @@ add_shortcode( 'mai_search_form', 'mai_search_form_shortcode' );
  *
  * @return string
  */
-function mai_search_form_shortcode() {
-	return get_search_form( false );
+function mai_search_form_shortcode( $atts ) {
+	return mai_get_search_form( $atts );
 }
 
 add_shortcode( 'mai_back_to_top', 'mai_back_to_top_shortcode' );

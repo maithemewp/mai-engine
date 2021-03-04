@@ -1,10 +1,13 @@
-.menu {
+.search-icon-form {
+	position: var(--search-icon-form-position, relative) !important;
 
 	.search-form {
 		position: absolute;
 		top: 100%;
-		right: 0;
-		display: var(--menu-search-form-display, none);
+		right: var(--search-icon-form-right, 0);
+		left: var(--search-icon-form-left, unset);
+		display: var(--search-icon-form-display, none);
+		width: var(--search-icon-form-width, unset);
 		padding: var(--spacing-sm);
 		background-color: var(--color-white);
 		border-radius: var(--input-border-radius) var(--button-border-radius) var(--button-border-radius) var(--input-border-radius);
@@ -12,21 +15,21 @@
 	}
 
 	.search-form-visible {
-		--menu-search-form-display: flex;
+		--search-icon-form-display: flex;
 	}
 }
 
 .search-toggle {
 	margin: 0;
-	padding: var(--menu-item-link-padding, (var(--spacing-sm) var(--spacing-xxs)));
-	color: var(--menu-item-link-color, var(--color-heading));
+	padding: var(--menu-item-link-padding, var(--spacing-sm) var(--spacing-xxs));
+	color: var(--menu-toggle-color, var(--menu-item-link-color, var(--color-heading)));
 	background: transparent;
 	border: none;
 	box-shadow: none;
 
 	&:hover,
 	&:focus {
-		color: var(--menu-item-link-color-hover, var(--color-link));
+		color: var(--menu-toggle-color, var(--menu-item-link-color, var(--color-heading)));
 		background: transparent;
 		border: none;
 		box-shadow: none;

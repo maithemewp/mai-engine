@@ -1,6 +1,8 @@
 :root {
 	--site-header-wrap-flex-wrap: nowrap;
+	--site-header-wrap-justify-content: var(--site-header-wrap-justify-content-desktop, space-between);
 	--header-section-order: 0;
+	--title-area-flex: 0 1 auto;
 	--title-area-padding: var(--title-area-padding-desktop) 0;
 
 	--nav-header-width: auto;
@@ -12,9 +14,8 @@
 
 	--nav-after-header-display: flex;
 
-	--menu-toggle-display: none;
-
 	--header-section-display: flex;
+	--header-section-mobile-display: none;
 
 	--sub-menu-position: absolute;
 	--sub-menu-left: -999rem;
@@ -47,7 +48,6 @@
 }
 
 .has-logo-center {
-	--site-header-wrap-justify-content: space-around;
 	--title-area-margin: 0 var(--spacing-lg);
 	--title-area-text-align: center;
 }

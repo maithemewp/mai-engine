@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-02-22T20:16:30+00:00\n"
+"POT-Creation-Date: 2021-03-04T22:20:04+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -44,7 +44,7 @@ msgstr ""
 
 #: config/twenty-seven.php:45
 #: config/lookbook.php:43
-#: config/_default.php:157
+#: lib/structure/header.php:203
 msgid "Menu"
 msgstr ""
 
@@ -77,38 +77,34 @@ msgstr ""
 msgid "Mobile Menu"
 msgstr ""
 
-#: config/_default.php:161
+#: config/_default.php:157
 msgid "Sub Menu"
 msgstr ""
 
-#: config/_default.php:173
-msgid "Menu Search"
-msgstr ""
-
-#: config/_default.php:376
+#: config/_default.php:358
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/_default.php:377
+#: config/_default.php:359
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/_default.php:378
+#: config/_default.php:360
 #: lib/admin/hide-elements.php:103
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default.php:493
+#: config/_default.php:475
 #: lib/functions/deprecated.php:94
 msgid "Sidebar"
 msgstr ""
 
-#: config/_default.php:494
+#: config/_default.php:476
 #: lib/functions/deprecated.php:95
 msgid "The Sidebar widget area."
 msgstr ""
 
-#: config/_default.php:598
+#: config/_default.php:585
 msgid "Read more"
 msgstr ""
 
@@ -225,7 +221,7 @@ msgstr ""
 
 #: lib/blocks/icon.php:268
 #: lib/functions/colors.php:188
-#: lib/functions/utilities.php:1216
+#: lib/functions/utilities.php:1421
 msgid "Link"
 msgstr ""
 
@@ -907,6 +903,8 @@ msgstr ""
 #: lib/functions/loop.php:508
 #: lib/functions/loop.php:541
 #: lib/customize/single-content.php:111
+#: lib/customize/site-header.php:68
+#: lib/customize/site-header.php:79
 #: lib/customize/content-archives.php:307
 msgid "Custom Content"
 msgstr ""
@@ -947,7 +945,7 @@ msgid "Align Text (vertical)"
 msgstr ""
 
 #: lib/blocks/grid.php:1160
-#: lib/functions/utilities.php:539
+#: lib/functions/utilities.php:543
 #: lib/customize/single-content.php:172
 #: lib/customize/content-archives.php:370
 #: lib/customize/content-archives.php:730
@@ -1632,7 +1630,7 @@ msgstr ""
 #: lib/admin/settings.php:25
 #: lib/admin/settings.php:26
 #: lib/admin/settings.php:85
-#: lib/functions/utilities.php:1285
+#: lib/functions/utilities.php:1490
 #: lib/functions/deprecated.php:129
 msgid "Mai Theme"
 msgstr ""
@@ -1910,16 +1908,21 @@ msgid "After Entry"
 msgstr ""
 
 #: lib/admin/hide-elements.php:114
+#: lib/functions/loop.php:546
+msgid "Author Box"
+msgstr ""
+
+#: lib/admin/hide-elements.php:115
 #: lib/functions/deprecated.php:109
 msgid "Before Footer"
 msgstr ""
 
-#: lib/admin/hide-elements.php:115
+#: lib/admin/hide-elements.php:116
 #: lib/functions/deprecated.php:115
 msgid "Footer"
 msgstr ""
 
-#: lib/admin/hide-elements.php:116
+#: lib/admin/hide-elements.php:117
 #: lib/functions/deprecated.php:120
 msgid "Footer Credits"
 msgstr ""
@@ -2083,19 +2086,19 @@ msgstr ""
 msgid "Edit Reusable Blocks"
 msgstr ""
 
-#: lib/functions/templates.php:423
+#: lib/functions/templates.php:421
 msgid "Sorry, no template part available for this theme."
 msgstr ""
 
-#: lib/functions/templates.php:441
+#: lib/functions/templates.php:439
 msgid "Sorry, this template part is already in use."
 msgstr ""
 
-#: lib/functions/templates.php:453
+#: lib/functions/templates.php:451
 msgid "Sorry, "
 msgstr ""
 
-#: lib/functions/templates.php:453
+#: lib/functions/templates.php:451
 msgid "template part already exists"
 msgstr ""
 
@@ -2157,60 +2160,62 @@ msgstr ""
 msgid "6"
 msgstr ""
 
-#: lib/functions/utilities.php:581
-#: lib/functions/utilities.php:640
+#: lib/functions/utilities.php:585
+#: lib/functions/utilities.php:644
 msgid "Post"
 msgstr ""
 
-#: lib/functions/utilities.php:617
+#: lib/functions/utilities.php:621
 #: lib/customize/site-layouts.php:204
 msgid "Search Results"
 msgstr ""
 
-#: lib/functions/utilities.php:618
+#: lib/functions/utilities.php:622
 #: lib/customize/site-layouts.php:218
 msgid "Author Archives"
 msgstr ""
 
-#: lib/functions/utilities.php:619
+#: lib/functions/utilities.php:623
 #: lib/customize/site-layouts.php:232
 msgid "Date Archives"
 msgstr ""
 
-#: lib/functions/utilities.php:641
+#: lib/functions/utilities.php:645
 msgid "Page"
 msgstr ""
 
-#: lib/functions/utilities.php:1213
+#: lib/functions/utilities.php:1320
+#: lib/structure/menus.php:336
+#: lib/customize/site-header.php:67
+msgid "Search"
+msgstr ""
+
+#: lib/functions/utilities.php:1418
 msgid "Primary"
 msgstr ""
 
-#: lib/functions/utilities.php:1214
+#: lib/functions/utilities.php:1419
 msgid "Secondary"
 msgstr ""
 
-#: lib/functions/utilities.php:1215
+#: lib/functions/utilities.php:1420
 msgid "Outline"
 msgstr ""
 
-#: lib/functions/utilities.php:1282
+#: lib/functions/utilities.php:1487
 msgid "View available shortcodes from"
 msgstr ""
 
-#: lib/functions/utilities.php:1283
+#: lib/functions/utilities.php:1488
 msgid "Genesis"
 msgstr ""
 
-#: lib/functions/utilities.php:1284
+#: lib/functions/utilities.php:1489
 msgid "and"
 msgstr ""
 
 #: lib/functions/loop.php:539
 msgid "Manual Excerpts"
-msgstr ""
-
-#: lib/functions/loop.php:546
-msgid "Author Box"
 msgstr ""
 
 #: lib/functions/loop.php:547
@@ -2285,16 +2290,20 @@ msgstr ""
 msgid "Powered by"
 msgstr ""
 
-#: lib/structure/menus.php:296
+#: lib/structure/menus.php:351
 msgid "Skip to header left navigation"
 msgstr ""
 
-#: lib/structure/menus.php:300
+#: lib/structure/menus.php:355
 msgid "Skip to header right navigation"
 msgstr ""
 
-#: lib/structure/menus.php:304
+#: lib/structure/menus.php:359
 msgid "Skip to after header navigation"
+msgstr ""
+
+#: lib/structure/header.php:236
+msgid "Header Search"
 msgstr ""
 
 #: lib/structure/footer.php:46
@@ -2389,6 +2398,14 @@ msgstr ""
 msgid "Warning: This will delete the entire /wp-content/fonts/ directory and all of it's contents. Enable this setting if your Google fonts are not loading correctly."
 msgstr ""
 
+#: lib/customize/typography.php:135
+msgid "does not exist."
+msgstr ""
+
+#: lib/customize/typography.php:164
+msgid "Fonts flushed successfully"
+msgstr ""
+
 #: lib/customize/site-layouts.php:35
 msgid "Site Layouts"
 msgstr ""
@@ -2439,6 +2456,26 @@ msgstr ""
 
 #: lib/customize/site-header.php:49
 msgid "Enable transparent header?"
+msgstr ""
+
+#: lib/customize/site-header.php:60
+msgid "Mobile Header"
+msgstr ""
+
+#: lib/customize/site-header.php:61
+msgid "Show/hide and re-order mobile header elements."
+msgstr ""
+
+#: lib/customize/site-header.php:65
+msgid "Logo"
+msgstr ""
+
+#: lib/customize/site-header.php:65
+msgid "Site Title"
+msgstr ""
+
+#: lib/customize/site-header.php:66
+msgid "Menu Toggle"
 msgstr ""
 
 #: lib/customize/menus.php:27

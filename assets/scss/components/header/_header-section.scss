@@ -15,10 +15,12 @@
 }
 
 .header-left {
+	--header-section-order: 0;
 	--header-section-justify-content: flex-start;
 }
 
 .header-right {
+	--header-section-order: 100;
 	--header-section-justify-content: flex-end;
 }
 
