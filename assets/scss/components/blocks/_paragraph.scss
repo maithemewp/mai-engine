@@ -1,5 +1,4 @@
 .has-drop-cap:not(:focus)::first-letter {
 	font-size: var(--drop-cap-font-size, (3.5em));
 	font-family: var(--drop-cap-font-family, inherit);
-	line-height: var(--drop-cap-line-height, 1);
 }
