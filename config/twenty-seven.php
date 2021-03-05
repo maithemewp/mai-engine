@@ -38,15 +38,6 @@ return [
 			'landscape-lg',
 		],
 	],
-	'scripts'          => [
-		'menus' => [
-			'localize' => [
-				'data' => [
-					'menuToggle' => '<span class="menu-toggle-icon"></span> &nbsp; ' . __( 'Menu', 'mai-engine' ),
-				],
-			],
-		],
-	],
 	'settings'         => [
 		'logo'             => [
 			'width' => [
@@ -101,15 +92,27 @@ return [
 		],
 	],
 	'custom-functions' => function () {
+		/**
+		 * Removes screen reader text class from mobile toggle text.
+		 *
+		 * @since TBD
+		 *
+		 * @param string $text The existing text.
+		 *
+		 * @return string
+		 */
+		add_filter( 'mai_menu_toggle_text', 'mai_twenty_seven_menu_toggle_text' );
+		function mai_twenty_seven_menu_toggle_text( $text ) {
+			return sprintf( '<span>%s</span>', __( 'Menu', 'mai-engine' ) );
+		}
+
 		add_filter( 'genesis_attr_entry-more', function ( $atts ) {
 			$atts['class'] = 'entry-more' . ( is_admin() ? ' wp-block-button' : '' );
-
 			return $atts;
 		} );
 
 		add_filter( 'genesis_attr_entry-more-link', function ( $atts ) {
 			$atts['class'] = 'entry-more-link has-xl-margin-top ' . ( is_admin() ? 'wp-block-button__link' : 'button-link' );
-
 			return $atts;
 		} );
 	},
