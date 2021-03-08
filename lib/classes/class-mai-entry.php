@@ -1032,6 +1032,7 @@ class Mai_Entry {
 		if ( 'single' === $this->context ) {
 			echo $open;
 			the_content();
+			$this->do_post_content_nav();
 			echo $close;
 
 		} else {
@@ -1068,9 +1069,38 @@ class Mai_Entry {
 	}
 
 	/**
+	 * Displays page links for paginated posts (i.e. includes the <!--nextpage--> Quicktag one or more times).
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	public function do_post_content_nav() {
+		wp_link_pages(
+			[
+				'before'      => genesis_markup(
+					[
+						'open'    => '<div %s>',
+						'context' => 'entry-pagination',
+						'echo'    => false,
+					]
+				) . __( 'Pages:', 'mai-engine' ),
+				'after'       => genesis_markup(
+					[
+						'close'   => '</div>',
+						'context' => 'entry-pagination',
+						'echo'    => false,
+					]
+				),
+				'link_before' => '<span class="screen-reader-text">' . __( 'Page ', 'mai-engine' ) . '</span>',
+			]
+		);
+	}
+
+	/**
 	 * Display the custom content.
 	 *
-	 * @since 1/4/21
+	 * @since 2.9.0
 	 *
 	 * @return void
 	 */
