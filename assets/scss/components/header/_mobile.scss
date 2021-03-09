@@ -37,4 +37,11 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+
+	// This matches .mai-cart-total-wrap in .menu-item.
+	.mai-cart-total-wrap {
+		position: var(--cart-total-position, absolute);
+		top: var(--spacing-xxs);
+		right: var(--spacing-xxs);
+	}
 }
