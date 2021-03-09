@@ -138,6 +138,17 @@ p.demo_store {
 	--table-margin: var(--spacing-md) 0 var(--spacing-xl);
 }
 
+.mai-icon-container {
+	position: relative;
+
+	.mai-cart-total-wrap {
+		position: var(--cart-total-position, absolute);
+		top: calc(var(--spacing-xxs) * -1);
+		right: calc(var(--spacing-xxs) * -1);
+	}
+}
+
+
 .mai-cart-total-wrap {
 	overflow: hidden;
 	line-height: 0;
@@ -146,6 +157,6 @@ p.demo_store {
 .mai-cart-total:not(:empty) {
 	padding: var(--cart-total-padding, var(--spacing-xxs));
 	color: var(--cart-total-color, white);
-	font-size: var(--cart-total-font-size, var(--font-size-sm));
+	font-size: var(--cart-total-font-size, 0.75em);
 	background: var(--cart-total-background, var(--color-danger));
 }

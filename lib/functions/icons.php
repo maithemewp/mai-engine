@@ -107,7 +107,19 @@ function mai_get_icon( $args ) {
 		}
 	}
 
-	$icon = genesis_markup(
+	$icon = '';
+
+	if ( $args['cart_total'] ) {
+		$icon .= genesis_markup(
+			[
+				'open'    => '<span class="mai-icon-container">',
+				'context' => 'mai-icon-container',
+				'echo'    => false,
+			]
+		);
+	}
+
+	$icon .= genesis_markup(
 		[
 			'open'    => "<{$tag} %s>" . '<span class="mai-icon-wrap">',
 			'close'   => '</span>' . "</{$tag}>",
@@ -120,6 +132,13 @@ function mai_get_icon( $args ) {
 
 	if ( $args['cart_total'] ) {
 		$icon .= mai_get_cart_total();
+		$icon .= genesis_markup(
+			[
+				'close'   => '</span>',
+				'context' => 'mai-icon-container',
+				'echo'    => false,
+			]
+		);
 	}
 
 	return $icon;
