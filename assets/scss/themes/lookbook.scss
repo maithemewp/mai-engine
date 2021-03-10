@@ -51,14 +51,6 @@
 	--content-sidebar-wrap-margin-top: 0;
 }
 
-.menu-toggle {
-	color: var(--color-body);
-
-	@include hover-focus {
-		color: var(--color-body);
-	}
-}
-
 .header-left {
 	--header-section-justify-content: flex-end;
 }
