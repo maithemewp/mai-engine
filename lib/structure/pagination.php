@@ -118,22 +118,37 @@ function mai_posts_nav() {
 
 					if ( $links ) {
 						foreach ( $links as $link ) {
-							$classes = $link->getAttribute( 'class' );
-							$classes = mai_add_classes( 'pagination-link', $classes );
-							$classes = mai_add_classes( $active ? 'button button-small' : 'button button-secondary button-small', $classes );
+							$classes     = $link->getAttribute( 'class' );
+							$new_classes = [
+								'pagination-link',
+								'button',
+								'button-small',
+							];
+							if ( $active ) {
+								$new_classes[] = 'button-secondary';
+							}
+							$new_classes = apply_filters( 'mai_archive_pagination_link_classes', $new_classes, $active, $type );
+							$classes     = mai_add_classes( $new_classes, $classes );
 							$link->setAttribute( 'class', $classes );
 						}
 					}
 				}
 			}
 		} elseif ( 'prev-next' === $type ) {
-			$links = $wrap->getElementsByTagName( 'a' );
+			$active = false;
+			$links  = $wrap->getElementsByTagName( 'a' );
 
 			if ( $links->length ) {
 				foreach ( $links as $link ) {
-					$classes = $link->getAttribute( 'class' );
-					$classes = mai_add_classes( 'pagination-link', $classes );
-					$classes = mai_add_classes( 'button button-secondary button-small', $classes );
+					$classes     = $link->getAttribute( 'class' );
+					$new_classes = [
+						'pagination-link',
+						'button',
+						'button-small',
+						'button-secondary',
+					];
+					$new_classes = apply_filters( 'mai_archive_pagination_link_classes', $new_classes, $active, $type );
+					$classes     = mai_add_classes( $new_classes, $classes );
 					$link->setAttribute( 'class', $classes );
 				}
 			}

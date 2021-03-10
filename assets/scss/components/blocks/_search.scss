@@ -1,12 +1,27 @@
 .wp-block-search {
+	display: flex;
+	flex-wrap: wrap;
+	margin: var(--search-block-margin, 0);
+
+	--search-input-max-width: 100%;
 	--button-margin: 0 0 0 var(--search-button-margin-left, calc(var(--spacing-xl) * -1));
+
+	&.alignleft {
+		justify-content: flex-start;
+		float: none;
+	}
 
 	&.aligncenter {
 		justify-content: center;
 	}
 
+	&.alignright {
+		justify-content: flex-end;
+		float: none;
+	}
+
 	.wp-block-search__inside-wrapper {
-		display: inline-flex;
+		flex: 0 1 var(--min-width, 3em);
 	}
 
 	.wp-block-search__label {
@@ -15,8 +30,7 @@
 	}
 
 	.wp-block-search__input {
-		flex: 1 1 200px;
-		min-width: var(--search-input-min-width, 256px); // Overides WP core styles with default in _form.scss.
+		flex: 1;
 		padding-right: var(--search-input-padding-right, calc(var(--spacing-xl) * -1));
 		border: var(--input-border, 1px solid rgba(0, 0, 0, 0.1)); // Overides WP core styles.
 
@@ -55,6 +69,7 @@
 		// Overrides WP core styles.
 		.wp-block-search__inside-wrapper {
 			padding: var(--input-padding, 0.9em) !important;
+			background: var(--input-background-color, var(--color-white));
 			border: var(--input-border, 1px solid rgba(0, 0, 0, 0.1)) !important;
 			border-radius: var(--input-border-radius, var(--border-radius)) !important;
 
@@ -63,4 +78,8 @@
 			}
 		}
 	}
+}
+
+.entry-content {
+	--search-block-margin: 0 0 var(--spacing-md);
 }

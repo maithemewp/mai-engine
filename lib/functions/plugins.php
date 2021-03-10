@@ -115,7 +115,6 @@ add_filter( 'woocommerce_product_loop_start', 'mai_product_loop_start_columns' )
  * @return string
  */
 function mai_product_loop_start_columns( $html ) {
-
 	$count = wc_get_loop_prop( 'columns' );
 
 	if ( ! is_numeric( $count ) ) {

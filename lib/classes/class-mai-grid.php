@@ -45,6 +45,13 @@ class Mai_Grid {
 	protected $args;
 
 	/**
+	 * Query Args.
+	 *
+	 * @var $query_args
+	 */
+	protected $query_args;
+
+	/**
 	 * Query.
 	 *
 	 * @var $query
@@ -75,11 +82,12 @@ class Mai_Grid {
 	 * @return void
 	 */
 	public function __construct( $args ) {
-		$args['context'] = 'block'; // Required for Mai_Entry.
-		$this->type      = isset( $args['type'] ) ? $args['type'] : 'post';
-		$this->settings  = $this->get_settings();
-		$this->defaults  = $this->get_defaults();
-		$this->args      = $this->get_sanitized_args( $args );
+		$args['context']  = 'block'; // Required for Mai_Entry.
+		$this->type       = isset( $args['type'] ) ? $args['type'] : 'post';
+		$this->settings   = $this->get_settings();
+		$this->defaults   = $this->get_defaults();
+		$this->args       = $this->get_sanitized_args( $args );
+		$this->query_args = [];
 	}
 
 	/**
@@ -132,7 +140,6 @@ class Mai_Grid {
 	 * @return array
 	 */
 	public function get_sanitized_args( $args ) {
-
 		// Parse args.
 		$args = wp_parse_args( $args, $this->defaults );
 
@@ -202,7 +209,6 @@ class Mai_Grid {
 
 		// Close.
 		mai_do_entries_close( $this->args );
-
 	}
 
 	/**
@@ -213,26 +219,30 @@ class Mai_Grid {
 	 * @return false|WP_Query|WP_Term_Query
 	 */
 	public function get_query() {
-		$this->query = false;
+		$query = false;
 
 		switch ( $this->args['type'] ) {
 			case 'post':
-				$query_args = $this->get_post_query_args();
-				if ( $query_args['post_type'] ) {
-					$this->query = new WP_Query( $query_args );
+				$this->query_args = $this->get_post_query_args();
+				if ( $this->query_args['post_type'] ) {
+					$query = new WP_Query( $this->query_args );
+					// Cache featured images.
+					if ( in_array( 'image', $this->args['show'] ) ) {
+						update_post_thumbnail_cache( $query );
+					}
 					wp_reset_postdata();
 				}
 				break;
 
 			case 'term':
-				$query_args = $this->get_term_query_args();
-				if ( $query_args['taxonomy'] ) {
-					$this->query = new WP_Term_Query( $query_args );
+				$this->query_args = $this->get_term_query_args();
+				if ( $this->query_args['taxonomy'] ) {
+					$query = new WP_Term_Query( $this->query_args );
 				}
 				break;
 		}
 
-		return $this->query;
+		return $query;
 	}
 
 	/**
@@ -245,8 +255,7 @@ class Mai_Grid {
 	public function do_grid_entries() {
 		switch ( $this->args['type'] ) {
 			case 'post':
-				$query_args = $this->get_post_query_args();
-				if ( $query_args['post_type'] ) {
+				if ( $this->query_args['post_type'] ) {
 					$posts = $this->query;
 					if ( $posts->have_posts() ) {
 						while ( $posts->have_posts() ) {
@@ -273,8 +282,7 @@ class Mai_Grid {
 				break;
 
 			case 'term':
-				$query_args = $this->get_term_query_args();
-				if ( $query_args['taxonomy'] ) {
+				if ( $this->query_args['taxonomy'] ) {
 					$term_query = $this->query;
 
 					if ( ! empty( $term_query->terms ) ) {
@@ -346,12 +354,36 @@ class Mai_Grid {
 				if ( $this->args['taxonomies'] ) {
 					foreach ( $this->args['taxonomies'] as $taxo ) {
 						$taxonomy = mai_isset( $taxo, 'taxonomy', '' );
-						$terms    = mai_isset( $taxo, 'terms', '' );
+						$terms    = mai_isset( $taxo, 'terms', [] );
+						$current  = mai_isset( $taxo, 'current', false );
 						$operator = mai_isset( $taxo, 'operator', '' );
+
 						// Skip if we don't have all the tax query args.
-						if ( ! ( $taxonomy && $terms && $operator ) ) {
+						if ( ! ( $taxonomy && ( $terms || $current ) && $operator ) ) {
 							continue;
 						}
+
+						// Get current archive or entry terms.
+						if ( $current ) {
+							if ( ! is_admin() ) {
+								if ( is_category() || is_tag() || is_tax() ) {
+									$terms[] = get_queried_object_id();
+								} elseif ( is_singular() ) {
+									$entry_terms = wp_get_post_terms( get_the_ID(), $taxonomy );
+									if ( ! is_wp_error( $entry_terms ) ) {
+										foreach ( $entry_terms as $entry_term ) {
+											$terms[] = $entry_term->term_id;
+										}
+									}
+								}
+							}
+						}
+
+						// Bail if no terms.
+						if ( ! $terms ) {
+							continue;
+						}
+
 						// Set the value.
 						$tax_query[] = [
 							'taxonomy' => $taxonomy,
@@ -431,26 +463,29 @@ class Mai_Grid {
 			$query_args['order'] = $this->args['order'];
 		}
 
-		// Exclude entries.
-		if ( ( 'title' !== $this->args['query_by'] ) && $this->args['post__not_in'] ) {
-			$query_args['post__not_in'] = $this->args['post__not_in'];
-		}
-
-		// Exclude displayed.
-		if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'] ) && ! empty( self::$existing_post_ids ) ) {
-			if ( isset( $query_args['post__not_in'] ) ) {
-				$query_args['post__not_in'] = array_merge( $query_args['post__not_in'], self::$existing_post_ids );
-			} else {
-				$query_args['post__not_in'] = self::$existing_post_ids;
+		// Exclude. If not getting entries by choice.
+		if ( 'id' !== $this->args['query_by'] ) {
+			// Exclude entries.
+			if ( $this->args['post__not_in'] ) {
+				$query_args['post__not_in'] = $this->args['post__not_in'];
 			}
-		}
 
-		// Exclude current.
-		if ( is_singular() && $this->args['excludes'] && in_array( 'exclude_current', $this->args['excludes'], true ) ) {
-			if ( isset( $query_args['post__not_in'] ) ) {
-				$query_args['post__not_in'][] = get_the_ID();
-			} else {
-				$query_args['post__not_in'] = [ get_the_ID() ];
+			// Exclude displayed.
+			if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'] ) && ! empty( self::$existing_post_ids ) ) {
+				if ( isset( $query_args['post__not_in'] ) ) {
+					$query_args['post__not_in'] = array_merge( $query_args['post__not_in'], self::$existing_post_ids );
+				} else {
+					$query_args['post__not_in'] = self::$existing_post_ids;
+				}
+			}
+
+			// Exclude current.
+			if ( is_singular() && $this->args['excludes'] && in_array( 'exclude_current', $this->args['excludes'], true ) ) {
+				if ( isset( $query_args['post__not_in'] ) ) {
+					$query_args['post__not_in'][] = get_the_ID();
+				} else {
+					$query_args['post__not_in'] = [ get_the_ID() ];
+				}
 			}
 		}
 

@@ -6,14 +6,15 @@
 
 	&:active,
 	&:focus {
+
 		@include hide-visually(unhide);
 
 		position: absolute; // override hide-visually.
+		z-index: 100000; /* Above WP toolbar. */
 		padding: var(--spacing-md) var(--spacing-lg);
-		background-color: var(--color-black);
 		color: var(--color-white);
 		text-decoration: none;
-		z-index: 100000; /* Above WP toolbar. */
+		background-color: var(--color-black);
 	}
 }
 

@@ -1,0 +1,12 @@
+.mai-rating {
+	display: flex;
+	justify-content: var(--mai-rating-justify-content, start);
+	--list-style-type: none;
+	--list-margin: 0;
+	--list-padding: 0;
+	--list-item-margin: 0;
+}
+
+.mai-rating-item:not(:first-child) {
+	margin-left: 2px;
+}

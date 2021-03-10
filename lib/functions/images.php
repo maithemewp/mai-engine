@@ -19,13 +19,22 @@
  * @return bool|mixed
  */
 function mai_get_aspect_ratio_from_orientation( $orientation ) {
+	static $ratios = null;
+
+	if ( is_array( $ratios ) && isset( $ratios[ $orientation ] ) ) {
+		return $ratios[ $orientation ];
+	}
+
+	$ratios      = [];
 	$image_sizes = mai_get_config( 'image-sizes' );
 
 	if ( isset( $image_sizes['add'][ $orientation ] ) ) {
-		return str_replace( ':', '/', $image_sizes['add'][ $orientation ] );
+		$ratios[ $orientation ] = str_replace( ':', '/', $image_sizes['add'][ $orientation ] );
+	} else {
+		$ratios[ $orientation ] = false;
 	}
 
-	return false;
+	return $ratios[ $orientation ];
 }
 
 /**
@@ -38,10 +47,18 @@ function mai_get_aspect_ratio_from_orientation( $orientation ) {
  * @return string
  */
 function mai_get_image_aspect_ratio( $image_size ) {
-	$all_sizes = mai_get_available_image_sizes();
-	$sizes     = isset( $all_sizes[ $image_size ] ) ? $all_sizes[ $image_size ] : false;
+	static $ratios = null;
 
-	return $sizes ? sprintf( '%s/%s', $sizes['width'], $sizes['height'] ) : '4/3';
+	if ( is_array( $ratios ) && isset( $ratios[ $image_size ] ) ) {
+		return $ratios[ $image_size ];
+	}
+
+	$ratios                = [];
+	$all_sizes             = mai_get_available_image_sizes();
+	$sizes                 = isset( $all_sizes[ $image_size ] ) ? $all_sizes[ $image_size ] : false;
+	$ratios[ $image_size ] = $sizes ? sprintf( '%s/%s', $sizes['width'], $sizes['height'] ) : '4/3';
+
+	return $ratios[ $image_size ];
 }
 
 /**
@@ -73,11 +90,13 @@ function mai_get_image_width( $image_size ) {
  * @return array
  */
 function mai_get_available_image_sizes() {
-	static $image_sizes = [];
+	static $image_sizes = null;
 
-	if ( ! empty( $image_sizes ) ) {
+	if ( ! is_null( $image_sizes ) ) {
 		return $image_sizes;
 	}
+
+	$image_sizes = [];
 
 	// Get image sizes.
 	global $_wp_additional_image_sizes;
@@ -108,11 +127,13 @@ function mai_get_available_image_sizes() {
 function mai_get_available_image_orientations() {
 	static $orientations = null;
 
-	if ( is_null( $orientations ) ) {
-		$image_sizes  = mai_get_config( 'image-sizes' );
-		$orientations = array_intersect( array_keys( $image_sizes['add'] ), [ 'landscape', 'portrait', 'square' ] );
-		$orientations = array_values( array_diff( $orientations, array_keys( $image_sizes['remove'] ) ) );
+	if ( ! is_null( $orientations ) ) {
+		return $orientations;
 	}
+
+	$image_sizes  = mai_get_config( 'image-sizes' );
+	$orientations = array_intersect( array_keys( $image_sizes['add'] ), [ 'landscape', 'portrait', 'square' ] );
+	$orientations = array_values( array_diff( $orientations, array_keys( $image_sizes['remove'] ) ) );
 
 	return $orientations;
 }
@@ -263,21 +284,23 @@ function mai_get_image_orientation_choices() {
 		return $choices;
 	}
 
-	if ( is_null( $choices ) ) {
-		$all = [
-			'landscape' => esc_html__( 'Landscape', 'mai-engine' ),
-			'portrait'  => esc_html__( 'Portrait', 'mai-engine' ),
-			'square'    => esc_html__( 'Square', 'mai-engine' ),
-		];
-
-		$orientations = mai_get_available_image_orientations();
-
-		foreach ( $orientations as $orientation ) {
-			$choices[ $orientation ] = $all[ $orientation ];
-		}
-
-		$choices['custom'] = esc_html__( 'Custom', 'mai-engine' );
+	if ( ! is_null( $choices ) ) {
+		return $choices;
 	}
+
+	$all = [
+		'landscape' => esc_html__( 'Landscape', 'mai-engine' ),
+		'portrait'  => esc_html__( 'Portrait', 'mai-engine' ),
+		'square'    => esc_html__( 'Square', 'mai-engine' ),
+	];
+
+	$orientations = mai_get_available_image_orientations();
+
+	foreach ( $orientations as $orientation ) {
+		$choices[ $orientation ] = $all[ $orientation ];
+	}
+
+	$choices['custom'] = esc_html__( 'Custom', 'mai-engine' );
 
 	return $choices;
 }

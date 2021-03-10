@@ -40,12 +40,10 @@
 	&.search {
 		z-index: 12; // 1 above sticky site-header.
 	}
+}
 
-	.mai-cart-total-wrap {
-		position: var(--cart-total-position, absolute);
-		top: var(--spacing-xxs);
-		right: var(--spacing-xxs);
-	}
+.no-js .menu-item.search {
+	--menu-item-display: none;
 }
 
 .menu-item-link {

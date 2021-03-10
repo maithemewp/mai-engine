@@ -1,5 +1,59 @@
 # Changelog
 
+## 2.11.0 (2/10/21)
+* Added: New mobile header settings to rearrange elements and display search icon and/or custom content including [mai_icon] links. This is great for search, phone, cart icons and anything else you want on mobile.
+* Added: New setting to show posts in current category/term in Mai Post Grid. Yay for related posts blocks automatically now.
+* Added: New [mai_rating] shortcode to show star ratings. Works great in Custom Content field of Mai Grid blocks or Archive/Single settings in Customizer.
+* Added: Author box is now an option in Hide Elements metabox.
+* Added: Built in support/styling for Mai Accordion block/plugin.
+* Added: New `mai_entry_content` filter on display of all entries.
+* Added: New `mai_cover_block_image_id` filter allows developers to easily swap out the image ID of a Cover block.
+* Added: New `mai_archive_pagination_link_classes` filter allows developers to change archive pagination classes.
+* Added: WP-CLI command for developers to flush the font cache via `wp mai flush`.
+* Added: New `mai_write_to_file()` debugging function for developers to write data to a file when debugging.
+* Changed: [Performance Update] All helper functions now make use of static caching to drop PHP processing time down tremendously.
+* Changed: [Performance Update] Template Parts are now cached with a transient so there is no database query to get the content.
+* Changed: [Performance Update] Icons now have height/width attributes and help eliminate CLS (Cumulative Layout Shift).
+* Changed: [Performance Update] CSS files are now split into smaller files for the performance benefits of HTTP2.
+* Changed: [Performance Update] Only call query args method once per instance of Mai Post/Term Grid block.
+* Changed: [Performance Update] Featured image query is now cached on all default archives and Mai Post/Term Grid instances. There are now even less database queries on every page.
+* Changed: [Performance Update] Template parts content is now parsed during rendering instead of during the query to retrieve them. This improves performance by not running code on template parts that may not be displayed.
+* Changed: [Performance Update] Menu search icons are now rendered in PHP so there is no flash when JS is loaded.
+* Changed: Output from WP_Query to get_post for `mai_get_post_content()` function. Fixes classes with `is_main_query()` checks in other plugins.
+* Changed: Entry padding is now applied to entry-wrap instead of the main entry so we no longer need negative margin on the entry-image when set to "Full".
+* Changed: Hide exclude settings if get entries by choice in Mai Post/Term Grid.
+* Changed: Buttons now use inline-flex so icons inside buttons are automatically vertically centered.
+* Changed: Allow shortcodes and HTML in read more text field. You can now use [mai_icon] shortcode in your Read More buttons.
+* Changed: Converted all instances of 100vw to new var(--viewport-width) custom property which accounts for scrollbars.
+* Changed: Editor background is now always white.
+* Changed: Bold/strong text now has break-word CSS applied.
+* Changed: Edit comment link is now visibile on comments when user has correct privileges.
+* Changed: Content width now expands to fill container if the main container width is customized to be larger.
+* Changed: Cart total displayed via [mai_icon] now displays more consistently regardless of where it's used.
+* Changed: Updated pot file for translations.
+* Changed: Updated ACF to 5.9.5.
+* Changed: Updated all dependencies to use Composer 2.
+* Changed: Mai Plugins admin menu content now displays the bundle and all plugins available.
+* Fixed: Customizer "Colors" panel now uses color palette for color pickers.
+* Fixed: Pages with a layout stored in the database that is no longer registered were not using the correct layout.
+* Fixed: Entry pagination not displaying when using page breaks for paginated posts.
+* Fixed: Missing fallback for column count when entries are set to display in a single column. Fixes minor horizontal scroll in some scenarios.
+* Fixed: Page Header image field was not being used on static front page.
+* Fixed: Error with Mai Columns block when using a custom arrangemnt and "Auto".
+* Fixed: Default column count in Mai Columns.
+* Fixed: Images in classic editor wider than their container.
+* Fixed: Search block styling with various configurations.
+* Fixed: More refined button styling in the editor.
+* Fixed: Author box avatar not centering correctly on mobile in some instances.
+* Fixed: Colors not inheriting correctly when displaying custom content in Mobile Menu template part.
+* Fixed: Remove box-shadow on link button style.
+* Fixed: Edge-case error when using a gallery shortcode without the default correct parameters.
+* Fixed: Minor issue when using async on a script from the config.
+* Fixed: WooCommerce shipping and payment style tweaks.
+* Fixed: WooCommerce shop table spacing.
+* Fixed: WooCommerce gallery max width not working correctly.
+* Fixed: WooCommerce action button styling.
+
 ## 2.10.0 (1/26/21)
 * Added: Mai Columns block! Super powerful responsive controls. This is marked as beta while we confirm settings and controls. Let us know how you like it.
 * Added: LearnDash support! Courses and course content (lessons/topics/etc.) now have their own Content Archives and Single Content settings.

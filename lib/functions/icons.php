@@ -16,6 +16,7 @@ defined( 'ABSPATH' ) || die;
  * Gets an icon.
  *
  * @since 0.1.0
+ * @since 2.11.0 Added width and height attributes to svg.
  *
  * @param array $args Icon args.
  *
@@ -33,7 +34,11 @@ function mai_get_icon( $args ) {
 		$args
 	);
 
-	$svg = mai_get_svg_icon( $args['icon'], $args['style'] );
+	$size = mai_get_width_height_attribute( $args['size'] );
+	$svg  = mai_get_svg_icon( $args['icon'], $args['style'], [
+		'width'  => $size,
+		'height' => $size,
+	] );
 
 	if ( ! $svg ) {
 		return '';
@@ -68,7 +73,7 @@ function mai_get_icon( $args ) {
 	}
 
 	if ( $args['color_background'] ) {
-		$atts['style'] .= sprintf( '--icon-background:%s;', $args['color_background'] );
+		$atts['style'] .= sprintf( '--icon-background:%s;', mai_get_color_value( $args['color_background'] ) );
 	}
 
 	if ( $args['color_shadow'] ) {
@@ -102,7 +107,19 @@ function mai_get_icon( $args ) {
 		}
 	}
 
-	$icon = genesis_markup(
+	$icon = '';
+
+	if ( $args['cart_total'] ) {
+		$icon .= genesis_markup(
+			[
+				'open'    => '<span class="mai-icon-container">',
+				'context' => 'mai-icon-container',
+				'echo'    => false,
+			]
+		);
+	}
+
+	$icon .= genesis_markup(
 		[
 			'open'    => "<{$tag} %s>" . '<span class="mai-icon-wrap">',
 			'close'   => '</span>' . "</{$tag}>",
@@ -115,6 +132,13 @@ function mai_get_icon( $args ) {
 
 	if ( $args['cart_total'] ) {
 		$icon .= mai_get_cart_total();
+		$icon .= genesis_markup(
+			[
+				'close'   => '</span>',
+				'context' => 'mai-icon-container',
+				'echo'    => false,
+			]
+		);
 	}
 
 	return $icon;
@@ -124,11 +148,12 @@ function mai_get_icon( $args ) {
  * Gets list of icon shortcode attributes.
  *
  * @since 0.1.0
+ * @since 2.11.0 Added filter.
  *
  * @return array
  */
 function mai_get_icon_default_args() {
-	return [
+	$defaults = [
 		'style'                => 'light',
 		'icon'                 => 'bolt',
 		'icon_brand'           => 'wordpress-simple',
@@ -158,6 +183,8 @@ function mai_get_icon_default_args() {
 		'text_shadow_y_offset' => 0,
 		'text_shadow_blur'     => 0,
 	];
+	$defaults = apply_filters( 'mai_icon_defaults', $defaults );
+	return $defaults;
 }
 
 /**
@@ -171,14 +198,11 @@ function mai_get_icon_default_args() {
  * @return string
  */
 function mai_get_svg( $name, $class = '' ) {
-	$file = mai_get_dir() . "assets/svg/$name.svg";
+	$svg = mai_get_svg_file( $name );
 
-	if ( ! file_exists( $file ) ) {
+	if ( ! $svg ) {
 		return '';
 	}
-
-	$svg = file_get_contents( $file );
-	$svg = mai_convert_svg_xmlns( $svg );
 
 	if ( $class ) {
 		$dom  = mai_get_dom_document( $svg );
@@ -205,8 +229,9 @@ function mai_get_svg( $name, $class = '' ) {
 /**
  * Returns an SVG string.
  *
- * @since 2.4.0 Added check for dom element.
  * @since 0.1.0
+ * @since 2.4.0 Added check for dom element.
+ * @since 2.11.0 Added default width and height attributes.
  *
  * @param string $name  SVG name.
  * @param string $style SVG style.
@@ -215,14 +240,19 @@ function mai_get_svg( $name, $class = '' ) {
  * @return string
  */
 function mai_get_svg_icon( $name, $style = 'light', $atts = [] ) {
-	$file = mai_get_dir() . "assets/icons/svgs/$style/$name.svg";
+	$svg = mai_get_svg_icon_file( $name, $style );
 
-	if ( ! file_exists( $file ) ) {
+	if ( ! $svg ) {
 		return '';
 	}
 
-	$svg = file_get_contents( $file );
-	$svg = mai_convert_svg_xmlns( $svg );
+	if ( ! isset( $atts['width'] ) ) {
+		$atts['width'] = '24';
+	}
+
+	if ( ! isset( $atts['height'] ) ) {
+		$atts['height'] = '24';
+	}
 
 	if ( $atts ) {
 		$dom  = mai_get_dom_document( $svg );
@@ -247,6 +277,67 @@ function mai_get_svg_icon( $name, $style = 'light', $atts = [] ) {
 
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 	return $svg;
+}
+
+/**
+ * Gets an svg file. Cached so the same file is never fetched twice on the same page.
+ *
+ * @since 2.11.0
+ *
+ * @param string $name The svg file name.
+ *
+ * @return string
+ */
+function mai_get_svg_file( $name ) {
+	static $files = null;
+
+	if ( is_array( $files ) && isset( $files[ $name ] ) ) {
+		return $files[ $name ];
+	}
+
+	$file = mai_get_dir() . "assets/svg/$name.svg";
+
+	if ( ! file_exists( $file ) ) {
+		$files[ $name ] = '';
+		return $files[ $name ];
+	}
+
+	$svg            = file_get_contents( $file );
+	$svg            = mai_convert_svg_xmlns( $svg );
+	$files[ $name ] = $svg;
+
+	return $files[ $name ];
+}
+
+/**
+ * Gets an svg icon file. Cached so the same file is never fetched twice on the same page.
+ *
+ * @since 2.11.0
+ *
+ * @param string $name  The svg file name.
+ * @param string $style The svg style.
+ *
+ * @return string
+ */
+function mai_get_svg_icon_file( $name, $style = 'light' ) {
+	static $files = null;
+
+	if ( is_array( $files ) && isset( $files[ $style ][ $name ] ) ) {
+		return $files[ $style ][ $name ];
+	}
+
+	$file = mai_get_dir() . "assets/icons/svgs/$style/$name.svg";
+
+	if ( ! file_exists( $file ) ) {
+		$files[ $style ][ $name ] = '';
+		return $files[ $style ][ $name ];
+	}
+
+	$svg                      = file_get_contents( $file );
+	$svg                      = mai_convert_svg_xmlns( $svg );
+	$files[ $style ][ $name ] = $svg;
+
+	return $files[ $style ][ $name ];
 }
 
 /**
@@ -275,12 +366,6 @@ function mai_get_svg_icon_url( $name, $style = 'light' ) {
  * @return string
  */
 function mai_convert_svg_xmlns( $svg ) {
-	static $url = null;
-
-	if ( is_null( $url ) ) {
-		$url = wp_parse_url( home_url() );
-	}
-
 	if ( ! mai_is_https() ) {
 		return $svg;
 	}

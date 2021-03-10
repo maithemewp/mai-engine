@@ -17,6 +17,12 @@
  * @return array
  */
 function mai_get_font_sizes() {
+	static $sizes = null;
+
+	if ( ! is_null( $sizes ) ) {
+		return $sizes;
+	}
+
 	$sizes  = [];
 	$config = mai_get_global_styles()['extra'];
 	$scale  = isset( $config['font-scale'] ) ? (int) $config['font-scale'] : 1.25;
@@ -61,13 +67,22 @@ function mai_get_font_sizes() {
  * @return string
  */
 function mai_get_default_font_family( $element ) {
+	static $families = null;
+
+	if ( is_array( $families ) && isset( $families[ $element ] ) ) {
+		return $families[ $element ];
+	}
+
 	$fonts = mai_get_global_styles( 'fonts' );
 
 	if ( ! mai_has_string( ':', $fonts[ $element ] ) ) {
-		return $fonts[ $element ];
+		$families[ $element ] = $fonts[ $element ];
+		return $families[ $element ];
 	}
 
-	return explode( ':', $fonts[ $element ] )[0];
+	$families[ $element ] = explode( ':', $fonts[ $element ] )[0];
+
+	return $families[ $element ];
 }
 
 /**
@@ -80,6 +95,12 @@ function mai_get_default_font_family( $element ) {
  * @return array
  */
 function mai_get_default_font_weights( $element ) {
+	static $weights = null;
+
+	if ( is_array( $weights ) && isset( $weights[ $element ] ) ) {
+		return $weights[ $element ];
+	}
+
 	$fallback = [ 'regular' ];
 	$fonts    = mai_get_global_styles( 'fonts' );
 	$string   = explode( ':', $fonts[ $element ] );
@@ -118,11 +139,19 @@ function mai_get_default_font_weight( $element ) {
  * @return string
  */
 function mai_get_font_family( $element ) {
+	static $families = null;
+
+	if ( is_array( $families ) && isset( $families[ $element ] ) ) {
+		return $families[ $element ];
+	}
+
 	$default = mai_get_default_font_family( $element );
 	$option  = mai_get_option( $element . '-typography' );
 	$family  = mai_isset( $option, 'font-family', $default );
 
-	return $family ?: 'unset';
+	$families[ $element ] = $family ?: 'unset';
+
+	return $families[ $element ];
 }
 
 /**
@@ -135,10 +164,18 @@ function mai_get_font_family( $element ) {
  * @return string
  */
 function mai_get_font_weight( $element ) {
+	static $weights = null;
+
+	if ( is_array( $weights ) && isset( $weights[ $element ] ) ) {
+		return $weights[ $element ];
+	}
+
 	$default = mai_get_default_font_weight( $element );
 	$option  = mai_get_option( $element . '-typography' );
 
-	return mai_isset( $option, 'variant', $default );
+	$weights[ $element ] = mai_isset( $option, 'variant', $default );
+
+	return $weights[ $element ];
 }
 
 /**
@@ -151,28 +188,38 @@ function mai_get_font_weight( $element ) {
  * @return string
  */
 function mai_get_bold_italic_variant( $element ) {
+	static $variants = null;
+
+	if ( is_array( $variants ) && isset( $variants[ $element ] ) ) {
+		return $variants[ $element ];
+	}
+
 	$bold = mai_get_bold_variant( $element );
 
 	if ( ! $bold ) {
-		return;
+		$variants[ $element ] = false;
+		return $variants[ $element ];
 	}
 
-	$kirki_fonts  = Kirki_Fonts::get_instance();
-	$google_fonts = $kirki_fonts::get_google_fonts();
+	$google_fonts = mai_get_kirki_google_fonts();
 	$font_family  = mai_get_font_family( $element );
 
 	if ( ! isset( $google_fonts[ $font_family ] ) ) {
-		return;
+		$variants[ $element ] = false;
+		return $variants[ $element ];
 	}
 
-	$variants = array_flip( $google_fonts[ $font_family ]['variants'] );
-	$variant  = $bold . 'italic';
+	$google_font_variants = array_flip( $google_fonts[ $font_family ]['variants'] );
+	$variant              = $bold . 'italic';
 
-	if ( ! isset( $variants[ $variant ] ) ) {
-		return;
+	if ( ! isset( $google_font_variants[ $variant ] ) ) {
+		$variants[ $element ] = false;
+		return $variants[ $element ];
 	}
 
-	return $variant;
+	$variants[ $element ] = $variant;
+
+	return $variants[ $element ];
 }
 
 /**
@@ -185,18 +232,24 @@ function mai_get_bold_italic_variant( $element ) {
  * @return string
  */
 function mai_get_bold_variant( $element ) {
+	static $variants = null;
+
+	if ( is_array( $variants ) && isset( $variants[ $element ] ) ) {
+		return $variants[ $element ];
+	}
+
 	$bold            = '700'; // Need default for instances where Google Fonts are not used in Customizer.
-	$kirki_fonts     = Kirki_Fonts::get_instance();
-	$google_fonts    = $kirki_fonts::get_google_fonts();
+	$google_fonts    = mai_get_kirki_google_fonts();
 	$font_family     = mai_get_font_family( $element );
 	$default_weights = mai_get_default_font_weights( $element );
 	$bold_variants   = [ '600', '500', '700', '800', '900' ];
 
 	if ( ! isset( $google_fonts[ $font_family ] ) ) {
-		return $bold;
+		$variants[ $element ] = $bold;
+		return $variants[ $element ];
 	}
 
-	$variants = $google_fonts[ $font_family ]['variants'];
+	$google_font_variants = isset( $google_fonts[ $font_family ]['variants'] ) ? $google_fonts[ $font_family ]['variants'] : [];
 
 	// Prioritize bold weights set in config (if it exists).
 	foreach ( $default_weights as $weight ) {
@@ -212,12 +265,14 @@ function mai_get_bold_variant( $element ) {
 
 	// Check if variant is actually available for family.
 	foreach ( $bold_variants as $bold_variant ) {
-		if ( in_array( $bold_variant, $variants, true ) ) {
+		if ( in_array( $bold_variant, $google_font_variants, true ) ) {
 			$bold = $bold_variant;
 		}
 	}
 
-	return $bold;
+	$variants[ $element ] = $bold;
+
+	return $variants[ $element ];
 }
 
 /**
@@ -230,20 +285,27 @@ function mai_get_bold_variant( $element ) {
  * @return string
  */
 function mai_get_italic_variant( $element ) {
+	static $variants = null;
+
+	if ( is_array( $variants ) && isset( $variants[ $element ] ) ) {
+		return $variants[ $element ];
+	}
+
 	$italic          = '';
-	$kirki_fonts     = Kirki_Fonts::get_instance();
-	$google_fonts    = $kirki_fonts::get_google_fonts();
+	$google_fonts    = mai_get_kirki_google_fonts();
 	$font_family     = mai_get_font_family( $element );
 	$regular_weight  = mai_get_font_weight( $element );
 	$default_weights = mai_get_default_font_weights( $element );
 
 	if ( ! isset( $google_fonts[ $font_family ] ) ) {
-		return $italic;
+		$variants[ $element ] = $italic;
+		return $variants[ $element ];
 	}
 
 	// Bail if regular weight is already italic.
 	if ( mai_has_string( 'italic', $regular_weight ) ) {
-		return $italic;
+		$variants[ $element ] = $italic;
+		return $variants[ $element ];
 	}
 
 	$variants = array_flip( $google_fonts[ $font_family ]['variants'] );
@@ -262,5 +324,27 @@ function mai_get_italic_variant( $element ) {
 		}
 	}
 
-	return $italic;
+	$variants[ $element ] = $italic;
+
+	return $variants[ $element ];
+}
+
+/**
+ * Gets google fonts from kirki.
+ *
+ * @since 2.11.0
+ *
+ * @return array
+ */
+function mai_get_kirki_google_fonts() {
+	static $fonts = null;
+
+	if ( ! is_null( $fonts ) ) {
+		return $fonts;
+	}
+
+	$kirki_fonts = Kirki_Fonts::get_instance();
+	$fonts       = $kirki_fonts::get_google_fonts();
+
+	return $fonts;
 }

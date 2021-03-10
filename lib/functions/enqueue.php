@@ -122,9 +122,9 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 	$handle    = isset( $args['handle'] ) ? $args['handle'] : mai_get_handle() . '-' . $handle;
 	$deps      = isset( $args['deps'] ) ? $args['deps'] : [];
 	$ver       = isset( $args['ver'] ) ? $args['ver'] : mai_get_asset_version( $src );
-	$src       = isset( $args['async'] ) ? $src . '#async' : $src; // I think this needs to be after $ver so #async doesn't mess with url.
+	$src       = isset( $args['async'] ) && $args['async'] && $src ? $src . '#async' : $src; // I think this needs to be after $ver so #async doesn't mess with url.
 	$media     = isset( $args['media'] ) ? $args['media'] : 'all';
-	$in_footer = isset( $args['in_footer'] ) ? $args['in_footer'] : true;
+	$in_footer = isset( $args['in_footer'] ) ? $args['in_footer'] : ( 'script' === $type ); // Default to true if script, false if style.
 	$condition = isset( $args['condition'] ) ? $args['condition'] : '__return_true';
 	$location  = isset( $args['location'] ) ? is_array( $args['location'] ) ? $args['location'] : [ $args['location'] ] : [ 'public' ];
 	$localize  = isset( $args['localize'] ) ? $args['localize'] : [];
@@ -159,8 +159,20 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 		return;
 	}
 
+	if ( '' === $src ) {
+		$src = false;
+	}
+
 	$register( $handle, $src, $deps, $ver, $last_arg );
-	$enqueue( $handle );
+
+	if ( ! $in_footer || is_admin() ) {
+		$enqueue( $handle );
+	} else {
+		// In footer, just before default for theme style.css
+		add_action( 'get_footer', function() use ( $enqueue, $handle ) {
+			$enqueue( $handle );
+		}, 9 );
+	}
 
 	if ( $inline ) {
 		wp_add_inline_style( $handle, mai_minify_css( $inline ) );
@@ -177,18 +189,12 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 	}
 
 	if ( $onload ) {
-		add_filter(
-			'style_loader_tag',
-			function ( $html, $original_handle ) use ( $args, $handle ) {
-				if ( $original_handle === $handle ) {
-					$html = str_replace( '>', ' onload="' . $args['onload'] . '">', $html );
-				}
-
-				return $html;
-			},
-			11,
-			2
-		);
+		add_filter( 'style_loader_tag', function ( $html, $original_handle ) use ( $args, $handle ) {
+			if ( $original_handle === $handle ) {
+				$html = str_replace( '>', ' onload="' . $args['onload'] . '">', $html );
+			}
+			return $html;
+		}, 11, 2 );
 	}
 }
 
@@ -306,8 +312,12 @@ add_filter( 'clean_url', 'mai_async_scripts', 11, 1 );
  * @return string
  */
 function mai_async_scripts( $url ) {
-	if ( strpos( $url, '#async' ) !== false ) {
-		$url = str_replace( '#async', '', $url ) . "' async='async";
+	if ( is_admin() ) {
+		return str_replace( '#async', '', $url );
+	} elseif ( ! is_admin() && mai_has_string( '#async', $url ) ) {
+		return str_replace( '#async', '', $url ) . "' async='async";
+	} elseif ( mai_has_string( '/wp-includes/css/dist/block-library/style.css', $url ) ) {
+		return $url . "' async='async";
 	}
 
 	return $url;

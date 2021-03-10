@@ -7,5 +7,13 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'WPTRT\\Customize\\Section\\' => array($vendorDir . '/wptrt/customize-section-button/src'),
+    'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
+    'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
+    'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
     'ProteusThemes\\WPContentImporter2\\' => array($vendorDir . '/proteusthemes/wp-content-importer-v2/src'),
+    'PhpOption\\' => array($vendorDir . '/phpoption/phpoption/src/PhpOption'),
+    'GrahamCampbell\\ResultType\\' => array($vendorDir . '/graham-campbell/result-type/src'),
+    'FFraenz\\PrivateComposerInstaller\\' => array($vendorDir . '/ffraenz/private-composer-installer/src'),
+    'Dotenv\\' => array($vendorDir . '/vlucas/phpdotenv/src'),
+    'Composer\\Installers\\' => array($vendorDir . '/composer/installers/src/Composer/Installers'),
 );

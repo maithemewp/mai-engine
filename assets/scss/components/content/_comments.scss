@@ -8,6 +8,7 @@
 }
 
 .comment {
+	position: relative;
 	margin: var(--comment-margin, 0 0 var(--spacing-md));
 	padding: var(--comment-padding, var(--spacing-xl));
 	border: var(--comment-border, var(--border));
@@ -63,7 +64,21 @@
 }
 
 .comment-edit-link {
-	display: none;
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: var(--spacing-sm);
+	color: var(--color-body);
+	font-size: 0.75rem;
+	line-height: 1;
+	text-transform: uppercase;
+	opacity: 0.5;
+}
+
+.comment-edit-link:hover,
+.comment-edit-link:focus {
+	color: var(--color-link);
+	opacity: 1;
 }
 
 .comment-respond {

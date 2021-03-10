@@ -27,7 +27,7 @@
 
 .has-content-sidebar,
 .has-sidebar-content {
-	--content-max-width: var(--breakpoint-lg);
+	--content-max-width: unset;
 }
 
 .has-sidebar-content {

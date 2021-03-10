@@ -242,22 +242,15 @@ function mai_add_extra_google_fonts( $fonts ) {
 
 	foreach ( $fonts_config as $element => $args ) {
 		$font_family  = mai_get_default_font_family( $element );
-		$font_weights = mai_get_default_font_weights( $element );
-
-		/**
-		 * Kirki Fonts.
-		 *
-		 * @var Kirki_Fonts $kirki_fonts Kirki fonts.
-		 */
-		$kirki_fonts  = Kirki_Fonts::get_instance();
-		$google_fonts = $kirki_fonts::get_google_fonts();
+		$google_fonts = mai_get_kirki_google_fonts();
 
 		// Return early if not a Google Font.
-		if ( ! isset( $google_fonts[ $font_family ] ) ) {
+		if ( ! ( isset( $google_fonts[ $font_family ] ) && isset( $google_fonts[ $font_family ]['variants'] ) ) ) {
 			continue;
 		}
 
-		$variants = $google_fonts[ $font_family ]['variants'];
+		$font_weights = mai_get_default_font_weights( $element );
+		$variants     = $google_fonts[ $font_family ]['variants'];
 
 		foreach ( $font_weights as $font_weight ) {
 

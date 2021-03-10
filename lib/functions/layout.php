@@ -18,6 +18,7 @@ add_filter( 'genesis_site_layout', 'mai_site_layout' );
  *
  * @since 0.1.0
  * @since 2.6.0 Removed $use_cache param since it's no longer necessary.
+ * @since 2.11.0 Make sure a layout is allowed before returning it.
  *
  * @return string
  */
@@ -28,7 +29,8 @@ function mai_site_layout() {
 		return esc_attr( $site_layout );
 	}
 
-	$name = null;
+	$allowed = genesis_get_layouts();
+	$name    = null;
 
 	if ( is_admin() ) {
 		global $pagenow;
@@ -47,7 +49,7 @@ function mai_site_layout() {
 
 		$single_layout = genesis_get_custom_field( '_genesis_layout', $post_id );
 
-		if ( $single_layout ) {
+		if ( $single_layout && isset( $allowed[ $single_layout ] ) ) {
 			$site_layout = $single_layout;
 			return $single_layout;
 		}
@@ -77,7 +79,7 @@ function mai_site_layout() {
 		$site_layout = get_the_author_meta( 'layout', (int) get_query_var( 'author' ) );
 	}
 
-	if ( ! $site_layout ) {
+	if ( ! ( $site_layout && isset( $allowed[ $site_layout ] ) ) ) {
 		$layouts  = [];
 		$defaults = mai_get_config( 'settings' )['site-layouts'];
 		$settings = mai_get_option( 'site-layouts', [] );
@@ -111,14 +113,14 @@ function mai_site_layout() {
 		}
 
 		// Context default.
-		if ( ! $site_layout && $context && isset( $layouts['default'][ $context ] ) && $layouts['default'][ $context ] ) {
+		if ( ! ( $site_layout && isset( $allowed[ $site_layout ] ) ) && $context && isset( $layouts['default'][ $context ] ) && $layouts['default'][ $context ] ) {
 			$site_layout = $layouts['default'][ $context ];
 		}
+	}
 
-		// Site default.
-		if ( ! $site_layout ) {
-			$site_layout = $layouts['default']['site'];
-		}
+	// Site default.
+	if ( ! ( $site_layout && isset( $allowed[ $site_layout ] ) ) ) {
+		$site_layout = $layouts['default']['site'];
 	}
 
 	return $site_layout;

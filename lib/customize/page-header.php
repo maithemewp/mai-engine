@@ -23,8 +23,8 @@ function mai_page_header_customizer_settings() {
 	$handle   = mai_get_handle();
 	$section  = $handle . '-page-header';
 	$defaults = mai_get_config( 'settings' )['page-header'];
-	$single   = mai_get_content_type_choices( false );
-	$archive  = mai_get_content_type_choices( true );
+	$single   = mai_get_content_type_single_choices();
+	$archive  = mai_get_content_type_archive_choices();
 
 	if ( '*' === $defaults['single'] ) {
 		$defaults['single'] = [];

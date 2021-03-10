@@ -20,6 +20,12 @@ defined( 'ABSPATH' ) || die;
  * @return array
  */
 function mai_get_colors() {
+	static $colors = null;
+
+	if ( ! is_null( $colors ) ) {
+		return $colors;
+	}
+
 	$colors   = [];
 	$defaults = mai_get_default_colors();
 
@@ -27,7 +33,9 @@ function mai_get_colors() {
 		$colors[ $name ] = mai_get_color( $name );
 	}
 
-	return array_merge( $colors, mai_get_custom_colors() );
+	$colors = array_merge( $colors, mai_get_custom_colors() );
+
+	return $colors;
 }
 
 /**
@@ -38,7 +46,15 @@ function mai_get_colors() {
  * @return array
  */
 function mai_get_default_colors() {
-	return mai_get_global_styles( 'colors' );
+	static $colors = null;
+
+	if ( ! is_null( $colors ) ) {
+		return $colors;
+	}
+
+	$colors = mai_get_global_styles( 'colors' );
+
+	return $colors;
 }
 
 /**
@@ -107,6 +123,12 @@ function mai_get_color( $name ) {
  * @return array
  */
 function mai_get_editor_color_palette() {
+	static $palette = null;
+
+	if ( ! is_null( $palette ) ) {
+		return $palette;
+	}
+
 	$colors  = mai_get_colors();
 	$values  = [];
 	$palette = [];
@@ -177,6 +199,12 @@ function mai_get_color_elements() {
  * @return array
  */
 function mai_get_color_choices() {
+	static $choices = null;
+
+	if ( ! is_null( $choices ) ) {
+		return $choices;
+	}
+
 	$color_choices = [];
 	$color_palette = mai_get_editor_color_palette();
 
@@ -184,7 +212,9 @@ function mai_get_color_choices() {
 		$color_choices[] = $color['color'];
 	}
 
-	return array_flip( array_flip( $color_choices ) );
+	$choices = array_flip( array_flip( $color_choices ) );
+
+	return $choices;
 }
 
 /**

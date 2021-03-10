@@ -45,6 +45,16 @@ function mai_render_search_block( $block_content, $block ) {
 
 		$first_block->setAttribute( 'class', $classes );
 
+		$xpath   = new DOMXPath( $dom );
+		$wrapper = $xpath->query( 'div[contains(concat(" ", normalize-space(@class), " "), " wp-block-search__inside-wrapper ")]' );
+
+		if ( $wrapper->length ) {
+			$wrapper = $wrapper->item(0);
+			$style   = $wrapper->getAttribute( 'style' );
+			$style   = str_replace( 'width', '--min-width', $style );
+			$wrapper->setAttribute( 'style', $style );
+		}
+
 		$block_content = $dom->saveHTML();
 	}
 

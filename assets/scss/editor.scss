@@ -18,6 +18,7 @@ body {
 	min-height: auto;
 	background: var(--color-white);
 
+	--body-background-color: var(--color-white);
 	--list-style-position: outside;
 	--list-padding: 0 0 var(--spacing-lg) var(--spacing-xl); // Adds list indent/spacing without affecting block layout.
 	--list-item-margin-bottom: var(--spacing-xs);
@@ -32,6 +33,12 @@ body {
 
 p {
 	font-size: var(--font-size-md);
+}
+
+.block-editor-plain-text {
+	/* TODO: Make this work if body color is set to white. */
+	/* TODO: --input-color: #000; is necessary when this happens as well. */
+	color: var(--color-body); /* Overrides WP core styles. Mostly for dark backgrounds when the text is changed to white. */
 }
 
 .has-dark-background {
@@ -194,6 +201,14 @@ input[type="submit"],
 
 	.wp-block[data-align="right"] & {
 		justify-content: flex-end;
+	}
+
+	.wp-block-search__input {
+		width: auto;
+		min-width: var(--search-input-min-width, 0);
+		max-width: var(--search-input-max-width, 320px);
+		font-size: var(--font-size-md);
+		-webkit-appearance: none;
 	}
 
 	.wp-block-search__button {
@@ -598,4 +613,18 @@ input[type="submit"],
 	flex: 1 1 100%;
 	max-width: 100%;
 	margin: auto 16px;
+}
+
+// Mai Accordion.
+
+.wp-block[data-type="acf/mai-accordion-item"] {
+	margin-bottom: var(--row-gap);
+}
+
+.wp-block[data-type="acf/mai-accordion-item"] .mai-accordion-item {
+	margin-bottom: 0;
+}
+
+.wp-block[data-type="acf/mai-accordion-item"] + .wp-block[data-type="acf/mai-accordion-item"] {
+	margin-top: 0;
 }

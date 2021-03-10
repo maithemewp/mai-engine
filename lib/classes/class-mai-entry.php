@@ -1032,6 +1032,7 @@ class Mai_Entry {
 		if ( 'single' === $this->context ) {
 			echo $open;
 			the_content();
+			$this->do_post_content_nav();
 			echo $close;
 
 		} else {
@@ -1061,16 +1062,45 @@ class Mai_Entry {
 			}
 
 			echo $open;
-			echo $content;
+			echo apply_filters( 'mai_entry_content', $content, $this->args, $this->entry );
 			echo $close;
 		}
 
 	}
 
 	/**
+	 * Displays page links for paginated posts (i.e. includes the <!--nextpage--> Quicktag one or more times).
+	 *
+	 * @since 2.11.0
+	 *
+	 * @return void
+	 */
+	public function do_post_content_nav() {
+		wp_link_pages(
+			[
+				'before'      => genesis_markup(
+					[
+						'open'    => '<div %s>',
+						'context' => 'entry-pagination',
+						'echo'    => false,
+					]
+				) . __( 'Pages:', 'mai-engine' ),
+				'after'       => genesis_markup(
+					[
+						'close'   => '</div>',
+						'context' => 'entry-pagination',
+						'echo'    => false,
+					]
+				),
+				'link_before' => '<span class="screen-reader-text">' . __( 'Page ', 'mai-engine' ) . '</span>',
+			]
+		);
+	}
+
+	/**
 	 * Display the custom content.
 	 *
-	 * @since 1/4/21
+	 * @since 2.9.0
 	 *
 	 * @return void
 	 */
@@ -1214,6 +1244,7 @@ class Mai_Entry {
 		}
 
 		$more_link_text = isset( $this->args['more_link_text'] ) && $this->args['more_link_text'] ? $this->args['more_link_text'] : mai_get_read_more_text();
+		$more_link_text = do_shortcode( $more_link_text );
 
 		// Screen reader text title.
 		switch ( $this->type ) {
@@ -1310,6 +1341,10 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_author_box() {
+		if ( ( 'single' === $this->context ) && mai_is_element_hidden( 'author_box', $this->id ) ) {
+			return;
+		}
+
 		echo genesis_get_author_box( 'single' );
 	}
 

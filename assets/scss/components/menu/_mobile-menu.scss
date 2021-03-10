@@ -34,6 +34,8 @@
 	--mobile-menu-background: var(--color-heading);
 
 	.mobile-menu {
+		color: var(--color-white);
+		--heading-color: var(--color-white);
 		--menu-item-link-color: var(--color-white);
 	}
 }

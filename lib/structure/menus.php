@@ -223,19 +223,23 @@ add_filter( 'wp_nav_menu_objects', 'mai_first_last_menu_items' );
  * @return array
  */
 function mai_first_last_menu_items( $items ) {
-	if ( ! empty( $items ) ) {
-		$top_level = [];
-		foreach ( $items as $index => $item ) {
-			if ( $item->menu_item_parent > 0 ) {
-				continue;
-			}
-			$top_level[ $index ] = $item;
+	if ( empty( $items ) ) {
+		return $items;
+	}
+
+	$top_level = [];
+
+	foreach ( $items as $index => $item ) {
+		if ( $item->menu_item_parent > 0 ) {
+			continue;
 		}
-		if ( $top_level ) {
-			$keys = array_keys( $top_level );
-			$items[ reset( $keys ) ]->classes[] = 'menu-item-first';
-			$items[ end( $keys ) ]->classes[]  = 'menu-item-last';
-		}
+		$top_level[ $index ] = $item;
+	}
+
+	if ( $top_level ) {
+		$keys = array_keys( $top_level );
+		$items[ reset( $keys ) ]->classes[] = 'menu-item-first';
+		$items[ end( $keys ) ]->classes[]  = 'menu-item-last';
 	}
 
 	return $items;
@@ -279,6 +283,57 @@ function mai_remove_menu_item_classes( $attribute ) {
 	}
 
 	return $attribute;
+}
+
+add_filter( 'nav_menu_css_class', 'mai_add_search_icon_form_class' );
+/**
+ * Add search-icon-form class.
+ *
+ * @since 2.11.0
+ *
+ * @param array|string $attribute Classes or ID.
+ *
+ * @return array|string
+ */
+function mai_add_search_icon_form_class( $attribute ) {
+	if ( ! is_array( $attribute ) ) {
+		return $attribute;
+	}
+	$flipped = array_flip( $attribute );
+	if ( ! isset( $flipped['search'] ) ) {
+		return $attribute;
+	}
+	$attribute[] = 'search-icon-form';
+	return $attribute;
+}
+
+/**
+ * Adds serach icon and search form to menu item.
+ *
+ * The menu item's starting output only includes `$args->before`, the opening `<a>`,
+ * the menu item's title, the closing `</a>`, and `$args->after`. Currently, there is
+ * no filter for modifying the opening and closing `<li>` for a menu item.
+ *
+ * @since 2.11.0
+ *
+ * @param string   $item_output The menu item's starting HTML output.
+ * @param WP_Post  $item        Menu item data object.
+ * @param int      $depth       Depth of menu item. Used for padding.
+ * @param stdClass $args        An object of wp_nav_menu() arguments.
+ */
+add_filter( 'walker_nav_menu_start_el', 'mai_nav_menu_search_icon', 10, 4 );
+function mai_nav_menu_search_icon( $item_output, $item, $depth, $args ) {
+	if ( $depth > 0 ) {
+		return $item_output;
+	}
+
+	$classes = array_flip( $item->classes );
+
+	if ( ! ( $classes && isset( $classes['search'] ) ) ) {
+		return $item_output;
+	}
+
+	return mai_get_search_icon_form( $item->title ?: __( 'Search', 'mai-engine' ) );
 }
 
 add_filter( 'genesis_skip_links_output', 'mai_add_nav_skip_links' );

@@ -152,28 +152,10 @@ return [
 				'name' => 'maiMenuVars',
 				'data' => [
 					'ariaLabel'     => __( 'Mobile Menu', 'mai-engine' ),
-					'menuToggle'    => sprintf(
-						'<span class="menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
-						__( 'Menu', 'mai-engine' )
-					),
 					'subMenuToggle' => sprintf(
 						'<span class="sub-menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
 						__( 'Sub Menu', 'mai-engine' )
 					),
-					'searchIcon'    => mai_get_svg_icon(
-						'search',
-						'regular',
-						[
-							'class' => 'search-toggle-icon',
-						]
-					),
-					'searchBox'     => ! defined( 'STYLESHEETPATH' ) ?:
-						get_search_form(
-							[
-								'aria_label' => esc_html__( 'Menu Search', 'mai-engine' ),
-								'echo'       => false,
-							]
-						),
 				],
 			],
 		],
@@ -215,60 +197,106 @@ return [
 	*/
 
 	'styles' => [
-		'main'                   => [],
-		'theme'                  => [
-			'src'  => 'default' !== mai_get_active_theme() ? mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css' : '',
-			'deps' => [
+		'main'                           => [
+			'async' => true,
+		],
+		'header'                         => [
+			'async'     => true,
+			'condition' => function () {
+				return ! mai_is_element_hidden( 'transparent_header' );
+			},
+		],
+		'blocks'                         => [
+			'async' => true,
+		],
+		'utilities'                      => [
+			'async' => true,
+		],
+		'theme'                          => [
+			'async'     => mai_get_option( 'genesis-style-trump', true ),
+			'src'       => 'default' !== mai_get_active_theme() ? mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css' : '',
+			'deps'      => [
 				'mai-engine-desktop',
 			],
+			'condition' => function() {
+				return 'default' !== mai_get_active_theme();
+			},
 		],
-		'admin'                  => [
+		'footer'                         => [
+			'in_footer' => true,
+		],
+		'admin'                          => [
 			'location' => 'admin',
 		],
-		'kirki'                  => [
+		'kirki'                          => [
 			'location' => 'customizer',
 		],
 		'wptrt-customize-section-button' => [
 			'src'      => mai_get_url() . 'vendor/wptrt/customize-section-button/public/css/customize-controls.css',
 			'location' => 'customizer',
 		],
-		'advanced-custom-fields' => [
+		'advanced-custom-fields'         => [
 			'location' => 'editor',
 		],
-		'atomic-blocks'          => [
+		'atomic-blocks'                  => [
+			'async'     => true,
 			'condition' => function () {
 				return function_exists( 'atomic_blocks_main_plugin_file' );
 			},
 		],
 		'facetwp'                => [
+			'async'     => true,
 			'condition' => function () {
 				return class_exists( 'FacetWP' );
 			},
 		],
 		'genesis-enews-extended' => [
+			'async'     => true,
 			'location'  => [ 'public', 'editor' ],
 			'condition' => function () {
 				return class_exists( 'BJGK_Genesis_ENews_Extended' );
 			},
 		],
 		'learndash' => [
+			'async'     => true,
 			'condition' => function () {
 				return class_exists( 'SFWD_LMS' );
 			},
 		],
 		'seo-slider'             => [
+			'async'     => true,
 			'condition' => function () {
 				return defined( 'SEO_SLIDER_VERSION' );
 			},
 		],
 		'simple-social-icons'    => [
+			'async'     => true,
 			'condition' => function () {
 				return class_exists( 'Simple_Social_Icons_Widget' );
 			},
 		],
-		'woocommerce'            => [
+		'woocommerce-global'     => [
+			'async'     => true,
 			'condition' => function () {
 				return class_exists( 'WooCommerce' );
+			},
+		],
+		'woocommerce-products'   => [
+			'async'     => true,
+			'condition' => function () {
+				return class_exists( 'WooCommerce' ) && ( is_shop() || is_product_taxonomy() || is_product() || is_cart() );
+			},
+		],
+		'woocommerce-cart'       => [
+			'async'     => true,
+			'condition' => function () {
+				return class_exists( 'WooCommerce' ) && ( is_cart() || is_checkout() );
+			},
+		],
+		'woocommerce-account'    => [
+			'async'     => true,
+			'condition' => function () {
+				return class_exists( 'WooCommerce' ) && is_account_page();
 			},
 		],
 		'wp-block-library-theme' => [
@@ -473,6 +501,11 @@ return [
 				'mobile'  => '16px',
 			],
 		],
+		'site-header-mobile'   => [
+			'title_area',
+			'menu_toggle',
+		],
+		'site-header-mobile-content' => '',
 		'site-layouts'         => [
 			'default' => [
 				'site'    => 'standard-content',

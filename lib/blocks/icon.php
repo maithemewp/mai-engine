@@ -50,9 +50,9 @@ function mai_register_icon_block() {
  */
 function mai_do_icon_block( $block, $content = '', $is_preview = false, $post_id = 0 ) {
 	$args     = [];
-	$settings = array_keys( mai_get_icon_default_args() );
+	$defaults = mai_get_icon_default_args();
 
-	foreach ( $settings as $setting ) {
+	foreach ( array_keys( $defaults ) as $setting ) {
 		$args[ $setting ] = get_field( $setting );
 	}
 

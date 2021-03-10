@@ -22,6 +22,7 @@ iframe {
 }
 
 figure {
+	max-width: 100%;
 	margin-inline-start: 0; // Chrome user agent override.
 	margin-inline-end: 0; // Chrome user agent override.
 }

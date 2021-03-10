@@ -31,8 +31,8 @@ add_shortcode( 'mai_search_form', 'mai_search_form_shortcode' );
  *
  * @return string
  */
-function mai_search_form_shortcode() {
-	return get_search_form( false );
+function mai_search_form_shortcode( $atts ) {
+	return mai_get_search_form( $atts );
 }
 
 add_shortcode( 'mai_back_to_top', 'mai_back_to_top_shortcode' );
@@ -170,17 +170,30 @@ function mai_cart_total_shortcode() {
 	return mai_get_cart_total();
 }
 
+add_shortcode( 'mai_rating', 'mai_rating_shortcode' );
+/**
+ * Displays star rating.
+ *
+ * @since 2.11.0
+ *
+ * @return string
+ */
+function mai_rating_shortcode( $atts ) {
+	return mai_get_rating( $atts );
+}
+
+
 add_shortcode( 'mai_price', 'mai_price_shortcode' );
 /**
  * Displays the WooCommerce product price.
  *
  * @uses WooCommerce
  *
- * @since 1/4/21
+ * @since 2.9.0
  *
  * @return string
  */
-function mai_price_shortcode() {
+function mai_price_shortcode( $atts ) {
 	if ( ! class_exists( 'WooCommerce' ) ) {
 		return;
 	}
@@ -251,6 +264,10 @@ function mai_post_terms_shortcode_classes( $output, $terms, $atts ) {
  */
 add_filter( 'do_shortcode_tag', 'mai_gallery_shortcode_tag', 10, 4 );
 function mai_gallery_shortcode_tag( $output, $tag, $atts, $m ) {
+	if ( ! $output ) {
+		return $output;
+	}
+
 	if ( 'gallery' !== $tag ) {
 		return $output;
 	}

@@ -23,21 +23,16 @@ function mai_structural_wrap_hooks() {
 		return;
 	}
 	foreach ( $wraps[0] as $context ) {
-		add_filter(
-			"genesis_structural_wrap-{$context}",
-			function ( $output, $original ) use ( $context ) {
-				$position = ( 'open' === $original ) ? 'before' : 'after';
-				ob_start();
-				do_action( "mai_{$position}_{$context}_wrap" );
-				if ( 'open' === $original ) {
-					return ob_get_clean() . $output;
-				} else {
-					return $output . ob_get_clean();
-				}
-			},
-			10,
-			2
-		);
+		add_filter( "genesis_structural_wrap-{$context}", function ( $output, $original ) use ( $context ) {
+			$position = ( 'open' === $original ) ? 'before' : 'after';
+			ob_start();
+			do_action( "mai_{$position}_{$context}_wrap" );
+			if ( 'open' === $original ) {
+				return ob_get_clean() . $output;
+			} else {
+				return $output . ob_get_clean();
+			}
+		}, 10, 2 );
 	}
 }
 

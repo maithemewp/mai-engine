@@ -12,14 +12,14 @@
 add_action( 'genesis_before', 'mai_amp_structure' );
 /**
  * Adds all AMP code here.
- * Avoids multiple genesis_is_amp() calls.
+ * Avoids multiple mai_is_amp() calls inside other functions.
  *
  * @since 0.1.0
  *
  * @return void
  */
 function mai_amp_structure() {
-	if ( ! genesis_is_amp() ) {
+	if ( ! mai_is_amp() ) {
 		return;
 	}
 
@@ -174,4 +174,23 @@ function mai_get_amp_menu_item( WP_Post $item ) {
  */
 function mai_get_amp_button_styles() {
 	return '--button-color:var(--menu-item-link-color,var(--color-heading));--button-color-hover:var(--button-color);--button-background:transparent;--button-background-hover:transparent;--button-border:0;--button-box-shadow:0;';
+}
+
+/**
+ * Checks if this web page is an AMP URL.
+ *
+ * @since 2.11.0
+ *
+ * @return bool
+ */
+function mai_is_amp() {
+	static $amp = null;
+
+	if ( ! is_null( $amp ) ) {
+		return $amp;
+	}
+
+	$amp = genesis_is_amp();
+
+	return $amp;
 }

@@ -19,9 +19,14 @@
  * @return array
  */
 function mai_get_content_archive_settings( $name = 'post' ) {
-	static $settings = null;
-	if ( ! is_null( $settings ) ) {
-		return $settings;
+	static $archive_settings = null;
+
+	if ( is_array( $archive_settings ) && isset( $archive_settings[ $name ] ) ) {
+		return $archive_settings[ $name ];
+	}
+
+	if ( ! is_array( $archive_settings ) ) {
+		$archive_settings = [];
 	}
 
 	$defaults = mai_get_config( 'settings' )['content-archives'];
@@ -315,7 +320,7 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			'settings'        => 'more_link_text',
 			'label'           => __( 'More Link Text', 'mai-engine' ),
 			'type'            => 'text',
-			'sanitize'        => 'esc_attr', // We may want to add icons/spans and HTML in here.
+			'sanitize'        => 'wp_kses_post', // We may want to add icons/spans and HTML in here.
 			'default'         => $defaults['more_link_text'],
 			'active_callback' => [
 				[
@@ -730,9 +735,9 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 		],
 	];
 
-	$settings = apply_filters( 'mai_content_archive_settings', $settings, $name );
+	$archive_settings[ $name ] = apply_filters( 'mai_content_archive_settings', $settings, $name );
 
-	return $settings;
+	return $archive_settings[ $name ];
 }
 
 add_action( 'init', 'mai_add_content_archive_settings' );

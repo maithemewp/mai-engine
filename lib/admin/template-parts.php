@@ -16,7 +16,7 @@ function mai_import_template_part_action() {
 
 	if ( current_user_can( 'edit_theme_options' ) && $referrer && $nonce && $action && $slug && wp_verify_nonce( $nonce, $action ) ) {
 
-		$redirect = admin_url( 'edit.php?post_type=wp_template_part' );
+		$redirect = admin_url( 'edit.php?post_type=mai_template_part' );
 		$result   = mai_import_template_part( $slug, true );
 
 		if ( ! $result['id'] ) {
@@ -39,7 +39,7 @@ function mai_import_template_part_action() {
 		wp_die(
 			__( 'Template Parts failed to generate.', 'mai-engine' ),
 			__( 'Error', 'mai-engine' ), array(
-				'link_url'  => admin_url( 'edit.php?post_type=wp_template_part' ),
+				'link_url'  => admin_url( 'edit.php?post_type=mai_template_part' ),
 				'link_text' => __( 'Go back.', 'mai-engine' ),
 		) );
 	}
@@ -59,7 +59,7 @@ function mai_generate_template_parts_action() {
 	$action   = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
 
 	if ( current_user_can( 'edit_theme_options' ) && $referrer && $nonce && $action && wp_verify_nonce( $nonce, $action ) ) {
-		$redirect       = admin_url( 'edit.php?post_type=wp_template_part' );
+		$redirect       = admin_url( 'edit.php?post_type=mai_template_part' );
 		$template_parts = mai_create_template_parts();
 		$count          = count( $template_parts );
 
@@ -86,7 +86,7 @@ function mai_generate_template_parts_action() {
 		wp_die(
 			__( 'Template Parts failed to generate.', 'mai-engine' ),
 			__( 'Error', 'mai-engine' ), array(
-				'link_url'  => admin_url( 'edit.php?post_type=wp_template_part' ),
+				'link_url'  => admin_url( 'edit.php?post_type=mai_template_part' ),
 				'link_text' => __( 'Go back.', 'mai-engine' ),
 		) );
 	}
@@ -103,7 +103,7 @@ add_action( 'load-edit.php', 'mai_template_parts_admin_notice' );
 function mai_template_parts_admin_notice() {
 	$screen = get_current_screen();
 
-	if ( 'wp_template_part' !== $screen->post_type ) {
+	if ( 'mai_template_part' !== $screen->post_type ) {
 		return;
 	}
 
@@ -123,7 +123,7 @@ function mai_template_parts_admin_notice() {
 
 	$slugs     = array_keys( $config );
 	$count     = count( $slugs );
-	$existing  = mai_get_template_part_objects();
+	$existing  = mai_get_template_part_objects( false );
 	$existing  = wp_list_pluck( $existing, 'post_name' );
 	$intersect = count( array_intersect( $slugs, $existing ) );
 
@@ -171,7 +171,7 @@ add_filter( 'post_row_actions', 'mai_template_parts_import_row_action', 10, 2 );
  * @return array
  */
 function mai_template_parts_import_row_action( $actions, $post ) {
-	if ( 'wp_template_part' !== $post->post_type ) {
+	if ( 'mai_template_part' !== $post->post_type ) {
 		return $actions;
 	}
 
@@ -240,7 +240,7 @@ add_filter( 'display_post_states', 'mai_template_part_post_state', 10, 2 );
  * @return array
  */
 function mai_template_part_post_state( $states, $post ) {
-	if ( 'wp_template_part' !== $post->post_type ) {
+	if ( 'mai_template_part' !== $post->post_type ) {
 		return $states;
 	}
 
@@ -255,7 +255,7 @@ function mai_template_part_post_state( $states, $post ) {
 	return $states;
 }
 
-add_filter( 'manage_wp_template_part_posts_columns', 'mai_template_part_add_slug_column' );
+add_filter( 'manage_mai_template_part_posts_columns', 'mai_template_part_add_slug_column' );
 /**
  * Add slug column to Template Parts.
  * Inserts as second to last item.
@@ -314,63 +314,12 @@ function mai_template_parts_order( $query ) {
 
 	$screen = get_current_screen();
 
-	if ( ! $screen || ( 'edit-wp_template_part' !== $screen->id ) ) {
+	if ( ! $screen || ( 'edit-mai_template_part' !== $screen->id ) ) {
 		return;
 	}
 
 	$query->set( 'orderby', 'menu_order' );
 	$query->set( 'order', 'ASC' );
-}
-
-add_action( 'after_switch_theme', 'mai_default_theme_template_parts' );
-/**
- * Sets demo template parts on theme switch.
- *
- * @since 2.6.0
- *
- * @return void
- */
-function mai_default_theme_template_parts() {
-
-	delete_transient( 'mai_demo_template_parts' );
-
-	$notices = [];
-
-	// Import existing template parts. Skips existing template parts with content.
-	$template_parts = mai_import_template_parts( 'empty' );
-
-	if ( $template_parts ) {
-		$count = count( $template_parts );
-
-		if ( 1 === $count ) {
-			$notices[] = sprintf( '%s %s', $count, __( 'default template part imported successfully.', 'mai-engine' ) );
-		} else {
-			$notices[] = sprintf( '%s %s', $count, __( 'default template parts imported successfully.', 'mai-engine' ) );
-		}
-
-	}
-
-	// Create default template parts.
-	$template_parts = mai_create_template_parts();
-
-	if ( $template_parts ) {
-		$count = count( $template_parts );
-
-		if ( 1 === $count ) {
-			$notices[] = sprintf( '%s %s', $count, __( 'default template part automatically created.', 'mai-engine' ) );
-		} else {
-			$notices[] = sprintf( '%s %s', $count, __( 'default template parts automatically created.', 'mai-engine' ) );
-		}
-	}
-
-	if ( $notices ) {
-		// Adds admin notice(s). May not display if redirected to setup wizard.
-		add_action( 'admin_notices', function() use ( $notices ) {
-			foreach ( $notices as $notice ) {
-				printf( '<div class="notice notice-success">%s</div>', esc_html( $notice ) );
-			}
-		});
-	}
 }
 
 add_action( 'current_screen', 'mai_widgets_template_parts_admin_notice' );
@@ -390,7 +339,7 @@ function mai_widgets_template_parts_admin_notice( $screen ) {
 		printf(
 			'<div class="notice notice-warning is-dismissible"><p>%s <a href="%s">%s</a>.</p></div>',
 			__( 'Mai Theme uses "Template Parts" (block-based widget areas).', 'mai-engine' ),
-			admin_url( 'edit.php?post_type=wp_template_part' ),
+			admin_url( 'edit.php?post_type=mai_template_part' ),
 			__( 'Edit template parts now', 'mai-engine' )
 		);
 	});

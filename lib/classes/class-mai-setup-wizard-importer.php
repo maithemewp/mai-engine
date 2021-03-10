@@ -169,7 +169,7 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 		}
 
 		foreach ( $data as $index => $post ) {
-			$existing = get_page_by_path( $post['post_name'], ARRAY_A, 'wp_template_part' );
+			$existing = get_page_by_path( $post['post_name'], ARRAY_A, 'mai_template_part' );
 
 			if ( $existing ) {
 				wp_trash_post( $existing['ID'] );
