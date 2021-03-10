@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Mai Engine plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.10.0\n"
+"Project-Id-Version: Mai Engine 2.11.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-03-04T22:20:04+00:00\n"
+"POT-Creation-Date: 2021-03-10T19:43:21+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -42,14 +42,14 @@ msgstr ""
 msgid "Corporate"
 msgstr ""
 
-#: config/twenty-seven.php:45
-#: config/lookbook.php:43
-#: lib/structure/header.php:203
-msgid "Menu"
+#: config/twenty-seven.php:71
+msgid "Read the Post →"
 msgstr ""
 
-#: config/twenty-seven.php:80
-msgid "Read the Post →"
+#: config/twenty-seven.php:106
+#: config/lookbook.php:108
+#: lib/structure/header.php:203
+msgid "Menu"
 msgstr ""
 
 #: config/_default.php:73
@@ -1316,6 +1316,14 @@ msgstr ""
 msgid "Return to dashboard"
 msgstr ""
 
+#: lib/classes/class-mai-entry.php:1087
+msgid "Pages:"
+msgstr ""
+
+#: lib/classes/class-mai-entry.php:1095
+msgid "Page "
+msgstr ""
+
 #: lib/classes/class-mai-setup-wizard-ajax.php:80
 msgid "Email address can not be empty."
 msgstr ""
@@ -1428,9 +1436,9 @@ msgstr ""
 #: lib/admin/settings.php:47
 #: lib/admin/settings.php:48
 #: lib/admin/template-parts.php:114
-#: lib/functions/templates.php:23
-#: lib/functions/templates.php:31
-#: lib/functions/templates.php:100
+#: lib/functions/templates.php:24
+#: lib/functions/templates.php:32
+#: lib/functions/templates.php:117
 msgid "Template Parts"
 msgstr ""
 
@@ -1645,7 +1653,7 @@ msgstr ""
 #: lib/admin/settings.php:58
 #: lib/admin/settings.php:67
 #: lib/admin/settings.php:68
-#: lib/functions/templates.php:112
+#: lib/functions/templates.php:129
 msgid "Reusable Blocks"
 msgstr ""
 
@@ -1654,90 +1662,106 @@ msgid "Supercharge your website with our custom add-on plugins!"
 msgstr ""
 
 #: lib/admin/settings.php:95
-msgid "Save over $240 on all plugins!"
+msgid "Save $$$ on all themes & all plugins!"
 msgstr ""
 
 #: lib/admin/settings.php:96
-msgid "Extend the functionality of your Mai Theme powered website with the Mai Theme Plugin Pack. Designed to work seamlessly with Mai Theme so you can launch and grow your website quickly. <strong><em>Valid on unlimited sites.</strong></em>"
+msgid "Get all of our designs and extend the functionality of your Mai Theme powered website with the Mai Plugins. Designed to work seamlessly with Mai Theme so you can launch and grow your website quickly."
 msgstr ""
 
 #: lib/admin/settings.php:97
-msgid "View The Plugin Pack"
+msgid "Valid on unlimited sites."
 msgstr ""
 
-#: lib/admin/settings.php:107
-msgid "Mai Archive Pages"
+#: lib/admin/settings.php:98
+msgid "View The Bundle"
 msgstr ""
 
 #: lib/admin/settings.php:108
+msgid "Mai Archive Pages"
+msgstr ""
+
+#: lib/admin/settings.php:109
 msgid "Build robust and SEO-friendly archive page intro content with blocks."
 msgstr ""
 
-#: lib/admin/settings.php:114
+#: lib/admin/settings.php:115
 msgid "Mai Favorites"
 msgstr ""
 
-#: lib/admin/settings.php:115
+#: lib/admin/settings.php:116
 msgid "Easily and beautifully display collections of your favorite external things (affiliate products, recommendations, etc.) with the Mai Post Grid block."
 msgstr ""
 
-#: lib/admin/settings.php:121
+#: lib/admin/settings.php:122
 msgid "Mai Testimonials"
 msgstr ""
 
-#: lib/admin/settings.php:122
+#: lib/admin/settings.php:123
 msgid "Show off all the great things your customers/clients have to say about you. Manage your testimonials in one place, and easily hide them with the Mai Post Grid block."
 msgstr ""
 
-#: lib/admin/settings.php:128
-msgid "Mai Ads & Extra Content"
-msgstr ""
-
 #: lib/admin/settings.php:129
-msgid "Boost your sales with display ads or content across a multitude of areas on your site all from one simple-to-manage spot. Pairs perfectly with the lead generation tool, ConvertFlow, for embedding targeted, dynamic CTAs."
+msgid "Mai Notices"
 msgstr ""
 
-#: lib/admin/settings.php:135
-msgid "Mai Effects"
+#: lib/admin/settings.php:130
+msgid "Display custom callout notices with icons to grab attention, show info, notes, ideas, errors, and more."
 msgstr ""
 
 #: lib/admin/settings.php:136
+msgid "Mai Ads & Extra Content"
+msgstr ""
+
+#: lib/admin/settings.php:137
+msgid "Boost your sales with display ads or content across a multitude of areas on your site all from one simple-to-manage spot. Pairs perfectly with the lead generation tool, ConvertFlow, for embedding targeted, dynamic CTAs."
+msgstr ""
+
+#: lib/admin/settings.php:143
+msgid "Mai Effects"
+msgstr ""
+
+#: lib/admin/settings.php:144
 msgid "<strong>Coming soon for v2!</strong><br />Add stand-out fadein animation effects, once only possible with developer intervention! Make your page header and sections pop."
 msgstr ""
 
+#: lib/admin/settings.php:150
+msgid "Mai Accordion"
+msgstr ""
+
 #: lib/admin/settings.php:151
+msgid "Create custom accordion block for content toggles, transcripts, FAQ’s, and more. Super fast and easy to use. No Javascript means no slowing down your pages."
+msgstr ""
+
+#: lib/admin/settings.php:157
 msgid "Mai Display Taxonomy"
 msgstr ""
 
-#: lib/admin/settings.php:152
+#: lib/admin/settings.php:158
 msgid "A utility plugin that creates a private, backend-only “Display” taxonomy for use with the Mai Post Grid block to have total control over your grid content in various areas of your website."
 msgstr ""
 
-#: lib/admin/settings.php:158
+#: lib/admin/settings.php:164
 msgid "Mai Config Generator"
 msgstr ""
 
-#: lib/admin/settings.php:159
+#: lib/admin/settings.php:165
 msgid "A developer-focused plugin to generate config.php content for setting defaults in a custom Mai Theme. If you install your custom theme, or site managers change any of the Customizer settings, the defaults will now come from this config."
 msgstr ""
 
-#: lib/admin/settings.php:170
-msgid "Premium Add-on Plugins"
+#: lib/admin/settings.php:174
+msgid "Mai Add-on Plugins"
 msgstr ""
 
-#: lib/admin/settings.php:186
-msgid "Free Add-on Plugins"
-msgstr ""
-
-#: lib/admin/settings.php:230
+#: lib/admin/settings.php:218
 msgid "Learn More"
 msgstr ""
 
-#: lib/admin/settings.php:249
+#: lib/admin/settings.php:237
 msgid "Documentation"
 msgstr ""
 
-#: lib/admin/settings.php:255
+#: lib/admin/settings.php:243
 msgid "Support"
 msgstr ""
 
@@ -1797,28 +1821,24 @@ msgstr ""
 msgid "Active"
 msgstr ""
 
-#: lib/admin/template-parts.php:364
-msgid "default template part imported successfully."
-msgstr ""
-
-#: lib/admin/template-parts.php:366
-msgid "default template parts imported successfully."
-msgstr ""
-
-#: lib/admin/template-parts.php:378
-msgid "default template part automatically created."
-msgstr ""
-
-#: lib/admin/template-parts.php:380
-msgid "default template parts automatically created."
-msgstr ""
-
-#: lib/admin/template-parts.php:410
+#: lib/admin/template-parts.php:359
 msgid "Mai Theme uses \"Template Parts\" (block-based widget areas)."
 msgstr ""
 
-#: lib/admin/template-parts.php:412
+#: lib/admin/template-parts.php:361
 msgid "Edit template parts now"
+msgstr ""
+
+#: lib/admin/upgrade.php:109
+msgid "Template Parts successfully updated for compatibility with WP 5.7+."
+msgstr ""
+
+#: lib/admin/upgrade.php:113
+msgid "Error migrating template parts."
+msgstr ""
+
+#: lib/admin/upgrade.php:118
+msgid "Please contact BizBudding support."
 msgstr ""
 
 #: lib/admin/term-image.php:46
@@ -2000,105 +2020,106 @@ msgstr ""
 msgid "Button Secondary"
 msgstr ""
 
-#: lib/functions/templates.php:24
+#: lib/functions/templates.php:25
 msgid "Template Part"
 msgstr ""
 
-#: lib/functions/templates.php:25
+#: lib/functions/templates.php:26
 msgctxt "Admin Menu text"
 msgid "Template Parts"
 msgstr ""
 
-#: lib/functions/templates.php:26
+#: lib/functions/templates.php:27
 msgctxt "Template Part"
 msgid "Add New"
 msgstr ""
 
-#: lib/functions/templates.php:27
+#: lib/functions/templates.php:28
 msgid "Add New Template Part"
 msgstr ""
 
-#: lib/functions/templates.php:28
+#: lib/functions/templates.php:29
 msgid "New Template Part"
 msgstr ""
 
-#: lib/functions/templates.php:29
+#: lib/functions/templates.php:30
 msgid "Edit Template Part"
 msgstr ""
 
-#: lib/functions/templates.php:30
+#: lib/functions/templates.php:31
 msgid "View Template Part"
 msgstr ""
 
-#: lib/functions/templates.php:32
+#: lib/functions/templates.php:33
 msgid "Search Template Parts"
 msgstr ""
 
-#: lib/functions/templates.php:33
+#: lib/functions/templates.php:34
 msgid "Parent Template Part:"
 msgstr ""
 
-#: lib/functions/templates.php:34
+#: lib/functions/templates.php:35
 msgid "No template parts found."
 msgstr ""
 
-#: lib/functions/templates.php:35
+#: lib/functions/templates.php:36
 msgid "No template parts found in Trash."
 msgstr ""
 
-#: lib/functions/templates.php:36
+#: lib/functions/templates.php:37
 msgid "Template part archives"
 msgstr ""
 
-#: lib/functions/templates.php:37
+#: lib/functions/templates.php:38
 msgid "Insert in to template part"
 msgstr ""
 
-#: lib/functions/templates.php:38
+#: lib/functions/templates.php:39
 msgid "Uploaded to this template part"
 msgstr ""
 
-#: lib/functions/templates.php:39
+#: lib/functions/templates.php:40
 msgid "Filter template parts list"
 msgstr ""
 
-#: lib/functions/templates.php:40
+#: lib/functions/templates.php:41
 msgid "Template parts list navigation"
 msgstr ""
 
-#: lib/functions/templates.php:41
+#: lib/functions/templates.php:42
 msgid "Template parts list"
 msgstr ""
 
-#: lib/functions/templates.php:46
+#: lib/functions/templates.php:47
 msgid "Template parts to include in your templates."
 msgstr ""
 
-#: lib/functions/templates.php:72
+#: lib/functions/templates.php:78
+#: lib/functions/templates.php:91
 msgid "The theme that provided the template part, if any."
 msgstr ""
 
-#: lib/functions/templates.php:103
+#: lib/functions/templates.php:120
 msgid "Edit Template Parts"
 msgstr ""
 
-#: lib/functions/templates.php:115
+#: lib/functions/templates.php:132
 msgid "Edit Reusable Blocks"
 msgstr ""
 
-#: lib/functions/templates.php:421
+#: lib/functions/templates.php:438
 msgid "Sorry, no template part available for this theme."
 msgstr ""
 
-#: lib/functions/templates.php:439
+#: lib/functions/templates.php:456
 msgid "Sorry, this template part is already in use."
 msgstr ""
 
-#: lib/functions/templates.php:451
+#: lib/functions/templates.php:468
 msgid "Sorry, "
 msgstr ""
 
-#: lib/functions/templates.php:451
+#: lib/functions/templates.php:468
 msgid "template part already exists"
 msgstr ""
 
