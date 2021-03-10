@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.11.0 (2/10/21)
+## 2.11.0 (3/10/21)
 * Added: New mobile header settings to rearrange elements and display search icon and/or custom content including [mai_icon] links. This is great for search, phone, cart icons and anything else you want on mobile.
 * Added: New setting to show posts in current category/term in Mai Post Grid. Yay for related posts blocks automatically now.
 * Added: New [mai_rating] shortcode to show star ratings. Works great in Custom Content field of Mai Grid blocks or Archive/Single settings in Customizer.
