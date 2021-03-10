@@ -36,6 +36,8 @@ p {
 }
 
 .block-editor-plain-text {
+	/* TODO: Make this work if body color is set to white. */
+	/* TODO: --input-color: #000; is necessary when this happens as well. */
 	color: var(--color-body); /* Overrides WP core styles. Mostly for dark backgrounds when the text is changed to white. */
 }
 
