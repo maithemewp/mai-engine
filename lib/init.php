@@ -248,6 +248,28 @@ function mai_load_default_favicon( $favicon ) {
 	return $favicon;
 }
 
+
+/**
+ * Clears the transient on post type save/update.
+ * This was running too late in mai_load_files().
+ *
+ * @since TBD
+ *
+ * @param int     $post_id The template part ID.
+ * @param WP_Post $post    The template part post object.
+ * @param bool    $update  Whether this is an existing post being updated.
+ *
+ * @return void
+ */
+add_action( 'save_post_mai_template_part', 'mai_save_template_part_delete_transient', 20, 3 );
+function mai_save_template_part_delete_transient( $post_id, $post, $update ) {
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	delete_transient( 'mai_template_parts' );
+}
+
 add_action( 'after_setup_theme', 'mai_load_files', 0 );
 /**
  * Load mai-engine files, or deactivate if active theme is not supported.
