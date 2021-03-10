@@ -15,6 +15,7 @@ add_action( 'init', 'mai_register_template_part_cpt' );
  *
  * @since 2.0.0
  * @since 2.4.0 Changed can_export to true.
+ * @since TBD Changed post type name to avoid conflict with WP 5.7.
  *
  * @return void
  */
@@ -65,17 +66,33 @@ function mai_register_template_part_cpt() {
 		],
 	];
 
-	// TODO: Can we use this to check which theme set the template part instead of making backups?
-	$meta_args = [
-		'object_subtype' => 'wp_template_part',
-		'type'           => 'string',
-		'description'    => __( 'The theme that provided the template part, if any.', 'mai-engine' ),
-		'single'         => true,
-		'show_in_rest'   => true,
-	];
+	$db_version = mai_get_option( 'db-version', false );
 
-	register_post_type( 'wp_template_part', $args );
-	register_meta( 'post', 'theme', $meta_args );
+	// We need the old post type during upgrade/migration.
+	if ( $db_version && version_compare( $db_version, '2.11.0', '<' ) && ! post_type_exists( 'wp_template_part' ) ) {
+		register_post_type( 'wp_template_part', $args );
+		register_meta( 'post', 'theme',
+			[
+				'object_subtype' => 'wp_template_part',
+				'type'           => 'string',
+				'description'    => __( 'The theme that provided the template part, if any.', 'mai-engine' ),
+				'single'         => true,
+				'show_in_rest'   => true,
+			]
+		);
+	}
+
+	register_post_type( 'mai_template_part', $args );
+	// TODO: Can we use this to check which theme set the template part instead of making backups?
+	register_meta( 'post', 'theme',
+		[
+			'object_subtype' => 'mai_template_part',
+			'type'           => 'string',
+			'description'    => __( 'The theme that provided the template part, if any.', 'mai-engine' ),
+			'single'         => true,
+			'show_in_rest'   => true,
+		]
+	);
 }
 
 add_action( 'admin_bar_menu', 'mai_add_admin_bar_links', 999 );
@@ -95,10 +112,10 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
 
 	$wp_admin_bar->add_node(
 		[
-			'id'     => 'template-parts',
+			'id'     => 'mai-template-parts',
 			'parent' => 'site-name',
 			'title'  => __( 'Template Parts', 'mai-engine' ),
-			'href'   => admin_url( 'edit.php?post_type=wp_template_part' ),
+			'href'   => admin_url( 'edit.php?post_type=mai_template_part' ),
 			'meta'   => [
 				'title' => __( 'Edit Template Parts', 'mai-engine' ),
 			],
@@ -107,7 +124,7 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
 
 	$wp_admin_bar->add_node(
 		[
-			'id'     => 'reusable-blocks',
+			'id'     => 'mai-reusable-blocks',
 			'parent' => 'site-name',
 			'title'  => __( 'Reusable Blocks', 'mai-engine' ),
 			'href'   => admin_url( 'edit.php?post_type=wp_block' ),
@@ -251,7 +268,7 @@ function mai_get_template_part_objects( $use_transient = true ) {
 			$parts = [];
 			$query = new WP_Query(
 				[
-					'post_type'              => 'wp_template_part',
+					'post_type'              => 'mai_template_part',
 					'post_status'            => 'any',
 					'post_name__in'          => $slugs,
 					'posts_per_page'         => 500,
@@ -351,7 +368,7 @@ function mai_create_template_parts() {
 
 		$post_id = wp_insert_post(
 			[
-				'post_type'    => 'wp_template_part',
+				'post_type'    => 'mai_template_part',
 				'post_name'    => $slug,
 				'post_status'  => 'publish',
 				'post_title'   => mai_convert_case( $slug, 'title' ),
@@ -456,7 +473,7 @@ function mai_import_template_part( $slug, $force = false ) {
 	$config  = mai_get_config( 'template-parts' );
 	$post_id = wp_insert_post(
 		[
-			'post_type'    => 'wp_template_part',
+			'post_type'    => 'mai_template_part',
 			'post_name'    => $slug,
 			'post_status'  => 'publish',
 			'post_title'   => mai_convert_case( $slug, 'title' ),
