@@ -232,9 +232,10 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 		$demos         = $this->demos->get_demos();
 		$content_types = [
 			'content'    => sprintf(
-				'<strong>%s</strong> <ul class="step-description"><li>%s</li></ul>',
+				'<strong>%s</strong> <ul class="step-description"><li>%s</li><li>%s</li></ul>',
 				__( 'Content', 'mai-engine' ),
-				__( 'Posts, pages, and menus.' )
+				__( 'Posts, pages, and menus.' ),
+				__( 'Existing posts, pages, and menus will not be deleted.', 'mai-engine' )
 			),
 			'templates'  => sprintf(
 				'<strong>%s</strong> <ul class="step-description"><li>%s</li><li>%s</li><li>%s</li></ul>',

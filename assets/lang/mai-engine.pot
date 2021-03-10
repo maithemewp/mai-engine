@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-03-10T19:43:21+00:00\n"
+"POT-Creation-Date: 2021-03-10T19:48:42+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -1432,7 +1432,11 @@ msgstr ""
 msgid "Content"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-fields.php:241
+#: lib/classes/class-mai-setup-wizard-fields.php:238
+msgid "Existing posts, pages, and menus will not be deleted."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-fields.php:242
 #: lib/admin/settings.php:47
 #: lib/admin/settings.php:48
 #: lib/admin/template-parts.php:114
@@ -1442,23 +1446,23 @@ msgstr ""
 msgid "Template Parts"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-fields.php:242
+#: lib/classes/class-mai-setup-wizard-fields.php:243
 msgid "Our block-based replacement for widgets."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-fields.php:243
+#: lib/classes/class-mai-setup-wizard-fields.php:244
 msgid "Requires \"Content\" in order to import images."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-fields.php:244
+#: lib/classes/class-mai-setup-wizard-fields.php:245
 msgid "Moves any existing template parts into the trash."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-fields.php:248
+#: lib/classes/class-mai-setup-wizard-fields.php:249
 msgid "Customizer Settings"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-fields.php:286
+#: lib/classes/class-mai-setup-wizard-fields.php:287
 msgid "View your site"
 msgstr ""
 
