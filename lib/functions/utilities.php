@@ -1545,3 +1545,32 @@ function mai_get_logo_icon_2x() {
 	$icon = file_exists( mai_get_dir() . $file ) ? mai_get_url() . $file : '';
 	return $icon;
 }
+
+/**
+ * Writes variable data to a file.
+
+ * This function for testing & debuggin only.
+ * Do not leave this function working on your site.
+ *
+ * @since TBD
+ *
+ * @param mixed  $value    The value to write to a file.
+ * @param string $filename The filename to create/write.
+ *
+ * @return void
+ */
+function mai_write_to_file( $value, $filename = '__debug' ) {
+	$file   = dirname( __FILE__ ) . sprintf( '/%s.txt', $filename );
+	$handle = fopen( $file, 'a' );
+	ob_start();
+	if ( is_array( $value ) || is_object( $value ) ) {
+		print_r( $value );
+	} elseif ( is_bool( $value ) ) {
+		var_dump( $value );
+	} else {
+		echo $value;
+	}
+	echo "\r\n\r\n";
+	fwrite( $handle, ob_get_clean() );
+	fclose( $handle );
+}
