@@ -123,7 +123,7 @@ function mai_typography_maybe_flush_local_fonts() {
 /**
  * Flushes local font files.
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @return void
  */

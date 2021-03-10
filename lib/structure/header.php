@@ -139,7 +139,7 @@ function mai_do_header() {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @return void
  */
@@ -195,7 +195,7 @@ function mai_do_title_area() {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @return void
  */
@@ -223,7 +223,7 @@ function mai_do_menu_toggle() {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @return void
  */
@@ -247,7 +247,7 @@ function mai_do_header_search() {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @return void
  */

@@ -1071,7 +1071,7 @@ class Mai_Entry {
 	/**
 	 * Displays page links for paginated posts (i.e. includes the <!--nextpage--> Quicktag one or more times).
 	 *
-	 * @since TBD
+	 * @since 2.11.0
 	 *
 	 * @return void
 	 */

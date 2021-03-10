@@ -97,7 +97,7 @@ return [
 		/**
 		 * Removes screen reader text class from mobile toggle text.
 		 *
-		 * @since TBD
+		 * @since 2.11.0
 		 *
 		 * @param string $text The existing text.
 		 *

@@ -202,7 +202,7 @@ function mai_get_asset_url( $file ) {
  * Returns the active child theme's sub config.
  *
  * @since 0.1.0
- * @since TBD Add static caching.
+ * @since 2.11.0 Add static caching.
  *
  * @param string $sub_config Name of config to get.
  *
@@ -231,7 +231,7 @@ function mai_get_config( $sub_config ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @return array
  */
@@ -498,7 +498,7 @@ function mai_get_post_type() {
  * If only a number value, use the fallback..
  *
  * @since 0.1.0
- * @since TBD Change intval to casting as int to allow negative numbers.
+ * @since 2.11.0 Change intval to casting as int to allow negative numbers.
  *
  * @param  string $value    The value. Could be integer 24 or with type 24px, 2rem, etc.
  * @param  string $fallback The fallback unit value.
@@ -570,7 +570,7 @@ function mai_get_customizer_link( $name, $type = 'section', $url = '' ) {
 /**
  * Get content type archive choices for Kirki.
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @return array
  */
@@ -629,7 +629,7 @@ function mai_get_content_type_archive_choices() {
 /**
  * Get content type single choices for Kirki.
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @return array
  */
@@ -772,7 +772,7 @@ function mai_get_ellipsis() {
  *
  * @since 0.3.0
  * @since N/A   Switched from get_post_field to WP_Query so blocks are parsed and shortcodes are rendered better.
- * @since TBD   Switched from WP_Query to mai_get_processed_content() to avoid conflicts with is_main_query().
+ * @since 2.11.0   Switched from WP_Query to mai_get_processed_content() to avoid conflicts with is_main_query().
  *
  * @param int|string $post_slug_or_id The post slug or ID.
  *
@@ -1127,7 +1127,7 @@ function mai_get_author_id() {
 /**
  * Gets a star rating.
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @param array $args The rating args.
  *
@@ -1279,7 +1279,7 @@ function mai_get_rating( $args ) {
  *    'submit_value', // Defaults to search icon. Uses this value for screen-reader-text.
  * ]
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @param array $args The search form args.
  *
@@ -1298,7 +1298,7 @@ function mai_get_search_form( $args = [] ) {
  * Gets a search icon with form for menu items
  * and mobile header.
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @access private The params may change in a future date.
  *
@@ -1495,7 +1495,7 @@ function mai_get_entry_meta_setting_description() {
  * Gets the plugin updater icons.
  * This may be used in additiona Mai Plugins.
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @return array
  */
@@ -1515,7 +1515,7 @@ function mai_get_updater_icons() {
 /**
  * Gets the Mai Theme logo icon @1x for plugin updater.
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @return string
  */
@@ -1532,7 +1532,7 @@ function mai_get_logo_icon_1x() {
 /**
  * Gets the Mai Theme logo icon @1x for plugin updater.
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @return string
  */
@@ -1552,7 +1552,7 @@ function mai_get_logo_icon_2x() {
  * This function for testing & debuggin only.
  * Do not leave this function working on your site.
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @param mixed  $value    The value to write to a file.
  * @param string $filename The filename to create/write.

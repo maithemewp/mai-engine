@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || die;
  * Gets an icon.
  *
  * @since 0.1.0
- * @since TBD Added width and height attributes to svg.
+ * @since 2.11.0 Added width and height attributes to svg.
  *
  * @param array $args Icon args.
  *
@@ -148,7 +148,7 @@ function mai_get_icon( $args ) {
  * Gets list of icon shortcode attributes.
  *
  * @since 0.1.0
- * @since TBD Added filter.
+ * @since 2.11.0 Added filter.
  *
  * @return array
  */
@@ -231,7 +231,7 @@ function mai_get_svg( $name, $class = '' ) {
  *
  * @since 0.1.0
  * @since 2.4.0 Added check for dom element.
- * @since TBD Added default width and height attributes.
+ * @since 2.11.0 Added default width and height attributes.
  *
  * @param string $name  SVG name.
  * @param string $style SVG style.
@@ -282,7 +282,7 @@ function mai_get_svg_icon( $name, $style = 'light', $atts = [] ) {
 /**
  * Gets an svg file. Cached so the same file is never fetched twice on the same page.
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @param string $name The svg file name.
  *
@@ -312,7 +312,7 @@ function mai_get_svg_file( $name ) {
 /**
  * Gets an svg icon file. Cached so the same file is never fetched twice on the same page.
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @param string $name  The svg file name.
  * @param string $style The svg style.

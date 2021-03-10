@@ -289,7 +289,7 @@ add_filter( 'nav_menu_css_class', 'mai_add_search_icon_form_class' );
 /**
  * Add search-icon-form class.
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @param array|string $attribute Classes or ID.
  *
@@ -314,7 +314,7 @@ function mai_add_search_icon_form_class( $attribute ) {
  * the menu item's title, the closing `</a>`, and `$args->after`. Currently, there is
  * no filter for modifying the opening and closing `<li>` for a menu item.
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @param string   $item_output The menu item's starting HTML output.
  * @param WP_Post  $item        Menu item data object.

@@ -174,7 +174,7 @@ add_shortcode( 'mai_rating', 'mai_rating_shortcode' );
 /**
  * Displays star rating.
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @return string
  */

@@ -807,7 +807,7 @@ function mai_get_instance( $class, ...$args ) {
 /**
  * Gets width or height attribute value from CSS values.
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @param $value The existing value. May be numeric, px, rem, or em.
  *

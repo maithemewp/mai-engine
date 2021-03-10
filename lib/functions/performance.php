@@ -100,7 +100,7 @@ function mai_remove_recent_comments_style() {
  *
  * Props Brady Vercher.
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @param array    $posts    List of posts in the query.
  * @param WP_Query $wp_query WP Query object.

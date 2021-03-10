@@ -253,7 +253,7 @@ function mai_load_default_favicon( $favicon ) {
  * Clears the transient on post type save/update.
  * This was running too late in mai_load_files().
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @param int     $post_id The template part ID.
  * @param WP_Post $post    The template part post object.

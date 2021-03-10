@@ -179,7 +179,7 @@ function mai_get_amp_button_styles() {
 /**
  * Checks if this web page is an AMP URL.
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @return bool
  */

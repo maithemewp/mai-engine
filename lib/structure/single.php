@@ -38,7 +38,7 @@ add_filter( 'wp_link_pages_link', 'mai_entry_pagination_button_class', 10, 2 );
 /**
  * Adds button classes to entry pagination links.
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @param string $link The page number HTML output.
  * @param int    $i    Page number for paginated posts' page links.

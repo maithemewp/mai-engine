@@ -332,7 +332,7 @@ function mai_get_italic_variant( $element ) {
 /**
  * Gets google fonts from kirki.
  *
- * @since TBD
+ * @since 2.11.0
  *
  * @return array
  */

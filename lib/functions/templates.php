@@ -15,7 +15,7 @@ add_action( 'init', 'mai_register_template_part_cpt' );
  *
  * @since 2.0.0
  * @since 2.4.0 Changed can_export to true.
- * @since TBD Changed post type name to avoid conflict with WP 5.7.
+ * @since 2.11.0 Changed post type name to avoid conflict with WP 5.7.
  *
  * @return void
  */
@@ -244,7 +244,7 @@ function mai_get_template_part_id( $slug ) {
  * @since 2.6.0
  * @since 2.10.0 Changes `posts_per_page` value from `count( $slugs )` to 500
  *              since WP seems to allow draft posts with the same slug as an existing post.
- * @since TBD Added transient and $use_transient param.
+ * @since 2.11.0 Added transient and $use_transient param.
  *
  * @param bool $use_transient Whether to use cache for fetching.
  *

@@ -18,7 +18,7 @@ add_filter( 'genesis_site_layout', 'mai_site_layout' );
  *
  * @since 0.1.0
  * @since 2.6.0 Removed $use_cache param since it's no longer necessary.
- * @since TBD Make sure a layout is allowed before returning it.
+ * @since 2.11.0 Make sure a layout is allowed before returning it.
  *
  * @return string
  */
