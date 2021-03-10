@@ -1759,7 +1759,7 @@ function mai_get_grid_block_settings() {
 						'sanitize'   => 'sanitize_bool',
 						'default'    => '',
 						'atts'       => [
-							'message' => sprintf( '%s <a target="_blank" href="#">%s</a>', esc_html__( 'Use current', 'mai-engine' ), mai_get_svg_icon( 'info-circle', 'solid', [ 'style' => 'width:18px;height:18px;vertical-align:middle;margin:-2px 0 0 4px;fill:currentColor;' ] ) ),
+							'message' => sprintf( '%s <a target="_blank" href="https://docs.bizbudding.com/docs/mai-grid-blocks/#taxonomy-meta">%s</a>', esc_html__( 'Use current', 'mai-engine' ), mai_get_svg_icon( 'info-circle', 'solid', [ 'style' => 'width:18px;height:18px;vertical-align:middle;margin:-2px 0 0 4px;fill:currentColor;' ] ) ),
 						],
 						'conditions' => [
 							[
