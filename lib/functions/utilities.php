@@ -859,6 +859,13 @@ function mai_get_read_more_text() {
  * @return int
  */
 function mai_get_header_shrink_offset() {
+	$preview   = is_customize_preview();
+	$transient = 'mai_header_shrink_offset';
+
+	if ( ! $preview && $cached_offset = get_transient( $transient ) ) {
+		return $cached_offset;
+	}
+
 	static $offset = null;
 
 	if ( ! is_null( $offset ) ) {
@@ -896,6 +903,12 @@ function mai_get_header_shrink_offset() {
 	$shrunk_height      = ( $shrunk_width / $desktop_width ) * $desktop_height;
 	$height_difference  = ceil( $desktop_height - $shrunk_height );
 	$offset             = $height_difference + $spacing_difference;
+
+	if ( $preview ) {
+		delete_transient( $transient );
+	} else {
+		set_transient( $transient, $offset, 60 );
+	}
 
 	return $offset;
 }
@@ -1544,33 +1557,4 @@ function mai_get_logo_icon_2x() {
 	$file = 'assets/img/icon-256x256.png';
 	$icon = file_exists( mai_get_dir() . $file ) ? mai_get_url() . $file : '';
 	return $icon;
-}
-
-/**
- * Writes variable data to a file.
-
- * This function for testing & debuggin only.
- * Do not leave this function working on your site.
- *
- * @since 2.11.0
- *
- * @param mixed  $value    The value to write to a file.
- * @param string $filename The filename to create/write.
- *
- * @return void
- */
-function mai_write_to_file( $value, $filename = '__debug' ) {
-	$file   = dirname( __FILE__ ) . sprintf( '/%s.txt', $filename );
-	$handle = fopen( $file, 'a' );
-	ob_start();
-	if ( is_array( $value ) || is_object( $value ) ) {
-		print_r( $value );
-	} elseif ( is_bool( $value ) ) {
-		var_dump( $value );
-	} else {
-		echo $value;
-	}
-	echo "\r\n\r\n";
-	fwrite( $handle, ob_get_clean() );
-	fclose( $handle );
 }

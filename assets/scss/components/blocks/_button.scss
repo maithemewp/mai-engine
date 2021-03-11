@@ -1,3 +1,17 @@
 .wp-block-buttons {
 	padding-top: var(--spacing-xs);
+
+	// Backwards compatibility since WP changed to flex
+	// in 5.7 and new instances use .is-content-justification-{alignment}
+	&.alignleft {
+		justify-content: flex-start;
+	}
+
+	&.aligncenter {
+		justify-content: center;
+	}
+
+	&.alignright {
+		justify-content: flex-end;
+	}
 }

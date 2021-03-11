@@ -21,6 +21,13 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_additional_colors_css' );
  * @return array
  */
 function mai_add_additional_colors_css( $css ) {
+	$preview   = is_customize_preview();
+	$transient = 'mai_additional_colors_css';
+
+	if ( ! $preview && $cached_css = get_transient( $transient ) ) {
+		return $cached_css;
+	}
+
 	$colors = mai_get_colors();
 	$shades = [
 		'primary',
@@ -60,6 +67,12 @@ function mai_add_additional_colors_css( $css ) {
 		}
 	}
 
+	if ( $preview ) {
+		delete_transient( $transient );
+	} else {
+		set_transient( $transient, $css, 60 );
+	}
+
 	return $css;
 }
 
@@ -74,6 +87,13 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_custom_color_css' );
  * @return array
  */
 function mai_add_custom_color_css( $css ) {
+	$preview   = is_customize_preview();
+	$transient = 'mai_custom_colors_css';
+
+	if ( ! $preview && $cached_css = get_transient( $transient ) ) {
+		return $cached_css;
+	}
+
 	$custom_colors = mai_get_option( 'custom-colors', [] );
 	$count         = 1;
 
@@ -87,6 +107,12 @@ function mai_add_custom_color_css( $css ) {
 
 			$count++;
 		}
+	}
+
+	if ( $preview ) {
+		delete_transient( $transient );
+	} else {
+		set_transient( $transient, $css, 60 );
 	}
 
 	return $css;
@@ -103,6 +129,13 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_button_text_colors' );
  * @return array
  */
 function mai_add_button_text_colors( $css ) {
+	$preview   = is_customize_preview();
+	$transient = 'mai_button_text_colors_css';
+
+	if ( ! $preview && $cached_css = get_transient( $transient ) ) {
+		return $cached_css;
+	}
+
 	$buttons = [
 		'primary'   => '',
 		'secondary' => 'secondary-',
@@ -116,6 +149,12 @@ function mai_add_button_text_colors( $css ) {
 		$text    = $white === $color ? $heading : $text;
 
 		$css['global'][':root'][ '--button-' . $suffix . 'color' ] = $text;
+	}
+
+	if ( $preview ) {
+		delete_transient( $transient );
+	} else {
+		set_transient( $transient, $css, 60 );
 	}
 
 	return $css;
@@ -176,6 +215,13 @@ function mai_add_body_font_variants( $fonts ) {
 		return $fonts;
 	}
 
+	$preview   = is_customize_preview();
+	$transient = 'mai_body_font_variants';
+
+	if ( ! $preview && $cached_fonts = get_transient( $transient ) ) {
+		return $cached_fonts;
+	}
+
 	$font_family = mai_get_font_family( 'body' );
 
 	// Return early if body font family not chosen.
@@ -208,6 +254,12 @@ function mai_add_body_font_variants( $fonts ) {
 		$fonts[ $name ] = array_map( 'strval', $variants );
 	}
 
+	if ( $preview ) {
+		delete_transient( $transient );
+	} else {
+		set_transient( $transient, $fonts, 60 );
+	}
+
 	return $fonts;
 }
 
@@ -224,6 +276,13 @@ add_filter( 'kirki_enqueue_google_fonts', 'mai_add_extra_google_fonts', 99 );
 function mai_add_extra_google_fonts( $fonts ) {
 	if ( ! $fonts ) {
 		return $fonts;
+	}
+
+	$preview   = is_customize_preview();
+	$transient = 'mai_extra_font_variants';
+
+	if ( ! $preview && $cached_fonts = get_transient( $transient ) ) {
+		return $cached_fonts;
 	}
 
 	// Convert to strings for later comparison.
@@ -280,6 +339,12 @@ function mai_add_extra_google_fonts( $fonts ) {
 		$fonts[ $font_family ] = array_unique( $fonts[ $font_family ] );
 	}
 
+	if ( $preview ) {
+		delete_transient( $transient );
+	} else {
+		set_transient( $transient, $fonts, 60 );
+	}
+
 	return $fonts;
 }
 
@@ -294,6 +359,13 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_fonts_custom_properties' );
  * @return array
  */
 function mai_add_fonts_custom_properties( $css ) {
+	$preview   = is_customize_preview();
+	$transient = 'mai_fonts_css';
+
+	if ( ! $preview && $cached_css = get_transient( $transient ) ) {
+		return $cached_css;
+	}
+
 	$body_font_family    = mai_get_font_family( 'body' );
 	$body_font_weight    = mai_get_font_weight( 'body' );
 	$body_font_bold      = mai_get_bold_variant( 'body' );
@@ -354,6 +426,12 @@ function mai_add_fonts_custom_properties( $css ) {
 		}
 	}
 
+	if ( $preview ) {
+		delete_transient( $transient );
+	} else {
+		set_transient( $transient, $cached_css, 60 );
+	}
+
 	return $css;
 }
 
@@ -371,6 +449,13 @@ function mai_add_page_header_content_type_css( $css ) {
 	$types = array_merge( mai_get_page_header_types( 'archive' ), mai_get_page_header_types( 'single' ) );
 	if ( empty( $types ) ) {
 		return $css;
+	}
+
+	$preview   = is_customize_preview();
+	$transient = 'mai_page_header_css';
+
+	if ( ! $preview && $cached_css = get_transient( $transient ) ) {
+		return $cached_css;
 	}
 
 	$config     = mai_get_config( 'settings' )['page-header'];
@@ -413,6 +498,12 @@ function mai_add_page_header_content_type_css( $css ) {
 
 	if ( $text_align ) {
 		$css['global'][':root']['--page-header-text-align'] = mai_get_align_text( esc_html( $text_align ) );
+	}
+
+	if ( $preview ) {
+		delete_transient( $transient );
+	} else {
+		set_transient( $transient, $cached_css, 60 );
 	}
 
 	return $css;

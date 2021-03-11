@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.11.1 (3/11/21)
+* Changed: [Performance Update] PHP processing for color and typography css is now cached with transients.
+* Changed: Customizer plugins link now goes to new location.
+* Fixed: Bug in WP 5.7 due to changes in the alignment markup where aligned buttons are not working correctly.
+
 ## 2.11.0 (3/10/21)
 * Added: New mobile header settings to rearrange elements and display search icon and/or custom content including [mai_icon] links. This is great for search, phone, cart icons and anything else you want on mobile.
 * Added: New setting to show posts in current category/term in Mai Post Grid. Yay for related posts blocks automatically now.

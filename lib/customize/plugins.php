@@ -33,7 +33,7 @@ function mai_plugins_customizer_upsell( $manager ) {
 					'utm_medium'   => 'customizer',
 					'utm_campaign' => 'mt-plugins',
 				],
-				'https://bizbudding.com/product-category/plugins'
+				'https://bizbudding.com/mai-theme/plugins/'
 			)
 		] )
 	);
