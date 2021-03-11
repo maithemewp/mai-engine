@@ -32,6 +32,7 @@ add_shortcode( 'mai_search_form', 'mai_search_form_shortcode' );
  * @return string
  */
 function mai_search_form_shortcode( $atts ) {
+	$atts = (array) $atts;
 	return mai_get_search_form( $atts );
 }
 
