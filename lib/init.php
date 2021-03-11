@@ -248,7 +248,6 @@ function mai_load_default_favicon( $favicon ) {
 	return $favicon;
 }
 
-
 /**
  * Clears the transient on post type save/update.
  * This was running too late in mai_load_files().
@@ -268,6 +267,35 @@ function mai_save_template_part_delete_transient( $post_id, $post, $update ) {
 	}
 
 	delete_transient( 'mai_template_parts' );
+}
+
+/**
+ * Writes variable data to a file.
+
+ * This function for testing & debuggin only.
+ * Do not leave this function working on your site.
+ *
+ * @since 2.11.0
+ *
+ * @param mixed  $value    The value to write to a file.
+ * @param string $filename The filename to create/write.
+ *
+ * @return void
+ */
+function mai_write_to_file( $value, $filename = '__debug' ) {
+	$file   = dirname( __FILE__ ) . sprintf( '/%s.txt', $filename );
+	$handle = fopen( $file, 'a' );
+	ob_start();
+	if ( is_array( $value ) || is_object( $value ) ) {
+		print_r( $value );
+	} elseif ( is_bool( $value ) ) {
+		var_dump( $value );
+	} else {
+		echo $value;
+	}
+	echo "\r\n\r\n";
+	fwrite( $handle, ob_get_clean() );
+	fclose( $handle );
 }
 
 add_action( 'after_setup_theme', 'mai_load_files', 0 );
