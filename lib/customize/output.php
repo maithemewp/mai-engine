@@ -9,30 +9,6 @@
  * @license   GPL-2.0-or-later
  */
 
-/**
- * Loads kirki styles as dynamic stylesheet instead of in the head.
- * This broke the customizer when using is_customize_preview() inside a callback.
- *
- * @since TBD
- *
- * @return bool
- */
-// if ( ! is_customize_preview() ) {
-// 	add_filter( 'kirki_output_inline_styles', '__return_false' );
-// }
-
-// add_filter( 'kirki_styles_action_handle', 'mai_dynamic_styles_handle' );
-/**
- * Adds mai handle as dynamic stylesheet.
- *
- * @since TBD
- *
- * @return string
- */
-function mai_dynamic_styles_handle() {
-	return mai_get_handle();
-}
-
 add_filter( 'kirki_mai-engine_styles', 'mai_add_additional_colors_css' );
 /**
  * Outputs named (non-element) color css.
