@@ -48,6 +48,7 @@
 }
 
 .has-logo-center {
+	--site-header-wrap-justify-content: var(--site-header-wrap-justify-content-desktop, space-around);
 	--title-area-margin: 0 var(--spacing-lg);
 	--title-area-text-align: center;
 }

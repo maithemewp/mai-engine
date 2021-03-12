@@ -342,9 +342,13 @@ function mai_render_template_part( $slug, $before = '', $after = '' ) {
 	$template_part = mai_get_template_part( $slug );
 
 	if ( $template_part ) {
+		do_action( "mai_before_{$slug}_template_part" );
 		echo $before;
+		do_action( "mai_before_{$slug}_template_part_content" );
 		echo mai_get_processed_content( $template_part );
+		do_action( "mai_after_{$slug}_template_part_content" );
 		echo $after;
+		do_action( "mai_after_{$slug}_template_part" );
 	}
 }
 

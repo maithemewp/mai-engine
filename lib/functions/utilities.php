@@ -1045,6 +1045,24 @@ function mai_get_menu_items_by_location( $location ) {
 }
 
 /**
+ * Gets menu default args.
+ * For use with mai_menu shorcode.
+ *
+ * @since TBD
+ *
+ * @return array
+ */
+function mai_get_menu_defaults() {
+	$defaults = [
+		'id'      => '',       // The menu ID, slug, name.
+		'class'   => '',       // HTML classes.
+		'align'   => 'center', // Accepts left, center, or right.
+		'display' => '',       // Accepts list.
+	];
+	return apply_filters( 'mai_menu_defaults', $defaults );
+}
+
+/**
  * Gets a user avatar.
  *
  * @since 2.7.0
