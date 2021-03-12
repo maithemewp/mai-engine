@@ -121,16 +121,8 @@ add_shortcode( 'mai_menu', 'mai_menu_shortcode' );
  * @return string
  */
 function mai_menu_shortcode( $atts ) {
-	$atts = shortcode_atts(
-		[
-			'id'      => '',       // The menu ID, slug, name.
-			'class'   => '',       // HTML classes.
-			'align'   => 'center', // Accepts left, center, or right.
-			'display' => '',       // Accepts list.
-		],
-		$atts,
-		'mai_menu'
-	);
+	$defaults = mai_get_menu_defaults();
+	$atts     = shortcode_atts( $defaults, $atts, 'mai_menu' );
 
 	if ( ! $atts['id'] ) {
 		return;

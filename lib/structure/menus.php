@@ -336,6 +336,27 @@ function mai_nav_menu_search_icon( $item_output, $item, $depth, $args ) {
 	return mai_get_search_icon_form( $item->title ?: __( 'Search', 'mai-engine' ) );
 }
 
+// add_action( 'mai_before_mobile-menu_template_part', 'mai_menu_mobile_defaults' );
+/**
+ * TODO: Consider changing defaults and handling menu styling and sub-menu functionality here.
+ *
+ * Changes mai_menu shortcode defaults in mobile menu template parts.
+ *
+ * @param array $defaults The existing defaults.
+ *
+ * @return array
+ */
+function mai_menu_mobile_defaults() {
+	$filter = function( $defaults ) {
+		$defaults['display'] = 'list';
+		return $defaults;
+	};
+	add_filter( 'mai_menu_defaults', $filter );
+	add_action( 'mai_after_mobile-menu_template_part', function() use ( $filter ) {
+		remove_filter( 'mai_menu_defaults', $filter );
+	});
+}
+
 add_filter( 'genesis_skip_links_output', 'mai_add_nav_skip_links' );
 /**
  * Adds navigation menu skip links.
