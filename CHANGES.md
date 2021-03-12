@@ -1,7 +1,12 @@
 # Changelog
 
+## 2.11.3 (3/12/21)
+* Added: New `mai_before_{$template_part}_template_part`, `mai_after_{$template_part}_template_part` action hooks before and after template parts and template part content.
+* Added: New `mai_menu_defaults` filter for devs to change [mai_menu] shortcode defaults.
+* Fixed: Logo not centering correctly in some configurations.
+
 ## 2.11.2 (3/11/21)
-* Fixes: Error when using [mai_search_form] shortcode without any attributes.
+* Fixed: Error when using [mai_search_form] shortcode without any attributes.
 
 ## 2.11.1 (3/11/21)
 * Changed: [Performance Update] PHP processing for color and typography css is now cached with transients.
