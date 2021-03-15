@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'c22da58b0befbb6fc3a4429d8ee945d4c62e1e38',
+    'reference' => 'c6e305c27b9bce8a7f2722ebefb3b53ad9bdafc5',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
@@ -87,7 +87,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'c22da58b0befbb6fc3a4429d8ee945d4c62e1e38',
+      'reference' => 'c6e305c27b9bce8a7f2722ebefb3b53ad9bdafc5',
     ),
     'phpoption/phpoption' => 
     array (
@@ -168,12 +168,12 @@ private static $installed = array (
     ),
     'yahnis-elsts/plugin-update-checker' => 
     array (
-      'pretty_version' => 'v4.10',
-      'version' => '4.10.0.0',
+      'pretty_version' => 'v4.11',
+      'version' => '4.11.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '0edd15f67822464af8a23285ce367b30d515a855',
+      'reference' => '3155f2d3f1ca5e7ed3f25b256f020e370515af43',
     ),
   ),
 );
