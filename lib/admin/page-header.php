@@ -23,9 +23,15 @@ function mai_add_page_header_metabox() {
 		return;
 	}
 
-	$locations = [];
+	$fields         = [];
+	$locations      = [];
+	$singles        = mai_get_page_header_types( 'single' );
+	$archives       = mai_get_page_header_types( 'archive' );
+	$current_id     = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
+	$page_for_posts = get_option( 'page_for_posts' );
+	$has_blog       = in_array( 'post', $archives ) && $page_for_posts;
 
-	foreach ( mai_get_page_header_types( 'single' ) as $type ) {
+	foreach ( $singles as $type ) {
 		$locations[] = [
 			[
 				'param'    => 'post_type',
@@ -35,39 +41,69 @@ function mai_add_page_header_metabox() {
 		];
 	}
 
-	foreach ( mai_get_page_header_types( 'archive' ) as $type ) {
+	foreach ( $archives as $type ) {
+		$param = false;
+
+		if ( 'author' === $type ) {
+			$param = 'user_form';
+		} elseif ( taxonomy_exists( $type ) ) {
+			$param = 'taxonomy';
+		}
+
+		/**
+		 * Bail if no param.
+		 * The $type could be a post_type, which would be set in customizer instead.
+		 */
+		if ( ! $param ) {
+			continue;
+		}
+
 		$locations[] = [
 			[
-				'param'    => 'author' === $type ? 'user_form' : 'taxonomy',
+				'param'    =>  $param,
 				'operator' => '==',
 				'value'    => $type,
 			],
 		];
 	}
 
+	if ( $has_blog ) {
+		$locations[] = [
+			[
+				'param'    => 'page_type',
+				'operator' => '==',
+				'value'    => 'posts_page',
+			],
+		];
+	}
+
+	// Only show page header image field if not blog archive.
+	if ( $has_blog && ( $current_id !== $page_for_posts ) ) {
+		$fields[] = [
+			'key'           => 'page_header_image',
+			'label'         => esc_html__( 'Image', 'mai-engine' ),
+			'name'          => 'page_header_image',
+			'type'          => 'image',
+			'return_format' => 'id',
+			'preview_size'  => 'landscape-sm',
+			'library'       => 'all',
+		];
+	}
+
+	$fields[] = [
+		'key'   => 'page_header_description',
+		'label' => esc_html__( 'Description', 'mai-engine' ),
+		'name'  => 'page_header_description',
+		'type'  => 'textarea',
+		'rows'  => '3',
+	];
+
 	$field_group_data = [
 		'key'      => 'page_header_field_group',
 		'title'    => esc_html__( 'Page Header', 'mai-engine' ),
 		'location' => $locations ?: false,
 		'position' => 'side',
-		'fields'   => [
-			[
-				'key'           => 'page_header_image',
-				'label'         => esc_html__( 'Image', 'mai-engine' ),
-				'name'          => 'page_header_image',
-				'type'          => 'image',
-				'return_format' => 'id',
-				'preview_size'  => 'landscape-sm',
-				'library'       => 'all',
-			],
-			[
-				'key'   => 'page_header_description',
-				'label' => esc_html__( 'Description', 'mai-engine' ),
-				'name'  => 'page_header_description',
-				'type'  => 'textarea',
-				'rows'  => '3',
-			],
-		],
+		'fields'   => $fields,
 	];
 
 	acf_add_local_field_group( $field_group_data );
