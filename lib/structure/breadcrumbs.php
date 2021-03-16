@@ -12,19 +12,21 @@
 // Disables Genesis Hide Breadcrumbs option.
 add_filter( 'genesis_breadcrumbs_toggle_enabled', '__return_false' );
 
-// Reposition the breadcrumbs.
+// Remove default Genesis breadcrumb output.
 remove_action( 'genesis_before_loop', 'genesis_do_breadcrumbs' );
 
-add_action( 'genesis_before', 'mai_maybe_hide_breadcrumbs' );
+add_action( 'genesis_before_content_sidebar_wrap', 'mai_do_breadcrumbs', 12 );
 /**
- * Description of expected behavior.
+ * Displays breadcrumbs if not hidden.
  *
- * @since 1.0.0
+ * @since TBD
  *
  * @return void
  */
-function mai_maybe_hide_breadcrumbs() {
-	if ( ! mai_is_element_hidden( 'breadcrumbs' ) ) {
-		add_action( 'genesis_before_content_sidebar_wrap', 'genesis_do_breadcrumbs', 12 );
+function mai_do_breadcrumbs() {
+	if ( mai_is_element_hidden( 'breadcrumbs' ) ) {
+		return;
 	}
+
+	genesis_do_breadcrumbs();
 }
