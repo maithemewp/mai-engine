@@ -109,7 +109,7 @@ function mai_do_blog_description() {
 		return;
 	}
 
-	$description = apply_filters( 'the_content', get_post( $posts_page )->post_content );
+	$description = get_post( $posts_page )->post_content;
 	$description = wp_kses_post( $description );
 
 	// Bail if no description.
