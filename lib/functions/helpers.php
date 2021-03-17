@@ -171,13 +171,25 @@ function mai_has_alignfull_first() {
 	if ( is_null( $has_alignfull_first ) ) {
 		$has_alignfull_first = false;
 
-		if ( ! mai_is_type_single() || ! has_blocks() ) {
+		if ( ! mai_is_type_single() ) {
 			return $has_alignfull_first;
 		}
 
-		$post_object = get_post( get_the_ID() );
-		$blocks      = (array) parse_blocks( $post_object->post_content );
-		$first       = reset( $blocks );
+		$content = '';
+
+		if ( is_404() ) {
+			$content = mai_get_template_part( '404-page' );
+		} elseif ( has_blocks() ) {
+			$post_object = get_post( get_the_ID() );
+			$content     = $post_object->post_content;
+		}
+
+		if ( ! $content ) {
+			return $has_alignfull_first;
+		}
+
+		$blocks = (array) parse_blocks( $content );
+		$first  = reset( $blocks );
 
 		if ( $first ) {
 			$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';

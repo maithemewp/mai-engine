@@ -31,6 +31,8 @@ function mai_do_404_page() {
 
 	// Swap content.
 	add_filter( 'genesis_markup_entry-content', function( $content, $args ) {
-		return mai_get_template_part( '404-page' );
+		ob_start();
+		mai_render_template_part( '404-page' );
+		return ob_get_clean();
 	}, 10, 2 );
 }
