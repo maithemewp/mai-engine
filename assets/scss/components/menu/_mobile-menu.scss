@@ -2,7 +2,10 @@
 	--menu-item-width: 100%;
 	--menu-item-link-flex: 1;
 	--wrap-display: block;
+	--sub-menu-background: var(--color-header);
 	--sub-menu-margin: 0 0 var(--spacing-md) var(--spacing-xxs);
+	// --sub-menu-link-color: currentColor;
+	// --sub-menu-link-color-hover: currentColor;
 	--cart-total-position: static;
 
 	position: absolute;
@@ -13,7 +16,7 @@
 	max-height: 100vh;
 	padding: var(--spacing-md) 0;
 	overflow-y: auto;
-	background: var(--mobile-menu-background, var(--site-header-background, var(--color-white)));
+	background: var(--mobile-menu-background, var(--site-header-background, var(--color-header)));
 	border-bottom: var(--mobile-menu-border-bottom, var(--border));
 	animation: var(--mobile-menu-animation, none);
 
@@ -31,18 +34,21 @@
 }
 
 .has-dark-header {
-	--mobile-menu-background: var(--color-heading);
+	--mobile-menu-background: var(--color-header);
 
 	.mobile-menu {
-		color: var(--color-white);
-		--heading-color: var(--color-white);
-		--menu-item-link-color: var(--color-white);
+		--sub-menu-link-color: var(--color-white);
+		--sub-menu-link-color-hover: var(--color-white);
+		// --menu-item-link-color: var(--color-white);
+	}
+
+	.mobile-menu .sub-menu {
+		// --menu-item-link-color: var(--color-white);
 	}
 }
 
 .mobile-menu-visible {
 	--mobile-menu-display: block;
-	--mobile-menu-background: var(--color-white);
 	--mobile-menu-animation: standardmenu 0.3s ease-in-out;
 }
 

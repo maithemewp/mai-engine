@@ -30,12 +30,12 @@
 	--title-area-transition: all 250ms ease-in-out;
 }
 
-.has-dark-header:not(.header-stuck) {
+.has-dark-header {
 	--title-area-color: var(--color-white);
 
-	.title-area {
-		--link-color-hover: var(--color-white); // Site title hover.
-	}
+	// .title-area {
+	// 	--link-color-hover: var(--color-white); // Site title hover.
+	// }
 }
 
 .site-title {

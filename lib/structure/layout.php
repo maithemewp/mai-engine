@@ -73,8 +73,15 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'has-sticky-header';
 	}
 
+	// Add transparent header class.
 	if ( mai_has_transparent_header() ) {
 		$classes[] = 'has-transparent-header';
+	}
+
+	// Add dark header class.
+	$colors = mai_get_colors();
+	if ( ! mai_is_light_color( $colors['header'] ) ) {
+		$classes[] = 'has-dark-header';
 	}
 
 	// Add page header classes.
@@ -89,6 +96,7 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'has-alignfull-first';
 	}
 
+	// TODO: Get rid of sidebar checks. Since they should not be used since the original deprecated stuff.
 	$header_left  = has_nav_menu( 'header-left' ) || mai_has_template_part( 'header-left' ) || is_active_sidebar( 'header-left' );
 	$header_right = has_nav_menu( 'header-right' ) || mai_has_template_part( 'header-right' ) || is_active_sidebar( 'header-right' );
 

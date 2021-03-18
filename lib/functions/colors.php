@@ -22,8 +22,10 @@ defined( 'ABSPATH' ) || die;
 function mai_get_colors() {
 	static $colors = null;
 
-	if ( ! is_null( $colors ) ) {
-		return $colors;
+	if ( ! is_customize_preview() ) {
+		if ( ! is_null( $colors ) ) {
+			return $colors;
+		}
 	}
 
 	$colors   = [];
@@ -183,6 +185,7 @@ function mai_get_color_elements() {
 	return [
 		'background' => __( 'Background', 'mai-engine' ),
 		'alt'        => __( 'Background Alt', 'mai-engine' ),
+		'header'     => __( 'Site Header', 'mai-engine' ),
 		'body'       => __( 'Body', 'mai-engine' ),
 		'heading'    => __( 'Heading', 'mai-engine' ),
 		'link'       => __( 'Link', 'mai-engine' ),
@@ -237,11 +240,22 @@ function mai_is_light_color( $color ) {
 		return false;
 	}
 
-	$color = mai_get_color_value( $color );
-	$color = ariColor::newColor( $color );
-	$limit = mai_get_global_styles( 'contrast-limit' );
+	$colors = null;
 
-	return $color->luminance > $limit;
+	if ( is_array( $colors ) ) {
+		if ( isset( $colors[ $color ] ) ) {
+			return $colors[ $color ];
+		}
+	} else {
+		$colors = [];
+	}
+
+	$value            = mai_get_color_value( $color );
+	$object           = ariColor::newColor( $value );
+	$limit            = mai_get_global_styles( 'contrast-limit' );
+	$colors[ $value ] = $object->luminance > $limit;
+
+	return $colors[ $value ];
 }
 
 /**

@@ -25,6 +25,7 @@ return [
 		'colors'         => [
 			'black'      => '#000000',
 			'white'      => '#ffffff',
+			'header'     => '#ffffff', // Site header background.
 			'background' => '#ffffff', // Body background.
 			'alt'        => '#f8f9fa', // Background alt.
 			'body'       => '#6c747d', // Body text color.
