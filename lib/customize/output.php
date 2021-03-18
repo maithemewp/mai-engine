@@ -9,6 +9,7 @@
  * @license   GPL-2.0-or-later
  */
 
+add_action( 'after_switch_theme', 'mai_flush_customizer_transients' );
 add_action( 'customize_save_after', 'mai_flush_customizer_transients' );
 /**
  * Deletes kirki transients when the Customizer is saved.
@@ -40,9 +41,10 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_kirki_css' );
  */
 function mai_add_kirki_css( $css ) {
 	$transient = 'mai_dynamic_css';
+	$admin     = is_admin();
 	$preview   = is_customize_preview();
 
-	if ( ! $preview && $cached_css = get_transient( $transient ) ) {
+	if ( ! ( $admin || $preview ) && $cached_css = get_transient( $transient ) ) {
 		return $cached_css;
 	}
 
@@ -55,7 +57,7 @@ function mai_add_kirki_css( $css ) {
 	$css = mai_add_page_header_content_type_css( $css );
 	$css = mai_add_extra_custom_properties( $css );
 
-	if ( ! $preview ) {
+	if ( ! ( $admin || $preview ) ) {
 		set_transient( $transient, $css, 60 );
 	}
 
@@ -78,16 +80,17 @@ function mai_add_kirki_fonts( $fonts ) {
 	}
 
 	$transient = 'mai_dynamic_fonts';
+	$admin     = is_admin();
 	$preview   = is_customize_preview();
 
-	if ( ! $preview && $cached_fonts = get_transient( $transient ) ) {
+	if ( ! ( $admin || $preview ) && $cached_fonts = get_transient( $transient ) ) {
 		return $cached_fonts;
 	}
 
 	$fonts = mai_add_body_font_variants( $fonts );
 	$fonts = mai_add_extra_google_fonts( $fonts );
 
-	if ( ! $preview ) {
+	if ( ! ( $admin || $preview ) ) {
 		set_transient( $transient, $fonts, 60 );
 	}
 
@@ -221,7 +224,9 @@ function mai_add_breakpoint_custom_properties( $css ) {
 	}
 
 	// Add breakpoints to beginning of array cause that's how Mike likes to see them.
-	$css['global'][':root'] = array_merge( $props, $css['global'][':root'] );
+	if ( $props ) {
+		$css['global'][':root'] = array_merge( $props, $css['global'][':root'] );
+	}
 
 	return $css;
 }
