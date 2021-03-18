@@ -423,10 +423,6 @@ function mai_get_settings( $name ) {
  * @return mixed
  */
 function mai_get_global_styles( $key ) {
-	if ( ! $key ) {
-		return false;
-	}
-
 	static $styles = null;
 
 	if ( is_array( $styles ) && isset( $styles[ $key ] ) ) {

@@ -24,7 +24,7 @@ function mai_get_font_sizes() {
 	}
 
 	$sizes  = [];
-	$config = mai_get_global_styles()['extra'];
+	$config = mai_get_config( 'global-styles' );
 	$scale  = isset( $config['font-scale'] ) ? (int) $config['font-scale'] : 1.25;
 	$base   = isset( $config['font-size-base'] ) ? (int) $config['font-size-base'] : 16;
 	$sm     = $base / $scale;
