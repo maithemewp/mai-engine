@@ -9,6 +9,25 @@
  * @license   GPL-2.0-or-later
  */
 
+add_action( 'customize_save_after', 'mai_flush_customizer_transients' );
+/**
+ * Deletes kirki transients when the Customizer is saved.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_flush_customizer_transients() {
+	$transients = [
+		'mai_dynamic_css',
+		'mai_dynamic_fonts',
+	];
+	foreach ( $transients as $transient ) {
+		delete_transient( $transient );
+	}
+}
+
+
 add_filter( 'kirki_mai-engine_styles', 'mai_add_kirki_css' );
 /**
  * Outputs kirki css.
@@ -20,16 +39,11 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_kirki_css' );
  * @return array
  */
 function mai_add_kirki_css( $css ) {
-	$transient  = 'mai_dynamic_css';
-	$cached_css = get_transient( $transient );
-	$preview    = is_customize_preview();
+	$transient = 'mai_dynamic_css';
+	$preview   = is_customize_preview();
 
-	if ( $cached_css ) {
-		if ( $preview ) {
-			delete_transient( $transient );
-		} else {
-			return $cached_css;
-		}
+	if ( ! $preview && $cached_css = get_transient( $transient ) ) {
+		return $cached_css;
 	}
 
 	$css = mai_add_additional_colors_css( $css );
@@ -63,16 +77,11 @@ function mai_add_kirki_fonts( $fonts ) {
 		return $fonts;
 	}
 
-	$transient    = 'mai_dynamic_fonts';
-	$cached_fonts = get_transient( $transient );
-	$preview      = is_customize_preview();
+	$transient = 'mai_dynamic_fonts';
+	$preview   = is_customize_preview();
 
-	if ( $cached_fonts ) {
-		if ( $preview ) {
-			delete_transient( $transient );
-		} else {
-			return $cached_fonts;
-		}
+	if ( ! $preview && $cached_fonts = get_transient( $transient ) ) {
+		return $cached_fonts;
 	}
 
 	$fonts = mai_add_body_font_variants( $fonts );
