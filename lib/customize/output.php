@@ -10,6 +10,7 @@
  */
 
 add_action( 'after_switch_theme', 'mai_flush_customizer_transients' );
+add_action( 'post_updated', 'mai_flush_customizer_transients' );
 add_action( 'customize_save_after', 'mai_flush_customizer_transients' );
 /**
  * Deletes kirki transients when the Customizer is saved.
@@ -27,7 +28,6 @@ function mai_flush_customizer_transients() {
 		delete_transient( $transient );
 	}
 }
-
 
 add_filter( 'kirki_mai-engine_styles', 'mai_add_kirki_css' );
 /**
