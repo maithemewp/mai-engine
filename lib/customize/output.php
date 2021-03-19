@@ -139,6 +139,7 @@ function mai_add_additional_colors_css( $css ) {
 			if ( $color ) {
 				$css['global'][':root'][ '--color-' . $name ]                               = $color;
 				$css['global'][ '.has-' . $name . '-color' ]['color']                       = 'var(--color-' . $name . ') !important';
+				$css['global'][ '.has-' . $name . '-color' ]['--body-color']                = 'var(--color-' . $name . ')';
 				$css['global'][ '.has-' . $name . '-color' ]['--heading-color']             = 'var(--color-' . $name . ')';
 				$css['global'][ '.has-' . $name . '-color' ]['--caption-color']             = 'var(--color-' . $name . ')';
 				$css['global'][ '.has-' . $name . '-color' ]['--cite-color']                = 'var(--color-' . $name . ')';

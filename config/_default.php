@@ -34,6 +34,11 @@ return [
 			'primary'    => '#007bff', // Button primary background color.
 			'secondary'  => '#6c747d', // Button secondary background color.
 		],
+		'custom-colors'  => [
+			// [
+			// 	'color' => '#bcda83', // var(--color-custom-1).
+			// ],
+		],
 		'fonts'          => [
 			'body'    => 'sans-serif:400',
 			'heading' => 'sans-serif:600',

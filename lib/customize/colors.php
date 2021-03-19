@@ -54,6 +54,18 @@ function mai_colors_customizer_settings() {
 					'context'       => [ 'front', 'editor' ],
 				],
 				[
+					'element'       => '.has-' . $id . '-color',
+					'property'      => '--color-body',
+					'value_pattern' => 'var(--color-' . $id . ') !important',
+					'context'       => [ 'front', 'editor' ],
+				],
+				[
+					'element'       => '.has-' . $id . '-color',
+					'property'      => '--color-heading',
+					'value_pattern' => 'var(--color-' . $id . ') !important',
+					'context'       => [ 'front', 'editor' ],
+				],
+				[
 					'element'       => '.has-' . $id . '-background-color',
 					'property'      => 'background-color',
 					'value_pattern' => 'var(--color-' . $id . ') !important',
@@ -74,7 +86,7 @@ function mai_colors_customizer_settings() {
 			'section'      => $section,
 			'button_label' => __( 'Add New Color ', 'mai-engine' ),
 			'settings'     => 'custom-colors',
-			'default'      => [],
+			'default'      => mai_get_option( 'custom-colors', mai_get_global_styles( 'custom-colors' ) ),
 			'row_label'    => [
 				'type'  => 'text',
 				'value' => __( 'Custom Color', 'mai-engine' ),
@@ -83,7 +95,6 @@ function mai_colors_customizer_settings() {
 				'color' => [
 					'type'    => 'color',
 					'label'   => '',
-					'default' => '',
 					'alpha'   => true,
 					'choices' => [
 						'alpha'    => true,
