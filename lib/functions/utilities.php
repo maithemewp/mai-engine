@@ -933,17 +933,20 @@ function mai_get_header_shrink_offset() {
  * @return string
  */
 function mai_get_menu( $menu, $args = [] ) {
+	$defaults = mai_get_menu_defaults();
+	$args     = shortcode_atts( $defaults, $args, 'mai_menu' );
+
 	if ( ! is_nav_menu( $menu ) ) {
 		return;
 	}
 
 	$menu_class = 'menu genesis-nav-menu';
 
-	if ( isset( $args['class'] ) && $args['class'] ) {
+	if ( $args['class'] ) {
 		$menu_class = mai_add_classes( $args['class'], $menu_class );
 	}
 
-	$list = isset( $args['display'] ) && ( 'list' === $args['display'] );
+	$list = 'list' === $args['display'];
 
 	if ( $list ) {
 		$menu_class = mai_add_classes( 'menu-list', $menu_class );
@@ -982,7 +985,7 @@ function mai_get_menu( $menu, $args = [] ) {
 			'style' => '',
 		];
 
-		if ( isset( $args['align'] ) && $args['align'] ) {
+		if ( $args['align'] ) {
 			switch ( trim( $args['align'] ) ) {
 				case 'left':
 					$atts['style'] .= '--menu-justify-content:flex-start;--menu-item-justify-content:flex-start;';
@@ -1003,6 +1006,16 @@ function mai_get_menu( $menu, $args = [] ) {
 					}
 					break;
 			}
+		}
+
+		if ( $args['font_size'] ) {
+			if ( in_array( $args['font_size'], ['xs', 'sm', 'md', 'lg', 'xl', 'xxl' ] ) ) {
+				$size = sprintf( 'var(--font-size-%s)', $args['font_size'] );
+			} else {
+				$size = mai_get_unit_value( $args['font-size'] );
+			}
+
+			$atts['style'] .= sprintf( '--menu-font-size:%s;', $size );
 		}
 
 		$atts['itemtype'] = 'https://schema.org/SiteNavigationElement';
@@ -1063,10 +1076,11 @@ function mai_get_menu_items_by_location( $location ) {
  */
 function mai_get_menu_defaults() {
 	$defaults = [
-		'id'      => '',       // The menu ID, slug, name.
-		'class'   => '',       // HTML classes.
-		'align'   => 'center', // Accepts left, center, or right.
-		'display' => '',       // Accepts list.
+		'id'        => '',       // The menu ID, slug, name.
+		'class'     => '',       // HTML classes.
+		'align'     => 'center', // Accepts left, center, or right.
+		'display'   => '',       // Accepts list.
+		'font_size' => '',       // Accepts size values 'sm', 'md', etc. or integer or unit value.
 	];
 	return apply_filters( 'mai_menu_defaults', $defaults );
 }

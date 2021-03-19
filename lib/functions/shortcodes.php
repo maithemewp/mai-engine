@@ -121,10 +121,7 @@ add_shortcode( 'mai_menu', 'mai_menu_shortcode' );
  * @return string
  */
 function mai_menu_shortcode( $atts ) {
-	$defaults = mai_get_menu_defaults();
-	$atts     = shortcode_atts( $defaults, $atts, 'mai_menu' );
-
-	if ( ! $atts['id'] ) {
+	if ( ! ( isset( $atts['id'] ) && $atts['id'] ) ) {
 		return;
 	}
 
