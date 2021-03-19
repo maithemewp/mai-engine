@@ -87,7 +87,7 @@ function mai_get_custom_colors() {
 	}
 
 	$colors  = [];
-	$options = mai_get_option( 'custom-colors', [] );
+	$options = mai_get_option( 'custom-colors', mai_get_global_styles( 'custom-colors' ) );
 	$count   = 1;
 
 	foreach ( $options as $index => $option ) {
