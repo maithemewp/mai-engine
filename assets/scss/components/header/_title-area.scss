@@ -13,6 +13,7 @@
 	text-align: var(--title-area-text-align, start);
 	transition: var(--title-area-transition, var(--transition));
 
+	--link-color-hover: var(--color-link);
 	--link-text-decoration: none;
 	--link-text-decoration-hover: none;
 }
@@ -31,8 +32,6 @@
 }
 
 .site-title {
-	--link-color-hover: var(--color-primary);
-
 	display: var(--site-title-display, block);
 	margin: var(--site-title-margin, auto);
 	font-weight: var(--site-title-font-weight, var(--heading-font-weight));
