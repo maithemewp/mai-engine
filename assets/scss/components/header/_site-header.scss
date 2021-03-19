@@ -67,6 +67,12 @@
 	@include dark_bg();
 }
 
+.has-dark-header .title-area,
+.has-dark-transparent-header:not(.header-stuck) .title-area {
+	--title-area-color: var(--color-white);
+	--link-color-hover: var(--color-white);
+}
+
 .has-dark-mobile-menu .mobile-menu {
 	--mobile-menu-color: var(--color-white);
 	--sub-menu-link-color: var(--color-white);
