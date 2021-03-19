@@ -32,7 +32,7 @@ function mai_register_columns_blocks() {
 			'keywords'        => [ 'columns' ],
 			'icon'            => mai_get_svg_icon( 'columns', 'light' ),
 			'supports'        => [
-				'align' => [ 'wide', 'full', 'left', 'center', 'right' ],
+				'align' => [ 'wide', 'full' ],
 				'mode'  => false,
 				'jsx'   => true,
 			],
