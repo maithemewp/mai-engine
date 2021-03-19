@@ -31,6 +31,8 @@
 }
 
 .site-title {
+	--link-color-hover: var(--color-primary);
+
 	display: var(--site-title-display, block);
 	margin: var(--site-title-margin, auto);
 	font-weight: var(--site-title-font-weight, var(--heading-font-weight));
