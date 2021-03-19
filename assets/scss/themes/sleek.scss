@@ -1,16 +1,24 @@
 :root {
+	--border-radius: 0;
 	--button-font-weight: var(--body-font-weight-bold);
-	--button-border-radius: 0;
-	--input-border-radius: 0;
+	--button-transform-hover: translateY(-5%);
+	--button-link-color: var(--color-heading);
+	--button-link-color-hover: var(--color-link);
 	--site-title-font-size: var(--font-size-lg);
 	--site-header-border-bottom: 0;
 }
 
-.entries-grid.has-image-full .entry.has-image-first {
-	--entry-position: relative;
+.is-style-subheading {
+	--body-color: var(--color-custom-1);
+	--heading-color: var(--color-custom-1);
 }
 
-.entries-grid.has-image-full .has-no-content-excerpt .entry.has-image-first .entry-wrap {
+.entries.has-image-full .entry.has-image-first {
+	--entry-position: relative;
+	--entry-image-link-margin-bottom: 0;
+}
+
+.entries.has-image-full .has-no-content-excerpt .entry.has-image-first .entry-wrap {
 	position: absolute;
 	bottom: 0;
 	left: 0;
@@ -20,15 +28,36 @@
 	background: var(--color-white);
 }
 
+.entries.has-image-full .has-no-content-excerpt .entry.has-image-first:hover .entry-wrap,
+.entries.has-image-full .has-no-content-excerpt .entry.has-image-first:focus .entry-wrap {
+	padding-bottom: var(--spacing-xl);
+	color: var(--color-white);
+	background: var(--color-black);
+	--body-color: var(--color-white);
+	--entry-title-link-color: var(--color-white);
+	--link-color: var(--color-white);
+	--link-color-hover: var(--color-white);
+	--link-filter-hover: brightness(0.8);
+}
+
+.entry-meta {
+	--link-color: var(--body-color, var(--color-body));
+	--link-color-hover: var(--color-link);
+}
+
+.entry-meta em {
+	color: var(--entry-meta-em-color, var(--color-custom-1));
+}
+
 @media only screen and (min-width: 1000px) {
 
-	.has-background-wide-left,
-	.has-background-wide-right {
+	.has-background-full-left,
+	.has-background-full-right {
 		position: relative;
 	}
 
-	.has-background-wide-left::before,
-	.has-background-wide-right::after {
+	.has-background-full-left::before,
+	.has-background-full-right::after {
 		position: absolute;
 		top: 0;
 		bottom: 0;
@@ -37,12 +66,12 @@
 		content: "";
 	}
 
-	.has-background-wide-left::before {
+	.has-background-full-left::before {
 		right: 0;
 		left: -9999px;
 	}
 
-	.has-background-wide-right::after {
+	.has-background-full-right::after {
 		right: -9999px;
 		left: 0;
 	}

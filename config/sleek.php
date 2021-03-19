@@ -18,9 +18,13 @@ return [
 			'body'       => '#333333', // Body text color.
 			'heading'    => '#111111', // Heading text color.
 			'link'       => '#e50000', // Link color.
-			'primary'    => '#999999', // Button primary background color.
-			'secondary'  => '#999999', // Button secondary background color.
-			'custom-1'   => '#999999'
+			'primary'    => '#111111', // Button primary background color.
+			'secondary'  => '#111111', // Button secondary background color.
+		],
+		'custom-colors' => [
+			[
+				'color' => '#999999', // var(--color-custom-1) for Subheading.
+			],
 		],
 		// 'fonts'  => [
 		// 	'body'    => 'Karla:400',
