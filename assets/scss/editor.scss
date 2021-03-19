@@ -149,6 +149,13 @@ p {
 	}
 }
 
+@each $margin-setting in $margin_settings {
+
+	[data-margin-#{ $margin-setting }="no"] {
+		margin-#{ $margin-setting }: 0 !important;
+	}
+}
+
 @each $size-name, $size-value in $font-sizes {
 
 	[data-font-size="#{ $size-name }"] > .rich-text {

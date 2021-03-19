@@ -617,6 +617,10 @@ const withMarginControls = createHigherOrderComponent( ( BlockEdit ) => {
 					value: '',
 				},
 				{
+					label: __( 'None', 'mai-engine' ),
+					value: 'no',
+				},
+				{
 					label: __( 'XS', 'mai-engine' ),
 					value: 'md',
 				},
