@@ -8,18 +8,18 @@
 	--input-width: auto;
 }
 
-// Start crazy CSS to override block-library styles.
-// This is really only here for nested cover/group blocks.
-
 .has-dark-background {
-	--heading-color: var(--color-white);
-	--body-color: var(--color-white);
+
+	@include dark_bg();
 }
 
 .has-light-background {
 	--heading-color: var(--color-heading);
 	--body-color: var(--color-body);
 }
+
+// Start crazy CSS to override block-library styles.
+// This is really only here for nested cover/group blocks.
 
 .has-dark-background h1:not(.has-text-color),
 .has-dark-background h2:not(.has-text-color),

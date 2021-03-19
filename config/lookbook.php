@@ -16,12 +16,12 @@ return [
 	'global-styles' => [
 		'breakpoint' => 1360,
 		'colors'     => [
+			'alt'       => '#f5f5f5',
+			'body'      => '#000000',
+			'heading'   => '#000000',
 			'link'      => '#ffe1ce',
 			'primary'   => '#000000',
 			'secondary' => '#f5f5f5',
-			'body'      => '#000000',
-			'heading'   => '#000000',
-			'alt'       => '#f5f5f5',
 		],
 		'fonts'      => [
 			'body'    => 'Lato:400',

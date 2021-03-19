@@ -439,6 +439,15 @@ function mai_get_global_styles( $key ) {
 	return $styles[ $key ];
 }
 
+
+add_filter( 'genesis_cpt_crumb', function( $crumb, $args ) {
+	if ( ! is_singular( [ 'page' ] ) ) {
+		return $crumb;
+	}
+	$slug = get_post_field( 'post_name', get_the_ID() );
+	return $slug ?: $crumb;
+}, 10, 2 );
+
 /**
  * Get breakpoints from initial site container width in config.
  *

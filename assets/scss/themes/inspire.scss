@@ -3,8 +3,6 @@
 :root {
 	--font-size-base: 14px;
 	--border-radius: 0;
-	--site-header-background: var(--color-primary);
-	--title-area-color: var(--color-white);
 	--button-font-weight: var(--body-font-weight-bold);
 	--author-box-color: var(--color-white);
 	--author-box-background: var(--color-primary);
@@ -31,7 +29,6 @@
 .nav-header {
 	--menu-font-size: var(--font-size-base);
 	--menu-font-weight: bold;
-	--menu-item-link-color: var(--color-white);
 }
 
 .nav-header .button,

@@ -17,12 +17,13 @@ return [
 	],
 	'global-styles' => [
 		'colors' => [
+			'alt'       => '#f3f2ed',
+			'header'    => '#002627',
+			'body'      => '#252323',
+			'heading'   => '#002627',
 			'link'      => '#894b32',
 			'primary'   => '#002627',
 			'secondary' => '#894b32',
-			'heading'   => '#002627',
-			'body'      => '#252323',
-			'alt'       => '#f3f2ed',
 			'black'     => '#222222',
 		],
 		'fonts' => [
@@ -71,21 +72,6 @@ return [
 		],
 	],
 	'custom-functions' => function() {
-		/**
-		 * Add custom body class.
-		 *
-		 * @since 2.6.0
-		 *
-		 * @param array $classes The existing body classes.
-		 *
-		 * @return array Modified classes.
-		 */
-		add_filter( 'body_class', 'mai_inspire_body_class' );
-		function mai_inspire_body_class( $classes ) {
-			$classes[] = 'has-dark-header';
-			return $classes;
-		}
-
 		add_filter( 'genesis_author_box_gravatar_size', 'mai_inspire_author_box_gravatar' );
 		/**
 		 * Use thumbnail image size for author box avatar.
