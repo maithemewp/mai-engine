@@ -69,7 +69,8 @@ function mai_colors_customizer_settings() {
 		$handle,
 		[
 			'type'         => 'repeater',
-			'label'        => '', // No label.
+			'label'        => __( 'Custom Colors', 'mai-engine' ),
+			'description'  => sprintf( '%s var(--color-custom-#)', __( 'Use in CSS via:', 'mai-engine' ) ),
 			'section'      => $section,
 			'button_label' => __( 'Add New Color ', 'mai-engine' ),
 			'settings'     => 'custom-colors',
