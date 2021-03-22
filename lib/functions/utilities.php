@@ -1140,7 +1140,7 @@ function mai_get_avatar_default_args() {
 function mai_get_author_id() {
 	static $author_id = false;
 
-	if ( ! is_null( $author_id ) ) {
+	if ( ! is_null( $author_id ) && $author_id ) {
 		return $author_id;
 	}
 
