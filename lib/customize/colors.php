@@ -55,13 +55,13 @@ function mai_colors_customizer_settings() {
 				],
 				[
 					'element'       => '.has-' . $id . '-color',
-					'property'      => '--color-body',
+					'property'      => '--body-color',
 					'value_pattern' => 'var(--color-' . $id . ') !important',
 					'context'       => [ 'front', 'editor' ],
 				],
 				[
 					'element'       => '.has-' . $id . '-color',
-					'property'      => '--color-heading',
+					'property'      => '--heading-color',
 					'value_pattern' => 'var(--color-' . $id . ') !important',
 					'context'       => [ 'front', 'editor' ],
 				],
