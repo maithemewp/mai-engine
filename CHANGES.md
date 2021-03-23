@@ -40,7 +40,7 @@
 * Changed: Converted all instances of 100vw to new var(--viewport-width) custom property which accounts for scrollbars.
 * Changed: Editor background is now always white.
 * Changed: Bold/strong text now has break-word CSS applied.
-* Changed: Edit comment link is now visibile on comments when user has correct privileges.
+* Changed: Edit comment link is now visible on comments when user has correct privileges.
 * Changed: Content width now expands to fill container if the main container width is customized to be larger.
 * Changed: Cart total displayed via [mai_icon] now displays more consistently regardless of where it's used.
 * Changed: Updated pot file for translations.
@@ -52,7 +52,7 @@
 * Fixed: Entry pagination not displaying when using page breaks for paginated posts.
 * Fixed: Missing fallback for column count when entries are set to display in a single column. Fixes minor horizontal scroll in some scenarios.
 * Fixed: Page Header image field was not being used on static front page.
-* Fixed: Error with Mai Columns block when using a custom arrangemnt and "Auto".
+* Fixed: Error with Mai Columns block when using a custom arrangement and "Auto".
 * Fixed: Default column count in Mai Columns.
 * Fixed: Images in classic editor wider than their container.
 * Fixed: Search block styling with various configurations.

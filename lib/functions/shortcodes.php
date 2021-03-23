@@ -62,19 +62,20 @@ function mai_back_to_top_shortcode( $atts = [] ) {
 		'link'  => esc_url( $atts['link'] ),
 		'title' => esc_html( $atts['title'] ),
 		'text'  => esc_html( $atts['text'] ),
-		'class' => sanitize_html_class( $atts['class'] ),
+		'class' => esc_html( $atts['class'] ),
 	];
 
-	$class = 'mai-back-to-top';
+	$classes = 'mai-back-to-top';
+
 	if ( $atts['class'] ) {
-		$class .= ' ' . $atts['class'];
+		$classes = mai_add_classes( $atts['class'], $classes );
 	}
 
 	return sprintf(
 		'<a href="%s" title="%s" class="%s">%s</a>',
 		$atts['link'],
 		$atts['title'],
-		trim( $class ),
+		trim( $classes ),
 		$atts['text']
 	);
 }
