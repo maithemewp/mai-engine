@@ -6,6 +6,14 @@
 	--button-link-color-hover: var(--color-link);
 	--site-title-font-size: var(--font-size-lg);
 	--site-header-border-bottom: 0;
+	--breadcrumb-font-size: var(--font-size-sm);
+}
+
+.breadcrumb {
+	color: var(--breadcrumb-color, var(--color-custom-1));
+	font-style: italic;
+	--link-color: var(--color-body);
+	--link-color-hover: var(--color-link);
 }
 
 .is-style-subheading {
