@@ -17,24 +17,82 @@ return [
 			'alt'        => '#f3f3f3', // Background alt.
 			'body'       => '#333333', // Body text color.
 			'heading'    => '#111111', // Heading text color.
-			'link'       => '#e50000', // Link color.
+			'link'       => '#0066cc', // Link color.
 			'primary'    => '#111111', // Button primary background color.
-			'secondary'  => '#111111', // Button secondary background color.
+			'secondary'  => '#000000', // Button secondary background color.
 		],
 		'custom-colors' => [
 			[
 				'color' => '#999999', // var(--color-custom-1) for Subheading.
 			],
 		],
-		// 'fonts'  => [
-		// 	'body'    => 'Karla:400',
-		// 	'heading' => 'Karla:700',
-		// ],
+		'fonts' => [
+			'body'    => 'Noto Sans:400',
+			'heading' => 'Montserrat:700',
+		],
 	],
 	'image-sizes' => [
 		'add' => [
 			'portrait' => '3:4',
 			'square'   => '1:1',
+		],
+	],
+	'settings' => [
+		'content-archives' => [
+			'post' => [
+				'show' => [
+					'image',
+					'genesis_entry_header',
+					'title',
+					'header_meta',
+					'genesis_before_entry_content',
+					'genesis_entry_content',
+					'genesis_after_entry_content',
+					'genesis_entry_footer',
+				],
+				'header_meta'        => '<em>by</em> [post_author_posts_link before=""] <em>on</em> [post_date before=""]',
+				'footer_meta'        => '[post_terms taxonomy="category" before="Category: "][post_terms taxonomy="post_tag" before="Tag: "]',
+				'boxed'              => false,
+				'columns'            => '2',
+			],
+			'portfolio' => [
+				'show' => [
+					'image',
+					'genesis_entry_header',
+					'title',
+					'genesis_before_entry_content',
+					'genesis_entry_content',
+					'genesis_after_entry_content',
+					'genesis_entry_footer',
+					'footer_meta',
+				],
+				'title_size'         => 'lg',
+				'image_orientation'  => 'square',
+				'image_position'     => 'full',
+				'footer_meta'        => '[post_terms taxonomy="portfolio_type" before=""]',
+				'boxed'              => false,
+				'columns'            => '2',
+				'column_gap'         => 'xl',
+				'row_gap'            => 'xl',
+			],
+		],
+		'single-content' => [
+			'post' => [
+				'header_meta' => '<em>by</em> [post_author_posts_link before=""] <em>on</em> [post_date before=""]',
+				'footer_meta' => '[post_terms taxonomy="category" before="→ "][post_terms taxonomy="post_tag" before="→ "]',
+			],
+			'portfolio' => [
+				'image_orientation' => 'square',
+				'footer_meta'       => '[post_terms taxonomy="portfolio_type" before="Portfolio Type: "][post_terms taxonomy="portfolio_tag" before="Portfolio Tag: "]',
+			],
+		],
+		'site-layouts' => [
+			'default' => [
+				'archive' => 'wide-content',
+			],
+			'archive' => [
+				'portfolio' => 'standard-content',
+			],
 		],
 	],
 	'custom-functions' => function() {
