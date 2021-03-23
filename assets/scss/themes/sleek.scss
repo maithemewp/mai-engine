@@ -23,6 +23,15 @@
 	--heading-color: var(--color-custom-1);
 }
 
+.button-link {
+	--button-display: inline-table; /* fixes underline on the arrow */
+	--button-text-decoration: underline;
+}
+
+.button-link::after {
+	--button-text-decoration: none;
+}
+
 .entries.has-image-full .entry.has-image-first {
 	--entry-position: relative;
 	--entry-image-link-margin-bottom: 0;
