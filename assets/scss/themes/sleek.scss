@@ -1,4 +1,6 @@
 :root {
+	--font-scale: 1.165;
+	--heading-line-height: 1.44;
 	--border-radius: 0;
 	--button-font-weight: var(--body-font-weight-bold);
 	--button-transform-hover: translateY(-5%);
@@ -45,12 +47,14 @@
 	--entry-title-link-color: var(--color-white);
 	--link-color: var(--color-white);
 	--link-color-hover: var(--color-white);
+	--entry-meta-link-color: var(--color-white);
+	--entry-meta-link-color-hover: var(--color-white);
 	--link-filter-hover: brightness(0.8);
 }
 
-.entry-meta {
-	--link-color: var(--body-color, var(--color-body));
-	--link-color-hover: var(--color-link);
+.entry-meta a {
+	--link-color: var(--entry-meta-link-color, var(--body-color, var(--color-body)));
+	--link-color-hover: var(--entry-meta-link-color-hover, var(--color-link));
 }
 
 .entry-meta em {
