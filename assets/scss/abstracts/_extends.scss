@@ -34,7 +34,7 @@
 
 @mixin button($is_admin: false) {
 	position: relative;
-	display: inline-flex;
+	display: var(--button-display, inline-flex);
 	align-items: center;
 	justify-content: center;
 	width: var(--button-width, auto);
