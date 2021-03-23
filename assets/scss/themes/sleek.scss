@@ -50,14 +50,14 @@
 .entries.has-image-full .has-no-content-excerpt .entry.has-image-first:hover .entry-wrap,
 .entries.has-image-full .has-no-content-excerpt .entry.has-image-first:focus .entry-wrap {
 	padding-bottom: var(--spacing-xl);
-	color: var(--color-white);
-	background: var(--color-black);
-	--body-color: var(--color-white);
-	--entry-title-link-color: var(--color-white);
-	--link-color: var(--color-white);
-	--link-color-hover: var(--color-white);
-	--entry-meta-link-color: var(--color-white);
-	--entry-meta-link-color-hover: var(--color-white);
+	color: var(--button-color);
+	background: var(--button-background, var(--color-primary));
+	--body-color: var(--button-color);
+	--entry-title-link-color: var(--button-color);
+	--link-color: var(--button-color);
+	--link-color-hover: var(--button-color);
+	--entry-meta-link-color: var(--button-color);
+	--entry-meta-link-color-hover: var(--button-color);
 	--link-filter-hover: brightness(0.8);
 }
 
