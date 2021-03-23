@@ -37,6 +37,10 @@
 	--entry-image-link-margin-bottom: 0;
 }
 
+.has-alt-background-color {
+	--entry-wrap-background: var(--color-alt);
+}
+
 .entries.has-image-full .has-no-content-excerpt .entry.has-image-first .entry-wrap {
 	position: absolute;
 	bottom: 0;
@@ -44,14 +48,14 @@
 	max-width: calc(100% - var(--spacing-xl));
 	margin-left: 0;
 	padding: var(--spacing-lg);
-	background: var(--color-white);
+	background: var(--entry-wrap-background, var(--color-white));
 }
 
 .entries.has-image-full .has-no-content-excerpt .entry.has-image-first:hover .entry-wrap,
 .entries.has-image-full .has-no-content-excerpt .entry.has-image-first:focus .entry-wrap {
 	padding-bottom: var(--spacing-xl);
 	color: var(--button-color);
-	background: var(--button-background, var(--color-primary));
+	--entry-wrap-background: var(--button-background, var(--color-primary));
 	--body-color: var(--button-color);
 	--entry-title-link-color: var(--button-color);
 	--entry-title-link-color-hover: var(--button-color);
