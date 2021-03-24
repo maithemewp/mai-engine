@@ -1109,7 +1109,7 @@ class Mai_Entry {
 			return;
 		}
 
-		if ( ! $this->args['custom_content'] ) {
+		if ( ! ( isset( $this->args['custom_content'] ) && $this->args['custom_content'] ) ) {
 			return;
 		}
 
