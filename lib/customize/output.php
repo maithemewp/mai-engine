@@ -9,7 +9,7 @@
  * @license   GPL-2.0-or-later
  */
 
-add_action( 'admin_init', 'mai_admin_flush_customizer_transients' );
+// add_action( 'admin_init', 'mai_admin_flush_customizer_transients' );
 /**
  * Deletes kirki transients if they have a value when viewing the Dashboard.
  *
@@ -31,7 +31,7 @@ function mai_admin_flush_customizer_transients() {
 }
 
 add_action( 'after_switch_theme',   'mai_flush_customizer_transients' );
-add_action( 'post_updated',         'mai_flush_customizer_transients' );
+add_action( 'save_post',            'mai_flush_customizer_transients' );
 add_action( 'customize_save_after', 'mai_flush_customizer_transients' );
 /**
  * Deletes kirki transients when the Customizer is saved.
