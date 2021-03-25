@@ -1098,6 +1098,11 @@ function mai_get_menu_defaults() {
 function mai_get_avatar( $args ) {
 	$args       = wp_parse_args( $args, mai_get_avatar_default_args() );
 	$args['id'] = 'current' === $args['id'] ? mai_get_author_id() : $args['id'];
+
+	if ( ! $args['id'] ) {
+		return;
+	}
+
 	$avatar     = get_avatar( $args['id'], absint( $args['size'] ) );
 
 	if ( ! $avatar ) {
@@ -1163,7 +1168,7 @@ function mai_get_avatar_default_args() {
 function mai_get_author_id() {
 	static $author_id = null;
 
-	if ( ! is_null( $author_id ) && $author_id ) {
+	if ( ! is_null( $author_id ) ) {
 		return $author_id;
 	}
 
