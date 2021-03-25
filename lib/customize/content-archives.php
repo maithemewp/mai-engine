@@ -29,12 +29,16 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 		$archive_settings = [];
 	}
 
-	$config = mai_get_config( 'settings' )['content-archives'];
+	$config   = mai_get_config( 'settings' )['content-archives'];
+	$defaults = isset( $config[ $name ] ) ? $config[ $name ] : $config['post'];
 
-	if ( 'post' !== $name && isset( $config[ $name ] ) ) {
-		$defaults = array_replace_recursive( $config[ 'post' ], $config[ $name ] );
-	} else {
-		$defaults = $config[ 'post' ];
+	if ( 'post' !== $name ) {
+		foreach ( $config[ 'post' ] as $key => $value ) {
+			if ( isset( $defaults[ $key ] ) ) {
+				continue;
+			}
+			$defaults[ $key ] = $value;
+		}
 	}
 
 	$settings = [

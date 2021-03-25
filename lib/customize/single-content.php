@@ -29,12 +29,16 @@ function mai_get_single_content_settings( $name = 'post' ) {
 		$single_settings = [];
 	}
 
-	$config = mai_get_config( 'settings' )['single-content'];
+	$config   = mai_get_config( 'settings' )['single-content'];
+	$defaults = isset( $config[ $name ] ) ? $config[ $name ] : $config['post'];
 
-	if ( 'post' !== $name && isset( $config[ $name ] ) ) {
-		$defaults = array_replace_recursive( $config[ 'post' ], $config[ $name ] );
-	} else {
-		$defaults = $config[ 'post' ];
+	if ( 'post' !== $name ) {
+		foreach ( $config[ 'post' ] as $key => $value ) {
+			if ( isset( $defaults[ $key ] ) ) {
+				continue;
+			}
+			$defaults[ $key ] = $value;
+		}
 	}
 
 	$settings = [
