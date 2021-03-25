@@ -29,8 +29,14 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 		$archive_settings = [];
 	}
 
-	$defaults = mai_get_config( 'settings' )['content-archives'];
-	$defaults = isset( $defaults[ $name ] ) ? $defaults[ $name ] : $defaults[ 'post' ];
+	$config = mai_get_config( 'settings' )['content-archives'];
+
+	if ( 'post' !== $name && isset( $config[ $name ] ) ) {
+		$defaults = array_replace_recursive( $config[ 'post' ], $config[ $name ] );
+	} else {
+		$defaults = $config[ 'post' ];
+	}
+
 	$settings = [
 		[
 			'settings'    => 'show',

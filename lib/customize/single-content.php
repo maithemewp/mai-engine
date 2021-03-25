@@ -29,8 +29,14 @@ function mai_get_single_content_settings( $name = 'post' ) {
 		$single_settings = [];
 	}
 
-	$defaults = mai_get_config( 'settings' )['single-content'];
-	$defaults = isset( $defaults[ $name ] ) ? $defaults[ $name ] : $defaults[ 'post' ];
+	$config = mai_get_config( 'settings' )['single-content'];
+
+	if ( 'post' !== $name && isset( $config[ $name ] ) ) {
+		$defaults = array_replace_recursive( $config[ 'post' ], $config[ $name ] );
+	} else {
+		$defaults = $config[ 'post' ];
+	}
+
 	$settings = [
 		[
 			'settings'    => 'show',
