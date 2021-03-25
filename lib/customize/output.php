@@ -9,8 +9,29 @@
  * @license   GPL-2.0-or-later
  */
 
-add_action( 'after_switch_theme', 'mai_flush_customizer_transients' );
-add_action( 'post_updated', 'mai_flush_customizer_transients' );
+add_action( 'admin_init', 'mai_admin_flush_customizer_transients' );
+/**
+ * Deletes kirki transients if they have a value when viewing the Dashboard.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_admin_flush_customizer_transients() {
+	$transients = [
+		'mai_dynamic_css',
+		'mai_dynamic_fonts',
+	];
+	foreach ( $transients as $transient ) {
+		if ( false === ( $value = get_transient( $transient ) ) ) {
+			continue;
+		}
+		delete_transient( $transient );
+	}
+}
+
+add_action( 'after_switch_theme',   'mai_flush_customizer_transients' );
+add_action( 'post_updated',         'mai_flush_customizer_transients' );
 add_action( 'customize_save_after', 'mai_flush_customizer_transients' );
 /**
  * Deletes kirki transients when the Customizer is saved.
