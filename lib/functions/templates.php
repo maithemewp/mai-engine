@@ -195,7 +195,6 @@ function mai_get_template_parts() {
  */
 function mai_get_template_part( $slug ) {
 	$template_parts = mai_get_template_parts();
-
 	return isset( $template_parts[ $slug ] ) ? $template_parts[ $slug ] : '';
 }
 
@@ -207,17 +206,20 @@ function mai_get_template_part( $slug ) {
  * @return array
  */
 function mai_get_template_part_ids() {
-	$template_parts = [];
-	$ids            = [];
-	$objects        = mai_get_template_part_objects();
+	static $ids = null;
+
+	if ( is_array( $ids ) ) {
+		return $ids;
+	}
+
+	$ids     = [];
+	$objects = mai_get_template_part_objects();
 
 	if ( $objects ) {
 		foreach ( $objects as $post ) {
 			$ids[ $post->post_name ] = $post->ID;
 		}
 	}
-
-	$template_parts = $ids;
 
 	return $ids;
 }
@@ -233,7 +235,6 @@ function mai_get_template_part_ids() {
  */
 function mai_get_template_part_id( $slug ) {
 	$template_parts = mai_get_template_part_ids();
-
 	return isset( $template_parts[ $slug ] ) ? $template_parts[ $slug ] : 0;
 }
 
@@ -281,8 +282,8 @@ function mai_get_template_part_objects( $use_transient = true ) {
 
 			if ( $query->have_posts() ) {
 				while ( $query->have_posts() ) : $query->the_post();
-					global $post;
-					$parts[] = $post;
+					$post_id = get_the_ID();
+					$parts[] = get_post( $post_id );
 				endwhile;
 			}
 
