@@ -780,19 +780,20 @@ function mai_get_ellipsis() {
  * Great for displaying reusable blocks in areas that are not block enabled.
  *
  * @since 0.3.0
- * @since N/A   Switched from get_post_field to WP_Query so blocks are parsed and shortcodes are rendered better.
- * @since 2.11.0   Switched from WP_Query to mai_get_processed_content() to avoid conflicts with is_main_query().
+ * @since N/A    Switched from get_post_field to WP_Query so blocks are parsed and shortcodes are rendered better.
+ * @since 2.11.0 Switched from WP_Query to mai_get_processed_content() to avoid conflicts with is_main_query().
  *
  * @param int|string $post_slug_or_id The post slug or ID.
+ * @param string     $post_type       The post type, if using post slug.
  *
  * @return string
  */
-function mai_get_post_content( $post_slug_or_id ) {
+function mai_get_post_content( $post_slug_or_id, $post_type = 'wp_block' ) {
 	if ( is_numeric( $post_slug_or_id ) ) {
 		$post = get_post( $post_slug_or_id );
 
 	} else {
-		$post = get_page_by_path( $post_slug_or_id, OBJECT, 'wp_block' );
+		$post = get_page_by_path( $post_slug_or_id, OBJECT, $post_type );
 	}
 
 	if ( ! $post ) {

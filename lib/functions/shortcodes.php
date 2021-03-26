@@ -88,8 +88,10 @@ add_shortcode( 'mai_content', 'mai_content_shortcode' );
  * Examples:
  * [mai_content id="123"]
  * [mai_content id="my-reusable-block"]
+ * [mai_content id="my-page-slug" post_type="page"]
  *
  * @since 0.3.0
+ * @since TBD Added post_type parameter when displaying content by post slug.
  *
  * @param array $atts Shortcode attributes.
  *
@@ -98,17 +100,20 @@ add_shortcode( 'mai_content', 'mai_content_shortcode' );
 function mai_content_shortcode( $atts = [] ) {
 	$atts = shortcode_atts(
 		[
-			'id' => '',
+			'id'        => '',
+			'post_type' => 'wp_block',
 		],
 		$atts,
 		'mai_content'
 	);
 
+	$atts = array_map( 'esc_html', $atts );
+
 	if ( empty( $atts['id'] ) ) {
 		return;
 	}
 
-	return mai_get_post_content( $atts['id'] );
+	return mai_get_post_content( $atts['id'], strtolower( $atts['post_type'] ) );
 }
 
 add_shortcode( 'mai_menu', 'mai_menu_shortcode' );
