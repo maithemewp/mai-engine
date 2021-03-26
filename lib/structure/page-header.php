@@ -69,6 +69,50 @@ function mai_page_header_setup() {
 	add_action( 'genesis_before_content_sidebar_wrap', 'mai_do_page_header' );
 }
 
+
+/**
+ * Display the page header.
+ *
+ * @since 0.1.0
+ *
+ * @return void
+ */
+function mai_do_page_header() {
+	genesis_markup(
+		[
+			'open'    => '<section %s>',
+			'context' => 'page-header',
+		]
+	);
+
+	genesis_structural_wrap( 'page-header', 'open' );
+
+	genesis_markup(
+		[
+			'open'    => '<div %s>',
+			'context' => 'page-header-inner',
+		]
+	);
+
+	do_action( 'mai_page_header' );
+
+	genesis_markup(
+		[
+			'close'   => '</div>',
+			'context' => 'page-header-inner',
+		]
+	);
+
+	genesis_structural_wrap( 'page-header', 'close' );
+
+	genesis_markup(
+		[
+			'close'   => '</section>',
+			'context' => 'page-header',
+		]
+	);
+}
+
 add_action( 'mai_before_page-header_wrap', 'mai_do_page_header_image' );
 /**
  * Display the page header image.
@@ -260,6 +304,10 @@ function mai_add_page_header_attributes( $attributes ) {
 	$attributes['id']     = 'page-header';
 	$attributes['class'] .= ' is-alignfull-first';
 
+	if ( ! mai_has_light_page_header() ) {
+		$attributes['class'] .= ' has-dark-background';
+	}
+
 	$default = mai_get_config( 'settings' )['page-header']['divider'];
 	$divider = mai_get_option( 'page-header-divider', $default );
 
@@ -270,49 +318,6 @@ function mai_add_page_header_attributes( $attributes ) {
 	$attributes['role'] = 'banner';
 
 	return $attributes;
-}
-
-/**
- * Display the page header.
- *
- * @since 0.1.0
- *
- * @return void
- */
-function mai_do_page_header() {
-	genesis_markup(
-		[
-			'open'    => '<section %s>',
-			'context' => 'page-header',
-		]
-	);
-
-	genesis_structural_wrap( 'page-header', 'open' );
-
-	genesis_markup(
-		[
-			'open'    => '<div %s>',
-			'context' => 'page-header-inner',
-		]
-	);
-
-	do_action( 'mai_page_header' );
-
-	genesis_markup(
-		[
-			'close'   => '</div>',
-			'context' => 'page-header-inner',
-		]
-	);
-
-	genesis_structural_wrap( 'page-header', 'close' );
-
-	genesis_markup(
-		[
-			'close'   => '</section>',
-			'context' => 'page-header',
-		]
-	);
 }
 
 /**

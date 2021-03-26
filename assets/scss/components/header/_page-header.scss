@@ -9,11 +9,6 @@
 	text-align: var(--page-header-text-align, center);
 	background: var(--page-header-background, var(--color-alt));
 	--alignfull-width: 100%;
-
-	.has-dark-page-header & {
-		--heading-color: var(--color-white);
-		--body-color: var(--color-white);
-	}
 }
 
 .page-header-wrap {
