@@ -413,13 +413,13 @@ function mai_has_light_page_header() {
 		$has_light_page_header = false;
 
 	} else {
-		$args   = mai_get_template_args();
-		$config = mai_get_config( 'settings' )['page-header'];
+		$args = mai_get_template_args();
 
 		if ( isset( $args['page-header-text-color'] ) && ! empty( $args['page-header-text-color'] ) ) {
 			$text_color = $args['page-header-text-color'];
 
 		} else {
+			$config     = mai_get_config( 'settings' )['page-header'];
 			$text_color = mai_get_option( 'page-header-text-color', $config['text-color'] );
 		}
 

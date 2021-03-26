@@ -713,6 +713,9 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			'label'           => __( 'Background/overlay color', 'mai-engine' ),
 			'type'            => 'color',
 			'default'         => $defaults['page-header-background-color'],
+			'choices'         => [
+				'palettes' => mai_get_color_choices(),
+			],
 			'active_callback' => 'mai_has_page_header_support_callback',
 		],
 		[

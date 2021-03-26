@@ -66,7 +66,7 @@ function mai_add_kirki_css( $css ) {
 	$preview   = is_customize_preview();
 
 	if ( ! ( $admin || $preview ) && $cached_css = get_transient( $transient ) ) {
-		return $cached_css;
+		// return $cached_css;
 	}
 
 	$css = mai_add_additional_colors_css( $css );
@@ -357,13 +357,8 @@ function mai_add_page_header_content_type_css( $css ) {
 	}
 
 	$config     = mai_get_config( 'settings' )['page-header'];
-	$text       = (string) mai_get_template_arg( 'page-header-text-color', mai_get_option( 'page-header-text-color', mai_get_color( $config['text-color'] ) ) );
 	$background = (string) mai_get_template_arg( 'page-header-background-color', mai_get_option( 'page-header-background-color', mai_get_color( $config['background-color'] ) ) );
 	$opacity    = (string) mai_get_page_header_overlay_opacity();
-
-	if ( $text ) {
-		$css['global'][':root']['--page-header-color'] = $text;
-	}
 
 	if ( $background ) {
 		$css['global'][':root']['--page-header-background'] = $background;

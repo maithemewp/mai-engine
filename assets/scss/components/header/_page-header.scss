@@ -6,12 +6,14 @@
 	justify-content: center;
 	width: 100%;
 	overflow: hidden;
-	color: var(--page-header-color, var(--color-body));
 	text-align: var(--page-header-text-align, center);
 	background: var(--page-header-background, var(--color-alt));
-
-	--heading-color: currentColor;
 	--alignfull-width: 100%;
+
+	.has-dark-page-header & {
+		--heading-color: var(--color-white);
+		--body-color: var(--color-white);
+	}
 }
 
 .page-header-wrap {
@@ -20,10 +22,6 @@
 	flex-direction: column;
 	align-items: var(--page-header-justify-content, center);
 	padding: var(--page-header-padding, var(--page-header-padding-top) var(--page-header-padding-sides, 0) var(--page-header-padding-bottom));
-}
-
-.has-dark-page-header {
-	--page-header-color: var(--color-white);
 }
 
 .page-header-overlay {
