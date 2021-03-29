@@ -22,6 +22,7 @@ add_filter( 'genesis_markup_search-form-submit_open', 'mai_search_form_submit_op
  */
 function mai_search_form_submit_open( $open_html ) {
 	if ( $open_html ) {
+		$open_html .= sprintf( '<span class="screen-reader-text">%s</span>', __( 'Submit search', 'mai-engine' ) );
 		$open_html .= mai_get_svg_icon(
 			'search',
 			'regular',
