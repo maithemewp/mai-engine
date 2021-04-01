@@ -325,3 +325,41 @@ function mai_get_image_sizes_from_aspect_ratio( $size = 'md', $ratio = '16:9' ) 
 
 	return [ $width, $height, true ];
 }
+
+/**
+ * Limits the largest image size served.
+ * Prevents cover blocks and page header from serving huge images.
+ *
+ * @param array|false  $image         {
+ *     Array of image data, or boolean false if no image is available.
+ *
+ *     @type string $0 Image source URL.
+ *     @type int    $1 Image width in pixels.
+ *     @type int    $2 Image height in pixels.
+ *     @type bool   $3 Whether the image is a resized image.
+ * }
+ * @param int          $attachment_id Image attachment ID.
+ * @param string|int[] $size          Requested image size. Can be any registered image size name, or
+ *                                    an array of width and height values in pixels (in that order).
+ * @param bool         $icon          Whether the image should be treated as an icon.
+ */
+add_filter( 'wp_get_attachment_image_src', 'mai_limit_attachment_image_src', 10, 4 );
+function mai_limit_attachment_image_src( $image, $attachment_id, $size, $icon ) {
+	if ( 'full' !== $size ) {
+		return $image;
+	}
+
+	if ( ! $image ) {
+		return $image;
+	}
+
+	remove_filter( 'wp_get_attachment_image_src', 'mai_limit_attachment_image_src', 10, 4 );
+
+	$available = mai_get_available_image_sizes();
+	$size      = isset( $available['1536x1536'] ) ? '1536x1536' : 'large';
+	$src       = wp_get_attachment_image_src( $attachment_id, $size );
+
+	add_filter( 'wp_get_attachment_image_src', 'mai_limit_attachment_image_src', 10, 4 );
+
+	return $src ?: $image;
+}

@@ -18,6 +18,8 @@ body {
 	min-height: auto;
 	background: var(--color-white);
 
+	--admin-menu-width: 160px;
+	--viewport-width: calc(100vw - var(--admin-menu-width) - var(--block-sidebar-width, 0));
 	--body-background-color: var(--color-white);
 	--list-style-position: outside;
 	--list-padding: 0 0 var(--spacing-lg) var(--spacing-xl); // Adds list indent/spacing without affecting block layout.
@@ -66,6 +68,8 @@ p {
 // Overridden in admin.scss.
 .wp-block:not([data-align="full"]):not([data-align="wide"]) {
 	max-width: var(--wp-block-max-width, var(--breakpoint-lg));
+	margin-right: unset;
+	margin-left: unset;
 }
 
 [data-type="core/pullquote"][data-align="left"],
@@ -89,6 +93,51 @@ p {
 	> [data-type="acf/mai-post-grid"] {
 		margin-top: 0;
 		margin-bottom: 0;
+	}
+}
+
+.wp-block[data-align="full"] > .wp-block-group {
+	padding-right: calc(((var(--viewport-width) - var(--wp-block-max-width)) / 2) - var(--side-spacing));
+	padding-left: calc(((var(--viewport-width) - var(--wp-block-max-width)) / 2) - var(--side-spacing));
+
+	> .wp-block-group__inner-container {
+		padding-right: var(--side-spacing);
+		padding-left: var(--side-spacing);
+	}
+}
+
+.wp-block[data-align="full"] > .wp-block-cover {
+	padding-right: calc(((var(--viewport-width) - var(--wp-block-max-width)) / 2) - var(--side-spacing));
+	padding-left: calc(((var(--viewport-width) - var(--wp-block-max-width)) / 2) - var(--side-spacing));
+
+	> .wp-block-cover__inner-container {
+		padding-right: var(--side-spacing);
+		padding-left: var(--side-spacing);
+	}
+}
+
+[data-content-align="start"] {
+	--group-block-justify-content: flex-start;
+	--cover-block-justify-content: flex-start;
+
+	> .wp-block-group__inner-container > .wp-block,
+	> .wp-block-cover__inner-container > .wp-block {
+		margin-left: unset;
+	}
+}
+
+[data-content-align="center"] {
+	--group-block-justify-content: center;
+	--cover-block-justify-content: center;
+}
+
+[data-content-align="end"] {
+	--group-block-justify-content: flex-end;
+	--cover-block-justify-content: flex-end;
+
+	> .wp-block-group__inner-container > .wp-block,
+	> .wp-block-cover__inner-container > .wp-block {
+		margin-right: unset;
 	}
 }
 
@@ -123,8 +172,7 @@ p {
 	@each $padding-setting in $padding_settings {
 
 		[data-spacing-#{ $padding-setting }="#{ $padding-name }"] {
-			--cover-block-padding-#{ $padding-setting }: #{ $padding-size };
-			--group-block-padding-#{ $padding-setting }: #{ $padding-size };
+			padding-#{ $padding-setting }: #{ $padding-size } !important;
 		}
 	}
 }
