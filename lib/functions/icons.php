@@ -98,8 +98,9 @@ function mai_get_icon( $args ) {
 	$tag = 'span';
 
 	if ( $args['link'] && ! is_admin() ) {
-		$tag          = 'a';
-		$atts['href'] = esc_url( $args['link'] );
+		$tag           = 'a';
+		$atts['href']  = esc_url( $args['link'] );
+		$atts['title'] = esc_attr( $args['link_title'] );
 
 		if ( $args['link_target'] ) {
 			$atts['target'] = '_blank';
@@ -161,6 +162,7 @@ function mai_get_icon_default_args() {
 		'align'                => 'center',
 		'size'                 => '40',
 		'link'                 => '',
+		'link_title'           => '',
 		'link_target'          => '',
 		'cart_total'           => false,
 		'class'                => '',
