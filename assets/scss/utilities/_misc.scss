@@ -111,10 +111,18 @@
 
 .has-no-margin-top {
 	margin-top: 0 !important;
+
+	> figure {
+		margin-top: 0;
+	}
 }
 
 .has-no-margin-bottom {
 	margin-bottom: 0 !important;
+
+	> figure {
+		margin-bottom: 0;
+	}
 }
 
 @each $breakpoint-name, $breakpoint-size in $breakpoints {
