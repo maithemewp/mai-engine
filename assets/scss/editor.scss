@@ -18,8 +18,7 @@ body {
 	min-height: auto;
 	background: var(--color-white);
 
-	--admin-menu-width: 160px;
-	--viewport-width: calc(100vw - var(--admin-menu-width) - var(--block-sidebar-width, 0));
+	--viewport-width: calc(100vw - var(--admin-menu-width, 160px) - var(--block-sidebar-width, 0));
 	--body-background-color: var(--color-white);
 	--list-style-position: outside;
 	--list-padding: 0 0 var(--spacing-lg) var(--spacing-xl); // Adds list indent/spacing without affecting block layout.
@@ -137,6 +136,12 @@ p {
 	> .wp-block-cover__inner-container > .wp-block {
 		margin-right: unset;
 	}
+}
+
+[data-content-width="no"] {
+	--content-max-width: var(--viewport-width);
+	--wp-block-max-width: var(--viewport-width);
+	--side-spacing: 0;
 }
 
 @each $breakpoint-name, $breakpoint-size in $breakpoints {
