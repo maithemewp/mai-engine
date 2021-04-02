@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-04-02T03:17:24+00:00\n"
+"POT-Creation-Date: 2021-04-02T18:09:13+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -225,7 +225,7 @@ msgstr ""
 
 #: lib/blocks/icon.php:268
 #: lib/functions/colors.php:191
-#: lib/functions/utilities.php:1481
+#: lib/functions/utilities.php:1485
 msgid "Link"
 msgstr ""
 
@@ -1662,7 +1662,7 @@ msgstr ""
 #: lib/admin/settings.php:25
 #: lib/admin/settings.php:26
 #: lib/admin/settings.php:85
-#: lib/functions/utilities.php:1550
+#: lib/functions/utilities.php:1554
 #: lib/functions/deprecated.php:129
 msgid "Mai Theme"
 msgstr ""
@@ -2230,33 +2230,33 @@ msgstr ""
 msgid "Page"
 msgstr ""
 
-#: lib/functions/utilities.php:1380
+#: lib/functions/utilities.php:1384
 #: lib/structure/menus.php:336
 #: lib/customize/site-header.php:67
 msgid "Search"
 msgstr ""
 
-#: lib/functions/utilities.php:1478
+#: lib/functions/utilities.php:1482
 msgid "Primary"
 msgstr ""
 
-#: lib/functions/utilities.php:1479
+#: lib/functions/utilities.php:1483
 msgid "Secondary"
 msgstr ""
 
-#: lib/functions/utilities.php:1480
+#: lib/functions/utilities.php:1484
 msgid "Outline"
 msgstr ""
 
-#: lib/functions/utilities.php:1547
+#: lib/functions/utilities.php:1551
 msgid "View available shortcodes from"
 msgstr ""
 
-#: lib/functions/utilities.php:1548
+#: lib/functions/utilities.php:1552
 msgid "Genesis"
 msgstr ""
 
-#: lib/functions/utilities.php:1549
+#: lib/functions/utilities.php:1553
 msgid "and"
 msgstr ""
 
