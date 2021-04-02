@@ -161,7 +161,7 @@ function mai_has_image_orientiation( $orientation ) {
  *
  * @since  2.0.0
  * @since  2.6.0 Added $max_width parameter.
- * @since  TBD No longer used. Deprecated.
+ * @since  2.12.0 No longer used. Deprecated.
  *
  * @param  mixed      $image_id  The image ID or URL.
  * @param  array      $atts      Any image attributes to add to the attachment.

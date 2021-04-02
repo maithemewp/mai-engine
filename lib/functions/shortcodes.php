@@ -91,7 +91,7 @@ add_shortcode( 'mai_content', 'mai_content_shortcode' );
  * [mai_content id="my-page-slug" post_type="page"]
  *
  * @since 0.3.0
- * @since TBD Added post_type parameter when displaying content by post slug.
+ * @since 2.12.0 Added post_type parameter when displaying content by post slug.
  *
  * @param array $atts Shortcode attributes.
  *

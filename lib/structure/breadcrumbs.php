@@ -19,7 +19,7 @@ add_action( 'genesis_before_content_sidebar_wrap', 'mai_do_breadcrumbs', 12 );
 /**
  * Displays breadcrumbs if not hidden.
  *
- * @since TBD
+ * @since 2.12.0
  *
  * @return void
  */

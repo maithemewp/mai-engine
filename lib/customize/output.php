@@ -15,7 +15,7 @@ add_action( 'customize_save_after', 'mai_flush_customizer_transients' );
 /**
  * Deletes kirki transients when the Customizer is saved.
  *
- * @since TBD
+ * @since 2.12.0
  *
  * @return void
  */
@@ -33,7 +33,7 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_kirki_css' );
 /**
  * Outputs kirki css.
  *
- * @since TBD
+ * @since 2.12.0
  *
  * @param array $css Kirki CSS.
  *
@@ -68,7 +68,7 @@ add_filter( 'kirki_enqueue_google_fonts', 'mai_add_kirki_fonts', 99 );
 /**
  * Loads additional fonts and variants.
  *
- * @since TBD
+ * @since 2.12.0
  *
  * @param array $fonts All fonts to be enqueued.
  *

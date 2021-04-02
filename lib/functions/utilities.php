@@ -1071,7 +1071,7 @@ function mai_get_menu_items_by_location( $location ) {
  * Gets menu default args.
  * For use with mai_menu shorcode.
  *
- * @since TBD
+ * @since 2.12.0
  *
  * @return array
  */

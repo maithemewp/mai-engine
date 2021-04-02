@@ -189,7 +189,7 @@ function mai_has_alignfull_first() {
 /**
  * Checks if first block has dark background.
  *
- * @since TBD
+ * @since 2.12.0
  *
  * @return bool
  */
@@ -219,7 +219,7 @@ function mai_has_dark_background_first() {
 /**
  * Gets first block on a page.
  *
- * @since TBD
+ * @since 2.12.0
  *
  * @return array|false
  */

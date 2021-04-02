@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.12.0 (TBD)
+## 2.12.0 (4/2/21)
 * Added: New Site Header color setting. Easily change your site header color, including dark headers with automatic white text!
 * Added: New "Full" option for Content Width in Group and Cover blocks.
 * Added: New "Content Alignment" settings in Group and Cover blocks. Set your content width to something smaller and align the inner container left/center/right.
