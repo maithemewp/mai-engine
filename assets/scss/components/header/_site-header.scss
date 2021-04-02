@@ -1,7 +1,7 @@
 .site-header {
 	position: var(--site-header-position, relative);
 	top: var(--site-header-top, auto);
-	z-index: 10;
+	z-index: 12;
 	width: 100%;
 	color: var(--color-body);
 	background: var(--site-header-background, var(--color-header));
