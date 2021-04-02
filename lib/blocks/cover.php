@@ -38,6 +38,9 @@ function mai_render_cover_block( $block_content, $block ) {
 	$parallax  = mai_isset( $block['attrs'], 'hasParallax', false );
 	// $repeated  = mai_isset( $block['attrs'], 'isRepeated', false );
 
+	// TODO: Consider adding back cover image filter.
+	// $image_id  = apply_filters( 'mai_cover_block_image_id', mai_isset( $block['attrs'], 'id', false ), $block );
+
 	if ( ! ( $align || ( $image_id && $image_url ) ) ) {
 		return $block_content;
 	}
