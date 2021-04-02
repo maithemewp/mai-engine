@@ -1,6 +1,8 @@
 .wp-block-cover {
 	position: relative; // so negative margins inside will work.
 	z-index: 0; // so negative margins work with overlay.
+	display: flex;
+	justify-content: var(--cover-block-justify-content, center);
 	min-height: 0;
 	padding: var(--cover-block-padding-top, 0.05px) var(--cover-block-padding-right, 0.05px) var(--cover-block-padding-bottom, 0.05px) var(--cover-block-padding-left, 0.05px); // 0.05px prevents margin collapsing.
 
@@ -10,8 +12,6 @@
 	}
 
 	&.alignfull {
-		display: flex;
-		justify-content: var(--cover-block-justify-content, unset);
 		// Can't override property or it will break nested blocks.
 		padding-right: calc(((var(--viewport-width) - var(--breakpoint-xl)) / 2) - var(--side-spacing));
 		padding-left: calc(((var(--viewport-width) - var(--breakpoint-xl)) / 2) - var(--side-spacing));
