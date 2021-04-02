@@ -16,7 +16,6 @@
 * Changed: Paragraphs now use `--body-color` custom property. This makes it much easier to hijack/intercept and change the default text color when using dark backgrounds or any other fitting scenario.
 * Changed: Default side spacing (mostly noticeable on mobile) is now slightly larger.
 * Changed: Multiple CSS classes can now be used with `[mai_back_to_top]` shortcode via the `class` parameter.
-* Changed: Output of all entry elements are now escaped fully.
 * Fixed: [Accessibility] Added missing screen-reader-text to search submit buttons.
 * Fixed: Cover block images being rendered twice due to changes in WP 5.7 for new instances of the block added after 5.7.
 * Fixed: Layout bug after saving/updating posts that would cause the logo/menu to be positioned wrong (and other weirdness) until you open the Customizer or transients are flushed.
