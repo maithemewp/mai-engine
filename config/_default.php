@@ -53,11 +53,14 @@ return [
 	|
 	| Image sizes. When adding or modifying 'landscape', 'portrait', or 'square'
 	| you must use an aspect ratio, not actual dimensions.
+	|
+	| The 'cover' size was chanted to match core WP '1536x1536' size.
+	| We don't really need this anymore but we're keeping it here for back compat.
 	*/
 
 	'image-sizes' => [
 		'add'    => [
-			'cover'     => [ 1600, 900, true ],
+			'cover'     => [ 1536, 1536, false ],
 			'landscape' => '4:3',
 			'tiny'      => [ 80, 80, true ],
 		],

@@ -157,8 +157,11 @@ function mai_has_image_orientiation( $orientation ) {
  * Get cover image HTML by ID,
  * with srcset for our registered image sizes.
  *
+ * @access private Do not use. Left here for back compat.
+ *
  * @since  2.0.0
  * @since  2.6.0 Added $max_width parameter.
+ * @since  TBD No longer used. Deprecated.
  *
  * @param  mixed      $image_id  The image ID or URL.
  * @param  array      $atts      Any image attributes to add to the attachment.
