@@ -17,8 +17,8 @@
 		padding-left: calc(((var(--viewport-width) - var(--breakpoint-xl)) / 2) - var(--side-spacing));
 
 		> .wp-block-cover__inner-container {
-			padding-right: var(--side-spacing);
-			padding-left: var(--side-spacing);
+			margin-right: var(--side-spacing);
+			margin-left: var(--side-spacing);
 		}
 	}
 

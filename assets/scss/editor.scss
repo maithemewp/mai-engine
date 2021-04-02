@@ -68,8 +68,6 @@ p {
 // Overridden in admin.scss.
 .wp-block:not([data-align="full"]):not([data-align="wide"]) {
 	max-width: var(--wp-block-max-width, var(--breakpoint-lg));
-	margin-right: unset;
-	margin-left: unset;
 }
 
 [data-type="core/pullquote"][data-align="left"],
@@ -101,8 +99,8 @@ p {
 	padding-left: calc(((var(--viewport-width) - var(--wp-block-max-width)) / 2) - var(--side-spacing));
 
 	> .wp-block-group__inner-container {
-		padding-right: var(--side-spacing);
-		padding-left: var(--side-spacing);
+		margin-right: var(--side-spacing);
+		margin-left: var(--side-spacing);
 	}
 }
 
@@ -111,8 +109,8 @@ p {
 	padding-left: calc(((var(--viewport-width) - var(--wp-block-max-width)) / 2) - var(--side-spacing));
 
 	> .wp-block-cover__inner-container {
-		padding-right: var(--side-spacing);
-		padding-left: var(--side-spacing);
+		margin-right: var(--side-spacing);
+		margin-left: var(--side-spacing);
 	}
 }
 
