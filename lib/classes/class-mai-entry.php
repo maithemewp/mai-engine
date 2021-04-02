@@ -442,7 +442,7 @@ class Mai_Entry {
 			[
 				'open'    => "<{$wrap} %s>",
 				'close'   => "</{$wrap}>",
-				'content' => wp_kses_post( $image ),
+				'content' => $image,
 				'context' => 'entry-image-link',
 				'echo'    => true,
 				'atts'    => $atts,
@@ -873,7 +873,7 @@ class Mai_Entry {
 				[
 					'open'    => '<a %s>',
 					'close'   => '</a>',
-					'content' => wp_kses_post( $title ),
+					'content' => $title,
 					'context' => 'entry-title-link',
 					'echo'    => false,
 					'atts'    => [
@@ -911,7 +911,7 @@ class Mai_Entry {
 			[
 				'open'    => "<{$wrap} %s>",
 				'close'   => "</{$wrap}>",
-				'content' => wp_kses_post( $title ),
+				'content' => $title,
 				'context' => 'entry-title',
 				'echo'    => false,
 				'atts'    => $atts,
@@ -981,7 +981,7 @@ class Mai_Entry {
 				'open'    => '<div %s>',
 				'close'   => '</div>',
 				'context' => 'entry-excerpt',
-				'content' => wp_kses_post( wpautop( $excerpt ) ),
+				'content' => wpautop( $excerpt ),
 				'echo'    => true,
 				'atts'    => [
 					'class' => ( 'single' === $this->context ) ? 'entry-excerpt entry-excerpt-single' : 'entry-excerpt',
@@ -1117,7 +1117,7 @@ class Mai_Entry {
 			[
 				'open'    => '<div %s>',
 				'close'   => '</div>',
-				'content' => wp_kses_post( mai_get_processed_content( $this->args['custom_content'] ) ),
+				'content' => mai_get_processed_content( $this->args['custom_content'] ),
 				'context' => 'entry-custom-content',
 				'echo'    => true,
 				'params'  => [
@@ -1148,6 +1148,7 @@ class Mai_Entry {
 			return;
 		}
 
+		$header_meta = wp_kses_post( $this->args['header_meta'] );
 		$header_meta = do_shortcode( $this->args['header_meta'] );
 
 		if ( ! $header_meta ) {
@@ -1158,7 +1159,7 @@ class Mai_Entry {
 			[
 				'open'    => '<div %s>',
 				'close'   => '</div>',
-				'content' => wp_kses_post( $header_meta ),
+				'content' => $header_meta,
 				'context' => 'entry-meta-before-content',
 				'echo'    => true,
 				'params'  => [
@@ -1188,6 +1189,7 @@ class Mai_Entry {
 			return;
 		}
 
+		$footer_meta = wp_kses_post( $this->args['header_meta'] );
 		$footer_meta = do_shortcode( $this->args['footer_meta'] );
 
 		if ( ! $footer_meta ) {
@@ -1198,7 +1200,7 @@ class Mai_Entry {
 			[
 				'open'    => '<div %s>',
 				'close'   => '</div>',
-				'content' => wp_kses_post( $footer_meta ),
+				'content' => $footer_meta,
 				'context' => 'entry-meta-after-content',
 				'echo'    => true,
 				'params'  => [
@@ -1242,6 +1244,7 @@ class Mai_Entry {
 		}
 
 		$more_link_text = isset( $this->args['more_link_text'] ) && $this->args['more_link_text'] ? $this->args['more_link_text'] : mai_get_read_more_text();
+		$more_link_text = $more_link_text;
 		$more_link_text = do_shortcode( $more_link_text );
 
 		// Screen reader text title.
@@ -1271,7 +1274,7 @@ class Mai_Entry {
 			[
 				'open'    => '<a %s>',
 				'close'   => '</a>',
-				'content' => wp_kses_post( $more_link_text ),
+				'content' => $more_link_text,
 				'context' => 'entry-more-link',
 				'echo'    => false,
 				'atts'    => [
@@ -1383,7 +1386,7 @@ class Mai_Entry {
 			[
 				'open'    => '<div %s>',
 				'context' => 'pagination-previous',
-				'content' => wp_kses_post( $prev_post_link ),
+				'content' => $prev_post_link,
 				'close'   => '</div>',
 				'params'  => [
 					'args'  => $this->args,
@@ -1397,7 +1400,7 @@ class Mai_Entry {
 			[
 				'open'    => '<div %s>',
 				'context' => 'pagination-next',
-				'content' => wp_kses_post( $next_post_link ),
+				'content' => $next_post_link,
 				'close'   => '</div>',
 				'params'  => [
 					'args'  => $this->args,
