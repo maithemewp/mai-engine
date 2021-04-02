@@ -58,8 +58,8 @@ function mai_render_group_block( $block_content, $block ) {
 		if ( $first_block ) {
 
 			if ( $align ) {
-				$style  = $first_block->getAttribute( 'style' );
-				$style .= sprintf( '--group-block-justify-content:%s;', mai_get_flex_align( $align ) );
+				$style = $first_block->getAttribute( 'style' );
+				$style = sprintf( '--group-block-justify-content:%s;', mai_get_flex_align( $align ) ) . $style;
 				$first_block->setAttribute( 'style', $style );
 			}
 

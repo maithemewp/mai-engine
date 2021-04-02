@@ -34,13 +34,12 @@ function mai_do_cover_group_block_settings( $block_content, $block ) {
 	}
 
 	$width  = mai_isset( $block['attrs'], 'contentWidth', '' );
-	$align  = mai_isset( $block['attrs'], 'contentAlign', '' );
 	$top    = mai_isset( $block['attrs'], 'verticalSpacingTop', '' );
 	$bottom = mai_isset( $block['attrs'], 'verticalSpacingBottom', '' );
 	$left   = mai_isset( $block['attrs'], 'verticalSpacingLeft', '' );
 	$right  = mai_isset( $block['attrs'], 'verticalSpacingRight', '' );
 
-	if ( $width || $align || $top || $bottom || $left || $right ) {
+	if ( $width || $top || $bottom || $left || $right ) {
 		$dom = mai_get_dom_document( $block_content );
 
 		/**
@@ -55,11 +54,6 @@ function mai_do_cover_group_block_settings( $block_content, $block ) {
 
 			if ( $width ) {
 				$classes = mai_add_classes( sprintf( 'has-%s-content-width', $width ), $classes );
-			}
-
-			if ( $align ) {
-				// ray( $align );
-				// $classes = mai_add_classes( sprintf( 'has-%s-content-width', $width ), $classes );
 			}
 
 			if ( $top ) {

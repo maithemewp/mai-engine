@@ -55,7 +55,7 @@ function mai_render_cover_block( $block_content, $block ) {
 		$style = $first_block->getAttribute( 'style' );
 
 		if ( $align ) {
-			$style .= sprintf( '--cover-block-justify-content:%s;', mai_get_flex_align( $align ) );
+			$style = sprintf( '--cover-block-justify-content:%s;', mai_get_flex_align( $align ) ) . $style;
 		}
 
 		if ( $image_id ) {
