@@ -125,9 +125,9 @@ function mai_do_page_header_image() {
 	$image_id = mai_get_page_header_image_id();
 
 	if ( $image_id ) {
-		$available = mai_get_available_image_sizes();
-		$size      = isset( $available['1536x1536'] ) ? '1536x1536' : 'large';
-		echo wp_get_attachment_image( $image_id, isset( $available['1536x1536'] ) ? '1536x1536' : 'large', false, [ 'class' => 'page-header-image' ] );
+		$available  = mai_get_available_image_sizes();
+		$image_size = isset( $available['1536x1536'] ) ? '1536x1536' : 'large';
+		echo wp_get_attachment_image( $image_id, $image_size, false, [ 'class' => 'page-header-image' ] );
 	}
 }
 
