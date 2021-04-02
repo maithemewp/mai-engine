@@ -442,7 +442,7 @@ class Mai_Entry {
 			[
 				'open'    => "<{$wrap} %s>",
 				'close'   => "</{$wrap}>",
-				'content' => $image,
+				'content' => wp_kses_post( $image ),
 				'context' => 'entry-image-link',
 				'echo'    => true,
 				'atts'    => $atts,
@@ -873,7 +873,7 @@ class Mai_Entry {
 				[
 					'open'    => '<a %s>',
 					'close'   => '</a>',
-					'content' => $title,
+					'content' => wp_kses_post( $title ),
 					'context' => 'entry-title-link',
 					'echo'    => false,
 					'atts'    => [
@@ -911,7 +911,7 @@ class Mai_Entry {
 			[
 				'open'    => "<{$wrap} %s>",
 				'close'   => "</{$wrap}>",
-				'content' => $title,
+				'content' => wp_kses_post( $title ),
 				'context' => 'entry-title',
 				'echo'    => false,
 				'atts'    => $atts,
@@ -981,7 +981,7 @@ class Mai_Entry {
 				'open'    => '<div %s>',
 				'close'   => '</div>',
 				'context' => 'entry-excerpt',
-				'content' => wpautop( $excerpt ),
+				'content' => wp_kses_post( wpautop( $excerpt ) ),
 				'echo'    => true,
 				'atts'    => [
 					'class' => ( 'single' === $this->context ) ? 'entry-excerpt entry-excerpt-single' : 'entry-excerpt',
@@ -1117,7 +1117,7 @@ class Mai_Entry {
 			[
 				'open'    => '<div %s>',
 				'close'   => '</div>',
-				'content' => mai_get_processed_content( $this->args['custom_content'] ),
+				'content' => wp_kses_post( mai_get_processed_content( $this->args['custom_content'] ) ),
 				'context' => 'entry-custom-content',
 				'echo'    => true,
 				'params'  => [
@@ -1148,7 +1148,6 @@ class Mai_Entry {
 			return;
 		}
 
-		$header_meta = wp_kses_post( $this->args['header_meta'] );
 		$header_meta = do_shortcode( $this->args['header_meta'] );
 
 		if ( ! $header_meta ) {
@@ -1159,7 +1158,7 @@ class Mai_Entry {
 			[
 				'open'    => '<div %s>',
 				'close'   => '</div>',
-				'content' => $header_meta,
+				'content' => wp_kses_post( $header_meta ),
 				'context' => 'entry-meta-before-content',
 				'echo'    => true,
 				'params'  => [
@@ -1189,7 +1188,6 @@ class Mai_Entry {
 			return;
 		}
 
-		$footer_meta = wp_kses_post( $this->args['footer_meta'] );
 		$footer_meta = do_shortcode( $this->args['footer_meta'] );
 
 		if ( ! $footer_meta ) {
@@ -1200,7 +1198,7 @@ class Mai_Entry {
 			[
 				'open'    => '<div %s>',
 				'close'   => '</div>',
-				'content' => $footer_meta,
+				'content' => wp_kses_post( $footer_meta ),
 				'context' => 'entry-meta-after-content',
 				'echo'    => true,
 				'params'  => [
@@ -1273,7 +1271,7 @@ class Mai_Entry {
 			[
 				'open'    => '<a %s>',
 				'close'   => '</a>',
-				'content' => $more_link_text,
+				'content' => wp_kses_post( $more_link_text ),
 				'context' => 'entry-more-link',
 				'echo'    => false,
 				'atts'    => [
@@ -1385,7 +1383,7 @@ class Mai_Entry {
 			[
 				'open'    => '<div %s>',
 				'context' => 'pagination-previous',
-				'content' => $prev_post_link,
+				'content' => wp_kses_post( $prev_post_link ),
 				'close'   => '</div>',
 				'params'  => [
 					'args'  => $this->args,
@@ -1399,7 +1397,7 @@ class Mai_Entry {
 			[
 				'open'    => '<div %s>',
 				'context' => 'pagination-next',
-				'content' => $next_post_link,
+				'content' => wp_kses_post( $next_post_link ),
 				'close'   => '</div>',
 				'params'  => [
 					'args'  => $this->args,
