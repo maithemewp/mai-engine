@@ -54,6 +54,13 @@ function mai_setup_loop() {
  * @return void
  */
 function mai_do_loop() {
+	/**
+	 * Filter to disable loop.
+	 */
+	if ( apply_filters( 'mai_remove_entries', false ) ) {
+		return;
+	}
+
 	$args    = mai_get_template_args();
 	$archive = ( 'archive' === $args['context'] );
 
