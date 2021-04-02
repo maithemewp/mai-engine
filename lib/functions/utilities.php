@@ -1247,6 +1247,10 @@ function mai_get_rating( $args ) {
 
 		$count = 1;
 		for ( $rating = 1; $rating <= $args['value']; $rating++ ) {
+			if ( $rating > $total ) {
+				break;
+			}
+
 			$html .= genesis_markup(
 				[
 					'open'    => '<li %s>',
@@ -1262,7 +1266,7 @@ function mai_get_rating( $args ) {
 			$count++;
 		}
 
-		if ( $count < $total ) {
+		if ( $count <= $total ) {
 			if ( $half ) {
 				$half = mai_get_icon(
 					[
@@ -1288,7 +1292,7 @@ function mai_get_rating( $args ) {
 				$count++;
 			}
 
-			if ( $count < $total ) {
+			if ( $count <= $total ) {
 				$empty = mai_get_icon(
 					[
 						'icon'       => 'star',
