@@ -381,7 +381,6 @@ function mai_load_files() {
 		'blocks/group',
 		'blocks/heading',
 		'blocks/icon',
-		'blocks/image',
 		'blocks/paragraph',
 		'blocks/search',
 		'blocks/settings',
