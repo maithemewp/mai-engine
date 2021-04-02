@@ -129,34 +129,6 @@ function mai_do_page_header_image() {
 	}
 }
 
-// add_filter( 'get_post_metadata', 'prefix_fallback_thumbnail_id', 10, 4 );
-function prefix_fallback_thumbnail_id( $value, $post_id, $meta_key, $single ) {
-
-	// Bail if not the key we want.
-	if ( '_wp_attached_file' !== $meta_key ) {
-		return $value;
-	}
-
-	// Bail if in admin.
-	if ( is_admin() ) {
-		return $value;
-	}
-
-	// 22153
-
-	// Remove filter to avoid loopbacks.
-	remove_filter( 'get_post_metadata', 'prefix_fallback_thumbnail_id', 10, 4 );
-
-	// Check for an existing featured image.
-	// $image_id = get_post_thumbnail_id( $post_id );
-
-	// Add back our filter.
-	add_filter( 'get_post_metadata', 'prefix_fallback_thumbnail_id', 10, 4 );
-
-
-	return $value;
-}
-
 add_action( 'mai_before_page-header_wrap', 'mai_do_page_header_overlay' );
 /**
  * Display the page header overlay if there is a page header image.
