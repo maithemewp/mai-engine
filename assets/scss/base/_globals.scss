@@ -37,7 +37,7 @@
 	--spacing-xxxl: calc(var(--spacing-xxl) * var(--spacing-scale));
 	--spacing-xxxxl: calc(var(--spacing-xxxl) * var(--spacing-scale));
 
-	--side-spacing: calc(var(--spacing-lg) + 2vw);
+	--side-spacing: calc(var(--spacing-md) + 2vw);
 
 	--row-gap: var(--spacing-md);
 	--column-gap: var(--spacing-md);
