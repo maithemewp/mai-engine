@@ -2,18 +2,19 @@
 	--menu-item-width: 100%;
 	--menu-item-link-flex: 1;
 	--wrap-display: block;
+	--sub-menu-background: var(--color-header);
 	--sub-menu-margin: 0 0 var(--spacing-md) var(--spacing-xxs);
-	--cart-total-position: static;
 
 	position: absolute;
 	top: 100%;
 	left: 0;
 	display: var(--mobile-menu-display, none);
 	width: 100%;
-	max-height: 100vh;
+	max-height: calc(100vh - var(--header-height, 0px) - var(--header-shrink-offset));
 	padding: var(--spacing-md) 0;
 	overflow-y: auto;
-	background: var(--mobile-menu-background, var(--site-header-background, var(--color-white)));
+	color: var(--mobile-menu-color, var(--color-body));
+	background: var(--mobile-menu-background, var(--color-header));
 	border-bottom: var(--mobile-menu-border-bottom, var(--border));
 	animation: var(--mobile-menu-animation, none);
 
@@ -30,19 +31,8 @@
 	}
 }
 
-.has-dark-header {
-	--mobile-menu-background: var(--color-heading);
-
-	.mobile-menu {
-		color: var(--color-white);
-		--heading-color: var(--color-white);
-		--menu-item-link-color: var(--color-white);
-	}
-}
-
 .mobile-menu-visible {
 	--mobile-menu-display: block;
-	--mobile-menu-background: var(--color-white);
 	--mobile-menu-animation: standardmenu 0.3s ease-in-out;
 }
 

@@ -270,6 +270,19 @@ function mai_register_icon_field_group() {
 					'default_value' => '',
 				],
 				[
+					'key'               => 'mai_icon_link_title',
+					'name'              => 'link_title',
+					'label'             => esc_html__( 'Link Title', 'mai-engine' ),
+					'instructions'      => esc_html__( 'Add a title for accessibility. Will not be displayed visually.', 'mai-engine' ),
+					'type'              => 'text',
+					'conditional_logic' => [
+						[
+							'field'    => 'mai_icon_link',
+							'operator' => '!=empty',
+						],
+					],
+				],
+				[
 					'key'               => 'mai_icon_link_target',
 					'name'              => 'link_target',
 					'label'             => '',

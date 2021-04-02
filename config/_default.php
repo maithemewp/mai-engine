@@ -25,6 +25,7 @@ return [
 		'colors'         => [
 			'black'      => '#000000',
 			'white'      => '#ffffff',
+			'header'     => '#ffffff', // Site header background.
 			'background' => '#ffffff', // Body background.
 			'alt'        => '#f8f9fa', // Background alt.
 			'body'       => '#6c747d', // Body text color.
@@ -32,6 +33,11 @@ return [
 			'link'       => '#007bff', // Link color.
 			'primary'    => '#007bff', // Button primary background color.
 			'secondary'  => '#6c747d', // Button secondary background color.
+		],
+		'custom-colors'  => [
+			// [
+			// 	'color' => '#bcda83', // var(--color-custom-1).
+			// ],
 		],
 		'fonts'          => [
 			'body'    => 'sans-serif:400',
@@ -47,11 +53,14 @@ return [
 	|
 	| Image sizes. When adding or modifying 'landscape', 'portrait', or 'square'
 	| you must use an aspect ratio, not actual dimensions.
+	|
+	| The 'cover' size was chanted to match core WP '1536x1536' size.
+	| We don't really need this anymore but we're keeping it here for back compat.
 	*/
 
 	'image-sizes' => [
 		'add'    => [
-			'cover'     => [ 1600, 900, true ],
+			'cover'     => [ 1536, 1536, false ],
 			'landscape' => '4:3',
 			'tiny'      => [ 80, 80, true ],
 		],

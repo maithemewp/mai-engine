@@ -68,20 +68,35 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'has-before-header';
 	}
 
-	// Add sticky header class.
-	if ( mai_has_sticky_header_enabled() && ! mai_is_element_hidden( 'sticky_header' ) ) {
-		$classes[] = 'has-sticky-header';
+	// Add dark header class.
+	$colors = mai_get_colors();
+	if ( ! mai_is_light_color( $colors['header'] ) ) {
+		$classes[] = 'has-dark-header has-dark-mobile-menu';
 	}
 
+	$has_page_header      = mai_has_page_header();
+	$has_dark_page_header = $has_page_header && ! mai_has_light_page_header();
+
+	// Add transparent header class.
 	if ( mai_has_transparent_header() ) {
 		$classes[] = 'has-transparent-header';
+
+		if ( $has_dark_page_header || ( ! $has_page_header && mai_has_dark_background_first() ) ) {
+			$classes[] = 'has-dark-transparent-header';
+		}
 	}
 
 	// Add page header classes.
-	$has_page_header = mai_has_page_header();
-	$classes[]       = $has_page_header ? 'has-page-header' : 'no-page-header';
 	if ( $has_page_header ) {
-		$classes[] = mai_has_light_page_header() ? 'has-light-page-header' : 'has-dark-page-header';
+		$classes[] = 'has-page-header';
+		$classes[] = $has_dark_page_header ? 'has-dark-page-header' : 'has-light-page-header';
+	} else {
+		$classes[] = 'no-page-header';
+	}
+
+	// Add sticky header class.
+	if ( mai_has_sticky_header_enabled() && ! mai_is_element_hidden( 'sticky_header' ) ) {
+		$classes[] = 'has-sticky-header';
 	}
 
 	// Add or alignfull class.
@@ -89,6 +104,7 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'has-alignfull-first';
 	}
 
+	// TODO: Get rid of sidebar checks. Since they should not be used since the original deprecated stuff.
 	$header_left  = has_nav_menu( 'header-left' ) || mai_has_template_part( 'header-left' ) || is_active_sidebar( 'header-left' );
 	$header_right = has_nav_menu( 'header-right' ) || mai_has_template_part( 'header-right' ) || is_active_sidebar( 'header-right' );
 

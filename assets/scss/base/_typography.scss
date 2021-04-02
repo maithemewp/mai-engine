@@ -15,17 +15,11 @@ a {
 	}
 }
 
-.has-dark-background {
-	--link-color: currentColor;
-	--link-color-hover: currentColor;
-	--link-text-decoration: underline;
-	--link-filter-hover: brightness(0.8);
-}
-
 p {
 	width: var(--paragraph-width, auto);
 	margin: var(--paragraph-margin, 0 0 var(--paragraph-margin-bottom, var(--spacing-md)));
 	padding: var(--paragraph-padding, 0);
+	color: var(--body-color, var(--color-body));
 
 	&:empty {
 		display: none;

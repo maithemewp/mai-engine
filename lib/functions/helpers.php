@@ -171,13 +171,7 @@ function mai_has_alignfull_first() {
 	if ( is_null( $has_alignfull_first ) ) {
 		$has_alignfull_first = false;
 
-		if ( ! mai_is_type_single() || ! has_blocks() ) {
-			return $has_alignfull_first;
-		}
-
-		$post_object = get_post( get_the_ID() );
-		$blocks      = (array) parse_blocks( $post_object->post_content );
-		$first       = reset( $blocks );
+		$first = mai_get_first_block();
 
 		if ( $first ) {
 			$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
@@ -190,6 +184,74 @@ function mai_has_alignfull_first() {
 	}
 
 	return $has_alignfull_first;
+}
+
+/**
+ * Checks if first block has dark background.
+ *
+ * @since 2.12.0
+ *
+ * @return bool
+ */
+function mai_has_dark_background_first() {
+	static $has_dark_first = null;
+
+	if ( is_null( $has_dark_first ) ) {
+		$has_dark_first = false;
+
+		$first = mai_get_first_block();
+
+		if ( $first ) {
+			$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
+			if ( 'core/cover' === $block_name ) {
+				$has_dark_first = true;
+			}
+			if ( 'core/group' === $block_name && isset( $first['attrs']['backgroundColor'] ) ) {
+				$color          = mai_get_color_value( $first['attrs']['backgroundColor'] );
+				$has_dark_first = $color && ! mai_is_light_color( $color );
+			}
+		}
+	}
+
+	return $has_dark_first;
+}
+
+/**
+ * Gets first block on a page.
+ *
+ * @since 2.12.0
+ *
+ * @return array|false
+ */
+function mai_get_first_block() {
+	static $first = null;
+
+	if ( ! is_null( $first ) ) {
+		return $first;
+	}
+
+	$first   = false;
+	$content = '';
+
+	if ( ! mai_is_type_single() ) {
+		return $first;
+	}
+
+	if ( is_404() ) {
+		$content = mai_get_template_part( '404-page' );
+	} elseif ( has_blocks() ) {
+		$post_object = get_post( get_the_ID() );
+		$content     = $post_object->post_content;
+	}
+
+	if ( ! $content ) {
+		return $first;
+	}
+
+	$blocks = (array) parse_blocks( $content );
+	$first  = reset( $blocks );
+
+	return $first;
 }
 
 /**
@@ -351,13 +413,13 @@ function mai_has_light_page_header() {
 		$has_light_page_header = false;
 
 	} else {
-		$args   = mai_get_template_args();
-		$config = mai_get_config( 'settings' )['page-header'];
+		$args = mai_get_template_args();
 
 		if ( isset( $args['page-header-text-color'] ) && ! empty( $args['page-header-text-color'] ) ) {
 			$text_color = $args['page-header-text-color'];
 
 		} else {
+			$config     = mai_get_config( 'settings' )['page-header'];
 			$text_color = mai_get_option( 'page-header-text-color', $config['text-color'] );
 		}
 

@@ -11,7 +11,7 @@
 
 .nav-after-header {
 	position: relative;
-	z-index: 9;
+	z-index: 10; // 1 more than After Header template part so search icon works.
 	display: var(--nav-after-header-display, none);
 	width: 100%;
 }

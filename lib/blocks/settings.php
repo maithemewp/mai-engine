@@ -50,41 +50,7 @@ function mai_do_cover_group_block_settings( $block_content, $block ) {
 		$first_block = mai_get_dom_first_child( $dom );
 
 		if ( $first_block ) {
-
 			$classes = $first_block->getAttribute( 'class' );
-
-			// Remove classes left from old regex.
-			$classes = str_replace(
-				[
-					'has-xs-content-width',
-					'has-sm-content-width',
-					'has-md-content-width',
-					'has-lg-content-width',
-					'has-xl-content-width',
-					'has-xs-padding-top',
-					'has-sm-padding-top',
-					'has-md-padding-top',
-					'has-lg-padding-top',
-					'has-xl-padding-top',
-					'has-xs-padding-bottom',
-					'has-sm-padding-bottom',
-					'has-md-padding-bottom',
-					'has-lg-padding-bottom',
-					'has-xl-padding-bottom',
-					'has-xs-padding-left',
-					'has-sm-padding-left',
-					'has-md-padding-left',
-					'has-lg-padding-left',
-					'has-xl-padding-left',
-					'has-xs-padding-right',
-					'has-sm-padding-right',
-					'has-md-padding-right',
-					'has-lg-padding-right',
-					'has-xl-padding-right',
-				],
-				'',
-				$classes
-			);
 
 			if ( $width ) {
 				$classes = mai_add_classes( sprintf( 'has-%s-content-width', $width ), $classes );

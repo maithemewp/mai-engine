@@ -39,7 +39,7 @@ add_action( 'genesis_header', 'mai_do_header' );
  * @return void
  */
 function mai_do_header() {
-	add_filter( 'genesis_attr_nav-menu', 'mai_nav_header_attributes', 10, 3 );
+	add_filter( 'genesis_attr_nav-menu', 'mai_nav_header_attributes' );
 
 	mai_do_header_left();
 
@@ -281,7 +281,7 @@ function mai_do_header_content() {
  */
 function mai_nav_header_attributes( $attributes ) {
 	$attributes['class'] .= ' nav-header';
-	$atts['itemtype']    = 'https://schema.org/SiteNavigationElement';
+	$atts['itemtype']     = 'https://schema.org/SiteNavigationElement';
 
 	return $attributes;
 }

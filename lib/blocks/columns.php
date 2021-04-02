@@ -32,7 +32,7 @@ function mai_register_columns_blocks() {
 			'keywords'        => [ 'columns' ],
 			'icon'            => mai_get_svg_icon( 'columns', 'light' ),
 			'supports'        => [
-				'align' => [ 'wide', 'full', 'left', 'center', 'right' ],
+				'align' => [ 'wide', 'full' ],
 				'mode'  => false,
 				'jsx'   => true,
 			],
@@ -205,7 +205,11 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 					$style .= sprintf( '--max-width-%s:%s;', $break, $max_width );
 				}
 
-				$element->setAttribute( 'style', $style );
+				if ( $style ) {
+					$element->setAttribute( 'style', $style );
+				} else {
+					$element->removeAttribute( 'style' );
+				}
 
 				if ( $element_i === ( $total_arrangements - 1 ) ) {
 					$element_i = 0;
@@ -230,7 +234,11 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 				}
 			}
 
-			$element->setAttribute( 'style', $style );
+			if ( $style ) {
+				$element->setAttribute( 'style', $style );
+			} else {
+				$element->removeAttribute( 'style' );
+			}
 		}
 	}
 

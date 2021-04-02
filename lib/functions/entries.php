@@ -18,9 +18,10 @@
  *
  * @link  https://github.com/studiopress/genesis/blob/master/lib/structure/loops.php#L64
  * @link  https://github.com/studiopress/genesis/blob/master/lib/structure/post.php
+ *
+ * @return void
  */
 function mai_do_entries_open( $args ) {
-
 	// Start the attributes.
 	$attributes = [
 		'class' => mai_add_classes( 'entries', isset( $args['class'] ) ? $args['class'] : '' ),

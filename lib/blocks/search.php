@@ -52,7 +52,12 @@ function mai_render_search_block( $block_content, $block ) {
 			$wrapper = $wrapper->item(0);
 			$style   = $wrapper->getAttribute( 'style' );
 			$style   = str_replace( 'width', '--min-width', $style );
-			$wrapper->setAttribute( 'style', $style );
+
+			if ( $style ) {
+				$wrapper->setAttribute( 'style', $style );
+			} else {
+				$wrapper->removeAttribute( 'style' );
+			}
 		}
 
 		$block_content = $dom->saveHTML();

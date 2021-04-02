@@ -422,7 +422,7 @@ function mai_get_settings( $name ) {
  *
  * @return mixed
  */
-function mai_get_global_styles( $key = '' ) {
+function mai_get_global_styles( $key ) {
 	static $styles = null;
 
 	if ( is_array( $styles ) && isset( $styles[ $key ] ) ) {
@@ -438,6 +438,15 @@ function mai_get_global_styles( $key = '' ) {
 
 	return $styles[ $key ];
 }
+
+
+add_filter( 'genesis_cpt_crumb', function( $crumb, $args ) {
+	if ( ! is_singular( [ 'page' ] ) ) {
+		return $crumb;
+	}
+	$slug = get_post_field( 'post_name', get_the_ID() );
+	return $slug ?: $crumb;
+}, 10, 2 );
 
 /**
  * Get breakpoints from initial site container width in config.
@@ -771,19 +780,20 @@ function mai_get_ellipsis() {
  * Great for displaying reusable blocks in areas that are not block enabled.
  *
  * @since 0.3.0
- * @since N/A   Switched from get_post_field to WP_Query so blocks are parsed and shortcodes are rendered better.
- * @since 2.11.0   Switched from WP_Query to mai_get_processed_content() to avoid conflicts with is_main_query().
+ * @since N/A    Switched from get_post_field to WP_Query so blocks are parsed and shortcodes are rendered better.
+ * @since 2.11.0 Switched from WP_Query to mai_get_processed_content() to avoid conflicts with is_main_query().
  *
  * @param int|string $post_slug_or_id The post slug or ID.
+ * @param string     $post_type       The post type, if using post slug.
  *
  * @return string
  */
-function mai_get_post_content( $post_slug_or_id ) {
+function mai_get_post_content( $post_slug_or_id, $post_type = 'wp_block' ) {
 	if ( is_numeric( $post_slug_or_id ) ) {
 		$post = get_post( $post_slug_or_id );
 
 	} else {
-		$post = get_page_by_path( $post_slug_or_id, OBJECT, 'wp_block' );
+		$post = get_page_by_path( $post_slug_or_id, OBJECT, $post_type );
 	}
 
 	if ( ! $post ) {
@@ -924,17 +934,20 @@ function mai_get_header_shrink_offset() {
  * @return string
  */
 function mai_get_menu( $menu, $args = [] ) {
+	$defaults = mai_get_menu_defaults();
+	$args     = shortcode_atts( $defaults, $args, 'mai_menu' );
+
 	if ( ! is_nav_menu( $menu ) ) {
 		return;
 	}
 
 	$menu_class = 'menu genesis-nav-menu';
 
-	if ( isset( $args['class'] ) && $args['class'] ) {
+	if ( $args['class'] ) {
 		$menu_class = mai_add_classes( $args['class'], $menu_class );
 	}
 
-	$list = isset( $args['display'] ) && ( 'list' === $args['display'] );
+	$list = 'list' === $args['display'];
 
 	if ( $list ) {
 		$menu_class = mai_add_classes( 'menu-list', $menu_class );
@@ -973,7 +986,7 @@ function mai_get_menu( $menu, $args = [] ) {
 			'style' => '',
 		];
 
-		if ( isset( $args['align'] ) && $args['align'] ) {
+		if ( $args['align'] ) {
 			switch ( trim( $args['align'] ) ) {
 				case 'left':
 					$atts['style'] .= '--menu-justify-content:flex-start;--menu-item-justify-content:flex-start;';
@@ -994,6 +1007,16 @@ function mai_get_menu( $menu, $args = [] ) {
 					}
 					break;
 			}
+		}
+
+		if ( $args['font_size'] ) {
+			if ( in_array( $args['font_size'], ['xs', 'sm', 'md', 'lg', 'xl', 'xxl' ] ) ) {
+				$size = sprintf( 'var(--font-size-%s)', $args['font_size'] );
+			} else {
+				$size = mai_get_unit_value( $args['font-size'] );
+			}
+
+			$atts['style'] .= sprintf( '--menu-font-size:%s;', $size );
 		}
 
 		$atts['itemtype'] = 'https://schema.org/SiteNavigationElement';
@@ -1048,16 +1071,17 @@ function mai_get_menu_items_by_location( $location ) {
  * Gets menu default args.
  * For use with mai_menu shorcode.
  *
- * @since TBD
+ * @since 2.12.0
  *
  * @return array
  */
 function mai_get_menu_defaults() {
 	$defaults = [
-		'id'      => '',       // The menu ID, slug, name.
-		'class'   => '',       // HTML classes.
-		'align'   => 'center', // Accepts left, center, or right.
-		'display' => '',       // Accepts list.
+		'id'        => '',       // The menu ID, slug, name.
+		'class'     => '',       // HTML classes.
+		'align'     => 'center', // Accepts left, center, or right.
+		'display'   => '',       // Accepts list.
+		'font_size' => '',       // Accepts size values 'sm', 'md', etc. or integer or unit value.
 	];
 	return apply_filters( 'mai_menu_defaults', $defaults );
 }
@@ -1075,6 +1099,11 @@ function mai_get_menu_defaults() {
 function mai_get_avatar( $args ) {
 	$args       = wp_parse_args( $args, mai_get_avatar_default_args() );
 	$args['id'] = 'current' === $args['id'] ? mai_get_author_id() : $args['id'];
+
+	if ( ! $args['id'] ) {
+		return;
+	}
+
 	$avatar     = get_avatar( $args['id'], absint( $args['size'] ) );
 
 	if ( ! $avatar ) {
@@ -1138,7 +1167,7 @@ function mai_get_avatar_default_args() {
  * @return int|false
  */
 function mai_get_author_id() {
-	static $author_id = false;
+	static $author_id = null;
 
 	if ( ! is_null( $author_id ) ) {
 		return $author_id;
@@ -1218,6 +1247,10 @@ function mai_get_rating( $args ) {
 
 		$count = 1;
 		for ( $rating = 1; $rating <= $args['value']; $rating++ ) {
+			if ( $rating > $total ) {
+				break;
+			}
+
 			$html .= genesis_markup(
 				[
 					'open'    => '<li %s>',
@@ -1233,7 +1266,7 @@ function mai_get_rating( $args ) {
 			$count++;
 		}
 
-		if ( $count < $total ) {
+		if ( $count <= $total ) {
 			if ( $half ) {
 				$half = mai_get_icon(
 					[
@@ -1259,7 +1292,7 @@ function mai_get_rating( $args ) {
 				$count++;
 			}
 
-			if ( $count < $total ) {
+			if ( $count <= $total ) {
 				$empty = mai_get_icon(
 					[
 						'icon'       => 'star',

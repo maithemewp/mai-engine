@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'c22da58b0befbb6fc3a4429d8ee945d4c62e1e38',
+    'reference' => '9dcf48f0a63b931969aa159b43ad4aa5ccba23b6',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
@@ -63,7 +63,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'c22da58b0befbb6fc3a4429d8ee945d4c62e1e38',
+      'reference' => '9dcf48f0a63b931969aa159b43ad4aa5ccba23b6',
     ),
     'phpoption/phpoption' => 
     array (
@@ -144,12 +144,12 @@
     ),
     'yahnis-elsts/plugin-update-checker' => 
     array (
-      'pretty_version' => 'v4.10',
-      'version' => '4.10.0.0',
+      'pretty_version' => 'v4.11',
+      'version' => '4.11.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '0edd15f67822464af8a23285ce367b30d515a855',
+      'reference' => '3155f2d3f1ca5e7ed3f25b256f020e370515af43',
     ),
   ),
 );

@@ -5,12 +5,16 @@
 	height: auto;
 	margin: var(--sub-menu-toggle-margin, 0);
 	padding: 1em;
-	background: transparent;
-
-	&:hover,
-	&:focus {
-		background: transparent;
-	}
+	--button-background: transparent;
+	--button-background-hover: transparent;
+	--button-text-decoration: none;
+	--button-text-decoration-hover: none;
+	--button-border: 0;
+	--button-border-hover: 0;
+	--button-box-shadow: 0;
+	--button-box-shadow-hover: 0;
+	--button-transform: 0;
+	--button-transform-hover: 0;
 
 	&:focus {
 		outline: var(--border);

@@ -10,46 +10,43 @@
  */
 
 return [
-	'demos'             => [
-		'portfolio'        => 59,
+	'demos' => [
+		'portfolio' => 59,
 	],
-	'global-styles'     => [
-		'colors'           => [
-			'alt'             => '#f5f5f5',
-			'body'            => '#4e4e4e',
-			'heading'         => '#2c2c2c',
-			'primary'         => '#2c2c2c',
-			'secondary'       => '#e6e7e9',
-			'link'            => '#a6a59b',
+	'global-styles' => [
+		'colors' => [
+			'alt'       => '#f5f5f5',
+			'body'      => '#4e4e4e',
+			'heading'   => '#2c2c2c',
+			'primary'   => '#2c2c2c',
+			'secondary' => '#e6e7e9',
+			'link'      => '#a6a59b',
 		],
-		'fonts'            => [
-			'body'            => 'Open Sans:400',
-			'heading'         => 'Montserrat:600,500',
+		'fonts' => [
+			'body'    => 'Open Sans:400',
+			'heading' => 'Montserrat:600,500',
 		],
 	],
-	'image-sizes'       => [
-		'add'              => [
-			'cover'           => [ 1600, 900, true ],
-			'square'          => '1:1',
-			'tiny'            => [ 80, 80, true ],
+	'image-sizes' => [
+		'add'  => [
+			'square' => '1:1',
 		],
-		'remove'           => [],
 	],
-	'settings'          => [
-		'logo'             => [
-			'width'           => [
-				'desktop'        => '300px',
+	'settings' => [
+		'logo' => [
+			'width' => [
+				'desktop' => '300px',
 			],
 		],
-		'site-layouts'      => [
-			'default'         => [
-				'site'           => 'content-sidebar',
+		'site-layouts' => [
+			'default'  => [
+				'site' => 'content-sidebar',
 			],
 		],
 		'content-archives' => [
-			'post'            => [
-				'columns'        => '1',
-				'boxed'          => false,
+			'post' => [
+				'columns' => '1',
+				'boxed'   => false,
 			],
 		],
 	],

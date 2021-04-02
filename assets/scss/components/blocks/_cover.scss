@@ -1,6 +1,8 @@
 .wp-block-cover {
 	position: relative; // so negative margins inside will work.
 	z-index: 0; // so negative margins work with overlay.
+	display: flex;
+	justify-content: var(--cover-block-justify-content, center);
 	min-height: 0;
 	padding: var(--cover-block-padding-top, 0.05px) var(--cover-block-padding-right, 0.05px) var(--cover-block-padding-bottom, 0.05px) var(--cover-block-padding-left, 0.05px); // 0.05px prevents margin collapsing.
 
@@ -10,22 +12,19 @@
 	}
 
 	&.alignfull {
-		--cover-block-padding-right: var(--side-spacing);
-		--cover-block-padding-left: var(--side-spacing);
+		// Can't override property or it will break nested blocks.
+		padding-right: calc(((var(--viewport-width) - var(--breakpoint-xl)) / 2) - var(--side-spacing));
+		padding-left: calc(((var(--viewport-width) - var(--breakpoint-xl)) / 2) - var(--side-spacing));
 
-		.wp-block-cover {
-			--cover-block-padding-right: 0;
-			--cover-block-padding-left: 0;
-		}
-
-		.wp-block-group {
-			--group-block-padding-right: 0;
-			--group-block-padding-left: 0;
+		> .wp-block-cover__inner-container {
+			margin-right: var(--side-spacing);
+			margin-left: var(--side-spacing);
 		}
 	}
 
+	&.is-repeated,
 	&.has-parallax {
-		background-image: var(--cover-block-background-image, var(--background-image-sm));
+		background-image: var(--cover-block-background-image, var(--background-image-sm, var(--background-image, none)));
 
 		@include mq(sm) {
 			--cover-block-background-image: var(--background-image-md);
@@ -40,17 +39,8 @@
 .wp-block-cover__inner-container {
 	width: 100% !important;
 	max-width: var(--content-max-width, var(--breakpoint-xl));
-	margin-right: auto;
-	margin-left: auto;
 }
 
-.wp-cover-block__image,
-.wp-cover-block__image img { // Added img for plugins that convert to picture/source and change our markup.
-	z-index: 0;
-	width: 100%;
-	height: 100% !important; // WooCommerce CSS and possibly other plugin CSS was overriding this.
-	object-fit: cover;
+.wp-block-cover__image-background {
 	object-position: var(--object-position, 50%);
-
-	@include position(absolute, 0 0 0 0);
 }

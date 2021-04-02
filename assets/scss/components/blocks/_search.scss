@@ -51,6 +51,9 @@
 		position: relative;
 		margin: var(--button-margin) !important; // Overides WP core styles.
 		padding: var(--button-padding, 0.9em 1.625em) !important; // Overides WP core styles.
+
+		@include button();
+		@include button-style("secondary");
 	}
 
 	.search-icon {

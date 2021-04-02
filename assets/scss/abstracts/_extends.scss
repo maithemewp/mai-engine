@@ -34,7 +34,7 @@
 
 @mixin button($is_admin: false) {
 	position: relative;
-	display: inline-flex;
+	display: var(--button-display, inline-flex);
 	align-items: center;
 	justify-content: center;
 	width: var(--button-width, auto);
@@ -158,4 +158,16 @@
 	font-size: var(--cite-font-size, 0.8em);
 	font-family: var(--cite-font-family, var(--heading-font-family));
 	font-style: var(--cite-font-style, normal);
+}
+
+@mixin dark_bg() {
+	--heading-color: var(--color-white);
+	--body-color: var(--color-white);
+	--link-color: currentColor;
+	--link-color-hover: currentColor;
+	--link-text-decoration: underline;
+	--link-filter-hover: brightness(0.8);
+	--menu-item-link-color: var(--color-white);
+	--menu-item-link-color-hover: var(--color-white);
+	--menu-item-name-filter-hover: brightness(0.8);
 }

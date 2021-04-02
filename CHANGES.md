@@ -1,5 +1,41 @@
 # Changelog
 
+## 2.12.0 (4/2/21)
+* Added: New Site Header color setting. Easily change your site header color, including dark headers with automatic white text!
+* Added: New "Full" option for Content Width in Group and Cover blocks.
+* Added: New "Content Alignment" settings in Group and Cover blocks. Set your content width to something smaller and align the inner container left/center/right.
+* Added: New `font_size` parameter in `[mai_menu]` shortcode. Accepts `xs`, `sm`, `md`, `lg`, `xl`, `xxl`, `xxxl`, `xxxxl`, and any CSS unit value like `16px`, `1em`, `1.2rem`. Number values like `16` will automatically be converted to pixel values like `16px` during display.
+* Added: New `post_type` parameter in `[mai_content]` shortcode so you can display any post type by slug. The `id` parameter already allowed this without needing `post_type` but now you can also display any post type by slug.
+* Added: New `mai_remove_entries` (bool) filter so developers can now easily remove entries from default loops.
+* Added: [Accessibility] Added "Link Title" field in Mai Icon block and `link_title` parameter in `[mai_icon]` shortcode to add a visually hidden label for accessibility.
+* Changed: [Performance Update] Simplify caching and transients to a single cached request.
+* Changed: Block settings panel labels are now more literal. "Spacing" is now "Padding" and "Content Width" is now "Layout" since adding new settings inside.
+* Changed: Update the updater package.
+* Changed: Simplified breadcrumb output hook/function so they are easier to move while respecting Hide Elements setting.
+* Changed: Custom color label and description in Customizer.
+* Changed: Paragraphs now use `--body-color` custom property. This makes it much easier to hijack/intercept and change the default text color when using dark backgrounds or any other fitting scenario.
+* Changed: Default side spacing (mostly noticeable on mobile) is now slightly larger.
+* Changed: Multiple CSS classes can now be used with `[mai_back_to_top]` shortcode via the `class` parameter.
+* Fixed: [Accessibility] Added missing screen-reader-text to search submit buttons.
+* Fixed: Cover block images being rendered twice due to changes in WP 5.7 for new instances of the block added after 5.7.
+* Fixed: Layout bug after saving/updating posts that would cause the logo/menu to be positioned wrong (and other weirdness) until you open the Customizer or transients are flushed.
+* Fixed: 404 template part output altering the content in some instances.
+* Fixed: Author avatar not showing in `[mai_avatar]` even though the author/user does have one.
+* Fixed: Remove unused left/center/right alignment settings in Mai Post/Term Grid block toolbar.
+* Fixed: Mai Columns new column appender button position was often hard to click/find.
+* Fixed: Mai Delight "Background" color setting was not working with anything other than the default.
+* Fixed: Page Header description now works on Blog page.
+* Fixed: Margin top/bottom settings on Image block were not overriding default margins in some instances.
+* Fixed: Search icon in After Header menu was cutting off the search field when After Header template part was present.
+* Fixed: Mobile menu could be cut off if the menu is really tall/long and requires scrolling on smaller devices.
+* Fixed: Star ratings in `[mai_rating]` shortcode were not showing the full amount of total stars in some instances.
+* Fixed: Warning from a genesis_attr filter referencing 3 parameters when only 1 was called.
+* Fixed: Search button styling changes introduced in WP 5.7.
+* Fixed: Content before entries on the blog page was stripping inline styles.
+* Fixed: Mobile toggle buttons wrongly inheriting button border/shadow when custom properties were used globally.
+* Fixed: Custom post types in config.php single-content and archive-content settings now use defaults for any args that are not set.
+* Fixed: Scrollbar width is now calculated during a screen resize or orientation change. This is used for precise full width containers due to a browser inconsistency with "100vw" when scrollbars are present.
+
 ## 2.11.3 (3/12/21)
 * Added: New `mai_before_{$template_part}_template_part`, `mai_after_{$template_part}_template_part` action hooks before and after template parts and template part content.
 * Added: New `mai_menu_defaults` filter for devs to change [mai_menu] shortcode defaults.
@@ -40,7 +76,7 @@
 * Changed: Converted all instances of 100vw to new var(--viewport-width) custom property which accounts for scrollbars.
 * Changed: Editor background is now always white.
 * Changed: Bold/strong text now has break-word CSS applied.
-* Changed: Edit comment link is now visibile on comments when user has correct privileges.
+* Changed: Edit comment link is now visible on comments when user has correct privileges.
 * Changed: Content width now expands to fill container if the main container width is customized to be larger.
 * Changed: Cart total displayed via [mai_icon] now displays more consistently regardless of where it's used.
 * Changed: Updated pot file for translations.
@@ -52,7 +88,7 @@
 * Fixed: Entry pagination not displaying when using page breaks for paginated posts.
 * Fixed: Missing fallback for column count when entries are set to display in a single column. Fixes minor horizontal scroll in some scenarios.
 * Fixed: Page Header image field was not being used on static front page.
-* Fixed: Error with Mai Columns block when using a custom arrangemnt and "Auto".
+* Fixed: Error with Mai Columns block when using a custom arrangement and "Auto".
 * Fixed: Default column count in Mai Columns.
 * Fixed: Images in classic editor wider than their container.
 * Fixed: Search block styling with various configurations.

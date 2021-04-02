@@ -2,6 +2,12 @@
 	var root             = document.documentElement;
 	var scrollBarWidth   = window.innerWidth - document.documentElement.clientWidth;
 	var searchToggles    = document.querySelectorAll( '.search-toggle' );
+	var globalResize     = new ResizeObserver(items => {
+		items.forEach(item => {
+			scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+			root.style.setProperty( '--scrollbar-width', scrollBarWidth + 'px' );
+		});
+	});
 	var toggleSearchForm = function( event ) {
 		var parent = this.closest( '.search-icon-form' );
 
@@ -33,11 +39,12 @@
 		}
 	};
 
-	root.style.setProperty( '--scrollbar-width', scrollBarWidth + 'px' );
+	globalResize.observe( root );
 
 	searchToggles.forEach( function( searchToggle ) {
 		searchToggle.addEventListener( 'click', toggleSearchForm, false );
 	} );
+
 } )();
 
 function maiToggleAriaValues( element ) {

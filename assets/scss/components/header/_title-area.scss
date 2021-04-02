@@ -13,6 +13,7 @@
 	text-align: var(--title-area-text-align, start);
 	transition: var(--title-area-transition, var(--transition));
 
+	--link-color-hover: var(--color-link);
 	--link-text-decoration: none;
 	--link-text-decoration-hover: none;
 }
@@ -28,14 +29,6 @@
 
 .has-sticky-header.header-stuck {
 	--title-area-transition: all 250ms ease-in-out;
-}
-
-.has-dark-header:not(.header-stuck) {
-	--title-area-color: var(--color-white);
-
-	.title-area {
-		--link-color-hover: var(--color-white); // Site title hover.
-	}
 }
 
 .site-title {

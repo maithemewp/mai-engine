@@ -38,10 +38,11 @@ function mai_import_template_part_action() {
 	} else {
 		wp_die(
 			__( 'Template Parts failed to generate.', 'mai-engine' ),
-			__( 'Error', 'mai-engine' ), array(
+			__( 'Error', 'mai-engine' ), [
 				'link_url'  => admin_url( 'edit.php?post_type=mai_template_part' ),
 				'link_text' => __( 'Go back.', 'mai-engine' ),
-		) );
+			]
+		);
 	}
 }
 

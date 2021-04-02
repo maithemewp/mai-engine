@@ -29,8 +29,18 @@ function mai_get_single_content_settings( $name = 'post' ) {
 		$single_settings = [];
 	}
 
-	$defaults = mai_get_config( 'settings' )['single-content'];
-	$defaults = isset( $defaults[ $name ] ) ? $defaults[ $name ] : $defaults[ 'post' ];
+	$config   = mai_get_config( 'settings' )['single-content'];
+	$defaults = isset( $config[ $name ] ) ? $config[ $name ] : $config['post'];
+
+	if ( 'post' !== $name ) {
+		foreach ( $config[ 'post' ] as $key => $value ) {
+			if ( isset( $defaults[ $key ] ) ) {
+				continue;
+			}
+			$defaults[ $key ] = $value;
+		}
+	}
+
 	$settings = [
 		[
 			'settings'    => 'show',
@@ -148,6 +158,9 @@ function mai_get_single_content_settings( $name = 'post' ) {
 			'label'           => __( 'Background/overlay color', 'mai-engine' ),
 			'type'            => 'color',
 			'default'         => $defaults['page-header-background-color'],
+			'choices'         => [
+				'palettes' => mai_get_color_choices(),
+			],
 			'active_callback' => 'mai_has_page_header_support_callback',
 		],
 		[

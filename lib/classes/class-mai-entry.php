@@ -1109,7 +1109,7 @@ class Mai_Entry {
 			return;
 		}
 
-		if ( ! $this->args['custom_content'] ) {
+		if ( ! ( isset( $this->args['custom_content'] ) && $this->args['custom_content'] ) ) {
 			return;
 		}
 
@@ -1189,7 +1189,7 @@ class Mai_Entry {
 			return;
 		}
 
-		$footer_meta = wp_kses_post( $this->args['footer_meta'] );
+		$footer_meta = wp_kses_post( $this->args['header_meta'] );
 		$footer_meta = do_shortcode( $this->args['footer_meta'] );
 
 		if ( ! $footer_meta ) {
@@ -1244,6 +1244,7 @@ class Mai_Entry {
 		}
 
 		$more_link_text = isset( $this->args['more_link_text'] ) && $this->args['more_link_text'] ? $this->args['more_link_text'] : mai_get_read_more_text();
+		$more_link_text = $more_link_text;
 		$more_link_text = do_shortcode( $more_link_text );
 
 		// Screen reader text title.

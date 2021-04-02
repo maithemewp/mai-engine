@@ -112,8 +112,9 @@
 	.has-image-stack {
 		--entry-flex-direction: column;
 		--entry-flex-wrap: nowrap;
-		--entry-image-link-max-width: 100%;
 		--entry-image-link-flex: initial;
+		--entry-image-link-max-width: 100%;
+		--entry-image-link-margin: 0 auto var(--spacing-md);
 		--entry-image-link-before-display: none;
 
 		// Needs to be more specific to intercept alternating images.

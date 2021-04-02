@@ -29,15 +29,23 @@ function mai_render_group_block( $block_content, $block ) {
 		return $block_content;
 	}
 
-	$light_or_dark = false;
+	$align     = mai_isset( $block['attrs'], 'contentAlign', false );
+	$bg        = mai_isset( $block['attrs'], 'backgroundColor', false );
+	$custom_bg = mai_isset( $block['attrs'], 'customBackgroundColor', false );
 
-	if ( isset( $block['attrs']['backgroundColor'] ) ) {
-		$light_or_dark = mai_is_light_color( $block['attrs']['backgroundColor'] ) ? 'light' : 'dark';
-	} elseif ( isset( $block['attrs']['customBackgroundColor'] ) ) {
-		$light_or_dark = mai_is_light_color( $block['attrs']['customBackgroundColor'] ) ? 'light' : 'dark';
+	if ( ! ( $align || $bg || $custom_bg ) ) {
+		return $block_content;
 	}
 
-	if ( $light_or_dark ) {
+	$light_or_dark = false;
+
+	if ( $bg ) {
+		$light_or_dark = mai_is_light_color( $bg ) ? 'light' : 'dark';
+	} elseif ( $custom_bg ) {
+		$light_or_dark = mai_is_light_color( $custom_bg ) ? 'light' : 'dark';
+	}
+
+	if ( $align || $light_or_dark ) {
 		$dom = mai_get_dom_document( $block_content );
 
 		/**
@@ -48,9 +56,15 @@ function mai_render_group_block( $block_content, $block ) {
 		$first_block = mai_get_dom_first_child( $dom );
 
 		if ( $first_block ) {
+
+			if ( $align ) {
+				$style = $first_block->getAttribute( 'style' );
+				$style = sprintf( '--group-block-justify-content:%s;', mai_get_flex_align( $align ) ) . $style;
+				$first_block->setAttribute( 'style', $style );
+			}
+
 			$classes = $first_block->getAttribute( 'class' );
 			$classes = mai_add_classes( sprintf( 'has-%s-background', $light_or_dark ), $classes );
-
 			$first_block->setAttribute( 'class', $classes );
 
 			$block_content = $dom->saveHTML();

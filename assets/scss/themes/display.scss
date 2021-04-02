@@ -11,11 +11,3 @@
 	--menu-font-family: var(--heading-font-family);
 	--menu-font-weight: var(--button-font-weight);
 }
-
-.has-transparent-header.mobile-menu-visible,
-.header-stuck,
-.single:not(.has-page-header) {
-	--site-header-background: var(--color-heading);
-	--title-area-color: var(--color-white);
-	--menu-item-link-color: var(--color-white);
-}

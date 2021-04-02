@@ -62,19 +62,20 @@ function mai_back_to_top_shortcode( $atts = [] ) {
 		'link'  => esc_url( $atts['link'] ),
 		'title' => esc_html( $atts['title'] ),
 		'text'  => esc_html( $atts['text'] ),
-		'class' => sanitize_html_class( $atts['class'] ),
+		'class' => esc_html( $atts['class'] ),
 	];
 
-	$class = 'mai-back-to-top';
+	$classes = 'mai-back-to-top';
+
 	if ( $atts['class'] ) {
-		$class .= ' ' . $atts['class'];
+		$classes = mai_add_classes( $atts['class'], $classes );
 	}
 
 	return sprintf(
 		'<a href="%s" title="%s" class="%s">%s</a>',
 		$atts['link'],
 		$atts['title'],
-		trim( $class ),
+		trim( $classes ),
 		$atts['text']
 	);
 }
@@ -87,8 +88,10 @@ add_shortcode( 'mai_content', 'mai_content_shortcode' );
  * Examples:
  * [mai_content id="123"]
  * [mai_content id="my-reusable-block"]
+ * [mai_content id="my-page-slug" post_type="page"]
  *
  * @since 0.3.0
+ * @since 2.12.0 Added post_type parameter when displaying content by post slug.
  *
  * @param array $atts Shortcode attributes.
  *
@@ -97,17 +100,20 @@ add_shortcode( 'mai_content', 'mai_content_shortcode' );
 function mai_content_shortcode( $atts = [] ) {
 	$atts = shortcode_atts(
 		[
-			'id' => '',
+			'id'        => '',
+			'post_type' => 'wp_block',
 		],
 		$atts,
 		'mai_content'
 	);
 
+	$atts = array_map( 'esc_html', $atts );
+
 	if ( empty( $atts['id'] ) ) {
 		return;
 	}
 
-	return mai_get_post_content( $atts['id'] );
+	return mai_get_post_content( $atts['id'], strtolower( $atts['post_type'] ) );
 }
 
 add_shortcode( 'mai_menu', 'mai_menu_shortcode' );
@@ -121,10 +127,7 @@ add_shortcode( 'mai_menu', 'mai_menu_shortcode' );
  * @return string
  */
 function mai_menu_shortcode( $atts ) {
-	$defaults = mai_get_menu_defaults();
-	$atts     = shortcode_atts( $defaults, $atts, 'mai_menu' );
-
-	if ( ! $atts['id'] ) {
+	if ( ! ( isset( $atts['id'] ) && $atts['id'] ) ) {
 		return;
 	}
 
@@ -296,7 +299,11 @@ function mai_gallery_shortcode_tag( $output, $tag, $atts, $m ) {
 		$style .= sprintf( '--gallery-columns-%s:%s;', $break, $column );
 	}
 
-	$first->setAttribute( 'style', $style );
+	if ( $style ) {
+		$first->setAttribute( 'style', $style );
+	} else {
+		$first->removeAttribute( 'style' );
+	}
 
 	$output = $dom->saveHTML();
 
