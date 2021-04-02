@@ -55,16 +55,16 @@ function mai_render_group_block( $block_content, $block ) {
 		 */
 		$first_block = mai_get_dom_first_child( $dom );
 
-		if ( $align ) {
-			$style  = $first_block->getAttribute( 'style' );
-			$style .= sprintf( '--group-block-justify-content:%s;', mai_get_flex_align( $align ) );
-			$first_block->setAttribute( 'style', $style );
-		}
-
 		if ( $first_block ) {
+
+			if ( $align ) {
+				$style  = $first_block->getAttribute( 'style' );
+				$style .= sprintf( '--group-block-justify-content:%s;', mai_get_flex_align( $align ) );
+				$first_block->setAttribute( 'style', $style );
+			}
+
 			$classes = $first_block->getAttribute( 'class' );
 			$classes = mai_add_classes( sprintf( 'has-%s-background', $light_or_dark ), $classes );
-
 			$first_block->setAttribute( 'class', $classes );
 
 			$block_content = $dom->saveHTML();
