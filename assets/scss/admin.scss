@@ -9,6 +9,15 @@
  * max-width + 160 (admin menu width) + 280 (block editor sidebar width) + 60px (extra).
  */
 
+.folded {
+	--admin-menu-width: 36px;
+}
+
+// After .folded since it doesn't matter what size the admin menu actually is.
+.is-fullscreen-mode {
+	--admin-menu-width: 0;
+}
+
 .edit-post-layout.is-sidebar-opened {
 	--block-sidebar-width: 281px;
 }
@@ -34,6 +43,14 @@
 }
 
 @media only screen and (min-width: 1500px) {
+
+
+	.edit-post-layout.is-sidebar-opened {
+		--wp-block-max-width: var(--breakpoint-lg);
+	}
+}
+
+@media only screen and (min-width: 1740px) {
 
 	.edit-post-layout.is-sidebar-opened {
 		--wp-block-max-width: var(--breakpoint-xl);
