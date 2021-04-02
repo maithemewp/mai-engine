@@ -130,6 +130,11 @@
 	}
 }
 
+.has-no-content-width {
+	--content-max-width: var(--viewport-width);
+	--side-spacing: 0;
+}
+
 .has-no-padding {
 	padding: 0 !important;
 }
