@@ -299,7 +299,11 @@ function mai_gallery_shortcode_tag( $output, $tag, $atts, $m ) {
 		$style .= sprintf( '--gallery-columns-%s:%s;', $break, $column );
 	}
 
-	$first->setAttribute( 'style', $style );
+	if ( $style ) {
+		$first->setAttribute( 'style', $style );
+	} else {
+		$first->removeAttribute( 'style' );
+	}
 
 	$output = $dom->saveHTML();
 

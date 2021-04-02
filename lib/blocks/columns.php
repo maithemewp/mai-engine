@@ -205,7 +205,11 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 					$style .= sprintf( '--max-width-%s:%s;', $break, $max_width );
 				}
 
-				$element->setAttribute( 'style', $style );
+				if ( $style ) {
+					$element->setAttribute( 'style', $style );
+				} else {
+					$element->removeAttribute( 'style' );
+				}
 
 				if ( $element_i === ( $total_arrangements - 1 ) ) {
 					$element_i = 0;
@@ -230,7 +234,11 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 				}
 			}
 
-			$element->setAttribute( 'style', $style );
+			if ( $style ) {
+				$element->setAttribute( 'style', $style );
+			} else {
+				$element->removeAttribute( 'style' );
+			}
 		}
 	}
 
