@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.12.0 (TBD)
+* Added: New Site Header color setting. Easily change your site header color, including dark headers with automatic white text!
+* Changed: [Performance Update] Simplify caching and transients to a single cached request.
+* Changed: Update the updater package.
+* Changed: Simplified breadcrumb output hook/function so they are easier to move while respecting Hide Elements setting.
+* Fixed: Layout bug after saving/updating posts that would cause the logo/menu to be positioned wrong (and other weirdness) until you open the Customizer or transients are flushed.
+* Fixed: 404 template part output altering the content in some instances.
+* Fixed: Page Header description now works on Blog page.
+* Fixed: Search button styling changes introduced in WP 5.7.
+* Fixed: Content before entries on the blog page was stripping inline styles.
+
 ## 2.11.3 (3/12/21)
 * Added: New `mai_before_{$template_part}_template_part`, `mai_after_{$template_part}_template_part` action hooks before and after template parts and template part content.
 * Added: New `mai_menu_defaults` filter for devs to change [mai_menu] shortcode defaults.

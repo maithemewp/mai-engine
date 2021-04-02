@@ -9,27 +9,6 @@
  * @license   GPL-2.0-or-later
  */
 
-// add_action( 'admin_init', 'mai_admin_flush_customizer_transients' );
-/**
- * Deletes kirki transients if they have a value when viewing the Dashboard.
- *
- * @since TBD
- *
- * @return void
- */
-function mai_admin_flush_customizer_transients() {
-	$transients = [
-		'mai_dynamic_css',
-		'mai_dynamic_fonts',
-	];
-	foreach ( $transients as $transient ) {
-		if ( false === ( $value = get_transient( $transient ) ) ) {
-			continue;
-		}
-		delete_transient( $transient );
-	}
-}
-
 add_action( 'after_switch_theme',   'mai_flush_customizer_transients' );
 add_action( 'save_post',            'mai_flush_customizer_transients' );
 add_action( 'customize_save_after', 'mai_flush_customizer_transients' );
@@ -66,7 +45,7 @@ function mai_add_kirki_css( $css ) {
 	$preview   = is_customize_preview();
 
 	if ( ! ( $admin || $preview ) && $cached_css = get_transient( $transient ) ) {
-		// return $cached_css;
+		return $cached_css;
 	}
 
 	$css = mai_add_additional_colors_css( $css );
