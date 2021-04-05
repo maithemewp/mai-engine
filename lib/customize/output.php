@@ -40,6 +40,17 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_kirki_css' );
  * @return array
  */
 function mai_add_kirki_css( $css ) {
+	/**
+	 * Check if this filter ran already.
+	 * loop_controls() method in Kirki calls this more than once.
+	 */
+	static $has_run = false;
+
+	if ( $has_run ) {
+		return $css;
+	}
+
+	$has_run   = true;
 	$transient = 'mai_dynamic_css';
 	$admin     = is_admin();
 	$preview   = is_customize_preview();
