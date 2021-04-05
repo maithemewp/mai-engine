@@ -51,7 +51,7 @@
 
 .custom-logo-link {
 	--link-transition: var(--title-area-transition, var(--transition));
-
+	position: relative;
 	display: flex;
 	align-items: center;
 	max-width: var(--custom-logo-width, 18rem);
@@ -62,5 +62,28 @@
 	display: block;
 	width: var(--viewport-width); // For svg logos.
 	max-width: 100%; // Because 100vw width is crazy.
+	opacity: var(--custom-logo-opacity, 1);
 	transition: var(--title-area-transition, var(--transition));
+}
+
+.has-scroll-logo {
+
+	.custom-logo-link::before {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		background-image: var(--custom-logo-link-before-background, var(--background-image, none));
+		background-repeat: no-repeat;
+		background-size: contain;
+		opacity: var(--custom-logo-link-before-opacity, 0);
+		content: "";
+	}
+
+	&.header-stuck {
+
+		@include mq(sm) {
+			--custom-logo-link-before-opacity: 1;
+			--custom-logo-opacity: 0;
+		}
+	}
 }
