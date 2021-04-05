@@ -2,6 +2,7 @@
 	--font-scale: 1.165;
 	--heading-line-height: 1.44;
 	--border-radius: 0;
+	--shadow: 0;
 	--button-font-weight: var(--body-font-weight-bold);
 	--button-transform-hover: translateY(-5%);
 	--button-link-color: var(--color-heading);
@@ -9,6 +10,10 @@
 	--site-title-font-size: var(--font-size-lg);
 	--site-header-border-bottom: 0;
 	--breadcrumb-font-size: var(--font-size-sm);
+	--author-box-background: var(--color-alt);
+	--author-box-border: 0;
+	--adjacent-entry-link-inner-background: var(--color-alt);
+	--adjacent-entry-link-inner-border: 0;
 }
 
 .breadcrumb {

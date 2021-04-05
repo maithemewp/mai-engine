@@ -18,7 +18,7 @@ return [
 	'global-styles' => [
 		'colors' => [
 			'background' => '#ffffff', // Body background.
-			'alt'        => '#f3f3f3', // Background alt.
+			'alt'        => '#fafafa', // Background alt.
 			'body'       => '#333333', // Body text color.
 			'heading'    => '#111111', // Heading text color.
 			'link'       => '#0066cc', // Link color.
