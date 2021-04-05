@@ -47,6 +47,7 @@ function mai_logo_customizer_settings() {
 					'element'       => '.custom-logo-link',
 					'property'      => '--background-image',
 					'value_pattern' => 'url($)',
+					'media_query'   => sprintf( '@media (min-width: %spx)', mai_get_breakpoint( 'sm' ) ),
 				],
 			],
 			'active_callback' => function() {
