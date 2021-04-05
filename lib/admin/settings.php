@@ -27,7 +27,7 @@ function mai_admin_menu_pages() {
 		'edit_posts',
 		'mai-theme',
 		'mai_render_admin_menu_page',
-		'data:image/svg+xml;base64,' . base64_encode( file_get_contents( mai_get_dir() . 'assets/svg/admin-menu-icon.svg' ) ),
+		'data:image/svg+xml;base64,' . base64_encode( file_get_contents( mai_get_dir() . 'assets/svg/mai-logo-icon.svg' ) ),
 		'58.995' // This only works as a string for some reason.
 	);
 

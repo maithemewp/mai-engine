@@ -58,10 +58,25 @@ add_filter( 'kirki/config', 'mai_kirki_config' );
  * @return array
  */
 function mai_kirki_config( $config ) {
-	$config['disable_loader'] = true;
-	$config['url_path']       = mai_get_url() . 'vendor/aristath/kirki';
-
+	$config['url_path'] = mai_get_url() . 'vendor/aristath/kirki';
 	return $config;
+}
+
+add_action( 'wp_head', 'mai_kirki_loading_icon', 101 );
+/**
+ * Adds the Mai Theme icon logo as the loader.
+ * Run safter Kirki, and add !important to override.
+ * Until Kikri v4 with a filter for this.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_kirki_loading_icon() {
+	if ( ! is_customize_preview() ) {
+		return;
+	}
+	printf( '<style>.kirki-customizer-loading-wrapper { background-image: url( "%s" ) !important;background-size:50px; }</style>', mai_get_url() . 'assets/svg/mai-logo-icon.svg' );
 }
 
 add_action( 'customize_register', 'mai_handle_existing_customizer_sections' );
