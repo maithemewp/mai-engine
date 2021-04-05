@@ -9,6 +9,32 @@
  * @license   GPL-2.0-or-later
  */
 
+add_action( 'upgrader_process_complete', 'mai_upgrade_complete', 10, 2 );
+/**
+ * Flush transients during update.
+ *
+ * @since TBD
+ *
+ * @param WP_Upgrader $upgrader_object The upgrader object.
+ * @param array       $options         Array of bulk item update data.
+ *
+ * @return void
+ */
+function mai_upgrade_complete( $upgrader_object, $options ) {
+	$current_plugin = plugin_basename( __FILE__ );
+
+	if ( 'update' !== $options['action'] ) {
+		return;
+	}
+
+	foreach( $options['plugins'] as $plugin ) {
+		if ( $current_plugin !== $plugin ) {
+			mai_flush_customizer_transients();
+			delete_transient( 'mai_template_parts' );
+		}
+	}
+}
+
 add_action( 'admin_init', 'mai_do_upgrade' );
 /**
  * Run setting upgrades during engine update.
