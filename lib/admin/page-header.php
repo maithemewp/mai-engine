@@ -30,6 +30,7 @@ function mai_add_page_header_metabox() {
 	$current_id     = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
 	$page_for_posts = get_option( 'page_for_posts' );
 	$has_blog       = in_array( 'post', $archives ) && $page_for_posts;
+	$is_blog        = $has_blog && $page_for_posts && ( $current_id === $page_for_posts );
 
 	foreach ( $singles as $type ) {
 		$locations[] = [
@@ -60,7 +61,7 @@ function mai_add_page_header_metabox() {
 
 		$locations[] = [
 			[
-				'param'    =>  $param,
+				'param'    => $param,
 				'operator' => '==',
 				'value'    => $type,
 			],
@@ -78,7 +79,7 @@ function mai_add_page_header_metabox() {
 	}
 
 	// Only show page header image field if not blog archive.
-	if ( $has_blog && ( $current_id !== $page_for_posts ) ) {
+	if ( ! $is_blog ) {
 		$fields[] = [
 			'key'           => 'page_header_image',
 			'label'         => esc_html__( 'Image', 'mai-engine' ),
