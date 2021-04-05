@@ -99,6 +99,11 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'has-sticky-header';
 	}
 
+	// Add scroll logo class.
+	if ( mai_has_sticky_scroll_logo() ) {
+		$classes[] = 'has-scroll-logo';
+	}
+
 	// Add or alignfull class.
 	if ( mai_has_alignfull_first() ) {
 		$classes[] = 'has-alignfull-first';

@@ -95,6 +95,25 @@
 	}
 }
 
+.has-scroll-logo {
+
+	&.header-stuck {
+
+		@include mq(sm) {
+
+			.custom-logo-link {
+				background: var(--background-image);
+				background-repeat: no-repeat;
+				background-size: contain;
+
+				.custom-logo {
+					opacity: 0;
+				}
+			}
+		}
+	}
+}
+
 .no-js {
 
 	&.has-light-header {
