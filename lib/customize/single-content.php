@@ -209,6 +209,14 @@ function mai_add_single_content_settings() {
 	$defaults = mai_get_config( 'settings' )['single-content']['enable'];
 	$sections = mai_get_option( 'single-settings', $defaults, false );
 
+	// Remove any content types that no longer exist.
+	foreach ( $sections as $index => $section ) {
+		if ( post_type_exists( $section ) ) {
+			continue;
+		}
+		unset( $sections[ $index ] );
+	}
+
 	Kirki::add_panel(
 		"{$handle}-{$panel}",
 		[

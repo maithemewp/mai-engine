@@ -767,6 +767,17 @@ function mai_add_content_archive_settings() {
 	$defaults = mai_get_config( 'settings' )['content-archives']['enable'];
 	$sections = mai_get_option( 'archive-settings', $defaults, false );
 
+	// Remove any content types that no longer exist.
+	foreach ( $sections as $index => $section ) {
+		if ( post_type_exists( $section ) || taxonomy_exists( $section ) ) {
+			continue;
+		}
+		if ( in_array( [ 'search', 'author', 'date' ] ) ) {
+			continue;
+		}
+		unset( $sections[ $index ] );
+	}
+
 	Kirki::add_panel(
 		"{$handle}-{$panel}",
 		[
