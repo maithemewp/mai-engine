@@ -98,6 +98,18 @@ return [
 				'portfolio' => 'standard-content',
 			],
 		],
+		'page-header' => [
+			'single' => [
+				'post',
+				'portfolio',
+			],
+			'content-width'    => 'sm',
+			'content-align'    => 'start',
+			'text-align'       => 'start',
+			'background-color' => '#000000',
+			'overlay-opacity'  => '0.5',
+			'text-color'       => 'light',
+		],
 	],
 	'custom-functions' => function() {
 		add_filter( 'genesis_attr_entries-wrap', 'mai_sleek_entries_wrap_attributes', 10, 3 );
