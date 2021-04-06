@@ -27,7 +27,13 @@ function mai_do_404_page() {
 	}
 
 	// Remove title.
-	add_filter( 'genesis_markup_entry-title', '__return_empty_string' );
+	// TODO: Use new method of remove entry elements once it's added.
+	add_filter( 'genesis_markup_entry-title', function( $false, $args ) {
+		if ( ! $args['params'] ) {
+			return '';
+		}
+		return $false;
+	}, 10, 2 );
 
 	// Swap content. Fakes entry markup to make sure alignfull first works as expected.
 	add_filter( 'genesis_markup_entry-content', function( $content, $args ) {
