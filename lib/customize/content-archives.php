@@ -772,7 +772,7 @@ function mai_add_content_archive_settings() {
 		if ( post_type_exists( $section ) || taxonomy_exists( $section ) ) {
 			continue;
 		}
-		if ( in_array( [ 'search', 'author', 'date' ] ) ) {
+		if ( in_array( $section, [ 'search', 'author', 'date' ] ) ) {
 			continue;
 		}
 		unset( $sections[ $index ] );
