@@ -63,6 +63,11 @@ function mai_do_loop() {
 
 	$args    = mai_get_template_args();
 	$archive = ( 'archive' === $args['context'] );
+	$facetwp = class_exists( 'facetwp' );
+
+	if ( $archive && $facetwp ) {
+		echo '<div class="facetwp-template">';
+	}
 
 	if ( have_posts() ) {
 
@@ -107,6 +112,10 @@ function mai_do_loop() {
 			 */
 			do_action( 'genesis_loop_else' );
 		}
+	}
+
+	if ( $archive && $facetwp ) {
+		echo '</div>';
 	}
 }
 

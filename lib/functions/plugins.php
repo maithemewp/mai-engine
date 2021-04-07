@@ -216,32 +216,6 @@ function mai_woocommerce_cart_item_remove_icon( $link ) {
 	return str_replace( '&times;', $svg, $link );
 }
 
-add_filter( 'genesis_attr_entries', 'mai_add_facetwp_template_class', 10, 3 );
-/**
- * Add facetwp-template class to archives.
- *
- * @since 0.2.0
- *
- * @param array  $attributes FacetWP template attributes.
- * @param string $context    Template context.
- * @param array  $args       Template args.
- *
- * @return array
- */
-function mai_add_facetwp_template_class( $attributes, $context, $args ) {
-	if ( ! class_exists( 'facetwp' ) ) {
-		return $attributes;
-	}
-
-	if ( ! isset( $args['params']['args'] ) || ( 'archive' !== $args['params']['args']['context'] ) ) {
-		return $attributes;
-	}
-
-	$attributes['class'] .= ' facetwp-template';
-
-	return $attributes;
-}
-
 add_filter( 'facetwp_shortcode_html', 'mai_facetwp_page_wrap', 10, 2 );
 /**
  * Add the wrap class to facetwp pager element.
@@ -358,6 +332,7 @@ add_filter( 'wp_dependency_required_row_meta', '__return_false' );
 
 add_filter( 'network_admin_plugin_action_links_mai-engine/mai-engine.php', 'mai_change_plugin_dependency_text', 100 );
 add_filter( 'plugin_action_links_mai-engine/mai-engine.php', 'mai_change_plugin_dependency_text', 100 );
+
 /**
  * Changes plugin dependency text.
  *
