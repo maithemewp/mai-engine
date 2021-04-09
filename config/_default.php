@@ -212,7 +212,7 @@ return [
 		'header'                         => [
 			'async'     => true,
 			'condition' => function () {
-				return ! mai_is_element_hidden( 'transparent_header' );
+				return ! mai_is_element_hidden( 'site_header' );
 			},
 		],
 		'blocks'                         => [
