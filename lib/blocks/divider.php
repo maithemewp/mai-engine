@@ -18,24 +18,26 @@ add_action( 'acf/init', 'mai_register_divider_block' );
  * @return void
  */
 function mai_register_divider_block() {
-	if ( function_exists( 'acf_register_block_type' ) ) {
-		acf_register_block_type(
-			[
-				'name'            => 'mai-divider',
-				'title'           => __( 'Mai Divider', 'mai-engine' ),
-				'description'     => __( 'A custom divider block.', 'mai-engine' ),
-				'render_callback' => 'mai_do_divider_block',
-				'category'        => 'widgets',
-				'keywords'        => [ 'divider' ],
-				'icon'            => mai_get_svg_icon( 'wave-sine', 'regular' ),
-				'mode'            => 'preview',
-				'align'           => 'full',
-				'supports'        => [
-					'align' => [ 'wide', 'full' ],
-				],
-			]
-		);
+	if ( ! function_exists( 'acf_register_block_type' ) ) {
+		return;
 	}
+
+	acf_register_block_type(
+		[
+			'name'            => 'mai-divider',
+			'title'           => __( 'Mai Divider', 'mai-engine' ),
+			'description'     => __( 'A custom divider block.', 'mai-engine' ),
+			'render_callback' => 'mai_do_divider_block',
+			'category'        => 'widgets',
+			'keywords'        => [ 'divider' ],
+			'icon'            => mai_get_svg_icon( 'wave-sine', 'regular' ),
+			'mode'            => 'preview',
+			'align'           => 'full',
+			'supports'        => [
+				'align' => [ 'wide', 'full' ],
+			],
+		]
+	);
 }
 
 /**
