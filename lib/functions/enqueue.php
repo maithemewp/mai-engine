@@ -105,6 +105,49 @@ function mai_enqueue_assets() {
 	}
 }
 
+add_filter( 'script_loader_tag', 'mai_script_loader_tag', 10, 3 );
+/**
+ * Adds attributes to scripts.
+ *
+ * @since TBD
+ *
+ * @param string $tag    The <script> tag for the enqueued script.
+ * @param string $handle The script's registered handle.
+ * @param string $src    The script's source URL.
+ *
+ * @return string
+ */
+function mai_script_loader_tag( $tag, $handle, $src ) {
+	$attributes = mai_get_script_attributes();
+	if ( ! ( isset( $attributes[ $handle ] ) && $attributes[ $handle ] ) ) {
+		return $tag;
+	}
+	$tag = mai_add_tag_attributes( $tag, $attributes[ $handle ] );
+	return $tag;
+}
+
+/**
+ * Adds attributes to styles.
+ *
+ * @since TBD
+ *
+ * @param string $html   The link tag for the enqueued style.
+ * @param string $handle The style's registered handle.
+ * @param string $href   The stylesheet's source URL.
+ * @param string $media  The stylesheet's media attribute.
+ *
+ * @return string
+ */
+add_filter( 'style_loader_tag', 'mai_style_loader_tag', 10, 4 );
+function mai_style_loader_tag( $html, $handle, $href, $media ) {
+	$attributes = mai_get_style_attributes();
+	if ( ! ( isset( $attributes[ $handle ] ) && $attributes[ $handle ] ) ) {
+		return $html;
+	}
+	$html = mai_add_tag_attributes( $html, $attributes[ $handle ] );
+	return $html;
+}
+
 /**
  * Register and enqueue script or style.
  *
@@ -122,14 +165,12 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 	$handle    = isset( $args['handle'] ) ? $args['handle'] : mai_get_handle() . '-' . $handle;
 	$deps      = isset( $args['deps'] ) ? $args['deps'] : [];
 	$ver       = isset( $args['ver'] ) ? $args['ver'] : mai_get_asset_version( $src );
-	$src       = isset( $args['async'] ) && $args['async'] && $src ? $src . '#async' : $src; // I think this needs to be after $ver so #async doesn't mess with url.
 	$media     = isset( $args['media'] ) ? $args['media'] : 'all';
 	$in_footer = isset( $args['in_footer'] ) ? $args['in_footer'] : ( 'script' === $type ); // Default to true if script, false if style.
 	$condition = isset( $args['condition'] ) ? $args['condition'] : '__return_true';
 	$location  = isset( $args['location'] ) ? is_array( $args['location'] ) ? $args['location'] : [ $args['location'] ] : [ 'public' ];
 	$localize  = isset( $args['localize'] ) ? $args['localize'] : [];
 	$inline    = isset( $args['inline'] ) ? $args['inline'] : false;
-	$onload    = isset( $args['onload'] ) ? $args['onload'] : false;
 	$last_arg  = 'style' === $type ? $media : $in_footer;
 	$register  = "wp_register_$type";
 	$enqueue   = "wp_enqueue_$type";
@@ -187,15 +228,101 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 
 		wp_localize_script( $handle, $localize['name'], $localize_data );
 	}
+}
 
-	if ( $onload ) {
-		add_filter( 'style_loader_tag', function ( $html, $original_handle ) use ( $args, $handle ) {
-			if ( $original_handle === $handle ) {
-				$html = str_replace( '>', ' onload="' . $args['onload'] . '">', $html );
-			}
-			return $html;
-		}, 11, 2 );
+/**
+ * Adds attributes to an HTML tag.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @param string $tag The <script> or <style> tag.
+ * @param array  $attributes The attributes by name and value.
+ *
+ * @return string
+ */
+function mai_add_tag_attributes( $tag, $attributes ) {
+	if ( ! $tag ) {
+		return $tag;
 	}
+	$dom   = mai_get_dom_document( $tag );
+	$first = mai_get_dom_first_child( $dom );
+	foreach ( $attributes as $name => $value ) {
+		$first->setAttribute( $name, $value );
+	}
+	return $dom->saveHTML();
+}
+
+/**
+ * Gets script attributes to be added later.
+ * These are not available to be added in wp_enqueue_script().
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @return array
+ */
+function mai_get_script_attributes() {
+	static $attributes = null;
+	if ( ! is_null( $attributes ) ) {
+		return $attributes;
+	}
+	$attributes = mai_get_tag_attributes( 'scripts' );
+	return $attributes;
+}
+
+/**
+ * Gets style attributes to be added later.
+ * These are not available to be added in wp_enqueue_style().
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @return array
+ */
+function mai_get_style_attributes() {
+	static $attributes = null;
+	if ( ! is_null( $attributes ) ) {
+		return $attributes;
+	}
+	$attributes = [
+		mai_get_handle() . '-desktop' => [
+			'async' => 'async',
+		]
+	];
+	$attributes = array_merge( mai_get_tag_attributes( 'styles' ), $attributes );
+	return $attributes;
+}
+
+/**
+ * Gets attributes of scripts or styles from the config.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @return array
+ */
+function mai_get_tag_attributes( $script_or_style ) {
+	$attributes = [];
+	$tags       = mai_get_config( $script_or_style );
+	foreach ( $tags as $name => $args ) {
+		$handle = isset( $args['handle'] ) ? $args['handle'] : mai_get_handle() . '-' . $name;
+		// ray( $args );
+		if ( isset( $args[''] ) && $args['onload'] ) {
+			$attributes[ $handle ]['onload'] = $args['onload'];
+		}
+		if ( isset( $args['async'] ) ) {
+			$attributes[ $handle ]['async'] = 'async';
+		}
+		if ( isset( $args['defer'] ) ) {
+			$attributes[ $handle ]['defer'] = 'defer';
+		}
+	}
+	return $attributes;
 }
 
 /**
@@ -278,8 +405,8 @@ EOT;
 add_action( 'wp_enqueue_scripts', 'mai_enqueue_desktop_styles' );
 /**
  * Load desktop styles only at breakpoint set in Customizer.
- *
  * Can't be in config because it uses default breakpoint which is also set in config file.
+ * Async added manually in style_loader_tag filter.
  *
  * @since 0.3.5
  * @since 2.4.2 Use wp_enqueue_style to correct load priority.
@@ -299,26 +426,4 @@ function mai_enqueue_desktop_styles() {
 	];
 
 	wp_enqueue_style( ...array_values( $style ) );
-}
-
-add_filter( 'clean_url', 'mai_async_scripts', 11, 1 );
-/**
- * Add async attribute to a url.
- *
- * @since 0.3.4
- *
- * @param string $url URL to check.
- *
- * @return string
- */
-function mai_async_scripts( $url ) {
-	if ( is_admin() ) {
-		return str_replace( '#async', '', $url );
-	} elseif ( ! is_admin() && mai_has_string( '#async', $url ) ) {
-		return str_replace( '#async', '', $url ) . "' async='async";
-	} elseif ( mai_has_string( '/wp-includes/css/dist/block-library/style.css', $url ) ) {
-		return $url . "' async='async";
-	}
-
-	return $url;
 }
