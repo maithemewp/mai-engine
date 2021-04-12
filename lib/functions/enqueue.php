@@ -289,9 +289,12 @@ function mai_get_style_attributes() {
 		return $attributes;
 	}
 	$attributes = [
+		'wp-block-library' => [
+			'async' => 'async',
+		],
 		mai_get_handle() . '-desktop' => [
 			'async' => 'async',
-		]
+		],
 	];
 	$attributes = array_merge( mai_get_tag_attributes( 'styles' ), $attributes );
 	return $attributes;
