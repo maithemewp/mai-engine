@@ -476,15 +476,27 @@ class Mai_Entry {
 		add_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
 		add_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 5 );
 
+		if ( 'single' === $this->context ) {
+			$filter = function() {
+				return false;
+			};
+
+			add_filter( 'wp_lazy_loading_enabled', $filter );
+		}
+
 		$image = wp_get_attachment_image(
 			$image_id,
 			$this->image_size,
 			false,
 			[
-				'class'   => "entry-image size-{$this->image_size}",
-				'loading' => 'lazy',
+				'class' => "entry-image size-{$this->image_size}",
 			]
 		);
+
+		if ( 'single' === $this->context ) {
+			remove_filter( 'wp_lazy_loading_enabled', $filter );
+		}
+
 		remove_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ] );
 		remove_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ] );
 
