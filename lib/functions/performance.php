@@ -124,7 +124,7 @@ function mai_limit_max_srcset_image( $image_meta, $size_array, $image_src, $atta
 	return $image_meta;
 }
 
-add_action( 'wp_head', 'mai_preload_logo', 4 );
+add_action( 'wp_head', 'mai_preload_logo', 0 );
 /**
  * Preloads logo.
  *
@@ -139,6 +139,10 @@ function mai_preload_logo() {
 		return;
 	}
 
+	if ( mai_is_element_hidden( 'header' ) ) {
+		return;
+	}
+
 	$image_url = wp_get_attachment_image_url( $image_id, 'full' );
 
 	if ( ! $image_url ) {
@@ -150,7 +154,7 @@ function mai_preload_logo() {
 	printf( '<link class="mai-preload" rel="preload" as="image" href="%s" imagesrcset="%s" />', $image_url, $image_srcset );
 }
 
-add_action( 'wp_head', 'mai_preload_page_header_image', 4 );
+add_action( 'wp_head', 'mai_preload_page_header_image', 0 );
 /**
  * Preloads page header image.
  *
@@ -170,7 +174,7 @@ function mai_preload_page_header_image() {
 	echo mai_get_preload_image_link( $image_id, $image_size );
 }
 
-add_action( 'wp_head', 'mai_preload_featured_image', 4 );
+add_action( 'wp_head', 'mai_preload_featured_image', 0 );
 /**
  * Preloads featured image on single posts.
  *
