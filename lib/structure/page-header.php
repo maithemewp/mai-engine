@@ -126,7 +126,7 @@ function mai_do_page_header_image() {
 
 	if ( $image_id ) {
 		$available  = mai_get_available_image_sizes();
-		$image_size = isset( $available['1536x1536'] ) ? '1536x1536' : 'large';
+		$image_size = isset( $available['1536x1536'] ) ? '1536x1536' : 'large'; // This is used in performance.php to preload as well.
 		echo wp_get_attachment_image( $image_id, $image_size, false, [ 'class' => 'page-header-image' ] );
 	}
 }

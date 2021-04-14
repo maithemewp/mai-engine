@@ -87,6 +87,151 @@ function mai_remove_recent_comments_style() {
 	remove_action( 'wp_head', [ $wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style' ] );
 }
 
+add_filter( 'wp_calculate_image_srcset_meta', 'mai_limit_max_srcset_image', 10, 4 );
+/**
+ * Limits srcset from using an image larger than the actual src image.
+ *
+ * @since TBD
+ *
+ * @param array  $image_meta    The image meta data as returned by 'wp_get_attachment_metadata()'.
+ * @param int[]  $size_array    {
+ *     An array of requested width and height values.
+ *
+ *     @type int $0 The width in pixels.
+ *     @type int $1 The height in pixels.
+ * }
+ * @param string $image_src     The 'src' of the image.
+ * @param int    $attachment_id The image attachment ID or 0 if not supplied.
+ *
+ * @return array
+ */
+function mai_limit_max_srcset_image( $image_meta, $size_array, $image_src, $attachment_id ) {
+	if ( ! isset( $size_array[0] ) ) {
+		return $image_meta;
+	}
+	$width = $size_array[0];
+	if ( is_array( $image_meta['sizes'] ) && $image_meta['sizes'] ) {
+		foreach ( $image_meta['sizes'] as $name => $value ) {
+			if ( ! isset( $value['width'] ) ) {
+				continue;
+			}
+			if ( $value['width'] > $width ) {
+				unset( $image_meta['sizes'][ $name ] );
+			}
+		}
+	}
+
+	return $image_meta;
+}
+
+add_action( 'wp_head', 'mai_preload_logo', 4 );
+/**
+ * Preloads logo.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_preload_logo() {
+	$image_id = get_theme_mod( 'custom_logo' );
+
+	if ( ! $image_id ) {
+		return;
+	}
+
+	$image_url = wp_get_attachment_image_url( $image_id, 'full' );
+
+	if ( ! $image_url ) {
+		return;
+	}
+
+	$image_srcset = wp_get_attachment_image_srcset( $image_id, 'full' );
+	$image_srcset = $image_srcset ?: '';
+	printf( '<link class="mai-preload" rel="preload" as="image" href="%s" imagesrcset="%s" />', $image_url, $image_srcset );
+}
+
+add_action( 'wp_head', 'mai_preload_page_header_image', 4 );
+/**
+ * Preloads page header image.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_preload_page_header_image() {
+	if ( ! mai_has_page_header() ) {
+		return;
+	}
+
+	$image_id   = mai_get_page_header_image_id();
+	$available  = mai_get_available_image_sizes();
+	$image_size = isset( $available['1536x1536'] ) ? '1536x1536' : 'large';
+
+	echo mai_get_preload_image_link( $image_id, $image_size );
+}
+
+add_action( 'wp_head', 'mai_preload_featured_image', 4 );
+/**
+ * Preloads featured image on single posts.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_preload_featured_image() {
+	if ( ! is_singular() ) {
+		return;
+	}
+
+	/**
+	 * Bail if has page header.
+	 * This would push the featured image down,
+	 * which would make lazy-loading worth it then.
+	 */
+	if ( mai_has_page_header() ) {
+		return;
+	}
+
+	$image_id = get_post_thumbnail_id();
+
+	if ( ! $image_id ) {
+		return;
+	}
+
+	$args = mai_get_template_args();
+
+	if ( ! ( isset( $args['show'] ) && in_array( 'image', $args['show'], true ) ) ) {
+		return;
+	}
+
+	$image_size = mai_isset( $args, 'image_size', 'landscape-md' );
+
+	echo mai_get_preload_image_link( $image_id, $image_size );
+}
+
+/**
+ * Gets <link> tag with image preloading data.
+ *
+ * @since TBD
+ *
+ * @param int    $image_id   The image ID.
+ * @param string $image_size The image size.
+ *
+ * @return string
+ */
+function mai_get_preload_image_link( $image_id, $image_size ) {
+	$image_url  = wp_get_attachment_image_url( $image_id, $image_size );
+
+	if ( ! $image_url ) {
+		return;
+	}
+
+	$image_srcset = wp_get_attachment_image_srcset( $image_id, $image_size );
+	$image_srcset = $image_srcset ? sprintf( ' imagesrcset="%s"', $image_srcset ) : '';
+
+	printf( '<link class="mai-preload" rel="preload" as="image" href="%s"%s />', $image_url, $image_srcset );
+}
+
 /**
  * Prime post thumbnail cache.
  *
