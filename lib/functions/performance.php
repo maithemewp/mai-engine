@@ -204,6 +204,10 @@ function mai_preload_featured_image() {
 		return;
 	}
 
+	if ( mai_is_element_hidden( 'featured_image' ) ) {
+		return;
+	}
+
 	$image_size = mai_isset( $args, 'image_size', 'landscape-md' );
 
 	echo mai_get_preload_image_link( $image_id, $image_size );
