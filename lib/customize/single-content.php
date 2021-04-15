@@ -130,6 +130,20 @@ function mai_get_single_content_settings( $name = 'post' ) {
 				],
 			],
 		],
+		// [
+		// 	'settings'        => 'custom_content_2',
+		// 	'label'           => __( 'Custom Content 2', 'mai-engine' ),
+		// 	'type'            => 'textarea',
+		// 	'sanitize'        => 'wp_kses_post',
+		// 	'default'         => $defaults['custom_content_2'],
+		// 	'active_callback' => [
+		// 		[
+		// 			'setting'  => 'show',
+		// 			'operator' => 'contains',
+		// 			'value'    => 'custom_content_2',
+		// 		],
+		// 	],
+		// ],
 		[
 			'type'     => 'custom',
 			'settings' => 'single-content-field-divider',

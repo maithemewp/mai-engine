@@ -1140,6 +1140,36 @@ class Mai_Entry {
 		);
 	}
 
+	// /**
+	//  * Display the custom content 2.
+	//  *
+	//  * @since TBD
+	//  *
+	//  * @return void
+	//  */
+	// public function do_custom_content_2() {
+	// 	if ( ( 'single' === $this->context ) && mai_is_element_hidden( 'custom_content_2', $this->id ) ) {
+	// 		return;
+	// 	}
+
+	// 	if ( ! ( isset( $this->args['custom_content_2'] ) && $this->args['custom_content_2'] ) ) {
+	// 		return;
+	// 	}
+
+	// 	genesis_markup(
+	// 		[
+	// 			'open'    => '<div %s>',
+	// 			'close'   => '</div>',
+	// 			'content' => mai_get_processed_content( $this->args['custom_content_2'] ),
+	// 			'context' => 'entry-custom-content-2',
+	// 			'echo'    => true,
+	// 			'params'  => [
+	// 				'args'  => $this->args,
+	// 				'entry' => $this->entry,
+	// 			],
+	// 		]
+	// 	);
+	// }
 
 	/**
 	 * Display the header meta.
