@@ -187,15 +187,6 @@ function mai_preload_featured_image() {
 		return;
 	}
 
-	/**
-	 * Bail if has page header.
-	 * This would push the featured image down,
-	 * which would make lazy-loading worth it then.
-	 */
-	if ( mai_has_page_header() ) {
-		return;
-	}
-
 	$image_id = get_post_thumbnail_id();
 
 	if ( ! $image_id ) {
