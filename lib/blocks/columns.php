@@ -36,17 +36,6 @@ function mai_register_columns_blocks() {
 				'mode'  => false,
 				'jsx'   => true,
 			],
-			'enqueue_assets'  => function() {
-				if ( ! is_admin() ) {
-					mai_enqueue_asset(
-						'mai-columns',
-						[
-							'src' => mai_get_url() . 'assets/css/columns.min.css',
-						],
-						'style'
-					);
-				}
-			},
 		]
 	);
 
