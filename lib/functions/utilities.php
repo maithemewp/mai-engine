@@ -1096,8 +1096,12 @@ function mai_get_menu_defaults() {
  *
  * @return string
  */
-function mai_get_avatar( $args ) {
-	$args = wp_parse_args( $args, mai_get_avatar_default_args() );
+function mai_get_avatar( $args = [] ) {
+	$args = shortcode_atts(
+		mai_get_avatar_default_args(),
+		$args,
+		'mai_avatar'
+	);
 
 	switch ( $args['id'] ) {
 		case 'current':
@@ -1157,7 +1161,7 @@ function mai_get_avatar_default_args() {
 	}
 
 	$args = [
-		'id'            => 'current',
+		'id'            => 'current', // Or 'user', or a user ID.
 		'size'          => mai_get_image_width( 'tiny' ) / 2, // Half of the tiny size.
 		'display'       => in_the_loop() ? 'inline-block' : 'block',
 		'margin_top'    => 0,
@@ -1173,6 +1177,9 @@ function mai_get_avatar_default_args() {
  * Gets an entry author ID.
  *
  * @since 2.7.0
+ * @since TBD Switch get_the_author_meta( 'ID' )
+ *        to get_post_field( 'post_author' )
+ *        since it wasn't working in page header and other contexts.
  *
  * @return int|false
  */
@@ -1188,7 +1195,7 @@ function mai_get_author_id() {
 	if ( is_author() && ! in_the_loop() ) {
 		$author_id = get_query_var( 'author' );
 	} else {
-		$author_id = get_the_author_meta( 'ID' );
+		$author_id = get_post_field( 'post_author' );
 	}
 
 	return $author_id;
