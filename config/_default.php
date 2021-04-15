@@ -170,7 +170,7 @@ return [
 		],
 		'header'     => [
 			'async'     => true,
-			'condition' => function () {
+			'condition' => function() {
 				return mai_has_sticky_header_enabled() || mai_has_transparent_header_enabled();
 			},
 		],
@@ -211,7 +211,7 @@ return [
 		],
 		'header'                         => [
 			'async'     => true,
-			'condition' => function () {
+			'condition' => function() {
 				return ! mai_is_element_hidden( 'site_header' );
 			},
 		],
@@ -224,12 +224,12 @@ return [
 		'theme'                          => [
 			'async'     => mai_get_option( 'genesis-style-trump', true ),
 			'src'       => 'default' !== mai_get_active_theme() ? mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css' : '',
-			'deps'      => [
-				'mai-engine-desktop',
-			],
 			'condition' => function() {
 				return 'default' !== mai_get_active_theme();
 			},
+		],
+		'desktop'                        => [
+			'async' => true,
 		],
 		'footer'                         => [
 			'in_footer' => true,
@@ -249,62 +249,62 @@ return [
 		],
 		'atomic-blocks'                  => [
 			'async'     => true,
-			'condition' => function () {
+			'condition' => function() {
 				return function_exists( 'atomic_blocks_main_plugin_file' );
 			},
 		],
 		'facetwp'                => [
 			'async'     => true,
-			'condition' => function () {
+			'condition' => function() {
 				return class_exists( 'FacetWP' );
 			},
 		],
 		'genesis-enews-extended' => [
 			'async'     => true,
 			'location'  => [ 'public', 'editor' ],
-			'condition' => function () {
+			'condition' => function() {
 				return class_exists( 'BJGK_Genesis_ENews_Extended' );
 			},
 		],
 		'learndash' => [
 			'async'     => true,
-			'condition' => function () {
+			'condition' => function() {
 				return class_exists( 'SFWD_LMS' );
 			},
 		],
 		'seo-slider'             => [
 			'async'     => true,
-			'condition' => function () {
+			'condition' => function() {
 				return defined( 'SEO_SLIDER_VERSION' );
 			},
 		],
 		'simple-social-icons'    => [
 			'async'     => true,
-			'condition' => function () {
+			'condition' => function() {
 				return class_exists( 'Simple_Social_Icons_Widget' );
 			},
 		],
 		'woocommerce-global'     => [
 			'async'     => true,
-			'condition' => function () {
+			'condition' => function() {
 				return class_exists( 'WooCommerce' );
 			},
 		],
 		'woocommerce-products'   => [
 			'async'     => true,
-			'condition' => function () {
+			'condition' => function() {
 				return class_exists( 'WooCommerce' ) && ( is_shop() || is_product_taxonomy() || is_product() || is_cart() );
 			},
 		],
 		'woocommerce-cart'       => [
 			'async'     => true,
-			'condition' => function () {
+			'condition' => function() {
 				return class_exists( 'WooCommerce' ) && ( is_cart() || is_checkout() );
 			},
 		],
 		'woocommerce-account'    => [
 			'async'     => true,
-			'condition' => function () {
+			'condition' => function() {
 				return class_exists( 'WooCommerce' ) && is_account_page();
 			},
 		],
@@ -312,6 +312,13 @@ return [
 			'handle'   => 'wp-block-library-theme',
 			'src'      => '',
 			'location' => 'editor',
+		],
+		'child-theme' => [
+			'async'     => true,
+			'handle'    => genesis_get_theme_handle(),
+			'src'       => get_stylesheet_uri(),
+			'ver'       => sprintf( '%s.%s', genesis_get_theme_version(), date( 'njYHi', filemtime( get_stylesheet_directory() . '/style.css' ) ) ),
+			'in_footer' => mai_get_option( 'genesis-style-trump', false ), // When this is true it's checked off to show in footer.
 		],
 	],
 

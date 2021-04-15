@@ -12,46 +12,14 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-add_action( 'init', 'mai_genesis_style_trump' );
 /**
- * Loads theme stylesheet.
+ * Removes default output of child theme stylesheet.
  *
- * @since 0.1.0
- * @since 2.6.0 Load child theme stylesheet after all engine styles if no style trump.
+ * @since TBD
  *
  * @return void
  */
-function mai_genesis_style_trump() {
-	remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
-
-	if ( mai_get_option( 'genesis-style-trump', true ) ) {
-		add_action( 'get_footer', 'mai_enqueue_child_theme_stylesheet' );
-	} else {
-		add_action( 'wp_enqueue_scripts', 'mai_enqueue_child_theme_stylesheet', 999 );
-	}
-}
-
-/**
- * Adds cache busting when stylesheet is updated.
- *
- * @since 0.1.0
- *
- * @return void
- */
-function mai_enqueue_child_theme_stylesheet() {
-	$version = sprintf(
-		'%s.%s',
-		genesis_get_theme_version(),
-		date( 'njYHi', filemtime( get_stylesheet_directory() . '/style.css' ) )
-	);
-
-	wp_enqueue_style(
-		genesis_get_theme_handle(),
-		get_stylesheet_uri(),
-		false,
-		$version
-	);
-}
+remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
 
 add_action( 'genesis_before', 'mai_js_nojs_script', 1 );
 /**
@@ -103,6 +71,19 @@ function mai_enqueue_assets() {
 	foreach ( $styles as $handle => $args ) {
 		mai_enqueue_asset( $handle, $args, 'style' );
 	}
+}
+
+add_filter( 'mai_styles_config', 'mai_styles_desktop_breakpoint' );
+/**
+ * Adds media query from mobile menu breakpoint option.
+ *
+ * @param array The styles config.
+ *
+ * @return array
+ */
+function mai_styles_desktop_breakpoint( $config ) {
+	$config['desktop']['media'] = sprintf( 'only screen and (min-width:%spx)', mai_get_option( 'mobile-menu-breakpoint', mai_get_breakpoint() ) );
+	return $config;
 }
 
 add_filter( 'script_loader_tag', 'mai_script_loader_tag', 10, 3 );
@@ -292,9 +273,6 @@ function mai_get_style_attributes() {
 		'wp-block-library' => [
 			'async' => 'async',
 		],
-		mai_get_handle() . '-desktop' => [
-			'async' => 'async',
-		],
 	];
 	$attributes = array_merge( mai_get_tag_attributes( 'styles' ), $attributes );
 	return $attributes;
@@ -403,30 +381,4 @@ function mai_admin_bar_inline_styles() {
 EOT;
 
 	wp_add_inline_style( mai_get_handle(), mai_minify_css( $css ) );
-}
-
-add_action( 'wp_enqueue_scripts', 'mai_enqueue_desktop_styles' );
-/**
- * Load desktop styles only at breakpoint set in Customizer.
- * Can't be in config because it uses default breakpoint which is also set in config file.
- * Async added manually in style_loader_tag filter.
- *
- * @since 0.3.5
- * @since 2.4.2 Use wp_enqueue_style to correct load priority.
- *
- * @return void
- */
-function mai_enqueue_desktop_styles() {
-	$style = [
-		'handle' => mai_get_handle() . '-desktop',
-		'src'    => mai_get_url() . 'assets/css/desktop.min.css',
-		'deps'   => [],
-		'ver'    => mai_get_asset_version( mai_get_url() . 'assets/css/desktop.min.css' ),
-		'media'  => sprintf(
-			'only screen and (min-width:%spx)',
-			mai_get_option( 'mobile-menu-breakpoint', mai_get_breakpoint() )
-		),
-	];
-
-	wp_enqueue_style( ...array_values( $style ) );
 }
