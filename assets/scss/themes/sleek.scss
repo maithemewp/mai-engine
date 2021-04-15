@@ -33,12 +33,11 @@
 
 	.page-header-image,
 	.page-header-image img {
-		width: calc(50% - calcvar(--page-header-right-spacing));
+		right: var(--page-header-right-spacing);
 		left: 50%;
-		right: calcvar(--page-header-right-spacing);
+		width: calc(50% - var(--page-header-right-spacing));
 	}
 }
-
 
 .breadcrumb {
 	color: var(--breadcrumb-color, var(--color-custom-1));
