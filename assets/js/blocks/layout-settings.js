@@ -570,7 +570,7 @@ const withSpacingControls = createHigherOrderComponent( ( BlockEdit ) => {
 					<BlockEdit {...props} />
 					<InspectorControls>
 						<PanelBody
-							title={__( 'Spacing', 'mai-engine' )}
+							title={__( 'Margin', 'mai-engine' )}
 							initialOpen={false}
 							className={'mai-spacing-settings'}
 						>
