@@ -160,6 +160,7 @@ p {
 	}
 }
 
+// This is margin on enableSpacingSettingsBlocks.
 @each $margin-name, $margin-size in $spacing {
 
 	@each $margin-setting in $margin_settings {
@@ -171,11 +172,13 @@ p {
 	}
 }
 
+// This is padding on enableLayoutSettingsBlocks.
 @each $padding-name, $padding-size in $padding_scale {
 
 	@each $padding-setting in $padding_settings {
 
-		[data-spacing-#{ $padding-setting }="#{ $padding-name }"] {
+		.wp-block-group[data-spacing-#{ $padding-setting }="#{ $padding-name }"],
+		.wp-block-cover[data-spacing-#{ $padding-setting }="#{ $padding-name }"] {
 			padding-#{ $padding-setting }: #{ $padding-size } !important;
 		}
 	}
