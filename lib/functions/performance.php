@@ -124,7 +124,7 @@ function mai_limit_max_srcset_image( $image_meta, $size_array, $image_src, $atta
 	return $image_meta;
 }
 
-add_action( 'wp_head', 'mai_preload_logo', 0 );
+// add_action( 'wp_head', 'mai_preload_logo', 0 );
 /**
  * Preloads logo.
  *
