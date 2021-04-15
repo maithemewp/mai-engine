@@ -13,8 +13,8 @@
 
 	&.alignfull {
 		// Can't override property or it will break nested blocks.
-		padding-right: calc(((var(--viewport-width) - var(--breakpoint-xl)) / 2) - var(--side-spacing));
-		padding-left: calc(((var(--viewport-width) - var(--breakpoint-xl)) / 2) - var(--side-spacing));
+		padding-right: var(--cover-block-alignfull-padding-left, calc(((var(--viewport-width) - var(--breakpoint-xl)) / 2) - var(--side-spacing)));
+		padding-left: var(--cover-block-alignfull-padding-right, calc(((var(--viewport-width) - var(--breakpoint-xl)) / 2) - var(--side-spacing)));
 
 		> .wp-block-cover__inner-container {
 			margin-right: var(--side-spacing);
@@ -34,6 +34,12 @@
 			--cover-block-background-image: var(--background-image-lg);
 		}
 	}
+}
+
+.has-boxed-container {
+	// Undo side-spacing padding and use 0.05px to prevent margin collapsing.
+	--cover-block-alignfull-padding-right: 0.05px;
+	--cover-block-alignfull-padding-left: 0.05px;
 }
 
 .wp-block-cover__inner-container {
