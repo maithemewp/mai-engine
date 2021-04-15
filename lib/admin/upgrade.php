@@ -27,6 +27,10 @@ function mai_upgrade_complete( $upgrader_object, $options ) {
 		return;
 	}
 
+	if ( ! ( isset( $options['plugins'] ) && $options['plugins'] ) ) {
+		return;
+	}
+
 	foreach( $options['plugins'] as $plugin ) {
 		if ( $current_plugin !== $plugin ) {
 			mai_flush_customizer_transients();
