@@ -65,7 +65,6 @@ function mai_add_kirki_css( $css ) {
 	$css = mai_add_breakpoint_custom_properties( $css );
 	$css = mai_add_title_area_custom_properties( $css );
 	$css = mai_add_fonts_custom_properties( $css );
-	$css = mai_add_page_header_content_type_css( $css );
 	$css = mai_add_extra_custom_properties( $css );
 
 	if ( ! ( $admin || $preview ) ) {
@@ -73,6 +72,31 @@ function mai_add_kirki_css( $css ) {
 	}
 
 	return $css;
+}
+
+add_filter( 'kirki_mai-engine_styles', 'mai_add_kirki_page_header_css' );
+/**
+ * Outputs kirki page header css.
+ * This can't be cached because it can be different per content type.
+ *
+ * @since TBD
+ *
+ * @param array $css Kirki CSS.
+ *
+ * @return array
+ */
+function mai_add_kirki_page_header_css( $css ) {
+	/**
+	 * Check if this filter ran already.
+	 * loop_controls() method in Kirki calls this more than once.
+	 */
+	static $has_run = false;
+
+	if ( $has_run ) {
+		return $css;
+	}
+
+	return array_merge( $css, mai_add_page_header_content_type_css( $css ) );
 }
 
 add_filter( 'kirki_enqueue_google_fonts', 'mai_add_kirki_fonts', 99 );
