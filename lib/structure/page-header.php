@@ -78,6 +78,7 @@ function mai_page_header_setup() {
  * @return void
  */
 function mai_do_page_header() {
+
 	genesis_markup(
 		[
 			'open'    => '<section %s>',
@@ -303,8 +304,11 @@ add_filter( 'genesis_attr_page-header', 'mai_add_page_header_attributes' );
  * @return mixed
  */
 function mai_add_page_header_attributes( $attributes ) {
-	$attributes['id']     = 'page-header';
-	$attributes['class'] .= ' is-alignfull-first';
+	$attributes['id'] = 'page-header';
+
+	if ( mai_get_page_header_image_id() ) {
+		$attributes['class'] .= ' has-page-header-image';
+	}
 
 	if ( ! mai_has_light_page_header() ) {
 		$attributes['class'] .= ' has-dark-background';
@@ -316,6 +320,8 @@ function mai_add_page_header_attributes( $attributes ) {
 	if ( $divider ) {
 		$attributes['class'] .= ' has-divider';
 	}
+
+	$attributes['class'] .= ' is-alignfull-first';
 
 	$attributes['role'] = 'banner';
 
