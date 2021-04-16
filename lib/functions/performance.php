@@ -202,7 +202,17 @@ function mai_preload_featured_image() {
 		return;
 	}
 
-	$image_size = mai_isset( $args, 'image_size', 'landscape-md' );
+	switch ( $args['image_orientation'] ) {
+		case 'landscape':
+		case 'portrait':
+		case 'square':
+			$fw_content = ( 'full-width-content' === genesis_site_layout() ) ? true : false;
+			$image_size = $fw_content ? 'lg' : 'md';
+			$image_size = sprintf( '%s-%s', $args['image_orientation'], $image_size );
+		break;
+		default:
+			$image_size = $args['image_size'];
+	}
 
 	echo mai_get_preload_image_link( $image_id, $image_size );
 }
