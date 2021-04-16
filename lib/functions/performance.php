@@ -182,6 +182,10 @@ function mai_preload_featured_image() {
 		return;
 	}
 
+	if ( mai_has_page_header() && mai_get_page_header_image_id() ) {
+		return;
+	}
+
 	$image_id = get_post_thumbnail_id();
 
 	if ( ! $image_id ) {
@@ -199,6 +203,50 @@ function mai_preload_featured_image() {
 	}
 
 	$image_size = mai_isset( $args, 'image_size', 'landscape-md' );
+
+	echo mai_get_preload_image_link( $image_id, $image_size );
+}
+
+add_action( 'wp_head', 'mai_preload_cover_block', 0 );
+/**
+ * Preloads the first cover block on single posts.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_preload_cover_block() {
+	if ( ! is_singular() ) {
+		return;
+	}
+
+	if ( mai_has_page_header() && mai_get_page_header_image_id() ) {
+		return;
+	}
+
+	$first = mai_get_first_block();
+
+	if ( ! $first ) {
+		return;
+	}
+
+	$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
+
+	if ( 'core/cover' !== $block_name ) {
+		return;
+	}
+
+	$image_id = isset( $first['attrs']['id'] ) && $first['attrs']['id'] ? $first['attrs']['id'] : 0;
+
+	if ( ! $image_id ) {
+		return;
+	}
+
+	$image_size = mai_get_cover_image_size();
+
+	if ( ! $image_size ) {
+		return;
+	}
 
 	echo mai_get_preload_image_link( $image_id, $image_size );
 }

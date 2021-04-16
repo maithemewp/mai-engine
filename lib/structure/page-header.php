@@ -408,23 +408,6 @@ function mai_get_page_header_image_id() {
 }
 
 /**
- * Get the page header image size.
- * This is also used for preloading in performance.php.
- *
- * @since TBD
- *
- * @return string
- */
-function mai_get_page_header_image_size() {
-	$image_size = null;
-	if ( ! is_null( $image_size ) ) {
-		return $image_size;
-	}
-	$image_size = (string) apply_filters( 'mai_page_header_image_size', 'cover' );
-	return $image_size;
-}
-
-/**
  * Get the page header title.
  *
  * @since 0.3.0
