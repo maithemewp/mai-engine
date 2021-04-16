@@ -143,15 +143,7 @@ function mai_preload_logo() {
 		return;
 	}
 
-	$image_url = wp_get_attachment_image_url( $image_id, 'full' );
-
-	if ( ! $image_url ) {
-		return;
-	}
-
-	$image_srcset = wp_get_attachment_image_srcset( $image_id, 'full' );
-	$image_srcset = $image_srcset ?: '';
-	printf( '<link class="mai-preload" rel="preload" as="image" href="%s" imagesrcset="%s" />', $image_url, $image_srcset );
+	echo mai_get_preload_image_link( $image_id, 'full' );
 }
 
 add_action( 'wp_head', 'mai_preload_page_header_image', 0 );
@@ -168,8 +160,11 @@ function mai_preload_page_header_image() {
 	}
 
 	$image_id   = mai_get_page_header_image_id();
-	$available  = mai_get_available_image_sizes();
-	$image_size = isset( $available['1536x1536'] ) ? '1536x1536' : 'large';
+	$image_size = mai_get_page_header_image_size();
+
+	if ( ! ( $image_id && $image_size ) ) {
+		return;
+	}
 
 	echo mai_get_preload_image_link( $image_id, $image_size );
 }

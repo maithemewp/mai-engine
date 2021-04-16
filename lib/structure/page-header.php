@@ -126,8 +126,7 @@ function mai_do_page_header_image() {
 	$image_id = mai_get_page_header_image_id();
 
 	if ( $image_id ) {
-		$available  = mai_get_available_image_sizes();
-		$image_size = isset( $available['1536x1536'] ) ? '1536x1536' : 'large'; // This is used in performance.php to preload as well.
+		$image_size = mai_get_page_header_image_size();
 		echo wp_get_attachment_image( $image_id, $image_size, false, [ 'class' => 'page-header-image' ] );
 	}
 }
@@ -406,6 +405,23 @@ function mai_get_page_header_image_id() {
 	$image_id = apply_filters( 'mai_page_header_image', $image_id );
 
 	return $image_id;
+}
+
+/**
+ * Get the page header image size.
+ * This is also used for preloading in performance.php.
+ *
+ * @since TBD
+ *
+ * @return string
+ */
+function mai_get_page_header_image_size() {
+	$image_size = null;
+	if ( ! is_null( $image_size ) ) {
+		return $image_size;
+	}
+	$image_size = (string) apply_filters( 'mai_page_header_image_size', 'cover' );
+	return $image_size;
 }
 
 /**
