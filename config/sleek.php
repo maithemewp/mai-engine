@@ -157,6 +157,19 @@ return [
 			'text-color'       => 'light',
 		],
 	],
+	'plugins'       => [
+		[
+			'name'     => 'Mai Portfolio',
+			'host'     => 'github',
+			'slug'     => 'maithemewp/mai-portfolio.php',
+			'uri'      => 'maithemewp/mai-portfolio',
+			'url'      => 'https://bizbudding.com/mai-theme/plugins/mai-portfolio/',
+			'branch'   => 'master',
+			'required' => false,
+			'token'    => null,
+			'demos'    => [ 'freelance', 'company', 'consulting' ],
+		],
+	],
 	'custom-functions' => function() {
 		add_filter( 'mai_page_header_image_size', 'mai_sleek_page_header_image_size' );
 		/**
