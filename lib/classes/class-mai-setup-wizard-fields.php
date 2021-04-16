@@ -198,12 +198,14 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 					$data_attr[] = $demo['id'];
 				}
 
+				$url = isset( $plugin['url'] ) ? $plugin['url'] : $plugin['uri'];
+
 				$fields[] = [
 					'id'         => $demo['id'] . '-' . $id,
 					'label'      => sprintf(
 						'&nbsp;<strong>%s</strong>&nbsp;<a href="%s" target="_blank">%s</a>',
 						$plugin['name'],
-						$plugin['uri'],
+						esc_url( $url ),
 						__( ' View details', 'mai-engine' )
 					),
 					'attributes' => [
