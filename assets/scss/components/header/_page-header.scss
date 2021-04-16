@@ -20,8 +20,8 @@
 }
 
 .page-header-overlay {
-	display: block;
-	background-color: var(--page-header-background, var(--color-alt));
+	display: var(--page-header-overlay-display, block);
+	background: var(--page-header-background, var(--color-alt));
 	opacity: var(--page-header-overlay-opacity, 0.5);
 	content: "";
 

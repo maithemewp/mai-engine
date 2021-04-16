@@ -9,7 +9,7 @@
 	--button-link-color-hover: var(--color-link);
 	--site-title-font-size: var(--font-size-lg);
 	--site-header-border-bottom: 0;
-	// --page-header-background: var(--color-black);
+	--page-header-inner-max-width: var(--breakpoint-xl);
 	--breadcrumb-font-size: var(--font-size-xs);
 	--author-box-background: var(--color-alt);
 	--author-box-border: 0;
@@ -18,13 +18,16 @@
 }
 
 .page-header {
-	background: linear-gradient(90deg, var(--page-header-background) 50%, var(--color-header) 50%);
+	background: linear-gradient(90deg, var(--page-header-background) calc(100% - var(--page-header-right-spacing, 0)), var(--color-header) calc(100% - var(--page-header-right-spacing, 0)));
 }
 
-@media only screen and (min-width: 1000px) {
+@media only screen and (min-width: 800px) {
 
-	.page-header {
-		--page-header-right-spacing: calc((var(--viewport-width) - var(--breakpoint-xl) - var(--side-spacing)) / 2);
+	:root {
+		--page-header-right-spacing: calc((var(--viewport-width) - var(--breakpoint-xl)) / 2);
+		--page-header-overlay-display: none;
+		--page-header-inner-max-width: 50%;
+		--page-header-inner-padding: 0 var(--spacing-xl) 0 0;
 	}
 
 	.page-header-overlay {
@@ -36,6 +39,13 @@
 		right: var(--page-header-right-spacing);
 		left: 50%;
 		width: calc(50% - var(--page-header-right-spacing));
+	}
+}
+
+@media only screen and (min-width: 1200px) {
+
+	:root {
+		--page-header-right-spacing: calc((var(--viewport-width) - var(--breakpoint-xl)) / 2);
 	}
 }
 
