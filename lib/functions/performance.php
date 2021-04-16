@@ -146,7 +146,7 @@ function mai_preload_logo() {
 	echo mai_get_preload_image_link( $image_id, 'full' );
 }
 
-add_action( 'wp_head', 'mai_preload_page_header_image', 0 );
+// add_action( 'wp_head', 'mai_preload_page_header_image', 0 );
 /**
  * Preloads page header image.
  *
@@ -169,7 +169,7 @@ function mai_preload_page_header_image() {
 	echo mai_get_preload_image_link( $image_id, $image_size );
 }
 
-add_action( 'wp_head', 'mai_preload_featured_image', 0 );
+// add_action( 'wp_head', 'mai_preload_featured_image', 0 );
 /**
  * Preloads featured image on single posts.
  *
@@ -217,7 +217,7 @@ function mai_preload_featured_image() {
 	echo mai_get_preload_image_link( $image_id, $image_size );
 }
 
-add_action( 'wp_head', 'mai_preload_cover_block', 0 );
+// add_action( 'wp_head', 'mai_preload_cover_block', 0 );
 /**
  * Preloads the first cover block on single posts.
  *
