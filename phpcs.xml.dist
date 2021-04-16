@@ -26,8 +26,8 @@
 	<!-- <rule ref="WordPress"> -->
 	<rule ref="vendor/wp-coding-standards/wpcs/WordPress">
 		<exclude name="WordPress.VIP"/>
+		<exclude name="WordPress-Docs"/>
 	</rule>
-	<!-- WordPress Rules -->
 
 	<rule ref="WordPress.Files.FileName">
 		<properties>
@@ -55,4 +55,6 @@
 			</property>
 		</properties>
 	</rule>
+	<!-- WordPress Rules -->
+
 </ruleset>

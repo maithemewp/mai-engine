@@ -103,15 +103,25 @@ return [
 				'post',
 				'portfolio',
 			],
-			'content-width'    => 'sm',
-			'content-align'    => 'start',
+			'content-width'    => '',
+			'content-align'    => '',
 			'text-align'       => 'start',
 			'background-color' => '#000000',
-			'overlay-opacity'  => '0.5',
+			'overlay-opacity'  => '0.6',
 			'text-color'       => 'light',
 		],
 	],
 	'custom-functions' => function() {
+		add_filter( 'mai_page_header_image_size', 'mai_sleek_page_header_image_size' );
+		/**
+		 * Changes page header image size to something smaller since it's not full width.
+		 *
+		 * @return string
+		 */
+		function mai_sleek_page_header_image_size() {
+			return 'landscape-md';
+		}
+
 		add_filter( 'genesis_attr_entries-wrap', 'mai_sleek_entries_wrap_attributes', 10, 3 );
 		/**
 		 * Adds class to show if a grid has no content or excerpt.
@@ -132,6 +142,34 @@ return [
 			}
 			$attributes['class'] .= ' has-no-content-excerpt';
 			return $attributes;
+		}
+
+		/**
+		 * Removes page header content width and align values.
+		 * This removes the inlines styles from being added in `mai_add_page_header_content_type_css()`
+		 *
+		 * @since TBD
+		 *
+		 * @param string $value
+		 *
+		 * @return string
+		 */
+		add_filter( 'mai_get_option_page-header-content-width', '__return_empty_string' );
+		add_filter( 'mai_get_option_page-header-content-align', '__return_empty_string' );
+
+		add_action( 'customize_register', 'mai_sleek_remove_page_header_settings', 100 );
+		/**
+		 * Removes page header content width and content align settings from Customizer.
+		 *
+		 * @since TBD
+		 *
+		 * @param WP_Customize_Manager $customizer The customizer instance.
+		 *
+		 * @return void
+		 */
+		function mai_sleek_remove_page_header_settings( $wp_customize ) {
+			$wp_customize->remove_control( 'mai-engine[page-header-content-width]' );
+			$wp_customize->remove_control( 'mai-engine[page-header-content-align]' );
 		}
 	},
 ];
