@@ -180,7 +180,6 @@ class Mai_Grid {
 	 * @return void
 	 */
 	public function render() {
-
 		// Bail if not showing any elements.
 		if ( empty( $this->args['show'] ) ) {
 			return;
