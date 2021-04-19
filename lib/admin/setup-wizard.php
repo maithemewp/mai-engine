@@ -318,15 +318,9 @@ add_action( 'mai_setup_wizard_before_import', 'mai_setup_wizard_remove_image_siz
  */
 function mai_setup_wizard_remove_image_sizes() {
 	add_filter( 'intermediate_image_sizes_advanced', function( $sizes ) {
-		$keepers     = [
-			'landscape-lg',
-			'landscape-md',
+		$keepers = [
 			'landscape-sm',
-			'portrait-lg',
-			'portrait-md',
 			'portrait-sm',
-			'square-lg',
-			'square-md',
 			'square-sm',
 			'thumbnail',
 			'tiny',
