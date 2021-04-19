@@ -76,6 +76,20 @@ function mai_get_image_width( $image_size ) {
 }
 
 /**
+ * Gets an image height by size name.
+ *
+ * @since TBD
+ *
+ * @param string $image_size The image size name.
+ *
+ * @return string
+ */
+function mai_get_image_height( $image_size ) {
+	$sizes = mai_get_available_image_sizes();
+	return isset( $sizes[ $image_size ]['height'] ) ? $sizes[ $image_size ]['height'] : 0;
+}
+
+/**
  * Get a combined list of default and custom registered image sizes.
  *
  * Originally taken from CMB2. Static variable added here.
