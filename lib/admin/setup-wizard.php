@@ -306,3 +306,37 @@ function mai_after_setup_wizard_import( $demo ) {
 	$wp_rewrite->set_permalink_structure( '/%postname%/' );
 	$wp_rewrite->flush_rules();
 }
+
+add_action( 'mai_setup_wizard_before_import', 'mai_setup_wizard_remove_image_sizes' );
+/**
+ * Removes image sizes during import.
+ * Greatly reduces import time.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_setup_wizard_remove_image_sizes() {
+	add_filter( 'intermediate_image_sizes_advanced', function( $sizes ) {
+		$keepers     = [
+			'landscape-lg',
+			'landscape-md',
+			'landscape-sm',
+			'portrait-lg',
+			'portrait-md',
+			'portrait-sm',
+			'square-lg',
+			'square-md',
+			'square-sm',
+			'thumbnail',
+			'tiny',
+		];
+		foreach ( $sizes as $name => $values ) {
+			if ( in_array( $name, $keepers ) ) {
+				continue;
+			}
+			unset( $sizes[ $name ] );
+		}
+		return $sizes;
+	});
+}
