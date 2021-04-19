@@ -103,8 +103,8 @@ class Mai_Entry {
 		$this->url         = $this->get_url();
 		$this->breakpoints = mai_get_breakpoints();
 		$this->link_entry  = apply_filters( 'mai_link_entry', (bool) ! $this->args['disable_entry_link'], $this->args, $this->entry );
-		$this->image_size  = $this->get_image_size();
 		$this->image_id    = $this->get_image_id();
+		$this->image_size  = $this->image_id ? $this->get_image_size() : '';
 	}
 
 	/**
@@ -719,11 +719,34 @@ class Mai_Entry {
 			case 'square':
 				$image_size = $this->get_image_size_by_cols();
 				$image_size = sprintf( '%s-%s', $this->args['image_orientation'], $image_size );
+				$image_size = $this->get_fallback_image_size( $image_size );
+				return $image_size;
 			break;
 			default:
 				$image_size = $this->args['image_size'];
 		}
 
+		return $image_size;
+	}
+
+	/**
+	 * Gets fallback image size if given size isn't available.
+	 *
+	 * @since TBD
+	 *
+	 * @return string
+	 */
+	public function get_fallback_image_size( $image_size ) {
+		if ( wp_get_attachment_image_url( $this->image_id, $image_size ) === wp_get_attachment_image_url( $this->image_id, 'full' ) ) {
+			if ( mai_has_string( '-lg', $image_size ) ) {
+				$image_size = str_replace( '-lg', '-md', $image_size );
+				return $this->get_fallback_image_size( $image_size );
+			}
+
+			if ( in_array( $image_size, [ 'landscape-md', 'portrait-md', 'square-md' ] ) ) {
+				return str_replace( '-md', '-sm', $image_size );
+			}
+		}
 		return $image_size;
 	}
 
