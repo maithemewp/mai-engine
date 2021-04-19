@@ -33,7 +33,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Adds steps.
 	 *
 	 * @since 1.0.0
 	 *
