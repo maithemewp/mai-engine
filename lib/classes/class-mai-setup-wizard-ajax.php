@@ -159,10 +159,10 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 
 		set_time_limit( apply_filters( 'mai_setup_wizard_time_limit', 300 ) );
 
-		if ( ! array_key_exists( $slug, get_plugins() ) ) {
-
+		if ( ! is_plugin_active( $slug ) ) {
 			$plugins = [];
 			$config  = mai_get_config( 'plugins' );
+
 			foreach ( $config as $plugin ) {
 				if ( $slug === $plugin['slug'] ) {
 					$plugin['required'] = true; // Forces installation.
