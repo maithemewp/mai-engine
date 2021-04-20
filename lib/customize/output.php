@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'after_switch_theme',   'mai_flush_customizer_transients' );
 add_action( 'save_post',            'mai_flush_customizer_transients' );
 add_action( 'customize_save_after', 'mai_flush_customizer_transients' );
@@ -230,13 +233,13 @@ function mai_add_button_text_colors( $css ) {
 	];
 
 	foreach ( $buttons as $button => $suffix ) {
-		$color   = mai_get_color( $button );
-		$text    = mai_is_light_color( $color ) ? mai_get_color_variant( $color, 'dark', 60 ) : mai_get_color( 'white' );
-		$white   = mai_get_color( 'white' );
-		$heading = mai_get_color( 'heading' );
+		$color   = mai_get_color_value( $button );
+		$text    = mai_is_light_color( $color ) ? mai_get_color_variant( $color, 'dark', 60 ) : mai_get_color_value( 'white' );
+		$white   = mai_get_color_value( 'white' );
+		$heading = mai_get_color_value( 'heading' );
 		$text    = $white === $color ? $heading : $text;
 
-		$css['global'][':root'][ '--button-' . $suffix . 'color' ] = $text;
+		$css['global'][':root'][ '--button-' . $suffix . 'color' ] = mai_get_color_css( $text );
 	}
 
 	return $css;
@@ -371,7 +374,7 @@ function mai_add_page_header_content_type_css( $css ) {
 	}
 
 	$config     = mai_get_config( 'settings' )['page-header'];
-	$background = (string) mai_get_template_arg( 'page-header-background-color', mai_get_option( 'page-header-background-color', mai_get_color( $config['background-color'] ) ) );
+	$background = (string) mai_get_template_arg( 'page-header-background-color', mai_get_option( 'page-header-background-color', mai_get_color_value( $config['background-color'] ) ) );
 	$opacity    = (string) mai_get_page_header_overlay_opacity();
 
 	if ( $background ) {

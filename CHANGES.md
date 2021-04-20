@@ -9,6 +9,8 @@
 * Added: [Developers] New `mai_page_header_image_size` filter to change the image size that's loaded in page header.
 * Added: [Developers] New `has-page-header-image` class added to the page header when there is an image.
 * Added: [Developers] Added back `mai_cover_block_image_id` filter.
+* Changed: Dynamic CSS now uses custom properties as inline style values instead of hex values when possible. This allows easier hijacking, overriding, and consistency when using custom CSS.
+* Changed: [Developers] Deprecated `mai_get_color()` function. Please use `mai_get_color_value()` instead when you want a color value, and `mai_get_color_css()` when you want custom properties when available.
 * Changed: Reverted paragraphs using `--body-color` custom property. This was causing issues in some dark background scenarios and for those still using page builders.
 * Changed: Hide customizer panels for content types that no longer exist, typically from plugins being deactivated.
 * Changed: Renamed "Spacing" to "Margin" on heading, paragraph, and separator blocks.

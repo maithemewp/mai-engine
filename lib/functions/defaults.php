@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'after_switch_theme', 'mai_default_theme_settings' );
 /**
  * Sets default theme settings on theme activation.
@@ -50,7 +53,7 @@ function mai_default_social_styles( $defaults ) {
 	// Allow config to set colors by name.
 	foreach ( $args as $key => $value ) {
 		if ( in_array( $key, $color_settings, true ) && in_array( $value, $colors, true ) ) {
-			$args[ $key ] = mai_get_color( $value );
+			$args[ $key ] = mai_get_color_value( $value );
 		}
 	}
 
@@ -68,7 +71,7 @@ add_filter( 'icon_widget_defaults', 'mai_icon_widget_defaults' );
  * @return array
  */
 function mai_icon_widget_defaults( $defaults ) {
-	$defaults['color']   = mai_get_color( 'primary' );
+	$defaults['color']   = mai_get_color_value( 'primary' );
 	$defaults['weight']  = '400';
 	$defaults['size']    = '3x';
 	$defaults['align']   = 'center';

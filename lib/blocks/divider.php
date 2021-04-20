@@ -97,7 +97,7 @@ function mai_get_divider( $atts = [] ) {
 			'flip_horizontal'  => false,
 			'flip_vertical'    => false,
 			'background_color' => 'transparent',
-			'color'            => mai_get_color( 'alt' ),
+			'color'            => 'alt',
 			'align'            => 'full',
 			'class'            => '',
 		]
@@ -129,7 +129,6 @@ function mai_get_divider( $atts = [] ) {
 	$atts['color']            = trim( $atts['color'] );
 	$atts['color']            = $atts['color'] ?: 'transparent';
 
-	$colors     = array_flip( mai_get_default_colors() );
 	$attributes = [
 		'class' => sprintf( 'mai-divider mai-divider-%s', $atts['style'] ),
 		'style' => '',
@@ -139,17 +138,8 @@ function mai_get_divider( $atts = [] ) {
 		$attributes['class'] .= ' align' . $atts['align'];
 	}
 
-	if ( isset( $colors[ $atts['color'] ] ) ) {
-		$attributes['class'] .= sprintf( ' has-%s-color', $colors[ $atts['color'] ] );
-	} else {
-		$attributes['style'] .= sprintf( '--divider-color:%s;', $atts['color'] );
-	}
-
-	if ( isset( $colors[ $atts['background_color'] ] ) ) {
-		$attributes['class'] .= sprintf( ' has-%s-background-color', $colors[ $atts['background_color'] ] );
-	} else {
-		$attributes['style'] .= sprintf( '--divider-background-color:%s;', $atts['background_color'] );
-	}
+	$attributes['style'] .= sprintf( '--divider-color:%s;', mai_get_color_css( $atts['color'] ) );
+	$attributes['style'] .= sprintf( '--divider-background-color:%s;', mai_get_color_css( $atts['background_color'] ) );
 
 	if ( $atts['height'] ) {
 		switch ( $atts['height'] ) {

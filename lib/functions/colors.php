@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || die;
  *
  * @since 2.0.0
  *
- * @return array
+ * @return array Colors with name as key and #hex code as value.
  */
 function mai_get_colors() {
 	static $colors = null;
@@ -28,16 +28,108 @@ function mai_get_colors() {
 		}
 	}
 
-	$colors   = [];
-	$defaults = mai_get_default_colors();
-
-	foreach ( $defaults as $name => $color ) {
-		$colors[ $name ] = mai_get_color( $name );
-	}
-
+	$colors = wp_parse_args( mai_get_option( 'colors', [] ), mai_get_global_styles( 'colors' ) );
 	$colors = array_merge( $colors, mai_get_custom_colors() );
 
 	return $colors;
+}
+
+/**
+ * Get custom colors as set in Customizer.
+ *
+ * @since 2.0.0
+ *
+ * @return array Colors with name as key and #hex code as value.
+ */
+function mai_get_custom_colors() {
+	static $colors = null;
+
+	if ( ! is_null( $colors ) ) {
+		return $colors;
+	}
+
+	$colors  = [];
+	$options = wp_parse_args( mai_get_option( 'custom-colors', [] ), mai_get_global_styles( 'custom-colors' ) );
+	$count   = 1;
+
+	foreach ( $options as $index => $option ) {
+		$colors[ 'custom-' . $count ] = $option['color'];
+		$count++;
+	}
+
+	return $colors;
+}
+
+/**
+ * Returns a color option value with config default fallback.
+ *
+ * @since 2.0.0
+ *
+ * @param string $name Name of the color to get.
+ *
+ * @return string
+ */
+function mai_get_color_og( $name ) {
+	$custom = mai_get_custom_colors();
+
+	if ( isset( $custom[ $name ] ) ) {
+		return $custom[ $name ];
+	}
+
+	return mai_get_option( 'color-' . $name, mai_get_default_color( $name ) );
+}
+
+/**
+ * Get a color value from any color name.
+ * If not in our stored colors by name, returns original color.
+ *
+ * @since 2.2.2
+ *
+ * @param string $color by name or hex, rgb, etc.
+ *
+ * @return string Color standard value: hex, rgb, etc.
+ */
+function mai_get_color_value( $color ) {
+	$colors = mai_get_colors();
+	return mai_isset( $colors, $color, $color );
+}
+
+/**
+ * Get a color value for CSS.
+ * If not in our stored colors by name, returns original color.
+ *
+ * @since 2.13.0
+ *
+ * @param string $color by name or hex, rgb, etc.
+ *
+ * @return string The color custom property or standard value.
+ */
+function mai_get_color_css( $color ) {
+	$name   = false;
+	$colors = mai_get_colors();
+	if ( isset( $colors[ $color ] ) ) {
+		$name = $color;
+	} else {
+		$name = mai_get_color_name( $color );
+	}
+	if ( $name ) {
+		return sprintf( 'var(--color-%s)', $name );
+	}
+	return $color;
+}
+
+/**
+ * Get a color name from hex code.
+ *
+ * @since 2.13.0
+ *
+ * @param string $hex
+ *
+ * @return string|false The color name or false.
+ */
+function mai_get_color_name( $hex ) {
+	$colors = array_flip( mai_get_colors() );
+	return mai_isset( $colors, $hex, false );
 }
 
 /**
@@ -70,51 +162,6 @@ function mai_get_default_colors() {
  */
 function mai_get_default_color( $name ) {
 	return mai_isset( mai_get_default_colors(), $name, '' );
-}
-
-/**
- * Get custom colors as set in Customizer.
- *
- * @since 2.0.0
- *
- * @return array
- */
-function mai_get_custom_colors() {
-	static $colors = null;
-
-	if ( ! is_null( $colors ) ) {
-		return $colors;
-	}
-
-	$colors  = [];
-	$options = mai_get_option( 'custom-colors', mai_get_global_styles( 'custom-colors' ) );
-	$count   = 1;
-
-	foreach ( $options as $index => $option ) {
-		$colors[ 'custom-' . $count ] = $option['color'];
-		$count++;
-	}
-
-	return $colors;
-}
-
-/**
- * Returns a color option value with config default fallback.
- *
- * @since 2.0.0
- *
- * @param string $name Name of the color to get.
- *
- * @return string
- */
-function mai_get_color( $name ) {
-	$custom = mai_get_custom_colors();
-
-	if ( isset( $custom[ $name ] ) ) {
-		return $custom[ $name ];
-	}
-
-	return mai_get_option( 'color-' . $name, mai_get_default_color( $name ) );
 }
 
 /**
@@ -281,18 +328,4 @@ function mai_get_color_variant( $color, $light_or_dark = 'dark', $amount = 7 ) {
 	$variant = $color->getNew( 'lightness', $value );
 
 	return $variant->toCSS( 'hex' );
-}
-
-/**
- * Get a color value from any color name.
- * If not in our stored colors by name, returns original color.
- *
- * @since 2.2.2
- *
- * @param string $color by name or hex, rgb, etc.
- *
- * @return string
- */
-function mai_get_color_value( $color ) {
-	return mai_isset( mai_get_colors(), $color, $color );
 }

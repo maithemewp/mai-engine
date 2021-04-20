@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 // Disable kirki telemetry.
 add_filter( 'kirki_telemetry', '__return_false' );
 

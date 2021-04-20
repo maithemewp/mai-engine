@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'genesis_meta', 'mai_page_header_setup' );
 /**
  * Sets up page header.
@@ -278,7 +281,7 @@ function mai_page_header_divider( $output, $original_output ) {
 	if ( $style && 'close' === $original_output ) {
 		$args = [
 			'style'           => $style,
-			'color'           => mai_get_option( 'page-header-divider-color', mai_get_color( $config['divider-color'] ) ),
+			'color'           => mai_get_option( 'page-header-divider-color', mai_get_color_value( $config['divider-color'] ) ),
 			'flip_horizontal' => mai_get_option( 'page-header-divider-flip-horizontal', $config['divider-flip-horizontal'] ),
 			'flip_vertical'   => mai_get_option( 'page-header-divider-flip-vertical', $config['divider-flip-vertical'] ),
 			'height'          => mai_get_option( 'page-header-divider-height', $config['divider-height'] ),
