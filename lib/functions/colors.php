@@ -28,7 +28,20 @@ function mai_get_colors() {
 		}
 	}
 
-	$colors = wp_parse_args( mai_get_option( 'colors', [] ), mai_get_global_styles( 'colors' ) );
+	$colors = [];
+	$names  = mai_get_color_elements();
+
+	foreach ( $names as $name => $label ) {
+		$color = mai_get_option( sprintf( 'color-%s', $name ), '' );
+
+		if ( ! $color ) {
+			continue;
+		}
+
+		$colors[ $name ] = $color;
+	}
+
+	$colors = wp_parse_args( $colors, mai_get_default_colors() );
 	$colors = array_merge( $colors, mai_get_custom_colors() );
 
 	return $colors;
@@ -58,25 +71,6 @@ function mai_get_custom_colors() {
 	}
 
 	return $colors;
-}
-
-/**
- * Returns a color option value with config default fallback.
- *
- * @since 2.0.0
- *
- * @param string $name Name of the color to get.
- *
- * @return string
- */
-function mai_get_color_og( $name ) {
-	$custom = mai_get_custom_colors();
-
-	if ( isset( $custom[ $name ] ) ) {
-		return $custom[ $name ];
-	}
-
-	return mai_get_option( 'color-' . $name, mai_get_default_color( $name ) );
 }
 
 /**
