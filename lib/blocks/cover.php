@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_filter( 'render_block', 'mai_render_cover_block', 10, 2 );
 /**
  * Convert non fixed background cover block to inline image with custom srcset.

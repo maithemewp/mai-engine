@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_filter( 'genesis_pre_get_option_posts_nav', 'mai_genesis_posts_nav' );
 /**
  * Uses mai-engine config/setting for posts_nav.

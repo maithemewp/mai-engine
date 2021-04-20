@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 // Remove unused body classes added by Genesis.
 remove_filter( 'body_class', 'genesis_header_body_classes' );
 

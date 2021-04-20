@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'genesis_before', 'mai_do_404_page' );
 /**
  * Renders the 404-page template part on 404 page.

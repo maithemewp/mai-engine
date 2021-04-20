@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'upgrader_process_complete', 'mai_upgrade_complete', 10, 2 );
 /**
  * Flush transients during update.

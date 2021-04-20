@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_filter( 'genesis_before', 'mai_structural_wrap_hooks' );
 /**
  * Add hooks before and after structural wraps.

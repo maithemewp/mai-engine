@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 // Allow shortcodes in nav menu items.
 add_filter( 'walker_nav_menu_start_el', 'do_shortcode' );
 

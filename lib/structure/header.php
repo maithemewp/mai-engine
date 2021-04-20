@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 /**
  * Always show the site title and description.
  * It's hidden screen-reader-text class if a custom logo is used.

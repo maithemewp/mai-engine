@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_filter( 'render_block', 'mai_do_cover_group_block_settings', 10, 2 );
 /**
  * Dynamically adds classes based on our custom attributes.

@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_filter( 'genesis_comment_list_args', 'mai_setup_comments_gravatar' );
 /**
  * Modify size of the Gravatar in the entry comments.

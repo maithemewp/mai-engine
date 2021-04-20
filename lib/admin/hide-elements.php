@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'acf/init', 'mai_add_hide_elements_metabox' );
 /**
  * Add Hide Elements metabox.

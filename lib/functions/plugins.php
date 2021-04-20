@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'wp_enqueue_scripts', 'mai_remove_simple_social_icons_css', 15 );
 /**
  * Remove Simple Social Icons CSS.
