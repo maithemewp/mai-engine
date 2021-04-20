@@ -126,19 +126,25 @@ function mai_setup_wizard_demos( $defaults ) {
 	$theme   = mai_get_active_theme();
 	$demos   = mai_get_config( 'demos' );
 	$config  = mai_get_config( 'plugins' );
-	$plugins = [];
 
 	if ( empty( $demos ) ) {
 		return [];
 	}
 
 	foreach ( $demos as $demo => $id ) {
+		$plugins  = [];
 		$demo_url = "https://demo.bizbudding.com/{$theme}-{$demo}/wp-content/uploads/sites/{$id}/mai-engine/";
 
 		foreach ( $config as $plugin ) {
-			if ( in_array( $demo, $plugin['demos'], true ) ) {
-				$plugins[] = $plugin;
+			if ( ! in_array( $demo, $plugin['demos'], true ) ) {
+				continue;
 			}
+
+			if ( is_plugin_active( $plugin['slug'] ) ) {
+				continue;
+			}
+
+			$plugins[] = $plugin;
 		}
 
 		$defaults[] = [
@@ -149,7 +155,6 @@ function mai_setup_wizard_demos( $defaults ) {
 			'preview'    => "https://demo.bizbudding.com/{$theme}-{$demo}/",
 			'plugins'    => $plugins,
 		];
-
 	}
 
 	return $defaults;
