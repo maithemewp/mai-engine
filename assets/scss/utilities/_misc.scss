@@ -15,7 +15,8 @@
 
 .has-light-background {
 	--heading-color: var(--color-heading);
-	--body-color: var(--color-body);
+	// --body-color: var(--color-body);
+	color: var(--color-body);
 }
 
 /**

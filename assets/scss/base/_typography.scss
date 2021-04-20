@@ -19,7 +19,6 @@ p {
 	width: var(--paragraph-width, auto);
 	margin: var(--paragraph-margin, 0 0 var(--paragraph-margin-bottom, var(--spacing-md)));
 	padding: var(--paragraph-padding, 0);
-	color: var(--body-color, var(--color-body));
 
 	&:empty {
 		display: none;
