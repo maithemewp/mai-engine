@@ -206,7 +206,7 @@ function mai_preload_featured_image() {
 		case 'landscape':
 		case 'portrait':
 		case 'square':
-			$fw_content = ( 'full-width-content' === genesis_site_layout() ) ? true : false;
+			$fw_content = ( 'wide-content' === genesis_site_layout() ) ? true : false;
 			$image_size = $fw_content ? 'lg' : 'md';
 			$image_size = sprintf( '%s-%s', $args['image_orientation'], $image_size );
 		break;

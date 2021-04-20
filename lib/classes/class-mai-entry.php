@@ -758,7 +758,7 @@ class Mai_Entry {
 	 * @return string
 	 */
 	public function get_image_size_by_cols() {
-		$fw_content = ( 'full-width-content' === genesis_site_layout() ) ? true : false;
+		$fw_content = ( 'wide-content' === genesis_site_layout() ) ? true : false;
 
 		// If single.
 		if ( 'single' === $this->context ) {
