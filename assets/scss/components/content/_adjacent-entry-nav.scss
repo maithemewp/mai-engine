@@ -27,9 +27,10 @@
 	height: 100%;
 	padding: var(--adjacent-entry-link-inner-padding, var(--spacing-lg));
 	text-align: var(--adjacent-entry-link-text-align);
-	border: var(--border);
-	border-radius: var(--border-radius);
-	box-shadow: var(--shadow);
+	background: var(--adjacent-entry-link-inner-background, none);
+	border: var(--adjacent-entry-link-inner-border, var(--border));
+	border-radius: var(--adjacent-entry-link-inner-border-radius, var(--border-radius));
+	box-shadow: var(--adjacent-entry-link-inner-box-shadow, var(--shadow));
 }
 
 .adjacent-entry-image {

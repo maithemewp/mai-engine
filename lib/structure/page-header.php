@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'genesis_meta', 'mai_page_header_setup' );
 /**
  * Sets up page header.
@@ -78,6 +81,7 @@ function mai_page_header_setup() {
  * @return void
  */
 function mai_do_page_header() {
+
 	genesis_markup(
 		[
 			'open'    => '<section %s>',
@@ -125,8 +129,7 @@ function mai_do_page_header_image() {
 	$image_id = mai_get_page_header_image_id();
 
 	if ( $image_id ) {
-		$available  = mai_get_available_image_sizes();
-		$image_size = isset( $available['1536x1536'] ) ? '1536x1536' : 'large';
+		$image_size = mai_get_page_header_image_size();
 		echo wp_get_attachment_image( $image_id, $image_size, false, [ 'class' => 'page-header-image' ] );
 	}
 }
@@ -278,7 +281,7 @@ function mai_page_header_divider( $output, $original_output ) {
 	if ( $style && 'close' === $original_output ) {
 		$args = [
 			'style'           => $style,
-			'color'           => mai_get_option( 'page-header-divider-color', mai_get_color( $config['divider-color'] ) ),
+			'color'           => mai_get_option( 'page-header-divider-color', mai_get_color_value( $config['divider-color'] ) ),
 			'flip_horizontal' => mai_get_option( 'page-header-divider-flip-horizontal', $config['divider-flip-horizontal'] ),
 			'flip_vertical'   => mai_get_option( 'page-header-divider-flip-vertical', $config['divider-flip-vertical'] ),
 			'height'          => mai_get_option( 'page-header-divider-height', $config['divider-height'] ),
@@ -303,8 +306,11 @@ add_filter( 'genesis_attr_page-header', 'mai_add_page_header_attributes' );
  * @return mixed
  */
 function mai_add_page_header_attributes( $attributes ) {
-	$attributes['id']     = 'page-header';
-	$attributes['class'] .= ' is-alignfull-first';
+	$attributes['id'] = 'page-header';
+
+	if ( mai_get_page_header_image_id() ) {
+		$attributes['class'] .= ' has-page-header-image';
+	}
 
 	if ( ! mai_has_light_page_header() ) {
 		$attributes['class'] .= ' has-dark-background';
@@ -316,6 +322,8 @@ function mai_add_page_header_attributes( $attributes ) {
 	if ( $divider ) {
 		$attributes['class'] .= ' has-divider';
 	}
+
+	$attributes['class'] .= ' is-alignfull-first';
 
 	$attributes['role'] = 'banner';
 

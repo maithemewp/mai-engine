@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_filter( 'mai_plugin_dependencies', 'mai_engine_plugin_dependencies' );
 /**
  * Show recommended plugins, in case setup wizard wasn't run.

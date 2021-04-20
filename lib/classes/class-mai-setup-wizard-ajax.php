@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 /**
  * Class Mai_Setup_Wizard_Ajax
  */
@@ -139,11 +142,16 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 	 * Plugin step ajax.
 	 *
 	 * @since 1.0.0
+	 * @since 2.13.0 Switched to WP_Dependency_Installer for plugin install/activation.
 	 *
 	 * @return void
 	 */
 	public function step_plugins() {
 		check_ajax_referer( $this->slug, 'nonce' );
+
+		if ( ! class_exists( 'WP_Dependency_Installer' ) ) {
+			wp_send_json_success( __( 'WP Dependency Installer is missing.', 'mai-engine' ) );
+		}
 
 		$field = $this->get_field();
 		$slug  = isset( $field['value'] ) ? $field['value'] : false;
@@ -154,30 +162,25 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 
 		set_time_limit( apply_filters( 'mai_setup_wizard_time_limit', 300 ) );
 
-		require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
-		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+		if ( ! is_plugin_active( $slug ) ) {
+			$plugins = [];
+			$config  = mai_get_config( 'plugins' );
 
-		if ( ! array_key_exists( $slug, get_plugins() ) ) {
-			$plugin = plugins_api(
-				'plugin_information',
-				[
-					'slug' => strtok( $slug, '/' ),
-				]
-			);
-
-			if ( is_wp_error( $plugin ) ) {
-				wp_send_json_error( __( 'Error object from API communication for plugin ', 'mai-engine' ) . $slug );
+			foreach ( $config as $plugin ) {
+				if ( $slug === $plugin['slug'] ) {
+					$plugin['required'] = true; // Forces installation.
+					$plugins[]          = $plugin;
+				}
 			}
 
-			$upgrader  = new Plugin_Upgrader( new WP_Upgrader_Skin() );
-			$installed = $upgrader->install( $plugin->download_link );
-
-			if ( is_wp_error( $installed ) ) {
+			if ( $plugins ) {
+				$wpdi = WP_Dependency_Installer::instance();
+				$wpdi->register( $plugins );
+				$wpdi->admin_init();
+			} else {
 				wp_send_json_error( __( 'Error installing ', 'mai-engine' ) . $slug );
 			}
 		}
-
-		activate_plugin( $slug, false, false, true );
 
 		$message = __( 'Installed ', 'mai-engine' ) . $slug;
 

@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 // Remove layout filter from Genesis Connect for WooCommerce.
 remove_filter( 'genesis_pre_get_option_site_layout', 'genesiswooc_archive_layout' );
 

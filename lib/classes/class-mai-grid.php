@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 /**
  * Instantiate a grid.
  *
@@ -180,7 +183,6 @@ class Mai_Grid {
 	 * @return void
 	 */
 	public function render() {
-
 		// Bail if not showing any elements.
 		if ( empty( $this->args['show'] ) ) {
 			return;

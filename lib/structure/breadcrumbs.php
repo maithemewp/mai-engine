@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 // Disables Genesis Hide Breadcrumbs option.
 add_filter( 'genesis_breadcrumbs_toggle_enabled', '__return_false' );
 

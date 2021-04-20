@@ -869,13 +869,6 @@ function mai_get_read_more_text() {
  * @return int
  */
 function mai_get_header_shrink_offset() {
-	$preview   = is_customize_preview();
-	$transient = 'mai_header_shrink_offset';
-
-	if ( ! $preview && $cached_offset = get_transient( $transient ) ) {
-		return $cached_offset;
-	}
-
 	static $offset = null;
 
 	if ( ! is_null( $offset ) ) {
@@ -913,12 +906,6 @@ function mai_get_header_shrink_offset() {
 	$shrunk_height      = ( $shrunk_width / $desktop_width ) * $desktop_height;
 	$height_difference  = ceil( $desktop_height - $shrunk_height );
 	$offset             = $height_difference + $spacing_difference;
-
-	if ( $preview ) {
-		delete_transient( $transient );
-	} else {
-		set_transient( $transient, $offset, 60 );
-	}
 
 	return $offset;
 }
@@ -1096,15 +1083,29 @@ function mai_get_menu_defaults() {
  *
  * @return string
  */
-function mai_get_avatar( $args ) {
-	$args       = wp_parse_args( $args, mai_get_avatar_default_args() );
-	$args['id'] = 'current' === $args['id'] ? mai_get_author_id() : $args['id'];
+function mai_get_avatar( $args = [] ) {
+	$args = shortcode_atts(
+		mai_get_avatar_default_args(),
+		$args,
+		'mai_avatar'
+	);
+
+	switch ( $args['id'] ) {
+		case 'current':
+			$args['id'] = mai_get_author_id();
+		break;
+		case 'user':
+			$args['id'] = get_current_user_id();
+		break;
+		default:
+			$args['id'] = $args['id'];
+	}
 
 	if ( ! $args['id'] ) {
 		return;
 	}
 
-	$avatar     = get_avatar( $args['id'], absint( $args['size'] ) );
+	$avatar = get_avatar( $args['id'], absint( $args['size'] ) );
 
 	if ( ! $avatar ) {
 		return;
@@ -1147,7 +1148,7 @@ function mai_get_avatar_default_args() {
 	}
 
 	$args = [
-		'id'            => 'current',
+		'id'            => 'current', // Or 'user', or a user ID.
 		'size'          => mai_get_image_width( 'tiny' ) / 2, // Half of the tiny size.
 		'display'       => in_the_loop() ? 'inline-block' : 'block',
 		'margin_top'    => 0,
@@ -1163,6 +1164,9 @@ function mai_get_avatar_default_args() {
  * Gets an entry author ID.
  *
  * @since 2.7.0
+ * @since 2.13.0 Switch get_the_author_meta( 'ID' )
+ *        to get_post_field( 'post_author' )
+ *        since it wasn't working in page header and other contexts.
  *
  * @return int|false
  */
@@ -1178,7 +1182,7 @@ function mai_get_author_id() {
 	if ( is_author() && ! in_the_loop() ) {
 		$author_id = get_query_var( 'author' );
 	} else {
-		$author_id = get_the_author_meta( 'ID' );
+		$author_id = get_post_field( 'post_author' );
 	}
 
 	return $author_id;

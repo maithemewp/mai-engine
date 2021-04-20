@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'init', 'mai_archive_settings_customizer_settings' );
 /**
  * Add archive content types customizer fields.

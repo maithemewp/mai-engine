@@ -333,6 +333,17 @@ function mai_has_sticky_header_enabled() {
 }
 
 /**
+ * Checks if site has sticky header and a scroll logo set.
+ *
+ * @since 2.13.0
+ *
+ * @return bool
+ */
+function mai_has_sticky_scroll_logo() {
+	return (bool) has_custom_logo() && mai_has_sticky_header_enabled() && ! mai_is_element_hidden( 'sticky_header' ) && mai_get_option( 'logo-scroll', false );
+}
+
+/**
  * Checks if site has transparent header enabled.
  *
  * @since 0.1.0

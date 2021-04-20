@@ -3,7 +3,7 @@
 	top: var(--site-header-top, auto);
 	z-index: 12;
 	width: 100%;
-	color: var(--color-body);
+	color: var(--site-header-color, var(--color-body));
 	background: var(--site-header-background, var(--color-header));
 	border-bottom: var(--site-header-border-bottom, var(--border));
 	box-shadow: var(--site-header-box-shadow, none);
@@ -41,6 +41,7 @@
 }
 
 .has-dark-header {
+	--site-header-color: var(--color-white);
 	--title-area-color: var(--color-white);
 	--site-header-border-bottom: 0;
 
@@ -92,12 +93,5 @@
 			--header-spacer-height: var(--header-shrink-offset);
 			--site-header-box-shadow: 0 0 24px rgba(0, 0, 0, 0.07);
 		}
-	}
-}
-
-.no-js {
-
-	&.has-light-header {
-		--site-header-background: var(--color-white);
 	}
 }

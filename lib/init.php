@@ -266,6 +266,14 @@ function mai_save_template_part_delete_transient( $post_id, $post, $update ) {
 		return;
 	}
 
+	if ( wp_is_post_autosave( $post_id ) ) {
+		return;
+	}
+
+	if ( wp_is_post_revision( $post_id ) ) {
+		return;
+	}
+
 	delete_transient( 'mai_template_parts' );
 }
 

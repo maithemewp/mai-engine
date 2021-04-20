@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'admin_init', 'mai_plugin_update_checker' );
 /**
  * Initialize plugin update checker.

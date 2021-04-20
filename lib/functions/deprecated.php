@@ -9,6 +9,25 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
+/**
+ * Returns a color option value with config default fallback.
+ *
+ * @since      2.0.0
+ * @deprecated 2.13.0 Use mai_get_color_value()
+ * @see        mai_get_color_value()
+ *
+ * @param string $name Name of the color to get.
+ *
+ * @return string
+ */
+function mai_get_color( $name ) {
+	_deprecated_function( __FUNCTION__, '2.13.0', 'mai_get_color_value()' );
+	mai_get_color_value( $name );
+}
+
 add_action( 'after_setup_theme', 'mai_do_deprecated_functionality', 4 );
 /**
  * Run deprecated functionality on older installs.

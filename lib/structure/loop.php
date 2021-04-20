@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'genesis_before_loop', 'mai_setup_loop' );
 /**
  * Do the main loop.
@@ -63,6 +66,11 @@ function mai_do_loop() {
 
 	$args    = mai_get_template_args();
 	$archive = ( 'archive' === $args['context'] );
+	$facetwp = class_exists( 'facetwp' );
+
+	if ( $archive && $facetwp ) {
+		echo '<div class="facetwp-template">';
+	}
 
 	if ( have_posts() ) {
 
@@ -107,6 +115,10 @@ function mai_do_loop() {
 			 */
 			do_action( 'genesis_loop_else' );
 		}
+	}
+
+	if ( $archive && $facetwp ) {
+		echo '</div>';
 	}
 }
 

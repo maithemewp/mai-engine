@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 /**
  * Gets aspect ratio from orientation.
  *
@@ -73,6 +76,20 @@ function mai_get_image_aspect_ratio( $image_size ) {
 function mai_get_image_width( $image_size ) {
 	$sizes = mai_get_available_image_sizes();
 	return isset( $sizes[ $image_size ]['width'] ) ? $sizes[ $image_size ]['width'] : 0;
+}
+
+/**
+ * Gets an image height by size name.
+ *
+ * @since 2.13.0
+ *
+ * @param string $image_size The image size name.
+ *
+ * @return string
+ */
+function mai_get_image_height( $image_size ) {
+	$sizes = mai_get_available_image_sizes();
+	return isset( $sizes[ $image_size ]['height'] ) ? $sizes[ $image_size ]['height'] : 0;
 }
 
 /**
@@ -330,6 +347,40 @@ function mai_get_image_sizes_from_aspect_ratio( $size = 'md', $ratio = '16:9' ) 
 }
 
 /**
+ * Get the page header image size.
+ * This is also used for preloading in performance.php.
+ *
+ * @since 2.13.0
+ *
+ * @return string
+ */
+function mai_get_page_header_image_size() {
+	$image_size = null;
+	if ( ! is_null( $image_size ) ) {
+		return $image_size;
+	}
+	$image_size = (string) apply_filters( 'mai_page_header_image_size', 'cover' );
+	return $image_size;
+}
+
+/**
+ * Get the cover image size.
+ * This is also used for preloading in performance.php.
+ *
+ * @since 2.13.0
+ *
+ * @return string
+ */
+function mai_get_cover_image_size() {
+	$image_size = null;
+	if ( ! is_null( $image_size ) ) {
+		return $image_size;
+	}
+	$image_size = (string) apply_filters( 'mai_cover_image_size', 'cover' );
+	return $image_size;
+}
+
+/**
  * Limits the largest image size served.
  * Prevents cover blocks and page header from serving huge images.
  *
@@ -359,7 +410,7 @@ function mai_limit_attachment_image_src( $image, $attachment_id, $size, $icon ) 
 	remove_filter( 'wp_get_attachment_image_src', 'mai_limit_attachment_image_src', 10, 4 );
 
 	$available = mai_get_available_image_sizes();
-	$size      = isset( $available['1536x1536'] ) ? '1536x1536' : 'large';
+	$size      = isset( $available['cover'] ) ? 'cover' : 'large';
 	$src       = wp_get_attachment_image_src( $attachment_id, $size );
 
 	add_filter( 'wp_get_attachment_image_src', 'mai_limit_attachment_image_src', 10, 4 );

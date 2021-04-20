@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 // Remove unused body classes added by Genesis.
 remove_filter( 'body_class', 'genesis_header_body_classes' );
 
@@ -97,6 +100,11 @@ function mai_body_classes( $classes ) {
 	// Add sticky header class.
 	if ( mai_has_sticky_header_enabled() && ! mai_is_element_hidden( 'sticky_header' ) ) {
 		$classes[] = 'has-sticky-header';
+	}
+
+	// Add scroll logo class.
+	if ( mai_has_sticky_scroll_logo() ) {
+		$classes[] = 'has-scroll-logo';
 	}
 
 	// Add or alignfull class.

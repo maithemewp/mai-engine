@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 /**
  * Class Mai_Setup_Wizard_Steps
  */
@@ -33,7 +36,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Adds steps.
 	 *
 	 * @since 1.0.0
 	 *

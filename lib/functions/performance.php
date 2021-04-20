@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'init', 'mai_disable_emojis' );
 /**
  * Disable the emoji's
@@ -85,6 +88,203 @@ function mai_remove_recent_comments_style() {
 	}
 
 	remove_action( 'wp_head', [ $wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style' ] );
+}
+
+add_filter( 'wp_calculate_image_srcset_meta', 'mai_limit_max_srcset_image', 10, 4 );
+/**
+ * Limits srcset from using an image larger than the actual src image.
+ *
+ * @since 2.13.0
+ *
+ * @param array  $image_meta    The image meta data as returned by 'wp_get_attachment_metadata()'.
+ * @param int[]  $size_array    {
+ *     An array of requested width and height values.
+ *
+ *     @type int $0 The width in pixels.
+ *     @type int $1 The height in pixels.
+ * }
+ * @param string $image_src     The 'src' of the image.
+ * @param int    $attachment_id The image attachment ID or 0 if not supplied.
+ *
+ * @return array
+ */
+function mai_limit_max_srcset_image( $image_meta, $size_array, $image_src, $attachment_id ) {
+	if ( ! isset( $size_array[0] ) ) {
+		return $image_meta;
+	}
+	$width = $size_array[0];
+	if ( is_array( $image_meta['sizes'] ) && $image_meta['sizes'] ) {
+		foreach ( $image_meta['sizes'] as $name => $value ) {
+			if ( ! isset( $value['width'] ) ) {
+				continue;
+			}
+			if ( $value['width'] > $width ) {
+				unset( $image_meta['sizes'][ $name ] );
+			}
+		}
+	}
+
+	return $image_meta;
+}
+
+// add_action( 'wp_head', 'mai_preload_logo', 0 );
+/**
+ * Preloads logo.
+ *
+ * @since 2.13.0
+ *
+ * @return void
+ */
+function mai_preload_logo() {
+	$image_id = get_theme_mod( 'custom_logo' );
+
+	if ( ! $image_id ) {
+		return;
+	}
+
+	if ( mai_is_element_hidden( 'header' ) ) {
+		return;
+	}
+
+	echo mai_get_preload_image_link( $image_id, 'full' );
+}
+
+// add_action( 'wp_head', 'mai_preload_page_header_image', 0 );
+/**
+ * Preloads page header image.
+ *
+ * @since 2.13.0
+ *
+ * @return void
+ */
+function mai_preload_page_header_image() {
+	if ( ! mai_has_page_header() ) {
+		return;
+	}
+
+	$image_id   = mai_get_page_header_image_id();
+	$image_size = mai_get_page_header_image_size();
+
+	if ( ! ( $image_id && $image_size ) ) {
+		return;
+	}
+
+	echo mai_get_preload_image_link( $image_id, $image_size );
+}
+
+// add_action( 'wp_head', 'mai_preload_featured_image', 0 );
+/**
+ * Preloads featured image on single posts.
+ *
+ * @since 2.13.0
+ *
+ * @return void
+ */
+function mai_preload_featured_image() {
+	if ( ! is_singular() ) {
+		return;
+	}
+
+	if ( mai_has_page_header() && mai_get_page_header_image_id() ) {
+		return;
+	}
+
+	$image_id = get_post_thumbnail_id();
+
+	if ( ! $image_id ) {
+		return;
+	}
+
+	$args = mai_get_template_args();
+
+	if ( ! ( isset( $args['show'] ) && in_array( 'image', $args['show'], true ) ) ) {
+		return;
+	}
+
+	if ( mai_is_element_hidden( 'featured_image' ) ) {
+		return;
+	}
+
+	switch ( $args['image_orientation'] ) {
+		case 'landscape':
+		case 'portrait':
+		case 'square':
+			$fw_content = ( 'wide-content' === genesis_site_layout() ) ? true : false;
+			$image_size = $fw_content ? 'lg' : 'md';
+			$image_size = sprintf( '%s-%s', $args['image_orientation'], $image_size );
+		break;
+		default:
+			$image_size = $args['image_size'];
+	}
+
+	echo mai_get_preload_image_link( $image_id, $image_size );
+}
+
+// add_action( 'wp_head', 'mai_preload_cover_block', 0 );
+/**
+ * Preloads the first cover block on single posts.
+ *
+ * @since 2.13.0
+ *
+ * @return void
+ */
+function mai_preload_cover_block() {
+	if ( ! is_singular() ) {
+		return;
+	}
+
+	if ( mai_has_page_header() && mai_get_page_header_image_id() ) {
+		return;
+	}
+
+	$first = mai_get_first_block();
+
+	if ( ! $first ) {
+		return;
+	}
+
+	$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
+
+	if ( 'core/cover' !== $block_name ) {
+		return;
+	}
+
+	$image_id = isset( $first['attrs']['id'] ) && $first['attrs']['id'] ? $first['attrs']['id'] : 0;
+
+	if ( ! $image_id ) {
+		return;
+	}
+
+	$image_size = mai_get_cover_image_size();
+
+	if ( ! $image_size ) {
+		return;
+	}
+
+	echo mai_get_preload_image_link( $image_id, $image_size );
+}
+
+/**
+ * Gets <link> tag with image preloading data.
+ *
+ * @since 2.13.0
+ *
+ * @param int    $image_id   The image ID.
+ * @param string $image_size The image size.
+ *
+ * @return string
+ */
+function mai_get_preload_image_link( $image_id, $image_size ) {
+	$image_url  = wp_get_attachment_image_url( $image_id, $image_size );
+
+	if ( ! $image_url ) {
+		return;
+	}
+
+	$image_srcset = wp_get_attachment_image_srcset( $image_id, $image_size );
+	$image_srcset = $image_srcset ? sprintf( ' imagesrcset="%s"', $image_srcset ) : '';
+
+	printf( '<link class="mai-preload" rel="preload" as="image" href="%s"%s />', $image_url, $image_srcset );
 }
 
 /**

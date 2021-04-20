@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_shortcode( 'mai_icon', 'mai_icon_shortcode' );
 /**
  * Dipslays an icon.
@@ -143,12 +146,6 @@ add_shortcode( 'mai_avatar', 'mai_avatar_shortcode' );
  * @return string
  */
 function mai_avatar_shortcode( $atts ) {
-	$atts = shortcode_atts(
-		mai_get_avatar_default_args(),
-		$atts,
-		'mai_avatar'
-	);
-
 	return mai_get_avatar( $atts );
 }
 

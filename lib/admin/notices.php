@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'admin_notices', 'mai_maybe_display_admin_notice', 20 );
 /**
  * Displays notices from a query args.

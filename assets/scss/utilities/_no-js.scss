@@ -1,0 +1,16 @@
+.no-js {
+	--header-section-display: flex;
+	--header-section-mobile-display: none;
+	--menu-item-display: inline-flex;
+	--menu-item-width: auto;
+	--menu-toggle-display: none;
+	--nav-after-header-display: flex;
+
+	&.has-light-header {
+		--site-header-background: var(--color-white);
+	}
+
+	.menu-item.search {
+		--menu-item-display: none;
+	}
+}

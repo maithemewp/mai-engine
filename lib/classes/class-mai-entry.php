@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 /**
  * Class Mai_Entry
  */
@@ -103,8 +106,8 @@ class Mai_Entry {
 		$this->url         = $this->get_url();
 		$this->breakpoints = mai_get_breakpoints();
 		$this->link_entry  = apply_filters( 'mai_link_entry', (bool) ! $this->args['disable_entry_link'], $this->args, $this->entry );
-		$this->image_size  = $this->get_image_size();
 		$this->image_id    = $this->get_image_id();
+		$this->image_size  = $this->image_id ? $this->get_image_size() : '';
 	}
 
 	/**
@@ -476,15 +479,27 @@ class Mai_Entry {
 		add_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
 		add_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 5 );
 
+		if ( 'single' === $this->context ) {
+			$filter = function() {
+				return false;
+			};
+
+			add_filter( 'wp_lazy_loading_enabled', $filter );
+		}
+
 		$image = wp_get_attachment_image(
 			$image_id,
 			$this->image_size,
 			false,
 			[
-				'class'   => "entry-image size-{$this->image_size}",
-				'loading' => 'lazy',
+				'class' => "entry-image size-{$this->image_size}",
 			]
 		);
+
+		if ( 'single' === $this->context ) {
+			remove_filter( 'wp_lazy_loading_enabled', $filter );
+		}
+
 		remove_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ] );
 		remove_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ] );
 
@@ -707,11 +722,34 @@ class Mai_Entry {
 			case 'square':
 				$image_size = $this->get_image_size_by_cols();
 				$image_size = sprintf( '%s-%s', $this->args['image_orientation'], $image_size );
+				$image_size = $this->get_fallback_image_size( $image_size );
+				return $image_size;
 			break;
 			default:
 				$image_size = $this->args['image_size'];
 		}
 
+		return $image_size;
+	}
+
+	/**
+	 * Gets fallback image size if given size isn't available.
+	 *
+	 * @since 2.13.0
+	 *
+	 * @return string
+	 */
+	public function get_fallback_image_size( $image_size ) {
+		if ( wp_get_attachment_image_url( $this->image_id, $image_size ) === wp_get_attachment_image_url( $this->image_id, 'full' ) ) {
+			if ( mai_has_string( '-lg', $image_size ) ) {
+				$image_size = str_replace( '-lg', '-md', $image_size );
+				return $this->get_fallback_image_size( $image_size );
+			}
+
+			if ( in_array( $image_size, [ 'landscape-md', 'portrait-md', 'square-md' ] ) ) {
+				return str_replace( '-md', '-sm', $image_size );
+			}
+		}
 		return $image_size;
 	}
 
@@ -723,7 +761,7 @@ class Mai_Entry {
 	 * @return string
 	 */
 	public function get_image_size_by_cols() {
-		$fw_content = ( 'full-width-content' === genesis_site_layout() ) ? true : false;
+		$fw_content = ( 'wide-content' === genesis_site_layout() ) ? true : false;
 
 		// If single.
 		if ( 'single' === $this->context ) {
@@ -1128,6 +1166,36 @@ class Mai_Entry {
 		);
 	}
 
+	// /**
+	//  * Display the custom content 2.
+	//  *
+	//  * @since 2.13.0
+	//  *
+	//  * @return void
+	//  */
+	// public function do_custom_content_2() {
+	// 	if ( ( 'single' === $this->context ) && mai_is_element_hidden( 'custom_content_2', $this->id ) ) {
+	// 		return;
+	// 	}
+
+	// 	if ( ! ( isset( $this->args['custom_content_2'] ) && $this->args['custom_content_2'] ) ) {
+	// 		return;
+	// 	}
+
+	// 	genesis_markup(
+	// 		[
+	// 			'open'    => '<div %s>',
+	// 			'close'   => '</div>',
+	// 			'content' => mai_get_processed_content( $this->args['custom_content_2'] ),
+	// 			'context' => 'entry-custom-content-2',
+	// 			'echo'    => true,
+	// 			'params'  => [
+	// 				'args'  => $this->args,
+	// 				'entry' => $this->entry,
+	// 			],
+	// 		]
+	// 	);
+	// }
 
 	/**
 	 * Display the header meta.

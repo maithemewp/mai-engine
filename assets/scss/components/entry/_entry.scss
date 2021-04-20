@@ -66,6 +66,8 @@
 }
 
 .has-boxed {
+	color: var(--color-body); // Force dark incase these entries are inside has-dark-background.
+	--heading-color: var(--color-heading); // Force dark incase these entries are inside has-dark-background.
 	--entry-background: var(--color-white);
 	--entry-border: var(--border);
 	--entry-box-shadow: var(--shadow);

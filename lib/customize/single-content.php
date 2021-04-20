@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 /**
  * Returns single content settings.
  *
@@ -130,6 +133,20 @@ function mai_get_single_content_settings( $name = 'post' ) {
 				],
 			],
 		],
+		// [
+		// 	'settings'        => 'custom_content_2',
+		// 	'label'           => __( 'Custom Content 2', 'mai-engine' ),
+		// 	'type'            => 'textarea',
+		// 	'sanitize'        => 'wp_kses_post',
+		// 	'default'         => $defaults['custom_content_2'],
+		// 	'active_callback' => [
+		// 		[
+		// 			'setting'  => 'show',
+		// 			'operator' => 'contains',
+		// 			'value'    => 'custom_content_2',
+		// 		],
+		// 	],
+		// ],
 		[
 			'type'     => 'custom',
 			'settings' => 'single-content-field-divider',
@@ -208,6 +225,14 @@ function mai_add_single_content_settings() {
 	$panel    = 'single-content';
 	$defaults = mai_get_config( 'settings' )['single-content']['enable'];
 	$sections = mai_get_option( 'single-settings', $defaults, false );
+
+	// Remove any content types that no longer exist.
+	foreach ( $sections as $index => $section ) {
+		if ( post_type_exists( $section ) ) {
+			continue;
+		}
+		unset( $sections[ $index ] );
+	}
 
 	Kirki::add_panel(
 		"{$handle}-{$panel}",

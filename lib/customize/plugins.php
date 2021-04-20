@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 use WPTRT\Customize\Section\Button;
 
 add_action( 'customize_register', 'mai_plugins_customizer_upsell' );

@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_filter( 'render_block', 'mai_render_cover_block', 10, 2 );
 /**
  * Convert non fixed background cover block to inline image with custom srcset.
@@ -38,8 +41,7 @@ function mai_render_cover_block( $block_content, $block ) {
 	$parallax  = mai_isset( $block['attrs'], 'hasParallax', false );
 	// $repeated  = mai_isset( $block['attrs'], 'isRepeated', false );
 
-	// TODO: Consider adding back cover image filter.
-	// $image_id  = apply_filters( 'mai_cover_block_image_id', mai_isset( $block['attrs'], 'id', false ), $block );
+	$image_id = apply_filters( 'mai_cover_block_image_id', $image_id, $block );
 
 	if ( ! ( $align || ( $image_id && $image_url ) ) ) {
 		return $block_content;
@@ -67,12 +69,25 @@ function mai_render_cover_block( $block_content, $block ) {
 			 *
 			 * @var DOMXPath $xpath
 			 */
-			$xpath  = new DOMXPath( $dom );
-			$images = $xpath->query( '//img[contains(concat(" ", @class, " "), " wp-block-cover__image-background ")]', $first_block );
+			$xpath      = new DOMXPath( $dom );
+			$images     = $xpath->query( '//img[contains(concat(" ", @class, " "), " wp-block-cover__image-background ")]', $first_block );
+			$image_size = mai_get_cover_image_size();
 
-			// Convert inline style to custom property.
 			if ( $images->length ) {
 				foreach ( $images as $image ) {
+					$new_url = wp_get_attachment_image_url( $image_id, $image_size ); // New url, using our image size.
+
+					// Replace src.
+					$src = $image->getAttribute( 'src' );
+					$src = str_replace( $image_url, $new_url, $src );
+					$image->setAttribute( 'src', $src );
+
+					// Replace srcset.
+					$srcset = $image->getAttribute( 'srcset' );
+					$srcset = str_replace( $image_url, $new_url, $srcset );
+					$image->setAttribute( 'srcset', $srcset );
+
+					// Convert inline style to custom property.
 					$image_style = $image->getAttribute( 'style' );
 					$image_style = str_replace( 'object-position:', '--object-position:', $image_style );
 					$image->setAttribute( 'style', $image_style );
@@ -86,8 +101,6 @@ function mai_render_cover_block( $block_content, $block ) {
 				$style  = str_replace( $before, '', $style );       // Some cover blocks only had one inline style, so no semicolon.
 
 				// Build new image.
-				$available  = mai_get_available_image_sizes();
-				$image_size = isset( $available['1536x1536'] ) ? '1536x1536' : 'large';
 				$image_html = wp_get_attachment_image( $image_id, $image_size, false, [ 'class' => 'wp-block-cover__image-background' ] );
 
 				if ( $image_html ) {
@@ -102,10 +115,9 @@ function mai_render_cover_block( $block_content, $block ) {
 
 			// Responsive background image custom properties.
 			if ( $parallax ) {
-				$available = mai_get_available_image_sizes();
 				$sizes     = [
-					'lg' => wp_get_attachment_image_url( $image_id, isset( $available['2048x2048'] ) ? '2048x2048' : 'large' ),
-					'md' => wp_get_attachment_image_url( $image_id, isset( $available['1536x1536'] ) ? '1536x1536' : 'large' ),
+					'lg' => wp_get_attachment_image_url( $image_id, $image_size ),
+					'md' => wp_get_attachment_image_url( $image_id, $image_size ),
 					'sm' => wp_get_attachment_image_url( $image_id, 'large' ),
 				];
 

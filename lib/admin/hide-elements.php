@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'acf/init', 'mai_add_hide_elements_metabox' );
 /**
  * Add Hide Elements metabox.
@@ -109,6 +112,7 @@ function mai_load_hide_elements_field( $field ) {
 	$field['choices']['header_meta']       = __( 'Header Meta', 'mai-engine' );
 	$field['choices']['entry_excerpt']     = __( 'Entry Excerpt', 'mai-engine' );
 	$field['choices']['custom_content']    = __( 'Custom Content', 'mai-engine' );
+	// $field['choices']['custom_content_2']  = __( 'Custom Content 2', 'mai-engine' );
 	$field['choices']['footer_meta']       = __( 'Footer Meta', 'mai-engine' );
 	$field['choices']['after_entry']       = __( 'After Entry', 'mai-engine' );
 	$field['choices']['author_box']        = __( 'Author Box', 'mai-engine' );

@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_filter( 'image_size_names_choose', 'mai_get_media_chooser_sizes' );
 /**
  * Add our image sizes to the media chooser.

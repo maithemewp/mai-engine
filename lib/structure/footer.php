@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 // Disable Genesis Footer Widgets toggle setting.
 add_filter( 'genesis_footer_widgets_toggle_enabled', '__return_false' );
 

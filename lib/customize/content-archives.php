@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 /**
  * Returns content archive settings.
  *
@@ -766,6 +769,17 @@ function mai_add_content_archive_settings() {
 	$panel    = 'content-archives';
 	$defaults = mai_get_config( 'settings' )['content-archives']['enable'];
 	$sections = mai_get_option( 'archive-settings', $defaults, false );
+
+	// Remove any content types that no longer exist.
+	foreach ( $sections as $index => $section ) {
+		if ( post_type_exists( $section ) || taxonomy_exists( $section ) ) {
+			continue;
+		}
+		if ( in_array( $section, [ 'search', 'author', 'date' ] ) ) {
+			continue;
+		}
+		unset( $sections[ $index ] );
+	}
 
 	Kirki::add_panel(
 		"{$handle}-{$panel}",

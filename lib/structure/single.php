@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 // Disable Genesis Title Toggle setting.
 add_filter( 'genesis_title_toggle_enabled', '__return_false' );
 

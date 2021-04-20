@@ -42,10 +42,6 @@
 	}
 }
 
-.no-js .menu-item.search {
-	--menu-item-display: none;
-}
-
 .menu-item-link {
 	display: var(--menu-item-link-display, (flex));
 	flex: var(--menu-item-link-flex, unset);
@@ -121,9 +117,4 @@
 .sidebar {
 	--menu-display: block;
 	--menu-item-link-padding: var(--spacing-xs) 0;
-}
-
-.no-js {
-	--menu-item-display: inline-flex;
-	--menu-item-width: auto;
 }

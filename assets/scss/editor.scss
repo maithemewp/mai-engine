@@ -3,8 +3,9 @@
 @import "base/globals";
 @import "base/heading";
 @import "base/list";
+@import "base/table";
 @import "base/typography";
-@import "components/blocks/_index";
+@import "components/blocks/_index-editor";
 @import "components/entry/_index";
 @import "utilities/_index";
 
@@ -43,13 +44,13 @@ p {
 }
 
 .has-dark-background {
+	color: var(--color-white);
 	--heading-color: var(--color-white);
-	--body-color: var(--color-white);
 }
 
 .has-light-background {
+	color: var(--color-body);
 	--heading-color: var(--color-heading);
-	--body-color: var(--color-body);
 }
 
 .alignfull {
@@ -159,6 +160,7 @@ p {
 	}
 }
 
+// This is margin on enableSpacingSettingsBlocks.
 @each $margin-name, $margin-size in $spacing {
 
 	@each $margin-setting in $margin_settings {
@@ -170,11 +172,13 @@ p {
 	}
 }
 
+// This is padding on enableLayoutSettingsBlocks.
 @each $padding-name, $padding-size in $padding_scale {
 
 	@each $padding-setting in $padding_settings {
 
-		[data-spacing-#{ $padding-setting }="#{ $padding-name }"] {
+		.wp-block-group[data-spacing-#{ $padding-setting }="#{ $padding-name }"],
+		.wp-block-cover[data-spacing-#{ $padding-setting }="#{ $padding-name }"] {
 			padding-#{ $padding-setting }: #{ $padding-size } !important;
 		}
 	}

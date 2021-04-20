@@ -161,8 +161,8 @@
 }
 
 @mixin dark_bg() {
+	color: var(--color-white);
 	--heading-color: var(--color-white);
-	--body-color: var(--color-white);
 	--link-color: currentColor;
 	--link-color-hover: currentColor;
 	--link-text-decoration: underline;

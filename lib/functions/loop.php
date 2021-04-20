@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 /**
  * Return content stripped down and limited content.
  *
@@ -539,6 +542,7 @@ function mai_get_single_show_choices() {
 		'excerpt'                      => esc_html__( 'Manual Excerpts', 'mai-engine' ),
 		'content'                      => esc_html__( 'Content', 'mai-engine' ),
 		'custom_content'               => esc_html__( 'Custom Content', 'mai-engine' ),
+		// 'custom_content_2'             => esc_html__( 'Custom Content 2', 'mai-engine' ),
 		'genesis_entry_content'        => 'genesis_entry_content',
 		'genesis_after_entry_content'  => 'genesis_after_entry_content',
 		'footer_meta'                  => esc_html__( 'Footer Meta', 'mai-engine' ),

@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_filter( 'render_block', 'mai_render_button_block', 10, 2 );
 /**
  * Add our button classes to the button link.
@@ -69,33 +72,33 @@ function mai_render_button_block( $block_content, $block ) {
 		$block_content = str_replace( 'button-large', '', $block_content );
 	}
 
-	$color           = '';
-	$color_name      = '';
-	$background      = '';
-	$background_name = '';
-	$radius          = '';
+	$color_value      = '';
+	$color_name       = '';
+	$background_value = '';
+	$background_name  = '';
+	$radius           = '';
 
 	if ( isset( $block['attrs']['textColor'] ) ) {
-		$color      = mai_get_color_value( $block['attrs']['textColor'] );
-		$color_name = $block['attrs']['textColor'];
+		$color_value = mai_get_color_value( $block['attrs']['textColor'] );
+		$color_name  = $block['attrs']['textColor'];
 
 	} elseif ( isset( $block['attrs']['style']['color']['text'] ) ) {
-		$color = mai_get_color_value( $block['attrs']['style']['color']['text'] );
+		$color_value = mai_get_color_value( $block['attrs']['style']['color']['text'] );
 	}
 
 	if ( isset( $block['attrs']['backgroundColor'] ) ) {
-		$background      = mai_get_color_value( $block['attrs']['backgroundColor'] );
-		$background_name = $block['attrs']['backgroundColor'];
+		$background_value = mai_get_color_value( $block['attrs']['backgroundColor'] );
+		$background_name  = $block['attrs']['backgroundColor'];
 
 	} elseif ( isset( $block['attrs']['style']['color']['background'] ) ) {
-		$background = mai_get_color_value( $block['attrs']['style']['color']['background'] );
+		$background_value = mai_get_color_value( $block['attrs']['style']['color']['background'] );
 	}
 
 	if ( isset( $block['attrs']['borderRadius'] ) ) {
 		$radius = mai_get_unit_value( $block['attrs']['borderRadius'] );
 	}
 
-	if ( $color || $background || $radius || $is_small || $is_large ) {
+	if ( $color_value || $background_value || $radius || $is_small || $is_large ) {
 		$dom     = mai_get_dom_document( $block_content );
 		$wraps   = $dom->getElementsByTagName( 'div' );
 		$buttons = $dom->getElementsByTagName( 'a' );
@@ -107,20 +110,22 @@ function mai_render_button_block( $block_content, $block ) {
 				$style = $wrap->getAttribute( 'style' );
 			}
 
-			if ( '' !== $color ) {
-				$style .= sprintf( '%s-color:%s;', $prefix, $color );
+			if ( '' !== $color_value ) {
+				$style .= sprintf( '%s-color:%s;', $prefix, mai_get_color_css( $color_value ) );
 
-				if ( $is_outline && mai_is_light_color( $color ) ) {
+				if ( $is_outline && mai_is_light_color( $color_value ) ) {
 					// For white or light colored outline buttons, change text dark on hover.
 					$style .= sprintf( '%s-color-hover:%s;', $prefix, 'rgba(0,0,0,0.8)' );
 				}
 			}
 
-			if ( '' !== $background ) {
-				$style .= sprintf( '%s-background:%s;', $prefix, $background );
+			if ( '' !== $background_value ) {
+				$style .= sprintf( '%s-background:%s;', $prefix, mai_get_color_css( $background_value ) );
+
+				mai_get_color_name( $background_value );
 
 				if ( ! $is_outline ) {
-					$style .= sprintf( '%s-background-hover:%s;', $prefix, mai_get_color_variant( $background, 'dark', 10 ) );
+					$style .= sprintf( '%s-background-hover:%s;', $prefix, mai_get_color_css( mai_get_color_variant( $background_value, 'dark', 10 ) ) );
 				}
 			}
 
@@ -142,10 +147,12 @@ function mai_render_button_block( $block_content, $block ) {
 				$classes = str_replace( 'has-text-color', '', $classes );
 				$classes = str_replace( 'has-background', '', $classes );
 
+				// Clear color classes.
 				if ( $color_name ) {
 					$classes = str_replace( sprintf( 'has-%s-color', $color_name ), '', $classes );
 				}
 
+				// Clear color classes.
 				if ( $background_name ) {
 					$classes = str_replace( sprintf( 'has-%s-background', $background_name ), '', $classes );
 				}

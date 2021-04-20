@@ -15,11 +15,14 @@
 
 .has-light-background {
 	--heading-color: var(--color-heading);
-	--body-color: var(--color-body);
+	// --body-color: var(--color-body);
+	color: var(--color-body);
 }
 
-// Start crazy CSS to override block-library styles.
-// This is really only here for nested cover/group blocks.
+/**
+ * Start crazy CSS to override block-library styles.
+ * This is really only here for nested cover/group blocks.
+ */
 
 .has-dark-background h1:not(.has-text-color),
 .has-dark-background h2:not(.has-text-color),
@@ -40,7 +43,9 @@
 	color: var(--body-color);
 }
 
-// End crazy CSS to override block-library styles.
+/**
+ * End crazy CSS to override block-library styles.
+ */
 
 .has-border {
 	border: var(--border);

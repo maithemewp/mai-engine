@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 // Mai Post Grid.
 add_filter( 'acf/load_field/key=mai_grid_block_show', 'mai_acf_load_show', 10, 1 );
 add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_in', 'mai_acf_get_posts', 10, 1 );

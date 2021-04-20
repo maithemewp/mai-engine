@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_filter( 'post_class', 'mai_remove_post_classes', 10, 3 );
 /**
  * Remove unnecessary post classes.

@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'acf/init', 'mai_register_divider_block' );
 /**
  * Register Mai Divider block..
@@ -18,24 +21,26 @@ add_action( 'acf/init', 'mai_register_divider_block' );
  * @return void
  */
 function mai_register_divider_block() {
-	if ( function_exists( 'acf_register_block_type' ) ) {
-		acf_register_block_type(
-			[
-				'name'            => 'mai-divider',
-				'title'           => __( 'Mai Divider', 'mai-engine' ),
-				'description'     => __( 'A custom divider block.', 'mai-engine' ),
-				'render_callback' => 'mai_do_divider_block',
-				'category'        => 'widgets',
-				'keywords'        => [ 'divider' ],
-				'icon'            => mai_get_svg_icon( 'wave-sine', 'regular' ),
-				'mode'            => 'preview',
-				'align'           => 'full',
-				'supports'        => [
-					'align' => [ 'wide', 'full' ],
-				],
-			]
-		);
+	if ( ! function_exists( 'acf_register_block_type' ) ) {
+		return;
 	}
+
+	acf_register_block_type(
+		[
+			'name'            => 'mai-divider',
+			'title'           => __( 'Mai Divider', 'mai-engine' ),
+			'description'     => __( 'A custom divider block.', 'mai-engine' ),
+			'render_callback' => 'mai_do_divider_block',
+			'category'        => 'widgets',
+			'keywords'        => [ 'divider' ],
+			'icon'            => mai_get_svg_icon( 'wave-sine', 'regular' ),
+			'mode'            => 'preview',
+			'align'           => 'full',
+			'supports'        => [
+				'align' => [ 'wide', 'full' ],
+			],
+		]
+	);
 }
 
 /**
@@ -95,7 +100,7 @@ function mai_get_divider( $atts = [] ) {
 			'flip_horizontal'  => false,
 			'flip_vertical'    => false,
 			'background_color' => 'transparent',
-			'color'            => mai_get_color( 'alt' ),
+			'color'            => 'alt',
 			'align'            => 'full',
 			'class'            => '',
 		]
@@ -127,7 +132,6 @@ function mai_get_divider( $atts = [] ) {
 	$atts['color']            = trim( $atts['color'] );
 	$atts['color']            = $atts['color'] ?: 'transparent';
 
-	$colors     = array_flip( mai_get_default_colors() );
 	$attributes = [
 		'class' => sprintf( 'mai-divider mai-divider-%s', $atts['style'] ),
 		'style' => '',
@@ -137,17 +141,8 @@ function mai_get_divider( $atts = [] ) {
 		$attributes['class'] .= ' align' . $atts['align'];
 	}
 
-	if ( isset( $colors[ $atts['color'] ] ) ) {
-		$attributes['class'] .= sprintf( ' has-%s-color', $colors[ $atts['color'] ] );
-	} else {
-		$attributes['style'] .= sprintf( '--divider-color:%s;', $atts['color'] );
-	}
-
-	if ( isset( $colors[ $atts['background_color'] ] ) ) {
-		$attributes['class'] .= sprintf( ' has-%s-background-color', $colors[ $atts['background_color'] ] );
-	} else {
-		$attributes['style'] .= sprintf( '--divider-background-color:%s;', $atts['background_color'] );
-	}
+	$attributes['style'] .= sprintf( '--divider-color:%s;', mai_get_color_css( $atts['color'] ) );
+	$attributes['style'] .= sprintf( '--divider-background-color:%s;', mai_get_color_css( $atts['background_color'] ) );
 
 	if ( $atts['height'] ) {
 		switch ( $atts['height'] ) {
