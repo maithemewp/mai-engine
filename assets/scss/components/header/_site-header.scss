@@ -4,7 +4,7 @@
 	z-index: 12;
 	width: 100%;
 	color: var(--color-body);
-	background: var(--site-header-background, var(--color-header));
+	background: var(--site-header-background, var(--color-white));
 	border-bottom: var(--site-header-border-bottom, var(--border));
 	box-shadow: var(--site-header-box-shadow, none);
 	transition: var(--transition);
