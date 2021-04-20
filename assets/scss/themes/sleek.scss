@@ -51,15 +51,15 @@
 }
 
 .breadcrumb {
-	color: var(--breadcrumb-color, var(--color-custom-1));
+	color: var(--breadcrumb-color, var(--color-custom-1, var(--color-body)));
 	font-style: italic;
 	--link-color: var(--color-body);
 	--link-color-hover: var(--color-link);
 }
 
 .is-style-subheading {
-	--body-color: var(--color-custom-1);
-	--heading-color: var(--color-custom-1);
+	--body-color: var(--color-custom-1, var(--color-body));
+	--heading-color: var(--color-custom-1, var(--color-body));
 }
 
 .button-link {
