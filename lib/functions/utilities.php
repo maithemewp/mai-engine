@@ -1164,7 +1164,7 @@ function mai_get_avatar_default_args() {
  * Gets an entry author ID.
  *
  * @since 2.7.0
- * @since TBD Switch get_the_author_meta( 'ID' )
+ * @since 2.13.0 Switch get_the_author_meta( 'ID' )
  *        to get_post_field( 'post_author' )
  *        since it wasn't working in page header and other contexts.
  *

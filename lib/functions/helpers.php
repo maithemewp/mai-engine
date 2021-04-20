@@ -335,7 +335,7 @@ function mai_has_sticky_header_enabled() {
 /**
  * Checks if site has sticky header and a scroll logo set.
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @return bool
  */

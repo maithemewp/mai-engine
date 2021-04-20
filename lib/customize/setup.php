@@ -68,7 +68,7 @@ add_action( 'wp_head', 'mai_kirki_loading_icon', 101 );
  * Run safter Kirki, and add !important to override.
  * Until Kikri v4 with a filter for this.
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @return void
  */

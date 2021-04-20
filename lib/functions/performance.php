@@ -91,7 +91,7 @@ add_filter( 'wp_calculate_image_srcset_meta', 'mai_limit_max_srcset_image', 10, 
 /**
  * Limits srcset from using an image larger than the actual src image.
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @param array  $image_meta    The image meta data as returned by 'wp_get_attachment_metadata()'.
  * @param int[]  $size_array    {
@@ -128,7 +128,7 @@ function mai_limit_max_srcset_image( $image_meta, $size_array, $image_src, $atta
 /**
  * Preloads logo.
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @return void
  */
@@ -150,7 +150,7 @@ function mai_preload_logo() {
 /**
  * Preloads page header image.
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @return void
  */
@@ -173,7 +173,7 @@ function mai_preload_page_header_image() {
 /**
  * Preloads featured image on single posts.
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @return void
  */
@@ -221,7 +221,7 @@ function mai_preload_featured_image() {
 /**
  * Preloads the first cover block on single posts.
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @return void
  */
@@ -264,7 +264,7 @@ function mai_preload_cover_block() {
 /**
  * Gets <link> tag with image preloading data.
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @param int    $image_id   The image ID.
  * @param string $image_size The image size.

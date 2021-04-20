@@ -317,7 +317,7 @@ add_action( 'mai_setup_wizard_before_import', 'mai_setup_wizard_remove_image_siz
  * Removes image sizes during import.
  * Greatly reduces import time.
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @return void
  */
@@ -352,7 +352,7 @@ add_filter( 'wp_import_post_data_processed', 'mai_setup_wizard_slash_data', 99, 
  * @link https://github.com/humanmade/WordPress-Importer/pull/161
  * @link https://github.com/humanmade/WordPress-Importer/pull/172
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @param array $data The array of data.
  *

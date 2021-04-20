@@ -207,7 +207,7 @@ return [
 		 * Removes page header content width and align values.
 		 * This removes the inlines styles from being added in `mai_add_page_header_content_type_css()`
 		 *
-		 * @since TBD
+		 * @since 2.13.0
 		 *
 		 * @param string $value
 		 *
@@ -220,7 +220,7 @@ return [
 		/**
 		 * Removes page header content width and content align settings from Customizer.
 		 *
-		 * @since TBD
+		 * @since 2.13.0
 		 *
 		 * @param WP_Customize_Manager $customizer The customizer instance.
 		 *

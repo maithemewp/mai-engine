@@ -732,7 +732,7 @@ class Mai_Entry {
 	/**
 	 * Gets fallback image size if given size isn't available.
 	 *
-	 * @since TBD
+	 * @since 2.13.0
 	 *
 	 * @return string
 	 */
@@ -1166,7 +1166,7 @@ class Mai_Entry {
 	// /**
 	//  * Display the custom content 2.
 	//  *
-	//  * @since TBD
+	//  * @since 2.13.0
 	//  *
 	//  * @return void
 	//  */

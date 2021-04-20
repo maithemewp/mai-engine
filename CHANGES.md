@@ -1,14 +1,53 @@
 # Changelog
 
+## 2.13.0 (4/20/21)
+* Added: [Beta] New scroll logo setting to change logos when a sticky header is stuck/scrolled.
+* Added: Mai icon to Customizer when preview is loading.
+* Added: New "user" value for the "id" parameter on `[mai_avatar]` to get the currently logged in user's avatar. Great for membership-type sites.
+* Added: [Developers] More custom properties on entry link.
+* Added: [Developers] New defer attribute available when loading scripts via the config.
+* Added: [Developers] New `mai_page_header_image_size` filter to change the image size that's loaded in page header.
+* Added: [Developers] New `has-page-header-image` class added to the page header when there is an image.
+* Added: [Developers] Added back `mai_cover_block_image_id` filter.
+* Changed: Reverted paragraphs using `--body-color` custom property. This was causing issues in some dark background scenarios and for those still using page builders.
+* Changed: Hide customizer panels for content types that no longer exist, typically from plugins being deactivated.
+* Changed: Renamed "Spacing" to "Margin" on heading, paragraph, and separator blocks.
+* Changed: Fully rebuilt how HTML attributes are added to scripts/styles via config.
+* Changed: [Performance] Setup Wizard now only imports full size and limits other crop/resized image sizes to a specific "allowed" list of sizes. Greatly reduces import time when loading content.
+* Changed: [Performance] Remove loading attribute from featured image on single posts/pages. Testing showed this improved LCP/CLS.
+* Changed: [Performance] Mai Columns CSS is now loaded with other block CSS instead of late loading. This helps with CLS.
+* Changed: [Performance] Now wp-block-library styles are loaded asynchronous by default.
+* Changed: [Performance] Entry images now check if the smaller crop sizes exist before falling back to the full size image when a specific image size doesn't exist.
+* Changed: CSS when JS is not loaded is now in footer so it doesn't create any CLS when JS is initially loaded for typical users.
+* Changed: Make sure style.css is loaded last when loading in header when customizer setting to load in footer is unchecked.
+* Changed: Switch `get_the_author_meta( 'ID' )` to `get_post_field( 'post_author' )` since it wasn't working in page header and
+other contexts.
+* Changed: Setup wizard now uses `WP_Dependency_Installer` to install/activate plugins.
+* Fixed: [Performance] Make sure dynamic CSS filter only runs when updating transient/cache.
+* Fixed: Missing page header image setting is now back.
+* Fixed: No longer cache page header dynamic CSS since different content types can have different values.
+* Fixed: Before header search input and sub-menus hidden behind the site header.
+* Fixed: Padding on alignfull blocks incorrect when boxed-container is used.
+* Fixed: Margin on heading, paragraph, and separator was way too big in editor when using the Margin block settings.
+* Fixed: Entries loading too small of an image when the using the Wide Content layout.
+* Fixed: Entry text color should use body color setting when the entries are boxed on dark background.
+* Fixed: Entry titles from other queries were getting removed on 404 page when the 404 Page template part was used.
+* Fixed: Header CSS not loading when transparent header was disabled.
+* Fixed: Table CSS was not loading in editor so table styles did not match front end.
+* Fixed: Setup Wizard no longer asks to install plugins that are already active.
+* Fixed: Setup Wizard no longer breaks blocks with HTML in the block settings.
+* Fixed: No longer cache logo scroll offset value twice.
+* Fixed: FacetWP results broken when the filters return no items.
+
 ## 2.12.0 (4/2/21)
 * Added: New Site Header color setting. Easily change your site header color, including dark headers with automatic white text!
 * Added: New "Full" option for Content Width in Group and Cover blocks.
 * Added: New "Content Alignment" settings in Group and Cover blocks. Set your content width to something smaller and align the inner container left/center/right.
 * Added: New `font_size` parameter in `[mai_menu]` shortcode. Accepts `xs`, `sm`, `md`, `lg`, `xl`, `xxl`, `xxxl`, `xxxxl`, and any CSS unit value like `16px`, `1em`, `1.2rem`. Number values like `16` will automatically be converted to pixel values like `16px` during display.
 * Added: New `post_type` parameter in `[mai_content]` shortcode so you can display any post type by slug. The `id` parameter already allowed this without needing `post_type` but now you can also display any post type by slug.
-* Added: New `mai_remove_entries` (bool) filter so developers can now easily remove entries from default loops.
+* Added: [Developers] New `mai_remove_entries` (bool) filter so developers can now easily remove entries from default loops.
 * Added: [Accessibility] Added "Link Title" field in Mai Icon block and `link_title` parameter in `[mai_icon]` shortcode to add a visually hidden label for accessibility.
-* Changed: [Performance Update] Simplify caching and transients to a single cached request.
+* Changed: [Performance] Simplify caching and transients to a single cached request.
 * Changed: Block settings panel labels are now more literal. "Spacing" is now "Padding" and "Content Width" is now "Layout" since adding new settings inside.
 * Changed: Update the updater package.
 * Changed: Simplified breadcrumb output hook/function so they are easier to move while respecting Hide Elements setting.
@@ -37,15 +76,15 @@
 * Fixed: Scrollbar width is now calculated during a screen resize or orientation change. This is used for precise full width containers due to a browser inconsistency with "100vw" when scrollbars are present.
 
 ## 2.11.3 (3/12/21)
-* Added: New `mai_before_{$template_part}_template_part`, `mai_after_{$template_part}_template_part` action hooks before and after template parts and template part content.
-* Added: New `mai_menu_defaults` filter for devs to change [mai_menu] shortcode defaults.
+* Added: [Developers] New `mai_before_{$template_part}_template_part`, `mai_after_{$template_part}_template_part` action hooks before and after template parts and template part content.
+* Added: [Developers] New `mai_menu_defaults` filter for developers to change [mai_menu] shortcode defaults.
 * Fixed: Logo not centering correctly in some configurations.
 
 ## 2.11.2 (3/11/21)
 * Fixed: Error when using [mai_search_form] shortcode without any attributes.
 
 ## 2.11.1 (3/11/21)
-* Changed: [Performance Update] PHP processing for color and typography css is now cached with transients.
+* Changed: [Performance] PHP processing for color and typography css is now cached with transients.
 * Changed: Customizer plugins link now goes to new location.
 * Fixed: Bug in WP 5.7 due to changes in the alignment markup where aligned buttons are not working correctly.
 
@@ -55,19 +94,19 @@
 * Added: New [mai_rating] shortcode to show star ratings. Works great in Custom Content field of Mai Grid blocks or Archive/Single settings in Customizer.
 * Added: Author box is now an option in Hide Elements metabox.
 * Added: Built in support/styling for Mai Accordion block/plugin.
-* Added: New `mai_entry_content` filter on display of all entries.
-* Added: New `mai_cover_block_image_id` filter allows developers to easily swap out the image ID of a Cover block.
-* Added: New `mai_archive_pagination_link_classes` filter allows developers to change archive pagination classes.
-* Added: WP-CLI command for developers to flush the font cache via `wp mai flush`.
-* Added: New `mai_write_to_file()` debugging function for developers to write data to a file when debugging.
-* Changed: [Performance Update] All helper functions now make use of static caching to drop PHP processing time down tremendously.
-* Changed: [Performance Update] Template Parts are now cached with a transient so there is no database query to get the content.
-* Changed: [Performance Update] Icons now have height/width attributes and help eliminate CLS (Cumulative Layout Shift).
-* Changed: [Performance Update] CSS files are now split into smaller files for the performance benefits of HTTP2.
-* Changed: [Performance Update] Only call query args method once per instance of Mai Post/Term Grid block.
-* Changed: [Performance Update] Featured image query is now cached on all default archives and Mai Post/Term Grid instances. There are now even less database queries on every page.
-* Changed: [Performance Update] Template parts content is now parsed during rendering instead of during the query to retrieve them. This improves performance by not running code on template parts that may not be displayed.
-* Changed: [Performance Update] Menu search icons are now rendered in PHP so there is no flash when JS is loaded.
+* Added: [Developers] New `mai_entry_content` filter on display of all entries.
+* Added: [Developers] New `mai_cover_block_image_id` filter allows developers to easily swap out the image ID of a Cover block.
+* Added: [Developers] New `mai_archive_pagination_link_classes` filter allows developers to change archive pagination classes.
+* Added: [Developers] WP-CLI command for developers to flush the font cache via `wp mai flush`.
+* Added: [Developers] New `mai_write_to_file()` debugging function for developers to write data to a file when debugging.
+* Changed: [Performance] All helper functions now make use of static caching to drop PHP processing time down tremendously.
+* Changed: [Performance] Template Parts are now cached with a transient so there is no database query to get the content.
+* Changed: [Performance] Icons now have height/width attributes and help eliminate CLS (Cumulative Layout Shift).
+* Changed: [Performance] CSS files are now split into smaller files for the performance benefits of HTTP2.
+* Changed: [Performance] Only call query args method once per instance of Mai Post/Term Grid block.
+* Changed: [Performance] Featured image query is now cached on all default archives and Mai Post/Term Grid instances. There are now even less database queries on every page.
+* Changed: [Performance] Template parts content is now parsed during rendering instead of during the query to retrieve them. This improves performance by not running code on template parts that may not be displayed.
+* Changed: [Performance] Menu search icons are now rendered in PHP so there is no flash when JS is loaded.
 * Changed: Output from WP_Query to get_post for `mai_get_post_content()` function. Fixes classes with `is_main_query()` checks in other plugins.
 * Changed: Entry padding is now applied to entry-wrap instead of the main entry so we no longer need negative margin on the entry-image when set to "Full".
 * Changed: Hide exclude settings if get entries by choice in Mai Post/Term Grid.
@@ -138,7 +177,7 @@
 * Added: Custom content option to Hide Elements metabox.
 * Added: Links to shortcode documentation related to Header/Footer Meta fields.
 * Added: Support for search block button inside setting.
-* Added: `mai_get_option{$name}` filter for developers to manipulate option values.
+* Added: [Developers] `mai_get_option{$name}` filter for developers to manipulate option values.
 * Changed: Header/Footer Meta text fields are now larger textarea fields for easier editing.
 * Changed: Updated pot file for translations.
 * Fixed: Entry meta not preserving whitespace in between elements.
@@ -168,7 +207,7 @@
 
 ## 2.8.0 (12/17/20)
 * Added: Header and footer meta options added to Hide Elements metabox.
-* Added: PHP filter for `mai_adjacent_entry_nav_taxonomy` to allow adjacent entry nav to show previous/next post in same taxonomy.
+* Added: [Developers] New `mai_adjacent_entry_nav_taxonomy` filter to allow adjacent entry nav to show previous/next post in same taxonomy.
 * Added: Dashboard menu item to show what Mai Plugins are available.
 * Added: More Google fonts available via Kirki update.
 * Added: Mai Plugins button link in Customizer.
@@ -253,7 +292,7 @@
 * Changed: Submenus now inherit default border-radius from the theme.
 * Changed: Entry meta wrap is now a div instead of span, so you can do more with Header/Footer meta Customizer fields.
 * Changed: Remove unecessary EDD dependency plugin when using Easy Digital Downloads.
-* Changed: Now passing all `$args` to grid query args PHP filters.
+* Changed: [Developers] Now passing all `$args` to grid query args PHP filters.
 * Changed: Remove unecessary styling on After Entry template part.
 * Changed: Load child theme stylesheet last when "Load in footer" is not on in Customizer.
 * Changed: Update ACF Pro to 5.9.3.

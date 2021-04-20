@@ -79,7 +79,7 @@ add_filter( 'kirki_mai-engine_styles', 'mai_add_kirki_page_header_css' );
  * Outputs kirki page header css.
  * This can't be cached because it can be different per content type.
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @param array $css Kirki CSS.
  *

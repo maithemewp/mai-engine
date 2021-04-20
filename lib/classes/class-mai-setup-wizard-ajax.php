@@ -139,7 +139,7 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 	 * Plugin step ajax.
 	 *
 	 * @since 1.0.0
-	 * @since TBD Switched to WP_Dependency_Installer for plugin install/activation.
+	 * @since 2.13.0 Switched to WP_Dependency_Installer for plugin install/activation.
 	 *
 	 * @return void
 	 */

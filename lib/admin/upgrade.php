@@ -13,7 +13,7 @@ add_action( 'upgrader_process_complete', 'mai_upgrade_complete', 10, 2 );
 /**
  * Flush transients during update.
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @param WP_Upgrader $upgrader_object The upgrader object.
  * @param array       $options         Array of bulk item update data.

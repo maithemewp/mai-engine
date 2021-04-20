@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || die;
 /**
  * Removes default output of child theme stylesheet.
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @return void
  */
@@ -90,7 +90,7 @@ add_filter( 'script_loader_tag', 'mai_script_loader_tag', 10, 3 );
 /**
  * Adds attributes to scripts.
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @param string $tag    The <script> tag for the enqueued script.
  * @param string $handle The script's registered handle.
@@ -110,7 +110,7 @@ function mai_script_loader_tag( $tag, $handle, $src ) {
 /**
  * Adds attributes to styles.
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @param string $html   The link tag for the enqueued style.
  * @param string $handle The style's registered handle.
@@ -216,7 +216,7 @@ function mai_enqueue_asset( $handle, $args, $type ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @param string $tag The <script> or <style> tag.
  * @param array  $attributes The attributes by name and value.
@@ -241,7 +241,7 @@ function mai_add_tag_attributes( $tag, $attributes ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @return array
  */
@@ -260,7 +260,7 @@ function mai_get_script_attributes() {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @return array
  */
@@ -283,7 +283,7 @@ function mai_get_style_attributes() {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @return array
  */

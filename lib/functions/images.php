@@ -78,7 +78,7 @@ function mai_get_image_width( $image_size ) {
 /**
  * Gets an image height by size name.
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @param string $image_size The image size name.
  *
@@ -347,7 +347,7 @@ function mai_get_image_sizes_from_aspect_ratio( $size = 'md', $ratio = '16:9' ) 
  * Get the page header image size.
  * This is also used for preloading in performance.php.
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @return string
  */
@@ -364,7 +364,7 @@ function mai_get_page_header_image_size() {
  * Get the cover image size.
  * This is also used for preloading in performance.php.
  *
- * @since TBD
+ * @since 2.13.0
  *
  * @return string
  */
