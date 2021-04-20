@@ -339,3 +339,25 @@ function mai_setup_wizard_remove_image_sizes() {
 		return $sizes;
 	});
 }
+
+add_filter( 'wp_import_post_data_processed', 'mai_setup_wizard_slash_data', 99, 1 );
+/**
+ * Adds slashes to post (block) content prior to creating.
+ * Blocks with HTML in their attributes were breaking.
+ * Mai Sleek header_meta as an example.
+ *
+ * Pull 161 has `wxr_importer.pre_process.post_meta` filter
+ * but this was breaking Hide Elements metabox so I'm not using it.
+ *
+ * @link https://github.com/humanmade/WordPress-Importer/pull/161
+ * @link https://github.com/humanmade/WordPress-Importer/pull/172
+ *
+ * @since TBD
+ *
+ * @param array $data The array of data.
+ *
+ * @return array
+ */
+function mai_setup_wizard_slash_data( $data ) {
+	return wp_slash( $data );
+}
