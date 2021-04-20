@@ -869,13 +869,6 @@ function mai_get_read_more_text() {
  * @return int
  */
 function mai_get_header_shrink_offset() {
-	$preview   = is_customize_preview();
-	$transient = 'mai_header_shrink_offset';
-
-	if ( ! $preview && $cached_offset = get_transient( $transient ) ) {
-		return $cached_offset;
-	}
-
 	static $offset = null;
 
 	if ( ! is_null( $offset ) ) {
@@ -913,12 +906,6 @@ function mai_get_header_shrink_offset() {
 	$shrunk_height      = ( $shrunk_width / $desktop_width ) * $desktop_height;
 	$height_difference  = ceil( $desktop_height - $shrunk_height );
 	$offset             = $height_difference + $spacing_difference;
-
-	if ( $preview ) {
-		delete_transient( $transient );
-	} else {
-		set_transient( $transient, $offset, 60 );
-	}
 
 	return $offset;
 }
