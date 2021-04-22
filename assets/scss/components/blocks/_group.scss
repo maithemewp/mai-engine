@@ -22,7 +22,9 @@
 	}
 }
 
+.has-sidebar,
 .has-boxed-container {
+	// Undo side-spacing padding and use 0.05px to prevent margin collapsing.
 	--group-block-alignfull-padding-right: 0.05px;
 	--group-block-alignfull-padding-left: 0.05px;
 }
