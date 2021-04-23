@@ -410,6 +410,16 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 					[
 						'setting'  => 'image_position',
 						'operator' => '==',
+						'value'    => 'left-middle',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'right-middle',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
 						'value'    => 'left-bottom',
 					],
 					[
