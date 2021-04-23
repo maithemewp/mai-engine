@@ -2325,7 +2325,7 @@ function mai_get_grid_block_settings() {
 			'block'      => [ 'term' ],
 			'type'       => 'select',
 			'sanitize'   => 'esc_html',
-			'default'    => 'date',
+			'default'    => 'name',
 			'choices'    => [
 				'name'  => esc_html__( 'Title', 'mai-engine' ),
 				'slug'  => esc_html__( 'Slug', 'mai-engine' ),
