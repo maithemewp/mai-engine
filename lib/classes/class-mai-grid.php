@@ -530,7 +530,7 @@ class Mai_Grid {
 						$term_id = get_queried_object_id();
 					}
 					if ( isset( $term_id ) && $term_id ) {
-						$query_args['parent'] = [ $term_id ];
+						$query_args['parent'] = $term_id;
 					}
 				} else {
 					$query_args['parent'] = $this->args['parent'];
