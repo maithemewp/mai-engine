@@ -2178,7 +2178,7 @@ function mai_get_grid_block_settings() {
 			'block'      => [ 'term' ],
 			'type'       => 'select',
 			'sanitize'   => 'esc_html',
-			'default'    => 'date',
+			'default'    => 'name',
 			'choices'    => [
 				'name'   => esc_html__( 'Taxonomy', 'mai-engine' ),
 				'id'     => esc_html__( 'Choice', 'mai-engine' ),
