@@ -174,9 +174,10 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 			}
 
 			if ( $plugins ) {
-				$wpdi = WP_Dependency_Installer::instance();
+				$wpdi = WP_Dependency_Installer::instance( __DIR__ );
 				$wpdi->register( $plugins );
 				$wpdi->admin_init();
+				// $wpdi->register( $plugins )->run();
 			} else {
 				wp_send_json_error( __( 'Error installing ', 'mai-engine' ) . $slug );
 			}
