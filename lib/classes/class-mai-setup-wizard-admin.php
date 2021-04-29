@@ -25,7 +25,7 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 	 * @return void
 	 */
 	public function add_hooks() {
-		add_action( 'admin_menu', [ $this, 'add_menu_page' ] );
+		add_action( 'admin_menu', [ $this, 'add_menu_page' ], 20 );
 		add_action( 'admin_enqueue_scripts', [ $this, 'load_scripts' ] );
 	}
 
