@@ -52,6 +52,7 @@ add_action( 'wp_enqueue_scripts', 'mai_enqueue_assets' );
 add_action( 'admin_enqueue_scripts', 'mai_enqueue_assets' );
 add_action( 'enqueue_block_editor_assets', 'mai_enqueue_assets' );
 add_action( 'customize_controls_enqueue_scripts', 'mai_enqueue_assets' );
+add_action( 'login_enqueue_scripts', 'mai_enqueue_assets' );
 /**
  * Register and enqueue all scripts and styles.
  *
@@ -157,11 +158,11 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 	$enqueue   = "wp_enqueue_$type";
 	$load      = false;
 
-	if ( in_array( 'public', $location, true ) && ! is_admin() ) {
+	if ( in_array( 'public', $location, true ) && ! is_admin() && ! did_action( 'login_enqueue_scripts' ) ) {
 		$load = true;
 	}
 
-	if ( in_array( 'admin', $location, true ) && is_admin() && ! is_customize_preview() ) {
+	if ( in_array( 'admin', $location, true ) && is_admin() && ! is_customize_preview() && ! did_action( 'login_enqueue_scripts' ) ) {
 		$load = true;
 	}
 
@@ -174,6 +175,10 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 	}
 
 	if ( in_array( 'customizer', $location, true ) && is_customize_preview() && ! did_action( 'genesis_meta' ) ) {
+		$load = true;
+	}
+
+	if ( in_array( 'login', $location, true ) && did_action( 'login_enqueue_scripts' ) ) {
 		$load = true;
 	}
 
