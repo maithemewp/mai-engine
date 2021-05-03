@@ -115,7 +115,7 @@ function mai_is_valid_size( $size ) {
 }
 
 /**
- * Check if were on any type of singular page.
+ * Checks if we're on any type of singular page.
  *
  * @since 0.1.0
  *
@@ -137,7 +137,7 @@ function mai_is_type_single( $use_cache = false ) {
 }
 
 /**
- * Check if were on any type of archive page.
+ * Checks if we're on any type of archive page.
  *
  * @since 0.1.0
  *
@@ -156,6 +156,13 @@ function mai_is_type_archive( $use_cache = false ) {
 	}
 
 	return $is_type_archive;
+}
+
+/**
+ * Checks if on the wp-login.php page.
+ */
+function mai_is_login_page() {
+	return false !== stripos( $_SERVER['SCRIPT_NAME'], strrchr( wp_login_url(), '/' ) );
 }
 
 /**
