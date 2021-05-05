@@ -357,7 +357,8 @@ li.product {
 	list-style-type: none;
 
 	li {
-		flex: 1;
+		flex: 0 1 100%;
+		max-width: calc(25% - var(--spacing-md));
 		margin-right: var(--spacing-md);
 
 		&:last-of-type {
