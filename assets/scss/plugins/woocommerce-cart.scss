@@ -185,6 +185,10 @@
 	}
 }
 
+.wc-proceed-to-checkout {
+	--button-padding: var(--spacing-lg);
+}
+
 .cart-collaterals {
 	margin: var(--column-gap) 0;
 }
