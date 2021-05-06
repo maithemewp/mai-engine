@@ -185,8 +185,12 @@
 	}
 }
 
+/* Makes sure proceed to checkout button is large enough,
+ * especially if button sizes are customized elsewhere.
+ */
 .wc-proceed-to-checkout {
 	--button-padding: var(--spacing-lg);
+	--button-font-size: var(--font-size-md);
 }
 
 .cart-collaterals {
