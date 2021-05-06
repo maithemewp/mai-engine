@@ -230,26 +230,27 @@
 .woocommerce-shipping-methods {
 
 	li {
-		display: grid;
-		grid-column-gap: var(--spacing-sm);
-		grid-template-rows: 1fr;
-		grid-template-columns: auto 1fr;
+		display: flex;
+		align-items: center;
 
 		&:last-child {
 			margin-bottom: 0;
 		}
 
 		> .shipping_method {
-			grid-row: 1/1;
-			margin: 0;
+			margin: 0 var(--spacing-xxs) 0 0;
 		}
 
 		> *:not(.shipping_method) {
-			grid-column-start: 2;
 			margin: 0;
 		}
 	}
 
+}
+
+.woocommerce-shipping-destination {
+	margin-top: var(--spacing-xxs);
+	font-size: smaller; /* Matches label default size. */
 }
 
 .woocommerce-checkout-payment {
