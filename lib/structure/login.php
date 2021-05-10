@@ -94,6 +94,7 @@ function mai_login_css() {
 			border: var(--button-border-hover, var(--button-border, 0));
 			box-shadow: var(--button-box-shadow-hover, var(--button-box-shadow, none));
 		}
+		body.login.wp-core-ui .button:not(.button-primary),
 		body.login.wp-core-ui .button-secondary {
 			--button-color: var(--button-secondary-color);
 			--button-color-hover: var(--button-secondary-color-hover, var(--button-secondary-color));
@@ -157,10 +158,10 @@ function mai_login_css() {
 			box-shadow: none;
 			outline: none;
 		}
-		body.login .button.wp-hide-pw,
-		body.login .button.wp-hide-pw:hover,
-		body.login .button.wp-hide-pw:focus,
-		body.login .button.wp-hide-pw:active {
+		body.login.wp-core-ui .button.wp-hide-pw,
+		body.login.wp-core-ui .button.wp-hide-pw:hover,
+		body.login.wp-core-ui .button.wp-hide-pw:focus,
+		body.login.wp-core-ui .button.wp-hide-pw:active {
 			--button-color: var(--color-primary);
 			--button-color-hover: var(--color-primary-dark);
 			--button-background: transparent;
