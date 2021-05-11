@@ -117,7 +117,11 @@ function mai_body_classes( $classes ) {
 	$header_right = has_nav_menu( 'header-right' ) || mai_has_template_part( 'header-right' ) || is_active_sidebar( 'header-right' );
 
 	// Add logo classes.
-	if ( ( $header_left && $header_right ) || ( ! $header_right && ! $header_right ) ) {
+	if ( $header_right && ! $header_left ) {
+		$classes[] = 'has-logo-left';
+	} elseif ( $header_left && ! $header_right ) {
+		$classes[] = 'has-logo-right';
+	} elseif ( ( $header_left && $header_right ) || ( ! $header_right && ! $header_right ) ) {
 		$classes[] = 'has-logo-center';
 	}
 

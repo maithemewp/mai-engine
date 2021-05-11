@@ -39,20 +39,12 @@ function mai_logo_customizer_settings() {
 	Kirki::add_field(
 		$config_id,
 		[
-			'type'     => 'image',
-			'settings' => 'logo-scroll',
-			'label'    => esc_html__( 'Logo on scroll (beta)', 'mai-engine' ),
-			'section'  => 'title_tagline',
-			'priority' => 60,
-			'default'  => '',
-			'output'   => [
-				[
-					'element'       => '.custom-logo-link',
-					'property'      => '--background-image',
-					'value_pattern' => 'url($)',
-					'media_query'   => sprintf( '@media (min-width: %spx)', mai_get_breakpoint( 'sm' ) ),
-				],
-			],
+			'type'            => 'image',
+			'settings'        => 'logo-scroll',
+			'label'           => esc_html__( 'Logo on scroll (beta)', 'mai-engine' ),
+			'section'         => 'title_tagline',
+			'priority'        => 60,
+			'default'         => '',
 			'active_callback' => function() {
 				return (bool) mai_has_sticky_header_enabled() && has_custom_logo();
 			},

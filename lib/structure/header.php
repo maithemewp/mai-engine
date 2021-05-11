@@ -307,6 +307,55 @@ function mai_maybe_hide_site_header() {
 	remove_action( 'genesis_header', 'genesis_header_markup_close', 15 );
 }
 
+add_action( 'genesis_site_title', 'mai_maybe_do_custom_scroll_logo', 0 );
+/**
+ * Adds filter on custom logo before site title.
+ * Removes filter after the logo is added.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_maybe_do_custom_scroll_logo() {
+	add_filter( 'get_custom_logo', 'mai_custom_scroll_logo', 10, 2 );
+
+	add_action( 'genesis_site_title', function() {
+		remove_filter( 'get_custom_logo', 'mai_custom_scroll_logo', 10, 2 );
+	}, 99 );
+}
+
+/**
+ * Adds an image inline in the site title element for the custom scroll logo.
+ *
+ * @since TBD
+ *
+ * @param string $html    The existing logo HTML.
+ * @param int    $blog_id The current blog ID in multisite.
+ *
+ * @return string
+ */
+function mai_custom_scroll_logo( $html, $blog_id ) {
+	$logo_url = mai_get_option( 'logo-scroll' );
+
+	if ( ! $logo_url ) {
+		return $html;
+	}
+
+	$dom   = mai_get_dom_document( $html );
+	$first = mai_get_dom_first_child( $dom );
+
+	if ( $first ) {
+		$img = $dom->createElement( 'img' );
+		$img->setAttribute( 'class', 'custom-scroll-logo' );
+		$img->setAttribute( 'src', $logo_url );
+		$img->setAttribute( 'loading', 'lazy' );
+		$first->insertBefore( $img );
+		$html = $dom->saveHTML();
+	}
+
+	return $html;
+}
+
 add_filter( 'genesis_site_title_wrap', 'mai_remove_site_title_h1' );
 /**
  * Removes h1 site title wrap.
@@ -333,7 +382,6 @@ function mai_site_title_link( $default ) {
 	return str_replace( '<a', '<a class="site-title-link" ', $default );
 }
 
-// add_action( 'mai_before_title_area', 'mai_do_header_left' );
 /**
  * Adds header left section.
  *
@@ -366,7 +414,6 @@ function mai_do_header_left() {
 	);
 }
 
-// add_action( 'mai_after_title_area', 'mai_do_header_right' );
 /**
  * Adds header right section.
  *
