@@ -1,13 +1,21 @@
 ( function() {
-	var root             = document.documentElement;
-	var scrollBarWidth   = window.innerWidth - document.documentElement.clientWidth;
-	var searchToggles    = document.querySelectorAll( '.search-toggle' );
-	var globalResize     = new ResizeObserver(items => {
+	var root           = document.documentElement;
+	var scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+	var searchToggles  = document.querySelectorAll( '.search-toggle' );
+	var globalResize   = new ResizeObserver(items => {
 		items.forEach(item => {
-			scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
-			root.style.setProperty( '--scrollbar-width', scrollBarWidth + 'px' );
+			var timeout;
+			if ( timeout ) {
+				clearTimeout( timeout );
+			}
+			timeout = setTimeout( function() {
+				timeout = null;
+				scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+				root.style.setProperty( '--scrollbar-width', scrollBarWidth + 'px' );
+			}, 300 );
 		});
 	});
+
 	var toggleSearchForm = function( event ) {
 		var parent = this.closest( '.search-icon-form' );
 
@@ -39,12 +47,16 @@
 		}
 	};
 
+	// Sets scrollbar width on page load.
+	root.style.setProperty( '--scrollbar-width', scrollBarWidth + 'px' );
+
+	// Sets scrollbar when window is resized.
 	globalResize.observe( root );
 
+	// Handles search toggle and form.
 	searchToggles.forEach( function( searchToggle ) {
 		searchToggle.addEventListener( 'click', toggleSearchForm, false );
 	} );
-
 } )();
 
 function maiToggleAriaValues( element ) {
