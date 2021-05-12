@@ -432,9 +432,13 @@ class Mai_Entry {
 		}
 
 		if ( $link_image ) {
-			$atts['href']        = $this->url;
-			$atts['aria-hidden'] = 'true';
-			$atts['tabindex']    = '-1';
+			$atts['href']     = $this->url;
+			$atts['tabindex'] = '-1';
+
+			// Hide from screen readers if there is another link.
+			if ( array_intersect( $this->args['show'], [ 'title', 'more_link' ] ) ) {
+				$atts['aria-hidden'] = 'true';
+			}
 		}
 
 		// This filter overrides href.
