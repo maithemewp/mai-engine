@@ -183,8 +183,10 @@ function mai_has_alignfull_first() {
 		if ( $first ) {
 			$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
 			$align       = isset( $first['attrs']['align'] ) ? $first['attrs']['align'] : '';
+			$allowed     = [ 'core/cover', 'core/group' ];
+			$allowed     = apply_filters( 'mai_alignfull_first_blocks', $allowed );
 
-			if ( in_array( $block_name, [ 'core/cover', 'core/group' ] ) && ( 'full' === $align ) ) {
+			if ( $allowed && in_array( $block_name, $allowed ) && ( 'full' === $align ) ) {
 				$has_alignfull_first = true;
 			}
 		}
