@@ -247,9 +247,10 @@ class Mai_Entry {
 			];
 
 			if ( $this->link_entry ) {
-				$overlay_wrap           = 'a';
-				$overlay_atts['href']   = $this->url;
-				$overlay_atts['class'] .= ' entry-overlay-link';
+				$overlay_wrap                = 'a';
+				$overlay_atts['href']        = $this->url;
+				$overlay_atts['class']      .= ' entry-overlay-link';
+				$overlay_atts['aria-hidden'] = 'true';
 			}
 
 			genesis_markup(
