@@ -1,5 +1,28 @@
 # Changelog
 
+## 2.14.0 ()
+* Added: Mai Icons plugin is now required and auto-installed. This makes the engine plugin much smaller and future updates will be extremely fast to install/update. Mai Icons only has SVG files. Mai Icon block and `[mai_icon]` shortcode won't render any icons if the plugin doesn't exist for some reason. There will be no errors and nothing will break.
+* Added: Login page now styled to match theme color settings.
+* Added: You can now add shortcodes to custom Excerpts in content archives. Useful for `[mai_rating]` or other content specific shortcodes.
+* Added: The last step in setup wizard now has a reminder to regenerate images.
+* Added: [Developers] Added `mai_alignfull_first_blocks` filter to enable other blocks to be supported as the first block in the content. This removes default spacing in many themes for the look of full width sections.
+* Changed: WooCommerce checkout and shop page layout tweaks.
+* Changed: WooCommerce proceed to checkout button now slightly larger than default buttons.
+* Changed: Scroll logo is now an inline image instead of background image on a psuedo-element.
+* Changed: Template part transient is now deleted any time a post is saved, even if it's a revision.
+* Fixed: [Accessibility] Entry image links now only have aria-hidden if there is another entry link inside the entry.
+* Fixed: [Accessibility] Added aria-hidden to entry overlay.
+* Fixed: [Accessibility] Entry background color is now black (not seen visually) when image location is set to background.
+* Fixed: Reusable blocks no longer break layout of the blocks inside, especially noticeable with full aligned inner blocks.
+* Fixed: Edge-case bug that caused horizontal jitter on some Android devices.
+* Fixed: Alignfull blocks had too much padding when page layout had sidebar.
+* Fixed: Mai Term Grid default "Get Entries By" setting was empty.
+* Fixed: Mai Term Grid default "Order By" setting was empty.
+* Fixed: Mai Term Grid parent setting not working in some scenarios.
+* Fixed: Cart total was cut off when double digit cart items and menu font size was customized to be larger than the default.
+* Fixed: Content Archives "Align Text Vertical" setting was hidden when image is Left/Right Middle.
+* Fixed: WooCommerce gallery thumbnails were too big if only 1-2 were loaded.
+
 ## 2.13.0 (4/20/21)
 * Added: [Beta] New scroll logo setting to change logos when a sticky header is stuck/scrolled.
 * Added: Mai icon to Customizer when preview is loading.
