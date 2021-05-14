@@ -174,7 +174,7 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 			}
 
 			if ( $plugins ) {
-				$wpdi = WP_Dependency_Installer::instance( __DIR__ );
+				$wpdi = WP_Dependency_Installer::instance();
 				$wpdi->register( $plugins );
 				$wpdi->admin_init();
 			} else {
