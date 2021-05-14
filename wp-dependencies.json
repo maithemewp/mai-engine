@@ -1,0 +1,11 @@
+[
+	{
+		"name": "Mai Icons",
+		"host": "github",
+		"slug": "mai-icons/mai-icons.php",
+		"uri": "maithemewp/mai-icons",
+		"branch": "develop",
+		"required": true,
+		"token": null
+	}
+]

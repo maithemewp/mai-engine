@@ -8,7 +8,10 @@ $baseDir = dirname($vendorDir);
 return array(
     'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'PAnD' => $vendorDir . '/collizo4sky/persist-admin-notices-dismissal/persist-admin-notices-dismissal.php',
     'Stringable' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
     'UnhandledMatchError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
     'ValueError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
+    'WPDI_Plugin_Installer_Skin' => $vendorDir . '/afragen/wp-dependency-installer/wp-dependency-installer.php',
+    'WP_Dependency_Installer' => $vendorDir . '/afragen/wp-dependency-installer/wp-dependency-installer.php',
 );

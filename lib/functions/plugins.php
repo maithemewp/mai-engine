@@ -335,7 +335,6 @@ add_filter( 'wp_dependency_required_row_meta', '__return_false' );
 
 add_filter( 'network_admin_plugin_action_links_mai-engine/mai-engine.php', 'mai_change_plugin_dependency_text', 100 );
 add_filter( 'plugin_action_links_mai-engine/mai-engine.php', 'mai_change_plugin_dependency_text', 100 );
-
 /**
  * Changes plugin dependency text.
  *

@@ -433,7 +433,7 @@ function mai_load_files() {
 		require_once __DIR__ . "/$file.php";
 	}
 
-	// Load CLI command.
+	// Loads CLI command.
 	if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		WP_CLI::add_command( 'mai generate', 'Mai_Cli_Generate_Command' );
 		WP_CLI::add_command( 'mai flush', function() {
