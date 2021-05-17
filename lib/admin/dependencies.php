@@ -16,7 +16,7 @@ add_action( 'after_setup_theme', 'mai_load_dependencies' );
 /**
  * Loads engine plugin dependencies.
  *
- * @since TBD
+ * @since 2.14.0
  *
  * @return void
  */

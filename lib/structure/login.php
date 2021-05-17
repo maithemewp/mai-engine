@@ -16,7 +16,7 @@ add_filter( 'login_body_class', 'mai_login_body_class' );
 /**
  * Adds login body class if dark background.
  *
- * @since TBD
+ * @since 2.14.0
  *
  * @param array $classes The existing classes.
  *

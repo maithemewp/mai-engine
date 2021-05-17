@@ -312,7 +312,7 @@ add_action( 'genesis_site_title', 'mai_maybe_do_custom_scroll_logo', 0 );
  * Adds filter on custom logo before site title.
  * Removes filter after the logo is added.
  *
- * @since TBD
+ * @since 2.14.0
  *
  * @return void
  */
@@ -327,7 +327,7 @@ function mai_maybe_do_custom_scroll_logo() {
 /**
  * Adds an image inline in the site title element for the custom scroll logo.
  *
- * @since TBD
+ * @since 2.14.0
  *
  * @param string $html    The existing logo HTML.
  * @param int    $blog_id The current blog ID in multisite.

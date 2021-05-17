@@ -359,7 +359,7 @@ function mai_get_svg_icon_url( $name, $style = 'light' ) {
 /**
  * Gets icons directory path.
  *
- * @since TBD
+ * @since 2.14.0
  *
  * @uses Mai Icons plugin.
  *
@@ -372,7 +372,7 @@ function mai_get_icons_dir() {
 /**
  * Gets icons directory url.
  *
- * @since TBD
+ * @since 2.14.0
  *
  * @uses Mai Icons plugin.
  *
