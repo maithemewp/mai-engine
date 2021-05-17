@@ -152,7 +152,6 @@ return [
 			'content-width'    => '',
 			'content-align'    => '',
 			'text-align'       => 'start',
-			// 'background-color' => '#000000',
 			'background-color' => 'secondary',
 			'overlay-opacity'  => '0.6',
 			'text-color'       => 'light',
@@ -162,7 +161,7 @@ return [
 		[
 			'name'     => 'Mai Portfolio',
 			'host'     => 'github',
-			'slug'     => 'maithemewp/mai-portfolio.php',
+			'slug'     => 'mai-portfolio/mai-portfolio.php',
 			'uri'      => 'maithemewp/mai-portfolio',
 			'url'      => 'https://bizbudding.com/mai-theme/plugins/mai-portfolio/',
 			'branch'   => 'master',

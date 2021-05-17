@@ -232,7 +232,7 @@ function mai_do_plugin_list_item_html( $plugin ) {
  *
  * @return void
  */
-add_action( 'admin_menu', 'mai_admin_menu_subpages', 12 );
+add_action( 'admin_menu', 'mai_admin_menu_subpages', 30 );
 function mai_admin_menu_subpages() {
 	global $submenu;
 

@@ -70,6 +70,12 @@ p {
 	max-width: var(--wp-block-max-width, var(--breakpoint-lg));
 }
 
+.wp-block.is-reusable {
+	max-width: unset !important;
+	margin-right: 0;
+	margin-left: 0;
+}
+
 [data-type="core/pullquote"][data-align="left"],
 [data-type="core/pullquote"][data-align="right"] {
 	max-width: 290px; // Match WP core front end styles.

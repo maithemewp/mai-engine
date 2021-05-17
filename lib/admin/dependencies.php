@@ -12,9 +12,25 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
+add_action( 'after_setup_theme', 'mai_load_dependencies' );
+/**
+ * Loads engine plugin dependencies.
+ *
+ * @since 2.14.0
+ *
+ * @return void
+ */
+function mai_load_dependencies() {
+	if ( ! class_exists( 'WP_Dependency_Installer' ) ) {
+		return;
+	}
+
+	WP_Dependency_Installer::instance( dirname( dirname( __DIR__ ) ) )->run();
+}
+
 add_filter( 'mai_plugin_dependencies', 'mai_engine_plugin_dependencies' );
 /**
- * Show recommended plugins, in case setup wizard wasn't run.
+ * Show theme recommended plugins, in case setup wizard wasn't run.
  *
  * Note: Currently no way to only recommend plugin by chosen demo, since
  * we need to run this function even if the setup wizard was not run.

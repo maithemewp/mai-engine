@@ -115,7 +115,7 @@ function mai_is_valid_size( $size ) {
 }
 
 /**
- * Check if were on any type of singular page.
+ * Checks if we're on any type of singular page.
  *
  * @since 0.1.0
  *
@@ -137,7 +137,7 @@ function mai_is_type_single( $use_cache = false ) {
 }
 
 /**
- * Check if were on any type of archive page.
+ * Checks if we're on any type of archive page.
  *
  * @since 0.1.0
  *
@@ -159,6 +159,13 @@ function mai_is_type_archive( $use_cache = false ) {
 }
 
 /**
+ * Checks if on the wp-login.php page.
+ */
+function mai_is_login_page() {
+	return false !== stripos( $_SERVER['SCRIPT_NAME'], strrchr( wp_login_url(), '/' ) );
+}
+
+/**
  * Checks if first block is cover or group block aligned full.
  *
  * @since 0.1.0
@@ -176,8 +183,10 @@ function mai_has_alignfull_first() {
 		if ( $first ) {
 			$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
 			$align       = isset( $first['attrs']['align'] ) ? $first['attrs']['align'] : '';
+			$allowed     = [ 'core/cover', 'core/group' ];
+			$allowed     = apply_filters( 'mai_alignfull_first_blocks', $allowed );
 
-			if ( in_array( $block_name, [ 'core/cover', 'core/group' ] ) && ( 'full' === $align ) ) {
+			if ( $allowed && in_array( $block_name, $allowed ) && ( 'full' === $align ) ) {
 				$has_alignfull_first = true;
 			}
 		}

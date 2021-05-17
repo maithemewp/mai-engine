@@ -328,7 +328,7 @@ function mai_get_svg_icon_file( $name, $style = 'light' ) {
 		return $files[ $style ][ $name ];
 	}
 
-	$file = mai_get_dir() . "assets/icons/svgs/$style/$name.svg";
+	$file = mai_get_icons_dir() . "/svgs/$style/$name.svg";
 
 	if ( ! file_exists( $file ) ) {
 		$files[ $style ][ $name ] = '';
@@ -353,7 +353,33 @@ function mai_get_svg_icon_file( $name, $style = 'light' ) {
  * @return string
  */
 function mai_get_svg_icon_url( $name, $style = 'light' ) {
-	return mai_get_url() . "assets/icons/svgs/$style/$name.svg";
+	return mai_get_icons_url() ?: '' . "svgs/$style/$name.svg";
+}
+
+/**
+ * Gets icons directory path.
+ *
+ * @since 2.14.0
+ *
+ * @uses Mai Icons plugin.
+ *
+ * @return string
+ */
+function mai_get_icons_dir() {
+	return function_exists( 'mai_icons_get_dir' ) ? mai_icons_get_dir() : false;
+}
+
+/**
+ * Gets icons directory url.
+ *
+ * @since 2.14.0
+ *
+ * @uses Mai Icons plugin.
+ *
+ * @return string
+ */
+function mai_get_icons_url() {
+	return function_exists( 'mai_icons_get_url' ) ? mai_icons_get_url() : false;
 }
 
 /**

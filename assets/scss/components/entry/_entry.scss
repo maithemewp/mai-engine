@@ -58,6 +58,10 @@
 .has-image-background {
 	--entry-flex-direction: row;
 	--entry-overflow: hidden; /* for border radius on absolute positioned image. */
+
+	.has-image {
+		--entry-background: var(--color-black);
+	}
 }
 
 [class*="has-image-left"],

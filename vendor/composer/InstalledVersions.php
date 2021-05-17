@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '8ba9681827e8c4863c5c96700c6a3ea4d97a7db9',
+    'reference' => 'c0ce651f326584487480ced681d53f2411a6b26e',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
@@ -44,6 +44,15 @@ private static $installed = array (
       ),
       'reference' => NULL,
     ),
+    'afragen/wp-dependency-installer' => 
+    array (
+      'pretty_version' => '3.1.0',
+      'version' => '3.1.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '65570a1eb966bb9adfc9d9e521357da080fbdc5a',
+    ),
     'aristath/kirki' => 
     array (
       'pretty_version' => '3.1.6',
@@ -53,14 +62,23 @@ private static $installed = array (
       ),
       'reference' => 'b678315bc09f1fd782e809dd5b2ce0647a6770ae',
     ),
-    'composer/installers' => 
+    'collizo4sky/persist-admin-notices-dismissal' => 
     array (
-      'pretty_version' => 'v1.10.0',
-      'version' => '1.10.0.0',
+      'pretty_version' => '1.4.4',
+      'version' => '1.4.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => '1a0357fccad9d1cc1ea0c9a05b8847fbccccb78d',
+      'reference' => '900739eb6b0ec0210465f5983a6d4e0e420289e4',
+    ),
+    'composer/installers' => 
+    array (
+      'pretty_version' => 'v1.11.0',
+      'version' => '1.11.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'ae03311f45dfe194412081526be2e003960df74b',
     ),
     'ffraenz/private-composer-installer' => 
     array (
@@ -87,7 +105,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '8ba9681827e8c4863c5c96700c6a3ea4d97a7db9',
+      'reference' => 'c0ce651f326584487480ced681d53f2411a6b26e',
     ),
     'phpoption/phpoption' => 
     array (

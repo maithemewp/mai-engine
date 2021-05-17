@@ -247,9 +247,10 @@ class Mai_Entry {
 			];
 
 			if ( $this->link_entry ) {
-				$overlay_wrap           = 'a';
-				$overlay_atts['href']   = $this->url;
-				$overlay_atts['class'] .= ' entry-overlay-link';
+				$overlay_wrap                = 'a';
+				$overlay_atts['href']        = $this->url;
+				$overlay_atts['class']      .= ' entry-overlay-link';
+				$overlay_atts['aria-hidden'] = 'true';
 			}
 
 			genesis_markup(
@@ -432,9 +433,13 @@ class Mai_Entry {
 		}
 
 		if ( $link_image ) {
-			$atts['href']        = $this->url;
-			$atts['aria-hidden'] = 'true';
-			$atts['tabindex']    = '-1';
+			$atts['href']     = $this->url;
+			$atts['tabindex'] = '-1';
+
+			// Hide from screen readers if there is another link.
+			if ( array_intersect( $this->args['show'], [ 'title', 'more_link' ] ) ) {
+				$atts['aria-hidden'] = 'true';
+			}
 		}
 
 		// This filter overrides href.
@@ -992,6 +997,11 @@ class Mai_Entry {
 					$excerpt = has_excerpt() && ! mai_is_element_hidden( 'entry_excerpt', $this->id ) ? get_the_excerpt() : '';
 				} else {
 					$excerpt = get_the_excerpt();
+
+					// Allow shortcodes in custom excerpt.
+					if ( has_excerpt( $this->id ) ) {
+						$excerpt = do_shortcode( $excerpt );
+					}
 				}
 			break;
 			case 'term':

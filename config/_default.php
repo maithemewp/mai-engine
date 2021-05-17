@@ -207,21 +207,26 @@ return [
 
 	'styles' => [
 		'main'                           => [
-			'async' => true,
+			'location' => [ 'public', 'login' ],
+			'async'    => true,
 		],
 		'header'                         => [
+			'location'  => 'public',
 			'async'     => true,
 			'condition' => function() {
 				return ! mai_is_element_hidden( 'site_header' );
 			},
 		],
 		'blocks'                         => [
-			'async' => true,
+			'location'  => 'public',
+			'async'     => true,
 		],
 		'utilities'                      => [
-			'async' => true,
+			'location'  => 'public',
+			'async'     => true,
 		],
 		'theme'                          => [
+			'location'  => [ 'public', 'login' ],
 			'async'     => mai_get_option( 'genesis-style-trump', true ),
 			'src'       => 'default' !== mai_get_active_theme() ? mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css' : '',
 			'condition' => function() {
@@ -229,9 +234,11 @@ return [
 			},
 		],
 		'desktop'                        => [
-			'async' => true,
+			'location'  => 'public',
+			'async'     => true,
 		],
 		'footer'                         => [
+			'location'  => 'public',
 			'in_footer' => true,
 		],
 		'admin'                          => [
@@ -241,25 +248,28 @@ return [
 			'location' => 'customizer',
 		],
 		'wptrt-customize-section-button' => [
-			'src'      => mai_get_url() . 'vendor/wptrt/customize-section-button/public/css/customize-controls.css',
 			'location' => 'customizer',
+			'src'      => mai_get_url() . 'vendor/wptrt/customize-section-button/public/css/customize-controls.css',
 		],
 		'advanced-custom-fields'         => [
 			'location' => 'editor',
 		],
 		'atomic-blocks'                  => [
+			'location'  => 'public',
 			'async'     => true,
 			'condition' => function() {
 				return function_exists( 'atomic_blocks_main_plugin_file' );
 			},
 		],
 		'facetwp'                => [
+			'location'  => 'public',
 			'async'     => true,
 			'condition' => function() {
 				return class_exists( 'FacetWP' );
 			},
 		],
 		'genesis-enews-extended' => [
+			'location'  => 'public',
 			'async'     => true,
 			'location'  => [ 'public', 'editor' ],
 			'condition' => function() {
@@ -267,53 +277,61 @@ return [
 			},
 		],
 		'learndash' => [
+			'location'  => 'public',
 			'async'     => true,
 			'condition' => function() {
 				return class_exists( 'SFWD_LMS' );
 			},
 		],
 		'seo-slider'             => [
+			'location'  => 'public',
 			'async'     => true,
 			'condition' => function() {
 				return defined( 'SEO_SLIDER_VERSION' );
 			},
 		],
 		'simple-social-icons'    => [
+			'location'  => 'public',
 			'async'     => true,
 			'condition' => function() {
 				return class_exists( 'Simple_Social_Icons_Widget' );
 			},
 		],
 		'woocommerce-global'     => [
+			'location'  => 'public',
 			'async'     => true,
 			'condition' => function() {
 				return class_exists( 'WooCommerce' );
 			},
 		],
 		'woocommerce-products'   => [
+			'location'  => 'public',
 			'async'     => true,
 			'condition' => function() {
 				return class_exists( 'WooCommerce' ) && ( is_shop() || is_product_taxonomy() || is_product() || is_cart() );
 			},
 		],
 		'woocommerce-cart'       => [
+			'location'  => 'public',
 			'async'     => true,
 			'condition' => function() {
 				return class_exists( 'WooCommerce' ) && ( is_cart() || is_checkout() );
 			},
 		],
 		'woocommerce-account'    => [
+			'location'  => 'public',
 			'async'     => true,
 			'condition' => function() {
 				return class_exists( 'WooCommerce' ) && is_account_page();
 			},
 		],
 		'wp-block-library-theme' => [
+			'location' => 'editor',
 			'handle'   => 'wp-block-library-theme',
 			'src'      => '',
-			'location' => 'editor',
 		],
 		'child-theme' => [
+			'location'  => [ 'public', 'login' ],
 			'async'     => true,
 			'handle'    => genesis_get_theme_handle(),
 			'src'       => get_stylesheet_uri(),

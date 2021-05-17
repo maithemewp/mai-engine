@@ -54,7 +54,7 @@ i {
 }
 
 blockquote {
-	margin: var(--blockquote-margin, (1em auto));
+	margin: var(--blockquote-margin, 1em auto);
 	padding: var(--blockquote-padding, 1em);
 	color: var(--blockquote-color, unset);
 	font-weight: var(--blockquote-font-weight, normal);
@@ -70,7 +70,7 @@ blockquote {
 	border-left: var(--blockquote-border-left, var(--border));
 	box-shadow: var(--blockquote-box-shadow, none);
 
-	--paragraph-padding: (var(--row-gap) 0);
+	--paragraph-padding: var(--row-gap) 0;
 }
 
 cite {
