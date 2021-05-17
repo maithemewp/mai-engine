@@ -28,7 +28,7 @@ function mai_register_columns_blocks() {
 	acf_register_block_type(
 		[
 			'name'            => 'mai-columns',
-			'title'           => __( 'Mai Columns', 'mai-engine' ) . ' (' . __( 'beta', 'mai-engine' ) . ')',
+			'title'           => __( 'Mai Columns', 'mai-engine' ),
 			'description'     => __( 'A custom columns block.', 'mai-engine' ),
 			'render_callback' => 'mai_do_columns_block',
 			'category'        => 'layout',
@@ -45,7 +45,7 @@ function mai_register_columns_blocks() {
 	acf_register_block_type(
 		[
 			'name'            => 'mai-column',
-			'title'           => __( 'Mai Column', 'mai-engine' ) . ' (' . __( 'beta', 'mai-engine' ) . ')',
+			'title'           => __( 'Mai Column', 'mai-engine' ),
 			'description'     => __( 'A custom column block.', 'mai-engine' ),
 			'render_callback' => 'mai_do_column_block',
 			'category'        => 'layout',
@@ -326,7 +326,6 @@ function mai_register_columns_field_groups() {
 			],
 			[
 				'key'               => 'mai_columns_arrangement',
-				// 'label'             => __( 'Arrangement (desktop)', 'mai-engine' ) . '<br /><em><small>' . sprintf( 'Screens over %spx', mai_get_breakpoint( 'lg' ) ) . '</small></em>',
 				'label'             => __( 'Arrangement (desktop)', 'mai-engine' ),
 				'name'              => 'arrangement',
 				'type'              => 'repeater',
@@ -370,7 +369,6 @@ function mai_register_columns_field_groups() {
 			],
 			[
 				'key'               => 'mai_columns_md_arrangement',
-				// 'label'             => __( 'Arrangement (lg tablets)', 'mai-engine' ) . '<br /><em><small>' . sprintf( 'Screens %spx to %spx', mai_get_breakpoint( 'sm' ), mai_get_breakpoint( 'md' ) ) . '</small></em>',
 				'label'             => __( 'Arrangement (lg tablets)', 'mai-engine' ),
 				'name'              => 'arrangement_md',
 				'type'              => 'repeater',
@@ -414,7 +412,6 @@ function mai_register_columns_field_groups() {
 			],
 			[
 				'key'               => 'mai_columns_sm_arrangement',
-				// 'label'             => __( 'Arrangement (sm tablets)', 'mai-engine' ) . '<br /><em><small>' . sprintf( 'Screens %spx to %spx', mai_get_breakpoint( 'xs' ), ( (int) mai_get_breakpoint( 'sm' ) - 1 ) ) . '</small></em>',
 				'label'             => __( 'Arrangement (sm tablets)', 'mai-engine' ),
 				'name'              => 'arrangement_sm',
 				'type'              => 'repeater',
@@ -458,7 +455,6 @@ function mai_register_columns_field_groups() {
 			],
 			[
 				'key'               => 'mai_columns_xs_arrangement',
-				// 'label'             => __( 'Arrangement (mobile)', 'mai-engine' ) . '<br /><em><small>' . sprintf( 'Screens up to %spx', ( (int) mai_get_breakpoint( 'xs' ) - 1 ) ) . '</small></em>',
 				'label'             => __( 'Arrangement (mobile)', 'mai-engine' ),
 				'name'              => 'arrangement_xs',
 				'type'              => 'repeater',
