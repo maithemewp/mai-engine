@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.14.0 (5/17/21)
-* Added: Mai Icons plugin is now required and auto-installed. This makes the engine plugin much smaller and future updates will be extremely fast to install/update. Mai Icons only has SVG files. Mai Icon block and `[mai_icon]` shortcode won't render any icons if the plugin doesn't exist for some reason. There will be no errors and nothing will break.
+* Added: Mai Icons plugin is now auto-installed and required. This update removes all icon SVG's from the engine and makes the plugin much smaller. Future updates will be extremely fast to install/update. Mai Icons plugin only contains the SVG files, Mai Icon block and `[mai_icon]` shortcode are still in the engine itself, the output will render the icons from Mai Icons plugin. If Mai Icons doesn't exist there will be no errors and nothing will break, you will only be missing the icons in the page HTML.
 * Added: Login page now styled to match theme color settings.
 * Added: You can now add shortcodes to custom Excerpts in content archives. Useful for `[mai_rating]` or other content specific shortcodes.
 * Added: The last step in setup wizard now has a reminder to regenerate images.
