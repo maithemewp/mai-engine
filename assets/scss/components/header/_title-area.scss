@@ -69,7 +69,7 @@
 .custom-scroll-logo {
 	position: absolute;
 	width: 100%;
-	height: 100%;
+	height: 100% !important; /* Force this because WooCommerce is too aggressive */
 	object-fit: contain;
 	object-position: var(--custom-scroll-logo-object-position, center);
 	opacity: var(--custom-scroll-logo-opacity, 0);
