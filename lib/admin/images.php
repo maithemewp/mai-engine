@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_filter( 'image_size_names_choose', 'mai_get_media_chooser_sizes' );
 /**
  * Add our image sizes to the media chooser.
@@ -20,10 +23,17 @@ add_filter( 'image_size_names_choose', 'mai_get_media_chooser_sizes' );
  * @return array  Modified size options.
  */
 function mai_get_media_chooser_sizes( $sizes ) {
+	static $choices = null;
+
+	if ( ! is_null( $choices ) ) {
+		return $choices;
+	}
+
 	global $_wp_additional_image_sizes;
 
 	if ( ! isset( $_wp_additional_image_sizes ) || 0 === count( $_wp_additional_image_sizes ) ) {
-		return $sizes;
+		$choices = $sizes;
+		return $choices;
 	}
 
 	$keepers = [
@@ -47,5 +57,7 @@ function mai_get_media_chooser_sizes( $sizes ) {
 		$sizes[ $name ] = $keepers[ $name ];
 	}
 
-	return $sizes;
+	$choices = $sizes;
+
+	return $choices;
 }

@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 // Enable shortcodes in widgets.
 add_filter( 'widget_text', 'do_shortcode' );
 

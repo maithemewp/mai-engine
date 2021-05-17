@@ -1,5 +1,173 @@
 # Changelog
 
+## 2.14.0 (5/17/21)
+* Added: Mai Icons plugin is now required and auto-installed. This makes the engine plugin much smaller and future updates will be extremely fast to install/update. Mai Icons only has SVG files. Mai Icon block and `[mai_icon]` shortcode won't render any icons if the plugin doesn't exist for some reason. There will be no errors and nothing will break.
+* Added: Login page now styled to match theme color settings.
+* Added: You can now add shortcodes to custom Excerpts in content archives. Useful for `[mai_rating]` or other content specific shortcodes.
+* Added: The last step in setup wizard now has a reminder to regenerate images.
+* Added: [Developers] Added `mai_alignfull_first_blocks` filter to enable other blocks to be supported as the first block in the content. This removes default spacing in many themes for the look of full width sections.
+* Changed: Mai Columns block is no longer in beta.
+* Changed: Scroll logo is now an inline image instead of background image on a psuedo-element.
+* Changed: Template part transient is now deleted any time a post is saved, even if it's a revision.
+* Changed: [WooCommerce] Checkout and shop page layout tweaks.
+* Changed: [WooCommerce] Proceed to checkout button now slightly larger than default buttons.
+* Fixed: [Accessibility] Entry image links now only have aria-hidden if there is another entry link inside the entry.
+* Fixed: [Accessibility] Added aria-hidden to entry overlay.
+* Fixed: [Accessibility] Entry background color is now black (not seen visually) when image location is set to background.
+* Fixed: Reusable blocks no longer break layout of the blocks inside, especially noticeable with full aligned inner blocks.
+* Fixed: Edge-case bug that caused horizontal jitter on some Android devices.
+* Fixed: Alignfull blocks had too much padding when page layout had sidebar.
+* Fixed: Mai Term Grid default "Get Entries By" setting was empty.
+* Fixed: Mai Term Grid default "Order By" setting was empty.
+* Fixed: Mai Term Grid parent setting not working in some scenarios.
+* Fixed: Cart total was cut off when double digit cart items and menu font size was customized to be larger than the default.
+* Fixed: Content Archives "Align Text Vertical" setting was hidden when image is Left/Right Middle.
+* Fixed: [WooCommerce] Gallery thumbnails were too big if only 1-2 were loaded.
+
+## 2.13.0 (4/20/21)
+* Added: [Beta] New scroll logo setting to change logos when a sticky header is stuck/scrolled.
+* Added: Mai icon to Customizer when preview is loading.
+* Added: New "user" value for the "id" parameter on `[mai_avatar]` to get the currently logged in user's avatar. Great for membership-type sites.
+* Added: [Developers] More custom properties on entry link.
+* Added: [Developers] New defer attribute available when loading scripts via the config.
+* Added: [Developers] New `mai_page_header_image_size` filter to change the image size that's loaded in page header.
+* Added: [Developers] New `has-page-header-image` class added to the page header when there is an image.
+* Added: [Developers] Added back `mai_cover_block_image_id` filter.
+* Changed: Dynamic CSS now uses custom properties as inline style values instead of hex values when possible. This allows easier hijacking, overriding, and consistency when using custom CSS.
+* Changed: [Developers] Deprecated `mai_get_color()` function. Please use `mai_get_color_value()` instead when you want a color value, and `mai_get_color_css()` when you want custom properties when available.
+* Changed: Reverted paragraphs using `--body-color` custom property. This was causing issues in some dark background scenarios and for those still using page builders.
+* Changed: Hide customizer panels for content types that no longer exist, typically from plugins being deactivated.
+* Changed: Renamed "Spacing" to "Margin" on heading, paragraph, and separator blocks.
+* Changed: Fully rebuilt how HTML attributes are added to scripts/styles via config.
+* Changed: [Performance] Setup Wizard now only imports full size and limits other crop/resized image sizes to a specific "allowed" list of sizes. Greatly reduces import time when loading content.
+* Changed: [Performance] Remove loading attribute from featured image on single posts/pages. Testing showed this improved LCP/CLS.
+* Changed: [Performance] Mai Columns CSS is now loaded with other block CSS instead of late loading. This helps with CLS.
+* Changed: [Performance] Now wp-block-library styles are loaded asynchronous by default.
+* Changed: [Performance] Entry images now check if the smaller crop sizes exist before falling back to the full size image when a specific image size doesn't exist.
+* Changed: CSS when JS is not loaded is now in footer so it doesn't create any CLS when JS is initially loaded for typical users.
+* Changed: Make sure style.css is loaded last when loading in header when customizer setting to load in footer is unchecked.
+* Changed: Switch `get_the_author_meta( 'ID' )` to `get_post_field( 'post_author' )` since it wasn't working in page header and
+other contexts.
+* Changed: Setup wizard now uses `WP_Dependency_Installer` to install/activate plugins.
+* Fixed: [Performance] Make sure dynamic CSS filter only runs when updating transient/cache.
+* Fixed: Missing page header image setting is now back.
+* Fixed: No longer cache page header dynamic CSS since different content types can have different values.
+* Fixed: Before header search input and sub-menus hidden behind the site header.
+* Fixed: Padding on alignfull blocks incorrect when boxed-container is used.
+* Fixed: Margin on heading, paragraph, and separator was way too big in editor when using the Margin block settings.
+* Fixed: Entries loading too small of an image when the using the Wide Content layout.
+* Fixed: Entry text color should use body color setting when the entries are boxed on dark background.
+* Fixed: Entry titles from other queries were getting removed on 404 page when the 404 Page template part was used.
+* Fixed: Header CSS not loading when transparent header was disabled.
+* Fixed: Table CSS was not loading in editor so table styles did not match front end.
+* Fixed: Setup Wizard no longer asks to install plugins that are already active.
+* Fixed: Setup Wizard no longer breaks blocks with HTML in the block settings.
+* Fixed: No longer cache logo scroll offset value twice.
+* Fixed: FacetWP results broken when the filters return no items.
+
+## 2.12.0 (4/2/21)
+* Added: New Site Header color setting. Easily change your site header color, including dark headers with automatic white text!
+* Added: New "Full" option for Content Width in Group and Cover blocks.
+* Added: New "Content Alignment" settings in Group and Cover blocks. Set your content width to something smaller and align the inner container left/center/right.
+* Added: New `font_size` parameter in `[mai_menu]` shortcode. Accepts `xs`, `sm`, `md`, `lg`, `xl`, `xxl`, `xxxl`, `xxxxl`, and any CSS unit value like `16px`, `1em`, `1.2rem`. Number values like `16` will automatically be converted to pixel values like `16px` during display.
+* Added: New `post_type` parameter in `[mai_content]` shortcode so you can display any post type by slug. The `id` parameter already allowed this without needing `post_type` but now you can also display any post type by slug.
+* Added: [Developers] New `mai_remove_entries` (bool) filter so developers can now easily remove entries from default loops.
+* Added: [Accessibility] Added "Link Title" field in Mai Icon block and `link_title` parameter in `[mai_icon]` shortcode to add a visually hidden label for accessibility.
+* Changed: [Performance] Simplify caching and transients to a single cached request.
+* Changed: Block settings panel labels are now more literal. "Spacing" is now "Padding" and "Content Width" is now "Layout" since adding new settings inside.
+* Changed: Update the updater package.
+* Changed: Simplified breadcrumb output hook/function so they are easier to move while respecting Hide Elements setting.
+* Changed: Custom color label and description in Customizer.
+* Changed: Paragraphs now use `--body-color` custom property. This makes it much easier to hijack/intercept and change the default text color when using dark backgrounds or any other fitting scenario.
+* Changed: Default side spacing (mostly noticeable on mobile) is now slightly larger.
+* Changed: Multiple CSS classes can now be used with `[mai_back_to_top]` shortcode via the `class` parameter.
+* Fixed: [Accessibility] Added missing screen-reader-text to search submit buttons.
+* Fixed: Cover block images being rendered twice due to changes in WP 5.7 for new instances of the block added after 5.7.
+* Fixed: Layout bug after saving/updating posts that would cause the logo/menu to be positioned wrong (and other weirdness) until you open the Customizer or transients are flushed.
+* Fixed: 404 template part output altering the content in some instances.
+* Fixed: Author avatar not showing in `[mai_avatar]` even though the author/user does have one.
+* Fixed: Remove unused left/center/right alignment settings in Mai Post/Term Grid block toolbar.
+* Fixed: Mai Columns new column appender button position was often hard to click/find.
+* Fixed: Mai Delight "Background" color setting was not working with anything other than the default.
+* Fixed: Page Header description now works on Blog page.
+* Fixed: Margin top/bottom settings on Image block were not overriding default margins in some instances.
+* Fixed: Search icon in After Header menu was cutting off the search field when After Header template part was present.
+* Fixed: Mobile menu could be cut off if the menu is really tall/long and requires scrolling on smaller devices.
+* Fixed: Star ratings in `[mai_rating]` shortcode were not showing the full amount of total stars in some instances.
+* Fixed: Warning from a genesis_attr filter referencing 3 parameters when only 1 was called.
+* Fixed: Search button styling changes introduced in WP 5.7.
+* Fixed: Content before entries on the blog page was stripping inline styles.
+* Fixed: Mobile toggle buttons wrongly inheriting button border/shadow when custom properties were used globally.
+* Fixed: Custom post types in config.php single-content and archive-content settings now use defaults for any args that are not set.
+* Fixed: Scrollbar width is now calculated during a screen resize or orientation change. This is used for precise full width containers due to a browser inconsistency with "100vw" when scrollbars are present.
+
+## 2.11.3 (3/12/21)
+* Added: [Developers] New `mai_before_{$template_part}_template_part`, `mai_after_{$template_part}_template_part` action hooks before and after template parts and template part content.
+* Added: [Developers] New `mai_menu_defaults` filter for developers to change [mai_menu] shortcode defaults.
+* Fixed: Logo not centering correctly in some configurations.
+
+## 2.11.2 (3/11/21)
+* Fixed: Error when using [mai_search_form] shortcode without any attributes.
+
+## 2.11.1 (3/11/21)
+* Changed: [Performance] PHP processing for color and typography css is now cached with transients.
+* Changed: Customizer plugins link now goes to new location.
+* Fixed: Bug in WP 5.7 due to changes in the alignment markup where aligned buttons are not working correctly.
+
+## 2.11.0 (3/10/21)
+* Added: New mobile header settings to rearrange elements and display search icon and/or custom content including [mai_icon] links. This is great for search, phone, cart icons and anything else you want on mobile.
+* Added: New setting to show posts in current category/term in Mai Post Grid. Yay for related posts blocks automatically now.
+* Added: New [mai_rating] shortcode to show star ratings. Works great in Custom Content field of Mai Grid blocks or Archive/Single settings in Customizer.
+* Added: Author box is now an option in Hide Elements metabox.
+* Added: Built in support/styling for Mai Accordion block/plugin.
+* Added: [Developers] New `mai_entry_content` filter on display of all entries.
+* Added: [Developers] New `mai_cover_block_image_id` filter allows developers to easily swap out the image ID of a Cover block.
+* Added: [Developers] New `mai_archive_pagination_link_classes` filter allows developers to change archive pagination classes.
+* Added: [Developers] WP-CLI command for developers to flush the font cache via `wp mai flush`.
+* Added: [Developers] New `mai_write_to_file()` debugging function for developers to write data to a file when debugging.
+* Changed: [Performance] All helper functions now make use of static caching to drop PHP processing time down tremendously.
+* Changed: [Performance] Template Parts are now cached with a transient so there is no database query to get the content.
+* Changed: [Performance] Icons now have height/width attributes and help eliminate CLS (Cumulative Layout Shift).
+* Changed: [Performance] CSS files are now split into smaller files for the performance benefits of HTTP2.
+* Changed: [Performance] Only call query args method once per instance of Mai Post/Term Grid block.
+* Changed: [Performance] Featured image query is now cached on all default archives and Mai Post/Term Grid instances. There are now even less database queries on every page.
+* Changed: [Performance] Template parts content is now parsed during rendering instead of during the query to retrieve them. This improves performance by not running code on template parts that may not be displayed.
+* Changed: [Performance] Menu search icons are now rendered in PHP so there is no flash when JS is loaded.
+* Changed: Output from WP_Query to get_post for `mai_get_post_content()` function. Fixes classes with `is_main_query()` checks in other plugins.
+* Changed: Entry padding is now applied to entry-wrap instead of the main entry so we no longer need negative margin on the entry-image when set to "Full".
+* Changed: Hide exclude settings if get entries by choice in Mai Post/Term Grid.
+* Changed: Buttons now use inline-flex so icons inside buttons are automatically vertically centered.
+* Changed: Allow shortcodes and HTML in read more text field. You can now use [mai_icon] shortcode in your Read More buttons.
+* Changed: Converted all instances of 100vw to new var(--viewport-width) custom property which accounts for scrollbars.
+* Changed: Editor background is now always white.
+* Changed: Bold/strong text now has break-word CSS applied.
+* Changed: Edit comment link is now visible on comments when user has correct privileges.
+* Changed: Content width now expands to fill container if the main container width is customized to be larger.
+* Changed: Cart total displayed via [mai_icon] now displays more consistently regardless of where it's used.
+* Changed: Updated pot file for translations.
+* Changed: Updated ACF to 5.9.5.
+* Changed: Updated all dependencies to use Composer 2.
+* Changed: Mai Plugins admin menu content now displays the bundle and all plugins available.
+* Fixed: Customizer "Colors" panel now uses color palette for color pickers.
+* Fixed: Pages with a layout stored in the database that is no longer registered were not using the correct layout.
+* Fixed: Entry pagination not displaying when using page breaks for paginated posts.
+* Fixed: Missing fallback for column count when entries are set to display in a single column. Fixes minor horizontal scroll in some scenarios.
+* Fixed: Page Header image field was not being used on static front page.
+* Fixed: Error with Mai Columns block when using a custom arrangement and "Auto".
+* Fixed: Default column count in Mai Columns.
+* Fixed: Images in classic editor wider than their container.
+* Fixed: Search block styling with various configurations.
+* Fixed: More refined button styling in the editor.
+* Fixed: Author box avatar not centering correctly on mobile in some instances.
+* Fixed: Colors not inheriting correctly when displaying custom content in Mobile Menu template part.
+* Fixed: Remove box-shadow on link button style.
+* Fixed: Edge-case error when using a gallery shortcode without the default correct parameters.
+* Fixed: Minor issue when using async on a script from the config.
+* Fixed: [WooCommerce] Shipping and payment style tweaks.
+* Fixed: [WooCommerce] Shop table spacing tweaks.
+* Fixed: [WooCommerce] Gallery max width not working correctly.
+* Fixed: [WooCommerce] Action button styling tweaks.
+
 ## 2.10.0 (1/26/21)
 * Added: Mai Columns block! Super powerful responsive controls. This is marked as beta while we confirm settings and controls. Let us know how you like it.
 * Added: LearnDash support! Courses and course content (lessons/topics/etc.) now have their own Content Archives and Single Content settings.
@@ -10,15 +178,15 @@
 * Added: Forms/inputs in the editor use the front-end styling.
 * Added: Support for native galleries in classic editor for older sites.
 * Added: New built in styling for soon to be released update to Genesis eNews Extended plugin.
-* Added: Edit page link to WooCommerce shop page on the front end.
 * Added: Full support and styling for search block button location settings.
+* Added: [WooCommerce] New Edit page link to shop page on the front end.
 * Changed: Template Parts no longer auto-generate when you trash/delete or visit Template Parts list on the Dashboard. You have to manually initiate via a "Generate Now" button any time default template parts are available and not yet created.
 * Changed: Default button word-break is now normal.
 * Changed: Header and footer meta fields are now text areas with more room for editing multi-line entry meta.
 * Changed: Admin menu location to make sure it's always next to Genesis.
 * Changed: Customizer content settings now use post type label for panel names.
-* Changed: WooCommerce login form no longer takes full width of it's container.
 * Changed: has-alignfull-first class is now added regardless of whether the page header is displaying on the page.
+* Changed: [WooCommerce] login form no longer takes full width of it's container.
 * Fixed: Edge-case bug where unused default template parts would get created in the database.
 * Fixed: Author archive intro text and description displaying incorrectly or not at all in some configurations.
 * Fixed: Entry read more links not aligning to the bottom when no images are displayed.
@@ -28,20 +196,20 @@
 * Fixed: Horizontal scroll in some instances (google ads) from sidebar layouts using CSS grid when not necessary (on mobile).
 * Fixed: Page header content width not working on Mai Delight.
 * Fixed: Page header text color now transitions the inner container background color on Mai Delight.
-* Fixed: Page header and cover block image position on WooCommerce pages.
-* Fixed: WooCommerce shipping method list styling.
+* Fixed: [WooCommerce] Page header and cover block image position on WooCommerce pages.
+* Fixed: [WooCommerce] Shipping method list styling.
 
 ## 2.9.2 (1/7/21)
 * Added: Custom content option to Hide Elements metabox.
 * Added: Links to shortcode documentation related to Header/Footer Meta fields.
 * Added: Support for search block button inside setting.
-* Added: `mai_get_option{$name}` filter for developers to manipulate option values.
+* Added: [Developers] `mai_get_option{$name}` filter for developers to manipulate option values.
 * Changed: Header/Footer Meta text fields are now larger textarea fields for easier editing.
 * Changed: Updated pot file for translations.
 * Fixed: Entry meta not preserving whitespace in between elements.
 * Fixed: Anchor link scroll margin top now uses shrunk header height if applicable.
 * Fixed: Page header image filter not updating cached variable correctly.
-* Fixed: WooCommerce cart styling when cross-sells are displaying.
+* Fixed: [WooCommerce] Cart styling when cross-sells are displaying.
 
 ## 2.9.1 (1/5/21)
 * Added: Entry Pagination Type setting to Content Archives panel in the Customizer to choose whether to use numeric or previous/next pagination on archives.
@@ -59,31 +227,31 @@
 * Fixed: Extra side spacing on Mai Post Grid block on mobile in some instances.
 * Fixed: Logo not centering in some instances when no header left or right menu is set.
 * Fixed: Lists not indented in the editor to match the front end.
-* Fixed: WooCommerce shop pagination now matches theme archive pagination styling.
 * Fixed: Page header image not covering full container when using some image optimization plugins.
 * Fixed: Mai Inspire Author box author image not centered correctly on mobile.
+* Fixed: [WooCommerce] Shop pagination now matches theme archive pagination styling.
 
 ## 2.8.0 (12/17/20)
 * Added: Header and footer meta options added to Hide Elements metabox.
-* Added: PHP filter for `mai_adjacent_entry_nav_taxonomy` to allow adjacent entry nav to show previous/next post in same taxonomy.
+* Added: [Developers] New `mai_adjacent_entry_nav_taxonomy` filter to allow adjacent entry nav to show previous/next post in same taxonomy.
 * Added: Dashboard menu item to show what Mai Plugins are available.
 * Added: More Google fonts available via Kirki update.
 * Added: Mai Plugins button link in Customizer.
 * Changed: Entry meta before/after-content classes now more element specific.
-* Changed: WooCommerce trim zeros filter runs early now, so filters on the default priority override our default.
 * Changed: Dashboard menu icon SVG now more efficient and no longer flashes on hover.
 * Changed: Updated pot file for translations.
+* Changed: [WooCommerce] trim zeros filter runs early now, so filters on the default priority override our default.
 * Fixed: Shrink header now buttery smooth even when logo shrinks on scroll.
 * Fixed: Duplicate search results text in page header.
 * Fixed: Mai Post Grid get entries by choice not allowing more than 12 entries.
 * Fixed: Mai Term Grid get entries by choice reversing display order.
 * Fixed: More thorough has-light/dark-background color CSS.
-* Fixed: WooCommerce zoom magnifying glass still showing behind our custom icon.
 * Fixed: No longer override menu-item-link classes being filtered by other plugins.
-* Fixed: Full align blocks in WooCommerce product descriptions being cut off.
 * Fixed: Error when WP_Widget_Recent_Comments is no longer available when a plugin (Perfmatters) or custom code removes it altogether.
 * Fixed: Anchor links not going to correct location due to conflict with scroll-behavoir CSS.
+* Fixed: [WooCommerce] Full align blocks in product descriptions being cut off.
 
+* Fixed: [WooCommerce] Zoom magnifying glass was still showing behind our custom icon.
 ## 2.7.1 (12/1/20)
 * Fixed: Removed PHP 7.3+ function.
 
@@ -91,7 +259,6 @@
 * Added: New `cart_total="true"` parameter for `[mai_icon]` shortcode to display current cart total over an icon (great for menu items).
 * Added: New `[mai_cart_total]` shortcode to display current cart total.
 * Added: New `[mai_avatar]` shortcode for use in Header/Footer meta fields on single/archive content or in Mai Grid blocks.
-* Added: Better default styling for WooCommerce reviews.
 * Added: Latest icons from Font Awesome Pro.
 * Changed: Widget Areas config syntax now uses id for the array key.
 * Changed: Logo spacing value output now output separate properties.
@@ -100,13 +267,14 @@
 * Fixed: Header jank when shrinking/scrolling in some instances.
 * Fixed: Bold font weight not loading or displaying correctly in some instances.
 * Fixed: AMP menu not displaying at all, or without styling in some instances.
-* Fixed: WooCommerce star ratings not displaying correctly.
 * Fixed: Error when using spacing or content width settings on a block without content.
 * Fixed: More thorough handling of has-light-background helper class.
 * Fixed: Body min-height now accounts for admin bar.
 * Fixed: Error with first/last menu item class when the first or last item has child menu items.
 * Fixed: Cover block inner content aligning incorrectly on layouts with a sidebar.
 * Fixed: Menu hover colors when using a dark, transparent header.
+* Fixed: [WooCommerce] star ratings not displaying correctly.
+* Fixed: [WooCommerce] Better default styling for reviews.
 
 ## 2.6.3.1 (11/13/20)
 * Fixed: Force update to show.
@@ -150,7 +318,7 @@
 * Changed: Submenus now inherit default border-radius from the theme.
 * Changed: Entry meta wrap is now a div instead of span, so you can do more with Header/Footer meta Customizer fields.
 * Changed: Remove unecessary EDD dependency plugin when using Easy Digital Downloads.
-* Changed: Now passing all `$args` to grid query args PHP filters.
+* Changed: [Developers] Now passing all `$args` to grid query args PHP filters.
 * Changed: Remove unecessary styling on After Entry template part.
 * Changed: Load child theme stylesheet last when "Load in footer" is not on in Customizer.
 * Changed: Update ACF Pro to 5.9.3.
@@ -198,7 +366,7 @@
 * Changed: Grid/entry images now use more thorough logic to build srcset and size image attributes, for even better performance.
 * Changed: All svg icons now use https for xmlns attribute.
 * Changed: Remove underline when hovering entry title links and adjacent entry navigation.
-* Changed: Much cleaner WooCommerce account navigation styling.
+* Changed: [WooCommerce] Much cleaner account navigation styling.
 * Fixed: After Header template part now works with transparent header.
 * Fixed: Timeout error when trying to view revisions.
 * Fixed: Transparent header was showing a gap when after header navigation was displaying.
@@ -222,11 +390,11 @@
 * Fixed: More thorough and lightweight background cover images.
 * Fixed: Mai Reusable Block widget wasn't showing the saved value when refreshing the page.
 * Fixed: Removed extra padding on Group and Cover blocks when they are nested.
-* Fixed: Even more refinded WooCommerce styling to match the theme.
-* Fixed: WooCommerce cart layout issues with some add-ons like WooCommerce Product Add-ons.
+* Fixed: [WooCommerce] Even more refined styling to match the theme.
+* Fixed: [WooCommerce] Cart layout issues with some add-ons like WooCommerce Product Add-ons.
 
 ## 2.4.5 (9/18/20)
-* Fixed: WooCommerce cart layout was broken on extra small mobile devices.
+* Fixed: [WooCommerce] Cart layout was broken on extra small mobile devices.
 
 ## 2.4.4 (9/17/20)
 * Added: Support for Mai Delight Travel demo.
@@ -241,10 +409,10 @@
 * Fixed: Search icon in menu was wrongly inheriting border and box shadow in some themes.
 * Fixed: Posts per page now set to the theme default when activating the theme.
 * Fixed: Typo in page header CSS custom properties.
-* Fixed: WooCommerce Sale badge was missing on single product pages in some instances.
-* Fixed: WooCommerce My Account navigation links weren't taking up full container width.
-* Fixed: Duplicate category descriptions displaying on WooCommerce category archives in some instances.
-* Fixed: WooCommerce shop title size and product count styling.
+* Fixed: [WooCommerce] Sale badge was missing on single product pages in some instances.
+* Fixed: [WooCommerce] My Account navigation links weren't taking up full container width.
+* Fixed: [WooCommerce] Duplicate category descriptions displaying on product category archives in some instances.
+* Fixed: [WooCommerce] Shop title size and product count styling.
 
 ## 2.4.3 (9/4/20)
 * Added: New helper utility classes for hidden-{breakpoint}, hidden-{breakpoint}-up, and hidden-{breakpoint}-down to hide elements at various breakpoints.
@@ -258,13 +426,13 @@
 * Fixed: Mai Grid markup was being output even if no entries matched the query.
 * Fixed: Breadcrumbs not matching content side spacing.
 * Fixed: Custom button border radius not working in some instances.
-* Fixed: WooCommerce checkout page, and payment gateway layout and styling.
-* Fixed: WooCommerce product grid showing list styles.
+* Fixed: Better visited button default styling.
 * Fixed: Entries wrap not taking up full width of the container.
 * Fixed: Mai Grid entry layout being affected by WooCommerce CSS when a grid is used on a product page.
-* Fixed: Duplicate term descriptions showing on some WooCommerce taxonomy archives.
-* Fixed: Better visited button default styling.
-* Fixed: WooCommerce store notice now matches theme styling.
+* Fixed: [WooCommerce] checkout page, and payment gateway layout and styling.
+* Fixed: [WooCommerce] product grid showing list styles.
+* Fixed: [WooCommerce] Duplicate term descriptions showing on some WooCommerce taxonomy archives.
+* Fixed: [WooCommerce] Store notice now matches theme styling.
 
 ## 2.4.2 (8/27/20)
 * Added: Updated Google Font list in Typography customizer fields via Kirki.
@@ -289,8 +457,8 @@
 * Fixed: Better handling and consistent display of category/term description and intro text, including when page header is enabled.
 * Fixed: Author box spacing.
 * Fixed: Avatar was not using default size if unmodified.
-* Fixed: WooCommerce default button styling now matches the theme better.
-* Fixed: WooCommerce gallery image layout and styling tweaks.
+* Fixed: [WooCommerce] Default button styling now matches the theme better.
+* Fixed: [WooCommerce] Gallery image layout and styling tweaks.
 
 ## 2.4.1 (8/10/20)
 * Added: New entry-wrap-{context} class for simpler CSS targeting.
@@ -363,8 +531,8 @@
 * Fixed: Input placeholder text getting lost on dark backgrounds.
 * Fixed: Center aligned search block.
 * Fixed: Cite elements not respecting color setting when in a group block.
-* Fixed: WooCommerce onsale badge size.
 * Fixed: Empty admin notice showing when deactivating some plugins.
+* Fixed: [WooCommerce] onsale badge size.
 
 ## 2.3.0 (7/21/20)
 * Added: Title size setting to Mai Grid blocks and Content Archive settings.

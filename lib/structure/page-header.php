@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'genesis_meta', 'mai_page_header_setup' );
 /**
  * Sets up page header.
@@ -69,6 +72,51 @@ function mai_page_header_setup() {
 	add_action( 'genesis_before_content_sidebar_wrap', 'mai_do_page_header' );
 }
 
+
+/**
+ * Display the page header.
+ *
+ * @since 0.1.0
+ *
+ * @return void
+ */
+function mai_do_page_header() {
+
+	genesis_markup(
+		[
+			'open'    => '<section %s>',
+			'context' => 'page-header',
+		]
+	);
+
+	genesis_structural_wrap( 'page-header', 'open' );
+
+	genesis_markup(
+		[
+			'open'    => '<div %s>',
+			'context' => 'page-header-inner',
+		]
+	);
+
+	do_action( 'mai_page_header' );
+
+	genesis_markup(
+		[
+			'close'   => '</div>',
+			'context' => 'page-header-inner',
+		]
+	);
+
+	genesis_structural_wrap( 'page-header', 'close' );
+
+	genesis_markup(
+		[
+			'close'   => '</section>',
+			'context' => 'page-header',
+		]
+	);
+}
+
 add_action( 'mai_before_page-header_wrap', 'mai_do_page_header_image' );
 /**
  * Display the page header image.
@@ -81,7 +129,8 @@ function mai_do_page_header_image() {
 	$image_id = mai_get_page_header_image_id();
 
 	if ( $image_id ) {
-		echo mai_get_cover_image_html( $image_id, [ 'class' => 'page-header-image' ] );
+		$image_size = mai_get_page_header_image_size();
+		echo wp_get_attachment_image( $image_id, $image_size, false, [ 'class' => 'page-header-image' ] );
 	}
 }
 
@@ -232,7 +281,7 @@ function mai_page_header_divider( $output, $original_output ) {
 	if ( $style && 'close' === $original_output ) {
 		$args = [
 			'style'           => $style,
-			'color'           => mai_get_option( 'page-header-divider-color', mai_get_color( $config['divider-color'] ) ),
+			'color'           => mai_get_option( 'page-header-divider-color', mai_get_color_value( $config['divider-color'] ) ),
 			'flip_horizontal' => mai_get_option( 'page-header-divider-flip-horizontal', $config['divider-flip-horizontal'] ),
 			'flip_vertical'   => mai_get_option( 'page-header-divider-flip-vertical', $config['divider-flip-vertical'] ),
 			'height'          => mai_get_option( 'page-header-divider-height', $config['divider-height'] ),
@@ -257,8 +306,15 @@ add_filter( 'genesis_attr_page-header', 'mai_add_page_header_attributes' );
  * @return mixed
  */
 function mai_add_page_header_attributes( $attributes ) {
-	$attributes['id']     = 'page-header';
-	$attributes['class'] .= ' is-alignfull-first';
+	$attributes['id'] = 'page-header';
+
+	if ( mai_get_page_header_image_id() ) {
+		$attributes['class'] .= ' has-page-header-image';
+	}
+
+	if ( ! mai_has_light_page_header() ) {
+		$attributes['class'] .= ' has-dark-background';
+	}
 
 	$default = mai_get_config( 'settings' )['page-header']['divider'];
 	$divider = mai_get_option( 'page-header-divider', $default );
@@ -267,52 +323,11 @@ function mai_add_page_header_attributes( $attributes ) {
 		$attributes['class'] .= ' has-divider';
 	}
 
+	$attributes['class'] .= ' is-alignfull-first';
+
 	$attributes['role'] = 'banner';
 
 	return $attributes;
-}
-
-/**
- * Display the page header.
- *
- * @since 0.1.0
- *
- * @return void
- */
-function mai_do_page_header() {
-	genesis_markup(
-		[
-			'open'    => '<section %s>',
-			'context' => 'page-header',
-		]
-	);
-
-	genesis_structural_wrap( 'page-header', 'open' );
-
-	genesis_markup(
-		[
-			'open'    => '<div %s>',
-			'context' => 'page-header-inner',
-		]
-	);
-
-	do_action( 'mai_page_header' );
-
-	genesis_markup(
-		[
-			'close'   => '</div>',
-			'context' => 'page-header-inner',
-		]
-	);
-
-	genesis_structural_wrap( 'page-header', 'close' );
-
-	genesis_markup(
-		[
-			'close'   => '</section>',
-			'context' => 'page-header',
-		]
-	);
 }
 
 /**
@@ -329,17 +344,23 @@ function mai_get_page_header_image_id() {
 		return $image_id;
 	}
 
-	if ( mai_is_type_single() ) {
-		$image_id = get_post_meta( get_the_ID(), 'page_header_image', true );
+	$post_id = false;
 
-	} elseif ( is_front_page() ) {
-		$image_id = '';
+	if ( is_singular() ) {
+		$post_id  = get_the_ID();
+		$image_id = get_post_meta( $post_id, 'page_header_image', true );
 
-		if ( 'page' === get_option( 'show_on_front' ) ) {
-			$image_id = get_post_meta( get_option( 'page_on_front' ), 'page_header_image', true );
+	} elseif ( is_front_page() && 'page' === get_option( 'show_on_front' ) ) {
+		$post_id = get_option( 'page_on_front' );
+		if ( $post_id ) {
+			$image_id = get_post_meta( $post_id, 'page_header_image', true );
 		}
+
 	} elseif ( is_home() ) {
-		$image_id = get_post_meta( get_option( 'page_for_posts' ), 'page_header_image', true );
+		$post_id = get_option( 'page_for_posts' );
+		if ( $post_id ) {
+			$image_id = get_post_meta( $post_id, 'page_header_image', true );
+		}
 
 	} elseif ( mai_is_type_archive() ) {
 		if ( is_category() || is_tag() || is_tax() ) {
@@ -367,11 +388,12 @@ function mai_get_page_header_image_id() {
 		}
 	}
 
-	if ( ! $image_id && is_singular() ) {
+	// We can't use is_home() to check for featured image because the args return archive settings.
+	if ( ! $image_id && $post_id && ( is_singular() || is_front_page() ) ) {
 		$args = mai_get_template_args();
 
 		if ( isset( $args['page-header-featured'] ) && $args['page-header-featured'] ) {
-			$image_id = get_post_thumbnail_id();
+			$image_id = get_post_thumbnail_id( $post_id );
 		}
 	}
 
@@ -463,7 +485,9 @@ function mai_get_page_header_title() {
 		$title = apply_filters( 'genesis_404_entry_title', esc_html__( 'Not found, error 404', 'mai-engine' ) );
 	}
 
-	return apply_filters( 'mai_page_header_title', $title );
+	$title = apply_filters( 'mai_page_header_title', $title );
+
+	return $title;
 }
 
 /**
@@ -528,5 +552,7 @@ function mai_get_page_header_description() {
 		$description = '';
 	}
 
-	return apply_filters( 'mai_page_header_description', $description );
+	$description = apply_filters( 'mai_page_header_description', $description );
+
+	return $description;
 }

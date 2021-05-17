@@ -6,11 +6,8 @@
 	justify-content: center;
 	width: 100%;
 	overflow: hidden;
-	color: var(--page-header-color, var(--color-body));
 	text-align: var(--page-header-text-align, center);
 	background: var(--page-header-background, var(--color-alt));
-
-	--heading-color: currentColor;
 	--alignfull-width: 100%;
 }
 
@@ -22,13 +19,9 @@
 	padding: var(--page-header-padding, var(--page-header-padding-top) var(--page-header-padding-sides, 0) var(--page-header-padding-bottom));
 }
 
-.has-dark-page-header {
-	--page-header-color: var(--color-white);
-}
-
 .page-header-overlay {
-	display: block;
-	background-color: var(--page-header-background, var(--color-alt));
+	display: var(--page-header-overlay-display, block);
+	background: var(--page-header-background, var(--color-alt));
 	opacity: var(--page-header-overlay-opacity, 0.5);
 	content: "";
 

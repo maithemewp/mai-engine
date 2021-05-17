@@ -9,9 +9,13 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_filter( 'genesis_markup_search-form-submit_open', 'mai_search_form_submit_open' );
 /**
- * Description of expected behavior.
+ * Adds search icon to submit button.
+ * Changes the search form input markup to button.
  *
  * @since 1.0.0
  *
@@ -21,6 +25,7 @@ add_filter( 'genesis_markup_search-form-submit_open', 'mai_search_form_submit_op
  */
 function mai_search_form_submit_open( $open_html ) {
 	if ( $open_html ) {
+		$open_html .= sprintf( '<span class="screen-reader-text">%s</span>', __( 'Submit search', 'mai-engine' ) );
 		$open_html .= mai_get_svg_icon(
 			'search',
 			'regular',
@@ -30,16 +35,18 @@ function mai_search_form_submit_open( $open_html ) {
 		);
 	}
 
-	return str_replace(
+	$open_html = str_replace(
 		[ 'input', 'search-form-submit"' ],
 		[ 'button', 'search-form-submit button-secondary"' ],
 		$open_html
 	);
+
+	return $open_html;
 }
 
 add_filter( 'genesis_markup_search-form-submit_close', 'mai_search_form_submit_close' );
 /**
- * Description of expected behavior.
+ * Adds closing button markup.
  *
  * @since 1.0.0
  *
@@ -48,5 +55,5 @@ add_filter( 'genesis_markup_search-form-submit_close', 'mai_search_form_submit_c
  * @return mixed
  */
 function mai_search_form_submit_close( $close_html ) {
-	return str_replace( 'input', 'button', $close_html );
+	return '</button>';
 }

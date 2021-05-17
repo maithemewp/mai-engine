@@ -3,8 +3,6 @@
 :root {
 	--font-size-base: 14px;
 	--border-radius: 0;
-	--site-header-background: var(--color-primary);
-	--title-area-color: var(--color-white);
 	--button-font-weight: var(--body-font-weight-bold);
 	--author-box-color: var(--color-white);
 	--author-box-background: var(--color-primary);
@@ -31,7 +29,6 @@
 .nav-header {
 	--menu-font-size: var(--font-size-base);
 	--menu-font-weight: bold;
-	--menu-item-link-color: var(--color-white);
 }
 
 .nav-header .button,
@@ -58,7 +55,7 @@
 		.entry-wrap > :first-child {
 			width: 100%;
 			max-width: calc(100% - var(--spacing-xl));
-			margin-top: calc(var(--spacing-xxl) * -1);
+			margin-top: calc(var(--spacing-xl) * -1);
 			margin-right: auto;
 			margin-left: auto;
 			padding: var(--spacing-lg) var(--spacing-lg) 0;
@@ -76,11 +73,14 @@
 
 .author-box {
 	--heading-color: var(--color-white);
+	--body-color: var(--color-white);
 
 	@include mq(sm) {
-		--author-box-avatar-margin: -60px 60px 0 -60px;
-
 		margin-top: var(--spacing-xxxl);
+
+		.avatar {
+			--author-box-avatar-margin: -60px 60px 0 -60px;
+		}
 	}
 }
 

@@ -50,6 +50,58 @@ module.exports.main = function() {
 		.pipe( notify( { message: config.messages.css } ) );
 };
 
+module.exports.header = function() {
+	return gulp.src( './assets/scss/header.scss' )
+		.pipe( plumber() )
+		.pipe( rename( 'header.min.scss' ) )
+		.pipe( sass.sync( {
+			outputStyle: 'compressed',
+			includePaths: [].concat( bourbon )
+		} ) )
+		.pipe( postcss( postProcessors ) )
+		.pipe( gulp.dest( './assets/css/' ) )
+		.pipe( notify( { message: config.messages.css } ) );
+};
+
+module.exports.blocks = function() {
+	return gulp.src( './assets/scss/blocks.scss' )
+		.pipe( plumber() )
+		.pipe( rename( 'blocks.min.scss' ) )
+		.pipe( sass.sync( {
+			outputStyle: 'compressed',
+			includePaths: [].concat( bourbon )
+		} ) )
+		.pipe( postcss( postProcessors ) )
+		.pipe( gulp.dest( './assets/css/' ) )
+		.pipe( notify( { message: config.messages.css } ) );
+};
+
+module.exports.utilities = function() {
+	return gulp.src( './assets/scss/utilities.scss' )
+		.pipe( plumber() )
+		.pipe( rename( 'utilities.min.scss' ) )
+		.pipe( sass.sync( {
+			outputStyle: 'compressed',
+			includePaths: [].concat( bourbon )
+		} ) )
+		.pipe( postcss( postProcessors ) )
+		.pipe( gulp.dest( './assets/css/' ) )
+		.pipe( notify( { message: config.messages.css } ) );
+};
+
+module.exports.footer = function() {
+	return gulp.src( './assets/scss/footer.scss' )
+		.pipe( plumber() )
+		.pipe( rename( 'footer.min.scss' ) )
+		.pipe( sass.sync( {
+			outputStyle: 'compressed',
+			includePaths: [].concat( bourbon )
+		} ) )
+		.pipe( postcss( postProcessors ) )
+		.pipe( gulp.dest( './assets/css/' ) )
+		.pipe( notify( { message: config.messages.css } ) );
+};
+
 module.exports.editor = function() {
 	postProcessors.push( remtopx( {
 		rootValue: config.css.basefontsize
@@ -147,19 +199,6 @@ module.exports.desktop = function() {
 			outputStyle: 'compressed',
 		} ) )
 		.pipe( postcss( postProcessors ) )
-		.pipe( gulp.dest( './assets/css/' ) )
-		.pipe( notify( { message: config.messages.css } ) );
-};
-
-module.exports.desktop = function() {
-	return gulp.src( './assets/scss/columns.scss' )
-		.pipe( plumber() )
-		.pipe( rename( 'columns.min.scss' ) )
-		.pipe( sass.sync( {
-			outputStyle: 'compressed',
-			includePaths: [].concat( bourbon )
-		} ) )
-		// .pipe( postcss( postProcessors ) ) // This was changing 100% in max-width to just 1.
 		.pipe( gulp.dest( './assets/css/' ) )
 		.pipe( notify( { message: config.messages.css } ) );
 };

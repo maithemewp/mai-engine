@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_filter( 'genesis_customizer_theme_settings_config', 'mai_customizer_theme_settings_beta_tester' );
 /**
  * Filter the Genesis Theme Settings customizer panel settings and add our new beta update setting.

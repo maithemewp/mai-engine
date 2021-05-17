@@ -9,6 +9,39 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
+add_action( 'upgrader_process_complete', 'mai_upgrade_complete', 10, 2 );
+/**
+ * Flush transients during update.
+ *
+ * @since 2.13.0
+ *
+ * @param WP_Upgrader $upgrader_object The upgrader object.
+ * @param array       $options         Array of bulk item update data.
+ *
+ * @return void
+ */
+function mai_upgrade_complete( $upgrader_object, $options ) {
+	$current_plugin = plugin_basename( __FILE__ );
+
+	if ( 'update' !== $options['action'] ) {
+		return;
+	}
+
+	if ( ! ( isset( $options['plugins'] ) && $options['plugins'] ) ) {
+		return;
+	}
+
+	foreach( $options['plugins'] as $plugin ) {
+		if ( $current_plugin !== $plugin ) {
+			mai_flush_customizer_transients();
+			delete_transient( 'mai_template_parts' );
+		}
+	}
+}
+
 add_action( 'admin_init', 'mai_do_upgrade' );
 /**
  * Run setting upgrades during engine update.
@@ -48,6 +81,14 @@ function mai_do_upgrade() {
 		if ( version_compare( $db_version, '2.0.1', '<' ) ) {
 			mai_upgrade_2_0_1();
 		}
+
+		if ( version_compare( $db_version, '2.11.0', '<' ) ) {
+			$success = mai_upgrade_2_11_0();
+
+			if ( ! $success ) {
+				return;
+			}
+		}
 	}
 
 	// Update database version after upgrade.
@@ -55,22 +96,69 @@ function mai_do_upgrade() {
 }
 
 /**
- * Upgrade function for 0.2.0.
+ * Upgrade function for 2.11.0.
  *
- * @since 0.2.0
+ * @since 2.11.0
  *
  * @return void
  */
-function mai_upgrade_0_2_0() {
-	$data = [
-		'color-darkest'  => mai_get_option( 'color-dark' ),
-		'color-dark'     => mai_get_option( 'color-medium' ),
-		'color-medium'   => mai_get_option( 'color-muted' ),
-		'color-lighter'  => mai_get_option( 'color-light' ),
-		'color-lightest' => mai_get_option( 'color-white' ),
-	];
+function mai_upgrade_2_11_0() {
+	$success = true;
+	$message = '';
+	$posts   = new WP_Query(
+		[
+			'post_type'              => 'wp_template_part',
+			'posts_per_page'         => -1,
+			'post_status'            => 'any',
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+			'suppress_filters'       => false, // https://github.com/10up/Engineering-Best-Practices/issues/116
+		]
+	);
 
-	mai_update_data( $data );
+	if ( $posts->have_posts() ) {
+		while ( $posts->have_posts() ) : $posts->the_post();
+			global $post;
+			$post->post_type = 'mai_template_part';
+			$post->guid      = str_replace( 'wp_template_part', 'mai_template_part', $post->guid );
+			$post_id         = wp_insert_post( $post );
+
+			if ( is_wp_error( $post_id ) ) {
+				$success = false;
+				$message = $post_id->get_error_message();
+				break;
+			}
+		endwhile;
+	}
+	wp_reset_postdata();
+
+	$notice = '';
+
+	if ( $success ) {
+		delete_transient( 'mai_template_parts' );
+		delete_transient( 'mai_demo_template_parts' );
+		flush_rewrite_rules( false );
+		$text   = __( 'Template Parts successfully updated for compatibility with WP 5.7+.', 'mai-engine' );
+		$notice = sprintf( '<div class="notice notice-success is-dismissable"><p>%s</p></div>', $text );
+
+	} else {
+		$text   = __( 'Error migrating template parts.', 'mai-engine' );
+		$text   = $message ? $text . ' ' . $message : $text;
+		$notice = sprintf(
+			'<div class="notice notice-error"><p>%s <a target="_blank" href="https://docs.bizbudding.com/support/">%s</a>.</p></div>',
+			$text,
+			__( 'Please contact BizBudding support.', 'mai-engine' )
+		);
+	}
+
+	if ( $notice ) {
+		add_action( 'admin_notices', function() use ( $notice ) {
+			echo $notice;
+		});
+	}
+
+	return $success;
 }
 
 /**
@@ -80,7 +168,7 @@ function mai_upgrade_0_2_0() {
  *
  * @return void
  */
-function mai_upgrade_2_0_1() {
+ function mai_upgrade_2_0_1() {
 	$boxed_container = current_theme_supports( 'boxed-container' );
 	$site_layouts    = mai_get_option( 'site-layouts' );
 
@@ -104,6 +192,25 @@ function mai_upgrade_2_0_1() {
 		'color-link'       => mai_get_option( 'primary', $colors['link'] ),
 		'color-primary'    => mai_get_option( 'primary', $colors['primary'] ),
 		'color-secondary'  => mai_get_option( 'secondary', $colors['secondary'] ),
+	];
+
+	mai_update_data( $data );
+}
+
+/**
+ * Upgrade function for 0.2.0.
+ *
+ * @since 0.2.0
+ *
+ * @return void
+ */
+function mai_upgrade_0_2_0() {
+	$data = [
+		'color-darkest'  => mai_get_option( 'color-dark' ),
+		'color-dark'     => mai_get_option( 'color-medium' ),
+		'color-medium'   => mai_get_option( 'color-muted' ),
+		'color-lighter'  => mai_get_option( 'color-light' ),
+		'color-lightest' => mai_get_option( 'color-white' ),
 	];
 
 	mai_update_data( $data );

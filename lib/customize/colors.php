@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'init', 'mai_colors_customizer_settings' );
 /**
  * Add Customizer color settings.
@@ -38,6 +41,9 @@ function mai_colors_customizer_settings() {
 			'label'    => $label,
 			'section'  => $section,
 			'default'  => mai_get_default_color( $id ),
+			'choices'  => [
+				'palettes' => mai_get_color_choices(),
+			],
 			'output'   => [
 				[
 					'element'  => ':root',
@@ -47,6 +53,18 @@ function mai_colors_customizer_settings() {
 				[
 					'element'       => '.has-' . $id . '-color',
 					'property'      => 'color',
+					'value_pattern' => 'var(--color-' . $id . ') !important',
+					'context'       => [ 'front', 'editor' ],
+				],
+				[
+					'element'       => '.has-' . $id . '-color',
+					'property'      => '--body-color',
+					'value_pattern' => 'var(--color-' . $id . ') !important',
+					'context'       => [ 'front', 'editor' ],
+				],
+				[
+					'element'       => '.has-' . $id . '-color',
+					'property'      => '--heading-color',
 					'value_pattern' => 'var(--color-' . $id . ') !important',
 					'context'       => [ 'front', 'editor' ],
 				],
@@ -66,11 +84,12 @@ function mai_colors_customizer_settings() {
 		$handle,
 		[
 			'type'         => 'repeater',
-			'label'        => '', // No label.
+			'label'        => __( 'Custom Colors', 'mai-engine' ),
+			'description'  => sprintf( '%s var(--color-custom-#)', __( 'Use in CSS via:', 'mai-engine' ) ),
 			'section'      => $section,
 			'button_label' => __( 'Add New Color ', 'mai-engine' ),
 			'settings'     => 'custom-colors',
-			'default'      => [],
+			'default'      => mai_get_option( 'custom-colors', mai_get_global_styles( 'custom-colors' ) ),
 			'row_label'    => [
 				'type'  => 'text',
 				'value' => __( 'Custom Color', 'mai-engine' ),
@@ -79,7 +98,6 @@ function mai_colors_customizer_settings() {
 				'color' => [
 					'type'    => 'color',
 					'label'   => '',
-					'default' => '',
 					'alpha'   => true,
 					'choices' => [
 						'alpha'    => true,

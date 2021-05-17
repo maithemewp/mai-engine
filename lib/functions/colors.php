@@ -17,17 +17,113 @@ defined( 'ABSPATH' ) || die;
  *
  * @since 2.0.0
  *
- * @return array
+ * @return array Colors with name as key and #hex code as value.
  */
 function mai_get_colors() {
-	$colors   = [];
-	$defaults = mai_get_default_colors();
+	static $colors = null;
 
-	foreach ( $defaults as $name => $color ) {
-		$colors[ $name ] = mai_get_color( $name );
+	if ( ! is_customize_preview() ) {
+		if ( ! is_null( $colors ) ) {
+			return $colors;
+		}
 	}
 
-	return array_merge( $colors, mai_get_custom_colors() );
+	$colors = [];
+	$names  = mai_get_color_elements();
+
+	foreach ( $names as $name => $label ) {
+		$color = mai_get_option( sprintf( 'color-%s', $name ), '' );
+
+		if ( ! $color ) {
+			continue;
+		}
+
+		$colors[ $name ] = $color;
+	}
+
+	$colors = wp_parse_args( $colors, mai_get_default_colors() );
+	$colors = array_merge( $colors, mai_get_custom_colors() );
+
+	return $colors;
+}
+
+/**
+ * Get custom colors as set in Customizer.
+ *
+ * @since 2.0.0
+ *
+ * @return array Colors with name as key and #hex code as value.
+ */
+function mai_get_custom_colors() {
+	static $colors = null;
+
+	if ( ! is_null( $colors ) ) {
+		return $colors;
+	}
+
+	$colors  = [];
+	$options = wp_parse_args( mai_get_option( 'custom-colors', [] ), mai_get_global_styles( 'custom-colors' ) );
+	$count   = 1;
+
+	foreach ( $options as $index => $option ) {
+		$colors[ 'custom-' . $count ] = $option['color'];
+		$count++;
+	}
+
+	return $colors;
+}
+
+/**
+ * Get a color value from any color name.
+ * If not in our stored colors by name, returns original color.
+ *
+ * @since 2.2.2
+ *
+ * @param string $color by name or hex, rgb, etc.
+ *
+ * @return string Color standard value: hex, rgb, etc.
+ */
+function mai_get_color_value( $color ) {
+	$colors = mai_get_colors();
+	return mai_isset( $colors, $color, $color );
+}
+
+/**
+ * Get a color value for CSS.
+ * If not in our stored colors by name, returns original color.
+ *
+ * @since 2.13.0
+ *
+ * @param string $color by name or hex, rgb, etc.
+ *
+ * @return string The color custom property or standard value.
+ */
+function mai_get_color_css( $color ) {
+	$name   = false;
+	$colors = mai_get_colors();
+	if ( isset( $colors[ $color ] ) ) {
+		$name = $color;
+	} else {
+		$name = mai_get_color_name( $color );
+	}
+	if ( $name ) {
+		return sprintf( 'var(--color-%s)', $name );
+	}
+	return $color;
+}
+
+/**
+ * Get a color name from hex code.
+ *
+ * @since 2.13.0
+ *
+ * @param string $hex
+ *
+ * @return string|false The color name or false.
+ */
+function mai_get_color_name( $hex ) {
+	$colors = array_flip( mai_get_colors() );
+	return mai_isset( $colors, $hex, false );
 }
 
 /**
@@ -38,7 +134,15 @@ function mai_get_colors() {
  * @return array
  */
 function mai_get_default_colors() {
-	return mai_get_global_styles( 'colors' );
+	static $colors = null;
+
+	if ( ! is_null( $colors ) ) {
+		return $colors;
+	}
+
+	$colors = mai_get_global_styles( 'colors' );
+
+	return $colors;
 }
 
 /**
@@ -55,51 +159,6 @@ function mai_get_default_color( $name ) {
 }
 
 /**
- * Get custom colors as set in Customizer.
- *
- * @since 2.0.0
- *
- * @return array
- */
-function mai_get_custom_colors() {
-	static $colors = null;
-
-	if ( ! is_null( $colors ) ) {
-		return $colors;
-	}
-
-	$colors  = [];
-	$options = mai_get_option( 'custom-colors', [] );
-	$count   = 1;
-
-	foreach ( $options as $index => $option ) {
-		$colors[ 'custom-' . $count ] = $option['color'];
-		$count++;
-	}
-
-	return $colors;
-}
-
-/**
- * Returns a color option value with config default fallback.
- *
- * @since 2.0.0
- *
- * @param string $name Name of the color to get.
- *
- * @return string
- */
-function mai_get_color( $name ) {
-	$custom = mai_get_custom_colors();
-
-	if ( isset( $custom[ $name ] ) ) {
-		return $custom[ $name ];
-	}
-
-	return mai_get_option( 'color-' . $name, mai_get_default_color( $name ) );
-}
-
-/**
  * Returns the color palette variables.
  *
  * @since 2.0.0
@@ -107,6 +166,12 @@ function mai_get_color( $name ) {
  * @return array
  */
 function mai_get_editor_color_palette() {
+	static $palette = null;
+
+	if ( ! is_null( $palette ) ) {
+		return $palette;
+	}
+
 	$colors  = mai_get_colors();
 	$values  = [];
 	$palette = [];
@@ -161,6 +226,7 @@ function mai_get_color_elements() {
 	return [
 		'background' => __( 'Background', 'mai-engine' ),
 		'alt'        => __( 'Background Alt', 'mai-engine' ),
+		'header'     => __( 'Site Header', 'mai-engine' ),
 		'body'       => __( 'Body', 'mai-engine' ),
 		'heading'    => __( 'Heading', 'mai-engine' ),
 		'link'       => __( 'Link', 'mai-engine' ),
@@ -177,6 +243,12 @@ function mai_get_color_elements() {
  * @return array
  */
 function mai_get_color_choices() {
+	static $choices = null;
+
+	if ( ! is_null( $choices ) ) {
+		return $choices;
+	}
+
 	$color_choices = [];
 	$color_palette = mai_get_editor_color_palette();
 
@@ -184,7 +256,9 @@ function mai_get_color_choices() {
 		$color_choices[] = $color['color'];
 	}
 
-	return array_flip( array_flip( $color_choices ) );
+	$choices = array_flip( array_flip( $color_choices ) );
+
+	return $choices;
 }
 
 /**
@@ -207,11 +281,22 @@ function mai_is_light_color( $color ) {
 		return false;
 	}
 
-	$color = mai_get_color_value( $color );
-	$color = ariColor::newColor( $color );
-	$limit = mai_get_global_styles( 'contrast-limit' );
+	$colors = null;
 
-	return $color->luminance > $limit;
+	if ( is_array( $colors ) ) {
+		if ( isset( $colors[ $color ] ) ) {
+			return $colors[ $color ];
+		}
+	} else {
+		$colors = [];
+	}
+
+	$value            = mai_get_color_value( $color );
+	$object           = ariColor::newColor( $value );
+	$limit            = mai_get_global_styles( 'contrast-limit' );
+	$colors[ $value ] = $object->luminance > $limit;
+
+	return $colors[ $value ];
 }
 
 /**
@@ -237,18 +322,4 @@ function mai_get_color_variant( $color, $light_or_dark = 'dark', $amount = 7 ) {
 	$variant = $color->getNew( 'lightness', $value );
 
 	return $variant->toCSS( 'hex' );
-}
-
-/**
- * Get a color value from any color name.
- * If not in our stored colors by name, returns original color.
- *
- * @since 2.2.2
- *
- * @param string $color by name or hex, rgb, etc.
- *
- * @return string
- */
-function mai_get_color_value( $color ) {
-	return mai_isset( mai_get_colors(), $color, $color );
 }

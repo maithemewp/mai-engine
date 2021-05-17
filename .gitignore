@@ -17,9 +17,12 @@ vendor/composer/installers
 vendor/composer/semver
 vendor/composer/xdebug-handler
 !vendor/advanced-custom-fields
+!vendor/afragen
 !vendor/aristath
-!vendor/yahnis-elsts
-!vendor/wpackagist-plugin
+!vendor/collizo4sky
 !vendor/maithemewp
 !vendor/proteusthemes
+!vendor/symfony
+!vendor/wpackagist-plugin
 !vendor/wptrt
+!vendor/yahnis-elsts

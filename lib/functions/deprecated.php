@@ -9,6 +9,128 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
+/**
+ * Returns a color option value with config default fallback.
+ *
+ * @since      2.0.0
+ * @deprecated 2.13.0 Use mai_get_color_value()
+ * @see        mai_get_color_value()
+ *
+ * @param string $name Name of the color to get.
+ *
+ * @return string
+ */
+function mai_get_color( $name ) {
+	_deprecated_function( __FUNCTION__, '2.13.0', 'mai_get_color_value()' );
+	mai_get_color_value( $name );
+}
+
+
+/**
+ * Get cover image HTML by ID,
+ * with srcset for our registered image sizes.
+ *
+ * @access private Do not use. Left here for back compat.
+ *
+ * @since  2.0.0
+ * @since  2.6.0 Added $max_width parameter.
+ * @since  2.12.0 No longer used. Deprecated.
+ *
+ * @param  mixed      $image_id  The image ID or URL.
+ * @param  array      $atts      Any image attributes to add to the attachment.
+ * @param  string|int $max_width The image max width. Either '100vw' or an integer pixel value.
+ *
+ * @return string  The image markup.
+ */
+function mai_get_cover_image_html( $image_id, $atts = [], $max_width = '100vw' ) {
+	_deprecated_function( __FUNCTION__, '2.12.0', 'No longer supported' );
+
+	$html = '';
+
+	// Setup atts.
+	$atts = wp_parse_args(
+		$atts,
+		[
+			'sizes'   => '100vw',
+			'loading' => 'lazy', // Add native lazy loading.
+		]
+	);
+
+	// Bail if not an image id or url.
+	if ( ! ( is_numeric( $image_id ) || filter_var( $image_id, FILTER_VALIDATE_URL ) ) ) {
+		return;
+	}
+
+	$full = '100vw' === $max_width;
+
+	if ( is_numeric( $image_id ) ) {
+		// Build srcset array.
+		$image_sizes    = mai_get_available_image_sizes();
+		$max_image_size = 'cover';
+		$srcset         = [];
+		$sizes          = [
+			'landscape-sm',
+			'landscape-md',
+			'landscape-lg',
+			'cover',
+		];
+
+		foreach ( $sizes as $size ) {
+			if ( ! isset( $image_sizes[ $size ] ) ) {
+				continue;
+			}
+
+			$url = '';
+
+			if ( is_numeric( $image_id ) ) {
+				if ( $full || ( $image_sizes[ $size ]['width'] <= (int) $max_width ) ) {
+					$url            = wp_get_attachment_image_url( $image_id, $size );
+					$max_image_size = $size;
+				}
+			} elseif ( filter_var( $image_id, FILTER_VALIDATE_URL) ) {
+				$url = $image_id;
+			}
+
+			if ( ! $url ) {
+				continue;
+			}
+
+			$srcset[] = sprintf( '%s %sw', $url, $image_sizes[ $size ]['width'] );
+		}
+
+		// Convert to string.
+		$atts['srcset'] = implode( ',', $srcset );
+
+		// Get the image HTML.
+		$html .= wp_get_attachment_image( $image_id, $max_image_size, false, $atts );
+
+	} elseif ( filter_var( $image_id, FILTER_VALIDATE_URL ) ) {
+
+		$output = '';
+
+		foreach ( $atts as $key => $value ) {
+
+			if ( ! $value ) {
+				continue;
+			}
+
+			if ( true === $value ) {
+				$output .= esc_html( $key ) . ' ';
+			} else {
+				$output .= sprintf( '%s="%s" ', esc_html( $key ), esc_attr( $value ) );
+			}
+		}
+
+		// TODO: Use `<figure>`?
+		$html = sprintf( '<img src="%s"%s>', $image_id, $output );
+	}
+
+	return $html;
+}
+
 add_action( 'after_setup_theme', 'mai_do_deprecated_functionality', 4 );
 /**
  * Run deprecated functionality on older installs.

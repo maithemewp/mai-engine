@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 /**
  * Returns content archive settings.
  *
@@ -19,13 +22,28 @@
  * @return array
  */
 function mai_get_content_archive_settings( $name = 'post' ) {
-	static $settings = null;
-	if ( ! is_null( $settings ) ) {
-		return $settings;
+	static $archive_settings = null;
+
+	if ( is_array( $archive_settings ) && isset( $archive_settings[ $name ] ) ) {
+		return $archive_settings[ $name ];
 	}
 
-	$defaults = mai_get_config( 'settings' )['content-archives'];
-	$defaults = isset( $defaults[ $name ] ) ? $defaults[ $name ] : $defaults[ 'post' ];
+	if ( ! is_array( $archive_settings ) ) {
+		$archive_settings = [];
+	}
+
+	$config   = mai_get_config( 'settings' )['content-archives'];
+	$defaults = isset( $config[ $name ] ) ? $config[ $name ] : $config['post'];
+
+	if ( 'post' !== $name ) {
+		foreach ( $config[ 'post' ] as $key => $value ) {
+			if ( isset( $defaults[ $key ] ) ) {
+				continue;
+			}
+			$defaults[ $key ] = $value;
+		}
+	}
+
 	$settings = [
 		[
 			'settings'    => 'show',
@@ -315,7 +333,7 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			'settings'        => 'more_link_text',
 			'label'           => __( 'More Link Text', 'mai-engine' ),
 			'type'            => 'text',
-			'sanitize'        => 'esc_attr', // We may want to add icons/spans and HTML in here.
+			'sanitize'        => 'wp_kses_post', // We may want to add icons/spans and HTML in here.
 			'default'         => $defaults['more_link_text'],
 			'active_callback' => [
 				[
@@ -388,6 +406,16 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 						'setting'  => 'image_position',
 						'operator' => '==',
 						'value'    => 'right-top',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'left-middle',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'right-middle',
 					],
 					[
 						'setting'  => 'image_position',
@@ -698,6 +726,9 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			'label'           => __( 'Background/overlay color', 'mai-engine' ),
 			'type'            => 'color',
 			'default'         => $defaults['page-header-background-color'],
+			'choices'         => [
+				'palettes' => mai_get_color_choices(),
+			],
 			'active_callback' => 'mai_has_page_header_support_callback',
 		],
 		[
@@ -730,9 +761,9 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 		],
 	];
 
-	$settings = apply_filters( 'mai_content_archive_settings', $settings, $name );
+	$archive_settings[ $name ] = apply_filters( 'mai_content_archive_settings', $settings, $name );
 
-	return $settings;
+	return $archive_settings[ $name ];
 }
 
 add_action( 'init', 'mai_add_content_archive_settings' );
@@ -748,6 +779,17 @@ function mai_add_content_archive_settings() {
 	$panel    = 'content-archives';
 	$defaults = mai_get_config( 'settings' )['content-archives']['enable'];
 	$sections = mai_get_option( 'archive-settings', $defaults, false );
+
+	// Remove any content types that no longer exist.
+	foreach ( $sections as $index => $section ) {
+		if ( post_type_exists( $section ) || taxonomy_exists( $section ) ) {
+			continue;
+		}
+		if ( in_array( $section, [ 'search', 'author', 'date' ] ) ) {
+			continue;
+		}
+		unset( $sections[ $index ] );
+	}
 
 	Kirki::add_panel(
 		"{$handle}-{$panel}",

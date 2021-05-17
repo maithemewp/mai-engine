@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 // Remove Genesis Connect for WooCommerce intro text fallback.
 add_action( 'genesis_before', function() {
 	remove_filter( 'genesis_term_intro_text_output', 'genesiswooc_term_intro_text_output' );
@@ -109,7 +112,7 @@ function mai_do_blog_description() {
 		return;
 	}
 
-	$description = apply_filters( 'the_content', get_post( $posts_page )->post_content );
+	$description = get_post( $posts_page )->post_content;
 	$description = wp_kses_post( $description );
 
 	// Bail if no description.

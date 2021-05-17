@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'acf/init', 'mai_register_columns_blocks' );
 /**
  * Registers the columns blocks.
@@ -25,35 +28,24 @@ function mai_register_columns_blocks() {
 	acf_register_block_type(
 		[
 			'name'            => 'mai-columns',
-			'title'           => __( 'Mai Columns', 'mai-engine' ) . ' (' . __( 'beta', 'mai-engine' ) . ')',
+			'title'           => __( 'Mai Columns', 'mai-engine' ),
 			'description'     => __( 'A custom columns block.', 'mai-engine' ),
 			'render_callback' => 'mai_do_columns_block',
 			'category'        => 'layout',
 			'keywords'        => [ 'columns' ],
 			'icon'            => mai_get_svg_icon( 'columns', 'light' ),
 			'supports'        => [
-				'align' => [ 'wide', 'full', 'left', 'center', 'right' ],
+				'align' => [ 'wide', 'full' ],
 				'mode'  => false,
 				'jsx'   => true,
 			],
-			'enqueue_assets'  => function() {
-				if ( ! is_admin() ) {
-					mai_enqueue_asset(
-						'mai-columns',
-						[
-							'src' => mai_get_url() . 'assets/css/columns.min.css',
-						],
-						'style'
-					);
-				}
-			},
 		]
 	);
 
 	acf_register_block_type(
 		[
 			'name'            => 'mai-column',
-			'title'           => __( 'Mai Column', 'mai-engine' ) . ' (' . __( 'beta', 'mai-engine' ) . ')',
+			'title'           => __( 'Mai Column', 'mai-engine' ),
 			'description'     => __( 'A custom column block.', 'mai-engine' ),
 			'render_callback' => 'mai_do_column_block',
 			'category'        => 'layout',
@@ -205,7 +197,11 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 					$style .= sprintf( '--max-width-%s:%s;', $break, $max_width );
 				}
 
-				$element->setAttribute( 'style', $style );
+				if ( $style ) {
+					$element->setAttribute( 'style', $style );
+				} else {
+					$element->removeAttribute( 'style' );
+				}
 
 				if ( $element_i === ( $total_arrangements - 1 ) ) {
 					$element_i = 0;
@@ -230,7 +226,11 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 				}
 			}
 
-			$element->setAttribute( 'style', $style );
+			if ( $style ) {
+				$element->setAttribute( 'style', $style );
+			} else {
+				$element->removeAttribute( 'style' );
+			}
 		}
 	}
 
@@ -326,7 +326,6 @@ function mai_register_columns_field_groups() {
 			],
 			[
 				'key'               => 'mai_columns_arrangement',
-				// 'label'             => __( 'Arrangement (desktop)', 'mai-engine' ) . '<br /><em><small>' . sprintf( 'Screens over %spx', mai_get_breakpoint( 'lg' ) ) . '</small></em>',
 				'label'             => __( 'Arrangement (desktop)', 'mai-engine' ),
 				'name'              => 'arrangement',
 				'type'              => 'repeater',
@@ -370,7 +369,6 @@ function mai_register_columns_field_groups() {
 			],
 			[
 				'key'               => 'mai_columns_md_arrangement',
-				// 'label'             => __( 'Arrangement (lg tablets)', 'mai-engine' ) . '<br /><em><small>' . sprintf( 'Screens %spx to %spx', mai_get_breakpoint( 'sm' ), mai_get_breakpoint( 'md' ) ) . '</small></em>',
 				'label'             => __( 'Arrangement (lg tablets)', 'mai-engine' ),
 				'name'              => 'arrangement_md',
 				'type'              => 'repeater',
@@ -414,7 +412,6 @@ function mai_register_columns_field_groups() {
 			],
 			[
 				'key'               => 'mai_columns_sm_arrangement',
-				// 'label'             => __( 'Arrangement (sm tablets)', 'mai-engine' ) . '<br /><em><small>' . sprintf( 'Screens %spx to %spx', mai_get_breakpoint( 'xs' ), ( (int) mai_get_breakpoint( 'sm' ) - 1 ) ) . '</small></em>',
 				'label'             => __( 'Arrangement (sm tablets)', 'mai-engine' ),
 				'name'              => 'arrangement_sm',
 				'type'              => 'repeater',
@@ -458,7 +455,6 @@ function mai_register_columns_field_groups() {
 			],
 			[
 				'key'               => 'mai_columns_xs_arrangement',
-				// 'label'             => __( 'Arrangement (mobile)', 'mai-engine' ) . '<br /><em><small>' . sprintf( 'Screens up to %spx', ( (int) mai_get_breakpoint( 'xs' ) - 1 ) ) . '</small></em>',
 				'label'             => __( 'Arrangement (mobile)', 'mai-engine' ),
 				'name'              => 'arrangement_xs',
 				'type'              => 'repeater',

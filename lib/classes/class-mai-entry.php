@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 /**
  * Class Mai_Entry
  */
@@ -103,8 +106,8 @@ class Mai_Entry {
 		$this->url         = $this->get_url();
 		$this->breakpoints = mai_get_breakpoints();
 		$this->link_entry  = apply_filters( 'mai_link_entry', (bool) ! $this->args['disable_entry_link'], $this->args, $this->entry );
-		$this->image_size  = $this->get_image_size();
 		$this->image_id    = $this->get_image_id();
+		$this->image_size  = $this->image_id ? $this->get_image_size() : '';
 	}
 
 	/**
@@ -244,9 +247,10 @@ class Mai_Entry {
 			];
 
 			if ( $this->link_entry ) {
-				$overlay_wrap           = 'a';
-				$overlay_atts['href']   = $this->url;
-				$overlay_atts['class'] .= ' entry-overlay-link';
+				$overlay_wrap                = 'a';
+				$overlay_atts['href']        = $this->url;
+				$overlay_atts['class']      .= ' entry-overlay-link';
+				$overlay_atts['aria-hidden'] = 'true';
 			}
 
 			genesis_markup(
@@ -429,9 +433,13 @@ class Mai_Entry {
 		}
 
 		if ( $link_image ) {
-			$atts['href']        = $this->url;
-			$atts['aria-hidden'] = 'true';
-			$atts['tabindex']    = '-1';
+			$atts['href']     = $this->url;
+			$atts['tabindex'] = '-1';
+
+			// Hide from screen readers if there is another link.
+			if ( array_intersect( $this->args['show'], [ 'title', 'more_link' ] ) ) {
+				$atts['aria-hidden'] = 'true';
+			}
 		}
 
 		// This filter overrides href.
@@ -476,15 +484,27 @@ class Mai_Entry {
 		add_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
 		add_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 5 );
 
+		if ( 'single' === $this->context ) {
+			$filter = function() {
+				return false;
+			};
+
+			add_filter( 'wp_lazy_loading_enabled', $filter );
+		}
+
 		$image = wp_get_attachment_image(
 			$image_id,
 			$this->image_size,
 			false,
 			[
-				'class'   => "entry-image size-{$this->image_size}",
-				'loading' => 'lazy',
+				'class' => "entry-image size-{$this->image_size}",
 			]
 		);
+
+		if ( 'single' === $this->context ) {
+			remove_filter( 'wp_lazy_loading_enabled', $filter );
+		}
+
 		remove_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ] );
 		remove_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ] );
 
@@ -707,11 +727,34 @@ class Mai_Entry {
 			case 'square':
 				$image_size = $this->get_image_size_by_cols();
 				$image_size = sprintf( '%s-%s', $this->args['image_orientation'], $image_size );
+				$image_size = $this->get_fallback_image_size( $image_size );
+				return $image_size;
 			break;
 			default:
 				$image_size = $this->args['image_size'];
 		}
 
+		return $image_size;
+	}
+
+	/**
+	 * Gets fallback image size if given size isn't available.
+	 *
+	 * @since 2.13.0
+	 *
+	 * @return string
+	 */
+	public function get_fallback_image_size( $image_size ) {
+		if ( wp_get_attachment_image_url( $this->image_id, $image_size ) === wp_get_attachment_image_url( $this->image_id, 'full' ) ) {
+			if ( mai_has_string( '-lg', $image_size ) ) {
+				$image_size = str_replace( '-lg', '-md', $image_size );
+				return $this->get_fallback_image_size( $image_size );
+			}
+
+			if ( in_array( $image_size, [ 'landscape-md', 'portrait-md', 'square-md' ] ) ) {
+				return str_replace( '-md', '-sm', $image_size );
+			}
+		}
 		return $image_size;
 	}
 
@@ -723,7 +766,7 @@ class Mai_Entry {
 	 * @return string
 	 */
 	public function get_image_size_by_cols() {
-		$fw_content = ( 'full-width-content' === genesis_site_layout() ) ? true : false;
+		$fw_content = ( 'wide-content' === genesis_site_layout() ) ? true : false;
 
 		// If single.
 		if ( 'single' === $this->context ) {
@@ -954,6 +997,11 @@ class Mai_Entry {
 					$excerpt = has_excerpt() && ! mai_is_element_hidden( 'entry_excerpt', $this->id ) ? get_the_excerpt() : '';
 				} else {
 					$excerpt = get_the_excerpt();
+
+					// Allow shortcodes in custom excerpt.
+					if ( has_excerpt( $this->id ) ) {
+						$excerpt = do_shortcode( $excerpt );
+					}
 				}
 			break;
 			case 'term':
@@ -1032,6 +1080,7 @@ class Mai_Entry {
 		if ( 'single' === $this->context ) {
 			echo $open;
 			the_content();
+			$this->do_post_content_nav();
 			echo $close;
 
 		} else {
@@ -1061,16 +1110,45 @@ class Mai_Entry {
 			}
 
 			echo $open;
-			echo $content;
+			echo apply_filters( 'mai_entry_content', $content, $this->args, $this->entry );
 			echo $close;
 		}
 
 	}
 
 	/**
+	 * Displays page links for paginated posts (i.e. includes the <!--nextpage--> Quicktag one or more times).
+	 *
+	 * @since 2.11.0
+	 *
+	 * @return void
+	 */
+	public function do_post_content_nav() {
+		wp_link_pages(
+			[
+				'before'      => genesis_markup(
+					[
+						'open'    => '<div %s>',
+						'context' => 'entry-pagination',
+						'echo'    => false,
+					]
+				) . __( 'Pages:', 'mai-engine' ),
+				'after'       => genesis_markup(
+					[
+						'close'   => '</div>',
+						'context' => 'entry-pagination',
+						'echo'    => false,
+					]
+				),
+				'link_before' => '<span class="screen-reader-text">' . __( 'Page ', 'mai-engine' ) . '</span>',
+			]
+		);
+	}
+
+	/**
 	 * Display the custom content.
 	 *
-	 * @since 1/4/21
+	 * @since 2.9.0
 	 *
 	 * @return void
 	 */
@@ -1079,7 +1157,7 @@ class Mai_Entry {
 			return;
 		}
 
-		if ( ! $this->args['custom_content'] ) {
+		if ( ! ( isset( $this->args['custom_content'] ) && $this->args['custom_content'] ) ) {
 			return;
 		}
 
@@ -1098,6 +1176,36 @@ class Mai_Entry {
 		);
 	}
 
+	// /**
+	//  * Display the custom content 2.
+	//  *
+	//  * @since 2.13.0
+	//  *
+	//  * @return void
+	//  */
+	// public function do_custom_content_2() {
+	// 	if ( ( 'single' === $this->context ) && mai_is_element_hidden( 'custom_content_2', $this->id ) ) {
+	// 		return;
+	// 	}
+
+	// 	if ( ! ( isset( $this->args['custom_content_2'] ) && $this->args['custom_content_2'] ) ) {
+	// 		return;
+	// 	}
+
+	// 	genesis_markup(
+	// 		[
+	// 			'open'    => '<div %s>',
+	// 			'close'   => '</div>',
+	// 			'content' => mai_get_processed_content( $this->args['custom_content_2'] ),
+	// 			'context' => 'entry-custom-content-2',
+	// 			'echo'    => true,
+	// 			'params'  => [
+	// 				'args'  => $this->args,
+	// 				'entry' => $this->entry,
+	// 			],
+	// 		]
+	// 	);
+	// }
 
 	/**
 	 * Display the header meta.
@@ -1159,7 +1267,7 @@ class Mai_Entry {
 			return;
 		}
 
-		$footer_meta = wp_kses_post( $this->args['footer_meta'] );
+		$footer_meta = wp_kses_post( $this->args['header_meta'] );
 		$footer_meta = do_shortcode( $this->args['footer_meta'] );
 
 		if ( ! $footer_meta ) {
@@ -1214,6 +1322,8 @@ class Mai_Entry {
 		}
 
 		$more_link_text = isset( $this->args['more_link_text'] ) && $this->args['more_link_text'] ? $this->args['more_link_text'] : mai_get_read_more_text();
+		$more_link_text = $more_link_text;
+		$more_link_text = do_shortcode( $more_link_text );
 
 		// Screen reader text title.
 		switch ( $this->type ) {
@@ -1310,6 +1420,10 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_author_box() {
+		if ( ( 'single' === $this->context ) && mai_is_element_hidden( 'author_box', $this->id ) ) {
+			return;
+		}
+
 		echo genesis_get_author_box( 'single' );
 	}
 

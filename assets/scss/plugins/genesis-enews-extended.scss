@@ -33,6 +33,7 @@
 		}
 	}
 
+	&.enews-1-field,
 	.enews-1-field {
 		--enews-flex-direction: row;
 		--enews-flex-wrap: nowrap;
@@ -50,6 +51,7 @@
 
 	@include mq(sm) {
 
+		&.enews-2-fields,
 		.enews-2-fields {
 			--enews-flex-direction: row;
 			--enews-flex-wrap: nowrap;
@@ -61,6 +63,7 @@
 
 	@include mq(md) {
 
+		&.enews-3-fields,
 		.enews-3-fields {
 			--enews-flex-direction: row;
 			--enews-flex-wrap: nowrap;

@@ -39,9 +39,11 @@ function mai_get_dir() {
 function mai_get_url() {
 	static $url = null;
 
-	if ( is_null( $url ) ) {
-		$url = trailingslashit( plugins_url( basename( mai_get_dir() ) ) );
+	if ( ! is_null( $url ) ) {
+		return $url;
 	}
+
+	$url = trailingslashit( plugins_url( basename( mai_get_dir() ) ) );
 
 	return $url;
 }
@@ -56,11 +58,13 @@ function mai_get_url() {
 function mai_get_base() {
 	static $base = null;
 
-	if ( is_null( $base ) ) {
-		$dir  = basename( dirname( dirname( __DIR__ ) ) );
-		$file = mai_get_handle() . '.php';
-		$base = $dir . DIRECTORY_SEPARATOR . $file;
+	if ( ! is_null( $base ) ) {
+		return $base;
 	}
+
+	$dir  = basename( dirname( dirname( __DIR__ ) ) );
+	$file = mai_get_handle() . '.php';
+	$base = $dir . DIRECTORY_SEPARATOR . $file;
 
 	return $base;
 }
@@ -195,15 +199,49 @@ function mai_get_asset_url( $file ) {
 }
 
 /**
- * Returns the active child theme's config.
+ * Returns the active child theme's sub config.
  *
  * @since 0.1.0
+ * @since 2.11.0 Add static caching.
  *
  * @param string $sub_config Name of config to get.
  *
  * @return array
  */
-function mai_get_config( $sub_config = 'default' ) {
+function mai_get_config( $sub_config ) {
+	static $configs = null;
+
+	if ( is_array( $configs ) && isset( $configs[ $sub_config ] ) ) {
+		return $configs[ $sub_config ];
+	}
+
+	if ( ! is_array( $configs ) ) {
+		$configs = [];
+	}
+
+	$config                 = mai_get_full_config();
+	$value                  = isset( $config[ $sub_config ] ) ? $config[ $sub_config ] : [];
+	$configs[ $sub_config ] = apply_filters( "mai_{$sub_config}_config", $value );
+
+	return $configs[ $sub_config ];
+}
+
+/**
+ * Returns the active child theme's full config.
+ *
+ * @access private
+ *
+ * @since 2.11.0
+ *
+ * @return array
+ */
+function mai_get_full_config() {
+	static $config = null;
+
+	if ( ! is_null( $config ) ) {
+		return $config;
+	}
+
 	$config = require mai_get_dir() . 'config/_default.php';
 	$theme  = mai_get_active_theme();
 	$theme  = ( 'default' === $theme ) ? '_default' : $theme;
@@ -238,7 +276,7 @@ function mai_get_config( $sub_config = 'default' ) {
 		$config = array_replace_recursive( $config, $new );
 		if ( isset( $new['settings']['content-archives'] ) ) {
 			foreach ( $new['settings']['content-archives'] as $key => $settings ) {
-				if ( ! ( isset( $new['settings']['content-archives'][ $key ]['show'] ) ) && isset( $config['settings']['content-archives'][ $key ]['show'] ) ) {
+				if ( ! ( isset( $new['settings']['content-archives'][ $key ]['show'] ) && isset( $config['settings']['content-archives'][ $key ]['show'] ) ) ) {
 					continue;
 				}
 				$config['settings']['content-archives'][ $key ]['show'] = $new['settings']['content-archives'][ $key ]['show'];
@@ -246,7 +284,7 @@ function mai_get_config( $sub_config = 'default' ) {
 		}
 		if ( isset( $new['settings']['single-content'] ) ) {
 			foreach ( $new['settings']['single-content'] as $key => $settings ) {
-				if ( ! ( isset( $new['settings']['single-content'][ $key ]['show'] ) ) && isset( $config['settings']['single-content'][ $key ]['show'] ) ) {
+				if ( ! ( isset( $new['settings']['single-content'][ $key ]['show'] ) && isset( $config['settings']['single-content'][ $key ]['show'] ) ) ) {
 					continue;
 				}
 				$config['settings']['single-content'][ $key ]['show'] = $new['settings']['single-content'][ $key ]['show'];
@@ -256,9 +294,7 @@ function mai_get_config( $sub_config = 'default' ) {
 
 	$config = apply_filters( 'mai_config', $config );
 
-	$configs[ $sub_config ] = isset( $config[ $sub_config ] ) ? $config[ $sub_config ] : [];
-
-	return apply_filters( "mai_{$sub_config}_config", $configs[ $sub_config ] );
+	return $config;
 }
 
 /**
@@ -271,7 +307,15 @@ function mai_get_config( $sub_config = 'default' ) {
  * @return string
  */
 function mai_get_active_theme() {
-	return apply_filters( 'mai_active_theme', mai_get_engine_theme() );
+	static $theme = null;
+
+	if ( ! is_null( $theme ) ) {
+		return $theme;
+	}
+
+	$theme = apply_filters( 'mai_active_theme', mai_get_engine_theme() );
+
+	return $theme;
 }
 
 /**
@@ -311,10 +355,18 @@ function mai_get_options( $use_cache = true ) {
  * @return mixed
  */
 function mai_get_option( $option, $default = false, $use_cache = true ) {
-	$options = mai_get_options( $use_cache );
-	$value   = isset( $options[ $option ] ) ? $options[ $option ] : $default;
+	static $values = null;
 
-	return apply_filters( "mai_get_option_{$option}", $value );
+	if ( $use_cache && is_array( $values ) && isset( $values[ $option ] ) ) {
+		return $values[ $option ];
+	}
+
+	$values            = [];
+	$options           = mai_get_options( $use_cache );
+	$value             = isset( $options[ $option ] ) ? $options[ $option ] : $default;
+	$values[ $option ] = apply_filters( "mai_get_option_{$option}", $value );
+
+	return $values[ $option ];
 }
 
 /**
@@ -346,7 +398,19 @@ function mai_update_option( $option, $value ) {
  * @return mixed
  */
 function mai_get_settings( $name ) {
-	return require mai_get_dir() . 'lib/customize/' . $name . '.php';
+	static $settings = null;
+
+	if ( is_array( $settings ) && isset( $settings[ $name ] ) ) {
+		return $settings[ $name ];
+	}
+
+	if ( ! is_array( $settings ) ) {
+		$settings = [];
+	}
+
+	$settings[ $name ] = require mai_get_dir() . 'lib/customize/' . $name . '.php';
+
+	return $settings[ $name ];
 }
 
 /**
@@ -358,11 +422,31 @@ function mai_get_settings( $name ) {
  *
  * @return mixed
  */
-function mai_get_global_styles( $key = '' ) {
-	$global_styles = mai_get_config( 'global-styles' );
+function mai_get_global_styles( $key ) {
+	static $styles = null;
 
-	return mai_isset( $global_styles, $key, $global_styles );
+	if ( is_array( $styles ) && isset( $styles[ $key ] ) ) {
+		return $styles[ $key ];
+	}
+
+	if ( ! is_array( $styles ) ) {
+		$styles = [];
+	}
+
+	$global_styles  = mai_get_config( 'global-styles' );
+	$styles[ $key ] = mai_isset( $global_styles, $key, $global_styles );
+
+	return $styles[ $key ];
 }
+
+
+add_filter( 'genesis_cpt_crumb', function( $crumb, $args ) {
+	if ( ! is_singular( [ 'page' ] ) ) {
+		return $crumb;
+	}
+	$slug = get_post_field( 'post_name', get_the_ID() );
+	return $slug ?: $crumb;
+}, 10, 2 );
 
 /**
  * Get breakpoints from initial site container width in config.
@@ -423,6 +507,7 @@ function mai_get_post_type() {
  * If only a number value, use the fallback..
  *
  * @since 0.1.0
+ * @since 2.11.0 Change intval to casting as int to allow negative numbers.
  *
  * @param  string $value    The value. Could be integer 24 or with type 24px, 2rem, etc.
  * @param  string $fallback The fallback unit value.
@@ -431,7 +516,7 @@ function mai_get_post_type() {
  */
 function mai_get_unit_value( $value, $fallback = 'px' ) {
 	if ( empty( $value ) || is_numeric( $value ) ) {
-		return sprintf( '%s%s', intval( $value ), $fallback );
+		return sprintf( '%s%s', (int) $value, $fallback );
 	}
 
 	return trim( $value );
@@ -458,7 +543,15 @@ function mai_get_integer_value( $string ) {
  * @return array
  */
 function mai_get_site_layout_choices() {
-	return [ '' => esc_html__( 'Default', 'mai-engine' ) ] + genesis_get_layouts_for_customizer();
+	static $choices = null;
+
+	if ( ! is_null( $choices ) ) {
+		return $choices;
+	}
+
+	$choices = [ '' => esc_html__( 'Default', 'mai-engine' ) ] + genesis_get_layouts_for_customizer();
+
+	return $choices;
 }
 
 /**
@@ -484,22 +577,22 @@ function mai_get_customizer_link( $name, $type = 'section', $url = '' ) {
 }
 
 /**
- * Get content type choices for Kirki.
+ * Get content type archive choices for Kirki.
  *
- * @since 0.2.0
- *
- * @param bool $archive Whether archive or single content type choices.
+ * @since 2.11.0
  *
  * @return array
  */
-function mai_get_content_type_choices( $archive = false ) {
+function mai_get_content_type_archive_choices() {
+	static $choices = null;
+
+	if ( ! is_null( $choices ) ) {
+		return $choices;
+	}
+
 	$choices = [
 		'post' => esc_html__( 'Post', 'mai-engine' ),
 	];
-
-	if ( ! $archive ) {
-		$choices['page'] = esc_html__( 'Page', 'mai-engine' );
-	}
 
 	$post_types = get_post_types(
 		[
@@ -511,9 +604,8 @@ function mai_get_content_type_choices( $archive = false ) {
 
 	if ( $post_types ) {
 		foreach ( $post_types as $name => $post_type ) {
-
 			// Skip post types without archives.
-			if ( $archive && ! (bool) $post_type->has_archive ) {
+			if ( ! (bool) $post_type->has_archive ) {
 				continue;
 			}
 
@@ -521,25 +613,59 @@ function mai_get_content_type_choices( $archive = false ) {
 		}
 	}
 
-	if ( $archive ) {
-		$taxonomies = get_taxonomies( [ 'public' => true ], 'objects' );
+	$taxonomies = get_taxonomies( [ 'public' => true ], 'objects' );
 
-		// Remove taxonomies we don't want.
-		unset( $taxonomies['post_format'] );
-		unset( $taxonomies['product_shipping_class'] );
-		unset( $taxonomies['yst_prominent_words'] );
+	// Remove taxonomies we don't want.
+	unset( $taxonomies['post_format'] );
+	unset( $taxonomies['product_shipping_class'] );
+	unset( $taxonomies['yst_prominent_words'] );
 
-		if ( $taxonomies ) {
-			foreach ( $taxonomies as $name => $taxonomy ) {
-				$choices[ $name ] = $taxonomy->label;
-			}
+	if ( $taxonomies ) {
+		foreach ( $taxonomies as $name => $taxonomy ) {
+			$choices[ $name ] = $taxonomy->label;
 		}
+	}
 
-		$choices += [
-			'search' => __( 'Search Results', 'mai-engine' ),
-			'author' => __( 'Author Archives', 'mai-engine' ),
-			'date'   => __( 'Date Archives', 'mai-engine' ),
-		];
+	$choices += [
+		'search' => __( 'Search Results', 'mai-engine' ),
+		'author' => __( 'Author Archives', 'mai-engine' ),
+		'date'   => __( 'Date Archives', 'mai-engine' ),
+	];
+
+	return $choices;
+}
+
+/**
+ * Get content type single choices for Kirki.
+ *
+ * @since 2.11.0
+ *
+ * @return array
+ */
+function mai_get_content_type_single_choices() {
+	static $choices = null;
+
+	if ( ! is_null( $choices ) ) {
+		return $choices;
+	}
+
+	$choices = [
+		'post' => esc_html__( 'Post', 'mai-engine' ),
+		'page' => esc_html__( 'Page', 'mai-engine' ),
+	];
+
+	$post_types = get_post_types(
+		[
+			'public'   => true,
+			'_builtin' => false,
+		],
+		'objects'
+	);
+
+	if ( $post_types ) {
+		foreach ( $post_types as $name => $post_type ) {
+			$choices[ $name ] = $post_type->label;
+		}
 	}
 
 	return $choices;
@@ -556,8 +682,13 @@ function mai_get_content_type_choices( $archive = false ) {
  * @return array
  */
 function mai_get_loop_content_type_choices( $archive = true ) {
-	$choices = mai_get_content_type_choices( $archive );
-	$feature = $archive ? 'mai-archive-settings' : 'mai-single-settings';
+	if ( $archive ) {
+		$choices = mai_get_content_type_archive_choices();
+		$feature = 'mai-archive-settings';
+	} else {
+		$choices = mai_get_content_type_single_choices();
+		$feature = 'mai-single-settings';
+	}
 
 	foreach ( $choices as $name => $label ) {
 
@@ -600,17 +731,28 @@ function mai_get_loop_content_type_choices( $archive = true ) {
  * @return string|false
  */
 function mai_get_taxonomy_post_type( $taxonomy ) {
-	$taxonomy = get_taxonomy( $taxonomy );
+	static $post_types = null;
 
-	if ( $taxonomy ) {
-		$post_type = reset( $taxonomy->object_type );
+	if ( is_array( $post_types ) && isset( $post_types[ $taxonomy ] ) ) {
+		return $post_types[ $taxonomy ];
+	}
+
+	if ( ! is_array( $post_types ) ) {
+		$post_types = [];
+	}
+
+	$post_types[ $taxonomy ] = false;
+	$taxo                    = get_taxonomy( $taxonomy );
+
+	if ( $taxo ) {
+		$post_type = reset( $taxo->object_type );
 
 		if ( post_type_exists( $post_type ) ) {
-			return $post_type;
+			$post_types[ $taxonomy ] = $post_type;
 		}
 	}
 
-	return false;
+	return $post_types[ $taxonomy ];
 }
 
 /**
@@ -621,7 +763,15 @@ function mai_get_taxonomy_post_type( $taxonomy ) {
  * @return string;
  */
 function mai_get_ellipsis() {
-	return apply_filters( 'mai_read_more_ellipses', ' &hellip;' );
+	static $ellipsis = null;
+
+	if ( ! is_null( $ellipsis ) ) {
+		return $ellipsis;
+	}
+
+	$ellipsis = apply_filters( 'mai_read_more_ellipses', ' &hellip;' );
+
+	return $ellipsis;
 }
 
 /**
@@ -629,58 +779,28 @@ function mai_get_ellipsis() {
  *
  * Great for displaying reusable blocks in areas that are not block enabled.
  *
- * Switched from get_post_field to WP_Query so blocks are parsed and shortcodes are rendered better.
- *
  * @since 0.3.0
+ * @since N/A    Switched from get_post_field to WP_Query so blocks are parsed and shortcodes are rendered better.
+ * @since 2.11.0 Switched from WP_Query to mai_get_processed_content() to avoid conflicts with is_main_query().
  *
  * @param int|string $post_slug_or_id The post slug or ID.
+ * @param string     $post_type       The post type, if using post slug.
  *
  * @return string
  */
-function mai_get_post_content( $post_slug_or_id ) {
-	$post_id   = false;
-	$post_type = false;
-
+function mai_get_post_content( $post_slug_or_id, $post_type = 'wp_block' ) {
 	if ( is_numeric( $post_slug_or_id ) ) {
-		$post_id   = $post_slug_or_id;
-		$post_type = get_post_type( $post_id );
+		$post = get_post( $post_slug_or_id );
 
 	} else {
-		$post = get_page_by_path( $post_slug_or_id, OBJECT, 'wp_block' );
-
-		if ( $post ) {
-			$post_id   = $post->ID;
-			$post_type = $post->post_type;
-		}
+		$post = get_page_by_path( $post_slug_or_id, OBJECT, $post_type );
 	}
 
-	if ( ! ( $post_id && $post_type ) ) {
-		return '';
+	if ( ! $post ) {
+		return;
 	}
 
-	$loop = new WP_Query(
-		[
-			'post_type'              => $post_type,
-			'post__in'               => [ $post_id ],
-			'posts_per_page'         => 1,
-			'no_found_rows'          => true,
-			'update_post_term_cache' => false,
-			'update_post_meta_cache' => false,
-		]
-	);
-
-	ob_start();
-
-	if ( $loop->have_posts() ) {
-		while ( $loop->have_posts() ) {
-			$loop->the_post();
-			the_content();
-		}
-	}
-
-	wp_reset_postdata();
-
-	return ob_get_clean();
+	return mai_get_processed_content( $post->post_content );
 }
 
 /**
@@ -730,7 +850,15 @@ function mai_get_processed_content( $content ) {
  * @return string
  */
 function mai_get_read_more_text() {
-	return esc_html( apply_filters( 'mai_read_more_text', mai_get_config( 'settings' )['content-archives']['more_link_text'] ) );
+	static $text = null;
+
+	if ( ! is_null( $text ) ) {
+		return $text;
+	}
+
+	$text = apply_filters( 'mai_read_more_text', mai_get_config( 'settings' )['content-archives']['more_link_text'] );
+
+	return $text;
 }
 
 /**
@@ -793,17 +921,20 @@ function mai_get_header_shrink_offset() {
  * @return string
  */
 function mai_get_menu( $menu, $args = [] ) {
+	$defaults = mai_get_menu_defaults();
+	$args     = shortcode_atts( $defaults, $args, 'mai_menu' );
+
 	if ( ! is_nav_menu( $menu ) ) {
 		return;
 	}
 
 	$menu_class = 'menu genesis-nav-menu';
 
-	if ( isset( $args['class'] ) && $args['class'] ) {
+	if ( $args['class'] ) {
 		$menu_class = mai_add_classes( $args['class'], $menu_class );
 	}
 
-	$list = isset( $args['display'] ) && ( 'list' === $args['display'] );
+	$list = 'list' === $args['display'];
 
 	if ( $list ) {
 		$menu_class = mai_add_classes( 'menu-list', $menu_class );
@@ -842,7 +973,7 @@ function mai_get_menu( $menu, $args = [] ) {
 			'style' => '',
 		];
 
-		if ( isset( $args['align'] ) && $args['align'] ) {
+		if ( $args['align'] ) {
 			switch ( trim( $args['align'] ) ) {
 				case 'left':
 					$atts['style'] .= '--menu-justify-content:flex-start;--menu-item-justify-content:flex-start;';
@@ -863,6 +994,16 @@ function mai_get_menu( $menu, $args = [] ) {
 					}
 					break;
 			}
+		}
+
+		if ( $args['font_size'] ) {
+			if ( in_array( $args['font_size'], ['xs', 'sm', 'md', 'lg', 'xl', 'xxl' ] ) ) {
+				$size = sprintf( 'var(--font-size-%s)', $args['font_size'] );
+			} else {
+				$size = mai_get_unit_value( $args['font-size'] );
+			}
+
+			$atts['style'] .= sprintf( '--menu-font-size:%s;', $size );
 		}
 
 		$atts['itemtype'] = 'https://schema.org/SiteNavigationElement';
@@ -893,14 +1034,43 @@ function mai_get_menu( $menu, $args = [] ) {
  * @return array
  */
 function mai_get_menu_items_by_location( $location ) {
-	$menu_items = [];
-	$locations  = get_nav_menu_locations();
-	if ( $locations && isset( $locations[ $location ] ) && $locations[ $location ] ) {
-		$menu       = get_term( $locations[ $location ] );
-		$menu_items = $menu ? wp_get_nav_menu_items( $menu->term_id ) : $menu_items;
+	static $menu_items = null;
+
+	if ( is_array( $menu_items ) && isset( $menu_items[ $location ] ) ) {
+		return $menu_items[ $location ];
 	}
 
-	return $menu_items;
+	if ( ! is_array( $menu_items ) ) {
+		$menu_items = [];
+	}
+
+	$items = [];
+	$locations = get_nav_menu_locations();
+	if ( $locations && isset( $locations[ $location ] ) && $locations[ $location ] ) {
+		$menu                    = get_term( $locations[ $location ] );
+		$menu_items[ $location ] = $menu && ! is_wp_error( $menu ) ? wp_get_nav_menu_items( $menu->term_id ) : $items;
+	}
+
+	return $menu_items[ $location ];
+}
+
+/**
+ * Gets menu default args.
+ * For use with mai_menu shorcode.
+ *
+ * @since 2.12.0
+ *
+ * @return array
+ */
+function mai_get_menu_defaults() {
+	$defaults = [
+		'id'        => '',       // The menu ID, slug, name.
+		'class'     => '',       // HTML classes.
+		'align'     => 'center', // Accepts left, center, or right.
+		'display'   => '',       // Accepts list.
+		'font_size' => '',       // Accepts size values 'sm', 'md', etc. or integer or unit value.
+	];
+	return apply_filters( 'mai_menu_defaults', $defaults );
 }
 
 /**
@@ -913,10 +1083,29 @@ function mai_get_menu_items_by_location( $location ) {
  *
  * @return string
  */
-function mai_get_avatar( $args ) {
-	$args       = wp_parse_args( $args, mai_get_avatar_default_args() );
-	$args['id'] = 'current' === $args['id'] ? mai_get_author_id() : $args['id'];
-	$avatar     = get_avatar( $args['id'], absint( $args['size'] ) );
+function mai_get_avatar( $args = [] ) {
+	$args = shortcode_atts(
+		mai_get_avatar_default_args(),
+		$args,
+		'mai_avatar'
+	);
+
+	switch ( $args['id'] ) {
+		case 'current':
+			$args['id'] = mai_get_author_id();
+		break;
+		case 'user':
+			$args['id'] = get_current_user_id();
+		break;
+		default:
+			$args['id'] = $args['id'];
+	}
+
+	if ( ! $args['id'] ) {
+		return;
+	}
+
+	$avatar = get_avatar( $args['id'], absint( $args['size'] ) );
 
 	if ( ! $avatar ) {
 		return;
@@ -952,8 +1141,14 @@ function mai_get_avatar( $args ) {
  * @return array
  */
 function mai_get_avatar_default_args() {
-	return [
-		'id'            => 'current',
+	static $args = null;
+
+	if ( ! is_null( $args ) ) {
+		return $args;
+	}
+
+	$args = [
+		'id'            => 'current', // Or 'user', or a user ID.
 		'size'          => mai_get_image_width( 'tiny' ) / 2, // Half of the tiny size.
 		'display'       => in_the_loop() ? 'inline-block' : 'block',
 		'margin_top'    => 0,
@@ -961,25 +1156,242 @@ function mai_get_avatar_default_args() {
 		'margin_bottom' => 0,
 		'margin_left'   => 0,
 	];
+
+	return $args;
 }
 
 /**
  * Gets an entry author ID.
  *
  * @since 2.7.0
+ * @since 2.13.0 Switch get_the_author_meta( 'ID' )
+ *        to get_post_field( 'post_author' )
+ *        since it wasn't working in page header and other contexts.
  *
  * @return int|false
  */
 function mai_get_author_id() {
+	static $author_id = null;
+
+	if ( ! is_null( $author_id ) ) {
+		return $author_id;
+	}
+
 	$author_id = false;
 
 	if ( is_author() && ! in_the_loop() ) {
 		$author_id = get_query_var( 'author' );
 	} else {
-		$author_id = get_the_author_meta( 'ID' );
+		$author_id = get_post_field( 'post_author' );
 	}
 
 	return $author_id;
+}
+
+/**
+ * Gets a star rating.
+ *
+ * @since 2.11.0
+ *
+ * @param array $args The rating args.
+ *
+ * @return string
+ */
+function mai_get_rating( $args ) {
+	$args = shortcode_atts( [
+		'value' => 5,
+		'total' => 5,
+		'size'  => '1em',
+		'color' => 'gold',
+		'align' => '',
+	], $args, 'mai_rating' );
+
+	$args = [
+		'value' => floatval( $args['value'] ),
+		'total' => absint( $args['total'] ),
+		'size'  => esc_html( $args['size'] ),
+		'color' => mai_get_color_value( $args['color'] ),
+		'align' => esc_html( $args['align'] ),
+	];
+
+	$attr = [
+		'class' => 'mai-rating',
+		'style' => '',
+	];
+
+	if ( $args['align'] ) {
+		$attr['style'] .= sprintf( '--mai-rating-justify-content:%s;', mai_get_flex_align( $args['align'] ) );
+	}
+
+	$split  = explode( '.', $args['value'] );
+	$half   = isset( $split[1] ) && $split[1];
+	$rating = floor( $args['value'] );
+	$total  = $args['total'];
+	$star   = mai_get_icon(
+		[
+			'icon'       => 'star',
+			'style'      => 'solid',
+			'size'       => $args['size'],
+			'color_icon' => $args['color'],
+			'class'      => 'mai-rating-icon',
+		]
+	);
+
+	$html = genesis_markup(
+		[
+			'open'    => '<ul %s>',
+			'context' => 'mai-rating',
+			'echo'    => false,
+			'atts'    => $attr,
+			'params'  => [
+				'args' => $args,
+			],
+		]
+	);
+
+		$count = 1;
+		for ( $rating = 1; $rating <= $args['value']; $rating++ ) {
+			if ( $rating > $total ) {
+				break;
+			}
+
+			$html .= genesis_markup(
+				[
+					'open'    => '<li %s>',
+					'close'   => '</li>',
+					'context' => 'mai-rating-item',
+					'content' => $star,
+					'echo'    => false,
+					'params'  => [
+						'args' => $args,
+					],
+				]
+			);
+			$count++;
+		}
+
+		if ( $count <= $total ) {
+			if ( $half ) {
+				$half = mai_get_icon(
+					[
+						'icon'       => 'star-half-alt',
+						'style'      => 'solid',
+						'size'       => $args['size'],
+						'color_icon' => $args['color'],
+						'class'      => 'mai-rating-icon',
+					]
+				);
+				$html .= genesis_markup(
+					[
+						'open'    => '<li %s>',
+						'close'   => '</li>',
+						'context' => 'mai-rating-item',
+						'content' => $half,
+						'echo'    => false,
+						'params'  => [
+							'args' => $args,
+						],
+					]
+				);
+				$count++;
+			}
+
+			if ( $count <= $total ) {
+				$empty = mai_get_icon(
+					[
+						'icon'       => 'star',
+						'style'      => 'light',
+						'size'       => $args['size'],
+						'color_icon' => $args['color'],
+						'class'      => 'mai-rating-icon',
+					]
+				);
+				for ( $count; $count <= $total; $count++ ) {
+					$html .= genesis_markup(
+						[
+							'open'    => '<li %s>',
+							'close'   => '</li>',
+							'context' => 'mai-rating-item',
+							'content' => $empty,
+							'echo'    => false,
+							'params'  => [
+								'args' => $args,
+							],
+						]
+					);
+				}
+			}
+		}
+
+	$html .= genesis_markup(
+		[
+			'close'   => '</ul>',
+			'context' => 'mai-rating',
+			'echo'    => false,
+			'params'  => [
+				'args' => $args,
+			],
+		]
+	);
+
+	return $html;
+}
+
+/**
+ * Gets a search form.
+ * Available default args:
+ * [
+ *    'label',        // Hidden.
+ *    'placeholder',  // Defaults to "Search site".
+ *    'input_value',  // Defaults to the search query.
+ *    'submit_value', // Defaults to search icon. Uses this value for screen-reader-text.
+ * ]
+ *
+ * @since 2.11.0
+ *
+ * @param array $args The search form args.
+ *
+ * @return string
+ */
+function mai_get_search_form( $args = [] ) {
+	if ( ! class_exists( 'Genesis_Search_Form' ) ) {
+		return get_search_form( false );
+	}
+
+	$searchform = new Genesis_Search_Form( $args );
+	return $searchform->get_form();
+}
+
+/**
+ * Gets a search icon with form for menu items
+ * and mobile header.
+ *
+ * @since 2.11.0
+ *
+ * @access private The params may change in a future date.
+ *
+ * @param string $title     The toggle icon screen reader text.
+ * @param string $icon_size The size of the icon.
+ *
+ * @return string
+ */
+function mai_get_search_icon_form( $title = '', $icon_size = '16' ) {
+	$icon = mai_get_svg_icon( 'search', 'regular',
+		[
+			'class'  => 'search-toggle-icon',
+			'width'  => mai_get_width_height_attribute( $icon_size ),
+			'height' => mai_get_width_height_attribute( $icon_size ),
+		]
+	);
+
+	$html = sprintf( '<button class="search-toggle" aria-expanded="false" aria-pressed="false"><span class="screen-reader-text">%s</span>%s</button>',
+		esc_html( $title ?: __( 'Search', 'mai-engine' ) ),
+		$icon
+	);
+
+	$html .= mai_get_search_form();
+
+	return $html;
 }
 
 /**
@@ -1048,10 +1460,12 @@ function mai_get_dom_first_child( $dom ) {
 function mai_is_https() {
 	static $https = null;
 
-	if ( is_null( $https ) ) {
-		$url   = wp_parse_url( home_url() );
-		$https = 'https' === $url['scheme'];
+	if ( ! is_null( $https ) ) {
+		return $https;
 	}
+
+	$url   = wp_parse_url( home_url() );
+	$https = 'https' === $url['scheme'];
 
 	return $https;
 }
@@ -1143,4 +1557,59 @@ function mai_get_entry_meta_setting_description() {
 		__( 'and', 'mai-engine' ),
 		__( 'Mai Theme', 'mai-engine' )
 	);
+}
+
+/**
+ * Gets the plugin updater icons.
+ * This may be used in additiona Mai Plugins.
+ *
+ * @since 2.11.0
+ *
+ * @return array
+ */
+function mai_get_updater_icons() {
+	$icons    = [];
+	$standard = mai_get_logo_icon_1x();
+	$retina   = mai_get_logo_icon_2x();
+	if ( $standard && $retina ) {
+		$icons = [
+			'1x' => $standard,
+			'2x' => $retina,
+		];
+	}
+	return $icons;
+}
+
+/**
+ * Gets the Mai Theme logo icon @1x for plugin updater.
+ *
+ * @since 2.11.0
+ *
+ * @return string
+ */
+function mai_get_logo_icon_1x() {
+	static $icon = null;
+	if ( ! is_null( $icon ) ) {
+		return $icon;
+	}
+	$file = 'assets/img/icon-128x128.png';
+	$icon = file_exists( mai_get_dir() . $file ) ? mai_get_url() . $file : '';
+	return $icon;
+}
+
+/**
+ * Gets the Mai Theme logo icon @1x for plugin updater.
+ *
+ * @since 2.11.0
+ *
+ * @return string
+ */
+function mai_get_logo_icon_2x() {
+	static $icon = null;
+	if ( ! is_null( $icon ) ) {
+		return $icon;
+	}
+	$file = 'assets/img/icon-256x256.png';
+	$icon = file_exists( mai_get_dir() . $file ) ? mai_get_url() . $file : '';
+	return $icon;
 }

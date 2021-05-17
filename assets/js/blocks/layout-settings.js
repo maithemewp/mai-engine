@@ -50,6 +50,10 @@ const addLayoutControlAttribute = ( settings, name ) => {
 				type: 'string',
 				default: '',
 			},
+			contentAlign: {
+				type: 'string',
+				default: '',
+			},
 			verticalSpacingTop: {
 				type: 'string',
 				default: '',
@@ -133,7 +137,49 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 	return ( props ) => {
 		if ( enableLayoutSettingsBlocks.includes( props.name ) ) {
 
-			const sizeScale = [
+			const contentWidthChoices = [
+				{
+					label: __( 'XS', 'mai-engine' ),
+					value: 'xs',
+				},
+				{
+					label: __( 'S', 'mai-engine' ),
+					value: 'sm',
+				},
+				{
+					label: __( 'M', 'mai-engine' ),
+					value: 'md',
+				},
+				{
+					label: __( 'L', 'mai-engine' ),
+					value: 'lg',
+				},
+				{
+					label: __( 'XL', 'mai-engine' ),
+					value: 'xl',
+				},
+				{
+					label: __( 'Full', 'mai-engine' ),
+					value: 'no',
+				},
+			];
+
+			const alignChoices = [
+				{
+					label: __( 'Start', 'mai-engine' ),
+					value: 'start',
+				},
+				{
+					label: __( 'Center', 'mai-engine' ),
+					value: 'center',
+				},
+				{
+					label: __( 'Right', 'mai-engine' ),
+					value: 'end',
+				},
+			];
+
+			const paddingChoices = [
 				{
 					label: __( 'XS', 'mai-engine' ),
 					value: 'xs',
@@ -158,6 +204,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 
 			const {
 					contentWidth,
+					contentAlign,
 					verticalSpacingTop,
 					verticalSpacingBottom,
 					verticalSpacingLeft,
@@ -169,17 +216,17 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 					<BlockEdit {...props} />
 					<InspectorControls>
 						<PanelBody
-							title={__( 'Content Width', 'mai-engine' )}
+							title={__( 'Layout', 'mai-engine' )}
 							initialOpen={false}
-							className={'mai-content-width-settings'}
+							className={'mai-content-width-align-settings'}
 						>
 							<BaseControl
 								id="mai-content-width"
-								label={__( 'Max Width', 'mai-engine' )}
+								label={__( 'Content Max Width', 'mai-engine' )}
 							>
 								<div>
 									<ButtonGroup mode="radio" data-chosen={contentWidth}>
-										{sizeScale.map( sizeInfo => (
+										{contentWidthChoices.map( sizeInfo => (
 											<Button
 											onClick={() => {
 												props.setAttributes( {
@@ -206,9 +253,42 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 									</Button>
 								</div>
 							</BaseControl>
+							<BaseControl
+								id="mai-content-align"
+								label={__( 'Content Alignment', 'mai-engine' )}
+							>
+								<div>
+									<ButtonGroup mode="radio" data-chosen={contentAlign}>
+										{alignChoices.map( alignInfo => (
+											<Button
+											onClick={() => {
+												props.setAttributes( {
+													contentAlign: alignInfo.value,
+												} );
+											}}
+											data-checked={contentAlign === alignInfo.value}
+											value={alignInfo.value}
+											key={`mai-content-align-${alignInfo.value}`}
+											index={alignInfo.value}
+											isSecondary={contentAlign !== alignInfo.value}
+											isPrimary={contentAlign === alignInfo.value}
+											>
+												<small>{alignInfo.label}</small>
+											</Button>
+										) )}
+									</ButtonGroup>
+									<Button isDestructive isSmall isLink onClick={() => {
+										props.setAttributes( {
+											contentAlign: null,
+										} );
+									}}>
+										{__( 'Clear', 'mai-engine' )}
+									</Button>
+								</div>
+							</BaseControl>
 						</PanelBody>
 						<PanelBody
-							title={__( 'Spacing', 'mai-engine' )}
+							title={__( 'Padding', 'mai-engine' )}
 							initialOpen={false}
 							className={'mai-spacing-settings'}
 						>
@@ -218,7 +298,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 							>
 								<div>
 									<ButtonGroup mode="radio" data-chosen={verticalSpacingTop}>
-										{sizeScale.map( sizeInfo => (
+										{paddingChoices.map( sizeInfo => (
 											<Button
 											onClick={() => {
 												props.setAttributes( {
@@ -251,7 +331,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 							>
 								<div>
 									<ButtonGroup mode="radio" data-chosen={verticalSpacingBottom}>
-										{sizeScale.map( sizeInfo => (
+										{paddingChoices.map( sizeInfo => (
 											<Button
 												onClick={() => {
 													props.setAttributes( {
@@ -284,7 +364,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 							>
 								<div>
 									<ButtonGroup mode="radio" data-chosen={verticalSpacingLeft}>
-										{sizeScale.map( sizeInfo => (
+										{paddingChoices.map( sizeInfo => (
 											<Button
 												onClick={() => {
 													props.setAttributes( {
@@ -317,7 +397,7 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 							>
 								<div>
 									<ButtonGroup mode="radio" data-chosen={verticalSpacingRight}>
-										{sizeScale.map( sizeInfo => (
+										{paddingChoices.map( sizeInfo => (
 											<Button
 												onClick={() => {
 													props.setAttributes( {
@@ -373,7 +453,7 @@ const withMaxWidthControls = createHigherOrderComponent( ( BlockEdit ) => {
 
 		if ( enableMaxWidthSettingsBlocks.includes( props.name ) ) {
 
-			const sizeScale = [
+			const widthChoices = [
 				{
 					label: __( 'XS', 'mai-engine' ),
 					value: 'xs',
@@ -415,7 +495,7 @@ const withMaxWidthControls = createHigherOrderComponent( ( BlockEdit ) => {
 							>
 								<div>
 									<ButtonGroup mode="radio" data-chosen={maxWidth}>
-										{sizeScale.map( sizeInfo => (
+										{widthChoices.map( sizeInfo => (
 											<Button
 											onClick={() => {
 												props.setAttributes( {
@@ -472,7 +552,7 @@ const withSpacingControls = createHigherOrderComponent( ( BlockEdit ) => {
 		if ( enableSpacingSettingsBlocks.includes( props.name ) ) {
 
 			// Values mapped to a spacing sizes, labels kept consistent. Matches grid/archive column and row gap.
-			const sizeScale = [
+			const widthChoices = [
 				{
 					label: __( 'XXS', 'mai-engine' ),
 					value: 'sm',
@@ -513,7 +593,7 @@ const withSpacingControls = createHigherOrderComponent( ( BlockEdit ) => {
 					<BlockEdit {...props} />
 					<InspectorControls>
 						<PanelBody
-							title={__( 'Spacing', 'mai-engine' )}
+							title={__( 'Margin', 'mai-engine' )}
 							initialOpen={false}
 							className={'mai-spacing-settings'}
 						>
@@ -523,7 +603,7 @@ const withSpacingControls = createHigherOrderComponent( ( BlockEdit ) => {
 							>
 								<div>
 									<ButtonGroup mode="radio" data-chosen={spacingTop}>
-										{sizeScale.map( sizeInfo => (
+										{widthChoices.map( sizeInfo => (
 											<Button
 											onClick={() => {
 												props.setAttributes( {
@@ -556,7 +636,7 @@ const withSpacingControls = createHigherOrderComponent( ( BlockEdit ) => {
 							>
 								<div>
 									<ButtonGroup mode="radio" data-chosen={spacingBottom}>
-										{sizeScale.map( sizeInfo => (
+										{widthChoices.map( sizeInfo => (
 											<Button
 											onClick={() => {
 												props.setAttributes( {
@@ -611,10 +691,14 @@ const withMarginControls = createHigherOrderComponent( ( BlockEdit ) => {
 		if ( enableMarginSettingsBlocks.includes( props.name ) ) {
 
 			// Values mapped to a spacing sizes, labels kept consistent. Matches grid/archive column and row gap.
-			const sizeScale = [
+			const widthChoices = [
 				{
 					label: __( 'Default', 'mai-engine' ),
 					value: '',
+				},
+				{
+					label: __( 'None', 'mai-engine' ),
+					value: 'no',
 				},
 				{
 					label: __( 'XS', 'mai-engine' ),
@@ -690,7 +774,7 @@ const withMarginControls = createHigherOrderComponent( ( BlockEdit ) => {
 										marginTop: marginTop,
 									} );
 								}}
-								options={ sizeScale }
+								options={ widthChoices }
 							/>
 							<SelectControl
 								label={ __( 'Bottom', 'mai-engine' ) }
@@ -700,7 +784,7 @@ const withMarginControls = createHigherOrderComponent( ( BlockEdit ) => {
 										marginBottom: marginBottom,
 									} );
 								}}
-								options={ sizeScale }
+								options={ widthChoices }
 							/>
 							<SelectControl
 								label={ __( 'Left', 'mai-engine' ) }
@@ -710,7 +794,7 @@ const withMarginControls = createHigherOrderComponent( ( BlockEdit ) => {
 										marginLeft: marginLeft,
 									} );
 								}}
-								options={ sizeScale }
+								options={ widthChoices }
 							/>
 							<SelectControl
 								label={ __( 'Right', 'mai-engine' ) }
@@ -720,7 +804,7 @@ const withMarginControls = createHigherOrderComponent( ( BlockEdit ) => {
 										marginRight: marginRight,
 									} );
 								}}
-								options={ sizeScale }
+								options={ widthChoices }
 							/>
 							<p><em>{ __( 'Note: Left/right overlap settings are disabled on smaller screens.', 'mai-engine' ) }</em></p>
 						</PanelBody>
@@ -751,6 +835,7 @@ const addCustomAttributes = createHigherOrderComponent( ( BlockListBlock ) => {
 
 		if ( enableLayoutSettingsBlocks.includes( props.name ) ) {
 			wrapperProps['data-content-width']  = props.attributes.contentWidth;
+			wrapperProps['data-content-align']  = props.attributes.contentAlign;
 			wrapperProps['data-spacing-top']    = props.attributes.verticalSpacingTop;
 			wrapperProps['data-spacing-bottom'] = props.attributes.verticalSpacingBottom;
 			wrapperProps['data-spacing-left']   = props.attributes.verticalSpacingLeft;

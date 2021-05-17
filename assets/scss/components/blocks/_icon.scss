@@ -1,11 +1,12 @@
 .mai-icon {
-	line-height: 1;
+	line-height: 0;
 	vertical-align: middle;
 
 	@include clearfix();
 
 	svg {
 		position: relative;
+		width: 100%;
 		max-width: var(--icon-size);
 		height: 100%;
 		max-height: var(--icon-size);

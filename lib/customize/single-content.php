@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 /**
  * Returns single content settings.
  *
@@ -19,13 +22,28 @@
  * @return array
  */
 function mai_get_single_content_settings( $name = 'post' ) {
-	static $settings = null;
-	if ( ! is_null( $settings ) ) {
-		return $settings;
+	static $single_settings = null;
+
+	if ( is_array( $single_settings ) && isset( $single_settings[ $name ] ) ) {
+		return $single_settings[ $name ];
 	}
 
-	$defaults = mai_get_config( 'settings' )['single-content'];
-	$defaults = isset( $defaults[ $name ] ) ? $defaults[ $name ] : $defaults[ 'post' ];
+	if ( ! is_array( $single_settings ) ) {
+		$single_settings = [];
+	}
+
+	$config   = mai_get_config( 'settings' )['single-content'];
+	$defaults = isset( $config[ $name ] ) ? $config[ $name ] : $config['post'];
+
+	if ( 'post' !== $name ) {
+		foreach ( $config[ 'post' ] as $key => $value ) {
+			if ( isset( $defaults[ $key ] ) ) {
+				continue;
+			}
+			$defaults[ $key ] = $value;
+		}
+	}
+
 	$settings = [
 		[
 			'settings'    => 'show',
@@ -115,6 +133,20 @@ function mai_get_single_content_settings( $name = 'post' ) {
 				],
 			],
 		],
+		// [
+		// 	'settings'        => 'custom_content_2',
+		// 	'label'           => __( 'Custom Content 2', 'mai-engine' ),
+		// 	'type'            => 'textarea',
+		// 	'sanitize'        => 'wp_kses_post',
+		// 	'default'         => $defaults['custom_content_2'],
+		// 	'active_callback' => [
+		// 		[
+		// 			'setting'  => 'show',
+		// 			'operator' => 'contains',
+		// 			'value'    => 'custom_content_2',
+		// 		],
+		// 	],
+		// ],
 		[
 			'type'     => 'custom',
 			'settings' => 'single-content-field-divider',
@@ -143,6 +175,9 @@ function mai_get_single_content_settings( $name = 'post' ) {
 			'label'           => __( 'Background/overlay color', 'mai-engine' ),
 			'type'            => 'color',
 			'default'         => $defaults['page-header-background-color'],
+			'choices'         => [
+				'palettes' => mai_get_color_choices(),
+			],
 			'active_callback' => 'mai_has_page_header_support_callback',
 		],
 		[
@@ -172,9 +207,9 @@ function mai_get_single_content_settings( $name = 'post' ) {
 		],
 	];
 
-	$settings = apply_filters( 'mai_single_content_settings', $settings, $name );
+	$single_settings[ $name ] = apply_filters( 'mai_single_content_settings', $settings, $name );
 
-	return $settings;
+	return $single_settings[ $name ];
 }
 
 add_action( 'init', 'mai_add_single_content_settings' );
@@ -190,6 +225,14 @@ function mai_add_single_content_settings() {
 	$panel    = 'single-content';
 	$defaults = mai_get_config( 'settings' )['single-content']['enable'];
 	$sections = mai_get_option( 'single-settings', $defaults, false );
+
+	// Remove any content types that no longer exist.
+	foreach ( $sections as $index => $section ) {
+		if ( post_type_exists( $section ) ) {
+			continue;
+		}
+		unset( $sections[ $index ] );
+	}
 
 	Kirki::add_panel(
 		"{$handle}-{$panel}",

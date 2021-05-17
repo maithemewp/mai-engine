@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 /**
  * Always show the site title and description.
  * It's hidden screen-reader-text class if a custom logo is used.
@@ -39,13 +42,134 @@ add_action( 'genesis_header', 'mai_do_header' );
  * @return void
  */
 function mai_do_header() {
-	add_filter( 'genesis_attr_nav-menu', 'mai_nav_header_attributes', 10, 3 );
+	add_filter( 'genesis_attr_nav-menu', 'mai_nav_header_attributes' );
+
+	mai_do_header_left();
+
+	$elements = mai_get_option( 'site-header-mobile', mai_get_config( 'settings')['site-header-mobile'] );
+
+	if ( $elements ) {
+
+		$filter = function( $defaults ) {
+			$defaults['size'] = '1.5em';
+			return $defaults;
+		};
+
+		add_filter( 'mai_icon_defaults', $filter );
+
+		$sections = [];
+		$left     = [];
+		$right    = [];
+		$flipped  = array_flip( $elements );
+
+		if ( isset( $flipped['title_area'] ) ) {
+			$left     = array_slice( $elements, 0, $flipped['title_area'] );
+			$right    = array_slice( $elements, $flipped['title_area'] + 1 );
+			$elements = array_values( array_diff( $elements, $left, $right ) );
+		}
+
+		if ( $left ) {
+			genesis_markup(
+				[
+					'open'    => '<div %s>',
+					'context' => 'header-left-mobile',
+					'echo'    => true,
+					'atts'    => [
+						'class' => 'header-section-mobile header-left-mobile'
+					]
+				]
+			);
+			foreach( $left as $index => $element ) {
+				$function = "mai_do_{$element}";
+				if ( function_exists( $function ) ) {
+					$function();
+				}
+			}
+			genesis_markup(
+				[
+					'close'   => '</div>',
+					'context' => 'header-left-mobile',
+					'echo'    => true,
+				]
+			);
+		}
+
+		if ( $elements ) {
+			foreach( $elements as $index => $element ) {
+				$function = "mai_do_{$element}";
+				if ( function_exists( $function ) ) {
+					$function();
+				}
+			}
+		}
+
+		if ( $right ) {
+			genesis_markup(
+				[
+					'open'    => '<div %s>',
+					'context' => 'header-right-mobile',
+					'echo'    => true,
+					'atts'    => [
+						'class' => 'header-section-mobile header-right-mobile'
+					]
+				]
+			);
+			foreach( $right as $index => $element ) {
+				$function = "mai_do_{$element}";
+				if ( function_exists( $function ) ) {
+					$function();
+				}
+			}
+			genesis_markup(
+				[
+					'close'   => '</div>',
+					'context' => 'header-right-mobile',
+					'echo'    => true,
+				]
+			);
+		}
+
+		remove_filter( 'mai_icon_defaults', $filter );
+	}
+
+	mai_do_header_right();
+
+	remove_filter( 'genesis_attr_nav-menu', 'mai_nav_header_attributes' );
+}
+
+/**
+ * Displays title area.
+ *
+ * @access private
+ *
+ * @since 2.11.0
+ *
+ * @return void
+ */
+function mai_do_title_area() {
 	do_action( 'mai_before_title_area' );
+
+	$class    = 'title-area';
+	$elements = mai_get_option( 'site-header-mobile', mai_get_config( 'settings')['site-header-mobile'] );
+
+	if ( $elements ) {
+		$first = 'title_area' === reset( $elements );
+		$last  = 'title_area' === end( $elements );
+		if ( $first ) {
+			$class .= ' title-area-first';
+		}
+		if ( $last ) {
+			$class .= ' title-area-last';
+		}
+	}
 
 	genesis_markup(
 		[
 			'open'    => '<div %s>',
 			'context' => 'title-area',
+			'atts'    => [
+				'class' => $class,
+			]
 		]
 	);
 
@@ -67,7 +191,86 @@ function mai_do_header() {
 	);
 
 	do_action( 'mai_after_title_area' );
-	remove_filter( 'genesis_attr_nav-menu', 'mai_nav_header_attributes' );
+}
+
+/**
+ * Displays mobile menu toggle.
+ *
+ * @access private
+ *
+ * @since 2.11.0
+ *
+ * @return void
+ */
+function mai_do_menu_toggle() {
+	$text = sprintf( '<span class="screen-reader-text">%s</span>', __( 'Menu', 'mai-engine' ) );
+	$text = apply_filters( 'mai_menu_toggle_text', $text );
+
+	genesis_markup(
+		[
+			'open'    => '<button %s>',
+			'close'   => '</button>',
+			'context' => 'menu-toggle',
+			'content' => sprintf( '<span class="menu-toggle-icon"></span>%s', $text ),
+			'atts'    => [
+				'class'         => 'menu-toggle',
+				'aria-expanded' => false,
+				'aria-pressed'  => false,
+			],
+		]
+	);
+}
+
+/**
+ * Displays mobile header search icon and form.
+ *
+ * @access private
+ *
+ * @since 2.11.0
+ *
+ * @return void
+ */
+function mai_do_header_search() {
+	genesis_markup(
+		[
+			'open'    => '<div %s>',
+			'close'   => '</div>',
+			'context' => 'header-search',
+			'content' => mai_get_search_icon_form( __( 'Header Search', 'mai-engine' ), 24 ),
+			'echo'    => true,
+			'atts'    => [
+				'class' => 'header-search search-icon-form',
+			]
+		]
+	);
+}
+
+/**
+ * Displays mobile header custom content.
+ *
+ * @access private
+ *
+ * @since 2.11.0
+ *
+ * @return void
+ */
+function mai_do_header_content() {
+	$content = mai_get_option( 'site-header-mobile-content', mai_get_config( 'settings')['site-header-mobile-content'] );
+	$content = trim( $content );
+
+	if ( ! $content ) {
+		return;
+	}
+
+	genesis_markup(
+		[
+			'open'    => '<div %s>',
+			'close'   => '</div>',
+			'context' => 'header-content',
+			'content' => do_shortcode( $content ),
+			'echo'    => true,
+		]
+	);
 }
 
 /**
@@ -81,7 +284,7 @@ function mai_do_header() {
  */
 function mai_nav_header_attributes( $attributes ) {
 	$attributes['class'] .= ' nav-header';
-	$atts['itemtype']    = 'https://schema.org/SiteNavigationElement';
+	$atts['itemtype']     = 'https://schema.org/SiteNavigationElement';
 
 	return $attributes;
 }
@@ -102,6 +305,55 @@ function mai_maybe_hide_site_header() {
 	remove_action( 'genesis_header', 'genesis_header_markup_open', 5 );
 	remove_action( 'genesis_header', 'mai_do_header' );
 	remove_action( 'genesis_header', 'genesis_header_markup_close', 15 );
+}
+
+add_action( 'genesis_site_title', 'mai_maybe_do_custom_scroll_logo', 0 );
+/**
+ * Adds filter on custom logo before site title.
+ * Removes filter after the logo is added.
+ *
+ * @since 2.14.0
+ *
+ * @return void
+ */
+function mai_maybe_do_custom_scroll_logo() {
+	add_filter( 'get_custom_logo', 'mai_custom_scroll_logo', 10, 2 );
+
+	add_action( 'genesis_site_title', function() {
+		remove_filter( 'get_custom_logo', 'mai_custom_scroll_logo', 10, 2 );
+	}, 99 );
+}
+
+/**
+ * Adds an image inline in the site title element for the custom scroll logo.
+ *
+ * @since 2.14.0
+ *
+ * @param string $html    The existing logo HTML.
+ * @param int    $blog_id The current blog ID in multisite.
+ *
+ * @return string
+ */
+function mai_custom_scroll_logo( $html, $blog_id ) {
+	$logo_url = mai_get_option( 'logo-scroll' );
+
+	if ( ! $logo_url ) {
+		return $html;
+	}
+
+	$dom   = mai_get_dom_document( $html );
+	$first = mai_get_dom_first_child( $dom );
+
+	if ( $first ) {
+		$img = $dom->createElement( 'img' );
+		$img->setAttribute( 'class', 'custom-scroll-logo' );
+		$img->setAttribute( 'src', $logo_url );
+		$img->setAttribute( 'loading', 'lazy' );
+		$first->insertBefore( $img );
+		$html = $dom->saveHTML();
+	}
+
+	return $html;
 }
 
 add_filter( 'genesis_site_title_wrap', 'mai_remove_site_title_h1' );
@@ -130,7 +382,6 @@ function mai_site_title_link( $default ) {
 	return str_replace( '<a', '<a class="site-title-link" ', $default );
 }
 
-add_action( 'mai_before_title_area', 'mai_do_header_left' );
 /**
  * Adds header left section.
  *
@@ -163,7 +414,6 @@ function mai_do_header_left() {
 	);
 }
 
-add_action( 'mai_after_title_area', 'mai_do_header_right' );
 /**
  * Adds header right section.
  *

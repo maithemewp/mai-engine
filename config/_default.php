@@ -25,6 +25,7 @@ return [
 		'colors'         => [
 			'black'      => '#000000',
 			'white'      => '#ffffff',
+			'header'     => '#ffffff', // Site header background.
 			'background' => '#ffffff', // Body background.
 			'alt'        => '#f8f9fa', // Background alt.
 			'body'       => '#6c747d', // Body text color.
@@ -32,6 +33,11 @@ return [
 			'link'       => '#007bff', // Link color.
 			'primary'    => '#007bff', // Button primary background color.
 			'secondary'  => '#6c747d', // Button secondary background color.
+		],
+		'custom-colors'  => [
+			// [
+			// 	'color' => '#bcda83', // var(--color-custom-1).
+			// ],
 		],
 		'fonts'          => [
 			'body'    => 'sans-serif:400',
@@ -47,11 +53,14 @@ return [
 	|
 	| Image sizes. When adding or modifying 'landscape', 'portrait', or 'square'
 	| you must use an aspect ratio, not actual dimensions.
+	|
+	| The 'cover' size was changed to match core WP '1536x1536' size.
+	| We don't really need this anymore but we're keeping it here for back compat.
 	*/
 
 	'image-sizes' => [
 		'add'    => [
-			'cover'     => [ 1600, 900, true ],
+			'cover'     => [ 1536, 1536, false ],
 			'landscape' => '4:3',
 			'tiny'      => [ 80, 80, true ],
 		],
@@ -152,34 +161,16 @@ return [
 				'name' => 'maiMenuVars',
 				'data' => [
 					'ariaLabel'     => __( 'Mobile Menu', 'mai-engine' ),
-					'menuToggle'    => sprintf(
-						'<span class="menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
-						__( 'Menu', 'mai-engine' )
-					),
 					'subMenuToggle' => sprintf(
 						'<span class="sub-menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
 						__( 'Sub Menu', 'mai-engine' )
 					),
-					'searchIcon'    => mai_get_svg_icon(
-						'search',
-						'regular',
-						[
-							'class' => 'search-toggle-icon',
-						]
-					),
-					'searchBox'     => ! defined( 'STYLESHEETPATH' ) ?:
-						get_search_form(
-							[
-								'aria_label' => esc_html__( 'Menu Search', 'mai-engine' ),
-								'echo'       => false,
-							]
-						),
 				],
 			],
 		],
 		'header'     => [
 			'async'     => true,
-			'condition' => function () {
+			'condition' => function() {
 				return mai_has_sticky_header_enabled() || mai_has_transparent_header_enabled();
 			},
 		],
@@ -215,66 +206,137 @@ return [
 	*/
 
 	'styles' => [
-		'main'                   => [],
-		'theme'                  => [
-			'src'  => 'default' !== mai_get_active_theme() ? mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css' : '',
-			'deps' => [
-				'mai-engine-desktop',
-			],
+		'main'                           => [
+			'location' => [ 'public', 'login' ],
+			'async'    => true,
 		],
-		'admin'                  => [
+		'header'                         => [
+			'location'  => 'public',
+			'async'     => true,
+			'condition' => function() {
+				return ! mai_is_element_hidden( 'site_header' );
+			},
+		],
+		'blocks'                         => [
+			'location'  => 'public',
+			'async'     => true,
+		],
+		'utilities'                      => [
+			'location'  => 'public',
+			'async'     => true,
+		],
+		'theme'                          => [
+			'location'  => [ 'public', 'login' ],
+			'async'     => mai_get_option( 'genesis-style-trump', true ),
+			'src'       => 'default' !== mai_get_active_theme() ? mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css' : '',
+			'condition' => function() {
+				return 'default' !== mai_get_active_theme();
+			},
+		],
+		'desktop'                        => [
+			'location'  => 'public',
+			'async'     => true,
+		],
+		'footer'                         => [
+			'location'  => 'public',
+			'in_footer' => true,
+		],
+		'admin'                          => [
 			'location' => 'admin',
 		],
-		'kirki'                  => [
+		'kirki'                          => [
 			'location' => 'customizer',
 		],
 		'wptrt-customize-section-button' => [
-			'src'      => mai_get_url() . 'vendor/wptrt/customize-section-button/public/css/customize-controls.css',
 			'location' => 'customizer',
+			'src'      => mai_get_url() . 'vendor/wptrt/customize-section-button/public/css/customize-controls.css',
 		],
-		'advanced-custom-fields' => [
+		'advanced-custom-fields'         => [
 			'location' => 'editor',
 		],
-		'atomic-blocks'          => [
-			'condition' => function () {
+		'atomic-blocks'                  => [
+			'location'  => 'public',
+			'async'     => true,
+			'condition' => function() {
 				return function_exists( 'atomic_blocks_main_plugin_file' );
 			},
 		],
 		'facetwp'                => [
-			'condition' => function () {
+			'location'  => 'public',
+			'async'     => true,
+			'condition' => function() {
 				return class_exists( 'FacetWP' );
 			},
 		],
 		'genesis-enews-extended' => [
+			'location'  => 'public',
+			'async'     => true,
 			'location'  => [ 'public', 'editor' ],
-			'condition' => function () {
+			'condition' => function() {
 				return class_exists( 'BJGK_Genesis_ENews_Extended' );
 			},
 		],
 		'learndash' => [
-			'condition' => function () {
+			'location'  => 'public',
+			'async'     => true,
+			'condition' => function() {
 				return class_exists( 'SFWD_LMS' );
 			},
 		],
 		'seo-slider'             => [
-			'condition' => function () {
+			'location'  => 'public',
+			'async'     => true,
+			'condition' => function() {
 				return defined( 'SEO_SLIDER_VERSION' );
 			},
 		],
 		'simple-social-icons'    => [
-			'condition' => function () {
+			'location'  => 'public',
+			'async'     => true,
+			'condition' => function() {
 				return class_exists( 'Simple_Social_Icons_Widget' );
 			},
 		],
-		'woocommerce'            => [
-			'condition' => function () {
+		'woocommerce-global'     => [
+			'location'  => 'public',
+			'async'     => true,
+			'condition' => function() {
 				return class_exists( 'WooCommerce' );
 			},
 		],
+		'woocommerce-products'   => [
+			'location'  => 'public',
+			'async'     => true,
+			'condition' => function() {
+				return class_exists( 'WooCommerce' ) && ( is_shop() || is_product_taxonomy() || is_product() || is_cart() );
+			},
+		],
+		'woocommerce-cart'       => [
+			'location'  => 'public',
+			'async'     => true,
+			'condition' => function() {
+				return class_exists( 'WooCommerce' ) && ( is_cart() || is_checkout() );
+			},
+		],
+		'woocommerce-account'    => [
+			'location'  => 'public',
+			'async'     => true,
+			'condition' => function() {
+				return class_exists( 'WooCommerce' ) && is_account_page();
+			},
+		],
 		'wp-block-library-theme' => [
+			'location' => 'editor',
 			'handle'   => 'wp-block-library-theme',
 			'src'      => '',
-			'location' => 'editor',
+		],
+		'child-theme' => [
+			'location'  => [ 'public', 'login' ],
+			'async'     => true,
+			'handle'    => genesis_get_theme_handle(),
+			'src'       => get_stylesheet_uri(),
+			'ver'       => sprintf( '%s.%s', genesis_get_theme_version(), date( 'njYHi', filemtime( get_stylesheet_directory() . '/style.css' ) ) ),
+			'in_footer' => mai_get_option( 'genesis-style-trump', false ), // When this is true it's checked off to show in footer.
 		],
 	],
 
@@ -473,6 +535,11 @@ return [
 				'mobile'  => '16px',
 			],
 		],
+		'site-header-mobile'   => [
+			'title_area',
+			'menu_toggle',
+		],
+		'site-header-mobile-content' => '',
 		'site-layouts'         => [
 			'default' => [
 				'site'    => 'standard-content',
@@ -540,6 +607,7 @@ return [
 				'header_meta'                  => 'mai_get_header_meta_default',
 				'footer_meta'                  => 'mai_get_footer_meta_default',
 				'custom_content'               => '',
+				// 'custom_content_2'             => '',
 				'page-header-image'            => '',
 				'page-header-featured'         => false,
 				'page-header-background-color' => '',

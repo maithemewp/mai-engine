@@ -9,15 +9,28 @@
  * max-width + 160 (admin menu width) + 280 (block editor sidebar width) + 60px (extra).
  */
 
+.folded {
+	--admin-menu-width: 36px;
+}
+
+// After .folded since it doesn't matter what size the admin menu actually is.
+.is-fullscreen-mode {
+	--admin-menu-width: 0;
+}
+
+.edit-post-layout.is-sidebar-opened {
+	--block-sidebar-width: 281px;
+}
+
 .edit-post-visual-editor__post-title-wrapper,
 .block-editor-block-list__layout.is-root-container {
-	padding-right: var(--spacing-lg);
-	padding-left: var(--spacing-lg);
+	padding-right: var(--side-spacing);
+	padding-left: var(--side-spacing);
 }
 
 .wp-block[data-align="full"] {
-	margin-right: calc(var(--spacing-lg) * -1);
-	margin-left: calc(var(--spacing-lg) * -1);
+	margin-right: calc(var(--side-spacing) * -1);
+	margin-left: calc(var(--side-spacing) * -1);
 }
 
 // Wide Content (Default).
@@ -25,14 +38,22 @@
 @media only screen and (min-width: 1220px) {
 
 	.edit-post-layout:not(.is-sidebar-opened) {
-		--wp-block-max-width: var(--breakpoint-lg);
+		--wp-block-max-width: var(--breakpoint-xl);
 	}
 }
 
 @media only screen and (min-width: 1500px) {
 
+
 	.edit-post-layout.is-sidebar-opened {
 		--wp-block-max-width: var(--breakpoint-lg);
+	}
+}
+
+@media only screen and (min-width: 1740px) {
+
+	.edit-post-layout.is-sidebar-opened {
+		--wp-block-max-width: var(--breakpoint-xl);
 	}
 }
 
@@ -363,7 +384,7 @@
  */
 
 // Can't target body classes in editor styles.
-body.post-type-wp_template_part .editor-styles-wrapper {
+body.post-type-mai_template_part .editor-styles-wrapper {
 	background-image:
 		linear-gradient(45deg, rgba(0, 0, 0, 0.025) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.025) 75%, rgba(0, 0, 0, 0.025)),
 		linear-gradient(45deg, rgba(0, 0, 0, 0.025) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.025) 75%, rgba(0, 0, 0, 0.025)) !important;
@@ -371,7 +392,7 @@ body.post-type-wp_template_part .editor-styles-wrapper {
 	background-size: 50px 50px !important;
 }
 
-body.post-type-wp_template_part .editor-post-title__block:not(.is-focus-mode).is-selected .editor-post-title__input {
+body.post-type-mai_template_part .editor-post-title__block:not(.is-focus-mode).is-selected .editor-post-title__input {
 	background: white;
 }
 
@@ -379,7 +400,7 @@ body.post-type-wp_template_part .editor-post-title__block:not(.is-focus-mode).is
  * Add-ons Page.
  */
 
-.mai-plugin-pack-cta {
+.mai-admin-cta {
 	padding: 36px;
 	color: #334b61;
 	font-size: 1.625em;
@@ -387,18 +408,18 @@ body.post-type-wp_template_part .editor-post-title__block:not(.is-focus-mode).is
 	background-color: #bcda83;
 }
 
-.mai-plugin-pack-cta svg {
+.mai-admin-cta svg {
 	display: block;
 	width: 36px;
 	margin: 0 auto 24px;
 	fill: currentColor;
 }
 
-.mai-plugin-pack-cta p {
+.mai-admin-cta p {
 	font-size: 17px;
 }
 
-.mai-plugin-pack-cta-button {
+.mai-admin-cta-button {
 	padding: 10px 24px !important;
 	color: white !important;
 	letter-spacing: 1px;
@@ -407,12 +428,12 @@ body.post-type-wp_template_part .editor-post-title__block:not(.is-focus-mode).is
 	border: 0 !important;
 }
 
-.mai-plugin-pack-cta-inner {
+.mai-admin-cta-inner {
 	max-width: 600px;
 	margin: auto;
 }
 
-.mai-plugin-pack-cta-inner > * {
+.mai-admin-cta-inner > * {
 	color: currentColor;
 }
 

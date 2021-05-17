@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_filter( 'render_block', 'mai_render_search_block', 10, 2 );
 /**
  * Add our button classes to the search button.
@@ -44,6 +47,21 @@ function mai_render_search_block( $block_content, $block ) {
 		$classes = mai_add_classes( 'button-secondary', $classes );
 
 		$first_block->setAttribute( 'class', $classes );
+
+		$xpath   = new DOMXPath( $dom );
+		$wrapper = $xpath->query( 'div[contains(concat(" ", normalize-space(@class), " "), " wp-block-search__inside-wrapper ")]' );
+
+		if ( $wrapper->length ) {
+			$wrapper = $wrapper->item(0);
+			$style   = $wrapper->getAttribute( 'style' );
+			$style   = str_replace( 'width', '--min-width', $style );
+
+			if ( $style ) {
+				$wrapper->setAttribute( 'style', $style );
+			} else {
+				$wrapper->removeAttribute( 'style' );
+			}
+		}
 
 		$block_content = $dom->saveHTML();
 	}

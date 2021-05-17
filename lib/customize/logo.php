@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'init', 'mai_logo_customizer_settings' );
 /**
  * Add logo customizer settings.
@@ -30,6 +33,21 @@ function mai_logo_customizer_settings() {
 			'section'  => 'title_tagline',
 			'priority' => 30,
 			'default'  => $defaults['show-tagline'],
+		]
+	);
+
+	Kirki::add_field(
+		$config_id,
+		[
+			'type'            => 'image',
+			'settings'        => 'logo-scroll',
+			'label'           => esc_html__( 'Logo on scroll (beta)', 'mai-engine' ),
+			'section'         => 'title_tagline',
+			'priority'        => 60,
+			'default'         => '',
+			'active_callback' => function() {
+				return (bool) mai_has_sticky_header_enabled() && has_custom_logo();
+			},
 		]
 	);
 

@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 if ( ! apply_filters( 'mai_init_setup_wizard', true ) ) {
 	return;
 }
@@ -126,19 +129,25 @@ function mai_setup_wizard_demos( $defaults ) {
 	$theme   = mai_get_active_theme();
 	$demos   = mai_get_config( 'demos' );
 	$config  = mai_get_config( 'plugins' );
-	$plugins = [];
 
 	if ( empty( $demos ) ) {
 		return [];
 	}
 
 	foreach ( $demos as $demo => $id ) {
+		$plugins  = [];
 		$demo_url = "https://demo.bizbudding.com/{$theme}-{$demo}/wp-content/uploads/sites/{$id}/mai-engine/";
 
 		foreach ( $config as $plugin ) {
-			if ( in_array( $demo, $plugin['demos'], true ) ) {
-				$plugins[] = $plugin;
+			if ( ! in_array( $demo, $plugin['demos'], true ) ) {
+				continue;
 			}
+
+			if ( is_plugin_active( $plugin['slug'] ) ) {
+				continue;
+			}
+
+			$plugins[] = $plugin;
 		}
 
 		$defaults[] = [
@@ -149,7 +158,6 @@ function mai_setup_wizard_demos( $defaults ) {
 			'preview'    => "https://demo.bizbudding.com/{$theme}-{$demo}/",
 			'plugins'    => $plugins,
 		];
-
 	}
 
 	return $defaults;
@@ -305,4 +313,54 @@ function mai_after_setup_wizard_import( $demo ) {
 	// Update permalink structure.
 	$wp_rewrite->set_permalink_structure( '/%postname%/' );
 	$wp_rewrite->flush_rules();
+}
+
+add_action( 'mai_setup_wizard_before_import', 'mai_setup_wizard_remove_image_sizes' );
+/**
+ * Removes image sizes during import.
+ * Greatly reduces import time.
+ *
+ * @since 2.13.0
+ *
+ * @return void
+ */
+function mai_setup_wizard_remove_image_sizes() {
+	add_filter( 'intermediate_image_sizes_advanced', function( $sizes ) {
+		$keepers = [
+			'landscape-sm',
+			'portrait-sm',
+			'square-sm',
+			'thumbnail',
+			'tiny',
+		];
+		foreach ( $sizes as $name => $values ) {
+			if ( in_array( $name, $keepers ) ) {
+				continue;
+			}
+			unset( $sizes[ $name ] );
+		}
+		return $sizes;
+	});
+}
+
+add_filter( 'wp_import_post_data_processed', 'mai_setup_wizard_slash_data', 99, 1 );
+/**
+ * Adds slashes to post (block) content prior to creating.
+ * Blocks with HTML in their attributes were breaking.
+ * Mai Sleek header_meta as an example.
+ *
+ * Pull 161 has `wxr_importer.pre_process.post_meta` filter
+ * but this was breaking Hide Elements metabox so I'm not using it.
+ *
+ * @link https://github.com/humanmade/WordPress-Importer/pull/161
+ * @link https://github.com/humanmade/WordPress-Importer/pull/172
+ *
+ * @since 2.13.0
+ *
+ * @param array $data The array of data.
+ *
+ * @return array
+ */
+function mai_setup_wizard_slash_data( $data ) {
+	return wp_slash( $data );
 }

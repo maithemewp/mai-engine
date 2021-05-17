@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 /**
  * Class Mai_Setup_Wizard_Steps
  */
@@ -33,7 +36,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Description of expected behavior.
+	 * Adds steps.
 	 *
 	 * @since 1.0.0
 	 *
@@ -221,7 +224,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 		return [
 			'id'            => 'done',
 			'title'         => __( 'Done', 'mai-engine' ),
-			'description'   => __( 'Your theme has been all set up.', 'mai-engine' ),
+			'description'   => sprintf( __( 'Your theme has been all set up. Don\'t forget to %s.', 'mai-engine' ), sprintf( '<a target="_blank" href="https://docs.bizbudding.com/docs/regenerating-images/">%s</a>', __( 'regenerate images', 'mai-engine' ) ) ),
 			'order'         => 50,
 			'continue_text' => __( 'View Your Site', 'mai-engine' ),
 			'continue_url'  => get_home_url(),

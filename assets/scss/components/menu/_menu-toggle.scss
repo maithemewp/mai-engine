@@ -1,18 +1,23 @@
 .menu-toggle {
 	z-index: 100;
-	display: var(--menu-toggle-display, (flex));
+	display: var(--menu-toggle-display, flex);
+	flex-direction: var(--menu-toggle-flex-direction, row);
 	align-items: center;
 	justify-content: center;
-	order: 1;
+	order: var(--menu-toggle-order, unset);
 	min-height: 2em;
 	margin: 0;
 	padding: var(--menu-toggle-padding, 0);
-	background: transparent;
-
-	&:hover,
-	&:focus {
-		background: transparent;
-	}
+	--button-background: transparent;
+	--button-background-hover: transparent;
+	--button-text-decoration: none;
+	--button-text-decoration-hover: none;
+	--button-border: 0;
+	--button-border-hover: 0;
+	--button-box-shadow: 0;
+	--button-box-shadow-hover: 0;
+	--button-transform: 0;
+	--button-transform-hover: 0;
 
 	&:focus {
 		outline: var(--border);
@@ -33,7 +38,7 @@
 	&::before,
 	&::after {
 		display: block;
-		width: var(--menu-toggle-line-width, (calc(var(--spacing-md) * 2)));
+		width: var(--menu-toggle-line-width, calc(var(--spacing-md) * 2));
 		height: var(--menu-toggle-line-height, 2px);
 		border-radius: var(--menu-toggle-line-border-radius, var(--border-radius));
 	}
@@ -46,15 +51,19 @@
 	}
 
 	&::before {
-		top: var(--menu-toggle-line-spacing, (calc(var(--spacing-md) * -0.5)));
+		top: var(--menu-toggle-line-spacing, calc(var(--spacing-md) * -0.5));
 		transform: var(--menu-toggle-line-before-transform, rotate(0deg));
 		transition: var(--menu-toggle-line-before-transition, top 0.2s 0.2s, transform 0.2s 0s);
 	}
 
 	&::after {
-		bottom: var(--menu-toggle-line-spacing, (calc(var(--spacing-md) * -0.5)));
+		bottom: var(--menu-toggle-line-spacing, calc(var(--spacing-md) * -0.5));
 		transform: var(--menu-toggle-line-after-transform, rotate(0deg));
 		transition: var(--menu-toggle-line-after-transition, bottom 0.2s 0.2s, transform 0.2s 0s);
+	}
+
+	+ span {
+		margin-left: var(--spacing-xs);
 	}
 }
 

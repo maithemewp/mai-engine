@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 /**
  * Renders a post grid.
  *
@@ -74,18 +77,20 @@ function mai_do_grid( $type, $args = [] ) {
 function mai_get_grid_show_choices() {
 	static $choices = null;
 
-	if ( is_null( $choices ) ) {
-		$choices = [
-			'image'          => esc_html__( 'Image', 'mai-engine' ),
-			'title'          => esc_html__( 'Title', 'mai-engine' ),
-			'header_meta'    => esc_html__( 'Header Meta', 'mai-engine' ),
-			'excerpt'        => esc_html__( 'Excerpt', 'mai-engine' ),
-			'content'        => esc_html__( 'Content', 'mai-engine' ),
-			'custom_content' => esc_html__( 'Custom Content', 'mai-engine' ),
-			'more_link'      => esc_html__( 'Read More link', 'mai-engine' ),
-			'footer_meta'    => esc_html__( 'Footer Meta', 'mai-engine' ),
-		];
+	if ( ! is_null( $choices ) ) {
+		return $choices;
 	}
+
+	$choices = [
+		'image'          => esc_html__( 'Image', 'mai-engine' ),
+		'title'          => esc_html__( 'Title', 'mai-engine' ),
+		'header_meta'    => esc_html__( 'Header Meta', 'mai-engine' ),
+		'excerpt'        => esc_html__( 'Excerpt', 'mai-engine' ),
+		'content'        => esc_html__( 'Content', 'mai-engine' ),
+		'custom_content' => esc_html__( 'Custom Content', 'mai-engine' ),
+		'more_link'      => esc_html__( 'Read More link', 'mai-engine' ),
+		'footer_meta'    => esc_html__( 'Footer Meta', 'mai-engine' ),
+	];
 
 	return $choices;
 }

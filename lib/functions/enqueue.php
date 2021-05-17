@@ -12,46 +12,14 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-add_action( 'init', 'mai_genesis_style_trump' );
 /**
- * Loads theme stylesheet.
+ * Removes default output of child theme stylesheet.
  *
- * @since 0.1.0
- * @since 2.6.0 Load child theme stylesheet after all engine styles if no style trump.
+ * @since 2.13.0
  *
  * @return void
  */
-function mai_genesis_style_trump() {
-	remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
-
-	if ( mai_get_option( 'genesis-style-trump', true ) ) {
-		add_action( 'get_footer', 'mai_enqueue_child_theme_stylesheet' );
-	} else {
-		add_action( 'wp_enqueue_scripts', 'mai_enqueue_child_theme_stylesheet', 999 );
-	}
-}
-
-/**
- * Adds cache busting when stylesheet is updated.
- *
- * @since 0.1.0
- *
- * @return void
- */
-function mai_enqueue_child_theme_stylesheet() {
-	$version = sprintf(
-		'%s.%s',
-		genesis_get_theme_version(),
-		date( 'njYHi', filemtime( get_stylesheet_directory() . '/style.css' ) )
-	);
-
-	wp_enqueue_style(
-		genesis_get_theme_handle(),
-		get_stylesheet_uri(),
-		false,
-		$version
-	);
-}
+remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
 
 add_action( 'genesis_before', 'mai_js_nojs_script', 1 );
 /**
@@ -84,6 +52,7 @@ add_action( 'wp_enqueue_scripts', 'mai_enqueue_assets' );
 add_action( 'admin_enqueue_scripts', 'mai_enqueue_assets' );
 add_action( 'enqueue_block_editor_assets', 'mai_enqueue_assets' );
 add_action( 'customize_controls_enqueue_scripts', 'mai_enqueue_assets' );
+add_action( 'login_enqueue_scripts', 'mai_enqueue_assets' );
 /**
  * Register and enqueue all scripts and styles.
  *
@@ -105,6 +74,62 @@ function mai_enqueue_assets() {
 	}
 }
 
+add_filter( 'mai_styles_config', 'mai_styles_desktop_breakpoint' );
+/**
+ * Adds media query from mobile menu breakpoint option.
+ *
+ * @param array The styles config.
+ *
+ * @return array
+ */
+function mai_styles_desktop_breakpoint( $config ) {
+	$config['desktop']['media'] = sprintf( 'only screen and (min-width:%spx)', mai_get_option( 'mobile-menu-breakpoint', mai_get_breakpoint() ) );
+	return $config;
+}
+
+add_filter( 'script_loader_tag', 'mai_script_loader_tag', 10, 3 );
+/**
+ * Adds attributes to scripts.
+ *
+ * @since 2.13.0
+ *
+ * @param string $tag    The <script> tag for the enqueued script.
+ * @param string $handle The script's registered handle.
+ * @param string $src    The script's source URL.
+ *
+ * @return string
+ */
+function mai_script_loader_tag( $tag, $handle, $src ) {
+	$attributes = mai_get_script_attributes();
+	if ( ! ( isset( $attributes[ $handle ] ) && $attributes[ $handle ] ) ) {
+		return $tag;
+	}
+	$tag = mai_add_tag_attributes( $tag, $attributes[ $handle ] );
+	return $tag;
+}
+
+/**
+ * Adds attributes to styles.
+ *
+ * @since 2.13.0
+ *
+ * @param string $html   The link tag for the enqueued style.
+ * @param string $handle The style's registered handle.
+ * @param string $href   The stylesheet's source URL.
+ * @param string $media  The stylesheet's media attribute.
+ *
+ * @return string
+ */
+add_filter( 'style_loader_tag', 'mai_style_loader_tag', 10, 4 );
+function mai_style_loader_tag( $html, $handle, $href, $media ) {
+	$attributes = mai_get_style_attributes();
+	if ( ! ( isset( $attributes[ $handle ] ) && $attributes[ $handle ] ) ) {
+		return $html;
+	}
+	$html = mai_add_tag_attributes( $html, $attributes[ $handle ] );
+	return $html;
+}
+
 /**
  * Register and enqueue script or style.
  *
@@ -122,24 +147,22 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 	$handle    = isset( $args['handle'] ) ? $args['handle'] : mai_get_handle() . '-' . $handle;
 	$deps      = isset( $args['deps'] ) ? $args['deps'] : [];
 	$ver       = isset( $args['ver'] ) ? $args['ver'] : mai_get_asset_version( $src );
-	$src       = isset( $args['async'] ) ? $src . '#async' : $src; // I think this needs to be after $ver so #async doesn't mess with url.
 	$media     = isset( $args['media'] ) ? $args['media'] : 'all';
-	$in_footer = isset( $args['in_footer'] ) ? $args['in_footer'] : true;
+	$in_footer = isset( $args['in_footer'] ) ? $args['in_footer'] : ( 'script' === $type ); // Default to true if script, false if style.
 	$condition = isset( $args['condition'] ) ? $args['condition'] : '__return_true';
 	$location  = isset( $args['location'] ) ? is_array( $args['location'] ) ? $args['location'] : [ $args['location'] ] : [ 'public' ];
 	$localize  = isset( $args['localize'] ) ? $args['localize'] : [];
 	$inline    = isset( $args['inline'] ) ? $args['inline'] : false;
-	$onload    = isset( $args['onload'] ) ? $args['onload'] : false;
 	$last_arg  = 'style' === $type ? $media : $in_footer;
 	$register  = "wp_register_$type";
 	$enqueue   = "wp_enqueue_$type";
 	$load      = false;
 
-	if ( in_array( 'public', $location, true ) && ! is_admin() ) {
+	if ( in_array( 'public', $location, true ) && ! is_admin() && ! did_action( 'login_enqueue_scripts' ) ) {
 		$load = true;
 	}
 
-	if ( in_array( 'admin', $location, true ) && is_admin() && ! is_customize_preview() ) {
+	if ( in_array( 'admin', $location, true ) && is_admin() && ! is_customize_preview() && ! did_action( 'login_enqueue_scripts' ) ) {
 		$load = true;
 	}
 
@@ -155,12 +178,28 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 		$load = true;
 	}
 
+	if ( in_array( 'login', $location, true ) && did_action( 'login_enqueue_scripts' ) ) {
+		$load = true;
+	}
+
 	if ( ! $load || ! is_callable( $condition ) || ! $condition() ) {
 		return;
 	}
 
+	if ( '' === $src ) {
+		$src = false;
+	}
+
 	$register( $handle, $src, $deps, $ver, $last_arg );
-	$enqueue( $handle );
+
+	if ( ! $in_footer || is_admin() ) {
+		$enqueue( $handle );
+	} else {
+		// In footer, just before default for theme style.css
+		add_action( 'get_footer', function() use ( $enqueue, $handle ) {
+			$enqueue( $handle );
+		}, 9 );
+	}
 
 	if ( $inline ) {
 		wp_add_inline_style( $handle, mai_minify_css( $inline ) );
@@ -175,21 +214,101 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 
 		wp_localize_script( $handle, $localize['name'], $localize_data );
 	}
+}
 
-	if ( $onload ) {
-		add_filter(
-			'style_loader_tag',
-			function ( $html, $original_handle ) use ( $args, $handle ) {
-				if ( $original_handle === $handle ) {
-					$html = str_replace( '>', ' onload="' . $args['onload'] . '">', $html );
-				}
-
-				return $html;
-			},
-			11,
-			2
-		);
+/**
+ * Adds attributes to an HTML tag.
+ *
+ * @access private
+ *
+ * @since 2.13.0
+ *
+ * @param string $tag The <script> or <style> tag.
+ * @param array  $attributes The attributes by name and value.
+ *
+ * @return string
+ */
+function mai_add_tag_attributes( $tag, $attributes ) {
+	if ( ! $tag ) {
+		return $tag;
 	}
+	$dom   = mai_get_dom_document( $tag );
+	$first = mai_get_dom_first_child( $dom );
+	foreach ( $attributes as $name => $value ) {
+		$first->setAttribute( $name, $value );
+	}
+	return $dom->saveHTML();
+}
+
+/**
+ * Gets script attributes to be added later.
+ * These are not available to be added in wp_enqueue_script().
+ *
+ * @access private
+ *
+ * @since 2.13.0
+ *
+ * @return array
+ */
+function mai_get_script_attributes() {
+	static $attributes = null;
+	if ( ! is_null( $attributes ) ) {
+		return $attributes;
+	}
+	$attributes = mai_get_tag_attributes( 'scripts' );
+	return $attributes;
+}
+
+/**
+ * Gets style attributes to be added later.
+ * These are not available to be added in wp_enqueue_style().
+ *
+ * @access private
+ *
+ * @since 2.13.0
+ *
+ * @return array
+ */
+function mai_get_style_attributes() {
+	static $attributes = null;
+	if ( ! is_null( $attributes ) ) {
+		return $attributes;
+	}
+	$attributes = [
+		'wp-block-library' => [
+			'async' => 'async',
+		],
+	];
+	$attributes = array_merge( mai_get_tag_attributes( 'styles' ), $attributes );
+	return $attributes;
+}
+
+/**
+ * Gets attributes of scripts or styles from the config.
+ *
+ * @access private
+ *
+ * @since 2.13.0
+ *
+ * @return array
+ */
+function mai_get_tag_attributes( $script_or_style ) {
+	$attributes = [];
+	$tags       = mai_get_config( $script_or_style );
+	foreach ( $tags as $name => $args ) {
+		$handle = isset( $args['handle'] ) ? $args['handle'] : mai_get_handle() . '-' . $name;
+		// ray( $args );
+		if ( isset( $args[''] ) && $args['onload'] ) {
+			$attributes[ $handle ]['onload'] = $args['onload'];
+		}
+		if ( isset( $args['async'] ) ) {
+			$attributes[ $handle ]['async'] = 'async';
+		}
+		if ( isset( $args['defer'] ) ) {
+			$attributes[ $handle ]['defer'] = 'defer';
+		}
+	}
+	return $attributes;
 }
 
 /**
@@ -267,48 +386,4 @@ function mai_admin_bar_inline_styles() {
 EOT;
 
 	wp_add_inline_style( mai_get_handle(), mai_minify_css( $css ) );
-}
-
-add_action( 'wp_enqueue_scripts', 'mai_enqueue_desktop_styles' );
-/**
- * Load desktop styles only at breakpoint set in Customizer.
- *
- * Can't be in config because it uses default breakpoint which is also set in config file.
- *
- * @since 0.3.5
- * @since 2.4.2 Use wp_enqueue_style to correct load priority.
- *
- * @return void
- */
-function mai_enqueue_desktop_styles() {
-	$style = [
-		'handle' => mai_get_handle() . '-desktop',
-		'src'    => mai_get_url() . 'assets/css/desktop.min.css',
-		'deps'   => [],
-		'ver'    => mai_get_asset_version( mai_get_url() . 'assets/css/desktop.min.css' ),
-		'media'  => sprintf(
-			'only screen and (min-width:%spx)',
-			mai_get_option( 'mobile-menu-breakpoint', mai_get_breakpoint() )
-		),
-	];
-
-	wp_enqueue_style( ...array_values( $style ) );
-}
-
-add_filter( 'clean_url', 'mai_async_scripts', 11, 1 );
-/**
- * Add async attribute to a url.
- *
- * @since 0.3.4
- *
- * @param string $url URL to check.
- *
- * @return string
- */
-function mai_async_scripts( $url ) {
-	if ( strpos( $url, '#async' ) !== false ) {
-		$url = str_replace( '#async', '', $url ) . "' async='async";
-	}
-
-	return $url;
 }

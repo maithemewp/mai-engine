@@ -11,7 +11,6 @@
 	var mobileMenuList   = document.querySelector( '.mobile-menu .menu' );
 	var mobileMenuWidget = document.querySelector( '.mobile-menu .widget' );
 	var menuToggle       = document.getElementsByClassName( 'menu-toggle' )[ 0 ];
-	var searchMenuItems  = document.querySelectorAll( '.menu-item.search' );
 
 	if ( ! siteHeaderWrap ) {
 		return;
@@ -41,54 +40,6 @@
 		}
 
 		siteHeaderWrap.parentNode.insertBefore( mobileMenu, null );
-	};
-
-	var createMenuToggle = function() {
-		if ( menuToggle ) {
-			return;
-		}
-		menuToggle = document.createElement( 'button' );
-		menuToggle.setAttribute( 'class', 'menu-toggle' );
-		menuToggle.setAttribute( 'aria-expanded', 'false' );
-		menuToggle.setAttribute( 'aria-pressed', 'false' );
-		menuToggle.innerHTML = maiMenuData.menuToggle;
-		siteHeaderWrap.appendChild( menuToggle );
-	};
-
-	var createSubMenuToggles = function() {
-		var subMenus = document.querySelectorAll( '.mobile-menu .sub-menu' );
-		subMenus.forEach( function( subMenu ) {
-			var subMenuToggle = document.createElement( 'button' );
-			subMenuToggle.setAttribute( 'class', 'sub-menu-toggle' );
-			subMenuToggle.setAttribute( 'aria-expanded', 'false' );
-			subMenuToggle.setAttribute( 'aria-pressed', 'false' );
-			subMenuToggle.innerHTML = maiMenuData.subMenuToggle;
-			subMenu.parentNode.insertBefore( subMenuToggle, subMenu );
-		} );
-	};
-
-	var createSearchForm = function() {
-		if ( ! searchMenuItems ) {
-			return;
-		}
-
-		searchMenuItems.forEach( function( item ) {
-			var icon   = maiMenuVars.searchIcon;
-			var button = document.createElement( 'button' );
-			var search = document.createElement( 'div' );
-
-			item.classList.add( 'menu-item-search' );
-			button.setAttribute( 'class', 'search-toggle' );
-			button.setAttribute( 'aria-expanded', 'false' );
-			button.setAttribute( 'aria-pressed', 'false' );
-
-			button.innerHTML = '<span class="screen-reader-text">' + item.innerText + '</span>' + icon;
-			item.innerHTML   = '';
-			search.innerHTML = maiMenuVars.searchBox;
-
-			item.append( button );
-			item.append( search.firstChild );
-		} );
 	};
 
 	var cloneMenuItems = function() {
@@ -139,17 +90,24 @@
 		} );
 	};
 
-	var toggleAriaValues = function( element ) {
-		var ariaValue = element.getAttribute( 'aria-expanded' ) === 'false' ? 'true' : 'false';
-
-		element.setAttribute( 'aria-expanded', ariaValue );
-		element.setAttribute( 'aria-pressed', ariaValue );
-
-		return element;
+	var createSubMenuToggles = function() {
+		var subMenus = document.querySelectorAll( '.mobile-menu .sub-menu' );
+		subMenus.forEach( function( subMenu ) {
+			var subMenuToggle = document.createElement( 'button' );
+			subMenuToggle.setAttribute( 'class', 'sub-menu-toggle' );
+			subMenuToggle.setAttribute( 'aria-expanded', 'false' );
+			subMenuToggle.setAttribute( 'aria-pressed', 'false' );
+			subMenuToggle.innerHTML = maiMenuData.subMenuToggle;
+			subMenu.parentNode.insertBefore( subMenuToggle, subMenu );
+		} );
 	};
 
 	var toggleMobileMenu = function() {
-		toggleAriaValues( menuToggle );
+		if ( ! menuToggle ) {
+			return;
+		}
+
+		maiToggleAriaValues( menuToggle );
 
 		body.classList.toggle( 'mobile-menu-visible' );
 
@@ -173,50 +131,20 @@
 		subMenuToggle     = subMenuToggle.classList.contains( 'menu-item' ) ? subMenuToggle.getElementsByClassName( 'sub-menu-toggle' )[ 0 ] : subMenuToggle;
 		var subMenu       = subMenuToggle.nextSibling;
 
-		toggleAriaValues( subMenuToggle );
+		maiToggleAriaValues( subMenuToggle );
 
 		subMenuToggle.classList.toggle( 'active' );
 		subMenu.classList.toggle( 'visible' );
 	};
 
-	var toggleSearchForm = function( event ) {
-		var target = event.target;
-		var item   = target.classList.contains( 'search' ) ? target : target.closest( '.menu-item.search' );
-		var form   = item.querySelector( '.search-form' );
-		var toggle = item.querySelector( '.search-toggle' );
-		var input  = item.querySelector( '.search-form-input' );
-
-		input.setAttribute( 'required', '' );
-
-		if ( ! target.classList.contains( 'search-form-input' ) && ! target.classList.contains( 'search-form-submit' ) && ! target.classList.contains( 'search-form' ) ) {
-			form.classList.toggle( 'search-form-visible' );
-			toggleAriaValues( toggle );
-		}
-
-		if ( form.classList.contains( 'search-form-visible' ) ) {
-			input.focus();
-
-			document.addEventListener( 'mouseup', function( event ) {
-				if ( ! event.target.closest( '.menu-item.search' ) ) {
-					form.classList.remove( 'search-form-visible' );
-					toggleAriaValues( toggle );
-				}
-			} );
-		}
-	};
-
 	var onReady = function() {
 		createMobileMenu();
-		createMenuToggle();
 		cloneMenuItems();
 		addMenuItemClasses();
 		createSubMenuToggles();
-		createSearchForm();
 
 		menuToggle.addEventListener( 'click', toggleMobileMenu, false );
-		searchMenuItems.forEach( function( searchMenuItem ) {
-			searchMenuItem.addEventListener( 'click', toggleSearchForm, false );
-		} );
+
 		document.addEventListener( 'click', function( event ) {
 			if ( event.target.classList.contains( 'sub-menu-toggle' ) || event.target.classList.contains( 'sub-menu-toggle-icon' ) ) {
 				toggleSubMenu( event );

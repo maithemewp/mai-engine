@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 /**
  * Return content stripped down and limited content.
  *
@@ -55,7 +58,6 @@ function mai_get_content_limit( $content, $limit, $ellipsis = true ) {
  * @return string Truncated string. Empty string if `$max_characters` is falsy.
  */
 function mai_get_truncated_text( $text, $max_characters, $ellipsis = true ) {
-
 	if ( ! $max_characters ) {
 		return '';
 	}
@@ -85,6 +87,12 @@ function mai_get_truncated_text( $text, $max_characters, $ellipsis = true ) {
  * @return bool
  */
 function mai_has_custom_loop() {
+	static $loop = null;
+
+	if ( ! is_null( $loop ) ) {
+		return $loop;
+	}
+
 	if ( mai_is_type_archive() ) {
 		$name     = mai_get_archive_args_name();
 		$defaults = mai_get_config( 'settings' )['content-archives']['enable'];
@@ -99,7 +107,8 @@ function mai_has_custom_loop() {
 	if ( isset( $name, $types ) ) {
 
 		if ( in_array( $name, $types, true ) ) {
-			return true;
+			$loop = true;
+			return $loop;
 		}
 
 		// All core WP post types and taxonomies use our custom loop.
@@ -117,7 +126,8 @@ function mai_has_custom_loop() {
 		);
 
 		if ( isset( $post_types[ $name ] ) || isset( $taxonomies[ $name ] ) ) {
-			return true;
+			$loop = true;
+			return $loop;
 		}
 
 		// Check taxonomy post type.
@@ -125,18 +135,22 @@ function mai_has_custom_loop() {
 			$post_type = mai_get_taxonomy_post_type( $name );
 
 			if ( $post_type && in_array( $post_type, $types, true ) ) {
-				return true;
+				$loop = true;
+				return $loop;
 			}
 		}
 
 		$other_types = [ 'author', 'date', 'search' ];
 
 		if ( in_array( $name, $other_types, true ) ) {
-			return true;
+			$loop = true;
+			return $loop;
 		}
 	}
 
-	return false;
+	$loop = false;
+
+	return $loop;
 }
 
 /**
@@ -185,7 +199,6 @@ function mai_get_template_args() {
 	if ( mai_is_type_archive() && ! mai_has_custom_loop_settings( $name ) ) {
 		$name = 'post';
 	}
-
 
 	// Bail if no data.
 	if ( ! ( $name && $context ) ) {
@@ -284,7 +297,7 @@ function mai_get_template_arg( $name, $default = null ) {
 }
 
 /**
- * Description of expected behavior.
+ * Gets sanitized entry args.
  *
  * @since 0.1.0
  * @since 2.4.2 Added $name param.
@@ -348,51 +361,55 @@ function mai_get_sanitized_entry_args( $args, $context, $name = 'post' ) {
 function mai_get_archive_args_name() {
 	static $name = null;
 
-	if ( is_null( $name ) ) {
-		if ( is_home() ) {
-			$name = 'post';
-
-		} elseif ( is_category() ) {
-			$name = 'category';
-
-		} elseif ( is_tag() ) {
-			$name = 'post_tag';
-
-		} elseif ( is_tax() ) {
-			$name = get_query_var( 'taxonomy' );
-
-			if ( ! $name ) {
-				$object = get_queried_object();
-
-				if ( $object ) {
-					$name = $object->taxonomy;
-				}
-			}
-		} elseif ( is_post_type_archive() ) {
-			$name = get_query_var( 'post_type' );
-
-			if ( ! $name ) {
-				$object = get_queried_object();
-
-				if ( $object ) {
-					$name = $object->name;
-				}
-			}
-		} elseif ( is_search() ) {
-			$name = 'search';
-
-		} elseif ( is_author() ) {
-			$name = 'author';
-
-		} elseif ( is_date() ) {
-			$name = 'date';
-
-		} else {
-			$name = 'post';
-		}
+	if ( ! is_null( $name ) ) {
+		return $name;
 	}
 
-	return apply_filters( 'mai_archive_args_name', $name );
+	if ( is_home() ) {
+		$name = 'post';
+
+	} elseif ( is_category() ) {
+		$name = 'category';
+
+	} elseif ( is_tag() ) {
+		$name = 'post_tag';
+
+	} elseif ( is_tax() ) {
+		$name = get_query_var( 'taxonomy' );
+
+		if ( ! $name ) {
+			$object = get_queried_object();
+
+			if ( $object ) {
+				$name = $object->taxonomy;
+			}
+		}
+	} elseif ( is_post_type_archive() ) {
+		$name = get_query_var( 'post_type' );
+
+		if ( ! $name ) {
+			$object = get_queried_object();
+
+			if ( $object ) {
+				$name = $object->name;
+			}
+		}
+	} elseif ( is_search() ) {
+		$name = 'search';
+
+	} elseif ( is_author() ) {
+		$name = 'author';
+
+	} elseif ( is_date() ) {
+		$name = 'date';
+
+	} else {
+		$name = 'post';
+	}
+
+	$name = apply_filters( 'mai_archive_args_name', $name );
+
+	return $name;
 }
 
 /**
@@ -403,9 +420,16 @@ function mai_get_archive_args_name() {
  * @return false|mixed|string
  */
 function mai_get_singular_args_name() {
-	$name = is_404() ? '404-page' : mai_get_post_type();
+	static $name = null;
 
-	return apply_filters( 'mai_single_args_name', $name );
+	if ( ! is_null( $name ) ) {
+		return $name;
+	}
+
+	$name = is_404() ? '404-page' : mai_get_post_type();
+	$name = apply_filters( 'mai_single_args_name', $name );
+
+	return $name;
 }
 
 /**
@@ -472,23 +496,25 @@ function mai_get_footer_meta_default( $name ) {
 function mai_get_archive_show_choices() {
 	static $choices = null;
 
-	if ( is_null( $choices ) ) {
-		$choices = [
-			'image'                        => esc_html__( 'Image', 'mai-engine' ),
-			'genesis_entry_header'         => 'genesis_entry_header',
-			'title'                        => esc_html__( 'Title', 'mai-engine' ),
-			'header_meta'                  => esc_html__( 'Header Meta', 'mai-engine' ),
-			'genesis_before_entry_content' => 'genesis_before_entry_content',
-			'excerpt'                      => esc_html__( 'Excerpt', 'mai-engine' ),
-			'content'                      => esc_html__( 'Content', 'mai-engine' ),
-			'custom_content'               => esc_html__( 'Custom Content', 'mai-engine' ),
-			'genesis_entry_content'        => 'genesis_entry_content',
-			'more_link'                    => esc_html__( 'Read More link', 'mai-engine' ),
-			'genesis_after_entry_content'  => 'genesis_after_entry_content',
-			'footer_meta'                  => esc_html__( 'Footer Meta', 'mai-engine' ),
-			'genesis_entry_footer'         => 'genesis_entry_footer',
-		];
+	if ( ! is_null( $choices ) ) {
+		return $choices;
 	}
+
+	$choices = [
+		'image'                        => esc_html__( 'Image', 'mai-engine' ),
+		'genesis_entry_header'         => 'genesis_entry_header',
+		'title'                        => esc_html__( 'Title', 'mai-engine' ),
+		'header_meta'                  => esc_html__( 'Header Meta', 'mai-engine' ),
+		'genesis_before_entry_content' => 'genesis_before_entry_content',
+		'excerpt'                      => esc_html__( 'Excerpt', 'mai-engine' ),
+		'content'                      => esc_html__( 'Content', 'mai-engine' ),
+		'custom_content'               => esc_html__( 'Custom Content', 'mai-engine' ),
+		'genesis_entry_content'        => 'genesis_entry_content',
+		'more_link'                    => esc_html__( 'Read More link', 'mai-engine' ),
+		'genesis_after_entry_content'  => 'genesis_after_entry_content',
+		'footer_meta'                  => esc_html__( 'Footer Meta', 'mai-engine' ),
+		'genesis_entry_footer'         => 'genesis_entry_footer',
+	];
 
 	return $choices;
 }
@@ -503,25 +529,28 @@ function mai_get_archive_show_choices() {
 function mai_get_single_show_choices() {
 	static $choices = null;
 
-	if ( is_null( $choices ) ) {
-		$choices = [
-			'image'                        => esc_html__( 'Image', 'mai-engine' ),
-			'genesis_entry_header'         => 'genesis_entry_header',
-			'title'                        => esc_html__( 'Title', 'mai-engine' ),
-			'header_meta'                  => esc_html__( 'Header Meta', 'mai-engine' ),
-			'genesis_before_entry_content' => 'genesis_before_entry_content',
-			'excerpt'                      => esc_html__( 'Manual Excerpts', 'mai-engine' ),
-			'content'                      => esc_html__( 'Content', 'mai-engine' ),
-			'custom_content'               => esc_html__( 'Custom Content', 'mai-engine' ),
-			'genesis_entry_content'        => 'genesis_entry_content',
-			'genesis_after_entry_content'  => 'genesis_after_entry_content',
-			'footer_meta'                  => esc_html__( 'Footer Meta', 'mai-engine' ),
-			'genesis_entry_footer'         => 'genesis_entry_footer',
-			'author_box'                   => esc_html__( 'Author Box', 'mai-engine' ),
-			'after_entry'                  => esc_html__( 'After Entry Template Part', 'mai-engine' ),
-			'adjacent_entry_nav'           => esc_html__( 'Previous/Next Entry Nav', 'mai-engine' ),
-		];
+	if ( ! is_null( $choices ) ) {
+		return $choices;
 	}
+
+	$choices = [
+		'image'                        => esc_html__( 'Image', 'mai-engine' ),
+		'genesis_entry_header'         => 'genesis_entry_header',
+		'title'                        => esc_html__( 'Title', 'mai-engine' ),
+		'header_meta'                  => esc_html__( 'Header Meta', 'mai-engine' ),
+		'genesis_before_entry_content' => 'genesis_before_entry_content',
+		'excerpt'                      => esc_html__( 'Manual Excerpts', 'mai-engine' ),
+		'content'                      => esc_html__( 'Content', 'mai-engine' ),
+		'custom_content'               => esc_html__( 'Custom Content', 'mai-engine' ),
+		// 'custom_content_2'             => esc_html__( 'Custom Content 2', 'mai-engine' ),
+		'genesis_entry_content'        => 'genesis_entry_content',
+		'genesis_after_entry_content'  => 'genesis_after_entry_content',
+		'footer_meta'                  => esc_html__( 'Footer Meta', 'mai-engine' ),
+		'genesis_entry_footer'         => 'genesis_entry_footer',
+		'author_box'                   => esc_html__( 'Author Box', 'mai-engine' ),
+		'after_entry'                  => esc_html__( 'After Entry Template Part', 'mai-engine' ),
+		'adjacent_entry_nav'           => esc_html__( 'Previous/Next Entry Nav', 'mai-engine' ),
+	];
 
 	return $choices;
 }

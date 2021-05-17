@@ -34,7 +34,9 @@
 
 @mixin button($is_admin: false) {
 	position: relative;
-	display: inline-block;
+	display: var(--button-display, inline-flex);
+	align-items: center;
+	justify-content: center;
 	width: var(--button-width, auto);
 	margin: var(--button-margin, 0);
 	padding: var(--button-padding, 0.9em 2em);
@@ -108,6 +110,7 @@
 		--button-background-hover: var(--button-link-background-hover, transparent);
 		--button-padding: var(--button-link-padding, 0.9em 0.5em);
 		--button-border: 0;
+		--button-box-shadow: 0;
 
 		&::after {
 			display: var(--button-link-after-display, inline-block);
@@ -139,7 +142,7 @@
 	@if ($is_admin) {
 		color: var(--button-color);
 		background: var(--button-background);
-		border-color: currentColor;
+		border-color: var(--button-border, currentColor);
 	}
 }
 
@@ -155,4 +158,16 @@
 	font-size: var(--cite-font-size, 0.8em);
 	font-family: var(--cite-font-family, var(--heading-font-family));
 	font-style: var(--cite-font-style, normal);
+}
+
+@mixin dark_bg() {
+	color: var(--color-white);
+	--heading-color: var(--color-white);
+	--link-color: currentColor;
+	--link-color-hover: currentColor;
+	--link-text-decoration: underline;
+	--link-filter-hover: brightness(0.8);
+	--menu-item-link-color: var(--color-white);
+	--menu-item-link-color-hover: var(--color-white);
+	--menu-item-name-filter-hover: brightness(0.8);
 }

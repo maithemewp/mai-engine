@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_filter( 'admin_body_class', 'mai_admin_body_classes' );
 /**
  * Add additional classes to the body element.

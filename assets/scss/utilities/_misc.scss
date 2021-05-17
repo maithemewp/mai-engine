@@ -8,18 +8,21 @@
 	--input-width: auto;
 }
 
-// Start crazy CSS to override block-library styles.
-// This is really only here for nested cover/group blocks.
-
 .has-dark-background {
-	--heading-color: var(--color-white);
-	--body-color: var(--color-white);
+
+	@include dark_bg();
 }
 
 .has-light-background {
 	--heading-color: var(--color-heading);
-	--body-color: var(--color-body);
+	// --body-color: var(--color-body);
+	color: var(--color-body);
 }
+
+/**
+ * Start crazy CSS to override block-library styles.
+ * This is really only here for nested cover/group blocks.
+ */
 
 .has-dark-background h1:not(.has-text-color),
 .has-dark-background h2:not(.has-text-color),
@@ -40,7 +43,9 @@
 	color: var(--body-color);
 }
 
-// End crazy CSS to override block-library styles.
+/**
+ * End crazy CSS to override block-library styles.
+ */
 
 .has-border {
 	border: var(--border);
@@ -111,10 +116,18 @@
 
 .has-no-margin-top {
 	margin-top: 0 !important;
+
+	> figure {
+		margin-top: 0;
+	}
 }
 
 .has-no-margin-bottom {
 	margin-bottom: 0 !important;
+
+	> figure {
+		margin-bottom: 0;
+	}
 }
 
 @each $breakpoint-name, $breakpoint-size in $breakpoints {
@@ -128,6 +141,11 @@
 	.has-#{ $breakpoint-name }-content-width {
 		--content-max-width: var(--breakpoint-#{ $breakpoint-name });
 	}
+}
+
+.has-no-content-width {
+	--content-max-width: var(--viewport-width);
+	--side-spacing: 0;
 }
 
 .has-no-padding {

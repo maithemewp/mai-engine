@@ -17,11 +17,12 @@ return [
 	],
 	'global-styles' => [
 		'colors' => [
+			'alt'       => '#f6f7f8',
+			'header'    => '#232c39',
+			'heading'   => '#232c39',
 			'link'      => '#fb2056',
 			'primary'   => '#fb2056',
 			'secondary' => '#8693a6',
-			'heading'   => '#232c39',
-			'alt'       => '#f6f7f8',
 		],
 		'fonts'  => [
 			'body'    => 'Hind:400',

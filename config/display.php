@@ -15,12 +15,13 @@ return [
 	],
 	'global-styles'          => [
 		'colors'                => [
+			'alt'                  => '#1b1e20',
+			'header'               => '#323232',
+			'body'                 => '#5a636b',
+			'heading'              => '#141618',
 			'link'                 => '#1ced8a',
 			'primary'              => '#1ced8a',
 			'secondary'            => '#141618',
-			'heading'              => '#141618',
-			'body'                 => '#5a636b',
-			'alt'                  => '#1b1e20',
 		],
 		'fonts'                 => [
 			'body'                 => 'Hind:400',

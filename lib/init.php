@@ -248,6 +248,52 @@ function mai_load_default_favicon( $favicon ) {
 	return $favicon;
 }
 
+/**
+ * Clears the transient on post type save/update.
+ * This was running too late in mai_load_files().
+ *
+ * @since 2.11.0
+ *
+ * @param int     $post_id The template part ID.
+ * @param WP_Post $post    The template part post object.
+ * @param bool    $update  Whether this is an existing post being updated.
+ *
+ * @return void
+ */
+add_action( 'save_post_mai_template_part', 'mai_save_template_part_delete_transient', 20, 3 );
+function mai_save_template_part_delete_transient( $post_id, $post, $update ) {
+	delete_transient( 'mai_template_parts' );
+}
+
+/**
+ * Writes variable data to a file.
+
+ * This function for testing & debuggin only.
+ * Do not leave this function working on your site.
+ *
+ * @since 2.11.0
+ *
+ * @param mixed  $value    The value to write to a file.
+ * @param string $filename The filename to create/write.
+ *
+ * @return void
+ */
+function mai_write_to_file( $value, $filename = '__debug' ) {
+	$file   = dirname( __FILE__ ) . sprintf( '/%s.txt', $filename );
+	$handle = fopen( $file, 'a' );
+	ob_start();
+	if ( is_array( $value ) || is_object( $value ) ) {
+		print_r( $value );
+	} elseif ( is_bool( $value ) ) {
+		var_dump( $value );
+	} else {
+		echo $value;
+	}
+	echo "\r\n\r\n";
+	fwrite( $handle, ob_get_clean() );
+	fclose( $handle );
+}
+
 add_action( 'after_setup_theme', 'mai_load_files', 0 );
 /**
  * Load mai-engine files, or deactivate if active theme is not supported.
@@ -331,7 +377,6 @@ function mai_load_files() {
 		'blocks/group',
 		'blocks/heading',
 		'blocks/icon',
-		'blocks/image',
 		'blocks/paragraph',
 		'blocks/search',
 		'blocks/settings',
@@ -388,8 +433,12 @@ function mai_load_files() {
 		require_once __DIR__ . "/$file.php";
 	}
 
-	// Load CLI command.
+	// Loads CLI command.
 	if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		WP_CLI::add_command( 'mai generate', 'Mai_Cli_Generate_Command' );
+		WP_CLI::add_command( 'mai flush', function() {
+			$message = mai_typography_flush_local_fonts();
+			WP_CLI::success( $message );
+		});
 	}
 }

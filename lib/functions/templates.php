@@ -9,12 +9,16 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'init', 'mai_register_template_part_cpt' );
 /**
  * Register template part post type.
  *
  * @since 2.0.0
  * @since 2.4.0 Changed can_export to true.
+ * @since 2.11.0 Changed post type name to avoid conflict with WP 5.7.
  *
  * @return void
  */
@@ -65,17 +69,33 @@ function mai_register_template_part_cpt() {
 		],
 	];
 
-	// TODO: Can we use this to check which theme set the template part instead of making backups?
-	$meta_args = [
-		'object_subtype' => 'wp_template_part',
-		'type'           => 'string',
-		'description'    => __( 'The theme that provided the template part, if any.', 'mai-engine' ),
-		'single'         => true,
-		'show_in_rest'   => true,
-	];
+	$db_version = mai_get_option( 'db-version', false );
 
-	register_post_type( 'wp_template_part', $args );
-	register_meta( 'post', 'theme', $meta_args );
+	// We need the old post type during upgrade/migration.
+	if ( $db_version && version_compare( $db_version, '2.11.0', '<' ) && ! post_type_exists( 'wp_template_part' ) ) {
+		register_post_type( 'wp_template_part', $args );
+		register_meta( 'post', 'theme',
+			[
+				'object_subtype' => 'wp_template_part',
+				'type'           => 'string',
+				'description'    => __( 'The theme that provided the template part, if any.', 'mai-engine' ),
+				'single'         => true,
+				'show_in_rest'   => true,
+			]
+		);
+	}
+
+	register_post_type( 'mai_template_part', $args );
+	// TODO: Can we use this to check which theme set the template part instead of making backups?
+	register_meta( 'post', 'theme',
+		[
+			'object_subtype' => 'mai_template_part',
+			'type'           => 'string',
+			'description'    => __( 'The theme that provided the template part, if any.', 'mai-engine' ),
+			'single'         => true,
+			'show_in_rest'   => true,
+		]
+	);
 }
 
 add_action( 'admin_bar_menu', 'mai_add_admin_bar_links', 999 );
@@ -95,10 +115,10 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
 
 	$wp_admin_bar->add_node(
 		[
-			'id'     => 'template-parts',
+			'id'     => 'mai-template-parts',
 			'parent' => 'site-name',
 			'title'  => __( 'Template Parts', 'mai-engine' ),
-			'href'   => admin_url( 'edit.php?post_type=wp_template_part' ),
+			'href'   => admin_url( 'edit.php?post_type=mai_template_part' ),
 			'meta'   => [
 				'title' => __( 'Edit Template Parts', 'mai-engine' ),
 			],
@@ -107,7 +127,7 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
 
 	$wp_admin_bar->add_node(
 		[
-			'id'     => 'reusable-blocks',
+			'id'     => 'mai-reusable-blocks',
 			'parent' => 'site-name',
 			'title'  => __( 'Reusable Blocks', 'mai-engine' ),
 			'href'   => admin_url( 'edit.php?post_type=wp_block' ),
@@ -143,9 +163,7 @@ function mai_get_template_parts() {
 
 	if ( $objects ) {
 		foreach ( $objects as $post ) {
-			$content = $post->post_content ? mai_get_processed_content( $post->post_content ) : '';
-
-			$posts[ $post->post_status ][ $post->post_name ] = $content;
+			$posts[ $post->post_status ][ $post->post_name ] = $post->post_content ?: '';
 		}
 	}
 
@@ -180,7 +198,6 @@ function mai_get_template_parts() {
  */
 function mai_get_template_part( $slug ) {
 	$template_parts = mai_get_template_parts();
-
 	return isset( $template_parts[ $slug ] ) ? $template_parts[ $slug ] : '';
 }
 
@@ -192,17 +209,20 @@ function mai_get_template_part( $slug ) {
  * @return array
  */
 function mai_get_template_part_ids() {
-	$template_parts = [];
-	$ids            = [];
-	$objects        = mai_get_template_part_objects();
+	static $ids = null;
+
+	if ( is_array( $ids ) ) {
+		return $ids;
+	}
+
+	$ids     = [];
+	$objects = mai_get_template_part_objects();
 
 	if ( $objects ) {
 		foreach ( $objects as $post ) {
 			$ids[ $post->post_name ] = $post->ID;
 		}
 	}
-
-	$template_parts = $ids;
 
 	return $ids;
 }
@@ -218,7 +238,6 @@ function mai_get_template_part_ids() {
  */
 function mai_get_template_part_id( $slug ) {
 	$template_parts = mai_get_template_part_ids();
-
 	return isset( $template_parts[ $slug ] ) ? $template_parts[ $slug ] : 0;
 }
 
@@ -229,10 +248,13 @@ function mai_get_template_part_id( $slug ) {
  * @since 2.6.0
  * @since 2.10.0 Changes `posts_per_page` value from `count( $slugs )` to 500
  *              since WP seems to allow draft posts with the same slug as an existing post.
+ * @since 2.11.0 Added transient and $use_transient param.
+ *
+ * @param bool $use_transient Whether to use cache for fetching.
  *
  * @return array
  */
-function mai_get_template_part_objects() {
+function mai_get_template_part_objects( $use_transient = true ) {
 	static $template_parts = null;
 
 	if ( ! is_null( $template_parts ) ) {
@@ -243,22 +265,38 @@ function mai_get_template_part_objects() {
 	$posts = [];
 
 	if ( ! empty( $slugs ) ) {
+		$transient = 'mai_template_parts';
 
-		$query = get_posts(
-			[
-				'post_type'              => 'wp_template_part',
-				'post_status'            => 'any',
-				'post_name__in'          => $slugs,
-				'posts_per_page'         => 500,
-				'no_found_rows'          => true,
-				'update_post_meta_cache' => false,
-				'update_post_term_cache' => false,
-				'suppress_filters'       => false, // https://github.com/10up/Engineering-Best-Practices/issues/116
-			]
-		);
-		foreach ( $query as $post ) {
-			$posts[] = $post;
+		if ( ! ( $use_transient && $parts = get_transient( $transient ) ) ) {
+
+			$parts = [];
+			$query = new WP_Query(
+				[
+					'post_type'              => 'mai_template_part',
+					'post_status'            => 'any',
+					'post_name__in'          => $slugs,
+					'posts_per_page'         => 500,
+					'no_found_rows'          => true,
+					'update_post_meta_cache' => false,
+					'update_post_term_cache' => false,
+					'suppress_filters'       => false, // https://github.com/10up/Engineering-Best-Practices/issues/116
+				]
+			);
+
+			if ( $query->have_posts() ) {
+				while ( $query->have_posts() ) : $query->the_post();
+					$post_id = get_the_ID();
+					$parts[] = get_post( $post_id );
+				endwhile;
+			}
+
+			wp_reset_postdata();
+
+			// Set transient, and expire after 1 hour.
+			set_transient( $transient, $parts, 1 * HOUR_IN_SECONDS );
 		}
+
+		$posts = $parts;
 	}
 
 	$template_parts = $posts;
@@ -307,11 +345,17 @@ function mai_template_part_exists( $slug ) {
 function mai_render_template_part( $slug, $before = '', $after = '' ) {
 	$template_part = mai_get_template_part( $slug );
 
-	if ( $template_part ) {
-		echo $before;
-		echo $template_part;
-		echo $after;
+	if ( ! $template_part ) {
+		return;
 	}
+
+	do_action( "mai_before_{$slug}_template_part" );
+	echo $before;
+	do_action( "mai_before_{$slug}_template_part_content" );
+	echo mai_get_processed_content( $template_part );
+	do_action( "mai_after_{$slug}_template_part_content" );
+	echo $after;
+	do_action( "mai_after_{$slug}_template_part" );
 }
 
 /**
@@ -334,7 +378,7 @@ function mai_create_template_parts() {
 
 		$post_id = wp_insert_post(
 			[
-				'post_type'    => 'wp_template_part',
+				'post_type'    => 'mai_template_part',
 				'post_name'    => $slug,
 				'post_status'  => 'publish',
 				'post_title'   => mai_convert_case( $slug, 'title' ),
@@ -439,7 +483,7 @@ function mai_import_template_part( $slug, $force = false ) {
 	$config  = mai_get_config( 'template-parts' );
 	$post_id = wp_insert_post(
 		[
-			'post_type'    => 'wp_template_part',
+			'post_type'    => 'mai_template_part',
 			'post_name'    => $slug,
 			'post_status'  => 'publish',
 			'post_title'   => mai_convert_case( $slug, 'title' ),

@@ -4,6 +4,8 @@
 }
 
 .title-area {
+	flex: var(--title-area-flex, 1);
+	order: var(--title-area-order, unset);
 	margin: var(--title-area-margin, 0);
 	padding: var(--title-area-padding, var(--spacing-md) 0);
 	color: var(--title-area-color, var(--color-heading));
@@ -11,8 +13,14 @@
 	text-align: var(--title-area-text-align, start);
 	transition: var(--title-area-transition, var(--transition));
 
+	--link-color-hover: var(--color-link);
 	--link-text-decoration: none;
 	--link-text-decoration-hover: none;
+}
+
+.title-area-first,
+.title-area-last {
+	--title-area-flex: 0 1 auto;
 }
 
 .has-sticky-header:not(.header-stuck) {
@@ -23,17 +31,9 @@
 	--title-area-transition: all 250ms ease-in-out;
 }
 
-.has-dark-header:not(.header-stuck) {
-	--title-area-color: var(--color-white);
-
-	.title-area {
-		--link-color-hover: var(--color-white); // Site title hover.
-	}
-}
-
 .site-title {
 	display: var(--site-title-display, block);
-	margin: var(--site-title-margin, 0);
+	margin: var(--site-title-margin, auto);
 	font-weight: var(--site-title-font-weight, var(--heading-font-weight));
 	font-size: var(--site-title-font-size, var(--font-size-xl));
 	font-family: var(--site-title-font-family, var(--heading-font-family));
@@ -51,15 +51,26 @@
 
 .custom-logo-link {
 	--link-transition: var(--title-area-transition, var(--transition));
-
+	position: relative;
 	display: flex;
 	align-items: center;
 	max-width: var(--custom-logo-width, 18rem);
+	margin: auto;
 }
 
 .custom-logo {
 	display: block;
-	width: 100vw; // For svg logos.
+	width: var(--viewport-width); // For svg logos.
 	max-width: 100%; // Because 100vw width is crazy.
+	opacity: var(--custom-logo-opacity, 1);
 	transition: var(--title-area-transition, var(--transition));
+}
+
+.custom-scroll-logo {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	object-position: var(--custom-scroll-logo-object-position, center);
+	opacity: var(--custom-scroll-logo-opacity, 0);
 }

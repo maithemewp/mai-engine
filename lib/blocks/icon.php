@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'acf/init', 'mai_register_icon_block' );
 /**
  * Register Mai Icon block.
@@ -18,23 +21,25 @@ add_action( 'acf/init', 'mai_register_icon_block' );
  * @return void
  */
 function mai_register_icon_block() {
-	if ( function_exists( 'acf_register_block_type' ) ) {
-		acf_register_block_type(
-			[
-				'name'            => 'mai-icon',
-				'title'           => __( 'Mai Icon', 'mai-engine' ),
-				'description'     => __( 'A custom icon block.', 'mai-engine' ),
-				'render_callback' => 'mai_do_icon_block',
-				'category'        => 'widgets',
-				'keywords'        => [ 'icon' ],
-				'icon'            => 'heart',
-				'mode'            => 'preview',
-				'supports'        => [
-					'align' => false,
-				],
-			]
-		);
+	if ( ! function_exists( 'acf_register_block_type' ) ) {
+		return;
 	}
+
+	acf_register_block_type(
+		[
+			'name'            => 'mai-icon',
+			'title'           => __( 'Mai Icon', 'mai-engine' ),
+			'description'     => __( 'A custom icon block.', 'mai-engine' ),
+			'render_callback' => 'mai_do_icon_block',
+			'category'        => 'widgets',
+			'keywords'        => [ 'icon' ],
+			'icon'            => 'heart',
+			'mode'            => 'preview',
+			'supports'        => [
+				'align' => false,
+			],
+		]
+	);
 }
 
 /**
@@ -50,9 +55,9 @@ function mai_register_icon_block() {
  */
 function mai_do_icon_block( $block, $content = '', $is_preview = false, $post_id = 0 ) {
 	$args     = [];
-	$settings = array_keys( mai_get_icon_default_args() );
+	$defaults = mai_get_icon_default_args();
 
-	foreach ( $settings as $setting ) {
+	foreach ( array_keys( $defaults ) as $setting ) {
 		$args[ $setting ] = get_field( $setting );
 	}
 
@@ -123,8 +128,15 @@ function mai_load_icon_brand_choices( $field ) {
  */
 function mai_get_icon_choices( $style ) {
 	$choices = [];
-	$dir     = mai_get_dir() . sprintf( 'assets/icons/svgs/%s', $style );
-	$url     = mai_get_url() . sprintf( 'assets/icons/sprites/%s', $style );
+	$dir     = mai_get_icons_dir();
+	$url     = mai_get_icons_url();
+
+	if ( ! ( $dir && $url ) ) {
+		return $choices;
+	}
+
+	$dir .= sprintf( '/svgs/%s', $style );
+	$url .= sprintf( '/sprites/%s', $style );
 
 	foreach ( glob( $dir . '/*.svg' ) as $file ) {
 		$name             = basename( $file, '.svg' );
@@ -268,6 +280,19 @@ function mai_register_icon_field_group() {
 					'label'         => esc_html__( 'Link', 'mai-engine' ),
 					'type'          => 'url',
 					'default_value' => '',
+				],
+				[
+					'key'               => 'mai_icon_link_title',
+					'name'              => 'link_title',
+					'label'             => esc_html__( 'Link Title', 'mai-engine' ),
+					'instructions'      => esc_html__( 'Add a title for accessibility. Will not be displayed visually.', 'mai-engine' ),
+					'type'              => 'text',
+					'conditional_logic' => [
+						[
+							'field'    => 'mai_icon_link',
+							'operator' => '!=empty',
+						],
+					],
 				],
 				[
 					'key'               => 'mai_icon_link_target',

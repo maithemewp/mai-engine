@@ -20,7 +20,15 @@ defined( 'ABSPATH' ) || die;
  * @return string
  */
 function mai_is_in_dev_mode() {
-	return genesis_is_in_dev_mode() || defined( 'WP_DEBUG' ) && WP_DEBUG;
+	static $dev_mode = null;
+
+	if ( ! is_null( $dev_mode ) ) {
+		return $dev_mode;
+	}
+
+	$dev_mode = genesis_is_in_dev_mode() || defined( 'WP_DEBUG' ) && WP_DEBUG;
+
+	return $dev_mode;
 }
 
 /**
@@ -107,7 +115,7 @@ function mai_is_valid_size( $size ) {
 }
 
 /**
- * Check if were on any type of singular page.
+ * Checks if we're on any type of singular page.
  *
  * @since 0.1.0
  *
@@ -129,7 +137,7 @@ function mai_is_type_single( $use_cache = false ) {
 }
 
 /**
- * Check if were on any type of archive page.
+ * Checks if we're on any type of archive page.
  *
  * @since 0.1.0
  *
@@ -151,6 +159,13 @@ function mai_is_type_archive( $use_cache = false ) {
 }
 
 /**
+ * Checks if on the wp-login.php page.
+ */
+function mai_is_login_page() {
+	return false !== stripos( $_SERVER['SCRIPT_NAME'], strrchr( wp_login_url(), '/' ) );
+}
+
+/**
  * Checks if first block is cover or group block aligned full.
  *
  * @since 0.1.0
@@ -163,25 +178,89 @@ function mai_has_alignfull_first() {
 	if ( is_null( $has_alignfull_first ) ) {
 		$has_alignfull_first = false;
 
-		if ( ! mai_is_type_single() || ! has_blocks() ) {
-			return $has_alignfull_first;
-		}
-
-		$post_object = get_post( get_the_ID() );
-		$blocks      = (array) parse_blocks( $post_object->post_content );
-		$first       = reset( $blocks );
+		$first = mai_get_first_block();
 
 		if ( $first ) {
 			$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
 			$align       = isset( $first['attrs']['align'] ) ? $first['attrs']['align'] : '';
+			$allowed     = [ 'core/cover', 'core/group' ];
+			$allowed     = apply_filters( 'mai_alignfull_first_blocks', $allowed );
 
-			if ( in_array( $block_name, [ 'core/cover', 'core/group' ] ) && ( 'full' === $align ) ) {
+			if ( $allowed && in_array( $block_name, $allowed ) && ( 'full' === $align ) ) {
 				$has_alignfull_first = true;
 			}
 		}
 	}
 
 	return $has_alignfull_first;
+}
+
+/**
+ * Checks if first block has dark background.
+ *
+ * @since 2.12.0
+ *
+ * @return bool
+ */
+function mai_has_dark_background_first() {
+	static $has_dark_first = null;
+
+	if ( is_null( $has_dark_first ) ) {
+		$has_dark_first = false;
+
+		$first = mai_get_first_block();
+
+		if ( $first ) {
+			$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
+			if ( 'core/cover' === $block_name ) {
+				$has_dark_first = true;
+			}
+			if ( 'core/group' === $block_name && isset( $first['attrs']['backgroundColor'] ) ) {
+				$color          = mai_get_color_value( $first['attrs']['backgroundColor'] );
+				$has_dark_first = $color && ! mai_is_light_color( $color );
+			}
+		}
+	}
+
+	return $has_dark_first;
+}
+
+/**
+ * Gets first block on a page.
+ *
+ * @since 2.12.0
+ *
+ * @return array|false
+ */
+function mai_get_first_block() {
+	static $first = null;
+
+	if ( ! is_null( $first ) ) {
+		return $first;
+	}
+
+	$first   = false;
+	$content = '';
+
+	if ( ! mai_is_type_single() ) {
+		return $first;
+	}
+
+	if ( is_404() ) {
+		$content = mai_get_template_part( '404-page' );
+	} elseif ( has_blocks() ) {
+		$post_object = get_post( get_the_ID() );
+		$content     = $post_object->post_content;
+	}
+
+	if ( ! $content ) {
+		return $first;
+	}
+
+	$blocks = (array) parse_blocks( $content );
+	$first  = reset( $blocks );
+
+	return $first;
 }
 
 /**
@@ -231,9 +310,16 @@ function mai_has_sidebar() {
  * @return bool
  */
 function mai_has_boxed_container() {
-	$default = current_theme_supports( 'boxed-container' );
+	static $has_boxed = null;
 
-	return mai_get_option( 'boxed-container', $default );
+	if ( ! is_null( $has_boxed ) ) {
+		return $has_boxed;
+	}
+
+	$default   = current_theme_supports( 'boxed-container' );
+	$has_boxed = mai_get_option( 'boxed-container', $default );
+
+	return $has_boxed;
 }
 
 /**
@@ -244,7 +330,26 @@ function mai_has_boxed_container() {
  * @return bool
  */
 function mai_has_sticky_header_enabled() {
-	return mai_get_option( 'site-header-sticky', current_theme_supports( 'sticky-header' ) );
+	static $sticky = null;
+
+	if ( ! is_null( $sticky ) ) {
+		return $sticky;
+	}
+
+	$sticky = mai_get_option( 'site-header-sticky', current_theme_supports( 'sticky-header' ) );
+
+	return $sticky;
+}
+
+/**
+ * Checks if site has sticky header and a scroll logo set.
+ *
+ * @since 2.13.0
+ *
+ * @return bool
+ */
+function mai_has_sticky_scroll_logo() {
+	return (bool) has_custom_logo() && mai_has_sticky_header_enabled() && ! mai_is_element_hidden( 'sticky_header' ) && mai_get_option( 'logo-scroll', false );
 }
 
 /**
@@ -255,7 +360,15 @@ function mai_has_sticky_header_enabled() {
  * @return bool
  */
 function mai_has_transparent_header_enabled() {
-	return mai_get_option( 'site-header-transparent', current_theme_supports( 'transparent-header' ) );
+	static $transparent = null;
+
+	if ( ! is_null( $transparent ) ) {
+		return $transparent;
+	}
+
+	$transparent = mai_get_option( 'site-header-transparent', current_theme_supports( 'transparent-header' ) );
+
+	return $transparent;
 }
 
 /**
@@ -266,23 +379,40 @@ function mai_has_transparent_header_enabled() {
  * @return bool
  */
 function mai_has_transparent_header() {
-	if ( ! mai_has_transparent_header_enabled() ) {
-		return false;
+	static $transparent = null;
+
+	if ( ! is_null( $transparent ) ) {
+		return $transparent;
 	}
+
+	if ( ! mai_has_transparent_header_enabled() ) {
+		$transparent = false;
+		return $transparent;
+	}
+
 	if ( mai_is_element_hidden( 'transparent_header' ) ) {
-		return false;
+		$transparent = false;
+		return $transparent;
 	}
-	// var hasTransparent = header && body.classList.contains( 'has-transparent-header-enabled' ) && ( hasPageHeader || ( hasAlignFull && ! hasBreadcrumbs ));
+
 	if ( mai_is_element_hidden( 'site_header' ) ) {
-		return false;
+		$transparent = false;
+		return $transparent;
 	}
+
 	if ( ! mai_has_transparent_header_enabled() ) {
-		return false;
+		$transparent = false;
+		return $transparent;
 	}
+
 	if ( ! ( mai_has_page_header() || ( mai_has_alignfull_first() && mai_is_element_hidden( 'entry_title' ) && ! mai_has_breadcrumbs() ) ) ) {
-		return false;
+		$transparent = false;
+		return $transparent;
 	}
-	return true;
+
+	$transparent = true;
+
+	return $transparent;
 }
 
 /**
@@ -303,13 +433,13 @@ function mai_has_light_page_header() {
 		$has_light_page_header = false;
 
 	} else {
-		$args   = mai_get_template_args();
-		$config = mai_get_config( 'settings' )['page-header'];
+		$args = mai_get_template_args();
 
 		if ( isset( $args['page-header-text-color'] ) && ! empty( $args['page-header-text-color'] ) ) {
 			$text_color = $args['page-header-text-color'];
 
 		} else {
+			$config     = mai_get_config( 'settings' )['page-header'];
 			$text_color = mai_get_option( 'page-header-text-color', $config['text-color'] );
 		}
 
@@ -375,6 +505,12 @@ function mai_has_page_header() {
  * @return bool
  */
 function mai_has_breadcrumbs() {
+	static $breadcrumbs = null;
+
+	if ( ! is_null( $breadcrumbs ) ) {
+		return $breadcrumbs;
+	}
+
 	/**
 	 * Do not output breadcrumbs if filter returns true.
 	 *
@@ -385,18 +521,23 @@ function mai_has_breadcrumbs() {
 	$genesis_breadcrumbs_hidden = apply_filters( 'genesis_do_breadcrumbs', genesis_breadcrumbs_hidden_on_current_page() );
 
 	if ( $genesis_breadcrumbs_hidden ) {
-		return false;
+		$breadcrumbs = false;
+		return $breadcrumbs;
 	}
 
 	if ( genesis_breadcrumbs_disabled_on_current_page() ) {
-		return false;
+		$breadcrumbs = false;
+		return $breadcrumbs;
 	}
 
 	if ( mai_is_element_hidden( 'breadcrumbs' ) ) {
-		return false;
+		$breadcrumbs = false;
+		return $breadcrumbs;
 	}
 
-	return true;
+	$breadcrumbs = true;
+
+	return $breadcrumbs;
 }
 
 /**
@@ -409,6 +550,12 @@ function mai_has_breadcrumbs() {
  * @return string|array May be * for all or array of types.
  */
 function mai_get_page_header_types( $context ) {
+	static $types = null;
+
+	if ( is_array( $types ) && isset( $types[ $context ] ) ) {
+		return $types[ $context ];
+	}
+
 	$types   = [];
 	$config  = mai_get_config( 'settings' )['page-header'];
 	$single  = array_merge(
@@ -437,7 +584,9 @@ function mai_get_page_header_types( $context ) {
 		$types = $config[ $context ];
 	}
 
-	return mai_get_option( 'page-header-' . $context, $types );
+	$types[ $context ] = mai_get_option( 'page-header-' . $context, $types );
+
+	return $types[ $context ];
 }
 
 /**
@@ -471,6 +620,12 @@ function mai_has_page_header_support_callback( $control ) {
  * @return float
  */
 function mai_get_page_header_overlay_opacity() {
+	static $opacity = null;
+
+	if ( ! is_null( $opacity ) ) {
+		return $opacity;
+	}
+
 	$opacity = mai_get_template_arg( 'page-header-overlay-opacity' );
 
 	if ( null !== $opacity && floatval( $opacity ) < 1 ) {
@@ -485,7 +640,9 @@ function mai_get_page_header_overlay_opacity() {
 		}
 	}
 
-	return floatval( mai_get_config( 'settings' )['page-header']['overlay-opacity'] );
+	$opacity = floatval( mai_get_config( 'settings' )['page-header']['overlay-opacity'] );
+
+	return $opacity;
 }
 
 /**
@@ -685,7 +842,7 @@ function mai_convert_case( $string, $case = 'snake' ) {
 		'dot'      => strtolower( implode( '.', $pieces ) ),
 	];
 
-	return $cases[ $case ];
+	return isset( $cases[ $case ] ) ? $cases[ $case ] : $string;
 }
 
 /**
@@ -727,4 +884,33 @@ function mai_get_instance( $class, ...$args ) {
 	}
 
 	return $classes[ $class ];
+}
+
+/**
+ * Gets width or height attribute value from CSS values.
+ *
+ * @since 2.11.0
+ *
+ * @param $value The existing value. May be numeric, px, rem, or em.
+ *
+ * @return int
+ */
+function mai_get_width_height_attribute( $value, $fallback = false ) {
+	if ( is_numeric( $value ) ) {
+		return $value;
+	}
+	// Pixel values.
+	elseif ( mai_has_string( 'px', $value ) ) {
+		$size = trim( str_replace( 'px', '', $value ) );
+		return $size;
+	}
+	// Rem or em values.
+	elseif ( mai_has_string( 'em', $value ) ) {
+		$size = filter_var( $value, FILTER_SANITIZE_NUMBER_INT );
+		if ( $size ) {
+			$size = absint( $size ) * 16;
+			return $size;
+		}
+	}
+	return $fallback ? absint( $fallback ) : absint( filter_var( $value, FILTER_SANITIZE_NUMBER_INT ) );
 }

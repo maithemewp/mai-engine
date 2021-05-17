@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'wp_enqueue_scripts', 'mai_remove_simple_social_icons_css', 15 );
 /**
  * Remove Simple Social Icons CSS.
@@ -115,7 +118,6 @@ add_filter( 'woocommerce_product_loop_start', 'mai_product_loop_start_columns' )
  * @return string
  */
 function mai_product_loop_start_columns( $html ) {
-
 	$count = wc_get_loop_prop( 'columns' );
 
 	if ( ! is_numeric( $count ) ) {
@@ -215,32 +217,6 @@ add_filter( 'woocommerce_cart_item_remove_link', 'mai_woocommerce_cart_item_remo
 function mai_woocommerce_cart_item_remove_icon( $link ) {
 	$svg = mai_get_svg_icon( 'times', 'light' );
 	return str_replace( '&times;', $svg, $link );
-}
-
-add_filter( 'genesis_attr_entries', 'mai_add_facetwp_template_class', 10, 3 );
-/**
- * Add facetwp-template class to archives.
- *
- * @since 0.2.0
- *
- * @param array  $attributes FacetWP template attributes.
- * @param string $context    Template context.
- * @param array  $args       Template args.
- *
- * @return array
- */
-function mai_add_facetwp_template_class( $attributes, $context, $args ) {
-	if ( ! class_exists( 'facetwp' ) ) {
-		return $attributes;
-	}
-
-	if ( ! isset( $args['params']['args'] ) || ( 'archive' !== $args['params']['args']['context'] ) ) {
-		return $attributes;
-	}
-
-	$attributes['class'] .= ' facetwp-template';
-
-	return $attributes;
 }
 
 add_filter( 'facetwp_shortcode_html', 'mai_facetwp_page_wrap', 10, 2 );

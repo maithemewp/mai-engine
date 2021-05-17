@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'after_setup_theme', 'mai_setup', 5 );
 /**
  * Theme setup.

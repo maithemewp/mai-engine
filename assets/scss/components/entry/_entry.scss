@@ -1,3 +1,7 @@
+.content {
+	--columns: 0; // Fallback for single entries. Using 1 broke alignfull.
+}
+
 .entries {
 	margin-bottom: var(--entries-margin-bottom, var(--spacing-lg));
 
@@ -42,9 +46,9 @@
 	width: var(--entry-width, auto); /* allows "auto" columns in grid and archives */
 	max-width: var(--entry-max-width, calc((100% / var(--columns)) - var(--column-gap)));
 	margin: var(--entry-margin, 0);
-	padding: var(--entry-padding, 0); /* must be a single value for use in calc() full "full" images */
+	padding: var(--entry-padding, 0);
 	overflow: var(--entry-overflow, unset);
-	text-align: var(--align-text);
+	text-align: var(--align-text, inherit);
 	background: var(--entry-background, unset);
 	border: var(--entry-border, 0);
 	border-radius: var(--entry-border-radius, var(--border-radius));
@@ -54,6 +58,10 @@
 .has-image-background {
 	--entry-flex-direction: row;
 	--entry-overflow: hidden; /* for border radius on absolute positioned image. */
+
+	.has-image {
+		--entry-background: var(--color-black);
+	}
 }
 
 [class*="has-image-left"],
@@ -62,6 +70,8 @@
 }
 
 .has-boxed {
+	color: var(--color-body); // Force dark incase these entries are inside has-dark-background.
+	--heading-color: var(--color-heading); // Force dark incase these entries are inside has-dark-background.
 	--entry-background: var(--color-white);
 	--entry-border: var(--border);
 	--entry-box-shadow: var(--shadow);
@@ -69,7 +79,7 @@
 }
 
 .has-boxed:not([class*="has-image-left-full"]):not([class*="has-image-right-full"]) {
-	--entry-padding: var(--spacing-lg); /* Must be a single value for use in calc() full "full" images */
+	--entry-wrap-padding: var(--spacing-lg); /* Must be a single value for use in calc() full "full" images */
 }
 
 .has-image-background,
@@ -108,13 +118,18 @@
 	.has-image-stack {
 		--entry-flex-direction: column;
 		--entry-flex-wrap: nowrap;
-		--entry-image-link-max-width: 100%;
 		--entry-image-link-flex: initial;
+		--entry-image-link-max-width: 100%;
+		--entry-image-link-margin: 0 auto var(--spacing-md);
+		--entry-image-link-before-display: none;
 
 		// Needs to be more specific to intercept alternating images.
 		.entry-image-link {
 			--entry-image-link-order: -1;
-			--entry-image-link-margin: 0 0 var(--spacing-md) 0;
+		}
+
+		.entries-wrap:not(.has-boxed) & {
+			--entry-image-link-margin: 0 0 var(--spacing-md);
 		}
 	}
 }

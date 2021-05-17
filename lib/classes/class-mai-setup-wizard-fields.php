@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 /**
  * Class Mai_Setup_Wizard_Fields
  */
@@ -198,12 +201,14 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 					$data_attr[] = $demo['id'];
 				}
 
+				$url = isset( $plugin['url'] ) ? $plugin['url'] : $plugin['uri'];
+
 				$fields[] = [
 					'id'         => $demo['id'] . '-' . $id,
 					'label'      => sprintf(
 						'&nbsp;<strong>%s</strong>&nbsp;<a href="%s" target="_blank">%s</a>',
 						$plugin['name'],
-						$plugin['uri'],
+						esc_url( $url ),
 						__( ' View details', 'mai-engine' )
 					),
 					'attributes' => [
@@ -232,9 +237,10 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 		$demos         = $this->demos->get_demos();
 		$content_types = [
 			'content'    => sprintf(
-				'<strong>%s</strong> <ul class="step-description"><li>%s</li></ul>',
+				'<strong>%s</strong> <ul class="step-description"><li>%s</li><li>%s</li></ul>',
 				__( 'Content', 'mai-engine' ),
-				__( 'Posts, pages, and menus.' )
+				__( 'Posts, pages, and menus.' ),
+				__( 'Existing posts, pages, and menus will not be deleted.', 'mai-engine' )
 			),
 			'templates'  => sprintf(
 				'<strong>%s</strong> <ul class="step-description"><li>%s</li><li>%s</li><li>%s</li></ul>',

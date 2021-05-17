@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'init', 'mai_page_header_customizer_settings' );
 /**
  * Add page header customizer fields.
@@ -23,8 +26,8 @@ function mai_page_header_customizer_settings() {
 	$handle   = mai_get_handle();
 	$section  = $handle . '-page-header';
 	$defaults = mai_get_config( 'settings' )['page-header'];
-	$single   = mai_get_content_type_choices( false );
-	$archive  = mai_get_content_type_choices( true );
+	$single   = mai_get_content_type_single_choices();
+	$archive  = mai_get_content_type_archive_choices();
 
 	if ( '*' === $defaults['single'] ) {
 		$defaults['single'] = [];
@@ -166,7 +169,7 @@ function mai_page_header_customizer_settings() {
 			'settings' => 'page-header-background-color',
 			'section'  => $section,
 			'label'    => __( 'Background/overlay color', 'mai-engine' ),
-			'default'  => mai_get_color( $defaults['background-color'] ),
+			'default'  => mai_get_color_value( $defaults['background-color'] ),
 			'choices'  => [
 				'palettes' => mai_get_color_choices(),
 			],
@@ -303,7 +306,7 @@ function mai_page_header_customizer_settings() {
 			'section'         => $section,
 			'label'           => __( 'Divider color', 'mai-engine' ),
 			'description'     => __( 'This should match your body background color', 'mai-engine' ),
-			'default'         => mai_get_color( $defaults['divider-color'] ),
+			'default'         => mai_get_color_value( $defaults['divider-color'] ),
 			'choices'         => [
 				'alpha'    => true,
 				'palettes' => mai_get_color_choices(),

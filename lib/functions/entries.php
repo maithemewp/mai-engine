@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 /**
  * Render the entries opening markup.
  *
@@ -18,9 +21,10 @@
  *
  * @link  https://github.com/studiopress/genesis/blob/master/lib/structure/loops.php#L64
  * @link  https://github.com/studiopress/genesis/blob/master/lib/structure/post.php
+ *
+ * @return void
  */
 function mai_do_entries_open( $args ) {
-
 	// Start the attributes.
 	$attributes = [
 		'class' => mai_add_classes( 'entries', isset( $args['class'] ) ? $args['class'] : '' ),
@@ -56,10 +60,15 @@ function mai_do_entries_open( $args ) {
 		}
 
 		if ( 'custom' === $args['image_orientation'] ) {
+			if ( isset( $args['class'] ) && ( mai_has_string( 'alignfull', $args['class'] ) || mai_has_string( 'alignwide', $args['class'] ) ) ) {
+				$image_width = 'unset';
+			} else {
+				$image_sizes = mai_get_available_image_sizes();
+				$image_size  = isset( $image_sizes[ $args['image_size'] ] ) ? $image_sizes[ $args['image_size'] ] : $image_sizes['landscape-md'];
+				$image_width = $image_size['width'] . 'px';
+			}
 
-			$image_sizes          = mai_get_available_image_sizes();
-			$image_size           = $image_sizes[ $args['image_size'] ];
-			$attributes['style'] .= sprintf( '--entry-image-link-max-width:%spx;', $image_size['width'] );
+			$attributes['style'] .= sprintf( '--entry-image-link-max-width:%s;', $image_width );
 
 		} else {
 

@@ -20,11 +20,13 @@
 
 	<!-- PHP Rules -->
 	<config name="testVersion" value="5.6-"/>
-	<rule ref="VariableAnalysis"/>
+	<!-- <rule ref="VariableAnalysis"/> -->
 
 	<!-- WordPress Rules -->
-	<rule ref="WordPress">
+	<!-- <rule ref="WordPress"> -->
+	<rule ref="vendor/wp-coding-standards/wpcs/WordPress">
 		<exclude name="WordPress.VIP"/>
+		<exclude name="WordPress-Docs"/>
 	</rule>
 
 	<rule ref="WordPress.Files.FileName">
@@ -48,7 +50,11 @@
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="git-contributing"/>
+			<property name="text_domain" type="array">
+				<element value="mai-engine"/>
+			</property>
 		</properties>
 	</rule>
+	<!-- WordPress Rules -->
+
 </ruleset>

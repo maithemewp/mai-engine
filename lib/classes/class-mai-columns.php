@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 /**
  * Class Mai_Columns
  */
@@ -153,7 +156,7 @@ class Mai_Columns {
 			$index    = 0;
 			$elements = $this->get_mapped_admin_elements( $arrangement );
 
-			foreach ( $elements as $index => $columns ) {
+			foreach ( $elements as $columns ) {
 				$index++;
 
 				if ( $flex = mai_columns_get_flex( $columns ) ) {
@@ -184,6 +187,7 @@ class Mai_Columns {
 	}
 
 	function get_mapped_admin_elements( $arrangement ) {
+		$arrangement        = (array) $arrangement;
 		$total_arrangements = count( $arrangement );
 		$count              = 0;
 		$elements           = [];

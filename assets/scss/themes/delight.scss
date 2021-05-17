@@ -1,10 +1,10 @@
 :root {
 	--font-scale: 1.2;
 	--font-size-base: 15px;
-	--body-background-color: #fcfcfc;
 	--body-font-weight: var(--font-weight-light);
 	--border-radius: 2px;
 	--shadow: 0 4px 24px 12px rgba(0, 0, 0, 0.025);
+	--entry-spacing: calc(8px + 2vw);
 	--entry-meta-font-size: var(--font-size-xs);
 	--avatar-border-radius: 50%;
 }
@@ -38,16 +38,14 @@ html {
 }
 
 .entry-image-single:first-child {
-	--entry-image-link-margin-bottom: -6px;
-
-	border-bottom-right-radius: 0;
-	border-bottom-left-radius: 0;
-	box-shadow: var(--shadow);
+	--entry-image-link-margin: calc(var(--entry-spacing) * -1) calc(var(--entry-spacing) * -1) var(--spacing-lg);
+	--entry-image-border-radius: var(--border-radius) var(--border-radius) 0 0;
+	--entry-image-link-box-shadow: var(--shadow);
 }
 
 body:not(.has-alignfull-first) .entry-wrap-single {
 	margin-bottom: var(--spacing-xxl);
-	padding: calc(8px + 2vw);
+	padding: var(--entry-spacing);
 	background: var(--color-white);
 	border: var(--border);
 	box-shadow: var(--shadow);

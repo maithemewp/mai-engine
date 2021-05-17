@@ -22,8 +22,9 @@ iframe {
 }
 
 figure {
-	margin-inline-start: 0; // Chrome user agent override.
+	max-width: 100%;
 	margin-inline-end: 0; // Chrome user agent override.
+	margin-inline-start: 0; // Chrome user agent override.
 }
 
 .has-rounded-image {

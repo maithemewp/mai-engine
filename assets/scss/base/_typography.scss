@@ -15,13 +15,6 @@ a {
 	}
 }
 
-.has-dark-background {
-	--link-color: currentColor;
-	--link-color-hover: currentColor;
-	--link-text-decoration: underline;
-	--link-filter-hover: brightness(0.8);
-}
-
 p {
 	width: var(--paragraph-width, auto);
 	margin: var(--paragraph-margin, 0 0 var(--paragraph-margin-bottom, var(--spacing-md)));
@@ -52,6 +45,7 @@ hr {
 b,
 strong {
 	font-weight: var(--strong-font-weight, var(--body-font-weight-bold));
+	word-wrap: break-word;
 }
 
 em,
@@ -60,7 +54,7 @@ i {
 }
 
 blockquote {
-	margin: var(--blockquote-margin, (1em auto));
+	margin: var(--blockquote-margin, 1em auto);
 	padding: var(--blockquote-padding, 1em);
 	color: var(--blockquote-color, unset);
 	font-weight: var(--blockquote-font-weight, normal);
@@ -76,7 +70,7 @@ blockquote {
 	border-left: var(--blockquote-border-left, var(--border));
 	box-shadow: var(--blockquote-box-shadow, none);
 
-	--paragraph-padding: (var(--row-gap) 0);
+	--paragraph-padding: var(--row-gap) 0;
 }
 
 cite {

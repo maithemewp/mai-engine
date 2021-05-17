@@ -13,6 +13,7 @@
 .has-image-background {
 
 	.has-image {
+		color: var(--color-white);
 		--entry-overlay-background: linear-gradient(var(--entry-overlay-background-direction, to bottom), var(--entry-overlay-color-start, var(--color-heading)) 0%, var(--entry-overlay-color-end, var(--color-heading)) 100%);
 		--entry-wrap-color: var(--color-white);
 

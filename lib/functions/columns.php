@@ -1,4 +1,16 @@
 <?php
+/**
+ * Mai Engine.
+ *
+ * @package   BizBudding\MaiEngine
+ * @link      https://bizbudding.com
+ * @author    BizBudding
+ * @copyright Copyright © 2020 BizBudding
+ * @license   GPL-2.0-or-later
+ */
+
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
 
 /**
  * Gets formatted columns args from block settings
@@ -18,8 +30,11 @@ function mai_columns_get_args( $i = null ) {
 			return $cache[ $i ];
 		}
 
+		$columns = get_field( 'columns' );
+		$columns = ( $columns || '0' === $columns ) ? $columns : 2;
+
 		$cache[ $i ] = [
-			'columns' => get_field( 'columns' ),
+			'columns' => $columns,
 		];
 
 		if ( 'custom' === $cache[ $i ]['columns'] ) {
@@ -32,11 +47,14 @@ function mai_columns_get_args( $i = null ) {
 
 			foreach ( $arrangements as $break => $arrangement ) {
 				foreach ( $arrangement as $columns ) {
-					$cache[ $i ]['arrangements'][ $break ][] = $columns['columns'];
+					if ( isset( $columns['columns'] ) ) {
+						$cache[ $i ]['arrangements'][ $break ][] = $columns['columns'];
+					}
 				}
 			}
 
 		} else {
+
 			$columns = mai_get_breakpoint_columns(
 				[
 					'columns_responsive' => false,
@@ -97,6 +115,10 @@ function mai_columns_get_max_width( $size ) {
 
 	if ( is_numeric( $size ) ) {
 		return ( $size ? (100 / (int) $size) : '100' ) . '%';
+	}
+
+	if ( 'auto' === $size ) {
+		return 'unset';
 	}
 
 	return '100%';

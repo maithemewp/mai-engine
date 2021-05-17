@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_shortcode( 'mai_icon', 'mai_icon_shortcode' );
 /**
  * Dipslays an icon.
@@ -31,8 +34,9 @@ add_shortcode( 'mai_search_form', 'mai_search_form_shortcode' );
  *
  * @return string
  */
-function mai_search_form_shortcode() {
-	return get_search_form( false );
+function mai_search_form_shortcode( $atts ) {
+	$atts = (array) $atts;
+	return mai_get_search_form( $atts );
 }
 
 add_shortcode( 'mai_back_to_top', 'mai_back_to_top_shortcode' );
@@ -61,19 +65,20 @@ function mai_back_to_top_shortcode( $atts = [] ) {
 		'link'  => esc_url( $atts['link'] ),
 		'title' => esc_html( $atts['title'] ),
 		'text'  => esc_html( $atts['text'] ),
-		'class' => sanitize_html_class( $atts['class'] ),
+		'class' => esc_html( $atts['class'] ),
 	];
 
-	$class = 'mai-back-to-top';
+	$classes = 'mai-back-to-top';
+
 	if ( $atts['class'] ) {
-		$class .= ' ' . $atts['class'];
+		$classes = mai_add_classes( $atts['class'], $classes );
 	}
 
 	return sprintf(
 		'<a href="%s" title="%s" class="%s">%s</a>',
 		$atts['link'],
 		$atts['title'],
-		trim( $class ),
+		trim( $classes ),
 		$atts['text']
 	);
 }
@@ -86,8 +91,10 @@ add_shortcode( 'mai_content', 'mai_content_shortcode' );
  * Examples:
  * [mai_content id="123"]
  * [mai_content id="my-reusable-block"]
+ * [mai_content id="my-page-slug" post_type="page"]
  *
  * @since 0.3.0
+ * @since 2.12.0 Added post_type parameter when displaying content by post slug.
  *
  * @param array $atts Shortcode attributes.
  *
@@ -96,17 +103,20 @@ add_shortcode( 'mai_content', 'mai_content_shortcode' );
 function mai_content_shortcode( $atts = [] ) {
 	$atts = shortcode_atts(
 		[
-			'id' => '',
+			'id'        => '',
+			'post_type' => 'wp_block',
 		],
 		$atts,
 		'mai_content'
 	);
 
+	$atts = array_map( 'esc_html', $atts );
+
 	if ( empty( $atts['id'] ) ) {
 		return;
 	}
 
-	return mai_get_post_content( $atts['id'] );
+	return mai_get_post_content( $atts['id'], strtolower( $atts['post_type'] ) );
 }
 
 add_shortcode( 'mai_menu', 'mai_menu_shortcode' );
@@ -120,18 +130,7 @@ add_shortcode( 'mai_menu', 'mai_menu_shortcode' );
  * @return string
  */
 function mai_menu_shortcode( $atts ) {
-	$atts = shortcode_atts(
-		[
-			'id'      => '',       // The menu ID, slug, name.
-			'class'   => '',       // HTML classes.
-			'align'   => 'center', // Accepts left, center, or right.
-			'display' => '',       // Accepts list.
-		],
-		$atts,
-		'mai_menu'
-	);
-
-	if ( ! $atts['id'] ) {
+	if ( ! ( isset( $atts['id'] ) && $atts['id'] ) ) {
 		return;
 	}
 
@@ -147,12 +146,6 @@ add_shortcode( 'mai_avatar', 'mai_avatar_shortcode' );
  * @return string
  */
 function mai_avatar_shortcode( $atts ) {
-	$atts = shortcode_atts(
-		mai_get_avatar_default_args(),
-		$atts,
-		'mai_avatar'
-	);
-
 	return mai_get_avatar( $atts );
 }
 
@@ -170,17 +163,30 @@ function mai_cart_total_shortcode() {
 	return mai_get_cart_total();
 }
 
+add_shortcode( 'mai_rating', 'mai_rating_shortcode' );
+/**
+ * Displays star rating.
+ *
+ * @since 2.11.0
+ *
+ * @return string
+ */
+function mai_rating_shortcode( $atts ) {
+	return mai_get_rating( $atts );
+}
+
+
 add_shortcode( 'mai_price', 'mai_price_shortcode' );
 /**
  * Displays the WooCommerce product price.
  *
  * @uses WooCommerce
  *
- * @since 1/4/21
+ * @since 2.9.0
  *
  * @return string
  */
-function mai_price_shortcode() {
+function mai_price_shortcode( $atts ) {
 	if ( ! class_exists( 'WooCommerce' ) ) {
 		return;
 	}
@@ -251,6 +257,10 @@ function mai_post_terms_shortcode_classes( $output, $terms, $atts ) {
  */
 add_filter( 'do_shortcode_tag', 'mai_gallery_shortcode_tag', 10, 4 );
 function mai_gallery_shortcode_tag( $output, $tag, $atts, $m ) {
+	if ( ! $output ) {
+		return $output;
+	}
+
 	if ( 'gallery' !== $tag ) {
 		return $output;
 	}
@@ -286,7 +296,11 @@ function mai_gallery_shortcode_tag( $output, $tag, $atts, $m ) {
 		$style .= sprintf( '--gallery-columns-%s:%s;', $break, $column );
 	}
 
-	$first->setAttribute( 'style', $style );
+	if ( $style ) {
+		$first->setAttribute( 'style', $style );
+	} else {
+		$first->removeAttribute( 'style' );
+	}
 
 	$output = $dom->saveHTML();
 

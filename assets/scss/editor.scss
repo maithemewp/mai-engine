@@ -3,8 +3,9 @@
 @import "base/globals";
 @import "base/heading";
 @import "base/list";
+@import "base/table";
 @import "base/typography";
-@import "components/blocks/_index";
+@import "components/blocks/_index-editor";
 @import "components/entry/_index";
 @import "utilities/_index";
 
@@ -18,6 +19,8 @@ body {
 	min-height: auto;
 	background: var(--color-white);
 
+	--viewport-width: calc(100vw - var(--admin-menu-width, 160px) - var(--block-sidebar-width, 0));
+	--body-background-color: var(--color-white);
 	--list-style-position: outside;
 	--list-padding: 0 0 var(--spacing-lg) var(--spacing-xl); // Adds list indent/spacing without affecting block layout.
 	--list-item-margin-bottom: var(--spacing-xs);
@@ -34,14 +37,20 @@ p {
 	font-size: var(--font-size-md);
 }
 
+.block-editor-plain-text {
+	/* TODO: Make this work if body color is set to white. */
+	/* TODO: --input-color: #000; is necessary when this happens as well. */
+	color: var(--color-body); /* Overrides WP core styles. Mostly for dark backgrounds when the text is changed to white. */
+}
+
 .has-dark-background {
+	color: var(--color-white);
 	--heading-color: var(--color-white);
-	--body-color: var(--color-white);
 }
 
 .has-light-background {
+	color: var(--color-body);
 	--heading-color: var(--color-heading);
-	--body-color: var(--color-body);
 }
 
 .alignfull {
@@ -59,6 +68,12 @@ p {
 // Overridden in admin.scss.
 .wp-block:not([data-align="full"]):not([data-align="wide"]) {
 	max-width: var(--wp-block-max-width, var(--breakpoint-lg));
+}
+
+.wp-block.is-reusable {
+	max-width: unset !important;
+	margin-right: 0;
+	margin-left: 0;
 }
 
 [data-type="core/pullquote"][data-align="left"],
@@ -85,6 +100,57 @@ p {
 	}
 }
 
+.wp-block[data-align="full"] > .wp-block-group {
+	padding-right: calc(((var(--viewport-width) - var(--wp-block-max-width)) / 2) - var(--side-spacing));
+	padding-left: calc(((var(--viewport-width) - var(--wp-block-max-width)) / 2) - var(--side-spacing));
+
+	> .wp-block-group__inner-container {
+		margin-right: var(--side-spacing);
+		margin-left: var(--side-spacing);
+	}
+}
+
+.wp-block[data-align="full"] > .wp-block-cover {
+	padding-right: calc(((var(--viewport-width) - var(--wp-block-max-width)) / 2) - var(--side-spacing));
+	padding-left: calc(((var(--viewport-width) - var(--wp-block-max-width)) / 2) - var(--side-spacing));
+
+	> .wp-block-cover__inner-container {
+		margin-right: var(--side-spacing);
+		margin-left: var(--side-spacing);
+	}
+}
+
+[data-content-align="start"] {
+	--group-block-justify-content: flex-start;
+	--cover-block-justify-content: flex-start;
+
+	> .wp-block-group__inner-container > .wp-block,
+	> .wp-block-cover__inner-container > .wp-block {
+		margin-left: unset;
+	}
+}
+
+[data-content-align="center"] {
+	--group-block-justify-content: center;
+	--cover-block-justify-content: center;
+}
+
+[data-content-align="end"] {
+	--group-block-justify-content: flex-end;
+	--cover-block-justify-content: flex-end;
+
+	> .wp-block-group__inner-container > .wp-block,
+	> .wp-block-cover__inner-container > .wp-block {
+		margin-right: unset;
+	}
+}
+
+[data-content-width="no"] {
+	--content-max-width: var(--viewport-width);
+	--wp-block-max-width: var(--viewport-width);
+	--side-spacing: 0;
+}
+
 @each $breakpoint-name, $breakpoint-size in $breakpoints {
 
 	[data-type="core/heading"][data-max-width="#{ $breakpoint-name }"],
@@ -100,6 +166,7 @@ p {
 	}
 }
 
+// This is margin on enableSpacingSettingsBlocks.
 @each $margin-name, $margin-size in $spacing {
 
 	@each $margin-setting in $margin_settings {
@@ -111,13 +178,14 @@ p {
 	}
 }
 
+// This is padding on enableLayoutSettingsBlocks.
 @each $padding-name, $padding-size in $padding_scale {
 
 	@each $padding-setting in $padding_settings {
 
-		[data-spacing-#{ $padding-setting }="#{ $padding-name }"] {
-			--cover-block-padding-#{ $padding-setting }: #{ $padding-size };
-			--group-block-padding-#{ $padding-setting }: #{ $padding-size };
+		.wp-block-group[data-spacing-#{ $padding-setting }="#{ $padding-name }"],
+		.wp-block-cover[data-spacing-#{ $padding-setting }="#{ $padding-name }"] {
+			padding-#{ $padding-setting }: #{ $padding-size } !important;
 		}
 	}
 }
@@ -139,6 +207,13 @@ p {
 		[data-margin-#{ $margin-setting }="#{ $spacing-name }"] {
 			margin-#{ $margin-setting }: calc(#{ $spacing-size } * -1) !important;
 		}
+	}
+}
+
+@each $margin-setting in $margin_settings {
+
+	[data-margin-#{ $margin-setting }="no"] {
+		margin-#{ $margin-setting }: 0 !important;
 	}
 }
 
@@ -194,6 +269,14 @@ input[type="submit"],
 
 	.wp-block[data-align="right"] & {
 		justify-content: flex-end;
+	}
+
+	.wp-block-search__input {
+		width: auto;
+		min-width: var(--search-input-min-width, 0);
+		max-width: var(--search-input-max-width, 320px);
+		font-size: var(--font-size-md);
+		-webkit-appearance: none;
 	}
 
 	.wp-block-search__button {
@@ -594,8 +677,16 @@ input[type="submit"],
 	}
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-list-appender {
-	flex: 1 1 100%;
-	max-width: 100%;
-	margin: auto 16px;
+// Mai Accordion.
+
+.wp-block[data-type="acf/mai-accordion-item"] {
+	margin-bottom: var(--row-gap);
+}
+
+.wp-block[data-type="acf/mai-accordion-item"] .mai-accordion-item {
+	margin-bottom: 0;
+}
+
+.wp-block[data-type="acf/mai-accordion-item"] + .wp-block[data-type="acf/mai-accordion-item"] {
+	margin-top: 0;
 }

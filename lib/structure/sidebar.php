@@ -9,6 +9,9 @@
  * @license   GPL-2.0-or-later
  */
 
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
+
 add_action( 'genesis_before', 'mai_no_sidebar' );
 /**
  * Remove sidebars on no-sidebar layouts.
