@@ -143,8 +143,9 @@ class Mai_Columns {
 	function get_inner_blocks() {
 		$allowed  = [ 'acf/mai-column' ];
 		$template = [];
+		$columns  = absint( $this->args['columns'] ) ?: 1;
 
-		for ( $i = 0 ; $i < $this->args['columns']; $i++ ) {
+		for ( $i = 0 ; $i < $columns; $i++ ) {
 			$template[] = [ 'acf/mai-column', [], [] ];
 		}
 

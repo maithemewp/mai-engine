@@ -278,7 +278,7 @@ function mai_add_single_content_settings() {
 			}
 
 			if ( isset( $field['choices'] ) && is_string( $field['choices'] ) && mai_has_string( 'mai_', $field['choices'] ) && is_callable( $field['choices'] ) ) {
-				$field['choices'] = call_user_func( $field['choices'], $section );
+				$field['choices'] = call_user_func( $field['choices'] );
 			}
 
 			if ( isset( $field['sanitize'] ) ) {
