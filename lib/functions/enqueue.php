@@ -297,7 +297,7 @@ function mai_get_tag_attributes( $script_or_style ) {
 	$tags       = mai_get_config( $script_or_style );
 	foreach ( $tags as $name => $args ) {
 		$handle = isset( $args['handle'] ) ? $args['handle'] : mai_get_handle() . '-' . $name;
-		// ray( $args );
+
 		if ( isset( $args[''] ) && $args['onload'] ) {
 			$attributes[ $handle ]['onload'] = $args['onload'];
 		}
