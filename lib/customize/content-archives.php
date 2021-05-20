@@ -835,11 +835,11 @@ function mai_add_content_archive_settings() {
 			$field['settings']    = $settings;
 
 			if ( isset( $field['default'] ) && is_string( $field['default'] ) && mai_has_string( 'mai_', $field['default'] ) && is_callable( $field['default'] ) ) {
-				$field['default'] = call_user_func_array( $field['default'], [ 'name' => $section ] );
+				$field['default'] = call_user_func( $field['default'], $section );
 			}
 
 			if ( isset( $field['choices'] ) && is_string( $field['choices'] ) && mai_has_string( 'mai_', $field['choices'] ) && is_callable( $field['choices'] ) ) {
-				$field['choices'] = call_user_func_array( $field['choices'], [ 'name' => $section ] );
+				$field['choices'] = call_user_func( $field['choices'], $section );
 			}
 
 			if ( isset( $field['sanitize'] ) ) {
