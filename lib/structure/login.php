@@ -79,12 +79,15 @@ function mai_login_css() {
 			color: var(--color-link);
 		}
 		body.login.wp-core-ui .button {
-			padding: var(--button-padding, 0.9em 2em);
+			font-size: 13px;
 			font-family: var(--system-font-family);
 			color: var(--button-color);
 			background: var(--button-background, var(--color-primary));
+			padding: 10px 16px;
 			border: var(--button-border, 0);
 			border-radius: var(--button-border-radius, var(--border-radius));
+			--button-transform: none;
+			--button-transform-hover: none;
 
 		}
 		body.login.wp-core-ui .button:hover,
@@ -128,9 +131,9 @@ function mai_login_css() {
 		body.login input[type="week"],
 		body.login select,
 		body.login textarea {
-			padding: var(--input-padding, 0.9em);
+			padding: 16px;
 			line-height: var(--input-line-height, 1);
-			font-size: var(--font-size-md);
+			font-size: 18px;
 			color: var(--input-color, var(--color-body));
 			background: var(--input-background-color, var(--color-white));
 			border: var(--input-border, 1px solid rgba(0,0,0,.1));
@@ -170,10 +173,9 @@ function mai_login_css() {
 			--button-border-hover: 0;
 			--button-box-shadow: 0;
 			--button-box-shadow-hover: 0;
-			--button-padding: 0;
 			--button-transform-hover: 0;
-			top: 50%;
-			transform: translateY(-50%);
+			top: 8px;
+			padding: 0;
 		}
 		body.login #login form p.forgetmenot,
 		body.login #login form p.submit {
@@ -183,8 +185,7 @@ function mai_login_css() {
 			float: left;
 			display: flex;
 			align-items: center;
-			margin-top: 4px;
-			line-height: 1;
+			margin-top: 18px;
 		}
 		body.login #login form p.forgetmenot #rememberme {
 			margin-right: 8px;
@@ -195,9 +196,21 @@ function mai_login_css() {
 		}
 		body.login #login form p.forgetmenot,
 		body.login #login form p.submit .button {
-			padding-top: 0.9em;
-			padding-bottom: 0.9em;
 			line-height: 1.625;
+		}
+		body.login #login form p.submit.reset-pass-submit {
+			float: none;
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: space-between;
+			max-width: 100%;
+		}
+		body.login #login form p.submit.reset-pass-submit button,
+		body.login #login form p.submit.reset-pass-submit input {
+			padding: 6px 10px;
+		}
+		body.login #login form p.submit.reset-pass-submit input {
+			margin-left: 6px;
 		}
 		<?php
 		$width_px = '100%';
