@@ -1384,9 +1384,18 @@ function mai_get_search_icon_form( $title = '', $icon_size = '16' ) {
 		]
 	);
 
-	$html = sprintf( '<button class="search-toggle" aria-expanded="false" aria-pressed="false"><span class="screen-reader-text">%s</span>%s</button>',
+	$close = mai_get_svg_icon( 'times', 'regular',
+		[
+			'class'  => 'search-toggle-close',
+			'width'  => mai_get_width_height_attribute( $icon_size ),
+			'height' => mai_get_width_height_attribute( $icon_size ),
+		]
+	);
+
+	$html = sprintf( '<button class="search-toggle" aria-expanded="false" aria-pressed="false"><span class="screen-reader-text">%s</span>%s%s</button>',
 		esc_html( $title ?: __( 'Search', 'mai-engine' ) ),
-		$icon
+		$icon,
+		$close
 	);
 
 	$html .= mai_get_search_form();
