@@ -17,8 +17,11 @@ add_filter( 'acf/load_field/key=mai_grid_block_show', 'mai_acf_load_show', 10, 1
 add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_in', 'mai_acf_get_posts', 10, 1 );
 add_filter( 'acf/load_field/key=mai_grid_block_tax_terms', 'mai_acf_load_terms', 10, 1 );
 add_filter( 'acf/prepare_field/key=mai_grid_block_tax_terms', 'mai_acf_prepare_terms', 10, 1 );
-add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_parent_in', 'mai_acf_get_post_parents', 10, 1 );
 add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_not_in', 'mai_acf_get_posts', 10, 1 );
+add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_parent_in', 'mai_acf_get_post_parents', 10, 1 );
+add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_in', 'mai_acf_get_posts_by_id', 12, 3 );
+add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_not_in', 'mai_acf_get_posts_by_id', 12, 3 );
+add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_parent_in','mai_acf_get_posts_by_id', 12, 3 );
 
 // Mai Term Grid.
 add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_include', 'mai_acf_get_terms', 10, 1 );
@@ -518,6 +521,36 @@ function mai_acf_get_post_parents( $args ) {
 			unset( $args['post_type'][ $index ] );
 		}
 	}
+
+	return $args;
+}
+
+/**
+ * Allow searching for post objects by ID.
+ *
+ * @since TBD
+ *
+ * @link https://www.powderkegwebdesign.com/fantastic-way-allow-searching-id-advanced-custom-fields-objects/
+ *
+ * @return array
+ */
+function mai_acf_get_posts_by_id( $args, $field, $post_id ) {
+	$query = ! empty( $args['s'] ) ? $args['s'] : false;
+
+	if ( ! $query ) {
+		return $args;
+	}
+
+	// Bail if not a numeric query.
+ 	if ( ! is_numeric( $query ) ) {
+		return $args;
+	}
+
+	// Set the post ID in the query.
+	$args['post__in'] = array( $query );
+
+	// Unset the actual search param.
+	unset( $args['s'] );
 
 	return $args;
 }
