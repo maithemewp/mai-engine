@@ -10,6 +10,14 @@
 			return;
 		}
 
+		var hideSearchForm = function( event ) {
+			if ( ! event.target.closest( '.search-icon-form' ) ) {
+				form.classList.remove( 'search-form-visible' );
+				maiToggleAriaValues( toggle );
+				document.removeEventListener( 'mouseup', hideSearchForm, true );
+			}
+		};
+
 		var target = event.target;
 		var form   = parent.querySelector( '.search-form' );
 		var toggle = parent.querySelector( '.search-toggle' );
@@ -24,13 +32,9 @@
 
 		if ( form.classList.contains( 'search-form-visible' ) ) {
 			input.focus();
-
-			document.addEventListener( 'mouseup', function( event ) {
-				if ( ! event.target.closest( '.search-icon-form' ) ) {
-					form.classList.remove( 'search-form-visible' );
-					maiToggleAriaValues( toggle );
-				}
-			} );
+			document.addEventListener( 'mouseup', hideSearchForm, true );
+		} else {
+			document.removeEventListener( 'mouseup', hideSearchForm, true );
 		}
 	};
 
