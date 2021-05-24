@@ -38,6 +38,7 @@
 	align-items: center;
 	justify-content: center;
 	width: var(--button-width, auto);
+	max-height: var(--button-max-height, 100%);
 	margin: var(--button-margin, 0);
 	padding: var(--button-padding, 0.9em 2em);
 	color: var(--button-color); // Color contrast automatically generated.
@@ -94,11 +95,11 @@
 	}
 
 	@if ("outline" == $style) {
+		--button-max-height: calc(100% - 4px); // Makes height same as button with no border.
 		--button-color: var(--button-outline-color, var(--color-primary));
 		--button-color-hover: var(--button-outline-color-hover, var(--color-white));
 		--button-background: var(--button-outline-background, transparent);
 		--button-background-hover: var(--button-outline-background-hover, var(--button-outline-color, var(--button-color)));
-		--button-line-height: calc(1em - 4px); // Makes height same as button with no border.
 		--button-border: 2px solid var(--button-outline-color, var(--button-color));
 		--button-border-hover: var(--button-border);
 	}
