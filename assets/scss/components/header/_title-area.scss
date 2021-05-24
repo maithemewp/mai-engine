@@ -73,4 +73,5 @@
 	object-fit: contain;
 	object-position: var(--custom-scroll-logo-object-position, center);
 	opacity: var(--custom-scroll-logo-opacity, 0);
+	transition: var(--title-area-transition, var(--transition));
 }
