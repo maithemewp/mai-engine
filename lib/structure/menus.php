@@ -195,6 +195,37 @@ function mai_nav_menu_buttons( $classes, $item, $args, $depth ) {
 	return $classes;
 }
 
+add_filter( 'nav_menu_css_class', 'mai_nav_menu_icons', 10, 4 );
+/**
+ * Adds menu-item-icon class if menu item only has an icon.
+ *
+ * @since TBD
+ *
+ * @param string[] $classes Array of the CSS classes that are applied to the menu item's `<li>` element.
+ * @param WP_Post  $item    The current menu item.
+ * @param stdClass $args    An object of wp_nav_menu() arguments.
+ * @param int      $depth   Depth of menu item. Used for padding.
+ *
+ * @return array
+ */
+function mai_nav_menu_icons( $classes, $item, $args, $depth ) {
+	if ( $depth > 0 ) {
+		return $classes;
+	}
+
+	if ( in_array( 'search', $classes ) ) {
+		$classes[] = 'menu-item-icon';
+		return $classes;
+	}
+
+	if ( preg_match( '/^\[mai_icon[^\]]+]$/', trim( $item->title ) ) ) {
+		$classes[] = 'menu-item-icon';
+		return $classes;
+	}
+
+	return $classes;
+}
+
 add_filter( 'nav_menu_link_attributes', 'mai_nav_link_atts' );
 /**
  * Pass nav menu link attributes through attribute parser.
@@ -272,6 +303,7 @@ function mai_remove_menu_item_classes( $attribute ) {
 			'menu-item-last',
 			'menu-item-has-children',
 			'menu-item-button',
+			'menu-item-icon',
 		];
 
 		foreach ( $attribute as $index => $class ) {

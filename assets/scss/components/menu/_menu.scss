@@ -102,6 +102,10 @@
 	}
 }
 
+.menu-item-icon + .menu-item-icon > .menu-item-link {
+	padding-left: var(--spacing-xxs);
+}
+
 .sub-menu {
 	--menu-item-dropdown-margin-left: auto;
 }
