@@ -68,6 +68,9 @@ function mai_login_css() {
 		body.login.has-dark-background #backtoblog a {
 			color: var(--color-white);
 		}
+		body.login #login {
+			padding: 1% 0 0;
+		}
 		.login .message,
 		.login .success,
 		.login #login_error {
