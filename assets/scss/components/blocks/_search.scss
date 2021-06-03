@@ -66,12 +66,10 @@
 	}
 
 	&.wp-block-search__button-inside {
-		--button-padding: 0.75em 1.25em;
-		--button-margin: -0.625em -0.625em -0.625em 0.625em;
 
 		// Overrides WP core styles.
 		.wp-block-search__inside-wrapper {
-			padding: var(--input-padding, 0.9em) !important;
+			padding: var(--spacing-xs) !important;
 			background: var(--input-background-color, var(--color-white));
 			border: var(--input-border, 1px solid rgba(0, 0, 0, 0.1)) !important;
 			border-radius: var(--input-border-radius, var(--border-radius)) !important;

@@ -259,6 +259,13 @@ input[type="submit"],
 
 .wp-block-search {
 
+	// When no alignment is set the wp-block is the same as the search block.
+	// When you set alignment it adds wp-block as a wrapper. Strange.
+	&.wp-block {
+		margin-right: auto;
+		margin-left: auto;
+	}
+
 	.wp-block[data-align="left"] & {
 		justify-content: flex-start;
 	}
