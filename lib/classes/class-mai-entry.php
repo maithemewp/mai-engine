@@ -996,7 +996,7 @@ class Mai_Entry {
 					// Manual excerpts only, on single posts.
 					$excerpt = has_excerpt() && ! mai_is_element_hidden( 'entry_excerpt', $this->id ) ? get_the_excerpt() : '';
 				} else {
-					$excerpt = get_the_excerpt();
+					$excerpt = get_the_excerpt( $this->id );
 
 					// Allow shortcodes in custom excerpt.
 					if ( has_excerpt( $this->id ) ) {
