@@ -487,6 +487,19 @@ function mai_get_breakpoint( $size = 'lg', $suffix = '' ) {
 }
 
 /**
+ * Returns the default breakpoint the mobile menu to display.
+ *
+ * @since TBD
+ *
+ * @return string
+ */
+function mai_get_mobile_menu_breakpoint() {
+	$breakpoint = ! is_null( mai_get_config( 'settings' )['mobile-menu-breakpoint'] ) ? mai_get_config( 'settings' )['mobile-menu-breakpoint'] : mai_get_breakpoint();
+
+	return mai_get_unit_value( $breakpoint );
+}
+
+/**
  * Return the current post type.
  * Sometimes we need this earlier than get_post_type()
  * can handle, so we fall back to the query var.

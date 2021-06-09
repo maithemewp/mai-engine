@@ -686,6 +686,7 @@ return [
 			'divider-overlay-opacity' => 0.5,
 			'divider-text-align'      => '',
 		],
+		'mobile-menu-breakpoint'      => null, // Null will use `mai_get_mobile_menu_breakpoint()` as default, which calls `mai_get_config()` so we can't use it here.
 		'header-left-menu-alignment'  => 'flex-start',
 		'header-right-menu-alignment' => 'flex-end',
 		'after-header-menu-alignment' => 'flex-start',

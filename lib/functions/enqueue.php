@@ -83,7 +83,7 @@ add_filter( 'mai_styles_config', 'mai_styles_desktop_breakpoint' );
  * @return array
  */
 function mai_styles_desktop_breakpoint( $config ) {
-	$config['desktop']['media'] = sprintf( 'only screen and (min-width:%spx)', mai_get_option( 'mobile-menu-breakpoint', mai_get_breakpoint() ) );
+	$config['desktop']['media'] = sprintf( 'only screen and (min-width:%spx)', mai_get_mobile_menu_breakpoint() );
 	return $config;
 }
 
