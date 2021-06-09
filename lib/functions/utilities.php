@@ -980,7 +980,15 @@ function mai_get_menu( $menu, $args = [] ) {
 	if ( $html ) {
 
 		$object = wp_get_nav_menu_object( $menu );
-		$class  = $object ? 'nav-' .  $object->slug : '';
+		$class  = '';
+
+		if ( $object ) {
+			$slug      = $object->slug;
+			$locations = get_nav_menu_locations();
+			$slug      = $locations && isset( $locations[ $slug ] ) ? $slug . '-menu' : $slug; // Prevent class name clash with official menu locations.
+			$class     = 'nav-' .  $slug;
+		}
+
 		$atts   = [
 			'class' => $class,
 			'style' => '',
