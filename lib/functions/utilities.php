@@ -494,9 +494,16 @@ function mai_get_breakpoint( $size = 'lg', $suffix = '' ) {
  * @return string
  */
 function mai_get_mobile_menu_breakpoint() {
-	$breakpoint = ! is_null( mai_get_config( 'settings' )['mobile-menu-breakpoint'] ) ? mai_get_config( 'settings' )['mobile-menu-breakpoint'] : mai_get_breakpoint();
+	static $breakpoint = null;
 
-	return mai_get_unit_value( $breakpoint );
+	if ( ! is_null( $breakpoint ) ) {
+		return $breakpoint;
+	}
+
+	$breakpoint = ! is_null( mai_get_config( 'settings' )['mobile-menu-breakpoint'] ) ? mai_get_config( 'settings' )['mobile-menu-breakpoint'] : mai_get_breakpoint();
+	$breakpoint = mai_get_unit_value( $breakpoint );
+
+	return $breakpoint;
 }
 
 /**
