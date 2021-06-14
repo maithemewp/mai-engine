@@ -108,6 +108,7 @@ class Mai_Entry {
 		$this->link_entry  = apply_filters( 'mai_link_entry', (bool) ! $this->args['disable_entry_link'], $this->args, $this->entry );
 		$this->image_id    = $this->get_image_id();
 		$this->image_size  = $this->image_id ? $this->get_image_size() : '';
+		$this->args        = apply_filters( 'mai_entry_args', $this->args, $this->entry, $this->type );
 	}
 
 	/**
