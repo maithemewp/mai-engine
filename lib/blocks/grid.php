@@ -174,7 +174,7 @@ function mai_get_grid_field_values( $type ) {
 	return $values;
 }
 
-add_action( 'init', 'mai_register_grid_field_groups', 20 );
+add_action( 'init', 'mai_register_grid_field_groups', 99 );
 /**
  * Register field groups for the grid block.
  * This can't be on 'after_setup_theme' or 'acf/init' hook because it's too early,

@@ -212,7 +212,7 @@ function mai_get_single_content_settings( $name = 'post' ) {
 	return $single_settings[ $name ];
 }
 
-add_action( 'init', 'mai_add_single_content_settings' );
+add_action( 'init', 'mai_add_single_content_settings', 99 );
 /**
  * Adds single content settings.
  *
