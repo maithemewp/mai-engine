@@ -12,7 +12,7 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-add_action( 'init', 'mai_site_layouts_customizer_settings' );
+add_action( 'init', 'mai_site_layouts_customizer_settings', 99 );
 /**
  * Add base styles customizer settings.
  *
