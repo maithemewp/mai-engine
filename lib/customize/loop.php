@@ -12,10 +12,13 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-add_action( 'init', 'mai_archive_settings_customizer_settings' );
+add_action( 'init', 'mai_archive_settings_customizer_settings', 99 );
 /**
  * Add archive content types customizer fields.
  * This needs to be on 'init' so custom post types and custom taxonomies are available.
+ *
+ * Priority must match for all instances of mai_get_content_type_(context)_choices()
+ * because they are statically cached.
  *
  * @since 0.2.0
  *
@@ -60,10 +63,13 @@ function mai_archive_settings_customizer_settings() {
 	);
 }
 
-add_action( 'init', 'mai_single_settings_customizer_settings' );
+add_action( 'init', 'mai_single_settings_customizer_settings', 99 );
 /**
  * Add single content types customizer fields.
  * This needs to be on 'init' so custom post types and custom taxonomies are available.
+ *
+ * Priority must match for all instances of mai_get_content_type_(context)_choices()
+ * because they are statically cached.
  *
  * @since 0.2.0
  *
