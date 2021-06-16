@@ -766,7 +766,7 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 	return $archive_settings[ $name ];
 }
 
-add_action( 'init', 'mai_add_content_archive_settings' );
+add_action( 'init', 'mai_add_content_archive_settings', 99 );
 /**
  * Add content archive customizer settings.
  *
