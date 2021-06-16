@@ -447,6 +447,24 @@ function mai_get_cart_total() {
 	return sprintf( '<span class="mai-cart-total-wrap is-circle"><span class="mai-cart-total">%s</span></span>', $total );
 }
 
+add_filter( 'ssp_register_post_type_args', 'mai_ssp_add_settings' );
+/**
+ * Adds support for mai settings in Seriously Simple Podcasting.
+ *
+ * @since TBD
+ *
+ * @param array $args The existing post type args.
+ *
+ * @return array
+ */
+function mai_ssp_add_settings( $args ) {
+	$args['supports'][] = 'mai-archive-settings';
+	$args['supports'][] = 'mai-single-settings';
+	$args['supports']   = array_unique( $args['supports'] );
+
+	return $args;
+}
+
 add_filter( 'mai_get_option_archive-settings', 'mai_learndash_add_settings' );
 add_filter( 'mai_get_option_single-settings', 'mai_learndash_add_settings' );
 /**
@@ -465,7 +483,7 @@ function mai_learndash_add_settings( $post_types ) {
 
 	$post_types[] = 'sfwd-courses';
 
-	return $post_types;
+	return array_unique( $post_types );
 }
 
 add_filter( 'mai_content_archive_settings', 'mai_learndash_course_archive_settings', 10, 2 );
