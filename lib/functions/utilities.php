@@ -1186,18 +1186,13 @@ function mai_get_avatar_default_args() {
  * @since 2.13.0 Switch get_the_author_meta( 'ID' )
  *        to get_post_field( 'post_author' )
  *        since it wasn't working in page header and other contexts.
+ *        Was this actually from static caching?
+ * @since TBD Remove static caching because it breaks on archives
+ *        and other contextx when different authors are on the same page.
  *
  * @return int|false
  */
 function mai_get_author_id() {
-	static $author_id = null;
-
-	if ( ! is_null( $author_id ) ) {
-		return $author_id;
-	}
-
-	$author_id = false;
-
 	if ( is_author() && ! in_the_loop() ) {
 		$author_id = get_query_var( 'author' );
 	} else {
