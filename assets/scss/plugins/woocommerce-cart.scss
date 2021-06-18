@@ -36,7 +36,8 @@
 	}
 }
 
-.woocommerce-cart-form {
+.woocommerce-cart-form,
+.woocommerce-checkout {
 	--link-color: var(--color-heading);
 
 	.shop_table {
