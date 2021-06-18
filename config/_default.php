@@ -171,7 +171,7 @@ return [
 		'header'     => [
 			'async'     => true,
 			'condition' => function() {
-				return mai_has_sticky_header_enabled() || mai_has_transparent_header_enabled();
+				return ( mai_has_sticky_header_enabled() || mai_has_transparent_header_enabled() ) && ! mai_is_element_hidden( 'site_header' );
 			},
 		],
 		'customizer' => [
@@ -215,6 +215,13 @@ return [
 			'async'     => true,
 			'condition' => function() {
 				return ! mai_is_element_hidden( 'site_header' );
+			},
+		],
+		'page-header'                         => [
+			'location'  => 'public',
+			'async'     => true,
+			'condition' => function() {
+				return mai_has_page_header();
 			},
 		],
 		'blocks'                         => [
