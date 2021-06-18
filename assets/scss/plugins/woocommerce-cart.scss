@@ -63,7 +63,7 @@
 			overflow: hidden;
 
 			// Originally for WooCommerce Product Add-ons, but could be anything.
-			> *:not(.remove):not(.quantity):not(.button):not(.coupon) {
+			> *:not(.remove):not(.quantity):not(.button):not(.coupon):not(.variation) {
 				padding: var(--spacing-md);
 			}
 		}
@@ -107,6 +107,7 @@
 		}
 
 		.shop_table {
+			--list-margin: 0;
 			border: none;
 		}
 
