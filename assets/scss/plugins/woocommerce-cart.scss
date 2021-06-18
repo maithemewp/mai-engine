@@ -40,6 +40,14 @@
 	--link-color: var(--color-heading);
 }
 
+.woocommerce-cart-form {
+
+	.shop_table {
+		// Originally for WooCommerce Product Add-ons, but could be anything.
+		--list-margin: 0;
+	}
+}
+
 @include mq(false, md) {
 
 	.woocommerce-cart-form {
@@ -49,7 +57,6 @@
 			border-left: 0;
 
 			// Originally for WooCommerce Product Add-ons, but could be anything.
-			--list-margin: 0;
 			--list-padding: var(--spacing-sm);
 		}
 
@@ -107,7 +114,6 @@
 		}
 
 		.shop_table {
-			--list-margin: 0;
 			border: none;
 		}
 
