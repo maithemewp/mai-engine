@@ -38,13 +38,14 @@
 
 .woocommerce-cart-form {
 	--link-color: var(--color-heading);
-}
-
-.woocommerce-cart-form {
 
 	.shop_table {
 		// Originally for WooCommerce Product Add-ons, but could be anything.
 		--list-margin: 0;
+
+		.variation {
+			font-size: 0.8rem;
+		}
 	}
 }
 
