@@ -163,8 +163,10 @@ class acf_field_email extends acf_field {
 	 * @return bool|string
 	 */
 	public function validate_value( $valid, $value, $field, $input ) {
-		if ( $value && filter_var( $value, FILTER_VALIDATE_EMAIL ) === false ) {
-			return sprintf( __( "'%s' is not a valid email address", 'acf' ), $value );
+		$flags = defined( 'FILTER_FLAG_EMAIL_UNICODE' ) ? FILTER_FLAG_EMAIL_UNICODE : 0;
+
+		if ( $value && filter_var( wp_unslash($value), FILTER_VALIDATE_EMAIL, $flags ) === false ) {
+			return sprintf( __( "'%s' is not a valid email address", 'acf' ), esc_html( $value ) );
 		}
 
 		return $valid;

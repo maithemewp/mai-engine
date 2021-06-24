@@ -3250,23 +3250,6 @@ function acf_get_truncated( $text, $length = 64 ) {
 	
 }
 
-
-/*
-*  acf_get_current_url
-*
-*  This function will return the current URL.
-*
-*  @date	23/01/2015
-*  @since	5.1.5
-*
-*  @param	void
-*  @return	string
-*/
-
-function acf_get_current_url() {
-	return ( is_ssl() ? 'https' : 'http' ) . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-}
-
 /*
 *  acf_current_user_can_admin
 *
@@ -3451,62 +3434,15 @@ function acf_get_valid_terms( $terms = false, $taxonomy = 'category' ) {
 
 
 /*
-*  acf_esc_html_deep
-*
-*  Navigates through an array and escapes html from the values.
-*
-*  @type	function
-*  @date	10/06/2015
-*  @since	5.2.7
-*
-*  @param	$value (mixed)
-*  @return	$value
-*/
-
-/*
-function acf_esc_html_deep( $value ) {
-	
-	// array
-	if( is_array($value) ) {
-		
-		$value = array_map('acf_esc_html_deep', $value);
-	
-	// object
-	} elseif( is_object($value) ) {
-		
-		$vars = get_object_vars( $value );
-		
-		foreach( $vars as $k => $v ) {
-			
-			$value->{$k} = acf_esc_html_deep( $v );
-		
-		}
-		
-	// string
-	} elseif( is_string($value) ) {
-
-		$value = esc_html($value);
-
-	}
-	
-	
-	// return
-	return $value;
-
-}
-*/
-
-
-/*
 *  acf_validate_attachment
 *
-*  This function will validate an attachment based on a field's resrictions and return an array of errors
+*  This function will validate an attachment based on a field's restrictions and return an array of errors
 *
 *  @type	function
 *  @date	3/07/2015
 *  @since	5.2.3
 *
-*  @param	$attachment (array) attachment data. Cahnges based on context
+*  @param	$attachment (array) attachment data. Changes based on context
 *  @param	$field (array) field settings containing restrictions
 *  @param	$context (string) $file is different when uploading / preparing
 *  @return	$errors (array)
@@ -3542,7 +3478,7 @@ function acf_validate_attachment( $attachment, $field, $context = 'prepare' ) {
 	// prepare
 	} elseif( $context == 'prepare' ) {
 		
-		$file['type'] = pathinfo($attachment['url'], PATHINFO_EXTENSION);
+		$file['type'] = pathinfo($attachment['filename'], PATHINFO_EXTENSION);
 		$file['size'] = acf_maybe_get($attachment, 'filesizeInBytes', 0);
 		$file['width'] = acf_maybe_get($attachment, 'width', 0);
 		$file['height'] = acf_maybe_get($attachment, 'height', 0);
@@ -3551,7 +3487,7 @@ function acf_validate_attachment( $attachment, $field, $context = 'prepare' ) {
 	} else {
 		
 		$file = array_merge($file, $attachment);
-		$file['type'] = pathinfo($attachment['url'], PATHINFO_EXTENSION);
+		$file['type'] = pathinfo($attachment['filename'], PATHINFO_EXTENSION);
 		
 	}
 	
