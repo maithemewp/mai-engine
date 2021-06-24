@@ -61,7 +61,8 @@ function mai_do_entries_open( $args ) {
 
 		if ( 'custom' === $args['image_orientation'] ) {
 			if ( isset( $args['class'] ) && ( mai_has_string( 'alignfull', $args['class'] ) || mai_has_string( 'alignwide', $args['class'] ) ) ) {
-				$image_width = 'unset';
+				$image_width = mai_get_image_width( $args['image_size'] );
+				$image_width = $image_width ? mai_get_unit_value( $image_width ) : 'unset';
 			} else {
 				$image_sizes = mai_get_available_image_sizes();
 				$image_size  = isset( $image_sizes[ $args['image_size'] ] ) ? $image_sizes[ $args['image_size'] ] : $image_sizes['landscape-md'];
