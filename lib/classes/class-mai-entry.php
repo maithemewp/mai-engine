@@ -483,7 +483,7 @@ class Mai_Entry {
 		}
 
 		add_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
-		add_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 5 );
+		add_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 4 );
 
 		if ( 'single' === $this->context ) {
 			$filter = function() {
@@ -506,8 +506,8 @@ class Mai_Entry {
 			remove_filter( 'wp_lazy_loading_enabled', $filter );
 		}
 
-		remove_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ] );
-		remove_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ] );
+		remove_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 4 );
+		remove_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
 
 		if ( 'single' === $this->context ) {
 			$caption = wp_get_attachment_caption( $image_id );
@@ -527,7 +527,7 @@ class Mai_Entry {
 	 *
 	 * @return int
 	 */
-	public function srcset_max_image_width() {
+	public function srcset_max_image_width( $max_image_width, $size_array ) {
 		$size        = 1600; // Max theme image size.
 		$has_sidebar = mai_has_sidebar();
 		$is_single   = 'single' === $this->context;
@@ -586,10 +586,10 @@ class Mai_Entry {
 		}
 
 		if ( $widths ) {
-			$size = absint( max( $widths ) );
+			$max_image_width = absint( max( $widths ) );
 		}
 
-		return $size;
+		return $max_image_width > $size ? $size : $max_image_width;
 	}
 
 	/**
@@ -601,7 +601,7 @@ class Mai_Entry {
 	 *
 	 * @return string
 	 */
-	public function calculate_image_sizes() {
+	public function calculate_image_sizes( $size, $image_src, $image_meta, $attachment_id ) {
 		$new_sizes   = [];
 		$has_sidebar = mai_has_sidebar();
 		$is_single   = 'single' === $this->context;
