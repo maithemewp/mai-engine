@@ -6,15 +6,15 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'e035029c6a7ef3d7e67ec0e4ed53840200803ae8',
+    'reference' => '021e67d9f352ede24602844ff508c10d9c410f7e',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
   array (
     'advanced-custom-fields/advanced-custom-fields-pro' => 
     array (
-      'pretty_version' => '5.9.5',
-      'version' => '5.9.5.0',
+      'pretty_version' => '5.9.7',
+      'version' => '5.9.7.0',
       'aliases' => 
       array (
       ),
@@ -31,12 +31,12 @@
     ),
     'aristath/kirki' => 
     array (
-      'pretty_version' => '3.1.6',
-      'version' => '3.1.6.0',
+      'pretty_version' => '3.1.7',
+      'version' => '3.1.7.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'b678315bc09f1fd782e809dd5b2ce0647a6770ae',
+      'reference' => '0f9d24437665f6d5664da4e12bb4f0ae410815e4',
     ),
     'collizo4sky/persist-admin-notices-dismissal' => 
     array (
@@ -81,7 +81,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'e035029c6a7ef3d7e67ec0e4ed53840200803ae8',
+      'reference' => '021e67d9f352ede24602844ff508c10d9c410f7e',
     ),
     'phpoption/phpoption' => 
     array (
@@ -117,30 +117,30 @@
     ),
     'symfony/polyfill-ctype' => 
     array (
-      'pretty_version' => 'v1.22.1',
-      'version' => '1.22.1.0',
+      'pretty_version' => 'v1.23.0',
+      'version' => '1.23.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'c6c942b1ac76c82448322025e084cadc56048b4e',
+      'reference' => '46cd95797e9df938fdd2b03693b5fca5e64b01ce',
     ),
     'symfony/polyfill-mbstring' => 
     array (
-      'pretty_version' => 'v1.22.1',
-      'version' => '1.22.1.0',
+      'pretty_version' => 'v1.23.0',
+      'version' => '1.23.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '5232de97ee3b75b0360528dae24e73db49566ab1',
+      'reference' => '2df51500adbaebdc4c38dea4c89a2e131c45c8a1',
     ),
     'symfony/polyfill-php80' => 
     array (
-      'pretty_version' => 'v1.22.1',
-      'version' => '1.22.1.0',
+      'pretty_version' => 'v1.23.0',
+      'version' => '1.23.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'dc3063ba22c2a1fd2f45ed856374d79114998f91',
+      'reference' => 'eca0bf41ed421bed1b57c4958bab16aa86b757d0',
     ),
     'vlucas/phpdotenv' => 
     array (
