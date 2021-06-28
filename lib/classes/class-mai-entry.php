@@ -217,7 +217,9 @@ class Mai_Entry {
 
 		// Image outside inner wrap if first element.
 		if ( $image_first ) {
+			do_action( "mai_before_entry_image", $this->entry, $this->args );
 			$this->do_image();
+			do_action( "mai_after_entry_image", $this->entry, $this->args );
 		}
 
 		if ( ! $image_only ) {
@@ -297,10 +299,15 @@ class Mai_Entry {
 			// Output the element if a method or function exists.
 			$method   = "do_{$element}";
 			$function = "mai_do_{$element}";
+
 			if ( method_exists( $this, $method ) ) {
+				do_action( "mai_before_entry_{$element}", $this->entry, $this->args );
 				$this->$method();
+				do_action( "mai_after_entry_{$element}", $this->entry, $this->args );
 			} elseif ( function_exists( $function ) ) {
+				do_action( "mai_before_entry_{$element}", $this->entry, $this->args );
 				$function( $this->entry, $this->args );
+				do_action( "mai_after_entry_{$element}", $this->entry, $this->args );
 			}
 		}
 
@@ -322,9 +329,17 @@ class Mai_Entry {
 			// Loop through our outside elements.
 			foreach ( $outside_elements as $element ) {
 				// Output the element if a method exists.
-				$method = "do_{$element}";
+				$method   = "do_{$element}";
+				$function = "mai_do_{$element}";
+
 				if ( method_exists( $this, $method ) ) {
+					do_action( "mai_before_entry_{$element}", $this->entry, $this->args );
 					$this->$method();
+					do_action( "mai_after_entry_{$element}", $this->entry, $this->args );
+				} elseif ( function_exists( $function ) ) {
+					do_action( "mai_before_entry_{$element}", $this->entry, $this->args );
+					$function( $this->entry, $this->args );
+					do_action( "mai_after_entry_{$element}", $this->entry, $this->args );
 				}
 			}
 		}
