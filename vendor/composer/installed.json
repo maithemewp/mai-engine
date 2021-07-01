@@ -74,17 +74,17 @@
         },
         {
             "name": "aristath/kirki",
-            "version": "3.1.7",
-            "version_normalized": "3.1.7.0",
+            "version": "3.1.8",
+            "version_normalized": "3.1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kirki-framework/kirki.git",
-                "reference": "0f9d24437665f6d5664da4e12bb4f0ae410815e4"
+                "reference": "9079acbfbac45befdea7c3bd2f20a5b6c1120284"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kirki-framework/kirki/zipball/0f9d24437665f6d5664da4e12bb4f0ae410815e4",
-                "reference": "0f9d24437665f6d5664da4e12bb4f0ae410815e4",
+                "url": "https://api.github.com/repos/kirki-framework/kirki/zipball/9079acbfbac45befdea7c3bd2f20a5b6c1120284",
+                "reference": "9079acbfbac45befdea7c3bd2f20a5b6c1120284",
                 "shasum": ""
             },
             "require": {
@@ -99,7 +99,7 @@
                 "phpunit/phpunit": "*",
                 "wp-coding-standards/wpcs": "*"
             },
-            "time": "2021-06-21T13:48:36+00:00",
+            "time": "2021-07-01T11:20:13+00:00",
             "type": "library",
             "installation-source": "dist",
             "notification-url": "https://packagist.org/downloads/",
@@ -126,7 +126,7 @@
             ],
             "support": {
                 "issues": "https://github.com/kirki-framework/kirki/issues",
-                "source": "https://github.com/kirki-framework/kirki/tree/3.1.7"
+                "source": "https://github.com/kirki-framework/kirki/tree/3.1.8"
             },
             "funding": [
                 {

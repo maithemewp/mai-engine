@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '021e67d9f352ede24602844ff508c10d9c410f7e',
+    'reference' => 'c53b7d2568651b5c7a5a314ffcd5fb11e49d94f8',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
@@ -57,12 +57,12 @@ private static $installed = array (
     ),
     'aristath/kirki' => 
     array (
-      'pretty_version' => '3.1.7',
-      'version' => '3.1.7.0',
+      'pretty_version' => '3.1.8',
+      'version' => '3.1.8.0',
       'aliases' => 
       array (
       ),
-      'reference' => '0f9d24437665f6d5664da4e12bb4f0ae410815e4',
+      'reference' => '9079acbfbac45befdea7c3bd2f20a5b6c1120284',
     ),
     'collizo4sky/persist-admin-notices-dismissal' => 
     array (
@@ -107,7 +107,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '021e67d9f352ede24602844ff508c10d9c410f7e',
+      'reference' => 'c53b7d2568651b5c7a5a314ffcd5fb11e49d94f8',
     ),
     'phpoption/phpoption' => 
     array (
