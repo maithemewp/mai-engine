@@ -40,7 +40,7 @@
 
 .has-dark-background p:not(.has-text-color),
 .has-light-background p:not(.has-text-color) {
-	color: var(--body-color);
+	color: var(--body-color, var(--color-body));
 }
 
 /**
