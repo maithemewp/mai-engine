@@ -38,14 +38,6 @@
 	color: var(--heading-color);
 }
 
-.has-dark-background p:not(.has-text-color) {
-	color: var(--color-white);
-}
-
-.has-light-background p:not(.has-text-color) {
-	color: var(--color-body);
-}
-
 /**
  * End crazy CSS to override block-library styles.
  */
