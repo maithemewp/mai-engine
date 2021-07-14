@@ -38,9 +38,12 @@
 	color: var(--heading-color);
 }
 
-.has-dark-background p:not(.has-text-color),
+.has-dark-background p:not(.has-text-color) {
+	color: var(--color-white);
+}
+
 .has-light-background p:not(.has-text-color) {
-	color: var(--body-color, var(--color-body));
+	color: var(--color-body);
 }
 
 /**
