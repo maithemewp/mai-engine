@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'c53b7d2568651b5c7a5a314ffcd5fb11e49d94f8',
+    'reference' => 'f55f5b34db6b79c67dab049ad828630909b900bb',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
@@ -31,12 +31,12 @@
     ),
     'aristath/kirki' => 
     array (
-      'pretty_version' => '3.1.8',
-      'version' => '3.1.8.0',
+      'pretty_version' => '3.1.9',
+      'version' => '3.1.9.0',
       'aliases' => 
       array (
       ),
-      'reference' => '9079acbfbac45befdea7c3bd2f20a5b6c1120284',
+      'reference' => '976e58876b51ac6b20fb3fdc8f29124552876cff',
     ),
     'collizo4sky/persist-admin-notices-dismissal' => 
     array (
@@ -81,7 +81,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'c53b7d2568651b5c7a5a314ffcd5fb11e49d94f8',
+      'reference' => 'f55f5b34db6b79c67dab049ad828630909b900bb',
     ),
     'phpoption/phpoption' => 
     array (
