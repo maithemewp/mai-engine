@@ -31,20 +31,16 @@
 	--archive-title-font-size: var(--font-size-xl);
 	--comment-border: 0;
 	--after-entry-text-align: center;
-
-	@include mq(lg) {
-		--nav-header-margin: auto;
-	}
 }
 
-.sub-menu {
+.nav-header .sub-menu {
 	--menu-item-link-color: var(--color-white);
 	--menu-item-link-color-hover: var(--color-secondary);
 }
 
-.sub-menu .menu-item-link-current,
-.sub-menu .menu-item-link:focus,
-.sub-menu .menu-item-link:hover {
+.nav-header .sub-menu .menu-item-link-current,
+.nav-header .sub-menu .menu-item-link:focus,
+.nav-header .sub-menu .menu-item-link:hover {
 	color: var(--color-white);
 	background-color: var(--color-secondary);
 }
