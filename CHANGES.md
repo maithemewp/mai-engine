@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.15.1 (7/21/21)
+* Changed: Bump ACF to 5.9.9
+* Changed: Embed blocks are now the full width of their container. This mostly helps in Mai Columns and when nested other layout blocks.
+
 ## 2.15.0 (7/21/21)
 * Added: Compatibility for WP 5.8 editor style changes.
 * Added: Support for PHP 8.
