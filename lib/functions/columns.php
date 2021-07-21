@@ -91,7 +91,7 @@ function mai_columns_get_flex( $size ) {
 			return '0 1 auto';
 		break;
 		case 'fill':
-			return '1 0 auto';
+			return '1 0 0';
 		break;
 		case 'full':
 			return '0 0 100%';

@@ -12,10 +12,13 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-add_action( 'init', 'mai_page_header_customizer_settings' );
+add_action( 'init', 'mai_page_header_customizer_settings', 99 );
 /**
  * Add page header customizer fields.
  * This needs to be on 'init' so custom post types and custom taxonomies are available.
+ *
+ * Priority must match for all instances of mai_get_content_type_(context)_choices()
+ * because they are statically cached.
  *
  * @since 2.4.0 Moved defaults to config.
  * @since 0.3.0

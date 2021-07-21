@@ -41,7 +41,7 @@ function mai_menus_customizer_settings() {
 			'section'           => $section,
 			'description'       => __( 'The largest screen width at which the mobile menu becomes active, in pixels.', 'mai-engine' ),
 			'sanitize_callback' => 'absint',
-			'default'           => mai_get_breakpoint(),
+			'default'           => mai_get_mobile_menu_breakpoint(),
 		]
 	);
 

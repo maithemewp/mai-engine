@@ -39,7 +39,7 @@ function mai_render_cover_block( $block_content, $block ) {
 	$image_id  = mai_isset( $block['attrs'], 'id', false );
 	$image_url = mai_isset( $block['attrs'], 'url', false );
 	$parallax  = mai_isset( $block['attrs'], 'hasParallax', false );
-	// $repeated  = mai_isset( $block['attrs'], 'isRepeated', false );
+	$repeated  = mai_isset( $block['attrs'], 'isRepeated', false );
 
 	$image_id = apply_filters( 'mai_cover_block_image_id', $image_id, $block );
 
@@ -94,7 +94,7 @@ function mai_render_cover_block( $block_content, $block ) {
 				}
 			}
 			// No inline image. This is a fallback for existing blocks < WP 5.7.
-			elseif ( ! $parallax && mai_has_string( $image_url, $block_content ) ) {
+			elseif ( ! ( $parallax || $repeated ) && mai_has_string( $image_url, $block_content ) ) {
 				// Disable background-image inline CSS.
 				$before = sprintf( 'background-image:url(%s)', $image_url );
 				$style  = str_replace( $before . ':', '', $style ); // With semicolon.
@@ -114,7 +114,7 @@ function mai_render_cover_block( $block_content, $block ) {
 			}
 
 			// Responsive background image custom properties.
-			if ( $parallax ) {
+			if ( $parallax || $repeated ) {
 				$sizes     = [
 					'lg' => wp_get_attachment_image_url( $image_id, $image_size ),
 					'md' => wp_get_attachment_image_url( $image_id, $image_size ),

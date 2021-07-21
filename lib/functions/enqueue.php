@@ -83,7 +83,8 @@ add_filter( 'mai_styles_config', 'mai_styles_desktop_breakpoint' );
  * @return array
  */
 function mai_styles_desktop_breakpoint( $config ) {
-	$config['desktop']['media'] = sprintf( 'only screen and (min-width:%spx)', mai_get_option( 'mobile-menu-breakpoint', mai_get_breakpoint() ) );
+	$config['desktop']['media'] = sprintf( 'only screen and (min-width:%s)', mai_get_mobile_menu_breakpoint() );
+
 	return $config;
 }
 
@@ -297,7 +298,7 @@ function mai_get_tag_attributes( $script_or_style ) {
 	$tags       = mai_get_config( $script_or_style );
 	foreach ( $tags as $name => $args ) {
 		$handle = isset( $args['handle'] ) ? $args['handle'] : mai_get_handle() . '-' . $name;
-		// ray( $args );
+
 		if ( isset( $args[''] ) && $args['onload'] ) {
 			$attributes[ $handle ]['onload'] = $args['onload'];
 		}
@@ -341,23 +342,6 @@ add_action( 'admin_enqueue_scripts', 'mai_remove_block_library_theme_css', 9 );
  */
 function mai_remove_block_library_theme_css() {
 	mai_deregister_asset( 'wp-block-library-theme' );
-}
-
-add_filter( 'block_editor_settings', 'mai_remove_noto_serif_editor_styles' );
-/**
- * Remove noto serif default editor style.
- *
- * @since 0.1.0
- *
- * @param array $settings Editor settings.
- *
- * @return array
- */
-function mai_remove_noto_serif_editor_styles( $settings ) {
-	unset( $settings['styles'][0] );
-	unset( $settings['styles'][1] );
-
-	return $settings;
 }
 
 add_action( 'wp_enqueue_scripts', 'mai_admin_bar_inline_styles' );

@@ -108,6 +108,7 @@ class Mai_Entry {
 		$this->link_entry  = apply_filters( 'mai_link_entry', (bool) ! $this->args['disable_entry_link'], $this->args, $this->entry );
 		$this->image_id    = $this->get_image_id();
 		$this->image_size  = $this->image_id ? $this->get_image_size() : '';
+		$this->args        = apply_filters( 'mai_entry_args', $this->args, $this->entry, $this->type );
 	}
 
 	/**
@@ -216,7 +217,9 @@ class Mai_Entry {
 
 		// Image outside inner wrap if first element.
 		if ( $image_first ) {
+			do_action( "mai_before_entry_image", $this->entry, $this->args );
 			$this->do_image();
+			do_action( "mai_after_entry_image", $this->entry, $this->args );
 		}
 
 		if ( ! $image_only ) {
@@ -296,10 +299,15 @@ class Mai_Entry {
 			// Output the element if a method or function exists.
 			$method   = "do_{$element}";
 			$function = "mai_do_{$element}";
+
 			if ( method_exists( $this, $method ) ) {
+				do_action( "mai_before_entry_{$element}", $this->entry, $this->args );
 				$this->$method();
+				do_action( "mai_after_entry_{$element}", $this->entry, $this->args );
 			} elseif ( function_exists( $function ) ) {
+				do_action( "mai_before_entry_{$element}", $this->entry, $this->args );
 				$function( $this->entry, $this->args );
+				do_action( "mai_after_entry_{$element}", $this->entry, $this->args );
 			}
 		}
 
@@ -321,9 +329,17 @@ class Mai_Entry {
 			// Loop through our outside elements.
 			foreach ( $outside_elements as $element ) {
 				// Output the element if a method exists.
-				$method = "do_{$element}";
+				$method   = "do_{$element}";
+				$function = "mai_do_{$element}";
+
 				if ( method_exists( $this, $method ) ) {
+					do_action( "mai_before_entry_{$element}", $this->entry, $this->args );
 					$this->$method();
+					do_action( "mai_after_entry_{$element}", $this->entry, $this->args );
+				} elseif ( function_exists( $function ) ) {
+					do_action( "mai_before_entry_{$element}", $this->entry, $this->args );
+					$function( $this->entry, $this->args );
+					do_action( "mai_after_entry_{$element}", $this->entry, $this->args );
 				}
 			}
 		}
@@ -482,7 +498,7 @@ class Mai_Entry {
 		}
 
 		add_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
-		add_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 5 );
+		add_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 4 );
 
 		if ( 'single' === $this->context ) {
 			$filter = function() {
@@ -505,8 +521,8 @@ class Mai_Entry {
 			remove_filter( 'wp_lazy_loading_enabled', $filter );
 		}
 
-		remove_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ] );
-		remove_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ] );
+		remove_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 4 );
+		remove_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
 
 		if ( 'single' === $this->context ) {
 			$caption = wp_get_attachment_caption( $image_id );
@@ -526,7 +542,7 @@ class Mai_Entry {
 	 *
 	 * @return int
 	 */
-	public function srcset_max_image_width() {
+	public function srcset_max_image_width( $max_image_width, $size_array ) {
 		$size        = 1600; // Max theme image size.
 		$has_sidebar = mai_has_sidebar();
 		$is_single   = 'single' === $this->context;
@@ -585,10 +601,10 @@ class Mai_Entry {
 		}
 
 		if ( $widths ) {
-			$size = absint( max( $widths ) );
+			$max_image_width = absint( max( $widths ) );
 		}
 
-		return $size;
+		return $max_image_width > $size ? $size : $max_image_width;
 	}
 
 	/**
@@ -600,7 +616,7 @@ class Mai_Entry {
 	 *
 	 * @return string
 	 */
-	public function calculate_image_sizes() {
+	public function calculate_image_sizes( $size, $image_src, $image_meta, $attachment_id ) {
 		$new_sizes   = [];
 		$has_sidebar = mai_has_sidebar();
 		$is_single   = 'single' === $this->context;
@@ -996,7 +1012,7 @@ class Mai_Entry {
 					// Manual excerpts only, on single posts.
 					$excerpt = has_excerpt() && ! mai_is_element_hidden( 'entry_excerpt', $this->id ) ? get_the_excerpt() : '';
 				} else {
-					$excerpt = get_the_excerpt();
+					$excerpt = get_the_excerpt( $this->id );
 
 					// Allow shortcodes in custom excerpt.
 					if ( has_excerpt( $this->id ) ) {

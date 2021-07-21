@@ -439,15 +439,6 @@ function mai_get_global_styles( $key ) {
 	return $styles[ $key ];
 }
 
-
-add_filter( 'genesis_cpt_crumb', function( $crumb, $args ) {
-	if ( ! is_singular( [ 'page' ] ) ) {
-		return $crumb;
-	}
-	$slug = get_post_field( 'post_name', get_the_ID() );
-	return $slug ?: $crumb;
-}, 10, 2 );
-
 /**
  * Get breakpoints from initial site container width in config.
  *
@@ -484,6 +475,26 @@ function mai_get_breakpoint( $size = 'lg', $suffix = '' ) {
 	$breakpoints = mai_get_breakpoints();
 
 	return $breakpoints[ $size ] . $suffix;
+}
+
+/**
+ * Returns the default breakpoint the mobile menu to display.
+ *
+ * @since TBD
+ *
+ * @return string
+ */
+function mai_get_mobile_menu_breakpoint() {
+	static $breakpoint = null;
+
+	if ( ! is_null( $breakpoint ) ) {
+		return $breakpoint;
+	}
+
+	$breakpoint = ! is_null( mai_get_config( 'settings' )['mobile-menu-breakpoint'] ) ? mai_get_config( 'settings' )['mobile-menu-breakpoint'] : mai_get_breakpoint();
+	$breakpoint = mai_get_unit_value( $breakpoint );
+
+	return $breakpoint;
 }
 
 /**
@@ -967,7 +978,15 @@ function mai_get_menu( $menu, $args = [] ) {
 	if ( $html ) {
 
 		$object = wp_get_nav_menu_object( $menu );
-		$class  = $object ? 'nav-' .  $object->slug : '';
+		$class  = '';
+
+		if ( $object ) {
+			$slug      = $object->slug;
+			$locations = get_nav_menu_locations();
+			$slug      = $locations && isset( $locations[ $slug ] ) ? $slug . '-menu' : $slug; // Prevent class name clash with official menu locations.
+			$class     = 'nav-' .  $slug;
+		}
+
 		$atts   = [
 			'class' => $class,
 			'style' => '',
@@ -1167,18 +1186,13 @@ function mai_get_avatar_default_args() {
  * @since 2.13.0 Switch get_the_author_meta( 'ID' )
  *        to get_post_field( 'post_author' )
  *        since it wasn't working in page header and other contexts.
+ *        Was this actually from static caching?
+ * @since TBD Remove static caching because it breaks on archives
+ *        and other contextx when different authors are on the same page.
  *
  * @return int|false
  */
 function mai_get_author_id() {
-	static $author_id = null;
-
-	if ( ! is_null( $author_id ) ) {
-		return $author_id;
-	}
-
-	$author_id = false;
-
 	if ( is_author() && ! in_the_loop() ) {
 		$author_id = get_query_var( 'author' );
 	} else {
@@ -1384,9 +1398,18 @@ function mai_get_search_icon_form( $title = '', $icon_size = '16' ) {
 		]
 	);
 
-	$html = sprintf( '<button class="search-toggle" aria-expanded="false" aria-pressed="false"><span class="screen-reader-text">%s</span>%s</button>',
+	$close = mai_get_svg_icon( 'times', 'regular',
+		[
+			'class'  => 'search-toggle-close',
+			'width'  => mai_get_width_height_attribute( $icon_size ),
+			'height' => mai_get_width_height_attribute( $icon_size ),
+		]
+	);
+
+	$html = sprintf( '<button class="search-toggle" aria-expanded="false" aria-pressed="false"><span class="screen-reader-text">%s</span>%s%s</button>',
 		esc_html( $title ?: __( 'Search', 'mai-engine' ) ),
-		$icon
+		$icon,
+		$close
 	);
 
 	$html .= mai_get_search_form();

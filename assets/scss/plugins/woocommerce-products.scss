@@ -352,22 +352,15 @@ li.product {
 }
 
 .flex-control-nav {
-	display: flex;
+	display: grid;
+	grid-gap: var(--spacing-md);
+	grid-template-columns: repeat(var(--product-gallery-columns, 4), 1fr);
 	margin-top: var(--spacing-md);
 	list-style-type: none;
 
-	li {
-		flex: 0 1 100%;
-		max-width: calc(25% - var(--spacing-md));
-		margin-right: var(--spacing-md);
-
-		&:last-of-type {
-			margin-right: 0;
-		}
-	}
-
 	img {
 		width: 100%;
+		cursor: pointer;
 	}
 }
 

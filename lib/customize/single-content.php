@@ -212,7 +212,7 @@ function mai_get_single_content_settings( $name = 'post' ) {
 	return $single_settings[ $name ];
 }
 
-add_action( 'init', 'mai_add_single_content_settings' );
+add_action( 'init', 'mai_add_single_content_settings', 99 );
 /**
  * Adds single content settings.
  *
@@ -274,11 +274,11 @@ function mai_add_single_content_settings() {
 			$field['settings']    = $settings;
 
 			if ( isset( $field['default'] ) && is_string( $field['default'] ) && mai_has_string( 'mai_', $field['default'] ) && is_callable( $field['default'] ) ) {
-				$field['default'] = call_user_func_array( $field['default'], [ 'name' => $section ] );
+				$field['default'] = call_user_func( $field['default'], $section );
 			}
 
 			if ( isset( $field['choices'] ) && is_string( $field['choices'] ) && mai_has_string( 'mai_', $field['choices'] ) && is_callable( $field['choices'] ) ) {
-				$field['choices'] = call_user_func_array( $field['choices'], [ 'name' => $section ] );
+				$field['choices'] = call_user_func( $field['choices'] );
 			}
 
 			if ( isset( $field['sanitize'] ) ) {

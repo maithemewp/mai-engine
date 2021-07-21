@@ -35,3 +35,11 @@
 
 	@include button-style("large");
 }
+
+.wp-block-button:first-child > .button-link {
+	padding-left: 0;
+}
+
+.wp-block-button:last-child > .button-link {
+	padding-right: 0;
+}

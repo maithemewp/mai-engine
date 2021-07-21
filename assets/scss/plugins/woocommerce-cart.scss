@@ -36,8 +36,18 @@
 	}
 }
 
-.woocommerce-cart-form {
+.woocommerce-cart-form,
+.woocommerce-checkout {
 	--link-color: var(--color-heading);
+
+	.shop_table {
+		// Originally for WooCommerce Product Add-ons, but could be anything.
+		--list-margin: 0;
+
+		.variation {
+			font-size: var(--font-size-sm);
+		}
+	}
 }
 
 @include mq(false, md) {
@@ -49,7 +59,6 @@
 			border-left: 0;
 
 			// Originally for WooCommerce Product Add-ons, but could be anything.
-			--list-margin: 0;
 			--list-padding: var(--spacing-sm);
 		}
 
@@ -63,7 +72,7 @@
 			overflow: hidden;
 
 			// Originally for WooCommerce Product Add-ons, but could be anything.
-			> *:not(.remove):not(.quantity):not(.button):not(.coupon) {
+			> *:not(.remove):not(.quantity):not(.button):not(.coupon):not(.variation) {
 				padding: var(--spacing-md);
 			}
 		}

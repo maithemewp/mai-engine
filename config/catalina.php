@@ -73,12 +73,12 @@ return [
 			$atts['class'] = 'entry-more' . ( is_admin() ? ' wp-block-button' : '' );
 
 			return $atts;
-		} );
+		});
 
 		add_filter( 'genesis_attr_entry-more-link', function ( $atts ) {
 			$atts['class'] = 'entry-more-link has-xl-margin-top ' . ( is_admin() ? 'wp-block-button__link' : 'button' );
 
 			return $atts;
-		} );
+		});
 	},
 ];

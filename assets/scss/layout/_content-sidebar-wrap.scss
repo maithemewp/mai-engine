@@ -14,11 +14,11 @@
 	}
 
 	> .content > .entry > .entry-wrap > .entry-content:first-child > .alignfull:first-child {
-		margin-top: calc((var(--content-sidebar-wrap-margin-top) * -1) - 1px); // One more px to handle sub-pixel rendering.
+		margin-top: calc(var(--content-sidebar-wrap-margin-top) * -1);
 	}
 
 	> .content > .entry > .entry-wrap:last-child > .entry-content > .alignfull:last-child {
-		margin-bottom: calc((var(--content-sidebar-wrap-margin-bottom) * -1) - 1px); // One more px to handle sub-pixel rendering.
+		margin-bottom: calc(var(--content-sidebar-wrap-margin-bottom) * -1);
 	}
 }
 

@@ -1,3 +1,5 @@
+@import "../abstracts/_index";
+
 :root {
 	--font-scale: 1.125; // Major second.
 	--border-radius: 0;
@@ -33,6 +35,14 @@
 	--menu-text-transform: uppercase;
 }
 
+.archive-title,
 .entry-title-single {
 	text-align: center;
+}
+
+@include mq(lg) {
+
+	:root {
+		--sidebar-width: 368px;
+	}
 }

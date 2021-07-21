@@ -29,8 +29,8 @@
 }
 
 .wp-block[data-align="full"] {
-	margin-right: calc(var(--side-spacing) * -1);
-	margin-left: calc(var(--side-spacing) * -1);
+	margin-right: calc(var(--side-spacing) * -1) !important;
+	margin-left: calc(var(--side-spacing) * -1) !important;
 }
 
 // Wide Content (Default).

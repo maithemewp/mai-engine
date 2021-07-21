@@ -219,7 +219,7 @@ function mai_get_template_args() {
 
 	foreach ( $defaults as $key => $value ) {
 		if ( is_string( $value ) && mai_has_string( 'mai_', $value ) && is_callable( $value ) ) {
-			$defaults[ $key ] = call_user_func_array( $value, [ 'name' => $name ] );
+			$defaults[ $key ] = call_user_func( $value, $name );
 		}
 	}
 

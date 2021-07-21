@@ -8,7 +8,7 @@
       "type": "package",
       "package": {
         "name": "advanced-custom-fields/advanced-custom-fields-pro",
-        "version": "5.9.5",
+        "version": "5.9.7",
         "dist": {
           "type": "zip",
           "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download&t={%VERSION}&k={%ACF_PRO_KEY}"

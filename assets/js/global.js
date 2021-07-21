@@ -15,22 +15,27 @@
 		var toggle = parent.querySelector( '.search-toggle' );
 		var input  = parent.querySelector( '.search-form-input' );
 
+		var hideSearchForm = function( event ) {
+			if ( ! event.target.closest( '.search-icon-form' ) ) {
+				form.classList.remove( 'search-form-visible' );
+				maiAriaClose( toggle );
+				document.removeEventListener( 'mouseup', hideSearchForm, true );
+			}
+		};
+
 		input.setAttribute( 'required', '' );
 
 		if ( ! ( target.classList.contains( 'search-form-input' ) || target.classList.contains( 'search-form-submit' ) || target.classList.contains( 'search-form' ) ) ) {
-			form.classList.toggle( 'search-form-visible' );
-			maiToggleAriaValues( toggle );
-		}
-
-		if ( form.classList.contains( 'search-form-visible' ) ) {
-			input.focus();
-
-			document.addEventListener( 'mouseup', function( event ) {
-				if ( ! event.target.closest( '.search-icon-form' ) ) {
-					form.classList.remove( 'search-form-visible' );
-					maiToggleAriaValues( toggle );
-				}
-			} );
+			if ( form.classList.contains( 'search-form-visible' ) ) {
+				maiAriaClose( toggle );
+				form.classList.remove( 'search-form-visible' );
+				document.removeEventListener( 'mouseup', hideSearchForm, true );
+			} else {
+				maiAriaOpen( toggle );
+				form.classList.add( 'search-form-visible' );
+				input.focus();
+				document.addEventListener( 'mouseup', hideSearchForm, true );
+			}
 		}
 	};
 
@@ -42,6 +47,20 @@
 		searchToggle.addEventListener( 'click', toggleSearchForm, false );
 	} );
 } )();
+
+function maiAriaOpen( element ) {
+	element.setAttribute( 'aria-expanded', 'true' );
+	element.setAttribute( 'aria-pressed', 'true' );
+
+	return element;
+};
+
+function maiAriaClose( element ) {
+	element.setAttribute( 'aria-expanded', 'false' );
+	element.setAttribute( 'aria-pressed', 'false' );
+
+	return element;
+};
 
 function maiToggleAriaValues( element ) {
 	var ariaValue = element.getAttribute( 'aria-expanded' ) === 'false' ? 'true' : 'false';

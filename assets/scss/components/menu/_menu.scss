@@ -102,6 +102,11 @@
 	}
 }
 
+.menu-item-icon + .menu-item-icon > .menu-item-link,
+.menu-item-icon + .menu-item-icon > .search-toggle {
+	padding-left: var(--spacing-xxs);
+}
+
 .sub-menu {
 	--menu-item-dropdown-margin-left: auto;
 }

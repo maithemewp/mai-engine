@@ -73,12 +73,14 @@
 .has-image-left-full:not(.has-boxed) {
 	--column-gap: 4px;
 	--entry-image-link-margin-right: var(--column-gap);
+	--entry-image-link-margin-left: 0;
 }
 
 .has-image-right-top,
 .has-image-right-middle,
 .has-image-right-bottom,
 .has-image-right-full:not(.has-boxed) {
+	--entry-image-link-margin-right: 0;
 	--entry-image-link-margin-left: var(--column-gap);
 }
 
@@ -88,18 +90,24 @@
 
 .has-image-odd-first .entry:nth-child(even) {
 	--entry-image-link-order: 2;
+	--entry-image-link-margin-right: 0;
 	--entry-image-link-margin-left: var(--column-gap);
 }
 
 .has-image-even-first .entry:nth-child(odd) {
 	--entry-image-link-order: -1;
 	--entry-image-link-margin-right: var(--column-gap);
+	--entry-image-link-margin-left: 0;
 }
 
 .has-boxed.has-image-full,
 .has-boxed.has-image-left-full,
 .has-boxed.has-image-right-full {
 	--entry-image-border-radius: 0;
+}
+
+.has-boxed.has-image-center .has-image-first {
+	--entry-image-link-margin-top: var(--spacing-lg);
 }
 
 .has-image-background {

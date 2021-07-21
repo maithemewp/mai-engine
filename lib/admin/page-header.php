@@ -12,7 +12,7 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-add_action( 'init', 'mai_add_page_header_metabox' );
+add_action( 'init', 'mai_add_page_header_metabox', 99 );
 /**
  * Add page header metabox.
  * This needs to be on init so custom post types and taxonomies are available.

@@ -19,10 +19,10 @@
 	margin: var(--archive-page-content-margin, (var(--archive-page-content-margin-top, 0) auto var(--archive-page-content-margin-bottom, var(--spacing-xl))));
 
 	&:first-child {
-		--archive-page-content-margin-top: calc((var(--content-sidebar-wrap-margin-top) * -1) - 1px); // One more px to handle sub-pixel rendering.
+		--archive-page-content-margin-top: calc(var(--content-sidebar-wrap-margin-top) * -1);
 	}
 
 	&:last-child {
-		--archive-page-content-margin-bottom: calc((var(--content-sidebar-wrap-margin-bottom) * -1) - 1px); // One more px to handle sub-pixel rendering.
+		--archive-page-content-margin-bottom: calc(var(--content-sidebar-wrap-margin-bottom) * -1);
 	}
 }

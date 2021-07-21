@@ -171,7 +171,7 @@ return [
 		'header'     => [
 			'async'     => true,
 			'condition' => function() {
-				return mai_has_sticky_header_enabled() || mai_has_transparent_header_enabled();
+				return ( mai_has_sticky_header_enabled() || mai_has_transparent_header_enabled() ) && ! mai_is_element_hidden( 'site_header' );
 			},
 		],
 		'customizer' => [
@@ -215,6 +215,13 @@ return [
 			'async'     => true,
 			'condition' => function() {
 				return ! mai_is_element_hidden( 'site_header' );
+			},
+		],
+		'page-header'                         => [
+			'location'  => 'public',
+			'async'     => true,
+			'condition' => function() {
+				return mai_has_page_header();
 			},
 		],
 		'blocks'                         => [
@@ -686,6 +693,7 @@ return [
 			'divider-overlay-opacity' => 0.5,
 			'divider-text-align'      => '',
 		],
+		'mobile-menu-breakpoint'      => null, // Null will use `mai_get_mobile_menu_breakpoint()` as default, which calls `mai_get_config()` so we can't use it here.
 		'header-left-menu-alignment'  => 'flex-start',
 		'header-right-menu-alignment' => 'flex-end',
 		'after-header-menu-alignment' => 'flex-start',
