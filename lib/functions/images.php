@@ -281,6 +281,9 @@ function mai_get_cover_image_size() {
 }
 
 /**
+ * No longer used.
+ * @see https://github.com/maithemewp/mai-engine/issues/482
+ *
  * Limits the largest image size served.
  * Prevents cover blocks and page header from serving huge images.
  *
@@ -297,7 +300,7 @@ function mai_get_cover_image_size() {
  *                                    an array of width and height values in pixels (in that order).
  * @param bool         $icon          Whether the image should be treated as an icon.
  */
-add_filter( 'wp_get_attachment_image_src', 'mai_limit_attachment_image_src', 10, 4 );
+// add_filter( 'wp_get_attachment_image_src', 'mai_limit_attachment_image_src', 10, 4 );
 function mai_limit_attachment_image_src( $image, $attachment_id, $size, $icon ) {
 	if ( 'full' !== $size ) {
 		return $image;
