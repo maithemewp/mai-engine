@@ -122,13 +122,13 @@
 	}
 
 	@if ("small" == $style) {
-		padding: var(--button-small-padding, (0.75rem 1.25rem));
-		font-size: var(--button-small-font-size, (0.75rem)); // Default buttons use font-base so can't use scale.
+		--button-padding: var(--button-small-padding, 0.75rem 1.25rem);
+		--button-font-size: var(--button-small-font-size, 0.8rem); // Default buttons use font-base so can't use scale.
 	}
 
 	@if ("large" == $style) {
-		padding: var(--button-large-padding, (1.25rem 2.5rem));
-		font-size: var(--button-large-font-size, (1.25rem)); // Default buttons use font-base so can't use scale.
+		--button-padding: var(--button-large-padding, 1.25rem 2.5rem);
+		--button-font-size: var(--button-large-font-size, 1.25rem); // Default buttons use font-base so can't use scale.
 	}
 
 	@if ("disabled" == $style) {
