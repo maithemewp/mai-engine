@@ -552,7 +552,15 @@ const withSpacingControls = createHigherOrderComponent( ( BlockEdit ) => {
 		if ( enableSpacingSettingsBlocks.includes( props.name ) ) {
 
 			// Values mapped to a spacing sizes, labels kept consistent. Matches grid/archive column and row gap.
-			const widthChoices = [
+			const marginTopBottomChoices = [
+				{
+					label: __( 'Default', 'mai-engine' ),
+					value: '',
+				},
+				{
+					label: __( 'None', 'mai-engine' ),
+					value: 'no',
+				},
 				{
 					label: __( 'XXS', 'mai-engine' ),
 					value: 'sm',
@@ -593,76 +601,30 @@ const withSpacingControls = createHigherOrderComponent( ( BlockEdit ) => {
 					<BlockEdit {...props} />
 					<InspectorControls>
 						<PanelBody
-							title={__( 'Margin', 'mai-engine' )}
-							initialOpen={false}
-							className={'mai-spacing-settings'}
-						>
-							<BaseControl
-								id="mai-spacing-top"
-								label={__( 'Top', 'mai-engine' )}
+								title={__( 'Margin', 'mai-engine' )}
+								initialOpen={false}
+								className={'mai-margin-settings'}
 							>
-								<div>
-									<ButtonGroup mode="radio" data-chosen={spacingTop}>
-										{widthChoices.map( sizeInfo => (
-											<Button
-											onClick={() => {
-												props.setAttributes( {
-													spacingTop: sizeInfo.value,
-												} );
-											}}
-											data-checked={spacingTop === sizeInfo.value}
-											value={sizeInfo.value}
-											key={`mai-space-top-${sizeInfo.value}`}
-											index={sizeInfo.value}
-											isSecondary={spacingTop !== sizeInfo.value}
-											isPrimary={spacingTop === sizeInfo.value}
-											>
-												<small><small>{sizeInfo.label}</small></small>
-											</Button>
-										) )}
-									</ButtonGroup>
-									<Button isDestructive isSmall isLink onClick={() => {
-										props.setAttributes( {
-											spacingTop: null,
-										} );
-									}}>
-										{__( 'Clear', 'mai-engine' )}
-									</Button>
-								</div>
-							</BaseControl>
-							<BaseControl
-								id="mai-spacing-bottom"
-								label={__( 'Bottom', 'mai-engine' )}
-							>
-								<div>
-									<ButtonGroup mode="radio" data-chosen={spacingBottom}>
-										{widthChoices.map( sizeInfo => (
-											<Button
-											onClick={() => {
-												props.setAttributes( {
-													spacingBottom: sizeInfo.value,
-												} );
-											}}
-											data-checked={spacingBottom === sizeInfo.value}
-											value={sizeInfo.value}
-											key={`mai-space-top-${sizeInfo.value}`}
-											index={sizeInfo.value}
-											isSecondary={spacingBottom !== sizeInfo.value}
-											isPrimary={spacingBottom === sizeInfo.value}
-											>
-												<small><small>{sizeInfo.label}</small></small>
-											</Button>
-										) )}
-									</ButtonGroup>
-									<Button isDestructive isSmall isLink onClick={() => {
-										props.setAttributes( {
-											spacingBottom: null,
-										} );
-									}}>
-										{__( 'Clear', 'mai-engine' )}
-									</Button>
-								</div>
-							</BaseControl>
+							<SelectControl
+								label={ __( 'Top', 'mai-engine' ) }
+								value={ spacingTop }
+								onChange={ ( spacingTop ) => {
+									props.setAttributes( {
+										spacingTop: spacingTop,
+									} );
+								}}
+								options={ marginTopBottomChoices }
+							/>
+							<SelectControl
+								label={ __( 'Bottom', 'mai-engine' ) }
+								value={ spacingBottom }
+								onChange={ ( spacingBottom ) => {
+									props.setAttributes( {
+										spacingBottom: spacingBottom,
+									} );
+								}}
+								options={ marginTopBottomChoices }
+							/>
 						</PanelBody>
 					</InspectorControls>
 				</Fragment>
