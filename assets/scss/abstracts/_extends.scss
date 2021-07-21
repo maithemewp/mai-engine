@@ -119,11 +119,6 @@
 			margin-left: var(--spacing-xs);
 			content: "\2192";
 		}
-
-		&:first-child:last-child {
-			padding-right: 0;
-			padding-left: 0;
-		}
 	}
 
 	@if ("small" == $style) {
