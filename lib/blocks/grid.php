@@ -94,7 +94,7 @@ function mai_register_grid_blocks() {
  */
 function mai_do_post_grid_block( $block, $content = '', $is_preview = false, $post_id = 0 ) {
 	// TODO: block id?
-	mai_do_grid_block( 'post', $block, $content = '', $is_preview = false, $post_id = 0 );
+	mai_do_grid_block( 'post', $block, $content = '', $is_preview, $post_id );
 }
 
 /**
@@ -111,7 +111,7 @@ function mai_do_post_grid_block( $block, $content = '', $is_preview = false, $po
  */
 function mai_do_term_grid_block( $block, $content = '', $is_preview = false, $post_id = 0 ) {
 	// TODO: block id?
-	mai_do_grid_block( 'term', $block, $content = '', $is_preview = false, $post_id = 0 );
+	mai_do_grid_block( 'term', $block, $content = '', $is_preview, $post_id );
 }
 
 /**
@@ -138,6 +138,8 @@ function mai_do_grid_block( $type, $block, $content = '', $is_preview = false, $
 	if ( ! empty( $block['align'] ) ) {
 		$args['class'] = mai_add_classes( 'align' . $block['align'], $args['class'] );
 	}
+
+	$args['preview'] = $is_preview;
 
 	mai_do_grid( $type, $args );
 }

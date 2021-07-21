@@ -334,7 +334,7 @@ class Mai_Grid {
 					if ( is_singular() ) {
 						$post_id = get_the_ID();
 
-					} elseif ( is_admin() ) {
+					} elseif ( isset( $this->args['preview'] ) && $this->args['preview'] ) {
 						$post_id = isset( $_REQUEST['post_id'] ) ? absint( $_REQUEST['post_id'] ) : false;
 					}
 
