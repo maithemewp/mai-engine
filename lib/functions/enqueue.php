@@ -344,23 +344,6 @@ function mai_remove_block_library_theme_css() {
 	mai_deregister_asset( 'wp-block-library-theme' );
 }
 
-add_filter( 'block_editor_settings', 'mai_remove_noto_serif_editor_styles' );
-/**
- * Remove noto serif default editor style.
- *
- * @since 0.1.0
- *
- * @param array $settings Editor settings.
- *
- * @return array
- */
-function mai_remove_noto_serif_editor_styles( $settings ) {
-	unset( $settings['styles'][0] );
-	unset( $settings['styles'][1] );
-
-	return $settings;
-}
-
 add_action( 'wp_enqueue_scripts', 'mai_admin_bar_inline_styles' );
 /**
  * Admin bar inline styles.
