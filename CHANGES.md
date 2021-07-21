@@ -1,8 +1,10 @@
 # Changelog
 
 ## 2.15.0 (7/21/21)
+* Added: Compatibility for WP 5.8 editor style changes.
 * Added: Support for PHP 8.
 * Added: Support for Seriously Simple Podcasting via Mai Theme Customizer settings.
+* Added: New "None" option for margin top and bottom settings on paragraph, heading, and separator blocks.
 * Added: Mai Post Grid now allows you to search for posts by ID. Great for sites with a lot of content.
 * Added: [Developers] New `mai_entry_args` filter on all archive, single, and Mai Post/Term Grid entries.
 * Added: [Developers] New `mai_before_entry_{$element}` and `mai_after_entry_{$element}` action hooks for entry elements.
@@ -11,10 +13,13 @@
 * Changed: Outline button now uses max-height instead of line-height to match button heights.
 * Changed: Page Header CSS is now in it's own file that is only loaded if the page header is displaying.
 * Changed: Button padding and font size now uses rem instead of em for consistency.
+* Changed: Button link style now has more spacing when next to another button.
+* Changed: Remove image size limit filter on image blocks.
 * Changed: [WooCommerce] Product gallery thumbnails CSS now simplified with CSS grid.
 * Changed: Bump ACF to 5.9.7.
-* Changed: Bump Kirki to 3.1.8
+* Changed: Bump Kirki to 3.1.9
 * Fixed: Mai Post/Term Grid block margin when alternating images.
+* Fixed: Mai Post Grid block get entries by current parent setting now works in editor.
 * Fixed: Mai Columns fill space setting was not working correctly in some instances.
 * Fixed: Entry image gap when image position is centered.
 * Fixed: Login page CSS tweaks for reset password and other views.
@@ -23,9 +28,10 @@
 * Fixed: Different author avatars not working when [mai_avatar] shortcode was used on archives.
 * Fixed: Repeatable image on Cover block not working in some scenarios.
 * Fixed: Search block editor style tweaks.
-* Fied: Remove button hover shadow on button link style.
+* Fixed: Remove button hover shadow on button link style.
 * Fixed: Some CPTs were not available in Customizer settings.
 * Fixed: [WooCommerce] cart and checkout style tweaks.
+* Fixed: Mai Catalina sub-menu styling on mobile.
 
 ## 2.14.1 (5/17/21)
 * Fixed: [WooCommerce] Scroll logo was too tall on WooCommerce pages from Woo's overly aggressive CSS affecting all images on a page.
