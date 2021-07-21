@@ -356,13 +356,14 @@ function mai_get_page_header_image_id() {
 			$image_id = get_post_meta( $post_id, 'page_header_image', true );
 		}
 
-	} elseif ( is_home() ) {
-		$post_id = get_option( 'page_for_posts' );
-		if ( $post_id ) {
-			$image_id = get_post_meta( $post_id, 'page_header_image', true );
-		}
-
-	} elseif ( mai_is_type_archive() ) {
+	}
+	// elseif ( is_home() && 'page' === get_option( 'show_on_front' ) ) {
+	// 	$post_id = get_option( 'page_for_posts' );
+	// 	if ( $post_id ) {
+	// 		$image_id = get_post_meta( $post_id, 'page_header_image', true );
+	// 	}
+	// }
+	elseif ( mai_is_type_archive() ) {
 		if ( is_category() || is_tag() || is_tax() ) {
 
 			/**
