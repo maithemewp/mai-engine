@@ -335,7 +335,11 @@ class Mai_Grid {
 						$post_id = get_the_ID();
 
 					} elseif ( isset( $this->args['preview'] ) && $this->args['preview'] ) {
-						$post_id = isset( $_REQUEST['post_id'] ) ? absint( $_REQUEST['post_id'] ) : false;
+						$post_id = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
+
+						if ( ! $post_id && wp_doing_ajax() && isset( $_REQUEST['post_id'] ) ) {
+							$post_id = absint( $_REQUEST['post_id'] );
+						}
 					}
 
 					if ( isset( $post_id ) && $post_id ) {
