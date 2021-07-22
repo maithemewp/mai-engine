@@ -93,9 +93,13 @@ class Mai_Column {
 			$colors = array_flip( mai_get_colors() );
 
 			if ( isset( $colors[ $this->args['background'] ] ) ) {
-				$attributes['class'] .= sprintf( ' has-%s-background-color', $colors[ $this->args['background'] ] );
+				$attributes['class'] = mai_add_classes( sprintf( ' has-%s-background-color', $colors[ $this->args['background'] ] ), $attributes['class'] );
 			} else {
-				$attributes['style'] .= sprintf( 'background:%s !important;', $this->args['background'] );
+				$attributes['style'] .= sprintf( 'background:%s;', $this->args['background'] );
+			}
+
+			if ( ! mai_is_light_color( $this->args['background'] ) ) {
+				$attributes['class'] = mai_add_classes( 'has-dark-background', $attributes['class'] );
 			}
 		}
 
