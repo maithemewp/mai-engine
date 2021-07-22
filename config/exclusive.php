@@ -180,7 +180,7 @@ return [
 		/**
 		 * Removes after header menu alignment setting from Customizer.
 		 *
-		 * @since TBD
+		 * @since 2.15.0
 		 *
 		 * @param WP_Customize_Manager $customizer The customizer instance.
 		 *
@@ -194,7 +194,7 @@ return [
 		/**
 		 * Removes after header menu alignment inline CSS.
 		 *
-		 * @since TBD
+		 * @since 2.15.0
 		 *
 		 * @param array $css The existing CSS.
 		 *

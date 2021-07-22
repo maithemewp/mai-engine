@@ -480,7 +480,7 @@ function mai_get_breakpoint( $size = 'lg', $suffix = '' ) {
 /**
  * Returns the default breakpoint the mobile menu to display.
  *
- * @since TBD
+ * @since 2.15.0
  *
  * @return string
  */
@@ -1187,7 +1187,7 @@ function mai_get_avatar_default_args() {
  *        to get_post_field( 'post_author' )
  *        since it wasn't working in page header and other contexts.
  *        Was this actually from static caching?
- * @since TBD Remove static caching because it breaks on archives
+ * @since 2.15.0 Remove static caching because it breaks on archives
  *        and other contextx when different authors are on the same page.
  *
  * @return int|false
@@ -1635,4 +1635,27 @@ function mai_get_logo_icon_2x() {
 	$file = 'assets/img/icon-256x256.png';
 	$icon = file_exists( mai_get_dir() . $file ) ? mai_get_url() . $file : '';
 	return $icon;
+}
+
+/**
+ * Gets a cart total that is ajax updated when new products are added to cart.
+ *
+ * @since 2.7.0
+ *
+ * @return string
+ */
+function mai_get_cart_total() {
+	if ( ! function_exists( 'WC' ) ) {
+		return '';
+	}
+
+	$cart = WC()->cart;
+	if ( ! $cart ) {
+		return;
+	}
+
+	$total = WC()->cart->get_cart_contents_count();
+	$total = $total ?: '';
+
+	return sprintf( '<span class="mai-cart-total-wrap is-circle"><span class="mai-cart-total">%s</span></span>', $total );
 }

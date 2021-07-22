@@ -429,6 +429,22 @@ function mai_load_files() {
 		$files[] = '../vendor/aristath/kirki/kirki';
 	}
 
+	if ( class_exists( 'FacetWP' ) ) {
+		$files[] = 'support/facetwp';
+	}
+
+	if ( class_exists( 'Polylang' ) ) {
+		$files[] = 'support/polylang';
+	}
+
+	if ( class_exists( 'SitePress' ) ) {
+		$files[] = 'support/wpml';
+	}
+
+	if ( class_exists( 'WooCommerce' ) ) {
+		$files[] = 'support/woocommerce';
+	}
+
 	foreach ( $files as $file ) {
 		require_once __DIR__ . "/$file.php";
 	}
