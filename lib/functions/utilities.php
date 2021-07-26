@@ -910,13 +910,13 @@ function mai_get_header_shrink_offset() {
 	$source_width       = $source[1];
 	$source_height      = $source[2];
 	$customizer_widths  = mai_get_option( 'logo-width', $config['width'] );
-	$customizer_widths  = array_map( 'intval', $customizer_widths );
-	$desktop_width      = $customizer_widths['desktop'];
+	$customizer_widths  = array_map( 'absint', $customizer_widths );
+	$desktop_width      = max( $customizer_widths['desktop'], 1 );
 	$desktop_height     = ( $desktop_width / $source_width ) * $source_height;
-	$shrunk_width       = $customizer_widths['mobile'];
+	$shrunk_width       = max( $customizer_widths['mobile'], 1 );
 	$shrunk_height      = ( $shrunk_width / $desktop_width ) * $desktop_height;
-	$height_difference  = ceil( $desktop_height - $shrunk_height );
-	$offset             = $height_difference + $spacing_difference;
+	$height_difference  = absint( ceil( $desktop_height - $shrunk_height ) );
+	$offset             = absint( $height_difference + $spacing_difference );
 
 	return $offset;
 }
