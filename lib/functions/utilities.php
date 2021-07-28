@@ -491,7 +491,8 @@ function mai_get_mobile_menu_breakpoint() {
 		return $breakpoint;
 	}
 
-	$breakpoint = ! is_null( mai_get_config( 'settings' )['mobile-menu-breakpoint'] ) ? mai_get_config( 'settings' )['mobile-menu-breakpoint'] : mai_get_breakpoint();
+	$default    = ! is_null( mai_get_config( 'settings' )['mobile-menu-breakpoint'] ) ? mai_get_config( 'settings' )['mobile-menu-breakpoint'] : mai_get_breakpoint();
+	$breakpoint = mai_get_option( 'mobile-menu-breakpoint', $default );
 	$breakpoint = mai_get_unit_value( $breakpoint );
 
 	return $breakpoint;
