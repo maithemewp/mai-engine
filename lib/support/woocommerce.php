@@ -184,17 +184,23 @@ function mai_woocommerce_edit_shop_link( $wp_admin_bar ) {
 		return;
 	}
 
+	if ( ! ( class_exists( 'WooCommerce' ) && function_exists( 'is_shop' ) && is_shop() ) ) {
+		return;
+	}
+
 	$page_id = get_option( 'woocommerce_shop_page_id' );
 
 	if ( ! $page_id ) {
 		return;
 	}
 
-	$wp_admin_bar->add_node( [
-		'id'    => 'mai-woocommerce-shop-page',
-		'title' => '<span class="ab-icon dashicons dashicons-edit" style="margin-top:2px;"></span><span class="ab-label">' . __( 'Edit Page', 'mai-engine' ) . '</span>',
-		'href'  => get_edit_post_link( $page_id, false ),
-	] );
+	$wp_admin_bar->add_node(
+		[
+			'id'    => 'mai-woocommerce-shop-page',
+			'title' => '<span class="ab-icon dashicons dashicons-edit" style="margin-top:2px;"></span><span class="ab-label">' . __( 'Edit Page', 'mai-engine' ) . '</span>',
+			'href'  => get_edit_post_link( $page_id, false ),
+		]
+	);
 }
 
 /**
