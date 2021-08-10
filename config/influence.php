@@ -11,22 +11,22 @@
 
 return [
 	'demos' => [
-		// 'travel'      => 0,
-		// 'home-garden' => 0,
+		'travel'  => 64,
+		'podcast' => 65,
+		'fashion' => 66,
 	],
 	'global-styles' => [
 		'colors' => [
-			'alt'        => '#f9f9f9', // Background alt.
-			'body'       => '#333333', // Body text color.
-			'heading'    => '#333333', // Heading text color.
-			'link'       => '#a0d9ca', // Link color.
-			'primary'    => '#a0d9ca', // Button primary background color.
-			'secondary'  => '#173c6e', // Button secondary background color.
+			'alt'       => '#f9f9f9', // Background alt.
+			'body'      => '#333333', // Body text color.
+			'heading'   => '#333333', // Heading text color.
+			'link'      => '#a0d9ca', // Link color.
+			'primary'   => '#a0d9ca', // Button primary background color.
+			'secondary' => '#173c6e', // Button secondary background color.
 		],
 		'fonts' => [
-			'body'       => 'Karla:400',
-			'heading'    => 'Montserrat:400',
-			// 'subheading' => 'Playfair Display:500italic',
+			'body'    => 'Karla:400',
+			'heading' => 'Montserrat:400',
 		],
 	],
 	'image-sizes' => [

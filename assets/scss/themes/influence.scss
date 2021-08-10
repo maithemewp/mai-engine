@@ -3,11 +3,16 @@
 :root {
 	--font-scale: 1.125; // Major second.
 	--border-radius: 0;
+	--shadow: 0;
 	--heading-text-transform: uppercase;
 	--heading-letter-spacing: 1px;
 	--button-font-family: var(--heading-font-family);
 	--button-font-weight: var(--heading-font-weight);
 	--button-text-transform: uppercase;
+	--author-box-background: var(--color-alt);
+	--author-box-border: 0;
+	--adjacent-entry-link-inner-background: var(--color-alt);
+	--adjacent-entry-link-inner-border: 0;
 }
 
 .site-container {
@@ -16,7 +21,7 @@
 }
 
 .button {
-	--font-size-base: 0.75em;
+	--font-size-base: 0.85rem;
 }
 
 .before-header {

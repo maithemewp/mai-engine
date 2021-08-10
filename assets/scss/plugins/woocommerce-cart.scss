@@ -2,6 +2,15 @@
 
 // Cart and Checkout.
 
+.woocommerce-form-login,
+.woocommerce-form-coupon {
+	margin-bottom: var(--spacing-xxl);
+}
+
+.woocommerce-form-coupon .button {
+	height: 100%;
+}
+
 .coupon {
 	display: flex;
 	flex-wrap: wrap;
@@ -28,17 +37,23 @@
 
 .woocommerce-form-coupon {
 	display: flex;
-	align-items: center;
-	margin-bottom: var(--column-gap);
+	flex-wrap: wrap;
 
 	p {
 		width: 100%;
 	}
+
+	.form-row-last {
+		margin-left: var(--spacing-sm);
+	}
+}
+
+.woocommerce-cart-form {
+	--link-color: var(--color-heading);
 }
 
 .woocommerce-cart-form,
 .woocommerce-checkout {
-	--link-color: var(--color-heading);
 
 	.shop_table {
 		// Originally for WooCommerce Product Add-ons, but could be anything.

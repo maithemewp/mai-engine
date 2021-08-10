@@ -530,7 +530,7 @@ function mai_acf_get_post_parents( $args ) {
 /**
  * Allow searching for post objects by ID.
  *
- * @since TBD
+ * @since 2.15.0
  *
  * @link https://www.powderkegwebdesign.com/fantastic-way-allow-searching-id-advanced-custom-fields-objects/
  *

@@ -480,7 +480,7 @@ function mai_get_breakpoint( $size = 'lg', $suffix = '' ) {
 /**
  * Returns the default breakpoint the mobile menu to display.
  *
- * @since TBD
+ * @since 2.15.0
  *
  * @return string
  */
@@ -491,7 +491,8 @@ function mai_get_mobile_menu_breakpoint() {
 		return $breakpoint;
 	}
 
-	$breakpoint = ! is_null( mai_get_config( 'settings' )['mobile-menu-breakpoint'] ) ? mai_get_config( 'settings' )['mobile-menu-breakpoint'] : mai_get_breakpoint();
+	$default    = ! is_null( mai_get_config( 'settings' )['mobile-menu-breakpoint'] ) ? mai_get_config( 'settings' )['mobile-menu-breakpoint'] : mai_get_breakpoint();
+	$breakpoint = mai_get_option( 'mobile-menu-breakpoint', $default );
 	$breakpoint = mai_get_unit_value( $breakpoint );
 
 	return $breakpoint;
@@ -910,13 +911,13 @@ function mai_get_header_shrink_offset() {
 	$source_width       = $source[1];
 	$source_height      = $source[2];
 	$customizer_widths  = mai_get_option( 'logo-width', $config['width'] );
-	$customizer_widths  = array_map( 'intval', $customizer_widths );
-	$desktop_width      = $customizer_widths['desktop'];
+	$customizer_widths  = array_map( 'absint', $customizer_widths );
+	$desktop_width      = max( $customizer_widths['desktop'], 1 );
 	$desktop_height     = ( $desktop_width / $source_width ) * $source_height;
-	$shrunk_width       = $customizer_widths['mobile'];
+	$shrunk_width       = max( $customizer_widths['mobile'], 1 );
 	$shrunk_height      = ( $shrunk_width / $desktop_width ) * $desktop_height;
-	$height_difference  = ceil( $desktop_height - $shrunk_height );
-	$offset             = $height_difference + $spacing_difference;
+	$height_difference  = absint( ceil( $desktop_height - $shrunk_height ) );
+	$offset             = absint( $height_difference + $spacing_difference );
 
 	return $offset;
 }
@@ -1187,7 +1188,7 @@ function mai_get_avatar_default_args() {
  *        to get_post_field( 'post_author' )
  *        since it wasn't working in page header and other contexts.
  *        Was this actually from static caching?
- * @since TBD Remove static caching because it breaks on archives
+ * @since 2.15.0 Remove static caching because it breaks on archives
  *        and other contextx when different authors are on the same page.
  *
  * @return int|false
@@ -1635,4 +1636,27 @@ function mai_get_logo_icon_2x() {
 	$file = 'assets/img/icon-256x256.png';
 	$icon = file_exists( mai_get_dir() . $file ) ? mai_get_url() . $file : '';
 	return $icon;
+}
+
+/**
+ * Gets a cart total that is ajax updated when new products are added to cart.
+ *
+ * @since 2.7.0
+ *
+ * @return string
+ */
+function mai_get_cart_total() {
+	if ( ! function_exists( 'WC' ) ) {
+		return '';
+	}
+
+	$cart = WC()->cart;
+	if ( ! $cart ) {
+		return;
+	}
+
+	$total = WC()->cart->get_cart_contents_count();
+	$total = $total ?: '';
+
+	return sprintf( '<span class="mai-cart-total-wrap is-circle"><span class="mai-cart-total">%s</span></span>', $total );
 }

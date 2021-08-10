@@ -199,7 +199,7 @@ add_filter( 'nav_menu_css_class', 'mai_nav_menu_icons', 10, 4 );
 /**
  * Adds menu-item-icon class if menu item only has an icon.
  *
- * @since TBD
+ * @since 2.15.0
  *
  * @param string[] $classes Array of the CSS classes that are applied to the menu item's `<li>` element.
  * @param WP_Post  $item    The current menu item.
