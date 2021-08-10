@@ -18,7 +18,7 @@ add_filter( 'pll_get_post_types', 'mai_polylang_post_types' );
  *
  * @uses Polylang
  *
- * @since TBD
+ * @since 2.16.0
  *
  * @param array $post_types The translateable post types.
  *
@@ -35,7 +35,7 @@ add_filter( 'mai_template_part_objects', 'mai_polylang_template_part_objects' );
  *
  * @uses Polylang
  *
- * @since TBD
+ * @since 2.16.0
  *
  * @param array $template_parts The template parts objects.
  *

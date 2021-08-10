@@ -18,7 +18,7 @@ add_filter( 'mai_template_part_objects', 'mai_wpml_template_part_objects' );
  *
  * @uses WPML
  *
- * @since TBD
+ * @since 2.16.0
  *
  * @param array $template_parts The template parts objects.
  *

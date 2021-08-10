@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.16.0 (8/10/21)
+* Added: WPML and Polylang translation support for Template Parts.
+* Fixed: Mai Columns now automatically makes text white when you set an individual column to a dark background color.
+* Fixed: PHP error when settings the site logo to 0 width.
+* Fixed: Mobile menu breakpoint was not using saved value in Customizer.
+* Fixed: [WooCommerce] Links on checkout looked like regular text. Now they use the theme link color.
+
 ## 2.15.1 (7/21/21)
 * Changed: Bump ACF to 5.9.9
 * Changed: Embed blocks are now the full width of their container. This mostly helps in Mai Columns and when nested other layout blocks.
