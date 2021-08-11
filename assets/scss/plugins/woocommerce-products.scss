@@ -60,7 +60,9 @@ ul.products {
 	grid-template-columns: repeat(var(--columns, 1), 1fr);
 
 	.woocommerce &::before,
-	.woocommerce-page &::before {
+	.woocommerce-page &::before,
+	.woocommerce &::after,
+	.woocommerce-page &::after {
 		display: none;
 	}
 
@@ -414,7 +416,7 @@ form.cart {
 /**
  * Fonts
  */
- @font-face {
+@font-face {
 	font-weight: 400;
 	font-family: star;
 	font-style: normal;
