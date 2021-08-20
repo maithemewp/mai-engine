@@ -205,5 +205,30 @@ return [
 
 			return $css;
 		}
+
+		/**
+		 * Convert all more links to button-link.
+		 *
+		 * @since TBD
+		 *
+		 * @return array
+		 */
+		add_filter( 'genesis_attr_entry-more-link', 'mai_exclusive_more_link_button', 10, 3 );
+		function mai_exclusive_more_link_button( $atts, $context, $args ) {
+			$args = isset( $args['params']['args'] ) ? $args['params']['args'] : [];
+
+			// Bail if no custom args.
+			if ( ! $args ) {
+				return $atts;
+			}
+
+			// Remove button-secondary if it exists.
+			$atts['class'] = str_replace( ' button-secondary', '', $atts['class'] );
+
+			// Make outline button.
+			$atts['class'] .= ' button-link';
+
+			return $atts;
+		}
 	},
 ];
