@@ -56,20 +56,3 @@ function mai_remove_sidebar_skip_link( $links ) {
 
 	return $links;
 }
-
-add_action( 'genesis_sidebar', 'mai_remove_default_sidebar_content', 8 );
-/**
- * Removes default sidebar content.
- * This will show up if using Sidebar template part.
- *
- * @since TBD
- *
- * @return void
- */
-function mai_remove_default_sidebar_content() {
-	if ( dynamic_sidebar( 'sidebar' ) ) {
-		return;
-	}
-
-	remove_action( 'genesis_sidebar', 'genesis_do_sidebar' );
-}
