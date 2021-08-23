@@ -4,7 +4,7 @@ Tags: acf, fields, custom fields, meta, repeater
 Requires at least: 4.7
 Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 5.10.0-RC1
+Stable tag: 5.9.9
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,26 +65,6 @@ From your WordPress dashboard
 
 
 == Changelog ==
-
-= 5.10 =
-*Release Date - TBD*
-
-* Enhancement - Improved security by running all user-generated content through `wp_kses()` by default
-* Enhancement - New ACF Blocks features
-    * Switched to v2 of the Blocks API for WordPress 5.6+
-    * Block preloading now enabled by default
-    * Block preloading now supports blocks set to "Edit" mode
-    * Add support for full height alignment setting
-* Enhancement - Added setting to color picker field to enable an opacity slider
-* Enhancement - Allow deletion of first field group location rule if multiple rules have been added thanks to
-Arthur Shlain
-* Fix - Fixed issue where fields in legacy widgets weren't saving in new widget block editor
-* Fix - Fixed issue with custom field validation in scheduled posts
-* Fix - Fixed warnings thrown by clone field if the cloned field group is empty
-* Fix - Fixed issue where Select2 search input wouldn't have focus in WordPress 5.8+
-* Fix - Fixed issue with Select2 value sorting when Yoast SEO is installed
-* Fix - Fixed deprecation warnings in block editor in WordPress 5.6+
-* i18n - Updated Swedish translation thanks to Erik Betshammar
 
 = 5.9.9 =
 *Release Date - 20 July 2021*

@@ -7729,12 +7729,9 @@
 				placeholder:		this.get('placeholder'),
 				multiple:			this.get('multiple'),
 				data:				[],
-				templateSelection:	function( selection ){
-					var $selection = $('<span class="acf-selection"></span>');
-					$selection.text( acf.escHtml( selection.text ) );
-					$selection.data('element', selection.element);
-					return $selection;
-				}
+				escapeMarkup:		function( string ){ 
+					return acf.escHtml( string ); 
+				},
 			};
 			
 			// multiple
@@ -7792,7 +7789,7 @@
 			            $ul.find('.select2-selection__choice').each(function() {
 				            
 				            // vars
-							var $option = $( $(this).children('span.acf-selection').data('element') );
+							var $option = $( $(this).data('data').element );
 							
 							// detach and re-append to end
 							$option.detach().appendTo( $select );
@@ -9659,7 +9656,7 @@
 			var lastPostStatus = '';
 			wp.data.subscribe(function() {
 				var postStatus = editorSelect.getEditedPostAttribute( 'status' );
-				useValidation = ( postStatus === 'publish' || postStatus === 'future' );
+				useValidation = ( postStatus === 'publish' );
 				lastPostStatus = ( postStatus !== 'publish' ) ? postStatus : lastPostStatus;
 			});
 
@@ -9679,7 +9676,7 @@
 						return resolve( 'Validation ignored (autosave).' );
 					}
 
-					// Bail early if validation is not needed.
+					// Bail early if validation is not neeed.
 					if( !useValidation ) {
 						return resolve( 'Validation ignored (draft).' );
 					}
@@ -9731,8 +9728,6 @@
 					}
 				}).then(function(){
 					return savePost.apply(_this, _args);
-				}).catch(function(err){
-					// Nothing to do here, user is alerted of validation issues.
 				});
 			};
 		}
