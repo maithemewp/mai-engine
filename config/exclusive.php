@@ -45,7 +45,7 @@ return [
 		'add' => [
 			'landscape' => '16:10',
 			// 'portrait'  => '3:4',
-			// 'square'    => '1:1',
+			'square'    => '1:1',
 		],
 	],
 	'settings' => [
