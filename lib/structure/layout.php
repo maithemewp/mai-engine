@@ -112,9 +112,8 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'has-alignfull-first';
 	}
 
-	// TODO: Get rid of sidebar checks. Since they should not be used since the original deprecated stuff.
-	$header_left  = has_nav_menu( 'header-left' ) || mai_has_template_part( 'header-left' ) || is_active_sidebar( 'header-left' );
-	$header_right = has_nav_menu( 'header-right' ) || mai_has_template_part( 'header-right' ) || is_active_sidebar( 'header-right' );
+	$header_left  = has_nav_menu( 'header-left' ) || mai_has_template_part( 'header-left' );
+	$header_right = has_nav_menu( 'header-right' ) || mai_has_template_part( 'header-right' );
 
 	// Add logo classes.
 	if ( $header_right && ! $header_left ) {
