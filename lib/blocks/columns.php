@@ -312,7 +312,7 @@ function mai_register_columns_field_groups() {
 			],
 			[
 				'key'               => 'mai_columns_arrangement_tab',
-				'label'             => mai_get_svg_icon( 'desktop', 'light' ),
+				'label'             => __( 'LG', 'mai-engine' ),
 				'type'              => 'tab',
 				'conditional_logic' => [
 					[
@@ -355,7 +355,7 @@ function mai_register_columns_field_groups() {
 			],
 			[
 				'key'               => 'mai_columns_arrangement_md_tab',
-				'label'             => mai_get_svg_icon( 'laptop', 'light' ),
+				'label'             => __( 'MD', 'mai-engine' ),
 				'type'              => 'tab',
 				'conditional_logic' => [
 					[
@@ -398,7 +398,7 @@ function mai_register_columns_field_groups() {
 			],
 			[
 				'key'               => 'mai_columns_arrangement_sm_tab',
-				'label'             => mai_get_svg_icon( 'tablet', 'light' ),
+				'label'             => __( 'SM', 'mai-engine' ),
 				'type'              => 'tab',
 				'conditional_logic' => [
 					[
@@ -441,7 +441,7 @@ function mai_register_columns_field_groups() {
 			],
 			[
 				'key'               => 'mai_columns_arrangement_xs_tab',
-				'label'             => mai_get_svg_icon( 'mobile', 'light' ),
+				'label'             => __( 'XS', 'mai-engine' ),
 				'type'              => 'tab',
 				'conditional_logic' => [
 					[
