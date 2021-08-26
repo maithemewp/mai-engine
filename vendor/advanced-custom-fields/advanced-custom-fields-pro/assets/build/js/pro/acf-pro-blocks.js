@@ -354,10 +354,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   var _wp$blockEditor = wp.blockEditor,
       BlockControls = _wp$blockEditor.BlockControls,
       InspectorControls = _wp$blockEditor.InspectorControls,
-      InnerBlocks = _wp$blockEditor.InnerBlocks;
+      InnerBlocks = _wp$blockEditor.InnerBlocks,
+      useBlockProps = _wp$blockEditor.useBlockProps;
   var _wp$components = wp.components,
-      Toolbar = _wp$components.Toolbar,
-      IconButton = _wp$components.IconButton,
+      ToolbarGroup = _wp$components.ToolbarGroup,
+      ToolbarButton = _wp$components.ToolbarButton,
       Placeholder = _wp$components.Placeholder,
       Spinner = _wp$components.Spinner;
   var Fragment = wp.element.Fragment;
@@ -387,50 +388,41 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     return blockTypes[name] || false;
   }
   /**
-   * Returns true if a block exists for the given name.
-   *
-   * @date	20/2/19
-   * @since	5.8.0
-   *
-   * @param	string name The block name.
-   * @return	bool
-   */
-
-
-  function isBlockType(name) {
-    return !!blockTypes[name];
-  }
-  /**
    * Returns true if the provided block is new.
    *
    * @date	31/07/2020
    * @since	5.9.0
    *
-   * @param	object props The block props.
+   * @param	object props The block props (of which, the attributes properties is destructured)
    * @return	bool
    */
 
 
-  function isNewBlock(props) {
-    return !props.attributes.id;
+  function isNewBlock(_ref) {
+    var attributes = _ref.attributes;
+    return !attributes.id;
   }
   /**
    * Returns true if the provided block is a duplicate:
    * True when there are is another block with the same "id", but a different "clientId".
-   * 
+   *
    * @date	31/07/2020
    * @since	5.9.0
    *
-   * @param	object props The block props.
+   * @param	object props The block props (of which, the attributes and clientId properties are destructured)
    * @return	bool
    */
 
 
-  function isDuplicateBlock(props) {
-    return getBlocks().filter(function (block) {
-      return block.attributes.id === props.attributes.id;
-    }).filter(function (block) {
-      return block.clientId !== props.clientId;
+  function isDuplicateBlock(_ref2) {
+    var attributes = _ref2.attributes,
+        clientId = _ref2.clientId;
+    return getBlocks().filter(function (_ref3) {
+      var attributes = _ref3.attributes;
+      return attributes.id === attributes.id;
+    }).filter(function (_ref4) {
+      var clientId = _ref4.clientId;
+      return clientId !== clientId;
     }).length;
   }
   /**
@@ -445,22 +437,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
   function registerBlockType(blockType) {
-    // Bail ealry if is excluded post_type.
+    // Bail early if is excluded post_type.
     var allowedTypes = blockType.post_types || [];
 
     if (allowedTypes.length) {
       // Always allow block to appear on "Edit reusable Block" screen.
-      allowedTypes.push('wp_block'); // Check post type.
+      allowedTypes.push("wp_block"); // Check post type.
 
-      var postType = acf.get('postType');
+      var postType = acf.get("postType");
 
-      if (allowedTypes.indexOf(postType) === -1) {
+      if (!allowedTypes.includes(postType)) {
         return false;
       }
     } // Handle svg HTML.
 
 
-    if (typeof blockType.icon === 'string' && blockType.icon.substr(0, 4) === '<svg') {
+    if (typeof blockType.icon === "string" && blockType.icon.substr(0, 4) === "<svg") {
       var iconHTML = blockType.icon;
       blockType.icon = /*#__PURE__*/React.createElement(Div, null, iconHTML);
     } // Remove icon if empty to allow for default "block".
@@ -472,13 +464,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     } // Check category exists and fallback to "common".
 
 
-    var category = wp.blocks.getCategories().filter(function (cat) {
-      return cat.slug === blockType.category;
+    var category = wp.blocks.getCategories().filter(function (_ref5) {
+      var slug = _ref5.slug;
+      return slug === blockType.category;
     }).pop();
 
     if (!category) {
       //console.warn( `The block "${blockType.name}" is registered with an unknown category "${blockType.category}".` );
-      blockType.category = 'common';
+      blockType.category = "common";
     } // Define block type attributes.
     // Leave default undefined to allow WP to serialize attributes in HTML comments.
     // See https://github.com/WordPress/gutenberg/issues/7342
@@ -486,19 +479,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     var attributes = {
       id: {
-        type: 'string'
+        type: "string"
       },
       name: {
-        type: 'string'
+        type: "string"
       },
       data: {
-        type: 'object'
+        type: "object"
       },
       align: {
-        type: 'string'
+        type: "string"
       },
       mode: {
-        type: 'string'
+        type: "string"
+      },
+      style: {
+        type: "string"
+      },
+      wpClassName: {
+        type: "string"
       }
     }; // Append edit and save functions.
 
@@ -514,19 +513,35 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     if (blockType.supports.align_content) {
       attributes = withAlignContentAttributes(attributes);
       ThisBlockEdit = withAlignContentComponent(ThisBlockEdit, blockType);
+    } // Apply full_height functionality.
+
+
+    if (blockType.supports.full_height) {
+      attributes = withFullHeightAttributes(attributes);
+      ThisBlockEdit = withFullHeightComponent(ThisBlockEdit, blockType);
     } // Merge in block settings.
 
 
     blockType = acf.parseArgs(blockType, {
-      title: '',
-      name: '',
-      category: '',
+      title: "",
+      name: "",
+      category: "",
       attributes: attributes,
+      apiVersion: 2,
       edit: function edit(props) {
         return /*#__PURE__*/React.createElement(ThisBlockEdit, props);
       },
       save: function save(props) {
-        return /*#__PURE__*/React.createElement(ThisBlockSave, props);
+        var wpProps = useBlockProps.save(props);
+        /**
+         * Because we don't wrap the output in any container, we need to change useBlockProp's modifications
+         * into attributes on the block instead so they're passed through to the template for output by users.
+         * If we save useBlockProps to className, they'll appear in the additional CSS, so we save it wpClassName instead.
+         */
+
+        if (wpProps.className) wpProps.attributes.wpClassName = wpProps.className;
+        if (wpProps.style) wpProps.attributes.style = wpProps.style;
+        return /*#__PURE__*/React.createElement(ThisBlockSave, wpProps);
       }
     }); // Add to storage.
 
@@ -537,7 +552,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     if (result.attributes.anchor) {
       result.attributes.anchor = {
-        type: 'string'
+        type: "string"
       };
     } // Return result.
 
@@ -556,8 +571,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
   function select(selector) {
-    if (selector === 'core/block-editor') {
-      return wp.data.select('core/block-editor') || wp.data.select('core/editor');
+    if (selector === "core/block-editor") {
+      return wp.data.select("core/block-editor") || wp.data.select("core/editor");
     }
 
     return wp.data.select(selector);
@@ -589,7 +604,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
   function getBlocks(args) {
     // Get all blocks (avoid deprecated warning).
-    var blocks = select('core/block-editor').getBlocks(); // Append innerBlocks.
+    var blocks = select("core/block-editor").getBlocks(); // Append innerBlocks.
 
     var i = 0;
 
@@ -599,10 +614,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     } // Loop over args and filter.
 
 
-    for (var k in args) {
-      blocks = blocks.filter(function (block) {
-        return block.attributes[k] === args[k];
+    var _loop = function _loop(k) {
+      blocks = blocks.filter(function (_ref6) {
+        var attributes = _ref6.attributes;
+        return attributes[k] === args[k];
       });
+    };
+
+    for (var k in args) {
+      _loop(k);
     } // Return results.
 
 
@@ -642,12 +662,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     clearTimeout(data.timeout);
     data.timeout = setTimeout(function () {
       $.ajax({
-        url: acf.get('ajaxurl'),
-        dataType: 'json',
-        type: 'post',
+        url: acf.get("ajaxurl"),
+        dataType: "json",
+        type: "post",
         cache: false,
         data: acf.prepareForAjax({
-          action: 'acf/ajax/fetch-block',
+          action: "acf/ajax/fetch-block",
           block: JSON.stringify(attributes),
           query: data.query
         })
@@ -715,8 +735,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
     var nodeAttrs = {};
-    acf.arrayArgs(node.attributes).map(parseNodeAttr).forEach(function (attr) {
-      nodeAttrs[attr.name] = attr.value;
+    acf.arrayArgs(node.attributes).map(parseNodeAttr).forEach(function (_ref7) {
+      var name = _ref7.name,
+          value = _ref7.value;
+      nodeAttrs[name] = value;
     }); // Define args for React.createElement().
 
     var args = [nodeName, nodeAttrs];
@@ -734,8 +756,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     return React.createElement.apply(this, args);
   }
-
-  ;
   /**
    * Converts a node or attribute name into it's JSX compliant name
    *
@@ -746,8 +766,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
    * @returns  string
    */
 
+
   function getJSXName(name) {
-    var replacement = acf.isget(acf, 'jsxNameReplacements', name);
+    var replacement = acf.isget(acf, "jsxNameReplacements", name);
     if (replacement) return replacement;
     return name;
   }
@@ -764,13 +785,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
   function parseNodeName(name) {
     switch (name) {
-      case 'innerblocks':
+      case "innerblocks":
         return InnerBlocks;
 
-      case 'script':
+      case "script":
         return Script;
 
-      case '#comment':
+      case "#comment":
         return null;
 
       default:
@@ -797,21 +818,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     switch (name) {
       // Class.
-      case 'class':
-        name = 'className';
+      case "class":
+        name = "className";
         break;
       // Style.
 
-      case 'style':
+      case "style":
         var css = {};
-        value.split(';').forEach(function (s) {
-          var pos = s.indexOf(':');
+        value.split(";").forEach(function (s) {
+          var pos = s.indexOf(":");
 
           if (pos > 0) {
             var ruleName = s.substr(0, pos).trim();
             var ruleValue = s.substr(pos + 1).trim(); // Rename core properties, but not CSS variables.
 
-            if (ruleName.charAt(0) !== '-') {
+            if (ruleName.charAt(0) !== "-") {
               ruleName = acf.strCamelCase(ruleName);
             }
 
@@ -824,7 +845,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       default:
         // No formatting needed for "data-x" attributes.
-        if (name.indexOf('data-') === 0) {
+        if (name.indexOf("data-") === 0) {
           break;
         } // Replace names for JSX counterparts.
 
@@ -833,13 +854,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         var c1 = value.charAt(0);
 
-        if (c1 === '[' || c1 === '{') {
+        if (c1 === "[" || c1 === "{") {
           value = JSON.parse(value);
         } // Convert bool values.
 
 
-        if (value === 'true' || value === 'false') {
-          value = value === 'true';
+        if (value === "true" || value === "false") {
+          value = value === "true";
         }
 
         break;
@@ -852,8 +873,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }
   /**
    * Higher Order Component used to set default block attribute values.
-   * 
-   * By modifying block attributes directly, instead of defining defaults in registerBlockType(), 
+   *
+   * By modifying block attributes directly, instead of defining defaults in registerBlockType(),
    * WordPress will include them always within the saved block serialized JSON.
    *
    * @date	31/07/2020
@@ -889,7 +910,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
         if (isNewBlock(props)) {
-          attributes.id = acf.uniqid('block_');
+          attributes.id = acf.uniqid("block_");
 
           for (var attribute in blockType.attributes) {
             if (attributes[attribute] === undefined && blockType[attribute] !== undefined) {
@@ -902,7 +923,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
         if (isDuplicateBlock(props)) {
-          attributes.id = acf.uniqid('block_');
+          attributes.id = acf.uniqid("block_");
           return _possibleConstructorReturn(_this);
         }
 
@@ -918,8 +939,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       return WrappedBlockEdit;
     }(Component);
-  }, 'withDefaultAttributes');
-  wp.hooks.addFilter('editor.BlockListBlock', 'acf/with-default-attributes', withDefaultAttributes);
+  }, "withDefaultAttributes");
+  wp.hooks.addFilter("editor.BlockListBlock", "acf/with-default-attributes", withDefaultAttributes);
   /**
    * The BlockSave functional component.
    *
@@ -964,22 +985,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var blockType = getBlockType(name); // Restrict current mode.
 
         function restrictMode(modes) {
-          if (modes.indexOf(attributes.mode) === -1) {
+          if (!modes.includes(attributes.mode)) {
             attributes.mode = modes[0];
           }
         }
 
         switch (blockType.mode) {
-          case 'edit':
-            restrictMode(['edit', 'preview']);
+          case "edit":
+            restrictMode(["edit", "preview"]);
             break;
 
-          case 'preview':
-            restrictMode(['preview', 'edit']);
+          case "preview":
+            restrictMode(["preview", "edit"]);
             break;
 
           default:
-            restrictMode(['auto']);
+            restrictMode(["auto"]);
             break;
         }
       }
@@ -995,27 +1016,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         var showToggle = blockType.supports.mode;
 
-        if (mode === 'auto') {
+        if (mode === "auto") {
           showToggle = false;
         } // Configure toggle variables.
 
 
-        var toggleText = mode === 'preview' ? acf.__('Switch to Edit') : acf.__('Switch to Preview');
-        var toggleIcon = mode === 'preview' ? 'edit' : 'welcome-view-site';
+        var toggleText = mode === "preview" ? acf.__("Switch to Edit") : acf.__("Switch to Preview");
+        var toggleIcon = mode === "preview" ? "edit" : "welcome-view-site";
 
         function toggleMode() {
           setAttributes({
-            mode: mode === 'preview' ? 'edit' : 'preview'
+            mode: mode === "preview" ? "edit" : "preview"
           });
         } // Return template.
 
 
-        return /*#__PURE__*/React.createElement(Fragment, null, /*#__PURE__*/React.createElement(BlockControls, null, showToggle && /*#__PURE__*/React.createElement(Toolbar, null, /*#__PURE__*/React.createElement(IconButton, {
+        return /*#__PURE__*/React.createElement(Fragment, null, /*#__PURE__*/React.createElement(BlockControls, null, showToggle && /*#__PURE__*/React.createElement(ToolbarGroup, null, /*#__PURE__*/React.createElement(ToolbarButton, {
           className: "components-icon-button components-toolbar__control",
           label: toggleText,
           icon: toggleIcon,
           onClick: toggleMode
-        }))), /*#__PURE__*/React.createElement(InspectorControls, null, mode === 'preview' && /*#__PURE__*/React.createElement("div", {
+        }))), /*#__PURE__*/React.createElement(InspectorControls, null, mode === "preview" && /*#__PURE__*/React.createElement("div", {
           className: "acf-block-component acf-block-panel"
         }, /*#__PURE__*/React.createElement(BlockForm, this.props))), /*#__PURE__*/React.createElement(BlockBody, this.props));
       }
@@ -1024,46 +1045,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     return BlockEdit;
   }(Component);
   /**
-   * The BlockBody component.
+   * The BlockBody functional component.
    *
    * @date	19/2/19
    * @since	5.7.12
    */
 
 
-  var _BlockBody = /*#__PURE__*/function (_Component3) {
-    _inherits(_BlockBody, _Component3);
-
-    var _super3 = _createSuper(_BlockBody);
-
-    function _BlockBody() {
-      _classCallCheck(this, _BlockBody);
-
-      return _super3.apply(this, arguments);
-    }
-
-    _createClass(_BlockBody, [{
-      key: "render",
-      value: function render() {
-        var _this$props4 = this.props,
-            attributes = _this$props4.attributes,
-            isSelected = _this$props4.isSelected;
-        var mode = attributes.mode;
-        return /*#__PURE__*/React.createElement("div", {
-          className: "acf-block-component acf-block-body"
-        }, mode === 'auto' && isSelected ? /*#__PURE__*/React.createElement(BlockForm, this.props) : mode === 'auto' && !isSelected ? /*#__PURE__*/React.createElement(BlockPreview, this.props) : mode === 'preview' ? /*#__PURE__*/React.createElement(BlockPreview, this.props) : /*#__PURE__*/React.createElement(BlockForm, this.props));
-      }
-    }]);
-
-    return _BlockBody;
-  }(Component); // Append blockIndex to component props.
+  function _BlockBody(props) {
+    var wpProps = useBlockProps();
+    var attributes = props.attributes,
+        isSelected = props.isSelected;
+    var mode = attributes.mode;
+    return /*#__PURE__*/React.createElement("div", wpProps, /*#__PURE__*/React.createElement("div", {
+      className: "acf-block-component acf-block-body"
+    }, mode === "auto" && isSelected ? /*#__PURE__*/React.createElement(BlockForm, props) : mode === "auto" && !isSelected ? /*#__PURE__*/React.createElement(BlockPreview, props) : mode === "preview" ? /*#__PURE__*/React.createElement(BlockPreview, props) : /*#__PURE__*/React.createElement(BlockForm, props)));
+  } // Append blockIndex to component props.
 
 
   var BlockBody = withSelect(function (select, ownProps) {
     var clientId = ownProps.clientId; // Use optional rootClientId to allow discoverability of child blocks.
 
-    var rootClientId = select('core/block-editor').getBlockRootClientId(clientId);
-    var index = select('core/block-editor').getBlockIndex(clientId, rootClientId);
+    var rootClientId = select("core/block-editor").getBlockRootClientId(clientId);
+    var index = select("core/block-editor").getBlockIndex(clientId, rootClientId);
     return {
       index: index
     };
@@ -1078,15 +1082,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
    * @return	void
    */
 
-  var Div = /*#__PURE__*/function (_Component4) {
-    _inherits(Div, _Component4);
+  var Div = /*#__PURE__*/function (_Component3) {
+    _inherits(Div, _Component3);
 
-    var _super4 = _createSuper(Div);
+    var _super3 = _createSuper(Div);
 
     function Div() {
       _classCallCheck(this, Div);
 
-      return _super4.apply(this, arguments);
+      return _super3.apply(this, arguments);
     }
 
     _createClass(Div, [{
@@ -1104,7 +1108,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }(Component);
   /**
    * A react Component for inline scripts.
-   * 
+   *
    * This Component uses a combination of React references and jQuery to append the
    * inline <script> HTML each time the component is rendered.
    *
@@ -1116,15 +1120,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
    */
 
 
-  var Script = /*#__PURE__*/function (_Component5) {
-    _inherits(Script, _Component5);
+  var Script = /*#__PURE__*/function (_Component4) {
+    _inherits(Script, _Component4);
 
-    var _super5 = _createSuper(Script);
+    var _super4 = _createSuper(Script);
 
     function Script() {
       _classCallCheck(this, Script);
 
-      return _super5.apply(this, arguments);
+      return _super4.apply(this, arguments);
     }
 
     _createClass(Script, [{
@@ -1172,24 +1176,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
    * @return	void
    */
 
-  var DynamicHTML = /*#__PURE__*/function (_Component6) {
-    _inherits(DynamicHTML, _Component6);
+  var DynamicHTML = /*#__PURE__*/function (_Component5) {
+    _inherits(DynamicHTML, _Component5);
 
-    var _super6 = _createSuper(DynamicHTML);
+    var _super5 = _createSuper(DynamicHTML);
 
     function DynamicHTML(props) {
       var _this4;
 
       _classCallCheck(this, DynamicHTML);
 
-      _this4 = _super6.call(this, props); // Bind callbacks.
+      _this4 = _super5.call(this, props); // Bind callbacks.
 
       _this4.setRef = _this4.setRef.bind(_assertThisInitialized(_this4)); // Define default props and call setup().
 
-      _this4.id = '';
+      _this4.id = "";
       _this4.el = false;
       _this4.subscribed = true;
-      _this4.renderMethod = 'jQuery';
+      _this4.renderMethod = "jQuery";
 
       _this4.setup(props); // Load state.
 
@@ -1206,6 +1210,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }, {
       key: "fetch",
       value: function fetch() {// Do nothing.
+      }
+    }, {
+      key: "maybePreload",
+      value: function maybePreload(blockId) {
+        if (this.state.html === undefined) {
+          var preloadedBlocks = acf.get("preloadedBlocks");
+
+          if (preloadedBlocks && preloadedBlocks[blockId]) {
+            // Set HTML to the preloaded version.
+            this.setHtml(preloadedBlocks[blockId]); // Delete the preloaded HTML so we don't try to load it again.
+
+            delete preloadedBlocks[blockId];
+            acf.set("preloadedBlocks", preloadedBlocks);
+            return true;
+          }
+        }
+
+        return false;
       }
     }, {
       key: "loadState",
@@ -1225,7 +1247,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }, {
       key: "setHtml",
       value: function setHtml(html) {
-        html = html ? html.trim() : ''; // Bail early if html has not changed.
+        html = html ? html.trim() : ""; // Bail early if html has not changed.
 
         if (html === this.state.html) {
           return;
@@ -1236,7 +1258,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           html: html
         };
 
-        if (this.renderMethod === 'jsx') {
+        if (this.renderMethod === "jsx") {
           state.jsx = acf.parseJSX(html);
           state.$el = $(this.el);
         } else {
@@ -1267,19 +1289,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     }, {
       key: "shouldComponentUpdate",
-      value: function shouldComponentUpdate(nextProps, nextState) {
-        if (nextProps.index !== this.props.index) {
+      value: function shouldComponentUpdate(_ref8, _ref9) {
+        var index = _ref8.index;
+        var html = _ref9.html;
+
+        if (index !== this.props.index) {
           this.componentWillMove();
         }
 
-        return nextState.html !== this.state.html;
+        return html !== this.state.html;
       }
     }, {
       key: "display",
       value: function display(context) {
         // This method is called after setting new HTML and the Component render.
         // The jQuery render method simply needs to move $el into place.
-        if (this.renderMethod === 'jQuery') {
+        if (this.renderMethod === "jQuery") {
           var $el = this.state.$el;
           var $prevParent = $el.parent();
           var $thisParent = $(this.el); // Move $el into place.
@@ -1297,11 +1322,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
         switch (context) {
-          case 'append':
+          case "append":
             this.componentDidAppend();
             break;
 
-          case 'remount':
+          case "remount":
             this.componentDidRemount();
             break;
         }
@@ -1314,24 +1339,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           //console.log('componentDidMount', this.id);
           this.fetch(); // Or remount existing HTML.
         } else {
-          this.display('remount');
+          this.display("remount");
         }
       }
     }, {
       key: "componentDidUpdate",
       value: function componentDidUpdate(prevProps, prevState) {
         // HTML has changed.
-        this.display('append');
+        this.display("append");
       }
     }, {
       key: "componentDidAppend",
       value: function componentDidAppend() {
-        acf.doAction('append', this.state.$el);
+        acf.doAction("append", this.state.$el);
       }
     }, {
       key: "componentWillUnmount",
       value: function componentWillUnmount() {
-        acf.doAction('unmount', this.state.$el); // Unsubscribe this component from state.
+        acf.doAction("unmount", this.state.$el); // Unsubscribe this component from state.
 
         this.subscribed = false;
       }
@@ -1347,7 +1372,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         // This timout ensures that unmounting occurs before remounting.
 
         setTimeout(function () {
-          acf.doAction('remount', _this5.state.$el);
+          acf.doAction("remount", _this5.state.$el);
         });
       }
     }, {
@@ -1355,9 +1380,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       value: function componentWillMove() {
         var _this6 = this;
 
-        acf.doAction('unmount', this.state.$el);
+        acf.doAction("unmount", this.state.$el);
         setTimeout(function () {
-          acf.doAction('remount', _this6.state.$el);
+          acf.doAction("remount", _this6.state.$el);
         });
       }
     }]);
@@ -1380,18 +1405,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   var BlockForm = /*#__PURE__*/function (_DynamicHTML) {
     _inherits(BlockForm, _DynamicHTML);
 
-    var _super7 = _createSuper(BlockForm);
+    var _super6 = _createSuper(BlockForm);
 
     function BlockForm() {
       _classCallCheck(this, BlockForm);
 
-      return _super7.apply(this, arguments);
+      return _super6.apply(this, arguments);
     }
 
     _createClass(BlockForm, [{
       key: "setup",
-      value: function setup(props) {
-        this.id = "BlockForm-".concat(props.attributes.id);
+      value: function setup(_ref10) {
+        var attributes = _ref10.attributes;
+        this.id = "BlockForm-".concat(attributes.id);
       }
     }, {
       key: "fetch",
@@ -1399,15 +1425,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var _this7 = this;
 
         // Extract props.
-        var attributes = this.props.attributes; // Request AJAX and update HTML on complete.
+        var attributes = this.props.attributes; // Try preloaded data first.
+
+        var preloaded = this.maybePreload(attributes.id);
+
+        if (preloaded) {
+          return;
+        } // Request AJAX and update HTML on complete.
+
 
         fetchBlock({
           attributes: attributes,
           query: {
             form: true
           }
-        }).done(function (json) {
-          _this7.setHtml(json.data.form);
+        }).done(function (_ref11) {
+          var data = _ref11.data;
+
+          _this7.setHtml(data.form);
         });
       }
     }, {
@@ -1416,14 +1451,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _get(_getPrototypeOf(BlockForm.prototype), "componentDidAppend", this).call(this); // Extract props.
 
 
-        var _this$props5 = this.props,
-            attributes = _this$props5.attributes,
-            setAttributes = _this$props5.setAttributes;
+        var _this$props4 = this.props,
+            attributes = _this$props4.attributes,
+            setAttributes = _this$props4.setAttributes;
+        var props = this.props;
         var $el = this.state.$el; // Callback for updating block data.
 
         function serializeData() {
           var silent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-          var data = acf.serialize($el, "acf-".concat(attributes.id));
+          var data = acf.serialize($el, "acf-".concat(attributes.id)); //console.log('serializeData', props, data);
 
           if (silent) {
             attributes.data = data;
@@ -1436,7 +1472,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
         var timeout = false;
-        $el.on('change keyup', function () {
+        $el.on("change keyup", function () {
           clearTimeout(timeout);
           timeout = setTimeout(serializeData, 300);
         }); // Ensure newly added block is saved with data.
@@ -1466,22 +1502,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   var BlockPreview = /*#__PURE__*/function (_DynamicHTML2) {
     _inherits(BlockPreview, _DynamicHTML2);
 
-    var _super8 = _createSuper(BlockPreview);
+    var _super7 = _createSuper(BlockPreview);
 
     function BlockPreview() {
       _classCallCheck(this, BlockPreview);
 
-      return _super8.apply(this, arguments);
+      return _super7.apply(this, arguments);
     }
 
     _createClass(BlockPreview, [{
       key: "setup",
-      value: function setup(props) {
-        this.id = "BlockPreview-".concat(props.attributes.id);
-        var blockType = getBlockType(props.name);
+      value: function setup(_ref12) {
+        var attributes = _ref12.attributes,
+            name = _ref12.name;
+        this.id = "BlockPreview-".concat(attributes.id);
+        var blockType = getBlockType(name);
 
         if (blockType.supports.jsx) {
-          this.renderMethod = 'jsx';
+          this.renderMethod = "jsx";
         } //console.log('setup', this.id);
 
       }
@@ -1500,13 +1538,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           prevAttributes: attributes
         }); // Try preloaded data first.
 
-        if (this.state.html === undefined) {
-          var preloadedBlocks = acf.get('preloadedBlocks');
+        var preloaded = this.maybePreload(attributes.id);
 
-          if (preloadedBlocks && preloadedBlocks[attributes.id]) {
-            this.setHtml(preloadedBlocks[attributes.id]);
-            return;
-          }
+        if (preloaded) {
+          return;
         } // Request AJAX and update HTML on complete.
 
 
@@ -1516,8 +1551,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             preview: true
           },
           delay: delay
-        }).done(function (json) {
-          _this8.setHtml(json.data.preview);
+        }).done(function (_ref13) {
+          var data = _ref13.data;
+
+          _this8.setHtml(data.preview);
         });
       }
     }, {
@@ -1529,9 +1566,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var attributes = this.props.attributes;
         var $el = this.state.$el; // Generate action friendly type.
 
-        var type = attributes.name.replace('acf/', ''); // Do action.
+        var type = attributes.name.replace("acf/", ""); // Do action.
 
-        acf.doAction('render_block_preview', $el, attributes);
+        acf.doAction("render_block_preview", $el, attributes);
         acf.doAction("render_block_preview/type=".concat(type), $el, attributes);
       }
     }, {
@@ -1588,7 +1625,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     } // Register block types.
 
 
-    var blockTypes = acf.get('blockTypes');
+    var blockTypes = acf.get("blockTypes");
 
     if (blockTypes) {
       blockTypes.map(registerBlockType);
@@ -1597,7 +1634,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   // This ensures that all localized data is available and that blocks are registered before the WP editor has been instantiated.
 
 
-  acf.addAction('prepare', initialize);
+  acf.addAction("prepare", initialize);
   /**
    * Returns a valid vertical alignment.
    *
@@ -1609,8 +1646,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
    */
 
   function validateVerticalAlignment(align) {
-    var ALIGNMENTS = ['top', 'center', 'bottom'];
-    var DEFAULT = 'top';
+    var ALIGNMENTS = ["top", "center", "bottom"];
+    var DEFAULT = "top";
     return ALIGNMENTS.includes(align) ? align : DEFAULT;
   }
   /**
@@ -1625,15 +1662,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
   function validateHorizontalAlignment(align) {
-    var ALIGNMENTS = ['left', 'center', 'right'];
-    var DEFAULT = acf.get('rtl') ? 'right' : 'left';
+    var ALIGNMENTS = ["left", "center", "right"];
+    var DEFAULT = acf.get("rtl") ? "right" : "left";
     return ALIGNMENTS.includes(align) ? align : DEFAULT;
   }
   /**
    * Returns a valid matrix alignment.
    *
-   * Written for "upgrade-path" compatibility from vertical alignment to matrix alignment. 
-   * 
+   * Written for "upgrade-path" compatibility from vertical alignment to matrix alignment.
+   *
    * @date	07/08/2020
    * @since	5.9.0
    *
@@ -1643,15 +1680,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
   function validateMatrixAlignment(align) {
-    var DEFAULT = 'center center';
+    var DEFAULT = "center center";
 
     if (align) {
-      var _align$split = align.split(' '),
+      var _align$split = align.split(" "),
           _align$split2 = _slicedToArray(_align$split, 2),
           y = _align$split2[0],
           x = _align$split2[1];
 
-      return validateVerticalAlignment(y) + ' ' + validateHorizontalAlignment(x);
+      return "".concat(validateVerticalAlignment(y), " ").concat(validateHorizontalAlignment(x));
     }
 
     return DEFAULT;
@@ -1664,6 +1701,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   var BlockAlignmentMatrixToolbar = wp.blockEditor.__experimentalBlockAlignmentMatrixToolbar || wp.blockEditor.BlockAlignmentMatrixToolbar; // Gutenberg v10.x begins transition from Toolbar components to Control components.
 
   var BlockAlignmentMatrixControl = wp.blockEditor.__experimentalBlockAlignmentMatrixControl || wp.blockEditor.BlockAlignmentMatrixControl;
+  var BlockFullHeightAlignmentControl = wp.blockEditor.__experimentalBlockFullHeightAligmentControl || wp.blockEditor.__experimentalBlockFullHeightAlignmentControl || wp.blockEditor.BlockFullHeightAlignmentControl;
   /**
    * Appends extra attributes for block types that support align_content.
    *
@@ -1676,7 +1714,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
   function withAlignContentAttributes(attributes) {
     attributes.align_content = {
-      type: 'string'
+      type: "string"
     };
     return attributes;
   }
@@ -1695,10 +1733,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   function withAlignContentComponent(OriginalBlockEdit, blockType) {
     // Determine alignment vars
     var type = blockType.supports.align_content;
-    var AlignmentComponent, validateAlignment;
+    var AlignmentComponent;
+    var validateAlignment;
 
     switch (type) {
-      case 'matrix':
+      case "matrix":
         AlignmentComponent = BlockAlignmentMatrixControl || BlockAlignmentMatrixToolbar;
         validateAlignment = validateMatrixAlignment;
         break;
@@ -1718,23 +1757,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     blockType.align_content = validateAlignment(blockType.align_content); // Return wrapped component.
 
-    return /*#__PURE__*/function (_Component7) {
-      _inherits(WrappedBlockEdit, _Component7);
+    return /*#__PURE__*/function (_Component6) {
+      _inherits(WrappedBlockEdit, _Component6);
 
-      var _super9 = _createSuper(WrappedBlockEdit);
+      var _super8 = _createSuper(WrappedBlockEdit);
 
       function WrappedBlockEdit() {
         _classCallCheck(this, WrappedBlockEdit);
 
-        return _super9.apply(this, arguments);
+        return _super8.apply(this, arguments);
       }
 
       _createClass(WrappedBlockEdit, [{
         key: "render",
         value: function render() {
-          var _this$props6 = this.props,
-              attributes = _this$props6.attributes,
-              setAttributes = _this$props6.setAttributes;
+          var _this$props5 = this.props,
+              attributes = _this$props5.attributes,
+              setAttributes = _this$props5.setAttributes;
           var align_content = attributes.align_content;
 
           function onChangeAlignContent(align_content) {
@@ -1746,7 +1785,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           return /*#__PURE__*/React.createElement(Fragment, null, /*#__PURE__*/React.createElement(BlockControls, {
             group: "block"
           }, /*#__PURE__*/React.createElement(AlignmentComponent, {
-            label: acf.__('Change content alignment'),
+            label: acf.__("Change content alignment"),
             value: validateAlignment(align_content),
             onChange: onChangeAlignContent
           })), /*#__PURE__*/React.createElement(OriginalBlockEdit, this.props));
@@ -1769,7 +1808,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
   function withAlignTextAttributes(attributes) {
     attributes.align_text = {
-      type: 'string'
+      type: "string"
     };
     return attributes;
   }
@@ -1790,6 +1829,75 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     blockType.align_text = validateAlignment(blockType.align_text); // Return wrapped component.
 
+    return /*#__PURE__*/function (_Component7) {
+      _inherits(WrappedBlockEdit, _Component7);
+
+      var _super9 = _createSuper(WrappedBlockEdit);
+
+      function WrappedBlockEdit() {
+        _classCallCheck(this, WrappedBlockEdit);
+
+        return _super9.apply(this, arguments);
+      }
+
+      _createClass(WrappedBlockEdit, [{
+        key: "render",
+        value: function render() {
+          var _this$props6 = this.props,
+              attributes = _this$props6.attributes,
+              setAttributes = _this$props6.setAttributes;
+          var align_text = attributes.align_text;
+
+          function onChangeAlignText(align_text) {
+            setAttributes({
+              align_text: validateAlignment(align_text)
+            });
+          }
+
+          return /*#__PURE__*/React.createElement(Fragment, null, /*#__PURE__*/React.createElement(BlockControls, {
+            group: "block"
+          }, /*#__PURE__*/React.createElement(AlignmentToolbar, {
+            value: validateAlignment(align_text),
+            onChange: onChangeAlignText
+          })), /*#__PURE__*/React.createElement(OriginalBlockEdit, this.props));
+        }
+      }]);
+
+      return WrappedBlockEdit;
+    }(Component);
+  }
+  /**
+   * Appends extra attributes for block types that support full height.
+   *
+   * @date	08/07/2020
+   * @since	5.9.0
+   *
+   * @param	object attributes The block type attributes.
+   * @return	object
+   */
+
+
+  function withFullHeightAttributes(attributes) {
+    attributes.full_height = {
+      type: "boolean"
+    };
+    return attributes;
+  }
+  /**
+   * A higher order component adding full height support.
+   *
+   * @date	19/07/2021
+   * @since	5.10.0
+   *
+   * @param	component OriginalBlockEdit The original BlockEdit component.
+   * @param	object blockType The block type settings.
+   * @return	component
+   */
+
+
+  function withFullHeightComponent(OriginalBlockEdit, blockType) {
+    if (!BlockFullHeightAlignmentControl) return OriginalBlockEdit; // Return wrapped component.
+
     return /*#__PURE__*/function (_Component8) {
       _inherits(WrappedBlockEdit, _Component8);
 
@@ -1807,17 +1915,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           var _this$props7 = this.props,
               attributes = _this$props7.attributes,
               setAttributes = _this$props7.setAttributes;
-          var align_text = attributes.align_text;
+          var full_height = attributes.full_height;
 
-          function onChangeAlignText(align_text) {
+          function onToggleFullHeight(full_height) {
             setAttributes({
-              align_text: validateAlignment(align_text)
+              full_height: full_height
             });
           }
 
-          return /*#__PURE__*/React.createElement(Fragment, null, /*#__PURE__*/React.createElement(BlockControls, null, /*#__PURE__*/React.createElement(AlignmentToolbar, {
-            value: validateAlignment(align_text),
-            onChange: onChangeAlignText
+          return /*#__PURE__*/React.createElement(Fragment, null, /*#__PURE__*/React.createElement(BlockControls, {
+            group: "block"
+          }, /*#__PURE__*/React.createElement(BlockFullHeightAlignmentControl, {
+            isActive: full_height,
+            onToggle: onToggleFullHeight
           })), /*#__PURE__*/React.createElement(OriginalBlockEdit, this.props));
         }
       }]);

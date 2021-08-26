@@ -477,13 +477,6 @@ return [
 		'after-entry' => [
 			'menu_order' => 30,
 		],
-		'sidebar' => [
-			'hook'       => 'genesis_sidebar',
-			'menu_order' => 30,
-			'condition'  => function() {
-				return mai_has_string( 'sidebar', genesis_site_layout() );
-			},
-		],
 		'before-footer' => [
 			'hook'       => 'genesis_footer',
 			'priority'   => 5,
