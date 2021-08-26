@@ -70,7 +70,7 @@ blockquote {
 	border-left: var(--blockquote-border-left, var(--border));
 	box-shadow: var(--blockquote-box-shadow, none);
 
-	--paragraph-padding: var(--row-gap) 0;
+	--paragraph-padding: var(--spacing-md) 0;
 }
 
 cite {

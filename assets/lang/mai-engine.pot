@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Mai Engine plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.16.0\n"
+"Project-Id-Version: Mai Engine 2.16.1-beta.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-08-10T16:27:18+00:00\n"
+"POT-Creation-Date: 2021-08-26T20:32:21+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -48,7 +48,7 @@ msgstr ""
 
 #: config/twenty-seven.php:106
 #: config/lookbook.php:108
-#: lib/structure/header.php:206
+#: lib/structure/header.php:209
 msgid "Menu"
 msgstr ""
 
@@ -393,6 +393,7 @@ msgid "Height"
 msgstr ""
 
 #: lib/blocks/divider.php:232
+#: lib/blocks/columns.php:444
 #: lib/blocks/columns.php:530
 #: lib/blocks/columns.php:548
 #: lib/blocks/columns.php:566
@@ -649,6 +650,11 @@ msgstr ""
 msgid "Responsive Arrangements"
 msgstr ""
 
+#: lib/blocks/columns.php:315
+#: lib/blocks/columns.php:638
+msgid "LG"
+msgstr ""
+
 #: lib/blocks/columns.php:329
 msgid "Arrangement (desktop)"
 msgstr ""
@@ -660,8 +666,18 @@ msgstr ""
 msgid "Add Column"
 msgstr ""
 
+#: lib/blocks/columns.php:358
+#: lib/blocks/columns.php:637
+msgid "MD"
+msgstr ""
+
 #: lib/blocks/columns.php:372
 msgid "Arrangement (lg tablets)"
+msgstr ""
+
+#: lib/blocks/columns.php:401
+#: lib/blocks/columns.php:636
+msgid "SM"
 msgstr ""
 
 #: lib/blocks/columns.php:415
@@ -777,18 +793,6 @@ msgstr ""
 
 #: lib/blocks/columns.php:630
 msgid "Spacing"
-msgstr ""
-
-#: lib/blocks/columns.php:636
-msgid "SM"
-msgstr ""
-
-#: lib/blocks/columns.php:637
-msgid "MD"
-msgstr ""
-
-#: lib/blocks/columns.php:638
-msgid "LG"
 msgstr ""
 
 #: lib/blocks/columns.php:647
@@ -2035,13 +2039,13 @@ msgstr ""
 
 #: lib/support/woocommerce.php:113
 #: lib/support/facetwp.php:61
-#: lib/structure/pagination.php:218
+#: lib/structure/pagination.php:219
 msgid "← Previous"
 msgstr ""
 
 #: lib/support/woocommerce.php:114
 #: lib/support/facetwp.php:86
-#: lib/structure/pagination.php:230
+#: lib/structure/pagination.php:231
 msgid "Next →"
 msgstr ""
 
@@ -2365,7 +2369,7 @@ msgstr ""
 msgid "Skip to after header navigation"
 msgstr ""
 
-#: lib/structure/header.php:239
+#: lib/structure/header.php:242
 msgid "Header Search"
 msgstr ""
 
