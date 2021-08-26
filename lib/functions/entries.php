@@ -59,7 +59,7 @@ function mai_do_entries_open( $args ) {
 			$attributes['style'] .= sprintf( '--aspect-ratio:%s;', $aspect_ratio );
 		}
 
-		if ( 'custom' === $args['image_orientation'] ) {
+		if ( 'custom' === $args['image_orientation'] && 'background' !== $args['image_position'] ) {
 			if ( isset( $args['class'] ) && ( mai_has_string( 'alignfull', $args['class'] ) || mai_has_string( 'alignwide', $args['class'] ) ) ) {
 				$image_width = mai_get_image_width( $args['image_size'] );
 				$image_width = $image_width ? mai_get_unit_value( $image_width ) : 'unset';
