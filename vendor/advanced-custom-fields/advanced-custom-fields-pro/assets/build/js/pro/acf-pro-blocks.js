@@ -1058,7 +1058,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         isSelected = props.isSelected;
     var mode = attributes.mode;
     return /*#__PURE__*/React.createElement("div", wpProps, /*#__PURE__*/React.createElement("div", {
-      class: "acf-block-component acf-block-body"
+      className: "acf-block-component acf-block-body"
     }, mode === "auto" && isSelected ? /*#__PURE__*/React.createElement(BlockForm, props) : mode === "auto" && !isSelected ? /*#__PURE__*/React.createElement(BlockPreview, props) : mode === "preview" ? /*#__PURE__*/React.createElement(BlockPreview, props) : /*#__PURE__*/React.createElement(BlockForm, props)));
   } // Append blockIndex to component props.
 

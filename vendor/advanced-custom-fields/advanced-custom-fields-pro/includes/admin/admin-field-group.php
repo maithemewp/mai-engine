@@ -623,6 +623,11 @@ if ( ! class_exists( 'acf_admin_field_group' ) ) :
 				die();
 			}
 
+			// verify user capability
+			if ( ! acf_current_user_can_admin() ) {
+				die();
+			}
+
 			// validate rule
 			$rule = acf_validate_location_rule( $_POST['rule'] );
 
@@ -656,6 +661,11 @@ if ( ! class_exists( 'acf_admin_field_group' ) ) :
 
 			// validate
 			if ( ! acf_verify_ajax() ) {
+				die();
+			}
+
+			// verify user capability
+			if ( ! acf_current_user_can_admin() ) {
 				die();
 			}
 
@@ -711,6 +721,11 @@ if ( ! class_exists( 'acf_admin_field_group' ) ) :
 
 			// verify nonce
 			if ( ! wp_verify_nonce( $args['nonce'], 'acf_nonce' ) ) {
+				die();
+			}
+
+			// verify user capability
+			if ( ! acf_current_user_can_admin() ) {
 				die();
 			}
 

@@ -882,6 +882,10 @@ function get_row_layout() {
 */
 
 function acf_shortcode( $atts ) {
+	// Mitigate issue where some AJAX requests can return ACF field data.
+	if ( wp_doing_ajax() && ! current_user_can( 'edit_posts' ) ) {
+		return;
+	}
 
 	// extract attributs
 	extract(

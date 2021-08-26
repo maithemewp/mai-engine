@@ -6,15 +6,15 @@
     'aliases' => 
     array (
     ),
-    'reference' => '9453d07bf3309f3f0816a4703b8cd652697e3239',
+    'reference' => 'f4a4338fdfaa8b62d3878ef76c8afd8fe5b1680f',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
   array (
     'advanced-custom-fields/advanced-custom-fields-pro' => 
     array (
-      'pretty_version' => '5.10.0-RC2',
-      'version' => '5.10.0.0-RC2',
+      'pretty_version' => '5.10',
+      'version' => '5.10.0.0',
       'aliases' => 
       array (
       ),
@@ -81,7 +81,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '9453d07bf3309f3f0816a4703b8cd652697e3239',
+      'reference' => 'f4a4338fdfaa8b62d3878ef76c8afd8fe5b1680f',
     ),
     'phpoption/phpoption' => 
     array (
