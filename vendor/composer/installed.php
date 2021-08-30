@@ -6,15 +6,15 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'f4a4338fdfaa8b62d3878ef76c8afd8fe5b1680f',
+    'reference' => '547f9d08567c87b943d35fc9039c6fc00e8d3400',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
   array (
     'advanced-custom-fields/advanced-custom-fields-pro' => 
     array (
-      'pretty_version' => '5.10',
-      'version' => '5.10.0.0',
+      'pretty_version' => '5.10.1',
+      'version' => '5.10.1.0',
       'aliases' => 
       array (
       ),
@@ -67,12 +67,12 @@
     ),
     'graham-campbell/result-type' => 
     array (
-      'pretty_version' => 'v1.0.1',
-      'version' => '1.0.1.0',
+      'pretty_version' => 'v1.0.2',
+      'version' => '1.0.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => '7e279d2cd5d7fbb156ce46daada972355cea27bb',
+      'reference' => '84afea85c6841deeea872f36249a206e878a5de0',
     ),
     'maithemewp/mai-engine' => 
     array (
@@ -81,16 +81,16 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'f4a4338fdfaa8b62d3878ef76c8afd8fe5b1680f',
+      'reference' => '547f9d08567c87b943d35fc9039c6fc00e8d3400',
     ),
     'phpoption/phpoption' => 
     array (
-      'pretty_version' => '1.7.5',
-      'version' => '1.7.5.0',
+      'pretty_version' => '1.8.0',
+      'version' => '1.8.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '994ecccd8f3283ecf5ac33254543eb0ac946d525',
+      'reference' => '5455cb38aed4523f99977c4a12ef19da4bfe2a28',
     ),
     'proteusthemes/wp-content-importer-v2' => 
     array (
