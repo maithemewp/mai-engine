@@ -43,7 +43,10 @@ return [
 			'default' => [
 				'site' => 'wide-content',
 			],
-			'single'  => [
+			'single' => [
+				'post' => 'content-sidebar',
+			],
+			'archive' => [
 				'post' => 'content-sidebar',
 			],
 		],
