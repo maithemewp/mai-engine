@@ -217,7 +217,7 @@
 	@each $padding-setting in $padding_settings {
 
 		.has-#{ $padding-name }-padding-#{ $padding-setting } {
-			padding-#{ $padding-setting }: $padding-size;
+			padding-#{ $padding-setting }: var(--padding-#{ $padding-setting }-#{ $padding-name }, $padding-size);
 		}
 	}
 }
