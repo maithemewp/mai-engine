@@ -409,7 +409,8 @@ input[type="submit"],
 }
 
 .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-list-appender {
-	margin: 16px 0 0 auto;
+	flex: 1 1 100%;
+	margin: 16px 0 16px var(--column-gap);
 }
 
 /* .mai-column */

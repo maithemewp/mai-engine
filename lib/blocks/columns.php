@@ -90,6 +90,25 @@ function mai_do_columns_block( $block, $content = '', $is_preview = false, $post
 	$columns = new Mai_Columns( $instance, $args[ $instance ] );
 	$columns->render();
 
+	static $css = false;
+
+	if ( $is_preview && ! $css ) {
+		echo '<style>
+			.mai-columns > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-list-appender .block-list-appender__toggle::after {
+				position: absolute;
+				top: 50%;
+				left: calc(100% + 10px);
+				display: block;
+				width: 200px;
+				text-align: left;
+				transform: translateY(-50%);
+				content: attr(aria-label);
+			}
+		</style>';
+
+		$css = true;
+	}
+
 	$instance++;
 }
 
