@@ -413,6 +413,21 @@ input[type="submit"],
 	margin: 16px 0 16px var(--column-gap);
 }
 
+.block-list-appender__toggle[aria-label$="Mai Column"] {
+	position: relative;
+}
+
+.block-list-appender__toggle[aria-label$="Mai Column"]::after {
+	position: absolute;
+	top: 50%;
+	left: calc(100% + 10px);
+	display: block;
+	width: 200px;
+	text-align: left;
+	transform: translateY(-50%);
+	content: attr(aria-label);
+}
+
 /* .mai-column */
 .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
 	flex: var(--flex, var(--flex-xs, var(--flex-fallback)));
