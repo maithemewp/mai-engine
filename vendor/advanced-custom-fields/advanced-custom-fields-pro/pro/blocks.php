@@ -357,6 +357,10 @@ function acf_rendered_block( $attributes, $content = '', $is_preview = false, $p
 
 	$html = ob_get_clean();
 
+	if ( 'preview' === $mode && $is_preview ) {
+		$html = '<div class="acf-block-preview">' . $html . '</div>';
+	}
+
 	// Replace <InnerBlocks /> placeholder on front-end.
 	if ( ! $is_preview ) {
 		// Escape "$" character to avoid "capture group" interpretation.
@@ -365,7 +369,7 @@ function acf_rendered_block( $attributes, $content = '', $is_preview = false, $p
 	}
 
 	// Store in cache for preloading.
-	acf_get_store( 'block-cache' )->set( $attributes['id'], '<div class="acf-block-preview">' . $html . '</div>' );
+	acf_get_store( 'block-cache' )->set( $attributes['id'], $html );
 	return $html;
 }
 
@@ -638,14 +642,8 @@ function acf_ajax_fetch_block() {
 		$content    = '';
 		$is_preview = true;
 
-		// Render.
-		$html  = '';
-		$html .= '<div class="acf-block-preview">';
-		$html .= acf_rendered_block( $block, $content, $is_preview, $post_id );
-		$html .= '</div>';
-
-		// Store HTML.
-		$response['preview'] = $html;
+		// Render and store HTML.
+		$response['preview'] = acf_rendered_block( $block, $content, $is_preview, $post_id );
 	}
 
 	// Send repsonse.

@@ -417,12 +417,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   function isDuplicateBlock(_ref2) {
     var attributes = _ref2.attributes,
         clientId = _ref2.clientId;
-    return getBlocks().filter(function (_ref3) {
-      var attributes = _ref3.attributes;
-      return attributes.id === attributes.id;
-    }).filter(function (_ref4) {
-      var clientId = _ref4.clientId;
-      return clientId !== clientId;
+    return getBlocks().filter(function (block) {
+      return block.attributes.id === attributes.id;
+    }).filter(function (block) {
+      return block.clientId !== clientId;
     }).length;
   }
   /**
@@ -464,8 +462,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     } // Check category exists and fallback to "common".
 
 
-    var category = wp.blocks.getCategories().filter(function (_ref5) {
-      var slug = _ref5.slug;
+    var category = wp.blocks.getCategories().filter(function (_ref3) {
+      var slug = _ref3.slug;
       return slug === blockType.category;
     }).pop();
 
@@ -491,9 +489,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         type: "string"
       },
       mode: {
-        type: "string"
-      },
-      style: {
         type: "string"
       },
       wpClassName: {
@@ -540,7 +535,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
          */
 
         if (wpProps.className) wpProps.attributes.wpClassName = wpProps.className;
-        if (wpProps.style) wpProps.attributes.style = wpProps.style;
         return /*#__PURE__*/React.createElement(ThisBlockSave, wpProps);
       }
     }); // Add to storage.
@@ -615,8 +609,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
     var _loop = function _loop(k) {
-      blocks = blocks.filter(function (_ref6) {
-        var attributes = _ref6.attributes;
+      blocks = blocks.filter(function (_ref4) {
+        var attributes = _ref4.attributes;
         return attributes[k] === args[k];
       });
     };
@@ -735,9 +729,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
     var nodeAttrs = {};
-    acf.arrayArgs(node.attributes).map(parseNodeAttr).forEach(function (_ref7) {
-      var name = _ref7.name,
-          value = _ref7.value;
+    acf.arrayArgs(node.attributes).map(parseNodeAttr).forEach(function (_ref5) {
+      var name = _ref5.name,
+          value = _ref5.value;
       nodeAttrs[name] = value;
     }); // Define args for React.createElement().
 
@@ -1289,9 +1283,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     }, {
       key: "shouldComponentUpdate",
-      value: function shouldComponentUpdate(_ref8, _ref9) {
-        var index = _ref8.index;
-        var html = _ref9.html;
+      value: function shouldComponentUpdate(_ref6, _ref7) {
+        var index = _ref6.index;
+        var html = _ref7.html;
 
         if (index !== this.props.index) {
           this.componentWillMove();
@@ -1415,8 +1409,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     _createClass(BlockForm, [{
       key: "setup",
-      value: function setup(_ref10) {
-        var attributes = _ref10.attributes;
+      value: function setup(_ref8) {
+        var attributes = _ref8.attributes;
         this.id = "BlockForm-".concat(attributes.id);
       }
     }, {
@@ -1439,8 +1433,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           query: {
             form: true
           }
-        }).done(function (_ref11) {
-          var data = _ref11.data;
+        }).done(function (_ref9) {
+          var data = _ref9.data;
 
           _this7.setHtml(data.form);
         });
@@ -1512,9 +1506,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     _createClass(BlockPreview, [{
       key: "setup",
-      value: function setup(_ref12) {
-        var attributes = _ref12.attributes,
-            name = _ref12.name;
+      value: function setup(_ref10) {
+        var attributes = _ref10.attributes,
+            name = _ref10.name;
         this.id = "BlockPreview-".concat(attributes.id);
         var blockType = getBlockType(name);
 
@@ -1551,8 +1545,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             preview: true
           },
           delay: delay
-        }).done(function (_ref13) {
-          var data = _ref13.data;
+        }).done(function (_ref11) {
+          var data = _ref11.data;
 
           _this8.setHtml(data.preview);
         });
