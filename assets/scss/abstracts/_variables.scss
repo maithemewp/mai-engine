@@ -14,6 +14,29 @@ $breakpoints: (
 	xs: ($breakpoint / 3) * 1px,
 ) !default;
 
+$colors: (
+	black : var(--color-black),
+	white : var(--color-white),
+	background : var(--color-background),
+	alt : var(--color-alt),
+	header : var(--color-header),
+	body : var(--color-body),
+	heading : var(--color-heading),
+	link : var(--color-link),
+	primary : var(--color-primary),
+	secondary : var(--color-secondary),
+	custom-1: var(--color-custom-1),
+	custom-2: var(--color-custom-2),
+	custom-3: var(--color-custom-3),
+	custom-4: var(--color-custom-4),
+	custom-5: var(--color-custom-5),
+	custom-6: var(--color-custom-6),
+	custom-7: var(--color-custom-7),
+	custom-8: var(--color-custom-8),
+	custom-9: var(--color-custom-9),
+	custom-10: var(--color-custom-10),
+) !default;
+
 $headings: (
 	h1: var(--font-size-xxxxl),
 	h2: var(--font-size-xxl),

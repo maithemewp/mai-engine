@@ -46,6 +46,7 @@ function mai_register_icon_block() {
  * Callback function to render the Icon block.
  *
  * @since 0.1.0
+ *
  * @param array  $block      The block settings and attributes.
  * @param string $content    The block inner HTML (empty).
  * @param bool   $is_preview True during AJAX preview.
@@ -61,6 +62,10 @@ function mai_do_icon_block( $block, $content = '', $is_preview = false, $post_id
 		$args[ $setting ] = get_field( $setting );
 	}
 
+	if ( 'custom' === $args['color_icon'] ) {
+		$args['color_icon'] = get_field( 'color_icon_custom' );
+	}
+
 	$args['class'] = isset( $block['className'] ) && ! empty( $block['className'] ) ? sanitize_html_class( $block['className'] ) : '';
 
 	// Swap for brand.
@@ -70,6 +75,37 @@ function mai_do_icon_block( $block, $content = '', $is_preview = false, $post_id
 	}
 
 	echo mai_get_icon( $args );
+}
+
+add_filter( 'acf/prepare_field/key=mai_icon_color', 'mai_prepare_legacy_icon_color_field' );
+/**
+ * Changes value to 'custom' if existing value is a hex value.
+ * This is for existing instances of the block prior to TDB.
+ *
+ * @since TBD
+ *
+ * @return array
+ */
+function mai_prepare_legacy_icon_color_field( $field ) {
+	if ( ! $field['value'] ) {
+		return $field;
+	}
+
+	if ( ! mai_has_string( '#', $field['value'] ) ) {
+		return $field;
+	}
+
+	// TODO: IS THIS IS BREAKING WHEN color-custom-1?
+
+	$original       = $field['value'];
+	$field['value'] = 'custom';
+
+	add_filter( 'acf/prepare_field/key=mai_icon_color_custom', function( $field ) use ( $original ) {
+		$field['value'] = $original;
+		return $field;
+	});
+
+	return $field;
 }
 
 add_filter( 'acf/load_field/key=mai_icon_choices', 'mai_load_icon_choices' );
@@ -85,7 +121,6 @@ add_filter( 'acf/load_field/key=mai_icon_brand_choices', 'mai_load_icon_brand_ch
  * @return array
  */
 function mai_load_icon_choices( $field ) {
-
 	// Bail if editing the field group.
 	if ( 'acf-field-group' === get_post_type() ) {
 		return $field;
@@ -106,7 +141,6 @@ function mai_load_icon_choices( $field ) {
  * @return mixed
  */
 function mai_load_icon_brand_choices( $field ) {
-
 	// Bail if editing the field group.
 	if ( 'acf-field-group' === get_post_type() ) {
 		return $field;
@@ -164,7 +198,11 @@ function mai_register_icon_field_group() {
 		return;
 	}
 
-	$defaults = mai_get_icon_default_args();
+	$defaults      = mai_get_icon_default_args();
+	$color_choices = mai_get_editor_color_palette();
+	$color_choices = wp_list_pluck( $color_choices, 'name', 'slug' );
+	$color_choices = array_merge( $color_choices, [ 'custom' => __( 'Custom color', 'mai-engine' ) ] );
+	$color_choices = array_merge( [ '' => __( 'Clear', 'mai-engine' ) ], $color_choices );
 
 	acf_add_local_field_group(
 		[
@@ -314,14 +352,30 @@ function mai_register_icon_field_group() {
 					'type'  => 'tab',
 				],
 				[
-					'key'   => 'mai_icon_color',
-					'label' => esc_html__( 'Icon Color', 'mai-engine' ),
-					'name'  => 'color_icon',
-					'type'  => 'color_picker',
+					'key'        => 'mai_icon_color',
+					'label'      => esc_html__( 'Icon Color', 'mai-engine' ),
+					'name'       => 'color_icon',
+					'type'       => 'radio',
+					'choices'    => $color_choices,
+					'wrapper'    => [
+						'class' => 'mai-block-colors',
+					],
+				],
+				[
+					'key'               => 'mai_icon_color_custom',
+					'name'              => 'color_icon_custom',
+					'type'              => 'color_picker',
+					'conditional_logic' => [
+						[
+							'field'    => 'mai_icon_color',
+							'operator' => '==',
+							'value'    => 'custom',
+						],
+					],
 				],
 				[
 					'key'   => 'mai_icon_background',
-					'label' => esc_html__( 'Background', 'mai-engine' ),
+					'label' => esc_html__( 'Background Color', 'mai-engine' ),
 					'name'  => 'color_background',
 					'type'  => 'color_picker',
 				],
@@ -499,10 +553,10 @@ function mai_register_icon_field_group() {
 				[
 					'key'           => 'mai_icon_round_corners',
 					'label'         => esc_html__( 'Round Corners', 'mai-engine' ),
-					'instructions'  => esc_html__( 'Accepts any unit value (%, px, etc.) and shorthand (0 16 0 16). Use 0px for square.', 'mai-theme' ),
+					'instructions'  => esc_html__( 'Accepts any unit value (%, px, etc.) and shorthand (0 16 0 16). Use 0px for square. Leave empty for theme default.', 'mai-theme' ),
 					'name'          => 'border_radius',
 					'type'          => 'text',
-					'default_value' => '50%',
+					'default_value' => '',
 					'placeholder'   => esc_html__( '50%', 'mai-engine' ),
 				],
 			],
