@@ -11,6 +11,7 @@
 		height: 100%;
 		max-height: var(--icon-size);
 		color: var(--icon-color);
+		filter: drop-shadow(var(--icon-text-shadow, unset));
 		fill: currentColor;
 	}
 }
@@ -26,17 +27,8 @@
 	border: var(--icon-border, unset);
 	border-radius: var(--icon-border-radius, unset);
 	box-shadow: var(--icon-box-shadow, unset);
-	filter: drop-shadow(var(--icon-text-shadow, unset));
 }
 
 :root {
-	--icon-size: 2em;
-}
-
-.menu {
-	--icon-size: 2em;
-}
-
-.entry-content {
-	--icon-size: 4em;
+	--icon-size: 2rem;
 }
