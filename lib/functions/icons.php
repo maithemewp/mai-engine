@@ -69,7 +69,7 @@ function mai_get_icon( $args ) {
 	}
 
 	if ( $args['color_icon'] ) {
-		$atts['style'] .= sprintf( '--icon-color:%s;', $args['color_icon'] );
+		$atts['style'] .= sprintf( '--icon-color:%s;', mai_get_color_css( $args['color_icon'] ) );
 	}
 
 	if ( $args['color_background'] ) {
