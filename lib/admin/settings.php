@@ -37,8 +37,8 @@ function mai_admin_menu_pages() {
 	// Changes first menu name. Otherwise above has Mai Theme as the first child too.
 	add_submenu_page(
 		'mai-theme',
-		esc_html__( 'Mai Design Pack', 'mai-engine' ),
-		esc_html__( 'Mai Design Pack', 'mai-engine' ),
+		esc_html__( 'About', 'mai-engine' ),
+		esc_html__( 'About', 'mai-engine' ),
 		'edit_posts',
 		'mai-theme',
 		'',
@@ -98,7 +98,7 @@ function mai_render_admin_menu_page() {
 		}
 	}
 	</style>';
-	echo '<iframe style="display:block;width:calc(100% + var(--mai-admin-content-left));height:100%;position:absolute;top:0;left:calc(var(--mai-admin-content-left) * -1);z-index: 9999;" width="400" height="800" frameborder="0" scrolling="yes" seamless="seamless" src="https://bizbudding.com/mai-engine-admin/"></iframe>';
+	echo '<iframe style="display:block;width:calc(100% + var(--mai-admin-content-left));height:calc(100vh - var(--mai-admin-toolbar));position:absolute;top:0;left:calc(var(--mai-admin-content-left) * -1);z-index: 9999;" width="400" height="800" frameborder="0" scrolling="yes" seamless="seamless" src="https://bizbudding.com/mai-engine-admin/"></iframe>';
 }
 
 /**
