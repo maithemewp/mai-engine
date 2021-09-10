@@ -98,6 +98,10 @@
 			line-height: 22px;
 			text-decoration: underline;
 
+			label {
+				display: block;
+			}
+
 			input {
 				display: none;
 			}
@@ -195,7 +199,7 @@
 		}
 	}
 
-	+ .acf-field-color-picker {
+	+ .acf-field-color-picker:not(:last-child) {
 		padding-bottom: 16px !important;
 		border-bottom: 1px solid #eee !important;
 	}

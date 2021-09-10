@@ -269,8 +269,24 @@ function mai_register_divider_field_groups() {
 					'key'           => 'mai_divider_color',
 					'label'         => esc_html__( 'Color', 'mai-engine' ),
 					'name'          => 'color',
-					'type'          => 'color_picker',
-					'default_value' => '#ffffff',
+					'type'          => 'radio',
+					'choices'       => mai_get_radio_color_choices(),
+					'default_value' => 'alt',
+					'wrapper'       => [
+						'class' => 'mai-block-colors',
+					],
+				],
+				[
+					'key'               => 'mai_divider_color_custom',
+					'name'              => 'color_custom',
+					'type'              => 'color_picker',
+					'conditional_logic' => [
+						[
+							'field'    => 'mai_divider_color',
+							'operator' => '==',
+							'value'    => 'custom',
+						],
+					],
 				],
 			],
 			'location'    => [

@@ -81,54 +81,6 @@ function mai_do_icon_block( $block, $content = '', $is_preview = false, $post_id
 	echo mai_get_icon( $args );
 }
 
-add_filter( 'acf/prepare_field/key=mai_icon_color', 'mai_prepare_legacy_color_field' );
-add_filter( 'acf/prepare_field/key=mai_icon_background', 'mai_prepare_legacy_color_field' );
-/**
- * Changes value to 'custom' if existing value is a hex value.
- * This is for existing instances of the block prior to TDB.
- *
- * @since TBD
- *
- * @return array
- */
-function mai_prepare_legacy_color_field( $field ) {
-	if ( ! $field['value'] ) {
-		return $field;
-	}
-
-	if ( ! mai_has_string( '#', $field['value'] ) ) {
-		return $field;
-	}
-
-	$key            = $field['key'];
-	$original       = $field['value'];
-	$field['value'] = 'custom';
-
-	add_filter( "acf/prepare_field/key={$key}_custom", function( $field ) use ( $original ) {
-		$field['value'] = $original;
-		return $field;
-	});
-
-	return $field;
-}
-
-add_filter( 'acf/format_value/key=mai_icon_color', 'mai_format_acf_color_value', 10, 3 );
-add_filter( 'acf/format_value/key=mai_icon_background', 'mai_format_acf_color_value', 10, 3 );
-/**
- * Returns custom color value if set to do so.
- *
- * @since TBD
- *
- * @return string
- */
-function mai_format_acf_color_value( $value, $post_id, $field ) {
-	if ( $value && 'custom' === $value ) {
-		$value = get_field( sprintf( '%s_custom', $field['name'] ) );
-	}
-
-	return $value;
-}
-
 add_filter( 'acf/load_field/key=mai_icon_choices', 'mai_load_icon_choices' );
 add_filter( 'acf/load_field/key=mai_icon_brand_choices', 'mai_load_icon_brand_choices' );
 /**
@@ -220,10 +172,7 @@ function mai_register_icon_field_group() {
 	}
 
 	$defaults      = mai_get_icon_default_args();
-	$color_choices = mai_get_editor_color_palette();
-	$color_choices = wp_list_pluck( $color_choices, 'name', 'slug' );
-	$color_choices = array_merge( $color_choices, [ 'custom' => __( 'Custom color', 'mai-engine' ) ] );
-	$color_choices = array_merge( [ '' => __( 'Clear', 'mai-engine' ) ], $color_choices );
+	$color_choices = mai_get_radio_color_choices();
 
 	acf_add_local_field_group(
 		[

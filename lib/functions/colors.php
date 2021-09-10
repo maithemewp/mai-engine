@@ -319,6 +319,28 @@ function mai_get_color_choices() {
 }
 
 /**
+ * Get color choices for ACF radio field.
+ *
+ * @since TBD
+ *
+ * @return array
+ */
+function mai_get_radio_color_choices() {
+	static $choices = null;
+
+	if ( ! is_null( $choices ) ) {
+		return $choices;
+	}
+
+	$choices = mai_get_editor_color_palette();
+	$choices = wp_list_pluck( $choices, 'name', 'slug' );
+	$choices = array_merge( $choices, [ 'custom' => __( 'Custom color', 'mai-engine' ) ] );
+	$choices = array_merge( [ '' => __( 'Clear', 'mai-engine' ) ], $choices );
+
+	return $choices;
+}
+
+/**
  * Check if a color is light.
  *
  * This helps with accessibility decisions to determine

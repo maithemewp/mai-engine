@@ -642,10 +642,26 @@ function mai_register_columns_field_groups() {
 				],
 			],
 			[
-				'key'       => 'mai_column_background',
-				'label'     => __( 'Background Color', 'mai-engine' ),
-				'name'      => 'background',
-				'type'      => 'color_picker',
+				'key'     => 'mai_column_background',
+				'label'   => __( 'Background Color', 'mai-engine' ),
+				'name'    => 'background',
+				'type'    => 'radio',
+				'choices' => mai_get_radio_color_choices(),
+				'wrapper' => [
+					'class' => 'mai-block-colors',
+				],
+			],
+			[
+				'key'               => 'mai_column_background_custom',
+				'name'              => 'background_custom',
+				'type'              => 'color_picker',
+				'conditional_logic' => [
+					[
+						'field'    => 'mai_column_background',
+						'operator' => '==',
+						'value'    => 'custom',
+					],
+				],
 			],
 			[
 				'key'               => 'mai_columns_first_xs',

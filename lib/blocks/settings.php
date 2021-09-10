@@ -12,6 +12,58 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
+add_filter( 'acf/prepare_field/key=mai_column_background', 'mai_prepare_legacy_color_field' );
+add_filter( 'acf/prepare_field/key=mai_divider_color', 'mai_prepare_legacy_color_field' );
+add_filter( 'acf/prepare_field/key=mai_icon_color', 'mai_prepare_legacy_color_field' );
+add_filter( 'acf/prepare_field/key=mai_icon_background', 'mai_prepare_legacy_color_field' );
+/**
+ * Changes value to 'custom' if existing value is a hex value.
+ * This is for existing instances of the block prior to TDB.
+ *
+ * @since TBD
+ *
+ * @return array
+ */
+function mai_prepare_legacy_color_field( $field ) {
+	if ( ! $field['value'] ) {
+		return $field;
+	}
+
+	if ( ! mai_has_string( '#', $field['value'] ) ) {
+		return $field;
+	}
+
+	$key            = $field['key'];
+	$original       = $field['value'];
+	$field['value'] = 'custom';
+
+	add_filter( "acf/prepare_field/key={$key}_custom", function( $field ) use ( $original ) {
+		$field['value'] = $original;
+		return $field;
+	});
+
+	return $field;
+}
+
+add_filter( 'acf/format_value/key=mai_column_background', 'mai_format_acf_color_value', 10, 3 );
+add_filter( 'acf/format_value/key=mai_divider_color', 'mai_format_acf_color_value', 10, 3 );
+add_filter( 'acf/format_value/key=mai_icon_color', 'mai_format_acf_color_value', 10, 3 );
+add_filter( 'acf/format_value/key=mai_icon_background', 'mai_format_acf_color_value', 10, 3 );
+/**
+ * Returns custom color value if set to do so.
+ *
+ * @since TBD
+ *
+ * @return string
+ */
+function mai_format_acf_color_value( $value, $post_id, $field ) {
+	if ( $value && 'custom' === $value ) {
+		$value = get_field( sprintf( '%s_custom', $field['name'] ) );
+	}
+
+	return $value;
+}
+
 add_filter( 'render_block', 'mai_do_cover_group_block_settings', 10, 2 );
 /**
  * Dynamically adds classes based on our custom attributes.
