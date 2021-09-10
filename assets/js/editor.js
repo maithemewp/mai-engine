@@ -120,19 +120,17 @@ wp.domReady( () => {
 	}
 
 	/**
-	 *  Initialize the field.
-	 *
-	 *  This function will initialize the $field.
+	 * Initialize the sortable field field.
 	 */
-	function initialize_sortable_field( $field ) {
+	function initialize_sortable_field( field ) {
 
 		// Bail if not a sortable field.
-		if ( ! $field.hasClass( 'mai-sortable' ) ) {
+		if ( ! field.$el.hasClass( 'mai-sortable' ) ) {
 			return;
 		}
 
 		// Add sortable
-		$field.find( '.acf-checkbox-list' ).sortable( {
+		field.$el.find( '.acf-checkbox-list' ).sortable( {
 			items: '> li',
 			handle: '> .mai-acf-sortable-handle',
 			// forceHelperSize: true,
@@ -147,22 +145,37 @@ wp.domReady( () => {
 				$( this ).find( 'input[type="checkbox"]' ).trigger( 'change' );
 			}
 		} );
+	}
 
+	/**
+	 * Adds spans to label text.
+	 */
+	function initialize_color_field( field ) {
+		var $labels = field.$el.find( '.acf-radio-list label' );
+
+		if ( $labels.length ) {
+			$.each( $labels, function( index, value ) {
+				$(this)
+				.contents()
+				.filter((i, node) => node.nodeType === Node.TEXT_NODE && '' !== node.textContent.trim())
+				.wrap( '<span />' );
+			});
+		}
 	}
 
 	if ( typeof acf.add_action !== 'undefined' ) {
 
-		/*
-		*  ready & append (ACF5)
-		*
-		*  These two events are called when a field element is ready for initizliation.
-		*  - ready: on page load similar to $(document).ready()
-		*  - append: on new DOM elements appended via repeater field or other AJAX calls
-		*/
-
-		acf.add_action( 'ready_field/key=mai_grid_block_show', initialize_sortable_field );
-		acf.add_action( 'append_field/key=mai_grid_block_show', initialize_sortable_field );
-
+		/**
+		 * ready & append (ACF5)
+		 *
+		 * These events are called when a field element is ready for initialization.
+		 * - ready: on page load similar to $(document).ready()
+		 * - append: on new DOM elements appended via repeater field or other AJAX calls
+		 */
+		acf.addAction( 'ready_field/key=mai_grid_block_show', initialize_sortable_field );
+		acf.addAction( 'append_field/key=mai_grid_block_show', initialize_sortable_field );
+		acf.addAction( 'ready_field/key=mai_column_background', initialize_color_field );
+		acf.addAction( 'append_field/key=mai_column_background', initialize_color_field );
 	}
 
 } )( jQuery );
