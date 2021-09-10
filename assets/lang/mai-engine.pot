@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-09-10T02:39:09+00:00\n"
+"POT-Creation-Date: 2021-09-10T18:52:47+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -184,7 +184,7 @@ msgid "Left"
 msgstr ""
 
 #: lib/blocks/icon.php:262
-#: lib/blocks/columns.php:499
+#: lib/blocks/columns.php:537
 #: lib/blocks/grid.php:854
 #: lib/blocks/grid.php:1181
 #: lib/blocks/grid.php:1561
@@ -250,7 +250,7 @@ msgid "Icon Color"
 msgstr ""
 
 #: lib/blocks/icon.php:348
-#: lib/blocks/columns.php:646
+#: lib/blocks/columns.php:685
 msgid "Background Color"
 msgstr ""
 
@@ -300,8 +300,8 @@ msgid "Margin"
 msgstr ""
 
 #: lib/blocks/icon.php:509
-#: lib/blocks/columns.php:514
-#: lib/blocks/columns.php:618
+#: lib/blocks/columns.php:553
+#: lib/blocks/columns.php:657
 #: lib/blocks/grid.php:1201
 #: lib/blocks/grid.php:1588
 #: lib/customize/content-archives.php:384
@@ -317,8 +317,8 @@ msgid "Top"
 msgstr ""
 
 #: lib/blocks/icon.php:517
-#: lib/blocks/columns.php:516
-#: lib/blocks/columns.php:620
+#: lib/blocks/columns.php:555
+#: lib/blocks/columns.php:659
 #: lib/blocks/grid.php:1203
 #: lib/blocks/grid.php:1590
 #: lib/customize/content-archives.php:386
@@ -393,12 +393,12 @@ msgid "Height"
 msgstr ""
 
 #: lib/blocks/divider.php:232
-#: lib/blocks/columns.php:443
-#: lib/blocks/columns.php:529
-#: lib/blocks/columns.php:547
-#: lib/blocks/columns.php:565
-#: lib/blocks/columns.php:584
-#: lib/blocks/columns.php:634
+#: lib/blocks/columns.php:480
+#: lib/blocks/columns.php:568
+#: lib/blocks/columns.php:586
+#: lib/blocks/columns.php:604
+#: lib/blocks/columns.php:623
+#: lib/blocks/columns.php:673
 #: lib/blocks/grid.php:787
 #: lib/blocks/grid.php:1616
 #: lib/blocks/grid.php:1639
@@ -421,10 +421,10 @@ msgid "XS"
 msgstr ""
 
 #: lib/blocks/divider.php:233
-#: lib/blocks/columns.php:530
-#: lib/blocks/columns.php:548
-#: lib/blocks/columns.php:566
-#: lib/blocks/columns.php:585
+#: lib/blocks/columns.php:569
+#: lib/blocks/columns.php:587
+#: lib/blocks/columns.php:605
+#: lib/blocks/columns.php:624
 #: lib/blocks/grid.php:788
 #: lib/blocks/grid.php:1617
 #: lib/blocks/grid.php:1640
@@ -447,10 +447,10 @@ msgid "S"
 msgstr ""
 
 #: lib/blocks/divider.php:234
-#: lib/blocks/columns.php:531
-#: lib/blocks/columns.php:549
-#: lib/blocks/columns.php:567
-#: lib/blocks/columns.php:586
+#: lib/blocks/columns.php:570
+#: lib/blocks/columns.php:588
+#: lib/blocks/columns.php:606
+#: lib/blocks/columns.php:625
 #: lib/blocks/grid.php:789
 #: lib/blocks/grid.php:1618
 #: lib/blocks/grid.php:1641
@@ -473,10 +473,10 @@ msgid "M"
 msgstr ""
 
 #: lib/blocks/divider.php:235
-#: lib/blocks/columns.php:532
-#: lib/blocks/columns.php:550
-#: lib/blocks/columns.php:568
-#: lib/blocks/columns.php:587
+#: lib/blocks/columns.php:571
+#: lib/blocks/columns.php:589
+#: lib/blocks/columns.php:607
+#: lib/blocks/columns.php:626
 #: lib/blocks/grid.php:790
 #: lib/blocks/grid.php:1619
 #: lib/blocks/grid.php:1642
@@ -499,11 +499,11 @@ msgid "L"
 msgstr ""
 
 #: lib/blocks/divider.php:236
-#: lib/blocks/columns.php:533
-#: lib/blocks/columns.php:551
-#: lib/blocks/columns.php:569
-#: lib/blocks/columns.php:588
-#: lib/blocks/columns.php:638
+#: lib/blocks/columns.php:572
+#: lib/blocks/columns.php:590
+#: lib/blocks/columns.php:608
+#: lib/blocks/columns.php:627
+#: lib/blocks/columns.php:677
 #: lib/blocks/grid.php:791
 #: lib/blocks/grid.php:1620
 #: lib/blocks/grid.php:1643
@@ -538,7 +538,7 @@ msgid "Color"
 msgstr ""
 
 #: lib/blocks/columns.php:31
-#: lib/blocks/columns.php:279
+#: lib/blocks/columns.php:313
 msgid "Mai Columns"
 msgstr ""
 
@@ -547,7 +547,7 @@ msgid "A custom columns block."
 msgstr ""
 
 #: lib/blocks/columns.php:48
-#: lib/blocks/columns.php:610
+#: lib/blocks/columns.php:649
 msgid "Mai Column"
 msgstr ""
 
@@ -555,146 +555,191 @@ msgstr ""
 msgid "A custom column block."
 msgstr ""
 
-#: lib/blocks/columns.php:255
-msgid "1/12"
-msgstr ""
-
-#: lib/blocks/columns.php:256
-msgid "1/8"
-msgstr ""
-
-#: lib/blocks/columns.php:257
-msgid "1/6"
-msgstr ""
-
-#: lib/blocks/columns.php:258
-msgid "1/5"
-msgstr ""
-
-#: lib/blocks/columns.php:259
-msgid "1/4"
-msgstr ""
-
-#: lib/blocks/columns.php:260
-msgid "1/3"
-msgstr ""
-
-#: lib/blocks/columns.php:261
-msgid "3/8"
-msgstr ""
-
-#: lib/blocks/columns.php:262
-msgid "2/5"
-msgstr ""
-
-#: lib/blocks/columns.php:263
-msgid "1/2"
-msgstr ""
-
-#: lib/blocks/columns.php:264
-msgid "3/5"
-msgstr ""
-
-#: lib/blocks/columns.php:265
-msgid "5/8"
-msgstr ""
-
-#: lib/blocks/columns.php:266
-msgid "2/3"
-msgstr ""
-
 #: lib/blocks/columns.php:267
-msgid "3/4"
+msgid "More"
 msgstr ""
 
 #: lib/blocks/columns.php:268
-msgid "4/5"
+msgid "Less"
 msgstr ""
 
 #: lib/blocks/columns.php:269
+msgid "options"
+msgstr ""
+
+#: lib/blocks/columns.php:287
+msgid "1/4"
+msgstr ""
+
+#: lib/blocks/columns.php:288
+msgid "1/3"
+msgstr ""
+
+#: lib/blocks/columns.php:289
+msgid "1/2"
+msgstr ""
+
+#: lib/blocks/columns.php:290
+msgid "2/3"
+msgstr ""
+
+#: lib/blocks/columns.php:291
+msgid "3/4"
+msgstr ""
+
+#: lib/blocks/columns.php:292
+msgid "1/12"
+msgstr ""
+
+#: lib/blocks/columns.php:293
+msgid "1/8"
+msgstr ""
+
+#: lib/blocks/columns.php:294
+msgid "1/6"
+msgstr ""
+
+#: lib/blocks/columns.php:295
+msgid "1/5"
+msgstr ""
+
+#: lib/blocks/columns.php:296
+msgid "3/8"
+msgstr ""
+
+#: lib/blocks/columns.php:297
+msgid "2/5"
+msgstr ""
+
+#: lib/blocks/columns.php:298
+msgid "3/5"
+msgstr ""
+
+#: lib/blocks/columns.php:299
+msgid "5/8"
+msgstr ""
+
+#: lib/blocks/columns.php:300
+msgid "4/5"
+msgstr ""
+
+#: lib/blocks/columns.php:301
 msgid "5/6"
 msgstr ""
 
-#: lib/blocks/columns.php:270
+#: lib/blocks/columns.php:302
 msgid "7/8"
 msgstr ""
 
-#: lib/blocks/columns.php:271
+#: lib/blocks/columns.php:303
 msgid "11/12"
 msgstr ""
 
-#: lib/blocks/columns.php:272
-msgid "Full Width"
+#: lib/blocks/columns.php:304
+msgid "Fit"
 msgstr ""
 
-#: lib/blocks/columns.php:273
-msgid "Fill Space"
+#: lib/blocks/columns.php:304
+#: lib/classes/class-mai-setup-wizard-fields.php:241
+#: lib/classes/class-mai-setup-wizard-steps.php:202
+#: lib/functions/grid.php:89
+#: lib/functions/loop.php:510
+#: lib/functions/loop.php:543
+msgid "Content"
 msgstr ""
 
-#: lib/blocks/columns.php:274
-#: lib/blocks/columns.php:293
+#: lib/blocks/columns.php:305
+msgid "Fill"
+msgstr ""
+
+#: lib/blocks/columns.php:305
+#: lib/blocks/columns.php:539
+msgid "Space"
+msgstr ""
+
+#: lib/blocks/columns.php:306
+#: lib/blocks/columns.php:552
+#: lib/blocks/grid.php:853
+#: lib/blocks/grid.php:1587
+#: lib/customize/content-archives.php:122
+#: lib/customize/content-archives.php:644
+#: assets/js/blocks/layout-settings.js:162
+#: assets/js/min/blocks.js:800
+msgid "Full"
+msgstr ""
+
+#: lib/blocks/columns.php:306
+#: assets/js/blocks/layout-settings.js:488
+#: assets/js/min/blocks.js:1126
+msgid "Width"
+msgstr ""
+
+#: lib/blocks/columns.php:309
+msgid "Custom arrangements will repeat in the sequence you set here. Only set one value if you want all columns to be the same."
+msgstr ""
+
+#: lib/blocks/columns.php:317
+msgid "Columns"
+msgstr ""
+
+#: lib/blocks/columns.php:327
 #: lib/functions/grid.php:268
 msgid "Auto"
 msgstr ""
 
-#: lib/blocks/columns.php:283
-msgid "Columns"
+#: lib/blocks/columns.php:328
+msgid "Custom arrangement"
 msgstr ""
 
-#: lib/blocks/columns.php:294
-#: lib/functions/images.php:223
-msgid "Custom"
-msgstr ""
-
-#: lib/blocks/columns.php:300
+#: lib/blocks/columns.php:334
 msgid "Responsive Arrangements"
 msgstr ""
 
-#: lib/blocks/columns.php:314
-#: lib/blocks/columns.php:637
+#: lib/blocks/columns.php:348
+#: lib/blocks/columns.php:676
 msgid "LG"
 msgstr ""
 
-#: lib/blocks/columns.php:328
+#: lib/blocks/columns.php:362
 msgid "Arrangement (desktop)"
 msgstr ""
 
-#: lib/blocks/columns.php:343
-#: lib/blocks/columns.php:386
-#: lib/blocks/columns.php:429
-#: lib/blocks/columns.php:472
+#: lib/blocks/columns.php:378
+#: lib/blocks/columns.php:422
+#: lib/blocks/columns.php:466
+#: lib/blocks/columns.php:510
 msgid "Add Column"
 msgstr ""
 
-#: lib/blocks/columns.php:357
-#: lib/blocks/columns.php:636
+#: lib/blocks/columns.php:392
+#: lib/blocks/columns.php:675
 msgid "MD"
 msgstr ""
 
-#: lib/blocks/columns.php:371
+#: lib/blocks/columns.php:406
 msgid "Arrangement (lg tablets)"
 msgstr ""
 
-#: lib/blocks/columns.php:400
-#: lib/blocks/columns.php:635
+#: lib/blocks/columns.php:436
+#: lib/blocks/columns.php:674
 msgid "SM"
 msgstr ""
 
-#: lib/blocks/columns.php:414
+#: lib/blocks/columns.php:450
 msgid "Arrangement (sm tablets)"
 msgstr ""
 
-#: lib/blocks/columns.php:457
+#: lib/blocks/columns.php:494
 msgid "Arrangement (mobile)"
 msgstr ""
 
-#: lib/blocks/columns.php:494
+#: lib/blocks/columns.php:532
 #: lib/blocks/grid.php:1554
 #: lib/customize/content-archives.php:620
 msgid "Align Columns"
 msgstr ""
 
-#: lib/blocks/columns.php:498
+#: lib/blocks/columns.php:536
 #: lib/blocks/grid.php:1180
 #: lib/blocks/grid.php:1560
 #: lib/customize/content-archives.php:371
@@ -706,7 +751,7 @@ msgstr ""
 msgid "Start"
 msgstr ""
 
-#: lib/blocks/columns.php:500
+#: lib/blocks/columns.php:538
 #: lib/blocks/grid.php:1182
 #: lib/blocks/grid.php:1562
 #: lib/customize/content-archives.php:373
@@ -716,24 +761,14 @@ msgstr ""
 msgid "End"
 msgstr ""
 
-#: lib/blocks/columns.php:509
+#: lib/blocks/columns.php:548
 #: lib/blocks/grid.php:1581
 #: lib/customize/content-archives.php:639
 msgid "Align Columns (vertical)"
 msgstr ""
 
-#: lib/blocks/columns.php:513
-#: lib/blocks/grid.php:853
-#: lib/blocks/grid.php:1587
-#: lib/customize/content-archives.php:122
-#: lib/customize/content-archives.php:644
-#: assets/js/blocks/layout-settings.js:162
-#: assets/js/min/blocks.js:800
-msgid "Full"
-msgstr ""
-
-#: lib/blocks/columns.php:515
-#: lib/blocks/columns.php:619
+#: lib/blocks/columns.php:554
+#: lib/blocks/columns.php:658
 #: lib/blocks/grid.php:1202
 #: lib/blocks/grid.php:1589
 #: lib/customize/content-archives.php:385
@@ -741,17 +776,17 @@ msgstr ""
 msgid "Middle"
 msgstr ""
 
-#: lib/blocks/columns.php:524
+#: lib/blocks/columns.php:563
 #: lib/blocks/grid.php:1609
 #: lib/customize/content-archives.php:659
 msgid "Column Gap"
 msgstr ""
 
-#: lib/blocks/columns.php:528
-#: lib/blocks/columns.php:546
-#: lib/blocks/columns.php:564
-#: lib/blocks/columns.php:583
-#: lib/blocks/columns.php:633
+#: lib/blocks/columns.php:567
+#: lib/blocks/columns.php:585
+#: lib/blocks/columns.php:603
+#: lib/blocks/columns.php:622
+#: lib/blocks/columns.php:672
 #: lib/blocks/grid.php:1615
 #: lib/blocks/grid.php:1638
 #: lib/customize/content-archives.php:664
@@ -764,18 +799,18 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: lib/blocks/columns.php:542
+#: lib/blocks/columns.php:581
 #: lib/blocks/grid.php:1632
 #: lib/customize/content-archives.php:674
 msgid "Row Gap"
 msgstr ""
 
-#: lib/blocks/columns.php:560
+#: lib/blocks/columns.php:599
 msgid "Top Margin"
 msgstr ""
 
-#: lib/blocks/columns.php:570
-#: lib/blocks/columns.php:589
+#: lib/blocks/columns.php:609
+#: lib/blocks/columns.php:628
 #: assets/js/blocks/layout-settings.js:589
 #: assets/js/blocks/layout-settings.js:686
 #: assets/js/min/blocks.js:1227
@@ -783,27 +818,31 @@ msgstr ""
 msgid "XXL"
 msgstr ""
 
-#: lib/blocks/columns.php:579
+#: lib/blocks/columns.php:618
 msgid "Bottom Margin"
 msgstr ""
 
-#: lib/blocks/columns.php:614
+#: lib/blocks/columns.php:653
 msgid "Align Content (vertical)"
 msgstr ""
 
-#: lib/blocks/columns.php:629
+#: lib/blocks/columns.php:668
 msgid "Spacing"
 msgstr ""
 
-#: lib/blocks/columns.php:670
+#: lib/blocks/columns.php:709
+msgid "Add box shadow"
+msgstr ""
+
+#: lib/blocks/columns.php:716
 msgid "Show first on mobile"
 msgstr ""
 
-#: lib/blocks/columns.php:677
+#: lib/blocks/columns.php:723
 msgid "Show first on small tablets"
 msgstr ""
 
-#: lib/blocks/columns.php:684
+#: lib/blocks/columns.php:730
 msgid "Show first on large tablets"
 msgstr ""
 
@@ -1452,14 +1491,6 @@ msgstr ""
 
 #: lib/classes/class-mai-setup-wizard-fields.php:212
 msgid " View details"
-msgstr ""
-
-#: lib/classes/class-mai-setup-wizard-fields.php:241
-#: lib/classes/class-mai-setup-wizard-steps.php:202
-#: lib/functions/grid.php:89
-#: lib/functions/loop.php:510
-#: lib/functions/loop.php:543
-msgid "Content"
 msgstr ""
 
 #: lib/classes/class-mai-setup-wizard-fields.php:243
@@ -2218,6 +2249,10 @@ msgstr ""
 msgid "Square"
 msgstr ""
 
+#: lib/functions/images.php:223
+msgid "Custom"
+msgstr ""
+
 #: lib/functions/deprecated.php:194
 msgid "The Before Header widget area."
 msgstr ""
@@ -2702,11 +2737,6 @@ msgstr ""
 #: assets/js/blocks/layout-settings.js:225
 #: assets/js/min/blocks.js:863
 msgid "Content Max Width"
-msgstr ""
-
-#: assets/js/blocks/layout-settings.js:488
-#: assets/js/min/blocks.js:1126
-msgid "Width"
 msgstr ""
 
 #: assets/js/blocks/layout-settings.js:494

@@ -111,6 +111,7 @@ function mai_do_column_block( $block, $content = '', $is_preview = false, $post_
 		'align_column_vertical' => get_field( 'align_column_vertical' ),
 		'spacing'               => get_field( 'spacing' ),
 		'background'            => get_field( 'background' ),
+		'shadow'                => get_field( 'shadow' ),
 		'first_xs'              => get_field( 'first_xs' ),
 		'first_sm'              => get_field( 'first_sm' ),
 		'first_md'              => get_field( 'first_md' ),
@@ -261,11 +262,10 @@ function mai_render_columns_arrangement_field( $field ) {
 	// Load open if using a hidden value.
 	$open = $field['value'] && in_array( $field['value'], [ '1/12', '1/8', '1/6', '1/5', '3/8', '2/5', '3/5', '5/8', '4/5', '5/6', '7/8', '11/12' ] );
 
-	printf( '<details%s><summary>%s <span class="more-text">%s</span><span class="less-text">%s</span> %s</summary></details>',
+	printf( '<details%s><summary><span class="more-text">↓ %s</span><span class="less-text">↑ %s</span> %s</summary></details>',
 		$open ? ' open' : '',
-		__( 'Show', 'mai-engine' ),
-		__( 'more', 'mai-engine' ),
-		__( 'less', 'mai-engine' ),
+		__( 'More', 'mai-engine' ),
+		__( 'Less', 'mai-engine' ),
 		__( 'options', 'mai-engine' )
 	);
 }
@@ -701,6 +701,13 @@ function mai_register_columns_field_groups() {
 						'value'    => 'custom',
 					],
 				],
+			],
+			[
+				'key'               => 'mai_columns_shadow',
+				'name'              => 'shadow',
+				'label'             => '',
+				'message'           => esc_html__( 'Add box shadow', 'mai-engine' ),
+				'type'              => 'true_false',
 			],
 			[
 				'key'               => 'mai_columns_first_xs',

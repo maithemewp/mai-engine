@@ -45,6 +45,7 @@ class Mai_Column {
 				'align_column_vertical' => 'start',
 				'spacing'               => '',
 				'background'            => '',
+				'shadow'                => false,
 				'first_xs'              => false,
 				'first_sm'              => false,
 				'first_md'              => false,
@@ -95,6 +96,10 @@ class Mai_Column {
 			if ( ! mai_is_light_color( $this->args['background'] ) ) {
 				$attributes['class'] = mai_add_classes( 'has-dark-background', $attributes['class'] );
 			}
+		}
+
+		if ( $this->args['shadow'] ) {
+			$attributes['class'] = mai_add_classes( 'has-shadow', $attributes['class'] );
 		}
 
 		if ( $this->args['first_xs'] ) {

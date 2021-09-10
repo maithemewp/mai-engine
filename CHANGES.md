@@ -1,5 +1,8 @@
 # Changelog
 
+##
+* Added: Mai Columns now has a "Space" option for alignment to align the columns with space between each item.
+
 ## 2.16.0 (8/10/21)
 * Added: WPML and Polylang translation support for Template Parts.
 * Fixed: Mai Columns now automatically makes text white when you set an individual column to a dark background color.
