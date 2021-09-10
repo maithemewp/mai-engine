@@ -257,7 +257,12 @@ function mai_render_columns_arrangement_field( $field ) {
 		)) {
 		return;
 	}
-	printf( '<details><summary>%s <span class="more-text">%s</span><span class="less-text">%s</span> %s</summary></details>',
+
+	// Load open if using a hidden value.
+	$open = $field['value'] && in_array( $field['value'], [ '1/12', '1/8', '1/6', '1/5', '3/8', '2/5', '3/5', '5/8', '4/5', '5/6', '7/8', '11/12' ] );
+
+	printf( '<details%s><summary>%s <span class="more-text">%s</span><span class="less-text">%s</span> %s</summary></details>',
+		$open ? ' open' : '',
 		__( 'Show', 'mai-engine' ),
 		__( 'more', 'mai-engine' ),
 		__( 'less', 'mai-engine' ),
