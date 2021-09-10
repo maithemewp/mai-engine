@@ -238,6 +238,33 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 	return $block_content;
 }
 
+add_action( 'acf/render_field/type=button_group', 'mai_render_columns_arrangement_field', 4 );
+/**
+ * Adds details/summary element to trigger hiding and showing advanced extra settings.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_render_columns_arrangement_field( $field ) {
+	if ( ! in_array( $field['key'],
+		[
+			'mai_columns_arrangement_columns',
+			'mai_columns_md_arrangement_columns',
+			'mai_columns_sm_arrangement_columns',
+			'mai_columns_xs_arrangement_columns',
+		]
+		)) {
+		return;
+	}
+	printf( '<details><summary>%s <span class="more-text">%s</span><span class="less-text">%s</span> %s</summary></details>',
+		__( 'Show', 'mai-engine' ),
+		__( 'more', 'mai-engine' ),
+		__( 'less', 'mai-engine' ),
+		__( 'options', 'mai-engine' )
+	);
+}
+
 add_action( 'acf/init', 'mai_register_columns_field_groups' );
 /**
  * Register Mai Columns block field group.
@@ -252,27 +279,29 @@ function mai_register_columns_field_groups() {
 	}
 
 	$column_choices = [
+		'1/4'   => __( '1/4', 'mai-engine' ),
+		'1/3'   => __( '1/3', 'mai-engine' ),
+		'1/2'   => __( '1/2', 'mai-engine' ),
+		'2/3'   => __( '2/3', 'mai-engine' ),
+		'3/4'   => __( '3/4', 'mai-engine' ),
 		'1/12'  => __( '1/12', 'mai-engine' ),
 		'1/8'   => __( '1/8', 'mai-engine' ),
 		'1/6'   => __( '1/6', 'mai-engine' ),
 		'1/5'   => __( '1/5', 'mai-engine' ),
-		'1/4'   => __( '1/4', 'mai-engine' ),
-		'1/3'   => __( '1/3', 'mai-engine' ),
 		'3/8'   => __( '3/8', 'mai-engine' ),
 		'2/5'   => __( '2/5', 'mai-engine' ),
-		'1/2'   => __( '1/2', 'mai-engine' ),
 		'3/5'   => __( '3/5', 'mai-engine' ),
 		'5/8'   => __( '5/8', 'mai-engine' ),
-		'2/3'   => __( '2/3', 'mai-engine' ),
-		'3/4'   => __( '3/4', 'mai-engine' ),
 		'4/5'   => __( '4/5', 'mai-engine' ),
 		'5/6'   => __( '5/6', 'mai-engine' ),
 		'7/8'   => __( '7/8', 'mai-engine' ),
 		'11/12' => __( '11/12', 'mai-engine' ),
-		'full'  => __( 'Full Width', 'mai-engine' ),
-		'fill'  => __( 'Fill Space', 'mai-engine' ),
-		'auto'  => __( 'Auto', 'mai-engine' ),
+		'auto'  => sprintf( '%s </span>%s</span>', __( 'Fit', 'mai-engine' ), __( 'Content', 'mai-engine' ) ),
+		'fill'  => sprintf( '%s </span>%s</span>', __( 'Fill', 'mai-engine' ), __( 'Space', 'mai-engine' ) ),
+		'full'  => sprintf( '%s </span>%s</span>', __( 'Full', 'mai-engine' ), __( 'Width', 'mai-engine' ) ),
 	];
+
+	$arrangement_instructions = __( 'Custom arrangements will repeat in the sequence you set here. Only set one value if you want all columns to be the same.', 'mai-engine' );
 
 	acf_add_local_field_group( [
 		'key'                 => 'mai_columns_field_group',
@@ -291,7 +320,7 @@ function mai_register_columns_field_groups() {
 					5                  => '5',
 					6                  => '6',
 					0                  => __( 'Auto', 'mai-engine' ),
-					'custom'           => __( 'Custom', 'mai-engine' ),
+					'custom'           => __( 'Custom arrangement', 'mai-engine' ),
 				],
 				'default_value'     => 2,
 			],
@@ -327,6 +356,7 @@ function mai_register_columns_field_groups() {
 				'key'               => 'mai_columns_arrangement',
 				'label'             => __( 'Arrangement (desktop)', 'mai-engine' ),
 				'name'              => 'arrangement',
+				'instructions'      => $arrangement_instructions,
 				'type'              => 'repeater',
 				'conditional_logic' => [
 					[
@@ -346,7 +376,7 @@ function mai_register_columns_field_groups() {
 						'key'             => 'mai_columns_arrangement_columns',
 						'label'           => '',
 						'name'            => 'columns',
-						'type'            => 'select',
+						'type'            => 'button_group',
 						'choices'         => $column_choices,
 						'default_value'   => '1/3',
 					],
@@ -370,6 +400,7 @@ function mai_register_columns_field_groups() {
 				'key'               => 'mai_columns_md_arrangement',
 				'label'             => __( 'Arrangement (lg tablets)', 'mai-engine' ),
 				'name'              => 'arrangement_md',
+				'instructions'      => $arrangement_instructions,
 				'type'              => 'repeater',
 				'conditional_logic' => [
 					[
@@ -389,7 +420,7 @@ function mai_register_columns_field_groups() {
 						'key'             => 'mai_columns_md_arrangement_columns',
 						'label'           => '',
 						'name'            => 'columns',
-						'type'            => 'select',
+						'type'            => 'button_group',
 						'choices'         => $column_choices,
 						'default_value'   => '1/3',
 					],
@@ -413,6 +444,7 @@ function mai_register_columns_field_groups() {
 				'key'               => 'mai_columns_sm_arrangement',
 				'label'             => __( 'Arrangement (sm tablets)', 'mai-engine' ),
 				'name'              => 'arrangement_sm',
+				'instructions'      => $arrangement_instructions,
 				'type'              => 'repeater',
 				'conditional_logic' => [
 					[
@@ -432,7 +464,7 @@ function mai_register_columns_field_groups() {
 						'key'             => 'mai_columns_sm_arrangement_columns',
 						'label'           => '',
 						'name'            => 'columns',
-						'type'            => 'select',
+						'type'            => 'button_group',
 						'choices'         => $column_choices,
 						'default_value'   => '1/2',
 					],
@@ -456,6 +488,7 @@ function mai_register_columns_field_groups() {
 				'key'               => 'mai_columns_xs_arrangement',
 				'label'             => __( 'Arrangement (mobile)', 'mai-engine' ),
 				'name'              => 'arrangement_xs',
+				'instructions'      => $arrangement_instructions,
 				'type'              => 'repeater',
 				'conditional_logic' => [
 					[
@@ -475,7 +508,7 @@ function mai_register_columns_field_groups() {
 						'key'             => 'mai_columns_xs_arrangement_columns',
 						'label'           => '',
 						'name'            => 'columns',
-						'type'            => 'select',
+						'type'            => 'button_group',
 						'choices'         => $column_choices,
 						'default_value'   => 'full',
 					],
@@ -498,6 +531,7 @@ function mai_register_columns_field_groups() {
 					'start'            => __( 'Start', 'mai-engine' ),
 					'center'           => __( 'Center', 'mai-engine' ),
 					'end'              => __( 'End', 'mai-engine' ),
+					'between'          => __( 'Space', 'mai-engine' ),
 				],
 				'default_value'     => 'start',
 				'wrapper'           => [

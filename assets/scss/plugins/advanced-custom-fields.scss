@@ -507,6 +507,139 @@
 	border: 0;
 }
 
+.acf-field-mai-columns-arrangement,
+.acf-field-mai-columns-md-arrangement,
+.acf-field-mai-columns-sm-arrangement,
+.acf-field-mai-columns-xs-arrangement {
+
+	.acf-input {
+		display: flex;
+		flex-direction: column;
+	}
+
+	details {
+		color: var(--wp-admin-theme-color);
+		text-align: center;
+		text-decoration: underline;
+		cursor: pointer;
+
+		summary {
+			font-size: 11px;
+			list-style: none;
+		}
+
+		> summary::-webkit-details-marker,
+		> summary::marker {
+			display: none;
+		}
+
+		&[open] {
+
+			~ .acf-button-group label {
+
+				&:nth-child(6),
+				&:nth-child(7),
+				&:nth-child(8),
+				&:nth-child(9),
+				&:nth-child(10),
+				&:nth-child(11),
+				&:nth-child(12),
+				&:nth-child(13),
+				&:nth-child(14),
+				&:nth-child(15),
+				&:nth-child(16),
+				&:nth-child(17),
+				&:nth-child(18),
+				&:nth-child(19),
+				&:nth-child(20) {
+					min-width: 33.333333%;
+				}
+			}
+
+			.more-text {
+				display: none;
+			}
+		}
+
+		&:not([open]) {
+
+			~ .acf-button-group label {
+
+				&:nth-child(6),
+				&:nth-child(7),
+				&:nth-child(8),
+				&:nth-child(9),
+				&:nth-child(10),
+				&:nth-child(11),
+				&:nth-child(12),
+				&:nth-child(13),
+				&:nth-child(14),
+				&:nth-child(15),
+				&:nth-child(16),
+				&:nth-child(17) {
+					display: none;
+				}
+			}
+
+			.less-text {
+				display: none;
+			}
+		}
+	}
+
+	.acf-button-group {
+		display: flex;
+		flex-wrap: wrap;
+		order: -1;
+		margin: 0 0 10px;
+		padding: 1px 0 0 1px;
+
+		label {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			min-width: 20%;
+			margin: -1px 0 0 -1px;
+			padding: 6px 0;
+			line-height: 1.1;
+			white-space: unset;
+			border-radius: var(--column-arrangement-border-radius, 0) !important;
+
+			&:not(:first-child):not(:nth-child(2)):not(:nth-child(3)):not(:nth-child(4)):not(:nth-child(5)) {
+				min-width: 33.333333%;
+			}
+
+			&:not(:nth-last-child(1)):not(:nth-last-child(2)):not(:nth-last-child(3)) {
+				font-size: 1.1rem;
+				font-feature-settings: frac;
+				font-variant-numeric: diagonal-fractions;
+			}
+
+			&:nth-last-child(1),
+			&:nth-last-child(2),
+			&:nth-last-child(3) {
+				font-size: 11px;
+			}
+
+			&:first-child {
+				--column-arrangement-border-radius: 3px 0 0 0;
+			}
+
+			&:nth-child(5) {
+				--column-arrangement-border-radius: 0 3px 0 0;
+			}
+
+			&:last-child {
+				--column-arrangement-border-radius: 0 0 3px 0;
+			}
+
+			&:nth-last-child(3) {
+				--column-arrangement-border-radius: 0 0 0 3px;
+			}
+		}
+	}
+}
+
 /* ACF button group. */
 
 .acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group .acf-button-group {
