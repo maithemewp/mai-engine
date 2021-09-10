@@ -33,6 +33,13 @@ function mai_prepare_legacy_color_field( $field ) {
 		return $field;
 	}
 
+	$name = mai_get_color_name( $field['value'] );
+
+	if ( $name ) {
+		$field['value'] = $name;
+		return $field;
+	}
+
 	$key            = $field['key'];
 	$original       = $field['value'];
 	$field['value'] = 'custom';
