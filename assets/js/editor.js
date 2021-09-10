@@ -30,7 +30,7 @@ wp.domReady( () => {
 	acf.add_filter( 'color_picker_args', function( args, $field ) {
 		args.palettes = maiEditorVars.palette;
 		return args;
-	} );
+	});
 
 	var icons = [ 'mai_icon_choices', 'mai_icon_brand_choices' ];
 	var post  = maiEditorVars.post;
