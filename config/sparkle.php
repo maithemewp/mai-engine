@@ -48,24 +48,21 @@ return [
 		],
 	],
 	'plugins'       => [
-		[
+		'genesis-connect-woocommerce/genesis-connect-woocommerce.php' => [
 			'name'  => 'Genesis Connect for WooCommerce',
 			'host'  => 'wordpress',
-			'slug'  => 'genesis-connect-woocommerce/genesis-connect-woocommerce.php',
 			'uri'   => 'https://wordpress.org/plugins/genesis-connect-woocommerce/',
 			'demos' => [ 'creative' ],
 		],
-		[
+		'wpforms-lite/wpforms.php' => [
 			'name'  => 'WP Forms Lite',
 			'host'  => 'wordpress',
-			'slug'  => 'wpforms-lite/wpforms.php',
 			'uri'   => 'https://wordpress.org/plugins/wpforms-lite/',
 			'demos' => [ 'creative', 'fashion' ],
 		],
-		[
+		'woocommerce/woocommerce.php' => [
 			'name'  => 'WooCommerce',
 			'host'  => 'wordpress',
-			'slug'  => 'woocommerce/woocommerce.php',
 			'uri'   => 'https://wordpress.org/plugins/woocommerce/',
 			'demos' => [ 'creative' ],
 		],

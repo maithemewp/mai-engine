@@ -23,6 +23,17 @@ defined( 'ABSPATH' ) || die;
  * @return null|string
  */
 function mai_get_icon( $args ) {
+	if ( ! class_exists( 'Mai_Icons_Plugin' ) ) {
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		$link = sprintf( '<a target="_blank" href="https://bizbudding.com/mai-theme/plugins/mai-icons/">%s</a>', __( 'Mai Icons', 'mai-engine' ) );
+		$text = sprintf( __( '%s plugin required.', 'mai-engine' ), $link );
+
+		return sprintf( '<p>%s</p>', $text );
+	}
+
 	$args = shortcode_atts(
 		mai_get_icon_default_args(),
 		$args,

@@ -135,13 +135,23 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Required Plugins
+	| Recommended Plugins
 	|--------------------------------------------------------------------------
 	|
-	| Required plugins to be installed during the plugins step in the setup wizard.
+	| Plugins to be installed during the plugins step in the setup wizard.
 	*/
 
-	'plugins' => [],
+	'plugins' => [
+		'mai-icons/mai-icons.php' => [
+			'name'     => 'Mai Icons',
+			'host'     => 'github',
+			'uri'      => 'maithemewp/mai-icons',
+			'url'      => 'https://bizbudding.com/mai-theme/plugins/mai-icons/',
+			'branch'   => 'master',
+			'token'    => null,
+			'demos'    => [],
+		],
+	],
 
 	/*
 	|--------------------------------------------------------------------------

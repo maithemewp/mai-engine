@@ -164,13 +164,14 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 
 		if ( ! is_plugin_active( $slug ) ) {
 			$plugins = [];
-			$config  = mai_get_config( 'plugins' );
+			$config  = mai_get_config_plugins();
 
 			foreach ( $config as $plugin ) {
-				if ( $slug === $plugin['slug'] ) {
-					$plugin['required'] = true; // Forces installation.
-					$plugins[]          = $plugin;
+				if ( $slug !== $plugin['slug'] ) {
+					continue;
 				}
+				$plugin['required'] = true; // Forces installation.
+				$plugins[]          = $plugin;
 			}
 
 			if ( $plugins ) {

@@ -298,6 +298,35 @@ function mai_get_full_config() {
 }
 
 /**
+ * Adds slug to plugin data array.
+ * Slug is used as the key so mai_get_config can merge default
+ * plugins with any added in child config.
+ *
+ * @since TBD
+ *
+ * @return array
+ */
+function mai_get_config_plugins() {
+	static $plugins = null;
+
+	if ( ! is_null( $plugins ) ) {
+		return $plugins;
+	}
+
+	$plugins = mai_get_config( 'plugins' );
+
+	if ( ! $plugins ) {
+		return $plugins;
+	}
+
+	foreach ( $plugins as $slug => $plugin ) {
+		$plugins[ $slug ]['slug'] = $slug;
+	}
+
+	return $plugins;
+}
+
+/**
  * Returns the active theme key.
  *
  * Wrapper function for mai_get_engine_theme.

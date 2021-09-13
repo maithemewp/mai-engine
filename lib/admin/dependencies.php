@@ -51,7 +51,7 @@ function mai_engine_plugin_dependencies( $dependencies ) {
 		return $dependencies;
 	}
 
-	$plugins     = mai_get_config( 'plugins' );
+	$plugins     = mai_get_config_plugins();
 	$total_demos = count( mai_get_config( 'demos' ) );
 
 	foreach ( $plugins as $plugin ) {

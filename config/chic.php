@@ -86,17 +86,15 @@ return [
 		],
 	],
 	'plugins'           => [
-		[
+		'genesis-enews-extended/plugin.php' => [
 			'name'            => 'Genesis eNews Extended',
 			'host'            => 'wordpress',
-			'slug'            => 'genesis-enews-extended/plugin.php',
 			'uri'             => 'https://wordpress.org/plugins/genesis-enews-extended/',
 			'demos'           => [],
 		],
-		[
+		'woocommerce/woocommerce.php' => [
 			'name'            => 'WooCommerce',
 			'host'            => 'wordpress',
-			'slug'            => 'woocommerce/woocommerce.php',
 			'uri'             => 'https://wordpress.org/plugins/woocommerce/',
 			'demos'           => [],
 		],
