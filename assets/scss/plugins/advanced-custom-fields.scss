@@ -332,10 +332,17 @@
 
 /* icon select field */
 
+.acf-field-mai-icon-choices .acf-selection,
+.acf-field-mai-icon-brand-choices .acf-selection {
+	display: flex;
+	align-items: center;
+	height: 100%;
+}
+
 .acf-field-mai-icon-choices .mai-icon-svg,
 .acf-field-mai-icon-brand-choices .mai-icon-svg {
 	max-width: 20px;
-	max-height: 20px;
+	max-height: 75%;
 	margin-left: 4px;
 }
 
