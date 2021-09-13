@@ -129,6 +129,8 @@ function mai_load_icon_brand_choices( $field ) {
  *
  * @since 1.0.0
  *
+ * @link https://css-tricks.com/on-xlinkhref-being-deprecated-in-svg/
+ *
  * @param string $style Icon style.
  *
  * @return array
@@ -148,7 +150,7 @@ function mai_get_icon_choices( $style ) {
 	foreach ( glob( $dir . '/*.svg' ) as $file ) {
 		$name             = basename( $file, '.svg' );
 		$choices[ $name ] = sprintf(
-			'<svg class="mai-icon-svg"><use xlink:href="%s.svg#%s"></use></svg><span class="mai-icon-name">%s</span>',
+			'<svg class="mai-icon-svg" width="32" height="32"><use href="%s.svg#%s"></use></svg><span class="mai-icon-name">%s</span>',
 			$url,
 			$name,
 			$name
