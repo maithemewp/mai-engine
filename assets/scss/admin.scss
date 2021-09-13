@@ -15,7 +15,7 @@
 
 // After .folded since it doesn't matter what size the admin menu actually is.
 .is-fullscreen-mode {
-	--admin-menu-width: 0;
+	--admin-menu-width: 0px; // Requires 0px for calc().
 }
 
 .edit-post-layout.is-sidebar-opened {
