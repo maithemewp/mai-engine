@@ -346,24 +346,19 @@
 
 [id$="-mai_icon_choices-results"],
 [id$="-mai_icon_brand_choices-results"] {
-	// display: flex;
-	// flex-wrap: wrap;
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 }
 
-[id$="-mai_icon_choices-results"] .select2-results__option.loading-results,
-[id$="-mai_icon_choices-results"] .select2-results__option.select2-results__message,
-[id$="-mai_icon_brand_choices-results"] .select2-results__option.loading-results,
-[id$="-mai_icon_brand_choices-results"] .select2-results__option.select2-results__message {
-	// flex: 1 1 100%;
-	// max-width: 100%;
+[id$="-mai_icon_choices-results"] .select2-results__option,
+[id$="-mai_icon_brand_choices-results"] .select2-results__option {
+	padding: 0;
 }
 
 [id$="-mai_icon_choices-results"] .select2-results__option .mai-icon-svg,
 [id$="-mai_icon_brand_choices-results"] .select2-results__option .mai-icon-svg {
-	max-width: 32px;
-	max-height: 32px;
+	max-width: 30px;
+	max-height: 30px;
 	padding-top: 6px;
 }
 
@@ -371,16 +366,13 @@
 [id$="-mai_icon_brand_choices-results"] .select2-results__option .mai-icon-name {
 	display: block;
 	margin: 4px auto 8px;
-	font-size: 12px;
-	word-wrap: anywhere;
-	opacity: 0.6;
+	font-size: 10px;
+	word-break: break-word;
+	opacity: 0.5;
 }
 
 [id$="-mai_icon_choices-results"] .select2-results__option:not(.loading-results):not(.select2-results__message),
 [id$="-mai_icon_brand_choices-results"] .select2-results__option:not(.loading-results):not(.select2-results__message) {
-	// flex: 1 1 100%;
-	// max-width: calc(33.33333333% - 8px);
-	// padding: 4px;
 	text-align: center;
 }
 
