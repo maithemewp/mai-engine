@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Mai Engine plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.16.1-beta.1\n"
+"Project-Id-Version: Mai Engine 2.16.1-beta.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-09-10T20:01:12+00:00\n"
+"POT-Creation-Date: 2021-09-13T18:30:05+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -72,39 +72,39 @@ msgstr ""
 msgid "Sidebar, Content"
 msgstr ""
 
-#: config/_default.php:163
+#: config/_default.php:173
 #: lib/functions/deprecated.php:226
 msgid "Mobile Menu"
 msgstr ""
 
-#: config/_default.php:166
+#: config/_default.php:176
 msgid "Sub Menu"
 msgstr ""
 
-#: config/_default.php:399
+#: config/_default.php:409
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/_default.php:400
+#: config/_default.php:410
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/_default.php:401
+#: config/_default.php:411
 #: lib/admin/hide-elements.php:106
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default.php:516
+#: config/_default.php:526
 #: lib/functions/deprecated.php:216
 msgid "Sidebar"
 msgstr ""
 
-#: config/_default.php:517
+#: config/_default.php:527
 #: lib/functions/deprecated.php:217
 msgid "The Sidebar widget area."
 msgstr ""
 
-#: config/_default.php:627
+#: config/_default.php:637
 msgid "Read more"
 msgstr ""
 
@@ -116,63 +116,73 @@ msgstr ""
 msgid "A custom icon block."
 msgstr ""
 
-#: lib/blocks/icon.php:180
-#: lib/blocks/icon.php:185
-#: lib/blocks/icon.php:204
+#: lib/blocks/icon.php:177
+#: lib/functions/icons.php:31
+msgid "Mai Icons"
+msgstr ""
+
+#: lib/blocks/icon.php:178
+#: lib/functions/icons.php:32
+msgid "%s plugin required."
+msgstr ""
+
+#: lib/blocks/icon.php:195
+#: lib/blocks/icon.php:214
+#: lib/blocks/icon.php:564
 msgid "Icon"
 msgstr ""
 
-#: lib/blocks/icon.php:191
+#: lib/blocks/icon.php:201
 #: lib/blocks/divider.php:215
 msgid "Style"
 msgstr ""
 
-#: lib/blocks/icon.php:195
+#: lib/blocks/icon.php:205
 #: lib/customize/single-content.php:203
 #: lib/customize/content-archives.php:757
 #: lib/customize/page-header.php:208
 msgid "Light"
 msgstr ""
 
-#: lib/blocks/icon.php:196
+#: lib/blocks/icon.php:206
 msgid "Regular"
 msgstr ""
 
-#: lib/blocks/icon.php:197
+#: lib/blocks/icon.php:207
 msgid "Solid"
 msgstr ""
 
-#: lib/blocks/icon.php:198
+#: lib/blocks/icon.php:208
 msgid "Brands"
 msgstr ""
 
-#: lib/blocks/icon.php:204
+#: lib/blocks/icon.php:214
 msgid "full search via"
 msgstr ""
 
-#: lib/blocks/icon.php:224
+#: lib/blocks/icon.php:234
 msgid "Icon (Brands)"
 msgstr ""
 
-#: lib/blocks/icon.php:244
+#: lib/blocks/icon.php:254
 #: lib/blocks/grid.php:757
 msgid "Display"
 msgstr ""
 
-#: lib/blocks/icon.php:248
+#: lib/blocks/icon.php:258
 msgid "Block"
 msgstr ""
 
-#: lib/blocks/icon.php:249
+#: lib/blocks/icon.php:259
 msgid "Inline"
 msgstr ""
 
-#: lib/blocks/icon.php:258
+#: lib/blocks/icon.php:268
 msgid "Align"
 msgstr ""
 
-#: lib/blocks/icon.php:261
-#: lib/blocks/icon.php:525
+#: lib/blocks/icon.php:271
+#: lib/blocks/icon.php:535
 #: lib/customize/menus.php:57
 #: lib/customize/menus.php:82
 #: lib/customize/menus.php:107
@@ -183,7 +193,7 @@ msgstr ""
 msgid "Left"
 msgstr ""
 
-#: lib/blocks/icon.php:262
+#: lib/blocks/icon.php:272
 #: lib/blocks/columns.php:537
 #: lib/blocks/grid.php:854
 #: lib/blocks/grid.php:1181
@@ -201,8 +211,8 @@ msgstr ""
 msgid "Center"
 msgstr ""
 
-#: lib/blocks/icon.php:263
-#: lib/blocks/icon.php:533
+#: lib/blocks/icon.php:273
+#: lib/blocks/icon.php:543
 #: lib/customize/menus.php:59
 #: lib/customize/menus.php:84
 #: lib/customize/menus.php:109
@@ -215,83 +225,83 @@ msgstr ""
 msgid "Right"
 msgstr ""
 
-#: lib/blocks/icon.php:280
+#: lib/blocks/icon.php:290
 msgid "Size"
 msgstr ""
 
-#: lib/blocks/icon.php:281
+#: lib/blocks/icon.php:291
 msgid "Accepts all unit values (px, rem, em, vw, etc). Leave empty for theme default."
 msgstr ""
 
-#: lib/blocks/icon.php:288
+#: lib/blocks/icon.php:298
 #: lib/functions/colors.php:248
-#: lib/functions/utilities.php:1513
+#: lib/functions/utilities.php:1542
 msgid "Link"
 msgstr ""
 
-#: lib/blocks/icon.php:295
+#: lib/blocks/icon.php:305
 msgid "Link Title"
 msgstr ""
 
-#: lib/blocks/icon.php:296
+#: lib/blocks/icon.php:306
 msgid "Add a title for accessibility. Will not be displayed visually."
 msgstr ""
 
-#: lib/blocks/icon.php:309
+#: lib/blocks/icon.php:319
 msgid "Open link in new window"
 msgstr ""
 
-#: lib/blocks/icon.php:321
+#: lib/blocks/icon.php:331
 msgid "Styles"
 msgstr ""
 
-#: lib/blocks/icon.php:326
+#: lib/blocks/icon.php:336
 msgid "Icon Color"
 msgstr ""
 
-#: lib/blocks/icon.php:348
+#: lib/blocks/icon.php:358
 #: lib/blocks/columns.php:685
 msgid "Background Color"
 msgstr ""
 
-#: lib/blocks/icon.php:370
+#: lib/blocks/icon.php:380
 msgid "Border Color"
 msgstr ""
 
-#: lib/blocks/icon.php:376
+#: lib/blocks/icon.php:386
 msgid "Border Width"
 msgstr ""
 
-#: lib/blocks/icon.php:395
+#: lib/blocks/icon.php:405
 msgid "Box Shadow"
 msgstr ""
 
-#: lib/blocks/icon.php:401
-#: lib/blocks/icon.php:451
+#: lib/blocks/icon.php:411
+#: lib/blocks/icon.php:461
 msgid "X Offset"
 msgstr ""
 
-#: lib/blocks/icon.php:414
-#: lib/blocks/icon.php:464
+#: lib/blocks/icon.php:424
+#: lib/blocks/icon.php:474
 msgid "Y Offset"
 msgstr ""
 
-#: lib/blocks/icon.php:427
-#: lib/blocks/icon.php:477
+#: lib/blocks/icon.php:437
+#: lib/blocks/icon.php:487
 msgid "Blur"
 msgstr ""
 
-#: lib/blocks/icon.php:445
+#: lib/blocks/icon.php:455
 msgid "Text Shadow"
 msgstr ""
 
-#: lib/blocks/icon.php:495
+#: lib/blocks/icon.php:505
 #: assets/js/blocks/layout-settings.js:291
 #: assets/js/min/blocks.js:929
 msgid "Padding"
 msgstr ""
 
-#: lib/blocks/icon.php:503
+#: lib/blocks/icon.php:513
 #: assets/js/blocks/layout-settings.js:604
 #: assets/js/blocks/layout-settings.js:727
 #: assets/js/min/blocks.js:1242
@@ -299,7 +309,7 @@ msgstr ""
 msgid "Margin"
 msgstr ""
 
-#: lib/blocks/icon.php:509
+#: lib/blocks/icon.php:519
 #: lib/blocks/columns.php:553
 #: lib/blocks/columns.php:657
 #: lib/blocks/grid.php:1201
@@ -316,7 +326,7 @@ msgstr ""
 msgid "Top"
 msgstr ""
 
-#: lib/blocks/icon.php:517
+#: lib/blocks/icon.php:527
 #: lib/blocks/columns.php:555
 #: lib/blocks/columns.php:659
 #: lib/blocks/grid.php:1203
@@ -333,13 +343,13 @@ msgstr ""
 msgid "Bottom"
 msgstr ""
 
-#: lib/blocks/icon.php:541
+#: lib/blocks/icon.php:551
 #: lib/blocks/grid.php:1418
 #: lib/customize/content-archives.php:534
 msgid "Border Radius"
 msgstr ""
 
-#: lib/blocks/icon.php:546
+#: lib/blocks/icon.php:556
 msgid "50%"
 msgstr ""
 
@@ -1015,7 +1025,7 @@ msgid "Align Text (vertical)"
 msgstr ""
 
 #: lib/blocks/grid.php:1200
-#: lib/functions/utilities.php:564
+#: lib/functions/utilities.php:593
 #: lib/customize/single-content.php:202
 #: lib/customize/content-archives.php:383
 #: lib/customize/content-archives.php:756
@@ -1427,15 +1437,15 @@ msgstr ""
 msgid "No plugins selected."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:181
+#: lib/classes/class-mai-setup-wizard-ajax.php:182
 msgid "Error installing "
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:185
+#: lib/classes/class-mai-setup-wizard-ajax.php:186
 msgid "Installed "
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:204
+#: lib/classes/class-mai-setup-wizard-ajax.php:205
 msgid "No field value."
 msgstr ""
 
@@ -1706,7 +1716,7 @@ msgstr ""
 
 #: lib/admin/settings.php:28
 #: lib/admin/settings.php:29
-#: lib/functions/utilities.php:1582
+#: lib/functions/utilities.php:1611
 #: lib/functions/deprecated.php:251
 msgid "Mai Theme"
 msgstr ""
@@ -2171,57 +2181,57 @@ msgstr ""
 msgid "6"
 msgstr ""
 
-#: lib/functions/utilities.php:606
-#: lib/functions/utilities.php:665
+#: lib/functions/utilities.php:635
+#: lib/functions/utilities.php:694
 msgid "Post"
 msgstr ""
 
-#: lib/functions/utilities.php:642
+#: lib/functions/utilities.php:671
 #: lib/customize/site-layouts.php:207
 msgid "Search Results"
 msgstr ""
 
-#: lib/functions/utilities.php:643
+#: lib/functions/utilities.php:672
 #: lib/customize/site-layouts.php:221
 msgid "Author Archives"
 msgstr ""
 
-#: lib/functions/utilities.php:644
+#: lib/functions/utilities.php:673
 #: lib/customize/site-layouts.php:235
 msgid "Date Archives"
 msgstr ""
 
-#: lib/functions/utilities.php:666
+#: lib/functions/utilities.php:695
 msgid "Page"
 msgstr ""
 
-#: lib/functions/utilities.php:1411
+#: lib/functions/utilities.php:1440
 #: lib/structure/menus.php:371
 #: lib/customize/site-header.php:70
 msgid "Search"
 msgstr ""
 
-#: lib/functions/utilities.php:1510
+#: lib/functions/utilities.php:1539
 msgid "Primary"
 msgstr ""
 
-#: lib/functions/utilities.php:1511
+#: lib/functions/utilities.php:1540
 msgid "Secondary"
 msgstr ""
 
-#: lib/functions/utilities.php:1512
+#: lib/functions/utilities.php:1541
 msgid "Outline"
 msgstr ""
 
-#: lib/functions/utilities.php:1579
+#: lib/functions/utilities.php:1608
 msgid "View available shortcodes from"
 msgstr ""
 
-#: lib/functions/utilities.php:1580
+#: lib/functions/utilities.php:1609
 msgid "Genesis"
 msgstr ""
 
-#: lib/functions/utilities.php:1581
+#: lib/functions/utilities.php:1610
 msgid "and"
 msgstr ""
 
