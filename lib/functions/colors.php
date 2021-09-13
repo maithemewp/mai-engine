@@ -130,10 +130,13 @@ function mai_get_color_name( $hex ) {
 	if ( count( $duplicates ) > 1 ) {
 		$priorities = mai_get_color_element_priorities();                            // [ slug => 1 ]
 		$matches    = array_intersect_key( $priorities, array_flip( $duplicates ) ); // [ slug => priority ]
-		$winner     = array_search( min( $matches ), $matches );
 
-		if ( $winner ) {
-			return $winner;
+		if ( $matches ) {
+			$winner = array_search( min( $matches ), $matches );
+
+			if ( $winner ) {
+				return $winner;
+			}
 		}
 	}
 
