@@ -1,7 +1,31 @@
 # Changelog
 
-##
+## 2.17.0
 * Added: Mai Columns now has a "Space" option for alignment to align the columns with space between each item.
+* Added: New shadow setting on individual Mai Column blocks to add default box shadow to the column item.
+* Added: New css custom properties to global override spacing sizes.
+* Added: New CSS custom property to easily override input placeholder font size.
+* Changed: Mai Icons plugin is no longer required for Mai Engine to run.
+* Changed: New block icons for Mai Columns and Mai Post/Term Grid blocks.
+* Changed: Settings and UI is much better when using Mai Columns blocks in the editor, including visible text when adding a new Mai Column.
+* Changed: Mai Icon, Mai Column, and Mai Divider color picker now matches native block style and UI.
+* Changed: Mai Icon, Mai Column, and Mai Divider color picker now uses site color palette when changing the color value in the Customizer, or pasting from another site or our pattern library.
+* Changed: Mai Icon border radius default now uses the theme default for new instances.
+* Changed: Bump ACF to 5.10.2
+* Changed: Reversed primary and secondary button colors on archive pagination.
+* Changed: Add some spacing back to top of login logo.
+* Changed: Remove deprecated header left/right sidebar (widget area) checks.
+* Changed: Mai Theme admin page content.
+* Changed: Mai Icon svg picker now uses href instead of deprecated xlink attribute.
+* Fixed: Mai Divider custom classes weren't adding spaces correctly on front end.
+* Fixed: Center logo on mobile it's the only element displaying.
+* Fixed: Blockquote paragraph spacing when used in a column.
+* Fixed: Image not filling full width in some configurations when Mai Post/Term grid is set to show a background image.
+* Fixed: Aligment width not going full width in the editor in some instances.
+* Fixed: JS error when mobile menu toggle is not displayed.
+* Fixed: Mai Reusable Block widget link to edit the actual block was not working.
+* Fixed: Hidden text links on login page in some configurations when header is set to a dark color.
+* Fixed: [WooCommerce] The show password icon was not displaying when login form was set to display on My Account page.
 
 ## 2.16.0 (8/10/21)
 * Added: WPML and Polylang translation support for Template Parts.
