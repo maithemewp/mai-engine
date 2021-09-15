@@ -1,4 +1,5 @@
 @import "../abstracts/_index";
+@import "../utilities/woocommerce-font"; // For stars ratings.
 
 // Archive, Single, Cart.
 
@@ -426,18 +427,6 @@ form.cart {
 		url(../../../../plugins/woocommerce/assets/fonts/star.woff) format("woff"),
 		url(../../../../plugins/woocommerce/assets/fonts/star.ttf) format("truetype"),
 		url(../../../../plugins/woocommerce/assets/fonts/star.svg#star) format("svg");
-}
-
-@font-face {
-	font-weight: 400;
-	font-family: WooCommerce;
-	font-style: normal;
-	src: url(../../../../plugins/woocommerce/assets/fonts/WooCommerce.eot);
-	src:
-		url(../../../../plugins/woocommerce/assets/fonts/WooCommerce.eot?#iefix) format("embedded-opentype"),
-		url(../../../../plugins/woocommerce/assets/fonts/WooCommerce.woff) format("woff"),
-		url(../../../../plugins/woocommerce/assets/fonts/WooCommerce.ttf) format("truetype"),
-		url(../../../../plugins/woocommerce/assets/fonts/WooCommerce.svg#WooCommerce) format("svg");
 }
 
 /**

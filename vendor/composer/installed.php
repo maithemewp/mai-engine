@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'c1c72a3acc1e1103caafe8e8b11c4ed74ad0ec85',
+    'reference' => 'af6e7859a99dfb763d440edcc56d68bd25571de6',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
@@ -49,12 +49,12 @@
     ),
     'composer/installers' => 
     array (
-      'pretty_version' => 'v1.11.0',
-      'version' => '1.11.0.0',
+      'pretty_version' => 'v1.12.0',
+      'version' => '1.12.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'ae03311f45dfe194412081526be2e003960df74b',
+      'reference' => 'd20a64ed3c94748397ff5973488761b22f6d3f19',
     ),
     'ffraenz/private-composer-installer' => 
     array (
@@ -81,7 +81,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'c1c72a3acc1e1103caafe8e8b11c4ed74ad0ec85',
+      'reference' => 'af6e7859a99dfb763d440edcc56d68bd25571de6',
     ),
     'phpoption/phpoption' => 
     array (

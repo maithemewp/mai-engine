@@ -37,6 +37,9 @@ module.exports = {
 			discardComments: {
 				removeAll: true
 			},
+			discardUnused: {
+				fontFace: false
+			},
 			zindex: false,
 			reduceIdents: false,
 		},

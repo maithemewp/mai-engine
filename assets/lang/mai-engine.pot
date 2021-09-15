@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Mai Engine plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.16.1-beta.2\n"
+"Project-Id-Version: Mai Engine 2.16.1-beta.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-09-13T18:30:05+00:00\n"
+"POT-Creation-Date: 2021-09-15T15:46:47+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -234,7 +234,7 @@ msgid "Accepts all unit values (px, rem, em, vw, etc). Leave empty for theme def
 msgstr ""
 
 #: lib/blocks/icon.php:298
-#: lib/functions/colors.php:248
+#: lib/functions/colors.php:251
 #: lib/functions/utilities.php:1542
 msgid "Link"
 msgstr ""
@@ -354,7 +354,7 @@ msgid "50%"
 msgstr ""
 
 #: lib/blocks/paragraph.php:33
-#: lib/functions/colors.php:247
+#: lib/functions/colors.php:250
 #: lib/customize/typography.php:72
 msgid "Heading"
 msgstr ""
@@ -937,7 +937,7 @@ msgid "Right Full"
 msgstr ""
 
 #: lib/blocks/grid.php:861
-#: lib/functions/colors.php:243
+#: lib/functions/colors.php:246
 #: lib/customize/content-archives.php:130
 msgid "Background"
 msgstr ""
@@ -1865,7 +1865,7 @@ msgid "Before Header"
 msgstr ""
 
 #: lib/admin/hide-elements.php:96
-#: lib/functions/colors.php:245
+#: lib/functions/colors.php:248
 #: lib/customize/site-header.php:30
 msgid "Site Header"
 msgstr ""
@@ -2001,28 +2001,28 @@ msgstr ""
 msgid "Back to top"
 msgstr ""
 
-#: lib/functions/colors.php:244
+#: lib/functions/colors.php:247
 msgid "Background Alt"
 msgstr ""
 
-#: lib/functions/colors.php:246
+#: lib/functions/colors.php:249
 #: lib/customize/typography.php:49
 msgid "Body"
 msgstr ""
 
-#: lib/functions/colors.php:249
+#: lib/functions/colors.php:252
 msgid "Button Primary"
 msgstr ""
 
-#: lib/functions/colors.php:250
+#: lib/functions/colors.php:253
 msgid "Button Secondary"
 msgstr ""
 
-#: lib/functions/colors.php:337
+#: lib/functions/colors.php:340
 msgid "Custom color"
 msgstr ""
 
-#: lib/functions/colors.php:338
+#: lib/functions/colors.php:341
 #: assets/js/blocks/layout-settings.js:252
 #: assets/js/blocks/layout-settings.js:285
 #: assets/js/blocks/layout-settings.js:324
