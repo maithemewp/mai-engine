@@ -76,19 +76,3 @@ function mai_header_spacer( $close, $args ) {
 
 	return $close . '<span class="header-spacer"></span>';
 }
-
-/**
- * Adds custom class to single entry titles in Mai Theme v2.
- *
- * @return array
- */
-add_filter( 'genesis_attr_content', 'mai_attr_content_name' );
-function mai_attr_content_name( $attributes ) {
-	if ( isset( $attributes['name'] ) ) {
-		return $attributes;
-	}
-
-	$attributes['name'] = 'content';
-
-	return $attributes;
-}
