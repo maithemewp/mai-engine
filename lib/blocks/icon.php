@@ -62,7 +62,7 @@ function mai_do_icon_block( $block, $content = '', $is_preview = false, $post_id
 		$args[ $setting ] = get_field( $setting );
 	}
 
-	$args['class'] = isset( $block['className'] ) && ! empty( $block['className'] ) ? sanitize_html_class( $block['className'] ) : '';
+	$args['class'] = isset( $block['className'] ) && ! empty( $block['className'] ) ? mai_add_classes( $block['className'] ) : '';
 
 	// Swap for brand.
 	if ( 'brands' === $args['style'] ) {

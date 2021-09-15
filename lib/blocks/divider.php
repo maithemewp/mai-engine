@@ -62,7 +62,7 @@ function mai_do_divider_block( $block, $content = '', $is_preview = false, $post
 		'flip_vertical'   => get_field( 'flip_vertical' ),
 		'flip_horizontal' => get_field( 'flip_horizontal' ),
 		'color'           => get_field( 'color' ),
-		'class'           => isset( $block['className'] ) && ! empty( $block['className'] ) ? sanitize_html_class( $block['className'] ) : '',
+		'class'           => isset( $block['className'] ) && ! empty( $block['className'] ) ? mai_add_classes( $block['className'] ) : '',
 		'align'           => isset( $block['align'] ) ? esc_html( $block['align'] ) : 'full',
 	];
 
@@ -114,7 +114,7 @@ function mai_get_divider( $atts = [] ) {
 		'background_color' => esc_html( $atts['background_color'] ),
 		'color'            => esc_html( $atts['color'] ),
 		'align'            => esc_html( $atts['align'] ),
-		'class'            => sanitize_html_class( $atts['class'] ),
+		'class'            => esc_attr( $atts['class'] ),
 	];
 
 	$flipping_horizontal = $atts['flip_horizontal'] && ! in_array( $atts['style'], [ 'point', 'round' ], true );
