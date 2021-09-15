@@ -63,7 +63,7 @@ module.exports.header = function() {
 		.pipe( notify( { message: config.messages.css } ) );
 };
 
-module.exports.header = function() {
+module.exports.pageheader = function() {
 	return gulp.src( './assets/scss/page-header.scss' )
 		.pipe( plumber() )
 		.pipe( rename( 'page-header.min.scss' ) )
