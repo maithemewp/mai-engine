@@ -116,7 +116,7 @@ function mai_get_color_css( $color ) {
  * Get a color name from hex code.
  *
  * @since 2.13.0
- * @since TBD Checks for duplicates and returns name by priority.
+ * @since 2.17.0 Checks for duplicates and returns name by priority.
  *
  * @param string $hex
  *
@@ -263,7 +263,7 @@ function mai_get_color_elements() {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.17.0
  *
  * @return array
  */
@@ -324,7 +324,7 @@ function mai_get_color_choices() {
 /**
  * Get color choices for ACF radio field.
  *
- * @since TBD
+ * @since 2.17.0
  *
  * @return array
  */

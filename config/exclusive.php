@@ -209,7 +209,7 @@ return [
 		/**
 		 * Convert all more links to button-link.
 		 *
-		 * @since TBD
+		 * @since 2.17.0
 		 *
 		 * @return array
 		 */

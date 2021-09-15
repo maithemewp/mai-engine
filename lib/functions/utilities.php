@@ -302,7 +302,7 @@ function mai_get_full_config() {
  * Slug is used as the key so mai_get_config can merge default
  * plugins with any added in child config.
  *
- * @since TBD
+ * @since 2.17.0
  *
  * @return array
  */

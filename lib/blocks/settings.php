@@ -20,7 +20,7 @@ add_filter( 'acf/prepare_field/key=mai_icon_background', 'mai_prepare_legacy_col
  * Changes value to 'custom' if existing value is a hex value.
  * This is for existing instances of the block prior to TDB.
  *
- * @since TBD
+ * @since 2.17.0
  *
  * @return array
  */
@@ -59,7 +59,7 @@ add_filter( 'acf/format_value/key=mai_icon_background', 'mai_format_acf_color_va
 /**
  * Returns custom color value if set to do so.
  *
- * @since TBD
+ * @since 2.17.0
  *
  * @return string
  */

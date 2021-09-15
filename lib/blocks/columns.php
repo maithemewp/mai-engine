@@ -243,7 +243,7 @@ add_action( 'acf/render_field/type=button_group', 'mai_render_columns_arrangemen
 /**
  * Adds details/summary element to trigger hiding and showing advanced extra settings.
  *
- * @since TBD
+ * @since 2.17.0
  *
  * @return void
  */
