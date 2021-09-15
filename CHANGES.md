@@ -1,9 +1,9 @@
 # Changelog
 
-## 2.17.0
+## 2.17.0 (TBD)
 * Added: Mai Columns now has a "Space" option for alignment to align the columns with space between each item.
 * Added: New shadow setting on individual Mai Column blocks to add default box shadow to the column item.
-* Added: New css custom properties to global override spacing sizes.
+* Added: New CSS custom properties to global override spacing sizes.
 * Added: New CSS custom property to easily override input placeholder font size.
 * Changed: Mai Icons plugin is no longer required for Mai Engine to run.
 * Changed: New block icons for Mai Columns and Mai Post/Term Grid blocks.
@@ -21,7 +21,7 @@
 * Fixed: Center logo on mobile it's the only element displaying.
 * Fixed: Blockquote paragraph spacing when used in a column.
 * Fixed: Image not filling full width in some configurations when Mai Post/Term grid is set to show a background image.
-* Fixed: Aligment width not going full width in the editor in some instances.
+* Fixed: Alignment width not going full width in the editor in some instances.
 * Fixed: JS error when mobile menu toggle is not displayed.
 * Fixed: Mai Reusable Block widget link to edit the actual block was not working.
 * Fixed: Hidden text links on login page in some configurations when header is set to a dark color.
