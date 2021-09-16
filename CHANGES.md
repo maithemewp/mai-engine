@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.17.0 (TBD)
+## 2.17.0 (9/16/21)
 * Added: Mai Columns now has a "Space" option for alignment to align the columns with space between each item.
 * Added: New shadow setting on individual Mai Column blocks to add default box shadow to the column item.
 * Added: New CSS custom properties to global override spacing sizes.
