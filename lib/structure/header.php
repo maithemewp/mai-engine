@@ -155,11 +155,14 @@ function mai_do_title_area() {
 	if ( $elements ) {
 		$first = 'title_area' === reset( $elements );
 		$last  = 'title_area' === end( $elements );
-		if ( $first ) {
-			$class .= ' title-area-first';
-		}
-		if ( $last ) {
-			$class .= ' title-area-last';
+
+		if ( ! ( $first && $last ) ) {
+			if ( $first ) {
+				$class .= ' title-area-first';
+			}
+			if ( $last ) {
+				$class .= ' title-area-last';
+			}
 		}
 	}
 

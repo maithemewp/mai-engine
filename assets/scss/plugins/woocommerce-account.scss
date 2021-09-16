@@ -1,8 +1,11 @@
 @import "../abstracts/_index";
 
+// Mostly for password eye icon.
+@import "../utilities/woocommerce-font";
+
 .woocommerce-MyAccount-navigation {
 	padding: 0;
-	background-color: var(--color-alt);
+	background-color: var(--color-white);
 	border: var(--border);
 	border-bottom: 0;
 	border-radius: var(--border-radius);

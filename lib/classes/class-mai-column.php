@@ -45,6 +45,7 @@ class Mai_Column {
 				'align_column_vertical' => 'start',
 				'spacing'               => '',
 				'background'            => '',
+				'shadow'                => false,
 				'first_xs'              => false,
 				'first_sm'              => false,
 				'first_md'              => false,
@@ -90,17 +91,15 @@ class Mai_Column {
 		}
 
 		if ( $this->args['background'] ) {
-			$colors = array_flip( mai_get_colors() );
-
-			if ( isset( $colors[ $this->args['background'] ] ) ) {
-				$attributes['class'] = mai_add_classes( sprintf( ' has-%s-background-color', $colors[ $this->args['background'] ] ), $attributes['class'] );
-			} else {
-				$attributes['style'] .= sprintf( 'background:%s;', $this->args['background'] );
-			}
+			$attributes['style'] .= sprintf( 'background:%s;', mai_get_color_css( $this->args['background'] ) );
 
 			if ( ! mai_is_light_color( $this->args['background'] ) ) {
 				$attributes['class'] = mai_add_classes( 'has-dark-background', $attributes['class'] );
 			}
+		}
+
+		if ( $this->args['shadow'] ) {
+			$attributes['class'] = mai_add_classes( 'has-shadow', $attributes['class'] );
 		}
 
 		if ( $this->args['first_xs'] ) {
@@ -128,10 +127,11 @@ class Mai_Column {
 	}
 
 	function get_inner_blocks() {
-		$template = [
-			[ 'core/paragraph', [], [] ],
-		];
+		// $template = [
+			// [ 'core/paragraph', [], [] ],
+		// ];
 
-		return sprintf( '<InnerBlocks template="%s" />', esc_attr( wp_json_encode( $template ) ) );
+		// return sprintf( '<InnerBlocks template="%s" />', esc_attr( wp_json_encode( $template ) ) );
+		return '<InnerBlocks />';
 	}
 }

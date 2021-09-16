@@ -39,7 +39,7 @@ function mai_admin_body_classes( $classes ) {
 
 add_action( 'after_setup_theme', 'mai_add_editor_color_palette' );
 /**
- * Description of expected behavior.
+ * Registers editor color palette.
  *
  * @since 0.1.0
  *
@@ -51,7 +51,7 @@ function mai_add_editor_color_palette() {
 
 add_action( 'after_setup_theme', 'mai_add_editor_font_sizes' );
 /**
- * Description of expected behavior.
+ * Registers editor font sizes.
  *
  * @since 0.1.0
  *

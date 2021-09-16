@@ -15,8 +15,8 @@ return [
 	],
 	'global-styles'          => [
 		'colors'                => [
-			'alt'                  => '#1b1e20',
-			'header'               => '#323232',
+			'alt'                  => '#eef0f1',
+			'header'               => '#141618',
 			'body'                 => '#5a636b',
 			'heading'              => '#141618',
 			'link'                 => '#1ced8a',
@@ -26,6 +26,11 @@ return [
 		'fonts'                 => [
 			'body'                 => 'Hind:400',
 			'heading'              => 'Poppins:700,600',
+		],
+	],
+	'image-sizes' => [
+		'add'    => [
+			'square' => '1:1',
 		],
 	],
 	'theme-support'          => [
@@ -75,8 +80,7 @@ return [
 					'genesis_after_entry_content',
 					'genesis_entry_footer',
 				],
-				'image_orientation'   => 'custom',
-				'image_size'          => 'large',
+				'image_orientation'   => 'square',
 				'image_position'      => 'background',
 				'align_text_vertical' => 'bottom',
 			],

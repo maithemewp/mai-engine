@@ -82,13 +82,4 @@ return [
 			],
 		],
 	],
-	'plugins'                 => [
-		[
-			'name'                  => 'WP Forms Lite',
-			'host'                  => 'wordpress',
-			'slug'                  => 'wpforms-lite/wpforms.php',
-			'uri'                   => 'https://wordpress.org/plugins/wpforms-lite/',
-			'demos'                 => [ 'recipes', 'travel' ],
-		],
-	],
 ];

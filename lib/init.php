@@ -383,7 +383,6 @@ function mai_load_files() {
 		'blocks/social-links',
 
 		// Customizer.
-		'customize/plugins',
 		'customize/beta-tester',
 		'customize/colors',
 		'customize/content-archives',
@@ -399,6 +398,7 @@ function mai_load_files() {
 		'customize/site-layouts',
 		'customize/typography',
 		'customize/updates',
+		'customize/upsell',
 	];
 
 	if ( is_admin() ) {

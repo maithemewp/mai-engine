@@ -135,13 +135,23 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Required Plugins
+	| Recommended Plugins
 	|--------------------------------------------------------------------------
 	|
-	| Required plugins to be installed during the plugins step in the setup wizard.
+	| Plugins to be installed during the plugins step in the setup wizard.
 	*/
 
-	'plugins' => [],
+	'plugins' => [
+		'mai-icons/mai-icons.php' => [
+			'name'     => 'Mai Icons',
+			'host'     => 'github',
+			'uri'      => 'maithemewp/mai-icons',
+			'url'      => 'https://bizbudding.com/mai-theme/plugins/mai-icons/',
+			'branch'   => 'master',
+			'token'    => null,
+			'demos'    => [],
+		],
+	],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -489,7 +499,7 @@ return [
 		'footer-credits' => [
 			'hook'       => 'genesis_footer',
 			'priority'   => 12,
-			'menu_order' => 45,
+			'menu_order' => 50,
 			'default'    => '<!-- wp:group {"align":"full","verticalSpacingTop":"xs","verticalSpacingBottom":"xs"} -->
 				<div class="wp-block-group alignfull"><div class="wp-block-group__inner-container"><!-- wp:paragraph {"align":"center","fontSize":"sm"} -->
 				<p class="has-text-align-center has-sm-font-size">Copyright [footer_copyright] · [footer_home_link] · All Rights Reserved · Powered by <a rel="noreferrer noopener" target="_blank" href="https://bizbudding.com/mai-theme/">Mai Theme</a></p>

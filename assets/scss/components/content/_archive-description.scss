@@ -18,11 +18,12 @@
 .archive-page-content {
 	margin: var(--archive-page-content-margin, (var(--archive-page-content-margin-top, 0) auto var(--archive-page-content-margin-bottom, var(--spacing-xl))));
 
-	&:first-child {
+	// This would be better if we knew there was an alignfull block first in the archive content.
+	.no-sidebar &:first-child {
 		--archive-page-content-margin-top: calc(var(--content-sidebar-wrap-margin-top) * -1);
 	}
 
-	&:last-child {
+	.no-sidebar &:last-child {
 		--archive-page-content-margin-bottom: calc(var(--content-sidebar-wrap-margin-bottom) * -1);
 	}
 }

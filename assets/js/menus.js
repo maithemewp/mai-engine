@@ -143,7 +143,9 @@
 		addMenuItemClasses();
 		createSubMenuToggles();
 
-		menuToggle.addEventListener( 'click', toggleMobileMenu, false );
+		if ( menuToggle ) {
+			menuToggle.addEventListener( 'click', toggleMobileMenu, false );
+		}
 
 		document.addEventListener( 'click', function( event ) {
 			if ( event.target.classList.contains( 'sub-menu-toggle' ) || event.target.classList.contains( 'sub-menu-toggle-icon' ) ) {

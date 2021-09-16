@@ -105,15 +105,17 @@ class Mai_Reusable_Block_Widget extends WP_Widget {
 			echo '</select>';
 			echo '</p>';
 
+			if ( $block_selected ) {
+				echo '<p style="font-size: 11px; line-height: 13px;">';
+					printf( '<a href="%s">%s</a>', get_edit_post_link( $block_selected ), esc_html__( 'Edit the currently saved block.', 'mai-engine' ) );
+				echo '</p>';
+			}
+
 		} else {
 			printf( '<p>%s</p>', esc_attr__( 'No saved reusable blocks yet.', 'mai-engine' ) );
 		}
 
 		wp_reset_postdata();
-
-		echo '<p style="font-size: 11px; line-height: 13px;">';
-		printf( '<a href="%s">%s</a>', '#', esc_html__( 'Edit the currently saved block.', 'mai-engine' ) );
-		echo '</p>';
 	}
 
 	/**

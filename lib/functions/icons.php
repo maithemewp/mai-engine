@@ -23,6 +23,17 @@ defined( 'ABSPATH' ) || die;
  * @return null|string
  */
 function mai_get_icon( $args ) {
+	if ( ! class_exists( 'Mai_Icons_Plugin' ) ) {
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		$link = sprintf( '<a target="_blank" href="https://bizbudding.com/mai-theme/plugins/mai-icons/">%s</a>', __( 'Mai Icons', 'mai-engine' ) );
+		$text = sprintf( __( '%s plugin required.', 'mai-engine' ), $link );
+
+		return sprintf( '<p>%s</p>', $text );
+	}
+
 	$args = shortcode_atts(
 		mai_get_icon_default_args(),
 		$args,
@@ -69,7 +80,7 @@ function mai_get_icon( $args ) {
 	}
 
 	if ( $args['color_icon'] ) {
-		$atts['style'] .= sprintf( '--icon-color:%s;', $args['color_icon'] );
+		$atts['style'] .= sprintf( '--icon-color:%s;', mai_get_color_css( $args['color_icon'] ) );
 	}
 
 	if ( $args['color_background'] ) {
@@ -89,10 +100,7 @@ function mai_get_icon( $args ) {
 	}
 
 	if ( $args['border_radius'] ) {
-		$radius        = explode( ' ', trim( $args['border_radius'] ) );
-		$radius        = array_map( 'mai_get_unit_value', $radius );
-		$radius        = array_filter( $radius );
-		$atts['style'] .= sprintf( '--icon-border-radius:%s;', implode( ' ', $radius ) );
+		$atts['style'] .= sprintf( '--icon-border-radius:%s;', $args['border_radius'] );
 	}
 
 	$tag = 'span';
@@ -177,7 +185,7 @@ function mai_get_icon_default_args() {
 		'margin_bottom'        => 0,
 		'padding'              => 0,
 		'border_width'         => 0,
-		'border_radius'        => '50%',
+		'border_radius'        => 'var(--border-radius)',
 		'x_offset'             => 0,
 		'y_offset'             => 0,
 		'blur'                 => 0,

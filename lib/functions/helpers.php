@@ -860,7 +860,7 @@ function mai_add_classes( $new, $existing = '' ) {
 		$space = ! empty( $existing ) ? ' ' : '';
 		$new   = is_array( $new ) ? implode( ' ', $new ) : $new;
 
-		return $existing . $space . $new;
+		return esc_attr( $existing . $space . $new );
 	}
 
 	return $existing;

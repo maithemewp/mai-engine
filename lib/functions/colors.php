@@ -116,14 +116,31 @@ function mai_get_color_css( $color ) {
  * Get a color name from hex code.
  *
  * @since 2.13.0
+ * @since 2.17.0 Checks for duplicates and returns name by priority.
  *
  * @param string $hex
  *
  * @return string|false The color name or false.
  */
 function mai_get_color_name( $hex ) {
-	$colors = array_flip( mai_get_colors() );
-	return mai_isset( $colors, $hex, false );
+	$colors     = mai_get_colors(); // [ slug => #hex ]
+	$duplicates = array_keys( $colors, $hex );
+
+	// Skip if not the winning duplicate.
+	if ( count( $duplicates ) > 1 ) {
+		$priorities = mai_get_color_element_priorities();                            // [ slug => 1 ]
+		$matches    = array_intersect_key( $priorities, array_flip( $duplicates ) ); // [ slug => priority ]
+
+		if ( $matches ) {
+			$winner = array_search( min( $matches ), $matches );
+
+			if ( $winner ) {
+				return $winner;
+			}
+		}
+	}
+
+	return mai_isset( array_flip( $colors ), $hex, false );
 }
 
 /**
@@ -161,6 +178,9 @@ function mai_get_default_color( $name ) {
 /**
  * Returns the color palette variables.
  *
+ * As soon as we can have duplicates it would be great to allow them.
+ * @link https://github.com/WordPress/gutenberg/issues/9357
+ *
  * @since 2.0.0
  *
  * @return array
@@ -172,43 +192,42 @@ function mai_get_editor_color_palette() {
 		return $palette;
 	}
 
-	$colors  = mai_get_colors();
-	$values  = [];
 	$palette = [];
 
 	if ( ! class_exists( 'ariColor' ) ) {
 		return $palette;
 	}
 
-	// Remove empty custom colors.
-	$colors = array_filter( $colors );
+	$colors   = mai_get_colors();         // [ slug => #hex ]
+	$colors   = array_filter( $colors );  // Remove empty custom colors.
+	$elements = mai_get_color_elements(); // [ slug => Name ]
 
-	// Sort colors by lightness.
+	// Sorts colors by lightness.
 	$sorted = [];
-
 	foreach ( $colors as $name => $hex ) {
 		$sorted[ $name ] = ariColor::newColor( $hex )->lightness;
 	}
-
 	asort( $sorted );
 
-	$elements = mai_get_color_elements();
-
+	// Set the values.
+	$values = [];
 	foreach ( $sorted as $name => $lightness ) {
-		$hex = $colors[ $name ];
+		$values[ $name ] = $colors[ $name ];
+	}
 
-		// Remove duplicate hex codes.
-		if ( in_array( $hex, $values, true ) ) {
+	foreach ( $values as $slug => $value ) {
+		// Checks for duplicates.
+		$name = mai_get_color_name( $value );
+
+		if ( $name && $slug !== $name ) {
 			continue;
 		}
 
-		$values[] = $hex;
-
-		// Add color.
+		// Add color to palette.
 		$palette[] = [
-			'name'  => mai_isset( $elements , $name, mai_convert_case( $name, 'title' ) ),
-			'slug'  => mai_convert_case( $name, 'kebab' ),
-			'color' => $hex,
+			'name'  => mai_isset( $elements , $slug, mai_convert_case( $slug, 'title' ) ),
+			'slug'  => mai_convert_case( $slug, 'kebab' ),
+			'color' => $value,
 		];
 	}
 
@@ -236,6 +255,42 @@ function mai_get_color_elements() {
 }
 
 /**
+ * Get color element priorities for when colors are duplicated.
+ * This is in 1st, 2nd, 3rd order. Not priority in terms of hook order.
+ *
+ * This may change or get removed when we no longer need to
+ * remove duplicate colors from `mai_get_editor_color_palette()`.
+ *
+ * @access private
+ *
+ * @since 2.17.0
+ *
+ * @return array
+ */
+function mai_get_color_element_priorities() {
+	static $priorities = null;
+
+	if ( ! is_null( $priorities ) ) {
+		return $priorities;
+	}
+
+	$priorities = [
+		'black'      => 1,
+		'white'      => 2,
+		'background' => 10,
+		'alt'        => 6,
+		'header'     => 9,
+		'body'       => 8,
+		'heading'    => 7,
+		'link'       => 5,
+		'primary'    => 3,
+		'secondary'  => 4,
+	];
+
+	return $priorities;
+}
+
+/**
  * Get color choices for Kirki.
  *
  * @since 2.0.0
@@ -256,7 +311,34 @@ function mai_get_color_choices() {
 		$color_choices[] = $color['color'];
 	}
 
-	$choices = array_flip( array_flip( $color_choices ) );
+	/**
+	 * Make sure no duplicates.
+	 * Eventually I hope to allow duplicates in `mai_get_editor_color_palette()`, see link.
+	 * This is for Customizer which only saves hex values anyway so we don't care about keys/names.
+	 */
+	$choices = array_unique( $color_choices );
+
+	return $choices;
+}
+
+/**
+ * Get color choices for ACF radio field.
+ *
+ * @since 2.17.0
+ *
+ * @return array
+ */
+function mai_get_radio_color_choices() {
+	static $choices = null;
+
+	if ( ! is_null( $choices ) ) {
+		return $choices;
+	}
+
+	$choices = mai_get_editor_color_palette();
+	$choices = wp_list_pluck( $choices, 'name', 'slug' );
+	$choices = array_merge( $choices, [ 'custom' => __( 'Custom color', 'mai-engine' ) ] );
+	$choices = array_merge( [ '' => __( 'Clear', 'mai-engine' ) ], $choices );
 
 	return $choices;
 }

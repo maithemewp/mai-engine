@@ -127,8 +127,9 @@ function mai_posts_nav() {
 								'button',
 								'button-small',
 							];
-							if ( $active ) {
+							if ( ! $active ) {
 								$new_classes[] = 'button-secondary';
+
 							}
 							$new_classes = apply_filters( 'mai_archive_pagination_link_classes', $new_classes, $active, $type );
 							$classes     = mai_add_classes( $new_classes, $classes );

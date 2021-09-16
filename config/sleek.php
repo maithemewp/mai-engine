@@ -158,10 +158,9 @@ return [
 		],
 	],
 	'plugins'       => [
-		[
+		'mai-portfolio/mai-portfolio.php' => [
 			'name'     => 'Mai Portfolio',
 			'host'     => 'github',
-			'slug'     => 'mai-portfolio/mai-portfolio.php',
 			'uri'      => 'maithemewp/mai-portfolio',
 			'url'      => 'https://bizbudding.com/mai-theme/plugins/mai-portfolio/',
 			'branch'   => 'master',

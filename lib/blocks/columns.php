@@ -33,7 +33,7 @@ function mai_register_columns_blocks() {
 			'render_callback' => 'mai_do_columns_block',
 			'category'        => 'layout',
 			'keywords'        => [ 'columns' ],
-			'icon'            => mai_get_svg_icon( 'columns', 'light' ),
+			'icon'            => '<svg role="img" aria-hidden="true" focusable="false" style="display:block;" width="20" height="20" viewBox="0 0 96 96" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g transform="matrix(0.75,0,0,0.780483,12,10.5366)"><g transform="matrix(1,0,0,0.851775,31,-1.2925)"><g transform="matrix(0.116119,-0.108814,0.238273,0.223283,16.9541,72.8004)"><rect x="-19.25" y="116.35" width="165.54" height="14" style="fill:currentColor;"/></g><g transform="matrix(0.185237,-0.173584,0.238273,0.223283,6.84275,60.9146)"><rect x="-19.25" y="116.35" width="165.54" height="14" style="fill:currentColor;"/></g><g transform="matrix(0.185237,-0.173584,0.238273,0.223283,6.84275,39.5536)"><rect x="-19.25" y="116.35" width="165.54" height="14" style="fill:currentColor;"/></g><g transform="matrix(0.185237,-0.173584,0.238273,0.223283,6.84275,18.5536)"><rect x="-19.25" y="116.35" width="165.54" height="14" style="fill:currentColor;"/></g><g transform="matrix(0.0966534,-0.0905728,0.238273,0.223283,5.13751,-0.987447)"><rect x="-19.25" y="116.35" width="165.54" height="14" style="fill:currentColor;"/></g></g><g transform="matrix(1,0,0,0.851775,-4.26326e-14,-1.2925)"><g transform="matrix(0.116119,-0.108814,0.238273,0.223283,16.9541,72.8004)"><rect x="-19.25" y="116.35" width="165.54" height="14" style="fill:currentColor;"/></g><g transform="matrix(0.185237,-0.173584,0.238273,0.223283,6.84275,60.9146)"><rect x="-19.25" y="116.35" width="165.54" height="14" style="fill:currentColor;"/></g><g transform="matrix(0.185237,-0.173584,0.238273,0.223283,6.84275,39.5536)"><rect x="-19.25" y="116.35" width="165.54" height="14" style="fill:currentColor;"/></g><g transform="matrix(0.185237,-0.173584,0.238273,0.223283,6.84275,18.5536)"><rect x="-19.25" y="116.35" width="165.54" height="14" style="fill:currentColor;"/></g><g transform="matrix(0.0966534,-0.0905728,0.238273,0.223283,5.13751,-0.987447)"><rect x="-19.25" y="116.35" width="165.54" height="14" style="fill:currentColor;"/></g></g><g transform="matrix(1,0,0,0.851775,-31,-1.2925)"><g transform="matrix(0.116119,-0.108814,0.238273,0.223283,16.9541,72.8004)"><rect x="-19.25" y="116.35" width="165.54" height="14" style="fill:currentColor;"/></g><g transform="matrix(0.185237,-0.173584,0.238273,0.223283,6.84275,60.9146)"><rect x="-19.25" y="116.35" width="165.54" height="14" style="fill:currentColor;"/></g><g transform="matrix(0.185237,-0.173584,0.238273,0.223283,6.84275,39.5536)"><rect x="-19.25" y="116.35" width="165.54" height="14" style="fill:currentColor;"/></g><g transform="matrix(0.185237,-0.173584,0.238273,0.223283,6.84275,18.5536)"><rect x="-19.25" y="116.35" width="165.54" height="14" style="fill:currentColor;"/></g><g transform="matrix(0.0966534,-0.0905728,0.238273,0.223283,5.13751,-0.987447)"><rect x="-19.25" y="116.35" width="165.54" height="14" style="fill:currentColor;"/></g></g><g transform="matrix(-0.268797,0,0,0.273288,155.348,7.00041)"><path d="M328.678,18.753L328.678,281.297L243.112,281.297L243.112,18.753M351,-0C351,-0.003 235.671,-0 235.671,-0C225.663,0.022 220.806,3.089 220.79,12.502L220.79,287.548C220.806,293.834 229.385,300.034 235.671,300.05L351,300.05L351,-0Z" style="fill:currentColor;fill-rule:nonzero;"/></g><g transform="matrix(0.291836,0,0,0.273288,-35.4345,7.00041)"><g><path d="M330.441,18.753L330.441,281.297L241.349,281.297L241.349,18.753M351,-0C351,-0.003 220.79,-0 220.79,-0L220.79,300.05L351,300.05L351,-0Z" style="fill:currentColor;fill-rule:nonzero;"/></g></g><g transform="matrix(0.268797,0,0,0.273288,-59.3476,7.00041)"><path d="M328.678,18.753L328.678,281.297L243.112,281.297L243.768,18.753M351,-0C351,-0.003 235.671,-0 235.671,-0C225.663,0.022 220.806,3.089 220.79,12.502L220.79,287.548C220.806,293.834 229.385,300.034 235.671,300.05L351,300.05L351,-0Z" style="fill:currentColor;fill-rule:nonzero;"/></g></g></svg>',
 			'supports'        => [
 				'align' => [ 'wide', 'full' ],
 				'mode'  => false,
@@ -50,7 +50,7 @@ function mai_register_columns_blocks() {
 			'render_callback' => 'mai_do_column_block',
 			'category'        => 'layout',
 			'keywords'        => [],
-			'icon'            => mai_get_svg_icon( 'rectangle-portrait', 'light' ),
+			'icon'            => '<svg role="img" aria-hidden="true" focusable="false" style="display:block;" width="20" height="20" viewBox="0 0 96 96" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g transform="matrix(0.75,0,0,0.780483,12,10.5366)"><g transform="matrix(1,0,0,0.851775,-31,-1.2925)"><g transform="matrix(0.116119,-0.108814,0.238273,0.223283,16.9541,72.8004)"><rect x="-19.25" y="116.35" width="165.54" height="14" style="fill:currentColor;"/></g><g transform="matrix(0.185237,-0.173584,0.238273,0.223283,6.84275,60.9146)"><rect x="-19.25" y="116.35" width="165.54" height="14" style="fill:currentColor;"/></g><g transform="matrix(0.185237,-0.173584,0.238273,0.223283,6.84275,39.5536)"><rect x="-19.25" y="116.35" width="165.54" height="14" style="fill:currentColor;"/></g><g transform="matrix(0.185237,-0.173584,0.238273,0.223283,6.84275,18.5536)"><rect x="-19.25" y="116.35" width="165.54" height="14" style="fill:currentColor;"/></g><g transform="matrix(0.0966534,-0.0905728,0.238273,0.223283,5.13751,-0.987447)"><rect x="-19.25" y="116.35" width="165.54" height="14" style="fill:currentColor;"/></g></g><g transform="matrix(-0.268797,0,0,0.273288,155.348,7.00041)"><path d="M328.678,18.753L328.678,281.297L243.112,281.297L243.112,18.753M351,-0C351,-0.003 235.671,-0 235.671,-0C225.663,0.022 220.806,3.089 220.79,12.502L220.79,287.548C220.806,293.834 229.385,300.034 235.671,300.05L351,300.05L351,-0Z" style="fill:currentColor;fill-rule:nonzero;"/></g><g transform="matrix(0.291836,0,0,0.273288,-35.4345,7.00041)"><g><path d="M330.441,18.753L330.441,281.297L241.349,281.297L241.349,18.753M351,-0C351,-0.003 220.79,-0 220.79,-0L220.79,300.05L351,300.05L351,-0Z" style="fill:currentColor;fill-rule:nonzero;"/></g></g><g transform="matrix(0.268797,0,0,0.273288,-59.3476,7.00041)"><path d="M328.678,18.753L328.678,281.297L243.112,281.297L243.768,18.753M351,-0C351,-0.003 235.671,-0 235.671,-0C225.663,0.022 220.806,3.089 220.79,12.502L220.79,287.548C220.806,293.834 229.385,300.034 235.671,300.05L351,300.05L351,-0Z" style="fill:currentColor;fill-rule:nonzero;"/></g></g></svg>',
 			'parent'          => [ 'acf/mai-columns' ],
 			'supports'        => [
 				'align' => false,
@@ -89,7 +89,6 @@ function mai_do_columns_block( $block, $content = '', $is_preview = false, $post
 
 	$columns = new Mai_Columns( $instance, $args[ $instance ] );
 	$columns->render();
-
 	$instance++;
 }
 
@@ -112,6 +111,7 @@ function mai_do_column_block( $block, $content = '', $is_preview = false, $post_
 		'align_column_vertical' => get_field( 'align_column_vertical' ),
 		'spacing'               => get_field( 'spacing' ),
 		'background'            => get_field( 'background' ),
+		'shadow'                => get_field( 'shadow' ),
 		'first_xs'              => get_field( 'first_xs' ),
 		'first_sm'              => get_field( 'first_sm' ),
 		'first_md'              => get_field( 'first_md' ),
@@ -239,6 +239,37 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 	return $block_content;
 }
 
+add_action( 'acf/render_field/type=button_group', 'mai_render_columns_arrangement_field', 4 );
+/**
+ * Adds details/summary element to trigger hiding and showing advanced extra settings.
+ *
+ * @since 2.17.0
+ *
+ * @return void
+ */
+function mai_render_columns_arrangement_field( $field ) {
+	if ( ! in_array( $field['key'],
+		[
+			'mai_columns_arrangement_columns',
+			'mai_columns_md_arrangement_columns',
+			'mai_columns_sm_arrangement_columns',
+			'mai_columns_xs_arrangement_columns',
+		]
+		)) {
+		return;
+	}
+
+	// Load open if using a hidden value.
+	$open = $field['value'] && in_array( $field['value'], [ '1/12', '1/8', '1/6', '1/5', '3/8', '2/5', '3/5', '5/8', '4/5', '5/6', '7/8', '11/12' ] );
+
+	printf( '<details%s><summary><span class="more-text">↓ %s</span><span class="less-text">↑ %s</span> %s</summary></details>',
+		$open ? ' open' : '',
+		__( 'More', 'mai-engine' ),
+		__( 'Less', 'mai-engine' ),
+		__( 'options', 'mai-engine' )
+	);
+}
+
 add_action( 'acf/init', 'mai_register_columns_field_groups' );
 /**
  * Register Mai Columns block field group.
@@ -253,27 +284,29 @@ function mai_register_columns_field_groups() {
 	}
 
 	$column_choices = [
+		'1/4'   => __( '1/4', 'mai-engine' ),
+		'1/3'   => __( '1/3', 'mai-engine' ),
+		'1/2'   => __( '1/2', 'mai-engine' ),
+		'2/3'   => __( '2/3', 'mai-engine' ),
+		'3/4'   => __( '3/4', 'mai-engine' ),
 		'1/12'  => __( '1/12', 'mai-engine' ),
 		'1/8'   => __( '1/8', 'mai-engine' ),
 		'1/6'   => __( '1/6', 'mai-engine' ),
 		'1/5'   => __( '1/5', 'mai-engine' ),
-		'1/4'   => __( '1/4', 'mai-engine' ),
-		'1/3'   => __( '1/3', 'mai-engine' ),
 		'3/8'   => __( '3/8', 'mai-engine' ),
 		'2/5'   => __( '2/5', 'mai-engine' ),
-		'1/2'   => __( '1/2', 'mai-engine' ),
 		'3/5'   => __( '3/5', 'mai-engine' ),
 		'5/8'   => __( '5/8', 'mai-engine' ),
-		'2/3'   => __( '2/3', 'mai-engine' ),
-		'3/4'   => __( '3/4', 'mai-engine' ),
 		'4/5'   => __( '4/5', 'mai-engine' ),
 		'5/6'   => __( '5/6', 'mai-engine' ),
 		'7/8'   => __( '7/8', 'mai-engine' ),
 		'11/12' => __( '11/12', 'mai-engine' ),
-		'full'  => __( 'Full Width', 'mai-engine' ),
-		'fill'  => __( 'Fill Space', 'mai-engine' ),
-		'auto'  => __( 'Auto', 'mai-engine' ),
+		'auto'  => sprintf( '%s </span>%s</span>', __( 'Fit', 'mai-engine' ), __( 'Content', 'mai-engine' ) ),
+		'fill'  => sprintf( '%s </span>%s</span>', __( 'Fill', 'mai-engine' ), __( 'Space', 'mai-engine' ) ),
+		'full'  => sprintf( '%s </span>%s</span>', __( 'Full', 'mai-engine' ), __( 'Width', 'mai-engine' ) ),
 	];
+
+	$arrangement_instructions = __( 'Custom arrangements will repeat in the sequence you set here. Only set one value if you want all columns to be the same.', 'mai-engine' );
 
 	acf_add_local_field_group( [
 		'key'                 => 'mai_columns_field_group',
@@ -292,7 +325,7 @@ function mai_register_columns_field_groups() {
 					5                  => '5',
 					6                  => '6',
 					0                  => __( 'Auto', 'mai-engine' ),
-					'custom'           => __( 'Custom', 'mai-engine' ),
+					'custom'           => __( 'Custom arrangement', 'mai-engine' ),
 				],
 				'default_value'     => 2,
 			],
@@ -312,7 +345,7 @@ function mai_register_columns_field_groups() {
 			],
 			[
 				'key'               => 'mai_columns_arrangement_tab',
-				'label'             => mai_get_svg_icon( 'desktop', 'light' ),
+				'label'             => __( 'LG', 'mai-engine' ),
 				'type'              => 'tab',
 				'conditional_logic' => [
 					[
@@ -328,6 +361,7 @@ function mai_register_columns_field_groups() {
 				'key'               => 'mai_columns_arrangement',
 				'label'             => __( 'Arrangement (desktop)', 'mai-engine' ),
 				'name'              => 'arrangement',
+				'instructions'      => $arrangement_instructions,
 				'type'              => 'repeater',
 				'conditional_logic' => [
 					[
@@ -347,7 +381,7 @@ function mai_register_columns_field_groups() {
 						'key'             => 'mai_columns_arrangement_columns',
 						'label'           => '',
 						'name'            => 'columns',
-						'type'            => 'select',
+						'type'            => 'button_group',
 						'choices'         => $column_choices,
 						'default_value'   => '1/3',
 					],
@@ -355,7 +389,7 @@ function mai_register_columns_field_groups() {
 			],
 			[
 				'key'               => 'mai_columns_arrangement_md_tab',
-				'label'             => mai_get_svg_icon( 'laptop', 'light' ),
+				'label'             => __( 'MD', 'mai-engine' ),
 				'type'              => 'tab',
 				'conditional_logic' => [
 					[
@@ -371,6 +405,7 @@ function mai_register_columns_field_groups() {
 				'key'               => 'mai_columns_md_arrangement',
 				'label'             => __( 'Arrangement (lg tablets)', 'mai-engine' ),
 				'name'              => 'arrangement_md',
+				'instructions'      => $arrangement_instructions,
 				'type'              => 'repeater',
 				'conditional_logic' => [
 					[
@@ -390,7 +425,7 @@ function mai_register_columns_field_groups() {
 						'key'             => 'mai_columns_md_arrangement_columns',
 						'label'           => '',
 						'name'            => 'columns',
-						'type'            => 'select',
+						'type'            => 'button_group',
 						'choices'         => $column_choices,
 						'default_value'   => '1/3',
 					],
@@ -398,7 +433,7 @@ function mai_register_columns_field_groups() {
 			],
 			[
 				'key'               => 'mai_columns_arrangement_sm_tab',
-				'label'             => mai_get_svg_icon( 'tablet', 'light' ),
+				'label'             => __( 'SM', 'mai-engine' ),
 				'type'              => 'tab',
 				'conditional_logic' => [
 					[
@@ -414,6 +449,7 @@ function mai_register_columns_field_groups() {
 				'key'               => 'mai_columns_sm_arrangement',
 				'label'             => __( 'Arrangement (sm tablets)', 'mai-engine' ),
 				'name'              => 'arrangement_sm',
+				'instructions'      => $arrangement_instructions,
 				'type'              => 'repeater',
 				'conditional_logic' => [
 					[
@@ -433,7 +469,7 @@ function mai_register_columns_field_groups() {
 						'key'             => 'mai_columns_sm_arrangement_columns',
 						'label'           => '',
 						'name'            => 'columns',
-						'type'            => 'select',
+						'type'            => 'button_group',
 						'choices'         => $column_choices,
 						'default_value'   => '1/2',
 					],
@@ -441,7 +477,7 @@ function mai_register_columns_field_groups() {
 			],
 			[
 				'key'               => 'mai_columns_arrangement_xs_tab',
-				'label'             => mai_get_svg_icon( 'mobile', 'light' ),
+				'label'             => __( 'XS', 'mai-engine' ),
 				'type'              => 'tab',
 				'conditional_logic' => [
 					[
@@ -457,6 +493,7 @@ function mai_register_columns_field_groups() {
 				'key'               => 'mai_columns_xs_arrangement',
 				'label'             => __( 'Arrangement (mobile)', 'mai-engine' ),
 				'name'              => 'arrangement_xs',
+				'instructions'      => $arrangement_instructions,
 				'type'              => 'repeater',
 				'conditional_logic' => [
 					[
@@ -476,7 +513,7 @@ function mai_register_columns_field_groups() {
 						'key'             => 'mai_columns_xs_arrangement_columns',
 						'label'           => '',
 						'name'            => 'columns',
-						'type'            => 'select',
+						'type'            => 'button_group',
 						'choices'         => $column_choices,
 						'default_value'   => 'full',
 					],
@@ -499,6 +536,7 @@ function mai_register_columns_field_groups() {
 					'start'            => __( 'Start', 'mai-engine' ),
 					'center'           => __( 'Center', 'mai-engine' ),
 					'end'              => __( 'End', 'mai-engine' ),
+					'between'          => __( 'Space', 'mai-engine' ),
 				],
 				'default_value'     => 'start',
 				'wrapper'           => [
@@ -643,10 +681,33 @@ function mai_register_columns_field_groups() {
 				],
 			],
 			[
-				'key'       => 'mai_column_background',
-				'label'     => __( 'Background Color', 'mai-engine' ),
-				'name'      => 'background',
-				'type'      => 'color_picker',
+				'key'     => 'mai_column_background',
+				'label'   => __( 'Background Color', 'mai-engine' ),
+				'name'    => 'background',
+				'type'    => 'radio',
+				'choices' => mai_get_radio_color_choices(),
+				'wrapper' => [
+					'class' => 'mai-block-colors',
+				],
+			],
+			[
+				'key'               => 'mai_column_background_custom',
+				'name'              => 'background_custom',
+				'type'              => 'color_picker',
+				'conditional_logic' => [
+					[
+						'field'    => 'mai_column_background',
+						'operator' => '==',
+						'value'    => 'custom',
+					],
+				],
+			],
+			[
+				'key'               => 'mai_columns_shadow',
+				'name'              => 'shadow',
+				'label'             => '',
+				'message'           => esc_html__( 'Add box shadow', 'mai-engine' ),
+				'type'              => 'true_false',
 			],
 			[
 				'key'               => 'mai_columns_first_xs',

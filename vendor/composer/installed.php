@@ -6,15 +6,15 @@
     'aliases' => 
     array (
     ),
-    'reference' => '45bd24795619655770cd7ec0c06174ae20f5908a',
+    'reference' => 'af6e7859a99dfb763d440edcc56d68bd25571de6',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
   array (
     'advanced-custom-fields/advanced-custom-fields-pro' => 
     array (
-      'pretty_version' => '5.9.9',
-      'version' => '5.9.9.0',
+      'pretty_version' => '5.10.2',
+      'version' => '5.10.2.0',
       'aliases' => 
       array (
       ),
@@ -49,12 +49,12 @@
     ),
     'composer/installers' => 
     array (
-      'pretty_version' => 'v1.11.0',
-      'version' => '1.11.0.0',
+      'pretty_version' => 'v1.12.0',
+      'version' => '1.12.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'ae03311f45dfe194412081526be2e003960df74b',
+      'reference' => 'd20a64ed3c94748397ff5973488761b22f6d3f19',
     ),
     'ffraenz/private-composer-installer' => 
     array (
@@ -67,12 +67,12 @@
     ),
     'graham-campbell/result-type' => 
     array (
-      'pretty_version' => 'v1.0.1',
-      'version' => '1.0.1.0',
+      'pretty_version' => 'v1.0.2',
+      'version' => '1.0.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => '7e279d2cd5d7fbb156ce46daada972355cea27bb',
+      'reference' => '84afea85c6841deeea872f36249a206e878a5de0',
     ),
     'maithemewp/mai-engine' => 
     array (
@@ -81,16 +81,16 @@
       'aliases' => 
       array (
       ),
-      'reference' => '45bd24795619655770cd7ec0c06174ae20f5908a',
+      'reference' => 'af6e7859a99dfb763d440edcc56d68bd25571de6',
     ),
     'phpoption/phpoption' => 
     array (
-      'pretty_version' => '1.7.5',
-      'version' => '1.7.5.0',
+      'pretty_version' => '1.8.0',
+      'version' => '1.8.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '994ecccd8f3283ecf5ac33254543eb0ac946d525',
+      'reference' => '5455cb38aed4523f99977c4a12ef19da4bfe2a28',
     ),
     'proteusthemes/wp-content-importer-v2' => 
     array (

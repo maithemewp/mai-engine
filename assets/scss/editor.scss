@@ -19,7 +19,7 @@ body {
 	min-height: auto;
 	background: var(--color-white);
 
-	--viewport-width: calc(100vw - var(--admin-menu-width, 160px) - var(--block-sidebar-width, 0));
+	--viewport-width: calc(100vw - var(--admin-menu-width, 160px) - var(--block-sidebar-width, 0px)); // Requires 0px for calc().
 	--body-background-color: var(--color-white);
 	--list-style-position: outside;
 	--list-padding: 0 0 var(--spacing-lg) var(--spacing-xl); // Adds list indent/spacing without affecting block layout.
@@ -378,6 +378,54 @@ input[type="submit"],
 	display: flex;
 	flex-direction: column;
 	justify-content: var(--justify-content, flex-start);
+}
+
+.mai-column .block-editor-block-list__layout[data-is-drop-zone="true"]:empty {
+	position: relative;
+	width: 100%;
+	height: 36px;
+	box-shadow: inset 0 0 0 1px var(--mai-block-appender-color, #1e1e1e);
+}
+
+// This is only needed if you delete the empty "Type / to choose a block" element from the column.
+.mai-column .block-editor-block-list__layout[data-is-drop-zone="true"]:empty::after {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	color: var(--mai-block-appender-color, #1e1e1e);
+	font-size: 24px;
+	content: "+";
+}
+
+.mai-column .block-editor-block-list__layout[data-is-drop-zone="true"]:empty:hover,
+.mai-column .block-editor-block-list__layout[data-is-drop-zone="true"]:empty:focus {
+	--mai-block-appender-color: var(--wp-admin-theme-color);
+	cursor: pointer;
+}
+
+.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-list-appender {
+	flex: 1 1 100%;
+	margin: 16px 0 16px var(--column-gap);
+}
+
+.block-list-appender__toggle[aria-label$="Mai Column"] {
+	position: relative;
+}
+
+.block-list-appender__toggle[aria-label$="Mai Column"]::after {
+	position: absolute;
+	top: 50%;
+	left: calc(100% + 10px);
+	display: block;
+	width: 200px;
+	text-align: left;
+	transform: translateY(-50%);
+	content: attr(aria-label);
 }
 
 /* .mai-column */
