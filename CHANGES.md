@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.17.1 (9/17/21)
+* Fixed: Archive single sortable settings not showing checkmarks in Chrome.
+* Fixed: New color picker settings weren't always showing the color name on hover.
+
 ## 2.17.0 (9/16/21)
 * Added: Mai Columns now has a "Space" option for alignment to align the columns with space between each item.
 * Added: New shadow setting on individual Mai Column blocks to add default box shadow to the column item.
