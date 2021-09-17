@@ -174,8 +174,16 @@ wp.domReady( () => {
 		 */
 		acf.addAction( 'ready_field/key=mai_grid_block_show', initialize_sortable_field );
 		acf.addAction( 'append_field/key=mai_grid_block_show', initialize_sortable_field );
+
 		acf.addAction( 'ready_field/key=mai_column_background', initialize_color_field );
+		acf.addAction( 'ready_field/key=mai_divider_color', initialize_color_field );
+		acf.addAction( 'ready_field/key=mai_icon_color', initialize_color_field );
+		acf.addAction( 'ready_field/key=mai_icon_background', initialize_color_field );
+
 		acf.addAction( 'append_field/key=mai_column_background', initialize_color_field );
+		acf.addAction( 'append_field/key=mai_divider_color', initialize_color_field );
+		acf.addAction( 'append_field/key=mai_icon_color', initialize_color_field );
+		acf.addAction( 'append_field/key=mai_icon_background', initialize_color_field );
 	}
 
 } )( jQuery );
