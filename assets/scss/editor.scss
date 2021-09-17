@@ -257,6 +257,12 @@ input[type="submit"],
 	}
 }
 
+// Remove default spacing on .wp-block from classic.css in WP core.
+.mai-divider {
+	margin-top: -28px;
+	margin-bottom: -28px;
+}
+
 .wp-block-search {
 
 	// When no alignment is set the wp-block is the same as the search block.

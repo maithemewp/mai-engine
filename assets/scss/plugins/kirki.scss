@@ -101,7 +101,7 @@
 
 /* this is to match ACF's checkbox styling. */
 .customize-control.customize-control-kirki-sortable ul.ui-sortable li:not(.invisible) .dashicons.visibility::before {
-	display: flex;
+	display: block;
 	width: 100%;
 	height: 100%;
 	margin: 1px 0 0 -1px;
