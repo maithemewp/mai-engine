@@ -100,7 +100,7 @@ function mai_get_icon( $args ) {
 	}
 
 	if ( $args['border_radius'] ) {
-		$atts['style'] .= sprintf( '--icon-border-radius:%s;', $args['border_radius'] );
+		$atts['style'] .= sprintf( '--icon-border-radius:%s;', mai_get_unit_value( $args['border_radius'] ) );
 	}
 
 	$tag = 'span';
