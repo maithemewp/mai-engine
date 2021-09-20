@@ -1440,7 +1440,7 @@ class Mai_Entry {
 			return;
 		}
 
-		echo genesis_get_author_box( 'single' );
+		echo mai_get_processed_content( genesis_get_author_box( 'single' ) );
 	}
 
 	/**

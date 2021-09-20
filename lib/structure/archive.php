@@ -253,5 +253,5 @@ function mai_do_author_archive_author_box() {
 	global $authordata;
 	$authordata = is_object( $authordata ) ? $authordata : get_userdata( get_query_var( 'author' ) );
 
-	echo genesis_get_author_box_by_user( $authordata->ID );
+	echo mai_get_processed_content( genesis_get_author_box_by_user( $authordata->ID ) );
 }
