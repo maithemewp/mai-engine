@@ -15,19 +15,20 @@
 
 .header-left-mobile {
 	justify-content: flex-start;
+	--search-icon-form-right: unset;
+	--search-icon-form-left: 0;
 }
 
 .header-right-mobile {
 	justify-content: flex-end;
+	--search-icon-form-right: 0;
+	--search-icon-form-left: unset;
 }
 
 .header-search {
 	order: var(--header-search-order, unset);
-	--search-icon-form-position: static;
 	--search-toggle-icon-width: 1.5em;
-	--search-icon-form-right: 0;
-	--search-icon-form-left: 0;
-	--search-icon-form-width: var(--viewport-width);
+	--search-icon-form-width: calc(var(--viewport-width) - (var(--side-spacing) * 2));
 	--search-input-width: 100%;
 	--search-input-max-width: 100%;
 }
