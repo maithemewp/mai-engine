@@ -7,6 +7,8 @@
 	--menu-font-size: 1rem;
 	--menu-text-transform: uppercase;
 	--button-background-hover: var(--color-primary-light);
+	--input-border: 1px solid var(--color-black);
+	--entry-meta-margin: 0 0 var(--spacing-md) 0;
 }
 
 .site-title {
@@ -48,6 +50,7 @@
 }
 
 .has-heading-line::after {
+	position: static; /* for editor styles */
 	display: block;
 	flex: 1;
 	width: 100%;
@@ -79,9 +82,10 @@
 	padding: var(--spacing-xxxxs) var(--spacing-xs);
 	color: var(--color-white);
 	font-weight: var(--menu-font-weight);
+	font-size: var(--font-size-xs);
 	font-family: var(--menu-font-family);
 	text-transform: uppercase;
-	background: var(--entry-term-link-background, var(--color-primary));
+	background: var(--entry-term-link-background, var(--color-black));
 }
 
 .entry-categories a:hover,
@@ -90,7 +94,12 @@
 .entry-tags a:focus,
 .entry-terms a:hover,
 .entry-terms a:focus {
-	--entry-term-link-background: var(--color-primary-light);
+	--entry-term-link-background: var(--entry-term-link-background-hover, var(--color-primary));
+}
+
+.has-image-background {
+	--entry-term-link-background: var(--color-primary);
+	--entry-term-link-background-hover: var(--color-primary-light);
 }
 
 .entry-more-link.button-link {
@@ -119,4 +128,9 @@
 		position: sticky;
 		top: var(--body-top);
 	}
+}
+
+.author-box,
+.adjacent-entry-pagination {
+	--border: 1px solid var(--color-black);
 }
