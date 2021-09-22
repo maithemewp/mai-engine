@@ -162,11 +162,30 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 		return $block_content;
 	}
 
-	$xpath    = new DOMXPath( $dom );
-	$elements = $xpath->query( 'div[contains(concat(" ", normalize-space(@class), " "), " mai-columns-wrap ")]/div[contains(concat(" ", normalize-space(@class), " "), " mai-column ")]' );
+	$xpath = new DOMXPath( $dom );
+	$query = $xpath->query( 'div[contains(concat(" ", normalize-space(@class), " "), " mai-columns-wrap ")]/div[contains(concat(" ", normalize-space(@class), " "), " mai-column ")]' );
 
-	if ( ! $elements->length ) {
+	if ( ! $query->length ) {
 		return $block_content;
+	}
+
+	$elements    = [];
+	$breakpoints = [ 'xs', 'sm', 'md', 'lg' ];
+
+	foreach ( $query as $element ) {
+		$style = $element->getAttribute( 'style' );
+
+		foreach ( $breakpoints as $breakpoint ) {
+			if ( ! isset( $elements[ $breakpoint ] ) ) {
+				$elements[ $breakpoint ] = [];
+			}
+
+			if ( mai_has_string( sprintf( '--order-%s:-1', $breakpoint ), $style ) && isset( $elements[ $breakpoint ] ) ) {
+				$elements[ $breakpoint ] = array_merge( [ $element ], $elements[ $breakpoint ] );
+			} else {
+				$elements[ $breakpoint ] = array_merge( $elements[ $breakpoint ], [ $element ] );
+			}
+		}
 	}
 
 	if ( 'custom' === $args['columns'] ) {
@@ -175,7 +194,7 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 			$total_arrangements = count( $arrangement );
 			$element_i          = 0;
 
-			foreach ( $elements as $element ) {
+			foreach ( $elements[ $break ] as $element ) {
 				$style = $element->getAttribute( 'style' );
 
 				$element->setAttribute( 'data-instance', $instance );
@@ -213,10 +232,12 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 
 	} else {
 
-		foreach ( $elements as $element ) {
-			$style = $element->getAttribute( 'style' );
+		foreach ( $elements as $break => $elements ) {
 
-			foreach ( $args['arrangements'] as $break => $column ) {
+			foreach ( $elements as $element ) {
+				$style  = $element->getAttribute( 'style' );
+				$column = $args['arrangements'][ $break ];
+
 				if ( $flex = mai_columns_get_flex( $column ) ) {
 					$style .= sprintf( '--flex-%s:%s;', $break, $flex );
 				}
@@ -224,12 +245,12 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 				if ( $max_width = mai_columns_get_max_width( $column ) ) {
 					$style .= sprintf( '--max-width-%s:%s;', $break, $max_width );
 				}
-			}
 
-			if ( $style ) {
-				$element->setAttribute( 'style', $style );
-			} else {
-				$element->removeAttribute( 'style' );
+				if ( $style ) {
+					$element->setAttribute( 'style', $style );
+				} else {
+					$element->removeAttribute( 'style' );
+				}
 			}
 		}
 	}
