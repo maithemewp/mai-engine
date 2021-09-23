@@ -26,6 +26,7 @@
 }
 
 .header-search {
+	z-index: 1;
 	order: var(--header-search-order, unset);
 	--search-toggle-icon-width: 1.5em;
 	--search-icon-form-width: calc(var(--viewport-width) - (var(--side-spacing) * 2));
