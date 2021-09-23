@@ -93,6 +93,7 @@ h6.has-background {
 	--entry-overlay-opacity: 0.1;
 	--entry-overlay-hover-color-start: var(--color-primary);
 	--entry-overlay-hover-color-end: var(--color-primary);
+	--entry-wrap-background: var(--color-white);
 
 	.entry-wrap {
 		padding: var(--spacing-md);
