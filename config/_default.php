@@ -450,7 +450,7 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Template Parts
+	| Content Areas
 	|--------------------------------------------------------------------------
 	|
 	| Default template parts to be created and available for use.

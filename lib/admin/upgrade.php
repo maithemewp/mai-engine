@@ -139,7 +139,7 @@ function mai_upgrade_2_11_0() {
 		delete_transient( 'mai_template_parts' );
 		delete_transient( 'mai_demo_template_parts' );
 		flush_rewrite_rules( false );
-		$text   = __( 'Template Parts successfully updated for compatibility with WP 5.7+.', 'mai-engine' );
+		$text   = __( 'Content Areas successfully updated for compatibility with WP 5.7+.', 'mai-engine' );
 		$notice = sprintf( '<div class="notice notice-success is-dismissable"><p>%s</p></div>', $text );
 
 	} else {

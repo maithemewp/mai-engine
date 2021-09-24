@@ -47,8 +47,8 @@ function mai_admin_menu_pages() {
 
 	add_submenu_page(
 		'mai-theme',
-		esc_html__( 'Template Parts', 'mai-engine' ),
-		esc_html__( 'Template Parts', 'mai-engine' ),
+		esc_html__( 'Content Areas', 'mai-engine' ),
+		esc_html__( 'Content Areas', 'mai-engine' ),
 		'edit_posts',
 		'edit.php?post_type=mai_template_part',
 		'',

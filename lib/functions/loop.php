@@ -548,7 +548,7 @@ function mai_get_single_show_choices() {
 		'footer_meta'                  => esc_html__( 'Footer Meta', 'mai-engine' ),
 		'genesis_entry_footer'         => 'genesis_entry_footer',
 		'author_box'                   => esc_html__( 'Author Box', 'mai-engine' ),
-		'after_entry'                  => esc_html__( 'After Entry Template Part', 'mai-engine' ),
+		'after_entry'                  => esc_html__( 'After Entry Content Area', 'mai-engine' ),
 		'adjacent_entry_nav'           => esc_html__( 'Previous/Next Entry Nav', 'mai-engine' ),
 	];
 

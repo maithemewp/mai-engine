@@ -24,17 +24,17 @@ add_action( 'init', 'mai_register_template_part_cpt' );
  */
 function mai_register_template_part_cpt() {
 	$labels = [
-		'name'                  => __( 'Template Parts', 'mai-engine' ),
-		'singular_name'         => __( 'Template Part', 'mai-engine' ),
-		'menu_name'             => _x( 'Template Parts', 'Admin Menu text', 'mai-engine' ),
-		'add_new'               => _x( 'Add New', 'Template Part', 'mai-engine' ),
-		'add_new_item'          => __( 'Add New Template Part', 'mai-engine' ),
-		'new_item'              => __( 'New Template Part', 'mai-engine' ),
-		'edit_item'             => __( 'Edit Template Part', 'mai-engine' ),
-		'view_item'             => __( 'View Template Part', 'mai-engine' ),
-		'all_items'             => __( 'Template Parts', 'mai-engine' ),
-		'search_items'          => __( 'Search Template Parts', 'mai-engine' ),
-		'parent_item_colon'     => __( 'Parent Template Part:', 'mai-engine' ),
+		'name'                  => __( 'Content Areas', 'mai-engine' ),
+		'singular_name'         => __( 'Content Area', 'mai-engine' ),
+		'menu_name'             => _x( 'Content Areas', 'Admin Menu text', 'mai-engine' ),
+		'add_new'               => _x( 'Add New', 'Content Area', 'mai-engine' ),
+		'add_new_item'          => __( 'Add New Content Area', 'mai-engine' ),
+		'new_item'              => __( 'New Content Area', 'mai-engine' ),
+		'edit_item'             => __( 'Edit Content Area', 'mai-engine' ),
+		'view_item'             => __( 'View Content Area', 'mai-engine' ),
+		'all_items'             => __( 'Content Areas', 'mai-engine' ),
+		'search_items'          => __( 'Search Content Areas', 'mai-engine' ),
+		'parent_item_colon'     => __( 'Parent Content Area:', 'mai-engine' ),
 		'not_found'             => __( 'No template parts found.', 'mai-engine' ),
 		'not_found_in_trash'    => __( 'No template parts found in Trash.', 'mai-engine' ),
 		'archives'              => __( 'Template part archives', 'mai-engine' ),
@@ -117,10 +117,10 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
 		[
 			'id'     => 'mai-template-parts',
 			'parent' => 'site-name',
-			'title'  => __( 'Template Parts', 'mai-engine' ),
+			'title'  => __( 'Content Areas', 'mai-engine' ),
 			'href'   => admin_url( 'edit.php?post_type=mai_template_part' ),
 			'meta'   => [
-				'title' => __( 'Edit Template Parts', 'mai-engine' ),
+				'title' => __( 'Edit Content Areas', 'mai-engine' ),
 			],
 		]
 	);
