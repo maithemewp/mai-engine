@@ -35,12 +35,12 @@ function mai_register_template_part_cpt() {
 		'all_items'             => __( 'Content Areas', 'mai-engine' ),
 		'search_items'          => __( 'Search Content Areas', 'mai-engine' ),
 		'parent_item_colon'     => __( 'Parent Content Area:', 'mai-engine' ),
-		'not_found'             => __( 'No template parts found.', 'mai-engine' ),
-		'not_found_in_trash'    => __( 'No template parts found in Trash.', 'mai-engine' ),
+		'not_found'             => __( 'No content areas found.', 'mai-engine' ),
+		'not_found_in_trash'    => __( 'No content areas found in Trash.', 'mai-engine' ),
 		'archives'              => __( 'Template part archives', 'mai-engine' ),
 		'insert_into_item'      => __( 'Insert in to template part', 'mai-engine' ),
 		'uploaded_to_this_item' => __( 'Uploaded to this template part', 'mai-engine' ),
-		'filter_items_list'     => __( 'Filter template parts list', 'mai-engine' ),
+		'filter_items_list'     => __( 'Filter content areas list', 'mai-engine' ),
 		'items_list_navigation' => __( 'Template parts list navigation', 'mai-engine' ),
 		'items_list'            => __( 'Template parts list', 'mai-engine' ),
 	];
@@ -242,7 +242,7 @@ function mai_get_template_part_id( $slug ) {
 }
 
 /**
- * Returns an array of template parts.
+ * Returns an array of content areas.
  * Slugs must exist in the config.
  *
  * @since 2.6.0
@@ -360,8 +360,8 @@ function mai_render_template_part( $slug, $before = '', $after = '' ) {
 }
 
 /**
- * Creates default template parts from config.
- * Skips existing template parts.
+ * Creates default content areas from config.
+ * Skips existing content areas.
  *
  * @access private
  *
@@ -399,8 +399,8 @@ function mai_create_template_parts() {
 }
 
 /**
- * Imports template parts from the demo.
- * Skips existing template parts.
+ * Imports content areas from the demo.
+ * Skips existing content areas.
  *
  * @access private
  *
@@ -754,7 +754,7 @@ function mai_get_new_image_from_url( $image_url, $filename = '' ) {
 }
 
 /**
- * Gets template parts content from the demo.
+ * Gets content areas content from the demo.
  * Caches via a transient.
  *
  * Requires Mai Demo Exporter plugin to be active on the demo site.

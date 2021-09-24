@@ -153,7 +153,7 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Imports template parts JSON.
+	 * Imports content areas JSON.
 	 *
 	 * @since 1.0.0
 	 *

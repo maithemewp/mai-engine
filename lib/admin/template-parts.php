@@ -60,7 +60,7 @@ function mai_import_template_part_action() {
 
 add_action( 'admin_post_mai_generate_template_parts_action', 'mai_generate_template_parts_action' );
 /**
- * Listener for generating default template parts.
+ * Listener for generating default content areas.
  *
  * @since 2.10.0
  *
@@ -78,13 +78,13 @@ function mai_generate_template_parts_action() {
 
 		switch ( $count ) {
 			case 0:
-				$message = __( 'Sorry, no template parts are available.', 'mai-engine' );
+				$message = __( 'Sorry, no content areas are available.', 'mai-engine' );
 			break;
 			case 1:
-				$message = sprintf( '%s %s', $count, __( 'default template parts successfully created.', 'mai-engine' ) );
+				$message = sprintf( '%s %s', $count, __( 'default content areas successfully created.', 'mai-engine' ) );
 			break;
 			default:
-				$message = sprintf( '%s %s', $count, __( 'default template parts successfully created.', 'mai-engine' ) );
+				$message = sprintf( '%s %s', $count, __( 'default content areas successfully created.', 'mai-engine' ) );
 		}
 
 
@@ -107,7 +107,7 @@ function mai_generate_template_parts_action() {
 
 add_action( 'load-edit.php', 'mai_template_parts_admin_notice' );
 /**
- * Adds admin notice to template parts.
+ * Adds admin notice to content areas.
  *
  * @since 2.6.0
  *
@@ -243,7 +243,7 @@ function mai_template_parts_import_row_action( $actions, $post ) {
 
 add_filter( 'display_post_states', 'mai_template_part_post_state', 10, 2 );
 /**
- * Display active template parts.
+ * Display active content areas.
  *
  * @since 2.0.0
  *
@@ -337,7 +337,7 @@ function mai_template_parts_order( $query ) {
 
 add_action( 'current_screen', 'mai_widgets_template_parts_admin_notice' );
 /**
- * Adds admin notice for template parts to widgets screen.
+ * Adds admin notice for content areas to widgets screen.
  *
  * @since 2.6.0
  *
@@ -353,7 +353,7 @@ function mai_widgets_template_parts_admin_notice( $screen ) {
 			'<div class="notice notice-warning is-dismissible"><p>%s <a href="%s">%s</a>.</p></div>',
 			__( 'Mai Theme uses "Content Areas" (block-based widget areas).', 'mai-engine' ),
 			admin_url( 'edit.php?post_type=mai_template_part' ),
-			__( 'Edit template parts now', 'mai-engine' )
+			__( 'Edit content areas now', 'mai-engine' )
 		);
 	});
 }

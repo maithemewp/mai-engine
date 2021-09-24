@@ -453,7 +453,7 @@ return [
 	| Content Areas
 	|--------------------------------------------------------------------------
 	|
-	| Default template parts to be created and available for use.
+	| Default content areas to be created and available for use.
 	*/
 
 	'template-parts' => [

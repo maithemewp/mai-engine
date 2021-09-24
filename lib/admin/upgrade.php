@@ -143,7 +143,7 @@ function mai_upgrade_2_11_0() {
 		$notice = sprintf( '<div class="notice notice-success is-dismissable"><p>%s</p></div>', $text );
 
 	} else {
-		$text   = __( 'Error migrating template parts.', 'mai-engine' );
+		$text   = __( 'Error migrating content areas.', 'mai-engine' );
 		$text   = $message ? $text . ' ' . $message : $text;
 		$notice = sprintf(
 			'<div class="notice notice-error"><p>%s <a target="_blank" href="https://docs.bizbudding.com/support/">%s</a>.</p></div>',
