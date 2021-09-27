@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-09-24T20:30:01+00:00\n"
+"POT-Creation-Date: 2021-09-27T19:47:32+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -1513,7 +1513,7 @@ msgstr ""
 #: lib/admin/template-parts.php:127
 #: lib/functions/templates.php:27
 #: lib/functions/templates.php:35
-#: lib/functions/templates.php:120
+#: lib/functions/templates.php:123
 msgid "Content Areas"
 msgstr ""
 
@@ -1526,7 +1526,7 @@ msgid "Requires \"Content\" in order to import images."
 msgstr ""
 
 #: lib/classes/class-mai-setup-wizard-fields.php:250
-msgid "Moves any existing template parts into the trash."
+msgid "Moves any existing content areas into the trash."
 msgstr ""
 
 #: lib/classes/class-mai-setup-wizard-fields.php:254
@@ -1730,7 +1730,7 @@ msgstr ""
 #: lib/admin/settings.php:61
 #: lib/admin/settings.php:70
 #: lib/admin/settings.php:71
-#: lib/functions/templates.php:132
+#: lib/functions/templates.php:135
 msgid "Reusable Blocks"
 msgstr ""
 
@@ -1762,12 +1762,12 @@ msgid "Go back."
 msgstr ""
 
 #: lib/admin/template-parts.php:81
-msgid "Sorry, no template parts are available."
+msgid "Sorry, no content areas are available."
 msgstr ""
 
 #: lib/admin/template-parts.php:84
 #: lib/admin/template-parts.php:87
-msgid "default template parts successfully created."
+msgid "default content areas successfully created."
 msgstr ""
 
 #: lib/admin/template-parts.php:126
@@ -1803,7 +1803,7 @@ msgid "Mai Theme uses \"Content Areas\" (block-based widget areas)."
 msgstr ""
 
 #: lib/admin/template-parts.php:356
-msgid "Edit template parts now"
+msgid "Edit content areas now"
 msgstr ""
 
 #: lib/admin/upgrade.php:142
@@ -1811,7 +1811,7 @@ msgid "Content Areas successfully updated for compatibility with WP 5.7+."
 msgstr ""
 
 #: lib/admin/upgrade.php:146
-msgid "Error migrating template parts."
+msgid "Error migrating content areas."
 msgstr ""
 
 #: lib/admin/upgrade.php:151
@@ -2079,11 +2079,11 @@ msgid "Parent Content Area:"
 msgstr ""
 
 #: lib/functions/templates.php:38
-msgid "No template parts found."
+msgid "No content areas found."
 msgstr ""
 
 #: lib/functions/templates.php:39
-msgid "No template parts found in Trash."
+msgid "No content areas found in Trash."
 msgstr ""
 
 #: lib/functions/templates.php:40
@@ -2099,7 +2099,7 @@ msgid "Uploaded to this template part"
 msgstr ""
 
 #: lib/functions/templates.php:43
-msgid "Filter template parts list"
+msgid "Filter content areas list"
 msgstr ""
 
 #: lib/functions/templates.php:44
@@ -2114,32 +2114,32 @@ msgstr ""
 msgid "Template parts to include in your templates."
 msgstr ""
 
-#: lib/functions/templates.php:81
-#: lib/functions/templates.php:94
+#: lib/functions/templates.php:84
+#: lib/functions/templates.php:97
 msgid "The theme that provided the template part, if any."
 msgstr ""
 
-#: lib/functions/templates.php:123
+#: lib/functions/templates.php:126
 msgid "Edit Content Areas"
 msgstr ""
 
-#: lib/functions/templates.php:135
+#: lib/functions/templates.php:138
 msgid "Edit Reusable Blocks"
 msgstr ""
 
-#: lib/functions/templates.php:449
+#: lib/functions/templates.php:452
 msgid "Sorry, no template part available for this theme."
 msgstr ""
 
-#: lib/functions/templates.php:467
+#: lib/functions/templates.php:470
 msgid "Sorry, this template part is already in use."
 msgstr ""
 
-#: lib/functions/templates.php:479
+#: lib/functions/templates.php:482
 msgid "Sorry, "
 msgstr ""
 
-#: lib/functions/templates.php:479
+#: lib/functions/templates.php:482
 msgid "template part already exists"
 msgstr ""
 
@@ -2343,15 +2343,15 @@ msgstr ""
 msgid "Latest Posts"
 msgstr ""
 
-#: lib/structure/page-header.php:465
+#: lib/structure/page-header.php:466
 msgid "Search results for: "
 msgstr ""
 
-#: lib/structure/page-header.php:474
+#: lib/structure/page-header.php:475
 msgid "Archives for "
 msgstr ""
 
-#: lib/structure/page-header.php:486
+#: lib/structure/page-header.php:487
 msgid "Not found, error 404"
 msgstr ""
 

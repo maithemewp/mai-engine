@@ -45,7 +45,7 @@
 	// Handles search toggle and form.
 	searchToggles.forEach( function( searchToggle ) {
 		searchToggle.addEventListener( 'click', toggleSearchForm, false );
-	} );
+	});
 } )();
 
 function maiAriaOpen( element ) {

@@ -121,7 +121,7 @@
 	};
 
 	var maybeCloseMobileMenu = function( event ) {
-		if ( ! event.target.closest( '.site-header, .mobile-menu' ) || 27 == event.keyCode ) {
+		if ( ! event.target.closest( '.site-header, .mobile-menu' ) || event.target.closest( '.search-toggle' ) || 27 == event.keyCode ) {
 			toggleMobileMenu();
 		}
 	};
