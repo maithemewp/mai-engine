@@ -479,18 +479,18 @@ function mai_has_page_header() {
 
 	if ( mai_is_type_archive() ) {
 		$has_page_header = in_array( mai_get_archive_args_name(), mai_get_page_header_types( 'archive' ), true );
-	}
 
-	if ( mai_is_type_single() ) {
+	} elseif ( mai_is_type_single() ) {
 		$has_page_header = in_array( mai_get_singular_args_name(), mai_get_page_header_types( 'single' ), true );
 
+		// TODO: Is this needed?
 		if ( genesis_entry_header_hidden_on_current_page() ) {
 			$has_page_header = false;
 		}
+	}
 
-		if ( mai_is_element_hidden( 'page_header' ) ) {
-			$has_page_header = false;
-		}
+	if ( $has_page_header && mai_is_element_hidden( 'page_header' ) ) {
+		$has_page_header = false;
 	}
 
 	return $has_page_header;
@@ -780,12 +780,21 @@ function mai_array_map_recursive( callable $func, array $array ) {
  * @return mixed
  */
 function mai_is_element_hidden( $element, $post_id = '' ) {
-	if ( ! is_singular() && ! $post_id ) {
-		return false;
+	if ( ! $post_id ) {
+		if ( is_singular() ) {
+			$post_id = get_the_ID();
+
+		} elseif ( 'page' === get_option( 'show_on_front' ) ) {
+			if ( is_front_page() ) {
+				$post_id = get_option( 'page_on_front' );
+			} elseif ( is_home() ) {
+				$post_id = get_option( 'page_for_posts' );
+			}
+		}
 	}
 
 	if ( ! $post_id ) {
-		$post_id = get_the_ID();
+		return false;
 	}
 
 	// Can't be static, entry-title breaks.

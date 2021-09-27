@@ -17,7 +17,33 @@ add_action( 'genesis_before', function() {
 	remove_filter( 'genesis_term_intro_text_output', 'genesiswooc_term_intro_text_output' );
 });
 
-// Enable shortcodes in archive description.
+add_action( 'genesis_before', 'mai_maybe_hide_blog_page_title' );
+/**
+ * Hides blog page title if static blog page setting is checked.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_maybe_hide_blog_page_title() {
+	if ( is_singular() && ! is_home() ) {
+		return;
+	}
+
+	if ( ! mai_is_element_hidden( 'entry_title' ) ) {
+		return;
+	}
+
+	remove_action( 'genesis_before_loop', 'genesis_do_posts_page_heading' );
+}
+
+/**
+ * Enable shortcodes in archive description.
+ *
+ * @since 2.0.0
+ *
+ * @return string
+ */
 add_filter( 'genesis_cpt_archive_intro_text_output', 'do_shortcode' );
 
 add_filter( 'excerpt_more', 'mai_read_more_ellipsis' );
@@ -100,10 +126,14 @@ add_action( 'mai_archives_description', 'mai_do_blog_description' );
  * @return void
  */
 function mai_do_blog_description() {
+	// Bail if not the blog page.
+	if ( ! ( is_home() && 'page' === get_option( 'show_on_front' ) ) ) {
+		return;
+	}
+
 	$posts_page = get_option( 'page_for_posts' );
 
-	// Bail if not the blog page.
-	if ( ! ( is_home() && $posts_page ) ) {
+	if ( ! $posts_page ) {
 		return;
 	}
 

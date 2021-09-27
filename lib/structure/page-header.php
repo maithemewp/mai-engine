@@ -355,7 +355,6 @@ function mai_get_page_header_image_id() {
 		if ( $post_id ) {
 			$image_id = get_post_meta( $post_id, 'page_header_image', true );
 		}
-
 	}
 	// elseif ( is_home() && 'page' === get_option( 'show_on_front' ) ) {
 	// 	$post_id = get_option( 'page_for_posts' );
@@ -429,9 +428,11 @@ function mai_get_page_header_title() {
 		$title = get_the_title();
 
 	} elseif ( is_front_page() ) {
+		// This would only run if front page is not a static page, since is_singular() is first.
 		$title = apply_filters( 'genesis_latest_posts_title', esc_html__( 'Latest Posts', 'mai-engine' ) );
 
 	} elseif ( is_home() ) {
+		// This would only run if front page and blog page are static pages, since is_front_page() is first.
 		$title = get_the_title( get_option( 'page_for_posts' ) );
 
 	} elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
