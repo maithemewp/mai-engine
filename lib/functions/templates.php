@@ -59,6 +59,9 @@ function mai_register_template_part_cpt() {
 		'rest_base'         => 'template-parts',
 		'map_meta_cap'      => true,
 		'can_export'        => true,
+		'capabilities'      => [
+			'create_posts' => 'do_not_allow',
+		],
 		'supports'          => [
 			'title',
 			'slug',
@@ -780,7 +783,7 @@ function mai_get_template_parts_from_demo() {
 					$body  = wp_remote_retrieve_body( $request );
 					$data  = json_decode( $body );
 
-					if ( $data ) {
+					if ( $data && isset( $data['content_raw'] ) ) {
 						$parts = wp_list_pluck( $data, 'content_raw', 'slug' );
 
 						if ( $parts ) {
