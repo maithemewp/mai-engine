@@ -8,13 +8,26 @@
 	root.style.setProperty( '--scrollbar-width', scrollBarWidth + 'px' );
 
 	var toggleSearchFormEvent = function( event ) {
-		var element = event.target.closest( '.search-icon-form' );
+		var elements = [];
+		var visible  = document.querySelectorAll( '.search-form-visible' );
+		var current  = event.target.closest( '.search-icon-form' );
 
-		if ( ! element ) {
+		// Add visible first, so they are closed before opening the current form.
+		if ( visible ) {
+			elements.push( ...visible );
+		}
+
+		if ( current ) {
+			elements.push( current );
+		}
+
+		if ( ! elements ) {
 			return;
 		}
 
-		toggleSearchForm( element );
+		elements.forEach( function( element ) {
+			toggleSearchForm( element );
+		});
 	}
 
 	var toggleSearchForm = function( element ) {
