@@ -80,7 +80,7 @@
 	--link-text-decoration: none;
 	--link-text-decoration-hover: none;
 	padding: var(--spacing-xxxxs) var(--spacing-xs);
-	color: var(--color-white);
+	color: var(--entry-term-link-color, var(--color-white));
 	font-weight: var(--menu-font-weight);
 	font-size: var(--font-size-xs);
 	font-family: var(--menu-font-family);
