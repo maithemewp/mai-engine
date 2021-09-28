@@ -8,26 +8,13 @@
 	root.style.setProperty( '--scrollbar-width', scrollBarWidth + 'px' );
 
 	var toggleSearchFormEvent = function( event ) {
-		var elements = [];
-		var visible  = document.querySelectorAll( '.search-form-visible' );
-		var current  = event.target.closest( '.search-icon-form' );
+		var element = event.target.closest( '.search-icon-form' );
 
-		// Add visible first, so they are closed before opening the current form.
-		if ( visible ) {
-			elements.push( ...visible );
-		}
-
-		if ( current ) {
-			elements.push( current );
-		}
-
-		if ( ! elements ) {
+		if ( ! element ) {
 			return;
 		}
 
-		elements.forEach( function( element ) {
-			toggleSearchForm( element );
-		});
+		toggleSearchForm( element );
 	}
 
 	var toggleSearchForm = function( element ) {
@@ -39,9 +26,6 @@
 
 		var form   = parent.querySelector( '.search-form' );
 		var toggle = parent.querySelector( '.search-toggle' );
-		var input  = parent.querySelector( '.search-form-input' );
-
-		input.setAttribute( 'required', '' );
 
 		maiToggleAriaValues( toggle );
 
@@ -50,6 +34,7 @@
 		if ( form.classList.contains( 'search-form-visible' ) ) {
 			body.addEventListener( 'keydown', maybeHideSearchForm, false );
 			body.addEventListener( 'click', maybeHideSearchForm, false );
+			form.querySelector( '.search-form-input' ).focus();
 		} else {
 			body.removeEventListener( 'keydown', maybeHideSearchForm, false );
 			body.removeEventListener( 'click', maybeHideSearchForm, false );
