@@ -1401,9 +1401,15 @@ function mai_get_search_form( $args = [] ) {
 	if ( ! class_exists( 'Genesis_Search_Form' ) ) {
 		return get_search_form( false );
 	}
-
+	$filter = function( $attributes ) {
+		$attributes['required'] = true;
+		return $attributes;
+	};
+	add_filter( 'genesis_attr_search-form-input', $filter );
 	$searchform = new Genesis_Search_Form( $args );
-	return $searchform->get_form();
+	$form       = $searchform->get_form();
+	remove_filter( 'genesis_attr_search-form-input', $filter );
+	return $form;
 }
 
 /**
