@@ -1095,7 +1095,9 @@ class Mai_Entry {
 		// Single needs the_content() directly, to parse_blocks and other filters.
 		if ( 'single' === $this->context ) {
 			echo $open;
+			do_action( "mai_before_entry_content_inner", $this->entry, $this->args );
 			the_content();
+			do_action( "mai_after_entry_content_inner", $this->entry, $this->args );
 			$this->do_post_content_nav();
 			echo $close;
 
@@ -1126,10 +1128,11 @@ class Mai_Entry {
 			}
 
 			echo $open;
+			do_action( "mai_before_entry_content_inner", $this->entry, $this->args );
 			echo apply_filters( 'mai_entry_content', $content, $this->args, $this->entry );
+			do_action( "mai_after_entry_content_inner", $this->entry, $this->args );
 			echo $close;
 		}
-
 	}
 
 	/**
