@@ -350,9 +350,9 @@ function mai_custom_scroll_logo( $html, $blog_id ) {
 	if ( $first ) {
 		$img = $dom->createElement( 'img' );
 		$img->setAttribute( 'class', 'custom-scroll-logo' );
-		$img->setAttribute( 'src', $logo_url );
+		$img->setAttribute( 'src', esc_url( $logo_url ) );
 		$img->setAttribute( 'loading', 'lazy' );
-		$first->insertBefore( $img );
+		$first->appendChild( $img );
 		$html = $dom->saveHTML();
 	}
 
