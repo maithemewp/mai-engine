@@ -294,6 +294,37 @@ function mai_write_to_file( $value, $filename = '__debug' ) {
 	fclose( $handle );
 }
 
+add_action( 'plugins_loaded', 'mai_load_vendor_plugins' );
+/**
+ * Load mai-engine included plugin files.
+ * This needs to run earlier than the other files.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_load_vendor_plugins() {
+	$files = [];
+
+	if ( ! class_exists( 'acf_pro' ) ) {
+		$files[] = '../vendor/advanced-custom-fields/advanced-custom-fields-pro/acf';
+	}
+
+	if ( ! class_exists( 'Kirki' ) ) {
+		$files[] = '../vendor/aristath/kirki/kirki';
+	}
+
+	if ( ! $files ) {
+		return;
+	}
+
+	foreach ( $files as $file ) {
+		require_once __DIR__ . "/$file.php";
+	}
+}
+
 add_action( 'after_setup_theme', 'mai_load_files', 0 );
 /**
  * Load mai-engine files, or deactivate if active theme is not supported.
@@ -421,13 +452,13 @@ function mai_load_files() {
 		);
 	}
 
-	if ( ! class_exists( 'acf_pro' ) ) {
-		$files[] = '../vendor/advanced-custom-fields/advanced-custom-fields-pro/acf';
-	}
+	// if ( ! class_exists( 'acf_pro' ) ) {
+	// 	$files[] = '../vendor/advanced-custom-fields/advanced-custom-fields-pro/acf';
+	// }
 
-	if ( ! class_exists( 'Kirki' ) ) {
-		$files[] = '../vendor/aristath/kirki/kirki';
-	}
+	// if ( ! class_exists( 'Kirki' ) ) {
+	// 	$files[] = '../vendor/aristath/kirki/kirki';
+	// }
 
 	if ( class_exists( 'FacetWP' ) ) {
 		$files[] = 'support/facetwp';
