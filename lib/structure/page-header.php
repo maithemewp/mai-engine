@@ -130,6 +130,7 @@ function mai_do_page_header_image() {
 
 	if ( $image_id ) {
 		$image_size = mai_get_page_header_image_size();
+
 		echo wp_get_attachment_image( $image_id, $image_size, false, [ 'class' => 'page-header-image' ] );
 	}
 }

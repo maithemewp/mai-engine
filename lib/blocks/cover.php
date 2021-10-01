@@ -84,8 +84,12 @@ function mai_render_cover_block( $block_content, $block ) {
 
 					// Replace srcset.
 					$srcset = $image->getAttribute( 'srcset' );
-					$srcset = str_replace( $image_url, $new_url, $srcset );
-					$image->setAttribute( 'srcset', $srcset );
+
+					// Not sure why, but this doesn't always show srcet and breaks. See #515.
+					if ( $srcset ) {
+						$srcset = str_replace( $image_url, $new_url, $srcset );
+						$image->setAttribute( 'srcset', $srcset );
+					}
 
 					// Convert inline style to custom property.
 					$image_style = $image->getAttribute( 'style' );
