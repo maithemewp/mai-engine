@@ -111,6 +111,7 @@ function mai_setup_wizard_menu( $args ) {
 	$args['parent_slug'] = 'mai-theme';
 	$args['menu_slug']   = 'mai-setup-wizard';
 	$args['menu_title']  = __( 'Setup Wizard', 'mai-engine' );
+	$args['position']    = 99;
 
 	return $args;
 }
