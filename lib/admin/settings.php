@@ -37,8 +37,8 @@ function mai_admin_menu_pages() {
 	// Changes first menu name. Otherwise above has Mai Theme as the first child too.
 	add_submenu_page(
 		'mai-theme',
-		esc_html__( 'About', 'mai-engine' ),
-		esc_html__( 'About', 'mai-engine' ),
+		esc_html__( 'About Mai Theme', 'mai-engine' ),
+		esc_html__( 'About Mai Theme', 'mai-engine' ),
 		'edit_posts',
 		'mai-theme',
 		'',
@@ -101,14 +101,14 @@ function mai_render_admin_menu_page() {
 	echo '<iframe style="display:block;width:calc(100% + var(--mai-admin-content-left));height:calc(100vh - var(--mai-admin-toolbar));position:absolute;top:0;left:calc(var(--mai-admin-content-left) * -1);z-index: 9999;" width="400" height="800" frameborder="0" scrolling="yes" seamless="seamless" src="https://bizbudding.com/mai-engine-admin/"></iframe>';
 }
 
+add_action( 'admin_menu', 'mai_admin_menu_subpages', 30 );
 /**
- * Add docs and support admin submenu items.
+ * Add docs and support admin submenu items to end of submenu.
  *
  * @since 2.6.0
  *
  * @return void
  */
-add_action( 'admin_menu', 'mai_admin_menu_subpages', 30 );
 function mai_admin_menu_subpages() {
 	global $submenu;
 
