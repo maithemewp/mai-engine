@@ -69,6 +69,7 @@ function mai_login_css() {
 			color: var(--color-white);
 		}
 		body.login #login {
+			margin: auto !important;
 			padding: 1vw 0 0;
 		}
 		.login .message,
