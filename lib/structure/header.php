@@ -352,6 +352,7 @@ function mai_custom_scroll_logo( $html, $blog_id ) {
 		$img->setAttribute( 'class', 'custom-scroll-logo' );
 		$img->setAttribute( 'src', esc_url( $logo_url ) );
 		$img->setAttribute( 'loading', 'lazy' );
+		$img->setAttribute( 'data-pin-nopin', 'true' );
 		$first->appendChild( $img );
 		$html = $dom->saveHTML();
 	}
