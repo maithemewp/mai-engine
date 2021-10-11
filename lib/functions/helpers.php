@@ -943,7 +943,7 @@ function mai_has_woocommerce_blocks() {
 	if ( is_singular() ) {
 		$post = get_post();
 
-		if ( $post && mai_has_woocommerce_blocks( $post->post_content ) ) {
+		if ( $post && mai_has_woocommerce_block( $post->post_content ) ) {
 			$has_blocks = true;
 		}
 	}
@@ -954,7 +954,7 @@ function mai_has_woocommerce_blocks() {
 
 		if ( $template_parts ) {
 			foreach ( $template_parts as $content ) {
-				if ( mai_has_woocommerce_blocks( $content ) ) {
+				if ( mai_has_woocommerce_block( $content ) ) {
 					$has_blocks = true;
 				}
 			}
