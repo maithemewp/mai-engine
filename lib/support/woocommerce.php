@@ -217,3 +217,32 @@ function mai_cart_total_fragment( $fragments ) {
 	$fragments['mai-cart-total'] = mai_get_cart_total();
 	return $fragments;
 }
+
+add_filter( 'render_block', 'mai_render_woocommerce_blocks', 10, 2 );
+/**
+ * Add our button classes to the button link.
+ *
+ * This allows us to only have CSS on button instead of wp-block-button__link.
+ * Remove default button wrapper class so we don't have to compete with core styles.
+ *
+ * @since  TBD
+ *
+ * @param  string $block_content The existing block content.
+ * @param  object $block         The button block object.
+ *
+ * @return string The modified block HTML.
+ */
+function mai_render_woocommerce_blocks( $block_content, $block ) {
+	if ( ! $block_content ) {
+		return $block_content;
+	}
+
+	// Bail if not a button block.
+	if ( ! mai_has_string( 'woocommerce/', $block['blockName'] ) ) {
+		return $block_content;
+	}
+
+	$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link button button-secondary button-small', $block_content );
+
+	return $block_content;
+}
