@@ -923,3 +923,29 @@ function mai_get_width_height_attribute( $value, $fallback = false ) {
 	}
 	return $fallback ? absint( $fallback ) : absint( filter_var( $value, FILTER_SANITIZE_NUMBER_INT ) );
 }
+
+/**
+ * Checks if a string of content has at least one WooCommerce block.
+ *
+ * @since TBD
+ *
+ * @param string $content HTML to parse.
+ *
+ * @return bool
+ */
+function mai_has_woocommerce_blocks( $content ) {
+	if ( ! has_blocks( $content ) ) {
+		return false;
+	}
+
+	$blocks = parse_blocks( $content );
+
+	if ( ! $blocks ) {
+		return false;
+	}
+
+	$names = wp_list_pluck( $blocks, 'blockName', 'blockName' );
+	$names = implode( ' ', $names );
+
+	return mai_has_string( 'woocommerce/', $names );
+}
