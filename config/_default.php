@@ -325,7 +325,17 @@ return [
 			'location'  => 'public',
 			'async'     => true,
 			'condition' => function() {
-				return class_exists( 'WooCommerce' ) && ( is_shop() || is_product_taxonomy() || is_product() || is_cart() );
+				if ( class_exists( 'WooCommerce' ) ) {
+					if ( is_shop() || is_product_taxonomy() || is_product() || is_cart() ) {
+						return true;
+					}
+
+					if ( mai_has_woocommerce_blocks() ) {
+						return true;
+					}
+				}
+
+				return false;
 			},
 		],
 		'woocommerce-cart'       => [

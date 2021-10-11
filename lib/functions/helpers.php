@@ -925,15 +925,55 @@ function mai_get_width_height_attribute( $value, $fallback = false ) {
 }
 
 /**
+ * Checks if a page has at least one WooCommerce block.
+ *
+ * @since TBD
+ * *
+ * @return bool
+ */
+function mai_has_woocommerce_blocks() {
+	static $has_blocks = null;
+
+	if ( ! is_null( $has_blocks ) ) {
+		return $has_blocks;
+	}
+
+	$has_blocks = false;
+
+	if ( is_singular() ) {
+		$post = get_post();
+
+		if ( $post && mai_has_woocommerce_blocks( $post->post_content ) ) {
+			$has_blocks = true;
+		}
+	}
+
+	if ( ! $has_blocks ) {
+
+		$template_parts = mai_get_template_parts();
+
+		if ( $template_parts ) {
+			foreach ( $template_parts as $content ) {
+				if ( mai_has_woocommerce_blocks( $content ) ) {
+					$has_blocks = true;
+				}
+			}
+		}
+	}
+
+	$has_blocks = apply_filters( 'mai_has_woocommerce_blocks', $has_blocks );
+
+	return $has_blocks;
+}
+
+/**
  * Checks if a string of content has at least one WooCommerce block.
  *
  * @since TBD
- *
- * @param string $content HTML to parse.
- *
+ * *
  * @return bool
  */
-function mai_has_woocommerce_blocks( $content ) {
+function mai_has_woocommerce_block( $content ) {
 	if ( ! has_blocks( $content ) ) {
 		return false;
 	}
