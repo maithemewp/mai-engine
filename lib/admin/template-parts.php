@@ -357,3 +357,47 @@ function mai_widgets_template_parts_admin_notice( $screen ) {
 		);
 	});
 }
+
+add_action( 'acf/init', 'mai_register_template_parts_acf_location' );
+/**
+ * Registers custom location rules for ACF metaboxes.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_register_template_parts_acf_location() {
+	if ( ! function_exists( 'acf_register_location_type' ) ) {
+		return;
+	}
+
+	class Mai_Template_Part_ACF_Location extends ACF_Location {
+
+		public function initialize() {
+			$this->public      = false;
+			$this->category    = 'post';
+			$this->object_type = 'post';
+			$this->name        = 'mai_template_part';
+			$this->label       = __( 'Mai Content Area', 'mai-custom-content-area' );
+		}
+
+		public static function get_operators( $rule ) {
+			return [
+				'==' => __( 'is', 'mai-custom-content-area' ),
+			];
+		}
+
+		public function get_values( $rule ) {
+			return [
+				'config' => __( 'Registered via config.php', 'mai-custom-content-area' ),
+				'custom' => __( 'Custom', 'mai-custom-content-area' ),
+			];
+		}
+
+		public function match( $rule, $screen, $field_group ) {
+			return true;
+		}
+	}
+
+	acf_register_location_type( 'Mai_Template_Part_ACF_Location' );
+}
