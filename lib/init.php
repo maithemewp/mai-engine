@@ -236,15 +236,18 @@ function mai_genesis_theme_settings_menu_ops( $options ) {
  * @since 2.4.3
  * @since 2.6.0 Changed function name to avoid clash when switching from v1 to v2.
  * @since 2.6.0 Check mai_get_url() function exists. We saw this run too early and fail.
+ * @since TBD Added `get_site_icon_url` filter because it was throwing errors in admin for missing favicon.
  * @link  https://github.com/maithemewp/mai-engine/issues/361
  *
  * @return string
  */
+add_filter( 'get_site_icon_url', 'mai_load_default_favicon' );
 add_filter( 'genesis_pre_load_favicon', 'mai_load_default_favicon' );
 function mai_load_default_favicon( $favicon ) {
-	if ( function_exists( 'mai_get_url' ) ) {
+	if ( ! $favicon && function_exists( 'mai_get_url' ) ) {
 		return mai_get_url() . 'assets/img/icon-256x256.png';
 	}
+
 	return $favicon;
 }
 
