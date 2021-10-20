@@ -835,7 +835,7 @@ class Mai_Entry {
 	 */
 	public function get_image_breakpoint_columns( $columns ) {
 		$image_sizes = mai_get_available_image_sizes();
-		$fallback    = isset( $image_sizes[ $this->image_size ]['width'] ) ? absint( $this->breakpoints['xl'] / $image_sizes[ $this->image_size ]['width'] ) : 1;
+		$fallback    = isset( $image_sizes[ $this->image_size ]['width'] ) && $image_sizes[ $this->image_size ]['width'] > 0 ? absint( $this->breakpoints['xl'] / $image_sizes[ $this->image_size ]['width'] ) : 1;
 
 		foreach ( $columns as $break => $count ) {
 			if ( 0 !== $count ) {
@@ -1180,11 +1180,41 @@ class Mai_Entry {
 			return;
 		}
 
+		/**
+		 * Add post ID to the [acf] shortcode.
+		 *
+		 * @param   array  $out    The modified attributes.
+		 * @param   array  $pairs  Entire list of supported attributes and their defaults.
+		 * @param   array  $atts   User defined attributes in shortcode tag.
+		 *
+		 * @return  array  The modified attributes.
+		 */
+		$filter = function( $out, $pairs, $atts ) {
+			if ( isset( $atts['post_id'] ) && $atts['post_id'] ) {
+				return $out;
+			}
+
+			$out['post_id'] = get_the_ID();
+
+			return $out;
+		};
+
+		// TODO: Only works if/when ACF adds the 'acf' shortcode to the shortcode_atts() function.
+		// if ( 'block' === $this->context ) {
+			// add_filter( 'shortcode_atts_acf', $filter, 10, 3 );
+		// }
+
+		$content = mai_get_processed_content( $this->args['custom_content'] );
+
+		// if ( 'block' === $this->context ) {
+		// 	remove_filter( 'shortcode_atts_acf', $filter, 10, 3 );
+		// }
+
 		genesis_markup(
 			[
 				'open'    => '<div %s>',
 				'close'   => '</div>',
-				'content' => mai_get_processed_content( $this->args['custom_content'] ),
+				'content' => $content,
 				'context' => 'entry-custom-content',
 				'echo'    => true,
 				'params'  => [
