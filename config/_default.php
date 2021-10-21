@@ -218,29 +218,24 @@ return [
 	'styles' => [
 		'main'                           => [
 			'location' => [ 'public', 'login' ],
-			'async'    => true,
 		],
 		'header'                         => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
 				return ! mai_is_element_hidden( 'site_header' );
 			},
 		],
 		'page-header'                         => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
 				return mai_has_page_header();
 			},
 		],
 		'blocks'                         => [
 			'location'  => 'public',
-			'async'     => true,
 		],
 		'utilities'                      => [
 			'location'  => 'public',
-			'async'     => true,
 		],
 		'theme'                          => [
 			'location'  => [ 'public', 'login' ],
@@ -252,7 +247,6 @@ return [
 		],
 		'desktop'                        => [
 			'location'  => 'public',
-			'async'     => true,
 		],
 		'footer'                         => [
 			'location'  => 'public',
@@ -273,21 +267,18 @@ return [
 		],
 		'atomic-blocks'                  => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
 				return function_exists( 'atomic_blocks_main_plugin_file' );
 			},
 		],
 		'facetwp'                => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
 				return class_exists( 'FacetWP' );
 			},
 		],
 		'genesis-enews-extended' => [
 			'location'  => 'public',
-			'async'     => true,
 			'location'  => [ 'public', 'editor' ],
 			'condition' => function() {
 				return class_exists( 'BJGK_Genesis_ENews_Extended' );
@@ -295,35 +286,30 @@ return [
 		],
 		'learndash' => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
 				return class_exists( 'SFWD_LMS' );
 			},
 		],
 		'seo-slider'             => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
 				return defined( 'SEO_SLIDER_VERSION' );
 			},
 		],
 		'simple-social-icons'    => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
 				return class_exists( 'Simple_Social_Icons_Widget' );
 			},
 		],
 		'woocommerce-global'     => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
 				return class_exists( 'WooCommerce' );
 			},
 		],
 		'woocommerce-products'   => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
 				if ( class_exists( 'WooCommerce' ) ) {
 					if ( is_shop() || is_product_taxonomy() || is_product() || is_cart() ) {
@@ -340,14 +326,12 @@ return [
 		],
 		'woocommerce-cart'       => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
 				return class_exists( 'WooCommerce' ) && ( is_cart() || is_checkout() );
 			},
 		],
 		'woocommerce-account'    => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
 				return class_exists( 'WooCommerce' ) && is_account_page();
 			},
@@ -359,7 +343,6 @@ return [
 		],
 		'child-theme' => [
 			'location'  => [ 'public', 'login' ],
-			'async'     => true,
 			'handle'    => genesis_get_theme_handle(),
 			'src'       => get_stylesheet_uri(),
 			'ver'       => sprintf( '%s.%s', genesis_get_theme_version(), date( 'njYHi', filemtime( get_stylesheet_directory() . '/style.css' ) ) ),
