@@ -294,6 +294,7 @@ function mai_get_style_attributes() {
 function mai_get_tag_attributes( $script_or_style ) {
 	$attributes = [];
 	$tags       = mai_get_config( $script_or_style );
+
 	foreach ( $tags as $name => $args ) {
 		$handle = isset( $args['handle'] ) ? $args['handle'] : mai_get_handle() . '-' . $name;
 
@@ -307,6 +308,7 @@ function mai_get_tag_attributes( $script_or_style ) {
 			$attributes[ $handle ]['defer'] = 'defer';
 		}
 	}
+
 	return $attributes;
 }
 
