@@ -331,6 +331,7 @@ function mai_maybe_do_custom_scroll_logo() {
  * Adds an image inline in the site title element for the custom scroll logo.
  *
  * @since 2.14.0
+ * @since TBD Check if existing $html. See #519.
  *
  * @param string $html    The existing logo HTML.
  * @param int    $blog_id The current blog ID in multisite.
@@ -338,6 +339,10 @@ function mai_maybe_do_custom_scroll_logo() {
  * @return string
  */
 function mai_custom_scroll_logo( $html, $blog_id ) {
+	if ( ! $html ) {
+		return $html;
+	}
+
 	$logo_url = mai_get_option( 'logo-scroll' );
 
 	if ( ! $logo_url ) {
