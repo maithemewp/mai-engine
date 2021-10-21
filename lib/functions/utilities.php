@@ -1055,7 +1055,8 @@ function mai_get_menu( $menu, $args = [] ) {
 			$atts['style'] .= sprintf( '--menu-font-size:%s;', $size );
 		}
 
-		$atts['itemtype'] = 'https://schema.org/SiteNavigationElement';
+		$atts['itemscope'] = true; // Requird by https://validator.w3.org when itemtype is used.
+		$atts['itemtype']  = 'https://schema.org/SiteNavigationElement';
 
 		$html = genesis_markup(
 			[
