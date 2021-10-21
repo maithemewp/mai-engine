@@ -276,9 +276,7 @@ function mai_get_style_attributes() {
 		return $attributes;
 	}
 	$attributes = [
-		'wp-block-library' => [
-			'async' => 'async',
-		],
+		'wp-block-library' => [],
 	];
 	$attributes = array_merge( mai_get_tag_attributes( 'styles' ), $attributes );
 	return $attributes;
