@@ -108,12 +108,12 @@ li.wc-block-grid__product {
 	left: -0.5em;
 	z-index: 2; // On top for archives, blocks, and singular.
 	padding: var(--spacing-xxxs) var(--spacing-sm);
-	color: var(--color-white);
+	color: var(--onsale-color, var(--color-white));
 	font-weight: var(--heading-font-weight);
 	font-size: small;
 	text-align: center;
 	text-transform: none;
-	background: var(--color-primary);
+	background: var(--onsale-background, var(--color-primary));
 	border: 0;
 	border-radius: var(--border-radius);
 }
