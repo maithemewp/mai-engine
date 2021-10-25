@@ -25,27 +25,14 @@ return [
 			'primary'    => '#11be9f', // Button primary background color.
 			'secondary'  => '#f1f1f1', // Button secondary background color.
 		],
-	// 	'custom-colors' => [
-	// 		[
-	// 			'color' => '#bcda83', // var(--color-custom-1).
-	// 		],
-	// ],
 		'fonts'  => [
-			// 'body'    => 'Roboto:300,500', // 300 is regular and 500 is bold.
 			'heading' => 'Oswald:600',
 			'menu'    => 'Oswald:400',
 		],
 	],
-	// 'theme-support' => [
-	// 	'add' => [
-	// 		'sticky-header',
-	// 		'transparent-header',
-	// 	],
-	// ],
 	'image-sizes' => [
 		'add' => [
 			'landscape' => '16:10',
-			// 'portrait'  => '3:4',
 			'square'    => '1:1',
 		],
 	],
@@ -67,30 +54,6 @@ return [
 		'after-header-menu-alignment' => 'center',
 		'mobile-menu-breakpoint'      => '9999px',
 		'single-content'              => [
-			// 'enable' => [ 'page', 'post' ],
-			// 'page'   => [
-			// 	'show' => [
-			// 		'genesis_entry_header',
-			// 		'title',
-			// 		'image',
-			// 		'genesis_before_entry_content',
-			// 		'excerpt',
-			// 		'content',
-			// 		'genesis_entry_content',
-			// 		'genesis_after_entry_content',
-			// 		'genesis_entry_footer',
-			// 	],
-			// 	'image_orientation'            => 'landscape',
-			// 	'image_size'                   => 'landscape-md',
-			// 	'header_meta'                  => '',
-			// 	'footer_meta'                  => '',
-			// 	'custom_content'               => '',
-			// 	'page-header-image'            => '',
-			// 	'page-header-featured'         => false,
-			// 	'page-header-background-color' => '',
-			// 	'page-header-overlay-opacity'  => '',
-			// 	'page-header-text-color'       => '',
-			// ],
 			'post' => [
 				'show' => [
 					'genesis_entry_header',
@@ -108,16 +71,7 @@ return [
 					'author_box',
 					'adjacent_entry_nav',
 				],
-			// 	'image_orientation'            => 'landscape',
-			// 	'image_size'                   => 'landscape-md',
-			// 	'header_meta'                  => 'mai_get_header_meta_default',
-				'footer_meta'                  => '[post_terms taxonomy="category" before="" sep=""]',
-			// 	'custom_content'               => '',
-			// 	'page-header-image'            => '',
-			// 	'page-header-featured'         => false,
-			// 	'page-header-background-color' => '',
-			// 	'page-header-overlay-opacity'  => '',
-			// 	'page-header-text-color'       => '',
+				'footer_meta' => '[post_terms taxonomy="category" before="" sep=""]',
 			],
 		],
 		'content-archives' => [
@@ -129,51 +83,15 @@ return [
 					'title',
 					'header_meta',
 					'genesis_before_entry_content',
-					// 'excerpt',
 					'genesis_entry_content',
-					// 'more_link',
 					'genesis_after_entry_content',
 					'genesis_entry_footer',
 				],
-				// 'title_size'                   => 'lg',
-				// 'image_orientation'            => 'landscape',
-				// 'image_size'                   => 'landscape-md',
-				// 'image_position'               => 'full',
-				// 'image_alternate'              => false,
-				// 'image_width'                  => 'third',
-				// 'header_meta'                  => 'mai_get_header_meta_default',
-				// 'content_limit'                => 0,
-				// 'custom_content'               => '',
-				// 'more_link_text'               => '',
 				'footer_meta'                  => '[post_terms taxonomy="category" before="" sep=""]',
-				// 'align_text'                   => 'start',
-				// 'align_text_vertical'          => '',
-				// 'image_stack'                  => true,
 				'boxed'                        => false,
-				// 'border_radius'                => '',
 				'columns'                      => '2',
-				// 'columns_responsive'           => '',
-				// 'columns_md'                   => '1',
-				// 'columns_sm'                   => '1',
-				// 'columns_xs'                   => '1',
-				// 'align_columns'                => 'left',
-				// 'align_columns_vertical'       => '',
-				// 'column_gap'                   => 'xl',
-				// 'row_gap'                      => 'xl',
 				'posts_per_page'               => '12',
-				// 'posts_nav'                    => 'numeric',
-				// 'page-header-image'            => '',
-				// 'page-header-background-color' => '',
-				// 'page-header-overlay-opacity'  => '',
-				// 'page-header-text-color'       => '',
 			],
-		],
-	],
-	'template-parts' => [
-		'after-header' => [
-			'contdition' => function() {
-				return is_singular( 'post' );
-			}
 		],
 	],
 	'custom-functions' => function() {
