@@ -895,7 +895,8 @@ function acf_shortcode( $atts ) {
 				'post_id'      => false,
 				'format_value' => true,
 			),
-			$atts
+			$atts,
+			'acf'
 		)
 	);
 
