@@ -622,7 +622,7 @@ function mai_get_taxonomy_choices() {
  * The post_type is passed via JS on select2_query_args filter.
  *
  * @since 0.1.0
- * @since TBD Added $fallback.
+ * @since 2.18.0 Added $fallback.
  *
  * @param bool $fallback Whether to use fallback choices.
  *

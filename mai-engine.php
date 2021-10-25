@@ -27,13 +27,13 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Main Mai_Engine Class.
  *
- * @since TBD
+ * @since 2.18.0
  */
 final class Mai_Engine {
 
 	/**
 	 * @var   Mai_Engine The one true Mai_Engine
-	 * @since TBD
+	 * @since 2.18.0
 	 */
 	private static $instance;
 
@@ -43,7 +43,7 @@ final class Mai_Engine {
 	 * Insures that only one instance of Mai_Engine exists in memory at any one
 	 * time. Also prevents needing to define globals all over the place.
 	 *
-	 * @since   TBD
+	 * @since   2.18.0
 	 * @static  var array $instance
 	 * @uses    Mai_Engine::setup_constants() Setup the constants needed.
 	 * @uses    Mai_Engine::includes() Include the required files.
@@ -67,7 +67,7 @@ final class Mai_Engine {
 	 * The whole idea of the singleton design pattern is that there is a single
 	 * object therefore, we don't want the object to be cloned.
 	 *
-	 * @since   TBD
+	 * @since   2.18.0
 	 * @access  protected
 	 * @return  void
 	 */
@@ -79,7 +79,7 @@ final class Mai_Engine {
 	/**
 	 * Disable unserializing of the class.
 	 *
-	 * @since   TBD
+	 * @since   2.18.0
 	 * @access  protected
 	 * @return  void
 	 */
@@ -92,7 +92,7 @@ final class Mai_Engine {
 	 * Include required files.
 	 *
 	 * @access  private
-	 * @since   TBD
+	 * @since   2.18.0
 	 * @return  void
 	 */
 	private function includes() {
@@ -106,7 +106,7 @@ final class Mai_Engine {
  * The main function responsible for returning the one true Mai_Engine
  * Instance to functions everywhere.
  *
- * @since TBD
+ * @since 2.18.0
  *
  * @return object|Mai_Engine The one true Mai_Engine Instance.
  */

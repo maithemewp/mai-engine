@@ -236,7 +236,7 @@ function mai_genesis_theme_settings_menu_ops( $options ) {
  * @since 2.4.3
  * @since 2.6.0 Changed function name to avoid clash when switching from v1 to v2.
  * @since 2.6.0 Check mai_get_url() function exists. We saw this run too early and fail.
- * @since TBD Added `get_site_icon_url` filter because it was throwing errors in admin for missing favicon.
+ * @since 2.18.0 Added `get_site_icon_url` filter because it was throwing errors in admin for missing favicon.
  * @link  https://github.com/maithemewp/mai-engine/issues/361
  *
  * @return string
@@ -304,7 +304,7 @@ add_action( 'plugins_loaded', 'mai_load_vendor_plugins' );
  *
  * @access private
  *
- * @since TBD
+ * @since 2.18.0
  *
  * @return void
  */
@@ -454,14 +454,6 @@ function mai_load_files() {
 			]
 		);
 	}
-
-	// if ( ! class_exists( 'acf_pro' ) ) {
-	// 	$files[] = '../vendor/advanced-custom-fields/advanced-custom-fields-pro/acf';
-	// }
-
-	// if ( ! class_exists( 'Kirki' ) ) {
-	// 	$files[] = '../vendor/aristath/kirki/kirki';
-	// }
 
 	if ( class_exists( 'FacetWP' ) ) {
 		$files[] = 'support/facetwp';

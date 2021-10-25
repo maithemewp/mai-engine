@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || die;
  * Converts an svg xmlns attribute to https if the site uses https.
  *
  * @since 2.6.0
- * @deprecated TBD Don't do this anymore. This invalidates HTML.
+ * @deprecated 2.18.0 Don't do this anymore. This invalidates HTML.
  *                    https://validator.w3.org shows error "Bad value https://www.w3.org/2000/svg for the attribute xmlns (only http://www.w3.org/2000/svg permitted here).".
  *
  * @access private

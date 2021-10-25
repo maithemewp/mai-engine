@@ -21,7 +21,7 @@ add_action( 'genesis_before', 'mai_maybe_hide_blog_page_title' );
 /**
  * Hides blog page title if static blog page setting is checked.
  *
- * @since TBD
+ * @since 2.18.0
  *
  * @return void
  */

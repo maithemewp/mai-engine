@@ -927,7 +927,7 @@ function mai_get_width_height_attribute( $value, $fallback = false ) {
 /**
  * Checks if a page has at least one WooCommerce block.
  *
- * @since TBD
+ * @since 2.18.0
  * *
  * @return bool
  */
@@ -969,7 +969,7 @@ function mai_has_woocommerce_blocks() {
 /**
  * Checks if a string of content has at least one WooCommerce block.
  *
- * @since TBD
+ * @since 2.18.0
  * *
  * @return bool
  */
