@@ -49,7 +49,7 @@
 	justify-content: var(--menu-item-link-justify-content, flex-start);
 	width: var(--menu-item-link-width, auto);
 	max-width: var(--menu-item-link-max-width, 100%);
-	padding: var(--menu-item-link-padding, (var(--spacing-sm) var(--spacing-sm)));
+	padding: var(--menu-item-link-padding, (var(--spacing-md) var(--spacing-md)));
 	color: var(--menu-item-link-color, var(--color-heading));
 	text-align: var(--menu-item-link-text-align, start);
 

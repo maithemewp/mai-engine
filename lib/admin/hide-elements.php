@@ -70,7 +70,7 @@ add_filter( 'acf/location/rule_match/mai_public_post_type', 'mai_acf_public_post
  *
  * @return bool
  */
-function mai_acf_public_post_type_rule_match( $result, $rule, $screen ) {
+function mai_acf_public_post_type_rule_match( $result, $rule, $screen, $field_group ) {
 	$post_types = get_post_types( [ 'public' => true ] );
 
 	return $post_types && isset( $screen['post_type'] ) && isset( $post_types[ $screen['post_type'] ] );

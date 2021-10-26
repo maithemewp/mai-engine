@@ -139,11 +139,11 @@ function mai_upgrade_2_11_0() {
 		delete_transient( 'mai_template_parts' );
 		delete_transient( 'mai_demo_template_parts' );
 		flush_rewrite_rules( false );
-		$text   = __( 'Template Parts successfully updated for compatibility with WP 5.7+.', 'mai-engine' );
+		$text   = __( 'Content Areas successfully updated for compatibility with WP 5.7+.', 'mai-engine' );
 		$notice = sprintf( '<div class="notice notice-success is-dismissable"><p>%s</p></div>', $text );
 
 	} else {
-		$text   = __( 'Error migrating template parts.', 'mai-engine' );
+		$text   = __( 'Error migrating content areas.', 'mai-engine' );
 		$text   = $message ? $text . ' ' . $message : $text;
 		$notice = sprintf(
 			'<div class="notice notice-error"><p>%s <a target="_blank" href="https://docs.bizbudding.com/support/">%s</a>.</p></div>',

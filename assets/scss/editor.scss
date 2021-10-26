@@ -227,6 +227,7 @@ p {
 input[type="submit"],
 .wp-block-button__link,
 .wp-block .button {
+	min-height: 1px; // Makes sure block styles are rendered correctly in editor. See #303.
 
 	@include button(true);
 

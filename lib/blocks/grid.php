@@ -622,10 +622,13 @@ function mai_get_taxonomy_choices() {
  * The post_type is passed via JS on select2_query_args filter.
  *
  * @since 0.1.0
+ * @since 2.18.0 Added $fallback.
+ *
+ * @param bool $fallback Whether to use fallback choices.
  *
  * @return array
  */
-function mai_get_post_types_taxonomy_choices() {
+function mai_get_post_types_taxonomy_choices( $fallback = true ) {
 	$choices = [];
 
 	if ( ! ( is_admin() || is_customize_preview() ) ) {
@@ -634,7 +637,7 @@ function mai_get_post_types_taxonomy_choices() {
 
 	$post_types = mai_get_acf_request( 'post_type' );
 
-	if ( ! $post_types ) {
+	if ( ! $post_types && $fallback ) {
 		$taxonomies = get_taxonomies( [], 'objects' );
 		$choices    = wp_list_pluck( $taxonomies, 'label', 'name' );
 

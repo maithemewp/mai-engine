@@ -835,7 +835,7 @@ class Mai_Entry {
 	 */
 	public function get_image_breakpoint_columns( $columns ) {
 		$image_sizes = mai_get_available_image_sizes();
-		$fallback    = isset( $image_sizes[ $this->image_size ]['width'] ) ? absint( $this->breakpoints['xl'] / $image_sizes[ $this->image_size ]['width'] ) : 1;
+		$fallback    = isset( $image_sizes[ $this->image_size ]['width'] ) && $image_sizes[ $this->image_size ]['width'] > 0 ? absint( $this->breakpoints['xl'] / $image_sizes[ $this->image_size ]['width'] ) : 1;
 
 		foreach ( $columns as $break => $count ) {
 			if ( 0 !== $count ) {
@@ -1095,7 +1095,9 @@ class Mai_Entry {
 		// Single needs the_content() directly, to parse_blocks and other filters.
 		if ( 'single' === $this->context ) {
 			echo $open;
+			do_action( "mai_before_entry_content_inner", $this->entry, $this->args );
 			the_content();
+			do_action( "mai_after_entry_content_inner", $this->entry, $this->args );
 			$this->do_post_content_nav();
 			echo $close;
 
@@ -1126,10 +1128,11 @@ class Mai_Entry {
 			}
 
 			echo $open;
+			do_action( "mai_before_entry_content_inner", $this->entry, $this->args );
 			echo apply_filters( 'mai_entry_content', $content, $this->args, $this->entry );
+			do_action( "mai_after_entry_content_inner", $this->entry, $this->args );
 			echo $close;
 		}
-
 	}
 
 	/**
@@ -1177,11 +1180,41 @@ class Mai_Entry {
 			return;
 		}
 
+		/**
+		 * Add post ID to the [acf] shortcode.
+		 *
+		 * @param   array  $out    The modified attributes.
+		 * @param   array  $pairs  Entire list of supported attributes and their defaults.
+		 * @param   array  $atts   User defined attributes in shortcode tag.
+		 *
+		 * @return  array  The modified attributes.
+		 */
+		$filter = function( $out, $pairs, $atts ) {
+			if ( isset( $atts['post_id'] ) && $atts['post_id'] ) {
+				return $out;
+			}
+
+			$out['post_id'] = get_the_ID();
+
+			return $out;
+		};
+
+		// TODO: Only works if/when ACF adds the 'acf' shortcode to the shortcode_atts() function.
+		// if ( 'block' === $this->context ) {
+			// add_filter( 'shortcode_atts_acf', $filter, 10, 3 );
+		// }
+
+		$content = mai_get_processed_content( $this->args['custom_content'] );
+
+		// if ( 'block' === $this->context ) {
+		// 	remove_filter( 'shortcode_atts_acf', $filter, 10, 3 );
+		// }
+
 		genesis_markup(
 			[
 				'open'    => '<div %s>',
 				'close'   => '</div>',
-				'content' => mai_get_processed_content( $this->args['custom_content'] ),
+				'content' => $content,
 				'context' => 'entry-custom-content',
 				'echo'    => true,
 				'params'  => [
@@ -1440,7 +1473,7 @@ class Mai_Entry {
 			return;
 		}
 
-		echo genesis_get_author_box( 'single' );
+		echo mai_get_processed_content( genesis_get_author_box( 'single' ) );
 	}
 
 	/**

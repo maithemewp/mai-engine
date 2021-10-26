@@ -180,8 +180,8 @@ function mai_get_asset_version( $file ) {
 /**
  * Returns minified version of asset if in dev mode.
  *
- * @since 2.4.0 Removed min dir if CSS file. Always return minified CSS.
  * @since 0.1.0
+ * @since 2.4.0 Removed min dir if CSS file. Always return minified CSS.
  *
  * @param string $file File base name (relative to type directory).
  *
@@ -1055,7 +1055,8 @@ function mai_get_menu( $menu, $args = [] ) {
 			$atts['style'] .= sprintf( '--menu-font-size:%s;', $size );
 		}
 
-		$atts['itemtype'] = 'https://schema.org/SiteNavigationElement';
+		$atts['itemscope'] = true; // Requird by https://validator.w3.org when itemtype is used.
+		$atts['itemtype']  = 'https://schema.org/SiteNavigationElement';
 
 		$html = genesis_markup(
 			[
@@ -1401,9 +1402,15 @@ function mai_get_search_form( $args = [] ) {
 	if ( ! class_exists( 'Genesis_Search_Form' ) ) {
 		return get_search_form( false );
 	}
-
+	$filter = function( $attributes ) {
+		$attributes['required'] = true;
+		return $attributes;
+	};
+	add_filter( 'genesis_attr_search-form-input', $filter );
 	$searchform = new Genesis_Search_Form( $args );
-	return $searchform->get_form();
+	$form       = $searchform->get_form();
+	remove_filter( 'genesis_attr_search-form-input', $filter );
+	return $form;
 }
 
 /**

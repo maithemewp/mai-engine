@@ -479,18 +479,18 @@ function mai_has_page_header() {
 
 	if ( mai_is_type_archive() ) {
 		$has_page_header = in_array( mai_get_archive_args_name(), mai_get_page_header_types( 'archive' ), true );
-	}
 
-	if ( mai_is_type_single() ) {
+	} elseif ( mai_is_type_single() ) {
 		$has_page_header = in_array( mai_get_singular_args_name(), mai_get_page_header_types( 'single' ), true );
 
+		// TODO: Is this needed?
 		if ( genesis_entry_header_hidden_on_current_page() ) {
 			$has_page_header = false;
 		}
+	}
 
-		if ( mai_is_element_hidden( 'page_header' ) ) {
-			$has_page_header = false;
-		}
+	if ( $has_page_header && mai_is_element_hidden( 'page_header' ) ) {
+		$has_page_header = false;
 	}
 
 	return $has_page_header;
@@ -780,12 +780,21 @@ function mai_array_map_recursive( callable $func, array $array ) {
  * @return mixed
  */
 function mai_is_element_hidden( $element, $post_id = '' ) {
-	if ( ! is_singular() && ! $post_id ) {
-		return false;
+	if ( ! $post_id ) {
+		if ( is_singular() ) {
+			$post_id = get_the_ID();
+
+		} elseif ( 'page' === get_option( 'show_on_front' ) ) {
+			if ( is_front_page() ) {
+				$post_id = get_option( 'page_on_front' );
+			} elseif ( is_home() ) {
+				$post_id = get_option( 'page_for_posts' );
+			}
+		}
 	}
 
 	if ( ! $post_id ) {
-		$post_id = get_the_ID();
+		return false;
 	}
 
 	// Can't be static, entry-title breaks.
@@ -913,4 +922,70 @@ function mai_get_width_height_attribute( $value, $fallback = false ) {
 		}
 	}
 	return $fallback ? absint( $fallback ) : absint( filter_var( $value, FILTER_SANITIZE_NUMBER_INT ) );
+}
+
+/**
+ * Checks if a page has at least one WooCommerce block.
+ *
+ * @since 2.18.0
+ * *
+ * @return bool
+ */
+function mai_has_woocommerce_blocks() {
+	static $has_blocks = null;
+
+	if ( ! is_null( $has_blocks ) ) {
+		return $has_blocks;
+	}
+
+	$has_blocks = false;
+
+	if ( is_singular() ) {
+		$post = get_post();
+
+		if ( $post && mai_has_woocommerce_block( $post->post_content ) ) {
+			$has_blocks = true;
+		}
+	}
+
+	if ( ! $has_blocks ) {
+
+		$template_parts = mai_get_template_parts();
+
+		if ( $template_parts ) {
+			foreach ( $template_parts as $content ) {
+				if ( mai_has_woocommerce_block( $content ) ) {
+					$has_blocks = true;
+				}
+			}
+		}
+	}
+
+	$has_blocks = apply_filters( 'mai_has_woocommerce_blocks', $has_blocks );
+
+	return $has_blocks;
+}
+
+/**
+ * Checks if a string of content has at least one WooCommerce block.
+ *
+ * @since 2.18.0
+ * *
+ * @return bool
+ */
+function mai_has_woocommerce_block( $content ) {
+	if ( ! has_blocks( $content ) ) {
+		return false;
+	}
+
+	$blocks = parse_blocks( $content );
+
+	if ( ! $blocks ) {
+		return false;
+	}
+
+	$names = wp_list_pluck( $blocks, 'blockName', 'blockName' );
+	$names = implode( ' ', $names );
+
+	return mai_has_string( 'woocommerce/', $names );
 }

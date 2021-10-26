@@ -49,7 +49,7 @@ class Mai_Reusable_Block_Widget extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 		if ( isset( $instance['block'] ) && ! empty( $instance['block'] ) ) {
-			$content = mai_get_post_content( $instance['block'] );
+			$content = trim( mai_get_post_content( $instance['block'] ) );
 			if ( ! $content ) {
 				return;
 			}

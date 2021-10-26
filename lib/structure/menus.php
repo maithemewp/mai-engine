@@ -375,7 +375,7 @@ function mai_nav_menu_search_icon( $item_output, $item, $depth, $args ) {
 /**
  * TODO: Consider changing defaults and handling menu styling and sub-menu functionality here.
  *
- * Changes mai_menu shortcode defaults in mobile menu template parts.
+ * Changes mai_menu shortcode defaults in mobile menu content areas.
  *
  * @param array $defaults The existing defaults.
  *

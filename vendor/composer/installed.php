@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'af6e7859a99dfb763d440edcc56d68bd25571de6',
+    'reference' => '0b9652d6747a7b1a9863e77acb58328ecb978684',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
@@ -67,12 +67,12 @@
     ),
     'graham-campbell/result-type' => 
     array (
-      'pretty_version' => 'v1.0.2',
-      'version' => '1.0.2.0',
+      'pretty_version' => 'v1.0.3',
+      'version' => '1.0.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => '84afea85c6841deeea872f36249a206e878a5de0',
+      'reference' => '296c015dc30ec4322168c5ad3ee5cc11dae827ac',
     ),
     'maithemewp/mai-engine' => 
     array (
@@ -81,7 +81,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'af6e7859a99dfb763d440edcc56d68bd25571de6',
+      'reference' => '0b9652d6747a7b1a9863e77acb58328ecb978684',
     ),
     'phpoption/phpoption' => 
     array (
@@ -144,12 +144,12 @@
     ),
     'vlucas/phpdotenv' => 
     array (
-      'pretty_version' => 'v5.3.0',
-      'version' => '5.3.0.0',
+      'pretty_version' => 'v5.3.1',
+      'version' => '5.3.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'b3eac5c7ac896e52deab4a99068e3f4ab12d9e56',
+      'reference' => 'accaddf133651d4b5cf81a119f25296736ffc850',
     ),
     'wptrt/customize-section-button' => 
     array (

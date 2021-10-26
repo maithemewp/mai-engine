@@ -1,6 +1,7 @@
 .mobile-menu {
 	--menu-item-width: 100%;
 	--menu-item-link-flex: 1;
+	--menu-item-link-padding: var(--spacing-sm) var(--spacing-sm);
 	--wrap-display: block;
 	--sub-menu-background: var(--color-header);
 	--sub-menu-margin: 0 0 var(--spacing-md) var(--spacing-xxs);
@@ -22,12 +23,18 @@
 		--sub-menu-toggle-margin: 0 0 0 auto;
 	}
 
-	.menu-item-search {
+	.search-icon-form {
 		display: none;
 	}
 
 	.menu-item-button {
 		--menu-item-margin: var(--spacing-sm) 0;
+	}
+
+	.menu-item:hover > .sub-menu:not(.visible),
+	.menu-item:focus > .sub-menu:not(.visible),
+	.menu-item:focus-within > .sub-menu:not(.visible) {
+		display: none;
 	}
 }
 

@@ -13,6 +13,46 @@
 defined( 'ABSPATH' ) || die;
 
 /**
+ * Converts an svg xmlns attribute to https if the site uses https.
+ *
+ * @since 2.6.0
+ * @deprecated 2.18.0 Don't do this anymore. This invalidates HTML.
+ *                    https://validator.w3.org shows error "Bad value https://www.w3.org/2000/svg for the attribute xmlns (only http://www.w3.org/2000/svg permitted here).".
+ *
+ * @access private
+ *
+ * @param string $svg The svg HTML.
+ *
+ * @return string
+ */
+function mai_convert_svg_xmlns( $svg ) {
+	return $svg;
+
+	// Old code left to remember what it was doing prior.
+
+	if ( ! mai_is_https() ) {
+		return $svg;
+	}
+
+	$dom   = mai_get_dom_document( $svg );
+	$first = mai_get_dom_first_child( $dom );
+
+	if ( $first ) {
+		$xmlns = $first->attributes->getNamedItem( 'xmlns' );
+		$xmlns = $xmlns->value;
+
+		if ( $xmlns ) {
+			$xmlns = str_replace( 'http:', 'https:', $xmlns );
+			$first->setAttribute( 'xmlns', $xmlns );
+			$svg = $dom->saveHTML();
+		}
+	}
+
+	return $svg;
+}
+
+
+/**
  * Returns a color option value with config default fallback.
  *
  * @since      2.0.0

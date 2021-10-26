@@ -244,10 +244,10 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 			),
 			'templates'  => sprintf(
 				'<strong>%s</strong> <ul class="step-description"><li>%s</li><li>%s</li><li>%s</li></ul>',
-				__( 'Template Parts', 'mai-engine' ),
+				__( 'Content Areas', 'mai-engine' ),
 				__( 'Our block-based replacement for widgets.', 'mai-engine' ),
 				__( 'Requires "Content" in order to import images.', 'mai-engine' ),
-				__( 'Moves any existing template parts into the trash.', 'mai-engine' )
+				__( 'Moves any existing content areas into the trash.', 'mai-engine' )
 			),
 			'customizer' => sprintf(
 				'<strong>%s</strong> <ul class="step-description"><li>%s</li></ul>',

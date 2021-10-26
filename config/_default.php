@@ -54,13 +54,13 @@ return [
 	| Image sizes. When adding or modifying 'landscape', 'portrait', or 'square'
 	| you must use an aspect ratio, not actual dimensions.
 	|
-	| The 'cover' size was changed to match core WP '1536x1536' size.
+	| The 'cover' size was changed to match core WP '2048x2048' size.
 	| We don't really need this anymore but we're keeping it here for back compat.
 	*/
 
 	'image-sizes' => [
 		'add'    => [
-			'cover'     => [ 1536, 1536, false ],
+			'cover'     => [ 2048, 2048, false ],
 			'landscape' => '4:3',
 			'tiny'      => [ 80, 80, true ],
 		],
@@ -218,33 +218,27 @@ return [
 	'styles' => [
 		'main'                           => [
 			'location' => [ 'public', 'login' ],
-			'async'    => true,
 		],
 		'header'                         => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
 				return ! mai_is_element_hidden( 'site_header' );
 			},
 		],
 		'page-header'                         => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
 				return mai_has_page_header();
 			},
 		],
 		'blocks'                         => [
 			'location'  => 'public',
-			'async'     => true,
 		],
 		'utilities'                      => [
 			'location'  => 'public',
-			'async'     => true,
 		],
 		'theme'                          => [
 			'location'  => [ 'public', 'login' ],
-			'async'     => mai_get_option( 'genesis-style-trump', true ),
 			'src'       => 'default' !== mai_get_active_theme() ? mai_get_url() . 'assets/css/themes/' . mai_get_active_theme() . '.min.css' : '',
 			'condition' => function() {
 				return 'default' !== mai_get_active_theme();
@@ -252,7 +246,6 @@ return [
 		],
 		'desktop'                        => [
 			'location'  => 'public',
-			'async'     => true,
 		],
 		'footer'                         => [
 			'location'  => 'public',
@@ -273,21 +266,18 @@ return [
 		],
 		'atomic-blocks'                  => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
 				return function_exists( 'atomic_blocks_main_plugin_file' );
 			},
 		],
 		'facetwp'                => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
 				return class_exists( 'FacetWP' );
 			},
 		],
 		'genesis-enews-extended' => [
 			'location'  => 'public',
-			'async'     => true,
 			'location'  => [ 'public', 'editor' ],
 			'condition' => function() {
 				return class_exists( 'BJGK_Genesis_ENews_Extended' );
@@ -295,49 +285,52 @@ return [
 		],
 		'learndash' => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
 				return class_exists( 'SFWD_LMS' );
 			},
 		],
 		'seo-slider'             => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
 				return defined( 'SEO_SLIDER_VERSION' );
 			},
 		],
 		'simple-social-icons'    => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
 				return class_exists( 'Simple_Social_Icons_Widget' );
 			},
 		],
 		'woocommerce-global'     => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
 				return class_exists( 'WooCommerce' );
 			},
 		],
 		'woocommerce-products'   => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
-				return class_exists( 'WooCommerce' ) && ( is_shop() || is_product_taxonomy() || is_product() || is_cart() );
+				if ( class_exists( 'WooCommerce' ) ) {
+					if ( is_shop() || is_product_taxonomy() || is_product() || is_cart() ) {
+						return true;
+					}
+
+					if ( mai_has_woocommerce_blocks() ) {
+						return true;
+					}
+				}
+
+				return false;
 			},
 		],
 		'woocommerce-cart'       => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
 				return class_exists( 'WooCommerce' ) && ( is_cart() || is_checkout() );
 			},
 		],
 		'woocommerce-account'    => [
 			'location'  => 'public',
-			'async'     => true,
 			'condition' => function() {
 				return class_exists( 'WooCommerce' ) && is_account_page();
 			},
@@ -349,7 +342,6 @@ return [
 		],
 		'child-theme' => [
 			'location'  => [ 'public', 'login' ],
-			'async'     => true,
 			'handle'    => genesis_get_theme_handle(),
 			'src'       => get_stylesheet_uri(),
 			'ver'       => sprintf( '%s.%s', genesis_get_theme_version(), date( 'njYHi', filemtime( get_stylesheet_directory() . '/style.css' ) ) ),
@@ -450,10 +442,10 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Template Parts
+	| Content Areas
 	|--------------------------------------------------------------------------
 	|
-	| Default template parts to be created and available for use.
+	| Default content areas to be created and available for use.
 	*/
 
 	'template-parts' => [

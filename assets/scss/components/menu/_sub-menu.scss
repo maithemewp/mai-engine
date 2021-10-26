@@ -1,3 +1,21 @@
+:root {
+	--sub-menu-position: absolute;
+	--sub-menu-left: -999rem;
+	--sub-menu-width: 200px;
+	--sub-menu-margin: 0 0 0 calc(0 - var(--spacing-md));
+	--sub-menu-background-color: var(--color-white);
+	--sub-menu-border: var(--border);
+	--sub-menu-border-radius: var(--border-radius);
+	--sub-menu-opacity: 0;
+	--sub-menu-transition: opacity var(--transition-duration) var(--transition-timing-function);
+	--sub-menu-animation: fadein 0.2s ease-in-out;
+
+	--sub-menu-toggle-position: relative;
+
+	--sub-sub-menu-top: -1px;
+	--sub-sub-menu-left: 100%;
+}
+
 .sub-menu {
 	--menu-item-width: 100%;
 	--menu-item-link-width: 100%;
@@ -35,6 +53,20 @@
 	top: var(--sub-sub-menu-top, auto);
 	left: var(--sub-sub-menu-left, auto);
 	white-space: var(--sub-sub-menu-white-space, normal);
+}
+
+.menu-item:hover > .sub-menu,
+.menu-item:focus > .sub-menu,
+.menu-item:focus-within > .sub-menu {
+	display: flex; /* can't be variable because 3rd level sub-menus will display too */
+	--sub-menu-opacity: 1;
+	--sub-menu-left: auto;
+}
+
+.mobile-menu {
+	--sub-menu-position: static;
+	--sub-menu-width: 100%;
+	--sub-menu-opacity: 1;
 }
 
 .menu-list,

@@ -20,4 +20,8 @@
 
 		@include caption();
 	}
+
+	&.is-style-stripes tbody tr:nth-child(2n+1) {
+		background-color: var(--color-alt);
+	}
 }

@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || die;
 
 add_filter( 'pll_get_post_types', 'mai_polylang_post_types' );
 /**
- * Adds template parts as a translateable post type.
+ * Adds content areas as a translateable post type.
  *
  * @uses Polylang
  *
@@ -31,13 +31,13 @@ function mai_polylang_post_types( $post_types ) {
 
 add_filter( 'mai_template_part_objects', 'mai_polylang_template_part_objects' );
 /**
- * Gets translated template parts.
+ * Gets translated content areas.
  *
  * @uses Polylang
  *
  * @since 2.16.0
  *
- * @param array $template_parts The template parts objects.
+ * @param array $template_parts The content areas objects.
  *
  * @return array
  */

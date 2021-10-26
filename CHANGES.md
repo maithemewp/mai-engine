@@ -1,5 +1,39 @@
 # Changelog
 
+## 2.18.0 (10/25/21)
+* Added: You can now use shortcodes and blocks (via [mai_content]) in author bios.
+* Added: [Developers] New `mai_before_entry_content_inner` and `mai_after_entry_content_inner` hooks.
+* Added: Default button classes added to WooCommerce blocks to help with styling consistency.
+* Added: Custom properties on WooCommerce onsale badge for easier CSS customizations.
+* Changed: Template Parts in Mai Theme are now called Content Areas. This avoids confusion as WordPress is introducing template parts into core.
+* Changed: Main plugin file is now `Mai_Engine` class for easier checking if Mai Engine is running via other plugins.
+* Changed: ACF Pro and Kirki are now loaded earlier.
+* Changed: Removed the ability to add new Content Areas. They do not display unless registered via config.php so this was adding confusion.
+* Changed: Default 'cover' registered image size is now 2048 instead of 1536, to match the core image size.
+* Changed: Default embed, iframe, object, and video elements no longer have `width: 100%;` as default CSS.
+* Changed: Refactored mobile menu and search toggle JS.
+* Changed: Search form input is now required when trying to submit and empty search query.
+* Changed: Admin menu label and order tweaks.
+* Changed: Simplified Content Area checker background in editor.
+* Changed: Use background alt color for striped table block style.
+* Fixed: ACF's [acf] shortcode now works in Custom Content field in Mai Post Grid blocks to show custom field values.
+* Fixed: Error if thumbnail image size was 0.
+* Fixed: Favicon 404 error in editor when non set.
+* Fixed: Error when there was a scroll logo value but no site logo.
+* Fixed: Hide Elements metabox settings now work on the static Page for Posts (Blog) page.
+* Fixed: Mai Icon block allows numeric border radius by forcing to px when rendering.
+* Fixed: Mai Columns now works correctly when setting column as first on mobile or tablet when using custom arrangements.
+* Fixed: Sub-menus not working if mobile menu toggle is shown on desktop.
+* Fixed: Mobile header search icon bar now displays correctly when mobile menu is shown on large screens.
+* Fixed: Mobile menu is now closed when you open the mobile search bar.
+* Fixed: Button block style previews were not displaying in some scenarios.
+* Fixed: Cover block image srcset was sometimes getting removed in some instances.
+* Fixed: Login form margin tweaks.
+* Fixed: Add nopin attribute on scroll logo.
+* Fixed: Missing itemscope on menus added via [mai_menu] shortcode.
+* Fixed: Remove async on styles, since this is not valid HTML.
+* Fixed: Invalid HTML from xmlns using https when it requires http.
+
 ## 2.17.1 (9/17/21)
 * Fixed: Archive single sortable settings not showing checkmarks in Chrome.
 * Fixed: New color picker settings weren't always showing the color name on hover.

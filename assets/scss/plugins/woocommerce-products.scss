@@ -19,7 +19,6 @@
 // Archive and Single.
 
 .products {
-	--price-font-size: var(--font-size-sm);
 
 	&.related {
 		margin-bottom: var(--spacing-xxl);
@@ -66,10 +65,6 @@ ul.products {
 	.woocommerce-page &::after {
 		display: none;
 	}
-
-	.price {
-		margin-top: auto;
-	}
 }
 
 li.product {
@@ -82,31 +77,62 @@ li.product {
 	box-shadow: var(--product-box-shadow, 0);
 	transition: none;
 
-	.button {
-
-		@include button-style(secondary);
-		@include button-style(small);
-	}
-
 	&::after {
 		display: inline-flex;
 		font-size: 0;
 	}
 }
 
-.onsale {
+// Archives, Single, or Blocks.
+.products,
+.wc-block-grid__products {
+	--price-font-size: var(--font-size-sm);
+}
+
+li.product,
+li.wc-block-grid__product {
+	position: relative;
+}
+
+.wc-block-grid__product-title {
+
+	@include heading;
+}
+
+.onsale,
+.wc-block-grid__product-onsale {
 	position: absolute;
 	top: -0.5em;
 	right: auto;
 	bottom: auto;
 	left: -0.5em;
-	z-index: 2; // On top for archive and singular.
+	z-index: 2; // On top for archives, blocks, and singular.
 	padding: var(--spacing-xxxs) var(--spacing-sm);
-	color: var(--color-white);
+	color: var(--onsale-color, var(--color-white));
 	font-weight: var(--heading-font-weight);
 	font-size: small;
-	background: var(--color-primary);
+	text-align: center;
+	text-transform: none;
+	background: var(--onsale-background, var(--color-primary));
+	border: 0;
 	border-radius: var(--border-radius);
+}
+
+li.product .price,
+li.wc-block-grid__product .price {
+	margin-top: auto;
+}
+
+li.product .button,
+li.wc-block-grid__product .wp-block-button {
+
+	@include button-style(secondary);
+	@include button-style(small);
+}
+
+// Blocks.
+.wc-block-components-price-slider__range-input-progress {
+	--range-color: var(--color-primary);
 }
 
 // Archive.
@@ -162,7 +188,8 @@ li.product {
 }
 
 .woocommerce-loop-category__title,
-.woocommerce-loop-product__title {
+.woocommerce-loop-product__title,
+.wc-block-grid__product-title {
 	margin-bottom: var(--spacing-xxs);
 	font-size: var(--product-title-font-size, var(--font-size-lg));
 	transition: var(--transition);
@@ -432,15 +459,24 @@ form.cart {
 /**
  * Star ratings
  */
-.star-rating {
+
+
+.wc-block-grid__product-rating .star-rating span::before,
+.wc-block-grid__product-rating .wc-block-grid__product-rating__stars span::before,
+.wc-block-components-review-list-item__rating > .wc-block-components-review-list-item__rating__stars span::before {
+	color: var(--star-rating-color, gold);
+}
+
+.products .star-rating {
 	position: relative;
-	width: 5.4em;
+	width: 5.3em;
 	height: 1em;
 	overflow: hidden;
 	color: var(--star-rating-color, gold);
 	font-size: 1em;
 	font-family: star;
 	line-height: 1;
+	word-break: normal;
 
 	&::before {
 		position: absolute;

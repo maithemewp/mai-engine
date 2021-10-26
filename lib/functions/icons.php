@@ -100,7 +100,7 @@ function mai_get_icon( $args ) {
 	}
 
 	if ( $args['border_radius'] ) {
-		$atts['style'] .= sprintf( '--icon-border-radius:%s;', $args['border_radius'] );
+		$atts['style'] .= sprintf( '--icon-border-radius:%s;', mai_get_unit_value( $args['border_radius'] ) );
 	}
 
 	$tag = 'span';
@@ -313,7 +313,6 @@ function mai_get_svg_file( $name ) {
 	}
 
 	$svg            = file_get_contents( $file );
-	$svg            = mai_convert_svg_xmlns( $svg );
 	$files[ $name ] = $svg;
 
 	return $files[ $name ];
@@ -344,7 +343,6 @@ function mai_get_svg_icon_file( $name, $style = 'light' ) {
 	}
 
 	$svg                      = file_get_contents( $file );
-	$svg                      = mai_convert_svg_xmlns( $svg );
 	$files[ $style ][ $name ] = $svg;
 
 	return $files[ $style ][ $name ];
@@ -388,37 +386,4 @@ function mai_get_icons_dir() {
  */
 function mai_get_icons_url() {
 	return function_exists( 'mai_icons_get_url' ) ? mai_icons_get_url() : false;
-}
-
-/**
- * Converts an svg xmlns attribute to https if the site uses https.
- *
- * @since 2.6.0
- *
- * @access private
- *
- * @param string $svg The svg HTML.
- *
- * @return string
- */
-function mai_convert_svg_xmlns( $svg ) {
-	if ( ! mai_is_https() ) {
-		return $svg;
-	}
-
-	$dom   = mai_get_dom_document( $svg );
-	$first = mai_get_dom_first_child( $dom );
-
-	if ( $first ) {
-		$xmlns = $first->attributes->getNamedItem( 'xmlns' );
-		$xmlns = $xmlns->value;
-
-		if ( $xmlns ) {
-			$xmlns = str_replace( 'http:', 'https:', $xmlns );
-			$first->setAttribute( 'xmlns', $xmlns );
-			$svg = $dom->saveHTML();
-		}
-	}
-
-	return $svg;
 }

@@ -102,7 +102,7 @@
 		} );
 	};
 
-	var toggleMobileMenu = function() {
+	var toggleMobileMenu = function( event ) {
 		if ( ! menuToggle ) {
 			return;
 		}
@@ -112,17 +112,17 @@
 		body.classList.toggle( 'mobile-menu-visible' );
 
 		if ( body.classList.contains( 'mobile-menu-visible' ) ) {
-			body.addEventListener( 'mouseup', maybeCloseMobileMenu, false );
 			body.addEventListener( 'keydown', maybeCloseMobileMenu, false );
+			body.addEventListener( 'click', maybeCloseMobileMenu, false );
 		} else {
-			body.removeEventListener( 'mouseup', maybeCloseMobileMenu, false );
 			body.removeEventListener( 'keydown', maybeCloseMobileMenu, false );
+			body.removeEventListener( 'click', maybeCloseMobileMenu, false );
 		}
 	};
 
 	var maybeCloseMobileMenu = function( event ) {
-		if ( ! event.target.closest( '.site-header, .mobile-menu' ) || 27 == event.keyCode ) {
-			toggleMobileMenu();
+		if ( ! event.target.closest( '.menu-toggle, .mobile-menu' ) || [ 'Escape', 'Esc' ].includes( event.key ) ) {
+			toggleMobileMenu( event );
 		}
 	};
 

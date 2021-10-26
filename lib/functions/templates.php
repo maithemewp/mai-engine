@@ -24,23 +24,23 @@ add_action( 'init', 'mai_register_template_part_cpt' );
  */
 function mai_register_template_part_cpt() {
 	$labels = [
-		'name'                  => __( 'Template Parts', 'mai-engine' ),
-		'singular_name'         => __( 'Template Part', 'mai-engine' ),
-		'menu_name'             => _x( 'Template Parts', 'Admin Menu text', 'mai-engine' ),
-		'add_new'               => _x( 'Add New', 'Template Part', 'mai-engine' ),
-		'add_new_item'          => __( 'Add New Template Part', 'mai-engine' ),
-		'new_item'              => __( 'New Template Part', 'mai-engine' ),
-		'edit_item'             => __( 'Edit Template Part', 'mai-engine' ),
-		'view_item'             => __( 'View Template Part', 'mai-engine' ),
-		'all_items'             => __( 'Template Parts', 'mai-engine' ),
-		'search_items'          => __( 'Search Template Parts', 'mai-engine' ),
-		'parent_item_colon'     => __( 'Parent Template Part:', 'mai-engine' ),
-		'not_found'             => __( 'No template parts found.', 'mai-engine' ),
-		'not_found_in_trash'    => __( 'No template parts found in Trash.', 'mai-engine' ),
+		'name'                  => __( 'Content Areas', 'mai-engine' ),
+		'singular_name'         => __( 'Content Area', 'mai-engine' ),
+		'menu_name'             => _x( 'Content Areas', 'Admin Menu text', 'mai-engine' ),
+		'add_new'               => _x( 'Add New', 'Content Area', 'mai-engine' ),
+		'add_new_item'          => __( 'Add New Content Area', 'mai-engine' ),
+		'new_item'              => __( 'New Content Area', 'mai-engine' ),
+		'edit_item'             => __( 'Edit Content Area', 'mai-engine' ),
+		'view_item'             => __( 'View Content Area', 'mai-engine' ),
+		'all_items'             => __( 'Content Areas', 'mai-engine' ),
+		'search_items'          => __( 'Search Content Areas', 'mai-engine' ),
+		'parent_item_colon'     => __( 'Parent Content Area:', 'mai-engine' ),
+		'not_found'             => __( 'No content areas found.', 'mai-engine' ),
+		'not_found_in_trash'    => __( 'No content areas found in Trash.', 'mai-engine' ),
 		'archives'              => __( 'Template part archives', 'mai-engine' ),
 		'insert_into_item'      => __( 'Insert in to template part', 'mai-engine' ),
 		'uploaded_to_this_item' => __( 'Uploaded to this template part', 'mai-engine' ),
-		'filter_items_list'     => __( 'Filter template parts list', 'mai-engine' ),
+		'filter_items_list'     => __( 'Filter content areas list', 'mai-engine' ),
 		'items_list_navigation' => __( 'Template parts list navigation', 'mai-engine' ),
 		'items_list'            => __( 'Template parts list', 'mai-engine' ),
 	];
@@ -59,6 +59,9 @@ function mai_register_template_part_cpt() {
 		'rest_base'         => 'template-parts',
 		'map_meta_cap'      => true,
 		'can_export'        => true,
+		'capabilities'      => [
+			'create_posts' => 'do_not_allow',
+		],
 		'supports'          => [
 			'title',
 			'slug',
@@ -117,10 +120,10 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
 		[
 			'id'     => 'mai-template-parts',
 			'parent' => 'site-name',
-			'title'  => __( 'Template Parts', 'mai-engine' ),
+			'title'  => __( 'Content Areas', 'mai-engine' ),
 			'href'   => admin_url( 'edit.php?post_type=mai_template_part' ),
 			'meta'   => [
-				'title' => __( 'Edit Template Parts', 'mai-engine' ),
+				'title' => __( 'Edit Content Areas', 'mai-engine' ),
 			],
 		]
 	);
@@ -242,7 +245,7 @@ function mai_get_template_part_id( $slug ) {
 }
 
 /**
- * Returns an array of template parts.
+ * Returns an array of content areas.
  * Slugs must exist in the config.
  *
  * @since 2.6.0
@@ -360,8 +363,8 @@ function mai_render_template_part( $slug, $before = '', $after = '' ) {
 }
 
 /**
- * Creates default template parts from config.
- * Skips existing template parts.
+ * Creates default content areas from config.
+ * Skips existing content areas.
  *
  * @access private
  *
@@ -399,8 +402,8 @@ function mai_create_template_parts() {
 }
 
 /**
- * Imports template parts from the demo.
- * Skips existing template parts.
+ * Imports content areas from the demo.
+ * Skips existing content areas.
  *
  * @access private
  *
@@ -754,7 +757,7 @@ function mai_get_new_image_from_url( $image_url, $filename = '' ) {
 }
 
 /**
- * Gets template parts content from the demo.
+ * Gets content areas content from the demo.
  * Caches via a transient.
  *
  * Requires Mai Demo Exporter plugin to be active on the demo site.
@@ -780,7 +783,7 @@ function mai_get_template_parts_from_demo() {
 					$body  = wp_remote_retrieve_body( $request );
 					$data  = json_decode( $body );
 
-					if ( $data ) {
+					if ( $data && isset( $data['content_raw'] ) ) {
 						$parts = wp_list_pluck( $data, 'content_raw', 'slug' );
 
 						if ( $parts ) {

@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || die;
 
 add_action( 'genesis_before', 'mai_render_template_parts' );
 /**
- * Display template parts defined in config.
+ * Display content areas defined in config.
  *
  * @since 2.0.1
  *
