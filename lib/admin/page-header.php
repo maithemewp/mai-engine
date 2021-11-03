@@ -81,11 +81,15 @@ function mai_add_page_header_metabox() {
 		];
 	}
 
+	global $pagenow;
+	$image_label       = 'edit-tags.php' === $pagenow ? esc_html__( 'Page Header Image', 'mai-engine' ) : esc_html__( 'Image', 'mai-engine' );
+	$description_label = 'edit-tags.php' === $pagenow ? esc_html__( 'Page Header Description', 'mai-engine' ) : esc_html__( 'Description', 'mai-engine' );
+
 	// Only show page header image field if not blog archive.
 	if ( ! $is_blog ) {
 		$fields[] = [
 			'key'           => 'page_header_image',
-			'label'         => esc_html__( 'Image', 'mai-engine' ),
+			'label'         => $image_label,
 			'name'          => 'page_header_image',
 			'type'          => 'image',
 			'return_format' => 'id',
@@ -96,7 +100,7 @@ function mai_add_page_header_metabox() {
 
 	$fields[] = [
 		'key'   => 'page_header_description',
-		'label' => esc_html__( 'Description', 'mai-engine' ),
+		'label' => $description_label,
 		'name'  => 'page_header_description',
 		'type'  => 'textarea',
 		'rows'  => '3',

@@ -44,6 +44,9 @@ function mai_add_featured_image_metabox() {
 		}
 	}
 
+	global $pagenow;
+	$image_label = 'edit-tags.php' === $pagenow ? esc_html__( 'Featured Image', 'mai-engine' ) : esc_html__( 'Image', 'mai-engine' );
+
 	$field_data = [
 		'key'      => 'featured_image_field_group',
 		'title'    => esc_html__( 'Featured Image', 'mai-engine' ),
@@ -51,7 +54,7 @@ function mai_add_featured_image_metabox() {
 		'fields'   => [
 			[
 				'key'           => 'featured_image',
-				'label'         => esc_html__( 'Image', 'mai-engine' ),
+				'label'         => $image_label,
 				'name'          => 'featured_image',
 				'type'          => 'image',
 				'return_format' => 'id',
