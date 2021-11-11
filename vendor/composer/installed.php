@@ -6,15 +6,15 @@
     'aliases' => 
     array (
     ),
-    'reference' => '0b9652d6747a7b1a9863e77acb58328ecb978684',
+    'reference' => '59697aa8fadb46ce1481a86cbe571bd9c8448c69',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
   array (
     'advanced-custom-fields/advanced-custom-fields-pro' => 
     array (
-      'pretty_version' => '5.10.2',
-      'version' => '5.10.2.0',
+      'pretty_version' => '5.11',
+      'version' => '5.11.0.0',
       'aliases' => 
       array (
       ),
@@ -81,7 +81,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '0b9652d6747a7b1a9863e77acb58328ecb978684',
+      'reference' => '59697aa8fadb46ce1481a86cbe571bd9c8448c69',
     ),
     'phpoption/phpoption' => 
     array (
@@ -144,12 +144,12 @@
     ),
     'vlucas/phpdotenv' => 
     array (
-      'pretty_version' => 'v5.3.1',
-      'version' => '5.3.1.0',
+      'pretty_version' => 'v5.4.0',
+      'version' => '5.4.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'accaddf133651d4b5cf81a119f25296736ffc850',
+      'reference' => 'd4394d044ed69a8f244f3445bcedf8a0d7fe2403',
     ),
     'wptrt/customize-section-button' => 
     array (
