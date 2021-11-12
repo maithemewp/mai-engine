@@ -850,7 +850,8 @@ function mai_get_post_content( $post_slug_or_id, $post_type = 'wp_block' ) {
  *
  * Most of the order comes from /wp-includes/default-filters.php.
  *
- * @since 2.4.2 Remove use of wp_make_content_images_responsive.
+ * @since TBD Conditionally `do_blocks()` or `wpautop()`.
+ * @since 2.4.2  Remove use of wp_make_content_images_responsive.
  * @since 0.3.0
  *
  * @param string $content The unprocessed content.
@@ -858,7 +859,6 @@ function mai_get_post_content( $post_slug_or_id, $post_type = 'wp_block' ) {
  * @return string
  */
 function mai_get_processed_content( $content ) {
-
 	/**
 	 * Embed.
 	 *
@@ -866,15 +866,16 @@ function mai_get_processed_content( $content ) {
 	 */
 	global $wp_embed;
 
-	$content = $wp_embed->autoembed( $content );     // WP runs priority 8.
-	$content = $wp_embed->run_shortcode( $content ); // WP runs priority 8.
-	$content = do_blocks( $content );                // WP runs priority 9.
-	$content = wptexturize( $content );              // WP runs priority 10.
-	$content = wpautop( $content );                  // WP runs priority 10.
-	$content = shortcode_unautop( $content );        // WP runs priority 10.
+	$blocks  = has_blocks( $content );
+	$content = $wp_embed->autoembed( $content );           // WP runs priority 8.
+	$content = $wp_embed->run_shortcode( $content );       // WP runs priority 8.
+	$content = $blocks ? do_blocks( $content ) : $content; // WP runs priority 9.
+	$content = wptexturize( $content );                    // WP runs priority 10.
+	$content = ! $blocks ? wpautop( $content ) : $content; // WP runs priority 10.
+	$content = shortcode_unautop( $content );              // WP runs priority 10.
 	$content = function_exists( 'wp_filter_content_tags' ) ? wp_filter_content_tags( $content ) : wp_make_content_images_responsive( $content ); // WP runs priority 10. WP 5.5 with fallback.
-	$content = do_shortcode( $content );             // WP runs priority 11.
-	$content = convert_smilies( $content );          // WP runs priority 20.
+	$content = do_shortcode( $content );                   // WP runs priority 11.
+	$content = convert_smilies( $content );                // WP runs priority 20.
 
 	return $content;
 }
