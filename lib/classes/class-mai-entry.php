@@ -1522,7 +1522,6 @@ class Mai_Entry {
 			]
 		);
 
-
 		genesis_markup(
 			[
 				'open'    => '<div %s>',
