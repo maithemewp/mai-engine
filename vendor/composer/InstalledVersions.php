@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '59697aa8fadb46ce1481a86cbe571bd9c8448c69',
+    'reference' => 'ef89adf34a225180ea39d378afca80d84d2a36d3',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
@@ -48,12 +48,21 @@ private static $installed = array (
     ),
     'afragen/wp-dependency-installer' => 
     array (
-      'pretty_version' => '3.1.0',
-      'version' => '3.1.0.0',
+      'pretty_version' => '4.2.2',
+      'version' => '4.2.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => '65570a1eb966bb9adfc9d9e521357da080fbdc5a',
+      'reference' => '5e5419348c6cde7b02f3c33fb3fc3381062443a1',
+    ),
+    'afragen/wp-dismiss-notice' => 
+    array (
+      'pretty_version' => '0.2.1',
+      'version' => '0.2.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'a0ced9836671d1374ed5d7f47e63ca313f5f54b9',
     ),
     'aristath/kirki' => 
     array (
@@ -63,15 +72,6 @@ private static $installed = array (
       array (
       ),
       'reference' => '976e58876b51ac6b20fb3fdc8f29124552876cff',
-    ),
-    'collizo4sky/persist-admin-notices-dismissal' => 
-    array (
-      'pretty_version' => '1.4.4',
-      'version' => '1.4.4.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '900739eb6b0ec0210465f5983a6d4e0e420289e4',
     ),
     'composer/installers' => 
     array (
@@ -107,7 +107,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '59697aa8fadb46ce1481a86cbe571bd9c8448c69',
+      'reference' => 'ef89adf34a225180ea39d378afca80d84d2a36d3',
     ),
     'phpoption/phpoption' => 
     array (
