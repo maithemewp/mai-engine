@@ -36,30 +36,6 @@ function mai_change_plugin_dependency_text( $actions ) {
 	return $actions;
 }
 
-add_filter( 'mai_plugin_dependencies', 'mai_require_genesis_connect', 10, 1 );
-/**
- * Recommend Genesis Connect if WooCommerce is installed.
- *
- * @since 0.1.0
- *
- * @param array $plugins List of plugin dependencies.
- *
- * @return array
- */
-function mai_require_genesis_connect( $plugins ) {
-	if ( class_exists( 'WooCommerce' ) ) {
-		$plugins[] = [
-			'name'     => 'Genesis Connect for WooCommerce',
-			'host'     => 'wordpress',
-			'slug'     => 'genesis-connect-woocommerce/genesis-connect-woocommerce.php',
-			'uri'      => 'https://wordpress.org/plugins/genesis-connect-woocommerce/',
-			'optional' => true,
-		];
-	}
-
-	return $plugins;
-}
-
 add_action( 'wp_enqueue_scripts', 'mai_remove_simple_social_icons_css', 15 );
 /**
  * Remove Simple Social Icons CSS.
