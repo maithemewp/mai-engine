@@ -12,32 +12,35 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-// add_action( 'after_setup_theme', 'mai_load_dependencies' );
-// /**
-//  * Loads engine plugin dependencies.
-//  *
-//  * @since 2.14.0
-//  *
-//  * @return void
-//  */
-// function mai_load_dependencies() {
-// 	if ( ! class_exists( 'WP_Dependency_Installer' ) ) {
-// 		return;
-// 	}
+add_action( 'after_setup_theme', 'mai_load_dependencies' );
+/**
+ * Loads engine plugin dependencies.
+ * This can't be added via `mai_plugin_dependencies` filter
+ * because the `wp_dependency_dismiss_label` doesn't work correctly that way.
+ *
+ * @since 2.14.0
+ * @since TBD Registered config via PHP.
+ *
+ * @return void
+ */
+function mai_load_dependencies() {
+	if ( ! class_exists( 'WP_Dependency_Installer' ) ) {
+		return;
+	}
 
-// 	$config = [
-// 		[
-// 			'name'     => 'Mai Icons',
-// 			'host'     => 'github',
-// 			'slug'     => 'mai-icons/mai-icons.php',
-// 			'uri'      => 'maithemewp/mai-icons',
-// 			'branch'   => 'master',
-// 			'required' => false,
-// 		]
-// 	];
+	$config = [
+		[
+			'name'     => 'Mai Icons',
+			'host'     => 'github',
+			'slug'     => 'mai-icons/mai-icons.php',
+			'uri'      => 'maithemewp/mai-icons',
+			'branch'   => 'master',
+			'required' => false,
+		]
+	];
 
-// 	WP_Dependency_Installer::instance( dirname( dirname( __DIR__ ) ) )->register( $config )->run();
-// }
+	WP_Dependency_Installer::instance( dirname( dirname( __DIR__ ) ) )->register( $config )->run();
+}
 
 add_filter( 'mai_plugin_dependencies', 'mai_engine_plugin_dependencies' );
 /**
@@ -49,22 +52,12 @@ add_filter( 'mai_plugin_dependencies', 'mai_engine_plugin_dependencies' );
  * Uses the WP Dependency Installer filter in the child theme.
  *
  * @since 0.1.0
- * @since TBD Added Mai Icons via PHP since some hosts throwing error with the JSON file.
  *
  * @param array $dependencies Plugin dependencies.
  *
  * @return array
  */
 function mai_engine_plugin_dependencies( $dependencies ) {
-	$dependencies[] = [
-		'name'     => 'Mai Icons',
-		'host'     => 'github',
-		'slug'     => 'mai-icons/mai-icons.php',
-		'uri'      => 'maithemewp/mai-icons',
-		'branch'   => 'master',
-		'optional' => true,
-	];
-
 	$setup_wizard_options = get_option( 'mai-setup-wizard', [] );
 
 	// Return early if setup wizard was run.
