@@ -328,6 +328,20 @@ function mai_load_vendor_plugins() {
 	}
 }
 
+add_action( 'setup_theme', 'mai_load_autoload' );
+/**
+ * Autloads engine dependencies before the child theme.
+ * This makes sure anything used in the engine and the theme uses the current version from the engine.
+ * Specifically added for wp-dependency-manager.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_load_autoload() {
+	require_once __DIR__ . '/../vendor/autoload.php';
+}
+
 add_action( 'after_setup_theme', 'mai_load_files', 0 );
 /**
  * Load mai-engine files, or deactivate if active theme is not supported.
@@ -353,9 +367,6 @@ function mai_load_files() {
 	}
 
 	$files = [
-
-		// Composer.
-		'../vendor/autoload',
 
 		// Functions.
 		'functions/autoload',
