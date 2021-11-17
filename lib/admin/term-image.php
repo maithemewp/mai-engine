@@ -63,3 +63,25 @@ function mai_add_featured_image_metabox() {
 
 	acf_add_local_field_group( $field_data );
 }
+
+add_filter( 'acf/load_field/key=featured_image', 'mai_load_featured_image_field' );
+/**
+ * Changes field label on Add New screen.
+ *
+ * @since TBD
+ *
+ * @param array $field The existing field array.
+ *
+ * @return array
+ */
+function mai_load_featured_image_field( $field ) {
+	$screen = get_current_screen();
+
+	if ( ! $screen || 'edit-tags' !== $screen->base ) {
+		return $field;
+	}
+
+	$field['label'] = __( 'Featured Image', 'mai-engine' );
+
+	return $field;
+}
