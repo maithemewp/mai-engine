@@ -39,6 +39,16 @@ function mai_load_dependencies() {
 		]
 	];
 
+	if ( class_exists( 'WooCommerce' ) ) {
+		$config[] = [
+			'name'     => 'Genesis Connect for WooCommerce',
+			'host'     => 'wordpress',
+			'slug'     => 'genesis-connect-woocommerce/genesis-connect-woocommerce.php',
+			'uri'      => 'https://wordpress.org/plugins/genesis-connect-woocommerce/',
+			'optional' => true,
+		];
+	}
+
 	WP_Dependency_Installer::instance( dirname( dirname( __DIR__ ) ) )->register( $config )->run();
 }
 
@@ -78,30 +88,6 @@ function mai_engine_plugin_dependencies( $dependencies ) {
 	}
 
 	return $dependencies;
-}
-
-add_filter( 'mai_plugin_dependencies', 'mai_require_genesis_connect', 10, 1 );
-/**
- * Recommend Genesis Connect if WooCommerce is installed.
- *
- * @since 0.1.0
- *
- * @param array $plugins List of plugin dependencies.
- *
- * @return array
- */
-function mai_require_genesis_connect( $plugins ) {
-	if ( class_exists( 'WooCommerce' ) ) {
-		$plugins[] = [
-			'name'     => 'Genesis Connect for WooCommerce',
-			'host'     => 'wordpress',
-			'slug'     => 'genesis-connect-woocommerce/genesis-connect-woocommerce.php',
-			'uri'      => 'https://wordpress.org/plugins/genesis-connect-woocommerce/',
-			'optional' => true,
-		];
-	}
-
-	return $plugins;
 }
 
 add_action( 'after_setup_theme', 'mai_deactivate_bundled_plugins' );
@@ -151,4 +137,52 @@ function mai_deactivate_bundled_plugins() {
 			}
 		);
 	}
+}
+
+/**
+ * Modifies dependency installer labels.
+ *
+ * @since 0.1.0
+ *
+ * @param string $label  The label text.
+ * @param string $source The dependency manager source.
+ *
+ * @return string
+ */
+add_filter( 'wp_dependency_dismiss_label', 'mai_dependencey_dismiss_label', 10, 2 );
+function mai_dependencey_dismiss_label( $label, $source ) {
+	if ( basename( __DIR__ ) !== $source ) {
+		return $label;
+	}
+
+	return mai_get_name();
+}
+
+/**
+ * Disables dependency manager "Required by" text.
+ *
+ * @since 0.1.0
+ *
+ * @return bool
+ */
+add_filter( 'wp_dependency_required_row_meta', '__return_false' );
+
+add_filter( 'network_admin_plugin_action_links_mai-engine/mai-engine.php', 'mai_change_plugin_dependency_text', 100 );
+add_filter( 'plugin_action_links_mai-engine/mai-engine.php', 'mai_change_plugin_dependency_text', 100 );
+/**
+ * Changes plugin dependency text.
+ *
+ * @since 0.1.0
+ *
+ * @param array $actions Plugin action links.
+ *
+ * @return array
+ */
+function mai_change_plugin_dependency_text( $actions ) {
+	$actions['required-plugin'] = sprintf(
+		'<span class="network_active">%s</span>',
+		__( 'Mai Theme Dependency', 'mai-engine' )
+	);
+
+	return $actions;
 }
