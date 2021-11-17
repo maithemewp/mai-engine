@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '5fb55ff296c218dd0583f3a1edb6ec491d962f42',
+    'reference' => 'bbd2577761852cd1fcf54824031578ba8bc7d0f0',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
@@ -81,7 +81,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '5fb55ff296c218dd0583f3a1edb6ec491d962f42',
+      'reference' => 'bbd2577761852cd1fcf54824031578ba8bc7d0f0',
     ),
     'phpoption/phpoption' => 
     array (
