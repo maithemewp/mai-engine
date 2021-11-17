@@ -12,8 +12,32 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-// Dependency installer labels.
-add_filter( 'wp_dependency_dismiss_label', 'mai_get_name' );
+/**
+ * Modifies dependency installer labels.
+ *
+ * @since 0.1.0
+ *
+ * @param string $label  The label text.
+ * @param string $source The dependency manager source.
+ *
+ * @return string
+ */
+add_filter( 'wp_dependency_dismiss_label', 'mai_dependencey_dismiss_label', 10, 2 );
+function mai_dependencey_dismiss_label( $label, $source ) {
+	if ( basename( __DIR__ ) !== $source ) {
+		return $label;
+	}
+
+	return mai_get_name();
+}
+
+/**
+ * Disables dependency manager "Required by" text.
+ *
+ * @since 0.1.0
+ *
+ * @return bool
+ */
 add_filter( 'wp_dependency_required_row_meta', '__return_false' );
 
 add_filter( 'network_admin_plugin_action_links_mai-engine/mai-engine.php', 'mai_change_plugin_dependency_text', 100 );
