@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Mai Engine plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.18.1-beta.2\n"
+"Project-Id-Version: Mai Engine 2.18.1-beta.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-11-17T19:39:44+00:00\n"
+"POT-Creation-Date: 2021-11-23T19:53:06+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -1400,11 +1400,11 @@ msgstr ""
 msgid "Return to dashboard"
 msgstr ""
 
-#: lib/classes/class-mai-entry.php:1154
+#: lib/classes/class-mai-entry.php:1156
 msgid "Pages:"
 msgstr ""
 
-#: lib/classes/class-mai-entry.php:1162
+#: lib/classes/class-mai-entry.php:1164
 msgid "Page "
 msgstr ""
 
@@ -1853,8 +1853,12 @@ msgstr ""
 msgid "on BizBudding for all the details, terms and conditions of this program."
 msgstr ""
 
-#: lib/admin/dependencies.php:147
+#: lib/admin/dependencies.php:133
 msgid " is bundled with Mai Engine and has been deactivated."
+msgstr ""
+
+#: lib/admin/dependencies.php:184
+msgid "Mai Theme Dependency"
 msgstr ""
 
 #: lib/admin/hide-elements.php:30
@@ -2155,10 +2159,6 @@ msgstr ""
 
 #: lib/functions/templates.php:482
 msgid "template part already exists"
-msgstr ""
-
-#: lib/functions/plugins.php:57
-msgid "Mai Theme Dependency"
 msgstr ""
 
 #: lib/functions/grid.php:88
