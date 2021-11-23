@@ -744,13 +744,15 @@ class Mai_Entry {
 				$image_size = $this->get_image_size_by_cols();
 				$image_size = sprintf( '%s-%s', $this->args['image_orientation'], $image_size );
 				$image_size = $this->get_fallback_image_size( $image_size );
-				return $image_size;
 			break;
 			default:
 				$image_size = $this->args['image_size'];
 		}
 
-		return $image_size;
+		// Filter.
+		$image_size = apply_filters( 'mai_entry_image_size', $image_size, $this->entry, $this->args );
+
+		return esc_attr( $image_size );
 	}
 
 	/**
@@ -1199,16 +1201,15 @@ class Mai_Entry {
 			return $out;
 		};
 
-		// TODO: Only works if/when ACF adds the 'acf' shortcode to the shortcode_atts() function.
-		// if ( 'block' === $this->context ) {
-			// add_filter( 'shortcode_atts_acf', $filter, 10, 3 );
-		// }
+		if ( 'block' === $this->context ) {
+			add_filter( 'shortcode_atts_acf', $filter, 10, 3 );
+		}
 
 		$content = mai_get_processed_content( $this->args['custom_content'] );
 
-		// if ( 'block' === $this->context ) {
-		// 	remove_filter( 'shortcode_atts_acf', $filter, 10, 3 );
-		// }
+		if ( 'block' === $this->context ) {
+			remove_filter( 'shortcode_atts_acf', $filter, 10, 3 );
+		}
 
 		genesis_markup(
 			[
