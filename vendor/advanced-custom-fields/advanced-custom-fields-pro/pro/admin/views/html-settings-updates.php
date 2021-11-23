@@ -17,7 +17,10 @@ $readonly = $active ? 1 : 0;
 		</div>
 		<div class="inner">
 			<?php if ( $is_defined_license ) { ?>
-				<p><?php printf( __( 'Your license key is defined in wp-config.php.', 'acf' ) ); ?></p>
+
+				<p>
+					<?php echo acf_esc_html( apply_filters( 'acf/admin/license_key_constant_message', __( 'Your license key is defined in wp-config.php.', 'acf' ) ) ); ?>
+				</p>
 
 				<?php if ( ! $active ) { ?>
 

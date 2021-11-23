@@ -6,15 +6,15 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'bbd2577761852cd1fcf54824031578ba8bc7d0f0',
+    'reference' => '37dfe7d92b7995f30b89049bf86f7d4283017237',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
   array (
     'advanced-custom-fields/advanced-custom-fields-pro' => 
     array (
-      'pretty_version' => '5.11',
-      'version' => '5.11.0.0',
+      'pretty_version' => '5.11.1',
+      'version' => '5.11.1.0',
       'aliases' => 
       array (
       ),
@@ -67,12 +67,12 @@
     ),
     'graham-campbell/result-type' => 
     array (
-      'pretty_version' => 'v1.0.3',
-      'version' => '1.0.3.0',
+      'pretty_version' => 'v1.0.4',
+      'version' => '1.0.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => '296c015dc30ec4322168c5ad3ee5cc11dae827ac',
+      'reference' => '0690bde05318336c7221785f2a932467f98b64ca',
     ),
     'maithemewp/mai-engine' => 
     array (
@@ -81,7 +81,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'bbd2577761852cd1fcf54824031578ba8bc7d0f0',
+      'reference' => '37dfe7d92b7995f30b89049bf86f7d4283017237',
     ),
     'phpoption/phpoption' => 
     array (
