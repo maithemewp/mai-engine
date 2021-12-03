@@ -175,7 +175,7 @@ function mai_login_css() {
 			--button-background-hover: transparent;
 			--button-border: 0;
 			--button-border-hover: 0;
-			--button-box-shadow: 0;
+			--button-box-shadow: none;
 			--button-box-shadow-hover: 0;
 			--button-transform-hover: 0;
 			top: 8px;
