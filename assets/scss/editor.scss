@@ -224,7 +224,7 @@ p {
 	}
 }
 
-button,
+// button, // This breaks core block control buttons.
 input[type="submit"],
 .wp-block-button__link,
 .wp-block .button {
