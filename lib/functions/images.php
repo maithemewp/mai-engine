@@ -13,6 +13,39 @@
 defined( 'ABSPATH' ) || die;
 
 /**
+ * Filters an image's 'srcset' sources.
+ *
+ * @param array  $sources {
+ *     One or more arrays of source data to include in the 'srcset'.
+ *
+ *     @type array $width {
+ *         @type string $url        The URL of an image source.
+ *         @type string $descriptor The descriptor type used in the image candidate string,
+ *                                  either 'w' or 'x'.
+ *         @type int    $value      The source width if paired with a 'w' descriptor, or a
+ *                                  pixel density value if paired with an 'x' descriptor.
+ *     }
+ * }
+ * @param array $size_array     {
+ *     An array of requested width and height values.
+ *
+ *     @type int $0 The width in pixels.
+ *     @type int $1 The height in pixels.
+ * }
+ * @param string $image_src     The 'src' of the image.
+ * @param array  $image_meta    The image meta data as returned by 'wp_get_attachment_metadata()'.
+ * @param int    $attachment_id Image attachment ID or 0.
+ *
+ * @return array
+ */
+add_filter( 'wp_calculate_image_srcset', 'mai_image_srcset_order', 10, 5 );
+function mai_image_srcset_order( $sources, $size_array, $image_src, $image_meta, $attachment_id ) {
+	ksort( $sources, SORT_NUMERIC );
+
+	return $sources;
+}
+
+/**
  * Gets aspect ratio from orientation.
  *
  * @since 0.1.0
