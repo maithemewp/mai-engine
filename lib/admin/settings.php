@@ -110,6 +110,10 @@ add_action( 'admin_menu', 'mai_admin_menu_subpages', 30 );
  * @return void
  */
 function mai_admin_menu_subpages() {
+	if ( ! current_user_can( 'edit_posts' ) ) {
+		return;
+	}
+
 	global $submenu;
 
 	$submenu['mai-theme'][] = [
