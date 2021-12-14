@@ -497,7 +497,7 @@ class Mai_Entry {
 			return '';
 		}
 
-		add_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
+		// add_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
 		add_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 4 );
 
 		if ( 'single' === $this->context ) {
@@ -507,6 +507,7 @@ class Mai_Entry {
 
 			add_filter( 'wp_lazy_loading_enabled', $filter );
 		}
+
 
 		$image = wp_get_attachment_image(
 			$image_id,
@@ -522,10 +523,11 @@ class Mai_Entry {
 		}
 
 		remove_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 4 );
-		remove_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
+		// remove_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
 
 		if ( 'single' === $this->context ) {
 			$caption = wp_get_attachment_caption( $image_id );
+
 			if ( $caption ) {
 				$image .= sprintf( '<figcaption>%s</figcaption>', $caption );
 			}
