@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-12-14T20:27:08+00:00\n"
+"POT-Creation-Date: 2021-12-14T20:55:58+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -1400,11 +1400,11 @@ msgstr ""
 msgid "Return to dashboard"
 msgstr ""
 
-#: lib/classes/class-mai-entry.php:1156
+#: lib/classes/class-mai-entry.php:1154
 msgid "Pages:"
 msgstr ""
 
-#: lib/classes/class-mai-entry.php:1164
+#: lib/classes/class-mai-entry.php:1162
 msgid "Page "
 msgstr ""
 
@@ -2353,19 +2353,19 @@ msgstr ""
 msgid "Skip to site footer"
 msgstr ""
 
-#: lib/structure/page-header.php:433
+#: lib/structure/page-header.php:435
 msgid "Latest Posts"
 msgstr ""
 
-#: lib/structure/page-header.php:467
+#: lib/structure/page-header.php:469
 msgid "Search results for: "
 msgstr ""
 
-#: lib/structure/page-header.php:476
+#: lib/structure/page-header.php:478
 msgid "Archives for "
 msgstr ""
 
-#: lib/structure/page-header.php:488
+#: lib/structure/page-header.php:490
 msgid "Not found, error 404"
 msgstr ""
 
