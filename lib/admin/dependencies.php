@@ -18,6 +18,12 @@ add_action( 'after_setup_theme', 'mai_load_dependencies' );
  * This can't be added via `mai_plugin_dependencies` filter
  * because the `wp_dependency_dismiss_label` doesn't work correctly that way.
  *
+ * Shows theme recommended plugins, in case setup wizard wasn't run.
+ *
+ * Note: Currently no way to only recommend plugin by chosen demo, since
+ * we need to run this function even if the setup wizard was not run.
+ * Workaround is to only recommend plugins required by all demos.
+ *
  * @since 2.14.0
  * @since TBD Registered config via PHP.
  *
@@ -28,19 +34,48 @@ function mai_load_dependencies() {
 		return;
 	}
 
-	$config = [
-		[
-			'name'     => 'Mai Icons',
-			'host'     => 'github',
-			'slug'     => 'mai-icons/mai-icons.php',
-			'uri'      => 'maithemewp/mai-icons',
-			'branch'   => 'master',
-			'required' => false,
-		]
-	];
+	if ( ! ( is_admin() && current_user_can( 'install_plugins' ) ) ) {
+		return;
+	}
 
-	if ( class_exists( 'WooCommerce' ) ) {
-		$config[] = [
+	$dependencies = mai_get_plugin_dependencies();
+
+	if ( ! $dependencies ) {
+		return;
+	}
+
+	WP_Dependency_Installer::instance( dirname( dirname( __DIR__ ) ) )->register( $dependencies )->run();
+}
+
+/**
+ * Gets engine plugin dependencies.
+ *
+ * @since TBD
+ *
+ * @return array
+ */
+function mai_get_plugin_dependencies() {
+	$dependencies         = [];
+	$setup_wizard_options = get_option( 'mai-setup-wizard', [] );
+
+	// Only if setup wizard was not run.
+	if ( ! ( $setup_wizard_options && isset( $setup_wizard_options['demo'] ) ) ) {
+
+		$plugins     = mai_get_config_plugins();
+		$total_demos = count( mai_get_config( 'demos' ) );
+
+		foreach ( $plugins as $plugin ) {
+			$plugin_demos = count( $plugin['demos'] );
+
+			if ( $total_demos === $plugin_demos && ! is_plugin_active( $plugin['slug'] ) ) {
+				$plugin['host'] = isset( $plugin['host'] ) ? $plugin['host'] : 'WordPress';
+				$dependencies[] = $plugin;
+			}
+		}
+	}
+
+	if ( class_exists( 'WooCommerce' ) || isset( $dependencies['slug']['woocommerce/woocommerce.php'] ) ) {
+		$dependencies[] = [
 			'name'     => 'Genesis Connect for WooCommerce',
 			'host'     => 'wordpress',
 			'slug'     => 'genesis-connect-woocommerce/genesis-connect-woocommerce.php',
@@ -49,43 +84,7 @@ function mai_load_dependencies() {
 		];
 	}
 
-	WP_Dependency_Installer::instance( dirname( dirname( __DIR__ ) ) )->register( $config )->run();
-}
-
-add_filter( 'mai_plugin_dependencies', 'mai_engine_plugin_dependencies' );
-/**
- * Show theme recommended plugins, in case setup wizard wasn't run.
- *
- * Note: Currently no way to only recommend plugin by chosen demo, since
- * we need to run this function even if the setup wizard was not run.
- * Workaround is to only recommend plugins required by all demos.
- * Uses the WP Dependency Installer filter in the child theme.
- *
- * @since 0.1.0
- *
- * @param array $dependencies Plugin dependencies.
- *
- * @return array
- */
-function mai_engine_plugin_dependencies( $dependencies ) {
-	$setup_wizard_options = get_option( 'mai-setup-wizard', [] );
-
-	// Return early if setup wizard was run.
-	if ( isset( $setup_wizard_options['demo'] ) ) {
-		return $dependencies;
-	}
-
-	$plugins     = mai_get_config_plugins();
-	$total_demos = count( mai_get_config( 'demos' ) );
-
-	foreach ( $plugins as $plugin ) {
-		$plugin_demos = count( $plugin['demos'] );
-
-		if ( $total_demos === $plugin_demos && ! is_plugin_active( $plugin['slug'] ) ) {
-			$plugin['host'] = isset( $plugin['host'] ) ? $plugin['host'] : 'WordPress';
-			$dependencies[] = $plugin;
-		}
-	}
+	$dependencies = apply_filters( 'mai_plugin_dependencies', $dependencies );
 
 	return $dependencies;
 }
