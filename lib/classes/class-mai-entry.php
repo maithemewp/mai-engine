@@ -501,13 +501,9 @@ class Mai_Entry {
 		add_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 4 );
 
 		if ( 'single' === $this->context ) {
-			$filter = function() {
-				return false;
-			};
-
+			$filter = function() { return false; };
 			add_filter( 'wp_lazy_loading_enabled', $filter );
 		}
-
 
 		$image = wp_get_attachment_image(
 			$image_id,
