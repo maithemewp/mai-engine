@@ -119,6 +119,7 @@
 		--entry-flex-direction: column;
 		--entry-flex-wrap: nowrap;
 		--entry-image-link-flex: initial;
+		--entry-image-link-width: 100%;
 		--entry-image-link-max-width: 100%;
 		--entry-image-link-margin: 0 auto var(--spacing-md);
 		--entry-image-link-before-display: none;
@@ -128,8 +129,8 @@
 			--entry-image-link-order: -1;
 		}
 
-		.entries-wrap:not(.has-boxed) & {
-			--entry-image-link-margin: 0 0 var(--spacing-md);
+		.has-boxed & {
+			--entry-image-link-margin: 0 auto;
 		}
 	}
 }
