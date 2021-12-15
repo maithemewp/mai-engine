@@ -61,6 +61,10 @@ function mai_get_plugin_dependencies() {
 	// Only if setup wizard was not run.
 	if ( ! ( $setup_wizard_options && isset( $setup_wizard_options['demo'] ) ) ) {
 
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+		}
+
 		$plugins     = mai_get_config_plugins();
 		$total_demos = count( mai_get_config( 'demos' ) );
 
@@ -98,6 +102,10 @@ add_action( 'after_setup_theme', 'mai_deactivate_bundled_plugins' );
  * @return void
  */
 function mai_deactivate_bundled_plugins() {
+	if ( ! function_exists( 'is_plugin_active' ) ) {
+		require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+	}
+
 	$plugins = [
 		'advanced-custom-fields/acf.php',
 		'advanced-custom-fields-master/acf.php',
