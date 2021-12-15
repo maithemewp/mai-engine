@@ -26,7 +26,7 @@
     "ext-json": "*",
     "ext-libxml": "*",
     "yahnis-elsts/plugin-update-checker": "^4.10",
-    "aristath/kirki": "*",
+    "aristath/kirki": "^3.0",
     "advanced-custom-fields/advanced-custom-fields-pro": "*",
     "proteusthemes/wp-content-importer-v2": "^2.1",
     "wptrt/customize-section-button": "^1.0",
