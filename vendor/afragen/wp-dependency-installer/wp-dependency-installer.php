@@ -74,7 +74,6 @@ if ( ! class_exists( 'WP_Dependency_Installer' ) ) {
 		public static function instance( $caller = false ) {
 			static $instance = null;
 			if ( null === $instance ) {
-				ray( 'wpdi engine' );
 				$instance = new self();
 			}
 			self::$caller = $caller;
