@@ -73,6 +73,7 @@ if ( ! class_exists( 'WP_Dependency_Installer' ) ) {
 		 */
 		public static function instance( $caller = false ) {
 			static $instance = null;
+			ray( 'wpdi ENGINE' );
 			if ( null === $instance ) {
 				$instance = new self();
 			}
@@ -88,12 +89,9 @@ if ( ! class_exists( 'WP_Dependency_Installer' ) ) {
 		private function __construct() {
 			$this->config  = [];
 			$this->notices = [];
-			add_action(
-				'plugins_loaded',
-				function() {
-					static::$nonce = wp_create_nonce( 'wp-dependency-installer' );
-				}
-			);
+			if ( defined( 'DOING_AJAX' ) && \DOING_AJAX ){
+				static::$nonce = wp_create_nonce( 'wp-dependency-installer' );
+			}
 		}
 
 		/**

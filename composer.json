@@ -30,7 +30,7 @@
     "advanced-custom-fields/advanced-custom-fields-pro": "*",
     "proteusthemes/wp-content-importer-v2": "^2.1",
     "wptrt/customize-section-button": "^1.0",
-    "afragen/wp-dependency-installer": "^4.2"
+    "afragen/wp-dependency-installer": "^4"
   },
   "require-dev": {
     "php": "^5.6|^7",
