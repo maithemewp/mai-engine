@@ -48,12 +48,6 @@ return [
 		],
 	],
 	'plugins'       => [
-		'genesis-connect-woocommerce/genesis-connect-woocommerce.php' => [
-			'name'  => 'Genesis Connect for WooCommerce',
-			'host'  => 'wordpress',
-			'uri'   => 'https://wordpress.org/plugins/genesis-connect-woocommerce/',
-			'demos' => [ 'creative' ],
-		],
 		'wpforms-lite/wpforms.php' => [
 			'name'  => 'WP Forms Lite',
 			'host'  => 'wordpress',
@@ -64,6 +58,12 @@ return [
 			'name'  => 'WooCommerce',
 			'host'  => 'wordpress',
 			'uri'   => 'https://wordpress.org/plugins/woocommerce/',
+			'demos' => [ 'creative' ],
+		],
+		'genesis-connect-woocommerce/genesis-connect-woocommerce.php' => [
+			'name'  => 'Genesis Connect for WooCommerce',
+			'host'  => 'wordpress',
+			'uri'   => 'https://wordpress.org/plugins/genesis-connect-woocommerce/',
 			'demos' => [ 'creative' ],
 		],
 	],

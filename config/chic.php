@@ -87,16 +87,22 @@ return [
 	],
 	'plugins'           => [
 		'genesis-enews-extended/plugin.php' => [
-			'name'            => 'Genesis eNews Extended',
-			'host'            => 'wordpress',
-			'uri'             => 'https://wordpress.org/plugins/genesis-enews-extended/',
-			'demos'           => [],
+			'name'  => 'Genesis eNews Extended',
+			'host'  => 'wordpress',
+			'uri'   => 'https://wordpress.org/plugins/genesis-enews-extended/',
+			'demos' => [],
 		],
 		'woocommerce/woocommerce.php' => [
-			'name'            => 'WooCommerce',
-			'host'            => 'wordpress',
-			'uri'             => 'https://wordpress.org/plugins/woocommerce/',
-			'demos'           => [],
+			'name'  => 'WooCommerce',
+			'host'  => 'wordpress',
+			'uri'   => 'https://wordpress.org/plugins/woocommerce/',
+			'demos' => [],
+		],
+		'genesis-connect-woocommerce/genesis-connect-woocommerce.php' => [
+			'name'  => 'Genesis Connect for WooCommerce',
+			'host'  => 'wordpress',
+			'uri'   => 'https://wordpress.org/plugins/genesis-connect-woocommerce/',
+			'demos' => [],
 		],
 	],
 ];

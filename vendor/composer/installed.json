@@ -2,8 +2,8 @@
     "packages": [
         {
             "name": "advanced-custom-fields/advanced-custom-fields-pro",
-            "version": "5.11.3",
-            "version_normalized": "5.11.3.0",
+            "version": "5.11.4",
+            "version_normalized": "5.11.4.0",
             "dist": {
                 "type": "zip",
                 "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download&t={%VERSION}&k={%ACF_PRO_KEY}"
@@ -81,23 +81,23 @@
         },
         {
             "name": "afragen/wp-dismiss-notice",
-            "version": "0.2.1",
-            "version_normalized": "0.2.1.0",
+            "version": "0.2.3",
+            "version_normalized": "0.2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/afragen/wp-dismiss-notice.git",
-                "reference": "a0ced9836671d1374ed5d7f47e63ca313f5f54b9"
+                "reference": "21949732f1ea21d81500bdda8f882ac7eb0f98af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/afragen/wp-dismiss-notice/zipball/a0ced9836671d1374ed5d7f47e63ca313f5f54b9",
-                "reference": "a0ced9836671d1374ed5d7f47e63ca313f5f54b9",
+                "url": "https://api.github.com/repos/afragen/wp-dismiss-notice/zipball/21949732f1ea21d81500bdda8f882ac7eb0f98af",
+                "reference": "21949732f1ea21d81500bdda8f882ac7eb0f98af",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.6"
             },
-            "time": "2021-09-26T22:09:34+00:00",
+            "time": "2021-12-19T21:53:57+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {

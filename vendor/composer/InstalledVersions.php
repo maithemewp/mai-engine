@@ -32,15 +32,15 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'f1552bb81e593ee0d8cd8da59b7ea6c9730384a0',
+    'reference' => '2627197096e0c7ad20afdf7f640483dcb84b25ac',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
   array (
     'advanced-custom-fields/advanced-custom-fields-pro' => 
     array (
-      'pretty_version' => '5.11.3',
-      'version' => '5.11.3.0',
+      'pretty_version' => '5.11.4',
+      'version' => '5.11.4.0',
       'aliases' => 
       array (
       ),
@@ -57,12 +57,12 @@ private static $installed = array (
     ),
     'afragen/wp-dismiss-notice' => 
     array (
-      'pretty_version' => '0.2.1',
-      'version' => '0.2.1.0',
+      'pretty_version' => '0.2.3',
+      'version' => '0.2.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'a0ced9836671d1374ed5d7f47e63ca313f5f54b9',
+      'reference' => '21949732f1ea21d81500bdda8f882ac7eb0f98af',
     ),
     'aristath/kirki' => 
     array (
@@ -107,7 +107,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'f1552bb81e593ee0d8cd8da59b7ea6c9730384a0',
+      'reference' => '2627197096e0c7ad20afdf7f640483dcb84b25ac',
     ),
     'phpoption/phpoption' => 
     array (
