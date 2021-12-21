@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '85c7b818cfbc2b333ef95b5890efa13f368c3940',
+    'reference' => '2627197096e0c7ad20afdf7f640483dcb84b25ac',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
@@ -31,12 +31,12 @@
     ),
     'afragen/wp-dismiss-notice' => 
     array (
-      'pretty_version' => '0.2.2',
-      'version' => '0.2.2.0',
+      'pretty_version' => '0.2.3',
+      'version' => '0.2.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'c2e737fe141a2f831da662373f7967b8b0faf35b',
+      'reference' => '21949732f1ea21d81500bdda8f882ac7eb0f98af',
     ),
     'aristath/kirki' => 
     array (
@@ -81,7 +81,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '85c7b818cfbc2b333ef95b5890efa13f368c3940',
+      'reference' => '2627197096e0c7ad20afdf7f640483dcb84b25ac',
     ),
     'phpoption/phpoption' => 
     array (

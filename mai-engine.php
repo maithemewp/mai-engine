@@ -96,6 +96,7 @@ final class Mai_Engine {
 	 * @return  void
 	 */
 	private function includes() {
+		require_once __DIR__ . '/vendor/autoload.php';
 		require_once __DIR__ . '/lib/init.php';
 	}
 }
