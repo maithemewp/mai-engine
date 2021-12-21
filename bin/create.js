@@ -58,8 +58,8 @@ const composerJson = function( theme ) {
         }
     ],
     "require": {
-        "maithemewp/mai-installer": "dev-master",
         "afragen/wp-dependency-installer": "^4.2"
+        "maithemewp/mai-installer": "dev-master",
     },
     "config": {
         "preferred-install": {
