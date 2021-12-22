@@ -204,11 +204,9 @@ function mai_add_custom_color_css( $css ) {
 
 	foreach ( $custom_colors as $custom_color ) {
 		if ( isset( $custom_color['color'] ) ) {
-			$css['global'][':root'][ '--color-custom-' . $count ] = $custom_color['color'];
-
-			$css['global'][ '.has-custom-' . $count . '-color' ]['color'] = $custom_color['color'];
-
-			$css['global'][ '.has-custom-' . $count . '-background-color' ]['background-color'] = $custom_color['color'];
+			$css['global'][':root'][ '--color-custom-' . $count ]                             = $custom_color['color'];
+			$css['global']['.has-custom-' . $count . '-color']['color']                       = mai_get_color_css( $custom_color['color'] );
+			$css['global']['.has-custom-' . $count . '-background-color']['background-color'] = mai_get_color_css( $custom_color['color'] );
 
 			$count++;
 		}
