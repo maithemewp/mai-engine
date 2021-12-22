@@ -33,7 +33,6 @@ class WP_Dismiss_Notice {
 
 		// Test to get correct URL for JS.
 		$response = wp_remote_head( $plugin_js_url );
-		ray( 200 === wp_remote_retrieve_response_code( $response ) );
 		$js_url   = ( 200 === wp_remote_retrieve_response_code( $response ) ) || is_wp_error( $response )
 			? $plugin_js_url
 			: get_stylesheet_directory_uri() . $composer_js_path;
