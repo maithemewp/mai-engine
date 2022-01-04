@@ -160,7 +160,6 @@ function mai_get_grid_field_values( $type ) {
 	$values = [];
 
 	foreach ( $fields as $key => $field ) {
-
 		// Skip tabs.
 		if ( 'tab' === $field['type'] ) {
 			continue;
@@ -754,6 +753,8 @@ function mai_get_acf_request( $request ) {
  * @return array
  */
 function mai_get_grid_block_settings() {
+	$date_info = sprintf( '<a style="text-decoration:none;font-size:1.5em;line-height:1;" target="_blank" href="https://docs.bizbudding.com/docs/mai-grid-blocks/" title="%s">ⓘ</a>', __( 'Examples', 'mai-engine' ) );
+
 	return [
 		'mai_grid_block_display_tab'              => [
 			'name'    => 'display_tab',
@@ -2068,6 +2069,52 @@ function mai_get_grid_block_settings() {
 			'atts'       => [
 				'placeholder' => 0,
 				'min'         => 0,
+			],
+		],
+		'mai_grid_block_posts_date_after'       => [
+			'name'       => 'date_after',
+			'label'      => __( 'After date', 'mai-engine' ),
+			'desc'       => sprintf( __( 'Get posts after a date/time. %s', 'mai-engine' ), $date_info ),
+			'block'      => [ 'post' ],
+			'type'       => 'text',
+			'sanitize'   => 'esc_html',
+			'default'    => '',
+			'conditions' => [
+				[
+					'field'    => 'mai_grid_block_post_type',
+					'operator' => '!=empty',
+				],
+				[
+					'field'    => 'mai_grid_block_query_by',
+					'operator' => '!=',
+					'value'    => 'id',
+				],
+			],
+			'atts'       => [
+				'placeholder' => '3 months ago', // Can't translate. I think strtotime() requires English?
+			],
+		],
+		'mai_grid_block_posts_date_before'       => [
+			'name'       => 'date_before',
+			'label'      => __( 'Before date', 'mai-engine' ),
+			'desc'       => sprintf( __( 'Get posts before a date/time. %s', 'mai-engine' ), $date_info ),
+			'block'      => [ 'post' ],
+			'type'       => 'text',
+			'sanitize'   => 'esc_html',
+			'default'    => '',
+			'conditions' => [
+				[
+					'field'    => 'mai_grid_block_post_type',
+					'operator' => '!=empty',
+				],
+				[
+					'field'    => 'mai_grid_block_query_by',
+					'operator' => '!=',
+					'value'    => 'id',
+				],
+			],
+			'atts'       => [
+				'placeholder' => '30 days', // Can't translate. I think strtotime() requires English?
 			],
 		],
 		'mai_grid_block_posts_orderby'            => [

@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '2627197096e0c7ad20afdf7f640483dcb84b25ac',
+    'reference' => '1cafe617eb08d556ba12dea3a208e18f47b99536',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
@@ -48,12 +48,12 @@ private static $installed = array (
     ),
     'afragen/wp-dependency-installer' => 
     array (
-      'pretty_version' => '4.2.2',
-      'version' => '4.2.2.0',
+      'pretty_version' => '4.2.3',
+      'version' => '4.2.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => '5e5419348c6cde7b02f3c33fb3fc3381062443a1',
+      'reference' => '68aa4bfabfe0e807c7cf370580d0254b7b25c4f7',
     ),
     'afragen/wp-dismiss-notice' => 
     array (
@@ -107,7 +107,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '2627197096e0c7ad20afdf7f640483dcb84b25ac',
+      'reference' => '1cafe617eb08d556ba12dea3a208e18f47b99536',
     ),
     'phpoption/phpoption' => 
     array (

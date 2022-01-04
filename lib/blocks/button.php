@@ -78,23 +78,34 @@ function mai_render_button_block( $block_content, $block ) {
 	$background_name  = '';
 	$radius           = '';
 
-	if ( isset( $block['attrs']['textColor'] ) ) {
+	// Color.
+	if ( isset( $block['attrs']['style']['color']['text'] ) ) {
+		$color_value = mai_get_color_value( $block['attrs']['style']['color']['text'] );
+	}
+	// Legacy.
+	elseif ( isset( $block['attrs']['textColor'] ) ) {
 		$color_value = mai_get_color_value( $block['attrs']['textColor'] );
 		$color_name  = $block['attrs']['textColor'];
 
-	} elseif ( isset( $block['attrs']['style']['color']['text'] ) ) {
-		$color_value = mai_get_color_value( $block['attrs']['style']['color']['text'] );
 	}
 
-	if ( isset( $block['attrs']['backgroundColor'] ) ) {
+	// Background.
+	if ( isset( $block['attrs']['style']['color']['background'] ) ) {
+		$background_value = mai_get_color_value( $block['attrs']['style']['color']['background'] );
+	}
+	// Legacy.
+	elseif ( isset( $block['attrs']['backgroundColor'] ) ) {
 		$background_value = mai_get_color_value( $block['attrs']['backgroundColor'] );
 		$background_name  = $block['attrs']['backgroundColor'];
 
-	} elseif ( isset( $block['attrs']['style']['color']['background'] ) ) {
-		$background_value = mai_get_color_value( $block['attrs']['style']['color']['background'] );
 	}
 
-	if ( isset( $block['attrs']['borderRadius'] ) ) {
+	// Border radius.
+	if ( isset( $block['attrs']['style']['border']['radius'] ) ) {
+		$radius = mai_get_unit_value( $block['attrs']['style']['border']['radius'] );
+	}
+	// Legacy.
+	elseif ( isset( $block['attrs']['borderRadius'] ) ) {
 		$radius = mai_get_unit_value( $block['attrs']['borderRadius'] );
 	}
 

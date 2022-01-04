@@ -701,7 +701,6 @@ function mai_minify_css( $css ) {
  * @return  mixed
  */
 function mai_sanitize( $value, $function = 'esc_html', $allow_null = false ) {
-
 	// Return null if allowing null.
 	if ( is_null( $value ) && $allow_null ) {
 		return $value;

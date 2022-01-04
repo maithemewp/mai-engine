@@ -453,6 +453,19 @@ class Mai_Grid {
 			break;
 		}
 
+		// Date.
+		if ( ( $this->args['date_after'] || $this->args['date_before'] ) && 'id' !== $this->args['query_by'] ) {
+			$query_args['date_query'] = [];
+
+			if ( $this->args['date_after'] ) {
+				$query_args['date_query']['after'] = $this->args['date_after'];
+			}
+
+			if ( $this->args['date_before'] ) {
+				$query_args['date_query']['before'] = $this->args['date_before'];
+			}
+		}
+
 		// Orderby.
 		if ( $this->args['orderby'] && ( 'id' !== $this->args['query_by'] ) ) {
 			$query_args['orderby'] = $this->args['orderby'];

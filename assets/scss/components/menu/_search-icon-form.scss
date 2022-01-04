@@ -3,12 +3,13 @@
 
 	.search-form {
 		position: absolute;
-		top: 100%;
+		top: var(--search-icon-form-top, 100%);
 		right: var(--search-icon-form-right, 0);
+		bottom: var(--search-icon-form-bottom, unset);
 		left: var(--search-icon-form-left, unset);
 		display: var(--search-icon-form-display, none);
 		width: var(--search-icon-form-width, unset);
-		max-width: var(--search-icon-form-max-width, var(--breakpoint-xl));
+		max-width: var(--search-icon-form-max-width, var(--wrap-max-width));
 		padding: var(--spacing-sm);
 		background-color: var(--color-white);
 		border-radius: var(--input-border-radius) var(--button-border-radius) var(--button-border-radius) var(--input-border-radius);
@@ -55,4 +56,9 @@
 
 .search-toggle-close {
 	display: var(--search-toggle-close-display, none);
+}
+
+.site-footer {
+	--search-icon-form-top: auto; /* unset didn't work here */
+	--search-icon-form-bottom: 100%;
 }
