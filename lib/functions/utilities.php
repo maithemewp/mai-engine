@@ -1244,23 +1244,31 @@ function mai_get_author_id() {
  * @return string
  */
 function mai_get_post_date( $args ) {
-	$html = '';
-	$args = shortcode_atts(
-		[
-			'before'         => '',
-			'after'          => '',
-			'before_updated' => '&nbsp;' . __( 'Updated: ', 'mai-engine' ),
-			'after_updated'  => '',
-			'format'         => get_option( 'date_format' ), // Date format.
-			'updated_format' => '',   // Updated date format.
-			'published'      => true, // Show published date.
-			'updated'        => true, // Show updated date.
-			'updated_min'    => '60 days', // Only show updated date if this much newer than published.
-			// 'relative'       => false, // TODO: "Days/weeks ago"
-		],
-		$args,
-		'mai_post_date'
-	);
+	$html     = '';
+	$defaults = [
+		'before'          => '',
+		'after'           => '',
+		'before_updated'  => sprintf( '&nbsp;%s:&nbsp;', __( 'Updated', 'mai-engine' ) ),
+		'after_updated'   => '',
+		'format'          => get_option( 'date_format' ), // Date format.
+		'updated_format'  => '',        // Updated date format.
+		'published'       => true,      // Show published date.
+		'updated'         => true,      // Show updated date.
+		'updated_min'     => '60 days', // Only show updated date if this long after published date.
+		'updated_only'    => false,     // Hides the published date if updated date is showing.
+		// 'relative'     => false,     // TODO: "Days/weeks ago"
+		// 'relative_min' => '6 weeks', // TODO: Only show relative date if it's within this time after published/updated date.
+	];
+
+	// A lot of code to conditionally add parenthesis around (Updated: {date}) as the default. :)
+	if ( ! ( isset( $args['before_updated'] ) && isset( $args['after_updated'] ) )
+		&& ( ! isset( $args['updated_only'] ) || ( isset( $args['updated_only'] ) && ! mai_sanitize_bool( $args['updated_only'] ) ) ) ) {
+
+		$defaults['before_updated'] = sprintf( '&nbsp;(%s:&nbsp;', __( 'Updated', 'mai-engine' ) );
+		$defaults['after_updated']  = ')';
+	}
+
+	$args = shortcode_atts( $defaults, $args, 'mai_post_date' );
 
 	// Sanitize.
 	$args['before']         = wp_kses_post( $args['before'] );
@@ -1272,14 +1280,17 @@ function mai_get_post_date( $args ) {
 	$args['published']      = mai_sanitize_bool( $args['published'] );
 	$args['updated']        = mai_sanitize_bool( $args['updated'] );
 	$args['updated_min']    = esc_html( $args['updated_min'] );
+	$args['updated_only']   = mai_sanitize_bool( $args['updated_only'] );
+
+	// Updated. If not showing published date or the modified date is newer than published date by the value set.
+	$updated = $args['updated'] && ( ! $args['published'] || get_the_modified_date( 'U' ) > strtotime( '+' . ltrim( $args['updated_min'], '+' ), get_the_time( 'U' ) ) );
 
 	// Published.
-	if ( $args['published'] ) {
+	if ( $args['published'] && ! ( $updated && $args['updated_only'] ) ) {
 		$html .= sprintf( '<time %s>%s%s%s</time>', genesis_attr( 'entry-time' ), $args['before'], get_the_time( $args['format'] ), $args['after'] );
 	}
 
-	// Updated. If not showing published date or the modified date is newer than published date by the value set.
-	if ( $args['updated'] && ( ! $args['published'] || get_the_modified_date( 'U' ) > strtotime( '+' . ltrim( $args['updated_min'], '+' ), get_the_time( 'U' ) ) ) ) {
+	if ( $updated ) {
 		$html .= sprintf( '<time %s>%s%s%s</time>', genesis_attr( 'entry-modified-time' ), $args['before_updated'], get_the_modified_time( $args['updated_format'] ), $args['after_updated'] );
 	}
 
