@@ -1073,6 +1073,9 @@ class Mai_Entry {
 				'open'    => '<div %s>',
 				'context' => 'entry-content',
 				'echo'    => false,
+				'atts'    => [
+					'class' => ( 'single' === $this->context ) ? 'entry-content entry-content-single' : 'entry-content',
+				],
 				'params'  => [
 					'args'  => $this->args,
 					'entry' => $this->entry,
