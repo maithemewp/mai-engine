@@ -1,10 +1,10 @@
 .header-section-mobile {
+	position: var(--header-section-mobile-position, relative);
 	display: var(--header-section-mobile-display, flex);
 	flex: 1;
 	align-items: center;
+	--search-icon-form-position: static;
 	--search-icon-form-width: var(--viewport-width);
-	// --search-icon-form-right: calc(var(--side-spacing) * -1);
-	// --search-icon-form-left: calc(var(--side-spacing) * -1);
 
 	.mai-icon {
 		--link-color: var(--menu-toggle-color, var(--menu-item-link-color, var(--color-heading)));

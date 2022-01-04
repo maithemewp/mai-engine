@@ -8,7 +8,8 @@
 		left: var(--search-icon-form-left, unset);
 		display: var(--search-icon-form-display, none);
 		width: var(--search-icon-form-width, unset);
-		max-width: var(--search-icon-form-max-width, var(--breakpoint-xl));
+		// max-width: var(--search-icon-form-max-width, var(--breakpoint-xl));
+		max-width: var(--search-icon-form-max-width, var(--wrap-max-width));
 		padding: var(--spacing-sm);
 		background-color: var(--color-white);
 		border-radius: var(--input-border-radius) var(--button-border-radius) var(--button-border-radius) var(--input-border-radius);
