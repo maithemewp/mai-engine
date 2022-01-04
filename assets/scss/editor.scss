@@ -257,6 +257,16 @@ input[type="submit"],
 
 		@include button-style("outline", true);
 	}
+
+	.button-small & {
+
+		@include button-style("small");
+	}
+
+	.button-large & {
+
+		@include button-style("large");
+	}
 }
 
 // Remove default spacing on .wp-block from classic.css in WP core.
