@@ -938,8 +938,8 @@ function mai_get_header_shrink_offset() {
 		return $offset;
 	}
 
-	$source_width       = $source[1];
-	$source_height      = $source[2];
+	$source_width       = isset( $source[1] ) ? $source[1] : 1;
+	$source_height      = isset( $source[2] ) ? $source[2] : 1;
 	$customizer_widths  = mai_get_option( 'logo-width', $config['width'] );
 	$customizer_widths  = array_map( 'absint', $customizer_widths );
 	$desktop_width      = max( $customizer_widths['desktop'], 1 );
