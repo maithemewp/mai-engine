@@ -133,6 +133,22 @@ add_action( 'woocommerce_before_single_product_summary', function() {
 	remove_filter( 'post_class', 'mai_woocommerce_product_single_class' );
 });
 
+add_action( 'woocommerce_before_single_product', 'mai_maybe_hide_woocommerce_product_title' );
+/**
+ * Hides the product title if the Hide Element metabox has Entry Title checked.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_maybe_hide_woocommerce_product_title() {
+	if ( ! mai_is_element_hidden( 'entry_title' ) ) {
+		return;
+	}
+
+	remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_title', 5 );
+}
+
 /**
  * Adds product single class.
  *
