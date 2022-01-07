@@ -164,11 +164,6 @@ class Mai_Columns {
 					$attributes['style'] .= sprintf( '--flex-%s:%s;', $break, $flex ); // Fallback for nested.
 					$attributes['style'] .= sprintf( '--flex-%s-%s:%s;', $break, $index, $flex );
 				}
-
-				if ( $max_width = mai_columns_get_max_width( $columns ) ) {
-					$attributes['style'] .= sprintf( '--max-width-%s:%s;', $break, $max_width ); // Fallback for nested.
-					$attributes['style'] .= sprintf( '--max-width-%s-%s:%s;', $break, $index, $max_width );
-				}
 			}
 		}
 

@@ -83,7 +83,7 @@ function mai_columns_get_args( $i = null ) {
  */
 function mai_columns_get_flex( $size ) {
 	if ( ! in_array( $size, [ 'auto', 'fill', 'full' ] ) ) {
-		return '1 0 100%';
+		return sprintf( '0 0 %s', mai_columns_get_flex_basis( $size ) );
 	}
 
 	switch ( $size ) {
@@ -108,18 +108,33 @@ function mai_columns_get_flex( $size ) {
  *
  * @return string
  */
-function mai_columns_get_max_width( $size ) {
-	if ( mai_has_string( '/', $size ) ) {
-		return mai_fraction_to_percent( $size );
-	}
-
+function mai_columns_get_flex_basis( $size ) {
+	// flex-basis: calc((100% / var(--columns) - ((var(--columns) - 1) / var(--columns) * var(--column-gap))));
 	if ( is_numeric( $size ) ) {
-		return ( $size ? (100 / (int) $size) : '100' ) . '%';
+		$size = (int) $size;
+		return sprintf( 'calc((100%%/%s - (%s/%s * var(--column-gap))))', $size, $size - 1, $size );
 	}
 
-	if ( 'auto' === $size ) {
-		return 'unset';
+	// flex-basis: calc(25% - (24px * 3/4));
+	if ( mai_has_string( '/', $size ) ) {
+		// Get percent.
+		$percent = mai_fraction_to_percent( $size );
+		// Array from fraction.
+		$array   = explode( '/', $size );
+		// Divide fractin to get decimal.
+		$float   = (isset( $array[0] ) ? $array[0] : 1) / (isset( $array[1] ) ? $array[1] : 1);
+		// Subtract 1 - decimal. Wow this was annoying. @link https://stackoverflow.com/questions/17210787/php-float-calculation-error-when-subtracting
+		$float   = bcsub( '1', (string) $float, 6 );
+		// Trim trailing zeros.
+		$float   = (float) $float;
+
+		return sprintf( 'calc(%s - (var(--column-gap) * %s))', $percent, $float );
 	}
 
-	return '100%';
+	// If fill or full?
+	if ( 'auto' !== $size ) {
+		return '100%';
+	}
+
+	return 'unset';
 }

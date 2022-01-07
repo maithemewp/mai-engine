@@ -386,10 +386,9 @@ input[type="submit"],
 
 	display: flex;
 	flex-wrap: wrap;
+	gap: var(--row-gap) var(--column-gap);
 	align-items: var(--align-columns-vertical);
 	justify-content: var(--align-columns);
-	width: calc(100% + var(--column-gap));
-	margin: calc(var(--row-gap) * -1) 0 0 calc(var(--column-gap) * -1);
 }
 
 .mai-column {
@@ -450,7 +449,7 @@ input[type="submit"],
 .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
 	flex: var(--flex, var(--flex-xs, var(--flex-fallback)));
 	max-width: calc(var(--max-width, var(--max-width-xs, var(--max-width-fallback))) - var(--column-gap));
-	margin: var(--row-gap) 0 0 var(--column-gap);
+	margin: 0; /* overrides core editor margin on wp-block */
 }
 
 .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block > .acf-block-component,

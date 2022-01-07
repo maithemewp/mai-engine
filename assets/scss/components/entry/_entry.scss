@@ -12,13 +12,9 @@
 .entries-wrap {
 	display: flex;
 	flex-wrap: wrap;
+	gap: var(--row-gap) var(--column-gap);
 	align-items: var(--align-columns-vertical, unset);
 	justify-content: var(--align-columns);
-	width: calc(100% + var(--column-gap));
-	max-width: var(--entries-wrap-max-width, calc(100% + var(--column-gap)));
-	margin: calc(var(--row-gap) * -1) 0 0 calc(var(--column-gap) * -1);
-
-	--entry-margin: var(--row-gap) 0 0 var(--column-gap);
 
 	@include mq(false, sm) {
 		--columns: var(--columns-xs);
@@ -40,11 +36,10 @@
 .entry {
 	position: var(--entry-position, static);
 	display: var(--entry-display, flex);
-	flex: var(--entry-flex, 1 1 calc((100% / var(--columns)) - var(--column-gap)));
+	flex: var(--entry-flex, 0 0 calc((100% / var(--columns) - ((var(--columns) - 1) / var(--columns) * var(--column-gap)))));
 	flex-direction: var(--entry-flex-direction, column);
 	flex-wrap: var(--entry-flex-wrap, nowrap);
 	width: var(--entry-width, auto); /* allows "auto" columns in grid and archives */
-	max-width: var(--entry-max-width, calc((100% / var(--columns)) - var(--column-gap)));
 	margin: var(--entry-margin, 0);
 	padding: var(--entry-padding, 0);
 	overflow: var(--entry-overflow, unset);
