@@ -14,15 +14,6 @@
 	border-radius: var(--entry-image-link-border-radius, unset);
 	box-shadow: var(--entry-image-link-box-shadow, none);
 
-	&::before {
-		display: var(--entry-image-link-before-display, none);
-		width: 1px;
-		height: 0;
-		margin-left: -1px;
-		padding-bottom: calc(100% / (var(--aspect-ratio, 4/3)));
-		content: "";
-	}
-
 	&:last-child {
 		margin-bottom: 0;
 	}
@@ -123,15 +114,6 @@
 	--entry-image-width: 100%;
 	--entry-image-height: 100%;
 	--entry-image-object-fit: cover;
-
-	.entry::before {
-		display: block;
-		width: 1px;
-		height: 0;
-		margin-left: -1px;
-		padding-bottom: calc(100% / (var(--aspect-ratio, 4/3)));
-		content: "";
-	}
 
 	.entry-image-link {
 		position: absolute;
