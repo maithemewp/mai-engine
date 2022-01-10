@@ -26,7 +26,6 @@
 	.mai-column {
 		--flex: var(--flex-sm, 1 0 100%);
 		--order: var(--order-sm, unset);
-		--max-width: var(--max-width-sm, 100%);
 	}
 }
 
@@ -35,7 +34,6 @@
 	.mai-column {
 		--flex: var(--flex-md, 1 0 100%);
 		--order: var(--order-md, unset);
-		--max-width: var(--max-width-md, 100%);
 	}
 }
 
@@ -43,6 +41,5 @@
 
 	.mai-column {
 		--flex: var(--flex-lg, 1 0 100%);
-		--max-width: var(--max-width-lg, 100%);
 	}
 }
