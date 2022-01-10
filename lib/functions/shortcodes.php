@@ -149,7 +149,7 @@ function mai_avatar_shortcode( $atts ) {
 	return mai_get_avatar( $atts );
 }
 
-add_shortcode( 'mai_post_date', 'mai_post_date_shortcode' );
+add_shortcode( 'mai_date', 'mai_date_shortcode' );
 /**
  * Displays post publish and modified date.
  *
@@ -157,8 +157,8 @@ add_shortcode( 'mai_post_date', 'mai_post_date_shortcode' );
  *
  * @return string
  */
-function mai_post_date_shortcode( $atts ) {
-	return mai_get_post_date( $atts );
+function mai_date_shortcode( $atts ) {
+	return mai_get_date( $atts );
 }
 
 add_shortcode( 'mai_cart_total', 'mai_cart_total_shortcode' );
