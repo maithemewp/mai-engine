@@ -56,7 +56,7 @@ function mai_register_template_part_cpt() {
 		'show_in_nav_menus' => false,
 		'show_in_admin_bar' => false,
 		'show_in_rest'      => true,
-		'rest_base'         => 'template-parts',
+		'rest_base'         => 'mai-template-parts',
 		'map_meta_cap'      => true,
 		'can_export'        => true,
 		'capabilities'      => [
@@ -776,7 +776,7 @@ function mai_get_template_parts_from_demo() {
 			$demo = array_shift( $demos );
 
 			if ( $demo && $demo['preview'] && $demo['preview'] ) {
-				$url     = sprintf( '%s/wp-json/wp/v2/template-parts', untrailingslashit( $demo['preview'] ) );
+				$url     = sprintf( '%s/wp-json/wp/v2/mai-template-parts', untrailingslashit( $demo['preview'] ) );
 				$request = wp_remote_get( $url );
 
 				if ( ! is_wp_error( $request ) ) {

@@ -938,8 +938,8 @@ function mai_get_header_shrink_offset() {
 		return $offset;
 	}
 
-	$source_width       = $source[1];
-	$source_height      = $source[2];
+	$source_width       = isset( $source[1] ) ? $source[1] : 1;
+	$source_height      = isset( $source[2] ) ? $source[2] : 1;
 	$customizer_widths  = mai_get_option( 'logo-width', $config['width'] );
 	$customizer_widths  = array_map( 'absint', $customizer_widths );
 	$desktop_width      = max( $customizer_widths['desktop'], 1 );
@@ -1243,7 +1243,7 @@ function mai_get_author_id() {
  *
  * @return string
  */
-function mai_get_post_date( $args ) {
+function mai_get_date( $args ) {
 	$html     = '';
 	$defaults = [
 		'before'          => '',
@@ -1268,7 +1268,7 @@ function mai_get_post_date( $args ) {
 		$defaults['after_updated']  = ')';
 	}
 
-	$args = shortcode_atts( $defaults, $args, 'mai_post_date' );
+	$args = shortcode_atts( $defaults, $args, 'mai_date' );
 
 	// Sanitize.
 	$args['before']         = wp_kses_post( $args['before'] );

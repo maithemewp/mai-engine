@@ -192,6 +192,7 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 
 		foreach ( array_reverse( $args['arrangements'] ) as $break => $arrangement ) {
 			$total_arrangements = count( $arrangement );
+
 			$element_i          = 0;
 
 			foreach ( $elements[ $break ] as $element ) {
@@ -212,10 +213,6 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 					$style .= sprintf( '--flex-%s:%s;', $break, $flex );
 				}
 
-				if ( $max_width = mai_columns_get_max_width( $arrangement_col ) ) {
-					$style .= sprintf( '--max-width-%s:%s;', $break, $max_width );
-				}
-
 				if ( $style ) {
 					$element->setAttribute( 'style', $style );
 				} else {
@@ -232,18 +229,14 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 
 	} else {
 
-		foreach ( $elements as $break => $elements ) {
+		foreach ( $elements as $break => $dom_elements ) {
 
-			foreach ( $elements as $element ) {
-				$style  = $element->getAttribute( 'style' );
-				$column = $args['arrangements'][ $break ];
+			foreach ( $dom_elements as $element ) {
+				$style   = $element->getAttribute( 'style' );
+				$columns = $args['arrangements'][ $break ];
 
-				if ( $flex = mai_columns_get_flex( $column ) ) {
+				if ( $flex = mai_columns_get_flex( $columns ) ) {
 					$style .= sprintf( '--flex-%s:%s;', $break, $flex );
-				}
-
-				if ( $max_width = mai_columns_get_max_width( $column ) ) {
-					$style .= sprintf( '--max-width-%s:%s;', $break, $max_width );
 				}
 
 				if ( $style ) {
