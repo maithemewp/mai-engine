@@ -102,25 +102,38 @@ function mai_columns_get_flex( $size ) {
 /**
  * Gets max width value from column size.
  *
- * @since 2.10.0
+ * Uses: `flex-basis: calc(25% - (var(--column-gap) * 3/4));`
+ * This also works: `flex-basis: calc((100% / var(--columns) - ((var(--columns) - 1) / var(--columns) * var(--column-gap))));`
+ * but it was easier to use the same formula with fractions.
  *
- * @param string|int $size The size from column setting.
+ * @since TBD
+ *
+ * @param string|int $size The size from column setting. Either a fraction `1/3` or an integer `3`.
  *
  * @return string
  */
 function mai_columns_get_flex_basis( $size ) {
-	// flex-basis: calc((100% / var(--columns) - ((var(--columns) - 1) / var(--columns) * var(--column-gap))));
-	if ( is_numeric( $size ) ) {
-		$size = (int) $size;
-		return sprintf( 'calc((100%%/%s - (%s/%s * var(--column-gap))))', $size, $size - 1, $size );
+	static $all = [];
+
+	if ( isset( $all[ $size ] ) ) {
+		return $all[ $size ];
 	}
 
-	// flex-basis: calc(25% - (24px * 3/4));
-	if ( mai_has_string( '/', $size ) ) {
+	$fraction = false;
+
+	if ( is_numeric( $size ) ) {
+		$size     = (int) $size;
+		$fraction = sprintf( '1/%s', $size );
+	} elseif ( mai_has_string( '/', $size ) ) {
+		$fraction = $size;
+	}
+
+	// Set columns.
+	if ( $fraction ) {
 		// Get percent.
-		$percent = mai_fraction_to_percent( $size );
+		$percent = mai_fraction_to_percent( $fraction );
 		// Array from fraction.
-		$array   = explode( '/', $size );
+		$array   = explode( '/', $fraction );
 		// Divide fractin to get decimal.
 		$float   = (isset( $array[0] ) ? $array[0] : 1) / (isset( $array[1] ) ? $array[1] : 1);
 		// Subtract 1 - decimal. Wow this was annoying. @link https://stackoverflow.com/questions/17210787/php-float-calculation-error-when-subtracting
@@ -128,13 +141,12 @@ function mai_columns_get_flex_basis( $size ) {
 		// Trim trailing zeros.
 		$float   = (float) $float;
 
-		return sprintf( 'calc(%s - (var(--column-gap) * %s))', $percent, $float );
+		$all[ $size ] = sprintf( 'calc(%s - (var(--column-gap) * %s))', $percent, $float );
+	}
+	// This shouldn't ever happen.
+	else {
+		$all[ $size ] =  '0';
 	}
 
-	// If fill or full?
-	if ( 'auto' !== $size ) {
-		return '100%';
-	}
-
-	return 'unset';
+	return $all[ $size ];
 }
