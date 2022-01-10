@@ -8,7 +8,7 @@
 
 .mai-column {
 	display: flex;
-	flex: var(--flex, var(--flex-xs, 1 0 var(--max-width, var(--max-width-xs, 100%))));
+	flex: var(--flex, var(--flex-xs, 0 0 100%));
 	flex-direction: column;
 	justify-content: var(--justify-content, flex-start);
 	order: var(--order, unset);
@@ -24,7 +24,7 @@
 @include mq(sm, md) {
 
 	.mai-column {
-		--flex: var(--flex-sm, 1 0 100%);
+		--flex: var(--flex-sm, 0 0 100%);
 		--order: var(--order-sm, unset);
 	}
 }
@@ -32,7 +32,7 @@
 @include mq(md, lg) {
 
 	.mai-column {
-		--flex: var(--flex-md, 1 0 100%);
+		--flex: var(--flex-md, 0 0 100%);
 		--order: var(--order-md, unset);
 	}
 }
@@ -40,6 +40,6 @@
 @include mq(lg) {
 
 	.mai-column {
-		--flex: var(--flex-lg, 1 0 100%);
+		--flex: var(--flex-lg, 0 0 100%);
 	}
 }

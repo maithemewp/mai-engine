@@ -104,7 +104,8 @@ function mai_columns_get_flex( $size ) {
  *
  * Uses: `flex-basis: calc(25% - (var(--column-gap) * 3/4));`
  * This also works: `flex-basis: calc((100% / var(--columns) - ((var(--columns) - 1) / var(--columns) * var(--column-gap))));`
- * but it was easier to use the same formula with fractions.
+ * but it was easier to use the same formula with fractions. The latter formula is sitll used for entry columns since we can't
+ * change it because it would break backwards compatibility.
  *
  * @since TBD
  *
