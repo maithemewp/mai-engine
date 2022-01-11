@@ -24,12 +24,15 @@ add_action( 'admin_menu', 'mai_admin_menu_pages' );
  * @return void
  */
 function mai_admin_menu_pages() {
+	$callback = apply_filters( 'mai_admin_menu_page_callback', 'mai_render_admin_menu_page' );
+	$label    = apply_filters( 'mai_admin_submenu_page_label', esc_html__( 'About Mai Theme', 'mai-engine' ) );
+
 	add_menu_page(
 		esc_html__( 'Mai Theme', 'mai-engine' ),
 		esc_html__( 'Mai Theme', 'mai-engine' ),
 		'edit_posts',
 		'mai-theme',
-		'mai_render_admin_menu_page',
+		$callback,
 		'data:image/svg+xml;base64,' . base64_encode( file_get_contents( mai_get_dir() . 'assets/svg/mai-logo-icon.svg' ) ),
 		'58.995' // This only works as a string for some reason.
 	);
@@ -37,8 +40,8 @@ function mai_admin_menu_pages() {
 	// Changes first menu name. Otherwise above has Mai Theme as the first child too.
 	add_submenu_page(
 		'mai-theme',
-		esc_html__( 'About Mai Theme', 'mai-engine' ),
-		esc_html__( 'About Mai Theme', 'mai-engine' ),
+		esc_html( $label ),
+		esc_html( $label ),
 		'edit_posts',
 		'mai-theme',
 		'',
