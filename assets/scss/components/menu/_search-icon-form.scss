@@ -44,6 +44,10 @@
 	}
 }
 
+.search-toggle-text {
+	margin-right: var(--spacing-xxs);
+}
+
 .search-toggle-icon,
 .search-toggle-close {
 	width: var(--search-toggle-icon-width, 1em);

@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || die;
 /* @noinspection PhpUnhandledExceptionInspection */
 spl_autoload_register( 'mai_autoload_register' );
 /**
- * Description of expected behavior.
+ * Autoloads any classes that start with Mai_.
  *
  * @since 0.1.0
  *

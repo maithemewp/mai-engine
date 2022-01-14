@@ -1466,14 +1466,25 @@ function mai_get_search_form( $args = [] ) {
 	if ( ! class_exists( 'Genesis_Search_Form' ) ) {
 		return get_search_form( false );
 	}
+
+	$args = wp_parse_args( $args,
+		[
+			'placeholder' => esc_html__( 'Search...', 'mai-engine' ),
+		]
+	);
+
 	$filter = function( $attributes ) {
 		$attributes['required'] = true;
 		return $attributes;
 	};
+
 	add_filter( 'genesis_attr_search-form-input', $filter );
+
 	$searchform = new Genesis_Search_Form( $args );
 	$form       = $searchform->get_form();
+
 	remove_filter( 'genesis_attr_search-form-input', $filter );
+
 	return $form;
 }
 
@@ -1507,7 +1518,11 @@ function mai_get_search_icon_form( $title = '', $icon_size = '16' ) {
 		]
 	);
 
-	$html = sprintf( '<button class="search-toggle" aria-expanded="false" aria-pressed="false"><span class="screen-reader-text">%s</span>%s%s</button>',
+	$hide_text  = apply_filters( 'mai_hide_search_toggle_text', false );
+	$text_class = $hide_text ? 'screen-reader-text' : 'search-toggle-text';
+
+	$html = sprintf( '<button class="search-toggle" aria-expanded="false" aria-pressed="false"><span class="%s">%s</span>%s%s</button>',
+		$text_class,
 		esc_html( $title ?: __( 'Search', 'mai-engine' ) ),
 		$icon,
 		$close

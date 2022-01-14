@@ -205,6 +205,21 @@ return [
 			'deps'     => [ 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ],
 			'location' => 'editor',
 		],
+		'addons'     => [
+			'location'  => 'admin',
+			'localize'  => [
+				'name' => 'maiAddonsVars',
+				'data' => [
+					'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
+					'ajaxNonce'   => wp_create_nonce( 'mai-addons' ),
+					'loadingText' => __( 'Loading', 'mai-engine' ),
+				],
+			],
+			'condition' => function() {
+				$screen = get_current_screen();
+				return $screen && 'toplevel_page_mai-theme' === $screen->id;
+			}
+		],
 	],
 
 	/*
@@ -250,6 +265,13 @@ return [
 		'footer'                         => [
 			'location'  => 'public',
 			'in_footer' => true,
+		],
+		'addons'                         => [
+			'location'  => 'admin',
+			'condition' => function() {
+				$screen = get_current_screen();
+				return $screen && 'toplevel_page_mai-theme' === $screen->id;
+			}
 		],
 		'admin'                          => [
 			'location' => 'admin',
