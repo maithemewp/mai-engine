@@ -37,8 +37,8 @@ function mai_admin_menu_pages() {
 	// Changes first menu name. Otherwise above has Mai Theme as the first child too.
 	add_submenu_page(
 		'mai-theme',
-		esc_html__( 'Add-ons', 'mai-engine' ),
-		esc_html__( 'Add-ons', 'mai-engine' ),
+		esc_html__( 'Plugins', 'mai-engine' ),
+		esc_html__( 'Plugins', 'mai-engine' ),
 		'edit_posts',
 		'mai-theme',
 		'',
@@ -76,16 +76,16 @@ function mai_admin_menu_pages() {
 	);
 }
 
-add_action( 'init', 'mai_addons_setup' );
+add_action( 'init', 'mai_plugins_setup' );
 /**
- * Setup addons admin page class.
+ * Setup plugins admin page class.
  *
  * @since 0.1.0
  *
  * @return void
  */
-function mai_addons_setup() {
-	$page = new Mai_Addons;
+function mai_plugins_setup() {
+	$page = new Mai_Plugins;
 }
 
 /**
@@ -96,7 +96,7 @@ function mai_addons_setup() {
  * @return void
  */
 function mai_render_admin_menu_page() {
-	do_action( 'mai_addons_page' );
+	do_action( 'mai_plugins_page' );
 	// echo '<style>
 	// :root {
 	// 	--mai-admin-toolbar: 32px;
@@ -142,7 +142,7 @@ function mai_admin_menu_subpages() {
 	];
 }
 
-add_filter( 'plugin_action_links_mai-engine/mai-engine.php', 'mai_add_addons_link', 10, 4 );
+add_filter( 'plugin_action_links_mai-engine/mai-engine.php', 'mai_add_plugins_link', 10, 4 );
 /**
  * Return the plugin action links. This will only be called if the plugin is active.
  *
@@ -155,8 +155,8 @@ add_filter( 'plugin_action_links_mai-engine/mai-engine.php', 'mai_add_addons_lin
  *
  * @return array Associative array of plugin action links
  */
-function mai_add_addons_link( $actions, $plugin_file, $plugin_data, $context ) {
-	$actions['settings'] = sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=mai-theme' ), __( 'Add-ons', 'mai-engine' ) );
+function mai_add_plugins_link( $actions, $plugin_file, $plugin_data, $context ) {
+	$actions['settings'] = sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=mai-theme' ), __( 'Plugins', 'mai-engine' ) );
 
 	return $actions;
 }
