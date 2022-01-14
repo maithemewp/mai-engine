@@ -205,13 +205,13 @@ return [
 			'deps'     => [ 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ],
 			'location' => 'editor',
 		],
-		'addons'     => [
+		'plugins'     => [
 			'location'  => 'admin',
 			'localize'  => [
-				'name' => 'maiAddonsVars',
+				'name' => 'maiPluginsVars',
 				'data' => [
 					'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
-					'ajaxNonce'   => wp_create_nonce( 'mai-addons' ),
+					'ajaxNonce'   => wp_create_nonce( 'mai-plugins' ),
 					'loadingText' => __( 'Loading', 'mai-engine' ),
 				],
 			],
@@ -266,7 +266,7 @@ return [
 			'location'  => 'public',
 			'in_footer' => true,
 		],
-		'addons'                         => [
+		'plugins'                        => [
 			'location'  => 'admin',
 			'condition' => function() {
 				$screen = get_current_screen();

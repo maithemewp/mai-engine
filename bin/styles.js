@@ -192,14 +192,14 @@ module.exports.plugins = function() {
 	} );
 };
 
-module.exports.addons = function() {
+module.exports.maiplugins = function() {
 	postProcessors.push( remtopx( {
 		rootValue: config.css.basefontsize
 	} ) );
 
-	return gulp.src( './assets/scss/addons.scss' )
+	return gulp.src( './assets/scss/plugins.scss' )
 		.pipe( plumber() )
-		.pipe( rename( 'addons.min.scss' ) )
+		.pipe( rename( 'plugins.min.scss' ) )
 		.pipe( sass.sync( {
 			outputStyle: 'compressed',
 		} ) )

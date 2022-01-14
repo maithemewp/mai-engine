@@ -1,81 +1,83 @@
-.mai-addons-description {
+.mai-plugins-description {
 	margin-top: 24px;
 }
 
-.mai-addons-description:not(.has-design-pack) {
+.mai-plugins-description {
 	display: grid;
 	grid-template-columns: 1fr;
 	gap: 16px;
 }
 
-.mai-addons-description p {
+.mai-plugins-description p {
 	margin: 0 0 8px;
+	font-size: 1rem;
 }
 
-.mai-addons-cta .button-primary {
+.mai-plugins-cta .button-primary {
 	padding: 10px 26px;
 	letter-spacing: 1px;
 	text-transform: uppercase;
 }
 
-.mai-addons-cta a {
+.mai-plugins-cta a {
+	font-size: 0.8rem;
 	text-decoration: none;
 }
 
 @media only screen and (min-width: 600px) {
 
-	.mai-addons-description:not(.has-design-pack) {
+	.mai-plugins-description:not(.has-design-pack) {
 		place-items: center;
 		grid-template-columns: 2fr 1fr;
 	}
 
-	.mai-addons-cta a {
+	.mai-plugins-cta a {
 		display: block;
 		text-align: center;
 	}
 }
 
-.mai-addons {
+.mai-plugins {
 	display: grid;
 	grid-gap: 24px;
-	grid-template-columns: repeat(var(--mai-addons-columns, 1), 1fr);
+	grid-template-columns: repeat(var(--mai-plugins-columns, 1), 1fr);
 	margin-top: 32px;
 }
 
-.mai-addon {
+.mai-plugin {
 	position: relative;
 	display: flex;
 	flex-direction: column;
 	padding: 24px;
-	border: var(--mai-addon-border, 1px solid rgba(0, 0, 0, 0.15));
+	border: var(--mai-plugin-border, 1px solid rgba(0, 0, 0, 0.15));
 	border-radius: 3px;
 	box-shadow: 0 2px 16px 2px rgba(0, 0, 0, 0.05);
 }
 
-.mai-addon-name {
+.mai-plugin-name {
 	margin: 0;
 }
 
-.mai-addon-actions {
+.mai-plugin-actions {
 	display: flex;
 	align-items: center;
 	margin: auto 0 0;
 }
 
-.mai-addon-actions > * + * {
+.mai-plugin-actions > * + * {
 	margin-left: 12px !important;
 }
 
-.mai-addon-actions .button[disabled] {
+.mai-plugin-actions .button[disabled] {
 	cursor: not-allowed !important;
 }
 
-.mai-addon-active {
+.mai-plugin-active {
 	color: #5cb85c;
 	font-variant: all-small-caps;
 }
 
-.mai-addon-links {
+.mai-plugin-links {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	min-height: 32px;
@@ -85,60 +87,60 @@
 	background: rgba(0, 0, 0, 0.05);
 }
 
-.mai-addon-links .dashicons {
+.mai-plugin-links .dashicons {
 	width: 1em;
 	height: 1em;
 	margin-right: 4px;
 	font-size: 1.3em;
 }
 
-.mai-addon-settings,
-.mai-addon-docs {
+.mai-plugin-settings,
+.mai-plugin-docs {
 	display: inline-flex;
 	align-items: center;
 	padding: 6px 8px;
 	text-decoration: none;
 }
 
-.mai-addon-settings {
-	display: var(--mai-addon-settings-display, none);
+.mai-plugin-settings {
+	display: var(--mai-plugin-settings-display, none);
 	grid-column-start: 1;
 	justify-content: start;
 }
 
-.mai-addon-docs {
+.mai-plugin-docs {
 	grid-column-start: 2;
 	justify-content: end;
 }
 
 
-.mai-addon-is-active {
-	--mai-addon-settings-display: inline-flex;
+.mai-plugin-is-active {
+	--mai-plugin-settings-display: inline-flex;
 }
 
 @media only screen and (min-width: 400px) and (max-width: 599px) {
 
 	:root {
-		--mai-addons-columns: 2;
+		--mai-plugins-columns: 2;
 	}
 }
 
 @media only screen and (min-width: 600px) {
 
 	:root {
-		--mai-addons-columns: 3;
+		--mai-plugins-columns: 3;
 	}
 }
 
-.mai-addon-loading {
-	--mai-addon-border: 1px solid rgba(0, 0, 0, 0.05);
+.mai-plugin-loading {
+	--mai-plugin-border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.mai-addon-loading > *:not(.mai-addon-loader) {
+.mai-plugin-loading > *:not(.mai-plugin-loader) {
 	opacity: 0.25;
 }
 
-.mai-addon-loader {
+.mai-plugin-loader {
 	--loader-size: 44px;
 	--checkmark-width: 22px;
 	--checkmark-height: 12px;
@@ -153,15 +155,15 @@
 	text-indent: -9999em;
 }
 
-.mai-addon-loader-inner {
+.mai-plugin-loader-inner {
 	position: relative;
 	display: block;
 	width: 100%;
 	height: 100%;
 }
 
-.mai-addon-loader-circle,
-.mai-addon-loader-circle-done {
+.mai-plugin-loader-circle,
+.mai-plugin-loader-circle-done {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -171,18 +173,18 @@
 	border-radius: 50%;
 }
 
-.mai-addon-loader-circle {
+.mai-plugin-loader-circle {
 	border: 3px solid rgba(0, 0, 0, 0.2);
 	border-left-color: var(--checkmark-color);
-	animation: maiaddoncircle 1s infinite linear;
+	animation: maiplugincircle 1s infinite linear;
 }
 
-.mai-addon-loader-circle-done {
+.mai-plugin-loader-circle-done {
 	border: 3px solid var(--checkmark-color);
-	animation: maiaddoncircledone 1s ease;
+	animation: maiplugincircledone 1s ease;
 }
 
-.mai-addon-loader-checkmark {
+.mai-plugin-loader-checkmark {
 	position: absolute;
 	top: 24px;
 	left: 8px;
@@ -193,10 +195,10 @@
 	transform: rotate(-50deg);
 	transform-origin: top left;
 	opacity: 1;
-	animation: maiaddoncheck 1.5s ease;
+	animation: maiplugincheck 1.5s ease;
 }
 
-@keyframes maiaddoncircle {
+@keyframes maiplugincircle {
 
 	0% {
 		transform: rotate(0deg);
@@ -207,7 +209,7 @@
 	}
 }
 
-@keyframes maiaddoncircledone {
+@keyframes maiplugincircledone {
 
 	0% {
 		border-color: transparent;
@@ -218,7 +220,7 @@
 	}
 }
 
-@keyframes maiaddoncheck {
+@keyframes maiplugincheck {
 
 	0% {
 		width: 0;

@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || die;
  *
  * @since 0.1.0
  */
-class Mai_Addons {
+class Mai_Plugins {
 	/**
 	 * Entry.
 	 *
@@ -41,8 +41,8 @@ class Mai_Addons {
 	 * @return void
 	 */
 	function hooks() {
-		add_action( 'wp_ajax_mai_addons_action', [ $this, 'ajax' ] );
-		add_action( 'mai_addons_page',           [ $this, 'page' ] );
+		add_action( 'wp_ajax_mai_plugins_action', [ $this, 'ajax' ] );
+		add_action( 'mai_plugins_page',           [ $this, 'page' ] );
 	}
 
 	/**
@@ -57,21 +57,19 @@ class Mai_Addons {
 			return;
 		}
 
-		check_ajax_referer( 'mai-addons', 'nonce' );
+		check_ajax_referer( 'mai-plugins', 'nonce' );
 
 		$succes = false;
-		$addons = $this->get_addons();
+		$plugins = $this->get_plugins();
 		$action = filter_input( INPUT_GET, 'trigger', FILTER_SANITIZE_STRING );
 		$slug   = filter_input( INPUT_GET, 'slug', FILTER_SANITIZE_STRING );
 
-		// ray( $addons );
-
-		if ( $addons && $action && $slug ) {
+		if ( $plugins && $action && $slug ) {
 			$key = sprintf( '%s/%s.php', $slug, $slug );
 
-			if ( 'activate' === $action && $this->has_wpdi && isset( $addons[ $slug ] ) ) {
-				$addon  =  $addons[ $slug ];
-				$config = [ $key => $addons[ $slug ] ];
+			if ( 'activate' === $action && $this->has_wpdi && isset( $plugins[ $slug ] ) ) {
+				$plugin  =  $plugins[ $slug ];
+				$config = [ $key => $plugins[ $slug ] ];
 
 				unset( $config[ $key ]['desc'] );
 				unset( $config[ $key ]['docs'] );
@@ -81,7 +79,7 @@ class Mai_Addons {
 
 				wp_send_json_success(
 					[
-						'message' => 'Plugin activated!',
+						'message' => esc_html__( 'Plugin activated!', 'mai-engine' ),
 						'html'    => $this->get_deactivate_button( $slug ),
 						'active'  => true,
 					]
@@ -92,7 +90,7 @@ class Mai_Addons {
 
 				wp_send_json_success(
 					[
-						'message' => 'Plugin deactivated!',
+						'message' => esc_html__( 'Plugin deactivated!', 'mai-engine' ),
 						'html'    => $this->get_activate_button( $slug ),
 						'active'  => false,
 					]
@@ -100,7 +98,7 @@ class Mai_Addons {
 			}
 		}
 
-		wp_send_json_error( [ 'error' => 'Sorry, something went wrong.' ] );
+		wp_send_json_error( [ 'error' => esc_html__( 'Sorry, something went wrong.', 'mai-engine' ) ] );
 
 		wp_die();
 	}
@@ -117,34 +115,34 @@ class Mai_Addons {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
-		$addons       = $this->get_addons();
+		$plugins       = $this->get_plugins();
 		$can_activate = current_user_can( 'activate_plugins' );
 		$can_install  = current_user_can( 'install_plugins' );
 		$theme_link   = '<a target="_blank" rel="noopener" href="https://bizbudding.com/mai-theme/">Mai Theme</a>';
 		$plugins_link = '<a target="_blank" rel="noopener" href="https://bizbudding.com/mai-design-pack/">Mai Design Pack</a>';
 
 		echo '<div class="wrap">';
-			echo '<h1 class="wp-heading-inline">Mai Add-on Plugins</h1>';
-			printf( '<div class="mai-addons-description%s">', class_exists( 'Mai_Design_Pack' ) ? ' has-design-pack' : '' );
-				echo '<div class="mai-addons-content">';
+			echo '<h1 class="wp-heading-inline">Mai Plugins</h1>';
+			printf( '<div class="mai-plugins-description%s">', class_exists( 'Mai_Design_Pack' ) ? ' has-design-pack' : '' );
+				echo '<div class="mai-plugins-content">';
 					printf( '<p>%s %s</p>',
 						sprintf( esc_html__( 'The Mai Design Pack plugin provides everything you need to enhance your website once it\'s up and running on %s.', 'mai-engine' ), $theme_link ),
-						sprintf( esc_html__( 'Learn more about pro add-ons and the pattern library included with the %s.', 'mai-engine' ), $plugins_link )
+						sprintf( esc_html__( 'Learn more about pro plugins and the pattern library included with the %s.', 'mai-engine' ), $plugins_link )
 					);
 				echo '</div>';
 
 				if ( ! class_exists( 'Mai_Design_Pack' ) ) {
-					echo '<div class="mai-addons-cta">';
+					echo '<div class="mai-plugins-cta">';
 						printf( '<p><a target="_blank" rel="noopener" href="https://bizbudding.com/mai-design-pack/" class="button button-primary">%s</a></p>', sprintf( '%s Mai Design Pack', esc_html__( 'Get', 'mai-engine' ) ) );
 						printf( '<p><a target="_blank" rel="noopener" href="https://bizbudding.com/my-account/">%s  →</a></p>', sprintf( 'BizBudding %s', esc_html__( 'Account', 'mai-engine' ) ) );
 					echo '</div>';
 				}
 			echo '</div>';
 
-			echo '<div class="mai-addons">';
+			echo '<div class="mai-plugins">';
 
-				foreach ( $addons as $slug => $addon ) {
-					$addon = wp_parse_args( $addon,
+				foreach ( $plugins as $slug => $plugin ) {
+					$plugin = wp_parse_args( $plugin,
 						[
 							'desc'     => '',
 							'docs'     => '',
@@ -155,14 +153,14 @@ class Mai_Addons {
 					$plugin_slug  = sprintf( '%s/%s.php', $slug, $slug );
 					$is_installed = $this->is_installed( $plugin_slug );
 					$is_active    = $this->is_active( $plugin_slug );
-					$class        = 'mai-addon';
-					$class       .= $is_active ? ' mai-addon-is-active' : '';
+					$class        = 'mai-plugin';
+					$class       .= $is_active ? ' mai-plugin-is-active' : '';
 
 					printf( '<div class="%s">', $class );
 
-						printf( '<h2 class="mai-addon-name">%s</h2>', $addon['name'] );
-						printf( '<p>%s</p>', $addon['desc'] );
-						echo '<p class="mai-addon-actions">';
+						printf( '<h2 class="mai-plugin-name">%s</h2>', $plugin['name'] );
+						printf( '<p>%s</p>', $plugin['desc'] );
+						echo '<p class="mai-plugin-actions">';
 
 							if ( $this->has_wpdi ) {
 								if ( $is_installed ) {
@@ -182,16 +180,15 @@ class Mai_Addons {
 
 						echo '</p>';
 
-						echo '<p class="mai-addon-links">';
+						echo '<p class="mai-plugin-links">';
 
-							if ( $addon['settings'] && $is_installed ) {
-								printf( '<a class="mai-addon-settings" href="%s"><span class="dashicons dashicons-admin-generic"></span> %s</a>', $addon['settings'], __( 'Settings', 'mai-engine' ) );
+							if ( $plugin['settings'] && $is_installed ) {
+								printf( '<a class="mai-plugin-settings" href="%s"><span class="dashicons dashicons-admin-generic"></span> %s</a>', $plugin['settings'], __( 'Settings', 'mai-engine' ) );
 							}
 
-							if ( $addon['docs'] ) {
-								printf( '<a class="mai-addon-docs" target="_blank" rel="noopener" href="%s"><span class="dashicons dashicons-media-document"></span> %s</a>', $addon['docs'], __( 'Documentation', 'mai-engine' ) );
+							if ( $plugin['docs'] ) {
+								printf( '<a class="mai-plugin-docs" target="_blank" rel="noopener" href="%s"><span class="dashicons dashicons-media-document"></span> %s</a>', $plugin['docs'], __( 'Documentation', 'mai-engine' ) );
 							}
-
 
 						echo '</p>';
 
@@ -211,8 +208,8 @@ class Mai_Addons {
 	 */
 	function get_deactivate_button( $slug ) {
 		$disabled = $this->is_disabled() ? ' disabled' : '';
-		$html     = sprintf( '<span class="mai-addon-active">%s</span>', __( 'Active', 'mai-engine' ) );
-		$html     .= sprintf( '<button class="mai-addon-deactivate button button-secondary" data-action="deactivate" data-slug="%s"%s>%s</button>', $slug, $disabled, __( 'Deactivate', 'mai-engine' ) );
+		$html     = sprintf( '<span class="mai-plugin-active">%s</span>', __( 'Active', 'mai-engine' ) );
+		$html     .= sprintf( '<button class="mai-plugin-deactivate button button-secondary" data-action="deactivate" data-slug="%s"%s>%s</button>', $slug, $disabled, __( 'Deactivate', 'mai-engine' ) );
 		return $html;
 	}
 
@@ -225,7 +222,7 @@ class Mai_Addons {
 	 */
 	function get_activate_button( $slug ) {
 		$disabled = $this->is_disabled() ? ' disabled' : '';
-		return sprintf( '<button class="mai-addon-activate button button-primary" data-action="activate" data-slug="%s"%s>%s</button>', $slug, $disabled, __( 'Activate', 'mai-engine' ) );
+		return sprintf( '<button class="mai-plugin-activate button button-primary" data-action="activate" data-slug="%s"%s>%s</button>', $slug, $disabled, __( 'Activate', 'mai-engine' ) );
 	}
 
 	/**
@@ -237,7 +234,7 @@ class Mai_Addons {
 	 */
 	function get_install_button( $slug ) {
 		$disabled = $this->is_disabled() ? ' disabled' : '';
-		return sprintf( '<button class="mai-addon-install button button-primary" data-action="activate" data-slug="%s"%s>%s</button>', $slug, $disabled, __( 'Install & Activate', 'mai-engine' ) );
+		return sprintf( '<button class="mai-plugin-install button button-primary" data-action="activate" data-slug="%s"%s>%s</button>', $slug, $disabled, __( 'Install & Activate', 'mai-engine' ) );
 	}
 
 	/**
@@ -310,32 +307,20 @@ class Mai_Addons {
 	}
 
 	/**
-	 * Gets a dependency array data.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @return array
-	 */
-	// function get_addon( $slug ) {
-	// 	$dependencies = $this->get_addons();
-	// 	return isset( $dependencies[ $slug ] ) ? $dependencies[ $slug ] : [];
-	// }
-
-	/**
 	 * Gets all dependency data.
 	 *
 	 * @since 0.1.0
 	 *
 	 * @return array
 	 */
-	function get_addons() {
-		static $addons = null;
+	function get_plugins() {
+		static $plugins = null;
 
-		if ( ! is_null( $addons ) ) {
-			return $addons;
+		if ( ! is_null( $plugins ) ) {
+			return $plugins;
 		}
 
-		$addons = [
+		$plugins = [
 			'mai-icons' => [
 				'name'     => 'Mai Icons',
 				'host'     => 'github',
@@ -466,9 +451,9 @@ class Mai_Addons {
 			],
 		];
 
-		$addons = apply_filters( 'mai_addons', $addons );
+		$plugins = apply_filters( 'mai_plugins', $plugins );
 
-		return $addons;
+		return $plugins;
 	}
 
 	/**
