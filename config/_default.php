@@ -217,7 +217,7 @@ return [
 			],
 			'condition' => function() {
 				$screen = get_current_screen();
-				return $screen && 'toplevel_page_mai-theme' === $screen->id;
+				return $screen && 'toplevel_page_mai-theme' === $screen->id && class_exists( 'Mai_Design_Pack' );
 			}
 		],
 	],
