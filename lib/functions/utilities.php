@@ -1518,7 +1518,7 @@ function mai_get_search_icon_form( $title = '', $icon_size = '16' ) {
 		]
 	);
 
-	$hide_text  = apply_filters( 'mai_hide_search_toggle_text', false );
+	$hide_text  = apply_filters( 'mai_hide_search_toggle_text', true );
 	$text_class = $hide_text ? 'screen-reader-text' : 'search-toggle-text';
 
 	$html = sprintf( '<button class="search-toggle" aria-expanded="false" aria-pressed="false"><span class="%s">%s</span>%s%s</button>',
