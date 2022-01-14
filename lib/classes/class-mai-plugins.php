@@ -457,17 +457,17 @@ class Mai_Plugins {
 				'docs'     => 'https://help.bizbudding.com/article/193-mai-config-generator',
 				'settings' => admin_url( 'admin.php?page=mai-config-generator' ),
 			],
-			'mai-ads-extra-content' => [
-				'name'     => sprintf( 'Mai Ads & Extra Content (%s)', esc_html( 'legacy', 'mai-engine' ) ),
-				'host'     => 'github',
-				'slug'     => 'mai-ads-extra-content/mai-ads-extra-content.php',
-				'uri'      => 'maithemewp/mai-ads-extra-content',
-				'branch'   => 'master',
-				'required' => true,
-				'desc'     => sprintf( esc_html__( 'Boost your sales by easily embedding CTAs, display ads, and more, anywhere on your site, all from one simple to manage location.%s', 'mai-engine' ), sprintf( '<br><br><strong>%s</strong>', sprintf( esc_html__( 'Note: This plugin has been replaced with %s', 'mai-engine' ), 'Mai Custom Content Areas' ) ) ),
-				'docs'     => 'https://help.bizbudding.com/article/146-mai-ads-extra-content',
-				'settings' => admin_url( 'admin.php?page=mai_aec' ),
-			],
+			// 'mai-ads-extra-content' => [
+			// 	'name'     => sprintf( 'Mai Ads & Extra Content (%s)', esc_html( 'legacy', 'mai-engine' ) ),
+			// 	'host'     => 'github',
+			// 	'slug'     => 'mai-ads-extra-content/mai-ads-extra-content.php',
+			// 	'uri'      => 'maithemewp/mai-ads-extra-content',
+			// 	'branch'   => 'master',
+			// 	'required' => true,
+			// 	'desc'     => sprintf( esc_html__( 'Boost your sales by easily embedding CTAs, display ads, and more, anywhere on your site, all from one simple to manage location.%s', 'mai-engine' ), sprintf( '<br><br><strong>%s</strong>', sprintf( esc_html__( 'Note: This plugin has been replaced with %s', 'mai-engine' ), 'Mai Custom Content Areas' ) ) ),
+			// 	'docs'     => 'https://help.bizbudding.com/article/146-mai-ads-extra-content',
+			// 	'settings' => admin_url( 'admin.php?page=mai_aec' ),
+			// ],
 		];
 
 		$plugins = apply_filters( 'mai_plugins', $plugins );
