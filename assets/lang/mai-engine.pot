@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Mai Engine plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.19.0-beta.5\n"
+"Project-Id-Version: Mai Engine 2.19.0-beta.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-01-14T16:58:46+00:00\n"
+"POT-Creation-Date: 2022-01-14T20:19:04+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -1420,106 +1420,110 @@ msgstr ""
 msgid " has been deactivated."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:84
+#: lib/classes/class-mai-plugins.php:82
 msgid "Plugin activated!"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:95
+#: lib/classes/class-mai-plugins.php:93
 msgid "Plugin deactivated!"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:103
+#: lib/classes/class-mai-plugins.php:101
 msgid "Sorry, something went wrong."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:131
+#: lib/classes/class-mai-plugins.php:129
 msgid "The Mai Design Pack plugin provides everything you need to enhance your website once it's up and running on %s."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:132
+#: lib/classes/class-mai-plugins.php:130
 msgid "Learn more about pro plugins and the pattern library included with the %s."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:138
+#: lib/classes/class-mai-plugins.php:136
 msgid "Get"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:139
+#: lib/classes/class-mai-plugins.php:137
 msgid "Account"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:188
-#: lib/classes/class-mai-plugins.php:488
+#: lib/classes/class-mai-plugins.php:186
+#: lib/classes/class-mai-plugins.php:492
 msgid "Settings"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:192
+#: lib/classes/class-mai-plugins.php:190
 #: lib/admin/admin-menu.php:133
 msgid "Documentation"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:214
+#: lib/classes/class-mai-plugins.php:210
 #: lib/admin/template-parts.php:264
 msgid "Active"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:215
+#: lib/classes/class-mai-plugins.php:211
 msgid "Deactivate"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:228
+#: lib/classes/class-mai-plugins.php:223
 msgid "Activate"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:240
+#: lib/classes/class-mai-plugins.php:234
 msgid "Install & Activate"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:346
+#: lib/classes/class-mai-plugins.php:245
+msgid "required"
+msgstr ""
+
+#: lib/classes/class-mai-plugins.php:350
 msgid "Include unique icons on your website with the Mai Icons plugin. There are over 7000 icons to choose from! Customization options include size, color, spacing, and more."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:357
+#: lib/classes/class-mai-plugins.php:361
 msgid "With Mai Testimonials, show off all the great things your customers have to say about you, while building credibility and increasing conversions."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:368
+#: lib/classes/class-mai-plugins.php:372
 msgid "Use Mai Favorites to give your visitors a way to easily browse collections of your favorite things such as affiliate products, recommendations, services, and more."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:379
+#: lib/classes/class-mai-plugins.php:383
 msgid "Mai Portfolio is a versatile and lightweight portfolio plugin for Mai Theme. It creates a custom post type called “Portfolio” that has all of our Customizer layout settings ready to customize."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:390
+#: lib/classes/class-mai-plugins.php:394
 msgid "Mai Accordion is perfect for displaying expandable FAQs, transcripts, resources, and even research. Add a title/question, then easily insert any block you want into the answer section."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:400
+#: lib/classes/class-mai-plugins.php:404
 msgid "Use our Mai Notices plugin to display custom callout notices to grab attention and share special information in any content area on your posts, pages, and products."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:410
+#: lib/classes/class-mai-plugins.php:414
 msgid "Add the Mai Table of Contents to the beginning of your posts or pages to improve readability. The table is auto-created from your heading structure so readers can jump to the section they want easily."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:421
+#: lib/classes/class-mai-plugins.php:425
 msgid "Mai Custom Content Areas is a game changer when it comes to creating a conversion marketing strategy on your website. Easily display calls to action and other custom content in different locations on posts, pages, and custom post types conditionally by category, tag, taxonomy, keyword, and more."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:431
+#: lib/classes/class-mai-plugins.php:435
 msgid "Boost your sales by easily embedding CTAs, display ads, and more, anywhere on your site, all from one simple to manage spot with Mai Ads & Extra Content. "
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:442
+#: lib/classes/class-mai-plugins.php:446
 msgid "Mai Archive Pages plugin allows you to build robust and SEO-friendly archive pages with blocks. Customize the content before and after your archive content to strategically build out your archive pages for SEO."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:452
+#: lib/classes/class-mai-plugins.php:456
 msgid "Mai Display Taxonomy is a utility plugin that creates a category to use with Mai Post Grid. It gives you total control over your grid content in various areas of your website."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:463
+#: lib/classes/class-mai-plugins.php:467
 msgid "A developer plugin to help set custom defaults for a custom Mai Theme. The config.php file is the “default settings” for your site. If you install your custom theme, or site managers change any of the Customizer settings, the defaults will now come from your custom config."
 msgstr ""
 

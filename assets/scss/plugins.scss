@@ -71,7 +71,8 @@
 	cursor: not-allowed !important;
 }
 
-.mai-plugin-actions .button[disabled]:hover::before {
+.mai-plugin-actions .button[disabled]:hover::before,
+.mai-plugin-actions .button[disabled]:focus::before {
 	position: absolute;
 	bottom: calc(100% + 6px);
 	left: 50%;
@@ -86,7 +87,8 @@
 	content: attr(data-disabled);
 }
 
-.mai-plugin-actions .button[disabled]:hover::after {
+.mai-plugin-actions .button[disabled]:hover::after,
+.mai-plugin-actions .button[disabled]:focus::after {
 	--triangle-width: 8px;
 	position: absolute;
 	bottom: calc(100% - 2px);
