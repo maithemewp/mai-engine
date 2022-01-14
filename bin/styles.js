@@ -192,6 +192,22 @@ module.exports.plugins = function() {
 	} );
 };
 
+module.exports.addons = function() {
+	postProcessors.push( remtopx( {
+		rootValue: config.css.basefontsize
+	} ) );
+
+	return gulp.src( './assets/scss/addons.scss' )
+		.pipe( plumber() )
+		.pipe( rename( 'addons.min.scss' ) )
+		.pipe( sass.sync( {
+			outputStyle: 'compressed',
+		} ) )
+		.pipe( postcss( postProcessors ) )
+		.pipe( gulp.dest( './assets/css/' ) )
+		.pipe( notify( { message: config.messages.css } ) );
+};
+
 module.exports.admin = function() {
 	return gulp.src( './assets/scss/admin.scss' )
 		.pipe( plumber() )

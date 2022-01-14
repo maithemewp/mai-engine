@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = {
+	'build:addons-css': [ require( './styles' ).addons ],
 	'build:admin-css': [ require( './styles' ).admin ],
 	'build:blocks-css': [ require( './styles' ).blocks ],
 	'build:columns-css': [ require( './styles' ).columns ],
@@ -15,7 +16,7 @@ module.exports = {
 	'build:theme-css': [ require( './styles' ).themes ],
 	'build:utilities-css': [ require( './styles' ).utilities ],
 
-	'build:css': [ [ 'build:admin-css', 'build:blocks-css', 'build:columns-css', 'build:deprecated-css', 'build:desktop-css', 'build:editor-css', 'build:footer-css', 'build:header-css', 'build:page-header-css', 'build:main-css', 'build:plugin-css', 'build:theme-css', 'build:utilities-css' ] ],
+	'build:css': [ [ 'build:addons-css', 'build:admin-css', 'build:blocks-css', 'build:columns-css', 'build:deprecated-css', 'build:desktop-css', 'build:editor-css', 'build:footer-css', 'build:header-css', 'build:page-header-css', 'build:main-css', 'build:plugin-css', 'build:theme-css', 'build:utilities-css' ] ],
 
 	'build:blocks': [ require( './scripts' ).blocks ],
 	'build:scripts': [ require( './scripts' ).js ],

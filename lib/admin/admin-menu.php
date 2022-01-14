@@ -24,15 +24,12 @@ add_action( 'admin_menu', 'mai_admin_menu_pages' );
  * @return void
  */
 function mai_admin_menu_pages() {
-	$callback = apply_filters( 'mai_admin_menu_page_callback', 'mai_render_admin_menu_page' );
-	$label    = apply_filters( 'mai_admin_submenu_page_label', esc_html__( 'About Mai Theme', 'mai-engine' ) );
-
 	add_menu_page(
 		esc_html__( 'Mai Theme', 'mai-engine' ),
 		esc_html__( 'Mai Theme', 'mai-engine' ),
 		'edit_posts',
 		'mai-theme',
-		$callback,
+		'mai_render_admin_menu_page',
 		'data:image/svg+xml;base64,' . base64_encode( file_get_contents( mai_get_dir() . 'assets/svg/mai-logo-icon.svg' ) ),
 		'58.995' // This only works as a string for some reason.
 	);
@@ -40,8 +37,8 @@ function mai_admin_menu_pages() {
 	// Changes first menu name. Otherwise above has Mai Theme as the first child too.
 	add_submenu_page(
 		'mai-theme',
-		esc_html( $label ),
-		esc_html( $label ),
+		esc_html__( 'Add-ons', 'mai-engine' ),
+		esc_html__( 'Add-ons', 'mai-engine' ),
 		'edit_posts',
 		'mai-theme',
 		'',
@@ -79,6 +76,18 @@ function mai_admin_menu_pages() {
 	);
 }
 
+add_action( 'init', 'mai_addons_setup' );
+/**
+ * Setup addons admin page class.
+ *
+ * @since 0.1.0
+ *
+ * @return void
+ */
+function mai_addons_setup() {
+	$page = new Mai_Addons;
+}
+
 /**
  * Renders admin settings page markup.
  *
@@ -87,21 +96,22 @@ function mai_admin_menu_pages() {
  * @return void
  */
 function mai_render_admin_menu_page() {
-	echo '<style>
-	:root {
-		--mai-admin-toolbar: 32px;
-		--mai-admin-content-left: 20px;
-	}
-	@media screen and (max-width: 782px) {
-		:root {
-			--mai-admin-toolbar: 46px;
-		}
-		.auto-fold {
-			--mai-admin-content-left: 10px;
-		}
-	}
-	</style>';
-	echo '<iframe style="display:block;width:calc(100% + var(--mai-admin-content-left));height:calc(100vh - var(--mai-admin-toolbar));position:absolute;top:0;left:calc(var(--mai-admin-content-left) * -1);z-index: 9999;" width="400" height="800" frameborder="0" scrolling="yes" seamless="seamless" src="https://bizbudding.com/mai-engine-admin/"></iframe>';
+	do_action( 'mai_addons_page' );
+	// echo '<style>
+	// :root {
+	// 	--mai-admin-toolbar: 32px;
+	// 	--mai-admin-content-left: 20px;
+	// }
+	// @media screen and (max-width: 782px) {
+	// 	:root {
+	// 		--mai-admin-toolbar: 46px;
+	// 	}
+	// 	.auto-fold {
+	// 		--mai-admin-content-left: 10px;
+	// 	}
+	// }
+	// </style>';
+	// echo '<iframe style="display:block;width:calc(100% + var(--mai-admin-content-left));height:calc(100vh - var(--mai-admin-toolbar));position:absolute;top:0;left:calc(var(--mai-admin-content-left) * -1);z-index: 9999;" width="400" height="800" frameborder="0" scrolling="yes" seamless="seamless" src="https://bizbudding.com/mai-engine-admin/"></iframe>';
 }
 
 add_action( 'admin_menu', 'mai_admin_menu_subpages', 30 );
@@ -130,4 +140,23 @@ function mai_admin_menu_subpages() {
 		'edit_posts',
 		'https://docs.bizbudding.com/support/',
 	];
+}
+
+add_filter( 'plugin_action_links_mai-engine/mai-engine.php', 'mai_add_addons_link', 10, 4 );
+/**
+ * Return the plugin action links. This will only be called if the plugin is active.
+ *
+ * @since TBD
+ *
+ * @param array  $actions     Associative array of action names to anchor tags
+ * @param string $plugin_file Plugin file name, ie my-plugin/my-plugin.php
+ * @param array  $plugin_data Associative array of plugin data from the plugin file headers
+ * @param string $context     Plugin status context, ie 'all', 'active', 'inactive', 'recently_active'
+ *
+ * @return array Associative array of plugin action links
+ */
+function mai_add_addons_link( $actions, $plugin_file, $plugin_data, $context ) {
+	$actions['settings'] = sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=mai-theme' ), __( 'Add-ons', 'mai-engine' ) );
+
+	return $actions;
 }

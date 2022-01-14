@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Mai Engine plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.19.0-beta.2\n"
+"Project-Id-Version: Mai Engine 2.19.0-beta.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-01-07T04:33:50+00:00\n"
+"POT-Creation-Date: 2022-01-12T21:28:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -81,30 +81,34 @@ msgstr ""
 msgid "Sub Menu"
 msgstr ""
 
-#: config/_default.php:401
+#: config/_default.php:215
+msgid "Loading"
+msgstr ""
+
+#: config/_default.php:423
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/_default.php:402
+#: config/_default.php:424
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/_default.php:403
+#: config/_default.php:425
 #: lib/admin/hide-elements.php:106
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default.php:518
+#: config/_default.php:540
 #: lib/functions/deprecated.php:256
 msgid "Sidebar"
 msgstr ""
 
-#: config/_default.php:519
+#: config/_default.php:541
 #: lib/functions/deprecated.php:257
 msgid "The Sidebar widget area."
 msgstr ""
 
-#: config/_default.php:629
+#: config/_default.php:651
 msgid "Read more"
 msgstr ""
 
@@ -199,7 +203,7 @@ msgid "Left"
 msgstr ""
 
 #: lib/blocks/icon.php:272
-#: lib/blocks/columns.php:559
+#: lib/blocks/columns.php:551
 #: lib/blocks/grid.php:858
 #: lib/blocks/grid.php:1185
 #: lib/blocks/grid.php:1565
@@ -265,7 +269,7 @@ msgid "Icon Color"
 msgstr ""
 
 #: lib/blocks/icon.php:358
-#: lib/blocks/columns.php:707
+#: lib/blocks/columns.php:699
 msgid "Background Color"
 msgstr ""
 
@@ -315,8 +319,8 @@ msgid "Margin"
 msgstr ""
 
 #: lib/blocks/icon.php:519
-#: lib/blocks/columns.php:575
-#: lib/blocks/columns.php:679
+#: lib/blocks/columns.php:567
+#: lib/blocks/columns.php:671
 #: lib/blocks/grid.php:1205
 #: lib/blocks/grid.php:1592
 #: lib/customize/content-archives.php:384
@@ -332,8 +336,8 @@ msgid "Top"
 msgstr ""
 
 #: lib/blocks/icon.php:527
-#: lib/blocks/columns.php:577
-#: lib/blocks/columns.php:681
+#: lib/blocks/columns.php:569
+#: lib/blocks/columns.php:673
 #: lib/blocks/grid.php:1207
 #: lib/blocks/grid.php:1594
 #: lib/customize/content-archives.php:386
@@ -408,12 +412,12 @@ msgid "Height"
 msgstr ""
 
 #: lib/blocks/divider.php:232
-#: lib/blocks/columns.php:502
-#: lib/blocks/columns.php:590
-#: lib/blocks/columns.php:608
-#: lib/blocks/columns.php:626
-#: lib/blocks/columns.php:645
-#: lib/blocks/columns.php:695
+#: lib/blocks/columns.php:494
+#: lib/blocks/columns.php:582
+#: lib/blocks/columns.php:600
+#: lib/blocks/columns.php:618
+#: lib/blocks/columns.php:637
+#: lib/blocks/columns.php:687
 #: lib/blocks/grid.php:791
 #: lib/blocks/grid.php:1620
 #: lib/blocks/grid.php:1643
@@ -436,10 +440,10 @@ msgid "XS"
 msgstr ""
 
 #: lib/blocks/divider.php:233
-#: lib/blocks/columns.php:591
-#: lib/blocks/columns.php:609
-#: lib/blocks/columns.php:627
-#: lib/blocks/columns.php:646
+#: lib/blocks/columns.php:583
+#: lib/blocks/columns.php:601
+#: lib/blocks/columns.php:619
+#: lib/blocks/columns.php:638
 #: lib/blocks/grid.php:792
 #: lib/blocks/grid.php:1621
 #: lib/blocks/grid.php:1644
@@ -462,10 +466,10 @@ msgid "S"
 msgstr ""
 
 #: lib/blocks/divider.php:234
-#: lib/blocks/columns.php:592
-#: lib/blocks/columns.php:610
-#: lib/blocks/columns.php:628
-#: lib/blocks/columns.php:647
+#: lib/blocks/columns.php:584
+#: lib/blocks/columns.php:602
+#: lib/blocks/columns.php:620
+#: lib/blocks/columns.php:639
 #: lib/blocks/grid.php:793
 #: lib/blocks/grid.php:1622
 #: lib/blocks/grid.php:1645
@@ -488,10 +492,10 @@ msgid "M"
 msgstr ""
 
 #: lib/blocks/divider.php:235
-#: lib/blocks/columns.php:593
-#: lib/blocks/columns.php:611
-#: lib/blocks/columns.php:629
-#: lib/blocks/columns.php:648
+#: lib/blocks/columns.php:585
+#: lib/blocks/columns.php:603
+#: lib/blocks/columns.php:621
+#: lib/blocks/columns.php:640
 #: lib/blocks/grid.php:794
 #: lib/blocks/grid.php:1623
 #: lib/blocks/grid.php:1646
@@ -514,11 +518,11 @@ msgid "L"
 msgstr ""
 
 #: lib/blocks/divider.php:236
-#: lib/blocks/columns.php:594
-#: lib/blocks/columns.php:612
-#: lib/blocks/columns.php:630
-#: lib/blocks/columns.php:649
-#: lib/blocks/columns.php:699
+#: lib/blocks/columns.php:586
+#: lib/blocks/columns.php:604
+#: lib/blocks/columns.php:622
+#: lib/blocks/columns.php:641
+#: lib/blocks/columns.php:691
 #: lib/blocks/grid.php:795
 #: lib/blocks/grid.php:1624
 #: lib/blocks/grid.php:1647
@@ -553,7 +557,7 @@ msgid "Color"
 msgstr ""
 
 #: lib/blocks/columns.php:31
-#: lib/blocks/columns.php:335
+#: lib/blocks/columns.php:327
 msgid "Mai Columns"
 msgstr ""
 
@@ -562,7 +566,7 @@ msgid "A custom columns block."
 msgstr ""
 
 #: lib/blocks/columns.php:48
-#: lib/blocks/columns.php:671
+#: lib/blocks/columns.php:663
 msgid "Mai Column"
 msgstr ""
 
@@ -570,91 +574,91 @@ msgstr ""
 msgid "A custom column block."
 msgstr ""
 
-#: lib/blocks/columns.php:289
+#: lib/blocks/columns.php:281
 msgid "More"
 msgstr ""
 
-#: lib/blocks/columns.php:290
+#: lib/blocks/columns.php:282
 msgid "Less"
 msgstr ""
 
-#: lib/blocks/columns.php:291
+#: lib/blocks/columns.php:283
 msgid "options"
 msgstr ""
 
-#: lib/blocks/columns.php:309
+#: lib/blocks/columns.php:301
 msgid "1/4"
 msgstr ""
 
-#: lib/blocks/columns.php:310
+#: lib/blocks/columns.php:302
 msgid "1/3"
 msgstr ""
 
-#: lib/blocks/columns.php:311
+#: lib/blocks/columns.php:303
 msgid "1/2"
 msgstr ""
 
-#: lib/blocks/columns.php:312
+#: lib/blocks/columns.php:304
 msgid "2/3"
 msgstr ""
 
-#: lib/blocks/columns.php:313
+#: lib/blocks/columns.php:305
 msgid "3/4"
 msgstr ""
 
-#: lib/blocks/columns.php:314
+#: lib/blocks/columns.php:306
 msgid "1/12"
 msgstr ""
 
-#: lib/blocks/columns.php:315
+#: lib/blocks/columns.php:307
 msgid "1/8"
 msgstr ""
 
-#: lib/blocks/columns.php:316
+#: lib/blocks/columns.php:308
 msgid "1/6"
 msgstr ""
 
-#: lib/blocks/columns.php:317
+#: lib/blocks/columns.php:309
 msgid "1/5"
 msgstr ""
 
-#: lib/blocks/columns.php:318
+#: lib/blocks/columns.php:310
 msgid "3/8"
 msgstr ""
 
-#: lib/blocks/columns.php:319
+#: lib/blocks/columns.php:311
 msgid "2/5"
 msgstr ""
 
-#: lib/blocks/columns.php:320
+#: lib/blocks/columns.php:312
 msgid "3/5"
 msgstr ""
 
-#: lib/blocks/columns.php:321
+#: lib/blocks/columns.php:313
 msgid "5/8"
 msgstr ""
 
-#: lib/blocks/columns.php:322
+#: lib/blocks/columns.php:314
 msgid "4/5"
 msgstr ""
 
-#: lib/blocks/columns.php:323
+#: lib/blocks/columns.php:315
 msgid "5/6"
 msgstr ""
 
-#: lib/blocks/columns.php:324
+#: lib/blocks/columns.php:316
 msgid "7/8"
 msgstr ""
 
-#: lib/blocks/columns.php:325
+#: lib/blocks/columns.php:317
 msgid "11/12"
 msgstr ""
 
-#: lib/blocks/columns.php:326
+#: lib/blocks/columns.php:318
 msgid "Fit"
 msgstr ""
 
-#: lib/blocks/columns.php:326
+#: lib/blocks/columns.php:318
 #: lib/classes/class-mai-setup-wizard-fields.php:241
 #: lib/classes/class-mai-setup-wizard-steps.php:202
 #: lib/functions/grid.php:89
@@ -663,17 +667,17 @@ msgstr ""
 msgid "Content"
 msgstr ""
 
-#: lib/blocks/columns.php:327
+#: lib/blocks/columns.php:319
 msgid "Fill"
 msgstr ""
 
-#: lib/blocks/columns.php:327
-#: lib/blocks/columns.php:561
+#: lib/blocks/columns.php:319
+#: lib/blocks/columns.php:553
 msgid "Space"
 msgstr ""
 
-#: lib/blocks/columns.php:328
-#: lib/blocks/columns.php:574
+#: lib/blocks/columns.php:320
+#: lib/blocks/columns.php:566
 #: lib/blocks/grid.php:857
 #: lib/blocks/grid.php:1591
 #: lib/customize/content-archives.php:122
@@ -683,78 +687,78 @@ msgstr ""
 msgid "Full"
 msgstr ""
 
-#: lib/blocks/columns.php:328
+#: lib/blocks/columns.php:320
 #: assets/js/blocks/layout-settings.js:488
 #: assets/js/min/blocks.js:1126
 msgid "Width"
 msgstr ""
 
-#: lib/blocks/columns.php:331
+#: lib/blocks/columns.php:323
 msgid "Custom arrangements will repeat in the sequence you set here. Only set one value if you want all columns to be the same."
 msgstr ""
 
-#: lib/blocks/columns.php:339
+#: lib/blocks/columns.php:331
 msgid "Columns"
 msgstr ""
 
-#: lib/blocks/columns.php:349
+#: lib/blocks/columns.php:341
 #: lib/functions/grid.php:268
 msgid "Auto"
 msgstr ""
 
-#: lib/blocks/columns.php:350
+#: lib/blocks/columns.php:342
 msgid "Custom arrangement"
 msgstr ""
 
-#: lib/blocks/columns.php:356
+#: lib/blocks/columns.php:348
 msgid "Responsive Arrangements"
 msgstr ""
 
-#: lib/blocks/columns.php:370
-#: lib/blocks/columns.php:698
+#: lib/blocks/columns.php:362
+#: lib/blocks/columns.php:690
 msgid "LG"
 msgstr ""
 
-#: lib/blocks/columns.php:384
+#: lib/blocks/columns.php:376
 msgid "Arrangement (desktop)"
 msgstr ""
 
-#: lib/blocks/columns.php:400
-#: lib/blocks/columns.php:444
-#: lib/blocks/columns.php:488
-#: lib/blocks/columns.php:532
+#: lib/blocks/columns.php:392
+#: lib/blocks/columns.php:436
+#: lib/blocks/columns.php:480
+#: lib/blocks/columns.php:524
 msgid "Add Column"
 msgstr ""
 
-#: lib/blocks/columns.php:414
-#: lib/blocks/columns.php:697
+#: lib/blocks/columns.php:406
+#: lib/blocks/columns.php:689
 msgid "MD"
 msgstr ""
 
-#: lib/blocks/columns.php:428
+#: lib/blocks/columns.php:420
 msgid "Arrangement (lg tablets)"
 msgstr ""
 
-#: lib/blocks/columns.php:458
-#: lib/blocks/columns.php:696
+#: lib/blocks/columns.php:450
+#: lib/blocks/columns.php:688
 msgid "SM"
 msgstr ""
 
-#: lib/blocks/columns.php:472
+#: lib/blocks/columns.php:464
 msgid "Arrangement (sm tablets)"
 msgstr ""
 
-#: lib/blocks/columns.php:516
+#: lib/blocks/columns.php:508
 msgid "Arrangement (mobile)"
 msgstr ""
 
-#: lib/blocks/columns.php:554
+#: lib/blocks/columns.php:546
 #: lib/blocks/grid.php:1558
 #: lib/customize/content-archives.php:620
 msgid "Align Columns"
 msgstr ""
 
-#: lib/blocks/columns.php:558
+#: lib/blocks/columns.php:550
 #: lib/blocks/grid.php:1184
 #: lib/blocks/grid.php:1564
 #: lib/customize/content-archives.php:371
@@ -766,7 +770,7 @@ msgstr ""
 msgid "Start"
 msgstr ""
 
-#: lib/blocks/columns.php:560
+#: lib/blocks/columns.php:552
 #: lib/blocks/grid.php:1186
 #: lib/blocks/grid.php:1566
 #: lib/customize/content-archives.php:373
@@ -776,14 +780,14 @@ msgstr ""
 msgid "End"
 msgstr ""
 
-#: lib/blocks/columns.php:570
+#: lib/blocks/columns.php:562
 #: lib/blocks/grid.php:1585
 #: lib/customize/content-archives.php:639
 msgid "Align Columns (vertical)"
 msgstr ""
 
-#: lib/blocks/columns.php:576
-#: lib/blocks/columns.php:680
+#: lib/blocks/columns.php:568
+#: lib/blocks/columns.php:672
 #: lib/blocks/grid.php:1206
 #: lib/blocks/grid.php:1593
 #: lib/customize/content-archives.php:385
@@ -791,17 +795,17 @@ msgstr ""
 msgid "Middle"
 msgstr ""
 
-#: lib/blocks/columns.php:585
+#: lib/blocks/columns.php:577
 #: lib/blocks/grid.php:1613
 #: lib/customize/content-archives.php:659
 msgid "Column Gap"
 msgstr ""
 
-#: lib/blocks/columns.php:589
-#: lib/blocks/columns.php:607
-#: lib/blocks/columns.php:625
-#: lib/blocks/columns.php:644
-#: lib/blocks/columns.php:694
+#: lib/blocks/columns.php:581
+#: lib/blocks/columns.php:599
+#: lib/blocks/columns.php:617
+#: lib/blocks/columns.php:636
+#: lib/blocks/columns.php:686
 #: lib/blocks/grid.php:1619
 #: lib/blocks/grid.php:1642
 #: lib/customize/content-archives.php:664
@@ -814,18 +818,18 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: lib/blocks/columns.php:603
+#: lib/blocks/columns.php:595
 #: lib/blocks/grid.php:1636
 #: lib/customize/content-archives.php:674
 msgid "Row Gap"
 msgstr ""
 
-#: lib/blocks/columns.php:621
+#: lib/blocks/columns.php:613
 msgid "Top Margin"
 msgstr ""
 
-#: lib/blocks/columns.php:631
-#: lib/blocks/columns.php:650
+#: lib/blocks/columns.php:623
+#: lib/blocks/columns.php:642
 #: assets/js/blocks/layout-settings.js:589
 #: assets/js/blocks/layout-settings.js:686
 #: assets/js/min/blocks.js:1227
@@ -833,31 +837,31 @@ msgstr ""
 msgid "XXL"
 msgstr ""
 
-#: lib/blocks/columns.php:640
+#: lib/blocks/columns.php:632
 msgid "Bottom Margin"
 msgstr ""
 
-#: lib/blocks/columns.php:675
+#: lib/blocks/columns.php:667
 msgid "Align Content (vertical)"
 msgstr ""
 
-#: lib/blocks/columns.php:690
+#: lib/blocks/columns.php:682
 msgid "Spacing"
 msgstr ""
 
-#: lib/blocks/columns.php:731
+#: lib/blocks/columns.php:723
 msgid "Add box shadow"
 msgstr ""
 
-#: lib/blocks/columns.php:738
+#: lib/blocks/columns.php:730
 msgid "Show first on mobile"
 msgstr ""
 
-#: lib/blocks/columns.php:745
+#: lib/blocks/columns.php:737
 msgid "Show first on small tablets"
 msgstr ""
 
-#: lib/blocks/columns.php:752
+#: lib/blocks/columns.php:744
 msgid "Show first on large tablets"
 msgstr ""
 
@@ -1462,16 +1466,99 @@ msgstr ""
 msgid "No plugins selected."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:182
+#: lib/classes/class-mai-setup-wizard-ajax.php:183
 msgid "Error installing "
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:186
+#: lib/classes/class-mai-setup-wizard-ajax.php:187
 msgid "Installed "
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:205
+#: lib/classes/class-mai-setup-wizard-ajax.php:206
 msgid "No field value."
+msgstr ""
+
+#: lib/classes/class-mai-addons.php:128
+msgid "The Mai Design Pack plugin provides everything you need to enhance your website once it's up and running on %s."
+msgstr ""
+
+#: lib/classes/class-mai-addons.php:129
+msgid "Learn more about pro add-ons and the pattern library included with the %s."
+msgstr ""
+
+#: lib/classes/class-mai-addons.php:175
+#: lib/classes/class-mai-addons.php:467
+msgid "Settings"
+msgstr ""
+
+#: lib/classes/class-mai-addons.php:179
+#: lib/admin/admin-menu.php:136
+msgid "Documentation"
+msgstr ""
+
+#: lib/classes/class-mai-addons.php:201
+#: lib/admin/template-parts.php:264
+msgid "Active"
+msgstr ""
+
+#: lib/classes/class-mai-addons.php:202
+msgid "Deactivate"
+msgstr ""
+
+#: lib/classes/class-mai-addons.php:215
+msgid "Activate"
+msgstr ""
+
+#: lib/classes/class-mai-addons.php:227
+msgid "Install & Activate"
+msgstr ""
+
+#: lib/classes/class-mai-addons.php:333
+msgid "Include unique icons on your website with the Mai Icons plugin. There are over 7000 icons to choose from! Customization options include size, color, spacing, and more."
+msgstr ""
+
+#: lib/classes/class-mai-addons.php:343
+msgid "With Mai Testimonials, show off all the great things your customers have to say about you, while building credibility and increasing conversions."
+msgstr ""
+
+#: lib/classes/class-mai-addons.php:353
+msgid "Use Mai Favorites to give your visitors a way to easily browse collections of your favorite things such as affiliate products, recommendations, services, and more."
+msgstr ""
+
+#: lib/classes/class-mai-addons.php:363
+msgid "Mai Portfolio is a versatile and lightweight portfolio plugin for Mai Theme. It creates a custom post type called “Portfolio” that has all of our Customizer layout settings ready to customize."
+msgstr ""
+
+#: lib/classes/class-mai-addons.php:373
+msgid "Mai Accordion is perfect for displaying expandable FAQs, transcripts, resources, and even research. Add a title/question, then easily insert any block you want into the answer section."
+msgstr ""
+
+#: lib/classes/class-mai-addons.php:383
+msgid "Use our Mai Notices plugin to display custom callout notices to grab attention and share special information in any content area on your posts, pages, and products."
+msgstr ""
+
+#: lib/classes/class-mai-addons.php:393
+msgid "Add the Mai Table of Contents to the beginning of your posts or pages to improve readability. The table is auto-created from your heading structure so readers can jump to the section they want easily."
+msgstr ""
+
+#: lib/classes/class-mai-addons.php:403
+msgid "Boost your sales by easily embedding CTAs, display ads, and more, anywhere on your site, all from one simple to manage spot with Mai Ads & Extra Content. "
+msgstr ""
+
+#: lib/classes/class-mai-addons.php:413
+msgid "Mai Custom Content Areas is a game changer when it comes to creating a conversion marketing strategy on your website. Easily display calls to action and other custom content in different locations on posts, pages, and custom post types conditionally by category, tag, taxonomy, keyword, and more."
+msgstr ""
+
+#: lib/classes/class-mai-addons.php:423
+msgid "Mai Archive Pages plugin allows you to build robust and SEO-friendly archive pages with blocks. Customize the content before and after your archive content to strategically build out your archive pages for SEO."
+msgstr ""
+
+#: lib/classes/class-mai-addons.php:433
+msgid "Mai Display Taxonomy is a utility plugin that creates a category to use with Mai Post Grid. It gives you total control over your grid content in various areas of your website."
+msgstr ""
+
+#: lib/classes/class-mai-addons.php:443
+msgid "A developer plugin to help set custom defaults for a custom Mai Theme. The config.php file is the “default settings” for your site. If you install your custom theme, or site managers change any of the Customizer settings, the defaults will now come from your custom config."
 msgstr ""
 
 #: lib/classes/class-mai-setup-wizard-service-provider.php:87
@@ -1533,9 +1620,9 @@ msgid "Existing posts, pages, and menus will not be deleted."
 msgstr ""
 
 #: lib/classes/class-mai-setup-wizard-fields.php:247
-#: lib/admin/settings.php:50
-#: lib/admin/settings.php:51
 #: lib/admin/template-parts.php:127
+#: lib/admin/admin-menu.php:53
+#: lib/admin/admin-menu.php:54
 #: lib/functions/templates.php:27
 #: lib/functions/templates.php:35
 #: lib/functions/templates.php:123
@@ -1739,34 +1826,6 @@ msgstr ""
 msgid "of"
 msgstr ""
 
-#: lib/admin/settings.php:28
-#: lib/admin/settings.php:29
-#: lib/functions/utilities.php:1682
-#: lib/functions/deprecated.php:291
-msgid "Mai Theme"
-msgstr ""
-
-#: lib/admin/settings.php:40
-#: lib/admin/settings.php:41
-msgid "About Mai Theme"
-msgstr ""
-
-#: lib/admin/settings.php:60
-#: lib/admin/settings.php:61
-#: lib/admin/settings.php:70
-#: lib/admin/settings.php:71
-#: lib/functions/templates.php:135
-msgid "Reusable Blocks"
-msgstr ""
-
-#: lib/admin/settings.php:120
-msgid "Documentation"
-msgstr ""
-
-#: lib/admin/settings.php:126
-msgid "Support"
-msgstr ""
-
 #: lib/admin/template-parts.php:40
 msgid "template part imported successfully!"
 msgstr ""
@@ -1819,16 +1878,36 @@ msgstr ""
 msgid "Warning! Importing will move the existing template part to the trash."
 msgstr ""
 
-#: lib/admin/template-parts.php:264
-msgid "Active"
-msgstr ""
-
 #: lib/admin/template-parts.php:354
 msgid "Mai Theme uses \"Content Areas\" (block-based widget areas)."
 msgstr ""
 
 #: lib/admin/template-parts.php:356
 msgid "Edit content areas now"
+msgstr ""
+
+#: lib/admin/admin-menu.php:31
+#: lib/admin/admin-menu.php:32
+#: lib/functions/utilities.php:1682
+#: lib/functions/deprecated.php:291
+msgid "Mai Theme"
+msgstr ""
+
+#: lib/admin/admin-menu.php:43
+#: lib/admin/admin-menu.php:44
+msgid "Add-ons"
+msgstr ""
+
+#: lib/admin/admin-menu.php:63
+#: lib/admin/admin-menu.php:64
+#: lib/admin/admin-menu.php:73
+#: lib/admin/admin-menu.php:74
+#: lib/functions/templates.php:135
+msgid "Reusable Blocks"
+msgstr ""
+
+#: lib/admin/admin-menu.php:142
+msgid "Support"
 msgstr ""
 
 #: lib/admin/upgrade.php:142
@@ -2023,7 +2102,7 @@ msgstr ""
 msgid "Next →"
 msgstr ""
 
-#: lib/support/woocommerce.php:200
+#: lib/support/woocommerce.php:216
 msgid "Edit Page"
 msgstr ""
 

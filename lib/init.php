@@ -324,7 +324,6 @@ function mai_load_files() {
 	}
 
 	$files = [
-
 		// Functions.
 		'functions/autoload',
 		'functions/colors',
@@ -407,13 +406,13 @@ function mai_load_files() {
 		$files = array_merge(
 			$files,
 			[
+				'admin/admin-menu',
 				'admin/dependencies',
 				'admin/editor',
 				'admin/hide-elements',
 				'admin/images',
 				'admin/notices',
 				'admin/page-header',
-				'admin/settings',
 				'admin/setup-wizard',
 				'admin/term-image',
 				'admin/template-parts',
