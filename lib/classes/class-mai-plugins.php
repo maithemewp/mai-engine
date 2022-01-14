@@ -67,7 +67,7 @@ class Mai_Plugins {
 		if ( $plugins && $action && $slug ) {
 			$key = sprintf( '%s/%s.php', $slug, $slug );
 
-			if ( 'activate' === $action && $this->has_wpdi && isset( $plugins[ $slug ] ) ) {
+			if ( in_array( $action, [ 'install', 'activate' ] ) && $this->has_wpdi && isset( $plugins[ $slug ] ) ) {
 				$plugin  =  $plugins[ $slug ];
 				$config = [ $key => $plugins[ $slug ] ];
 
@@ -207,9 +207,8 @@ class Mai_Plugins {
 	 * @return string
 	 */
 	function get_deactivate_button( $slug ) {
-		$disabled = $this->is_disabled() ? ' disabled' : '';
-		$html     = sprintf( '<span class="mai-plugin-active">%s</span>', __( 'Active', 'mai-engine' ) );
-		$html     .= sprintf( '<button class="mai-plugin-deactivate button button-secondary" data-action="deactivate" data-slug="%s"%s>%s</button>', $slug, $disabled, __( 'Deactivate', 'mai-engine' ) );
+		$html  = sprintf( '<span class="mai-plugin-active">%s</span>', __( 'Active', 'mai-engine' ) );
+		$html .= $this->get_button( 'deactivate', 'secondary', __( 'Deactivate', 'mai-engine' ), $slug );
 		return $html;
 	}
 
@@ -221,8 +220,7 @@ class Mai_Plugins {
 	 * @return string
 	 */
 	function get_activate_button( $slug ) {
-		$disabled = $this->is_disabled() ? ' disabled' : '';
-		return sprintf( '<button class="mai-plugin-activate button button-primary" data-action="activate" data-slug="%s"%s>%s</button>', $slug, $disabled, __( 'Activate', 'mai-engine' ) );
+		return $this->get_button( 'activate', 'primary', __( 'Activate', 'mai-engine' ), $slug );
 	}
 
 	/**
@@ -233,8 +231,29 @@ class Mai_Plugins {
 	 * @return string
 	 */
 	function get_install_button( $slug ) {
-		$disabled = $this->is_disabled() ? ' disabled' : '';
-		return sprintf( '<button class="mai-plugin-install button button-primary" data-action="activate" data-slug="%s"%s>%s</button>', $slug, $disabled, __( 'Install & Activate', 'mai-engine' ) );
+		return $this->get_button( 'install', 'primary', __( 'Install & Activate', 'mai-engine' ), $slug );
+	}
+
+	/**
+	 * Gets button markup.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return string
+	 */
+	function get_button( $action, $class, $text, $slug ) {
+		$data_disabled = $this->is_disabled() ? sprintf( ' data-disabled="Mai Design Pack %s."', esc_html__( 'required', 'mai-engine' ) ) : '';
+		$disabled      = $this->is_disabled() ? ' disabled' : '';
+
+		return sprintf( '<button class="mai-plugin-%s button button-%s" data-action="%s" data-slug="%s"%s%s>%s</button>',
+			$action,
+			$class,
+			$action,
+			$slug,
+			$data_disabled,
+			$disabled,
+			$text
+		);
 	}
 
 	/**
