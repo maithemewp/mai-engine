@@ -13,7 +13,7 @@
 defined( 'ABSPATH' ) || die;
 
 /**
- * Description of expected behavior.
+ * Checks if in dev mode.
  *
  * @since 0.1.0
  *
