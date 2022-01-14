@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-01-14T20:19:04+00:00\n"
+"POT-Creation-Date: 2022-01-14T21:05:35+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -1512,7 +1512,11 @@ msgid "Mai Custom Content Areas is a game changer when it comes to creating a co
 msgstr ""
 
 #: lib/classes/class-mai-plugins.php:435
-msgid "Boost your sales by easily embedding CTAs, display ads, and more, anywhere on your site, all from one simple to manage spot with Mai Ads & Extra Content. "
+msgid "Boost your sales by easily embedding CTAs, display ads, and more, anywhere on your site, all from one simple to manage location.%s"
+msgstr ""
+
+#: lib/classes/class-mai-plugins.php:435
+msgid "Note: This plugin has been replaced with %s"
 msgstr ""
 
 #: lib/classes/class-mai-plugins.php:446
