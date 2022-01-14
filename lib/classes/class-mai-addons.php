@@ -345,6 +345,7 @@ class Mai_Addons {
 				'required' => true,
 				'desc'     => __( 'Include unique icons on your website with the Mai Icons plugin. There are over 7000 icons to choose from! Customization options include size, color, spacing, and more.', 'mai-engine' ),
 				'docs'     => 'https://help.bizbudding.com/article/143-mai-icons',
+				'settings' => '',
 			],
 			'mai-testimonials' => [
 				'name'     => 'Mai Testimonials',
@@ -355,6 +356,7 @@ class Mai_Addons {
 				'required' => true,
 				'desc'     => __( 'With Mai Testimonials, show off all the great things your customers have to say about you, while building credibility and increasing conversions.', 'mai-engine' ),
 				'docs'     => 'https://help.bizbudding.com/article/141-mai-testimonials',
+				'settings' => admin_url( 'edit.php?post_type=testimonial' ),
 			],
 			'mai-favorites' => [
 				'name'     => 'Mai Favorites',
@@ -365,6 +367,7 @@ class Mai_Addons {
 				'required' => true,
 				'desc'     => __( 'Use Mai Favorites to give your visitors a way to easily browse collections of your favorite things such as affiliate products, recommendations, services, and more.', 'mai-engine' ),
 				'docs'     => 'https://help.bizbudding.com/article/144-mai-favorites',
+				'settings' => admin_url( 'edit.php?post_type=favorite' ),
 			],
 			'mai-portfolio' => [
 				'name'     => 'Mai Portfolio',
@@ -375,6 +378,7 @@ class Mai_Addons {
 				'required' => true,
 				'desc'     => __( 'Mai Portfolio is a versatile and lightweight portfolio plugin for Mai Theme. It creates a custom post type called “Portfolio” that has all of our Customizer layout settings ready to customize.', 'mai-engine' ),
 				'docs'     => 'https://help.bizbudding.com/article/191-mai-portfolio',
+				'settings' => admin_url( 'edit.php?post_type=portfolio' ),
 			],
 			'mai-accordion' => [
 				'name'     => 'Mai Accordion',
@@ -405,16 +409,7 @@ class Mai_Addons {
 				'required' => true,
 				'desc'     => __( 'Add the Mai Table of Contents to the beginning of your posts or pages to improve readability. The table is auto-created from your heading structure so readers can jump to the section they want easily.', 'mai-engine' ),
 				'docs'     => 'https://help.bizbudding.com/article/145-mai-table-of-content',
-			],
-			'mai-ads-extra-content' => [
-				'name'     => 'Mai Ads & Extra Content',
-				'host'     => 'github',
-				'slug'     => 'mai-ads-extra-content/mai-ads-extra-content.php',
-				'uri'      => 'maithemewp/mai-ads-extra-content',
-				'branch'   => 'master',
-				'required' => true,
-				'desc'     => __( 'Boost your sales by easily embedding CTAs, display ads, and more, anywhere on your site, all from one simple to manage spot with Mai Ads & Extra Content. ', 'mai-engine' ),
-				'docs'     => 'https://help.bizbudding.com/article/146-mai-ads-extra-content',
+				'settings' => admin_url( 'admin.php?page=mai-table-of-contents' ),
 			],
 			'mai-custom-content-areas' => [
 				'name'     => 'Mai Custom Content Areas',
@@ -425,6 +420,17 @@ class Mai_Addons {
 				'required' => true,
 				'desc'     => __( 'Mai Custom Content Areas is a game changer when it comes to creating a conversion marketing strategy on your website. Easily display calls to action and other custom content in different locations on posts, pages, and custom post types conditionally by category, tag, taxonomy, keyword, and more.', 'mai-engine' ),
 				'docs'     => 'https://help.bizbudding.com/article/192-mai-custom-content-areas',
+			],
+			'mai-ads-extra-content' => [
+				'name'     => 'Mai Ads & Extra Content',
+				'host'     => 'github',
+				'slug'     => 'mai-ads-extra-content/mai-ads-extra-content.php',
+				'uri'      => 'maithemewp/mai-ads-extra-content',
+				'branch'   => 'master',
+				'required' => true,
+				'desc'     => __( 'Boost your sales by easily embedding CTAs, display ads, and more, anywhere on your site, all from one simple to manage spot with Mai Ads & Extra Content. ', 'mai-engine' ),
+				'docs'     => 'https://help.bizbudding.com/article/146-mai-ads-extra-content',
+				'settings' => admin_url( 'edit.php?post_type=mai_template_part' ),
 			],
 			'mai-archive-pages' => [
 				'name'     => 'Mai Archive Pages',
@@ -445,6 +451,7 @@ class Mai_Addons {
 				'required' => true,
 				'desc'     => __( 'Mai Display Taxonomy is a utility plugin that creates a category to use with Mai Post Grid. It gives you total control over your grid content in various areas of your website.', 'mai-engine' ),
 				'docs'     => 'https://help.bizbudding.com/article/149-mai-display-taxonomy',
+				'settings' => admin_url( 'admin.php?page=mai-display-taxonomy' ),
 			],
 			'mai-config-generator' => [
 				'name'     => 'Mai Config Generator',
@@ -455,6 +462,7 @@ class Mai_Addons {
 				'required' => true,
 				'desc'     => __( 'A developer plugin to help set custom defaults for a custom Mai Theme. The config.php file is the “default settings” for your site. If you install your custom theme, or site managers change any of the Customizer settings, the defaults will now come from your custom config.', 'mai-engine' ),
 				'docs'     => 'https://help.bizbudding.com/article/193-mai-config-generator',
+				'settings' => admin_url( 'admin.php?page=mai-config-generator' ),
 			],
 		];
 
