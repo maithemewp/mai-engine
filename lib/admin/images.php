@@ -33,28 +33,38 @@ function mai_get_media_chooser_sizes( $sizes ) {
 
 	if ( ! isset( $_wp_additional_image_sizes ) || 0 === count( $_wp_additional_image_sizes ) ) {
 		$choices = $sizes;
+
 		return $choices;
 	}
 
-	$keepers = [
-		'landscape-sm' => __( 'Landscape (Small)', 'mai-engine' ),
-		'landscape-md' => __( 'Landscape (Medium)', 'mai-engine' ),
-		'landscape-lg' => __( 'Landscape (Large)', 'mai-engine' ),
-		'portrait-sm'  => __( 'Portrait (Small)', 'mai-engine' ),
-		'portrait-md'  => __( 'Portrait (Medium)', 'mai-engine' ),
-		'portrait-lg'  => __( 'Portrait (Large)', 'mai-engine' ),
-		'square-sm'    => __( 'Square (Small)', 'mai-engine' ),
-		'square-md'    => __( 'Square (Medium)', 'mai-engine' ),
-		'square-lg'    => __( 'Square (Large)', 'mai-engine' ),
-		'tiny'         => __( 'Tiny', 'mai-engine' ),
-		'cover'        => __( 'Cover', 'mai-engine' ),
-	];
+	$custom       = [];
+	$orientations = [];
+	$image_sizes  = mai_get_config( 'image-sizes' );
+	$small        = __( 'Small', 'mai-engine' );
+	$medium       = __( 'Medium', 'mai-engine' );
+	$large        = __( 'Large', 'mai-engine' );
 
-	foreach ( $_wp_additional_image_sizes as $name => $sizes_array ) {
-		if ( ! isset( $keepers[ $name ] ) ) {
-			continue;
+	foreach ( $image_sizes['add'] as $name => $args ) {
+		if ( is_array( $args ) ) {
+			$custom[ $name ] = mai_convert_case( $name, 'title' );
 		}
-		$sizes[ $name ] = $keepers[ $name ];
+		elseif ( is_string( $args ) && mai_has_string( ':', $args ) ) {
+			$orientations[ $name . '-sm' ] = mai_convert_case( $name, 'title' ) . sprintf( ' (%s)', $small );
+			$orientations[ $name . '-md' ] = mai_convert_case( $name, 'title' ) . sprintf( ' (%s)', $medium );
+			$orientations[ $name . '-lg' ] = mai_convert_case( $name, 'title' ) . sprintf( ' (%s)', $large );
+		}
+	}
+
+	if ( $custom ) {
+		foreach ( $custom as $name => $label ) {
+			$sizes[ $name ] = $label;
+		}
+	}
+
+	if ( $orientations ) {
+		foreach ( $orientations as $name => $label ) {
+			$sizes[ $name ] = $label;
+		}
 	}
 
 	$choices = $sizes;
