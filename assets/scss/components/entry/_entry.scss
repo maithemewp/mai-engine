@@ -50,6 +50,14 @@
 	box-shadow: var(--entry-box-shadow, unset);
 }
 
+.has-image-left-full,
+.has-image-right-full {
+
+	.entry-image {
+		aspect-ratio: var(--aspect-ratio, 4/3);
+	}
+}
+
 .has-image-background {
 	--entry-flex-direction: row;
 	--entry-overflow: hidden; /* for border radius on absolute positioned image. */
@@ -65,6 +73,8 @@
 
 @supports not (aspect-ratio: 4/3) {
 
+	.has-image-left-full .entry-image-link::before,
+	.has-image-right-full .entry-image-link::before,
 	.has-image-background .entry::before {
 		display: block;
 		width: 1px;

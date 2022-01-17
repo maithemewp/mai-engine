@@ -64,7 +64,7 @@ function mai_get_aspect_ratio_from_orientation( $orientation ) {
 	$ratios      = [];
 	$image_sizes = mai_get_config( 'image-sizes' );
 
-	if ( isset( $image_sizes['add'][ $orientation ] ) ) {
+	if ( isset( $image_sizes['add'][ $orientation ] ) && is_string( $image_sizes['add'][ $orientation ] ) && mai_has_string( ':', $image_sizes['add'][ $orientation ] ) ) {
 		$ratios[ $orientation ] = str_replace( ':', '/', $image_sizes['add'][ $orientation ] );
 	} else {
 		$ratios[ $orientation ] = false;
@@ -181,9 +181,16 @@ function mai_get_available_image_orientations() {
 		return $orientations;
 	}
 
+	$orientations = [];
 	$image_sizes  = mai_get_config( 'image-sizes' );
-	$orientations = array_intersect( array_keys( $image_sizes['add'] ), [ 'landscape', 'portrait', 'square' ] );
-	$orientations = array_values( array_diff( $orientations, array_keys( $image_sizes['remove'] ) ) );
+
+	foreach ( $image_sizes['add'] as $name => $args ) {
+		if ( ! ( is_string( $args ) && mai_has_string( ':', $args ) ) ) {
+			continue;
+		}
+
+		$orientations[] = $name;
+	}
 
 	return $orientations;
 }
@@ -241,7 +248,7 @@ function mai_get_image_orientation_choices() {
 		return $choices;
 	}
 
-	$all = [
+	$default = [
 		'landscape' => esc_html__( 'Landscape', 'mai-engine' ),
 		'portrait'  => esc_html__( 'Portrait', 'mai-engine' ),
 		'square'    => esc_html__( 'Square', 'mai-engine' ),
@@ -250,7 +257,7 @@ function mai_get_image_orientation_choices() {
 	$orientations = mai_get_available_image_orientations();
 
 	foreach ( $orientations as $orientation ) {
-		$choices[ $orientation ] = $all[ $orientation ];
+		$choices[ $orientation ] = isset( $default[ $orientation ] ) ? $default[ $orientation ] : mai_convert_case( $orientation, 'title' );
 	}
 
 	$choices['custom'] = esc_html__( 'Custom', 'mai-engine' );

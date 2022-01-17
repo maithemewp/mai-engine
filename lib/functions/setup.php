@@ -84,7 +84,7 @@ function mai_setup() {
 			if ( is_array( $args ) ) {
 				add_image_size( $name, $args[0], $args[1], $args[2] );
 
-			} elseif ( $args ) {
+			} elseif ( is_string( $args ) && mai_has_string( ':', $args ) ) {
 				$sm = mai_get_image_sizes_from_aspect_ratio( 'xs', $args );
 				$md = mai_get_image_sizes_from_aspect_ratio( 'md', $args );
 				$lg = mai_get_image_sizes_from_aspect_ratio( 'xl', $args );

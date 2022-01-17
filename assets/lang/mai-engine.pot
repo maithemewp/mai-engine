@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Mai Engine plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.19.0-beta.6\n"
+"Project-Id-Version: Mai Engine 2.19.0-beta.8\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-01-14T21:05:35+00:00\n"
+"POT-Creation-Date: 2022-01-17T22:35:36+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -1454,7 +1454,7 @@ msgid "Settings"
 msgstr ""
 
 #: lib/classes/class-mai-plugins.php:190
-#: lib/admin/admin-menu.php:133
+#: lib/admin/admin-menu.php:291
 msgid "Documentation"
 msgstr ""
 
@@ -1512,22 +1512,14 @@ msgid "Mai Custom Content Areas is a game changer when it comes to creating a co
 msgstr ""
 
 #: lib/classes/class-mai-plugins.php:435
-msgid "Boost your sales by easily embedding CTAs, display ads, and more, anywhere on your site, all from one simple to manage location.%s"
-msgstr ""
-
-#: lib/classes/class-mai-plugins.php:435
-msgid "Note: This plugin has been replaced with %s"
-msgstr ""
-
-#: lib/classes/class-mai-plugins.php:446
 msgid "Mai Archive Pages plugin allows you to build robust and SEO-friendly archive pages with blocks. Customize the content before and after your archive content to strategically build out your archive pages for SEO."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:456
+#: lib/classes/class-mai-plugins.php:445
 msgid "Mai Display Taxonomy is a utility plugin that creates a category to use with Mai Post Grid. It gives you total control over your grid content in various areas of your website."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:467
+#: lib/classes/class-mai-plugins.php:456
 msgid "A developer plugin to help set custom defaults for a custom Mai Theme. The config.php file is the “default settings” for your site. If you install your custom theme, or site managers change any of the Customizer settings, the defaults will now come from your custom config."
 msgstr ""
 
@@ -1923,19 +1915,103 @@ msgstr ""
 
 #: lib/admin/admin-menu.php:40
 #: lib/admin/admin-menu.php:41
-#: lib/admin/admin-menu.php:159
+#: lib/admin/admin-menu.php:317
 msgid "Plugins"
 msgstr ""
 
 #: lib/admin/admin-menu.php:60
 #: lib/admin/admin-menu.php:61
-#: lib/admin/admin-menu.php:70
-#: lib/admin/admin-menu.php:71
+#: lib/admin/admin-menu.php:80
+#: lib/admin/admin-menu.php:81
 #: lib/functions/templates.php:135
 msgid "Reusable Blocks"
 msgstr ""
 
-#: lib/admin/admin-menu.php:139
+#: lib/admin/admin-menu.php:71
+msgid "Patterns"
+msgstr ""
+
+#: lib/admin/admin-menu.php:168
+msgid "Contact Forms"
+msgstr ""
+
+#: lib/admin/admin-menu.php:173
+msgid "CTAs"
+msgstr ""
+
+#: lib/admin/admin-menu.php:178
+msgid "Features"
+msgstr ""
+
+#: lib/admin/admin-menu.php:183
+msgid "Footers"
+msgstr ""
+
+#: lib/admin/admin-menu.php:188
+msgid "Hero Sections"
+msgstr ""
+
+#: lib/admin/admin-menu.php:193
+msgid "Homepages"
+msgstr ""
+
+#: lib/admin/admin-menu.php:198
+msgid "Landing Pages"
+msgstr ""
+
+#: lib/admin/admin-menu.php:203
+msgid "Logos"
+msgstr ""
+
+#: lib/admin/admin-menu.php:208
+msgid "Podcasts"
+msgstr ""
+
+#: lib/admin/admin-menu.php:213
+msgid "Portfolios"
+msgstr ""
+
+#: lib/admin/admin-menu.php:218
+msgid "Pricing Tables"
+msgstr ""
+
+#: lib/admin/admin-menu.php:223
+msgid "Team Pages"
+msgstr ""
+
+#: lib/admin/admin-menu.php:228
+msgid "Testimonials"
+msgstr ""
+
+#: lib/admin/admin-menu.php:234
+msgid "Library"
+msgstr ""
+
+#: lib/admin/admin-menu.php:236
+msgid "Create a website design just like the pros using pre-built patterns that provide the ability to add complex sections and layouts to your website. The %s is included with the %s and is included for our %s customers."
+msgstr ""
+
+#: lib/admin/admin-menu.php:239
+msgid "These patterns are designed to work seamlessly with %s."
+msgstr ""
+
+#: lib/admin/admin-menu.php:242
+msgid "%s account"
+msgstr ""
+
+#: lib/admin/admin-menu.php:242
+msgid "to get instant access."
+msgstr ""
+
+#: lib/admin/admin-menu.php:245
+msgid "Includes patterns to help you create:"
+msgstr ""
+
+#: lib/admin/admin-menu.php:248
+msgid "View Patterns"
+msgstr ""
+
+#: lib/admin/admin-menu.php:297
 msgid "Support"
 msgstr ""
 
@@ -2075,48 +2151,16 @@ msgstr ""
 msgid "Page Header Description"
 msgstr ""
 
-#: lib/admin/images.php:40
-msgid "Landscape (Small)"
-msgstr ""
-
-#: lib/admin/images.php:41
-msgid "Landscape (Medium)"
-msgstr ""
-
-#: lib/admin/images.php:42
-msgid "Landscape (Large)"
-msgstr ""
-
 #: lib/admin/images.php:43
-msgid "Portrait (Small)"
+msgid "Small"
 msgstr ""
 
 #: lib/admin/images.php:44
-msgid "Portrait (Medium)"
+msgid "Medium"
 msgstr ""
 
 #: lib/admin/images.php:45
-msgid "Portrait (Large)"
-msgstr ""
-
-#: lib/admin/images.php:46
-msgid "Square (Small)"
-msgstr ""
-
-#: lib/admin/images.php:47
-msgid "Square (Medium)"
-msgstr ""
-
-#: lib/admin/images.php:48
-msgid "Square (Large)"
-msgstr ""
-
-#: lib/admin/images.php:49
-msgid "Tiny"
-msgstr ""
-
-#: lib/admin/images.php:50
-msgid "Cover"
+msgid "Large"
 msgstr ""
 
 #: lib/support/woocommerce.php:113
@@ -2398,19 +2442,19 @@ msgstr ""
 msgid "Previous/Next Entry Nav"
 msgstr ""
 
-#: lib/functions/images.php:245
+#: lib/functions/images.php:252
 msgid "Landscape"
 msgstr ""
 
-#: lib/functions/images.php:246
+#: lib/functions/images.php:253
 msgid "Portrait"
 msgstr ""
 
-#: lib/functions/images.php:247
+#: lib/functions/images.php:254
 msgid "Square"
 msgstr ""
 
-#: lib/functions/images.php:256
+#: lib/functions/images.php:263
 msgid "Custom"
 msgstr ""
 
