@@ -217,8 +217,8 @@ function mai_do_menu_toggle() {
 			'content' => sprintf( '<span class="menu-toggle-icon"></span>%s', $text ),
 			'atts'    => [
 				'class'         => 'menu-toggle',
-				'aria-expanded' => false,
-				'aria-pressed'  => false,
+				'aria-expanded' => 'false',
+				'aria-pressed'  => 'false',
 			],
 		]
 	);
