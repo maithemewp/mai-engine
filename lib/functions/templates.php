@@ -767,6 +767,12 @@ function mai_get_new_image_from_url( $image_url, $filename = '' ) {
  * @return array
  */
 function mai_get_template_parts_from_demo() {
+	static $template_parts = null;
+
+	if ( ! is_null( $template_parts ) ) {
+		return $template_parts;
+	}
+
 	if ( false === ( $template_parts = get_transient( 'mai_demo_template_parts' ) ) ) {
 		$template_parts = [];
 		$config         = mai_get_config( 'template-parts' );
@@ -780,11 +786,25 @@ function mai_get_template_parts_from_demo() {
 				$request = wp_remote_get( $url );
 
 				if ( ! is_wp_error( $request ) ) {
-					$body  = wp_remote_retrieve_body( $request );
-					$data  = json_decode( $body );
+					$body = wp_remote_retrieve_body( $request );
+					$data = json_decode( $body );
 
-					if ( $data && isset( $data['content_raw'] ) ) {
-						$parts = wp_list_pluck( $data, 'content_raw', 'slug' );
+					if ( $data && is_array( $data ) ) {
+						$parts = [];
+
+						/**
+						 * Can't use `wp_list_pluck()` because the key may not exist
+						 * since changing the rest route in TDB
+						 *
+						 * @link https://core.trac.wordpress.org/ticket/34172
+						 */
+						foreach ( $data as $item ) {
+							if ( ! ( isset( $item['content_raw'] ) && isset( $item['slug'] ) ) ) {
+								continue;
+							}
+
+							$parts[ $item['slug'] ] = $item['content_raw'];
+						}
 
 						if ( $parts ) {
 							foreach ( $config as $slug => $args ) {
@@ -802,6 +822,8 @@ function mai_get_template_parts_from_demo() {
 
 		set_transient( 'mai_demo_template_parts', $template_parts, HOUR_IN_SECONDS );
 	}
+
+	$template_parts = (array) $template_parts;
 
 	return $template_parts;
 }
