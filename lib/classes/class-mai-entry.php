@@ -735,16 +735,13 @@ class Mai_Entry {
 	 * @return string
 	 */
 	public function get_image_size() {
-		switch ( $this->args['image_orientation'] ) {
-			case 'landscape':
-			case 'portrait':
-			case 'square':
-				$image_size = $this->get_image_size_by_cols();
-				$image_size = sprintf( '%s-%s', $this->args['image_orientation'], $image_size );
-				$image_size = $this->get_fallback_image_size( $image_size );
-			break;
-			default:
-				$image_size = $this->args['image_size'];
+		if ( mai_has_image_orientiation( $this->args['image_orientation'] ) ) {
+			$image_size = $this->get_image_size_by_cols();
+			$image_size = sprintf( '%s-%s', $this->args['image_orientation'], $image_size );
+			$image_size = $this->get_fallback_image_size( $image_size );
+
+		} else {
+			$image_size = $this->args['image_size'];
 		}
 
 		// Filter.
@@ -767,10 +764,11 @@ class Mai_Entry {
 				return $this->get_fallback_image_size( $image_size );
 			}
 
-			if ( in_array( $image_size, [ 'landscape-md', 'portrait-md', 'square-md' ] ) ) {
+			if ( mai_has_string( '-md', $image_size ) ) {
 				return str_replace( '-md', '-sm', $image_size );
 			}
 		}
+
 		return $image_size;
 	}
 
