@@ -753,7 +753,7 @@ function mai_get_acf_request( $request ) {
  * @return array
  */
 function mai_get_grid_block_settings() {
-	$date_info = sprintf( '<a style="text-decoration:none;font-size:1.5em;line-height:1;" target="_blank" href="https://docs.bizbudding.com/docs/mai-grid-blocks/" title="%s">ⓘ</a>', __( 'Examples', 'mai-engine' ) );
+	$date_info = mai_get_block_setting_info_link( 'https://help.bizbudding.com/article/176-mai-grid-blocks' );
 
 	return [
 		'mai_grid_block_display_tab'              => [
@@ -1803,7 +1803,7 @@ function mai_get_grid_block_settings() {
 						'sanitize'   => 'sanitize_bool',
 						'default'    => '',
 						'atts'       => [
-							'message' => sprintf( '%s <a target="_blank" href="https://docs.bizbudding.com/docs/mai-grid-blocks/#taxonomy-meta">%s</a>', esc_html__( 'Use current', 'mai-engine' ), mai_get_svg_icon( 'info-circle', 'solid', [ 'style' => 'width:18px;height:18px;vertical-align:middle;margin:-2px 0 0 4px;fill:currentColor;' ] ) ),
+							'message' => sprintf( '%s %s', esc_html__( 'Use current', 'mai-engine' ), mai_get_block_setting_info_link( 'https://docs.bizbudding.com/docs/mai-grid-blocks/#taxonomy-meta' ) ),
 						],
 						'conditions' => [
 							[
@@ -2074,7 +2074,7 @@ function mai_get_grid_block_settings() {
 		'mai_grid_block_posts_date_after'       => [
 			'name'       => 'date_after',
 			'label'      => __( 'After date', 'mai-engine' ),
-			'desc'       => sprintf( __( 'Get posts after a date/time. %s', 'mai-engine' ), $date_info ),
+			'desc'       => sprintf( esc_html__( 'Get posts after a date/time. %s', 'mai-engine' ), $date_info ),
 			'block'      => [ 'post' ],
 			'type'       => 'text',
 			'sanitize'   => 'esc_html',
@@ -2097,7 +2097,7 @@ function mai_get_grid_block_settings() {
 		'mai_grid_block_posts_date_before'       => [
 			'name'       => 'date_before',
 			'label'      => __( 'Before date', 'mai-engine' ),
-			'desc'       => sprintf( __( 'Get posts before a date/time. %s', 'mai-engine' ), $date_info ),
+			'desc'       => sprintf( esc_html__( 'Get posts after a date/time. %s', 'mai-engine' ), $date_info ),
 			'block'      => [ 'post' ],
 			'type'       => 'text',
 			'sanitize'   => 'esc_html',
