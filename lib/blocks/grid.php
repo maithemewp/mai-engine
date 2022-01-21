@@ -46,6 +46,7 @@ function mai_register_grid_blocks() {
 
 	$icon = '<svg style="display:block;" width="20" height="20" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g transform="matrix(1,0,0,1,13,-2)"><g transform="matrix(1,0,0,3,0,-28)"><path d="M9,16.125C9,16.056 8.832,16 8.625,16L3.375,16C3.168,16 3,16.056 3,16.125L3,16.375C3,16.444 3.168,16.5 3.375,16.5L8.625,16.5C8.832,16.5 9,16.444 9,16.375L9,16.125Z"/></g><g transform="matrix(1,0,0,3,0,-31)"><path d="M9,16.125C9,16.056 8.832,16 8.625,16L3.375,16C3.168,16 3,16.056 3,16.125L3,16.375C3,16.444 3.168,16.5 3.375,16.5L8.625,16.5C8.832,16.5 9,16.444 9,16.375L9,16.125Z"/></g><g transform="matrix(1,0,0,3,0,-34)"><path d="M9,16.125C9,16.056 8.832,16 8.625,16L3.375,16C3.168,16 3,16.056 3,16.125L3,16.375C3,16.444 3.168,16.5 3.375,16.5L8.625,16.5C8.832,16.5 9,16.444 9,16.375L9,16.125Z"/></g><g transform="matrix(0.333333,0,0,0.333333,2,5.5)"><path d="M19,3L5,3C3.9,3 3,3.9 3,5L3,19C3,20.1 3.9,21 5,21L19,21C20.1,21 21,20.1 21,19L21,5C21,3.9 20.1,3 19,3ZM6,6L18,6L18,10.5C18,10.5 15.7,10.2 15.5,10.5L11.9,14L9,12C8.7,11.8 8.4,11.8 8.2,12L6,13.5L6,6ZM18,18L6,18L6,15L8.6,13.6L11.6,15.5C11.9,15.7 12.3,15.7 12.5,15.4L16,12L18,12L18,18Z" style="fill-rule:nonzero;"/></g></g><g transform="matrix(1,0,0,1,6,-2)"><g transform="matrix(1,0,0,3,0,-28)"><path d="M9,16.125C9,16.056 8.832,16 8.625,16L3.375,16C3.168,16 3,16.056 3,16.125L3,16.375C3,16.444 3.168,16.5 3.375,16.5L8.625,16.5C8.832,16.5 9,16.444 9,16.375L9,16.125Z"/></g><g transform="matrix(1,0,0,3,0,-31)"><path d="M9,16.125C9,16.056 8.832,16 8.625,16L3.375,16C3.168,16 3,16.056 3,16.125L3,16.375C3,16.444 3.168,16.5 3.375,16.5L8.625,16.5C8.832,16.5 9,16.444 9,16.375L9,16.125Z"/></g><g transform="matrix(1,0,0,3,0,-34)"><path d="M9,16.125C9,16.056 8.832,16 8.625,16L3.375,16C3.168,16 3,16.056 3,16.125L3,16.375C3,16.444 3.168,16.5 3.375,16.5L8.625,16.5C8.832,16.5 9,16.444 9,16.375L9,16.125Z"/></g><g transform="matrix(0.333333,0,0,0.333333,2,5.5)"><path d="M19,3L5,3C3.9,3 3,3.9 3,5L3,19C3,20.1 3.9,21 5,21L19,21C20.1,21 21,20.1 21,19L21,5C21,3.9 20.1,3 19,3ZM6,6L18,6L18,10.5C18,10.5 15.7,10.2 15.5,10.5L11.9,14L9,12C8.7,11.8 8.4,11.8 8.2,12L6,13.5L6,6ZM18,18L6,18L6,15L8.6,13.6L11.6,15.5C11.9,15.7 12.3,15.7 12.5,15.4L16,12L18,12L18,18Z" style="fill-rule:nonzero;"/></g></g><g transform="matrix(1,0,0,1,-1,-2)"><g transform="matrix(1,0,0,3,0,-28)"><path d="M9,16.125C9,16.056 8.832,16 8.625,16L3.375,16C3.168,16 3,16.056 3,16.125L3,16.375C3,16.444 3.168,16.5 3.375,16.5L8.625,16.5C8.832,16.5 9,16.444 9,16.375L9,16.125Z"/></g><g transform="matrix(1,0,0,3,0,-31)"><path d="M9,16.125C9,16.056 8.832,16 8.625,16L3.375,16C3.168,16 3,16.056 3,16.125L3,16.375C3,16.444 3.168,16.5 3.375,16.5L8.625,16.5C8.832,16.5 9,16.444 9,16.375L9,16.125Z"/></g><g transform="matrix(1,0,0,3,0,-34)"><path d="M9,16.125C9,16.056 8.832,16 8.625,16L3.375,16C3.168,16 3,16.056 3,16.125L3,16.375C3,16.444 3.168,16.5 3.375,16.5L8.625,16.5C8.832,16.5 9,16.444 9,16.375L9,16.125Z"/></g><g transform="matrix(0.333333,0,0,0.333333,2,5.5)"><path d="M19,3L5,3C3.9,3 3,3.9 3,5L3,19C3,20.1 3.9,21 5,21L19,21C20.1,21 21,20.1 21,19L21,5C21,3.9 20.1,3 19,3ZM6,6L18,6L18,10.5C18,10.5 15.7,10.2 15.5,10.5L11.9,14L9,12C8.7,11.8 8.4,11.8 8.2,12L6,13.5L6,6ZM18,18L6,18L6,15L8.6,13.6L11.6,15.5C11.9,15.7 12.3,15.7 12.5,15.4L16,12L18,12L18,18Z" style="fill-rule:nonzero;"/></g></g></svg>';
 
+	// Mai Post Grid.
 	acf_register_block_type(
 		[
 			'name'            => 'mai-post-grid',
@@ -753,7 +754,7 @@ function mai_get_acf_request( $request ) {
  * @return array
  */
 function mai_get_grid_block_settings() {
-	$date_info = sprintf( '<a style="text-decoration:none;font-size:1.5em;line-height:1;" target="_blank" href="https://docs.bizbudding.com/docs/mai-grid-blocks/" title="%s">ⓘ</a>', __( 'Examples', 'mai-engine' ) );
+	$date_info = mai_get_block_setting_info_link( 'https://help.bizbudding.com/article/176-mai-grid-blocks' );
 
 	return [
 		'mai_grid_block_display_tab'              => [
@@ -1803,7 +1804,7 @@ function mai_get_grid_block_settings() {
 						'sanitize'   => 'sanitize_bool',
 						'default'    => '',
 						'atts'       => [
-							'message' => sprintf( '%s <a target="_blank" href="https://docs.bizbudding.com/docs/mai-grid-blocks/#taxonomy-meta">%s</a>', esc_html__( 'Use current', 'mai-engine' ), mai_get_svg_icon( 'info-circle', 'solid', [ 'style' => 'width:18px;height:18px;vertical-align:middle;margin:-2px 0 0 4px;fill:currentColor;' ] ) ),
+							'message' => sprintf( '%s %s', esc_html__( 'Use current', 'mai-engine' ), mai_get_block_setting_info_link( 'https://docs.bizbudding.com/docs/mai-grid-blocks/#taxonomy-meta' ) ),
 						],
 						'conditions' => [
 							[
@@ -2074,7 +2075,7 @@ function mai_get_grid_block_settings() {
 		'mai_grid_block_posts_date_after'       => [
 			'name'       => 'date_after',
 			'label'      => __( 'After date', 'mai-engine' ),
-			'desc'       => sprintf( __( 'Get posts after a date/time. %s', 'mai-engine' ), $date_info ),
+			'desc'       => sprintf( esc_html__( 'Get posts after a date/time. %s', 'mai-engine' ), $date_info ),
 			'block'      => [ 'post' ],
 			'type'       => 'text',
 			'sanitize'   => 'esc_html',
@@ -2097,7 +2098,7 @@ function mai_get_grid_block_settings() {
 		'mai_grid_block_posts_date_before'       => [
 			'name'       => 'date_before',
 			'label'      => __( 'Before date', 'mai-engine' ),
-			'desc'       => sprintf( __( 'Get posts before a date/time. %s', 'mai-engine' ), $date_info ),
+			'desc'       => sprintf( esc_html__( 'Get posts after a date/time. %s', 'mai-engine' ), $date_info ),
 			'block'      => [ 'post' ],
 			'type'       => 'text',
 			'sanitize'   => 'esc_html',

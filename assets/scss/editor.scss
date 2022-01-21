@@ -224,6 +224,12 @@ p {
 	}
 }
 
+// Our default of 0 left/right margin caused overlap in editor.
+.wp-block-image {
+	margin-right: auto;
+	margin-left: auto;
+}
+
 // button, // This breaks core block control buttons.
 input[type="submit"],
 .wp-block-button__link,

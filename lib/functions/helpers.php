@@ -944,6 +944,22 @@ function mai_get_width_height_attribute( $value, $fallback = false ) {
 }
 
 /**
+ * Gets info icon with link.
+ *
+ * @since TBD
+ *
+ * @param $href The href value.
+ *
+ * @return int
+ */
+function mai_get_block_setting_info_link( $href ) {
+	return sprintf( '<a target="_blank" class="mai-info-icon-link" href="%s"><span class="screen-reader-text">%s</span></a>',
+		esc_url( $href ),
+		esc_html__( 'More info', 'mai-engine' )
+	);
+}
+
+/**
  * Checks if a page has at least one WooCommerce block.
  *
  * @since 2.18.0

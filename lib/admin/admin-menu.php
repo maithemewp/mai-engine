@@ -288,15 +288,9 @@ function mai_admin_menu_subpages() {
 	global $submenu;
 
 	$submenu['mai-theme'][] = [
-		__( 'Documentation', 'mai-engine' ),
+		__( 'Docs & Support', 'mai-engine' ),
 		'edit_posts',
-		'https://docs.bizbudding.com/',
-	];
-
-	$submenu['mai-theme'][] = [
-		__( 'Support', 'mai-engine' ),
-		'edit_posts',
-		'https://docs.bizbudding.com/support/',
+		'https://help.bizbudding.com/',
 	];
 }
 
