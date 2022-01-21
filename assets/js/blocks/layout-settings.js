@@ -7,22 +7,26 @@ const { InspectorControls }          = wp.blockEditor;
 const { addFilter }                  = wp.hooks;
 const { PanelBody, BaseControl, ButtonGroup, Button, SelectControl } = wp.components;
 
+// Content Width, Max Width, Content Align, Padding.
 const enableLayoutSettingsBlocks = [
 	'core/cover',
 	'core/group',
 ];
 
+// Max Width.
 const enableMaxWidthSettingsBlocks = [
 	'core/heading',
 	'core/paragraph',
 ];
 
+// Margin, only Top and Bottom.
 const enableSpacingSettingsBlocks = [
 	'core/heading',
 	'core/paragraph',
 	'core/separator',
 ];
 
+// Margin, Top, Right, Bottom, and Left.
 const enableMarginSettingsBlocks = [
 	'core/image',
 	'core/cover',
