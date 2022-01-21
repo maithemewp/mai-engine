@@ -412,7 +412,7 @@ class Mai_Plugins {
 				'branch'   => 'master',
 				'required' => true,
 				'desc'     => esc_html__( 'Add the Mai Table of Contents to the beginning of your posts or pages to improve readability. The table is auto-created from your heading structure so readers can jump to the section they want easily.', 'mai-engine' ),
-				'docs'     => 'https://help.bizbudding.com/article/145-mai-table-of-content',
+				'docs'     => 'https://help.bizbudding.com/article/145-mai-table-of-contents',
 				'settings' => admin_url( 'admin.php?page=mai-table-of-contents' ),
 			],
 			'mai-custom-content-areas' => [
