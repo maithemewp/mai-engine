@@ -171,10 +171,7 @@ return [
 				'name' => 'maiMenuVars',
 				'data' => [
 					'ariaLabel'     => __( 'Mobile Menu', 'mai-engine' ),
-					'subMenuToggle' => sprintf(
-						'<span class="sub-menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
-						__( 'Sub Menu', 'mai-engine' )
-					),
+					'subMenuToggle' => __( 'Sub Menu', 'mai-engine' ),
 				],
 			],
 		],

@@ -94,10 +94,22 @@
 		var subMenus = document.querySelectorAll( '.mobile-menu .sub-menu' );
 		subMenus.forEach( function( subMenu ) {
 			var subMenuToggle = document.createElement( 'button' );
+			var toggleText    = maiMenuData.subMenuToggle;
+			var parentItem    = subMenu.closest( '.menu-item' );
+
+			if ( parentItem ) {
+				var toggleTextName = parentItem.querySelector( 'span[itemprop="name"]' );
+				toggleTextName     = toggleTextName ? toggleTextName.innerText.trim() : '';
+
+				if ( toggleTextName ) {
+					toggleText = toggleTextName + ' ' + toggleText;
+				}
+			}
+
 			subMenuToggle.setAttribute( 'class', 'sub-menu-toggle' );
 			subMenuToggle.setAttribute( 'aria-expanded', 'false' );
 			subMenuToggle.setAttribute( 'aria-pressed', 'false' );
-			subMenuToggle.innerHTML = maiMenuData.subMenuToggle;
+			subMenuToggle.innerHTML = '<span class="sub-menu-toggle-icon"></span><span class="screen-reader-text">' + toggleText + '</span>';
 			subMenu.parentNode.insertBefore( subMenuToggle, subMenu );
 		} );
 	};
