@@ -850,7 +850,7 @@ function mai_get_post_content( $post_slug_or_id, $post_type = 'wp_block' ) {
  *
  * Most of the order comes from /wp-includes/default-filters.php.
  *
- * @since TBD Conditionally `do_blocks()` or `wpautop()`.
+ * @since 2.19.0 Conditionally `do_blocks()` or `wpautop()`.
  * @since 2.4.2  Remove use of wp_make_content_images_responsive.
  * @since 0.3.0
  *
@@ -1237,7 +1237,7 @@ function mai_get_author_id() {
 /**
  * Gets a post date, optionally with updated date.
  *
- * @since TBD
+ * @since 2.19.0
  *
  * @param array $args The date args.
  *
