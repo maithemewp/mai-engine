@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Mai Engine plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.19.0-beta.8\n"
+"Project-Id-Version: Mai Engine 2.19.0-beta.12\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-01-17T22:35:36+00:00\n"
+"POT-Creation-Date: 2022-01-26T15:34:29+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -77,38 +77,38 @@ msgstr ""
 msgid "Mobile Menu"
 msgstr ""
 
-#: config/_default.php:176
+#: config/_default.php:174
 msgid "Sub Menu"
 msgstr ""
 
-#: config/_default.php:215
+#: config/_default.php:212
 msgid "Loading"
 msgstr ""
 
-#: config/_default.php:423
+#: config/_default.php:420
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/_default.php:424
+#: config/_default.php:421
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/_default.php:425
+#: config/_default.php:422
 #: lib/admin/hide-elements.php:106
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default.php:540
+#: config/_default.php:537
 #: lib/functions/deprecated.php:256
 msgid "Sidebar"
 msgstr ""
 
-#: config/_default.php:541
+#: config/_default.php:538
 #: lib/functions/deprecated.php:257
 msgid "The Sidebar widget area."
 msgstr ""
 
-#: config/_default.php:651
+#: config/_default.php:648
 msgid "Read more"
 msgstr ""
 
@@ -174,7 +174,7 @@ msgid "Icon (Brands)"
 msgstr ""
 
 #: lib/blocks/icon.php:254
-#: lib/blocks/grid.php:761
+#: lib/blocks/grid.php:762
 msgid "Display"
 msgstr ""
 
@@ -195,18 +195,18 @@ msgstr ""
 #: lib/customize/menus.php:57
 #: lib/customize/menus.php:82
 #: lib/customize/menus.php:107
-#: assets/js/blocks/layout-settings.js:363
-#: assets/js/blocks/layout-settings.js:752
-#: assets/js/min/blocks.js:1001
-#: assets/js/min/blocks.js:1390
+#: assets/js/blocks/layout-settings.js:367
+#: assets/js/blocks/layout-settings.js:756
+#: assets/js/min/blocks.js:1005
+#: assets/js/min/blocks.js:1394
 msgid "Left"
 msgstr ""
 
 #: lib/blocks/icon.php:272
 #: lib/blocks/columns.php:551
-#: lib/blocks/grid.php:858
-#: lib/blocks/grid.php:1185
-#: lib/blocks/grid.php:1565
+#: lib/blocks/grid.php:859
+#: lib/blocks/grid.php:1186
+#: lib/blocks/grid.php:1566
 #: lib/customize/menus.php:58
 #: lib/customize/menus.php:83
 #: lib/customize/menus.php:108
@@ -215,8 +215,8 @@ msgstr ""
 #: lib/customize/content-archives.php:626
 #: lib/customize/page-header.php:131
 #: lib/customize/page-header.php:147
-#: assets/js/blocks/layout-settings.js:173
-#: assets/js/min/blocks.js:811
+#: assets/js/blocks/layout-settings.js:177
+#: assets/js/min/blocks.js:815
 msgid "Center"
 msgstr ""
 
@@ -225,12 +225,12 @@ msgstr ""
 #: lib/customize/menus.php:59
 #: lib/customize/menus.php:84
 #: lib/customize/menus.php:109
-#: assets/js/blocks/layout-settings.js:177
-#: assets/js/blocks/layout-settings.js:396
-#: assets/js/blocks/layout-settings.js:762
-#: assets/js/min/blocks.js:815
-#: assets/js/min/blocks.js:1034
-#: assets/js/min/blocks.js:1400
+#: assets/js/blocks/layout-settings.js:181
+#: assets/js/blocks/layout-settings.js:400
+#: assets/js/blocks/layout-settings.js:766
+#: assets/js/min/blocks.js:819
+#: assets/js/min/blocks.js:1038
+#: assets/js/min/blocks.js:1404
 msgid "Right"
 msgstr ""
 
@@ -305,55 +305,55 @@ msgid "Text Shadow"
 msgstr ""
 
 #: lib/blocks/icon.php:505
-#: assets/js/blocks/layout-settings.js:291
-#: assets/js/min/blocks.js:929
+#: assets/js/blocks/layout-settings.js:295
+#: assets/js/min/blocks.js:933
 msgid "Padding"
 msgstr ""
 
 #: lib/blocks/icon.php:513
-#: assets/js/blocks/layout-settings.js:604
-#: assets/js/blocks/layout-settings.js:727
-#: assets/js/min/blocks.js:1242
-#: assets/js/min/blocks.js:1365
+#: assets/js/blocks/layout-settings.js:608
+#: assets/js/blocks/layout-settings.js:731
+#: assets/js/min/blocks.js:1246
+#: assets/js/min/blocks.js:1369
 msgid "Margin"
 msgstr ""
 
 #: lib/blocks/icon.php:519
 #: lib/blocks/columns.php:567
 #: lib/blocks/columns.php:671
-#: lib/blocks/grid.php:1205
-#: lib/blocks/grid.php:1592
+#: lib/blocks/grid.php:1206
+#: lib/blocks/grid.php:1593
 #: lib/customize/content-archives.php:384
 #: lib/customize/content-archives.php:645
 #: lib/customize/page-header.php:94
-#: assets/js/blocks/layout-settings.js:297
-#: assets/js/blocks/layout-settings.js:609
-#: assets/js/blocks/layout-settings.js:732
-#: assets/js/min/blocks.js:935
-#: assets/js/min/blocks.js:1247
-#: assets/js/min/blocks.js:1370
+#: assets/js/blocks/layout-settings.js:301
+#: assets/js/blocks/layout-settings.js:613
+#: assets/js/blocks/layout-settings.js:736
+#: assets/js/min/blocks.js:939
+#: assets/js/min/blocks.js:1251
+#: assets/js/min/blocks.js:1374
 msgid "Top"
 msgstr ""
 
 #: lib/blocks/icon.php:527
 #: lib/blocks/columns.php:569
 #: lib/blocks/columns.php:673
-#: lib/blocks/grid.php:1207
-#: lib/blocks/grid.php:1594
+#: lib/blocks/grid.php:1208
+#: lib/blocks/grid.php:1595
 #: lib/customize/content-archives.php:386
 #: lib/customize/content-archives.php:647
 #: lib/customize/page-header.php:95
-#: assets/js/blocks/layout-settings.js:330
-#: assets/js/blocks/layout-settings.js:619
-#: assets/js/blocks/layout-settings.js:742
-#: assets/js/min/blocks.js:968
-#: assets/js/min/blocks.js:1257
-#: assets/js/min/blocks.js:1380
+#: assets/js/blocks/layout-settings.js:334
+#: assets/js/blocks/layout-settings.js:623
+#: assets/js/blocks/layout-settings.js:746
+#: assets/js/min/blocks.js:972
+#: assets/js/min/blocks.js:1261
+#: assets/js/min/blocks.js:1384
 msgid "Bottom"
 msgstr ""
 
 #: lib/blocks/icon.php:551
-#: lib/blocks/grid.php:1422
+#: lib/blocks/grid.php:1423
 #: lib/customize/content-archives.php:534
 msgid "Border Radius"
 msgstr ""
@@ -418,40 +418,14 @@ msgstr ""
 #: lib/blocks/columns.php:618
 #: lib/blocks/columns.php:637
 #: lib/blocks/columns.php:687
-#: lib/blocks/grid.php:791
-#: lib/blocks/grid.php:1620
-#: lib/blocks/grid.php:1643
+#: lib/blocks/grid.php:792
+#: lib/blocks/grid.php:1621
+#: lib/blocks/grid.php:1644
 #: lib/customize/content-archives.php:64
 #: lib/customize/content-archives.php:665
 #: lib/customize/content-archives.php:680
 #: lib/customize/page-header.php:112
 #: lib/customize/page-header.php:242
-#: assets/js/blocks/layout-settings.js:142
-#: assets/js/blocks/layout-settings.js:184
-#: assets/js/blocks/layout-settings.js:458
-#: assets/js/blocks/layout-settings.js:569
-#: assets/js/blocks/layout-settings.js:666
-#: assets/js/min/blocks.js:780
-#: assets/js/min/blocks.js:822
-#: assets/js/min/blocks.js:1096
-#: assets/js/min/blocks.js:1207
-#: assets/js/min/blocks.js:1304
-msgid "XS"
-msgstr ""
-
-#: lib/blocks/divider.php:233
-#: lib/blocks/columns.php:583
-#: lib/blocks/columns.php:601
-#: lib/blocks/columns.php:619
-#: lib/blocks/columns.php:638
-#: lib/blocks/grid.php:792
-#: lib/blocks/grid.php:1621
-#: lib/blocks/grid.php:1644
-#: lib/customize/content-archives.php:65
-#: lib/customize/content-archives.php:666
-#: lib/customize/content-archives.php:681
-#: lib/customize/page-header.php:113
-#: lib/customize/page-header.php:243
 #: assets/js/blocks/layout-settings.js:146
 #: assets/js/blocks/layout-settings.js:188
 #: assets/js/blocks/layout-settings.js:462
@@ -462,22 +436,22 @@ msgstr ""
 #: assets/js/min/blocks.js:1100
 #: assets/js/min/blocks.js:1211
 #: assets/js/min/blocks.js:1308
-msgid "S"
+msgid "XS"
 msgstr ""
 
-#: lib/blocks/divider.php:234
-#: lib/blocks/columns.php:584
-#: lib/blocks/columns.php:602
-#: lib/blocks/columns.php:620
-#: lib/blocks/columns.php:639
+#: lib/blocks/divider.php:233
+#: lib/blocks/columns.php:583
+#: lib/blocks/columns.php:601
+#: lib/blocks/columns.php:619
+#: lib/blocks/columns.php:638
 #: lib/blocks/grid.php:793
 #: lib/blocks/grid.php:1622
 #: lib/blocks/grid.php:1645
-#: lib/customize/content-archives.php:66
-#: lib/customize/content-archives.php:667
-#: lib/customize/content-archives.php:682
-#: lib/customize/page-header.php:114
-#: lib/customize/page-header.php:244
+#: lib/customize/content-archives.php:65
+#: lib/customize/content-archives.php:666
+#: lib/customize/content-archives.php:681
+#: lib/customize/page-header.php:113
+#: lib/customize/page-header.php:243
 #: assets/js/blocks/layout-settings.js:150
 #: assets/js/blocks/layout-settings.js:192
 #: assets/js/blocks/layout-settings.js:466
@@ -488,22 +462,22 @@ msgstr ""
 #: assets/js/min/blocks.js:1104
 #: assets/js/min/blocks.js:1215
 #: assets/js/min/blocks.js:1312
-msgid "M"
+msgid "S"
 msgstr ""
 
-#: lib/blocks/divider.php:235
-#: lib/blocks/columns.php:585
-#: lib/blocks/columns.php:603
-#: lib/blocks/columns.php:621
-#: lib/blocks/columns.php:640
+#: lib/blocks/divider.php:234
+#: lib/blocks/columns.php:584
+#: lib/blocks/columns.php:602
+#: lib/blocks/columns.php:620
+#: lib/blocks/columns.php:639
 #: lib/blocks/grid.php:794
 #: lib/blocks/grid.php:1623
 #: lib/blocks/grid.php:1646
-#: lib/customize/content-archives.php:67
-#: lib/customize/content-archives.php:668
-#: lib/customize/content-archives.php:683
-#: lib/customize/page-header.php:115
-#: lib/customize/page-header.php:245
+#: lib/customize/content-archives.php:66
+#: lib/customize/content-archives.php:667
+#: lib/customize/content-archives.php:682
+#: lib/customize/page-header.php:114
+#: lib/customize/page-header.php:244
 #: assets/js/blocks/layout-settings.js:154
 #: assets/js/blocks/layout-settings.js:196
 #: assets/js/blocks/layout-settings.js:470
@@ -514,23 +488,22 @@ msgstr ""
 #: assets/js/min/blocks.js:1108
 #: assets/js/min/blocks.js:1219
 #: assets/js/min/blocks.js:1316
-msgid "L"
+msgid "M"
 msgstr ""
 
-#: lib/blocks/divider.php:236
-#: lib/blocks/columns.php:586
-#: lib/blocks/columns.php:604
-#: lib/blocks/columns.php:622
-#: lib/blocks/columns.php:641
-#: lib/blocks/columns.php:691
+#: lib/blocks/divider.php:235
+#: lib/blocks/columns.php:585
+#: lib/blocks/columns.php:603
+#: lib/blocks/columns.php:621
+#: lib/blocks/columns.php:640
 #: lib/blocks/grid.php:795
 #: lib/blocks/grid.php:1624
 #: lib/blocks/grid.php:1647
-#: lib/customize/content-archives.php:68
-#: lib/customize/content-archives.php:669
-#: lib/customize/content-archives.php:684
-#: lib/customize/page-header.php:116
-#: lib/customize/page-header.php:246
+#: lib/customize/content-archives.php:67
+#: lib/customize/content-archives.php:668
+#: lib/customize/content-archives.php:683
+#: lib/customize/page-header.php:115
+#: lib/customize/page-header.php:245
 #: assets/js/blocks/layout-settings.js:158
 #: assets/js/blocks/layout-settings.js:200
 #: assets/js/blocks/layout-settings.js:474
@@ -541,6 +514,33 @@ msgstr ""
 #: assets/js/min/blocks.js:1112
 #: assets/js/min/blocks.js:1223
 #: assets/js/min/blocks.js:1320
+msgid "L"
+msgstr ""
+
+#: lib/blocks/divider.php:236
+#: lib/blocks/columns.php:586
+#: lib/blocks/columns.php:604
+#: lib/blocks/columns.php:622
+#: lib/blocks/columns.php:641
+#: lib/blocks/columns.php:691
+#: lib/blocks/grid.php:796
+#: lib/blocks/grid.php:1625
+#: lib/blocks/grid.php:1648
+#: lib/customize/content-archives.php:68
+#: lib/customize/content-archives.php:669
+#: lib/customize/content-archives.php:684
+#: lib/customize/page-header.php:116
+#: lib/customize/page-header.php:246
+#: assets/js/blocks/layout-settings.js:162
+#: assets/js/blocks/layout-settings.js:204
+#: assets/js/blocks/layout-settings.js:478
+#: assets/js/blocks/layout-settings.js:589
+#: assets/js/blocks/layout-settings.js:686
+#: assets/js/min/blocks.js:800
+#: assets/js/min/blocks.js:842
+#: assets/js/min/blocks.js:1116
+#: assets/js/min/blocks.js:1227
+#: assets/js/min/blocks.js:1324
 msgid "XL"
 msgstr ""
 
@@ -678,18 +678,18 @@ msgstr ""
 
 #: lib/blocks/columns.php:320
 #: lib/blocks/columns.php:566
-#: lib/blocks/grid.php:857
-#: lib/blocks/grid.php:1591
+#: lib/blocks/grid.php:858
+#: lib/blocks/grid.php:1592
 #: lib/customize/content-archives.php:122
 #: lib/customize/content-archives.php:644
-#: assets/js/blocks/layout-settings.js:162
-#: assets/js/min/blocks.js:800
+#: assets/js/blocks/layout-settings.js:166
+#: assets/js/min/blocks.js:804
 msgid "Full"
 msgstr ""
 
 #: lib/blocks/columns.php:320
-#: assets/js/blocks/layout-settings.js:488
-#: assets/js/min/blocks.js:1126
+#: assets/js/blocks/layout-settings.js:492
+#: assets/js/min/blocks.js:1130
 msgid "Width"
 msgstr ""
 
@@ -753,26 +753,26 @@ msgid "Arrangement (mobile)"
 msgstr ""
 
 #: lib/blocks/columns.php:546
-#: lib/blocks/grid.php:1558
+#: lib/blocks/grid.php:1559
 #: lib/customize/content-archives.php:620
 msgid "Align Columns"
 msgstr ""
 
 #: lib/blocks/columns.php:550
-#: lib/blocks/grid.php:1184
-#: lib/blocks/grid.php:1564
+#: lib/blocks/grid.php:1185
+#: lib/blocks/grid.php:1565
 #: lib/customize/content-archives.php:371
 #: lib/customize/content-archives.php:625
 #: lib/customize/page-header.php:130
 #: lib/customize/page-header.php:146
-#: assets/js/blocks/layout-settings.js:169
-#: assets/js/min/blocks.js:807
+#: assets/js/blocks/layout-settings.js:173
+#: assets/js/min/blocks.js:811
 msgid "Start"
 msgstr ""
 
 #: lib/blocks/columns.php:552
-#: lib/blocks/grid.php:1186
-#: lib/blocks/grid.php:1566
+#: lib/blocks/grid.php:1187
+#: lib/blocks/grid.php:1567
 #: lib/customize/content-archives.php:373
 #: lib/customize/content-archives.php:627
 #: lib/customize/page-header.php:132
@@ -781,22 +781,22 @@ msgid "End"
 msgstr ""
 
 #: lib/blocks/columns.php:562
-#: lib/blocks/grid.php:1585
+#: lib/blocks/grid.php:1586
 #: lib/customize/content-archives.php:639
 msgid "Align Columns (vertical)"
 msgstr ""
 
 #: lib/blocks/columns.php:568
 #: lib/blocks/columns.php:672
-#: lib/blocks/grid.php:1206
-#: lib/blocks/grid.php:1593
+#: lib/blocks/grid.php:1207
+#: lib/blocks/grid.php:1594
 #: lib/customize/content-archives.php:385
 #: lib/customize/content-archives.php:646
 msgid "Middle"
 msgstr ""
 
 #: lib/blocks/columns.php:577
-#: lib/blocks/grid.php:1613
+#: lib/blocks/grid.php:1614
 #: lib/customize/content-archives.php:659
 msgid "Column Gap"
 msgstr ""
@@ -806,20 +806,20 @@ msgstr ""
 #: lib/blocks/columns.php:617
 #: lib/blocks/columns.php:636
 #: lib/blocks/columns.php:686
-#: lib/blocks/grid.php:1619
-#: lib/blocks/grid.php:1642
+#: lib/blocks/grid.php:1620
+#: lib/blocks/grid.php:1643
 #: lib/customize/content-archives.php:664
 #: lib/customize/content-archives.php:679
 #: lib/customize/page-header.php:223
-#: assets/js/blocks/layout-settings.js:561
-#: assets/js/blocks/layout-settings.js:662
-#: assets/js/min/blocks.js:1199
-#: assets/js/min/blocks.js:1300
+#: assets/js/blocks/layout-settings.js:565
+#: assets/js/blocks/layout-settings.js:666
+#: assets/js/min/blocks.js:1203
+#: assets/js/min/blocks.js:1304
 msgid "None"
 msgstr ""
 
 #: lib/blocks/columns.php:595
-#: lib/blocks/grid.php:1636
+#: lib/blocks/grid.php:1637
 #: lib/customize/content-archives.php:674
 msgid "Row Gap"
 msgstr ""
@@ -830,10 +830,10 @@ msgstr ""
 
 #: lib/blocks/columns.php:623
 #: lib/blocks/columns.php:642
-#: assets/js/blocks/layout-settings.js:589
-#: assets/js/blocks/layout-settings.js:686
-#: assets/js/min/blocks.js:1227
-#: assets/js/min/blocks.js:1324
+#: assets/js/blocks/layout-settings.js:593
+#: assets/js/blocks/layout-settings.js:690
+#: assets/js/min/blocks.js:1231
+#: assets/js/min/blocks.js:1328
 msgid "XXL"
 msgstr ""
 
@@ -865,122 +865,118 @@ msgstr ""
 msgid "Show first on large tablets"
 msgstr ""
 
-#: lib/blocks/grid.php:52
-#: lib/blocks/grid.php:221
+#: lib/blocks/grid.php:53
+#: lib/blocks/grid.php:222
 msgid "Mai Post Grid"
 msgstr ""
 
-#: lib/blocks/grid.php:53
+#: lib/blocks/grid.php:54
 msgid "Display posts/pages/cpts in various layouts."
 msgstr ""
 
-#: lib/blocks/grid.php:70
-#: lib/blocks/grid.php:239
+#: lib/blocks/grid.php:71
+#: lib/blocks/grid.php:240
 msgid "Mai Term Grid"
 msgstr ""
 
-#: lib/blocks/grid.php:71
+#: lib/blocks/grid.php:72
 msgid "Display categories/tags/terms in various layouts."
 msgstr ""
 
-#: lib/blocks/grid.php:756
-msgid "Examples"
-msgstr ""
-
-#: lib/blocks/grid.php:768
+#: lib/blocks/grid.php:769
 #: lib/customize/single-content.php:50
 #: lib/customize/content-archives.php:50
 msgid "Show"
 msgstr ""
 
-#: lib/blocks/grid.php:769
+#: lib/blocks/grid.php:770
 msgid "Show/hide and re-order elements."
 msgstr ""
 
-#: lib/blocks/grid.php:785
+#: lib/blocks/grid.php:786
 #: lib/customize/content-archives.php:59
 msgid "Title Size"
 msgstr ""
 
-#: lib/blocks/grid.php:814
+#: lib/blocks/grid.php:815
 #: lib/customize/single-content.php:59
 #: lib/customize/content-archives.php:82
 msgid "Image Orientation"
 msgstr ""
 
-#: lib/blocks/grid.php:830
+#: lib/blocks/grid.php:831
 #: lib/customize/single-content.php:74
 #: lib/customize/content-archives.php:97
 msgid "Image Size"
 msgstr ""
 
-#: lib/blocks/grid.php:851
+#: lib/blocks/grid.php:852
 #: lib/customize/content-archives.php:117
 msgid "Image Position"
 msgstr ""
 
-#: lib/blocks/grid.php:859
+#: lib/blocks/grid.php:860
 #: lib/customize/content-archives.php:124
 msgid "Left Top"
 msgstr ""
 
-#: lib/blocks/grid.php:860
+#: lib/blocks/grid.php:861
 #: lib/customize/content-archives.php:125
 msgid "Left Middle"
 msgstr ""
 
-#: lib/blocks/grid.php:861
+#: lib/blocks/grid.php:862
 #: lib/customize/content-archives.php:126
 msgid "Left Full"
 msgstr ""
 
-#: lib/blocks/grid.php:862
+#: lib/blocks/grid.php:863
 #: lib/customize/content-archives.php:127
 msgid "Right Top"
 msgstr ""
 
-#: lib/blocks/grid.php:863
+#: lib/blocks/grid.php:864
 #: lib/customize/content-archives.php:128
 msgid "Right Middle"
 msgstr ""
 
-#: lib/blocks/grid.php:864
+#: lib/blocks/grid.php:865
 #: lib/customize/content-archives.php:129
 msgid "Right Full"
 msgstr ""
 
-#: lib/blocks/grid.php:865
+#: lib/blocks/grid.php:866
 #: lib/functions/colors.php:246
 #: lib/customize/content-archives.php:130
 msgid "Background"
 msgstr ""
 
-#: lib/blocks/grid.php:883
+#: lib/blocks/grid.php:884
 #: lib/customize/content-archives.php:182
 msgid "Display images alternating"
 msgstr ""
 
-#: lib/blocks/grid.php:962
+#: lib/blocks/grid.php:963
 #: lib/customize/content-archives.php:230
 msgid "Image Width"
 msgstr ""
 
-#: lib/blocks/grid.php:968
+#: lib/blocks/grid.php:969
 #: lib/customize/content-archives.php:235
 msgid "One Fourth"
 msgstr ""
 
-#: lib/blocks/grid.php:969
+#: lib/blocks/grid.php:970
 #: lib/customize/content-archives.php:236
 msgid "One Third"
 msgstr ""
 
-#: lib/blocks/grid.php:970
+#: lib/blocks/grid.php:971
 #: lib/customize/content-archives.php:237
 msgid "One Half"
 msgstr ""
 
-#: lib/blocks/grid.php:1079
+#: lib/blocks/grid.php:1080
 #: lib/admin/hide-elements.php:112
 #: lib/functions/grid.php:87
 #: lib/functions/loop.php:507
@@ -990,7 +986,7 @@ msgstr ""
 msgid "Header Meta"
 msgstr ""
 
-#: lib/blocks/grid.php:1098
+#: lib/blocks/grid.php:1099
 #: lib/admin/hide-elements.php:114
 #: lib/functions/grid.php:90
 #: lib/functions/loop.php:511
@@ -1002,22 +998,22 @@ msgstr ""
 msgid "Custom Content"
 msgstr ""
 
-#: lib/blocks/grid.php:1116
+#: lib/blocks/grid.php:1117
 #: lib/customize/content-archives.php:298
 msgid "Content Limit"
 msgstr ""
 
-#: lib/blocks/grid.php:1117
+#: lib/blocks/grid.php:1118
 #: lib/customize/content-archives.php:299
 msgid "Limit the number of characters shown for the content or excerpt. Use 0 for no limit."
 msgstr ""
 
-#: lib/blocks/grid.php:1141
+#: lib/blocks/grid.php:1142
 #: lib/customize/content-archives.php:334
 msgid "More Link Text"
 msgstr ""
 
-#: lib/blocks/grid.php:1159
+#: lib/blocks/grid.php:1160
 #: lib/admin/hide-elements.php:116
 #: lib/functions/grid.php:92
 #: lib/functions/loop.php:515
@@ -1027,380 +1023,377 @@ msgstr ""
 msgid "Footer Meta"
 msgstr ""
 
-#: lib/blocks/grid.php:1178
+#: lib/blocks/grid.php:1179
 #: lib/customize/content-archives.php:366
 msgid "Align Text"
 msgstr ""
 
-#: lib/blocks/grid.php:1198
+#: lib/blocks/grid.php:1199
 #: lib/customize/content-archives.php:378
 msgid "Align Text (vertical)"
 msgstr ""
 
-#: lib/blocks/grid.php:1204
+#: lib/blocks/grid.php:1205
 #: lib/functions/utilities.php:593
 #: lib/customize/single-content.php:202
 #: lib/customize/content-archives.php:383
 #: lib/customize/content-archives.php:756
-#: assets/js/blocks/layout-settings.js:557
-#: assets/js/blocks/layout-settings.js:658
-#: assets/js/min/blocks.js:1195
-#: assets/js/min/blocks.js:1296
+#: assets/js/blocks/layout-settings.js:561
+#: assets/js/blocks/layout-settings.js:662
+#: assets/js/min/blocks.js:1199
+#: assets/js/min/blocks.js:1300
 msgid "Default"
 msgstr ""
 
-#: lib/blocks/grid.php:1305
+#: lib/blocks/grid.php:1306
 #: lib/customize/content-archives.php:451
 msgid "Stack Image"
 msgstr ""
 
-#: lib/blocks/grid.php:1311
+#: lib/blocks/grid.php:1312
 #: lib/customize/content-archives.php:485
 msgid "Stack image and content on mobile"
 msgstr ""
 
-#: lib/blocks/grid.php:1390
+#: lib/blocks/grid.php:1391
 #: lib/customize/content-archives.php:522
 msgid "Boxed"
 msgstr ""
 
-#: lib/blocks/grid.php:1396
+#: lib/blocks/grid.php:1397
 #: lib/customize/content-archives.php:527
 msgid "Display boxed styling"
 msgstr ""
 
-#: lib/blocks/grid.php:1423
+#: lib/blocks/grid.php:1424
 #: lib/customize/content-archives.php:535
 msgid "Leave empty for theme default. Accepts all unit values (px, rem, em, vw, etc)."
 msgstr ""
 
-#: lib/blocks/grid.php:1455
-#: assets/js/blocks/layout-settings.js:219
-#: assets/js/min/blocks.js:857
+#: lib/blocks/grid.php:1456
+#: assets/js/blocks/layout-settings.js:223
+#: assets/js/min/blocks.js:861
 msgid "Layout"
 msgstr ""
 
-#: lib/blocks/grid.php:1462
+#: lib/blocks/grid.php:1463
 #: lib/customize/content-archives.php:560
 msgid "Columns (desktop)"
 msgstr ""
 
-#: lib/blocks/grid.php:1484
+#: lib/blocks/grid.php:1485
 #: lib/customize/content-archives.php:568
 msgid "Custom responsive columns"
 msgstr ""
 
-#: lib/blocks/grid.php:1489
+#: lib/blocks/grid.php:1490
 #: lib/customize/content-archives.php:575
 msgid "Columns (lg tablets)"
 msgstr ""
 
-#: lib/blocks/grid.php:1512
+#: lib/blocks/grid.php:1513
 #: lib/customize/content-archives.php:590
 msgid "Columns (sm tablets)"
 msgstr ""
 
-#: lib/blocks/grid.php:1535
+#: lib/blocks/grid.php:1536
 #: lib/customize/content-archives.php:605
 msgid "Columns (mobile)"
 msgstr ""
 
-#: lib/blocks/grid.php:1665
+#: lib/blocks/grid.php:1666
 msgid "Remove bottom spacing"
 msgstr ""
 
-#: lib/blocks/grid.php:1675
-#: lib/blocks/grid.php:2283
+#: lib/blocks/grid.php:1676
+#: lib/blocks/grid.php:2284
 msgid "Entries"
 msgstr ""
 
-#: lib/blocks/grid.php:1687
+#: lib/blocks/grid.php:1688
 msgid "Post Type"
 msgstr ""
 
-#: lib/blocks/grid.php:1701
-#: lib/blocks/grid.php:2264
+#: lib/blocks/grid.php:1702
+#: lib/blocks/grid.php:2265
 msgid "Get Entries By"
 msgstr ""
 
-#: lib/blocks/grid.php:1707
+#: lib/blocks/grid.php:1708
 msgid "Default Query"
 msgstr ""
 
-#: lib/blocks/grid.php:1708
-#: lib/blocks/grid.php:2271
+#: lib/blocks/grid.php:1709
+#: lib/blocks/grid.php:2272
 msgid "Choice"
 msgstr ""
 
-#: lib/blocks/grid.php:1709
+#: lib/blocks/grid.php:1710
 msgid "Taxonomy/Meta"
 msgstr ""
 
-#: lib/blocks/grid.php:1710
-#: lib/blocks/grid.php:1999
-#: lib/blocks/grid.php:2272
-#: lib/blocks/grid.php:2332
+#: lib/blocks/grid.php:1711
+#: lib/blocks/grid.php:2000
+#: lib/blocks/grid.php:2273
+#: lib/blocks/grid.php:2333
 msgid "Parent"
 msgstr ""
 
-#: lib/blocks/grid.php:1721
+#: lib/blocks/grid.php:1722
 msgid "Choose Entries"
 msgstr ""
 
-#: lib/blocks/grid.php:1722
+#: lib/blocks/grid.php:1723
 msgid "Show specific entries. Choose all that apply."
 msgstr ""
 
-#: lib/blocks/grid.php:1746
+#: lib/blocks/grid.php:1747
 msgid "Taxonomies"
 msgstr ""
 
-#: lib/blocks/grid.php:1764
-#: lib/blocks/grid.php:1884
+#: lib/blocks/grid.php:1765
+#: lib/blocks/grid.php:1885
 msgid "Add Condition"
 msgstr ""
 
-#: lib/blocks/grid.php:1768
-#: lib/blocks/grid.php:2250
-#: lib/blocks/grid.php:2270
+#: lib/blocks/grid.php:1769
+#: lib/blocks/grid.php:2251
+#: lib/blocks/grid.php:2271
 msgid "Taxonomy"
 msgstr ""
 
-#: lib/blocks/grid.php:1781
+#: lib/blocks/grid.php:1782
 msgid "Terms"
 msgstr ""
 
-#: lib/blocks/grid.php:1806
+#: lib/blocks/grid.php:1807
 msgid "Use current"
 msgstr ""
 
-#: lib/blocks/grid.php:1817
+#: lib/blocks/grid.php:1818
 msgid "Operator"
 msgstr ""
 
-#: lib/blocks/grid.php:1823
+#: lib/blocks/grid.php:1824
 msgid "In"
 msgstr ""
 
-#: lib/blocks/grid.php:1824
+#: lib/blocks/grid.php:1825
 msgid "Not In"
 msgstr ""
 
-#: lib/blocks/grid.php:1838
+#: lib/blocks/grid.php:1839
 msgid "Taxonomies Relation"
-msgstr ""
-
-#: lib/blocks/grid.php:1844
-#: lib/blocks/grid.php:1955
-msgid "And"
 msgstr ""
 
 #: lib/blocks/grid.php:1845
 #: lib/blocks/grid.php:1956
+msgid "And"
+msgstr ""
+
+#: lib/blocks/grid.php:1846
+#: lib/blocks/grid.php:1957
 msgid "Or"
 msgstr ""
 
-#: lib/blocks/grid.php:1866
+#: lib/blocks/grid.php:1867
 msgid "Meta Keys"
 msgstr ""
 
-#: lib/blocks/grid.php:1889
+#: lib/blocks/grid.php:1890
 msgid "Meta Key"
 msgstr ""
 
-#: lib/blocks/grid.php:1897
+#: lib/blocks/grid.php:1898
 msgid "Compare"
 msgstr ""
 
-#: lib/blocks/grid.php:1903
+#: lib/blocks/grid.php:1904
 msgid "Is equal to"
 msgstr ""
 
-#: lib/blocks/grid.php:1904
+#: lib/blocks/grid.php:1905
 msgid "Is not equal to"
 msgstr ""
 
-#: lib/blocks/grid.php:1905
+#: lib/blocks/grid.php:1906
 msgid "Is greater than"
 msgstr ""
 
-#: lib/blocks/grid.php:1906
+#: lib/blocks/grid.php:1907
 msgid "Is great than or equal to"
 msgstr ""
 
-#: lib/blocks/grid.php:1907
+#: lib/blocks/grid.php:1908
 msgid "Is less than"
 msgstr ""
 
-#: lib/blocks/grid.php:1908
+#: lib/blocks/grid.php:1909
 msgid "Is less than or equal to"
 msgstr ""
 
-#: lib/blocks/grid.php:1909
+#: lib/blocks/grid.php:1910
 msgid "Exists"
 msgstr ""
 
-#: lib/blocks/grid.php:1910
+#: lib/blocks/grid.php:1911
 msgid "Does not exist"
 msgstr ""
 
-#: lib/blocks/grid.php:1922
+#: lib/blocks/grid.php:1923
 msgid "Meta Value"
 msgstr ""
 
-#: lib/blocks/grid.php:1949
+#: lib/blocks/grid.php:1950
 msgid "Meta Keys Relation"
 msgstr ""
 
-#: lib/blocks/grid.php:1994
-#: lib/blocks/grid.php:2327
+#: lib/blocks/grid.php:1995
+#: lib/blocks/grid.php:2328
 msgid "Show children of current entry"
-msgstr ""
-
-#: lib/blocks/grid.php:2028
-#: lib/blocks/grid.php:2363
-msgid "Number of Entries"
 msgstr ""
 
 #: lib/blocks/grid.php:2029
 #: lib/blocks/grid.php:2364
-msgid "Use 0 to show all."
+msgid "Number of Entries"
 msgstr ""
 
-#: lib/blocks/grid.php:2052
-#: lib/blocks/grid.php:2387
-msgid "Offset"
+#: lib/blocks/grid.php:2030
+#: lib/blocks/grid.php:2365
+msgid "Use 0 to show all."
 msgstr ""
 
 #: lib/blocks/grid.php:2053
 #: lib/blocks/grid.php:2388
+msgid "Offset"
+msgstr ""
+
+#: lib/blocks/grid.php:2054
+#: lib/blocks/grid.php:2389
 msgid "Skip this number of entries."
 msgstr ""
 
-#: lib/blocks/grid.php:2076
+#: lib/blocks/grid.php:2077
 msgid "After date"
 msgstr ""
 
-#: lib/blocks/grid.php:2077
+#: lib/blocks/grid.php:2078
+#: lib/blocks/grid.php:2101
 msgid "Get posts after a date/time. %s"
 msgstr ""
 
-#: lib/blocks/grid.php:2099
+#: lib/blocks/grid.php:2100
 msgid "Before date"
 msgstr ""
 
-#: lib/blocks/grid.php:2100
-msgid "Get posts before a date/time. %s"
-msgstr ""
-
-#: lib/blocks/grid.php:2122
-#: lib/blocks/grid.php:2411
+#: lib/blocks/grid.php:2123
+#: lib/blocks/grid.php:2412
 msgid "Order By"
 msgstr ""
 
-#: lib/blocks/grid.php:2128
-#: lib/blocks/grid.php:2417
+#: lib/blocks/grid.php:2129
+#: lib/blocks/grid.php:2418
 #: lib/functions/grid.php:86
 #: lib/functions/loop.php:506
 #: lib/functions/loop.php:539
 msgid "Title"
 msgstr ""
 
-#: lib/blocks/grid.php:2129
-#: lib/blocks/grid.php:2418
+#: lib/blocks/grid.php:2130
+#: lib/blocks/grid.php:2419
 #: lib/admin/template-parts.php:284
 msgid "Slug"
 msgstr ""
 
-#: lib/blocks/grid.php:2130
+#: lib/blocks/grid.php:2131
 msgid "Date"
 msgstr ""
 
-#: lib/blocks/grid.php:2131
+#: lib/blocks/grid.php:2132
 msgid "Modified"
 msgstr ""
 
-#: lib/blocks/grid.php:2132
+#: lib/blocks/grid.php:2133
 msgid "Random"
 msgstr ""
 
-#: lib/blocks/grid.php:2133
+#: lib/blocks/grid.php:2134
 msgid "Comment Count"
 msgstr ""
 
-#: lib/blocks/grid.php:2134
+#: lib/blocks/grid.php:2135
 msgid "Menu Order"
 msgstr ""
 
-#: lib/blocks/grid.php:2135
+#: lib/blocks/grid.php:2136
 msgid "Meta Value Number"
 msgstr ""
 
-#: lib/blocks/grid.php:2155
+#: lib/blocks/grid.php:2156
 msgid "Meta key"
 msgstr ""
 
-#: lib/blocks/grid.php:2174
-#: lib/blocks/grid.php:2440
+#: lib/blocks/grid.php:2175
+#: lib/blocks/grid.php:2441
 msgid "Order"
-msgstr ""
-
-#: lib/blocks/grid.php:2180
-#: lib/blocks/grid.php:2446
-msgid "Ascending"
 msgstr ""
 
 #: lib/blocks/grid.php:2181
 #: lib/blocks/grid.php:2447
-msgid "Descending"
+msgid "Ascending"
 msgstr ""
 
-#: lib/blocks/grid.php:2197
-#: lib/blocks/grid.php:2463
-msgid "Exclude Entries"
+#: lib/blocks/grid.php:2182
+#: lib/blocks/grid.php:2448
+msgid "Descending"
 msgstr ""
 
 #: lib/blocks/grid.php:2198
 #: lib/blocks/grid.php:2464
+msgid "Exclude Entries"
+msgstr ""
+
+#: lib/blocks/grid.php:2199
+#: lib/blocks/grid.php:2465
 msgid "Hide specific entries. Choose all that apply."
 msgstr ""
 
-#: lib/blocks/grid.php:2222
-#: lib/blocks/grid.php:2491
+#: lib/blocks/grid.php:2223
+#: lib/blocks/grid.php:2492
 msgid "Exclude"
-msgstr ""
-
-#: lib/blocks/grid.php:2228
-#: lib/blocks/grid.php:2500
-msgid "Exclude displayed"
 msgstr ""
 
 #: lib/blocks/grid.php:2229
 #: lib/blocks/grid.php:2501
+msgid "Exclude displayed"
+msgstr ""
+
+#: lib/blocks/grid.php:2230
+#: lib/blocks/grid.php:2502
 msgid "Exclude current"
 msgstr ""
 
-#: lib/blocks/grid.php:2284
+#: lib/blocks/grid.php:2285
 msgid "Show specific entries. Choose all that apply. If empty, Grid will get entries by date."
 msgstr ""
 
-#: lib/blocks/grid.php:2419
+#: lib/blocks/grid.php:2420
 msgid "Entry Totals"
 msgstr ""
 
-#: lib/blocks/grid.php:2420
+#: lib/blocks/grid.php:2421
 msgid "Term ID"
 msgstr ""
 
-#: lib/blocks/grid.php:2499
+#: lib/blocks/grid.php:2500
 msgid "Exclude terms with no posts"
 msgstr ""
 
-#: lib/blocks/grid.php:2512
+#: lib/blocks/grid.php:2513
 msgid "Disable"
 msgstr ""
 
-#: lib/blocks/grid.php:2518
+#: lib/blocks/grid.php:2519
 msgid "Disable entry links"
 msgstr ""
 
@@ -1454,7 +1447,6 @@ msgid "Settings"
 msgstr ""
 
 #: lib/classes/class-mai-plugins.php:190
-#: lib/admin/admin-menu.php:291
 msgid "Documentation"
 msgstr ""
 
@@ -1527,11 +1519,11 @@ msgstr ""
 msgid "Return to dashboard"
 msgstr ""
 
-#: lib/classes/class-mai-entry.php:1157
+#: lib/classes/class-mai-entry.php:1155
 msgid "Pages:"
 msgstr ""
 
-#: lib/classes/class-mai-entry.php:1165
+#: lib/classes/class-mai-entry.php:1163
 msgid "Page "
 msgstr ""
 
@@ -1915,7 +1907,7 @@ msgstr ""
 
 #: lib/admin/admin-menu.php:40
 #: lib/admin/admin-menu.php:41
-#: lib/admin/admin-menu.php:317
+#: lib/admin/admin-menu.php:311
 msgid "Plugins"
 msgstr ""
 
@@ -2011,8 +2003,8 @@ msgstr ""
 msgid "View Patterns"
 msgstr ""
 
-#: lib/admin/admin-menu.php:297
-msgid "Support"
+#: lib/admin/admin-menu.php:291
+msgid "Docs & Support"
 msgstr ""
 
 #: lib/admin/upgrade.php:142
@@ -2213,20 +2205,20 @@ msgid "Custom color"
 msgstr ""
 
 #: lib/functions/colors.php:341
-#: assets/js/blocks/layout-settings.js:252
-#: assets/js/blocks/layout-settings.js:285
-#: assets/js/blocks/layout-settings.js:324
-#: assets/js/blocks/layout-settings.js:357
-#: assets/js/blocks/layout-settings.js:390
-#: assets/js/blocks/layout-settings.js:423
-#: assets/js/blocks/layout-settings.js:521
-#: assets/js/min/blocks.js:890
-#: assets/js/min/blocks.js:923
-#: assets/js/min/blocks.js:962
-#: assets/js/min/blocks.js:995
-#: assets/js/min/blocks.js:1028
-#: assets/js/min/blocks.js:1061
-#: assets/js/min/blocks.js:1159
+#: assets/js/blocks/layout-settings.js:256
+#: assets/js/blocks/layout-settings.js:289
+#: assets/js/blocks/layout-settings.js:328
+#: assets/js/blocks/layout-settings.js:361
+#: assets/js/blocks/layout-settings.js:394
+#: assets/js/blocks/layout-settings.js:427
+#: assets/js/blocks/layout-settings.js:525
+#: assets/js/min/blocks.js:894
+#: assets/js/min/blocks.js:927
+#: assets/js/min/blocks.js:966
+#: assets/js/min/blocks.js:999
+#: assets/js/min/blocks.js:1032
+#: assets/js/min/blocks.js:1065
+#: assets/js/min/blocks.js:1163
 msgid "Clear"
 msgstr ""
 
@@ -2428,6 +2420,10 @@ msgstr ""
 
 #: lib/functions/utilities.php:1696
 msgid "and"
+msgstr ""
+
+#: lib/functions/helpers.php:958
+msgid "More info"
 msgstr ""
 
 #: lib/functions/loop.php:542
@@ -2886,8 +2882,8 @@ msgid "Content Width"
 msgstr ""
 
 #: lib/customize/page-header.php:127
-#: assets/js/blocks/layout-settings.js:258
-#: assets/js/min/blocks.js:896
+#: assets/js/blocks/layout-settings.js:262
+#: assets/js/min/blocks.js:900
 msgid "Content Alignment"
 msgstr ""
 
@@ -2939,52 +2935,52 @@ msgstr ""
 msgid "Check this box to enable beta updates of all Mai plugins and add-ons."
 msgstr ""
 
-#: assets/js/blocks/layout-settings.js:225
-#: assets/js/min/blocks.js:863
+#: assets/js/blocks/layout-settings.js:229
+#: assets/js/min/blocks.js:867
 msgid "Content Max Width"
 msgstr ""
 
-#: assets/js/blocks/layout-settings.js:494
-#: assets/js/min/blocks.js:1132
+#: assets/js/blocks/layout-settings.js:498
+#: assets/js/min/blocks.js:1136
 msgid "Max Width"
 msgstr ""
 
-#: assets/js/blocks/layout-settings.js:565
-#: assets/js/min/blocks.js:1203
+#: assets/js/blocks/layout-settings.js:569
+#: assets/js/min/blocks.js:1207
 msgid "XXS"
-msgstr ""
-
-#: assets/js/blocks/layout-settings.js:690
-#: assets/js/min/blocks.js:1328
-msgid "XS Overlap"
 msgstr ""
 
 #: assets/js/blocks/layout-settings.js:694
 #: assets/js/min/blocks.js:1332
-msgid "S Overlap"
+msgid "XS Overlap"
 msgstr ""
 
 #: assets/js/blocks/layout-settings.js:698
 #: assets/js/min/blocks.js:1336
-msgid "M Overlap"
+msgid "S Overlap"
 msgstr ""
 
 #: assets/js/blocks/layout-settings.js:702
 #: assets/js/min/blocks.js:1340
-msgid "L Overlap"
+msgid "M Overlap"
 msgstr ""
 
 #: assets/js/blocks/layout-settings.js:706
 #: assets/js/min/blocks.js:1344
-msgid "XL Overlap"
+msgid "L Overlap"
 msgstr ""
 
 #: assets/js/blocks/layout-settings.js:710
 #: assets/js/min/blocks.js:1348
+msgid "XL Overlap"
+msgstr ""
+
+#: assets/js/blocks/layout-settings.js:714
+#: assets/js/min/blocks.js:1352
 msgid "XXL Overlap"
 msgstr ""
 
-#: assets/js/blocks/layout-settings.js:771
-#: assets/js/min/blocks.js:1409
+#: assets/js/blocks/layout-settings.js:775
+#: assets/js/min/blocks.js:1413
 msgid "Note: Left/right overlap settings are disabled on smaller screens."
 msgstr ""
