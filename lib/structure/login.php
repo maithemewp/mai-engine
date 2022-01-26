@@ -69,7 +69,7 @@ function mai_login_css() {
 			color: var(--color-white);
 		}
 		body.login #login {
-			margin: auto !important;
+			margin: 16vh auto 36px !important;
 			padding: 1vw 0 0;
 		}
 		.login .message,
@@ -133,13 +133,29 @@ function mai_login_css() {
 		body.login input[type="time"],
 		body.login input[type="url"],
 		body.login input[type="week"],
-		body.login select,
 		body.login textarea {
 			padding: 16px;
+			background: var(--input-background-color, var(--color-white));
+		}
+		body.login input[type="text"],
+		body.login input[type="password"],
+		body.login input[type="color"],
+		body.login input[type="date"],
+		body.login input[type="datetime"],
+		body.login input[type="datetime-local"],
+		body.login input[type="email"],
+		body.login input[type="month"],
+		body.login input[type="number"],
+		body.login input[type="search"],
+		body.login input[type="tel"],
+		body.login input[type="time"],
+		body.login input[type="url"],
+		body.login input[type="week"],
+		body.login select,
+		body.login textarea {
 			line-height: var(--input-line-height, 1);
 			font-size: 18px;
 			color: var(--input-color, var(--color-body));
-			background: var(--input-background-color, var(--color-white));
 			border: var(--input-border, 1px solid rgba(0,0,0,.1));
 			border-radius: var(--input-border-radius, var(--border-radius));
 		}
@@ -265,6 +281,18 @@ function mai_login_css() {
 		.login #nav,
 		.login #backtoblog {
 			text-align: center;
+		}
+		#language-switcher {
+			display: flex;
+			align-items: center;
+		}
+		#language-switcher > select,
+		#language-switcher > .button {
+			min-height: 40px;
+			font-size: 14px;
+		}
+		#language-switcher > .button {
+			padding: 4px 12px;
 		}
 		@media screen and (max-width: 782px) {
 			body.login input[type="radio"],
