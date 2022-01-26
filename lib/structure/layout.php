@@ -149,7 +149,7 @@ function mai_body_classes( $classes ) {
 
 add_filter( 'genesis_attr_site-container', 'mai_back_to_top_anchor' );
 /**
- * Description of expected behavior.
+ * Adds #top id to site-container.
  *
  * @since 0.1.0
  *

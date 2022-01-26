@@ -13,6 +13,39 @@
 defined( 'ABSPATH' ) || die;
 
 /**
+ * Filters an image's 'srcset' sources.
+ *
+ * @param array  $sources {
+ *     One or more arrays of source data to include in the 'srcset'.
+ *
+ *     @type array $width {
+ *         @type string $url        The URL of an image source.
+ *         @type string $descriptor The descriptor type used in the image candidate string,
+ *                                  either 'w' or 'x'.
+ *         @type int    $value      The source width if paired with a 'w' descriptor, or a
+ *                                  pixel density value if paired with an 'x' descriptor.
+ *     }
+ * }
+ * @param array $size_array     {
+ *     An array of requested width and height values.
+ *
+ *     @type int $0 The width in pixels.
+ *     @type int $1 The height in pixels.
+ * }
+ * @param string $image_src     The 'src' of the image.
+ * @param array  $image_meta    The image meta data as returned by 'wp_get_attachment_metadata()'.
+ * @param int    $attachment_id Image attachment ID or 0.
+ *
+ * @return array
+ */
+add_filter( 'wp_calculate_image_srcset', 'mai_image_srcset_order', 10, 5 );
+function mai_image_srcset_order( $sources, $size_array, $image_src, $image_meta, $attachment_id ) {
+	ksort( $sources, SORT_NUMERIC );
+
+	return $sources;
+}
+
+/**
  * Gets aspect ratio from orientation.
  *
  * @since 0.1.0
@@ -31,7 +64,7 @@ function mai_get_aspect_ratio_from_orientation( $orientation ) {
 	$ratios      = [];
 	$image_sizes = mai_get_config( 'image-sizes' );
 
-	if ( isset( $image_sizes['add'][ $orientation ] ) ) {
+	if ( isset( $image_sizes['add'][ $orientation ] ) && is_string( $image_sizes['add'][ $orientation ] ) && mai_has_string( ':', $image_sizes['add'][ $orientation ] ) ) {
 		$ratios[ $orientation ] = str_replace( ':', '/', $image_sizes['add'][ $orientation ] );
 	} else {
 		$ratios[ $orientation ] = false;
@@ -148,9 +181,16 @@ function mai_get_available_image_orientations() {
 		return $orientations;
 	}
 
+	$orientations = [];
 	$image_sizes  = mai_get_config( 'image-sizes' );
-	$orientations = array_intersect( array_keys( $image_sizes['add'] ), [ 'landscape', 'portrait', 'square' ] );
-	$orientations = array_values( array_diff( $orientations, array_keys( $image_sizes['remove'] ) ) );
+
+	foreach ( $image_sizes['add'] as $name => $args ) {
+		if ( ! ( is_string( $args ) && mai_has_string( ':', $args ) ) ) {
+			continue;
+		}
+
+		$orientations[] = $name;
+	}
 
 	return $orientations;
 }
@@ -208,7 +248,7 @@ function mai_get_image_orientation_choices() {
 		return $choices;
 	}
 
-	$all = [
+	$default = [
 		'landscape' => esc_html__( 'Landscape', 'mai-engine' ),
 		'portrait'  => esc_html__( 'Portrait', 'mai-engine' ),
 		'square'    => esc_html__( 'Square', 'mai-engine' ),
@@ -217,7 +257,7 @@ function mai_get_image_orientation_choices() {
 	$orientations = mai_get_available_image_orientations();
 
 	foreach ( $orientations as $orientation ) {
-		$choices[ $orientation ] = $all[ $orientation ];
+		$choices[ $orientation ] = isset( $default[ $orientation ] ) ? $default[ $orientation ] : mai_convert_case( $orientation, 'title' );
 	}
 
 	$choices['custom'] = esc_html__( 'Custom', 'mai-engine' );

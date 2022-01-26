@@ -15,8 +15,17 @@ defined( 'ABSPATH' ) || die;
 add_action( 'after_setup_theme', 'mai_load_dependencies' );
 /**
  * Loads engine plugin dependencies.
+ * This can't be added via `mai_plugin_dependencies` filter
+ * because the `wp_dependency_dismiss_label` doesn't work correctly that way.
+ *
+ * Shows theme recommended plugins, in case setup wizard wasn't run.
+ *
+ * Note: Currently no way to only recommend plugin by chosen demo, since
+ * we need to run this function even if the setup wizard was not run.
+ * Workaround is to only recommend plugins required by all demos.
  *
  * @since 2.14.0
+ * @since 2.19.0 Registered config via PHP.
  *
  * @return void
  */
@@ -25,43 +34,61 @@ function mai_load_dependencies() {
 		return;
 	}
 
-	WP_Dependency_Installer::instance( dirname( dirname( __DIR__ ) ) )->run();
+	if ( ! ( is_admin() && current_user_can( 'install_plugins' ) ) ) {
+		return;
+	}
+
+	$dependencies = mai_get_plugin_dependencies();
+
+	if ( ! $dependencies ) {
+		return;
+	}
+
+	WP_Dependency_Installer::instance( dirname( dirname( __DIR__ ) ) )->register( $dependencies )->run();
 }
 
-add_filter( 'mai_plugin_dependencies', 'mai_engine_plugin_dependencies' );
 /**
- * Show theme recommended plugins, in case setup wizard wasn't run.
+ * Gets engine plugin dependencies.
  *
- * Note: Currently no way to only recommend plugin by chosen demo, since
- * we need to run this function even if the setup wizard was not run.
- * Workaround is to only recommend plugins required by all demos.
- * Uses the WP Dependency Installer filter in the child theme.
- *
- * @since 0.1.0
- *
- * @param array $dependencies Plugin dependencies.
+ * @since 2.19.0
  *
  * @return array
  */
-function mai_engine_plugin_dependencies( $dependencies ) {
+function mai_get_plugin_dependencies() {
+	$dependencies         = [];
 	$setup_wizard_options = get_option( 'mai-setup-wizard', [] );
 
-	// Return early if setup wizard was run.
-	if ( isset( $setup_wizard_options['demo'] ) ) {
-		return $dependencies;
-	}
+	// Only if setup wizard was not run.
+	if ( ! ( $setup_wizard_options && isset( $setup_wizard_options['demo'] ) ) ) {
 
-	$plugins     = mai_get_config_plugins();
-	$total_demos = count( mai_get_config( 'demos' ) );
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+		}
 
-	foreach ( $plugins as $plugin ) {
-		$plugin_demos = count( $plugin['demos'] );
+		$plugins     = mai_get_config_plugins();
+		$total_demos = count( mai_get_config( 'demos' ) );
 
-		if ( $total_demos === $plugin_demos && ! is_plugin_active( $plugin['slug'] ) ) {
-			$plugin['host'] = isset( $plugin['host'] ) ? $plugin['host'] : 'WordPress';
-			$dependencies[] = $plugin;
+		foreach ( $plugins as $plugin ) {
+			$plugin_demos = count( $plugin['demos'] );
+
+			if ( $total_demos === $plugin_demos && ! is_plugin_active( $plugin['slug'] ) ) {
+				$plugin['host'] = isset( $plugin['host'] ) ? $plugin['host'] : 'WordPress';
+				$dependencies[] = $plugin;
+			}
 		}
 	}
+
+	if ( class_exists( 'WooCommerce' ) || isset( $dependencies['slug']['woocommerce/woocommerce.php'] ) ) {
+		$dependencies[] = [
+			'name'     => 'Genesis Connect for WooCommerce',
+			'host'     => 'wordpress',
+			'slug'     => 'genesis-connect-woocommerce/genesis-connect-woocommerce.php',
+			'uri'      => 'https://wordpress.org/plugins/genesis-connect-woocommerce/',
+			'optional' => true,
+		];
+	}
+
+	$dependencies = apply_filters( 'mai_plugin_dependencies', $dependencies );
 
 	return $dependencies;
 }
@@ -75,6 +102,10 @@ add_action( 'after_setup_theme', 'mai_deactivate_bundled_plugins' );
  * @return void
  */
 function mai_deactivate_bundled_plugins() {
+	if ( ! function_exists( 'is_plugin_active' ) ) {
+		require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+	}
+
 	$plugins = [
 		'advanced-custom-fields/acf.php',
 		'advanced-custom-fields-master/acf.php',
@@ -113,4 +144,52 @@ function mai_deactivate_bundled_plugins() {
 			}
 		);
 	}
+}
+
+/**
+ * Modifies dependency installer labels.
+ *
+ * @since 0.1.0
+ *
+ * @param string $label  The label text.
+ * @param string $source The dependency manager source.
+ *
+ * @return string
+ */
+add_filter( 'wp_dependency_dismiss_label', 'mai_dependencey_dismiss_label', 10, 2 );
+function mai_dependencey_dismiss_label( $label, $source ) {
+	if ( basename( __DIR__ ) !== $source ) {
+		return $label;
+	}
+
+	return mai_get_name();
+}
+
+/**
+ * Disables dependency manager "Required by" text.
+ *
+ * @since 0.1.0
+ *
+ * @return bool
+ */
+add_filter( 'wp_dependency_required_row_meta', '__return_false' );
+
+add_filter( 'network_admin_plugin_action_links_mai-engine/mai-engine.php', 'mai_change_plugin_dependency_text', 100 );
+add_filter( 'plugin_action_links_mai-engine/mai-engine.php', 'mai_change_plugin_dependency_text', 100 );
+/**
+ * Changes plugin dependency text.
+ *
+ * @since 0.1.0
+ *
+ * @param array $actions Plugin action links.
+ *
+ * @return array
+ */
+function mai_change_plugin_dependency_text( $actions ) {
+	$actions['required-plugin'] = sprintf(
+		'<span class="network_active">%s</span>',
+		__( 'Mai Theme Dependency', 'mai-engine' )
+	);
+
+	return $actions;
 }

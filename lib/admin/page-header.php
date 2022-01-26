@@ -112,3 +112,47 @@ function mai_add_page_header_metabox() {
 
 	acf_add_local_field_group( $field_group_data );
 }
+
+add_filter( 'acf/load_field/key=page_header_image', 'mai_load_page_header_image_field' );
+/**
+ * Changes field label on Add New screen.
+ *
+ * @since 2.19.0
+ *
+ * @param array $field The existing field array.
+ *
+ * @return array
+ */
+function mai_load_page_header_image_field( $field ) {
+	$screen = get_current_screen();
+
+	if ( ! $screen || 'edit-tags' !== $screen->base ) {
+		return $field;
+	}
+
+	$field['label'] = __( 'Page Header Image', 'mai-engine' );
+
+	return $field;
+}
+
+add_filter( 'acf/load_field/key=page_header_description', 'mai_load_page_header_description_field' );
+/**
+ * Changes field label on Add New screen.
+ *
+ * @since 2.19.0
+ *
+ * @param array $field The existing field array.
+ *
+ * @return array
+ */
+function mai_load_page_header_description_field( $field ) {
+	$screen = get_current_screen();
+
+	if ( ! $screen || 'edit-tags' !== $screen->base ) {
+		return $field;
+	}
+
+	$field['label'] = __( 'Page Header Description', 'mai-engine' );
+
+	return $field;
+}

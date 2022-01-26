@@ -13,7 +13,7 @@
 defined( 'ABSPATH' ) || die;
 
 /**
- * Description of expected behavior.
+ * Checks if in dev mode.
  *
  * @since 0.1.0
  *
@@ -169,6 +169,9 @@ function mai_is_login_page() {
  * Checks if first block is cover or group block aligned full.
  *
  * @since 0.1.0
+ * @since 2.19.0 Checks for alignfull class.
+ *               Useful when allowed blocks are added via PHP filter
+ *               and block doesn't have align settings.
  *
  * @return bool
  */
@@ -181,13 +184,30 @@ function mai_has_alignfull_first() {
 		$first = mai_get_first_block();
 
 		if ( $first ) {
-			$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
-			$align       = isset( $first['attrs']['align'] ) ? $first['attrs']['align'] : '';
-			$allowed     = [ 'core/cover', 'core/group' ];
-			$allowed     = apply_filters( 'mai_alignfull_first_blocks', $allowed );
+			$block_name = isset( $first['blockName'] ) ? $first['blockName'] : '';
+			$allowed    = [ 'core/cover', 'core/group' ];
+			$allowed    = apply_filters( 'mai_alignfull_first_blocks', $allowed );
 
-			if ( $allowed && in_array( $block_name, $allowed ) && ( 'full' === $align ) ) {
+			if ( ! ( $allowed && in_array( $block_name, $allowed ) ) ) {
+				return $has_alignfull_first;
+			}
+
+			$align = isset( $first['attrs']['align'] ) ? $first['attrs']['align'] : '';
+
+			if ( $align && 'full' === $align ) {
 				$has_alignfull_first = true;
+				return $has_alignfull_first;
+			}
+
+			$classes = isset( $first['attrs']['className'] ) && $first['attrs']['className'] ? trim( $first['attrs']['className'] ) : '';
+
+			if ( $classes ) {
+				$classes = explode( ' ', $classes );
+
+				if ( in_array( 'alignfull', $classes ) ) {
+					$has_alignfull_first = true;
+					return $has_alignfull_first;
+				}
 			}
 		}
 	}
@@ -681,7 +701,6 @@ function mai_minify_css( $css ) {
  * @return  mixed
  */
 function mai_sanitize( $value, $function = 'esc_html', $allow_null = false ) {
-
 	// Return null if allowing null.
 	if ( is_null( $value ) && $allow_null ) {
 		return $value;
@@ -922,6 +941,22 @@ function mai_get_width_height_attribute( $value, $fallback = false ) {
 		}
 	}
 	return $fallback ? absint( $fallback ) : absint( filter_var( $value, FILTER_SANITIZE_NUMBER_INT ) );
+}
+
+/**
+ * Gets info icon with link.
+ *
+ * @since 2.19.0
+ *
+ * @param $href The href value.
+ *
+ * @return int
+ */
+function mai_get_block_setting_info_link( $href ) {
+	return sprintf( '<a target="_blank" class="mai-info-icon-link" href="%s"><span class="screen-reader-text">%s</span></a>',
+		esc_url( $href ),
+		esc_html__( 'More info', 'mai-engine' )
+	);
 }
 
 /**

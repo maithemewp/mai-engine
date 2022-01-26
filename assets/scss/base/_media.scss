@@ -20,6 +20,15 @@ iframe {
 	border: 0;
 }
 
+/**
+ * Some WooCommerce payment gateways, and likely other things, use iframe as an embedded input.
+ * This is so weird, but it caused checkout issues so I'm adding this.
+ * If it's only Woo related it could go in woocommerce-cart.css but for now I'm making it global.
+ */
+iframe[type] {
+	padding: 0;
+}
+
 figure {
 	max-width: 100%;
 	margin-inline-end: 0; // Chrome user agent override.

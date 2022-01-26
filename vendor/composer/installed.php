@@ -6,15 +6,15 @@
     'aliases' => 
     array (
     ),
-    'reference' => '0b9652d6747a7b1a9863e77acb58328ecb978684',
+    'reference' => '4bd18fa1f435fb5df7db944243630c8ea1cdb420',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
   array (
     'advanced-custom-fields/advanced-custom-fields-pro' => 
     array (
-      'pretty_version' => '5.10.2',
-      'version' => '5.10.2.0',
+      'pretty_version' => '5.11.4',
+      'version' => '5.11.4.0',
       'aliases' => 
       array (
       ),
@@ -22,12 +22,21 @@
     ),
     'afragen/wp-dependency-installer' => 
     array (
-      'pretty_version' => '3.1.0',
-      'version' => '3.1.0.0',
+      'pretty_version' => '4.3.2',
+      'version' => '4.3.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => '65570a1eb966bb9adfc9d9e521357da080fbdc5a',
+      'reference' => '707d659fcbf690999dde8d5a4359e32e0675cf98',
+    ),
+    'afragen/wp-dismiss-notice' => 
+    array (
+      'pretty_version' => '0.2.3',
+      'version' => '0.2.3.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '21949732f1ea21d81500bdda8f882ac7eb0f98af',
     ),
     'aristath/kirki' => 
     array (
@@ -37,15 +46,6 @@
       array (
       ),
       'reference' => '976e58876b51ac6b20fb3fdc8f29124552876cff',
-    ),
-    'collizo4sky/persist-admin-notices-dismissal' => 
-    array (
-      'pretty_version' => '1.4.4',
-      'version' => '1.4.4.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '900739eb6b0ec0210465f5983a6d4e0e420289e4',
     ),
     'composer/installers' => 
     array (
@@ -67,12 +67,12 @@
     ),
     'graham-campbell/result-type' => 
     array (
-      'pretty_version' => 'v1.0.3',
-      'version' => '1.0.3.0',
+      'pretty_version' => 'v1.0.4',
+      'version' => '1.0.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => '296c015dc30ec4322168c5ad3ee5cc11dae827ac',
+      'reference' => '0690bde05318336c7221785f2a932467f98b64ca',
     ),
     'maithemewp/mai-engine' => 
     array (
@@ -81,16 +81,16 @@
       'aliases' => 
       array (
       ),
-      'reference' => '0b9652d6747a7b1a9863e77acb58328ecb978684',
+      'reference' => '4bd18fa1f435fb5df7db944243630c8ea1cdb420',
     ),
     'phpoption/phpoption' => 
     array (
-      'pretty_version' => '1.8.0',
-      'version' => '1.8.0.0',
+      'pretty_version' => '1.8.1',
+      'version' => '1.8.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '5455cb38aed4523f99977c4a12ef19da4bfe2a28',
+      'reference' => 'eab7a0df01fe2344d172bff4cd6dbd3f8b84ad15',
     ),
     'proteusthemes/wp-content-importer-v2' => 
     array (
@@ -117,39 +117,39 @@
     ),
     'symfony/polyfill-ctype' => 
     array (
-      'pretty_version' => 'v1.23.0',
-      'version' => '1.23.0.0',
+      'pretty_version' => 'v1.24.0',
+      'version' => '1.24.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '46cd95797e9df938fdd2b03693b5fca5e64b01ce',
+      'reference' => '30885182c981ab175d4d034db0f6f469898070ab',
     ),
     'symfony/polyfill-mbstring' => 
     array (
-      'pretty_version' => 'v1.23.1',
-      'version' => '1.23.1.0',
+      'pretty_version' => 'v1.24.0',
+      'version' => '1.24.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '9174a3d80210dca8daa7f31fec659150bbeabfc6',
+      'reference' => '0abb51d2f102e00a4eefcf46ba7fec406d245825',
     ),
     'symfony/polyfill-php80' => 
     array (
-      'pretty_version' => 'v1.23.1',
-      'version' => '1.23.1.0',
+      'pretty_version' => 'v1.24.0',
+      'version' => '1.24.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '1100343ed1a92e3a38f9ae122fc0eb21602547be',
+      'reference' => '57b712b08eddb97c762a8caa32c84e037892d2e9',
     ),
     'vlucas/phpdotenv' => 
     array (
-      'pretty_version' => 'v5.3.1',
-      'version' => '5.3.1.0',
+      'pretty_version' => 'v5.4.1',
+      'version' => '5.4.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'accaddf133651d4b5cf81a119f25296736ffc850',
+      'reference' => '264dce589e7ce37a7ba99cb901eed8249fbec92f',
     ),
     'wptrt/customize-section-button' => 
     array (

@@ -32,7 +32,7 @@ function mai_site_layout() {
 		return esc_attr( $site_layout );
 	}
 
-	$allowed = genesis_get_layouts();
+	$allowed = (array) genesis_get_layouts();
 	$name    = null;
 
 	if ( is_admin() ) {
@@ -54,7 +54,6 @@ function mai_site_layout() {
 
 		if ( $single_layout && isset( $allowed[ $single_layout ] ) ) {
 			$site_layout = $single_layout;
-			return $single_layout;
 		}
 
 		$name = get_post_type( $post_id );
@@ -82,7 +81,7 @@ function mai_site_layout() {
 		$site_layout = get_the_author_meta( 'layout', (int) get_query_var( 'author' ) );
 	}
 
-	if ( ! ( $site_layout && isset( $allowed[ $site_layout ] ) ) ) {
+	if ( ! $site_layout && ! is_admin() ) {
 		$layouts  = [];
 		$defaults = mai_get_config( 'settings' )['site-layouts'];
 		$settings = mai_get_option( 'site-layouts', [] );
@@ -122,35 +121,39 @@ function mai_site_layout() {
 	}
 
 	// Site default.
-	if ( ! ( $site_layout && isset( $allowed[ $site_layout ] ) ) ) {
-		$site_layout = $layouts['default']['site'];
+	if ( ! $site_layout ) {
+		foreach ( $allowed as $layout_name => $layout_data ) {
+			if ( isset( $layout_data['default'] ) && $layout_data['default'] ) {
+				$site_layout = $layout_name;
+				break;
+			}
+		}
+
+		if ( ! $site_layout ) {
+			$site_layout = 'standard-content';
+		}
 	}
 
-	return $site_layout;
+	return esc_attr( $site_layout );
 }
 
-add_action( 'template_redirect', 'mai_content_width' );
 /**
- * Filter the content width based on the user selected layout.
+ * Set the content width in pixels, based on the theme's design and stylesheet.
+ * Priority 0 to make it available to lower priority callbacks.
  *
  * @since 0.1.0
- * @since 2.6.0 Change to template_redirect since after_setup_theme was too early for mai_site_layout() function.
+ * @since 2.6.0  Change to template_redirect since after_setup_theme was too early for mai_site_layout() function.
+ * @since 2.19.0 Change back to after_setup_theme after digging a bit deeper.
+ *
+ * @link https://github.com/studiopress/genesis/issues/77
+ *
+ * @global int $content_width Content width.
  *
  * @return void
  */
+add_action( 'after_setup_theme', 'mai_content_width', 5 );
 function mai_content_width() {
-	global $GLOBALS;
-
-	// Taken from assets/scss/layout/_content.scss.
-	$breakpoints = [
-		'wide-content'     => 'xl',
-		'content-sidebar'  => 'lg',
-		'sidebar-content'  => 'lg',
-		'standard-content' => 'md',
-		'narrow-content'   => 'sm',
-	];
-
-	$width = mai_isset( $breakpoints, mai_site_layout(), 'md' );
-
-	$GLOBALS['content_width'] = mai_get_breakpoint( $width );
+	// Open WPCS issue: {@link https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/issues/1043}.
+	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+	$GLOBALS['content_width'] = apply_filters( 'mai_content_width', mai_get_breakpoint( 'md' ) );
 }

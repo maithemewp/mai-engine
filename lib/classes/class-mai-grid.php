@@ -150,7 +150,7 @@ class Mai_Grid {
 		foreach ( $args as $name => $value ) {
 
 			// Has sub fields.
-			if ( isset( $this->settings[ $name ]['atts']['sub_fields'] ) ) {
+			if ( isset( $this->settings[ $name ]['atts']['sub_fields'] ) && is_array( $this->settings[ $name ]['atts']['sub_fields'] ) ) {
 				$sub_fields_values = [];
 
 				if ( $value && is_array( $value ) ) {
@@ -158,10 +158,13 @@ class Mai_Grid {
 
 					foreach ( $value as $sub_field_index => $sub_field_row ) {
 						foreach ( $sub_field_row as $sub_field_name => $sub_field_value ) {
-							$sub_fields_values[ $sub_field_index ][ $sub_field_name ] = mai_sanitize( $sub_field_value, $sub_fields_config[ $sub_field_name ] );
+							if ( isset( $sub_fields_config[ $sub_field_name ] ) ) {
+								$sub_fields_values[ $sub_field_index ][ $sub_field_name ] = mai_sanitize( $sub_field_value, $sub_fields_config[ $sub_field_name ] );
+							}
 						}
 					}
 				}
+
 				$args[ $name ] = $sub_fields_values;
 
 			} else {
@@ -172,7 +175,9 @@ class Mai_Grid {
 			}
 		}
 
-		return apply_filters( 'mai_grid_args', $args );
+		$args = apply_filters( 'mai_grid_args', $args );
+
+		return $args;
 	}
 
 	/**
@@ -451,6 +456,19 @@ class Mai_Grid {
 				}
 
 			break;
+		}
+
+		// Date.
+		if ( ( $this->args['date_after'] || $this->args['date_before'] ) && 'id' !== $this->args['query_by'] ) {
+			$query_args['date_query'] = [];
+
+			if ( $this->args['date_after'] ) {
+				$query_args['date_query']['after'] = $this->args['date_after'];
+			}
+
+			if ( $this->args['date_before'] ) {
+				$query_args['date_query']['before'] = $this->args['date_before'];
+			}
 		}
 
 		// Orderby.

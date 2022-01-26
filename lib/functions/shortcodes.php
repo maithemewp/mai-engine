@@ -149,6 +149,18 @@ function mai_avatar_shortcode( $atts ) {
 	return mai_get_avatar( $atts );
 }
 
+add_shortcode( 'mai_date', 'mai_date_shortcode' );
+/**
+ * Displays post publish and modified date.
+ *
+ * @since 2.19.0
+ *
+ * @return string
+ */
+function mai_date_shortcode( $atts ) {
+	return mai_get_date( $atts );
+}
+
 add_shortcode( 'mai_cart_total', 'mai_cart_total_shortcode' );
 /**
  * Displays the cart total.

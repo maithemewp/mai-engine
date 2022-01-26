@@ -343,7 +343,7 @@ function mai_add_search_icon_form_class( $attribute ) {
 }
 
 /**
- * Adds serach icon and search form to menu item.
+ * Adds search icon and search form to menu item.
  *
  * The menu item's starting output only includes `$args->before`, the opening `<a>`,
  * the menu item's title, the closing `</a>`, and `$args->after`. Currently, there is

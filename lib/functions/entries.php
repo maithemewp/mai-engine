@@ -54,37 +54,31 @@ function mai_do_entries_open( $args ) {
 	if ( in_array( 'image', $args['show'], true ) && $args['image_position'] ) {
 		$attributes['class'] .= ' has-image-' . $args['image_position'];
 
+		// Aspect ratio.
 		if ( in_array( $args['image_position'], [ 'background', 'left-full', 'right-full' ], true ) ) {
 			$aspect_ratio         = mai_has_image_orientiation( $args['image_orientation'] ) ? mai_get_aspect_ratio_from_orientation( $args['image_orientation'] ) : mai_get_image_aspect_ratio( $args['image_size'] );
 			$attributes['style'] .= sprintf( '--aspect-ratio:%s;', $aspect_ratio );
 		}
 
-		if ( 'custom' === $args['image_orientation'] && 'background' !== $args['image_position'] ) {
-			if ( isset( $args['class'] ) && ( mai_has_string( 'alignfull', $args['class'] ) || mai_has_string( 'alignwide', $args['class'] ) ) ) {
-				$image_width = mai_get_image_width( $args['image_size'] );
-				$image_width = $image_width ? mai_get_unit_value( $image_width ) : 'unset';
-			} else {
-				$image_sizes = mai_get_available_image_sizes();
-				$image_size  = isset( $image_sizes[ $args['image_size'] ] ) ? $image_sizes[ $args['image_size'] ] : $image_sizes['landscape-md'];
-				$image_width = $image_size['width'] . 'px';
-			}
+		if ( 'background' !== $args['image_position'] ) {
 
-			$attributes['style'] .= sprintf( '--entry-image-link-max-width:%s;', $image_width );
+			$left_right = mai_has_string( [ 'left', 'right' ], $args['image_position'] );
 
-		} else {
-
-			if ( mai_has_string( [ 'left', 'right' ], $args['image_position'] ) ) {
-
-				// Image alternating.
-				if ( $args['image_alternate'] ) {
-					if ( mai_has_string( 'left', $args['image_position'] ) ) {
-						$attributes['class'] .= ' has-image-odd-first';
-					} elseif ( mai_has_string( 'right', $args['image_position'] ) ) {
-						$attributes['class'] .= ' has-image-even-first';
-					}
+			// Image width.
+			if ( 'custom' === $args['image_orientation'] ) {
+				if ( isset( $args['class'] ) && ( mai_has_string( 'alignfull', $args['class'] ) || mai_has_string( 'alignwide', $args['class'] ) ) ) {
+					$image_width = mai_get_image_width( $args['image_size'] );
+					$image_width = $image_width ? mai_get_unit_value( $image_width ) : 'unset';
+				} else {
+					$image_sizes = mai_get_available_image_sizes();
+					$image_size  = isset( $image_sizes[ $args['image_size'] ] ) ? $image_sizes[ $args['image_size'] ] : $image_sizes['landscape-md'];
+					$image_width = $image_size['width'] . 'px';
 				}
 
-				// Image width.
+				$attributes['style'] .= sprintf( '--entry-image-link-max-width:%s;', $image_width );
+
+			} elseif ( $left_right ) {
+
 				switch ( $args['image_width'] ) {
 					case 'half':
 						$attributes['style'] .= sprintf( '--entry-image-link-max-width:%s;', '50%' );
@@ -95,6 +89,15 @@ function mai_do_entries_open( $args ) {
 					case 'fourth':
 						$attributes['style'] .= sprintf( '--entry-image-link-max-width:%s;', '25%' );
 						break;
+				}
+			}
+
+			// Image alternating.
+			if ( $left_right && $args['image_alternate'] ) {
+				if ( mai_has_string( 'left', $args['image_position'] ) ) {
+					$attributes['class'] .= ' has-image-odd-first';
+				} elseif ( mai_has_string( 'right', $args['image_position'] ) ) {
+					$attributes['class'] .= ' has-image-even-first';
 				}
 			}
 		}

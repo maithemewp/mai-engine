@@ -8,7 +8,7 @@ const fs           = require( 'fs' ),
 const styleCss = function( theme ) {
 	return `/**
  * Theme Name:       ${theme.name}
- * Theme URI:        https://bizbudding.com/products/${theme.slug}-theme/
+ * Theme URI:        https://bizbudding.com/mai-theme/
  * Description:      ${theme.name} child theme for the Genesis Framework.
  * Author:           BizBudding
  * Author URI:       https://bizbudding.com/
@@ -24,6 +24,7 @@ const styleCss = function( theme ) {
 
 const functionsPhp = function( theme ) {
 	return `<?php
+
 /**
  * ${theme.name} theme.
  *
@@ -51,8 +52,17 @@ const composerJson = function( theme ) {
             "email": "team@bizbudding.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/maithemewp/mai-installer"
+        }
+    ],
     "require": {
         "maithemewp/mai-installer": "dev-master"
+    },
+    "replace": {
+        "afragen/wp-dependency-installer": "*"
     },
     "config": {
         "preferred-install": {
@@ -61,8 +71,7 @@ const composerJson = function( theme ) {
         "sort-order": true
     },
     "minimum-stability": "dev"
-}
-`;
+}`;
 };
 
 const gitIgnore = function() {
@@ -96,7 +105,7 @@ const themeScss = function() {
 };
 
 const genesisVersion = function() {
-	let version = '3.3.2';
+	let version = '3.3.5';
 
 	readline.createInterface( {
 		input: fs.createReadStream( '../../themes/genesis/style.css' ),

@@ -49,7 +49,7 @@
 .page,
 .has-boxed {
 	--entry-border: 0;
-	--entry-box-shadow: 0;
+	--entry-box-shadow: none;
 	--entry-overflow: visible;
 	--entry-image-link-border: var(--border);
 	--entry-image-link-box-shadow: var(--shadow);

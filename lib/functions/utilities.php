@@ -850,7 +850,8 @@ function mai_get_post_content( $post_slug_or_id, $post_type = 'wp_block' ) {
  *
  * Most of the order comes from /wp-includes/default-filters.php.
  *
- * @since 2.4.2 Remove use of wp_make_content_images_responsive.
+ * @since 2.19.0 Conditionally `do_blocks()` or `wpautop()`.
+ * @since 2.4.2  Remove use of wp_make_content_images_responsive.
  * @since 0.3.0
  *
  * @param string $content The unprocessed content.
@@ -858,7 +859,6 @@ function mai_get_post_content( $post_slug_or_id, $post_type = 'wp_block' ) {
  * @return string
  */
 function mai_get_processed_content( $content ) {
-
 	/**
 	 * Embed.
 	 *
@@ -866,15 +866,16 @@ function mai_get_processed_content( $content ) {
 	 */
 	global $wp_embed;
 
-	$content = $wp_embed->autoembed( $content );     // WP runs priority 8.
-	$content = $wp_embed->run_shortcode( $content ); // WP runs priority 8.
-	$content = do_blocks( $content );                // WP runs priority 9.
-	$content = wptexturize( $content );              // WP runs priority 10.
-	$content = wpautop( $content );                  // WP runs priority 10.
-	$content = shortcode_unautop( $content );        // WP runs priority 10.
+	$blocks  = has_blocks( $content );
+	$content = $wp_embed->autoembed( $content );           // WP runs priority 8.
+	$content = $wp_embed->run_shortcode( $content );       // WP runs priority 8.
+	$content = $blocks ? do_blocks( $content ) : $content; // WP runs priority 9.
+	$content = wptexturize( $content );                    // WP runs priority 10.
+	$content = ! $blocks ? wpautop( $content ) : $content; // WP runs priority 10.
+	$content = shortcode_unautop( $content );              // WP runs priority 10.
 	$content = function_exists( 'wp_filter_content_tags' ) ? wp_filter_content_tags( $content ) : wp_make_content_images_responsive( $content ); // WP runs priority 10. WP 5.5 with fallback.
-	$content = do_shortcode( $content );             // WP runs priority 11.
-	$content = convert_smilies( $content );          // WP runs priority 20.
+	$content = do_shortcode( $content );                   // WP runs priority 11.
+	$content = convert_smilies( $content );                // WP runs priority 20.
 
 	return $content;
 }
@@ -937,8 +938,8 @@ function mai_get_header_shrink_offset() {
 		return $offset;
 	}
 
-	$source_width       = $source[1];
-	$source_height      = $source[2];
+	$source_width       = isset( $source[1] ) ? $source[1] : 1;
+	$source_height      = isset( $source[2] ) ? $source[2] : 1;
 	$customizer_widths  = mai_get_option( 'logo-width', $config['width'] );
 	$customizer_widths  = array_map( 'absint', $customizer_widths );
 	$desktop_width      = max( $customizer_widths['desktop'], 1 );
@@ -1234,6 +1235,69 @@ function mai_get_author_id() {
 }
 
 /**
+ * Gets a post date, optionally with updated date.
+ *
+ * @since 2.19.0
+ *
+ * @param array $args The date args.
+ *
+ * @return string
+ */
+function mai_get_date( $args ) {
+	$html     = '';
+	$defaults = [
+		'before'          => '',
+		'after'           => '',
+		'before_updated'  => sprintf( '&nbsp;%s:&nbsp;', __( 'Updated', 'mai-engine' ) ),
+		'after_updated'   => '',
+		'format'          => get_option( 'date_format' ), // Date format.
+		'updated_format'  => '',        // Updated date format.
+		'published'       => true,      // Show published date.
+		'updated'         => true,      // Show updated date.
+		'updated_min'     => '60 days', // Only show updated date if this long after published date.
+		'updated_only'    => false,     // Hides the published date if updated date is showing.
+		// 'relative'     => false,     // TODO: "Days/weeks ago"
+		// 'relative_min' => '6 weeks', // TODO: Only show relative date if it's within this time after published/updated date.
+	];
+
+	// A lot of code to conditionally add parenthesis around (Updated: {date}) as the default. :)
+	if ( ! ( isset( $args['before_updated'] ) && isset( $args['after_updated'] ) )
+		&& ( ! isset( $args['updated_only'] ) || ( isset( $args['updated_only'] ) && ! mai_sanitize_bool( $args['updated_only'] ) ) ) ) {
+
+		$defaults['before_updated'] = sprintf( '&nbsp;(%s:&nbsp;', __( 'Updated', 'mai-engine' ) );
+		$defaults['after_updated']  = ')';
+	}
+
+	$args = shortcode_atts( $defaults, $args, 'mai_date' );
+
+	// Sanitize.
+	$args['before']         = wp_kses_post( $args['before'] );
+	$args['after']          = wp_kses_post( $args['after'] );
+	$args['before_updated'] = wp_kses_post( $args['before_updated'] );
+	$args['after_updated']  = wp_kses_post( $args['after_updated'] );
+	$args['format']         = esc_html( $args['format'] );
+	$args['updated_format'] = $args['updated_format'] ? esc_html( $args['updated_format'] ) : $args['format'];
+	$args['published']      = mai_sanitize_bool( $args['published'] );
+	$args['updated']        = mai_sanitize_bool( $args['updated'] );
+	$args['updated_min']    = esc_html( $args['updated_min'] );
+	$args['updated_only']   = mai_sanitize_bool( $args['updated_only'] );
+
+	// Updated. If not showing published date or the modified date is newer than published date by the value set.
+	$updated = $args['updated'] && ( ! $args['published'] || get_the_modified_date( 'U' ) > strtotime( '+' . ltrim( $args['updated_min'], '+' ), get_the_time( 'U' ) ) );
+
+	// Published.
+	if ( $args['published'] && ! ( $updated && $args['updated_only'] ) ) {
+		$html .= sprintf( '<time %s>%s%s%s</time>', genesis_attr( 'entry-time' ), $args['before'], get_the_time( $args['format'] ), $args['after'] );
+	}
+
+	if ( $updated ) {
+		$html .= sprintf( '<time %s>%s%s%s</time>', genesis_attr( 'entry-modified-time' ), $args['before_updated'], get_the_modified_time( $args['updated_format'] ), $args['after_updated'] );
+	}
+
+	return $html;
+}
+
+/**
  * Gets a star rating.
  *
  * @since 2.11.0
@@ -1402,14 +1466,25 @@ function mai_get_search_form( $args = [] ) {
 	if ( ! class_exists( 'Genesis_Search_Form' ) ) {
 		return get_search_form( false );
 	}
+
+	$args = wp_parse_args( $args,
+		[
+			'placeholder' => esc_html__( 'Search...', 'mai-engine' ),
+		]
+	);
+
 	$filter = function( $attributes ) {
 		$attributes['required'] = true;
 		return $attributes;
 	};
+
 	add_filter( 'genesis_attr_search-form-input', $filter );
+
 	$searchform = new Genesis_Search_Form( $args );
 	$form       = $searchform->get_form();
+
 	remove_filter( 'genesis_attr_search-form-input', $filter );
+
 	return $form;
 }
 
@@ -1443,7 +1518,11 @@ function mai_get_search_icon_form( $title = '', $icon_size = '16' ) {
 		]
 	);
 
-	$html = sprintf( '<button class="search-toggle" aria-expanded="false" aria-pressed="false"><span class="screen-reader-text">%s</span>%s%s</button>',
+	$hide_text  = apply_filters( 'mai_hide_search_toggle_text', true );
+	$text_class = $hide_text ? 'screen-reader-text' : 'search-toggle-text';
+
+	$html = sprintf( '<button class="search-toggle" aria-expanded="false" aria-pressed="false"><span class="%s">%s</span>%s%s</button>',
+		$text_class,
 		esc_html( $title ?: __( 'Search', 'mai-engine' ) ),
 		$icon,
 		$close

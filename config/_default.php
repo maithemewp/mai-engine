@@ -171,10 +171,7 @@ return [
 				'name' => 'maiMenuVars',
 				'data' => [
 					'ariaLabel'     => __( 'Mobile Menu', 'mai-engine' ),
-					'subMenuToggle' => sprintf(
-						'<span class="sub-menu-toggle-icon"></span><span class="screen-reader-text">%s</span>',
-						__( 'Sub Menu', 'mai-engine' )
-					),
+					'subMenuToggle' => __( 'Sub Menu', 'mai-engine' ),
 				],
 			],
 		],
@@ -204,6 +201,21 @@ return [
 			'src'      => mai_get_url() . 'assets/js/min/blocks.js',
 			'deps'     => [ 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ],
 			'location' => 'editor',
+		],
+		'plugins'     => [
+			'location'  => 'admin',
+			'localize'  => [
+				'name' => 'maiPluginsVars',
+				'data' => [
+					'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
+					'ajaxNonce'   => wp_create_nonce( 'mai-plugins' ),
+					'loadingText' => __( 'Loading', 'mai-engine' ),
+				],
+			],
+			'condition' => function() {
+				$screen = get_current_screen();
+				return $screen && 'toplevel_page_mai-theme' === $screen->id && class_exists( 'Mai_Design_Pack' );
+			}
 		],
 	],
 
@@ -250,6 +262,13 @@ return [
 		'footer'                         => [
 			'location'  => 'public',
 			'in_footer' => true,
+		],
+		'plugins'                        => [
+			'location'  => 'admin',
+			'condition' => function() {
+				$screen = get_current_screen();
+				return $screen && 'toplevel_page_mai-theme' === $screen->id;
+			}
 		],
 		'admin'                          => [
 			'location' => 'admin',

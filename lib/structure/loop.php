@@ -50,7 +50,7 @@ function mai_setup_loop() {
 }
 
 /**
- * Description of expected behavior.
+ * Runs the main loop.
  *
  * @since 0.1.0
  *

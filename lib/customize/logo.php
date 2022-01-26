@@ -72,7 +72,7 @@ function mai_logo_customizer_settings() {
 					'element'           => [ ':root', '.header-stuck' ],
 					'property'          => '--custom-logo-width',
 					'sanitize_callback' => function( $value ) {
-						return array_map( 'mai_get_unit_value', array_map( 'absint', $value ) );
+						return array_map( 'mai_get_unit_value', array_map( 'absint', (array) $value ) );
 					},
 				],
 				[
@@ -81,7 +81,7 @@ function mai_logo_customizer_settings() {
 					'property'          => '--custom-logo-width',
 					'media_query'       => sprintf( '@media (min-width: %spx)', mai_get_breakpoint( 'lg' ) ),
 					'sanitize_callback' => function( $value ) {
-						return array_map( 'mai_get_unit_value', array_map( 'absint', $value ) );
+						return array_map( 'mai_get_unit_value', array_map( 'absint', (array) $value ) );
 					},
 				],
 			],
@@ -109,7 +109,7 @@ function mai_logo_customizer_settings() {
 					'element'           => ':root',
 					'property'          => '--title-area-padding-mobile',
 					'sanitize_callback' => function( $value ) {
-						return array_map( 'mai_get_unit_value', array_map( 'absint', $value ) );
+						return array_map( 'mai_get_unit_value', array_map( 'absint', (array) $value ) );
 					},
 				],
 				[
@@ -118,7 +118,7 @@ function mai_logo_customizer_settings() {
 					'property'          => '--title-area-padding-desktop',
 					'media_query'       => sprintf( '@media (min-width: %spx)', mai_get_breakpoint( 'lg' ) ),
 					'sanitize_callback' => function( $value ) {
-						return array_map( 'mai_get_unit_value', array_map( 'absint', $value ) );
+						return array_map( 'mai_get_unit_value', array_map( 'absint', (array) $value ) );
 					},
 				],
 			],

@@ -1,20 +1,17 @@
 .mai-columns-wrap {
 	display: flex;
 	flex-wrap: wrap;
+	gap: var(--row-gap) var(--column-gap);
 	align-items: var(--align-columns-vertical);
 	justify-content: var(--align-columns);
-	width: calc(100% + var(--column-gap));
-	margin: calc(var(--row-gap) * -1) 0 0 calc(var(--column-gap) * -1);
 }
 
 .mai-column {
 	display: flex;
-	flex: var(--flex, var(--flex-xs, 1 0 100%));
+	flex: var(--flex, var(--flex-xs, 0 0 100%));
 	flex-direction: column;
 	justify-content: var(--justify-content, flex-start);
 	order: var(--order, unset);
-	max-width: calc(var(--max-width, var(--max-width-xs, 100%)) - var(--column-gap));
-	margin: var(--row-gap) 0 0 var(--column-gap);
 }
 
 @include mq(false, sm) {
@@ -27,25 +24,22 @@
 @include mq(sm, md) {
 
 	.mai-column {
-		--flex: var(--flex-sm, 1 0 100%);
+		--flex: var(--flex-sm, 0 0 100%);
 		--order: var(--order-sm, unset);
-		--max-width: var(--max-width-sm, 100%);
 	}
 }
 
 @include mq(md, lg) {
 
 	.mai-column {
-		--flex: var(--flex-md, 1 0 100%);
+		--flex: var(--flex-md, 0 0 100%);
 		--order: var(--order-md, unset);
-		--max-width: var(--max-width-md, 100%);
 	}
 }
 
 @include mq(lg) {
 
 	.mai-column {
-		--flex: var(--flex-lg, 1 0 100%);
-		--max-width: var(--max-width-lg, 100%);
+		--flex: var(--flex-lg, 0 0 100%);
 	}
 }

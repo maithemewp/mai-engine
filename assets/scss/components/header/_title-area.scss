@@ -75,3 +75,19 @@
 	opacity: var(--custom-scroll-logo-opacity, 0);
 	transition: var(--title-area-transition, var(--transition));
 }
+
+.has-scroll-logo {
+
+	&.has-logo-left {
+		--custom-scroll-logo-object-position: center left;
+	}
+
+	&.has-logo-right {
+		--custom-scroll-logo-object-position: center right;
+	}
+
+	&.header-stuck {
+		--custom-scroll-logo-opacity: 1;
+		--custom-logo-opacity: 0;
+	}
+}

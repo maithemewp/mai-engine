@@ -9,6 +9,7 @@
 }
 
 @mixin heading {
+	clear: both;
 	margin-top: var(--heading-margin-top, 0);
 	margin-bottom: var(--heading-margin-bottom, var(--spacing-md));
 	color: var(--heading-color, var(--color-heading));
@@ -111,7 +112,7 @@
 		--button-background-hover: var(--button-link-background-hover, transparent);
 		--button-padding: var(--button-link-padding, 0.9rem 0.5rem);
 		--button-border: 0;
-		--button-box-shadow: 0;
+		--button-box-shadow: none;
 		--button-box-shadow-hover: 0;
 
 		&::after {

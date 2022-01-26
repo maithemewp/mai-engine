@@ -1,4 +1,9 @@
 .wp-block-image {
+	margin: var(--image-block-margin, 0 0 var(--image-block-margin-bottom, var(--spacing-md)));
+
+	&:last-child {
+		--image-block-margin-bottom: 0;
+	}
 
 	&.alignleft {
 		margin-right: var(--spacing-md);

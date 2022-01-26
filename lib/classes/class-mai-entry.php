@@ -497,14 +497,11 @@ class Mai_Entry {
 			return '';
 		}
 
-		add_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
+		// add_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
 		add_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 4 );
 
 		if ( 'single' === $this->context ) {
-			$filter = function() {
-				return false;
-			};
-
+			$filter = function() { return false; };
 			add_filter( 'wp_lazy_loading_enabled', $filter );
 		}
 
@@ -522,10 +519,11 @@ class Mai_Entry {
 		}
 
 		remove_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 4 );
-		remove_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
+		// remove_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
 
 		if ( 'single' === $this->context ) {
 			$caption = wp_get_attachment_caption( $image_id );
+
 			if ( $caption ) {
 				$image .= sprintf( '<figcaption>%s</figcaption>', $caption );
 			}
@@ -737,20 +735,19 @@ class Mai_Entry {
 	 * @return string
 	 */
 	public function get_image_size() {
-		switch ( $this->args['image_orientation'] ) {
-			case 'landscape':
-			case 'portrait':
-			case 'square':
-				$image_size = $this->get_image_size_by_cols();
-				$image_size = sprintf( '%s-%s', $this->args['image_orientation'], $image_size );
-				$image_size = $this->get_fallback_image_size( $image_size );
-				return $image_size;
-			break;
-			default:
-				$image_size = $this->args['image_size'];
+		if ( mai_has_image_orientiation( $this->args['image_orientation'] ) ) {
+			$image_size = $this->get_image_size_by_cols();
+			$image_size = sprintf( '%s-%s', $this->args['image_orientation'], $image_size );
+			$image_size = $this->get_fallback_image_size( $image_size );
+
+		} else {
+			$image_size = $this->args['image_size'];
 		}
 
-		return $image_size;
+		// Filter.
+		$image_size = apply_filters( 'mai_entry_image_size', $image_size, $this->entry, $this->args );
+
+		return esc_attr( $image_size );
 	}
 
 	/**
@@ -767,10 +764,11 @@ class Mai_Entry {
 				return $this->get_fallback_image_size( $image_size );
 			}
 
-			if ( in_array( $image_size, [ 'landscape-md', 'portrait-md', 'square-md' ] ) ) {
+			if ( mai_has_string( '-md', $image_size ) ) {
 				return str_replace( '-md', '-sm', $image_size );
 			}
 		}
+
 		return $image_size;
 	}
 
@@ -1073,6 +1071,9 @@ class Mai_Entry {
 				'open'    => '<div %s>',
 				'context' => 'entry-content',
 				'echo'    => false,
+				'atts'    => [
+					'class' => ( 'single' === $this->context ) ? 'entry-content entry-content-single' : 'entry-content',
+				],
 				'params'  => [
 					'args'  => $this->args,
 					'entry' => $this->entry,
@@ -1199,16 +1200,15 @@ class Mai_Entry {
 			return $out;
 		};
 
-		// TODO: Only works if/when ACF adds the 'acf' shortcode to the shortcode_atts() function.
-		// if ( 'block' === $this->context ) {
-			// add_filter( 'shortcode_atts_acf', $filter, 10, 3 );
-		// }
+		if ( 'block' === $this->context ) {
+			add_filter( 'shortcode_atts_acf', $filter, 10, 3 );
+		}
 
 		$content = mai_get_processed_content( $this->args['custom_content'] );
 
-		// if ( 'block' === $this->context ) {
-		// 	remove_filter( 'shortcode_atts_acf', $filter, 10, 3 );
-		// }
+		if ( 'block' === $this->context ) {
+			remove_filter( 'shortcode_atts_acf', $filter, 10, 3 );
+		}
 
 		genesis_markup(
 			[
@@ -1521,7 +1521,6 @@ class Mai_Entry {
 				],
 			]
 		);
-
 
 		genesis_markup(
 			[

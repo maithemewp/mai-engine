@@ -120,6 +120,11 @@ gulp build:css
 gulp build:js
 ```
 
+**To create a new engine theme**
+```shell
+gulp create --name=themename --composer
+```
+
 ### Using the CSS system
 
 Goals of the CSS system: Keep it DRY. Prioritize performance.

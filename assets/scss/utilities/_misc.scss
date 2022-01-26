@@ -15,7 +15,6 @@
 
 .has-light-background {
 	--heading-color: var(--color-heading);
-	// --body-color: var(--color-body);
 	color: var(--color-body);
 }
 
@@ -145,6 +144,14 @@
 
 .has-no-padding {
 	padding: 0 !important;
+}
+
+.has-auto-margin-top {
+	margin-top: auto !important;
+}
+
+.has-auto-margin-bottom {
+	margin-bottom: auto !important;
 }
 
 .has-auto-margin-left {

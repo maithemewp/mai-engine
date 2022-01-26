@@ -60,10 +60,10 @@ p {
 	margin-left: 0;
 }
 
-.wp-block-cover__inner-container,
-.wp-block-group__inner-container {
-	width: var(--wp-block-max-width, var(--breakpoint-xl));
-}
+// .wp-block-cover__inner-container,
+// .wp-block-group__inner-container {
+	// max-width: var(--wp-block-max-width, var(--breakpoint-xl)) !important;
+// }
 
 // Overridden in admin.scss.
 .wp-block:not([data-align="full"]):not([data-align="wide"]) {
@@ -151,6 +151,34 @@ p {
 	--side-spacing: 0;
 }
 
+/**
+ * This is padding on enableLayoutSettingsBlocks.
+ *
+ * 'core/cover',
+ * 'core/group',
+ */
+@each $padding-name, $padding-size in $padding_scale {
+
+	@each $padding-setting in $padding_settings {
+
+		.wp-block-cover[data-spacing-#{ $padding-setting }="#{ $padding-name }"],
+		.wp-block-group[data-spacing-#{ $padding-setting }="#{ $padding-name }"] {
+			padding-#{ $padding-setting }: #{ $padding-size } !important;
+		}
+	}
+}
+
+/**
+ * Max width on enableMaxWidthSettingsBlocks.
+ *
+ * 'core/heading',
+ * 'core/paragraph',
+ *
+ * and enableLayoutSettingsBlocks.
+ *
+ * 'core/cover',
+ * 'core/group',
+ */
 @each $breakpoint-name, $breakpoint-size in $breakpoints {
 
 	[data-type="core/heading"][data-max-width="#{ $breakpoint-name }"],
@@ -160,51 +188,68 @@ p {
 
 	// We don't need to worry about nested block here,
 	// since their content should never be larger than the parent.
-	[data-content-width="#{ $breakpoint-name }"] .wp-block-cover__inner-container,
-	[data-content-width="#{ $breakpoint-name }"] .wp-block-group__inner-container {
-		--wp-block-max-width: var(--breakpoint-#{ $breakpoint-name });
+	[data-content-width="#{ $breakpoint-name }"] {
+		--content-max-width: var(--breakpoint-#{ $breakpoint-name });
 	}
 }
 
-// This is margin on enableSpacingSettingsBlocks.
+/**
+ * This is margin on enableSpacingSettingsBlocks.
+ *
+ * 'core/heading',
+ * 'core/paragraph',
+ * 'core/separator',
+ */
 @each $margin-name, $margin-size in $spacing {
 
 	@each $margin-setting in $margin_settings {
 
-		[data-spacing-#{ $margin-setting }="#{ $margin-name }"] {
+		.wp-block-heading[data-spacing-#{ $margin-setting }="#{ $margin-name }"],
+		.wp-block-paragraph[data-spacing-#{ $margin-setting }="#{ $margin-name }"],
+		.wp-block-separator[data-spacing-#{ $margin-setting }="#{ $margin-name }"] {
 			--heading-margin-#{ $margin-setting }: #{ $margin-size };
 			--separator-block-margin-#{ $margin-setting }: #{ $margin-size };
+			--paragraph-margin-#{ $margin-setting }: #{ $margin-size };
+			// margin-#{ $margin-setting }: #{ $margin-size };
 		}
 	}
 }
 
-// This is padding on enableLayoutSettingsBlocks.
-@each $padding-name, $padding-size in $padding_scale {
-
-	@each $padding-setting in $padding_settings {
-
-		.wp-block-group[data-spacing-#{ $padding-setting }="#{ $padding-name }"],
-		.wp-block-cover[data-spacing-#{ $padding-setting }="#{ $padding-name }"] {
-			padding-#{ $padding-setting }: #{ $padding-size } !important;
-		}
-	}
-}
-
+/**
+ * This is margin on enableMarginSettingsBlocks.
+ *
+ * 'core/image',
+ * 'core/cover',
+ * 'core/group',
+ */
 @each $spacing-name, $spacing-size in $margin {
 
 	@each $margin-setting in $margin_settings {
 
-		[data-margin-#{ $margin-setting }="#{ $spacing-name }"] {
+		// [data-margin-#{ $margin-setting }="#{ $spacing-name }"] {
+		.wp-block-image[data-spacing-#{ $margin-setting }="#{ $spacing-name }"],
+		.wp-block-cover[data-spacing-#{ $margin-setting }="#{ $spacing-name }"],
+		.wp-block-group[data-spacing-#{ $margin-setting }="#{ $spacing-name }"] {
 			margin-#{ $margin-setting }: #{ $spacing-size } !important;
 		}
 	}
 }
 
+/**
+ * This is negative margin on enableMarginSettingsBlocks.
+ *
+ * 'core/image',
+ * 'core/cover',
+ * 'core/group',
+ */
 @each $spacing-name, $spacing-size in $negative_margin {
 
 	@each $margin-setting in $margin_settings {
 
-		[data-margin-#{ $margin-setting }="#{ $spacing-name }"] {
+		// [data-margin-#{ $margin-setting }="#{ $spacing-name }"] {
+		.wp-block-image[data-spacing-#{ $margin-setting }="#{ $spacing-name }"],
+		.wp-block-cover[data-spacing-#{ $margin-setting }="#{ $spacing-name }"],
+		.wp-block-group[data-spacing-#{ $margin-setting }="#{ $spacing-name }"] {
 			margin-#{ $margin-setting }: calc(#{ $spacing-size } * -1) !important;
 		}
 	}
@@ -224,6 +269,13 @@ p {
 	}
 }
 
+// Our default of 0 left/right margin caused overlap in editor.
+.wp-block-image {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+// button, // This breaks core block control buttons.
 input[type="submit"],
 .wp-block-button__link,
 .wp-block .button {
@@ -255,6 +307,16 @@ input[type="submit"],
 	.is-style-outline & {
 
 		@include button-style("outline", true);
+	}
+
+	.button-small & {
+
+		@include button-style("small");
+	}
+
+	.button-large & {
+
+		@include button-style("large");
 	}
 }
 
@@ -375,10 +437,9 @@ input[type="submit"],
 
 	display: flex;
 	flex-wrap: wrap;
+	gap: var(--row-gap) var(--column-gap);
 	align-items: var(--align-columns-vertical);
 	justify-content: var(--align-columns);
-	width: calc(100% + var(--column-gap));
-	margin: calc(var(--row-gap) * -1) 0 0 calc(var(--column-gap) * -1);
 }
 
 .mai-column {
@@ -439,7 +500,7 @@ input[type="submit"],
 .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
 	flex: var(--flex, var(--flex-xs, var(--flex-fallback)));
 	max-width: calc(var(--max-width, var(--max-width-xs, var(--max-width-fallback))) - var(--column-gap));
-	margin: var(--row-gap) 0 0 var(--column-gap);
+	margin: 0; /* overrides core editor margin on wp-block */
 }
 
 .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block > .acf-block-component,

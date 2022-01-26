@@ -42,16 +42,3 @@
 	--mobile-menu-display: block;
 	--mobile-menu-animation: standardmenu 0.3s ease-in-out;
 }
-
-@keyframes standardmenu {
-
-	0% {
-		top: 80%;
-		opacity: 0;
-	}
-
-	100% {
-		top: 100%;
-		opacity: 1;
-	}
-}

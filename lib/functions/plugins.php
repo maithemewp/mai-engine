@@ -12,54 +12,6 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-// Dependency installer labels.
-add_filter( 'wp_dependency_dismiss_label', 'mai_get_name' );
-add_filter( 'wp_dependency_required_row_meta', '__return_false' );
-
-add_filter( 'network_admin_plugin_action_links_mai-engine/mai-engine.php', 'mai_change_plugin_dependency_text', 100 );
-add_filter( 'plugin_action_links_mai-engine/mai-engine.php', 'mai_change_plugin_dependency_text', 100 );
-/**
- * Changes plugin dependency text.
- *
- * @since 0.1.0
- *
- * @param array $actions Plugin action links.
- *
- * @return array
- */
-function mai_change_plugin_dependency_text( $actions ) {
-	$actions['required-plugin'] = sprintf(
-		'<span class="network_active">%s</span>',
-		__( 'Mai Theme Dependency', 'mai-engine' )
-	);
-
-	return $actions;
-}
-
-add_filter( 'mai_plugin_dependencies', 'mai_require_genesis_connect', 10, 1 );
-/**
- * Recommend Genesis Connect if WooCommerce is installed.
- *
- * @since 0.1.0
- *
- * @param array $plugins List of plugin dependencies.
- *
- * @return array
- */
-function mai_require_genesis_connect( $plugins ) {
-	if ( class_exists( 'WooCommerce' ) ) {
-		$plugins[] = [
-			'name'     => 'Genesis Connect for WooCommerce',
-			'host'     => 'wordpress',
-			'slug'     => 'genesis-connect-woocommerce/genesis-connect-woocommerce.php',
-			'uri'      => 'https://wordpress.org/plugins/genesis-connect-woocommerce/',
-			'optional' => true,
-		];
-	}
-
-	return $plugins;
-}
-
 add_action( 'wp_enqueue_scripts', 'mai_remove_simple_social_icons_css', 15 );
 /**
  * Remove Simple Social Icons CSS.
