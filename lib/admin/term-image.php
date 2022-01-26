@@ -68,7 +68,7 @@ add_filter( 'acf/load_field/key=featured_image', 'mai_load_featured_image_field'
 /**
  * Changes field label on Add New screen.
  *
- * @since TBD
+ * @since 2.19.0
  *
  * @param array $field The existing field array.
  *

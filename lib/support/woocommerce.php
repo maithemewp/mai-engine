@@ -137,7 +137,7 @@ add_action( 'woocommerce_before_single_product', 'mai_maybe_hide_woocommerce_pro
 /**
  * Hides the product title if the Hide Element metabox has Entry Title checked.
  *
- * @since TBD
+ * @since 2.19.0
  *
  * @return void
  */

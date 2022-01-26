@@ -169,7 +169,7 @@ function mai_is_login_page() {
  * Checks if first block is cover or group block aligned full.
  *
  * @since 0.1.0
- * @since TBD Checks for alignfull class.
+ * @since 2.19.0 Checks for alignfull class.
  *               Useful when allowed blocks are added via PHP filter
  *               and block doesn't have align settings.
  *
@@ -946,7 +946,7 @@ function mai_get_width_height_attribute( $value, $fallback = false ) {
 /**
  * Gets info icon with link.
  *
- * @since TBD
+ * @since 2.19.0
  *
  * @param $href The href value.
  *

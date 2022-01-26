@@ -143,7 +143,7 @@ function mai_site_layout() {
  *
  * @since 0.1.0
  * @since 2.6.0  Change to template_redirect since after_setup_theme was too early for mai_site_layout() function.
- * @since TBD Change back to after_setup_theme after digging a bit deeper.
+ * @since 2.19.0 Change back to after_setup_theme after digging a bit deeper.
  *
  * @link https://github.com/studiopress/genesis/issues/77
  *

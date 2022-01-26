@@ -25,7 +25,7 @@ add_action( 'after_setup_theme', 'mai_load_dependencies' );
  * Workaround is to only recommend plugins required by all demos.
  *
  * @since 2.14.0
- * @since TBD Registered config via PHP.
+ * @since 2.19.0 Registered config via PHP.
  *
  * @return void
  */
@@ -50,7 +50,7 @@ function mai_load_dependencies() {
 /**
  * Gets engine plugin dependencies.
  *
- * @since TBD
+ * @since 2.19.0
  *
  * @return array
  */

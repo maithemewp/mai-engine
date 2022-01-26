@@ -127,7 +127,7 @@ function mai_render_admin_menu_page() {
 /**
  * Renders admin patterns page markup.
  *
- * @since TBD
+ * @since 2.19.0
  *
  * @return void
  */
@@ -298,7 +298,7 @@ add_filter( 'plugin_action_links_mai-engine/mai-engine.php', 'mai_add_plugins_li
 /**
  * Return the plugin action links. This will only be called if the plugin is active.
  *
- * @since TBD
+ * @since 2.19.0
  *
  * @param array  $actions     Associative array of action names to anchor tags
  * @param string $plugin_file Plugin file name, ie my-plugin/my-plugin.php

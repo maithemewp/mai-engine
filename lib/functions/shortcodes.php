@@ -153,7 +153,7 @@ add_shortcode( 'mai_date', 'mai_date_shortcode' );
 /**
  * Displays post publish and modified date.
  *
- * @since TBD
+ * @since 2.19.0
  *
  * @return string
  */

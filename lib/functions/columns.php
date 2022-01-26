@@ -107,7 +107,7 @@ function mai_columns_get_flex( $size ) {
  * but it was easier to use the same formula with fractions. The latter formula is sitll used for entry columns since we can't
  * change it because it would break backwards compatibility.
  *
- * @since TBD
+ * @since 2.19.0
  *
  * @param string|int $size The size from column setting. Either a fraction `1/3` or an integer `3`.
  *

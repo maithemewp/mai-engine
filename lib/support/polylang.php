@@ -16,7 +16,7 @@ add_filter( 'register_post_type_args', 'mai_polylang_create_template_parts', 8, 
 /**
  * Allows users to create new template parts.
  *
- * @since TBD
+ * @since 2.19.0
  *
  * @param array  $args      Array of arguments for registering a post type. See the register_post_type() function for accepted arguments.
  * @param string $post_type Post type key.

@@ -117,7 +117,7 @@ add_filter( 'acf/load_field/key=page_header_image', 'mai_load_page_header_image_
 /**
  * Changes field label on Add New screen.
  *
- * @since TBD
+ * @since 2.19.0
  *
  * @param array $field The existing field array.
  *
@@ -139,7 +139,7 @@ add_filter( 'acf/load_field/key=page_header_description', 'mai_load_page_header_
 /**
  * Changes field label on Add New screen.
  *
- * @since TBD
+ * @since 2.19.0
  *
  * @param array $field The existing field array.
  *
