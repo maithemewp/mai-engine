@@ -336,7 +336,7 @@ add_action( 'admin_enqueue_scripts', 'mai_remove_global_styles_css', 9 );
 /**
  * Remove global styles CSS.
  *
- * @since TBD
+ * @since 2.19.1
  *
  * @return void
  */
