@@ -1,53 +1,53 @@
 # Changelog
 
 ## 2.19.1 (1/27/22)
-Fixed: Error when editing content areas in the admin.
-Fixed: Login form styling tweak for language switcher.
+* Fixed: Error when editing content areas in the admin.
+* Fixed: Login form styling tweak for language switcher.
 
 ## 2.19.0 (1/26/22)
-Added: New Plugins admin page which enables an easy install and activate screen when new Mai Design Pack plugin is installed.
-Added: New Patterns admin page which gives quick access to Mai Pattern Library.
-Added: New after and before date settings to Mai Post Grid block.
-Added: New `[mai_date]` shortcode to allow much more control over published and updated dates in entries.
-Added: New `has-auto-margin-top` and `has-auto-margin-bottom` helper CSS classes.
-Added: Custom image sizes added via config.php are now added to editor media chooser.
-Added: Custom image orientations can now be added via config.php and are automatically available in Customizer and Mai Post/Term Grid blocks.
-Added: [Developers] New `mai_entry_image_size` filter.
-Added: [Developers] New `mai_alignfull_first_blocks` filter to allow Mai Theme to check for other blocks that may be the first full aligned block in the content. Our CSS is adjusted for these blocks to remove whitespace on full width sections.
-Added: [Developers] New `mai_hide_search_toggle_text` filter to enable text next to the search toggle icon.
-Added: [Developers] Entry content now has `entry-content-single` class to differentiate when it's archive, single, or a grid entry.
-Changed: Columns via archives, Mai Columns, or Mai Post/Term Grid now use `gap` for CSS instead of negative margin. This works in enough recent major browser versions that it's worth using.
-Changed: Aspect ratio CSS now uses `aspect-ratio` property, with a fallback to the old padding trick for unsupported browsers.
-Changed: Helper `has-{color}-color` classes now use custom property values accordingly, instead of raw hex values.
-Changed: [Performance] Better responsive images by removing our max srcset size filter. This was causing full size image to load in some scenarios.
-Changed: [Performance] Removed lazy loading attribute from page header image since that will almost always be loaded above the fold.
-Changed: [Accessibility] Menu toggle search forms now have a default placeholder.
-Changed: Headings now clear floats in CSS.
-Changed: List item margin is now applied a bit more aggressively to override WP core styles.
-Changed: Clearer image field labels when editing categories, tags, and custom taxonomies.
-Changed: Image srcset is now sorted to be mobile first. This controversially doesn't actually do anything, but we think it's much more readable.
-Changed: Admin menu support and docs links are now combined with an added capability check.
-Changed: Genesis Connect for WooCommerce is now recommended via the engine, not in the theme.
-Changed: Updated dependency installer.
-Changed: Dependency load order and other tweaks.
-Changed: Updated ACF to 5.11.4.
-Changed: Processing content function now conditionally checks for blocks to avoid extra `br` and `p` tags.
-Changed: Box shadow is now `none` instead of `0` when trying to removing via CSS.
-Changed: Menu search toggle in footer now opens the search box above the icon.
-Changed: Image blocks now have no margin when they are last item in a Mai Column block.
-Fixed: Editing Content Areas was showing a whitescreen in WP 5.9.
-Fixed: Mobile header search box now aligns correctly no matter where it is in the header.
-Fixed: Entry image margin and spacing fixes, especially when aligned left or right.
-Fixed: Scroll logo was not working on smaller screens when the header was still sticky.
-Fixed: Custom border radius on buttons weren't working.
-Fixed: Custom button-small and button-large classes now display button styles correctly in the editor.
-Fixed: Archive and Mai Post Grid alternating images weren't working when a custom image size was used.
-Fixed: Edge-case error when logo or scroll logo file was corrupt or missing dimensions.
-Fixed: Edge-case styling issue when some WooCommerce (or other) plugins use an iframe as an input.
-Fixed: Edge-case error when no site layout could be found and final fallback was needed.
-Fixed: Creating custom template content areas for translations was not working with WPML or Polylang.
-Fixed: [Accessibility] Aria labels were reversed on mobile menu toggle.
-Fixed: [WooCommerce] Hiding entry titles now work on product pages.
+* Added: New Plugins admin page which enables an easy install and activate screen when new Mai Design Pack plugin is installed.
+* Added: New Patterns admin page which gives quick access to Mai Pattern Library.
+* Added: New after and before date settings to Mai Post Grid block.
+* Added: New `[mai_date]` shortcode to allow much more control over published and updated dates in entries.
+* Added: New `has-auto-margin-top` and `has-auto-margin-bottom` helper CSS classes.
+* Added: Custom image sizes added via config.php are now added to editor media chooser.
+* Added: Custom image orientations can now be added via config.php and are automatically available in Customizer and Mai Post/Term Grid blocks.
+* Added: [Developers] New `mai_entry_image_size` filter.
+* Added: [Developers] New `mai_alignfull_first_blocks` filter to allow Mai Theme to check for other blocks that may be the first full aligned block in the content. Our CSS is adjusted for these blocks to remove whitespace on full width sections.
+* Added: [Developers] New `mai_hide_search_toggle_text` filter to enable text next to the search toggle icon.
+* Added: [Developers] Entry content now has `entry-content-single` class to differentiate when it's archive, single, or a grid entry.
+* Changed: Columns via archives, Mai Columns, or Mai Post/Term Grid now use `gap` for CSS instead of negative margin. This works in enough recent major browser versions that it's worth using.
+* Changed: Aspect ratio CSS now uses `aspect-ratio` property, with a fallback to the old padding trick for unsupported browsers.
+* Changed: Helper `has-{color}-color` classes now use custom property values accordingly, instead of raw hex values.
+* Changed: [Performance] Better responsive images by removing our max srcset size filter. This was causing full size image to load in some scenarios.
+* Changed: [Performance] Removed lazy loading attribute from page header image since that will almost always be loaded above the fold.
+* Changed: [Accessibility] Menu toggle search forms now have a default placeholder.
+* Changed: Headings now clear floats in CSS.
+* Changed: List item margin is now applied a bit more aggressively to override WP core styles.
+* Changed: Clearer image field labels when editing categories, tags, and custom taxonomies.
+* Changed: Image srcset is now sorted to be mobile first. This controversially doesn't actually do anything, but we think it's much more readable.
+* Changed: Admin menu support and docs links are now combined with an added capability check.
+* Changed: Genesis Connect for WooCommerce is now recommended via the engine, not in the theme.
+* Changed: Updated dependency installer.
+* Changed: Dependency load order and other tweaks.
+* Changed: Updated ACF to 5.11.4.
+* Changed: Processing content function now conditionally checks for blocks to avoid extra `br` and `p` tags.
+* Changed: Box shadow is now `none` instead of `0` when trying to removing via CSS.
+* Changed: Menu search toggle in footer now opens the search box above the icon.
+* Changed: Image blocks now have no margin when they are last item in a Mai Column block.
+* Fixed: Editing Content Areas was showing a whitescreen in WP 5.9.
+* Fixed: Mobile header search box now aligns correctly no matter where it is in the header.
+* Fixed: Entry image margin and spacing fixes, especially when aligned left or right.
+* Fixed: Scroll logo was not working on smaller screens when the header was still sticky.
+* Fixed: Custom border radius on buttons weren't working.
+* Fixed: Custom button-small and button-large classes now display button styles correctly in the editor.
+* Fixed: Archive and Mai Post Grid alternating images weren't working when a custom image size was used.
+* Fixed: Edge-case error when logo or scroll logo file was corrupt or missing dimensions.
+* Fixed: Edge-case styling issue when some WooCommerce (or other) plugins use an iframe as an input.
+* Fixed: Edge-case error when no site layout could be found and final fallback was needed.
+* Fixed: Creating custom template content areas for translations was not working with WPML or Polylang.
+* Fixed: [Accessibility] Aria labels were reversed on mobile menu toggle.
+* Fixed: [WooCommerce] Hiding entry titles now work on product pages.
 
 ## 2.18.0 (10/25/21)
 * Added: You can now use shortcodes and blocks (via [mai_content]) in author bios.
