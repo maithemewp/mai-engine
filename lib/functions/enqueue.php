@@ -331,8 +331,8 @@ function mai_deregister_asset( $handle ) {
 	$wp_styles->remove( $handle );
 }
 
-add_action( 'wp_enqueue_scripts', 'mai_remove_global_styles_css' );
-add_action( 'admin_enqueue_scripts', 'mai_remove_global_styles_css', 9 );
+// add_action( 'wp_enqueue_scripts', 'mai_remove_global_styles_css' );
+// add_action( 'admin_enqueue_scripts', 'mai_remove_global_styles_css', 9 );
 /**
  * Remove global styles CSS.
  *
