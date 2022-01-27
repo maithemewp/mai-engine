@@ -33,72 +33,70 @@ function mai_site_layout() {
 	}
 
 	$allowed = (array) genesis_get_layouts();
+	$default = 'standard-content';
 	$name    = null;
+	$context = null;
 
-	if ( is_admin() ) {
-		global $pagenow;
-
-		$site_layout = 'wide-content';
-
-		if ( 'post.php' !== $pagenow ) {
-			return $site_layout;
+	// Set default.
+	foreach ( $allowed as $layout_name => $layout_data ) {
+		if ( isset( $layout_data['default'] ) && $layout_data['default'] ) {
+			$default = $layout_name;
+			break;
 		}
-
-		$post_id = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
-
-		if ( ! $post_id ) {
-			return $site_layout;
-		}
-
-		$single_layout = genesis_get_custom_field( '_genesis_layout', $post_id );
-
-		if ( $single_layout && isset( $allowed[ $single_layout ] ) ) {
-			$site_layout = $single_layout;
-		}
-
-		$name = get_post_type( $post_id );
-
-	} elseif ( is_singular() || ( is_home() && ! genesis_is_root_page() ) ) {
-		$post_id     = is_home() ? get_option( 'page_for_posts' ) : null;
-		$site_layout = genesis_get_custom_field( '_genesis_layout', $post_id );
-
-	} elseif ( is_category() || is_tag() || is_tax() ) {
-
-		/**
-		 * WP Query object.
-		 *
-		 * @var WP_Query $wp_query
-		 */
-		global $wp_query;
-
-		$term        = $wp_query->get_queried_object();
-		$site_layout = $term ? get_term_meta( $term->term_id, 'layout', true ) : '';
-
-	} elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-		$site_layout = genesis_get_cpt_option( 'layout' );
-
-	} elseif ( is_author() ) {
-		$site_layout = get_the_author_meta( 'layout', (int) get_query_var( 'author' ) );
 	}
 
-	if ( ! $site_layout && ! is_admin() ) {
-		$layouts  = [];
-		$defaults = mai_get_config( 'settings' )['site-layouts'];
-		$settings = mai_get_option( 'site-layouts', [] );
+	// Admin.
+	if ( is_admin() ) {
+		$screen = get_current_screen();
 
-		// Remove empty values from settings, so wp_parse_args works correctly.
-		foreach ( $settings as $context => $values ) {
-			$settings[ $context ] = array_filter( $settings[ $context ] );
+		if ( ! $screen || 'post' !== $screen->base ) {
+			return $default;
 		}
 
-		// Loop through defaults, and parse settings if available.
-		foreach ( $defaults as $context => $default ) {
-			$layouts[ $context ] = isset( $settings[ $context ] ) ? wp_parse_args( $settings[ $context ], $defaults[ $context ] ) : $defaults[ $context ];
+		// Can't get_the_ID() on pages like Page for Posts.
+		$post_id = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
+
+		if ( $post_id ) {
+			$single_layout = genesis_get_custom_field( '_genesis_layout', $post_id );
+
+			if ( $single_layout && isset( $allowed[ $single_layout ] ) ) {
+				$site_layout = $single_layout;
+			}
 		}
 
-		$context = null;
+		$name    = $screen->post_type;
+		$context = 'single';
+	}
+	// Front end.
+	else {
+		if ( is_singular() || ( is_home() && ! genesis_is_root_page() ) ) {
+			$post_id     = is_home() ? get_option( 'page_for_posts' ) : null;
+			$site_layout = genesis_get_custom_field( '_genesis_layout', $post_id );
 
-		if ( ! $name ) {
+		} elseif ( is_category() || is_tag() || is_tax() ) {
+
+			/**
+			 * WP Query object.
+			 *
+			 * @var WP_Query $wp_query
+			 */
+			global $wp_query;
+
+			$term        = $wp_query->get_queried_object();
+			$site_layout = $term ? get_term_meta( $term->term_id, 'layout', true ) : '';
+
+		} elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+			$site_layout = genesis_get_cpt_option( 'layout' );
+
+		} elseif ( is_author() ) {
+			$site_layout = get_the_author_meta( 'layout', (int) get_query_var( 'author' ) );
+		}
+	}
+
+	if ( ! ( $site_layout && isset( $allowed[ $site_layout ] ) ) ) {
+		$layouts = (array) mai_get_site_layouts();
+
+		if ( ! ( $name && $context ) ) {
 			if ( mai_is_type_archive() ) {
 				$context = 'archive';
 				$name    = mai_get_archive_args_name();
@@ -115,26 +113,71 @@ function mai_site_layout() {
 		}
 
 		// Context default.
-		if ( ! ( $site_layout && isset( $allowed[ $site_layout ] ) ) && $context && isset( $layouts['default'][ $context ] ) && $layouts['default'][ $context ] ) {
-			$site_layout = $layouts['default'][ $context ];
+		if ( ! ( $site_layout && isset( $allowed[ $site_layout ] ) ) ) {
+			if ( $context && isset( $layouts['default'][ $context ] ) && $layouts['default'][ $context ] ) {
+				$site_layout = $layouts['default'][ $context ];
+			}
 		}
 	}
 
 	// Site default.
-	if ( ! $site_layout ) {
-		foreach ( $allowed as $layout_name => $layout_data ) {
-			if ( isset( $layout_data['default'] ) && $layout_data['default'] ) {
-				$site_layout = $layout_name;
-				break;
-			}
+	if ( ! ( $site_layout && isset( $allowed[ $site_layout ] ) ) ) {
+		if ( isset( $defaults['default']['site'] ) && $defaults['default']['site'] ) {
+			$site_layout = $defaults['default']['site'];
 		}
 
-		if ( ! $site_layout ) {
-			$site_layout = 'standard-content';
+		if ( ! ( $site_layout && isset( $allowed[ $site_layout ] ) ) ) {
+			$site_layout = $default;
 		}
 	}
 
 	return esc_attr( $site_layout );
+}
+
+/**
+ * Gets all site layouts.
+ * Uses Customizer settings with fallbacks to config.
+ *
+ * @since 2.19.2
+ *
+ * @return array
+ */
+function mai_get_site_layouts() {
+	static $layouts = null;
+
+	if ( ! is_null( $layouts ) ) {
+		return $layouts;
+	}
+
+	$layouts  = [];
+	$allowed  = (array) genesis_get_layouts();
+	$settings = (array) mai_get_option( 'site-layouts', [] );
+	$defaults = (array) mai_get_config( 'settings' )['site-layouts'];
+
+	// Remove dividers from settings.
+	foreach ( $settings as $context => $values ) {
+		foreach ( $values as $key => $value ) {
+			if ( mai_has_string( '-divider', $key ) ) {
+				unset( $settings[ $context ][ $key ] );
+			}
+		}
+	}
+
+	// Loop through defaults, and parse settings if available.
+	foreach ( $defaults as $context => $default ) {
+		$layouts[ $context ] = isset( $settings[ $context ] ) ? wp_parse_args( $settings[ $context ], $defaults[ $context ] ) : $defaults[ $context ];
+	}
+
+	// Make sure all layouts are allowed.
+	foreach ( $layouts as $context => $types ) {
+		foreach ( $types as $type => $layout ) {
+			if ( $layout && ! isset( $allowed[ $layout ] ) ) {
+				$layouts[ $context ][ $type ] = '';
+			}
+		}
+	}
+
+	return $layouts;
 }
 
 /**
