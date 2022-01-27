@@ -75,7 +75,12 @@ function mai_render_cover_block( $block_content, $block ) {
 
 			if ( $overlays->length ) {
 				foreach ( $overlays as $overlay ) {
-					$classes = $overlay->getAttribute( 'class' );
+					$setclass = false;
+					$opacity  = (int) round( $opacity, -1, PHP_ROUND_HALF_UP ); // Round to 10.
+					$dim      = 'has-background-dim';
+					$amount   = sprintf( 'has-background-dim-%s', $opacity );
+					$classes  = $overlay->getAttribute( 'class' );
+					$array    = explode( ' ', $classes );
 
 					/**
 					 * Older instances of Cover block were not using the opacity setting for some reason.
@@ -84,9 +89,18 @@ function mai_render_cover_block( $block_content, $block ) {
 					 * Idk what changed or why this broke, but it's super frustrating
 					 * to have to do this.
 					 */
-					if ( ! mai_has_string( 'has-background-dim-', $classes ) ) {
-						$opacity = (int) round( $opacity, -1, PHP_ROUND_HALF_UP ); // Round to 10.
-						$classes = mai_add_classes( sprintf( 'has-background-dim-%s', $opacity ), $classes );
+
+					if ( ! in_array( $dim, $array ) ) {
+						$classes  = mai_add_classes( $dim, $classes );
+						$setclass = true;
+					}
+
+					if ( ! in_array( $amount, $array ) ) {
+						$classes = mai_add_classes( $amount, $classes );
+						$setclass = true;
+					}
+
+					if ( $setclass ) {
 						$overlay->setAttribute( 'class', $classes );
 					}
 				}
