@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.19.0 (1/27/22)
+## 2.19.1 (1/27/22)
 Fixed: Error when editing content areas in the admin.
 Fixed: Login form styling tweak for language switcher.
 
