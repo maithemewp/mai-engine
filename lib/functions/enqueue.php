@@ -331,10 +331,24 @@ function mai_deregister_asset( $handle ) {
 	$wp_styles->remove( $handle );
 }
 
+add_action( 'wp_enqueue_scripts', 'mai_remove_global_styles_css' );
+add_action( 'admin_enqueue_scripts', 'mai_remove_global_styles_css', 9 );
+/**
+ * Remove global styles CSS.
+ *
+ * @since 2.19.1
+ *
+ * @return void
+ */
+function mai_remove_global_styles_css() {
+	mai_deregister_asset( 'global-styles' );
+}
+
+
 add_action( 'wp_enqueue_scripts', 'mai_remove_block_library_theme_css' );
 add_action( 'admin_enqueue_scripts', 'mai_remove_block_library_theme_css', 9 );
 /**
- * Remove block library theme CSS from admin.
+ * Remove block library theme CSS.
  *
  * @since 2.4.0
  *
