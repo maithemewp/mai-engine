@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2.19.1 (1/27/22)
+* Changed: Removed global styles unused CSS added in WP 5.9.
 * Fixed: Error when editing content areas in the admin.
 * Fixed: Login form styling tweak for language switcher.
 
