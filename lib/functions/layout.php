@@ -32,8 +32,9 @@ function mai_site_layout() {
 		return esc_attr( $site_layout );
 	}
 
-	$allowed = (array) genesis_get_layouts();
-	$name    = null;
+	$allowed  = (array) genesis_get_layouts();
+	$defaults = mai_get_config( 'settings' )['site-layouts'];
+	$name     = null;
 
 	if ( is_admin() ) {
 		global $pagenow;
@@ -81,14 +82,17 @@ function mai_site_layout() {
 		$site_layout = get_the_author_meta( 'layout', (int) get_query_var( 'author' ) );
 	}
 
-	if ( ! $site_layout && ! is_admin() ) {
+	if ( ! ( $site_layout && isset( $allowed[ $site_layout ] ) ) && ! is_admin() ) {
 		$layouts  = [];
-		$defaults = mai_get_config( 'settings' )['site-layouts'];
 		$settings = mai_get_option( 'site-layouts', [] );
 
-		// Remove empty values from settings, so wp_parse_args works correctly.
+		// Remove dividers from settings.
 		foreach ( $settings as $context => $values ) {
-			$settings[ $context ] = array_filter( $settings[ $context ] );
+			foreach ( $values as $key => $value ) {
+				if ( mai_has_string( '-divider', $key ) ) {
+					unset( $settings[ $context ][ $key ] );
+				}
+			}
 		}
 
 		// Loop through defaults, and parse settings if available.
@@ -115,17 +119,25 @@ function mai_site_layout() {
 		}
 
 		// Context default.
-		if ( ! ( $site_layout && isset( $allowed[ $site_layout ] ) ) && $context && isset( $layouts['default'][ $context ] ) && $layouts['default'][ $context ] ) {
-			$site_layout = $layouts['default'][ $context ];
+		if ( ! ( $site_layout && isset( $allowed[ $site_layout ] ) ) ) {
+			if ( $context && isset( $layouts['default'][ $context ] ) && $layouts['default'][ $context ] ) {
+				$site_layout = $layouts['default'][ $context ];
+			}
 		}
 	}
 
 	// Site default.
-	if ( ! $site_layout ) {
-		foreach ( $allowed as $layout_name => $layout_data ) {
-			if ( isset( $layout_data['default'] ) && $layout_data['default'] ) {
-				$site_layout = $layout_name;
-				break;
+	if ( ! ( $site_layout && isset( $allowed[ $site_layout ] ) ) ) {
+		if ( isset( $defaults['default']['site'] ) && $defaults['default']['site'] ) {
+			$site_layout = $defaults['default']['site'];
+		}
+
+		if ( ! ( $site_layout && isset( $allowed[ $site_layout ] ) ) ) {
+			foreach ( $allowed as $layout_name => $layout_data ) {
+				if ( isset( $layout_data['default'] ) && $layout_data['default'] ) {
+					$site_layout = $layout_name;
+					break;
+				}
 			}
 		}
 
