@@ -36,6 +36,7 @@ function mai_render_cover_block( $block_content, $block ) {
 	}
 
 	$align     = mai_isset( $block['attrs'], 'contentAlign', false );
+	$opacity   = mai_isset( $block['attrs'], 'dimRatio', false );
 	$image_id  = mai_isset( $block['attrs'], 'id', false );
 	$image_url = mai_isset( $block['attrs'], 'url', false );
 	$parallax  = mai_isset( $block['attrs'], 'hasParallax', false );
@@ -43,7 +44,7 @@ function mai_render_cover_block( $block_content, $block ) {
 
 	$image_id = apply_filters( 'mai_cover_block_image_id', $image_id, $block );
 
-	if ( ! ( $align || ( $image_id && $image_url ) ) ) {
+	if ( ! ( $align || $opacity || ( $image_id && $image_url ) ) ) {
 		return $block_content;
 	}
 
@@ -61,6 +62,35 @@ function mai_render_cover_block( $block_content, $block ) {
 
 		if ( $align ) {
 			$style = sprintf( '--cover-block-justify-content:%s;', mai_get_flex_align( $align ) ) . $style;
+		}
+
+		if ( $opacity ) {
+			/**
+			 * The dom xpath.
+			 *
+			 * @var DOMXPath $xpath
+			 */
+			$xpath    = new DOMXPath( $dom );
+			$overlays = $xpath->query( '//span[contains(concat(" ", @class, " "), " wp-block-cover__gradient-background ")]', $first_block );
+
+			if ( $overlays->length ) {
+				foreach ( $overlays as $overlay ) {
+					$classes = $overlay->getAttribute( 'class' );
+
+					/**
+					 * Older instances of Cover block were not using the opacity setting for some reason.
+					 * This happened in WP 5.9 and/or engine 2.19.0.
+					 * This is a fix so the front end doesn't break.
+					 * Idk what changed or why this broke, but it's super frustrating
+					 * to have to do this.
+					 */
+					if ( ! mai_has_string( 'has-background-dim-', $classes ) ) {
+						$opacity = (int) round( $opacity, -1, PHP_ROUND_HALF_UP ); // Round to 10.
+						$classes = mai_add_classes( sprintf( 'has-background-dim-%s', $opacity ), $classes );
+						$overlay->setAttribute( 'class', $classes );
+					}
+				}
+			}
 		}
 
 		if ( $image_id ) {
