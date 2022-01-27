@@ -793,17 +793,17 @@ function mai_get_template_parts_from_demo() {
 						$parts = [];
 
 						/**
-						 * Can't use `wp_list_pluck()` because the key may not exist
+						 * Can't use `wp_list_pluck()` because the key/property may not exist
 						 * since changing the rest route in TDB
 						 *
 						 * @link https://core.trac.wordpress.org/ticket/34172
 						 */
 						foreach ( $data as $item ) {
-							if ( ! ( isset( $item['content_raw'] ) && isset( $item['slug'] ) ) ) {
+							if ( ! ( is_object( $item ) && property_exists( $item, 'content_raw' ) && property_exists( $item, 'slug' ) ) ) {
 								continue;
 							}
 
-							$parts[ $item['slug'] ] = $item['content_raw'];
+							$parts[ $item->slug ] = $item->content_raw;
 						}
 
 						if ( $parts ) {
