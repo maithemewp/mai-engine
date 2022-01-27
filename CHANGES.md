@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.19.1 (1/27/22)
+Fixed: Error when editing content areas in the admin.
+Fixed: Login form styling tweak for language switcher.
+
 ## 2.19.0 (1/26/22)
 Added: New Plugins admin page which enables an easy install and activate screen when new Mai Design Pack plugin is installed.
 Added: New Patterns admin page which gives quick access to Mai Pattern Library.
