@@ -138,7 +138,7 @@ function mai_site_layout() {
  * Gets all site layouts.
  * Uses Customizer settings with fallbacks to config.
  *
- * @since TBD
+ * @since 2.19.2
  *
  * @return array
  */

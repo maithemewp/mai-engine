@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.19.2 (1/27/22)
+* Fixed: Layout fallbacks were not working in some configurations.
+* Fixed: Site layouts now work (again) in the editor (editor content width).
+
 ## 2.19.1 (1/27/22)
 * Changed: Removed global styles unused CSS added in WP 5.9.
 * Fixed: Error when editing content areas in the admin.
