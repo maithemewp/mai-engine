@@ -24,13 +24,15 @@
 
 .edit-post-visual-editor__post-title-wrapper,
 .block-editor-block-list__layout.is-root-container {
-	padding-right: var(--side-spacing);
-	padding-left: var(--side-spacing);
+	max-width: var(--wp-block-max-width, var(--breakpoint-lg));
+	margin-right: auto;
+	margin-left: auto;
 }
 
 .wp-block[data-align="full"] {
-	margin-right: calc(var(--side-spacing) * -1) !important;
-	margin-left: calc(var(--side-spacing) * -1) !important;
+	max-width: var(--alignfull-max-width, var(--viewport-width));
+	margin-right: var(--alignfull-margin-right, calc(50% - ((var(--viewport-width) / 2) - (var(--scrollbar-width, 0px) / 2)))) !important;
+	margin-left: var(--alignfull-margin-left, calc(50% - ((var(--viewport-width) / 2) - (var(--scrollbar-width, 0px) / 2)))) !important;
 }
 
 // Wide Content (Default).

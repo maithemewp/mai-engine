@@ -60,16 +60,6 @@ p {
 	margin-left: 0;
 }
 
-// .wp-block-cover__inner-container,
-// .wp-block-group__inner-container {
-	// max-width: var(--wp-block-max-width, var(--breakpoint-xl)) !important;
-// }
-
-// Overridden in admin.scss.
-.wp-block:not([data-align="full"]):not([data-align="wide"]) {
-	max-width: var(--wp-block-max-width, var(--breakpoint-lg));
-}
-
 .wp-block.is-reusable {
 	max-width: unset !important;
 	margin-right: 0;
@@ -101,23 +91,13 @@ p {
 }
 
 .wp-block[data-align="full"] > .wp-block-group {
-	padding-right: calc(((var(--viewport-width) - var(--wp-block-max-width)) / 2) - var(--side-spacing));
-	padding-left: calc(((var(--viewport-width) - var(--wp-block-max-width)) / 2) - var(--side-spacing));
-
-	> .wp-block-group__inner-container {
-		margin-right: var(--side-spacing);
-		margin-left: var(--side-spacing);
-	}
+	padding-right: var(--side-spacing);
+	padding-left: var(--side-spacing);
 }
 
 .wp-block[data-align="full"] > .wp-block-cover {
-	padding-right: calc(((var(--viewport-width) - var(--wp-block-max-width)) / 2) - var(--side-spacing));
-	padding-left: calc(((var(--viewport-width) - var(--wp-block-max-width)) / 2) - var(--side-spacing));
-
-	> .wp-block-cover__inner-container {
-		margin-right: var(--side-spacing);
-		margin-left: var(--side-spacing);
-	}
+	padding-right: var(--side-spacing);
+	padding-left: var(--side-spacing);
 }
 
 [data-content-align="start"] {
@@ -143,12 +123,6 @@ p {
 	> .wp-block-cover__inner-container > .wp-block {
 		margin-right: unset;
 	}
-}
-
-[data-content-width="no"] {
-	--content-max-width: var(--viewport-width);
-	--wp-block-max-width: var(--viewport-width);
-	--side-spacing: 0;
 }
 
 /**
@@ -190,7 +164,14 @@ p {
 	// since their content should never be larger than the parent.
 	[data-content-width="#{ $breakpoint-name }"] {
 		--content-max-width: var(--breakpoint-#{ $breakpoint-name });
+		--wp-block-max-width: var(--breakpoint-#{ $breakpoint-name });
 	}
+}
+
+[data-content-width="no"] {
+	--content-max-width: var(--viewport-width);
+	--wp-block-max-width: var(--viewport-width);
+	--side-spacing: 0;
 }
 
 /**
@@ -210,7 +191,6 @@ p {
 			--heading-margin-#{ $margin-setting }: #{ $margin-size };
 			--separator-block-margin-#{ $margin-setting }: #{ $margin-size };
 			--paragraph-margin-#{ $margin-setting }: #{ $margin-size };
-			// margin-#{ $margin-setting }: #{ $margin-size };
 		}
 	}
 }
@@ -222,15 +202,14 @@ p {
  * 'core/cover',
  * 'core/group',
  */
-@each $spacing-name, $spacing-size in $margin {
+@each $margin-name, $margin-size in $margin {
 
 	@each $margin-setting in $margin_settings {
 
-		// [data-margin-#{ $margin-setting }="#{ $spacing-name }"] {
-		.wp-block-image[data-spacing-#{ $margin-setting }="#{ $spacing-name }"],
-		.wp-block-cover[data-spacing-#{ $margin-setting }="#{ $spacing-name }"],
-		.wp-block-group[data-spacing-#{ $margin-setting }="#{ $spacing-name }"] {
-			margin-#{ $margin-setting }: #{ $spacing-size } !important;
+		.wp-block-image[data-margin-#{ $margin-setting }="#{ $margin-name }"],
+		.wp-block-cover[data-margin-#{ $margin-setting }="#{ $margin-name }"],
+		.wp-block-group[data-margin-#{ $margin-setting }="#{ $margin-name }"] {
+			margin-#{ $margin-setting }: #{ $margin-size } !important;
 		}
 	}
 }
@@ -242,15 +221,14 @@ p {
  * 'core/cover',
  * 'core/group',
  */
-@each $spacing-name, $spacing-size in $negative_margin {
+@each $margin-name, $margin-size in $negative_margin {
 
 	@each $margin-setting in $margin_settings {
 
-		// [data-margin-#{ $margin-setting }="#{ $spacing-name }"] {
-		.wp-block-image[data-spacing-#{ $margin-setting }="#{ $spacing-name }"],
-		.wp-block-cover[data-spacing-#{ $margin-setting }="#{ $spacing-name }"],
-		.wp-block-group[data-spacing-#{ $margin-setting }="#{ $spacing-name }"] {
-			margin-#{ $margin-setting }: calc(#{ $spacing-size } * -1) !important;
+		.wp-block-image[data-margin-#{ $margin-setting }="#{ $margin-name }"],
+		.wp-block-cover[data-margin-#{ $margin-setting }="#{ $margin-name }"],
+		.wp-block-group[data-margin-#{ $margin-setting }="#{ $margin-name }"] {
+			margin-#{ $margin-setting }: calc(#{ $margin-size } * -1) !important;
 		}
 	}
 }
