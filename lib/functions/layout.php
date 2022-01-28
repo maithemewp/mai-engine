@@ -122,8 +122,8 @@ function mai_site_layout() {
 
 	// Site default.
 	if ( ! ( $site_layout && isset( $allowed[ $site_layout ] ) ) ) {
-		if ( isset( $defaults['default']['site'] ) && $defaults['default']['site'] ) {
-			$site_layout = $defaults['default']['site'];
+		if ( isset( $layouts['default']['site'] ) && $layouts['default']['site'] ) {
+			$site_layout = $layouts['default']['site'];
 		}
 
 		if ( ! ( $site_layout && isset( $allowed[ $site_layout ] ) ) ) {
