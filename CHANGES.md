@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.19.3 (1/28/22)
+* Fixed: Layout fallbacks not working, again.
+
 ## 2.19.2 (1/27/22)
 * Fixed: Layout fallbacks were not working in some configurations.
 * Fixed: Site layouts now work (again) in the editor (editor content width).
