@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.19.4 (1/28/22)
+* Fixed: Editor layout, full align, and margin settings now more closely match the front end.
+
 ## 2.19.3 (1/28/22)
 * Fixed: Layout fallbacks not working, again.
 
