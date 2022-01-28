@@ -189,7 +189,7 @@ p {
 	// We don't need to worry about nested block here,
 	// since their content should never be larger than the parent.
 	[data-content-width="#{ $breakpoint-name }"] {
-		--content-max-width: var(--breakpoint-#{ $breakpoint-name });
+		--wp-block-max-width: var(--breakpoint-#{ $breakpoint-name });
 	}
 }
 
@@ -222,15 +222,14 @@ p {
  * 'core/cover',
  * 'core/group',
  */
-@each $spacing-name, $spacing-size in $margin {
+@each $margin-name, $margin-size in $margin {
 
 	@each $margin-setting in $margin_settings {
 
-		// [data-margin-#{ $margin-setting }="#{ $spacing-name }"] {
-		.wp-block-image[data-spacing-#{ $margin-setting }="#{ $spacing-name }"],
-		.wp-block-cover[data-spacing-#{ $margin-setting }="#{ $spacing-name }"],
-		.wp-block-group[data-spacing-#{ $margin-setting }="#{ $spacing-name }"] {
-			margin-#{ $margin-setting }: #{ $spacing-size } !important;
+		.wp-block-image[data-margin-#{ $margin-setting }="#{ $margin-name }"],
+		.wp-block-cover[data-margin-#{ $margin-setting }="#{ $margin-name }"],
+		.wp-block-group[data-margin-#{ $margin-setting }="#{ $margin-name }"] {
+			margin-#{ $margin-setting }: #{ $margin-size } !important;
 		}
 	}
 }
@@ -242,15 +241,14 @@ p {
  * 'core/cover',
  * 'core/group',
  */
-@each $spacing-name, $spacing-size in $negative_margin {
+@each $margin-name, $margin-size in $negative_margin {
 
 	@each $margin-setting in $margin_settings {
 
-		// [data-margin-#{ $margin-setting }="#{ $spacing-name }"] {
-		.wp-block-image[data-spacing-#{ $margin-setting }="#{ $spacing-name }"],
-		.wp-block-cover[data-spacing-#{ $margin-setting }="#{ $spacing-name }"],
-		.wp-block-group[data-spacing-#{ $margin-setting }="#{ $spacing-name }"] {
-			margin-#{ $margin-setting }: calc(#{ $spacing-size } * -1) !important;
+		.wp-block-image[data-margin-#{ $margin-setting }="#{ $margin-name }"],
+		.wp-block-cover[data-margin-#{ $margin-setting }="#{ $margin-name }"],
+		.wp-block-group[data-margin-#{ $margin-setting }="#{ $margin-name }"] {
+			margin-#{ $margin-setting }: calc(#{ $margin-size } * -1) !important;
 		}
 	}
 }
