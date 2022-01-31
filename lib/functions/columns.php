@@ -137,10 +137,15 @@ function mai_columns_get_flex_basis( $size ) {
 		$array   = explode( '/', $fraction );
 		// Divide fractin to get decimal.
 		$float   = (isset( $array[0] ) ? $array[0] : 1) / (isset( $array[1] ) ? $array[1] : 1);
-		// Subtract 1 - decimal. Wow this was annoying. @link https://stackoverflow.com/questions/17210787/php-float-calculation-error-when-subtracting
-		$float   = bcsub( '1', (string) $float, 6 );
+		// Trim to 6 places.
+		// $float   = number_format( $float, 6, '.', '' ); // No need to do this since using the calculation before * 1000000.
+		// Subtract 1 - {decimal}. Wow this was annoying. @link https://stackoverflow.com/questions/17210787/php-float-calculation-error-when-subtracting
+		// $float   = bcsub( '1', (string) $float, 6 ); // Can't use this because it's not available on all hosts. @link https://stackoverflow.com/questions/63593354/undefined-function-bcsub
+		$float   = ( ( 1000000 - floor($float * 1000000) ) / 1000000 );
 		// Trim trailing zeros.
 		$float   = (float) $float;
+		// Converts 0.0 to 0.
+		$float   = $float > 0 ? $float : '0';
 
 		$all[ $size ] = sprintf( 'calc(%s - (var(--column-gap) * %s))', $percent, $float );
 	}
