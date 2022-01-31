@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.19.6 (1/31/22)
+* Changed: Reverts clearing floats on headings. Headings now wrap around floated images and other elements as they did before 2.19.
+
 ## 2.19.5 (1/31/22)
 * Fixed: Function `bcsub()` does not exist on some hosting enviroments. Converted to a different method of calculation so that function is not required.
 
