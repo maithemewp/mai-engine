@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.19.5 (1/31/22)
+* Fixed: Function `bcsub()` does not exist on some hosting enviroments. Converted to a different method of calculation so that function is not required.
+
 ## 2.19.4 (1/28/22)
 * Fixed: Editor layout, full align, and margin settings now more closely match the front end.
 
