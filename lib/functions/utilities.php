@@ -740,11 +740,12 @@ function mai_get_loop_content_type_choices( $archive = true ) {
 			if ( ! $post_type->_builtin && ! post_type_supports( $post_type->name, $feature ) ) {
 				unset( $choices[ $name ] );
 			}
-		} elseif ( taxonomy_exists( $name ) ) {
+		}
+		// If type is a taxonomy.
+		elseif ( taxonomy_exists( $name ) ) {
 
 			$post_type = mai_get_taxonomy_post_type( $name );
 
-			// If type is a taxonomy.
 			if ( $post_type ) {
 				$post_type = get_post_type_object( $post_type );
 
