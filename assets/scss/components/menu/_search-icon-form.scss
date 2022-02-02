@@ -25,14 +25,14 @@
 	position: relative;
 	margin: 0;
 	padding: var(--menu-item-link-padding, var(--spacing-sm) var(--spacing-xxs));
-	color: var(--menu-toggle-color, var(--menu-item-link-color, var(--color-heading)));
+	color: var(--search-toggle-color, var(--menu-item-link-color, var(--color-heading)));
 	background: transparent;
 	border: none;
 	box-shadow: none;
 
 	&:hover,
 	&:focus {
-		color: var(--menu-toggle-color, var(--menu-item-link-color, var(--color-heading)));
+		color: var(--search-toggle-color-hover, var(--search-toggle-color, var(--menu-item-link-color, var(--color-heading))));
 		background: transparent;
 		border: none;
 		box-shadow: none;
