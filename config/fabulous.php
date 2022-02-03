@@ -10,7 +10,11 @@
  */
 
 return [
-	'demos'         => [],
+	'demos'         => [
+		'personal' => 30,
+		'fitness'  => 29,
+		'fitness'  => 31,
+	],
 	'global-styles' => [
 		'colors' => [
 			'background' => '#f9f9f9', // Body background.
@@ -57,28 +61,7 @@ return [
 		],
 		'mobile-menu-breakpoint' => '1040',
 		'content-archives'       => [
-			'category' => [
-				'image_orientation' => 'portrait',
-				'boxed'             => false,
-				'column_gap'        => 'xxl',
-				'row_gap'           => 'xxl',
-				'posts_nav'         => 'numeric',
-				'posts_per_page'    => '9',
-				'show'              => [
-					'image',
-					'genesis_entry_header',
-					'title',
-					'header_meta',
-					'genesis_before_entry_content',
-					'excerpt',
-					'genesis_entry_content',
-					'more_link',
-					'genesis_after_entry_content',
-					'genesis_entry_footer',
-					'footer_meta',
-				],
-				'content_limit' => '120',
-			],
+			'enable' => [ 'post', 'category' ],
 			'post' => [
 				'image_orientation' => 'portrait',
 				'image_position'    => 'left-middle',
@@ -96,11 +79,37 @@ return [
 					'genesis_entry_footer',
 					'footer_meta',
 				],
+				'content_limit'       => '200',
 				'boxed'               => false,
 				'column_gap'          => 'xxl',
 				'row_gap'             => 'xxxl',
 				'image_width'         => 'half',
 				'align_text_vertical' => 'middle',
+			],
+			'category' => [
+				'image_orientation' => 'portrait',
+				'boxed'             => false,
+				'column_gap'        => 'xxl',
+				'row_gap'           => 'xxl',
+				'posts_nav'         => 'numeric',
+				'posts_per_page'    => '9',
+				'show'              => [
+					'image',
+					'genesis_entry_header',
+					'header_meta',
+					'title',
+					'genesis_before_entry_content',
+					'excerpt',
+					'genesis_entry_content',
+					'more_link',
+					'genesis_after_entry_content',
+					'genesis_entry_footer',
+				],
+				'content_limit'  => '120',
+				'image_position' => 'center',
+				'header_meta'    => '[post_date]',
+				'footer_meta'    => '[post_categories]',
+				'columns'        => '3',
 			],
 		],
 	],
