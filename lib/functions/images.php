@@ -40,7 +40,7 @@ defined( 'ABSPATH' ) || die;
  */
 add_filter( 'wp_calculate_image_srcset', 'mai_image_srcset_order', 10, 5 );
 function mai_image_srcset_order( $sources, $size_array, $image_src, $image_meta, $attachment_id ) {
-	// Someone hit a bool $sources error.
+	// Someone hit a bool $sources error when using svg for site logo.
 	if ( is_array( $sources ) && $sources ) {
 		ksort( $sources, SORT_NUMERIC );
 	}
