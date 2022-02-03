@@ -2,6 +2,8 @@
 	width: 100%;
 	max-width: var(--content-max-width); // Default set in global.
 	margin: var(--content-margin, var(--content-margin-top, 0) var(--content-margin-sides, auto) var(--content-margin-bottom, 0));
+	// padding: var(--content-padding, 0);
+	// background: var(--content-background);
 
 	@include mq(lg) {
 		order: var(--content-order, 0);
