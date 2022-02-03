@@ -21,6 +21,11 @@ return [
 			'primary'    => '#6ecfbe', // Button primary background color.
 			'secondary'  => '#f4f4f4', // Button secondary background color.
 		],
+		'custom-colors' => [
+			[
+				'color' => '#fb1490', // var(--color-custom-1).
+			],
+		],
 		'fonts' => [
 			'body'    => 'Montserrat:400',
 			'heading' => 'Pathway Gothic One:400',
