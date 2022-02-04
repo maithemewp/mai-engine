@@ -112,6 +112,12 @@ return [
 				'columns'        => '3',
 			],
 		],
+		'single-content' => [
+			'post' => [
+				'image_orientation' => 'portrait',
+				'header_meta'       => '[mai_avatar size="32"][post_date] [post_author_posts_link before="by "]',
+			],
+		],
 	],
 	'plugins'           => [
 		'woocommerce/woocommerce.php' => [
