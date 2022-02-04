@@ -11,9 +11,9 @@
 
 return [
 	'demos'         => [
+		'creative' => 31,
 		'personal' => 30,
 		'fitness'  => 29,
-		'fitness'  => 31,
 	],
 	'global-styles' => [
 		'colors' => [
