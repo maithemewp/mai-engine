@@ -961,6 +961,8 @@ class Mai_Entry {
 
 		if ( 'single' === $this->context ) {
 			$atts['class'] .= ' entry-title-single';
+		} elseif ( 'archive' === $this->context ) {
+			$atts['class'] .= ' entry-title-archive';
 		}
 
 		// Build the output.
