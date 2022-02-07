@@ -29,6 +29,17 @@ class ComposerStaticInitb0704fa2d6e84172882dda317c7a9166
             'ProteusThemes\\WPContentImporter2\\' => 33,
             'PhpOption\\' => 10,
         ),
+        'K' => 
+        array (
+            'Kirki\\Util\\' => 11,
+            'Kirki\\Settings\\' => 15,
+            'Kirki\\Module\\' => 13,
+            'Kirki\\Field\\' => 12,
+            'Kirki\\Data\\' => 11,
+            'Kirki\\Control\\' => 14,
+            'Kirki\\Compatibility\\' => 20,
+            'Kirki\\' => 6,
+        ),
         'G' => 
         array (
             'GrahamCampbell\\ResultType\\' => 26,
@@ -71,6 +82,101 @@ class ComposerStaticInitb0704fa2d6e84172882dda317c7a9166
         'PhpOption\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
+        ),
+        'Kirki\\Util\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kirki-framework/util/src',
+            1 => __DIR__ . '/..' . '/kirki-framework/control-dashicons/src/Util',
+        ),
+        'Kirki\\Settings\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kirki-framework/control-repeater/src/Settings',
+        ),
+        'Kirki\\Module\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kirki-framework/module-webfonts/src',
+            1 => __DIR__ . '/..' . '/kirki-framework/module-tooltips/src',
+            2 => __DIR__ . '/..' . '/kirki-framework/module-selective-refresh/src',
+            3 => __DIR__ . '/..' . '/kirki-framework/module-section-icons/src',
+            4 => __DIR__ . '/..' . '/kirki-framework/module-preset/src',
+            5 => __DIR__ . '/..' . '/kirki-framework/module-postmessage/src',
+            6 => __DIR__ . '/..' . '/kirki-framework/module-field-dependencies/src',
+            7 => __DIR__ . '/..' . '/kirki-framework/module-css/src',
+            8 => __DIR__ . '/..' . '/kirki-framework/module-editor-styles/src',
+        ),
+        'Kirki\\Field\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kirki-framework/control-react-select/src/Field',
+            1 => __DIR__ . '/..' . '/kirki-framework/control-react-colorful/src/Field',
+            2 => __DIR__ . '/..' . '/kirki-framework/control-generic/src/Field',
+            3 => __DIR__ . '/..' . '/kirki-framework/control-custom/src/Field',
+            4 => __DIR__ . '/..' . '/kirki-framework/field-typography/src/Field',
+            5 => __DIR__ . '/..' . '/kirki-framework/field-multicolor/src/Field',
+            6 => __DIR__ . '/..' . '/kirki-framework/control-select/src/Field',
+            7 => __DIR__ . '/..' . '/kirki-framework/field-fontawesome/src/Field',
+            8 => __DIR__ . '/..' . '/kirki-framework/control-dimension/src/Field',
+            9 => __DIR__ . '/..' . '/kirki-framework/field-dimensions/src',
+            10 => __DIR__ . '/..' . '/kirki-framework/control-radio/src/Field',
+            11 => __DIR__ . '/..' . '/kirki-framework/field-background/src',
+            12 => __DIR__ . '/..' . '/kirki-framework/control-upload/src/Field',
+            13 => __DIR__ . '/..' . '/kirki-framework/control-sortable/src/Field',
+            14 => __DIR__ . '/..' . '/kirki-framework/control-slider/src/Field',
+            15 => __DIR__ . '/..' . '/kirki-framework/control-image/src/Field',
+            16 => __DIR__ . '/..' . '/kirki-framework/control-color/src/Field',
+            17 => __DIR__ . '/..' . '/kirki-framework/control-checkbox/src/Field',
+            18 => __DIR__ . '/..' . '/kirki-framework/control-repeater/src/Field',
+            19 => __DIR__ . '/..' . '/kirki-framework/control-palette/src/Field',
+            20 => __DIR__ . '/..' . '/kirki-framework/control-multicheck/src/Field',
+            21 => __DIR__ . '/..' . '/kirki-framework/control-editor/src/Field',
+            22 => __DIR__ . '/..' . '/kirki-framework/control-date/src/Field',
+            23 => __DIR__ . '/..' . '/kirki-framework/control-dashicons/src/Field',
+            24 => __DIR__ . '/..' . '/kirki-framework/control-color-palette/src/Field',
+            25 => __DIR__ . '/..' . '/kirki-framework/control-code/src/Field',
+        ),
+        'Kirki\\Data\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kirki-framework/data-option/src',
+        ),
+        'Kirki\\Control\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kirki-framework/control-base/src/Control',
+            1 => __DIR__ . '/..' . '/kirki-framework/control-react-select/src/Control',
+            2 => __DIR__ . '/..' . '/kirki-framework/control-react-colorful/src/Control',
+            3 => __DIR__ . '/..' . '/kirki-framework/control-generic/src/Control',
+            4 => __DIR__ . '/..' . '/kirki-framework/control-custom/src/Control',
+            5 => __DIR__ . '/..' . '/kirki-framework/field-typography/src/Control',
+            6 => __DIR__ . '/..' . '/kirki-framework/field-multicolor/src/Control',
+            7 => __DIR__ . '/..' . '/kirki-framework/control-select/src/Control',
+            8 => __DIR__ . '/..' . '/kirki-framework/control-dimension/src/Control',
+            9 => __DIR__ . '/..' . '/kirki-framework/control-radio/src/Control',
+            10 => __DIR__ . '/..' . '/kirki-framework/control-upload/src/Control',
+            11 => __DIR__ . '/..' . '/kirki-framework/control-sortable/src/Control',
+            12 => __DIR__ . '/..' . '/kirki-framework/control-slider/src/Control',
+            13 => __DIR__ . '/..' . '/kirki-framework/control-image/src/Control',
+            14 => __DIR__ . '/..' . '/kirki-framework/control-color/src/Control',
+            15 => __DIR__ . '/..' . '/kirki-framework/control-checkbox/src/Control',
+            16 => __DIR__ . '/..' . '/kirki-framework/control-repeater/src/Control',
+            17 => __DIR__ . '/..' . '/kirki-framework/control-palette/src/Control',
+            18 => __DIR__ . '/..' . '/kirki-framework/control-multicheck/src/Control',
+            19 => __DIR__ . '/..' . '/kirki-framework/control-editor/src/Control',
+            20 => __DIR__ . '/..' . '/kirki-framework/control-date/src/Control',
+            21 => __DIR__ . '/..' . '/kirki-framework/control-dashicons/src/Control',
+            22 => __DIR__ . '/..' . '/kirki-framework/control-cropped-image/src',
+            23 => __DIR__ . '/..' . '/kirki-framework/control-color-palette/src/Control',
+            24 => __DIR__ . '/..' . '/kirki-framework/control-code/src/Control',
+        ),
+        'Kirki\\Compatibility\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kirki-framework/compatibility/src',
+        ),
+        'Kirki\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kirki-framework/url-getter/src',
+            1 => __DIR__ . '/..' . '/kirki-framework/googlefonts/src',
+            2 => __DIR__ . '/..' . '/kirki-framework/module-sections/src',
+            3 => __DIR__ . '/..' . '/kirki-framework/module-panels/src',
+            4 => __DIR__ . '/..' . '/kirki-framework/l10n/src',
+            5 => __DIR__ . '/..' . '/kirki-framework/field/src',
         ),
         'GrahamCampbell\\ResultType\\' => 
         array (

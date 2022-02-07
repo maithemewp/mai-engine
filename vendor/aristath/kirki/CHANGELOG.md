@@ -1,6 +1,71 @@
+### 4.0.19 - February 7, 2022 ###
+Improvement:
+- `module-tooltips`: Adjust tooltip positioning to handle the dynamic content height and to respect the control's section height.
+
+Bugfix:
+- `control-palette` (not `control-color-palette`): it was missing
+- `control-react-colorful`: CSS output on instant preview (postMessage) didn't work when `property` is not set in the `output` argument's item.
+
+### 4.0.18 - January 25, 2022 ###
+Bugfix:
+- `module-tooltips`: Tooltip was displayed repeatedly inside repeater field
+
+### 4.0.17 - January 25, 2022 ###
+Bugfixes:
+- `control-checkbox`: There was notice messages where `$args['default']` can be undefined
+- `control-generic`: On number control, it was possible break the min & max by manually inputting the number
+
+### 4.0.16 - January 24, 2022 ###
+* Fix issue where switch control didn't handle the default value correctly.
+
+### 4.0.15 - January 18, 2022 ###
+* Fix issue where _html entities_ are not rendered in some control's label and description.
+
+### 4.0.14 - January 14, 2022 ###
+* Fix issue where the description in some controls can't contain HTML.
+
+### 4.0.13 - January 12, 2022 ###
+* Fix CSS output bug when Kirki fields are registered through `kirki_fields` (or `kirki/fields`) filter hook.
+
+### 4.0.12 - January 11, 2022 ###
+* Fix SVG upload on image control.
+
+### 4.0.11 - January 10, 2022 ###
+* Include section icons module (was missing)
+
+### 4.0.10 - January 10, 2022 ###
+* Fix issue where CSS output didn't respect active_callback's default value.
+
+### 4.0.9 - January 05, 2022 ###
+* Fix CSS output issue when a theme register their Kirki controls inside `init` hook.
+
+### 4.0.8 - January 05, 2022 ###
+* Fix CSS output issue where it doesn't respect `active_callback`
+
+### 4.0.7 - January 04, 2022 ###
+* Fix issue when using `option_type` as `option` without specifying the `option_name`
+
+### 4.0.6 - January 03, 2022 ###
+* Fix `active_callback` issue when using nested condition
+
+### 4.0.5 - Dezember 31, 2021 ###
+* Fix `toggleClass` usage when using `js_vars`
+
+### 4.0.4 - Dezember 31, 2021 ###
+* Allow string (numeric) as the choices value in slider control
+* Fix the compatibility issue when using Kirki::get_option to get the value of fields registered using new API.
+
+### 4.0.3 - Dezember 30, 2021 ###
+
+* Fixed: Fatal error caused by wrong folder name
+
+### 4.0 - Dezember 29, 2021 ###
+
+* Kirki 4.0 Release
+
 ## 3.1.9 - July 19, 2021
 
-* Fixed: Fixed: Styling issue in Switch control.
+* Fixed: Styling issue in Switch control.
 
 ## 3.1.8 - July 1, 2021
 
