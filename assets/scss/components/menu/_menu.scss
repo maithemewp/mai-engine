@@ -42,6 +42,13 @@
 	}
 }
 
+.menu-item-button {
+	--menu-item-link-flex: 0 1 auto; // Mostly for buttons in mobile menu.
+	--menu-item-link-color: var(--button-color);
+	--menu-item-link-color-hover: var(--button-color-hover, var(--button-color));
+	--button-font-size: var(--menu-font-size, var(--font-size-md));
+}
+
 .menu-item-link {
 	display: var(--menu-item-link-display, (flex));
 	flex: var(--menu-item-link-flex, unset);
@@ -69,13 +76,6 @@
 		> span {
 			filter: var(--menu-item-name-filter-hover, unset);
 		}
-	}
-
-	&[class*="button"] {
-		--menu-item-link-flex: 0 1 auto; // Mostly for buttons in mobile menu.
-		--menu-item-link-color: var(--button-color);
-		--menu-item-link-color-hover: var(--button-color-hover, var(--button-color));
-		--button-font-size: var(--menu-font-size, var(--font-size-md));
 	}
 }
 
