@@ -6,6 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    $vendorDir . '/aristath/kirki',
-    $vendorDir . '/aristath/kirki/core',
+    $vendorDir . '/kirki-framework/kirki',
+    $vendorDir . '/kirki-framework/kirki/core',
 );

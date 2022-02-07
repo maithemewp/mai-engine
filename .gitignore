@@ -18,7 +18,7 @@ vendor/composer/semver
 vendor/composer/xdebug-handler
 !vendor/advanced-custom-fields
 !vendor/afragen
-!vendor/aristath
+!vendor/kirki-framework
 !vendor/collizo4sky
 !vendor/maithemewp
 !vendor/proteusthemes
