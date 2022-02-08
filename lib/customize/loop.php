@@ -29,7 +29,7 @@ function mai_archive_settings_customizer_settings() {
 	$section = $handle . '-content-archives';
 	$choices = mai_get_loop_content_type_choices( true );
 
-	Kirki::add_section(
+	new \Kirki\Section(
 		$section,
 		[
 			'title'    => __( 'Enable Content Types', 'mai-engine' ),
@@ -80,7 +80,7 @@ function mai_single_settings_customizer_settings() {
 	$section = $handle . '-single-content';
 	$choices = mai_get_loop_content_type_choices( false );
 
-	Kirki::add_section(
+	new \Kirki\Section(
 		$section,
 		[
 			'title'    => __( 'Enable Content Types', 'mai-engine' ),

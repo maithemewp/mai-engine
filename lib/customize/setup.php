@@ -18,7 +18,33 @@ add_filter( 'kirki_telemetry', '__return_false' );
 // Skip hidden webfont choices.
 add_filter( 'kirki_mai-engine_webfonts_skip_hidden', '__return_false' );
 
-add_action( 'after_setup_theme', 'mai_add_kirki_config' );
+add_filter( 'kirki_path_url', 'mai_kirki_path_url', 10, 2 );
+/**
+ * Uses engine url for kirki assets.
+ *
+ * @since TBD
+ *
+ * @param string $url  The existing url.
+ * @param string $path The existing path.
+ *
+ * @return string
+ */
+function mai_kirki_path_url( $url, $path ) {
+	return str_replace( mai_get_dir(), mai_get_url(), $url );
+}
+
+add_action( 'init', 'mai_settings_panel' );
+function mai_settings_panel() {
+	new \Kirki\Panel(
+		mai_get_handle(),
+		[
+			'priority' => 150,
+			'title'    => esc_html__( 'Theme Settings', 'mai-engine' ),
+		]
+	);
+}
+
+// add_action( 'after_setup_theme', 'mai_add_kirki_config' );
 /**
  * Add Kirki config.
  *
@@ -41,16 +67,16 @@ function mai_add_kirki_config() {
 		]
 	);
 
-	Kirki::add_panel(
-		$handle,
-		[
-			'priority' => 150,
-			'title'    => esc_html__( 'Theme Settings', 'mai-engine' ),
-		]
-	);
+	// new \Kirki\Panel(
+	// 	$handle,
+	// 	[
+	// 		'priority' => 150,
+	// 		'title'    => esc_html__( 'Theme Settings', 'mai-engine' ),
+	// 	]
+	// );
 }
 
-add_filter( 'kirki/config', 'mai_kirki_config' );
+// add_filter( 'kirki/config', 'mai_kirki_config' );
 /**
  * Modifies kirki config defaults.
  *

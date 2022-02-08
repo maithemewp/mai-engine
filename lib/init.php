@@ -287,7 +287,7 @@ function mai_load_vendor_plugins() {
 	}
 
 	if ( ! class_exists( 'Kirki' ) ) {
-		$files[] = '../vendor/aristath/kirki/kirki';
+		$files[] = '../vendor/kirki-framework/kirki/kirki';
 	}
 
 	if ( ! $files ) {
@@ -328,6 +328,7 @@ function mai_load_files() {
 		'functions/autoload',
 		'functions/colors',
 		'functions/columns',
+		'functions/customizer',
 		'functions/defaults',
 		'functions/deprecated',
 		'functions/enqueue',
@@ -382,25 +383,32 @@ function mai_load_files() {
 		'blocks/search',
 		'blocks/settings',
 		'blocks/social-links',
-
-		// Customizer.
-		'customize/beta-tester',
-		'customize/colors',
-		'customize/content-archives',
-		'customize/logo',
-		'customize/loop',
-		'customize/menus',
-		'customize/output',
-		'customize/page-header',
-		'customize/performance',
-		'customize/setup',
-		'customize/single-content',
-		'customize/site-header',
-		'customize/site-layouts',
-		'customize/typography',
-		'customize/updates',
-		'customize/upsell',
 	];
+
+	// Customizer.
+	if ( class_exists( 'Kirki' ) ) {
+		$files = array_merge(
+			$files,
+			[
+				'customize/setup', // Setup first.
+				'customize/beta-tester',
+				'customize/colors',
+				// 'customize/content-archives',
+				// 'customize/logo',
+				// 'customize/loop',
+				'customize/menus',
+				// 'customize/page-header',
+				// 'customize/performance',
+				// 'customize/single-content',
+				// 'customize/site-header',
+				// 'customize/site-layouts',
+				'customize/typography',
+				// 'customize/updates',
+				// 'customize/upsell',
+				'customize/output', // Output last.
+			]
+		);
+	}
 
 	if ( is_admin() ) {
 		$files = array_merge(

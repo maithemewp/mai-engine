@@ -32,7 +32,22 @@ function mai_flush_customizer_transients() {
 	}
 }
 
-add_filter( 'kirki_mai-engine_styles', 'mai_add_kirki_css' );
+
+// add_filter( 'kirki_output_item_args', 'mai_kirki_output_item_args', 10, 4 );
+// function mai_kirki_output_item_args( $output, $value, $something_else, $field ) {
+// 	ray( $output, $value, $something_else, $field );
+// 	return $output;
+// }
+
+
+// add_filter( 'kirki_mai-engine_dynamic_css', 'mai_kirki_dynamice_css' );
+// function mai_kirki_dynamice_css( $styles ) {
+// 	ray( $styles );
+// 	return $styles;
+// }
+
+// add_filter( 'kirki_mai-engine_styles', 'mai_add_kirki_css' );
+add_filter( 'kirki_global_styles', 'mai_add_kirki_css' );
 /**
  * Outputs kirki css.
  *
@@ -59,11 +74,12 @@ function mai_add_kirki_css( $css ) {
 	$preview   = is_customize_preview();
 
 	if ( ! ( $admin || $preview ) && $cached_css = get_transient( $transient ) ) {
-		return $cached_css;
+		// return $cached_css;
 	}
 
-	$css = mai_add_additional_colors_css( $css );
-	$css = mai_add_custom_color_css( $css );
+	ray( $css );
+
+	$css = mai_add_colors_css( $css );
 	$css = mai_add_button_text_colors( $css );
 	$css = mai_add_breakpoint_custom_properties( $css );
 	$css = mai_add_title_area_custom_properties( $css );
@@ -71,7 +87,7 @@ function mai_add_kirki_css( $css ) {
 	$css = mai_add_extra_custom_properties( $css );
 
 	if ( ! ( $admin || $preview ) ) {
-		set_transient( $transient, $css, 60 );
+		// set_transient( $transient, $css, 60 );
 	}
 
 	return $css;
@@ -145,70 +161,40 @@ function mai_add_kirki_fonts( $fonts ) {
  *
  * @return array
  */
-function mai_add_additional_colors_css( $css ) {
-	$colors = mai_get_colors();
-	$shades = [
-		'primary',
-		'secondary',
-		'link'
-	];
-
-	// Add lighter and darker variants of primary and secondary colors.
-	foreach ( $shades as $shade ) {
-		if ( mai_isset( $colors, $shade, '' ) ) {
-			$light = mai_get_color_variant( $colors[ $shade ], 'light', 10 );
-			$dark  = mai_get_color_variant( $colors[ $shade ], 'dark', 10 );
-
-			if ( $light ) {
-				$css['global'][':root'][ '--color-' . $shade . '-light' ] = $light;
-			}
-
-			if ( $dark ) {
-				$css['global'][':root'][ '--color-' . $shade . '-dark' ] = $dark;
-			}
-		}
-	}
-
-	// Exclude settings output by Kirki.
-	$colors = array_diff_key( $colors, mai_get_color_elements() );
+function mai_add_colors_css( $css ) {
+	$colors   = mai_get_colors();
+	// $elements = mai_get_color_elements();
+	$shades = [ 'primary', 'secondary', 'link' ];
 
 	if ( $colors ) {
 		foreach ( $colors as $name => $color ) {
-			if ( $color ) {
-				$css['global'][':root'][ '--color-' . $name ]                               = $color;
-				$css['global'][ '.has-' . $name . '-color' ]['color']                       = 'var(--color-' . $name . ') !important';
-				$css['global'][ '.has-' . $name . '-color' ]['--body-color']                = 'var(--color-' . $name . ')';
-				$css['global'][ '.has-' . $name . '-color' ]['--heading-color']             = 'var(--color-' . $name . ')';
-				$css['global'][ '.has-' . $name . '-color' ]['--caption-color']             = 'var(--color-' . $name . ')';
-				$css['global'][ '.has-' . $name . '-color' ]['--cite-color']                = 'var(--color-' . $name . ')';
-				$css['global'][ '.has-' . $name . '-background-color' ]['background-color'] = 'var(--color-' . $name . ') !important';
+			if ( ! $color ) {
+				continue;
 			}
-		}
-	}
 
-	return $css;
-}
+			$shade                                        = in_array( $name, $shades );
+			$property                                     = 'var(--color-' . $name . ') !important';
+			$css['global'][':root'][ '--color-' . $name ] = $color;
 
-/**
- * Outputs breakpoint custom property.
- *
- * @since 2.0.0
- *
- * @param array $css Kirki CSS array.
- *
- * @return array
- */
-function mai_add_custom_color_css( $css ) {
-	$custom_colors = mai_get_option( 'custom-colors', [] );
-	$count         = 1;
+			if ( $shade ) {
+				$light = mai_get_color_variant( $colors[ $name ], 'light', 10 );
+				$dark  = mai_get_color_variant( $colors[ $name ], 'dark', 10 );
 
-	foreach ( $custom_colors as $custom_color ) {
-		if ( isset( $custom_color['color'] ) ) {
-			$css['global'][':root'][ '--color-custom-' . $count ]                             = $custom_color['color'];
-			$css['global']['.has-custom-' . $count . '-color']['color']                       = mai_get_color_css( $custom_color['color'] );
-			$css['global']['.has-custom-' . $count . '-background-color']['background-color'] = mai_get_color_css( $custom_color['color'] );
+				if ( $light ) {
+					$css['global'][':root'][ '--color-' . $name . '-light' ] = $light;
+				}
 
-			$count++;
+				if ( $dark ) {
+					$css['global'][':root'][ '--color-' . $name . '-dark' ] = $dark;
+				}
+			}
+
+			$css['global'][ '.has-' . $name . '-color' ]['color']                       = 'var(--color-' . $name . ') !important';
+			$css['global'][ '.has-' . $name . '-color' ]['--body-color']                = 'var(--color-' . $name . ')';
+			$css['global'][ '.has-' . $name . '-color' ]['--heading-color']             = 'var(--color-' . $name . ')';
+			$css['global'][ '.has-' . $name . '-color' ]['--caption-color']             = 'var(--color-' . $name . ')';
+			$css['global'][ '.has-' . $name . '-color' ]['--cite-color']                = 'var(--color-' . $name . ')';
+			$css['global'][ '.has-' . $name . '-background-color' ]['background-color'] = 'var(--color-' . $name . ') !important';
 		}
 	}
 

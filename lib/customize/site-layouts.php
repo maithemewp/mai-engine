@@ -32,7 +32,7 @@ function mai_site_layouts_customizer_settings() {
 		'single'  => sprintf( '%s[%s][single]', $handle, $name ),
 	];
 
-	Kirki::add_section(
+	new \Kirki\Section(
 		$section,
 		[
 			'title' => __( 'Site Layouts', 'mai-engine' ),

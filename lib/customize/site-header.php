@@ -24,7 +24,7 @@ function mai_site_header_customizer_settings() {
 	$handle  = mai_get_handle();
 	$section = $handle . '-site-header';
 
-	Kirki::add_section(
+	new \Kirki\Section(
 		$section,
 		[
 			'title' => esc_html__( 'Site Header', 'mai-engine' ),

@@ -48,7 +48,7 @@ function mai_page_header_customizer_settings() {
 		}
 	}
 
-	Kirki::add_section(
+	new \Kirki\Section(
 		$section,
 		[
 			'title' => __( 'Page Header', 'mai-engine' ),

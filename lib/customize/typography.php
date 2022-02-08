@@ -29,7 +29,7 @@ function mai_typography_customizer_settings() {
 	$handle  = mai_get_handle();
 	$section = $handle . '-typography';
 
-	Kirki::add_section(
+	new \Kirki\Section(
 		$section,
 		[
 			'title' => __( 'Typography', 'mai-engine' ),
@@ -40,66 +40,65 @@ function mai_typography_customizer_settings() {
 	$body_font_family = mai_get_default_font_family( 'body' );
 	$body_font_weight = mai_get_default_font_weight( 'body' );
 
-	Kirki::add_field(
-		$handle,
-		[
-			'type'        => 'typography',
-			'settings'    => 'body-typography',
-			'section'     => $section,
-			'label'       => __( 'Body', 'mai-engine' ),
-			'description' => __( 'Default: ', 'mai-engine' ) . $body_font_family . ' ' . $body_font_weight,
-			'choices'     => [
-				'fonts'   => [
-					'standard' => [ 'serif', 'sans-serif', 'monospace' ],
+	new \Kirki\Field\Typography(
+		mai_parse_kirki_args(
+			[
+				'settings'    => 'body-typography',
+				'section'     => $section,
+				'label'       => __( 'Body', 'mai-engine' ),
+				'description' => __( 'Default: ', 'mai-engine' ) . $body_font_family . ' ' . $body_font_weight,
+				'choices'     => [
+					'fonts'   => [
+						'standard' => [ 'serif', 'sans-serif', 'monospace' ],
+					],
 				],
-			],
-			'default'     => [
-				'font-family' => $body_font_family,
-				'variant'     => $body_font_weight,
-			],
-		]
+				'default'     => [
+					'font-family' => $body_font_family,
+					'variant'     => $body_font_weight,
+				],
+			]
+		)
 	);
 
 	$heading_font_family = mai_get_default_font_family( 'heading' );
 	$heading_font_weight = mai_get_default_font_weight( 'heading' );
 
-	Kirki::add_field(
-		$handle,
-		[
-			'type'        => 'typography',
-			'settings'    => 'heading-typography',
-			'section'     => $section,
-			'label'       => __( 'Heading', 'mai-engine' ),
-			'description' => __( 'Default: ', 'mai-engine' ) . $heading_font_family . ' ' . $heading_font_weight,
-			'choices'     => [
-				'fonts'   => [
-					'standard' => [ 'serif', 'sans-serif', 'monospace' ],
+	new \Kirki\Field\Typography(
+		mai_parse_kirki_args(
+			[
+				'settings'    => 'heading-typography',
+				'section'     => $section,
+				'label'       => __( 'Heading', 'mai-engine' ),
+				'description' => __( 'Default: ', 'mai-engine' ) . $heading_font_family . ' ' . $heading_font_weight,
+				'choices'     => [
+					'fonts'   => [
+						'standard' => [ 'serif', 'sans-serif', 'monospace' ],
+					],
 				],
-			],
-			'default'     => [
-				'font-family' => $heading_font_family,
-				'variant'     => $heading_font_weight,
-			],
-		]
+				'default'     => [
+					'font-family' => $heading_font_family,
+					'variant'     => $heading_font_weight,
+				],
+			]
+		)
 	);
 
-	Kirki::add_field(
-		$handle,
-		[
-			'type'        => 'switch',
-			'settings'    => 'flush-typography',
-			'label'       => __( 'Flush local fonts', 'mai-engine' ),
-			'description' => __( 'Warning: This will delete the entire /wp-content/fonts/ directory and all of it\'s contents. Enable this setting if your Google fonts are not loading correctly.', 'mai-engine' ),
-			'section'     => $section,
-			'transport'   => 'postMessage',
-			'choices' => [
-				'on'  => __( 'Flush once', 'kirki' ),
-				'off' => __( 'No', 'kirki' )
+	new \Kirki\Field\Checkbox_Switch(
+		mai_parse_kirki_args(
+			[
+				'settings'    => 'flush-typography',
+				'label'       => __( 'Flush local fonts', 'mai-engine' ),
+				'description' => __( 'Warning: This will delete the entire /wp-content/fonts/ directory and all of it\'s contents. Enable this setting if your Google fonts are not loading correctly.', 'mai-engine' ),
+				'section'     => $section,
+				'transport'   => 'postMessage',
+				'choices' => [
+					'on'  => __( 'Flush once', 'kirki' ),
+					'off' => __( 'No', 'kirki' )
+				]
 			]
-		]
+		)
 	);
 }
-
 
 add_action( 'init', 'mai_typography_maybe_flush_local_fonts' );
 /**
