@@ -9,18 +9,25 @@
  * @license   GPL-2.0-or-later
  */
 
+use Kirki\Util\Helper;
+
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-add_action( 'init', 'mai_menus_customizer_settings' );
+// add_action( 'genesis_before_loop', function() {
+// 	$data = get_option( 'mai-engine' );
+// 	ray( $data );
+// });
+
+// add_action( 'after_setup_theme', 'mai_menus_customizer_settings' );
 /**
- * Add base styles customizer settings.
+ * Add menu customizer settings.
  *
  * @since 0.3.0
  *
  * @return void
  */
-function mai_menus_customizer_settings() {
+// function mai_menus_customizer_settings() {
 	$handle  = mai_get_handle();
 	$section = $handle . '-menus';
 
@@ -119,4 +126,4 @@ function mai_menus_customizer_settings() {
 			]
 		)
 	);
-}
+// }

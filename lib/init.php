@@ -391,6 +391,7 @@ function mai_load_files() {
 			$files,
 			[
 				'customize/setup', // Setup first.
+				'customize/examples', // Kirki examples. Leave commented out.
 				'customize/beta-tester',
 				'customize/colors',
 				// 'customize/content-archives',

@@ -77,7 +77,7 @@ function mai_add_kirki_css( $css ) {
 		// return $cached_css;
 	}
 
-	ray( $css );
+	// ray( $css );
 
 	$css = mai_add_colors_css( $css );
 	$css = mai_add_button_text_colors( $css );
