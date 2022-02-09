@@ -45,7 +45,7 @@ function mai_typography_customizer_settings() {
 	new \Kirki\Field\Typography(
 		mai_parse_kirki_args(
 			[
-				'settings'    => 'body-typography',
+				'settings'    => mai_get_kirki_setting( 'body-typography' ),
 				'section'     => $section,
 				'label'       => __( 'Body', 'mai-engine' ),
 				'description' => __( 'Default: ', 'mai-engine' ) . $body_font_family . ' ' . $body_font_weight,
@@ -68,7 +68,7 @@ function mai_typography_customizer_settings() {
 	new \Kirki\Field\Typography(
 		mai_parse_kirki_args(
 			[
-				'settings'    => 'heading-typography',
+				'settings'    => mai_get_kirki_setting( 'heading-typography' ),
 				'section'     => $section,
 				'label'       => __( 'Heading', 'mai-engine' ),
 				'description' => __( 'Default: ', 'mai-engine' ) . $heading_font_family . ' ' . $heading_font_weight,
@@ -88,7 +88,7 @@ function mai_typography_customizer_settings() {
 	new \Kirki\Field\Checkbox_Switch(
 		mai_parse_kirki_args(
 			[
-				'settings'    => 'flush-typography',
+				'settings'    => mai_get_kirki_setting( 'flush-typography' ),
 				'label'       => __( 'Flush local fonts', 'mai-engine' ),
 				'description' => __( 'Warning: This will delete the entire /wp-content/fonts/ directory and all of it\'s contents. Enable this setting if your Google fonts are not loading correctly.', 'mai-engine' ),
 				'section'     => $section,

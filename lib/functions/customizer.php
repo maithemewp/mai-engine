@@ -31,12 +31,32 @@ defined( 'ABSPATH' ) || die;
  */
 function mai_parse_kirki_args( $args ) {
 	$args['option_type'] = 'option';
-	$args['option_name'] = mai_get_handle();
-	// $args['option_name'] = sprintf( '%s[%s]', mai_get_handle(), $args['settings'] );
+	// $args['option_name'] = mai_get_handle(); // I don't think this is needed but keeping here to be safe.
+
+	// Custom dividers don't have settings.
+	// if ( isset( $args['settings'] ) ) {
+	// 	$args['settings']    = mai_get_kirki_setting( $args['settings'] );
+	// }
+	// if ( ! isset( $args['option_name'] ) ) {
+	// 	$args['option_name'] = mai_get_kirki_setting( $args['settings'] );
+	// }
 
 	return $args;
 }
 
+/**
+ * Gets setting name for kirki.
+ *
+ * @since TBD
+ *
+ * @param string $key  The setting key.
+ * @param string $base The setting base.
+ *
+ * @return string
+ */
+function mai_get_kirki_setting( $key, $base = '' ) {
+	return sprintf( '%s%s[%s]', mai_get_handle(), $base, $key );
+}
 
 /**
  * Returns content archive settings.

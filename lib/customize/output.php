@@ -77,13 +77,16 @@ function mai_add_kirki_css( $css ) {
 		// return $cached_css;
 	}
 
-	// ray( $css );
+	// Make sure :root is set before adding to it below.
+	if ( ! isset( $css['global'][':root'] ) ) {
+		$css['global'][':root'] = [];
+	}
 
+	$css = mai_add_breakpoint_custom_properties( $css );
+	$css = mai_add_fonts_custom_properties( $css );
 	$css = mai_add_colors_css( $css );
 	$css = mai_add_button_text_colors( $css );
-	$css = mai_add_breakpoint_custom_properties( $css );
 	$css = mai_add_title_area_custom_properties( $css );
-	$css = mai_add_fonts_custom_properties( $css );
 	$css = mai_add_extra_custom_properties( $css );
 
 	if ( ! ( $admin || $preview ) ) {
@@ -138,14 +141,14 @@ function mai_add_kirki_fonts( $fonts ) {
 	$preview   = is_customize_preview();
 
 	if ( ! ( $admin || $preview ) && $cached_fonts = get_transient( $transient ) ) {
-		return $cached_fonts;
+		// return $cached_fonts;
 	}
 
 	$fonts = mai_add_body_font_variants( $fonts );
 	$fonts = mai_add_extra_google_fonts( $fonts );
 
 	if ( ! ( $admin || $preview ) ) {
-		set_transient( $transient, $fonts, 60 );
+		// set_transient( $transient, $fonts, 60 );
 	}
 
 	return $fonts;

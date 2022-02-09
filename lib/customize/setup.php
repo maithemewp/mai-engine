@@ -35,24 +35,13 @@ function mai_kirki_path_url( $url, $path ) {
 	return str_replace( mai_get_dir(), mai_get_url(), $url );
 }
 
-add_action( 'init', 'mai_settings_panel' );
-function mai_settings_panel() {
-	new \Kirki\Panel(
-		mai_get_handle(),
-		[
-			'priority' => 150,
-			'title'    => esc_html__( 'Theme Settings', 'mai-engine' ),
-		]
-	);
-}
-
-// add_action( 'after_setup_theme', 'mai_add_kirki_config' );
+// add_action( 'init', 'mai_add_kirki_config', 8 );
 /**
  * Add Kirki config.
  *
- * @since  0.1.0
+ * @since 0.1.0
  *
- * @link   https://aristath.github.io/kirki/docs/getting-started/config.html
+ * @link https://aristath.github.io/kirki/docs/getting-started/config.html
  *
  * @return void
  */
@@ -68,14 +57,24 @@ function mai_add_kirki_config() {
 			'gutenberg_support' => true,
 		]
 	);
+}
 
-	// new \Kirki\Panel(
-	// 	$handle,
-	// 	[
-	// 		'priority' => 150,
-	// 		'title'    => esc_html__( 'Theme Settings', 'mai-engine' ),
-	// 	]
-	// );
+add_action( 'init', 'mai_settings_panel', 8 );
+/**
+ * Add Kirki theme settings panel.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_settings_panel() {
+	new \Kirki\Panel(
+		mai_get_handle(),
+		[
+			'priority' => 150,
+			'title'    => esc_html__( 'Theme Settings', 'mai-engine' ),
+		]
+	);
 }
 
 // add_filter( 'kirki/config', 'mai_kirki_config' );
