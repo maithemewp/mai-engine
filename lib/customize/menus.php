@@ -66,9 +66,9 @@ function mai_menus_customizer_settings() {
 						'property' => '--menu-justify-content',
 					],
 				],
-				// 'active_callback' => function() {
-				// 	return has_nav_menu( 'header-left' );
-				// },
+				'active_callback' => function() {
+					return has_nav_menu( 'header-left' );
+				},
 			]
 		)
 	);
@@ -92,9 +92,9 @@ function mai_menus_customizer_settings() {
 						'property' => '--menu-justify-content',
 					],
 				],
-				// 'active_callback' => function() {
-				// 	return has_nav_menu( 'header-right' );
-				// },
+				'active_callback' => function() {
+					return has_nav_menu( 'header-right' );
+				},
 			]
 		)
 	);
@@ -118,9 +118,9 @@ function mai_menus_customizer_settings() {
 						'property' => '--menu-justify-content',
 					],
 				],
-				// 'active_callback' => function() {
-				// 	return has_nav_menu( 'after-header' );
-				// },
+				'active_callback' => function() {
+					return has_nav_menu( 'after-header' );
+				},
 			]
 		)
 	);
