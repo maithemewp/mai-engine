@@ -73,7 +73,7 @@ li.product {
 	padding: var(--product-padding, 0) !important;
 	border: var(--product-border, 0);
 	border-radius: var(--product-border-radius, 0);
-	box-shadow: var(--product-box-shadow, 0);
+	box-shadow: var(--product-box-shadow, none);
 	transition: none;
 
 	&::after {
