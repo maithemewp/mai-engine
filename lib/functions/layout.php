@@ -47,7 +47,7 @@ function mai_site_layout() {
 
 	// Admin.
 	if ( is_admin() ) {
-		$screen = get_current_screen();
+		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
 
 		if ( ! $screen || 'post' !== $screen->base ) {
 			return $default;
