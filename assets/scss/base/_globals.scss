@@ -79,20 +79,19 @@
 	 */
 
 	// This is the original for smaller padding values. Not used for Group/Cover spacing.
-	--spacing-base: 16px; /* Only used for values md and smaller as of 2.20 */
-	--spacing-scale: 1.5; /* Only used for values md and smaller as of 2.20 */
+	--spacing-base: 16px;
+	// --spacing-scale: 1.5;
 	--spacing-xxxxs: calc(var(--spacing-xxxs) / var(--spacing-scale));
 	--spacing-xxxs: calc(var(--spacing-xxs) / var(--spacing-scale));
 	--spacing-xxs: calc(var(--spacing-xs) / var(--spacing-scale));
 	--spacing-xs: calc(var(--spacing-sm) / var(--spacing-scale));
 	--spacing-sm: calc(var(--spacing-md) / var(--spacing-scale));
 	--spacing-md: var(--spacing-base);
-	// via https://utopia.fyi/type/calculator?c=400,16,1.25,1200,16,1.5,6,4,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l
-	--spacing-lg: clamp(1.25rem, 1.13rem + 0.50vw, 1.50rem);
-	--spacing-xl: clamp(1.56rem, 1.22rem + 1.38vw, 2.25rem);
-	--spacing-xxl: clamp(1.95rem, 1.24rem + 2.84vw, 3.38rem);
-	--spacing-xxxl: clamp(2.44rem, 1.13rem + 5.24vw, 5.06rem);
-	--spacing-xxxxl: clamp(3.05rem, 0.78rem + 9.08vw, 7.59rem);
+	--spacing-lg: calc(var(--spacing-md) * var(--spacing-scale));
+	--spacing-xl: calc(var(--spacing-lg) * var(--spacing-scale));
+	--spacing-xxl: calc(var(--spacing-xl) * var(--spacing-scale));
+	--spacing-xxxl: calc(var(--spacing-xxl) * var(--spacing-scale));
+	--spacing-xxxxl: calc(var(--spacing-xxxl) * var(--spacing-scale));
 
 	--side-spacing: calc(var(--spacing-md) + 2vw);
 
@@ -126,4 +125,25 @@
 :root {
 
 	@include custom-properties;
+}
+
+@include mq(false, md) {
+
+	:root {
+		--spacing-scale: 1.250; // Major third.
+	}
+}
+
+@include mq(md, lg) {
+
+	:root {
+		--spacing-scale: 1.333; // Perfect fourth.
+	}
+}
+
+@include mq(lg) {
+
+	:root {
+		--spacing-scale: 1.5; // Major fifth.
+	}
 }
