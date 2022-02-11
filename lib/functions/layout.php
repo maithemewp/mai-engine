@@ -47,9 +47,18 @@ function mai_site_layout() {
 
 	// Admin.
 	if ( is_admin() ) {
+		if ( ! function_exists( 'get_current_screen' ) ) {
+			// Don't set `$site_layout` here.
+			// This may be run later when `get_current_screen()` is available
+			// and return a different value.
+			return $default;
+		}
+
 		$screen = get_current_screen();
 
+		// TODO: Do we need to check support for genesis-layouts here?
 		if ( ! $screen || 'post' !== $screen->base ) {
+			$site_layout = $default;
 			return $default;
 		}
 

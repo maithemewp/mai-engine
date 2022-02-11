@@ -7,6 +7,9 @@
 
 	#{$heading} {
 		font-size: var(--#{$heading}-font-size, $font-size);
+		// --font-size-min: var(--fluid-font-size-min-#{$font-size});
+		// --font-size-max: var(--fluid-font-size-#{$font-size});
+		// font-size: var(--#{$heading}-font-size, var(--heading-font-size));
 	}
 }
 

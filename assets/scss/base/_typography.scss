@@ -25,10 +25,7 @@ p {
 	}
 
 	&:last-child {
-
-		@include mq(md) {
-			--paragraph-margin-bottom: 0;
-		}
+		--paragraph-margin-bottom: 0;
 	}
 
 	&.has-background {

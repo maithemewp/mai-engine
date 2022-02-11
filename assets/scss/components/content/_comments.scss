@@ -11,6 +11,7 @@
 	position: relative;
 	margin: var(--comment-margin, 0 0 var(--spacing-md));
 	padding: var(--comment-padding, var(--spacing-xl));
+	background: var(--comment-background, unset);
 	border: var(--comment-border, var(--border));
 	border-radius: var(--comment-border-radius, var(--border-radius));
 	box-shadow: var(--comment-box-shadow, var(--shadow));
