@@ -9,6 +9,8 @@
  * @license   GPL-2.0-or-later
  */
 
+use Kirki\Util\Helper;
+
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
@@ -303,7 +305,6 @@ function mai_page_header_customizer_settings() {
 	new \Kirki\Field\Color(
 		mai_parse_kirki_args(
 			[
-				'type'            => 'color',
 				'settings'        => mai_get_kirki_setting( 'page-header-divider-color' ),
 				'section'         => $section,
 				'label'           => __( 'Divider color', 'mai-engine' ),

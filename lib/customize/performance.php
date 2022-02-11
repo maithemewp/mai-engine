@@ -12,6 +12,8 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
+use Kirki\Util\Helper;
+
 add_action( 'init', 'mai_performance_customizer_settings' );
 /**
  * Add performance customizer settings.

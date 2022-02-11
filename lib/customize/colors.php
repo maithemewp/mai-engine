@@ -65,7 +65,6 @@ function mai_colors_customizer_settings() {
 	new \Kirki\Field\Repeater(
 		mai_parse_kirki_args(
 			[
-				'type'         => 'repeater',
 				'label'        => __( 'Custom Colors', 'mai-engine' ),
 				'description'  => sprintf( '%s var(--color-custom-#)', __( 'Use in CSS via:', 'mai-engine' ) ),
 				'section'      => $section,
