@@ -99,11 +99,11 @@ $margin_settings: (
 
 $padding_scale: (
 	no: 0,
-	xs: 0.5em,
-	sm: 2em,
-	md: calc(2rem + 2vw),
-	lg: calc(4rem + 4vw),
-	xl: calc(8rem + 8vw),
+	xs: var(--padding-xs),
+	sm: var(--padding-sm),
+	md: var(--padding-md),
+	lg: var(--padding-lg),
+	xl: var(--padding-xl),
 ) !default;
 
 $padding_settings: (

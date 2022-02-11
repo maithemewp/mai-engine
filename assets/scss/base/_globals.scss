@@ -62,7 +62,6 @@
 	// --fluid-font-size-xxxl: calc(var(--fluid-font-size-xxl) * var(--font-scale));
 	// --fluid-font-size-xxxxl: calc(var(--fluid-font-size-xxxl) * var(--font-scale));
 
-	--font-scale: 1.25; // Major Third.
 	--font-size-base: 16px;
 	--font-scale-responsive: 0.15vw;
 	--font-size-xs: calc(var(--font-size-sm) / var(--font-scale));
@@ -80,7 +79,6 @@
 
 	// This is the original for smaller padding values. Not used for Group/Cover spacing.
 	--spacing-base: 16px;
-	// --spacing-scale: 1.5;
 	--spacing-xxxxs: calc(var(--spacing-xxxs) / var(--spacing-scale));
 	--spacing-xxxs: calc(var(--spacing-xxs) / var(--spacing-scale));
 	--spacing-xxs: calc(var(--spacing-xs) / var(--spacing-scale));
@@ -94,6 +92,13 @@
 	--spacing-xxxxl: calc(var(--spacing-xxxl) * var(--spacing-scale));
 
 	--side-spacing: calc(var(--spacing-md) + 2vw);
+
+	--padding-base: 56px;
+	--padding-xs: calc(var(--padding-sm) / var(--padding-scale));
+	--padding-sm: calc(var(--padding-md) / var(--padding-scale));
+	--padding-md: var(--padding-base);
+	--padding-lg: calc(var(--padding-md) * var(--padding-scale));
+	--padding-xl: calc(var(--padding-lg) * var(--padding-scale));
 
 	/*******************
 	 * Misc.
@@ -130,20 +135,26 @@
 @include mq(false, md) {
 
 	:root {
-		--spacing-scale: 1.250; // Major third.
+		--font-scale: var(--font-scale-mobile, 1.125);       // Major second.
+		--spacing-scale: var(--spacing-scale-mobile, 1.25);  // Major third.
+		--padding-scale: var(--padding-scale-mobile, 1.125); // Major third.
 	}
 }
 
 @include mq(md, lg) {
 
 	:root {
-		--spacing-scale: 1.333; // Perfect fourth.
+		--font-scale: var(--font-scale-mobile, 1.2);         // Minor third.
+		--spacing-scale: var(--spacing-scale-tablet, 1.333); // Perfect fourth.
+		--padding-scale: var(--padding-scale-tablet, 1.618); // Golden ratio.
 	}
 }
 
 @include mq(lg) {
 
 	:root {
-		--spacing-scale: 1.5; // Major fifth.
+		--font-scale: var(--font-scale-desktop, 1.25);      // Major Third.
+		--spacing-scale: var(--spacing-scale-desktop, 1.5); // Major fifth.
+		--padding-scale: var(--padding-scale-desktop, 2);   // Octave.
 	}
 }
