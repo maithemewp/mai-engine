@@ -6,10 +6,65 @@
 	--color-border: rgba(10, 20, 30, 0.05);
 	--color-shadow: rgba(10, 20, 30, 0.1);
 
-	--font-scale: 1.25;
-	--font-scale-responsive: 0.15vw;
+	--system-font-family: -apple-system, blinkmacsystemfont, "Segoe UI", roboto, oxygen-sans, ubuntu, cantarell, "Helvetica Neue", sans-serif;
+	--code-font-family: consolas, monaco, monospace;
 
+	/*******************
+	 * Fluid scale.
+	 */
+
+	// --fluid-base: 16;        /* px value */
+	// --fluid-min-width: 400;  /* px value of smallest mobile breakpoint */
+	// --fluid-max-width: 1200; /* px value of larget breakpoint */
+
+	// --fluid-min-rem: calc(var(--fluid-min) / var(--fluid-base) * 1rem);
+	// --fluid-max-rem: calc(var(--fluid-max) / var(--fluid-base) * 1rem);
+	// --fluid-min-width-rem: calc(var(--fluid-min-width) / var(--fluid-base) * 1rem);
+	// --fluid-max-width-rem: calc(var(--fluid-max-width) / var(--fluid-base) * 1rem);
+
+	// --fluid-slope: calc(var(--fluid-max) - var(--fluid-min)) / (var(--fluid-max-width) - var(--fluid-min-width));
+	// --fluid-intersection: calc((var(--fluid-min-width) * -1) * var(--fluid-slope) + var(--fluid-min));
+	// --fluid-intersection-rem: calc(var(--fluid-intersection) / var(--fluid-base) * 1rem);
+	// --fluid-value: clamp(var(--fluid-min-rem), calc(var(--fluid-intersection-rem) + (var(--fluid-slope) * 100) * 1vw), var(--fluid-max-rem));
+
+	/**
+	--fluid-value: clamp(
+		var(--fluid-min) / var(--fluid-base) * 1rem,
+		((((var(--fluid-min-width) * -1) * (var(--fluid-max) - var(--fluid-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) + var(--fluid-min)) / var(--fluid-base) * 1rem) + ((var(--fluid-max) - var(--fluid-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) * 100) * 1vw),
+		var(--fluid-max) / var(--fluid-base) * 1rem
+	);
+	*/
+
+	/*******************
+	 * Font size scale.
+	 */
+
+	// --font-scale-min: 1.2; // Mobile - Minor Third.
+	// --font-scale: 1.25;    // Desktop - Major Third.
+	// --fluid-font-size-base-min: 17;
+	// --fluid-font-size-base: 18;
+	// // Mobile.
+	// --fluid-font-size-min-xs: calc(var(--fluid-font-size-min-sm) / var(--font-scale-min));
+	// --fluid-font-size-min-sm: calc(var(--fluid-font-size-min-md) / var(--font-scale-min));
+	// --fluid-font-size-min-md: var(--fluid-font-size-base-min);
+	// --fluid-font-size-min-lg: calc(var(--fluid-font-size-min-md) * var(--font-scale-min));
+	// --fluid-font-size-min-xl: calc(var(--fluid-font-size-min-lg) * var(--font-scale-min));
+	// --fluid-font-size-min-xxl: calc(var(--fluid-font-size-min-xl) * var(--font-scale-min));
+	// --fluid-font-size-min-xxxl: calc(var(--fluid-font-size-min-xxl) * var(--font-scale-min));
+	// --fluid-font-size-min-xxxxl: calc(var(--fluid-font-size-min-xxxl) * var(--font-scale-min));
+	// // Desktop.
+	// --fluid-font-size-xs: calc(var(--fluid-font-size-sm) / var(--font-scale));
+	// --fluid-font-size-sm: calc(var(--fluid-font-size-md) / var(--font-scale));
+	// --fluid-font-size-md: var(--fluid-font-size-base);
+	// --fluid-font-size-lg: calc(var(--fluid-font-size-md) * var(--font-scale));
+	// --fluid-font-size-xl: calc(var(--fluid-font-size-lg) * var(--font-scale));
+	// --fluid-font-size-xxl: calc(var(--fluid-font-size-xl) * var(--font-scale));
+	// --fluid-font-size-xxxl: calc(var(--fluid-font-size-xxl) * var(--font-scale));
+	// --fluid-font-size-xxxxl: calc(var(--fluid-font-size-xxxl) * var(--font-scale));
+
+	--font-scale: 1.25; // Major Third.
 	--font-size-base: 16px;
+	--font-scale-responsive: 0.15vw;
 	--font-size-xs: calc(var(--font-size-sm) / var(--font-scale));
 	--font-size-sm: calc(var(--font-size-md) / var(--font-scale));
 	--font-size-md: calc(var(--font-size-base) + var(--font-scale-responsive));
@@ -19,25 +74,46 @@
 	--font-size-xxxl: calc(var(--font-size-xxl) * var(--font-scale));
 	--font-size-xxxxl: calc(var(--font-size-xxxl) * var(--font-scale));
 
-	--system-font-family: -apple-system, blinkmacsystemfont, "Segoe UI", roboto, oxygen-sans, ubuntu, cantarell, "Helvetica Neue", sans-serif;
-	--code-font-family: consolas, monaco, monospace;
+	/*******************
+	 * Spacing scale.
+	 */
 
-	--spacing-base: 16px;
-	--spacing-scale: 1.5;
-
+	// This is the original for smaller padding values. Not used for Group/Cover spacing.
+	--fluid-min-width: 400;     /* px value of smallest mobile breakpoint */
+	--fluid-max-width: 1200;    /* px value of larget breakpoint */
+	--spacing-base: 16px;       /* Value of the base. Only used for smaller values as of 2.20 */
+	--spacing-scale-min: 1.25;  /* Mobile - Major Third. */
+	--spacing-scale: 1.5;      /* Desktop - Perfect Fifth. */
+	// Mobile.
+	--spacing-lg-min: calc(16 * var(--spacing-scale-min));
+	--spacing-xl-min: calc(var(--spacing-lg-min) * var(--spacing-scale-min));
+	--spacing-xxl-min: calc(var(--spacing-xl-min) * var(--spacing-scale-min));
+	--spacing-xxxl-min: calc(var(--spacing-xxl-min) * var(--spacing-scale-min));
+	--spacing-xxxxl-min: calc(var(--spacing-xxxl-min) * var(--spacing-scale-min));
+	// Desktop.
+	--spacing-lg-max: calc(16 * var(--spacing-scale));
+	--spacing-xl-max: calc(var(--spacing-lg-max) * var(--spacing-scale));
+	--spacing-xxl-max: calc(var(--spacing-xl-max) * var(--spacing-scale));
+	--spacing-xxxl-max: calc(var(--spacing-xxl-max) * var(--spacing-scale));
+	--spacing-xxxxl-max: calc(var(--spacing-xxxl-max) * var(--spacing-scale));
+	// Values.
 	--spacing-xxxxs: calc(var(--spacing-xxxs) / var(--spacing-scale));
 	--spacing-xxxs: calc(var(--spacing-xxs) / var(--spacing-scale));
 	--spacing-xxs: calc(var(--spacing-xs) / var(--spacing-scale));
 	--spacing-xs: calc(var(--spacing-sm) / var(--spacing-scale));
 	--spacing-sm: calc(var(--spacing-md) / var(--spacing-scale));
 	--spacing-md: var(--spacing-base);
-	--spacing-lg: calc(var(--spacing-md) * var(--spacing-scale));
-	--spacing-xl: calc(var(--spacing-lg) * var(--spacing-scale));
-	--spacing-xxl: calc(var(--spacing-xl) * var(--spacing-scale));
-	--spacing-xxxl: calc(var(--spacing-xxl) * var(--spacing-scale));
-	--spacing-xxxxl: calc(var(--spacing-xxxl) * var(--spacing-scale));
+	--spacing-lg: clamp((var(--spacing-lg-min) / 16 * 1rem), ((((var(--fluid-min-width) * -1) * (var(--spacing-lg-max) - var(--spacing-lg-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) + var(--spacing-lg-min)) / 16 * 1rem) + ((var(--spacing-lg-max) - var(--spacing-lg-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) * 100) * 1vw),(var(--spacing-lg-max) / 16 * 1rem));
+	--spacing-xl: clamp((var(--spacing-xl-min) / 16 * 1rem), ((((var(--fluid-min-width) * -1) * (var(--spacing-xl-max) - var(--spacing-xl-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) + var(--spacing-xl-min)) / 16 * 1rem) + ((var(--spacing-xl-max) - var(--spacing-xl-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) * 100) * 1vw),(var(--spacing-xl-max) / 16 * 1rem));
+	--spacing-xxl: clamp((var(--spacing-xxl-min) / 16 * 1rem), ((((var(--fluid-min-width) * -1) * (var(--spacing-xxl-max) - var(--spacing-xxl-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) + var(--spacing-xxl-min)) / 16 * 1rem) + ((var(--spacing-xxl-max) - var(--spacing-xxl-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) * 100) * 1vw),(var(--spacing-xxl-max) / 16 * 1rem));
+	--spacing-xxxl: clamp((var(--spacing-xxxl-min) / 16 * 1rem), ((((var(--fluid-min-width) * -1) * (var(--spacing-xxxl-max) - var(--spacing-xxxl-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) + var(--spacing-xxxl-min)) / 16 * 1rem) + ((var(--spacing-xxxl-max) - var(--spacing-xxxl-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) * 100) * 1vw),(var(--spacing-xxxl-max) / 16 * 1rem));
+	--spacing-xxxxl: clamp((var(--spacing-xxxxl-min) / 16 * 1rem), ((((var(--fluid-min-width) * -1) * (var(--spacing-xxxxl-max) - var(--spacing-xxxxl-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) + var(--spacing-xxxxl-min)) / 16 * 1rem) + ((var(--spacing-xxxxl-max) - var(--spacing-xxxxl-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) * 100) * 1vw),(var(--spacing-xxxxl-max) / 16 * 1rem));
 
 	--side-spacing: calc(var(--spacing-md) + 2vw);
+
+	/*******************
+	 * Misc.
+	 */
 
 	--row-gap: var(--spacing-md);
 	--column-gap: var(--spacing-md);
