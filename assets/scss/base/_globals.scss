@@ -79,35 +79,20 @@
 	 */
 
 	// This is the original for smaller padding values. Not used for Group/Cover spacing.
-	--fluid-min-width: 400;     /* px value of smallest mobile breakpoint */
-	--fluid-max-width: 1200;    /* px value of larget breakpoint */
-	--spacing-base: 16px;       /* Value of the base. Only used for smaller values as of 2.20 */
-	--spacing-scale-min: 1.25;  /* Mobile - Major Third. */
-	--spacing-scale: 1.5;      /* Desktop - Perfect Fifth. */
-	// Mobile.
-	--spacing-lg-min: calc(16 * var(--spacing-scale-min));
-	--spacing-xl-min: calc(var(--spacing-lg-min) * var(--spacing-scale-min));
-	--spacing-xxl-min: calc(var(--spacing-xl-min) * var(--spacing-scale-min));
-	--spacing-xxxl-min: calc(var(--spacing-xxl-min) * var(--spacing-scale-min));
-	--spacing-xxxxl-min: calc(var(--spacing-xxxl-min) * var(--spacing-scale-min));
-	// Desktop.
-	--spacing-lg-max: calc(16 * var(--spacing-scale));
-	--spacing-xl-max: calc(var(--spacing-lg-max) * var(--spacing-scale));
-	--spacing-xxl-max: calc(var(--spacing-xl-max) * var(--spacing-scale));
-	--spacing-xxxl-max: calc(var(--spacing-xxl-max) * var(--spacing-scale));
-	--spacing-xxxxl-max: calc(var(--spacing-xxxl-max) * var(--spacing-scale));
-	// Values.
+	--spacing-base: 16px; /* Only used for values md and smaller as of 2.20 */
+	--spacing-scale: 1.5; /* Only used for values md and smaller as of 2.20 */
 	--spacing-xxxxs: calc(var(--spacing-xxxs) / var(--spacing-scale));
 	--spacing-xxxs: calc(var(--spacing-xxs) / var(--spacing-scale));
 	--spacing-xxs: calc(var(--spacing-xs) / var(--spacing-scale));
 	--spacing-xs: calc(var(--spacing-sm) / var(--spacing-scale));
 	--spacing-sm: calc(var(--spacing-md) / var(--spacing-scale));
 	--spacing-md: var(--spacing-base);
-	--spacing-lg: clamp((var(--spacing-lg-min) / 16 * 1rem), ((((var(--fluid-min-width) * -1) * (var(--spacing-lg-max) - var(--spacing-lg-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) + var(--spacing-lg-min)) / 16 * 1rem) + ((var(--spacing-lg-max) - var(--spacing-lg-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) * 100) * 1vw),(var(--spacing-lg-max) / 16 * 1rem));
-	--spacing-xl: clamp((var(--spacing-xl-min) / 16 * 1rem), ((((var(--fluid-min-width) * -1) * (var(--spacing-xl-max) - var(--spacing-xl-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) + var(--spacing-xl-min)) / 16 * 1rem) + ((var(--spacing-xl-max) - var(--spacing-xl-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) * 100) * 1vw),(var(--spacing-xl-max) / 16 * 1rem));
-	--spacing-xxl: clamp((var(--spacing-xxl-min) / 16 * 1rem), ((((var(--fluid-min-width) * -1) * (var(--spacing-xxl-max) - var(--spacing-xxl-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) + var(--spacing-xxl-min)) / 16 * 1rem) + ((var(--spacing-xxl-max) - var(--spacing-xxl-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) * 100) * 1vw),(var(--spacing-xxl-max) / 16 * 1rem));
-	--spacing-xxxl: clamp((var(--spacing-xxxl-min) / 16 * 1rem), ((((var(--fluid-min-width) * -1) * (var(--spacing-xxxl-max) - var(--spacing-xxxl-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) + var(--spacing-xxxl-min)) / 16 * 1rem) + ((var(--spacing-xxxl-max) - var(--spacing-xxxl-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) * 100) * 1vw),(var(--spacing-xxxl-max) / 16 * 1rem));
-	--spacing-xxxxl: clamp((var(--spacing-xxxxl-min) / 16 * 1rem), ((((var(--fluid-min-width) * -1) * (var(--spacing-xxxxl-max) - var(--spacing-xxxxl-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) + var(--spacing-xxxxl-min)) / 16 * 1rem) + ((var(--spacing-xxxxl-max) - var(--spacing-xxxxl-min)) / (var(--fluid-max-width) - var(--fluid-min-width)) * 100) * 1vw),(var(--spacing-xxxxl-max) / 16 * 1rem));
+	// via https://utopia.fyi/type/calculator?c=400,16,1.25,1200,16,1.5,6,4,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l
+	--spacing-lg: clamp(1.25rem, 1.13rem + 0.50vw, 1.50rem);
+	--spacing-xl: clamp(1.56rem, 1.22rem + 1.38vw, 2.25rem);
+	--spacing-xxl: clamp(1.95rem, 1.24rem + 2.84vw, 3.38rem);
+	--spacing-xxxl: clamp(2.44rem, 1.13rem + 5.24vw, 5.06rem);
+	--spacing-xxxxl: clamp(3.05rem, 0.78rem + 9.08vw, 7.59rem);
 
 	--side-spacing: calc(var(--spacing-md) + 2vw);
 
