@@ -93,10 +93,10 @@
 
 	--side-spacing: calc(var(--spacing-md) + 2vw);
 
-	--padding-base: 56px;
-	--padding-xs: calc(var(--padding-sm) / var(--padding-scale));
-	--padding-sm: calc(var(--padding-md) / var(--padding-scale));
-	--padding-md: var(--padding-base);
+	--padding-base: 8px;
+	--padding-xs: calc(var(--padding-base) * var(--padding-scale));
+	--padding-sm: calc(var(--padding-xs) * var(--padding-scale));
+	--padding-md: calc(var(--padding-sm) * var(--padding-scale));
 	--padding-lg: calc(var(--padding-md) * var(--padding-scale));
 	--padding-xl: calc(var(--padding-lg) * var(--padding-scale));
 
@@ -137,7 +137,7 @@
 	:root {
 		--font-scale: var(--font-scale-mobile, 1.125);       // Major second.
 		--spacing-scale: var(--spacing-scale-mobile, 1.25);  // Major third.
-		--padding-scale: var(--padding-scale-mobile, 1.125); // Major third.
+		--padding-scale: var(--padding-scale-mobile, 1.618); // Golden ratio.
 	}
 }
 
@@ -146,7 +146,7 @@
 	:root {
 		--font-scale: var(--font-scale-mobile, 1.2);         // Minor third.
 		--spacing-scale: var(--spacing-scale-tablet, 1.333); // Perfect fourth.
-		--padding-scale: var(--padding-scale-tablet, 1.618); // Golden ratio.
+		--padding-scale: var(--padding-scale-tablet, 1.778); // Minor seventh.
 	}
 }
 
