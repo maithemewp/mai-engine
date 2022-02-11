@@ -4,12 +4,12 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitb0704fa2d6e84172882dda317c7a9166
+class ComposerStaticInitc1b3856ce1e6efeeda11d5551fc2e64a
 {
     public static $files = array (
-        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '49a1299791c25c6fd83542c6fedacddd' => __DIR__ . '/..' . '/yahnis-elsts/plugin-update-checker/load-v4p11.php',
     );
 
@@ -128,10 +128,10 @@ class ComposerStaticInitb0704fa2d6e84172882dda317c7a9166
             19 => __DIR__ . '/..' . '/kirki-framework/control-palette/src/Field',
             20 => __DIR__ . '/..' . '/kirki-framework/control-multicheck/src/Field',
             21 => __DIR__ . '/..' . '/kirki-framework/control-editor/src/Field',
-            22 => __DIR__ . '/..' . '/kirki-framework/control-color-palette/src/Field',
-            23 => __DIR__ . '/..' . '/kirki-framework/control-code/src/Field',
-            24 => __DIR__ . '/..' . '/kirki-framework/control-date/src/Field',
-            25 => __DIR__ . '/..' . '/kirki-framework/control-dashicons/src/Field',
+            22 => __DIR__ . '/..' . '/kirki-framework/control-date/src/Field',
+            23 => __DIR__ . '/..' . '/kirki-framework/control-dashicons/src/Field',
+            24 => __DIR__ . '/..' . '/kirki-framework/control-color-palette/src/Field',
+            25 => __DIR__ . '/..' . '/kirki-framework/control-code/src/Field',
         ),
         'Kirki\\Data\\' => 
         array (
@@ -159,11 +159,11 @@ class ComposerStaticInitb0704fa2d6e84172882dda317c7a9166
             17 => __DIR__ . '/..' . '/kirki-framework/control-palette/src/Control',
             18 => __DIR__ . '/..' . '/kirki-framework/control-multicheck/src/Control',
             19 => __DIR__ . '/..' . '/kirki-framework/control-editor/src/Control',
-            20 => __DIR__ . '/..' . '/kirki-framework/control-cropped-image/src',
-            21 => __DIR__ . '/..' . '/kirki-framework/control-color-palette/src/Control',
-            22 => __DIR__ . '/..' . '/kirki-framework/control-code/src/Control',
-            23 => __DIR__ . '/..' . '/kirki-framework/control-date/src/Control',
-            24 => __DIR__ . '/..' . '/kirki-framework/control-dashicons/src/Control',
+            20 => __DIR__ . '/..' . '/kirki-framework/control-date/src/Control',
+            21 => __DIR__ . '/..' . '/kirki-framework/control-dashicons/src/Control',
+            22 => __DIR__ . '/..' . '/kirki-framework/control-cropped-image/src',
+            23 => __DIR__ . '/..' . '/kirki-framework/control-color-palette/src/Control',
+            24 => __DIR__ . '/..' . '/kirki-framework/control-code/src/Control',
         ),
         'Kirki\\Compatibility\\' => 
         array (
@@ -210,9 +210,9 @@ class ComposerStaticInitb0704fa2d6e84172882dda317c7a9166
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitb0704fa2d6e84172882dda317c7a9166::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitb0704fa2d6e84172882dda317c7a9166::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitb0704fa2d6e84172882dda317c7a9166::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitc1b3856ce1e6efeeda11d5551fc2e64a::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitc1b3856ce1e6efeeda11d5551fc2e64a::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitc1b3856ce1e6efeeda11d5551fc2e64a::$classMap;
 
         }, null, ClassLoader::class);
     }

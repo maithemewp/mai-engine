@@ -6,11 +6,7 @@
     'aliases' => 
     array (
     ),
-<<<<<<< HEAD
-    'reference' => 'd03954780871fbea1148190bfc81c32dfb30f8ef',
-=======
-    'reference' => '03bf2db064708d5bd7bd0eff93063b229e1ca8f1',
->>>>>>> develop
+    'reference' => '67fe3bf0cab56713b58761bbbc9016825f4c6826',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
@@ -224,21 +220,21 @@
     ),
     'kirki-framework/control-react-colorful' => 
     array (
-      'pretty_version' => 'v1.0.11',
-      'version' => '1.0.11.0',
+      'pretty_version' => 'v1.0.14',
+      'version' => '1.0.14.0',
       'aliases' => 
       array (
       ),
-      'reference' => '927673efeec9aa2d1dd79ce18fc0ba6e261845c3',
+      'reference' => 'bcfe71b736f4b43c00b0292e9260c78815808364',
     ),
     'kirki-framework/control-react-select' => 
     array (
-      'pretty_version' => 'v1.1.4',
-      'version' => '1.1.4.0',
+      'pretty_version' => 'v1.1.5',
+      'version' => '1.1.5.0',
       'aliases' => 
       array (
       ),
-      'reference' => '5208475f2b8cccdbed64764164bb4f34c62af570',
+      'reference' => '4c156e42a36f74ff5b9b1e2797b1742845de9e47',
     ),
     'kirki-framework/control-repeater' => 
     array (
@@ -332,21 +328,21 @@
     ),
     'kirki-framework/field-multicolor' => 
     array (
-      'pretty_version' => 'v1.0.1',
-      'version' => '1.0.1.0',
+      'pretty_version' => 'v1.0.3',
+      'version' => '1.0.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'fcb68ed3a1508ac5ffa4d62f6034dce35be7cd87',
+      'reference' => '3e0df3f5548fb89b38cb144bc87992936ed7b536',
     ),
     'kirki-framework/field-typography' => 
     array (
-      'pretty_version' => 'v1.0.5',
-      'version' => '1.0.5.0',
+      'pretty_version' => 'v1.0.6',
+      'version' => '1.0.6.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'df2c8a9d3db8a3407a3835453de3c85641198c10',
+      'reference' => '2d96fc2d65325ce8474d55e083db742cf437c0dd',
     ),
     'kirki-framework/googlefonts' => 
     array (
@@ -364,7 +360,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'ffedf719fa5c6e442fc3db8bff2d182271ad8cd8',
+      'reference' => '808b0c642aecb1697b925fb399897446a6bab9f9',
     ),
     'kirki-framework/l10n' => 
     array (
@@ -377,12 +373,12 @@
     ),
     'kirki-framework/module-css' => 
     array (
-      'pretty_version' => 'v1.0.8',
-      'version' => '1.0.8.0',
+      'pretty_version' => 'v1.0.9',
+      'version' => '1.0.9.0',
       'aliases' => 
       array (
       ),
-      'reference' => '8684b335be44382c52a61e7eda3bf0cfdfabbc2f',
+      'reference' => '96645a327b1a60e1d29fd0193e85f1346b9b268f',
     ),
     'kirki-framework/module-editor-styles' => 
     array (
@@ -413,12 +409,12 @@
     ),
     'kirki-framework/module-postmessage' => 
     array (
-      'pretty_version' => 'v1.0.4',
-      'version' => '1.0.4.0',
+      'pretty_version' => 'v1.0.5',
+      'version' => '1.0.5.0',
       'aliases' => 
       array (
       ),
-      'reference' => '21dc54238435137181a43fccf248f4d2bc655a13',
+      'reference' => 'e53eb3361bae51b6453e67f3f8690c61b1254707',
     ),
     'kirki-framework/module-preset' => 
     array (
@@ -499,11 +495,7 @@
       'aliases' => 
       array (
       ),
-<<<<<<< HEAD
-      'reference' => 'd03954780871fbea1148190bfc81c32dfb30f8ef',
-=======
-      'reference' => '03bf2db064708d5bd7bd0eff93063b229e1ca8f1',
->>>>>>> develop
+      'reference' => '67fe3bf0cab56713b58761bbbc9016825f4c6826',
     ),
     'phpoption/phpoption' => 
     array (
