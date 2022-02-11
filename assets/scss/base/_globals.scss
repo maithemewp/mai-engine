@@ -79,11 +79,11 @@
 
 	// This is the original for smaller padding values. Not used for Group/Cover spacing.
 	--spacing-base: 16px;
-	--spacing-xxxxs: calc(var(--spacing-xxxs) / var(--spacing-scale));
-	--spacing-xxxs: calc(var(--spacing-xxs) / var(--spacing-scale));
-	--spacing-xxs: calc(var(--spacing-xs) / var(--spacing-scale));
-	--spacing-xs: calc(var(--spacing-sm) / var(--spacing-scale));
-	--spacing-sm: calc(var(--spacing-md) / var(--spacing-scale));
+	--spacing-xxxxs: 2px;
+	--spacing-xxxs: 4px;
+	--spacing-xxs: 6px;
+	--spacing-xs: 8px;
+	--spacing-sm: 12px;
 	--spacing-md: var(--spacing-base);
 	--spacing-lg: calc(var(--spacing-md) * var(--spacing-scale));
 	--spacing-xl: calc(var(--spacing-lg) * var(--spacing-scale));
@@ -94,8 +94,8 @@
 	--side-spacing: calc(var(--spacing-md) + 2vw);
 
 	--padding-base: 8px;
-	--padding-xs: calc(var(--padding-base) * var(--padding-scale));
-	--padding-sm: calc(var(--padding-xs) * var(--padding-scale));
+	--padding-xs: var(--padding-base);
+	--padding-sm: calc(var(--padding-base) * (var(--padding-scale) * 2));
 	--padding-md: calc(var(--padding-sm) * var(--padding-scale));
 	--padding-lg: calc(var(--padding-md) * var(--padding-scale));
 	--padding-xl: calc(var(--padding-lg) * var(--padding-scale));
@@ -136,7 +136,7 @@
 
 	:root {
 		--font-scale: var(--font-scale-mobile, 1.125);       // Major second.
-		--spacing-scale: var(--spacing-scale-mobile, 1.25);  // Major third.
+		--spacing-scale: var(--spacing-scale-mobile, 1.333); // Perfect fourth.
 		--padding-scale: var(--padding-scale-mobile, 1.618); // Golden ratio.
 	}
 }
@@ -145,7 +145,7 @@
 
 	:root {
 		--font-scale: var(--font-scale-mobile, 1.2);         // Minor third.
-		--spacing-scale: var(--spacing-scale-tablet, 1.333); // Perfect fourth.
+		--spacing-scale: var(--spacing-scale-tablet, 1.414); // Augmented fourth.
 		--padding-scale: var(--padding-scale-tablet, 1.778); // Minor seventh.
 	}
 }
