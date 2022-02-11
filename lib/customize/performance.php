@@ -34,58 +34,59 @@ function mai_performance_customizer_settings() {
 		]
 	);
 
-	Kirki::add_field(
-		$config_id,
-		[
-			'type'     => 'checkbox',
-			'settings' => 'genesis-style-trump',
-			'label'    => esc_html__( 'Load child theme stylesheet in footer', 'mai-engine' ),
-			'section'  => $section_id,
-			'default'  => $defaults['genesis-style-trump'],
-		]
+	new \Kirki\Field\Checkbox(
+		mai_parse_kirki_args(
+			[
+				'settings' => mai_get_kirki_setting( 'genesis-style-trump' ),
+				'label'    => esc_html__( 'Load child theme stylesheet in footer', 'mai-engine' ),
+				'section'  => $section_id,
+				'default'  => $defaults['genesis-style-trump'],
+			]
+		)
 	);
 
-	Kirki::add_field(
-		$config_id,
-		[
-			'type'     => 'checkbox',
-			'settings' => 'remove-menu-item-classes',
-			'label'    => esc_html__( 'Remove menu item id and additional classes', 'mai-engine' ),
-			'section'  => $section_id,
-			'default'  => $defaults['remove-menu-item-classes'],
-		]
+	new \Kirki\Field\Checkbox(
+		mai_parse_kirki_args(
+			[
+				'settings' => mai_get_kirki_setting( 'remove-menu-item-classes' ),
+				'label'    => esc_html__( 'Remove menu item id and additional classes', 'mai-engine' ),
+				'section'  => $section_id,
+				'default'  => $defaults['remove-menu-item-classes'],
+			]
+		)
 	);
 
-	Kirki::add_field(
-		$config_id,
-		[
-			'type'     => 'checkbox',
-			'settings' => 'remove-template-classes',
-			'label'    => esc_html__( 'Remove additional page template body classes', 'mai-engine' ),
-			'section'  => $section_id,
-			'default'  => $defaults['remove-template-classes'],
-		]
+	new \Kirki\Field\Checkbox(
+		mai_parse_kirki_args(
+			[
+				'settings' => mai_get_kirki_setting( 'remove-template-classes' ),
+				'label'    => esc_html__( 'Remove additional page template body classes', 'mai-engine' ),
+				'section'  => $section_id,
+				'default'  => $defaults['remove-template-classes'],
+			]
+		)
 	);
 
-	Kirki::add_field(
-		$config_id,
-		[
-			'type'     => 'checkbox',
-			'settings' => 'disable-emojis',
-			'label'    => esc_html__( 'Disable emojis', 'mai-engine' ),
-			'section'  => $section_id,
-			'default'  => $defaults['disable-emojis'],
-		]
+	new \Kirki\Field\Checkbox(
+		mai_parse_kirki_args(
+			[
+				'settings' => mai_get_kirki_setting( 'disable-emojis' ),
+				'label'    => esc_html__( 'Disable emojis', 'mai-engine' ),
+				'section'  => $section_id,
+				'default'  => $defaults['disable-emojis'],
+			]
+		)
 	);
 
-	Kirki::add_field(
-		$config_id,
-		[
-			'type'     => 'checkbox',
-			'settings' => 'remove-recent-comments-css',
-			'label'    => esc_html__( 'Remove recent comments CSS', 'mai-engine' ),
-			'section'  => $section_id,
-			'default'  => $defaults['remove-recent-comments-css'],
-		]
+	new \Kirki\Field\Checkbox(
+		mai_parse_kirki_args(
+			[
+				'type'     => 'checkbox',
+				'settings' => mai_get_kirki_setting( 'remove-recent-comments-css' ),
+				'label'    => esc_html__( 'Remove recent comments CSS', 'mai-engine' ),
+				'section'  => $section_id,
+				'default'  => $defaults['remove-recent-comments-css'],
+			]
+		)
 	);
 }

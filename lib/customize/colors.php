@@ -78,10 +78,10 @@ function mai_colors_customizer_settings() {
 				],
 				'fields'       => [
 					'color' => [
-						'type'    => 'color',
-						'label'   => '',
-						'alpha'   => true,
-						'choices' => [
+						'type'     => 'color',
+						'label'    => '',
+						'alpha'    => true,
+						'choices'  => [
 							'alpha'    => true,
 							'palettes' => mai_get_color_choices(), // Not working since v4.
 						],
