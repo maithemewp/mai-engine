@@ -93,6 +93,10 @@
 
 	--side-spacing: calc(var(--spacing-md) + 2vw);
 
+	/*******************
+	 * Padding scale.
+	 */
+
 	--padding-base: 8px;
 	--padding-xs: var(--padding-base);
 	--padding-sm: calc(var(--padding-base) * (var(--padding-scale) * 2));
