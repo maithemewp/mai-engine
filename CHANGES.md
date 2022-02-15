@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.20.0 (2/15/22)
+* Added: New XXL and XXXL padding settings on Mai Column block.
+* Changed: Typography and spacing ratios are now incremented smaller on tablet and mobile for better responsive dislay on smaller screens.
+* Changed: Updated dependency manager.
+* Changed: Wide align now has a set extended width regardless of content width as well as better handling on tablet/mobile.
+* Fixed: Wide align wasn't displaying correctly in the editor.
+* Fixed: Image spacing when centered in a boxed entry.
+* Fixed: Compatibility with some plugins checking layouts before `get_current_screen()` function is available.
+* Fixed: Missing bottom margin on editor title wrapper since 5.9 is using custom properties that aren't set.
+* Fixed: [WooCommerce] Stars not displaying correctly on single product pages.
+
 ## 2.19.6 (1/31/22)
 * Changed: Reverts clearing floats on headings. Headings now wrap around floated images and other elements as they did before 2.19.
 

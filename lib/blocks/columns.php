@@ -322,438 +322,441 @@ function mai_register_columns_field_groups() {
 
 	$arrangement_instructions = __( 'Custom arrangements will repeat in the sequence you set here. Only set one value if you want all columns to be the same.', 'mai-engine' );
 
-	acf_add_local_field_group( [
-		'key'                 => 'mai_columns_field_group',
-		'title'               => __( 'Mai Columns', 'mai-engine' ),
-		'fields'              => [
-			[
-				'key'               => 'mai_columns_columns',
-				'label'             => __( 'Columns', 'mai-engine' ),
-				'name'              => 'columns',
-				'type'              => 'select',
-				'choices'           => [
-					1                  => '1',
-					2                  => '2',
-					3                  => '3',
-					4                  => '4',
-					5                  => '5',
-					6                  => '6',
-					0                  => __( 'Auto', 'mai-engine' ),
-					'custom'           => __( 'Custom arrangement', 'mai-engine' ),
-				],
-				'default_value'     => 2,
-			],
-			[
-				'key'               => 'mai_columns_arrangement_message',
-				'label'             => __( 'Responsive Arrangements', 'mai-engine' ),
-				'type'              => 'message',
-				'conditional_logic' => [
-					[
-						[
-							'field'          => 'mai_columns_columns',
-							'operator'       => '==',
-							'value'          => 'custom',
-						],
-					],
-				],
-			],
-			[
-				'key'               => 'mai_columns_arrangement_tab',
-				'label'             => __( 'LG', 'mai-engine' ),
-				'type'              => 'tab',
-				'conditional_logic' => [
-					[
-						[
-							'field'          => 'mai_columns_columns',
-							'operator'       => '==',
-							'value'          => 'custom',
-						],
-					],
-				],
-			],
-			[
-				'key'               => 'mai_columns_arrangement',
-				'label'             => __( 'Arrangement (desktop)', 'mai-engine' ),
-				'name'              => 'arrangement',
-				'instructions'      => $arrangement_instructions,
-				'type'              => 'repeater',
-				'conditional_logic' => [
-					[
-						[
-							'field'          => 'mai_columns_columns',
-							'operator'       => '==',
-							'value'          => 'custom',
-						],
-					],
-				],
-				'min'               => 1,
-				'max'               => 0,
-				'layout'            => 'block',
-				'button_label'      => __( 'Add Column', 'mai-engine' ),
-				'sub_fields'        => [
-					[
-						'key'             => 'mai_columns_arrangement_columns',
-						'label'           => '',
-						'name'            => 'columns',
-						'type'            => 'button_group',
-						'choices'         => $column_choices,
-						'default_value'   => '1/3',
-					],
-				],
-			],
-			[
-				'key'               => 'mai_columns_arrangement_md_tab',
-				'label'             => __( 'MD', 'mai-engine' ),
-				'type'              => 'tab',
-				'conditional_logic' => [
-					[
-						[
-							'field'          => 'mai_columns_columns',
-							'operator'       => '==',
-							'value'          => 'custom',
-						],
-					],
-				],
-			],
-			[
-				'key'               => 'mai_columns_md_arrangement',
-				'label'             => __( 'Arrangement (lg tablets)', 'mai-engine' ),
-				'name'              => 'arrangement_md',
-				'instructions'      => $arrangement_instructions,
-				'type'              => 'repeater',
-				'conditional_logic' => [
-					[
-						[
-							'field'          => 'mai_columns_columns',
-							'operator'       => '==',
-							'value'          => 'custom',
-						],
-					],
-				],
-				'min'               => 1,
-				'max'               => 0,
-				'layout'            => 'block',
-				'button_label'      => __( 'Add Column', 'mai-engine' ),
-				'sub_fields'        => [
-					[
-						'key'             => 'mai_columns_md_arrangement_columns',
-						'label'           => '',
-						'name'            => 'columns',
-						'type'            => 'button_group',
-						'choices'         => $column_choices,
-						'default_value'   => '1/3',
-					],
-				],
-			],
-			[
-				'key'               => 'mai_columns_arrangement_sm_tab',
-				'label'             => __( 'SM', 'mai-engine' ),
-				'type'              => 'tab',
-				'conditional_logic' => [
-					[
-						[
-							'field'          => 'mai_columns_columns',
-							'operator'       => '==',
-							'value'          => 'custom',
-						],
-					],
-				],
-			],
-			[
-				'key'               => 'mai_columns_sm_arrangement',
-				'label'             => __( 'Arrangement (sm tablets)', 'mai-engine' ),
-				'name'              => 'arrangement_sm',
-				'instructions'      => $arrangement_instructions,
-				'type'              => 'repeater',
-				'conditional_logic' => [
-					[
-						[
-							'field'          => 'mai_columns_columns',
-							'operator'       => '==',
-							'value'          => 'custom',
-						],
-					],
-				],
-				'min'               => 1,
-				'max'               => 0,
-				'layout'            => 'block',
-				'button_label'      => __( 'Add Column', 'mai-engine' ),
-				'sub_fields'        => [
-					[
-						'key'             => 'mai_columns_sm_arrangement_columns',
-						'label'           => '',
-						'name'            => 'columns',
-						'type'            => 'button_group',
-						'choices'         => $column_choices,
-						'default_value'   => '1/2',
-					],
-				],
-			],
-			[
-				'key'               => 'mai_columns_arrangement_xs_tab',
-				'label'             => __( 'XS', 'mai-engine' ),
-				'type'              => 'tab',
-				'conditional_logic' => [
-					[
-						[
-							'field'          => 'mai_columns_columns',
-							'operator'       => '==',
-							'value'          => 'custom',
-						],
-					],
-				],
-			],
-			[
-				'key'               => 'mai_columns_xs_arrangement',
-				'label'             => __( 'Arrangement (mobile)', 'mai-engine' ),
-				'name'              => 'arrangement_xs',
-				'instructions'      => $arrangement_instructions,
-				'type'              => 'repeater',
-				'conditional_logic' => [
-					[
-						[
-							'field'          => 'mai_columns_columns',
-							'operator'       => '==',
-							'value'          => 'custom',
-						],
-					],
-				],
-				'min'               => 1,
-				'max'               => 0,
-				'layout'            => 'block',
-				'button_label'      => __( 'Add Column', 'mai-engine' ),
-				'sub_fields'        => [
-					[
-						'key'             => 'mai_columns_xs_arrangement_columns',
-						'label'           => '',
-						'name'            => 'columns',
-						'type'            => 'button_group',
-						'choices'         => $column_choices,
-						'default_value'   => 'full',
-					],
-				],
-			],
-			[
-				'key'               => 'mai_columns_arrangement_closing_tab',
-				'type'              => 'tab',
-				'endpoint'          => 1,
-				'wrapper'           => [
-					'class'            => 'mai-columns-closing-tab',
-				],
-			],
-			[
-				'key'               => 'mai_columns_align_columns',
-				'label'             => __( 'Align Columns', 'mai-engine' ),
-				'name'              => 'align_columns',
-				'type'              => 'button_group',
-				'choices'           => [
-					'start'            => __( 'Start', 'mai-engine' ),
-					'center'           => __( 'Center', 'mai-engine' ),
-					'end'              => __( 'End', 'mai-engine' ),
-					'between'          => __( 'Space', 'mai-engine' ),
-				],
-				'default_value'     => 'start',
-				'wrapper'           => [
-					'class'            => 'mai-acf-button-group',
-				],
-			],
-			[
-				'key'               => 'mai_columns_align_columns_vertical',
-				'label'             => __( 'Align Columns (vertical)', 'mai-engine' ),
-				'name'              => 'align_columns_vertical',
-				'type'              => 'button_group',
-				'choices'           => [
-					''                 => __( 'Full', 'mai-engine' ),
-					'top'              => __( 'Top', 'mai-engine' ),
-					'middle'           => __( 'Middle', 'mai-engine' ),
-					'bottom'           => __( 'Bottom', 'mai-engine' ),
-				],
-				'wrapper'           => [
-					'class'            => 'mai-acf-button-group',
-				],
-			],
-			[
-				'key'               => 'mai_columns_column_gap',
-				'label'             => __( 'Column Gap', 'mai-engine' ),
-				'name'              => 'column_gap',
-				'type'              => 'button_group',
-				'choices'           => [
-					''                 => __( 'None', 'mai-engine' ),
-					'md'               => __( 'XS', 'mai-engine' ),
-					'lg'               => __( 'S', 'mai-engine' ),
-					'xl'               => __( 'M', 'mai-engine' ),
-					'xxl'              => __( 'L', 'mai-engine' ),
-					'xxxl'             => __( 'XL', 'mai-engine' ),
-				],
-				'default_value'     => 'xl',
-				'wrapper'           => [
-					'class'            => 'mai-acf-button-group mai-acf-button-group-small',
-				],
-			],
-			[
-				'key'               => 'mai_columns_row_gap',
-				'label'             => __( 'Row Gap', 'mai-engine' ),
-				'name'              => 'row_gap',
-				'type'              => 'button_group',
-				'choices'           => [
-					''                 => __( 'None', 'mai-engine' ),
-					'md'               => __( 'XS', 'mai-engine' ),
-					'lg'               => __( 'S', 'mai-engine' ),
-					'xl'               => __( 'M', 'mai-engine' ),
-					'xxl'              => __( 'L', 'mai-engine' ),
-					'xxxl'             => __( 'XL', 'mai-engine' ),
-				],
-				'default_value'     => 'xl',
-				'wrapper'           => [
-					'class'            => 'mai-acf-button-group mai-acf-button-group-small',
-				],
-			],
-			[
-				'key'               => 'mai_columns_margin_top',
-				'label'             => __( 'Top Margin', 'mai-engine' ),
-				'name'              => 'margin_top',
-				'type'              => 'button_group',
-				'choices'           => [
-					''                 => __( 'None', 'mai-engine' ),
-					'md'               => __( 'XS', 'mai-engine' ),
-					'lg'               => __( 'S', 'mai-engine' ),
-					'xl'               => __( 'M', 'mai-engine' ),
-					'xxl'              => __( 'L', 'mai-engine' ),
-					'xxxl'             => __( 'XL', 'mai-engine' ),
-					'xxxxl'            => __( 'XXL', 'mai-engine' ),
-				],
-				'default_value'     => '',
-				'wrapper'           => [
-					'class'            => 'mai-acf-button-group mai-acf-button-group-small',
-				],
-			],
-			[
-				'key'               => 'mai_columns_margin_bottom',
-				'label'             => __( 'Bottom Margin', 'mai-engine' ),
-				'name'              => 'margin_bottom',
-				'type'              => 'button_group',
-				'choices'           => [
-					''                 => __( 'None', 'mai-engine' ),
-					'md'               => __( 'XS', 'mai-engine' ),
-					'lg'               => __( 'S', 'mai-engine' ),
-					'xl'               => __( 'M', 'mai-engine' ),
-					'xxl'              => __( 'L', 'mai-engine' ),
-					'xxxl'             => __( 'XL', 'mai-engine' ),
-					'xxxxl'            => __( 'XXL', 'mai-engine' ),
-				],
-				'default_value'     => '',
-				'wrapper'           => [
-					'class'            => 'mai-acf-button-group mai-acf-button-group-small',
-				],
-			],
-		],
-		'location'            => [
-			[
+	acf_add_local_field_group(
+		[
+			'key'                 => 'mai_columns_field_group',
+			'title'               => __( 'Mai Columns', 'mai-engine' ),
+			'fields'              => [
 				[
-					'param'            => 'block',
-					'operator'         => '==',
-					'value'            => 'acf/mai-columns',
+					'key'               => 'mai_columns_columns',
+					'label'             => __( 'Columns', 'mai-engine' ),
+					'name'              => 'columns',
+					'type'              => 'select',
+					'choices'           => [
+						1                  => '1',
+						2                  => '2',
+						3                  => '3',
+						4                  => '4',
+						5                  => '5',
+						6                  => '6',
+						0                  => __( 'Auto', 'mai-engine' ),
+						'custom'           => __( 'Custom arrangement', 'mai-engine' ),
+					],
+					'default_value'     => 2,
+				],
+				[
+					'key'               => 'mai_columns_arrangement_message',
+					'label'             => __( 'Responsive Arrangements', 'mai-engine' ),
+					'type'              => 'message',
+					'conditional_logic' => [
+						[
+							[
+								'field'          => 'mai_columns_columns',
+								'operator'       => '==',
+								'value'          => 'custom',
+							],
+						],
+					],
+				],
+				[
+					'key'               => 'mai_columns_arrangement_tab',
+					'label'             => __( 'LG', 'mai-engine' ),
+					'type'              => 'tab',
+					'conditional_logic' => [
+						[
+							[
+								'field'          => 'mai_columns_columns',
+								'operator'       => '==',
+								'value'          => 'custom',
+							],
+						],
+					],
+				],
+				[
+					'key'               => 'mai_columns_arrangement',
+					'label'             => __( 'Arrangement (desktop)', 'mai-engine' ),
+					'name'              => 'arrangement',
+					'instructions'      => $arrangement_instructions,
+					'type'              => 'repeater',
+					'conditional_logic' => [
+						[
+							[
+								'field'          => 'mai_columns_columns',
+								'operator'       => '==',
+								'value'          => 'custom',
+							],
+						],
+					],
+					'min'               => 1,
+					'max'               => 0,
+					'layout'            => 'block',
+					'button_label'      => __( 'Add Column', 'mai-engine' ),
+					'sub_fields'        => [
+						[
+							'key'             => 'mai_columns_arrangement_columns',
+							'label'           => '',
+							'name'            => 'columns',
+							'type'            => 'button_group',
+							'choices'         => $column_choices,
+							'default_value'   => '1/3',
+						],
+					],
+				],
+				[
+					'key'               => 'mai_columns_arrangement_md_tab',
+					'label'             => __( 'MD', 'mai-engine' ),
+					'type'              => 'tab',
+					'conditional_logic' => [
+						[
+							[
+								'field'          => 'mai_columns_columns',
+								'operator'       => '==',
+								'value'          => 'custom',
+							],
+						],
+					],
+				],
+				[
+					'key'               => 'mai_columns_md_arrangement',
+					'label'             => __( 'Arrangement (lg tablets)', 'mai-engine' ),
+					'name'              => 'arrangement_md',
+					'instructions'      => $arrangement_instructions,
+					'type'              => 'repeater',
+					'conditional_logic' => [
+						[
+							[
+								'field'          => 'mai_columns_columns',
+								'operator'       => '==',
+								'value'          => 'custom',
+							],
+						],
+					],
+					'min'               => 1,
+					'max'               => 0,
+					'layout'            => 'block',
+					'button_label'      => __( 'Add Column', 'mai-engine' ),
+					'sub_fields'        => [
+						[
+							'key'             => 'mai_columns_md_arrangement_columns',
+							'label'           => '',
+							'name'            => 'columns',
+							'type'            => 'button_group',
+							'choices'         => $column_choices,
+							'default_value'   => '1/3',
+						],
+					],
+				],
+				[
+					'key'               => 'mai_columns_arrangement_sm_tab',
+					'label'             => __( 'SM', 'mai-engine' ),
+					'type'              => 'tab',
+					'conditional_logic' => [
+						[
+							[
+								'field'          => 'mai_columns_columns',
+								'operator'       => '==',
+								'value'          => 'custom',
+							],
+						],
+					],
+				],
+				[
+					'key'               => 'mai_columns_sm_arrangement',
+					'label'             => __( 'Arrangement (sm tablets)', 'mai-engine' ),
+					'name'              => 'arrangement_sm',
+					'instructions'      => $arrangement_instructions,
+					'type'              => 'repeater',
+					'conditional_logic' => [
+						[
+							[
+								'field'          => 'mai_columns_columns',
+								'operator'       => '==',
+								'value'          => 'custom',
+							],
+						],
+					],
+					'min'               => 1,
+					'max'               => 0,
+					'layout'            => 'block',
+					'button_label'      => __( 'Add Column', 'mai-engine' ),
+					'sub_fields'        => [
+						[
+							'key'             => 'mai_columns_sm_arrangement_columns',
+							'label'           => '',
+							'name'            => 'columns',
+							'type'            => 'button_group',
+							'choices'         => $column_choices,
+							'default_value'   => '1/2',
+						],
+					],
+				],
+				[
+					'key'               => 'mai_columns_arrangement_xs_tab',
+					'label'             => __( 'XS', 'mai-engine' ),
+					'type'              => 'tab',
+					'conditional_logic' => [
+						[
+							[
+								'field'          => 'mai_columns_columns',
+								'operator'       => '==',
+								'value'          => 'custom',
+							],
+						],
+					],
+				],
+				[
+					'key'               => 'mai_columns_xs_arrangement',
+					'label'             => __( 'Arrangement (mobile)', 'mai-engine' ),
+					'name'              => 'arrangement_xs',
+					'instructions'      => $arrangement_instructions,
+					'type'              => 'repeater',
+					'conditional_logic' => [
+						[
+							[
+								'field'          => 'mai_columns_columns',
+								'operator'       => '==',
+								'value'          => 'custom',
+							],
+						],
+					],
+					'min'               => 1,
+					'max'               => 0,
+					'layout'            => 'block',
+					'button_label'      => __( 'Add Column', 'mai-engine' ),
+					'sub_fields'        => [
+						[
+							'key'             => 'mai_columns_xs_arrangement_columns',
+							'label'           => '',
+							'name'            => 'columns',
+							'type'            => 'button_group',
+							'choices'         => $column_choices,
+							'default_value'   => 'full',
+						],
+					],
+				],
+				[
+					'key'               => 'mai_columns_arrangement_closing_tab',
+					'type'              => 'tab',
+					'endpoint'          => 1,
+					'wrapper'           => [
+						'class'            => 'mai-columns-closing-tab',
+					],
+				],
+				[
+					'key'               => 'mai_columns_align_columns',
+					'label'             => __( 'Align Columns', 'mai-engine' ),
+					'name'              => 'align_columns',
+					'type'              => 'button_group',
+					'choices'           => [
+						'start'            => __( 'Start', 'mai-engine' ),
+						'center'           => __( 'Center', 'mai-engine' ),
+						'end'              => __( 'End', 'mai-engine' ),
+						'between'          => __( 'Space', 'mai-engine' ),
+					],
+					'default_value'     => 'start',
+					'wrapper'           => [
+						'class'            => 'mai-acf-button-group',
+					],
+				],
+				[
+					'key'               => 'mai_columns_align_columns_vertical',
+					'label'             => __( 'Align Columns (vertical)', 'mai-engine' ),
+					'name'              => 'align_columns_vertical',
+					'type'              => 'button_group',
+					'choices'           => [
+						''                 => __( 'Full', 'mai-engine' ),
+						'top'              => __( 'Top', 'mai-engine' ),
+						'middle'           => __( 'Middle', 'mai-engine' ),
+						'bottom'           => __( 'Bottom', 'mai-engine' ),
+					],
+					'wrapper'           => [
+						'class'            => 'mai-acf-button-group',
+					],
+				],
+				[
+					'key'               => 'mai_columns_column_gap',
+					'label'             => __( 'Column Gap', 'mai-engine' ),
+					'name'              => 'column_gap',
+					'type'              => 'button_group',
+					'choices'           => [
+						''                 => __( 'None', 'mai-engine' ),
+						'md'               => __( 'XS', 'mai-engine' ),
+						'lg'               => __( 'S', 'mai-engine' ),
+						'xl'               => __( 'M', 'mai-engine' ),
+						'xxl'              => __( 'L', 'mai-engine' ),
+						'xxxl'             => __( 'XL', 'mai-engine' ),
+					],
+					'default_value'     => 'xl',
+					'wrapper'           => [
+						'class'            => 'mai-acf-button-group mai-acf-button-group-small',
+					],
+				],
+				[
+					'key'               => 'mai_columns_row_gap',
+					'label'             => __( 'Row Gap', 'mai-engine' ),
+					'name'              => 'row_gap',
+					'type'              => 'button_group',
+					'choices'           => [
+						''                 => __( 'None', 'mai-engine' ),
+						'md'               => __( 'XS', 'mai-engine' ),
+						'lg'               => __( 'S', 'mai-engine' ),
+						'xl'               => __( 'M', 'mai-engine' ),
+						'xxl'              => __( 'L', 'mai-engine' ),
+						'xxxl'             => __( 'XL', 'mai-engine' ),
+					],
+					'default_value'     => 'xl',
+					'wrapper'           => [
+						'class'            => 'mai-acf-button-group mai-acf-button-group-small',
+					],
+				],
+				[
+					'key'               => 'mai_columns_margin_top',
+					'label'             => __( 'Top Margin', 'mai-engine' ),
+					'name'              => 'margin_top',
+					'type'              => 'button_group',
+					'choices'           => [
+						''                 => __( 'None', 'mai-engine' ),
+						'md'               => __( 'XS', 'mai-engine' ),
+						'lg'               => __( 'S', 'mai-engine' ),
+						'xl'               => __( 'M', 'mai-engine' ),
+						'xxl'              => __( 'L', 'mai-engine' ),
+						'xxxl'             => __( 'XL', 'mai-engine' ),
+						'xxxxl'            => __( 'XXL', 'mai-engine' ),
+					],
+					'default_value'     => '',
+					'wrapper'           => [
+						'class'            => 'mai-acf-button-group mai-acf-button-group-small',
+					],
+				],
+				[
+					'key'               => 'mai_columns_margin_bottom',
+					'label'             => __( 'Bottom Margin', 'mai-engine' ),
+					'name'              => 'margin_bottom',
+					'type'              => 'button_group',
+					'choices'           => [
+						''                 => __( 'None', 'mai-engine' ),
+						'md'               => __( 'XS', 'mai-engine' ),
+						'lg'               => __( 'S', 'mai-engine' ),
+						'xl'               => __( 'M', 'mai-engine' ),
+						'xxl'              => __( 'L', 'mai-engine' ),
+						'xxxl'             => __( 'XL', 'mai-engine' ),
+						'xxxxl'            => __( 'XXL', 'mai-engine' ),
+					],
+					'default_value'     => '',
+					'wrapper'           => [
+						'class'            => 'mai-acf-button-group mai-acf-button-group-small',
+					],
 				],
 			],
-		],
-	]);
+			'location'            => [
+				[
+					[
+						'param'            => 'block',
+						'operator'         => '==',
+						'value'            => 'acf/mai-columns',
+					],
+				],
+			],
+		]
+	);
 
-	acf_add_local_field_group( [
-		'key'         => 'mai_column_field_group',
-		'title'       => __( 'Mai Column', 'mai-engine' ),
-		'fields'      => [
-			[
-				'key'               => 'mai_column_align_column_vertical',
-				'label'             => __( 'Align Content (vertical)', 'mai-engine' ),
-				'name'              => 'align_column_vertical',
-				'type'              => 'button_group',
-				'choices'           => [
-					'start'            => __( 'Top', 'mai-engine' ),
-					'middle'           => __( 'Middle', 'mai-engine' ),
-					'end'              => __( 'Bottom', 'mai-engine' ),
+	acf_add_local_field_group(
+		[
+			'key'         => 'mai_column_field_group',
+			'title'       => __( 'Mai Column', 'mai-engine' ),
+			'fields'      => [
+				[
+					'key'               => 'mai_column_align_column_vertical',
+					'label'             => __( 'Align Content (vertical)', 'mai-engine' ),
+					'name'              => 'align_column_vertical',
+					'type'              => 'button_group',
+					'choices'           => [
+						'start'            => __( 'Top', 'mai-engine' ),
+						'middle'           => __( 'Middle', 'mai-engine' ),
+						'end'              => __( 'Bottom', 'mai-engine' ),
+					],
+					'default_value'     => 'start',
+					'wrapper'           => [
+						'class'            => 'mai-acf-button-group',
+					],
 				],
-				'default_value'     => 'start',
-				'wrapper'           => [
-					'class'            => 'mai-acf-button-group',
+				[
+					'key'       => 'mai_column_spacing',
+					'label'     => __( 'Padding', 'mai-engine' ),
+					'name'      => 'spacing',
+					'type'      => 'select',
+					'choices'   => [
+						''         => __( 'None', 'mai-engine' ),
+						'xs'       => __( 'XS', 'mai-engine' ),
+						'sm'       => __( 'SM', 'mai-engine' ),
+						'md'       => __( 'MD', 'mai-engine' ),
+						'lg'       => __( 'LG', 'mai-engine' ),
+						'xl'       => __( 'XL', 'mai-engine' ),
+						'xxl'      => __( 'XXL', 'mai-engine' ),
+						'xxxl'     => __( 'XXXL', 'mai-engine' ),
+					],
+				],
+				[
+					'key'     => 'mai_column_background',
+					'label'   => __( 'Background Color', 'mai-engine' ),
+					'name'    => 'background',
+					'type'    => 'radio',
+					'choices' => mai_get_radio_color_choices(),
+					'wrapper' => [
+						'class' => 'mai-block-colors',
+					],
+				],
+				[
+					'key'               => 'mai_column_background_custom',
+					'name'              => 'background_custom',
+					'type'              => 'color_picker',
+					'conditional_logic' => [
+						[
+							'field'    => 'mai_column_background',
+							'operator' => '==',
+							'value'    => 'custom',
+						],
+					],
+				],
+				[
+					'key'               => 'mai_columns_shadow',
+					'name'              => 'shadow',
+					'label'             => '',
+					'message'           => esc_html__( 'Add box shadow', 'mai-engine' ),
+					'type'              => 'true_false',
+				],
+				[
+					'key'               => 'mai_columns_first_xs',
+					'name'              => 'first_xs',
+					'label'             => '',
+					'message'           => esc_html__( 'Show first on mobile', 'mai-engine' ),
+					'type'              => 'true_false',
+				],
+				[
+					'key'               => 'mai_columns_first_sm',
+					'name'              => 'first_sm',
+					'label'             => '',
+					'message'           => esc_html__( 'Show first on small tablets', 'mai-engine' ),
+					'type'              => 'true_false',
+				],
+				[
+					'key'               => 'mai_columns_first_md',
+					'name'              => 'first_md',
+					'label'             => '',
+					'message'           => esc_html__( 'Show first on large tablets', 'mai-engine' ),
+					'type'              => 'true_false',
 				],
 			],
-			[
-				'key'       => 'mai_column_spacing',
-				'label'     => __( 'Spacing', 'mai-engine' ),
-				'name'      => 'spacing',
-				'type'      => 'button_group',
-				'choices'   => [
-					''         => __( 'None', 'mai-engine' ),
-					'xs'       => __( 'XS', 'mai-engine' ),
-					'sm'       => __( 'SM', 'mai-engine' ),
-					'md'       => __( 'MD', 'mai-engine' ),
-					'lg'       => __( 'LG', 'mai-engine' ),
-					'xl'       => __( 'XL', 'mai-engine' ),
-				],
-				'wrapper'   => [
-					'class'    => 'mai-acf-button-group',
-				],
-			],
-			[
-				'key'     => 'mai_column_background',
-				'label'   => __( 'Background Color', 'mai-engine' ),
-				'name'    => 'background',
-				'type'    => 'radio',
-				'choices' => mai_get_radio_color_choices(),
-				'wrapper' => [
-					'class' => 'mai-block-colors',
-				],
-			],
-			[
-				'key'               => 'mai_column_background_custom',
-				'name'              => 'background_custom',
-				'type'              => 'color_picker',
-				'conditional_logic' => [
+			'location'    => [
+				[
 					[
-						'field'    => 'mai_column_background',
+						'param'    => 'block',
 						'operator' => '==',
-						'value'    => 'custom',
+						'value'    => 'acf/mai-column',
 					],
 				],
 			],
-			[
-				'key'               => 'mai_columns_shadow',
-				'name'              => 'shadow',
-				'label'             => '',
-				'message'           => esc_html__( 'Add box shadow', 'mai-engine' ),
-				'type'              => 'true_false',
-			],
-			[
-				'key'               => 'mai_columns_first_xs',
-				'name'              => 'first_xs',
-				'label'             => '',
-				'message'           => esc_html__( 'Show first on mobile', 'mai-engine' ),
-				'type'              => 'true_false',
-			],
-			[
-				'key'               => 'mai_columns_first_sm',
-				'name'              => 'first_sm',
-				'label'             => '',
-				'message'           => esc_html__( 'Show first on small tablets', 'mai-engine' ),
-				'type'              => 'true_false',
-			],
-			[
-				'key'               => 'mai_columns_first_md',
-				'name'              => 'first_md',
-				'label'             => '',
-				'message'           => esc_html__( 'Show first on large tablets', 'mai-engine' ),
-				'type'              => 'true_false',
-			],
-		],
-		'location'    => [
-			[
-				[
-					'param'    => 'block',
-					'operator' => '==',
-					'value'    => 'acf/mai-column',
-				],
-			],
-		],
-		'active'      => true,
-	]);
+			'active'      => true,
+		]
+	);
 }

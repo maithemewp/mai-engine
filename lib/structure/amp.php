@@ -176,7 +176,7 @@ function mai_get_amp_menu_item( WP_Post $item ) {
  * @return string
  */
 function mai_get_amp_button_styles() {
-	return '--button-color:var(--menu-item-link-color,var(--color-heading));--button-color-hover:var(--button-color);--button-background:transparent;--button-background-hover:transparent;--button-border:0;--button-box-shadow:0;';
+	return '--button-color:var(--menu-item-link-color,var(--color-heading));--button-color-hover:var(--button-color);--button-background:transparent;--button-background-hover:transparent;--button-border:0;--button-box-shadow:none;';
 }
 
 /**

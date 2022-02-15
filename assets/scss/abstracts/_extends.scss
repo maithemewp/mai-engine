@@ -112,7 +112,7 @@
 		--button-padding: var(--button-link-padding, 0.9rem 0.5rem);
 		--button-border: 0;
 		--button-box-shadow: none;
-		--button-box-shadow-hover: 0;
+		--button-box-shadow-hover: none;
 
 		&::after {
 			display: var(--button-link-after-display, inline-block);

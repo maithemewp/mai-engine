@@ -1,5 +1,8 @@
 'use strict';
 
+// Use in terminal via:
+// `gulp create --name=themename`
+
 const fs           = require( 'fs' ),
 	  argv         = require( 'yargs' ).argv,
 	  readline     = require( 'readline' ),

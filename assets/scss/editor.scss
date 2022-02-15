@@ -28,6 +28,10 @@ body {
 	@include body();
 }
 
+.edit-post-visual-editor__post-title-wrapper {
+	margin-bottom: var(--spacing-md); // this element is using var(--wp--style--block-gap) which is not defined in this non-FSE theme.
+}
+
 .editor-post-title__block .editor-post-title__input {
 
 	@include heading;

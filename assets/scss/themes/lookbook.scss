@@ -1,7 +1,7 @@
 @import "../abstracts/_index";
 
 :root {
-	--font-scale: 1.2;
+	--font-scale-desktop: 1.3;
 	--border-radius: 0;
 	--body-line-height: 1.875;
 	--button-padding: 1.2em 2.4em;
@@ -40,23 +40,11 @@
 	--archive-description-margin: 3em auto;
 	--archive-title-font-size: var(--font-size-lg);
 	--archive-title-font-weight: var(--body-font-weight-bold);
-
-	@include mq(md) {
-		--font-scale: 1.3;
-	}
 }
 
 .single-post,
 .is-archive {
 	--content-sidebar-wrap-margin-top: 0;
-}
-
-.header-left {
-	--header-section-justify-content: flex-end;
-}
-
-.header-right {
-	--header-section-justify-content: flex-start;
 }
 
 .menu-item-link span {
@@ -92,13 +80,13 @@
 	}
 }
 
-.page .entry-title {
-	font-size: var(--font-size-xxl);
+.page .entry-title-single {
+	--entry-title-font-size: var(--font-size-xxl);
 }
 
 .entry-single:not(.type-page) {
 
-	h1.entry-title,
+	.entry-title-single,
 	.entry-meta-before-content,
 	.entry-meta-after-content,
 	.entry-excerpt-single {
@@ -109,7 +97,7 @@
 
 .entries-archive.has-image-full {
 
-	.entry-title,
+	.entry-title-archive,
 	.entry-meta-before-content,
 	.entry-meta-after-content,
 	.entry-excerpt {
@@ -117,7 +105,7 @@
 	}
 }
 
-.page .entry-title::after,
+.page .entry-title-single::after,
 .entry-excerpt::after {
 	display: block;
 	width: 2.5%;
