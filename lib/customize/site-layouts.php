@@ -56,10 +56,9 @@ function mai_site_layouts_customizer_settings() {
 	new \Kirki\Field\Custom(
 		mai_parse_kirki_args(
 			[
-				// 'settings'    => 'defaults-layout-divider',
-				// 'option_name' => $options['default'],
-				'section'     => $section,
-				'default'     => sprintf( '<h3>%s</h3>', __( 'Defaults', 'mai-engine' ) ),
+				'settings' => mai_get_kirki_setting( 'defaults-layout-divider', $options['default'] ),
+				'section'  => $section,
+				'default'  => sprintf( '<h3>%s</h3>', __( 'Defaults', 'mai-engine' ) ),
 			]
 		)
 	);
@@ -67,14 +66,11 @@ function mai_site_layouts_customizer_settings() {
 	new \Kirki\Field\Select(
 		mai_parse_kirki_args(
 			[
-				'type'        => 'select',
-				'settings'    => mai_get_kirki_setting( 'site', $options['default'] ),
-				// 'settings'    => 'site',
-				// 'option_name' => $options['default'],
-				'section'     => $section,
-				'label'       => __( 'Site Default', 'mai-engine' ),
-				'default'     => $defaults['default']['site'],
-				'choices'     => genesis_get_layouts_for_customizer(),
+				'settings' => mai_get_kirki_setting( 'site', $options['default'] ),
+				'section'  => $section,
+				'label'    => __( 'Site Default', 'mai-engine' ),
+				'default'  => $defaults['default']['site'],
+				'choices'  => genesis_get_layouts_for_customizer(),
 			]
 		)
 	);
@@ -82,14 +78,11 @@ function mai_site_layouts_customizer_settings() {
 	new \Kirki\Field\Select(
 		mai_parse_kirki_args(
 			[
-				'type'        => 'select',
-				'settings'    =>  mai_get_kirki_setting( 'archive', $options['default'] ),
-				// 'settings'    => 'archive',
-				// 'option_name' => $options['default'],
-				'section'     => $section,
-				'label'       => __( 'Content Archives', 'mai-engine' ),
-				'default'     => $defaults['default']['archive'],
-				'choices'     => mai_get_site_layout_choices(),
+				'settings' => mai_get_kirki_setting( 'archive', $options['default'] ),
+				'section'  => $section,
+				'label'    => __( 'Content Archives', 'mai-engine' ),
+				'default'  => $defaults['default']['archive'],
+				'choices'  => mai_get_site_layout_choices(),
 			]
 		)
 	);
@@ -97,153 +90,142 @@ function mai_site_layouts_customizer_settings() {
 	new \Kirki\Field\Select(
 		mai_parse_kirki_args(
 			[
-				'type'        => 'select',
-				'settings'    =>  mai_get_kirki_setting( 'single', $options['default'] ),
-				// 'settings'    => 'single',
-				// 'option_name' => $options['default'],
-				'section'     => $section,
-				'label'       => __( 'Single Content', 'mai-engine' ),
-				'default'     => $defaults['default']['single'],
-				'choices'     => mai_get_site_layout_choices(),
+				'settings' => mai_get_kirki_setting( 'single', $options['default'] ),
+				'section'  => $section,
+				'label'    => __( 'Single Content', 'mai-engine' ),
+				'default'  => $defaults['default']['single'],
+				'choices'  => mai_get_site_layout_choices(),
 			]
 		)
 	);
 
-	// $post_types = get_post_types( [ 'public' => true ], 'objects' );
-	// unset( $post_types['attachment'] );
+	$post_types = get_post_types( [ 'public' => true ], 'objects' );
+	unset( $post_types['attachment'] );
 
-	// foreach ( $post_types as $name => $post_type ) {
+	foreach ( $post_types as $name => $post_type ) {
 
-	// 	Kirki::add_field(
-	// 		$handle,
-	// 		[
-	// 			'type'        => 'custom',
-	// 			'settings'    => $name . '-layout-divider',
-	// 			'option_name' => $options['default'],
-	// 			'section'     => $section,
-	// 			'default'     => sprintf( '<h3>%s</h3>', $post_type->label ),
-	// 		]
-	// 	);
+		new \Kirki\Field\Custom(
+			mai_parse_kirki_args(
+				[
+					'settings' => mai_get_kirki_setting( $name . '-layout-divider', $options['default'] ),
+					'section'  => $section,
+					'default'  => sprintf( '<h3>%s</h3>', $post_type->label ),
+				]
+			)
+		);
 
-	// 	Kirki::add_field(
-	// 		$handle,
-	// 		[
-	// 			'type'        => 'select',
-	// 			'settings'    => $name,
-	// 			'option_name' => $options['single'],
-	// 			'section'     => $section,
-	// 			'label'       => __( 'Single', 'mai-engine' ),
-	// 			'default'     => isset( $defaults['single'][ $name ] ) ? $defaults['single'][ $name ] : '',
-	// 			'choices'     => mai_get_site_layout_choices(),
-	// 		]
-	// 	);
+		new \Kirki\Field\Select(
+			mai_parse_kirki_args(
+				[
+					'settings' => mai_get_kirki_setting( $name, $options['single'] ),
+					'section'  => $section,
+					'label'    => __( 'Single', 'mai-engine' ),
+					'default'  => isset( $defaults['single'][ $name ] ) ? $defaults['single'][ $name ]: '',
+					'choices'  => mai_get_site_layout_choices(),
+				]
+			)
+		);
 
-	// 	if ( 'post' === $name || $post_type->has_archive ) {
+		if ( 'post' === $name || $post_type->has_archive ) {
 
-	// 		Kirki::add_field(
-	// 			$handle,
-	// 			[
-	// 				'type'        => 'select',
-	// 				'settings'    => $name,
-	// 				'option_name' => $options['archive'],
-	// 				'section'     => $section,
-	// 				'label'       => __( 'Archive', 'mai-engine' ),
-	// 				'default'     => isset( $defaults['archive'][ $name ] ) ? $defaults['archive'][ $name ] : '',
-	// 				'choices'     => mai_get_site_layout_choices(),
-	// 			]
-	// 		);
+			new \Kirki\Field\Select(
+				mai_parse_kirki_args(
+					[
+						'settings' => mai_get_kirki_setting( $name, $options['archive'] ),
+						'section'  => $section,
+						'label'    => __( 'Archive', 'mai-engine' ),
+						'default'  => isset( $defaults['archive'][ $name ] ) ? $defaults['archive'][ $name ]: '',
+						'choices'  => mai_get_site_layout_choices(),
+					]
+				)
+			);
+		}
 
-	// 	}
+		$taxonomies = get_object_taxonomies( $name, 'objects' );
 
-	// 	$taxonomies = get_object_taxonomies( $name, 'objects' );
+		if ( $taxonomies ) {
+			// Get only public taxonomies.
+			$taxonomies = wp_list_filter( $taxonomies, [ 'public' => true ] );
+			// Remove taxonomies we don't want.
+			unset( $taxonomies['post_format'] );
+			unset( $taxonomies['product_shipping_class'] );
+			unset( $taxonomies['yst_prominent_words'] );
+		}
 
-	// 	if ( $taxonomies ) {
-	// 		// Get only public taxonomies.
-	// 		$taxonomies = wp_list_filter( $taxonomies, [ 'public' => true ] );
-	// 		// Remove taxonomies we don't want.
-	// 		unset( $taxonomies['post_format'] );
-	// 		unset( $taxonomies['product_shipping_class'] );
-	// 		unset( $taxonomies['yst_prominent_words'] );
-	// 	}
+		if ( $taxonomies ) {
+			foreach ( $taxonomies as $taxo_name => $taxonomy ) {
 
-	// 	if ( $taxonomies ) {
-	// 		foreach ( $taxonomies as $taxo_name => $taxonomy ) {
-	// 			Kirki::add_field(
-	// 				$handle,
-	// 				[
-	// 					'type'        => 'select',
-	// 					'settings'    => $taxo_name,
-	// 					'option_name' => $options['archive'],
-	// 					'section'     => $section,
-	// 					'label'       => $taxonomy->label,
-	// 					'default'     => isset( $defaults['archive'][ $taxo_name ] ) ? $defaults['archive'][ $taxo_name ] : '',
-	// 					'choices'     => mai_get_site_layout_choices(),
-	// 				]
-	// 			);
-	// 		}
-	// 	}
-	// }
+				new \Kirki\Field\Select(
+					mai_parse_kirki_args(
+						[
+							'settings' => mai_get_kirki_setting( $taxo_name, $options['archive'] ),
+							'section'  => $section,
+							'label'    => $taxonomy->label,
+							'default'  => isset( $defaults['archive'][ $taxo_name ] ) ? $defaults['archive'][ $taxo_name ]: '',
+							'choices'  => mai_get_site_layout_choices(),
+						]
+					)
+				);
+			}
+		}
+	}
 
-	// Kirki::add_field(
-	// 	$handle,
-	// 	[
-	// 		'type'        => 'custom',
-	// 		'settings'    => 'misc-layout-divider',
-	// 		'option_name' => $options['default'],
-	// 		'section'     => $section,
-	// 		'default'     => sprintf( '<h3>%s</h3>', __( 'Miscellaneous', 'mai-engine' ) ),
-	// 	]
-	// );
+	new \Kirki\Field\Custom(
+		mai_parse_kirki_args(
+			[
+				'type'     => 'custom',
+				'settings' => mai_get_kirki_setting( 'misc-layout-divider', $options['default'] ),
+				'section'  => $section,
+				'default'  => sprintf( '<h3>%s</h3>', __( 'Miscellaneous', 'mai-engine' ) ),
+			]
+		)
+	);
 
-	// Kirki::add_field(
-	// 	$handle,
-	// 	[
-	// 		'type'        => 'select',
-	// 		'settings'    => 'search',
-	// 		'option_name' => $options['archive'],
-	// 		'section'     => $section,
-	// 		'label'       => __( 'Search Results', 'mai-engine' ),
-	// 		'default'     => $defaults['archive']['search'],
-	// 		'choices'     => mai_get_site_layout_choices(),
-	// 	]
-	// );
+	new \Kirki\Field\Select(
+		mai_parse_kirki_args(
+			[
+				'settings' => mai_get_kirki_setting( 'search', $options['archive'] ),
+				'section'  => $section,
+				'label'    => __( 'Search Results', 'mai-engine' ),
+				'default'  => $defaults['archive']['search'],
+				'choices'  => mai_get_site_layout_choices(),
+			]
+		)
+	);
 
-	// Kirki::add_field(
-	// 	$handle,
-	// 	[
-	// 		'type'        => 'select',
-	// 		'settings'    => 'author',
-	// 		'option_name' => $options['archive'],
-	// 		'section'     => $section,
-	// 		'label'       => __( 'Author Archives', 'mai-engine' ),
-	// 		'default'     => $defaults['archive']['author'],
-	// 		'choices'     => mai_get_site_layout_choices(),
-	// 	]
-	// );
+	new \Kirki\Field\Select(
+		mai_parse_kirki_args(
+			[
+				'settings' => mai_get_kirki_setting( 'author', $options['archive'] ),
+				'section'  => $section,
+				'label'    => __( 'Author Archives', 'mai-engine' ),
+				'default'  => $defaults['archive']['author'],
+				'choices'  => mai_get_site_layout_choices(),
+			]
+		)
+	);
 
-	// Kirki::add_field(
-	// 	$handle,
-	// 	[
-	// 		'type'        => 'select',
-	// 		'settings'    => 'date',
-	// 		'option_name' => $options['archive'],
-	// 		'section'     => $section,
-	// 		'label'       => __( 'Date Archives', 'mai-engine' ),
-	// 		'default'     => $defaults['archive']['date'],
-	// 		'choices'     => mai_get_site_layout_choices(),
-	// 	]
-	// );
+	new \Kirki\Field\Select(
+		mai_parse_kirki_args(
+			[
+				'settings' => mai_get_kirki_setting( 'date', $options['archive'] ),
+				'section'  => $section,
+				'label'    => __( 'Date Archives', 'mai-engine' ),
+				'default'  => $defaults['archive']['date'],
+				'choices'  => mai_get_site_layout_choices(),
+			]
+		)
+	);
 
-	// Kirki::add_field(
-	// 	$handle,
-	// 	[
-	// 		'type'        => 'select',
-	// 		'settings'    => '404-page',
-	// 		'option_name' => $options['single'],
-	// 		'section'     => $section,
-	// 		'label'       => __( '404', 'mai-engine' ),
-	// 		'default'     => $defaults['single']['404-page'],
-	// 		'choices'     => mai_get_site_layout_choices(),
-	// 	]
-	// );
+	new \Kirki\Field\Select(
+		mai_parse_kirki_args(
+			[
+				'settings' => mai_get_kirki_setting( '404-page', $options['single'] ),
+				'section'  => $section,
+				'label'    => __( '404', 'mai-engine' ),
+				'default'  => $defaults['single']['404-page'],
+				'choices'  => mai_get_site_layout_choices(),
+			]
+		)
+	);
 }
