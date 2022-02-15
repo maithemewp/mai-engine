@@ -26,18 +26,21 @@ function mai_customizer_upsell( $manager ) {
 	$handle  = mai_get_handle();
 	$section = $handle . '-upsell';
 	$args    = [
-		'type'        => 'link',
-		'title'       => __( 'Mai Design Pack', 'mai-engine' ),
-		'button_text' => __( 'Learn More', 'mai-engine' ),
-		'button_url'  => add_query_arg(
+		'type'            => 'link',
+		'title'           => __( 'Mai Design Pack', 'mai-engine' ),
+		'button_text'     => __( 'Learn More', 'mai-engine' ),
+		'button_url'      => add_query_arg(
 			[
-				'utm_source'   => 'engine',
-				'utm_medium'   => 'customizer',
-				'utm_campaign' => 'mai-design-pack',
+				'utm_source'    => 'engine',
+				'utm_medium'    => 'customizer',
+				'utm_campaign'  => 'mai-design-pack',
 			],
 			'https://bizbudding.com/mai-design-pack/'
 		),
-		'priority'    => 999,
+		'priority'        => 999,
+		'active_callback' => function() {
+			return ! class_exists( 'Mai_Design_Pack' );
+		},
 	];
 
 	new \Kirki\Section( $section, $args );
