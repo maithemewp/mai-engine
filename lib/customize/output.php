@@ -13,7 +13,6 @@
 defined( 'ABSPATH' ) || die;
 
 add_action( 'after_switch_theme',   'mai_flush_customizer_transients' );
-add_action( 'save_post',            'mai_flush_customizer_transients' );
 add_action( 'customize_save_after', 'mai_flush_customizer_transients' );
 /**
  * Deletes kirki transients when the Customizer is saved.
@@ -32,7 +31,26 @@ function mai_flush_customizer_transients() {
 	}
 }
 
-// add_filter( 'kirki_mai-engine_styles', 'mai_add_kirki_css' );
+add_action( 'save_post', 'mai_save_post_flush_customizer_transients', 999, 3 );
+/**
+ * Flush transients when saving/updating posts.
+ *
+ * @since TBD
+ *
+ * @param int     $post_id Post ID.
+ * @param WP_Post $post    Post object.
+ * @param bool    $update  Whether this is an existing post being updated.
+ *
+ * @return void
+ */
+function mai_save_post_flush_customizer_transients( $post_id, $post, $update ) {
+	if ( wp_is_post_revision( $post_id ) ) {
+		return;
+	}
+
+	mai_flush_customizer_transients();
+}
+
 add_filter( 'kirki_global_styles', 'mai_add_kirki_css' );
 /**
  * Outputs kirki css.
@@ -57,9 +75,10 @@ function mai_add_kirki_css( $css ) {
 	$has_run   = true;
 	$transient = 'mai_dynamic_css';
 	$admin     = is_admin();
+	$ajax      = wp_doing_ajax();
 	$preview   = is_customize_preview();
 
-	if ( ! ( $admin || $preview ) && $cached_css = get_transient( $transient ) ) {
+	if ( ! ( $admin || $ajax || $preview ) && $cached_css = get_transient( $transient ) ) {
 		// return $cached_css;
 	}
 
@@ -82,7 +101,6 @@ function mai_add_kirki_css( $css ) {
 	return $css;
 }
 
-// add_filter( 'kirki_mai-engine_styles', 'mai_add_kirki_page_header_css' );
 add_filter( 'kirki_global_styles', 'mai_add_kirki_page_header_css' );
 /**
  * Outputs kirki page header css.
