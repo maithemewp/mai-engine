@@ -9,6 +9,8 @@
  * @license   GPL-2.0-or-later
  */
 
+use Kirki\Util\Helper;
+
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
@@ -18,51 +20,37 @@ add_filter( 'kirki_telemetry', '__return_false' );
 // Skip hidden webfont choices.
 add_filter( 'kirki_mai-engine_webfonts_skip_hidden', '__return_false' );
 
-add_action( 'after_setup_theme', 'mai_add_kirki_config' );
+add_filter( 'kirki_path_url', 'mai_kirki_path_url', 10, 2 );
 /**
- * Add Kirki config.
+ * Uses engine url for kirki assets.
  *
- * @since  0.1.0
+ * @since TBD
  *
- * @link   https://aristath.github.io/kirki/docs/getting-started/config.html
+ * @param string $url  The existing url.
+ * @param string $path The existing path.
+ *
+ * @return string
+ */
+function mai_kirki_path_url( $url, $path ) {
+	return str_replace( mai_get_dir(), mai_get_url(), $url );
+}
+
+add_action( 'init', 'mai_settings_panel', 8 );
+/**
+ * Add Kirki theme settings panel.
+ *
+ * @since TBD
  *
  * @return void
  */
-function mai_add_kirki_config() {
-	$handle = mai_get_handle();
-
-	Kirki::add_config(
-		$handle,
-		[
-			'capability'        => 'edit_theme_options',
-			'option_type'       => 'option',
-			'option_name'       => $handle,
-			'gutenberg_support' => true,
-		]
-	);
-
-	Kirki::add_panel(
-		$handle,
+function mai_settings_panel() {
+	new \Kirki\Panel(
+		mai_get_handle(),
 		[
 			'priority' => 150,
 			'title'    => esc_html__( 'Theme Settings', 'mai-engine' ),
 		]
 	);
-}
-
-add_filter( 'kirki/config', 'mai_kirki_config' );
-/**
- * Modifies kirki config defaults.
- *
- * @since 0.1.0
- *
- * @param array $config Kirki config.
- *
- * @return array
- */
-function mai_kirki_config( $config ) {
-	$config['url_path'] = mai_get_url() . 'vendor/aristath/kirki';
-	return $config;
 }
 
 add_action( 'wp_head', 'mai_kirki_loading_icon', 101 );

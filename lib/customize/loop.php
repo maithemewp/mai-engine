@@ -9,6 +9,8 @@
  * @license   GPL-2.0-or-later
  */
 
+use Kirki\Util\Helper;
+
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
@@ -29,7 +31,7 @@ function mai_archive_settings_customizer_settings() {
 	$section = $handle . '-content-archives';
 	$choices = mai_get_loop_content_type_choices( true );
 
-	Kirki::add_section(
+	new \Kirki\Section(
 		$section,
 		[
 			'title'    => __( 'Enable Content Types', 'mai-engine' ),
@@ -38,28 +40,28 @@ function mai_archive_settings_customizer_settings() {
 		]
 	);
 
-	Kirki::add_field(
-		$handle,
-		[
-			'type'        => 'multicheck',
-			'settings'    => 'archive-settings',
-			'section'     => $section,
-			'label'       => __( 'Archive content types', 'mai-engine' ),
-			'description' => __( 'Custom post types must support "mai-archive-settings" to be available here.', 'mai-engine' ),
-			'default'     => mai_get_config( 'settings' )['content-archives']['enable'],
-			'choices'     => $choices,
-		]
+	new \Kirki\Field\Multicheck(
+		mai_parse_kirki_args(
+			[
+				'settings'    => mai_get_kirki_setting( 'archive-settings' ),
+				'section'     => $section,
+				'label'       => __( 'Archive content types', 'mai-engine' ),
+				'description' => __( 'Custom post types must support "mai-archive-settings" to be available here.', 'mai-engine' ),
+				'default'     => mai_get_config( 'settings' )['content-archives']['enable'],
+				'choices'     => $choices,
+			]
+		)
 	);
 
-	Kirki::add_field(
-		$handle,
-		[
-			'type'        => 'custom',
-			'settings'    => 'archive-settings-refresh',
-			'section'     => $section,
-			'label'       => esc_html__( 'Refresh after updating!', 'mai-engine' ),
-			'description' => sprintf( '<p>%s</p>', esc_html__( 'In order to show/hide panels for the updated values you must reload the Customizer after saving any changes.', 'mai-engine' ) ),
-		]
+	new \Kirki\Field\Custom(
+		mai_parse_kirki_args(
+			[
+				'settings'    => mai_get_kirki_setting( 'archive-settings-refresh' ),
+				'section'     => $section,
+				'label'       => esc_html__( 'Refresh after updating!', 'mai-engine' ),
+				'description' => sprintf( '<p>%s</p>', esc_html__( 'In order to show/hide panels for the updated values you must reload the Customizer after saving any changes.', 'mai-engine' ) ),
+			]
+		)
 	);
 }
 
@@ -80,7 +82,7 @@ function mai_single_settings_customizer_settings() {
 	$section = $handle . '-single-content';
 	$choices = mai_get_loop_content_type_choices( false );
 
-	Kirki::add_section(
+	new \Kirki\Section(
 		$section,
 		[
 			'title'    => __( 'Enable Content Types', 'mai-engine' ),
@@ -89,27 +91,27 @@ function mai_single_settings_customizer_settings() {
 		]
 	);
 
-	Kirki::add_field(
-		$handle,
-		[
-			'type'        => 'multicheck',
-			'settings'    => 'single-settings',
-			'section'     => $section,
-			'label'       => __( 'Single content types', 'mai-engine' ),
-			'description' => __( 'Custom post types must support "mai-single-settings" to be available here.', 'mai-engine' ),
-			'default'     => mai_get_config( 'settings' )['single-content']['enable'],
-			'choices'     => $choices,
-		]
+	new \Kirki\Field\Multicheck(
+		mai_parse_kirki_args(
+			[
+				'settings'    => mai_get_kirki_setting( 'single-settings' ),
+				'section'     => $section,
+				'label'       => __( 'Single content types', 'mai-engine' ),
+				'description' => __( 'Custom post types must support "mai-single-settings" to be available here.', 'mai-engine' ),
+				'default'     => mai_get_config( 'settings' )['single-content']['enable'],
+				'choices'     => $choices,
+			]
+		)
 	);
 
-	Kirki::add_field(
-		$handle,
-		[
-			'type'        => 'custom',
-			'settings'    => 'single-settings-refresh',
-			'section'     => $section,
-			'label'       => esc_html__( 'Refresh after updating!', 'mai-engine' ),
-			'description' => sprintf( '<p>%s</p>', esc_html__( 'In order to show/hide panels for the updated values you must reload the Customizer after saving any changes.', 'mai-engine' ) ),
-		]
+	new \Kirki\Field\Custom(
+		mai_parse_kirki_args(
+			[
+				'settings'    => mai_get_kirki_setting( 'single-settings-refresh' ),
+				'section'     => $section,
+				'label'       => esc_html__( 'Refresh after updating!', 'mai-engine' ),
+				'description' => sprintf( '<p>%s</p>', esc_html__( 'In order to show/hide panels for the updated values you must reload the Customizer after saving any changes.', 'mai-engine' ) ),
+			]
+		)
 	);
 }

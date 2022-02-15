@@ -12,17 +12,17 @@ README
 temp
 node_modules
 vendor/*
-!vendor/composer
 vendor/composer/installers
 vendor/composer/semver
 vendor/composer/xdebug-handler
+# vendor/kirki-framework/
+!vendor/composer
 !vendor/advanced-custom-fields
 !vendor/afragen
-!vendor/aristath
 !vendor/collizo4sky
+# !vendor/kirki-framework/kirki
 !vendor/maithemewp
 !vendor/proteusthemes
 !vendor/symfony
 !vendor/wpackagist-plugin
-!vendor/wptrt
 !vendor/yahnis-elsts
