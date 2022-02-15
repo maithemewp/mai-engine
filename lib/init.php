@@ -404,8 +404,8 @@ function mai_load_files() {
 				'customize/site-header',
 				'customize/site-layouts',
 				'customize/typography',
-				// 'customize/updates',
-				// 'customize/upsell',
+				'customize/updates',
+				'customize/upsell',
 				'customize/output', // Output last.
 			]
 		);

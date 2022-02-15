@@ -24,5 +24,4 @@ vendor/composer/xdebug-handler
 !vendor/proteusthemes
 !vendor/symfony
 !vendor/wpackagist-plugin
-!vendor/wptrt
 !vendor/yahnis-elsts
