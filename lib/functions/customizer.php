@@ -12,13 +12,6 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-// delete_option( 'mai-engine' );
-// add_action( 'genesis_before_loop', function() {
-// 	$meta = get_option( 'mai-engine' );
-// 	ray( $meta );
-// });
-
-
 /**
  * Sets kirki args option type and name.
  * This is required since Kirki v4 doesn't use a config anymore.
@@ -31,15 +24,6 @@ defined( 'ABSPATH' ) || die;
  */
 function mai_parse_kirki_args( $args ) {
 	$args['option_type'] = 'option';
-	// $args['option_name'] = mai_get_handle(); // I don't think this is needed but keeping here to be safe.
-
-	// Custom dividers don't have settings.
-	// if ( isset( $args['settings'] ) ) {
-	// 	$args['settings']    = mai_get_kirki_setting( $args['settings'] );
-	// }
-	// if ( ! isset( $args['option_name'] ) ) {
-	// 	$args['option_name'] = mai_get_kirki_setting( $args['settings'] );
-	// }
 
 	return $args;
 }
@@ -56,6 +40,79 @@ function mai_parse_kirki_args( $args ) {
  */
 function mai_get_kirki_setting( $key, $base = '' ) {
 	return sprintf( '%s%s[%s]', mai_get_handle(), $base, $key );
+}
+
+/**
+ * Get kirki class name from v3 type name.
+ *
+ * @since TBD
+ *
+ * @param string $type The type name.
+ *
+ * @return string
+ */
+function mai_get_kirki_class( $type ) {
+	$classes = mai_get_kirki_classes();
+
+	return $classes[ $type ];
+}
+
+/**
+ * Gets kirki class names from v3 type name.
+ *
+ * @since TBD
+ *
+ * @return array
+ */
+function mai_get_kirki_classes() {
+	static $classes = null;
+
+	if ( ! is_null( $classes ) ) {
+		return $classes;
+	}
+
+	$classes = [
+		'checkbox'        => '\Kirki\Field\Checkbox',
+		'color'           => '\Kirki\Field\Color',
+		'custom'          => '\Kirki\Field\Custom',
+		'image'           => '\Kirki\Field\Image',
+		'multicheck'      => '\Kirki\Field\Multicheck',
+		'radio-buttonset' => '\Kirki\Field\Radio_Buttonset',
+		'select'          => '\Kirki\Field\Select',
+		'slider'          => '\Kirki\Field\Slider',
+		'sortable'        => '\Kirki\Field\Sortable',
+		'text'            => '\Kirki\Field\Text',
+		'textarea'        => '\Kirki\Field\Textarea',
+	];
+
+	return $classes;
+}
+
+/**
+ * Parses active_callback from our helper functions to get settings.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @param array  $data    The conditions.
+ * @param string $panel   The panel name.
+ * @param string $section The section name.
+ *
+ * @return array
+ */
+function mai_get_kirki_active_callback( $data, $panel, $section ) {
+	foreach ( $data as $data_index => $conditions ) {
+		if ( isset( $conditions['setting'] ) ) {
+			$data[ $data_index ]['setting'] = mai_get_kirki_setting( $data[ $data_index ]['setting'], "[$panel][$section]" );
+		} else {
+			foreach ( $conditions as $conditions_index => $condition ) {
+				$data[ $data_index ][ $conditions_index ]['setting'] = mai_get_kirki_setting( $data[ $data_index ][ $conditions_index ]['setting'], "[$panel][$section]" );
+			}
+		}
+	}
+
+	return $data;
 }
 
 /**
@@ -115,11 +172,9 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			],
 			'active_callback' => [
 				[
-					[
-						'setting'  => 'show',
-						'operator' => 'contains',
-						'value'    => 'title',
-					],
+					'setting'  => 'show',
+					'operator' => 'contains',
+					'value'    => 'title',
 				],
 			],
 		],
@@ -190,6 +245,11 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			'default'         => '',
 			'active_callback' => [
 				[
+					'setting'  => 'show',
+					'operator' => 'contains',
+					'value'    => 'image',
+				],
+				[
 					[
 						'setting'  => 'image_position',
 						'operator' => '==',
@@ -231,11 +291,9 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			'default'         => $defaults['image_alternate'],
 			'active_callback' => [
 				[
-					[
-						'setting'  => 'show',
-						'operator' => 'contains',
-						'value'    => 'image',
-					],
+					'setting'  => 'show',
+					'operator' => 'contains',
+					'value'    => 'image',
 				],
 				[
 					[
@@ -284,11 +342,9 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			],
 			'active_callback' => [
 				[
-					[
-						'setting'  => 'show',
-						'operator' => 'contains',
-						'value'    => 'image',
-					],
+					'setting'  => 'show',
+					'operator' => 'contains',
+					'value'    => 'image',
 				],
 				[
 					[
@@ -498,6 +554,11 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			'default'         => '',
 			'active_callback' => [
 				[
+					'setting'  => 'show',
+					'operator' => 'contains',
+					'value'    => 'image',
+				],
+				[
 					[
 						'setting'  => 'image_position',
 						'operator' => '==',
@@ -533,6 +594,11 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			'sanitize'        => 'mai_sanitize_bool',
 			'default'         => $defaults['image_stack'],
 			'active_callback' => [
+				[
+					'setting'  => 'show',
+					'operator' => 'contains',
+					'value'    => 'image',
+				],
 				[
 					[
 						'setting'  => 'image_position',
@@ -772,9 +838,6 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			'label'           => __( 'Background/overlay color', 'mai-engine' ),
 			'type'            => 'color',
 			'default'         => $defaults['page-header-background-color'],
-			'choices'         => [
-				'palettes' => mai_get_color_choices(),
-			],
 			'active_callback' => 'mai_has_page_header_support_callback',
 		],
 		[
@@ -975,9 +1038,6 @@ function mai_get_single_content_settings( $name = 'post' ) {
 			'label'           => __( 'Background/overlay color', 'mai-engine' ),
 			'type'            => 'color',
 			'default'         => $defaults['page-header-background-color'],
-			'choices'         => [
-				'palettes' => mai_get_color_choices(),
-			],
 			'active_callback' => 'mai_has_page_header_support_callback',
 		],
 		[

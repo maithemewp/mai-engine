@@ -391,16 +391,15 @@ function mai_load_files() {
 			$files,
 			[
 				'customize/setup', // Setup first.
-				// 'customize/examples', // Kirki examples. Leave commented out.
 				'customize/beta-tester',
 				'customize/colors',
-				// 'customize/content-archives',
+				'customize/content-archives',
 				'customize/logo',
-				// 'customize/loop',
+				'customize/loop',
 				'customize/menus',
 				'customize/page-header',
 				'customize/performance',
-				// 'customize/single-content',
+				'customize/single-content',
 				'customize/site-header',
 				'customize/site-layouts',
 				'customize/typography',

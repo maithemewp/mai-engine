@@ -32,20 +32,6 @@ function mai_flush_customizer_transients() {
 	}
 }
 
-
-// add_filter( 'kirki_output_item_args', 'mai_kirki_output_item_args', 10, 4 );
-// function mai_kirki_output_item_args( $output, $value, $something_else, $field ) {
-// 	ray( $output, $value, $something_else, $field );
-// 	return $output;
-// }
-
-
-// add_filter( 'kirki_mai-engine_dynamic_css', 'mai_kirki_dynamice_css' );
-// function mai_kirki_dynamice_css( $styles ) {
-// 	ray( $styles );
-// 	return $styles;
-// }
-
 // add_filter( 'kirki_mai-engine_styles', 'mai_add_kirki_css' );
 add_filter( 'kirki_global_styles', 'mai_add_kirki_css' );
 /**
@@ -96,7 +82,8 @@ function mai_add_kirki_css( $css ) {
 	return $css;
 }
 
-add_filter( 'kirki_mai-engine_styles', 'mai_add_kirki_page_header_css' );
+// add_filter( 'kirki_mai-engine_styles', 'mai_add_kirki_page_header_css' );
+add_filter( 'kirki_global_styles', 'mai_add_kirki_page_header_css' );
 /**
  * Outputs kirki page header css.
  * This can't be cached because it can be different per content type.
@@ -117,6 +104,8 @@ function mai_add_kirki_page_header_css( $css ) {
 	if ( $has_run ) {
 		return $css;
 	}
+
+	$has_run = true;
 
 	return array_merge( $css, mai_add_page_header_content_type_css( $css ) );
 }
@@ -356,6 +345,7 @@ function mai_add_fonts_custom_properties( $css ) {
  */
 function mai_add_page_header_content_type_css( $css ) {
 	$types = array_merge( mai_get_page_header_types( 'archive' ), mai_get_page_header_types( 'single' ) );
+
 	if ( empty( $types ) ) {
 		return $css;
 	}

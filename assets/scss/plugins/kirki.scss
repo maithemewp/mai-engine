@@ -110,11 +110,20 @@
 }
 
 /* Standalone heading styling */
-#customize-control-mai-engine-content-archives-post-boxed_heading,
-#customize-control-mai-engine-content-archives-post-boxed_heading .customize-control-title,
-#customize-control-mai-engine-content-archives-post-image_stack_heading,
-#customize-control-mai-engine-content-archives-post-image_stack_heading .customize-control-title {
-	margin-bottom: 0;
+
+#customize-control-mai-engine-content-archives-post-image-alternate-heading,
+#customize-control-mai-engine-content-archives-post-image-alternate-heading .customize-control-title,
+#customize-control-mai-engine-content-archives-post-image-stack-heading,
+#customize-control-mai-engine-content-archives-post-image-stack-heading .customize-control-title,
+#customize-control-mai-engine-content-archives-post-boxed-heading,
+#customize-control-mai-engine-content-archives-post-boxed-heading .customize-control-title {
+	margin-bottom: 0 !important;
+}
+
+#customize-control-mai-engine-content-archives-post-image-alternate-heading + .customize-control,
+#customize-control-mai-engine-content-archives-post-image-stack-heading + .customize-control,
+#customize-control-mai-engine-content-archives-post-boxed-heading + .customize-control {
+	margin-top: 4px !important;
 }
 
 /* Kirki responsive columns container */

@@ -9,6 +9,8 @@
  * @license   GPL-2.0-or-later
  */
 
+use Kirki\Util\Helper;
+
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
@@ -31,9 +33,11 @@ function mai_add_content_archive_settings() {
 		if ( post_type_exists( $section ) || taxonomy_exists( $section ) ) {
 			continue;
 		}
+
 		if ( in_array( $section, [ 'search', 'author', 'date' ] ) ) {
 			continue;
 		}
+
 		unset( $sections[ $index ] );
 	}
 
@@ -73,12 +77,10 @@ function mai_add_content_archive_settings() {
 			$field['section'] = "{$handle}-{$panel}-{$section}";
 
 			if ( $settings ) {
-				$field['settings'] = $section . '-' . mai_convert_case( $settings, 'kebab' );
+				$base              = "[$panel][$section]";
+				$setting           = mai_convert_case( $settings, 'kebab' );
+				$field['settings'] = mai_get_kirki_setting( $setting, $base );
 			}
-
-			$field['option_type'] = 'option';
-			$field['option_name'] = $handle . '[' . $panel . '][' . $section . ']';
-			$field['settings']    = $settings;
 
 			if ( isset( $field['default'] ) && is_string( $field['default'] ) && mai_has_string( 'mai_', $field['default'] ) && is_callable( $field['default'] ) ) {
 				$field['default'] = call_user_func( $field['default'], $section );
@@ -93,27 +95,14 @@ function mai_add_content_archive_settings() {
 			}
 
 			// Workaround to fix active callback function with nested options.
-			if ( isset( $field['active_callback'] ) ) {
-				if ( is_array( $field['active_callback'] ) ) {
-					foreach ( $field['active_callback'] as $index => $condition ) {
-						foreach ( $condition as $key => $value ) {
-							if ( 'setting' === $key ) {
-								$field['active_callback'][ $index ][ $key ] = "{$handle}[$panel][$section][$value]";
-							}
-
-							if ( is_array( $value ) ) {
-								foreach ( $value as $nested_key => $nested_value ) {
-									if ( 'setting' === $nested_key ) {
-										$field['active_callback'][ $index ][ $key ][ $nested_key ] = "{$handle}[$panel][$section][$nested_value]";
-									}
-								}
-							}
-						}
-					}
-				}
+			if ( isset( $field['active_callback'] ) && is_array( $field['active_callback'] ) ) {
+				$field['active_callback'] = mai_get_kirki_active_callback( $field['active_callback'], $panel, $section );
 			}
 
-			Kirki::add_field( $handle, $field );
+			$class = mai_get_kirki_class( $field['type'] );
+			unset( $field['type'] );
+
+			new $class( mai_parse_kirki_args( $field ) );
 		}
 	}
 }
