@@ -15,9 +15,6 @@ defined( 'ABSPATH' ) || die;
 // Disable Genesis Title Toggle setting.
 add_filter( 'genesis_title_toggle_enabled', '__return_false' );
 
-// Disables the post edit link.
-add_filter( 'edit_post_link', '__return_empty_string' );
-
 // Remove author 'says' text.
 add_filter( 'comment_author_says_text', '__return_empty_string' );
 
