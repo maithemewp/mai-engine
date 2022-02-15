@@ -14,10 +14,6 @@ class ComposerStaticInitc1b3856ce1e6efeeda11d5551fc2e64a
     );
 
     public static $prefixLengthsPsr4 = array (
-        'W' => 
-        array (
-            'WPTRT\\Customize\\Section\\' => 24,
-        ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Php80\\' => 23,
@@ -59,10 +55,6 @@ class ComposerStaticInitc1b3856ce1e6efeeda11d5551fc2e64a
     );
 
     public static $prefixDirsPsr4 = array (
-        'WPTRT\\Customize\\Section\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/wptrt/customize-section-button/src',
-        ),
         'Symfony\\Polyfill\\Php80\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',

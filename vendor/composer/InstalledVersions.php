@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '3fc7b46a0d2ee708133be4459b987320235324cb',
+    'reference' => '827a870385f3c9f1529175398c26b5e169ee99e4',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
@@ -521,7 +521,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '3fc7b46a0d2ee708133be4459b987320235324cb',
+      'reference' => '827a870385f3c9f1529175398c26b5e169ee99e4',
     ),
     'phpoption/phpoption' => 
     array (
@@ -590,15 +590,6 @@ private static $installed = array (
       array (
       ),
       'reference' => '264dce589e7ce37a7ba99cb901eed8249fbec92f',
-    ),
-    'wptrt/customize-section-button' => 
-    array (
-      'pretty_version' => '1.0.1',
-      'version' => '1.0.1.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '510c956c1142f712cda3041fc2d02d316228f031',
     ),
     'yahnis-elsts/plugin-update-checker' => 
     array (
