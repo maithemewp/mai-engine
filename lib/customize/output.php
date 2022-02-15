@@ -172,8 +172,7 @@ function mai_add_kirki_fonts( $fonts ) {
  * @return array
  */
 function mai_add_colors_css( $css ) {
-	$colors   = mai_get_colors();
-	// $elements = mai_get_color_elements();
+	$colors = mai_get_colors();
 	$shades = [ 'primary', 'secondary', 'link' ];
 
 	if ( $colors ) {
