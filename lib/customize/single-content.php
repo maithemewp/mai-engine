@@ -68,9 +68,7 @@ function mai_add_single_content_settings() {
 			$field['section'] = "{$handle}-{$panel}-{$section}";
 
 			if ( $settings ) {
-				$base              = "[$panel][$section]";
-				$setting           = mai_convert_case( $settings, 'kebab' );
-				$field['settings'] = mai_get_kirki_setting( $setting, $base );
+				$field['settings'] = mai_get_kirki_setting( $settings, "[$panel][$section]" );
 			}
 
 			if ( isset( $field['default'] ) && is_string( $field['default'] ) && mai_has_string( 'mai_', $field['default'] ) && is_callable( $field['default'] ) ) {
