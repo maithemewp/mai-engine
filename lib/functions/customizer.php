@@ -488,25 +488,15 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			],
 			'active_callback' => [
 				[
-					[
-						'setting'  => 'image_position',
-						'operator' => '==',
-						'value'    => 'left',
-					],
-					[
-						'setting'  => 'image_position',
-						'operator' => '==',
-						'value'    => 'right',
-					],
+					'setting'  => 'show',
+					'operator' => 'contains',
+					'value'    => 'image',
+				],
+				[
 					[
 						'setting'  => 'image_position',
 						'operator' => '==',
 						'value'    => 'left-top',
-					],
-					[
-						'setting'  => 'image_position',
-						'operator' => '==',
-						'value'    => 'right-top',
 					],
 					[
 						'setting'  => 'image_position',
@@ -516,22 +506,17 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 					[
 						'setting'  => 'image_position',
 						'operator' => '==',
-						'value'    => 'right-middle',
-					],
-					[
-						'setting'  => 'image_position',
-						'operator' => '==',
-						'value'    => 'left-bottom',
-					],
-					[
-						'setting'  => 'image_position',
-						'operator' => '==',
-						'value'    => 'right-bottom',
-					],
-					[
-						'setting'  => 'image_position',
-						'operator' => '==',
 						'value'    => 'left-full',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'right-top',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'right-middle',
 					],
 					[
 						'setting'  => 'image_position',
@@ -561,12 +546,12 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 					[
 						'setting'  => 'image_position',
 						'operator' => '==',
-						'value'    => 'left',
+						'value'    => 'left-top',
 					],
 					[
 						'setting'  => 'image_position',
 						'operator' => '==',
-						'value'    => 'right',
+						'value'    => 'left-middle',
 					],
 					[
 						'setting'  => 'image_position',
@@ -576,12 +561,17 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 					[
 						'setting'  => 'image_position',
 						'operator' => '==',
-						'value'    => 'right-full',
+						'value'    => 'right-top',
 					],
 					[
 						'setting'  => 'image_position',
 						'operator' => '==',
-						'value'    => 'background',
+						'value'    => 'right-middle',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'right-full',
 					],
 				],
 			],
@@ -602,12 +592,12 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 					[
 						'setting'  => 'image_position',
 						'operator' => '==',
-						'value'    => 'left',
+						'value'    => 'left-top',
 					],
 					[
 						'setting'  => 'image_position',
 						'operator' => '==',
-						'value'    => 'right',
+						'value'    => 'left-middle',
 					],
 					[
 						'setting'  => 'image_position',
@@ -617,12 +607,17 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 					[
 						'setting'  => 'image_position',
 						'operator' => '==',
-						'value'    => 'right-full',
+						'value'    => 'right-top',
 					],
 					[
 						'setting'  => 'image_position',
 						'operator' => '==',
-						'value'    => 'background',
+						'value'    => 'right-middle',
+					],
+					[
+						'setting'  => 'image_position',
+						'operator' => '==',
+						'value'    => 'right-full',
 					],
 				],
 			],

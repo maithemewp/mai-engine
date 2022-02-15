@@ -129,22 +129,26 @@
 	}
 }
 
+.has-image-even-first .entry:nth-child(odd),
 .has-image-odd-first .entry:nth-child(even) {
 	--entry-image-link-order: 2;
 	--entry-image-link-margin-right: 0;
 	--entry-image-link-margin-left: var(--entry-image-link-gap);
 }
 
-.has-image-even-first .entry:nth-child(odd) {
+.has-image-even-first .entry:nth-child(even),
+.has-image-odd-first .entry:nth-child(odd) {
 	--entry-image-link-order: -1;
 	--entry-image-link-margin-right: var(--entry-image-link-gap);
 	--entry-image-link-margin-left: 0;
 }
 
+.has-image-even-first.has-boxed:not(.has-image-left-full):not(.has-image-right-full) .entry:nth-child(odd),
 .has-image-odd-first.has-boxed:not(.has-image-left-full):not(.has-image-right-full) .entry:nth-child(even) {
 	--entry-image-link-margin-right: var(--entry-wrap-padding);
 }
 
-.has-image-even-first.has-boxed:not(.has-image-left-full):not(.has-image-right-full) .entry:nth-child(odd) {
+.has-image-even-first.has-boxed:not(.has-image-left-full):not(.has-image-right-full) .entry:nth-child(even),
+.has-image-odd-first.has-boxed:not(.has-image-left-full):not(.has-image-right-full) .entry:nth-child(odd) {
 	--entry-image-link-margin-left: var(--entry-wrap-padding);
 }

@@ -111,18 +111,18 @@
 
 /* Standalone heading styling */
 
-#customize-control-mai-engine-content-archives-post-image-alternate-heading,
-#customize-control-mai-engine-content-archives-post-image-alternate-heading .customize-control-title,
-#customize-control-mai-engine-content-archives-post-image-stack-heading,
-#customize-control-mai-engine-content-archives-post-image-stack-heading .customize-control-title,
-#customize-control-mai-engine-content-archives-post-boxed-heading,
-#customize-control-mai-engine-content-archives-post-boxed-heading .customize-control-title {
+#customize-control-mai-engine-content-archives-post-image_alternate_heading,
+#customize-control-mai-engine-content-archives-post-image_alternate_heading .customize-control-title,
+#customize-control-mai-engine-content-archives-post-image_stack_heading,
+#customize-control-mai-engine-content-archives-post-image_stack_heading .customize-control-title,
+#customize-control-mai-engine-content-archives-post-boxed_heading,
+#customize-control-mai-engine-content-archives-post-boxed_heading .customize-control-title {
 	margin-bottom: 0 !important;
 }
 
-#customize-control-mai-engine-content-archives-post-image-alternate-heading + .customize-control,
-#customize-control-mai-engine-content-archives-post-image-stack-heading + .customize-control,
-#customize-control-mai-engine-content-archives-post-boxed-heading + .customize-control {
+#customize-control-mai-engine-content-archives-post-image_alternate_heading + .customize-control,
+#customize-control-mai-engine-content-archives-post-image_stack_heading + .customize-control,
+#customize-control-mai-engine-content-archives-post-boxed_heading + .customize-control {
 	margin-top: 4px !important;
 }
 
@@ -325,18 +325,18 @@ li.customize-control-kirki-color-palette .colors-wrapper input:checked + label .
 	border-top: 1px dashed #ddd;
 }
 
-[id^="customize-control-mai-engine-site-layouts"][id$="-layout-divider"] ~ .customize-control-kirki-select {
+[id^="customize-control-mai-engine-site-layouts"][id$="-layout-divider"] ~ .customize-control-kirki-react-select {
 	margin: 0 !important;
 	padding: 0 0 16px 16px;
 	border-left: 1px dashed #ddd;
 }
 
-[id^="customize-control-mai-engine-site-layouts"][id$="-layout-divider"] ~ .customize-control-kirki-select .customize-control-title {
+[id^="customize-control-mai-engine-site-layouts"][id$="-layout-divider"] ~ .customize-control-kirki-react-select .customize-control-title {
 	font-weight: 400;
 	font-size: 13px; /* Customizer default body font size */
 }
 
-[id^="customize-control-mai-engine-site-layouts"][id$="-layout-divider"] ~ .customize-control-kirki-select .select2-container {
+[id^="customize-control-mai-engine-site-layouts"][id$="-layout-divider"] ~ .customize-control-kirki-react-select .kirki-react-select-container {
 	width: calc(100% - 16px) !important;
 }
 
