@@ -16,6 +16,7 @@ vendor/*
 vendor/composer/installers
 vendor/composer/semver
 vendor/composer/xdebug-handler
+vendor/kirki-framework/*
 !vendor/advanced-custom-fields
 !vendor/afragen
 !vendor/kirki-framework/kirki
