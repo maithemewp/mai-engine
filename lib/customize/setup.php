@@ -35,30 +35,6 @@ function mai_kirki_path_url( $url, $path ) {
 	return str_replace( mai_get_dir(), mai_get_url(), $url );
 }
 
-// add_action( 'init', 'mai_add_kirki_config', 8 );
-/**
- * Add Kirki config.
- *
- * @since 0.1.0
- *
- * @link https://aristath.github.io/kirki/docs/getting-started/config.html
- *
- * @return void
- */
-function mai_add_kirki_config() {
-	$handle = mai_get_handle();
-
-	Kirki::add_config(
-		$handle,
-		[
-			'capability'        => 'edit_theme_options',
-			'option_type'       => 'option',
-			'option_name'       => $handle,
-			'gutenberg_support' => true,
-		]
-	);
-}
-
 add_action( 'init', 'mai_settings_panel', 8 );
 /**
  * Add Kirki theme settings panel.
@@ -75,21 +51,6 @@ function mai_settings_panel() {
 			'title'    => esc_html__( 'Theme Settings', 'mai-engine' ),
 		]
 	);
-}
-
-// add_filter( 'kirki/config', 'mai_kirki_config' );
-/**
- * Modifies kirki config defaults.
- *
- * @since 0.1.0
- *
- * @param array $config Kirki config.
- *
- * @return array
- */
-function mai_kirki_config( $config ) {
-	$config['url_path'] = mai_get_url() . 'vendor/aristath/kirki';
-	return $config;
 }
 
 add_action( 'wp_head', 'mai_kirki_loading_icon', 101 );

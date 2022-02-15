@@ -9,10 +9,10 @@
  * @license   GPL-2.0-or-later
  */
 
+use Kirki\Util\Helper;
+
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
-
-use Kirki\Util\Helper;
 
 add_action( 'init', 'mai_performance_customizer_settings' );
 /**
