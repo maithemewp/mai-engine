@@ -79,7 +79,7 @@ function mai_add_kirki_css( $css ) {
 	$preview   = is_customize_preview();
 
 	if ( ! ( $admin || $ajax || $preview ) && $cached_css = get_transient( $transient ) ) {
-		// return $cached_css;
+		return $cached_css;
 	}
 
 	// Make sure :root is set before adding to it below.
@@ -95,7 +95,7 @@ function mai_add_kirki_css( $css ) {
 	$css = mai_add_extra_custom_properties( $css );
 
 	if ( ! ( $admin || $preview ) ) {
-		// set_transient( $transient, $css, 60 );
+		set_transient( $transient, $css, 60 );
 	}
 
 	return $css;
@@ -148,14 +148,14 @@ function mai_add_kirki_fonts( $fonts ) {
 	$preview   = is_customize_preview();
 
 	if ( ! ( $admin || $preview ) && $cached_fonts = get_transient( $transient ) ) {
-		// return $cached_fonts;
+		return $cached_fonts;
 	}
 
 	$fonts = mai_add_body_font_variants( $fonts );
 	$fonts = mai_add_extra_google_fonts( $fonts );
 
 	if ( ! ( $admin || $preview ) ) {
-		// set_transient( $transient, $fonts, 60 );
+		set_transient( $transient, $fonts, 60 );
 	}
 
 	return $fonts;
