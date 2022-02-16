@@ -12,10 +12,10 @@ README
 temp
 node_modules
 vendor/*
+!vendor/composer
 vendor/composer/installers
 vendor/composer/semver
 vendor/composer/xdebug-handler
-!vendor/composer
 !vendor/advanced-custom-fields
 !vendor/afragen
 !vendor/collizo4sky
