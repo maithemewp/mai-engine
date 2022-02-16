@@ -129,6 +129,7 @@ function mai_customize_register_posts_per_page( $wp_customize ) {
 			'sanitize_callback' => 'absint',
 		]
 	);
+
 	$wp_customize->add_control(
 		'posts_per_page',
 		[
