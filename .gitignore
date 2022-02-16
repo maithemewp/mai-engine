@@ -12,15 +12,15 @@ README
 temp
 node_modules
 vendor/*
+!vendor/autoload.php
+!vendor/composer
 vendor/composer/installers
 vendor/composer/semver
 vendor/composer/xdebug-handler
-# vendor/kirki-framework/
-!vendor/composer
 !vendor/advanced-custom-fields
 !vendor/afragen
 !vendor/collizo4sky
-# !vendor/kirki-framework/kirki
+!vendor/kirki-framework
 !vendor/maithemewp
 !vendor/proteusthemes
 !vendor/symfony
