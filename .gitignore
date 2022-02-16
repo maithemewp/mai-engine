@@ -12,6 +12,7 @@ README
 temp
 node_modules
 vendor/*
+!vendor/autoload.php
 !vendor/composer
 vendor/composer/installers
 vendor/composer/semver
