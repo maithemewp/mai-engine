@@ -19,7 +19,7 @@ vendor/composer/xdebug-handler
 !vendor/advanced-custom-fields
 !vendor/afragen
 !vendor/collizo4sky
-!vendor/kirki-framework/kirki
+!vendor/kirki-framework
 !vendor/maithemewp
 !vendor/proteusthemes
 !vendor/symfony
