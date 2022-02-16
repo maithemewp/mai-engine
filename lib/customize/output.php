@@ -94,7 +94,7 @@ function mai_add_kirki_css( $css ) {
 	$css = mai_add_title_area_custom_properties( $css );
 	$css = mai_add_extra_custom_properties( $css );
 
-	if ( ! ( $admin || $preview ) ) {
+	if ( ! ( $admin || $ajax || $preview ) ) {
 		set_transient( $transient, $css, 60 );
 	}
 
@@ -139,22 +139,34 @@ add_filter( 'kirki_enqueue_google_fonts', 'mai_add_kirki_fonts', 99 );
  * @return mixed
  */
 function mai_add_kirki_fonts( $fonts ) {
+	/**
+	 * Check if this filter ran already.
+	 */
+	static $has_run = false;
+
+	if ( $has_run ) {
+		return $fonts;
+	}
+
+	$has_run = true;
+
 	if ( ! $fonts ) {
 		return $fonts;
 	}
 
 	$transient = 'mai_dynamic_fonts';
 	$admin     = is_admin();
+	$ajax      = wp_doing_ajax();
 	$preview   = is_customize_preview();
 
-	if ( ! ( $admin || $preview ) && $cached_fonts = get_transient( $transient ) ) {
+	if ( ! ( $admin || $ajax || $preview ) && $cached_fonts = get_transient( $transient ) ) {
 		return $cached_fonts;
 	}
 
 	$fonts = mai_add_body_font_variants( $fonts );
 	$fonts = mai_add_extra_google_fonts( $fonts );
 
-	if ( ! ( $admin || $preview ) ) {
+	if ( ! ( $admin || $ajax || $preview ) ) {
 		set_transient( $transient, $fonts, 60 );
 	}
 
