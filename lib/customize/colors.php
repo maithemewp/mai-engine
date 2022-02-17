@@ -52,7 +52,7 @@ function mai_colors_customizer_settings() {
 
 	foreach ( $colors as $id => $label ) {
 		$args = [
-			'settings' => 'color-' . $id,
+			'settings' => mai_get_kirki_setting( 'color-' . $id ),
 			'label'    => $label,
 			'section'  => $section,
 			'default'  => mai_get_default_color( $id ),
@@ -69,7 +69,7 @@ function mai_colors_customizer_settings() {
 				'description'  => sprintf( '%s var(--color-custom-#)', __( 'Use in CSS via:', 'mai-engine' ) ),
 				'section'      => $section,
 				'button_label' => __( 'Add New Color ', 'mai-engine' ),
-				'settings'     => 'custom-colors',
+				'settings'     => mai_get_kirki_setting( 'custom-colors' ),
 				'default'      => mai_get_option( 'custom-colors', mai_get_global_styles( 'custom-colors' ) ),
 				'row_label'    => [
 					'type'  => 'text',

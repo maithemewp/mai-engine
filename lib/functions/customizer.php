@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mai Engine.
  *
@@ -24,6 +25,7 @@ defined( 'ABSPATH' ) || die;
  */
 function mai_parse_kirki_args( $args ) {
 	$args['option_type'] = 'option';
+	$args['capability']  = 'edit_theme_options';
 
 	return $args;
 }

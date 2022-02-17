@@ -6,15 +6,15 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'c5ac7be894b7063784688685ed6923600ed314dd',
+    'reference' => '8199352e56f601812a0e04e8d1d8b63858651bc7',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
   array (
     'advanced-custom-fields/advanced-custom-fields-pro' => 
     array (
-      'pretty_version' => '5.11.4',
-      'version' => '5.11.4.0',
+      'pretty_version' => '5.12-RC1',
+      'version' => '5.12.0.0-RC1',
       'aliases' => 
       array (
       ),
@@ -283,12 +283,12 @@
     ),
     'kirki-framework/data-option' => 
     array (
-      'pretty_version' => 'v1.0.2',
-      'version' => '1.0.2.0',
+      'pretty_version' => 'v1.0.3',
+      'version' => '1.0.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'af1ce8f0b890ae005566fcb4d7f44bebb2c17b0c',
+      'reference' => '9a54f5c553e2f1e84f4ff620e271bfc16ee49ced',
     ),
     'kirki-framework/field' => 
     array (
@@ -355,12 +355,12 @@
     ),
     'kirki-framework/kirki' => 
     array (
-      'pretty_version' => 'v4.0.21',
-      'version' => '4.0.21.0',
+      'pretty_version' => 'v4.0.22',
+      'version' => '4.0.22.0',
       'aliases' => 
       array (
       ),
-      'reference' => '808b0c642aecb1697b925fb399897446a6bab9f9',
+      'reference' => 'bbe992b293019a708d58f99b487c23afcdb3c0e6',
     ),
     'kirki-framework/l10n' => 
     array (
@@ -373,12 +373,12 @@
     ),
     'kirki-framework/module-css' => 
     array (
-      'pretty_version' => 'v1.0.9',
-      'version' => '1.0.9.0',
+      'pretty_version' => 'v1.0.10',
+      'version' => '1.0.10.0',
       'aliases' => 
       array (
       ),
-      'reference' => '96645a327b1a60e1d29fd0193e85f1346b9b268f',
+      'reference' => '93b97d0e6b09fe4953c69a8ba9bc06884af91b27',
     ),
     'kirki-framework/module-editor-styles' => 
     array (
@@ -409,12 +409,12 @@
     ),
     'kirki-framework/module-postmessage' => 
     array (
-      'pretty_version' => 'v1.0.5',
-      'version' => '1.0.5.0',
+      'pretty_version' => 'v1.0.6',
+      'version' => '1.0.6.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'e53eb3361bae51b6453e67f3f8690c61b1254707',
+      'reference' => 'd543c8d34e7d6fc8c2ce4805d8fc940070a54691',
     ),
     'kirki-framework/module-preset' => 
     array (
@@ -495,7 +495,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'c5ac7be894b7063784688685ed6923600ed314dd',
+      'reference' => '8199352e56f601812a0e04e8d1d8b63858651bc7',
     ),
     'phpoption/phpoption' => 
     array (

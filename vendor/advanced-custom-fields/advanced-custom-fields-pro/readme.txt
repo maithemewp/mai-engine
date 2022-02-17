@@ -2,9 +2,9 @@
 Contributors: elliotcondon
 Tags: acf, fields, custom fields, meta, repeater
 Requires at least: 4.7
-Tested up to: 5.8.1
+Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 5.11.4
+Stable tag: 5.12-RC1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -75,6 +75,35 @@ From your WordPress dashboard
 
 
 == Changelog ==
+
+= 5.12-RC1 =
+*Release Date 16th February 2022*
+
+* New - Disable edit mode for blocks viewed in the block editor's mobile and tablet preview modes
+* Fix - Correctly apply edit mode block restrictions in template editor view of block editor
+* Fix - Warnings and PHP 8.1 deprecation notices in REST API
+* Fix - Better support for double byte characters in "acf_get_truncated" (props @cabradb)
+* i18n - Broken link in the Croatian translation
+* i18n - Automated building of acf.pot for translators in each release
+
+= 5.12-beta2 =
+*Release Date 9th February 2022*
+
+* New - Added block caching system to reduce the number of AJAX calls in the block editor
+* New - ACF blocks in the new Site Editor are now forced into "preview" mode for better compatibility
+* Fix - Fixed an issue where block "$context" was not available in preloaded blocks or frontend rendering in 5.12-beta1
+* Fix - Fixed an issue where anchors weren't working correctly in WordPress 5.9
+* Fix - Fixed an issue where the "unfiltered_html" capability wasn't being used by ACF blocks
+
+= 5.12-beta1 =
+*Release Date 25th January 2022*
+
+* New - ACF blocks now have preliminary support for the WordPress Query Loop block
+* New - ACF blocks now have preliminary support for the new Site Editor included in WordPress 5.9
+* Enhancement - Block preloading can now be disabled by using "acf_update_setting( 'preload_blocks', false );" in the "acf/init" action hook
+* Enhancement - ACF and ACF Pro will now detect if each other are active and deactivate the other plugin on plugin activation
+* Fix - Fixed an issue where it was impossible to update an ACF block inside the widget block editor
+* Fix - Fixed an issue where ACF fields might not appear in REST API calls made via internal WordPress functions
 
 = 5.11.4 =
 *Release Date - 2nd December 2021*
