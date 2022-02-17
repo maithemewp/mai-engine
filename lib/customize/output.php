@@ -12,12 +12,14 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-add_action( 'after_switch_theme',   'mai_flush_customizer_transients' );
-add_action( 'customize_save_after', 'mai_flush_customizer_transients' );
+add_action( 'after_switch_theme',       'mai_flush_customizer_transients' );
+add_action( 'customize_save_after',     'mai_flush_customizer_transients' );
+add_action( 'update_option_mai-engine', 'mai_flush_customizer_transients' );
 /**
- * Deletes kirki transients when the Customizer is saved.
+ * Deletes kirki transients when switching themes, when the Customizer is saved, or when mai-engine option is updated.
  *
  * @since 2.12.0
+ * @since TBD Added updated_option hook.
  *
  * @return void
  */
