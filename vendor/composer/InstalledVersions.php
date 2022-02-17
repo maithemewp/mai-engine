@@ -32,15 +32,15 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '7dc169fc54e93e5371cb4c75b993cdff14aac3a6',
+    'reference' => '8199352e56f601812a0e04e8d1d8b63858651bc7',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
   array (
     'advanced-custom-fields/advanced-custom-fields-pro' => 
     array (
-      'pretty_version' => '5.11.4',
-      'version' => '5.11.4.0',
+      'pretty_version' => '5.12-RC1',
+      'version' => '5.12.0.0-RC1',
       'aliases' => 
       array (
       ),
@@ -521,7 +521,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '7dc169fc54e93e5371cb4c75b993cdff14aac3a6',
+      'reference' => '8199352e56f601812a0e04e8d1d8b63858651bc7',
     ),
     'phpoption/phpoption' => 
     array (
