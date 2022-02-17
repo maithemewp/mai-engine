@@ -5,7 +5,11 @@
 	var searchToggles  = document.querySelectorAll( '.search-toggle' );
 
 	// Sets scrollbar width on page load.
-	root.style.setProperty( '--scrollbar-width', scrollBarWidth + 'px' );
+	// Make sure it's a reasonable size. See https://github.com/maithemewp/mai-engine/issues/516.
+	// FB/IG gets wonky and calculates this to something huge causing the window to be squished.
+	if ( scrollBarWidth <= 20 ) {
+		root.style.setProperty( '--scrollbar-width', scrollBarWidth + 'px' );
+	}
 
 	var toggleSearchFormEvent = function( event ) {
 		var element = event.target.closest( '.search-icon-form' );
