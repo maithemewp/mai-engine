@@ -41,6 +41,12 @@ p {
 	font-size: var(--font-size-md);
 }
 
+.block-editor-block-list__block .block-list-appender.block-list-appender {
+	// These are 0 in WP so the appender isn't centered by default.
+	margin-right: auto;
+	margin-left: auto;
+}
+
 .block-editor-plain-text {
 	/* TODO: Make this work if body color is set to white. */
 	/* TODO: --input-color: #000; is necessary when this happens as well. */
