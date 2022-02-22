@@ -103,6 +103,7 @@
 	--padding-md: calc(var(--padding-sm) * var(--padding-scale));
 	--padding-lg: calc(var(--padding-md) * var(--padding-scale));
 	--padding-xl: calc(var(--padding-lg) * var(--padding-scale));
+	--padding-xxl: calc(var(--padding-xl) * var(--padding-scale)); // Only for dividers.
 
 	/*******************
 	 * Misc.
