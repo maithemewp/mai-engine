@@ -95,12 +95,12 @@ function mai_get_divider( $atts = [] ) {
 	$atts = wp_parse_args(
 		$atts,
 		[
-			'style'            => 'angle',
+			'style'            => 'wave',
 			'height'           => 'md',
 			'flip_horizontal'  => false,
 			'flip_vertical'    => false,
 			'background_color' => 'transparent',
-			'color'            => 'alt',
+			'color'            => 'primary',
 			'align'            => 'full',
 			'class'            => '',
 		]
@@ -147,23 +147,24 @@ function mai_get_divider( $atts = [] ) {
 	if ( $atts['height'] ) {
 		switch ( $atts['height'] ) {
 			case 'xs':
-				$height = '2vw';
+				$height = 'var(--padding-sm)';
 				break;
 			case 'sm':
-				$height = '4vw';
+				$height = 'var(--padding-md)';
 				break;
 			case 'md':
-				$height = '8vw';
+				$height = 'var(--padding-lg)';
 				break;
 			case 'lg':
-				$height = '16vw';
+				$height = 'var(--padding-xl)';
 				break;
 			case 'xl':
-				$height = '32vw';
+				$height = 'var(--padding-xxl)';
 				break;
 			default:
-				$height = '8vw';
+				$height = 'var(--padding-lg)';
 		}
+
 		$attributes['style'] .= sprintf( '--divider-height:%s;', $height );
 	}
 
@@ -211,11 +212,12 @@ function mai_register_divider_field_groups() {
 			'title'       => esc_html__( 'Mai Divider', 'mai-engine' ),
 			'fields'      => [
 				[
-					'key'     => 'mai_divider_style',
-					'label'   => esc_html__( 'Style', 'mai-engine' ),
-					'name'    => 'style',
-					'type'    => 'radio',
-					'choices' => [
+					'key'           => 'mai_divider_style',
+					'label'         => esc_html__( 'Style', 'mai-engine' ),
+					'name'          => 'style',
+					'type'          => 'radio',
+					'default_value' => 'wave',
+					'choices'       => [
 						'angle' => esc_html__( 'Angle', 'mai-engine' ),
 						'curve' => esc_html__( 'Curve', 'mai-engine' ),
 						'wave'  => esc_html__( 'Wave', 'mai-engine' ),
@@ -228,6 +230,7 @@ function mai_register_divider_field_groups() {
 					'label'         => esc_html__( 'Height', 'mai-engine' ),
 					'name'          => 'height',
 					'type'          => 'button_group',
+					'default_value' => 'md',
 					'choices'       => [
 						'xs' => esc_html__( 'XS', 'mai-engine' ),
 						'sm' => esc_html__( 'S', 'mai-engine' ),
@@ -235,7 +238,6 @@ function mai_register_divider_field_groups() {
 						'lg' => esc_html__( 'L', 'mai-engine' ),
 						'xl' => esc_html__( 'XL', 'mai-engine' ),
 					],
-					'default_value' => 'md',
 				],
 				[
 					'key'               => 'mai_divider_flip_horizontal',
@@ -271,7 +273,7 @@ function mai_register_divider_field_groups() {
 					'name'          => 'color',
 					'type'          => 'radio',
 					'choices'       => mai_get_radio_color_choices(),
-					'default_value' => 'alt',
+					'default_value' => 'primary',
 					'wrapper'       => [
 						'class' => 'mai-block-colors',
 					],
