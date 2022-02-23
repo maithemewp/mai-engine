@@ -13,6 +13,7 @@
 	--avatar-border-radius: 999px;
 }
 
+// TODO: We already have .has-shadow class in the engine.
 .has-box-shadow {
 	box-shadow: var(--shadow);
 }
