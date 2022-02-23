@@ -352,20 +352,20 @@ function acf_rendered_block( $attributes, $content = '', $is_preview = false, $p
 
 	ob_start();
 
-	if ( 'edit' === $mode && $is_preview ) {
-		// Load the block form since we're in edit mode.
-		$block = acf_prepare_block( $attributes );
-		acf_setup_meta( $block['data'], $block['id'], true );
-		$fields = acf_get_block_fields( $block );
-		acf_prefix_fields( $fields, "acf-{$block['id']}" );
-
-		echo '<div class="acf-block-fields acf-fields">';
-		acf_render_fields( $fields, $block['id'], 'div', 'field' );
-		echo '</div>';
-	} else {
+//	if ( 'edit' === $mode && $is_preview ) {
+//		// Load the block form since we're in edit mode.
+//		$block = acf_prepare_block( $attributes );
+//		acf_setup_meta( $block['data'], $block['id'], true );
+//		$fields = acf_get_block_fields( $block );
+//		acf_prefix_fields( $fields, "acf-{$block['id']}" );
+//
+//		echo '<div class="acf-block-fields acf-fields">';
+//		acf_render_fields( $fields, $block['id'], 'div', 'field' );
+//		echo '</div>';
+//	} else {
 		// Capture block render output.
 		acf_render_block( $attributes, $content, $is_preview, $post_id, $wp_block, $context );
-	}
+//	}
 
 	$html = ob_get_clean();
 
@@ -710,7 +710,7 @@ function acf_parse_save_blocks( $text = '' ) {
 }
 
 // Hook into saving process.
-add_filter( 'content_save_pre', 'acf_parse_save_blocks', 99, 1 );
+add_filter( 'content_save_pre', 'acf_parse_save_blocks', 5, 1 );
 
 /**
  * acf_parse_save_blocks_callback
@@ -742,7 +742,7 @@ function acf_parse_save_blocks_callback( $matches ) {
 	}
 
 	/**
-	 * Filteres the block attributes before saving.
+	 * Filters the block attributes before saving.
 	 *
 	 * @date    18/3/19
 	 * @since   5.7.14
@@ -751,6 +751,36 @@ function acf_parse_save_blocks_callback( $matches ) {
 	 */
 	$attrs = apply_filters( 'acf/pre_save_block', $attrs );
 
-	// Return new comment
-	return '<!-- wp:' . $name . ' ' . acf_json_encode( $attrs ) . ' ' . $void . '-->';
+	// Gutenberg expects a specific encoding format.
+	$attrs = acf_serialize_block_attributes( $attrs );
+
+	return '<!-- wp:' . $name . ' ' . $attrs . ' ' . $void . '-->';
+}
+
+/**
+ * This directly copied from the WordPress core `serialize_block_attributes()` function.
+ *
+ * We need this in order to make sure that block attributes are stored in a way that is
+ * consistent with how Gutenberg sends them over from JS, and so that things like wp_kses()
+ * work as expected. Copied from core to get around a bug that was fixed in 5.8.1 or on the off chance
+ * that folks are still using WP 5.3 or below.
+ *
+ * TODO: Remove this when we refactor `acf_parse_save_blocks_callback()` to use `serialize_block()`,
+ * or when we're confident that folks aren't using WP versions prior to 5.8.
+ *
+ * @since 5.12
+ *
+ * @param array $block_attributes Attributes object.
+ * @return string Serialized attributes.
+ */
+function acf_serialize_block_attributes( $block_attributes ) {
+	$encoded_attributes = wp_json_encode( $block_attributes, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+	$encoded_attributes = preg_replace( '/--/', '\\u002d\\u002d', $encoded_attributes );
+	$encoded_attributes = preg_replace( '/</', '\\u003c', $encoded_attributes );
+	$encoded_attributes = preg_replace( '/>/', '\\u003e', $encoded_attributes );
+	$encoded_attributes = preg_replace( '/&/', '\\u0026', $encoded_attributes );
+	// Regex: /\\"/
+	$encoded_attributes = preg_replace( '/\\\\"/', '\\u0022', $encoded_attributes );
+
+	return $encoded_attributes;
 }

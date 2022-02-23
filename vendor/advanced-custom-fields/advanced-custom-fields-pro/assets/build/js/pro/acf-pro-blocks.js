@@ -1160,13 +1160,12 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
         attributes,
         context
       } = this.props; // Try preloaded data first.
-
-      const preloaded = this.maybePreload(attributes.id);
-
-      if (preloaded) {
-        return;
-      } // Request AJAX and update HTML on complete.
-
+      // const preloaded = this.maybePreload( attributes.id );
+      //
+      // if ( preloaded ) {
+      // 	return;
+      // }
+      // Request AJAX and update HTML on complete.
 
       fetchBlock({
         attributes,
