@@ -200,7 +200,7 @@ function mai_add_colors_css( $css ) {
 			$css['global'][':root'][ '--color-' . $name ] = $color;
 
 			if ( $shade ) {
-				$light = mai_get_color_variant( $colors[ $name ], 'light', 10 );
+				$light = mai_get_color_variant( $colors[ $name ], 'light', 8 );
 				$dark  = mai_get_color_variant( $colors[ $name ], 'dark', 10 );
 
 				if ( $light ) {
