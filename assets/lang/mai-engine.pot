@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-02-23T15:12:08+00:00\n"
+"POT-Creation-Date: 2022-02-23T21:59:08+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -269,7 +269,7 @@ msgid "Icon Color"
 msgstr ""
 
 #: lib/blocks/icon.php:358
-#: lib/blocks/columns.php:701
+#: lib/blocks/columns.php:703
 msgid "Background Color"
 msgstr ""
 
@@ -305,7 +305,7 @@ msgid "Text Shadow"
 msgstr ""
 
 #: lib/blocks/icon.php:505
-#: lib/blocks/columns.php:685
+#: lib/blocks/columns.php:687
 #: assets/js/blocks/layout-settings.js:295
 #: assets/js/min/blocks.js:933
 msgid "Padding"
@@ -320,9 +320,9 @@ msgid "Margin"
 msgstr ""
 
 #: lib/blocks/icon.php:519
-#: lib/blocks/gallery.php:301
+#: lib/blocks/gallery.php:307
 #: lib/blocks/columns.php:568
-#: lib/blocks/columns.php:674
+#: lib/blocks/columns.php:676
 #: lib/blocks/grid.php:1206
 #: lib/blocks/grid.php:1593
 #: lib/functions/customizer.php:487
@@ -338,9 +338,9 @@ msgid "Top"
 msgstr ""
 
 #: lib/blocks/icon.php:527
-#: lib/blocks/gallery.php:303
+#: lib/blocks/gallery.php:309
 #: lib/blocks/columns.php:570
-#: lib/blocks/columns.php:676
+#: lib/blocks/columns.php:678
 #: lib/blocks/grid.php:1208
 #: lib/blocks/grid.php:1595
 #: lib/functions/customizer.php:489
@@ -384,32 +384,36 @@ msgstr ""
 msgid "A custom gallery block."
 msgstr ""
 
-#: lib/blocks/gallery.php:118
+#: lib/blocks/gallery.php:111
 #: lib/blocks/divider.php:31
 #: lib/blocks/divider.php:212
 msgid "Mai Divider"
 msgstr ""
 
-#: lib/blocks/gallery.php:122
-#: lib/blocks/gallery.php:154
+#: lib/blocks/gallery.php:115
+#: lib/blocks/gallery.php:145
 msgid "Images"
 msgstr ""
 
-#: lib/blocks/gallery.php:129
+#: lib/blocks/gallery.php:122
 #: lib/blocks/grid.php:815
 #: lib/functions/customizer.php:184
 #: lib/functions/customizer.php:917
 msgid "Image Orientation"
 msgstr ""
 
-#: lib/blocks/gallery.php:138
+#: lib/blocks/gallery.php:130
 #: lib/blocks/grid.php:831
 #: lib/functions/customizer.php:199
 #: lib/functions/customizer.php:932
 msgid "Image Size"
 msgstr ""
 
-#: lib/blocks/gallery.php:165
+#: lib/blocks/gallery.php:158
+msgid "Add image shadow"
+msgstr ""
+
+#: lib/blocks/gallery.php:163
 #: lib/blocks/grid.php:1456
 #: assets/js/blocks/layout-settings.js:223
 #: assets/js/min/blocks.js:861
@@ -428,31 +432,31 @@ msgstr ""
 msgid "Columns (lg tablets)"
 msgstr ""
 
-#: lib/blocks/gallery.php:220
+#: lib/blocks/gallery.php:222
 msgid "Columns (md tablets)"
 msgstr ""
 
-#: lib/blocks/gallery.php:246
+#: lib/blocks/gallery.php:250
 #: lib/blocks/grid.php:1536
 #: lib/functions/customizer.php:713
 msgid "Columns (mobile)"
 msgstr ""
 
-#: lib/blocks/gallery.php:272
+#: lib/blocks/gallery.php:278
 #: lib/blocks/columns.php:547
 #: lib/blocks/grid.php:1559
 #: lib/functions/customizer.php:728
 msgid "Align Columns"
 msgstr ""
 
-#: lib/blocks/gallery.php:296
+#: lib/blocks/gallery.php:302
 #: lib/blocks/columns.php:563
 #: lib/blocks/grid.php:1586
 #: lib/functions/customizer.php:747
 msgid "Align Columns (vertical)"
 msgstr ""
 
-#: lib/blocks/gallery.php:300
+#: lib/blocks/gallery.php:306
 #: lib/blocks/columns.php:320
 #: lib/blocks/columns.php:567
 #: lib/blocks/grid.php:858
@@ -464,9 +468,9 @@ msgstr ""
 msgid "Full"
 msgstr ""
 
-#: lib/blocks/gallery.php:302
+#: lib/blocks/gallery.php:308
 #: lib/blocks/columns.php:569
-#: lib/blocks/columns.php:675
+#: lib/blocks/columns.php:677
 #: lib/blocks/grid.php:1207
 #: lib/blocks/grid.php:1594
 #: lib/functions/customizer.php:488
@@ -474,20 +478,22 @@ msgstr ""
 msgid "Middle"
 msgstr ""
 
-#: lib/blocks/gallery.php:320
+#: lib/blocks/gallery.php:326
 #: lib/blocks/columns.php:578
 #: lib/blocks/grid.php:1614
 #: lib/functions/customizer.php:767
 msgid "Column Gap"
 msgstr ""
 
-#: lib/blocks/gallery.php:325
-#: lib/blocks/gallery.php:343
-#: lib/blocks/columns.php:582
-#: lib/blocks/columns.php:600
-#: lib/blocks/columns.php:618
-#: lib/blocks/columns.php:637
-#: lib/blocks/columns.php:689
+#: lib/blocks/gallery.php:331
+#: lib/blocks/gallery.php:350
+#: lib/blocks/gallery.php:369
+#: lib/blocks/gallery.php:388
+#: lib/blocks/columns.php:583
+#: lib/blocks/columns.php:602
+#: lib/blocks/columns.php:620
+#: lib/blocks/columns.php:639
+#: lib/blocks/columns.php:691
 #: lib/blocks/grid.php:1620
 #: lib/blocks/grid.php:1643
 #: lib/functions/customizer.php:772
@@ -500,15 +506,17 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: lib/blocks/gallery.php:326
-#: lib/blocks/gallery.php:344
+#: lib/blocks/gallery.php:332
+#: lib/blocks/gallery.php:351
+#: lib/blocks/gallery.php:370
+#: lib/blocks/gallery.php:389
 #: lib/blocks/divider.php:235
 #: lib/blocks/columns.php:495
-#: lib/blocks/columns.php:583
-#: lib/blocks/columns.php:601
-#: lib/blocks/columns.php:619
-#: lib/blocks/columns.php:638
-#: lib/blocks/columns.php:690
+#: lib/blocks/columns.php:584
+#: lib/blocks/columns.php:603
+#: lib/blocks/columns.php:621
+#: lib/blocks/columns.php:640
+#: lib/blocks/columns.php:692
 #: lib/blocks/grid.php:792
 #: lib/blocks/grid.php:1621
 #: lib/blocks/grid.php:1644
@@ -530,13 +538,15 @@ msgstr ""
 msgid "XS"
 msgstr ""
 
-#: lib/blocks/gallery.php:327
-#: lib/blocks/gallery.php:345
+#: lib/blocks/gallery.php:333
+#: lib/blocks/gallery.php:352
+#: lib/blocks/gallery.php:371
+#: lib/blocks/gallery.php:390
 #: lib/blocks/divider.php:236
-#: lib/blocks/columns.php:584
-#: lib/blocks/columns.php:602
-#: lib/blocks/columns.php:620
-#: lib/blocks/columns.php:639
+#: lib/blocks/columns.php:585
+#: lib/blocks/columns.php:604
+#: lib/blocks/columns.php:622
+#: lib/blocks/columns.php:641
 #: lib/blocks/grid.php:793
 #: lib/blocks/grid.php:1622
 #: lib/blocks/grid.php:1645
@@ -558,13 +568,15 @@ msgstr ""
 msgid "S"
 msgstr ""
 
-#: lib/blocks/gallery.php:328
-#: lib/blocks/gallery.php:346
+#: lib/blocks/gallery.php:334
+#: lib/blocks/gallery.php:353
+#: lib/blocks/gallery.php:372
+#: lib/blocks/gallery.php:391
 #: lib/blocks/divider.php:237
-#: lib/blocks/columns.php:585
-#: lib/blocks/columns.php:603
-#: lib/blocks/columns.php:621
-#: lib/blocks/columns.php:640
+#: lib/blocks/columns.php:586
+#: lib/blocks/columns.php:605
+#: lib/blocks/columns.php:623
+#: lib/blocks/columns.php:642
 #: lib/blocks/grid.php:794
 #: lib/blocks/grid.php:1623
 #: lib/blocks/grid.php:1646
@@ -586,13 +598,15 @@ msgstr ""
 msgid "M"
 msgstr ""
 
-#: lib/blocks/gallery.php:329
-#: lib/blocks/gallery.php:347
+#: lib/blocks/gallery.php:335
+#: lib/blocks/gallery.php:354
+#: lib/blocks/gallery.php:373
+#: lib/blocks/gallery.php:392
 #: lib/blocks/divider.php:238
-#: lib/blocks/columns.php:586
-#: lib/blocks/columns.php:604
-#: lib/blocks/columns.php:622
-#: lib/blocks/columns.php:641
+#: lib/blocks/columns.php:587
+#: lib/blocks/columns.php:606
+#: lib/blocks/columns.php:624
+#: lib/blocks/columns.php:643
 #: lib/blocks/grid.php:795
 #: lib/blocks/grid.php:1624
 #: lib/blocks/grid.php:1647
@@ -614,14 +628,16 @@ msgstr ""
 msgid "L"
 msgstr ""
 
-#: lib/blocks/gallery.php:330
-#: lib/blocks/gallery.php:348
+#: lib/blocks/gallery.php:336
+#: lib/blocks/gallery.php:355
+#: lib/blocks/gallery.php:374
+#: lib/blocks/gallery.php:393
 #: lib/blocks/divider.php:239
-#: lib/blocks/columns.php:587
-#: lib/blocks/columns.php:605
-#: lib/blocks/columns.php:623
-#: lib/blocks/columns.php:642
-#: lib/blocks/columns.php:694
+#: lib/blocks/columns.php:588
+#: lib/blocks/columns.php:607
+#: lib/blocks/columns.php:625
+#: lib/blocks/columns.php:644
+#: lib/blocks/columns.php:696
 #: lib/blocks/grid.php:796
 #: lib/blocks/grid.php:1625
 #: lib/blocks/grid.php:1648
@@ -643,11 +659,37 @@ msgstr ""
 msgid "XL"
 msgstr ""
 
-#: lib/blocks/gallery.php:338
-#: lib/blocks/columns.php:596
+#: lib/blocks/gallery.php:337
+#: lib/blocks/gallery.php:356
+#: lib/blocks/gallery.php:375
+#: lib/blocks/gallery.php:394
+#: lib/blocks/columns.php:589
+#: lib/blocks/columns.php:608
+#: lib/blocks/columns.php:626
+#: lib/blocks/columns.php:645
+#: lib/blocks/columns.php:697
+#: assets/js/blocks/layout-settings.js:593
+#: assets/js/blocks/layout-settings.js:690
+#: assets/js/min/blocks.js:1231
+#: assets/js/min/blocks.js:1328
+msgid "XXL"
+msgstr ""
+
+#: lib/blocks/gallery.php:345
+#: lib/blocks/columns.php:597
 #: lib/blocks/grid.php:1637
 #: lib/functions/customizer.php:782
 msgid "Row Gap"
+msgstr ""
+
+#: lib/blocks/gallery.php:364
+#: lib/blocks/columns.php:616
+msgid "Top Margin"
+msgstr ""
+
+#: lib/blocks/gallery.php:383
+#: lib/blocks/columns.php:635
+msgid "Bottom Margin"
 msgstr ""
 
 #: lib/blocks/divider.php:32
@@ -705,7 +747,7 @@ msgid "A custom columns block."
 msgstr ""
 
 #: lib/blocks/columns.php:48
-#: lib/blocks/columns.php:666
+#: lib/blocks/columns.php:668
 msgid "Mai Column"
 msgstr ""
 
@@ -843,7 +885,7 @@ msgid "Responsive Arrangements"
 msgstr ""
 
 #: lib/blocks/columns.php:363
-#: lib/blocks/columns.php:693
+#: lib/blocks/columns.php:695
 msgid "LG"
 msgstr ""
 
@@ -859,7 +901,7 @@ msgid "Add Column"
 msgstr ""
 
 #: lib/blocks/columns.php:407
-#: lib/blocks/columns.php:692
+#: lib/blocks/columns.php:694
 msgid "MD"
 msgstr ""
 
@@ -868,7 +910,7 @@ msgid "Arrangement (lg tablets)"
 msgstr ""
 
 #: lib/blocks/columns.php:451
-#: lib/blocks/columns.php:691
+#: lib/blocks/columns.php:693
 msgid "SM"
 msgstr ""
 
@@ -902,45 +944,27 @@ msgstr ""
 msgid "End"
 msgstr ""
 
-#: lib/blocks/columns.php:614
-msgid "Top Margin"
-msgstr ""
-
-#: lib/blocks/columns.php:624
-#: lib/blocks/columns.php:643
-#: lib/blocks/columns.php:695
-#: assets/js/blocks/layout-settings.js:593
-#: assets/js/blocks/layout-settings.js:690
-#: assets/js/min/blocks.js:1231
-#: assets/js/min/blocks.js:1328
-msgid "XXL"
-msgstr ""
-
-#: lib/blocks/columns.php:633
-msgid "Bottom Margin"
-msgstr ""
-
-#: lib/blocks/columns.php:670
+#: lib/blocks/columns.php:672
 msgid "Align Content (vertical)"
 msgstr ""
 
-#: lib/blocks/columns.php:696
+#: lib/blocks/columns.php:698
 msgid "XXXL"
 msgstr ""
 
-#: lib/blocks/columns.php:725
+#: lib/blocks/columns.php:727
 msgid "Add box shadow"
 msgstr ""
 
-#: lib/blocks/columns.php:732
+#: lib/blocks/columns.php:734
 msgid "Show first on mobile"
 msgstr ""
 
-#: lib/blocks/columns.php:739
+#: lib/blocks/columns.php:741
 msgid "Show first on small tablets"
 msgstr ""
 
-#: lib/blocks/columns.php:746
+#: lib/blocks/columns.php:748
 msgid "Show first on large tablets"
 msgstr ""
 
@@ -1571,6 +1595,10 @@ msgstr ""
 
 #: lib/classes/class-mai-entry.php:1165
 msgid "Page "
+msgstr ""
+
+#: lib/classes/class-mai-gallery.php:112
+msgid "Add gallery images in the block sidebar settings."
 msgstr ""
 
 #: lib/classes/class-mai-setup-wizard-ajax.php:83
