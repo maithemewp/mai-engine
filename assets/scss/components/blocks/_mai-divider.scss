@@ -4,8 +4,8 @@
 	display: block;
 	width: var(--divider-width, var(--alignfull-width, auto));
 	height: var(--divider-height);
-	margin-top: -0.5px;
-	margin-bottom: -0.5px;
+	margin-top: -1px;
+	margin-bottom: -1px;
 	background: var(--divider-background-color, transparent);
 }
 
