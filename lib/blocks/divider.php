@@ -193,7 +193,7 @@ function mai_get_divider( $atts = [] ) {
 	);
 }
 
-add_action( 'acf/init', 'mai_register_divider_field_groups' );
+add_action( 'acf/init', 'mai_register_divider_field_group' );
 /**
  * Register Mai Divider block field group.
  *
@@ -201,7 +201,7 @@ add_action( 'acf/init', 'mai_register_divider_field_groups' );
  *
  * @return void
  */
-function mai_register_divider_field_groups() {
+function mai_register_divider_field_group() {
 	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
 		return;
 	}

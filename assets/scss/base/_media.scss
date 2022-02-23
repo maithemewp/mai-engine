@@ -10,6 +10,7 @@ img {
 	height: auto;
 	vertical-align: top;
 	border-radius: var(--image-border-radius, 0);
+	filter: var(--image-filter, unset);
 
 	&.aligncenter {
 		display: block;

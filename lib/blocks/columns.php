@@ -578,6 +578,7 @@ function mai_register_columns_field_groups() {
 					'label'             => __( 'Column Gap', 'mai-engine' ),
 					'name'              => 'column_gap',
 					'type'              => 'button_group',
+					'default_value'     => 'xl',
 					'choices'           => [
 						''                 => __( 'None', 'mai-engine' ),
 						'md'               => __( 'XS', 'mai-engine' ),
@@ -585,8 +586,8 @@ function mai_register_columns_field_groups() {
 						'xl'               => __( 'M', 'mai-engine' ),
 						'xxl'              => __( 'L', 'mai-engine' ),
 						'xxxl'             => __( 'XL', 'mai-engine' ),
+						'xxxxl'            => __( 'XXL', 'mai-engine' ),
 					],
-					'default_value'     => 'xl',
 					'wrapper'           => [
 						'class'            => 'mai-acf-button-group mai-acf-button-group-small',
 					],
@@ -596,6 +597,7 @@ function mai_register_columns_field_groups() {
 					'label'             => __( 'Row Gap', 'mai-engine' ),
 					'name'              => 'row_gap',
 					'type'              => 'button_group',
+					'default_value'     => 'xl',
 					'choices'           => [
 						''                 => __( 'None', 'mai-engine' ),
 						'md'               => __( 'XS', 'mai-engine' ),
@@ -603,8 +605,8 @@ function mai_register_columns_field_groups() {
 						'xl'               => __( 'M', 'mai-engine' ),
 						'xxl'              => __( 'L', 'mai-engine' ),
 						'xxxl'             => __( 'XL', 'mai-engine' ),
+						'xxxxl'            => __( 'XXL', 'mai-engine' ),
 					],
-					'default_value'     => 'xl',
 					'wrapper'           => [
 						'class'            => 'mai-acf-button-group mai-acf-button-group-small',
 					],

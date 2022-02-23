@@ -76,6 +76,14 @@ p {
 	margin-left: 0;
 }
 
+[data-content-align="start"] {
+	margin-inline-start: 0;
+}
+
+[data-content-align="end"] {
+	margin-inline-end: 0;
+}
+
 [data-type="core/pullquote"][data-align="left"],
 [data-type="core/pullquote"][data-align="right"] {
 	max-width: 290px; // Match WP core front end styles.

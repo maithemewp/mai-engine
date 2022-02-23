@@ -53,6 +53,10 @@
 	box-shadow: var(--shadow);
 }
 
+.has-drop-shadow {
+	filter: var(--drop-shadow);
+}
+
 .is-sticky {
 	position: sticky !important;
 	top: var(--scroll-margin-top); // Respects sticky header height.

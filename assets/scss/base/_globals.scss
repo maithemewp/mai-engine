@@ -121,6 +121,7 @@
 	--border-width: 1px;
 	--border: var(--border-width) solid var(--color-border);
 	--shadow: 0 0.25em 1em 0 var(--color-shadow);
+	--drop-shadow: drop-shadow(0 0.25em 1em var(--color-shadow));
 
 	--transition-property: all;
 	--transition-duration: 0.2s;
