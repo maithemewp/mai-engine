@@ -33,6 +33,10 @@
 	margin-left: auto;
 }
 
+.wp-block {
+	max-width: var(--wp-block-max-width, var(--breakpoint-lg));
+}
+
 .wp-block[data-align="full"] {
 	max-width: var(--alignfull-max-width, var(--editor-viewport-width));
 	margin-right: var(--alignfull-margin-right, calc(50% - ((var(--editor-viewport-width) / 2) - (var(--scrollbar-width, 0px) / 2)))) !important;
