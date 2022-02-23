@@ -375,6 +375,7 @@ function mai_load_files() {
 		'blocks/columns',
 		'blocks/cover',
 		'blocks/divider',
+		'blocks/gallery',
 		'blocks/grid',
 		'blocks/group',
 		'blocks/heading',
