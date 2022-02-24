@@ -50,6 +50,10 @@
 	box-shadow: var(--entry-box-shadow, unset);
 }
 
+.entry-archive {
+	order: var(--entry-order, var(--entry-index, unset));
+}
+
 .has-image-left-full,
 .has-image-right-full {
 
