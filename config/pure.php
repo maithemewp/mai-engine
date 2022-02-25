@@ -17,7 +17,7 @@ return [
 			// 'white'      => '#ffffff',
 			// 'header'     => '#ffffff', // Site header background.
 			// 'background' => '#ffffff', // Body background.
-			'alt'        => '#f9f9f9', // Background alt.Gray #f9f9f9. Blue #f8fbff. Tan #fbf8f5.
+			'alt'        => '#f8f8f8', // Background alt.Gray #f8f8f8. Blue #f8fbff. Tan #fbf8f5.
 			'body'       => '#111111', // Body text color.
 			'heading'    => '#111111', // Heading text color.
 			'link'       => '#02C091', // Link color.
