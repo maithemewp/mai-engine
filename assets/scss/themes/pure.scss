@@ -6,13 +6,14 @@
 	--input-border: 1px solid rgba(0, 0, 0, 0.4);
 	--input-padding: 0.7em;
 	--button-padding: 0.7rem 2rem;
+	--button-font-family: var(--heading-font-family);
 	--button-background-hover: var(--color-primary-light);
 	--button-transform-hover: translateY(-1px);
 	// --entry-title-text-decoration: underline var(--color-link);
 }
 
 .entries {
-	--entry-meta-margin: 0 0 var(--spacing-xs) 0;
+	--entry-meta-margin: 0 0 var(--spacing-xxxxs) 0;
 	--entry-meta-font-size: var(--font-size-xs);
 }
 
