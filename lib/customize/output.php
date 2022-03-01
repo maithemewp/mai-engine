@@ -81,7 +81,7 @@ function mai_add_kirki_css( $css ) {
 	$preview   = is_customize_preview();
 
 	if ( ! ( $admin || $ajax || $preview ) && $cached_css = get_transient( $transient ) ) {
-		return $cached_css;
+		// return $cached_css;
 	}
 
 	// Make sure :root is set before adding to it below.
@@ -97,38 +97,12 @@ function mai_add_kirki_css( $css ) {
 	$css = mai_add_extra_custom_properties( $css );
 
 	if ( ! ( $admin || $ajax || $preview ) ) {
-		set_transient( $transient, $css, 60 );
+		// set_transient( $transient, $css, 60 );
 	}
 
 	return $css;
 }
 
-add_filter( 'kirki_global_styles', 'mai_add_kirki_page_header_css' );
-/**
- * Outputs kirki page header css.
- * This can't be cached because it can be different per content type.
- *
- * @since 2.13.0
- *
- * @param array $css Kirki CSS.
- *
- * @return array
- */
-function mai_add_kirki_page_header_css( $css ) {
-	/**
-	 * Check if this filter ran already.
-	 * loop_controls() method in Kirki calls this more than once.
-	 */
-	static $has_run = false;
-
-	if ( $has_run ) {
-		return $css;
-	}
-
-	$has_run = true;
-
-	return array_merge( $css, mai_add_page_header_content_type_css( $css ) );
-}
 
 add_filter( 'kirki_enqueue_google_fonts', 'mai_add_kirki_fonts', 99 );
 /**
@@ -162,17 +136,110 @@ function mai_add_kirki_fonts( $fonts ) {
 	$preview   = is_customize_preview();
 
 	if ( ! ( $admin || $ajax || $preview ) && $cached_fonts = get_transient( $transient ) ) {
-		return $cached_fonts;
+		// return $cached_fonts;
 	}
 
-	$fonts = mai_add_body_font_variants( $fonts );
-	$fonts = mai_add_extra_google_fonts( $fonts );
+	$fonts = mai_add_font_variants( $fonts );
+	$fonts = mai_add_additional_fonts( $fonts );
+
+	// Remove any duplicates.
+	foreach ( $fonts as $font_family => $font_variants ) {
+		$fonts[ $font_family ] = array_unique( $fonts[ $font_family ] );
+	}
 
 	if ( ! ( $admin || $ajax || $preview ) ) {
-		set_transient( $transient, $fonts, 60 );
+		// set_transient( $transient, $fonts, 60 );
 	}
 
 	return $fonts;
+}
+
+add_filter( 'kirki_global_styles', 'mai_add_kirki_page_header_css' );
+/**
+ * Outputs kirki page header css.
+ * This can't be cached because it can be different per content type.
+ *
+ * @since 2.13.0
+ *
+ * @param array $css Kirki CSS.
+ *
+ * @return array
+ */
+function mai_add_kirki_page_header_css( $css ) {
+	/**
+	 * Check if this filter ran already.
+	 * loop_controls() method in Kirki calls this more than once.
+	 */
+	static $has_run = false;
+
+	if ( $has_run ) {
+		return $css;
+	}
+
+	$has_run = true;
+
+	return array_merge( $css, mai_add_page_header_content_type_css( $css ) );
+}
+
+/**
+ * Outputs breakpoint custom property.
+ *
+ * @since 2.0.0
+ *
+ * @param array $css Kirki CSS.
+ *
+ * @return array
+ */
+function mai_add_breakpoint_custom_properties( $css ) {
+	$props       = [];
+	$breakpoints = mai_get_breakpoints();
+
+	foreach ( $breakpoints as $name => $size ) {
+		$props[ '--breakpoint-' . $name ] = $size . 'px';
+	}
+
+	// Add breakpoints to beginning of array cause that's how Mike likes to see them.
+	if ( $props ) {
+		$css['global'][':root'] = array_merge( $props, $css['global'][':root'] );
+	}
+
+	return $css;
+}
+
+/**
+ * Adds typography settings custom properties to Kirki output.
+ *
+ * @since 2.0.0
+ * @since TBD Full refactor.
+ *
+ * @param array $css Kirki CSS output array.
+ *
+ * @return array
+ */
+function mai_add_fonts_custom_properties( $css ) {
+	$elements = [
+		'body'    => mai_get_font_weights( 'body' ),
+		'heading' => mai_get_font_weights( 'heading' ),
+	];
+
+	foreach ( $elements as $element => $weights ) {
+		$family   = mai_get_font_family( $element );
+		$variants = mai_get_font_variants( $element );
+
+		if ( $family ) {
+			$css['global'][':root'][ sprintf( '--%s-font-family', $element ) ] = $family;
+		}
+
+		$css['global'][':root'][ sprintf( '--%s-font-weight', $element ) ]       = mai_isset( $weights, 'default', '400' );
+		$css['global'][':root'][ sprintf( '--%s-font-weight-light', $element ) ] = mai_isset( $weights, 'light', '300' );
+		$css['global'][':root'][ sprintf( '--%s-font-weight-bold', $element ) ]  = mai_isset( $weights, 'bold', '600' );
+
+		if ( isset( $variants['default'] ) && mai_has_string( 'italic', $variants['default'] ) ) {
+			$css['global'][':root'][ sprintf( '--%s-font-style', $element ) ] = 'italic';
+		}
+	}
+
+	return $css;
 }
 
 /**
@@ -253,31 +320,6 @@ function mai_add_button_text_colors( $css ) {
 }
 
 /**
- * Outputs breakpoint custom property.
- *
- * @since 2.0.0
- *
- * @param array $css Kirki CSS.
- *
- * @return array
- */
-function mai_add_breakpoint_custom_properties( $css ) {
-	$props       = [];
-	$breakpoints = mai_get_breakpoints();
-
-	foreach ( $breakpoints as $name => $size ) {
-		$props[ '--breakpoint-' . $name ] = $size . 'px';
-	}
-
-	// Add breakpoints to beginning of array cause that's how Mike likes to see them.
-	if ( $props ) {
-		$css['global'][':root'] = array_merge( $props, $css['global'][':root'] );
-	}
-
-	return $css;
-}
-
-/**
  * Outputs title area custom properties.
  *
  * @since 2.8.0
@@ -293,76 +335,108 @@ function mai_add_title_area_custom_properties( $css ) {
 }
 
 /**
- * Adds typography settings custom properties to Kirki output.
+ * Adds any other custom properties defined in config to output.
  *
  * @since 2.0.0
  *
- * @param array $css Kirki CSS output array.
+ * @param array $css Kirki CSS array.
  *
- * @return array
+ * @return mixed
  */
-function mai_add_fonts_custom_properties( $css ) {
-	$body_font_family    = mai_get_font_family( 'body' );
-	$body_font_weight    = mai_get_font_weight( 'body' );
-	$body_font_bold      = mai_get_bold_variant( 'body' );
-	$heading_font_family = mai_get_font_family( 'heading' );
-	$heading_font_weight = mai_get_font_weight( 'heading' );
-	$fonts_config        = mai_get_global_styles( 'fonts' );
+function mai_add_extra_custom_properties( $css ) {
+	$extra = mai_get_global_styles( 'extra' );
 
-	if ( $body_font_family ) {
-		$css['global'][':root']['--body-font-family'] = $body_font_family;
+	foreach ( $extra as $property => $value ) {
+		$css['global'][':root'][ '--' . esc_attr( $property ) ] = esc_attr( $value );
 	}
 
-	if ( $body_font_weight ) {
-		$body_weight = in_array( $body_font_weight, [ 'regular', 'italic' ] ) ? '400' : $body_font_weight; // Could only be italic.
-		$body_weight = str_replace( 'italic', '', $body_weight ); // Could be 300italic.
+	return $css;
+}
 
-		$css['global'][':root']['--body-font-weight'] = $body_weight;
+/**
+ * Loads font family variants.
+ *
+ * @since TBD
+ *
+ * @param array $fonts All fonts to be enqueued.
+ *
+ * @return mixed
+ */
+function mai_add_font_variants( $fonts ) {
+	$body_family    = mai_get_font_family( 'body' );
+	$heading_family = mai_get_font_family( 'heading' );
+
+	if ( isset( $fonts[ $body_family ] ) ) {
+		$variants = array_values( array_filter( array_values( mai_get_font_variants( 'body' ) ) ) );
+
+		foreach ( $variants as $variant ) {
+			$fonts[ $body_family ] = array_unique( array_merge( $fonts[ $body_family ], (array) $variant ) ); // Force to array so individual and 'add' values still work.
+		}
 	}
 
-	if ( $body_font_bold ) {
-		$css['global'][':root']['--body-font-weight-bold'] = $body_font_bold;
+	if ( isset( $fonts[ $heading_family ] ) ) {
+		$variants = array_values( array_filter( array_values( mai_get_font_variants( 'heading' ) ) ) );
+
+		foreach ( $variants as $variant ) {
+			$fonts[ $heading_family ] = array_unique( array_merge( $fonts[ $heading_family ], (array) $variant ) ); // Force to array so individual and 'add' values still work.
+		}
 	}
 
-	if ( mai_has_string( 'italic', $body_font_weight ) ) {
-		$css['global'][':root'][ '--body-font-style' ] = 'italic';
-	}
+	return $fonts;
+}
 
-	if ( $heading_font_family ) {
-		$css['global'][':root']['--heading-font-family'] = $heading_font_family;
-	}
-
-	if ( $heading_font_weight ) {
-		$heading_weight = in_array( $heading_font_weight, [ 'regular', 'italic' ] ) ? '400' : $heading_font_weight; // Could only be italic.
-		$heading_weight = str_replace( 'italic', '', $heading_weight ); // Could be 300italic.
-
-		$css['global'][':root']['--heading-font-weight'] = $heading_weight;
-	}
-
-	if ( mai_has_string( 'italic', $heading_font_weight ) ) {
-		$css['global'][':root'][ '--heading-font-style' ] = 'italic';
-	}
+/**
+ * Loads any other Google font families defined in the config.
+ *
+ * @since 2.0.0
+ *
+ * @param array $fonts All Google Fonts to be enqueued.
+ *
+ * @return mixed
+ */
+function mai_add_additional_fonts( $fonts ) {
+	$fonts_config = mai_get_global_styles( 'fonts' );
 
 	unset( $fonts_config['body'] );
 	unset( $fonts_config['heading'] );
 
+	if ( ! $fonts_config ) {
+		return $fonts;
+	}
+
+	$google_fonts = mai_get_kirki_google_fonts();
+
 	if ( $fonts_config ) {
-		foreach ( $fonts_config as $element => $string ) {
-			$extra_font_family = mai_get_default_font_family( $element );
-			$extra_font_weight = mai_get_default_font_weight( $element );
-			$extra_weight      = in_array( $extra_font_weight, [ 'regular', 'italic' ] ) ? '400' : $extra_font_weight; // Could only be italic.
-			$extra_weight      = str_replace( 'italic', '', $extra_weight ); // Could be 300italic.
+		foreach ( $fonts_config as $element => $args ) {
+			$font_family = mai_get_default_font_family( $element );
 
-			$css['global'][':root'][ '--' . $element . '-font-family' ] = $extra_font_family;
-			$css['global'][':root'][ '--' . $element . '-font-weight' ] = $extra_weight;
+			// Skip if not a Google Font.
+			if ( ! ( isset( $google_fonts[ $font_family ] ) && isset( $google_fonts[ $font_family ]['variants'] ) ) ) {
+				continue;
+			}
 
-			if ( mai_has_string( 'italic', $extra_font_weight ) ) {
-				$css['global'][':root'][ '--' . $element . '-font-style' ] = 'italic';
+			$font_weights = mai_get_default_font_weights( $element );
+			$available    = $google_fonts[ $font_family ]['variants'];
+
+			// Skip if none available.
+			if ( ! $available ) {
+				continue;
+			}
+
+			foreach ( $font_weights as $font_weight ) {
+				$font_weight = mai_get_font_variant_for_kirki( $font_weight );
+
+				// Skip if config weight is not a variant in this family.
+				if ( ! in_array( $font_weight, $available, true ) ) {
+					continue;
+				}
+
+				$fonts[ $font_family ][] = (string) $font_weight;
 			}
 		}
 	}
 
-	return $css;
+	return $fonts;
 }
 
 /**
@@ -403,153 +477,20 @@ function mai_add_page_header_content_type_css( $css ) {
 	$content_width = mai_get_option( 'page-header-content-width', $config['content-width'] );
 
 	if ( $content_width ) {
-		$css['global'][':root']['--page-header-inner-max-width'] = sprintf( 'var(--breakpoint-%s)', esc_html( $content_width ));
+		$css['global'][':root']['--page-header-inner-max-width'] = sprintf( 'var(--breakpoint-%s)', esc_attr( $content_width ));
 	}
 
 	$content_align = mai_get_option( 'page-header-content-align', $config['content-align'] );
 
 	if ( $content_align ) {
-		$css['global'][':root']['--page-header-justify-content'] = mai_get_flex_align( esc_html( $content_align ) );
+		$css['global'][':root']['--page-header-justify-content'] = mai_get_flex_align( esc_attr( $content_align ) );
 	}
 
 	$text_align = mai_get_option( 'page-header-text-align', $config['text-align'] );
 
 	if ( $text_align ) {
-		$css['global'][':root']['--page-header-text-align'] = mai_get_align_text( esc_html( $text_align ) );
+		$css['global'][':root']['--page-header-text-align'] = mai_get_align_text( esc_attr( $text_align ) );
 	}
 
 	return $css;
-}
-
-/**
- * Add sany other custom properties defined in config to output.
- *
- * @since 2.0.0
- *
- * @param array $css Kirki CSS array.
- *
- * @return mixed
- */
-function mai_add_extra_custom_properties( $css ) {
-	$extra = mai_get_global_styles( 'extra' );
-
-	foreach ( $extra as $property => $value ) {
-		$css['global'][':root'][ '--' . $property ] = $value;
-	}
-
-	return $css;
-}
-
-/**
- * Loads italic and bold variations of body font family.
- *
- * @since 2.0.0
- *
- * @param array $fonts All fonts to be enqueued.
- *
- * @return mixed
- */
-function mai_add_body_font_variants( $fonts ) {
-	$font_family = mai_get_font_family( 'body' );
-
-	// Return early if body font family not chosen.
-	if ( ! isset( $fonts[ $font_family ] ) ) {
-		return $fonts;
-	}
-
-	// Set variants if they exist.
-	$bold        = mai_get_bold_variant( 'body' );
-	$italic      = mai_get_italic_variant( 'body' );
-	$bold_italic = mai_get_bold_italic_variant( 'body' );
-
-	if ( $bold ) {
-		$fonts[ $font_family ][] = $bold;
-	}
-
-	if ( $italic ) {
-		$fonts[ $font_family ][] = $italic;
-	}
-
-	if ( $bold_italic ) {
-		$fonts[ $font_family ][] = $bold_italic;
-	}
-
-	// Remove duplicates.
-	$fonts[ $font_family ] = array_flip( array_flip( $fonts[ $font_family ] ) );
-
-	// Make all variants strings.
-	foreach ( $fonts as $name => $variants ) {
-		$fonts[ $name ] = array_map( 'strval', $variants );
-	}
-
-	return $fonts;
-}
-
-/**
- * Loads any other Google font families defined in the config.
- *
- * @since 2.0.0
- *
- * @param array $fonts All Google Fonts to be enqueued.
- *
- * @return mixed
- */
-function mai_add_extra_google_fonts( $fonts ) {
-	// Convert to strings for later comparison.
-	if ( $fonts ) {
-		foreach ( $fonts as $family => $weights ) {
-			$fonts[ $family ] = array_map( 'strval', $weights );
-		}
-	}
-
-	$fonts_config = mai_get_global_styles( 'fonts' );
-
-	unset( $fonts_config['body'] );
-	unset( $fonts_config['heading'] );
-
-	if ( ! $fonts_config ) {
-		return $fonts;
-	}
-
-	foreach ( $fonts_config as $element => $args ) {
-		$font_family  = mai_get_default_font_family( $element );
-		$google_fonts = mai_get_kirki_google_fonts();
-
-		// Return early if not a Google Font.
-		if ( ! ( isset( $google_fonts[ $font_family ] ) && isset( $google_fonts[ $font_family ]['variants'] ) ) ) {
-			continue;
-		}
-
-		$font_weights = mai_get_default_font_weights( $element );
-		$variants     = $google_fonts[ $font_family ]['variants'];
-
-		foreach ( $font_weights as $font_weight ) {
-
-			// Skip if config weight is not a variant in this family.
-			if ( ! in_array( $font_weight, $variants, true ) ) {
-				continue;
-			}
-
-			// Skip if variant already registered.
-			if ( isset( $fonts[ $font_family ] ) && in_array( $font_weight, $fonts[ $font_family ], true ) ) {
-				continue;
-			}
-
-			$fonts[ $font_family ][] = (string) $font_weight;
-		}
-	}
-
-	foreach ( $fonts as $font_family => $font_weights ) {
-
-		// If we have 400 and regular, remove 400. Kikri uses regular.
-		if ( count( array_intersect( $font_weights, [ '400', 'regular' ] ) ) > 1 ) {
-			$index = array_search( '400', $font_weights, true );
-			unset( $fonts[ $font_family ][ $index ] );
-		}
-
-		// Remove any leftover duplicates.
-		$fonts[ $font_family ] = array_unique( $fonts[ $font_family ] );
-	}
-
-	return $fonts;
 }

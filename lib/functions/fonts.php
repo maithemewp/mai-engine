@@ -182,154 +182,293 @@ function mai_get_font_weight( $element ) {
 }
 
 /**
- * Returns the bold italic variant of a given element.
+ * Gets font weight value for CSS.
+ * Converts regular to 400 and removes italic.
  *
- * @since 2.6.0
+ * @since TBD
  *
- * @param string $element Element to check.
+ * @param string $weight The font weight to sanitize.
  *
  * @return string
  */
-function mai_get_bold_italic_variant( $element ) {
+function mai_get_font_weight_for_css( $weight ) {
+	$weight = (string) $weight;
+
+	// Convert regular or italic to default font weight.
+	if ( in_array( $weight, [ 'regular', 'italic' ] ) ) {
+		$weight = '400';
+	}
+
+	// Remove italic from 300italic.
+	$weight = str_replace( 'italic', '', $weight );
+
+	return $weight;
+}
+
+/**
+ * Gets font variant value for Kirki.
+ * Converts 400 to regular.
+ *
+ * @since TBD
+ *
+ * @param string $variant The font variant to sanitize.
+ *
+ * @return string
+ */
+function mai_get_font_variant_for_kirki( $variant ) {
+	$variant = (string) $variant;
+
+	// Convert 400 to regular.
+	if ( in_array( $variant, [ '400' ] ) ) {
+		$variant = 'regular';
+	}
+
+	return $variant;
+}
+
+/**
+ * Gets available font weights for an element.
+ * Uses naming for use directly in CSS.
+ *
+ * @since TBD
+ *
+ * @param string $element Element to check.
+ *
+ * @return array
+ */
+function mai_get_font_weights( $element ) {
+	static $weights = null;
+
+	if ( is_array( $weights ) && isset( $weights[ $element ] ) ) {
+		return $weights[ $element ];
+	}
+
+	if ( ! is_array( $weights ) ) {
+		$weights = [];
+	}
+
+	$variants = mai_get_font_variants( $element );
+
+	foreach ( $variants as $name => $value ) {
+		if ( is_array( $value ) ) {
+			foreach ( $value as $index => $variant ) {
+				$variants[ $name ][ $index ] = mai_get_font_weight_for_css( $variant );
+			}
+		} else {
+			$variants[ $name ] = mai_get_font_weight_for_css( $value );
+		}
+	}
+
+	$weights[ $element ] = $variants;
+
+	return $weights[ $element ];
+}
+
+/**
+ * Gets available font variants for an element.
+ * Uses naming for Kirki.
+ *
+ * @since TBD
+ *
+ * @param string $element Element to check.
+ *
+ * @return array
+ */
+function mai_get_font_variants( $element ) {
 	static $variants = null;
 
 	if ( is_array( $variants ) && isset( $variants[ $element ] ) ) {
 		return $variants[ $element ];
 	}
 
-	$bold = mai_get_bold_variant( $element );
-
-	if ( ! $bold ) {
-		$variants[ $element ] = false;
-		return $variants[ $element ];
+	if ( ! is_array( $variants ) ) {
+		$variants = [];
 	}
 
 	$google_fonts = mai_get_kirki_google_fonts();
+	$config       = mai_get_global_styles( 'font-variants' );
 	$font_family  = mai_get_font_family( $element );
+	$font_weight  = mai_get_font_weight( $element );
+	$defaults     = [
+		'default'    => $font_weight,
+		'light'      => '',
+		'bold'       => '',
+		'italic'     => '',
+		'bolditalic' => '',
+		'add'        => '',
+	];
 
+	// Bail if no config for element.
+	if ( ! isset( $config[ $element ] ) ) {
+		$variants[ $element ] = $defaults;
+		return $variants[ $element ];
+	}
+
+	// Bail not a google font.
 	if ( ! isset( $google_fonts[ $font_family ] ) ) {
-		$variants[ $element ] = false;
+		$variants[ $element ] = $defaults;
 		return $variants[ $element ];
 	}
 
-	$google_font_variants = array_flip( $google_fonts[ $font_family ]['variants'] );
-	$variant              = $bold . 'italic';
+	$available = isset( $google_fonts[ $font_family ]['variants'] ) ? $google_fonts[ $font_family ]['variants'] : [];
 
-	if ( ! isset( $google_font_variants[ $variant ] ) ) {
-		$variants[ $element ] = false;
+	// Bail if no variants available.
+	if ( ! $available ) {
+		$variants[ $element ] = $defaults;
 		return $variants[ $element ];
 	}
 
-	$variants[ $element ] = $variant;
+	// Set all attributes.
+	$values = wp_parse_args( $config[ $element ], $defaults );
 
-	return $variants[ $element ];
-}
+	// Convert to strings, and change 400 to regular for Kirki comparison.
+	foreach ( $values as $name => $value ) {
+		if ( $value ) {
+			$array = explode( ',', $value );
+			$array = array_map( 'strval', $array );
 
-/**
- * Returns the best match bold variant of a given element.
- *
- * @since 2.0.0
- *
- * @param string $element Element to check.
- *
- * @return string
- */
-function mai_get_bold_variant( $element ) {
-	static $variants = null;
+			if ( $array ) {
+				foreach ( $array as $index => $variant ) {
+					$array[ $index ] = mai_get_font_variant_for_kirki( $variant );
+				}
 
-	if ( is_array( $variants ) && isset( $variants[ $element ] ) ) {
-		return $variants[ $element ];
-	}
-
-	$bold            = '700'; // Need default for instances where Google Fonts are not used in Customizer.
-	$google_fonts    = mai_get_kirki_google_fonts();
-	$font_family     = mai_get_font_family( $element );
-	$default_weights = mai_get_default_font_weights( $element );
-	$bold_variants   = [ '600', '500', '700', '800', '900' ];
-
-	if ( ! isset( $google_fonts[ $font_family ] ) ) {
-		$variants[ $element ] = $bold;
-		return $variants[ $element ];
-	}
-
-	$google_font_variants = isset( $google_fonts[ $font_family ]['variants'] ) ? $google_fonts[ $font_family ]['variants'] : [];
-
-	// Prioritize bold weights set in config (if it exists).
-	foreach ( $default_weights as $weight ) {
-		if ( in_array( (string) $weight, $bold_variants, true ) ) {
-
-			// If any exist in the config, move them to the top of the array.
-			$bold_variants = array_merge( [ $weight ], $bold_variants );
-		}
-	}
-
-	// Reverse variants so the highest priority is looped through last.
-	$bold_variants = array_reverse( array_unique( $bold_variants ) );
-
-	// Check if variant is actually available for family.
-	foreach ( $bold_variants as $bold_variant ) {
-		if ( in_array( $bold_variant, $google_font_variants, true ) ) {
-			$bold = $bold_variant;
-		}
-	}
-
-	$variants[ $element ] = $bold;
-
-	return $variants[ $element ];
-}
-
-/**
- * Returns the best match italic variant of a given element.
- *
- * @since 2.0.0
- *
- * @param string $element Element to check.
- *
- * @return string
- */
-function mai_get_italic_variant( $element ) {
-	static $variants = null;
-
-	if ( is_array( $variants ) && isset( $variants[ $element ] ) ) {
-		return $variants[ $element ];
-	}
-
-	$italic          = '';
-	$google_fonts    = mai_get_kirki_google_fonts();
-	$font_family     = mai_get_font_family( $element );
-	$regular_weight  = mai_get_font_weight( $element );
-	$default_weights = mai_get_default_font_weights( $element );
-
-	if ( ! isset( $google_fonts[ $font_family ] ) ) {
-		$variants[ $element ] = $italic;
-		return $variants[ $element ];
-	}
-
-	// Bail if regular weight is already italic.
-	if ( mai_has_string( 'italic', $regular_weight ) ) {
-		$variants[ $element ] = $italic;
-		return $variants[ $element ];
-	}
-
-	$variants = array_flip( $google_fonts[ $font_family ]['variants'] );
-
-	if ( isset( $variants[ $regular_weight . 'italic' ] ) ) {
-		$italic = $regular_weight . 'italic';
-
-	} elseif ( isset( $variants['italic'] ) ) {
-		$italic = 'italic';
-
-	} elseif ( ! empty( $default_weights ) ) {
-		foreach ( $default_weights as $weight ) {
-			if ( mai_has_string( 'i', $weight ) ) {
-				$italic = $weight;
+				$values[ $name ] = implode( ',', $array );
 			}
 		}
 	}
 
-	$variants[ $element ] = $italic;
+	// Default. Don't check if available because we need this output in CSS,
+	// It should be available if chosen from Custmoizer.
+	if ( $values['default'] ) {
+		$variants[ $element ]['default'] = $values['default'];
+	}
 
-	return $variants[ $element ];
+	// Light.
+	if ( $values['light'] && in_array( $values['light'], $available ) ) {
+		$variants[ $element ]['light'] = $values['light'];
+	}
+
+	// Bold.
+	if ( $values['bold'] ) {
+		$bold = mai_maybe_get_bold_variant( $values['bold'], $available );
+
+		if ( $bold ) {
+			$variants[ $element ]['bold'] = $bold;
+		}
+	} else {
+		$bold = false; // For later conditions.
+	}
+
+	// Italic custom.
+	if ( $values['italic'] ) {
+		$italic = mai_maybe_get_italic_variant( $values['italic'], $available );
+	}
+	// Italic default.
+	elseif ( 'body' === $element ) {
+		$italic = mai_maybe_get_italic_variant( $font_weight, $available );
+	}
+	// Set empty var.
+	else {
+		$italic = '';
+	}
+
+	if ( $italic ) {
+		$variants[ $element ]['italic'] = $italic;
+	}
+
+	// Bold-Italic custom.
+	if ( $values['bolditalic'] && in_array( $values['bolditalic'] . 'italic', $available ) ) {
+		$variants[ $element ]['bolditalic'] = $values['bolditalic'] . 'italic';
+	}
+	// Bold-Italic default.
+	elseif ( 'body' === $element && $bold && in_array( $bold . 'italic', $available ) ) {
+		$variants[ $element ][ 'bolditalic' ] = $bold . 'italic';
+	}
+
+	// Additional.
+	if ( $values['add'] ) {
+		$add = explode( ',', $values['add'] );
+
+		foreach ( $add as $weight ) {
+			if ( ! in_array( $weight, $available ) ) {
+				continue;
+			}
+
+			$variants[ $element ]['add'][] = $weight;
+		}
+	}
+
+	return mai_isset( $variants, $element, $defaults );
+}
+
+/**
+ * Recursively attempts to return a valid bold font weight from available weights.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @param int|string $variant   The variant to check.
+ * @param array      $available The available font variants from Kirki.
+ *
+ * @return int|string false;
+ */
+function mai_maybe_get_bold_variant( $variant, $available ) {
+	if ( '400' === $variant ) {
+		$variant = 'regular';
+	}
+
+	if ( in_array( $variant, $available ) ) {
+		return $variant;
+	}
+
+	if ( 'regular' === $variant ) {
+		$variant = '400';
+	}
+
+	if ( is_numeric( $variant ) ) {
+		if ( (int) $variant > 900 ) {
+			return false;
+		}
+
+		$variant = (string) ((int) $variant + 100);
+
+		return mai_maybe_get_bold_variant( $variant, $available );
+	}
+
+	return false;
+}
+
+/**
+ * Attempts to return a valid italic font weight from available weights.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @param int|string $variant   The variant to check.
+ * @param array      $available The available font variants from Kirki.
+ *
+ * @return int|string false;
+ */
+function mai_maybe_get_italic_variant( $variant, $available ) {
+	if ( in_array( $variant, [ 'regular', 'italic', '400', '400italic' ] ) ) {
+		$variant = 'italic';
+	}
+
+	if ( in_array( $variant, $available ) ) {
+		return $variant;
+	}
+
+	if ( in_array( $variant . 'italic', $available ) ) {
+		return $variant . 'italic';
+	}
+
+	if ( in_array( 'italic', $available ) ) {
+		return 'italic';
+	}
+
+	return false;
 }
 
 /**
