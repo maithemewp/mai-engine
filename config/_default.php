@@ -46,8 +46,8 @@ return [
 		],
 		'font-variants'  => [
 			'body'    => [
-				'light'      => '',    // Optionally declare a light font variant.
-				'bold'       => '700', // Optionally declare a bold font variant.
+				'light'      => '',    // Optionally declare a light font weight.
+				'bold'       => '700', // Optionally declare a specific bold font weight. If empty, a default will be used.
 				'italic'     => '',    // Default uses italic version of the body weight. Optionally declare a specific weight here.
 				'bolditalic' => '',    // Default uses italic version of the bold weight. Optionally declare a specific weight here.
 				'additional' => '',    // Optionally add comma-separated list of additoinal body font weights to load. Uses chosen body font family.
