@@ -427,6 +427,7 @@ function mai_maybe_get_bold_variant( $variant, $available ) {
 	}
 
 	if ( is_numeric( $variant ) ) {
+		// Prevent infinite loops.
 		if ( (int) $variant > 900 ) {
 			return false;
 		}

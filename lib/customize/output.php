@@ -81,7 +81,7 @@ function mai_add_kirki_css( $css ) {
 	$preview   = is_customize_preview();
 
 	if ( ! ( $admin || $ajax || $preview ) && $cached_css = get_transient( $transient ) ) {
-		// return $cached_css;
+		return $cached_css;
 	}
 
 	// Make sure :root is set before adding to it below.
@@ -90,14 +90,14 @@ function mai_add_kirki_css( $css ) {
 	}
 
 	$css = mai_add_breakpoint_custom_properties( $css );
+	$css = mai_add_title_area_custom_properties( $css );
 	$css = mai_add_fonts_custom_properties( $css );
 	$css = mai_add_colors_css( $css );
 	$css = mai_add_button_text_colors( $css );
-	$css = mai_add_title_area_custom_properties( $css );
 	$css = mai_add_extra_custom_properties( $css );
 
 	if ( ! ( $admin || $ajax || $preview ) ) {
-		// set_transient( $transient, $css, 60 );
+		set_transient( $transient, $css, 60 );
 	}
 
 	return $css;
@@ -136,7 +136,7 @@ function mai_add_kirki_fonts( $fonts ) {
 	$preview   = is_customize_preview();
 
 	if ( ! ( $admin || $ajax || $preview ) && $cached_fonts = get_transient( $transient ) ) {
-		// return $cached_fonts;
+		return $cached_fonts;
 	}
 
 	$fonts = mai_add_font_variants( $fonts );
@@ -148,7 +148,7 @@ function mai_add_kirki_fonts( $fonts ) {
 	}
 
 	if ( ! ( $admin || $ajax || $preview ) ) {
-		// set_transient( $transient, $fonts, 60 );
+		set_transient( $transient, $fonts, 60 );
 	}
 
 	return $fonts;
@@ -207,6 +207,21 @@ function mai_add_breakpoint_custom_properties( $css ) {
 }
 
 /**
+ * Outputs title area custom properties.
+ *
+ * @since 2.8.0
+ *
+ * @param array $css Kirki CSS.
+ *
+ * @return array
+ */
+function mai_add_title_area_custom_properties( $css ) {
+	$css['global'][':root']['--header-shrink-offset'] = mai_get_unit_value( mai_get_header_shrink_offset() );
+
+	return $css;
+}
+
+/**
  * Adds typography settings custom properties to Kirki output.
  *
  * @since 2.0.0
@@ -225,14 +240,22 @@ function mai_add_fonts_custom_properties( $css ) {
 	foreach ( $elements as $element => $weights ) {
 		$family   = mai_get_font_family( $element );
 		$variants = mai_get_font_variants( $element );
+		$light    = mai_isset( $weights, 'light', false );
+		$bold     = mai_isset( $weights, 'bold', false );
 
 		if ( $family ) {
 			$css['global'][':root'][ sprintf( '--%s-font-family', $element ) ] = $family;
 		}
 
-		$css['global'][':root'][ sprintf( '--%s-font-weight', $element ) ]       = mai_isset( $weights, 'default', '400' );
-		$css['global'][':root'][ sprintf( '--%s-font-weight-light', $element ) ] = mai_isset( $weights, 'light', '300' );
-		$css['global'][':root'][ sprintf( '--%s-font-weight-bold', $element ) ]  = mai_isset( $weights, 'bold', '600' );
+		$css['global'][':root'][ sprintf( '--%s-font-weight', $element ) ] = mai_isset( $weights, 'default', '400' );
+
+		if ( $light ) {
+			$css['global'][':root'][ sprintf( '--%s-font-weight-light', $element ) ] = $light;
+		}
+
+		if ( $bold ) {
+			$css['global'][':root'][ sprintf( '--%s-font-weight-bold', $element ) ]  = $bold;
+		}
 
 		if ( isset( $variants['default'] ) && mai_has_string( 'italic', $variants['default'] ) ) {
 			$css['global'][':root'][ sprintf( '--%s-font-style', $element ) ] = 'italic';
@@ -315,21 +338,6 @@ function mai_add_button_text_colors( $css ) {
 
 		$css['global'][':root'][ '--button-' . $suffix . 'color' ] = mai_get_color_css( $text );
 	}
-
-	return $css;
-}
-
-/**
- * Outputs title area custom properties.
- *
- * @since 2.8.0
- *
- * @param array $css Kirki CSS.
- *
- * @return array
- */
-function mai_add_title_area_custom_properties( $css ) {
-	$css['global'][':root']['--header-shrink-offset'] = mai_get_unit_value( mai_get_header_shrink_offset() );
 
 	return $css;
 }
