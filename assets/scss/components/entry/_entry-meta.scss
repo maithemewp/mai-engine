@@ -1,6 +1,9 @@
 .entry-meta {
 	margin: var(--entry-meta-margin, 0 0 var(--spacing-xl) 0);
+	font-weight: var(--entry-meta-font-weight, unset);
 	font-size: var(--entry-meta-font-size, var(--font-size-sm));
+	font-family: var(--entry-meta-font-family, unset);
+	letter-spacing: var(--entry-meta-letter-spacing, inherit);
 	white-space: pre-wrap; // Preserve white-space (spaces) in text/content.
 	text-align: var(--entry-meta-text-align, start);
 
