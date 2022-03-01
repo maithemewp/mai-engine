@@ -5,7 +5,7 @@
 	--menu-font-weight: var(--heading-font-weight-light);
 	--input-padding: 0.5em;
 	--input-font-family: var(--heading-font-family);
-	--input-border: 1px solid rgba(0, 0, 0, 0.4);
+	--input-border: 1px solid var(--color-secondary);
 	--button-padding: 0.7rem 2rem;
 	--button-font-family: var(--heading-font-family);
 	--button-background-hover: var(--color-primary-light);
@@ -22,8 +22,14 @@
 	--adjacent-entry-link-inner-box-shadow: none;
 }
 
+.has-boxed {
+	--entry-background: var(--color-alt);
+	--entry-border: 0;
+	--entry-box-shadow: none;
+}
+
 .entries {
-	--entry-meta-margin: 0 0 var(--spacing-xxxxs) 0;
+	--entry-meta-margin: 0 0 var(--spacing-xxxs) 0;
 }
 
 .entry-meta {

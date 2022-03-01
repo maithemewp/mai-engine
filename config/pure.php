@@ -46,6 +46,29 @@ return [
 		],
 	],
 	'settings' => [
+		'content-archives' => [
+			'post' => [
+				'show' => [
+					'image',
+					'genesis_entry_header',
+					'title',
+					'genesis_before_entry_content',
+					'excerpt',
+					'genesis_entry_content',
+					'genesis_after_entry_content',
+					'genesis_entry_footer',
+				],
+				'image_orientation'   => 'square',
+				'image_position'      => 'left-middle',
+				'image_width'         => 'fourth',
+				'header_meta'         => '[post_date] [post_author_posts_link before="by "]',
+				'footer_meta'         => '[post_terms taxonomy="category" before="Category: "][post_terms taxonomy="post_tag" before="Tag: "]',
+				'align_text_vertical' => 'middle',
+				'boxed'               => false,
+				'columns'             => '1',
+				'row_gap'             => 'xxxl',
+			],
+		],
 		'single-content' => [
 			'post' => [
 				'image_orientation' => 'square',
