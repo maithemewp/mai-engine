@@ -1,12 +1,9 @@
 .mai-gallery {
-	--gallery-margin: var(--row-gap) 0 0 var(--column-gap);
 	display: flex;
 	flex-wrap: wrap;
+	gap: var(--row-gap) var(--column-gap);
 	align-items: var(--align-columns-vertical, unset);
 	justify-content: var(--align-columns, unset);
-	width: calc(100% + var(--column-gap));
-	max-width: var(--gallery-max-width, calc(100% + var(--column-gap)));
-	margin: calc(var(--row-gap) * -1) 0 0 calc(var(--column-gap) * -1);
 	line-height: 1.5;
 }
 
@@ -39,9 +36,8 @@
 }
 
 .mai-gallery-item {
-	flex: var(--gallery-flex, 1 1 calc((100% / var(--columns)) - var(--column-gap)));
-	max-width: var(--gallery-max-width, calc((100% / var(--columns)) - var(--column-gap)));
-	margin: var(--gallery-margin, 0);
+	flex: var(--gallery-item-flex, 1 1 calc((100% / var(--columns)) - var(--column-gap)));
+	margin: var(--gallery-item-margin, 0);
 	line-height: 1;
 	text-align: center;
 }
