@@ -439,6 +439,10 @@ function mai_load_files() {
 		$files[] = 'support/polylang';
 	}
 
+	if ( class_exists( 'RankMath' ) ) {
+		$files[] = 'support/rankmath';
+	}
+
 	if ( class_exists( 'SitePress' ) ) {
 		$files[] = 'support/wpml';
 	}
