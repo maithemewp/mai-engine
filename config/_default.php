@@ -37,11 +37,28 @@ return [
 		'custom-colors'  => [
 			// [
 			// 	'color' => '#bcda83', // var(--color-custom-1).
+			// 	'color' => '#6c747d', // var(--color-custom-2).
 			// ],
 		],
 		'fonts'          => [
 			'body'    => 'sans-serif:400',
 			'heading' => 'sans-serif:600',
+		],
+		'font-variants'  => [
+			'body'    => [
+				'light'      => '',    // Optionally declare a light font weight.
+				'bold'       => '700', // Optionally declare a specific bold font weight. If empty, a default will be used.
+				'italic'     => '',    // Default uses italic version of the body weight. Optionally declare a specific weight here.
+				'bolditalic' => '',    // Default uses italic version of the bold weight. Optionally declare a specific weight here.
+				'additional' => '',    // Optionally add comma-separated list of additoinal body font weights to load. Uses chosen body font family.
+			],
+			'heading' => [
+				'light'      => '', // Optionally declare a light font weight here.
+				'bold'       => '', // Optionally declare a bold weight here.
+				'italic'     => '', // Optionally declare a italic weight here.
+				'bolditalic' => '', // Optionally declare a bold italic weight here.
+				'additional' => '', // Optionally add comma-separated list of additoinal heading font weights to load. Uses chosen heading font family.
+			],
 		],
 		'extra'          => [],
 	],
