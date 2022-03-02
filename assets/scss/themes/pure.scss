@@ -22,6 +22,16 @@
 	--adjacent-entry-link-inner-box-shadow: none;
 }
 
+.button-link {
+	--button-transform: none;
+	--button-transform-hover: none;
+}
+
+.menu-item-button {
+	--button-link-color: var(--color-heading);
+	--button-link-color-hover: var(--color-link);
+}
+
 .has-boxed {
 	--entry-background: var(--color-alt);
 	--entry-border: 0;
