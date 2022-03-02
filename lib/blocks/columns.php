@@ -209,15 +209,9 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 					$arrangement_col = $arrangement[ $element_i ];
 				}
 
-				if ( $flex = mai_columns_get_flex( $arrangement_col ) ) {
-					$style .= sprintf( '--flex-%s:%s;', $break, $flex );
-				}
+				$style .= sprintf( '--flex-%s:%s;', $break, mai_columns_get_flex( $arrangement_col ) );
 
-				if ( $style ) {
-					$element->setAttribute( 'style', $style );
-				} else {
-					$element->removeAttribute( 'style' );
-				}
+				$element->setAttribute( 'style', $style );
 
 				if ( $element_i === ( $total_arrangements - 1 ) ) {
 					$element_i = 0;
@@ -232,18 +226,10 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 		foreach ( $elements as $break => $dom_elements ) {
 
 			foreach ( $dom_elements as $element ) {
-				$style   = $element->getAttribute( 'style' );
-				$columns = $args['arrangements'][ $break ];
+				$style  = $element->getAttribute( 'style' );
+				$style .= sprintf( '--flex-%s:%s;', $break, mai_columns_get_flex( $args['arrangements'][ $break ] ) );
 
-				if ( $flex = mai_columns_get_flex( $columns ) ) {
-					$style .= sprintf( '--flex-%s:%s;', $break, $flex );
-				}
-
-				if ( $style ) {
-					$element->setAttribute( 'style', $style );
-				} else {
-					$element->removeAttribute( 'style' );
-				}
+				$element->setAttribute( 'style', $style );
 			}
 		}
 	}

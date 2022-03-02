@@ -160,10 +160,9 @@ class Mai_Columns {
 			foreach ( $elements as $columns ) {
 				$index++;
 
-				if ( $flex = mai_columns_get_flex( $columns ) ) {
-					$attributes['style'] .= sprintf( '--flex-%s:%s;', $break, $flex ); // Fallback for nested.
-					$attributes['style'] .= sprintf( '--flex-%s-%s:%s;', $break, $index, $flex );
-				}
+				$flex                 = mai_columns_get_flex( $columns );
+				$attributes['style'] .= sprintf( '--flex-%s:%s;', $break, $flex ); // Fallback for nested.
+				$attributes['style'] .= sprintf( '--flex-%s-%s:%s;', $break, $index, $flex );
 			}
 		}
 

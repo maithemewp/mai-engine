@@ -73,8 +73,6 @@ function mai_columns_get_args( $i = null ) {
 
 /**
  * Gets flex value from column size.
- * If size is a percentage the default is already declared via CSS
- * so function returns false.
  *
  * @since 2.10.0
  *
@@ -82,21 +80,29 @@ function mai_columns_get_args( $i = null ) {
  *
  */
 function mai_columns_get_flex( $size ) {
-	if ( ! in_array( $size, [ 'auto', 'fill', 'full' ] ) ) {
-		return sprintf( '0 0 %s', mai_columns_get_flex_basis( $size ) );
+	static $all = [];
+
+	if ( isset( $all[ $size ] ) ) {
+		return $all[ $size ];
 	}
+
+	$basis = mai_columns_get_flex_basis( $size );
 
 	switch ( $size ) {
 		case 'auto':
-			return '0 1 auto';
+			$all[ $size ] = sprintf( '0 1 %s', $basis );
 		break;
 		case 'fill':
-			return '1 0 0';
+			$all[ $size ] = sprintf( '1 0 %s', $basis );
 		break;
 		case 'full':
-			return '0 0 100%';
+			$all[ $size ] = sprintf( '0 0 %s', $basis );
 		break;
+		default:
+			$all[ $size ] = sprintf( '0 0 %s', $basis );
 	}
+
+	return $all[ $size ];
 }
 
 /**
@@ -117,6 +123,22 @@ function mai_columns_get_flex_basis( $size ) {
 	static $all = [];
 
 	if ( isset( $all[ $size ] ) ) {
+		return $all[ $size ];
+	}
+
+	if ( in_array( $size, [ 'auto', 'fill', 'full' ] ) ) {
+		switch ( $size ) {
+			case 'auto':
+				$all[ $size ] = 'auto';
+			break;
+			case 'fill':
+				$all[ $size ] = '0';
+			break;
+			case 'full':
+				$all[ $size ] = '100%';
+			break;
+		}
+
 		return $all[ $size ];
 	}
 
