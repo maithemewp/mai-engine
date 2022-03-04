@@ -13,6 +13,43 @@
 defined( 'ABSPATH' ) || die;
 
 /**
+ * Gets inline styles for reusable responsive columns data.
+ *
+ * @since TBD
+ *
+ * @param array $args The columns args data.
+ *
+ * @return string
+ */
+function mai_get_columns_styles( $args ) {
+	$style = '';
+
+	// Columns.
+	$columns = mai_get_breakpoint_columns( $args );
+	$style  .= sprintf( '--columns-lg:%s;', $columns['lg'] );
+	$style  .= sprintf( '--columns-md:%s;', $columns['md'] );
+	$style  .= sprintf( '--columns-sm:%s;', $columns['sm'] );
+	$style  .= sprintf( '--columns-xs:%s;', $columns['xs'] );
+
+	// Column/Row gap.
+	$column_gap = $args['column_gap'] ? sprintf( 'var(--spacing-%s)', $args['column_gap'] ) : '0px'; // Needs 0px for calc().
+	$row_gap    = $args['row_gap'] ? sprintf( 'var(--spacing-%s)', $args['row_gap'] ) : '0px'; // Needs 0px for calc().
+	$style     .= sprintf( '--column-gap:%s;', $column_gap  );
+	$style     .= sprintf( '--row-gap:%s;', $row_gap );
+
+	// Align columns.
+	if ( $args['align_columns'] ) {
+		$style .= sprintf( '--align-columns:%s;', mai_get_flex_align( $args['align_columns'] ) );
+	}
+
+	if ( $args['align_columns_vertical'] ) {
+		$style .= sprintf( '--align-columns-vertical:%s;', mai_get_flex_align( $args['align_columns_vertical'] ) );
+	}
+
+	return $style;
+}
+
+/**
  * Gets formatted columns args from block settings
  * and caches value so it can be pulled use by the individual columns.
  *

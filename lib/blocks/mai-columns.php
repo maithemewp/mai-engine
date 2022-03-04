@@ -572,7 +572,7 @@ function mai_register_columns_field_groups() {
 						'xl'               => __( 'M', 'mai-engine' ),
 						'xxl'              => __( 'L', 'mai-engine' ),
 						'xxxl'             => __( 'XL', 'mai-engine' ),
-						'xxxxl'            => __( 'XXL', 'mai-engine' ),
+						'xxxxl'            => __( '2XL', 'mai-engine' ),
 					],
 					'wrapper'           => [
 						'class'            => 'mai-acf-button-group mai-acf-button-group-small',
@@ -591,7 +591,7 @@ function mai_register_columns_field_groups() {
 						'xl'               => __( 'M', 'mai-engine' ),
 						'xxl'              => __( 'L', 'mai-engine' ),
 						'xxxl'             => __( 'XL', 'mai-engine' ),
-						'xxxxl'            => __( 'XXL', 'mai-engine' ),
+						'xxxxl'            => __( '2XL', 'mai-engine' ),
 					],
 					'wrapper'           => [
 						'class'            => 'mai-acf-button-group mai-acf-button-group-small',
@@ -609,7 +609,7 @@ function mai_register_columns_field_groups() {
 						'xl'               => __( 'M', 'mai-engine' ),
 						'xxl'              => __( 'L', 'mai-engine' ),
 						'xxxl'             => __( 'XL', 'mai-engine' ),
-						'xxxxl'            => __( 'XXL', 'mai-engine' ),
+						'xxxxl'            => __( '2XL', 'mai-engine' ),
 					],
 					'default_value'     => '',
 					'wrapper'           => [
@@ -628,7 +628,7 @@ function mai_register_columns_field_groups() {
 						'xl'               => __( 'M', 'mai-engine' ),
 						'xxl'              => __( 'L', 'mai-engine' ),
 						'xxxl'             => __( 'XL', 'mai-engine' ),
-						'xxxxl'            => __( 'XXL', 'mai-engine' ),
+						'xxxxl'            => __( '2XL', 'mai-engine' ),
 					],
 					'default_value'     => '',
 					'wrapper'           => [
@@ -680,8 +680,8 @@ function mai_register_columns_field_groups() {
 						'md'       => __( 'MD', 'mai-engine' ),
 						'lg'       => __( 'LG', 'mai-engine' ),
 						'xl'       => __( 'XL', 'mai-engine' ),
-						'xxl'      => __( 'XXL', 'mai-engine' ),
-						'xxxl'     => __( 'XXXL', 'mai-engine' ),
+						'xxl'      => __( '2XL', 'mai-engine' ),
+						'xxxl'     => __( '3XL', 'mai-engine' ),
 					],
 				],
 				[

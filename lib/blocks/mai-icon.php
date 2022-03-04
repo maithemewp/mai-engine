@@ -75,6 +75,7 @@ function mai_do_icon_block( $block, $content = '', $is_preview = false, $post_id
 		if ( '' !== $value ) {
 			continue;
 		}
+
 		unset( $args[ $key ] );
 	}
 
@@ -196,58 +197,68 @@ function mai_register_icon_field_group() {
 				'type'  => 'tab',
 			],
 			[
-				'key'           => 'mai_icon_style',
-				'name'          => 'style',
-				'label'         => esc_html__( 'Style', 'mai-engine' ),
-				'type'          => 'button_group',
-				'default_value' => $defaults['style'],
-				'choices'       => [
-					'light'   => esc_html__( 'Light', 'mai-engine' ),
-					'regular' => esc_html__( 'Regular', 'mai-engine' ),
-					'solid'   => esc_html__( 'Solid', 'mai-engine' ),
-					'brands'  => esc_html__( 'Brands', 'mai-engine' ),
-				],
+				'key'               => 'mai_icon_clone',
+				'label'             => __( 'Icon', 'mai-engine' ),
+				'name'              => 'icon_clone',
+				'type'              => 'clone',
+				'display'           => 'group', // 'group' or 'seamless'. 'group' allows direct return of actual field names via get_field( 'style' ).
+				'clone'             => [ 'mai_icon_style', 'mai_icon_choices', 'mai_icon_brand_choices' ],
 			],
-			[
-				'key'               => 'mai_icon_choices',
-				'name'              => 'icon',
-				'label'             => esc_html__( 'Icon', 'mai-engine' ) . sprintf( ' (%s <a href="https://fontawesome.com/v5/search/">Font Awesome</a>)', __( 'full search via', 'mai-engine' ) ),
-				'type'              => 'select',
-				'default_value'     => $defaults['icon'],
-				'multiple'          => 0,
-				'ui'                => 1,
-				'ajax'              => 1,
-				'conditional_logic' => [
-					[
-						'field'    => 'mai_icon_style',
-						'operator' => '!=',
-						'value'    => 'brands',
-					],
-				],
-				'wrapper'           => [
-					'class' => 'mai-icon-select',
-				],
-			],
-			[
-				'key'               => 'mai_icon_brand_choices',
-				'name'              => 'icon_brand',
-				'label'             => esc_html__( 'Icon (Brands)', 'mai-engine' ),
-				'type'              => 'select',
-				'default_value'     => $defaults['icon_brand'],
-				'multiple'          => 0,
-				'ui'                => 1,
-				'ajax'              => 1,
-				'conditional_logic' => [
-					[
-						'field'    => 'mai_icon_style',
-						'operator' => '==',
-						'value'    => 'brands',
-					],
-				],
-				'wrapper'           => [
-					'class' => 'mai-icon-select',
-				],
-			],
+			// [
+			// 	'key'           => 'mai_icon_style',
+			// 	'name'          => 'style',
+			// 	'label'         => esc_html__( 'Style', 'mai-engine' ),
+			// 	'type'          => 'button_group',
+			// 	'default_value' => $defaults['style'],
+			// 	'choices'       => [
+			// 		'light'   => esc_html__( 'Light', 'mai-engine' ),
+			// 		'regular' => esc_html__( 'Regular', 'mai-engine' ),
+			// 		'solid'   => esc_html__( 'Solid', 'mai-engine' ),
+			// 		'brands'  => esc_html__( 'Brands', 'mai-engine' ),
+			// 	],
+			// ],
+			// [
+			// 	'key'               => 'mai_icon_choices',
+			// 	'name'              => 'icon',
+			// 	'label'             => esc_html__( 'Icon', 'mai-engine' ) . sprintf( ' (%s <a href="https://fontawesome.com/v5/search/">Font Awesome</a>)', __( 'full search via', 'mai-engine' ) ),
+			// 	'type'              => 'select',
+			// 	'default_value'     => $defaults['icon'],
+			// 	'allow_null'        => 1, // These fields are cloned in Mai Notices and other blocks so we need to allow null.
+			// 	'multiple'          => 0,
+			// 	'ui'                => 1,
+			// 	'ajax'              => 1,
+			// 	'conditional_logic' => [
+			// 		[
+			// 			'field'    => 'mai_icon_style',
+			// 			'operator' => '!=',
+			// 			'value'    => 'brands',
+			// 		],
+			// 	],
+			// 	'wrapper'           => [
+			// 		'class' => 'mai-icon-select',
+			// 	],
+			// ],
+			// [
+			// 	'key'               => 'mai_icon_brand_choices',
+			// 	'name'              => 'icon_brand',
+			// 	'label'             => esc_html__( 'Icon (Brands)', 'mai-engine' ),
+			// 	'type'              => 'select',
+			// 	'default_value'     => $defaults['icon_brand'],
+			// 	'allow_null'        => 1, // These fields are cloned in Mai Notices and other blocks so we need to allow null.
+			// 	'multiple'          => 0,
+			// 	'ui'                => 1,
+			// 	'ajax'              => 1,
+			// 	'conditional_logic' => [
+			// 		[
+			// 			'field'    => 'mai_icon_style',
+			// 			'operator' => '==',
+			// 			'value'    => 'brands',
+			// 		],
+			// 	],
+			// 	'wrapper'           => [
+			// 		'class' => 'mai-icon-select',
+			// 	],
+			// ],
 			[
 				'key'           => 'mai_icon_display',
 				'name'          => 'display',

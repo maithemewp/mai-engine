@@ -36,7 +36,7 @@
 }
 
 .mai-gallery-item {
-	flex: var(--gallery-item-flex, 1 1 calc((100% / var(--columns)) - var(--column-gap)));
+	flex: var(--gallery-item-flex, 0 0 calc((100% / var(--columns)) - var(--column-gap)));
 	margin: var(--gallery-item-margin, 0);
 	line-height: 1;
 	text-align: center;

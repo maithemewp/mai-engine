@@ -27,13 +27,6 @@ class Mai_Grid {
 	protected $type;
 
 	/**
-	 * Settings.
-	 *
-	 * @var $settings
-	 */
-	protected $settings;
-
-	/**
 	 * Defaults.
 	 *
 	 * @var $defaults
@@ -87,40 +80,11 @@ class Mai_Grid {
 	public function __construct( $args ) {
 		$args['context']  = 'block'; // Required for Mai_Entry.
 		$this->type       = isset( $args['type'] ) ? $args['type'] : 'post';
-		$this->settings   = $this->get_settings();
 		$this->defaults   = $this->get_defaults();
 		$this->args       = $this->get_sanitized_args( $args );
 		$this->query_args = [];
 	}
 
-	/**
-	 * Get the grid settings.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @return array
-	 */
-	public function get_settings() {
-		$settings = [];
-		$config   = mai_get_grid_block_settings();
-
-		foreach ( $config as $key => $setting ) {
-
-			// Skip tabs.
-			if ( 'tab' === $setting['type'] ) {
-				continue;
-			}
-
-			// Skip fields not in this grid type.
-			if ( ! in_array( $this->type, $setting['block'], true ) ) {
-				continue;
-			}
-
-			$settings[ $setting['name'] ] = $setting;
-		}
-
-		return $settings;
-	}
 
 	/**
 	 * Get default settings.
@@ -130,7 +94,26 @@ class Mai_Grid {
 	 * @return array
 	 */
 	public function get_defaults() {
-		return wp_list_pluck( $this->settings, 'default' );
+		static $defaults = null;
+
+		if ( is_array( $defaults ) && isset( $defaults[ $this->type ] ) ) {
+			return $defaults[ $this->type ];
+		}
+
+		$display                 = mai_get_grid_display_defaults();
+		$layout                  = mai_get_grid_layout_defaults();
+		$defaults[ $this->type ] = array_merge( $display, $layout );
+
+		switch ( $this->type ) {
+			case 'post':
+				$defaults[ $this->type ] = array_merge( $defaults[ $this->type ], mai_get_wp_query_defaults() );
+			break;
+			case 'term':
+				$defaults[ $this->type ] = array_merge( $defaults[ $this->type ], mai_get_wp_term_query_defaults() );
+			break;
+		}
+
+		return $defaults[ $this->type ];
 	}
 
 	/**

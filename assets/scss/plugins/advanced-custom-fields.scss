@@ -1,6 +1,6 @@
 @import "../abstracts/_index";
 
-// acf sortable checkbox
+// acf sortable checkbox.
 
 .mai-sortable ul.acf-checkbox-list > li {
 	display: grid;
@@ -49,9 +49,39 @@
 	fill: currentColor;
 }
 
-// end acf sortable checkbox
+// end acf sortable checkbox.
 
-// radio color choices
+// clone.
+
+.acf-field-clone[class*="mai"] {
+	margin: var(--mai-field-clone-margin, 0) !important;
+	padding: 0 !important;
+	border: 0 !important;
+}
+
+.acf-field[class*="mai"] + .acf-field-clone[class*="mai"] {
+	--mai-field-clone-margin: -16px 0 0;
+}
+
+.acf-field-clone[class*="mai"] .acf-clone-fields {
+	border: 0 !important;
+}
+
+.acf-field-clone[class*="mai"] + .acf-field:not(.acf-field-clone) {
+	margin-top: 0 !important;
+}
+
+.acf-field-clone[class*="mai"] > .acf-input > .acf-clone-fields > .acf-field:not(.acf-hidden):last-of-type {
+	margin-bottom: 16px !important;
+}
+
+.acf-field-clone[class*="mai"] > .acf-label {
+	display: none;
+}
+
+// end clone.
+
+// radio color choices.
 
 .mai-block-colors {
 
@@ -400,19 +430,19 @@
 	padding-top: 0;
 }
 
-.acf-block-component .acf-block-fields div.acf-field.mai-grid-nested-columns {
+.acf-block-component .acf-block-fields div.acf-field.mai-acf-nested-columns {
 	margin: 0 0 0 16px;
-	padding: 12px 12px 4px;
+	padding: 12px 16px 4px 12px;
 	border-left: 1px solid #e2e4e7 !important;
 }
 
-.acf-block-component .acf-block-fields > div.acf-field.mai-grid-nested-columns-first {
+.acf-block-component .acf-block-fields div.acf-field.mai-acf-nested-columns-first {
 	position: relative;
 	border-top: 1px solid #e2e4e7 !important;
 	border-radius: 3px 0 0 0;
 }
 
-.acf-block-component .acf-block-fields > div.acf-field.mai-grid-nested-columns-first::before {
+.acf-block-component .acf-block-fields div.acf-field.mai-acf-nested-columns-first::before {
 	position: absolute;
 	bottom: 100%;
 	left: 6px;
@@ -423,7 +453,7 @@
 	content: "";
 }
 
-.acf-block-component .acf-block-fields > div.acf-field.mai-grid-nested-columns-last {
+.acf-block-component .acf-block-fields div.acf-field.mai-acf-nested-columns-last {
 	padding-bottom: 12px;
 	border-bottom: 1px solid #e2e4e7 !important;
 	border-radius: 0 0 0 3px;

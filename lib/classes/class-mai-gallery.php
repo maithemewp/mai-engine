@@ -107,6 +107,7 @@ class Mai_Gallery {
 	 */
 	function get() {
 		$html  = '';
+
 		if ( ! $this->args['images'] ) {
 			if ( $this->args['preview'] ) {
 				$text  = __( 'Add gallery images in the block sidebar settings.', 'mai-engine' );
@@ -116,45 +117,21 @@ class Mai_Gallery {
 			return $html;
 		}
 
-		$attributes = [
+		$atts = [
 			'class' => mai_add_classes( 'mai-gallery', $this->args['class'] ),
-			'style' => '',
+			'style' => mai_get_columns_styles( $this->args ),
 		];
 
 		if ( $this->args['margin_top'] ) {
-			$attributes['class'] = mai_add_classes( sprintf( 'has-%s-margin-top', $this->args['margin_top'] ), $attributes['class'] );
+			$atts['class'] = mai_add_classes( sprintf( 'has-%s-margin-top', $this->args['margin_top'] ), $atts['class'] );
 		}
 
 		if ( $this->args['margin_bottom'] ) {
-			$attributes['class'] = mai_add_classes( sprintf( 'has-%s-margin-bottom', $this->args['margin_bottom'] ), $attributes['class'] );
+			$atts['class'] = mai_add_classes( sprintf( 'has-%s-margin-bottom', $this->args['margin_bottom'] ), $atts['class'] );
 		}
 
 		if ( $this->args['shadow'] ) {
-			$attributes['class'] = mai_add_classes( 'has-drop-shadow', $attributes['class'] );
-		}
-
-		// Get the columns breakpoint array.
-		$columns = mai_get_breakpoint_columns( $this->args );
-
-		$attributes['style'] .= sprintf( '--columns-lg:%s;', $columns['lg'] );
-		$attributes['style'] .= sprintf( '--columns-md:%s;', $columns['md'] );
-		$attributes['style'] .= sprintf( '--columns-sm:%s;', $columns['sm'] );
-		$attributes['style'] .= sprintf( '--columns-xs:%s;', $columns['xs'] );
-
-		// Column/Row gap.
-		$column_gap = $this->args['column_gap'] ? sprintf( 'var(--spacing-%s)', $this->args['column_gap'] ) : '0px'; // Needs 0px for calc().
-		$row_gap    = $this->args['row_gap'] ? sprintf( 'var(--spacing-%s)', $this->args['row_gap'] ) : '0px'; // Needs 0px for calc().
-
-		$attributes['style'] .= sprintf( '--column-gap:%s;', $column_gap  );
-		$attributes['style'] .= sprintf( '--row-gap:%s;', $row_gap );
-
-		// Align columns.
-		if ( $this->args['align_columns'] ) {
-			$attributes['style'] .= sprintf( '--align-columns:%s;', mai_get_flex_align( $this->args['align_columns'] ) );
-		}
-
-		if ( $this->args['align_columns_vertical'] ) {
-			$attributes['style'] .= sprintf( '--align-columns-vertical:%s;', mai_get_flex_align( $this->args['align_columns_vertical'] ) );
+			$atts['class'] = mai_add_classes( 'has-drop-shadow', $atts['class'] );
 		}
 
 		$html .= genesis_markup(
@@ -162,7 +139,7 @@ class Mai_Gallery {
 				'open'    => '<div %s>',
 				'context' => 'mai-gallery',
 				'echo'    => false,
-				'atts'    => $attributes,
+				'atts'    => $atts,
 				'params'  => [
 					'args' => $this->args,
 				],

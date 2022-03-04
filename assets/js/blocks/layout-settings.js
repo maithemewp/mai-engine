@@ -590,7 +590,7 @@ const withSpacingControls = createHigherOrderComponent( ( BlockEdit ) => {
 					value: 'xxxl',
 				},
 				{
-					label: __( 'XXL', 'mai-engine' ),
+					label: __( '2XL', 'mai-engine' ),
 					value: 'xxxxl',
 				},
 			];
@@ -687,7 +687,7 @@ const withMarginControls = createHigherOrderComponent( ( BlockEdit ) => {
 					value: 'xxxl',
 				},
 				{
-					label: __( 'XXL', 'mai-engine' ),
+					label: __( '2XL', 'mai-engine' ),
 					value: 'xxxxl',
 				},
 				{
