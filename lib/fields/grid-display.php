@@ -54,6 +54,48 @@ function mai_get_grid_display_defaults() {
 }
 
 /**
+ * Gets sanitized field values.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @return array
+ */
+function mai_get_grid_display_sanitized( $args ) {
+	$array = [
+		'show'                => 'esc_html',
+		'title_size'          => 'esc_html',
+		'image_orientation'   => 'esc_html',
+		'image_size'          => 'esc_html',
+		'image_position'      => 'esc_html',
+		'image_alternate'     => 'mai_sanitize_bool',
+		'image_width'         => 'esc_html',
+		'header_meta'         => 'wp_kses_post',
+		'custom_content'      => 'wp_kses_post',
+		'content_limit'       => 'absint',
+		'more_link_text'      => 'wp_kses_post', // We may want to add icons/spans and HTML in here.
+		'footer_meta'         => 'wp_kses_post',
+		'align_text'          => 'esc_html',
+		'align_text_vertical' => 'esc_html',
+		'image_stack'         => 'mai_sanitize_bool',
+		'boxed'               => 'mai_sanitize_bool',
+		'border_radius'       => 'esc_html',
+		'disable_entry_link'  => 'mai_sanitize_bool',
+	];
+
+	foreach ( $array as $key => $function ) {
+		if ( ! isset( $args[ $key ] ) ) {
+			continue;
+		}
+
+		$args[ $key ] = mai_sanitize( $args[ $key ], $function );
+	}
+
+	return $args;
+}
+
+/**
  * Gets fields for acf field group.
  *
  * @access private
@@ -69,6 +111,7 @@ function mai_get_grid_display_fields() {
 		return $fields;
 	}
 
+	$defaults  = mai_get_grid_display_defaults();
 	$date_info = mai_get_block_setting_info_link( 'https://help.bizbudding.com/article/176-mai-grid-blocks' );
 	$fields    = [
 		[

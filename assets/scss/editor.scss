@@ -377,66 +377,7 @@ input[type="submit"],
 	pointer-events: none;
 }
 
-/* .mai-columns-wrap */
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout {
-	--flex-fallback: 1 0 100%;
-	--flex-1: var(--flex-xs-1, var(--flex-xs, var(--flex-fallback)));
-	--flex-2: var(--flex-xs-2, var(--flex-xs, var(--flex-fallback)));
-	--flex-3: var(--flex-xs-3, var(--flex-xs, var(--flex-fallback)));
-	--flex-4: var(--flex-xs-4, var(--flex-xs, var(--flex-fallback)));
-	--flex-5: var(--flex-xs-5, var(--flex-xs, var(--flex-fallback)));
-	--flex-6: var(--flex-xs-6, var(--flex-xs, var(--flex-fallback)));
-	--flex-7: var(--flex-xs-7, var(--flex-xs, var(--flex-fallback)));
-	--flex-8: var(--flex-xs-8, var(--flex-xs, var(--flex-fallback)));
-	--flex-9: var(--flex-xs-9, var(--flex-xs, var(--flex-fallback)));
-	--flex-10: var(--flex-xs-10, var(--flex-xs, var(--flex-fallback)));
-	--flex-11: var(--flex-xs-11, var(--flex-xs, var(--flex-fallback)));
-	--flex-12: var(--flex-xs-12, var(--flex-xs, var(--flex-fallback)));
-	--flex-13: var(--flex-xs-13, var(--flex-xs, var(--flex-fallback)));
-	--flex-14: var(--flex-xs-14, var(--flex-xs, var(--flex-fallback)));
-	--flex-15: var(--flex-xs-15, var(--flex-xs, var(--flex-fallback)));
-	--flex-16: var(--flex-xs-16, var(--flex-xs, var(--flex-fallback)));
-	--flex-17: var(--flex-xs-17, var(--flex-xs, var(--flex-fallback)));
-	--flex-18: var(--flex-xs-18, var(--flex-xs, var(--flex-fallback)));
-	--flex-19: var(--flex-xs-19, var(--flex-xs, var(--flex-fallback)));
-	--flex-20: var(--flex-xs-20, var(--flex-xs, var(--flex-fallback)));
-	--flex-21: var(--flex-xs-21, var(--flex-xs, var(--flex-fallback)));
-	--flex-22: var(--flex-xs-22, var(--flex-xs, var(--flex-fallback)));
-	--flex-23: var(--flex-xs-23, var(--flex-xs, var(--flex-fallback)));
-	--flex-24: var(--flex-xs-24, var(--flex-xs, var(--flex-fallback)));
-
-	--max-width-fallback: 100%;
-	--max-width-1: var(--max-width-xs-1, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-2: var(--max-width-xs-2, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-3: var(--max-width-xs-3, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-4: var(--max-width-xs-4, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-5: var(--max-width-xs-5, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-6: var(--max-width-xs-6, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-7: var(--max-width-xs-7, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-8: var(--max-width-xs-8, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-9: var(--max-width-xs-9, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-10: var(--max-width-xs-10, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-11: var(--max-width-xs-11, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-12: var(--max-width-xs-12, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-13: var(--max-width-xs-13, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-14: var(--max-width-xs-14, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-15: var(--max-width-xs-15, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-16: var(--max-width-xs-16, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-17: var(--max-width-xs-17, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-18: var(--max-width-xs-18, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-19: var(--max-width-xs-19, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-20: var(--max-width-xs-20, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-21: var(--max-width-xs-21, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-22: var(--max-width-xs-22, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-23: var(--max-width-xs-23, var(--max-width-xs, var(--max-width-fallback)));
-	--max-width-24: var(--max-width-xs-24, var(--max-width-xs, var(--max-width-fallback)));
-
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--row-gap) var(--column-gap);
-	align-items: var(--align-columns-vertical);
-	justify-content: var(--align-columns);
-}
+// Mai Columns.
 
 .mai-column {
 	display: flex;
@@ -472,7 +413,7 @@ input[type="submit"],
 	cursor: pointer;
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-list-appender {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-list-appender {
 	flex: 1 1 100%;
 	margin: 16px 0 16px var(--column-gap);
 }
@@ -492,146 +433,209 @@ input[type="submit"],
 	content: attr(aria-label);
 }
 
-/* .mai-column */
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+// Columns.
+
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout {
+	--flex-fallback: 1 0 100%;
+	--flex-1: var(--flex-xs-1, var(--flex-xs, var(--flex-fallback)));
+	--flex-2: var(--flex-xs-2, var(--flex-xs, var(--flex-fallback)));
+	--flex-3: var(--flex-xs-3, var(--flex-xs, var(--flex-fallback)));
+	--flex-4: var(--flex-xs-4, var(--flex-xs, var(--flex-fallback)));
+	--flex-5: var(--flex-xs-5, var(--flex-xs, var(--flex-fallback)));
+	--flex-6: var(--flex-xs-6, var(--flex-xs, var(--flex-fallback)));
+	--flex-7: var(--flex-xs-7, var(--flex-xs, var(--flex-fallback)));
+	--flex-8: var(--flex-xs-8, var(--flex-xs, var(--flex-fallback)));
+	--flex-9: var(--flex-xs-9, var(--flex-xs, var(--flex-fallback)));
+	--flex-10: var(--flex-xs-10, var(--flex-xs, var(--flex-fallback)));
+	--flex-11: var(--flex-xs-11, var(--flex-xs, var(--flex-fallback)));
+	--flex-12: var(--flex-xs-12, var(--flex-xs, var(--flex-fallback)));
+	--flex-13: var(--flex-xs-13, var(--flex-xs, var(--flex-fallback)));
+	--flex-14: var(--flex-xs-14, var(--flex-xs, var(--flex-fallback)));
+	--flex-15: var(--flex-xs-15, var(--flex-xs, var(--flex-fallback)));
+	--flex-16: var(--flex-xs-16, var(--flex-xs, var(--flex-fallback)));
+	--flex-17: var(--flex-xs-17, var(--flex-xs, var(--flex-fallback)));
+	--flex-18: var(--flex-xs-18, var(--flex-xs, var(--flex-fallback)));
+	--flex-19: var(--flex-xs-19, var(--flex-xs, var(--flex-fallback)));
+	--flex-20: var(--flex-xs-20, var(--flex-xs, var(--flex-fallback)));
+	--flex-21: var(--flex-xs-21, var(--flex-xs, var(--flex-fallback)));
+	--flex-22: var(--flex-xs-22, var(--flex-xs, var(--flex-fallback)));
+	--flex-23: var(--flex-xs-23, var(--flex-xs, var(--flex-fallback)));
+	--flex-24: var(--flex-xs-24, var(--flex-xs, var(--flex-fallback)));
+
+	// --max-width-fallback: 100%;
+	// --max-width-1: var(--max-width-xs-1, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-2: var(--max-width-xs-2, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-3: var(--max-width-xs-3, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-4: var(--max-width-xs-4, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-5: var(--max-width-xs-5, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-6: var(--max-width-xs-6, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-7: var(--max-width-xs-7, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-8: var(--max-width-xs-8, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-9: var(--max-width-xs-9, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-10: var(--max-width-xs-10, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-11: var(--max-width-xs-11, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-12: var(--max-width-xs-12, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-13: var(--max-width-xs-13, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-14: var(--max-width-xs-14, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-15: var(--max-width-xs-15, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-16: var(--max-width-xs-16, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-17: var(--max-width-xs-17, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-18: var(--max-width-xs-18, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-19: var(--max-width-xs-19, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-20: var(--max-width-xs-20, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-21: var(--max-width-xs-21, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-22: var(--max-width-xs-22, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-23: var(--max-width-xs-23, var(--max-width-xs, var(--max-width-fallback)));
+	// --max-width-24: var(--max-width-xs-24, var(--max-width-xs, var(--max-width-fallback)));
+
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--row-gap) var(--column-gap);
+	align-items: var(--align-columns-vertical);
+	justify-content: var(--align-columns);
+}
+
+// Column.
+
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
 	flex: var(--flex, var(--flex-xs, var(--flex-fallback)));
-	max-width: calc(var(--max-width, var(--max-width-xs, var(--max-width-fallback))) - var(--column-gap));
+	// max-width: calc(var(--max-width, var(--max-width-xs, var(--max-width-fallback))) - var(--column-gap));
 	margin: 0; /* overrides core editor margin on wp-block */
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block > .acf-block-component,
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block > .acf-block-component > div,
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block > .acf-block-component > div > .mai-column,
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block > .acf-block-component > div > .acf-block-preview,
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block > .acf-block-component > div > .acf-block-preview > .mai-column {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block > .acf-block-component,
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block > .acf-block-component > div,
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block > .acf-block-component > div > .is-column,
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block > .acf-block-component > div > .acf-block-preview,
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block > .acf-block-component > div > .acf-block-preview > .is-column {
 	height: 100%;
 }
 
-/* .mai-column:nth-child(1) */
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(1) {
+/* .is-column:nth-child(1) */
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(1) {
 	--flex: var(--flex-1);
-	--max-width: var(--max-width-1);
+	// --max-width: var(--max-width-1);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(2) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(2) {
 	--flex: var(--flex-2);
-	--max-width: var(--max-width-2);
+	// --max-width: var(--max-width-2);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(3) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(3) {
 	--flex: var(--flex-3);
-	--max-width: var(--max-width-3);
+	// --max-width: var(--max-width-3);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(4) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(4) {
 	--flex: var(--flex-4);
-	--max-width: var(--max-width-4);
+	// --max-width: var(--max-width-4);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(5) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(5) {
 	--flex: var(--flex-5);
-	--max-width: var(--max-width-5);
+	// --max-width: var(--max-width-5);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(6) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(6) {
 	--flex: var(--flex-6);
-	--max-width: var(--max-width-6);
+	// --max-width: var(--max-width-6);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(7) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(7) {
 	--flex: var(--flex-7);
-	--max-width: var(--max-width-7);
+	// --max-width: var(--max-width-7);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(8) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(8) {
 	--flex: var(--flex-8);
-	--max-width: var(--max-width-8);
+	// --max-width: var(--max-width-8);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(9) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(9) {
 	--flex: var(--flex-9);
-	--max-width: var(--max-width-9);
+	// --max-width: var(--max-width-9);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(10) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(10) {
 	--flex: var(--flex-10);
-	--max-width: var(--max-width-10);
+	// --max-width: var(--max-width-10);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(11) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(11) {
 	--flex: var(--flex-11);
-	--max-width: var(--max-width-11);
+	// --max-width: var(--max-width-11);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(12) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(12) {
 	--flex: var(--flex-12);
-	--max-width: var(--max-width-12);
+	// --max-width: var(--max-width-12);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(13) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(13) {
 	--flex: var(--flex-13);
-	--max-width: var(--max-width-13);
+	// --max-width: var(--max-width-13);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(14) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(14) {
 	--flex: var(--flex-14);
-	--max-width: var(--max-width-14);
+	// --max-width: var(--max-width-14);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(15) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(15) {
 	--flex: var(--flex-15);
-	--max-width: var(--max-width-15);
+	// --max-width: var(--max-width-15);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(16) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(16) {
 	--flex: var(--flex-16);
-	--max-width: var(--max-width-16);
+	// --max-width: var(--max-width-16);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(17) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(17) {
 	--flex: var(--flex-17);
-	--max-width: var(--max-width-17);
+	// --max-width: var(--max-width-17);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(18) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(18) {
 	--flex: var(--flex-18);
-	--max-width: var(--max-width-18);
+	// --max-width: var(--max-width-18);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(19) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(19) {
 	--flex: var(--flex-19);
-	--max-width: var(--max-width-19);
+	// --max-width: var(--max-width-19);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(20) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(20) {
 	--flex: var(--flex-20);
-	--max-width: var(--max-width-20);
+	// --max-width: var(--max-width-20);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(21) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(21) {
 	--flex: var(--flex-21);
-	--max-width: var(--max-width-21);
+	// --max-width: var(--max-width-21);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(22) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(22) {
 	--flex: var(--flex-22);
-	--max-width: var(--max-width-22);
+	// --max-width: var(--max-width-22);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(23) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(23) {
 	--flex: var(--flex-23);
-	--max-width: var(--max-width-23);
+	// --max-width: var(--max-width-23);
 }
 
-.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(24) {
+.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(24) {
 	--flex: var(--flex-24);
-	--max-width: var(--max-width-24);
+	// --max-width: var(--max-width-24);
 }
 
 @include mq(sm, md) {
 
-	/* .mai-columns-wrap */
-	.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout {
+	/* .has-columns */
+	.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout {
 		--flex-1: var(--flex-sm-1, var(--flex-sm, var(--flex-fallback)));
 		--flex-2: var(--flex-sm-2, var(--flex-sm, var(--flex-fallback)));
 		--flex-3: var(--flex-sm-3, var(--flex-sm, var(--flex-fallback)));
@@ -657,37 +661,37 @@ input[type="submit"],
 		--flex-23: var(--flex-sm-23, var(--flex-sm, var(--flex-fallback)));
 		--flex-24: var(--flex-sm-24, var(--flex-sm, var(--flex-fallback)));
 
-		--max-width-1: var(--max-width-sm-1, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-2: var(--max-width-sm-2, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-3: var(--max-width-sm-3, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-4: var(--max-width-sm-4, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-5: var(--max-width-sm-5, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-6: var(--max-width-sm-6, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-7: var(--max-width-sm-7, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-8: var(--max-width-sm-8, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-9: var(--max-width-sm-9, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-10: var(--max-width-sm-10, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-11: var(--max-width-sm-11, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-12: var(--max-width-sm-12, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-13: var(--max-width-sm-13, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-14: var(--max-width-sm-14, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-15: var(--max-width-sm-15, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-16: var(--max-width-sm-16, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-17: var(--max-width-sm-17, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-18: var(--max-width-sm-18, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-19: var(--max-width-sm-19, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-20: var(--max-width-sm-20, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-21: var(--max-width-sm-21, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-22: var(--max-width-sm-22, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-23: var(--max-width-sm-23, var(--max-width-sm, var(--max-width-fallback)));
-		--max-width-24: var(--max-width-sm-24, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-1: var(--max-width-sm-1, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-2: var(--max-width-sm-2, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-3: var(--max-width-sm-3, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-4: var(--max-width-sm-4, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-5: var(--max-width-sm-5, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-6: var(--max-width-sm-6, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-7: var(--max-width-sm-7, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-8: var(--max-width-sm-8, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-9: var(--max-width-sm-9, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-10: var(--max-width-sm-10, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-11: var(--max-width-sm-11, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-12: var(--max-width-sm-12, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-13: var(--max-width-sm-13, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-14: var(--max-width-sm-14, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-15: var(--max-width-sm-15, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-16: var(--max-width-sm-16, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-17: var(--max-width-sm-17, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-18: var(--max-width-sm-18, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-19: var(--max-width-sm-19, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-20: var(--max-width-sm-20, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-21: var(--max-width-sm-21, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-22: var(--max-width-sm-22, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-23: var(--max-width-sm-23, var(--max-width-sm, var(--max-width-fallback)));
+		// --max-width-24: var(--max-width-sm-24, var(--max-width-sm, var(--max-width-fallback)));
 	}
 }
 
 @include mq(md, lg) {
 
-	/* .mai-columns-wrap */
-	.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout {
+	/* .has-columns */
+	.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout {
 		--flex-1: var(--flex-md-1, var(--flex-md, var(--flex-fallback)));
 		--flex-2: var(--flex-md-2, var(--flex-md, var(--flex-fallback)));
 		--flex-3: var(--flex-md-3, var(--flex-md, var(--flex-fallback)));
@@ -713,37 +717,37 @@ input[type="submit"],
 		--flex-23: var(--flex-md-23, var(--flex-md, var(--flex-fallback)));
 		--flex-24: var(--flex-md-24, var(--flex-md, var(--flex-fallback)));
 
-		--max-width-1: var(--max-width-md-1, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-2: var(--max-width-md-2, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-3: var(--max-width-md-3, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-4: var(--max-width-md-4, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-5: var(--max-width-md-5, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-6: var(--max-width-md-6, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-7: var(--max-width-md-7, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-8: var(--max-width-md-8, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-9: var(--max-width-md-9, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-10: var(--max-width-md-10, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-11: var(--max-width-md-11, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-12: var(--max-width-md-12, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-13: var(--max-width-md-13, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-14: var(--max-width-md-14, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-15: var(--max-width-md-15, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-16: var(--max-width-md-16, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-17: var(--max-width-md-17, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-18: var(--max-width-md-18, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-19: var(--max-width-md-19, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-20: var(--max-width-md-20, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-21: var(--max-width-md-21, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-22: var(--max-width-md-22, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-23: var(--max-width-md-23, var(--max-width-md, var(--max-width-fallback)));
-		--max-width-24: var(--max-width-md-24, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-1: var(--max-width-md-1, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-2: var(--max-width-md-2, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-3: var(--max-width-md-3, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-4: var(--max-width-md-4, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-5: var(--max-width-md-5, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-6: var(--max-width-md-6, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-7: var(--max-width-md-7, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-8: var(--max-width-md-8, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-9: var(--max-width-md-9, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-10: var(--max-width-md-10, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-11: var(--max-width-md-11, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-12: var(--max-width-md-12, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-13: var(--max-width-md-13, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-14: var(--max-width-md-14, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-15: var(--max-width-md-15, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-16: var(--max-width-md-16, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-17: var(--max-width-md-17, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-18: var(--max-width-md-18, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-19: var(--max-width-md-19, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-20: var(--max-width-md-20, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-21: var(--max-width-md-21, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-22: var(--max-width-md-22, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-23: var(--max-width-md-23, var(--max-width-md, var(--max-width-fallback)));
+		// --max-width-24: var(--max-width-md-24, var(--max-width-md, var(--max-width-fallback)));
 	}
 }
 
 @include mq(lg) {
 
-	/* .mai-columns-wrap */
-	.mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout {
+	/* .has-columns */
+	.has-columns > .block-editor-inner-blocks > .block-editor-block-list__layout {
 		--flex-1: var(--flex-lg-1, var(--flex-lg, var(--flex-fallback)));
 		--flex-2: var(--flex-lg-2, var(--flex-lg, var(--flex-fallback)));
 		--flex-3: var(--flex-lg-3, var(--flex-lg, var(--flex-fallback)));
@@ -769,30 +773,30 @@ input[type="submit"],
 		--flex-23: var(--flex-lg-23, var(--flex-lg, var(--flex-fallback)));
 		--flex-24: var(--flex-lg-24, var(--flex-lg, var(--flex-fallback)));
 
-		--max-width-1: var(--max-width-lg-1, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-2: var(--max-width-lg-2, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-3: var(--max-width-lg-3, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-4: var(--max-width-lg-4, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-5: var(--max-width-lg-5, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-6: var(--max-width-lg-6, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-7: var(--max-width-lg-7, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-8: var(--max-width-lg-8, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-9: var(--max-width-lg-9, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-10: var(--max-width-lg-10, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-11: var(--max-width-lg-11, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-12: var(--max-width-lg-12, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-13: var(--max-width-lg-13, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-14: var(--max-width-lg-14, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-15: var(--max-width-lg-15, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-16: var(--max-width-lg-16, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-17: var(--max-width-lg-17, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-18: var(--max-width-lg-18, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-19: var(--max-width-lg-19, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-20: var(--max-width-lg-20, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-21: var(--max-width-lg-21, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-22: var(--max-width-lg-22, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-23: var(--max-width-lg-23, var(--max-width-lg, var(--max-width-fallback)));
-		--max-width-24: var(--max-width-lg-24, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-1: var(--max-width-lg-1, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-2: var(--max-width-lg-2, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-3: var(--max-width-lg-3, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-4: var(--max-width-lg-4, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-5: var(--max-width-lg-5, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-6: var(--max-width-lg-6, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-7: var(--max-width-lg-7, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-8: var(--max-width-lg-8, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-9: var(--max-width-lg-9, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-10: var(--max-width-lg-10, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-11: var(--max-width-lg-11, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-12: var(--max-width-lg-12, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-13: var(--max-width-lg-13, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-14: var(--max-width-lg-14, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-15: var(--max-width-lg-15, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-16: var(--max-width-lg-16, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-17: var(--max-width-lg-17, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-18: var(--max-width-lg-18, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-19: var(--max-width-lg-19, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-20: var(--max-width-lg-20, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-21: var(--max-width-lg-21, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-22: var(--max-width-lg-22, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-23: var(--max-width-lg-23, var(--max-width-lg, var(--max-width-fallback)));
+		// --max-width-24: var(--max-width-lg-24, var(--max-width-lg, var(--max-width-fallback)));
 	}
 }
 

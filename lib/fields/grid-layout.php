@@ -30,19 +30,53 @@ function mai_get_grid_layout_defaults() {
 	}
 
 	$defaults = [
-		'columns'                               => 3,
-		'columns_responsive'                    => 0,
-		'columns_md'                            => 1,
-		'columns_sm'                            => 1,
-		'columns_xs'                            => 1,
-		'mai_grid_block_align_columns'          => 'start',
-		'mai_grid_block_align_columns_vertical' => '',
-		'mai_grid_block_column_gap'             => 'lg',
-		'mai_grid_block_row_gap'                => 'lg',
-		'mai_grid_block_remove_spacing' => '',
+		'columns'                => 3,
+		'columns_responsive'     => 0,
+		'columns_md'             => 1,
+		'columns_sm'             => 1,
+		'columns_xs'             => 1,
+		'align_columns'          => 'start',
+		'align_columns_vertical' => '',
+		'column_gap'             => 'lg',
+		'row_gap'                => 'lg',
+		'remove_spacing'         => '',
 	];
 
 	return $defaults;
+}
+
+/**
+ * Gets sanitized field values.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @return array
+ */
+function mai_get_grid_layout_sanitized( $args ) {
+	$array = [
+		'columns'                => 'absint',
+		'columns_responsive'     => 'mai_sanitize_bool',
+		'columns_md'             => 'absint',
+		'columns_sm'             => 'absint',
+		'columns_xs'             => 'absint',
+		'align_columns'          => 'esc_html',
+		'align_columns_vertical' => 'esc_html',
+		'column_gap'             => 'esc_html',
+		'row_gap'                => 'esc_html',
+		'remove_spacing'         => 'mai_sanitize_bool',
+	];
+
+	foreach ( $array as $key => $function ) {
+		if ( ! isset( $args[ $key ] ) ) {
+			continue;
+		}
+
+		$args[ $key ] = mai_sanitize( $args[ $key ], $function );
+	}
+
+	return $args;
 }
 
 /**

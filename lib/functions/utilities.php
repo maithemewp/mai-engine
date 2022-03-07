@@ -1629,27 +1629,10 @@ function mai_get_editor_localized_data() {
 		'link'      => __( 'Link', 'mai-engine' ),
 	];
 
-	$settings = mai_get_grid_block_settings();
-
-	foreach ( $settings as $key => $field ) {
-		if ( 'tab' === $field['type'] ) {
-			continue;
-		}
-
-		foreach ( [ 'post', 'term', 'user' ] as $type ) {
-			if ( ! in_array( $type, $field['block'], true ) ) {
-				continue;
-			}
-
-			if ( isset( $field['atts']['sub_fields'] ) ) {
-				foreach ( $field['atts']['sub_fields'] as $sub_key => $sub_field ) {
-					$data[ $type ][ $sub_field['name'] ] = $sub_key;
-				}
-			} else {
-				$data[ $type ][ $field['name'] ] = $key;
-			}
-		}
-	}
+	$fields         = array_keys( mai_get_grid_display_defaults() );
+	$fields         = array_merge( $fields, array_keys( mai_get_grid_layout_defaults() ) );
+	$data[ 'post' ] = array_merge( $fields, array_keys( mai_get_wp_query_defaults() ) );
+	$data[ 'term' ] = array_merge( $fields, array_keys( mai_get_wp_term_query_defaults() ) );
 
 	return $data;
 }

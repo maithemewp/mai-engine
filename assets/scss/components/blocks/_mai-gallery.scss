@@ -1,42 +1,8 @@
 .mai-gallery {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--row-gap) var(--column-gap);
-	align-items: var(--align-columns-vertical, unset);
-	justify-content: var(--align-columns, unset);
 	line-height: 1.5;
 }
 
-@media only screen and (max-width: 599px) {
-
-	.mai-gallery {
-		--columns: var(--columns-xs);
-	}
-}
-
-@media only screen and (min-width: 600px) and (max-width: 799px) {
-
-	.mai-gallery {
-		--columns: var(--columns-sm);
-	}
-}
-
-@media only screen and (min-width: 800px) and (max-width: 999px) {
-
-	.mai-gallery {
-		--columns: var(--columns-md);
-	}
-}
-
-@media only screen and (min-width: 1000px) {
-
-	.mai-gallery {
-		--columns: var(--columns-lg);
-	}
-}
-
 .mai-gallery-item {
-	flex: var(--gallery-item-flex, 0 0 calc((100% / var(--columns)) - var(--column-gap)));
 	margin: var(--gallery-item-margin, 0);
 	line-height: 1;
 	text-align: center;

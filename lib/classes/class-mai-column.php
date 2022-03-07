@@ -74,7 +74,7 @@ class Mai_Column {
 	 */
 	public function render() {
 		$attributes = [
-			'class' => 'mai-column',
+			'class' => 'mai-column is-column',
 			'style' => '',
 		];
 

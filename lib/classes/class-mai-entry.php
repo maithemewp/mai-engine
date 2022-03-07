@@ -138,7 +138,7 @@ class Mai_Entry {
 		}
 
 		$atts = [
-			'class' => sprintf( 'entry entry-%s', 'block' === $this->context ? 'grid' : $this->context ),
+			'class' => sprintf( 'entry entry-%s is-column', 'block' === $this->context ? 'grid' : $this->context ),
 		];
 
 		// Add index for easy custom ordering.

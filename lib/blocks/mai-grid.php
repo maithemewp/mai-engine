@@ -157,22 +157,22 @@ function mai_do_grid_block( $type, $block, $content = '', $is_preview = false, $
  * @return array
  */
 function mai_get_grid_field_values( $type ) {
-	$fields = mai_get_grid_block_settings();
-	$values = [];
+	$values   = [];
+	$defaults = mai_get_grid_display_defaults();
+	$defaults = array_merge( $defaults, mai_get_grid_layout_defaults() );
 
-	foreach ( $fields as $key => $field ) {
-		// Skip tabs.
-		if ( 'tab' === $field['type'] ) {
-			continue;
-		}
+	switch ( $type ) {
+		case 'post':
+			$defaults = array_merge( $defaults, mai_get_wp_query_defaults() );
+		break;
+		case 'term':
+			$defaults = array_merge( $defaults, mai_get_wp_term_query_defaults() );
+		break;
+	}
 
-		// Skip if not the block we want.
-		if ( ! in_array( $type, $field['block'], true ) ) {
-			continue;
-		}
-
-		$value                    = get_field( $field['name'] );
-		$values[ $field['name'] ] = is_null( $value ) ? $fields[ $key ]['default'] : $value;
+	foreach ( $defaults as $key => $default ) {
+		$value                    = get_field( $key );
+		$values[ $key ] = is_null( $value ) ? $default : $value;
 	}
 
 	return $values;
@@ -193,62 +193,14 @@ function mai_register_grid_field_groups() {
 		return;
 	}
 
-	// $post_grid = [];
-	// $term_grid = [];
-	// $user_grid = [];
-
-	// // Get fields.
-	// $fields = mai_get_grid_block_settings();
-
-	// foreach ( $fields as $key => $field ) {
-
-	// 	// Post grid.
-	// 	if ( in_array( 'post', $field['block'], true ) ) {
-	// 		$post_grid[] = mai_get_acf_field_data( $key, $field );
-	// 	}
-	// 	// Term grid.
-	// 	if ( in_array( 'term', $field['block'], true ) ) {
-	// 		$term_grid[] = mai_get_acf_field_data( $key, $field );
-	// 	}
-	// 	// Post grid.
-	// 	if ( in_array( 'user', $field['block'], true ) ) {
-	// 		$user_grid[] = mai_get_acf_field_data( $key, $field );
-	// 	}
-	// }
-
-	$fields = [
-		// Display.
-		'mai_grid_block_display_tab',
-		'mai_grid_block_show',
-		'mai_grid_block_title_size',
-		'mai_grid_block_image_orientation',
-		'mai_grid_block_image_size',
-		'mai_grid_block_image_position',
-		'mai_grid_block_image_alternate',
-		'mai_grid_block_image_width',
-		'mai_grid_block_header_meta',
-		'mai_grid_block_custom_content',
-		'mai_grid_block_content_limit',
-		'mai_grid_block_more_link_text',
-		'mai_grid_block_footer_meta',
-		'mai_grid_block_align_text',
-		'mai_grid_block_align_text_vertical',
-		'mai_grid_block_image_stack',
-		'mai_grid_block_boxed',
-		'mai_grid_block_border_radius',
-		// Layout.
-		'mai_grid_block_layout_tab',
-		'mai_grid_block_columns',
-		'mai_grid_block_columns_responsive',
-		'mai_grid_block_columns_md',
-		'mai_grid_block_columns_sm',
-		'mai_grid_block_columns_xs',
-		'mai_grid_block_align_columns',
-		'mai_grid_block_align_columns_vertical',
-		'mai_grid_block_column_gap',
-		'mai_grid_block_row_gap',
-		'mai_grid_block_remove_spacing', // TODO: Convert this to margin top/bottom? Check if this is true and set to None, if false auto set to MD?
-	];
+	$fields        = array_merge( [ 'mai_grid_block_display_tab' ], array_keys( mai_get_grid_display_defaults() ) );
+	$fields        = array_merge( $fields, [ 'mai_grid_block_layout_tab' ] );
+	$fields        = array_merge( $fields, array_keys( mai_get_grid_layout_defaults() ) );
+	$fields        = array_diff( $fields, [ 'mai_grid_block_disable_entry_link' ] ); // Remove this since we want it under the Entries tab. See `mai_get_grid_display_fields()`.
+	$post_fields   = array_merge( $fields, array_keys( mai_get_wp_query_defaults() ) );
+	$term_fields   = array_merge( $fields, array_keys( mai_get_wp_term_query_defaults() ) );
+	$post_fields[] = 'mai_grid_block_disable_entry_link';
+	$term_fields[] = 'mai_grid_block_disable_entry_link';
 
 	acf_add_local_field_group(
 		[
@@ -261,32 +213,7 @@ function mai_register_grid_field_groups() {
 					'name'    => 'post_grid_clone',
 					'type'    => 'clone',
 					'display' => 'group', // 'group' or 'seamless'. 'group' allows direct return of actual field names via get_field( 'style' ).
-					'clone'   => array_merge(
-						$fields,
-						[
-							// Entries.
-							'mai_grid_block_entries_tab',
-							'mai_grid_block_post_type',
-							'mai_grid_block_query_by',
-							'mai_grid_block_post_in',
-							'mai_grid_block_post_taxonomies',
-							'mai_grid_block_post_taxonomies_relation',
-							'mai_grid_block_post_meta_keys',
-							'mai_grid_block_post_meta_keys_relation',
-							'mai_grid_block_post_current_children',
-							'mai_grid_block_post_parent_in',
-							'mai_grid_block_posts_per_page',
-							'mai_grid_block_posts_offset',
-							'mai_grid_block_posts_date_after',
-							'mai_grid_block_posts_date_before',
-							'mai_grid_block_posts_orderby',
-							'mai_grid_block_posts_orderby_meta_key',
-							'mai_grid_block_posts_order',
-							'mai_grid_block_post_not_in',
-							'mai_grid_block_posts_exclude',
-							'mai_grid_block_disable_entry_link',
-						]
-					),
+					'clone'   => $post_fields,
 				],
 			],
 			'location' => [
@@ -313,24 +240,7 @@ function mai_register_grid_field_groups() {
 					'name'    => 'term_grid_clone',
 					'type'    => 'clone',
 					'display' => 'group', // 'group' or 'seamless'. 'group' allows direct return of actual field names via get_field( 'style' ).
-					'clone'   => array_merge(
-						$fields,
-						[
-							// Entries.
-							'mai_grid_block_taxonomy',
-							'mai_grid_block_tax_query_by',
-							'mai_grid_block_tax_include',
-							'mai_grid_block_current_children',
-							'mai_grid_block_tax_parent',
-							'mai_grid_block_tax_number',
-							'mai_grid_block_tax_offset',
-							'mai_grid_block_tax_orderby',
-							'mai_grid_block_tax_order',
-							'mai_grid_block_tax_exclude',
-							'mai_grid_block_tax_excludes',
-							'mai_grid_block_disable_entry_link',
-						]
-					),
+					'clone'   => $term_fields,
 				],
 			],
 			'location' => [
@@ -345,85 +255,6 @@ function mai_register_grid_field_groups() {
 			'active'   => true,
 		]
 	);
-}
-
-/**
- * Gets ACF field data and prepares it for field registration.
- *
- * @since 0.1.0
- *
- * @param string $key   Field key.
- * @param array  $field Field data.
- *
- * @return array
- */
-function mai_get_acf_field_data( $key, $field ) {
-
-	// Setup data.
-	$data = [
-		'key'   => $key,
-		'name'  => $field['name'],
-		'label' => $field['label'],
-		'type'  => $field['type'],
-	];
-
-	// Maybe add description.
-	if ( isset( $field['desc'] ) ) {
-		$data['instructions'] = $field['desc'];
-	}
-
-	// Additional attributes.
-	if ( isset( $field['atts'] ) ) {
-		foreach ( $field['atts'] as $field_key => $value ) {
-
-			// Sub fields.
-			if ( 'sub_fields' === $field_key ) {
-				$data['sub_fields'] = [];
-				foreach ( $value as $sub_field_key => $sub_field ) {
-					$data['sub_fields'][] = mai_get_acf_field_data( $sub_field_key, $sub_field );
-				}
-			} else {
-
-				// Standard field data.
-				$data[ $field_key ] = $value;
-			}
-		}
-	}
-
-	// Maybe add conditional logic.
-	if ( isset( $field['conditions'] ) ) {
-		$data['conditional_logic'] = $field['conditions'];
-	}
-
-	// Maybe add default.
-	if ( isset( $field['default'] ) ) {
-
-		/**
-		 * This needs default_value instead of default.
-		 *
-		 * @link  https://www.advancedcustomfields.com/resources/register-fields-via-php/
-		 */
-		$data['default_value'] = $field['default'];
-	}
-
-	/*
-	 * Maybe add choices.
-	 * TODO: If sites with a lot of posts cause slow loading,
-	 * (if ACF ajax isn't working with this code),
-	 * we may need to move to load_field filters,
-	 * though this should work as-is.
-	 */
-
-	if ( isset( $field['choices'] ) ) {
-		if ( is_array( $field['choices'] ) ) {
-			$data['choices'] = $field['choices'];
-
-		} elseif ( is_string( $field['choices'] ) && is_callable( $field['choices'] ) && mai_has_string( 'mai_', $field['choices'] ) ) {
-			$data['choices'] = call_user_func( $field['choices'] );
-		}
-	}
-
-	return $data;
 }
 
 /**

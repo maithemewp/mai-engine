@@ -118,9 +118,13 @@ class Mai_Gallery {
 		}
 
 		$atts = [
-			'class' => mai_add_classes( 'mai-gallery', $this->args['class'] ),
+			'class' => 'mai-gallery has-columns',
 			'style' => mai_get_columns_styles( $this->args ),
 		];
+
+		if ( $this->args['class'] ) {
+			$atts['class'] = mai_add_classes( $this->args['class'], $atts['class'] );
+		}
 
 		if ( $this->args['margin_top'] ) {
 			$atts['class'] = mai_add_classes( sprintf( 'has-%s-margin-top', $this->args['margin_top'] ), $atts['class'] );
@@ -173,6 +177,9 @@ class Mai_Gallery {
 						'context' => 'mai-gallery-item',
 						'content' => $image,
 						'echo'    => false,
+						'atts'    => [
+							'class' => 'mai-gallery-item is-column',
+						],
 						'params'  => [
 							'args' => $this->args,
 						],

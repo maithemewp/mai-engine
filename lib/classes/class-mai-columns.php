@@ -84,40 +84,40 @@ class Mai_Columns {
 	 * @return void
 	 */
 	function render() {
-		$attributes = [
+		$atts = [
 			'class'         => 'mai-columns',
 			'data-instance' => $this->instance,
 			'style'         => '',
 		];
 
 		if ( $this->args['class'] ) {
-			$attributes['class'] = mai_add_classes( $this->args['class'], $attributes['class'] );
+			$atts['class'] = mai_add_classes( $this->args['class'], $atts['class'] );
 		}
 
 		if ( in_array( $this->args['align'], [ 'full', 'wide' ] ) ) {
-			$attributes['class'] = mai_add_classes( 'align' . $this->args['align'], $attributes['class'] );
+			$atts['class'] = mai_add_classes( 'align' . $this->args['align'], $atts['class'] );
 		}
 
 		if ( $this->args['margin_top'] ) {
-			$attributes['class'] = mai_add_classes( sprintf( 'has-%s-margin-top', $this->args['margin_top'] ), $attributes['class'] );
+			$atts['class'] = mai_add_classes( sprintf( 'has-%s-margin-top', $this->args['margin_top'] ), $atts['class'] );
 		}
 
 		if ( $this->args['margin_bottom'] ) {
-			$attributes['class'] = mai_add_classes( sprintf( 'has-%s-margin-bottom', $this->args['margin_bottom'] ), $attributes['class'] );
+			$atts['class'] = mai_add_classes( sprintf( 'has-%s-margin-bottom', $this->args['margin_bottom'] ), $atts['class'] );
 		}
 
 		if ( $this->args['preview'] ) {
-			$attributes = $this->get_admin_attributes( $attributes );
+			$atts = $this->get_admin_attributes( $atts );
 		}
 
-		$attributes = $this->get_attributes( $attributes );
+		$atts = $this->get_attributes( $atts );
 
 		genesis_markup(
 			[
 				'open'    => '<div %s>',
 				'context' => 'mai-columns',
 				'echo'    => true,
-				'atts'    => $attributes,
+				'atts'    => $atts,
 			]
 		);
 
@@ -128,6 +128,9 @@ class Mai_Columns {
 				'context' => 'mai-columns-wrap',
 				'content' => $this->get_inner_blocks(),
 				'echo'    => true,
+				'atts'    => [
+					'class' => 'mai-columns-wrap has-columns'
+				],
 			]
 		);
 

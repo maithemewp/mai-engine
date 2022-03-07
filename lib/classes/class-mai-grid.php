@@ -126,39 +126,20 @@ class Mai_Grid {
 	 * @return array
 	 */
 	public function get_sanitized_args( $args ) {
-		// Parse args.
-		$args = wp_parse_args( $args, $this->defaults );
+		$sanitized = mai_get_grid_display_sanitized( $args );
+		$sanitized = mai_get_grid_layout_sanitized( $sanitized );
 
-		// Sanitize.
-		foreach ( $args as $name => $value ) {
-
-			// Has sub fields.
-			if ( isset( $this->settings[ $name ]['atts']['sub_fields'] ) && is_array( $this->settings[ $name ]['atts']['sub_fields'] ) ) {
-				$sub_fields_values = [];
-
-				if ( $value && is_array( $value ) ) {
-					$sub_fields_config = array_column( $this->settings[ $name ]['atts']['sub_fields'], 'sanitize', 'name' );
-
-					foreach ( $value as $sub_field_index => $sub_field_row ) {
-						foreach ( $sub_field_row as $sub_field_name => $sub_field_value ) {
-							if ( isset( $sub_fields_config[ $sub_field_name ] ) ) {
-								$sub_fields_values[ $sub_field_index ][ $sub_field_name ] = mai_sanitize( $sub_field_value, $sub_fields_config[ $sub_field_name ] );
-							}
-						}
-					}
-				}
-
-				$args[ $name ] = $sub_fields_values;
-
-			} else {
-
-				// Standard field check.
-				$sanitize      = isset( $this->settings[ $name ] ) ? $this->settings[ $name ]['sanitize'] : 'esc_html';
-				$args[ $name ] = mai_sanitize( $value, $sanitize );
-			}
+		switch ( $this->type ) {
+			case 'post':
+				$sanitized = mai_get_wp_query_sanitized( $sanitized );
+			break;
+			case 'term':
+				$sanitized = mai_get_wp_term_query_sanitized( $sanitized );
+			break;
 		}
 
-		$args = apply_filters( 'mai_grid_args', $args );
+		// TODO: Should this be before our sanitization? Seems weird.
+		$args = apply_filters( 'mai_grid_args', $sanitized );
 
 		return $args;
 	}

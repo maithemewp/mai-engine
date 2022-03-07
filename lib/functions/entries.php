@@ -165,7 +165,7 @@ function mai_do_entries_open( $args ) {
 		]
 	);
 
-	$wrap_class = 'entries-wrap';
+	$wrap_class = 'entries-wrap has-columns';
 
 	// Add image stack class to entries-wrap so it intercepts the inline variable so we don't need overly specific CSS.
 	if ( $args['image_stack'] && in_array( 'image', $args['show'], true ) && $args['image_position'] && mai_has_string( [

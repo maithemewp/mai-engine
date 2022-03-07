@@ -47,6 +47,41 @@ function mai_get_wp_term_query_defaults() {
 }
 
 /**
+ * Gets sanitized field values.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @return array
+ */
+function mai_get_wp_term_query_sanitized( $args ) {
+	$array = [
+		'taxonomy'         => 'esc_html',
+		'query_by'         => 'esc_html',
+		'include'          => 'absint',
+		'current_children' => 'mai_sanitize_bool',
+		'parent'           => 'mai_sanitize_bool',
+		'number'           => 'absint',
+		'offset'           => 'absint',
+		'orderby'          => 'esc_html',
+		'order'            => 'esc_html',
+		'exclude'          => 'absint',
+		'excludes'         => 'esc_html',
+	];
+
+	foreach ( $array as $key => $function ) {
+		if ( ! isset( $args[ $key ] ) ) {
+			continue;
+		}
+
+		$args[ $key ] = mai_sanitize( $args[ $key ], $function );
+	}
+
+	return $args;
+}
+
+/**
  * Gets fields for acf field group.
  *
  * @access private

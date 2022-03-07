@@ -89,6 +89,53 @@ function mai_get_wp_query_defaults() {
 }
 
 /**
+ * Gets sanitized field values.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @return array
+ */
+function mai_get_wp_query_sanitized( $args ) {
+	$array = [
+		'post_type'           => 'esc_html',
+		'query_by'            => 'esc_html',
+		'post__in'            => 'absint',
+		'taxonomy'            => 'esc_html',
+		'terms'               => 'absint',
+		'current'             => 'mai_sanitize_bool',
+		'operator'            => 'esc_html',
+		'taxonomies_relation' => 'esc_html',
+		'meta_key'            => 'esc_html',
+		'meta_compare'        => 'esc_html',
+		'meta_value'          => 'esc_html',
+		'meta_keys_relation'  => 'esc_html',
+		'current_children'    => 'mai_sanitize_bool',
+		'post_parent__in'     => 'absint',
+		'posts_per_page'      => 'absint',
+		'offset'              => 'absint',
+		'date_after'          => 'esc_html',
+		'date_before'         => 'esc_html',
+		'orderby'             => 'esc_html',
+		'orderby_meta_key'    => 'esc_html',
+		'order'               => 'esc_html',
+		'post__not_in'        => 'absint',
+		'excludes'            => 'esc_html',
+	];
+
+	foreach ( $array as $key => $function ) {
+		if ( ! isset( $args[ $key ] ) ) {
+			continue;
+		}
+
+		$args[ $key ] = mai_sanitize( $args[ $key ], $function );
+	}
+
+	return $args;
+}
+
+/**
  * Gets fields for acf field group.
  *
  * @access private
