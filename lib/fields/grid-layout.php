@@ -102,7 +102,6 @@ function mai_get_grid_layout_fields() {
 			'name'          => 'columns',
 			'label'         => esc_html__( 'Columns (desktop)', 'mai-engine' ),
 			'type'          => 'button_group',
-			// 'sanitize'   => 'absint',
 			'default_value' => $defaults['columns'],
 			'choices'       => mai_get_columns_choices(),
 			'wrapper'       => [
@@ -114,7 +113,6 @@ function mai_get_grid_layout_fields() {
 			'name'          => 'columns_responsive',
 			'label'         => '',
 			'type'          => 'true_false',
-			// 'sanitize'   => 'mai_sanitize_bool',
 			'default_value' => $defaults['columns_responsive'],
 			'message'       => esc_html__( 'Custom responsive columns', 'mai-engine' ),
 		],
@@ -123,7 +121,6 @@ function mai_get_grid_layout_fields() {
 			'name'              => 'columns_md',
 			'label'             => esc_html__( 'Columns (lg tablets)', 'mai-engine' ),
 			'type'              => 'button_group',
-			// 'sanitize'       => 'absint',
 			'default_value'     => $defaults['columns_md'],
 			'choices'           => mai_get_columns_choices(),
 			'conditional_logic' => [
@@ -142,7 +139,6 @@ function mai_get_grid_layout_fields() {
 			'name'              => 'columns_sm',
 			'label'             => esc_html__( 'Columns (sm tablets)', 'mai-engine' ),
 			'type'              => 'button_group',
-			// 'sanitize'       => 'absint',
 			'default_value'     => $defaults['columns_sm'],
 			'choices'           => mai_get_columns_choices(),
 			'conditional_logic' => [
@@ -161,9 +157,8 @@ function mai_get_grid_layout_fields() {
 			'name'              => 'columns_xs',
 			'label'             => esc_html__( 'Columns (mobile)', 'mai-engine' ),
 			'type'              => 'button_group',
-			// 'sanitize'       => 'absint',
 			'default_value'     => $defaults['columns_xs'],
-			'choices'           => 'mai_get_columns_choices',
+			'choices'           => mai_get_columns_choices(),
 			'conditional_logic' => [
 				[
 					'field'    => 'mai_grid_block_columns_responsive',
@@ -180,7 +175,6 @@ function mai_get_grid_layout_fields() {
 			'name'              => 'align_columns',
 			'label'             => esc_html__( 'Align Columns', 'mai-engine' ),
 			'type'              => 'button_group',
-			// 'sanitize'       => 'esc_html',
 			'default_value'     => $defaults['align_columns'],
 			'choices'           => [
 				'start'  => esc_html__( 'Start', 'mai-engine' ),
@@ -203,7 +197,6 @@ function mai_get_grid_layout_fields() {
 			'name'              => 'align_columns_vertical',
 			'label'             => esc_html__( 'Align Columns (vertical)', 'mai-engine' ),
 			'type'              => 'button_group',
-			// 'sanitize'       => 'esc_html',
 			'default_value'     => $defaults['align_columns_vertical'],
 			'choices'           => [
 				''       => esc_html__( 'Full', 'mai-engine' ),
@@ -227,7 +220,6 @@ function mai_get_grid_layout_fields() {
 			'name'          => 'column_gap',
 			'label'         => esc_html__( 'Column Gap', 'mai-engine' ),
 			'type'          => 'button_group',
-			// 'sanitize'   => 'esc_html',
 			'default_value' => $defaults['column_gap'],
 			'choices'       => [
 				''     => esc_html__( 'None', 'mai-engine' ),
@@ -246,7 +238,6 @@ function mai_get_grid_layout_fields() {
 			'name'          => 'row_gap',
 			'label'         => esc_html__( 'Row Gap', 'mai-engine' ),
 			'type'          => 'button_group',
-			// 'sanitize'   => 'esc_html',
 			'default_value' => $defaults['row_gap'],
 			'choices'       => [
 				''     => esc_html__( 'None', 'mai-engine' ),
@@ -265,7 +256,6 @@ function mai_get_grid_layout_fields() {
 			'name'          => 'remove_spacing',
 			'label'         => '',
 			'type'          => 'true_false',
-			// 'sanitize'   => 'mai_sanitize_bool',
 			'default_value' => $defaults['remove_spacing'],
 			'message'       => esc_html__( 'Remove bottom spacing', 'mai-engine' ),
 		],

@@ -178,11 +178,9 @@ function mai_get_grid_field_values( $type ) {
 	return $values;
 }
 
-add_action( 'init', 'mai_register_grid_field_groups', 99 );
+add_action( 'acf/init', 'mai_register_grid_field_groups' );
 /**
  * Register field groups for the grid block.
- * This can't be on 'after_setup_theme' or 'acf/init' hook because it's too early,
- * and get_post_types() doesn't get all custom post types.
  *
  * @since 0.1.0
  *
@@ -193,14 +191,25 @@ function mai_register_grid_field_groups() {
 		return;
 	}
 
-	$fields        = array_merge( [ 'mai_grid_block_display_tab' ], array_keys( mai_get_grid_display_defaults() ) );
-	$fields        = array_merge( $fields, [ 'mai_grid_block_layout_tab' ] );
-	$fields        = array_merge( $fields, array_keys( mai_get_grid_layout_defaults() ) );
-	$fields        = array_diff( $fields, [ 'mai_grid_block_disable_entry_link' ] ); // Remove this since we want it under the Entries tab. See `mai_get_grid_display_fields()`.
-	$post_fields   = array_merge( $fields, array_keys( mai_get_wp_query_defaults() ) );
-	$term_fields   = array_merge( $fields, array_keys( mai_get_wp_term_query_defaults() ) );
-	$post_fields[] = 'mai_grid_block_disable_entry_link';
-	$term_fields[] = 'mai_grid_block_disable_entry_link';
+	$names = [
+		'display'       => array_diff( array_keys( mai_get_grid_display_defaults() ), [ 'disable_entry_link' ] ),
+		'layout'        => array_keys( mai_get_grid_layout_defaults() ),
+		'wp_query'      => array_keys( mai_get_wp_query_defaults() ),
+		'wp_term_query' => array_keys( mai_get_wp_term_query_defaults() ),
+	];
+
+	foreach ( $names as $name => $keys ) {
+		foreach ( $keys as $index => $key ) {
+			$names[ $name ][ $index ] = 'mai_grid_block_' . $key;
+		}
+	}
+
+	$display       = array_merge( [ 'mai_grid_block_display_tab' ], $names['display'] );
+	$layout        = array_merge( [ 'mai_grid_block_layout_tab' ], $names['layout'] );
+	$wp_query      = array_merge( [ 'mai_grid_block_entries_tab' ], $names['wp_query'] );
+	$wp_term_query = array_merge( [ 'mai_grid_block_entries_tab' ], $names['wp_term_query'] );
+	$post_fields   = array_merge( $display, $layout, $wp_query, [ 'mai_grid_block_disable_entry_link' ] );
+	$term_fields   = array_merge( $display, $layout, $wp_term_query, [ 'mai_grid_block_disable_entry_link' ] );
 
 	acf_add_local_field_group(
 		[

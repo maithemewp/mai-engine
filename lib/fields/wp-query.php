@@ -190,7 +190,6 @@ function mai_get_wp_query_fields() {
 			'label'             => esc_html__( 'Choose Entries', 'mai-engine' ),
 			'desc'              => esc_html__( 'Show specific entries. Choose all that apply.', 'mai-engine' ),
 			'type'              => 'post_object',
-			// 'sanitize'       => 'absint',
 			'default_value'     => $defaults['post__in'],
 			'conditional_logic' => [
 				[
@@ -242,7 +241,6 @@ function mai_get_wp_query_fields() {
 					'name'              => 'terms',
 					'label'             => esc_html__( 'Terms', 'mai-engine' ),
 					'type'              => 'select',
-					// 'sanitize'       => 'absint',
 					'default_value'     => $defaults['terms'],
 					'ui'                => 1,
 					'ajax'              => 1,
@@ -259,7 +257,6 @@ function mai_get_wp_query_fields() {
 					'name'              => 'current',
 					'label'             => '',
 					'type'              => 'true_false',
-					// 'sanitize'       => 'sanitize_bool',
 					'default_value'     => $defaults['current'],
 					'message'           => sprintf( '%s %s', esc_html__( 'Use current', 'mai-engine' ), mai_get_block_setting_info_link( 'https://docs.bizbudding.com/docs/mai-grid-blocks/#taxonomy-meta' ) ),
 					'conditional_logic' => [
@@ -351,14 +348,14 @@ function mai_get_wp_query_fields() {
 					'type'              => 'select',
 					'default_value'     => $defaults['meta_compare'],
 					'choices'           => [
-						'='          => __( 'Is equal to', 'mai-engine' ),
-						'!='         => __( 'Is not equal to', 'mai-engine' ),
-						'>'          => __( 'Is greater than', 'mai-engine' ),
-						'>='         => __( 'Is great than or equal to', 'mai-engine' ),
-						'<'          => __( 'Is less than', 'mai-engine' ),
-						'<='         => __( 'Is less than or equal to', 'mai-engine' ),
-						'EXISTS'     => __( 'Exists', 'mai-engine' ),
-						'NOT EXISTS' => __( 'Does not exist', 'mai-engine' ),
+						'='          => esc_html__( 'Is equal to', 'mai-engine' ),
+						'!='         => esc_html__( 'Is not equal to', 'mai-engine' ),
+						'>'          => esc_html__( 'Is greater than', 'mai-engine' ),
+						'>='         => esc_html__( 'Is great than or equal to', 'mai-engine' ),
+						'<'          => esc_html__( 'Is less than', 'mai-engine' ),
+						'<='         => esc_html__( 'Is less than or equal to', 'mai-engine' ),
+						'EXISTS'     => esc_html__( 'Exists', 'mai-engine' ),
+						'NOT EXISTS' => esc_html__( 'Does not exist', 'mai-engine' ),
 					],
 					'conditional_logic' => [
 						[
@@ -425,7 +422,6 @@ function mai_get_wp_query_fields() {
 			'name'              => 'current_children',
 			'label'             => '',
 			'type'              => 'true_false',
-			// 'sanitize'       => 'mai_sanitize_bool',
 			'default_value'     => $defaults['current_children'],
 			'message'           => esc_html__( 'Show children of current entry', 'mai-engine' ),
 			'conditional_logic' => [
@@ -445,7 +441,6 @@ function mai_get_wp_query_fields() {
 			'name'              => 'post_parent__in',
 			'label'             => esc_html__( 'Parent', 'mai-engine' ),
 			'type'              => 'post_object',
-			// 'sanitize'       => 'absint',
 			'default_value'     => $defaults['post_parent__in'],
 			'multiple'          => 1, // WP_Query allows multiple parents.
 			'return_format'     => 'id',
@@ -473,7 +468,6 @@ function mai_get_wp_query_fields() {
 			'label'             => esc_html__( 'Number of Entries', 'mai-engine' ),
 			'desc'              => esc_html__( 'Use 0 to show all.', 'mai-engine' ),
 			'type'              => 'number',
-			// 'sanitize'       => 'absint',
 			'default_value'     => $defaults['posts_per_page'],
 			// 'placeholder'    => 12,
 			'min'               => 0,
@@ -495,7 +489,6 @@ function mai_get_wp_query_fields() {
 			'label'             => esc_html__( 'Offset', 'mai-engine' ),
 			'desc'              => esc_html__( 'Skip this number of entries.', 'mai-engine' ),
 			'type'              => 'number',
-			// 'sanitize'       => 'absint',
 			'default_value'     => $defaults['offset'],
 			'placeholder'       => 0,
 			'min'               => 0,
@@ -514,7 +507,7 @@ function mai_get_wp_query_fields() {
 		[
 			'key'               => 'mai_grid_block_posts_date_after',
 			'name'              => 'date_after',
-			'label'             => __( 'After date', 'mai-engine' ),
+			'label'             => esc_html__( 'After date', 'mai-engine' ),
 			'desc'              => sprintf( esc_html__( 'Get posts after a date/time. %s', 'mai-engine' ), $date_info ),
 			'type'              => 'text',
 			'default_value'     => $defaults['date_after'],
@@ -534,7 +527,7 @@ function mai_get_wp_query_fields() {
 		[
 			'key'               => 'mai_grid_block_posts_date_before',
 			'name'              => 'date_before',
-			'label'             => __( 'Before date', 'mai-engine' ),
+			'label'             => esc_html__( 'Before date', 'mai-engine' ),
 			'desc'              => sprintf( esc_html__( 'Get posts after a date/time. %s', 'mai-engine' ), $date_info ),
 			'type'              => 'text',
 			'default_value'     => $defaults['date_before'],
@@ -631,7 +624,6 @@ function mai_get_wp_query_fields() {
 			'multiple'          => 1,
 			'return_format'     => 'id',
 			'ui'                => 1,
-			// 'sanitize'       => 'absint',
 			'conditional_logic' => [
 				[
 					'field'    => 'mai_grid_block_post_type',

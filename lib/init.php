@@ -474,7 +474,7 @@ function mai_load_files() {
 	}
 }
 
-add_action( 'acf/init', 'mai_register_clone_fields' );
+add_action( 'acf/init', 'mai_register_clone_fields', 0 );
 /**
  * Register field groups for resuable fields.
  *
@@ -487,20 +487,30 @@ function mai_register_clone_fields() {
 		return;
 	}
 
-	$fields = [];
-	$array  = [
+	// $fields = [];
+	// $array  = [
+	// 	mai_get_icons_fields(),
+	// 	mai_get_columns_fields(),
+	// 	mai_get_grid_tabs_fields(),
+	// 	mai_get_grid_display_fields(),
+	// 	mai_get_grid_layout_fields(),
+	// 	mai_get_wp_query_fields(),
+	// 	mai_get_wp_term_query_fields(),
+	// ];
+
+	// foreach ( $array as $values ) {
+	// 	$fields = array_merge( $fields, $values );
+	// }
+
+	$fields = array_merge(
+		mai_get_icons_fields(),
 		mai_get_columns_fields(),
+		mai_get_grid_tabs_fields(),
 		mai_get_grid_display_fields(),
 		mai_get_grid_layout_fields(),
-		mai_get_grid_tabs_fields(),
-		mai_get_icons_fields(),
 		mai_get_wp_query_fields(),
-		mai_get_wp_term_query_fields(),
-	];
-
-	foreach ( $array as $values ) {
-		$fields = array_merge( $fields, $values );
-	}
+		mai_get_wp_term_query_fields()
+	);
 
 	acf_add_local_field_group(
 		[

@@ -120,7 +120,6 @@ function mai_get_grid_display_fields() {
 			'label'         => esc_html__( 'Show', 'mai-engine' ),
 			'desc'          => esc_html__( 'Show/hide and re-order elements.', 'mai-engine' ),
 			'type'          => 'checkbox',
-			// 'sanitize'   => 'esc_html',
 			'default_value' => $defaults['show'],
 			'choices'       => [
 				'image'          => esc_html__( 'Image', 'mai-engine' ),
@@ -141,7 +140,6 @@ function mai_get_grid_display_fields() {
 			'name'              => 'title_size',
 			'label'             => esc_html__( 'Title Size', 'mai-engine' ),
 			'type'              => 'button_group',
-			// 'sanitize'       => 'esc_html',
 			'default_value'     => $defaults['title_size'],
 			'choices'           => [
 				'sm'  => esc_html__( 'XS', 'mai-engine' ),
@@ -166,7 +164,6 @@ function mai_get_grid_display_fields() {
 			'name'              => 'image_orientation',
 			'label'             => esc_html__( 'Image Orientation', 'mai-engine' ),
 			'type'              => 'select',
-			// 'sanitize'       => 'esc_html',
 			'default_value'     => $defaults['image_orientation'],
 			'choices'           => mai_get_image_orientation_choices(),
 			'conditional_logic' => [
@@ -182,7 +179,6 @@ function mai_get_grid_display_fields() {
 			'name'              => 'image_size',
 			'label'             => esc_html__( 'Image Size', 'mai-engine' ),
 			'type'              => 'select',
-			// 'sanitize'       => 'esc_html',
 			'default_value'     => $defaults['image_size'],
 			'choices'           => mai_get_image_size_choices(),
 			'conditional_logic' => [
@@ -203,7 +199,6 @@ function mai_get_grid_display_fields() {
 			'name'              => 'image_position',
 			'label'             => esc_html__( 'Image Position', 'mai-engine' ),
 			'type'              => 'select',
-			// 'sanitize'       => 'esc_html',
 			'default_value'     => $defaults['image_position'],
 			'choices'           => [
 				'full'         => esc_html__( 'Full', 'mai-engine' ),
@@ -229,7 +224,6 @@ function mai_get_grid_display_fields() {
 			'name'              => 'image_alternate',
 			'label'             => '',
 			'type'              => 'true_false',
-			// 'sanitize'       => 'mai_sanitize_bool',
 			'default_value'     => $defaults['image_alternate'],
 			'message'           => esc_html__( 'Display images alternating', 'mai-engine' ),
 			'conditional_logic' => [
@@ -312,12 +306,16 @@ function mai_get_grid_display_fields() {
 			'name'              => 'image_width',
 			'label'             => esc_html__( 'Image Width', 'mai-engine' ),
 			'type'              => 'button_group',
-			// 'sanitize'       => 'esc_html',
 			'default_value'     => $defaults['image_width'],
 			'choices'           => [
 				'fourth' => esc_html__( '¼', 'mai-engine' ),
-				'third'  => esc_html__( '⅓', 'mai-engine' ),
-				'half'   => esc_html__( '½', 'mai-engine' ),
+				// 'third'  => esc_html__( '⅓', 'mai-engine' ),
+				'third'  => esc_html__( '1/3', 'mai-engine' ),
+				// 'half'   => esc_html__( '½', 'mai-engine' ),
+				'half'   => esc_html__( 'Half', 'mai-engine' ),
+			],
+			'wrapper'           => [
+				'class' => 'mai-acf-button-group',
 			],
 			'conditional_logic' => [
 				[
@@ -429,7 +427,6 @@ function mai_get_grid_display_fields() {
 			'name'              => 'header_meta',
 			'label'             => esc_html__( 'Header Meta', 'mai-engine' ),
 			'type'              => 'textarea',
-			// 'sanitize'       => 'wp_kses_post',
 			'default_value'     => $defaults['header_meta'],
 			'rows'              => 3,
 			'conditional_logic' => [
@@ -445,7 +442,6 @@ function mai_get_grid_display_fields() {
 			'name'              => 'custom_content',
 			'label'             => esc_html__( 'Custom Content', 'mai-engine' ),
 			'type'              => 'textarea',
-			// 'sanitize'       => 'wp_kses_post',
 			'default_value'     => $defaults['custom_content'],
 			'rows'              => 3,
 			'conditional_logic' => [
@@ -462,7 +458,6 @@ function mai_get_grid_display_fields() {
 			'label'             => esc_html__( 'Content Limit', 'mai-engine' ),
 			'desc'              => esc_html__( 'Limit the number of characters shown for the content or excerpt. Use 0 for no limit.', 'mai-engine' ),
 			'type'              => 'text',
-			// 'sanitize'       => 'absint',
 			'default_value'     => $defaults['content_limit'],
 			'conditional_logic' => [
 				[
@@ -486,7 +481,6 @@ function mai_get_grid_display_fields() {
 			'name'              => 'more_link_text',
 			'label'             => esc_html__( 'More Link Text', 'mai-engine' ),
 			'type'              => 'text',
-			// 'sanitize'       => 'wp_kses_post', // We may want to add icons/spans and HTML in here.
 			'default_value'     => $defaults['more_link_text'],
 			'placeholder'       => mai_get_read_more_text(),
 			'conditional_logic' => [
@@ -502,7 +496,6 @@ function mai_get_grid_display_fields() {
 			'name'              => 'footer_meta',
 			'label'             => esc_html__( 'Footer Meta', 'mai-engine' ),
 			'type'              => 'textarea',
-			// 'sanitize'       => 'wp_kses_post',
 			'default_value'     => $defaults['footer_meta'],
 			'rows'              => 3,
 			'conditional_logic' => [
@@ -518,7 +511,6 @@ function mai_get_grid_display_fields() {
 			'name'          => 'align_text',
 			'label'         => esc_html__( 'Align Text', 'mai-engine' ),
 			'type'          => 'button_group',
-			// 'sanitize'   => 'esc_html',
 			'default_value' => $defaults['align_text'],
 			'choices'       => [
 				'start'  => esc_html__( 'Start', 'mai-engine' ),
@@ -534,7 +526,6 @@ function mai_get_grid_display_fields() {
 			'name'              => 'align_text_vertical',
 			'label'             => esc_html__( 'Align Text (vertical)', 'mai-engine' ),
 			'type'              => 'button_group',
-			// 'sanitize'       => 'esc_html',
 			'default_value'     => $defaults['align_text_vertical'],
 			'choices'           => [
 				''       => esc_html__( 'Default', 'mai-engine' ),
@@ -637,7 +628,6 @@ function mai_get_grid_display_fields() {
 			'name'              => 'image_stack',
 			'label'             => esc_html__( 'Stack Image', 'mai-engine' ),
 			'type'              => 'true_false',
-			// 'sanitize'       => 'mai_sanitize_bool',
 			'default_value'     => $defaults['image_stack'],
 			'message'           => esc_html__( 'Stack image and content on mobile', 'mai-engine' ),
 			'conditional_logic' => [
@@ -720,7 +710,6 @@ function mai_get_grid_display_fields() {
 			'name'              => 'boxed',
 			'label'             => esc_html__( 'Boxed', 'mai-engine' ),
 			'type'              => 'true_false',
-			// 'sanitize'       => 'mai_sanitize_bool',
 			'default_value'     => $defaults['boxed'],
 			'message'           => esc_html__( 'Display boxed styling', 'mai-engine' ),
 			'conditional_logic' => [
@@ -751,7 +740,6 @@ function mai_get_grid_display_fields() {
 			'label'             => esc_html__( 'Border Radius', 'mai-engine' ),
 			'desc'              => esc_html__( 'Leave empty for theme default. Accepts all unit values (px, rem, em, vw, etc).', 'mai-engine' ),
 			'type'              => 'text',
-			// 'sanitize'       => 'esc_html',
 			'default_value'     => $defaults['border_radius'],
 			'input_attrs'       => [
 				'placeholder' => isset( mai_get_global_styles( 'extra' )['border-radius'] ) ? mai_get_global_styles( 'extra' )['border-radius']: '4px',
@@ -780,7 +768,6 @@ function mai_get_grid_display_fields() {
 			'name'          => 'disable_entry_link',
 			'label'         => esc_html__( 'Disable', 'mai-engine' ),
 			'type'          => 'true_false',
-			// 'sanitize'   => 'mai_sanitize_bool',
 			'default_value' => $defaults['disable_entry_link'],
 			'message'       => esc_html__( 'Disable entry links', 'mai-engine' ),
 		],
