@@ -26,10 +26,10 @@ function mai_get_columns_styles( $args ) {
 
 	// Columns.
 	$columns = mai_get_breakpoint_columns( $args );
-	$style  .= sprintf( '--columns-lg:%s;', $columns['lg'] );
-	$style  .= sprintf( '--columns-md:%s;', $columns['md'] );
-	$style  .= sprintf( '--columns-sm:%s;', $columns['sm'] );
-	$style  .= sprintf( '--columns-xs:%s;', $columns['xs'] );
+
+	foreach ( $columns as $break => $value ) {
+		$style .= sprintf( '--columns-%s:%s;', $break, $value );
+	}
 
 	// Column/Row gap.
 	$column_gap = $args['column_gap'] ? sprintf( 'var(--spacing-%s)', $args['column_gap'] ) : '0px'; // Needs 0px for calc().
