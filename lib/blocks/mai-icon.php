@@ -62,13 +62,15 @@ function mai_do_icon_block( $block, $content = '', $is_preview = false, $post_id
 		$args[ $setting ] = get_field( $setting );
 	}
 
-	$args['class'] = isset( $block['className'] ) && ! empty( $block['className'] ) ? mai_add_classes( $block['className'] ) : '';
-
 	// Swap for brand.
 	if ( 'brands' === $args['style'] ) {
 		$args['icon'] = $args['icon_brand'];
-		unset( $args['icon_brand'] );
 	}
+
+	// Remove brand.
+	unset( $args['icon_brand'] );
+
+	$args['class'] = isset( $block['className'] ) && ! empty( $block['className'] ) ? mai_add_classes( $block['className'] ) : '';
 
 	// Remove empty args so defaults are used.
 	foreach ( $args as $key => $value ) {
@@ -204,61 +206,6 @@ function mai_register_icon_field_group() {
 				'display'           => 'group', // 'group' or 'seamless'. 'group' allows direct return of actual field names via get_field( 'style' ).
 				'clone'             => [ 'mai_icon_style', 'mai_icon_choices', 'mai_icon_brand_choices' ],
 			],
-			// [
-			// 	'key'           => 'mai_icon_style',
-			// 	'name'          => 'style',
-			// 	'label'         => esc_html__( 'Style', 'mai-engine' ),
-			// 	'type'          => 'button_group',
-			// 	'default_value' => $defaults['style'],
-			// 	'choices'       => [
-			// 		'light'   => esc_html__( 'Light', 'mai-engine' ),
-			// 		'regular' => esc_html__( 'Regular', 'mai-engine' ),
-			// 		'solid'   => esc_html__( 'Solid', 'mai-engine' ),
-			// 		'brands'  => esc_html__( 'Brands', 'mai-engine' ),
-			// 	],
-			// ],
-			// [
-			// 	'key'               => 'mai_icon_choices',
-			// 	'name'              => 'icon',
-			// 	'label'             => esc_html__( 'Icon', 'mai-engine' ) . sprintf( ' (%s <a href="https://fontawesome.com/v5/search/">Font Awesome</a>)', __( 'full search via', 'mai-engine' ) ),
-			// 	'type'              => 'select',
-			// 	'default_value'     => $defaults['icon'],
-			// 	'allow_null'        => 1, // These fields are cloned in Mai Notices and other blocks so we need to allow null.
-			// 	'multiple'          => 0,
-			// 	'ui'                => 1,
-			// 	'ajax'              => 1,
-			// 	'conditional_logic' => [
-			// 		[
-			// 			'field'    => 'mai_icon_style',
-			// 			'operator' => '!=',
-			// 			'value'    => 'brands',
-			// 		],
-			// 	],
-			// 	'wrapper'           => [
-			// 		'class' => 'mai-icon-select',
-			// 	],
-			// ],
-			// [
-			// 	'key'               => 'mai_icon_brand_choices',
-			// 	'name'              => 'icon_brand',
-			// 	'label'             => esc_html__( 'Icon (Brands)', 'mai-engine' ),
-			// 	'type'              => 'select',
-			// 	'default_value'     => $defaults['icon_brand'],
-			// 	'allow_null'        => 1, // These fields are cloned in Mai Notices and other blocks so we need to allow null.
-			// 	'multiple'          => 0,
-			// 	'ui'                => 1,
-			// 	'ajax'              => 1,
-			// 	'conditional_logic' => [
-			// 		[
-			// 			'field'    => 'mai_icon_style',
-			// 			'operator' => '==',
-			// 			'value'    => 'brands',
-			// 		],
-			// 	],
-			// 	'wrapper'           => [
-			// 		'class' => 'mai-icon-select',
-			// 	],
-			// ],
 			[
 				'key'           => 'mai_icon_display',
 				'name'          => 'display',
@@ -342,27 +289,35 @@ function mai_register_icon_field_group() {
 				'label' => esc_html__( 'Styles', 'mai-engine' ),
 				'type'  => 'tab',
 			],
+			// [
+			// 	'key'     => 'mai_icon_color',
+			// 	'label'   => esc_html__( 'Icon Color', 'mai-engine' ),
+			// 	'name'    => 'color_icon',
+			// 	'type'    => 'radio',
+			// 	'choices' => $color_choices,
+			// 	'wrapper' => [
+			// 		'class' => 'mai-block-colors',
+			// 	],
+			// ],
+			// [
+			// 	'key'               => 'mai_icon_color_custom',
+			// 	'name'              => 'color_icon_custom',
+			// 	'type'              => 'color_picker',
+			// 	'conditional_logic' => [
+			// 		[
+			// 			'field'    => 'mai_icon_color',
+			// 			'operator' => '==',
+			// 			'value'    => 'custom',
+			// 		],
+			// 	],
+			// ],
 			[
-				'key'     => 'mai_icon_color',
-				'label'   => esc_html__( 'Icon Color', 'mai-engine' ),
-				'name'    => 'color_icon',
-				'type'    => 'radio',
-				'choices' => $color_choices,
-				'wrapper' => [
-					'class' => 'mai-block-colors',
-				],
-			],
-			[
-				'key'               => 'mai_icon_color_custom',
-				'name'              => 'color_icon_custom',
-				'type'              => 'color_picker',
-				'conditional_logic' => [
-					[
-						'field'    => 'mai_icon_color',
-						'operator' => '==',
-						'value'    => 'custom',
-					],
-				],
+				'key'               => 'mai_icon_color_clone',
+				'label'             => __( 'Icon Color', 'mai-engine' ),
+				'name'              => 'icon_color_clone',
+				'type'              => 'clone',
+				'display'           => 'group', // 'group' or 'seamless'. 'group' allows direct return of actual field names via get_field( 'style' ).
+				'clone'             => [ 'mai_icon_color', 'mai_icon_color_custom' ],
 			],
 			[
 				'key'     => 'mai_icon_background',

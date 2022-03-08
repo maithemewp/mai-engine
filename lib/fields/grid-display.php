@@ -41,7 +41,7 @@ function mai_get_grid_display_defaults() {
 		'custom_content'      => '',
 		'content_limit'       => 0,
 		'more_link_text'      => '',
-		'footer_meta'         => '[post_categories]', // TODO:                                 this should be different, or empty depending on the post type?
+		'footer_meta'         => '[post_categories]', // TODO: this should be different, or empty depending on the post type?
 		'align_text'          => 'start',
 		'align_text_vertical' => '',
 		'image_stack'         => 1,

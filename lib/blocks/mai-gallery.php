@@ -75,6 +75,15 @@ function mai_do_gallery_block( $block, $content = '', $is_preview = false, $post
 		'margin_bottom'          => get_field( 'margin_bottom' ),
 	];
 
+	// Remove empty args so defaults are used.
+	foreach ( $args as $key => $value ) {
+		if ( '' !== $value ) {
+			continue;
+		}
+
+		unset( $args[ $key ] );
+	}
+
 	echo mai_get_gallery( $args );
 }
 
@@ -163,240 +172,26 @@ function mai_register_gallery_group() {
 					'label' => __( 'Layout', 'mai-engine' ),
 					'type'  => 'tab',
 				],
-				// [
-				// 	'key'           => 'mai_gallery_columns',
-				// 	'label'         => 'Columns',
-				// 	'name'          => 'columns',
-				// 	'type'          => 'button_group',
-				// 	'default_value' => 3,
-				// 	'choices'       => [
-				// 		1 => 1,
-				// 		2 => 2,
-				// 		3 => 3,
-				// 		4 => 4,
-				// 		5 => 5,
-				// 		6 => 6,
-				// 		7 => 7,
-				// 		8 => 8,
-				// 	],
-				// 	'wrapper'       => [
-				// 		'class' => 'mai-acf-button-group',
-				// 	]
-				// ],
-				// [
-				// 	'key'     => 'mai_gallery_columns_responsive',
-				// 	'name'    => 'columns_responsive',
-				// 	'type'    => 'true_false',
-				// 	'message' => __( 'Custom responsive columns', 'mai-engine' ),
-				// ],
-				// [
-				// 	'key'               => 'mai_gallery_columns_md',
-				// 	'label'             => __( 'Columns (lg tablets)', 'mai-engine' ),
-				// 	'name'              => 'columns_md',
-				// 	'type'              => 'button_group',
-				// 	'choices'           => [
-				// 		1 => 1,
-				// 		2 => 2,
-				// 		3 => 3,
-				// 		4 => 4,
-				// 		5 => 5,
-				// 		6 => 6,
-				// 		7 => 7,
-				// 		8 => 8,
-				// 	],
-				// 	'wrapper'           => [
-				// 		'class' => 'mai-acf-button-group mai-acf-nested-columns mai-acf-nested-columns-first',
-				// 	],
-				// 	'conditional_logic' => [
-				// 		[
-				// 			[
-				// 				'field'    => 'mai_gallery_columns_responsive',
-				// 				'operator' => '==',
-				// 				'value'    => 1,
-				// 			],
-				// 		],
-				// 	],
-				// ],
-				// [
-				// 	'key'               => 'mai_gallery_columns_sm',
-				// 	'label'             => __( 'Columns (md tablets)', 'mai-engine' ),
-				// 	'name'              => 'columns_sm',
-				// 	'type'              => 'button_group',
-				// 	'choices'           => [
-				// 		1 => 1,
-				// 		2 => 2,
-				// 		3 => 3,
-				// 		4 => 4,
-				// 		5 => 5,
-				// 		6 => 6,
-				// 		7 => 7,
-				// 		8 => 8,
-				// 	],
-				// 	'wrapper'           => [
-				// 		'class' => 'mai-acf-button-group mai-acf-nested-columns',
-				// 	],
-				// 	'conditional_logic' => [
-				// 		[
-				// 			[
-				// 				'field'    => 'mai_gallery_columns_responsive',
-				// 				'operator' => '==',
-				// 				'value'    => 1,
-				// 			],
-				// 		],
-				// 	],
-				// ],
-				// [
-				// 	'key'               => 'mai_gallery_columns_xs',
-				// 	'label'             => __( 'Columns (mobile)', 'mai-engine' ),
-				// 	'name'              => 'columns_xs',
-				// 	'type'              => 'button_group',
-				// 	'choices'           => [
-				// 		1 => 1,
-				// 		2 => 2,
-				// 		3 => 3,
-				// 		4 => 4,
-				// 		5 => 5,
-				// 		6 => 6,
-				// 		7 => 7,
-				// 		8 => 8,
-				// 	],
-				// 	'wrapper'           => [
-				// 		'class' => 'mai-acf-button-group mai-acf-nested-columns mai-acf-nested-columns-last',
-				// 	],
-				// 	'conditional_logic' => [
-				// 		[
-				// 			[
-				// 				'field'    => 'mai_gallery_columns_responsive',
-				// 				'operator' => '==',
-				// 				'value'    => 1,
-				// 			],
-				// 		],
-				// 	],
-				// ],
-				// [
-				// 	'key'               => 'mai_gallery_align_columns',
-				// 	'label'             => __( 'Align Columns', 'mai-engine' ),
-				// 	'name'              => 'align_columns',
-				// 	'type'              => 'button_group',
-				// 	'default_value'     => 'center',
-				// 	'choices'           => [
-				// 		'start'  => 'Start',
-				// 		'center' => 'Center',
-				// 		'end'    => 'End',
-				// 	],
-				// 	'wrapper'           => [
-				// 		'class' => 'mai-acf-button-group',
-				// 	],
-				// 	'conditional_logic' => [
-				// 		[
-				// 			[
-				// 				'field'    => 'mai_gallery_columns',
-				// 				'operator' => '!=',
-				// 				'value'    => '1',
-				// 			],
-				// 		],
-				// 	],
-				// ],
-				// [
-				// 	'key'               => 'mai_gallery_align_columns_vertical',
-				// 	'label'             => __( 'Align Columns (vertical)', 'mai-engine' ),
-				// 	'name'              => 'align_columns_vertical',
-				// 	'type'              => 'button_group',
-				// 	'choices'           => [
-				// 		'full'   => __( 'Full', 'mai-engine' ),
-				// 		'top'    => __( 'Top', 'mai-engine' ),
-				// 		'middle' => __( 'Middle', 'mai-engine' ),
-				// 		'bottom' => __( 'Bottom', 'mai-engine' ),
-				// 	],
-				// 	'wrapper'           => [
-				// 		'class' => 'mai-acf-button-group',
-				// 	],
-				// 	'conditional_logic' => [
-				// 		[
-				// 			[
-				// 				'field'    => 'mai_gallery_columns',
-				// 				'operator' => '!=',
-				// 				'value'    => '1',
-				// 			],
-				// 		],
-				// 	],
-				// ],
-				// [
-				// 	'key'           => 'mai_gallery_column_gap',
-				// 	'label'         => __( 'Column Gap', 'mai-engine' ),
-				// 	'name'          => 'column_gap',
-				// 	'type'          => 'button_group',
-				// 	'default_value' => 'md',
-				// 	'choices'       => [
-				// 		''      => __( 'None', 'mai-engine' ),
-				// 		'md'    => __( 'XS', 'mai-engine' ),
-				// 		'lg'    => __( 'S', 'mai-engine' ),
-				// 		'xl'    => __( 'M', 'mai-engine' ),
-				// 		'xxl'   => __( 'L', 'mai-engine' ),
-				// 		'xxxl'  => __( 'XL', 'mai-engine' ),
-				// 		'xxxxl' => __( '2XL', 'mai-engine' ),
-				// 	],
-				// 	'wrapper'       => [
-				// 		'class' => 'mai-acf-button-group mai-acf-button-group-small',
-				// 	],
-				// ],
-				// [
-				// 	'key'           => 'mai_gallery_row_gap',
-				// 	'label'         => __( 'Row Gap', 'mai-engine' ),
-				// 	'name'          => 'row_gap',
-				// 	'type'          => 'button_group',
-				// 	'default_value' => 'md',
-				// 	'choices'       => [
-				// 		''      => __( 'None', 'mai-engine' ),
-				// 		'md'    => __( 'XS', 'mai-engine' ),
-				// 		'lg'    => __( 'S', 'mai-engine' ),
-				// 		'xl'    => __( 'M', 'mai-engine' ),
-				// 		'xxl'   => __( 'L', 'mai-engine' ),
-				// 		'xxxl'  => __( 'XL', 'mai-engine' ),
-				// 		'xxxxl' => __( '2XL', 'mai-engine' ),
-				// 	],
-				// 	'wrapper'       => [
-				// 		'class' => 'mai-acf-button-group mai-acf-button-group-small',
-				// 	],
-				// ],
-				// [
-				// 	'key'           => 'mai_gallery_margin_top',
-				// 	'label'         => __( 'Top Margin', 'mai-engine' ),
-				// 	'name'          => 'margin_top',
-				// 	'type'          => 'button_group',
-				// 	'default_value' => '',
-				// 	'choices'       => [
-				// 		''      => __( 'None', 'mai-engine' ),
-				// 		'md'    => __( 'XS', 'mai-engine' ),
-				// 		'lg'    => __( 'S', 'mai-engine' ),
-				// 		'xl'    => __( 'M', 'mai-engine' ),
-				// 		'xxl'   => __( 'L', 'mai-engine' ),
-				// 		'xxxl'  => __( 'XL', 'mai-engine' ),
-				// 		'xxxxl' => __( '2XL', 'mai-engine' ),
-				// 	],
-				// 	'wrapper' => [
-				// 		'class' => 'mai-acf-button-group mai-acf-button-group-small',
-				// 	],
-				// ],
-				// [
-				// 	'key'           => 'mai_gallery_margin_bottom',
-				// 	'label'         => __( 'Bottom Margin', 'mai-engine' ),
-				// 	'name'          => 'margin_bottom',
-				// 	'type'          => 'button_group',
-				// 	'default_value' => '',
-				// 	'choices'       => [
-				// 		''      => __( 'None', 'mai-engine' ),
-				// 		'md'    => __( 'XS', 'mai-engine' ),
-				// 		'lg'    => __( 'S', 'mai-engine' ),
-				// 		'xl'    => __( 'M', 'mai-engine' ),
-				// 		'xxl'   => __( 'L', 'mai-engine' ),
-				// 		'xxxl'  => __( 'XL', 'mai-engine' ),
-				// 		'xxxxl' => __( '2XL', 'mai-engine' ),
-				// 	],
-				// 	'wrapper' => [
-				// 		'class' => 'mai-acf-button-group mai-acf-button-group-small',
-				// 	],
-				// ],
+				[
+					'key'     => 'mai_gallery_columns_clone',
+					'label'   => __( 'Columns', 'mai-engine' ),
+					'name'    => 'columns_clone',
+					'type'    => 'clone',
+					'display' => 'group', // 'group' or 'seamless'. 'group' allows direct return of actual field names via get_field( 'style' ).
+					'clone'   => [
+						'mai_columns',
+						'mai_columns_responsive',
+						'mai_columns_md',
+						'mai_columns_sm',
+						'mai_columns_xs',
+						'mai_align_columns',
+						'mai_align_columns_vertical',
+						'mai_column_gap',
+						'mai_row_gap',
+						'mai_margin_top',
+						'mai_margin_bottom',
+					],
+				],
 			],
 			'location'    => [
 				[

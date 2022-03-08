@@ -1,10 +1,11 @@
 .has-columns {
-	--flex-default: 0 0 calc((100% / var(--columns)) - var(--column-gap));
+	// --flex-default: 0 0 calc((100% / var(--columns)) - var(--column-gap));
+	--flex-default: 0 0 calc((100% / var(--columns) - ((var(--columns) - 1) / var(--columns) * var(--column-gap))));
 	display: flex;
 	flex-wrap: wrap;
 	gap: var(--row-gap) var(--column-gap);
 	align-items: var(--align-columns-vertical, unset);
-	justify-content: var(--align-columns);
+	justify-content: var(--align-columns, unset);
 
 	@include mq(false, sm) {
 		--columns: var(--columns-xs);

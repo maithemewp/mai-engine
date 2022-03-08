@@ -87,6 +87,28 @@ function mai_get_icons_fields() {
 				'class' => 'mai-icon-select',
 			],
 		],
+		[
+			'key'     => 'mai_icon_color',
+			'label'   => esc_html__( 'Icon Color', 'mai-engine' ),
+			'name'    => 'color_icon',
+			'type'    => 'radio',
+			'choices' => mai_get_radio_color_choices(),
+			'wrapper' => [
+				'class' => 'mai-block-colors',
+			],
+		],
+		[
+			'key'               => 'mai_icon_color_custom',
+			'name'              => 'color_icon_custom',
+			'type'              => 'color_picker',
+			'conditional_logic' => [
+				[
+					'field'    => 'mai_icon_color',
+					'operator' => '==',
+					'value'    => 'custom',
+				],
+			],
+		],
 	];
 
 	return $fields;
