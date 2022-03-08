@@ -52,24 +52,6 @@ function mai_prepare_legacy_color_field( $field ) {
 	return $field;
 }
 
-// add_filter( 'acf/format_value/key=mai_icon_choices', 'mai_format_acf_icon_value', 10, 3 );
-/**
- * Returns custom color value if set to do so.
- *
- * @since TBD
- *
- * @return string
- */
-function mai_format_acf_icon_value( $value, $post_id, $field ) {
-	// ray( get_field( 'style' ), get_field( 'style', $post_id ) );
-
-	if ( 'brands' === get_field( 'style' ) ) {
-		$value = get_field( 'icon_brand' );
-	}
-
-	return $value;
-}
-
 add_filter( 'acf/format_value/key=mai_column_background', 'mai_format_acf_color_value', 10, 3 );
 add_filter( 'acf/format_value/key=mai_divider_color', 'mai_format_acf_color_value', 10, 3 );
 add_filter( 'acf/format_value/key=mai_icon_color', 'mai_format_acf_color_value', 10, 3 );
