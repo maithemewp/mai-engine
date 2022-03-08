@@ -107,21 +107,6 @@ function mai_plugins_setup() {
  */
 function mai_render_admin_menu_page() {
 	do_action( 'mai_plugins_page' );
-	// echo '<style>
-	// :root {
-	// 	--mai-admin-toolbar: 32px;
-	// 	--mai-admin-content-left: 20px;
-	// }
-	// @media screen and (max-width: 782px) {
-	// 	:root {
-	// 		--mai-admin-toolbar: 46px;
-	// 	}
-	// 	.auto-fold {
-	// 		--mai-admin-content-left: 10px;
-	// 	}
-	// }
-	// </style>';
-	// echo '<iframe style="display:block;width:calc(100% + var(--mai-admin-content-left));height:calc(100vh - var(--mai-admin-toolbar));position:absolute;top:0;left:calc(var(--mai-admin-content-left) * -1);z-index: 9999;" width="400" height="800" frameborder="0" scrolling="yes" seamless="seamless" src="https://bizbudding.com/mai-engine-admin/"></iframe>';
 }
 
 /**
@@ -136,16 +121,17 @@ function mai_render_admin_patterns_menu_page() {
 	<style>
 	.mai-patterns {
 		display: grid;
-		grid-template-columns: 1fr 1fr 1fr 1fr;
+		grid-template-columns: repeat(var(--mai-patterns-columns, 1), 1fr);
 		gap: 48px 24px;
 		margin: 60px 0;
 	}
 	.mai-pattern {
 		padding: 24px;
-		background: white;
+		background: #fff;
 		text-align: center;
-		box-shadow: 0 2px 16px 2px rgba(0, 0, 0, 0.05);
+		border: var(--mai-plugin-border, 1px solid rgba(0,0,0,.1));
 		border-radius: 3px;
+		box-shadow: 0 2px 16px 2px rgba(0,0,0,.05);
 	}
 	.mai-pattern-category {
 		display: block;
@@ -159,6 +145,21 @@ function mai_render_admin_patterns_menu_page() {
 	.mai-patterns .mai-icon svg {
 		width: 1.25rem;
 		height: 1.25rem;
+	}
+	@media only screen and (min-width: 400px) and (max-width: 599px) {
+		:root {
+			--mai-patterns-columns: 2;
+		}
+	}
+	@media only screen and (min-width: 600px) and (max-width: 999px) {
+		:root {
+			--mai-patterns-columns: 3;
+		}
+	}
+	@media only screen and (min-width: 1000px) {
+		:root {
+			--mai-patterns-columns: 4;
+		}
 	}
 	</style>
 	<?php

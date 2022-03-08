@@ -106,10 +106,15 @@ function mai_do_entries_open( $args ) {
 	// Get the columns breakpoint array.
 	$columns = mai_get_breakpoint_columns( $args );
 
-	$attributes['style'] .= sprintf( '--columns-lg:%s;', $columns['lg'] );
-	$attributes['style'] .= sprintf( '--columns-md:%s;', $columns['md'] );
-	$attributes['style'] .= sprintf( '--columns-sm:%s;', $columns['sm'] );
-	$attributes['style'] .= sprintf( '--columns-xs:%s;', $columns['xs'] );
+	// Set columns properties.
+	foreach ( $columns as $break => $value ) {
+		$attributes['style'] .= sprintf( '--columns-%s:%s;', $break, $value );
+	}
+
+	// Set flex properties. This is required to make sure nested columns work.
+	foreach ( $columns as $break => $value ) {
+		$attributes['style'] .= sprintf( '--flex-%s:%s;', $break, mai_columns_get_flex( $value ) );
+	}
 
 	// Get column gap, deprecating old text field values.
 	if ( $args['column_gap'] ) {
@@ -165,7 +170,7 @@ function mai_do_entries_open( $args ) {
 		]
 	);
 
-	$wrap_class = 'entries-wrap';
+	$wrap_class = 'entries-wrap has-columns';
 
 	// Add image stack class to entries-wrap so it intercepts the inline variable so we don't need overly specific CSS.
 	if ( $args['image_stack'] && in_array( 'image', $args['show'], true ) && $args['image_position'] && mai_has_string( [

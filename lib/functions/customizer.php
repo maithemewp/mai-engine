@@ -337,9 +337,9 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			'sanitize'        => 'esc_html',
 			'default'         => $defaults['image_width'],
 			'choices'         => [
-				'fourth' => __( 'One Fourth', 'mai-engine' ),
-				'third'  => __( 'One Third', 'mai-engine' ),
-				'half'   => __( 'One Half', 'mai-engine' ),
+				'fourth' => esc_html__( '¼', 'mai-engine' ),
+				'third'  => esc_html__( '⅓', 'mai-engine' ),
+				'half'   => esc_html__( '½', 'mai-engine' ),
 			],
 			'active_callback' => [
 				[

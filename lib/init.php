@@ -370,16 +370,25 @@ function mai_load_files() {
 		'structure/widget-areas',
 		'structure/wrap',
 
+		// Fields.
+		'fields/columns',
+		'fields/grid-display',
+		'fields/grid-layout',
+		'fields/grid-tabs',
+		'fields/icons',
+		'fields/wp-query',
+		'fields/wp-term-query',
+
 		// Blocks.
 		'blocks/button',
-		'blocks/columns',
 		'blocks/cover',
-		'blocks/divider',
-		'blocks/gallery',
-		'blocks/grid',
 		'blocks/group',
 		'blocks/heading',
-		'blocks/icon',
+		'blocks/mai-columns',
+		'blocks/mai-divider',
+		'blocks/mai-gallery',
+		'blocks/mai-grid',
+		'blocks/mai-icon',
 		'blocks/paragraph',
 		'blocks/search',
 		'blocks/settings',
@@ -439,6 +448,10 @@ function mai_load_files() {
 		$files[] = 'support/polylang';
 	}
 
+	if ( class_exists( 'RankMath' ) ) {
+		$files[] = 'support/rankmath';
+	}
+
 	if ( class_exists( 'SitePress' ) ) {
 		$files[] = 'support/wpml';
 	}
@@ -459,4 +472,54 @@ function mai_load_files() {
 			WP_CLI::success( $message );
 		});
 	}
+}
+
+add_action( 'acf/init', 'mai_register_clone_fields', 0 );
+/**
+ * Register field groups for resuable fields.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_register_clone_fields() {
+	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+		return;
+	}
+
+	// $fields = [];
+	// $array  = [
+	// 	mai_get_icons_fields(),
+	// 	mai_get_columns_fields(),
+	// 	mai_get_grid_tabs_fields(),
+	// 	mai_get_grid_display_fields(),
+	// 	mai_get_grid_layout_fields(),
+	// 	mai_get_wp_query_fields(),
+	// 	mai_get_wp_term_query_fields(),
+	// ];
+
+	// foreach ( $array as $values ) {
+	// 	$fields = array_merge( $fields, $values );
+	// }
+
+	$fields = array_merge(
+		mai_get_icons_fields(),
+		mai_get_columns_fields(),
+		mai_get_grid_tabs_fields(),
+		mai_get_grid_display_fields(),
+		mai_get_grid_layout_fields(),
+		mai_get_wp_query_fields(),
+		mai_get_wp_term_query_fields()
+	);
+
+	acf_add_local_field_group(
+		[
+			'key'         => 'mai_clone_fields',
+			'title'       => esc_html__( 'Mai Clone Fields', 'mai-engine' ),
+			'fields'      => $fields,
+			'location'    => false,
+			'active'      => true,
+			'description' => '',
+		]
+	);
 }

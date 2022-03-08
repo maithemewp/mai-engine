@@ -9,34 +9,9 @@
 	--entry-meta-margin: 0 0 var(--spacing-md) 0;
 }
 
-.entries-wrap {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--row-gap) var(--column-gap);
-	align-items: var(--align-columns-vertical, unset);
-	justify-content: var(--align-columns);
-
-	@include mq(false, sm) {
-		--columns: var(--columns-xs);
-	}
-
-	@include mq(sm, md) {
-		--columns: var(--columns-sm);
-	}
-
-	@include mq(md, lg) {
-		--columns: var(--columns-md);
-	}
-
-	@include mq(lg) {
-		--columns: var(--columns-lg);
-	}
-}
-
 .entry {
 	position: var(--entry-position, static);
 	display: var(--entry-display, flex);
-	flex: var(--entry-flex, 0 0 calc((100% / var(--columns) - ((var(--columns) - 1) / var(--columns) * var(--column-gap))))); /* in v3 this should use mai_columns_get_flex(), but too late now. */
 	flex-direction: var(--entry-flex-direction, column);
 	flex-wrap: var(--entry-flex-wrap, nowrap);
 	width: var(--entry-width, auto); /* allows "auto" columns in grid and archives */

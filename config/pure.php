@@ -46,6 +46,9 @@ return [
 		],
 	],
 	'settings' => [
+		'logo'             => [
+			'show-tagline' => false,
+		],
 		'content-archives' => [
 			'post' => [
 				'show' => [
@@ -61,6 +64,7 @@ return [
 				'image_orientation'   => 'square',
 				'image_position'      => 'left-middle',
 				'image_width'         => 'fourth',
+				'image_alternate'     => false,
 				'header_meta'         => '[post_date] [post_author_posts_link before="by "]',
 				'footer_meta'         => '[post_terms taxonomy="category" before="Category: "][post_terms taxonomy="post_tag" before="Tag: "]',
 				'align_text_vertical' => 'middle',

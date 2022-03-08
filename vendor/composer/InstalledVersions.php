@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'c93a4de445c8bafef04e32bbf9b497a81f25af39',
+    'reference' => '07c9ffbfce1feaa3f1548bba40f9d0039efb1298',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
@@ -422,7 +422,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'c93a4de445c8bafef04e32bbf9b497a81f25af39',
+      'reference' => '07c9ffbfce1feaa3f1548bba40f9d0039efb1298',
     ),
     'phpoption/phpoption' => 
     array (
@@ -458,8 +458,8 @@ private static $installed = array (
     ),
     'symfony/polyfill-ctype' => 
     array (
-      'pretty_version' => 'v1.24.0',
-      'version' => '1.24.0.0',
+      'pretty_version' => 'v1.25.0',
+      'version' => '1.25.0.0',
       'aliases' => 
       array (
       ),
@@ -467,8 +467,8 @@ private static $installed = array (
     ),
     'symfony/polyfill-mbstring' => 
     array (
-      'pretty_version' => 'v1.24.0',
-      'version' => '1.24.0.0',
+      'pretty_version' => 'v1.25.0',
+      'version' => '1.25.0.0',
       'aliases' => 
       array (
       ),
@@ -476,12 +476,12 @@ private static $installed = array (
     ),
     'symfony/polyfill-php80' => 
     array (
-      'pretty_version' => 'v1.24.0',
-      'version' => '1.24.0.0',
+      'pretty_version' => 'v1.25.0',
+      'version' => '1.25.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '57b712b08eddb97c762a8caa32c84e037892d2e9',
+      'reference' => '4407588e0d3f1f52efb65fbe92babe41f37fe50c',
     ),
     'vlucas/phpdotenv' => 
     array (

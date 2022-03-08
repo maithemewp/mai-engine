@@ -209,15 +209,9 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 					$arrangement_col = $arrangement[ $element_i ];
 				}
 
-				if ( $flex = mai_columns_get_flex( $arrangement_col ) ) {
-					$style .= sprintf( '--flex-%s:%s;', $break, $flex );
-				}
+				$style .= sprintf( '--flex-%s:%s;', $break, mai_columns_get_flex( $arrangement_col ) );
 
-				if ( $style ) {
-					$element->setAttribute( 'style', $style );
-				} else {
-					$element->removeAttribute( 'style' );
-				}
+				$element->setAttribute( 'style', $style );
 
 				if ( $element_i === ( $total_arrangements - 1 ) ) {
 					$element_i = 0;
@@ -232,18 +226,10 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 		foreach ( $elements as $break => $dom_elements ) {
 
 			foreach ( $dom_elements as $element ) {
-				$style   = $element->getAttribute( 'style' );
-				$columns = $args['arrangements'][ $break ];
+				$style  = $element->getAttribute( 'style' );
+				$style .= sprintf( '--flex-%s:%s;', $break, mai_columns_get_flex( $args['arrangements'][ $break ] ) );
 
-				if ( $flex = mai_columns_get_flex( $columns ) ) {
-					$style .= sprintf( '--flex-%s:%s;', $break, $flex );
-				}
-
-				if ( $style ) {
-					$element->setAttribute( 'style', $style );
-				} else {
-					$element->removeAttribute( 'style' );
-				}
+				$element->setAttribute( 'style', $style );
 			}
 		}
 	}
@@ -586,7 +572,7 @@ function mai_register_columns_field_groups() {
 						'xl'               => __( 'M', 'mai-engine' ),
 						'xxl'              => __( 'L', 'mai-engine' ),
 						'xxxl'             => __( 'XL', 'mai-engine' ),
-						'xxxxl'            => __( 'XXL', 'mai-engine' ),
+						'xxxxl'            => __( '2XL', 'mai-engine' ),
 					],
 					'wrapper'           => [
 						'class'            => 'mai-acf-button-group mai-acf-button-group-small',
@@ -605,7 +591,7 @@ function mai_register_columns_field_groups() {
 						'xl'               => __( 'M', 'mai-engine' ),
 						'xxl'              => __( 'L', 'mai-engine' ),
 						'xxxl'             => __( 'XL', 'mai-engine' ),
-						'xxxxl'            => __( 'XXL', 'mai-engine' ),
+						'xxxxl'            => __( '2XL', 'mai-engine' ),
 					],
 					'wrapper'           => [
 						'class'            => 'mai-acf-button-group mai-acf-button-group-small',
@@ -623,7 +609,7 @@ function mai_register_columns_field_groups() {
 						'xl'               => __( 'M', 'mai-engine' ),
 						'xxl'              => __( 'L', 'mai-engine' ),
 						'xxxl'             => __( 'XL', 'mai-engine' ),
-						'xxxxl'            => __( 'XXL', 'mai-engine' ),
+						'xxxxl'            => __( '2XL', 'mai-engine' ),
 					],
 					'default_value'     => '',
 					'wrapper'           => [
@@ -642,7 +628,7 @@ function mai_register_columns_field_groups() {
 						'xl'               => __( 'M', 'mai-engine' ),
 						'xxl'              => __( 'L', 'mai-engine' ),
 						'xxxl'             => __( 'XL', 'mai-engine' ),
-						'xxxxl'            => __( 'XXL', 'mai-engine' ),
+						'xxxxl'            => __( '2XL', 'mai-engine' ),
 					],
 					'default_value'     => '',
 					'wrapper'           => [
@@ -694,8 +680,8 @@ function mai_register_columns_field_groups() {
 						'md'       => __( 'MD', 'mai-engine' ),
 						'lg'       => __( 'LG', 'mai-engine' ),
 						'xl'       => __( 'XL', 'mai-engine' ),
-						'xxl'      => __( 'XXL', 'mai-engine' ),
-						'xxxl'     => __( 'XXXL', 'mai-engine' ),
+						'xxl'      => __( '2XL', 'mai-engine' ),
+						'xxxl'     => __( '3XL', 'mai-engine' ),
 					],
 				],
 				[

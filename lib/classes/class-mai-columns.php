@@ -84,42 +84,50 @@ class Mai_Columns {
 	 * @return void
 	 */
 	function render() {
-		$attributes = [
+		$atts = [
 			'class'         => 'mai-columns',
 			'data-instance' => $this->instance,
 			'style'         => '',
 		];
 
 		if ( $this->args['class'] ) {
-			$attributes['class'] = mai_add_classes( $this->args['class'], $attributes['class'] );
+			$atts['class'] = mai_add_classes( $this->args['class'], $atts['class'] );
 		}
 
 		if ( in_array( $this->args['align'], [ 'full', 'wide' ] ) ) {
-			$attributes['class'] = mai_add_classes( 'align' . $this->args['align'], $attributes['class'] );
+			$atts['class'] = mai_add_classes( 'align' . $this->args['align'], $atts['class'] );
 		}
 
 		if ( $this->args['margin_top'] ) {
-			$attributes['class'] = mai_add_classes( sprintf( 'has-%s-margin-top', $this->args['margin_top'] ), $attributes['class'] );
+			$atts['class'] = mai_add_classes( sprintf( 'has-%s-margin-top', $this->args['margin_top'] ), $atts['class'] );
 		}
 
 		if ( $this->args['margin_bottom'] ) {
-			$attributes['class'] = mai_add_classes( sprintf( 'has-%s-margin-bottom', $this->args['margin_bottom'] ), $attributes['class'] );
+			$atts['class'] = mai_add_classes( sprintf( 'has-%s-margin-bottom', $this->args['margin_bottom'] ), $atts['class'] );
 		}
 
 		if ( $this->args['preview'] ) {
-			$attributes = $this->get_admin_attributes( $attributes );
+			$atts = $this->get_admin_attributes( $atts );
 		}
 
-		$attributes = $this->get_attributes( $attributes );
+		$atts = $this->get_attributes( $atts );
 
 		genesis_markup(
 			[
 				'open'    => '<div %s>',
 				'context' => 'mai-columns',
 				'echo'    => true,
-				'atts'    => $attributes,
+				'atts'    => $atts,
 			]
 		);
+
+		$wrap_atts = [
+			'class' => 'mai-columns-wrap has-columns'
+		];
+
+		if ( $this->args['preview'] ) {
+			$wrap_atts['class'] = mai_add_classes( 'has-columns-nested', $wrap_atts['class'] ); // Temp workaround for ACF nested block markup.
+		}
 
 		genesis_markup(
 			[
@@ -128,6 +136,7 @@ class Mai_Columns {
 				'context' => 'mai-columns-wrap',
 				'content' => $this->get_inner_blocks(),
 				'echo'    => true,
+				'atts'    => $wrap_atts,
 			]
 		);
 
@@ -160,10 +169,9 @@ class Mai_Columns {
 			foreach ( $elements as $columns ) {
 				$index++;
 
-				if ( $flex = mai_columns_get_flex( $columns ) ) {
-					$attributes['style'] .= sprintf( '--flex-%s:%s;', $break, $flex ); // Fallback for nested.
-					$attributes['style'] .= sprintf( '--flex-%s-%s:%s;', $break, $index, $flex );
-				}
+				$flex                 = mai_columns_get_flex( $columns );
+				$attributes['style'] .= sprintf( '--flex-%s:%s;', $break, $flex ); // Fallback for nested.
+				$attributes['style'] .= sprintf( '--flex-%s-%s:%s;', $break, $index, $flex );
 			}
 		}
 

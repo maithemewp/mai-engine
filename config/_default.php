@@ -447,6 +447,8 @@ return [
 			],
 			'post-thumbnails',
 			'responsive-embeds',
+			// Plugins.
+			'rank-math-breadcrumbs',
 			'woocommerce',
 			'wc-product-gallery-zoom',
 			'wc-product-gallery-lightbox',
