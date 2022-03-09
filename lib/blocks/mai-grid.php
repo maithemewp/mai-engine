@@ -191,25 +191,7 @@ function mai_register_grid_field_groups() {
 		return;
 	}
 
-	$names = [
-		'display'       => array_diff( array_keys( mai_get_grid_display_defaults() ), [ 'disable_entry_link' ] ),
-		'layout'        => array_keys( mai_get_grid_layout_defaults() ),
-		'wp_query'      => array_keys( mai_get_wp_query_defaults() ),
-		'wp_term_query' => array_keys( mai_get_wp_term_query_defaults() ),
-	];
-
-	foreach ( $names as $name => $keys ) {
-		foreach ( $keys as $index => $key ) {
-			$names[ $name ][ $index ] = 'mai_grid_block_' . $key;
-		}
-	}
-
-	$display       = array_merge( [ 'mai_grid_block_display_tab' ], $names['display'] );
-	$layout        = array_merge( [ 'mai_grid_block_layout_tab' ], $names['layout'] );
-	$wp_query      = array_merge( [ 'mai_grid_block_entries_tab' ], $names['wp_query'] );
-	$wp_term_query = array_merge( [ 'mai_grid_block_entries_tab' ], $names['wp_term_query'] );
-	$post_fields   = array_merge( $display, $layout, $wp_query, [ 'mai_grid_block_disable_entry_link' ] );
-	$term_fields   = array_merge( $display, $layout, $wp_term_query, [ 'mai_grid_block_disable_entry_link' ] );
+	$keys = mai_get_grid_field_keys();
 
 	acf_add_local_field_group(
 		[
@@ -222,7 +204,7 @@ function mai_register_grid_field_groups() {
 					'name'    => 'post_grid_clone',
 					'type'    => 'clone',
 					'display' => 'group', // 'group' or 'seamless'. 'group' allows direct return of actual field names via get_field( 'style' ).
-					'clone'   => $post_fields,
+					'clone'   => $keys['post'],
 				],
 			],
 			'location' => [
@@ -249,7 +231,7 @@ function mai_register_grid_field_groups() {
 					'name'    => 'term_grid_clone',
 					'type'    => 'clone',
 					'display' => 'group', // 'group' or 'seamless'. 'group' allows direct return of actual field names via get_field( 'style' ).
-					'clone'   => $term_fields,
+					'clone'   => $keys['term'],
 				],
 			],
 			'location' => [

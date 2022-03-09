@@ -240,3 +240,52 @@ function mai_get_columns_choices() {
 		'0' => esc_html__( 'Auto', 'mai-engine' ),
 	];
 }
+
+/**
+ * Gets field keys to be used by clone fields.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @return array
+ */
+function mai_get_grid_field_keys() {
+	static $keys = null;
+
+	if ( ! is_null( $keys ) ) {
+		return $keys;
+	}
+
+	$names = [];
+	$data  = [
+		'display'       => mai_get_grid_display_fields(),
+		'layout'        => mai_get_grid_layout_fields(),
+		'wp_query'      => mai_get_wp_query_fields(),
+		'wp_term_query' => mai_get_wp_term_query_fields(),
+	];
+
+	foreach ( $data as $name => $values ) {
+		foreach ( $values as $field ) {
+			$names[ $name ][] = $field['key'];
+			// $sub_fields       = isset( $field['sub_fields'] ) ? $field['sub_fields'] : [];
+
+			// if ( $sub_fields ) {
+			// 	foreach ( $sub_fields as $sub_field ) {
+			// 		$names[ $name ][] = $sub_field['key'];
+			// 	}
+			// }
+		}
+	}
+
+	$display         = array_merge( [ 'mai_grid_block_display_tab' ], array_diff( $names['display'], [ 'mai_grid_block_disable_entry_link' ] ) );
+	$layout          = array_merge( [ 'mai_grid_block_layout_tab' ], $names['layout'] );
+	$wp_query        = array_merge( [ 'mai_grid_block_entries_tab' ], $names['wp_query'] );
+	$wp_term_query   = array_merge( [ 'mai_grid_block_entries_tab' ], $names['wp_term_query'] );
+	$keys            = [
+		'post' => array_merge( $display, $layout, $wp_query, [ 'mai_grid_block_disable_entry_link' ] ),
+		'term' => array_merge( $display, $layout, $wp_term_query, [ 'mai_grid_block_disable_entry_link' ] ),
+	];
+
+	return $keys;
+}
