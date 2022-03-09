@@ -1629,10 +1629,29 @@ function mai_get_editor_localized_data() {
 		'link'      => __( 'Link', 'mai-engine' ),
 	];
 
-	$fields         = array_keys( mai_get_grid_display_defaults() );
-	$fields         = array_merge( $fields, array_keys( mai_get_grid_layout_defaults() ) );
-	$data[ 'post' ] = array_merge( $fields, array_keys( mai_get_wp_query_defaults() ) );
-	$data[ 'term' ] = array_merge( $fields, array_keys( mai_get_wp_term_query_defaults() ) );
+	$names = [];
+	$grid  = [
+		'display'       => mai_get_grid_display_fields(),
+		'layout'        => mai_get_grid_layout_fields(),
+		'wp_query'      => mai_get_wp_query_fields(),
+		'wp_term_query' => mai_get_wp_term_query_fields(),
+	];
+
+	foreach ( $grid as $name => $values ) {
+		foreach ( $values as $field ) {
+			$names[ $name ][ $field['name'] ] = $field['key'];
+			$sub_fields                       = isset( $field['sub_fields'] ) ? $field['sub_fields'] : [];
+
+			if ( $sub_fields ) {
+				foreach ( $sub_fields as $sub_field ) {
+					$names[ $name ][ $sub_field['name'] ] = $sub_field['key'];
+				}
+			}
+		}
+	}
+
+	$data['post'] = array_merge( $names['display'], $names['layout'], $names['wp_query'] );
+	$data['term'] = array_merge( $names['display'], $names['layout'], $names['wp_term_query'] );
 
 	return $data;
 }

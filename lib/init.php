@@ -487,21 +487,6 @@ function mai_register_clone_fields() {
 		return;
 	}
 
-	// $fields = [];
-	// $array  = [
-	// 	mai_get_icons_fields(),
-	// 	mai_get_columns_fields(),
-	// 	mai_get_grid_tabs_fields(),
-	// 	mai_get_grid_display_fields(),
-	// 	mai_get_grid_layout_fields(),
-	// 	mai_get_wp_query_fields(),
-	// 	mai_get_wp_term_query_fields(),
-	// ];
-
-	// foreach ( $array as $values ) {
-	// 	$fields = array_merge( $fields, $values );
-	// }
-
 	$fields = array_merge(
 		mai_get_icons_fields(),
 		mai_get_columns_fields(),
