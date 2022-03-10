@@ -17,41 +17,80 @@ defined( 'ABSPATH' ) || die;
  *
  * @since TBD
  *
- * @param array $args The columns args data.
+ * @param array $atts   The markup atts.
+ * @param array $args   The columns args data.
+ * @param bool  $nested Whether the columns are built via nested ACF blocks.
  *
  * @return string
  */
-function mai_get_columns_styles( $args ) {
-	$style = '';
+function mai_get_columns_atts( $atts, $args, $nested = false ) {
+	$atts['class'] = isset( $atts['class'] ) ? $atts['class'] : '';
+	$atts['style'] = isset( $atts['style'] ) ? $atts['style'] : '';
 
-	// Columns.
+	// Columns class.
+	$atts['class'] = mai_add_classes( 'has-columns', $atts['class'] );
+
+	// Get columns arrangement.
 	$columns = mai_get_breakpoint_columns( $args );
 
+	// Set columns properties.
 	foreach ( $columns as $break => $value ) {
-		$style .= sprintf( '--columns-%s:%s;', $break, $value );
+		$atts['style'] .= sprintf( '--columns-%s:%s;', $break, $value );
 	}
 
 	// Set flex properties. This is required to make sure nested columns work.
 	foreach ( $columns as $break => $value ) {
-		$style .= sprintf( '--flex-%s:%s;', $break, mai_columns_get_flex( $value ) );
+		$atts['style'] .= sprintf( '--flex-%s:%s;', $break, mai_columns_get_flex( $value ) );
+	}
+
+	// Temp workaround for ACF nested block markup.
+	// Container should have has-columns-nested class as well.
+	if ( $nested && $args['preview'] ) {
+		$atts['class'] = mai_add_classes( 'has-columns-nested', $atts['class'] );
+
+		foreach ( $columns as $break => $value ) {
+			for ( $i = 1; $i < 24; $i++ ) {
+				$atts['style'] .= sprintf( '--flex-%s-%s:%s;', $break, $i, mai_columns_get_flex( $value ) );
+			}
+		}
 	}
 
 	// Column/Row gap.
-	$column_gap = $args['column_gap'] ? sprintf( 'var(--spacing-%s)', $args['column_gap'] ) : '0px'; // Needs 0px for calc().
-	$row_gap    = $args['row_gap'] ? sprintf( 'var(--spacing-%s)', $args['row_gap'] ) : '0px'; // Needs 0px for calc().
-	$style     .= sprintf( '--column-gap:%s;', $column_gap  );
-	$style     .= sprintf( '--row-gap:%s;', $row_gap );
+	$column_gap     = $args['column_gap'] ? sprintf( 'var(--spacing-%s)', $args['column_gap'] ) : '0px'; // Needs 0px for calc().
+	$row_gap        = $args['row_gap'] ? sprintf( 'var(--spacing-%s)', $args['row_gap'] ) : '0px'; // Needs 0px for calc().
+	$atts['style'] .= sprintf( '--column-gap:%s;', $column_gap  );
+	$atts['style'] .= sprintf( '--row-gap:%s;', $row_gap );
 
 	// Align columns.
 	if ( $args['align_columns'] ) {
-		$style .= sprintf( '--align-columns:%s;', mai_get_flex_align( $args['align_columns'] ) );
+		$atts['style'] .= sprintf( '--align-columns:%s;', mai_get_flex_align( $args['align_columns'] ) );
 	}
 
 	if ( $args['align_columns_vertical'] ) {
-		$style .= sprintf( '--align-columns-vertical:%s;', mai_get_flex_align( $args['align_columns_vertical'] ) );
+		$atts['style'] .= sprintf( '--align-columns-vertical:%s;', mai_get_flex_align( $args['align_columns_vertical'] ) );
 	}
 
-	return $style;
+	return $atts;
+}
+
+/**
+ * Temp workaround for ACF nested block markup.
+ */
+function mai_get_columns_nested_styles( $args ) {
+	$styles = '';
+
+	// Columns.
+	$columns = mai_get_breakpoint_columns( $args );
+
+	// foreach ( $columns as $break => $value ) {
+		// $atts['style'] .= sprintf( '--columns-%s:%s;', $break, $value );
+	// }
+
+	// Set flex properties. This is required to make sure nested columns work.
+	foreach ( $columns as $break => $value ) {
+		$atts['style'] .= sprintf( '--flex-%s-%s:%s;', $break, $index, $flex );
+		$atts['style'] .= sprintf( '--flex-%s:%s;', $break, mai_columns_get_flex( $value ) );
+	}
 }
 
 /**
