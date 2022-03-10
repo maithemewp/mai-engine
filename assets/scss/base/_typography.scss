@@ -52,7 +52,7 @@ i {
 
 blockquote {
 	margin: var(--blockquote-margin, 1em auto);
-	padding: var(--blockquote-padding, 1em);
+	padding: var(--blockquote-padding, var(--spacing-sm) 0 var(--spacing-xs) var(--spacing-lg));
 	color: var(--blockquote-color, unset);
 	font-weight: var(--blockquote-font-weight, normal);
 	font-size: var(--blockquote-font-size, 1em);
@@ -66,8 +66,6 @@ blockquote {
 	border-bottom: var(--blockquote-border-bottom, 0);
 	border-left: var(--blockquote-border-left, var(--border));
 	box-shadow: var(--blockquote-box-shadow, none);
-
-	--paragraph-padding: var(--spacing-md) 0;
 }
 
 cite {
