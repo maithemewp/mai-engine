@@ -43,6 +43,7 @@ class Mai_Gallery {
 		$args = wp_parse_args( $args,
 			[
 				'preview'                => false,
+				'align'                  => '',
 				'class'                  => '',
 				'images'                 => [],
 				'image_orientation'      => 'landscape',
@@ -65,6 +66,7 @@ class Mai_Gallery {
 		// Sanitize.
 		$args = [
 			'preview'                => mai_sanitize_bool( $args['preview'] ),
+			'align'                  => esc_attr( $args['align'] ),
 			'class'                  => esc_html( $args['class'] ),
 			'images'                 => $args['images'] ? array_map( 'absint', (array) $args['images'] ) : [],
 			'image_orientation'      => esc_html( $args['image_orientation'] ),
@@ -122,6 +124,10 @@ class Mai_Gallery {
 		];
 
 		$atts = mai_get_columns_atts( $atts, $this->args );
+
+		if ( $this->args['align'] ) {
+			$atts['class'] = mai_add_classes( 'align' . $this->args['align'], $atts['class'] );
+		}
 
 		if ( $this->args['class'] ) {
 			$atts['class'] = mai_add_classes( $this->args['class'], $atts['class'] );
