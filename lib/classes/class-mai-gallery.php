@@ -121,7 +121,7 @@ class Mai_Gallery {
 			'class' => 'mai-gallery',
 		];
 
-		$atts = mai_get_columns_atts( $atts, $this->args, true );
+		$atts = mai_get_columns_atts( $atts, $this->args );
 
 		if ( $this->args['class'] ) {
 			$atts['class'] = mai_add_classes( $this->args['class'], $atts['class'] );
