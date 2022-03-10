@@ -31,6 +31,11 @@ function mai_get_columns_styles( $args ) {
 		$style .= sprintf( '--columns-%s:%s;', $break, $value );
 	}
 
+	// Set flex properties. This is required to make sure nested columns work.
+	foreach ( $columns as $break => $value ) {
+		$style .= sprintf( '--flex-%s:%s;', $break, mai_columns_get_flex( $value ) );
+	}
+
 	// Column/Row gap.
 	$column_gap = $args['column_gap'] ? sprintf( 'var(--spacing-%s)', $args['column_gap'] ) : '0px'; // Needs 0px for calc().
 	$row_gap    = $args['row_gap'] ? sprintf( 'var(--spacing-%s)', $args['row_gap'] ) : '0px'; // Needs 0px for calc().
