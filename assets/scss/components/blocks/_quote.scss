@@ -4,7 +4,6 @@
 	footer,
 	&__citation {
 		position: relative;
-		margin-top: 1em;
 	}
 
 	footer,
@@ -29,7 +28,6 @@
 	&.is-style-large,
 	&.is-large {
 		margin: var(--blockquote-margin, 1em auto);
-		padding: var(--blockquote-padding, 1em);
 
 		p {
 			font-size: var(--blockquote-font-size-large, var(--font-size-xl));
@@ -45,5 +43,9 @@
 			font-size: var(--caption-font-size, var(--font-size-xs));
 			text-align: inherit;
 		}
+	}
+
+	> p:last-of-type:not(:last-child) {
+		--paragraph-margin-bottom: var(--spacing-xxxs);
 	}
 }

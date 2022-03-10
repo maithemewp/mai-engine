@@ -36,7 +36,7 @@ function mai_register_gallery_block() {
 			'icon'            => 'format-gallery',
 			'mode'            => 'preview',
 			'supports'        => [
-				'align' => false,
+				'align' => [ 'wide', 'full' ],
 			],
 		]
 	);
@@ -57,6 +57,7 @@ function mai_register_gallery_block() {
 function mai_do_gallery_block( $block, $content = '', $is_preview = false, $post_id = 0 ) {
 	$args = [
 		'preview'                => $is_preview,
+		'align'                  => isset( $block['align'] ) ? $block['align'] : '',
 		'class'                  => isset( $block['className'] ) && ! empty( $block['className'] ) ? mai_add_classes( $block['className'] ) : '',
 		'images'                 => get_field( 'images' ),
 		'image_orientation'      => get_field( 'image_orientation' ),
@@ -74,15 +75,6 @@ function mai_do_gallery_block( $block, $content = '', $is_preview = false, $post
 		'margin_top'             => get_field( 'margin_top' ),
 		'margin_bottom'          => get_field( 'margin_bottom' ),
 	];
-
-	// Remove empty args so defaults are used.
-	foreach ( $args as $key => $value ) {
-		if ( '' !== $value ) {
-			continue;
-		}
-
-		unset( $args[ $key ] );
-	}
 
 	echo mai_get_gallery( $args );
 }
@@ -117,7 +109,7 @@ function mai_register_gallery_group() {
 	acf_add_local_field_group(
 		[
 			'key'         => 'mai_gallery_field_group',
-			'title'       => esc_html__( 'Mai Divider', 'mai-engine' ),
+			'title'       => esc_html__( 'Mai Gallery', 'mai-engine' ),
 			'fields'      => [
 				[
 					'key'       => 'mai_gallery_images_tab',
