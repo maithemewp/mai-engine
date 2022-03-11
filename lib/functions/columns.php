@@ -54,7 +54,7 @@ function mai_get_columns_atts( $atts, $args, $nested = false ) {
 
 	// Column/Row gap.
 	$column_gap     = isset( $args['column_gap'] ) && $args['column_gap'] && mai_is_valid_size( $args['column_gap'] ) ? sprintf( 'var(--spacing-%s)', $args['column_gap'] ) : '0px'; // Needs 0px for calc().
-	$row_gap        = isset( $args['row_gap'] ) && $args['column_gap'] && mai_is_valid_size( $args['row_gap'] ) ? sprintf( 'var(--spacing-%s)', $args['row_gap'] ) : '0px'; // Needs 0px for calc().
+	$row_gap        = isset( $args['row_gap'] ) && $args['row_gap'] && mai_is_valid_size( $args['row_gap'] ) ? sprintf( 'var(--spacing-%s)', $args['row_gap'] ) : '0px'; // Needs 0px for calc().
 	$atts['style'] .= sprintf( '--column-gap:%s;', $column_gap  );
 	$atts['style'] .= sprintf( '--row-gap:%s;', $row_gap );
 
