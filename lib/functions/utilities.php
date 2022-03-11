@@ -1764,17 +1764,28 @@ function mai_get_logo_icon_2x() {
  * @return string
  */
 function mai_get_cart_total() {
-	if ( ! function_exists( 'WC' ) ) {
+	$woo = class_exists( 'WooCommerce' ) && function_exists( 'WC' );
+	$edd = class_exists( 'Easy_Digital_Downloads' );
+
+	if ( ! ( $woo || $edd ) ) {
 		return '';
 	}
 
-	$cart = WC()->cart;
-	if ( ! $cart ) {
-		return;
-	}
+	$total = '';
 
-	$total = WC()->cart->get_cart_contents_count();
-	$total = $total ?: '';
+	if ( $woo ) {
+		$cart = WC()->cart;
+
+		if ( ! $cart ) {
+			return $total;
+		}
+
+		$total = WC()->cart->get_cart_contents_count();
+		$total = $total ?: '';
+
+	} elseif ( $edd ) {
+		$total = edd_get_cart_total();
+	}
 
 	return sprintf( '<span class="mai-cart-total-wrap is-circle"><span class="mai-cart-total">%s</span></span>', $total );
 }
