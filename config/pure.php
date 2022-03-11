@@ -10,6 +10,9 @@
  */
 
 return [
+	'demos'         => [
+		'creator' => 75,
+	],
 	'global-styles' => [
 		'colors' => [
 			'black'      => '#111111',
