@@ -298,6 +298,13 @@ return [
 				return function_exists( 'atomic_blocks_main_plugin_file' );
 			},
 		],
+		'easy-digital-downloads' => [
+			'location'  => 'public',
+			'inline'    => true,
+			'condition' => function() {
+				return class_exists( 'Easy_Digital_Downloads' );
+			},
+		],
 		'facetwp'                => [
 			'location'  => 'public',
 			'condition' => function() {

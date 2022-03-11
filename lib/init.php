@@ -441,6 +441,10 @@ function mai_load_files() {
 		);
 	}
 
+	if ( class_exists( 'Easy_Digital_Downloads' ) ) {
+		$files[] = 'support/easy-digital-downloads';
+	}
+
 	if ( class_exists( 'FacetWP' ) ) {
 		$files[] = 'support/facetwp';
 	}

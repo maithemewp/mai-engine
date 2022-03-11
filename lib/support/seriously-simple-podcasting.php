@@ -23,10 +23,8 @@ add_filter( 'ssp_register_post_type_args', 'mai_ssp_add_settings' );
  * @return array
  */
 function mai_ssp_add_settings( $args ) {
-	$args['supports'][] = 'genesis-cpt-archives-settings';
-	$args['supports'][] = 'mai-archive-settings';
-	$args['supports'][] = 'mai-single-settings';
-	$args['supports']   = array_unique( $args['supports'] );
+	$supports         = [ 'genesis-cpt-archives-settings', 'genesis-layouts', 'mai-archive-settings', 'mai-single-settings' ];
+	$args['supports'] = array_unique( array_merge( $args['supports'], $supports ) );
 
 	return $args;
 }
