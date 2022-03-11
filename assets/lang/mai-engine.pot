@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Mai Engine plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.21.0-beta.11\n"
+"Project-Id-Version: Mai Engine 2.21.0-beta.19\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-03-09T04:06:49+00:00\n"
+"POT-Creation-Date: 2022-03-11T21:41:18+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -85,30 +85,30 @@ msgstr ""
 msgid "Loading"
 msgstr ""
 
-#: config/_default.php:429
+#: config/_default.php:436
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/_default.php:430
+#: config/_default.php:437
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/_default.php:431
+#: config/_default.php:438
 #: lib/admin/hide-elements.php:106
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default.php:548
+#: config/_default.php:555
 #: lib/functions/deprecated.php:254
 msgid "Sidebar"
 msgstr ""
 
-#: config/_default.php:549
+#: config/_default.php:556
 #: lib/functions/deprecated.php:255
 msgid "The Sidebar widget area."
 msgstr ""
 
-#: config/_default.php:659
+#: config/_default.php:666
 msgid "Read more"
 msgstr ""
 
@@ -129,6 +129,7 @@ msgid "Subheading"
 msgstr ""
 
 #: lib/blocks/mai-gallery.php:31
+#: lib/blocks/mai-gallery.php:112
 msgid "Mai Gallery"
 msgstr ""
 
@@ -136,45 +137,44 @@ msgstr ""
 msgid "A custom gallery block."
 msgstr ""
 
-#: lib/blocks/mai-gallery.php:120
-#: lib/blocks/mai-divider.php:31
-#: lib/blocks/mai-divider.php:212
-msgid "Mai Divider"
-msgstr ""
-
-#: lib/blocks/mai-gallery.php:124
-#: lib/blocks/mai-gallery.php:154
+#: lib/blocks/mai-gallery.php:116
+#: lib/blocks/mai-gallery.php:146
 msgid "Images"
 msgstr ""
 
-#: lib/blocks/mai-gallery.php:131
+#: lib/blocks/mai-gallery.php:123
 #: lib/functions/customizer.php:184
 #: lib/functions/customizer.php:917
 #: lib/fields/grid-display.php:165
 msgid "Image Orientation"
 msgstr ""
 
-#: lib/blocks/mai-gallery.php:139
+#: lib/blocks/mai-gallery.php:131
 #: lib/functions/customizer.php:199
 #: lib/functions/customizer.php:932
 #: lib/fields/grid-display.php:180
 msgid "Image Size"
 msgstr ""
 
-#: lib/blocks/mai-gallery.php:167
+#: lib/blocks/mai-gallery.php:159
 msgid "Add image shadow"
 msgstr ""
 
-#: lib/blocks/mai-gallery.php:172
+#: lib/blocks/mai-gallery.php:164
 #: lib/fields/grid-tabs.php:41
 #: assets/js/blocks/layout-settings.js:223
 #: assets/js/min/blocks.js:861
 msgid "Layout"
 msgstr ""
 
-#: lib/blocks/mai-gallery.php:177
+#: lib/blocks/mai-gallery.php:169
 #: lib/blocks/mai-columns.php:318
 msgid "Columns"
+msgstr ""
+
+#: lib/blocks/mai-divider.php:31
+#: lib/blocks/mai-divider.php:212
+msgid "Mai Divider"
 msgstr ""
 
 #: lib/blocks/mai-divider.php:32
@@ -227,10 +227,10 @@ msgstr ""
 #: lib/functions/customizer.php:788
 #: lib/fields/grid-layout.php:226
 #: lib/fields/grid-layout.php:244
-#: lib/fields/columns.php:268
-#: lib/fields/columns.php:287
-#: lib/fields/columns.php:306
-#: lib/fields/columns.php:325
+#: lib/fields/columns.php:267
+#: lib/fields/columns.php:286
+#: lib/fields/columns.php:305
+#: lib/fields/columns.php:324
 #: lib/fields/grid-display.php:145
 #: lib/customize/page-header.php:113
 #: lib/customize/page-header.php:240
@@ -257,10 +257,10 @@ msgstr ""
 #: lib/functions/customizer.php:789
 #: lib/fields/grid-layout.php:227
 #: lib/fields/grid-layout.php:245
-#: lib/fields/columns.php:269
-#: lib/fields/columns.php:288
-#: lib/fields/columns.php:307
-#: lib/fields/columns.php:326
+#: lib/fields/columns.php:268
+#: lib/fields/columns.php:287
+#: lib/fields/columns.php:306
+#: lib/fields/columns.php:325
 #: lib/fields/grid-display.php:146
 #: lib/customize/page-header.php:114
 #: lib/customize/page-header.php:241
@@ -287,10 +287,10 @@ msgstr ""
 #: lib/functions/customizer.php:790
 #: lib/fields/grid-layout.php:228
 #: lib/fields/grid-layout.php:246
-#: lib/fields/columns.php:270
-#: lib/fields/columns.php:289
-#: lib/fields/columns.php:308
-#: lib/fields/columns.php:327
+#: lib/fields/columns.php:269
+#: lib/fields/columns.php:288
+#: lib/fields/columns.php:307
+#: lib/fields/columns.php:326
 #: lib/fields/grid-display.php:147
 #: lib/customize/page-header.php:115
 #: lib/customize/page-header.php:242
@@ -317,10 +317,10 @@ msgstr ""
 #: lib/functions/customizer.php:791
 #: lib/fields/grid-layout.php:229
 #: lib/fields/grid-layout.php:247
-#: lib/fields/columns.php:271
-#: lib/fields/columns.php:290
-#: lib/fields/columns.php:309
-#: lib/fields/columns.php:328
+#: lib/fields/columns.php:270
+#: lib/fields/columns.php:289
+#: lib/fields/columns.php:308
+#: lib/fields/columns.php:327
 #: lib/fields/grid-display.php:148
 #: lib/customize/page-header.php:116
 #: lib/customize/page-header.php:243
@@ -348,10 +348,10 @@ msgstr ""
 #: lib/functions/customizer.php:792
 #: lib/fields/grid-layout.php:230
 #: lib/fields/grid-layout.php:248
-#: lib/fields/columns.php:272
-#: lib/fields/columns.php:291
-#: lib/fields/columns.php:310
-#: lib/fields/columns.php:329
+#: lib/fields/columns.php:271
+#: lib/fields/columns.php:290
+#: lib/fields/columns.php:309
+#: lib/fields/columns.php:328
 #: lib/fields/grid-display.php:149
 #: lib/customize/page-header.php:117
 #: lib/customize/page-header.php:244
@@ -506,7 +506,7 @@ msgstr ""
 #: lib/functions/customizer.php:224
 #: lib/functions/customizer.php:752
 #: lib/fields/grid-layout.php:202
-#: lib/fields/columns.php:242
+#: lib/fields/columns.php:241
 #: lib/fields/grid-display.php:204
 #: assets/js/blocks/layout-settings.js:166
 #: assets/js/min/blocks.js:804
@@ -577,7 +577,7 @@ msgstr ""
 #: lib/blocks/mai-columns.php:533
 #: lib/functions/customizer.php:728
 #: lib/fields/grid-layout.php:176
-#: lib/fields/columns.php:213
+#: lib/fields/columns.php:212
 msgid "Align Columns"
 msgstr ""
 
@@ -624,7 +624,7 @@ msgstr ""
 #: lib/blocks/mai-columns.php:549
 #: lib/functions/customizer.php:747
 #: lib/fields/grid-layout.php:198
-#: lib/fields/columns.php:237
+#: lib/fields/columns.php:236
 msgid "Align Columns (vertical)"
 msgstr ""
 
@@ -634,7 +634,7 @@ msgstr ""
 #: lib/functions/customizer.php:487
 #: lib/functions/customizer.php:753
 #: lib/fields/grid-layout.php:203
-#: lib/fields/columns.php:243
+#: lib/fields/columns.php:242
 #: lib/fields/grid-display.php:532
 #: lib/customize/page-header.php:95
 #: assets/js/blocks/layout-settings.js:301
@@ -651,7 +651,7 @@ msgstr ""
 #: lib/functions/customizer.php:488
 #: lib/functions/customizer.php:754
 #: lib/fields/grid-layout.php:204
-#: lib/fields/columns.php:244
+#: lib/fields/columns.php:243
 #: lib/fields/grid-display.php:533
 msgid "Middle"
 msgstr ""
@@ -662,7 +662,7 @@ msgstr ""
 #: lib/functions/customizer.php:489
 #: lib/functions/customizer.php:755
 #: lib/fields/grid-layout.php:205
-#: lib/fields/columns.php:245
+#: lib/fields/columns.php:244
 #: lib/fields/grid-display.php:534
 #: lib/customize/page-header.php:96
 #: assets/js/blocks/layout-settings.js:334
@@ -677,7 +677,7 @@ msgstr ""
 #: lib/blocks/mai-columns.php:564
 #: lib/functions/customizer.php:767
 #: lib/fields/grid-layout.php:221
-#: lib/fields/columns.php:262
+#: lib/fields/columns.php:261
 msgid "Column Gap"
 msgstr ""
 
@@ -690,10 +690,10 @@ msgstr ""
 #: lib/functions/customizer.php:787
 #: lib/fields/grid-layout.php:225
 #: lib/fields/grid-layout.php:243
-#: lib/fields/columns.php:267
-#: lib/fields/columns.php:286
-#: lib/fields/columns.php:305
-#: lib/fields/columns.php:324
+#: lib/fields/columns.php:266
+#: lib/fields/columns.php:285
+#: lib/fields/columns.php:304
+#: lib/fields/columns.php:323
 #: lib/customize/page-header.php:221
 #: assets/js/blocks/layout-settings.js:565
 #: assets/js/blocks/layout-settings.js:666
@@ -707,10 +707,10 @@ msgstr ""
 #: lib/blocks/mai-columns.php:612
 #: lib/blocks/mai-columns.php:631
 #: lib/blocks/mai-columns.php:683
-#: lib/fields/columns.php:273
-#: lib/fields/columns.php:292
-#: lib/fields/columns.php:311
-#: lib/fields/columns.php:330
+#: lib/fields/columns.php:272
+#: lib/fields/columns.php:291
+#: lib/fields/columns.php:310
+#: lib/fields/columns.php:329
 #: assets/js/blocks/layout-settings.js:593
 #: assets/js/blocks/layout-settings.js:690
 #: assets/js/min/blocks.js:1231
@@ -721,17 +721,17 @@ msgstr ""
 #: lib/blocks/mai-columns.php:583
 #: lib/functions/customizer.php:782
 #: lib/fields/grid-layout.php:239
-#: lib/fields/columns.php:281
+#: lib/fields/columns.php:280
 msgid "Row Gap"
 msgstr ""
 
 #: lib/blocks/mai-columns.php:602
-#: lib/fields/columns.php:300
+#: lib/fields/columns.php:299
 msgid "Top Margin"
 msgstr ""
 
 #: lib/blocks/mai-columns.php:621
-#: lib/fields/columns.php:319
+#: lib/fields/columns.php:318
 msgid "Bottom Margin"
 msgstr ""
 
@@ -959,10 +959,6 @@ msgstr ""
 msgid " has been deactivated."
 msgstr ""
 
-#: lib/init.php:503
-msgid "Mai Clone Fields"
-msgstr ""
-
 #: lib/classes/class-mai-plugins.php:82
 msgid "Plugin activated!"
 msgstr ""
@@ -1081,7 +1077,7 @@ msgstr ""
 msgid "Page "
 msgstr ""
 
-#: lib/classes/class-mai-gallery.php:113
+#: lib/classes/class-mai-gallery.php:115
 msgid "Add gallery images in the block sidebar settings."
 msgstr ""
 
@@ -2074,13 +2070,13 @@ msgstr ""
 
 #: lib/functions/customizer.php:676
 #: lib/fields/grid-layout.php:117
-#: lib/fields/columns.php:121
+#: lib/fields/columns.php:120
 msgid "Custom responsive columns"
 msgstr ""
 
 #: lib/functions/customizer.php:683
 #: lib/fields/grid-layout.php:122
-#: lib/fields/columns.php:126
+#: lib/fields/columns.php:125
 msgid "Columns (lg tablets)"
 msgstr ""
 
@@ -2091,7 +2087,7 @@ msgstr ""
 
 #: lib/functions/customizer.php:713
 #: lib/fields/grid-layout.php:158
-#: lib/fields/columns.php:184
+#: lib/fields/columns.php:183
 msgid "Columns (mobile)"
 msgstr ""
 
@@ -2624,8 +2620,12 @@ msgstr ""
 msgid "Exclude terms with no posts"
 msgstr ""
 
-#: lib/fields/columns.php:155
+#: lib/fields/columns.php:154
 msgid "Columns (md tablets)"
+msgstr ""
+
+#: lib/fields/clone.php:41
+msgid "Mai Clone Fields"
 msgstr ""
 
 #: lib/fields/grid-display.php:121
