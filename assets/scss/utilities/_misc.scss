@@ -346,3 +346,25 @@
 		visibility: hidden;
 	}
 }
+
+.mai-cart-total-wrap {
+	overflow: hidden;
+	line-height: 0;
+}
+
+.mai-icon-container {
+	position: relative;
+
+	.mai-cart-total-wrap {
+		position: var(--cart-total-position, absolute);
+		top: calc(var(--spacing-xxs) * -1);
+		right: calc(var(--spacing-xxs) * -1);
+	}
+}
+
+.mai-cart-total:not(:empty) {
+	padding: var(--cart-total-padding, var(--spacing-xxs));
+	color: var(--cart-total-color, white);
+	font-size: var(--cart-total-font-size, 0.75rem); /* em was breaking when menu size was larger */
+	background: var(--cart-total-background, var(--color-danger));
+}

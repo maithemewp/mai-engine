@@ -65,7 +65,7 @@ return [
 				'image_position'      => 'left-middle',
 				'image_width'         => 'fourth',
 				'image_alternate'     => false,
-				'header_meta'         => '[post_date] [post_author_posts_link before="by "]',
+				'header_meta'         => '[post_date format="M j, Y"] [post_author_posts_link before="by "]',
 				'footer_meta'         => '[post_terms taxonomy="category" before="Category: "][post_terms taxonomy="post_tag" before="Tag: "]',
 				'align_text_vertical' => 'middle',
 				'boxed'               => false,
@@ -76,7 +76,7 @@ return [
 		'single-content' => [
 			'post' => [
 				'image_orientation' => 'square',
-				'header_meta'       => '[mai_avatar size="32"][post_date][post_author_posts_link before=" · "]',
+				'header_meta'       => '[mai_avatar size="32"][post_date format="M j, Y"][post_author_posts_link before=" · "]',
 				'show'              => [
 					'genesis_entry_header',
 					'title',
