@@ -34,6 +34,12 @@
 	--button-link-color-hover: var(--color-link);
 }
 
+.has-dark-header .menu-item-button,
+.has-dark-transparent-header .menu-item-button {
+	--button-link-color: var(--color-white);
+	--button-link-color-hover: var(--color-white);
+}
+
 .has-boxed {
 	--entry-background: var(--color-alt);
 	--entry-border: 0;
