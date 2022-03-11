@@ -12,7 +12,6 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-
 /**
  * Gets field defaults.
  * TODO: Move these to config.php?

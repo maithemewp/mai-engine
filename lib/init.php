@@ -371,6 +371,7 @@ function mai_load_files() {
 		'structure/wrap',
 
 		// Fields.
+		'fields/clone', // Must be first.
 		'fields/columns',
 		'fields/grid-display',
 		'fields/grid-layout',
@@ -444,6 +445,10 @@ function mai_load_files() {
 		$files[] = 'support/facetwp';
 	}
 
+	if ( class_exists( 'SFWD_LMS' ) ) {
+		$files[] = 'support/learndash';
+	}
+
 	if ( class_exists( 'Polylang' ) ) {
 		$files[] = 'support/polylang';
 	}
@@ -460,6 +465,14 @@ function mai_load_files() {
 		$files[] = 'support/woocommerce';
 	}
 
+	if ( function_exists( 'ss_get_podcast' ) ) {
+		$files[] = 'support/seriously-simple-podcasting';
+	}
+
+	if ( class_exists( 'WPForms' ) || function_exists( 'wpforms' ) ) {
+		$files[] = 'support/wpforms';
+	}
+
 	foreach ( $files as $file ) {
 		require_once __DIR__ . "/$file.php";
 	}
@@ -472,39 +485,4 @@ function mai_load_files() {
 			WP_CLI::success( $message );
 		});
 	}
-}
-
-add_action( 'acf/init', 'mai_register_clone_fields', 0 );
-/**
- * Register field groups for resuable fields.
- *
- * @since TBD
- *
- * @return void
- */
-function mai_register_clone_fields() {
-	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
-		return;
-	}
-
-	$fields = array_merge(
-		mai_get_icons_fields(),
-		mai_get_columns_fields(),
-		mai_get_grid_tabs_fields(),
-		mai_get_grid_display_fields(),
-		mai_get_grid_layout_fields(),
-		mai_get_wp_query_fields(),
-		mai_get_wp_term_query_fields()
-	);
-
-	acf_add_local_field_group(
-		[
-			'key'         => 'mai_clone_fields',
-			'title'       => esc_html__( 'Mai Clone Fields', 'mai-engine' ),
-			'fields'      => $fields,
-			'location'    => false,
-			'active'      => true,
-			'description' => '',
-		]
-	);
 }
