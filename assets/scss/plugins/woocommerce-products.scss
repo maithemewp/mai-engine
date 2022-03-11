@@ -248,6 +248,10 @@ li.wc-block-grid__product .wp-block-button {
 	}
 }
 
+.product_title {
+	--entry-title-font-size: var(--font-size-xxxl);
+}
+
 .woocommerce-product-gallery,
 .summary {
 	float: none !important;
