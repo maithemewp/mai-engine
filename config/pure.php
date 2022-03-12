@@ -54,6 +54,17 @@ return [
 		'logo'             => [
 			'show-tagline' => false,
 		],
+		'page-header'      => [
+			'archive'          => '*',
+			'background-color' => 'alt',
+			'text-color'       => 'dark',
+			'content-width'    => 'xl',
+			'text-align'       => 'center',
+			'spacing'          => [
+				'top'    => '2em',
+				'bottom' => '2em',
+			],
+		],
 		'content-archives' => [
 			'post' => [
 				'show' => [
