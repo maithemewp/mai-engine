@@ -150,7 +150,7 @@
 @include mq(md, lg) {
 
 	:root {
-		--font-scale: var(--font-scale-mobile, 1.2);         // Minor third.
+		--font-scale: var(--font-scale-tablet, 1.2);         // Minor third.
 		--spacing-scale: var(--spacing-scale-tablet, 1.414); // Augmented fourth.
 		--padding-scale: var(--padding-scale-tablet, 1.778); // Minor seventh.
 	}
