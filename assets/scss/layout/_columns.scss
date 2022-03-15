@@ -25,7 +25,7 @@
 }
 
 .is-column {
-	flex: var(--flex, var(--flex-default));
+	flex: var(--flex, var(--flex-xs, var(--flex-default)));
 	order: var(--order, unset);
 
 	@include mq(false, sm) {

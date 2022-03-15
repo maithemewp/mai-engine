@@ -27,14 +27,15 @@ defined( 'ABSPATH' ) || die;
 function mai_do_entries_open( $args ) {
 	// Start the atts.
 	$atts = [
-		'class' => mai_add_classes( 'entries', isset( $args['class'] ) ? $args['class'] : '' ),
-		'style' => '',
+		'preview' => is_admin(),
+		'class'   => mai_add_classes( 'entries', isset( $args['class'] ) ? $args['class']: '' ),
+		'style'   => '',
 	];
 
 	$atts = mai_get_columns_atts( $atts, $args );
 
 	// Context.
-	$context             = 'block' === $args['context'] ? 'grid' : $args['context'];
+	$context       = 'block' === $args['context'] ? 'grid' : $args['context'];
 	$atts['class'] = mai_add_classes( 'entries-' . $context, $atts['class'] );
 
 	// Boxed.

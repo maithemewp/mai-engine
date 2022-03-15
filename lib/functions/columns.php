@@ -42,8 +42,11 @@ function mai_get_columns_atts( $atts, $args, $nested = false ) {
 	foreach ( $columns as $break => $value ) {
 		$atts['style'] .= sprintf( '--flex-%s:%s;', $break, mai_columns_get_flex( $value ) );
 
-		for ( $i = 1; $i < 24; $i++ ) {
-			$atts['style'] .= sprintf( '--flex-%s-%s:%s;', $break, $i, mai_columns_get_flex( $value ) );
+		// Temp workaround for ACF nested block markup.
+		if ( $nested && $args['preview'] ) {
+			for ( $i = 1; $i < 24; $i++ ) {
+				$atts['style'] .= sprintf( '--flex-%s-%s:%s;', $break, $i, mai_columns_get_flex( $value ) );
+			}
 		}
 	}
 
