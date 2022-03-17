@@ -14,6 +14,8 @@ defined( 'ABSPATH' ) || die;
 
 /**
  * Gets inline styles for reusable responsive columns data.
+ * Margins must be handled separately because they may be
+ * applied to a different container element.
  *
  * @since TBD
  *
