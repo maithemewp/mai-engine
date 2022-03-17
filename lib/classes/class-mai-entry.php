@@ -1129,7 +1129,7 @@ class Mai_Entry {
 			}
 
 			// Limit.
-			if ( $content && isset( $this->args['content_limit'] ) && ( $this->args['content_limit'] > 0 ) ) {
+			if ( $content && isset( $this->args['content_limit'] ) && $this->args['content_limit'] > 0 ) {
 				$content = mai_get_content_limit( $content, $this->args['content_limit'] );
 			}
 

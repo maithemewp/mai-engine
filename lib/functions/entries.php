@@ -32,8 +32,6 @@ function mai_do_entries_open( $args ) {
 		'style'   => '',
 	];
 
-	$atts = mai_get_columns_atts( $atts, $args );
-
 	// Context.
 	$context       = 'block' === $args['context'] ? 'grid' : $args['context'];
 	$atts['class'] = mai_add_classes( 'entries-' . $context, $atts['class'] );
@@ -134,14 +132,19 @@ function mai_do_entries_open( $args ) {
 		]
 	);
 
-	$wrap_class = 'entries-wrap has-columns';
+	$wrap_atts = [
+		'class' => 'entries-wrap',
+	];
+
+	$wrap_atts = mai_get_columns_atts( $wrap_atts, $args );
 
 	// Add image stack class to entries-wrap so it intercepts the inline variable so we don't need overly specific CSS.
 	if ( $args['image_stack'] && in_array( 'image', $args['show'], true ) && $args['image_position'] && mai_has_string( [
 			'left',
 			'right',
 		], $args['image_position'] ) ) {
-		$wrap_class .= ' has-image-stack';
+
+		$wrap_atts['class'] = mai_add_classes( 'has-image-stack', $wrap_atts['class'] );
 	}
 
 	genesis_markup(
@@ -149,9 +152,7 @@ function mai_do_entries_open( $args ) {
 			'open'    => '<div %s>',
 			'context' => 'entries-wrap',
 			'echo'    => true,
-			'atts'    => [
-				'class' => $wrap_class,
-			],
+			'atts'    => $wrap_atts,
 			'params'  => [
 				'args' => $args,
 			],
