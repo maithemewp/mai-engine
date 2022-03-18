@@ -679,6 +679,11 @@
 	display: flex;
 }
 
+.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group .acf-button-group label {
+	padding: 7px 4px;
+	line-height: 1.2;
+}
+
 .acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear {
 	position: relative;
 }

@@ -84,85 +84,6 @@ function mai_do_icon_block( $block, $content = '', $is_preview = false, $post_id
 	echo mai_get_icon( $args );
 }
 
-add_filter( 'acf/load_field/key=mai_icon_choices', 'mai_load_icon_choices' );
-add_filter( 'acf/load_field/key=mai_icon_brand_choices', 'mai_load_icon_brand_choices' );
-/**
- * Load the icon field, getting choices from our icons directory.
- * Uses sprite for performance of loading choices in the field.
- *
- * @since 0.1.0
- *
- * @param array $field The ACF field.
- *
- * @return array
- */
-function mai_load_icon_choices( $field ) {
-	// Bail if editing the field group.
-	if ( 'acf-field-group' === get_post_type() ) {
-		return $field;
-	}
-
-	$field['choices'] = mai_get_icon_choices( 'light' );
-
-	return $field;
-}
-
-/**
- * Add icon brand choices.
- *
- * @since 0.1.0
- *
- * @param array $field Field args.
- *
- * @return mixed
- */
-function mai_load_icon_brand_choices( $field ) {
-	// Bail if editing the field group.
-	if ( 'acf-field-group' === get_post_type() ) {
-		return $field;
-	}
-
-	$field['choices'] = mai_get_icon_choices( 'brands' );
-
-	return $field;
-}
-
-/**
- * Get icon svg choices.
- *
- * @since 1.0.0
- *
- * @link https://css-tricks.com/on-xlinkhref-being-deprecated-in-svg/
- *
- * @param string $style Icon style.
- *
- * @return array
- */
-function mai_get_icon_choices( $style ) {
-	$choices = [];
-	$dir     = mai_get_icons_dir();
-	$url     = mai_get_icons_url();
-
-	if ( ! ( $dir && $url ) ) {
-		return $choices;
-	}
-
-	$dir .= sprintf( '/svgs/%s', $style );
-	$url .= sprintf( '/sprites/%s', $style );
-
-	foreach ( glob( $dir . '/*.svg' ) as $file ) {
-		$name             = basename( $file, '.svg' );
-		$choices[ $name ] = sprintf(
-			'<svg class="mai-icon-svg" width="32" height="32"><use href="%s.svg#%s"></use></svg><span class="mai-icon-name">%s</span>',
-			$url,
-			$name,
-			$name
-		);
-	}
-
-	return $choices;
-}
-
 add_action( 'acf/init', 'mai_register_icon_field_group' );
 /**
  * Register icon block field group.
@@ -289,57 +210,13 @@ function mai_register_icon_field_group() {
 				'label' => esc_html__( 'Styles', 'mai-engine' ),
 				'type'  => 'tab',
 			],
-			// [
-			// 	'key'     => 'mai_icon_color',
-			// 	'label'   => esc_html__( 'Icon Color', 'mai-engine' ),
-			// 	'name'    => 'color_icon',
-			// 	'type'    => 'radio',
-			// 	'choices' => $color_choices,
-			// 	'wrapper' => [
-			// 		'class' => 'mai-block-colors',
-			// 	],
-			// ],
-			// [
-			// 	'key'               => 'mai_icon_color_custom',
-			// 	'name'              => 'color_icon_custom',
-			// 	'type'              => 'color_picker',
-			// 	'conditional_logic' => [
-			// 		[
-			// 			'field'    => 'mai_icon_color',
-			// 			'operator' => '==',
-			// 			'value'    => 'custom',
-			// 		],
-			// 	],
-			// ],
 			[
 				'key'               => 'mai_icon_color_clone',
 				'label'             => __( 'Icon Color', 'mai-engine' ),
 				'name'              => 'icon_color_clone',
 				'type'              => 'clone',
 				'display'           => 'group', // 'group' or 'seamless'. 'group' allows direct return of actual field names via get_field( 'style' ).
-				'clone'             => [ 'mai_icon_color', 'mai_icon_color_custom' ],
-			],
-			[
-				'key'     => 'mai_icon_background',
-				'label'   => esc_html__( 'Background Color', 'mai-engine' ),
-				'name'    => 'color_background',
-				'type'    => 'radio',
-				'choices' => $color_choices,
-				'wrapper' => [
-					'class' => 'mai-block-colors',
-				],
-			],
-			[
-				'key'               => 'mai_icon_background_custom',
-				'name'              => 'color_background_custom',
-				'type'              => 'color_picker',
-				'conditional_logic' => [
-					[
-						'field'    => 'mai_icon_background',
-						'operator' => '==',
-						'value'    => 'custom',
-					],
-				],
+				'clone'             => [ 'mai_icon_color', 'mai_icon_color_custom', 'mai_icon_background', 'mai_icon_background_custom' ],
 			],
 			[
 				'key'   => 'mai_icon_border_color',
