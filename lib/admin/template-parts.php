@@ -114,9 +114,9 @@ add_action( 'load-edit.php', 'mai_template_parts_admin_notice' );
  * @return void
  */
 function mai_template_parts_admin_notice() {
-	$screen = get_current_screen();
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : false;
 
-	if ( 'mai_template_part' !== $screen->post_type ) {
+	if ( ! ( $screen && 'mai_template_part' === $screen->post_type ) ) {
 		return;
 	}
 
@@ -325,9 +325,9 @@ function mai_template_parts_order( $query ) {
 		return;
 	}
 
-	$screen = get_current_screen();
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : false;
 
-	if ( ! $screen || ( 'edit-mai_template_part' !== $screen->id ) ) {
+	if ( ! ( $screen && ( 'edit-mai_template_part' === $screen->id ) ) ) {
 		return;
 	}
 

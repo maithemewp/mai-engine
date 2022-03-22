@@ -226,7 +226,7 @@ return [
 				],
 			],
 			'condition' => function() {
-				$screen = get_current_screen();
+				$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : false;
 				return $screen && 'toplevel_page_mai-theme' === $screen->id && class_exists( 'Mai_Design_Pack' );
 			}
 		],
@@ -279,7 +279,7 @@ return [
 		'plugins'                        => [
 			'location'  => 'admin',
 			'condition' => function() {
-				$screen = get_current_screen();
+				$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : false;
 				return $screen && 'toplevel_page_mai-theme' === $screen->id;
 			}
 		],
