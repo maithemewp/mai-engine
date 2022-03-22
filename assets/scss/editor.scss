@@ -94,6 +94,12 @@ body {
 	float: right;
 }
 
+// Not sure why the editor markup for these blocks is so different, but we need space in editor.
+.wp-block-quote__citation,
+.wp-block-pullquote__citation {
+	margin-top: var(--spacing-sm);
+}
+
 .block-editor-block-list__layout {
 
 	> [data-type="core/group"],

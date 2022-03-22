@@ -1,15 +1,18 @@
+cite,
+.wp-block-quote footer,
+.wp-block-quote__citation,
+.wp-block-pullquote footer,
+.wp-block-pullquote__citation {
+
+	@include cite();
+}
+
 .wp-block-quote {
 
 	cite,
 	footer,
 	&__citation {
 		position: relative;
-	}
-
-	footer,
-	&__citation {
-
-		@include cite();
 	}
 
 	&.has-text-align-right,
@@ -47,5 +50,14 @@
 
 	> p:last-of-type:not(:last-child) {
 		--paragraph-margin-bottom: var(--spacing-xxxs);
+	}
+}
+
+.wp-block-pullquote {
+	margin: 0;
+	padding: 0;
+
+	p {
+		font-size: var(--blockquote-font-size, 1em); // Override WP styles.
 	}
 }
