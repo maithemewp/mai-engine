@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '07c9ffbfce1feaa3f1548bba40f9d0039efb1298',
+    'reference' => '0ce0b53a45604f8167d816a7ae915fa3e922b240',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
@@ -310,12 +310,12 @@ private static $installed = array (
     ),
     'kirki-framework/kirki' => 
     array (
-      'pretty_version' => 'v4.0.22',
-      'version' => '4.0.22.0',
+      'pretty_version' => '4.0.23',
+      'version' => '4.0.23.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'bbe992b293019a708d58f99b487c23afcdb3c0e6',
+      'reference' => 'da3b1976e39b61c8e7e5210a3d01adbdacad0926',
     ),
     'kirki-framework/l10n' => 
     array (
@@ -422,7 +422,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '07c9ffbfce1feaa3f1548bba40f9d0039efb1298',
+      'reference' => '0ce0b53a45604f8167d816a7ae915fa3e922b240',
     ),
     'phpoption/phpoption' => 
     array (

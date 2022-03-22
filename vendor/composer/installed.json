@@ -415,17 +415,17 @@
         },
         {
             "name": "kirki-framework/kirki",
-            "version": "v4.0.22",
-            "version_normalized": "4.0.22.0",
+            "version": "4.0.23",
+            "version_normalized": "4.0.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kirki-framework/kirki.git",
-                "reference": "bbe992b293019a708d58f99b487c23afcdb3c0e6"
+                "reference": "da3b1976e39b61c8e7e5210a3d01adbdacad0926"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kirki-framework/kirki/zipball/bbe992b293019a708d58f99b487c23afcdb3c0e6",
-                "reference": "bbe992b293019a708d58f99b487c23afcdb3c0e6",
+                "url": "https://api.github.com/repos/kirki-framework/kirki/zipball/da3b1976e39b61c8e7e5210a3d01adbdacad0926",
+                "reference": "da3b1976e39b61c8e7e5210a3d01adbdacad0926",
                 "shasum": ""
             },
             "require": {
@@ -483,7 +483,7 @@
                 "wp-coding-standards/wpcs": "*",
                 "wptrt/wpthemereview": "dev-develop"
             },
-            "time": "2022-02-17T14:46:00+00:00",
+            "time": "2022-03-22T09:40:15+00:00",
             "type": "library",
             "installation-source": "dist",
             "notification-url": "https://packagist.org/downloads/",
@@ -508,18 +508,8 @@
             ],
             "support": {
                 "issues": "https://github.com/kirki-framework/kirki/issues",
-                "source": "https://github.com/kirki-framework/kirki/tree/v4.0.22"
+                "source": "https://github.com/kirki-framework/kirki/tree/v4.0.23"
             },
-            "funding": [
-                {
-                    "url": "https://aristath.github.io/donate",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/aristath",
-                    "type": "github"
-                }
-            ],
             "install-path": "../kirki-framework/kirki"
         },
         {
