@@ -12,6 +12,18 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
+add_filter( 'kirki_inline_styles_id', 'mai_kirki_inline_styles_id' );
+/**
+ * Changes kirki inline styles element id.
+ *
+ * @since TBD
+ *
+ * @return string
+ */
+function mai_kirki_inline_styles_id( $id ) {
+	return 'mai-inline-styles';
+}
+
 add_action( 'after_switch_theme',       'mai_flush_customizer_transients' );
 add_action( 'customize_save_after',     'mai_flush_customizer_transients' );
 add_action( 'update_option_mai-engine', 'mai_flush_customizer_transients' );
