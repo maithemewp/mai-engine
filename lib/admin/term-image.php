@@ -29,9 +29,11 @@ function mai_add_featured_image_metabox() {
 	$locations = [];
 
 	$taxonomies = get_taxonomies( [ 'public' => 'true' ], 'names' );
+
 	if ( class_exists( 'WooCommerce' ) ) {
 		unset( $taxonomies['product_cat'] );
 	}
+
 	if ( $taxonomies ) {
 		foreach ( $taxonomies as $taxonomy ) {
 			$locations[] = [

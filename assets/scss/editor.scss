@@ -37,14 +37,10 @@ body {
 	@include heading;
 }
 
-p {
-	font-size: var(--font-size-md);
-}
-
 .block-editor-block-list__block .block-list-appender.block-list-appender {
 	// These are 0 in WP so the appender isn't centered by default.
-	margin-right: auto;
-	margin-left: auto;
+	// margin-right: auto;
+	// margin-left: auto;
 }
 
 .block-editor-plain-text {
