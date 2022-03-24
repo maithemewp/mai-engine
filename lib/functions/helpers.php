@@ -610,29 +610,6 @@ function mai_get_page_header_types( $context ) {
 }
 
 /**
- * Checks if a content type has Page Header support.
- *
- * @since 0.1.0
- *
- * @param Kirki_Control_Base $control The customizer field control (not WP_Customize_Control).
- *
- * @return bool
- */
-function mai_has_page_header_support_callback( $control ) {
-	$types   = [
-		'archive' => 'content-archives',
-		'single'  => 'single-content',
-	];
-	$handle  = mai_get_handle();
-	$name    = $control->option_name;
-	$context = mai_has_string( 'archives', $name ) ? 'archive' : 'single';
-	$type    = str_replace( $handle . '[' . $types[ $context ] . '][', '', $name );
-	$type    = str_replace( ']', '', $type );
-
-	return in_array( $type, mai_get_page_header_types( $context ), true );
-}
-
-/**
  * Gets page header opacity, with fallbacks.
  *
  * @since  2.6.0

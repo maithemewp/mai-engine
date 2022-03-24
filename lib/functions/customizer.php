@@ -137,6 +137,7 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 		$archive_settings = [];
 	}
 
+	$context  = 'archive';
 	$config   = mai_get_config( 'settings' )['content-archives'];
 	$defaults = isset( $config[ $name ] ) ? $config[ $name ] : $config['post'];
 
@@ -827,14 +828,18 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			'choices'         => [
 				'save_as' => 'id',
 			],
-			'active_callback' => 'mai_has_page_header_support_callback',
+			'active_callback' => function() use ( $name, $context ) {
+				return in_array( $name, mai_get_page_header_types( $context ), true );
+			},
 		],
 		[
 			'settings'        => 'page-header-background-color',
 			'label'           => __( 'Background/overlay color', 'mai-engine' ),
 			'type'            => 'color',
 			'default'         => $defaults['page-header-background-color'],
-			'active_callback' => 'mai_has_page_header_support_callback',
+			'active_callback' => function() use ( $name, $context ) {
+				return in_array( $name, mai_get_page_header_types( $context ), true );
+			},
 		],
 		[
 			'settings'        => 'page-header-overlay-opacity',
@@ -847,7 +852,9 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 				'max'  => 1,
 				'step' => 0.01,
 			],
-			'active_callback' => 'mai_has_page_header_support_callback',
+			'active_callback' => function() use ( $name, $context ) {
+				return in_array( $name, mai_get_page_header_types( $context ), true );
+			},
 			'sanitize_callback' => function( $value ) {
 				return (float) $value; // Remove trailing zeros.
 			},
@@ -862,7 +869,9 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 				'light' => __( 'Light', 'mai-engine' ),
 				'dark'  => __( 'Dark', 'mai-engine' ),
 			],
-			'active_callback' => 'mai_has_page_header_support_callback',
+			'active_callback' => function() use ( $name, $context ) {
+				return in_array( $name, mai_get_page_header_types( $context ), true );
+			},
 		],
 	];
 
@@ -891,6 +900,7 @@ function mai_get_single_content_settings( $name = 'post' ) {
 		$single_settings = [];
 	}
 
+	$context  = 'single';
 	$config   = mai_get_config( 'settings' )['single-content'];
 	$defaults = isset( $config[ $name ] ) ? $config[ $name ] : $config['post'];
 
@@ -1018,7 +1028,9 @@ function mai_get_single_content_settings( $name = 'post' ) {
 			'choices'         => [
 				'save_as' => 'id',
 			],
-			'active_callback' => 'mai_has_page_header_support_callback',
+			'active_callback' => function() use ( $name, $context ) {
+				return in_array( $name, mai_get_page_header_types( $context ), true );
+			},
 		],
 		[
 			'settings'        => 'page-header-featured',
@@ -1026,14 +1038,18 @@ function mai_get_single_content_settings( $name = 'post' ) {
 			'type'            => 'checkbox',
 			'sanitize'        => 'mai_sanitize_bool',
 			'default'         => $defaults['page-header-featured'],
-			'active_callback' => 'mai_has_page_header_support_callback',
+			'active_callback' => function() use ( $name, $context ) {
+				return in_array( $name, mai_get_page_header_types( $context ), true );
+			},
 		],
 		[
 			'settings'        => 'page-header-background-color',
 			'label'           => __( 'Background/overlay color', 'mai-engine' ),
 			'type'            => 'color',
 			'default'         => $defaults['page-header-background-color'],
-			'active_callback' => 'mai_has_page_header_support_callback',
+			'active_callback' => function() use ( $name, $context ) {
+				return in_array( $name, mai_get_page_header_types( $context ), true );
+			},
 		],
 		[
 			'settings'        => 'page-header-overlay-opacity',
@@ -1046,7 +1062,9 @@ function mai_get_single_content_settings( $name = 'post' ) {
 				'max'  => 1,
 				'step' => 0.01,
 			],
-			'active_callback' => 'mai_has_page_header_support_callback',
+			'active_callback' => function() use ( $name, $context ) {
+				return in_array( $name, mai_get_page_header_types( $context ), true );
+			},
 		],
 		[
 			'settings'        => 'page-header-text-color',
@@ -1058,7 +1076,9 @@ function mai_get_single_content_settings( $name = 'post' ) {
 				'light' => __( 'Light', 'mai-engine' ),
 				'dark'  => __( 'Dark', 'mai-engine' ),
 			],
-			'active_callback' => 'mai_has_page_header_support_callback',
+			'active_callback' => function() use ( $name, $context ) {
+				return in_array( $name, mai_get_page_header_types( $context ), true );
+			},
 		],
 	];
 

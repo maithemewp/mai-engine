@@ -5,6 +5,7 @@
 * Added: Support for Easy Digital Downloads. Customizer archive/single, layout, and color now work with Downloads out of the box.
 * Added: Support for RankMath, including RankMath breadcrumbs.
 * Added: Larger padding and gap settings to blocks like Mai Columns.
+* Added: Margin top and bottom settings to Mai Post/Term Grid blocks.
 * Added: [Developers] New `config.php` syntax to allow custom font weights based on the currently selected heading/body font, with automatically generated `-light` and `-bold` custom properties.
 * Added: [Developers] New `has-drop-shadow` class to easily add consistent shadow to transparent images inside of a container.
 * Added: [Developers] New `has-background` class on Mai Column block when a background color is added.
