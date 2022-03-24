@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Mai Engine plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.21.0-beta.19\n"
+"Project-Id-Version: Mai Engine 2.21.0-beta.24\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-03-11T21:41:18+00:00\n"
+"POT-Creation-Date: 2022-03-23T20:43:31+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -182,7 +182,6 @@ msgid "A custom divider block."
 msgstr ""
 
 #: lib/blocks/mai-divider.php:216
-#: lib/fields/icons.php:35
 msgid "Style"
 msgstr ""
 
@@ -486,8 +485,8 @@ msgstr ""
 #: lib/blocks/mai-columns.php:304
 #: lib/classes/class-mai-setup-wizard-fields.php:241
 #: lib/classes/class-mai-setup-wizard-steps.php:202
-#: lib/functions/loop.php:510
-#: lib/functions/loop.php:543
+#: lib/functions/loop.php:509
+#: lib/functions/loop.php:542
 #: lib/fields/grid-display.php:129
 msgid "Content"
 msgstr ""
@@ -594,7 +593,7 @@ msgid "Start"
 msgstr ""
 
 #: lib/blocks/mai-columns.php:538
-#: lib/blocks/mai-icon.php:230
+#: lib/blocks/mai-icon.php:151
 #: lib/functions/customizer.php:225
 #: lib/functions/customizer.php:475
 #: lib/functions/customizer.php:734
@@ -630,7 +629,7 @@ msgstr ""
 
 #: lib/blocks/mai-columns.php:554
 #: lib/blocks/mai-columns.php:662
-#: lib/blocks/mai-icon.php:485
+#: lib/blocks/mai-icon.php:362
 #: lib/functions/customizer.php:487
 #: lib/functions/customizer.php:753
 #: lib/fields/grid-layout.php:203
@@ -658,7 +657,7 @@ msgstr ""
 
 #: lib/blocks/mai-columns.php:556
 #: lib/blocks/mai-columns.php:664
-#: lib/blocks/mai-icon.php:493
+#: lib/blocks/mai-icon.php:370
 #: lib/functions/customizer.php:489
 #: lib/functions/customizer.php:755
 #: lib/fields/grid-layout.php:205
@@ -740,7 +739,7 @@ msgid "Align Content (vertical)"
 msgstr ""
 
 #: lib/blocks/mai-columns.php:673
-#: lib/blocks/mai-icon.php:471
+#: lib/blocks/mai-icon.php:348
 #: assets/js/blocks/layout-settings.js:295
 #: assets/js/min/blocks.js:933
 msgid "Padding"
@@ -751,7 +750,7 @@ msgid "3XL"
 msgstr ""
 
 #: lib/blocks/mai-columns.php:689
-#: lib/blocks/mai-icon.php:324
+#: lib/fields/icons.php:193
 msgid "Background Color"
 msgstr ""
 
@@ -803,42 +802,42 @@ msgstr ""
 msgid "A custom icon block."
 msgstr ""
 
-#: lib/blocks/mai-icon.php:180
+#: lib/blocks/mai-icon.php:101
 #: lib/functions/icons.php:31
 msgid "Mai Icons"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:181
+#: lib/blocks/mai-icon.php:102
 #: lib/functions/icons.php:32
 msgid "%s plugin required."
 msgstr ""
 
-#: lib/blocks/mai-icon.php:198
-#: lib/blocks/mai-icon.php:203
-#: lib/blocks/mai-icon.php:530
-#: lib/fields/icons.php:51
+#: lib/blocks/mai-icon.php:119
+#: lib/blocks/mai-icon.php:124
+#: lib/blocks/mai-icon.php:407
+#: lib/fields/icons.php:130
 msgid "Icon"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:212
+#: lib/blocks/mai-icon.php:133
 #: lib/fields/grid-tabs.php:35
 msgid "Display"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:216
+#: lib/blocks/mai-icon.php:137
 msgid "Block"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:217
+#: lib/blocks/mai-icon.php:138
 msgid "Inline"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:226
+#: lib/blocks/mai-icon.php:147
 msgid "Align"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:229
-#: lib/blocks/mai-icon.php:501
+#: lib/blocks/mai-icon.php:150
+#: lib/blocks/mai-icon.php:378
 #: lib/customize/menus.php:59
 #: lib/customize/menus.php:85
 #: lib/customize/menus.php:111
@@ -849,8 +848,8 @@ msgstr ""
 msgid "Left"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:231
-#: lib/blocks/mai-icon.php:509
+#: lib/blocks/mai-icon.php:152
+#: lib/blocks/mai-icon.php:386
 #: lib/customize/menus.php:61
 #: lib/customize/menus.php:87
 #: lib/customize/menus.php:113
@@ -863,73 +862,73 @@ msgstr ""
 msgid "Right"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:248
+#: lib/blocks/mai-icon.php:169
 msgid "Size"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:249
+#: lib/blocks/mai-icon.php:170
 msgid "Accepts all unit values (px, rem, em, vw, etc). Leave empty for theme default."
 msgstr ""
 
-#: lib/blocks/mai-icon.php:256
+#: lib/blocks/mai-icon.php:177
 #: lib/functions/colors.php:251
 #: lib/functions/utilities.php:1629
 msgid "Link"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:263
+#: lib/blocks/mai-icon.php:184
 msgid "Link Title"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:264
+#: lib/blocks/mai-icon.php:185
 msgid "Add a title for accessibility. Will not be displayed visually."
 msgstr ""
 
-#: lib/blocks/mai-icon.php:277
+#: lib/blocks/mai-icon.php:198
 msgid "Open link in new window"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:289
+#: lib/blocks/mai-icon.php:210
 msgid "Styles"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:316
-#: lib/fields/icons.php:92
+#: lib/blocks/mai-icon.php:215
+#: lib/fields/icons.php:171
 msgid "Icon Color"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:346
+#: lib/blocks/mai-icon.php:223
 msgid "Border Color"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:352
+#: lib/blocks/mai-icon.php:229
 msgid "Border Width"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:371
+#: lib/blocks/mai-icon.php:248
 msgid "Box Shadow"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:377
-#: lib/blocks/mai-icon.php:427
+#: lib/blocks/mai-icon.php:254
+#: lib/blocks/mai-icon.php:304
 msgid "X Offset"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:390
-#: lib/blocks/mai-icon.php:440
+#: lib/blocks/mai-icon.php:267
+#: lib/blocks/mai-icon.php:317
 msgid "Y Offset"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:403
-#: lib/blocks/mai-icon.php:453
+#: lib/blocks/mai-icon.php:280
+#: lib/blocks/mai-icon.php:330
 msgid "Blur"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:421
+#: lib/blocks/mai-icon.php:298
 msgid "Text Shadow"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:479
+#: lib/blocks/mai-icon.php:356
 #: assets/js/blocks/layout-settings.js:608
 #: assets/js/blocks/layout-settings.js:731
 #: assets/js/min/blocks.js:1246
@@ -937,13 +936,13 @@ msgstr ""
 msgid "Margin"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:517
+#: lib/blocks/mai-icon.php:394
 #: lib/functions/customizer.php:642
 #: lib/fields/grid-display.php:740
 msgid "Border Radius"
 msgstr ""
 
-#: lib/blocks/mai-icon.php:522
+#: lib/blocks/mai-icon.php:399
 msgid "50%"
 msgstr ""
 
@@ -1579,16 +1578,16 @@ msgstr ""
 msgid "Please contact BizBudding support."
 msgstr ""
 
-#: lib/admin/term-image.php:49
-#: lib/admin/term-image.php:84
+#: lib/admin/term-image.php:51
+#: lib/admin/term-image.php:86
 #: lib/admin/hide-elements.php:110
 msgid "Featured Image"
 msgstr ""
 
-#: lib/admin/term-image.php:54
+#: lib/admin/term-image.php:56
 #: lib/admin/page-header.php:88
-#: lib/functions/loop.php:504
-#: lib/functions/loop.php:537
+#: lib/functions/loop.php:503
+#: lib/functions/loop.php:536
 #: lib/fields/grid-display.php:125
 msgid "Image"
 msgstr ""
@@ -1665,8 +1664,8 @@ msgstr ""
 #: lib/admin/hide-elements.php:112
 #: lib/functions/customizer.php:386
 #: lib/functions/customizer.php:952
-#: lib/functions/loop.php:507
-#: lib/functions/loop.php:540
+#: lib/functions/loop.php:506
+#: lib/functions/loop.php:539
 #: lib/fields/grid-display.php:127
 #: lib/fields/grid-display.php:428
 msgid "Header Meta"
@@ -1679,8 +1678,8 @@ msgstr ""
 #: lib/admin/hide-elements.php:114
 #: lib/functions/customizer.php:423
 #: lib/functions/customizer.php:982
-#: lib/functions/loop.php:511
-#: lib/functions/loop.php:544
+#: lib/functions/loop.php:510
+#: lib/functions/loop.php:543
 #: lib/fields/grid-display.php:130
 #: lib/fields/grid-display.php:443
 #: lib/customize/site-header.php:72
@@ -1691,8 +1690,8 @@ msgstr ""
 #: lib/admin/hide-elements.php:116
 #: lib/functions/customizer.php:454
 #: lib/functions/customizer.php:967
-#: lib/functions/loop.php:515
-#: lib/functions/loop.php:548
+#: lib/functions/loop.php:514
+#: lib/functions/loop.php:547
 #: lib/fields/grid-display.php:132
 #: lib/fields/grid-display.php:497
 msgid "Footer Meta"
@@ -1704,7 +1703,7 @@ msgid "After Entry"
 msgstr ""
 
 #: lib/admin/hide-elements.php:118
-#: lib/functions/loop.php:550
+#: lib/functions/loop.php:549
 msgid "Author Box"
 msgstr ""
 
@@ -2142,7 +2141,7 @@ msgstr ""
 
 #: lib/functions/customizer.php:862
 #: lib/functions/customizer.php:1058
-#: lib/fields/icons.php:39
+#: lib/fields/icons.php:118
 #: lib/customize/page-header.php:206
 msgid "Light"
 msgstr ""
@@ -2248,33 +2247,33 @@ msgstr ""
 msgid "More info"
 msgstr ""
 
-#: lib/functions/loop.php:506
-#: lib/functions/loop.php:539
+#: lib/functions/loop.php:505
+#: lib/functions/loop.php:538
 #: lib/fields/wp-query.php:560
 #: lib/fields/wp-term-query.php:253
 #: lib/fields/grid-display.php:126
 msgid "Title"
 msgstr ""
 
-#: lib/functions/loop.php:509
+#: lib/functions/loop.php:508
 #: lib/fields/grid-display.php:128
 msgid "Excerpt"
 msgstr ""
 
-#: lib/functions/loop.php:513
+#: lib/functions/loop.php:512
 #: lib/fields/grid-display.php:131
 msgid "Read More link"
 msgstr ""
 
-#: lib/functions/loop.php:542
+#: lib/functions/loop.php:541
 msgid "Manual Excerpts"
 msgstr ""
 
-#: lib/functions/loop.php:551
+#: lib/functions/loop.php:550
 msgid "After Entry Content Area"
 msgstr ""
 
-#: lib/functions/loop.php:552
+#: lib/functions/loop.php:551
 msgid "Previous/Next Entry Nav"
 msgstr ""
 
@@ -2644,23 +2643,27 @@ msgstr ""
 msgid "Disable entry links"
 msgstr ""
 
-#: lib/fields/icons.php:40
+#: lib/fields/icons.php:114
+msgid "Icon Style"
+msgstr ""
+
+#: lib/fields/icons.php:119
 msgid "Regular"
 msgstr ""
 
-#: lib/fields/icons.php:41
+#: lib/fields/icons.php:120
 msgid "Solid"
 msgstr ""
 
-#: lib/fields/icons.php:42
+#: lib/fields/icons.php:121
 msgid "Brands"
 msgstr ""
 
-#: lib/fields/icons.php:51
+#: lib/fields/icons.php:130
 msgid "full search via"
 msgstr ""
 
-#: lib/fields/icons.php:72
+#: lib/fields/icons.php:151
 msgid "Icon (Brands)"
 msgstr ""
 

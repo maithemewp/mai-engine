@@ -402,6 +402,16 @@ class Mai_Plugins {
 				'desc'     => esc_html__( 'Mai Accordion is perfect for displaying expandable FAQs, transcripts, resources, and even research. Add a title/question, then easily insert any block you want into the answer section.', 'mai-engine' ),
 				'docs'     => 'https://help.bizbudding.com/article/147-mai-accordian',
 			],
+			'mai-galleries' => [
+				'name'     => 'Mai Galleries',
+				'host'     => 'github',
+				'slug'     => 'mai-galleries/mai-galleries.php',
+				'uri'      => 'maithemewp/mai-galleries',
+				'branch'   => 'master',
+				'required' => true,
+				'desc'     => esc_html__( 'Mai Galleries easily creates responsive image galleries with optional image lightbox', 'mai-engine' ),
+				'docs'     => '#',
+			],
 			'mai-lists' => [
 				'name'     => 'Mai Lists',
 				'host'     => 'github',
@@ -409,7 +419,7 @@ class Mai_Plugins {
 				'uri'      => 'maithemewp/mai-lists',
 				'branch'   => 'master',
 				'required' => true,
-				'desc'     => esc_html__( 'Mai Lists is ', 'mai-engine' ),
+				'desc'     => esc_html__( 'Mai Lists creates simple and beautiful icon lists and responsive icon feature grids.', 'mai-engine' ),
 				'docs'     => '#',
 			],
 			'mai-notices' => [

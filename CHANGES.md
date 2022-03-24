@@ -1,5 +1,32 @@
 # Changelog
 
+## 2.21.0 (TBD)
+* Added: New Mai Gallery block for a simple and responsive grid of images.
+* Added: Support for Easy Digital Downloads. Customizer archive/single, layout, and color now work with Downloads out of the box.
+* Added: Support for RankMath, including RankMath breadcrumbs.
+* Added: Larger padding and gap settings to blocks like Mai Columns.
+* Added: [Developers] New `config.php` syntax to allow custom font weights based on the currently selected heading/body font, with automatically generated `-light` and `-bold` custom properties.
+* Added: [Developers] New `has-drop-shadow` class to easily add consistent shadow to transparent images inside of a container.
+* Added: [Developers] New `has-background` class on Mai Column block when a background color is added.
+* Added: [Developers] New `--image-filter` custom property for setting image filter globally with CSS.
+* Added: [Developers] New `--entry-order` custom property to manipulate entry order or custom content in archives.
+* Added: [Developers] New entry meta custom properties for easily changing meta font styles.
+* Changed: Converted many block fields to ACF clone fields so they can easily be re-used and paired with some useful new helper functions.
+* Changed: Slightly changed the color variant amount when auto-generating light/dark color variants.
+* Changed: Minor blockquote styling tweaks.
+* Changed: Icon link to Font Awesome now points to new url on their updated website.
+* Changed: Bump ACF to 5.12.1 which fixes the bug where duplicating a block would cause issues when changing settings of one of them.
+* Changed: Bumped to Kirki v4. Color and other controls/settings now use the React components bundled in WP.
+* Changed: Added an ajax check when using transients for dynamically generating font and typography CSS.
+* Changed: Clear internal CSS cache when anything updates mai-engine option.
+* Fixed: Mai Post/Term Grid images not centering correctly in some configurations.
+* Fixed: Mai Divider now uses a fixed height scaling system to match padding scale. This fixes the occasional small gap that would appear above or below the divider and random window widths.
+* Fixed: Font scale breakpoint custom properties had the wrong name for tablets in last update.
+* Fixed: Content alignment sometimes not centered in the editor.
+* Fixed: Alternating images in archives or Mai Post Grid did not have the correct margin and spacing in some configurations.
+* Fixed: First version wasn't being correctly stored.
+* Fixed: Occasional squished display when viewing on Instagram and Facebook's internal browser.
+
 ## 2.20.0 (2/15/22)
 * Added: New XXL and XXXL padding settings on Mai Column block.
 * Changed: Typography and spacing ratios are now incremented smaller on tablet and mobile for better responsive dislay on smaller screens.

@@ -265,6 +265,10 @@ function mai_load_default_favicon( $favicon ) {
  */
 add_action( 'save_post_mai_template_part', 'mai_save_template_part_delete_transient', 20, 3 );
 function mai_save_template_part_delete_transient( $post_id, $post, $update ) {
+	if ( wp_is_post_revision( $post_id ) ) {
+		return;
+	}
+
 	delete_transient( 'mai_template_parts' );
 }
 
@@ -387,7 +391,6 @@ function mai_load_files() {
 		'blocks/heading',
 		'blocks/mai-columns',
 		'blocks/mai-divider',
-		'blocks/mai-gallery',
 		'blocks/mai-grid',
 		'blocks/mai-icon',
 		'blocks/paragraph',
