@@ -39,6 +39,8 @@ function mai_get_grid_layout_defaults() {
 		'align_columns_vertical' => '',
 		'column_gap'             => 'lg',
 		'row_gap'                => 'lg',
+		'margin_top'             => '',
+		'margin_bottom'          => '',
 		'remove_spacing'         => '',
 	];
 
@@ -65,6 +67,8 @@ function mai_get_grid_layout_sanitized( $args ) {
 		'align_columns_vertical' => 'esc_html',
 		'column_gap'             => 'esc_html',
 		'row_gap'                => 'esc_html',
+		'margin_top'             => 'sanitize_html_class',
+		'margin_bottom'          => 'sanitize_html_class',
 		'remove_spacing'         => 'mai_sanitize_bool',
 	];
 
@@ -222,15 +226,17 @@ function mai_get_grid_layout_fields() {
 			'type'          => 'button_group',
 			'default_value' => $defaults['column_gap'],
 			'choices'       => [
-				''     => esc_html__( 'None', 'mai-engine' ),
-				'md'   => esc_html__( 'XS', 'mai-engine' ), // Values mapped to a spacing sizes, labels kept consistent.
-				'lg'   => esc_html__( 'S', 'mai-engine' ),
-				'xl'   => esc_html__( 'M', 'mai-engine' ),
-				'xxl'  => esc_html__( 'L', 'mai-engine' ),
-				'xxxl' => esc_html__( 'XL', 'mai-engine' ),
+				// Values mapped to a spacing sizes, labels kept consistent.
+				''      => esc_html__( 'None', 'mai-engine' ),
+				'md'    => esc_html__( 'XS', 'mai-engine' ),
+				'lg'    => esc_html__( 'S', 'mai-engine' ),
+				'xl'    => esc_html__( 'M', 'mai-engine' ),
+				'xxl'   => esc_html__( 'L', 'mai-engine' ),
+				'xxxl'  => esc_html__( 'XL', 'mai-engine' ),
+				'xxxxl' => esc_html__( '2XL', 'mai-engine' ),
 			],
 			'wrapper'       => [
-				'class' => 'mai-acf-button-group',
+				'class' => 'mai-acf-button-group mai-acf-button-group-small',
 			],
 		],
 		[
@@ -240,15 +246,55 @@ function mai_get_grid_layout_fields() {
 			'type'          => 'button_group',
 			'default_value' => $defaults['row_gap'],
 			'choices'       => [
-				''     => esc_html__( 'None', 'mai-engine' ),
-				'md'   => esc_html__( 'XS', 'mai-engine' ), // Values mapped to a spacing sizes, labels kept consistent.
-				'lg'   => esc_html__( 'S', 'mai-engine' ),
-				'xl'   => esc_html__( 'M', 'mai-engine' ),
-				'xxl'  => esc_html__( 'L', 'mai-engine' ),
-				'xxxl' => esc_html__( 'XL', 'mai-engine' ),
+				// Values mapped to a spacing sizes, labels kept consistent.
+				''      => esc_html__( 'None', 'mai-engine' ),
+				'md'    => esc_html__( 'XS', 'mai-engine' ),
+				'lg'    => esc_html__( 'S', 'mai-engine' ),
+				'xl'    => esc_html__( 'M', 'mai-engine' ),
+				'xxl'   => esc_html__( 'L', 'mai-engine' ),
+				'xxxl'  => esc_html__( 'XL', 'mai-engine' ),
+				'xxxxl' => esc_html__( '2XL', 'mai-engine' ),
 			],
 			'wrapper'       => [
-				'class' => 'mai-acf-button-group',
+				'class' => 'mai-acf-button-group mai-acf-button-group-small',
+			],
+		],
+		[
+			'key'               => 'mai_grid_block_margin_top',
+			'label'             => esc_html__( 'Top Margin', 'mai-engine' ),
+			'name'              => 'margin_top',
+			'type'              => 'button_group',
+			'choices'           => [
+				''      => esc_html__( 'None', 'mai-engine' ),
+				'md'    => esc_html__( 'XS', 'mai-engine' ),
+				'lg'    => esc_html__( 'S', 'mai-engine' ),
+				'xl'    => esc_html__( 'M', 'mai-engine' ),
+				'xxl'   => esc_html__( 'L', 'mai-engine' ),
+				'xxxl'  => esc_html__( 'XL', 'mai-engine' ),
+				'xxxxl' => esc_html__( '2XL', 'mai-engine' ),
+			],
+			'default_value'     => '',
+			'wrapper'           => [
+				'class'            => 'mai-acf-button-group mai-acf-button-group-small',
+			],
+		],
+		[
+			'key'               => 'mai_grid_block_margin_bottom',
+			'label'             => esc_html__( 'Bottom Margin', 'mai-engine' ),
+			'name'              => 'margin_bottom',
+			'type'              => 'button_group',
+			'choices'           => [
+				''      => esc_html__( 'None', 'mai-engine' ),
+				'md'    => esc_html__( 'XS', 'mai-engine' ),
+				'lg'    => esc_html__( 'S', 'mai-engine' ),
+				'xl'    => esc_html__( 'M', 'mai-engine' ),
+				'xxl'   => esc_html__( 'L', 'mai-engine' ),
+				'xxxl'  => esc_html__( 'XL', 'mai-engine' ),
+				'xxxxl' => esc_html__( '2XL', 'mai-engine' ),
+			],
+			'default_value'     => '',
+			'wrapper'           => [
+				'class'            => 'mai-acf-button-group mai-acf-button-group-small',
 			],
 		],
 		[
