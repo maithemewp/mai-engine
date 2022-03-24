@@ -409,8 +409,8 @@ class Mai_Plugins {
 				'uri'      => 'maithemewp/mai-galleries',
 				'branch'   => 'master',
 				'required' => true,
-				'desc'     => esc_html__( 'Mai Galleries easily creates responsive image galleries with optional image lightbox', 'mai-engine' ),
-				'docs'     => '#',
+				'desc'     => esc_html__( 'Mai Galleries allows you to easily create responsive image galleries with optional image lightbox.', 'mai-engine' ),
+				'docs'     => 'https://help.bizbudding.com/article/207-mai-galleries',
 			],
 			'mai-lists' => [
 				'name'     => 'Mai Lists',
@@ -419,8 +419,8 @@ class Mai_Plugins {
 				'uri'      => 'maithemewp/mai-lists',
 				'branch'   => 'master',
 				'required' => true,
-				'desc'     => esc_html__( 'Mai Lists creates simple and beautiful icon lists and responsive icon feature grids.', 'mai-engine' ),
-				'docs'     => '#',
+				'desc'     => esc_html__( 'Mai Lists is a versatile block to create simple and beautiful icon lists and responsive icon feature grids.', 'mai-engine' ),
+				'docs'     => 'https://help.bizbudding.com/article/208-mai-lists',
 			],
 			'mai-notices' => [
 				'name'     => 'Mai Notices',
