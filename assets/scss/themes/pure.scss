@@ -44,11 +44,7 @@
 	text-transform: uppercase;
 }
 
-.entry-title-link {
-	// text-decoration-thickness: 3px;
-}
-
-.entry-title-link:hover,
-.entry-title-link:focus {
-	// text-decoration-thickness: 6px;
+.has-image-background .has-image:hover,
+.has-image-background .has-image:focus {
+	--image-transform: scale(1.05);
 }

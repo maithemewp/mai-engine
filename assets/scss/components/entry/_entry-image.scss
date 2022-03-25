@@ -47,7 +47,7 @@
 	min-width: 100%;
 	height: var(--entry-image-height, inherit);
 	object-fit: var(--entry-image-object-fit, unset);
-	border-radius: var(--entry-image-border-radius, var(--border-radius));
+	border-radius: var(--entry-image-border-radius, var(--image-border-radius, var(--border-radius)));
 }
 
 .has-image-center {
