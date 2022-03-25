@@ -104,11 +104,13 @@ function mai_do_entries_open( $args ) {
 		}
 	}
 
-	if ( $args['margin_top'] ) {
+	// Check isset because customizer archives don't have margin settings.
+	if ( isset( $args['margin_top'] ) && $args['margin_top'] ) {
 		$atts['class'] = mai_add_classes( sprintf( 'has-%s-margin-top', $args['margin_top'] ), $atts['class'] );
 	}
 
-	if ( $args['margin_bottom'] ) {
+	// Check isset because customizer archives don't have margin settings.
+	if ( isset( $args['margin_bottom'] ) && $args['margin_bottom'] ) {
 		$atts['class'] = mai_add_classes( sprintf( 'has-%s-margin-bottom', $args['margin_bottom'] ), $atts['class'] );
 	}
 
