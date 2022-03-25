@@ -785,6 +785,8 @@ function mai_is_element_hidden( $element, $post_id = '' ) {
 				$post_id = get_option( 'page_on_front' );
 			} elseif ( is_home() ) {
 				$post_id = get_option( 'page_for_posts' );
+			} elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
+				$post_id = get_option( 'woocommerce_shop_page_id' );
 			}
 		}
 	}
