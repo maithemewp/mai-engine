@@ -27,6 +27,7 @@
 * Fixed: Alternating images in archives or Mai Post Grid did not have the correct margin and spacing in some configurations.
 * Fixed: First version wasn't being correctly stored.
 * Fixed: Occasional squished display when viewing on Instagram and Facebook's internal browser.
+* Fixed: [WooCommerce] Hiding most elements on Shop page should work now.
 
 ## 2.20.0 (2/15/22)
 * Added: New XXL and XXXL padding settings on Mai Column block.
