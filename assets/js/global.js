@@ -7,7 +7,7 @@
 	// Sets scrollbar width on page load.
 	// Make sure it's a reasonable size. See https://github.com/maithemewp/mai-engine/issues/516.
 	// FB/IG gets wonky and calculates this to something huge causing the window to be squished.
-	if ( scrollBarWidth <= 20 ) {
+	if ( scrollBarWidth > 0 && scrollBarWidth <= 20 ) {
 		root.style.setProperty( '--scrollbar-width', scrollBarWidth + 'px' );
 	}
 
