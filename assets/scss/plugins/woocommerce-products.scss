@@ -122,7 +122,7 @@ li.wc-block-grid__product .price {
 	margin-top: auto;
 }
 
-li.product .button,
+li.product .button:not(.added_to_cart),
 li.wc-block-grid__product .wp-block-button {
 
 	@include button-style(secondary);
@@ -198,15 +198,46 @@ li.wc-block-grid__product .wp-block-button {
 .added:hover,
 .added:focus {
 	margin: auto auto var(--spacing-xs);
-	color: var(--button-secondary-color); // Color contrast automatically generated.
-	font-size: 80%;
-	background: var(--button-secondary-background, var(--color-secondary));
 	--button-opacity: 0.5;
+}
+
+.ajax_add_to_cart {
+
+	&.loading {
+		text-indent: -9999px;
+
+		&::after {
+			position: absolute;
+			top: calc(50% - 0.5rem);
+			left: calc(50% - 0.5rem);
+			display: block;
+			width: 1rem;
+			height: 1rem;
+			border: 2px solid var(--button-color);
+			border-bottom-color: transparent;
+			border-radius: 50%;
+			transform: translate(-50%, -50%);
+			animation: addtocartloading 1s infinite linear;
+			content: "";
+		}
+	}
+}
+
+@keyframes addtocartloading {
+
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
 }
 
 .added_to_cart {
 
 	@include button;
+	@include button-style(small);
 
 	&:hover,
 	&:focus {
