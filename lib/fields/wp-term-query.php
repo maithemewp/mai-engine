@@ -12,6 +12,21 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
+add_filter( 'acf/load_field/key=mai_grid_block_taxonomy', 'mai_grid_load_taxonomy_field' );
+/**
+ * Loads post type choices.
+ *
+ * @since TBD
+ *
+ * @param array $field The existing field array.
+ *
+ * @return array
+ */
+function mai_grid_load_taxonomy_field( $field ) {
+	$field['choices'] = mai_get_taxonomy_choices();
+	return $field;
+}
+
 /**
  * Gets field defaults.
  * TODO: Move these to config.php?
@@ -105,7 +120,7 @@ function mai_get_wp_term_query_fields() {
 			'label'         => esc_html__( 'Taxonomy', 'mai-engine' ),
 			'type'          => 'select',
 			'default_value' => $defaults['taxonomy'],
-			'choices'       => mai_get_taxonomy_choices(),
+			'choices'       => '', // Loaded in filter later.
 			'multiple'      => 1,
 			'ui'            => 1,
 			'ajax'          => 0,

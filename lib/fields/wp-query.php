@@ -12,7 +12,7 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-add_filter( 'acf/load_field/key=mai_grid_block_post_type', 'mai_post_type_field' );
+add_filter( 'acf/load_field/key=mai_grid_block_post_type', 'mai_grid_load_post_type_field' );
 /**
  * Loads post type choices.
  *
@@ -22,12 +22,12 @@ add_filter( 'acf/load_field/key=mai_grid_block_post_type', 'mai_post_type_field'
  *
  * @return array
  */
-function mai_post_type_field( $field ) {
+function mai_grid_load_post_type_field( $field ) {
 	$field['choices'] = mai_get_post_type_choices();
 	return $field;
 }
 
-add_filter( 'acf/load_field/key=mai_grid_block_tax_taxonomy', 'mai_load_taxonomy_field' );
+add_filter( 'acf/load_field/key=mai_grid_block_tax_taxonomy', 'mai_grid_load_tax_taxonomy_field' );
 /**
  * Loads taxonomy choices.
  *
@@ -37,7 +37,7 @@ add_filter( 'acf/load_field/key=mai_grid_block_tax_taxonomy', 'mai_load_taxonomy
  *
  * @return array
  */
-function mai_load_taxonomy_field( $field ) {
+function mai_grid_load_tax_taxonomy_field( $field ) {
 	$field['choices'] = mai_get_post_types_taxonomy_choices();
 	return $field;
 }
