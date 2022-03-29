@@ -198,10 +198,10 @@ return [
 				return ( mai_has_sticky_header_enabled() || mai_has_transparent_header_enabled() ) && ! mai_is_element_hidden( 'site_header' );
 			},
 		],
-		// 'customizer' => [
-		// 	'deps'     => [ 'jquery' ],
-		// 	'location' => 'customizer',
-		// ],
+		'customizer' => [
+			'deps'     => [ 'jquery' ],
+			'location' => 'customizer',
+		],
 		'editor'     => [
 			'deps'     => [ 'jquery', 'jquery-ui-sortable', 'wp-blocks', 'wp-dom' ],
 			'location' => 'editor',
