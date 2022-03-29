@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || die;
 
 add_filter( 'acf/load_field/key=mai_grid_block_taxonomy', 'mai_grid_load_taxonomy_field' );
 /**
- * Loads post type choices.
+ * Loads taxonomy choices.
  *
  * @since TBD
  *
