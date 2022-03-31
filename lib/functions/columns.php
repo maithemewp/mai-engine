@@ -45,7 +45,9 @@ function mai_get_columns_atts( $atts, $args, $nested = false ) {
 		$atts['style'] .= sprintf( '--flex-%s:%s;', $break, mai_columns_get_flex( $value ) );
 
 		// Temp workaround for ACF nested block markup.
-		if ( $nested && $args['preview'] ) {
+		// Can't do $nested && $args['preview'] because it broke Mai Gallery (not nested) inside Mai Columns (nested).
+		// So we always need the explicit flex items. Boo.
+		if ( $args['preview'] ) {
 			for ( $i = 1; $i < 24; $i++ ) {
 				$atts['style'] .= sprintf( '--flex-%s-%s:%s;', $break, $i, mai_columns_get_flex( $value ) );
 			}
