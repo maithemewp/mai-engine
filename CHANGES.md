@@ -20,6 +20,7 @@
 * Changed: Bump ACF to 5.12.1 which fixes the bug where duplicating a block would cause issues when changing settings of one of them.
 * Changed: Bumped to Kirki v4. Color and other controls/settings now use the React components bundled in WP.
 * Changed: Added an ajax check when using transients for dynamically generating font and typography CSS.
+* Changed: Internal CSS cache via transients are automatically cleared after 1 hour now instead of 1 minute.
 * Changed: Clear internal CSS cache when anything updates mai-engine option.
 * Fixed: Mai Post/Term Grid images not centering correctly in some configurations.
 * Fixed: Mai Divider now uses a fixed height scaling system to match padding scale. This fixes the occasional small gap that would appear above or below the divider and random window widths.
