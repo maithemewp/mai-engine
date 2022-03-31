@@ -109,7 +109,7 @@ function mai_add_kirki_css( $css ) {
 	$css = mai_add_extra_custom_properties( $css );
 
 	if ( ! ( $admin || $ajax || $preview ) ) {
-		set_transient( $transient, $css, 60 );
+		set_transient( $transient, $css, HOUR_IN_SECONDS );
 	}
 
 	return $css;
@@ -160,7 +160,7 @@ function mai_add_kirki_fonts( $fonts ) {
 	}
 
 	if ( ! ( $admin || $ajax || $preview ) ) {
-		set_transient( $transient, $fonts, 60 );
+		set_transient( $transient, $fonts, HOUR_IN_SECONDS );
 	}
 
 	return $fonts;
