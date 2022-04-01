@@ -27,7 +27,6 @@ defined( 'ABSPATH' ) || die;
 function mai_do_entries_open( $args ) {
 	// Start the atts.
 	$atts = [
-		'preview' => is_admin(),
 		'class'   => mai_add_classes( 'entries', isset( $args['class'] ) ? $args['class']: '' ),
 		'style'   => '',
 	];
