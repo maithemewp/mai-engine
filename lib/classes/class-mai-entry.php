@@ -832,7 +832,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Gets a reasonable column count when a breakpoint has a 0 (Auto) value.
+	 * Gets a reasonable column count when a breakpoint has a 0 (Auto/Fit) value.
 	 *
 	 * @param array $columns The existing columns.
 	 *

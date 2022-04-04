@@ -190,7 +190,7 @@ function mai_get_icons_fields() {
 		],
 		[
 			'key'     => 'mai_icon_background',
-			'label'   => esc_html__( 'Background Color', 'mai-engine' ),
+			'label'   => esc_html__( 'Icon Background Color', 'mai-engine' ),
 			'name'    => 'color_background',
 			'type'    => 'radio',
 			'choices' => mai_get_radio_color_choices(),

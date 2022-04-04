@@ -325,7 +325,7 @@ function mai_register_columns_field_groups() {
 						4                  => '4',
 						5                  => '5',
 						6                  => '6',
-						0                  => __( 'Auto', 'mai-engine' ),
+						0                  => __( 'Fit', 'mai-engine' ),
 						'custom'           => __( 'Custom arrangement', 'mai-engine' ),
 					],
 					'default_value'     => 2,

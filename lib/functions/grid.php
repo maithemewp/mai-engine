@@ -128,7 +128,7 @@ function mai_get_breakpoint_columns( $args ) {
 				$columns['sm'] = 1;
 				$columns['xs'] = 1;
 			break;
-			case 0: // Auto.
+			case 0: // Fit/Auto.
 				$columns['md'] = 0;
 				$columns['sm'] = 0;
 				$columns['xs'] = 0;
@@ -237,7 +237,7 @@ function mai_get_columns_choices() {
 		'4' => esc_html__( '4', 'mai-engine' ),
 		'5' => esc_html__( '5', 'mai-engine' ),
 		'6' => esc_html__( '6', 'mai-engine' ),
-		'0' => esc_html__( 'Auto', 'mai-engine' ),
+		'0' => esc_html__( 'Fit', 'mai-engine' ),
 	];
 }
 
