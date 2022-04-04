@@ -745,7 +745,12 @@ function mai_sanitize_bool( $value ) {
  */
 function mai_fraction_to_percent( $fraction ) {
 	$numbers = explode( '/', $fraction );
-	return ( round( (int) $numbers[0] / (int) $numbers[1], 6 ) * 100 ) . '%';
+	$top     = (int) $numbers[0];
+	$bottom  = (int) $numbers[1];
+	$top     = 0 === $top ? 1 : $top;
+	$bottom  = 0 === $bottom ? 1 : $bottom;
+
+	return ( round( $top / $bottom, 6 ) * 100 ) . '%';
 }
 
 /**
