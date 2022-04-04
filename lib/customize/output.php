@@ -399,8 +399,6 @@ function mai_add_font_variants( $fonts ) {
 		}
 	}
 
-	ray( $fonts );
-
 	return $fonts;
 }
 
