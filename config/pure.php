@@ -12,7 +12,7 @@
 return [
 	'demos'         => [
 		'creator'     => 75,
-		// 'two'     => 76,
+		'author'      => 76,
 		'photography' => 77,
 	],
 	'global-styles' => [

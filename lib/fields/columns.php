@@ -64,8 +64,8 @@ function mai_get_columns_sanitized( $args ) {
 		'columns_xs'             => 'absint',
 		'align_columns'          => 'esc_html',
 		'align_columns_vertical' => 'esc_html',
-		'column_gap'             => 'esc_html',
-		'row_gap'                => 'esc_html',
+		'column_gap'             => 'sanitize_html_class',
+		'row_gap'                => 'sanitize_html_class',
 		'margin_top'             => 'sanitize_html_class',
 		'margin_bottom'          => 'sanitize_html_class',
 	];
