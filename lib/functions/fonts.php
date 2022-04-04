@@ -199,7 +199,7 @@ function mai_get_font_weight_for_css( $weight ) {
 		$weight = '400';
 	}
 
-	// Remove italic from 300italic.
+	// Remove italic from values like 300italic.
 	$weight = str_replace( 'italic', '', $weight );
 
 	return $weight;
@@ -319,7 +319,9 @@ function mai_get_font_variants( $element ) {
 	}
 
 	// Set all attributes.
-	$values = wp_parse_args( $config[ $element ], $defaults );
+	$values  = wp_parse_args( $config[ $element ], $defaults );
+	$default = isset( $values['default'] ) ? $values['default'] : '400';
+	$default = mai_get_font_weight_for_css( $default );
 
 	// Convert to strings, and change 400 to regular for Kirki comparison.
 	foreach ( $values as $name => $value ) {
@@ -338,38 +340,50 @@ function mai_get_font_variants( $element ) {
 	}
 
 	// Default. Don't check if available because we need this output in CSS,
-	// It should be available if chosen from Custmoizer.
-	if ( $values['default'] ) {
-		$variants[ $element ]['default'] = $values['default'];
-	}
+	// It should be available if chosen from Customizer.
+	$variants[ $element ]['default'] = isset( $values['default'] ) ? $values['default'] : 'regular';
+
+	// Set empty vars.
+	$light = $bold = $italic = $bolditalic = '';
 
 	// Light.
-	if ( $values['light'] && in_array( $values['light'], $available ) ) {
-		$variants[ $element ]['light'] = $values['light'];
+	if ( $values['light'] ) {
+		$light = mai_maybe_get_light_variant( $values['light'], $available );
+
+		// Start with default and recursively check 100 lighter.
+		if ( ! $light && is_numeric( $default ) ) {
+			$start = (string) ((int) $default - 100);
+			$light = mai_maybe_get_light_variant( $start, $available, true );
+		}
+	}
+
+	if ( $light ) {
+		$variants[ $element ]['light'] = $light;
 	}
 
 	// Bold.
 	if ( $values['bold'] ) {
 		$bold = mai_maybe_get_bold_variant( $values['bold'], $available );
+	}
 
-		if ( $bold ) {
-			$variants[ $element ]['bold'] = $bold;
-		}
-	} else {
-		$bold = false; // For later conditions.
+	// Start with default and recursively check 100 heavier.
+	if ( ! $bold && 'body' === $element && is_numeric( $default ) ) {
+		$start = (string) ((int) $default + 100);
+		$bold  = mai_maybe_get_bold_variant( $start, $available, true );
+	}
+
+	if ( $bold ) {
+		$variants[ $element ]['bold'] = $bold;
 	}
 
 	// Italic custom.
 	if ( $values['italic'] ) {
 		$italic = mai_maybe_get_italic_variant( $values['italic'], $available );
 	}
+
 	// Italic default.
-	elseif ( 'body' === $element ) {
+	if ( ! $italic && 'body' === $element ) {
 		$italic = mai_maybe_get_italic_variant( $font_weight, $available );
-	}
-	// Set empty var.
-	else {
-		$italic = '';
 	}
 
 	if ( $italic ) {
@@ -377,12 +391,17 @@ function mai_get_font_variants( $element ) {
 	}
 
 	// Bold-Italic custom.
-	if ( $values['bolditalic'] && in_array( $values['bolditalic'] . 'italic', $available ) ) {
-		$variants[ $element ]['bolditalic'] = $values['bolditalic'] . 'italic';
+	if ( $values['bolditalic'] ) {
+		$bolditalic = mai_maybe_get_bolditalic_variant( $values['bolditalic'], $available );
 	}
+
 	// Bold-Italic default.
-	elseif ( 'body' === $element && $bold && in_array( $bold . 'italic', $available ) ) {
-		$variants[ $element ][ 'bolditalic' ] = $bold . 'italic';
+	if ( ! $bolditalic && 'body' === $element && $bold ) {
+		$bolditalic = mai_maybe_get_bolditalic_variant( $bold, $available );
+	}
+
+	if ( $bolditalic ) {
+		$variants[ $element ][ 'bolditalic' ] = $bolditalic;
 	}
 
 	// Additional.
@@ -402,6 +421,44 @@ function mai_get_font_variants( $element ) {
 }
 
 /**
+ * Recursively attempts to return a valid light font weight from available weights.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @param int|string $variant   The variant to check.
+ * @param array      $available The available font variants from Kirki.
+ * @param bool       $recursive Optionally check for other variants recursively.
+ *
+ * @return int|string false;
+ */
+function mai_maybe_get_light_variant( $variant, $available, $recursive = false ) {
+	$variant = mai_get_font_variant_for_kirki( $variant ); // For kirki.
+
+	if ( in_array( $variant, $available ) ) {
+		return $variant;
+	}
+
+	if ( $recursive ) {
+		// Make sure it's numeric.
+		$numeric = mai_get_font_weight_for_css( $variant );
+
+		if ( is_numeric( $numeric ) ) {
+			// Prevent infinite loops.
+			if ( (int) $numeric <= 0 ) {
+				return false;
+			}
+
+			$numeric = (string) ((int) $numeric - 100);
+			$variant = mai_maybe_get_light_variant( $numeric, $available, true );
+		}
+	}
+
+	return $variant;
+}
+
+/**
  * Recursively attempts to return a valid bold font weight from available weights.
  *
  * @access private
@@ -410,34 +467,33 @@ function mai_get_font_variants( $element ) {
  *
  * @param int|string $variant   The variant to check.
  * @param array      $available The available font variants from Kirki.
+ * @param bool       $recursive Optionally check for other variants recursively.
  *
  * @return int|string false;
  */
-function mai_maybe_get_bold_variant( $variant, $available ) {
-	if ( '400' === $variant ) {
-		$variant = 'regular';
-	}
+function mai_maybe_get_bold_variant( $variant, $available, $recursive = false ) {
+	$variant = mai_get_font_variant_for_kirki( $variant ); // For kirki.
 
 	if ( in_array( $variant, $available ) ) {
 		return $variant;
 	}
 
-	if ( 'regular' === $variant ) {
-		$variant = '400';
-	}
+	if ( $recursive ) {
+		// Make sure it's numeric.
+		$numeric = mai_get_font_weight_for_css( $variant );
 
-	if ( is_numeric( $variant ) ) {
-		// Prevent infinite loops.
-		if ( (int) $variant > 900 ) {
-			return false;
+		if ( is_numeric( $numeric ) ) {
+			// Prevent infinite loops.
+			if ( (int) $numeric > 900 ) {
+				return false;
+			}
+
+			$numeric = (string) ((int) $numeric + 100);
+			$variant = mai_maybe_get_bold_variant( $numeric, $available, true );
 		}
-
-		$variant = (string) ((int) $variant + 100);
-
-		return mai_maybe_get_bold_variant( $variant, $available );
 	}
 
-	return false;
+	return $variant;
 }
 
 /**
@@ -465,11 +521,39 @@ function mai_maybe_get_italic_variant( $variant, $available ) {
 		return $variant . 'italic';
 	}
 
-	if ( in_array( 'italic', $available ) ) {
-		return 'italic';
+	return false;
+}
+
+/**
+ * Attempts to return a valid bolditalic font weight from available weights.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @param int|string $variant   The variant to check.
+ * @param array      $available The available font variants from Kirki.
+ *
+ * @return int|string false;
+ */
+function mai_maybe_get_bolditalic_variant( $variant, $available ) {
+	$weight = mai_get_font_weight_for_css( $variant ); // Make sure it's numeric.
+	$italic = $weight . 'italic'; // Set new variable with 'italic' string.
+
+	// Try actual italic variant.
+	if ( in_array( $italic, $available ) ) {
+		$variant = $italic;
+	}
+	// Fall back to just the standard weight and let the browser make it italic.
+	elseif ( in_array( $weight, $available ) ) {
+		$variant = $weight;
+	}
+	// None.
+	else {
+		$variant = false;
 	}
 
-	return false;
+	return $variant;
 }
 
 /**

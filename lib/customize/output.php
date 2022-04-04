@@ -252,8 +252,6 @@ function mai_add_fonts_custom_properties( $css ) {
 	foreach ( $elements as $element => $weights ) {
 		$family   = mai_get_font_family( $element );
 		$variants = mai_get_font_variants( $element );
-		$light    = mai_isset( $weights, 'light', false );
-		$bold     = mai_isset( $weights, 'bold', false );
 
 		if ( $family ) {
 			$css['global'][':root'][ sprintf( '--%s-font-family', $element ) ] = $family;
@@ -261,12 +259,12 @@ function mai_add_fonts_custom_properties( $css ) {
 
 		$css['global'][':root'][ sprintf( '--%s-font-weight', $element ) ] = mai_isset( $weights, 'default', '400' );
 
-		if ( $light ) {
-			$css['global'][':root'][ sprintf( '--%s-font-weight-light', $element ) ] = $light;
+		if ( $weights['light'] ) {
+			$css['global'][':root'][ sprintf( '--%s-font-weight-light', $element ) ] = $weights['light'];
 		}
 
-		if ( $bold ) {
-			$css['global'][':root'][ sprintf( '--%s-font-weight-bold', $element ) ]  = $bold;
+		if ( $weights['bold'] ) {
+			$css['global'][':root'][ sprintf( '--%s-font-weight-bold', $element ) ]  = $weights['bold'];
 		}
 
 		if ( isset( $variants['default'] ) && mai_has_string( 'italic', $variants['default'] ) ) {
@@ -383,24 +381,25 @@ function mai_add_extra_custom_properties( $css ) {
  * @return mixed
  */
 function mai_add_font_variants( $fonts ) {
-	$body_family    = mai_get_font_family( 'body' );
-	$heading_family = mai_get_font_family( 'heading' );
+	$elements = [
+		'body'    => mai_get_font_weights( 'body' ),
+		'heading' => mai_get_font_weights( 'heading' ),
+	];
 
-	if ( isset( $fonts[ $body_family ] ) ) {
-		$variants = array_values( array_filter( array_values( mai_get_font_variants( 'body' ) ) ) );
+	foreach ( $elements as $element => $weights ) {
+		$family = mai_get_font_family( $element );
 
-		foreach ( $variants as $variant ) {
-			$fonts[ $body_family ] = array_unique( array_merge( $fonts[ $body_family ], (array) $variant ) ); // Force to array so individual and 'add' values still work.
+		if ( isset( $fonts[ $family ] ) ) {
+			$variants = array_values( array_filter( array_values( mai_get_font_variants( $element ) ) ) );
+
+			foreach ( $variants as $variant ) {
+				// Typecast to array so individual and 'add' values still work.
+				$fonts[ $family ] = array_unique( array_merge( $fonts[ $family ], (array) $variant ) );
+			}
 		}
 	}
 
-	if ( isset( $fonts[ $heading_family ] ) ) {
-		$variants = array_values( array_filter( array_values( mai_get_font_variants( 'heading' ) ) ) );
-
-		foreach ( $variants as $variant ) {
-			$fonts[ $heading_family ] = array_unique( array_merge( $fonts[ $heading_family ], (array) $variant ) ); // Force to array so individual and 'add' values still work.
-		}
-	}
+	ray( $fonts );
 
 	return $fonts;
 }

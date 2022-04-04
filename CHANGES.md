@@ -16,6 +16,7 @@
 * Changed: Converted many block fields to ACF clone fields so they can easily be re-used and paired with some useful new helper functions.
 * Changed: Slightly changed the color variant amount when auto-generating light/dark color variants.
 * Changed: Minor blockquote styling tweaks.
+* Changed: Columns "Auto" setting is now "Fit" to match consistency with other blocks.
 * Changed: Icon link to Font Awesome now points to new url on their updated website.
 * Changed: Bump ACF to 5.12.1 which fixes the bug where duplicating a block would cause issues when changing settings of one of them.
 * Changed: Bumped to Kirki v4. Color and other controls/settings now use the React components bundled in WP.
