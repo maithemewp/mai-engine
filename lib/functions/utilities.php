@@ -390,7 +390,10 @@ function mai_get_option( $option, $default = false, $use_cache = true ) {
 		return $values[ $option ];
 	}
 
-	$values            = [];
+	if ( ! is_array( $values ) ) {
+		$values = [];
+	}
+
 	$options           = mai_get_options( $use_cache );
 	$value             = isset( $options[ $option ] ) ? $options[ $option ] : $default;
 	$values[ $option ] = apply_filters( "mai_get_option_{$option}", $value );
