@@ -419,7 +419,7 @@ class Mai_Plugins {
 				'uri'      => 'maithemewp/mai-lists',
 				'branch'   => 'master',
 				'required' => true,
-				'desc'     => esc_html__( 'Mai Lists is a versatile block to create simple and beautiful icon lists and responsive icon feature grids.', 'mai-engine' ),
+				'desc'     => esc_html__( 'Mai Lists is a versatile block to create simple and beautiful icon or numbered lists and responsive icon feature grids.', 'mai-engine' ),
 				'docs'     => 'https://help.bizbudding.com/article/208-mai-lists',
 			],
 			'mai-notices' => [
