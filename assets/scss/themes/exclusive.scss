@@ -61,13 +61,9 @@
 }
 
 .has-image.has-entry-link .entry-image-link {
+	--entry-image-link-border-radius: var(--border-radius);
 	overflow: hidden;
 }
-
-// .has-image.has-entry-link .entry-image {
-// 	transform: var(--entry-image-link-transform, scale(1));
-// 	transition: var(--transition);
-// }
 
 .has-image.has-entry-link:focus,
 .has-image.has-entry-link:hover {
