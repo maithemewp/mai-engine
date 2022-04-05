@@ -49,7 +49,9 @@
 	overflow: hidden;
 }
 
-.has-image.has-entry-link .entry-image-link:focus,
-.has-image.has-entry-link .entry-image-link:hover {
+.entries.has-image-background .has-image.has-entry-link:focus,
+.entries.has-image-background .has-image.has-entry-link:hover,
+.entries:not(.has-image-background) .has-image.has-entry-link .entry-image-link:focus,
+.entries:not(.has-image-background) .has-image.has-entry-link .entry-image-link:hover {
 	--image-transform: scale(1.05);
 }
