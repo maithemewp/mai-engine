@@ -44,7 +44,7 @@
 	text-transform: uppercase;
 }
 
-.has-image-background .has-image:hover,
-.has-image-background .has-image:focus {
+.has-image.has-entry-link:focus,
+.has-image.has-entry-link:hover {
 	--image-transform: scale(1.05);
 }
