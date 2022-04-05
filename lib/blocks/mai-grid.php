@@ -171,7 +171,7 @@ function mai_get_grid_field_values( $type ) {
 	}
 
 	foreach ( $defaults as $key => $default ) {
-		$value                    = get_field( $key );
+		$value          = get_field( $key );
 		$values[ $key ] = is_null( $value ) ? $default : $value;
 	}
 

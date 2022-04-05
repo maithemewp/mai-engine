@@ -76,7 +76,7 @@ function mai_get_wp_term_query_sanitized( $args ) {
 		'query_by'         => 'esc_html',
 		'include'          => 'absint',
 		'current_children' => 'mai_sanitize_bool',
-		'parent'           => 'mai_sanitize_bool',
+		'parent'           => 'absint',
 		'number'           => 'absint',
 		'offset'           => 'absint',
 		'orderby'          => 'esc_html',
