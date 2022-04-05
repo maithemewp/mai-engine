@@ -357,9 +357,7 @@ function mai_get_font_variants( $element ) {
 		}
 	}
 
-	if ( $light ) {
-		$variants[ $element ]['light'] = $light;
-	}
+	$variants[ $element ]['light'] = $light ?: '';
 
 	// Bold.
 	if ( $values['bold'] ) {
@@ -372,9 +370,7 @@ function mai_get_font_variants( $element ) {
 		$bold  = mai_maybe_get_bold_variant( $start, $available, true );
 	}
 
-	if ( $bold ) {
-		$variants[ $element ]['bold'] = $bold;
-	}
+	$variants[ $element ]['bold'] = $bold ?: '';
 
 	// Italic custom.
 	if ( $values['italic'] ) {
@@ -386,9 +382,7 @@ function mai_get_font_variants( $element ) {
 		$italic = mai_maybe_get_italic_variant( $font_weight, $available );
 	}
 
-	if ( $italic ) {
-		$variants[ $element ]['italic'] = $italic;
-	}
+	$variants[ $element ]['italic'] = $italic ?: '';
 
 	// Bold-Italic custom.
 	if ( $values['bolditalic'] ) {
@@ -400,9 +394,7 @@ function mai_get_font_variants( $element ) {
 		$bolditalic = mai_maybe_get_bolditalic_variant( $bold, $available );
 	}
 
-	if ( $bolditalic ) {
-		$variants[ $element ][ 'bolditalic' ] = $bolditalic;
-	}
+	$variants[ $element ][ 'bolditalic' ] = $bolditalic ?: '';
 
 	// Additional.
 	if ( $values['add'] ) {
