@@ -195,19 +195,37 @@ class Mai_Grid {
 		switch ( $this->args['type'] ) {
 			case 'post':
 				$this->query_args = $this->get_post_query_args();
+
 				if ( $this->query_args['post_type'] ) {
+					// Bail if a grid was set to a post_type that no longer exists.
+					foreach ( (array) $this->query_args['post_type'] as $post_type ) {
+						if ( ! post_type_exists( $post_type ) ) {
+							return;
+						};
+					}
+
 					$query = new WP_Query( $this->query_args );
+
 					// Cache featured images.
 					if ( in_array( 'image', $this->args['show'] ) ) {
 						update_post_thumbnail_cache( $query );
 					}
+
 					wp_reset_postdata();
 				}
 				break;
 
 			case 'term':
 				$this->query_args = $this->get_term_query_args();
+
+				// Bail if a grid was set to a taxonomy that no longer exists.
 				if ( $this->query_args['taxonomy'] ) {
+					foreach ( (array) $this->query_args['taxonomy'] as $taxonomy ) {
+						if ( ! taxonomy_exists( $taxonomy ) ) {
+							return;
+						};
+					}
+
 					$query = new WP_Term_Query( $this->query_args );
 				}
 				break;
