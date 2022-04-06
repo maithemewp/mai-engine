@@ -13,6 +13,71 @@
 defined( 'ABSPATH' ) || die;
 
 /**
+ * Gets inline styles for reusable responsive columns data.
+ * Margins must be handled separately because they may be
+ * applied to a different container element.
+ *
+ * @since TBD
+ *
+ * @param array $atts   The markup atts.
+ * @param array $args   The columns args data.
+ * @param bool  $nested Whether the columns are built via nested ACF blocks.
+ *
+ * @return string
+ */
+function mai_get_columns_atts( $atts, $args, $nested = false ) {
+	$atts['class'] = isset( $atts['class'] ) ? $atts['class'] : '';
+	$atts['style'] = isset( $atts['style'] ) ? $atts['style'] : '';
+
+	// Columns class.
+	$atts['class'] = mai_add_classes( 'has-columns', $atts['class'] );
+
+	// Get columns arrangement.
+	$columns = mai_get_breakpoint_columns( $args );
+
+	// Set columns properties.
+	foreach ( $columns as $break => $value ) {
+		$atts['style'] .= sprintf( '--columns-%s:%s;', $break, $value );
+	}
+
+	// Set flex properties. This is required to make sure nested columns work.
+	foreach ( $columns as $break => $value ) {
+		$atts['style'] .= sprintf( '--flex-%s:%s;', $break, mai_columns_get_flex( $value ) );
+
+		// Temp workaround for ACF nested block markup.
+		// Can't do $nested && $args['preview'] because it broke Mai Gallery (not nested) inside Mai Columns (nested).
+		// So we always need the explicit flex items. Boo.
+		if ( isset( $args['preview'] ) && $args['preview'] ) {
+			for ( $i = 1; $i < 24; $i++ ) {
+				$atts['style'] .= sprintf( '--flex-%s-%s:%s;', $break, $i, mai_columns_get_flex( $value ) );
+			}
+		}
+	}
+
+	// Temp workaround for ACF nested block markup.
+	if ( $nested && isset( $args['preview'] ) && $args['preview'] ) {
+		$atts['class'] = mai_add_classes( 'has-columns-nested', $atts['class'] );
+	}
+
+	// Column/Row gap.
+	$column_gap     = isset( $args['column_gap'] ) && $args['column_gap'] && mai_is_valid_size( $args['column_gap'] ) ? sprintf( 'var(--spacing-%s)', $args['column_gap'] ) : '0px'; // Needs 0px for calc().
+	$row_gap        = isset( $args['row_gap'] ) && $args['row_gap'] && mai_is_valid_size( $args['row_gap'] ) ? sprintf( 'var(--spacing-%s)', $args['row_gap'] ) : '0px'; // Needs 0px for calc().
+	$atts['style'] .= sprintf( '--column-gap:%s;', $column_gap  );
+	$atts['style'] .= sprintf( '--row-gap:%s;', $row_gap );
+
+	// Align columns.
+	if ( isset( $args['align_columns'] ) && $args['align_columns'] ) {
+		$atts['style'] .= sprintf( '--align-columns:%s;', mai_get_flex_align( $args['align_columns'] ) );
+	}
+
+	if ( isset( $args['align_columns_vertical'] ) && $args['align_columns_vertical'] ) {
+		$atts['style'] .= sprintf( '--align-columns-vertical:%s;', mai_get_flex_align( $args['align_columns_vertical'] ) );
+	}
+
+	return $atts;
+}
+
+/**
  * Gets formatted columns args from block settings
  * and caches value so it can be pulled use by the individual columns.
  *
@@ -73,30 +138,37 @@ function mai_columns_get_args( $i = null ) {
 
 /**
  * Gets flex value from column size.
- * If size is a percentage the default is already declared via CSS
- * so function returns false.
  *
  * @since 2.10.0
  *
  * @param string $size
  *
+ * @return string
  */
 function mai_columns_get_flex( $size ) {
-	if ( ! in_array( $size, [ 'auto', 'fill', 'full' ] ) ) {
-		return sprintf( '0 0 %s', mai_columns_get_flex_basis( $size ) );
+	static $all = [];
+
+	if ( isset( $all[ $size ] ) ) {
+		return $all[ $size ];
 	}
+
+	$basis = mai_columns_get_flex_basis( $size );
 
 	switch ( $size ) {
 		case 'auto':
-			return '0 1 auto';
+			$all[ $size ] = sprintf( '0 1 %s', $basis );
 		break;
 		case 'fill':
-			return '1 0 0';
+			$all[ $size ] = sprintf( '1 0 %s', $basis );
 		break;
 		case 'full':
-			return '0 0 100%';
+			$all[ $size ] = sprintf( '0 0 %s', $basis );
 		break;
+		default:
+			$all[ $size ] = sprintf( '0 0 %s', $basis );
 	}
+
+	return $all[ $size ];
 }
 
 /**
@@ -104,7 +176,7 @@ function mai_columns_get_flex( $size ) {
  *
  * Uses: `flex-basis: calc(25% - (var(--column-gap) * 3/4));`
  * This also works: `flex-basis: calc((100% / var(--columns) - ((var(--columns) - 1) / var(--columns) * var(--column-gap))));`
- * but it was easier to use the same formula with fractions. The latter formula is sitll used for entry columns since we can't
+ * but it was easier to use the same formula with fractions. The latter formula is still used for entry columns since we can't
  * change it because it would break backwards compatibility.
  *
  * @since 2.19.0
@@ -117,6 +189,22 @@ function mai_columns_get_flex_basis( $size ) {
 	static $all = [];
 
 	if ( isset( $all[ $size ] ) ) {
+		return $all[ $size ];
+	}
+
+	if ( in_array( $size, [ 'auto', 'fill', 'full' ] ) ) {
+		switch ( $size ) {
+			case 'auto':
+				$all[ $size ] = 'auto';
+			break;
+			case 'fill':
+				$all[ $size ] = '0';
+			break;
+			case 'full':
+				$all[ $size ] = '100%';
+			break;
+		}
+
 		return $all[ $size ];
 	}
 
@@ -135,8 +223,12 @@ function mai_columns_get_flex_basis( $size ) {
 		$percent = mai_fraction_to_percent( $fraction );
 		// Array from fraction.
 		$array   = explode( '/', $fraction );
-		// Divide fractin to get decimal.
-		$float   = (isset( $array[0] ) ? $array[0] : 1) / (isset( $array[1] ) ? $array[1] : 1);
+		$top     = (int) (isset( $array[0] ) ? $array[0] : 1);
+		$bottom  = (int) (isset( $array[1] ) ? $array[1] : 1);
+		$top     = 0 === $top ? 1 : $top;
+		$bottom  = 0 === $bottom ? 1 : $bottom;
+		// Divide fraction to get decimal.
+		$float   = $top / $bottom;
 		// Trim to 6 places.
 		// $float   = number_format( $float, 6, '.', '' ); // No need to do this since using the calculation before * 1000000.
 		// Subtract 1 - {decimal}. Wow this was annoying. @link https://stackoverflow.com/questions/17210787/php-float-calculation-error-when-subtracting

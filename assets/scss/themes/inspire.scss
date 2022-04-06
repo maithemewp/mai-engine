@@ -41,9 +41,7 @@
 
 .is-style-subheading {
 	font-style: italic;
-
-	--heading-font-family: var(--subheading-font-family);
-	--heading-font-weight: var(--subheading-font-weight);
+	--heading-font-weight: var(--heading-font-weight-light);
 	--heading-text-transform: normal;
 	--heading-letter-spacing: 0;
 }

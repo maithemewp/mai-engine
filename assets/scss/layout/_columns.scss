@@ -1,0 +1,48 @@
+.has-columns {
+	// --flex-default: 0 0 calc((100% / var(--columns)) - var(--column-gap));
+	--flex-default: 0 0 calc((100% / var(--columns) - ((var(--columns) - 1) / var(--columns) * var(--column-gap))));
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--row-gap) var(--column-gap);
+	align-items: var(--align-columns-vertical, unset);
+	justify-content: var(--align-columns, unset);
+
+	@include mq(false, sm) {
+		--columns: var(--columns-xs);
+	}
+
+	@include mq(sm, md) {
+		--columns: var(--columns-sm);
+	}
+
+	@include mq(md, lg) {
+		--columns: var(--columns-md);
+	}
+
+	@include mq(lg) {
+		--columns: var(--columns-lg);
+	}
+}
+
+.is-column {
+	flex: var(--flex, var(--flex-xs, var(--flex-default)));
+	order: var(--order, unset);
+
+	@include mq(false, sm) {
+		--order: var(--order-xs, unset);
+	}
+
+	@include mq(sm, md) {
+		--flex: var(--flex-sm, var(--flex-default));
+		--order: var(--order-sm, unset);
+	}
+
+	@include mq(md, lg) {
+		--flex: var(--flex-md, var(--flex-default));
+		--order: var(--order-md, unset);
+	}
+
+	@include mq(lg) {
+		--flex: var(--flex-lg, var(--flex-default));
+	}
+}

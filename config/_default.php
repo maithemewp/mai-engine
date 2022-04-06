@@ -37,11 +37,28 @@ return [
 		'custom-colors'  => [
 			// [
 			// 	'color' => '#bcda83', // var(--color-custom-1).
+			// 	'color' => '#6c747d', // var(--color-custom-2).
 			// ],
 		],
 		'fonts'          => [
 			'body'    => 'sans-serif:400',
 			'heading' => 'sans-serif:600',
+		],
+		'font-variants'  => [
+			'body'    => [
+				'light'      => '',    // Optionally declare a light font weight. Automatically generates var(--body-font-weight-light).
+				'bold'       => '700', // Optionally declare a specific bold font weight. If empty, a default will be used. Automatically generates var(--body-font-weight-bold).
+				'italic'     => '',    // Default uses italic version of the body weight. Optionally declare a specific weight here.
+				'bolditalic' => '',    // Default uses italic version of the bold weight. Optionally declare a specific weight here.
+				'additional' => '',    // Optionally add comma-separated list of additoinal body font weights to load. Uses chosen body font family.
+			],
+			'heading' => [
+				'light'      => '', // Optionally declare a light font weight here. Automatically generates var(--heading-font-weight-light).
+				'bold'       => '', // Optionally declare a bold weight here. Automatically generates var(--heading-font-weight-bold).
+				'italic'     => '', // Optionally declare a italic weight here.
+				'bolditalic' => '', // Optionally declare a bold italic weight here.
+				'additional' => '', // Optionally add comma-separated list of additoinal heading font weights to load. Uses chosen heading font family.
+			],
 		],
 		'extra'          => [],
 	],
@@ -185,10 +202,6 @@ return [
 			'deps'     => [ 'jquery' ],
 			'location' => 'customizer',
 		],
-		'wptrt-customize-section-button' => [
-			'src'      => mai_get_url() . 'vendor/wptrt/customize-section-button/public/js/customize-controls.js',
-			'location' => 'customizer',
-		],
 		'editor'     => [
 			'deps'     => [ 'jquery', 'jquery-ui-sortable', 'wp-blocks', 'wp-dom' ],
 			'location' => 'editor',
@@ -213,7 +226,7 @@ return [
 				],
 			],
 			'condition' => function() {
-				$screen = get_current_screen();
+				$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : false;
 				return $screen && 'toplevel_page_mai-theme' === $screen->id && class_exists( 'Mai_Design_Pack' );
 			}
 		],
@@ -266,7 +279,7 @@ return [
 		'plugins'                        => [
 			'location'  => 'admin',
 			'condition' => function() {
-				$screen = get_current_screen();
+				$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : false;
 				return $screen && 'toplevel_page_mai-theme' === $screen->id;
 			}
 		],
@@ -276,10 +289,6 @@ return [
 		'kirki'                          => [
 			'location' => 'customizer',
 		],
-		'wptrt-customize-section-button' => [
-			'location' => 'customizer',
-			'src'      => mai_get_url() . 'vendor/wptrt/customize-section-button/public/css/customize-controls.css',
-		],
 		'advanced-custom-fields'         => [
 			'location' => 'editor',
 		],
@@ -287,6 +296,13 @@ return [
 			'location'  => 'public',
 			'condition' => function() {
 				return function_exists( 'atomic_blocks_main_plugin_file' );
+			},
+		],
+		'easy-digital-downloads' => [
+			'location'  => 'public',
+			'inline'    => true,
+			'condition' => function() {
+				return class_exists( 'Easy_Digital_Downloads' );
 			},
 		],
 		'facetwp'                => [
@@ -438,6 +454,8 @@ return [
 			],
 			'post-thumbnails',
 			'responsive-embeds',
+			// Plugins.
+			'rank-math-breadcrumbs',
 			'woocommerce',
 			'wc-product-gallery-zoom',
 			'wc-product-gallery-lightbox',

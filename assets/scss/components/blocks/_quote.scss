@@ -1,16 +1,18 @@
+cite,
+.wp-block-quote footer,
+.wp-block-quote__citation,
+.wp-block-pullquote footer,
+.wp-block-pullquote__citation {
+
+	@include cite();
+}
+
 .wp-block-quote {
 
 	cite,
 	footer,
 	&__citation {
 		position: relative;
-		margin-top: 1em;
-	}
-
-	footer,
-	&__citation {
-
-		@include cite();
 	}
 
 	&.has-text-align-right,
@@ -29,7 +31,6 @@
 	&.is-style-large,
 	&.is-large {
 		margin: var(--blockquote-margin, 1em auto);
-		padding: var(--blockquote-padding, 1em);
 
 		p {
 			font-size: var(--blockquote-font-size-large, var(--font-size-xl));
@@ -45,5 +46,18 @@
 			font-size: var(--caption-font-size, var(--font-size-xs));
 			text-align: inherit;
 		}
+	}
+
+	> p:last-of-type:not(:last-child) {
+		--paragraph-margin-bottom: var(--spacing-xxxs);
+	}
+}
+
+.wp-block-pullquote {
+	margin: 0;
+	padding: 0;
+
+	p {
+		font-size: var(--blockquote-font-size, 1em); // Override WP styles.
 	}
 }

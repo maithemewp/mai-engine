@@ -610,29 +610,6 @@ function mai_get_page_header_types( $context ) {
 }
 
 /**
- * Checks if a content type has Page Header support.
- *
- * @since 0.1.0
- *
- * @param Kirki_Control_Base $control The customizer field control (not WP_Customize_Control).
- *
- * @return bool
- */
-function mai_has_page_header_support_callback( $control ) {
-	$types   = [
-		'archive' => 'content-archives',
-		'single'  => 'single-content',
-	];
-	$handle  = mai_get_handle();
-	$name    = $control->option_name;
-	$context = mai_has_string( 'archives', $name ) ? 'archive' : 'single';
-	$type    = str_replace( $handle . '[' . $types[ $context ] . '][', '', $name );
-	$type    = str_replace( ']', '', $type );
-
-	return in_array( $type, mai_get_page_header_types( $context ), true );
-}
-
-/**
  * Gets page header opacity, with fallbacks.
  *
  * @since  2.6.0
@@ -768,7 +745,12 @@ function mai_sanitize_bool( $value ) {
  */
 function mai_fraction_to_percent( $fraction ) {
 	$numbers = explode( '/', $fraction );
-	return ( round( (int) $numbers[0] / (int) $numbers[1], 6 ) * 100 ) . '%';
+	$top     = (int) $numbers[0];
+	$bottom  = (int) $numbers[1];
+	$top     = 0 === $top ? 1 : $top;
+	$bottom  = 0 === $bottom ? 1 : $bottom;
+
+	return ( round( $top / $bottom, 6 ) * 100 ) . '%';
 }
 
 /**
@@ -808,6 +790,8 @@ function mai_is_element_hidden( $element, $post_id = '' ) {
 				$post_id = get_option( 'page_on_front' );
 			} elseif ( is_home() ) {
 				$post_id = get_option( 'page_for_posts' );
+			} elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
+				$post_id = get_option( 'woocommerce_shop_page_id' );
 			}
 		}
 	}

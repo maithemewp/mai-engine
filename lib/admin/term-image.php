@@ -29,9 +29,11 @@ function mai_add_featured_image_metabox() {
 	$locations = [];
 
 	$taxonomies = get_taxonomies( [ 'public' => 'true' ], 'names' );
+
 	if ( class_exists( 'WooCommerce' ) ) {
 		unset( $taxonomies['product_cat'] );
 	}
+
 	if ( $taxonomies ) {
 		foreach ( $taxonomies as $taxonomy ) {
 			$locations[] = [
@@ -75,9 +77,9 @@ add_filter( 'acf/load_field/key=featured_image', 'mai_load_featured_image_field'
  * @return array
  */
 function mai_load_featured_image_field( $field ) {
-	$screen = get_current_screen();
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : false;
 
-	if ( ! $screen || 'edit-tags' !== $screen->base ) {
+	if ( ! ( $screen && 'edit-tags' === $screen->base ) ) {
 		return $field;
 	}
 

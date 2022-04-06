@@ -32,15 +32,15 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '03bf2db064708d5bd7bd0eff93063b229e1ca8f1',
+    'reference' => '6f368f8de0b7e769c2fbfa3ec240cc660728de8e',
     'name' => 'maithemewp/mai-engine',
   ),
   'versions' => 
   array (
     'advanced-custom-fields/advanced-custom-fields-pro' => 
     array (
-      'pretty_version' => '5.11.4',
-      'version' => '5.11.4.0',
+      'pretty_version' => '5.12.2',
+      'version' => '5.12.2.0',
       'aliases' => 
       array (
       ),
@@ -63,15 +63,6 @@ private static $installed = array (
       array (
       ),
       'reference' => '21949732f1ea21d81500bdda8f882ac7eb0f98af',
-    ),
-    'aristath/kirki' => 
-    array (
-      'pretty_version' => '3.1.9',
-      'version' => '3.1.9.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '976e58876b51ac6b20fb3fdc8f29124552876cff',
     ),
     'composer/installers' => 
     array (
@@ -100,6 +91,330 @@ private static $installed = array (
       ),
       'reference' => '0690bde05318336c7221785f2a932467f98b64ca',
     ),
+    'kirki-framework/compatibility' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-base' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-checkbox' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-code' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-color' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-color-palette' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-cropped-image' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-custom' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-dashicons' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-date' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-dimension' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-editor' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-generic' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-image' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-multicheck' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-palette' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-radio' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-react-colorful' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-react-select' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-repeater' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-select' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-slider' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-sortable' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/control-upload' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/data-option' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/field' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/field-background' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/field-dimensions' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/field-fontawesome' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/field-multicolor' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/field-typography' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/kirki' => 
+    array (
+      'pretty_version' => '4.0.23',
+      'version' => '4.0.23.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'da3b1976e39b61c8e7e5210a3d01adbdacad0926',
+    ),
+    'kirki-framework/l10n' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/module-css' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/module-editor-styles' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/module-field-dependencies' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/module-panels' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/module-postmessage' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/module-preset' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/module-section-icons' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/module-sections' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/module-selective-refresh' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/module-tooltips' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/module-webfonts' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/url-getter' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
+    'kirki-framework/util' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '*',
+      ),
+    ),
     'maithemewp/mai-engine' => 
     array (
       'pretty_version' => 'dev-develop',
@@ -107,7 +422,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '03bf2db064708d5bd7bd0eff93063b229e1ca8f1',
+      'reference' => '6f368f8de0b7e769c2fbfa3ec240cc660728de8e',
     ),
     'phpoption/phpoption' => 
     array (
@@ -143,8 +458,8 @@ private static $installed = array (
     ),
     'symfony/polyfill-ctype' => 
     array (
-      'pretty_version' => 'v1.24.0',
-      'version' => '1.24.0.0',
+      'pretty_version' => 'v1.25.0',
+      'version' => '1.25.0.0',
       'aliases' => 
       array (
       ),
@@ -152,8 +467,8 @@ private static $installed = array (
     ),
     'symfony/polyfill-mbstring' => 
     array (
-      'pretty_version' => 'v1.24.0',
-      'version' => '1.24.0.0',
+      'pretty_version' => 'v1.25.0',
+      'version' => '1.25.0.0',
       'aliases' => 
       array (
       ),
@@ -161,12 +476,12 @@ private static $installed = array (
     ),
     'symfony/polyfill-php80' => 
     array (
-      'pretty_version' => 'v1.24.0',
-      'version' => '1.24.0.0',
+      'pretty_version' => 'v1.25.0',
+      'version' => '1.25.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '57b712b08eddb97c762a8caa32c84e037892d2e9',
+      'reference' => '4407588e0d3f1f52efb65fbe92babe41f37fe50c',
     ),
     'vlucas/phpdotenv' => 
     array (
@@ -176,15 +491,6 @@ private static $installed = array (
       array (
       ),
       'reference' => '264dce589e7ce37a7ba99cb901eed8249fbec92f',
-    ),
-    'wptrt/customize-section-button' => 
-    array (
-      'pretty_version' => '1.0.1',
-      'version' => '1.0.1.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '510c956c1142f712cda3041fc2d02d316228f031',
     ),
     'yahnis-elsts/plugin-update-checker' => 
     array (

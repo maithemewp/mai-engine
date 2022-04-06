@@ -2,8 +2,8 @@
     "packages": [
         {
             "name": "advanced-custom-fields/advanced-custom-fields-pro",
-            "version": "5.11.4",
-            "version_normalized": "5.11.4.0",
+            "version": "5.12.2",
+            "version_normalized": "5.12.2.0",
             "dist": {
                 "type": "zip",
                 "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download&t={%VERSION}&k={%ACF_PRO_KEY}"
@@ -123,74 +123,6 @@
                 "source": "https://github.com/afragen/wp-dismiss-notice"
             },
             "install-path": "../afragen/wp-dismiss-notice"
-        },
-        {
-            "name": "aristath/kirki",
-            "version": "3.1.9",
-            "version_normalized": "3.1.9.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kirki-framework/kirki.git",
-                "reference": "976e58876b51ac6b20fb3fdc8f29124552876cff"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kirki-framework/kirki/zipball/976e58876b51ac6b20fb3fdc8f29124552876cff",
-                "reference": "976e58876b51ac6b20fb3fdc8f29124552876cff",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.2"
-            },
-            "require-dev": {
-                "codacy/coverage": "dev-master",
-                "composer/installers": "*",
-                "dealerdirect/phpcodesniffer-composer-installer": "*",
-                "php-coveralls/php-coveralls": "^2.0",
-                "phpcompatibility/phpcompatibility-wp": "*",
-                "phpunit/phpunit": "*",
-                "wp-coding-standards/wpcs": "*"
-            },
-            "time": "2021-07-19T13:34:04+00:00",
-            "type": "library",
-            "installation-source": "dist",
-            "notification-url": "https://packagist.org/downloads/",
-            "include-path": [
-                ".",
-                "core"
-            ],
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "aristath",
-                    "email": "aristath@gmail.com",
-                    "homepage": "https://aristath.github.io",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Extending the WordPress customizer",
-            "homepage": "https://kirki.org",
-            "keywords": [
-                "customizer",
-                "wordpress"
-            ],
-            "support": {
-                "issues": "https://github.com/kirki-framework/kirki/issues",
-                "source": "https://github.com/kirki-framework/kirki/tree/3.1.9"
-            },
-            "funding": [
-                {
-                    "url": "https://aristath.github.io/donate",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/aristath",
-                    "type": "github"
-                }
-            ],
-            "install-path": "../aristath/kirki"
         },
         {
             "name": "composer/installers",
@@ -482,6 +414,105 @@
             "install-path": "../graham-campbell/result-type"
         },
         {
+            "name": "kirki-framework/kirki",
+            "version": "4.0.23",
+            "version_normalized": "4.0.23.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kirki-framework/kirki.git",
+                "reference": "da3b1976e39b61c8e7e5210a3d01adbdacad0926"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kirki-framework/kirki/zipball/da3b1976e39b61c8e7e5210a3d01adbdacad0926",
+                "reference": "da3b1976e39b61c8e7e5210a3d01adbdacad0926",
+                "shasum": ""
+            },
+            "require": {
+                "kirki-framework/compatibility": "*",
+                "kirki-framework/control-base": "*",
+                "kirki-framework/control-checkbox": "*",
+                "kirki-framework/control-code": "*",
+                "kirki-framework/control-color": "*",
+                "kirki-framework/control-color-palette": "*",
+                "kirki-framework/control-cropped-image": "*",
+                "kirki-framework/control-custom": "*",
+                "kirki-framework/control-dashicons": "*",
+                "kirki-framework/control-date": "*",
+                "kirki-framework/control-dimension": "*",
+                "kirki-framework/control-editor": "*",
+                "kirki-framework/control-generic": "*",
+                "kirki-framework/control-image": "*",
+                "kirki-framework/control-multicheck": "*",
+                "kirki-framework/control-palette": "*",
+                "kirki-framework/control-radio": "*",
+                "kirki-framework/control-react-colorful": "*",
+                "kirki-framework/control-react-select": "*",
+                "kirki-framework/control-repeater": "*",
+                "kirki-framework/control-select": "*",
+                "kirki-framework/control-slider": "*",
+                "kirki-framework/control-sortable": "*",
+                "kirki-framework/control-upload": "*",
+                "kirki-framework/data-option": "*",
+                "kirki-framework/field": "*",
+                "kirki-framework/field-background": "*",
+                "kirki-framework/field-dimensions": "*",
+                "kirki-framework/field-fontawesome": "*",
+                "kirki-framework/field-multicolor": "*",
+                "kirki-framework/field-typography": "*",
+                "kirki-framework/l10n": "*",
+                "kirki-framework/module-css": "*",
+                "kirki-framework/module-editor-styles": "*",
+                "kirki-framework/module-field-dependencies": "*",
+                "kirki-framework/module-panels": "*",
+                "kirki-framework/module-postmessage": "*",
+                "kirki-framework/module-preset": "*",
+                "kirki-framework/module-section-icons": "*",
+                "kirki-framework/module-sections": "*",
+                "kirki-framework/module-selective-refresh": "*",
+                "kirki-framework/module-tooltips": "*",
+                "kirki-framework/module-webfonts": "*",
+                "kirki-framework/url-getter": "*",
+                "kirki-framework/util": "*",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "composer/installers": "*",
+                "dealerdirect/phpcodesniffer-composer-installer": "*",
+                "phpcompatibility/phpcompatibility-wp": "*",
+                "wp-coding-standards/wpcs": "*",
+                "wptrt/wpthemereview": "dev-develop"
+            },
+            "time": "2022-03-22T09:40:15+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "notification-url": "https://packagist.org/downloads/",
+            "include-path": [
+                ".",
+                "core"
+            ],
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kirki Framework",
+                    "email": "connect@mapsteps.com"
+                }
+            ],
+            "description": "Extending the WordPress customizer",
+            "homepage": "https://kirki.org",
+            "keywords": [
+                "customizer",
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/kirki-framework/kirki/issues",
+                "source": "https://github.com/kirki-framework/kirki/tree/v4.0.23"
+            },
+            "install-path": "../kirki-framework/kirki"
+        },
+        {
             "name": "phpoption/phpoption",
             "version": "1.8.1",
             "version_normalized": "1.8.1.0",
@@ -612,8 +643,8 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.24.0",
-            "version_normalized": "1.24.0.0",
+            "version": "v1.25.0",
+            "version_normalized": "1.25.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
@@ -647,12 +678,12 @@
             },
             "installation-source": "dist",
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Ctype\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Ctype\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -677,7 +708,7 @@
                 "portable"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.24.0"
+                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.25.0"
             },
             "funding": [
                 {
@@ -697,8 +728,8 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.24.0",
-            "version_normalized": "1.24.0.0",
+            "version": "v1.25.0",
+            "version_normalized": "1.25.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
@@ -732,12 +763,12 @@
             },
             "installation-source": "dist",
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Mbstring\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Mbstring\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -763,7 +794,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.24.0"
+                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.25.0"
             },
             "funding": [
                 {
@@ -783,23 +814,23 @@
         },
         {
             "name": "symfony/polyfill-php80",
-            "version": "v1.24.0",
-            "version_normalized": "1.24.0.0",
+            "version": "v1.25.0",
+            "version_normalized": "1.25.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
-                "reference": "57b712b08eddb97c762a8caa32c84e037892d2e9"
+                "reference": "4407588e0d3f1f52efb65fbe92babe41f37fe50c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/57b712b08eddb97c762a8caa32c84e037892d2e9",
-                "reference": "57b712b08eddb97c762a8caa32c84e037892d2e9",
+                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/4407588e0d3f1f52efb65fbe92babe41f37fe50c",
+                "reference": "4407588e0d3f1f52efb65fbe92babe41f37fe50c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
             },
-            "time": "2021-09-13T13:58:33+00:00",
+            "time": "2022-03-04T08:16:47+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -812,12 +843,12 @@
             },
             "installation-source": "dist",
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php80\\": ""
-                },
                 "files": [
                     "bootstrap.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php80\\": ""
+                },
                 "classmap": [
                     "Resources/stubs"
                 ]
@@ -849,7 +880,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/v1.24.0"
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.25.0"
             },
             "funding": [
                 {
@@ -949,55 +980,6 @@
                 }
             ],
             "install-path": "../vlucas/phpdotenv"
-        },
-        {
-            "name": "wptrt/customize-section-button",
-            "version": "1.0.1",
-            "version_normalized": "1.0.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/WPTT/customize-section-button.git",
-                "reference": "510c956c1142f712cda3041fc2d02d316228f031"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/WPTT/customize-section-button/zipball/510c956c1142f712cda3041fc2d02d316228f031",
-                "reference": "510c956c1142f712cda3041fc2d02d316228f031",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6"
-            },
-            "time": "2019-07-01T16:39:26+00:00",
-            "type": "library",
-            "installation-source": "dist",
-            "autoload": {
-                "psr-4": {
-                    "WPTRT\\Customize\\Section\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "WordPress.org Theme Review Team",
-                    "email": "themes@wordpress.org",
-                    "homepage": "https://make.wordpress.org/themes",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A button section for the WordPress customizer.",
-            "homepage": "https://github.com/WPTRT/customize-section-button",
-            "keywords": [
-                "wordpress"
-            ],
-            "support": {
-                "issues": "https://github.com/WPTRT/customize-section-button/issues",
-                "source": "https://github.com/WPTT/customize-section-button/tree/1.0.1"
-            },
-            "install-path": "../wptrt/customize-section-button"
         },
         {
             "name": "yahnis-elsts/plugin-update-checker",

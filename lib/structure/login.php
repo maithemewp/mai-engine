@@ -9,6 +9,8 @@
  * @license   GPL-2.0-or-later
  */
 
+use Kirki\Util\Helper;
+
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
@@ -43,8 +45,8 @@ add_action( 'login_head', 'mai_login_css', 99 );
  * @return void
  */
 function mai_login_css() {
-	if ( class_exists( 'Kirki_Modules_CSS' ) ) {
-		$css = Kirki_Modules_CSS::get_instance();
+	if ( class_exists( 'Kirki\Module\CSS' ) ) {
+		$css = new \Kirki\Module\CSS();
 		$css->print_styles_inline();
 	}
 

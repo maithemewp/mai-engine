@@ -9,12 +9,14 @@
  * @license   GPL-2.0-or-later
  */
 
+use Kirki\Util\Helper;
+
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
 add_action( 'init', 'mai_menus_customizer_settings' );
 /**
- * Add base styles customizer settings.
+ * Add menu customizer settings.
  *
  * @since 0.3.0
  *
@@ -24,7 +26,7 @@ function mai_menus_customizer_settings() {
 	$handle  = mai_get_handle();
 	$section = $handle . '-menus';
 
-	Kirki::add_section(
+	new \Kirki\Section(
 		$section,
 		[
 			'title' => esc_html__( 'Menus', 'mai-engine' ),
@@ -32,91 +34,94 @@ function mai_menus_customizer_settings() {
 		]
 	);
 
-	Kirki::add_field(
-		$handle,
-		[
-			'type'              => 'text',
-			'settings'          => 'mobile-menu-breakpoint',
-			'label'             => __( 'Mobile Menu Breakpoint', 'mai-engine' ),
-			'section'           => $section,
-			'description'       => __( 'The largest screen width at which the mobile menu becomes active, in pixels.', 'mai-engine' ),
-			'sanitize_callback' => 'absint',
-			'default'           => mai_get_mobile_menu_breakpoint(),
-		]
+	new \Kirki\Field\Text(
+		mai_parse_kirki_args(
+			[
+				'settings'          => mai_get_kirki_setting( 'mobile-menu-breakpoint' ),
+				'label'             => __( 'Mobile Menu Breakpoint', 'mai-engine' ),
+				'section'           => $section,
+				'description'       => __( 'The largest screen width at which the mobile menu becomes active, in pixels.', 'mai-engine' ),
+				'sanitize_callback' => 'absint',
+				'default'           => mai_get_mobile_menu_breakpoint(),
+			]
+		)
 	);
 
-	Kirki::add_field(
-		$handle,
-		[
-			'type'            => 'radio-buttonset',
-			'settings'        => 'header-left-menu-alignment',
-			'section'         => $section,
-			'label'           => __( 'Header Left Menu Alignment', 'mai-engine' ),
-			'default'         => mai_get_config( 'settings' )['header-left-menu-alignment'],
-			'choices'         => [
-				'flex-start' => __( 'Left', 'mai-engine' ),
-				'center'     => __( 'Center', 'mai-engine' ),
-				'flex-end'   => __( 'Right', 'mai-engine' ),
-			],
-			'output'          => [
-				[
-					'element'  => '.header-left',
-					'property' => '--menu-justify-content',
+	new \Kirki\Field\Radio_Buttonset(
+		mai_parse_kirki_args(
+			[
+				'settings'        => mai_get_kirki_setting( 'header-left-menu-alignment' ),
+				'section'         => $section,
+				'label'           => __( 'Header Left Menu Alignment', 'mai-engine' ),
+				'default'         => mai_get_config( 'settings' )['header-left-menu-alignment'],
+				'transport'       => 'auto',
+				'choices'         => [
+					'flex-start' => __( 'Left', 'mai-engine' ),
+					'center'     => __( 'Center', 'mai-engine' ),
+					'flex-end'   => __( 'Right', 'mai-engine' ),
 				],
-			],
-			'active_callback' => function() {
-				return has_nav_menu( 'header-left' );
-			},
-		]
+				'output'          => [
+					[
+						'element'  => '.header-left',
+						'property' => '--menu-justify-content',
+					],
+				],
+				'active_callback' => function() {
+					return has_nav_menu( 'header-left' );
+				},
+			]
+		)
 	);
 
-	Kirki::add_field(
-		$handle,
-		[
-			'type'            => 'radio-buttonset',
-			'settings'        => 'header-right-menu-alignment',
-			'section'         => $section,
-			'label'           => __( 'Header Right Menu Alignment', 'mai-engine' ),
-			'default'         => mai_get_config( 'settings' )['header-right-menu-alignment'],
-			'choices'         => [
-				'flex-start' => __( 'Left', 'mai-engine' ),
-				'center'     => __( 'Center', 'mai-engine' ),
-				'flex-end'   => __( 'Right', 'mai-engine' ),
-			],
-			'output'          => [
-				[
-					'element'  => '.header-right',
-					'property' => '--menu-justify-content',
+	new \Kirki\Field\Radio_Buttonset(
+		mai_parse_kirki_args(
+			[
+				'settings'        => mai_get_kirki_setting( 'header-right-menu-alignment' ),
+				'section'         => $section,
+				'label'           => __( 'Header Right Menu Alignment', 'mai-engine' ),
+				'default'         => mai_get_config( 'settings' )['header-right-menu-alignment'],
+				'transport'       => 'auto',
+				'choices'         => [
+					'flex-start' => __( 'Left', 'mai-engine' ),
+					'center'     => __( 'Center', 'mai-engine' ),
+					'flex-end'   => __( 'Right', 'mai-engine' ),
 				],
-			],
-			'active_callback' => function() {
-				return has_nav_menu( 'header-right' );
-			},
-		]
+				'output'          => [
+					[
+						'element'  => '.header-right',
+						'property' => '--menu-justify-content',
+					],
+				],
+				'active_callback' => function() {
+					return has_nav_menu( 'header-right' );
+				},
+			]
+		)
 	);
 
-	Kirki::add_field(
-		$handle,
-		[
-			'type'            => 'radio-buttonset',
-			'settings'        => 'after-header-menu-alignment',
-			'section'         => $section,
-			'label'           => __( 'After Header Menu Alignment', 'mai-engine' ),
-			'default'         => mai_get_config( 'settings' )['after-header-menu-alignment'],
-			'choices'         => [
-				'flex-start' => __( 'Left', 'mai-engine' ),
-				'center'     => __( 'Center', 'mai-engine' ),
-				'flex-end'   => __( 'Right', 'mai-engine' ),
-			],
-			'output'          => [
-				[
-					'element'  => '.nav-after-header',
-					'property' => '--menu-justify-content',
+	new \Kirki\Field\Radio_Buttonset(
+		mai_parse_kirki_args(
+			[
+				'settings'        => mai_get_kirki_setting( 'after-header-menu-alignment' ),
+				'section'         => $section,
+				'label'           => __( 'After Header Menu Alignment', 'mai-engine' ),
+				'default'         => mai_get_config( 'settings' )['after-header-menu-alignment'],
+				'transport'       => 'auto',
+				'choices'         => [
+					'flex-start' => __( 'Left', 'mai-engine' ),
+					'center'     => __( 'Center', 'mai-engine' ),
+					'flex-end'   => __( 'Right', 'mai-engine' ),
 				],
-			],
-			'active_callback' => function() {
-				return has_nav_menu( 'after-header' );
-			},
-		]
+				'output'          => [
+					[
+						'element'  => '.nav-after-header',
+						'property' => '--menu-justify-content',
+					],
+				],
+				'active_callback' => function() {
+					return has_nav_menu( 'after-header' );
+				},
+			]
+		)
 	);
 }

@@ -265,6 +265,10 @@ function mai_load_default_favicon( $favicon ) {
  */
 add_action( 'save_post_mai_template_part', 'mai_save_template_part_delete_transient', 20, 3 );
 function mai_save_template_part_delete_transient( $post_id, $post, $update ) {
+	if ( wp_is_post_revision( $post_id ) ) {
+		return;
+	}
+
 	delete_transient( 'mai_template_parts' );
 }
 
@@ -287,7 +291,7 @@ function mai_load_vendor_plugins() {
 	}
 
 	if ( ! class_exists( 'Kirki' ) ) {
-		$files[] = '../vendor/aristath/kirki/kirki';
+		$files[] = '../vendor/kirki-framework/kirki/kirki';
 	}
 
 	if ( ! $files ) {
@@ -328,6 +332,7 @@ function mai_load_files() {
 		'functions/autoload',
 		'functions/colors',
 		'functions/columns',
+		'functions/customizer',
 		'functions/defaults',
 		'functions/deprecated',
 		'functions/enqueue',
@@ -369,38 +374,55 @@ function mai_load_files() {
 		'structure/widget-areas',
 		'structure/wrap',
 
+		// Fields.
+		'fields/clone', // Must be first.
+		'fields/columns',
+		'fields/grid-display',
+		'fields/grid-layout',
+		'fields/grid-tabs',
+		'fields/icons',
+		'fields/wp-query',
+		'fields/wp-term-query',
+
 		// Blocks.
 		'blocks/button',
-		'blocks/columns',
 		'blocks/cover',
-		'blocks/divider',
-		'blocks/grid',
 		'blocks/group',
 		'blocks/heading',
-		'blocks/icon',
+		'blocks/mai-columns',
+		'blocks/mai-divider',
+		'blocks/mai-grid',
+		'blocks/mai-icon',
 		'blocks/paragraph',
 		'blocks/search',
 		'blocks/settings',
 		'blocks/social-links',
-
-		// Customizer.
-		'customize/beta-tester',
-		'customize/colors',
-		'customize/content-archives',
-		'customize/logo',
-		'customize/loop',
-		'customize/menus',
-		'customize/output',
-		'customize/page-header',
-		'customize/performance',
-		'customize/setup',
-		'customize/single-content',
-		'customize/site-header',
-		'customize/site-layouts',
-		'customize/typography',
-		'customize/updates',
-		'customize/upsell',
 	];
+
+	// Customizer.
+	if ( class_exists( 'Kirki' ) ) {
+		$files = array_merge(
+			$files,
+			[
+				'customize/setup', // Setup first.
+				'customize/beta-tester',
+				'customize/colors',
+				'customize/content-archives',
+				'customize/logo',
+				'customize/loop',
+				'customize/menus',
+				'customize/page-header',
+				'customize/performance',
+				'customize/single-content',
+				'customize/site-header',
+				'customize/site-layouts',
+				'customize/typography',
+				'customize/updates',
+				'customize/upsell',
+				'customize/output', // Output last.
+			]
+		);
+	}
 
 	if ( is_admin() ) {
 		$files = array_merge(
@@ -422,12 +444,24 @@ function mai_load_files() {
 		);
 	}
 
+	if ( class_exists( 'Easy_Digital_Downloads' ) ) {
+		$files[] = 'support/easy-digital-downloads';
+	}
+
 	if ( class_exists( 'FacetWP' ) ) {
 		$files[] = 'support/facetwp';
 	}
 
+	if ( class_exists( 'SFWD_LMS' ) ) {
+		$files[] = 'support/learndash';
+	}
+
 	if ( class_exists( 'Polylang' ) ) {
 		$files[] = 'support/polylang';
+	}
+
+	if ( class_exists( 'RankMath' ) ) {
+		$files[] = 'support/rankmath';
 	}
 
 	if ( class_exists( 'SitePress' ) ) {
@@ -436,6 +470,14 @@ function mai_load_files() {
 
 	if ( class_exists( 'WooCommerce' ) ) {
 		$files[] = 'support/woocommerce';
+	}
+
+	if ( function_exists( 'ss_get_podcast' ) ) {
+		$files[] = 'support/seriously-simple-podcasting';
+	}
+
+	if ( class_exists( 'WPForms' ) || function_exists( 'wpforms' ) ) {
+		$files[] = 'support/wpforms';
 	}
 
 	foreach ( $files as $file ) {

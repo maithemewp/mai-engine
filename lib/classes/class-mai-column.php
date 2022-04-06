@@ -74,7 +74,7 @@ class Mai_Column {
 	 */
 	public function render() {
 		$attributes = [
-			'class' => 'mai-column',
+			'class' => 'mai-column is-column',
 			'style' => '',
 		];
 
@@ -91,6 +91,7 @@ class Mai_Column {
 		}
 
 		if ( $this->args['background'] ) {
+			$attributes['class']  = mai_add_classes( 'has-background', $attributes['class'] );
 			$attributes['style'] .= sprintf( 'background:%s;', mai_get_color_css( $this->args['background'] ) );
 
 			if ( ! mai_is_light_color( $this->args['background'] ) ) {

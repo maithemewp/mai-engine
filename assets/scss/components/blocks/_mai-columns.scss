@@ -1,45 +1,5 @@
-.mai-columns-wrap {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--row-gap) var(--column-gap);
-	align-items: var(--align-columns-vertical);
-	justify-content: var(--align-columns);
-}
-
 .mai-column {
 	display: flex;
-	flex: var(--flex, var(--flex-xs, 0 0 100%));
 	flex-direction: column;
 	justify-content: var(--justify-content, flex-start);
-	order: var(--order, unset);
-}
-
-@include mq(false, sm) {
-
-	.mai-column {
-		--order: var(--order-xs, unset);
-	}
-}
-
-@include mq(sm, md) {
-
-	.mai-column {
-		--flex: var(--flex-sm, 0 0 100%);
-		--order: var(--order-sm, unset);
-	}
-}
-
-@include mq(md, lg) {
-
-	.mai-column {
-		--flex: var(--flex-md, 0 0 100%);
-		--order: var(--order-md, unset);
-	}
-}
-
-@include mq(lg) {
-
-	.mai-column {
-		--flex: var(--flex-lg, 0 0 100%);
-	}
 }

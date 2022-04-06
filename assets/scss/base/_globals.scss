@@ -103,6 +103,7 @@
 	--padding-md: calc(var(--padding-sm) * var(--padding-scale));
 	--padding-lg: calc(var(--padding-md) * var(--padding-scale));
 	--padding-xl: calc(var(--padding-lg) * var(--padding-scale));
+	--padding-xxl: calc(var(--padding-xl) * var(--padding-scale)); // Only for dividers.
 
 	/*******************
 	 * Misc.
@@ -120,6 +121,7 @@
 	--border-width: 1px;
 	--border: var(--border-width) solid var(--color-border);
 	--shadow: 0 0.25em 1em 0 var(--color-shadow);
+	--drop-shadow: drop-shadow(0 0.25em 1em var(--color-shadow));
 
 	--transition-property: all;
 	--transition-duration: 0.2s;
@@ -148,7 +150,7 @@
 @include mq(md, lg) {
 
 	:root {
-		--font-scale: var(--font-scale-mobile, 1.2);         // Minor third.
+		--font-scale: var(--font-scale-tablet, 1.2);         // Minor third.
 		--spacing-scale: var(--spacing-scale-tablet, 1.414); // Augmented fourth.
 		--padding-scale: var(--padding-scale-tablet, 1.778); // Minor seventh.
 	}

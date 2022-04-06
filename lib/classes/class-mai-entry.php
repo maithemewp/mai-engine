@@ -119,6 +119,7 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function render() {
+		static $index = 1;
 
 		// Remove post attributes.
 		remove_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
@@ -137,8 +138,13 @@ class Mai_Entry {
 		}
 
 		$atts = [
-			'class' => sprintf( 'entry entry-%s', 'block' === $this->context ? 'grid' : $this->context ),
+			'class' => sprintf( 'entry entry-%s is-column', 'block' === $this->context ? 'grid' : $this->context ),
 		];
+
+		// Add index for easy custom ordering.
+		if ( 'archive' === $this->context ) {
+			$atts['style'] = sprintf( '--entry-index:%s;', $index );
+		}
 
 		// Add entry link class.
 		if ( $this->link_entry ) {
@@ -366,6 +372,7 @@ class Mai_Entry {
 			remove_filter( 'post_class', [ $this, 'has_image_class' ] );
 		}
 
+		$index++;
 	}
 
 	/**
@@ -825,7 +832,7 @@ class Mai_Entry {
 	}
 
 	/**
-	 * Gets a reasonable column count when a breakpoint has a 0 (Auto) value.
+	 * Gets a reasonable column count when a breakpoint has a 0 (Auto/Fit) value.
 	 *
 	 * @param array $columns The existing columns.
 	 *
@@ -1122,7 +1129,7 @@ class Mai_Entry {
 			}
 
 			// Limit.
-			if ( $content && isset( $this->args['content_limit'] ) && ( $this->args['content_limit'] > 0 ) ) {
+			if ( $content && isset( $this->args['content_limit'] ) && $this->args['content_limit'] > 0 ) {
 				$content = mai_get_content_limit( $content, $this->args['content_limit'] );
 			}
 

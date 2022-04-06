@@ -164,7 +164,7 @@ function mai_get_icon( $args ) {
 function mai_get_icon_default_args() {
 	$defaults = [
 		'style'                => 'light',
-		'icon'                 => 'bolt',
+		'icon'                 => 'heart',
 		'icon_brand'           => 'wordpress-simple',
 		'display'              => 'block',
 		'align'                => 'center',
@@ -193,7 +193,9 @@ function mai_get_icon_default_args() {
 		'text_shadow_y_offset' => 0,
 		'text_shadow_blur'     => 0,
 	];
+
 	$defaults = apply_filters( 'mai_icon_defaults', $defaults );
+
 	return $defaults;
 }
 
@@ -233,7 +235,7 @@ function mai_get_svg( $name, $class = '' ) {
 	}
 
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-	return $svg;
+	return trim( $svg );
 }
 
 /**
@@ -286,7 +288,7 @@ function mai_get_svg_icon( $name, $style = 'light', $atts = [] ) {
 	}
 
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-	return $svg;
+	return trim( $svg );
 }
 
 /**
@@ -313,7 +315,7 @@ function mai_get_svg_file( $name ) {
 	}
 
 	$svg            = file_get_contents( $file );
-	$files[ $name ] = $svg;
+	$files[ $name ] = trim( $svg );
 
 	return $files[ $name ];
 }
@@ -343,7 +345,7 @@ function mai_get_svg_icon_file( $name, $style = 'light' ) {
 	}
 
 	$svg                      = file_get_contents( $file );
-	$files[ $style ][ $name ] = $svg;
+	$files[ $style ][ $name ] = trim( $svg );
 
 	return $files[ $style ][ $name ];
 }
@@ -359,7 +361,10 @@ function mai_get_svg_icon_file( $name, $style = 'light' ) {
  * @return string
  */
 function mai_get_svg_icon_url( $name, $style = 'light' ) {
-	return mai_get_icons_url() ?: '' . "svgs/$style/$name.svg";
+	$url = mai_get_icons_url();
+	$url = $url ? $url . "/svgs/$style/$name.svg" : '';
+
+	return $url;
 }
 
 /**

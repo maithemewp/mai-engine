@@ -47,12 +47,16 @@
 	min-width: 100%;
 	height: var(--entry-image-height, inherit);
 	object-fit: var(--entry-image-object-fit, unset);
-	border-radius: var(--entry-image-border-radius, var(--border-radius));
+	border-radius: var(--entry-image-border-radius, var(--image-border-radius, var(--border-radius)));
+}
+
+.has-image-center {
+	--entry-image-link-align: center;
 }
 
 .has-image-center:not(.has-boxed) {
-	--entry-image-link-margin-right: auto;
-	--entry-image-link-margin-left: auto;
+	// --entry-image-link-margin-right: auto;
+	// --entry-image-link-margin-left: auto;
 }
 
 .has-image-left-middle,
@@ -77,14 +81,14 @@
 	--entry-image-link-margin-bottom: 0;
 }
 
-.has-boxed.has-image-center {
-	--entry-image-link-margin-right: var(--entry-wrap-padding);
-	--entry-image-link-margin-left: var(--entry-wrap-padding);
-}
+// .has-boxed.has-image-center:not(.has-image-first) {}
 
 .has-boxed.has-image-center .has-image-first {
-	--entry-image-link-margin-top: var(--entry-wrap-padding);
-	--entry-image-link-margin-bottom: 0;
+	--entry-image-link-margin: var(--entry-wrap-padding) var(--entry-wrap-padding) 0;
+	// --entry-image-link-margin-top: var(--entry-wrap-padding);
+	// --entry-image-link-margin-right: var(--entry-wrap-padding);
+	// --entry-image-link-margin-bottom: 0;
+	// --entry-image-link-margin-left: var(--entry-wrap-padding);
 }
 
 .has-boxed.has-image-left-top,
@@ -129,22 +133,26 @@
 	}
 }
 
+.has-image-even-first .entry:nth-child(odd),
 .has-image-odd-first .entry:nth-child(even) {
 	--entry-image-link-order: 2;
 	--entry-image-link-margin-right: 0;
 	--entry-image-link-margin-left: var(--entry-image-link-gap);
 }
 
-.has-image-even-first .entry:nth-child(odd) {
+.has-image-even-first .entry:nth-child(even),
+.has-image-odd-first .entry:nth-child(odd) {
 	--entry-image-link-order: -1;
 	--entry-image-link-margin-right: var(--entry-image-link-gap);
 	--entry-image-link-margin-left: 0;
 }
 
+.has-image-even-first.has-boxed:not(.has-image-left-full):not(.has-image-right-full) .entry:nth-child(odd),
 .has-image-odd-first.has-boxed:not(.has-image-left-full):not(.has-image-right-full) .entry:nth-child(even) {
 	--entry-image-link-margin-right: var(--entry-wrap-padding);
 }
 
-.has-image-even-first.has-boxed:not(.has-image-left-full):not(.has-image-right-full) .entry:nth-child(odd) {
+.has-image-even-first.has-boxed:not(.has-image-left-full):not(.has-image-right-full) .entry:nth-child(even),
+.has-image-odd-first.has-boxed:not(.has-image-left-full):not(.has-image-right-full) .entry:nth-child(odd) {
 	--entry-image-link-margin-left: var(--entry-wrap-padding);
 }

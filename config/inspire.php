@@ -27,9 +27,14 @@ return [
 			'black'     => '#222222',
 		],
 		'fonts' => [
-			'body'       => 'Lato:400',
-			'heading'    => 'Playfair Display:900',
-			'subheading' => 'Playfair Display:500italic',
+			'body'    => 'Lato:400',
+			'heading' => 'Playfair Display:900',
+		],
+		'font-variants' => [
+			'heading' => [
+				'light'      => '500',
+				'additional' => '500italic',
+			],
 		],
 	],
 	'image-sizes' => [

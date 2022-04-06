@@ -51,7 +51,6 @@ function mai_convert_svg_xmlns( $svg ) {
 	return $svg;
 }
 
-
 /**
  * Returns a color option value with config default fallback.
  *
@@ -67,7 +66,6 @@ function mai_get_color( $name ) {
 	_deprecated_function( __FUNCTION__, '2.13.0', 'mai_get_color_value()' );
 	mai_get_color_value( $name );
 }
-
 
 /**
  * Get cover image HTML by ID,

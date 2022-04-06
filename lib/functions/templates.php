@@ -296,7 +296,7 @@ function mai_get_template_part_objects( $use_transient = true ) {
 			wp_reset_postdata();
 
 			// Set transient, and expire after 1 hour.
-			set_transient( $transient, $parts, 1 * HOUR_IN_SECONDS );
+			set_transient( $transient, $parts, HOUR_IN_SECONDS );
 		}
 
 		$posts = $parts;

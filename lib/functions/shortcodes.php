@@ -199,7 +199,10 @@ add_shortcode( 'mai_price', 'mai_price_shortcode' );
  * @return string
  */
 function mai_price_shortcode( $atts ) {
-	if ( ! class_exists( 'WooCommerce' ) ) {
+	$woo = class_exists( 'WooCommerce' );
+	$edd = class_exists( 'Easy_Digital_Downloads' );
+
+	if ( ! ( $woo || $edd ) ) {
 		return;
 	}
 
@@ -215,13 +218,25 @@ function mai_price_shortcode( $atts ) {
 		$atts['id'] = get_the_ID();
 	}
 
-	$product = wc_get_product( $atts['id'] );
-
-	if ( ! $product ) {
+	if ( ! $atts['id'] ) {
 		return;
 	}
 
-	return $product->get_price_html();
+	$price     = '';
+	$post_type = get_post_type( $atts['id'] );
+
+	if ( $woo && 'product' === $post_type ) {
+		$product = wc_get_product( $atts['id'] );
+
+		if ( $product ) {
+			$price = $product->get_price_html();
+		}
+
+	} elseif ( $edd && 'download' === $post_type ) {
+		$price = edd_price( $atts['id'], false, false );
+	}
+
+	return $price;
 }
 
 add_filter( 'genesis_post_terms_shortcode', 'mai_post_terms_shortcode_classes', 10, 3 );

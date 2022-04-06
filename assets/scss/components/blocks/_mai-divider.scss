@@ -1,0 +1,36 @@
+.mai-divider {
+	position: var(--divider-position, static);
+	z-index: var(--divider-z-index, 1);
+	display: block;
+	width: var(--divider-width, var(--alignfull-width, auto));
+	height: var(--divider-height);
+	margin-top: -1px;
+	margin-bottom: -1px;
+	background: var(--divider-background-color, transparent);
+}
+
+.wp-block-cover,
+.wp-block-group {
+	--divider-position: relative;
+}
+
+.mai-divider-svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+	color: var(--divider-color, currentColor);
+	background-color: transparent;
+	transform: var(--divider-transform, scale(1));
+}
+
+.flip-vertical {
+	--divider-transform: scaleY(-1);
+}
+
+.flip-horizontal {
+	--divider-transform: scaleX(-1);
+}
+
+.flip-vertical.flip-horizontal {
+	--divider-transform: scale(-1);
+}

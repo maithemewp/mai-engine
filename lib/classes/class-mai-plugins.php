@@ -115,11 +115,19 @@ class Mai_Plugins {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
-		$plugins       = $this->get_plugins();
+		$plugins      = $this->get_plugins();
 		$can_activate = current_user_can( 'activate_plugins' );
 		$can_install  = current_user_can( 'install_plugins' );
+		$plugins_url  = add_query_arg(
+			[
+				'utm_source'    => 'engine',
+				'utm_medium'    => 'mai-design-pack',
+				'utm_campaign'  => 'mai-design-pack',
+			],
+			'https://bizbudding.com/mai-design-pack/'
+		);
 		$theme_link   = '<a target="_blank" rel="noopener" href="https://bizbudding.com/mai-theme/">Mai Theme</a>';
-		$plugins_link = '<a target="_blank" rel="noopener" href="https://bizbudding.com/mai-design-pack/">Mai Design Pack</a>';
+		$plugins_link = sprintf( '<a target="_blank" rel="noopener" href="%s">Mai Design Pack</a>', $plugins_url );
 
 		echo '<div class="wrap">';
 			echo '<h1 class="wp-heading-inline">Mai Plugins</h1>';
@@ -133,7 +141,7 @@ class Mai_Plugins {
 
 				if ( ! class_exists( 'Mai_Design_Pack' ) ) {
 					echo '<div class="mai-plugins-cta">';
-						printf( '<p><a target="_blank" rel="noopener" href="https://bizbudding.com/mai-design-pack/" class="button button-primary">%s</a></p>', sprintf( '%s Mai Design Pack', esc_html__( 'Get', 'mai-engine' ) ) );
+						printf( '<p><a target="_blank" rel="noopener" href="%s" class="button button-primary">%s</a></p>', $plugins_url, sprintf( '%s Mai Design Pack', esc_html__( 'Get', 'mai-engine' ) ) );
 						printf( '<p><a target="_blank" rel="noopener" href="https://bizbudding.com/my-account/">%s  →</a></p>', sprintf( 'BizBudding %s', esc_html__( 'Account', 'mai-engine' ) ) );
 					echo '</div>';
 				}
@@ -393,6 +401,26 @@ class Mai_Plugins {
 				'required' => true,
 				'desc'     => esc_html__( 'Mai Accordion is perfect for displaying expandable FAQs, transcripts, resources, and even research. Add a title/question, then easily insert any block you want into the answer section.', 'mai-engine' ),
 				'docs'     => 'https://help.bizbudding.com/article/147-mai-accordian',
+			],
+			'mai-galleries' => [
+				'name'     => 'Mai Galleries',
+				'host'     => 'github',
+				'slug'     => 'mai-galleries/mai-galleries.php',
+				'uri'      => 'maithemewp/mai-galleries',
+				'branch'   => 'master',
+				'required' => true,
+				'desc'     => esc_html__( 'Mai Galleries allows you to easily create responsive image galleries with optional image lightbox.', 'mai-engine' ),
+				'docs'     => 'https://help.bizbudding.com/article/207-mai-galleries',
+			],
+			'mai-lists' => [
+				'name'     => 'Mai Lists',
+				'host'     => 'github',
+				'slug'     => 'mai-lists/mai-lists.php',
+				'uri'      => 'maithemewp/mai-lists',
+				'branch'   => 'master',
+				'required' => true,
+				'desc'     => esc_html__( 'Mai Lists is a versatile block to create simple and beautiful icon or numbered lists and responsive icon feature grids.', 'mai-engine' ),
+				'docs'     => 'https://help.bizbudding.com/article/208-mai-lists',
 			],
 			'mai-notices' => [
 				'name'     => 'Mai Notices',

@@ -21,7 +21,6 @@ wp.domReady( () => {
 } );
 
 ( function( $ ) {
-
 	if ( 'object' !== typeof acf ) {
 		return;
 	}

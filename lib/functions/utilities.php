@@ -390,7 +390,10 @@ function mai_get_option( $option, $default = false, $use_cache = true ) {
 		return $values[ $option ];
 	}
 
-	$values            = [];
+	if ( ! is_array( $values ) ) {
+		$values = [];
+	}
+
 	$options           = mai_get_options( $use_cache );
 	$value             = isset( $options[ $option ] ) ? $options[ $option ] : $default;
 	$values[ $option ] = apply_filters( "mai_get_option_{$option}", $value );
@@ -1629,27 +1632,29 @@ function mai_get_editor_localized_data() {
 		'link'      => __( 'Link', 'mai-engine' ),
 	];
 
-	$settings = mai_get_grid_block_settings();
+	$names = [];
+	$grid  = [
+		'display'       => mai_get_grid_display_fields(),
+		'layout'        => mai_get_grid_layout_fields(),
+		'wp_query'      => mai_get_wp_query_fields(),
+		'wp_term_query' => mai_get_wp_term_query_fields(),
+	];
 
-	foreach ( $settings as $key => $field ) {
-		if ( 'tab' === $field['type'] ) {
-			continue;
-		}
+	foreach ( $grid as $name => $values ) {
+		foreach ( $values as $field ) {
+			$names[ $name ][ $field['name'] ] = $field['key'];
+			$sub_fields                       = isset( $field['sub_fields'] ) ? $field['sub_fields'] : [];
 
-		foreach ( [ 'post', 'term', 'user' ] as $type ) {
-			if ( ! in_array( $type, $field['block'], true ) ) {
-				continue;
-			}
-
-			if ( isset( $field['atts']['sub_fields'] ) ) {
-				foreach ( $field['atts']['sub_fields'] as $sub_key => $sub_field ) {
-					$data[ $type ][ $sub_field['name'] ] = $sub_key;
+			if ( $sub_fields ) {
+				foreach ( $sub_fields as $sub_field ) {
+					$names[ $name ][ $sub_field['name'] ] = $sub_field['key'];
 				}
-			} else {
-				$data[ $type ][ $field['name'] ] = $key;
 			}
 		}
 	}
+
+	$data['post'] = array_merge( $names['display'], $names['layout'], $names['wp_query'] );
+	$data['term'] = array_merge( $names['display'], $names['layout'], $names['wp_term_query'] );
 
 	return $data;
 }
@@ -1762,17 +1767,28 @@ function mai_get_logo_icon_2x() {
  * @return string
  */
 function mai_get_cart_total() {
-	if ( ! function_exists( 'WC' ) ) {
+	$woo = class_exists( 'WooCommerce' ) && function_exists( 'WC' );
+	$edd = class_exists( 'Easy_Digital_Downloads' );
+
+	if ( ! ( $woo || $edd ) ) {
 		return '';
 	}
 
-	$cart = WC()->cart;
-	if ( ! $cart ) {
-		return;
-	}
+	$total = '';
 
-	$total = WC()->cart->get_cart_contents_count();
-	$total = $total ?: '';
+	if ( $woo ) {
+		$cart = WC()->cart;
+
+		if ( ! $cart ) {
+			return $total;
+		}
+
+		$total = WC()->cart->get_cart_contents_count();
+		$total = $total ?: '';
+
+	} elseif ( $edd ) {
+		$total = edd_get_cart_total();
+	}
 
 	return sprintf( '<span class="mai-cart-total-wrap is-circle"><span class="mai-cart-total">%s</span></span>', $total );
 }

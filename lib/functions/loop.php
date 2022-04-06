@@ -26,7 +26,6 @@ defined( 'ABSPATH' ) || die;
  * @return string
  */
 function mai_get_content_limit( $content, $limit, $ellipsis = true ) {
-
 	// Strip tags and shortcodes so the content truncation count is done correctly.
 	$content = strip_tags( strip_shortcodes( $content ), apply_filters( 'get_the_content_limit_allowedtags', '<script>,<style>' ) );
 

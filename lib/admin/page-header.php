@@ -124,7 +124,7 @@ add_filter( 'acf/load_field/key=page_header_image', 'mai_load_page_header_image_
  * @return array
  */
 function mai_load_page_header_image_field( $field ) {
-	$screen = get_current_screen();
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : false;
 
 	if ( ! $screen || 'edit-tags' !== $screen->base ) {
 		return $field;
@@ -146,7 +146,7 @@ add_filter( 'acf/load_field/key=page_header_description', 'mai_load_page_header_
  * @return array
  */
 function mai_load_page_header_description_field( $field ) {
-	$screen = get_current_screen();
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : false;
 
 	if ( ! $screen || 'edit-tags' !== $screen->base ) {
 		return $field;

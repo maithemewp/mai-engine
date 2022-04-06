@@ -68,34 +68,6 @@ function mai_do_grid( $type, $args = [] ) {
 }
 
 /**
- * Gets choices for Show field in grid blocks.
- *
- * @since 0.1.0
- *
- * @return array
- */
-function mai_get_grid_show_choices() {
-	static $choices = null;
-
-	if ( ! is_null( $choices ) ) {
-		return $choices;
-	}
-
-	$choices = [
-		'image'          => esc_html__( 'Image', 'mai-engine' ),
-		'title'          => esc_html__( 'Title', 'mai-engine' ),
-		'header_meta'    => esc_html__( 'Header Meta', 'mai-engine' ),
-		'excerpt'        => esc_html__( 'Excerpt', 'mai-engine' ),
-		'content'        => esc_html__( 'Content', 'mai-engine' ),
-		'custom_content' => esc_html__( 'Custom Content', 'mai-engine' ),
-		'more_link'      => esc_html__( 'Read More link', 'mai-engine' ),
-		'footer_meta'    => esc_html__( 'Footer Meta', 'mai-engine' ),
-	];
-
-	return $choices;
-}
-
-/**
  * Get the columns at different breakpoints.
  *
  * @since 0.1.0
@@ -156,7 +128,7 @@ function mai_get_breakpoint_columns( $args ) {
 				$columns['sm'] = 1;
 				$columns['xs'] = 1;
 			break;
-			case 0: // Auto.
+			case 0: // Fit/Auto.
 				$columns['md'] = 0;
 				$columns['sm'] = 0;
 				$columns['xs'] = 0;
@@ -265,6 +237,55 @@ function mai_get_columns_choices() {
 		'4' => esc_html__( '4', 'mai-engine' ),
 		'5' => esc_html__( '5', 'mai-engine' ),
 		'6' => esc_html__( '6', 'mai-engine' ),
-		'0' => esc_html__( 'Auto', 'mai-engine' ),
+		'0' => esc_html__( 'Fit', 'mai-engine' ),
 	];
+}
+
+/**
+ * Gets field keys to be used by clone fields.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @return array
+ */
+function mai_get_grid_field_keys() {
+	static $keys = null;
+
+	if ( ! is_null( $keys ) ) {
+		return $keys;
+	}
+
+	$names = [];
+	$data  = [
+		'display'       => mai_get_grid_display_fields(),
+		'layout'        => mai_get_grid_layout_fields(),
+		'wp_query'      => mai_get_wp_query_fields(),
+		'wp_term_query' => mai_get_wp_term_query_fields(),
+	];
+
+	foreach ( $data as $name => $values ) {
+		foreach ( $values as $field ) {
+			$names[ $name ][] = $field['key'];
+			// $sub_fields       = isset( $field['sub_fields'] ) ? $field['sub_fields'] : [];
+
+			// if ( $sub_fields ) {
+			// 	foreach ( $sub_fields as $sub_field ) {
+			// 		$names[ $name ][] = $sub_field['key'];
+			// 	}
+			// }
+		}
+	}
+
+	$display         = array_merge( [ 'mai_grid_block_display_tab' ], array_diff( $names['display'], [ 'mai_grid_block_disable_entry_link' ] ) );
+	$layout          = array_merge( [ 'mai_grid_block_layout_tab' ], $names['layout'] );
+	$wp_query        = array_merge( [ 'mai_grid_block_entries_tab' ], $names['wp_query'] );
+	$wp_term_query   = array_merge( [ 'mai_grid_block_entries_tab' ], $names['wp_term_query'] );
+	$keys            = [
+		'post' => array_merge( $display, $layout, $wp_query, [ 'mai_grid_block_disable_entry_link' ] ),
+		'term' => array_merge( $display, $layout, $wp_term_query, [ 'mai_grid_block_disable_entry_link' ] ),
+	];
+
+	return $keys;
 }

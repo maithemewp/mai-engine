@@ -25,39 +25,39 @@ defined( 'ABSPATH' ) || die;
  * @return void
  */
 function mai_do_entries_open( $args ) {
-	// Start the attributes.
-	$attributes = [
-		'class' => mai_add_classes( 'entries', isset( $args['class'] ) ? $args['class'] : '' ),
-		'style' => '',
+	// Start the atts.
+	$atts = [
+		'class'   => mai_add_classes( 'entries', isset( $args['class'] ) ? $args['class']: '' ),
+		'style'   => '',
 	];
 
 	// Context.
-	$context             = 'block' === $args['context'] ? 'grid' : $args['context'];
-	$attributes['class'] = mai_add_classes( 'entries-' . $context, $attributes['class'] );
+	$context       = 'block' === $args['context'] ? 'grid' : $args['context'];
+	$atts['class'] = mai_add_classes( 'entries-' . $context, $atts['class'] );
 
 	// Boxed.
 	if ( $args['boxed'] && ! ( in_array( 'image', $args['show'], true ) && ( 'background' === $args['image_position'] ) ) ) {
-		$attributes['class'] .= ' has-boxed';
+		$atts['class'] .= ' has-boxed';
 	}
 
 	// Spacing. Only for grid blocks, so check isset.
 	if ( mai_isset( $args, 'remove_spacing', false ) ) {
-		$attributes['style'] .= '--entries-margin-bottom:0;';
+		$atts['style'] .= '--entries-margin-bottom:0;';
 	}
 
 	// Title size.
 	if ( $args['title_size'] ) {
-		$attributes['style'] .= sprintf( '--entry-title-font-size:var(--font-size-%s);', $args['title_size'] );
+		$atts['style'] .= sprintf( '--entry-title-font-size:var(--font-size-%s);', $args['title_size'] );
 	}
 
 	// Image position.
 	if ( in_array( 'image', $args['show'], true ) && $args['image_position'] ) {
-		$attributes['class'] .= ' has-image-' . $args['image_position'];
+		$atts['class'] .= ' has-image-' . $args['image_position'];
 
 		// Aspect ratio.
 		if ( in_array( $args['image_position'], [ 'background', 'left-full', 'right-full' ], true ) ) {
 			$aspect_ratio         = mai_has_image_orientiation( $args['image_orientation'] ) ? mai_get_aspect_ratio_from_orientation( $args['image_orientation'] ) : mai_get_image_aspect_ratio( $args['image_size'] );
-			$attributes['style'] .= sprintf( '--aspect-ratio:%s;', $aspect_ratio );
+			$atts['style'] .= sprintf( '--aspect-ratio:%s;', $aspect_ratio );
 		}
 
 		if ( 'background' !== $args['image_position'] ) {
@@ -75,19 +75,19 @@ function mai_do_entries_open( $args ) {
 					$image_width = $image_size['width'] . 'px';
 				}
 
-				$attributes['style'] .= sprintf( '--entry-image-link-max-width:%s;', $image_width );
+				$atts['style'] .= sprintf( '--entry-image-link-max-width:%s;', $image_width );
 
 			} elseif ( $left_right ) {
 
 				switch ( $args['image_width'] ) {
 					case 'half':
-						$attributes['style'] .= sprintf( '--entry-image-link-max-width:%s;', '50%' );
+						$atts['style'] .= sprintf( '--entry-image-link-max-width:%s;', '50%' );
 						break;
 					case 'third':
-						$attributes['style'] .= sprintf( '--entry-image-link-max-width:%s;', '33.33333333%' );
+						$atts['style'] .= sprintf( '--entry-image-link-max-width:%s;', '33.33333333%' );
 						break;
 					case 'fourth':
-						$attributes['style'] .= sprintf( '--entry-image-link-max-width:%s;', '25%' );
+						$atts['style'] .= sprintf( '--entry-image-link-max-width:%s;', '25%' );
 						break;
 				}
 			}
@@ -95,84 +95,65 @@ function mai_do_entries_open( $args ) {
 			// Image alternating.
 			if ( $left_right && $args['image_alternate'] ) {
 				if ( mai_has_string( 'left', $args['image_position'] ) ) {
-					$attributes['class'] .= ' has-image-odd-first';
+					$atts['class'] .= ' has-image-odd-first';
 				} elseif ( mai_has_string( 'right', $args['image_position'] ) ) {
-					$attributes['class'] .= ' has-image-even-first';
+					$atts['class'] .= ' has-image-even-first';
 				}
 			}
 		}
 	}
 
-	// Get the columns breakpoint array.
-	$columns = mai_get_breakpoint_columns( $args );
-
-	$attributes['style'] .= sprintf( '--columns-lg:%s;', $columns['lg'] );
-	$attributes['style'] .= sprintf( '--columns-md:%s;', $columns['md'] );
-	$attributes['style'] .= sprintf( '--columns-sm:%s;', $columns['sm'] );
-	$attributes['style'] .= sprintf( '--columns-xs:%s;', $columns['xs'] );
-
-	// Get column gap, deprecating old text field values.
-	if ( $args['column_gap'] ) {
-		$column_gap = mai_is_valid_size( $args['column_gap'] ) ? $args['column_gap'] : 'lg';
-		$column_gap = sprintf( 'var(--spacing-%s)', $column_gap );
-	} else {
-		$column_gap = '0px'; // px needed for calculations.
+	// Check isset because customizer archives don't have margin settings.
+	if ( isset( $args['margin_top'] ) && $args['margin_top'] ) {
+		$atts['class'] = mai_add_classes( sprintf( 'has-%s-margin-top', $args['margin_top'] ), $atts['class'] );
 	}
 
-	// Get row gap, deprecating old text field values.
-	if ( $args['row_gap'] ) {
-		$row_gap = mai_is_valid_size( $args['row_gap'] ) ? $args['row_gap'] : 'lg';
-		$row_gap = sprintf( 'var(--spacing-%s)', $row_gap );
-	} else {
-		$row_gap = '0px'; // px needed for calculations.
+	// Check isset because customizer archives don't have margin settings.
+	if ( isset( $args['margin_bottom'] ) && $args['margin_bottom'] ) {
+		$atts['class'] = mai_add_classes( sprintf( 'has-%s-margin-bottom', $args['margin_bottom'] ), $atts['class'] );
 	}
 
-	$attributes['style'] .= sprintf( '--column-gap:%s;', $column_gap );
-	$attributes['style'] .= sprintf( '--row-gap:%s;', $row_gap );
-	$attributes['style'] .= sprintf( '--align-text:%s;', mai_get_align_text( $args['align_text'] ) );
-
-	if ( isset( $args['align_columns'] ) && $args['align_columns'] ) {
-		$attributes['style'] .= sprintf( '--align-columns:%s;', mai_get_flex_align( $args['align_columns'] ) );
-	}
-
-	if ( isset( $args['align_columns_vertical'] ) && $args['align_columns_vertical'] ) {
-		$attributes['style'] .= sprintf( '--align-columns-vertical:%s;', mai_get_flex_align( $args['align_columns_vertical'] ) );
-	}
+	$atts['style'] .= sprintf( '--align-text:%s;', mai_get_align_text( $args['align_text'] ) );
 
 	if ( isset( $args['align_text_vertical'] ) && mai_has_string( [
 		'left',
 		'right',
 		'background',
 	], $args['image_position'] ) ) {
-		$attributes['style'] .= sprintf( '--align-text-vertical:%s;', mai_get_align_text( $args['align_text_vertical'] ) );
+		$atts['style'] .= sprintf( '--align-text-vertical:%s;', mai_get_align_text( $args['align_text_vertical'] ) );
 	}
 
 	if ( isset( $args['border_radius'] ) && '' !== $args['border_radius'] && ( ( 'background' === $args['image_position'] ) || $args['boxed'] ) ) {
-		$attributes['style'] .= sprintf( '--border-radius:%s;', mai_get_unit_value( $args['border_radius'] ) );
+		$atts['style'] .= sprintf( '--border-radius:%s;', mai_get_unit_value( $args['border_radius'] ) );
 	}
 
-	$attributes['style'] .= sprintf( '--entry-meta-text-align:%s;', mai_get_align_text( $args['align_text'] ) );
+	$atts['style'] .= sprintf( '--entry-meta-text-align:%s;', mai_get_align_text( $args['align_text'] ) );
 
 	genesis_markup(
 		[
 			'open'    => '<div %s>',
 			'context' => 'entries',
 			'echo'    => true,
-			'atts'    => $attributes,
+			'atts'    => $atts,
 			'params'  => [
 				'args' => $args,
 			],
 		]
 	);
 
-	$wrap_class = 'entries-wrap';
+	$wrap_atts = [
+		'class' => 'entries-wrap',
+	];
+
+	$wrap_atts = mai_get_columns_atts( $wrap_atts, $args );
 
 	// Add image stack class to entries-wrap so it intercepts the inline variable so we don't need overly specific CSS.
 	if ( $args['image_stack'] && in_array( 'image', $args['show'], true ) && $args['image_position'] && mai_has_string( [
 			'left',
 			'right',
 		], $args['image_position'] ) ) {
-		$wrap_class .= ' has-image-stack';
+
+		$wrap_atts['class'] = mai_add_classes( 'has-image-stack', $wrap_atts['class'] );
 	}
 
 	genesis_markup(
@@ -180,9 +161,7 @@ function mai_do_entries_open( $args ) {
 			'open'    => '<div %s>',
 			'context' => 'entries-wrap',
 			'echo'    => true,
-			'atts'    => [
-				'class' => $wrap_class,
-			],
+			'atts'    => $wrap_atts,
 			'params'  => [
 				'args' => $args,
 			],
