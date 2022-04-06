@@ -18,7 +18,7 @@
 * Changed: Minor blockquote styling tweaks.
 * Changed: Columns "Auto" setting is now "Fit" to match consistency with other blocks.
 * Changed: Icon link to Font Awesome now points to new url on their updated website.
-* Changed: Bump ACF to 5.12.1 which fixes the bug where duplicating a block would cause issues when changing settings of one of them.
+* Changed: Bump ACF to 5.12.2 which fixes the bug where duplicating a block would cause issues when changing settings of one of them.
 * Changed: Bumped to Kirki v4. Color and other controls/settings now use the React components bundled in WP.
 * Changed: Added an ajax check when using transients for dynamically generating font and typography CSS.
 * Changed: Internal CSS cache via transients are automatically cleared after 1 hour now instead of 1 minute.
