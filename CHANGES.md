@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.21.0 (TBD)
+## 2.21.0 (4/6/22)
 * Added: New Mai Gallery block for a simple and responsive grid of images.
 * Added: Support for Easy Digital Downloads. Customizer archive/single, layout, and color now work with Downloads out of the box.
 * Added: Support for RankMath, including RankMath breadcrumbs.

@@ -16,7 +16,7 @@ add_filter( 'edd_download_supports', 'mai_edd_download_supports' );
 /**
  * Adds support for mai settings in Easy Digital Downloads.
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param array $supports The existing post type supports.
  *
@@ -33,7 +33,7 @@ add_filter( 'edd_purchase_link_defaults', 'mai_edd_purchase_link_defaults' );
 /**
  * Sets purchase link defaults.
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param array $args The purchase link args.
  *
@@ -50,7 +50,7 @@ add_filter( 'edd_purchase_link_args', 'mai_edd_purchase_link_args' );
  * Adds custom class to buttons if color is set to default.
  * This is so we can force mai custom properities.
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param array $args The purchase link args.
  *

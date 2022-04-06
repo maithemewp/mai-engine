@@ -16,7 +16,7 @@ add_filter( 'rank_math/frontend/breadcrumb/args', 'mai_rank_math_breadcrumb_args
 /**
  * Adds breadcrumb class to Rank Math breadcrumbs.
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param $args The existing breadcrumb args.
  *

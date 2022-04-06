@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || die;
  * Margins must be handled separately because they may be
  * applied to a different container element.
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param array $atts   The markup atts.
  * @param array $args   The columns args data.

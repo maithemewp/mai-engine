@@ -246,7 +246,7 @@ function mai_get_columns_choices() {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @return array
  */

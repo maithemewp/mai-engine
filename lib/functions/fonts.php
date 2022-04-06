@@ -185,7 +185,7 @@ function mai_get_font_weight( $element ) {
  * Gets font weight value for CSS.
  * Converts regular to 400 and removes italic.
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param string $weight The font weight to sanitize.
  *
@@ -209,7 +209,7 @@ function mai_get_font_weight_for_css( $weight ) {
  * Gets font variant value for Kirki.
  * Converts 400 to regular.
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param string $variant The font variant to sanitize.
  *
@@ -230,7 +230,7 @@ function mai_get_font_variant_for_kirki( $variant ) {
  * Gets available font weights for an element.
  * Uses naming for use directly in CSS.
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param string $element Element to check.
  *
@@ -268,7 +268,7 @@ function mai_get_font_weights( $element ) {
  * Gets available font variants for an element.
  * Uses naming for Kirki.
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param string $element Element to check.
  *
@@ -417,7 +417,7 @@ function mai_get_font_variants( $element ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param int|string $variant   The variant to check.
  * @param array      $available The available font variants from Kirki.
@@ -455,7 +455,7 @@ function mai_maybe_get_light_variant( $variant, $available, $recursive = false )
  *
  * @access private
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param int|string $variant   The variant to check.
  * @param array      $available The available font variants from Kirki.
@@ -493,7 +493,7 @@ function mai_maybe_get_bold_variant( $variant, $available, $recursive = false ) 
  *
  * @access private
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param int|string $variant   The variant to check.
  * @param array      $available The available font variants from Kirki.
@@ -521,7 +521,7 @@ function mai_maybe_get_italic_variant( $variant, $available ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param int|string $variant   The variant to check.
  * @param array      $available The available font variants from Kirki.

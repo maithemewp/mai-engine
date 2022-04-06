@@ -18,7 +18,7 @@ add_filter( 'kirki_default_color_swatches', 'mai_kirki_color_swatches' );
 /**
  * Adds selected colors as default palette to all kirki color pickers.
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param array $swatches The existing colors.
  *
