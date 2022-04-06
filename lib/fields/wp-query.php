@@ -16,7 +16,7 @@ add_filter( 'acf/load_field/key=mai_grid_block_post_type', 'mai_grid_load_post_t
 /**
  * Loads post type choices.
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param array $field The existing field array.
  *
@@ -31,7 +31,7 @@ add_filter( 'acf/load_field/key=mai_grid_block_tax_taxonomy', 'mai_grid_load_tax
 /**
  * Loads taxonomy choices.
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param array $field The existing field array.
  *
@@ -48,7 +48,7 @@ function mai_grid_load_tax_taxonomy_field( $field ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @return array
  */
@@ -95,7 +95,7 @@ function mai_get_wp_query_defaults() {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @return array
  */
@@ -144,7 +144,7 @@ function mai_get_wp_query_sanitized( $args ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @return array
  */

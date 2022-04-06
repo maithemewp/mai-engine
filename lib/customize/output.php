@@ -16,7 +16,7 @@ add_filter( 'kirki_inline_styles_id', 'mai_kirki_inline_styles_id' );
 /**
  * Changes kirki inline styles element id.
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @return string
  */
@@ -31,7 +31,7 @@ add_action( 'update_option_mai-engine', 'mai_flush_customizer_transients' );
  * Deletes kirki transients when switching themes, when the Customizer is saved, or when mai-engine option is updated.
  *
  * @since 2.12.0
- * @since TBD Added updated_option hook.
+ * @since 2.21.0 Added updated_option hook.
  *
  * @return void
  */
@@ -49,7 +49,7 @@ add_action( 'save_post', 'mai_save_post_flush_customizer_transients', 999, 3 );
 /**
  * Flush transients when saving/updating posts.
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param int     $post_id Post ID.
  * @param WP_Post $post    Post object.
@@ -237,7 +237,7 @@ function mai_add_title_area_custom_properties( $css ) {
  * Adds typography settings custom properties to Kirki output.
  *
  * @since 2.0.0
- * @since TBD Full refactor.
+ * @since 2.21.0 Full refactor.
  *
  * @param array $css Kirki CSS output array.
  *
@@ -374,7 +374,7 @@ function mai_add_extra_custom_properties( $css ) {
 /**
  * Loads font family variants.
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param array $fonts All fonts to be enqueued.
  *

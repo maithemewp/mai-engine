@@ -24,7 +24,7 @@ add_filter( 'kirki_path_url', 'mai_kirki_path_url', 10, 2 );
 /**
  * Uses engine url for kirki assets.
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param string $url  The existing url.
  * @param string $path The existing path.
@@ -39,7 +39,7 @@ add_action( 'init', 'mai_settings_panel', 8 );
 /**
  * Add Kirki theme settings panel.
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @return void
  */

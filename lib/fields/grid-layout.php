@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || die;
  *
  * @access private
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @return array
  */
@@ -52,7 +52,7 @@ function mai_get_grid_layout_defaults() {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @return array
  */
@@ -88,7 +88,7 @@ function mai_get_grid_layout_sanitized( $args ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @return array
  */

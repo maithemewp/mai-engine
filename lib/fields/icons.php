@@ -96,7 +96,7 @@ function mai_get_icon_choices( $style ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @return array
  */

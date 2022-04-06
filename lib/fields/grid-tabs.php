@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || die;
  *
  * @access private
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @return array
  */

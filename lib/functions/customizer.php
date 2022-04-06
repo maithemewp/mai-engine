@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || die;
  * Sets kirki args option type and name.
  * This is required since Kirki v4 doesn't use a config anymore.
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param array $args The existing args array.
  *
@@ -33,7 +33,7 @@ function mai_parse_kirki_args( $args ) {
 /**
  * Gets setting name for kirki.
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param string $key  The setting key.
  * @param string $base The setting base.
@@ -47,7 +47,7 @@ function mai_get_kirki_setting( $key, $base = '' ) {
 /**
  * Get kirki class name from v3 type name.
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param string $type The type name.
  *
@@ -62,7 +62,7 @@ function mai_get_kirki_class( $type ) {
 /**
  * Gets kirki class names from v3 type name.
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @return array
  */
@@ -95,7 +95,7 @@ function mai_get_kirki_classes() {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.21.0
  *
  * @param array  $data    The conditions.
  * @param string $panel   The panel name.
