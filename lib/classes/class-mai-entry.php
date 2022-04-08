@@ -375,7 +375,7 @@ class Mai_Entry {
 		}
 
 		if ( 'archive' === $this->context ) {
-			$index++;
+			$entry_index++;
 		}
 	}
 
