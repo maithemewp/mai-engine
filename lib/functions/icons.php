@@ -337,7 +337,15 @@ function mai_get_svg_icon_file( $name, $style = 'light' ) {
 		return $files[ $style ][ $name ];
 	}
 
-	$file = mai_get_icons_dir() . "/svgs/$style/$name.svg";
+	// Dir requires Mai Icons.
+	$dir = mai_get_icons_dir();
+
+	if ( ! $dir ) {
+		$files[ $style ][ $name ] = '';
+		return $files[ $style ][ $name ];
+	}
+
+	$file = $dir . "/svgs/$style/$name.svg";
 
 	if ( ! file_exists( $file ) ) {
 		$files[ $style ][ $name ] = '';

@@ -1522,6 +1522,8 @@ function mai_get_search_icon_form( $title = '', $icon_size = '16' ) {
 		]
 	);
 
+	$icon       = $icon ?: '<span class="search-toggle-icon">&#x1f50d;</span>'; // Fallback to HTML entity.
+	$close      = $close ?: '<span class="search-toggle-close">&times;</span>'; // Fallback to HTML entity.
 	$hide_text  = apply_filters( 'mai_hide_search_toggle_text', true );
 	$text_class = $hide_text ? 'screen-reader-text' : 'search-toggle-text';
 
