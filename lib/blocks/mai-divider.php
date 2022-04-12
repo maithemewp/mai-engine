@@ -25,6 +25,10 @@ function mai_register_divider_block() {
 		return;
 	}
 
+	// Requires Mai Icons.
+	$icon = mai_get_svg_icon( 'wave-sine', 'regular' );
+	$icon = $icon ?: 'minus';
+
 	acf_register_block_type(
 		[
 			'name'            => 'mai-divider',
@@ -33,7 +37,7 @@ function mai_register_divider_block() {
 			'render_callback' => 'mai_do_divider_block',
 			'category'        => 'widgets',
 			'keywords'        => [ 'divider' ],
-			'icon'            => mai_get_svg_icon( 'wave-sine', 'regular' ),
+			'icon'            => $icon,
 			'mode'            => 'preview',
 			'align'           => 'full',
 			'supports'        => [

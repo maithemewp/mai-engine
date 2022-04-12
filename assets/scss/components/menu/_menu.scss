@@ -5,9 +5,9 @@
 	justify-content: var(--menu-justify-content, flex-start);
 	width: 100%;
 	margin: 0;
-	font-weight: var(--menu-font-weight, inherit);
+	font-weight: var(--menu-font-weight, unset);
 	font-size: var(--menu-font-size, var(--font-size-md));
-	font-family: var(--menu-font-family, inherit);
+	font-family: var(--menu-font-family, var(--inherit));
 	line-height: var(--menu-line-height, 1.219); // Perfect fourth.
 	letter-spacing: var(--menu-letter-spacing, normal);
 	text-transform: var(--menu-text-transform, normal);

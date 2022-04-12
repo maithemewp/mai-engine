@@ -182,7 +182,7 @@ add_filter( 'woocommerce_cart_item_remove_link', 'mai_woocommerce_cart_item_remo
  */
 function mai_woocommerce_cart_item_remove_icon( $link ) {
 	$svg = mai_get_svg_icon( 'times', 'light' );
-	return str_replace( '&times;', $svg, $link );
+	return $svg ? str_replace( '&times;', $svg, $link ) : $link;
 }
 
 add_action( 'admin_bar_menu', 'mai_woocommerce_edit_shop_link', 90 );

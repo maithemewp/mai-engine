@@ -202,6 +202,7 @@ li.wc-block-grid__product .wp-block-button {
 }
 
 .ajax_add_to_cart {
+	--button-transition: var(--transition), text-indent 0ms;
 
 	&.loading {
 		text-indent: -9999px;

@@ -119,7 +119,9 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function render() {
-		static $index = 1;
+		if ( 'archive' === $this->context ) {
+			static $entry_index = 1;
+		}
 
 		// Remove post attributes.
 		remove_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
@@ -143,7 +145,7 @@ class Mai_Entry {
 
 		// Add index for easy custom ordering.
 		if ( 'archive' === $this->context ) {
-			$atts['style'] = sprintf( '--entry-index:%s;', $index );
+			$atts['style'] = sprintf( '--entry-index:%s;', $entry_index );
 		}
 
 		// Add entry link class.
@@ -372,7 +374,9 @@ class Mai_Entry {
 			remove_filter( 'post_class', [ $this, 'has_image_class' ] );
 		}
 
-		$index++;
+		if ( 'archive' === $this->context ) {
+			$entry_index++;
+		}
 	}
 
 	/**

@@ -3,7 +3,7 @@
 	width: 100%;
 	margin: var(--entry-excerpt-margin, 0 0 var(--entry-excerpt-margin-bottom, var(--spacing-md)));
 	font-size: var(--entry-excerpt-font-size, (0.9em));
-	font-family: var(--entry-excerpt-font-family, inherit);
+	font-family: var(--entry-excerpt-font-family, var(--inherit));
 
 	&:last-child {
 		--entry-excerpt-margin-bottom: 0;

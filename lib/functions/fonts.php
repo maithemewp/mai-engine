@@ -501,16 +501,19 @@ function mai_maybe_get_bold_variant( $variant, $available, $recursive = false ) 
  * @return int|string false;
  */
 function mai_maybe_get_italic_variant( $variant, $available ) {
+	// Convert to standard italic.
 	if ( in_array( $variant, [ 'regular', 'italic', '400', '400italic' ] ) ) {
 		$variant = 'italic';
 	}
 
-	if ( in_array( $variant, $available ) ) {
-		return $variant;
+	// If still a number value, try number plus italic.
+	if ( is_numeric( $variant ) &&  in_array( $variant . 'italic', $available ) ) {
+		return $variant . 'italic';
 	}
 
-	if ( in_array( $variant . 'italic', $available ) ) {
-		return $variant . 'italic';
+	// Try whatever the actual value is.
+	if ( in_array( $variant, $available ) ) {
+		return $variant;
 	}
 
 	return false;
