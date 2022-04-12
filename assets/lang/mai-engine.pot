@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Mai Engine plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.21.0\n"
+"Project-Id-Version: Mai Engine 2.21.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-04-06T15:31:29+00:00\n"
+"POT-Creation-Date: 2022-04-08T16:34:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -128,49 +128,49 @@ msgstr ""
 msgid "Subheading"
 msgstr ""
 
-#: lib/blocks/mai-divider.php:31
-#: lib/blocks/mai-divider.php:212
+#: lib/blocks/mai-divider.php:35
+#: lib/blocks/mai-divider.php:216
 msgid "Mai Divider"
 msgstr ""
 
-#: lib/blocks/mai-divider.php:32
+#: lib/blocks/mai-divider.php:36
 msgid "A custom divider block."
 msgstr ""
 
-#: lib/blocks/mai-divider.php:216
+#: lib/blocks/mai-divider.php:220
 msgid "Style"
 msgstr ""
 
-#: lib/blocks/mai-divider.php:221
+#: lib/blocks/mai-divider.php:225
 #: lib/customize/page-header.php:222
 msgid "Angle"
 msgstr ""
 
-#: lib/blocks/mai-divider.php:222
+#: lib/blocks/mai-divider.php:226
 #: lib/customize/page-header.php:223
 msgid "Curve"
 msgstr ""
 
-#: lib/blocks/mai-divider.php:223
+#: lib/blocks/mai-divider.php:227
 #: lib/customize/page-header.php:226
 msgid "Wave"
 msgstr ""
 
-#: lib/blocks/mai-divider.php:224
+#: lib/blocks/mai-divider.php:228
 #: lib/customize/page-header.php:224
 msgid "Point"
 msgstr ""
 
-#: lib/blocks/mai-divider.php:225
+#: lib/blocks/mai-divider.php:229
 #: lib/customize/page-header.php:225
 msgid "Round"
 msgstr ""
 
-#: lib/blocks/mai-divider.php:230
+#: lib/blocks/mai-divider.php:234
 msgid "Height"
 msgstr ""
 
-#: lib/blocks/mai-divider.php:235
+#: lib/blocks/mai-divider.php:239
 #: lib/blocks/mai-columns.php:481
 #: lib/blocks/mai-columns.php:570
 #: lib/blocks/mai-columns.php:589
@@ -204,7 +204,7 @@ msgstr ""
 msgid "XS"
 msgstr ""
 
-#: lib/blocks/mai-divider.php:236
+#: lib/blocks/mai-divider.php:240
 #: lib/blocks/mai-columns.php:571
 #: lib/blocks/mai-columns.php:590
 #: lib/blocks/mai-columns.php:608
@@ -236,7 +236,7 @@ msgstr ""
 msgid "S"
 msgstr ""
 
-#: lib/blocks/mai-divider.php:237
+#: lib/blocks/mai-divider.php:241
 #: lib/blocks/mai-columns.php:572
 #: lib/blocks/mai-columns.php:591
 #: lib/blocks/mai-columns.php:609
@@ -268,7 +268,7 @@ msgstr ""
 msgid "M"
 msgstr ""
 
-#: lib/blocks/mai-divider.php:238
+#: lib/blocks/mai-divider.php:242
 #: lib/blocks/mai-columns.php:573
 #: lib/blocks/mai-columns.php:592
 #: lib/blocks/mai-columns.php:610
@@ -300,7 +300,7 @@ msgstr ""
 msgid "L"
 msgstr ""
 
-#: lib/blocks/mai-divider.php:239
+#: lib/blocks/mai-divider.php:243
 #: lib/blocks/mai-columns.php:574
 #: lib/blocks/mai-columns.php:593
 #: lib/blocks/mai-columns.php:611
@@ -333,15 +333,15 @@ msgstr ""
 msgid "XL"
 msgstr ""
 
-#: lib/blocks/mai-divider.php:244
+#: lib/blocks/mai-divider.php:248
 msgid "Flip Horizontally"
 msgstr ""
 
-#: lib/blocks/mai-divider.php:265
+#: lib/blocks/mai-divider.php:269
 msgid "Flip Vertically"
 msgstr ""
 
-#: lib/blocks/mai-divider.php:272
+#: lib/blocks/mai-divider.php:276
 msgid "Color"
 msgstr ""
 
@@ -846,7 +846,7 @@ msgstr ""
 
 #: lib/blocks/mai-icon.php:177
 #: lib/functions/colors.php:251
-#: lib/functions/utilities.php:1632
+#: lib/functions/utilities.php:1634
 msgid "Link"
 msgstr ""
 
@@ -1046,11 +1046,11 @@ msgstr ""
 msgid "Return to dashboard"
 msgstr ""
 
-#: lib/classes/class-mai-entry.php:1164
+#: lib/classes/class-mai-entry.php:1168
 msgid "Pages:"
 msgstr ""
 
-#: lib/classes/class-mai-entry.php:1172
+#: lib/classes/class-mai-entry.php:1176
 msgid "Page "
 msgstr ""
 
@@ -1433,7 +1433,7 @@ msgstr ""
 
 #: lib/admin/admin-menu.php:28
 #: lib/admin/admin-menu.php:29
-#: lib/functions/utilities.php:1703
+#: lib/functions/utilities.php:1705
 #: lib/functions/deprecated.php:289
 msgid "Mai Theme"
 msgstr ""
@@ -2199,33 +2199,33 @@ msgstr ""
 msgid "Search..."
 msgstr ""
 
-#: lib/functions/utilities.php:1530
+#: lib/functions/utilities.php:1532
 #: lib/structure/menus.php:371
 #: lib/customize/site-header.php:71
 msgid "Search"
 msgstr ""
 
-#: lib/functions/utilities.php:1629
+#: lib/functions/utilities.php:1631
 msgid "Primary"
 msgstr ""
 
-#: lib/functions/utilities.php:1630
+#: lib/functions/utilities.php:1632
 msgid "Secondary"
 msgstr ""
 
-#: lib/functions/utilities.php:1631
+#: lib/functions/utilities.php:1633
 msgid "Outline"
 msgstr ""
 
-#: lib/functions/utilities.php:1700
+#: lib/functions/utilities.php:1702
 msgid "View available shortcodes from"
 msgstr ""
 
-#: lib/functions/utilities.php:1701
+#: lib/functions/utilities.php:1703
 msgid "Genesis"
 msgstr ""
 
-#: lib/functions/utilities.php:1702
+#: lib/functions/utilities.php:1704
 msgid "and"
 msgstr ""
 

@@ -19,7 +19,7 @@ label {
 	padding: var(--input-padding, 0.9em); // Matches button vertical spacing.
 	color: var(--input-color, var(--color-body));
 	font-size: var(--input-font-size, var(--font-size-base));
-	font-family: var(--input-font-family, inherit);
+	font-family: var(--input-font-family, var(--inherit));
 	line-height: var(--input-line-height, 1);
 	background-color: var(--input-background-color, var(--color-white));
 	background-clip: padding-box; // Remove iOS box shadow.
