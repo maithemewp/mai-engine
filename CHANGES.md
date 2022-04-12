@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.21.1 (TBD)
+## 2.21.1 (4/12/22)
 * Fixed: Italicized text showing as incorrectly showing as bold and italic in some configurations.
 * Fixed: Errors and empty menu search icon when Mai Icons plugin is not active. Now using HTML entities as fallbacks for search and close icon.
 * Fixed: Entry index was incrementing in Grid when it should only be for archive entries. This was breaking the layout of in-content content areas in Mai Custom Content Areas plugin.
