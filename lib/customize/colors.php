@@ -58,7 +58,6 @@ function mai_colors_customizer_settings() {
 			'default'  => mai_get_default_color( $id ),
 		];
 
-		// Kirki::add_field( $handle, $args );
 		new \Kirki\Field\Color( mai_parse_kirki_args( $args ) );
 	}
 
@@ -82,7 +81,7 @@ function mai_colors_customizer_settings() {
 						'alpha'    => true,
 						'choices'  => [
 							'alpha'    => true,
-							'palettes' => mai_get_color_choices(), // Not working since v4.
+							// 'palettes' => mai_get_color_choices(), // Not working since v4.
 						],
 					],
 				],
