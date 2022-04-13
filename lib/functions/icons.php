@@ -28,7 +28,7 @@ function mai_get_icon( $args ) {
 			return;
 		}
 
-		$link = sprintf( '<a target="_blank" href="https://bizbudding.com/mai-theme/plugins/mai-icons/">%s</a>', __( 'Mai Icons', 'mai-engine' ) );
+		$link = sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=mai-theme' ), __( 'Mai Icons', 'mai-engine' ) );
 		$text = sprintf( __( '%s plugin required.', 'mai-engine' ), $link );
 
 		return sprintf( '<p>%s</p>', $text );

@@ -163,7 +163,7 @@ return [
 			'name'     => 'Mai Icons',
 			'host'     => 'github',
 			'uri'      => 'maithemewp/mai-icons',
-			'url'      => 'https://bizbudding.com/mai-theme/plugins/mai-icons/',
+			'url'      => 'https://bizbudding.com/mai-theme/',
 			'branch'   => 'master',
 			'token'    => null,
 			'demos'    => [],
