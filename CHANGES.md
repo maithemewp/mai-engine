@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.21.2 (4/14/22)
+* Changed: Allow Mai Icons plugin to be installed via Dashboard > Mai Theme > Plugins without requireing Mai Design Pack plugin.
+* Fixed: Color settings in the Customizer were not saving in some scenarios.
+* Fixed: Missing fallback for `--body-font-weight-bold` when a non-Google font is selected in the Typography settings.
+* Fixed: Mai Icon block link no longer 404's and links to Plugins page when Mai Icons plugin is not installed.
+* Fixed: The `is-column` class was getting added to `entry-single` wrap when it should only be on archive and grid entries.
+
 ## 2.21.1 (4/12/22)
 * Fixed: Italicized text showing as incorrectly showing as bold and italic in some configurations.
 * Fixed: Errors and empty menu search icon when Mai Icons plugin is not active. Now using HTML entities as fallbacks for search and close icon.
