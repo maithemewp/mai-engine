@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.21.2 (4/14/22)
-* Changed: Allow Mai Icons plugin to be installed via Dashboard > Mai Theme > Plugins without requireing Mai Design Pack plugin.
+* Changed: Allow Mai Icons plugin to be installed via Dashboard > Mai Theme > Plugins without requiring Mai Design Pack plugin.
 * Fixed: Color settings in the Customizer were not saving in some scenarios.
 * Fixed: Missing fallback for `--body-font-weight-bold` when a non-Google font is selected in the Typography settings.
 * Fixed: Mai Icon block link no longer 404's and links to Plugins page when Mai Icons plugin is not installed.
