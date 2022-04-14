@@ -22,10 +22,8 @@ defined( 'ABSPATH' ) || die;
 function mai_get_colors() {
 	static $colors = null;
 
-	if ( ! is_customize_preview() ) {
-		if ( ! is_null( $colors ) ) {
-			return $colors;
-		}
+	if ( ! is_null( $colors ) && ! is_customize_preview() ) {
+		return $colors;
 	}
 
 	$colors = [];
@@ -44,6 +42,10 @@ function mai_get_colors() {
 	$colors = wp_parse_args( $colors, mai_get_default_colors() );
 	$colors = array_merge( $colors, mai_get_custom_colors() );
 
+	foreach ( $colors as $name => $color ) {
+		$colors[ $name ] = strtolower( $color );
+	}
+
 	return $colors;
 }
 
@@ -57,7 +59,7 @@ function mai_get_colors() {
 function mai_get_custom_colors() {
 	static $colors = null;
 
-	if ( ! is_null( $colors ) ) {
+	if ( ! is_null( $colors ) && ! is_customize_preview() ) {
 		return $colors;
 	}
 
@@ -101,14 +103,17 @@ function mai_get_color_value( $color ) {
 function mai_get_color_css( $color ) {
 	$name   = false;
 	$colors = mai_get_colors();
+
 	if ( isset( $colors[ $color ] ) ) {
 		$name = $color;
 	} else {
 		$name = mai_get_color_name( $color );
 	}
+
 	if ( $name ) {
 		return sprintf( 'var(--color-%s)', $name );
 	}
+
 	return $color;
 }
 
@@ -188,7 +193,7 @@ function mai_get_default_color( $name ) {
 function mai_get_editor_color_palette() {
 	static $palette = null;
 
-	if ( ! is_null( $palette ) ) {
+	if ( ! is_null( $palette ) && ! is_customize_preview() ) {
 		return $palette;
 	}
 
@@ -300,7 +305,7 @@ function mai_get_color_element_priorities() {
 function mai_get_color_choices() {
 	static $choices = null;
 
-	if ( ! is_null( $choices ) ) {
+	if ( ! is_null( $choices ) && ! is_customize_preview() ) {
 		return $choices;
 	}
 
@@ -313,7 +318,7 @@ function mai_get_color_choices() {
 
 	/**
 	 * Make sure no duplicates.
-	 * Eventually I hope to allow duplicates in `mai_get_editor_color_palette()`, see link.
+	 * Eventually I hope to allow duplicates in `mai_get_editor_color_palette()`, see link in that function doc block.
 	 * This is for Customizer which only saves hex values anyway so we don't care about keys/names.
 	 */
 	$choices = array_unique( $color_choices );

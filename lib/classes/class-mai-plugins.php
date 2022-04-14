@@ -65,40 +65,54 @@ class Mai_Plugins {
 		$slug   = filter_input( INPUT_GET, 'slug', FILTER_SANITIZE_STRING );
 
 		if ( $plugins && $action && $slug ) {
-			$key = sprintf( '%s/%s.php', $slug, $slug );
-
-			if ( in_array( $action, [ 'install', 'activate' ] ) && $this->has_wpdi && isset( $plugins[ $slug ] ) ) {
-				$plugin  =  $plugins[ $slug ];
-				$config = [ $key => $plugins[ $slug ] ];
-
-				unset( $config[ $key ]['desc'] );
-				unset( $config[ $key ]['docs'] );
-				unset( $config[ $key ]['settings'] );
-
-				WP_Dependency_Installer::instance()->register( $config )->admin_init();
-
-				wp_send_json_success(
+			if ( $this->is_disabled( $slug ) ) {
+				wp_send_json_error(
 					[
-						'message' => esc_html__( 'Plugin activated!', 'mai-engine' ),
-						'html'    => $this->get_deactivate_button( $slug ),
-						'active'  => true,
+						'error' => esc_html__( 'Mai Design Pack plugin is required.', 'mai-engine' ),
 					]
 				);
 
-			} elseif ( 'deactivate' === $action ) {
-				deactivate_plugins( $key );
+			} else {
+				$key = sprintf( '%s/%s.php', $slug, $slug );
 
-				wp_send_json_success(
-					[
-						'message' => esc_html__( 'Plugin deactivated!', 'mai-engine' ),
-						'html'    => $this->get_activate_button( $slug ),
-						'active'  => false,
-					]
-				);
+				if ( in_array( $action, [ 'install', 'activate' ] ) && $this->has_wpdi && isset( $plugins[ $slug ] ) ) {
+					$plugin  =  $plugins[ $slug ];
+					$config = [ $key => $plugins[ $slug ] ];
+
+					unset( $config[ $key ]['desc'] );
+					unset( $config[ $key ]['docs'] );
+					unset( $config[ $key ]['settings'] );
+
+					WP_Dependency_Installer::instance()->register( $config )->admin_init();
+
+					wp_send_json_success(
+						[
+							'message' => esc_html__( 'Plugin activated!', 'mai-engine' ),
+							'html'    => $this->get_deactivate_button( $slug ),
+							'active'  => true,
+						]
+					);
+
+				} elseif ( 'deactivate' === $action ) {
+					deactivate_plugins( $key );
+
+					wp_send_json_success(
+						[
+							'message' => esc_html__( 'Plugin deactivated!', 'mai-engine' ),
+							'html'    => $this->get_activate_button( $slug ),
+							'active'  => false,
+						]
+					);
+				}
 			}
-		}
 
-		wp_send_json_error( [ 'error' => esc_html__( 'Sorry, something went wrong.', 'mai-engine' ) ] );
+		} else {
+			wp_send_json_error(
+				[
+					'error' => esc_html__( 'Sorry, something went wrong.', 'mai-engine' ),
+				]
+			);
+		}
 
 		wp_die();
 	}
@@ -167,7 +181,7 @@ class Mai_Plugins {
 					printf( '<div class="%s">', $class );
 
 						printf( '<h2 class="mai-plugin-name">%s</h2>', $plugin['name'] );
-						printf( '<p>%s</p>', $plugin['desc'] );
+						printf( '<p class="mai-plugin-desc">%s</p>', $plugin['desc'] );
 						echo '<p class="mai-plugin-actions">';
 
 							if ( $this->has_wpdi ) {
@@ -250,8 +264,8 @@ class Mai_Plugins {
 	 * @return string
 	 */
 	function get_button( $action, $class, $text, $slug ) {
-		$data_disabled = $this->is_disabled() ? sprintf( ' data-disabled="Mai Design Pack %s."', esc_html__( 'required', 'mai-engine' ) ) : '';
-		$disabled      = $this->is_disabled() ? ' disabled' : '';
+		$data_disabled = $this->is_disabled( $slug ) ? sprintf( ' data-disabled="Mai Design Pack %s."', esc_html__( 'required', 'mai-engine' ) ) : '';
+		$disabled      = $this->is_disabled( $slug ) ? ' disabled' : '';
 
 		return sprintf( '<button class="mai-plugin-%s button button-%s" data-action="%s" data-slug="%s"%s%s>%s</button>',
 			$action,
@@ -281,18 +295,24 @@ class Mai_Plugins {
 	 *
 	 * @since 0.1.0
 	 *
+	 * @param string $slug The plugin slug.
+	 *
 	 * @return bool
 	 */
-	function is_disabled() {
-		static $bool = null;
+	function is_disabled( $slug ) {
+		static $disabled = null;
 
-		if ( ! is_null( $bool ) ) {
-			return $bool;
+		if ( is_array( $disabled ) && isset( $disabled[ $slug ] ) ) {
+			return $disabled[ $slug ];
 		}
 
-		$bool = ! ( $this->has_wpdi && class_exists( 'Mai_Design_Pack' ) );
+		if ( ! is_array( $disabled ) ) {
+			$disabled = [];
+		}
 
-		return $bool;
+		$disabled[ $slug ] = ! ( $this->has_wpdi && ( 'mai-icons' === $slug || class_exists( 'Mai_Design_Pack' ) ) );
+
+		return $disabled[ $slug ];
 	}
 
 	/**

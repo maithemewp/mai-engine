@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Mai Engine plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.21.1\n"
+"Project-Id-Version: Mai Engine 2.21.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-04-12T16:13:22+00:00\n"
+"POT-Creation-Date: 2022-04-14T15:49:55+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -118,7 +118,7 @@ msgid "Cheatin&#8217; huh?"
 msgstr ""
 
 #: lib/blocks/paragraph.php:33
-#: lib/functions/colors.php:250
+#: lib/functions/colors.php:255
 #: lib/customize/typography.php:73
 msgid "Heading"
 msgstr ""
@@ -845,8 +845,8 @@ msgid "Accepts all unit values (px, rem, em, vw, etc). Leave empty for theme def
 msgstr ""
 
 #: lib/blocks/mai-icon.php:177
-#: lib/functions/colors.php:251
-#: lib/functions/utilities.php:1634
+#: lib/functions/colors.php:256
+#: lib/functions/utilities.php:1638
 msgid "Link"
 msgstr ""
 
@@ -932,113 +932,117 @@ msgstr ""
 msgid " has been deactivated."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:82
+#: lib/classes/class-mai-plugins.php:71
+msgid "Mai Design Pack plugin is required."
+msgstr ""
+
+#: lib/classes/class-mai-plugins.php:90
 msgid "Plugin activated!"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:93
+#: lib/classes/class-mai-plugins.php:101
 msgid "Plugin deactivated!"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:101
+#: lib/classes/class-mai-plugins.php:112
 msgid "Sorry, something went wrong."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:137
+#: lib/classes/class-mai-plugins.php:151
 msgid "The Mai Design Pack plugin provides everything you need to enhance your website once it's up and running on %s."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:138
+#: lib/classes/class-mai-plugins.php:152
 msgid "Learn more about pro plugins and the pattern library included with the %s."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:144
+#: lib/classes/class-mai-plugins.php:158
 msgid "Get"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:145
+#: lib/classes/class-mai-plugins.php:159
 msgid "Account"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:194
-#: lib/classes/class-mai-plugins.php:520
+#: lib/classes/class-mai-plugins.php:208
+#: lib/classes/class-mai-plugins.php:540
 msgid "Settings"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:198
+#: lib/classes/class-mai-plugins.php:212
 msgid "Documentation"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:218
+#: lib/classes/class-mai-plugins.php:232
 #: lib/admin/template-parts.php:264
 msgid "Active"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:219
+#: lib/classes/class-mai-plugins.php:233
 msgid "Deactivate"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:231
+#: lib/classes/class-mai-plugins.php:245
 msgid "Activate"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:242
+#: lib/classes/class-mai-plugins.php:256
 msgid "Install & Activate"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:253
+#: lib/classes/class-mai-plugins.php:267
 msgid "required"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:358
+#: lib/classes/class-mai-plugins.php:378
 msgid "Include unique icons on your website with the Mai Icons plugin. There are over 7000 icons to choose from! Customization options include size, color, spacing, and more."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:369
+#: lib/classes/class-mai-plugins.php:389
 msgid "With Mai Testimonials, show off all the great things your customers have to say about you, while building credibility and increasing conversions."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:380
+#: lib/classes/class-mai-plugins.php:400
 msgid "Use Mai Favorites to give your visitors a way to easily browse collections of your favorite things such as affiliate products, recommendations, services, and more."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:391
+#: lib/classes/class-mai-plugins.php:411
 msgid "Mai Portfolio is a versatile and lightweight portfolio plugin for Mai Theme. It creates a custom post type called “Portfolio” that has all of our Customizer layout settings ready to customize."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:402
+#: lib/classes/class-mai-plugins.php:422
 msgid "Mai Accordion is perfect for displaying expandable FAQs, transcripts, resources, and even research. Add a title/question, then easily insert any block you want into the answer section."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:412
+#: lib/classes/class-mai-plugins.php:432
 msgid "Mai Galleries allows you to easily create responsive image galleries with optional image lightbox."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:422
+#: lib/classes/class-mai-plugins.php:442
 msgid "Mai Lists is a versatile block to create simple and beautiful icon or numbered lists and responsive icon feature grids."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:432
+#: lib/classes/class-mai-plugins.php:452
 msgid "Use our Mai Notices plugin to display custom callout notices to grab attention and share special information in any content area on your posts, pages, and products."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:442
+#: lib/classes/class-mai-plugins.php:462
 msgid "Add the Mai Table of Contents to the beginning of your posts or pages to improve readability. The table is auto-created from your heading structure so readers can jump to the section they want easily."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:453
+#: lib/classes/class-mai-plugins.php:473
 msgid "Mai Custom Content Areas is a game changer when it comes to creating a conversion marketing strategy on your website. Easily display calls to action and other custom content in different locations on posts, pages, and custom post types conditionally by category, tag, taxonomy, keyword, and more."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:463
+#: lib/classes/class-mai-plugins.php:483
 msgid "Mai Archive Pages plugin allows you to build robust and SEO-friendly archive pages with blocks. Customize the content before and after your archive content to strategically build out your archive pages for SEO."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:473
+#: lib/classes/class-mai-plugins.php:493
 msgid "Mai Display Taxonomy is a utility plugin that creates a category to use with Mai Post Grid. It gives you total control over your grid content in various areas of your website."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:484
+#: lib/classes/class-mai-plugins.php:504
 msgid "A developer plugin to help set custom defaults for a custom Mai Theme. The config.php file is the “default settings” for your site. If you install your custom theme, or site managers change any of the Customizer settings, the defaults will now come from your custom config."
 msgstr ""
 
@@ -1046,11 +1050,11 @@ msgstr ""
 msgid "Return to dashboard"
 msgstr ""
 
-#: lib/classes/class-mai-entry.php:1168
+#: lib/classes/class-mai-entry.php:1173
 msgid "Pages:"
 msgstr ""
 
-#: lib/classes/class-mai-entry.php:1176
+#: lib/classes/class-mai-entry.php:1181
 msgid "Page "
 msgstr ""
 
@@ -1433,7 +1437,7 @@ msgstr ""
 
 #: lib/admin/admin-menu.php:28
 #: lib/admin/admin-menu.php:29
-#: lib/functions/utilities.php:1705
+#: lib/functions/utilities.php:1709
 #: lib/functions/deprecated.php:289
 msgid "Mai Theme"
 msgstr ""
@@ -1604,7 +1608,7 @@ msgid "Before Header"
 msgstr ""
 
 #: lib/admin/hide-elements.php:96
-#: lib/functions/colors.php:248
+#: lib/functions/colors.php:253
 #: lib/customize/site-header.php:32
 msgid "Site Header"
 msgstr ""
@@ -1748,34 +1752,34 @@ msgstr ""
 msgid "Back to top"
 msgstr ""
 
-#: lib/functions/colors.php:246
+#: lib/functions/colors.php:251
 #: lib/functions/customizer.php:233
 #: lib/fields/grid-display.php:212
 msgid "Background"
 msgstr ""
 
-#: lib/functions/colors.php:247
+#: lib/functions/colors.php:252
 msgid "Background Alt"
 msgstr ""
 
-#: lib/functions/colors.php:249
+#: lib/functions/colors.php:254
 #: lib/customize/typography.php:50
 msgid "Body"
 msgstr ""
 
-#: lib/functions/colors.php:252
+#: lib/functions/colors.php:257
 msgid "Button Primary"
 msgstr ""
 
-#: lib/functions/colors.php:253
+#: lib/functions/colors.php:258
 msgid "Button Secondary"
 msgstr ""
 
-#: lib/functions/colors.php:340
+#: lib/functions/colors.php:345
 msgid "Custom color"
 msgstr ""
 
-#: lib/functions/colors.php:341
+#: lib/functions/colors.php:346
 #: assets/js/blocks/layout-settings.js:256
 #: assets/js/blocks/layout-settings.js:289
 #: assets/js/blocks/layout-settings.js:328
@@ -2014,7 +2018,7 @@ msgstr ""
 #: lib/functions/customizer.php:487
 #: lib/functions/customizer.php:868
 #: lib/functions/customizer.php:1075
-#: lib/functions/utilities.php:596
+#: lib/functions/utilities.php:600
 #: lib/fields/grid-display.php:531
 #: assets/js/blocks/layout-settings.js:561
 #: assets/js/blocks/layout-settings.js:662
@@ -2166,66 +2170,66 @@ msgstr ""
 msgid "6"
 msgstr ""
 
-#: lib/functions/utilities.php:638
-#: lib/functions/utilities.php:697
+#: lib/functions/utilities.php:642
+#: lib/functions/utilities.php:701
 msgid "Post"
 msgstr ""
 
-#: lib/functions/utilities.php:674
+#: lib/functions/utilities.php:678
 #: lib/customize/site-layouts.php:189
 msgid "Search Results"
 msgstr ""
 
-#: lib/functions/utilities.php:675
+#: lib/functions/utilities.php:679
 #: lib/customize/site-layouts.php:201
 msgid "Author Archives"
 msgstr ""
 
-#: lib/functions/utilities.php:676
+#: lib/functions/utilities.php:680
 #: lib/customize/site-layouts.php:213
 msgid "Date Archives"
 msgstr ""
 
-#: lib/functions/utilities.php:698
+#: lib/functions/utilities.php:702
 msgid "Page"
 msgstr ""
 
-#: lib/functions/utilities.php:1255
-#: lib/functions/utilities.php:1271
+#: lib/functions/utilities.php:1259
+#: lib/functions/utilities.php:1275
 msgid "Updated"
 msgstr ""
 
-#: lib/functions/utilities.php:1476
+#: lib/functions/utilities.php:1480
 msgid "Search..."
 msgstr ""
 
-#: lib/functions/utilities.php:1532
+#: lib/functions/utilities.php:1536
 #: lib/structure/menus.php:371
 #: lib/customize/site-header.php:71
 msgid "Search"
 msgstr ""
 
-#: lib/functions/utilities.php:1631
+#: lib/functions/utilities.php:1635
 msgid "Primary"
 msgstr ""
 
-#: lib/functions/utilities.php:1632
+#: lib/functions/utilities.php:1636
 msgid "Secondary"
 msgstr ""
 
-#: lib/functions/utilities.php:1633
+#: lib/functions/utilities.php:1637
 msgid "Outline"
 msgstr ""
 
-#: lib/functions/utilities.php:1702
+#: lib/functions/utilities.php:1706
 msgid "View available shortcodes from"
 msgstr ""
 
-#: lib/functions/utilities.php:1703
+#: lib/functions/utilities.php:1707
 msgid "Genesis"
 msgstr ""
 
-#: lib/functions/utilities.php:1704
+#: lib/functions/utilities.php:1708
 msgid "and"
 msgstr ""
 
@@ -2707,19 +2711,19 @@ msgstr ""
 msgid "Colors"
 msgstr ""
 
-#: lib/customize/colors.php:68
+#: lib/customize/colors.php:67
 msgid "Custom Colors"
 msgstr ""
 
-#: lib/customize/colors.php:69
+#: lib/customize/colors.php:68
 msgid "Use in CSS via:"
 msgstr ""
 
-#: lib/customize/colors.php:71
+#: lib/customize/colors.php:70
 msgid "Add New Color "
 msgstr ""
 
-#: lib/customize/colors.php:76
+#: lib/customize/colors.php:75
 msgid "Custom Color"
 msgstr ""
 

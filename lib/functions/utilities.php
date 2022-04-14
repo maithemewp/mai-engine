@@ -386,6 +386,10 @@ function mai_get_options( $use_cache = true ) {
 function mai_get_option( $option, $default = false, $use_cache = true ) {
 	static $values = null;
 
+	if ( $use_cache && is_customize_preview() ) {
+		$use_cache = false;
+	}
+
 	if ( $use_cache && is_array( $values ) && isset( $values[ $option ] ) ) {
 		return $values[ $option ];
 	}

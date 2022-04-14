@@ -18,20 +18,15 @@
 				'slug': $(this).attr( 'data-slug' ),
 				'trigger': $(this).attr( 'data-action' ),
 			},
-			success: function( response ) {
-				$button.parent( '.mai-plugin-actions' ).html( response.data.html );
-
-				if ( response.data.active ) {
-					$card.addClass( 'mai-plugin-is-active' );
-				} else {
-					$card.removeClass( 'mai-plugin-is-active' );
-				}
-			},
+			success: function( response ) {},
 			fail: function( response ) {
 				console.log( 'Mai Plugins', response );
 			}
 		}).done( function( response ) {
 			var $loader = $card.find( '.mai-plugin-loader' );
+
+			// Hide any existing notices.
+			$card.find( '.mai-plugin-notice' ).remove();
 
 			if ( response.success ) {
 				$loader.find( '.mai-plugin-loader-inner' ).append( '<span class="mai-plugin-loader-circle-done"></span><span class="mai-plugin-loader-checkmark"></span>' );
@@ -41,11 +36,23 @@
 					$loader.fadeOut( 400, function() {
 						$card.removeClass( 'mai-plugin-loading' );
 					});
+
+					$button.parent( '.mai-plugin-actions' ).html( response.data.html );
+
+					if ( response.data.active ) {
+						$card.addClass( 'mai-plugin-is-active' );
+					} else {
+						$card.removeClass( 'mai-plugin-is-active' );
+					}
+
 				}, 1200 );
 
 			} else {
 				$card.removeClass( 'mai-plugin-loading' );
 				$loader.remove();
+
+				// Show error notice.
+				$card.find( '.mai-plugin-desc' ).after( '<div class="mai-plugin-notice notice notice-error"><p>' + response.data.error + '</p></div>' );
 			}
 		});
 	})

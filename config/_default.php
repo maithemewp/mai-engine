@@ -163,7 +163,7 @@ return [
 			'name'     => 'Mai Icons',
 			'host'     => 'github',
 			'uri'      => 'maithemewp/mai-icons',
-			'url'      => 'https://bizbudding.com/mai-theme/plugins/mai-icons/',
+			'url'      => 'https://bizbudding.com/mai-theme/',
 			'branch'   => 'master',
 			'token'    => null,
 			'demos'    => [],
@@ -227,7 +227,7 @@ return [
 			],
 			'condition' => function() {
 				$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : false;
-				return $screen && 'toplevel_page_mai-theme' === $screen->id && class_exists( 'Mai_Design_Pack' );
+				return $screen && 'toplevel_page_mai-theme' === $screen->id;
 			}
 		],
 	],

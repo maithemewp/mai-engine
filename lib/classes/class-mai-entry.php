@@ -140,8 +140,13 @@ class Mai_Entry {
 		}
 
 		$atts = [
-			'class' => sprintf( 'entry entry-%s is-column', 'block' === $this->context ? 'grid' : $this->context ),
+			'class' => sprintf( 'entry entry-%s', 'block' === $this->context ? 'grid' : $this->context ),
 		];
+
+		// Add column class.
+		if ( 'single' !== $this->context ) {
+			$atts['class'] .= ' is-column';
+		}
 
 		// Add index for easy custom ordering.
 		if ( 'archive' === $this->context ) {

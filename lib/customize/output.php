@@ -266,6 +266,10 @@ function mai_add_fonts_custom_properties( $css ) {
 		if ( $weights['bold'] ) {
 			$css['global'][':root'][ sprintf( '--%s-font-weight-bold', $element ) ]  = $weights['bold'];
 		}
+		// Fallback since we always need --body-font-weight-bold declared.
+		elseif ( 'body' === $element ) {
+			$css['global'][':root'][ sprintf( '--%s-font-weight-bold', $element ) ]  = 'bold';
+		}
 
 		if ( isset( $variants['default'] ) && mai_has_string( 'italic', $variants['default'] ) ) {
 			$css['global'][':root'][ sprintf( '--%s-font-style', $element ) ] = 'italic';
