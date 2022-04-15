@@ -203,9 +203,9 @@ function mai_get_editor_color_palette() {
 		return $palette;
 	}
 
+	$elements = mai_get_color_elements(); // [ slug => Name ]
 	$colors   = mai_get_colors();         // [ slug => #hex ]
 	$colors   = array_filter( $colors );  // Remove empty custom colors.
-	$elements = mai_get_color_elements(); // [ slug => Name ]
 
 	// Sorts colors by lightness.
 	$sorted = [];

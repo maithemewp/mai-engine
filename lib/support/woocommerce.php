@@ -34,15 +34,29 @@ function mai_dequeue_woocommerce_styles( $enqueue_styles ) {
 	return $enqueue_styles;
 }
 
-add_filter( 'woocommerce_style_smallscreen_breakpoint', 'mai_woocommerce_breakpoint' );
 /**
- * Modifies the WooCommerce breakpoints.
+ * Modifies the WooCommerce smallscreen breakpoint after conditional tags are available.
+ *
+ * @see https://secure.helpscout.net/conversation/1847628081/627055
+ *
+ * @since 2.21.3
+ *
+ * @return void
+ */
+add_action( 'posts_selection', function() {
+	add_filter( 'woocommerce_style_smallscreen_breakpoint', 'mai_woocommerce_breakpoint' );
+});
+
+/**
+ * Modifies the WooCommerce breakpoint.
  *
  * @since 0.1.0
  *
+ * @param string $breakpoint The size value string. Example: '768px'.
+ *
  * @return string
  */
-function mai_woocommerce_breakpoint() {
+function mai_woocommerce_breakpoint( $breakpoint ) {
 	$breakpoint      = 'md';
 	$current         = mai_site_layout();
 	$sidebar_layouts = [

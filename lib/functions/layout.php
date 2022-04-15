@@ -20,15 +20,17 @@ add_filter( 'genesis_site_layout', 'mai_site_layout' );
  * Use Mai Engine layout.
  *
  * @since 0.1.0
- * @since 2.6.0 Removed $use_cache param since it's no longer necessary.
+ * @since 2.6.0  Removed $use_cache param since it's no longer necessary.
  * @since 2.11.0 Make sure a layout is allowed before returning it.
+ * @since 2.21.3 Only use cache if conditional tags are available.
  *
  * @return string
  */
 function mai_site_layout() {
 	static $site_layout = null;
 
-	if ( ! is_null( $site_layout ) ) {
+	// Only use cache if conditional tags are available.
+	if ( ! is_null( $site_layout ) && did_action( 'posts_selection' ) ) {
 		return esc_attr( $site_layout );
 	}
 
@@ -78,6 +80,7 @@ function mai_site_layout() {
 	}
 	// Front end.
 	else {
+
 		if ( is_singular() || ( is_home() && ! genesis_is_root_page() ) ) {
 			$post_id     = is_home() ? get_option( 'page_for_posts' ) : null;
 			$site_layout = genesis_get_custom_field( '_genesis_layout', $post_id );
