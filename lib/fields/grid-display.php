@@ -308,11 +308,9 @@ function mai_get_grid_display_fields() {
 			'type'              => 'button_group',
 			'default_value'     => $defaults['image_width'],
 			'choices'           => [
-				'fourth' => esc_html__( '¼', 'mai-engine' ),
-				// 'third'  => esc_html__( '⅓', 'mai-engine' ),
+				'fourth' => esc_html__( '1/4', 'mai-engine' ),
 				'third'  => esc_html__( '1/3', 'mai-engine' ),
-				// 'half'   => esc_html__( '½', 'mai-engine' ),
-				'half'   => esc_html__( 'Half', 'mai-engine' ),
+				'half'   => esc_html__( '1/2', 'mai-engine' ),
 			],
 			'wrapper'           => [
 				'class' => 'mai-acf-button-group',
