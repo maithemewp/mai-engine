@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.21.3 (4/27/22)
+* Added: Basic support for bbPress.
+* Added: Show Mai Engine version number on Mai Theme > Plugins page in the Dashboard.
+* Changed: [WooCommerce] Small checkout button layout tweaks when Google and/or Apple Pay buttons are used.
+* Fixed: Edge-case compatibility issue with any plugins that may trigger conditional tags to get called before they are available.
+* Fixed: Mai Post/Grid image width button label inconsistency.
+* Fixed: [FacetWP] Add button-small class to pager buttons so they match default archive pagination button styles.
+
 ## 2.21.2 (4/14/22)
 * Changed: Allow Mai Icons plugin to be installed via Dashboard > Mai Theme > Plugins without requiring Mai Design Pack plugin.
 * Fixed: Color settings in the Customizer were not saving in some scenarios.
