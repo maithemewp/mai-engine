@@ -161,6 +161,8 @@ class Mai_Plugins {
 				}
 			echo '</div>';
 
+			printf( '<p>%s &mdash; <strong>%s</strong></p>', __( 'You are running Mai Engine version', 'mai-engine' ), mai_get_version() );
+
 			echo '<div class="mai-plugins">';
 
 				foreach ( $plugins as $slug => $plugin ) {
