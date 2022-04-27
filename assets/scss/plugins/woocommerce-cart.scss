@@ -379,13 +379,11 @@
 	margin-bottom: var(--spacing-xl);
 }
 
-.place-order {
-
-	.button {
-		width: 100%;
-	}
+.place-order .button,
+.checkout-button {
+	width: 100%;
 }
 
 .checkout-button {
-	width: 100%;
+	margin-bottom: var(--spacing-lg);
 }
