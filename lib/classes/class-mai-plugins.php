@@ -59,10 +59,10 @@ class Mai_Plugins {
 
 		check_ajax_referer( 'mai-plugins', 'nonce' );
 
-		$succes = false;
+		$succes  = false;
 		$plugins = $this->get_plugins();
-		$action = filter_input( INPUT_GET, 'trigger', FILTER_SANITIZE_STRING );
-		$slug   = filter_input( INPUT_GET, 'slug', FILTER_SANITIZE_STRING );
+		$action  = filter_input( INPUT_GET, 'trigger', FILTER_SANITIZE_STRING );
+		$slug    = filter_input( INPUT_GET, 'slug', FILTER_SANITIZE_STRING );
 
 		if ( $plugins && $action && $slug ) {
 			if ( $this->is_disabled( $slug ) ) {

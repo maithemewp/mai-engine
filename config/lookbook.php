@@ -26,7 +26,11 @@ return [
 		'fonts'      => [
 			'body'    => 'Lato:400',
 			'heading' => 'Playfair Display:400',
-			'menu'    => 'Playfair Display:700',
+		],
+		'font-variants'  => [
+			'heading' => [
+				'bold' => '700', // Always loads bold weight since this is used for menus.
+			],
 		],
 	],
 	'theme-support' => [

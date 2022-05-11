@@ -27,6 +27,11 @@ return [
 			'body'                 => 'Hind:400',
 			'heading'              => 'Poppins:700,600',
 		],
+		'font-variants'  => [
+			'heading' => [
+				'light' => '400', // Always loads regular weight since this is used for menus.
+			],
+		],
 	],
 	'image-sizes' => [
 		'add'    => [

@@ -34,6 +34,11 @@ return [
 			'body'    => 'Montserrat:400',
 			'heading' => 'Pathway Gothic One:400',
 		],
+		'font-variants'  => [
+			'heading' => [
+				'light' => '400', // Always loads regular weight since this is used for menus.
+			],
+		],
 	],
 	'image-sizes' => [
 		'add' => [

@@ -26,6 +26,11 @@ return [
 			'body'    => 'Open Sans:400',
 			'heading' => 'Montserrat:600,500',
 		],
+		'font-variants'  => [
+			'heading' => [
+				'light' => '400', // Always loads regular weight since this is used for menus.
+			],
+		],
 	],
 	'image-sizes' => [
 		'add'  => [

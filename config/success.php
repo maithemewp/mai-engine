@@ -28,6 +28,11 @@ return [
 			'body'    => 'Hind:400',
 			'heading' => 'Montserrat:600',
 		],
+		'font-variants'  => [
+			'heading' => [
+				'light' => '400', // Always loads regular weight since this is used for menus.
+			],
+		],
 	],
 	'theme-support' => [
 		'add' => [
