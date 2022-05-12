@@ -414,6 +414,7 @@ function mai_has_transparent_header_enabled() {
 /**
  * Checks if site has transparent header.
  *
+ * @since TBD Added filter.
  * @since 0.1.0
  *
  * @return bool
