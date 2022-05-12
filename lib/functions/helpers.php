@@ -362,6 +362,26 @@ function mai_has_sticky_header_enabled() {
 }
 
 /**
+ * Checks if a site has a sticky header.
+ *
+ * @since TBD
+ *
+ * @return bool
+ */
+function mai_has_sticky_header() {
+	static $sticky = null;
+
+	if ( ! is_null( $sticky ) ) {
+		return $sticky;
+	}
+
+	$sticky = mai_has_sticky_header_enabled() && ! mai_is_element_hidden( 'sticky_header' );
+	$sticky = (bool) apply_filters( 'mai_has_sticky_header', $sticky );
+
+	return $sticky;
+}
+
+/**
  * Checks if site has sticky header and a scroll logo set.
  *
  * @since 2.13.0
@@ -405,32 +425,23 @@ function mai_has_transparent_header() {
 		return $transparent;
 	}
 
-	if ( ! mai_has_transparent_header_enabled() ) {
-		$transparent = false;
-		return $transparent;
+	$transparent = false;
+
+	if ( mai_has_transparent_header_enabled() ) {
+		if ( ! ( mai_is_element_hidden( 'transparent_header' ) || mai_is_element_hidden( 'site_header' ) ) ) {
+			if ( mai_has_page_header() || ( mai_has_alignfull_first() && mai_is_element_hidden( 'entry_title' ) && ! mai_has_breadcrumbs() ) ) {
+				$transparent = true;
+			}
+		}
 	}
 
-	if ( mai_is_element_hidden( 'transparent_header' ) ) {
-		$transparent = false;
-		return $transparent;
-	}
-
-	if ( mai_is_element_hidden( 'site_header' ) ) {
-		$transparent = false;
-		return $transparent;
-	}
-
-	if ( ! mai_has_transparent_header_enabled() ) {
-		$transparent = false;
-		return $transparent;
-	}
-
-	if ( ! ( mai_has_page_header() || ( mai_has_alignfull_first() && mai_is_element_hidden( 'entry_title' ) && ! mai_has_breadcrumbs() ) ) ) {
-		$transparent = false;
-		return $transparent;
-	}
-
-	$transparent = true;
+	/**
+	 * If you force a transparent header with this filter,
+	 * the content offset will only work if there is a page header
+	 * or an alignfull element first in the editor content,
+	 * otherwise you'll need to add padding/margin top -- `var(--transparent-header-offset, 0)`.
+	 */
+	$transparent = (bool) apply_filters( 'mai_has_transparent_header', $transparent );
 
 	return $transparent;
 }
