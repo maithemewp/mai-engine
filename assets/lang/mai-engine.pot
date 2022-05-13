@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Mai Engine plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.21.3\n"
+"Project-Id-Version: Mai Engine 2.21.4-beta.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-05-11T14:34:10+00:00\n"
+"POT-Creation-Date: 2022-05-13T16:25:44+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.1.0\n"
 "X-Domain: mai-engine\n"
@@ -2238,7 +2238,7 @@ msgstr ""
 msgid "and"
 msgstr ""
 
-#: lib/functions/helpers.php:942
+#: lib/functions/helpers.php:954
 msgid "More info"
 msgstr ""
 

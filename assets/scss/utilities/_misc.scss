@@ -236,72 +236,72 @@
 @include mq(false, sm) {
 
 	.hidden-xs {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(sm, md) {
 
 	.hidden-sm {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(md, lg) {
 
 	.hidden-md {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(lg, xl) {
 
 	.hidden-lg {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(xs) {
 
 	.hidden-xs-up {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(sm) {
 
 	.hidden-sm-up {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(md) {
 
 	.hidden-md-up {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(lg) {
 
 	.hidden-lg-up {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(xl) {
 
 	.hidden-xl-up {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
@@ -310,40 +310,40 @@
 @include mq(false, xs) {
 
 	.hidden-xs-down {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(false, sm) {
 
 	.hidden-sm-down {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(false, md) {
 
 	.hidden-md-down {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(false, lg) {
 
 	.hidden-lg-down {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(false, xl) {
 
 	.hidden-xl-down {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
