@@ -4,7 +4,7 @@ Tags: acf, fields, custom fields, meta, repeater
 Requires at least: 4.7
 Tested up to: 5.9.3
 Requires PHP: 5.6
-Stable tag: 5.12.2
+Stable tag: 6.0.0-alpha1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -75,6 +75,11 @@ From your WordPress dashboard
 
 
 == Changelog ==
+
+= 6.0.0-alpha1 =
+*Release Date 12th May 2022*
+
+* Enhancement - This build provides a preview of upcoming block changes. View the [full release notes on GitHub](https://github.com/AdvancedCustomFields/acf/issues/654)
 
 = 5.12.2 =
 *Release Date 6th April 2022*

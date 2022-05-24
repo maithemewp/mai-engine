@@ -26,7 +26,9 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
     BlockControls,
     InspectorControls,
     InnerBlocks,
-    useBlockProps
+    useBlockProps,
+    AlignmentToolbar,
+    BlockVerticalAlignmentToolbar
   } = wp.blockEditor;
   const {
     ToolbarGroup,
@@ -45,7 +47,13 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
   } = wp.data;
   const {
     createHigherOrderComponent
-  } = wp.compose;
+  } = wp.compose; // Potentially experimental dependencies.
+
+  const BlockAlignmentMatrixToolbar = wp.blockEditor.__experimentalBlockAlignmentMatrixToolbar || wp.blockEditor.BlockAlignmentMatrixToolbar; // Gutenberg v10.x begins transition from Toolbar components to Control components.
+
+  const BlockAlignmentMatrixControl = wp.blockEditor.__experimentalBlockAlignmentMatrixControl || wp.blockEditor.BlockAlignmentMatrixControl;
+  const BlockFullHeightAlignmentControl = wp.blockEditor.__experimentalBlockFullHeightAligmentControl || wp.blockEditor.__experimentalBlockFullHeightAlignmentControl || wp.blockEditor.BlockFullHeightAlignmentControl;
+  const useInnerBlocksProps = wp.blockEditor.__experimentalUseInnerBlocksProps || wp.blockEditor.useInnerBlocksProps;
   /**
    * Storage for registered block types.
    *
@@ -66,42 +74,6 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
 
   function getBlockType(name) {
     return blockTypes[name] || false;
-  }
-  /**
-   * Returns true if the provided block is new.
-   *
-   * @date	31/07/2020
-   * @since	5.9.0
-   *
-   * @param	{object} props The block props (of which, the attributes properties is destructured)
-   * @return	bool
-   */
-
-
-  function isNewBlock(_ref) {
-    let {
-      attributes
-    } = _ref;
-    return !attributes.id;
-  }
-  /**
-   * Returns true if the provided block is a duplicate:
-   * True when there are is another block with the same "id", but a different "clientId".
-   *
-   * @date	31/07/2020
-   * @since	5.9.0
-   *
-   * @param	{object} props The block props (of which, the attributes and clientId properties are destructured)
-   * @return	bool
-   */
-
-
-  function isDuplicateBlock(_ref2) {
-    let {
-      attributes,
-      clientId
-    } = _ref2;
-    return !!getBlocks().filter(block => block.attributes.id === attributes.id).filter(block => block.clientId !== clientId).length;
   }
   /**
    * Returns true if a block (identified by client ID) is nested in a query loop block.
@@ -148,10 +120,15 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
   function isDesktopPreviewDeviceType() {
     const editPostStore = select('core/edit-post'); // Return true if the edit post store isn't available (such as in the widget editor)
 
-    if (!editPostStore) return true; // Return true if the function doesn't exist
+    if (!editPostStore) return true; // Check if function exists (experimental or not) and return true if it's Desktop, or doesn't exist.
 
-    if (!editPostStore.__experimentalGetPreviewDeviceType) return true;
-    return 'Desktop' === editPostStore.__experimentalGetPreviewDeviceType();
+    if (editPostStore.__experimentalGetPreviewDeviceType) {
+      return 'Desktop' === editPostStore.__experimentalGetPreviewDeviceType();
+    } else if (editPostStore.getPreviewDeviceType) {
+      return 'Desktop' === editPostStore.getPreviewDeviceType();
+    } else {
+      return true;
+    }
   }
   /**
    * Returns true if the block editor is currently in template edit mode.
@@ -223,76 +200,65 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
     } // Check category exists and fallback to "common".
 
 
-    const category = wp.blocks.getCategories().filter(_ref3 => {
+    const category = wp.blocks.getCategories().filter(_ref => {
       let {
         slug
-      } = _ref3;
+      } = _ref;
       return slug === blockType.category;
     }).pop();
 
     if (!category) {
       //console.warn( `The block "${blockType.name}" is registered with an unknown category "${blockType.category}".` );
       blockType.category = 'common';
-    } // Define block type attributes.
-    // Leave default undefined to allow WP to serialize attributes in HTML comments.
-    // See https://github.com/WordPress/gutenberg/issues/7342
-
-
-    let attributes = {
-      id: {
-        type: 'string'
-      },
-      name: {
-        type: 'string'
-      },
-      data: {
-        type: 'object'
-      },
-      align: {
-        type: 'string'
-      },
-      mode: {
-        type: 'string'
-      }
-    }; // Apply anchor supports to avoid block editor default writing to ID.
-
-    if (blockType.supports.anchor) {
-      attributes.anchor = {
-        type: 'string'
-      };
-    } // Append edit and save functions.
-
-
-    let ThisBlockEdit = BlockEdit;
-    let ThisBlockSave = BlockSave; // Apply align_text functionality.
-
-    if (blockType.supports.align_text) {
-      attributes = withAlignTextAttributes(attributes);
-      ThisBlockEdit = withAlignTextComponent(ThisBlockEdit, blockType);
-    } // Apply align_content functionality.
-
-
-    if (blockType.supports.align_content) {
-      attributes = withAlignContentAttributes(attributes);
-      ThisBlockEdit = withAlignContentComponent(ThisBlockEdit, blockType);
-    } // Apply full_height functionality.
-
-
-    if (blockType.supports.full_height) {
-      attributes = withFullHeightAttributes(attributes);
-      ThisBlockEdit = withFullHeightComponent(ThisBlockEdit, blockType);
-    } // Merge in block settings.
+    } // Merge in block settings before local additions.
 
 
     blockType = acf.parseArgs(blockType, {
       title: '',
       name: '',
       category: '',
-      attributes,
-      apiVersion: 2,
-      edit: props => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(ThisBlockEdit, props),
-      save: () => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(ThisBlockSave, null)
-    }); // Add to storage.
+      api_version: 2,
+      acf_block_version: 1
+    }); // Remove all attribute defaults from PHP values to allow serialisation.
+    // https://github.com/WordPress/gutenberg/issues/7342
+
+    for (const key in blockType.attributes) {
+      delete blockType.attributes[key].default;
+    } // Apply anchor supports to avoid block editor default writing to ID.
+
+
+    if (blockType.supports.anchor) {
+      blockType.attributes.anchor = {
+        type: 'string'
+      };
+    } // Append edit and save functions.
+
+
+    let ThisBlockEdit = BlockEdit;
+    let ThisBlockSave = BlockSave; // Apply alignText functionality.
+
+    if (blockType.supports.alignText || blockType.supports.align_text) {
+      blockType.attributes = addBackCompatAttribute(blockType.attributes, 'align_text', 'string');
+      ThisBlockEdit = withAlignTextComponent(ThisBlockEdit, blockType);
+    } // Apply alignContent functionality.
+
+
+    if (blockType.supports.alignContent || blockType.supports.align_content) {
+      blockType.attributes = addBackCompatAttribute(blockType.attributes, 'align_content', 'string');
+      ThisBlockEdit = withAlignContentComponent(ThisBlockEdit, blockType);
+    } // Apply fullHeight functionality.
+
+
+    if (blockType.supports.fullHeight || blockType.supports.full_height) {
+      blockType.attributes = addBackCompatAttribute(blockType.attributes, 'full_height', 'boolean');
+      ThisBlockEdit = withFullHeightComponent(ThisBlockEdit, blockType.blockType);
+    } // Set edit and save functions.
+
+
+    blockType.edit = props => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(ThisBlockEdit, props);
+
+    blockType.save = () => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(ThisBlockSave, null); // Add to storage.
+
 
     blockTypes[blockType.name] = blockType; // Register with WP.
 
@@ -364,10 +330,10 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
     select('core/block-editor').getBlocks().forEach(recurseBlocks); // Loop over args and filter.
 
     for (const k in args) {
-      blocks = blocks.filter(_ref4 => {
+      blocks = blocks.filter(_ref2 => {
         let {
           attributes
-        } = _ref4;
+        } = _ref2;
         return attributes[k] === args[k];
       });
     } // Return results.
@@ -407,8 +373,9 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
       attributes = {},
       context = {},
       query = {},
+      clientId = null,
       delay = 0
-    } = args; // Build a unique queue ID from block data
+    } = args; // Build a unique queue ID from block data, including the clientId for edit forms.
 
     const queueId = md5(JSON.stringify(_objectSpread(_objectSpread(_objectSpread({}, attributes), context), query)));
     const data = ajaxQueue[queueId] || {
@@ -426,6 +393,7 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
       data.started = true;
 
       if (fetchCache[queueId]) {
+        console.log('Loading block ' + clientId + ' from fetch cache hash ' + queueId);
         ajaxQueue[queueId] = null;
         data.promise.resolve.apply(fetchCache[queueId][0], fetchCache[queueId][1]);
       } else {
@@ -437,6 +405,7 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
           data: acf.prepareForAjax({
             action: 'acf/ajax/fetch-block',
             block: JSON.stringify(attributes),
+            clientId: clientId,
             context: JSON.stringify(context),
             query: data.query
           })
@@ -478,11 +447,16 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
    * @since	5.9.0
    *
    * @param	string html The HTML to convert.
+   * @param	int acfBlockVersion The ACF block version number.
    * @return	object Result of React.createElement().
    */
 
 
-  acf.parseJSX = html => parseNode($(html)[0]);
+  acf.parseJSX = (html, acfBlockVersion) => {
+    // Correctly balance InnerBlocks tags for jQuery's initial parse.
+    html = html.replace(/<InnerBlocks([^>]+)?\/>/, '<InnerBlocks$1></InnerBlocks>');
+    return parseNode($(html)[0], acfBlockVersion);
+  };
   /**
    * Converts a DOM node into a React element.
    *
@@ -490,13 +464,14 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
    * @since	5.9.0
    *
    * @param	DOM node The DOM node.
+   * @param	int acfBlockVersion The ACF block version number.
    * @return	object Result of React.createElement().
    */
 
 
-  function parseNode(node) {
+  function parseNode(node, acfBlockVersion) {
     // Get node name.
-    const nodeName = parseNodeName(node.nodeName.toLowerCase());
+    const nodeName = parseNodeName(node.nodeName.toLowerCase(), acfBlockVersion);
 
     if (!nodeName) {
       return null;
@@ -504,13 +479,18 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
 
 
     const nodeAttrs = {};
-    acf.arrayArgs(node.attributes).map(parseNodeAttr).forEach(_ref5 => {
+    acf.arrayArgs(node.attributes).map(parseNodeAttr).forEach(_ref3 => {
       let {
         name,
         value
-      } = _ref5;
+      } = _ref3;
       nodeAttrs[name] = value;
-    }); // Define args for React.createElement().
+    });
+
+    if ('ACFInnerBlocks' === nodeName) {
+      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(ACFInnerBlocks, nodeAttrs);
+    } // Define args for React.createElement().
+
 
     const args = [nodeName, nodeAttrs];
     acf.arrayArgs(node.childNodes).forEach(child => {
@@ -521,7 +501,7 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
           args.push(text);
         }
       } else {
-        args.push(parseNode(child));
+        args.push(parseNode(child, acfBlockVersion));
       }
     }); // Return element.
 
@@ -534,7 +514,7 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
    * @since    5.9.8
    *
    * @param    string name The node or attribute name.
-   * @returns  string
+   * @return  string
    */
 
 
@@ -550,14 +530,19 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
    * @since	5.9.0
    *
    * @param	string name The node name in lowercase.
+   * @param	int acfBlockVersion The ACF block version number.
    * @return	mixed
    */
 
 
-  function parseNodeName(name) {
+  function parseNodeName(name, acfBlockVersion) {
     switch (name) {
       case 'innerblocks':
-        return InnerBlocks;
+        if (acfBlockVersion < 2) {
+          return InnerBlocks;
+        }
+
+        return 'ACFInnerBlocks';
 
       case 'script':
         return Script;
@@ -571,6 +556,22 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
     }
 
     return name;
+  }
+  /**
+   * Functional component for ACFInnerBlocks.
+   *
+   * @since 6.0.0
+   *
+   * @param obj props element properties.
+   * @return DOM element
+   */
+
+
+  function ACFInnerBlocks(props) {
+    const innerBlockProps = useInnerBlocksProps({
+      className: 'acf-inner-blocks-container'
+    }, props);
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", innerBlockProps, innerBlockProps.children);
   }
   /**
    * Converts the given attribute into a React friendly name and value object.
@@ -669,25 +670,31 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
 
       if (!blockType) {
         return;
-      } // Set unique ID and default attributes for newly added blocks.
+      } // Backward compatibility attribute replacement.
 
 
-      if (isNewBlock(props)) {
-        attributes.id = acf.uniqid('block_');
+      if (attributes.full_height) {
+        attributes.fullHeight = attributes.full_height;
+      }
 
-        for (let attribute in blockType.attributes) {
-          if (attributes[attribute] === undefined && blockType[attribute] !== undefined) {
-            attributes[attribute] = blockType[attribute];
-          }
+      delete attributes.full_height;
+
+      if (attributes.align_content) {
+        attributes.alignContent = attributes.align_content;
+      }
+
+      delete attributes.align_content;
+
+      if (attributes.align_text) {
+        attributes.alignText = attributes.align_text;
+      }
+
+      delete attributes.align_text; // Set default attributes for those undefined.
+
+      for (let attribute in blockType.attributes) {
+        if (attributes[attribute] === undefined && blockType[attribute] !== undefined) {
+          attributes[attribute] = blockType[attribute];
         }
-
-        return;
-      } // Generate new ID for duplicated blocks.
-
-
-      if (isDuplicateBlock(props)) {
-        attributes.id = acf.uniqid('block_');
-        return;
       }
     }
 
@@ -923,16 +930,14 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
     fetch() {// Do nothing.
     }
 
-    maybePreload(blockId) {
+    maybePreload(blockId, clientId) {
       if (this.state.html === undefined && !isBlockInQueryLoop(this.props.clientId)) {
         const preloadedBlocks = acf.get('preloadedBlocks');
 
         if (preloadedBlocks && preloadedBlocks[blockId]) {
           // Set HTML to the preloaded version.
-          this.setHtml(preloadedBlocks[blockId]); // Delete the preloaded HTML so we don't try to load it again.
-
-          delete preloadedBlocks[blockId];
-          acf.set('preloadedBlocks', preloadedBlocks);
+          console.log('Loading block ' + clientId + ' from preload of hash ' + blockId);
+          this.setHtml(preloadedBlocks[blockId].replaceAll(blockId, clientId));
           return true;
         }
       }
@@ -964,9 +969,11 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
       const state = {
         html
       };
+      const blockType = getBlockType(this.props.name);
+      const acfBlockVersion = blockType.acf_block_version || 1;
 
       if (this.renderMethod === 'jsx') {
-        state.jsx = acf.parseJSX(html);
+        state.jsx = acf.parseJSX(html, acfBlockVersion);
         state.$el = $(this.el);
       } else {
         state.$el = $(html);
@@ -993,13 +1000,13 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
       }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(Placeholder, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(Spinner, null)));
     }
 
-    shouldComponentUpdate(_ref6, _ref7) {
+    shouldComponentUpdate(_ref4, _ref5) {
       let {
         index
-      } = _ref6;
+      } = _ref4;
       let {
         html
-      } = _ref7;
+      } = _ref5;
 
       if (index !== this.props.index) {
         this.componentWillMove();
@@ -1098,18 +1105,19 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
 
 
   class BlockForm extends DynamicHTML {
-    setup(_ref8) {
+    setup(_ref6) {
       let {
-        attributes
-      } = _ref8;
-      this.id = `BlockForm-${attributes.id}`;
+        clientId
+      } = _ref6;
+      this.id = `BlockForm-${clientId}`;
     }
 
     fetch() {
       // Extract props.
       const {
         attributes,
-        context
+        context,
+        clientId
       } = this.props; // Try preloaded data first.
       // const preloaded = this.maybePreload( attributes.id );
       //
@@ -1118,17 +1126,19 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
       // }
       // Request AJAX and update HTML on complete.
 
+      console.log('BlockForm fetchBlock for ' + clientId);
       fetchBlock({
         attributes,
         context,
+        clientId,
         query: {
           form: true
         }
-      }).done(_ref9 => {
+      }).done(_ref7 => {
         let {
           data
-        } = _ref9;
-        this.setHtml(data.form);
+        } = _ref7;
+        this.setHtml(data.form.replaceAll(data.clientId, clientId));
       });
     }
 
@@ -1137,7 +1147,8 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
 
       const {
         attributes,
-        setAttributes
+        setAttributes,
+        clientId
       } = this.props;
       const props = this.props;
       const {
@@ -1146,7 +1157,8 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
 
       function serializeData() {
         let silent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-        const data = acf.serialize($el, `acf-${attributes.id}`); //console.log('serializeData', props, data);
+        const data = acf.serialize($el, `acf-${clientId}`);
+        console.log('serializeData', props, data);
 
         if (silent) {
           attributes.data = data;
@@ -1185,17 +1197,17 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
 
 
   class BlockPreview extends DynamicHTML {
-    setup(_ref10) {
+    setup(_ref8) {
       let {
-        attributes,
+        clientId,
         name
-      } = _ref10;
+      } = _ref8;
       const blockType = getBlockType(name);
       const contextPostId = acf.isget(this.props, 'context', 'postId');
-      this.id = `BlockPreview-${attributes.id}`; // Apply the contextPostId to the ID if set to stop query loop ID duplication.
+      this.id = `BlockPreview-${clientId}`; // Apply the contextPostId to the ID if set to stop query loop ID duplication.
 
       if (contextPostId) {
-        this.id = `BlockPreview-${attributes.id}-${contextPostId}`;
+        this.id = `BlockPreview-${clientId}-${contextPostId}`;
       }
 
       if (blockType.supports.jsx) {
@@ -1208,29 +1220,36 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
       let args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       const {
         attributes = this.props.attributes,
+        clientId = this.props.clientId,
         context = this.props.context,
         delay = 0
       } = args; // Remember attributes used to fetch HTML.
 
       this.setState({
         prevAttributes: attributes
-      }); // Try preloaded data first.
+      });
+      let sortedAttributes = Object.keys(attributes).sort().reduce((acc, currValue) => {
+        acc[currValue] = attributes[currValue];
+        return acc;
+      }, {}); // Try preloaded data first.
 
-      const preloaded = this.maybePreload(attributes.id);
+      const preloaded = this.maybePreload(md5(JSON.stringify(sortedAttributes)), clientId);
       if (preloaded) return; // Request AJAX and update HTML on complete.
 
+      console.log('BlockPreview fetchBlock for ' + clientId + ' (' + md5(JSON.stringify(sortedAttributes)) + ')');
       fetchBlock({
         attributes,
         context,
+        clientId,
         query: {
           preview: true
         },
         delay
-      }).done(_ref11 => {
+      }).done(_ref9 => {
         let {
           data
-        } = _ref11;
-        this.setHtml(data.preview);
+        } = _ref9;
+        this.setHtml(data.preview.replaceAll(data.clientId, clientId));
       });
     }
 
@@ -1361,35 +1380,9 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
     }
 
     return DEFAULT;
-  } // Dependencies.
-
-
-  const {
-    AlignmentToolbar,
-    BlockVerticalAlignmentToolbar
-  } = wp.blockEditor;
-  const BlockAlignmentMatrixToolbar = wp.blockEditor.__experimentalBlockAlignmentMatrixToolbar || wp.blockEditor.BlockAlignmentMatrixToolbar; // Gutenberg v10.x begins transition from Toolbar components to Control components.
-
-  const BlockAlignmentMatrixControl = wp.blockEditor.__experimentalBlockAlignmentMatrixControl || wp.blockEditor.BlockAlignmentMatrixControl;
-  const BlockFullHeightAlignmentControl = wp.blockEditor.__experimentalBlockFullHeightAligmentControl || wp.blockEditor.__experimentalBlockFullHeightAlignmentControl || wp.blockEditor.BlockFullHeightAlignmentControl;
-  /**
-   * Appends extra attributes for block types that support align_content.
-   *
-   * @date	08/07/2020
-   * @since	5.9.0
-   *
-   * @param	object attributes The block type attributes.
-   * @return	object
-   */
-
-  function withAlignContentAttributes(attributes) {
-    attributes.align_content = {
-      type: 'string'
-    };
-    return attributes;
   }
   /**
-   * A higher order component adding align_content editing functionality.
+   * A higher order component adding alignContent editing functionality.
    *
    * @date	08/07/2020
    * @since	5.9.0
@@ -1402,7 +1395,7 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
 
   function withAlignContentComponent(OriginalBlockEdit, blockType) {
     // Determine alignment vars
-    let type = blockType.supports.align_content;
+    let type = blockType.supports.align_content || blockType.supports.alignContent;
     let AlignmentComponent;
     let validateAlignment;
 
@@ -1425,7 +1418,7 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
     } // Ensure correct block attribute data is sent in intial preview AJAX request.
 
 
-    blockType.align_content = validateAlignment(blockType.align_content); // Return wrapped component.
+    blockType.alignContent = validateAlignment(blockType.alignContent); // Return wrapped component.
 
     return class WrappedBlockEdit extends Component {
       render() {
@@ -1434,12 +1427,12 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
           setAttributes
         } = this.props;
         const {
-          align_content
+          alignContent
         } = attributes;
 
-        function onChangeAlignContent(align_content) {
+        function onChangeAlignContent(alignContent) {
           setAttributes({
-            align_content: validateAlignment(align_content)
+            alignContent: validateAlignment(alignContent)
           });
         }
 
@@ -1447,7 +1440,7 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
           group: "block"
         }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(AlignmentComponent, {
           label: acf.__('Change content alignment'),
-          value: validateAlignment(align_content),
+          value: validateAlignment(alignContent),
           onChange: onChangeAlignContent
         })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(OriginalBlockEdit, this.props));
       }
@@ -1455,24 +1448,7 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
     };
   }
   /**
-   * Appends extra attributes for block types that support align_text.
-   *
-   * @date	08/07/2020
-   * @since	5.9.0
-   *
-   * @param	object attributes The block type attributes.
-   * @return	object
-   */
-
-
-  function withAlignTextAttributes(attributes) {
-    attributes.align_text = {
-      type: 'string'
-    };
-    return attributes;
-  }
-  /**
-   * A higher order component adding align_text editing functionality.
+   * A higher order component adding alignText editing functionality.
    *
    * @date	08/07/2020
    * @since	5.9.0
@@ -1486,7 +1462,7 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
   function withAlignTextComponent(OriginalBlockEdit, blockType) {
     const validateAlignment = validateHorizontalAlignment; // Ensure correct block attribute data is sent in intial preview AJAX request.
 
-    blockType.align_text = validateAlignment(blockType.align_text); // Return wrapped component.
+    blockType.alignText = validateAlignment(blockType.alignText); // Return wrapped component.
 
     return class WrappedBlockEdit extends Component {
       render() {
@@ -1495,41 +1471,24 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
           setAttributes
         } = this.props;
         const {
-          align_text
+          alignText
         } = attributes;
 
-        function onChangeAlignText(align_text) {
+        function onChangeAlignText(alignText) {
           setAttributes({
-            align_text: validateAlignment(align_text)
+            alignText: validateAlignment(alignText)
           });
         }
 
         return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(BlockControls, {
           group: "block"
         }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(AlignmentToolbar, {
-          value: validateAlignment(align_text),
+          value: validateAlignment(alignText),
           onChange: onChangeAlignText
         })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(OriginalBlockEdit, this.props));
       }
 
     };
-  }
-  /**
-   * Appends extra attributes for block types that support full height.
-   *
-   * @date	08/07/2020
-   * @since	5.9.0
-   *
-   * @param	object attributes The block type attributes.
-   * @return	object
-   */
-
-
-  function withFullHeightAttributes(attributes) {
-    attributes.full_height = {
-      type: 'boolean'
-    };
-    return attributes;
   }
   /**
    * A higher order component adding full height support.
@@ -1553,24 +1512,40 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
           setAttributes
         } = this.props;
         const {
-          full_height
+          fullHeight
         } = attributes;
 
-        function onToggleFullHeight(full_height) {
+        function onToggleFullHeight(fullHeight) {
           setAttributes({
-            full_height
+            fullHeight
           });
         }
 
         return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(BlockControls, {
           group: "block"
         }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(BlockFullHeightAlignmentControl, {
-          isActive: full_height,
+          isActive: fullHeight,
           onToggle: onToggleFullHeight
         })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(OriginalBlockEdit, this.props));
       }
 
     };
+  }
+  /**
+   * Appends a backwards compatibility attribute for conversion.
+   *
+   * @since	5.13
+   *
+   * @param	object attributes The block type attributes.
+   * @return	object
+   */
+
+
+  function addBackCompatAttribute(attributes, new_attribute, type) {
+    attributes[new_attribute] = {
+      type: type
+    };
+    return attributes;
   }
 })(jQuery);
 

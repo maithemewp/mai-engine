@@ -200,7 +200,13 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
       save: function (props) {
         return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(ThisBlockSave, props);
       }
-    }); // Add to storage.
+    }); // Remove all attribute defaults from PHP values to allow serialisation.
+    // https://github.com/WordPress/gutenberg/issues/7342
+
+    for (const key in blockType.attributes) {
+      delete blockType.attributes[key].default;
+    } // Add to storage.
+
 
     blockTypes[blockType.name] = blockType; // Register with WP.
 
