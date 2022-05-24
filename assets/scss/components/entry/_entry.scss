@@ -92,7 +92,7 @@
 	display: flex;
 	flex: 1; /* 1 1 100% breaks image-left/right-full */
 	flex-direction: column;
-	justify-content: var(--align-text-vertical);
+	justify-content: var(--align-text-vertical, initial);
 	width: var(--entry-wrap-width, 100%);
 	margin: var(--entry-wrap-margin, 0 auto);
 	padding: var(--entry-wrap-padding, 0);
