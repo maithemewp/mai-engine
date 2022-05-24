@@ -12,9 +12,22 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
+/**
+ * Remove inline duotone svgs.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+remove_action( 'wp_body_open', 'wp_global_styles_render_svg_filters' );
+
 add_action( 'init', 'mai_disable_emojis' );
 /**
  * Disable the emoji's
+ *
+ * @since 0.1.0
+ *
+ * @return void
  */
 function mai_disable_emojis() {
 	if ( ! mai_get_option( 'disable-emojis', true ) ) {
