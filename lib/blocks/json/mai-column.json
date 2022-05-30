@@ -1,0 +1,21 @@
+{
+  "name": "acf/mai-column",
+  "title": "Mai Column",
+  "description": "A column item.",
+  "category": "layout",
+  "icon": "admin-comments",
+  "keywords": [],
+  "textdomain": "mai-engine",
+  "apiVersion": 2,
+  "acf": {
+    "jsx": true,
+    "mode": false,
+    "renderCallback": "mai_do_column_block"
+  },
+  "parent": [ "acf/mai-columns" ],
+  "supports": {
+    "align": false,
+    "alignText": false,
+    "anchor": false
+  }
+}
