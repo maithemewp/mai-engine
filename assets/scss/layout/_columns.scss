@@ -1,48 +1,45 @@
-.has-columns {
-	// --flex-default: 0 0 calc((100% / var(--columns)) - var(--column-gap));
-	--flex-default: 0 0 calc((100% / var(--columns) - ((var(--columns) - 1) / var(--columns) * var(--column-gap))));
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--row-gap) var(--column-gap);
-	align-items: var(--align-columns-vertical, unset);
-	justify-content: var(--align-columns, unset);
-
-	@include mq(false, sm) {
-		--columns: var(--columns-xs);
-	}
-
-	@include mq(sm, md) {
-		--columns: var(--columns-sm);
-	}
-
-	@include mq(md, lg) {
-		--columns: var(--columns-md);
-	}
-
-	@include mq(lg) {
-		--columns: var(--columns-lg);
-	}
-}
-
+// These props needs to be set on both classes because
+// they are generated on the container for many uses,
+// but Mai Columns generates the sizes on the column itself.
+// Same annoyance in editor.scss.
+.has-columns,
 .is-column {
-	flex: var(--flex, var(--flex-xs, var(--flex-default)));
-	order: var(--order, unset);
+	--flex-basis: calc((100% * var(--columns) - (var(--column-gap) * (1 - var(--columns)))) - 0.025px); // Removes 0.025px to prevent margin collapsing.
+	--flex-default: 0 0 var(--flex-basis);
 
 	@include mq(false, sm) {
+		--flex: var(--flex-xs, var(--flex-default));
+		--columns: var(--columns-xs, 1);
 		--order: var(--order-xs, unset);
 	}
 
 	@include mq(sm, md) {
 		--flex: var(--flex-sm, var(--flex-default));
+		--columns: var(--columns-sm, 1);
 		--order: var(--order-sm, unset);
 	}
 
 	@include mq(md, lg) {
 		--flex: var(--flex-md, var(--flex-default));
+		--columns: var(--columns-md, 1);
 		--order: var(--order-md, unset);
 	}
 
 	@include mq(lg) {
 		--flex: var(--flex-lg, var(--flex-default));
+		--columns: var(--columns-lg, 1);
 	}
+}
+
+.has-columns {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--row-gap) var(--column-gap);
+	align-items: var(--align-columns-vertical, unset);
+	justify-content: var(--align-columns, unset);
+}
+
+.is-column {
+	flex: var(--flex, var(--flex-default));
+	order: var(--order, unset);
 }

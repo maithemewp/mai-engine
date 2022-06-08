@@ -209,7 +209,8 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 					$arrangement_col = $arrangement[ $element_i ];
 				}
 
-				$style .= sprintf( '--flex-%s:%s;', $break, mai_columns_get_flex( $arrangement_col ) );
+				$style .= mai_columns_get_columns( $break, $arrangement_col );
+				$style .= mai_columns_get_flex( $break, $arrangement_col );
 
 				$element->setAttribute( 'style', $style );
 
@@ -226,8 +227,10 @@ function mai_render_mai_columns_block( $block_content, $block ) {
 		foreach ( $elements as $break => $dom_elements ) {
 
 			foreach ( $dom_elements as $element ) {
+				// $style .= sprintf( '--flex-%s:%s;', $break, mai_columns_get_flex( $args['arrangements'][ $break ] ) );
 				$style  = $element->getAttribute( 'style' );
-				$style .= sprintf( '--flex-%s:%s;', $break, mai_columns_get_flex( $args['arrangements'][ $break ] ) );
+				$style .= mai_columns_get_columns( $break, $args['arrangements'][ $break ] );
+				$style .= mai_columns_get_flex( $break, $args['arrangements'][ $break ] );
 
 				$element->setAttribute( 'style', $style );
 			}
