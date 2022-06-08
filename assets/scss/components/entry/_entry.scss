@@ -93,8 +93,9 @@
 	flex: 1; /* 1 1 100% breaks image-left/right-full */
 	flex-direction: column;
 	justify-content: var(--align-text-vertical, initial);
-	width: var(--entry-wrap-width, 100%);
-	margin: var(--entry-wrap-margin, 0 auto);
+	// width: var(--entry-wrap-width, 100%);
+	width: var(--entry-wrap-width, initial); /* using 100% was causing overflow issues and content too wide when boxed. */
+	margin: var(--entry-wrap-margin, 0); /* using 0 auto caused issue when the content didn't fill up the container. */
 	padding: var(--entry-wrap-padding, 0);
 	color: var(--entry-wrap-color, inherit);
 	background: var(--entry-wrap-background, transparent);
