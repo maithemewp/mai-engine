@@ -1,4 +1,5 @@
 @import "abstracts/_index";
+@import "base/box-sizing"; /* Something changed in WP 6.0 and we needed this for boxed entries. */
 @import "base/form";
 @import "base/globals";
 @import "base/heading";
@@ -447,10 +448,6 @@ input[type="submit"],
 }
 
 // Column.
-
-.is-column {
-	box-sizing: border-box; /* Something changed in WP 6.0 and we needed this for boxed entries. */
-}
 
 .has-columns:not(.has-columns-nested),
 .has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout,
