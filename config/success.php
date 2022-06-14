@@ -30,7 +30,7 @@ return [
 		],
 		'font-variants'  => [
 			'heading' => [
-				'light' => '400', // Always loads regular weight since this is used for menus.
+				'light' => '600', // Always loads 600 weight since this is used for menus.
 			],
 		],
 	],
