@@ -3,11 +3,11 @@
 :root {
 	--font-scale: 1.125;
 	--border-radius: 1px;
-	--color-medium: #f9f9f9;
 	--heading-text-transform: uppercase;
 	--menu-font-size: var(--font-size-xs);
 	--menu-font-family: var(--heading-font-family);
 	--menu-font-weight: var(--heading-font-weight-light);
+	--menu-text-transform: uppercase;
 	--menu-item-link-color: var(--color-heading);
 	--button-font-family: var(--heading-font-family);
 	--button-font-weight: var(--heading-font-weight);
@@ -26,10 +26,6 @@
 	border-bottom: var(--border);
 }
 
-.menu {
-	text-transform: uppercase;
-}
-
 .breadcrumb {
 	text-align: center;
 }
@@ -37,16 +33,12 @@
 .home-form {
 	position: relative;
 
-	.wp-block-columns {
-		margin-bottom: 0;
-	}
-
 	.wp-block-image img {
 		display: block;
 		width: 100%;
 		margin-top: -60px;
-		border: 16px solid #faf7f6;
-		box-shadow: 0 0 0 2px #fff, 0 0 8px 4px rgba(0, 0, 0, 0.02);
+		border: 16px solid var(--color-alt);
+		box-shadow: 0 0 0 2px var(--color-white), 0 0 8px 4px rgba(0, 0, 0, 0.02);
 
 		@include mq(lg) {
 			margin-bottom: -60px;
@@ -59,9 +51,8 @@
 
 		&::before,
 		&::after {
-			flex-grow: 1;
+			flex: 1 1 auto;
 			height: 1px;
-			margin-right: var(--spacing-md);
 			background-color: currentColor;
 			content: "";
 		}
