@@ -64,15 +64,7 @@
 
 .is-circle,
 .is-square {
-	display: inline-grid;
-	padding: 0 !important;
-
-	> :first-child {
-		display: flex;
-		flex-direction: column;
-		place-content: center;
-		grid-area: 1/-1;
-	}
+	aspect-ratio: 1/1;
 }
 
 .is-circle {
