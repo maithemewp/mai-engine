@@ -75,14 +75,6 @@
 	border-radius: var(--border-radius);
 }
 
-.is-circle::before,
-.is-square::before {
-	display: block;
-	grid-area: 1/-1;
-	padding-bottom: 100%;
-	content: "";
-}
-
 .is-boxed {
 	margin: 0 0 var(--spacing-md);
 	padding: var(--spacing-xl);
