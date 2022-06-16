@@ -3,10 +3,13 @@
 }
 
 .entries {
-	margin-bottom: var(--entries-margin-bottom, var(--spacing-lg));
-
 	--entry-image-line-height: 0;
 	--entry-meta-margin: 0 0 var(--spacing-md) 0;
+}
+
+.entries-archive {
+	// Grid blocks have margin settings with default of None, so we don't need this on entries.
+	margin-bottom: var(--entries-margin-bottom, var(--spacing-lg));
 }
 
 .entry {
@@ -14,7 +17,7 @@
 	display: var(--entry-display, flex);
 	flex-direction: var(--entry-flex-direction, column);
 	flex-wrap: var(--entry-flex-wrap, nowrap);
-	width: var(--entry-width, auto); /* allows "auto" columns in grid and archives */
+	width: var(--entry-width, auto); // allows "auto" columns in grid and archives.
 	margin: var(--entry-margin, 0);
 	padding: var(--entry-padding, 0);
 	overflow: var(--entry-overflow, unset);

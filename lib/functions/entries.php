@@ -56,7 +56,7 @@ function mai_do_entries_open( $args ) {
 
 		// Aspect ratio.
 		if ( in_array( $args['image_position'], [ 'background', 'left-full', 'right-full' ], true ) ) {
-			$aspect_ratio         = mai_has_image_orientiation( $args['image_orientation'] ) ? mai_get_aspect_ratio_from_orientation( $args['image_orientation'] ) : mai_get_image_aspect_ratio( $args['image_size'] );
+			$aspect_ratio   = mai_has_image_orientiation( $args['image_orientation'] ) ? mai_get_aspect_ratio_from_orientation( $args['image_orientation'] ) : mai_get_image_aspect_ratio( $args['image_size'] );
 			$atts['style'] .= sprintf( '--aspect-ratio:%s;', $aspect_ratio );
 		}
 
