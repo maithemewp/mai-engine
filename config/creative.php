@@ -11,7 +11,7 @@
 
 return [
 	'demos' => [
-		'portfolio' => 59,
+		// 'portfolio' => 59,
 	],
 	'global-styles' => [
 		'colors' => [

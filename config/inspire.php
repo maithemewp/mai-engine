@@ -11,9 +11,9 @@
 
 return [
 	'demos' => [
-		'home-garden'   => 35,
-		'health-beauty' => 36,
-		'travel'        => 37,
+		// 'home-garden'   => 35,
+		// 'health-beauty' => 36,
+		// 'travel'        => 37,
 	],
 	'global-styles' => [
 		'colors' => [

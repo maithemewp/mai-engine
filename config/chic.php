@@ -11,7 +11,7 @@
 
 return [
 	'demos'             => [
-		'blog'             => 60,
+		// 'blog'             => 60,
 	],
 	'global-styles'     => [
 		'colors'           => [

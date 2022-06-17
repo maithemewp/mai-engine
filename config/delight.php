@@ -11,8 +11,8 @@
 
 return [
 	'demos'                   => [
-		'recipes'                => 6,
-		'travel'                 => 7,
+		// 'recipes'                => 6,
+		// 'travel'                 => 7,
 		// 'home'                   => 8,
 	],
 	'global-styles'           => [

@@ -11,9 +11,9 @@
 
 return [
 	'demos'         => [
-		'freelance'  => 61,
-		'company'    => 62,
-		'consulting' => 63,
+		// 'freelance'  => 61,
+		// 'company'    => 62,
+		// 'consulting' => 63,
 	],
 	'global-styles' => [
 		'colors' => [

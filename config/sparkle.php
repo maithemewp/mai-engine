@@ -11,8 +11,8 @@
 
 return [
 	'demos'         => [
-		'creative' => 2,
-		'fashion'  => 18,
+		// 'creative' => 2,
+		// 'fashion'  => 18,
 	],
 	'global-styles' => [
 		'colors' => [

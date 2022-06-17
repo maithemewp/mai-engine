@@ -11,7 +11,7 @@
 
 return [
 	'demos'         => [
-		'law'      => 9,
+		// 'law'      => 9,
 		// 'news'     => 10,
 		// 'personal' => 11,
 	],

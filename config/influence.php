@@ -11,9 +11,9 @@
 
 return [
 	'demos' => [
-		'travel'  => 64,
-		'podcast' => 65,
-		'fashion' => 66,
+		// 'travel'  => 64,
+		// 'podcast' => 65,
+		// 'fashion' => 66,
 	],
 	'global-styles' => [
 		'colors' => [

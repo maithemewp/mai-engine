@@ -2,8 +2,9 @@
 
 return [
 	'demos'         => [
+		'corporate' => 'https://demo.bizbudding.com/prosper-corporate/wp-content/uploads/sites/16/mai-engine/',
 		// 'medical'   => 15,
-		'corporate' => 16,
+		// 'corporate' => 16,
 		// 'author'    => 17,
 	],
 	'global-styles' => [

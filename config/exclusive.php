@@ -11,9 +11,9 @@
 
 return [
 	'demos' => [
-		'news'   => 69,
-		'tech'   => 67,
-		'sports' => 68,
+		// 'news'   => 69,
+		// 'tech'   => 67,
+		// 'sports' => 68,
 	],
 	'global-styles' => [
 		'colors' => [

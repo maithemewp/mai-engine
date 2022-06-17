@@ -11,9 +11,9 @@
 
 return [
 	'demos'         => [
-		'creator'     => 75,
-		'author'      => 76,
-		'photography' => 77,
+		// 'creator'     => 75,
+		// 'author'      => 76,
+		// 'photography' => 77,
 	],
 	'global-styles' => [
 		'colors' => [
