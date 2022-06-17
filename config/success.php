@@ -11,6 +11,7 @@
 
 return [
 	'demos'         => [
+		'business' => 'https://demo.bizbudding.com/success-business/wp-content/uploads/sites/5/mai-engine/',
 		// 'local'    => 3,
 		// 'coaching' => 4,
 		// 'business' => 5,
