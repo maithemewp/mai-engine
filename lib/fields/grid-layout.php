@@ -41,7 +41,6 @@ function mai_get_grid_layout_defaults() {
 		'row_gap'                => 'lg',
 		'margin_top'             => '',
 		'margin_bottom'          => '',
-		'remove_spacing'         => '',
 	];
 
 	return $defaults;
