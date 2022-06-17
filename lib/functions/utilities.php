@@ -1796,5 +1796,5 @@ function mai_get_cart_total() {
 		$total = edd_get_cart_total();
 	}
 
-	return sprintf( '<span class="mai-cart-total-wrap is-circle"><span class="mai-cart-total">%s</span></span>', $total );
+	return sprintf( '<span class="mai-cart-total is-circle">%s</span>', $total );
 }

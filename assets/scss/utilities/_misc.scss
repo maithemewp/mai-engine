@@ -332,24 +332,24 @@
 	}
 }
 
-.mai-cart-total-wrap {
-	overflow: hidden;
-	line-height: 0;
-}
-
 .mai-icon-container {
 	position: relative;
 
-	.mai-cart-total-wrap {
+	.mai-cart-total {
 		position: var(--cart-total-position, absolute);
-		top: calc(var(--spacing-xxs) * -1);
-		right: calc(var(--spacing-xxs) * -1);
+		top: calc(0.5em * -1);
+		right: calc(0.5em * -1);
 	}
 }
 
 .mai-cart-total:not(:empty) {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	padding: var(--cart-total-padding, var(--spacing-xxs));
+	overflow: hidden;
 	color: var(--cart-total-color, white);
 	font-size: var(--cart-total-font-size, 0.75rem); /* em was breaking when menu size was larger */
+	line-height: 0;
 	background: var(--cart-total-background, var(--color-danger));
 }
