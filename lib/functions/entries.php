@@ -40,11 +40,6 @@ function mai_do_entries_open( $args ) {
 		$atts['class'] .= ' has-boxed';
 	}
 
-	// Spacing. Only for grid blocks, so check isset.
-	if ( mai_isset( $args, 'remove_spacing', false ) ) {
-		$atts['style'] .= '--entries-margin-bottom:0;';
-	}
-
 	// Title size.
 	if ( $args['title_size'] ) {
 		$atts['style'] .= sprintf( '--entry-title-font-size:var(--font-size-%s);', $args['title_size'] );
