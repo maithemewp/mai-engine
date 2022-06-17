@@ -71,7 +71,7 @@ class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $key Demo ID.
+	 * @param string $key Demo key name. Example: 'corporate'.
 	 *
 	 * @return array
 	 */
@@ -123,7 +123,7 @@ class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 	 *
 	 * @since 2.0.1
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function get_chosen_demo() {
 		if ( ! $this->all_demos ) {
@@ -159,8 +159,9 @@ class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 			'mai_setup_wizard_demo_defaults',
 			[
 				'content'    => false,
-				'widgets'    => false,
 				'customizer' => false,
+				'templates'  => false,
+				'widgets'    => false,
 				'preview'    => false,
 				'plugins'    => [],
 				'screenshot' => isset( $args['screenshot'] ) ? $args['screenshot'] : $this->get_screenshot( $args['preview'] ),

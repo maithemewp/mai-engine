@@ -11,7 +11,7 @@
 
 return [
 	'demos'            => [
-		'default' => 51,
+		// 'default' => 51,
 	],
 	'global-styles'    => [
 		'colors' => [

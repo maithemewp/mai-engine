@@ -135,9 +135,10 @@ function mai_setup_wizard_demos( $defaults ) {
 		return [];
 	}
 
-	foreach ( $demos as $demo => $id ) {
-		$plugins  = [];
-		$demo_url = "https://demo.bizbudding.com/{$theme}-{$demo}/wp-content/uploads/sites/{$id}/mai-engine/";
+	foreach ( $demos as $demo => $files_path ) {
+		$plugins    = [];
+		$files_path = trailingslashit( $files_path );
+		// $demo_url = "https://demo.bizbudding.com/{$theme}-{$demo}/wp-content/uploads/sites/{$id}/mai-engine/";
 
 		foreach ( $config as $plugin ) {
 			if ( isset( $plugins['demos'] ) && $plugins['demos'] && ! in_array( $demo, $plugin['demos'], true ) ) {
@@ -153,9 +154,9 @@ function mai_setup_wizard_demos( $defaults ) {
 
 		$defaults[] = [
 			'name'       => ucwords( $demo ),
-			'content'    => $demo_url . 'content.xml',
-			'templates'  => $demo_url . 'template-parts.json',
-			'customizer' => $demo_url . 'customizer.dat',
+			'content'    => $files_path . 'content.xml',
+			'templates'  => $files_path . 'template-parts.json',
+			'customizer' => $files_path . 'customizer.dat',
 			'preview'    => "https://demo.bizbudding.com/{$theme}-{$demo}/",
 			'plugins'    => $plugins,
 		];

@@ -11,7 +11,7 @@
 
 return [
 	'demos'                  => [
-		'agency'                => 23,
+		// 'agency'                => 23,
 	],
 	'global-styles'          => [
 		'colors'                => [

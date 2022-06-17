@@ -11,7 +11,7 @@
 
 return [
 	'demos'         => [
-		'webinar' => 54,
+		// 'webinar' => 54,
 	],
 	'global-styles' => [
 		'colors' => [

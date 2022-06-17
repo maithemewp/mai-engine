@@ -64,31 +64,16 @@
 
 .is-circle,
 .is-square {
-	display: inline-grid;
-	padding: 0 !important;
-
-	> :first-child {
-		display: flex;
-		flex-direction: column;
-		place-content: center;
-		grid-area: 1/-1;
-	}
+	aspect-ratio: 1/1;
 }
 
 .is-circle {
+	overflow: hidden;
 	border-radius: 9999px;
 }
 
 .is-rounded {
 	border-radius: var(--border-radius);
-}
-
-.is-circle::before,
-.is-square::before {
-	display: block;
-	grid-area: 1/-1;
-	padding-bottom: 100%;
-	content: "";
 }
 
 .is-boxed {
@@ -347,24 +332,24 @@
 	}
 }
 
-.mai-cart-total-wrap {
-	overflow: hidden;
-	line-height: 0;
-}
-
 .mai-icon-container {
 	position: relative;
 
-	.mai-cart-total-wrap {
+	.mai-cart-total {
 		position: var(--cart-total-position, absolute);
-		top: calc(var(--spacing-xxs) * -1);
-		right: calc(var(--spacing-xxs) * -1);
+		top: calc(0.5em * -1);
+		right: calc(0.5em * -1);
 	}
 }
 
 .mai-cart-total:not(:empty) {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	padding: var(--cart-total-padding, var(--spacing-xxs));
+	overflow: hidden;
 	color: var(--cart-total-color, white);
 	font-size: var(--cart-total-font-size, 0.75rem); /* em was breaking when menu size was larger */
+	line-height: 0;
 	background: var(--cart-total-background, var(--color-danger));
 }

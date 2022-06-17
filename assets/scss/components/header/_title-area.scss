@@ -45,7 +45,7 @@
 
 .site-description {
 	display: var(--site-description-display, block);
-	margin: 0;
+	margin: var(--site-description-margin, var(--spacing-xs) 0 0);
 	font-size: var(--site-description-font-size, (smaller));
 }
 

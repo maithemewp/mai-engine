@@ -1774,7 +1774,7 @@ function mai_get_logo_icon_2x() {
  */
 function mai_get_cart_total() {
 	$woo = class_exists( 'WooCommerce' ) && function_exists( 'WC' );
-	$edd = class_exists( 'Easy_Digital_Downloads' );
+	$edd = class_exists( 'Easy_Digital_Downloads' ) && function_exists( 'edd_get_cart_total' );
 
 	if ( ! ( $woo || $edd ) ) {
 		return '';
@@ -1796,5 +1796,5 @@ function mai_get_cart_total() {
 		$total = edd_get_cart_total();
 	}
 
-	return sprintf( '<span class="mai-cart-total-wrap is-circle"><span class="mai-cart-total">%s</span></span>', $total );
+	return sprintf( '<span class="mai-cart-total is-circle">%s</span>', $total );
 }

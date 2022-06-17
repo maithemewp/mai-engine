@@ -5,14 +5,23 @@
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
+<<<<<<< HEAD
         'reference' => '7068a863d44843dd1ecc9376a897b6568878e648',
+=======
+        'reference' => '13ab127e270a4fe9eb7c247c1e2499643a8b1d55',
+>>>>>>> develop
         'name' => 'maithemewp/mai-engine',
         'dev' => false,
     ),
     'versions' => array(
         'advanced-custom-fields/advanced-custom-fields-pro' => array(
+<<<<<<< HEAD
             'pretty_version' => '6.0.0-alpha1',
             'version' => '6.0.0.0-alpha1',
+=======
+            'pretty_version' => '5.12.2',
+            'version' => '5.12.2.0',
+>>>>>>> develop
             'type' => 'library',
             'install_path' => __DIR__ . '/../advanced-custom-fields/advanced-custom-fields-pro',
             'aliases' => array(),
@@ -251,12 +260,21 @@
             ),
         ),
         'kirki-framework/kirki' => array(
+<<<<<<< HEAD
             'pretty_version' => '4.0.23',
             'version' => '4.0.23.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../kirki-framework/kirki',
             'aliases' => array(),
             'reference' => 'da3b1976e39b61c8e7e5210a3d01adbdacad0926',
+=======
+            'pretty_version' => '4.0.24',
+            'version' => '4.0.24.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../kirki-framework/kirki',
+            'aliases' => array(),
+            'reference' => '810938ec2b095966774784a27880f4aeba2d2853',
+>>>>>>> develop
             'dev_requirement' => false,
         ),
         'kirki-framework/l10n' => array(
@@ -349,7 +367,11 @@
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
+<<<<<<< HEAD
             'reference' => '7068a863d44843dd1ecc9376a897b6568878e648',
+=======
+            'reference' => '13ab127e270a4fe9eb7c247c1e2499643a8b1d55',
+>>>>>>> develop
             'dev_requirement' => false,
         ),
         'phpoption/phpoption' => array(
@@ -383,6 +405,7 @@
             ),
         ),
         'symfony/polyfill-ctype' => array(
+<<<<<<< HEAD
             'pretty_version' => 'v1.25.0',
             'version' => '1.25.0.0',
             'type' => 'library',
@@ -407,6 +430,32 @@
             'install_path' => __DIR__ . '/../symfony/polyfill-php80',
             'aliases' => array(),
             'reference' => '4407588e0d3f1f52efb65fbe92babe41f37fe50c',
+=======
+            'pretty_version' => 'v1.26.0',
+            'version' => '1.26.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/polyfill-ctype',
+            'aliases' => array(),
+            'reference' => '6fd1b9a79f6e3cf65f9e679b23af304cd9e010d4',
+            'dev_requirement' => false,
+        ),
+        'symfony/polyfill-mbstring' => array(
+            'pretty_version' => 'v1.26.0',
+            'version' => '1.26.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/polyfill-mbstring',
+            'aliases' => array(),
+            'reference' => '9344f9cb97f3b19424af1a21a3b0e75b0a7d8d7e',
+            'dev_requirement' => false,
+        ),
+        'symfony/polyfill-php80' => array(
+            'pretty_version' => 'v1.26.0',
+            'version' => '1.26.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/polyfill-php80',
+            'aliases' => array(),
+            'reference' => 'cfa0ae98841b9e461207c13ab093d76b0fa7bace',
+>>>>>>> develop
             'dev_requirement' => false,
         ),
         'vlucas/phpdotenv' => array(

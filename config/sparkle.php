@@ -11,8 +11,9 @@
 
 return [
 	'demos'         => [
-		'creative' => 2,
-		'fashion'  => 18,
+		'creative' => 'https://demo.bizbudding.com/sparkle-creative/wp-content/uploads/sites/2/mai-engine/',
+		// 'creative' => 2,
+		// 'fashion'  => 18,
 	],
 	'global-styles' => [
 		'colors' => [

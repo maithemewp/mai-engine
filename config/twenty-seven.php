@@ -11,7 +11,7 @@
 
 return [
 	'demos'            => [
-		'default' => 55,
+		// 'default' => 55,
 	],
 	'global-styles'    => [
 		'breakpoint' => 800,

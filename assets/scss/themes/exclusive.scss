@@ -4,6 +4,7 @@
 	--shadow: 0;
 	--title-area-flex: 0 1 auto;
 	--title-area-text-align: center;
+	--site-description-margin: var(--spacing-sm) 0 0;
 	--menu-font-size: 1rem;
 	--menu-text-transform: uppercase;
 	--button-background-hover: var(--color-primary-light);
@@ -18,10 +19,6 @@
 
 .site-title-link {
 	border-bottom: 4px solid var(--color-primary);
-}
-
-.site-description {
-	margin-top: var(--spacing-sm);
 }
 
 .nav-after-header {
