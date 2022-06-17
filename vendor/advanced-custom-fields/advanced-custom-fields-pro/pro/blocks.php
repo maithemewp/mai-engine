@@ -56,12 +56,16 @@ function acf_handle_json_block_registration( $settings, $metadata ) {
 			'enqueue_assets'    => false,
 			'uses_context'      => array(),
 			'supports'          => array(),
+			'attributes'        => array(),
 			'acf_block_version' => 2,
 		)
 	);
 
-	// Add default attributes.
-	$settings['attributes'] = acf_get_block_type_default_attributes( $metadata );
+	// Add user provided attributes to ACF's required defaults.
+	$settings['attributes'] = wp_parse_args(
+		acf_get_block_type_default_attributes( $metadata ),
+		$settings['attributes']
+	);
 
 	// Add default ACF 'supports' settings.
 	$settings['supports'] = wp_parse_args(
@@ -517,6 +521,7 @@ function acf_render_block_callback( $attributes, $content = '', $wp_block = null
  */
 function acf_rendered_block( $attributes, $content = '', $is_preview = false, $post_id = 0, $wp_block = null, $context = false ) {
 	$mode = isset( $attributes['mode'] ) ? $attributes['mode'] : 'auto';
+	$form = ( 'edit' === $mode && $is_preview );
 
 	// If context is available from the WP_Block class object and we have no context of our own, use that.
 	if ( empty( $context ) && ! empty( $wp_block->context ) ) {
@@ -526,29 +531,41 @@ function acf_rendered_block( $attributes, $content = '', $is_preview = false, $p
 	// Check if we need to generate a block ID.
 	$attributes['id'] = acf_get_block_id( $attributes );
 
+	// Check if we've already got a cache of this block ID and return it to save rendering.
+	if ( $cached_block = acf_get_store( 'block-cache' )->get( $attributes['id'] ) ) {
+		if ( $form ) {
+			if ( $cached_block['form'] ) {
+				return $cached_block['html'];
+			}
+		} else {
+			if ( ! $cached_block['form'] ) {
+				return $cached_block['html'];
+			}
+		}
+	}
+
 	ob_start();
 
-	// if ( 'edit' === $mode && $is_preview ) {
-	// Load the block form since we're in edit mode.
-	// $block = acf_prepare_block( $attributes );
-	// acf_setup_meta( $block['data'], $block['id'], true );
-	// $fields = acf_get_block_fields( $block );
-	// acf_prefix_fields( $fields, "acf-{$block['id']}" );
-	//
-	// echo '<div class="acf-block-fields acf-fields">';
-	// acf_render_fields( $fields, $block['id'], 'div', 'field' );
-	// echo '</div>';
-	// } else {
+	if ( $form ) {
+		// Load the block form since we're in edit mode.
+
+		// Set flag for post REST cleanup of media enqueue count during preloads.
+		acf_set_data( 'acf_did_render_block_form', true );
+
+		$block = acf_prepare_block( $attributes );
+		acf_setup_meta( $block['data'], $block['id'], true );
+		$fields = acf_get_block_fields( $block );
+		acf_prefix_fields( $fields, "acf-{$block['id']}" );
+
+		echo '<div class="acf-block-fields acf-fields">';
+		acf_render_fields( $fields, $block['id'], 'div', 'field' );
+		echo '</div>';
+	} else {
 		// Capture block render output.
 		acf_render_block( $attributes, $content, $is_preview, $post_id, $wp_block, $context );
-	// }
+	}
 
 	$html = ob_get_clean();
-
-	// if ( in_array( $mode, array( 'preview', 'auto' ) ) && $is_preview ) {
-	if ( $is_preview ) {
-		$html = '<div class="acf-block-preview">' . $html . '</div>';
-	}
 
 	// Replace <InnerBlocks /> placeholder on front-end.
 	if ( ! $is_preview ) {
@@ -556,14 +573,20 @@ function acf_rendered_block( $attributes, $content = '', $is_preview = false, $p
 		$content = str_replace( '$', '\$', $content );
 
 		// Wrap content in our acf-inner-container wrapper if necessary.
-		if ( $wp_block && $wp_block->block_type->acf_block_version > 1 ) {
-			$content = '<div class="acf-inner-blocks-container">' . $content . '</div>';
+		if ( $wp_block && $wp_block->block_type->acf_block_version > 1 && apply_filters( 'acf/blocks/wrap_frontend_innerblocks', true ) ) {
+			$content = '<div class="acf-innerblocks-container">' . $content . '</div>';
 		}
 		$html = preg_replace( '/<InnerBlocks([\S\s]*?)\/>/', $content, $html );
 	}
 
 	// Store in cache for preloading.
-	acf_get_store( 'block-cache' )->set( $attributes['id'], $html );
+	acf_get_store( 'block-cache' )->set(
+		$attributes['id'],
+		array(
+			'form' => $form,
+			'html' => $html,
+		)
+	);
 	return $html;
 }
 
@@ -966,9 +989,9 @@ function acf_get_block_id( $attributes ) {
 	if ( empty( $attributes['id'] ) ) {
 		unset( $attributes['id'] );
 
-		// Remove all empty values as they're not present in JS hash building.
+		// Remove all empty string values as they're not present in JS hash building.
 		foreach ( $attributes as $key => $value ) {
-			if ( empty( $value ) ) {
+			if ( '' === $value ) {
 				unset( $attributes[ $key ] );
 			}
 		}
@@ -1020,4 +1043,43 @@ function acf_serialize_block_attributes( $block_attributes ) {
 	$encoded_attributes = preg_replace( '/\\\\"/', '\\u0022', $encoded_attributes );
 
 	return $encoded_attributes;
+}
+
+/**
+ * Set ACF data before a rest call if media scripts have not been enqueued yet for after REST reset.
+ *
+ * @date    07/06/22
+ * @since   6.0
+ *
+ * @param   mixed $response
+ * @return  mixed
+ */
+add_filter( 'rest_request_before_callbacks', 'acf_set_after_rest_media_enqueue_reset_flag' );
+function acf_set_after_rest_media_enqueue_reset_flag( $response ) {
+	global $wp_actions;
+
+	acf_set_data( 'acf_should_reset_media_enqueue', empty( $wp_actions['wp_enqueue_media'] ) );
+	acf_set_data( 'acf_did_render_block_form', false );
+
+	return $response;
+}
+
+/**
+ * Reset wp_enqueue_media action count after REST call so it can happen inside the main execution if required.
+ *
+ * @date    07/06/22
+ * @since   6.0
+ *
+ * @param   mixed $response
+ * @return  mixed
+ */
+add_filter( 'rest_request_after_callbacks', 'acf_reset_media_enqueue_after_rest' );
+function acf_reset_media_enqueue_after_rest( $response ) {
+
+	if ( acf_get_data( 'acf_should_reset_media_enqueue' ) && acf_get_data( 'acf_did_render_block_form' ) ) {
+		global $wp_actions;
+		$wp_actions['wp_enqueue_media'] = 0;
+	}
+
+	return $response;
 }

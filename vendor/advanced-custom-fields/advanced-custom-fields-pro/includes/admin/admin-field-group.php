@@ -382,7 +382,7 @@ if ( ! class_exists( 'acf_admin_field_group' ) ) :
 
 		function post_submitbox_misc_actions() {
 			global $field_group;
-			$status_label = $field_group['active'] ? _x( 'Active', 'post status', 'acf' ) : _x( 'Disabled', 'post status', 'acf' );
+			$status_label = $field_group['active'] ? _x( 'Active', 'post status', 'acf' ) : _x( 'Inactive', 'post status', 'acf' );
 
 			?>
 <script type="text/javascript">

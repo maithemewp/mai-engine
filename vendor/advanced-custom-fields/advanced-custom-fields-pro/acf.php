@@ -3,7 +3,7 @@
 Plugin Name: Advanced Custom Fields PRO
 Plugin URI: https://www.advancedcustomfields.com
 Description: Customize WordPress with powerful, professional and intuitive fields.
-Version: 6.0.0-alpha1
+Version: 6.0.0-alpha2
 Author: Delicious Brains
 Author URI: https://www.advancedcustomfields.com
 Update URI: https://www.advancedcustomfields.com/pro
@@ -20,7 +20,7 @@ if ( ! class_exists( 'ACF' ) ) :
 	class ACF {
 
 		/** @var string The plugin version number. */
-		var $version = '6.0.0-alpha1';
+		var $version = '6.0.0-alpha2';
 
 		/** @var array The plugin settings array. */
 		var $settings = array();
@@ -434,16 +434,16 @@ if ( ! class_exists( 'ACF' ) ) :
 		 */
 		function register_post_status() {
 
-			// Register the Disabled post status.
+			// Register the Inactive post status.
 			register_post_status(
 				'acf-disabled',
 				array(
-					'label'                     => _x( 'Disabled', 'post status', 'acf' ),
+					'label'                     => _x( 'Inactive', 'post status', 'acf' ),
 					'public'                    => true,
 					'exclude_from_search'       => false,
 					'show_in_admin_all_list'    => true,
 					'show_in_admin_status_list' => true,
-					'label_count'               => _n_noop( 'Disabled <span class="count">(%s)</span>', 'Disabled <span class="count">(%s)</span>', 'acf' ),
+					'label_count'               => _n_noop( 'Inactive <span class="count">(%s)</span>', 'Inactive <span class="count">(%s)</span>', 'acf' ),
 				)
 			);
 		}

@@ -1,3 +1,10 @@
+<?php
+$field_groups     = acf_get_field_groups();
+$num_field_groups = 0;
+if ( is_array( $field_groups ) ) {
+	$num_field_groups = count( $field_groups );
+}
+?>
 <div class="acf-field-list-wrap">
 	
 	<ul class="acf-hl acf-thead">
@@ -27,8 +34,9 @@
 				acf_get_view(
 					'field-group-field',
 					array(
-						'field' => $field,
-						'i'     => $i,
+						'field'            => $field,
+						'i'                => $i,
+						'num_field_groups' => $num_field_groups,
 					)
 				);
 
@@ -65,8 +73,9 @@ if ( ! $parent ) :
 	acf_get_view(
 		'field-group-field',
 		array(
-			'field' => $clone,
-			'i'     => 0,
+			'field'            => $clone,
+			'i'                => 0,
+			'num_field_groups' => $num_field_groups,
 		)
 	);
 	?>

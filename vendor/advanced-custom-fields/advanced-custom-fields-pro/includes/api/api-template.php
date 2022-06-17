@@ -57,33 +57,24 @@ function get_field( $selector, $post_id = false, $format_value = true ) {
 
 }
 
-
-/*
-*  the_field()
-*
-*  This function is the same as echo get_field().
-*
-*  @type    function
-*  @since   1.0.3
-*  @date    29/01/13
-*
-*  @param   $selector (string) the field name or key
-*  @param   $post_id (mixed) the post_id of which the value is saved against
-*  @return  n/a
-*/
-
+/**
+ *  This function is the same as echo get_field().
+ *
+ *  @since   1.0.3
+ *  @date    29/01/13
+ *
+ *  @param string $selector The field name or key.
+ *  @param mixed  $post_id  The post_id of which the value is saved against.
+ *  @return  void
+ */
 function the_field( $selector, $post_id = false, $format_value = true ) {
-
 	$value = get_field( $selector, $post_id, $format_value );
 
 	if ( is_array( $value ) ) {
-
-		$value = @implode( ', ', $value );
-
+		$value = implode( ', ', $value );
 	}
 
 	echo $value;
-
 }
 
 /**
@@ -890,7 +881,7 @@ function acf_shortcode( $atts ) {
 	}
 
 	if ( is_array( $value ) ) {
-		$value = @implode( ', ', $value );
+		$value = implode( ', ', $value );
 	}
 
 	return $value;

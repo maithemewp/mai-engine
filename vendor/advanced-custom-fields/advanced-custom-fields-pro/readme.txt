@@ -2,9 +2,9 @@
 Contributors: elliotcondon
 Tags: acf, fields, custom fields, meta, repeater
 Requires at least: 4.7
-Tested up to: 5.9.3
+Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 6.0.0-alpha1
+Stable tag: 6.0.0-alpha2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,6 +13,8 @@ Customize WordPress with powerful, professional and intuitive fields. Proudly po
 == Description ==
 
 Advanced Custom Fields turns WordPress sites into a fully-fledged content management system by giving you all the tools to do more with your data.
+
+https://deliciousbrains.wistia.com/medias/md7ea4ep8z
 
 Use the Advanced Custom Fields plugin to take full control of your WordPress edit screens & custom field data.
 
@@ -75,6 +77,21 @@ From your WordPress dashboard
 
 
 == Changelog ==
+
+= 6.0.0-alpha2 =
+*Release Date 9th June 2022*
+
+* Enhancement - This build continues the preview of upcoming block changes. View the [full release notes on GitHub](https://github.com/AdvancedCustomFields/acf/issues/654)
+* Enhancement - User provided attributes in block.json blocks now correctly get passed to block registration
+* Enhancement - Block markup for v2 blocks is now simplified further
+* Enhancement - Disabling blocks v2 front-end wrapping of innerBlocks now possible with the new `acf/blocks/wrap_frontend_innerblocks` boolean filter
+* Fix - Block preloading now works for blocks saved in edit mode
+* Fix - Block v2 upgrades now no longer overwrite user defined values with defaults
+* Fix - Block edit forms now behave correctly if they are not visible when loaded
+* Fix - The field “move” option now no longer displays for fields when only one field group exists
+* Fix - Language for field group activation state now standardized to "active" and "inactive"
+* New - Bulk actions for field groups now include "Activate" and "Deactivate" options
+* i18n - French translation now updated from user contributions (Thanks to Timothée Moulin)
 
 = 6.0.0-alpha1 =
 *Release Date 12th May 2022*
