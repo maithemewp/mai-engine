@@ -173,6 +173,15 @@ function mai_load_genesis() {
 	}
 }
 
+/**
+ * Removes deprecated stuff from Genesis.
+ *
+ * @since TBD
+ *
+ * @return bool
+ */
+add_filter( 'genesis_load_deprecated', '__return_false' );
+
 add_action( 'genesis_init', 'mai_modify_genesis_defaults', 5 );
 /**
  * Removes all Genesis functions that use the is_child_theme() function.
