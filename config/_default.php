@@ -463,6 +463,7 @@ return [
 			'wp-block-styles',
 		],
 		'remove' => [
+			// 'core-block-patterns',
 			'genesis-footer-widgets',
 		],
 	],

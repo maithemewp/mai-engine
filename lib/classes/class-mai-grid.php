@@ -519,9 +519,14 @@ class Mai_Grid {
 		switch ( $this->args['query_by'] ) {
 			// "Taxonomy" name is the default in WP_Term_Query.
 			case 'name':
-				// Top level terms only.
+				// Top level terms only. Only add if at least one taxonomy is hierarchical. See #597.
 				// TODO: Add a setting to show child terms too.
-				$query_args['parent'] = 0;
+				foreach ( $this->args['taxonomy'] as $taxonomy ) {
+					if ( is_taxonomy_hierarchical( $taxonomy ) ) {
+						$query_args['parent'] = 0;
+					}
+					break;
+				}
 			break;
 			case 'id':
 				$query_args['include'] = $this->args['include'];

@@ -532,17 +532,17 @@ function acf_rendered_block( $attributes, $content = '', $is_preview = false, $p
 	$attributes['id'] = acf_get_block_id( $attributes );
 
 	// Check if we've already got a cache of this block ID and return it to save rendering.
-	if ( $cached_block = acf_get_store( 'block-cache' )->get( $attributes['id'] ) ) {
-		if ( $form ) {
-			if ( $cached_block['form'] ) {
-				return $cached_block['html'];
-			}
-		} else {
-			if ( ! $cached_block['form'] ) {
-				return $cached_block['html'];
-			}
-		}
-	}
+	// if ( $cached_block = acf_get_store( 'block-cache' )->get( $attributes['id'] ) ) {
+	// 	if ( $form ) {
+	// 		if ( $cached_block['form'] ) {
+	// 			return $cached_block['html'];
+	// 		}
+	// 	} else {
+	// 		if ( ! $cached_block['form'] ) {
+	// 			return $cached_block['html'];
+	// 		}
+	// 	}
+	// }
 
 	ob_start();
 

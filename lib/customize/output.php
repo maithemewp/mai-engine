@@ -12,6 +12,8 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
+// add_filter( 'kirki_output_inline_styles', '__return_false', 8 );
+
 add_filter( 'kirki_inline_styles_id', 'mai_kirki_inline_styles_id' );
 /**
  * Changes kirki inline styles element id.
