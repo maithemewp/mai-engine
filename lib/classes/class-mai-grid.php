@@ -524,8 +524,8 @@ class Mai_Grid {
 				foreach ( $this->args['taxonomy'] as $taxonomy ) {
 					if ( is_taxonomy_hierarchical( $taxonomy ) ) {
 						$query_args['parent'] = 0;
+						break;
 					}
-					break;
 				}
 			break;
 			case 'id':
