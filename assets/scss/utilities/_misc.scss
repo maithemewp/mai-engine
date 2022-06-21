@@ -50,6 +50,7 @@
 }
 
 .has-shadow {
+	z-index: 1; // Needed when Mai Column (or similar) has shadow with no column gap.
 	box-shadow: var(--shadow);
 }
 
