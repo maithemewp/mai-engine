@@ -46,6 +46,7 @@
 }
 
 .has-border-radius {
+	overflow: hidden; // Needed so content doesn't bleed out. I hope this doesn't cause issues elsewhere, when we want overlap.
 	border-radius: var(--border-radius);
 }
 
