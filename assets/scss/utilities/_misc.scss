@@ -51,7 +51,8 @@
 }
 
 .has-shadow {
-	z-index: 1; // Needed when Mai Column (or similar) has shadow with no column gap.
+	position: relative;
+	z-index: 1; // Needed when Mai Column (or similar) has shadow with no column gap. Position relative is only here so z-index works too.
 	box-shadow: var(--shadow);
 }
 
