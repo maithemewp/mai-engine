@@ -46,10 +46,12 @@
 }
 
 .has-border-radius {
+	overflow: hidden; // Needed so content doesn't bleed out. I hope this doesn't cause issues elsewhere, when we want overlap.
 	border-radius: var(--border-radius);
 }
 
 .has-shadow {
+	z-index: 1; // Needed when Mai Column (or similar) has shadow with no column gap.
 	box-shadow: var(--shadow);
 }
 

@@ -46,6 +46,8 @@ class Mai_Column {
 				'spacing'               => '',
 				'background'            => '',
 				'shadow'                => false,
+				'border'                => false,
+				'radius'                => false,
 				'first_xs'              => false,
 				'first_sm'              => false,
 				'first_md'              => false,
@@ -57,6 +59,9 @@ class Mai_Column {
 		$args['align_column_vertical'] = esc_html( $args['align_column_vertical'] );
 		$args['spacing']               = esc_html( $args['spacing'] );
 		$args['background']            = esc_html( $args['background'] );
+		$args['shadow']                = mai_sanitize_bool( $args['shadow'] );
+		$args['border']                = mai_sanitize_bool( $args['border'] );
+		$args['radius']                = mai_sanitize_bool( $args['radius'] );
 		$args['first_xs']              = mai_sanitize_bool( $args['first_xs'] );
 		$args['first_sm']              = mai_sanitize_bool( $args['first_sm'] );
 		$args['first_md']              = mai_sanitize_bool( $args['first_md'] );
@@ -101,6 +106,14 @@ class Mai_Column {
 
 		if ( $this->args['shadow'] ) {
 			$attributes['class'] = mai_add_classes( 'has-shadow', $attributes['class'] );
+		}
+
+		if ( $this->args['border'] ) {
+			$attributes['class'] = mai_add_classes( 'has-border', $attributes['class'] );
+		}
+
+		if ( $this->args['radius'] ) {
+			$attributes['class'] = mai_add_classes( 'has-border-radius', $attributes['class'] );
 		}
 
 		if ( $this->args['first_xs'] ) {
