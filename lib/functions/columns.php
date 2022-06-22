@@ -281,6 +281,7 @@ function mai_columns_get_flex_basis( $size ) {
 			// $percent = sprintf( '((%s/%s * 100) * 1%%)', $top, $bottom );
 			// $percent = sprintf( '(((%s) * 100 * 1%%))', $fraction );
 			// $all[ $size ] = sprintf( 'calc(((%s/%s * 100) * 1%%) - (var(--column-gap) * (1 - (%s/%s))))', $top, $bottom, $top, $bottom );
+			// $all[ $size ] = 'calc((100% * var(--columns) - (var(--column-gap) * (1 - var(--columns)))) - 0.025px)';
 			$all[ $size ] = 'var(--flex-basis)';
 
 		// } else {

@@ -163,16 +163,25 @@ class Mai_Columns {
 
 	function get_admin_attributes( $attributes ) {
 		foreach ( array_reverse( $this->args['arrangements'] ) as $break => $arrangement ) {
-			$index    = 0;
 			$elements = $this->get_mapped_admin_elements( $arrangement );
 
+			$index = 0;
 			foreach ( $elements as $columns ) {
 				$index++;
 
-				$attributes['style'] .= mai_columns_get_columns( $break, $columns );
+				// $attributes['style'] .= mai_columns_get_columns( $break, $columns );
 				$attributes['style'] .= mai_columns_get_columns( sprintf( '%s-%s', $break, $index ), $columns );
-				$attributes['style'] .= mai_columns_get_flex( $break, $columns );
-				$attributes['style'] .= mai_columns_get_flex( sprintf( '%s-%s', $break, $index ), $columns );
+			}
+
+			$index = 0;
+			foreach ( $elements as $columns ) {
+				$index++;
+
+				// $attributes['style'] .= mai_columns_get_flex( $break, $columns );
+				// $attributes['style'] .= mai_columns_get_flex( sprintf( '%s-%s', $break, $index ), $columns );
+				if ( in_array( $columns, [ 'auto', 'fill', 'full' ] ) ) {
+					$attributes['style'] .= mai_columns_get_flex( sprintf( '%s-%s', $break, $index ), $columns );
+				}
 			}
 		}
 
@@ -196,7 +205,7 @@ class Mai_Columns {
 		$total_arrangements = count( $arrangement );
 		$count              = 0;
 		$elements           = [];
-		for ( $i = 0; $i < 12; $i++ ) {
+		for ( $i = 0; $i < 24; $i++ ) {
 			$elements[ $i ] = $arrangement[ $count ];
 
 			if ( $count === ( $total_arrangements - 1 ) ) {
