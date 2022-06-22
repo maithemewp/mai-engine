@@ -106,12 +106,6 @@ class Mai_Columns {
 			$atts['class'] = mai_add_classes( sprintf( 'has-%s-margin-bottom', $this->args['margin_bottom'] ), $atts['class'] );
 		}
 
-		if ( $this->args['preview'] ) {
-			$atts = $this->get_admin_attributes( $atts );
-		}
-
-		$atts = $this->get_attributes( $atts );
-
 		genesis_markup(
 			[
 				'open'    => '<div %s>',
@@ -122,12 +116,16 @@ class Mai_Columns {
 		);
 
 		$wrap_atts = [
-			'class' => 'mai-columns-wrap has-columns'
+			'class' => 'mai-columns-wrap has-columns',
+			'style' => '',
 		];
 
 		if ( $this->args['preview'] ) {
 			$wrap_atts['class'] = mai_add_classes( 'has-columns-nested', $wrap_atts['class'] ); // Temp workaround for ACF nested block markup.
+			$wrap_atts          = $this->get_admin_attributes( $wrap_atts );
 		}
+
+		$wrap_atts = $this->get_attributes( $wrap_atts );
 
 		genesis_markup(
 			[
