@@ -443,50 +443,45 @@ input[type="submit"],
 	display: flex;
 	flex-wrap: wrap;
 	gap: var(--row-gap) var(--column-gap);
-	align-items: var(--align-columns-vertical, unset);
-	justify-content: var(--align-columns, unset);
+	align-items: var(--align-columns-vertical, initial); // Needs initial for nested columns.
+	justify-content: var(--align-columns, initial); // Needs initial for nested columns.
 }
 
 // Column.
 
-.has-columns:not(.has-columns-nested),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout,
-.has-columns:not(.has-columns-nested) > .is-column,
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
-	--columns-default: 1/1;
-	--flex-basis: calc((100% * var(--columns) - (var(--column-gap) * (1 - var(--columns)))) - 0.025px); // Removes 0.025px to prevent margin collapsing.
-	--flex-default: 0 0 var(--flex-basis);
+// .has-columns:not(.has-columns-nested),
+// .has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout,
+// .has-columns:not(.has-columns-nested) > .is-column,
+// .has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+// .has-columns {
+// 	--columns-default: 1/1;
+// 	--flex-basis: calc((100% * var(--columns) - (var(--column-gap) * (1 - var(--columns)))) - 0.025px); // Removes 0.025px to prevent margin collapsing.
+// 	--flex-default: 0 0 var(--flex-basis);
 
-	@include mq(false, sm) {
-		--flex: var(--flex-xs, var(--flex-default));
-		--columns: var(--columns-xs, 1);
-		--order: var(--order-xs, unset);
-	}
+// 	@include mq(false, sm) {
+// 		// --flex: var(--flex-xs);
+// 		// --columns: var(--columns-xs, 1);
+// 		--order: var(--order-xs, unset);
+// 	}
 
-	@include mq(sm, md) {
-		--flex: var(--flex-sm, var(--flex-default));
-		--columns: var(--columns-sm, 1);
-		--order: var(--order-sm, unset);
-	}
+// 	@include mq(sm, md) {
+// 		// --flex: var(--flex-sm);
+// 		// --columns: var(--columns-sm, 1);
+// 		--order: var(--order-sm, unset);
+// 	}
 
-	@include mq(md, lg) {
-		--flex: var(--flex-md, var(--flex-default));
-		--columns: var(--columns-md, 1);
-		--order: var(--order-md, unset);
-	}
+// 	@include mq(md, lg) {
+// 		// --flex: var(--flex-md);
+// 		// --columns: var(--columns-md, 1);
+// 		--order: var(--order-md, unset);
+// 	}
 
-	@include mq(lg) {
-		--flex: var(--flex-lg, var(--flex-default));
-		--columns: var(--columns-lg, 1);
-	}
-}
-
-.has-columns:not(.has-columns-nested) > .is-column,
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
-	flex: var(--flex, var(--flex-default));
-	order: var(--order, unset);
-	margin: 0; /* overrides core editor margin on wp-block */
-}
+// 	@include mq(lg) {
+// 		// --flex: var(--flex-lg);
+// 		// --flex: var(--flex-default);
+// 		// --columns: var(--columns-lg, 1);
+// 	}
+// }
 
 .has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block > .acf-block-component,
 .has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block > .acf-block-component > div,
@@ -496,380 +491,804 @@ input[type="submit"],
 	height: 100%;
 }
 
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(1),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(1) {
-	--columns: var(--columns-1);
-	--flex: var(--flex-1, var(--flex-default));
-}
+.has-columns:not(.has-columns-nested) > .is-column,
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--columns-default: 1/1;
+	--flex-basis: calc((100% * var(--columns) - (var(--column-gap) * (1 - var(--columns)))) - 0.025px); // Removes 0.025px to prevent margin collapsing.
+	--flex-default: 0 0 var(--flex-basis);
 
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(2),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(2) {
-	--columns: var(--columns-2);
-	--flex: var(--flex-2, var(--flex-default));
-}
+	@include mq(false, sm) {
+		// --flex: var(--flex-xs);
+		// --columns: var(--columns-xs, 1);
+		--order: var(--order-xs, unset);
+	}
 
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(3),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(3) {
-	--columns: var(--columns-3);
-	--flex: var(--flex-3, var(--flex-default));
-}
+	@include mq(sm, md) {
+		// --flex: var(--flex-sm);
+		// --columns: var(--columns-sm, 1);
+		--order: var(--order-sm, unset);
+	}
 
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(4),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(4) {
-	--columns: var(--columns-4);
-	--flex: var(--flex-4, var(--flex-default));
-}
+	@include mq(md, lg) {
+		// --flex: var(--flex-md);
+		// --columns: var(--columns-md, 1);
+		--order: var(--order-md, unset);
+	}
 
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(5),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(5) {
-	--columns: var(--columns-5);
-	--flex: var(--flex-5, var(--flex-default));
-}
+	@include mq(lg) {
+		// --flex: var(--flex-lg);
+		// --flex: var(--flex-default);
+		// --columns: var(--columns-lg, 1);
+		// --flex-lg: 0 0 calc((100% * var(--columns) - (var(--column-gap) * (1 - var(--columns)))) - 0.025px);
+	}
 
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(6),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(6) {
-	--columns: var(--columns-6);
-	--flex: var(--flex-6, var(--flex-default));
-}
-
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(7),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(7) {
-	--columns: var(--columns-7);
-	--flex: var(--flex-7, var(--flex-default));
-}
-
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(8),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(8) {
-	--columns: var(--columns-8);
-	--flex: var(--flex-8, var(--flex-default));
-}
-
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(9),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(9) {
-	--columns: var(--columns-9);
-	--flex: var(--flex-9, var(--flex-default));
-}
-
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(10),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(10) {
-	--columns: var(--columns-10);
-	--flex: var(--flex-10, var(--flex-default));
-}
-
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(11),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(11) {
-	--columns: var(--columns-11);
-	--flex: var(--flex-11, var(--flex-default));
-}
-
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(12),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(12) {
-	--columns: var(--columns-12);
-	--flex: var(--flex-12, var(--flex-default));
-}
-
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(13),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(13) {
-	--columns: var(--columns-13);
-	--flex: var(--flex-13, var(--flex-default));
-}
-
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(14),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(14) {
-	--columns: var(--columns-14);
-	--flex: var(--flex-14, var(--flex-default));
-}
-
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(15),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(15) {
-	--columns: var(--columns-15);
-	--flex: var(--flex-15, var(--flex-default));
-}
-
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(16),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(16) {
-	--columns: var(--columns-16);
-	--flex: var(--flex-16, var(--flex-default));
-}
-
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(17),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(17) {
-	--columns: var(--columns-17);
-	--flex: var(--flex-17, var(--flex-default));
-}
-
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(18),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(18) {
-	--columns: var(--columns-18);
-	--flex: var(--flex-18, var(--flex-default));
-}
-
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(19),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(19) {
-	--columns: var(--columns-19);
-	--flex: var(--flex-19, var(--flex-default));
-}
-
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(20),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(20) {
-	--columns: var(--columns-20);
-	--flex: var(--flex-20, var(--flex-default));
-}
-
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(21),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(21) {
-	--columns: var(--columns-21);
-	--flex: var(--flex-21, var(--flex-default));
-}
-
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(22),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(22) {
-	--columns: var(--columns-22);
-	--flex: var(--flex-22, var(--flex-default));
-}
-
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(23),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(23) {
-	--columns: var(--columns-23);
-	--flex: var(--flex-23, var(--flex-default));
-}
-
-.has-columns:not(.has-columns-nested) > .is-column:nth-child(24),
-.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(24) {
-	--columns: var(--columns-24);
-	--flex: var(--flex-24, var(--flex-default));
+	flex: var(--flex);
+	order: var(--order, unset);
+	margin: 0; /* overrides core editor margin on wp-block */
 }
 
 @include mq(false, sm) {
 
-	.has-columns:not(.has-columns-nested),
-	.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout,
+	// .has-columns:not(.has-columns-nested),
+	// .has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout,
 	.has-columns:not(.has-columns-nested) > .is-column,
 	.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
-		--columns-1: var(--columns-xs-1, var(--columns-xs, var(--columns-default)));
-		--columns-2: var(--columns-xs-2, var(--columns-xs, var(--columns-default)));
-		--columns-3: var(--columns-xs-3, var(--columns-xs, var(--columns-default)));
-		--columns-4: var(--columns-xs-4, var(--columns-xs, var(--columns-default)));
-		--columns-5: var(--columns-xs-5, var(--columns-xs, var(--columns-default)));
-		--columns-6: var(--columns-xs-6, var(--columns-xs, var(--columns-default)));
-		--columns-7: var(--columns-xs-7, var(--columns-xs, var(--columns-default)));
-		--columns-8: var(--columns-xs-8, var(--columns-xs, var(--columns-default)));
-		--columns-9: var(--columns-xs-9, var(--columns-xs, var(--columns-default)));
-		--columns-10: var(--columns-xs-10, var(--columns-xs, var(--columns-default)));
-		--columns-11: var(--columns-xs-11, var(--columns-xs, var(--columns-default)));
-		--columns-12: var(--columns-xs-12, var(--columns-xs, var(--columns-default)));
-		--columns-13: var(--columns-xs-13, var(--columns-xs, var(--columns-default)));
-		--columns-14: var(--columns-xs-14, var(--columns-xs, var(--columns-default)));
-		--columns-15: var(--columns-xs-15, var(--columns-xs, var(--columns-default)));
-		--columns-16: var(--columns-xs-16, var(--columns-xs, var(--columns-default)));
-		--columns-17: var(--columns-xs-17, var(--columns-xs, var(--columns-default)));
-		--columns-18: var(--columns-xs-18, var(--columns-xs, var(--columns-default)));
-		--columns-19: var(--columns-xs-19, var(--columns-xs, var(--columns-default)));
-		--columns-20: var(--columns-xs-20, var(--columns-xs, var(--columns-default)));
-		--columns-21: var(--columns-xs-21, var(--columns-xs, var(--columns-default)));
-		--columns-22: var(--columns-xs-22, var(--columns-xs, var(--columns-default)));
-		--columns-23: var(--columns-xs-23, var(--columns-xs, var(--columns-default)));
-		--columns-24: var(--columns-xs-24, var(--columns-xs, var(--columns-default)));
+		--columns-1: var(--columns-xs-1);
+		--columns-2: var(--columns-xs-2);
+		--columns-3: var(--columns-xs-3);
+		--columns-4: var(--columns-xs-4);
+		--columns-5: var(--columns-xs-5);
+		--columns-6: var(--columns-xs-6);
+		--columns-7: var(--columns-xs-7);
+		--columns-8: var(--columns-xs-8);
+		--columns-9: var(--columns-xs-9);
+		--columns-10: var(--columns-xs-10);
+		--columns-11: var(--columns-xs-11);
+		--columns-12: var(--columns-xs-12);
+		--columns-13: var(--columns-xs-13);
+		--columns-14: var(--columns-xs-14);
+		--columns-15: var(--columns-xs-15);
+		--columns-16: var(--columns-xs-16);
+		--columns-17: var(--columns-xs-17);
+		--columns-18: var(--columns-xs-18);
+		--columns-19: var(--columns-xs-19);
+		--columns-20: var(--columns-xs-20);
+		--columns-21: var(--columns-xs-21);
+		--columns-22: var(--columns-xs-22);
+		--columns-23: var(--columns-xs-23);
+		--columns-24: var(--columns-xs-24);
 
-		--flex-1: var(--flex-xs-1, var(--flex-xs, var(--flex-default)));
-		--flex-2: var(--flex-xs-2, var(--flex-xs, var(--flex-default)));
-		--flex-3: var(--flex-xs-3, var(--flex-xs, var(--flex-default)));
-		--flex-4: var(--flex-xs-4, var(--flex-xs, var(--flex-default)));
-		--flex-5: var(--flex-xs-5, var(--flex-xs, var(--flex-default)));
-		--flex-6: var(--flex-xs-6, var(--flex-xs, var(--flex-default)));
-		--flex-7: var(--flex-xs-7, var(--flex-xs, var(--flex-default)));
-		--flex-8: var(--flex-xs-8, var(--flex-xs, var(--flex-default)));
-		--flex-9: var(--flex-xs-9, var(--flex-xs, var(--flex-default)));
-		--flex-10: var(--flex-xs-10, var(--flex-xs, var(--flex-default)));
-		--flex-11: var(--flex-xs-11, var(--flex-xs, var(--flex-default)));
-		--flex-12: var(--flex-xs-12, var(--flex-xs, var(--flex-default)));
-		--flex-13: var(--flex-xs-13, var(--flex-xs, var(--flex-default)));
-		--flex-14: var(--flex-xs-14, var(--flex-xs, var(--flex-default)));
-		--flex-15: var(--flex-xs-15, var(--flex-xs, var(--flex-default)));
-		--flex-16: var(--flex-xs-16, var(--flex-xs, var(--flex-default)));
-		--flex-17: var(--flex-xs-17, var(--flex-xs, var(--flex-default)));
-		--flex-18: var(--flex-xs-18, var(--flex-xs, var(--flex-default)));
-		--flex-19: var(--flex-xs-19, var(--flex-xs, var(--flex-default)));
-		--flex-20: var(--flex-xs-20, var(--flex-xs, var(--flex-default)));
-		--flex-21: var(--flex-xs-21, var(--flex-xs, var(--flex-default)));
-		--flex-22: var(--flex-xs-22, var(--flex-xs, var(--flex-default)));
-		--flex-23: var(--flex-xs-23, var(--flex-xs, var(--flex-default)));
-		--flex-24: var(--flex-xs-24, var(--flex-xs, var(--flex-default)));
+		--flex-1: var(--flex-xs, var(--flex-default));
+		--flex-2: var(--flex-xs, var(--flex-default));
+		--flex-3: var(--flex-xs, var(--flex-default));
+		--flex-4: var(--flex-xs, var(--flex-default));
+		--flex-5: var(--flex-xs, var(--flex-default));
+		--flex-6: var(--flex-xs, var(--flex-default));
+		--flex-7: var(--flex-xs, var(--flex-default));
+		--flex-8: var(--flex-xs, var(--flex-default));
+		--flex-9: var(--flex-xs, var(--flex-default));
+		--flex-10: var(--flex-xs, var(--flex-default));
+		--flex-11: var(--flex-xs, var(--flex-default));
+		--flex-12: var(--flex-xs, var(--flex-default));
+		--flex-13: var(--flex-xs, var(--flex-default));
+		--flex-14: var(--flex-xs, var(--flex-default));
+		--flex-15: var(--flex-xs, var(--flex-default));
+		--flex-16: var(--flex-xs, var(--flex-default));
+		--flex-17: var(--flex-xs, var(--flex-default));
+		--flex-18: var(--flex-xs, var(--flex-default));
+		--flex-19: var(--flex-xs, var(--flex-default));
+		--flex-20: var(--flex-xs, var(--flex-default));
+		--flex-21: var(--flex-xs, var(--flex-default));
+		--flex-22: var(--flex-xs, var(--flex-default));
+		--flex-23: var(--flex-xs, var(--flex-default));
+		--flex-24: var(--flex-xs, var(--flex-default));
 	}
 }
 
 @include mq(sm, md) {
 
-	.has-columns:not(.has-columns-nested),
-	.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout,
+	// .has-columns:not(.has-columns-nested),
+	// .has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout,
 	.has-columns:not(.has-columns-nested) > .is-column,
 	.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
-		--columns-1: var(--columns-sm-1, var(--columns-sm, var(--columns-default)));
-		--columns-2: var(--columns-sm-2, var(--columns-sm, var(--columns-default)));
-		--columns-3: var(--columns-sm-3, var(--columns-sm, var(--columns-default)));
-		--columns-4: var(--columns-sm-4, var(--columns-sm, var(--columns-default)));
-		--columns-5: var(--columns-sm-5, var(--columns-sm, var(--columns-default)));
-		--columns-6: var(--columns-sm-6, var(--columns-sm, var(--columns-default)));
-		--columns-7: var(--columns-sm-7, var(--columns-sm, var(--columns-default)));
-		--columns-8: var(--columns-sm-8, var(--columns-sm, var(--columns-default)));
-		--columns-9: var(--columns-sm-9, var(--columns-sm, var(--columns-default)));
-		--columns-10: var(--columns-sm-10, var(--columns-sm, var(--columns-default)));
-		--columns-11: var(--columns-sm-11, var(--columns-sm, var(--columns-default)));
-		--columns-12: var(--columns-sm-12, var(--columns-sm, var(--columns-default)));
-		--columns-13: var(--columns-sm-13, var(--columns-sm, var(--columns-default)));
-		--columns-14: var(--columns-sm-14, var(--columns-sm, var(--columns-default)));
-		--columns-15: var(--columns-sm-15, var(--columns-sm, var(--columns-default)));
-		--columns-16: var(--columns-sm-16, var(--columns-sm, var(--columns-default)));
-		--columns-17: var(--columns-sm-17, var(--columns-sm, var(--columns-default)));
-		--columns-18: var(--columns-sm-18, var(--columns-sm, var(--columns-default)));
-		--columns-19: var(--columns-sm-19, var(--columns-sm, var(--columns-default)));
-		--columns-20: var(--columns-sm-20, var(--columns-sm, var(--columns-default)));
-		--columns-21: var(--columns-sm-21, var(--columns-sm, var(--columns-default)));
-		--columns-22: var(--columns-sm-22, var(--columns-sm, var(--columns-default)));
-		--columns-23: var(--columns-sm-23, var(--columns-sm, var(--columns-default)));
-		--columns-24: var(--columns-sm-24, var(--columns-sm, var(--columns-default)));
+		--columns-1: var(--columns-sm-1);
+		--columns-2: var(--columns-sm-2);
+		--columns-3: var(--columns-sm-3);
+		--columns-4: var(--columns-sm-4);
+		--columns-5: var(--columns-sm-5);
+		--columns-6: var(--columns-sm-6);
+		--columns-7: var(--columns-sm-7);
+		--columns-8: var(--columns-sm-8);
+		--columns-9: var(--columns-sm-9);
+		--columns-10: var(--columns-sm-10);
+		--columns-11: var(--columns-sm-11);
+		--columns-12: var(--columns-sm-12);
+		--columns-13: var(--columns-sm-13);
+		--columns-14: var(--columns-sm-14);
+		--columns-15: var(--columns-sm-15);
+		--columns-16: var(--columns-sm-16);
+		--columns-17: var(--columns-sm-17);
+		--columns-18: var(--columns-sm-18);
+		--columns-19: var(--columns-sm-19);
+		--columns-20: var(--columns-sm-20);
+		--columns-21: var(--columns-sm-21);
+		--columns-22: var(--columns-sm-22);
+		--columns-23: var(--columns-sm-23);
+		--columns-24: var(--columns-sm-24);
 
-		--flex-1: var(--flex-sm-1, var(--flex-sm, var(--flex-default)));
-		--flex-2: var(--flex-sm-2, var(--flex-sm, var(--flex-default)));
-		--flex-3: var(--flex-sm-3, var(--flex-sm, var(--flex-default)));
-		--flex-4: var(--flex-sm-4, var(--flex-sm, var(--flex-default)));
-		--flex-5: var(--flex-sm-5, var(--flex-sm, var(--flex-default)));
-		--flex-6: var(--flex-sm-6, var(--flex-sm, var(--flex-default)));
-		--flex-7: var(--flex-sm-7, var(--flex-sm, var(--flex-default)));
-		--flex-8: var(--flex-sm-8, var(--flex-sm, var(--flex-default)));
-		--flex-9: var(--flex-sm-9, var(--flex-sm, var(--flex-default)));
-		--flex-10: var(--flex-sm-10, var(--flex-sm, var(--flex-default)));
-		--flex-11: var(--flex-sm-11, var(--flex-sm, var(--flex-default)));
-		--flex-12: var(--flex-sm-12, var(--flex-sm, var(--flex-default)));
-		--flex-13: var(--flex-sm-13, var(--flex-sm, var(--flex-default)));
-		--flex-14: var(--flex-sm-14, var(--flex-sm, var(--flex-default)));
-		--flex-15: var(--flex-sm-15, var(--flex-sm, var(--flex-default)));
-		--flex-16: var(--flex-sm-16, var(--flex-sm, var(--flex-default)));
-		--flex-17: var(--flex-sm-17, var(--flex-sm, var(--flex-default)));
-		--flex-18: var(--flex-sm-18, var(--flex-sm, var(--flex-default)));
-		--flex-19: var(--flex-sm-19, var(--flex-sm, var(--flex-default)));
-		--flex-20: var(--flex-sm-20, var(--flex-sm, var(--flex-default)));
-		--flex-21: var(--flex-sm-21, var(--flex-sm, var(--flex-default)));
-		--flex-22: var(--flex-sm-22, var(--flex-sm, var(--flex-default)));
-		--flex-23: var(--flex-sm-23, var(--flex-sm, var(--flex-default)));
-		--flex-24: var(--flex-sm-24, var(--flex-sm, var(--flex-default)));
+		--flex-1: var(--flex-sm, var(--flex-default));
+		--flex-2: var(--flex-sm, var(--flex-default));
+		--flex-3: var(--flex-sm, var(--flex-default));
+		--flex-4: var(--flex-sm, var(--flex-default));
+		--flex-5: var(--flex-sm, var(--flex-default));
+		--flex-6: var(--flex-sm, var(--flex-default));
+		--flex-7: var(--flex-sm, var(--flex-default));
+		--flex-8: var(--flex-sm, var(--flex-default));
+		--flex-9: var(--flex-sm, var(--flex-default));
+		--flex-10: var(--flex-sm, var(--flex-default));
+		--flex-11: var(--flex-sm, var(--flex-default));
+		--flex-12: var(--flex-sm, var(--flex-default));
+		--flex-13: var(--flex-sm, var(--flex-default));
+		--flex-14: var(--flex-sm, var(--flex-default));
+		--flex-15: var(--flex-sm, var(--flex-default));
+		--flex-16: var(--flex-sm, var(--flex-default));
+		--flex-17: var(--flex-sm, var(--flex-default));
+		--flex-18: var(--flex-sm, var(--flex-default));
+		--flex-19: var(--flex-sm, var(--flex-default));
+		--flex-20: var(--flex-sm, var(--flex-default));
+		--flex-21: var(--flex-sm, var(--flex-default));
+		--flex-22: var(--flex-sm, var(--flex-default));
+		--flex-23: var(--flex-sm, var(--flex-default));
+		--flex-24: var(--flex-sm, var(--flex-default));
 	}
 }
 
 @include mq(md, lg) {
 
-	.has-columns:not(.has-columns-nested),
-	.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout,
+	// .has-columns:not(.has-columns-nested),
+	// .has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout,
 	.has-columns:not(.has-columns-nested) > .is-column,
 	.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
-		--columns-1: var(--columns-md-1, var(--columns-md, var(--columns-default)));
-		--columns-2: var(--columns-md-2, var(--columns-md, var(--columns-default)));
-		--columns-3: var(--columns-md-3, var(--columns-md, var(--columns-default)));
-		--columns-4: var(--columns-md-4, var(--columns-md, var(--columns-default)));
-		--columns-5: var(--columns-md-5, var(--columns-md, var(--columns-default)));
-		--columns-6: var(--columns-md-6, var(--columns-md, var(--columns-default)));
-		--columns-7: var(--columns-md-7, var(--columns-md, var(--columns-default)));
-		--columns-8: var(--columns-md-8, var(--columns-md, var(--columns-default)));
-		--columns-9: var(--columns-md-9, var(--columns-md, var(--columns-default)));
-		--columns-10: var(--columns-md-10, var(--columns-md, var(--columns-default)));
-		--columns-11: var(--columns-md-11, var(--columns-md, var(--columns-default)));
-		--columns-12: var(--columns-md-12, var(--columns-md, var(--columns-default)));
-		--columns-13: var(--columns-md-13, var(--columns-md, var(--columns-default)));
-		--columns-14: var(--columns-md-14, var(--columns-md, var(--columns-default)));
-		--columns-15: var(--columns-md-15, var(--columns-md, var(--columns-default)));
-		--columns-16: var(--columns-md-16, var(--columns-md, var(--columns-default)));
-		--columns-17: var(--columns-md-17, var(--columns-md, var(--columns-default)));
-		--columns-18: var(--columns-md-18, var(--columns-md, var(--columns-default)));
-		--columns-19: var(--columns-md-19, var(--columns-md, var(--columns-default)));
-		--columns-20: var(--columns-md-20, var(--columns-md, var(--columns-default)));
-		--columns-21: var(--columns-md-21, var(--columns-md, var(--columns-default)));
-		--columns-22: var(--columns-md-22, var(--columns-md, var(--columns-default)));
-		--columns-23: var(--columns-md-23, var(--columns-md, var(--columns-default)));
-		--columns-24: var(--columns-md-24, var(--columns-md, var(--columns-default)));
+		--columns-1: var(--columns-md-1);
+		--columns-2: var(--columns-md-2);
+		--columns-3: var(--columns-md-3);
+		--columns-4: var(--columns-md-4);
+		--columns-5: var(--columns-md-5);
+		--columns-6: var(--columns-md-6);
+		--columns-7: var(--columns-md-7);
+		--columns-8: var(--columns-md-8);
+		--columns-9: var(--columns-md-9);
+		--columns-10: var(--columns-md-10);
+		--columns-11: var(--columns-md-11);
+		--columns-12: var(--columns-md-12);
+		--columns-13: var(--columns-md-13);
+		--columns-14: var(--columns-md-14);
+		--columns-15: var(--columns-md-15);
+		--columns-16: var(--columns-md-16);
+		--columns-17: var(--columns-md-17);
+		--columns-18: var(--columns-md-18);
+		--columns-19: var(--columns-md-19);
+		--columns-20: var(--columns-md-20);
+		--columns-21: var(--columns-md-21);
+		--columns-22: var(--columns-md-22);
+		--columns-23: var(--columns-md-23);
+		--columns-24: var(--columns-md-24);
 
-		--flex-1: var(--flex-md-1, var(--flex-md, var(--flex-default)));
-		--flex-2: var(--flex-md-2, var(--flex-md, var(--flex-default)));
-		--flex-3: var(--flex-md-3, var(--flex-md, var(--flex-default)));
-		--flex-4: var(--flex-md-4, var(--flex-md, var(--flex-default)));
-		--flex-5: var(--flex-md-5, var(--flex-md, var(--flex-default)));
-		--flex-6: var(--flex-md-6, var(--flex-md, var(--flex-default)));
-		--flex-7: var(--flex-md-7, var(--flex-md, var(--flex-default)));
-		--flex-8: var(--flex-md-8, var(--flex-md, var(--flex-default)));
-		--flex-9: var(--flex-md-9, var(--flex-md, var(--flex-default)));
-		--flex-10: var(--flex-md-10, var(--flex-md, var(--flex-default)));
-		--flex-11: var(--flex-md-11, var(--flex-md, var(--flex-default)));
-		--flex-12: var(--flex-md-12, var(--flex-md, var(--flex-default)));
-		--flex-13: var(--flex-md-13, var(--flex-md, var(--flex-default)));
-		--flex-14: var(--flex-md-14, var(--flex-md, var(--flex-default)));
-		--flex-15: var(--flex-md-15, var(--flex-md, var(--flex-default)));
-		--flex-16: var(--flex-md-16, var(--flex-md, var(--flex-default)));
-		--flex-17: var(--flex-md-17, var(--flex-md, var(--flex-default)));
-		--flex-18: var(--flex-md-18, var(--flex-md, var(--flex-default)));
-		--flex-19: var(--flex-md-19, var(--flex-md, var(--flex-default)));
-		--flex-20: var(--flex-md-20, var(--flex-md, var(--flex-default)));
-		--flex-21: var(--flex-md-21, var(--flex-md, var(--flex-default)));
-		--flex-22: var(--flex-md-22, var(--flex-md, var(--flex-default)));
-		--flex-23: var(--flex-md-23, var(--flex-md, var(--flex-default)));
-		--flex-24: var(--flex-md-24, var(--flex-md, var(--flex-default)));
+		--flex-1: var(--flex-md-1, var(--flex-default));
+		--flex-2: var(--flex-md-2, var(--flex-default));
+		--flex-3: var(--flex-md-3, var(--flex-default));
+		--flex-4: var(--flex-md-4, var(--flex-default));
+		--flex-5: var(--flex-md-5, var(--flex-default));
+		--flex-6: var(--flex-md-6, var(--flex-default));
+		--flex-7: var(--flex-md-7, var(--flex-default));
+		--flex-8: var(--flex-md-8, var(--flex-default));
+		--flex-9: var(--flex-md-9, var(--flex-default));
+		--flex-10: var(--flex-md-10, var(--flex-default));
+		--flex-11: var(--flex-md-11, var(--flex-default));
+		--flex-12: var(--flex-md-12, var(--flex-default));
+		--flex-13: var(--flex-md-13, var(--flex-default));
+		--flex-14: var(--flex-md-14, var(--flex-default));
+		--flex-15: var(--flex-md-15, var(--flex-default));
+		--flex-16: var(--flex-md-16, var(--flex-default));
+		--flex-17: var(--flex-md-17, var(--flex-default));
+		--flex-18: var(--flex-md-18, var(--flex-default));
+		--flex-19: var(--flex-md-19, var(--flex-default));
+		--flex-20: var(--flex-md-20, var(--flex-default));
+		--flex-21: var(--flex-md-21, var(--flex-default));
+		--flex-22: var(--flex-md-22, var(--flex-default));
+		--flex-23: var(--flex-md-23, var(--flex-default));
+		--flex-24: var(--flex-md-24, var(--flex-default));
 	}
 }
 
 @include mq(lg) {
 
-	.has-columns:not(.has-columns-nested),
-	.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout,
+	// .has-columns:not(.has-columns-nested),
+	// .has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout,
 	.has-columns:not(.has-columns-nested) > .is-column,
 	.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
-		--columns-1: var(--columns-lg-1, var(--columns-lg, var(--columns-default)));
-		--columns-2: var(--columns-lg-2, var(--columns-lg, var(--columns-default)));
-		--columns-3: var(--columns-lg-3, var(--columns-lg, var(--columns-default)));
-		--columns-4: var(--columns-lg-4, var(--columns-lg, var(--columns-default)));
-		--columns-5: var(--columns-lg-5, var(--columns-lg, var(--columns-default)));
-		--columns-6: var(--columns-lg-6, var(--columns-lg, var(--columns-default)));
-		--columns-7: var(--columns-lg-7, var(--columns-lg, var(--columns-default)));
-		--columns-8: var(--columns-lg-8, var(--columns-lg, var(--columns-default)));
-		--columns-9: var(--columns-lg-9, var(--columns-lg, var(--columns-default)));
-		--columns-10: var(--columns-lg-10, var(--columns-lg, var(--columns-default)));
-		--columns-11: var(--columns-lg-11, var(--columns-lg, var(--columns-default)));
-		--columns-12: var(--columns-lg-12, var(--columns-lg, var(--columns-default)));
-		--columns-13: var(--columns-lg-13, var(--columns-lg, var(--columns-default)));
-		--columns-14: var(--columns-lg-14, var(--columns-lg, var(--columns-default)));
-		--columns-15: var(--columns-lg-15, var(--columns-lg, var(--columns-default)));
-		--columns-16: var(--columns-lg-16, var(--columns-lg, var(--columns-default)));
-		--columns-17: var(--columns-lg-17, var(--columns-lg, var(--columns-default)));
-		--columns-18: var(--columns-lg-18, var(--columns-lg, var(--columns-default)));
-		--columns-19: var(--columns-lg-19, var(--columns-lg, var(--columns-default)));
-		--columns-20: var(--columns-lg-20, var(--columns-lg, var(--columns-default)));
-		--columns-21: var(--columns-lg-21, var(--columns-lg, var(--columns-default)));
-		--columns-22: var(--columns-lg-22, var(--columns-lg, var(--columns-default)));
-		--columns-23: var(--columns-lg-23, var(--columns-lg, var(--columns-default)));
-		--columns-24: var(--columns-lg-24, var(--columns-lg, var(--columns-default)));
+		--columns-1: var(--columns-lg-1);
+		--columns-2: var(--columns-lg-2);
+		--columns-3: var(--columns-lg-3);
+		--columns-4: var(--columns-lg-4);
+		--columns-5: var(--columns-lg-5);
+		--columns-6: var(--columns-lg-6);
+		--columns-7: var(--columns-lg-7);
+		--columns-8: var(--columns-lg-8);
+		--columns-9: var(--columns-lg-9);
+		--columns-10: var(--columns-lg-10);
+		--columns-11: var(--columns-lg-11);
+		--columns-12: var(--columns-lg-12);
+		--columns-13: var(--columns-lg-13);
+		--columns-14: var(--columns-lg-14);
+		--columns-15: var(--columns-lg-15);
+		--columns-16: var(--columns-lg-16);
+		--columns-17: var(--columns-lg-17);
+		--columns-18: var(--columns-lg-18);
+		--columns-19: var(--columns-lg-19);
+		--columns-20: var(--columns-lg-20);
+		--columns-21: var(--columns-lg-21);
+		--columns-22: var(--columns-lg-22);
+		--columns-23: var(--columns-lg-23);
+		--columns-24: var(--columns-lg-24);
 
-		--flex-1: var(--flex-lg-1, var(--flex-lg, var(--flex-default)));
-		--flex-2: var(--flex-lg-2, var(--flex-lg, var(--flex-default)));
-		--flex-3: var(--flex-lg-3, var(--flex-lg, var(--flex-default)));
-		--flex-4: var(--flex-lg-4, var(--flex-lg, var(--flex-default)));
-		--flex-5: var(--flex-lg-5, var(--flex-lg, var(--flex-default)));
-		--flex-6: var(--flex-lg-6, var(--flex-lg, var(--flex-default)));
-		--flex-7: var(--flex-lg-7, var(--flex-lg, var(--flex-default)));
-		--flex-8: var(--flex-lg-8, var(--flex-lg, var(--flex-default)));
-		--flex-9: var(--flex-lg-9, var(--flex-lg, var(--flex-default)));
-		--flex-10: var(--flex-lg-10, var(--flex-lg, var(--flex-default)));
-		--flex-11: var(--flex-lg-11, var(--flex-lg, var(--flex-default)));
-		--flex-12: var(--flex-lg-12, var(--flex-lg, var(--flex-default)));
-		--flex-13: var(--flex-lg-13, var(--flex-lg, var(--flex-default)));
-		--flex-14: var(--flex-lg-14, var(--flex-lg, var(--flex-default)));
-		--flex-15: var(--flex-lg-15, var(--flex-lg, var(--flex-default)));
-		--flex-16: var(--flex-lg-16, var(--flex-lg, var(--flex-default)));
-		--flex-17: var(--flex-lg-17, var(--flex-lg, var(--flex-default)));
-		--flex-18: var(--flex-lg-18, var(--flex-lg, var(--flex-default)));
-		--flex-19: var(--flex-lg-19, var(--flex-lg, var(--flex-default)));
-		--flex-20: var(--flex-lg-20, var(--flex-lg, var(--flex-default)));
-		--flex-21: var(--flex-lg-21, var(--flex-lg, var(--flex-default)));
-		--flex-22: var(--flex-lg-22, var(--flex-lg, var(--flex-default)));
-		--flex-23: var(--flex-lg-23, var(--flex-lg, var(--flex-default)));
-		--flex-24: var(--flex-lg-24, var(--flex-lg, var(--flex-default)));
+		--flex-1: var(--flex-lg-1, var(--flex-default));
+		--flex-2: var(--flex-lg-2, var(--flex-default));
+		--flex-3: var(--flex-lg-3, var(--flex-default));
+		--flex-4: var(--flex-lg-4, var(--flex-default));
+		--flex-5: var(--flex-lg-5, var(--flex-default));
+		--flex-6: var(--flex-lg-6, var(--flex-default));
+		--flex-7: var(--flex-lg-7, var(--flex-default));
+		--flex-8: var(--flex-lg-8, var(--flex-default));
+		--flex-9: var(--flex-lg-9, var(--flex-default));
+		--flex-10: var(--flex-lg-10, var(--flex-default));
+		--flex-11: var(--flex-lg-11, var(--flex-default));
+		--flex-12: var(--flex-lg-12, var(--flex-default));
+		--flex-13: var(--flex-lg-13, var(--flex-default));
+		--flex-14: var(--flex-lg-14, var(--flex-default));
+		--flex-15: var(--flex-lg-15, var(--flex-default));
+		--flex-16: var(--flex-lg-16, var(--flex-default));
+		--flex-17: var(--flex-lg-17, var(--flex-default));
+		--flex-18: var(--flex-lg-18, var(--flex-default));
+		--flex-19: var(--flex-lg-19, var(--flex-default));
+		--flex-20: var(--flex-lg-20, var(--flex-default));
+		--flex-21: var(--flex-lg-21, var(--flex-default));
+		--flex-22: var(--flex-lg-22, var(--flex-default));
+		--flex-23: var(--flex-lg-23, var(--flex-default));
+		--flex-24: var(--flex-lg-24, var(--flex-default));
 	}
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(1),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(1) {
+	--columns: var(--columns-1);
+	--flex: var(--flex-1);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(2),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(2) {
+	--columns: var(--columns-2);
+	--flex: var(--flex-2);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(3),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(3) {
+	--columns: var(--columns-3);
+	--flex: var(--flex-3);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(4),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(4) {
+	--columns: var(--columns-4);
+	--flex: var(--flex-4);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(5),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(5) {
+	--columns: var(--columns-5);
+	--flex: var(--flex-5);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(6),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(6) {
+	--columns: var(--columns-6);
+	--flex: var(--flex-6);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(7),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(7) {
+	--columns: var(--columns-7);
+	--flex: var(--flex-7);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(8),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(8) {
+	--columns: var(--columns-8);
+	--flex: var(--flex-8);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(9),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(9) {
+	--columns: var(--columns-9);
+	--flex: var(--flex-9);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(10),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(10) {
+	--columns: var(--columns-10);
+	--flex: var(--flex-10);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(11),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(11) {
+	--columns: var(--columns-11);
+	--flex: var(--flex-11);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(12),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(12) {
+	--columns: var(--columns-12);
+	--flex: var(--flex-12);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(13),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(13) {
+	--columns: var(--columns-13);
+	--flex: var(--flex-13);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(14),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(14) {
+	--columns: var(--columns-14);
+	--flex: var(--flex-14);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(15),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(15) {
+	--columns: var(--columns-15);
+	--flex: var(--flex-15);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(16),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(16) {
+	--columns: var(--columns-16);
+	--flex: var(--flex-16);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(17),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(17) {
+	--columns: var(--columns-17);
+	--flex: var(--flex-17);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(18),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(18) {
+	--columns: var(--columns-18);
+	--flex: var(--flex-18);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(19),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(19) {
+	--columns: var(--columns-19);
+	--flex: var(--flex-19);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(20),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(20) {
+	--columns: var(--columns-20);
+	--flex: var(--flex-20);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(21),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(21) {
+	--columns: var(--columns-21);
+	--flex: var(--flex-21);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(22),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(22) {
+	--columns: var(--columns-22);
+	--flex: var(--flex-22);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(23),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(23) {
+	--columns: var(--columns-23);
+	--flex: var(--flex-23);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(24),
+.has-columns-nested > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block:nth-child(24) {
+	--columns: var(--columns-24);
+	--flex: var(--flex-24);
+}
+
+// This CSS is only here to zero out the --flex-xs-1 values for nested Mai Columns with custom arrangements.
+// Once we can use ACF block api version 2 and pass values via `provides_context` and `uses_context` we'll be able to simplify almost all of the
+// crazy code in this file for columns.
+
+.mai-columns:not([style*="flex-xs-1"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-1: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-2"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-2: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-3"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-3: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-4"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-4: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-5"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-5: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-6"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-6: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-7"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-7: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-8"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-8: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-9"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-9: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-10"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-10: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-11"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-11: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-12"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-12: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-13"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-13: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-14"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-14: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-15"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-15: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-16"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-16: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-17"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-17: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-18"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-18: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-19"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-19: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-20"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-20: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-21"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-21: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-22"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-22: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-23"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-23: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-xs-24"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-xs-24: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-1"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-1: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-2"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-2: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-3"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-3: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-4"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-4: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-5"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-5: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-6"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-6: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-7"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-7: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-8"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-8: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-9"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-9: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-10"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-10: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-11"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-11: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-12"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-12: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-13"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-13: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-14"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-14: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-15"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-15: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-16"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-16: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-17"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-17: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-18"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-18: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-19"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-19: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-20"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-20: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-21"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-21: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-22"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-22: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-23"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-23: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-sm-24"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-sm-24: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-1"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-1: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-2"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-2: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-3"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-3: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-4"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-4: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-5"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-5: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-6"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-6: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-7"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-7: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-8"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-8: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-9"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-9: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-10"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-10: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-11"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-11: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-12"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-12: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-13"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-13: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-14"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-14: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-15"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-15: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-16"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-16: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-17"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-17: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-18"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-18: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-19"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-19: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-20"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-20: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-21"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-21: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-22"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-22: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-23"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-23: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-md-24"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-md-24: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-1"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-1: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-2"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-2: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-3"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-3: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-4"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-4: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-5"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-5: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-6"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-6: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-7"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-7: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-8"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-8: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-9"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-9: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-10"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-10: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-11"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-11: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-12"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-12: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-13"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-13: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-14"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-14: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-15"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-15: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-16"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-16: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-17"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-17: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-18"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-18: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-19"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-19: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-20"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-20: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-21"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-21: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-22"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-22: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-23"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-23: var(--flex-default);
+}
+
+.mai-columns:not([style*="--flex-lg-24"]) > .mai-columns-wrap > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-acf-mai-column {
+	--flex-lg-24: var(--flex-default);
 }
 
 // Mai Accordion.

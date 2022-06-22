@@ -210,7 +210,7 @@ function mai_get_flex_align( $value ) {
 			$return = 'space-between';
 		break;
 		default:
-			$return = 'unset';
+			$return = 'initial'; // Needs initial for nested columns.
 	}
 
 	return $return;
