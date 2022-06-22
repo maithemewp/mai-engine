@@ -169,9 +169,9 @@ class Mai_Columns {
 			foreach ( $elements as $columns ) {
 				$index++;
 
-				// $attributes['style'] .= mai_columns_get_columns( $break, $columns );
+				$attributes['style'] .= mai_columns_get_columns( $break, $columns );
 				$attributes['style'] .= mai_columns_get_columns( sprintf( '%s-%s', $break, $index ), $columns );
-				// $attributes['style'] .= mai_columns_get_flex( $break, $columns );
+				$attributes['style'] .= mai_columns_get_flex( $break, $columns );
 				$attributes['style'] .= mai_columns_get_flex( sprintf( '%s-%s', $break, $index ), $columns );
 			}
 		}
