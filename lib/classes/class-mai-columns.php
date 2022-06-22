@@ -169,9 +169,9 @@ class Mai_Columns {
 			foreach ( $elements as $columns ) {
 				$index++;
 
-				$attributes['style'] .= mai_columns_get_columns( $break, $columns );
+				// $attributes['style'] .= mai_columns_get_columns( $break, $columns );
 				$attributes['style'] .= mai_columns_get_columns( sprintf( '%s-%s', $break, $index ), $columns );
-				$attributes['style'] .= mai_columns_get_flex( $break, $columns );
+				// $attributes['style'] .= mai_columns_get_flex( $break, $columns );
 				$attributes['style'] .= mai_columns_get_flex( sprintf( '%s-%s', $break, $index ), $columns );
 			}
 		}
@@ -186,7 +186,7 @@ class Mai_Columns {
 		$attributes['style'] .= sprintf( '--column-gap:%s;', $column_gap  );
 		$attributes['style'] .= sprintf( '--row-gap:%s;', $row_gap );
 		$attributes['style'] .= sprintf( '--align-columns:%s;', ! empty( $this->args['align_columns'] ) ? mai_get_flex_align( $this->args['align_columns'] ) : 'unset' ); // If wide/full then unset will be used.
-		$attributes['style'] .= sprintf( '--align-columns-vertical:%s;', ! empty( $this->args['align_columns_vertical'] ) ? mai_get_flex_align( $this->args['align_columns_vertical'] ) : 'unset' );
+		$attributes['style'] .= sprintf( '--align-columns-vertical:%s;', ! empty( $this->args['align_columns_vertical'] ) ? mai_get_flex_align( $this->args['align_columns_vertical'] ) : 'initial' ); // Needs initial for nested columns.
 
 		return $attributes;
 	}

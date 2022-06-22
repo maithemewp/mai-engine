@@ -443,8 +443,8 @@ input[type="submit"],
 	display: flex;
 	flex-wrap: wrap;
 	gap: var(--row-gap) var(--column-gap);
-	align-items: var(--align-columns-vertical, unset);
-	justify-content: var(--align-columns, unset);
+	align-items: var(--align-columns-vertical, initial); // Needs initial for nested columns.
+	justify-content: var(--align-columns, initial); // Needs initial for nested columns.
 }
 
 // Column.
