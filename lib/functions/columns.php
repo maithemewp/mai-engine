@@ -32,8 +32,8 @@ function mai_get_columns_atts( $atts, $args, $nested = false ) {
 	// Columns class.
 	$atts['class'] = mai_add_classes( 'has-columns', $atts['class'] );
 
-	// Get columns arrangement.
-	$columns = mai_get_breakpoint_columns( $args );
+	// Get columns arrangement. Reverse order so it's mobile first.
+	$columns = array_reverse( mai_get_breakpoint_columns( $args ) );
 
 	// If preview.
 	$preview = isset( $args['preview'] ) && $args['preview'];
