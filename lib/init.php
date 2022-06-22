@@ -506,3 +506,15 @@ function mai_load_files() {
 		});
 	}
 }
+
+
+/**
+ * Removes innerblocks wrap from ACF.
+ *
+ * @since TBD
+ *
+ * @return bool
+ */
+add_action( 'after_theme_setup', function() {
+	add_filter( 'acf/blocks/wrap_frontend_innerblocks', '__return_false', 99 );
+});
