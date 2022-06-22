@@ -79,7 +79,7 @@ function mai_register_columns_blocks() {
  *
  * @return void
  */
-function mai_do_columns_block( $attributes, $content = '', $is_preview = false, $post_id = 0, $wp_block, $context ) {
+function mai_do_columns_block( $attributes, $content = '', $is_preview = false, $post_id = 0 ) {
 	static $instance = 1;
 
 	$args                                        = mai_columns_get_args( $instance );
@@ -112,7 +112,7 @@ function mai_do_columns_block( $attributes, $content = '', $is_preview = false, 
  *
  * @return void
  */
-function mai_do_column_block( $attributes, $content = '', $is_preview = false, $post_id = 0, $wp_block, $context ) {
+function mai_do_column_block( $attributes, $content = '', $is_preview = false, $post_id = 0 ) {
 	$args = [
 		'preview'               => $is_preview,
 		'class'                 => isset( $attributes['className'] ) ? $attributes['className']: '',
