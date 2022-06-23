@@ -29,7 +29,10 @@ add_filter( 'genesis_attr_nav-header-right', 'mai_add_header_nav_attributes' );
 function mai_add_header_nav_attributes( $atts ) {
 	$atts['id']       = $atts['class'];
 	$atts['class']    = 'nav-header ' . $atts['class'];
-	$atts['itemtype'] = 'https://schema.org/SiteNavigationElement';
+
+	if ( ! apply_filters( 'genesis_disable_microdata', false ) ) {
+		$atts['itemtype'] = 'https://schema.org/SiteNavigationElement';
+	}
 
 	return $atts;
 }

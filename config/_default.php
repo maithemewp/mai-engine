@@ -187,8 +187,9 @@ return [
 			'localize' => [
 				'name' => 'maiMenuVars',
 				'data' => [
-					'ariaLabel'     => __( 'Mobile Menu', 'mai-engine' ),
-					'subMenuToggle' => __( 'Sub Menu', 'mai-engine' ),
+					'ariaLabel'        => __( 'Mobile Menu', 'mai-engine' ),
+					'subMenuToggle'    => __( 'Sub Menu', 'mai-engine' ),
+					'disableMicroData' => apply_filters( 'genesis_disable_microdata', false ),
 				],
 			],
 		],

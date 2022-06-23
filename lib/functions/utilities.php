@@ -1064,8 +1064,10 @@ function mai_get_menu( $menu, $args = [] ) {
 			$atts['style'] .= sprintf( '--menu-font-size:%s;', $size );
 		}
 
-		$atts['itemscope'] = true; // Requird by https://validator.w3.org when itemtype is used.
-		$atts['itemtype']  = 'https://schema.org/SiteNavigationElement';
+		if ( ! apply_filters( 'genesis_disable_microdata', false ) ) {
+			$atts['itemscope'] = true; // Requird by https://validator.w3.org when itemtype is used.
+			$atts['itemtype']  = 'https://schema.org/SiteNavigationElement';
+		}
 
 		$html = genesis_markup(
 			[
