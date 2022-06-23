@@ -99,7 +99,9 @@ class Mai_Column {
 			$attributes['class']  = mai_add_classes( 'has-background', $attributes['class'] );
 			$attributes['style'] .= sprintf( 'background:%s;', mai_get_color_css( $this->args['background'] ) );
 
-			if ( ! mai_is_light_color( $this->args['background'] ) ) {
+			if ( mai_is_light_color( $this->args['background'] ) ) {
+				$attributes['class'] = mai_add_classes( 'has-light-background', $attributes['class'] );
+			} else {
 				$attributes['class'] = mai_add_classes( 'has-dark-background', $attributes['class'] );
 			}
 		}
