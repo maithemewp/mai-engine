@@ -238,16 +238,19 @@ function mai_add_title_area_custom_properties( $css ) {
  *
  * @since 2.0.0
  * @since 2.21.0 Full refactor.
+ * @since TBD Fixes missing additional fonts.
  *
  * @param array $css Kirki CSS output array.
  *
  * @return array
  */
 function mai_add_fonts_custom_properties( $css ) {
-	$elements = [
-		'body'    => mai_get_font_weights( 'body' ),
-		'heading' => mai_get_font_weights( 'heading' ),
-	];
+	$elements = [];
+	$fonts    = array_keys( mai_get_global_styles( 'fonts' ) );
+
+	foreach ( $fonts as $element ) {
+		$elements[ $element ] = mai_get_font_weights( $element );
+	}
 
 	foreach ( $elements as $element => $weights ) {
 		$family   = mai_get_font_family( $element );
