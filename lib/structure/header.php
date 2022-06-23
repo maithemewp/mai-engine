@@ -281,15 +281,18 @@ function mai_do_header_content() {
  *
  * @since 0.1.0
  *
- * @param array $attributes Header attributes.
+ * @param array $atts Header attributes.
  *
  * @return mixed
  */
-function mai_nav_header_attributes( $attributes ) {
-	$attributes['class'] .= ' nav-header';
-	$atts['itemtype']     = 'https://schema.org/SiteNavigationElement';
+function mai_nav_header_attributes( $atts ) {
+	$atts['class'] .= ' nav-header';
 
-	return $attributes;
+	if ( ! apply_filters( 'genesis_disable_microdata', false ) ) {
+		$atts['itemtype'] = 'https://schema.org/SiteNavigationElement';
+	}
+
+	return $atts;
 }
 
 add_action( 'genesis_before', 'mai_maybe_hide_site_header' );
