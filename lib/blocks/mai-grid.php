@@ -27,6 +27,9 @@ add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_parent_in','ma
 add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_include', 'mai_acf_get_terms', 10, 1 );
 add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_exclude', 'mai_acf_get_terms', 10, 1 );
 add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_parent', 'mai_acf_get_term_parents', 10, 1 );
+add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_include', 'mai_acf_get_terms_by_id', 10, 3 );
+add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_exclude', 'mai_acf_get_terms_by_id', 10, 3 );
+add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_parent', 'mai_acf_get_terms_by_id', 10, 3 );
 
 add_filter( 'acf/prepare_field/key=mai_grid_block_column_gap', 'mai_acf_load_gap', 10, 1 );
 add_filter( 'acf/prepare_field/key=mai_grid_block_row_gap', 'mai_acf_load_gap', 10, 1 );
@@ -446,7 +449,7 @@ function mai_acf_get_post_parents( $args ) {
 }
 
 /**
- * Allow searching for post objects by ID.
+ * Allow searching for posts by ID.
  *
  * @since 2.15.0
  *
@@ -467,7 +470,7 @@ function mai_acf_get_posts_by_id( $args, $field, $post_id ) {
 	}
 
 	// Set the post ID in the query.
-	$args['post__in'] = array( $query );
+	$args['post__in'] = [ $query ];
 
 	// Unset the actual search param.
 	unset( $args['s'] );
@@ -626,6 +629,36 @@ function mai_get_term_choices_from_taxonomy( $taxonomy = '' ) {
 	}
 
 	return $choices;
+}
+
+/**
+ * Allow searching for terms by ID.
+ *
+ * @since TBD
+ *
+ * @link https://www.powderkegwebdesign.com/fantastic-way-allow-searching-id-advanced-custom-fields-objects/
+ *
+ * @return array
+ */
+function mai_acf_get_terms_by_id( $args, $field, $post_id ) {
+	$query = ! empty( $args['search'] ) ? $args['search'] : false;
+
+	if ( ! $query ) {
+		return $args;
+	}
+
+	// Bail if not a numeric query.
+ 	if ( ! is_numeric( $query ) ) {
+		return $args;
+	}
+
+	// Set the term ID in the query.
+	$args['include'] = [ $query ];
+
+	// Unset the actual search param.
+	unset( $args['search'] );
+
+	return $args;
 }
 
 /**
