@@ -1129,7 +1129,6 @@ class Mai_Entry {
 					// Archives. So many people wanted (expected?) the full content to show here.
 					if ( 'archive' === $this->context ) {
 						ob_start();
-						// the_content();
 						the_content( null, true );
 						$content = ob_get_clean();
 					}
