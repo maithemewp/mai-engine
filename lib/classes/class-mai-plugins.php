@@ -175,7 +175,8 @@ class Mai_Plugins {
 					);
 
 					$plugin_slug  = sprintf( '%s/%s.php', $slug, $slug );
-					$data         = get_plugin_data( WP_CONTENT_DIR . '/plugins/' . $plugin_slug, false, false );
+					$file         = WP_CONTENT_DIR . '/plugins/' . $plugin_slug;
+					$data         = file_exists( WP_CONTENT_DIR . '/plugins/' . $plugin_slug ) ? get_plugin_data( $file, false, false ) : [];
 					$version      = $data && isset( $data['Version'] ) ? $data['Version'] : '';
 					$version      = $version ? sprintf( '<span class="mai-plugin-version">%s</span>', $version ) : '';
 					$is_installed = $this->is_installed( $plugin_slug );
