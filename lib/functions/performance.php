@@ -103,6 +103,25 @@ function mai_remove_recent_comments_style() {
 	remove_action( 'wp_head', [ $wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style' ] );
 }
 
+add_action( 'wp_print_scripts', 'mai_dequeue_comment_reply', 99 );
+/**
+ * Dequeue comment reply script if there are no comments to reply to.
+ * This should be dealt with in Genesis core IMO ¯\_(ツ)_/¯
+ *
+ * @link https://github.com/studiopress/genesis/issues/2684
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_dequeue_comment_reply() {
+	if ( ! ( is_singular() && get_option( 'thread_comments' ) && comments_open() && (int) get_comments_number() <= 0 ) ) {
+		return;
+	}
+
+	wp_dequeue_script( 'comment-reply' );
+}
+
 // add_filter( 'wp_calculate_image_srcset_meta', 'mai_limit_max_srcset_image', 10, 4 );
 /**
  * Limits srcset from using an image larger than the actual src image.
