@@ -97,6 +97,11 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'no-page-header';
 	}
 
+	ray( mai_has_sticky_header_enabled(), mai_get_option( 'site-header-sticky', current_theme_supports( 'sticky-header' ) ) );
+	// ray( current_theme_supports( 'sticky-header' ) );
+	// ray( mai_get_option( 'site-header-sticky', 'test' ) );
+	// ray( mai_has_sticky_header_enabled() );
+
 	// Add sticky header class.
 	if ( mai_has_sticky_header_enabled() && ! mai_is_element_hidden( 'sticky_header' ) ) {
 		$classes[] = 'has-sticky-header';
