@@ -175,6 +175,9 @@ class Mai_Plugins {
 					);
 
 					$plugin_slug  = sprintf( '%s/%s.php', $slug, $slug );
+					$data         = get_plugin_data( WP_CONTENT_DIR . '/plugins/' . $plugin_slug, false, false );
+					$version      = $data && isset( $data['Version'] ) ? $data['Version'] : '';
+					$version      = $version ? sprintf( '<span class="mai-plugin-version">%s</span>', $version ) : '';
 					$is_installed = $this->is_installed( $plugin_slug );
 					$is_active    = $this->is_active( $plugin_slug );
 					$class        = 'mai-plugin';
@@ -182,7 +185,7 @@ class Mai_Plugins {
 
 					printf( '<div class="%s">', $class );
 
-						printf( '<h2 class="mai-plugin-name">%s</h2>', $plugin['name'] );
+						printf( '<h2 class="mai-plugin-name">%s</h2>', $plugin['name'] . $version );
 						printf( '<p class="mai-plugin-desc">%s</p>', $plugin['desc'] );
 						echo '<p class="mai-plugin-actions">';
 
