@@ -86,7 +86,6 @@ function mai_add_kirki_css( $css ) {
 		return $css;
 	}
 
-	$has_run   = true;
 	$transient = 'mai_dynamic_css';
 	$admin     = is_admin();
 	$ajax      = wp_doing_ajax();
@@ -111,6 +110,8 @@ function mai_add_kirki_css( $css ) {
 	if ( ! ( $admin || $ajax || $preview ) ) {
 		set_transient( $transient, $css, HOUR_IN_SECONDS );
 	}
+
+	$has_run = true;
 
 	return $css;
 }
