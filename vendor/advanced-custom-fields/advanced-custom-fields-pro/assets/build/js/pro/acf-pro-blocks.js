@@ -14,9 +14,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
 
@@ -587,8 +587,11 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
 
 
   function ACFInnerBlocks(props) {
+    const {
+      className = 'acf-innerblocks-container'
+    } = props;
     const innerBlockProps = useInnerBlocksProps({
-      className: 'acf-innerblocks-container'
+      className: className
     }, props);
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", innerBlockProps, innerBlockProps.children);
   }
@@ -1166,7 +1169,7 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
         context,
         clientId
       } = this.props;
-      const hash = createBlockAttributesHash(attributes); // Try preloaded data first.
+      const hash = createBlockAttributesHash(attributes, context); // Try preloaded data first.
 
       const preloaded = this.maybePreload(hash, clientId, true);
 
@@ -1293,9 +1296,10 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
       } = this.props; // Remember attributes used to fetch HTML.
 
       this.setState({
-        prevAttributes: attributes
+        prevAttributes: attributes,
+        prevContext: context
       });
-      const hash = createBlockAttributesHash(attributes); // Try preloaded data first.
+      const hash = createBlockAttributesHash(attributes, context); // Try preloaded data first.
 
       let preloaded = this.maybePreload(hash, clientId, false);
 
@@ -1352,7 +1356,7 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
       const nextAttributes = nextProps.attributes;
       const thisAttributes = this.props.attributes; // Update preview if block data has changed.
 
-      if (!compareObjects(nextAttributes, thisAttributes)) {
+      if (!compareObjects(nextAttributes, thisAttributes) || !compareObjects(nextProps.context, this.props.context)) {
         let delay = 0; // Delay fetch when editing className or anchor to simulate consistent logic to custom fields.
 
         if (nextAttributes.className !== thisAttributes.className) {
@@ -1365,6 +1369,7 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
 
         this.fetch({
           attributes: nextAttributes,
+          context: nextProps.context,
           delay
         });
       }
@@ -1375,7 +1380,7 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
     componentDidRemount() {
       super.componentDidRemount(); // Update preview if data has changed since last render (changing from "edit" to "preview").
 
-      if (!compareObjects(this.state.prevAttributes, this.props.attributes)) {
+      if (!compareObjects(this.state.prevAttributes, this.props.attributes) || !compareObjects(this.state.prevContext, this.props.context)) {
         //console.log('componentDidRemount', this.id);
         this.fetch();
       }
@@ -1632,11 +1637,13 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
    * @since 6.0
    *
    * @param object attributes The block type attributes.
+   * @param object context The current block context object.
    * @return string
    */
 
 
-  function createBlockAttributesHash(attributes) {
+  function createBlockAttributesHash(attributes, context) {
+    attributes['_acf_context'] = context;
     return md5(JSON.stringify(Object.keys(attributes).sort().reduce((acc, currValue) => {
       acc[currValue] = attributes[currValue];
       return acc;

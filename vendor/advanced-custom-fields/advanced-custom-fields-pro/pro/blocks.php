@@ -79,11 +79,13 @@ function acf_handle_json_block_registration( $settings, $metadata ) {
 	);
 
 	// Add default ACF 'uses_context' settings.
-	$settings['uses_context'] = wp_parse_args(
-		$settings['uses_context'],
-		array(
-			'postId',
-			'postType',
+	$settings['uses_context'] = array_unique(
+		array_merge(
+			$settings['uses_context'],
+			array(
+				'postId',
+				'postType',
+			)
 		)
 	);
 
@@ -330,6 +332,16 @@ function acf_get_block_type_default_attributes( $block_type ) {
 			'default' => '',
 		);
 	}
+
+	// For each of ACF's block attributes, check if the user's block attributes contains a default value we should use.
+	if ( isset( $block_type['attributes'] ) && is_array( $block_type['attributes'] ) ) {
+		foreach ( array_keys( $attributes ) as $key ) {
+			if ( isset( $block_type['attributes'][ $key ] ) && is_array( $block_type['attributes'][ $key ] ) && isset( $block_type['attributes'][ $key ]['default'] ) ) {
+				$attributes[ $key ]['default'] = $block_type['attributes'][ $key ]['default'];
+			}
+		}
+	}
+
 	return $attributes;
 }
 
@@ -529,20 +541,20 @@ function acf_rendered_block( $attributes, $content = '', $is_preview = false, $p
 	}
 
 	// Check if we need to generate a block ID.
-	$attributes['id'] = acf_get_block_id( $attributes );
+	$attributes['id'] = acf_get_block_id( $attributes, $context );
 
-	// Check if we've already got a cache of this block ID and return it to save rendering.
-	// if ( $cached_block = acf_get_store( 'block-cache' )->get( $attributes['id'] ) ) {
-	// 	if ( $form ) {
-	// 		if ( $cached_block['form'] ) {
-	// 			return $cached_block['html'];
-	// 		}
-	// 	} else {
-	// 		if ( ! $cached_block['form'] ) {
-	// 			return $cached_block['html'];
-	// 		}
-	// 	}
-	// }
+	// Check if we've already got a cache of this block ID and return it to save rendering if we're in the backend.
+	if ( $is_preview && $cached_block = acf_get_store( 'block-cache' )->get( $attributes['id'] ) ) {
+		if ( $form ) {
+			if ( $cached_block['form'] ) {
+				return $cached_block['html'];
+			}
+		} else {
+			if ( ! $cached_block['form'] ) {
+				return $cached_block['html'];
+			}
+		}
+	}
 
 	ob_start();
 
@@ -573,20 +585,28 @@ function acf_rendered_block( $attributes, $content = '', $is_preview = false, $p
 		$content = str_replace( '$', '\$', $content );
 
 		// Wrap content in our acf-inner-container wrapper if necessary.
-		if ( $wp_block && $wp_block->block_type->acf_block_version > 1 && apply_filters( 'acf/blocks/wrap_frontend_innerblocks', true ) ) {
-			$content = '<div class="acf-innerblocks-container">' . $content . '</div>';
+		if ( $wp_block && $wp_block->block_type->acf_block_version > 1 && apply_filters( 'acf/blocks/wrap_frontend_innerblocks', true, $attributes['name'] ) ) {
+			// Check for a class (or className) provided in the template to become the InnerBlocks wrapper class.
+			$matches = array();
+			if ( preg_match( '/<InnerBlocks(?:[\S\s]+?)(?:(?:className)|(?:class))="([\S\s]+?)"(?:[\S\s]*?)\/>/', $html, $matches ) ) {
+				$class = isset( $matches[1] ) ? $matches[1] : 'acf-innerblocks-container';
+			} else {
+				$class = 'acf-innerblocks-container';
+			}
+			$content = '<div class="' . $class . '">' . $content . '</div>';
 		}
 		$html = preg_replace( '/<InnerBlocks([\S\s]*?)\/>/', $content, $html );
+	} else {
+		// Store in cache for preloading if we're in the backend.
+		acf_get_store( 'block-cache' )->set(
+			$attributes['id'],
+			array(
+				'form' => $form,
+				'html' => $html,
+			)
+		);
 	}
 
-	// Store in cache for preloading.
-	acf_get_store( 'block-cache' )->set(
-		$attributes['id'],
-		array(
-			'form' => $form,
-			'html' => $html,
-		)
-	);
 	return $html;
 }
 
@@ -983,9 +1003,11 @@ function acf_parse_save_blocks_callback( $matches ) {
  * @since 6.0.0
  *
  * @param array $attributes A block attributes array.
+ * @param array $context The block context array, defaults to an empty array.
  * @return string A block ID.
  */
-function acf_get_block_id( $attributes ) {
+function acf_get_block_id( $attributes, $context = array() ) {
+	$attributes['_acf_context'] = $context;
 	if ( empty( $attributes['id'] ) ) {
 		unset( $attributes['id'] );
 
@@ -994,6 +1016,11 @@ function acf_get_block_id( $attributes ) {
 			if ( '' === $value ) {
 				unset( $attributes[ $key ] );
 			}
+		}
+
+		// Check if data is empty and remove it if so to match JS hash building.
+		if ( isset( $attributes['data'] ) && empty( $attributes['data'] ) ) {
+			unset( $attributes['data'] );
 		}
 
 		ksort( $attributes );

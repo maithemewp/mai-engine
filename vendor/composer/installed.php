@@ -5,14 +5,14 @@
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'e0579d567f54829137aaa30bfee6052ef6c47094',
+        'reference' => '7798b68c69980fc12ebcaa9507dba9714f4feac8',
         'name' => 'maithemewp/mai-engine',
         'dev' => false,
     ),
     'versions' => array(
         'advanced-custom-fields/advanced-custom-fields-pro' => array(
-            'pretty_version' => '6.0.0-alpha2',
-            'version' => '6.0.0.0-alpha2',
+            'pretty_version' => '6.0.0-alpha3',
+            'version' => '6.0.0.0-alpha3',
             'type' => 'library',
             'install_path' => __DIR__ . '/../advanced-custom-fields/advanced-custom-fields-pro',
             'aliases' => array(),
@@ -349,7 +349,7 @@
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'e0579d567f54829137aaa30bfee6052ef6c47094',
+            'reference' => '7798b68c69980fc12ebcaa9507dba9714f4feac8',
             'dev_requirement' => false,
         ),
         'phpoption/phpoption' => array(

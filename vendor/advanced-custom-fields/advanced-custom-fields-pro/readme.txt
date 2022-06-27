@@ -4,7 +4,7 @@ Tags: acf, fields, custom fields, meta, repeater
 Requires at least: 4.7
 Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 6.0.0-alpha2
+Stable tag: 6.0.0-alpha3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -77,6 +77,17 @@ From your WordPress dashboard
 
 
 == Changelog ==
+
+= 6.0.0-alpha3 =
+*Release Date 27th June 2022
+
+* Enhancement - This build continues the preview of upcoming block changes. View the [full release notes on GitHub](https://github.com/AdvancedCustomFields/acf/issues/654)
+* Enhancement - Changes to a block context now trigger a re-render in the block editor
+* Enhancement - The block’s name is now passed to the `acf/blocks/wrap_frontend_innerblocks` filter as a second parameter to enable per block type filtering
+* Enhancement - Block template `<InnerBlocks>` tags now support a class attribute which will be used as the wrapper’s class name
+* Enhancement - User default values for ACF Blocks default attributes are now correctly applied
+* Fix - Block rendering cache now excludes frontend output to solve issues with different InnerBlock contents in duplicated parent blocks
+* Fix - Blocks which contain no fields now preload correctly
 
 = 6.0.0-alpha2 =
 *Release Date 9th June 2022*
