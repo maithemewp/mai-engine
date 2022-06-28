@@ -56,11 +56,11 @@ function mai_get_columns_atts( $atts, $args, $nested = false ) {
 	// Separate loops so it's more readable in the markup.
 	else {
 		foreach ( $columns as $break => $value ) {
-			for ( $i = 1; $i < 24; $i++ ) {
+			for ( $i = 1; $i <= 24; $i++ ) {
 				$atts['style'] .= mai_columns_get_columns( sprintf( '%s-%s', $break, $i ), $value );
 			}
 
-			for ( $i = 1; $i < 24; $i++ ) {
+			for ( $i = 1; $i <= 24; $i++ ) {
 				if ( in_array( $value, [ 'auto', 'fill', 'full' ] ) ) {
 					$atts['style'] .= mai_columns_get_flex( sprintf( '%s-%s', $break, $i ), $value );
 				}
