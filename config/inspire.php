@@ -12,7 +12,7 @@
 return [
 	'demos' => [
 		// 'home-garden'   => 35,
-		// 'health-beauty' => 36,
+		'health-beauty' => 'https://demo.bizbudding.com/inspire-health-beauty/wp-content/uploads/sites/36/mai-engine/',
 		// 'travel'        => 37,
 	],
 	'global-styles' => [

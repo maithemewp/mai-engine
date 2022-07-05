@@ -11,9 +11,9 @@
 
 return [
 	'demos'         => [
-		// 'creator'     => 75,
-		// 'author'      => 76,
-		// 'photography' => 77,
+		'creator'     => 'https://demo.bizbudding.com/pure-creator/wp-content/uploads/sites/75/mai-engine/',
+		'author'      => 'https://demo.bizbudding.com/pure-author/wp-content/uploads/sites/76/mai-engine/',
+		'photography' => 'https://demo.bizbudding.com/pure-photography/wp-content/uploads/sites/77/mai-engine/',
 	],
 	'global-styles' => [
 		'colors' => [
