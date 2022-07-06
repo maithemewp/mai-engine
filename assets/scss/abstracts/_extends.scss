@@ -95,7 +95,7 @@
 	}
 
 	@if ("outline" == $style) {
-		--button-max-height: calc(100% - 4px); // Makes height same as button with no border.
+		// --button-max-height: calc(100% - 4px); // Makes height same as button with no border. Removed via https://github.com/maithemewp/mai-engine/issues/602.
 		--button-color: var(--button-outline-color, var(--color-primary));
 		--button-color-hover: var(--button-outline-color-hover, var(--color-white));
 		--button-background: var(--button-outline-background, transparent);
