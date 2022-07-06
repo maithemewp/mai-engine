@@ -12,15 +12,6 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-/**
- * Remove inline duotone svgs.
- *
- * @since TBD
- *
- * @return void
- */
-remove_action( 'wp_body_open', 'wp_global_styles_render_svg_filters' );
-
 add_action( 'init', 'mai_disable_emojis' );
 /**
  * Disable the emoji's
@@ -30,7 +21,11 @@ add_action( 'init', 'mai_disable_emojis' );
  * @return void
  */
 function mai_disable_emojis() {
-	if ( ! mai_get_option( 'disable-emojis', true ) ) {
+	$settings    = mai_get_config( 'settings' );
+	$performance = isset( $settings['performance'] ) ? $settings['performance'] : [];
+	$default     = isset( $performance['disable-emojis'] ) ? $performance['disable-emojis'] : true;
+
+	if ( ! mai_get_option( 'disable-emojis', $default ) ) {
 		return;
 	}
 
@@ -80,6 +75,33 @@ function mai_disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
 	return $urls;
 }
 
+/**
+ * Remove inline duotone svgs.
+ *
+ * @since TBD
+ *
+ * @link https://github.com/WordPress/gutenberg/issues/38299
+ * @link https://github.com/WordPress/gutenberg/issues/36834
+ *
+ * @return void
+ */
+add_action( 'init', 'mai_remove_wp_global_styles' );
+function mai_remove_wp_global_styles() {
+	$settings    = mai_get_config( 'settings' );
+	$performance = isset( $settings['performance'] ) ? $settings['performance'] : [];
+	$default     = isset( $performance['remove-global-styles'] ) ? $performance['remove-global-styles'] : true;
+
+	if ( ! mai_get_option( 'remove-global-styles', $default ) ) {
+		return;
+	}
+
+	// Global styles.
+	remove_action( 'wp_enqueue_scripts', 'wp_enqueue_global_styles' );
+	remove_action( 'wp_footer', 'wp_enqueue_global_styles', 1 );
+	// INline SVGs.
+	remove_action( 'wp_body_open', 'wp_global_styles_render_svg_filters' );
+}
+
 add_action( 'widgets_init', 'mai_remove_recent_comments_style' );
 /**
  * Removes recent comments widget CSS.
@@ -89,7 +111,11 @@ add_action( 'widgets_init', 'mai_remove_recent_comments_style' );
  * @return void
  */
 function mai_remove_recent_comments_style() {
-	if ( ! mai_get_option( 'remove-recent-comments-css', true ) ) {
+	$settings    = mai_get_config( 'settings' );
+	$performance = isset( $settings['performance'] ) ? $settings['performance'] : [];
+	$default     = isset( $performance['remove-recent-comments-css'] ) ? $performance['remove-recent-comments-css'] : true;
+
+	if ( ! mai_get_option( 'remove-recent-comments-css', $default ) ) {
 		return;
 	}
 
