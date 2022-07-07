@@ -16,10 +16,8 @@
 	}
 }
 
-.wp-block-button {
-	align-self: normal; // See https://github.com/maithemewp/mai-engine/issues/602.
-}
-
-.wp-block-button__link {
-	height: 100%; // See https://github.com/maithemewp/mai-engine/issues/602.
+.wp-block-buttons[class*="wp-container-"] {
+	// To allow outline buttons to be the same height.
+	// See https://github.com/maithemewp/mai-engine/issues/602.
+	align-items: normal;
 }
