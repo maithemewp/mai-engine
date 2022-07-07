@@ -77,13 +77,30 @@ body {
 	margin-left: 0;
 }
 
-[data-content-align="start"] {
-	margin-inline-start: 0;
-}
+// [data-content-align="start"] {
+// 	margin-inline-start: 0;
+// }
 
-[data-content-align="end"] {
-	margin-inline-end: 0;
-}
+// [data-content-align="end"] {
+// 	margin-inline-end: 0;
+// }
+
+// [data-align] > [data-type="core/paragraph"] {
+// 	float: none;
+// }
+
+// [data-align="left"] > [data-type="core/paragraph"] {
+// 	margin-right: auto;
+// }
+
+// [data-align="right"] > [data-type="core/paragraph"] {
+// 	margin-left: auto;
+// }
+
+// [data-align="center"] > [data-type="core/paragraph"] {
+// 	margin-right: auto;
+// 	margin-left: auto;
+// }
 
 [data-type="core/pullquote"][data-align="left"],
 [data-type="core/pullquote"][data-align="right"] {
