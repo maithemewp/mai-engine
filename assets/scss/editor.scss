@@ -53,6 +53,8 @@ body {
 .has-dark-background {
 	color: var(--color-white);
 	--heading-color: var(--color-white);
+	--entry-title-link-color: var(--color-white); // For Mai Post Grid in side has-dark-background.
+	--entry-title-link-color-hover: brightness(0.8); // For Mai Post Grid in side has-dark-background.
 }
 
 .has-light-background {
