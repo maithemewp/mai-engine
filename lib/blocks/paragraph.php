@@ -62,8 +62,55 @@ function mai_render_paragraph_block( $block_content, $block ) {
 		return $block_content;
 	}
 
-	if ( 'core/paragraph' === $block['blockName'] && 9 === strlen( $block_content ) ) {
-		$block_content = '';
+	if ( 'core/paragraph' !== $block['blockName'] ) {
+		return $block_content;
+	}
+
+	if ( 9 === strlen( $block_content ) ) {
+		return '';
+	}
+
+	if ( ! ( isset( $block['attrs']['contentAlign'] ) && $block['attrs']['contentAlign'] ) ) {
+		return $block_content;
+	}
+
+	// Bail if center, this is default layout for backwards compatibility.
+	if ( 'center' === $block['attrs']['contentAlign'] ) {
+		return $block_content;
+	}
+
+	$align = $block['attrs']['contentAlign'];
+
+	switch ( $align ) {
+		case 'start':
+			$side = is_rtl() ? 'right' : 'left';
+			break;
+		case 'end':
+			$side = is_rtl() ? 'left' : 'right';
+		break;
+		default:
+			$side = '';
+	}
+
+	if ( ! $side ) {
+		return $block_content;
+	}
+
+	$dom = mai_get_dom_document( $block_content );
+
+	/**
+	 * The group block container.
+	 *
+	 * @var DOMElement $first_block The group block container.
+	 */
+	$first_block = mai_get_dom_first_child( $dom );
+
+	if ( $first_block ) {
+		$classes = $first_block->getAttribute( 'class' );
+		$classes = mai_add_classes( sprintf( 'has-no-margin-%s', $side ), $classes );
+		$first_block->setAttribute( 'class', $classes );
+
+		$block_content = $dom->saveHTML();
 	}
 
 	return $block_content;

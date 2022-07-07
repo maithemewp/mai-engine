@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.22.0 (TBD)
+
 ## 2.21.3 (4/27/22)
 * Added: Basic support for bbPress.
 * Added: Show Mai Engine version number on Mai Theme > Plugins page in the Dashboard.

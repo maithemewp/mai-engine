@@ -167,6 +167,16 @@ body {
 	}
 }
 
+p[data-content-align="start"],
+.wp-block-heading[data-content-align="start"] {
+	margin-left: 0;
+}
+
+p[data-content-align="end"],
+.wp-block-heading[data-content-align="end"] {
+	margin-right: 0;
+}
+
 /**
  * This is padding on enableLayoutSettingsBlocks.
  *
