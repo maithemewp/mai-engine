@@ -98,7 +98,7 @@ function mai_remove_wp_global_styles() {
 	// Global styles.
 	remove_action( 'wp_enqueue_scripts', 'wp_enqueue_global_styles' );
 	remove_action( 'wp_footer', 'wp_enqueue_global_styles', 1 );
-	// INline SVGs.
+	// Inline SVGs.
 	remove_action( 'wp_body_open', 'wp_global_styles_render_svg_filters' );
 }
 
