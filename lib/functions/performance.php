@@ -100,6 +100,10 @@ function mai_remove_wp_global_styles() {
 	remove_action( 'wp_footer', 'wp_enqueue_global_styles', 1 );
 	// Inline SVGs.
 	remove_action( 'wp_body_open', 'wp_global_styles_render_svg_filters' );
+
+	// Editor.
+	remove_action( 'enqueue_block_editor_assets', 'wp_enqueue_global_styles_css_custom_properties' );
+	remove_action( 'in_admin_header', 'wp_global_styles_render_svg_filters' );
 }
 
 add_action( 'widgets_init', 'mai_remove_recent_comments_style' );
