@@ -11,7 +11,7 @@
 
 return [
 	'demos' => [
-		// 'portfolio' => 59,
+		'portfolio' => 'https://demo.bizbudding.com/creative-portfolio/wp-content/uploads/sites/59/mai-engine/',
 	],
 	'global-styles' => [
 		'colors' => [

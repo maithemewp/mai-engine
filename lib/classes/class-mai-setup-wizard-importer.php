@@ -168,7 +168,7 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 		$data = json_decode( $raw, true );
 
 		if ( ! is_array( $data ) || 'array' !== gettype( $data ) ) {
-			wp_send_json_error( __( 'Something went wrong downloading template part data. Please contact BizBudding support for assistance.', 'mai-engine' ) );
+			wp_send_json_error( __( 'Something went wrong downloading content area data. Please contact BizBudding support for assistance.', 'mai-engine' ) );
 		}
 
 		foreach ( $data as $index => $post ) {

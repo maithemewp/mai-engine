@@ -11,7 +11,7 @@
 
 return [
 	'demos'                  => [
-		// 'agency'                => 23,
+		'agency' => 'https://demo.bizbudding.com/display-agency/wp-content/uploads/sites/23/mai-engine/',
 	],
 	'global-styles'          => [
 		'colors'                => [
@@ -27,15 +27,15 @@ return [
 			'body'                 => 'Hind:400',
 			'heading'              => 'Poppins:700,600',
 		],
-		'font-variants'  => [
-			'heading' => [
-				'light' => '400', // Always loads regular weight since this is used for menus.
+		'font-variants'         => [
+			'heading'              => [
+				'light'               => '400', // Always loads regular weight since this is used for menus.
 			],
 		],
 	],
-	'image-sizes' => [
-		'add'    => [
-			'square' => '1:1',
+	'image-sizes'            => [
+		'add'                   => [
+			'square'               => '1:1',
 		],
 	],
 	'theme-support'          => [
@@ -48,7 +48,7 @@ return [
 		'logo'                  => [
 			'show-tagline'         => false,
 		],
-		'site-layouts'           => [
+		'site-layouts'          => [
 			'default'              => [
 				'site'                => 'standard-content',
 				'archive'             => 'wide-content',

@@ -1,3 +1,14 @@
+/**
+ * To rebuild this script you need to run:
+npm install
+npm run blocks
+ *
+ * Since we're using gulp 3 still you may need to force NPM version:
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"
+nvm use 11.15.0
+find . -name ".DS_Store" -delete
+ */
 import assign from 'lodash.assign';
 
 const { __ }                         = wp.i18n;
@@ -83,6 +94,10 @@ const addLayoutControlAttribute = ( settings, name ) => {
 		 */
 		settings.attributes = assign( settings.attributes, {
 			maxWidth: {
+				type: 'string',
+				default: '',
+			},
+			contentAlign: {
 				type: 'string',
 				default: '',
 			},
@@ -480,8 +495,24 @@ const withMaxWidthControls = createHigherOrderComponent( ( BlockEdit ) => {
 				},
 			];
 
+			const alignChoices = [
+				{
+					label: __( 'Start', 'mai-engine' ),
+					value: 'start',
+				},
+				{
+					label: __( 'Center', 'mai-engine' ),
+					value: 'center',
+				},
+				{
+					label: __( 'Right', 'mai-engine' ),
+					value: 'end',
+				},
+			];
+
 			const {
 					maxWidth,
+					contentAlign,
 				} = props.attributes;
 
 			return (
@@ -489,7 +520,7 @@ const withMaxWidthControls = createHigherOrderComponent( ( BlockEdit ) => {
 					<BlockEdit {...props} />
 					<InspectorControls>
 						<PanelBody
-							title={__( 'Width', 'mai-engine' )}
+							title={__( 'Layout', 'mai-engine' )}
 							initialOpen={false}
 							className={'mai-width-settings'}
 						>
@@ -520,6 +551,39 @@ const withMaxWidthControls = createHigherOrderComponent( ( BlockEdit ) => {
 									<Button isDestructive isSmall isLink onClick={() => {
 										props.setAttributes( {
 											maxWidth: null,
+										} );
+									}}>
+										{__( 'Clear', 'mai-engine' )}
+									</Button>
+								</div>
+							</BaseControl>
+							<BaseControl
+								id="mai-width-content-align"
+								label={__( 'Content Alignment', 'mai-engine' )}
+							>
+								<div>
+									<ButtonGroup mode="radio" data-chosen={contentAlign}>
+										{alignChoices.map( alignInfo => (
+											<Button
+											onClick={() => {
+												props.setAttributes( {
+													contentAlign: alignInfo.value,
+												} );
+											}}
+											data-checked={contentAlign === alignInfo.value}
+											value={alignInfo.value}
+											key={`mai-width-content-align-${alignInfo.value}`}
+											index={alignInfo.value}
+											isSecondary={contentAlign !== alignInfo.value}
+											isPrimary={contentAlign === alignInfo.value}
+											>
+												<small>{alignInfo.label}</small>
+											</Button>
+										) )}
+									</ButtonGroup>
+									<Button isDestructive isSmall isLink onClick={() => {
+										props.setAttributes( {
+											contentAlign: null,
 										} );
 									}}>
 										{__( 'Clear', 'mai-engine' )}
@@ -809,7 +873,8 @@ const addCustomAttributes = createHigherOrderComponent( ( BlockListBlock ) => {
 		}
 
 		if ( enableMaxWidthSettingsBlocks.includes( props.name ) ) {
-			wrapperProps['data-max-width']  = props.attributes.maxWidth;
+			wrapperProps['data-max-width']     = props.attributes.maxWidth;
+			wrapperProps['data-content-align'] = props.attributes.contentAlign;
 		}
 
 		if ( enableSpacingSettingsBlocks.includes( props.name ) ) {

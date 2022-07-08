@@ -15,3 +15,9 @@
 		justify-content: flex-end;
 	}
 }
+
+.wp-block-buttons[class*="wp-container-"] {
+	// To allow outline buttons to be the same height.
+	// See https://github.com/maithemewp/mai-engine/issues/602.
+	align-items: normal;
+}

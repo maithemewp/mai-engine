@@ -11,9 +11,9 @@
 
 return [
 	'demos'         => [
-		// 'creative' => 31,
-		// 'personal' => 30,
-		// 'fitness'  => 29,
+		'creative' => 'https://demo.bizbudding.com/fabulous-creative/wp-content/uploads/sites/31/mai-engine/',
+		'personal' => 'https://demo.bizbudding.com/fabulous-personal/wp-content/uploads/sites/30/mai-engine/',
+		'fitness'  => 'https://demo.bizbudding.com/fabulous-fitness/wp-content/uploads/sites/29/mai-engine/',
 	],
 	'global-styles' => [
 		'colors' => [

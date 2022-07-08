@@ -1,5 +1,40 @@
 # Changelog
 
+## 2.22.0 (TBD)
+* Added: New "Has border" and "Has border radius" settings on Mai Column blocks.
+* Added: New "Content Alignment" setting on Heading and Paragraph blocks for times when the Max Width setting is used and you want to align the content independent from the text alignment.
+* Added: [Performance] New setting to remove unused global styles and inline SVGs added by WP 6.0 for features rarely used in WP. These extra styles and inline SVGs are now removed by default.
+* Added: [Performance] The comment-reply JS script is no longer loaded unless comments are enabled and there is at least 1 comment.
+* Added: Mai Term Grid now allows you to search by term ID when choosing specific terms to include/exclude, etc.
+* Added: Plugin version numbers are now shown in Dashboard > Mai Theme > Plugins.
+* Added: [Developers] New `mai_has_sticky_header` and `mai_has_transparent_header` filters so developer can enable or disable conditionally.
+* Changed: Mai Theme now requires PHP 7 and up.
+* Changed: Showing Content on content archives now shows the full content, markup, blocks, shortcodes, etc.
+* Changed: Added filter to remove deprecated code from even loading in Genesis.
+* Changed: Columns CSS now works the same way everywhere, whether it's in Mai Grid blocks, content archives, or Mai plugins that use our columns clone fields and helper functions.
+* Changed: "Width" panel on Heading and Paragraph blocks is now called "Layout" since the "Content Alignment" setting has been added.
+* Changed: The `has-light-background` class is now added to Mai Column if a light background is set. This helps force default colors on the inner content, especially when the columns are over a dark background.
+* Changed: Themes that use heading font for the menu now use the 'font-variant' attribute in config.php.
+* Changed: More thorough application of `hidden-sm`, `hidden-sm-up`, and `hidden-sm-down` and all size helper classes to hide elements.
+* Changed: Site description margin tweak when the site title and description are both shown.
+* Changed: Much simpler CSS for `is-circle` and `is-square` helper classes.
+* Changed: The config.php now uses the full, absolute URL to the import files for the setup wizard. This is so the demos are no longer reliant on the site ID.
+* Changed: [Developers] The `genesis_disable_microdata` filter is now respected when we add navigation microdata.
+* Fixed: Some general compatibility fixes for WP 6.0.
+* Fixed: Number setting not working in Mai Term Grid if the taxonomy is Post Tag or another non-hierarchical taxonomy.
+* Fixed: Nested columns are now even more thorough in the editor, so it should more closely match the front end.
+* Fixed: Potentially fixed a random bug where customizer CSS would break while setting a transient and required flushing transients (or opening Customizer and updating) to fix.
+* Fixed: Outline buttons were larger than standard buttons from changes in WP 6.0.
+* Fixed: Added some custom property fallback values for edge-case configurations where the value is not set by the theme.
+* Fixed: CSS tweak to fix entry title links when Mai Grid blocks are not boxed and over a dark background.
+* Fixed: CSS tweak to fix entry-wrap width in some edge-case configurations.
+* Fixed: CSS tweak for inline highlighted text to fix changes in WP 6.0.
+* Fixed: CSS tweak that adds z-index to `has-shadow` class.
+* Fixed: Margin being added unexpectedly to Mai Grid blocks when the margin settings are set to None.
+* Fixed: Edge-case scenarios where a custom font is added via the config using `400italic` instead of just `italic` will now work either way.
+* Fixed: More customizer settings should show in live preview from a fix in static caching in our helper functions.
+
+
 ## 2.21.3 (4/27/22)
 * Added: Basic support for bbPress.
 * Added: Show Mai Engine version number on Mai Theme > Plugins page in the Dashboard.
@@ -184,7 +219,7 @@
 * Changed: Add some spacing back to top of login logo.
 * Changed: Remove deprecated header left/right sidebar (widget area) checks.
 * Changed: Mai Theme admin page content.
-* Changed: Mai Icon svg picker now uses href instead of deprecated xlink attribute.
+* Changed: Mai Icon SVG picker now uses href instead of deprecated xlink attribute.
 * Fixed: Mai Divider custom classes weren't adding spaces correctly on front end.
 * Fixed: Center logo on mobile it's the only element displaying.
 * Fixed: Blockquote paragraph spacing when used in a column.
@@ -606,7 +641,7 @@ other contexts.
 * Changed: After Header template part now displays after the After Header Menu location.
 * Changed: Color palette now shows the actual color setting name instead of the hex code.
 * Changed: Grid/entry images now use more thorough logic to build srcset and size image attributes, for even better performance.
-* Changed: All svg icons now use https for xmlns attribute.
+* Changed: All SVG icons now use https for xmlns attribute.
 * Changed: Remove underline when hovering entry title links and adjacent entry navigation.
 * Changed: [WooCommerce] Much cleaner account navigation styling.
 * Fixed: After Header template part now works with transparent header.

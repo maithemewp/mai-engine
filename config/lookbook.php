@@ -11,7 +11,7 @@
 
 return [
 	'demos'         => [
-		// 'default' => 53,
+		'default' => 'https://demo.bizbudding.com/lookbook/wp-content/uploads/sites/53/mai-engine/',
 	],
 	'global-styles' => [
 		'breakpoint' => 1360,
