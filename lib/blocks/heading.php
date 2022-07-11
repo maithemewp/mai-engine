@@ -38,7 +38,7 @@ add_filter( 'render_block', 'mai_render_heading_block', 10, 2 );
 /**
  * Handles content alignment settings via margin utility classes.
  *
- * @since TBD
+ * @since 2.22.0
  *
  * @param string $block_content Block HTML markup.
  * @param array  $block         Block data.

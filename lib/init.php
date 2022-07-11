@@ -176,7 +176,7 @@ function mai_load_genesis() {
 /**
  * Removes deprecated stuff from Genesis.
  *
- * @since TBD
+ * @since 2.22.0
  *
  * @return bool
  */

@@ -155,7 +155,7 @@ function mai_columns_get_args( $i = null ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.22.0
  *
  * @param string     $break The breakpoint value. Either xs, sm, md, etc.
  * @param int|string $size The columns args data.
@@ -180,7 +180,7 @@ function mai_columns_get_columns( $break, $size ) {
  * @access private
  *
  * @since 2.10.0
- * @since TBD Added $break to stay consistent with `mai_columns_get_columns()`.
+ * @since 2.22.0 Added $break to stay consistent with `mai_columns_get_columns()`.
  *
  * @param string $break Either xs, sm, md, etc.
  * @param string $size

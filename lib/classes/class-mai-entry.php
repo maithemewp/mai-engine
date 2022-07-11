@@ -1080,7 +1080,7 @@ class Mai_Entry {
 	 * Initially based off of genesis_do_post_content().
 	 *
 	 * @since 0.1.0
-	 * @since TBD Changed to show full content on archives.
+	 * @since 2.22.0 Changed to show full content on archives.
 	 *
 	 * @return void
 	 */
