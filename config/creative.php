@@ -11,7 +11,7 @@
 
 return [
 	'demos' => [
-		'portfolio' => 59,
+		'portfolio' => 'https://demo.bizbudding.com/creative-portfolio/wp-content/uploads/sites/59/mai-engine/',
 	],
 	'global-styles' => [
 		'colors' => [
@@ -25,6 +25,11 @@ return [
 		'fonts' => [
 			'body'    => 'Open Sans:400',
 			'heading' => 'Montserrat:600,500',
+		],
+		'font-variants'  => [
+			'heading' => [
+				'light' => '400', // Always loads regular weight since this is used for menus.
+			],
 		],
 	],
 	'image-sizes' => [

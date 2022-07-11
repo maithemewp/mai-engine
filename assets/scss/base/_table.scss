@@ -22,10 +22,10 @@ td {
 	border-left: 0;
 
 	&:first-of-type {
-		border-left: var(--table-border);
+		border-left: var(--table-border, var(--border));
 	}
 
 	&:last-of-type {
-		border-right: var(--table-border);
+		border-right: var(--table-border, var(--border));
 	}
 }

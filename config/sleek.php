@@ -11,9 +11,9 @@
 
 return [
 	'demos'         => [
-		'freelance'  => 61,
-		'company'    => 62,
-		'consulting' => 63,
+		'freelance'  => 'https://demo.bizbudding.com/sleek-freelance/wp-content/uploads/sites/61/mai-engine/',
+		'company'    => 'https://demo.bizbudding.com/sleek-company/wp-content/uploads/sites/62/mai-engine/',
+		'consulting' => 'https://demo.bizbudding.com/sleek-consulting/wp-content/uploads/sites/63/mai-engine/',
 	],
 	'global-styles' => [
 		'colors' => [

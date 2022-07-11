@@ -1080,6 +1080,7 @@ class Mai_Entry {
 	 * Initially based off of genesis_do_post_content().
 	 *
 	 * @since 0.1.0
+	 * @since 2.22.0 Changed to show full content on archives.
 	 *
 	 * @return void
 	 */
@@ -1125,7 +1126,16 @@ class Mai_Entry {
 			// Content.
 			switch ( $this->type ) {
 				case 'post':
-					$content = strip_shortcodes( get_the_content( null, false, $this->entry ) );
+					// Archives. So many people wanted (expected?) the full content to show here.
+					if ( 'archive' === $this->context ) {
+						ob_start();
+						the_content( null, true );
+						$content = ob_get_clean();
+					}
+					// Block. Let's leave as-is.
+					else {
+						$content = strip_shortcodes( get_the_content( null, false, $this->entry ) );
+					}
 				break;
 				case 'term':
 					$content = term_description( $this->id );

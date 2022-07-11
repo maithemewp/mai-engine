@@ -11,9 +11,9 @@
 
 return [
 	'demos'                   => [
-		'recipes'                => 6,
-		'travel'                 => 7,
-		// 'home'                   => 8,
+		'recipes' => 'https://demo.bizbudding.com/delight-recipes/wp-content/uploads/sites/6/mai-engine/',
+		'travel'  => 'https://demo.bizbudding.com/delight-travel/wp-content/uploads/sites/7/mai-engine/',
+		// 'home'    => 8,
 	],
 	'global-styles'           => [
 		'colors'                 => [

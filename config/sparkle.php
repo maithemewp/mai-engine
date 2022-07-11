@@ -11,8 +11,8 @@
 
 return [
 	'demos'         => [
-		'creative' => 2,
-		'fashion'  => 18,
+		'creative' => 'https://demo.bizbudding.com/sparkle-creative/wp-content/uploads/sites/2/mai-engine/',
+		'fashion'  => 'https://demo.bizbudding.com/sparkle-fashion/wp-content/uploads/sites/18/mai-engine/',
 	],
 	'global-styles' => [
 		'colors' => [
@@ -26,6 +26,11 @@ return [
 		'fonts'  => [
 			'body'    => 'Work Sans:400',
 			'heading' => 'Josefin Sans:600',
+		],
+		'font-variants'  => [
+			'heading' => [
+				'light' => '400', // Always loads regular weight since this is used for menus.
+			],
 		],
 	],
 	'image-sizes'   => [

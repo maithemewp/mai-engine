@@ -11,7 +11,7 @@
 
 return [
 	'demos'         => [
-		'agency' => 52,
+		'agency' => 'https://demo.bizbudding.com/studio-agency/wp-content/uploads/sites/52/mai-engine/',
 	],
 	'global-styles' => [
 		'colors' => [

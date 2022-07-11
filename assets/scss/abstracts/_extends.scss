@@ -164,6 +164,8 @@
 	--link-color-hover: currentColor;
 	--link-text-decoration: underline;
 	--link-filter-hover: brightness(0.8);
+	--entry-title-link-color: var(--color-white); // For Mai Post Grid in side has-dark-background.
+	--entry-title-link-color-hover: brightness(0.8); // For Mai Post Grid in side has-dark-background.
 	--menu-item-link-color: var(--color-white);
 	--menu-item-link-color-hover: var(--color-white);
 	--menu-item-name-filter-hover: brightness(0.8);

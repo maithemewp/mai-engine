@@ -4,7 +4,7 @@
 	font-size: var(--entry-meta-font-size, var(--font-size-sm));
 	font-family: var(--entry-meta-font-family, unset);
 	letter-spacing: var(--entry-meta-letter-spacing, inherit);
-	white-space: pre-wrap; // Preserve white-space (spaces) in text/content.
+	// white-space: pre-wrap; // Preserve white-space (spaces) in text/content. Removed this, it was causing other issues.
 	text-align: var(--entry-meta-text-align, start);
 
 	> * {

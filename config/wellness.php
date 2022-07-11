@@ -10,11 +10,11 @@
  */
 
 return [
-	// 'demos'         => [
+	'demos'         => [
 		// 'local'    => 3,
 		// 'coaching' => 4,
-	// 	'business' => 5,
-	// ],
+		// 'business' => 5,
+	],
 	'global-styles' => [
 		'colors' => [
 		// 'black'      => '#000000',

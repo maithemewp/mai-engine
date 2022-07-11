@@ -59,10 +59,10 @@ class Mai_Plugins {
 
 		check_ajax_referer( 'mai-plugins', 'nonce' );
 
-		$succes = false;
+		$succes  = false;
 		$plugins = $this->get_plugins();
-		$action = filter_input( INPUT_GET, 'trigger', FILTER_SANITIZE_STRING );
-		$slug   = filter_input( INPUT_GET, 'slug', FILTER_SANITIZE_STRING );
+		$action  = filter_input( INPUT_GET, 'trigger', FILTER_SANITIZE_STRING );
+		$slug    = filter_input( INPUT_GET, 'slug', FILTER_SANITIZE_STRING );
 
 		if ( $plugins && $action && $slug ) {
 			if ( $this->is_disabled( $slug ) ) {
@@ -175,6 +175,10 @@ class Mai_Plugins {
 					);
 
 					$plugin_slug  = sprintf( '%s/%s.php', $slug, $slug );
+					$file         = WP_CONTENT_DIR . '/plugins/' . $plugin_slug;
+					$data         = file_exists( WP_CONTENT_DIR . '/plugins/' . $plugin_slug ) ? get_plugin_data( $file, false, false ) : [];
+					$version      = $data && isset( $data['Version'] ) ? $data['Version'] : '';
+					$version      = $version ? sprintf( '<span class="mai-plugin-version">%s</span>', $version ) : '';
 					$is_installed = $this->is_installed( $plugin_slug );
 					$is_active    = $this->is_active( $plugin_slug );
 					$class        = 'mai-plugin';
@@ -182,7 +186,7 @@ class Mai_Plugins {
 
 					printf( '<div class="%s">', $class );
 
-						printf( '<h2 class="mai-plugin-name">%s</h2>', $plugin['name'] );
+						printf( '<h2 class="mai-plugin-name">%s</h2>', $plugin['name'] . $version );
 						printf( '<p class="mai-plugin-desc">%s</p>', $plugin['desc'] );
 						echo '<p class="mai-plugin-actions">';
 

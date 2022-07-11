@@ -11,9 +11,9 @@
 
 return [
 	'demos' => [
-		'news'   => 69,
-		'tech'   => 67,
-		'sports' => 68,
+		'news'   => 'https://demo.bizbudding.com/exclusive-news/wp-content/uploads/sites/69/mai-engine/',
+		'tech'   => 'https://demo.bizbudding.com/exclusive-tech/wp-content/uploads/sites/67/mai-engine/',
+		'sports' => 'https://demo.bizbudding.com/exclusive-sports/wp-content/uploads/sites/68/mai-engine/',
 	],
 	'global-styles' => [
 		'colors' => [

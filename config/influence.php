@@ -11,9 +11,9 @@
 
 return [
 	'demos' => [
-		'travel'  => 64,
-		'podcast' => 65,
-		'fashion' => 66,
+		'travel'  => 'https://demo.bizbudding.com/influence-travel/wp-content/uploads/sites/64/mai-engine/',
+		'podcast' => 'https://demo.bizbudding.com/influence-podcast/wp-content/uploads/sites/65/mai-engine/',
+		'fashion' => 'https://demo.bizbudding.com/influence-fashion/wp-content/uploads/sites/66/mai-engine/',
 	],
 	'global-styles' => [
 		'colors' => [

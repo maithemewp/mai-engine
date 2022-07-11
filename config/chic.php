@@ -11,7 +11,7 @@
 
 return [
 	'demos'             => [
-		'blog'             => 60,
+		'blog' => 'https://demo.bizbudding.com/chic-blog/wp-content/uploads/sites/60/mai-engine/',
 	],
 	'global-styles'     => [
 		'colors'           => [

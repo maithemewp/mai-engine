@@ -50,6 +50,12 @@ i {
 	font-style: var(--emphasis-font-style, italic);
 }
 
+// This is added when highlighting a portion of text inside of a heading or paragraph block.
+// TODO: What happens when a background is also added?
+mark.has-inline-color {
+	background: transparent;
+}
+
 blockquote {
 	margin: var(--blockquote-margin, 1em auto);
 	padding: var(--blockquote-padding, var(--spacing-sm) 0 var(--spacing-xs) var(--spacing-lg));

@@ -24,8 +24,11 @@
 		mobileMenu = document.createElement( 'div' );
 		mobileMenu.setAttribute( 'class', 'mobile-menu' );
 		mobileMenu.setAttribute( 'aria-label', maiMenuData.ariaLabel );
-		mobileMenu.setAttribute( 'itemscope', '' );
-		mobileMenu.setAttribute( 'itemtype', 'https://schema.org/SiteNavigationElement' );
+
+		if ( ! maiMenuData.disableMicroData ) {
+			mobileMenu.setAttribute( 'itemscope', '' );
+			mobileMenu.setAttribute( 'itemtype', 'https://schema.org/SiteNavigationElement' );
+		}
 
 		if ( ! mobileMenuWrap ) {
 			mobileMenuWrap = document.createElement( 'div' );

@@ -11,9 +11,9 @@
 
 return [
 	'demos'         => [
-		'law'      => 9,
-		// 'news'     => 10,
-		// 'personal' => 11,
+		'law'       => 'https://demo.bizbudding.com/achieve-law/wp-content/uploads/sites/9/mai-engine/',
+		'news'      => 'https://demo.bizbudding.com/achieve-news/wp-content/uploads/sites/10/mai-engine/',
+		// 'corporate' => 'https://demo.bizbudding.com/achieve-corporate/wp-content/uploads/sites/11/mai-engine/',
 	],
 	'global-styles' => [
 		'colors' => [

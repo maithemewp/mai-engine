@@ -11,7 +11,7 @@
 
 return [
 	'demos'            => [
-		'default' => 51,
+		'default' => 'https://demo.bizbudding.com/catalina/wp-content/uploads/sites/51/mai-engine/',
 	],
 	'global-styles'    => [
 		'colors' => [

@@ -3,10 +3,13 @@
 }
 
 .entries {
-	margin-bottom: var(--entries-margin-bottom, var(--spacing-lg));
-
 	--entry-image-line-height: 0;
 	--entry-meta-margin: 0 0 var(--spacing-md) 0;
+}
+
+.entries-archive {
+	// Grid blocks have margin settings with default of None, so we don't need this on entries.
+	margin-bottom: var(--entries-margin-bottom, var(--spacing-lg));
 }
 
 .entry {
@@ -14,7 +17,7 @@
 	display: var(--entry-display, flex);
 	flex-direction: var(--entry-flex-direction, column);
 	flex-wrap: var(--entry-flex-wrap, nowrap);
-	width: var(--entry-width, auto); /* allows "auto" columns in grid and archives */
+	width: var(--entry-width, auto); // allows "auto" columns in grid and archives.
 	margin: var(--entry-margin, 0);
 	padding: var(--entry-padding, 0);
 	overflow: var(--entry-overflow, unset);
@@ -92,9 +95,10 @@
 	display: flex;
 	flex: 1; /* 1 1 100% breaks image-left/right-full */
 	flex-direction: column;
-	justify-content: var(--align-text-vertical);
-	width: var(--entry-wrap-width, 100%);
-	margin: var(--entry-wrap-margin, 0 auto);
+	justify-content: var(--align-text-vertical, initial);
+	// width: var(--entry-wrap-width, 100%);
+	width: var(--entry-wrap-width, initial); /* using 100% was causing overflow issues and content too wide when boxed. */
+	margin: var(--entry-wrap-margin, 0); /* using 0 auto caused issue when the content didn't fill up the container. */
 	padding: var(--entry-wrap-padding, 0);
 	color: var(--entry-wrap-color, inherit);
 	background: var(--entry-wrap-background, transparent);

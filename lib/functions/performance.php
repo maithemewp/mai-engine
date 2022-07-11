@@ -15,9 +15,17 @@ defined( 'ABSPATH' ) || die;
 add_action( 'init', 'mai_disable_emojis' );
 /**
  * Disable the emoji's
+ *
+ * @since 0.1.0
+ *
+ * @return void
  */
 function mai_disable_emojis() {
-	if ( ! mai_get_option( 'disable-emojis', true ) ) {
+	$settings    = mai_get_config( 'settings' );
+	$performance = isset( $settings['performance'] ) ? $settings['performance'] : [];
+	$default     = isset( $performance['disable-emojis'] ) ? $performance['disable-emojis'] : true;
+
+	if ( ! mai_get_option( 'disable-emojis', $default ) ) {
 		return;
 	}
 
@@ -67,6 +75,37 @@ function mai_disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
 	return $urls;
 }
 
+/**
+ * Remove inline duotone svgs.
+ *
+ * @since 2.22.0
+ *
+ * @link https://github.com/WordPress/gutenberg/issues/38299
+ * @link https://github.com/WordPress/gutenberg/issues/36834
+ *
+ * @return void
+ */
+add_action( 'init', 'mai_remove_wp_global_styles' );
+function mai_remove_wp_global_styles() {
+	$settings    = mai_get_config( 'settings' );
+	$performance = isset( $settings['performance'] ) ? $settings['performance'] : [];
+	$default     = isset( $performance['remove-global-styles'] ) ? $performance['remove-global-styles'] : true;
+
+	if ( ! mai_get_option( 'remove-global-styles', $default ) ) {
+		return;
+	}
+
+	// Global styles.
+	remove_action( 'wp_enqueue_scripts', 'wp_enqueue_global_styles' );
+	remove_action( 'wp_footer', 'wp_enqueue_global_styles', 1 );
+	// Inline SVGs.
+	remove_action( 'wp_body_open', 'wp_global_styles_render_svg_filters' );
+
+	// Editor.
+	remove_action( 'enqueue_block_editor_assets', 'wp_enqueue_global_styles_css_custom_properties' );
+	remove_action( 'in_admin_header', 'wp_global_styles_render_svg_filters' );
+}
+
 add_action( 'widgets_init', 'mai_remove_recent_comments_style' );
 /**
  * Removes recent comments widget CSS.
@@ -76,7 +115,11 @@ add_action( 'widgets_init', 'mai_remove_recent_comments_style' );
  * @return void
  */
 function mai_remove_recent_comments_style() {
-	if ( ! mai_get_option( 'remove-recent-comments-css', true ) ) {
+	$settings    = mai_get_config( 'settings' );
+	$performance = isset( $settings['performance'] ) ? $settings['performance'] : [];
+	$default     = isset( $performance['remove-recent-comments-css'] ) ? $performance['remove-recent-comments-css'] : true;
+
+	if ( ! mai_get_option( 'remove-recent-comments-css', $default ) ) {
 		return;
 	}
 
@@ -88,6 +131,25 @@ function mai_remove_recent_comments_style() {
 	}
 
 	remove_action( 'wp_head', [ $wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style' ] );
+}
+
+add_action( 'wp_print_scripts', 'mai_dequeue_comment_reply', 99 );
+/**
+ * Dequeue comment reply script if there are no comments to reply to.
+ * This should be dealt with in Genesis core IMO ¯\_(ツ)_/¯
+ *
+ * @link https://github.com/studiopress/genesis/issues/2684
+ *
+ * @since 2.22.0
+ *
+ * @return void
+ */
+function mai_dequeue_comment_reply() {
+	if ( ! ( is_singular() && get_option( 'thread_comments' ) && comments_open() && (int) get_comments_number() <= 0 ) ) {
+		return;
+	}
+
+	wp_dequeue_script( 'comment-reply' );
 }
 
 // add_filter( 'wp_calculate_image_srcset_meta', 'mai_limit_max_srcset_image', 10, 4 );

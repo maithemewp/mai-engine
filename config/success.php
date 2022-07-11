@@ -11,9 +11,10 @@
 
 return [
 	'demos'         => [
+		'business' => 'https://demo.bizbudding.com/success-business/wp-content/uploads/sites/5/mai-engine/',
 		// 'local'    => 3,
 		// 'coaching' => 4,
-		'business' => 5,
+		// 'business' => 5,
 	],
 	'global-styles' => [
 		'colors' => [
@@ -27,6 +28,11 @@ return [
 		'fonts'  => [
 			'body'    => 'Hind:400',
 			'heading' => 'Montserrat:600',
+		],
+		'font-variants'  => [
+			'heading' => [
+				'light' => '600', // Always loads 600 weight since this is used for menus.
+			],
 		],
 	],
 	'theme-support' => [

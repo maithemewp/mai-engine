@@ -315,9 +315,11 @@ function mai_sidebar_has_widget( $sidebar, $widget ) {
 function mai_has_sidebar() {
 	static $has_sidebar = null;
 
-	if ( is_null( $has_sidebar ) ) {
-		$has_sidebar = in_array( mai_site_layout(), [ 'content-sidebar', 'sidebar-content' ], true );
+	if ( ! is_null( $has_sidebar ) && ! is_customize_preview() ) {
+		return $has_sidebar;
 	}
+
+	$has_sidebar = in_array( mai_site_layout(), [ 'content-sidebar', 'sidebar-content' ], true );
 
 	return $has_sidebar;
 }
@@ -332,7 +334,7 @@ function mai_has_sidebar() {
 function mai_has_boxed_container() {
 	static $has_boxed = null;
 
-	if ( ! is_null( $has_boxed ) ) {
+	if ( ! is_null( $has_boxed ) && ! is_customize_preview() ) {
 		return $has_boxed;
 	}
 
@@ -352,11 +354,31 @@ function mai_has_boxed_container() {
 function mai_has_sticky_header_enabled() {
 	static $sticky = null;
 
-	if ( ! is_null( $sticky ) ) {
+	if ( ! is_null( $sticky ) && ! is_customize_preview() ) {
 		return $sticky;
 	}
 
 	$sticky = mai_get_option( 'site-header-sticky', current_theme_supports( 'sticky-header' ) );
+
+	return $sticky;
+}
+
+/**
+ * Checks if a site has a sticky header.
+ *
+ * @since 2.22.0
+ *
+ * @return bool
+ */
+function mai_has_sticky_header() {
+	static $sticky = null;
+
+	if ( ! is_null( $sticky ) && ! is_customize_preview() ) {
+		return $sticky;
+	}
+
+	$sticky = mai_has_sticky_header_enabled() && ! mai_is_element_hidden( 'sticky_header' );
+	$sticky = (bool) apply_filters( 'mai_has_sticky_header', $sticky );
 
 	return $sticky;
 }
@@ -394,6 +416,7 @@ function mai_has_transparent_header_enabled() {
 /**
  * Checks if site has transparent header.
  *
+ * @since 2.22.0 Added filter.
  * @since 0.1.0
  *
  * @return bool
@@ -405,32 +428,23 @@ function mai_has_transparent_header() {
 		return $transparent;
 	}
 
-	if ( ! mai_has_transparent_header_enabled() ) {
-		$transparent = false;
-		return $transparent;
+	$transparent = false;
+
+	if ( mai_has_transparent_header_enabled() ) {
+		if ( ! ( mai_is_element_hidden( 'transparent_header' ) || mai_is_element_hidden( 'site_header' ) ) ) {
+			if ( mai_has_page_header() || ( mai_has_alignfull_first() && mai_is_element_hidden( 'entry_title' ) && ! mai_has_breadcrumbs() ) ) {
+				$transparent = true;
+			}
+		}
 	}
 
-	if ( mai_is_element_hidden( 'transparent_header' ) ) {
-		$transparent = false;
-		return $transparent;
-	}
-
-	if ( mai_is_element_hidden( 'site_header' ) ) {
-		$transparent = false;
-		return $transparent;
-	}
-
-	if ( ! mai_has_transparent_header_enabled() ) {
-		$transparent = false;
-		return $transparent;
-	}
-
-	if ( ! ( mai_has_page_header() || ( mai_has_alignfull_first() && mai_is_element_hidden( 'entry_title' ) && ! mai_has_breadcrumbs() ) ) ) {
-		$transparent = false;
-		return $transparent;
-	}
-
-	$transparent = true;
+	/**
+	 * If you force a transparent header with this filter,
+	 * the content offset will only work if there is a page header
+	 * or an alignfull element first in the editor content,
+	 * otherwise you'll need to add padding/margin top -- `var(--transparent-header-offset, 0)`.
+	 */
+	$transparent = (bool) apply_filters( 'mai_has_transparent_header', $transparent );
 
 	return $transparent;
 }

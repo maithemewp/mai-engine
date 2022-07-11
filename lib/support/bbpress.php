@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || die;
 /**
  * Removes default meta support for bbPress post types.
  *
- * @since TBD
+ * @since 2.21.3
  *
  * @return void
  */
@@ -39,7 +39,7 @@ add_action( 'genesis_meta', 'mai_bbpress_search_remove_loop' );
 /**
  * Removes custom loop for search results.
  *
- * @since TBD
+ * @since 2.21.3
  *
  * @return void
  */

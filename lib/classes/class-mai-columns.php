@@ -106,12 +106,6 @@ class Mai_Columns {
 			$atts['class'] = mai_add_classes( sprintf( 'has-%s-margin-bottom', $this->args['margin_bottom'] ), $atts['class'] );
 		}
 
-		if ( $this->args['preview'] ) {
-			$atts = $this->get_admin_attributes( $atts );
-		}
-
-		$atts = $this->get_attributes( $atts );
-
 		genesis_markup(
 			[
 				'open'    => '<div %s>',
@@ -122,12 +116,16 @@ class Mai_Columns {
 		);
 
 		$wrap_atts = [
-			'class' => 'mai-columns-wrap has-columns'
+			'class' => 'mai-columns-wrap has-columns',
+			'style' => '',
 		];
 
 		if ( $this->args['preview'] ) {
 			$wrap_atts['class'] = mai_add_classes( 'has-columns-nested', $wrap_atts['class'] ); // Temp workaround for ACF nested block markup.
+			$wrap_atts          = $this->get_admin_attributes( $wrap_atts );
 		}
+
+		$wrap_atts = $this->get_attributes( $wrap_atts );
 
 		genesis_markup(
 			[
@@ -163,15 +161,25 @@ class Mai_Columns {
 
 	function get_admin_attributes( $attributes ) {
 		foreach ( array_reverse( $this->args['arrangements'] ) as $break => $arrangement ) {
-			$index    = 0;
 			$elements = $this->get_mapped_admin_elements( $arrangement );
 
+			$index = 0;
 			foreach ( $elements as $columns ) {
 				$index++;
 
-				$flex                 = mai_columns_get_flex( $columns );
-				$attributes['style'] .= sprintf( '--flex-%s:%s;', $break, $flex ); // Fallback for nested.
-				$attributes['style'] .= sprintf( '--flex-%s-%s:%s;', $break, $index, $flex );
+				// $attributes['style'] .= mai_columns_get_columns( $break, $columns );
+				$attributes['style'] .= mai_columns_get_columns( sprintf( '%s-%s', $break, $index ), $columns );
+			}
+
+			$index = 0;
+			foreach ( $elements as $columns ) {
+				$index++;
+
+				// $attributes['style'] .= mai_columns_get_flex( $break, $columns );
+				// $attributes['style'] .= mai_columns_get_flex( sprintf( '%s-%s', $break, $index ), $columns );
+				if ( in_array( $columns, [ 'auto', 'fill', 'full' ] ) ) {
+					$attributes['style'] .= mai_columns_get_flex( sprintf( '%s-%s', $break, $index ), $columns );
+				}
 			}
 		}
 
@@ -185,7 +193,7 @@ class Mai_Columns {
 		$attributes['style'] .= sprintf( '--column-gap:%s;', $column_gap  );
 		$attributes['style'] .= sprintf( '--row-gap:%s;', $row_gap );
 		$attributes['style'] .= sprintf( '--align-columns:%s;', ! empty( $this->args['align_columns'] ) ? mai_get_flex_align( $this->args['align_columns'] ) : 'unset' ); // If wide/full then unset will be used.
-		$attributes['style'] .= sprintf( '--align-columns-vertical:%s;', ! empty( $this->args['align_columns_vertical'] ) ? mai_get_flex_align( $this->args['align_columns_vertical'] ) : 'unset' );
+		$attributes['style'] .= sprintf( '--align-columns-vertical:%s;', ! empty( $this->args['align_columns_vertical'] ) ? mai_get_flex_align( $this->args['align_columns_vertical'] ) : 'initial' ); // Needs initial for nested columns.
 
 		return $attributes;
 	}
@@ -195,7 +203,7 @@ class Mai_Columns {
 		$total_arrangements = count( $arrangement );
 		$count              = 0;
 		$elements           = [];
-		for ( $i = 0; $i < 12; $i++ ) {
+		for ( $i = 0; $i < 24; $i++ ) {
 			$elements[ $i ] = $arrangement[ $count ];
 
 			if ( $count === ( $total_arrangements - 1 ) ) {

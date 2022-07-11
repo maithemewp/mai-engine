@@ -1,48 +1,69 @@
-.has-columns {
-	// --flex-default: 0 0 calc((100% / var(--columns)) - var(--column-gap));
-	--flex-default: 0 0 calc((100% / var(--columns) - ((var(--columns) - 1) / var(--columns) * var(--column-gap))));
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--row-gap) var(--column-gap);
-	align-items: var(--align-columns-vertical, unset);
-	justify-content: var(--align-columns, unset);
-
-	@include mq(false, sm) {
-		--columns: var(--columns-xs);
-	}
-
-	@include mq(sm, md) {
-		--columns: var(--columns-sm);
-	}
-
-	@include mq(md, lg) {
-		--columns: var(--columns-md);
-	}
-
-	@include mq(lg) {
-		--columns: var(--columns-lg);
-	}
-}
-
+// These props needs to be set on both classes because
+// they are generated on the container for many uses,
+// but Mai Columns generates the sizes on the column itself.
+// Even worse trickery in editor.scss.
+// It should all be easier with ACF block API v2 coming in 2.16.
+.has-columns,
 .is-column {
-	flex: var(--flex, var(--flex-xs, var(--flex-default)));
-	order: var(--order, unset);
+	--flex-basis: calc((100% * var(--columns) - (var(--column-gap) * (1 - var(--columns)))) - 0.025px); // Removes 0.025px to prevent margin collapsing.
+	--flex-default: 0 0 var(--flex-basis);
 
 	@include mq(false, sm) {
-		--order: var(--order-xs, unset);
+		--flex: var(--flex-xs, var(--flex-default));
+		--columns: var(--columns-xs, 1);
 	}
 
 	@include mq(sm, md) {
 		--flex: var(--flex-sm, var(--flex-default));
-		--order: var(--order-sm, unset);
+		--columns: var(--columns-sm, 1);
 	}
 
 	@include mq(md, lg) {
 		--flex: var(--flex-md, var(--flex-default));
-		--order: var(--order-md, unset);
+		--columns: var(--columns-md, 1);
 	}
 
 	@include mq(lg) {
 		--flex: var(--flex-lg, var(--flex-default));
+		--columns: var(--columns-lg, 1);
 	}
+}
+
+.has-columns {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--row-gap) var(--column-gap);
+	align-items: var(--align-columns-vertical, initial); // Needs initial for nested columns.
+	justify-content: var(--align-columns, initial); // Needs initial for nested columns.
+}
+
+.is-column {
+	flex: var(--flex, var(--flex-default));
+	order: var(--order, unset);
+
+	@include mq(false, sm) {
+		--order: var(--order-xs, initial);
+	}
+
+	@include mq(sm, md) {
+		--order: var(--order-sm, initial);
+	}
+
+	@include mq(md, lg) {
+		--order: var(--order-md, initial);
+	}
+}
+
+// This is for nested blocks where both use order values.
+
+.is-column:not([style*="--order-xs"]) {
+	--order-xs: initial;
+}
+
+.is-column:not([style*="--order-sm"]) {
+	--order-sm: initial;
+}
+
+.is-column:not([style*="--order-md"]) {
+	--order-md: initial;
 }

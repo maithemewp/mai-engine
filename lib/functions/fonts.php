@@ -223,6 +223,11 @@ function mai_get_font_variant_for_kirki( $variant ) {
 		$variant = 'regular';
 	}
 
+	// Convert 400italic to regular.
+	if ( in_array( $variant, [ '400italic' ] ) ) {
+		$variant = 'italic';
+	}
+
 	return $variant;
 }
 

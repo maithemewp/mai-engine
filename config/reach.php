@@ -11,8 +11,8 @@
 
 return [
 	'demos'         => [
-		'agency'  => 13,
-		'podcast' => 12,
+		'agency'  => 'https://demo.bizbudding.com/reach-agency/wp-content/uploads/sites/13/mai-engine/',
+		'podcast' => 'https://demo.bizbudding.com/reach-podcast/wp-content/uploads/sites/12/mai-engine/',
 	],
 	'global-styles' => [
 		'colors' => [

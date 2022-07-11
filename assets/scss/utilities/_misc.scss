@@ -46,10 +46,13 @@
 }
 
 .has-border-radius {
+	overflow: hidden; // Needed so content doesn't bleed out. I hope this doesn't cause issues elsewhere, when we want overlap.
 	border-radius: var(--border-radius);
 }
 
 .has-shadow {
+	position: relative;
+	z-index: 1; // Needed when Mai Column (or similar) has shadow with no column gap. Position relative is only here so z-index works too.
 	box-shadow: var(--shadow);
 }
 
@@ -64,31 +67,16 @@
 
 .is-circle,
 .is-square {
-	display: inline-grid;
-	padding: 0 !important;
-
-	> :first-child {
-		display: flex;
-		flex-direction: column;
-		place-content: center;
-		grid-area: 1/-1;
-	}
+	aspect-ratio: 1/1;
 }
 
 .is-circle {
+	overflow: hidden;
 	border-radius: 9999px;
 }
 
 .is-rounded {
 	border-radius: var(--border-radius);
-}
-
-.is-circle::before,
-.is-square::before {
-	display: block;
-	grid-area: 1/-1;
-	padding-bottom: 100%;
-	content: "";
 }
 
 .is-boxed {
@@ -126,6 +114,14 @@
 	> figure {
 		margin-bottom: 0;
 	}
+}
+
+.has-no-margin-left {
+	margin-left: 0 !important;
+}
+
+.has-no-margin-right {
+	margin-right: 0 !important;
 }
 
 @each $breakpoint-name, $breakpoint-size in $breakpoints {
@@ -236,72 +232,72 @@
 @include mq(false, sm) {
 
 	.hidden-xs {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(sm, md) {
 
 	.hidden-sm {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(md, lg) {
 
 	.hidden-md {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(lg, xl) {
 
 	.hidden-lg {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(xs) {
 
 	.hidden-xs-up {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(sm) {
 
 	.hidden-sm-up {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(md) {
 
 	.hidden-md-up {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(lg) {
 
 	.hidden-lg-up {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(xl) {
 
 	.hidden-xl-up {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
@@ -310,61 +306,61 @@
 @include mq(false, xs) {
 
 	.hidden-xs-down {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(false, sm) {
 
 	.hidden-sm-down {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(false, md) {
 
 	.hidden-md-down {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(false, lg) {
 
 	.hidden-lg-down {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
 }
 
 @include mq(false, xl) {
 
 	.hidden-xl-down {
-		display: none;
-		visibility: hidden;
+		display: none !important;
+		visibility: hidden !important;
 	}
-}
-
-.mai-cart-total-wrap {
-	overflow: hidden;
-	line-height: 0;
 }
 
 .mai-icon-container {
 	position: relative;
 
-	.mai-cart-total-wrap {
+	.mai-cart-total {
 		position: var(--cart-total-position, absolute);
-		top: calc(var(--spacing-xxs) * -1);
-		right: calc(var(--spacing-xxs) * -1);
+		top: calc(0.5em * -1);
+		right: calc(0.5em * -1);
 	}
 }
 
 .mai-cart-total:not(:empty) {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	padding: var(--cart-total-padding, var(--spacing-xxs));
+	overflow: hidden;
 	color: var(--cart-total-color, white);
 	font-size: var(--cart-total-font-size, 0.75rem); /* em was breaking when menu size was larger */
+	line-height: 0;
 	background: var(--cart-total-background, var(--color-danger));
 }

@@ -65,6 +65,11 @@ function mai_save_post_flush_customizer_transients( $post_id, $post, $update ) {
 	mai_flush_customizer_transients();
 }
 
+// For testing.
+// add_filter( 'kirki_global_dynamic_css', function( $styles ) {
+// 	return $styles;
+// });
+
 add_filter( 'kirki_global_styles', 'mai_add_kirki_css' );
 /**
  * Outputs kirki css.
@@ -79,20 +84,22 @@ function mai_add_kirki_css( $css ) {
 	/**
 	 * Check if this filter ran already.
 	 * loop_controls() method in Kirki calls this more than once.
+	 *
+	 * This was disabled in 2.22.0 because the loop_controls should only have this config_id once.
 	 */
-	static $has_run = false;
+	// static $has_run = false;
 
-	if ( $has_run ) {
-		return $css;
-	}
+	// if ( $has_run ) {
+	// 	return $css;
+	// }
 
-	$has_run   = true;
-	$transient = 'mai_dynamic_css';
-	$admin     = is_admin();
-	$ajax      = wp_doing_ajax();
-	$preview   = is_customize_preview();
+	$transient      = 'mai_dynamic_css';
+	$admin          = did_action( 'wp_head' ); // This took a while to figure out, but this filter/css is only run on wp_head on front end. Using `is_admin()` doesn't work.
+	$ajax           = function_exists( 'wp_doing_ajax' ) && wp_doing_ajax();
+	$preview        = is_customize_preview();
+	$use_transients = ! ( $admin || $ajax || $preview );
 
-	if ( ! ( $admin || $ajax || $preview ) && $cached_css = get_transient( $transient ) ) {
+	if ( $use_transients && $cached_css = get_transient( $transient ) ) {
 		return $cached_css;
 	}
 
@@ -108,13 +115,14 @@ function mai_add_kirki_css( $css ) {
 	$css = mai_add_button_text_colors( $css );
 	$css = mai_add_extra_custom_properties( $css );
 
-	if ( ! ( $admin || $ajax || $preview ) ) {
+	if ( $use_transients ) {
 		set_transient( $transient, $css, HOUR_IN_SECONDS );
 	}
 
+	// $has_run = true;
+
 	return $css;
 }
-
 
 add_filter( 'kirki_enqueue_google_fonts', 'mai_add_kirki_fonts', 99 );
 /**
@@ -238,16 +246,19 @@ function mai_add_title_area_custom_properties( $css ) {
  *
  * @since 2.0.0
  * @since 2.21.0 Full refactor.
+ * @since 2.22.0 Fixes missing additional fonts.
  *
  * @param array $css Kirki CSS output array.
  *
  * @return array
  */
 function mai_add_fonts_custom_properties( $css ) {
-	$elements = [
-		'body'    => mai_get_font_weights( 'body' ),
-		'heading' => mai_get_font_weights( 'heading' ),
-	];
+	$elements = [];
+	$fonts    = array_keys( mai_get_global_styles( 'fonts' ) );
+
+	foreach ( $fonts as $element ) {
+		$elements[ $element ] = mai_get_font_weights( $element );
+	}
 
 	foreach ( $elements as $element => $weights ) {
 		$family   = mai_get_font_family( $element );

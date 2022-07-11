@@ -41,7 +41,6 @@ function mai_get_grid_layout_defaults() {
 		'row_gap'                => 'lg',
 		'margin_top'             => '',
 		'margin_bottom'          => '',
-		'remove_spacing'         => '',
 	];
 
 	return $defaults;
@@ -296,14 +295,6 @@ function mai_get_grid_layout_fields() {
 			'wrapper'           => [
 				'class'            => 'mai-acf-button-group mai-acf-button-group-small',
 			],
-		],
-		[
-			'key'           => 'mai_grid_block_remove_spacing',
-			'name'          => 'remove_spacing',
-			'label'         => '',
-			'type'          => 'true_false',
-			'default_value' => $defaults['remove_spacing'],
-			'message'       => esc_html__( 'Remove bottom spacing', 'mai-engine' ),
 		],
 	];
 

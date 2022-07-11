@@ -32,30 +32,44 @@ function mai_get_columns_atts( $atts, $args, $nested = false ) {
 	// Columns class.
 	$atts['class'] = mai_add_classes( 'has-columns', $atts['class'] );
 
-	// Get columns arrangement.
-	$columns = mai_get_breakpoint_columns( $args );
+	// Get columns arrangement. Reverse order so it's mobile first.
+	$columns = array_reverse( mai_get_breakpoint_columns( $args ) );
 
-	// Set columns properties.
-	foreach ( $columns as $break => $value ) {
-		$atts['style'] .= sprintf( '--columns-%s:%s;', $break, $value );
+	// If preview.
+	$preview = isset( $args['preview'] ) && $args['preview'];
+
+	// Not preview.
+	if ( ! $preview ) {
+		// Set columns properties. Separate loops so it's more readable in the markup.
+		foreach ( $columns as $break => $value ) {
+			$atts['style'] .= mai_columns_get_columns( $break, $value );
+		}
+
+		// Set flex properties. Separate loops so it's more readable in the markup.
+		foreach ( $columns as $break => $value ) {
+			$atts['style'] .= mai_columns_get_flex( $break, $value );
+		}
 	}
+	// Temp workaround for ACF nested block markup.
+	// Can't do $nested && $args['preview'] because it broke Mai Gallery/List (not nested) inside Mai Columns (nested).
+	// So we always need the explicit flex items. Boo.
+	// Separate loops so it's more readable in the markup.
+	else {
+		foreach ( $columns as $break => $value ) {
+			for ( $i = 1; $i <= 24; $i++ ) {
+				$atts['style'] .= mai_columns_get_columns( sprintf( '%s-%s', $break, $i ), $value );
+			}
 
-	// Set flex properties. This is required to make sure nested columns work.
-	foreach ( $columns as $break => $value ) {
-		$atts['style'] .= sprintf( '--flex-%s:%s;', $break, mai_columns_get_flex( $value ) );
-
-		// Temp workaround for ACF nested block markup.
-		// Can't do $nested && $args['preview'] because it broke Mai Gallery (not nested) inside Mai Columns (nested).
-		// So we always need the explicit flex items. Boo.
-		if ( isset( $args['preview'] ) && $args['preview'] ) {
-			for ( $i = 1; $i < 24; $i++ ) {
-				$atts['style'] .= sprintf( '--flex-%s-%s:%s;', $break, $i, mai_columns_get_flex( $value ) );
+			for ( $i = 1; $i <= 24; $i++ ) {
+				if ( in_array( $value, [ 'auto', 'fill', 'full' ] ) ) {
+					$atts['style'] .= mai_columns_get_flex( sprintf( '%s-%s', $break, $i ), $value );
+				}
 			}
 		}
 	}
 
 	// Temp workaround for ACF nested block markup.
-	if ( $nested && isset( $args['preview'] ) && $args['preview'] ) {
+	if ( $nested && $preview ) {
 		$atts['class'] = mai_add_classes( 'has-columns-nested', $atts['class'] );
 	}
 
@@ -137,42 +151,69 @@ function mai_columns_get_args( $i = null ) {
 }
 
 /**
+ * Gets inline styles for reusable responsive columns count, fraction, or flex value.
+ *
+ * @access private
+ *
+ * @since 2.22.0
+ *
+ * @param string     $break The breakpoint value. Either xs, sm, md, etc.
+ * @param int|string $size The columns args data.
+ *
+ * @return string
+ */
+function mai_columns_get_columns( $break, $size ) {
+	$style = '';
+
+	if ( is_numeric( $size ) ) {
+		$style .= sprintf( '--columns-%s:1/%s;', $break, $size );
+	} elseif ( mai_has_string( '/', $size ) ) {
+		$style .= sprintf( '--columns-%s:%s;', $break, $size );
+	}
+
+	return $style;
+}
+
+/**
  * Gets flex value from column size.
  *
- * @since 2.10.0
+ * @access private
  *
+ * @since 2.10.0
+ * @since 2.22.0 Added $break to stay consistent with `mai_columns_get_columns()`.
+ *
+ * @param string $break Either xs, sm, md, etc.
  * @param string $size
  *
  * @return string
  */
-function mai_columns_get_flex( $size ) {
-	static $all = [];
-
-	if ( isset( $all[ $size ] ) ) {
-		return $all[ $size ];
-	}
-
+function mai_columns_get_flex( $break, $size ) {
+	$style = '';
 	$basis = mai_columns_get_flex_basis( $size );
 
 	switch ( $size ) {
 		case 'auto':
-			$all[ $size ] = sprintf( '0 1 %s', $basis );
+			// $style .= sprintf( '0 1 %s', $basis );
+			$style .= sprintf( '--flex-%s:0 1 %s;', $break, $basis );
 		break;
 		case 'fill':
-			$all[ $size ] = sprintf( '1 0 %s', $basis );
+			// $style .= sprintf( '1 0 %s', $basis );
+			$style .= sprintf( '--flex-%s:1 0 %s;', $break, $basis );
 		break;
 		case 'full':
-			$all[ $size ] = sprintf( '0 0 %s', $basis );
+			// $style .= sprintf( '0 0 %s', $basis );
+			$style .= sprintf( '--flex-%s:0 0 %s;', $break, $basis );
 		break;
 		default:
-			$all[ $size ] = sprintf( '0 0 %s', $basis );
+			// $style .= sprintf( '0 0 %s', $basis );
+			$style .= sprintf( '--flex-%s:0 0 %s;', $break, $basis );
 	}
 
-	return $all[ $size ];
+	return $style;
 }
 
 /**
- * Gets max width value from column size.
+ * Gets flex basis value from column size.
  *
  * Uses: `flex-basis: calc(25% - (var(--column-gap) * 3/4));`
  * This also works: `flex-basis: calc((100% / var(--columns) - ((var(--columns) - 1) / var(--columns) * var(--column-gap))));`
@@ -219,27 +260,43 @@ function mai_columns_get_flex_basis( $size ) {
 
 	// Set columns.
 	if ( $fraction ) {
-		// Get percent.
-		$percent = mai_fraction_to_percent( $fraction );
-		// Array from fraction.
-		$array   = explode( '/', $fraction );
-		$top     = (int) (isset( $array[0] ) ? $array[0] : 1);
-		$bottom  = (int) (isset( $array[1] ) ? $array[1] : 1);
-		$top     = 0 === $top ? 1 : $top;
-		$bottom  = 0 === $bottom ? 1 : $bottom;
-		// Divide fraction to get decimal.
-		$float   = $top / $bottom;
-		// Trim to 6 places.
-		// $float   = number_format( $float, 6, '.', '' ); // No need to do this since using the calculation before * 1000000.
-		// Subtract 1 - {decimal}. Wow this was annoying. @link https://stackoverflow.com/questions/17210787/php-float-calculation-error-when-subtracting
-		// $float   = bcsub( '1', (string) $float, 6 ); // Can't use this because it's not available on all hosts. @link https://stackoverflow.com/questions/63593354/undefined-function-bcsub
-		$float   = ( ( 1000000 - floor($float * 1000000) ) / 1000000 );
-		// Trim trailing zeros.
-		$float   = (float) $float;
-		// Converts 0.0 to 0.
-		$float   = $float > 0 ? $float : '0';
 
-		$all[ $size ] = sprintf( 'calc(%s - (var(--column-gap) * %s))', $percent, $float );
+		// ray( $fraction );
+
+		// Temp disable.
+		// if ( false === true ) {
+			// Get percent.
+			// $percent = mai_fraction_to_percent( $fraction );
+			// Array from fraction.
+			// $array   = explode( '/', $fraction );
+			// $top     = (int) (isset( $array[0] ) ? $array[0] : 1);
+			// $bottom  = (int) (isset( $array[1] ) ? $array[1] : 1);
+			// $top     = 0 === $top ? 1 : $top;
+			// $bottom  = 0 === $bottom ? 1 : $bottom;
+			// Divide fraction to get decimal.
+			// $float   = $top / $bottom;
+			// Trim to 6 places.
+			// $float   = number_format( $float, 6, '.', '' ); // No need to do this since using the calculation before * 1000000.
+			// Subtract 1 - {decimal}. Wow this was annoying. @link https://stackoverflow.com/questions/17210787/php-float-calculation-error-when-subtracting
+			// $float   = bcsub( '1', (string) $float, 6 ); // Can't use this because it's not available on all hosts. @link https://stackoverflow.com/questions/63593354/undefined-function-bcsub
+			// $float   = ( ( 1000000 - floor($float * 1000000) ) / 1000000 );
+			// Trim trailing zeros.
+			// $float   = (float) $float;
+			// Converts 0.0 to 0.
+			// $float   = $float > 0 ? $float : '0';
+
+			// $all[ $size ] = sprintf( 'calc(%s - (var(--column-gap) * %s))', $percent, $float );
+
+			// $percent = sprintf( '((%s/%s * 100) * 1%%)', $top, $bottom );
+			// $percent = sprintf( '(((%s) * 100 * 1%%))', $fraction );
+			// $all[ $size ] = sprintf( 'calc(((%s/%s * 100) * 1%%) - (var(--column-gap) * (1 - (%s/%s))))', $top, $bottom, $top, $bottom );
+			// $all[ $size ] = 'calc((100% * var(--columns) - (var(--column-gap) * (1 - var(--columns)))) - 0.025px)';
+			$all[ $size ] = 'var(--flex-basis)';
+
+		// } else {
+
+
+		// }
 	}
 	// This shouldn't ever happen.
 	else {

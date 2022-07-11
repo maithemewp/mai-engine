@@ -187,8 +187,9 @@ return [
 			'localize' => [
 				'name' => 'maiMenuVars',
 				'data' => [
-					'ariaLabel'     => __( 'Mobile Menu', 'mai-engine' ),
-					'subMenuToggle' => __( 'Sub Menu', 'mai-engine' ),
+					'ariaLabel'        => __( 'Mobile Menu', 'mai-engine' ),
+					'subMenuToggle'    => __( 'Sub Menu', 'mai-engine' ),
+					'disableMicroData' => apply_filters( 'genesis_disable_microdata', false ),
 				],
 			],
 		],
@@ -463,6 +464,7 @@ return [
 			'wp-block-styles',
 		],
 		'remove' => [
+			// 'core-block-patterns',
 			'genesis-footer-widgets',
 		],
 	],
@@ -742,6 +744,7 @@ return [
 			'remove-template-classes'    => true,
 			'disable-emojis'             => true,
 			'remove-recent-comments-css' => true,
+			'remove-global-styles'       => true,
 		],
 		'genesis'             => [
 			'avatar_size'           => 48,
