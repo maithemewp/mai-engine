@@ -2,13 +2,8 @@
     "packages": [
         {
             "name": "advanced-custom-fields/advanced-custom-fields-pro",
-<<<<<<< HEAD
             "version": "6.0.0-alpha3",
             "version_normalized": "6.0.0.0-alpha3",
-=======
-            "version": "5.12.3",
-            "version_normalized": "5.12.3.0",
->>>>>>> develop
             "dist": {
                 "type": "zip",
                 "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download&t={%VERSION}&k={%ACF_PRO_KEY}"

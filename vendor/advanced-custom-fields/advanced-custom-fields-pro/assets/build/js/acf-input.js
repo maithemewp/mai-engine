@@ -2252,7 +2252,7 @@
       return this.$('.acf-file-uploader');
     },
     $input: function () {
-      return this.$('input[type="hidden"]:first');
+      return this.$('input[type="hidden"]');
     },
     validateAttachment: function (attachment) {
       // defaults
@@ -2871,7 +2871,7 @@
       return this.$('.acf-image-uploader');
     },
     $input: function () {
-      return this.$('input[type="hidden"]:first');
+      return this.$('input[type="hidden"]');
     },
     events: {
       'click a[data-name="add"]': 'onClickAdd',
