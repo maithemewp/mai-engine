@@ -529,7 +529,8 @@ class Mai_Grid {
 				}
 			break;
 			case 'id':
-				$query_args['include'] = $this->args['include'];
+				// Empty array returns all terms, array(-1) prevents this.
+				$query_args['include'] = $this->args['include'] ?: [ -1 ];
 				$query_args['orderby'] = 'include';
 				$query_args['order']   = 'ASC';
 			break;
