@@ -88,6 +88,7 @@ return [
 					'genesis_entry_footer',
 				],
 				'footer_meta'                  => '[post_terms taxonomy="category" before="" sep=""]',
+				'more_link_style'              => 'button_link',
 				'boxed'                        => false,
 				'columns'                      => '2',
 				'posts_per_page'               => '12',

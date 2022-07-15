@@ -664,9 +664,10 @@ return [
 			],
 		],
 		'content-archives'    => [
-			'enable'         => [ 'post' ],
-			'more_link_text' => __( 'Read more', 'mai-engine' ),
-			'post'           => [
+			'enable'          => [ 'post' ],
+			'more_link_text'  => __( 'Read more', 'mai-engine' ),
+			'more_link_style' => 'button_secondary',
+			'post'            => [
 				'show'                         => [
 					'image',
 					'genesis_entry_header',
