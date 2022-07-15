@@ -19,3 +19,12 @@
 		}
 	}
 }
+
+.entry-more-link[class="entry-more-link"] {
+	font-size: var(--font-size-sm);
+}
+
+.entry-more-link.button-link {
+	padding-right: 0;
+	padding-left: 0;
+}

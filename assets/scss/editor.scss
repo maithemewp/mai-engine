@@ -350,6 +350,11 @@ input[type="submit"],
 	}
 }
 
+.entry-more-link.wp-block-button__link {
+	padding-right: 0;
+	padding-left: 0;
+}
+
 // Remove default spacing on .wp-block from classic.css in WP core.
 .mai-divider {
 	margin-top: -28px;

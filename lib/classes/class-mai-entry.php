@@ -1398,9 +1398,10 @@ class Mai_Entry {
 			return;
 		}
 
-		$more_link_text = isset( $this->args['more_link_text'] ) && $this->args['more_link_text'] ? $this->args['more_link_text'] : mai_get_read_more_text();
-		$more_link_text = $more_link_text;
-		$more_link_text = do_shortcode( $more_link_text );
+		$more_link_style = isset( $this->args['more_link_style'] ) && $this->args['more_link_style'] ? $this->args['more_link_style']: 'button_secondary';
+		$more_link_text  = isset( $this->args['more_link_text'] ) && $this->args['more_link_text'] ? $this->args['more_link_text']: mai_get_read_more_text();
+		$more_link_text  = $more_link_text;
+		$more_link_text  = do_shortcode( $more_link_text );
 
 		// Screen reader text title.
 		switch ( $this->type ) {
@@ -1422,6 +1423,53 @@ class Mai_Entry {
 				$title = '';
 		}
 
+		$class      = 'entry-more-link';
+		$wrap_class = 'entry-more';
+
+		// Editor.
+		if ( is_admin() ) {
+
+			switch ( $more_link_style ) {
+				case 'button':
+					$class      .= ' wp-block-button__link has-sm-font-size';
+					$wrap_class .= '';
+				break;
+				case 'button_outline':
+					$class      .= ' wp-block-button__link  has-sm-font-size';
+					$wrap_class .= ' is-style-outline';
+				break;
+				case 'button_link':
+					$class      .= ' wp-block-button__link';
+					$wrap_class .= ' is-style-link';
+				break;
+				case 'link':
+					$class      .= ' has-sm-font-size';
+				break;
+				default:
+					$class      .= ' wp-block-button__link has-sm-font-size';
+					$wrap_class .= ' is-style-secondary';
+			}
+		}
+		// Front end.
+		else {
+
+			switch ( $more_link_style ) {
+				case 'button':
+					$class .= ' button button-small';
+				break;
+				case 'button_outline':
+					$class .= ' button button-outline button-small';
+				break;
+				case 'button_link':
+					$class .= ' button button-link';
+					break;
+				case 'link':
+				break;
+				default:
+					$class .= ' button button-secondary button-small';
+			}
+		}
+
 		$more_link_text .= $title ? sprintf( '<span class="screen-reader-text">%s</span>', $title ) : '';
 
 		// The link HTML.
@@ -1435,7 +1483,7 @@ class Mai_Entry {
 				'atts'    => [
 					'href'   => $href,
 					'target' => is_admin() ? '_blank' : false,
-					'class'  => 'entry-more-link ' . ( is_admin() ? 'wp-block-button__link has-small-font-size' : 'button button-small button-secondary' ),
+					'class'  => $class,
 				],
 				'params'  => [
 					'args'  => $this->args,
@@ -1452,7 +1500,7 @@ class Mai_Entry {
 				'content' => $more_link,
 				'context' => 'entry-more',
 				'atts'    => [
-					'class' => 'entry-more' . ( is_admin() ? ' wp-block-button is-style-secondary' : '' ),
+					'class' => $wrap_class,
 				],
 				'echo'    => true,
 				'params'  => [
