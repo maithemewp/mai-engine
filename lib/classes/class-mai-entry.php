@@ -1431,12 +1431,12 @@ class Mai_Entry {
 
 			switch ( $more_link_style ) {
 				case 'button':
-					$class      .= ' wp-block-button__link has-sm-font-size';
-					$wrap_class .= '';
+					$class      .= ' wp-block-button__link';
+					$wrap_class .= ' is-style-primary button-small';
 				break;
 				case 'button_outline':
-					$class      .= ' wp-block-button__link  has-sm-font-size';
-					$wrap_class .= ' is-style-outline';
+					$class      .= ' wp-block-button__link';
+					$wrap_class .= ' is-style-outline button-small';
 				break;
 				case 'button_link':
 					$class      .= ' wp-block-button__link';
@@ -1446,8 +1446,8 @@ class Mai_Entry {
 					$class      .= ' has-sm-font-size';
 				break;
 				default:
-					$class      .= ' wp-block-button__link has-sm-font-size';
-					$wrap_class .= ' is-style-secondary';
+					$class      .= ' wp-block-button__link';
+					$wrap_class .= ' is-style-secondary button-small';
 			}
 		}
 		// Front end.
