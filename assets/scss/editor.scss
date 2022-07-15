@@ -350,7 +350,8 @@ input[type="submit"],
 	}
 }
 
-.entry-more-link.wp-block-button__link {
+.entry-more.is-style-link .wp-block-button__link,
+.entry-more:not([class*="is-style-link"]):not([class*="is-style-"]) .wp-block-button__link {
 	padding: 0;
 }
 
