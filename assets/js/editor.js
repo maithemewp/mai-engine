@@ -102,20 +102,21 @@ wp.domReady( () => {
 		}
 
 		return data;
-
 	} );
 
 	function getPostType( $input, keys ) {
-		return acf.getField( keys.post_type ).val();
+		var $field = $input.parents( '.acf-fields' ).find( '.acf-field[data-key="' + keys.post_type + '"]' );
+		return acf.getField( $field ).val();
 	}
 
 	function getRowTaxonomy( $input, keys ) {
-		var $field = $input.parents( '.acf-field' ).prev( '.acf-field' );
+		var $field = $input.parents( '.acf-fields' ).find( '.acf-field[data-key="' + keys.taxonomy + '"]' );
 		return acf.getField( $field ).val();
 	}
 
 	function getTaxonomy( $input, keys ) {
-		return acf.getField( keys.taxonomy ).val();
+		var $field = $input.parents( '.acf-fields' ).find( '.acf-field[data-key="' + keys.taxonomy + '"]' );
+		return acf.getField( $field ).val();
 	}
 
 	/**
