@@ -87,7 +87,7 @@ function mai_add_kirki_css( $css ) {
 	 * Check if this filter ran already.
 	 * loop_controls() method in Kirki calls this more than once.
 	 *
-	 * This was disabled in TBD because the loop_controls should only have this config_id once.
+	 * This was disabled in 2.22.0 because the loop_controls should only have this config_id once.
 	 */
 	// static $has_run = false;
 
@@ -248,7 +248,7 @@ function mai_add_title_area_custom_properties( $css ) {
  *
  * @since 2.0.0
  * @since 2.21.0 Full refactor.
- * @since TBD Fixes missing additional fonts.
+ * @since 2.22.0 Fixes missing additional fonts.
  *
  * @param array $css Kirki CSS output array.
  *

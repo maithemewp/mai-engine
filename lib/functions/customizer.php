@@ -451,6 +451,27 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			],
 		],
 		[
+			'settings'        => 'more_link_style',
+			'label'           => __( 'More Link Style', 'mai-engine' ),
+			'type'            => 'select',
+			'sanitize'        => 'esc_html',
+			'default'         => $defaults['more_link_style'],
+			'choices'         => [
+				'button'           => esc_html__( 'Primary Button', 'mai-engine' ),
+				'button_secondary' => esc_html__( 'Secondary Button', 'mai-engine' ),
+				'button_outline'   => esc_html__( 'Outline Button', 'mai-engine' ),
+				'button_link'      => esc_html__( 'Link Button', 'mai-engine' ),
+				'link'             => esc_html__( 'Link', 'mai-engine' ),
+			],
+			'active_callback' => [
+				[
+					'setting'  => 'show',
+					'operator' => 'contains',
+					'value'    => 'more_link',
+				],
+			],
+		],
+		[
 			'settings'        => 'footer_meta',
 			'label'           => __( 'Footer Meta', 'mai-engine' ),
 			'description'     => mai_get_entry_meta_setting_description(),

@@ -634,7 +634,7 @@ function mai_get_term_choices_from_taxonomy( $taxonomy = '' ) {
 /**
  * Allow searching for terms by ID.
  *
- * @since TBD
+ * @since 2.22.0
  *
  * @link https://www.powderkegwebdesign.com/fantastic-way-allow-searching-id-advanced-custom-fields-objects/
  *

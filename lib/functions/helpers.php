@@ -366,7 +366,7 @@ function mai_has_sticky_header_enabled() {
 /**
  * Checks if a site has a sticky header.
  *
- * @since TBD
+ * @since 2.22.0
  *
  * @return bool
  */
@@ -416,7 +416,7 @@ function mai_has_transparent_header_enabled() {
 /**
  * Checks if site has transparent header.
  *
- * @since TBD Added filter.
+ * @since 2.22.0 Added filter.
  * @since 0.1.0
  *
  * @return bool

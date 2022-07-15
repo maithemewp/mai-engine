@@ -192,7 +192,17 @@ function acf_register_block_type( $block ) {
 	if ( function_exists( 'register_block_type' ) ) {
 		register_block_type(
 			$block['name'],
+<<<<<<< HEAD
 			$block
+=======
+			array(
+				'attributes'      => acf_get_block_type_default_attributes( $block ),
+				'uses_context'    => $block['usesContext'],
+				'style'           => isset( $block['style'] ) ? $block['style'] : '',
+				'api_version'     => 2,
+				'render_callback' => 'acf_render_block_callback',
+			)
+>>>>>>> develop
 		);
 	}
 

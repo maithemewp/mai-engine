@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.22.0 (TBD)
+## 2.22.0 (7/11/2022)
 * Added: New "Has border" and "Has border radius" settings on Mai Column blocks.
 * Added: New "Content Alignment" setting on Heading and Paragraph blocks for times when the Max Width setting is used and you want to align the content independent from the text alignment.
 * Added: [Performance] New setting to remove unused global styles and inline SVGs added by WP 6.0 for features rarely used in WP. These extra styles and inline SVGs are now removed by default.
@@ -23,7 +23,7 @@
 * Fixed: Some general compatibility fixes for WP 6.0.
 * Fixed: Number setting not working in Mai Term Grid if the taxonomy is Post Tag or another non-hierarchical taxonomy.
 * Fixed: Nested columns are now even more thorough in the editor, so it should more closely match the front end.
-* Fixed: Potentially fixed a random bug where customizer CSS would break while setting a transient and required flushing transients (or opening Customizer and updating) to fix.
+* Fixed: Potentially fixed a random bug where Customizer CSS would break while setting a transient and required flushing transients (or opening Customizer and updating) to fix.
 * Fixed: Outline buttons were larger than standard buttons from changes in WP 6.0.
 * Fixed: Added some custom property fallback values for edge-case configurations where the value is not set by the theme.
 * Fixed: CSS tweak to fix entry title links when Mai Grid blocks are not boxed and over a dark background.
@@ -32,8 +32,7 @@
 * Fixed: CSS tweak that adds z-index to `has-shadow` class.
 * Fixed: Margin being added unexpectedly to Mai Grid blocks when the margin settings are set to None.
 * Fixed: Edge-case scenarios where a custom font is added via the config using `400italic` instead of just `italic` will now work either way.
-* Fixed: More customizer settings should show in live preview from a fix in static caching in our helper functions.
-
+* Fixed: More Customizer settings should show in live preview from a fix in static caching in our helper functions.
 
 ## 2.21.3 (4/27/22)
 * Added: Basic support for bbPress.

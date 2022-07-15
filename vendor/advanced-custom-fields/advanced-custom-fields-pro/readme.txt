@@ -2,9 +2,15 @@
 Contributors: elliotcondon
 Tags: acf, fields, custom fields, meta, repeater
 Requires at least: 4.7
+<<<<<<< HEAD
 Tested up to: 6.0
 Requires PHP: 5.6
 Stable tag: 6.0.0-alpha3
+=======
+Tested up to: 6.0.1
+Requires PHP: 5.6
+Stable tag: 5.12.3
+>>>>>>> develop
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +84,7 @@ From your WordPress dashboard
 
 == Changelog ==
 
+<<<<<<< HEAD
 = 6.0.0-alpha3 =
 *Release Date 27th June 2022
 
@@ -108,6 +115,12 @@ From your WordPress dashboard
 *Release Date 12th May 2022*
 
 * Enhancement - This build provides a preview of upcoming block changes. View the [full release notes on GitHub](https://github.com/AdvancedCustomFields/acf/issues/654)
+=======
+= 5.12.3 =
+*Release Date 14th July 2022*
+
+* Security Fix - Inputs for basic file uploads are now nonced to prevent an issue which could allow arbitrary file uploads to forms with ACF fields (Thanks to James Golovich from Pritect, Inc.)
+>>>>>>> develop
 
 = 5.12.2 =
 *Release Date 6th April 2022*

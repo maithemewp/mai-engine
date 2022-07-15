@@ -78,7 +78,7 @@ function mai_disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
 /**
  * Remove inline duotone svgs.
  *
- * @since TBD
+ * @since 2.22.0
  *
  * @link https://github.com/WordPress/gutenberg/issues/38299
  * @link https://github.com/WordPress/gutenberg/issues/36834
@@ -140,7 +140,7 @@ add_action( 'wp_print_scripts', 'mai_dequeue_comment_reply', 99 );
  *
  * @link https://github.com/studiopress/genesis/issues/2684
  *
- * @since TBD
+ * @since 2.22.0
  *
  * @return void
  */

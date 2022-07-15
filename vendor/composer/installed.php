@@ -5,14 +5,23 @@
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
+<<<<<<< HEAD
         'reference' => '61a9572441dc3cb4738b905fb2a4fb360f5eea6b',
+=======
+        'reference' => 'ddee945ca3c9e363fd86db8434ebf38bb2211b28',
+>>>>>>> develop
         'name' => 'maithemewp/mai-engine',
         'dev' => false,
     ),
     'versions' => array(
         'advanced-custom-fields/advanced-custom-fields-pro' => array(
+<<<<<<< HEAD
             'pretty_version' => '6.0.0-alpha3',
             'version' => '6.0.0.0-alpha3',
+=======
+            'pretty_version' => '5.12.3',
+            'version' => '5.12.3.0',
+>>>>>>> develop
             'type' => 'library',
             'install_path' => __DIR__ . '/../advanced-custom-fields/advanced-custom-fields-pro',
             'aliases' => array(),
@@ -20,12 +29,12 @@
             'dev_requirement' => false,
         ),
         'afragen/wp-dependency-installer' => array(
-            'pretty_version' => '4.3.4',
-            'version' => '4.3.4.0',
+            'pretty_version' => '4.3.5',
+            'version' => '4.3.5.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../afragen/wp-dependency-installer',
             'aliases' => array(),
-            'reference' => 'd13c7f2caab8781758c46ebef508953ce98259db',
+            'reference' => 'aee91336474390c60f66398e1d730ea289a36a1f',
             'dev_requirement' => false,
         ),
         'afragen/wp-dismiss-notice' => array(
@@ -349,7 +358,11 @@
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
+<<<<<<< HEAD
             'reference' => '61a9572441dc3cb4738b905fb2a4fb360f5eea6b',
+=======
+            'reference' => 'ddee945ca3c9e363fd86db8434ebf38bb2211b28',
+>>>>>>> develop
             'dev_requirement' => false,
         ),
         'phpoption/phpoption' => array(
