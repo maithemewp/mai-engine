@@ -147,7 +147,6 @@ return [
 		 *
 		 * @since TBD
 		 *
-		 *
 		 * @param mixed      $value   The field value.
 		 * @param int|string $post_id The post ID where the value is saved.
 		 * @param array      $field   The field array containing all settings.
