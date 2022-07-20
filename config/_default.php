@@ -664,9 +664,9 @@ return [
 			],
 		],
 		'content-archives'    => [
-			'enable'         => [ 'post' ],
-			'more_link_text' => __( 'Read more', 'mai-engine' ),
-			'post'           => [
+			'enable'          => [ 'post' ],
+			'more_link_text'  => __( 'Read more', 'mai-engine' ),
+			'post'            => [
 				'show'                         => [
 					'image',
 					'genesis_entry_header',
@@ -689,6 +689,7 @@ return [
 				'content_limit'                => 0,
 				'custom_content'               => '',
 				'more_link_text'               => '',
+				'more_link_style'              => 'button_secondary',
 				'footer_meta'                  => 'mai_get_footer_meta_default',
 				'align_text'                   => 'start',
 				'align_text_vertical'          => '',

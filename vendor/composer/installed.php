@@ -5,14 +5,14 @@
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'fee750be6ab567d99e60fb98cbc1be1d4d28f369',
+        'reference' => 'ddee945ca3c9e363fd86db8434ebf38bb2211b28',
         'name' => 'maithemewp/mai-engine',
         'dev' => false,
     ),
     'versions' => array(
         'advanced-custom-fields/advanced-custom-fields-pro' => array(
-            'pretty_version' => '5.12.2',
-            'version' => '5.12.2.0',
+            'pretty_version' => '5.12.3',
+            'version' => '5.12.3.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../advanced-custom-fields/advanced-custom-fields-pro',
             'aliases' => array(),
@@ -20,12 +20,12 @@
             'dev_requirement' => false,
         ),
         'afragen/wp-dependency-installer' => array(
-            'pretty_version' => '4.3.4',
-            'version' => '4.3.4.0',
+            'pretty_version' => '4.3.5',
+            'version' => '4.3.5.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../afragen/wp-dependency-installer',
             'aliases' => array(),
-            'reference' => 'd13c7f2caab8781758c46ebef508953ce98259db',
+            'reference' => 'aee91336474390c60f66398e1d730ea289a36a1f',
             'dev_requirement' => false,
         ),
         'afragen/wp-dismiss-notice' => array(
@@ -349,7 +349,7 @@
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'fee750be6ab567d99e60fb98cbc1be1d4d28f369',
+            'reference' => 'ddee945ca3c9e363fd86db8434ebf38bb2211b28',
             'dev_requirement' => false,
         ),
         'phpoption/phpoption' => array(

@@ -41,6 +41,7 @@ function mai_get_grid_display_defaults() {
 		'custom_content'      => '',
 		'content_limit'       => 0,
 		'more_link_text'      => '',
+		'more_link_style'     => 'button_secondary',
 		'footer_meta'         => '[post_categories]', // TODO: this should be different, or empty depending on the post type?
 		'align_text'          => 'start',
 		'align_text_vertical' => '',
@@ -75,6 +76,7 @@ function mai_get_grid_display_sanitized( $args ) {
 		'custom_content'      => 'wp_kses_post',
 		'content_limit'       => 'absint',
 		'more_link_text'      => 'wp_kses_post', // We may want to add icons/spans and HTML in here.
+		'more_link_style'     => 'esc_html',
 		'footer_meta'         => 'wp_kses_post',
 		'align_text'          => 'esc_html',
 		'align_text_vertical' => 'esc_html',
@@ -481,6 +483,27 @@ function mai_get_grid_display_fields() {
 			'type'              => 'text',
 			'default_value'     => $defaults['more_link_text'],
 			'placeholder'       => mai_get_read_more_text(),
+			'conditional_logic' => [
+				[
+					'field'    => 'mai_grid_block_show',
+					'operator' => '==',
+					'value'    => 'more_link',
+				],
+			],
+		],
+		[
+			'key'               => 'mai_grid_block_more_link_style',
+			'name'              => 'more_link_style',
+			'label'             => esc_html__( 'More Link Style', 'mai-engine' ),
+			'type'              => 'select',
+			'default_value'     => $defaults['more_link_style'],
+			'choices'       => [
+				'button'           => esc_html__( 'Primary Button', 'mai-engine' ),
+				'button_secondary' => esc_html__( 'Secondary Button', 'mai-engine' ),
+				'button_outline'   => esc_html__( 'Outline Button', 'mai-engine' ),
+				'button_link'      => esc_html__( 'Link Button', 'mai-engine' ),
+				'link'             => esc_html__( 'Link', 'mai-engine' ),
+			],
 			'conditional_logic' => [
 				[
 					'field'    => 'mai_grid_block_show',

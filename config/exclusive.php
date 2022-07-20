@@ -88,6 +88,7 @@ return [
 					'genesis_entry_footer',
 				],
 				'footer_meta'                  => '[post_terms taxonomy="category" before="" sep=""]',
+				'more_link_style'              => 'button_link',
 				'boxed'                        => false,
 				'columns'                      => '2',
 				'posts_per_page'               => '12',
@@ -125,29 +126,40 @@ return [
 			return $css;
 		}
 
+		add_filter( 'acf/load_field/name=more_link_style', 'mai_exclusive_load_more_link_style_field' );
 		/**
-		 * Convert all more links to button-link.
+		 * Sets default more links to link button.
 		 *
-		 * @since 2.17.0
+		 * @since 2.23.0
 		 *
-		 * @return array
+		 * @param array $field The existing field array.
+		 *
+		 * @return string
 		 */
-		add_filter( 'genesis_attr_entry-more-link', 'mai_exclusive_more_link_button', 10, 3 );
-		function mai_exclusive_more_link_button( $atts, $context, $args ) {
-			$args = isset( $args['params']['args'] ) ? $args['params']['args'] : [];
+		function mai_exclusive_load_more_link_style_field( $field ) {
+			$field['default_value'] = 'button_link';
 
-			// Bail if no custom args.
-			if ( ! $args ) {
-				return $atts;
+			return $field;
+		}
+
+		add_filter( 'acf/load_value/name=more_link_style', 'mai_exclusive_load_more_link_style_value', 10, 3 );
+		/**
+		 * Sets empty more link values to link button.
+		 *
+		 * @since 2.23.0
+		 *
+		 * @param mixed      $value   The field value.
+		 * @param int|string $post_id The post ID where the value is saved.
+		 * @param array      $field   The field array containing all settings.
+		 *
+		 * @return string
+		 */
+		function mai_exclusive_load_more_link_style_value( $value, $post_id, $field ) {
+			if ( $value ) {
+				return $value;
 			}
 
-			// Remove button-secondary if it exists.
-			$atts['class'] = str_replace( ' button-secondary', '', $atts['class'] );
-
-			// Make outline button.
-			$atts['class'] .= ' button-link';
-
-			return $atts;
+			return 'button_link';
 		}
 	},
 ];

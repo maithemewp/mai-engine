@@ -1,6 +1,13 @@
 # Changelog
 
-## 2.22.0 (7/11/2022)
+## 2.23.0 (7/20/22)
+* Added: New "More Link Style" setting to choose the style for the "Read More" link/button on Mai Post/Grid blocks and Content Archives settings in Customizer.
+* Added: Form `accent-color` declaration so choice fields like radio and checkbox use chosen primary color.
+* Fixed: Post type and taxonomy choices not loading correctly when multiple Mai Post/Grid blocks were used with the edit mode enabled.
+* Fixed: Entry image width when Mai Post Grid is used in a registered block pattern.
+* Fixed: [Developers] Added `style` attribute to `register_block_type` in ACF so patterns work better in pattern inserter until ACF 6.0 is released.
+
+## 2.22.0 (7/11/22)
 * Added: New "Has border" and "Has border radius" settings on Mai Column blocks.
 * Added: New "Content Alignment" setting on Heading and Paragraph blocks for times when the Max Width setting is used and you want to align the content independent from the text alignment.
 * Added: [Performance] New setting to remove unused global styles and inline SVGs added by WP 6.0 for features rarely used in WP. These extra styles and inline SVGs are now removed by default.
