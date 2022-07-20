@@ -61,6 +61,7 @@
 
 .has-image-left-middle,
 .has-image-right-middle {
+	--entry-image-width: 100%; // This was needed so patterns didn't break in pattern inserter.
 	--entry-image-link-align: center;
 }
 
