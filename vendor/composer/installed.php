@@ -5,7 +5,7 @@
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'ddee945ca3c9e363fd86db8434ebf38bb2211b28',
+        'reference' => '23a8b8f3abe122db599f99b2a67eac391ad7ec13',
         'name' => 'maithemewp/mai-engine',
         'dev' => false,
     ),
@@ -349,7 +349,7 @@
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'ddee945ca3c9e363fd86db8434ebf38bb2211b28',
+            'reference' => '23a8b8f3abe122db599f99b2a67eac391ad7ec13',
             'dev_requirement' => false,
         ),
         'phpoption/phpoption' => array(
