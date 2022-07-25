@@ -110,7 +110,7 @@ wp.domReady( () => {
 	}
 
 	function getRowTaxonomy( $input, keys ) {
-		var $field = $input.parents( '.acf-fields' ).find( '.acf-field[data-key="' + keys.taxonomy + '"]' );
+		var $field = $input.parents( '.acf-row' ).find( '.acf-field[data-key="' + keys.taxonomy + '"]' );
 		return acf.getField( $field ).val();
 	}
 
