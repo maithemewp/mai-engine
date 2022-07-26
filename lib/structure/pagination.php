@@ -216,7 +216,8 @@ add_filter( 'genesis_prev_link_text', 'mai_previous_page_link' );
  * @return string
  */
 function mai_previous_page_link() {
-	return esc_html__( '← Previous', 'mai-engine' );
+	$icon = mai_get_previous_icon( 'archive-pagination' );
+	return sprintf( '%s%s', $icon, esc_html__( 'Previous', 'mai-engine' ) );
 }
 
 add_filter( 'genesis_next_link_text', 'mai_next_page_link' );
@@ -228,7 +229,8 @@ add_filter( 'genesis_next_link_text', 'mai_next_page_link' );
  * @return string
  */
 function mai_next_page_link() {
-	return esc_html__( 'Next →', 'mai-engine' );
+	$icon = mai_get_next_icon( 'archive-pagination' );
+	return sprintf( '%s%s', esc_html__( 'Next', 'mai-engine' ), $icon );
 }
 
 add_filter( 'genesis_markup_pagination-previous_content', 'mai_previous_pagination_text' );

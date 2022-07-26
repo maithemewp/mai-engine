@@ -13,6 +13,52 @@
 defined( 'ABSPATH' ) || die;
 
 /**
+ * Gets previous icon. This may be used for adjacent entry navigation and archive pagination.
+ *
+ * @since TBD
+ *
+ * @param string $context The context in which the icon is used. Useful for filters.
+ *
+ * @return string
+ */
+function mai_get_previous_icon( $context = '' ) {
+	$icon = mai_get_icon(
+		[
+			'icon'         => 'arrow-left',
+			'style'        => 'regular',
+			'size'         => '0.75em',
+			'margin_right' => '0.5em',
+		]
+	);
+	$icon = apply_filters( 'mai_previous_arrow', $icon, $context );
+
+	return $icon;
+}
+
+/**
+ * Gets next icon. This may be used for adjacent entry navigation and archive pagination.
+ *
+ * @since TBD
+ *
+ * @param string $context The context in which the icon is used. Useful for filters.
+ *
+ * @return string
+ */
+function mai_get_next_icon( $context = '' ) {
+	$icon = mai_get_icon(
+		[
+			'icon'        => 'arrow-right',
+			'style'       => 'regular',
+			'size'        => '0.75em',
+			'margin_left' => '0.5em',
+		]
+	);
+	$icon = apply_filters( 'mai_next_arrow', $icon, $context );
+
+	return $icon;
+}
+
+/**
  * Gets an icon.
  *
  * @since 0.1.0
