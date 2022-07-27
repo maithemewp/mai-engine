@@ -27,3 +27,62 @@ function mai_setup_comments_gravatar( array $args ) {
 
 	return $args;
 }
+
+// Remove author 'says' text.
+add_filter( 'comment_author_says_text', '__return_empty_string' );
+
+add_filter( 'comment_reply_link', 'mai_comment_reply_button_class' );
+/**
+ * Add comment reply button classes.
+ *
+ * @since 0.1.0
+ *
+ * @param string $link The button html.
+ *
+ * @return string
+ */
+function mai_comment_reply_button_class( $link ) {
+	$dom   = mai_get_dom_document( $link );
+	$links = $dom->getElementsByTagName( 'a' );
+
+	if ( ! $links ) {
+		return $link;
+	}
+
+	foreach ( $links as $button ) {
+		$classes = $button->getAttribute( 'class' );
+		$classes = mai_add_classes( [ 'button', 'button-secondary', 'button-small' ], $classes );
+		$classes = $button->setAttribute( 'class', $classes );
+	}
+
+	return $dom->saveHTML();
+}
+
+/**
+ * Filters the cancel comment reply link HTML.
+ *
+ * @since 2.7.0
+ *
+ * @param string $formatted_link The HTML-formatted cancel comment reply link.
+ * @param string $link           Cancel comment reply link URL.
+ * @param string $text           Cancel comment reply link text.
+ */
+add_filter( 'cancel_comment_reply_link', 'mai_comment_reply_link', 10, 3 );
+function mai_comment_reply_link( $formatted_link, $link, $text ) {
+	if ( ! $formatted_link ) {
+		return $formatted_link;
+	}
+
+	$dom  = mai_get_dom_document( $formatted_link );
+	$link = mai_get_dom_first_child( $dom );
+
+	if ( ! $link ) {
+		return $formatted_link;
+	}
+
+	$classes = $link->getAttribute( 'class' );
+	$classes = mai_add_classes( 'cancel-comment-reply-link', $classes );
+	$classes = $link->setAttribute( 'class', $classes );
+
+	return $dom->saveHTML();
+}
