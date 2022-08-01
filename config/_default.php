@@ -766,7 +766,7 @@ return [
 			// Menu search icon.
 			'search'              => [
 				'icon'  => 'search',
-				'style' => 'solid',
+				'style' => 'regular',
 			],
 		],
 		'performance'         => [
