@@ -1563,10 +1563,8 @@ class Mai_Entry {
 	 */
 	public function do_adjacent_entry_nav() {
 		$taxonomy       = apply_filters( 'mai_adjacent_entry_nav_taxonomy', '', $this->entry, $this->args );
-		$prev_icon      = mai_get_previous_icon( 'adjacent-entry-pagination' );
-		$next_icon      = mai_get_next_icon( 'adjacent-entry-pagination' );
-		$prev_post_text = sprintf( '<span class="screen-reader-text">%s</span><span class="adjacent-post-link">%s%s%s</span>', esc_html__( 'Previous Post:', 'genesis' ), $prev_icon, '%image', '%title' );
-		$next_post_text = sprintf( '<span class="screen-reader-text">%s</span><span class="adjacent-post-link">%s%s%s</span>', esc_html__( 'Next Post:', 'genesis' ), '%title', '%image',$next_icon );
+		$prev_post_text = sprintf( '<span class="screen-reader-text">%s</span><span class="adjacent-post-link">%s%s</span>', esc_html__( 'Previous Post:', 'genesis' ), '%image', '%title' );
+		$next_post_text = sprintf( '<span class="screen-reader-text">%s</span><span class="adjacent-post-link">%s%s</span>', esc_html__( 'Next Post:', 'genesis' ), '%title', '%image' );
 
 		if ( $taxonomy ) {
 			$prev_post_link = get_previous_post_link( '%link', $prev_post_text, true, '', $taxonomy );

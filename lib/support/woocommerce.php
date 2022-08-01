@@ -124,8 +124,8 @@ add_filter( 'woocommerce_pagination_args', 'mai_woocommerce_pagination_previous_
  * @return array
  */
 function mai_woocommerce_pagination_previous_next_text( $args ) {
-	$args['prev_text'] = mai_get_previous_icon( 'archive-pagination' ) . esc_html__( 'Previous', 'mai-engine' );
-	$args['next_text'] = esc_html__( 'Next', 'mai-engine' ) . mai_get_next_icon( 'archive-pagination' );
+	$args['prev_text'] = esc_html__( 'Previous', 'mai-engine' );
+	$args['next_text'] = esc_html__( 'Next', 'mai-engine' );
 
 	return $args;
 }

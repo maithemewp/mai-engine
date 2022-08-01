@@ -206,7 +206,6 @@ function mai_adjacent_entry( $content, $args ) {
 	return $content;
 }
 
-
 add_filter( 'genesis_prev_link_text', 'mai_previous_page_link' );
 /**
  * Changes the previous page link text.
@@ -216,8 +215,7 @@ add_filter( 'genesis_prev_link_text', 'mai_previous_page_link' );
  * @return string
  */
 function mai_previous_page_link() {
-	$icon = mai_get_previous_icon( 'archive-pagination' );
-	return sprintf( '%s%s', $icon, esc_html__( 'Previous', 'mai-engine' ) );
+	return esc_html__( 'Previous', 'mai-engine' );
 }
 
 add_filter( 'genesis_next_link_text', 'mai_next_page_link' );
@@ -229,36 +227,7 @@ add_filter( 'genesis_next_link_text', 'mai_next_page_link' );
  * @return string
  */
 function mai_next_page_link() {
-	$icon = mai_get_next_icon( 'archive-pagination' );
-	return sprintf( '%s%s', esc_html__( 'Next', 'mai-engine' ), $icon );
-}
-
-add_filter( 'genesis_markup_pagination-previous_content', 'mai_previous_pagination_text' );
-/**
- * Changes the adjacent entry previous link arrow icon.
- *
- * @since 0.1.0
- *
- * @param string $content Previous link text.
- *
- * @return string
- */
-function mai_previous_pagination_text( $content ) {
-	return str_replace( '&#xAB;', '←', $content );
-}
-
-add_filter( 'genesis_markup_pagination-next_content', 'mai_next_pagination_text' );
-/**
- * Changes the next link arrow icon.
- *
- * @since 0.1.0
- *
- * @param string $content Next link text.
- *
- * @return string
- */
-function mai_next_pagination_text( $content ) {
-	return str_replace( '&#xBB;', '→', $content );
+	return esc_html__( 'Next', 'mai-engine' );
 }
 
 add_filter( 'previous_post_link', 'mai_adjacent_entry_link_thumbnail', 10, 5 );

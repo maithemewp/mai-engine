@@ -35,3 +35,27 @@
 		text-align: var(--pagination-next-text-align, start);
 	}
 }
+
+.pagination-previous .pagination-link::before,
+.woocommerce-pagination .prev::before {
+	mask-image: var(--pagination-previous-url, "");
+}
+
+.pagination-next .pagination-link::after,
+.woocommerce-pagination .next::after {
+	mask-image: var(--pagination-next-url, "");
+}
+
+.pagination-previous .pagination-link::before,
+.pagination-next .pagination-link::after,
+.woocommerce-pagination .prev::before,
+.woocommerce-pagination .next::after {
+	display: inline-flex;
+	width: 0.75em;
+	height: 0.75em;
+	background: currentColor;
+	mask-position: center;
+	mask-repeat: no-repeat;
+	mask-size: contain;
+	content: "";
+}

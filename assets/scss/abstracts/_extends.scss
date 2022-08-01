@@ -35,6 +35,7 @@
 @mixin button($is_admin: false) {
 	position: relative;
 	display: var(--button-display, inline-flex);
+	gap: var(--spacing-xs);
 	align-items: center;
 	justify-content: center;
 	width: var(--button-width, auto);
@@ -115,9 +116,16 @@
 		--button-box-shadow-hover: none;
 
 		&::after {
-			display: var(--button-link-after-display, inline-block);
-			margin-left: var(--spacing-xs);
-			content: "\2192";
+			display: inline-flex;
+			flex: 1 0 auto;
+			width: 0.75em;
+			height: 0.75em;
+			background: currentColor;
+			mask-image: var(--button-link-url, "");
+			mask-position: center;
+			mask-repeat: no-repeat;
+			mask-size: contain;
+			content: "";
 		}
 	}
 
