@@ -776,6 +776,7 @@ return [
 			'disable-emojis'             => true,
 			'remove-recent-comments-css' => true,
 			'remove-global-styles'       => true,
+			'remove-jquery-migrate'      => true,
 		],
 		'genesis'             => [
 			'avatar_size'           => 48,
