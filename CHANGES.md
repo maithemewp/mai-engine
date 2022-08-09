@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.24.0 (8/9/22)
+* Added: [Performance] New setting to remove jQuery Migrate script. Default is on (removes script).
+* Changed: Previous and next icons are now handled via the `config.php` file with automatically added CSS custom properties.
+* Changed: Moved updater script to `plugins_loaded` hook so it should update via WP-CLI now.
+* Fixed: Mai Grid blocks getting wrong taxonomy/terms when adding multiple taxonomy conditions.
+
 ## 2.23.0 (7/20/22)
 * Added: New "More Link Style" setting to choose the style for the "Read More" link/button on Mai Post/Grid blocks and Content Archives settings in Customizer.
 * Added: Form `accent-color` declaration so choice fields like radio and checkbox use chosen primary color.

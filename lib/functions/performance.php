@@ -106,6 +106,42 @@ function mai_remove_wp_global_styles() {
 	remove_action( 'in_admin_header', 'wp_global_styles_render_svg_filters' );
 }
 
+add_action( 'wp_default_scripts', 'mai_remove_jquery_migrate' );
+/**
+ * Remove jQuery Migrate script.
+ *
+ * @since 2.24.0
+ *
+ * @param WP_Scripts $scripts The existing scripts.
+ *
+ * @return void
+ */
+function mai_remove_jquery_migrate( $scripts ) {
+	if ( is_admin() ) {
+		return;
+	}
+
+	$settings    = mai_get_config( 'settings' );
+	$performance = isset( $settings['performance'] ) ? $settings['performance'] : [];
+	$default     = isset( $performance['remove-jquery-migrate'] ) ? $performance['remove-jquery-migrate'] : true;
+
+	if ( ! mai_get_option( 'remove-jquery-migrate', $default ) ) {
+		return;
+	}
+
+	if ( ! isset( $scripts->registered['jquery'] ) ) {
+		return;
+	}
+
+	$script = $scripts->registered['jquery'];
+
+	if ( ! $script->deps ) {
+		return;
+	}
+
+	$script->deps = array_diff( $script->deps, [ 'jquery-migrate' ] );
+}
+
 add_action( 'widgets_init', 'mai_remove_recent_comments_style' );
 /**
  * Removes recent comments widget CSS.

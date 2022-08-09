@@ -1512,7 +1512,8 @@ function mai_get_search_form( $args = [] ) {
  * @return string
  */
 function mai_get_search_icon_form( $title = '', $icon_size = '16' ) {
-	$icon = mai_get_svg_icon( 'search', 'regular',
+	$search = mai_get_config( 'settings' )['icons']['search'];
+	$icon   = mai_get_svg_icon( $search['icon'], $search['style'],
 		[
 			'class'  => 'search-toggle-icon',
 			'width'  => mai_get_width_height_attribute( $icon_size ),

@@ -123,6 +123,28 @@ return [
 				'header_meta'       => '[mai_avatar size="32"][post_date] [post_author_posts_link before="by "]',
 			],
 		],
+		'icons'                 => [
+			'button-link'         => [
+				'icon'  => 'chevron-right',
+				'style' => 'regular',
+			],
+			'pagination-next'     => [
+				'icon'  => 'chevron-right',
+				'style' => 'regular',
+			],
+			'pagination-previous' => [
+				'icon'  => 'chevron-left',
+				'style' => 'regular',
+			],
+			'entry-next'          => [
+				'icon'  => 'chevron-right',
+				'style' => 'regular',
+			],
+			'entry-previous'      => [
+				'icon'  => 'chevron-left',
+				'style' => 'regular',
+			],
+		],
 	],
 	'plugins'           => [
 		'woocommerce/woocommerce.php' => [
