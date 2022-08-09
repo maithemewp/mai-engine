@@ -110,7 +110,7 @@ add_action( 'wp_default_scripts', 'mai_remove_jquery_migrate' );
 /**
  * Remove jQuery Migrate script.
  *
- * @since TBD
+ * @since 2.24.0
  *
  * @param WP_Scripts $scripts The existing scripts.
  *

@@ -286,7 +286,7 @@ add_action( 'plugins_loaded', 'mai_plugin_update_checker' );
  * Initialize plugin update checker.
  *
  * @since 0.1.0
- * @since TBD Moved to plugins_loaded hook. See #607.
+ * @since 2.24.0 Moved to plugins_loaded hook. See #607.
  *
  * @return void
  */
