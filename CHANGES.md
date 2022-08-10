@@ -2,7 +2,7 @@
 
 ## 2.24.0 (8/9/22)
 * Added: [Performance] New setting to remove jQuery Migrate script. Default is on (removes script).
-* Changed: Previous and next icons are now handled via the `config.php` file with automatically added CSS custom properties.
+* Changed: Previous and next icons are now added and overridden via the `config.php` file with automatically added CSS custom properties.
 * Changed: Moved updater script to `plugins_loaded` hook so it should update via WP-CLI now.
 * Fixed: Mai Grid blocks getting wrong taxonomy/terms when adding multiple taxonomy conditions.
 
