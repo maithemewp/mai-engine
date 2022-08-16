@@ -49,6 +49,38 @@ function mai_image_srcset_order( $sources, $size_array, $image_src, $image_meta,
 }
 
 /**
+ * Gets scroll logo ID.
+ * Prior to 2.24.1 the logo was saved as a url. This makes sure an ID is always returned.
+ *
+ * @since TBD
+ *
+ * @return int
+ */
+function mai_get_scroll_logo_id() {
+	static $logo_id = null;
+
+	if ( ! is_null( $logo_id ) ) {
+		return $logo_id;
+	}
+
+	$logo = mai_get_option( 'logo-scroll' );
+
+	if ( ! $logo ) {
+		$logo_id = 0;
+		return $logo_id;
+	}
+
+	if ( is_numeric( $logo ) ) {
+		$logo_id = $logo;
+		return $logo_id;
+	}
+
+	$logo_id = attachment_url_to_postid( $logo );
+
+	return $logo_id;
+}
+
+/**
  * Gets aspect ratio from orientation.
  *
  * @since 0.1.0
