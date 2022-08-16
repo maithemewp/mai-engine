@@ -388,15 +388,12 @@ class Mai_Grid {
 
 					// If we have tax query values.
 					if ( $tax_query ) {
-
 						// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 						$query_args['tax_query'] = $tax_query;
 
 						if ( $this->args['taxonomies_relation'] ) {
 							// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
-							$query_args['tax_query'][] = [
-								'relation' => $this->args['taxonomies_relation'],
-							];
+							$query_args['tax_query']['relation'] = $this->args['taxonomies_relation'];
 						}
 					}
 				}
