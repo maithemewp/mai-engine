@@ -213,12 +213,13 @@
 						}
 					}
 
-					@each $name, $color in $colors {
+					// This moved to inline CSS via `mai_add_editor_inline_css()` so we can do additional colors via config.
+					// @each $name, $color in $colors {
 
-						&[value="#{$name}"] {
-							background-color: $color;
-						}
-					}
+					// 	&[value="#{$name}"] {
+					// 		background-color: $color;
+					// 	}
+					// }
 				}
 
 				// Span added via JS in editor.js.

@@ -61,6 +61,30 @@ function mai_add_editor_font_sizes() {
 	add_theme_support( 'editor-font-sizes', mai_get_font_sizes() );
 }
 
+add_action( 'admin_head', 'mai_add_editor_inline_css' );
+/**
+ * Adds inline CSS from PHP data.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_add_editor_inline_css() {
+	$colors = mai_get_colors();
+
+	if ( ! $colors ) {
+		return;
+	}
+
+	echo '<style id="mai-editor-inline-styles">';
+	foreach ( $colors as $name => $value ) {
+		printf ( '.mai-block-colors ul.acf-radio-list li:not(:first-child):not(:last-child) label input[type="radio"][value="%s"] {', $name );
+			printf( 'background-color:var(--color-%s)', $name );
+		echo '}';
+	}
+	echo '</div>';
+}
+
 add_action( 'edit_form_after_title', 'mai_add_editor_on_posts_page' );
 /**
  * Enable the editor on the page for posts.
