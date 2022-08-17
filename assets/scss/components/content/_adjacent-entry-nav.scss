@@ -50,7 +50,7 @@
 .pagination-previous .adjacent-entry-link-inner::before,
 .pagination-next .adjacent-entry-link-inner::after {
 	display: inline-flex;
-	flex: 1 0 auto;
+	flex: 0 0 auto;
 	width: 0.64em;
 	height: 0.64em;
 	background: currentColor;
