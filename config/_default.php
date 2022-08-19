@@ -739,6 +739,36 @@ return [
 		'header-left-menu-alignment'  => 'flex-start',
 		'header-right-menu-alignment' => 'flex-end',
 		'after-header-menu-alignment' => 'flex-start',
+		'icons'                       => [
+			// Link button style.
+			'button-link'         => [
+				'icon'  => 'arrow-right',
+				'style' => 'regular',
+			],
+			// Archive pagination.
+			'pagination-next'     => [
+				'icon'  => 'arrow-right',
+				'style' => 'regular',
+			],
+			'pagination-previous' => [
+				'icon'  => 'arrow-left',
+				'style' => 'regular',
+			],
+			// Adjacent entry pagination.
+			'entry-next'          => [
+				'icon'  => 'arrow-right',
+				'style' => 'regular',
+			],
+			'entry-previous'      => [
+				'icon'  => 'arrow-left',
+				'style' => 'regular',
+			],
+			// Menu search icon.
+			'search'              => [
+				'icon'  => 'search',
+				'style' => 'regular',
+			],
+		],
 		'performance'         => [
 			'genesis-style-trump'        => true,
 			'remove-menu-item-classes'   => true,
@@ -746,6 +776,7 @@ return [
 			'disable-emojis'             => true,
 			'remove-recent-comments-css' => true,
 			'remove-global-styles'       => true,
+			'remove-jquery-migrate'      => true,
 		],
 		'genesis'             => [
 			'avatar_size'           => 48,

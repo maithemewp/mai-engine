@@ -22,10 +22,12 @@
 
 .adjacent-entry-link-inner {
 	display: flex;
+	gap: var(--spacing-md);
 	align-items: center;
 	justify-content: var(--adjacent-entry-link-inner-justify-content, normal);
 	height: 100%;
 	padding: var(--adjacent-entry-link-inner-padding, var(--spacing-lg));
+	line-height: var(--heading-line-height, 1.219);
 	text-align: var(--adjacent-entry-link-text-align);
 	background: var(--adjacent-entry-link-inner-background, none);
 	border: var(--adjacent-entry-link-inner-border, var(--border));
@@ -35,5 +37,25 @@
 
 .adjacent-entry-image {
 	flex-shrink: 0;
-	margin: 0 var(--spacing-sm);
+}
+
+.pagination-previous .adjacent-entry-link-inner::before {
+	mask-image: var(--entry-previous-url, "");
+}
+
+.pagination-next .adjacent-entry-link-inner::after {
+	mask-image: var(--entry-next-url, "");
+}
+
+.pagination-previous .adjacent-entry-link-inner::before,
+.pagination-next .adjacent-entry-link-inner::after {
+	display: inline-flex;
+	flex: 0 0 auto;
+	width: 0.64em;
+	height: 0.64em;
+	background: currentColor;
+	mask-position: center;
+	mask-repeat: no-repeat;
+	mask-size: contain;
+	content: "";
 }

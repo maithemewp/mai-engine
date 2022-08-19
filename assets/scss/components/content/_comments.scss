@@ -88,8 +88,12 @@
 	margin: var(--comments-margin, (var(--spacing-xxl) auto));
 }
 
-.comment-reply-link {
+.comment-reply-title {
+	display: flex;
+	gap: 0.5em;
+	align-items: center;
+}
 
-	@include button-style("secondary");
-	@include button-style("small");
+.cancel-comment-reply-link {
+	font-size: var(--font-size-sm);
 }

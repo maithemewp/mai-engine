@@ -96,6 +96,18 @@ function mai_performance_customizer_settings() {
 		mai_parse_kirki_args(
 			[
 				'type'     => 'checkbox',
+				'settings' => mai_get_kirki_setting( 'remove-jquery-migrate' ),
+				'label'    => esc_html__( 'Remove jQuery Migrate script', 'mai-engine' ),
+				'section'  => $section_id,
+				'default'  => $defaults['remove-jquery-migrate'],
+			]
+		)
+	);
+
+	new \Kirki\Field\Checkbox(
+		mai_parse_kirki_args(
+			[
+				'type'     => 'checkbox',
 				'settings' => mai_get_kirki_setting( 'remove-global-styles' ),
 				'label'    => esc_html__( 'Remove unused global styles and inline svgs', 'mai-engine' ),
 				'section'  => $section_id,

@@ -81,5 +81,27 @@ return [
 				'page-header-featured' => '1',
 			],
 		],
+		'icons'                 => [
+			'button-link'         => [
+				'icon'  => 'chevron-double-right',
+				'style' => 'regular',
+			],
+			'pagination-next'     => [
+				'icon'  => 'chevron-double-right',
+				'style' => 'regular',
+			],
+			'pagination-previous' => [
+				'icon'  => 'chevron-double-left',
+				'style' => 'regular',
+			],
+			'entry-next'          => [
+				'icon'  => 'chevron-double-right',
+				'style' => 'regular',
+			],
+			'entry-previous'      => [
+				'icon'  => 'chevron-double-left',
+				'style' => 'regular',
+			],
+		],
 	],
 ];

@@ -130,7 +130,7 @@ return [
 		/**
 		 * Sets default more links to link button.
 		 *
-		 * @since TBD
+		 * @since 2.23.0
 		 *
 		 * @param array $field The existing field array.
 		 *
@@ -146,7 +146,7 @@ return [
 		/**
 		 * Sets empty more link values to link button.
 		 *
-		 * @since TBD
+		 * @since 2.23.0
 		 *
 		 * @param mixed      $value   The field value.
 		 * @param int|string $post_id The post ID where the value is saved.

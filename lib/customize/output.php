@@ -114,7 +114,8 @@ function mai_add_kirki_css( $css ) {
 	$css = mai_add_title_area_custom_properties( $css );
 	$css = mai_add_fonts_custom_properties( $css );
 	$css = mai_add_colors_css( $css );
-	$css = mai_add_button_text_colors( $css );
+	$css = mai_add_buttons_css( $css );
+	$css = mai_add_icons_css( $css );
 	$css = mai_add_extra_custom_properties( $css );
 
 	if ( $use_transients ) {
@@ -350,7 +351,7 @@ function mai_add_colors_css( $css ) {
  *
  * @return array
  */
-function mai_add_button_text_colors( $css ) {
+function mai_add_buttons_css( $css ) {
 	$buttons = [
 		'primary'   => '',
 		'secondary' => 'secondary-',
@@ -364,6 +365,35 @@ function mai_add_button_text_colors( $css ) {
 		$text    = $white === $color ? $heading : $text;
 
 		$css['global'][':root'][ '--button-' . $suffix . 'color' ] = mai_get_color_css( $text );
+	}
+
+	return $css;
+}
+
+/**
+ * Outputs icons custom properties.
+ *
+ * @since 2.0.0
+ *
+ * @param array $css Kirki CSS.
+ *
+ * @return array
+ */
+function mai_add_icons_css( $css ) {
+	$elements = mai_get_config( 'settings' )['icons'];
+
+	foreach ( $elements as $element => $values ) {
+		if ( ! ( isset( $values['icon'] ) && $values['style'] ) ) {
+			continue;
+		}
+
+		$icon_url = mai_get_svg_icon_url( $values['icon'], $values['style'] );
+
+		if ( ! $icon_url ) {
+			continue;
+		}
+
+		$css['global'][':root'][ sprintf( '--%s-url', $element ) ] = sprintf( "url('%s')", $icon_url );
 	}
 
 	return $css;

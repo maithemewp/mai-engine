@@ -346,14 +346,15 @@ function mai_custom_scroll_logo( $html, $blog_id ) {
 		return $html;
 	}
 
-	$logo_url = mai_get_option( 'logo-scroll' );
+	$logo_id = mai_get_scroll_logo_id();
 
-	if ( ! $logo_url ) {
+	if ( ! $logo_id ) {
 		return $html;
 	}
 
-	$dom   = mai_get_dom_document( $html );
-	$first = mai_get_dom_first_child( $dom );
+	$logo_url = wp_get_attachment_image_url( $logo_id, 'large' );
+	$dom      = mai_get_dom_document( $html );
+	$first    = mai_get_dom_first_child( $dom );
 
 	if ( $first ) {
 		$img = $dom->createElement( 'img' );
