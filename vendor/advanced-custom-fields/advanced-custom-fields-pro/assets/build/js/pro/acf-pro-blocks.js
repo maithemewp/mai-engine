@@ -474,7 +474,7 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
     html = '<div>' + html + '</div>'; // Correctly balance InnerBlocks tags for jQuery's initial parse.
 
     html = html.replace(/<InnerBlocks([^>]+)?\/>/, '<InnerBlocks$1></InnerBlocks>');
-    return parseNode($(html)[0], acfBlockVersion).props.children;
+    return parseNode($(html)[0], acfBlockVersion, 0).props.children;
   };
   /**
    * Converts a DOM node into a React element.
@@ -484,11 +484,13 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
    *
    * @param	DOM node The DOM node.
    * @param	int acfBlockVersion The ACF block version number.
+   * @param	int level The recursion level.
    * @return	object Result of React.createElement().
    */
 
 
   function parseNode(node, acfBlockVersion) {
+    let level = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
     // Get node name.
     const nodeName = parseNodeName(node.nodeName.toLowerCase(), acfBlockVersion);
 
@@ -498,6 +500,12 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
 
 
     const nodeAttrs = {};
+
+    if (level === 1) {
+      // Top level (after stripping away the container div), create a ref for passing through to ACF's JS API.
+      nodeAttrs.ref = React.createRef();
+    }
+
     acf.arrayArgs(node.attributes).map(parseNodeAttr).forEach(_ref3 => {
       let {
         name,
@@ -520,7 +528,7 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
           args.push(text);
         }
       } else {
-        args.push(parseNode(child, acfBlockVersion));
+        args.push(parseNode(child, acfBlockVersion, level + 1));
       }
     }); // Return element.
 
@@ -1017,7 +1025,14 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
       };
 
       if (this.renderMethod === 'jsx') {
-        state.jsx = acf.parseJSX(html, getBlockVersion(this.props.name));
+        state.jsx = acf.parseJSX(html, getBlockVersion(this.props.name)); // If we've got an object (as an array) use the first ref.
+
+        if (state.jsx[0]) {
+          state.ref = state.jsx[0].ref;
+        } else {
+          state.ref = state.jsx.ref;
+        }
+
         state.$el = $(this.el);
       } else {
         state.$el = $(html);
@@ -1337,19 +1352,8 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
     }
 
     componentDidAppend() {
-      super.componentDidAppend(); // Extract props.
-
-      const {
-        attributes
-      } = this.props;
-      const {
-        $el
-      } = this.state; // Generate action friendly type.
-
-      const type = attributes.name.replace('acf/', ''); // Do action.
-
-      acf.doAction('render_block_preview', $el, attributes);
-      acf.doAction(`render_block_preview/type=${type}`, $el, attributes);
+      super.componentDidAppend();
+      this.renderBlockPreviewEvent();
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -1377,13 +1381,45 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
       return super.shouldComponentUpdate(nextProps, nextState);
     }
 
+    renderBlockPreviewEvent() {
+      // Extract props.
+      const {
+        attributes,
+        name
+      } = this.props;
+      const {
+        $el,
+        ref
+      } = this.state;
+      var blockElement; // Generate action friendly type.
+
+      const type = attributes.name.replace('acf/', '');
+
+      if (ref && ref.current) {
+        // We've got a react ref from a JSX container. Use the parent as the blockElement
+        blockElement = $(ref.current).parent();
+      } else if (getBlockVersion(name) == 1) {
+        blockElement = $el;
+      } else {
+        blockElement = $el.parents('.acf-block-preview');
+      } // Do action.
+
+
+      acf.doAction('render_block_preview', blockElement, attributes);
+      acf.doAction(`render_block_preview/type=${type}`, blockElement, attributes);
+    }
+
     componentDidRemount() {
       super.componentDidRemount(); // Update preview if data has changed since last render (changing from "edit" to "preview").
 
       if (!compareObjects(this.state.prevAttributes, this.props.attributes) || !compareObjects(this.state.prevContext, this.props.context)) {
         //console.log('componentDidRemount', this.id);
         this.fetch();
-      }
+      } // Fire the block preview event so blocks can reinit JS elements.
+      // React reusing DOM elements covers any potential race condition from the above fetch.
+
+
+      this.renderBlockPreviewEvent();
     }
 
   }
@@ -1755,6 +1791,7 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
     fontvariant: 'fontVariant',
     fontweight: 'fontWeight',
     for: 'htmlFor',
+    foreignobject: 'foreignObject',
     formaction: 'formAction',
     formenctype: 'formEncType',
     formmethod: 'formMethod',

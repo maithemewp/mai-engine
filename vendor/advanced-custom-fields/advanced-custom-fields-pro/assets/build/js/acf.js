@@ -1698,7 +1698,7 @@
     },
     showTitle: function (e, $el) {
       // vars
-      var title = $el.attr('title'); // bail ealry if no title
+      var title = $el.attr('title'); // bail early if no title
 
       if (!title) {
         return;
@@ -3664,8 +3664,16 @@
 
 
   acf.getXhrError = function (xhr) {
-    if (xhr.responseJSON && xhr.responseJSON.message) {
-      return xhr.responseJSON.message;
+    if (xhr.responseJSON) {
+      // Responses via `return new WP_Error();`
+      if (xhr.responseJSON.message) {
+        return xhr.responseJSON.message;
+      } // Responses via `wp_send_json_error();`.
+
+
+      if (xhr.responseJSON.data && xhr.responseJSON.data.error) {
+        return xhr.responseJSON.data.error;
+      }
     } else if (xhr.statusText) {
       return xhr.statusText;
     }

@@ -774,7 +774,7 @@ if ( ! class_exists( 'acf_admin_field_group' ) ) :
 						continue;
 					}
 
-					// bail ealry if is current
+					// bail early if is current
 					if ( $field_group['ID'] == $args['post_id'] ) {
 						continue;
 					}

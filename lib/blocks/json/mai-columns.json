@@ -4,14 +4,11 @@
   "description": "A custom columns block.",
   "category": "layout",
   "icon": "admin-comments",
-  "keywords": [
-    "columns"
-  ],
+  "keywords": [ "columns" ],
   "textdomain": "mai-engine",
   "apiVersion": 2,
   "acf": {
-    "jsx": true,
-    "mode": false,
+    "mode": "preview",
     "renderCallback": "mai_do_columns_block"
   },
   "supports": {
@@ -20,13 +17,6 @@
       "full"
     ],
     "alignText": false,
-    "anchor": true,
-    "spacing": {
-      "margin": [
-        "top",
-        "bottom"
-      ],
-      "padding": true
-    }
+    "anchor": true
   }
 }

@@ -8,11 +8,11 @@
   "textdomain": "mai-engine",
   "apiVersion": 2,
   "acf": {
-    "jsx": true,
-    "mode": false,
+    "mode": "preview",
     "renderCallback": "mai_do_column_block"
   },
   "parent": [ "acf/mai-columns" ],
+  "usesContext": [ "acf/fields" ],
   "supports": {
     "align": false,
     "alignText": false,

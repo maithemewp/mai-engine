@@ -54,6 +54,7 @@ function acf_handle_json_block_registration( $settings, $metadata ) {
 			'enqueue_style'     => false,
 			'enqueue_script'    => false,
 			'enqueue_assets'    => false,
+			'post_types'        => array(),
 			'uses_context'      => array(),
 			'supports'          => array(),
 			'attributes'        => array(),
@@ -95,6 +96,7 @@ function acf_handle_json_block_registration( $settings, $metadata ) {
 		'renderTemplate' => 'render_template',
 		'mode'           => 'mode',
 		'blockVersion'   => 'acf_block_version',
+		'postTypes'      => 'post_types',
 	);
 	$textdomain        = ! empty( $metadata['textdomain'] ) ? $metadata['textdomain'] : 'acf';
 	$i18n_schema       = get_block_metadata_i18n_schema();
@@ -567,11 +569,15 @@ function acf_rendered_block( $attributes, $content = '', $is_preview = false, $p
 		$block = acf_prepare_block( $attributes );
 		acf_setup_meta( $block['data'], $block['id'], true );
 		$fields = acf_get_block_fields( $block );
-		acf_prefix_fields( $fields, "acf-{$block['id']}" );
+		if ( $fields ) {
+			acf_prefix_fields( $fields, "acf-{$block['id']}" );
 
-		echo '<div class="acf-block-fields acf-fields">';
-		acf_render_fields( $fields, $block['id'], 'div', 'field' );
-		echo '</div>';
+			echo '<div class="acf-block-fields acf-fields">';
+			acf_render_fields( $fields, $block['id'], 'div', 'field' );
+			echo '</div>';
+		} else {
+			echo acf_get_empty_block_form_html( $attributes['name'] );
+		}
 	} else {
 		// Capture block render output.
 		acf_render_block( $attributes, $content, $is_preview, $post_id, $wp_block, $context );
@@ -588,7 +594,7 @@ function acf_rendered_block( $attributes, $content = '', $is_preview = false, $p
 		if ( $wp_block && $wp_block->block_type->acf_block_version > 1 && apply_filters( 'acf/blocks/wrap_frontend_innerblocks', true, $attributes['name'] ) ) {
 			// Check for a class (or className) provided in the template to become the InnerBlocks wrapper class.
 			$matches = array();
-			if ( preg_match( '/<InnerBlocks(?:[\S\s]+?)(?:(?:className)|(?:class))="([\S\s]+?)"(?:[\S\s]*?)\/>/', $html, $matches ) ) {
+			if ( preg_match( '/<InnerBlocks(?:[^<]+?)(?:(?:className)|(?:class))=["\']([\S\s]+?)["\'](?:[\s]*?)\/>/', $html, $matches ) ) {
 				$class = isset( $matches[1] ) ? $matches[1] : 'acf-innerblocks-container';
 			} else {
 				$class = 'acf-innerblocks-container';
@@ -892,17 +898,23 @@ function acf_ajax_fetch_block() {
 		// Prefix field inputs to avoid multiple blocks using the same name/id attributes.
 		acf_prefix_fields( $fields, "acf-{$block['id']}" );
 
-		// Start Capture.
-		ob_start();
+		if ( $fields ) {
 
-		// Render.
-		echo '<div class="acf-block-fields acf-fields">';
-			acf_render_fields( $fields, acf_ensure_block_id_prefix( $block['id'] ), 'div', 'field' );
-		echo '</div>';
+			// Start Capture.
+			ob_start();
 
-		// Store Capture.
-		$response['form'] = ob_get_contents();
-		ob_end_clean();
+			// Render.
+			echo '<div class="acf-block-fields acf-fields">';
+				acf_render_fields( $fields, acf_ensure_block_id_prefix( $block['id'] ), 'div', 'field' );
+			echo '</div>';
+
+			// Store Capture.
+			$response['form'] = ob_get_clean();
+
+		} else {
+			// There are no fields on this block.
+			$response['form'] = acf_get_empty_block_form_html( $block['name'] );
+		}
 	}
 
 	// Query preview.
@@ -924,11 +936,36 @@ function acf_ajax_fetch_block() {
 acf_register_ajax( 'fetch-block', 'acf_ajax_fetch_block' );
 
 /**
- * acf_parse_save_blocks
+ * Render the empty block form for when a block has no fields assigned.
  *
+ * @since   6.0.0
+ *
+ * @param   string $block_name The block name current being rendered.
+ * @return  string The html that makes up a block form with no fields.
+ */
+function acf_get_empty_block_form_html( $block_name ) {
+	$html = '<div class="acf-block-fields acf-fields acf-empty-block-fields">';
+
+	$message = __( 'This block contains no editable fields.', 'acf' );
+
+	if ( acf_current_user_can_admin() ) {
+		$message .= ' ';
+		$message .= sprintf(
+			/* translators: %s: an admin URL to the field group edit screen */
+			__( 'Assign a <a href="%s" target="_blank">field group</a> to add fields to this block.', 'acf' ),
+			admin_url( 'edit.php?post_type=acf-field-group' )
+		);
+	}
+
+	$html .= apply_filters( 'acf/blocks/no_fields_assigned_message', $message, $block_name );
+
+	$html .= '</div>';
+	return $html;
+}
+
+/**
  * Parse content that may contain HTML block comments and saves ACF block meta.
  *
- * @date    27/2/19
  * @since   5.7.13
  *
  * @param   string $text Content that may contain HTML block comments.
@@ -950,8 +987,6 @@ function acf_parse_save_blocks( $text = '' ) {
 add_filter( 'content_save_pre', 'acf_parse_save_blocks', 5, 1 );
 
 /**
- * acf_parse_save_blocks_callback
- *
  * Callback used in preg_replace to modify ACF Block comment.
  *
  * @date    1/3/19

@@ -170,7 +170,7 @@ function acf_maybe_get_field( $selector, $post_id = false, $strict = true ) {
 
 function acf_maybe_get_sub_field( $selectors, $post_id = false, $strict = true ) {
 
-	// bail ealry if not enough selectors
+	// bail early if not enough selectors
 	if ( ! is_array( $selectors ) || count( $selectors ) < 3 ) {
 		return false;
 	}
@@ -1061,6 +1061,9 @@ function add_row( $selector, $row = false, $post_id = false ) {
 
 	// append
 	$value[] = $row;
+
+	// Paginated repeaters should be saved normally.
+	$field['pagination'] = false;
 
 	// update value
 	acf_update_value( $value, $post_id, $field );

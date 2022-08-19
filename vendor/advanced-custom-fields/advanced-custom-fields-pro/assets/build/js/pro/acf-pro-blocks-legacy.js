@@ -119,7 +119,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 
   function registerBlockType(blockType) {
-    // Bail ealry if is excluded post_type.
+    // bail early if is excluded post_type.
     var allowedTypes = blockType.post_types || [];
 
     if (allowedTypes.length) {
@@ -800,23 +800,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
     fetch() {// Do nothing.
     }
 
-    maybePreload(blockId) {
-      if (this.state.html === undefined) {
-        const preloadedBlocks = acf.get('preloadedBlocks');
-
-        if (preloadedBlocks && preloadedBlocks[blockId]) {
-          // Set HTML to the preloaded version.
-          this.setHtml(preloadedBlocks[blockId]); // Delete the preloaded HTML so we don't try to load it again.
-
-          delete preloadedBlocks[blockId];
-          acf.set('preloadedBlocks', preloadedBlocks);
-          return true;
-        }
-      }
-
-      return false;
-    }
-
     loadState() {
       this.state = store[this.id] || {};
     }
@@ -976,14 +959,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
       // Extract props.
       const {
         attributes
-      } = this.props; // Try preloaded data first.
-
-      const preloaded = this.maybePreload(attributes.id);
-
-      if (preloaded) {
-        return;
-      } // Request AJAX and update HTML on complete.
-
+      } = this.props; // Request AJAX and update HTML on complete.
 
       fetchBlock({
         attributes: attributes,
@@ -1066,14 +1042,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
       this.setState({
         prevAttributes: attributes
-      }); // Try preloaded data first.
-
-      const preloaded = this.maybePreload(attributes.id);
-
-      if (preloaded) {
-        return;
-      } // Request AJAX and update HTML on complete.
-
+      }); // Request AJAX and update HTML on complete.
 
       fetchBlock({
         attributes: attributes,
@@ -1082,7 +1051,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
         },
         delay: delay
       }).done(json => {
-        this.setHtml(json.data.preview);
+        this.setHtml('<div class="acf-block-preview">' + json.data.preview + '</div>');
       });
     }
 
@@ -1468,6 +1437,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
     fontvariant: 'fontVariant',
     fontweight: 'fontWeight',
     for: 'htmlFor',
+    foreignobject: 'foreignObject',
     formaction: 'formAction',
     formenctype: 'formEncType',
     formmethod: 'formMethod',

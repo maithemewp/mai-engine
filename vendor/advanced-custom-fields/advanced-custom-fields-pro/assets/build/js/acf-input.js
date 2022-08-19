@@ -1189,7 +1189,7 @@
     var target = conditions.get('field'); // use the 'target' to find the 'trigger' field.
     // - this field is used to setup the conditional logic events
 
-    var field = target.getField(rule.field); // bail ealry if no target or no field (possible if field doesn't exist due to HTML error)
+    var field = target.getField(rule.field); // bail early if no target or no field (possible if field doesn't exist due to HTML error)
 
     if (!target || !field) {
       return false;
@@ -1580,7 +1580,7 @@
       } // instantiate
 
 
-      var condition = acf.newCondition(rule, this); // bail ealry if condition failed (field did not exist)
+      var condition = acf.newCondition(rule, this); // bail early if condition failed (field did not exist)
 
       if (!condition) {
         return false;
@@ -1737,9 +1737,9 @@
       // Use SVG inside Gutenberg editor.
       if (acf.isGutenberg()) {
         if (props.open) {
-          return '<svg class="acf-accordion-icon" width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" focusable="false"><g><path fill="none" d="M0,0h24v24H0V0z"></path></g><g><path d="M12,8l-6,6l1.41,1.41L12,10.83l4.59,4.58L18,14L12,8z"></path></g></svg>';
+          return '<svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="acf-accordion-icon components-panel__arrow" aria-hidden="true" focusable="false"><path d="M6.5 12.4L12 8l5.5 4.4-.9 1.2L12 10l-4.5 3.6-1-1.2z"></path></svg>';
         } else {
-          return '<svg class="acf-accordion-icon" width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" focusable="false"><g><path fill="none" d="M0,0h24v24H0V0z"></path></g><g><path d="M7.41,8.59L12,13.17l4.59-4.58L18,10l-6,6l-6-6L7.41,8.59z"></path></g></svg>';
+          return '<svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class=" acf-accordion-icon components-panel__arrow" aria-hidden="true" focusable="false"><path d="M17.5 11.6L12 16l-5.5-4.4.9-1.2L12 14l4.5-3.6 1 1.2z"></path></svg>';
         }
       } else {
         if (props.open) {
@@ -2114,11 +2114,11 @@
       // vars
       var locale = acf.get('locale');
       var rtl = acf.get('rtl');
-      var l10n = acf.get('datePickerL10n'); // bail ealry if no l10n
+      var l10n = acf.get('datePickerL10n'); // bail early if no l10n
 
       if (!l10n) {
         return false;
-      } // bail ealry if no datepicker library
+      } // bail early if no datepicker library
 
 
       if (typeof $.datepicker === 'undefined') {
@@ -2134,7 +2134,7 @@
   }); // add
 
   acf.newDatePicker = function ($input, args) {
-    // bail ealry if no datepicker library
+    // bail early if no datepicker library
     if (typeof $.datepicker === 'undefined') {
       return false;
     } // defaults
@@ -2201,11 +2201,11 @@
       // vars
       var locale = acf.get('locale');
       var rtl = acf.get('rtl');
-      var l10n = acf.get('dateTimePickerL10n'); // bail ealry if no l10n
+      var l10n = acf.get('dateTimePickerL10n'); // bail early if no l10n
 
       if (!l10n) {
         return false;
-      } // bail ealry if no datepicker library
+      } // bail early if no datepicker library
 
 
       if (typeof $.timepicker === 'undefined') {
@@ -2221,7 +2221,7 @@
   }); // add
 
   acf.newDateTimePicker = function ($input, args) {
-    // bail ealry if no datepicker library
+    // bail early if no datepicker library
     if (typeof $.timepicker === 'undefined') {
       return false;
     } // defaults
@@ -2252,7 +2252,7 @@
       return this.$('.acf-file-uploader');
     },
     $input: function () {
-      return this.$('input[type="hidden"]');
+      return this.$('input[type="hidden"]:first');
     },
     validateAttachment: function (attachment) {
       // defaults
@@ -2871,7 +2871,7 @@
       return this.$('.acf-image-uploader');
     },
     $input: function () {
-      return this.$('input[type="hidden"]');
+      return this.$('input[type="hidden"]:first');
     },
     events: {
       'click a[data-name="add"]': 'onClickAdd',
@@ -4549,7 +4549,7 @@
   acf.registerFieldType(Field); // add
 
   acf.newTimePicker = function ($input, args) {
-    // bail ealry if no datepicker library
+    // bail early if no datepicker library
     if (typeof $.timepicker === 'undefined') {
       return false;
     } // defaults
@@ -4596,13 +4596,13 @@
     },
     render: function () {
       // vars
-      var $switch = this.$switch(); // bail ealry if no $switch
+      var $switch = this.$switch(); // bail early if no $switch
 
       if (!$switch.length) return; // vars
 
       var $on = $switch.children('.acf-switch-on');
       var $off = $switch.children('.acf-switch-off');
-      var width = Math.max($on.width(), $off.width()); // bail ealry if no width
+      var width = Math.max($on.width(), $off.width()); // bail early if no width
 
       if (!width) return; // set widths
 
@@ -5916,7 +5916,7 @@
 
       if (!$fields.length) {
         return false;
-      } // bail ealry if is .-left
+      } // bail early if is .-left
 
 
       if ($el.hasClass('-left')) {
@@ -8023,7 +8023,7 @@
       var locale = acf.get('locale');
       var rtl = acf.get('rtl');
       var l10n = acf.get('select2L10n');
-      var version = getVersion(); // bail ealry if no l10n
+      var version = getVersion(); // bail early if no l10n
 
       if (!l10n) {
         return false;
@@ -8458,7 +8458,7 @@
     },
     enableTinymce: function (id) {
       // bail early
-      if (typeof switchEditors === 'undefined') return false; // bail ealry if not initialized
+      if (typeof switchEditors === 'undefined') return false; // bail early if not initialized
 
       if (typeof tinyMCEPreInit.mceInit[id] === 'undefined') return false; // Ensure textarea element is visible
       // - Fixes bug in block editor when switching between "Block" and "Document" tabs.
@@ -8541,7 +8541,7 @@
       this.stopListening();
     },
     startListening: function () {
-      // bail ealry if already changed, not active
+      // bail early if already changed, not active
       if (this.changed || !this.active) {
         return;
       } // update
@@ -9141,7 +9141,7 @@
   acf.lockForm = function ($form) {
     // vars
     var $wrap = findSubmitWrap($form);
-    var $submit = $wrap.find('.button, [type="submit"]');
+    var $submit = $wrap.find('.button, [type="submit"]').not('.acf-nav, .acf-repeater-add-row');
     var $spinner = $wrap.find('.spinner, .acf-spinner'); // hide all spinners (hides the preview spinner)
 
     acf.hideSpinner($spinner); // lock
@@ -9166,7 +9166,7 @@
   acf.unlockForm = function ($form) {
     // vars
     var $wrap = findSubmitWrap($form);
-    var $submit = $wrap.find('.button, [type="submit"]');
+    var $submit = $wrap.find('.button, [type="submit"]').not('.acf-nav, .acf-repeater-add-row');
     var $spinner = $wrap.find('.spinner, .acf-spinner'); // unlock
 
     acf.enableSubmit($submit);

@@ -8,7 +8,7 @@ if ( is_array( $field_groups ) ) {
 <div class="acf-field-list-wrap">
 	
 	<ul class="acf-hl acf-thead">
-		<li class="li-field-order"><?php _e( 'Order', 'acf' ); ?></li>
+		<li class="li-field-order"><?php /* translators: The positional order number of the field. */ _e( 'Order', 'acf' ); ?></li>
 		<li class="li-field-label"><?php _e( 'Label', 'acf' ); ?></li>
 		<li class="li-field-name"><?php _e( 'Name', 'acf' ); ?></li>
 		<li class="li-field-key"><?php _e( 'Key', 'acf' ); ?></li>

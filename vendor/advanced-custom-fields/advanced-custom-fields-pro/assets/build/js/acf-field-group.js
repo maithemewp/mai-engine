@@ -1803,7 +1803,7 @@
     var type = field.get('setting') || '';
     var name = field.get('name') || '';
     var mid = modelId(type + ' ' + name);
-    var model = acf.models[mid] || null; // bail ealry if no setting
+    var model = acf.models[mid] || null; // bail early if no setting
 
     if (model === null) return false; // instantiate
 
@@ -2129,7 +2129,7 @@
       new_field: 'onNewField'
     },
     onNewField: function (field) {
-      // bail ealry if not append
+      // bail early if not append
       if (!field.has('append')) return; // vars
 
       var append = field.get('append');
