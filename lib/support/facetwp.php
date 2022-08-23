@@ -58,32 +58,32 @@ function mai_facetwp_genesis_pager( $output, $params ) {
 	if ( $total_pages > 1 ) {
 
 		if ( 1 < $page ) {
-			$output .= sprintf( '<li class="pagination-previous"><a class="facetwp-page button button-secondary button-small" data-page="%s">%s</a>&nbsp;</li>', ( $page - 1 ), esc_html__( '← Previous', 'mai-engine' ) );
+			$output .= sprintf( '<li class="pagination-previous"><a class="facetwp-page pagination-link button button-secondary button-small" data-page="%s">%s</a>&nbsp;</li>', ( $page - 1 ), esc_html__( 'Previous', 'mai-engine' ) );
 		}
 		if ( 3 < $page ) {
-			$output .= '<li><a class="facetwp-page button button-secondary button-small first-page" data-page="1"><span class="screen-reader-text">' . $go_to_page . '</span> 1</a>&nbsp;</li>';
+			$output .= '<li><a class="facetwp-page pagination-link button button-secondary button-small first-page" data-page="1"><span class="screen-reader-text">' . $go_to_page . '</span> 1</a>&nbsp;</li>';
 			$output .= '<li class="pagination-omission">&hellip;</li>';
 		}
 		for ( $i = 2; $i > 0; $i-- ) {
 			if ( 0 < ( $page - $i ) ) {
-				$output .= '<li><a class="facetwp-page button button-secondary button-small" data-page="' . ( $page - $i ) . '"><span class="screen-reader-text">' . $go_to_page . '</span> ' . ( $page - $i ) . '</a>&nbsp;</li>';
+				$output .= '<li><a class="facetwp-page pagination-link button button-secondary button-small" data-page="' . ( $page - $i ) . '"><span class="screen-reader-text">' . $go_to_page . '</span> ' . ( $page - $i ) . '</a>&nbsp;</li>';
 			}
 		}
 
 		// Current page.
-		$output .= '<li class="active"><a class="facetwp-page button button-small" aria-label="Current page" data-page="' . $page . '"><span class="screen-reader-text">' . $go_to_page . '</span> ' . $page . '</a>&nbsp;</li>';
+		$output .= '<li class="active"><a class="facetwp-page pagination-link button button-small" aria-label="Current page" data-page="' . $page . '"><span class="screen-reader-text">' . $go_to_page . '</span> ' . $page . '</a>&nbsp;</li>';
 
 		for ( $i = 1; $i <= 2; $i++ ) {
 			if ( $total_pages >= ( $page + $i ) ) {
-				$output .= '<li><a class="facetwp-page button button-secondary button-small" data-page="' . ( $page + $i ) . '"><span class="screen-reader-text">' . $go_to_page . '</span> ' . ( $page + $i ) . '</a>&nbsp;</li>';
+				$output .= '<li><a class="facetwp-page pagination-link button button-secondary button-small" data-page="' . ( $page + $i ) . '"><span class="screen-reader-text">' . $go_to_page . '</span> ' . ( $page + $i ) . '</a>&nbsp;</li>';
 			}
 		}
 		if ( $total_pages > ( $page + 2 ) ) {
 			$output .= '<li class="pagination-omission">&hellip;&nbsp;</li>';
-			$output .= '<li><a class="facetwp-page button button-secondary button-small last-page" data-page="' . $total_pages . '"><span class="screen-reader-text">' . $go_to_page . '</span> ' . $total_pages . '</a>&nbsp;</li>';
+			$output .= '<li><a class="facetwp-page pagination-link button button-secondary button-small last-page" data-page="' . $total_pages . '"><span class="screen-reader-text">' . $go_to_page . '</span> ' . $total_pages . '</a>&nbsp;</li>';
 		}
 		if ( $page < $total_pages ) {
-			$output .= sprintf( '<li class="pagination-next"><a class="facetwp-page button button-secondary button-small" data-page="%s">%s</a>&nbsp;</li>', ( $page + 1 ), esc_html__( 'Next →', 'mai-engine' ) );
+			$output .= sprintf( '<li class="pagination-next"><a class="facetwp-page pagination-link button button-secondary button-small" data-page="%s">%s</a>&nbsp;</li>', ( $page + 1 ), esc_html__( 'Next', 'mai-engine' ) );
 		}
 	}
 
