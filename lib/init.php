@@ -347,7 +347,7 @@ add_action( 'plugins_loaded', 'mai_load_vendor_plugins' );
 function mai_load_vendor_plugins() {
 	$files = [];
 
-	if ( ! class_exists( 'acf_pro' ) ) {
+	if ( mai_needs_mai_acf_pro() ) {
 		$files[] = '../vendor/advanced-custom-fields/advanced-custom-fields-pro/acf';
 	}
 
@@ -446,11 +446,11 @@ function mai_load_files() {
 		'fields/wp-term-query',
 
 		// Blocks.
+		'blocks/general',
 		'blocks/button',
 		'blocks/cover',
 		'blocks/group',
 		'blocks/heading',
-		'blocks/mai-columns',
 		'blocks/mai-divider',
 		'blocks/mai-grid',
 		'blocks/mai-icon',
@@ -458,6 +458,8 @@ function mai_load_files() {
 		'blocks/search',
 		'blocks/settings',
 		'blocks/social-links',
+		'blocks/mai-columns/block',
+		'blocks/mai-column/block',
 	];
 
 	// Customizer.
@@ -558,14 +560,58 @@ function mai_load_files() {
 	}
 }
 
-
 /**
- * Removes innerblocks wrap from ACF.
+ * Checks if Mai needs to load ACF Pro.
+ *
+ * @access private
  *
  * @since TBD
  *
  * @return bool
  */
-add_action( 'after_theme_setup', function() {
-	add_filter( 'acf/blocks/wrap_frontend_innerblocks', '__return_false', 99 );
-});
+function mai_needs_mai_acf_pro() {
+	static $needs = null;
+
+	if ( ! is_null( $needs ) ) {
+		return $needs;
+	}
+
+	$needs = false;
+
+	// No ACF Pro.
+	if ( ! class_exists( 'acf_pro' ) ) {
+		$needs = true;
+	}
+	// Has ACF Pro.
+	else {
+		$version = acf_get_setting( 'version' );
+		$data    = mai_get_mai_acf_plugin_data();
+
+		if ( ! $version || version_compare( $version, $data['Version'], '<' ) ) {
+			$needs = true;
+		}
+	}
+
+	return $needs;
+}
+
+/**
+ * Gets ACF plugin data from the version loaded in Mai.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @return bool
+ */
+function mai_get_mai_acf_plugin_data() {
+	static $data = null;
+
+	if ( ! is_null( $data ) ) {
+		return $data;
+	}
+
+	$data = get_plugin_data( trailingslashit( dirname( __DIR__ ) ) . 'vendor/advanced-custom-fields/advanced-custom-fields-pro/acf.php' );
+
+	return $data;
+}

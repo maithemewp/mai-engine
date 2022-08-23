@@ -106,18 +106,30 @@ function mai_deactivate_bundled_plugins() {
 		require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 	}
 
-	$plugins = [
+	$acfs = [
 		'advanced-custom-fields/acf.php',
 		'advanced-custom-fields-master/acf.php',
 		'advanced-custom-fields-pro/acf.php',
 		'advanced-custom-fields-pro-master/acf.php',
+	];
+
+	$kirkis = [
 		'kirki/kirki.php',
 		'kirki-master/kirki.php',
 	];
 
 	$deactivated = [];
 
-	foreach ( $plugins as $plugin ) {
+	if ( mai_needs_mai_acf_pro() ) {
+		foreach ( $acfs as $plugin ) {
+			if ( is_plugin_active( $plugin ) ) {
+				deactivate_plugins( $plugin );
+				$deactivated[] = $plugin;
+			}
+		}
+	}
+
+	foreach ( $kirkis as $plugin ) {
 		if ( is_plugin_active( $plugin ) ) {
 			deactivate_plugins( $plugin );
 			$deactivated[] = $plugin;

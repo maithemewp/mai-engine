@@ -23,14 +23,6 @@ class ComposerStaticInit8a2acdbec0eb50dd7d8363aeff3d1ab6
     );
 
     public static $prefixLengthsPsr4 = array (
-        'p' => 
-        array (
-            'phpDocumentor\\Reflection\\' => 25,
-        ),
-        'W' => 
-        array (
-            'Webmozart\\Assert\\' => 17,
-        ),
         'V' => 
         array (
             'VariableAnalysis\\' => 17,
@@ -62,7 +54,6 @@ class ComposerStaticInit8a2acdbec0eb50dd7d8363aeff3d1ab6
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
             'ProteusThemes\\WPContentImporter2\\' => 33,
-            'Prophecy\\' => 9,
             'PhpOption\\' => 10,
             'PhpCsFixer\\' => 11,
         ),
@@ -99,16 +90,6 @@ class ComposerStaticInit8a2acdbec0eb50dd7d8363aeff3d1ab6
     );
 
     public static $prefixDirsPsr4 = array (
-        'phpDocumentor\\Reflection\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
-            1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
-            2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
-        ),
-        'Webmozart\\Assert\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/webmozart/assert/src',
-        ),
         'VariableAnalysis\\' => 
         array (
             0 => __DIR__ . '/..' . '/sirbrillig/phpcs-variable-analysis/VariableAnalysis',
@@ -200,10 +181,6 @@ class ComposerStaticInit8a2acdbec0eb50dd7d8363aeff3d1ab6
         'ProteusThemes\\WPContentImporter2\\' => 
         array (
             0 => __DIR__ . '/..' . '/proteusthemes/wp-content-importer-v2/src',
-        ),
-        'Prophecy\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy',
         ),
         'PhpOption\\' => 
         array (
