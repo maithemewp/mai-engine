@@ -87,7 +87,7 @@ function mai_facetwp_genesis_pager( $output, $params ) {
 		}
 	}
 
-	$output .= '<style type="text/css">.archive-pagination .wrap.facetwp-pager + .wrap { display:none; } .facetwp-pager .facetwp-page{ display:inline-block; margin:0; padding:var(--button-padding); }</style>';
+	$output .= '<style type="text/css">.archive-pagination .wrap.facetwp-pager + .wrap { display:none; } .facetwp-pager .facetwp-page{display:var(--button-display,inline-flex);margin:0;padding:var(--button-padding);}</style>';
 
 	$output .= '</ul>';
 
