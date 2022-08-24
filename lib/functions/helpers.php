@@ -917,7 +917,7 @@ function mai_get_instance( $class, ...$args ) {
  *
  * @since 2.11.0
  *
- * @param $value The existing value. May be numeric, px, rem, or em.
+ * @param string $value The existing value. May be numeric, px, rem, or em.
  *
  * @return int
  */
@@ -938,6 +938,7 @@ function mai_get_width_height_attribute( $value, $fallback = false ) {
 			return $size;
 		}
 	}
+
 	return $fallback ? absint( $fallback ) : absint( filter_var( $value, FILTER_SANITIZE_NUMBER_INT ) );
 }
 

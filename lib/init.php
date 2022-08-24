@@ -451,15 +451,15 @@ function mai_load_files() {
 		'blocks/cover',
 		'blocks/group',
 		'blocks/heading',
-		'blocks/mai-divider',
-		'blocks/mai-grid',
-		'blocks/mai-icon',
 		'blocks/paragraph',
 		'blocks/search',
 		'blocks/settings',
 		'blocks/social-links',
+		'blocks/mai-grid',
 		'blocks/mai-columns/block',
 		'blocks/mai-column/block',
+		'blocks/mai-divider/block',
+		'blocks/mai-icon/block',
 	];
 
 	// Customizer.

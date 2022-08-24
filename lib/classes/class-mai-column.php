@@ -143,11 +143,6 @@ class Mai_Column {
 	}
 
 	function get_inner_blocks() {
-		// $template = [
-			// [ 'core/paragraph', [], [] ],
-		// ];
-
-		// return sprintf( '<InnerBlocks template="%s" />', esc_attr( wp_json_encode( $template ) ) );
 		return '<InnerBlocks />';
 	}
 }

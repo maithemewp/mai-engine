@@ -46,10 +46,14 @@ function mai_get_icon( $args ) {
 	);
 
 	$size = mai_get_width_height_attribute( $args['size'] );
-	$svg  = mai_get_svg_icon( $args['icon'], $args['style'], [
-		'width'  => $size,
-		'height' => $size,
-	] );
+	$svg  = mai_get_svg_icon(
+		$args['icon'],
+		$args['style'],
+		[
+			'width'  => $size,
+			'height' => $size,
+		]
+	);
 
 	if ( ! $svg ) {
 		return '';
@@ -158,10 +162,17 @@ function mai_get_icon( $args ) {
  *
  * @since 0.1.0
  * @since 2.11.0 Added filter.
+ * @since TBD Added static caching.
  *
  * @return array
  */
 function mai_get_icon_default_args() {
+	static $args = null;
+
+	if ( ! is_null( $args ) ) {
+		return $args;
+	}
+
 	$defaults = [
 		'style'                => 'light',
 		'icon'                 => 'heart',
@@ -194,9 +205,9 @@ function mai_get_icon_default_args() {
 		'text_shadow_blur'     => 0,
 	];
 
-	$defaults = apply_filters( 'mai_icon_defaults', $defaults );
+	$args = apply_filters( 'mai_icon_defaults', $defaults );
 
-	return $defaults;
+	return $args;
 }
 
 /**
