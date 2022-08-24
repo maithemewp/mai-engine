@@ -65,6 +65,10 @@ class ACF_Repeater_Table {
 			$this->field['pagination'] = false;
 		}
 
+		if ( ! empty( $this->field['parent_repeater'] ) || ! empty( $this->field['parent_layout'] ) ) {
+			$this->field['pagination'] = false;
+		}
+
 		$this->setup();
 	}
 
@@ -155,13 +159,14 @@ class ACF_Repeater_Table {
 		if ( $this->field['pagination'] ) {
 			$div['data-per_page']   = $this->field['rows_per_page'];
 			$div['data-total_rows'] = $this->field['total_rows'];
+			$div['data-orig_name']  = $this->field['orig_name'];
 		}
 
 		if ( empty( $this->value ) ) {
 			$div['class'] .= ' -empty';
 		}
 		?>
-		<div <?php acf_esc_attr_e( $div ); ?>>
+		<div <?php echo acf_esc_attrs( $div ); ?>>
 			<?php
 			acf_hidden_input(
 				array(
@@ -224,7 +229,7 @@ class ACF_Repeater_Table {
 					// Remove "id" to avoid "for" attribute on <label>.
 					$sub_field['id'] = '';
 					?>
-					<th <?php acf_esc_attr_e( $attrs ); ?>>
+					<th <?php echo acf_esc_attrs( $attrs ); ?>>
 						<?php acf_render_field_label( $sub_field ); ?>
 						<?php acf_render_field_instructions( $sub_field ); ?>
 					</th>
@@ -353,7 +358,8 @@ class ACF_Repeater_Table {
 		$classes      = 'acf-row-handle order';
 		$title        = __( 'Drag to reorder', 'acf' );
 		$row_num_html = sprintf(
-			'<span class="acf-row-number">%d</span>',
+			'<span class="acf-row-number" title="%s">%d</span>',
+			__( 'Click to reorder', 'acf' ),
 			$hr_row_num
 		);
 
@@ -432,7 +438,7 @@ class ACF_Repeater_Table {
 
 		$html_current_page = sprintf(
 			"%s<input class='current-page' id='current-page-selector' type='text' name='paged' value='%s' size='%d' aria-describedby='table-paging' />",
-			'<label for="current-page-selector" class="screen-reader-text">' . __( 'Current Page' ) . '</label>',
+			'<label for="current-page-selector" class="screen-reader-text">' . __( 'Current Page', 'acf' ) . '</label>',
 			1,
 			strlen( $total_pages )
 		);
@@ -440,17 +446,17 @@ class ACF_Repeater_Table {
 		$html_total_pages = sprintf( "<span class='acf-total-pages'>%s</span>", number_format_i18n( $total_pages ) );
 		?>
 		<div class="acf-tablenav tablenav-pages">
-			<a class="first-page button acf-nav" aria-hidden="true" data-event="first-page">
-				<span class="screen-reader-text"><?php _e( 'First page' ); ?></span>
+			<a class="first-page button acf-nav" aria-hidden="true" data-event="first-page" title="<?php esc_attr_e( 'First Page', 'acf' ); ?>">
+				<span class="screen-reader-text"><?php esc_html_e( 'First Page', 'acf' ); ?></span>
 				<span aria-hidden="true">&laquo;</span>
 			</a>
-			<a class="prev-page button acf-nav" aria-hidden="true" data-event="prev-page">
-				<span class="screen-reader-text"><?php _e( 'Previous page' ); ?></span>
+			<a class="prev-page button acf-nav" aria-hidden="true" data-event="prev-page" title="<?php esc_attr_e( 'Previous Page', 'acf' ); ?>">
+				<span class="screen-reader-text"><?php esc_html_e( 'Previous Page', 'acf' ); ?></span>
 				<span aria-hidden="true">&lsaquo;</span>
 			</a>
 			<span class="paging-input">
-				<label for="current-page-selector" class="screen-reader-text"><?php _e( 'Current Page' ); ?></label>
-				<span class="tablenav-paging-text">
+				<label for="current-page-selector" class="screen-reader-text"><?php esc_html_e( 'Current Page', 'acf' ); ?></label>
+				<span class="tablenav-paging-text" title="<?php esc_attr_e( 'Current Page', 'acf' ); ?>">
 				<?php
 				printf(
 					/* translators: 1: Current page, 2: Total pages. */
@@ -461,12 +467,12 @@ class ACF_Repeater_Table {
 				?>
 				</span>
 			</span>
-			<a class="next-page button acf-nav" data-event="next-page">
-				<span class="screen-reader-text"><?php _e( 'Next page' ); ?></span>
+			<a class="next-page button acf-nav" data-event="next-page" title="<?php esc_attr_e( 'Next Page', 'acf' ); ?>">
+				<span class="screen-reader-text"><?php esc_html_e( 'Next Page', 'acf' ); ?></span>
 				<span aria-hidden="true">&rsaquo;</span>
 			</a>
-			<a class="last-page button acf-nav" data-event="last-page">
-				<span class="screen-reader-text"><?php _e( 'Last page' ); ?></span>
+			<a class="last-page button acf-nav" data-event="last-page" title="<?php esc_attr_e( 'Last Page', 'acf' ); ?>">
+				<span class="screen-reader-text"><?php esc_html_e( 'Last Page', 'acf' ); ?></span>
 				<span aria-hidden="true">&raquo;</span>
 			</a>
 		</div>

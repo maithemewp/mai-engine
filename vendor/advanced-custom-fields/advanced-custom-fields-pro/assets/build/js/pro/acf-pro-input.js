@@ -1420,6 +1420,14 @@
           this.updateRowStatus($el, 'reordered', newRowNum); // Hide the row numbers to avoid confusion with existing rows.
 
           $el.find('.acf-row-number').first().hide().text(newRowNum);
+
+          if (!$el.find('.acf-order-input-wrap').hasClass('disabled')) {
+            let message = acf.__('Order will be assigned upon save');
+
+            $el.find('.acf-order-input-wrap').addClass('disabled');
+            $el.find('.acf-row-number').first().after('<span title="' + message + '">-</span>');
+          }
+
           $el.find('.acf-order-input').first().hide();
           $el.attr('data-inserted', newRowNum);
         } else {
@@ -1432,6 +1440,8 @@
             $el.addClass('acf-divider');
           }
         }
+
+        $el.find('.acf-input:first').find('input:not([type=hidden]), select, textarea').first().trigger('focus');
       } // Render and trigger change for validation errors.
 
 
@@ -1485,6 +1495,14 @@
         this.updateRowStatus($el, 'reordered', prevRowNum); // Hide the row numbers to avoid confusion with existing rows.
 
         $el.find('.acf-row-number').first().hide();
+
+        if (!$el.find('.acf-order-input-wrap').hasClass('disabled')) {
+          let message = acf.__('Order will be assigned upon save');
+
+          $el.find('.acf-order-input-wrap').addClass('disabled');
+          $el.find('.acf-row-number').first().after('<span title="' + message + '">-</span>');
+        }
+
         $el.find('.acf-order-input').first().hide();
         $el.attr('data-inserted', prevRowNum);
         $el.removeClass('acf-divider');
@@ -1544,6 +1562,10 @@
     },
     onClickRowOrder: function (e, $el) {
       if (!this.get('pagination')) {
+        return;
+      }
+
+      if ($el.hasClass('disabled')) {
         return;
       }
 
@@ -1768,6 +1790,7 @@
         action: 'acf/ajax/query_repeater',
         paged: this.page,
         field_key: this.get('key'),
+        field_name: this.get('orig_name'),
         rows_per_page: parseInt(this.get('per_page')),
         refresh: clearChanged
       });

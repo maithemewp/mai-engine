@@ -763,7 +763,7 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 				}
 
 				?>
-			<th <?php acf_esc_attr_e( $attrs ); ?>>
+			<th <?php echo acf_esc_attrs( $attrs ); ?>>
 				<?php acf_render_field_label( $sub_field ); ?>
 				<?php acf_render_field_instructions( $sub_field ); ?>
 			</th>
@@ -866,13 +866,12 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'   => __( 'Prefix Field Labels', 'acf' ),
-					'message' => $instructions,
-					// 'instructions_placement'  => 'field',
-					'name'    => 'prefix_label',
-					'class'   => 'setting-prefix-label',
-					'type'    => 'true_false',
-					'ui'      => 1,
+					'label' => __( 'Prefix Field Labels', 'acf' ),
+					'hint'  => $instructions,
+					'name'  => 'prefix_label',
+					'class' => 'setting-prefix-label',
+					'type'  => 'true_false',
+					'ui'    => 1,
 				)
 			);
 
@@ -882,13 +881,12 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'   => __( 'Prefix Field Names', 'acf' ),
-					'message' => $instructions,
-					// 'instructions_placement'  => 'field',
-					'name'    => 'prefix_name',
-					'class'   => 'setting-prefix-name',
-					'type'    => 'true_false',
-					'ui'      => 1,
+					'label' => __( 'Prefix Field Names', 'acf' ),
+					'hint'  => $instructions,
+					'name'  => 'prefix_name',
+					'class' => 'setting-prefix-name',
+					'type'  => 'true_false',
+					'ui'    => 1,
 				)
 			);
 

@@ -5,11 +5,25 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 	class acf_field_repeater extends acf_field {
 
 		/**
-		 * If we should apply pagination, regardless of the field setting.
+		 * If we're currently rendering fields.
 		 *
 		 * @var bool
 		 */
-		public $should_paginate = false;
+		public $is_rendering = false;
+
+		/**
+		 * The total number of rows added to the repeater.
+		 *
+		 * @var int
+		 */
+		public $total_rows = 0;
+
+		/**
+		 * The original field name before it's ran through `acf_prepare_field()`.
+		 *
+		 * @var string
+		 */
+		public $orig_name = '';
 
 		/**
 		 * This function will set up the field type data
@@ -36,7 +50,7 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 
 			// filters
 			$this->add_filter( 'acf/validate_field', array( $this, 'validate_any_field' ) );
-			$this->add_filter( 'acf/pre_render_field', array( $this, 'pre_render_field' ), 10, 2 );
+			$this->add_filter( 'acf/pre_render_fields', array( $this, 'pre_render_fields' ), 10, 2 );
 
 			add_action( 'wp_ajax_acf/ajax/query_repeater', array( $this, 'ajax_get_rows' ) );
 		}
@@ -53,6 +67,7 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 					'Minimum rows reached ({min} rows)' => __( 'Minimum rows reached ({min} rows)', 'acf' ),
 					'Maximum rows reached ({max} rows)' => __( 'Maximum rows reached ({max} rows)', 'acf' ),
 					'Error loading page'                => __( 'Error loading page', 'acf' ),
+					'Order will be assigned upon save'  => __( 'Order will be assigned upon save', 'acf' ),
 				)
 			);
 		}
@@ -72,7 +87,13 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 			$sub_fields   = acf_get_fields( $field );
 
 			if ( $sub_fields ) {
-				$field['sub_fields'] = $sub_fields;
+				$field['sub_fields'] = array_map(
+					function( $sub_field ) use ( $field ) {
+						$sub_field['parent_repeater'] = $field['key'];
+						return $sub_field;
+					},
+					$sub_fields
+				);
 			}
 
 			if ( '' === $field['button_label'] ) {
@@ -83,26 +104,18 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 		}
 
 		/**
-		 * Runs on the "acf/pre_render_field" filter. Sets up pagination
-		 * and adds the total number of rows to the main field array.
+		 * Runs on the "acf/pre_render_fields" filter. Used to signify
+		 * that we're currently rendering a repeater field.
 		 *
 		 * @since 6.0.0
 		 *
-		 * @param array $field   The main field array.
+		 * @param array $fields  The main field array.
 		 * @param mixed $post_id The post ID for the field being rendered.
 		 * @return array
 		 */
-		function pre_render_field( $field, $post_id = false ) {
-			if ( ! isset( $field['type'] ) || 'repeater' !== $field['type'] ) {
-				return $field;
-			}
-
-			if ( ! empty( $field['pagination'] ) ) {
-				$this->should_paginate = true;
-				$field['total_rows']   = (int) acf_get_metadata( $post_id, $field['name'] );
-			}
-
-			return $field;
+		function pre_render_fields( $fields, $post_id = false ) {
+			$this->is_rendering = true;
+			return $fields;
 		}
 
 		/**
@@ -114,7 +127,9 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 		 * @param array $field An array holding all the field's data.
 		 */
 		function render_field( $field ) {
-			$table = new ACF_Repeater_Table( $field );
+			$field['orig_name']  = $this->orig_name;
+			$field['total_rows'] = $this->total_rows;
+			$table               = new ACF_Repeater_Table( $field );
 			$table->render();
 		}
 
@@ -128,83 +143,27 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 		 * @param array $field An array holding all the field's data.
 		 */
 		function render_field_settings( $field ) {
-
-			// vars
-			$args = array(
-				'fields' => $field['sub_fields'],
-				'parent' => $field['ID'],
+			$args                = array(
+				'fields'      => $field['sub_fields'],
+				'parent'      => $field['ID'],
+				'is_subfield' => true,
 			);
-
+			$supports_pagination = ( empty( $field['parent_repeater'] ) && empty( $field['parent_layout'] ) );
 			?>
-		<tr class="acf-field acf-field-setting-sub_fields" data-setting="repeater" data-name="sub_fields">
-			<td class="acf-label">
-				<label><?php _e( 'Sub Fields', 'acf' ); ?></label>
-				<p class="description"></p>		
-			</td>
-			<td class="acf-input">
-				<?php
+			<div class="acf-field acf-field-setting-sub_fields" data-setting="repeater" data-name="sub_fields">
+				<div class="acf-label">
+					<label><?php _e( 'Sub Fields', 'acf' ); ?></label>
+					<p class="description"></p>		
+				</div>
+				<div class="acf-input acf-input-sub">
+					<?php
 
-				acf_get_view( 'field-group-fields', $args );
+					acf_get_view( 'field-group-fields', $args );
 
-				?>
-			</td>
-		</tr>
+					?>
+				</div>
+			</div>
 			<?php
-
-			// rows
-			$field['min'] = empty( $field['min'] ) ? '' : $field['min'];
-			$field['max'] = empty( $field['max'] ) ? '' : $field['max'];
-
-			// collapsed
-			$choices = array();
-			if ( $field['collapsed'] ) {
-
-				// load sub field
-				$sub_field = acf_get_field( $field['collapsed'] );
-
-				// append choice
-				if ( $sub_field ) {
-					$choices[ $sub_field['key'] ] = $sub_field['label'];
-				}
-			}
-
-			acf_render_field_setting(
-				$field,
-				array(
-					'label'        => __( 'Collapsed', 'acf' ),
-					'instructions' => __( 'Select a sub field to show when row is collapsed', 'acf' ),
-					'type'         => 'select',
-					'name'         => 'collapsed',
-					'allow_null'   => 1,
-					'choices'      => $choices,
-				)
-			);
-
-			// min
-			acf_render_field_setting(
-				$field,
-				array(
-					'label'        => __( 'Minimum Rows', 'acf' ),
-					'instructions' => '',
-					'type'         => 'number',
-					'name'         => 'min',
-					'placeholder'  => '0',
-				)
-			);
-
-			// max
-			acf_render_field_setting(
-				$field,
-				array(
-					'label'        => __( 'Maximum Rows', 'acf' ),
-					'instructions' => '',
-					'type'         => 'number',
-					'name'         => 'max',
-					'placeholder'  => '0',
-				)
-			);
-
-			// layout
 			acf_render_field_setting(
 				$field,
 				array(
@@ -222,37 +181,104 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 				)
 			);
 
-			acf_render_field_setting(
-				$field,
-				array(
-					'label'        => __( 'Pagination', 'acf' ),
-					'instructions' => __( 'Useful for fields with a large number of rows.', 'acf' ),
-					'class'        => 'acf-repeater-pagination',
-					'type'         => 'true_false',
-					'name'         => 'pagination',
-					'ui'           => 1,
-				)
-			);
+			if ( $supports_pagination ) {
+				acf_render_field_setting(
+					$field,
+					array(
+						'label'        => __( 'Pagination', 'acf' ),
+						'instructions' => __( 'Useful for fields with a large number of rows.', 'acf' ),
+						'class'        => 'acf-repeater-pagination',
+						'type'         => 'true_false',
+						'name'         => 'pagination',
+						'ui'           => 1,
+					)
+				);
+
+				acf_render_field_setting(
+					$field,
+					array(
+						'label'        => __( 'Rows Per Page', 'acf' ),
+						'instructions' => __( 'Set the number of rows to be displayed on a page.', 'acf' ),
+						'class'        => 'acf-repeater-pagination-num-rows',
+						'type'         => 'number',
+						'name'         => 'rows_per_page',
+						'placeholder'  => 20,
+						'ui'           => 1,
+						'conditions'   => array(
+							'field'    => 'pagination',
+							'operator' => '==',
+							'value'    => 1,
+						),
+					)
+				);
+			}
+		}
+
+		/**
+		 * Renders the field settings used in the "Validation" tab.
+		 *
+		 * @since 6.0
+		 *
+		 * @param array $field The field settings array.
+		 * @return void
+		 */
+		function render_field_validation_settings( $field ) {
+			$field['min'] = empty( $field['min'] ) ? '' : $field['min'];
+			$field['max'] = empty( $field['max'] ) ? '' : $field['max'];
 
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'        => __( 'Rows Per Page', 'acf' ),
-					'instructions' => __( 'Set the number of rows to be displayed on a page.', 'acf' ),
-					'class'        => 'acf-repeater-pagination-num-rows',
+					'label'        => __( 'Minimum Rows', 'acf' ),
+					'instructions' => '',
 					'type'         => 'number',
-					'name'         => 'rows_per_page',
-					'placeholder'  => 20,
-					'ui'           => 1,
-					'conditions'   => array(
-						'field'    => 'pagination',
-						'operator' => '==',
-						'value'    => 1,
-					),
+					'name'         => 'min',
+					'placeholder'  => '0',
 				)
 			);
 
-			// button_label
+			acf_render_field_setting(
+				$field,
+				array(
+					'label'        => __( 'Maximum Rows', 'acf' ),
+					'instructions' => '',
+					'type'         => 'number',
+					'name'         => 'max',
+					'placeholder'  => '0',
+				)
+			);
+		}
+
+		/**
+		 * Renders the field settings used in the "Presentation" tab.
+		 *
+		 * @since 6.0
+		 *
+		 * @param array $field The field settings array.
+		 * @return void
+		 */
+		function render_field_presentation_settings( $field ) {
+			$choices = array();
+			if ( $field['collapsed'] ) {
+				$sub_field = acf_get_field( $field['collapsed'] );
+
+				if ( $sub_field ) {
+					$choices[ $sub_field['key'] ] = $sub_field['label'];
+				}
+			}
+
+			acf_render_field_setting(
+				$field,
+				array(
+					'label'        => __( 'Collapsed', 'acf' ),
+					'instructions' => __( 'Select a sub field to show when row is collapsed', 'acf' ),
+					'type'         => 'select',
+					'name'         => 'collapsed',
+					'allow_null'   => 1,
+					'choices'      => $choices,
+				)
+			);
+
 			acf_render_field_setting(
 				$field,
 				array(
@@ -277,6 +303,9 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 		 * @return array $value
 		 */
 		function load_value( $value, $post_id, $field ) {
+			$this->total_rows = 0;
+			$this->orig_name  = $field['name'];
+
 			// Bail early if we don't have enough info to load the field.
 			if ( empty( $value ) || ! is_numeric( $value ) || empty( $field['sub_fields'] ) ) {
 				return false;
@@ -286,8 +315,10 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 			$rows   = array();
 			$offset = 0;
 
-			if ( ! empty( $field['pagination'] ) && $this->should_paginate ) {
-				$rows_per_page = isset( $field['rows_per_page'] ) ? (int) $field['rows_per_page'] : 20;
+			if ( ! empty( $field['pagination'] ) && $this->is_rendering ) {
+				$this->total_rows = $value;
+				$rows_per_page    = isset( $field['rows_per_page'] ) ? (int) $field['rows_per_page'] : 20;
+
 				if ( $rows_per_page < 1 ) {
 					$rows_per_page = 20;
 				}
@@ -491,9 +522,9 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 			foreach ( $field['sub_fields'] as $sub_field ) {
 				$value = null;
 
-				if ( isset( $row[ $sub_field['key'] ] ) ) {
+				if ( array_key_exists( $sub_field['key'], $row ) ) {
 					$value = $row[ $sub_field['key'] ];
-				} elseif ( isset( $row[ $sub_field['name'] ] ) ) {
+				} elseif ( array_key_exists( $sub_field['name'], $row ) ) {
 					$value = $row[ $sub_field['name'] ];
 				} else {
 					// Value does not exist.
@@ -966,6 +997,7 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 
 			$args = acf_request_args(
 				array(
+					'field_name'    => '',
 					'field_key'     => '',
 					'post_id'       => 0,
 					'rows_per_page' => 0,
@@ -973,8 +1005,8 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 				)
 			);
 
-			if ( '' === $args['field_key'] ) {
-				$error = array( 'error' => __( 'Invalid field key.', 'acf' ) );
+			if ( '' === $args['field_name'] || '' === $args['field_key'] ) {
+				$error = array( 'error' => __( 'Invalid field key or name.', 'acf' ) );
 				wp_send_json_error( $error, 404 );
 			}
 
@@ -991,11 +1023,7 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 			$field = acf_validate_field( $field );
 
 			// Make sure that we only get a subset of the rows.
-			$this->should_paginate = true;
-
-			if ( $args['refresh'] ) {
-				$response['total_rows'] = (int) acf_get_metadata( $post_id, $field['name'] );
-			}
+			$this->is_rendering = true;
 
 			$args['rows_per_page'] = (int) $args['rows_per_page'];
 
@@ -1003,10 +1031,20 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 				$field['rows_per_page'] = $args['rows_per_page'];
 			}
 
+			/**
+			 * We have to swap out the field name with the one sent via JS,
+			 * as the repeater could be inside a subfield.
+			 */
+			$field['name'] = $args['field_name'];
+
 			$field['value']   = acf_get_value( $post_id, $field );
 			$field            = acf_prepare_field( $field );
 			$repeater_table   = new ACF_Repeater_Table( $field );
 			$response['rows'] = $repeater_table->rows( true );
+
+			if ( $args['refresh'] ) {
+				$response['total_rows'] = $this->total_rows;
+			}
 
 			wp_send_json_success( $response );
 		}

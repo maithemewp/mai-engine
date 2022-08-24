@@ -1694,7 +1694,10 @@
     events: {
       'mouseenter .acf-js-tooltip': 'showTitle',
       'mouseup .acf-js-tooltip': 'hideTitle',
-      'mouseleave .acf-js-tooltip': 'hideTitle'
+      'mouseleave .acf-js-tooltip': 'hideTitle',
+      'focus .acf-js-tooltip': 'showTitle',
+      'blur .acf-js-tooltip': 'hideTitle',
+      'keyup .acf-js-tooltip': 'onKeyUp'
     },
     showTitle: function (e, $el) {
       // vars
@@ -1724,6 +1727,11 @@
       this.tooltip.hide(); // restore title
 
       $el.attr('title', this.tooltip.get('text'));
+    },
+    onKeyUp: function (e, $el) {
+      if ('Escape' === e.key) {
+        this.hideTitle(e, $el);
+      }
     }
   });
 })(jQuery);

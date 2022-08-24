@@ -410,7 +410,6 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
       data.started = true;
 
       if (fetchCache[queueId]) {
-        console.log('Loading block ' + clientId + ' from fetch cache hash ' + queueId);
         ajaxQueue[queueId] = null;
         data.promise.resolve.apply(fetchCache[queueId][0], fetchCache[queueId][1]);
       } else {
@@ -991,7 +990,6 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
           // Ensure we only preload the correct block state (form or preview).
           if (form && !preloadedBlocks[blockId].form || !form && preloadedBlocks[blockId].form) return false; // Set HTML to the preloaded version.
 
-          console.log('Loading ' + modeText + ' for block ' + clientId + ' from preload with hash ' + blockId);
           return preloadedBlocks[blockId].html.replaceAll(blockId, clientId);
         }
       }
@@ -1114,7 +1112,6 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
     componentDidMount() {
       // Fetch on first load.
       if (this.state.html === undefined) {
-        //console.log('componentDidMount', this.id);
         this.fetch(); // Or remount existing HTML.
       } else {
         this.display('remount');
@@ -1194,8 +1191,6 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
       } // Request AJAX and update HTML on complete.
 
 
-      console.log('BlockForm fetchBlock for ' + clientId + ' (' + hash + ')'); // Request AJAX and update HTML on complete.
-
       fetchBlock({
         attributes,
         context,
@@ -1238,7 +1233,6 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
       function serializeData() {
         let silent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
         const data = acf.serialize($el, `acf-${clientId}`);
-        console.log('serializeData', props, data);
 
         if (silent) {
           attributes.data = data;
@@ -1294,8 +1288,7 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
 
       if (blockType.supports.jsx) {
         this.renderMethod = 'jsx';
-      } //console.log('setup', this.id);
-
+      }
     }
 
     fetch() {
@@ -1328,7 +1321,6 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
       } // Request AJAX and update HTML on complete.
 
 
-      console.log('BlockPreview fetchBlock for ' + clientId + ' (' + hash + ')');
       fetchBlock({
         attributes,
         context,
@@ -1413,7 +1405,6 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
       super.componentDidRemount(); // Update preview if data has changed since last render (changing from "edit" to "preview").
 
       if (!compareObjects(this.state.prevAttributes, this.props.attributes) || !compareObjects(this.state.prevContext, this.props.context)) {
-        //console.log('componentDidRemount', this.id);
         this.fetch();
       } // Fire the block preview event so blocks can reinit JS elements.
       // React reusing DOM elements covers any potential race condition from the above fetch.

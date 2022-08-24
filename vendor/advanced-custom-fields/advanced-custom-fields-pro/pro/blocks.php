@@ -1,4 +1,9 @@
 <?php
+/**
+ * The ACF Blocks PHP code.
+ *
+ * @package ACF
+ */
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
@@ -7,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 acf_register_store( 'block-types' );
 acf_register_store( 'block-cache' );
 
-// Register block.json support handlers
+// Register block.json support handlers.
 add_filter( 'block_type_metadata', 'acf_add_block_namespace' );
 add_filter( 'block_type_metadata_settings', 'acf_handle_json_block_registration', 99, 2 );
 
@@ -40,7 +45,6 @@ function acf_add_block_namespace( $metadata ) {
  * @return array Block registration settings with ACF required additions.
  */
 function acf_handle_json_block_registration( $settings, $metadata ) {
-
 	if ( ! acf_is_acf_block_json( $metadata ) ) {
 		return $settings;
 	}
@@ -138,8 +142,6 @@ function acf_is_acf_block_json( $metadata ) {
 
 
 /**
- * acf_register_block_type
- *
  * Registers a block type.
  *
  * @date    18/2/19
@@ -164,14 +166,15 @@ function acf_register_block_type( $block ) {
 	// Require name.
 	if ( ! $block['name'] ) {
 		$message = __( 'Block type name is required.', 'acf' );
-		_doing_it_wrong( __FUNCTION__, $message, '5.8.0' );
+		_doing_it_wrong( __FUNCTION__, $message, '5.8.0' ); //phpcs:ignore -- escape not required.
 		return false;
 	}
 
 	// Bail early if already exists.
 	if ( acf_has_block_type( $block['name'] ) ) {
-		$message = sprintf( __( 'Block type "%s" is already registered.' ), $block['name'] );
-		_doing_it_wrong( __FUNCTION__, $message, '5.8.0' );
+		/* translators: The name of the block type */
+		$message = sprintf( __( 'Block type "%s" is already registered.', 'acf' ), $block['name'] );
+		_doing_it_wrong( __FUNCTION__, $message, '5.8.0' ); //phpcs:ignore -- escape not required.
 		return false;
 	}
 
@@ -206,8 +209,6 @@ function acf_register_block_type( $block ) {
 }
 
 /**
- * acf_register_block
- *
  * See acf_register_block_type().
  *
  * @date    18/2/19
@@ -221,11 +222,8 @@ function acf_register_block( $block ) {
 }
 
 /**
- * acf_has_block_type
- *
  * Returns true if a block type exists for the given name.
  *
- * @date    18/2/19
  * @since   5.7.12
  *
  * @param   string $name The block type name.
@@ -236,14 +234,10 @@ function acf_has_block_type( $name ) {
 }
 
 /**
- * acf_get_block_types
- *
  * Returns an array of all registered block types.
  *
- * @date    18/2/19
  * @since   5.7.12
  *
- * @param   void
  * @return  array
  */
 function acf_get_block_types() {
@@ -251,11 +245,8 @@ function acf_get_block_types() {
 }
 
 /**
- * acf_get_block_types
- *
  * Returns a block type for the given name.
  *
- * @date    18/2/19
  * @since   5.7.12
  *
  * @param   string $name The block type name.
@@ -266,11 +257,8 @@ function acf_get_block_type( $name ) {
 }
 
 /**
- * acf_remove_block_type
- *
  * Removes a block type for the given name.
  *
- * @date    18/2/19
  * @since   5.7.12
  *
  * @param   string $name The block type name.
@@ -348,11 +336,8 @@ function acf_get_block_type_default_attributes( $block_type ) {
 }
 
 /**
- * acf_validate_block_type
- *
  * Validates a block type ensuring all settings exist.
  *
- * @date    10/4/18
  * @since   5.8.0
  *
  * @param   array $block The block settings.
@@ -421,11 +406,8 @@ function acf_validate_block_type( $block ) {
 }
 
 /**
- * acf_prepare_block
- *
  * Prepares a block for use in render_callback by merging in all settings and attributes.
  *
- * @date    19/11/18
  * @since   5.8.0
  *
  * @param   array $block The block props.
@@ -469,7 +451,6 @@ function acf_prepare_block( $block ) {
  * @return array Modified block array with backwards compatibility attributes.
  */
 function acf_add_back_compat_attributes( $block ) {
-
 	foreach ( acf_get_block_back_compat_attribute_key_array() as $new => $old ) {
 		if ( isset( $block[ $new ] ) ) {
 			$block[ $old ] = $block[ $new ];
@@ -511,12 +492,23 @@ function acf_render_block_callback( $attributes, $content = '', $wp_block = null
 	$post_id    = get_the_ID();
 
 	// Set preview flag to true when rendering for the block editor.
-	if ( is_admin() && acf_is_block_editor() ) {
+	if ( acf_block_is_preview() ) {
 		$is_preview = true;
 	}
 
 	// Return rendered block HTML.
 	return acf_rendered_block( $attributes, $content, $is_preview, $post_id, $wp_block );
+}
+
+/**
+ * Returns true if we're in a regular backend load of the block preview.
+ *
+ * @since 6.0.0
+ *
+ * @return bool
+ */
+function acf_block_is_preview() {
+	return ( is_admin() && acf_is_block_editor() && ! ( doing_filter( 'render_block' ) || doing_filter( 'the_content' ) ) );
 }
 
 /**
@@ -546,14 +538,17 @@ function acf_rendered_block( $attributes, $content = '', $is_preview = false, $p
 	$attributes['id'] = acf_get_block_id( $attributes, $context );
 
 	// Check if we've already got a cache of this block ID and return it to save rendering if we're in the backend.
-	if ( $is_preview && $cached_block = acf_get_store( 'block-cache' )->get( $attributes['id'] ) ) {
-		if ( $form ) {
-			if ( $cached_block['form'] ) {
-				return $cached_block['html'];
-			}
-		} else {
-			if ( ! $cached_block['form'] ) {
-				return $cached_block['html'];
+	if ( $is_preview ) {
+		$cached_block = acf_get_store( 'block-cache' )->get( $attributes['id'] );
+		if ( $cached_block ) {
+			if ( $form ) {
+				if ( $cached_block['form'] ) {
+					return $cached_block['html'];
+				}
+			} else {
+				if ( ! $cached_block['form'] ) {
+					return $cached_block['html'];
+				}
 			}
 		}
 	}
@@ -576,7 +571,7 @@ function acf_rendered_block( $attributes, $content = '', $is_preview = false, $p
 			acf_render_fields( $fields, $block['id'], 'div', 'field' );
 			echo '</div>';
 		} else {
-			echo acf_get_empty_block_form_html( $attributes['name'] );
+			echo acf_get_empty_block_form_html( $attributes['name'] ); //phpcs:ignore -- escaped in function.
 		}
 	} else {
 		// Capture block render output.
@@ -602,16 +597,16 @@ function acf_rendered_block( $attributes, $content = '', $is_preview = false, $p
 			$content = '<div class="' . $class . '">' . $content . '</div>';
 		}
 		$html = preg_replace( '/<InnerBlocks([\S\s]*?)\/>/', $content, $html );
-	} else {
-		// Store in cache for preloading if we're in the backend.
-		acf_get_store( 'block-cache' )->set(
-			$attributes['id'],
-			array(
-				'form' => $form,
-				'html' => $html,
-			)
-		);
 	}
+
+	// Store in cache for preloading if we're in the backend.
+	acf_get_store( 'block-cache' )->set(
+		$attributes['id'],
+		array(
+			'form' => $form,
+			'html' => $html,
+		)
+	);
 
 	return $html;
 }
@@ -619,7 +614,6 @@ function acf_rendered_block( $attributes, $content = '', $is_preview = false, $p
 /**
  * Renders the block HTML.
  *
- * @date    19/2/19
  * @since   5.7.12
  *
  * @param   array    $attributes The block attributes.
@@ -628,7 +622,7 @@ function acf_rendered_block( $attributes, $content = '', $is_preview = false, $p
  * @param   int      $post_id The current post being edited or viewed.
  * @param   WP_Block $wp_block The block instance (since WP 5.5).
  * @param   array    $context The block context array.
- * @return  void
+ * @return  void|string
  */
 function acf_render_block( $attributes, $content = '', $is_preview = false, $post_id = 0, $wp_block = null, $context = false ) {
 
@@ -679,8 +673,6 @@ function acf_render_block( $attributes, $content = '', $is_preview = false, $pos
 }
 
 /**
- * acf_get_block_fields
- *
  * Returns an array of all fields for the given block.
  *
  * @date    24/10/18
@@ -713,14 +705,10 @@ function acf_get_block_fields( $block ) {
 }
 
 /**
- * acf_enqueue_block_assets
- *
  * Enqueues and localizes block scripts and styles.
  *
- * @date    28/2/19
  * @since   5.7.13
  *
- * @param   void
  * @return  void
  */
 function acf_enqueue_block_assets() {
@@ -775,11 +763,8 @@ function acf_enqueue_block_assets() {
 }
 
 /**
- * acf_enqueue_block_type_assets
- *
  * Enqueues scripts and styles for a specific block type.
  *
- * @date    28/2/19
  * @since   5.7.13
  *
  * @param   array $block_type The block type settings.
@@ -792,12 +777,12 @@ function acf_enqueue_block_type_assets( $block_type ) {
 
 	// Enqueue style.
 	if ( $block_type['enqueue_style'] ) {
-		wp_enqueue_style( $handle, $block_type['enqueue_style'], array(), false, 'all' );
+		wp_enqueue_style( $handle, $block_type['enqueue_style'], array(), ACF_VERSION, 'all' );
 	}
 
 	// Enqueue script.
 	if ( $block_type['enqueue_script'] ) {
-		wp_enqueue_script( $handle, $block_type['enqueue_script'], array(), false, true );
+		wp_enqueue_script( $handle, $block_type['enqueue_script'], array(), ACF_VERSION, true );
 	}
 
 	// Enqueue assets callback.
@@ -807,14 +792,10 @@ function acf_enqueue_block_type_assets( $block_type ) {
 }
 
 /**
- * acf_ajax_fetch_block
- *
  * Handles the ajax request for block data.
  *
- * @date    28/2/19
  * @since   5.7.13
  *
- * @param   void
  * @return  void
  */
 function acf_ajax_fetch_block() {
@@ -866,7 +847,8 @@ function acf_ajax_fetch_block() {
 	}
 
 	// Prepare block ensuring all settings and attributes exist.
-	if ( ! $block = acf_prepare_block( $block ) ) {
+	$block = acf_prepare_block( $block );
+	if ( ! $block ) {
 		wp_send_json_error();
 	}
 
@@ -883,6 +865,7 @@ function acf_ajax_fetch_block() {
 
 	// Setup main postdata for post_id.
 	global $post;
+	//phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- required for block template rendering.
 	$post = get_post( $post_id );
 	setup_postdata( $post );
 
@@ -899,7 +882,6 @@ function acf_ajax_fetch_block() {
 		acf_prefix_fields( $fields, "acf-{$block['id']}" );
 
 		if ( $fields ) {
-
 			// Start Capture.
 			ob_start();
 
@@ -910,16 +892,14 @@ function acf_ajax_fetch_block() {
 
 			// Store Capture.
 			$response['form'] = ob_get_clean();
-
 		} else {
 			// There are no fields on this block.
-			$response['form'] = acf_get_empty_block_form_html( $block['name'] );
+			$response['form'] = acf_get_empty_block_form_html( $block['name'] ); //phpcs:ignore -- escaped in function.
 		}
 	}
 
 	// Query preview.
 	if ( ! empty( $query['preview'] ) ) {
-
 		// Render_callback vars.
 		$content    = '';
 		$is_preview = true;
@@ -960,7 +940,7 @@ function acf_get_empty_block_form_html( $block_name ) {
 	$html .= apply_filters( 'acf/blocks/no_fields_assigned_message', $message, $block_name );
 
 	$html .= '</div>';
-	return $html;
+	return acf_esc_html( $html );
 }
 
 /**
@@ -989,7 +969,6 @@ add_filter( 'content_save_pre', 'acf_parse_save_blocks', 5, 1 );
 /**
  * Callback used in preg_replace to modify ACF Block comment.
  *
- * @date    1/3/19
  * @since   5.7.13
  *
  * @param   array $matches The preg matches.
@@ -997,7 +976,7 @@ add_filter( 'content_save_pre', 'acf_parse_save_blocks', 5, 1 );
  */
 function acf_parse_save_blocks_callback( $matches ) {
 
-	// Defaults
+	// Defaults.
 	$name  = isset( $matches['name'] ) ? $matches['name'] : '';
 	$attrs = isset( $matches['attrs'] ) ? json_decode( $matches['attrs'], true ) : '';
 	$void  = isset( $matches['void'] ) ? $matches['void'] : '';
@@ -1059,7 +1038,7 @@ function acf_get_block_id( $attributes, $context = array() ) {
 		}
 
 		ksort( $attributes );
-		return md5( acf_serialize_block_attributes( $attributes ) );
+		return md5( wp_json_encode( $attributes, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) );
 	}
 	return $attributes['id'];
 }
@@ -1101,7 +1080,7 @@ function acf_serialize_block_attributes( $block_attributes ) {
 	$encoded_attributes = preg_replace( '/</', '\\u003c', $encoded_attributes );
 	$encoded_attributes = preg_replace( '/>/', '\\u003e', $encoded_attributes );
 	$encoded_attributes = preg_replace( '/&/', '\\u0026', $encoded_attributes );
-	// Regex: /\\"/
+	// Regex: /\\"/.
 	$encoded_attributes = preg_replace( '/\\\\"/', '\\u0022', $encoded_attributes );
 
 	return $encoded_attributes;
@@ -1113,10 +1092,9 @@ function acf_serialize_block_attributes( $block_attributes ) {
  * @date    07/06/22
  * @since   6.0
  *
- * @param   mixed $response
+ * @param   WP_REST_Response|WP_HTTP_Response|WP_Error|mixed $response The WordPress response object.
  * @return  mixed
  */
-add_filter( 'rest_request_before_callbacks', 'acf_set_after_rest_media_enqueue_reset_flag' );
 function acf_set_after_rest_media_enqueue_reset_flag( $response ) {
 	global $wp_actions;
 
@@ -1125,6 +1103,7 @@ function acf_set_after_rest_media_enqueue_reset_flag( $response ) {
 
 	return $response;
 }
+add_filter( 'rest_request_before_callbacks', 'acf_set_after_rest_media_enqueue_reset_flag' );
 
 /**
  * Reset wp_enqueue_media action count after REST call so it can happen inside the main execution if required.
@@ -1132,16 +1111,16 @@ function acf_set_after_rest_media_enqueue_reset_flag( $response ) {
  * @date    07/06/22
  * @since   6.0
  *
- * @param   mixed $response
+ * @param   WP_REST_Response|WP_HTTP_Response|WP_Error|mixed $response The WordPress response object.
  * @return  mixed
  */
-add_filter( 'rest_request_after_callbacks', 'acf_reset_media_enqueue_after_rest' );
 function acf_reset_media_enqueue_after_rest( $response ) {
-
 	if ( acf_get_data( 'acf_should_reset_media_enqueue' ) && acf_get_data( 'acf_did_render_block_form' ) ) {
 		global $wp_actions;
+		//phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- no other option here as this works around a breaking WordPress change with REST preload scopes.
 		$wp_actions['wp_enqueue_media'] = 0;
 	}
 
 	return $response;
 }
+add_filter( 'rest_request_after_callbacks', 'acf_reset_media_enqueue_after_rest' );

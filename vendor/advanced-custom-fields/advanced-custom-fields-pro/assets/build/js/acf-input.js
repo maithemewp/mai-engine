@@ -3849,7 +3849,17 @@
       duplicateField: 'onDuplicate'
     },
     findFields: function () {
-      return this.$el.nextUntil('.acf-field-tab', '.acf-field');
+      let filter = '.acf-field';
+
+      if (this.get('key') === 'acf_field_settings_tabs') {
+        filter = '.acf-field-settings-main';
+      }
+
+      if (this.get('key') === 'acf_field_group_settings_tabs') {
+        filter = '.field-group-settings-tab';
+      }
+
+      return this.$el.nextUntil('.acf-field-tab', filter);
     },
     getFields: function () {
       return acf.getFields(this.findFields());
@@ -3995,7 +4005,13 @@
       if ($before.is('tr')) {
         this.$el = $('<tr class="acf-tab-wrap"><td colspan="2"><ul class="acf-hl acf-tab-group"></ul></td></tr>');
       } else {
-        this.$el = $('<div class="acf-tab-wrap -' + placement + '"><ul class="acf-hl acf-tab-group"></ul></div>');
+        let ulClass = 'acf-hl acf-tab-group';
+
+        if (this.get('key') === 'acf_field_settings_tabs') {
+          ulClass = 'acf-field-settings-tab-bar';
+        }
+
+        this.$el = $('<div class="acf-tab-wrap -' + placement + '"><ul class="' + ulClass + '"></ul></div>');
       } // append
 
 
@@ -4078,7 +4094,10 @@
     },
     addTab: function ($a, field) {
       // create <li>
-      var $li = $('<li>' + $a.outerHTML() + '</li>'); // append
+      var $li = $('<li>' + $a.outerHTML() + '</li>'); // add settings type class.
+
+      var classes = $a.attr('class').replace('acf-tab-button', '');
+      $li.addClass(classes); // append
 
       this.$('ul').append($li); // initialize
 
@@ -4179,6 +4198,7 @@
       prepare: 'render',
       append: 'render',
       unload: 'onUnload',
+      show: 'render',
       invalid_field: 'onInvalidField'
     },
     findTabs: function () {
@@ -5359,6 +5379,10 @@
 
     if (args.visible) {
       selector += ':visible';
+    }
+
+    if (!args.suppressFilters) {
+      selector = acf.applyFilters('find_fields_selector', selector, args);
     } // query
 
 
