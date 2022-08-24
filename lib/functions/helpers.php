@@ -922,7 +922,7 @@ function mai_get_instance( $class, ...$args ) {
  * @return int
  */
 function mai_get_width_height_attribute( $value, $fallback = false ) {
-	if ( is_numeric( $value ) ) {
+	if ( is_numeric( $value ) || mai_has_string( 'calc(', $value ) ) {
 		return $value;
 	}
 	// Pixel values.
