@@ -399,7 +399,6 @@ function mai_load_files() {
 		'functions/enqueue',
 		'functions/entries',
 		'functions/fonts',
-		'functions/grid',
 		'functions/helpers',
 		'functions/icons',
 		'functions/images',
@@ -437,6 +436,7 @@ function mai_load_files() {
 
 		// Fields.
 		'fields/clone', // Must be first.
+		'fields/functions', // Load functions so they are available.
 		'fields/columns',
 		'fields/grid-display',
 		'fields/grid-layout',
@@ -455,11 +455,14 @@ function mai_load_files() {
 		'blocks/search',
 		'blocks/settings',
 		'blocks/social-links',
-		'blocks/mai-grid',
 		'blocks/mai-columns/block',
 		'blocks/mai-column/block',
 		'blocks/mai-divider/block',
 		'blocks/mai-icon/block',
+		'blocks/mai-grid/functions',
+		'blocks/mai-grid/blocks',
+		'blocks/mai-grid/post-block',
+		'blocks/mai-grid/term-block',
 	];
 
 	// Customizer.

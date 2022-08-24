@@ -271,19 +271,15 @@ function mai_columns_get_flex( $break, $size ) {
 
 	switch ( $size ) {
 		case 'auto':
-			// $style .= sprintf( '0 1 %s', $basis );
 			$style .= sprintf( '--flex-%s:0 1 %s;', $break, $basis );
 		break;
 		case 'fill':
-			// $style .= sprintf( '1 0 %s', $basis );
 			$style .= sprintf( '--flex-%s:1 0 %s;', $break, $basis );
 		break;
 		case 'full':
-			// $style .= sprintf( '0 0 %s', $basis );
 			$style .= sprintf( '--flex-%s:0 0 %s;', $break, $basis );
 		break;
 		default:
-			// $style .= sprintf( '0 0 %s', $basis );
 			$style .= sprintf( '--flex-%s:0 0 %s;', $break, $basis );
 	}
 
@@ -338,43 +334,7 @@ function mai_columns_get_flex_basis( $size ) {
 
 	// Set columns.
 	if ( $fraction ) {
-
-		// ray( $fraction );
-
-		// Temp disable.
-		// if ( false === true ) {
-			// Get percent.
-			// $percent = mai_fraction_to_percent( $fraction );
-			// Array from fraction.
-			// $array   = explode( '/', $fraction );
-			// $top     = (int) (isset( $array[0] ) ? $array[0] : 1);
-			// $bottom  = (int) (isset( $array[1] ) ? $array[1] : 1);
-			// $top     = 0 === $top ? 1 : $top;
-			// $bottom  = 0 === $bottom ? 1 : $bottom;
-			// Divide fraction to get decimal.
-			// $float   = $top / $bottom;
-			// Trim to 6 places.
-			// $float   = number_format( $float, 6, '.', '' ); // No need to do this since using the calculation before * 1000000.
-			// Subtract 1 - {decimal}. Wow this was annoying. @link https://stackoverflow.com/questions/17210787/php-float-calculation-error-when-subtracting
-			// $float   = bcsub( '1', (string) $float, 6 ); // Can't use this because it's not available on all hosts. @link https://stackoverflow.com/questions/63593354/undefined-function-bcsub
-			// $float   = ( ( 1000000 - floor($float * 1000000) ) / 1000000 );
-			// Trim trailing zeros.
-			// $float   = (float) $float;
-			// Converts 0.0 to 0.
-			// $float   = $float > 0 ? $float : '0';
-
-			// $all[ $size ] = sprintf( 'calc(%s - (var(--column-gap) * %s))', $percent, $float );
-
-			// $percent = sprintf( '((%s/%s * 100) * 1%%)', $top, $bottom );
-			// $percent = sprintf( '(((%s) * 100 * 1%%))', $fraction );
-			// $all[ $size ] = sprintf( 'calc(((%s/%s * 100) * 1%%) - (var(--column-gap) * (1 - (%s/%s))))', $top, $bottom, $top, $bottom );
-			// $all[ $size ] = 'calc((100% * var(--columns) - (var(--column-gap) * (1 - var(--columns)))) - 0.025px)';
-			$all[ $size ] = 'var(--flex-basis)';
-
-		// } else {
-
-
-		// }
+		$all[ $size ] = 'var(--flex-basis)';
 	}
 	// This shouldn't ever happen.
 	else {

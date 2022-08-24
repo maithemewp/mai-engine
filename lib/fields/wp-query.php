@@ -42,6 +42,155 @@ function mai_grid_load_tax_taxonomy_field( $field ) {
 	return $field;
 }
 
+add_filter( 'acf/load_field/key=mai_grid_block_tax_terms', 'mai_acf_load_terms', 10, 1 );
+/**
+ * Get terms from an ajax query.
+ * The taxonomy is passed via JS on select2_query_args filter.
+ *
+ * @since 0.1.0
+ *
+ * @param array $field The ACF field array.
+ *
+ * @return mixed
+ */
+function mai_acf_load_terms( $field ) {
+	$taxonomy = mai_get_acf_request( 'taxonomy' );
+
+	if ( ! $taxonomy ) {
+		return $field;
+	}
+
+	$field['choices'] = mai_get_term_choices_from_taxonomy( $taxonomy );
+
+	return $field;
+}
+
+add_filter( 'acf/prepare_field/key=mai_grid_block_tax_terms', 'mai_acf_prepare_terms', 10, 1 );
+/**
+ * Load term choices based on existing saved field value.
+ * Ajax loading terms was working, but if a term was already saved
+ * it was not loading correctly when editing a post.
+ *
+ * @link  https://github.com/maithemewp/mai-engine/issues/93
+ *
+ * @since 0.3.3
+ *
+ * @param array $field The ACF field array.
+ *
+ * @return mixed
+ */
+function mai_acf_prepare_terms( $field ) {
+	if ( ! $field['value'] ) {
+		return $field;
+	}
+
+	$term_id = $field['value'][0];
+
+	if ( ! $term_id ) {
+		return $field;
+	}
+
+	$term = get_term( $term_id );
+
+	if ( ! $term ) {
+		return $field;
+	}
+
+	$field['choices'] = mai_get_term_choices_from_taxonomy( $term->taxonomy );
+
+	return $field;
+}
+
+add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_parent_in', 'mai_acf_get_post_parents', 10, 1 );
+/**
+ * Set the post type args for post_object query in ACF.
+ *
+ * @since 0.1.0
+ *
+ * @param array $args Field args.
+ *
+ * @return mixed
+ */
+function mai_acf_get_post_parents( $args ) {
+	$args['post_type'] = [];
+	$post_types        = mai_get_acf_request( 'post_type' );
+
+	if ( ! $post_types ) {
+		return $args;
+	}
+
+	foreach ( (array) $post_types as $post_type ) {
+		$args['post_type'][] = sanitize_text_field( wp_unslash( $post_type ) );
+	}
+
+	foreach ( $args['post_type'] as $index => $post_type ) {
+		if ( ! is_post_type_hierarchical( $post_type ) ) {
+			unset( $args['post_type'][ $index ] );
+		}
+	}
+
+	return $args;
+}
+
+add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_in',       'mai_acf_get_posts_by_id', 12, 3 );
+add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_not_in',   'mai_acf_get_posts_by_id', 12, 3 );
+add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_parent_in','mai_acf_get_posts_by_id', 12, 3 );
+/**
+ * Allow searching for posts by ID.
+ *
+ * @since 2.15.0
+ *
+ * @link https://www.powderkegwebdesign.com/fantastic-way-allow-searching-id-advanced-custom-fields-objects/
+ *
+ * @return array
+ */
+function mai_acf_get_posts_by_id( $args, $field, $post_id ) {
+	$query = ! empty( $args['s'] ) ? $args['s'] : false;
+
+	if ( ! $query ) {
+		return $args;
+	}
+
+	// Bail if not a numeric query.
+ 	if ( ! is_numeric( $query ) ) {
+		return $args;
+	}
+
+	// Set the post ID in the query.
+	$args['post__in'] = [ $query ];
+
+	// Unset the actual search param.
+	unset( $args['s'] );
+
+	return $args;
+}
+
+/**
+ * Get post type choices for select field.
+ * If this is called too early all post types may not be registered.
+ *
+ * @since 0.1.0
+ *
+ * @return array
+ */
+function mai_get_post_type_choices() {
+	$choices    = [];
+	$post_types = get_post_types( [ 'public' => true ] );
+
+	unset( $post_types['attachment'] );
+
+	$post_types = array_keys( $post_types );
+	$post_types = apply_filters( 'mai_grid_post_types', $post_types );
+
+	if ( $post_types ) {
+		foreach ( $post_types as $post_type ) {
+			$choices[ $post_type ] = get_post_type_object( $post_type )->label;
+		}
+	}
+
+	return $choices;
+}
+
 /**
  * Gets field defaults.
  * TODO: Move these to config.php?

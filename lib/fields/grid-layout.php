@@ -12,6 +12,51 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
+add_filter( 'acf/prepare_field/key=mai_grid_block_column_gap', 'mai_acf_load_gap', 10, 1 );
+add_filter( 'acf/prepare_field/key=mai_grid_block_row_gap',    'mai_acf_load_gap', 10, 1 );
+/**
+ * Sets the default gap if existing value is not a valid size.
+ * This helps deprecate the old text field values, so the default is set correctly for existing block instances.
+ *
+ * @since 2.4.0
+ *
+ * @param array $field The existing field.
+ *
+ * @return array
+ */
+function mai_acf_load_gap( $field ) {
+	if ( $field['value'] && ! mai_is_valid_size( $field['value'] ) ) {
+		$field['value'] = $field['default_value'];
+	}
+
+	return $field;
+}
+
+/**
+ * Get columns choices for settings.
+ *
+ * @since 0.1.0
+ *
+ * @return array
+ */
+function mai_get_columns_choices() {
+	$choices = [];
+
+	if ( ! ( is_admin() || is_customize_preview() ) ) {
+		return $choices;
+	}
+
+	return [
+		'1' => esc_html__( '1', 'mai-engine' ),
+		'2' => esc_html__( '2', 'mai-engine' ),
+		'3' => esc_html__( '3', 'mai-engine' ),
+		'4' => esc_html__( '4', 'mai-engine' ),
+		'5' => esc_html__( '5', 'mai-engine' ),
+		'6' => esc_html__( '6', 'mai-engine' ),
+		'0' => esc_html__( 'Fit', 'mai-engine' ),
+	];
+}
+
 /**
  * Gets field defaults.
  * TODO: Move these to config.php?
