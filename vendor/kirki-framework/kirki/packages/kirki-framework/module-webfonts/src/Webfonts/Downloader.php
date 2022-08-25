@@ -203,7 +203,6 @@ class Downloader {
 			return;
 		}
 
-		ray( $contents );
 		return $contents;
 	}
 
