@@ -352,18 +352,23 @@ function mai_custom_scroll_logo( $html, $blog_id ) {
 		return $html;
 	}
 
-	$logo_url = wp_get_attachment_image_url( $logo_id, 'large' );
-	$dom      = mai_get_dom_document( $html );
-	$first    = mai_get_dom_first_child( $dom );
+	$logo = wp_get_attachment_image( $logo_id, 'large', false,
+		[
+			'class'          => 'custom-scroll-logo',
+			'data-pin-nopin' => 'true',
+		]
+	);
 
-	if ( $first ) {
-		$img = $dom->createElement( 'img' );
-		$img->setAttribute( 'class', 'custom-scroll-logo' );
-		$img->setAttribute( 'src', esc_url( $logo_url ) );
-		$img->setAttribute( 'loading', 'lazy' );
-		$img->setAttribute( 'data-pin-nopin', 'true' );
-		$first->appendChild( $img );
-		$html = $dom->saveHTML();
+	if ( $logo ) {
+		$dom   = mai_get_dom_document( $html );
+		$first = mai_get_dom_first_child( $dom );
+
+		if ( $first ) {
+			$fragment = $first->ownerDocument->createDocumentFragment();
+			$fragment->appendXML( $logo );
+			$first->appendChild( $fragment );
+			$html = $dom->saveHTML();
+		}
 	}
 
 	return $html;
