@@ -18,10 +18,10 @@ html {
 
 body {
 	min-height: auto;
-	background: var(--color-white);
+	// background: var(--color-white);
 
 	--viewport-width: calc(100vw - var(--admin-menu-width, 160px) - var(--block-sidebar-width, 0px)); // Requires 0px for calc().
-	--body-background-color: var(--color-white);
+	// --body-background-color: var(--color-white); // Testing not overriding in editor.
 	--list-style-position: outside;
 	--list-padding: 0 0 var(--spacing-lg) var(--spacing-xl); // Adds list indent/spacing without affecting block layout.
 	--list-item-margin-bottom: var(--spacing-xs);

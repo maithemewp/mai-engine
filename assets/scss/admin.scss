@@ -9,6 +9,11 @@
  * max-width + 160 (admin menu width) + 280 (block editor sidebar width) + 60px (extra).
  */
 
+body.has-dark-body .editor-styles-wrapper {
+	--heading-color: var(--color-white);
+	--body-color: var(--color-white);
+}
+
 .edit-post-layout {
 	--editor-viewport-width: calc(100vw - var(--admin-menu-width, 160px) - var(--block-sidebar-width, 0px)); // Requires 0px for calc(). This is used in editor.scss too.
 }
@@ -413,13 +418,13 @@
  */
 
 // Can't target body classes in editor styles.
-body.post-type-wp_block .editor-styles-wrapper,
-body.post-type-mai_template_part .editor-styles-wrapper {
-	background: repeating-conic-gradient(white 0% 25%, rgba(0, 0, 0, 0.025) 0% 50%) 50% / 40px 40px !important;
-	background-position: top left !important;
-}
+// body.post-type-wp_block .editor-styles-wrapper,
+// body.post-type-mai_template_part .editor-styles-wrapper {
+// 	background: repeating-conic-gradient(white 0% 25%, rgba(0, 0, 0, 0.025) 0% 50%) 50% / 40px 40px !important;
+// 	background-position: top left !important;
+// }
 
-body.post-type-wp_block .editor-post-title__block:not(.is-focus-mode).is-selected .editor-post-title__input,
-body.post-type-mai_template_part .editor-post-title__block:not(.is-focus-mode).is-selected .editor-post-title__input {
-	background: white;
-}
+// body.post-type-wp_block .editor-post-title__block:not(.is-focus-mode).is-selected .editor-post-title__input,
+// body.post-type-mai_template_part .editor-post-title__block:not(.is-focus-mode).is-selected .editor-post-title__input {
+// 	background: white;
+// }
