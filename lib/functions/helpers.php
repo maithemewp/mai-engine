@@ -160,9 +160,55 @@ function mai_is_type_archive( $use_cache = false ) {
 
 /**
  * Checks if on the wp-login.php page.
+ *
+ * @since unknown
+ *
+ * @return bool
  */
 function mai_is_login_page() {
 	return false !== stripos( $_SERVER['SCRIPT_NAME'], strrchr( wp_login_url(), '/' ) );
+}
+
+/**
+ * Checks if body has a dark background.
+ *
+ * @since TBD
+ *
+ * @return bool
+ */
+function mai_has_dark_body() {
+	static $dark = null;
+
+	if ( ! is_null( $dark ) ) {
+		return $dark;
+	}
+
+	$colors = mai_get_colors();
+	$light  = mai_is_light_color( $colors['background'] );
+	$dark   = ! $light;
+
+	return $dark;
+}
+
+/**
+ * Checks if body has a dark background.
+ *
+ * @since TBD
+ *
+ * @return bool
+ */
+function mai_has_dark_header() {
+	static $dark = null;
+
+	if ( ! is_null( $dark ) ) {
+		return $dark;
+	}
+
+	$colors = mai_get_colors();
+	$light  = mai_is_light_color( $colors['header'] );
+	$dark   = ! $light;
+
+	return $dark;
 }
 
 /**
