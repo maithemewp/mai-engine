@@ -23,6 +23,13 @@ add_filter( 'admin_body_class', 'mai_admin_body_classes' );
  * @return array
  */
 function mai_admin_body_classes( $classes ) {
+	$colors = mai_get_colors();
+
+	// Colors.
+	if ( ! mai_is_light_color( $colors['background'] ) ) {
+		$classes = mai_add_classes( 'has-dark-body', $classes );
+	}
+
 	// Layout.
 	$layout  = genesis_site_layout();
 	$classes = mai_add_classes( $layout, $classes );
