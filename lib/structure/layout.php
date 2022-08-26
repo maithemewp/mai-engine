@@ -44,7 +44,6 @@ add_filter( 'body_class', 'mai_body_classes' );
  * @return array
  */
 function mai_body_classes( $classes ) {
-
 	// Remove unnecessary page template classes.
 	if ( mai_get_option( 'remove-template-classes', true ) ) {
 		$template  = get_page_template_slug();
@@ -71,9 +70,14 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'has-before-header';
 	}
 
-	// Add dark header class.
+	// Add dark class.
 	$colors = mai_get_colors();
-	if ( ! mai_is_light_color( $colors['header'] ) ) {
+
+	if ( mai_has_dark_body() ) {
+		$classes[] = 'has-dark-body';
+	}
+
+	if ( mai_has_dark_header() ) {
 		$classes[] = 'has-dark-header has-dark-mobile-menu';
 	}
 
@@ -161,6 +165,26 @@ function mai_back_to_top_anchor( $attr ) {
 	$attr['id'] = 'top';
 
 	return $attr;
+}
+
+add_filter( 'genesis_attr_content-sidebar-wrap', 'mai_add_dark_background_class' );
+add_filter( 'genesis_attr_site-footer',          'mai_add_dark_background_class' );
+/**
+ *
+ * @since TBD
+ *
+ * @param array $attributes Current attributes.
+ *
+ * @return array The modified attributes.
+ */
+function mai_add_dark_background_class( $attributes ) {
+	if ( ! mai_has_dark_body() ) {
+		return $attributes;
+	}
+
+	$attributes['class'] = mai_add_classes( 'has-dark-background', $attributes['class'] );
+
+	return $attributes;
 }
 
 add_filter( 'genesis_attr_content', 'mai_add_content_classes' );
