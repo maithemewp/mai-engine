@@ -930,8 +930,8 @@ function mai_get_header_shrink_offset() {
 	$customizer_spacing = mai_get_option( 'logo-spacing', $config['spacing'] );
 	$customizer_spacing = array_map( 'intval', $customizer_spacing );
 	$desktop_spacing    = $customizer_spacing['desktop'];
-	$shrunk_spacing     = $customizer_spacing['mobile'];
-	$spacing_difference = ceil( ( $desktop_spacing - $shrunk_spacing) * 2 );
+	$mobile_spacing     = $customizer_spacing['mobile'];
+	$spacing_difference = ceil( ( $desktop_spacing - $mobile_spacing) * 2 );
 	$logo_id            = get_theme_mod( 'custom_logo' );
 
 	if ( ! $logo_id ) {
@@ -946,15 +946,15 @@ function mai_get_header_shrink_offset() {
 		return $offset;
 	}
 
-	$source_width       = isset( $source[1] ) ? $source[1] : 1;
-	$source_height      = isset( $source[2] ) ? $source[2] : 1;
+	$source_width       = isset( $source[1] ) ? absint( $source[1] ) : 1;
+	$source_height      = isset( $source[2] ) ? absint( $source[2] ) : 1;
 	$customizer_widths  = mai_get_option( 'logo-width', $config['width'] );
 	$customizer_widths  = array_map( 'absint', $customizer_widths );
 	$desktop_width      = max( $customizer_widths['desktop'], 1 );
 	$desktop_height     = ( $desktop_width / $source_width ) * $source_height;
-	$shrunk_width       = max( $customizer_widths['mobile'], 1 );
-	$shrunk_height      = ( $shrunk_width / $desktop_width ) * $desktop_height;
-	$height_difference  = absint( ceil( $desktop_height - $shrunk_height ) );
+	$mobile_width       = max( $customizer_widths['mobile'], 1 );
+	$mobile_height      = ( $mobile_width / $desktop_width ) * $desktop_height;
+	$height_difference  = absint( ceil( $desktop_height - $mobile_height ) );
 	$offset             = absint( $height_difference + $spacing_difference );
 
 	return $offset;
