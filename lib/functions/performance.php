@@ -21,11 +21,7 @@ add_action( 'init', 'mai_disable_emojis' );
  * @return void
  */
 function mai_disable_emojis() {
-	$settings    = mai_get_config( 'settings' );
-	$performance = isset( $settings['performance'] ) ? $settings['performance'] : [];
-	$default     = isset( $performance['disable-emojis'] ) ? $performance['disable-emojis'] : true;
-
-	if ( ! mai_get_option( 'disable-emojis', $default ) ) {
+	if ( ! mai_get_option( 'disable-emojis', mai_get_performance_default( 'disable-emojis' ) ) ) {
 		return;
 	}
 
@@ -87,11 +83,7 @@ function mai_disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
  */
 add_action( 'init', 'mai_remove_wp_global_styles' );
 function mai_remove_wp_global_styles() {
-	$settings    = mai_get_config( 'settings' );
-	$performance = isset( $settings['performance'] ) ? $settings['performance'] : [];
-	$default     = isset( $performance['remove-global-styles'] ) ? $performance['remove-global-styles'] : true;
-
-	if ( ! mai_get_option( 'remove-global-styles', $default ) ) {
+	if ( ! mai_get_option( 'remove-global-styles', mai_get_performance_default( 'remove-global-styles' ) ) ) {
 		return;
 	}
 
@@ -121,11 +113,7 @@ function mai_remove_jquery_migrate( $scripts ) {
 		return;
 	}
 
-	$settings    = mai_get_config( 'settings' );
-	$performance = isset( $settings['performance'] ) ? $settings['performance'] : [];
-	$default     = isset( $performance['remove-jquery-migrate'] ) ? $performance['remove-jquery-migrate'] : true;
-
-	if ( ! mai_get_option( 'remove-jquery-migrate', $default ) ) {
+	if ( ! mai_get_option( 'remove-jquery-migrate', mai_get_performance_default( 'remove-jquery-migrate' ) ) ) {
 		return;
 	}
 
@@ -151,11 +139,7 @@ add_action( 'widgets_init', 'mai_remove_recent_comments_style' );
  * @return void
  */
 function mai_remove_recent_comments_style() {
-	$settings    = mai_get_config( 'settings' );
-	$performance = isset( $settings['performance'] ) ? $settings['performance'] : [];
-	$default     = isset( $performance['remove-recent-comments-css'] ) ? $performance['remove-recent-comments-css'] : true;
-
-	if ( ! mai_get_option( 'remove-recent-comments-css', $default ) ) {
+	if ( ! mai_get_option( 'remove-recent-comments-css', mai_get_performance_default( 'remove-recent-comments-css' ) ) ) {
 		return;
 	}
 
@@ -197,6 +181,12 @@ add_action( 'wp_head', 'mai_preload_fonts', 2 );
  * @return void
  */
 function mai_preload_fonts() {
+	if ( ! mai_get_option( 'preload-fonts', mai_get_performance_default( 'preload-fonts' ) ) ) {
+		return;
+	}
+
+	vd( 'here' );
+
 	$urls     = [];
 	$contents = get_transient( 'kirki_remote_url_contents' ); // This is rebuilt in Kirki's `Downloader` class `get_cached_url_contents()` method.
 	// $fonts = get_option( 'kirki_downloaded_font_files' ); // These are all of the available local fonts, not just the ones loaded on the front end.
@@ -399,6 +389,23 @@ function mai_get_preload_image_link( $image_id, $image_size ) {
 	}
 
 	printf( '<link class="mai-preload" rel="preload" as="image" href="%s"%s />', $image_url );
+}
+
+/**
+ * Gets default performance setting.
+ * Falls back to true if key is not available.
+ *
+ * @since TBD
+ *
+ * @param string $setting The setting to check.
+ *
+ * @return bool
+ */
+function mai_get_performance_default( $setting ) {
+	$settings    = mai_get_config( 'settings' );
+	$performance = isset( $settings['performance'] ) ? $settings['performance'] : [];
+
+	return isset( $performance['disable-emojis'] ) ? $performance['disable-emojis'] : true;
 }
 
 /**
