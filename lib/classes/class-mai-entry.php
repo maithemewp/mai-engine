@@ -1565,6 +1565,9 @@ class Mai_Entry {
 		$taxonomy       = apply_filters( 'mai_adjacent_entry_nav_taxonomy', '', $this->entry, $this->args );
 		$prev_post_text = sprintf( '<span class="screen-reader-text">%s</span><span class="adjacent-post-link">%s%s</span>', esc_html__( 'Previous Post:', 'genesis' ), '%image', '%title' );
 		$next_post_text = sprintf( '<span class="screen-reader-text">%s</span><span class="adjacent-post-link">%s%s</span>', esc_html__( 'Next Post:', 'genesis' ), '%title', '%image' );
+		$prev_class     = 'pagination-previous';
+		$next_class     = 'pagination-next';
+		$dark_bg        = mai_has_dark_body() && ! mai_has_boxed_container();
 
 		if ( $taxonomy ) {
 			$prev_post_link = get_previous_post_link( '%link', $prev_post_text, true, '', $taxonomy );
@@ -1572,6 +1575,11 @@ class Mai_Entry {
 		} else {
 			$prev_post_link = get_previous_post_link( '%link', $prev_post_text );
 			$next_post_link = get_next_post_link( '%link', $next_post_text );
+		}
+
+		if ( $dark_bg ) {
+			$prev_class .= ' has-dark-background';
+			$next_class .= ' has-dark-background';
 		}
 
 		genesis_markup(
@@ -1591,6 +1599,9 @@ class Mai_Entry {
 				'context' => 'pagination-previous',
 				'content' => $prev_post_link,
 				'close'   => '</div>',
+				'atts'    => [
+					'class' => $prev_class,
+				],
 				'params'  => [
 					'args'  => $this->args,
 					'entry' => $this->entry,
@@ -1604,6 +1615,9 @@ class Mai_Entry {
 				'context' => 'pagination-next',
 				'content' => $next_post_link,
 				'close'   => '</div>',
+				'atts'    => [
+					'class' => $next_class,
+				],
 				'params'  => [
 					'args'  => $this->args,
 					'entry' => $this->entry,
