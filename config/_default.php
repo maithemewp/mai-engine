@@ -771,6 +771,7 @@ return [
 		],
 		'performance'         => [
 			'genesis-style-trump'        => true,
+			'preload-fonts'              => true,
 			'remove-menu-item-classes'   => true,
 			'remove-template-classes'    => true,
 			'disable-emojis'             => true,

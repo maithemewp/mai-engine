@@ -930,31 +930,31 @@ function mai_get_header_shrink_offset() {
 	$customizer_spacing = mai_get_option( 'logo-spacing', $config['spacing'] );
 	$customizer_spacing = array_map( 'intval', $customizer_spacing );
 	$desktop_spacing    = $customizer_spacing['desktop'];
-	$shrunk_spacing     = $customizer_spacing['mobile'];
-	$spacing_difference = ceil( ( $desktop_spacing - $shrunk_spacing) * 2 );
-	$logo_id            = get_theme_mod( 'custom_logo' );
+	$mobile_spacing     = $customizer_spacing['mobile'];
+	$spacing_difference = ceil( ( $desktop_spacing - $mobile_spacing) * 2 );
+	$logo_id            = mai_get_logo_id();
 
 	if ( ! $logo_id ) {
 		$offset = $spacing_difference;
 		return $offset;
 	}
 
-	$source = wp_get_attachment_image_src( $logo_id, 'full' );
+	$source = wp_get_attachment_image_src( $logo_id, 'full' ); // `get_custom_logo()` uses the full size image.
 
 	if ( ! $source ) {
 		$offset = $spacing_difference;
 		return $offset;
 	}
 
-	$source_width       = isset( $source[1] ) ? $source[1] : 1;
-	$source_height      = isset( $source[2] ) ? $source[2] : 1;
+	$source_width       = isset( $source[1] ) ? absint( $source[1] ) : 1;
+	$source_height      = isset( $source[2] ) ? absint( $source[2] ) : 1;
 	$customizer_widths  = mai_get_option( 'logo-width', $config['width'] );
 	$customizer_widths  = array_map( 'absint', $customizer_widths );
 	$desktop_width      = max( $customizer_widths['desktop'], 1 );
 	$desktop_height     = ( $desktop_width / $source_width ) * $source_height;
-	$shrunk_width       = max( $customizer_widths['mobile'], 1 );
-	$shrunk_height      = ( $shrunk_width / $desktop_width ) * $desktop_height;
-	$height_difference  = absint( ceil( $desktop_height - $shrunk_height ) );
+	$mobile_width       = max( $customizer_widths['mobile'], 1 );
+	$mobile_height      = ( $mobile_width / $desktop_width ) * $desktop_height;
+	$height_difference  = absint( ceil( $desktop_height - $mobile_height ) );
 	$offset             = absint( $height_difference + $spacing_difference );
 
 	return $offset;
@@ -1800,4 +1800,177 @@ function mai_get_cart_total() {
 	}
 
 	return sprintf( '<span class="mai-cart-total is-circle">%s</span>', $total );
+}
+
+
+/**
+ * Gets all instances of strings between a starting and ending point.
+ *
+ * @param string $string          The string to check.
+ * @param string $starting_string The starging string.
+ * @param string $ending_string   The ending string.
+ *
+ * @return array
+ */
+function mai_get_all_strings_between_strings( $string, $starting_string, $ending_string ) {
+	$result = [];
+	$array  = explode( $starting_string, $string );
+
+	if ( ! $array ) {
+		return $result;
+	}
+
+	if ( isset( $array[1] ) ) {
+		unset( $array[0] );
+	}
+
+	foreach ( $array as $values ) {
+		$item = explode( $ending_string, $values );
+
+		if ( ! isset( $item[0] ) ) {
+			continue;
+		}
+
+		// Adds result, including starging and ending string.
+		$result[] = $starting_string . $item[0] . $ending_string;
+	}
+
+	return $result;
+}
+
+/**
+ * Get a string between a starting and ending point.
+ *
+ * @param string $string          The string to check.
+ * @param string $starting_string The starging string.
+ * @param string $ending_string   The ending string.
+ *
+ * @return string
+ */
+function mai_get_string_between_strings( $string, $starting_string, $ending_string ) {
+	$array = explode( $starting_string, $string );
+
+	if ( ! isset( $array[1] ) ) {
+		return '';
+	}
+
+	$array = explode( $ending_string, $array[1] );
+
+	return $array[0];
+}
+
+/**
+ * Checks if a string starts with another string.
+ *
+ * @param string $haystack The full string.
+ * @param string $needle   The string to check.
+ *
+ * @return bool
+ */
+function mai_string_starts_width( $haystack, $needle ) {
+	// PHP 8 has this already.
+	if ( function_exists( 'str_starts_with' ) ) {
+		return str_starts_with( $haystack, $needle );
+	}
+
+	return '' !== (string) $needle && strncmp( $haystack, $needle, 0 === strlen( $needle ) );
+}
+
+/**
+ * Checks if a string ends with another string.
+ *
+ * @param string $haystack The full string.
+ * @param string $needle   The string to check.
+ *
+ * @return bool
+ */
+function mai_string_ends_width( $haystack, $needle ) {
+	// PHP 8 has this already.
+	if ( function_exists( 'str_ends_with' ) ) {
+		return str_ends_with( $haystack, $needle );
+	}
+
+	$needle_len = strlen( $needle );
+
+	return ( 0 === $needle_len || 0 === substr_compare( $haystack, $needle, - $needle_len ) );
+}
+
+/**
+ * Gets all non latin locales in WP.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @link https://wpcentral.io/internationalization/
+ *
+ * @return array
+ */
+function mai_get_non_latin_locales() {
+	return [
+		'arq'        => 'Algerian Arabic',
+		'am'         => 'Amharic',
+		'ar'         => 'Arabic',
+		'hy'         => 'Armenian',
+		'as'         => 'Assamese',
+		'bcc'        => 'Balochi Southern',
+		'ba'         => 'Bashkir',
+		'bel'        => 'Belarusian	',
+		'bn_BD'      => 'Bengali',
+		'bg_BG'      => 'Bulgarian',
+		'zh_CN'      => 'Chinese (China)',
+		'zh_HK'      => 'Chinese (Hong Kong)',
+		'zh_TW'      => 'Chinese (Taiwan)',
+		'dv'         => 'Dhivehi',
+		'dzo'        => 'Dzongkha',
+		'art_xemoji' => 'Emoji',
+		'ka_GE'      => 'Georgian',
+		'el'         => 'Greek',
+		'gu'         => 'Gujarati',
+		'haz'        => 'Hazaragi',
+		'he_IL'      => 'Hebrew',
+		'hi_IN'      => 'Hindi',
+		'ja'         => 'Japanese',
+		'kn'         => 'Kannada',
+		'kk'         => 'Kazakh',
+		'km'         => 'Khmer',
+		'ky_KY'      => 'Kirghiz',
+		'ko_KR'      => 'Korean',
+		'ckb'        => 'Kurdish (Sorani)',
+		'lo'         => 'Lao',
+		'mk_MK'      => 'Macedonian',
+		'ml_IN'      => 'Malayalam',
+		'mr'         => 'Marathi',
+		'xmf'        => 'Mingrelian',
+		'mn'         => 'Mongolian',
+		'ary'        => 'Moroccan Arabic',
+		'my_MM'      => 'Myanmar (Burmese)',
+		'ne_NP'      => 'Nepali',
+		'ory'        => 'Oriya',
+		'os'         => 'Ossetic',
+		'ps'         => 'Pashto',
+		'fa_IR'      => 'Persian',
+		'fa_AF'      => 'Persian (Afghanistan)',
+		'pa_IN'      => 'Punjabi',
+		'ru_RU'      => 'Russian',
+		'rue'        => 'Rusyn',
+		'sah'        => 'Sakha',
+		'sa_IN'      => 'Sanskrit',
+		'sr_RS'      => 'Serbian',
+		'snd'        => 'Sindhi',
+		'si_LK'      => 'Sinhala',
+		'azb'        => 'South Azerbaijani',
+		'tg'         => 'Tajik',
+		'tzm'        => 'Tamazight (Central Atlas)',
+		'ta_IN'      => 'Tamil',
+		'ta_LK'      => 'Tamil (Sri Lanka)',
+		'tt_RU'      => 'Tatar',
+		'te'         => 'Telugu',
+		'th'         => 'Thai',
+		'bo'         => 'Tibetan',
+		'tir'        => 'Tigrinya',
+		'ug_CN'      => 'Uighur',
+		'uk'         => 'Ukrainian',
+		'ur'         => 'Urdu',
+	];
 }

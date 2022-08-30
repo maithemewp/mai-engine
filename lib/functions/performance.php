@@ -21,11 +21,7 @@ add_action( 'init', 'mai_disable_emojis' );
  * @return void
  */
 function mai_disable_emojis() {
-	$settings    = mai_get_config( 'settings' );
-	$performance = isset( $settings['performance'] ) ? $settings['performance'] : [];
-	$default     = isset( $performance['disable-emojis'] ) ? $performance['disable-emojis'] : true;
-
-	if ( ! mai_get_option( 'disable-emojis', $default ) ) {
+	if ( ! mai_get_option( 'disable-emojis', mai_get_performance_default( 'disable-emojis' ) ) ) {
 		return;
 	}
 
@@ -87,11 +83,7 @@ function mai_disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
  */
 add_action( 'init', 'mai_remove_wp_global_styles' );
 function mai_remove_wp_global_styles() {
-	$settings    = mai_get_config( 'settings' );
-	$performance = isset( $settings['performance'] ) ? $settings['performance'] : [];
-	$default     = isset( $performance['remove-global-styles'] ) ? $performance['remove-global-styles'] : true;
-
-	if ( ! mai_get_option( 'remove-global-styles', $default ) ) {
+	if ( ! mai_get_option( 'remove-global-styles', mai_get_performance_default( 'remove-global-styles' ) ) ) {
 		return;
 	}
 
@@ -121,11 +113,7 @@ function mai_remove_jquery_migrate( $scripts ) {
 		return;
 	}
 
-	$settings    = mai_get_config( 'settings' );
-	$performance = isset( $settings['performance'] ) ? $settings['performance'] : [];
-	$default     = isset( $performance['remove-jquery-migrate'] ) ? $performance['remove-jquery-migrate'] : true;
-
-	if ( ! mai_get_option( 'remove-jquery-migrate', $default ) ) {
+	if ( ! mai_get_option( 'remove-jquery-migrate', mai_get_performance_default( 'remove-jquery-migrate' ) ) ) {
 		return;
 	}
 
@@ -151,11 +139,7 @@ add_action( 'widgets_init', 'mai_remove_recent_comments_style' );
  * @return void
  */
 function mai_remove_recent_comments_style() {
-	$settings    = mai_get_config( 'settings' );
-	$performance = isset( $settings['performance'] ) ? $settings['performance'] : [];
-	$default     = isset( $performance['remove-recent-comments-css'] ) ? $performance['remove-recent-comments-css'] : true;
-
-	if ( ! mai_get_option( 'remove-recent-comments-css', $default ) ) {
+	if ( ! mai_get_option( 'remove-recent-comments-css', mai_get_performance_default( 'remove-recent-comments-css' ) ) ) {
 		return;
 	}
 
@@ -188,66 +172,89 @@ function mai_dequeue_comment_reply() {
 	wp_dequeue_script( 'comment-reply' );
 }
 
-// add_filter( 'wp_calculate_image_srcset_meta', 'mai_limit_max_srcset_image', 10, 4 );
+add_action( 'wp_head', 'mai_preload_fonts', 2 );
 /**
- * Limits srcset from using an image larger than the actual src image.
+ * Adds preload links early in the head for Google fonts from Kirki.
  *
- * @since 2.13.0
+ * @since TBD
  *
- * @param array  $image_meta    The image meta data as returned by 'wp_get_attachment_metadata()'.
- * @param int[]  $size_array    {
- *     An array of requested width and height values.
- *
- *     @type int $0 The width in pixels.
- *     @type int $1 The height in pixels.
- * }
- * @param string $image_src     The 'src' of the image.
- * @param int    $attachment_id The image attachment ID or 0 if not supplied.
- *
- * @return array
+ * @return void
  */
-function mai_limit_max_srcset_image( $image_meta, $size_array, $image_src, $attachment_id ) {
-	if ( ! isset( $size_array[0] ) ) {
-		return $image_meta;
-	}
-	$width = $size_array[0];
-	if ( is_array( $image_meta['sizes'] ) && $image_meta['sizes'] ) {
-		foreach ( $image_meta['sizes'] as $name => $value ) {
-			if ( ! isset( $value['width'] ) ) {
-				continue;
-			}
-			if ( $value['width'] > $width ) {
-				unset( $image_meta['sizes'][ $name ] );
-			}
-		}
+function mai_preload_fonts() {
+	if ( ! mai_get_option( 'preload-fonts', mai_get_performance_default( 'preload-fonts' ) ) ) {
+		return;
 	}
 
-	return $image_meta;
+	$urls     = [];
+	$contents = get_transient( 'kirki_remote_url_contents' ); // This is rebuilt in Kirki's `Downloader` class `get_cached_url_contents()` method.
+	// $fonts = get_option( 'kirki_downloaded_font_files' ); // These are all of the available local fonts, not just the ones loaded on the front end.
+
+	if ( ! $contents ) {
+		return;
+	}
+
+	foreach ( $contents as $css ) {
+		$urls = array_merge( $urls, mai_get_font_preload_urls_from_css( $css ) );
+	}
+
+	if ( ! $urls ) {
+		return;
+	}
+
+	foreach ( $urls as $url ) {
+		$info = pathinfo( $url );
+		$type = isset( $info['extension'] ) ? $info['extension'] : 'woff2';
+
+		printf( '<link class="mai-preload" rel="preload" href="%s" as="font" type="font/%s" crossorigin />', $url, $type );
+	}
 }
 
-// add_action( 'wp_head', 'mai_preload_logo', 0 );
+add_action( 'wp_head', 'mai_preload_logo', 2 );
 /**
  * Preloads logo.
  *
- * @since 2.13.0
+ * @link https://www.stefanjudis.com/today-i-learned/how-to-preload-responsive-images-with-imagesizes-and-imagesrcset/
+ *
+ * @since TBD
  *
  * @return void
  */
 function mai_preload_logo() {
-	$image_id = get_theme_mod( 'custom_logo' );
-
-	if ( ! $image_id ) {
-		return;
-	}
-
 	if ( mai_is_element_hidden( 'header' ) ) {
 		return;
 	}
 
-	echo mai_get_preload_image_link( $image_id, 'full' );
+	$break   = mai_get_mobile_menu_breakpoint();
+	$widths  = mai_get_option( 'logo-width', [] );
+	$desktop = max( $widths['desktop'], 1 );
+	$mobile  = max( $widths['mobile'], 1 );
+	$images  = [
+		mai_get_logo(),
+		mai_get_scroll_logo(),
+	];
+
+	foreach ( $images as $image ) {
+		if ( ! $image ) {
+			continue;
+		}
+
+		$attr   = [];
+		$sizes  = mai_get_string_between_strings( $image, 'sizes="', '"' );
+		$srcset = mai_get_string_between_strings( $image, 'srcset="', '"' );
+
+		if ( $sizes ) {
+			$attr[] = sprintf( 'imagesizes="%s"', $sizes );
+		}
+
+		if ( $srcset ) {
+			$attr[] = sprintf( 'imagesrcset="%s"', $srcset );
+		}
+
+		printf( '<link class="mai-preload" rel="preload" as="image" %s/>%s', trim( implode( ' ', $attr ) ), "\n" );
+	}
 }
 
-// add_action( 'wp_head', 'mai_preload_page_header_image', 0 );
+// add_action( 'wp_head', 'mai_preload_page_header_image', 2 );
 /**
  * Preloads page header image.
  *
@@ -270,7 +277,7 @@ function mai_preload_page_header_image() {
 	echo mai_get_preload_image_link( $image_id, $image_size );
 }
 
-// add_action( 'wp_head', 'mai_preload_featured_image', 0 );
+// add_action( 'wp_head', 'mai_preload_featured_image', 2 );
 /**
  * Preloads featured image on single posts.
  *
@@ -318,7 +325,7 @@ function mai_preload_featured_image() {
 	echo mai_get_preload_image_link( $image_id, $image_size );
 }
 
-// add_action( 'wp_head', 'mai_preload_cover_block', 0 );
+// add_action( 'wp_head', 'mai_preload_cover_block', 2 );
 /**
  * Preloads the first cover block on single posts.
  *
@@ -379,10 +386,24 @@ function mai_get_preload_image_link( $image_id, $image_size ) {
 		return;
 	}
 
-	$image_srcset = wp_get_attachment_image_srcset( $image_id, $image_size );
-	$image_srcset = $image_srcset ? sprintf( ' imagesrcset="%s"', $image_srcset ) : '';
+	printf( '<link class="mai-preload" rel="preload" as="image" href="%s"%s />', $image_url );
+}
 
-	printf( '<link class="mai-preload" rel="preload" as="image" href="%s"%s />', $image_url, $image_srcset );
+/**
+ * Gets default performance setting.
+ * Falls back to true if key is not available.
+ *
+ * @since TBD
+ *
+ * @param string $setting The setting to check.
+ *
+ * @return bool
+ */
+function mai_get_performance_default( $setting ) {
+	$settings    = mai_get_config( 'settings' );
+	$performance = isset( $settings['performance'] ) ? $settings['performance'] : [];
+
+	return isset( $performance['disable-emojis'] ) ? $performance['disable-emojis'] : true;
 }
 
 /**

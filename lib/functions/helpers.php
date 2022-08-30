@@ -437,7 +437,7 @@ function mai_has_sticky_header() {
  * @return bool
  */
 function mai_has_sticky_scroll_logo() {
-	return (bool) has_custom_logo() && mai_has_sticky_header_enabled() && ! mai_is_element_hidden( 'sticky_header' ) && mai_get_option( 'logo-scroll', false );
+	return (bool) has_custom_logo() && mai_has_sticky_header_enabled() && ! mai_is_element_hidden( 'sticky_header' ) && mai_get_scroll_logo_id();
 }
 
 /**

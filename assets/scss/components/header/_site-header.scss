@@ -12,7 +12,8 @@
 
 .site-header-wrap {
 	display: var(--site-header-wrap-display, flex);
-	flex-wrap: var(--site-header-wrap-flex-wrap, wrap);
+	flex-wrap: var(--site-header-wrap-flex-wrap, nowrap);
+	gap: var(--site-header-wrap-gap, var(--spacing-lg));
 	align-items: var(--site-header-wrap-align-items, center);
 	justify-content: var(--site-header-wrap-justify-content, var(--site-header-wrap-justify-content-mobile, unset));
 	width: var(--site-header-wrap-width, (calc(100% - calc(var(--side-spacing) * 2))));

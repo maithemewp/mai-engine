@@ -6,9 +6,13 @@
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
 <<<<<<< HEAD
+<<<<<<< HEAD
         'reference' => 'aba54f560bf1b9af60a44daf2d3c439b1da38cfd',
 =======
         'reference' => '4c9376e3bfc795019b6eb7b63d4601b93eb4dd21',
+>>>>>>> develop
+=======
+        'reference' => 'c8a2964ba8b1966b7f7ec0016eff3d43eaf14dc2',
 >>>>>>> develop
         'name' => 'maithemewp/mai-engine',
         'dev' => true,
@@ -471,9 +475,13 @@
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
 <<<<<<< HEAD
+<<<<<<< HEAD
             'reference' => 'aba54f560bf1b9af60a44daf2d3c439b1da38cfd',
 =======
             'reference' => '4c9376e3bfc795019b6eb7b63d4601b93eb4dd21',
+>>>>>>> develop
+=======
+            'reference' => 'c8a2964ba8b1966b7f7ec0016eff3d43eaf14dc2',
 >>>>>>> develop
             'dev_requirement' => false,
         ),
