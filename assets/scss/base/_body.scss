@@ -22,10 +22,10 @@ body {
 	}
 }
 
-:target {
-	scroll-margin-top: var(--scroll-margin-top);
+.has-sticky-header {
+	--scroll-margin-top: calc(var(--body-top) + var(--header-height-shrunk, var(--header-height, 0px)) + var(--spacing-xs)); // Requires 0px value fallback. 0 breaks this.
 }
 
-.has-sticky-header {
-	--scroll-margin-top: calc(var(--body-top) + var(--header-height-shrunk, var(--header-height, 0px)) + var(--spacing-lg)); // Requires 0px value fallback. 0 breaks this.
+[id] {
+	scroll-margin-top: var(--scroll-margin-top);
 }
