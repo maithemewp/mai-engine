@@ -23,11 +23,13 @@ add_filter( 'admin_body_class', 'mai_admin_body_classes' );
  * @return array
  */
 function mai_admin_body_classes( $classes ) {
-	$colors = mai_get_colors();
-
 	// Colors.
-	if ( ! mai_is_light_color( $colors['background'] ) ) {
+	if ( mai_has_dark_body() && ! mai_has_boxed_container() ) {
 		$classes = mai_add_classes( 'has-dark-body', $classes );
+	}
+
+	if ( mai_has_boxed_container() ) {
+		$classes = mai_add_classes( 'has-boxed-container', $classes );
 	}
 
 	// Layout.
