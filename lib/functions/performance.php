@@ -185,8 +185,6 @@ function mai_preload_fonts() {
 		return;
 	}
 
-	vd( 'here' );
-
 	$urls     = [];
 	$contents = get_transient( 'kirki_remote_url_contents' ); // This is rebuilt in Kirki's `Downloader` class `get_cached_url_contents()` method.
 	// $fonts = get_option( 'kirki_downloaded_font_files' ); // These are all of the available local fonts, not just the ones loaded on the front end.
