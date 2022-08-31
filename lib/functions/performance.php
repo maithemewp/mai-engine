@@ -172,7 +172,8 @@ function mai_dequeue_comment_reply() {
 	wp_dequeue_script( 'comment-reply' );
 }
 
-add_action( 'wp_head', 'mai_preload_fonts', 2 );
+add_action( 'admin_head', 'mai_preload_fonts', 2 );
+add_action( 'wp_head',    'mai_preload_fonts', 2 );
 /**
  * Adds preload links early in the head for Google fonts from Kirki.
  *

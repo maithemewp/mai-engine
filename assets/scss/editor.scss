@@ -50,13 +50,10 @@ body {
 	color: var(--color-body); /* Overrides WP core styles. Mostly for dark backgrounds when the text is changed to white. */
 }
 
+// FYI: The has-dark-background class is not automatically added to Group blocks with dark color in the editor.
 .has-dark-background {
-	color: var(--color-white);
-	--heading-color: var(--color-white);
-	// For Mai Post Grid in side has-dark-background.
-	// FYI: The has-dark-background class is not automatically added to Group blocks with dark color in the editor.
-	--entry-title-link-color: var(--color-white);
-	--entry-title-link-color-hover: brightness(0.8);
+
+	@include dark_bg();
 }
 
 .has-light-background {
