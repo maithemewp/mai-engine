@@ -17,6 +17,46 @@ add_action( 'genesis_before', function() {
 	remove_filter( 'genesis_term_intro_text_output', 'genesiswooc_term_intro_text_output' );
 });
 
+add_action( 'wp_head', 'mai_add_taxonomy_opengraph_image' );
+/**
+ * Adds term featured image as Open Graph meta tags.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_add_taxonomy_opengraph_image() {
+	// Bail if not a term archive.
+	if ( ! ( is_category() || is_tag() || is_tax() ) ) {
+		return;
+	}
+
+	$term = get_queried_object();
+
+	if ( ! $term ) {
+		return;
+	}
+
+	$image_id  = mai_get_term_image_id( $term->term_id );
+	$image     = $image_id ? wp_get_attachment_image_src( $image_id, 'landscape-lg' ) : '';
+
+	if ( ! $image ) {
+		return;
+	}
+
+	$url    = esc_url( $image[0] );
+	$width  = absint( $image[1] );
+	$height = absint( $image[2] );
+	$info   = pathinfo( $url );
+	$ext    = esc_attr( $info['extension'] );
+	$ext    = 'jpg' === $ext ? 'jpeg' : $ext;
+
+	printf( '<meta property="og:image" content="%s" class="mai-meta-tag">', $url );
+	printf( '<meta property="og:image:width" content="%s" class="mai-meta-tag">', $width );
+	printf( '<meta property="og:image:height" content="%s" class="mai-meta-tag">', $height );
+	printf( '<meta property="og:image:type" content="image/%s" class="mai-meta-tag">', $ext );
+}
+
 add_action( 'genesis_before', 'mai_maybe_hide_blog_page_title' );
 /**
  * Hides blog page title if static blog page setting is checked.

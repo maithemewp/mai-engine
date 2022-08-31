@@ -714,6 +714,7 @@ class Mai_Entry {
 				$key = 'featured_image';
 
 				// We need to check each term because a grid archive can show multiple taxonomies.
+				// Needed too many checks to use `mai_get_term_image_id()`.
 				if ( class_exists( 'WooCommerce' ) && 'block' === $this->context && 'term' === $this->type ) {
 					$term = get_term( $this->id );
 					if ( $term && 'product_cat' === $term->taxonomy ) {

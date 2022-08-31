@@ -138,6 +138,36 @@ function mai_get_scroll_logo_id() {
 }
 
 /**
+ * Gets term featured image ID.
+ *
+ * @since TBD
+ *
+ * @param int|WP_Term
+ *
+ * @return int
+ */
+function mai_get_term_image_id( $term ) {
+	$image_id = 0;
+	$term     = get_term( $term );
+
+	if ( ! $term || is_wp_error( $term ) ) {
+		return $image_id;
+	}
+
+	$key = 'featured_image';
+
+	// We need to check each term because a grid archive can show multiple taxonomies.
+	if ( class_exists( 'WooCommerce' ) && 'product_cat' === $term->taxonomy ) {
+		$key = 'thumbnail_id';
+	}
+
+	$image_id = get_term_meta( $term->term_id, $key, true );
+
+	return absint( $image_id );
+}
+
+
+/**
  * Adds (forces) logo attributes.
  * This makes sure the correct attributes are used, and match for preloading.
  *
