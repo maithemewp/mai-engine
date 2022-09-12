@@ -205,13 +205,22 @@
 }
 .acf-field-object > .handle strong {
   display: block;
-  padding-bottom: 6px;
+  padding-bottom: 0;
   font-size: 14px;
   line-height: 14px;
   min-height: 14px;
 }
 .acf-field-object > .handle .row-options {
-  visibility: hidden;
+  display: block;
+  opacity: 0;
+  margin-top: 6px;
+  margin-bottom: -20px;
+}
+@media screen and (max-width: 880px) {
+  .acf-field-object > .handle .row-options {
+    opacity: 1;
+    margin-bottom: 0;
+  }
 }
 .acf-field-object > .handle .row-options a {
   margin-right: 4px;
@@ -245,8 +254,9 @@
 .acf-field-object.open > .handle a:hover {
   text-decoration: underline !important;
 }
-.acf-field-object:hover > .handle .row-options, .acf-field-object.-hover > .handle .row-options {
-  visibility: visible;
+.acf-field-object:hover > .handle .row-options, .acf-field-object.-hover > .handle .row-options, .acf-field-object:focus-within > .handle .row-options {
+  opacity: 1;
+  margin-bottom: 0;
 }
 .acf-field-object > .settings {
   display: none;
@@ -499,12 +509,10 @@ td.acf-input {
     width: auto !important;
     border: 0 none !important;
   }
-
   tr.acf-field {
     border-top: #ededed solid 1px !important;
     margin-bottom: 0 !important;
   }
-
   td.acf-label {
     background: transparent !important;
     padding-bottom: 0 !important;
@@ -560,28 +568,22 @@ td.acf-input {
 *  Headings
 *
 *---------------------------------------------------------------------------------------------*/
-.post-type-acf-field-group h1,
+.h1, .post-type-acf-field-group h1,
 .acf-headerbar h1 {
   font-size: 21px;
   font-weight: 400;
 }
-.post-type-acf-field-group h2, .post-type-acf-field-group #acf-field-group-fields .acf-field-list.-empty .no-fields-message .no-fields-message-inner h2, .post-type-acf-field-group #acf-field-group-fields .acf-field-list.-empty .no-fields-message .no-fields-message-inner .acf-page-title, .post-type-acf-field-group .acf-page-title,
-.acf-headerbar h2,
-.acf-headerbar .acf-page-title {
+
+.h2, .post-type-acf-field-group #acf-field-group-fields .acf-field-list.-empty .no-fields-message .no-fields-message-inner h2, .acf-page-title, .post-type-acf-field-group h2,
+.acf-headerbar h2 {
   font-size: 18px;
   font-weight: 400;
 }
-.post-type-acf-field-group h3, .post-type-acf-field-group .acf-field-settings-fc_head label,
-.post-type-acf-field-group #acf-popup .acf-popup-box .title .acf-field-settings-fc_head label,
-.post-type-acf-field-group .acf-field-settings-fc_head #acf-popup .acf-popup-box .title label, .post-type-acf-field-group #acf-popup .acf-popup-box .title h1,
+
+.h3, .post-type-acf-field-group .acf-field-settings-fc_head label, .post-type-acf-field-group #acf-popup .acf-popup-box .title h1,
 .post-type-acf-field-group #acf-popup .acf-popup-box .title h2,
-.post-type-acf-field-group #acf-popup .acf-popup-box .title .acf-page-title,
-.post-type-acf-field-group #acf-popup .acf-popup-box .title #acf-field-group-fields .acf-field-list.-empty .no-fields-message .no-fields-message-inner h2,
-.post-type-acf-field-group #acf-field-group-fields .acf-field-list.-empty .no-fields-message .no-fields-message-inner #acf-popup .acf-popup-box .title h2,
-.post-type-acf-field-group #acf-popup .acf-popup-box .title #acf-field-group-fields .acf-field-list.-empty .no-fields-message .no-fields-message-inner .acf-page-title,
-.post-type-acf-field-group #acf-field-group-fields .acf-field-list.-empty .no-fields-message .no-fields-message-inner #acf-popup .acf-popup-box .title .acf-page-title,
 .post-type-acf-field-group #acf-popup .acf-popup-box .title h3,
-.post-type-acf-field-group #acf-popup .acf-popup-box .title h4,
+.post-type-acf-field-group #acf-popup .acf-popup-box .title h4, .post-type-acf-field-group h3,
 .acf-headerbar h3 {
   font-size: 16px;
   font-weight: 400;
@@ -1196,6 +1198,9 @@ td.acf-input {
 .post-type-acf-field-group .acf-field-object.open .handle a {
   color: #0783BE !important;
 }
+.post-type-acf-field-group .acf-field-object.open .handle a.delete-field {
+  color: #a00 !important;
+}
 .post-type-acf-field-group .acf-field-object ul.acf-hl {
   display: flex;
   align-items: stretch;
@@ -1204,7 +1209,7 @@ td.acf-input {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  min-height: 64px;
+  min-height: 56px;
   color: #344054;
 }
 .post-type-acf-field-group .acf-field-object .handle li.li-field-label {
@@ -1400,7 +1405,7 @@ td.acf-input {
 .acf-fields .acf-tab-group {
   display: flex;
   align-items: stretch;
-  min-height: 56px;
+  min-height: 48px;
   padding-top: 0;
   padding-right: 0;
   padding-bottom: 0;
@@ -1519,6 +1524,9 @@ td.acf-input {
 #acf-field-group-options .acf-field[data-name=description] {
   max-width: 600px;
 }
+#acf-field-group-options .acf-button-group {
+  display: inline-flex;
+}
 
 /*---------------------------------------------------------------------------------------------
 *
@@ -1594,8 +1602,8 @@ td.acf-input {
   width: 16px;
   height: 16px;
   display: inline-flex;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   background-color: #667085;
   border: none;
   border-radius: 0;
@@ -1773,11 +1781,10 @@ td.acf-input {
 }
 .post-type-acf-field-group #acf-field-group-fields .acf-field-list.-empty .no-fields-message .no-fields-message-inner img,
 .post-type-acf-field-group #acf-field-group-fields .acf-field-list.-empty .no-fields-message .no-fields-message-inner h2,
-.post-type-acf-field-group #acf-field-group-fields .acf-field-list.-empty .no-fields-message .no-fields-message-inner .acf-page-title,
 .post-type-acf-field-group #acf-field-group-fields .acf-field-list.-empty .no-fields-message .no-fields-message-inner p {
   flex: 1 0 100%;
 }
-.post-type-acf-field-group #acf-field-group-fields .acf-field-list.-empty .no-fields-message .no-fields-message-inner h2, .post-type-acf-field-group #acf-field-group-fields .acf-field-list.-empty .no-fields-message .no-fields-message-inner .acf-page-title {
+.post-type-acf-field-group #acf-field-group-fields .acf-field-list.-empty .no-fields-message .no-fields-message-inner h2 {
   margin-top: 32px;
   margin-bottom: 0;
   padding: 0;
@@ -1833,14 +1840,7 @@ td.acf-input {
 }
 .post-type-acf-field-group #acf-popup .acf-popup-box .title h1,
 .post-type-acf-field-group #acf-popup .acf-popup-box .title h2,
-.post-type-acf-field-group #acf-popup .acf-popup-box .title .acf-page-title,
-.post-type-acf-field-group #acf-popup .acf-popup-box .title #acf-field-group-fields .acf-field-list.-empty .no-fields-message .no-fields-message-inner h2,
-.post-type-acf-field-group #acf-field-group-fields .acf-field-list.-empty .no-fields-message .no-fields-message-inner #acf-popup .acf-popup-box .title h2,
-.post-type-acf-field-group #acf-popup .acf-popup-box .title #acf-field-group-fields .acf-field-list.-empty .no-fields-message .no-fields-message-inner .acf-page-title,
-.post-type-acf-field-group #acf-field-group-fields .acf-field-list.-empty .no-fields-message .no-fields-message-inner #acf-popup .acf-popup-box .title .acf-page-title,
 .post-type-acf-field-group #acf-popup .acf-popup-box .title h3,
-.post-type-acf-field-group #acf-popup .acf-popup-box .title .acf-field-settings-fc_head label,
-.post-type-acf-field-group .acf-field-settings-fc_head #acf-popup .acf-popup-box .title label,
 .post-type-acf-field-group #acf-popup .acf-popup-box .title h4 {
   padding-left: 0;
   color: #344054;
@@ -2115,6 +2115,18 @@ td.acf-input {
 }
 .post-type-acf-field-group .acf-field-settings-fc_head .acf-fl-actions li:last-of-type {
   margin-right: 0;
+}
+
+/*---------------------------------------------------------------------------------------------
+*
+*  Temporary fix to hide pagination setting for repeaters used as subfields.
+*
+*---------------------------------------------------------------------------------------------*/
+.post-type-acf-field-group .acf-field-object-flexible-content .acf-field-setting-pagination {
+  display: none;
+}
+.post-type-acf-field-group .acf-field-object-repeater .acf-field-object-repeater .acf-field-setting-pagination {
+  display: none;
 }
 
 /*# sourceMappingURL=acf-field-group.css.map*/

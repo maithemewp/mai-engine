@@ -2,7 +2,7 @@
 Contributors: elliotcondon
 Tags: acf, fields, custom fields, meta, repeater
 Requires at least: 4.7
-Tested up to: 6.0
+Tested up to: 6.0.2
 Requires PHP: 5.6
 Stable tag: 5.12.3
 License: GPLv2 or later
@@ -77,6 +77,24 @@ From your WordPress dashboard
 
 
 == Changelog ==
+
+= 6.0.0-RC3 = 
+*Release Date 9th September 2022*
+
+* Fix - Blocks containing InnerBlocks are now correctly editable when preloaded. This fix required reverting the previous RC1 change which allowed block templates to render other blocks with InnerBlocks - we will re-enable that support in a subsequent release shortly
+* Fix - block.json blocks now default to `apiVersion: 2` which solves issues with duplicated wrapper markup for blocks which didn’t manually define it
+* Fix - Repeaters no longer use pagination in front end forms
+* Fix - Various refinements and fixes of the new UI
+
+= 6.0.0-RC2 =
+*Release Date 5th September 2022*
+
+* Fix - Improved performance of the new UI by significantly reducing CSS size
+* Fix - Repeater Pagination will no longer allow “per page” values less than one
+* Fix - ACF will no longer trigger warnings when third party plugins add sub pages to the ACF menu
+* Fix - ACF Blocks now correctly have `$is_preview` set to true for preloaded blocks
+* Fix - Custom classes on `<InnerBlocks>` attributes now render correctly if that element also contains a template containing another class
+* Fix - New admin button group and select2 styles no longer leak out of the admin screens
 
 = 6.0.0-RC1 =
 *Release Date 24th August 2022*

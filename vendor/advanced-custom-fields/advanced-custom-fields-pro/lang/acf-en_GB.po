@@ -12,7 +12,7 @@
 # This file is distributed under the same license as Advanced Custom Fields.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-08-24T07:03:45+00:00\n"
+"PO-Revision-Date: 2022-09-09T14:03:41+00:00\n"
 "Report-Msgid-Bugs-To: http://support.advancedcustomfields.com\n"
 "Language: en_GB\n"
 "MIME-Version: 1.0\n"
@@ -1362,7 +1362,7 @@ msgstr "Restricted"
 #: includes/media.php:53 assets/build/js/acf-input.js:6529
 #: assets/build/js/acf-input.js:7390
 msgid "Collapse Details"
-msgstr "Collapse details"
+msgstr "Collapse Details"
 
 #: includes/media.php:52 assets/build/js/acf-input.js:6529
 #: assets/build/js/acf-input.js:7387

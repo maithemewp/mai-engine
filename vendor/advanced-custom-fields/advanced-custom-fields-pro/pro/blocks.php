@@ -63,6 +63,7 @@ function acf_handle_json_block_registration( $settings, $metadata ) {
 			'supports'          => array(),
 			'attributes'        => array(),
 			'acf_block_version' => 2,
+			'api_version'       => 2,
 		)
 	);
 
@@ -570,7 +571,7 @@ function acf_rendered_block( $attributes, $content = '', $is_preview = false, $p
 	$html = ob_get_clean();
 
 	// Replace <InnerBlocks /> placeholder on front-end.
-	if ( ! $is_preview || doing_filter( 'render_block' ) || doing_filter( 'the_content' ) ) {
+	if ( ! $is_preview ) {
 		// Escape "$" character to avoid "capture group" interpretation.
 		$content = str_replace( '$', '\$', $content );
 
@@ -578,7 +579,7 @@ function acf_rendered_block( $attributes, $content = '', $is_preview = false, $p
 		if ( $wp_block && $wp_block->block_type->acf_block_version > 1 && apply_filters( 'acf/blocks/wrap_frontend_innerblocks', true, $attributes['name'] ) ) {
 			// Check for a class (or className) provided in the template to become the InnerBlocks wrapper class.
 			$matches = array();
-			if ( preg_match( '/<InnerBlocks(?:[^<]+?)(?:(?:className)|(?:class))=["\']([\S\s]+?)["\'](?:[\s]*?)\/>/', $html, $matches ) ) {
+			if ( preg_match( '/<InnerBlocks(?:[^<]+?)(?:class|className)=(?:["\']\W+\s*(?:\w+)\()?["\']([^\'"]+)[\'"]/', $html, $matches ) ) {
 				$class = isset( $matches[1] ) ? $matches[1] : 'acf-innerblocks-container';
 			} else {
 				$class = 'acf-innerblocks-container';

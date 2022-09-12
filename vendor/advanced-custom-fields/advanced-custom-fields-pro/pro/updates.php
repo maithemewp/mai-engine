@@ -96,7 +96,7 @@ if ( ! class_exists( 'acf_pro_updates' ) ) :
 			}
 
 			// display message
-			echo '<br />' . sprintf( __( 'To enable updates, please enter your license key on the <a href="%1$s">Updates</a> page. If you don\'t have a licence key, please see <a href="%2$s" target="_blank">details & pricing</a>.', 'acf' ), admin_url( 'edit.php?post_type=acf-field-group&page=acf-settings-updates' ), 'https://www.advancedcustomfields.com/pro/?utm_source=ACF%2Bpro%2Bplugin&utm_medium=insideplugin&utm_campaign=ACF%2Bupgrade&utm_content=updates' );
+			echo '<br />' . sprintf( __( 'To enable updates, please enter your license key on the <a href="%1$s">Updates</a> page. If you don\'t have a licence key, please see <a href="%2$s" target="_blank">details & pricing</a>.', 'acf' ), admin_url( 'edit.php?post_type=acf-field-group&page=acf-settings-updates' ), acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/pro/', 'ACF upgrade', 'updates' ) );
 
 		}
 

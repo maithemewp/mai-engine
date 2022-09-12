@@ -12,7 +12,7 @@
 # This file is distributed under the same license as Advanced Custom Fields.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-08-24T07:03:45+00:00\n"
+"PO-Revision-Date: 2022-09-09T14:03:41+00:00\n"
 "Report-Msgid-Bugs-To: http://support.advancedcustomfields.com\n"
 "Language: nl_NL\n"
 "MIME-Version: 1.0\n"
@@ -751,7 +751,7 @@ msgstr "breedte"
 
 #: includes/admin/views/field-group-field.php:161
 msgid "Wrapper Attributes"
-msgstr "Wrapper-attributen"
+msgstr "Wrapper attributen"
 
 #: includes/admin/views/field-group-field.php:135
 msgid "Required?"
@@ -779,7 +779,7 @@ msgstr "Veldnaam"
 
 #: includes/admin/views/field-group-field.php:79
 msgid "This is the name which will appear on the EDIT page"
-msgstr "Dit is de naam die op de EDIT-pagina zal verschijnen"
+msgstr "Dit is de naam die op de BEWERK pagina zal verschijnen"
 
 #: includes/admin/views/field-group-field.php:78
 msgid "Field Label"
@@ -812,7 +812,7 @@ msgstr "Veld bewerken"
 
 #: includes/admin/views/field-group-field.php:49
 msgid "Drag to reorder"
-msgstr "Sleep om te ordenen"
+msgstr "Sleep om te herschikken"
 
 #: includes/admin/admin-field-group.php:175
 #: includes/admin/views/html-location-group.php:3
@@ -1023,7 +1023,7 @@ msgstr "Selecteer %s"
 #: includes/admin/admin-field-groups.php:525
 #: includes/admin/views/field-group-field.php:57
 msgid "Duplicate"
-msgstr "Duplicaat"
+msgstr "Dupliceer"
 
 #: includes/admin/admin-field-groups.php:505
 msgid "Duplicate this item"
@@ -1158,7 +1158,7 @@ msgstr "Verplaatsen naar prullenbak. Weet je het zeker?"
 #: assets/build/js/acf-field-group.js:2047
 #: assets/build/js/acf-field-group.js:2413
 msgid "Field group title is required"
-msgstr "Titel van veldgroep is vereist"
+msgstr "Veldgroep titel is vereist"
 
 #: includes/admin/admin-field-group.php:165
 #: assets/build/js/acf-field-group.js:1063

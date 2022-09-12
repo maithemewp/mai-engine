@@ -1,14 +1,17 @@
 <?php
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- included template file.
+
 global $post_type, $post_type_object, $acf_page_title;
 $post_new_file = "post-new.php?post_type=$post_type";
 
+$page_title = false;
 if ( isset( $acf_page_title ) ) {
 	$page_title = $acf_page_title;
-} else {
+} elseif ( is_object( $post_type_object ) ) {
 	$page_title = $post_type_object->labels->name;
 }
-
-?>
+if ( $page_title ) {
+	?>
 <div class="acf-headerbar">
 
 	<h1 class="acf-page-title">
@@ -24,3 +27,4 @@ if ( isset( $acf_page_title ) ) {
 	?>
 
 </div>
+<?php } ?>

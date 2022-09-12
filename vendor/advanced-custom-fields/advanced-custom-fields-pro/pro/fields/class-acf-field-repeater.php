@@ -36,12 +36,13 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 			$this->label    = __( 'Repeater', 'acf' );
 			$this->category = 'layout';
 			$this->defaults = array(
-				'sub_fields'   => array(),
-				'min'          => 0,
-				'max'          => 0,
-				'layout'       => 'table',
-				'button_label' => '',
-				'collapsed'    => '',
+				'sub_fields'    => array(),
+				'min'           => 0,
+				'max'           => 0,
+				'rows_per_page' => 20,
+				'layout'        => 'table',
+				'button_label'  => '',
+				'collapsed'     => '',
 			);
 
 			// field filters
@@ -96,6 +97,10 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 				);
 			}
 
+			if ( empty( $field['rows_per_page'] ) || (int) $field['rows_per_page'] < 1 ) {
+				$field['rows_per_page'] = 20;
+			}
+
 			if ( '' === $field['button_label'] ) {
 				$field['button_label'] = __( 'Add Row', 'acf' );
 			}
@@ -114,7 +119,10 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 		 * @return array
 		 */
 		function pre_render_fields( $fields, $post_id = false ) {
-			$this->is_rendering = true;
+			if ( is_admin() ) {
+				$this->is_rendering = true;
+			}
+
 			return $fields;
 		}
 
@@ -204,6 +212,7 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 						'name'         => 'rows_per_page',
 						'placeholder'  => 20,
 						'ui'           => 1,
+						'min'          => 1,
 						'conditions'   => array(
 							'field'    => 'pagination',
 							'operator' => '==',
@@ -598,7 +607,7 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 			$new_value = 0;
 			$old_value = (int) acf_get_metadata( $post_id, $field['name'] );
 
-			if ( ! empty( $field['pagination'] ) && did_action( 'acf/save_post' ) ) {
+			if ( ! empty( $field['pagination'] ) && did_action( 'acf/save_post' ) && ! isset( $_POST['_acf_form'] ) ) {
 				$old_rows       = acf_get_value( $post_id, $field );
 				$old_rows       = is_array( $old_rows ) ? $old_rows : array();
 				$edited_rows    = array();

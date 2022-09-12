@@ -59,7 +59,7 @@ if ( $is_subfield ) {
 					printf(
 						/* translators: %s url to field types list */
 						__( 'Choose from over 30 field types. <a href="%s" target="_blank">Learn more</a>.', 'acf' ),
-						'https://www.advancedcustomfields.com/resources/#field-types'
+						acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/resources/', 'docs', 'empty-field-group', 'field-types' )
 					);
 					?>
 				</p>

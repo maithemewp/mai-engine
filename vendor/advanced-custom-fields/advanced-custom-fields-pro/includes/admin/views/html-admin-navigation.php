@@ -87,7 +87,7 @@ if ( $tabs === false ) {
 	?>
 
 	<?php if ( ! defined( 'ACF_PRO' ) || ! ACF_PRO ) : ?>
-	<a target="_blank" href="https://www.advancedcustomfields.com/pro/?utm_source=ACF%2BFree&utm_medium=insideplugin&utm_campaign=ACF%2Bupgrade&utm_content=header" class="btn-upgrade acf-admin-toolbar-upgrade-btn">
+	<a target="_blank" href="<?php echo acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/pro/', 'ACF upgrade', 'header' ); ?>" class="btn-upgrade acf-admin-toolbar-upgrade-btn">
 		<i class="acf-icon acf-icon-stars"></i>
 		<p><?php _e( 'Unlock Extra Features with ACF PRO', 'acf' ); ?></p>
 	</a>

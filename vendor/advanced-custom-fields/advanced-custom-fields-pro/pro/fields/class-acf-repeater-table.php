@@ -61,11 +61,18 @@ class ACF_Repeater_Table {
 		$this->field      = $field;
 		$this->sub_fields = $field['sub_fields'];
 
+		// Default to non-paginated repeaters.
 		if ( empty( $this->field['pagination'] ) ) {
 			$this->field['pagination'] = false;
 		}
 
+		// We don't yet support pagination inside other repeaters or flexible content fields.
 		if ( ! empty( $this->field['parent_repeater'] ) || ! empty( $this->field['parent_layout'] ) ) {
+			$this->field['pagination'] = false;
+		}
+
+		// We don't yet support pagination in frontend forms.
+		if ( ! is_admin() ) {
 			$this->field['pagination'] = false;
 		}
 
