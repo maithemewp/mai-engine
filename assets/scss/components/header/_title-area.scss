@@ -4,7 +4,7 @@
 }
 
 .title-area {
-	flex: var(--title-area-flex, 1);
+	flex: var(--title-area-flex, 0 1 auto);
 	order: var(--title-area-order, unset);
 	margin: var(--title-area-margin, 0);
 	padding: var(--title-area-padding, var(--spacing-md) 0);
@@ -16,11 +16,6 @@
 	--link-color-hover: var(--color-link);
 	--link-text-decoration: none;
 	--link-text-decoration-hover: none;
-}
-
-.title-area-first,
-.title-area-last {
-	--title-area-flex: 0 1 auto;
 }
 
 .has-sticky-header:not(.header-stuck) {
