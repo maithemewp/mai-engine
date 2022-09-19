@@ -44,22 +44,19 @@ function mai_register_columns_block() {
  * @return void
  */
 function mai_do_columns_block( $attributes, $content = '', $is_preview = false, $post_id = 0, $wp_block, $context ) {
-	static $instance = 1;
+	$args['preview']                = $is_preview;
+	$args['class']                  = isset( $attributes['className'] ) ? $attributes['className']: '';
+	$args['column_gap']             = get_field( 'column_gap' );
+	$args['row_gap']                = get_field( 'row_gap' );
+	$args['align']                  = $attributes['align'];
+	$args['align_columns']          = get_field( 'align_columns' );
+	$args['align_columns_vertical'] = get_field( 'align_columns_vertical' );
+	$args['margin_top']             = get_field( 'margin_top' );
+	$args['margin_bottom']          = get_field( 'margin_bottom' );
 
-	$args                                        = mai_columns_get_args( $instance );
-	$args[ $instance ]['preview']                = $is_preview;
-	$args[ $instance ]['class']                  = isset( $attributes['className'] ) ? $attributes['className']: '';
-	$args[ $instance ]['column_gap']             = get_field( 'column_gap' );
-	$args[ $instance ]['row_gap']                = get_field( 'row_gap' );
-	$args[ $instance ]['align']                  = $attributes['align'];
-	$args[ $instance ]['align_columns']          = get_field( 'align_columns' );
-	$args[ $instance ]['align_columns_vertical'] = get_field( 'align_columns_vertical' );
-	$args[ $instance ]['margin_top']             = get_field( 'margin_top' );
-	$args[ $instance ]['margin_bottom']          = get_field( 'margin_bottom' );
-
-	$columns = new Mai_Columns( $instance, $args[ $instance ] );
+	// $columns = new Mai_Columns( $instance, $args[ $instance ] );
+	$columns = new Mai_Columns( $args );
 	$columns->render();
-	$instance++;
 }
 
 /**
@@ -77,7 +74,7 @@ function mai_do_columns_block( $attributes, $content = '', $is_preview = false, 
  * @return void
  */
 function mai_do_column_block( $attributes, $content = '', $is_preview = false, $post_id = 0, $wp_block, $context ) {
-	$args = [
+	$args  = [
 		'preview'               => $is_preview,
 		'class'                 => isset( $attributes['className'] ) ? $attributes['className']: '',
 		'align_column_vertical' => get_field( 'align_column_vertical' ),
@@ -89,13 +86,14 @@ function mai_do_column_block( $attributes, $content = '', $is_preview = false, $
 		'first_xs'              => get_field( 'first_xs' ),
 		'first_sm'              => get_field( 'first_sm' ),
 		'first_md'              => get_field( 'first_md' ),
+		'fields'                => isset( $context['acf/fields'] ) ? $context['acf/fields'] : [],
 	];
 
 	$columns = new Mai_Column( $args );
 	$columns->render();
 }
 
-add_filter( 'render_block', 'mai_render_mai_columns_block', 10, 2 );
+// add_filter( 'render_block', 'mai_render_mai_columns_block', 10, 2 );
 /**
  * Adds inline custom properties for custom column arrangments.
  *
@@ -361,7 +359,7 @@ function mai_register_columns_field_groups() {
 							'name'            => 'columns',
 							'type'            => 'button_group',
 							'choices'         => $column_choices,
-							'default_value'   => '1/3',
+							'default_value'   => '1/4',
 						],
 					],
 				],

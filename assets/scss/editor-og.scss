@@ -1,0 +1,1321 @@
+@import "abstracts/_index";
+@import "base/box-sizing"; /* Something changed in WP 6.0 and we needed this for boxed entries. */
+@import "base/form";
+@import "base/globals";
+@import "base/heading";
+@import "base/list";
+@import "base/table";
+@import "base/typography";
+@import "components/blocks/_index-editor";
+@import "components/entry/_index";
+@import "utilities/_index";
+
+html {
+	font-size: 100%; // 16px browser default.
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+body {
+	min-height: auto;
+	// background: var(--color-white);
+
+	--viewport-width: calc(100vw - var(--admin-menu-width, 160px) - var(--block-sidebar-width, 0px)); // Requires 0px for calc().
+	// --body-background-color: var(--color-white); // Testing not overriding in editor.
+	--list-style-position: outside;
+	--list-padding: 0 0 var(--spacing-lg) var(--spacing-xl); // Adds list indent/spacing without affecting block layout.
+	--list-item-margin-bottom: var(--spacing-xs);
+
+	@include body();
+}
+
+.edit-post-visual-editor__post-title-wrapper {
+	margin-bottom: var(--spacing-md); // this element is using var(--wp--style--block-gap) which is not defined in this non-FSE theme.
+}
+
+.editor-post-title__block .editor-post-title__input {
+
+	@include heading;
+}
+
+.block-editor-block-list__block .block-list-appender.block-list-appender {
+	// These are 0 in WP so the appender isn't centered by default.
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.block-editor-plain-text {
+	/* TODO: Make this work if body color is set to white. */
+	/* TODO: --input-color: #000; is necessary when this happens as well. */
+	color: var(--color-body); /* Overrides WP core styles. Mostly for dark backgrounds when the text is changed to white. */
+}
+
+// FYI: The has-dark-background class is not automatically added to Group blocks with dark color in the editor.
+.has-dark-background {
+
+	@include dark_bg();
+}
+
+.has-light-background {
+	color: var(--color-body);
+	--heading-color: var(--color-heading);
+}
+
+.alignfull {
+	width: 100%;
+	max-width: 100%;
+	margin-right: 0;
+	margin-left: 0;
+}
+
+.wp-block.is-reusable {
+	max-width: unset !important;
+	margin-right: 0;
+	margin-left: 0;
+}
+
+// [data-content-align="start"] {
+// 	margin-inline-start: 0;
+// }
+
+// [data-content-align="end"] {
+// 	margin-inline-end: 0;
+// }
+
+// [data-align] > [data-type="core/paragraph"] {
+// 	float: none;
+// }
+
+// [data-align="left"] > [data-type="core/paragraph"] {
+// 	margin-right: auto;
+// }
+
+// [data-align="right"] > [data-type="core/paragraph"] {
+// 	margin-left: auto;
+// }
+
+// [data-align="center"] > [data-type="core/paragraph"] {
+// 	margin-right: auto;
+// 	margin-left: auto;
+// }
+
+[data-type="core/pullquote"][data-align="left"],
+[data-type="core/pullquote"][data-align="right"] {
+	max-width: 290px; // Match WP core front end styles.
+	overflow: hidden;
+}
+
+[data-type="core/pullquote"][data-align="left"] {
+	float: left;
+}
+
+[data-type="core/pullquote"][data-align="right"] {
+	float: right;
+}
+
+// Not sure why the editor markup for these blocks is so different, but we need space in editor.
+.wp-block-quote__citation,
+.wp-block-pullquote__citation {
+	margin-top: var(--spacing-sm);
+}
+
+.block-editor-block-list__layout {
+
+	> [data-type="core/group"],
+	> [data-type="core/cover"],
+	> [data-type="acf/mai-post-grid"] {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+}
+
+.wp-block[data-align="full"] > .wp-block-group {
+	padding-right: var(--side-spacing);
+	padding-left: var(--side-spacing);
+}
+
+.wp-block[data-align="full"] > .wp-block-cover {
+	padding-right: var(--side-spacing);
+	padding-left: var(--side-spacing);
+}
+
+[data-content-align="start"] {
+	--group-block-justify-content: flex-start;
+	--cover-block-justify-content: flex-start;
+
+	> .wp-block-group__inner-container > .wp-block,
+	> .wp-block-cover__inner-container > .wp-block {
+		margin-left: unset;
+	}
+}
+
+[data-content-align="center"] {
+	--group-block-justify-content: center;
+	--cover-block-justify-content: center;
+}
+
+[data-content-align="end"] {
+	--group-block-justify-content: flex-end;
+	--cover-block-justify-content: flex-end;
+
+	> .wp-block-group__inner-container > .wp-block,
+	> .wp-block-cover__inner-container > .wp-block {
+		margin-right: unset;
+	}
+}
+
+p[data-content-align="start"],
+.wp-block-heading[data-content-align="start"] {
+	margin-left: 0;
+}
+
+p[data-content-align="end"],
+.wp-block-heading[data-content-align="end"] {
+	margin-right: 0;
+}
+
+/**
+ * This is padding on enableLayoutSettingsBlocks.
+ *
+ * 'core/cover',
+ * 'core/group',
+ */
+@each $padding-name, $padding-size in $padding_scale {
+
+	@each $padding-setting in $padding_settings {
+
+		.wp-block-cover[data-spacing-#{ $padding-setting }="#{ $padding-name }"],
+		.wp-block-group[data-spacing-#{ $padding-setting }="#{ $padding-name }"] {
+			padding-#{ $padding-setting }: #{ $padding-size } !important;
+		}
+	}
+}
+
+/**
+ * Max width on enableMaxWidthSettingsBlocks.
+ *
+ * 'core/heading',
+ * 'core/paragraph',
+ *
+ * and enableLayoutSettingsBlocks.
+ *
+ * 'core/cover',
+ * 'core/group',
+ */
+@each $breakpoint-name, $breakpoint-size in $breakpoints {
+
+	[data-type="core/heading"][data-max-width="#{ $breakpoint-name }"],
+	[data-type="core/paragraph"][data-max-width="#{ $breakpoint-name }"] {
+		--wp-block-max-width: var(--breakpoint-#{ $breakpoint-name });
+	}
+
+	// We don't need to worry about nested block here,
+	// since their content should never be larger than the parent.
+	[data-content-width="#{ $breakpoint-name }"] {
+		--content-max-width: var(--breakpoint-#{ $breakpoint-name });
+		--wp-block-max-width: var(--breakpoint-#{ $breakpoint-name });
+	}
+}
+
+[data-content-width="no"] {
+	--content-max-width: var(--viewport-width);
+	--wp-block-max-width: var(--viewport-width);
+	--side-spacing: 0;
+}
+
+/**
+ * This is margin on enableSpacingSettingsBlocks.
+ *
+ * 'core/heading',
+ * 'core/paragraph',
+ * 'core/separator',
+ */
+@each $margin-name, $margin-size in $spacing {
+
+	@each $margin-setting in $margin_settings {
+
+		.wp-block-heading[data-spacing-#{ $margin-setting }="#{ $margin-name }"],
+		.wp-block-paragraph[data-spacing-#{ $margin-setting }="#{ $margin-name }"],
+		.wp-block-separator[data-spacing-#{ $margin-setting }="#{ $margin-name }"] {
+			--heading-margin-#{ $margin-setting }: #{ $margin-size };
+			--separator-block-margin-#{ $margin-setting }: #{ $margin-size };
+			--paragraph-margin-#{ $margin-setting }: #{ $margin-size };
+		}
+	}
+}
+
+/**
+ * This is margin on enableMarginSettingsBlocks.
+ *
+ * 'core/image',
+ * 'core/cover',
+ * 'core/group',
+ */
+@each $margin-name, $margin-size in $margin {
+
+	@each $margin-setting in $margin_settings {
+
+		.wp-block-image[data-margin-#{ $margin-setting }="#{ $margin-name }"],
+		.wp-block-cover[data-margin-#{ $margin-setting }="#{ $margin-name }"],
+		.wp-block-group[data-margin-#{ $margin-setting }="#{ $margin-name }"] {
+			margin-#{ $margin-setting }: #{ $margin-size } !important;
+		}
+	}
+}
+
+/**
+ * This is negative margin on enableMarginSettingsBlocks.
+ *
+ * 'core/image',
+ * 'core/cover',
+ * 'core/group',
+ */
+@each $margin-name, $margin-size in $negative_margin {
+
+	@each $margin-setting in $margin_settings {
+
+		.wp-block-image[data-margin-#{ $margin-setting }="#{ $margin-name }"],
+		.wp-block-cover[data-margin-#{ $margin-setting }="#{ $margin-name }"],
+		.wp-block-group[data-margin-#{ $margin-setting }="#{ $margin-name }"] {
+			margin-#{ $margin-setting }: calc(#{ $margin-size } * -1) !important;
+		}
+	}
+}
+
+@each $margin-setting in $margin_settings {
+
+	[data-margin-#{ $margin-setting }="no"] {
+		margin-#{ $margin-setting }: 0 !important;
+	}
+}
+
+@each $size-name, $size-value in $font-sizes {
+
+	[data-font-size="#{ $size-name }"] > .rich-text {
+		font-size: #{ $size-value };
+	}
+}
+
+// Our default of 0 left/right margin caused overlap in editor.
+.wp-block-image {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+// button, // This breaks core block control buttons.
+input[type="submit"],
+.wp-block-button__link,
+.wp-block .button {
+	min-height: 1px; // Makes sure block styles are rendered correctly in editor. See #303.
+
+	@include button(true);
+
+	// Default block style preview.
+	.is-style-default & {
+
+		@include button(true);
+	}
+
+	&:active,
+	&:visited {
+		color: var(--button-color-hover, var(--button-color));
+	}
+
+	.is-style-secondary & {
+
+		@include button-style("secondary", true);
+	}
+
+	.is-style-link & {
+
+		@include button-style("link", true);
+	}
+
+	.is-style-outline & {
+
+		@include button-style("outline", true);
+	}
+
+	.button-small & {
+
+		@include button-style("small");
+	}
+
+	.button-large & {
+
+		@include button-style("large");
+	}
+}
+
+.entry-more.is-style-link .wp-block-button__link,
+.entry-more:not([class*="is-style-link"]):not([class*="is-style-"]) .wp-block-button__link {
+	padding: 0;
+}
+
+// Remove default spacing on .wp-block from classic.css in WP core.
+.mai-divider {
+	margin-top: -28px;
+	margin-bottom: -28px;
+}
+
+.wp-block-search {
+
+	// When no alignment is set the wp-block is the same as the search block.
+	// When you set alignment it adds wp-block as a wrapper. Strange.
+	&.wp-block {
+		margin-right: auto;
+		margin-left: auto;
+	}
+
+	.wp-block[data-align="left"] & {
+		justify-content: flex-start;
+	}
+
+	.wp-block[data-align="center"] & {
+		justify-content: center;
+	}
+
+	.wp-block[data-align="right"] & {
+		justify-content: flex-end;
+	}
+
+	.wp-block-search__input {
+		width: auto;
+		min-width: var(--search-input-min-width, 0);
+		max-width: var(--search-input-max-width, 320px);
+		font-size: var(--font-size-md);
+		-webkit-appearance: none;
+	}
+
+	.wp-block-search__button {
+		height: auto !important;
+
+		@include button(true);
+		@include button-style("secondary", true);
+
+		&.has-icon {
+			position: relative;
+			height: 100%;
+
+			svg {
+				position: absolute;
+				top: calc(50% - 12px);
+				left: calc(50% - 12px);
+				width: 24px;
+				height: 24px;
+				fill: currentColor;
+			}
+		}
+	}
+}
+
+.mai-grid a {
+	pointer-events: none;
+}
+
+// Columns.
+
+.has-columns:not(.has-columns-nested),
+.has-columns-nested > .block-editor-block-list__layout {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--row-gap) var(--column-gap);
+	align-items: var(--align-columns-vertical, initial); // Needs initial for nested columns.
+	justify-content: var(--align-columns, initial); // Needs initial for nested columns.
+}
+
+.has-columns-nested > .block-editor-block-list__layout > .wp-block,
+.has-columns-nested > .block-editor-block-list__layout > .wp-block > .is-column {
+	height: 100%;
+}
+
+// Column.
+
+.has-columns:not(.has-columns-nested) > .is-column,
+.has-columns-nested > .block-editor-block-list__layout > .wp-block {
+	--columns-default: 1/1;
+	--flex-basis: calc((100% * var(--columns) - (var(--column-gap) * (1 - var(--columns)))) - 0.025px); // Removes 0.025px to prevent margin collapsing.
+	--flex-default: 0 0 var(--flex-basis);
+
+	@include mq(false, sm) {
+		--order: var(--order-xs, unset);
+	}
+
+	@include mq(sm, md) {
+		--order: var(--order-sm, unset);
+	}
+
+	@include mq(md, lg) {
+		--order: var(--order-md, unset);
+	}
+
+	flex: var(--flex);
+	order: var(--order, unset);
+	margin: 0; /* overrides core editor margin on wp-block */
+}
+
+@include mq(false, sm) {
+
+	.has-columns:not(.has-columns-nested) > .is-column,
+	.has-columns-nested > .block-editor-block-list__layout > .wp-block {
+		--columns-1: var(--columns-xs-1);
+		--columns-2: var(--columns-xs-2);
+		--columns-3: var(--columns-xs-3);
+		--columns-4: var(--columns-xs-4);
+		--columns-5: var(--columns-xs-5);
+		--columns-6: var(--columns-xs-6);
+		--columns-7: var(--columns-xs-7);
+		--columns-8: var(--columns-xs-8);
+		--columns-9: var(--columns-xs-9);
+		--columns-10: var(--columns-xs-10);
+		--columns-11: var(--columns-xs-11);
+		--columns-12: var(--columns-xs-12);
+		--columns-13: var(--columns-xs-13);
+		--columns-14: var(--columns-xs-14);
+		--columns-15: var(--columns-xs-15);
+		--columns-16: var(--columns-xs-16);
+		--columns-17: var(--columns-xs-17);
+		--columns-18: var(--columns-xs-18);
+		--columns-19: var(--columns-xs-19);
+		--columns-20: var(--columns-xs-20);
+		--columns-21: var(--columns-xs-21);
+		--columns-22: var(--columns-xs-22);
+		--columns-23: var(--columns-xs-23);
+		--columns-24: var(--columns-xs-24);
+
+		--flex-1: var(--flex-xs, var(--flex-default));
+		--flex-2: var(--flex-xs, var(--flex-default));
+		--flex-3: var(--flex-xs, var(--flex-default));
+		--flex-4: var(--flex-xs, var(--flex-default));
+		--flex-5: var(--flex-xs, var(--flex-default));
+		--flex-6: var(--flex-xs, var(--flex-default));
+		--flex-7: var(--flex-xs, var(--flex-default));
+		--flex-8: var(--flex-xs, var(--flex-default));
+		--flex-9: var(--flex-xs, var(--flex-default));
+		--flex-10: var(--flex-xs, var(--flex-default));
+		--flex-11: var(--flex-xs, var(--flex-default));
+		--flex-12: var(--flex-xs, var(--flex-default));
+		--flex-13: var(--flex-xs, var(--flex-default));
+		--flex-14: var(--flex-xs, var(--flex-default));
+		--flex-15: var(--flex-xs, var(--flex-default));
+		--flex-16: var(--flex-xs, var(--flex-default));
+		--flex-17: var(--flex-xs, var(--flex-default));
+		--flex-18: var(--flex-xs, var(--flex-default));
+		--flex-19: var(--flex-xs, var(--flex-default));
+		--flex-20: var(--flex-xs, var(--flex-default));
+		--flex-21: var(--flex-xs, var(--flex-default));
+		--flex-22: var(--flex-xs, var(--flex-default));
+		--flex-23: var(--flex-xs, var(--flex-default));
+		--flex-24: var(--flex-xs, var(--flex-default));
+	}
+}
+
+@include mq(sm, md) {
+
+	.has-columns:not(.has-columns-nested) > .is-column,
+	.has-columns-nested > .block-editor-block-list__layout > .wp-block {
+		--columns-1: var(--columns-sm-1);
+		--columns-2: var(--columns-sm-2);
+		--columns-3: var(--columns-sm-3);
+		--columns-4: var(--columns-sm-4);
+		--columns-5: var(--columns-sm-5);
+		--columns-6: var(--columns-sm-6);
+		--columns-7: var(--columns-sm-7);
+		--columns-8: var(--columns-sm-8);
+		--columns-9: var(--columns-sm-9);
+		--columns-10: var(--columns-sm-10);
+		--columns-11: var(--columns-sm-11);
+		--columns-12: var(--columns-sm-12);
+		--columns-13: var(--columns-sm-13);
+		--columns-14: var(--columns-sm-14);
+		--columns-15: var(--columns-sm-15);
+		--columns-16: var(--columns-sm-16);
+		--columns-17: var(--columns-sm-17);
+		--columns-18: var(--columns-sm-18);
+		--columns-19: var(--columns-sm-19);
+		--columns-20: var(--columns-sm-20);
+		--columns-21: var(--columns-sm-21);
+		--columns-22: var(--columns-sm-22);
+		--columns-23: var(--columns-sm-23);
+		--columns-24: var(--columns-sm-24);
+
+		--flex-1: var(--flex-sm, var(--flex-default));
+		--flex-2: var(--flex-sm, var(--flex-default));
+		--flex-3: var(--flex-sm, var(--flex-default));
+		--flex-4: var(--flex-sm, var(--flex-default));
+		--flex-5: var(--flex-sm, var(--flex-default));
+		--flex-6: var(--flex-sm, var(--flex-default));
+		--flex-7: var(--flex-sm, var(--flex-default));
+		--flex-8: var(--flex-sm, var(--flex-default));
+		--flex-9: var(--flex-sm, var(--flex-default));
+		--flex-10: var(--flex-sm, var(--flex-default));
+		--flex-11: var(--flex-sm, var(--flex-default));
+		--flex-12: var(--flex-sm, var(--flex-default));
+		--flex-13: var(--flex-sm, var(--flex-default));
+		--flex-14: var(--flex-sm, var(--flex-default));
+		--flex-15: var(--flex-sm, var(--flex-default));
+		--flex-16: var(--flex-sm, var(--flex-default));
+		--flex-17: var(--flex-sm, var(--flex-default));
+		--flex-18: var(--flex-sm, var(--flex-default));
+		--flex-19: var(--flex-sm, var(--flex-default));
+		--flex-20: var(--flex-sm, var(--flex-default));
+		--flex-21: var(--flex-sm, var(--flex-default));
+		--flex-22: var(--flex-sm, var(--flex-default));
+		--flex-23: var(--flex-sm, var(--flex-default));
+		--flex-24: var(--flex-sm, var(--flex-default));
+	}
+}
+
+@include mq(md, lg) {
+
+	.has-columns:not(.has-columns-nested) > .is-column,
+	.has-columns-nested > .block-editor-block-list__layout > .wp-block {
+		--columns-1: var(--columns-md-1);
+		--columns-2: var(--columns-md-2);
+		--columns-3: var(--columns-md-3);
+		--columns-4: var(--columns-md-4);
+		--columns-5: var(--columns-md-5);
+		--columns-6: var(--columns-md-6);
+		--columns-7: var(--columns-md-7);
+		--columns-8: var(--columns-md-8);
+		--columns-9: var(--columns-md-9);
+		--columns-10: var(--columns-md-10);
+		--columns-11: var(--columns-md-11);
+		--columns-12: var(--columns-md-12);
+		--columns-13: var(--columns-md-13);
+		--columns-14: var(--columns-md-14);
+		--columns-15: var(--columns-md-15);
+		--columns-16: var(--columns-md-16);
+		--columns-17: var(--columns-md-17);
+		--columns-18: var(--columns-md-18);
+		--columns-19: var(--columns-md-19);
+		--columns-20: var(--columns-md-20);
+		--columns-21: var(--columns-md-21);
+		--columns-22: var(--columns-md-22);
+		--columns-23: var(--columns-md-23);
+		--columns-24: var(--columns-md-24);
+
+		--flex-1: var(--flex-md-1, var(--flex-default));
+		--flex-2: var(--flex-md-2, var(--flex-default));
+		--flex-3: var(--flex-md-3, var(--flex-default));
+		--flex-4: var(--flex-md-4, var(--flex-default));
+		--flex-5: var(--flex-md-5, var(--flex-default));
+		--flex-6: var(--flex-md-6, var(--flex-default));
+		--flex-7: var(--flex-md-7, var(--flex-default));
+		--flex-8: var(--flex-md-8, var(--flex-default));
+		--flex-9: var(--flex-md-9, var(--flex-default));
+		--flex-10: var(--flex-md-10, var(--flex-default));
+		--flex-11: var(--flex-md-11, var(--flex-default));
+		--flex-12: var(--flex-md-12, var(--flex-default));
+		--flex-13: var(--flex-md-13, var(--flex-default));
+		--flex-14: var(--flex-md-14, var(--flex-default));
+		--flex-15: var(--flex-md-15, var(--flex-default));
+		--flex-16: var(--flex-md-16, var(--flex-default));
+		--flex-17: var(--flex-md-17, var(--flex-default));
+		--flex-18: var(--flex-md-18, var(--flex-default));
+		--flex-19: var(--flex-md-19, var(--flex-default));
+		--flex-20: var(--flex-md-20, var(--flex-default));
+		--flex-21: var(--flex-md-21, var(--flex-default));
+		--flex-22: var(--flex-md-22, var(--flex-default));
+		--flex-23: var(--flex-md-23, var(--flex-default));
+		--flex-24: var(--flex-md-24, var(--flex-default));
+	}
+}
+
+@include mq(lg) {
+
+	.has-columns:not(.has-columns-nested) > .is-column,
+	.has-columns-nested > .block-editor-block-list__layout > .wp-block {
+		--columns-1: var(--columns-lg-1);
+		--columns-2: var(--columns-lg-2);
+		--columns-3: var(--columns-lg-3);
+		--columns-4: var(--columns-lg-4);
+		--columns-5: var(--columns-lg-5);
+		--columns-6: var(--columns-lg-6);
+		--columns-7: var(--columns-lg-7);
+		--columns-8: var(--columns-lg-8);
+		--columns-9: var(--columns-lg-9);
+		--columns-10: var(--columns-lg-10);
+		--columns-11: var(--columns-lg-11);
+		--columns-12: var(--columns-lg-12);
+		--columns-13: var(--columns-lg-13);
+		--columns-14: var(--columns-lg-14);
+		--columns-15: var(--columns-lg-15);
+		--columns-16: var(--columns-lg-16);
+		--columns-17: var(--columns-lg-17);
+		--columns-18: var(--columns-lg-18);
+		--columns-19: var(--columns-lg-19);
+		--columns-20: var(--columns-lg-20);
+		--columns-21: var(--columns-lg-21);
+		--columns-22: var(--columns-lg-22);
+		--columns-23: var(--columns-lg-23);
+		--columns-24: var(--columns-lg-24);
+
+		--flex-1: var(--flex-lg-1, var(--flex-default));
+		--flex-2: var(--flex-lg-2, var(--flex-default));
+		--flex-3: var(--flex-lg-3, var(--flex-default));
+		--flex-4: var(--flex-lg-4, var(--flex-default));
+		--flex-5: var(--flex-lg-5, var(--flex-default));
+		--flex-6: var(--flex-lg-6, var(--flex-default));
+		--flex-7: var(--flex-lg-7, var(--flex-default));
+		--flex-8: var(--flex-lg-8, var(--flex-default));
+		--flex-9: var(--flex-lg-9, var(--flex-default));
+		--flex-10: var(--flex-lg-10, var(--flex-default));
+		--flex-11: var(--flex-lg-11, var(--flex-default));
+		--flex-12: var(--flex-lg-12, var(--flex-default));
+		--flex-13: var(--flex-lg-13, var(--flex-default));
+		--flex-14: var(--flex-lg-14, var(--flex-default));
+		--flex-15: var(--flex-lg-15, var(--flex-default));
+		--flex-16: var(--flex-lg-16, var(--flex-default));
+		--flex-17: var(--flex-lg-17, var(--flex-default));
+		--flex-18: var(--flex-lg-18, var(--flex-default));
+		--flex-19: var(--flex-lg-19, var(--flex-default));
+		--flex-20: var(--flex-lg-20, var(--flex-default));
+		--flex-21: var(--flex-lg-21, var(--flex-default));
+		--flex-22: var(--flex-lg-22, var(--flex-default));
+		--flex-23: var(--flex-lg-23, var(--flex-default));
+		--flex-24: var(--flex-lg-24, var(--flex-default));
+	}
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(1),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(1) {
+	--columns: var(--columns-1);
+	--flex: var(--flex-1);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(2),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(2) {
+	--columns: var(--columns-2);
+	--flex: var(--flex-2);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(3),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(3) {
+	--columns: var(--columns-3);
+	--flex: var(--flex-3);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(4),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(4) {
+	--columns: var(--columns-4);
+	--flex: var(--flex-4);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(5),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(5) {
+	--columns: var(--columns-5);
+	--flex: var(--flex-5);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(6),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(6) {
+	--columns: var(--columns-6);
+	--flex: var(--flex-6);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(7),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(7) {
+	--columns: var(--columns-7);
+	--flex: var(--flex-7);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(8),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(8) {
+	--columns: var(--columns-8);
+	--flex: var(--flex-8);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(9),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(9) {
+	--columns: var(--columns-9);
+	--flex: var(--flex-9);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(10),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(10) {
+	--columns: var(--columns-10);
+	--flex: var(--flex-10);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(11),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(11) {
+	--columns: var(--columns-11);
+	--flex: var(--flex-11);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(12),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(12) {
+	--columns: var(--columns-12);
+	--flex: var(--flex-12);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(13),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(13) {
+	--columns: var(--columns-13);
+	--flex: var(--flex-13);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(14),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(14) {
+	--columns: var(--columns-14);
+	--flex: var(--flex-14);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(15),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(15) {
+	--columns: var(--columns-15);
+	--flex: var(--flex-15);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(16),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(16) {
+	--columns: var(--columns-16);
+	--flex: var(--flex-16);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(17),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(17) {
+	--columns: var(--columns-17);
+	--flex: var(--flex-17);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(18),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(18) {
+	--columns: var(--columns-18);
+	--flex: var(--flex-18);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(19),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(19) {
+	--columns: var(--columns-19);
+	--flex: var(--flex-19);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(20),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(20) {
+	--columns: var(--columns-20);
+	--flex: var(--flex-20);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(21),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(21) {
+	--columns: var(--columns-21);
+	--flex: var(--flex-21);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(22),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(22) {
+	--columns: var(--columns-22);
+	--flex: var(--flex-22);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(23),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(23) {
+	--columns: var(--columns-23);
+	--flex: var(--flex-23);
+}
+
+.has-columns:not(.has-columns-nested) > .is-column:nth-child(24),
+.has-columns-nested > .block-editor-block-list__layout > .wp-block:nth-child(24) {
+	--columns: var(--columns-24);
+	--flex: var(--flex-24);
+}
+
+// This CSS is only here to zero out the --flex-xs-1 values for nested Mai Columns with custom arrangements.
+// Once we can use ACF block api version 2 and pass values via `provides_context` and `uses_context` we'll be able to simplify almost all of the
+// crazy code in this file for columns.
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-1"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-1"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-1: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-2"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-2"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-2: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-3"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-3"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-3: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-4"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-4"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-4: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-5"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-5"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-5: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-6"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-6"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-6: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-7"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-7"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-7: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-8"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-8"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-8: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-9"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-9"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-9: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-10"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-10"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-10: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-11"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-11"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-11: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-12"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-12"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-12: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-13"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-13"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-13: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-14"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-14"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-14: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-15"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-15"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-15: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-16"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-16"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-16: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-17"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-17"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-17: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-18"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-18"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-18: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-19"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-19"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-19: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-20"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-20"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-20: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-21"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-21"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-21: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-22"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-22"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-22: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-23"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-23"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-23: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-xs-24"]) > .is-column,
+.has-columns-nested:not([style*="--flex-xs-24"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-xs-24: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-1"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-1"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-1: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-2"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-2"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-2: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-3"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-3"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-3: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-4"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-4"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-4: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-5"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-5"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-5: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-6"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-6"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-6: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-7"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-7"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-7: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-8"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-8"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-8: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-9"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-9"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-9: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-10"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-10"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-10: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-11"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-11"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-11: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-12"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-12"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-12: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-13"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-13"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-13: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-14"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-14"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-14: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-15"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-15"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-15: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-16"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-16"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-16: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-17"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-17"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-17: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-18"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-18"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-18: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-19"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-19"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-19: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-20"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-20"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-20: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-21"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-21"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-21: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-22"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-22"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-22: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-23"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-23"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-23: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-sm-24"]) > .is-column,
+.has-columns-nested:not([style*="--flex-sm-24"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-sm-24: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-1"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-1"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-1: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-2"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-2"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-2: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-3"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-3"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-3: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-4"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-4"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-4: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-5"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-5"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-5: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-6"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-6"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-6: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-7"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-7"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-7: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-8"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-8"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-8: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-9"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-9"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-9: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-10"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-10"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-10: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-11"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-11"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-11: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-12"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-12"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-12: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-13"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-13"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-13: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-14"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-14"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-14: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-15"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-15"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-15: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-16"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-16"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-16: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-17"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-17"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-17: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-18"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-18"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-18: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-19"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-19"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-19: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-20"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-20"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-20: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-21"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-21"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-21: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-22"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-22"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-22: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-23"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-23"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-23: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-md-24"]) > .is-column,
+.has-columns-nested:not([style*="--flex-md-24"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-md-24: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-1"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-1"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-1: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-2"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-2"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-2: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-3"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-3"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-3: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-4"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-4"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-4: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-5"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-5"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-5: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-6"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-6"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-6: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-7"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-7"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-7: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-8"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-8"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-8: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-9"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-9"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-9: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-10"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-10"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-10: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-11"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-11"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-11: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-12"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-12"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-12: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-13"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-13"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-13: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-14"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-14"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-14: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-15"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-15"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-15: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-16"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-16"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-16: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-17"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-17"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-17: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-18"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-18"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-18: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-19"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-19"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-19: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-20"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-20"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-20: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-21"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-21"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-21: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-22"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-22"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-22: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-23"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-23"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-23: var(--flex-default);
+}
+
+.has-columns:not(.has-columns-nested):not([style*="--flex-lg-24"]) > .is-column,
+.has-columns-nested:not([style*="--flex-lg-24"]) > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	--flex-lg-24: var(--flex-default);
+}
+
+// Mai Accordion.
+
+.wp-block[data-type="acf/mai-accordion-item"] {
+	margin-bottom: var(--row-gap);
+}
+
+.wp-block[data-type="acf/mai-accordion-item"] .mai-accordion-item {
+	margin-bottom: 0;
+}
+
+.wp-block[data-type="acf/mai-accordion-item"] + .wp-block[data-type="acf/mai-accordion-item"] {
+	margin-top: 0;
+}

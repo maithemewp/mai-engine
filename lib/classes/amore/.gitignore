@@ -1,0 +1,6 @@
+*.lock
+.DS_Store
+LICENSE
+vendor/**/*.md
+vendor/**/*.json
+!vendor

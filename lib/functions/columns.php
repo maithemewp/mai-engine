@@ -117,7 +117,7 @@ function mai_get_columns_atts( $atts, $args, $nested = false ) {
 	$preview = isset( $args['preview'] ) && $args['preview'];
 
 	// Not preview.
-	if ( ! $preview ) {
+	// if ( ! $preview ) {
 		// Set columns properties. Separate loops so it's more readable in the markup.
 		foreach ( $columns as $break => $value ) {
 			$atts['style'] .= mai_columns_get_columns( $break, $value );
@@ -127,24 +127,24 @@ function mai_get_columns_atts( $atts, $args, $nested = false ) {
 		foreach ( $columns as $break => $value ) {
 			$atts['style'] .= mai_columns_get_flex( $break, $value );
 		}
-	}
+	// }
 	// Temp workaround for ACF nested block markup.
 	// Can't do $nested && $args['preview'] because it broke Mai Gallery/List (not nested) inside Mai Columns (nested).
 	// So we always need the explicit flex items. Boo.
 	// Separate loops so it's more readable in the markup.
-	else {
-		foreach ( $columns as $break => $value ) {
-			for ( $i = 1; $i <= 24; $i++ ) {
-				$atts['style'] .= mai_columns_get_columns( sprintf( '%s-%s', $break, $i ), $value );
-			}
+	// else {
+	// 	foreach ( $columns as $break => $value ) {
+	// 		for ( $i = 1; $i <= 24; $i++ ) {
+	// 			$atts['style'] .= mai_columns_get_columns( sprintf( '%s-%s', $break, $i ), $value );
+	// 		}
 
-			for ( $i = 1; $i <= 24; $i++ ) {
-				if ( in_array( $value, [ 'auto', 'fill', 'full' ] ) ) {
-					$atts['style'] .= mai_columns_get_flex( sprintf( '%s-%s', $break, $i ), $value );
-				}
-			}
-		}
-	}
+	// 		for ( $i = 1; $i <= 24; $i++ ) {
+	// 			if ( in_array( $value, [ 'auto', 'fill', 'full' ] ) ) {
+	// 				$atts['style'] .= mai_columns_get_flex( sprintf( '%s-%s', $break, $i ), $value );
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	// Temp workaround for ACF nested block markup.
 	if ( $nested && $preview ) {
@@ -167,6 +167,31 @@ function mai_get_columns_atts( $atts, $args, $nested = false ) {
 	}
 
 	return $atts;
+}
+
+/**
+ * Gets column index.
+ * This determines which column/item is currently
+ * being rendered inside the parent.
+ *
+ * @since TBD
+ *
+ * @param bool $reset Whether to reset the index.
+ *
+ * @return int
+ */
+function mai_column_get_index( $reset = false ) {
+	static $index = 0;
+
+	if ( $reset ) {
+		$index = 0;
+		return $index;
+	}
+
+	$return = $index;
+	$index++;
+
+	return $return;
 }
 
 /**
