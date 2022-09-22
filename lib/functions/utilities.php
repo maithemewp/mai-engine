@@ -1896,6 +1896,45 @@ function mai_string_ends_width( $haystack, $needle ) {
 }
 
 /**
+ * Gets the correct column value from the repeated arrangement array.
+ * Alternate, but slower, versions below.
+ *
+ * // Slow.
+ * $array = array_merge(...array_fill( 0, $index, $array ));
+ * return $array[ $index ] ?? $default;
+ *
+ * // Slowest.
+ * $array = [];
+ * for ( $i = 0; $i < ( $index + 1) / count( $pattern ); $i++ ) {
+ * 	$array = array_merge( $array, $pattern );
+ * }
+ * return $array[ $index ] ?? $default;
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @param int   $index   The current item index to get the value for.
+ * @param array $array   The array to get index value from.
+ * @param mixed $default The default value if there is no index.
+ *
+ * @return mixed
+ */
+function mai_get_index_value_from_array( $index, $array, $default = null ) {
+	// If index is already available, return it.
+	if ( isset( $array[ $index ] ) ) {
+		return $array[ $index ];
+	}
+
+	// If only 1 item in array, return the first.
+	if ( 1 === count( $array ) ) {
+		return reset( $array );
+	}
+
+	return $array[ $index % count( $array ) ] ?? $default;
+}
+
+/**
  * Gets all non latin locales in WP.
  *
  * @access private
