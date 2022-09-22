@@ -38,6 +38,13 @@ class Mai_Column {
 	public $parent;
 
 	/**
+	 * Parent args.
+	 *
+	 * @var array $arrangement
+	 */
+	public $arrangement;
+
+	/**
 	 * Mai_Column constructor.
 	 *
 	 * @since 2.10.0
@@ -48,9 +55,13 @@ class Mai_Column {
 	 * @return void
 	 */
 	public function __construct( $args ) {
-		$this->index  = mai_column_get_index();
-		$this->args   = $this->get_sanitized_args( $args ); // Must be before parent.
-		$this->parent = $this->get_parent_args();
+		$this->args  = $this->get_sanitized_args( $args );
+
+		if ( ! $this->args['preview'] ) {
+			$this->index       = mai_column_get_index();
+			$this->parent      = $this->get_parent_args();
+			$this->arrangement = mai_columns_get_arrangement( $this->parent );
+		}
 	}
 
 	/**
@@ -67,7 +78,7 @@ class Mai_Column {
 	/**
 	 * Gets the column.
 	 *
-	 * @since TBD
+	 * @since 2.10.0
 	 *
 	 * @return string
 	 */
@@ -77,7 +88,9 @@ class Mai_Column {
 			'style' => '',
 		];
 
-		$atts = $this->add_columns_atts( $atts );
+		if ( ! $this->args['preview'] ) {
+			$atts = $this->add_columns_atts( $atts );
+		}
 
 		if ( $this->args['class'] ) {
 			$atts['class'] = mai_add_classes( $this->args['class'], $atts['class'] );
@@ -188,12 +201,16 @@ class Mai_Column {
 	function get_parent_args() {
 		static $cache = [];
 
-		// Get hash from args.
-		$hash = md5( serialize( $this->args ) );
+		/**
+		 * Get hash from args.
+		 * These will be identical for all columns within the same parent,
+		 * and possibly other instances with the same settings.
+		 */
+		$hash = md5( serialize( $this->args['fields'] ) );
 
 		// Return if already cached.
 		if ( isset( $cache[ $hash ] ) ) {
-			// return $cache[ $hash ];
+			return $cache[ $hash ];
 		}
 
 		$args     = [];
@@ -211,34 +228,40 @@ class Mai_Column {
 		}
 
 		if ( 'custom' === $args['columns'] ) {
+			/**
+			 * We can't get repeater data via ACF, since it's the raw values.
+			 *
+			 * @link https://github.com/AdvancedCustomFields/acf/issues/710
+			 */
 			$this->args['fields'] = acf_setup_meta( $this->args['fields'], 'block_context' );
 			$repeaters            = [
-				'arrangement'    => '1/4',
-				'arrangement_md' => '1/3',
+				'arrangement'    => '1/2',
+				'arrangement_xs' => 'full',
+				'arrangement_md' => '1/2',
 				'arrangement_sm' => '1/2',
-				'arrangement_xs' => '1/1',
 			];
 
 			foreach ( $repeaters as $name => $default ) {
 				$args[ $name ] = [];
-				// $values        = get_field( $name, 'block_context' );
-
-				// foreach ( (array) $values as $value ) {
-				// 	$args[ $name ][] = isset( $value['columns'] ) ? $value['columns'] : $default;
-				// }
 
 				$value = isset( $this->args['fields'][ $name ] ) ? $this->args['fields'][ $name ] : null;
 
 				if ( is_null( $value ) ) {
-					$args[ $name ][] = $default;
+					$args[ $name ][] = [
+						'columns' => $default,
+					];
+
 					continue;
 				}
 
-				// Array starts with 0 but rows count starts with 1.
+				// Manually get our repeater row keys/values.
 				for ( $i = 0; $i < (int) $value; $i++ ) {
-					$sub_key         = sprintf( '%s_%s_columns', $name, $i );
-					$sub_value       = isset( $this->args['fields'][ $sub_key ] ) ? $this->args['fields'][ $sub_key ] : $default;
-					$args[ $name ][] = $sub_value;
+					$sub_key       = sprintf( '%s_%s_columns', $name, $i );
+					$sub_value     = isset( $this->args['fields'][ $sub_key ] ) ? $this->args['fields'][ $sub_key ] : $default;
+
+					$args[ $name ][] = [
+						'columns' => $sub_value,
+					];
 				}
 			}
 		}
@@ -262,83 +285,13 @@ class Mai_Column {
 		// Make sure style is set.
 		$atts['style'] = isset( $atts['style'] ) ? $atts['style'] : '';
 
-		if ( 'custom' === $this->parent['columns'] ) {
-			$arrangements = [
-				'xs' => $this->parent['arrangement_xs'],
-				'sm' => $this->parent['arrangement_sm'],
-				'md' => $this->parent['arrangement_md'],
-				'lg' => $this->parent['arrangement'],
-			];
-
-			foreach ( $arrangements as $break => $arrangement ) {
-				// foreach ( (array) $arrangement as $column ) {
-					$arrangement_col = $this->get_value_from_pattern( $this->index, $arrangement );
-
-					// if ( 'lg' === $break ) {
-						// ray( $arrangement_col );
-					// }
-
-					$atts['style']  .= mai_columns_get_columns( $break, $arrangement_col );
-					$atts['style']  .= mai_columns_get_flex( $break, $arrangement_col );
-				// }
-			}
-
-		} else {
-
-			$columns = mai_get_breakpoint_columns(
-				[
-					'columns_responsive' => $this->parent['columns_responsive'],
-					'columns'            => $this->parent['columns'],
-				]
-			);
-
-			foreach ( $columns as $break => $column ) {
-				$atts['style'] .= mai_columns_get_columns( $break, $column );
-				$atts['style'] .= mai_columns_get_flex( $break, $column );
-			}
+		foreach ( $this->arrangement as $break => $column ) {
+			$col            = is_array( $column ) ? mai_get_index_value_from_array( $this->index, $column ) : $column;
+			$atts['style'] .= mai_columns_get_columns( $break, $col );
+			$atts['style'] .= mai_columns_get_flex( $break, $col );
 		}
 
 		return $atts;
-	}
-
-	/**
-	 * Gets the correct column value from the repeated arrangement array.
-	 * Originally used for loop like below, until switching to array_fill()
-	 * because it's more readable and apparently slightly more performant.
-	 *
-	 * $array = [];
-	 * for ( $i = 0; $i < ( $index + 1) / count( $pattern ); $i++ ) {
-	 * 	$array = array_merge( $array, $pattern );
-	 * }
-	 *
-	 * @since TBD
-	 *
-	 * @param int $index The current item index to get the value for.
-	 * @param array
-	 *
-	 * @return mixed
-	 */
-	function get_value_from_pattern( $index, $pattern, $default = '' ) {
-		// ray( $index, $pattern );
-		// If index is already available, return it.
-		if ( isset( $pattern[ $index ] ) ) {
-			return $pattern[ $index ];
-		}
-
-		// If only 1 item in array, return the first.
-		if ( 1 === count( $pattern ) ) {
-			return reset( $pattern );
-		}
-
-		// Duplicate array the amount of times we need.
-		// $array = array_merge(...array_fill( 0, $index, $pattern ));
-
-		// return $array[ $index ] ?? $default;
-
-		$return = $pattern[ $index % count( $pattern ) ] ?? $default;
-
-		// ray( $return );
-		return $return;
 	}
 
 	/**

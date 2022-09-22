@@ -42,7 +42,7 @@ function mai_get_breakpoint_columns( $args ) {
 		$columns['sm'] = $args['columns_sm'];
 		$columns['xs'] = $args['columns_xs'];
 	} else {
-		switch ( $args['columns'] ) {
+		switch ( (int) $args['columns'] ) {
 			case 6:
 				$columns['md'] = 4;
 				$columns['sm'] = 3;
@@ -94,6 +94,8 @@ function mai_get_breakpoint_columns( $args ) {
  * Gets inline styles for reusable responsive columns data.
  * Margins must be handled separately because they may be
  * applied to a different container element.
+ *
+ * This does not apply for Mai Column since there are custom arrangements involved.
  *
  * @since 2.21.0
  *
@@ -195,62 +197,74 @@ function mai_column_get_index( $reset = false ) {
 }
 
 /**
- * Gets formatted columns args from block settings
- * and caches value so it can be pulled use by the individual columns.
+ * Gets columns arrangement whether it's custom, responsive, or default.
  *
- * @since 2.10.0
+ * @since TBD
  *
- * @param int $i The columns block instance.
+ * @param array $args The columns settings args.
  *
  * @return array
  */
-function mai_columns_get_args( $i = null ) {
+function mai_columns_get_arrangement( $args ) {
 	static $cache = [];
 
-	if ( ! is_null( $i ) ) {
-		if ( isset( $cache[ $i ] ) ) {
-			return $cache[ $i ];
-		}
+	// Parse.
+	$args = wp_parse_args( $args,
+		[
+			'columns'            => 2,
+			'columns_responsive' => false,
+			'columns_md'         => 2,
+			'columns_sm'         => 2,
+			'columns_xs'         => 2,
+			'arrangement'        => [ '1/2' ],
+			'arrangement_md'     => [ '1/2' ],
+			'arrangement_sm'     => [ '1/2' ],
+			'arrangement_xs'     => [ 'full' ],
+		]
+	);
 
-		$columns = get_field( 'columns' );
-		$columns = ( $columns || '0' === $columns ) ? $columns : 2;
+	// Only the args we want, sanitized.
+	$args = [
+		'columns'            => is_numeric( $args['columns'] ) ? absint( $args['columns'] ): esc_html( $args['columns'] ),
+		'columns_responsive' => mai_sanitize_bool( $args['columns_responsive'] ),
+		'columns_md'         => absint( $args['columns_md'] ),
+		'columns_sm'         => absint( $args['columns_sm'] ),
+		'columns_xs'         => absint( $args['columns_xs'] ),
+		'arrangement'        => mai_array_map_recursive( 'esc_html', (array) $args['arrangement'] ),
+		'arrangement_md'     => mai_array_map_recursive( 'esc_html', (array) $args['arrangement_md'] ),
+		'arrangement_sm'     => mai_array_map_recursive( 'esc_html', (array) $args['arrangement_sm'] ),
+		'arrangement_xs'     => mai_array_map_recursive( 'esc_html', (array) $args['arrangement_xs'] ),
+	];
 
-		$cache[ $i ] = [
-			'columns' => $columns,
-		];
+	// Columns fix. Is this needed?
+	// $args['columns'] = $args['columns'] || 0 ===  absint( $args['columns'] ) ? $args['columns'] : 2;
 
-		if ( 'custom' === $cache[ $i ]['columns'] ) {
-			$arrangements = [
-				'lg' => get_field( 'arrangement' ),
-				'md' => get_field( 'arrangement_md' ),
-				'sm' => get_field( 'arrangement_sm' ),
-				'xs' => get_field( 'arrangement_xs' ),
-			];
+	// Get hash from args.
+	$hash = md5( serialize( $args ) );
 
-			foreach ( $arrangements as $break => $arrangement ) {
-				foreach ( $arrangement as $columns ) {
-					if ( isset( $columns['columns'] ) ) {
-						$cache[ $i ]['arrangements'][ $break ][] = $columns['columns'];
-					}
-				}
-			}
+	// Return if already cached.
+	if ( isset( $cache[ $hash ] ) ) {
+		return $cache[ $hash ];
+	}
 
-		} else {
+	if ( 'custom' === $args['columns'] ) {
 
-			$columns = mai_get_breakpoint_columns(
-				[
-					'columns_responsive' => false,
-					'columns'            => $cache[ $i ]['columns'],
-				]
-			);
+		$cache[ $hash ][ 'xs' ] = wp_list_pluck( $args['arrangement_xs'], 'columns' );
+		$cache[ $hash ][ 'sm' ] = wp_list_pluck( $args['arrangement_sm'], 'columns' );
+		$cache[ $hash ][ 'md' ] = wp_list_pluck( $args['arrangement_md'], 'columns' );
+		$cache[ $hash ][ 'lg' ] = wp_list_pluck( $args['arrangement'], 'columns' );
 
-			foreach ( $columns as $break => $column ) {
-				$cache[ $i ]['arrangements'][ $break ] = 0 === $column ? 'auto' : $column;
-			}
+	} else {
+
+		$columns = array_reverse( mai_get_breakpoint_columns( $args ) );
+
+		foreach ( $columns as $break => $column ) {
+			// 0 is Fit for responsive columns.
+			$cache[ $hash ][ $break ] = [ 0 === $column ? 'auto' : $column ];
 		}
 	}
 
-	return $cache;
+	return $cache[ $hash ];
 }
 
 /**

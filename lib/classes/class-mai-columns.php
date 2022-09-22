@@ -16,6 +16,19 @@ defined( 'ABSPATH' ) || die;
  * Class Mai_Columns
  */
 class Mai_Columns {
+	/**
+	 * Hashes.
+	 *
+	 * @var array $hashes
+	 */
+	protected static $hashes = [];
+
+	/**
+	 * Hash.
+	 *
+	 * @var string $hash
+	 */
+	protected $hash;
 
 	/**
 	 * Args.
@@ -23,6 +36,13 @@ class Mai_Columns {
 	 * @var array $args
 	 */
 	protected $args;
+
+	/**
+	 * Parent args.
+	 *
+	 * @var array $arrangement
+	 */
+	public $arrangement;
 
 	/**
 	 * Mai_Columns constructor.
@@ -33,6 +53,11 @@ class Mai_Columns {
 	 */
 	function __construct( $args ) {
 		$this->args = $this->get_sanitized_args( $args );
+
+		if ( $this->args['preview'] ) {
+			$this->arrangement = mai_columns_get_arrangement( $this->args );
+			$this->hash        = md5( serialize( $this->arrangement ) );
+		}
 	}
 
 	/**
@@ -48,6 +73,15 @@ class Mai_Columns {
 		$args = wp_parse_args( $args,
 			[
 				'class'                  => '',
+				'columns'                => 2,
+				'columns_responsive'     => false,
+				'columns_md'             => 2,
+				'columns_sm'             => 1,
+				'columns_xs'             => 1,
+				'arrangement'            => [ '1/2' ],
+				'arrangement_md'         => [ '1/2' ],
+				'arrangement_sm'         => [ '1/2' ],
+				'arrangement_xs'         => [ 'full' ],
 				'column_gap'             => 'xl',
 				'row_gap'                => 'xl',
 				'align'                  => '',
@@ -55,7 +89,6 @@ class Mai_Columns {
 				'align_columns_vertical' => '',
 				'margin_top'             => '',
 				'margin_bottom'          => '',
-				'arrangements'           => [],
 				'preview'                => false,
 			]
 		);
@@ -68,7 +101,6 @@ class Mai_Columns {
 		$args['align_columns_vertical'] = esc_html( $args['align_columns_vertical'] );
 		$args['margin_top']             = sanitize_html_class( $args['margin_top'] );
 		$args['margin_bottom']          = sanitize_html_class( $args['margin_bottom'] );
-		$args['arrangements']           = mai_array_map_recursive( 'esc_html', $args['arrangements'] );
 		$args['preview']                = mai_sanitize_bool( $args['preview'] );
 
 		return $args;
@@ -98,6 +130,11 @@ class Mai_Columns {
 			'class' => 'mai-columns',
 			'style' => '',
 		];
+
+		if ( $this->args['preview'] ) {
+			$html                 .= $this->get_styles();
+			$atts['data-instance'] = $this->hash;
+		}
 
 		if ( $this->args['class'] ) {
 			$atts['class'] = mai_add_classes( $this->args['class'], $atts['class'] );
@@ -160,6 +197,62 @@ class Mai_Columns {
 		 * so this needs to be after rendering the parent.
 		 */
 		$index = mai_column_get_index( true );
+
+		return $html;
+	}
+
+	/**
+	 * Gets inline CSS for editor styles.
+	 * Frustrating to do this, but here we are.
+	 * Using `display: contents;` hides the column toolbar.
+	 *
+	 * @since TBD
+	 *
+	 * @return string
+	 */
+	function get_styles() {
+		// Bail if we've already loaded styles for this arranagment.
+		if ( in_array( $this->hash, $this::$hashes ) ) {
+			return '';
+		}
+
+		// Add hash to hashes.
+		$this::$hashes[] = $this->hash;
+
+		$wrap  = sprintf( '.mai-columns[data-instance="%s"] > .mai-columns-wrap > .acf-innerblocks-container', $this->hash );
+		$media = [
+			'xs' => '@media only screen and (max-width: 599px)',
+			'sm' => '@media only screen and (min-width: 600px) and (max-width: 799px)',
+			'md' => '@media only screen and (min-width: 800px) and (max-width: 999px)',
+			'lg' => '@media only screen and (min-width: 1000px)',
+		];
+
+		$html = '<style>';
+
+		foreach ( $this->arrangement as $break => $arrangement ) {
+			$count = count( $arrangement );
+
+			// Start media query.
+			$html .= $media[ $break ] . ' {';
+				if ( 1 === $count ) {
+					$html .= $wrap . ' > .wp-block {';
+						$html .= mai_columns_get_columns( $break, reset( $arrangement ) );
+						$html .= mai_columns_get_flex( $break, reset( $arrangement ) );
+					$html .= '}';
+				} else {
+					foreach ( $arrangement as $index => $column ) {
+						$html .= sprintf( '%s > .wp-block:nth-child(%sn+%s) {', $wrap, $count, $index + 1 );
+							$html .= mai_columns_get_columns( $break, $column );
+							$html .= mai_columns_get_flex( $break, $column );
+						$html .= '}';
+					}
+				}
+
+			// End media query.
+			$html .= '}';
+		}
+
+		$html .= '</style>';
 
 		return $html;
 	}

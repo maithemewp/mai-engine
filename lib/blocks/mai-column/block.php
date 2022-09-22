@@ -28,3 +28,167 @@ function mai_register_column_block() {
 		]
 	);
 }
+
+/**
+ * Callback function to render the column block.
+ *
+ * @since 2.10.0
+ *
+ * @param array    $attributes The block attributes.
+ * @param string   $content The block content.
+ * @param bool     $is_preview Whether or not the block is being rendered for editing preview.
+ * @param int      $post_id The current post being edited or viewed.
+ * @param WP_Block $wp_block The block instance (since WP 5.5).
+ * @param array    $context The block context array.
+ *
+ * @return void
+ */
+function mai_do_column_block( $attributes, $content = '', $is_preview = false, $post_id = 0, $wp_block, $context ) {
+	$args  = [
+		'preview'               => $is_preview,
+		'class'                 => isset( $attributes['className'] ) ? $attributes['className']: '',
+		'align_column_vertical' => get_field( 'align_column_vertical' ),
+		'spacing'               => get_field( 'spacing' ),
+		'background'            => get_field( 'background' ),
+		'shadow'                => get_field( 'shadow' ),
+		'border'                => get_field( 'border' ),
+		'radius'                => get_field( 'radius' ),
+		'first_xs'              => get_field( 'first_xs' ),
+		'first_sm'              => get_field( 'first_sm' ),
+		'first_md'              => get_field( 'first_md' ),
+		'fields'                => isset( $context['acf/fields'] ) ? $context['acf/fields'] : [],
+	];
+
+	$columns = new Mai_Column( $args );
+	$columns->render();
+}
+
+add_action( 'acf/init', 'mai_register_column_field_group' );
+/**
+ * Register Mai Column block field group.
+ *
+ * @since 2.10.0
+ *
+ * @return void
+ */
+function mai_register_column_field_group() {
+	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+		return;
+	}
+
+	acf_add_local_field_group(
+		[
+			'key'         => 'mai_column_field_group',
+			'title'       => __( 'Mai Column', 'mai-engine' ),
+			'fields'      => [
+				[
+					'key'               => 'mai_column_align_column_vertical',
+					'label'             => __( 'Align Content (vertical)', 'mai-engine' ),
+					'name'              => 'align_column_vertical',
+					'type'              => 'button_group',
+					'choices'           => [
+						'start'            => __( 'Top', 'mai-engine' ),
+						'middle'           => __( 'Middle', 'mai-engine' ),
+						'end'              => __( 'Bottom', 'mai-engine' ),
+					],
+					'default_value'     => 'start',
+					'wrapper'           => [
+						'class'            => 'mai-acf-button-group',
+					],
+				],
+				[
+					'key'       => 'mai_column_spacing',
+					'label'     => __( 'Padding', 'mai-engine' ),
+					'name'      => 'spacing',
+					'type'      => 'select',
+					'choices'   => [
+						''         => __( 'None', 'mai-engine' ),
+						'xs'       => __( 'XS', 'mai-engine' ),
+						'sm'       => __( 'SM', 'mai-engine' ),
+						'md'       => __( 'MD', 'mai-engine' ),
+						'lg'       => __( 'LG', 'mai-engine' ),
+						'xl'       => __( 'XL', 'mai-engine' ),
+						'xxl'      => __( '2XL', 'mai-engine' ),
+						'xxxl'     => __( '3XL', 'mai-engine' ),
+					],
+				],
+				[
+					'key'     => 'mai_column_background',
+					'label'   => __( 'Background Color', 'mai-engine' ),
+					'name'    => 'background',
+					'type'    => 'radio',
+					'choices' => mai_get_radio_color_choices(),
+					'wrapper' => [
+						'class' => 'mai-block-colors',
+					],
+				],
+				[
+					'key'               => 'mai_column_background_custom',
+					'name'              => 'background_custom',
+					'type'              => 'color_picker',
+					'conditional_logic' => [
+						[
+							'field'    => 'mai_column_background',
+							'operator' => '==',
+							'value'    => 'custom',
+						],
+					],
+				],
+				[
+					'key'               => 'mai_columns_shadow',
+					'name'              => 'shadow',
+					'label'             => '',
+					'message'           => esc_html__( 'Add box shadow', 'mai-engine' ),
+					'type'              => 'true_false',
+				],
+				[
+					'key'               => 'mai_columns_border',
+					'name'              => 'border',
+					'label'             => '',
+					'message'           => esc_html__( 'Add border', 'mai-engine' ),
+					'type'              => 'true_false',
+				],
+				[
+					'key'               => 'mai_columns_radius',
+					'name'              => 'radius',
+					'label'             => '',
+					'message'           => esc_html__( 'Add border radius', 'mai-engine' ),
+					'type'              => 'true_false',
+				],
+				[
+					'key'               => 'mai_columns_first_xs',
+					'name'              => 'first_xs',
+					'label'             => '',
+					'message'           => esc_html__( 'Show first on mobile', 'mai-engine' ),
+					'type'              => 'true_false',
+				],
+				[
+					'key'               => 'mai_columns_first_sm',
+					'name'              => 'first_sm',
+					'label'             => '',
+					'message'           => esc_html__( 'Show first on small tablets', 'mai-engine' ),
+					'type'              => 'true_false',
+				],
+				[
+					'key'               => 'mai_columns_first_md',
+					'name'              => 'first_md',
+					'label'             => '',
+					'message'           => esc_html__( 'Show first on large tablets', 'mai-engine' ),
+					'type'              => 'true_false',
+				],
+			],
+			'location'    => [
+				[
+					[
+						'param'    => 'block',
+						'operator' => '==',
+						'value'    => 'acf/mai-column',
+					],
+				],
+			],
+			'active'      => true,
+		]
+	);
+}
+
+

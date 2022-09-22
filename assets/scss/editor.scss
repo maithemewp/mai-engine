@@ -6,7 +6,7 @@
 @import "base/list";
 @import "base/table";
 @import "base/typography";
-@import "layout/columns";
+// @import "layout/columns";
 @import "components/blocks/_index-editor";
 @import "components/entry/_index";
 @import "utilities/_index";
@@ -416,9 +416,85 @@ input[type="submit"],
 
 // Columns.
 
-.has-columns-nested > .acf-innerblocks-container,
+.has-columns:not(.has-columns-nested) {
+	--flex-basis: calc((100% * var(--columns) - (var(--column-gap) * (1 - var(--columns)))) - 0.025px); // Removes 0.025px to prevent margin collapsing.
+	--flex-default: 0 0 var(--flex-basis);
+
+	@include mq(false, sm) {
+		--flex: var(--flex-xs, var(--flex-default));
+		--columns: var(--columns-xs, 1/1);
+		--order: var(--order-xs, unset);
+	}
+
+	@include mq(sm, md) {
+		--flex: var(--flex-sm, var(--flex-default));
+		--columns: var(--columns-sm, 1/1);
+		--order: var(--order-sm, unset);
+	}
+
+	@include mq(md, lg) {
+		--flex: var(--flex-md, var(--flex-default));
+		--columns: var(--columns-md, 1/1);
+		--order: var(--order-md, unset);
+	}
+
+	@include mq(lg) {
+		--flex: var(--flex-lg, var(--flex-default));
+		--columns: var(--columns-lg, 1/1);
+	}
+}
+
+.has-columns:not(.has-columns-nested),
+.has-columns-nested > .acf-innerblocks-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--row-gap) var(--column-gap);
+	align-items: var(--align-columns-vertical, initial); // Needs initial for nested columns.
+	justify-content: var(--align-columns, initial); // Needs initial for nested columns.
+}
+
+// Column.
+
 .has-columns-nested > .acf-innerblocks-container > .wp-block {
-	display: contents;
+	--flex-basis: calc((100% * var(--columns) - (var(--column-gap) * (1 - var(--columns)))) - 0.025px); // Removes 0.025px to prevent margin collapsing.
+	--flex-default: 0 0 var(--flex-basis);
+
+	@include mq(false, sm) {
+		--flex: var(--flex-xs, var(--flex-default));
+		--columns: var(--columns-xs, 1/1);
+		--order: var(--order-xs, unset);
+	}
+
+	@include mq(sm, md) {
+		--flex: var(--flex-sm, var(--flex-default));
+		--columns: var(--columns-sm, 1/1);
+		--order: var(--order-sm, unset);
+	}
+
+	@include mq(md, lg) {
+		--flex: var(--flex-md, var(--flex-default));
+		--columns: var(--columns-md, 1/1);
+		--order: var(--order-md, unset);
+	}
+
+	@include mq(lg) {
+		--flex: var(--flex-lg, var(--flex-default));
+		--columns: var(--columns-lg, 1/1);
+	}
+}
+
+.has-columns:not(.has-columns-nested) > .is-column,
+.has-columns-nested > .acf-innerblocks-container > .wp-block {
+	flex: var(--flex, var(--flex-default));
+	order: var(--order, unset);
+	margin: 0; /* overrides core editor margin on wp-block */
+}
+
+.has-columns-nested > .acf-innerblocks-container > .wp-block > .is-column {
+	display: flex;
+	flex-direction: column;
+	justify-content: var(--justify-content, flex-start);
+	height: 100%;
 }
 
 // Mai Accordion.
