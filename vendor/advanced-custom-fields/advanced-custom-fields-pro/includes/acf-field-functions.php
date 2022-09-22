@@ -745,7 +745,7 @@ function acf_render_field_wrap( $field, $element = 'div', $instruction = 'label'
 	if ( $element !== 'td' ) {
 		echo "<$inner_element class=\"acf-label\">" . "\n";
 			acf_render_field_label( $field );
-		if ( $instruction == 'label' ) {
+		if ( $instruction == 'label' && 'name' !== $field['_name'] ) {
 			acf_render_field_instructions( $field, $field_setting );
 		}
 			echo "</$inner_element>" . "\n";
@@ -756,6 +756,11 @@ function acf_render_field_wrap( $field, $element = 'div', $instruction = 'label'
 		acf_render_field_instructions( $field );
 	}
 		echo "</$inner_element>" . "\n";
+
+	if ( 'name' === $field['_name'] ) {
+		acf_render_field_instructions( $field, $field_setting );
+	}
+
 	if ( $field_setting && $instruction == 'field' ) {
 		acf_render_field_instructions( $field );
 	}

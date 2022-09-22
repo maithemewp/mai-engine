@@ -2183,6 +2183,11 @@ html[dir=rtl] .acf-table > tbody > tr > td.order + td {
   *  ACF label
   *
   *---------------------------------------------------------------------------------------------*/
+  /*---------------------------------------------------------------------------------------------
+  *
+  *  Tooltip for field name field setting (result of a fix for keyboard navigation)
+  *
+  *---------------------------------------------------------------------------------------------*/
 }
 .post-type-acf-field-group input[type=text],
 .post-type-acf-field-group input[type=search],
@@ -2519,6 +2524,16 @@ html[dir=rtl] .acf-table > tbody > tr > td.order + td {
 }
 .post-type-acf-field-group .acf-label label {
   margin-bottom: 0;
+}
+.post-type-acf-field-group .acf-field-setting-name .acf-tip {
+  position: absolute;
+  top: 0;
+  left: 654px;
+  color: #98A2B3;
+}
+.post-type-acf-field-group .acf-field-setting-name .acf-tip .acf-icon-help {
+  width: 18px;
+  height: 18px;
 }
 
 /*---------------------------------------------------------------------------------------------

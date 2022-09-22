@@ -520,10 +520,11 @@ td.acf-input {
 }
 /*---------------------------------------------------------------------------------------------
 *
-*  Subtle background on tab fields to separate them from others
+*  Subtle background on accordion & tab fields to separate them from others
 *
 *---------------------------------------------------------------------------------------------*/
-.post-type-acf-field-group #acf-field-group-fields .acf-field-object-tab {
+.post-type-acf-field-group #acf-field-group-fields .acf-field-object-tab,
+.post-type-acf-field-group #acf-field-group-fields .acf-field-object-accordion {
   background-color: #F9FAFB;
 }
 
@@ -730,6 +731,11 @@ td.acf-input {
   /*---------------------------------------------------------------------------------------------
   *
   *  ACF label
+  *
+  *---------------------------------------------------------------------------------------------*/
+  /*---------------------------------------------------------------------------------------------
+  *
+  *  Tooltip for field name field setting (result of a fix for keyboard navigation)
   *
   *---------------------------------------------------------------------------------------------*/
 }
@@ -1069,6 +1075,16 @@ td.acf-input {
 .post-type-acf-field-group .acf-label label {
   margin-bottom: 0;
 }
+.post-type-acf-field-group .acf-field-setting-name .acf-tip {
+  position: absolute;
+  top: 0;
+  left: 654px;
+  color: #98A2B3;
+}
+.post-type-acf-field-group .acf-field-setting-name .acf-tip .acf-icon-help {
+  width: 18px;
+  height: 18px;
+}
 
 /*---------------------------------------------------------------------------------------------
 *
@@ -1182,6 +1198,17 @@ td.acf-input {
   width: 100%;
   background: #D0D5DD;
   margin-top: -1px;
+}
+.post-type-acf-field-group .acf-field-object.acf-field-is-endpoint.acf-field-object-accordion:before {
+  display: none;
+}
+.post-type-acf-field-group .acf-field-object.acf-field-is-endpoint.acf-field-object-accordion:after {
+  display: block;
+  content: "";
+  height: 2px;
+  width: 100%;
+  background: #D0D5DD;
+  z-index: 500;
 }
 .post-type-acf-field-group .acf-field-object:hover {
   background-color: #f7fbfd;

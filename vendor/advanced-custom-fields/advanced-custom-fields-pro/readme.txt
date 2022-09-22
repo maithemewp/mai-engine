@@ -4,7 +4,7 @@ Tags: acf, fields, custom fields, meta, repeater
 Requires at least: 4.7
 Tested up to: 6.0.2
 Requires PHP: 5.6
-Stable tag: 5.12.3
+Stable tag: 6.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,8 +13,6 @@ Customize WordPress with powerful, professional and intuitive fields. Proudly po
 == Description ==
 
 Advanced Custom Fields turns WordPress sites into a fully-fledged content management system by giving you all the tools to do more with your data.
-
-https://deliciousbrains.wistia.com/medias/md7ea4ep8z
 
 Use the Advanced Custom Fields plugin to take full control of your WordPress edit screens & custom field data.
 
@@ -78,35 +76,16 @@ From your WordPress dashboard
 
 == Changelog ==
 
-= 6.0.0-RC3 = 
-*Release Date 9th September 2022*
+= 6.0.0 =
+*Release Date 21st September 2022*
 
-* Fix - Blocks containing InnerBlocks are now correctly editable when preloaded. This fix required reverting the previous RC1 change which allowed block templates to render other blocks with InnerBlocks - we will re-enable that support in a subsequent release shortly
-* Fix - block.json blocks now default to `apiVersion: 2` which solves issues with duplicated wrapper markup for blocks which didn’t manually define it
-* Fix - Repeaters no longer use pagination in front end forms
-* Fix - Various refinements and fixes of the new UI
-
-= 6.0.0-RC2 =
-*Release Date 5th September 2022*
-
-* Fix - Improved performance of the new UI by significantly reducing CSS size
-* Fix - Repeater Pagination will no longer allow “per page” values less than one
-* Fix - ACF will no longer trigger warnings when third party plugins add sub pages to the ACF menu
-* Fix - ACF Blocks now correctly have `$is_preview` set to true for preloaded blocks
-* Fix - Custom classes on `<InnerBlocks>` attributes now render correctly if that element also contains a template containing another class
-* Fix - New admin button group and select2 styles no longer leak out of the admin screens
-
-= 6.0.0-RC1 =
-*Release Date 24th August 2022*
-
-* New - ACF now has a new refreshed UI with improved UX for editing field groups, including a new tabbed settings layout for fields. Third party ACF extension plugin developers can read more about the optional changes they can make to support the new tabs in [our RC1 announcement post](https://www.advancedcustomfields.com/blog/acf-pro-6-0-rc-1/#new-ui})
-* New - Repeaters now have an optional "Pagination" setting which can be used to control the number of rows displayed at once. More details can be found on our [RC1 announcement post](https://www.advancedcustomfields.com/blog/acf-pro-6-0-rc-1/)
+* New - ACF now has a new refreshed UI with improved UX for editing field groups, including a new tabbed settings layout for fields. Third party ACF extension plugin developers can read more about the optional changes they can make to support the new tabs in [our release announcement post](https://www.advancedcustomfields.com/blog/acf-6-0-released/#new-ui)
+* New - Repeaters now have an optional "Pagination" setting which can be used to control the number of rows displayed at once. More details can be found on our [Repeater field documentation](https://www.advancedcustomfields.com/resources/repeater/#pagination)
 * New - ACF Blocks now have a versioning system allowing developers to opt in to new features
-* New - ACF Blocks now support version 2, enabling block.json support, reduced wrapper markup and significant other new features. Full details and examples of this can be found on our [RC1 announcement post](https://www.advancedcustomfields.com/blog/acf-pro-6-0-rc-1/)
-* New - ACF Blocks no longer use Block IDs saved in the block comment
+* New - ACF Blocks now support version 2, enabling block.json support, reduced wrapper markup and significant other new features. Full details and examples of this can be found in [What's new with ACF Blocks in ACF 6](https://www.advancedcustomfields.com/resources/whats-new-with-acf-blocks-in-acf-6/)
+* New - ACF Blocks no longer use Block IDs saved in the block comment. See [What's new with ACF Blocks in ACF 6](https://www.advancedcustomfields.com/resources/whats-new-with-acf-blocks-in-acf-6/#block-id) for more information.
 * Enhancement - Bulk actions for field groups now include "Activate" and "Deactivate" options
 * Fix - ACF will no longer perform a multisite database upgrade check on every admin load once each upgrade has been performed
-* Fix - ACF Block templates which render other blocks will now have their InnerBlocks rendered correctly
 * Fix - ACF Blocks preloading now works for blocks saved in edit mode
 * Fix - ACF Blocks edit forms now behave correctly if they are not visible when loaded 
 * Fix - ACF Blocks now always fire `render_block_preview` events when a block preview is displayed or redisplayed
