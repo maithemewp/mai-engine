@@ -498,11 +498,20 @@ input[type="submit"],
 }
 
 // Mai Columns
+
+// This is also handled for dark body in admin.scss.
+.has-dark-background {
+	--mai-block-appender-color: var(--color-white);
+}
+
+.has-light-background {
+	--mai-block-appender-color: #1e1e1e;
+}
+
 .mai-column .block-editor-block-list__layout[data-is-drop-zone="true"]:empty {
 	position: relative;
 	width: 100%;
 	height: 36px;
-	background: var(--color-white);
 	box-shadow: inset 0 0 0 1px var(--mai-block-appender-color, #1e1e1e);
 }
 
