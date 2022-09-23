@@ -1,0 +1,16 @@
+{
+  "name": "acf/mai-icon",
+  "title": "Mai Icon",
+  "description": "A custom icon block.",
+  "category": "widgets",
+  "keywords": [ "icon", "font", "awesome" ],
+  "icon": "heart",
+  "textdomain": "mai-engine",
+  "acf": {
+    "mode": "preview",
+    "renderCallback": "mai_do_icon_block"
+  },
+  "supports": {
+    "align": false
+  }
+}

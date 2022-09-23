@@ -1,0 +1,16 @@
+{
+  "name": "acf/mai-term-grid",
+  "title": "Mai Term Grid",
+  "description": "Display categories/tags/terms in various layouts.",
+  "category": "widgets",
+  "keywords": [ "grid", "category", "term" ],
+  "textdomain": "mai-engine",
+  "acf": {
+    "mode": "preview",
+    "renderCallback": "mai_do_term_grid_block"
+  },
+  "supports": {
+    "align": [ "wide", "full" ],
+    "anchor": true
+  }
+}
