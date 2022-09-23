@@ -497,6 +497,36 @@ input[type="submit"],
 	height: 100%;
 }
 
+// Mai Columns
+.mai-column .block-editor-block-list__layout[data-is-drop-zone="true"]:empty {
+	position: relative;
+	width: 100%;
+	height: 36px;
+	background: var(--color-white);
+	box-shadow: inset 0 0 0 1px var(--mai-block-appender-color, #1e1e1e);
+}
+
+// This is only needed if you delete the empty "Type / to choose a block" element from the column.
+.mai-column .block-editor-block-list__layout[data-is-drop-zone="true"]:empty::after {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	color: var(--mai-block-appender-color, #1e1e1e);
+	font-size: 24px;
+	content: "+";
+}
+
+.mai-column .block-editor-block-list__layout[data-is-drop-zone="true"]:empty:hover,
+.mai-column .block-editor-block-list__layout[data-is-drop-zone="true"]:empty:focus {
+	--mai-block-appender-color: var(--wp-admin-theme-color);
+	cursor: pointer;
+}
+
 // Mai Accordion.
 
 .wp-block[data-type="acf/mai-accordion-item"] {
