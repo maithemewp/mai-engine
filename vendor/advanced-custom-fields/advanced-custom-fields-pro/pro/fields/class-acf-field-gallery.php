@@ -226,7 +226,7 @@ if ( ! class_exists( 'acf_field_gallery' ) ) :
 			$r     = array();
 			$order = 'DESC';
 			$args  = acf_parse_args(
-				$_POST,
+				$_POST, // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Verified below.
 				array(
 					'ids'       => 0,
 					'sort'      => 'date',

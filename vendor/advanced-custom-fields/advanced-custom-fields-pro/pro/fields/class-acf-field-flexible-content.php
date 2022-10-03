@@ -279,19 +279,19 @@ if ( ! class_exists( 'acf_field_flexible_content' ) ) :
 
 			?>
 <div <?php echo acf_esc_attrs( $div ); ?>>
-	
+
 			<?php acf_hidden_input( array( 'name' => $field['name'] ) ); ?>
-	
+
 	<div class="no-value-message">
 			<?php echo acf_esc_html( $no_value_message ); ?>
 	</div>
-	
+
 	<div class="clones">
 			<?php foreach ( $layouts as $layout ) : ?>
 				<?php $this->render_layout( $field, $layout, 'acfcloneindex', array() ); ?>
 		<?php endforeach; ?>
 	</div>
-	
+
 	<div class="values">
 			<?php
 			if ( ! empty( $field['value'] ) ) :
@@ -311,11 +311,11 @@ if ( ! class_exists( 'acf_field_flexible_content' ) ) :
 			endif;
 			?>
 	</div>
-	
+
 	<div class="acf-actions">
 		<a class="acf-button button button-primary" href="#" data-name="add-layout"><?php echo acf_esc_html( $field['button_label'] ); ?></a>
 	</div>
-	
+
 	<script type="text-html" class="tmpl-popup"><ul>
 			<?php
 			foreach ( $layouts as $layout ) :
@@ -335,7 +335,7 @@ if ( ! class_exists( 'acf_field_flexible_content' ) ) :
 			?>
 </ul>
 	</script>
-	
+
 </div>
 			<?php
 
@@ -397,7 +397,7 @@ if ( ! class_exists( 'acf_field_flexible_content' ) ) :
 
 			?>
 <div <?php echo acf_esc_attr( $div ); ?>>
-			
+
 			<?php
 			acf_hidden_input(
 				array(
@@ -406,21 +406,21 @@ if ( ! class_exists( 'acf_field_flexible_content' ) ) :
 				)
 			);
 			?>
-	
+
 	<div class="acf-fc-layout-handle" title="<?php _e( 'Drag to reorder', 'acf' ); ?>" data-name="collapse-layout"><?php echo acf_esc_html( $title ); ?></div>
-	
+
 	<div class="acf-fc-layout-controls">
 		<a class="acf-icon -plus small light acf-js-tooltip" href="#" data-name="add-layout" title="<?php _e( 'Add layout', 'acf' ); ?>"></a>
 		<a class="acf-icon -duplicate small light acf-js-tooltip" href="#" data-name="duplicate-layout" title="<?php _e( 'Duplicate layout', 'acf' ); ?>"></a>
 		<a class="acf-icon -minus small light acf-js-tooltip" href="#" data-name="remove-layout" title="<?php _e( 'Remove layout', 'acf' ); ?>"></a>
 		<a class="acf-icon -collapse small -clear acf-js-tooltip" href="#" data-name="collapse-layout" title="<?php _e( 'Click to toggle', 'acf' ); ?>"></a>
 	</div>
-	
+
 			<?php if ( ! empty( $sub_fields ) ) : ?>
-	
+
 				<?php if ( $layout['display'] == 'table' ) : ?>
 	<table class="acf-table">
-		
+
 		<thead>
 			<tr>
 					<?php
@@ -452,20 +452,20 @@ if ( ! class_exists( 'acf_field_flexible_content' ) ) :
 						<?php acf_render_field_label( $sub_field ); ?>
 						<?php acf_render_field_instructions( $sub_field ); ?>
 					</th>
-					<?php endforeach; ?> 
+					<?php endforeach; ?>
 			</tr>
 		</thead>
-		
+
 		<tbody>
 			<tr class="acf-row">
 	<?php else : ?>
-	<div class="acf-fields 
+	<div class="acf-fields
 		<?php
 		if ( $layout['display'] == 'row' ) :
 			?>
 		-left<?php endif; ?>">
 	<?php endif; ?>
-	
+
 					<?php
 
 					// loop though sub fields
@@ -493,7 +493,7 @@ if ( ! class_exists( 'acf_field_flexible_content' ) ) :
 					}
 
 					?>
-			
+
 				<?php if ( $layout['display'] == 'table' ) : ?>
 			</tr>
 		</tbody>
@@ -1412,9 +1412,8 @@ if ( ! class_exists( 'acf_field_flexible_content' ) ) :
 
 		function ajax_layout_title() {
 
-			// options
 			$options = acf_parse_args(
-				$_POST,
+				$_POST, // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Verified elsewhere.
 				array(
 					'post_id'   => 0,
 					'i'         => 0,

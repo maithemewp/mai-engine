@@ -952,12 +952,14 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 				return '';
 			}
 
+			// phpcs:disable WordPress.Security.NonceVerification.Missing -- Verified elsewhere.
 			// ajax_fields
 			if ( isset( $_POST['fields'][ $selector ] ) ) {
 
 				return $this->get_clone_setting_field_choice( $_POST['fields'][ $selector ] );
 
 			}
+			// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 			// field
 			if ( acf_is_field_key( $selector ) ) {

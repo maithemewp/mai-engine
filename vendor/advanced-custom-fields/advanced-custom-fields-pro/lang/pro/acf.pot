@@ -7,7 +7,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: WP Engine <support@advancedcustomfields.com>\n"
-"POT-Creation-Date: 2022-09-20 10:23+0000\n"
+"POT-Creation-Date: 2022-09-29 12:33+0000\n"
 "Report-Msgid-Bugs-To: https://support.advancedcustomfields.com\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -91,7 +91,7 @@ msgstr ""
 msgid "Check Again"
 msgstr ""
 
-#: pro/updates.php:561
+#: pro/updates.php:593
 msgid "<b>ACF Activation Error</b>. Could not connect to activation server"
 msgstr ""
 
@@ -188,19 +188,19 @@ msgstr ""
 msgid "Prefix Field Names"
 msgstr ""
 
-#: pro/fields/class-acf-field-clone.php:999
+#: pro/fields/class-acf-field-clone.php:1001
 msgid "Unknown field"
 msgstr ""
 
-#: pro/fields/class-acf-field-clone.php:1003
+#: pro/fields/class-acf-field-clone.php:1005
 msgid "(no title)"
 msgstr ""
 
-#: pro/fields/class-acf-field-clone.php:1036
+#: pro/fields/class-acf-field-clone.php:1038
 msgid "Unknown field group"
 msgstr ""
 
-#: pro/fields/class-acf-field-clone.php:1040
+#: pro/fields/class-acf-field-clone.php:1042
 msgid "All fields from %s field group"
 msgstr ""
 
@@ -326,17 +326,17 @@ msgstr ""
 msgid "Button Label"
 msgstr ""
 
-#: pro/fields/class-acf-field-flexible-content.php:1699, pro/fields/class-acf-field-repeater.php:919
+#: pro/fields/class-acf-field-flexible-content.php:1698, pro/fields/class-acf-field-repeater.php:919
 msgid "%s must be of type array or null."
 msgstr ""
 
-#: pro/fields/class-acf-field-flexible-content.php:1710
+#: pro/fields/class-acf-field-flexible-content.php:1709
 msgid "%1$s must contain at least %2$s %3$s layout."
 msgid_plural "%1$s must contain at least %2$s %3$s layouts."
 msgstr[0] ""
 msgstr[1] ""
 
-#: pro/fields/class-acf-field-flexible-content.php:1726
+#: pro/fields/class-acf-field-flexible-content.php:1725
 msgid "%1$s must contain at most %2$s %3$s layout."
 msgid_plural "%1$s must contain at most %2$s %3$s layouts."
 msgstr[0] ""

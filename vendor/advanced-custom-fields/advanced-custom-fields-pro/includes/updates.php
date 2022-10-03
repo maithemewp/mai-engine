@@ -368,7 +368,7 @@ if ( ! class_exists( 'ACF_Updates' ) ) :
 			}
 
 			// force-check (only once)
-			$force_check = ( $this->checked == 0 ) ? ! empty( $_GET['force-check'] ) : false;
+			$force_check = ( $this->checked == 0 ) ? ! empty( $_GET['force-check'] ) : false; // phpcs:ignore -- False positive, value not used.
 
 			// fetch updates (this filter is called multiple times during a single page load)
 			$updates = $this->get_plugin_updates( $force_check );

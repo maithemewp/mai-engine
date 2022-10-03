@@ -333,7 +333,7 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 				}
 
 				if ( doing_action( 'wp_ajax_acf/ajax/query_repeater' ) ) {
-					$offset = ( intval( $_POST['paged'] ) - 1 ) * $rows_per_page;
+					$offset = ( intval( $_POST['paged'] ) - 1 ) * $rows_per_page; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Verified elsewhere.
 					$value  = min( $value, $offset + $rows_per_page );
 				} else {
 					$value = min( $value, $rows_per_page );
@@ -607,7 +607,7 @@ if ( ! class_exists( 'acf_field_repeater' ) ) :
 			$new_value = 0;
 			$old_value = (int) acf_get_metadata( $post_id, $field['name'] );
 
-			if ( ! empty( $field['pagination'] ) && did_action( 'acf/save_post' ) && ! isset( $_POST['_acf_form'] ) ) {
+			if ( ! empty( $field['pagination'] ) && did_action( 'acf/save_post' ) && ! isset( $_POST['_acf_form'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Value not used.
 				$old_rows       = acf_get_value( $post_id, $field );
 				$old_rows       = is_array( $old_rows ) ? $old_rows : array();
 				$edited_rows    = array();

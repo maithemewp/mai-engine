@@ -7,7 +7,7 @@ $button   = $active ? __( 'Deactivate License', 'acf' ) : __( 'Activate License'
 $readonly = $active ? 1 : 0;
 
 ?>
-<div class="wrap acf-settings-wrap">
+<div class="wrap acf-settings-wrap acf-updates">
 
 	<h1><?php _e( 'Updates', 'acf' ); ?></h1>
 
