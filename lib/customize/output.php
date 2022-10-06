@@ -558,3 +558,59 @@ function mai_add_page_header_content_type_css( $css ) {
 
 	return $css;
 }
+
+add_filter( 'after_setup_theme', 'mai_add_classic_editor_styles' );
+/**
+ * Adds Kirki styles to classic editor.
+ * This also works for ACF WYSIWYG fields.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_add_classic_editor_styles() {
+	add_editor_style( admin_url( 'admin-ajax.php' ) . '?action=mai_classic_editor_styles' ); // Default styles from Kirki. Mostly for WYSIWYG.
+}
+
+/**
+ * Generates a virtual file for Kirki WP Editor styles.
+ *
+ * @link https://github.com/kirki-framework/kirki/issues/1065
+ * @link http://wordpress.stackexchange.com/a/226623/2807
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+add_action( 'wp_ajax_nopriv_mai_classic_editor_styles', 'mai_do_classic_editor_styles' );
+add_action( 'wp_ajax_mai_classic_editor_styles',        'mai_do_classic_editor_styles' );
+function mai_do_classic_editor_styles() {
+	$css      = '';
+	$contents = get_transient( 'kirki_remote_url_contents' ); // This is rebuilt in Kirki's `Downloader` class `get_cached_url_contents()` method.
+
+	if ( $contents ) {
+		foreach ( $contents as $font_css ) {
+			// Strip comments.
+			$font_css = str_replace( '/*', '_COMSTART', $font_css );
+			$font_css = str_replace( '*/', 'COMEND_', $font_css );
+			$font_css = preg_replace( '/_COMSTART.*?COMEND_/s', '', $font_css );
+
+			// Add font CSS.
+			$css .= $font_css;
+		}
+	}
+
+	if ( class_exists( 'Kirki\Module\CSS' ) ) {
+		ob_start();
+		$module = new \Kirki\Module\CSS();
+		$module->print_styles_inline();
+		$dynamic = ob_get_clean();
+		$css    .= strip_tags( $dynamic );
+	}
+
+	if ( $css ) {
+		header( 'Content-Type: text/css; charset=UTF-8' );
+		echo $css;
+	}
+	exit;
+}
