@@ -105,6 +105,7 @@ function mai_get_grid_display_defaults() {
 		'boxed'               => 1,
 		'border_radius'       => '',
 		'disable_entry_link'  => 0,
+		'no_results'          => '',
 	];
 
 	return $defaults;
@@ -838,7 +839,7 @@ function mai_get_grid_display_fields() {
 				],
 			],
 		],
-		// This is added in Entries tab but it's cleaner to keep it here
+		// These is added in Entries tab but it's cleaner to keep it here
 		// since entries is separate files for post/term grid.
 		[
 			'key'           => 'mai_grid_block_disable_entry_link',
@@ -847,6 +848,14 @@ function mai_get_grid_display_fields() {
 			'type'          => 'true_false',
 			'default_value' => $defaults['disable_entry_link'],
 			'message'       => esc_html__( 'Disable entry links', 'mai-engine' ),
+		],
+		[
+			'key'           => 'mai_grid_block_no_results',
+			'name'          => 'no_results',
+			'label'         => esc_html__( 'No results text', 'mai-engine' ),
+			'type'          => 'textarea',
+			'default_value' => $defaults['no_results'],
+			'rows'          => 2,
 		],
 	];
 

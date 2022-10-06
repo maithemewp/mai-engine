@@ -160,10 +160,12 @@ class Mai_Grid {
 		$this->query = $this->get_query();
 
 		if ( 'post' === $this->type && ( ! $this->query || ! $this->query->have_posts() ) ) {
+			echo mai_get_processed_content( $this->args['no_results'] );
 			return;
 		}
 
 		if ( 'term' === $this->type && ( ! $this->query || ! $this->query->terms ) ) {
+			echo mai_get_processed_content( $this->args['no_results'] );
 			return;
 		}
 
