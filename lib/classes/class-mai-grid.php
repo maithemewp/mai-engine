@@ -158,14 +158,33 @@ class Mai_Grid {
 		}
 
 		$this->query = $this->get_query();
+		$no_results  = false;
 
 		if ( 'post' === $this->type && ( ! $this->query || ! $this->query->have_posts() ) ) {
-			echo mai_get_processed_content( $this->args['no_results'] );
-			return;
+			$no_results = true;
 		}
 
 		if ( 'term' === $this->type && ( ! $this->query || ! $this->query->terms ) ) {
-			echo mai_get_processed_content( $this->args['no_results'] );
+			$no_results = true;
+		}
+
+		// No resuilts.
+		if ( $no_results ) {
+			if ( ! $this->args['no_results'] ) {
+				return;
+			}
+
+			$class = 'mai-grid-no-results';
+
+			if ( isset( $this->args['margin_top'] ) && $this->args['margin_top'] ) {
+				$class = mai_add_classes( sprintf( 'has-%s-margin-top', $this->args['margin_top'] ), $class );
+			}
+
+			if ( isset( $this->args['margin_bottom'] ) && $this->args['margin_bottom'] ) {
+				$class = mai_add_classes( sprintf( 'has-%s-margin-bottom', $this->args['margin_bottom'] ), $class );
+			}
+
+			printf( '<div class="%s">%s</div>', $class, mai_get_processed_content( $this->args['no_results'] ) );
 			return;
 		}
 
