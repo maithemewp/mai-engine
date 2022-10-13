@@ -178,22 +178,27 @@ function mai_get_columns_atts( $atts, $args, $nested = false ) {
  *
  * @since TBD
  *
- * @param bool $reset Whether to reset the index.
+ * @param string $hash  The parent hash.
+ * @param bool   $reset Whether to reset the index.
  *
  * @return int
  */
-function mai_column_get_index( $reset = false ) {
-	static $index = 0;
+function mai_column_get_index( $hash, $reset = false ) {
+	static $indexes = [];
 
-	if ( $reset ) {
-		$index = 0;
-		return $index;
+	if ( isset( $indexes[ $hash ] ) ) {
+		if ( $reset ) {
+			$indexes[ $hash ] = 0;
+		} else {
+			$indexes[ $hash ]++;
+		}
+
+		return $indexes[ $hash ];
 	}
 
-	$return = $index;
-	$index++;
+	$indexes[ $hash ] = 0;
 
-	return $return;
+	return $indexes[ $hash ];
 }
 
 /**

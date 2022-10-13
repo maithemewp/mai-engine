@@ -31,6 +31,13 @@ class Mai_Column {
 	public $args;
 
 	/**
+	 * Hash.
+	 *
+	 * @var string $hash
+	 */
+	public $hash;
+
+	/**
 	 * Parent args.
 	 *
 	 * @var array $parent
@@ -58,7 +65,8 @@ class Mai_Column {
 		$this->args  = $this->get_sanitized_args( $args );
 
 		if ( ! $this->args['preview'] ) {
-			$this->index       = mai_column_get_index();
+			$this->hash        = $this->get_hash();
+			$this->index       = mai_column_get_index( $this->hash );
 			$this->parent      = $this->get_parent_args();
 			$this->arrangement = mai_columns_get_arrangement( $this->parent );
 		}
@@ -192,6 +200,19 @@ class Mai_Column {
 	}
 
 	/**
+	 * Gets hash from args.
+	 * These will be identical for all columns within the same parent,
+	 * and possibly other instances with the same settings.
+	 *
+	 * @since TBD
+	 *
+	 * @return string
+	 */
+	function get_hash() {
+		return md5( serialize( $this->args['fields'] ) );
+	}
+
+	/**
 	 * Gets parsed args with only the keys we want.
 	 *
 	 * @since TBD
@@ -201,16 +222,9 @@ class Mai_Column {
 	function get_parent_args() {
 		static $cache = [];
 
-		/**
-		 * Get hash from args.
-		 * These will be identical for all columns within the same parent,
-		 * and possibly other instances with the same settings.
-		 */
-		$hash = md5( serialize( $this->args['fields'] ) );
-
 		// Return if already cached.
-		if ( isset( $cache[ $hash ] ) ) {
-			return $cache[ $hash ];
+		if ( isset( $cache[ $this->hash ] ) ) {
+			return $cache[ $this->hash ];
 		}
 
 		$args     = [];
@@ -235,10 +249,10 @@ class Mai_Column {
 			 */
 			$this->args['fields'] = acf_setup_meta( $this->args['fields'], 'block_context' );
 			$repeaters            = [
-				'arrangement'    => '1/2',
 				'arrangement_xs' => 'full',
 				'arrangement_md' => '1/2',
 				'arrangement_sm' => '1/2',
+				'arrangement'    => '1/2',
 			];
 
 			foreach ( $repeaters as $name => $default ) {
@@ -267,9 +281,9 @@ class Mai_Column {
 		}
 
 		// Store in cache.
-		$cache[ $hash ] = $args;
+		$cache[ $this->hash ] = $args;
 
-		return $cache[ $hash ];
+		return $cache[ $this->hash ];
 	}
 
 	/**

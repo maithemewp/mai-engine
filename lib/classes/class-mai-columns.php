@@ -196,7 +196,7 @@ class Mai_Columns {
 		 * Nested blocks are parsed before the parent,
 		 * so this needs to be after rendering the parent.
 		 */
-		$index = mai_column_get_index( true );
+		$index = mai_column_get_index( $this->hash, true );
 
 		return $html;
 	}
