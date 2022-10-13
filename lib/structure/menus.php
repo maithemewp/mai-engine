@@ -232,7 +232,6 @@ function mai_nav_menu_icons( $classes, $item, $args, $depth ) {
 add_filter( 'nav_menu_link_attributes', 'mai_nav_link_atts' );
 /**
  * Pass nav menu link attributes through attribute parser.
- *
  * Adds nav menu link attributes via the Genesis markup API.
  *
  * @since 0.1.0
@@ -243,7 +242,7 @@ add_filter( 'nav_menu_link_attributes', 'mai_nav_link_atts' );
  */
 function mai_nav_link_atts( $atts ) {
 	$atts['class'] .= ' menu-item-link';
-	$atts['class'] .= $atts['aria-current'] ? ' menu-item-link-current' : '';
+	$atts['class'] .= isset( $atts['aria-current'] ) && $atts['aria-current'] ? ' menu-item-link-current' : '';
 	$atts['class']  = trim( $atts['class'] );
 
 	return $atts;
