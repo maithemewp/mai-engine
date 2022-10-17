@@ -306,8 +306,8 @@ function mai_plugin_update_checker() {
 	);
 
 	// Get the branch. If checking for beta releases.
-	$branch = function_exists( 'genesis_get_option' ) && genesis_get_option( 'mai_tester' );
-	$branch = $branch ? 'beta' : 'master';
+	$options = get_option( 'genesis-settings' ); // Too early to use `genesis_get_option()`.
+	$branch  = isset( $options['mai_tester'] ) && $options['mai_tester'] ? 'beta' : 'master';
 
 	// Allow branch and updater object manipulation.
 	$branch = apply_filters( 'mai_updater_branch', $branch );
