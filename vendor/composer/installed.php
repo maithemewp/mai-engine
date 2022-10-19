@@ -5,14 +5,14 @@
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'c564e03a1e0c8a76e5fd7326d2601ae9d788bfef',
+        'reference' => '6f5d21a129122da106157d3acbb1738150400d13',
         'name' => 'maithemewp/mai-engine',
         'dev' => false,
     ),
     'versions' => array(
         'advanced-custom-fields/advanced-custom-fields-pro' => array(
-            'pretty_version' => '6.0.2',
-            'version' => '6.0.2.0',
+            'pretty_version' => '6.0.3',
+            'version' => '6.0.3.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../advanced-custom-fields/advanced-custom-fields-pro',
             'aliases' => array(),
@@ -349,7 +349,7 @@
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'c564e03a1e0c8a76e5fd7326d2601ae9d788bfef',
+            'reference' => '6f5d21a129122da106157d3acbb1738150400d13',
             'dev_requirement' => false,
         ),
         'phpoption/phpoption' => array(
@@ -410,12 +410,12 @@
             'dev_requirement' => false,
         ),
         'vlucas/phpdotenv' => array(
-            'pretty_version' => 'v5.4.1',
-            'version' => '5.4.1.0',
+            'pretty_version' => 'v5.5.0',
+            'version' => '5.5.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../vlucas/phpdotenv',
             'aliases' => array(),
-            'reference' => '264dce589e7ce37a7ba99cb901eed8249fbec92f',
+            'reference' => '1a7ea2afc49c3ee6d87061f5a233e3a035d0eae7',
             'dev_requirement' => false,
         ),
         'yahnis-elsts/plugin-update-checker' => array(
