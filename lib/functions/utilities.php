@@ -1266,8 +1266,8 @@ function mai_get_date( $args ) {
 		'updated'         => true,      // Show updated date.
 		'updated_min'     => '60 days', // Only show updated date if this long after published date.
 		'updated_only'    => false,     // Hides the published date if updated date is showing.
-		// 'relative'     => false,     // TODO: "Days/weeks ago"
-		// 'relative_min' => '6 weeks', // TODO: Only show relative date if it's within this time after published/updated date.
+		'relative'        => false,     // Shows as "minutes/days/weeks ago".
+		'relative_max'    => '2 days',  // Only show relative date if it's within this time after published/updated date.
 	];
 
 	// A lot of code to conditionally add parenthesis around (Updated: {date}) as the default. :)
@@ -1289,19 +1289,43 @@ function mai_get_date( $args ) {
 	$args['updated_format'] = $args['updated_format'] ? esc_html( $args['updated_format'] ) : $args['format'];
 	$args['published']      = mai_sanitize_bool( $args['published'] );
 	$args['updated']        = mai_sanitize_bool( $args['updated'] );
-	$args['updated_min']    = esc_html( $args['updated_min'] );
+	$args['updated_min']    = trim( ltrim( esc_html( $args['updated_min'] ) ) );
 	$args['updated_only']   = mai_sanitize_bool( $args['updated_only'] );
+	$args['relative']       = mai_sanitize_bool( $args['relative'] );
+	$args['relative_max']   = trim( ltrim( mai_sanitize_bool( $args['relative_max'] ) ) );
+
+	// Get times for comparison.
+	$current_time   = current_time( 'timestamp' );
+	$published_time = get_the_time( 'U' );
+	$modified_time  = get_the_modified_time( 'U' );
 
 	// Updated. If not showing published date or the modified date is newer than published date by the value set.
-	$updated = $args['updated'] && ( ! $args['published'] || get_the_modified_date( 'U' ) > strtotime( '+' . ltrim( $args['updated_min'], '+' ), get_the_time( 'U' ) ) );
+	$show_updated = $args['updated'] && ( ! $args['published'] || $modified_time > strtotime( '+' . $args['updated_min'], $published_time ) );
 
-	// Published.
-	if ( $args['published'] && ! ( $updated && $args['updated_only'] ) ) {
-		$html .= sprintf( '<time %s>%s%s%s</time>', genesis_attr( 'entry-time' ), $args['before'], get_the_time( $args['format'] ), $args['after'] );
+	// Published. If showing published and not only showing updated date.
+	if ( $args['published'] && ! ( $show_updated && $args['updated_only'] ) ) {
+		// If showing relative and it's within the max time to show it.
+		if ( $args['relative'] && $current_time >= strtotime( '+' . $args['relative_max'], $published_time ) ) {
+			$published  = human_time_diff( $published_time, $current_time );
+			$published .= ' ' . __( 'ago', 'mai-engine' );
+		} else {
+			$published = get_the_time( $args['format'] );
+		}
+
+		$html .= sprintf( '<time %s>%s%s%s</time>', genesis_attr( 'entry-time' ), $args['before'], $published, $args['after'] );
 	}
 
-	if ( $updated ) {
-		$html .= sprintf( '<time %s>%s%s%s</time>', genesis_attr( 'entry-modified-time' ), $args['before_updated'], get_the_modified_time( $args['updated_format'] ), $args['after_updated'] );
+	// Updated.
+	if ( $show_updated ) {
+		// If showing relative and it's within the max time to show it.
+		if ( $args['relative'] && $current_time >= strtotime( '+' . $args['relative_max'], $modified_time ) ) {
+			$modified  = human_time_diff( $modified_time, $current_time );
+			$modified .= ' ' . __( 'ago', 'mai-engine' );
+		} else {
+			$modified = get_the_modified_time( $args['updated_format'] );
+		}
+
+		$html .= sprintf( '<time %s>%s%s%s</time>', genesis_attr( 'entry-modified-time' ), $args['before_updated'], $modified, $args['after_updated'] );
 	}
 
 	return $html;
