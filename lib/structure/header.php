@@ -369,7 +369,7 @@ function mai_custom_scroll_logo( $html, $blog_id ) {
  * Makes sure custom logo uses same attributes as scroll logo.
  * This also makes sure the scrset and sizes attributes match for preloading.
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @param array $attr      Custom logo image attributes.
  * @param int   $image_id  Custom logo attachment ID.

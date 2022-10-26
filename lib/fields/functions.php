@@ -37,7 +37,7 @@ function mai_get_acf_request( $request ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @param string $field_name The ACF field name.
  * @param array  $fields     The field data from `$context['acf/fields']`.

@@ -51,7 +51,7 @@ function mai_image_srcset_order( $sources, $size_array, $image_src, $image_meta,
 /**
  * Gets logo markup.
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @return string
  */
@@ -70,7 +70,7 @@ function mai_get_logo() {
 /**
  * Gets scroll logo markup.
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @return string
  */
@@ -97,7 +97,7 @@ function mai_get_scroll_logo() {
 /**
  * Gets logo ID.
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @return int
  */
@@ -109,7 +109,7 @@ function mai_get_logo_id() {
  * Gets scroll logo ID.
  * Prior to 2.24.1 the logo was saved as a url. This makes sure an ID is always returned.
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @return int
  */
@@ -140,7 +140,7 @@ function mai_get_scroll_logo_id() {
 /**
  * Gets term featured image ID.
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @param int|WP_Term
  *
@@ -173,7 +173,7 @@ function mai_get_term_image_id( $term ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @param array $attr The existing attributes.
  *

@@ -564,7 +564,7 @@ add_filter( 'after_setup_theme', 'mai_add_classic_editor_styles' );
  * Adds Kirki styles to classic editor.
  * This also works for ACF WYSIWYG fields.
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @return void
  */
@@ -578,7 +578,7 @@ function mai_add_classic_editor_styles() {
  * @link https://github.com/kirki-framework/kirki/issues/1065
  * @link http://wordpress.stackexchange.com/a/226623/2807
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @return void
  */

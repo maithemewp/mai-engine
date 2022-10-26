@@ -17,7 +17,7 @@ add_action( 'acf/init', 'mai_register_column_block' );
  * Registers the columns blocks.
  *
  * @since 2.10.0
- * @since TBD Converted to block.json via `register_block_type()`.
+ * @since 2.25.0 Converted to block.json via `register_block_type()`.
  *
  * @return void
  */

@@ -17,7 +17,7 @@ add_action( 'acf/init', 'mai_register_icon_block' );
  * Register Mai Icon block.
  *
  * @since 0.1.0
- * @since TBD Converted to block.json via `register_block_type()`.
+ * @since 2.25.0 Converted to block.json via `register_block_type()`.
  *
  * @return void
  */

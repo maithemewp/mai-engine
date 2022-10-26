@@ -582,7 +582,7 @@ function mai_get_kirki_google_fonts() {
  * Checks our chosen fonts from The Customizer
  * to make sure they match up.
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @param string $css The CSS to parse.
  *

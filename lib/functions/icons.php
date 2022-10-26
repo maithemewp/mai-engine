@@ -162,7 +162,7 @@ function mai_get_icon( $args ) {
  *
  * @since 0.1.0
  * @since 2.11.0 Added filter.
- * @since TBD Added static caching.
+ * @since 2.25.0 Added static caching.
  *
  * @return array
  */

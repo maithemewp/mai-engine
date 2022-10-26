@@ -21,7 +21,7 @@ add_action( 'wp_head', 'mai_add_taxonomy_opengraph_image' );
 /**
  * Adds term featured image as Open Graph meta tags.
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @return void
  */

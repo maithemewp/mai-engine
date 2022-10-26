@@ -156,7 +156,7 @@ function mai_get_columns_atts( $atts, $args, $nested = false ) {
  * This determines which column/item is currently
  * being rendered inside the parent.
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @param string $hash  The parent hash.
  * @param bool   $reset Whether to reset the index.
@@ -184,7 +184,7 @@ function mai_column_get_index( $hash, $reset = false ) {
 /**
  * Gets columns arrangement whether it's custom, responsive, or default.
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @param array $args The columns settings args.
  *

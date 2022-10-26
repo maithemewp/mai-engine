@@ -170,7 +170,7 @@ function mai_back_to_top_anchor( $attr ) {
 add_filter( 'genesis_attr_content-sidebar-wrap', 'mai_content_sidebar_wrap_dark_background_class' );
 /**
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @param array $attr Current attributes.
  *
@@ -193,7 +193,7 @@ function mai_content_sidebar_wrap_dark_background_class( $attr ) {
 add_filter( 'genesis_attr_site-footer', 'mai_site_footer_dark_background_class' );
 /**
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @param array $attr Current attributes.
  *

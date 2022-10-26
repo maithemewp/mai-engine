@@ -120,7 +120,7 @@ class Mai_Columns {
 	/**
 	 * Gets the columns.
 	 *
-	 * @since TBD
+	 * @since 2.25.0
 	 *
 	 * @return string
 	 */
@@ -206,7 +206,7 @@ class Mai_Columns {
 	 * Frustrating to do this, but here we are.
 	 * Using `display: contents;` hides the column toolbar.
 	 *
-	 * @since TBD
+	 * @since 2.25.0
 	 *
 	 * @return string
 	 */

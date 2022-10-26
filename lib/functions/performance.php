@@ -177,7 +177,7 @@ add_action( 'wp_head',    'mai_preload_fonts', 2 );
 /**
  * Adds preload links early in the head for Google fonts from Kirki.
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @return void
  */
@@ -216,7 +216,7 @@ add_action( 'wp_head', 'mai_preload_logo', 2 );
  *
  * @link https://www.stefanjudis.com/today-i-learned/how-to-preload-responsive-images-with-imagesizes-and-imagesrcset/
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @return void
  */
@@ -394,7 +394,7 @@ function mai_get_preload_image_link( $image_id, $image_size ) {
  * Gets default performance setting.
  * Falls back to true if key is not available.
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @param string $setting The setting to check.
  *

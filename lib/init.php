@@ -568,7 +568,7 @@ function mai_load_files() {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @return bool
  */
@@ -603,7 +603,7 @@ function mai_needs_mai_acf_pro() {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @return bool
  */

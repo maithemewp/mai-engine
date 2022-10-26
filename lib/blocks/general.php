@@ -17,7 +17,7 @@ add_filter( 'acf/register_block_type_args', 'mai_acf_register_block_type_args' )
  * Makes sure all mai blocks are using the v2 API.
  * This insures blocks registered via Mai plugins use the current API.
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @param array $args The block args.
  *
@@ -36,7 +36,7 @@ add_filter( 'acf/blocks/wrap_frontend_innerblocks', 'mai_acf_remove_wrap_fronten
  * Removes innerblocks wrap from ACF.
  * This allows us to update Mai blocks from other plugins to the v2 API from here.
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @param bool   $wrap Whether to include the wrapping element on the front end.
  * @param string $name The registered block name.

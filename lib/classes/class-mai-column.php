@@ -204,7 +204,7 @@ class Mai_Column {
 	 * These will be identical for all columns within the same parent,
 	 * and possibly other instances with the same settings.
 	 *
-	 * @since TBD
+	 * @since 2.25.0
 	 *
 	 * @return string
 	 */
@@ -215,7 +215,7 @@ class Mai_Column {
 	/**
 	 * Gets parsed args with only the keys we want.
 	 *
-	 * @since TBD
+	 * @since 2.25.0
 	 *
 	 * @return void
 	 */

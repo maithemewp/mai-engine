@@ -172,7 +172,7 @@ function mai_is_login_page() {
 /**
  * Checks if body has a dark background.
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @return bool
  */
@@ -193,7 +193,7 @@ function mai_has_dark_body() {
 /**
  * Checks if body has a dark background.
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @return bool
  */

@@ -1936,7 +1936,7 @@ function mai_string_ends_width( $haystack, $needle ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @param int   $index   The current item index to get the value for.
  * @param array $array   The array to get index value from.
@@ -1963,7 +1963,7 @@ function mai_get_index_value_from_array( $index, $array, $default = null ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.25.0
  *
  * @link https://wpcentral.io/internationalization/
  *
