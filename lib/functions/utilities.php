@@ -1267,7 +1267,7 @@ function mai_get_date( $args ) {
 		'updated_min'     => '60 days', // Only show updated date if this long after published date.
 		'updated_only'    => false,     // Hides the published date if updated date is showing.
 		'relative'        => false,     // Shows as "minutes/days/weeks ago".
-		'relative_max'    => '2 days',  // Only show relative date if it's within this time after published/updated date.
+		'relative_max'    => '7 days',  // Only show relative date if it's within this time after published/updated date.
 	];
 
 	// A lot of code to conditionally add parenthesis around (Updated: {date}) as the default. :)
@@ -1292,7 +1292,7 @@ function mai_get_date( $args ) {
 	$args['updated_min']    = trim( ltrim( esc_html( $args['updated_min'] ) ) );
 	$args['updated_only']   = mai_sanitize_bool( $args['updated_only'] );
 	$args['relative']       = mai_sanitize_bool( $args['relative'] );
-	$args['relative_max']   = trim( ltrim( mai_sanitize_bool( $args['relative_max'] ) ) );
+	$args['relative_max']   = trim( ltrim( esc_html( $args['relative_max'] ), '+' ) );
 
 	// Get times for comparison.
 	$current_time   = current_time( 'timestamp' );
@@ -1305,7 +1305,7 @@ function mai_get_date( $args ) {
 	// Published. If showing published and not only showing updated date.
 	if ( $args['published'] && ! ( $show_updated && $args['updated_only'] ) ) {
 		// If showing relative and it's within the max time to show it.
-		if ( $args['relative'] && $current_time >= strtotime( '+' . $args['relative_max'], $published_time ) ) {
+		if ( $args['relative'] && $current_time <= strtotime( '+' . $args['relative_max'], $published_time ) ) {
 			$published  = human_time_diff( $published_time, $current_time );
 			$published .= ' ' . __( 'ago', 'mai-engine' );
 		} else {
@@ -1318,7 +1318,7 @@ function mai_get_date( $args ) {
 	// Updated.
 	if ( $show_updated ) {
 		// If showing relative and it's within the max time to show it.
-		if ( $args['relative'] && $current_time >= strtotime( '+' . $args['relative_max'], $modified_time ) ) {
+		if ( $args['relative'] && $current_time <= strtotime( '+' . $args['relative_max'], $modified_time ) ) {
 			$modified  = human_time_diff( $modified_time, $current_time );
 			$modified .= ' ' . __( 'ago', 'mai-engine' );
 		} else {
