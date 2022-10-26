@@ -453,9 +453,10 @@ input[type="submit"],
 	justify-content: var(--align-columns, initial); // Needs initial for nested columns.
 }
 
-// Column.
+// Column & Mai Column.
 
-.has-columns-nested > .acf-innerblocks-container > .wp-block {
+.has-columns-nested:not(.mai-columns),
+.mai-columns > .mai-columns-wrap > .acf-innerblocks-container > .wp-block {
 	--flex-basis: calc((100% * var(--columns) - (var(--column-gap) * (1 - var(--columns)))) - 0.025px); // Removes 0.025px to prevent margin collapsing.
 	--flex-default: 0 0 var(--flex-basis);
 
@@ -483,6 +484,8 @@ input[type="submit"],
 	}
 }
 
+//  Column.
+
 .has-columns:not(.has-columns-nested) > .is-column,
 .has-columns-nested > .acf-innerblocks-container > .wp-block {
 	flex: var(--flex, var(--flex-default));
@@ -491,13 +494,16 @@ input[type="submit"],
 }
 
 .has-columns-nested > .acf-innerblocks-container > .wp-block > .is-column {
-	display: flex;
-	flex-direction: column;
-	justify-content: var(--justify-content, flex-start);
 	height: 100%;
 }
 
 // Mai Columns
+
+.mai-columns > .mai-columns-wrap > .acf-innerblocks-container > .wp-block > .mai-columns {
+	display: flex;
+	flex-direction: column;
+	justify-content: var(--justify-content, flex-start);
+}
 
 // This is also handled for dark body in admin.scss.
 .has-dark-background {
