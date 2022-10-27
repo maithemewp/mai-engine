@@ -1,8 +1,8 @@
 # Changelog
 
-## 2.25.0 ()
+## 2.25.0 (10/27/22)
 * Added: New `relative` and `relative_max` attributes for `[mai_date]` shortcode. Allows you to show "2 days ago" as the date for a limited amount of time after publishing.
-* Added: Mai Post/Term Grid blocks have a new setting to add text when there are no entry results.
+* Added: New setting in Mai Post/Term Grid blocks to add text when there are no entry results.
 * Added: [Performance] New setting in Customizer > Theme Settings > Performance to preload the main heading and body font files when Google fonts are the chosen font families. This setting defaults to on.
 * Added: Using a dark body background color is much more usable on the front end and in the editor.
 * Added: [SEO] Category/Tag/Term featured image is now used as Open Graph image.
