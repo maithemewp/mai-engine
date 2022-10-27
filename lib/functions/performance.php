@@ -228,9 +228,9 @@ function mai_preload_logo() {
 	$break   = mai_get_mobile_menu_breakpoint();
 	$widths  = mai_get_option( 'logo-width', [] );
 	$desktop = isset( $widths['desktop'] ) ? $widths['desktop'] : 0;
-	$desktop = max( $widths['desktop'], 1 );
+	$desktop = max( $desktop, 1 );
 	$mobile  = isset( $widths['mobile'] ) ? $widths['mobile'] : 0;
-	$mobile  = max( $widths['mobile'], 1 );
+	$mobile  = max( $mobile, 1 );
 	$images  = [
 		mai_get_logo(),
 		mai_get_scroll_logo(),
