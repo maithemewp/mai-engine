@@ -182,8 +182,10 @@ function mai_get_term_image_id( $term ) {
 function mai_add_logo_attributes( $attr ) {
 	$break     = mai_get_mobile_menu_breakpoint();
 	$widths    = mai_get_option( 'logo-width', [] );
-	$desktop   = max( $widths['desktop'], 1 );
-	$mobile    = max( $widths['mobile'], 1 );
+	$desktop   = isset( $widths['desktop'] ) ? $widths['desktop'] : 0;
+	$desktop   = max( $desktop, 1 );
+	$mobile    = isset( $widths['mobile'] ) ? $widths['mobile'] : 0;
+	$mobile    = max( $mobile, 1 );
 	$overrides = [
 		'loading' => 'eager',
 		'sizes'   => sprintf( '(min-width: %s) %s, %s', $break, mai_get_unit_value( $desktop ), mai_get_unit_value( $mobile ) ),
