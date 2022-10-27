@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.25.1 (10/27/22)
+* Fixed: Blocks with margin overlap should now correctly show on top of sibling elements in the editor.
+* Fixed: Error preloading logo if theme name is switched while active.
+
 ## 2.25.0 (10/27/22)
 * Added: New `relative` and `relative_max` attributes for `[mai_date]` shortcode. Allows you to show "2 days ago" as the date for a limited amount of time after publishing.
 * Added: New setting in Mai Post/Term Grid blocks to add text when there are no entry results.
