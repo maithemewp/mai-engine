@@ -279,6 +279,7 @@ p[data-content-align="end"],
 		.wp-block-cover[data-margin-#{ $margin-setting }="#{ $margin-name }"],
 		.wp-block-group[data-margin-#{ $margin-setting }="#{ $margin-name }"] {
 			margin-#{ $margin-setting }: calc(#{ $margin-size } * -1) !important;
+			z-index: 1;
 		}
 	}
 }
