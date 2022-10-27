@@ -950,9 +950,12 @@ function mai_get_header_shrink_offset() {
 	$source_height      = isset( $source[2] ) ? absint( $source[2] ) : 1;
 	$customizer_widths  = mai_get_option( 'logo-width', $config['width'] );
 	$customizer_widths  = array_map( 'absint', $customizer_widths );
-	$desktop_width      = max( $customizer_widths['desktop'], 1 );
+
+	$desktop_width      = isset( $customizer_widths['desktop'] ) ? $customizer_widths['desktop'] : 0;
+	$desktop_width      = max( $desktop_width, 1 );
 	$desktop_height     = ( $desktop_width / $source_width ) * $source_height;
-	$mobile_width       = max( $customizer_widths['mobile'], 1 );
+	$mobile_width       = isset( $customizer_widths['mobile'] ) ? $customizer_widths['mobile'] : 0;
+	$mobile_width       = max( $mobile_width, 1 );
 	$mobile_height      = ( $mobile_width / $desktop_width ) * $desktop_height;
 	$height_difference  = absint( ceil( $desktop_height - $mobile_height ) );
 	$offset             = absint( $height_difference + $spacing_difference );

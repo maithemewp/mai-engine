@@ -182,6 +182,7 @@ function mai_get_term_image_id( $term ) {
 function mai_add_logo_attributes( $attr ) {
 	$break     = mai_get_mobile_menu_breakpoint();
 	$widths    = mai_get_option( 'logo-width', [] );
+	$widths    = array_map( 'absint', $widths );
 	$desktop   = isset( $widths['desktop'] ) ? $widths['desktop'] : 0;
 	$desktop   = max( $desktop, 1 );
 	$mobile    = isset( $widths['mobile'] ) ? $widths['mobile'] : 0;
