@@ -50,7 +50,7 @@ function mai_login_css() {
 		$css->print_styles_inline();
 	}
 
-	$logo_id           = get_theme_mod( 'custom_logo' );
+	$logo_id           = mai_get_logo_id();
 	$header_background = mai_get_color_value( 'header' );
 	?>
 	<style>
@@ -236,7 +236,7 @@ function mai_login_css() {
 		}
 		<?php
 		$width_px = '100%';
-		$logo_id  = get_theme_mod( 'custom_logo' );
+		$logo_id  = mai_get_logo_id();
 
 		if ( $logo_id ) {
 			$widths   = mai_get_option( 'logo-width', [] );

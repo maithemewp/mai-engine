@@ -306,8 +306,8 @@ function mai_plugin_update_checker() {
 	);
 
 	// Get the branch. If checking for beta releases.
-	$branch = function_exists( 'genesis_get_option' ) && genesis_get_option( 'mai_tester' );
-	$branch = $branch ? 'beta' : 'master';
+	$options = get_option( 'genesis-settings' ); // Too early to use `genesis_get_option()` and GENESIS_SETTINGS_FIELD.
+	$branch  = isset( $options['mai_tester'] ) && $options['mai_tester'] ? 'beta' : 'master';
 
 	// Allow branch and updater object manipulation.
 	$branch = apply_filters( 'mai_updater_branch', $branch );
@@ -347,7 +347,7 @@ add_action( 'plugins_loaded', 'mai_load_vendor_plugins' );
 function mai_load_vendor_plugins() {
 	$files = [];
 
-	if ( ! class_exists( 'acf_pro' ) ) {
+	if ( mai_needs_mai_acf_pro() ) {
 		$files[] = '../vendor/advanced-custom-fields/advanced-custom-fields-pro/acf';
 	}
 
@@ -399,7 +399,6 @@ function mai_load_files() {
 		'functions/enqueue',
 		'functions/entries',
 		'functions/fonts',
-		'functions/grid',
 		'functions/helpers',
 		'functions/icons',
 		'functions/images',
@@ -437,6 +436,7 @@ function mai_load_files() {
 
 		// Fields.
 		'fields/clone', // Must be first.
+		'fields/functions', // Load functions so they are available.
 		'fields/columns',
 		'fields/grid-display',
 		'fields/grid-layout',
@@ -446,18 +446,23 @@ function mai_load_files() {
 		'fields/wp-term-query',
 
 		// Blocks.
+		'blocks/general',
 		'blocks/button',
 		'blocks/cover',
 		'blocks/group',
 		'blocks/heading',
-		'blocks/mai-columns',
-		'blocks/mai-divider',
-		'blocks/mai-grid',
-		'blocks/mai-icon',
 		'blocks/paragraph',
 		'blocks/search',
 		'blocks/settings',
 		'blocks/social-links',
+		'blocks/mai-columns/block',
+		'blocks/mai-column/block',
+		'blocks/mai-divider/block',
+		'blocks/mai-icon/block',
+		'blocks/mai-grid/functions',
+		'blocks/mai-grid/blocks',
+		'blocks/mai-grid/post-block',
+		'blocks/mai-grid/term-block',
 	];
 
 	// Customizer.
@@ -556,4 +561,60 @@ function mai_load_files() {
 			WP_CLI::success( $message );
 		});
 	}
+}
+
+/**
+ * Checks if Mai needs to load ACF Pro.
+ *
+ * @access private
+ *
+ * @since 2.25.0
+ *
+ * @return bool
+ */
+function mai_needs_mai_acf_pro() {
+	static $needs = null;
+
+	if ( ! is_null( $needs ) ) {
+		return $needs;
+	}
+
+	$needs = false;
+
+	// No ACF Pro.
+	if ( ! class_exists( 'acf_pro' ) ) {
+		$needs = true;
+	}
+	// Has ACF Pro.
+	else {
+		$version = acf_get_setting( 'version' );
+		$data    = mai_get_mai_acf_plugin_data();
+
+		if ( ! $version || version_compare( $version, $data['Version'], '<' ) ) {
+			$needs = true;
+		}
+	}
+
+	return $needs;
+}
+
+/**
+ * Gets ACF plugin data from the version loaded in Mai.
+ *
+ * @access private
+ *
+ * @since 2.25.0
+ *
+ * @return bool
+ */
+function mai_get_mai_acf_plugin_data() {
+	static $data = null;
+
+	if ( ! is_null( $data ) ) {
+		return $data;
+	}
+
+	$data = get_plugin_data( trailingslashit( dirname( __DIR__ ) ) . 'vendor/advanced-custom-fields/advanced-custom-fields-pro/acf.php' );
+
+	return $data;
 }

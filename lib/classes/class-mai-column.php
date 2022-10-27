@@ -16,6 +16,12 @@ defined( 'ABSPATH' ) || die;
  * Class Mai_Column
  */
 class Mai_Column {
+	/**
+	 * Index.
+	 *
+	 * @var int $index
+	 */
+	protected $index;
 
 	/**
 	 * Args.
@@ -23,6 +29,27 @@ class Mai_Column {
 	 * @var array $args
 	 */
 	public $args;
+
+	/**
+	 * Hash.
+	 *
+	 * @var string $hash
+	 */
+	public $hash;
+
+	/**
+	 * Parent args.
+	 *
+	 * @var array $parent
+	 */
+	public $parent;
+
+	/**
+	 * Parent args.
+	 *
+	 * @var array $arrangement
+	 */
+	public $arrangement;
 
 	/**
 	 * Mai_Column constructor.
@@ -35,9 +62,110 @@ class Mai_Column {
 	 * @return void
 	 */
 	public function __construct( $args ) {
-		$this->args = $this->get_sanitized_args( $args );
+		$this->args  = $this->get_sanitized_args( $args );
+
+		if ( ! $this->args['preview'] ) {
+			$this->hash        = $this->get_hash();
+			$this->index       = mai_column_get_index( $this->hash );
+			$this->parent      = $this->get_parent_args();
+			$this->arrangement = mai_columns_get_arrangement( $this->parent );
+		}
 	}
 
+	/**
+	 * Gets the column.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @return void
+	 */
+	public function render() {
+		echo $this->get();
+	}
+
+	/**
+	 * Gets the column.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @return string
+	 */
+	public function get() {
+		$atts = [
+			'class' => 'mai-column is-column',
+			'style' => '',
+		];
+
+		if ( ! $this->args['preview'] ) {
+			$atts = $this->add_columns_atts( $atts );
+		}
+
+		if ( $this->args['class'] ) {
+			$atts['class'] = mai_add_classes( $this->args['class'], $atts['class'] );
+		}
+
+		if ( $this->args['align_column_vertical'] ) {
+			$atts['style'] .= sprintf( '--justify-content:%s;', mai_get_flex_align( $this->args['align_column_vertical'] ) );
+		}
+
+		if ( $this->args['spacing'] ) {
+			$atts['class'] = mai_add_classes( sprintf( 'has-%s-padding', esc_html( $this->args['spacing'] ) ), $atts['class'] );
+		}
+
+		if ( $this->args['background'] ) {
+			$atts['class']  = mai_add_classes( 'has-background', $atts['class'] );
+			$atts['style'] .= sprintf( 'background:%s;', mai_get_color_css( $this->args['background'] ) );
+
+			if ( mai_is_light_color( $this->args['background'] ) ) {
+				$atts['class'] = mai_add_classes( 'has-light-background', $atts['class'] );
+			} else {
+				$atts['class'] = mai_add_classes( 'has-dark-background', $atts['class'] );
+			}
+		}
+
+		if ( $this->args['shadow'] ) {
+			$atts['class'] = mai_add_classes( 'has-shadow', $atts['class'] );
+		}
+
+		if ( $this->args['border'] ) {
+			$atts['class'] = mai_add_classes( 'has-border', $atts['class'] );
+		}
+
+		if ( $this->args['radius'] ) {
+			$atts['class'] = mai_add_classes( 'has-border-radius', $atts['class'] );
+		}
+
+		if ( $this->args['first_xs'] ) {
+			$atts['style'] .= '--order-xs:-1;';
+		}
+
+		if ( $this->args['first_sm'] ) {
+			$atts['style'] .= '--order-sm:-1;';
+		}
+
+		if ( $this->args['first_md'] ) {
+			$atts['style'] .= '--order-md:-1;';
+		}
+
+		return genesis_markup(
+			[
+				'open'    => '<div %s>',
+				'close'   => '</div>',
+				'context' => 'mai-column',
+				'content' => $this->get_inner_blocks(),
+				'echo'    => false,
+				'atts'    => $atts,
+			]
+		);
+	}
+
+	/**
+	 * Gets sanitized args.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @return array
+	 */
 	function get_sanitized_args( $args ) {
 		$args = wp_parse_args( $args,
 			[
@@ -52,6 +180,7 @@ class Mai_Column {
 				'first_sm'              => false,
 				'first_md'              => false,
 				'preview'               => false,
+				'fields'                => [],
 			]
 		);
 
@@ -71,83 +200,122 @@ class Mai_Column {
 	}
 
 	/**
-	 * Renders the columns.
+	 * Gets hash from args.
+	 * These will be identical for all columns within the same parent,
+	 * and possibly other instances with the same settings.
 	 *
-	 * @since 2.10.0
+	 * @since 2.25.0
+	 *
+	 * @return string
+	 */
+	function get_hash() {
+		return md5( serialize( $this->args['fields'] ) );
+	}
+
+	/**
+	 * Gets parsed args with only the keys we want.
+	 *
+	 * @since 2.25.0
 	 *
 	 * @return void
 	 */
-	public function render() {
-		$attributes = [
-			'class' => 'mai-column is-column',
-			'style' => '',
+	function get_parent_args() {
+		static $cache = [];
+
+		// Return if already cached.
+		if ( isset( $cache[ $this->hash ] ) ) {
+			return $cache[ $this->hash ];
+		}
+
+		$args     = [];
+		$defaults = [
+			'columns'            => 2,
+			'columns_responsive' => false,
+			'columns_md'         => 2,
+			'columns_sm'         => 1,
+			'columns_xs'         => 1,
 		];
 
-		if ( $this->args['class'] ) {
-			$attributes['class'] = mai_add_classes( $this->args['class'], $attributes['class'] );
+		// Gets field values.
+		foreach ( $defaults as $name => $default ) {
+			$args[ $name ] = isset( $this->args['fields'][ $name ] ) ? $this->args['fields'][ $name ] : $default;
 		}
 
-		if ( $this->args['align_column_vertical'] ) {
-			$attributes['style'] .= sprintf( '--justify-content:%s;', mai_get_flex_align( $this->args['align_column_vertical'] ) );
-		}
+		if ( 'custom' === $args['columns'] ) {
+			/**
+			 * We can't get repeater data via ACF, since it's the raw values.
+			 *
+			 * @link https://github.com/AdvancedCustomFields/acf/issues/710
+			 */
+			$this->args['fields'] = acf_setup_meta( $this->args['fields'], 'block_context' );
+			$repeaters            = [
+				'arrangement_xs' => 'full',
+				'arrangement_md' => '1/2',
+				'arrangement_sm' => '1/2',
+				'arrangement'    => '1/2',
+			];
 
-		if ( $this->args['spacing'] ) {
-			$attributes['class'] = mai_add_classes( sprintf( 'has-%s-padding', esc_html( $this->args['spacing'] ) ), $attributes['class'] );
-		}
+			foreach ( $repeaters as $name => $default ) {
+				$args[ $name ] = [];
 
-		if ( $this->args['background'] ) {
-			$attributes['class']  = mai_add_classes( 'has-background', $attributes['class'] );
-			$attributes['style'] .= sprintf( 'background:%s;', mai_get_color_css( $this->args['background'] ) );
+				$value = isset( $this->args['fields'][ $name ] ) ? $this->args['fields'][ $name ] : null;
 
-			if ( mai_is_light_color( $this->args['background'] ) ) {
-				$attributes['class'] = mai_add_classes( 'has-light-background', $attributes['class'] );
-			} else {
-				$attributes['class'] = mai_add_classes( 'has-dark-background', $attributes['class'] );
+				if ( is_null( $value ) ) {
+					$args[ $name ][] = [
+						'columns' => $default,
+					];
+
+					continue;
+				}
+
+				// Manually get our repeater row keys/values.
+				for ( $i = 0; $i < (int) $value; $i++ ) {
+					$sub_key       = sprintf( '%s_%s_columns', $name, $i );
+					$sub_value     = isset( $this->args['fields'][ $sub_key ] ) ? $this->args['fields'][ $sub_key ] : $default;
+
+					$args[ $name ][] = [
+						'columns' => $sub_value,
+					];
+				}
 			}
 		}
 
-		if ( $this->args['shadow'] ) {
-			$attributes['class'] = mai_add_classes( 'has-shadow', $attributes['class'] );
-		}
+		// Store in cache.
+		$cache[ $this->hash ] = $args;
 
-		if ( $this->args['border'] ) {
-			$attributes['class'] = mai_add_classes( 'has-border', $attributes['class'] );
-		}
-
-		if ( $this->args['radius'] ) {
-			$attributes['class'] = mai_add_classes( 'has-border-radius', $attributes['class'] );
-		}
-
-		if ( $this->args['first_xs'] ) {
-			$attributes['style'] .= '--order-xs:-1;';
-		}
-
-		if ( $this->args['first_sm'] ) {
-			$attributes['style'] .= '--order-sm:-1;';
-		}
-
-		if ( $this->args['first_md'] ) {
-			$attributes['style'] .= '--order-md:-1;';
-		}
-
-		genesis_markup(
-			[
-				'open'    => '<div %s>',
-				'close'   => '</div>',
-				'context' => 'mai-column',
-				'content' => $this->get_inner_blocks(),
-				'echo'    => true,
-				'atts'    => $attributes,
-			]
-		);
+		return $cache[ $this->hash ];
 	}
 
-	function get_inner_blocks() {
-		// $template = [
-			// [ 'core/paragraph', [], [] ],
-		// ];
+	/**
+	 * Adds columns attributes from parent block args.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @param array $atts The existing attributes.
+	 *
+	 * @return array
+	 */
+	function add_columns_atts( $atts ) {
+		// Make sure style is set.
+		$atts['style'] = isset( $atts['style'] ) ? $atts['style'] : '';
 
-		// return sprintf( '<InnerBlocks template="%s" />', esc_attr( wp_json_encode( $template ) ) );
+		foreach ( $this->arrangement as $break => $column ) {
+			$col            = is_array( $column ) ? mai_get_index_value_from_array( $this->index, $column ) : $column;
+			$atts['style'] .= mai_columns_get_columns( $break, $col );
+			$atts['style'] .= mai_columns_get_flex( $break, $col );
+		}
+
+		return $atts;
+	}
+
+	/**
+	 * Gets inner blocks element.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @return string
+	 */
+	function get_inner_blocks() {
 		return '<InnerBlocks />';
 	}
 }

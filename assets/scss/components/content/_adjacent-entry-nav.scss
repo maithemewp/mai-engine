@@ -1,8 +1,6 @@
 .adjacent-entry-pagination {
 	--image-border-radius: var(--border-radius);
 	--link-color: var(--color-heading);
-	--link-text-decoration: none;
-	--link-text-decoration-hover: none;
 
 	display: grid;
 	grid-gap: var(--spacing-md);
@@ -18,6 +16,11 @@
 		--adjacent-entry-link-inner-justify-content: flex-end;
 		--adjacent-entry-link-text-align: end;
 	}
+}
+
+.adjacent-entry-link {
+	--link-text-decoration: none;
+	--link-text-decoration-hover: none;
 }
 
 .adjacent-entry-link-inner {
@@ -50,7 +53,7 @@
 .pagination-previous .adjacent-entry-link-inner::before,
 .pagination-next .adjacent-entry-link-inner::after {
 	display: inline-flex;
-	flex: 1 0 auto;
+	flex: 0 0 auto;
 	width: 0.64em;
 	height: 0.64em;
 	background: currentColor;

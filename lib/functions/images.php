@@ -49,6 +49,150 @@ function mai_image_srcset_order( $sources, $size_array, $image_src, $image_meta,
 }
 
 /**
+ * Gets logo markup.
+ *
+ * @since 2.25.0
+ *
+ * @return string
+ */
+function mai_get_logo() {
+	static $logo = null;
+
+	if ( ! is_null( $logo ) ) {
+		return $logo;
+	}
+
+	$logo = get_custom_logo();
+
+	return $logo;
+}
+
+/**
+ * Gets scroll logo markup.
+ *
+ * @since 2.25.0
+ *
+ * @return string
+ */
+function mai_get_scroll_logo() {
+	static $logo = null;
+
+	if ( ! is_null( $logo ) ) {
+		return $logo;
+	}
+
+	$logo_id = mai_get_scroll_logo_id();
+	$atts    = mai_add_logo_attributes(
+		[
+			'class'          => 'custom-scroll-logo',
+			'data-pin-nopin' => 'true',
+		]
+	);
+
+	$logo = wp_get_attachment_image( $logo_id, 'large', false, $atts );
+
+	return $logo;
+}
+
+/**
+ * Gets logo ID.
+ *
+ * @since 2.25.0
+ *
+ * @return int
+ */
+function mai_get_logo_id() {
+	return absint( get_theme_mod( 'custom_logo' ) );
+}
+
+/**
+ * Gets scroll logo ID.
+ * Prior to 2.24.1 the logo was saved as a url. This makes sure an ID is always returned.
+ *
+ * @since 2.25.0
+ *
+ * @return int
+ */
+function mai_get_scroll_logo_id() {
+	static $logo_id = null;
+
+	if ( ! is_null( $logo_id ) ) {
+		return absint( $logo_id );
+	}
+
+	$logo = mai_get_option( 'logo-scroll' );
+
+	if ( ! $logo ) {
+		$logo_id = 0;
+		return $logo_id;
+	}
+
+	if ( is_numeric( $logo ) ) {
+		$logo_id = $logo;
+		return absint( $logo_id );
+	}
+
+	$logo_id = attachment_url_to_postid( $logo );
+
+	return absint( $logo_id );
+}
+
+/**
+ * Gets term featured image ID.
+ *
+ * @since 2.25.0
+ *
+ * @param int|WP_Term
+ *
+ * @return int
+ */
+function mai_get_term_image_id( $term ) {
+	$image_id = 0;
+	$term     = get_term( $term );
+
+	if ( ! $term || is_wp_error( $term ) ) {
+		return $image_id;
+	}
+
+	$key = 'featured_image';
+
+	// We need to check each term because a grid archive can show multiple taxonomies.
+	if ( class_exists( 'WooCommerce' ) && 'product_cat' === $term->taxonomy ) {
+		$key = 'thumbnail_id';
+	}
+
+	$image_id = get_term_meta( $term->term_id, $key, true );
+
+	return absint( $image_id );
+}
+
+
+/**
+ * Adds (forces) logo attributes.
+ * This makes sure the correct attributes are used, and match for preloading.
+ *
+ * @access private
+ *
+ * @since 2.25.0
+ *
+ * @param array $attr The existing attributes.
+ *
+ * @return array
+ */
+function mai_add_logo_attributes( $attr ) {
+	$break     = mai_get_mobile_menu_breakpoint();
+	$widths    = mai_get_option( 'logo-width', [] );
+	$desktop   = max( $widths['desktop'], 1 );
+	$mobile    = max( $widths['mobile'], 1 );
+	$overrides = [
+		'loading' => 'eager',
+		'sizes'   => sprintf( '(min-width: %s) %s, %s', $break, mai_get_unit_value( $desktop ), mai_get_unit_value( $mobile ) ),
+	];
+
+	return wp_parse_args( $overrides, $attr	);
+}
+
+/**
  * Gets aspect ratio from orientation.
  *
  * @since 0.1.0

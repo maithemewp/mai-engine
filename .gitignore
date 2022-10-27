@@ -5,12 +5,12 @@
 .cache
 .vscode
 *.lock
-*lock.json
 *.zip
 LICENSE
 README
-temp
+package-lock.json
 node_modules
+temp
 vendor/*
 !vendor/autoload.php
 !vendor/composer

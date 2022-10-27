@@ -8,7 +8,7 @@
       "type": "package",
       "package": {
         "name": "advanced-custom-fields/advanced-custom-fields-pro",
-        "version": "5.12.3",
+        "version": "6.0.3",
         "dist": {
           "type": "zip",
           "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download&t={%VERSION}&k={%ACF_PRO_KEY}"
@@ -25,7 +25,7 @@
     "ext-dom": "*",
     "ext-json": "*",
     "ext-libxml": "*",
-    "advanced-custom-fields/advanced-custom-fields-pro": "*",
+    "advanced-custom-fields/advanced-custom-fields-pro": "^6",
     "afragen/wp-dependency-installer": "^4",
     "kirki-framework/kirki": "^4.0",
     "proteusthemes/wp-content-importer-v2": "^2.1",

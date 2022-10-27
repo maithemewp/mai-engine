@@ -12,6 +12,62 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
+add_filter( 'acf/load_field/key=mai_grid_block_show', 'mai_acf_load_show', 10, 1 );
+/**
+ * Loads the "Show" field.
+ *
+ * @since 0.1.0
+ *
+ * @param array $field Field array.
+ *
+ * @return mixed
+ */
+function mai_acf_load_show( $field ) {
+
+	// Get existing values, which are sorted correctly, without infinite loop.
+	remove_filter( 'acf/load_field/key=mai_grid_block_show', 'mai_acf_load_show' );
+
+	$defaults = $field['choices'];
+	$existing = get_field( 'show' );
+
+	// Make sure only valid choices are used.
+	$existing = $existing ? array_intersect_key( array_flip( $existing ), $defaults ) : [];
+
+	add_filter( 'acf/load_field/key=mai_grid_block_show', 'mai_acf_load_show' );
+
+	// If we have existing values, reorder them.
+	$field['choices'] = $existing ? array_merge( $existing, $defaults ) : $field['choices'];
+
+	return $field;
+}
+
+add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_in',     'mai_acf_get_posts', 10, 1 );
+add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_not_in', 'mai_acf_get_posts', 10, 1 );
+/**
+ * Gets chosen post type for use in other field filters.
+ *
+ * @since 0.1.0
+ *
+ * @param array $args Field args.
+ *
+ * @return mixed
+ */
+function mai_acf_get_posts( $args ) {
+	$args['post_type'] = [];
+	$post_types        = mai_get_acf_request( 'post_type' );
+
+	if ( ! $post_types ) {
+		return $args;
+	}
+
+	foreach ( (array) $post_types as $post_type ) {
+		$args['post_type'][] = sanitize_text_field( wp_unslash( $post_type ) );
+	}
+
+	return $args;
+}
+
+
 /**
  * Gets field defaults.
  * TODO: Move these to config.php?
@@ -49,6 +105,7 @@ function mai_get_grid_display_defaults() {
 		'boxed'               => 1,
 		'border_radius'       => '',
 		'disable_entry_link'  => 0,
+		'no_results'          => '',
 	];
 
 	return $defaults;
@@ -782,7 +839,7 @@ function mai_get_grid_display_fields() {
 				],
 			],
 		],
-		// This is added in Entries tab but it's cleaner to keep it here
+		// These is added in Entries tab but it's cleaner to keep it here
 		// since entries is separate files for post/term grid.
 		[
 			'key'           => 'mai_grid_block_disable_entry_link',
@@ -791,6 +848,14 @@ function mai_get_grid_display_fields() {
 			'type'          => 'true_false',
 			'default_value' => $defaults['disable_entry_link'],
 			'message'       => esc_html__( 'Disable entry links', 'mai-engine' ),
+		],
+		[
+			'key'           => 'mai_grid_block_no_results',
+			'name'          => 'no_results',
+			'label'         => esc_html__( 'No results text', 'mai-engine' ),
+			'type'          => 'textarea',
+			'default_value' => $defaults['no_results'],
+			'rows'          => 2,
 		],
 	];
 

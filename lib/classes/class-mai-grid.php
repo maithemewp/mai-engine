@@ -158,12 +158,33 @@ class Mai_Grid {
 		}
 
 		$this->query = $this->get_query();
+		$no_results  = false;
 
 		if ( 'post' === $this->type && ( ! $this->query || ! $this->query->have_posts() ) ) {
-			return;
+			$no_results = true;
 		}
 
 		if ( 'term' === $this->type && ( ! $this->query || ! $this->query->terms ) ) {
+			$no_results = true;
+		}
+
+		// No resuilts.
+		if ( $no_results ) {
+			if ( ! $this->args['no_results'] ) {
+				return;
+			}
+
+			$class = 'mai-grid-no-results';
+
+			if ( isset( $this->args['margin_top'] ) && $this->args['margin_top'] ) {
+				$class = mai_add_classes( sprintf( 'has-%s-margin-top', $this->args['margin_top'] ), $class );
+			}
+
+			if ( isset( $this->args['margin_bottom'] ) && $this->args['margin_bottom'] ) {
+				$class = mai_add_classes( sprintf( 'has-%s-margin-bottom', $this->args['margin_bottom'] ), $class );
+			}
+
+			printf( '<div class="%s">%s</div>', $class, mai_get_processed_content( $this->args['no_results'] ) );
 			return;
 		}
 
@@ -388,15 +409,12 @@ class Mai_Grid {
 
 					// If we have tax query values.
 					if ( $tax_query ) {
-
 						// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 						$query_args['tax_query'] = $tax_query;
 
 						if ( $this->args['taxonomies_relation'] ) {
 							// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
-							$query_args['tax_query'][] = [
-								'relation' => $this->args['taxonomies_relation'],
-							];
+							$query_args['tax_query']['relation'] = $this->args['taxonomies_relation'];
 						}
 					}
 				}

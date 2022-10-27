@@ -575,3 +575,76 @@ function mai_get_kirki_google_fonts() {
 
 	return $fonts;
 }
+
+/**
+ * Gets preload urls from CSS.
+ * Only loads main element fonts, not bold/italic/etc.
+ * Checks our chosen fonts from The Customizer
+ * to make sure they match up.
+ *
+ * @since 2.25.0
+ *
+ * @param string $css The CSS to parse.
+ *
+ * @return array
+ */
+function mai_get_font_preload_urls_from_css( $css ) {
+	$urls      = [];
+	$locale    = get_locale();
+	$non_latin = mai_get_non_latin_locales();
+
+	// Bail if not a latin based language.
+	if ( isset( $non_latin[ $locale ] ) ) {
+		return $urls;
+	}
+
+	$strings = mai_get_all_strings_between_strings( $css, '/* latin */', '}' );
+
+	if ( ! $strings ) {
+		return $urls;
+	}
+
+	$elements = [];
+	$fonts    = array_keys( mai_get_global_styles( 'fonts' ) );
+
+	foreach ( $fonts as $element ) {
+		$elements[ mai_get_font_family( $element ) ][] = mai_get_font_weight_for_css( mai_get_font_weight( $element ) );
+	}
+
+	foreach ( $strings as $string ) {
+		$family = mai_get_string_between_strings( $string, "font-family: '", "';" );
+		$weight = mai_get_string_between_strings( $string, "font-weight: ", ";" );
+		$weight = $weight ? mai_get_font_weight_for_css( $weight ) : '';
+		$style  = mai_get_string_between_strings( $string, "font-style: ", ";" );
+		$src    = mai_get_string_between_strings( $string, "src: url(", ")" );
+
+		// Skip if we don't have enough data.
+		if ( ! ( $family && $weight && $src ) ) {
+			continue;
+		}
+
+		// Skip if not the correct font family and weight.
+		if ( ! ( isset( $elements[ $family ] ) && in_array( $weight, $elements[ $family ] ) ) ) {
+			continue;
+		}
+
+		// Skip if not the normal font style.
+		if ( $style && 'normal' !== $style ) {
+			continue;
+		}
+
+		$info = pathinfo( $src );
+		$fam  = sanitize_title_with_dashes( $family );
+		$base = $info['basename'];
+		$url  = sprintf( '%s/fonts/%s/%s', content_url(), $fam, $base );
+		$file = str_replace( content_url(), WP_CONTENT_DIR, $url );
+
+		if ( ! file_exists( $file ) ) {
+			continue;
+		}
+
+		$urls[] = $url;
+	}
+
+	return $urls;
+}

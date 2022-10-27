@@ -23,6 +23,15 @@ add_filter( 'admin_body_class', 'mai_admin_body_classes' );
  * @return array
  */
 function mai_admin_body_classes( $classes ) {
+	// Colors.
+	if ( mai_has_dark_body() && ! mai_has_boxed_container() ) {
+		$classes = mai_add_classes( 'has-dark-body', $classes );
+	}
+
+	if ( mai_has_boxed_container() ) {
+		$classes = mai_add_classes( 'has-boxed-container', $classes );
+	}
+
 	// Layout.
 	$layout  = genesis_site_layout();
 	$classes = mai_add_classes( $layout, $classes );
@@ -59,6 +68,30 @@ add_action( 'after_setup_theme', 'mai_add_editor_font_sizes' );
  */
 function mai_add_editor_font_sizes() {
 	add_theme_support( 'editor-font-sizes', mai_get_font_sizes() );
+}
+
+add_action( 'admin_head', 'mai_add_editor_inline_css' );
+/**
+ * Adds inline CSS from PHP data.
+ *
+ * @since 2.25.0
+ *
+ * @return void
+ */
+function mai_add_editor_inline_css() {
+	$colors = mai_get_colors();
+
+	if ( ! $colors ) {
+		return;
+	}
+
+	echo '<style id="mai-editor-inline-styles">';
+	foreach ( $colors as $name => $value ) {
+		printf ( '.mai-block-colors ul.acf-radio-list li:not(:first-child):not(:last-child) label input[type="radio"][value="%s"] {', $name );
+			printf( 'background-color:var(--color-%s)', $name );
+		echo '}';
+	}
+	echo '</div>';
 }
 
 add_action( 'edit_form_after_title', 'mai_add_editor_on_posts_page' );

@@ -1,0 +1,16 @@
+{
+  "name": "acf/mai-post-grid",
+  "title": "Mai Post Grid",
+  "description": "Display posts/pages/cpts in various layouts.",
+  "category": "widgets",
+  "keywords": [ "grid", "post", "page" ],
+  "textdomain": "mai-engine",
+  "acf": {
+    "mode": "preview",
+    "renderCallback": "mai_do_post_grid_block"
+  },
+  "supports": {
+    "align": [ "wide", "full" ],
+    "anchor": true
+  }
+}

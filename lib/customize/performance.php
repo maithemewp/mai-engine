@@ -50,6 +50,17 @@ function mai_performance_customizer_settings() {
 	new \Kirki\Field\Checkbox(
 		mai_parse_kirki_args(
 			[
+				'settings' => mai_get_kirki_setting( 'preload-fonts' ),
+				'label'    => esc_html__( 'Preload heading and body font files', 'mai-engine' ),
+				'section'  => $section_id,
+				'default'  => $defaults['preload-fonts'],
+			]
+		)
+	);
+
+	new \Kirki\Field\Checkbox(
+		mai_parse_kirki_args(
+			[
 				'settings' => mai_get_kirki_setting( 'remove-menu-item-classes' ),
 				'label'    => esc_html__( 'Remove menu item id and additional classes', 'mai-engine' ),
 				'section'  => $section_id,

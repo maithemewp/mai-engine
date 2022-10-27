@@ -45,9 +45,9 @@ function mai_logo_customizer_settings() {
 				'section'         => 'title_tagline',
 				'priority'        => 60,
 				'default'         => '',
-				// 'choices'         => [
-				// 	'save_as' => 'id', // TODO: Save as ID, then mai_custom_scroll_logo() needs to check if url or if numeric.
-				// ],
+				'choices'         => [
+					'save_as' => 'id',
+				],
 				'active_callback' => function() {
 					return (bool) mai_has_sticky_header_enabled() && has_custom_logo();
 				},

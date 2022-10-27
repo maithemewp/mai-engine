@@ -160,9 +160,55 @@ function mai_is_type_archive( $use_cache = false ) {
 
 /**
  * Checks if on the wp-login.php page.
+ *
+ * @since unknown
+ *
+ * @return bool
  */
 function mai_is_login_page() {
 	return false !== stripos( $_SERVER['SCRIPT_NAME'], strrchr( wp_login_url(), '/' ) );
+}
+
+/**
+ * Checks if body has a dark background.
+ *
+ * @since 2.25.0
+ *
+ * @return bool
+ */
+function mai_has_dark_body() {
+	static $dark = null;
+
+	if ( ! is_null( $dark ) ) {
+		return $dark;
+	}
+
+	$colors = mai_get_colors();
+	$light  = mai_is_light_color( $colors['background'] );
+	$dark   = ! $light;
+
+	return $dark;
+}
+
+/**
+ * Checks if body has a dark background.
+ *
+ * @since 2.25.0
+ *
+ * @return bool
+ */
+function mai_has_dark_header() {
+	static $dark = null;
+
+	if ( ! is_null( $dark ) ) {
+		return $dark;
+	}
+
+	$colors = mai_get_colors();
+	$light  = mai_is_light_color( $colors['header'] );
+	$dark   = ! $light;
+
+	return $dark;
 }
 
 /**
@@ -391,7 +437,7 @@ function mai_has_sticky_header() {
  * @return bool
  */
 function mai_has_sticky_scroll_logo() {
-	return (bool) has_custom_logo() && mai_has_sticky_header_enabled() && ! mai_is_element_hidden( 'sticky_header' ) && mai_get_option( 'logo-scroll', false );
+	return (bool) has_custom_logo() && mai_has_sticky_header_enabled() && ! mai_is_element_hidden( 'sticky_header' ) && mai_get_scroll_logo_id();
 }
 
 /**
@@ -917,12 +963,12 @@ function mai_get_instance( $class, ...$args ) {
  *
  * @since 2.11.0
  *
- * @param $value The existing value. May be numeric, px, rem, or em.
+ * @param string $value The existing value. May be numeric, px, rem, or em.
  *
  * @return int
  */
 function mai_get_width_height_attribute( $value, $fallback = false ) {
-	if ( is_numeric( $value ) ) {
+	if ( is_numeric( $value ) || mai_has_string( 'calc(', $value ) ) {
 		return $value;
 	}
 	// Pixel values.
@@ -938,6 +984,7 @@ function mai_get_width_height_attribute( $value, $fallback = false ) {
 			return $size;
 		}
 	}
+
 	return $fallback ? absint( $fallback ) : absint( filter_var( $value, FILTER_SANITIZE_NUMBER_INT ) );
 }
 

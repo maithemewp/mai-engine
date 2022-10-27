@@ -346,9 +346,9 @@ function mai_custom_scroll_logo( $html, $blog_id ) {
 		return $html;
 	}
 
-	$logo_url = mai_get_option( 'logo-scroll' );
+	$logo = mai_get_scroll_logo();
 
-	if ( ! $logo_url ) {
+	if ( ! $logo ) {
 		return $html;
 	}
 
@@ -356,16 +356,30 @@ function mai_custom_scroll_logo( $html, $blog_id ) {
 	$first = mai_get_dom_first_child( $dom );
 
 	if ( $first ) {
-		$img = $dom->createElement( 'img' );
-		$img->setAttribute( 'class', 'custom-scroll-logo' );
-		$img->setAttribute( 'src', esc_url( $logo_url ) );
-		$img->setAttribute( 'loading', 'lazy' );
-		$img->setAttribute( 'data-pin-nopin', 'true' );
-		$first->appendChild( $img );
+		$fragment = $first->ownerDocument->createDocumentFragment();
+		$fragment->appendXML( $logo );
+		$first->appendChild( $fragment );
 		$html = $dom->saveHTML();
 	}
 
 	return $html;
+}
+
+/**
+ * Makes sure custom logo uses same attributes as scroll logo.
+ * This also makes sure the scrset and sizes attributes match for preloading.
+ *
+ * @since 2.25.0
+ *
+ * @param array $attr      Custom logo image attributes.
+ * @param int   $image_id  Custom logo attachment ID.
+ * @param int   $blog_id   ID of the blog to get the custom logo for.
+ *
+ * @return array
+ */
+add_filter( 'get_custom_logo_image_attributes', 'mai_custom_logo_image_attributes', 10, 3 );
+function mai_custom_logo_image_attributes( $attr, $image_id, $blog_id ) {
+	return mai_add_logo_attributes( $attr );
 }
 
 add_filter( 'genesis_site_title_wrap', 'mai_remove_site_title_h1' );

@@ -17,29 +17,12 @@ add_action( 'acf/init', 'mai_register_icon_block' );
  * Register Mai Icon block.
  *
  * @since 0.1.0
+ * @since 2.25.0 Converted to block.json via `register_block_type()`.
  *
  * @return void
  */
 function mai_register_icon_block() {
-	if ( ! function_exists( 'acf_register_block_type' ) ) {
-		return;
-	}
-
-	acf_register_block_type(
-		[
-			'name'            => 'mai-icon',
-			'title'           => __( 'Mai Icon', 'mai-engine' ),
-			'description'     => __( 'A custom icon block.', 'mai-engine' ),
-			'render_callback' => 'mai_do_icon_block',
-			'category'        => 'widgets',
-			'keywords'        => [ 'icon' ],
-			'icon'            => 'heart',
-			'mode'            => 'preview',
-			'supports'        => [
-				'align' => false,
-			],
-		]
-	);
+	register_block_type( __DIR__ . '/block.json' );
 }
 
 /**
@@ -58,28 +41,25 @@ function mai_do_icon_block( $block, $content = '', $is_preview = false, $post_id
 	$args     = [];
 	$defaults = mai_get_icon_default_args();
 
+	// Get values. Checks for null or empty string so defaults are used.
 	foreach ( array_keys( $defaults ) as $setting ) {
-		$args[ $setting ] = get_field( $setting );
+		$value = get_field( $setting );
+
+		if ( ! is_null( $value ) && '' !== $value ) {
+			$args[ $setting ] = $value;
+		}
 	}
 
 	// Swap for brand.
-	if ( 'brands' === $args['style'] ) {
+	if ( isset( $args['style'] ) && 'brands' === $args['style'] ) {
 		$args['icon'] = $args['icon_brand'];
 	}
 
 	// Remove brand.
 	unset( $args['icon_brand'] );
 
+	// Add class.
 	$args['class'] = isset( $block['className'] ) && ! empty( $block['className'] ) ? mai_add_classes( $block['className'] ) : '';
-
-	// Remove empty args so defaults are used.
-	foreach ( $args as $key => $value ) {
-		if ( '' !== $value ) {
-			continue;
-		}
-
-		unset( $args[ $key ] );
-	}
 
 	echo mai_get_icon( $args );
 }

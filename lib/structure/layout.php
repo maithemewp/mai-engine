@@ -44,9 +44,8 @@ add_filter( 'body_class', 'mai_body_classes' );
  * @return array
  */
 function mai_body_classes( $classes ) {
-
 	// Remove unnecessary page template classes.
-	if ( mai_get_option( 'remove-template-classes', true ) ) {
+	if ( mai_get_option( 'remove-template-classes', mai_get_performance_default( 'remove-template-classes' ) ) ) {
 		$template  = get_page_template_slug();
 		$basename  = basename( $template, '.php' );
 		$directory = str_replace( [ '/', basename( $template ) ], '', $template );
@@ -71,9 +70,14 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'has-before-header';
 	}
 
-	// Add dark header class.
+	// Add dark class.
 	$colors = mai_get_colors();
-	if ( ! mai_is_light_color( $colors['header'] ) ) {
+
+	if ( mai_has_dark_body() ) {
+		$classes[] = 'has-dark-body';
+	}
+
+	if ( mai_has_dark_header() ) {
 		$classes[] = 'has-dark-header has-dark-mobile-menu';
 	}
 
@@ -159,6 +163,48 @@ add_filter( 'genesis_attr_site-container', 'mai_back_to_top_anchor' );
  */
 function mai_back_to_top_anchor( $attr ) {
 	$attr['id'] = 'top';
+
+	return $attr;
+}
+
+add_filter( 'genesis_attr_content-sidebar-wrap', 'mai_content_sidebar_wrap_dark_background_class' );
+/**
+ *
+ * @since 2.25.0
+ *
+ * @param array $attr Current attributes.
+ *
+ * @return array The modified attributes.
+ */
+function mai_content_sidebar_wrap_dark_background_class( $attr ) {
+	if ( ! mai_has_dark_body() ) {
+		return $attr;
+	}
+
+	if ( mai_has_boxed_container() ) {
+		return $attr;
+	}
+
+	$attr['class'] = mai_add_classes( 'has-dark-background', $attr['class'] );
+
+	return $attr;
+}
+
+add_filter( 'genesis_attr_site-footer', 'mai_site_footer_dark_background_class' );
+/**
+ *
+ * @since 2.25.0
+ *
+ * @param array $attr Current attributes.
+ *
+ * @return array The modified attributes.
+ */
+function mai_site_footer_dark_background_class( $attr ) {
+	if ( ! mai_has_dark_body() ) {
+		return $attr;
+	}
+
+	$attr['class'] = mai_add_classes( 'has-dark-background', $attr['class'] );
 
 	return $attr;
 }

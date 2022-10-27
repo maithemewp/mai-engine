@@ -42,7 +42,7 @@ function mai_get_breakpoint_columns( $args ) {
 		$columns['sm'] = $args['columns_sm'];
 		$columns['xs'] = $args['columns_xs'];
 	} else {
-		switch ( $args['columns'] ) {
+		switch ( (int) $args['columns'] ) {
 			case 6:
 				$columns['md'] = 4;
 				$columns['sm'] = 3;
@@ -95,6 +95,8 @@ function mai_get_breakpoint_columns( $args ) {
  * Margins must be handled separately because they may be
  * applied to a different container element.
  *
+ * This does not apply for Mai Column since there are custom arrangements involved.
+ *
  * @since 2.21.0
  *
  * @param array $atts   The markup atts.
@@ -113,40 +115,20 @@ function mai_get_columns_atts( $atts, $args, $nested = false ) {
 	// Get columns arrangement. Reverse order so it's mobile first.
 	$columns = array_reverse( mai_get_breakpoint_columns( $args ) );
 
+	// Set columns properties. Separate loops so it's more readable in the markup.
+	foreach ( $columns as $break => $value ) {
+		$atts['style'] .= mai_columns_get_columns( $break, $value );
+	}
+
+	// Set flex properties. Separate loops so it's more readable in the markup.
+	foreach ( $columns as $break => $value ) {
+		$atts['style'] .= mai_columns_get_flex( $break, $value );
+	}
+
 	// If preview.
 	$preview = isset( $args['preview'] ) && $args['preview'];
 
-	// Not preview.
-	if ( ! $preview ) {
-		// Set columns properties. Separate loops so it's more readable in the markup.
-		foreach ( $columns as $break => $value ) {
-			$atts['style'] .= mai_columns_get_columns( $break, $value );
-		}
-
-		// Set flex properties. Separate loops so it's more readable in the markup.
-		foreach ( $columns as $break => $value ) {
-			$atts['style'] .= mai_columns_get_flex( $break, $value );
-		}
-	}
-	// Temp workaround for ACF nested block markup.
-	// Can't do $nested && $args['preview'] because it broke Mai Gallery/List (not nested) inside Mai Columns (nested).
-	// So we always need the explicit flex items. Boo.
-	// Separate loops so it's more readable in the markup.
-	else {
-		foreach ( $columns as $break => $value ) {
-			for ( $i = 1; $i <= 24; $i++ ) {
-				$atts['style'] .= mai_columns_get_columns( sprintf( '%s-%s', $break, $i ), $value );
-			}
-
-			for ( $i = 1; $i <= 24; $i++ ) {
-				if ( in_array( $value, [ 'auto', 'fill', 'full' ] ) ) {
-					$atts['style'] .= mai_columns_get_flex( sprintf( '%s-%s', $break, $i ), $value );
-				}
-			}
-		}
-	}
-
-	// Temp workaround for ACF nested block markup.
+	// Workaround for ACF nested block markup.
 	if ( $nested && $preview ) {
 		$atts['class'] = mai_add_classes( 'has-columns-nested', $atts['class'] );
 	}
@@ -170,62 +152,104 @@ function mai_get_columns_atts( $atts, $args, $nested = false ) {
 }
 
 /**
- * Gets formatted columns args from block settings
- * and caches value so it can be pulled use by the individual columns.
+ * Gets column index.
+ * This determines which column/item is currently
+ * being rendered inside the parent.
  *
- * @since 2.10.0
+ * @since 2.25.0
  *
- * @param int $i The columns block instance.
+ * @param string $hash  The parent hash.
+ * @param bool   $reset Whether to reset the index.
+ *
+ * @return int
+ */
+function mai_column_get_index( $hash, $reset = false ) {
+	static $indexes = [];
+
+	if ( isset( $indexes[ $hash ] ) ) {
+		if ( $reset ) {
+			$indexes[ $hash ] = 0;
+		} else {
+			$indexes[ $hash ]++;
+		}
+
+		return $indexes[ $hash ];
+	}
+
+	$indexes[ $hash ] = 0;
+
+	return $indexes[ $hash ];
+}
+
+/**
+ * Gets columns arrangement whether it's custom, responsive, or default.
+ *
+ * @since 2.25.0
+ *
+ * @param array $args The columns settings args.
  *
  * @return array
  */
-function mai_columns_get_args( $i = null ) {
+function mai_columns_get_arrangement( $args ) {
 	static $cache = [];
 
-	if ( ! is_null( $i ) ) {
-		if ( isset( $cache[ $i ] ) ) {
-			return $cache[ $i ];
-		}
+	// Parse.
+	$args = wp_parse_args( $args,
+		[
+			'columns'            => 2,
+			'columns_responsive' => false,
+			'columns_md'         => 2,
+			'columns_sm'         => 2,
+			'columns_xs'         => 2,
+			'arrangement'        => [ '1/2' ],
+			'arrangement_md'     => [ '1/2' ],
+			'arrangement_sm'     => [ '1/2' ],
+			'arrangement_xs'     => [ 'full' ],
+		]
+	);
 
-		$columns = get_field( 'columns' );
-		$columns = ( $columns || '0' === $columns ) ? $columns : 2;
+	// Only the args we want, sanitized.
+	$args = [
+		'columns'            => is_numeric( $args['columns'] ) ? absint( $args['columns'] ): esc_html( $args['columns'] ),
+		'columns_responsive' => mai_sanitize_bool( $args['columns_responsive'] ),
+		'columns_md'         => absint( $args['columns_md'] ),
+		'columns_sm'         => absint( $args['columns_sm'] ),
+		'columns_xs'         => absint( $args['columns_xs'] ),
+		'arrangement'        => mai_array_map_recursive( 'esc_html', (array) $args['arrangement'] ),
+		'arrangement_md'     => mai_array_map_recursive( 'esc_html', (array) $args['arrangement_md'] ),
+		'arrangement_sm'     => mai_array_map_recursive( 'esc_html', (array) $args['arrangement_sm'] ),
+		'arrangement_xs'     => mai_array_map_recursive( 'esc_html', (array) $args['arrangement_xs'] ),
+	];
 
-		$cache[ $i ] = [
-			'columns' => $columns,
-		];
+	// Columns fix. Is this needed?
+	// $args['columns'] = $args['columns'] || 0 ===  absint( $args['columns'] ) ? $args['columns'] : 2;
 
-		if ( 'custom' === $cache[ $i ]['columns'] ) {
-			$arrangements = [
-				'lg' => get_field( 'arrangement' ),
-				'md' => get_field( 'arrangement_md' ),
-				'sm' => get_field( 'arrangement_sm' ),
-				'xs' => get_field( 'arrangement_xs' ),
-			];
+	// Get hash from args.
+	$hash = md5( serialize( $args ) );
 
-			foreach ( $arrangements as $break => $arrangement ) {
-				foreach ( $arrangement as $columns ) {
-					if ( isset( $columns['columns'] ) ) {
-						$cache[ $i ]['arrangements'][ $break ][] = $columns['columns'];
-					}
-				}
-			}
+	// Return if already cached.
+	if ( isset( $cache[ $hash ] ) ) {
+		return $cache[ $hash ];
+	}
 
-		} else {
+	if ( 'custom' === $args['columns'] ) {
 
-			$columns = mai_get_breakpoint_columns(
-				[
-					'columns_responsive' => false,
-					'columns'            => $cache[ $i ]['columns'],
-				]
-			);
+		$cache[ $hash ][ 'xs' ] = wp_list_pluck( $args['arrangement_xs'], 'columns' );
+		$cache[ $hash ][ 'sm' ] = wp_list_pluck( $args['arrangement_sm'], 'columns' );
+		$cache[ $hash ][ 'md' ] = wp_list_pluck( $args['arrangement_md'], 'columns' );
+		$cache[ $hash ][ 'lg' ] = wp_list_pluck( $args['arrangement'], 'columns' );
 
-			foreach ( $columns as $break => $column ) {
-				$cache[ $i ]['arrangements'][ $break ] = 0 === $column ? 'auto' : $column;
-			}
+	} else {
+
+		$columns = array_reverse( mai_get_breakpoint_columns( $args ) );
+
+		foreach ( $columns as $break => $column ) {
+			// 0 is Fit for responsive columns.
+			$cache[ $hash ][ $break ] = [ 0 === $column ? 'auto' : $column ];
 		}
 	}
 
-	return $cache;
+	return $cache[ $hash ];
 }
 
 /**
@@ -271,19 +295,15 @@ function mai_columns_get_flex( $break, $size ) {
 
 	switch ( $size ) {
 		case 'auto':
-			// $style .= sprintf( '0 1 %s', $basis );
 			$style .= sprintf( '--flex-%s:0 1 %s;', $break, $basis );
 		break;
 		case 'fill':
-			// $style .= sprintf( '1 0 %s', $basis );
 			$style .= sprintf( '--flex-%s:1 0 %s;', $break, $basis );
 		break;
 		case 'full':
-			// $style .= sprintf( '0 0 %s', $basis );
 			$style .= sprintf( '--flex-%s:0 0 %s;', $break, $basis );
 		break;
 		default:
-			// $style .= sprintf( '0 0 %s', $basis );
 			$style .= sprintf( '--flex-%s:0 0 %s;', $break, $basis );
 	}
 
@@ -338,43 +358,7 @@ function mai_columns_get_flex_basis( $size ) {
 
 	// Set columns.
 	if ( $fraction ) {
-
-		// ray( $fraction );
-
-		// Temp disable.
-		// if ( false === true ) {
-			// Get percent.
-			// $percent = mai_fraction_to_percent( $fraction );
-			// Array from fraction.
-			// $array   = explode( '/', $fraction );
-			// $top     = (int) (isset( $array[0] ) ? $array[0] : 1);
-			// $bottom  = (int) (isset( $array[1] ) ? $array[1] : 1);
-			// $top     = 0 === $top ? 1 : $top;
-			// $bottom  = 0 === $bottom ? 1 : $bottom;
-			// Divide fraction to get decimal.
-			// $float   = $top / $bottom;
-			// Trim to 6 places.
-			// $float   = number_format( $float, 6, '.', '' ); // No need to do this since using the calculation before * 1000000.
-			// Subtract 1 - {decimal}. Wow this was annoying. @link https://stackoverflow.com/questions/17210787/php-float-calculation-error-when-subtracting
-			// $float   = bcsub( '1', (string) $float, 6 ); // Can't use this because it's not available on all hosts. @link https://stackoverflow.com/questions/63593354/undefined-function-bcsub
-			// $float   = ( ( 1000000 - floor($float * 1000000) ) / 1000000 );
-			// Trim trailing zeros.
-			// $float   = (float) $float;
-			// Converts 0.0 to 0.
-			// $float   = $float > 0 ? $float : '0';
-
-			// $all[ $size ] = sprintf( 'calc(%s - (var(--column-gap) * %s))', $percent, $float );
-
-			// $percent = sprintf( '((%s/%s * 100) * 1%%)', $top, $bottom );
-			// $percent = sprintf( '(((%s) * 100 * 1%%))', $fraction );
-			// $all[ $size ] = sprintf( 'calc(((%s/%s * 100) * 1%%) - (var(--column-gap) * (1 - (%s/%s))))', $top, $bottom, $top, $bottom );
-			// $all[ $size ] = 'calc((100% * var(--columns) - (var(--column-gap) * (1 - var(--columns)))) - 0.025px)';
-			$all[ $size ] = 'var(--flex-basis)';
-
-		// } else {
-
-
-		// }
+		$all[ $size ] = 'var(--flex-basis)';
 	}
 	// This shouldn't ever happen.
 	else {

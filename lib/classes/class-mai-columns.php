@@ -16,13 +16,19 @@ defined( 'ABSPATH' ) || die;
  * Class Mai_Columns
  */
 class Mai_Columns {
+	/**
+	 * Hashes.
+	 *
+	 * @var array $hashes
+	 */
+	protected static $hashes = [];
 
 	/**
-	 * Instance.
+	 * Hash.
 	 *
-	 * @var int $instance
+	 * @var string $hash
 	 */
-	protected $instance;
+	protected $hash;
 
 	/**
 	 * Args.
@@ -32,24 +38,50 @@ class Mai_Columns {
 	protected $args;
 
 	/**
+	 * Parent args.
+	 *
+	 * @var array $arrangement
+	 */
+	public $arrangement;
+
+	/**
 	 * Mai_Columns constructor.
 	 *
 	 * @since 2.10.0
 	 *
-	 * @param array $columns_block.
-	 * @param bool  $columns_preview If in admin.
-	 *
 	 * @return void
 	 */
-	function __construct( $instance, $args ) {
-		$this->instance = $instance;
-		$this->args     = $this->get_sanitized_args( $args );
+	function __construct( $args ) {
+		$this->args = $this->get_sanitized_args( $args );
+
+		if ( $this->args['preview'] ) {
+			$this->arrangement = mai_columns_get_arrangement( $this->args );
+			$this->hash        = md5( serialize( $this->arrangement ) );
+		}
 	}
 
+	/**
+	 * Gets sanitized args.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @param array $args The existing args.
+	 *
+	 * @return array
+	 */
 	function get_sanitized_args( $args ) {
 		$args = wp_parse_args( $args,
 			[
 				'class'                  => '',
+				'columns'                => 2,
+				'columns_responsive'     => false,
+				'columns_md'             => 2,
+				'columns_sm'             => 1,
+				'columns_xs'             => 1,
+				'arrangement'            => [ '1/2' ],
+				'arrangement_md'         => [ '1/2' ],
+				'arrangement_sm'         => [ '1/2' ],
+				'arrangement_xs'         => [ 'full' ],
 				'column_gap'             => 'xl',
 				'row_gap'                => 'xl',
 				'align'                  => '',
@@ -57,7 +89,6 @@ class Mai_Columns {
 				'align_columns_vertical' => '',
 				'margin_top'             => '',
 				'margin_bottom'          => '',
-				'arrangements'           => [],
 				'preview'                => false,
 			]
 		);
@@ -70,7 +101,6 @@ class Mai_Columns {
 		$args['align_columns_vertical'] = esc_html( $args['align_columns_vertical'] );
 		$args['margin_top']             = sanitize_html_class( $args['margin_top'] );
 		$args['margin_bottom']          = sanitize_html_class( $args['margin_bottom'] );
-		$args['arrangements']           = mai_array_map_recursive( 'esc_html', $args['arrangements'] );
 		$args['preview']                = mai_sanitize_bool( $args['preview'] );
 
 		return $args;
@@ -84,11 +114,27 @@ class Mai_Columns {
 	 * @return void
 	 */
 	function render() {
+		echo $this->get();
+	}
+
+	/**
+	 * Gets the columns.
+	 *
+	 * @since 2.25.0
+	 *
+	 * @return string
+	 */
+	function get() {
+		$html = '';
 		$atts = [
-			'class'         => 'mai-columns',
-			'data-instance' => $this->instance,
-			'style'         => '',
+			'class' => 'mai-columns',
+			'style' => '',
 		];
+
+		if ( $this->args['preview'] ) {
+			$html                 .= $this->get_styles();
+			$atts['data-instance'] = $this->hash;
+		}
 
 		if ( $this->args['class'] ) {
 			$atts['class'] = mai_add_classes( $this->args['class'], $atts['class'] );
@@ -106,11 +152,11 @@ class Mai_Columns {
 			$atts['class'] = mai_add_classes( sprintf( 'has-%s-margin-bottom', $this->args['margin_bottom'] ), $atts['class'] );
 		}
 
-		genesis_markup(
+		$html .= genesis_markup(
 			[
 				'open'    => '<div %s>',
 				'context' => 'mai-columns',
-				'echo'    => true,
+				'echo'    => false,
 				'atts'    => $atts,
 			]
 		);
@@ -121,98 +167,133 @@ class Mai_Columns {
 		];
 
 		if ( $this->args['preview'] ) {
-			$wrap_atts['class'] = mai_add_classes( 'has-columns-nested', $wrap_atts['class'] ); // Temp workaround for ACF nested block markup.
-			$wrap_atts          = $this->get_admin_attributes( $wrap_atts );
+			$wrap_atts['class'] = mai_add_classes( 'has-columns-nested', $wrap_atts['class'] ); // Workaround for editor nested block markup.
 		}
 
-		$wrap_atts = $this->get_attributes( $wrap_atts );
+		$wrap_atts = $this->add_atts( $wrap_atts );
 
-		genesis_markup(
+		$html .= genesis_markup(
 			[
 				'open'    => '<div %s>',
 				'close'   => '</div>',
 				'context' => 'mai-columns-wrap',
 				'content' => $this->get_inner_blocks(),
-				'echo'    => true,
+				'echo'    => false,
 				'atts'    => $wrap_atts,
 			]
 		);
 
-		genesis_markup(
+		$html .= genesis_markup(
 			[
 				'close'   => '</div>',
 				'context' => 'mai-columns',
-				'echo'    => true,
+				'echo'    => false,
 			]
 		);
+
+		/**
+		 * Reset index.
+		 * Nested blocks are parsed before the parent,
+		 * so this needs to be after rendering the parent.
+		 */
+		$index = mai_column_get_index( $this->hash, true );
+
+		return $html;
 	}
 
+	/**
+	 * Gets inline CSS for editor styles.
+	 * Frustrating to do this, but here we are.
+	 * Using `display: contents;` hides the column toolbar.
+	 *
+	 * @since 2.25.0
+	 *
+	 * @return string
+	 */
+	function get_styles() {
+		// Bail if we've already loaded styles for this arranagment.
+		if ( in_array( $this->hash, $this::$hashes ) ) {
+			return '';
+		}
+
+		// Add hash to hashes.
+		$this::$hashes[] = $this->hash;
+
+		$wrap  = sprintf( '.mai-columns[data-instance="%s"] > .mai-columns-wrap > .acf-innerblocks-container', $this->hash );
+		$media = [
+			'xs' => '@media only screen and (max-width: 599px)',
+			'sm' => '@media only screen and (min-width: 600px) and (max-width: 799px)',
+			'md' => '@media only screen and (min-width: 800px) and (max-width: 999px)',
+			'lg' => '@media only screen and (min-width: 1000px)',
+		];
+
+		$html = '<style>';
+
+		foreach ( $this->arrangement as $break => $arrangement ) {
+			$count = count( $arrangement );
+
+			// Start media query.
+			$html .= $media[ $break ] . ' {';
+				if ( 1 === $count ) {
+					$html .= $wrap . ' > .wp-block {';
+						$html .= mai_columns_get_columns( $break, reset( $arrangement ) );
+						$html .= mai_columns_get_flex( $break, reset( $arrangement ) );
+					$html .= '}';
+				} else {
+					foreach ( $arrangement as $index => $column ) {
+						$html .= sprintf( '%s > .wp-block:nth-child(%sn+%s) {', $wrap, $count, $index + 1 );
+							$html .= mai_columns_get_columns( $break, $column );
+							$html .= mai_columns_get_flex( $break, $column );
+						$html .= '}';
+					}
+				}
+
+			// End media query.
+			$html .= '}';
+		}
+
+		$html .= '</style>';
+
+		return $html;
+	}
+
+	/**
+	 * Adds attributes from args.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @param array $atts The existing attributes.
+	 *
+	 * @return array
+	 */
+	function add_atts( $atts ) {
+		$column_gap = $this->args['column_gap'] ? sprintf( 'var(--spacing-%s)', $this->args['column_gap'] ) : '0px'; // Needs 0px for calc().
+		$row_gap    = $this->args['row_gap'] ? sprintf( 'var(--spacing-%s)', $this->args['row_gap'] ) : '0px'; // Needs 0px for calc().
+
+		$atts['style'] .= sprintf( '--column-gap:%s;', $column_gap  );
+		$atts['style'] .= sprintf( '--row-gap:%s;', $row_gap );
+		$atts['style'] .= sprintf( '--align-columns:%s;', ! empty( $this->args['align_columns'] ) ? mai_get_flex_align( $this->args['align_columns'] ) : 'unset' ); // If wide/full then unset will be used.
+		$atts['style'] .= sprintf( '--align-columns-vertical:%s;', ! empty( $this->args['align_columns_vertical'] ) ? mai_get_flex_align( $this->args['align_columns_vertical'] ) : 'initial' ); // Needs initial for nested columns.
+
+		return $atts;
+	}
+
+	/**
+	 * Gets inner blocks element.
+	 *
+	 * @since 2.10.0
+	 *
+	 * @return string
+	 */
 	function get_inner_blocks() {
 		$allowed  = [ 'acf/mai-column' ];
 		$template = [];
-		$columns  = absint( $this->args['columns'] ) ?: 1;
+		$columns  = isset( $this->args['columns'] ) ? absint( $this->args['columns'] ) : 2;
 
 		for ( $i = 0 ; $i < $columns; $i++ ) {
 			$template[] = [ 'acf/mai-column', [], [] ];
 		}
 
 		return sprintf( '<InnerBlocks allowedBlocks="%s" template="%s" />', esc_attr( wp_json_encode( $allowed ) ), esc_attr( wp_json_encode( $template ) ) );
-	}
-
-	function get_admin_attributes( $attributes ) {
-		foreach ( array_reverse( $this->args['arrangements'] ) as $break => $arrangement ) {
-			$elements = $this->get_mapped_admin_elements( $arrangement );
-
-			$index = 0;
-			foreach ( $elements as $columns ) {
-				$index++;
-
-				// $attributes['style'] .= mai_columns_get_columns( $break, $columns );
-				$attributes['style'] .= mai_columns_get_columns( sprintf( '%s-%s', $break, $index ), $columns );
-			}
-
-			$index = 0;
-			foreach ( $elements as $columns ) {
-				$index++;
-
-				// $attributes['style'] .= mai_columns_get_flex( $break, $columns );
-				// $attributes['style'] .= mai_columns_get_flex( sprintf( '%s-%s', $break, $index ), $columns );
-				if ( in_array( $columns, [ 'auto', 'fill', 'full' ] ) ) {
-					$attributes['style'] .= mai_columns_get_flex( sprintf( '%s-%s', $break, $index ), $columns );
-				}
-			}
-		}
-
-		return $attributes;
-	}
-
-	function get_attributes( $attributes ) {
-		$column_gap = $this->args['column_gap'] ? sprintf( 'var(--spacing-%s)', $this->args['column_gap'] ) : '0px'; // Needs 0px for calc().
-		$row_gap    = $this->args['row_gap'] ? sprintf( 'var(--spacing-%s)', $this->args['row_gap'] ) : '0px'; // Needs 0px for calc().
-
-		$attributes['style'] .= sprintf( '--column-gap:%s;', $column_gap  );
-		$attributes['style'] .= sprintf( '--row-gap:%s;', $row_gap );
-		$attributes['style'] .= sprintf( '--align-columns:%s;', ! empty( $this->args['align_columns'] ) ? mai_get_flex_align( $this->args['align_columns'] ) : 'unset' ); // If wide/full then unset will be used.
-		$attributes['style'] .= sprintf( '--align-columns-vertical:%s;', ! empty( $this->args['align_columns_vertical'] ) ? mai_get_flex_align( $this->args['align_columns_vertical'] ) : 'initial' ); // Needs initial for nested columns.
-
-		return $attributes;
-	}
-
-	function get_mapped_admin_elements( $arrangement ) {
-		$arrangement        = (array) $arrangement;
-		$total_arrangements = count( $arrangement );
-		$count              = 0;
-		$elements           = [];
-		for ( $i = 0; $i < 24; $i++ ) {
-			$elements[ $i ] = $arrangement[ $count ];
-
-			if ( $count === ( $total_arrangements - 1 ) ) {
-				$count = 0;
-			} else {
-				$count++;
-			}
-		}
-
-		return $elements;
 	}
 }

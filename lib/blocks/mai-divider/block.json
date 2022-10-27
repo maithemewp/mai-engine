@@ -1,0 +1,15 @@
+{
+  "name": "acf/mai-divider",
+  "title": "Mai Divider",
+  "description": "A custom divider block.",
+  "category": "layout",
+  "keywords": [ "divider", "separator", "separate" ],
+  "textdomain": "mai-engine",
+  "acf": {
+    "mode": "preview",
+    "renderCallback": "mai_do_divider_block"
+  },
+  "supports": {
+    "align": [ "wide", "full" ]
+  }
+}

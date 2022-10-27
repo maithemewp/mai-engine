@@ -27,6 +27,227 @@ function mai_grid_load_taxonomy_field( $field ) {
 	return $field;
 }
 
+add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_include', 'mai_acf_get_terms', 10, 1 );
+add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_exclude', 'mai_acf_get_terms', 10, 1 );
+/**
+ * Get terms from an ajax query.
+ * The taxonomy is passed via JS on select2_query_args filter.
+ *
+ * @since 0.1.0
+ *
+ * @param array $args Field args.
+ *
+ * @return mixed
+ */
+function mai_acf_get_terms( $args ) {
+	$args['taxonomy'] = [];
+	$taxonomies       = mai_get_acf_request( 'taxonomy' );
+
+	if ( ! $taxonomies ) {
+		return $args;
+	}
+
+	foreach ( (array) $taxonomies as $taxonomy ) {
+		$args['taxonomy'][] = sanitize_text_field( wp_unslash( $taxonomy ) );
+	}
+
+	return $args;
+}
+
+add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_parent', 'mai_acf_get_term_parents', 10, 1 );
+/**
+ * Get taxonomies from an ajax query.
+ * The taxonomy is passed via JS on select2_query_args filter.
+ *
+ * @since 0.1.0
+ *
+ * @param array $args Field args.
+ *
+ * @return mixed
+ */
+function mai_acf_get_term_parents( $args ) {
+	$args['taxonomy'] = [];
+	$taxonomies       = mai_get_acf_request( 'taxonomy' );
+
+	if ( ! $taxonomies ) {
+		return $args;
+	}
+
+	foreach ( (array) $taxonomies as $taxonomy ) {
+		$args['taxonomy'][] = sanitize_text_field( wp_unslash( $taxonomy ) );
+	}
+
+	foreach ( $args['taxonomy'] as $index => $taxonomy ) {
+		if ( ! is_taxonomy_hierarchical( $taxonomy ) ) {
+			unset( $args['taxonomy'][ $index ] );
+		}
+
+		continue;
+	}
+
+	return $args;
+}
+
+add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_include', 'mai_acf_get_terms_by_id', 10, 3 );
+add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_exclude', 'mai_acf_get_terms_by_id', 10, 3 );
+add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_parent',  'mai_acf_get_terms_by_id', 10, 3 );
+/**
+ * Allow searching for terms by ID.
+ *
+ * @since 2.22.0
+ *
+ * @link https://www.powderkegwebdesign.com/fantastic-way-allow-searching-id-advanced-custom-fields-objects/
+ *
+ * @return array
+ */
+function mai_acf_get_terms_by_id( $args, $field, $post_id ) {
+	$query = ! empty( $args['search'] ) ? $args['search'] : false;
+
+	if ( ! $query ) {
+		return $args;
+	}
+
+	// Bail if not a numeric query.
+ 	if ( ! is_numeric( $query ) ) {
+		return $args;
+	}
+
+	// Set the term ID in the query.
+	$args['include'] = [ $query ];
+
+	// Unset the actual search param.
+	unset( $args['search'] );
+
+	return $args;
+}
+
+/**
+ * Get taxonomy choices for select field
+ *
+ * @since 0.1.0
+ *
+ * @return array
+ */
+function mai_get_taxonomy_choices() {
+	$choices = [];
+
+	$taxonomies = get_taxonomies(
+		[
+			'public' => true,
+		],
+		'objects',
+		'or'
+	);
+
+	if ( $taxonomies ) {
+
+		// Remove taxonomies we don't want.
+		unset( $taxonomies['post_format'] );
+		unset( $taxonomies['product_shipping_class'] );
+		unset( $taxonomies['yst_prominent_words'] );
+
+		foreach ( $taxonomies as $name => $taxonomy ) {
+			$choices[ $name ] = $taxonomy->label;
+		}
+	}
+
+	return $choices;
+}
+
+/**
+ * Get taxonomy choices from the current post type.
+ * The post_type is passed via JS on select2_query_args filter.
+ *
+ * @since 0.1.0
+ * @since 2.18.0 Added $fallback.
+ *
+ * @param bool $fallback Whether to use fallback choices.
+ *
+ * @return array
+ */
+function mai_get_post_types_taxonomy_choices( $fallback = true ) {
+	$choices = [];
+
+	if ( ! ( is_admin() || is_customize_preview() ) ) {
+		return $choices;
+	}
+
+	$post_types = mai_get_acf_request( 'post_type' );
+
+	if ( ! $post_types && $fallback ) {
+		$taxonomies = get_taxonomies( [], 'objects' );
+		$choices    = wp_list_pluck( $taxonomies, 'label', 'name' );
+
+		return $choices;
+	}
+
+	return mai_get_taxonomy_choices_from_post_types( $post_types );
+}
+
+/**
+ * Get taxonomy choices from an array of post types.
+ *
+ * @since 0.3.3
+ *
+ * @param array $post_types Array of registered post_type names.
+ *
+ * @return array
+ */
+function mai_get_taxonomy_choices_from_post_types( $post_types = [] ) {
+	$choices = [];
+
+	if ( ! $post_types ) {
+		return $choices;
+	}
+
+	foreach ( (array) $post_types as $post_type ) {
+		$taxonomies = get_object_taxonomies( sanitize_text_field( wp_unslash( $post_type ) ), 'objects' );
+
+		if ( $taxonomies ) {
+
+			// Remove taxonomies we don't want.
+			unset( $taxonomies['post_format'] );
+			unset( $taxonomies['product_shipping_class'] );
+			unset( $taxonomies['yst_prominent_words'] );
+
+			foreach ( $taxonomies as $name => $taxo ) {
+				$choices[ $name ] = $taxo->label;
+			}
+		}
+	}
+
+	return $choices;
+}
+
+/**
+ * Get term choices from a taxonomy
+ *
+ * @since 0.3.3
+ *
+ * @param string $taxonomy A registered taxonomy name.
+ *
+ * @return array
+ */
+function mai_get_term_choices_from_taxonomy( $taxonomy = '' ) {
+	$choices = [];
+	$terms   = get_terms(
+		$taxonomy,
+		[
+			'hide_empty' => false,
+		]
+	);
+
+	if ( ! $terms ) {
+		return $choices;
+	}
+
+	foreach ( $terms as $term ) {
+		$choices[ $term->term_id ] = $term->name;
+	}
+
+	return $choices;
+}
+
 /**
  * Gets field defaults.
  * TODO: Move these to config.php?

@@ -2,7 +2,7 @@
 // they are generated on the container for many uses,
 // but Mai Columns generates the sizes on the column itself.
 // Even worse trickery in editor.scss.
-// It should all be easier with ACF block API v2 coming in 2.16.
+// It should all be easier with ACF block API v2 coming in ACF 6.0.
 .has-columns,
 .is-column {
 	--flex-basis: calc((100% * var(--columns) - (var(--column-gap) * (1 - var(--columns)))) - 0.025px); // Removes 0.025px to prevent margin collapsing.

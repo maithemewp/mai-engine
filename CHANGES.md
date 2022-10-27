@@ -1,5 +1,28 @@
 # Changelog
 
+## 2.25.0 (10/27/22)
+* Added: New `relative` and `relative_max` attributes for `[mai_date]` shortcode. Allows you to show "2 days ago" as the date for a limited amount of time after publishing.
+* Added: New setting in Mai Post/Term Grid blocks to add text when there are no entry results.
+* Added: [Performance] New setting in Customizer > Theme Settings > Performance to preload the main heading and body font files when Google fonts are the chosen font families. This setting defaults to on.
+* Added: Using a dark body background color is much more usable on the front end and in the editor.
+* Added: [SEO] Category/Tag/Term featured image is now used as Open Graph image.
+* Added: [Performance] Removed lazy loading and added srcset on site header logos.
+* Changed: [Performance] Now using woff2 font files which are significantly smaller and more performant.
+* Changed: [Performance] Now preloading the logo file(s).
+* Changed: Updated ACF Pro to v6.0.0. Loading Mai blocks in the editor should now be significantly faster.
+* Changed: Updated all blocks to use new block.json format to register.
+* Changed: Rebuilt the output logic for Mai Columns with new features available in ACF v6.
+* Changed: ACF Pro will now remain active if installed standalone and running a version newer than what is in Mai Engine.
+* Fixed: Remove left margin on list blocks when setting a background color.
+* Fixed: Button link text and arrow were not centered when a button was set to a larger width.
+* Fixed: Better handling of dark background colors for body and other areas, as well as better handling of text color in these scenarios.
+* Fixed: Site header items now always remain in the same row on mobile.
+* Fixed: Pagination arrows not aligning to the edge when adjacent post does not have a featured image.
+* Fixed: Custom colors in the config are now correctly shown as options in ACF color picker fields.
+* Fixed: Mai Post Grid taxonomy relation not working in some configurations.
+* Fixed: Error when aria-current attribute is not available on a menu item.
+* Fixed: FacetWP pagination now uses arrows from config.
+
 ## 2.24.0 (8/9/22)
 * Added: [Performance] New setting to remove jQuery Migrate script. Default is on (removes script).
 * Changed: Previous and next icons are now added and overridden via the `config.php` file with automatically added CSS custom properties.
