@@ -69,7 +69,8 @@ function mai_get_plugin_dependencies() {
 		$total_demos = count( mai_get_config( 'demos' ) );
 
 		foreach ( $plugins as $plugin ) {
-			$plugin_demos = count( $plugin['demos'] );
+			$demos        = isset( $plugin['demos'] ) ? $plugin['demos'] : [];
+			$plugin_demos = count( $demos );
 
 			if ( $total_demos === $plugin_demos && ! is_plugin_active( $plugin['slug'] ) ) {
 				$plugin['host'] = isset( $plugin['host'] ) ? $plugin['host'] : 'WordPress';
