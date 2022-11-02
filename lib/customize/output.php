@@ -608,6 +608,10 @@ function mai_do_classic_editor_styles() {
 		$css    .= strip_tags( $dynamic );
 	}
 
+	if ( mai_has_boxed_container() ) {
+		$css .= '.mce-content-body {--body-background-color: var(--color-white);}';
+	}
+
 	if ( $css ) {
 		header( 'Content-Type: text/css; charset=UTF-8' );
 		echo $css;
