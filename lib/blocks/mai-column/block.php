@@ -43,7 +43,7 @@ function mai_register_column_block() {
  *
  * @return void
  */
-function mai_do_column_block( $attributes, $content = '', $is_preview = false, $post_id = 0, $wp_block, $context ) {
+function mai_do_column_block( $attributes, $content, $is_preview, $post_id, $wp_block, $context ) {
 	$args  = [
 		'preview'               => $is_preview,
 		'class'                 => isset( $attributes['className'] ) ? $attributes['className']: '',

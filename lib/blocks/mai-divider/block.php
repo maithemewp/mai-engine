@@ -44,7 +44,7 @@ function mai_register_divider_block() {
  *
  * @return void
  */
-function mai_do_divider_block( $block, $content = '', $is_preview = false, $post_id = 0 ) {
+function mai_do_divider_block( $block, $content, $is_preview, $post_id ) {
 	$atts = [
 		'style'           => get_field( 'style' ),
 		'height'          => get_field( 'height' ),
