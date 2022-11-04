@@ -1,4 +1,6 @@
 .wp-block-buttons {
+	--row-gap: var(--spacing-xxs);
+	--column-gap: var(--spacing-xxs);
 	padding-top: var(--spacing-xs);
 
 	// Backwards compatibility since WP changed to flex

@@ -1052,6 +1052,9 @@ class Mai_Entry {
 			$excerpt = mai_get_content_limit( $excerpt, $this->args['content_limit'] );
 		}
 
+		// Filter for entry excerpt.
+		$excerpt = apply_filters( 'mai_entry_excerpt', $excerpt, $this->args, $this->entry );
+
 		if ( ! $excerpt ) {
 			return;
 		}

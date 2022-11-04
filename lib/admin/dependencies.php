@@ -56,6 +56,7 @@ function mai_load_dependencies() {
  */
 function mai_get_plugin_dependencies() {
 	$dependencies         = [];
+	$plugins              = mai_get_config_plugins();
 	$setup_wizard_options = get_option( 'mai-setup-wizard', [] );
 
 	// Only if setup wizard was not run.
@@ -65,11 +66,11 @@ function mai_get_plugin_dependencies() {
 			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 		}
 
-		$plugins     = mai_get_config_plugins();
 		$total_demos = count( mai_get_config( 'demos' ) );
 
 		foreach ( $plugins as $plugin ) {
-			$plugin_demos = count( $plugin['demos'] );
+			$demos        = isset( $plugin['demos'] ) ? $plugin['demos'] : [];
+			$plugin_demos = count( $demos );
 
 			if ( $total_demos === $plugin_demos && ! is_plugin_active( $plugin['slug'] ) ) {
 				$plugin['host'] = isset( $plugin['host'] ) ? $plugin['host'] : 'WordPress';
@@ -78,6 +79,25 @@ function mai_get_plugin_dependencies() {
 		}
 	}
 
+	// Gets required plugins.
+	foreach( $plugins as $plugin ) {
+
+		if ( ! ( isset( $plugin['required'] ) || isset( $plugin['optional'] ) ) ) {
+			continue;
+		}
+
+		if ( isset( $plugin['required'] ) && ! $plugin['required'] ) {
+			continue;
+		}
+
+		if ( isset( $plugin['optional'] ) && $plugin['optional'] ) {
+			continue;
+		}
+
+		$dependencies[] = $plugin;
+	}
+
+	// Handles WooCommerce dependencies.
 	if ( class_exists( 'WooCommerce' ) || isset( $dependencies['slug']['woocommerce/woocommerce.php'] ) ) {
 		$dependencies[] = [
 			'name'     => 'Genesis Connect for WooCommerce',

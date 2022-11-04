@@ -225,6 +225,7 @@ function mai_get_wp_query_defaults() {
 		'meta_keys_relation'  => 'AND',
 		'current_children'    => 0,
 		'post_parent__in'     => '',
+		// 'author__in'          => '',
 		'posts_per_page'      => 12,
 		'offset'              => 0,
 		'date_after'          => '',
@@ -266,6 +267,7 @@ function mai_get_wp_query_sanitized( $args ) {
 		'meta_keys_relation'  => 'esc_html',
 		'current_children'    => 'mai_sanitize_bool',
 		'post_parent__in'     => 'absint',
+		// 'author__in'          => 'absint',
 		'posts_per_page'      => 'absint',
 		'offset'              => 'absint',
 		'date_after'          => 'esc_html',
@@ -303,6 +305,18 @@ function mai_get_wp_query_fields() {
 	if ( ! is_null( $fields ) ) {
 		return $fields;
 	}
+
+	// $authors   = [];
+	// $roles     = wp_roles();
+	// $roles     = $roles->roles;
+
+	// foreach ( $roles as $role => $capabilities ) {
+	// 	if ( ! $capabilities['edit_posts'] ) {
+	// 		continue;
+	// 	}
+
+	// 	$authors[] = $role;
+	// }
 
 	$defaults  = mai_get_wp_query_defaults();
 	$date_info = mai_get_block_setting_info_link( 'https://help.bizbudding.com/article/176-mai-grid-blocks' );
@@ -615,6 +629,17 @@ function mai_get_wp_query_fields() {
 				],
 			],
 		],
+		// [
+		// 	'key'           => 'mai_grid_block_post_author_in',
+		// 	'name'          => 'author__in',
+		// 	'label'         => esc_html__( 'Authors', 'mai-engine' ),
+		// 	'type'          => 'user',
+		// 	'instructions'  => '',
+		// 	'role'          => $authors,
+		// 	'multiple'      => 1,
+		// 	'allow_null'    => 1,
+		// 	'return_format' => 'id',
+		// ],
 		[
 			'key'               => 'mai_grid_block_posts_per_page',
 			'name'              => 'posts_per_page',

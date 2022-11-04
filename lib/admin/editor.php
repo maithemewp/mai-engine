@@ -75,10 +75,17 @@ add_action( 'admin_head', 'mai_add_editor_inline_css' );
  * Adds inline CSS from PHP data.
  *
  * @since 2.25.0
+ * @since TBD
  *
  * @return void
  */
 function mai_add_editor_inline_css() {
+	$screen = get_current_screen();
+
+	if ( ! $screen || 'post' !== $screen->base ) {
+		return;
+	}
+
 	$colors = mai_get_colors();
 
 	if ( ! $colors ) {
