@@ -81,6 +81,7 @@ function mai_get_plugin_dependencies() {
 
 	// Gets required plugins.
 	foreach( $plugins as $plugin ) {
+
 		if ( ! ( isset( $plugin['required'] ) || isset( $plugin['optional'] ) ) ) {
 			continue;
 		}

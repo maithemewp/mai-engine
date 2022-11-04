@@ -1,7 +1,8 @@
 # Changelog
 
-## 2.25.2 ()
+## 2.25.2 (11/4/22)
 * Added: [Developers] New `mai_entry_excerpt` filter to add excerpt content even if there is not manual excerpt added.
+* Fixed: Compatibility issues with WP 6.1 that was affecting alignment on buttons, galleries, and likely other blocks.
 * Fixed: WYSIWYG/Classic editor background color should stay white when using boxed container setting on your site.
 * Fixed: Inline block editor CSS was being added to pages that weren't using the block editor, and caused some compatibilty issues with some other plugins.
 
