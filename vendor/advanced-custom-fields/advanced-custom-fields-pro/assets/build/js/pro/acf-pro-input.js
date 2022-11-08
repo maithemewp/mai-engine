@@ -1703,7 +1703,13 @@
       this.off('mouseover');
     },
     onChangeField: function (e, $el) {
-      const $row = $el.closest('.acf-row');
+      const $target = $(e.delegateTarget);
+      let $row = $el.closest('.acf-row');
+
+      if ($row.closest('.acf-field-repeater').data('key') !== $target.data('key')) {
+        $row = $row.parent().closest('.acf-row');
+      }
+
       this.updateRowStatus($row, 'changed');
     },
     updateRowStatus: function ($row, status) {
@@ -1713,8 +1719,15 @@
         return;
       }
 
+      const parent_key = $row.parents('.acf-field-repeater').data('key');
+
+      if (this.parent() && parent_key !== this.get('key')) {
+        return;
+      }
+
       const row_id = $row.data('id');
-      const status_name = `acf[${this.get('key')}][${row_id}][acf_${status}]`;
+      const input_name = this.$el.find('.acf-repeater-hidden-input:first').attr('name');
+      const status_name = `${input_name}[${row_id}][acf_${status}]`;
       const status_input = `<input type="hidden" class="acf-row-status" name="${status_name}" value="${data}" />`;
 
       if (!$row.hasClass('acf-' + status)) {
