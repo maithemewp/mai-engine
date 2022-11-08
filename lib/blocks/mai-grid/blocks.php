@@ -177,7 +177,7 @@ function mai_get_grid_field_values( $type ) {
  *
  * @return void
  */
-function mai_do_post_grid_block( $attributes, $content = '', $is_preview = false, $post_id = 0, $wp_block = null, $context = false ) {
+function mai_do_post_grid_block( $attributes, $content, $is_preview, $post_id, $wp_block, $context ) {
 	// TODO: block id?
 	mai_do_grid_block( 'post', $attributes, $content, $is_preview, $post_id, $wp_block, $context );
 }
@@ -196,7 +196,7 @@ function mai_do_post_grid_block( $attributes, $content = '', $is_preview = false
  *
  * @return void
  */
-function mai_do_term_grid_block( $attributes, $content = '', $is_preview = false, $post_id = 0, $wp_block = null, $context = false ) {
+function mai_do_term_grid_block( $attributes, $content, $is_preview, $post_id, $wp_block, $context ) {
 	// TODO: block id?
 	mai_do_grid_block( 'term', $attributes, $content, $is_preview, $post_id, $wp_block, $context );
 }

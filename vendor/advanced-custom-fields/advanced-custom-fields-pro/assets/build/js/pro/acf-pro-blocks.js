@@ -500,7 +500,7 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
 
     const nodeAttrs = {};
 
-    if (level === 1) {
+    if (level === 1 && nodeName !== 'ACFInnerBlocks') {
       // Top level (after stripping away the container div), create a ref for passing through to ACF's JS API.
       nodeAttrs.ref = React.createRef();
     }
@@ -1023,10 +1023,18 @@ const md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
       };
 
       if (this.renderMethod === 'jsx') {
-        state.jsx = acf.parseJSX(html, getBlockVersion(this.props.name)); // If we've got an object (as an array) use the first ref.
+        state.jsx = acf.parseJSX(html, getBlockVersion(this.props.name)); // Handle templates which don't contain any valid JSX parsable elements.
 
-        if (state.jsx[0]) {
-          state.ref = state.jsx[0].ref;
+        if (!state.jsx) {
+          console.warn('Your ACF block template contains no valid HTML elements. Appending a empty div to prevent React JS errors.');
+          state.html += '<div></div>';
+          state.jsx = acf.parseJSX(state.html, getBlockVersion(this.props.name));
+        } // If we've got an object (as an array) find the first valid React ref.
+
+
+        if (Array.isArray(state.jsx)) {
+          let refElement = state.jsx.find(element => React.isValidElement(element));
+          state.ref = refElement.ref;
         } else {
           state.ref = state.jsx.ref;
         }

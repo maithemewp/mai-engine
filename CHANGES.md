@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.25.3 (11/8/22)
+* Changed: Updated ACF Pro to 6.0.4
+* Fixed: PHP warning from required parameter folowing optional parameter in some blocks.
+
 ## 2.25.2 (11/4/22)
 * Added: [Developers] New `mai_entry_excerpt` filter to add excerpt content even if there is not manual excerpt added.
 * Fixed: Compatibility issues with WP 6.1 that was affecting alignment on buttons, galleries, and likely other blocks.

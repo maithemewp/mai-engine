@@ -37,7 +37,7 @@ function mai_register_icon_block() {
  *
  * @return void
  */
-function mai_do_icon_block( $block, $content = '', $is_preview = false, $post_id = 0 ) {
+function mai_do_icon_block( $block, $content, $is_preview, $post_id ) {
 	$args     = [];
 	$defaults = mai_get_icon_default_args();
 
