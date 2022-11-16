@@ -1,3 +1,6 @@
 .wp-block-columns {
+	--row-gap: var(--spacing-lg);
+	--column-gap: var(--spacing-lg);
+	gap: var(--row-gap) var(--column-gap);
 	margin-bottom: 0 !important; // Why the heck does WP add margin bottom here when we have spacer block?
 }

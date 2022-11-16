@@ -1,7 +1,6 @@
 .is-layout-flex {
 	display: flex;
 	flex-wrap: wrap;
-	gap: var(--row-gap) var(--column-gap);
 }
 
 @include mq(md) {
