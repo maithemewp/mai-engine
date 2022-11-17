@@ -43,6 +43,13 @@ function mai_add_hide_elements_metabox() {
 						'value'    => true, // Currently unused.
 					],
 				],
+				[
+					[
+						'param'    => 'mai_public_taxonomy',
+						'operator' => '==', // Currently unused.
+						'value'    => true, // Currently unused.
+					],
+				],
 			],
 			'fields'                => [
 				[
@@ -76,6 +83,28 @@ function mai_acf_public_post_type_rule_match( $result, $rule, $screen, $field_gr
 	return $post_types && isset( $screen['post_type'] ) && isset( $post_types[ $screen['post_type'] ] );
 }
 
+add_filter( 'acf/location/rule_match/mai_public_taxonomy', 'mai_acf_public_taxonomy_rule_match', 10, 4 );
+/**
+ * Shows "Hide Elements" metabox on all public taxonomys types.
+ *
+ * @since TBD
+ *
+ * @param bool      $result Whether the rule matches.
+ * @param array     $rule   Current rule to match (param, operator, value).
+ * @param WP_Screen $screen The current screen.
+ *
+ * @return bool
+ */
+function mai_acf_public_taxonomy_rule_match( $result, $rule, $screen, $field_group ) {
+	$taxonomies = get_taxonomies( [ 'public' => 'true' ], 'names' );
+
+	if ( class_exists( 'WooCommerce' ) ) {
+		unset( $taxonomies['product_cat'] );
+	}
+
+	return $taxonomies && isset( $screen['taxonomy'] ) && isset( $taxonomies[ $screen['taxonomy'] ] );
+}
+
 add_filter( 'acf/load_field/key=hide_elements', 'mai_load_hide_elements_field' );
 /**
  * Loads "Hide Elements" metabox choices.
@@ -91,6 +120,7 @@ function mai_load_hide_elements_field( $field ) {
 	$post_type   = mai_get_admin_post_type();
 	$default     = mai_get_config( 'settings' )['page-header']['single'];
 	$page_header = mai_get_option( 'page-header-single', $default );
+	$singular    = mai_is_type_single();
 
 	$field['choices']['before_header'] = __( 'Before Header', 'mai-engine' );
 	$field['choices']['site_header']   = __( 'Site Header', 'mai-engine' );
@@ -107,15 +137,23 @@ function mai_load_hide_elements_field( $field ) {
 	$field['choices']['after_header']      = __( 'After Header', 'mai-engine' );
 	$field['choices']['page_header']       = __( 'Page Header', 'mai-engine' );
 	$field['choices']['breadcrumbs']       = __( 'Breadcrumbs', 'mai-engine' );
-	$field['choices']['featured_image']    = __( 'Featured Image', 'mai-engine' );
-	$field['choices']['entry_title']       = __( 'Entry Title', 'mai-engine' );
-	$field['choices']['header_meta']       = __( 'Header Meta', 'mai-engine' );
-	$field['choices']['entry_excerpt']     = __( 'Entry Excerpt', 'mai-engine' );
-	$field['choices']['custom_content']    = __( 'Custom Content', 'mai-engine' );
-	// $field['choices']['custom_content_2']  = __( 'Custom Content 2', 'mai-engine' );
-	$field['choices']['footer_meta']       = __( 'Footer Meta', 'mai-engine' );
-	$field['choices']['after_entry']       = __( 'After Entry', 'mai-engine' );
-	$field['choices']['author_box']        = __( 'Author Box', 'mai-engine' );
+
+	if ( $singular ) {
+		$field['choices']['featured_image'] = __( 'Featured Image', 'mai-engine' );
+	}
+
+	$field['choices']['entry_title']   = __( 'Entry Title', 'mai-engine' );
+	$field['choices']['entry_excerpt'] = __( 'Entry Excerpt', 'mai-engine' );
+
+	if ( $singular ) {
+		$field['choices']['header_meta']      = __( 'Header Meta', 'mai-engine' );
+		$field['choices']['custom_content']   = __( 'Custom Content', 'mai-engine' );
+		// $field['choices']['custom_content_2'] = __( 'Custom Content 2', 'mai-engine' );
+		$field['choices']['footer_meta']      = __( 'Footer Meta', 'mai-engine' );
+		$field['choices']['after_entry']      = __( 'After Entry', 'mai-engine' );
+		$field['choices']['author_box']       = __( 'Author Box', 'mai-engine' );
+	}
+
 	$field['choices']['before_footer']     = __( 'Before Footer', 'mai-engine' );
 	$field['choices']['footer']            = __( 'Footer', 'mai-engine' );
 	$field['choices']['footer_credits']    = __( 'Footer Credits', 'mai-engine' );
