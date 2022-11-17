@@ -98,10 +98,6 @@ add_filter( 'acf/location/rule_match/mai_public_taxonomy', 'mai_acf_public_taxon
 function mai_acf_public_taxonomy_rule_match( $result, $rule, $screen, $field_group ) {
 	$taxonomies = get_taxonomies( [ 'public' => 'true' ], 'names' );
 
-	if ( class_exists( 'WooCommerce' ) ) {
-		unset( $taxonomies['product_cat'] );
-	}
-
 	return $taxonomies && isset( $screen['taxonomy'] ) && isset( $taxonomies[ $screen['taxonomy'] ] );
 }
 
