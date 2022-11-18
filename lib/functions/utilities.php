@@ -1345,7 +1345,7 @@ function mai_get_date( $args ) {
  *
  * @return string
  */
-function mai_get_rating( $args ) {
+function mai_get_rating( $args = [] ) {
 	$args = shortcode_atts( [
 		'value' => 5,
 		'total' => 5,
