@@ -96,7 +96,9 @@ add_filter( 'acf/location/rule_match/mai_public_taxonomy', 'mai_acf_public_taxon
  * @return bool
  */
 function mai_acf_public_taxonomy_rule_match( $result, $rule, $screen, $field_group ) {
-	$taxonomies = get_taxonomies( [ 'public' => 'true' ], 'names' );
+	$current    = get_current_screen();
+	$term       = isset( $current->base ) && 'term' === $current->base;
+	$taxonomies = $term ? get_taxonomies( [ 'public' => 'true' ], 'names' ) : [];
 
 	return $taxonomies && isset( $screen['taxonomy'] ) && isset( $taxonomies[ $screen['taxonomy'] ] );
 }
@@ -113,10 +115,10 @@ add_filter( 'acf/load_field/key=hide_elements', 'mai_load_hide_elements_field' )
  */
 function mai_load_hide_elements_field( $field ) {
 	$field['choices'] = [];
-	$post_type   = mai_get_admin_post_type();
 	$default     = mai_get_config( 'settings' )['page-header']['single'];
 	$page_header = mai_get_option( 'page-header-single', $default );
-	$singular    = mai_is_type_single();
+	$current     = get_current_screen();
+	$singular    = isset( $current->base ) && 'post' === $current->base;
 
 	$field['choices']['before_header'] = __( 'Before Header', 'mai-engine' );
 	$field['choices']['site_header']   = __( 'Site Header', 'mai-engine' );
