@@ -31,13 +31,8 @@ function mai_render_template_parts() {
 		$after     = isset( $template_part['after'] ) ? $template_part['after'] : '';
 
 		if ( $hook && ! mai_is_element_hidden( mai_convert_case( $slug ) ) ) {
-
-			if ( $condition && is_callable( $condition ) && ! $condition() ) {
-				continue;
-			}
-
-			add_action( $hook, function() use ( $slug, $before, $after ) {
-				mai_render_template_part( $slug, $before, $after );
+			add_action( $hook, function() use ( $slug, $before, $after, $condition ) {
+				mai_render_template_part( $slug, $before, $after, $condition );
 			}, $priority );
 		}
 	}

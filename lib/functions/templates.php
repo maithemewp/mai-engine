@@ -345,17 +345,23 @@ function mai_template_part_exists( $slug ) {
  * Renders the template part with the given slug.
  *
  * @since 2.0.1
+ * @since TBD Added $condition param.
  *
- * @param string $slug   Template part slug.
- * @param string $before Before content markup.
- * @param string $after  After content markup.
+ * @param string      $slug      Template part slug.
+ * @param string      $before    Before content markup.
+ * @param string      $after     After content markup.
+ * @param string|bool $condition Whether to show the template part.
  *
  * @return void
  */
-function mai_render_template_part( $slug, $before = '', $after = '' ) {
+function mai_render_template_part( $slug, $before = '', $after = '', $condition = '' ) {
 	$template_part = mai_get_template_part( $slug );
 
 	if ( ! $template_part ) {
+		return;
+	}
+
+	if ( $condition && is_callable( $condition ) && ! $condition() ) {
 		return;
 	}
 
