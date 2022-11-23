@@ -1896,7 +1896,7 @@ function mai_get_string_between_strings( $string, $starting_string, $ending_stri
  *
  * @return bool
  */
-function mai_string_starts_width( $haystack, $needle ) {
+function mai_string_starts_with( $haystack, $needle ) {
 	// PHP 8 has this already.
 	if ( function_exists( 'str_starts_with' ) ) {
 		return str_starts_with( $haystack, $needle );
