@@ -1,4 +1,4 @@
-.wp-block-navigation ul,
-.wp-block-navigation ul li {
-	list-style: none;
+.wp-block-navigation__container {
+	--list-item-margin: 0;
+	gap: var(--spacing-xs) var(--spacing-lg);
 }
