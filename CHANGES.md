@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.25.4 (11/29/22)
+* Added: Hide Elements metabox now available on Category, Tag, and Term archives.
+* Changed: Updated ACF Pro to 6.0.5
+* Changed: Minor CSS tweaks around WP's new is-layout-{type} classes.
+* Fixed: Division by zero error when using an SVG logo in some configurations.
+* Fixed: Mai Columns vertical alignment setting was not working in the editor.
+* Fixed: Logo was dimming on hover if using a dark site header background color.
+* Fixed: Gap was too large on Navigation menu block when inside Mai Columns.
+
 ## 2.25.3 (11/8/22)
 * Changed: Updated ACF Pro to 6.0.4
 * Fixed: PHP warning from required parameter following optional parameter in some blocks.
