@@ -1027,7 +1027,7 @@ class Mai_Entry {
 			case 'post':
 				if ( 'single' === $this->context ) {
 					// Manual excerpts only, on single posts.
-					$excerpt = has_excerpt() && ! mai_is_element_hidden( 'entry_excerpt', $this->id ) ? get_the_excerpt() : '';
+					$excerpt = has_excerpt( $this->id ) && ! mai_is_element_hidden( 'entry_excerpt', $this->id ) ? get_the_excerpt( $this->id ) : '';
 				} else {
 					$excerpt = get_the_excerpt( $this->id );
 
