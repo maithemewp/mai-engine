@@ -57,6 +57,30 @@ function mai_add_taxonomy_opengraph_image() {
 	printf( '<meta property="og:image:type" content="image/%s" class="mai-meta-tag">', $ext );
 }
 
+add_action( 'genesis_before', 'mai_maybe_hide_archive_elements' );
+/**
+ * Hides term archive elements if Hide Elements has them hidden.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_maybe_hide_archive_elements() {
+	if ( ! ( is_category() || is_tag() || is_tax() ) ) {
+		return;
+	}
+
+	if ( mai_is_element_hidden( 'entry_title' ) ) {
+		remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_headline', 10, 3 );
+	}
+
+	if ( mai_is_element_hidden( 'entry_excerpt' ) ) {
+		remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_open', 5 );
+		remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_intro_text', 12 );
+		remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_close', 15 );
+	}
+}
+
 add_action( 'genesis_before', 'mai_maybe_hide_blog_page_title' );
 /**
  * Hides blog page title if static blog page setting is checked.

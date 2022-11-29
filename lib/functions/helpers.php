@@ -834,36 +834,82 @@ function mai_array_map_recursive( callable $func, array $array ) {
  *
  * @since 0.3.0
  * @since 2.5.0 Add $post_id to use outside of the loop.
+ * @since TBD Change $post_id to $id and added support for term IDs.
  *
  * @param bool $element Element to check.
- * @param int  $post_id The post ID.
+ * @param int  $id      The ID.
  *
  * @return mixed
  */
-function mai_is_element_hidden( $element, $post_id = '' ) {
-	if ( ! $post_id ) {
-		if ( is_singular() ) {
-			$post_id = get_the_ID();
+function mai_is_element_hidden( $element, $id = '' ) {
+	$type = 'post';
 
-		} elseif ( 'page' === get_option( 'show_on_front' ) ) {
-			if ( is_front_page() ) {
-				$post_id = get_option( 'page_on_front' );
-			} elseif ( is_home() ) {
-				$post_id = get_option( 'page_for_posts' );
-			} elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
-				$post_id = get_option( 'woocommerce_shop_page_id' );
-			}
+	if ( ! $id ) {
+		if ( is_singular() ) {
+			$id = get_the_ID();
+		}
+		elseif ( 'page' === get_option( 'show_on_front' ) && is_home() ) {
+			$id = get_option( 'page_for_posts' );
+		}
+		elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
+			$id = get_option( 'woocommerce_shop_page_id' );
+		}
+		elseif ( is_category() || is_tag() || is_tax() ) {
+			$type = 'term';
+			$id   = get_queried_object_id();
 		}
 	}
 
-	if ( ! $post_id ) {
+	if ( ! $id ) {
 		return false;
 	}
 
-	// Can't be static, entry-title breaks.
-	$elements = get_post_meta( $post_id, 'hide_elements', true );
+	// Get elements.
+	$elements = mai_get_hidden_elements( $id, $type );
 
-	return in_array( $element, (array) $elements, true );
+	// Set value.
+	$hidden = in_array( $element, (array) $elements, true );
+
+	// Filter.
+	$hidden = (bool) apply_filters( 'mai_element_hidden', $hidden, $element );
+
+	return $hidden;
+}
+
+/**
+ * Gets hidden elements for a single page.
+ * This may run on single and term archives.
+ *
+ * @since TBD
+ *
+ * @param int    $id   The object ID.
+ * @param string $type The object type.
+ *
+ * @return array
+ */
+function mai_get_hidden_elements( $id, $type = 'post' ) {
+	static $elements = null;
+
+	if ( ! is_null( $elements ) ) {
+		return $elements;
+	}
+
+	$elements = [];
+
+	switch ( $type ) {
+		case 'post':
+			$elements = get_post_meta( $id, 'hide_elements', true );
+		break;
+		case 'term':
+			$elements = get_term_meta( $id, 'hide_elements', true );
+		break;
+	}
+
+	// Filter.
+	$elements = apply_filters( 'mai_hidden_elements', $elements );
+	$elements = array_map( 'sanitize_key', (array) $elements );
+
+	return $elements;
 }
 
 /**

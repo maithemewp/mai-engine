@@ -947,7 +947,9 @@ function mai_get_header_shrink_offset() {
 	}
 
 	$source_width       = isset( $source[1] ) ? absint( $source[1] ) : 1;
+	$source_width       = max( $source_width, 1 );
 	$source_height      = isset( $source[2] ) ? absint( $source[2] ) : 1;
+	$source_height      = max( $source_height, 1 );
 	$customizer_widths  = mai_get_option( 'logo-width', $config['width'] );
 	$customizer_widths  = array_map( 'absint', $customizer_widths );
 
@@ -1343,7 +1345,7 @@ function mai_get_date( $args ) {
  *
  * @return string
  */
-function mai_get_rating( $args ) {
+function mai_get_rating( $args = [] ) {
 	$args = shortcode_atts( [
 		'value' => 5,
 		'total' => 5,
@@ -1894,7 +1896,7 @@ function mai_get_string_between_strings( $string, $starting_string, $ending_stri
  *
  * @return bool
  */
-function mai_string_starts_width( $haystack, $needle ) {
+function mai_string_starts_with( $haystack, $needle ) {
 	// PHP 8 has this already.
 	if ( function_exists( 'str_starts_with' ) ) {
 		return str_starts_with( $haystack, $needle );

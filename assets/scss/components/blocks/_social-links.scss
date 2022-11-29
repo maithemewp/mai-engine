@@ -8,18 +8,4 @@
 			background-color: transparent;
 		}
 	}
-
-	&.alignleft {
-		float: none;
-	}
-
-	&.aligncenter {
-		justify-content: center;
-		float: none;
-	}
-
-	&.alignright {
-		justify-content: flex-end;
-		float: none;
-	}
 }

@@ -318,13 +318,28 @@ function mai_get_template_part_objects( $use_transient = true ) {
  * Checks whether the template part exists and has content.
  *
  * @since 2.0.1
+ * @since TBD Check condition.
  *
  * @param string $slug Template part slug.
  *
  * @return bool
  */
 function mai_has_template_part( $slug ) {
-	return mai_template_part_exists( $slug ) && mai_get_template_part( $slug );
+	if ( ! mai_template_part_exists( $slug ) ) {
+		return false;
+	}
+
+	if ( ! mai_get_template_part( $slug ) ) {
+		return false;
+	}
+
+	$parts = mai_get_config( 'template-parts' );
+
+	if ( isset( $parts[ $slug ]['condition'] ) && is_callable( $parts[ $slug ]['condition'] ) && ! $parts[ $slug ]['condition']() ) {
+		return false;
+	}
+
+	return true;
 }
 
 /**
@@ -353,16 +368,14 @@ function mai_template_part_exists( $slug ) {
  * @return void
  */
 function mai_render_template_part( $slug, $before = '', $after = '' ) {
-	$template_part = mai_get_template_part( $slug );
-
-	if ( ! $template_part ) {
+	if ( ! mai_has_template_part( $slug ) ) {
 		return;
 	}
 
 	do_action( "mai_before_{$slug}_template_part" );
 	echo $before;
 	do_action( "mai_before_{$slug}_template_part_content" );
-	echo mai_get_processed_content( $template_part );
+	echo mai_get_processed_content( mai_get_template_part( $slug ) );
 	do_action( "mai_after_{$slug}_template_part_content" );
 	echo $after;
 	do_action( "mai_after_{$slug}_template_part" );

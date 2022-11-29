@@ -43,7 +43,6 @@ function mai_page_header_setup() {
 		$description = get_term_meta( get_queried_object_id(), 'page_header_description', true );
 		$intro_text  = get_term_meta( get_queried_object_id(), 'intro_text', true );
 		$intro_text  = apply_filters( 'genesis_term_intro_text_output', $intro_text ?: '' );
-
 		if ( ! $description && $intro_text ) {
 			// Remove archive-description wrap and intro text if intro text is used in page header.
 			remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_open', 5 );
@@ -538,7 +537,7 @@ function mai_get_page_header_description() {
 
 		$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
 
-		if ( $term ) {
+		if ( $term && ! mai_is_element_hidden( 'entry_excerpt' ) ) {
 			$description = get_term_meta( $term->term_id, 'page_header_description', true );
 			$description = $description ? $description : get_term_meta( $term->term_id, 'intro_text', true ); // Fallback to intro text.
 			$description = apply_filters( 'genesis_term_intro_text_output', $description ? $description : '' );

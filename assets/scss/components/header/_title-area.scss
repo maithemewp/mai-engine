@@ -45,6 +45,8 @@
 }
 
 .custom-logo-link {
+	--link-filter: none; // For dark background header.
+	--link-filter-hover: none; // For dark background header.
 	--link-transition: var(--title-area-transition, var(--transition));
 	position: relative;
 	display: flex;
