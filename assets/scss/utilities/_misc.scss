@@ -63,6 +63,7 @@
 .is-sticky {
 	position: sticky !important;
 	top: var(--scroll-margin-top); // Respects sticky header height.
+	z-index: 9;
 }
 
 .is-circle,
