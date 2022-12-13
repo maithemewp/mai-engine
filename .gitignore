@@ -23,14 +23,10 @@ vendor/composer/xdebug-handler
 !vendor/kirki-framework
 !vendor/maithemewp
 !vendor/proteusthemes
-# vendor/symfony
-# !vendor/symfony
-# vendor/symfony/*
-# !vendor/symfony/polyfill-ctype
-# !vendor/symfony/polyfill-mbstring
-# !vendor/symfony/polyfill-php80
-# vendor/symfony/polyfill-ctype
-# vendor/symfony/polyfill-mbstring
-# vendor/symfony/polyfill-php80
+!vendor/symfony
+vendor/symfony/*
+!vendor/symfony/polyfill-ctype/
+!vendor/symfony/polyfill-mbstring/
+!vendor/symfony/polyfill-php80/
 !vendor/wpackagist-plugin
 !vendor/yahnis-elsts
