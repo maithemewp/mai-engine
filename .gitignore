@@ -25,8 +25,8 @@ vendor/composer/xdebug-handler
 !vendor/proteusthemes
 !vendor/symfony
 vendor/symfony/*
-!vendor/symfony/polyfill-ctype/
-!vendor/symfony/polyfill-mbstring/
-!vendor/symfony/polyfill-php80/
+!vendor/symfony/polyfill-ctype
+!vendor/symfony/polyfill-mbstring
+!vendor/symfony/polyfill-php80
 !vendor/wpackagist-plugin
 !vendor/yahnis-elsts
