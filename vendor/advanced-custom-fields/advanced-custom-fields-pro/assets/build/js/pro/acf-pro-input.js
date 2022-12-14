@@ -51,7 +51,6 @@
       return this.$('.tmpl-popup:last');
     },
     getPopupHTML: function () {
-      // vars
       var html = this.$popup().html();
       var $html = $(html);
 
@@ -65,7 +64,6 @@
 
       // modify popup
       $html.find('[data-layout]').each(function () {
-        // vars
         var $a = $(this);
         var min = $a.data('min') || 0;
         var max = $a.data('max') || 0;
@@ -80,7 +78,6 @@
 
         // min
         if (min && count < min) {
-          // vars
           var required = min - count;
           var title = acf.__('{required} {label} {identifier} required (min {min})');
           var identifier = acf._n('layout', 'layouts', required);
@@ -98,8 +95,6 @@
 
       // update
       html = $html.outerHTML();
-
-      // return
       return html;
     },
     getValue: function () {
@@ -139,7 +134,6 @@
       });
     },
     addCollapsed: function () {
-      // vars
       var indexes = preference.load(this.get('key'));
 
       // bail early if no collapsed
@@ -210,8 +204,6 @@
       if (this.allowAdd()) {
         return true;
       }
-
-      // vars
       var max = this.get('max');
       var text = acf.__('This field has a limit of {max} {label} {identifier}');
       var identifier = acf._n('layout', 'layouts', max);
@@ -226,8 +218,6 @@
         text: text,
         type: 'warning'
       });
-
-      // return
       return false;
     },
     onClickAdd: function (e, $el) {
@@ -304,8 +294,6 @@
 
       // trigger change for validation errors
       this.$input().trigger('change');
-
-      // return
       return $el;
     },
     onClickDuplicate: function (e, $el) {
@@ -323,8 +311,6 @@
       if (!this.allowAdd()) {
         return false;
       }
-
-      // Vars.
       var fieldKey = this.get('key');
 
       // Duplicate layout.
@@ -366,8 +352,6 @@
       if (this.allowRemove()) {
         return true;
       }
-
-      // vars
       var min = this.get('min');
       var text = acf.__('This field requires at least {min} {label} {identifier}');
       var identifier = acf._n('layout', 'layouts', min);
@@ -382,8 +366,6 @@
         text: text,
         type: 'warning'
       });
-
-      // return
       return false;
     },
     onClickRemove: function (e, $el) {
@@ -413,8 +395,6 @@
     removeLayout: function ($layout) {
       // reference
       var self = this;
-
-      // vars
       var endHeight = this.getValue() == 1 ? 60 : 0;
 
       // remove
@@ -431,7 +411,6 @@
       });
     },
     onClickCollapse: function (e, $el) {
-      // vars
       var $layout = $el.closest('.layout');
 
       // toggle
@@ -457,7 +436,6 @@
       this.renderLayout($layout);
     },
     renderLayout: function ($layout) {
-      // vars
       var $input = $layout.children('input');
       var prefix = $input.attr('name').replace('[acf_fc_layout]', '');
 
@@ -484,7 +462,6 @@
       });
     },
     onUnload: function () {
-      // vars
       var indexes = [];
 
       // loop
@@ -564,7 +541,6 @@
   var preference = new acf.Model({
     name: 'this.collapsedLayouts',
     key: function (key, context) {
-      // vars
       var count = this.get(key + context) || 0;
 
       // update
@@ -575,16 +551,11 @@
       if (count > 1) {
         key += '-' + count;
       }
-
-      // return
       return key;
     },
     load: function (key) {
-      // vars
       var key = this.key(key, 'load');
       var data = acf.getPreference(this.name);
-
-      // return
       if (data && data[key]) {
         return data[key];
       } else {
@@ -592,7 +563,6 @@
       }
     },
     save: function (key, value) {
-      // vars
       var key = this.key(key, 'save');
       var data = acf.getPreference(this.name) || {};
 

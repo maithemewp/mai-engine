@@ -930,7 +930,6 @@ acf_register_ajax( 'fetch-block', 'acf_ajax_fetch_block' );
  * @return  string The html that makes up a block form with no fields.
  */
 function acf_get_empty_block_form_html( $block_name ) {
-	$html = '<div class="acf-block-fields acf-fields acf-empty-block-fields">';
 
 	$message = __( 'This block contains no editable fields.', 'acf' );
 
@@ -943,10 +942,9 @@ function acf_get_empty_block_form_html( $block_name ) {
 		);
 	}
 
-	$html .= apply_filters( 'acf/blocks/no_fields_assigned_message', $message, $block_name );
+	$message = apply_filters( 'acf/blocks/no_fields_assigned_message', $message, $block_name );
 
-	$html .= '</div>';
-	return acf_esc_html( $html );
+	return empty( $message ) ? '' : acf_esc_html( '<div class="acf-block-fields acf-fields acf-empty-block-fields">' . $message . '</div>' );
 }
 
 /**
