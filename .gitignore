@@ -28,6 +28,7 @@ vendor/symfony/*
 !vendor/symfony/deprecation-contracts
 !vendor/symfony/polyfill-ctype
 !vendor/symfony/polyfill-mbstring
+!vendor/symfony/polyfill-php73
 !vendor/symfony/polyfill-php80
 !vendor/wpackagist-plugin
 !vendor/yahnis-elsts
