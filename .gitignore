@@ -24,13 +24,5 @@ vendor/composer/xdebug-handler
 !vendor/maithemewp
 !vendor/proteusthemes
 !vendor/symfony
-vendor/symfony/*
-!vendor/symfony/deprecation-contracts
-!vendor/symfony/polyfill-ctype
-!vendor/symfony/polyfill-mbstring
-!vendor/symfony/polyfill-php73
-!vendor/symfony/polyfill-php80
-!vendor/symfony/polyfill-intl-grapheme
-!vendor/symfony/polyfill-intl-normalizer
 !vendor/wpackagist-plugin
 !vendor/yahnis-elsts
