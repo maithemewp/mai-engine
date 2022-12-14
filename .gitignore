@@ -31,5 +31,6 @@ vendor/symfony/*
 !vendor/symfony/polyfill-php73
 !vendor/symfony/polyfill-php80
 !vendor/symfony/polyfill-intl-grapheme
+!vendor/symfony/polyfill-intl-normalizer
 !vendor/wpackagist-plugin
 !vendor/yahnis-elsts
