@@ -6,12 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
-    'PhpToken' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
-    'Stringable' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
-    'UnhandledMatchError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
-    'ValueError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
     'WP_Dependency_Installer' => $vendorDir . '/afragen/wp-dependency-installer/wp-dependency-installer.php',
     'WP_Dependency_Installer_Skin' => $vendorDir . '/afragen/wp-dependency-installer/wp-dependency-installer-skin.php',
     'WP_Dismiss_Notice' => $vendorDir . '/afragen/wp-dismiss-notice/wp-dismiss-notice.php',
