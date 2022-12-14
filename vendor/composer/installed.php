@@ -3,7 +3,7 @@
         'name' => 'maithemewp/mai-engine',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => '0a98dacce9fd371521de9f38d7b92e2605883616',
+        'reference' => 'e6ba36c34eef44375bcada3d5d1f3c258309cce2',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,8 +11,8 @@
     ),
     'versions' => array(
         'advanced-custom-fields/advanced-custom-fields-pro' => array(
-            'pretty_version' => '6.0.5',
-            'version' => '6.0.5.0',
+            'pretty_version' => '6.0.6',
+            'version' => '6.0.6.0',
             'reference' => NULL,
             'type' => 'library',
             'install_path' => __DIR__ . '/../advanced-custom-fields/advanced-custom-fields-pro',
@@ -140,9 +140,9 @@
             'dev_requirement' => true,
         ),
         'doctrine/lexer' => array(
-            'pretty_version' => '2.0.0',
-            'version' => '2.0.0.0',
-            'reference' => '3cf140b81e55d5d640f73367d829db7e3023ef69',
+            'pretty_version' => '2.1.0',
+            'version' => '2.1.0.0',
+            'reference' => '39ab8fcf5a51ce4b85ca97c7a7d033eb12831124',
             'type' => 'library',
             'install_path' => __DIR__ . '/../doctrine/lexer',
             'aliases' => array(),
@@ -472,7 +472,7 @@
         'maithemewp/mai-engine' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => '0a98dacce9fd371521de9f38d7b92e2605883616',
+            'reference' => 'e6ba36c34eef44375bcada3d5d1f3c258309cce2',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

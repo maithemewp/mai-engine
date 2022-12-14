@@ -25,6 +25,7 @@ vendor/composer/xdebug-handler
 !vendor/proteusthemes
 !vendor/symfony
 vendor/symfony/*
+!vendor/symfony/deprecation-contracts
 !vendor/symfony/polyfill-ctype
 !vendor/symfony/polyfill-mbstring
 !vendor/symfony/polyfill-php80
