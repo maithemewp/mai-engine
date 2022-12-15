@@ -20,7 +20,7 @@
 	}
 
 	> .content > .entry > .entry-wrap:last-child > .entry-content > .alignfull:last-child {
-		margin-bottom: calc(var(--content-sidebar-wrap-margin-bottom) * -1);
+		margin-bottom: var(--alignfull-first-margin-bottom, calc(var(--content-sidebar-wrap-margin-bottom) * -1));
 	}
 }
 
