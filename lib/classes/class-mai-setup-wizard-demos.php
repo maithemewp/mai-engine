@@ -184,7 +184,7 @@ class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 			'w' => 400,
 			'h' => 300,
 		];
-		$src       = 'https://wordpress.com/mshots/v1/' . $url . '?' . http_build_query( $params, null, '&' );
+		$src       = 'https://wordpress.com/mshots/v1/' . $url . '?' . http_build_query( $params, '', '&' );
 		$cache_key = md5( $src );
 		$data_uri  = get_transient( $cache_key );
 
