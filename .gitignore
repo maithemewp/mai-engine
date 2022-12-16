@@ -24,5 +24,6 @@ vendor/composer/xdebug-handler
 !vendor/kirki-framework
 !vendor/maithemewp
 !vendor/proteusthemes
+!vendor/symfony
 !vendor/wpackagist-plugin
 !vendor/yahnis-elsts
