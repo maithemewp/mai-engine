@@ -23,8 +23,6 @@ vendor/composer/xdebug-handler
 !vendor/collizo4sky
 !vendor/kirki-framework
 !vendor/maithemewp
-!vendor/myclabs
 !vendor/proteusthemes
-!vendor/symfony
 !vendor/wpackagist-plugin
 !vendor/yahnis-elsts
