@@ -241,97 +241,15 @@ function mai_preload_logo() {
 			continue;
 		}
 
-		// $srcset = mai_get_string_between_strings( $image, 'srcset="', '"' );
-		// $sizes  = mai_get_string_between_strings( $image, 'sizes="', '"' );
-		$attr   = [];
-		$atts   = mai_get_image_src_srcset_sizes( $image_id );
-		$src    = isset( $atts['src'] ) ? $atts['src'] : '';
-		$srcset = isset( $atts['srcset'] ) ? $atts['srcset'] : '';
-		$sizes  = isset( $atts['sizes'] ) ? $atts['sizes'] : '';
-
-		if ( $src && ! $srcset ) {
-			$attr[] = sprintf( 'href="%s"', $src );
-		}
-
-		if ( $srcset ) {
-			$attr[] = sprintf( 'imagesrcset="%s"', $srcset );
-		}
-
-		if ( $sizes ) {
-			$attr[] = sprintf( 'imagesizes="%s"', $sizes );
-		}
-
-		$attr = array_filter( $attr );
-
-		if ( ! $attr ) {
-			return;
-		}
-
-		printf( '<link rel="preload" class="mai-preload" %s as="image" />%s', trim( implode( ' ', $attr ) ), "\n" );
+		echo mai_get_preload_image_link( $image_id, 'full' );
 	}
 }
 
-/**
- * Taken from `wp_get_attachment_image()`.
- *
- * @access private
- *
- * @since TBD
- *
- * @param int $image_id The image ID.
- *
- * @return array
- */
-function mai_get_image_src_srcset_sizes( $image_id, $size = 'full' ) {
-	$attr = [
-		'src'    => '',
-		'srcset' => '',
-		'sizes'  => '',
-	];
-
-	$image      = wp_get_attachment_image_src( $image_id, $size );
-	$image_meta = wp_get_attachment_metadata( $image_id );
-
-	if ( $image ) {
-		list( $src, $width, $height ) = $image;
-
-		$attr['src'] = $src;
-	}
-
-	if ( is_array( $image_meta ) ) {
-		$size_array = array( absint( $width ), absint( $height ) );
-		$srcset     = wp_calculate_image_srcset( $size_array, $src, $image_meta, $image_id );
-		$sizes      = wp_calculate_image_sizes( $size_array, $src, $image_meta, $image_id );
-
-		if ( $srcset && ( $sizes || ! empty( $attr['sizes'] ) ) ) {
-			$attr['srcset'] = $srcset;
-
-			if ( empty( $attr['sizes'] ) ) {
-				$attr['sizes'] = $sizes;
-			}
-		}
-	}
-
-	/**
-	 * Filters the list of attachment image attributes.
-	 *
-	 * @param string[]     $attr       Array of attribute values for the image markup, keyed by attribute name.
-	 *                                 See wp_get_attachment_image().
-	 * @param WP_Post      $attachment Image attachment post.
-	 * @param string|int[] $size       Requested image size. Can be any registered image size name, or
-	 *                                 an array of width and height values in pixels (in that order).
-	 */
-	$attr = apply_filters( 'wp_get_attachment_image_attributes', $attr, get_post( $image_id ), $size );
-	$attr = array_map( 'esc_attr', $attr );
-
-	return $attr;
-}
-
-// add_action( 'wp_head', 'mai_preload_page_header_image', 2 );
+add_action( 'wp_head', 'mai_preload_page_header_image', 2 );
 /**
  * Preloads page header image.
  *
- * @since 2.13.0
+ * @since TBD
  *
  * @return void
  */
@@ -350,20 +268,16 @@ function mai_preload_page_header_image() {
 	echo mai_get_preload_image_link( $image_id, $image_size );
 }
 
-// add_action( 'wp_head', 'mai_preload_featured_image', 2 );
+add_action( 'wp_head', 'mai_preload_featured_image', 2 );
 /**
  * Preloads featured image on single posts.
  *
- * @since 2.13.0
+ * @since TBD
  *
  * @return void
  */
 function mai_preload_featured_image() {
 	if ( ! is_singular() ) {
-		return;
-	}
-
-	if ( mai_has_page_header() && mai_get_page_header_image_id() ) {
 		return;
 	}
 
@@ -387,9 +301,7 @@ function mai_preload_featured_image() {
 		case 'landscape':
 		case 'portrait':
 		case 'square':
-			$fw_content = ( 'wide-content' === genesis_site_layout() ) ? true : false;
-			$image_size = $fw_content ? 'lg' : 'md';
-			$image_size = sprintf( '%s-%s', $args['image_orientation'], $image_size );
+			$image_size = sprintf( '%s-lg', $args['image_orientation'] );
 		break;
 		default:
 			$image_size = $args['image_size'];
@@ -398,11 +310,11 @@ function mai_preload_featured_image() {
 	echo mai_get_preload_image_link( $image_id, $image_size );
 }
 
-// add_action( 'wp_head', 'mai_preload_cover_block', 2 );
+add_action( 'wp_head', 'mai_preload_cover_block', 2 );
 /**
  * Preloads the first cover block on single posts.
  *
- * @since 2.13.0
+ * @since TBD
  *
  * @return void
  */
@@ -411,7 +323,15 @@ function mai_preload_cover_block() {
 		return;
 	}
 
-	if ( mai_has_page_header() && mai_get_page_header_image_id() ) {
+	// Bail if has page header.
+	// if ( mai_has_page_header() && mai_get_page_header_image_id() ) {
+		// return;
+	// }
+
+	$args = mai_get_template_args();
+
+	// Bail if showing featured image.
+	if ( ! isset( $args['show'] ) && in_array( 'image', $args['show'], true ) && ! mai_is_element_hidden( 'featured_image' ) ) {
 		return;
 	}
 
@@ -421,7 +341,7 @@ function mai_preload_cover_block() {
 		return;
 	}
 
-	$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
+	$block_name = isset( $first['blockName'] ) ? $first['blockName'] : '';
 
 	if ( 'core/cover' !== $block_name ) {
 		return;
@@ -440,26 +360,6 @@ function mai_preload_cover_block() {
 	}
 
 	echo mai_get_preload_image_link( $image_id, $image_size );
-}
-
-/**
- * Gets <link> tag with image preloading data.
- *
- * @since 2.13.0
- *
- * @param int    $image_id   The image ID.
- * @param string $image_size The image size.
- *
- * @return string
- */
-function mai_get_preload_image_link( $image_id, $image_size ) {
-	$image_url  = wp_get_attachment_image_url( $image_id, $image_size );
-
-	if ( ! $image_url ) {
-		return;
-	}
-
-	printf( '<link class="mai-preload" rel="preload" as="image" href="%s"%s />', $image_url );
 }
 
 /**
