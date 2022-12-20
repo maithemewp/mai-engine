@@ -206,7 +206,7 @@ function mai_preload_fonts() {
 		$info = pathinfo( $url );
 		$type = isset( $info['extension'] ) ? $info['extension'] : 'woff2';
 
-		printf( '<link class="mai-preload" rel="preload" href="%s" as="font" type="font/%s" crossorigin />', $url, $type );
+		printf( '<link rel="preload" class="mai-preload" href="%s" as="font" type="font/%s" crossorigin />%s', $url, $type, PHP_EOL );
 	}
 }
 
@@ -225,30 +225,106 @@ function mai_preload_logo() {
 		return;
 	}
 
-	$images  = [
-		mai_get_logo(),
-		mai_get_scroll_logo(),
-	];
+	$image_ids = array_filter(
+		[
+			mai_get_logo_id(),
+			mai_get_scroll_logo_id(),
+		]
+	);
 
-	foreach ( $images as $image ) {
-		if ( ! $image ) {
+	if ( ! $image_ids ) {
+		return;
+	}
+
+	foreach ( $image_ids as $image_id ) {
+		if ( ! $image_id ) {
 			continue;
 		}
 
+		// $srcset = mai_get_string_between_strings( $image, 'srcset="', '"' );
+		// $sizes  = mai_get_string_between_strings( $image, 'sizes="', '"' );
 		$attr   = [];
-		$sizes  = mai_get_string_between_strings( $image, 'sizes="', '"' );
-		$srcset = mai_get_string_between_strings( $image, 'srcset="', '"' );
+		$atts   = mai_get_image_src_srcset_sizes( $image_id );
+		$src    = isset( $atts['src'] ) ? $atts['src'] : '';
+		$srcset = isset( $atts['srcset'] ) ? $atts['srcset'] : '';
+		$sizes  = isset( $atts['sizes'] ) ? $atts['sizes'] : '';
 
-		if ( $sizes ) {
-			$attr[] = sprintf( 'imagesizes="%s"', $sizes );
+		if ( $src && ! $srcset ) {
+			$attr[] = sprintf( 'href="%s"', $src );
 		}
 
 		if ( $srcset ) {
 			$attr[] = sprintf( 'imagesrcset="%s"', $srcset );
 		}
 
-		printf( '<link class="mai-preload" rel="preload" as="image" %s/>%s', trim( implode( ' ', $attr ) ), "\n" );
+		if ( $sizes ) {
+			$attr[] = sprintf( 'imagesizes="%s"', $sizes );
+		}
+
+		$attr = array_filter( $attr );
+
+		if ( ! $attr ) {
+			return;
+		}
+
+		printf( '<link rel="preload" class="mai-preload" %s as="image" />%s', trim( implode( ' ', $attr ) ), "\n" );
 	}
+}
+
+/**
+ * Taken from `wp_get_attachment_image()`.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @param int $image_id The image ID.
+ *
+ * @return array
+ */
+function mai_get_image_src_srcset_sizes( $image_id, $size = 'full' ) {
+	$attr = [
+		'src'    => '',
+		'srcset' => '',
+		'sizes'  => '',
+	];
+
+	$image      = wp_get_attachment_image_src( $image_id, $size );
+	$image_meta = wp_get_attachment_metadata( $image_id );
+
+	if ( $image ) {
+		list( $src, $width, $height ) = $image;
+
+		$attr['src'] = $src;
+	}
+
+	if ( is_array( $image_meta ) ) {
+		$size_array = array( absint( $width ), absint( $height ) );
+		$srcset     = wp_calculate_image_srcset( $size_array, $src, $image_meta, $image_id );
+		$sizes      = wp_calculate_image_sizes( $size_array, $src, $image_meta, $image_id );
+
+		if ( $srcset && ( $sizes || ! empty( $attr['sizes'] ) ) ) {
+			$attr['srcset'] = $srcset;
+
+			if ( empty( $attr['sizes'] ) ) {
+				$attr['sizes'] = $sizes;
+			}
+		}
+	}
+
+	/**
+	 * Filters the list of attachment image attributes.
+	 *
+	 * @param string[]     $attr       Array of attribute values for the image markup, keyed by attribute name.
+	 *                                 See wp_get_attachment_image().
+	 * @param WP_Post      $attachment Image attachment post.
+	 * @param string|int[] $size       Requested image size. Can be any registered image size name, or
+	 *                                 an array of width and height values in pixels (in that order).
+	 */
+	$attr = apply_filters( 'wp_get_attachment_image_attributes', $attr, get_post( $image_id ), $size );
+	$attr = array_map( 'esc_attr', $attr );
+
+	return $attr;
 }
 
 // add_action( 'wp_head', 'mai_preload_page_header_image', 2 );
