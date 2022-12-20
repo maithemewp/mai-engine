@@ -629,9 +629,9 @@ function mai_get_font_preload_urls_from_css( $css ) {
 		}
 
 		// Skip if not the normal font style.
-		if ( $style && 'normal' !== $style ) {
-			continue;
-		}
+		// if ( $style && 'normal' !== $style ) {
+		// 	continue;
+		// }
 
 		$info = pathinfo( $src );
 		$fam  = sanitize_title_with_dashes( $family );
