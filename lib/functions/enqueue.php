@@ -151,7 +151,7 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 	$media     = isset( $args['media'] ) ? $args['media'] : 'all';
 	$in_footer = isset( $args['in_footer'] ) ? $args['in_footer'] : ( 'script' === $type ); // Default to true if script, false if style.
 	$condition = isset( $args['condition'] ) ? $args['condition'] : '__return_true';
-	$location  = isset( $args['location'] ) ? is_array( $args['location'] ) ? $args['location'] : [ $args['location'] ] : [ 'public' ];
+	$location  = isset( $args['location'] ) & ! empty( $args['location'] ) ? (array) $args['location'] : [ 'public' ];
 	$localize  = isset( $args['localize'] ) ? $args['localize'] : [];
 	$inline    = isset( $args['inline'] ) ? $args['inline'] : false;
 	$last_arg  = 'style' === $type ? $media : $in_footer;
