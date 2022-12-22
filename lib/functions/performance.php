@@ -206,7 +206,7 @@ function mai_preload_fonts() {
 		$info = pathinfo( $url );
 		$type = isset( $info['extension'] ) ? $info['extension'] : 'woff2';
 
-		printf( '<link class="mai-preload" rel="preload" href="%s" as="font" type="font/%s" crossorigin />', $url, $type );
+		printf( '<link rel="preload" class="mai-preload" href="%s" as="font" type="font/%s" crossorigin />%s', $url, $type, PHP_EOL );
 	}
 }
 
@@ -225,37 +225,31 @@ function mai_preload_logo() {
 		return;
 	}
 
-	$images  = [
-		mai_get_logo(),
-		mai_get_scroll_logo(),
-	];
+	$image_ids = array_filter(
+		[
+			mai_get_logo_id(),
+			mai_get_scroll_logo_id(),
+		]
+	);
 
-	foreach ( $images as $image ) {
-		if ( ! $image ) {
+	if ( ! $image_ids ) {
+		return;
+	}
+
+	foreach ( $image_ids as $image_id ) {
+		if ( ! $image_id ) {
 			continue;
 		}
 
-		$attr   = [];
-		$sizes  = mai_get_string_between_strings( $image, 'sizes="', '"' );
-		$srcset = mai_get_string_between_strings( $image, 'srcset="', '"' );
-
-		if ( $sizes ) {
-			$attr[] = sprintf( 'imagesizes="%s"', $sizes );
-		}
-
-		if ( $srcset ) {
-			$attr[] = sprintf( 'imagesrcset="%s"', $srcset );
-		}
-
-		printf( '<link class="mai-preload" rel="preload" as="image" %s/>%s', trim( implode( ' ', $attr ) ), "\n" );
+		echo mai_get_preload_image_link( $image_id, 'full' );
 	}
 }
 
-// add_action( 'wp_head', 'mai_preload_page_header_image', 2 );
+add_action( 'wp_head', 'mai_preload_page_header_image', 2 );
 /**
  * Preloads page header image.
  *
- * @since 2.13.0
+ * @since TBD
  *
  * @return void
  */
@@ -274,20 +268,16 @@ function mai_preload_page_header_image() {
 	echo mai_get_preload_image_link( $image_id, $image_size );
 }
 
-// add_action( 'wp_head', 'mai_preload_featured_image', 2 );
+add_action( 'wp_head', 'mai_preload_featured_image', 2 );
 /**
  * Preloads featured image on single posts.
  *
- * @since 2.13.0
+ * @since TBD
  *
  * @return void
  */
 function mai_preload_featured_image() {
 	if ( ! is_singular() ) {
-		return;
-	}
-
-	if ( mai_has_page_header() && mai_get_page_header_image_id() ) {
 		return;
 	}
 
@@ -311,9 +301,7 @@ function mai_preload_featured_image() {
 		case 'landscape':
 		case 'portrait':
 		case 'square':
-			$fw_content = ( 'wide-content' === genesis_site_layout() ) ? true : false;
-			$image_size = $fw_content ? 'lg' : 'md';
-			$image_size = sprintf( '%s-%s', $args['image_orientation'], $image_size );
+			$image_size = sprintf( '%s-lg', $args['image_orientation'] );
 		break;
 		default:
 			$image_size = $args['image_size'];
@@ -322,11 +310,11 @@ function mai_preload_featured_image() {
 	echo mai_get_preload_image_link( $image_id, $image_size );
 }
 
-// add_action( 'wp_head', 'mai_preload_cover_block', 2 );
+add_action( 'wp_head', 'mai_preload_cover_block', 2 );
 /**
  * Preloads the first cover block on single posts.
  *
- * @since 2.13.0
+ * @since TBD
  *
  * @return void
  */
@@ -335,7 +323,15 @@ function mai_preload_cover_block() {
 		return;
 	}
 
-	if ( mai_has_page_header() && mai_get_page_header_image_id() ) {
+	// Bail if has page header.
+	// if ( mai_has_page_header() && mai_get_page_header_image_id() ) {
+		// return;
+	// }
+
+	$args = mai_get_template_args();
+
+	// Bail if showing featured image.
+	if ( ! isset( $args['show'] ) && in_array( 'image', $args['show'], true ) && ! mai_is_element_hidden( 'featured_image' ) ) {
 		return;
 	}
 
@@ -345,7 +341,7 @@ function mai_preload_cover_block() {
 		return;
 	}
 
-	$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
+	$block_name = isset( $first['blockName'] ) ? $first['blockName'] : '';
 
 	if ( 'core/cover' !== $block_name ) {
 		return;
@@ -364,26 +360,6 @@ function mai_preload_cover_block() {
 	}
 
 	echo mai_get_preload_image_link( $image_id, $image_size );
-}
-
-/**
- * Gets <link> tag with image preloading data.
- *
- * @since 2.13.0
- *
- * @param int    $image_id   The image ID.
- * @param string $image_size The image size.
- *
- * @return string
- */
-function mai_get_preload_image_link( $image_id, $image_size ) {
-	$image_url  = wp_get_attachment_image_url( $image_id, $image_size );
-
-	if ( ! $image_url ) {
-		return;
-	}
-
-	printf( '<link class="mai-preload" rel="preload" as="image" href="%s"%s />', $image_url );
 }
 
 /**

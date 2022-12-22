@@ -25,24 +25,35 @@ function mai_page_header_setup() {
 		return;
 	}
 
-	if ( mai_is_type_single() && apply_filters( 'mai_entry_title_in_page_header', true ) ) {
-		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
-	}
-
-	if ( is_404() ) {
-		add_filter( 'genesis_markup_entry-title', '__return_empty_string' );
-	}
-
 	remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
 	remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
 
+	if ( mai_has_title_in_page_header() ) {
+		if ( mai_is_type_single() ) {
+			remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
+		}
 
-	remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_headline', 10, 3 );
+		if ( is_404() ) {
+			add_filter( 'genesis_markup_entry-title', '__return_empty_string' );
+		}
+
+		remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_headline', 10, 3 );
+		remove_action( 'genesis_before_loop', 'genesis_do_posts_page_heading' );
+		remove_action( 'genesis_before_loop', 'genesis_do_date_archive_title' );
+		remove_action( 'genesis_before_loop', 'genesis_do_blog_template_heading' );
+		remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
+		remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
+		remove_action( 'genesis_before_loop', 'genesis_do_search_title' );
+		remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_title', 5 );
+		add_filter( 'woocommerce_show_page_title', '__return_null' );
+		add_filter( 'genesis_search_title_output', '__return_false' );
+	}
 
 	if ( is_category() || is_tag() || is_tax() ) {
 		$description = get_term_meta( get_queried_object_id(), 'page_header_description', true );
 		$intro_text  = get_term_meta( get_queried_object_id(), 'intro_text', true );
 		$intro_text  = apply_filters( 'genesis_term_intro_text_output', $intro_text ?: '' );
+
 		if ( ! $description && $intro_text ) {
 			// Remove archive-description wrap and intro text if intro text is used in page header.
 			remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_open', 5 );
@@ -55,22 +66,12 @@ function mai_page_header_setup() {
 		}
 	}
 
-	remove_action( 'genesis_before_loop', 'genesis_do_posts_page_heading' );
-	remove_action( 'genesis_before_loop', 'genesis_do_date_archive_title' );
-	remove_action( 'genesis_before_loop', 'genesis_do_blog_template_heading' );
-	remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
-	remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
-	remove_action( 'genesis_before_loop', 'genesis_do_search_title' );
-	remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_title', 5 );
 	remove_action( 'woocommerce_before_shop_loop', 'woocommerce_result_count', 20 );
-
-	add_filter( 'woocommerce_show_page_title', '__return_null' );
-	add_filter( 'genesis_search_title_output', '__return_false' );
 	add_filter( 'genesis_attr_entry', 'mai_page_header_entry_attr' );
 
+	// Do page header.
 	add_action( 'genesis_before_content_sidebar_wrap', 'mai_do_page_header' );
 }
-
 
 /**
  * Display the page header.
@@ -173,7 +174,7 @@ function mai_do_page_header_title() {
 
 	$title = mai_get_page_header_title();
 
-	if ( $title && apply_filters( 'mai_entry_title_in_page_header', true ) ) {
+	if ( $title && mai_has_title_in_page_header() ) {
 		genesis_markup(
 			[
 				'open'    => '<h1 %s itemprop="headline">',

@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.25.5 (12/22/22)
+* Changed: [Performance] Now preloading page header image, single entry featured image, and cover block image if it's the first block in the content.
+* Changed: [Performance] All woff2 files via config and settings are now preloaded.
+* Changed: Updated ACF Pro to 6.0.6
+* Changed: [WooCommerce] Product summary is not vertically aligned with product image on product pages.
+* Changed: `is-sticky` class now has `z-index` added, to make sure sticky element is on top of other elements.
+* Changed: Updates pot file with missing and changed text strings from past updates.
+* Fixed: [Performance] Logos not preloading correctly in some instances.
+* Fixed: [Performance] Some files were incorrectly getting loaded in the footer.
+* Fixed: Better handling of first full aligned block top margin when plugins inject scripts or styles as the first element in the content.
+* Fixed: Hiding entry title via Mai Elements settings was not working in some edge-case areas of the site.
+* Fixed: Boxed layout showing when first block was full aligned on Mai Achieve theme.
+* Fixed: PHP 8.1 deprecated function warning with `http_build_query()`.
+
 ## 2.25.4 (11/29/22)
 * Added: Hide Elements metabox now available on Category, Tag, and Term archives.
 * Changed: Updated ACF Pro to 6.0.5

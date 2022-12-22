@@ -301,6 +301,12 @@ li.wc-block-grid__product .wp-block-button {
 
 }
 
+.summary {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
 .woocommerce-product-gallery {
 	position: relative;
 }

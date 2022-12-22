@@ -149,14 +149,14 @@ add_action( 'woocommerce_before_single_product_summary', function() {
 
 add_action( 'woocommerce_before_single_product', 'mai_maybe_hide_woocommerce_product_title' );
 /**
- * Hides the product title if the Hide Element metabox has Entry Title checked.
+ * Hides the product title if the Hide Element metabox has Entry Title checked or if page title is in header.
  *
  * @since 2.19.0
  *
  * @return void
  */
 function mai_maybe_hide_woocommerce_product_title() {
-	if ( ! mai_is_element_hidden( 'entry_title' ) ) {
+	if ( ! mai_is_element_hidden( 'entry_title' ) || ( mai_has_page_header() && mai_has_title_in_page_header() ) ) {
 		return;
 	}
 

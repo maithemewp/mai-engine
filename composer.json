@@ -8,13 +8,15 @@
       "type": "package",
       "package": {
         "name": "advanced-custom-fields/advanced-custom-fields-pro",
-        "version": "6.0.5",
+        "version": "6.0.6",
         "dist": {
           "type": "zip",
           "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download&t={%VERSION}&k={%ACF_PRO_KEY}"
         },
         "require": {
-          "composer/installers": "^1.4",
+          "composer/installers": "^1.4"
+        },
+        "require-dev": {
           "ffraenz/private-composer-installer": "^5.0"
         }
       }

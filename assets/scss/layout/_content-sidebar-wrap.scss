@@ -13,12 +13,14 @@
 		}
 	}
 
-	> .content > .entry > .entry-wrap > .entry-content:first-child > .alignfull:first-child {
-		margin-top: calc(var(--content-sidebar-wrap-margin-top) * -1);
+	> .content > .entry > .entry-wrap > .entry-content:first-child > .alignfull:first-child,
+	> .content > .entry > .entry-wrap > .entry-content:first-child > :where(script, style):first-child + .alignfull,
+	> .content > .entry > .entry-wrap > .entry-content:first-child > :where(script, style):first-child + :where(script, style) + .alignfull {
+		margin-top: var(--alignfull-first-margin-top, calc(var(--content-sidebar-wrap-margin-top) * -1));
 	}
 
 	> .content > .entry > .entry-wrap:last-child > .entry-content > .alignfull:last-child {
-		margin-bottom: calc(var(--content-sidebar-wrap-margin-bottom) * -1);
+		margin-bottom: var(--alignfull-first-margin-bottom, calc(var(--content-sidebar-wrap-margin-bottom) * -1));
 	}
 }
 

@@ -33,6 +33,8 @@
 }
 
 .has-page-header .content {
+	--alignfull-first-margin-top: calc((var(--content-sidebar-wrap-margin-top) + 2em) * -1);
+	--alignfull-first-margin-bottom: calc((var(--content-sidebar-wrap-margin-bottom) + 2em) * -1);
 
 	@include mq(md) {
 		padding: var(--content-padding, 2em);

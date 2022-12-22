@@ -471,6 +471,120 @@ function mai_get_cover_image_size() {
 }
 
 /**
+ * Gets <link> tag with image preloading data.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @param int    $image_id   The image ID.
+ * @param string $image_size The image size.
+ *
+ * @return string
+ */
+function mai_get_preload_image_link( $image_id, $image_size = 'full' ) {
+	$image_url  = wp_get_attachment_image_url( $image_id, $image_size );
+
+	if ( ! $image_url ) {
+		return;
+	}
+
+	$attr   = [];
+	$atts   = mai_get_image_src_srcset_sizes( $image_id, $image_size );
+	$src    = isset( $atts['src'] ) ? $atts['src'] : '';
+	$srcset = isset( $atts['srcset'] ) ? $atts['srcset'] : '';
+	$sizes  = isset( $atts['sizes'] ) ? $atts['sizes'] : '';
+
+	// Gets smallest image size.
+	// if ( $srcset ) {
+	// 	$array = explode( ',', $srcset );
+	// 	$first = reset( $array );
+	// 	$array = explode( ' ', $first );
+	// 	$first = reset( $array );
+	// 	$src   = esc_url( $first );
+	// }
+
+	if ( $src && ! $srcset ) {
+		$attr[] = sprintf( 'href="%s"', $src );
+	} else {
+		// @link https://nostrongbeliefs.com/blog/preloading-responsive-images/
+		$attr[] = sprintf( 'href=""' );
+	}
+
+	if ( $srcset ) {
+		$attr[] = sprintf( 'imagesrcset="%s"', $srcset );
+	}
+
+	if ( $sizes ) {
+		$attr[] = sprintf( 'imagesizes="%s"', $sizes );
+	}
+
+	$attr = array_filter( $attr );
+
+	if ( ! $attr ) {
+		return;
+	}
+
+	return sprintf( '<link rel="preload" class="mai-preload" %s as="image" />%s', trim( implode( ' ', $attr ) ), "\n" );
+}
+
+/**
+ * Taken from `wp_get_attachment_image()`.
+ *
+ * @access private
+ *
+ * @since TBD
+ *
+ * @param int $image_id The image ID.
+ *
+ * @return array
+ */
+function mai_get_image_src_srcset_sizes( $image_id, $size = 'full' ) {
+	$attr = [
+		'src'    => '',
+		'srcset' => '',
+		'sizes'  => '',
+	];
+
+	$image      = wp_get_attachment_image_src( $image_id, $size );
+	$image_meta = wp_get_attachment_metadata( $image_id );
+
+	if ( $image ) {
+		list( $src, $width, $height ) = $image;
+
+		$attr['src'] = $src;
+	}
+
+	if ( is_array( $image_meta ) ) {
+		$size_array = array( absint( $width ), absint( $height ) );
+		$srcset     = wp_calculate_image_srcset( $size_array, $src, $image_meta, $image_id );
+		$sizes      = wp_calculate_image_sizes( $size_array, $src, $image_meta, $image_id );
+
+		if ( $srcset && ( $sizes || ! empty( $attr['sizes'] ) ) ) {
+			$attr['srcset'] = $srcset;
+
+			if ( empty( $attr['sizes'] ) ) {
+				$attr['sizes'] = $sizes;
+			}
+		}
+	}
+
+	/**
+	 * Filters the list of attachment image attributes.
+	 *
+	 * @param string[]     $attr       Array of attribute values for the image markup, keyed by attribute name.
+	 *                                 See wp_get_attachment_image().
+	 * @param WP_Post      $attachment Image attachment post.
+	 * @param string|int[] $size       Requested image size. Can be any registered image size name, or
+	 *                                 an array of width and height values in pixels (in that order).
+	 */
+	$attr = apply_filters( 'wp_get_attachment_image_attributes', $attr, get_post( $image_id ), $size );
+	$attr = array_map( 'esc_attr', $attr );
+
+	return $attr;
+}
+
+/**
  * No longer used.
  * @see https://github.com/maithemewp/mai-engine/issues/482
  *

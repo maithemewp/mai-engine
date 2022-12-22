@@ -75,6 +75,10 @@ function mai_debug( $data, $function = 's', $hook = 'after_setup_theme', $priori
  * @return string
  */
 function mai_has_string( $needle, $haystack ) {
+	if ( ! $haystack ) {
+		return false;
+	}
+
 	if ( is_array( $needle ) ) {
 		foreach ( $needle as $string ) {
 			if ( false !== strpos( $haystack, $string ) ) {
@@ -574,6 +578,25 @@ function mai_has_page_header() {
 	}
 
 	return $has_page_header;
+}
+
+/**
+ * Checks if showing page header in title.
+ *
+ * @since TBD
+ *
+ * @return bool
+ */
+function mai_has_title_in_page_header() {
+	static $cache = null;
+
+	if ( ! is_null( $cache ) ) {
+		return $cache;
+	}
+
+	$cache = (bool) apply_filters( 'mai_entry_title_in_page_header', true );
+
+	return $cache;
 }
 
 /**
