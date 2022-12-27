@@ -475,7 +475,7 @@ function mai_get_cover_image_size() {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.25.5
  *
  * @param int    $image_id   The image ID.
  * @param string $image_size The image size.
@@ -533,7 +533,7 @@ function mai_get_preload_image_link( $image_id, $image_size = 'full' ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.25.5
  *
  * @param int $image_id The image ID.
  *

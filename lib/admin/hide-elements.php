@@ -87,7 +87,7 @@ add_filter( 'acf/location/rule_match/mai_public_taxonomy', 'mai_acf_public_taxon
 /**
  * Shows "Hide Elements" metabox on all public taxonomys types.
  *
- * @since TBD
+ * @since 2.25.5
  *
  * @param bool      $result Whether the rule matches.
  * @param array     $rule   Current rule to match (param, operator, value).
