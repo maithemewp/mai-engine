@@ -134,7 +134,7 @@ return [
 		 *
 		 * @param array $field The existing field array.
 		 *
-		 * @return string
+		 * @return array
 		 */
 		function mai_exclusive_load_more_link_style_field( $field ) {
 			$field['default_value'] = 'button_link';
@@ -152,7 +152,7 @@ return [
 		 * @param int|string $post_id The post ID where the value is saved.
 		 * @param array      $field   The field array containing all settings.
 		 *
-		 * @return string
+		 * @return mixed
 		 */
 		function mai_exclusive_load_more_link_style_value( $value, $post_id, $field ) {
 			if ( $value ) {
