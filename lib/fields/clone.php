@@ -40,7 +40,7 @@ function mai_register_clone_fields() {
 			'key'         => 'mai_clone_fields',
 			'title'       => esc_html__( 'Mai Clone Fields', 'mai-engine' ),
 			'fields'      => $fields,
-			'location'    => false,
+			'location'    => [],
 			'active'      => true,
 			'description' => '',
 		]
