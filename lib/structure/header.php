@@ -289,7 +289,8 @@ function mai_nav_header_attributes( $atts ) {
 	$atts['class'] .= ' nav-header';
 
 	if ( ! apply_filters( 'genesis_disable_microdata', false ) ) {
-		$atts['itemtype'] = 'https://schema.org/SiteNavigationElement';
+		$atts['itemscope'] = true; // Requird by https://validator.w3.org when itemtype is used.
+		$atts['itemtype']  = 'https://schema.org/SiteNavigationElement';
 	}
 
 	return $atts;
