@@ -12,48 +12,6 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-add_filter( 'render_block', 'mai_render_social_links_block', 10, 2 );
-/**
- * Convert social xmlns links to https.
- *
- * @since 2.5.1.
- *
- * @param  string $block_content The existing block content.
- * @param  object $block         The cover block object.
- *
- * @return string
- */
-function mai_render_social_links_block( $block_content, $block ) {
-	if ( ! $block_content ) {
-		return $block_content;
-	}
-
-	// Bail if not a social-link block.
-	if ( 'core/social-link' !== $block['blockName'] ) {
-		return $block_content;
-	}
-
-	if ( mai_is_https() ) {
-		$dom = mai_get_dom_document( $block_content );
-
-		$svgs = $dom->getElementsByTagName( 'svg' );
-		$svg  = $svgs->item(0);
-
-		if ( $svg ) {
-			$xmlns = $svg->attributes->getNamedItem( 'xmlns' );
-			$xmlns = $xmlns->value;
-
-			if ( $xmlns ) {
-				$xmlns = str_replace( 'http:', 'https:', $xmlns );
-				$svg->setAttribute( 'xmlns', $xmlns );
-				$block_content = $dom->saveHTML();
-			}
-		}
-	}
-
-	return $block_content;
-}
-
 add_action( 'init', 'mai_register_social_icon_block_styles' );
 /**
  * Register social links no background style.
