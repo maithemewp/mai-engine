@@ -360,7 +360,7 @@ function mai_custom_scroll_logo( $html, $blog_id ) {
 		$fragment = $first->ownerDocument->createDocumentFragment();
 		$fragment->appendXML( $logo );
 		$first->appendChild( $fragment );
-		$html = $dom->saveHTML();
+		$html = $dom->saveHTML( $dom->documentElement );
 	}
 
 	return $html;

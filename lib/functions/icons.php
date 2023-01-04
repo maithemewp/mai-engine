@@ -241,7 +241,7 @@ function mai_get_svg( $name, $class = '' ) {
 		if ( $first_svg ) {
 			$classes = mai_add_classes( $class, $first_svg->getAttribute( 'class' ) );
 			$first_svg->setAttribute( 'class', $classes );
-			$svg = $dom->saveHTML();
+			$svg = $dom->saveHTML( $dom->documentElement );
 		}
 	}
 
@@ -295,7 +295,7 @@ function mai_get_svg_icon( $name, $style = 'light', $atts = [] ) {
 			}
 		}
 
-		$svg = $dom->saveHTML();
+		$svg = $dom->saveHTML( $dom->documentElement );
 	}
 
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents

@@ -693,7 +693,7 @@ function mai_localize_blocks( $content ) {
 						}
 					}
 
-					$blocks[ $index ]['innerHTML'] = $dom->saveHTML();
+					$blocks[ $index ]['innerHTML'] = $dom->saveHTML( $dom->documentElement );
 
 					$blocks[ $index ] = filter_block_kses( $blocks[ $index ], 'post' );
 				}

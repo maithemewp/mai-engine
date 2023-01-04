@@ -44,7 +44,7 @@ function mai_convert_svg_xmlns( $svg ) {
 		if ( $xmlns ) {
 			$xmlns = str_replace( 'http:', 'https:', $xmlns );
 			$first->setAttribute( 'xmlns', $xmlns );
-			$svg = $dom->saveHTML();
+			$svg = $dom->saveHTML( $dom->documentElement );
 		}
 	}
 
