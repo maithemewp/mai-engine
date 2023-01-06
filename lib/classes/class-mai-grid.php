@@ -364,6 +364,7 @@ class Mai_Grid {
 				$query_args['orderby']  = 'post__in';
 			break;
 			case 'tax_meta':
+			case 'trending': // For Mai Trending Posts.
 				$tax_query = [];
 				if ( $this->args['taxonomies'] ) {
 					foreach ( $this->args['taxonomies'] as $taxo ) {
