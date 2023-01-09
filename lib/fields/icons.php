@@ -108,8 +108,8 @@ function mai_get_icon_choices( $style ) {
 			);
 		}
 
-		// Set transient, and expire after 8 hours
-		set_transient( $transient, $choices, 8 * HOUR_IN_SECONDS );
+		// Set transient, and expire after 1 hour.
+		set_transient( $transient, $choices, 1 * HOUR_IN_SECONDS );
 	}
 
 	// Set static caching.
