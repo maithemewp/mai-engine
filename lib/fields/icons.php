@@ -18,12 +18,17 @@ add_filter( 'acf/load_field/key=mai_icon_choices', 'mai_load_icon_choices' );
  * Uses sprite for performance of loading choices in the field.
  *
  * @since 0.1.0
+ * @since TBD Only get choices in admin.
  *
  * @param array $field The ACF field.
  *
  * @return array
  */
 function mai_load_icon_choices( $field ) {
+	if ( ! is_admin() ) {
+		return $field;
+	}
+
 	// Bail if editing the field group.
 	if ( 'acf-field-group' === get_post_type() ) {
 		return $field;
@@ -39,12 +44,17 @@ add_filter( 'acf/load_field/key=mai_icon_brand_choices', 'mai_load_icon_brand_ch
  * Add icon brand choices.
  *
  * @since 0.1.0
+ * @since TBD Only get choices in admin.
  *
  * @param array $field Field args.
  *
  * @return mixed
  */
 function mai_load_icon_brand_choices( $field ) {
+	if ( ! is_admin() ) {
+		return $field;
+	}
+
 	// Bail if editing the field group.
 	if ( 'acf-field-group' === get_post_type() ) {
 		return $field;
@@ -59,6 +69,7 @@ function mai_load_icon_brand_choices( $field ) {
  * Get icon svg choices.
  *
  * @since 1.0.0
+ * @since TBD Added static caching and transients.
  *
  * @link https://css-tricks.com/on-xlinkhref-being-deprecated-in-svg/
  *
@@ -67,26 +78,42 @@ function mai_load_icon_brand_choices( $field ) {
  * @return array
  */
 function mai_get_icon_choices( $style ) {
-	$choices = [];
-	$dir     = mai_get_icons_dir();
-	$url     = mai_get_icons_url();
+	static $cache = [];
 
-	if ( ! ( $dir && $url ) ) {
-		return $choices;
+	if ( isset( $cache[ $style ] ) ) {
+		return $cache[ $style ];
 	}
 
-	$dir .= sprintf( '/svgs/%s', $style );
-	$url .= sprintf( '/sprites/%s', $style );
+	$transient = 'mai_icon_choices_' . $style;
 
-	foreach ( glob( $dir . '/*.svg' ) as $file ) {
-		$name             = basename( $file, '.svg' );
-		$choices[ $name ] = sprintf(
-			'<svg class="mai-icon-svg" width="32" height="32"><use href="%s.svg#%s"></use></svg><span class="mai-icon-name">%s</span>',
-			$url,
-			$name,
-			$name
-		);
+	if ( false === ( $choices = get_transient( $transient ) ) ) {
+		$choices = [];
+		$dir     = mai_get_icons_dir();
+		$url     = mai_get_icons_url();
+
+		if ( ! ( $dir && $url ) ) {
+			return $choices;
+		}
+
+		$dir .= sprintf( '/svgs/%s', $style );
+		$url .= sprintf( '/sprites/%s', $style );
+
+		foreach ( glob( $dir . '/*.svg' ) as $file ) {
+			$name             = basename( $file, '.svg' );
+			$choices[ $name ] = sprintf(
+				'<svg class="mai-icon-svg" width="32" height="32"><use href="%s.svg#%s"></use></svg><span class="mai-icon-name">%s</span>',
+				$url,
+				$name,
+				$name
+			);
+		}
+
+		// Set transient, and expire after 8 hours
+		set_transient( $transient, $choices, 8 * HOUR_IN_SECONDS );
 	}
+
+	// Set static caching.
+	$cache[ $style ] = $choices;
 
 	return $choices;
 }

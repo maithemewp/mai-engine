@@ -17,13 +17,19 @@ add_filter( 'acf/load_field/key=mai_grid_block_taxonomy', 'mai_grid_load_taxonom
  * Loads taxonomy choices.
  *
  * @since 2.21.0
+ * @since TBD Only run in admin.
  *
  * @param array $field The existing field array.
  *
  * @return array
  */
 function mai_grid_load_taxonomy_field( $field ) {
+	if ( ! is_admin() ) {
+		return $field;
+	}
+
 	$field['choices'] = mai_get_taxonomy_choices();
+
 	return $field;
 }
 
@@ -34,12 +40,17 @@ add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_exclude', 'mai_acf
  * The taxonomy is passed via JS on select2_query_args filter.
  *
  * @since 0.1.0
+ * @since TBD Only run in admin.
  *
  * @param array $args Field args.
  *
  * @return mixed
  */
 function mai_acf_get_terms( $args ) {
+	if ( ! is_admin() ) {
+		return $args;
+	}
+
 	$args['taxonomy'] = [];
 	$taxonomies       = mai_get_acf_request( 'taxonomy' );
 
@@ -60,12 +71,17 @@ add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_parent', 'mai_acf_
  * The taxonomy is passed via JS on select2_query_args filter.
  *
  * @since 0.1.0
+ * @since TBD Only run in admin.
  *
  * @param array $args Field args.
  *
  * @return mixed
  */
 function mai_acf_get_term_parents( $args ) {
+	if ( ! is_admin() ) {
+		return $args;
+	}
+
 	$args['taxonomy'] = [];
 	$taxonomies       = mai_get_acf_request( 'taxonomy' );
 
@@ -95,12 +111,17 @@ add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_parent',  'mai_acf
  * Allow searching for terms by ID.
  *
  * @since 2.22.0
+ * @since TBD Only run in admin.
  *
  * @link https://www.powderkegwebdesign.com/fantastic-way-allow-searching-id-advanced-custom-fields-objects/
  *
  * @return array
  */
 function mai_acf_get_terms_by_id( $args, $field, $post_id ) {
+	if ( ! is_admin() ) {
+		return $args;
+	}
+
 	$query = ! empty( $args['search'] ) ? $args['search'] : false;
 
 	if ( ! $query ) {
