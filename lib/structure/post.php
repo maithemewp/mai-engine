@@ -12,6 +12,15 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
+/**
+ * Removes unused Genesis class.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+remove_filter( 'post_class', 'genesis_featured_image_post_class' );
+
 add_filter( 'post_class', 'mai_remove_post_classes', 10, 3 );
 /**
  * Remove unnecessary post classes.
