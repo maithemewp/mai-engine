@@ -117,7 +117,7 @@ function mai_get_scroll_logo_id() {
 	static $logo_id = null;
 
 	if ( ! is_null( $logo_id ) ) {
-		return absint( $logo_id );
+		return $logo_id;
 	}
 
 	$logo = mai_get_option( 'logo-scroll' );
@@ -128,13 +128,13 @@ function mai_get_scroll_logo_id() {
 	}
 
 	if ( is_numeric( $logo ) ) {
-		$logo_id = $logo;
-		return absint( $logo_id );
+		$logo_id = absint( $logo );
+		return $logo_id;
 	}
 
-	$logo_id = attachment_url_to_postid( $logo );
+	$logo_id = absint( attachment_url_to_postid( $logo ) );
 
-	return absint( $logo_id );
+	return $logo_id;
 }
 
 /**
