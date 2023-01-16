@@ -17,7 +17,7 @@ add_filter( 'acf/load_field/key=mai_grid_block_taxonomy', 'mai_grid_load_taxonom
  * Loads taxonomy choices.
  *
  * @since 2.21.0
- * @since TBD Only run in admin.
+ * @since 2.25.6 Only run in admin.
  *
  * @param array $field The existing field array.
  *
@@ -40,7 +40,7 @@ add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_exclude', 'mai_acf
  * The taxonomy is passed via JS on select2_query_args filter.
  *
  * @since 0.1.0
- * @since TBD Only run in admin.
+ * @since 2.25.6 Only run in admin.
  *
  * @param array $args Field args.
  *
@@ -71,7 +71,7 @@ add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_parent', 'mai_acf_
  * The taxonomy is passed via JS on select2_query_args filter.
  *
  * @since 0.1.0
- * @since TBD Only run in admin.
+ * @since 2.25.6 Only run in admin.
  *
  * @param array $args Field args.
  *
@@ -111,7 +111,7 @@ add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_parent',  'mai_acf
  * Allow searching for terms by ID.
  *
  * @since 2.22.0
- * @since TBD Only run in admin.
+ * @since 2.25.6 Only run in admin.
  *
  * @link https://www.powderkegwebdesign.com/fantastic-way-allow-searching-id-advanced-custom-fields-objects/
  *

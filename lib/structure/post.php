@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || die;
 /**
  * Removes unused Genesis class.
  *
- * @since TBD
+ * @since 2.25.6
  *
  * @return void
  */
