@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.25.6 (1/16/23)
+* Changed: [Performance] Converted to dwv units when available, to calculate full viewport width via CSS instead of JS.
+* Changed: [Performance] Only load ACF block field filters in the editor.
+* Changed: [Performance] Removed unused Genesis filter that adds a featured image class.
+* Changed: Icon picker field filters are cached for 1 hour instead of 8.
+* Changed: Updated dependencies script.
+* Fixed: Social Icons block was using the wrong https value for xmls attribute.
+* Fixed: Character encoding for special characters from non-English languages.
+
 ## 2.25.5 (12/22/22)
 * Changed: [Performance] Now preloading page header image, single entry featured image, and cover block image if it's the first block in the content.
 * Changed: [Performance] All woff2 files via config and settings are now preloaded.
