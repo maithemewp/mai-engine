@@ -583,7 +583,7 @@ function mai_has_page_header() {
 /**
  * Checks if showing page header in title.
  *
- * @since TBD
+ * @since 2.25.5
  *
  * @return bool
  */
@@ -857,7 +857,7 @@ function mai_array_map_recursive( callable $func, array $array ) {
  *
  * @since 0.3.0
  * @since 2.5.0 Add $post_id to use outside of the loop.
- * @since TBD Change $post_id to $id and added support for term IDs.
+ * @since 2.25.5 Change $post_id to $id and added support for term IDs.
  *
  * @param bool $element Element to check.
  * @param int  $id      The ID.
@@ -903,7 +903,7 @@ function mai_is_element_hidden( $element, $id = '' ) {
  * Gets hidden elements for a single page.
  * This may run on single and term archives.
  *
- * @since TBD
+ * @since 2.25.5
  *
  * @param int    $id   The object ID.
  * @param string $type The object type.

@@ -61,7 +61,7 @@ add_action( 'genesis_before', 'mai_maybe_hide_archive_elements' );
 /**
  * Hides term archive elements if Hide Elements has them hidden.
  *
- * @since TBD
+ * @since 2.25.5
  *
  * @return void
  */

@@ -23,6 +23,9 @@ add_filter( 'acf/load_field/key=mai_grid_block_show', 'mai_acf_load_show', 10, 1
  * @return mixed
  */
 function mai_acf_load_show( $field ) {
+	if ( ! is_admin() ) {
+		return $field;
+	}
 
 	// Get existing values, which are sorted correctly, without infinite loop.
 	remove_filter( 'acf/load_field/key=mai_grid_block_show', 'mai_acf_load_show' );
@@ -53,6 +56,10 @@ add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_not_in', 'mai_
  * @return mixed
  */
 function mai_acf_get_posts( $args ) {
+	if ( ! is_admin() ) {
+		return $args;
+	}
+
 	$args['post_type'] = [];
 	$post_types        = mai_get_acf_request( 'post_type' );
 
@@ -66,7 +73,6 @@ function mai_acf_get_posts( $args ) {
 
 	return $args;
 }
-
 
 /**
  * Gets field defaults.

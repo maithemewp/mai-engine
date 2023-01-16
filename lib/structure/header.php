@@ -289,7 +289,8 @@ function mai_nav_header_attributes( $atts ) {
 	$atts['class'] .= ' nav-header';
 
 	if ( ! apply_filters( 'genesis_disable_microdata', false ) ) {
-		$atts['itemtype'] = 'https://schema.org/SiteNavigationElement';
+		$atts['itemscope'] = true; // Requird by https://validator.w3.org when itemtype is used.
+		$atts['itemtype']  = 'https://schema.org/SiteNavigationElement';
 	}
 
 	return $atts;
@@ -359,7 +360,7 @@ function mai_custom_scroll_logo( $html, $blog_id ) {
 		$fragment = $first->ownerDocument->createDocumentFragment();
 		$fragment->appendXML( $logo );
 		$first->appendChild( $fragment );
-		$html = $dom->saveHTML();
+		$html = $dom->saveHTML( $dom->documentElement );
 	}
 
 	return $html;

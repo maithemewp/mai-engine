@@ -238,7 +238,7 @@ function mai_add_tag_attributes( $tag, $attributes ) {
 	foreach ( $attributes as $name => $value ) {
 		$first->setAttribute( $name, $value );
 	}
-	return $dom->saveHTML();
+	return $dom->saveHTML( $dom->documentElement );
 }
 
 /**

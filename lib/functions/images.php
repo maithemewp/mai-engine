@@ -117,7 +117,7 @@ function mai_get_scroll_logo_id() {
 	static $logo_id = null;
 
 	if ( ! is_null( $logo_id ) ) {
-		return absint( $logo_id );
+		return $logo_id;
 	}
 
 	$logo = mai_get_option( 'logo-scroll' );
@@ -128,13 +128,13 @@ function mai_get_scroll_logo_id() {
 	}
 
 	if ( is_numeric( $logo ) ) {
-		$logo_id = $logo;
-		return absint( $logo_id );
+		$logo_id = absint( $logo );
+		return $logo_id;
 	}
 
-	$logo_id = attachment_url_to_postid( $logo );
+	$logo_id = absint( attachment_url_to_postid( $logo ) );
 
-	return absint( $logo_id );
+	return $logo_id;
 }
 
 /**
@@ -475,7 +475,7 @@ function mai_get_cover_image_size() {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.25.5
  *
  * @param int    $image_id   The image ID.
  * @param string $image_size The image size.
@@ -533,7 +533,7 @@ function mai_get_preload_image_link( $image_id, $image_size = 'full' ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.25.5
  *
  * @param int $image_id The image ID.
  *

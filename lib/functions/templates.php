@@ -318,7 +318,7 @@ function mai_get_template_part_objects( $use_transient = true ) {
  * Checks whether the template part exists and has content.
  *
  * @since 2.0.1
- * @since TBD Check condition.
+ * @since 2.25.5 Check condition.
  *
  * @param string $slug Template part slug.
  *
@@ -693,7 +693,7 @@ function mai_localize_blocks( $content ) {
 						}
 					}
 
-					$blocks[ $index ]['innerHTML'] = $dom->saveHTML();
+					$blocks[ $index ]['innerHTML'] = $dom->saveHTML( $dom->documentElement );
 
 					$blocks[ $index ] = filter_block_kses( $blocks[ $index ], 'post' );
 				}

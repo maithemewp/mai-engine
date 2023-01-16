@@ -17,13 +17,19 @@ add_filter( 'acf/load_field/key=mai_grid_block_post_type', 'mai_grid_load_post_t
  * Loads post type choices.
  *
  * @since 2.21.0
+ * @since 2.25.6 Only run in admin.
  *
  * @param array $field The existing field array.
  *
  * @return array
  */
 function mai_grid_load_post_type_field( $field ) {
+	if ( ! is_admin() ) {
+		return $field;
+	}
+
 	$field['choices'] = mai_get_post_type_choices();
+
 	return $field;
 }
 
@@ -32,13 +38,19 @@ add_filter( 'acf/load_field/key=mai_grid_block_tax_taxonomy', 'mai_grid_load_tax
  * Loads taxonomy choices.
  *
  * @since 2.21.0
+ * @since 2.25.6 Only run in admin.
  *
  * @param array $field The existing field array.
  *
  * @return array
  */
 function mai_grid_load_tax_taxonomy_field( $field ) {
+	if ( ! is_admin() ) {
+		return $field;
+	}
+
 	$field['choices'] = mai_get_post_types_taxonomy_choices();
+
 	return $field;
 }
 
@@ -48,12 +60,17 @@ add_filter( 'acf/load_field/key=mai_grid_block_tax_terms', 'mai_acf_load_terms',
  * The taxonomy is passed via JS on select2_query_args filter.
  *
  * @since 0.1.0
+ * @since 2.25.6 Only run in admin.
  *
  * @param array $field The ACF field array.
  *
  * @return mixed
  */
 function mai_acf_load_terms( $field ) {
+	if ( ! is_admin() ) {
+		return $field;
+	}
+
 	$taxonomy = mai_get_acf_request( 'taxonomy' );
 
 	if ( ! $taxonomy ) {
@@ -74,12 +91,17 @@ add_filter( 'acf/prepare_field/key=mai_grid_block_tax_terms', 'mai_acf_prepare_t
  * @link  https://github.com/maithemewp/mai-engine/issues/93
  *
  * @since 0.3.3
+ * @since 2.25.6 Only run in admin.
  *
  * @param array $field The ACF field array.
  *
  * @return mixed
  */
 function mai_acf_prepare_terms( $field ) {
+	if ( ! is_admin() ) {
+		return $field;
+	}
+
 	if ( ! $field['value'] ) {
 		return $field;
 	}
@@ -106,12 +128,17 @@ add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_parent_in', 'm
  * Set the post type args for post_object query in ACF.
  *
  * @since 0.1.0
+ * @since 2.25.6 Only run in admin.
  *
  * @param array $args Field args.
  *
  * @return mixed
  */
 function mai_acf_get_post_parents( $args ) {
+	if ( ! is_admin() ) {
+		return $args;
+	}
+
 	$args['post_type'] = [];
 	$post_types        = mai_get_acf_request( 'post_type' );
 
@@ -139,12 +166,17 @@ add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_parent_in','ma
  * Allow searching for posts by ID.
  *
  * @since 2.15.0
+ * @since 2.25.6 Only run in admin.
  *
  * @link https://www.powderkegwebdesign.com/fantastic-way-allow-searching-id-advanced-custom-fields-objects/
  *
  * @return array
  */
 function mai_acf_get_posts_by_id( $args, $field, $post_id ) {
+	if ( ! is_admin() ) {
+		return $args;
+	}
+
 	$query = ! empty( $args['s'] ) ? $args['s'] : false;
 
 	if ( ! $query ) {

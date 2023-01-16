@@ -70,7 +70,7 @@ function mai_render_group_block( $block_content, $block ) {
 			$classes = mai_add_classes( sprintf( 'has-%s-background', $light_or_dark ), $classes );
 			$first_block->setAttribute( 'class', $classes );
 
-			$block_content = $dom->saveHTML();
+			$block_content = $dom->saveHTML( $dom->documentElement );
 		}
 	}
 

@@ -5,10 +5,12 @@
 	var searchToggles  = document.querySelectorAll( '.search-toggle' );
 
 	// Sets scrollbar width on page load.
+	// These properties are set in CSS if @supports dvw, so this should set if dvw is not supported.
 	// Make sure it's a reasonable size. See https://github.com/maithemewp/mai-engine/issues/516.
 	// FB/IG gets wonky and calculates this to something huge causing the window to be squished.
-	if ( scrollBarWidth > 0 && scrollBarWidth <= 20 ) {
-		root.style.setProperty( '--scrollbar-width', scrollBarWidth + 'px' );
+	if ( ! CSS.supports( 'width', '100dvw' ) && ( scrollBarWidth > 0 && scrollBarWidth <= 20 ) ) {
+		root.style.setProperty( '--scrollbar-width', scrollBarWidth + 'px' ); // Needs px value for calculations.
+		root.style.setProperty( '--viewport-width', 'calc(100vw - var(--scrollbar-width, 0px))' ); // Needs px value for calculations.
 	}
 
 	var toggleSearchFormEvent = function( event ) {

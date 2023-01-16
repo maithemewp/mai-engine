@@ -249,7 +249,7 @@ add_action( 'wp_head', 'mai_preload_page_header_image', 2 );
 /**
  * Preloads page header image.
  *
- * @since TBD
+ * @since 2.25.5
  *
  * @return void
  */
@@ -272,7 +272,7 @@ add_action( 'wp_head', 'mai_preload_featured_image', 2 );
 /**
  * Preloads featured image on single posts.
  *
- * @since TBD
+ * @since 2.25.5
  *
  * @return void
  */
@@ -314,7 +314,7 @@ add_action( 'wp_head', 'mai_preload_cover_block', 2 );
 /**
  * Preloads the first cover block on single posts.
  *
- * @since TBD
+ * @since 2.25.5
  *
  * @return void
  */
