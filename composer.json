@@ -11,13 +11,13 @@
         "version": "6.0.7",
         "dist": {
           "type": "zip",
-          "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download&t={%VERSION}&k={%ACF_PRO_KEY}"
+          "url": "https://connect.advancedcustomfields.com/index.php?a=download&p=pro&k={%PLUGIN_ACF_KEY}&t={%VERSION}"
         },
         "require": {
-          "composer/installers": "^1.4"
+          "composer/installers": "^1.4",
+          "ffraenz/private-composer-installer": "^5.0"
         },
         "require-dev": {
-          "ffraenz/private-composer-installer": "^5.0"
         }
       }
     }
@@ -27,7 +27,7 @@
     "ext-dom": "*",
     "ext-json": "*",
     "ext-libxml": "*",
-    "advanced-custom-fields/advanced-custom-fields-pro": "^6",
+    "advanced-custom-fields/advanced-custom-fields-pro": "*",
     "afragen/wp-dependency-installer": "^4",
     "kirki-framework/kirki": "^4.0",
     "proteusthemes/wp-content-importer-v2": "^2.1",

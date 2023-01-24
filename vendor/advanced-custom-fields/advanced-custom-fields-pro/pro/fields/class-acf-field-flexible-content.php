@@ -546,8 +546,7 @@ if ( ! class_exists( 'acf_field_flexible_content' ) ) :
 				<div class="acf-field acf-field-setting-fc_layout" data-name="fc_layout" data-setting="flexible_content" data-layout-label="<?php echo esc_attr( $layout['label'] ); ?>" data-id="<?php echo esc_attr( $layout['key'] ); ?>">
 					<div class="acf-label acf-field-settings-fc_head">
 						<div class="acf-fc_draggable">
-							<label class="reorder-layout"><?php esc_attr_e( 'Layout', 'acf' ); ?>
-							<span class="acf-fc-layout-name"></span></label>
+							<label class="acf-fc-layout-name reorder-layout" ><?php esc_attr_e( 'Layout', 'acf' ); ?></label>
 						</div>
 
 						<ul class="acf-bl acf-fl-actions">
