@@ -132,7 +132,12 @@ function mai_do_page_header_image() {
 		$image_size = mai_get_page_header_image_size();
 		$filter     = function() { return false; };
 		add_filter( 'wp_lazy_loading_enabled', $filter );
-		echo wp_get_attachment_image( $image_id, $image_size, false, [ 'class' => 'page-header-image' ] );
+		echo wp_get_attachment_image( $image_id, $image_size, false,
+			[
+				'class' => 'page-header-image',
+				'sizes' => '100vw',
+			]
+		);
 		remove_filter( 'wp_lazy_loading_enabled', $filter );
 	}
 }

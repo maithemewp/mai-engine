@@ -753,9 +753,9 @@ class Mai_Entry {
 	 */
 	public function get_image_size() {
 		if ( mai_has_image_orientiation( $this->args['image_orientation'] ) ) {
-			$image_size = $this->get_image_size_by_cols();
-			$image_size = sprintf( '%s-%s', $this->args['image_orientation'], $image_size );
-			$image_size = $this->get_fallback_image_size( $image_size );
+			// $image_size = $this->get_image_size_by_cols();
+			$image_size = sprintf( '%s-sm', $this->args['image_orientation'] );
+			// $image_size = $this->get_fallback_image_size( $image_size );
 
 		} else {
 			$image_size = $this->args['image_size'];
@@ -774,20 +774,17 @@ class Mai_Entry {
 	 *
 	 * @return string
 	 */
-	public function get_fallback_image_size( $image_size ) {
-		if ( wp_get_attachment_image_url( $this->image_id, $image_size ) === wp_get_attachment_image_url( $this->image_id, 'full' ) ) {
-			if ( mai_has_string( '-lg', $image_size ) ) {
-				$image_size = str_replace( '-lg', '-md', $image_size );
-				return $this->get_fallback_image_size( $image_size );
-			}
+	// public function get_fallback_image_size( $image_size ) {
+	// 	$url      = wp_get_attachment_image_url( $this->image_id, $image_size );
+	// 	$url_full = wp_get_attachment_image_url( $this->image_id, 'full' );
 
-			if ( mai_has_string( '-md', $image_size ) ) {
-				return str_replace( '-md', '-sm', $image_size );
-			}
-		}
+	// 	if ( $url && $url_full && $url === $url_full ) {
+	// 		$image_size = str_replace( '-lg', '-sm', $image_size );
+	// 		$image_size = str_replace( '-md', '-sm', $image_size );
+	// 	}
 
-		return $image_size;
-	}
+	// 	return $image_size;
+	// }
 
 	/**
 	 * Gets the image size by columns.
@@ -796,50 +793,50 @@ class Mai_Entry {
 	 *
 	 * @return string
 	 */
-	public function get_image_size_by_cols() {
-		$fw_content = ( 'wide-content' === genesis_site_layout() ) ? true : false;
+	// public function get_image_size_by_cols() {
+		// $fw_content = ( 'wide-content' === genesis_site_layout() ) ? true : false;
 
-		// If single.
-		if ( 'single' === $this->context ) {
-			$image_size = $fw_content ? 'lg' : 'md';
-		} else {
-			$img_aligned = mai_has_string( ['left', 'right'], $this->args['image_position'] );
+		// // If single.
+		// if ( 'single' === $this->context ) {
+		// 	$image_size = $fw_content ? 'lg' : 'md';
+		// } else {
+		// 	$img_aligned = mai_has_string( ['left', 'right'], $this->args['image_position'] );
 
-			// Archive or block.
-			switch ( $this->args['columns'] ) {
-				case 1:
-					if ( $fw_content ) {
-						if ( $img_aligned ) {
-							$image_size = 'md';
-						} else {
-							$image_size = 'lg';
-						}
-					} else {
-						if ( $img_aligned ) {
-							$image_size = 'sm';
-						} else {
-							$image_size = 'md';
-						}
-					}
-				break;
-				case 2:
-					if ( $fw_content ) {
-						if ( $img_aligned ) {
-							$image_size = 'sm';
-						} else {
-							$image_size = 'md';
-						}
-					} else {
-						$image_size = 'sm';
-					}
-				break;
-				default:
-					$image_size = 'sm';
-			}
-		}
+		// 	// Archive or block.
+		// 	switch ( $this->args['columns'] ) {
+		// 		case 1:
+		// 			if ( $fw_content ) {
+		// 				if ( $img_aligned ) {
+		// 					$image_size = 'md';
+		// 				} else {
+		// 					$image_size = 'lg';
+		// 				}
+		// 			} else {
+		// 				if ( $img_aligned ) {
+		// 					$image_size = 'sm';
+		// 				} else {
+		// 					$image_size = 'md';
+		// 				}
+		// 			}
+		// 		break;
+		// 		case 2:
+		// 			if ( $fw_content ) {
+		// 				if ( $img_aligned ) {
+		// 					$image_size = 'sm';
+		// 				} else {
+		// 					$image_size = 'md';
+		// 				}
+		// 			} else {
+		// 				$image_size = 'sm';
+		// 			}
+		// 		break;
+		// 		default:
+		// 			$image_size = 'sm';
+		// 	}
+		// }
 
-		return $image_size;
-	}
+		// return $image_size;
+	// }
 
 	/**
 	 * Gets a reasonable column count when a breakpoint has a 0 (Auto/Fit) value.
