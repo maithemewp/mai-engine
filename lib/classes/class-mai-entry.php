@@ -16,6 +16,12 @@ defined( 'ABSPATH' ) || die;
  * Class Mai_Entry
  */
 class Mai_Entry {
+	/**
+	 * Index.
+	 *
+	 * @var $index
+	 */
+	static protected $index = 1;
 
 	/**
 	 * Entry.
@@ -271,10 +277,16 @@ class Mai_Entry {
 			];
 
 			if ( $this->link_entry ) {
-				$overlay_wrap                = 'a';
-				$overlay_atts['href']        = $this->url;
-				$overlay_atts['class']      .= ' entry-overlay-link';
-				$overlay_atts['aria-hidden'] = 'true';
+				$overlay_wrap           = 'a';
+				$overlay_atts['href']   = $this->url;
+				$overlay_atts['class'] .= ' entry-overlay-link';
+
+				// If showing title aria-labelledby title id, otherwise label is title.
+				if ( in_array( 'title', $this->args['show'], true ) ) {
+					$overlay_atts['aria-labelledby'] = 'entry-title-' . $this::$index;
+				} else {
+					$overlay_atts['aria-label'] = $this->title;
+				}
 			}
 
 			genesis_markup(
@@ -390,6 +402,8 @@ class Mai_Entry {
 		if ( 'archive' === $this->context ) {
 			$entry_index++;
 		}
+
+		$this::$index++;
 	}
 
 	/**
@@ -911,6 +925,7 @@ class Mai_Entry {
 	 * @return  void
 	 */
 	public function do_title() {
+		// Bail if not showing title.
 		if ( ( 'single' === $this->context ) && ( mai_is_element_hidden( 'entry_title', $this->id ) || ( mai_has_page_header() && mai_has_title_in_page_header() ) ) ) {
 			return;
 		}
@@ -1011,6 +1026,12 @@ class Mai_Entry {
 		$atts = [
 			'class' => 'entry-title',
 		];
+
+		// ARIA.
+		if ( $this->link_entry && isset( $this->args['image_position'] ) && ( 'background' === $this->args['image_position'] ) ) {
+			// Add the title id for entry-overlay-link aria-labelledby.
+			$atts['id'] = 'entry-title-' . $this::$index;
+		}
 
 		if ( 'single' === $this->context ) {
 			$atts['class'] .= ' entry-title-single';
