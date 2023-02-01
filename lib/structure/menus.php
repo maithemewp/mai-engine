@@ -32,7 +32,7 @@ add_filter( 'genesis_attr_nav-header-right', 'mai_add_nav_attributes', 10, 3 );
  */
 function mai_add_nav_attributes( $atts, $context, $args ) {
 	// ARIA.
-	if ( isset( $atts['aria-label'] ) || empty( $atts['aria-label'] ) ) {
+	if ( ! isset( $atts['aria-label'] ) || empty( $atts['aria-label'] ) ) {
 		if ( isset( $args['params']['theme_location'] ) && $args['params']['theme_location'] ) {
 			$atts['aria-label'] = mai_convert_case( $args['params']['theme_location'], 'title' );
 		} elseif ( isset( $args['params']['id'] ) && $args['params']['id'] ) {
