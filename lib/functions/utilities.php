@@ -976,13 +976,13 @@ function mai_get_header_shrink_offset() {
  * @return string
  */
 function mai_get_menu( $menu, $args = [] ) {
-	$defaults = mai_get_menu_defaults();
-	$args     = shortcode_atts( $defaults, $args, 'mai_menu' );
-
 	if ( ! is_nav_menu( $menu ) ) {
 		return;
 	}
 
+	$defaults   = mai_get_menu_defaults();
+	$args       = shortcode_atts( $defaults, $args, 'mai_menu' );
+	$args       = array_map( 'esc_attr', $args );
 	$menu_class = 'menu genesis-nav-menu';
 
 	if ( $args['class'] ) {
@@ -1069,9 +1069,8 @@ function mai_get_menu( $menu, $args = [] ) {
 			$atts['style'] .= sprintf( '--menu-font-size:%s;', $size );
 		}
 
-		if ( ! apply_filters( 'genesis_disable_microdata', false ) ) {
-			$atts['itemscope'] = true; // Requird by https://validator.w3.org when itemtype is used.
-			$atts['itemtype']  = 'https://schema.org/SiteNavigationElement';
+		if ( $args['label'] ) {
+			$atts['aria-label'] = $args['label'];
 		}
 
 		$html = genesis_markup(
@@ -1110,8 +1109,9 @@ function mai_get_menu_items_by_location( $location ) {
 		$menu_items = [];
 	}
 
-	$items = [];
+	$items     = [];
 	$locations = get_nav_menu_locations();
+
 	if ( $locations && isset( $locations[ $location ] ) && $locations[ $location ] ) {
 		$menu                    = get_term( $locations[ $location ] );
 		$menu_items[ $location ] = $menu && ! is_wp_error( $menu ) ? wp_get_nav_menu_items( $menu->term_id ) : $items;
@@ -1135,7 +1135,9 @@ function mai_get_menu_defaults() {
 		'align'     => 'center', // Accepts left, center, or right.
 		'display'   => '',       // Accepts list.
 		'font_size' => '',       // Accepts size values 'sm', 'md', etc. or integer or unit value.
+		'label'     => '',       // Aria label for accessibility.
 	];
+
 	return apply_filters( 'mai_menu_defaults', $defaults );
 }
 

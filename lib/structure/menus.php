@@ -15,21 +15,32 @@ defined( 'ABSPATH' ) || die;
 // Allow shortcodes in nav menu items.
 add_filter( 'walker_nav_menu_start_el', 'do_shortcode' );
 
-add_filter( 'genesis_attr_nav-header-left', 'mai_add_header_nav_attributes' );
-add_filter( 'genesis_attr_nav-header-right', 'mai_add_header_nav_attributes' );
+add_filter( 'genesis_attr_nav-menu',         'mai_add_nav_attributes', 10, 3 );
+add_filter( 'genesis_attr_nav-header-left',  'mai_add_nav_attributes', 10, 3 );
+add_filter( 'genesis_attr_nav-header-right', 'mai_add_nav_attributes', 10, 3 );
 /**
- * Adds nav-header left and right classes.
+ * Adds nav attributes.
  *
  * @since 2.1.1
+ * @since TBD Consolidated other filters and added aria-label.
  *
- * @param array $atts Element attributes.
+ * @param array  $atts    Element attributes.
+ * @param string $context Element context.
+ * @param array  $args    The menu args.
  *
  * @return array
  */
-function mai_add_header_nav_attributes( $atts ) {
-	$atts['id']       = $atts['class'];
-	$atts['class']    = 'nav-header ' . $atts['class'];
+function mai_add_nav_attributes( $atts, $context, $args ) {
+	// ARIA.
+	if ( isset( $atts['aria-label'] ) || empty( $atts['aria-label'] ) ) {
+		if ( isset( $args['params']['theme_location'] ) && $args['params']['theme_location'] ) {
+			$atts['aria-label'] = mai_convert_case( $args['params']['theme_location'], 'title' );
+		} elseif ( isset( $args['params']['id'] ) && $args['params']['id'] ) {
+			$atts['aria-label'] = mai_convert_case( $args['params']['id'], 'title' );
+		}
+	}
 
+	// Microdata.
 	if ( ! apply_filters( 'genesis_disable_microdata', false ) ) {
 		$atts['itemscope'] = true; // Requird by https://validator.w3.org when itemtype is used.
 		$atts['itemtype']  = 'https://schema.org/SiteNavigationElement';
