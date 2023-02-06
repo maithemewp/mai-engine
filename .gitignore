@@ -8,6 +8,7 @@
 *.zip
 LICENSE
 README
+auth.json
 package-lock.json
 node_modules
 temp
