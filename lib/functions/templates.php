@@ -53,7 +53,6 @@ function mai_register_template_part_cpt() {
 		'rewrite'           => false,
 		'show_ui'           => true,
 		'show_in_menu'      => current_user_can( 'edit_theme_options' ) ? 'themes.php' : false,
-		// 'show_in_menu'      => true,
 		'show_in_nav_menus' => false,
 		'show_in_admin_bar' => false,
 		'show_in_rest'      => true,
