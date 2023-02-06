@@ -16,6 +16,12 @@ defined( 'ABSPATH' ) || die;
  * Class Mai_Entry
  */
 class Mai_Entry {
+	/**
+	 * Index.
+	 *
+	 * @var $index
+	 */
+	static protected $index = 1;
 
 	/**
 	 * Entry.
@@ -58,6 +64,13 @@ class Mai_Entry {
 	 * @var $url
 	 */
 	protected $url;
+
+	/**
+	 * Title.
+	 *
+	 * @var $title
+	 */
+	protected $title;
 
 	/**
 	 * Breakpoints.
@@ -104,6 +117,7 @@ class Mai_Entry {
 		$this->type        = isset( $this->args['type'] ) ? $this->args['type'] : 'post';
 		$this->id          = $this->get_id();
 		$this->url         = $this->get_url();
+		$this->title       = $this->get_title();
 		$this->breakpoints = mai_get_breakpoints();
 		$this->link_entry  = apply_filters( 'mai_link_entry', (bool) ! $this->args['disable_entry_link'], $this->args, $this->entry );
 		$this->image_id    = $this->get_image_id();
@@ -263,10 +277,16 @@ class Mai_Entry {
 			];
 
 			if ( $this->link_entry ) {
-				$overlay_wrap                = 'a';
-				$overlay_atts['href']        = $this->url;
-				$overlay_atts['class']      .= ' entry-overlay-link';
-				$overlay_atts['aria-hidden'] = 'true';
+				$overlay_wrap           = 'a';
+				$overlay_atts['href']   = $this->url;
+				$overlay_atts['class'] .= ' entry-overlay-link';
+
+				// If showing title aria-labelledby title id, otherwise label is title.
+				if ( in_array( 'title', $this->args['show'], true ) ) {
+					$overlay_atts['aria-labelledby'] = 'entry-title-' . $this::$index;
+				} else {
+					$overlay_atts['aria-label'] = $this->title;
+				}
 			}
 
 			genesis_markup(
@@ -382,6 +402,8 @@ class Mai_Entry {
 		if ( 'archive' === $this->context ) {
 			$entry_index++;
 		}
+
+		$this::$index++;
 	}
 
 	/**
@@ -435,6 +457,37 @@ class Mai_Entry {
 	}
 
 	/**
+	 * Gets the entry title.
+	 *
+	 * @since TBD
+	 *
+	 * @return false|string
+	 */
+	public function get_title() {
+		switch ( $this->type ) {
+			case 'post':
+				$title = get_the_title( $this->id );
+
+				// Legacy Genesis filter.
+				if ( 'block' !== $this->context ) {
+					// Filter the post title text.
+					$title = apply_filters( 'genesis_post_title_text', $title );
+				}
+			break;
+			case 'term':
+				$title = $this->entry->name;
+			break;
+			case 'user':
+				$title = ''; // TODO: Add title.
+			break;
+			default:
+				$title = '';
+		}
+
+		return $title;
+	}
+
+	/**
 	 * Render the image.
 	 *
 	 * @since 0.1.0
@@ -471,6 +524,10 @@ class Mai_Entry {
 			// Hide from screen readers if there is another link.
 			if ( array_intersect( $this->args['show'], [ 'title', 'more_link' ] ) ) {
 				$atts['aria-hidden'] = 'true';
+			}
+			// Otherwise add aria-label because links must have discernible text.
+			elseif ( $this->title ) {
+				$atts['aria-label'] = $this->title;
 			}
 		}
 
@@ -868,73 +925,18 @@ class Mai_Entry {
 	 * @return  void
 	 */
 	public function do_title() {
+		// Bail if not showing title.
 		if ( ( 'single' === $this->context ) && ( mai_is_element_hidden( 'entry_title', $this->id ) || ( mai_has_page_header() && mai_has_title_in_page_header() ) ) ) {
 			return;
 		}
 
-		// Title.
-		switch ( $this->type ) {
-			case 'post':
-				// Not a block.
-				if ( 'block' !== $this->context ) {
-					// Singular and archive wrap and title text.
-					if ( 'single' === $this->context ) {
-						$wrap = 'h1';
-					} else {
-						$wrap = 'h2';
-					}
-
-					$title = get_the_title();
-
-					// If HTML5 with semantic headings, wrap in H1.
-					$wrap = genesis_get_seo_option( 'semantic_headings' ) ? 'h1' : $wrap;
-
-					// Filter the post title text.
-					$title = apply_filters( 'genesis_post_title_text', $title );
-
-					// Wrap in H2 on static homepages if Primary Title H1 is set to title or description.
-					if (
-						( 'single' === $this->context )
-						&& is_front_page()
-						&& ! is_home()
-						&& genesis_seo_active()
-						&& 'neither' !== genesis_get_seo_option( 'home_h1_on' )
-					) {
-						$wrap = 'h2';
-					}
-
-					/**
-					 * Entry title wrapping element.
-					 *
-					 * The wrapping element for the entry title.
-					 *
-					 * @param string $wrap The wrapping element (h1, h2, p, etc.).
-					 */
-					$wrap = apply_filters( 'genesis_entry_title_wrap', $wrap );
-
-				} else {
-					// Block.
-					$wrap  = 'h3';
-					$title = get_the_title( $this->entry );
-				}
-
-			break;
-			case 'term':
-				$wrap  = 'h3'; // Only blocks use this function for terms.
-				$title = $this->entry->name;
-			break;
-			case 'user':
-				$wrap  = 'h3'; // Only blocks use this function for users.
-				$title = ''; // TODO: Add title.
-			break;
-			default:
-				$title = '';
-		}
-
 		// Bail if no title.
-		if ( ! $title ) {
+		if ( ! $this->title ) {
 			return;
 		}
+
+		// Don't override property since it's used for aria-label.
+		$title = $this->title;
 
 		// If linking.
 		if ( $this->link_entry ) {
@@ -960,6 +962,58 @@ class Mai_Entry {
 			add_filter( 'genesis_attr_entry-title-link', 'genesis_attributes_entry_title_link' );
 		}
 
+		// Wrap.
+		switch ( $this->type ) {
+			case 'post':
+				// Not a block.
+				if ( 'block' !== $this->context ) {
+					// Singular and archive wrap and title text.
+					if ( 'single' === $this->context ) {
+						$wrap = 'h1';
+					} else {
+						$wrap = 'h2';
+					}
+
+					// If HTML5 with semantic headings, wrap in H1.
+					$wrap = genesis_get_seo_option( 'semantic_headings' ) ? 'h1' : $wrap;
+
+					// Wrap in H2 on static homepages if Primary Title H1 is set to title or description.
+					if (
+						( 'single' === $this->context )
+						&& is_front_page()
+						&& ! is_home()
+						&& genesis_seo_active()
+						&& 'neither' !== genesis_get_seo_option( 'home_h1_on' )
+					) {
+						$wrap = 'h2';
+					}
+
+					/**
+					 * Legacy Genesis entry title wrapping element.
+					 * Use `mai_entry_title_wrap` below.
+					 *
+					 * The wrapping element for the entry title.
+					 *
+					 * @param string $wrap The wrapping element (h1, h2, p, etc.).
+					 */
+					$wrap = apply_filters( 'genesis_entry_title_wrap', $wrap );
+
+				} else {
+					// Block.
+					$wrap  = 'h3';
+				}
+
+			break;
+			case 'term':
+				$wrap  = 'h3'; // Only blocks use this function for terms.
+			break;
+			case 'user':
+				$wrap  = 'h3'; // Only blocks use this function for users.
+			break;
+			default:
+				$wrap  = 'h3';
+		}
+
 		/**
 		 * Entry title wrapping element.
 		 *
@@ -972,6 +1026,12 @@ class Mai_Entry {
 		$atts = [
 			'class' => 'entry-title',
 		];
+
+		// ARIA.
+		if ( $this->link_entry && isset( $this->args['image_position'] ) && ( 'background' === $this->args['image_position'] ) ) {
+			// Add the title id for entry-overlay-link aria-labelledby.
+			$atts['id'] = 'entry-title-' . $this::$index;
+		}
 
 		if ( 'single' === $this->context ) {
 			$atts['class'] .= ' entry-title-single';
@@ -996,7 +1056,7 @@ class Mai_Entry {
 			]
 		);
 
-		// Add genesis filter.
+		// Adds legacy genesis filter.
 		if ( 'post' === $this->type ) {
 			$output = apply_filters( 'genesis_post_title_output', $output, $wrap, $title ) . "\n";
 		}

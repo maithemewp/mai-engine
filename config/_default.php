@@ -491,8 +491,8 @@ return [
 		'before-header' => [
 			'hook'       => 'genesis_before_header',
 			'menu_order' => 5,
-			'before'     => '<div class="before-header template-part">',
-			'after'      => '</div>',
+			'before'     => '<section class="before-header template-part">',
+			'after'      => '</section>',
 		],
 		'header-left' => [
 			'hook'       => 'mai_header_left',
@@ -512,8 +512,8 @@ return [
 			'hook'       => 'genesis_after_header',
 			'priority'   => 12,
 			'menu_order' => 25,
-			'before'     => '<div class="after-header template-part">',
-			'after'      => '</div>',
+			'before'     => '<section class="after-header template-part">',
+			'after'      => '</section>',
 		],
 		'after-entry' => [
 			'menu_order' => 30,
@@ -531,7 +531,7 @@ return [
 			'hook'       => 'genesis_footer',
 			'priority'   => 12,
 			'menu_order' => 50,
-			'default'    => '<!-- wp:group {"align":"full","verticalSpacingTop":"xs","verticalSpacingBottom":"xs"} -->
+			'default'    => '<!-- wp:group {"tagName":"section","align":"full","verticalSpacingTop":"xs","verticalSpacingBottom":"xs"} -->
 				<div class="wp-block-group alignfull"><div class="wp-block-group__inner-container"><!-- wp:paragraph {"align":"center","fontSize":"sm"} -->
 				<p class="has-text-align-center has-sm-font-size">Copyright [footer_copyright] · [footer_home_link] · All Rights Reserved · Powered by <a rel="noreferrer noopener" target="_blank" href="https://bizbudding.com/mai-theme/">Mai Theme</a></p>
 				<!-- /wp:paragraph --></div></div>

@@ -3,26 +3,17 @@
         'name' => 'maithemewp/mai-engine',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => '3463fae784ee044deaaef05ccde7aa08ba33f63f',
+        'reference' => '7eeae4b1bec025ab532255581a7f9e6c3e83a12c',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => false,
     ),
     'versions' => array(
-        'advanced-custom-fields/advanced-custom-fields-pro' => array(
-            'pretty_version' => '6.0.7',
-            'version' => '6.0.7.0',
-            'reference' => NULL,
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../advanced-custom-fields/advanced-custom-fields-pro',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
         'afragen/wp-dependency-installer' => array(
-            'pretty_version' => '4.3.6',
-            'version' => '4.3.6.0',
-            'reference' => '9e681ea57e040fec5e18f1b91648d14e56f07ea4',
+            'pretty_version' => '4.3.10',
+            'version' => '4.3.10.0',
+            'reference' => 'e5a5e3f7d7f00ecb9663d22fbf1a3ac85b9ce45f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../afragen/wp-dependency-installer',
             'aliases' => array(),
@@ -38,9 +29,9 @@
             'dev_requirement' => false,
         ),
         'composer/installers' => array(
-            'pretty_version' => 'v1.12.0',
-            'version' => '1.12.0.0',
-            'reference' => 'd20a64ed3c94748397ff5973488761b22f6d3f19',
+            'pretty_version' => 'v2.2.0',
+            'version' => '2.2.0.0',
+            'reference' => 'c29dc4b93137acb82734f672c37e029dfbd95b35',
             'type' => 'composer-plugin',
             'install_path' => __DIR__ . '/./installers',
             'aliases' => array(),
@@ -328,7 +319,7 @@
         'maithemewp/mai-engine' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => '3463fae784ee044deaaef05ccde7aa08ba33f63f',
+            'reference' => '7eeae4b1bec025ab532255581a7f9e6c3e83a12c',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -343,17 +334,14 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'roundcube/plugin-installer' => array(
+        'wpengine/advanced-custom-fields-pro' => array(
+            'pretty_version' => '6.0.7',
+            'version' => '6.0.7.0',
+            'reference' => NULL,
+            'type' => 'wordpress-plugin',
+            'install_path' => __DIR__ . '/../wpengine/advanced-custom-fields-pro',
+            'aliases' => array(),
             'dev_requirement' => false,
-            'replaced' => array(
-                0 => '*',
-            ),
-        ),
-        'shama/baton' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '*',
-            ),
         ),
         'yahnis-elsts/plugin-update-checker' => array(
             'pretty_version' => 'v4.13',

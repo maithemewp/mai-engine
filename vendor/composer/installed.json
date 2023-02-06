@@ -1,41 +1,25 @@
 {
     "packages": [
         {
-            "name": "advanced-custom-fields/advanced-custom-fields-pro",
-            "version": "6.0.7",
-            "version_normalized": "6.0.7.0",
-            "dist": {
-                "type": "zip",
-                "url": "https://connect.advancedcustomfields.com/index.php?a=download&p=pro&k={%PLUGIN_ACF_KEY}&t={%VERSION}"
-            },
-            "require": {
-                "composer/installers": "^1.4",
-                "ffraenz/private-composer-installer": "^5.0"
-            },
-            "type": "library",
-            "installation-source": "dist",
-            "install-path": "../advanced-custom-fields/advanced-custom-fields-pro"
-        },
-        {
             "name": "afragen/wp-dependency-installer",
-            "version": "4.3.6",
-            "version_normalized": "4.3.6.0",
+            "version": "4.3.10",
+            "version_normalized": "4.3.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/afragen/wp-dependency-installer.git",
-                "reference": "9e681ea57e040fec5e18f1b91648d14e56f07ea4"
+                "reference": "e5a5e3f7d7f00ecb9663d22fbf1a3ac85b9ce45f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/afragen/wp-dependency-installer/zipball/9e681ea57e040fec5e18f1b91648d14e56f07ea4",
-                "reference": "9e681ea57e040fec5e18f1b91648d14e56f07ea4",
+                "url": "https://api.github.com/repos/afragen/wp-dependency-installer/zipball/e5a5e3f7d7f00ecb9663d22fbf1a3ac85b9ce45f",
+                "reference": "e5a5e3f7d7f00ecb9663d22fbf1a3ac85b9ce45f",
                 "shasum": ""
             },
             "require": {
                 "afragen/wp-dismiss-notice": "*",
                 "php": ">=5.6"
             },
-            "time": "2023-01-19T16:18:06+00:00",
+            "time": "2023-01-29T18:28:50+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -126,41 +110,39 @@
         },
         {
             "name": "composer/installers",
-            "version": "v1.12.0",
-            "version_normalized": "1.12.0.0",
+            "version": "v2.2.0",
+            "version_normalized": "2.2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "d20a64ed3c94748397ff5973488761b22f6d3f19"
+                "reference": "c29dc4b93137acb82734f672c37e029dfbd95b35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/d20a64ed3c94748397ff5973488761b22f6d3f19",
-                "reference": "d20a64ed3c94748397ff5973488761b22f6d3f19",
+                "url": "https://api.github.com/repos/composer/installers/zipball/c29dc4b93137acb82734f672c37e029dfbd95b35",
+                "reference": "c29dc4b93137acb82734f672c37e029dfbd95b35",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "^1.0 || ^2.0"
-            },
-            "replace": {
-                "roundcube/plugin-installer": "*",
-                "shama/baton": "*"
+                "composer-plugin-api": "^1.0 || ^2.0",
+                "php": "^7.2 || ^8.0"
             },
             "require-dev": {
                 "composer/composer": "1.6.* || ^2.0",
                 "composer/semver": "^1 || ^3",
                 "phpstan/phpstan": "^0.12.55",
                 "phpstan/phpstan-phpunit": "^0.12.16",
-                "symfony/phpunit-bridge": "^4.2 || ^5",
-                "symfony/process": "^2.3"
+                "symfony/phpunit-bridge": "^5.3",
+                "symfony/process": "^5"
             },
-            "time": "2021-09-13T08:19:44+00:00",
+            "time": "2022-08-20T06:45:11+00:00",
             "type": "composer-plugin",
             "extra": {
                 "class": "Composer\\Installers\\Plugin",
                 "branch-alias": {
-                    "dev-main": "1.x-dev"
-                }
+                    "dev-main": "2.x-dev"
+                },
+                "plugin-modifies-install-path": true
             },
             "installation-source": "dist",
             "autoload": {
@@ -182,7 +164,6 @@
             "description": "A multi-framework Composer library installer",
             "homepage": "https://composer.github.io/installers/",
             "keywords": [
-                "Craft",
                 "Dolibarr",
                 "Eliasis",
                 "Hurad",
@@ -203,7 +184,6 @@
                 "Whmcs",
                 "WolfCMS",
                 "agl",
-                "aimeos",
                 "annotatecms",
                 "attogram",
                 "bitrix",
@@ -222,7 +202,6 @@
                 "grav",
                 "installer",
                 "itop",
-                "joomla",
                 "known",
                 "kohana",
                 "laravel",
@@ -231,6 +210,7 @@
                 "magento",
                 "majima",
                 "mako",
+                "matomo",
                 "mediawiki",
                 "miaoxing",
                 "modulework",
@@ -250,9 +230,7 @@
                 "silverstripe",
                 "sydes",
                 "sylius",
-                "symfony",
                 "tastyigniter",
-                "typo3",
                 "wordpress",
                 "yawik",
                 "zend",
@@ -260,7 +238,7 @@
             ],
             "support": {
                 "issues": "https://github.com/composer/installers/issues",
-                "source": "https://github.com/composer/installers/tree/v1.12.0"
+                "source": "https://github.com/composer/installers/tree/v2.2.0"
             },
             "funding": [
                 {
@@ -431,6 +409,21 @@
                 "source": "https://github.com/proteusthemes/WordPress-Importer/tree/v2.1.0"
             },
             "install-path": "../proteusthemes/wp-content-importer-v2"
+        },
+        {
+            "name": "wpengine/advanced-custom-fields-pro",
+            "version": "6.0.7",
+            "version_normalized": "6.0.7.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://connect.advancedcustomfields.com/v2/plugins/composer_download?p=pro&t=6.0.7"
+            },
+            "require": {
+                "composer/installers": "~1.0 || ~2.0"
+            },
+            "type": "wordpress-plugin",
+            "installation-source": "dist",
+            "install-path": "../wpengine/advanced-custom-fields-pro"
         },
         {
             "name": "yahnis-elsts/plugin-update-checker",

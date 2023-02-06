@@ -189,7 +189,7 @@ function mai_template_parts_import_row_action( $actions, $post ) {
 	}
 
 	if ( ! ( current_user_can( 'edit_theme_options' ) && current_user_can( 'delete_post', $post->ID ) ) ) {
-		return;
+		return $actions;
 	}
 
 	$template_parts = mai_get_template_parts_from_demo();

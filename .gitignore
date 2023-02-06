@@ -19,11 +19,10 @@ vendor/composer/installers
 vendor/composer/pcre
 vendor/composer/semver
 vendor/composer/xdebug-handler
-!vendor/advanced-custom-fields
 !vendor/afragen
 !vendor/collizo4sky
 !vendor/kirki-framework
 !vendor/maithemewp
 !vendor/proteusthemes
-!vendor/wpackagist-plugin
+!vendor/wpengine
 !vendor/yahnis-elsts
