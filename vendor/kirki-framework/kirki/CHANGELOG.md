@@ -1,3 +1,7 @@
+### 4.1.0 - February 07, 2023 ###
+- New: Settings page to allow users to clear the Kirki font cache.
+- Tweak: Bundled all individual packages into the main repository, reducing the number of repositories used in development. This simplifies development by eliminating the need to work on multiple repositories.
+
 ### 4.0.24 - March 22, 2022 ###
 #### control-react-colorful package
 Bugfixes:

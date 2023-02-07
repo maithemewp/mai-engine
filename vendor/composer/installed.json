@@ -2,24 +2,24 @@
     "packages": [
         {
             "name": "afragen/wp-dependency-installer",
-            "version": "4.3.10",
-            "version_normalized": "4.3.10.0",
+            "version": "4.3.12",
+            "version_normalized": "4.3.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/afragen/wp-dependency-installer.git",
-                "reference": "e5a5e3f7d7f00ecb9663d22fbf1a3ac85b9ce45f"
+                "reference": "da85ae335c8342878d83b5ed7fe56b58609db4e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/afragen/wp-dependency-installer/zipball/e5a5e3f7d7f00ecb9663d22fbf1a3ac85b9ce45f",
-                "reference": "e5a5e3f7d7f00ecb9663d22fbf1a3ac85b9ce45f",
+                "url": "https://api.github.com/repos/afragen/wp-dependency-installer/zipball/da85ae335c8342878d83b5ed7fe56b58609db4e1",
+                "reference": "da85ae335c8342878d83b5ed7fe56b58609db4e1",
                 "shasum": ""
             },
             "require": {
                 "afragen/wp-dismiss-notice": "*",
                 "php": ">=5.6"
             },
-            "time": "2023-01-29T18:28:50+00:00",
+            "time": "2023-02-06T04:22:45+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -258,65 +258,20 @@
         },
         {
             "name": "kirki-framework/kirki",
-            "version": "4.0.24",
-            "version_normalized": "4.0.24.0",
+            "version": "4.1.0",
+            "version_normalized": "4.1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kirki-framework/kirki.git",
-                "reference": "810938ec2b095966774784a27880f4aeba2d2853"
+                "reference": "a811333c9cb1ac0c4d00045eb905fae4c94211e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kirki-framework/kirki/zipball/810938ec2b095966774784a27880f4aeba2d2853",
-                "reference": "810938ec2b095966774784a27880f4aeba2d2853",
+                "url": "https://api.github.com/repos/kirki-framework/kirki/zipball/a811333c9cb1ac0c4d00045eb905fae4c94211e8",
+                "reference": "a811333c9cb1ac0c4d00045eb905fae4c94211e8",
                 "shasum": ""
             },
             "require": {
-                "kirki-framework/compatibility": "*",
-                "kirki-framework/control-base": "*",
-                "kirki-framework/control-checkbox": "*",
-                "kirki-framework/control-code": "*",
-                "kirki-framework/control-color": "*",
-                "kirki-framework/control-color-palette": "*",
-                "kirki-framework/control-cropped-image": "*",
-                "kirki-framework/control-custom": "*",
-                "kirki-framework/control-dashicons": "*",
-                "kirki-framework/control-date": "*",
-                "kirki-framework/control-dimension": "*",
-                "kirki-framework/control-editor": "*",
-                "kirki-framework/control-generic": "*",
-                "kirki-framework/control-image": "*",
-                "kirki-framework/control-multicheck": "*",
-                "kirki-framework/control-palette": "*",
-                "kirki-framework/control-radio": "*",
-                "kirki-framework/control-react-colorful": "*",
-                "kirki-framework/control-react-select": "*",
-                "kirki-framework/control-repeater": "*",
-                "kirki-framework/control-select": "*",
-                "kirki-framework/control-slider": "*",
-                "kirki-framework/control-sortable": "*",
-                "kirki-framework/control-upload": "*",
-                "kirki-framework/data-option": "*",
-                "kirki-framework/field": "*",
-                "kirki-framework/field-background": "*",
-                "kirki-framework/field-dimensions": "*",
-                "kirki-framework/field-fontawesome": "*",
-                "kirki-framework/field-multicolor": "*",
-                "kirki-framework/field-typography": "*",
-                "kirki-framework/l10n": "*",
-                "kirki-framework/module-css": "*",
-                "kirki-framework/module-editor-styles": "*",
-                "kirki-framework/module-field-dependencies": "*",
-                "kirki-framework/module-panels": "*",
-                "kirki-framework/module-postmessage": "*",
-                "kirki-framework/module-preset": "*",
-                "kirki-framework/module-section-icons": "*",
-                "kirki-framework/module-sections": "*",
-                "kirki-framework/module-selective-refresh": "*",
-                "kirki-framework/module-tooltips": "*",
-                "kirki-framework/module-webfonts": "*",
-                "kirki-framework/url-getter": "*",
-                "kirki-framework/util": "*",
                 "php": ">=7.0"
             },
             "require-dev": {
@@ -326,9 +281,77 @@
                 "wp-coding-standards/wpcs": "*",
                 "wptrt/wpthemereview": "dev-develop"
             },
-            "time": "2022-05-25T11:09:16+00:00",
+            "time": "2023-02-07T13:56:08+00:00",
             "type": "library",
             "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Kirki\\": [
+                        "packages/control-base/src",
+                        "packages/control-checkbox/src",
+                        "packages/control-code/src",
+                        "packages/control-color/src",
+                        "packages/control-color-palette/src",
+                        "packages/control-cropped-image/src",
+                        "packages/control-custom/src",
+                        "packages/control-dashicons/src",
+                        "packages/control-date/src",
+                        "packages/control-dimension/src",
+                        "packages/control-editor/src",
+                        "packages/control-generic/src",
+                        "packages/control-image/src",
+                        "packages/control-multicheck/src",
+                        "packages/control-palette/src",
+                        "packages/control-radio/src",
+                        "packages/control-react-colorful/src",
+                        "packages/control-react-select/src",
+                        "packages/control-repeater/src",
+                        "packages/control-select/src",
+                        "packages/control-slider/src",
+                        "packages/control-sortable/src",
+                        "packages/control-upload/src",
+                        "packages/field/src",
+                        "packages/googlefonts/src",
+                        "packages/l10n/src",
+                        "packages/module-panels/src",
+                        "packages/module-sections/src",
+                        "packages/url-getter/src"
+                    ],
+                    "Kirki\\Data\\": [
+                        "packages/data-option/src"
+                    ],
+                    "Kirki\\Util\\": [
+                        "packages/util/src"
+                    ],
+                    "Kirki\\Field\\": [
+                        "packages/field/src/Field",
+                        "packages/field-background/src",
+                        "packages/field-dimensions/src",
+                        "packages/field-fontawesome/src",
+                        "packages/field-multicolor/src/Field",
+                        "packages/field-multicolor/src",
+                        "packages/field-typography/src/Field",
+                        "packages/field-typography/src"
+                    ],
+                    "Kirki\\Module\\": [
+                        "packages/module-css/src",
+                        "packages/module-editor-styles/src",
+                        "packages/module-field-dependencies/src",
+                        "packages/module-postmessage/src",
+                        "packages/module-preset/src",
+                        "packages/module-section-icons/src",
+                        "packages/module-selective-refresh/src",
+                        "packages/module-tooltips/src",
+                        "packages/module-webfonts/src"
+                    ],
+                    "Kirki\\Settings\\": [
+                        "packages/settings/src"
+                    ],
+                    "Kirki\\Compatibility\\": [
+                        "packages/compatibility/src"
+                    ]
+                }
+            },
             "notification-url": "https://packagist.org/downloads/",
             "include-path": [
                 ".",
@@ -351,7 +374,7 @@
             ],
             "support": {
                 "issues": "https://github.com/kirki-framework/kirki/issues",
-                "source": "https://github.com/kirki-framework/kirki/tree/v4.0.24"
+                "source": "https://github.com/kirki-framework/kirki/tree/v4.1.0"
             },
             "install-path": "../kirki-framework/kirki"
         },
