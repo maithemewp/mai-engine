@@ -225,3 +225,12 @@ function mai_change_plugin_dependency_text( $actions ) {
 
 	return $actions;
 }
+
+/**
+ * Disable Kirki settings page added in 4.1.0.
+ *
+ * @since TBD
+ *
+ * @return bool
+ */
+add_filter( 'kirki_settings_page', '__return_false', 8 );
