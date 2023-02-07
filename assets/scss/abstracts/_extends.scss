@@ -60,6 +60,7 @@
 	outline: var(--button-outline, none);
 	box-shadow: var(--button-box-shadow, none);
 	transform: var(--button-transform, none);
+	filter: var(--button-filter, none);
 	cursor: var(--button-cursor, pointer);
 	opacity: var(--button-opacity, 1);
 	transition: var(--button-transition, var(--transition));
@@ -75,6 +76,7 @@
 		outline: var(--button-outline-hover, var(--button-outline, none));
 		box-shadow: var(--button-box-shadow-hover, var(--button-box-shadow, none));
 		transform: var(--button-transform-hover, var(--button-transform, none));
+		filter: var(--button-filter-hover, var(--button-filter, none));
 	}
 
 	// Disable background color on hover.
