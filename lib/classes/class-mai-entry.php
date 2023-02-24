@@ -1187,16 +1187,12 @@ class Mai_Entry {
 			// Content.
 			switch ( $this->type ) {
 				case 'post':
-					// Archives. So many people wanted (expected?) the full content to show here.
-					if ( 'archive' === $this->context ) {
-						ob_start();
-						the_content( null, true );
-						$content = ob_get_clean();
-					}
-					// Block. Let's leave as-is.
-					else {
-						$content = strip_shortcodes( get_the_content( null, false, $this->entry ) );
-					}
+					// So many people wanted (expected?) the full content to show here.
+					// This may cause an infinite loop if the content contains another grid showing
+					// the full content of the post.
+					ob_start();
+					the_content( null, true );
+					$content = ob_get_clean();
 				break;
 				case 'term':
 					$content = term_description( $this->id );
