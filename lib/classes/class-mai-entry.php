@@ -1188,11 +1188,7 @@ class Mai_Entry {
 			switch ( $this->type ) {
 				case 'post':
 					// So many people wanted (expected?) the full content to show here.
-					// This may cause an infinite loop if the content contains another grid showing
-					// the full content of the post.
-					ob_start();
-					the_content( null, true );
-					$content = ob_get_clean();
+					$content = $this->get_post_content( $this->id );
 				break;
 				case 'term':
 					$content = term_description( $this->id );
@@ -1219,6 +1215,30 @@ class Mai_Entry {
 			do_action( "mai_after_entry_content_inner", $this->entry, $this->args );
 			echo $close;
 		}
+	}
+
+	/**
+	 * Gets full post content by post ID.
+	 * Stores content in a static variable
+	 * so if it loops and tries to pull the content of the same post,
+	 * it has it stored and doesn't do_blocks again.
+	 * This prevents infinite loops.
+	 *
+	 * @param int $post_id
+	 *
+	 * @return string
+	 */
+	public function get_post_content( $post_id ) {
+		static $content = [];
+
+		if ( isset( $content[ $post_id ] ) ) {
+			return $content[ $post_id ];
+		}
+
+		$content[ $post_id ] = get_the_content( null, false, $post_id );
+		$content[ $post_id ] = do_blocks( $content[ $post_id ] );
+
+		return $content[ $post_id ];
 	}
 
 	/**
