@@ -3,7 +3,7 @@
         'name' => 'maithemewp/mai-engine',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => 'de8c49682f5825a02a9a938eaa82bbc5382ebce7',
+        'reference' => 'e31dcbeb89e9198ba4219263dfb564abc4157eba',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -226,7 +226,7 @@
         'kirki-framework/kirki' => array(
             'pretty_version' => '4.1.0',
             'version' => '4.1.0.0',
-            'reference' => 'a811333c9cb1ac0c4d00045eb905fae4c94211e8',
+            'reference' => 'c173513717c42cf176f55dd888b9656adb9a5e05',
             'type' => 'library',
             'install_path' => __DIR__ . '/../kirki-framework/kirki',
             'aliases' => array(),
@@ -319,7 +319,7 @@
         'maithemewp/mai-engine' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => 'de8c49682f5825a02a9a938eaa82bbc5382ebce7',
+            'reference' => 'e31dcbeb89e9198ba4219263dfb564abc4157eba',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

@@ -263,12 +263,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kirki-framework/kirki.git",
-                "reference": "a811333c9cb1ac0c4d00045eb905fae4c94211e8"
+                "reference": "c173513717c42cf176f55dd888b9656adb9a5e05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kirki-framework/kirki/zipball/a811333c9cb1ac0c4d00045eb905fae4c94211e8",
-                "reference": "a811333c9cb1ac0c4d00045eb905fae4c94211e8",
+                "url": "https://api.github.com/repos/kirki-framework/kirki/zipball/c173513717c42cf176f55dd888b9656adb9a5e05",
+                "reference": "c173513717c42cf176f55dd888b9656adb9a5e05",
                 "shasum": ""
             },
             "require": {
@@ -281,7 +281,7 @@
                 "wp-coding-standards/wpcs": "*",
                 "wptrt/wpthemereview": "dev-develop"
             },
-            "time": "2023-02-07T13:56:08+00:00",
+            "time": "2023-02-07T14:56:30+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
