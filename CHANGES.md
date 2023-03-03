@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.26.0 (3/3/23)
+* Added: [Accessibility] New `aria-label` support for menus, including a new `label` parameter in `[mai_menu]` shortcode.
+* Added: [Accessibility] New `aria-label` attribute added to entry title links when needed.
+* Added: [Accessibility] Entry overlay links how have `aria-labelledby` or `aria-label` with title added.
+* Added: [Developers] New `--button-filter` CSS property added to buttons.
+* Changed: [Accessibility] Before and After Header Content Areas now use `<section>` element instead of `<div>`.
+* Changed: [Accessibility] Mai Icon links now add title as screen reader text.
+* Changed: [Accessibility] Removed `role="banner"` from page header so the default `<header>` element can remain the default banner.
+* Changed: [Performance] Entry images now use the smallest size for `src` since the `srcset` will serve the correct size image based on screen size.
+* Changed: Archive or Mai Post Grid entries show the full block content when "Show" has "Content" with no limit set.
+* Changed: Updated Kirki to 4.1.0, and disabled their new settings page.
+* Changed: Updated ACF Pro to 6.0.7.
+* Changed: Now using ACF's new built in Composer support for updates.
+* Fixed: Editors were not able to access Reusable Blocks or Content Areas posts in the Dashboard.
+
 ## 2.25.6 (1/16/23)
 * Changed: [Performance] Converted to dwv units when available, to calculate full viewport width via CSS instead of JS.
 * Changed: [Performance] Only load ACF block field filters in the editor.

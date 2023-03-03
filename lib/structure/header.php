@@ -143,7 +143,7 @@ add_filter( 'genesis_attr_nav-header-right', 'mai_add_nav_header_attributes', 10
  * Adds nav-header left and right id and classes.
  *
  * @since 2.1.1
- * @since TBD Added aria-label support and extra params.
+ * @since 2.26.0 Added aria-label support and extra params.
  *
  * @param array  $atts    Element attributes.
  * @param string $context Element context.
