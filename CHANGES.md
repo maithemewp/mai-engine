@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.26.1 (3/3/23)
+* Fixed: Make sure full/wide aligned Cover blocks use larger image from srcset/sizes.
+
 ## 2.26.0 (3/3/23)
 * Added: [Accessibility] New `aria-label` support for menus, including a new `label` parameter in `[mai_menu]` shortcode.
 * Added: [Accessibility] New `aria-label` attribute added to entry title links when needed.
