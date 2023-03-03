@@ -35,16 +35,17 @@ function mai_render_cover_block( $block_content, $block ) {
 		return $block_content;
 	}
 
-	$align     = mai_isset( $block['attrs'], 'contentAlign', false );
-	$opacity   = mai_isset( $block['attrs'], 'dimRatio', false );
-	$image_id  = mai_isset( $block['attrs'], 'id', false );
-	$image_url = mai_isset( $block['attrs'], 'url', false );
-	$parallax  = mai_isset( $block['attrs'], 'hasParallax', false );
-	$repeated  = mai_isset( $block['attrs'], 'isRepeated', false );
+	$align         = mai_isset( $block['attrs'], 'align', false );
+	$content_align = mai_isset( $block['attrs'], 'contentAlign', false );
+	$opacity       = mai_isset( $block['attrs'], 'dimRatio', false );
+	$image_id      = mai_isset( $block['attrs'], 'id', false );
+	$image_url     = mai_isset( $block['attrs'], 'url', false );
+	$parallax      = mai_isset( $block['attrs'], 'hasParallax', false );
+	$repeated      = mai_isset( $block['attrs'], 'isRepeated', false );
 
 	$image_id = apply_filters( 'mai_cover_block_image_id', $image_id, $block );
 
-	if ( ! ( $align || $opacity || ( $image_id && $image_url ) ) ) {
+	if ( ! ( $content_align || $opacity || ( $image_id && $image_url ) ) ) {
 		return $block_content;
 	}
 
@@ -60,8 +61,8 @@ function mai_render_cover_block( $block_content, $block ) {
 	if ( $first_block ) {
 		$style = $first_block->getAttribute( 'style' );
 
-		if ( $align ) {
-			$style = sprintf( '--cover-block-justify-content:%s;', mai_get_flex_align( $align ) ) . $style;
+		if ( $content_align ) {
+			$style = sprintf( '--cover-block-justify-content:%s;', mai_get_flex_align( $content_align ) ) . $style;
 		}
 
 		if ( $opacity ) {
@@ -133,6 +134,11 @@ function mai_render_cover_block( $block_content, $block ) {
 					if ( $srcset ) {
 						$srcset = str_replace( $image_url, $new_url, $srcset );
 						$image->setAttribute( 'srcset', $srcset );
+					}
+
+					// Make sure sizes is full width now that src is showing the smallest size.
+					if ( in_array( $align, [ 'full', 'wide' ] ) ) {
+						$image->setAttribute( 'sizes', '100vw' );
 					}
 
 					// Convert inline style to custom property.

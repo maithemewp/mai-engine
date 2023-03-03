@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.26.1 (3/3/23)
+* Fixed: Make sure full/wide aligned Cover blocks use larger image from srcset/sizes.
+
 ## 2.26.0 (3/3/23)
 * Added: [Accessibility] New `aria-label` support for menus, including a new `label` parameter in `[mai_menu]` shortcode.
 * Added: [Accessibility] New `aria-label` attribute added to entry title links when needed.
@@ -623,8 +626,8 @@ other contexts.
 * Fixed: Error when `WP_Widget_Recent_Comments` is no longer available when a plugin (Perfmatters) or custom code removes it altogether.
 * Fixed: Anchor links not going to correct location due to conflict with scroll-behavoir CSS.
 * Fixed: [WooCommerce] Full align blocks in product descriptions being cut off.
-
 * Fixed: [WooCommerce] Zoom magnifying glass was still showing behind our custom icon.
+
 ## 2.7.1 (12/1/20)
 * Fixed: Removed PHP 7.3+ function.
 
