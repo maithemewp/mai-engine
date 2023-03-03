@@ -308,6 +308,7 @@ add_filter( 'genesis_attr_page-header', 'mai_add_page_header_attributes' );
  * Add page header attributes.
  *
  * @since 2.0.0
+ * @since TBD Remove role="banner" as this should stay reserved for <header> element.
  *
  * @param array $attributes Page header element attributes.
  *
@@ -332,8 +333,6 @@ function mai_add_page_header_attributes( $attributes ) {
 	}
 
 	$attributes['class'] .= ' is-alignfull-first';
-
-	$attributes['role'] = 'banner';
 
 	return $attributes;
 }
