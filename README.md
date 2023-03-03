@@ -96,6 +96,13 @@ From there, make sure that Node is running the correct version (11.15.0). To do 
 composer setup-nvm
 ```
 
+#### CLI
+
+Update the pot file by cd into mai-engine and running:
+```
+wp i18n make-pot ./ ./assets/lang/mai-engine.pot
+```
+
 #### Gulp
 
 Once the Gulp CLI and Node packages have been installed, you are ready to begin using the following Gulp tasks to automate development:

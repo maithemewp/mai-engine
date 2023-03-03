@@ -132,7 +132,12 @@ function mai_do_page_header_image() {
 		$image_size = mai_get_page_header_image_size();
 		$filter     = function() { return false; };
 		add_filter( 'wp_lazy_loading_enabled', $filter );
-		echo wp_get_attachment_image( $image_id, $image_size, false, [ 'class' => 'page-header-image' ] );
+		echo wp_get_attachment_image( $image_id, $image_size, false,
+			[
+				'class' => 'page-header-image',
+				'sizes' => '100vw',
+			]
+		);
 		remove_filter( 'wp_lazy_loading_enabled', $filter );
 	}
 }
@@ -303,6 +308,7 @@ add_filter( 'genesis_attr_page-header', 'mai_add_page_header_attributes' );
  * Add page header attributes.
  *
  * @since 2.0.0
+ * @since 2.26.0 Remove role="banner" as this should stay reserved for <header> element.
  *
  * @param array $attributes Page header element attributes.
  *
@@ -327,8 +333,6 @@ function mai_add_page_header_attributes( $attributes ) {
 	}
 
 	$attributes['class'] .= ' is-alignfull-first';
-
-	$attributes['role'] = 'banner';
 
 	return $attributes;
 }

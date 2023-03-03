@@ -348,7 +348,7 @@ function mai_load_vendor_plugins() {
 	$files = [];
 
 	if ( mai_needs_mai_acf_pro() ) {
-		$files[] = '../vendor/advanced-custom-fields/advanced-custom-fields-pro/acf';
+		$files[] = '../vendor/wpengine/advanced-custom-fields-pro/acf';
 	}
 
 	if ( ! class_exists( 'Kirki' ) ) {
@@ -614,7 +614,7 @@ function mai_get_mai_acf_plugin_data() {
 		return $data;
 	}
 
-	$data = get_plugin_data( trailingslashit( dirname( __DIR__ ) ) . 'vendor/advanced-custom-fields/advanced-custom-fields-pro/acf.php' );
+	$data = get_plugin_data( trailingslashit( dirname( __DIR__ ) ) . 'vendor/wpengine/advanced-custom-fields-pro/acf.php' );
 
 	return $data;
 }

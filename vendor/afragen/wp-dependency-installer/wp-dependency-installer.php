@@ -587,7 +587,7 @@ if ( ! class_exists( 'WP_Dependency_Installer' ) ) {
 		 */
 		public function upgrader_source_selection( $source, $remote_source ) {
 			$new_source = trailingslashit( $remote_source ) . dirname( $this->current_slug );
-			$this->move_dir( $source, $new_source );
+			$this->move_dir( $source, $new_source, true );
 
 			return trailingslashit( $new_source );
 		}
@@ -598,35 +598,58 @@ if ( ! class_exists( 'WP_Dependency_Installer' ) ) {
 		 *
 		 * Assumes that WP_Filesystem() has already been called and setup.
 		 *
-		 * @since 6.1.0
+		 * @since 6.2.0
 		 *
 		 * @global WP_Filesystem_Base $wp_filesystem WordPress filesystem subclass.
 		 *
-		 * @param string $from        Source directory.
-		 * @param string $to          Destination directory.
-		 * @return true|WP_Error True on success, WP_Error on failure.
+		 * @param string $from      Source directory.
+		 * @param string $to        Destination directory.
+		 * @param bool   $overwrite Overwrite destination.
+		 *                          Default is false.
+		 * @return bool|WP_Error True on success, False or WP_Error on failure.
 		 */
-		private function move_dir( $from, $to ) {
+		private function move_dir( $from, $to, $overwrite = false ) {
 			global $wp_filesystem;
+
+			if ( trailingslashit( strtolower( $from ) ) === trailingslashit( strtolower( $to ) ) ) {
+				return new \WP_Error( 'source_destination_same_move_dir', __( 'The source and destination are the same.' ) );
+			}
+
+			if ( $wp_filesystem->exists( $to ) ) {
+				if ( ! $overwrite ) {
+					return new \WP_Error( 'destination_already_exists_move_dir', __( 'The destination folder already exists.' ), $to );
+				} elseif ( ! $wp_filesystem->delete( $to, true ) ) {
+					// Can't overwrite if the destination couldn't be deleted.
+					return new \WP_Error( 'destination_not_deleted_move_dir', __( 'The destination directory already exists and could not be removed.' ) );
+				}
+			}
 
 			$result = false;
 
-			/**
-			 * Fires before move_dir().
-			 *
-			 * @since 6.1.0
-			 */
-			do_action( 'pre_move_dir' );
-
 			if ( 'direct' === $wp_filesystem->method ) {
-				$wp_filesystem->rmdir( $to );
-
-				$result = @rename( $from, $to );
+				if ( $wp_filesystem->delete( $to, true ) ) {
+					$result = @rename( $from, $to );
+				}
+			} else {
+				// Non-direct filesystems use some version of rename without a fallback.
+				$result = $wp_filesystem->move( $from, $to, $overwrite );
 			}
 
-			// Non-direct filesystems use some version of rename without a fallback.
-			if ( 'direct' !== $wp_filesystem->method ) {
-				$result = $wp_filesystem->move( $from, $to );
+			if ( $result ) {
+				/*
+				 * When using an environment with shared folders,
+				 * there is a delay in updating the filesystem's cache.
+				 *
+				 * This is a known issue in environments with a VirtualBox provider.
+				 *
+				 * A 200ms delay gives time for the filesystem to update its cache,
+				 * prevents "Operation not permitted", and "No such file or directory" warnings.
+				 *
+				 * This delay is used in other projects, including Composer.
+				 * @link https://github.com/composer/composer/blob/main/src/Composer/Util/Platform.php#L228-L233
+				 */
+				usleep( 200000 );
+				$this->wp_opcache_invalidate_directory( $to );
 			}
 
 			if ( ! $result ) {
@@ -644,14 +667,72 @@ if ( ! class_exists( 'WP_Dependency_Installer' ) ) {
 				}
 			}
 
-			/**
-			 * Fires after move_dir().
-			 *
-			 * @since 6.1.0
-			 */
-			do_action( 'post_move_dir' );
-
 			return $result;
+		}
+
+
+		/**
+		 * Attempts to clear the opcode cache for a directory of files.
+		 *
+		 * @since 6.2.0
+		 *
+		 * @see wp_opcache_invalidate()
+		 * @link https://www.php.net/manual/en/function.opcache-invalidate.php
+		 * @global WP_Filesystem_Base $wp_filesystem WordPress filesystem subclass.
+		 *
+		 * @param string $dir The path to the directory for which the opcode cache is to be cleared.
+		 */
+		private function wp_opcache_invalidate_directory( $dir ) {
+			global $wp_filesystem;
+
+			if ( ! is_string( $dir ) || '' === trim( $dir ) ) {
+				if ( WP_DEBUG ) {
+					$error_message = sprintf(
+						/* translators: %s: The function name. */
+						__( '%s expects a non-empty string.' ),
+						'<code>wp_opcache_invalidate_directory()</code>'
+					);
+					// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
+					trigger_error( $error_message );
+				}
+				return;
+			}
+
+			$dirlist = $wp_filesystem->dirlist( $dir, false, true );
+
+			if ( empty( $dirlist ) ) {
+				return;
+			}
+
+			/*
+			 * Recursively invalidate opcache of files in a directory.
+			 *
+			 * WP_Filesystem_*::dirlist() returns an array of file and directory information.
+			 *
+			 * This does not include a path to the file or directory.
+			 * To invalidate files within sub-directories, recursion is needed
+			 * to prepend an absolute path containing the sub-directory's name.
+			 *
+			 * @param array  $dirlist Array of file/directory information from WP_Filesystem_Base::dirlist(),
+			 *                        with sub-directories represented as nested arrays.
+			 * @param string $path    Absolute path to the directory.
+			 */
+			$invalidate_directory = function( $dirlist, $path ) use ( &$invalidate_directory ) {
+				$path = trailingslashit( $path );
+
+				foreach ( $dirlist as $name => $details ) {
+					if ( 'f' === $details['type'] ) {
+						wp_opcache_invalidate( $path . $name, true );
+						continue;
+					}
+
+					if ( is_array( $details['files'] ) && ! empty( $details['files'] ) ) {
+						$invalidate_directory( $details['files'], $path . $name );
+					}
+				}
+			};
+
+			$invalidate_directory( $dirlist, $dir );
 		}
 
 		/**

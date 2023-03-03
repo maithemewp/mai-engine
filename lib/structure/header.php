@@ -42,7 +42,7 @@ add_action( 'genesis_header', 'mai_do_header' );
  * @return void
  */
 function mai_do_header() {
-	add_filter( 'genesis_attr_nav-menu', 'mai_nav_header_attributes' );
+	add_filter( 'genesis_attr_nav-menu', 'mai_nav_header_attributes', 10, 3 );
 
 	mai_do_header_left();
 
@@ -134,7 +134,28 @@ function mai_do_header() {
 
 	mai_do_header_right();
 
-	remove_filter( 'genesis_attr_nav-menu', 'mai_nav_header_attributes' );
+	remove_filter( 'genesis_attr_nav-menu', 'mai_nav_header_attributes', 10, 3 );
+}
+
+add_filter( 'genesis_attr_nav-header-left',  'mai_add_nav_header_attributes', 10, 3 );
+add_filter( 'genesis_attr_nav-header-right', 'mai_add_nav_header_attributes', 10, 3 );
+/**
+ * Adds nav-header left and right id and classes.
+ *
+ * @since 2.1.1
+ * @since 2.26.0 Added aria-label support and extra params.
+ *
+ * @param array  $atts    Element attributes.
+ * @param string $context Element context.
+ * @param array  $args    The menu args.
+ *
+ * @return array
+ */
+function mai_add_nav_header_attributes( $atts, $context, $args ) {
+	$atts['id']    = $atts['class'];
+	$atts['class'] = 'nav-header ' . $atts['class'];
+
+	return $atts;
 }
 
 /**
@@ -281,17 +302,14 @@ function mai_do_header_content() {
  *
  * @since 0.1.0
  *
- * @param array $atts Header attributes.
+ * @param array  $atts    Header attributes.
+ * @param string $context The element context.
+ * @param array  $args    The full args.
  *
  * @return mixed
  */
-function mai_nav_header_attributes( $atts ) {
+function mai_nav_header_attributes( $atts, $context, $args ) {
 	$atts['class'] .= ' nav-header';
-
-	if ( ! apply_filters( 'genesis_disable_microdata', false ) ) {
-		$atts['itemscope'] = true; // Requird by https://validator.w3.org when itemtype is used.
-		$atts['itemtype']  = 'https://schema.org/SiteNavigationElement';
-	}
 
 	return $atts;
 }

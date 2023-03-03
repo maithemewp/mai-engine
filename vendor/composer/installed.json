@@ -1,41 +1,25 @@
 {
     "packages": [
         {
-            "name": "advanced-custom-fields/advanced-custom-fields-pro",
-            "version": "6.0.6",
-            "version_normalized": "6.0.6.0",
-            "dist": {
-                "type": "zip",
-                "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download&t={%VERSION}&k={%ACF_PRO_KEY}"
-            },
-            "require": {
-                "composer/installers": "^1.4",
-                "ffraenz/private-composer-installer": "^5.0"
-            },
-            "type": "library",
-            "installation-source": "dist",
-            "install-path": "../advanced-custom-fields/advanced-custom-fields-pro"
-        },
-        {
             "name": "afragen/wp-dependency-installer",
-            "version": "4.3.5",
-            "version_normalized": "4.3.5.0",
+            "version": "4.3.12",
+            "version_normalized": "4.3.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/afragen/wp-dependency-installer.git",
-                "reference": "aee91336474390c60f66398e1d730ea289a36a1f"
+                "reference": "da85ae335c8342878d83b5ed7fe56b58609db4e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/afragen/wp-dependency-installer/zipball/aee91336474390c60f66398e1d730ea289a36a1f",
-                "reference": "aee91336474390c60f66398e1d730ea289a36a1f",
+                "url": "https://api.github.com/repos/afragen/wp-dependency-installer/zipball/da85ae335c8342878d83b5ed7fe56b58609db4e1",
+                "reference": "da85ae335c8342878d83b5ed7fe56b58609db4e1",
                 "shasum": ""
             },
             "require": {
                 "afragen/wp-dismiss-notice": "*",
                 "php": ">=5.6"
             },
-            "time": "2022-07-15T19:47:50+00:00",
+            "time": "2023-02-06T04:22:45+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -126,41 +110,39 @@
         },
         {
             "name": "composer/installers",
-            "version": "v1.12.0",
-            "version_normalized": "1.12.0.0",
+            "version": "v2.2.0",
+            "version_normalized": "2.2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "d20a64ed3c94748397ff5973488761b22f6d3f19"
+                "reference": "c29dc4b93137acb82734f672c37e029dfbd95b35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/d20a64ed3c94748397ff5973488761b22f6d3f19",
-                "reference": "d20a64ed3c94748397ff5973488761b22f6d3f19",
+                "url": "https://api.github.com/repos/composer/installers/zipball/c29dc4b93137acb82734f672c37e029dfbd95b35",
+                "reference": "c29dc4b93137acb82734f672c37e029dfbd95b35",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "^1.0 || ^2.0"
-            },
-            "replace": {
-                "roundcube/plugin-installer": "*",
-                "shama/baton": "*"
+                "composer-plugin-api": "^1.0 || ^2.0",
+                "php": "^7.2 || ^8.0"
             },
             "require-dev": {
                 "composer/composer": "1.6.* || ^2.0",
                 "composer/semver": "^1 || ^3",
                 "phpstan/phpstan": "^0.12.55",
                 "phpstan/phpstan-phpunit": "^0.12.16",
-                "symfony/phpunit-bridge": "^4.2 || ^5",
-                "symfony/process": "^2.3"
+                "symfony/phpunit-bridge": "^5.3",
+                "symfony/process": "^5"
             },
-            "time": "2021-09-13T08:19:44+00:00",
+            "time": "2022-08-20T06:45:11+00:00",
             "type": "composer-plugin",
             "extra": {
                 "class": "Composer\\Installers\\Plugin",
                 "branch-alias": {
-                    "dev-main": "1.x-dev"
-                }
+                    "dev-main": "2.x-dev"
+                },
+                "plugin-modifies-install-path": true
             },
             "installation-source": "dist",
             "autoload": {
@@ -182,7 +164,6 @@
             "description": "A multi-framework Composer library installer",
             "homepage": "https://composer.github.io/installers/",
             "keywords": [
-                "Craft",
                 "Dolibarr",
                 "Eliasis",
                 "Hurad",
@@ -203,7 +184,6 @@
                 "Whmcs",
                 "WolfCMS",
                 "agl",
-                "aimeos",
                 "annotatecms",
                 "attogram",
                 "bitrix",
@@ -222,7 +202,6 @@
                 "grav",
                 "installer",
                 "itop",
-                "joomla",
                 "known",
                 "kohana",
                 "laravel",
@@ -231,6 +210,7 @@
                 "magento",
                 "majima",
                 "mako",
+                "matomo",
                 "mediawiki",
                 "miaoxing",
                 "modulework",
@@ -250,9 +230,7 @@
                 "silverstripe",
                 "sydes",
                 "sylius",
-                "symfony",
                 "tastyigniter",
-                "typo3",
                 "wordpress",
                 "yawik",
                 "zend",
@@ -260,7 +238,7 @@
             ],
             "support": {
                 "issues": "https://github.com/composer/installers/issues",
-                "source": "https://github.com/composer/installers/tree/v1.12.0"
+                "source": "https://github.com/composer/installers/tree/v2.2.0"
             },
             "funding": [
                 {
@@ -280,65 +258,20 @@
         },
         {
             "name": "kirki-framework/kirki",
-            "version": "4.0.24",
-            "version_normalized": "4.0.24.0",
+            "version": "4.1.0",
+            "version_normalized": "4.1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kirki-framework/kirki.git",
-                "reference": "810938ec2b095966774784a27880f4aeba2d2853"
+                "reference": "c173513717c42cf176f55dd888b9656adb9a5e05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kirki-framework/kirki/zipball/810938ec2b095966774784a27880f4aeba2d2853",
-                "reference": "810938ec2b095966774784a27880f4aeba2d2853",
+                "url": "https://api.github.com/repos/kirki-framework/kirki/zipball/c173513717c42cf176f55dd888b9656adb9a5e05",
+                "reference": "c173513717c42cf176f55dd888b9656adb9a5e05",
                 "shasum": ""
             },
             "require": {
-                "kirki-framework/compatibility": "*",
-                "kirki-framework/control-base": "*",
-                "kirki-framework/control-checkbox": "*",
-                "kirki-framework/control-code": "*",
-                "kirki-framework/control-color": "*",
-                "kirki-framework/control-color-palette": "*",
-                "kirki-framework/control-cropped-image": "*",
-                "kirki-framework/control-custom": "*",
-                "kirki-framework/control-dashicons": "*",
-                "kirki-framework/control-date": "*",
-                "kirki-framework/control-dimension": "*",
-                "kirki-framework/control-editor": "*",
-                "kirki-framework/control-generic": "*",
-                "kirki-framework/control-image": "*",
-                "kirki-framework/control-multicheck": "*",
-                "kirki-framework/control-palette": "*",
-                "kirki-framework/control-radio": "*",
-                "kirki-framework/control-react-colorful": "*",
-                "kirki-framework/control-react-select": "*",
-                "kirki-framework/control-repeater": "*",
-                "kirki-framework/control-select": "*",
-                "kirki-framework/control-slider": "*",
-                "kirki-framework/control-sortable": "*",
-                "kirki-framework/control-upload": "*",
-                "kirki-framework/data-option": "*",
-                "kirki-framework/field": "*",
-                "kirki-framework/field-background": "*",
-                "kirki-framework/field-dimensions": "*",
-                "kirki-framework/field-fontawesome": "*",
-                "kirki-framework/field-multicolor": "*",
-                "kirki-framework/field-typography": "*",
-                "kirki-framework/l10n": "*",
-                "kirki-framework/module-css": "*",
-                "kirki-framework/module-editor-styles": "*",
-                "kirki-framework/module-field-dependencies": "*",
-                "kirki-framework/module-panels": "*",
-                "kirki-framework/module-postmessage": "*",
-                "kirki-framework/module-preset": "*",
-                "kirki-framework/module-section-icons": "*",
-                "kirki-framework/module-sections": "*",
-                "kirki-framework/module-selective-refresh": "*",
-                "kirki-framework/module-tooltips": "*",
-                "kirki-framework/module-webfonts": "*",
-                "kirki-framework/url-getter": "*",
-                "kirki-framework/util": "*",
                 "php": ">=7.0"
             },
             "require-dev": {
@@ -348,9 +281,77 @@
                 "wp-coding-standards/wpcs": "*",
                 "wptrt/wpthemereview": "dev-develop"
             },
-            "time": "2022-05-25T11:09:16+00:00",
+            "time": "2023-02-07T14:56:30+00:00",
             "type": "library",
             "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Kirki\\": [
+                        "packages/control-base/src",
+                        "packages/control-checkbox/src",
+                        "packages/control-code/src",
+                        "packages/control-color/src",
+                        "packages/control-color-palette/src",
+                        "packages/control-cropped-image/src",
+                        "packages/control-custom/src",
+                        "packages/control-dashicons/src",
+                        "packages/control-date/src",
+                        "packages/control-dimension/src",
+                        "packages/control-editor/src",
+                        "packages/control-generic/src",
+                        "packages/control-image/src",
+                        "packages/control-multicheck/src",
+                        "packages/control-palette/src",
+                        "packages/control-radio/src",
+                        "packages/control-react-colorful/src",
+                        "packages/control-react-select/src",
+                        "packages/control-repeater/src",
+                        "packages/control-select/src",
+                        "packages/control-slider/src",
+                        "packages/control-sortable/src",
+                        "packages/control-upload/src",
+                        "packages/field/src",
+                        "packages/googlefonts/src",
+                        "packages/l10n/src",
+                        "packages/module-panels/src",
+                        "packages/module-sections/src",
+                        "packages/url-getter/src"
+                    ],
+                    "Kirki\\Data\\": [
+                        "packages/data-option/src"
+                    ],
+                    "Kirki\\Util\\": [
+                        "packages/util/src"
+                    ],
+                    "Kirki\\Field\\": [
+                        "packages/field/src/Field",
+                        "packages/field-background/src",
+                        "packages/field-dimensions/src",
+                        "packages/field-fontawesome/src",
+                        "packages/field-multicolor/src/Field",
+                        "packages/field-multicolor/src",
+                        "packages/field-typography/src/Field",
+                        "packages/field-typography/src"
+                    ],
+                    "Kirki\\Module\\": [
+                        "packages/module-css/src",
+                        "packages/module-editor-styles/src",
+                        "packages/module-field-dependencies/src",
+                        "packages/module-postmessage/src",
+                        "packages/module-preset/src",
+                        "packages/module-section-icons/src",
+                        "packages/module-selective-refresh/src",
+                        "packages/module-tooltips/src",
+                        "packages/module-webfonts/src"
+                    ],
+                    "Kirki\\Settings\\": [
+                        "packages/settings/src"
+                    ],
+                    "Kirki\\Compatibility\\": [
+                        "packages/compatibility/src"
+                    ]
+                }
+            },
             "notification-url": "https://packagist.org/downloads/",
             "include-path": [
                 ".",
@@ -373,7 +374,7 @@
             ],
             "support": {
                 "issues": "https://github.com/kirki-framework/kirki/issues",
-                "source": "https://github.com/kirki-framework/kirki/tree/v4.0.24"
+                "source": "https://github.com/kirki-framework/kirki/tree/v4.1.0"
             },
             "install-path": "../kirki-framework/kirki"
         },
@@ -431,6 +432,21 @@
                 "source": "https://github.com/proteusthemes/WordPress-Importer/tree/v2.1.0"
             },
             "install-path": "../proteusthemes/wp-content-importer-v2"
+        },
+        {
+            "name": "wpengine/advanced-custom-fields-pro",
+            "version": "6.0.7",
+            "version_normalized": "6.0.7.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://connect.advancedcustomfields.com/v2/plugins/composer_download?p=pro&t=6.0.7"
+            },
+            "require": {
+                "composer/installers": "~1.0 || ~2.0"
+            },
+            "type": "wordpress-plugin",
+            "installation-source": "dist",
+            "install-path": "../wpengine/advanced-custom-fields-pro"
         },
         {
             "name": "yahnis-elsts/plugin-update-checker",

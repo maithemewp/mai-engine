@@ -107,16 +107,20 @@ function mai_get_icon( $args ) {
 		$atts['style'] .= sprintf( '--icon-border-radius:%s;', mai_get_unit_value( $args['border_radius'] ) );
 	}
 
-	$tag = 'span';
+	$tag   = 'span';
+	$label = '';
 
 	if ( $args['link'] && ! is_admin() ) {
-		$tag           = 'a';
-		$atts['href']  = esc_url( $args['link'] );
-		$atts['title'] = esc_attr( $args['link_title'] );
+		$tag          = 'a';
+		$atts['href'] = esc_url( $args['link'] );
 
 		if ( $args['link_target'] ) {
 			$atts['target'] = '_blank';
 			$atts['rel']    = 'noopener nofollow';
+		}
+
+		if ( $args['link_title'] ) {
+			$label = sprintf( '<span class="screen-reader-text">%s</span>', $args['link_title'] );
 		}
 	}
 
@@ -135,7 +139,7 @@ function mai_get_icon( $args ) {
 	$icon .= genesis_markup(
 		[
 			'open'    => "<{$tag} %s>" . '<span class="mai-icon-wrap">',
-			'close'   => '</span>' . "</{$tag}>",
+			'close'   => '</span>' . $label . "</{$tag}>",
 			'content' => $svg,
 			'context' => 'mai-icon',
 			'echo'    => false,

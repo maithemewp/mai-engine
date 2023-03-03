@@ -449,7 +449,7 @@ function mai_get_page_header_image_size() {
 	if ( ! is_null( $image_size ) ) {
 		return $image_size;
 	}
-	$image_size = (string) apply_filters( 'mai_page_header_image_size', 'cover' );
+	$image_size = (string) apply_filters( 'mai_page_header_image_size', 'medium' );
 	return $image_size;
 }
 
@@ -466,7 +466,7 @@ function mai_get_cover_image_size() {
 	if ( ! is_null( $image_size ) ) {
 		return $image_size;
 	}
-	$image_size = (string) apply_filters( 'mai_cover_image_size', 'cover' );
+	$image_size = (string) apply_filters( 'mai_cover_image_size', 'medium' );
 	return $image_size;
 }
 
