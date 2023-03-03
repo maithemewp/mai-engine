@@ -22,7 +22,7 @@ add_filter( 'genesis_attr_nav-header-right', 'mai_add_nav_attributes', 10, 3 );
  * Adds nav attributes.
  *
  * @since 2.1.1
- * @since TBD Consolidated other filters and added aria-label.
+ * @since 2.26.0 Consolidated other filters and added aria-label.
  *
  * @param array  $atts    Element attributes.
  * @param string $context Element context.

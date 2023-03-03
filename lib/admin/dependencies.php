@@ -229,7 +229,7 @@ function mai_change_plugin_dependency_text( $actions ) {
 /**
  * Disable Kirki settings page added in 4.1.0.
  *
- * @since TBD
+ * @since 2.26.0
  *
  * @return bool
  */

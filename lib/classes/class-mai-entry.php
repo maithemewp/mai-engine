@@ -459,7 +459,7 @@ class Mai_Entry {
 	/**
 	 * Gets the entry title.
 	 *
-	 * @since TBD
+	 * @since 2.26.0
 	 *
 	 * @return false|string
 	 */
