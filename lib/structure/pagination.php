@@ -206,7 +206,7 @@ function mai_adjacent_entry( $content, $args ) {
 	return $content;
 }
 
-add_filter( 'genesis_prev_link_text', 'mai_previous_page_link' );
+add_filter( 'genesis_prev_link_text', 'mai_previous_page_link', 8 );
 /**
  * Changes the previous page link text.
  *
@@ -218,7 +218,7 @@ function mai_previous_page_link() {
 	return esc_html__( 'Previous', 'mai-engine' );
 }
 
-add_filter( 'genesis_next_link_text', 'mai_next_page_link' );
+add_filter( 'genesis_next_link_text', 'mai_next_page_link', 8 );
 /**
  * Changes the next page link text.
  *
