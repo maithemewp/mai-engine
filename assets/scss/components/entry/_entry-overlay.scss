@@ -6,6 +6,7 @@
 	left: 0;
 	z-index: 0;
 	background: var(--entry-overlay-background, transparent);
+	border-radius: var(--entry-border-radius, var(--border-radius)); /* taken from entry, mostly for background image */
 	opacity: var(--entry-overlay-opacity, 0.6);
 	transition: var(--transition);
 }
