@@ -36,11 +36,11 @@
 		}
 	}
 
-	&[style*="--align-text-vertical:flex-start"] .has-image {
+	&[style*="--align-text-vertical:start"] .has-image {
 		--entry-overlay-color-end: transparent;
 	}
 
-	&[style*="--align-text-vertical:flex-end"] .has-image {
+	&[style*="--align-text-vertical:end"] .has-image {
 		--entry-overlay-color-start: transparent;
 	}
 }
