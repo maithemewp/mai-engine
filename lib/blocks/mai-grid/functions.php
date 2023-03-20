@@ -82,6 +82,7 @@ function mai_get_align_text( $alignment ) {
 		case 'left':
 		case 'top':
 			$value = 'start';
+		break;
 		case 'center':
 		case 'middle':
 			$value = 'center';
