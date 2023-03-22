@@ -23,6 +23,7 @@
 
 	&.is-layout-flex {
 		gap: var(--row-gap) var(--column-gap);
+		justify-content: start;
 		align-items: center;
 	}
 }
