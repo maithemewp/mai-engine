@@ -20,6 +20,11 @@
 		margin-top: 0;
 		margin-bottom: 0;
 	}
+
+	&.is-layout-flex {
+		gap: var(--row-gap) var(--column-gap);
+		align-items: center;
+	}
 }
 
 .has-sidebar,
