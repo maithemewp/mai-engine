@@ -1205,13 +1205,17 @@ class Mai_Entry {
 				$content = mai_get_content_limit( $content, $this->args['content_limit'] );
 			}
 
+			// Filter.
+			$content = apply_filters( 'mai_entry_content', $content, $this->args, $this->entry );
+			$content = wp_kses_post( $content );
+
 			if ( ! $content ) {
 				return;
 			}
 
 			echo $open;
 			do_action( "mai_before_entry_content_inner", $this->entry, $this->args );
-			echo apply_filters( 'mai_entry_content', $content, $this->args, $this->entry );
+			echo $content;
 			do_action( "mai_after_entry_content_inner", $this->entry, $this->args );
 			echo $close;
 		}
