@@ -1111,6 +1111,7 @@ class Mai_Entry {
 
 		// Filter for entry excerpt.
 		$excerpt = apply_filters( 'mai_entry_excerpt', $excerpt, $this->args, $this->entry );
+		$excerpt = wp_kses_post( $excerpt );
 
 		if ( ! $excerpt ) {
 			return;
