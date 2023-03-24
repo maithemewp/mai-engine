@@ -275,28 +275,6 @@ function mai_render_admin_patterns_menu_page() {
 	echo '</div>';
 }
 
-add_action( 'admin_menu', 'mai_admin_menu_subpages', 30 );
-/**
- * Add docs and support admin submenu items to end of submenu.
- *
- * @since 2.6.0
- *
- * @return void
- */
-function mai_admin_menu_subpages() {
-	if ( ! current_user_can( 'edit_posts' ) ) {
-		return;
-	}
-
-	global $submenu;
-
-	$submenu['mai-theme'][] = [
-		__( 'Docs & Support', 'mai-engine' ),
-		'edit_posts',
-		'https://help.bizbudding.com/',
-	];
-}
-
 add_filter( 'plugin_action_links_mai-engine/mai-engine.php', 'mai_add_plugins_link', 10, 4 );
 /**
  * Return the plugin action links. This will only be called if the plugin is active.
@@ -314,4 +292,76 @@ function mai_add_plugins_link( $actions, $plugin_file, $plugin_data, $context ) 
 	$actions['settings'] = sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=mai-theme' ), __( 'Plugins', 'mai-engine' ) );
 
 	return $actions;
+}
+
+add_action( 'admin_menu', 'mai_admin_menu_subpages', 999 );
+/**
+ * Add docs and support admin submenu items to end of submenu.
+ *
+ * @since 2.6.0
+ *
+ * @return void
+ */
+function mai_admin_menu_subpages() {
+	if ( ! current_user_can( 'edit_posts' ) ) {
+		return;
+	}
+
+	global $submenu;
+
+	// Set vars.
+	$ordered = $plugins = $content_areas = $reusable_blocks = $patterns = $setup_wizard = [];
+
+	// Store fixed items.
+	foreach ( $submenu['mai-theme'] as $index => $item ) {
+		switch ( $item[2] ) {
+			case 'mai-theme':
+				$plugins = $item;
+				unset( $submenu['mai-theme'][ $index ] );
+			break;
+			case 'edit.php?post_type=mai_template_part':
+				$content_areas = $item;
+				unset( $submenu['mai-theme'][ $index ] );
+			break;
+			case 'edit.php?post_type=wp_block':
+				$reusable_blocks = $item;
+				unset( $submenu['mai-theme'][ $index ] );
+			break;
+			case 'mai-patterns':
+				$patterns = $item;
+				unset( $submenu['mai-theme'][ $index ] );
+			break;
+			case 'mai-setup-wizard':
+				$setup_wizard = $item;
+				unset( $submenu['mai-theme'][ $index ] );
+			break;
+		}
+	}
+
+	// Order alphabetically by menu title.
+	array_multisort( array_map( function( $item ) {
+		return $item[0];
+	},  $submenu['mai-theme'] ), SORT_ASC, $submenu['mai-theme'] );
+
+	// Add starting items.
+	$submenu['mai-theme'] = array_merge(
+		[
+			$plugins,
+			$content_areas,
+			$reusable_blocks,
+		],
+		$submenu['mai-theme']
+	);
+
+	// Add ending items.
+	$submenu['mai-theme'][] = $patterns;
+	$submenu['mai-theme'][] = $setup_wizard;
+	$submenu['mai-theme'][] = [
+		__( 'Docs & Support', 'mai-engine' ),
+		'edit_posts',
+		'https://help.bizbudding.com/',
+	];
+
+	// Remove any empty items.
+	$submenu['mai-theme'] = array_filter( $submenu['mai-theme'] );
 }

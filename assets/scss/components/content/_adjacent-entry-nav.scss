@@ -8,12 +8,12 @@
 	margin-bottom: var(--spacing-xxl);
 
 	.pagination-previous {
-		--adjacent-entry-link-inner-justify-content: flex-start;
+		--adjacent-entry-link-inner-justify-content: start;
 		--adjacent-entry-link-text-align: start;
 	}
 
 	.pagination-next {
-		--adjacent-entry-link-inner-justify-content: flex-end;
+		--adjacent-entry-link-inner-justify-content: end;
 		--adjacent-entry-link-text-align: end;
 	}
 }

@@ -140,6 +140,10 @@ function mai_render_cover_block( $block_content, $block ) {
 					if ( in_array( $align, [ 'full', 'wide' ] ) ) {
 						$image->setAttribute( 'sizes', '100vw' );
 					}
+					// Full width on mobile, half width other.
+					else {
+						$image->setAttribute( 'sizes', '(max-width: 600px) 100vw, 500vw' );
+					}
 
 					// Convert inline style to custom property.
 					$image_style = $image->getAttribute( 'style' );

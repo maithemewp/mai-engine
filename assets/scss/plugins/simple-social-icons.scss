@@ -20,7 +20,7 @@
 	ul {
 		display: flex;
 		flex-wrap: nowrap;
-		justify-content: flex-start;
+		justify-content: start;
 		margin: 0;
 		padding: 0;
 
@@ -56,11 +56,11 @@
 		}
 
 		&.alignleft {
-			justify-content: flex-start;
+			justify-content: start;
 		}
 
 		&.alignright {
-			justify-content: flex-end;
+			justify-content: end;
 		}
 	}
 }

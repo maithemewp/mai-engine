@@ -138,8 +138,8 @@ body {
 }
 
 [data-content-align="start"] {
-	--group-block-justify-content: flex-start;
-	--cover-block-justify-content: flex-start;
+	--group-block-justify-content: start;
+	--cover-block-justify-content: start;
 
 	> .wp-block-group__inner-container > .wp-block,
 	> .wp-block-cover__inner-container > .wp-block {
@@ -153,8 +153,8 @@ body {
 }
 
 [data-content-align="end"] {
-	--group-block-justify-content: flex-end;
-	--cover-block-justify-content: flex-end;
+	--group-block-justify-content: end;
+	--cover-block-justify-content: end;
 
 	> .wp-block-group__inner-container > .wp-block,
 	> .wp-block-cover__inner-container > .wp-block {
@@ -367,7 +367,7 @@ input[type="submit"],
 	}
 
 	.wp-block[data-align="left"] & {
-		justify-content: flex-start;
+		justify-content: start;
 	}
 
 	.wp-block[data-align="center"] & {
@@ -375,7 +375,7 @@ input[type="submit"],
 	}
 
 	.wp-block[data-align="right"] & {
-		justify-content: flex-end;
+		justify-content: end;
 	}
 
 	.wp-block-search__input {
@@ -500,7 +500,7 @@ input[type="submit"],
 .mai-columns > .mai-columns-wrap > .acf-innerblocks-container > .wp-block > .mai-column {
 	display: flex;
 	flex-direction: column;
-	justify-content: var(--justify-content, flex-start);
+	justify-content: var(--justify-content, start);
 }
 
 // This is also handled for dark body in admin.scss.

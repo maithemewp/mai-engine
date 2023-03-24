@@ -17,13 +17,13 @@
 }
 
 .header-left-mobile {
-	justify-content: flex-start;
+	justify-content: start;
 	--search-icon-form-right: unset;
 	--search-icon-form-left: calc(var(--side-spacing) * -1);
 }
 
 .header-right-mobile {
-	justify-content: flex-end;
+	justify-content: end;
 	--search-icon-form-right: calc(var(--side-spacing) * -1);
 	--search-icon-form-left: unset;
 }

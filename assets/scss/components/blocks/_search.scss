@@ -7,7 +7,7 @@
 	--button-margin: 0 0 0 var(--search-button-margin-left, calc(var(--spacing-xl) * -1));
 
 	&.alignleft {
-		justify-content: flex-start;
+		justify-content: start;
 		float: none;
 	}
 
@@ -16,7 +16,7 @@
 	}
 
 	&.alignright {
-		justify-content: flex-end;
+		justify-content: end;
 		float: none;
 	}
 
