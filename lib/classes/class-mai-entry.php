@@ -1229,6 +1229,8 @@ class Mai_Entry {
 	 * it has it stored and doesn't do_blocks again.
 	 * This prevents infinite loops.
 	 *
+	 * @since TBD
+	 *
 	 * @param int $post_id
 	 *
 	 * @return string
@@ -1241,7 +1243,7 @@ class Mai_Entry {
 		}
 
 		$content[ $post_id ] = get_the_content( null, false, $post_id );
-		$content[ $post_id ] = do_blocks( $content[ $post_id ] );
+		$content[ $post_id ] = mai_get_processed_content( $content[ $post_id ] );
 
 		return $content[ $post_id ];
 	}
