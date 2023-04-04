@@ -65,23 +65,23 @@
         },
         {
             "name": "afragen/wp-dismiss-notice",
-            "version": "0.3.0",
-            "version_normalized": "0.3.0.0",
+            "version": "0.3.2",
+            "version_normalized": "0.3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/afragen/wp-dismiss-notice.git",
-                "reference": "8b690bc045620811d3c0724c2a2746cf1baab809"
+                "reference": "5a3dd3198c819a7e3df3062399f7c41548b5a8ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/afragen/wp-dismiss-notice/zipball/8b690bc045620811d3c0724c2a2746cf1baab809",
-                "reference": "8b690bc045620811d3c0724c2a2746cf1baab809",
+                "url": "https://api.github.com/repos/afragen/wp-dismiss-notice/zipball/5a3dd3198c819a7e3df3062399f7c41548b5a8ab",
+                "reference": "5a3dd3198c819a7e3df3062399f7c41548b5a8ab",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.6"
             },
-            "time": "2023-01-02T19:27:07+00:00",
+            "time": "2023-03-30T21:37:09+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -435,14 +435,17 @@
         },
         {
             "name": "wpengine/advanced-custom-fields-pro",
-            "version": "6.0.7",
-            "version_normalized": "6.0.7.0",
+            "version": "6.1.2",
+            "version_normalized": "6.1.2.0",
             "dist": {
                 "type": "zip",
-                "url": "https://connect.advancedcustomfields.com/v2/plugins/composer_download?p=pro&t=6.0.7"
+                "url": "https://connect.advancedcustomfields.com/v2/plugins/composer_download?p=pro&t=6.1.2"
             },
             "require": {
                 "composer/installers": "~1.0 || ~2.0"
+            },
+            "replace": {
+                "wpackagist-plugin/advanced-custom-fields": "self.version"
             },
             "type": "wordpress-plugin",
             "installation-source": "dist",
