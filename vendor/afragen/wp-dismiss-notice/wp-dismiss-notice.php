@@ -42,9 +42,12 @@ class WP_Dismiss_Notice {
 		$response = get_transient( 'wp-dismiss-notice_jsurl' );
 		if ( ! $response ) {
 			$response = wp_remote_head( $plugin_js_url );
-			set_transient( 'wp-dismiss-notice_jsurl', $response, WEEK_IN_SECONDS );
+			$response = is_wp_error( $response ) ? $response->get_error_message() : wp_remote_retrieve_response_code( $response );
+			if ( is_int( $response ) ) {
+				set_transient( 'wp-dismiss-notice_jsurl', $response, WEEK_IN_SECONDS );
+			}
 		}
-		$js_url = ( 200 === wp_remote_retrieve_response_code( $response ) ) || is_wp_error( $response )
+		$js_url = ( 200 === $response )
 			? $plugin_js_url
 			: get_stylesheet_directory_uri() . $composer_js_path;
 
