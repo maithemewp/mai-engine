@@ -3,7 +3,7 @@
         'name' => 'maithemewp/mai-engine',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => 'bbf6e2106f6c39247e32b5d68fabb04f1bad44c1',
+        'reference' => '69cbea0ceec7eb0315e1555753c77b58f98ff61d',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -20,9 +20,9 @@
             'dev_requirement' => false,
         ),
         'afragen/wp-dismiss-notice' => array(
-            'pretty_version' => '0.3.2',
-            'version' => '0.3.2.0',
-            'reference' => '5a3dd3198c819a7e3df3062399f7c41548b5a8ab',
+            'pretty_version' => '0.3.3',
+            'version' => '0.3.3.0',
+            'reference' => '606c0d5222ad223fb420bb33db947e592b213920',
             'type' => 'library',
             'install_path' => __DIR__ . '/../afragen/wp-dismiss-notice',
             'aliases' => array(),
@@ -319,7 +319,7 @@
         'maithemewp/mai-engine' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => 'bbf6e2106f6c39247e32b5d68fabb04f1bad44c1',
+            'reference' => '69cbea0ceec7eb0315e1555753c77b58f98ff61d',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -337,12 +337,12 @@
         'wpackagist-plugin/advanced-custom-fields' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => '6.1.2',
+                0 => '6.1.3',
             ),
         ),
         'wpengine/advanced-custom-fields-pro' => array(
-            'pretty_version' => '6.1.2',
-            'version' => '6.1.2.0',
+            'pretty_version' => '6.1.3',
+            'version' => '6.1.3.0',
             'reference' => NULL,
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../wpengine/advanced-custom-fields-pro',
