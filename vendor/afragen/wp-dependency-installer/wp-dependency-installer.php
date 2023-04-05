@@ -100,9 +100,6 @@ if ( ! class_exists( 'WP_Dependency_Installer' ) ) {
 				'wp_dependency_notices',
 				function( $notices, $slug ) {
 					foreach ( array_keys( $notices ) as $key ) {
-						if ( ! isset( $notices[ $key ]['slug'] ) ) {
-							ray( $slug );
-						}
 						if ( ! is_wp_error( $notices[ $key ] ) && $notices[ $key ]['slug'] === $slug ) {
 							$notices[ $key ]['nonce'] = $this->config[ $slug ]['nonce'];
 						}
