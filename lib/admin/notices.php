@@ -21,13 +21,13 @@ add_action( 'admin_notices', 'mai_maybe_display_admin_notice', 20 );
  * @return void
  */
 function mai_maybe_display_admin_notice() {
-	$notice = filter_input( INPUT_GET, 'mai_notice', FILTER_SANITIZE_STRING );
+	$notice = mai_sanitize_get( 'mai_notice' );
 
 	if ( ! $notice ) {
 		return;
 	}
 
-	$type = filter_input( INPUT_GET, 'mai_type', FILTER_SANITIZE_STRING );
+	$type = mai_sanitize_get( 'mai_type' );
 	$type = $type ?: 'success';
 
 	printf( '<div class="notice notice-%s">%s</div>', sanitize_html_class( $type ), wpautop( $notice ) );

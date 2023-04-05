@@ -61,8 +61,8 @@ class Mai_Plugins {
 
 		$succes  = false;
 		$plugins = $this->get_plugins();
-		$action  = filter_input( INPUT_GET, 'trigger', FILTER_SANITIZE_STRING );
-		$slug    = filter_input( INPUT_GET, 'slug', FILTER_SANITIZE_STRING );
+		$action  = mai_sanitize_get( 'trigger' );
+		$slug    = mai_sanitize_get( 'slug' );
 
 		if ( $plugins && $action && $slug ) {
 			if ( $this->is_disabled( $slug ) ) {
