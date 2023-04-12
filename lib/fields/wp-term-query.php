@@ -33,20 +33,58 @@ function mai_grid_load_taxonomy_field( $field ) {
 	return $field;
 }
 
-add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_include', 'mai_acf_get_terms', 10, 1 );
-add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_exclude', 'mai_acf_get_terms', 10, 1 );
+add_filter( 'acf/load_field/key=mai_grid_block_tax_include', 'mai_grid_load_include_terms_field' );
+add_filter( 'acf/load_field/key=mai_grid_block_tax_exclude', 'mai_grid_load_include_terms_field' );
+/**
+ * Sets taxonomy based on the block taxonomies field, when the include/exclude fields are initially loaded.
+ *
+ * @since TBD
+ *
+ * @param array $field
+ *
+ * @return array
+ */
+function mai_grid_load_include_terms_field( $field ) {
+	if ( ! is_admin() ) {
+		return $field;
+	}
+
+	$action = mai_get_acf_request( 'action' );
+	$block  = mai_get_acf_request( 'block' );
+
+	if ( ! ( $action && $block && 'acf/ajax/fetch-block' === $action ) ) {
+		return $field;
+	}
+
+	$block = json_decode( wp_unslash( $block ), true );
+
+	if ( ! isset( $block['name'] ) || 'acf/mai-term-grid' !== $block['name'] ) {
+		return $field;
+	}
+
+	if ( isset( $block['data']['taxonomy'] ) ) {
+		$taxonomies        = (array) $block['data']['taxonomy'];
+		$field['taxonomy'] = reset( $taxonomies );
+	}
+
+	return $field;
+}
+
+add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_include', 'mai_acf_get_terms', 10, 3 );
+add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_exclude', 'mai_acf_get_terms', 10, 3 );
 /**
  * Get terms from an ajax query.
  * The taxonomy is passed via JS on select2_query_args filter.
  *
  * @since 0.1.0
  * @since 2.25.6 Only run in admin.
+ * @since TBD Force first taxonomy. See #631.
  *
  * @param array $args Field args.
  *
  * @return mixed
  */
-function mai_acf_get_terms( $args ) {
+function mai_acf_get_terms( $args, $field, $post_id  ) {
 	if ( ! is_admin() ) {
 		return $args;
 	}
@@ -58,9 +96,9 @@ function mai_acf_get_terms( $args ) {
 		return $args;
 	}
 
-	foreach ( (array) $taxonomies as $taxonomy ) {
-		$args['taxonomy'][] = sanitize_text_field( wp_unslash( $taxonomy ) );
-	}
+	// Forces first taxonomy, since ACF's Taxonomy field type does not allow multiple taxonomies.
+	$taxonomies       = wp_unslash( (array) $taxonomies );
+	$args['taxonomy'] = reset( $taxonomies );
 
 	return $args;
 }
