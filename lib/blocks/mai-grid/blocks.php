@@ -217,12 +217,8 @@ function mai_do_term_grid_block( $attributes, $content, $is_preview, $post_id, $
  */
 function mai_do_grid_block( $type, $attributes, $content, $is_preview, $post_id, $wp_block, $context ) {
 	$args          = mai_get_grid_field_values( $type );
-	$args['class'] = isset( $args['class'] ) ? $args['class'] : '';
-	// $args['id']    = isset( $args['id'] ) ? $args['id'] : '';
-
-	if ( ! empty( $attributes['className'] ) ) {
-		$args['class'] = mai_add_classes( $attributes['className'], $args['class'] );
-	}
+	$args['id']    = isset( $attributes['anchor'] ) ? sanitize_key( $attributes['anchor'] ) : '';
+	$args['class'] = isset( $attributes['className'] ) ? sanitize_html_class( $attributes['className'] ) : '';
 
 	if ( ! empty( $attributes['align'] ) ) {
 		$args['class'] = mai_add_classes( 'align' . $attributes['align'], $args['class'] );
