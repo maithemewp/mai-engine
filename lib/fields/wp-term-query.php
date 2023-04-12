@@ -530,7 +530,7 @@ function mai_get_wp_term_query_fields() {
 					'operator' => '!=empty',
 				],
 				[
-					'field'    => 'mai_grid_block_query_by',
+					'field'    => 'mai_grid_block_tax_query_by',
 					'operator' => '!=',
 					'value'    => 'id',
 				],
