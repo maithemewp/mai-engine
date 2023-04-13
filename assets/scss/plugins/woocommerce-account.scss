@@ -4,10 +4,10 @@
 @import "../utilities/woocommerce-font";
 
 .woocommerce-MyAccount-navigation {
+	margin-bottom: var(--spacing-xxl);
 	padding: 0;
 	background-color: var(--color-white);
 	border: var(--border);
-	border-bottom: 0;
 	border-radius: var(--border-radius);
 
 	--list-item-margin: 0;
@@ -18,6 +18,12 @@
 	ul {
 		--list-margin: 0;
 		--list-style-type: none;
+
+		@include mq(false, md) {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+		}
 	}
 
 	a {
@@ -28,8 +34,18 @@
 	}
 }
 
+
+
 .woocommerce-MyAccount-navigation-link {
-	border-bottom: var(--border);
+	@include mq(false, md) {
+		border-bottom: none;
+	}
+
+	@include mq(md) {
+		&:not(:last-child) {
+			border-bottom: var(--border);
+		}
+	}
 
 	&.is-active {
 

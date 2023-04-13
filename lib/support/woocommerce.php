@@ -68,7 +68,7 @@ function mai_woocommerce_breakpoint( $breakpoint ) {
 		$breakpoint = 'lg';
 	}
 
-	return mai_get_unit_value( mai_get_breakpoint( $breakpoint ), 'px' );
+	return mai_get_unit_value( mai_get_breakpoint( $breakpoint ) - 1, 'px' );
 }
 
 add_filter( 'woocommerce_product_loop_start', 'mai_product_loop_start_columns' );

@@ -136,6 +136,26 @@ body.has-boxed-container .editor-styles-wrapper {
 }
 
 /**
+ * Admin Menu styles.
+ */
+
+#toplevel_page_mai-theme .wp-submenu li:nth-child(4) {
+	margin-bottom: 5px;
+	padding-bottom: 6px;
+	border-bottom: 1px solid 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#toplevel_page_mai-theme .wp-submenu li:not(:nth-child(4)) + li:nth-last-child(3) {
+	margin-top: 5px;
+	padding-top: 6px;
+	border-top: 1px solid 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#toplevel_page_mai-theme .wp-submenu li:nth-child(4) + li:nth-last-child(3) {
+	// border: 0;
+}
+
+/**
  * Setup Wizard.
  */
 

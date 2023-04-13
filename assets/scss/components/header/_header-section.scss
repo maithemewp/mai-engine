@@ -16,11 +16,10 @@
 
 .header-left {
 	--header-section-order: 0;
-	--header-section-justify-content: flex-start;
+	--header-section-justify-content: start;
 }
 
 .header-right {
 	--header-section-order: 100;
-	--header-section-justify-content: flex-end;
+	--header-section-justify-content: end;
 }
-

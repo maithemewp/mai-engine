@@ -49,7 +49,7 @@ $colors: (
 .footer-credits .wrap {
 	display: var(--wrap-display, (flex));
 	flex-wrap: var(--wrap-flex-wrap, wrap);
-	align-items: var(--wrap-align-items, flex-start);
+	align-items: var(--wrap-align-items, start);
 	justify-content: var(--wrap-justify-content, space-between);
 }
 
@@ -80,8 +80,8 @@ $colors: (
 	&.has-1-widgets {
 		text-align: center;
 
-		--wrap-align-items: flex-end;
-		--menu-justify-content: flex-end;
+		--wrap-align-items: end;
+		--menu-justify-content: end;
 	}
 
 	&:not(.has-1-widgets) {

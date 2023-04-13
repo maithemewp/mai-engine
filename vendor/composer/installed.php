@@ -3,7 +3,7 @@
         'name' => 'maithemewp/mai-engine',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => 'e31dcbeb89e9198ba4219263dfb564abc4157eba',
+        'reference' => 'b99fd238a61fa85fdce0381ee48dc851fd1900cc',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -20,9 +20,9 @@
             'dev_requirement' => false,
         ),
         'afragen/wp-dismiss-notice' => array(
-            'pretty_version' => '0.3.0',
-            'version' => '0.3.0.0',
-            'reference' => '8b690bc045620811d3c0724c2a2746cf1baab809',
+            'pretty_version' => '0.3.4',
+            'version' => '0.3.4.0',
+            'reference' => 'a195d3badb28965f6a33e04e7b488b7d8d29df39',
             'type' => 'library',
             'install_path' => __DIR__ . '/../afragen/wp-dismiss-notice',
             'aliases' => array(),
@@ -319,7 +319,7 @@
         'maithemewp/mai-engine' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => 'e31dcbeb89e9198ba4219263dfb564abc4157eba',
+            'reference' => 'b99fd238a61fa85fdce0381ee48dc851fd1900cc',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -334,9 +334,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'wpackagist-plugin/advanced-custom-fields' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '6.1.4',
+            ),
+        ),
         'wpengine/advanced-custom-fields-pro' => array(
-            'pretty_version' => '6.0.7',
-            'version' => '6.0.7.0',
+            'pretty_version' => '6.1.4',
+            'version' => '6.1.4.0',
             'reference' => NULL,
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../wpengine/advanced-custom-fields-pro',

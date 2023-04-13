@@ -17,6 +17,7 @@
 	display: var(--entry-display, flex);
 	flex-direction: var(--entry-flex-direction, column);
 	flex-wrap: var(--entry-flex-wrap, nowrap);
+	align-items: var(--align-text-vertical, initial);
 	width: var(--entry-width, auto); // allows "auto" columns in grid and archives.
 	margin: var(--entry-margin, 0);
 	padding: var(--entry-padding, 0);
@@ -42,7 +43,13 @@
 
 .has-image-background {
 	--entry-flex-direction: row;
-	--entry-overflow: hidden; /* for border radius on absolute positioned image. */
+	--align-text-vertical: start;
+	/*
+	for border radius on absolute positioned image.
+	but can't use because it breaks aspect-ratio
+	when content is larger than the container.
+	*/
+	// --entry-overflow: hidden;
 
 	.has-image {
 		--entry-background: var(--color-black);
@@ -95,8 +102,6 @@
 	display: flex;
 	flex: 1; /* 1 1 100% breaks image-left/right-full */
 	flex-direction: column;
-	justify-content: var(--align-text-vertical, initial);
-	// width: var(--entry-wrap-width, 100%);
 	width: var(--entry-wrap-width, initial); /* using 100% was causing overflow issues and content too wide when boxed. */
 	margin: var(--entry-wrap-margin, 0); /* using 0 auto caused issue when the content didn't fill up the container. */
 	padding: var(--entry-wrap-padding, 0);

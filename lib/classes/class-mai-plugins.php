@@ -61,8 +61,8 @@ class Mai_Plugins {
 
 		$succes  = false;
 		$plugins = $this->get_plugins();
-		$action  = filter_input( INPUT_GET, 'trigger', FILTER_SANITIZE_STRING );
-		$slug    = filter_input( INPUT_GET, 'slug', FILTER_SANITIZE_STRING );
+		$action  = mai_sanitize_get( 'trigger' );
+		$slug    = mai_sanitize_get( 'slug' );
 
 		if ( $plugins && $action && $slug ) {
 			if ( $this->is_disabled( $slug ) ) {
@@ -148,7 +148,9 @@ class Mai_Plugins {
 			printf( '<div class="mai-plugins-description%s">', class_exists( 'Mai_Design_Pack' ) ? ' has-design-pack' : '' );
 				echo '<div class="mai-plugins-content">';
 					printf( '<p>%s %s</p>',
+						/* translators: %s is replaced with the linked theme name. */
 						sprintf( esc_html__( 'The Mai Design Pack plugin provides everything you need to enhance your website once it\'s up and running on %s.', 'mai-engine' ), $theme_link ),
+						/* translators: %s is replaced with the linked plugin name. */
 						sprintf( esc_html__( 'Learn more about pro plugins and the pattern library included with the %s.', 'mai-engine' ), $plugins_link )
 					);
 				echo '</div>';

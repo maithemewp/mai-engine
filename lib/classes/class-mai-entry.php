@@ -1111,6 +1111,7 @@ class Mai_Entry {
 
 		// Filter for entry excerpt.
 		$excerpt = apply_filters( 'mai_entry_excerpt', $excerpt, $this->args, $this->entry );
+		$excerpt = wp_kses_post( $excerpt );
 
 		if ( ! $excerpt ) {
 			return;
@@ -1205,13 +1206,17 @@ class Mai_Entry {
 				$content = mai_get_content_limit( $content, $this->args['content_limit'] );
 			}
 
+			// Filter.
+			$content = apply_filters( 'mai_entry_content', $content, $this->args, $this->entry );
+			$content = wp_kses_post( $content );
+
 			if ( ! $content ) {
 				return;
 			}
 
 			echo $open;
 			do_action( "mai_before_entry_content_inner", $this->entry, $this->args );
-			echo apply_filters( 'mai_entry_content', $content, $this->args, $this->entry );
+			echo $content;
 			do_action( "mai_after_entry_content_inner", $this->entry, $this->args );
 			echo $close;
 		}
@@ -1223,6 +1228,8 @@ class Mai_Entry {
 	 * so if it loops and tries to pull the content of the same post,
 	 * it has it stored and doesn't do_blocks again.
 	 * This prevents infinite loops.
+	 *
+	 * @since 2.27.0
 	 *
 	 * @param int $post_id
 	 *
@@ -1236,7 +1243,7 @@ class Mai_Entry {
 		}
 
 		$content[ $post_id ] = get_the_content( null, false, $post_id );
-		$content[ $post_id ] = do_blocks( $content[ $post_id ] );
+		$content[ $post_id ] = mai_get_processed_content( $content[ $post_id ] );
 
 		return $content[ $post_id ];
 	}

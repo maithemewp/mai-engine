@@ -27,9 +27,14 @@ defined( 'ABSPATH' ) || die;
 function mai_do_entries_open( $args ) {
 	// Start the atts.
 	$atts = [
-		'class'   => mai_add_classes( 'entries', isset( $args['class'] ) ? $args['class']: '' ),
+		'class'   => mai_add_classes( 'entries', isset( $args['class'] ) ? $args['class'] : '' ),
 		'style'   => '',
 	];
+
+	// ID.
+	if ( isset( $args['id'] ) && $args['id'] ) {
+		$atts['id'] = sanitize_key( $args['id'] );
+	}
 
 	// Context.
 	$context       = 'block' === $args['context'] ? 'grid' : $args['context'];

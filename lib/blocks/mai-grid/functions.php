@@ -80,21 +80,17 @@ function mai_get_align_text( $alignment ) {
 	switch ( $alignment ) {
 		case 'start':
 		case 'left':
+		case 'top':
 			$value = 'start';
 		break;
-		case 'top':
-			$value = 'flex-start';
-			break;
 		case 'center':
 		case 'middle':
 			$value = 'center';
 		break;
 		case 'end':
 		case 'right':
-			$value = 'end';
-		break;
 		case 'bottom':
-			$value = 'flex-end';
+			$value = 'end';
 		break;
 		default:
 			$value = 'unset';
@@ -117,7 +113,7 @@ function mai_get_flex_align( $value ) {
 		case 'start':
 		case 'left':
 		case 'top':
-			$return = 'flex-start';
+			$return = 'start';
 		break;
 		case 'center':
 		case 'middle':
@@ -126,7 +122,7 @@ function mai_get_flex_align( $value ) {
 		case 'end':
 		case 'right':
 		case 'bottom':
-			$return = 'flex-end';
+			$return = 'end';
 		break;
 		case 'between':
 			$return = 'space-between';
@@ -137,5 +133,3 @@ function mai_get_flex_align( $value ) {
 
 	return $return;
 }
-
-

@@ -2,7 +2,7 @@
 	display: var(--menu-display, (flex));
 	flex-wrap: var(--menu-flex-wrap, wrap);
 	align-items: var(--menu-align-items, center);
-	justify-content: var(--menu-justify-content, flex-start);
+	justify-content: var(--menu-justify-content, start);
 	width: 100%;
 	margin: 0;
 	font-weight: var(--menu-font-weight, unset);
@@ -22,7 +22,7 @@
 	position: relative;
 	display: var(--menu-item-display, (flex));
 	flex-wrap: var(--menu-item-flex-wrap, wrap);
-	justify-content: var(--menu-item-justify-content, flex-start);
+	justify-content: var(--menu-item-justify-content, start);
 	width: var(--menu-item-width, auto);
 	margin: var(--menu-item-margin, 0);
 
@@ -53,7 +53,7 @@
 	display: var(--menu-item-link-display, (flex));
 	flex: var(--menu-item-link-flex, unset);
 	align-items: center;
-	justify-content: var(--menu-item-link-justify-content, flex-start);
+	justify-content: var(--menu-item-link-justify-content, start);
 	width: var(--menu-item-link-width, auto);
 	max-width: var(--menu-item-link-max-width, 100%);
 	padding: var(--menu-item-link-padding, (var(--spacing-md) var(--spacing-md)));

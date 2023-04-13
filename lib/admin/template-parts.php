@@ -22,9 +22,9 @@ add_action( 'admin_post_mai_import_template_part_action', 'mai_import_template_p
  */
 function mai_import_template_part_action() {
 	$referrer = check_admin_referer( 'mai_import_template_part_action', 'mai_import_template_part_nonce' );
-	$nonce    = filter_input( INPUT_GET, 'mai_import_template_part_nonce', FILTER_SANITIZE_STRING );
-	$action   = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
-	$slug     = filter_input( INPUT_GET, 'slug', FILTER_SANITIZE_STRING );
+	$nonce    = mai_sanitize_get( 'mai_import_template_part_nonce' );
+	$action   = mai_sanitize_get( 'action' );
+	$slug     = mai_sanitize_get( 'slug' );
 
 	if ( current_user_can( 'edit_theme_options' ) && $referrer && $nonce && $action && $slug && wp_verify_nonce( $nonce, $action ) ) {
 
@@ -68,8 +68,8 @@ add_action( 'admin_post_mai_generate_template_parts_action', 'mai_generate_templ
  */
 function mai_generate_template_parts_action() {
 	$referrer = check_admin_referer( 'mai_generate_template_parts_action', 'mai_generate_template_parts_nonce' );
-	$nonce    = filter_input( INPUT_GET, 'mai_generate_template_parts_nonce', FILTER_SANITIZE_STRING );
-	$action   = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
+	$nonce    = mai_sanitize_get( 'mai_generate_template_parts_nonce' );
+	$action   = mai_sanitize_get( 'action' );
 
 	if ( current_user_can( 'edit_theme_options' ) && $referrer && $nonce && $action && wp_verify_nonce( $nonce, $action ) ) {
 		$redirect       = admin_url( 'edit.php?post_type=mai_template_part' );

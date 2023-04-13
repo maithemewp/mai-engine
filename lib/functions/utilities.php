@@ -1039,9 +1039,9 @@ function mai_get_menu( $menu, $args = [] ) {
 		if ( $args['align'] ) {
 			switch ( trim( $args['align'] ) ) {
 				case 'left':
-					$atts['style'] .= '--menu-justify-content:flex-start;--menu-item-justify-content:flex-start;';
+					$atts['style'] .= '--menu-justify-content:start;--menu-item-justify-content:start;';
 					if ( $list ) {
-						$atts['style'] .= '--menu-item-link-justify-content:flex-start;--menu-item-link-text-align:start;';
+						$atts['style'] .= '--menu-item-link-justify-content:start;--menu-item-link-text-align:start;';
 					}
 					break;
 				case 'center':
@@ -1051,9 +1051,9 @@ function mai_get_menu( $menu, $args = [] ) {
 					}
 					break;
 				case 'right':
-					$atts['style'] .= '--menu-justify-content:flex-end;--menu-item-justify-content:flex-end;';
+					$atts['style'] .= '--menu-justify-content:end;--menu-item-justify-content:end;';
 					if ( $list ) {
-						$atts['style'] .= '--menu-item-link-justify-content:flex-end;--menu-item-link-text-align:end;';
+						$atts['style'] .= '--menu-item-link-justify-content:end;--menu-item-link-text-align:end;';
 					}
 					break;
 			}
@@ -1963,6 +1963,21 @@ function mai_get_index_value_from_array( $index, $array, $default = null ) {
 	}
 
 	return $array[ $index % count( $array ) ] ?? $default;
+}
+
+/**
+ * Sanitize $_GET parameter.
+ *
+ * @access private
+ *
+ * @since 2.27.0
+ *
+ * @param string $param    The parameter name.
+ * @param string $function The sanitization function.
+ * @return void
+ */
+function mai_sanitize_get( $param, $function = 'esc_html' ) {
+	return isset( $_GET[ $param ] ) ? $function( $_GET[ $param ] ) : null;
 }
 
 /**
