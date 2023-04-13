@@ -5,6 +5,7 @@
 * Changed: Mai Theme admin submenu items are now separated with a divider, and plugin settings pages are now alphabetized.
 * Changed: Content is fully processed to allow embeds, shortcodes, and blocks when displaying full content via the settings.
 * Changed: Entry excerpt content is now sanitized via `wp_kses_post` for better security.
+* Changed: Updated `.pot` file for translations.
 * Changed: [WooCommerce] Better mobile styling for WooCommerce Account navigation.
 * Changed: [Developers] Previous/Next text filters are now run earlier, so it's easier to filter and override with a default priority.
 * Changed: [Developers] The `mai_entry_content` filter is now run before the conditional check for empty content.
