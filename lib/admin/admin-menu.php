@@ -236,13 +236,17 @@ function mai_render_admin_patterns_menu_page() {
 	echo '<div class="wrap">';
 		printf( '<h1 class="wp-heading-inline">Mai Pattern %s</h1>', esc_html__( 'Library', 'mai-engine' ) );
 		echo '<p>';
-			printf( esc_html__( 'Create a website design just like the pros using pre-built patterns that provide the ability to add complex sections and layouts to your website. The %s is included with the %s and is included for our %s customers.', 'mai-engine' ), 'Mai Pattern Library', 'Mai Design Pack', 'Mai Solution' );
+		// Mai Patterns description
+			/* translators: %1$s %2$s %3$s are replaced with the plugin names. */
+			printf( esc_html__( 'Create a website design just like the pros using pre-built patterns that provide the ability to add complex sections and layouts to your website. The %1$s is included with the %2$s and is included for our %3$s customers.', 'mai-engine' ), 'Mai Pattern Library', 'Mai Design Pack', 'Mai Solution' );
 		echo '</p>';
 		echo '<p>';
+			/* translators: %s is replaced with the theme name. */
 			printf( esc_html__( 'These patterns are designed to work seamlessly with %s.', 'mai-engine' ), 'Mai Theme' );
 		echo '</p>';
 		echo '<p>';
-			printf( '%s <a target="_blank" rel="noopener" href="https://bizbudding.com/my-account/">%s</a> %s', esc_html( 'Log in to your', 'mai-engine' ), sprintf( esc_html__( '%s account', 'mai-engine' ), 'BizBudding', 'mai-engine' ), esc_html__( 'to get instant access.', 'mai-engine' ) );
+			/* translators: %s is replaced with the company name. */
+			printf( '%1$s <a target="_blank" rel="noopener" href="https://bizbudding.com/my-account/">%2$s</a> %3$s', esc_html( 'Log in to your', 'mai-engine' ), sprintf( esc_html__( '%s account', 'mai-engine' ), 'BizBudding', 'mai-engine' ), esc_html__( 'to get instant access.', 'mai-engine' ) );
 		echo '</p>';
 		echo '<p>';
 			esc_html__( 'Includes patterns to help you create:', 'mai-engine' );
