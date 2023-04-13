@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.27.0 (4/13/23)
+* Added: PHP 8.1 compatibility.
+* Changed: Mai Theme admin submenu items are now separated with a divider, and plugin settings pages are now alphabetized.
+* Changed: Content is fully processed to allow embeds, shortcodes, and blocks when displaying full content via the settings.
+* Changed: Entry excerpt content is now sanitized via `wp_kses_post` for better security.
+* Changed: [WooCommerce] Better mobile styling for WooCommerce Account navigation.
+* Changed: [Developers] Previous/Next text filters are now run earlier, so it's easier to filter and override with a default priority.
+* Changed: [Developers] The `mai_entry_content` filter is now run before the conditional check for empty content.
+* Changed: [Developers] Flexbox now uses start/end instead of flex-start/flex-end.
+* Changed: Update ACF to 6.1.4.
+* Changed: Update dependency installer.
+* Fixed: Cover block images sizes attribute now defaults to 50vw on desktop, when not Full Aligned.
+* Fixed: Mai Post/Term Grid anchor and additional classes fields now work correctly.
+* Fixed: Mai Term Grid Entries by choice, and Exclude fields were showing empty on page refresh even when there were values saved.
+* Fixed: Mai Term Grid offset field still showing when getting entries by Choice.
+* Fixed: Better alignment support for Group block's Row variation.
+* Fixed: An occasional conflict with other plugins would throw a `get_current_screen()` function does not exist error.
+* Fixed: Entries with fixed aspect ratio were not expanding correctly when content was larger than the ratio allowed. #630.
+
 ## 2.26.1 (3/3/23)
 * Fixed: Make sure full/wide aligned Cover blocks use larger image from srcset/sizes.
 

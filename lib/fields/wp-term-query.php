@@ -38,7 +38,7 @@ add_filter( 'acf/load_field/key=mai_grid_block_tax_exclude', 'mai_grid_load_incl
 /**
  * Sets taxonomy based on the block taxonomies field, when the include/exclude fields are initially loaded.
  *
- * @since TBD
+ * @since 2.27.0
  *
  * @param array $field
  *
@@ -78,7 +78,7 @@ add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_exclude', 'mai_acf
  *
  * @since 0.1.0
  * @since 2.25.6 Only run in admin.
- * @since TBD Force first taxonomy. See #631.
+ * @since 2.27.0 Force first taxonomy. See #631.
  *
  * @param array $args Field args.
  *

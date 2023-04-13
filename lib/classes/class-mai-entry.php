@@ -1229,7 +1229,7 @@ class Mai_Entry {
 	 * it has it stored and doesn't do_blocks again.
 	 * This prevents infinite loops.
 	 *
-	 * @since TBD
+	 * @since 2.27.0
 	 *
 	 * @param int $post_id
 	 *
