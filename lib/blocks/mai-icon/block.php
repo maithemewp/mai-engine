@@ -79,6 +79,7 @@ function mai_register_icon_field_group() {
 
 	if ( ! class_exists( 'Mai_Icons_Plugin' ) ) {
 		$link   = sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=mai-theme' ), __( 'Mai Icons', 'mai-engine' ) );
+		/* translators: %s is replaced with the linked plugin name. */
 		$text   = sprintf( __( '%s plugin required.', 'mai-engine' ), $link );
 		$fields = [
 			[

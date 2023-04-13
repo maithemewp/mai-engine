@@ -1970,7 +1970,7 @@ function mai_get_index_value_from_array( $index, $array, $default = null ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.27.0
  *
  * @param string $param    The parameter name.
  * @param string $function The sanitization function.

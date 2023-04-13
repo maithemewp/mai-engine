@@ -148,7 +148,9 @@ class Mai_Plugins {
 			printf( '<div class="mai-plugins-description%s">', class_exists( 'Mai_Design_Pack' ) ? ' has-design-pack' : '' );
 				echo '<div class="mai-plugins-content">';
 					printf( '<p>%s %s</p>',
+						/* translators: %s is replaced with the linked theme name. */
 						sprintf( esc_html__( 'The Mai Design Pack plugin provides everything you need to enhance your website once it\'s up and running on %s.', 'mai-engine' ), $theme_link ),
+						/* translators: %s is replaced with the linked plugin name. */
 						sprintf( esc_html__( 'Learn more about pro plugins and the pattern library included with the %s.', 'mai-engine' ), $plugins_link )
 					);
 				echo '</div>';

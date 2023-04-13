@@ -718,6 +718,7 @@ function mai_get_wp_query_fields() {
 			'key'               => 'mai_grid_block_posts_date_after',
 			'name'              => 'date_after',
 			'label'             => esc_html__( 'After date', 'mai-engine' ),
+			                       /* translators: %s is replaced with a documentation link. */
 			'desc'              => sprintf( esc_html__( 'Get posts after a date/time. %s', 'mai-engine' ), $date_info ),
 			'type'              => 'text',
 			'default_value'     => $defaults['date_after'],
