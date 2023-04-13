@@ -142,7 +142,7 @@ function mai_render_cover_block( $block_content, $block ) {
 					}
 					// Full width on mobile, half width other.
 					else {
-						$image->setAttribute( 'sizes', '(max-width: 600px) 100vw, 500vw' );
+						$image->setAttribute( 'sizes', '(max-width: 600px) 100vw, 50vw' );
 					}
 
 					// Convert inline style to custom property.
