@@ -511,12 +511,14 @@ function mai_get_preload_image_link( $image_id, $image_size = 'full' ) {
 		$attr[] = sprintf( 'href=""' );
 	}
 
+	// Add srcset, and only add sizes if srcset exists.
+	// HTML validator threw errors if sizes was added without srcset.
 	if ( $srcset ) {
 		$attr[] = sprintf( 'imagesrcset="%s"', $srcset );
-	}
 
-	if ( $sizes ) {
-		$attr[] = sprintf( 'imagesizes="%s"', $sizes );
+		if ( $sizes ) {
+			$attr[] = sprintf( 'imagesizes="%s"', $sizes );
+		}
 	}
 
 	$attr = array_filter( $attr );

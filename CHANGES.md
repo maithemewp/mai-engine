@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.27.1 (5/2/23)
+* Fixed: The sizes attribute is only added to preload links if a srcset value is present. This prevents invalid markup.
+* Changed: Update ACF to 6.1.5.
+
 ## 2.27.0 (4/13/23)
 * Added: PHP 8.1 compatibility.
 * Changed: Mai Theme admin submenu items are now separated with a divider, and plugin settings pages are now alphabetized.
