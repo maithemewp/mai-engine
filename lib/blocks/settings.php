@@ -136,7 +136,7 @@ function mai_do_cover_group_block_settings( $block_content, $block ) {
 
 			$first_block->setAttribute( 'class', $classes );
 
-			$block_content = $dom->saveHTML( $dom->documentElement );
+			$block_content = $dom->saveHTML();
 		}
 	}
 
@@ -184,7 +184,7 @@ function mai_do_block_max_width_settings( $block_content, $block ) {
 
 			$first_block->setAttribute( 'class', $classes );
 
-			$block_content = $dom->saveHTML( $dom->documentElement );
+			$block_content = $dom->saveHTML();
 		}
 	}
 
@@ -241,7 +241,7 @@ function mai_do_block_spacing_settings( $block_content, $block ) {
 
 			$first_block->setAttribute( 'class', $classes );
 
-			$block_content = $dom->saveHTML( $dom->documentElement );
+			$block_content = $dom->saveHTML();
 		}
 	}
 
@@ -323,7 +323,7 @@ function mai_do_block_margin_settings( $block_content, $block ) {
 
 			$first_block->setAttribute( 'class', $classes );
 
-			$block_content = $dom->saveHTML( $dom->documentElement );
+			$block_content = $dom->saveHTML();
 		}
 	}
 

@@ -191,7 +191,7 @@ function mai_render_cover_block( $block_content, $block ) {
 			$first_block->removeAttribute( 'style' );
 		}
 
-		$block_content = $dom->saveHTML( $dom->documentElement );
+		$block_content = $dom->saveHTML();
 	}
 
 	return $block_content;
