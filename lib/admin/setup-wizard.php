@@ -279,10 +279,10 @@ function mai_after_setup_wizard_import( $demo ) {
 	$home = 'Home - ' . mai_convert_case( mai_get_active_theme() . ' ' . $demo, 'title' );
 
 	// Assign front page and posts page.
-	$front = get_page_by_title( $home );
-	$front = $front ?: get_page_by_title( 'Home' ); // Fallback if no home with demo name.
-	$blog  = get_page_by_title( 'Blog' );
-	$shop  = get_page_by_title( 'Shop' );
+	$front = mai_get_page_by_title( $home );
+	$front = $front ?: mai_get_page_by_title( 'Home' ); // Fallback if no home with demo name.
+	$blog  = mai_get_page_by_title( 'Blog' );
+	$shop  = mai_get_page_by_title( 'Shop' );
 
 	if ( $front ) {
 		update_option( 'page_on_front', $front->ID );

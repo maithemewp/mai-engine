@@ -26,10 +26,10 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 	 */
 	public function add_hooks() {
 		add_action( 'wp_ajax_mai_setup_wizard_welcome', [ $this, 'step_welcome' ] );
-		add_action( 'wp_ajax_mai_setup_wizard_demo', [ $this, 'step_demo' ] );
+		add_action( 'wp_ajax_mai_setup_wizard_demo',    [ $this, 'step_demo' ] );
 		add_action( 'wp_ajax_mai_setup_wizard_plugins', [ $this, 'step_plugins' ] );
 		add_action( 'wp_ajax_mai_setup_wizard_content', [ $this, 'step_content' ] );
-		add_action( 'wp_ajax_mai_setup_wizard_done', [ $this, 'step_done' ] );
+		add_action( 'wp_ajax_mai_setup_wizard_done',    [ $this, 'step_done' ] );
 	}
 
 	/**
