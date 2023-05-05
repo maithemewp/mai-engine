@@ -11,9 +11,9 @@
 
 return [
 	'demos' => [
-		// 'home-garden'   => 35,
+		'home-garden'   => 'https://demo.bizbudding.com/inspire-home-garden/wp-content/uploads/sites/35/mai-engine/',
 		'health-beauty' => 'https://demo.bizbudding.com/inspire-health-beauty/wp-content/uploads/sites/36/mai-engine/',
-		// 'travel'        => 37,
+		'travel'        => 'https://demo.bizbudding.com/inspire-travel/wp-content/uploads/sites/37/mai-engine/',
 	],
 	'global-styles' => [
 		'colors' => [
