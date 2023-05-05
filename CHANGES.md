@@ -1,11 +1,15 @@
 # Changelog
 
+## 2.28.0 (5/5/23)
+* Changed: Update ACF to 6.1.6.
+* Fixed: More thorough handling of markup processing to make sure valid markup is returned.
+
 ## 2.27.2 (5/2/23)
 * Fixed: Remove beta label from plugin version.
 
 ## 2.27.1 (5/2/23)
-* Fixed: The sizes attribute is only added to preload links if a srcset value is present. This prevents invalid markup.
 * Changed: Update ACF to 6.1.5.
+* Fixed: The sizes attribute is only added to preload links if a srcset value is present. This prevents invalid markup.
 
 ## 2.27.0 (4/13/23)
 * Added: PHP 8.1 compatibility.

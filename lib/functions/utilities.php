@@ -1588,21 +1588,29 @@ function mai_get_search_icon_form( $title = '', $icon_size = '16' ) {
  * @return DOMDocument
  */
 function mai_get_dom_document( $html ) {
-
 	// Create the new document.
 	$dom = new DOMDocument();
 
 	// Modify state.
 	$libxml_previous_state = libxml_use_internal_errors( true );
 
+	// Encode.
+	$html = mb_convert_encoding( $html, 'HTML-ENTITIES', 'UTF-8' );
+
 	// Load the content in the document HTML.
-	$dom->loadHTML( mb_convert_encoding( $html, 'HTML-ENTITIES', 'UTF-8' ) );
+	$dom->loadHTML( "<div>$html</div>" );
 
-	// Remove <!DOCTYPE.
-	$dom->removeChild( $dom->doctype );
+	// Handle wraps.
+	$container = $dom->getElementsByTagName('div')->item(0);
+	$container = $container->parentNode->removeChild( $container );
 
-	// Remove <html><body></body></html>.
-	$dom->replaceChild( $dom->firstChild->firstChild->firstChild, $dom->firstChild ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+	while ( $dom->firstChild ) {
+		$dom->removeChild( $dom->firstChild );
+	}
+
+	while ( $container->firstChild ) {
+		$dom->appendChild( $container->firstChild );
+	}
 
 	// Handle errors.
 	libxml_clear_errors();
@@ -1623,12 +1631,16 @@ function mai_get_dom_document( $html ) {
  * @return DOMElement $first_block The group block container.
  */
 function mai_get_dom_first_child( $dom ) {
-	/**
-	 * The group block container.
-	 *
-	 * @var DOMElement $first_block The group block container.
-	 */
-	return $dom->childNodes && isset( $dom->childNodes[0] ) ? $dom->childNodes[0] : false; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+	foreach ( $dom->childNodes as $node ) {
+		// Skip if not a DOMElement.
+		if ( 1 !== $node->nodeType ) {
+			continue;
+		}
+
+		return $node;
+	}
+
+	return false;
 }
 
 /**
