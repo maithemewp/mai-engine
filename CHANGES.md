@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.28.1 (5/10/23)
+* Fixed: Wrong ID being returned on front page for site layout in some scenarios.
+* Fixed: Replace deprecated `get_page_by_title()` function.
+* Fixed: Mai Inspire demos not working in Mai Setup Wizard.
+
 ## 2.28.0 (5/5/23)
 * Changed: Update ACF to 6.1.6.
 * Fixed: More thorough handling of markup processing to make sure valid markup is returned.
