@@ -82,8 +82,15 @@ function mai_site_layout() {
 	else {
 
 		if ( is_singular() || ( is_home() && ! genesis_is_root_page() ) ) {
-			$post_id     = is_home() ? get_option( 'page_for_posts' ) : null;
-			$site_layout = genesis_get_custom_field( '_genesis_layout', $post_id );
+			$post_id = null;
+
+			if ( is_home() ) {
+				$post_id = get_option( 'page_for_posts' );
+			} elseif ( is_front_page() ) {
+				$post_id = get_option( 'page_on_front' );
+			}
+
+			$site_layout = genesis_get_custom_field( '_genesis_layout', $post_id ); // Function handles null.
 
 		} elseif ( is_category() || is_tag() || is_tax() ) {
 
