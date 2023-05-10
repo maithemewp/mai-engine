@@ -1993,6 +1993,38 @@ function mai_sanitize_get( $param, $function = 'esc_html' ) {
 }
 
 /**
+ * Undocumented function
+ *
+ * @access private
+ *
+ * @param string $title     The page title.
+ * @param string $post_type The post type.
+ *
+ * @return WP_Post|false
+ */
+function mai_get_page_by_title( $title, $post_type = 'page' ) {
+	$page  = false;
+	$query = new WP_Query(
+		[
+			'post_type'              => $post_type,
+			'title'                  => $title,
+			'post_status'            => 'all',
+			'posts_per_page'         => 1,
+			'ignore_sticky_posts'    => true,
+			'no_found_rows'          => true,
+			'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+		]
+	);
+
+	if ( ! empty( $query->post ) ) {
+		$page = $query->post;
+	}
+
+	return $page;
+}
+
+/**
  * Gets all non latin locales in WP.
  *
  * @access private
