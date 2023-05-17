@@ -93,11 +93,15 @@ h6.has-background {
 	--entry-overlay-opacity: 0.1;
 	--entry-overlay-hover-color-start: var(--color-primary);
 	--entry-overlay-hover-color-end: var(--color-primary);
-	--entry-wrap-background: var(--color-white);
+	--entry-wrap-background: transparent;
+
+	.entry {
+		--entry-background: var(--color-background);
+		--entry-border: var(--border);
+	}
 
 	.entry-wrap {
 		padding: var(--spacing-md);
-		border: var(--border);
 
 		> * {
 			padding: var(--spacing-xs) var(--spacing-md);
@@ -170,4 +174,3 @@ h6.has-background {
 		text-align: center;
 	}
 }
-
