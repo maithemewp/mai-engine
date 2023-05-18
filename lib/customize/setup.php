@@ -81,6 +81,14 @@ add_action( 'customize_register', 'mai_handle_existing_customizer_sections' );
  * @return void
  */
 function mai_handle_existing_customizer_sections( $wp_customize ) {
+	/**
+	 * Bail if not in the customizer.
+	 * Ajax and other editor stuff were throwing errors here.
+	 */
+	if ( ! is_customize_preview() ) {
+		return;
+	}
+
 	$handle   = mai_get_handle();
 	$sections = genesis_get_config( 'customizer-theme-settings' )['genesis']['sections'];
 
