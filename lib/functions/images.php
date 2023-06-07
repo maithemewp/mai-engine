@@ -483,7 +483,7 @@ function mai_get_cover_image_size() {
  * @return string
  */
 function mai_get_preload_image_link( $image_id, $image_size = 'full' ) {
-	$image_url  = wp_get_attachment_image_url( $image_id, $image_size );
+	$image_url = wp_get_attachment_image_url( $image_id, $image_size );
 
 	if ( ! $image_url ) {
 		return;
