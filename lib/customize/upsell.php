@@ -27,7 +27,7 @@ function mai_customizer_upsell( $manager ) {
 	$section = $handle . '-upsell';
 	$args    = [
 		'type'            => 'link',
-		'title'           => __( 'Mai Design Pack', 'mai-engine' ),
+		'title'           => __( 'Mai Theme Pro Plugin', 'mai-engine' ),
 		'button_text'     => __( 'Learn More', 'mai-engine' ),
 		'button_url'      => add_query_arg(
 			[
