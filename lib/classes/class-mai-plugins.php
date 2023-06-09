@@ -135,10 +135,10 @@ class Mai_Plugins {
 		$plugins_url  = add_query_arg(
 			[
 				'utm_source'    => 'engine',
-				'utm_medium'    => 'mai-design-pack',
-				'utm_campaign'  => 'mai-design-pack',
+				'utm_medium'    => 'mai-theme-pro',
+				'utm_campaign'  => 'mai-theme-pro',
 			],
-			'https://bizbudding.com/mai-design-pack/'
+			'https://bizbudding.com/mai-theme-pro/'
 		);
 		$theme_link   = '<a target="_blank" rel="noopener" href="https://bizbudding.com/mai-theme/">Mai Theme</a>';
 		$plugins_link = sprintf( '<a target="_blank" rel="noopener" href="%s">Mai Theme Pro Plugin</a>', $plugins_url );
@@ -149,7 +149,7 @@ class Mai_Plugins {
 				echo '<div class="mai-plugins-content">';
 					printf( '<p>%s %s</p>',
 						/* translators: %s is replaced with the linked theme name. */
-						sprintf( esc_html__( 'The Mai Theme Pro Plugin plugin provides everything you need to enhance your website once it\'s up and running on %s.', 'mai-engine' ), $theme_link ),
+						sprintf( esc_html__( 'The Mai Theme Pro Bundle provides everything you need to enhance your website once it\'s up and running on %s.', 'mai-engine' ), $theme_link ),
 						/* translators: %s is replaced with the linked plugin name. */
 						sprintf( esc_html__( 'Learn more about pro plugins and the pattern library included with the %s.', 'mai-engine' ), $plugins_link )
 					);
@@ -157,7 +157,7 @@ class Mai_Plugins {
 
 				if ( ! class_exists( 'Mai_Design_Pack' ) ) {
 					echo '<div class="mai-plugins-cta">';
-						printf( '<p><a target="_blank" rel="noopener" href="%s" class="button button-primary">%s</a></p>', $plugins_url, sprintf( '%s Mai Theme Pro Plugin', esc_html__( 'Get', 'mai-engine' ) ) );
+						printf( '<p><a target="_blank" rel="noopener" href="%s" class="button button-primary">%s</a></p>', $plugins_url, sprintf( '%s Mai Theme Pro', esc_html__( 'Get', 'mai-engine' ) ) );
 						printf( '<p><a target="_blank" rel="noopener" href="https://bizbudding.com/my-account/">%s  →</a></p>', sprintf( 'BizBudding %s', esc_html__( 'Account', 'mai-engine' ) ) );
 					echo '</div>';
 				}
