@@ -451,6 +451,7 @@ function mai_load_files() {
 		'blocks/cover',
 		'blocks/group',
 		'blocks/heading',
+		'blocks/in-the-loop',
 		'blocks/paragraph',
 		'blocks/search',
 		'blocks/settings',

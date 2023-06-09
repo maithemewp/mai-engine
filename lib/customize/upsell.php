@@ -27,15 +27,15 @@ function mai_customizer_upsell( $manager ) {
 	$section = $handle . '-upsell';
 	$args    = [
 		'type'            => 'link',
-		'title'           => __( 'Mai Design Pack', 'mai-engine' ),
+		'title'           => __( 'Mai Theme Pro Bundle', 'mai-engine' ),
 		'button_text'     => __( 'Learn More', 'mai-engine' ),
 		'button_url'      => add_query_arg(
 			[
 				'utm_source'    => 'engine',
 				'utm_medium'    => 'customizer',
-				'utm_campaign'  => 'mai-design-pack',
+				'utm_campaign'  => 'mai-theme-pro',
 			],
-			'https://bizbudding.com/mai-design-pack/'
+			'https://bizbudding.com/mai-theme-pro/'
 		),
 		'priority'        => 999,
 		'active_callback' => function() {

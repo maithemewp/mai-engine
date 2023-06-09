@@ -30,7 +30,7 @@ function mai_site_layout() {
 	static $site_layout = null;
 
 	// Only use cache if conditional tags are available.
-	if ( ! is_null( $site_layout ) && did_action( 'posts_selection' ) ) {
+	if ( ! is_null( $site_layout ) && $site_layout ) {
 		return esc_attr( $site_layout );
 	}
 
@@ -82,7 +82,7 @@ function mai_site_layout() {
 	else {
 
 		if ( is_singular() || ( is_home() && ! genesis_is_root_page() ) ) {
-			$post_id = null;
+			$post_id = get_queried_object_id();
 
 			if ( is_home() ) {
 				$post_id = get_option( 'page_for_posts' );

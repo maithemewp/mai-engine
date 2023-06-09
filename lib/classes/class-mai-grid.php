@@ -303,11 +303,19 @@ class Mai_Grid {
 						 * @var WP_Term $term Term object.
 						 */
 						foreach ( $term_query->terms as $term ) {
+							// Set global variable for the term, since WP does not offer this by default.
+							global $mai_term;
+							$mai_term = $term;
+
 							mai_do_entry( $term, $this->args );
 
 							// Add this term to the existing term IDs.
 							self::$existing_term_ids[] = $term->term_id;
 						}
+
+						// Unset global var.
+						unset ( $GLOBALS['mai_term'] );
+
 						// Clear duplicate IDs.
 						self::$existing_term_ids = array_unique( self::$existing_term_ids );
 					}

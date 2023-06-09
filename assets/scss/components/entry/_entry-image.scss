@@ -7,6 +7,8 @@
 	flex: var(--entry-image-link-flex, initial);
 	align-self: var(--entry-image-link-align, unset);
 	order: var(--entry-image-link-order, unset);
+	width: var(--entry-image-width, initial);
+	height: var(--entry-image-height, initial);
 	max-width: var(--entry-image-link-max-width, unset);
 	margin: var(--entry-image-link-margin, var(--entry-image-link-margin-top, 0) var(--entry-image-link-margin-right, 0) var(--entry-image-link-margin-bottom, var(--spacing-md)) var(--entry-image-link-margin-left, 0));
 	line-height: var(--entry-image-line-height, unset);

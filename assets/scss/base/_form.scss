@@ -58,7 +58,7 @@ textarea {
 
 select {
 	height: var(--select-height, calc(var(--font-size-md, 1em) * 2));
-	--input-padding: var(--select-padding, 0);
+	--input-padding: var(--select-padding, 0 var(--spacing-sm));
 
 	&[multiple] {
 		height: auto;
