@@ -151,7 +151,7 @@ class Mai_Plugins {
 						/* translators: %s is replaced with the linked theme name. */
 						sprintf( esc_html__( 'The Mai Theme Pro Bundle provides everything you need to enhance your website once it\'s up and running on %s.', 'mai-engine' ), $theme_link ),
 						/* translators: %s is replaced with the linked plugin name. */
-						sprintf( esc_html__( 'Learn more about pro plugins and the pattern library included with the %s.', 'mai-engine' ), $plugins_link )
+						sprintf( esc_html__( 'Learn more about pro plugins and the pattern library included with the %s (%s).', 'mai-engine' ), $plugins_link, __( 'formerly Mai Design Pack', 'mai-engine' ) )
 					);
 				echo '</div>';
 
