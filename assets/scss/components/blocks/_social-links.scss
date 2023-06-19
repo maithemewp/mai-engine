@@ -1,5 +1,10 @@
 .wp-block-social-links {
-	margin: 0;
+	--list-margin: 0;
+	--list-item-margin-bottom: 0;
+
+	&:not(.is-style-no-background) {
+		gap: var(--spacing-xxs);
+	}
 
 	&.is-style-no-background {
 
