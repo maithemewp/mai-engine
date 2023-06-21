@@ -184,6 +184,10 @@ class Mai_Grid {
 				$class = mai_add_classes( sprintf( 'has-%s-margin-bottom', $this->args['margin_bottom'] ), $class );
 			}
 
+			if ( isset( $this->args['align_text'] ) && $this->args['align_text'] ) {
+				$class = mai_add_classes( sprintf( 'has-text-align-%s', mai_get_align_text( $this->args['align_text'] ) ), $class );
+			}
+
 			printf( '<div class="%s">%s</div>', $class, mai_get_processed_content( $this->args['no_results'] ) );
 			return;
 		}
