@@ -68,7 +68,7 @@ class Mai_Plugins {
 			if ( $this->is_disabled( $slug ) ) {
 				wp_send_json_error(
 					[
-						'error' => esc_html__( 'Mai Design Pack plugin is required.', 'mai-engine' ),
+						'error' => esc_html__( 'Mai Theme Pro Plugin plugin is required.', 'mai-engine' ),
 					]
 				);
 
@@ -135,13 +135,13 @@ class Mai_Plugins {
 		$plugins_url  = add_query_arg(
 			[
 				'utm_source'    => 'engine',
-				'utm_medium'    => 'mai-design-pack',
-				'utm_campaign'  => 'mai-design-pack',
+				'utm_medium'    => 'mai-theme-pro',
+				'utm_campaign'  => 'mai-theme-pro',
 			],
-			'https://bizbudding.com/mai-design-pack/'
+			'https://bizbudding.com/mai-theme-pro/'
 		);
 		$theme_link   = '<a target="_blank" rel="noopener" href="https://bizbudding.com/mai-theme/">Mai Theme</a>';
-		$plugins_link = sprintf( '<a target="_blank" rel="noopener" href="%s">Mai Design Pack</a>', $plugins_url );
+		$plugins_link = sprintf( '<a target="_blank" rel="noopener" href="%s">Mai Theme Pro Plugin</a>', $plugins_url );
 
 		echo '<div class="wrap">';
 			echo '<h1 class="wp-heading-inline">Mai Plugins</h1>';
@@ -149,15 +149,15 @@ class Mai_Plugins {
 				echo '<div class="mai-plugins-content">';
 					printf( '<p>%s %s</p>',
 						/* translators: %s is replaced with the linked theme name. */
-						sprintf( esc_html__( 'The Mai Design Pack plugin provides everything you need to enhance your website once it\'s up and running on %s.', 'mai-engine' ), $theme_link ),
+						sprintf( esc_html__( 'The Mai Theme Pro Bundle provides everything you need to enhance your website once it\'s up and running on %s.', 'mai-engine' ), $theme_link ),
 						/* translators: %s is replaced with the linked plugin name. */
-						sprintf( esc_html__( 'Learn more about pro plugins and the pattern library included with the %s.', 'mai-engine' ), $plugins_link )
+						sprintf( esc_html__( 'Learn more about pro plugins and the pattern library included with the %s (%s).', 'mai-engine' ), $plugins_link, __( 'formerly Mai Design Pack', 'mai-engine' ) )
 					);
 				echo '</div>';
 
 				if ( ! class_exists( 'Mai_Design_Pack' ) ) {
 					echo '<div class="mai-plugins-cta">';
-						printf( '<p><a target="_blank" rel="noopener" href="%s" class="button button-primary">%s</a></p>', $plugins_url, sprintf( '%s Mai Design Pack', esc_html__( 'Get', 'mai-engine' ) ) );
+						printf( '<p><a target="_blank" rel="noopener" href="%s" class="button button-primary">%s</a></p>', $plugins_url, sprintf( '%s Mai Theme Pro', esc_html__( 'Get', 'mai-engine' ) ) );
 						printf( '<p><a target="_blank" rel="noopener" href="https://bizbudding.com/my-account/">%s  →</a></p>', sprintf( 'BizBudding %s', esc_html__( 'Account', 'mai-engine' ) ) );
 					echo '</div>';
 				}
@@ -272,7 +272,7 @@ class Mai_Plugins {
 	 * @return string
 	 */
 	function get_button( $action, $class, $text, $slug ) {
-		$data_disabled = $this->is_disabled( $slug ) ? sprintf( ' data-disabled="Mai Design Pack %s."', esc_html__( 'required', 'mai-engine' ) ) : '';
+		$data_disabled = $this->is_disabled( $slug ) ? sprintf( ' data-disabled="Mai Theme Pro Plugin %s."', esc_html__( 'required', 'mai-engine' ) ) : '';
 		$disabled      = $this->is_disabled( $slug ) ? ' disabled' : '';
 
 		return sprintf( '<button class="mai-plugin-%s button button-%s" data-action="%s" data-slug="%s"%s%s>%s</button>',

@@ -238,7 +238,7 @@ function mai_render_admin_patterns_menu_page() {
 		echo '<p>';
 		// Mai Patterns description
 			/* translators: %1$s %2$s %3$s are replaced with the plugin names. */
-			printf( esc_html__( 'Create a website design just like the pros using pre-built patterns that provide the ability to add complex sections and layouts to your website. The %1$s is included with the %2$s and is included for our %3$s customers.', 'mai-engine' ), 'Mai Pattern Library', 'Mai Design Pack', 'Mai Solution' );
+			printf( esc_html__( 'Create a website design just like the pros using pre-built patterns that provide the ability to add complex sections and layouts to your website. The %1$s is included with the %2$s and is included for our %3$s customers.', 'mai-engine' ), 'Mai Pattern Library', 'Mai Theme Pro Plugin', 'Mai Solution' );
 		echo '</p>';
 		echo '<p>';
 			/* translators: %s is replaced with the theme name. */

@@ -269,13 +269,13 @@
 	display: flex;
 }
 
-.acf-block-panel .acf-block-fields div.acf-field[data-name="padding"] {
+.acf-block-panel .acf-block-fields div.acf-field.acf-field-mai-icon-padding {
 	clear: both !important;
 	padding-top: 16px;
 	border-top: 1px solid #e2e4e7;
 }
 
-.acf-block-panel .acf-block-fields div.acf-field[data-name="padding"] .acf-input {
+.acf-block-panel .acf-block-fields div.acf-field.acf-field-mai-icon-padding .acf-input {
 	max-width: calc(50% - 16px) !important;
 }
 
