@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.28.2 (6/21/23)
+* Added: Better compatibility when using core Post Content and Post Featured Image blocks.
+* Added: [Developers] New `$mai_term` global variable for terms in the loop via Mai Term Grid block.
+* Changed: Renamed Mai Design Pack to Mai Theme Pro.
+* Changed: Added more side spacing to the default select field styling.
+* Changed: Update dependencies.
+* Fixed: Layout setting per-post not working correctly in some scenarios.
+* Fixed: Entry images not filling container when showing left/right full.
+* Fixed: Social icons alignment in editor was not working in some configurations.
+* Fixed: Function does not exist error for a Genesis function in some edge-case scenarios.
+* Fixed: Unexpected border showing on some entry images in Mai Chic.
+
 ## 2.28.1 (5/10/23)
 * Fixed: Wrong ID being returned on front page for site layout in some scenarios.
 * Fixed: Replace deprecated `get_page_by_title()` function.
