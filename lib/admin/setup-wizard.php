@@ -226,6 +226,36 @@ function mai_setup_wizard_email_option( $email_address ) {
 	remove_filter( 'wp_mail_from', $filter );
 }
 
+add_action( 'mai_setup_wizard_before_plugins_ajax', 'mai_before_setup_wizard_plugins_ajax', 10, 2 );
+/**
+ * Removes auto-creation of WooCommerce pages
+ * when activating WooCommerce during Mai Setup Wizard.
+ *
+ * @since TBD
+ *
+ * @param string $slug  Plugin file slug.
+ * @param array  $field Field data.
+ *
+ * @return void
+ */
+function mai_before_setup_wizard_plugins_ajax( $slug, $field ) {
+	if ( 'woocommerce/woocommerce.php' !== $slug ) {
+		return;
+	}
+
+	// Unset default pages since they will be imported via the setup wizard
+	// with possible custom title/content.
+	add_filter( 'woocommerce_create_pages', function( $pages ) {
+		unset( $pages['shop'] );
+		unset( $pages['cart'] );
+		unset( $pages['checkout'] );
+		unset( $pages['myaccount'] );
+		unset( $pages['refund_returns'] );
+
+		return $pages;
+	});
+}
+
 add_action( 'mai_setup_wizard_after_import', 'mai_after_setup_wizard_import' );
 /**
  * Configures site settings after demo content is imported.
@@ -280,9 +310,10 @@ function mai_after_setup_wizard_import( $demo ) {
 
 	// Assign front page and posts page.
 	$front = mai_get_page_by_title( $home );
-	$front = $front ?: mai_get_page_by_title( 'Home' ); // Fallback if no home with demo name.
-	$blog  = mai_get_page_by_title( 'Blog' );
-	$shop  = mai_get_page_by_title( 'Shop' );
+	$front = $front ?: mai_get_page_by_title( 'Home' );             // Fallback if no home with demo name.
+	$front = $front ?: get_page_by_path( 'home', OBJECT, 'page' );  // Fallback if no home by title.
+	$blog  = get_page_by_path( 'blog', OBJECT, 'page' );
+	$shop  = get_page_by_path( 'shop', OBJECT, 'page' );
 
 	if ( $front ) {
 		update_option( 'page_on_front', $front->ID );
