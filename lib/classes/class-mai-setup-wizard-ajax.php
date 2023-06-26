@@ -160,6 +160,8 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 			wp_send_json_success( __( 'No plugins selected.', 'mai-engine' ) );
 		}
 
+		do_action( 'mai_setup_wizard_before_plugins_ajax', $slug, $field );
+
 		set_time_limit( apply_filters( 'mai_setup_wizard_time_limit', 300 ) );
 
 		if ( ! is_plugin_active( $slug ) ) {

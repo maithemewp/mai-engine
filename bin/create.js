@@ -108,7 +108,7 @@ const themeScss = function() {
 };
 
 const genesisVersion = function() {
-	let version = '3.3.5';
+	let version = '3.4.0';
 
 	readline.createInterface( {
 		input: fs.createReadStream( '../../themes/genesis/style.css' ),
