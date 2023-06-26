@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.29.0 (6/26/23)
+* Changed: Mai Post/Term Grid “no results” text now respects text alignment setting.
+* Changed: Updated Kirki to 4.2.0.
+* Fixed: Multiple custom classes on Mai Post/Term Grid were getting joined into a single class.
+
 ## 2.28.2 (6/21/23)
 * Added: Better compatibility when using core Post Content and Post Featured Image blocks.
 * Added: [Developers] New `$mai_term` global variable for terms in the loop via Mai Term Grid block.
