@@ -1,8 +1,11 @@
 # Changelog
 
+## 2.29.1 (6/28/23)
+* Changed: Update ACF to 6.1.7.
+
 ## 2.29.0 (6/26/23)
 * Changed: Mai Post/Term Grid “no results” text now respects text alignment setting.
-* Changed: Updated Kirki to 4.2.0.
+* Changed: Update Kirki to 4.2.0.
 * Fixed: Multiple custom classes on Mai Post/Term Grid were getting joined into a single class.
 
 ## 2.28.2 (6/21/23)
