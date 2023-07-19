@@ -32,10 +32,10 @@ function mai_do_breadcrumbs() {
 		return;
 	}
 
-	$aio  = function_exists( 'aioseo_breadcrumbs' );
 	$rank = function_exists( 'rank_math_the_breadcrumbs' );
+	$aio  = function_exists( 'aioseo_breadcrumbs' );
 
-	if ( $aio || $rank ) {
+	if ( $rank || $aio ) {
 		// Conditions taken from `genesis_do_breadcrumbs()`.
 		$genesis_breadcrumbs_hidden = apply_filters( 'genesis_do_breadcrumbs', genesis_breadcrumbs_hidden_on_current_page() );
 
@@ -47,10 +47,26 @@ function mai_do_breadcrumbs() {
 			return;
 		}
 
-		if ( $aio ) {
-			aioseo_breadcrumbs();
-		} elseif ( $rank ) {
+		if ( $rank ) {
 			rank_math_the_breadcrumbs();
+		} elseif ( $aio ) {
+			ob_start();
+			aioseo_breadcrumbs();
+			$breadcrumbs = ob_get_clean();
+
+			if ( class_exists( 'WP_HTML_Tag_Processor' ) ) {
+				$tags = new WP_HTML_Tag_Processor( $breadcrumbs );
+
+				while ( $tags->next_tag( [ 'tag_name' => 'div', 'class_name' => 'aioseo-breadcrumbs' ] ) ) {
+					$classes = mai_add_classes( 'breadcrumb', $tags->get_attribute( 'class' ) );
+					$tags->set_attribute( 'class', $classes );
+					break;
+				}
+
+				$breadcrumbs = $tags->get_updated_html();
+			}
+
+			echo $breadcrumbs;
 		}
 	} else {
 		genesis_do_breadcrumbs();
