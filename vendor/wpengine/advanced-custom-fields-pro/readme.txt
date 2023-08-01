@@ -4,7 +4,7 @@ Tags: acf, fields, custom fields, meta, repeater
 Requires at least: 4.7
 Tested up to: 6.2
 Requires PHP: 5.6
-Stable tag: 6.1.6
+Stable tag: 6.1.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -92,6 +92,35 @@ From your WordPress dashboard
 
 == Changelog ==
 
+= 6.2-beta1 =
+*Release Date 27th July 2023*
+
+* [View Release Post](https://www.advancedcustomfields.com/blog/acf-6-2-beta1/)
+* New - Bidirectional Relationships now supported for Relationship, Post Object, User and Taxonomy fields. View the [release post](https://www.advancedcustomfields.com/blog/acf-6-2-beta1/) for full information
+* New - Options Pages can now be registered and managed by the admin UI
+* Enhancement - ACF JSON now supports multiple save locations
+* Enhancement - ACF Post Types and Taxonomies now support duplication
+* Fix - REST updates of fields with choices containing integer or mixed keys now behave correctly
+
+= 6.1.7 =
+*Release Date 27th June 2023*
+
+* New - Added new capability settings for ACF taxonomies
+* Enhancement - Added a new `acf/field_group/auto_add_first_field` filter which can be used to prevent new field groups from automatically adding a field
+* Enhancement - Field setting labels now have standard capitalization in the field group editor
+* Enhancement - Clone field now has a tutorial link
+* Enhancement - "Exclude From Search" CPT setting now has an improved description
+* Enhancement - The `acf_get_posts()` function now has `acf/acf_get_posts/args` and `acf/acf_get_posts/results` filters
+* Enhancement - Added a new `acf/options_page/save` action hook that gets fired during save of ACF Options Pages
+* Fix - Taxonomies are now initialized before post types, preventing some permalink issues
+* Fix - Increased the taxonomy slug maximum length to 32 characters
+* Fix - Extra tabs are no longer added to PHP exports with field settings containing multiple lines
+* Fix - ACF admin assets now load when editing profile and users for a multisite network
+* Fix - Blocks with recursive `render_callback` functions will no longer crash the editor
+* Fix - JSON files now end in a new line for better compatibility with code editors
+* i18n - `layout(s)` strings in Flexible Content fields are now translatable
+* i18n - Updated Polish translations
+
 = 6.1.6 =
 *Release Date 4th May 2023*
 
@@ -151,7 +180,7 @@ From your WordPress dashboard
 
 * [View Release Post](https://www.advancedcustomfields.com/blog/acf-6-1-0-released/)
 * New - Register Custom Post Types and Taxonomies using ACF. View the [release post](https://www.advancedcustomfields.com/blog/acf-6-1-0-released/#cpts-taxonomies) for full information
-* New - A new field type selection browser providing details on each type of field. View the [release post](https://www.advancedcustomfields.com/blog/acf-6-1-0-released/#field-type-modal) for full information.
+* New - A new field type selection browser providing details on each type of field. View the [release post](https://www.advancedcustomfields.com/blog/acf-6-1-0-released/#field-type-modal) for full information
 * New - PHP 8.1 and 8.2 support
 * Security Fix - ACF's data serialization system will now prevent classes being unserialized. This prevents a potential security issue should an attacker know a vulnerable class is available, and can write malicious data to the database.
 * Enhancement - Post Object, Page Link and Relationship fields now support filtering by post status
