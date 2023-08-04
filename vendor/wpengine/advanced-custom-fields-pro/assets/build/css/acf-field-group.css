@@ -2648,6 +2648,16 @@ html[dir=rtl] .acf-field-object.open > .handle {
 
 /*----------------------------------------------------------------------------
 *
+*  Field settings container
+*
+*----------------------------------------------------------------------------*/
+.acf-field-type-settings {
+  container-name: settings;
+  container-type: inline-size;
+}
+
+/*----------------------------------------------------------------------------
+*
 *  Split field settings
 *
 *----------------------------------------------------------------------------*/
@@ -2668,6 +2678,17 @@ html[dir=rtl] .acf-field-object.open > .handle {
   border-left-color: #EAECF0;
 }
 
+@container settings (max-width: 1170px) {
+  .acf-field-settings-split {
+    border: none;
+    flex-direction: column;
+  }
+  .acf-field {
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: #EAECF0;
+  }
+}
 /*----------------------------------------------------------------------------
 *
 *  Display & return format

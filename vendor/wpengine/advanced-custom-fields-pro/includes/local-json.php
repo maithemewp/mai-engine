@@ -382,6 +382,33 @@ if ( ! class_exists( 'ACF_Local_JSON' ) ) :
 			$paths          = $this->get_save_paths( $key, $post );
 			$file           = false;
 			$first_writable = false;
+			$load_path      = '';
+
+			if ( is_array( $this->files ) && isset( $this->files[ $key ] ) ) {
+				$load_path = $this->files[ $key ];
+			}
+
+			/**
+			 * Filters the filename used when saving JSON.
+			 *
+			 * @since 6.2
+			 *
+			 * @param string $filename  The default filename.
+			 * @param array  $post      The main post array for the item being saved.
+			 * @param string $load_path The path that the item was loaded from.
+			 */
+			$filename = apply_filters( 'acf/json/save_file_name', $key . '.json', $post, $load_path );
+
+			if ( ! is_string( $filename ) ) {
+				return false;
+			}
+
+			$filename = sanitize_file_name( $filename );
+
+			// sanitize_file_name() can potentially remove all characters.
+			if ( empty( $filename ) ) {
+				return false;
+			}
 
 			foreach ( $paths as $path ) {
 				if ( ! is_writable( $path ) ) {
@@ -392,7 +419,7 @@ if ( ! class_exists( 'ACF_Local_JSON' ) ) :
 					$first_writable = $path;
 				}
 
-				$file_to_check = trailingslashit( $path ) . $key . '.json';
+				$file_to_check = trailingslashit( $path ) . $filename;
 
 				if ( is_file( $file_to_check ) ) {
 					$file = $file_to_check;
@@ -401,7 +428,7 @@ if ( ! class_exists( 'ACF_Local_JSON' ) ) :
 
 			if ( ! $file ) {
 				if ( $first_writable ) {
-					$file = trailingslashit( $first_writable ) . $key . '.json';
+					$file = trailingslashit( $first_writable ) . $filename;
 				} else {
 					return false;
 				}
@@ -422,7 +449,7 @@ if ( ! class_exists( 'ACF_Local_JSON' ) ) :
 
 			// Prepare for export and save the file.
 			$post   = acf_prepare_internal_post_type_for_export( $post, $post_type );
-			$result = file_put_contents( $file, acf_json_encode( $post ) . "\r\n" );
+			$result = file_put_contents( $file, acf_json_encode( $post ) . apply_filters( 'acf/json/eof_newline', PHP_EOL ) );
 
 			// Return true if bytes were written.
 			return is_int( $result );

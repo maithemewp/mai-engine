@@ -371,6 +371,11 @@ if ( ! class_exists( 'ACF_UI_Options_Page' ) ) {
 					$value = filter_var( $value, FILTER_VALIDATE_BOOLEAN );
 				}
 
+				// Escape HTML.
+				if ( in_array( $setting, array( 'page_title', 'menu_title' ), true ) ) {
+					$value = esc_html( $value );
+				}
+
 				// A `parent_slug` value of "none" is only used in the UI.
 				if ( 'parent_slug' === $setting && 'none' === $value ) {
 					continue;

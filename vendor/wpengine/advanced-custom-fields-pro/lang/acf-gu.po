@@ -12,7 +12,7 @@
 # This file is distributed under the same license as Advanced Custom Fields.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-07-27T17:20:31+00:00\n"
+"PO-Revision-Date: 2023-08-03T17:01:29+00:00\n"
 "Report-Msgid-Bugs-To: http://support.advancedcustomfields.com\n"
 "Language: gu\n"
 "MIME-Version: 1.0\n"
@@ -2881,7 +2881,7 @@ msgstr ""
 
 #: includes/admin/views/browse-fields-modal.php:65
 msgid "Upgrade to PRO"
-msgstr ""
+msgstr "પ્રો પર અપગ્રેડ કરો"
 
 #: includes/admin/post-types/admin-field-group.php:288
 #: includes/admin/post-types/admin-post-type.php:292

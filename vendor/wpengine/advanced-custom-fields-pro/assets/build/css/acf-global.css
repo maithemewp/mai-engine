@@ -1676,6 +1676,15 @@ html[dir=rtl] .acf-table > tbody > tr > td.order + td {
   }
 }
 
+/*-------------------------------------------------------------------
+*
+*  ACF Admin Page Footer Styles
+*
+*------------------------------------------------------------------*/
+.acf-admin-page #wpfooter {
+  font-style: italic;
+}
+
 /*---------------------------------------------------------------------------------------------
 *
 *  Admin Postbox & ACF Postbox
@@ -1919,7 +1928,6 @@ html[dir=rtl] .acf-table > tbody > tr > td.order + td {
 .acf-admin-page #lost-connection-notice {
   position: relative;
   box-sizing: border-box;
-  max-width: 1440px;
   min-height: 48px;
   margin-top: 0 !important;
   margin-right: 0 !important;
@@ -2079,6 +2087,9 @@ html[dir=rtl] .acf-table > tbody > tr > td.order + td {
   align-items: center;
   margin-top: -6px;
   margin-bottom: 0;
+}
+.acf-admin-page .notice[data-persisted=true] {
+  display: none;
 }
 .acf-admin-page .notice.is-dismissible {
   padding-right: 56px;
@@ -4098,6 +4109,20 @@ html[dir=rtl] .acf-table > tbody > tr > td.order + td {
   border-radius: 8px;
   box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.04), 0px 8px 23px rgba(0, 0, 0, 0.12);
 }
+.acf-admin-toolbar .acf-more ul .acf-wp-engine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background: #ECFBFC;
+}
+.acf-admin-toolbar .acf-more ul .acf-wp-engine a {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  border-top: none;
+}
 .acf-admin-toolbar .acf-more ul li {
   margin: 0;
   padding: 0 16px;
@@ -4126,9 +4151,9 @@ html[dir=rtl] .acf-table > tbody > tr > td.order + td {
   padding: 0;
   color: #1D2939;
   border-radius: 0;
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: #F2F4F7;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: #F2F4F7;
 }
 .acf-admin-toolbar .acf-more ul li a:hover, .acf-admin-toolbar .acf-more ul li a.acf-tab.is-active {
   background-color: unset;
@@ -4156,7 +4181,26 @@ html[dir=rtl] .acf-table > tbody > tr > td.order + td {
   padding-right: 6px;
   padding-left: 6px;
 }
-.acf-admin-toolbar .acf-more ul li:last-child a {
+.acf-admin-toolbar .acf-more ul li a img.acf-wp-engine-pro {
+  display: block;
+  height: 16px;
+  width: auto;
+}
+.acf-admin-toolbar .acf-more ul li a .acf-wp-engine-upsell-pill {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 22px;
+  border-radius: 100px;
+  font-size: 11px;
+  padding-right: 8px;
+  padding-left: 8px;
+  background: #0ECAD4;
+  color: #FFFFFF;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.12);
+  text-transform: uppercase;
+}
+.acf-admin-toolbar .acf-more ul li:first-child a {
   border-bottom: none;
 }
 .acf-admin-toolbar .acf-more ul:hover, .acf-admin-toolbar .acf-more ul:focus {

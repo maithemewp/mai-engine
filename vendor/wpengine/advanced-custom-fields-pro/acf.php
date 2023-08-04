@@ -9,7 +9,7 @@
  * Plugin Name:   Advanced Custom Fields PRO
  * Plugin URI:    https://www.advancedcustomfields.com
  * Description:   Customize WordPress with powerful, professional and intuitive fields.
- * Version:       6.2.0-beta1
+ * Version:       6.2.0-RC1
  * Author:        WP Engine
  * Author URI:    https://wpengine.com/?utm_source=wordpress.org&utm_medium=referral&utm_campaign=plugin_directory&utm_content=advanced_custom_fields
  * Update URI:    https://www.advancedcustomfields.com/pro
@@ -34,7 +34,7 @@ if ( ! class_exists( 'ACF' ) ) {
 		 *
 		 * @var string
 		 */
-		public $version = '6.2.0-beta1';
+		public $version = '6.2.0-RC1';
 
 		/**
 		 * The plugin settings array.
@@ -276,6 +276,9 @@ if ( ! class_exists( 'ACF' ) ) {
 				acf_include( 'includes/post-types/class-acf-taxonomy.php' );
 				acf_include( 'includes/post-types/class-acf-post-type.php' );
 			}
+
+			// Add other ACF internal post types.
+			do_action( 'acf/init_internal_post_types' );
 
 			// Include fields.
 			acf_include( 'includes/fields/class-acf-field-text.php' );

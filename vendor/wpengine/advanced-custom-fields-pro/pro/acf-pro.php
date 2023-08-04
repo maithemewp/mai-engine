@@ -32,10 +32,6 @@ if ( ! class_exists( 'acf_pro' ) ) :
 			acf_include( 'pro/acf-ui-options-page-functions.php' );
 			acf_include( 'pro/updates.php' );
 
-			if ( acf_get_setting( 'enable_options_pages_ui' ) ) {
-				acf_include( 'pro/post-types/acf-ui-options-page.php' );
-			}
-
 			if ( is_admin() ) {
 				acf_include( 'pro/admin/admin-options-page.php' );
 				acf_include( 'pro/admin/admin-updates.php' );
@@ -43,6 +39,7 @@ if ( ! class_exists( 'acf_pro' ) ) :
 
 			// actions
 			add_action( 'init', array( $this, 'register_assets' ) );
+			add_action( 'acf/init_internal_post_types', array( $this, 'register_ui_options_pages' ) );
 			add_action( 'acf/include_fields', array( $this, 'include_options_pages' ) );
 			add_action( 'acf/include_field_types', array( $this, 'include_field_types' ), 5 );
 			add_action( 'acf/include_location_rules', array( $this, 'include_location_rules' ), 5 );
@@ -51,6 +48,21 @@ if ( ! class_exists( 'acf_pro' ) ) :
 
 			// Add filters.
 			add_filter( 'posts_where', array( $this, 'posts_where' ), 10, 2 );
+		}
+
+		/**
+		 * Registers the `acf-ui-options-page` post type and initializes the UI.
+		 *
+		 * @since 6.2
+		 *
+		 * @return void
+		 */
+		public function register_ui_options_pages() {
+			if ( ! acf_get_setting( 'enable_options_pages_ui' ) ) {
+				return;
+			}
+
+			acf_include( 'pro/post-types/acf-ui-options-page.php' );
 		}
 
 		/**

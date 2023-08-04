@@ -83,6 +83,18 @@ if ( ! acf_get_setting( 'pro' ) ) {
 	);
 }
 
+if ( ! defined( 'PWP_NAME' ) ) {
+	$acf_wpengine_logo = acf_get_url( 'assets/images/wp-engine-horizontal-black.svg' );
+	$acf_wpengine_logo = sprintf( '<span><img class="acf-wp-engine-pro" src="%s" alt="WP Engine" /></span>', $acf_wpengine_logo );
+	$utm_content       = acf_is_pro() ? 'acf_pro_plugin_topbar_dropdown_cta' : 'acf_free_plugin_topbar_dropdown_cta';
+	$acf_more_items[]  = array(
+		'url'      => acf_add_url_utm_tags( 'https://wpengine.com/plans/?coupon=freedomtocreate', 'bx_prod_referral', $utm_content, false, 'acf_plugin', 'referral' ),
+		'text'     => $acf_wpengine_logo . '<span class="acf-wp-engine-upsell-pill">' . __( '4 Months Free', 'acf' ) . '</span>',
+		'target'   => '_blank',
+		'li_class' => 'acf-wp-engine',
+	);
+}
+
 /**
  * Filters the admin navigation more items.
  *
@@ -97,11 +109,10 @@ if ( $core_tabs === false ) {
 	return;
 }
 
-$acf_is_free            = ! defined( 'ACF_PRO' ) || ! ACF_PRO;
 $acf_wpengine_logo_link = acf_add_url_utm_tags(
 	'https://wpengine.com/',
 	'bx_prod_referral',
-	$acf_is_free ? 'acf_free_plugin_topbar_logo' : 'acf_pro_plugin_topbar_logo',
+	acf_is_pro() ? 'acf_pro_plugin_topbar_logo' : 'acf_free_plugin_topbar_logo',
 	false,
 	'acf_plugin',
 	'referral'
@@ -126,8 +137,9 @@ function acf_print_menu_section( $menu_items, $section = '' ) {
 	$section_html = '';
 
 	foreach ( $menu_items as $menu_item ) {
-		$class  = ! empty( $menu_item['class'] ) ? $menu_item['class'] : $menu_item['text'];
-		$target = ! empty( $more_item['target'] ) ? ' target="' . esc_attr( $more_item['target'] ) . '"' : '';
+		$class    = ! empty( $menu_item['class'] ) ? $menu_item['class'] : $menu_item['text'];
+		$target   = ! empty( $menu_item['target'] ) ? ' target="' . esc_attr( $menu_item['target'] ) . '"' : '';
+		$li_class = ! empty( $menu_item['li_class'] ) ? $menu_item['li_class'] : '';
 
 		$html = sprintf(
 			'<a class="acf-tab%s %s" href="%s"%s><i class="acf-icon"></i>%s</a>',
@@ -139,7 +151,11 @@ function acf_print_menu_section( $menu_items, $section = '' ) {
 		);
 
 		if ( 'core' !== $section ) {
-			$html = '<li>' . $html . '</li>';
+			if ( $li_class === '' ) {
+				$html = '<li>' . $html . '</li>';
+			} else {
+				$html = sprintf( '<li class="%s">', $li_class ) . $html . '</li>';
+			}
 		}
 
 		$section_html .= $html;
@@ -153,7 +169,7 @@ function acf_print_menu_section( $menu_items, $section = '' ) {
 		<div class="acf-nav-wrap">
 			<a href="<?php echo admin_url( 'edit.php?post_type=acf-field-group' ); ?>" class="acf-logo">
 				<img src="<?php echo acf_get_url( 'assets/images/acf-logo.svg' ); ?>" alt="<?php esc_attr_e( 'Advanced Custom Fields logo', 'acf' ); ?>">
-				<?php if ( defined( 'ACF_PRO' ) && ACF_PRO ) { ?>
+				<?php if ( acf_is_pro() ) { ?>
 					<div class="acf-pro-label">PRO</div>
 				<?php } ?>
 			</a>
@@ -181,7 +197,7 @@ function acf_print_menu_section( $menu_items, $section = '' ) {
 			<?php } ?>
 		</div>
 		<div class="acf-nav-upgrade-wrap">
-			<?php if ( $acf_is_free ) : ?>
+			<?php if ( ! acf_is_pro() ) : ?>
 				<a target="_blank" href="<?php echo acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/pro/', 'ACF upgrade', 'header' ); ?>" class="btn-upgrade acf-admin-toolbar-upgrade-btn">
 					<i class="acf-icon acf-icon-stars"></i>
 					<p><?php esc_html_e( 'Unlock Extra Features with ACF PRO', 'acf' ); ?></p>
