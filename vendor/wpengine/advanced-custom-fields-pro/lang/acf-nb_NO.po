@@ -12,7 +12,7 @@
 # This file is distributed under the same license as Advanced Custom Fields.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-08-03T17:01:29+00:00\n"
+"PO-Revision-Date: 2023-08-09T12:53:50+00:00\n"
 "Report-Msgid-Bugs-To: http://support.advancedcustomfields.com\n"
 "Language: nb_NO\n"
 "MIME-Version: 1.0\n"
@@ -2707,8 +2707,8 @@ msgstr ""
 msgid ""
 "<strong>%1$s</strong> - We've detected one or more calls to retrieve ACF "
 "field values before ACF has been initialized. This is not supported and can "
-"result in malformed or missing data. <a href=\"%2$s\" "
-"target=\"_blank\">Learn how to fix this</a>."
+"result in malformed or missing data. <a href=\"%2$s\" target=\"_blank"
+"\">Learn how to fix this</a>."
 msgstr ""
 
 #: includes/fields/class-acf-field-user.php:540
@@ -5485,9 +5485,9 @@ msgstr "Alternativer er oppdatert"
 
 #: pro/updates.php:99
 msgid ""
-"To enable updates, please enter your license key on the <a "
-"href=\"%1$s\">Updates</a> page. If you don't have a licence key, please see "
-"<a href=\"%2$s\" target=\"_blank\">details & pricing</a>."
+"To enable updates, please enter your license key on the <a href=\"%1$s"
+"\">Updates</a> page. If you don't have a licence key, please see <a href="
+"\"%2$s\" target=\"_blank\">details & pricing</a>."
 msgstr ""
 
 #: pro/updates.php:159
@@ -5529,8 +5529,8 @@ msgid ""
 "No Custom Field Groups found for this options page. <a href=\"%s\">Create a "
 "Custom Field Group</a>"
 msgstr ""
-"Ingen egendefinerte feltgrupper funnet for denne valg-siden. <a "
-"href=\"%s\">Opprette en egendefinert feltgruppe</a>"
+"Ingen egendefinerte feltgrupper funnet for denne valg-siden. <a href=\"%s"
+"\">Opprette en egendefinert feltgruppe</a>"
 
 #: pro/admin/admin-updates.php:52
 msgid "<b>Error</b>. Could not connect to update server"
@@ -5951,8 +5951,8 @@ msgid ""
 "licence key, please see <a href=\"%s\" target=\"_blank\">details & pricing</"
 "a>."
 msgstr ""
-"For å låse opp oppdateringer må lisensnøkkelen skrives inn under. Se <a "
-"href=\"%s\" target=\"_blank\">detaljer og priser</a> dersom du ikke har "
+"For å låse opp oppdateringer må lisensnøkkelen skrives inn under. Se <a href="
+"\"%s\" target=\"_blank\">detaljer og priser</a> dersom du ikke har "
 "lisensnøkkel."
 
 #: pro/admin/views/html-settings-updates.php:37

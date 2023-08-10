@@ -12,7 +12,7 @@
 # This file is distributed under the same license as Advanced Custom Fields.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-08-03T17:01:29+00:00\n"
+"PO-Revision-Date: 2023-08-09T12:53:50+00:00\n"
 "Report-Msgid-Bugs-To: http://support.advancedcustomfields.com\n"
 "Language: pt_PT\n"
 "MIME-Version: 1.0\n"
@@ -269,9 +269,9 @@ msgstr ""
 msgid "The post type key must be under 20 characters."
 msgstr ""
 
-#: includes/fields/class-acf-field-wysiwyg.php:27
+#: pro/fields/class-acf-field-flexible-content.php:27
 msgid "We do not recommend using this field in ACF Blocks."
-msgstr ""
+msgstr "Não recomendamos utilizar este campo em blocos ACF."
 
 #: includes/fields/class-acf-field-wysiwyg.php:27
 msgid ""
@@ -2624,8 +2624,8 @@ msgid ""
 "Choose from over 30 field types. <a href=\"%s\" target=\"_blank\">Learn "
 "more</a>."
 msgstr ""
-"Escolha entre mais de 30 tipos de campo. <a href=\"%s\" "
-"target=\"_blank\">Saiba mais</a>."
+"Escolha entre mais de 30 tipos de campo. <a href=\"%s\" target=\"_blank"
+"\">Saiba mais</a>."
 
 #: includes/admin/views/acf-field-group/fields.php:65
 msgid ""
@@ -2745,8 +2745,8 @@ msgstr ""
 msgid ""
 "<strong>%1$s</strong> - We've detected one or more calls to retrieve ACF "
 "field values before ACF has been initialized. This is not supported and can "
-"result in malformed or missing data. <a href=\"%2$s\" "
-"target=\"_blank\">Learn how to fix this</a>."
+"result in malformed or missing data. <a href=\"%2$s\" target=\"_blank"
+"\">Learn how to fix this</a>."
 msgstr ""
 
 #: includes/fields/class-acf-field-user.php:540
@@ -5541,16 +5541,18 @@ msgstr "Alterar o alinhamento do conteúdo"
 msgid "%s settings"
 msgstr "Definições de %s"
 
-#: pro/blocks.php:936
+#: pro/blocks.php:943
 msgid "This block contains no editable fields."
-msgstr ""
+msgstr "Este bloco não contém campos editáveis."
 
 #. translators: %s: an admin URL to the field group edit screen
-#: pro/blocks.php:942
+#: pro/blocks.php:949
 msgid ""
 "Assign a <a href=\"%s\" target=\"_blank\">field group</a> to add fields to "
 "this block."
 msgstr ""
+"Atribua um <a href=\"%s\" target=\"_blank\">grupo de campos</a> para "
+"adicionar campos a este bloco."
 
 #: pro/options-page.php:78
 msgid "Options Updated"
@@ -5558,32 +5560,42 @@ msgstr "Opções actualizadas"
 
 #: pro/updates.php:99
 msgid ""
-"To enable updates, please enter your license key on the <a "
-"href=\"%1$s\">Updates</a> page. If you don't have a licence key, please see "
-"<a href=\"%2$s\" target=\"_blank\">details & pricing</a>."
+"To enable updates, please enter your license key on the <a href=\"%1$s"
+"\">Updates</a> page. If you don't have a licence key, please see <a href="
+"\"%2$s\" target=\"_blank\">details & pricing</a>."
 msgstr ""
+"Para activar as actualizações, por favor insira a sua chave de licença na "
+"página das <a href=\"%1$s\">actualizações</a>. Se não tiver uma chave de "
+"licença, por favor consulte os <a href=\"%2$s\" target=\"_blank\">detalhes e "
+"preços</a>."
 
 #: pro/updates.php:159
 msgid ""
 "<b>ACF Activation Error</b>. Your defined license key has changed, but an "
 "error occurred when deactivating your old licence"
 msgstr ""
+"<b>Erro de activação do ACF</b>. A chave de licença definida foi alterada, "
+"mas ocorreu um erro ao desactivar a licença antiga"
 
 #: pro/updates.php:154
 msgid ""
 "<b>ACF Activation Error</b>. Your defined license key has changed, but an "
 "error occurred when connecting to activation server"
 msgstr ""
+"<b>Erro de activação do ACF</b>. A chave de licença definida foi alterada, "
+"mas ocorreu um erro ao ligar ao servidor de activação"
 
 #: pro/updates.php:192
 msgid "<b>ACF Activation Error</b>"
-msgstr ""
+msgstr "<b>Erro de activação do ACF</b>"
 
 #: pro/updates.php:187
 msgid ""
 "<b>ACF Activation Error</b>. An error occurred when connecting to activation "
 "server"
 msgstr ""
+"<b>Erro de activação do ACF</b>. Ocorreu um erro ao ligar ao servidor de "
+"activação"
 
 #: pro/updates.php:279
 msgid "Check Again"
@@ -5592,18 +5604,20 @@ msgstr "Verificar de novo"
 #: pro/updates.php:593
 msgid "<b>ACF Activation Error</b>. Could not connect to activation server"
 msgstr ""
+"<b>Erro de activação do ACF</b>. Não foi possível ligar ao servidor de "
+"activação"
 
-#: pro/admin/admin-options-page.php:195
+#: pro/admin/admin-options-page.php:205
 msgid "Publish"
 msgstr "Publicado"
 
-#: pro/admin/admin-options-page.php:199
+#: pro/admin/admin-options-page.php:209
 msgid ""
 "No Custom Field Groups found for this options page. <a href=\"%s\">Create a "
 "Custom Field Group</a>"
 msgstr ""
-"Nenhum grupo de campos personalizado encontrado na página de opções. <a "
-"href=\"%s\">Criar um grupo de campos personalizado</a>"
+"Nenhum grupo de campos personalizado encontrado na página de opções. <a href="
+"\"%s\">Criar um grupo de campos personalizado</a>"
 
 #: pro/admin/admin-updates.php:52
 msgid "<b>Error</b>. Could not connect to update server"
@@ -5622,6 +5636,8 @@ msgid ""
 "<b>Error</b>. Your license for this site has expired or been deactivated. "
 "Please reactivate your ACF PRO license."
 msgstr ""
+"<b>Erro</b>. A sua licença para este site expirou ou foi desactivada. Por "
+"favor active de novo a sua licença ACF PRO."
 
 #: pro/fields/class-acf-field-clone.php:27,
 #: pro/fields/class-acf-field-repeater.php:31
@@ -5631,52 +5647,56 @@ msgid ""
 "time. The Clone field can either replace itself with the selected fields or "
 "display the selected fields as a group of subfields."
 msgstr ""
+"Permite-lhe seleccionar e mostrar campos existentes. Não duplica nenhum "
+"campo na base de dados, mas carrega e mosta os campos seleccionados durante "
+"a execução. O campo Clone pode substituir-se a si próprio com os campos "
+"seleccionados, ou mostrar os campos seleccionados como um grupo de subcampos."
 
-#: pro/fields/class-acf-field-clone.php:819
+#: pro/fields/class-acf-field-clone.php:820
 msgid "Select one or more fields you wish to clone"
-msgstr "Seleccione um ou mais campos que deseje clonar."
+msgstr "Seleccione um ou mais campos que deseje clonar"
 
-#: pro/fields/class-acf-field-clone.php:838
+#: pro/fields/class-acf-field-clone.php:839
 msgid "Display"
 msgstr "Visualização"
 
-#: pro/fields/class-acf-field-clone.php:839
+#: pro/fields/class-acf-field-clone.php:840
 msgid "Specify the style used to render the clone field"
-msgstr "Especifica o estilo usado para mostrar o campo de clone."
+msgstr "Especifique o estilo usado para mostrar o campo de clone"
 
-#: pro/fields/class-acf-field-clone.php:844
+#: pro/fields/class-acf-field-clone.php:845
 msgid "Group (displays selected fields in a group within this field)"
 msgstr "Grupo (mostra os campos seleccionados num grupo dentro deste campo)"
 
-#: pro/fields/class-acf-field-clone.php:845
+#: pro/fields/class-acf-field-clone.php:846
 msgid "Seamless (replaces this field with selected fields)"
 msgstr "Simples (substitui este campo pelos campos seleccionados)"
 
-#: pro/fields/class-acf-field-clone.php:868
+#: pro/fields/class-acf-field-clone.php:869
 msgid "Labels will be displayed as %s"
 msgstr "As legendas serão mostradas com %s"
 
-#: pro/fields/class-acf-field-clone.php:873
+#: pro/fields/class-acf-field-clone.php:874
 msgid "Prefix Field Labels"
 msgstr "Prefixo nas legendas dos campos"
 
-#: pro/fields/class-acf-field-clone.php:883
+#: pro/fields/class-acf-field-clone.php:884
 msgid "Values will be saved as %s"
 msgstr "Os valores serão guardados como %s"
 
-#: pro/fields/class-acf-field-clone.php:888
+#: pro/fields/class-acf-field-clone.php:889
 msgid "Prefix Field Names"
 msgstr "Prefixos nos nomes dos campos"
 
-#: pro/fields/class-acf-field-clone.php:1005
+#: pro/fields/class-acf-field-clone.php:1006
 msgid "Unknown field"
 msgstr "Campo desconhecido"
 
-#: pro/fields/class-acf-field-clone.php:1042
+#: pro/fields/class-acf-field-clone.php:1043
 msgid "Unknown field group"
 msgstr "Grupo de campos desconhecido"
 
-#: pro/fields/class-acf-field-clone.php:1046
+#: pro/fields/class-acf-field-clone.php:1047
 msgid "All fields from %s field group"
 msgstr "Todos os campos do grupo de campos %s"
 
@@ -5685,6 +5705,9 @@ msgid ""
 "Allows you to define, create and manage content with total control by "
 "creating layouts that contain subfields that content editors can choose from."
 msgstr ""
+"Permite-lhe definir, criar e gerir conteúdos com total controlo através da "
+"criação de layouts que contêm subcampos que pode ser escolhidos pelos "
+"editores de conteúdos."
 
 #: pro/fields/class-acf-field-flexible-content.php:36,
 #: pro/fields/class-acf-field-repeater.php:103,
@@ -5760,8 +5783,6 @@ msgid "Add New Layout"
 msgstr "Adicionar novo layout"
 
 #: pro/fields/class-acf-field-flexible-content.php:564
-#, fuzzy
-#| msgid "Add layout"
 msgid "Add Layout"
 msgstr "Adicionar layout"
 
@@ -5789,108 +5810,103 @@ msgstr "Legenda do botão"
 #: pro/fields/class-acf-field-flexible-content.php:1710,
 #: pro/fields/class-acf-field-repeater.php:918
 msgid "%s must be of type array or null."
-msgstr ""
+msgstr "%s tem de ser do tipo array ou nulo."
 
 #: pro/fields/class-acf-field-flexible-content.php:1721
 msgid "%1$s must contain at least %2$s %3$s layout."
 msgid_plural "%1$s must contain at least %2$s %3$s layouts."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1$s tem de conter pelo menos %2$s layout %3$s."
+msgstr[1] "%1$s tem de conter pelo menos %2$s layouts %3$s."
 
 #: pro/fields/class-acf-field-flexible-content.php:1737
 msgid "%1$s must contain at most %2$s %3$s layout."
 msgid_plural "%1$s must contain at most %2$s %3$s layouts."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1$s tem de conter no máximo %2$s layout %3$s."
+msgstr[1] "%1$s tem de conter no máximo %2$s layouts %3$s."
 
 #: pro/fields/class-acf-field-gallery.php:27
 msgid ""
 "An interactive interface for managing a collection of attachments, such as "
 "images."
 msgstr ""
+"Uma interface interactiva para gerir uma colecção de anexos, como imagens."
 
-#: pro/fields/class-acf-field-gallery.php:77
+#: pro/fields/class-acf-field-gallery.php:78
 msgid "Add Image to Gallery"
 msgstr "Adicionar imagem à galeria"
 
-#: pro/fields/class-acf-field-gallery.php:78
+#: pro/fields/class-acf-field-gallery.php:79
 msgid "Maximum selection reached"
 msgstr "Máximo de selecção alcançado"
 
-#: pro/fields/class-acf-field-gallery.php:324
+#: pro/fields/class-acf-field-gallery.php:325
 msgid "Length"
 msgstr "Comprimento"
 
-#: pro/fields/class-acf-field-gallery.php:368
+#: pro/fields/class-acf-field-gallery.php:369
 msgid "Caption"
 msgstr "Legenda"
 
-#: pro/fields/class-acf-field-gallery.php:380
+#: pro/fields/class-acf-field-gallery.php:381
 msgid "Alt Text"
 msgstr "Texto alternativo"
 
-#: pro/fields/class-acf-field-gallery.php:504
+#: pro/fields/class-acf-field-gallery.php:505
 msgid "Add to gallery"
 msgstr "Adicionar à galeria"
 
-#: pro/fields/class-acf-field-gallery.php:508
+#: pro/fields/class-acf-field-gallery.php:509
 msgid "Bulk actions"
 msgstr "Acções por lotes"
 
-#: pro/fields/class-acf-field-gallery.php:509
+#: pro/fields/class-acf-field-gallery.php:510
 msgid "Sort by date uploaded"
 msgstr "Ordenar por data de carregamento"
 
-#: pro/fields/class-acf-field-gallery.php:510
+#: pro/fields/class-acf-field-gallery.php:511
 msgid "Sort by date modified"
 msgstr "Ordenar por data de modificação"
 
-#: pro/fields/class-acf-field-gallery.php:511
+#: pro/fields/class-acf-field-gallery.php:512
 msgid "Sort by title"
 msgstr "Ordenar por título"
 
-#: pro/fields/class-acf-field-gallery.php:512
+#: pro/fields/class-acf-field-gallery.php:513
 msgid "Reverse current order"
 msgstr "Inverter ordem actual"
 
-#: pro/fields/class-acf-field-gallery.php:524
+#: pro/fields/class-acf-field-gallery.php:525
 msgid "Close"
 msgstr "Fechar"
 
-#: pro/fields/class-acf-field-gallery.php:615
+#: pro/fields/class-acf-field-gallery.php:616
 msgid "Minimum Selection"
 msgstr "Selecção mínima"
 
-#: pro/fields/class-acf-field-gallery.php:625
+#: pro/fields/class-acf-field-gallery.php:626
 msgid "Maximum Selection"
 msgstr "Selecção máxima"
 
-#: pro/fields/class-acf-field-gallery.php:707
-msgid "Allowed file types"
-msgstr "Tipos de ficheiros permitidos"
-
-#: pro/fields/class-acf-field-gallery.php:727
+#: pro/fields/class-acf-field-gallery.php:728
 msgid "Insert"
 msgstr "Inserir"
 
-#: pro/fields/class-acf-field-gallery.php:728
+#: pro/fields/class-acf-field-gallery.php:729
 msgid "Specify where new attachments are added"
-msgstr "Especifica onde serão adicionados os novos anexos."
+msgstr "Especifique onde serão adicionados os novos anexos"
 
-#: pro/fields/class-acf-field-gallery.php:732
+#: pro/fields/class-acf-field-gallery.php:733
 msgid "Append to the end"
 msgstr "No fim"
 
-#: pro/fields/class-acf-field-gallery.php:733
+#: pro/fields/class-acf-field-gallery.php:734
 msgid "Prepend to the beginning"
 msgstr "No início"
 
 #: pro/fields/class-acf-field-repeater.php:66,
 #: pro/fields/class-acf-field-repeater.php:463
-#, fuzzy
-#| msgid "Minimum rows reached ({min} rows)"
 msgid "Minimum rows not reached ({min} rows)"
-msgstr "Mínimo de linhas alcançado ({min} linhas)"
+msgstr "Mínimo de linhas não alcançado ({min} linhas)"
 
 #: pro/fields/class-acf-field-repeater.php:67
 msgid "Maximum rows reached ({max} rows)"
@@ -5898,23 +5914,23 @@ msgstr "Máximo de linhas alcançado ({max} linhas)"
 
 #: pro/fields/class-acf-field-repeater.php:68
 msgid "Error loading page"
-msgstr ""
+msgstr "Erro ao carregar a página"
 
 #: pro/fields/class-acf-field-repeater.php:69
 msgid "Order will be assigned upon save"
-msgstr ""
+msgstr "A ordem será atribuída ao guardar"
 
 #: pro/fields/class-acf-field-repeater.php:196
 msgid "Useful for fields with a large number of rows."
-msgstr ""
+msgstr "Útil para campos com uma grande quantidade de linhas."
 
 #: pro/fields/class-acf-field-repeater.php:207
 msgid "Rows Per Page"
-msgstr ""
+msgstr "Linhas por página"
 
 #: pro/fields/class-acf-field-repeater.php:208
 msgid "Set the number of rows to be displayed on a page."
-msgstr ""
+msgstr "Define o número de linhas a mostrar numa página."
 
 #: pro/fields/class-acf-field-repeater.php:240
 msgid "Minimum Rows"
@@ -5930,21 +5946,17 @@ msgstr "Minimizado"
 
 #: pro/fields/class-acf-field-repeater.php:282
 msgid "Select a sub field to show when row is collapsed"
-msgstr "Seleccione o subcampo a mostrar ao minimizar a linha."
+msgstr "Seleccione o subcampo a mostrar ao minimizar a linha"
 
 #: pro/fields/class-acf-field-repeater.php:1060
-#, fuzzy
-#| msgid "Invalid field group ID."
 msgid "Invalid field key or name."
-msgstr "O ID do grupo de campos é inválido."
+msgstr "Chave ou nome de campo inválido."
 
 #: pro/fields/class-acf-field-repeater.php:1069
 msgid "There was an error retrieving the field."
-msgstr ""
+msgstr "Ocorreu um erro ao obter o campo."
 
 #: pro/fields/class-acf-repeater-table.php:369
-#, fuzzy
-#| msgid "Drag to reorder"
 msgid "Click to reorder"
 msgstr "Arraste para reordenar"
 
@@ -5964,41 +5976,33 @@ msgstr "Remover linha"
 #: pro/fields/class-acf-repeater-table.php:465,
 #: pro/fields/class-acf-repeater-table.php:466
 msgid "Current Page"
-msgstr ""
+msgstr "Página actual"
 
 #: pro/fields/class-acf-repeater-table.php:456,
 #: pro/fields/class-acf-repeater-table.php:457
-#, fuzzy
-#| msgid "Front Page"
 msgid "First Page"
-msgstr "Página inicial"
+msgstr "Primeira página"
 
 #: pro/fields/class-acf-repeater-table.php:460,
 #: pro/fields/class-acf-repeater-table.php:461
-#, fuzzy
-#| msgid "Posts Page"
 msgid "Previous Page"
-msgstr "Página de artigos"
+msgstr "Página anterior"
 
 #. translators: 1: Current page, 2: Total pages.
 #: pro/fields/class-acf-repeater-table.php:470
 msgctxt "paging"
 msgid "%1$s of %2$s"
-msgstr ""
+msgstr "%1$s de %2$s"
 
 #: pro/fields/class-acf-repeater-table.php:477,
 #: pro/fields/class-acf-repeater-table.php:478
-#, fuzzy
-#| msgid "Front Page"
 msgid "Next Page"
-msgstr "Página inicial"
+msgstr "Página seguinte"
 
 #: pro/fields/class-acf-repeater-table.php:481,
 #: pro/fields/class-acf-repeater-table.php:482
-#, fuzzy
-#| msgid "Posts Page"
 msgid "Last Page"
-msgstr "Página de artigos"
+msgstr "Última página"
 
 #: pro/locations/class-acf-location-block.php:71
 msgid "No block types exist"
@@ -6036,11 +6040,11 @@ msgstr "Chave de licença"
 
 #: pro/admin/views/html-settings-updates.php:22
 msgid "Your license key is defined in wp-config.php."
-msgstr ""
+msgstr "A sua chave de licença está definida no wp-config.php."
 
 #: pro/admin/views/html-settings-updates.php:29
 msgid "Retry Activation"
-msgstr ""
+msgstr "Tentar activar de novo"
 
 #: pro/admin/views/html-settings-updates.php:61
 msgid "Update Information"
@@ -6064,15 +6068,11 @@ msgstr "Informações sobre a actualização"
 
 #: pro/admin/views/html-settings-updates.php:126
 msgid "Check For Updates"
-msgstr ""
+msgstr "Verificar actualizações"
 
 #: pro/admin/views/html-settings-updates.php:121
-#, fuzzy
-#| msgid "Please enter your license key above to unlock updates"
 msgid "Enter your license key to unlock updates"
-msgstr ""
-"Por favor, insira acima a sua chave de licença para desbloquear as "
-"actualizações"
+msgstr "Digite a sua chave de licença para desbloquear as actualizações"
 
 #: pro/admin/views/html-settings-updates.php:119
 msgid "Update Plugin"
@@ -6080,4 +6080,4 @@ msgstr "Actualizar plugin"
 
 #: pro/admin/views/html-settings-updates.php:117
 msgid "Please reactivate your license to unlock updates"
-msgstr ""
+msgstr "Por favor reactive a sua licença para desbloquear as actualizações"

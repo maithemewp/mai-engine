@@ -12,7 +12,7 @@
 # This file is distributed under the same license as Advanced Custom Fields.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-08-03T17:01:29+00:00\n"
+"PO-Revision-Date: 2023-08-09T12:53:50+00:00\n"
 "Report-Msgid-Bugs-To: http://support.advancedcustomfields.com\n"
 "Language: de_DE_formal\n"
 "MIME-Version: 1.0\n"
@@ -255,8 +255,8 @@ msgid ""
 "This field must not be a WordPress <a href=\"%s\" target=\"_blank\">reserved "
 "term</a>."
 msgstr ""
-"Dieses Feld darf kein von WordPress <a href=\"%s\" "
-"target=\"_blank\">reservierter Begriff</a> sein."
+"Dieses Feld darf kein von WordPress <a href=\"%s\" target=\"_blank"
+"\">reservierter Begriff</a> sein."
 
 #: includes/post-types/class-acf-post-type.php:306
 msgid ""
@@ -2839,13 +2839,13 @@ msgstr ""
 msgid ""
 "<strong>%1$s</strong> - We've detected one or more calls to retrieve ACF "
 "field values before ACF has been initialized. This is not supported and can "
-"result in malformed or missing data. <a href=\"%2$s\" "
-"target=\"_blank\">Learn how to fix this</a>."
+"result in malformed or missing data. <a href=\"%2$s\" target=\"_blank"
+"\">Learn how to fix this</a>."
 msgstr ""
 "<strong>%1$s</strong> – Es wurde mindestens ein Versuch festgestellt, ACF-"
 "Feldwerte abzurufen, bevor ACF initialisiert wurde. Dies wird nicht "
-"unterstützt und kann zu fehlerhaften oder fehlenden Daten führen. <a "
-"href=\"%2$s\" target=\"_blank\">Lerne, wie du das beheben kannst (engl.)</a>."
+"unterstützt und kann zu fehlerhaften oder fehlenden Daten führen. <a href="
+"\"%2$s\" target=\"_blank\">Lerne, wie du das beheben kannst (engl.)</a>."
 
 #: includes/fields/class-acf-field-user.php:540
 msgid "%1$s must have a user with the %2$s role."
@@ -5668,9 +5668,9 @@ msgstr "Optionen aktualisiert"
 
 #: pro/updates.php:99
 msgid ""
-"To enable updates, please enter your license key on the <a "
-"href=\"%1$s\">Updates</a> page. If you don't have a licence key, please see "
-"<a href=\"%2$s\" target=\"_blank\">details & pricing</a>."
+"To enable updates, please enter your license key on the <a href=\"%1$s"
+"\">Updates</a> page. If you don't have a licence key, please see <a href="
+"\"%2$s\" target=\"_blank\">details & pricing</a>."
 msgstr ""
 
 #: pro/updates.php:159

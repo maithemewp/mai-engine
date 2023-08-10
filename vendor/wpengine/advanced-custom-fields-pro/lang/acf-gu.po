@@ -12,7 +12,7 @@
 # This file is distributed under the same license as Advanced Custom Fields.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-08-03T17:01:29+00:00\n"
+"PO-Revision-Date: 2023-08-09T12:53:50+00:00\n"
 "Report-Msgid-Bugs-To: http://support.advancedcustomfields.com\n"
 "Language: gu\n"
 "MIME-Version: 1.0\n"
@@ -1093,7 +1093,7 @@ msgstr ""
 
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:272
 msgid "New Item Name"
-msgstr ""
+msgstr "નવી આઇટમનું નામ"
 
 #. translators: %s Singular form of taxonomy name
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:269
@@ -1114,7 +1114,7 @@ msgstr "અદ્યતન ટેગ"
 
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:233
 msgid "Assigns the update item text."
-msgstr ""
+msgstr "અપડેટ આઇટમ ટેક્સ્ટ સોંપે છે."
 
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:232
 msgid "Update Item"
@@ -1155,7 +1155,7 @@ msgstr ""
 
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:153
 msgid "Menu Label"
-msgstr ""
+msgstr "મેનુ લેબલ"
 
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:127
 msgid "Active taxonomies are enabled and registered with WordPress."
@@ -1469,7 +1469,7 @@ msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:961
 msgid "Delete With User"
-msgstr ""
+msgstr "વપરાશકર્તા સાથે કાઢી નાખો"
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:947
 msgid "Allow the post type to be exported from 'Tools' > 'Export'."
@@ -1485,7 +1485,7 @@ msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:914
 msgid "Plural Capability Name"
-msgstr ""
+msgstr "બહુવચન ક્ષમતા નામ"
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:896
 msgid "Choose another post type to base the capabilities for this post type."
@@ -1493,7 +1493,7 @@ msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:895
 msgid "Singular Capability Name"
-msgstr ""
+msgstr "એકવચન ક્ષમતા નામ"
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:881
 msgid ""
@@ -1504,11 +1504,11 @@ msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:880
 msgid "Rename Capabilities"
-msgstr ""
+msgstr "ક્ષમતાઓનું નામ બદલો"
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:865
 msgid "Exclude From Search"
-msgstr ""
+msgstr "શોધમાંથી બાકાત રાખો"
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:852
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:850
@@ -1550,7 +1550,7 @@ msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:761
 msgid "Menu Position"
-msgstr ""
+msgstr "મેનુ સ્થિતિ"
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:743
 msgid ""
@@ -1593,11 +1593,11 @@ msgstr ""
 #: includes/admin/views/acf-post-type/advanced-settings.php:699
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:714
 msgid "Show In UI"
-msgstr ""
+msgstr "UI માં બતાવો"
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:685
 msgid "A link to a post."
-msgstr ""
+msgstr "પોસ્ટની લિંક."
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:684
 msgid "Description for a navigation link block variation."
@@ -1615,7 +1615,7 @@ msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:664
 msgid "Post Link"
-msgstr ""
+msgstr "પોસ્ટ લિંક"
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:663
 msgid "Title for a navigation link block variation."
@@ -1631,7 +1631,7 @@ msgstr ""
 #: includes/admin/views/acf-post-type/advanced-settings.php:659
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:674
 msgid "%s Link"
-msgstr ""
+msgstr "%s લિંક"
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:644
 msgid "Post updated."
@@ -1720,7 +1720,7 @@ msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:544
 msgid "Posts list"
-msgstr ""
+msgstr "પોસ્ટ્સ યાદી"
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:543
 msgid "Used by screen readers for the items list on the post type list screen."
@@ -1729,7 +1729,7 @@ msgstr ""
 #: includes/admin/views/acf-post-type/advanced-settings.php:542
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:636
 msgid "Items List"
-msgstr ""
+msgstr "આઇટ્મસ  યાદી"
 
 #. translators: %s Plural form of post type name
 #. translators: %s Plural form of taxonomy name
@@ -2812,8 +2812,8 @@ msgstr ""
 msgid ""
 "<strong>%1$s</strong> - We've detected one or more calls to retrieve ACF "
 "field values before ACF has been initialized. This is not supported and can "
-"result in malformed or missing data. <a href=\"%2$s\" "
-"target=\"_blank\">Learn how to fix this</a>."
+"result in malformed or missing data. <a href=\"%2$s\" target=\"_blank"
+"\">Learn how to fix this</a>."
 msgstr ""
 "<strong>%1$s</strong> - ACF શરૂ થાય તે પહેલાં અમે ACF ફીલ્ડ મૂલ્યો પુનઃપ્રાપ્ત કરવા માટે "
 "એક અથવા વધુ કૉલ્સ શોધી કાઢ્યા છે. આ સમર્થિત નથી અને તે ખોટા અથવા ખોવાયેલા ડેટામાં "

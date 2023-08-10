@@ -12,7 +12,7 @@
 # This file is distributed under the same license as Advanced Custom Fields.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-08-03T17:01:29+00:00\n"
+"PO-Revision-Date: 2023-08-09T12:53:50+00:00\n"
 "Report-Msgid-Bugs-To: http://support.advancedcustomfields.com\n"
 "Language: fa_IR\n"
 "MIME-Version: 1.0\n"
@@ -2729,13 +2729,13 @@ msgstr ""
 msgid ""
 "<strong>%1$s</strong> - We've detected one or more calls to retrieve ACF "
 "field values before ACF has been initialized. This is not supported and can "
-"result in malformed or missing data. <a href=\"%2$s\" "
-"target=\"_blank\">Learn how to fix this</a>."
+"result in malformed or missing data. <a href=\"%2$s\" target=\"_blank"
+"\">Learn how to fix this</a>."
 msgstr ""
 "<strong>%1$s</strong> - قبل از شروع اولیه ACF، یک یا چند تماس را برای "
 "بازیابی مقادیر فیلد ACF شناسایی کرده‌ایم. این مورد پشتیبانی نمی‌شود و می‌تواند "
-"منجر به داده‌های ناقص یا از دست رفته شود. <a href=\"%2$s\" "
-"target=\"_blank\">با نحوه رفع این مشکل آشنا شوید</a>."
+"منجر به داده‌های ناقص یا از دست رفته شود. <a href=\"%2$s\" target=\"_blank"
+"\">با نحوه رفع این مشکل آشنا شوید</a>."
 
 #: includes/fields/class-acf-field-user.php:540
 msgid "%1$s must have a user with the %2$s role."
@@ -5514,9 +5514,9 @@ msgstr "تنظیمات به روز شدند"
 
 #: pro/updates.php:99
 msgid ""
-"To enable updates, please enter your license key on the <a "
-"href=\"%1$s\">Updates</a> page. If you don't have a licence key, please see "
-"<a href=\"%2$s\" target=\"_blank\">details & pricing</a>."
+"To enable updates, please enter your license key on the <a href=\"%1$s"
+"\">Updates</a> page. If you don't have a licence key, please see <a href="
+"\"%2$s\" target=\"_blank\">details & pricing</a>."
 msgstr ""
 
 #: pro/updates.php:159
@@ -5980,8 +5980,8 @@ msgid ""
 "licence key, please see <a href=\"%s\" target=\"_blank\">details & pricing</"
 "a>."
 msgstr ""
-"برای به روزرسانی لطفا کد لایسنس را وارد  کنید. <a href=\"%s\" "
-"target=\"_blank\">قیمت ها</a>."
+"برای به روزرسانی لطفا کد لایسنس را وارد  کنید. <a href=\"%s\" target=\"_blank"
+"\">قیمت ها</a>."
 
 #: pro/admin/views/html-settings-updates.php:37
 msgid "License Key"

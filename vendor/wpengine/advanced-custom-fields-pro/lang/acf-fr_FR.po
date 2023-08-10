@@ -12,7 +12,7 @@
 # This file is distributed under the same license as Advanced Custom Fields.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-08-03T17:01:29+00:00\n"
+"PO-Revision-Date: 2023-08-09T12:53:50+00:00\n"
 "Report-Msgid-Bugs-To: http://support.advancedcustomfields.com\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
@@ -2672,8 +2672,8 @@ msgid ""
 "New to ACF? Take a look at our <a href=\"%s\" target=\"_blank\">getting "
 "started guide</a>."
 msgstr ""
-"Nouveau sur ACF ? Jetez un œil à notre <a href=\"%s\" "
-"target=\"_blank\">guide des premiers pas</a>."
+"Nouveau sur ACF ? Jetez un œil à notre <a href=\"%s\" target=\"_blank"
+"\">guide des premiers pas</a>."
 
 #: includes/admin/views/acf-field-group/list-empty.php:15
 msgid "Add Field Group"
@@ -2739,8 +2739,8 @@ msgid ""
 "Choose from over 30 field types. <a href=\"%s\" target=\"_blank\">Learn "
 "more</a>."
 msgstr ""
-"Choisissez parmi plus de 30 types de champs. <a href=\"%s\" "
-"target=\"_blank\">En savoir plus</a>."
+"Choisissez parmi plus de 30 types de champs. <a href=\"%s\" target=\"_blank"
+"\">En savoir plus</a>."
 
 #: includes/admin/views/acf-field-group/fields.php:65
 msgid ""
@@ -2860,8 +2860,8 @@ msgstr ""
 msgid ""
 "<strong>%1$s</strong> - We've detected one or more calls to retrieve ACF "
 "field values before ACF has been initialized. This is not supported and can "
-"result in malformed or missing data. <a href=\"%2$s\" "
-"target=\"_blank\">Learn how to fix this</a>."
+"result in malformed or missing data. <a href=\"%2$s\" target=\"_blank"
+"\">Learn how to fix this</a>."
 msgstr ""
 "<strong>%1$s</strong> - Nous avons détecté un ou plusieurs appels pour "
 "récupérer les valeurs des champs ACF avant l’initialisation d’ACF. Ceci "
@@ -5677,7 +5677,7 @@ msgstr "Modifier l’alignement du contenu"
 #. translators: %s: Block type title
 #: pro/blocks.php:731
 msgid "%s settings"
-msgstr "Réglages de %s "
+msgstr "Réglages de %s"
 
 #: pro/blocks.php:936
 msgid "This block contains no editable fields."
@@ -5699,9 +5699,9 @@ msgstr "Options mises à jour"
 
 #: pro/updates.php:99
 msgid ""
-"To enable updates, please enter your license key on the <a "
-"href=\"%1$s\">Updates</a> page. If you don't have a licence key, please see "
-"<a href=\"%2$s\" target=\"_blank\">details & pricing</a>."
+"To enable updates, please enter your license key on the <a href=\"%1$s"
+"\">Updates</a> page. If you don't have a licence key, please see <a href="
+"\"%2$s\" target=\"_blank\">details & pricing</a>."
 msgstr ""
 "Pour activer les mises à jour, veuillez indiquer votre clé de licence sur la "
 "page <a href=\"%1$s\">Mises à jour</a>. Si vous n’en possédez pas encore "
@@ -5789,6 +5789,10 @@ msgid ""
 "time. The Clone field can either replace itself with the selected fields or "
 "display the selected fields as a group of subfields."
 msgstr ""
+"Vous permet de sélectionner et afficher des champs existants. Le clone ne "
+"duplique pas les champs dans la base de données, il récupère leurs valeurs "
+"au chargement de la page. Le Clone sera remplacé par les champs qu’il "
+"représente et les affiche comme un groupe de sous-champs."
 
 #: pro/fields/class-acf-field-clone.php:819
 msgid "Select one or more fields you wish to clone"
@@ -5846,6 +5850,9 @@ msgid ""
 "Allows you to define, create and manage content with total control by "
 "creating layouts that contain subfields that content editors can choose from."
 msgstr ""
+"Vous permet de définir, créer et gérer des contenus avec un contrôle total : "
+"les éditeurs peuvent créer des mises en page en sélectionnant des "
+"dispositions basées sur des sous-champs."
 
 # @ acf
 #: pro/fields/class-acf-field-flexible-content.php:36,
@@ -5931,8 +5938,6 @@ msgstr "Ajouter une disposition"
 
 # @ acf
 #: pro/fields/class-acf-field-flexible-content.php:564
-#, fuzzy
-#| msgid "Add layout"
 msgid "Add Layout"
 msgstr "Ajouter une disposition"
 
@@ -5981,6 +5986,8 @@ msgid ""
 "An interactive interface for managing a collection of attachments, such as "
 "images."
 msgstr ""
+"Une interface interactive pour gérer une collection de fichiers joints, "
+"telles que des images."
 
 # @ acf
 #: pro/fields/class-acf-field-gallery.php:77
@@ -6066,10 +6073,8 @@ msgstr "Insérer au début"
 
 #: pro/fields/class-acf-field-repeater.php:66,
 #: pro/fields/class-acf-field-repeater.php:463
-#, fuzzy
-#| msgid "Minimum rows reached ({min} rows)"
 msgid "Minimum rows not reached ({min} rows)"
-msgstr "Nombre minimal d’éléments atteint ({min} éléments)"
+msgstr "Nombre minimal d’éléments insuffisant ({min} éléments)"
 
 #: pro/fields/class-acf-field-repeater.php:67
 msgid "Maximum rows reached ({max} rows)"
@@ -6081,7 +6086,7 @@ msgstr "Erreur de chargement de la page"
 
 #: pro/fields/class-acf-field-repeater.php:69
 msgid "Order will be assigned upon save"
-msgstr ""
+msgstr "L’ordre sera assigné après l’enregistrement"
 
 #: pro/fields/class-acf-field-repeater.php:196
 msgid "Useful for fields with a large number of rows."
@@ -6114,20 +6119,16 @@ msgid "Select a sub field to show when row is collapsed"
 msgstr "Choisir un sous champ à montrer lorsque la ligne est refermée"
 
 #: pro/fields/class-acf-field-repeater.php:1060
-#, fuzzy
-#| msgid "Invalid field key."
 msgid "Invalid field key or name."
-msgstr "Clé de champ invalide"
+msgstr "Clé de champ invalide."
 
 #: pro/fields/class-acf-field-repeater.php:1069
 msgid "There was an error retrieving the field."
 msgstr "Il y a une erreur lors de la récupération du champ."
 
 #: pro/fields/class-acf-repeater-table.php:369
-#, fuzzy
-#| msgid "Drag to reorder"
 msgid "Click to reorder"
-msgstr "Glisser pour réorganiser"
+msgstr "Cliquer pour réorganiser"
 
 # @ acf
 #: pro/fields/class-acf-repeater-table.php:402
@@ -6151,15 +6152,11 @@ msgstr "Page actuelle"
 
 #: pro/fields/class-acf-repeater-table.php:456,
 #: pro/fields/class-acf-repeater-table.php:457
-#, fuzzy
-#| msgid "First page"
 msgid "First Page"
 msgstr "Première page"
 
 #: pro/fields/class-acf-repeater-table.php:460,
 #: pro/fields/class-acf-repeater-table.php:461
-#, fuzzy
-#| msgid "Previous page"
 msgid "Previous Page"
 msgstr "Page précédente"
 
@@ -6171,15 +6168,11 @@ msgstr "%1$s sur %2$s"
 
 #: pro/fields/class-acf-repeater-table.php:477,
 #: pro/fields/class-acf-repeater-table.php:478
-#, fuzzy
-#| msgid "Next page"
 msgid "Next Page"
 msgstr "Page suivante"
 
 #: pro/fields/class-acf-repeater-table.php:481,
 #: pro/fields/class-acf-repeater-table.php:482
-#, fuzzy
-#| msgid "Last page"
 msgid "Last Page"
 msgstr "Dernière page"
 
@@ -6212,8 +6205,8 @@ msgid ""
 "a>."
 msgstr ""
 "Pour débloquer les mises à jour, veuillez entrer votre clé de licence ci-"
-"dessous. Si vous n’en possédez pas encore une, jetez un oeil à nos <a "
-"href=\"%s\" target=\"_blank\">détails & tarifs</a>."
+"dessous. Si vous n’en possédez pas encore une, jetez un oeil à nos <a href="
+"\"%s\" target=\"_blank\">détails & tarifs</a>."
 
 # @ acf
 #: pro/admin/views/html-settings-updates.php:37
@@ -6222,7 +6215,7 @@ msgstr "Clé de licence"
 
 #: pro/admin/views/html-settings-updates.php:22
 msgid "Your license key is defined in wp-config.php."
-msgstr "Votre clé de licence est définie dans le fichier wp-config.php"
+msgstr "Votre clé de licence est définie dans le fichier wp-config.php."
 
 #: pro/admin/views/html-settings-updates.php:29
 msgid "Retry Activation"
@@ -6253,13 +6246,11 @@ msgstr "Améliorations"
 
 #: pro/admin/views/html-settings-updates.php:126
 msgid "Check For Updates"
-msgstr ""
+msgstr "Vérifier les mises à jour"
 
 #: pro/admin/views/html-settings-updates.php:121
-#, fuzzy
-#| msgid "Please enter your license key above to unlock updates"
 msgid "Enter your license key to unlock updates"
-msgstr "Entrez votre clé de licence ci-dessous pour activer les mises à jour"
+msgstr "Indiquez votre clé de licence pour activer les mises à jour"
 
 # @ acf
 #: pro/admin/views/html-settings-updates.php:119

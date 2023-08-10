@@ -14,10 +14,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 global $submenu, $submenu_file, $plugin_page, $acf_page_title;
 
 // Setup default vars and generate array of navigation items.
-$parent_slug    = 'edit.php?post_type=acf-field-group';
-$core_tabs      = array();
-$acf_more_items = array();
-$more_items     = array();
+$parent_slug         = 'edit.php?post_type=acf-field-group';
+$core_tabs           = array();
+$acf_more_items      = array();
+$more_items          = array();
+$wpengine_more_items = array();
 
 // Hardcoded since future ACF post types will likely live in the "More" menu.
 $core_tabs_classes      = array( 'acf-field-group', 'acf-post-type', 'acf-taxonomy' );
@@ -84,10 +85,10 @@ if ( ! acf_get_setting( 'pro' ) ) {
 }
 
 if ( ! defined( 'PWP_NAME' ) ) {
-	$acf_wpengine_logo = acf_get_url( 'assets/images/wp-engine-horizontal-black.svg' );
-	$acf_wpengine_logo = sprintf( '<span><img class="acf-wp-engine-pro" src="%s" alt="WP Engine" /></span>', $acf_wpengine_logo );
-	$utm_content       = acf_is_pro() ? 'acf_pro_plugin_topbar_dropdown_cta' : 'acf_free_plugin_topbar_dropdown_cta';
-	$acf_more_items[]  = array(
+	$acf_wpengine_logo     = acf_get_url( 'assets/images/wp-engine-horizontal-black.svg' );
+	$acf_wpengine_logo     = sprintf( '<span><img class="acf-wp-engine-pro" src="%s" alt="WP Engine" /></span>', $acf_wpengine_logo );
+	$utm_content           = acf_is_pro() ? 'acf_pro_plugin_topbar_dropdown_cta' : 'acf_free_plugin_topbar_dropdown_cta';
+	$wpengine_more_items[] = array(
 		'url'      => acf_add_url_utm_tags( 'https://wpengine.com/plans/?coupon=freedomtocreate', 'bx_prod_referral', $utm_content, false, 'acf_plugin', 'referral' ),
 		'text'     => $acf_wpengine_logo . '<span class="acf-wp-engine-upsell-pill">' . __( '4 Months Free', 'acf' ) . '</span>',
 		'target'   => '_blank',
@@ -190,6 +191,9 @@ function acf_print_menu_section( $menu_items, $section = '' ) {
 						if ( $more_items ) {
 							echo '<li class="acf-more-section-header"><span class="acf-tab acf-tab-header">' . esc_html__( 'Other', 'acf' ) . ' </span></li>';
 							acf_print_menu_section( $more_items );
+						}
+						if ( $wpengine_more_items ) {
+							acf_print_menu_section( $wpengine_more_items );
 						}
 						?>
 					</ul>
