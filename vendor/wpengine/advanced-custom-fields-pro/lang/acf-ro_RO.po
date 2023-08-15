@@ -12,7 +12,7 @@
 # This file is distributed under the same license as Advanced Custom Fields.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-08-09T12:53:50+00:00\n"
+"PO-Revision-Date: 2023-06-27T14:09:59+00:00\n"
 "Report-Msgid-Bugs-To: http://support.advancedcustomfields.com\n"
 "Language: ro_RO\n"
 "MIME-Version: 1.0\n"
@@ -21,124 +21,39 @@ msgstr ""
 "X-Generator: gettext\n"
 "Project-Id-Version: Advanced Custom Fields\n"
 
-#: includes/fields/class-acf-field-page_link.php:517
-#: includes/fields/class-acf-field-post_object.php:433
-#: includes/fields/class-acf-field-select.php:413
-#: includes/fields/class-acf-field-user.php:86
-msgid "Select Multiple"
-msgstr ""
-
-#: includes/admin/views/global/navigation.php:141
-msgid "WP Engine logo"
-msgstr "Logo WP Engine"
-
-#: includes/admin/views/acf-taxonomy/basic-settings.php:42
-msgid "Lower case letters, underscores and dashes only, Max 32 characters."
-msgstr ""
-
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1132
-msgid "The capability name for assigning terms of this taxonomy."
-msgstr ""
-
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1131
-msgid "Assign Terms Capability"
-msgstr ""
-
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1115
-msgid "The capability name for deleting terms of this taxonomy."
-msgstr ""
-
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1114
-msgid "Delete Terms Capability"
-msgstr ""
-
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1098
-msgid "The capability name for editing terms of this taxonomy."
-msgstr ""
-
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1097
-msgid "Edit Terms Capability"
-msgstr ""
-
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1081
-msgid "The capability name for managing terms of this taxonomy."
-msgstr ""
-
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1080
-msgid "Manage Terms Capability"
-msgstr ""
-
-#: includes/admin/views/acf-post-type/advanced-settings.php:866
-msgid ""
-"Sets whether posts should be excluded from search results and taxonomy "
-"archive pages."
-msgstr ""
-
-#: includes/admin/views/acf-field-group/pro-features.php:59
-msgid "More Tools from WP Engine"
-msgstr ""
-
-#. translators: %s - WP Engine logo
-#: includes/admin/views/acf-field-group/pro-features.php:54
-msgid "Built for those that build with WordPress, by the team at %s"
-msgstr ""
-
-#: includes/admin/views/acf-field-group/pro-features.php:16
-msgid "View Pricing & Upgrade"
-msgstr ""
-
-#: includes/admin/views/acf-field-group/pro-features.php:15
-msgid "Learn More"
-msgstr ""
-
-#: includes/admin/views/acf-field-group/pro-features.php:13
-msgid ""
-"Speed up your workflow and develop better websites with features like ACF "
-"Blocks and Options Pages, and sophisticated field types like Repeater, "
-"Flexible Content, Clone, and Gallery."
-msgstr ""
-
-#: includes/admin/views/acf-field-group/pro-features.php:2
-msgid "Unlock Advanced Features and Build Even More with ACF PRO"
-msgstr ""
-
-#: includes/admin/admin.php:238
-msgid "from"
-msgstr ""
-
 #. translators: %s - singular label of post type/taxonomy, i.e. "Movie"/"Genre"
 #: includes/admin/views/global/form-top.php:17
 msgid "%s fields"
 msgstr ""
 
-#: includes/admin/post-types/admin-taxonomies.php:293
+#: includes/admin/post-types/admin-taxonomies.php:260
 msgid "No terms"
 msgstr ""
 
-#: includes/admin/post-types/admin-taxonomies.php:266
+#: includes/admin/post-types/admin-taxonomies.php:233
 msgid "No post types"
 msgstr ""
 
-#: includes/admin/post-types/admin-post-types.php:289
+#: includes/admin/post-types/admin-post-types.php:256
 msgid "No posts"
 msgstr ""
 
-#: includes/admin/post-types/admin-post-types.php:263
+#: includes/admin/post-types/admin-post-types.php:230
 msgid "No taxonomies"
 msgstr ""
 
-#: includes/admin/post-types/admin-post-types.php:208
-#: includes/admin/post-types/admin-taxonomies.php:208
+#: includes/admin/post-types/admin-post-types.php:175
+#: includes/admin/post-types/admin-taxonomies.php:175
 msgid "No field groups"
 msgstr ""
 
-#: includes/admin/post-types/admin-field-groups.php:281
+#: includes/admin/post-types/admin-field-groups.php:259
 msgid "No fields"
 msgstr ""
 
-#: includes/admin/post-types/admin-field-groups.php:154
-#: includes/admin/post-types/admin-post-types.php:172
-#: includes/admin/post-types/admin-taxonomies.php:172
+#: includes/admin/post-types/admin-field-groups.php:132
+#: includes/admin/post-types/admin-post-types.php:139
+#: includes/admin/post-types/admin-taxonomies.php:139
 msgid "No description"
 msgstr ""
 
@@ -148,26 +63,26 @@ msgstr ""
 msgid "Any post status"
 msgstr ""
 
-#: includes/post-types/class-acf-taxonomy.php:284
+#: includes/post-types/class-acf-taxonomy.php:278
 msgid ""
 "This taxonomy key is already in use by another taxonomy registered outside "
 "of ACF and cannot be used."
 msgstr ""
 
-#: includes/post-types/class-acf-taxonomy.php:279
+#: includes/post-types/class-acf-taxonomy.php:273
 msgid ""
 "This taxonomy key is already in use by another taxonomy in ACF and cannot be "
 "used."
 msgstr ""
 
-#: includes/post-types/class-acf-taxonomy.php:252
+#: includes/post-types/class-acf-taxonomy.php:246
 msgid ""
 "The taxonomy key must only contain lower case alphanumeric characters, "
 "underscores or dashes."
 msgstr ""
 
-#: includes/post-types/class-acf-taxonomy.php:247
-msgid "The taxonomy key must be under 32 characters."
+#: includes/post-types/class-acf-taxonomy.php:241
+msgid "The taxonomy key must be under 20 characters."
 msgstr ""
 
 #: includes/post-types/class-acf-taxonomy.php:99
@@ -240,7 +155,7 @@ msgstr ""
 
 #. translators: %s a link to WordPress.org's Reserved Terms page
 #: includes/post-types/class-acf-post-type.php:312
-#: includes/post-types/class-acf-taxonomy.php:258
+#: includes/post-types/class-acf-taxonomy.php:252
 msgid ""
 "This field must not be a WordPress <a href=\"%s\" target=\"_blank\">reserved "
 "term</a>."
@@ -441,14 +356,14 @@ msgid ""
 "are shown while editing content. Useful for keeping large datasets tidy."
 msgstr ""
 
-#: includes/fields.php:474
+#: includes/fields.php:473
 msgid ""
 "This provides a solution for repeating content such as slides, team members, "
 "and call-to-action tiles, by acting as a parent to a set of subfields which "
 "can be repeated again and again."
 msgstr ""
 
-#: includes/fields.php:464
+#: includes/fields.php:463
 msgid ""
 "This provides an interactive interface for managing a collection of "
 "attachments. Most settings are similar to the Image field type. Additional "
@@ -456,7 +371,7 @@ msgid ""
 "and the minimum/maximum number of attachments allowed."
 msgstr ""
 
-#: includes/fields.php:454
+#: includes/fields.php:453
 msgid ""
 "This provides a simple, structured, layout-based editor. The Flexible "
 "Content field allows you to define, create and manage content with total "
@@ -500,7 +415,7 @@ msgstr "ID-ul articolului nu este valid."
 msgid "Invalid post type selected for review."
 msgstr ""
 
-#: includes/admin/views/global/navigation.php:115
+#: includes/admin/views/global/navigation.php:104
 msgid "More"
 msgstr ""
 
@@ -581,12 +496,12 @@ msgstr ""
 msgid "Genres"
 msgstr ""
 
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1207
+#: includes/admin/views/acf-taxonomy/advanced-settings.php:1129
 msgid ""
 "Optional custom controller to use instead of `WP_REST_Terms_Controller `."
 msgstr ""
 
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1151
+#: includes/admin/views/acf-taxonomy/advanced-settings.php:1073
 msgid "Expose this post type in the REST API."
 msgstr ""
 
@@ -655,7 +570,7 @@ msgstr "Nor de etichete"
 
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:820
 msgid ""
-"A PHP function name to be called for sanitizing taxonomy data saved from a "
+"A PHP function name to be called tor sanitizing taxonomy data saved from a "
 "meta box."
 msgstr ""
 
@@ -1165,6 +1080,7 @@ msgid "movie"
 msgstr ""
 
 #: includes/admin/views/acf-post-type/basic-settings.php:41
+#: includes/admin/views/acf-taxonomy/basic-settings.php:42
 msgid "Lower case letters, underscores and dashes only, Max 20 characters."
 msgstr ""
 
@@ -1194,27 +1110,27 @@ msgid ""
 msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:1249
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1206
+#: includes/admin/views/acf-taxonomy/advanced-settings.php:1128
 msgid "Controller Class"
 msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:1231
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1187
+#: includes/admin/views/acf-taxonomy/advanced-settings.php:1109
 msgid "The namespace part of the REST API URL."
 msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:1230
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1186
+#: includes/admin/views/acf-taxonomy/advanced-settings.php:1108
 msgid "Namespace Route"
 msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:1212
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1168
+#: includes/admin/views/acf-taxonomy/advanced-settings.php:1090
 msgid "The base URL for the post type REST API URLs."
 msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:1211
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1167
+#: includes/admin/views/acf-taxonomy/advanced-settings.php:1089
 msgid "Base URL"
 msgstr ""
 
@@ -1224,7 +1140,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:1196
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1150
+#: includes/admin/views/acf-taxonomy/advanced-settings.php:1072
 msgid "Show In REST API"
 msgstr "Arată în REST API"
 
@@ -1405,6 +1321,10 @@ msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:880
 msgid "Rename Capabilities"
+msgstr ""
+
+#: includes/admin/views/acf-post-type/advanced-settings.php:866
+msgid "Sets whether posts should be excluded from search results."
 msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:865
@@ -2139,14 +2059,14 @@ msgstr[1] "Am exportat %s elemente."
 msgstr[2] "Am exportat %s de elemente."
 
 #: includes/admin/post-types/admin-taxonomy.php:124
-#: assets/build/js/acf-internal-post-type.js:177
-#: assets/build/js/acf-internal-post-type.js:247
+#: assets/build/js/acf-internal-post-type.js:144
+#: assets/build/js/acf-internal-post-type.js:204
 msgid "Category"
 msgstr "Categorie"
 
 #: includes/admin/post-types/admin-taxonomy.php:122
-#: assets/build/js/acf-internal-post-type.js:174
-#: assets/build/js/acf-internal-post-type.js:244
+#: assets/build/js/acf-internal-post-type.js:141
+#: assets/build/js/acf-internal-post-type.js:201
 msgid "Tag"
 msgstr "Etichetă"
 
@@ -2189,7 +2109,7 @@ msgstr "Am șters taxonomia."
 msgid "Taxonomy updated."
 msgstr "Am actualizat taxonomia."
 
-#: includes/admin/post-types/admin-taxonomies.php:377
+#: includes/admin/post-types/admin-taxonomies.php:344
 #: includes/admin/post-types/admin-taxonomy.php:152
 msgid ""
 "This taxonomy could not be registered because its key is in use by another "
@@ -2197,7 +2117,7 @@ msgid ""
 msgstr ""
 
 #. translators: %s number of taxonomies synchronized
-#: includes/admin/post-types/admin-taxonomies.php:359
+#: includes/admin/post-types/admin-taxonomies.php:326
 msgid "Taxonomy synchronized."
 msgid_plural "%s taxonomies synchronized."
 msgstr[0] "Am sincronizat taxonomia."
@@ -2205,7 +2125,7 @@ msgstr[1] "Am sincronizat %s taxonomii."
 msgstr[2] "Am sincronizat %s de taxonomii."
 
 #. translators: %s number of taxonomies duplicated
-#: includes/admin/post-types/admin-taxonomies.php:352
+#: includes/admin/post-types/admin-taxonomies.php:319
 msgid "Taxonomy duplicated."
 msgid_plural "%s taxonomies duplicated."
 msgstr[0] ""
@@ -2213,7 +2133,7 @@ msgstr[1] ""
 msgstr[2] ""
 
 #. translators: %s number of taxonomies deactivated
-#: includes/admin/post-types/admin-taxonomies.php:345
+#: includes/admin/post-types/admin-taxonomies.php:312
 msgid "Taxonomy deactivated."
 msgid_plural "%s taxonomies deactivated."
 msgstr[0] "Am dezactivat taxonomia."
@@ -2221,19 +2141,19 @@ msgstr[1] "Am dezactivat %s taxonomii."
 msgstr[2] "Am dezactivat %s de taxonomii."
 
 #. translators: %s number of taxonomies activated
-#: includes/admin/post-types/admin-taxonomies.php:338
+#: includes/admin/post-types/admin-taxonomies.php:305
 msgid "Taxonomy activated."
 msgid_plural "%s taxonomies activated."
 msgstr[0] "Am activat taxonomia."
 msgstr[1] "Am activat %s taxonomii."
 msgstr[2] "Am activat %s de taxonomii."
 
-#: includes/admin/post-types/admin-taxonomies.php:139
+#: includes/admin/post-types/admin-taxonomies.php:106
 msgid "Terms"
 msgstr "Termeni"
 
 #. translators: %s number of post types synchronized
-#: includes/admin/post-types/admin-post-types.php:352
+#: includes/admin/post-types/admin-post-types.php:319
 msgid "Post type synchronized."
 msgid_plural "%s post types synchronized."
 msgstr[0] "Am sincronizat tipul de articol."
@@ -2241,7 +2161,7 @@ msgstr[1] "Am sincronizat %s tipuri de articol."
 msgstr[2] "Am sincronizat %s de tipuri de articol."
 
 #. translators: %s number of post types duplicated
-#: includes/admin/post-types/admin-post-types.php:345
+#: includes/admin/post-types/admin-post-types.php:312
 msgid "Post type duplicated."
 msgid_plural "%s post types duplicated."
 msgstr[0] ""
@@ -2249,7 +2169,7 @@ msgstr[1] ""
 msgstr[2] ""
 
 #. translators: %s number of post types deactivated
-#: includes/admin/post-types/admin-post-types.php:338
+#: includes/admin/post-types/admin-post-types.php:305
 msgid "Post type deactivated."
 msgid_plural "%s post types deactivated."
 msgstr[0] "Am dezactivat tipul de articol."
@@ -2257,15 +2177,15 @@ msgstr[1] "Am dezactivat %s tipuri de articol."
 msgstr[2] "Am dezactivat %s de tipuri de articol."
 
 #. translators: %s number of post types activated
-#: includes/admin/post-types/admin-post-types.php:331
+#: includes/admin/post-types/admin-post-types.php:298
 msgid "Post type activated."
 msgid_plural "%s post types activated."
 msgstr[0] "Am activat tipul de articol."
 msgstr[1] "Am activat %s tipuri de articol."
 msgstr[2] "Am activat %s de tipuri de articol."
 
-#: includes/admin/post-types/admin-post-types.php:112
-#: includes/admin/post-types/admin-taxonomies.php:137
+#: includes/admin/post-types/admin-post-types.php:79
+#: includes/admin/post-types/admin-taxonomies.php:104
 #: includes/admin/tools/class-acf-admin-tool-import.php:82
 #: includes/admin/views/acf-taxonomy/basic-settings.php:66
 #: includes/post-types/class-acf-post-type.php:90
@@ -2283,15 +2203,15 @@ msgid "Basic Settings"
 msgstr "Setări de bază"
 
 #: includes/admin/post-types/admin-post-type.php:152
-#: includes/admin/post-types/admin-post-types.php:370
+#: includes/admin/post-types/admin-post-types.php:337
 msgid ""
 "This post type could not be registered because its key is in use by another "
 "post type registered by another plugin or theme."
 msgstr ""
 
 #: includes/admin/post-types/admin-post-type.php:125
-#: assets/build/js/acf-internal-post-type.js:171
-#: assets/build/js/acf-internal-post-type.js:241
+#: assets/build/js/acf-internal-post-type.js:138
+#: assets/build/js/acf-internal-post-type.js:198
 msgid "Pages"
 msgstr "Pagini"
 
@@ -2361,8 +2281,8 @@ msgid "PRO Only"
 msgstr ""
 
 #: includes/admin/post-types/admin-field-group.php:97
-#: assets/build/js/acf-internal-post-type.js:303
-#: assets/build/js/acf-internal-post-type.js:408
+#: assets/build/js/acf-internal-post-type.js:270
+#: assets/build/js/acf-internal-post-type.js:365
 msgid "Field groups linked successfully."
 msgstr "Am legat cu succes grupurile de câmpuri."
 
@@ -2414,26 +2334,25 @@ msgstr[0] "Am legat cu succes grupul de câmpuri."
 msgstr[1] "Am legat cu succes grupurile de câmpuri."
 msgstr[2] "Am legat cu succes grupurile de câmpuri."
 
-#: includes/admin/admin-internal-post-type-list.php:254
-#: includes/admin/post-types/admin-post-types.php:371
-#: includes/admin/post-types/admin-taxonomies.php:378
+#: includes/admin/admin-internal-post-type-list.php:255
+#: includes/admin/post-types/admin-post-types.php:338
+#: includes/admin/post-types/admin-taxonomies.php:345
 msgctxt "post status"
 msgid "Registration Failed"
 msgstr "Înregistrarea a eșuat"
 
-#: includes/admin/admin-internal-post-type-list.php:253
+#: includes/admin/admin-internal-post-type-list.php:254
 msgid ""
 "This item could not be registered because its key is in use by another item "
 "registered by another plugin or theme."
 msgstr ""
 
 #: includes/acf-internal-post-type-functions.php:482
-#: includes/acf-internal-post-type-functions.php:511
+#: includes/acf-internal-post-type-functions.php:510
 msgid "REST API"
 msgstr "REST API"
 
 #: includes/acf-internal-post-type-functions.php:481
-#: includes/acf-internal-post-type-functions.php:510
 msgid "Permissions"
 msgstr "Permisiuni"
 
@@ -2452,7 +2371,7 @@ msgstr "Vizibilitate"
 msgid "Labels"
 msgstr "Etichete"
 
-#: includes/admin/post-types/admin-field-group.php:260
+#: includes/admin/post-types/admin-field-group.php:243
 msgid "Field Settings Tabs"
 msgstr ""
 
@@ -2469,7 +2388,7 @@ msgid "[ACF shortcode value disabled for preview]"
 msgstr ""
 
 #: includes/admin/admin-internal-post-type.php:287
-#: includes/admin/post-types/admin-field-group.php:562
+#: includes/admin/post-types/admin-field-group.php:545
 msgid "Close Modal"
 msgstr "Închide fereastra modală"
 
@@ -2521,19 +2440,19 @@ msgstr "Permite valori personalizate"
 msgid "Checkbox custom values cannot be empty. Uncheck any empty values."
 msgstr ""
 
-#: includes/admin/views/global/navigation.php:156
+#: includes/admin/views/global/navigation.php:140
 msgid "Updates"
 msgstr "Actualizări"
 
-#: includes/admin/views/global/navigation.php:94
+#: includes/admin/views/global/navigation.php:83
 msgid "Advanced Custom Fields logo"
 msgstr ""
 
-#: includes/admin/views/global/form-top.php:66
+#: includes/admin/views/global/form-top.php:57
 msgid "Save Changes"
 msgstr "Salvează modificările"
 
-#: includes/admin/views/global/form-top.php:53
+#: includes/admin/views/global/form-top.php:44
 msgid "Field Group Title"
 msgstr "Titlu grup de câmpuri"
 
@@ -2565,27 +2484,32 @@ msgstr ""
 msgid "Add Your First Field Group"
 msgstr "Adaugă primul tău grup de câmpuri"
 
-#: includes/admin/views/acf-field-group/pro-features.php:39
+#: includes/admin/views/acf-field-group/pro-features.php:16
+msgid "Upgrade Now"
+msgstr "Actualizează acum"
+
+#: includes/admin/views/acf-field-group/pro-features.php:11
 msgid "Options Pages"
 msgstr "Pagini opțiuni"
 
-#: includes/admin/views/acf-field-group/pro-features.php:35
+#: includes/admin/views/acf-field-group/pro-features.php:10
 msgid "ACF Blocks"
 msgstr "Blocuri ACF"
 
-#: includes/admin/views/acf-field-group/pro-features.php:43
+#: includes/admin/views/acf-field-group/pro-features.php:8
 msgid "Gallery Field"
 msgstr ""
 
-#: includes/admin/views/acf-field-group/pro-features.php:23
+#: includes/admin/views/acf-field-group/pro-features.php:7
 msgid "Flexible Content Field"
 msgstr "Câmp cu conținut flexibil"
 
-#: includes/admin/views/acf-field-group/pro-features.php:27
+#: includes/admin/views/acf-field-group/pro-features.php:6
 msgid "Repeater Field"
 msgstr ""
 
-#: includes/admin/views/global/navigation.php:137
+#: includes/admin/views/acf-field-group/pro-features.php:4
+#: includes/admin/views/global/navigation.php:125
 msgid "Unlock Extra Features with ACF PRO"
 msgstr ""
 
@@ -2607,32 +2531,32 @@ msgid "Location Rules"
 msgstr ""
 
 #. translators: %s url to field types list
-#: includes/admin/views/acf-field-group/fields.php:72
+#: includes/admin/views/acf-field-group/fields.php:61
 msgid ""
 "Choose from over 30 field types. <a href=\"%s\" target=\"_blank\">Learn "
 "more</a>."
 msgstr ""
 
-#: includes/admin/views/acf-field-group/fields.php:65
+#: includes/admin/views/acf-field-group/fields.php:54
 msgid ""
 "Get started creating new custom fields for your posts, pages, custom post "
 "types and other WordPress content."
 msgstr ""
 
-#: includes/admin/views/acf-field-group/fields.php:64
+#: includes/admin/views/acf-field-group/fields.php:53
 msgid "Add Your First Field"
 msgstr "Adaugă primul tău câmp"
 
 #. translators: A symbol (or text, if not available in your locale) meaning
 #. "Order Number", in terms of positional placement.
-#: includes/admin/views/acf-field-group/fields.php:43
+#: includes/admin/views/acf-field-group/fields.php:32
 msgid "#"
 msgstr ""
 
-#: includes/admin/views/acf-field-group/fields.php:33
-#: includes/admin/views/acf-field-group/fields.php:67
-#: includes/admin/views/acf-field-group/fields.php:103
-#: includes/admin/views/global/form-top.php:62
+#: includes/admin/views/acf-field-group/fields.php:22
+#: includes/admin/views/acf-field-group/fields.php:56
+#: includes/admin/views/acf-field-group/fields.php:92
+#: includes/admin/views/global/form-top.php:53
 msgid "Add Field"
 msgstr "Adaugă câmp"
 
@@ -2658,7 +2582,7 @@ msgid "Export As JSON"
 msgstr ""
 
 #. translators: %s number of field groups deactivated
-#: includes/admin/post-types/admin-field-groups.php:367
+#: includes/admin/post-types/admin-field-groups.php:345
 msgid "Field group deactivated."
 msgid_plural "%s field groups deactivated."
 msgstr[0] "Am dezactivat grupul de câmpuri."
@@ -2666,28 +2590,28 @@ msgstr[1] "Am dezactivat %s grupuri de câmpuri."
 msgstr[2] "Am dezactivat %s de grupuri de câmpuri."
 
 #. translators: %s number of field groups activated
-#: includes/admin/post-types/admin-field-groups.php:360
+#: includes/admin/post-types/admin-field-groups.php:338
 msgid "Field group activated."
 msgid_plural "%s field groups activated."
 msgstr[0] "Am activat grupul de câmpuri."
 msgstr[1] "Am activat %s grupuri de câmpuri."
 msgstr[2] "Am activat %s de grupuri de câmpuri."
 
-#: includes/admin/admin-internal-post-type-list.php:429
-#: includes/admin/admin-internal-post-type-list.php:460
+#: includes/admin/admin-internal-post-type-list.php:430
+#: includes/admin/admin-internal-post-type-list.php:461
 msgid "Deactivate"
 msgstr "Dezactivează"
 
-#: includes/admin/admin-internal-post-type-list.php:429
+#: includes/admin/admin-internal-post-type-list.php:430
 msgid "Deactivate this item"
 msgstr "Dezactivează acest element"
 
-#: includes/admin/admin-internal-post-type-list.php:425
-#: includes/admin/admin-internal-post-type-list.php:459
+#: includes/admin/admin-internal-post-type-list.php:426
+#: includes/admin/admin-internal-post-type-list.php:460
 msgid "Activate"
 msgstr "Activează"
 
-#: includes/admin/admin-internal-post-type-list.php:425
+#: includes/admin/admin-internal-post-type-list.php:426
 msgid "Activate this item"
 msgstr "Activează acest element"
 
@@ -2697,8 +2621,8 @@ msgstr "Activează acest element"
 msgid "Move field group to trash?"
 msgstr "Muți grupul de câmpuri la gunoi?"
 
-#: acf.php:485 includes/admin/admin-internal-post-type-list.php:241
-#: includes/admin/post-types/admin-field-group.php:288
+#: acf.php:485 includes/admin/admin-internal-post-type-list.php:242
+#: includes/admin/post-types/admin-field-group.php:271
 #: includes/admin/post-types/admin-post-type.php:292
 #: includes/admin/post-types/admin-taxonomy.php:292
 msgctxt "post status"
@@ -2795,7 +2719,7 @@ msgstr ""
 msgid "Upgrade to PRO"
 msgstr "Actualizează la PRO"
 
-#: includes/admin/post-types/admin-field-group.php:288
+#: includes/admin/post-types/admin-field-group.php:271
 #: includes/admin/post-types/admin-post-type.php:292
 #: includes/admin/post-types/admin-taxonomy.php:292
 msgctxt "post status"
@@ -2843,8 +2767,8 @@ msgid "Attachments"
 msgstr "Atașamente"
 
 #: includes/acf-wp-functions.php:54
-#: includes/admin/post-types/admin-post-types.php:137
-#: includes/admin/post-types/admin-taxonomies.php:112
+#: includes/admin/post-types/admin-post-types.php:104
+#: includes/admin/post-types/admin-taxonomies.php:79
 #: includes/admin/tools/class-acf-admin-tool-import.php:93
 #: includes/admin/views/acf-post-type/basic-settings.php:70
 #: includes/post-types/class-acf-taxonomy.php:90
@@ -2854,10 +2778,10 @@ msgstr "Taxonomii"
 
 #: includes/acf-wp-functions.php:41
 #: includes/admin/post-types/admin-post-type.php:123
-#: includes/admin/post-types/admin-post-types.php:139
+#: includes/admin/post-types/admin-post-types.php:106
 #: includes/admin/views/acf-post-type/advanced-settings.php:102
-#: assets/build/js/acf-internal-post-type.js:168
-#: assets/build/js/acf-internal-post-type.js:238
+#: assets/build/js/acf-internal-post-type.js:135
+#: assets/build/js/acf-internal-post-type.js:195
 msgid "Posts"
 msgstr "Articole"
 
@@ -2873,49 +2797,49 @@ msgstr ""
 msgid "Invalid field group parameter(s)."
 msgstr ""
 
-#: includes/admin/admin-internal-post-type-list.php:395
+#: includes/admin/admin-internal-post-type-list.php:396
 msgid "Awaiting save"
 msgstr ""
 
-#: includes/admin/admin-internal-post-type-list.php:392
+#: includes/admin/admin-internal-post-type-list.php:393
 msgid "Saved"
 msgstr ""
 
-#: includes/admin/admin-internal-post-type-list.php:388
+#: includes/admin/admin-internal-post-type-list.php:389
 #: includes/admin/tools/class-acf-admin-tool-import.php:49
 msgid "Import"
 msgstr "Importă"
 
-#: includes/admin/admin-internal-post-type-list.php:384
+#: includes/admin/admin-internal-post-type-list.php:385
 msgid "Review changes"
 msgstr ""
 
-#: includes/admin/admin-internal-post-type-list.php:360
+#: includes/admin/admin-internal-post-type-list.php:361
 msgid "Located in: %s"
 msgstr ""
 
-#: includes/admin/admin-internal-post-type-list.php:357
+#: includes/admin/admin-internal-post-type-list.php:358
 msgid "Located in plugin: %s"
 msgstr ""
 
-#: includes/admin/admin-internal-post-type-list.php:354
+#: includes/admin/admin-internal-post-type-list.php:355
 msgid "Located in theme: %s"
 msgstr ""
 
-#: includes/admin/post-types/admin-field-groups.php:261
+#: includes/admin/post-types/admin-field-groups.php:239
 msgid "Various"
 msgstr ""
 
-#: includes/admin/admin-internal-post-type-list.php:209
-#: includes/admin/admin-internal-post-type-list.php:467
+#: includes/admin/admin-internal-post-type-list.php:210
+#: includes/admin/admin-internal-post-type-list.php:468
 msgid "Sync changes"
 msgstr ""
 
-#: includes/admin/admin-internal-post-type-list.php:208
+#: includes/admin/admin-internal-post-type-list.php:209
 msgid "Loading diff"
 msgstr ""
 
-#: includes/admin/admin-internal-post-type-list.php:207
+#: includes/admin/admin-internal-post-type-list.php:208
 msgid "Review local JSON changes"
 msgstr ""
 
@@ -3158,19 +3082,19 @@ msgstr "Arată acest câmp dacă"
 msgid "Conditional Logic"
 msgstr "Condiționalitate logică"
 
-#: includes/admin/admin.php:238
+#: includes/admin/admin.php:234
 #: includes/admin/views/acf-field-group/conditional-logic.php:156
 #: includes/admin/views/acf-field-group/location-rule.php:91
 msgid "and"
 msgstr "și"
 
-#: includes/admin/post-types/admin-field-groups.php:123
-#: includes/admin/post-types/admin-post-types.php:143
-#: includes/admin/post-types/admin-taxonomies.php:143
+#: includes/admin/post-types/admin-field-groups.php:101
+#: includes/admin/post-types/admin-post-types.php:110
+#: includes/admin/post-types/admin-taxonomies.php:110
 msgid "Local JSON"
 msgstr "JSON local"
 
-#: includes/admin/views/acf-field-group/pro-features.php:31
+#: includes/admin/views/acf-field-group/pro-features.php:9
 msgid "Clone Field"
 msgstr "Clonează câmpul"
 
@@ -3197,11 +3121,11 @@ msgstr "Este necesară actualizarea bazei de date"
 msgid "Options Page"
 msgstr "Pagină opțiuni"
 
-#: includes/admin/views/upgrade/notice.php:15 includes/fields.php:461
+#: includes/admin/views/upgrade/notice.php:15 includes/fields.php:460
 msgid "Gallery"
 msgstr "Galerie"
 
-#: includes/admin/views/upgrade/notice.php:12 includes/fields.php:451
+#: includes/admin/views/upgrade/notice.php:12 includes/fields.php:450
 msgid "Flexible Content"
 msgstr "Conținut flexibil"
 
@@ -3238,15 +3162,15 @@ msgstr "Trimite trackback-uri"
 #: includes/admin/post-types/admin-taxonomy.php:123
 #: includes/admin/views/acf-field-group/options.php:170
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:155
-#: assets/build/js/acf-internal-post-type.js:175
-#: assets/build/js/acf-internal-post-type.js:245
+#: assets/build/js/acf-internal-post-type.js:142
+#: assets/build/js/acf-internal-post-type.js:202
 msgid "Tags"
 msgstr "Etichete"
 
 #: includes/admin/post-types/admin-taxonomy.php:125
 #: includes/admin/views/acf-field-group/options.php:169
-#: assets/build/js/acf-internal-post-type.js:178
-#: assets/build/js/acf-internal-post-type.js:248
+#: assets/build/js/acf-internal-post-type.js:145
+#: assets/build/js/acf-internal-post-type.js:205
 msgid "Categories"
 msgstr "Categorii"
 
@@ -3317,11 +3241,11 @@ msgid "Below labels"
 msgstr "Sub etichete"
 
 #: includes/admin/views/acf-field-group/options.php:124
-msgid "Instruction Placement"
+msgid "Instruction placement"
 msgstr "Plasare instrucțiuni"
 
 #: includes/admin/views/acf-field-group/options.php:107
-msgid "Label Placement"
+msgid "Label placement"
 msgstr "Plasare etichetă"
 
 #: includes/admin/views/acf-field-group/options.php:97
@@ -3352,20 +3276,20 @@ msgstr "Standard (casetă meta WP)"
 msgid "Style"
 msgstr "Stil"
 
-#: includes/admin/views/acf-field-group/fields.php:55
+#: includes/admin/views/acf-field-group/fields.php:44
 msgid "Type"
 msgstr "Tip"
 
-#: includes/admin/post-types/admin-field-groups.php:117
-#: includes/admin/post-types/admin-post-types.php:136
-#: includes/admin/post-types/admin-taxonomies.php:136
-#: includes/admin/views/acf-field-group/fields.php:54
+#: includes/admin/post-types/admin-field-groups.php:95
+#: includes/admin/post-types/admin-post-types.php:103
+#: includes/admin/post-types/admin-taxonomies.php:103
+#: includes/admin/views/acf-field-group/fields.php:43
 msgid "Key"
 msgstr "Cheie"
 
 #. translators: Hidden accessibility text for the positional order number of
 #. the field.
-#: includes/admin/views/acf-field-group/fields.php:48
+#: includes/admin/views/acf-field-group/fields.php:37
 msgid "Order"
 msgstr "Ordine"
 
@@ -3600,21 +3524,21 @@ msgstr ""
 msgid "Import Field Groups"
 msgstr "Importă grupuri de câmpuri"
 
-#: includes/admin/admin-internal-post-type-list.php:383
+#: includes/admin/admin-internal-post-type-list.php:384
 msgid "Sync"
 msgstr "Sincronizează"
 
-#: includes/admin/admin-internal-post-type-list.php:840
+#: includes/admin/admin-internal-post-type-list.php:841
 msgid "Select %s"
 msgstr "Selectează %s"
 
-#: includes/admin/admin-internal-post-type-list.php:418
-#: includes/admin/admin-internal-post-type-list.php:456
+#: includes/admin/admin-internal-post-type-list.php:419
+#: includes/admin/admin-internal-post-type-list.php:457
 #: includes/admin/views/acf-field-group/field.php:73
 msgid "Duplicate"
 msgstr "Fă duplicat"
 
-#: includes/admin/admin-internal-post-type-list.php:418
+#: includes/admin/admin-internal-post-type-list.php:419
 msgid "Duplicate this item"
 msgstr "Fă un duplicat al acestui element"
 
@@ -3626,9 +3550,9 @@ msgstr ""
 msgid "Documentation"
 msgstr "Documentație"
 
-#: includes/admin/post-types/admin-field-groups.php:116
-#: includes/admin/post-types/admin-post-types.php:135
-#: includes/admin/post-types/admin-taxonomies.php:135
+#: includes/admin/post-types/admin-field-groups.php:94
+#: includes/admin/post-types/admin-post-types.php:102
+#: includes/admin/post-types/admin-taxonomies.php:102
 #: includes/admin/views/acf-field-group/options.php:234
 #: includes/admin/views/acf-post-type/advanced-settings.php:58
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:110
@@ -3637,13 +3561,13 @@ msgstr "Documentație"
 msgid "Description"
 msgstr "Descriere"
 
-#: includes/admin/admin-internal-post-type-list.php:380
-#: includes/admin/admin-internal-post-type-list.php:729
+#: includes/admin/admin-internal-post-type-list.php:381
+#: includes/admin/admin-internal-post-type-list.php:730
 msgid "Sync available"
 msgstr "Sincronizarea este disponibilă"
 
 #. translators: %s number of field groups synchronized
-#: includes/admin/post-types/admin-field-groups.php:381
+#: includes/admin/post-types/admin-field-groups.php:359
 msgid "Field group synchronized."
 msgid_plural "%s field groups synchronized."
 msgstr[0] "Am sincronizat grupul de câmpuri."
@@ -3651,14 +3575,14 @@ msgstr[1] "Am sincronizat %s grupuri de câmpuri."
 msgstr[2] "Am sincronizat %s de grupuri de câmpuri."
 
 #. translators: %s number of field groups duplicated
-#: includes/admin/post-types/admin-field-groups.php:374
+#: includes/admin/post-types/admin-field-groups.php:352
 msgid "Field group duplicated."
 msgid_plural "%s field groups duplicated."
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: includes/admin/admin-internal-post-type-list.php:130
+#: includes/admin/admin-internal-post-type-list.php:131
 msgid "Active <span class=\"count\">(%s)</span>"
 msgid_plural "Active <span class=\"count\">(%s)</span>"
 msgstr[0] "Activ <span class=\"count\">(%s)</span>"
@@ -3681,22 +3605,22 @@ msgstr "Actualizează baza de date"
 msgid "Custom Fields"
 msgstr "Câmpuri personalizate"
 
-#: includes/admin/post-types/admin-field-group.php:607
+#: includes/admin/post-types/admin-field-group.php:590
 msgid "Move Field"
 msgstr "Mută câmpul"
 
-#: includes/admin/post-types/admin-field-group.php:596
-#: includes/admin/post-types/admin-field-group.php:600
+#: includes/admin/post-types/admin-field-group.php:579
+#: includes/admin/post-types/admin-field-group.php:583
 msgid "Please select the destination for this field"
 msgstr "Te rog selectează destinația pentru acest câmp"
 
 #. translators: Confirmation message once a field has been moved to a different
 #. field group.
-#: includes/admin/post-types/admin-field-group.php:558
+#: includes/admin/post-types/admin-field-group.php:541
 msgid "The %1$s field can now be found in the %2$s field group"
 msgstr "Câmpul %1$s poate fi găsit acum în grupul de câmpuri %2$s"
 
-#: includes/admin/post-types/admin-field-group.php:555
+#: includes/admin/post-types/admin-field-group.php:538
 msgid "Move Complete."
 msgstr ""
 
@@ -3707,16 +3631,16 @@ msgstr ""
 msgid "Active"
 msgstr ""
 
-#: includes/admin/post-types/admin-field-group.php:257
+#: includes/admin/post-types/admin-field-group.php:240
 msgid "Field Keys"
 msgstr "Chei câmp"
 
-#: includes/admin/post-types/admin-field-group.php:155
+#: includes/admin/post-types/admin-field-group.php:158
 #: includes/admin/tools/class-acf-admin-tool-export.php:320
 msgid "Settings"
 msgstr "Setări"
 
-#: includes/admin/post-types/admin-field-groups.php:118
+#: includes/admin/post-types/admin-field-groups.php:96
 msgid "Location"
 msgstr "Locație"
 
@@ -3804,7 +3728,7 @@ msgid "Field group updated."
 msgstr "Am actualizat grupul de câmpuri."
 
 #: includes/admin/admin-tools.php:118
-#: includes/admin/views/global/navigation.php:154
+#: includes/admin/views/global/navigation.php:138
 #: includes/admin/views/tools/tools.php:21
 msgid "Tools"
 msgstr "Unelte"
@@ -3823,15 +3747,15 @@ msgstr "Formulare"
 
 #: includes/admin/post-types/admin-post-type.php:124 includes/locations.php:100
 #: includes/locations/class-acf-location-page.php:22
-#: assets/build/js/acf-internal-post-type.js:170
-#: assets/build/js/acf-internal-post-type.js:240
+#: assets/build/js/acf-internal-post-type.js:137
+#: assets/build/js/acf-internal-post-type.js:197
 msgid "Page"
 msgstr "Pagină"
 
 #: includes/admin/post-types/admin-post-type.php:122 includes/locations.php:99
 #: includes/locations/class-acf-location-post.php:22
-#: assets/build/js/acf-internal-post-type.js:167
-#: assets/build/js/acf-internal-post-type.js:237
+#: assets/build/js/acf-internal-post-type.js:134
+#: assets/build/js/acf-internal-post-type.js:194
 msgid "Post"
 msgstr "Articol"
 
@@ -4007,7 +3931,7 @@ msgid "The changes you made will be lost if you navigate away from this page"
 msgstr ""
 "Modificările pe care le-ai făcut se vor pierde dacă părăsești această pagină"
 
-#: includes/api/api-helpers.php:3498
+#: includes/api/api-helpers.php:3482
 msgid "File type must be %s."
 msgstr "Tipul de fișier trebuie să fie %s."
 
@@ -4016,38 +3940,38 @@ msgstr "Tipul de fișier trebuie să fie %s."
 #: includes/admin/views/acf-field-group/conditional-logic.php:169
 #: includes/admin/views/acf-field-group/location-group.php:3
 #: includes/admin/views/acf-field-group/locations.php:36
-#: includes/api/api-helpers.php:3494 assets/build/js/acf-field-group.js:771
+#: includes/api/api-helpers.php:3478 assets/build/js/acf-field-group.js:771
 #: assets/build/js/acf-field-group.js:2361
 #: assets/build/js/acf-field-group.js:933
 #: assets/build/js/acf-field-group.js:2769
 msgid "or"
 msgstr "sau"
 
-#: includes/api/api-helpers.php:3467
+#: includes/api/api-helpers.php:3451
 msgid "File size must not exceed %s."
 msgstr "Dimensiunea fișierului nu trebuie să depășească %s."
 
-#: includes/api/api-helpers.php:3462
+#: includes/api/api-helpers.php:3446
 msgid "File size must be at least %s."
 msgstr "Dimensiunea fișierului trebuie să aibă cel puțin %s."
 
-#: includes/api/api-helpers.php:3447
+#: includes/api/api-helpers.php:3431
 msgid "Image height must not exceed %dpx."
 msgstr "Înălțimea imaginii nu trebuie să depășească %d px."
 
-#: includes/api/api-helpers.php:3442
+#: includes/api/api-helpers.php:3426
 msgid "Image height must be at least %dpx."
 msgstr "Înălțimea imaginii trebuie să fie de cel puțin %d px."
 
-#: includes/api/api-helpers.php:3428
+#: includes/api/api-helpers.php:3412
 msgid "Image width must not exceed %dpx."
 msgstr "Lățimea imaginii nu trebuie să depășească %d px."
 
-#: includes/api/api-helpers.php:3423
+#: includes/api/api-helpers.php:3407
 msgid "Image width must be at least %dpx."
 msgstr "Lățimea imaginii trebuie să aibă cel puțin %d px."
 
-#: includes/api/api-helpers.php:1669 includes/api/api-term.php:147
+#: includes/api/api-helpers.php:1653 includes/api/api-term.php:147
 msgid "(no title)"
 msgstr "(fără titlu)"
 
@@ -4123,7 +4047,7 @@ msgstr "Legătură la pagină"
 msgid "Add"
 msgstr "Adaugă"
 
-#: includes/admin/views/acf-field-group/fields.php:53
+#: includes/admin/views/acf-field-group/fields.php:42
 #: includes/fields/class-acf-field-taxonomy.php:913
 msgid "Name"
 msgstr "Nume"
@@ -4249,7 +4173,7 @@ msgid "Allow this accordion to open without closing others."
 msgstr ""
 
 #: includes/fields/class-acf-field-accordion.php:95
-msgid "Multi-Expand"
+msgid "Multi-expand"
 msgstr ""
 
 #: includes/fields/class-acf-field-accordion.php:85
@@ -4422,7 +4346,7 @@ msgid "All user roles"
 msgstr "Toate rolurile de utilizator"
 
 #: includes/fields/class-acf-field-user.php:55
-msgid "Filter by Role"
+msgid "Filter by role"
 msgstr "Filtrează după rol"
 
 #: includes/fields/class-acf-field-user.php:20 includes/locations.php:101
@@ -4440,8 +4364,8 @@ msgstr "Selectează culoarea"
 #: includes/admin/post-types/admin-post-type.php:126
 #: includes/admin/post-types/admin-taxonomy.php:126
 #: includes/fields/class-acf-field-color_picker.php:74
-#: assets/build/js/acf-internal-post-type.js:67
-#: assets/build/js/acf-internal-post-type.js:77
+#: assets/build/js/acf-internal-post-type.js:54
+#: assets/build/js/acf-internal-post-type.js:59
 msgid "Default"
 msgstr "Implicită"
 
@@ -4610,7 +4534,7 @@ msgstr ""
 msgid "Both (Array)"
 msgstr ""
 
-#: includes/admin/views/acf-field-group/fields.php:52
+#: includes/admin/views/acf-field-group/fields.php:41
 #: includes/fields/class-acf-field-button-group.php:174
 #: includes/fields/class-acf-field-checkbox.php:378
 #: includes/fields/class-acf-field-radio.php:219
@@ -4671,6 +4595,13 @@ msgstr ""
 msgid "Button Group"
 msgstr ""
 
+#: includes/fields/class-acf-field-page_link.php:517
+#: includes/fields/class-acf-field-post_object.php:433
+#: includes/fields/class-acf-field-select.php:413
+#: includes/fields/class-acf-field-user.php:86
+msgid "Select multiple values?"
+msgstr "Selectezi mai multe valori?"
+
 #: includes/fields/class-acf-field-button-group.php:194
 #: includes/fields/class-acf-field-page_link.php:538
 #: includes/fields/class-acf-field-post_object.php:455
@@ -4678,8 +4609,8 @@ msgstr ""
 #: includes/fields/class-acf-field-select.php:435
 #: includes/fields/class-acf-field-taxonomy.php:789
 #: includes/fields/class-acf-field-user.php:107
-msgid "Allow Null"
-msgstr "Permite o valoare nulă"
+msgid "Allow Null?"
+msgstr "Permiți o valoare nulă?"
 
 #: includes/fields/class-acf-field-page_link.php:263
 #: includes/fields/class-acf-field-post_object.php:264
@@ -4692,12 +4623,12 @@ msgid "TinyMCE will not be initialized until field is clicked"
 msgstr "TinyMCE nu va fi inițializat până când câmpul nu este bifat"
 
 #: includes/fields/class-acf-field-wysiwyg.php:396
-msgid "Delay Initialization"
-msgstr "Întârzie inițializarea"
+msgid "Delay initialization?"
+msgstr "Întârzii inițializarea?"
 
 #: includes/fields/class-acf-field-wysiwyg.php:385
-msgid "Show Media Upload Buttons"
-msgstr "Arată butoanele de încărcare Media"
+msgid "Show Media Upload Buttons?"
+msgstr "Arăți butoanele de încărcare Media?"
 
 #: includes/fields/class-acf-field-wysiwyg.php:369
 msgid "Toolbar"
@@ -4832,11 +4763,11 @@ msgid "Post Object"
 msgstr "Obiect articol"
 
 #: includes/fields/class-acf-field-relationship.php:683
-msgid "Maximum Posts"
+msgid "Maximum posts"
 msgstr "Număr maxim de articole"
 
 #: includes/fields/class-acf-field-relationship.php:673
-msgid "Minimum Posts"
+msgid "Minimum posts"
 msgstr "Număr minim de articole"
 
 #: includes/admin/views/acf-field-group/options.php:168
@@ -4931,7 +4862,7 @@ msgstr "Listă separată prin virgulă. Lăsați liber pentru toate tipurile"
 
 #: includes/fields/class-acf-field-file.php:290
 #: includes/fields/class-acf-field-image.php:316
-msgid "Allowed File Types"
+msgid "Allowed file types"
 msgstr "Tipuri de fișier permise"
 
 #: includes/fields/class-acf-field-file.php:278
@@ -5372,7 +5303,7 @@ msgstr "Caută câmpuri"
 msgid "View Field"
 msgstr "Vezi câmpul"
 
-#: acf.php:446 includes/admin/views/acf-field-group/fields.php:115
+#: acf.php:446 includes/admin/views/acf-field-group/fields.php:104
 msgid "New Field"
 msgstr "Câmp nou"
 
@@ -5389,8 +5320,8 @@ msgid "Field"
 msgstr "Câmp"
 
 #: acf.php:441 includes/admin/post-types/admin-field-group.php:154
-#: includes/admin/post-types/admin-field-groups.php:119
-#: includes/admin/views/acf-field-group/fields.php:32
+#: includes/admin/post-types/admin-field-groups.php:97
+#: includes/admin/views/acf-field-group/fields.php:21
 msgid "Fields"
 msgstr "Câmpuri"
 
@@ -5434,9 +5365,9 @@ msgstr ""
 msgid "Field Group"
 msgstr "Grup de câmpuri"
 
-#: acf.php:407 includes/admin/post-types/admin-field-groups.php:78
-#: includes/admin/post-types/admin-post-types.php:138
-#: includes/admin/post-types/admin-taxonomies.php:138
+#: acf.php:407 includes/admin/post-types/admin-field-groups.php:56
+#: includes/admin/post-types/admin-post-types.php:105
+#: includes/admin/post-types/admin-taxonomies.php:105
 msgid "Field Groups"
 msgstr "Grupuri de câmpuri"
 
@@ -5830,10 +5761,6 @@ msgstr "Selecție minimă"
 #: pro/fields/class-acf-field-gallery.php:625
 msgid "Maximum Selection"
 msgstr "Selecție maximă"
-
-#: pro/fields/class-acf-field-gallery.php:707
-msgid "Allowed file types"
-msgstr "Tipuri de fișiere permise"
 
 #: pro/fields/class-acf-field-gallery.php:727
 msgid "Insert"

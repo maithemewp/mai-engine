@@ -12,7 +12,7 @@
 # This file is distributed under the same license as Advanced Custom Fields.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-08-09T12:53:50+00:00\n"
+"PO-Revision-Date: 2023-06-27T14:09:59+00:00\n"
 "Report-Msgid-Bugs-To: http://support.advancedcustomfields.com\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
@@ -21,124 +21,39 @@ msgstr ""
 "X-Generator: gettext\n"
 "Project-Id-Version: Advanced Custom Fields\n"
 
-#: includes/fields/class-acf-field-page_link.php:517
-#: includes/fields/class-acf-field-post_object.php:433
-#: includes/fields/class-acf-field-select.php:413
-#: includes/fields/class-acf-field-user.php:86
-msgid "Select Multiple"
-msgstr ""
-
-#: includes/admin/views/global/navigation.php:141
-msgid "WP Engine logo"
-msgstr ""
-
-#: includes/admin/views/acf-taxonomy/basic-settings.php:42
-msgid "Lower case letters, underscores and dashes only, Max 32 characters."
-msgstr ""
-
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1132
-msgid "The capability name for assigning terms of this taxonomy."
-msgstr ""
-
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1131
-msgid "Assign Terms Capability"
-msgstr ""
-
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1115
-msgid "The capability name for deleting terms of this taxonomy."
-msgstr ""
-
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1114
-msgid "Delete Terms Capability"
-msgstr ""
-
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1098
-msgid "The capability name for editing terms of this taxonomy."
-msgstr ""
-
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1097
-msgid "Edit Terms Capability"
-msgstr ""
-
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1081
-msgid "The capability name for managing terms of this taxonomy."
-msgstr ""
-
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1080
-msgid "Manage Terms Capability"
-msgstr ""
-
-#: includes/admin/views/acf-post-type/advanced-settings.php:866
-msgid ""
-"Sets whether posts should be excluded from search results and taxonomy "
-"archive pages."
-msgstr ""
-
-#: includes/admin/views/acf-field-group/pro-features.php:59
-msgid "More Tools from WP Engine"
-msgstr ""
-
-#. translators: %s - WP Engine logo
-#: includes/admin/views/acf-field-group/pro-features.php:54
-msgid "Built for those that build with WordPress, by the team at %s"
-msgstr ""
-
-#: includes/admin/views/acf-field-group/pro-features.php:16
-msgid "View Pricing & Upgrade"
-msgstr ""
-
-#: includes/admin/views/acf-field-group/pro-features.php:15
-msgid "Learn More"
-msgstr ""
-
-#: includes/admin/views/acf-field-group/pro-features.php:13
-msgid ""
-"Speed up your workflow and develop better websites with features like ACF "
-"Blocks and Options Pages, and sophisticated field types like Repeater, "
-"Flexible Content, Clone, and Gallery."
-msgstr ""
-
-#: includes/admin/views/acf-field-group/pro-features.php:2
-msgid "Unlock Advanced Features and Build Even More with ACF PRO"
-msgstr ""
-
-#: includes/admin/admin.php:238
-msgid "from"
-msgstr ""
-
 #. translators: %s - singular label of post type/taxonomy, i.e. "Movie"/"Genre"
 #: includes/admin/views/global/form-top.php:17
 msgid "%s fields"
 msgstr ""
 
-#: includes/admin/post-types/admin-taxonomies.php:293
+#: includes/admin/post-types/admin-taxonomies.php:260
 msgid "No terms"
 msgstr ""
 
-#: includes/admin/post-types/admin-taxonomies.php:266
+#: includes/admin/post-types/admin-taxonomies.php:233
 msgid "No post types"
 msgstr ""
 
-#: includes/admin/post-types/admin-post-types.php:289
+#: includes/admin/post-types/admin-post-types.php:256
 msgid "No posts"
 msgstr ""
 
-#: includes/admin/post-types/admin-post-types.php:263
+#: includes/admin/post-types/admin-post-types.php:230
 msgid "No taxonomies"
 msgstr ""
 
-#: includes/admin/post-types/admin-post-types.php:208
-#: includes/admin/post-types/admin-taxonomies.php:208
+#: includes/admin/post-types/admin-post-types.php:175
+#: includes/admin/post-types/admin-taxonomies.php:175
 msgid "No field groups"
 msgstr ""
 
-#: includes/admin/post-types/admin-field-groups.php:281
+#: includes/admin/post-types/admin-field-groups.php:259
 msgid "No fields"
 msgstr ""
 
-#: includes/admin/post-types/admin-field-groups.php:154
-#: includes/admin/post-types/admin-post-types.php:172
-#: includes/admin/post-types/admin-taxonomies.php:172
+#: includes/admin/post-types/admin-field-groups.php:132
+#: includes/admin/post-types/admin-post-types.php:139
+#: includes/admin/post-types/admin-taxonomies.php:139
 msgid "No description"
 msgstr ""
 
@@ -148,26 +63,26 @@ msgstr ""
 msgid "Any post status"
 msgstr ""
 
-#: includes/post-types/class-acf-taxonomy.php:284
+#: includes/post-types/class-acf-taxonomy.php:278
 msgid ""
 "This taxonomy key is already in use by another taxonomy registered outside "
 "of ACF and cannot be used."
 msgstr ""
 
-#: includes/post-types/class-acf-taxonomy.php:279
+#: includes/post-types/class-acf-taxonomy.php:273
 msgid ""
 "This taxonomy key is already in use by another taxonomy in ACF and cannot be "
 "used."
 msgstr ""
 
-#: includes/post-types/class-acf-taxonomy.php:252
+#: includes/post-types/class-acf-taxonomy.php:246
 msgid ""
 "The taxonomy key must only contain lower case alphanumeric characters, "
 "underscores or dashes."
 msgstr ""
 
-#: includes/post-types/class-acf-taxonomy.php:247
-msgid "The taxonomy key must be under 32 characters."
+#: includes/post-types/class-acf-taxonomy.php:241
+msgid "The taxonomy key must be under 20 characters."
 msgstr ""
 
 #: includes/post-types/class-acf-taxonomy.php:99
@@ -240,7 +155,7 @@ msgstr ""
 
 #. translators: %s a link to WordPress.org's Reserved Terms page
 #: includes/post-types/class-acf-post-type.php:312
-#: includes/post-types/class-acf-taxonomy.php:258
+#: includes/post-types/class-acf-taxonomy.php:252
 msgid ""
 "This field must not be a WordPress <a href=\"%s\" target=\"_blank\">reserved "
 "term</a>."
@@ -441,14 +356,14 @@ msgid ""
 "are shown while editing content. Useful for keeping large datasets tidy."
 msgstr ""
 
-#: includes/fields.php:474
+#: includes/fields.php:473
 msgid ""
 "This provides a solution for repeating content such as slides, team members, "
 "and call-to-action tiles, by acting as a parent to a set of subfields which "
 "can be repeated again and again."
 msgstr ""
 
-#: includes/fields.php:464
+#: includes/fields.php:463
 msgid ""
 "This provides an interactive interface for managing a collection of "
 "attachments. Most settings are similar to the Image field type. Additional "
@@ -456,7 +371,7 @@ msgid ""
 "and the minimum/maximum number of attachments allowed."
 msgstr ""
 
-#: includes/fields.php:454
+#: includes/fields.php:453
 msgid ""
 "This provides a simple, structured, layout-based editor. The Flexible "
 "Content field allows you to define, create and manage content with total "
@@ -500,7 +415,7 @@ msgstr ""
 msgid "Invalid post type selected for review."
 msgstr ""
 
-#: includes/admin/views/global/navigation.php:115
+#: includes/admin/views/global/navigation.php:104
 msgid "More"
 msgstr ""
 
@@ -581,12 +496,12 @@ msgstr ""
 msgid "Genres"
 msgstr ""
 
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1207
+#: includes/admin/views/acf-taxonomy/advanced-settings.php:1129
 msgid ""
 "Optional custom controller to use instead of `WP_REST_Terms_Controller `."
 msgstr ""
 
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1151
+#: includes/admin/views/acf-taxonomy/advanced-settings.php:1073
 msgid "Expose this post type in the REST API."
 msgstr ""
 
@@ -655,7 +570,7 @@ msgstr ""
 
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:820
 msgid ""
-"A PHP function name to be called for sanitizing taxonomy data saved from a "
+"A PHP function name to be called tor sanitizing taxonomy data saved from a "
 "meta box."
 msgstr ""
 
@@ -1163,6 +1078,7 @@ msgid "movie"
 msgstr ""
 
 #: includes/admin/views/acf-post-type/basic-settings.php:41
+#: includes/admin/views/acf-taxonomy/basic-settings.php:42
 msgid "Lower case letters, underscores and dashes only, Max 20 characters."
 msgstr ""
 
@@ -1192,27 +1108,27 @@ msgid ""
 msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:1249
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1206
+#: includes/admin/views/acf-taxonomy/advanced-settings.php:1128
 msgid "Controller Class"
 msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:1231
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1187
+#: includes/admin/views/acf-taxonomy/advanced-settings.php:1109
 msgid "The namespace part of the REST API URL."
 msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:1230
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1186
+#: includes/admin/views/acf-taxonomy/advanced-settings.php:1108
 msgid "Namespace Route"
 msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:1212
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1168
+#: includes/admin/views/acf-taxonomy/advanced-settings.php:1090
 msgid "The base URL for the post type REST API URLs."
 msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:1211
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1167
+#: includes/admin/views/acf-taxonomy/advanced-settings.php:1089
 msgid "Base URL"
 msgstr ""
 
@@ -1222,7 +1138,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:1196
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1150
+#: includes/admin/views/acf-taxonomy/advanced-settings.php:1072
 msgid "Show In REST API"
 msgstr ""
 
@@ -1403,6 +1319,10 @@ msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:880
 msgid "Rename Capabilities"
+msgstr ""
+
+#: includes/admin/views/acf-post-type/advanced-settings.php:866
+msgid "Sets whether posts should be excluded from search results."
 msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:865
@@ -2131,14 +2051,14 @@ msgid_plural "Exported %s items."
 msgstr[0] ""
 
 #: includes/admin/post-types/admin-taxonomy.php:124
-#: assets/build/js/acf-internal-post-type.js:177
-#: assets/build/js/acf-internal-post-type.js:247
+#: assets/build/js/acf-internal-post-type.js:144
+#: assets/build/js/acf-internal-post-type.js:204
 msgid "Category"
 msgstr ""
 
 #: includes/admin/post-types/admin-taxonomy.php:122
-#: assets/build/js/acf-internal-post-type.js:174
-#: assets/build/js/acf-internal-post-type.js:244
+#: assets/build/js/acf-internal-post-type.js:141
+#: assets/build/js/acf-internal-post-type.js:201
 msgid "Tag"
 msgstr ""
 
@@ -2181,7 +2101,7 @@ msgstr ""
 msgid "Taxonomy updated."
 msgstr ""
 
-#: includes/admin/post-types/admin-taxonomies.php:377
+#: includes/admin/post-types/admin-taxonomies.php:344
 #: includes/admin/post-types/admin-taxonomy.php:152
 msgid ""
 "This taxonomy could not be registered because its key is in use by another "
@@ -2189,59 +2109,59 @@ msgid ""
 msgstr ""
 
 #. translators: %s number of taxonomies synchronized
-#: includes/admin/post-types/admin-taxonomies.php:359
+#: includes/admin/post-types/admin-taxonomies.php:326
 msgid "Taxonomy synchronized."
 msgid_plural "%s taxonomies synchronized."
 msgstr[0] ""
 
 #. translators: %s number of taxonomies duplicated
-#: includes/admin/post-types/admin-taxonomies.php:352
+#: includes/admin/post-types/admin-taxonomies.php:319
 msgid "Taxonomy duplicated."
 msgid_plural "%s taxonomies duplicated."
 msgstr[0] ""
 
 #. translators: %s number of taxonomies deactivated
-#: includes/admin/post-types/admin-taxonomies.php:345
+#: includes/admin/post-types/admin-taxonomies.php:312
 msgid "Taxonomy deactivated."
 msgid_plural "%s taxonomies deactivated."
 msgstr[0] ""
 
 #. translators: %s number of taxonomies activated
-#: includes/admin/post-types/admin-taxonomies.php:338
+#: includes/admin/post-types/admin-taxonomies.php:305
 msgid "Taxonomy activated."
 msgid_plural "%s taxonomies activated."
 msgstr[0] ""
 
-#: includes/admin/post-types/admin-taxonomies.php:139
+#: includes/admin/post-types/admin-taxonomies.php:106
 msgid "Terms"
 msgstr ""
 
 #. translators: %s number of post types synchronized
-#: includes/admin/post-types/admin-post-types.php:352
+#: includes/admin/post-types/admin-post-types.php:319
 msgid "Post type synchronized."
 msgid_plural "%s post types synchronized."
 msgstr[0] ""
 
 #. translators: %s number of post types duplicated
-#: includes/admin/post-types/admin-post-types.php:345
+#: includes/admin/post-types/admin-post-types.php:312
 msgid "Post type duplicated."
 msgid_plural "%s post types duplicated."
 msgstr[0] ""
 
 #. translators: %s number of post types deactivated
-#: includes/admin/post-types/admin-post-types.php:338
+#: includes/admin/post-types/admin-post-types.php:305
 msgid "Post type deactivated."
 msgid_plural "%s post types deactivated."
 msgstr[0] ""
 
 #. translators: %s number of post types activated
-#: includes/admin/post-types/admin-post-types.php:331
+#: includes/admin/post-types/admin-post-types.php:298
 msgid "Post type activated."
 msgid_plural "%s post types activated."
 msgstr[0] ""
 
-#: includes/admin/post-types/admin-post-types.php:112
-#: includes/admin/post-types/admin-taxonomies.php:137
+#: includes/admin/post-types/admin-post-types.php:79
+#: includes/admin/post-types/admin-taxonomies.php:104
 #: includes/admin/tools/class-acf-admin-tool-import.php:82
 #: includes/admin/views/acf-taxonomy/basic-settings.php:66
 #: includes/post-types/class-acf-post-type.php:90
@@ -2259,15 +2179,15 @@ msgid "Basic Settings"
 msgstr ""
 
 #: includes/admin/post-types/admin-post-type.php:152
-#: includes/admin/post-types/admin-post-types.php:370
+#: includes/admin/post-types/admin-post-types.php:337
 msgid ""
 "This post type could not be registered because its key is in use by another "
 "post type registered by another plugin or theme."
 msgstr ""
 
 #: includes/admin/post-types/admin-post-type.php:125
-#: assets/build/js/acf-internal-post-type.js:171
-#: assets/build/js/acf-internal-post-type.js:241
+#: assets/build/js/acf-internal-post-type.js:138
+#: assets/build/js/acf-internal-post-type.js:198
 msgid "Pages"
 msgstr ""
 
@@ -2337,8 +2257,8 @@ msgid "PRO Only"
 msgstr ""
 
 #: includes/admin/post-types/admin-field-group.php:97
-#: assets/build/js/acf-internal-post-type.js:303
-#: assets/build/js/acf-internal-post-type.js:408
+#: assets/build/js/acf-internal-post-type.js:270
+#: assets/build/js/acf-internal-post-type.js:365
 msgid "Field groups linked successfully."
 msgstr ""
 
@@ -2388,26 +2308,25 @@ msgid "Field group linked successfully."
 msgid_plural "Field groups linked successfully."
 msgstr[0] ""
 
-#: includes/admin/admin-internal-post-type-list.php:254
-#: includes/admin/post-types/admin-post-types.php:371
-#: includes/admin/post-types/admin-taxonomies.php:378
+#: includes/admin/admin-internal-post-type-list.php:255
+#: includes/admin/post-types/admin-post-types.php:338
+#: includes/admin/post-types/admin-taxonomies.php:345
 msgctxt "post status"
 msgid "Registration Failed"
 msgstr ""
 
-#: includes/admin/admin-internal-post-type-list.php:253
+#: includes/admin/admin-internal-post-type-list.php:254
 msgid ""
 "This item could not be registered because its key is in use by another item "
 "registered by another plugin or theme."
 msgstr ""
 
 #: includes/acf-internal-post-type-functions.php:482
-#: includes/acf-internal-post-type-functions.php:511
+#: includes/acf-internal-post-type-functions.php:510
 msgid "REST API"
 msgstr ""
 
 #: includes/acf-internal-post-type-functions.php:481
-#: includes/acf-internal-post-type-functions.php:510
 msgid "Permissions"
 msgstr ""
 
@@ -2426,7 +2345,7 @@ msgstr ""
 msgid "Labels"
 msgstr ""
 
-#: includes/admin/post-types/admin-field-group.php:260
+#: includes/admin/post-types/admin-field-group.php:243
 msgid "Field Settings Tabs"
 msgstr ""
 
@@ -2441,7 +2360,7 @@ msgid "[ACF shortcode value disabled for preview]"
 msgstr ""
 
 #: includes/admin/admin-internal-post-type.php:287
-#: includes/admin/post-types/admin-field-group.php:562
+#: includes/admin/post-types/admin-field-group.php:545
 msgid "Close Modal"
 msgstr ""
 
@@ -2498,15 +2417,15 @@ msgstr ""
 msgid "Updates"
 msgstr "更新"
 
-#: includes/admin/views/global/navigation.php:94
+#: includes/admin/views/global/navigation.php:83
 msgid "Advanced Custom Fields logo"
 msgstr ""
 
-#: includes/admin/views/global/form-top.php:66
+#: includes/admin/views/global/form-top.php:57
 msgid "Save Changes"
 msgstr ""
 
-#: includes/admin/views/global/form-top.php:53
+#: includes/admin/views/global/form-top.php:44
 msgid "Field Group Title"
 msgstr ""
 
@@ -2538,27 +2457,32 @@ msgstr ""
 msgid "Add Your First Field Group"
 msgstr ""
 
-#: includes/admin/views/acf-field-group/pro-features.php:39
+#: includes/admin/views/acf-field-group/pro-features.php:16
+msgid "Upgrade Now"
+msgstr ""
+
+#: includes/admin/views/acf-field-group/pro-features.php:11
 msgid "Options Pages"
 msgstr ""
 
-#: includes/admin/views/acf-field-group/pro-features.php:35
+#: includes/admin/views/acf-field-group/pro-features.php:10
 msgid "ACF Blocks"
 msgstr ""
 
-#: includes/admin/views/acf-field-group/pro-features.php:43
+#: includes/admin/views/acf-field-group/pro-features.php:8
 msgid "Gallery Field"
 msgstr ""
 
-#: includes/admin/views/acf-field-group/pro-features.php:23
+#: includes/admin/views/acf-field-group/pro-features.php:7
 msgid "Flexible Content Field"
 msgstr ""
 
-#: includes/admin/views/acf-field-group/pro-features.php:27
+#: includes/admin/views/acf-field-group/pro-features.php:6
 msgid "Repeater Field"
 msgstr ""
 
-#: includes/admin/views/global/navigation.php:137
+#: includes/admin/views/acf-field-group/pro-features.php:4
+#: includes/admin/views/global/navigation.php:125
 msgid "Unlock Extra Features with ACF PRO"
 msgstr ""
 
@@ -2580,32 +2504,32 @@ msgid "Location Rules"
 msgstr ""
 
 #. translators: %s url to field types list
-#: includes/admin/views/acf-field-group/fields.php:72
+#: includes/admin/views/acf-field-group/fields.php:61
 msgid ""
 "Choose from over 30 field types. <a href=\"%s\" target=\"_blank\">Learn "
 "more</a>."
 msgstr ""
 
-#: includes/admin/views/acf-field-group/fields.php:65
+#: includes/admin/views/acf-field-group/fields.php:54
 msgid ""
 "Get started creating new custom fields for your posts, pages, custom post "
 "types and other WordPress content."
 msgstr ""
 
-#: includes/admin/views/acf-field-group/fields.php:64
+#: includes/admin/views/acf-field-group/fields.php:53
 msgid "Add Your First Field"
 msgstr ""
 
 #. translators: A symbol (or text, if not available in your locale) meaning
 #. "Order Number", in terms of positional placement.
-#: includes/admin/views/acf-field-group/fields.php:43
+#: includes/admin/views/acf-field-group/fields.php:32
 msgid "#"
 msgstr ""
 
-#: includes/admin/views/acf-field-group/fields.php:33
-#: includes/admin/views/acf-field-group/fields.php:67
-#: includes/admin/views/acf-field-group/fields.php:103
-#: includes/admin/views/global/form-top.php:62
+#: includes/admin/views/acf-field-group/fields.php:22
+#: includes/admin/views/acf-field-group/fields.php:56
+#: includes/admin/views/acf-field-group/fields.php:92
+#: includes/admin/views/global/form-top.php:53
 msgid "Add Field"
 msgstr ""
 
@@ -2631,32 +2555,32 @@ msgid "Export As JSON"
 msgstr ""
 
 #. translators: %s number of field groups deactivated
-#: includes/admin/post-types/admin-field-groups.php:367
+#: includes/admin/post-types/admin-field-groups.php:345
 msgid "Field group deactivated."
 msgid_plural "%s field groups deactivated."
 msgstr[0] ""
 
 #. translators: %s number of field groups activated
-#: includes/admin/post-types/admin-field-groups.php:360
+#: includes/admin/post-types/admin-field-groups.php:338
 msgid "Field group activated."
 msgid_plural "%s field groups activated."
 msgstr[0] ""
 
-#: includes/admin/admin-internal-post-type-list.php:429
-#: includes/admin/admin-internal-post-type-list.php:460
+#: includes/admin/admin-internal-post-type-list.php:430
+#: includes/admin/admin-internal-post-type-list.php:461
 msgid "Deactivate"
 msgstr ""
 
-#: includes/admin/admin-internal-post-type-list.php:429
+#: includes/admin/admin-internal-post-type-list.php:430
 msgid "Deactivate this item"
 msgstr ""
 
-#: includes/admin/admin-internal-post-type-list.php:425
-#: includes/admin/admin-internal-post-type-list.php:459
+#: includes/admin/admin-internal-post-type-list.php:426
+#: includes/admin/admin-internal-post-type-list.php:460
 msgid "Activate"
 msgstr ""
 
-#: includes/admin/admin-internal-post-type-list.php:425
+#: includes/admin/admin-internal-post-type-list.php:426
 msgid "Activate this item"
 msgstr ""
 
@@ -2666,8 +2590,8 @@ msgstr ""
 msgid "Move field group to trash?"
 msgstr ""
 
-#: acf.php:485 includes/admin/admin-internal-post-type-list.php:241
-#: includes/admin/post-types/admin-field-group.php:288
+#: acf.php:485 includes/admin/admin-internal-post-type-list.php:242
+#: includes/admin/post-types/admin-field-group.php:271
 #: includes/admin/post-types/admin-post-type.php:292
 #: includes/admin/post-types/admin-taxonomy.php:292
 msgctxt "post status"
@@ -2758,7 +2682,7 @@ msgstr "十六进制字符串"
 msgid "Upgrade to PRO"
 msgstr ""
 
-#: includes/admin/post-types/admin-field-group.php:288
+#: includes/admin/post-types/admin-field-group.php:271
 #: includes/admin/post-types/admin-post-type.php:292
 #: includes/admin/post-types/admin-taxonomy.php:292
 msgctxt "post status"
@@ -2806,8 +2730,8 @@ msgid "Attachments"
 msgstr "附件"
 
 #: includes/acf-wp-functions.php:54
-#: includes/admin/post-types/admin-post-types.php:137
-#: includes/admin/post-types/admin-taxonomies.php:112
+#: includes/admin/post-types/admin-post-types.php:104
+#: includes/admin/post-types/admin-taxonomies.php:79
 #: includes/admin/tools/class-acf-admin-tool-import.php:93
 #: includes/admin/views/acf-post-type/basic-settings.php:70
 #: includes/post-types/class-acf-taxonomy.php:90
@@ -2817,10 +2741,10 @@ msgstr "分类法"
 
 #: includes/acf-wp-functions.php:41
 #: includes/admin/post-types/admin-post-type.php:123
-#: includes/admin/post-types/admin-post-types.php:139
+#: includes/admin/post-types/admin-post-types.php:106
 #: includes/admin/views/acf-post-type/advanced-settings.php:102
-#: assets/build/js/acf-internal-post-type.js:168
-#: assets/build/js/acf-internal-post-type.js:238
+#: assets/build/js/acf-internal-post-type.js:135
+#: assets/build/js/acf-internal-post-type.js:195
 msgid "Posts"
 msgstr "文章"
 
@@ -2836,49 +2760,49 @@ msgstr ""
 msgid "Invalid field group parameter(s)."
 msgstr "无效的字段组参数。"
 
-#: includes/admin/admin-internal-post-type-list.php:395
+#: includes/admin/admin-internal-post-type-list.php:396
 msgid "Awaiting save"
 msgstr "等待保存"
 
-#: includes/admin/admin-internal-post-type-list.php:392
+#: includes/admin/admin-internal-post-type-list.php:393
 msgid "Saved"
 msgstr "已保存"
 
-#: includes/admin/admin-internal-post-type-list.php:388
+#: includes/admin/admin-internal-post-type-list.php:389
 #: includes/admin/tools/class-acf-admin-tool-import.php:49
 msgid "Import"
 msgstr "导入"
 
-#: includes/admin/admin-internal-post-type-list.php:384
+#: includes/admin/admin-internal-post-type-list.php:385
 msgid "Review changes"
 msgstr "查看变更"
 
-#: includes/admin/admin-internal-post-type-list.php:360
+#: includes/admin/admin-internal-post-type-list.php:361
 msgid "Located in: %s"
 msgstr "位于：%s"
 
-#: includes/admin/admin-internal-post-type-list.php:357
+#: includes/admin/admin-internal-post-type-list.php:358
 msgid "Located in plugin: %s"
 msgstr "位于插件中：%s"
 
-#: includes/admin/admin-internal-post-type-list.php:354
+#: includes/admin/admin-internal-post-type-list.php:355
 msgid "Located in theme: %s"
 msgstr "位于主题中：%s"
 
-#: includes/admin/post-types/admin-field-groups.php:261
+#: includes/admin/post-types/admin-field-groups.php:239
 msgid "Various"
 msgstr "各种各样的"
 
-#: includes/admin/admin-internal-post-type-list.php:209
-#: includes/admin/admin-internal-post-type-list.php:467
+#: includes/admin/admin-internal-post-type-list.php:210
+#: includes/admin/admin-internal-post-type-list.php:468
 msgid "Sync changes"
 msgstr "同步更改"
 
-#: includes/admin/admin-internal-post-type-list.php:208
+#: includes/admin/admin-internal-post-type-list.php:209
 msgid "Loading diff"
 msgstr "加载差异"
 
-#: includes/admin/admin-internal-post-type-list.php:207
+#: includes/admin/admin-internal-post-type-list.php:208
 msgid "Review local JSON changes"
 msgstr "查看本地JSON更改"
 
@@ -3132,19 +3056,19 @@ msgstr "显示此字段的条件"
 msgid "Conditional Logic"
 msgstr "条件逻辑"
 
-#: includes/admin/admin.php:238
+#: includes/admin/admin.php:234
 #: includes/admin/views/acf-field-group/conditional-logic.php:156
 #: includes/admin/views/acf-field-group/location-rule.php:91
 msgid "and"
 msgstr "与"
 
-#: includes/admin/post-types/admin-field-groups.php:123
-#: includes/admin/post-types/admin-post-types.php:143
-#: includes/admin/post-types/admin-taxonomies.php:143
+#: includes/admin/post-types/admin-field-groups.php:101
+#: includes/admin/post-types/admin-post-types.php:110
+#: includes/admin/post-types/admin-taxonomies.php:110
 msgid "Local JSON"
 msgstr "本地 JSON"
 
-#: includes/admin/views/acf-field-group/pro-features.php:31
+#: includes/admin/views/acf-field-group/pro-features.php:9
 msgid "Clone Field"
 msgstr "克隆字段"
 
@@ -3171,15 +3095,15 @@ msgstr "需要升级数据库"
 msgid "Options Page"
 msgstr "选项页面"
 
-#: includes/admin/views/upgrade/notice.php:15 includes/fields.php:461
+#: includes/admin/views/upgrade/notice.php:15 includes/fields.php:460
 msgid "Gallery"
 msgstr "相册"
 
-#: includes/admin/views/upgrade/notice.php:12 includes/fields.php:451
+#: includes/admin/views/upgrade/notice.php:12 includes/fields.php:450
 msgid "Flexible Content"
 msgstr "大段内容"
 
-#: includes/admin/views/upgrade/notice.php:9 includes/fields.php:471
+#: includes/admin/views/upgrade/notice.php:9 includes/fields.php:470
 msgid "Repeater"
 msgstr "重复器"
 
@@ -3210,15 +3134,15 @@ msgstr "发送 Trackbacks"
 #: includes/admin/post-types/admin-taxonomy.php:123
 #: includes/admin/views/acf-field-group/options.php:170
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:155
-#: assets/build/js/acf-internal-post-type.js:175
-#: assets/build/js/acf-internal-post-type.js:245
+#: assets/build/js/acf-internal-post-type.js:142
+#: assets/build/js/acf-internal-post-type.js:202
 msgid "Tags"
 msgstr "标签"
 
 #: includes/admin/post-types/admin-taxonomy.php:125
 #: includes/admin/views/acf-field-group/options.php:169
-#: assets/build/js/acf-internal-post-type.js:178
-#: assets/build/js/acf-internal-post-type.js:248
+#: assets/build/js/acf-internal-post-type.js:145
+#: assets/build/js/acf-internal-post-type.js:205
 msgid "Categories"
 msgstr "类别"
 
@@ -3289,12 +3213,12 @@ msgid "Below labels"
 msgstr "标签之下"
 
 #: includes/admin/views/acf-field-group/options.php:124
-msgid "Instruction Placement"
-msgstr ""
+msgid "Instruction placement"
+msgstr "说明位置"
 
 #: includes/admin/views/acf-field-group/options.php:107
-msgid "Label Placement"
-msgstr ""
+msgid "Label placement"
+msgstr "标签位置"
 
 #: includes/admin/views/acf-field-group/options.php:97
 msgid "Side"
@@ -3324,20 +3248,20 @@ msgstr "标准（WP Metabox）"
 msgid "Style"
 msgstr "样式"
 
-#: includes/admin/views/acf-field-group/fields.php:55
+#: includes/admin/views/acf-field-group/fields.php:44
 msgid "Type"
 msgstr "类型"
 
-#: includes/admin/post-types/admin-field-groups.php:117
-#: includes/admin/post-types/admin-post-types.php:136
-#: includes/admin/post-types/admin-taxonomies.php:136
-#: includes/admin/views/acf-field-group/fields.php:54
+#: includes/admin/post-types/admin-field-groups.php:95
+#: includes/admin/post-types/admin-post-types.php:103
+#: includes/admin/post-types/admin-taxonomies.php:103
+#: includes/admin/views/acf-field-group/fields.php:43
 msgid "Key"
 msgstr "密钥"
 
 #. translators: Hidden accessibility text for the positional order number of
 #. the field.
-#: includes/admin/views/acf-field-group/fields.php:48
+#: includes/admin/views/acf-field-group/fields.php:37
 msgid "Order"
 msgstr "序号"
 
@@ -3570,21 +3494,21 @@ msgstr ""
 msgid "Import Field Groups"
 msgstr "导入字段组"
 
-#: includes/admin/admin-internal-post-type-list.php:383
+#: includes/admin/admin-internal-post-type-list.php:384
 msgid "Sync"
 msgstr "同步"
 
-#: includes/admin/admin-internal-post-type-list.php:840
+#: includes/admin/admin-internal-post-type-list.php:841
 msgid "Select %s"
 msgstr "选择 %s"
 
-#: includes/admin/admin-internal-post-type-list.php:418
-#: includes/admin/admin-internal-post-type-list.php:456
+#: includes/admin/admin-internal-post-type-list.php:419
+#: includes/admin/admin-internal-post-type-list.php:457
 #: includes/admin/views/acf-field-group/field.php:73
 msgid "Duplicate"
 msgstr "复制"
 
-#: includes/admin/admin-internal-post-type-list.php:418
+#: includes/admin/admin-internal-post-type-list.php:419
 msgid "Duplicate this item"
 msgstr "复制此项"
 
@@ -3596,9 +3520,9 @@ msgstr ""
 msgid "Documentation"
 msgstr "进程文档"
 
-#: includes/admin/post-types/admin-field-groups.php:116
-#: includes/admin/post-types/admin-post-types.php:135
-#: includes/admin/post-types/admin-taxonomies.php:135
+#: includes/admin/post-types/admin-field-groups.php:94
+#: includes/admin/post-types/admin-post-types.php:102
+#: includes/admin/post-types/admin-taxonomies.php:102
 #: includes/admin/views/acf-field-group/options.php:234
 #: includes/admin/views/acf-post-type/advanced-settings.php:58
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:110
@@ -3607,24 +3531,24 @@ msgstr "进程文档"
 msgid "Description"
 msgstr "描述"
 
-#: includes/admin/admin-internal-post-type-list.php:380
-#: includes/admin/admin-internal-post-type-list.php:729
+#: includes/admin/admin-internal-post-type-list.php:381
+#: includes/admin/admin-internal-post-type-list.php:730
 msgid "Sync available"
 msgstr "有可用同步"
 
 #. translators: %s number of field groups synchronized
-#: includes/admin/post-types/admin-field-groups.php:381
+#: includes/admin/post-types/admin-field-groups.php:359
 msgid "Field group synchronized."
 msgid_plural "%s field groups synchronized."
 msgstr[0] ""
 
 #. translators: %s number of field groups duplicated
-#: includes/admin/post-types/admin-field-groups.php:374
+#: includes/admin/post-types/admin-field-groups.php:352
 msgid "Field group duplicated."
 msgid_plural "%s field groups duplicated."
 msgstr[0] "%s已复制字段组。"
 
-#: includes/admin/admin-internal-post-type-list.php:130
+#: includes/admin/admin-internal-post-type-list.php:131
 msgid "Active <span class=\"count\">(%s)</span>"
 msgid_plural "Active <span class=\"count\">(%s)</span>"
 msgstr[0] "启用 <span class=\"count\">(%s)</span>"
@@ -3645,22 +3569,22 @@ msgstr "升级数据库"
 msgid "Custom Fields"
 msgstr "字段"
 
-#: includes/admin/post-types/admin-field-group.php:607
+#: includes/admin/post-types/admin-field-group.php:590
 msgid "Move Field"
 msgstr "移动字段"
 
-#: includes/admin/post-types/admin-field-group.php:596
-#: includes/admin/post-types/admin-field-group.php:600
+#: includes/admin/post-types/admin-field-group.php:579
+#: includes/admin/post-types/admin-field-group.php:583
 msgid "Please select the destination for this field"
 msgstr "请选择这个字段的位置"
 
 #. translators: Confirmation message once a field has been moved to a different
 #. field group.
-#: includes/admin/post-types/admin-field-group.php:558
+#: includes/admin/post-types/admin-field-group.php:541
 msgid "The %1$s field can now be found in the %2$s field group"
 msgstr "现在可以在 %2$s 字段组中找到 %1$s 字段"
 
-#: includes/admin/post-types/admin-field-group.php:555
+#: includes/admin/post-types/admin-field-group.php:538
 msgid "Move Complete."
 msgstr "移动完成。"
 
@@ -3671,16 +3595,16 @@ msgstr "移动完成。"
 msgid "Active"
 msgstr "激活"
 
-#: includes/admin/post-types/admin-field-group.php:257
+#: includes/admin/post-types/admin-field-group.php:240
 msgid "Field Keys"
 msgstr "字段 Keys"
 
-#: includes/admin/post-types/admin-field-group.php:155
+#: includes/admin/post-types/admin-field-group.php:158
 #: includes/admin/tools/class-acf-admin-tool-export.php:320
 msgid "Settings"
 msgstr "设置"
 
-#: includes/admin/post-types/admin-field-groups.php:118
+#: includes/admin/post-types/admin-field-groups.php:96
 msgid "Location"
 msgstr "位置"
 
@@ -3768,7 +3692,7 @@ msgid "Field group updated."
 msgstr "字段组已更新。"
 
 #: includes/admin/admin-tools.php:118
-#: includes/admin/views/global/navigation.php:154
+#: includes/admin/views/global/navigation.php:138
 #: includes/admin/views/tools/tools.php:21
 msgid "Tools"
 msgstr "工具"
@@ -3787,15 +3711,15 @@ msgstr "表单"
 
 #: includes/admin/post-types/admin-post-type.php:124 includes/locations.php:100
 #: includes/locations/class-acf-location-page.php:22
-#: assets/build/js/acf-internal-post-type.js:170
-#: assets/build/js/acf-internal-post-type.js:240
+#: assets/build/js/acf-internal-post-type.js:137
+#: assets/build/js/acf-internal-post-type.js:197
 msgid "Page"
 msgstr "页面"
 
 #: includes/admin/post-types/admin-post-type.php:122 includes/locations.php:99
 #: includes/locations/class-acf-location-post.php:22
-#: assets/build/js/acf-internal-post-type.js:167
-#: assets/build/js/acf-internal-post-type.js:237
+#: assets/build/js/acf-internal-post-type.js:134
+#: assets/build/js/acf-internal-post-type.js:194
 msgid "Post"
 msgstr "文章"
 
@@ -3970,7 +3894,7 @@ msgstr "编辑"
 msgid "The changes you made will be lost if you navigate away from this page"
 msgstr "如果浏览其它页面，会丢失当前所做的修改"
 
-#: includes/api/api-helpers.php:3498
+#: includes/api/api-helpers.php:3482
 msgid "File type must be %s."
 msgstr "字段类型必须是 %s。"
 
@@ -3979,38 +3903,38 @@ msgstr "字段类型必须是 %s。"
 #: includes/admin/views/acf-field-group/conditional-logic.php:169
 #: includes/admin/views/acf-field-group/location-group.php:3
 #: includes/admin/views/acf-field-group/locations.php:36
-#: includes/api/api-helpers.php:3494 assets/build/js/acf-field-group.js:771
+#: includes/api/api-helpers.php:3478 assets/build/js/acf-field-group.js:771
 #: assets/build/js/acf-field-group.js:2361
 #: assets/build/js/acf-field-group.js:933
 #: assets/build/js/acf-field-group.js:2769
 msgid "or"
 msgstr "或"
 
-#: includes/api/api-helpers.php:3467
+#: includes/api/api-helpers.php:3451
 msgid "File size must not exceed %s."
 msgstr "文件尺寸最大不能超过 %s。"
 
-#: includes/api/api-helpers.php:3462
+#: includes/api/api-helpers.php:3446
 msgid "File size must be at least %s."
 msgstr "文件尺寸至少得是 %s。"
 
-#: includes/api/api-helpers.php:3447
+#: includes/api/api-helpers.php:3431
 msgid "Image height must not exceed %dpx."
 msgstr "图像高度最大不能超过 %dpx。"
 
-#: includes/api/api-helpers.php:3442
+#: includes/api/api-helpers.php:3426
 msgid "Image height must be at least %dpx."
 msgstr "图像高度至少得是 %dpx。"
 
-#: includes/api/api-helpers.php:3428
+#: includes/api/api-helpers.php:3412
 msgid "Image width must not exceed %dpx."
 msgstr "图像宽度最大不能超过 %dpx。"
 
-#: includes/api/api-helpers.php:3423
+#: includes/api/api-helpers.php:3407
 msgid "Image width must be at least %dpx."
 msgstr "图像宽度至少得是 %dpx。"
 
-#: includes/api/api-helpers.php:1669 includes/api/api-term.php:147
+#: includes/api/api-helpers.php:1653 includes/api/api-term.php:147
 msgid "(no title)"
 msgstr "(无标题)"
 
@@ -4086,7 +4010,7 @@ msgstr "页面链接"
 msgid "Add"
 msgstr "添加"
 
-#: includes/admin/views/acf-field-group/fields.php:53
+#: includes/admin/views/acf-field-group/fields.php:42
 #: includes/fields/class-acf-field-taxonomy.php:913
 msgid "Name"
 msgstr "名称"
@@ -4212,8 +4136,8 @@ msgid "Allow this accordion to open without closing others."
 msgstr "允许此手风琴打开而不关闭其他。"
 
 #: includes/fields/class-acf-field-accordion.php:95
-msgid "Multi-Expand"
-msgstr ""
+msgid "Multi-expand"
+msgstr "多扩展"
 
 #: includes/fields/class-acf-field-accordion.php:85
 msgid "Display this accordion as open on page load."
@@ -4383,8 +4307,8 @@ msgid "All user roles"
 msgstr "所有用户角色"
 
 #: includes/fields/class-acf-field-user.php:55
-msgid "Filter by Role"
-msgstr ""
+msgid "Filter by role"
+msgstr "根据角色过滤"
 
 #: includes/fields/class-acf-field-user.php:20 includes/locations.php:101
 msgid "User"
@@ -4401,8 +4325,8 @@ msgstr "选择颜色"
 #: includes/admin/post-types/admin-post-type.php:126
 #: includes/admin/post-types/admin-taxonomy.php:126
 #: includes/fields/class-acf-field-color_picker.php:74
-#: assets/build/js/acf-internal-post-type.js:67
-#: assets/build/js/acf-internal-post-type.js:77
+#: assets/build/js/acf-internal-post-type.js:54
+#: assets/build/js/acf-internal-post-type.js:59
 msgid "Default"
 msgstr "默认"
 
@@ -4571,7 +4495,7 @@ msgstr "范围(滑块)"
 msgid "Both (Array)"
 msgstr "两个 (阵列)"
 
-#: includes/admin/views/acf-field-group/fields.php:52
+#: includes/admin/views/acf-field-group/fields.php:41
 #: includes/fields/class-acf-field-button-group.php:174
 #: includes/fields/class-acf-field-checkbox.php:378
 #: includes/fields/class-acf-field-radio.php:219
@@ -4630,6 +4554,13 @@ msgstr "选项"
 msgid "Button Group"
 msgstr "按钮组"
 
+#: includes/fields/class-acf-field-page_link.php:517
+#: includes/fields/class-acf-field-post_object.php:433
+#: includes/fields/class-acf-field-select.php:413
+#: includes/fields/class-acf-field-user.php:86
+msgid "Select multiple values?"
+msgstr "是否选择多个值？"
+
 #: includes/fields/class-acf-field-button-group.php:194
 #: includes/fields/class-acf-field-page_link.php:538
 #: includes/fields/class-acf-field-post_object.php:455
@@ -4637,8 +4568,8 @@ msgstr "按钮组"
 #: includes/fields/class-acf-field-select.php:435
 #: includes/fields/class-acf-field-taxonomy.php:789
 #: includes/fields/class-acf-field-user.php:107
-msgid "Allow Null"
-msgstr ""
+msgid "Allow Null?"
+msgstr "是否允许空值？"
 
 #: includes/fields/class-acf-field-page_link.php:263
 #: includes/fields/class-acf-field-post_object.php:264
@@ -4651,12 +4582,12 @@ msgid "TinyMCE will not be initialized until field is clicked"
 msgstr "TinyMCE 在栏位没有点击之前不会初始化"
 
 #: includes/fields/class-acf-field-wysiwyg.php:396
-msgid "Delay Initialization"
-msgstr ""
+msgid "Delay initialization?"
+msgstr "延迟初始化？"
 
 #: includes/fields/class-acf-field-wysiwyg.php:385
-msgid "Show Media Upload Buttons"
-msgstr ""
+msgid "Show Media Upload Buttons?"
+msgstr "是否显示媒体上传按钮？"
 
 #: includes/fields/class-acf-field-wysiwyg.php:369
 msgid "Toolbar"
@@ -4789,12 +4720,12 @@ msgid "Post Object"
 msgstr "文章对象"
 
 #: includes/fields/class-acf-field-relationship.php:683
-msgid "Maximum Posts"
-msgstr ""
+msgid "Maximum posts"
+msgstr "最大文章数"
 
 #: includes/fields/class-acf-field-relationship.php:673
-msgid "Minimum Posts"
-msgstr ""
+msgid "Minimum posts"
+msgstr "最小文章数"
 
 #: includes/admin/views/acf-field-group/options.php:168
 #: includes/admin/views/acf-post-type/advanced-settings.php:25
@@ -4889,8 +4820,8 @@ msgstr "用英文逗号分隔开，留空则为全部类型"
 
 #: includes/fields/class-acf-field-file.php:290
 #: includes/fields/class-acf-field-image.php:316
-msgid "Allowed File Types"
-msgstr ""
+msgid "Allowed file types"
+msgstr "允许的文字类型"
 
 #: includes/fields/class-acf-field-file.php:278
 #: includes/fields/class-acf-field-image.php:280
@@ -5330,7 +5261,7 @@ msgstr "搜索字段"
 msgid "View Field"
 msgstr "视图字段"
 
-#: acf.php:446 includes/admin/views/acf-field-group/fields.php:115
+#: acf.php:446 includes/admin/views/acf-field-group/fields.php:104
 msgid "New Field"
 msgstr "新字段"
 
@@ -5347,8 +5278,8 @@ msgid "Field"
 msgstr "字段"
 
 #: acf.php:441 includes/admin/post-types/admin-field-group.php:154
-#: includes/admin/post-types/admin-field-groups.php:119
-#: includes/admin/views/acf-field-group/fields.php:32
+#: includes/admin/post-types/admin-field-groups.php:97
+#: includes/admin/views/acf-field-group/fields.php:21
 msgid "Fields"
 msgstr "字段"
 
@@ -5392,9 +5323,9 @@ msgstr "新建"
 msgid "Field Group"
 msgstr "字段组"
 
-#: acf.php:407 includes/admin/post-types/admin-field-groups.php:78
-#: includes/admin/post-types/admin-post-types.php:138
-#: includes/admin/post-types/admin-taxonomies.php:138
+#: acf.php:407 includes/admin/post-types/admin-field-groups.php:56
+#: includes/admin/post-types/admin-post-types.php:105
+#: includes/admin/post-types/admin-taxonomies.php:105
 msgid "Field Groups"
 msgstr "字段组"
 
@@ -5760,10 +5691,6 @@ msgstr "最小选择"
 #: pro/fields/class-acf-field-gallery.php:625
 msgid "Maximum Selection"
 msgstr "最大选择"
-
-#: pro/fields/class-acf-field-gallery.php:707
-msgid "Allowed file types"
-msgstr "允许的文字类型"
 
 #: pro/fields/class-acf-field-gallery.php:727
 msgid "Insert"
