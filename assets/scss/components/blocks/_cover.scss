@@ -1,6 +1,7 @@
 .wp-block-cover {
 	position: relative; // so negative margins inside will work.
 	z-index: 0; // so negative margins work with overlay.
+	overflow: initial; // WP 6.3 added overflow clip/hidden.
 	display: flex;
 	justify-content: var(--cover-block-justify-content, center);
 	min-height: 0;
