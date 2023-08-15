@@ -21,19 +21,6 @@
 			margin-left: var(--side-spacing);
 		}
 	}
-
-	&.is-repeated,
-	&.has-parallax {
-		background-image: var(--cover-block-background-image, var(--background-image-sm, var(--background-image, none)));
-
-		@include mq(sm) {
-			--cover-block-background-image: var(--background-image-md);
-		}
-
-		@include mq(md) {
-			--cover-block-background-image: var(--background-image-lg);
-		}
-	}
 }
 
 .has-sidebar,
@@ -50,4 +37,16 @@
 
 .wp-block-cover__image-background {
 	object-position: var(--object-position, 50%);
+
+	&.has-parallax {
+		background-image: var(--cover-block-background-image, var(--background-image-sm, var(--background-image, none)));
+
+		@include mq(sm) {
+			--cover-block-background-image: var(--background-image-md);
+		}
+
+		@include mq(md) {
+			--cover-block-background-image: var(--background-image-lg);
+		}
+	}
 }
