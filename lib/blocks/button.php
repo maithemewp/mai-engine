@@ -116,33 +116,35 @@ function mai_render_button_block( $block_content, $block ) {
 			$prefix = ( 'primary' === $type ) ? '--button' : sprintf( '--button-%s', $type );
 
 			foreach ( $wraps as $wrap ) {
-				$style = $wrap->getAttribute( 'style' );
+				$style  = $wrap->getAttribute( 'style' );
+				$styles = explode( ';', $style );
+				$styles = array_map( 'trim', $styles );
 
 				if ( '' !== $color_value ) {
-					$style .= sprintf( '%s-color:%s;', $prefix, mai_get_color_css( $color_value ) );
+					$styles[] = sprintf( '%s-color:%s', $prefix, mai_get_color_css( $color_value ) );
 
 					if ( $is_outline && mai_is_light_color( $color_value ) ) {
 						// For white or light colored outline buttons, change text dark on hover.
-						$style .= sprintf( '%s-color-hover:%s;', $prefix, 'rgba(0,0,0,0.8)' );
+						$styles[] = sprintf( '%s-color-hover:%s', $prefix, 'rgba(0,0,0,0.8)' );
 					}
 				}
 
 				if ( '' !== $background_value ) {
-					$style .= sprintf( '%s-background:%s;', $prefix, mai_get_color_css( $background_value ) );
+					$styles[] = sprintf( '%s-background:%s', $prefix, mai_get_color_css( $background_value ) );
 
 					mai_get_color_name( $background_value );
 
 					if ( ! $is_outline ) {
-						$style .= sprintf( '%s-background-hover:%s;', $prefix, mai_get_color_css( mai_get_color_variant( $background_value, 'dark', 10 ) ) );
+						$styles[] = sprintf( '%s-background-hover:%s', $prefix, mai_get_color_css( mai_get_color_variant( $background_value, 'dark', 10 ) ) );
 					}
 				}
 
 				if ( '' !== $radius ) {
-					$style .= sprintf( '--button-border-radius:%s;', $radius );
+					$styles[] = sprintf( '--button-border-radius:%s', $radius );
 				}
 
-				if ( $style ) {
-					$wrap->setAttribute( 'style', trim( $style ) );
+				if ( $styles ) {
+					$wrap->setAttribute( 'style', implode( ';', $styles ) );
 				} else {
 					$wrap->removeAttribute( 'style' );
 				}
