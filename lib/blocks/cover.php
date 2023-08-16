@@ -19,7 +19,7 @@ add_filter( 'render_block', 'mai_render_cover_block', 10, 2 );
  * Changes inline styles to CSS custom properties for use in CSS.
  *
  * @since 0.1.0
- * @since TBD Converted to `WP_HTML_Tag_Processor`.
+ * @since 2.30.0 Converted to `WP_HTML_Tag_Processor`.
  *
  * @param  string $block_content The existing block content.
  * @param  object $block         The cover block object.
