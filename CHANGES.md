@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.30.1 (8/16/23)
+* Fixed: Custom inline styles breaking when buttons had multiple customizations like custom font sizes and colors.
+
 ## 2.30.0 (8/16/23)
 * Added: Support for AIOSEO breadcrumbs.
 * Changed: Update ACF to 6.2.0.
