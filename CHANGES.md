@@ -3,7 +3,8 @@
 ## 2.30.0 (8/16/23)
 * Added: Support for AIOSEO breadcrumbs.
 * Changed: Update ACF to 6.2.0.
-* Changed: Show all markup when dislaying full content of an entry.
+* Changed: Show all markup when - displaying
+ full content of an entry.
 * Changed: Cover block markup is now manipulated via `WP_HTML_Tag_Processor` instead of PHP `DOMDocument`.
 * Fixed: Conflict with a new change in WP 6.3 where Cover block has overflow clip/hidden added and cuts off overlap from inner blocks.
 
