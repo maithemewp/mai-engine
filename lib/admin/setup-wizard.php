@@ -231,7 +231,7 @@ add_action( 'mai_setup_wizard_before_plugins_ajax', 'mai_before_setup_wizard_plu
  * Removes auto-creation of WooCommerce pages
  * when activating WooCommerce during Mai Setup Wizard.
  *
- * @since TBD
+ * @since 2.29.0?
  *
  * @param string $slug  Plugin file slug.
  * @param array  $field Field data.

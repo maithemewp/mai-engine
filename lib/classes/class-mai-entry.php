@@ -1206,9 +1206,8 @@ class Mai_Entry {
 				$content = mai_get_content_limit( $content, $this->args['content_limit'] );
 			}
 
-			// Filter.
+			// Filter. No escaping.
 			$content = apply_filters( 'mai_entry_content', $content, $this->args, $this->entry );
-			$content = wp_kses_post( $content );
 
 			if ( ! $content ) {
 				return;
@@ -1241,7 +1240,6 @@ class Mai_Entry {
 		if ( isset( $content[ $post_id ] ) ) {
 			return $content[ $post_id ];
 		}
-
 		$content[ $post_id ] = get_the_content( null, false, $post_id );
 		$content[ $post_id ] = mai_get_processed_content( $content[ $post_id ] );
 

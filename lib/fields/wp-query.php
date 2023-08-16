@@ -177,7 +177,7 @@ function mai_acf_get_posts_by_id( $args, $field, $post_id ) {
 		return $args;
 	}
 
-	$query = ! empty( $args['s'] ) ? $args['s'] : false;
+	$query = isset( $args['s'] ) && ! empty( $args['s'] ) ? $args['s'] : false;
 
 	if ( ! $query ) {
 		return $args;
