@@ -1874,7 +1874,7 @@ function mai_get_all_strings_between_strings( $string, $starting_string, $ending
 			continue;
 		}
 
-		// Adds result, including starging and ending string.
+		// Adds result, including starting and ending string.
 		$result[] = $starting_string . $item[0] . $ending_string;
 	}
 

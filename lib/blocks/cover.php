@@ -60,14 +60,16 @@ function mai_render_cover_block( $block_content, $block ) {
 
 	// Justify content.
 	while ( $tags->next_tag( [ 'tag_name' => 'div', 'class_name' => 'wp-block-cover' ] ) ) {
-		$style = (string) $tags->get_attribute( 'style' );
+		$styles = (string) $tags->get_attribute( 'style' );
+		$styles = explode( ';', $styles );
+		$styles = array_map( 'trim', $styles );
 
 		if ( $content_align ) {
-			$style .= sprintf( '--cover-block-justify-content:%s;', mai_get_flex_align( $content_align ) );
+			$styles[] = sprintf( '--cover-block-justify-content:%s', mai_get_flex_align( $content_align ) );
 		}
 
-		if ( $style ) {
-			$tags->set_attribute( 'style', $style );
+		if ( $styles ) {
+			$tags->set_attribute( 'style', implode( ';', $styles ) );
 		} else {
 			$tags->remove_attribute( 'style' );
 		}
@@ -98,20 +100,21 @@ function mai_render_cover_block( $block_content, $block ) {
 					$style .= sprintf( '--background-image-%s:url(%s);', $size, $url );
 				}
 
-				$existing_style = (string) $tags->get_attribute( 'style' );
+				$styles = (string) $tags->get_attribute( 'style' );
 
-				if ( $existing_style ) {
-					$image_array = explode( ';', $existing_style );
+				if ( $styles ) {
+					$styles = explode( ';', $styles );
+					$styles = array_map( 'trim', $styles );
 
-					foreach ( explode( ';', $existing_style ) as $index => $string ) {
+					foreach ( $styles as $index => $string ) {
 						if ( ! str_starts_with( $string, 'background-image' ) ) {
 							continue;
 						}
 
-						unset( $image_array[ $index ] );
+						unset( $styles[ $index ] );
 					}
 
-					$style = $style . implode( ';', $image_array );
+					$style = $style . implode( ';', $styles );
 				}
 
 				$tags->set_attribute( 'style', $style );
@@ -143,11 +146,13 @@ function mai_render_cover_block( $block_content, $block ) {
 				}
 
 				// Convert inline style to custom property.
-				$style = (string) $tags->get_attribute( 'style' );
+				$styles = (string) $tags->get_attribute( 'style' );
 
-				if ( $style ) {
-					$style = str_replace( 'object-position:', '--object-position:', $style );
-					$tags->set_attribute( 'style', $style );
+				if ( $styles ) {
+					$styles = explode( ';', $styles );
+					$styles = array_map( 'trim', $styles );
+					$styles = str_replace( 'object-position:', '--object-position:', implode( ';', $styles ) );
+					$tags->set_attribute( 'style', $styles );
 				} else {
 					$tags->remove_attribute( 'style' );
 				}
