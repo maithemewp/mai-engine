@@ -50,10 +50,6 @@ class Mai_Core_Blocks_In_The_Loop_Fix {
 	 * @return null|string
 	 */
 	function set_in_the_loop( $pre_render, $parsed_block, $parent_block ) {
-		if ( is_admin() ) {
-			return $pre_render;
-		}
-
 		if ( ! isset( $parsed_block['blockName'] ) ) {
 			return $pre_render;
 		}
@@ -64,7 +60,7 @@ class Mai_Core_Blocks_In_The_Loop_Fix {
 
 		global $wp_query;
 
-		if ( isset( $wp_query ) && ! in_the_loop() ) {
+		if ( isset( $wp_query ) && $wp_query->posts && ! in_the_loop() ) {
 			$this->in_the_loop     = in_the_loop();
 			$wp_query->in_the_loop = true;
 		}
@@ -82,17 +78,13 @@ class Mai_Core_Blocks_In_The_Loop_Fix {
 	 * @return string
 	 */
 	function revert_in_the_loop( $block_content, $parsed_block, $wp_block ) {
-		if ( is_admin() ) {
-			return $block_content;
-		}
-
 		if ( is_null( $this->in_the_loop ) ) {
 			return $block_content;
 		}
 
 		global $wp_query;
 
-		if ( isset( $wp_query ) ) {
+		if ( isset( $wp_query ) && $wp_query->posts && ! is_null( $this->in_the_loop ) ) {
 			$wp_query->in_the_loop = $this->in_the_loop;
 		}
 
