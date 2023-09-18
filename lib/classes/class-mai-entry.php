@@ -1058,7 +1058,7 @@ class Mai_Entry {
 
 		// Adds legacy genesis filter.
 		if ( 'post' === $this->type ) {
-			$output = apply_filters( 'genesis_post_title_output', $output, $wrap, $title ) . "\n";
+			$output = apply_filters( 'genesis_post_title_output', $output, $wrap, $title ) . PHP_EOL;
 		}
 
 		if ( ! $output ) {

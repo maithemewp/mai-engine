@@ -527,7 +527,7 @@ function mai_get_preload_image_link( $image_id, $image_size = 'full' ) {
 		return;
 	}
 
-	return sprintf( '<link rel="preload" class="mai-preload" %s as="image" />%s', trim( implode( ' ', $attr ) ), "\n" );
+	return sprintf( '<link rel="preload" class="mai-preload" %s as="image" />%s', trim( implode( ' ', $attr ) ), PHP_EOL );
 }
 
 /**
