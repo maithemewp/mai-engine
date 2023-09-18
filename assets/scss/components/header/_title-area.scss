@@ -44,7 +44,8 @@
 	font-size: var(--site-description-font-size, (smaller));
 }
 
-.custom-logo-link {
+// Needs to be scoped to title-area so it doesn't affect site logo blocks.
+.title-area .custom-logo-link {
 	--link-filter: none; // For dark background header.
 	--link-filter-hover: none; // For dark background header.
 	--link-transition: var(--title-area-transition, var(--transition));
@@ -55,7 +56,7 @@
 	margin: auto;
 }
 
-.custom-logo {
+.title-area .custom-logo {
 	display: block;
 	width: var(--viewport-width); // For svg logos.
 	max-width: 100%; // Because 100vw width is crazy.
