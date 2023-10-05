@@ -227,6 +227,11 @@ function mai_get_template_args() {
 	$args      = isset( $options[ $name ] ) ? $options[ $name ] : [];
 	$skip_empy = [ 'header_meta', 'footer_meta', 'column_gap', 'row_gap' ];
 
+	// Posts per page on blog archive comes directly from WP settings.
+	if ( 'archive' === $context && 'post' === $name ) {
+		$args['posts_per_page'] = get_option( 'posts_per_page' );
+	}
+
 	// Remove settings with empty string, since that means use the default.
 	foreach ( $args as $key => $value ) {
 
