@@ -1324,7 +1324,7 @@ class Mai_Entry {
 			[
 				'open'    => '<div %s>',
 				'close'   => '</div>',
-				'content' => $content,
+				'content' => trim( $content ),
 				'context' => 'entry-custom-content',
 				'echo'    => true,
 				'params'  => [
