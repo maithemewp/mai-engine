@@ -9,6 +9,10 @@
 .entry-custom-content {
 	margin: var(--entry-custom-content-margin, 0 0 var(--entry-custom-content-margin-bottom, var(--spacing-md)));
 
+	&:empty {
+		display: none;
+	}
+
 	&:last-child {
 		margin-bottom: 0;
 	}
