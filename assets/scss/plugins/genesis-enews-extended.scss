@@ -40,12 +40,19 @@
 		--input-width: auto;
 		--input-margin: 0 calc(var(--spacing-sm) * -1) 0 0;
 		--button-margin: 0 0 0 calc(var(--spacing-sm) * -1);
+		// --input-margin: 0;
+		// --button-margin: 0;
 		--button-width: auto;
 
 		.enews-email {
-			padding-right: var(--spacing-xl);
+			padding-right: var(--spacing-md);
 			border-top-right-radius: 0;
 			border-bottom-right-radius: 0;
+		}
+
+		.enews-submit {
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
 		}
 	}
 
