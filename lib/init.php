@@ -455,6 +455,7 @@ function mai_load_files() {
 		'blocks/paragraph',
 		'blocks/search',
 		'blocks/settings',
+		'blocks/site-logo',
 		'blocks/social-links',
 		'blocks/mai-columns/block',
 		'blocks/mai-column/block',

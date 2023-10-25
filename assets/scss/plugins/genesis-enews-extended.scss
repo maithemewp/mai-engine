@@ -37,15 +37,18 @@
 	.enews-1-field {
 		--enews-flex-direction: row;
 		--enews-flex-wrap: nowrap;
-		--input-width: auto;
-		--input-margin: 0 calc(var(--spacing-sm) * -1) 0 0;
-		--button-margin: 0 0 0 calc(var(--spacing-sm) * -1);
+		--input-width: initial;
+		--input-margin: 0 0 -1px 0;
 		--button-width: auto;
 
 		.enews-email {
-			padding-right: var(--spacing-xl);
 			border-top-right-radius: 0;
 			border-bottom-right-radius: 0;
+		}
+
+		.enews-submit {
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
 		}
 	}
 

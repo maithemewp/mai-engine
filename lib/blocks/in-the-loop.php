@@ -60,7 +60,7 @@ class Mai_Core_Blocks_In_The_Loop_Fix {
 
 		global $wp_query;
 
-		if ( isset( $wp_query ) && ! in_the_loop() ) {
+		if ( isset( $wp_query ) && $wp_query->posts && ! in_the_loop() ) {
 			$this->in_the_loop     = in_the_loop();
 			$wp_query->in_the_loop = true;
 		}
@@ -74,7 +74,7 @@ class Mai_Core_Blocks_In_The_Loop_Fix {
 	 * @param string   $block_content The block content.
 	 * @param array    $block         The full block, including name and attributes.
 	 * @param WP_Block $instance      The block instance.
-
+	 *
 	 * @return string
 	 */
 	function revert_in_the_loop( $block_content, $parsed_block, $wp_block ) {
@@ -84,7 +84,7 @@ class Mai_Core_Blocks_In_The_Loop_Fix {
 
 		global $wp_query;
 
-		if ( isset( $wp_query ) ) {
+		if ( isset( $wp_query ) && $wp_query->posts && ! is_null( $this->in_the_loop ) ) {
 			$wp_query->in_the_loop = $this->in_the_loop;
 		}
 

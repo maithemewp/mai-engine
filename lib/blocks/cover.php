@@ -59,7 +59,7 @@ function mai_render_cover_block( $block_content, $block ) {
 	$tags = new WP_HTML_Tag_Processor( $block_content );
 
 	// Justify content.
-	while ( $tags->next_tag( [ 'tag_name' => 'div', 'class_name' => 'wp-block-cover' ] ) ) {
+	while ( $tags->next_tag( [ 'class_name' => 'wp-block-cover' ] ) ) {
 		$styles = (string) $tags->get_attribute( 'style' );
 		$styles = explode( ';', $styles );
 		$styles = array_map( 'trim', $styles );

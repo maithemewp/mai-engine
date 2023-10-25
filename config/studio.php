@@ -11,7 +11,8 @@
 
 return [
 	'demos'         => [
-		'agency' => 'https://demo.bizbudding.com/studio-agency/wp-content/uploads/sites/52/mai-engine/',
+		'agency'      => 'https://demo.bizbudding.com/studio-agency/wp-content/uploads/sites/52/mai-engine/',
+		'real-estate' => 'https://demo.bizbudding.com/studio-real-estate/wp-content/uploads/sites/82/mai-engine/',
 	],
 	'global-styles' => [
 		'colors' => [
