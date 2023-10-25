@@ -16,7 +16,7 @@ add_filter( 'render_block', 'mai_render_site_logo_block', 10, 2 );
 /**
  * Swaps class name for site logo block to avoid conflicts with custom-logo CSS in Mai.
  *
- * @since TBD
+ * @since 2.30.3
  *
  * @param string $block_content Block HTML markup.
  * @param array  $block         Block data.
