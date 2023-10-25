@@ -397,6 +397,7 @@ class Mai_Grid {
 									$terms[] = get_queried_object_id();
 								} elseif ( is_singular() ) {
 									$entry_terms = wp_get_post_terms( get_the_ID(), $taxonomy );
+
 									if ( ! is_wp_error( $entry_terms ) ) {
 										foreach ( $entry_terms as $entry_term ) {
 											$terms[] = $entry_term->term_id;

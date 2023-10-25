@@ -74,7 +74,7 @@ class Mai_Core_Blocks_In_The_Loop_Fix {
 	 * @param string   $block_content The block content.
 	 * @param array    $block         The full block, including name and attributes.
 	 * @param WP_Block $instance      The block instance.
-
+	 *
 	 * @return string
 	 */
 	function revert_in_the_loop( $block_content, $parsed_block, $wp_block ) {
