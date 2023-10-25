@@ -301,7 +301,7 @@ function mai_preload_featured_image() {
 		case 'landscape':
 		case 'portrait':
 		case 'square':
-			$image_size = sprintf( '%s-lg', $args['image_orientation'] );
+			$image_size = sprintf( '%s-sm', $args['image_orientation'] );
 		break;
 		default:
 			$image_size = $args['image_size'];

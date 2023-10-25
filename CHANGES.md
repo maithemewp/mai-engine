@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.30.3 (10/25/23)
+* Added: Support for Mai Studio Real Estate demo.
+* Changed: Update ACF to 6.2.2
+* Changed: Style improvements for Genesis eNews Extended widget.
+* Fixed: Cover block markup logic not applying in some configurations when the wrapper element is not a div.
+* Fixed: Search block styles updated with changes in WP styles.
+* Fixed: Hide entry custom content element if it's empty.
+* Fixed: Duplicate style tags on some block svg icons in the editor.
+* Fixed: Preload sometimes using the wrong image on mobile.
+* Fixed: Scroll logo CSS wrongfully affecting site logo block.
+* Fixed: Blog archive posts per page not pulling correct value in some configurations.
+
 ## 2.30.2 (8/25/23)
 * Fixed: Broken inline CSS on Cover blocks in some configurations.
 
