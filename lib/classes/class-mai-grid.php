@@ -157,9 +157,9 @@ class Mai_Grid {
 			return;
 		}
 
-		do_action( 'mai_before_grid_query', $this->args );
+		// do_action( 'mai_before_grid_query', $this->args );
 		$this->query = $this->get_query();
-		do_action( 'mai_after_grid_query', $this->args );
+		// do_action( 'mai_after_grid_query', $this->args );
 
 		$no_results = false;
 
