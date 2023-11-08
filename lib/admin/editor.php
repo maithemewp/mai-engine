@@ -97,7 +97,7 @@ function mai_add_editor_inline_css() {
 			printf( 'background-color:var(--color-%s)', $name );
 		echo '}';
 	}
-	echo '</div>';
+	echo '</style>';
 }
 
 add_action( 'edit_form_after_title', 'mai_add_editor_on_posts_page' );
