@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.30.4 (11/8/23)
+* Fixed: Wrong closing tag on inline style causing broken or missing JS notice in the block editor in some scenarios.
+* Fixed: Force all attributes in `mai_get_image_src_srcset_sizes()` for scenarios where a plugin filters the values and removes some required attributes.
+
 ## 2.30.3 (10/25/23)
 * Added: Support for Mai Studio Real Estate demo.
 * Changed: Update ACF to 6.2.2

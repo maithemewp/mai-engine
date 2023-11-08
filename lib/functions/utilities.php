@@ -1596,6 +1596,9 @@ function mai_get_dom_document( $html ) {
 
 	// Encode.
 	$html = mb_convert_encoding( $html, 'HTML-ENTITIES', 'UTF-8' );
+	// $html = htmlspecialchars( $html, ENT_COMPAT, 'UTF-8' );
+	// $html = htmlspecialchars_decode( mb_encode_numericentity( htmlentities( $html, ENT_QUOTES, 'UTF-8' ), [0x80, 0x10FFFF, 0, ~0], 'UTF-8' ) );
+	// $html = mb_encode_numericentity( $html, [0x80, 0x10FFFF, 0, ~0], 'UTF-8' ), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
 
 	// Load the content in the document HTML.
 	$dom->loadHTML( "<div>$html</div>" );

@@ -157,8 +157,11 @@ class Mai_Grid {
 			return;
 		}
 
+		// do_action( 'mai_before_grid_query', $this->args );
 		$this->query = $this->get_query();
-		$no_results  = false;
+		// do_action( 'mai_after_grid_query', $this->args );
+
+		$no_results = false;
 
 		if ( 'post' === $this->type && ( ! $this->query || ! $this->query->have_posts() ) ) {
 			$no_results = true;

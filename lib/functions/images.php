@@ -583,6 +583,15 @@ function mai_get_image_src_srcset_sizes( $image_id, $size = 'full' ) {
 	$attr = apply_filters( 'wp_get_attachment_image_attributes', $attr, get_post( $image_id ), $size );
 	$attr = array_map( 'esc_attr', $attr );
 
+	// Force attributes. We've seen the above filter used and these are not always set.
+	$attr = wp_parse_args( $attr,
+		[
+			'src'    => '',
+			'srcset' => '',
+			'sizes'  => '',
+		]
+	);
+
 	return $attr;
 }
 
