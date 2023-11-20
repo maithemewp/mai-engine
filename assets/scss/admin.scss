@@ -156,6 +156,56 @@ body.has-boxed-container .editor-styles-wrapper {
 }
 
 /**
+ * ACF field groups in the sidebar.
+ */
+
+#side-sortables .acf-postbox .postbox-header {
+	position: relative !important;
+}
+
+#side-sortables .acf-postbox:first-child .postbox-header {
+	border-top: 0 !important;
+}
+
+#side-sortables .acf-postbox h2.hndle {
+	padding: 16px 48px 16px 16px !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+}
+
+#side-sortables .acf-postbox .acf-hndle-cog,
+#side-sortables .acf-postbox .handle-order-higher,
+#side-sortables .acf-postbox .handle-order-lower {
+	display: none !important;
+}
+
+#side-sortables .acf-postbox .handlediv {
+	position: absolute;
+	right: 16px;
+	top: 50%;
+	width: 24px;
+	height: 24px;
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+	transition: color .1s ease-in-out;
+	text-align: right;
+	box-shadow: none !important;
+}
+
+#side-sortables .acf-postbox .handlediv .toggle-indicator:before {
+	width: 100%;
+	height: 100%;
+	background-image: url('data:image/svg+xml;charset=UTF-8,<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="components-panel__arrow" aria-hidden="true" focusable="false"><path d="M17.5 11.6L12 16l-5.5-4.4.9-1.2L12 14l4.5-3.6 1 1.2z"></path></svg>');
+	background-repeat: no-repeat;
+	background-position: center;
+	content: "" !important;
+}
+
+#side-sortables .acf-postbox .handlediv[aria-expanded="true"] .toggle-indicator:before {
+	background-image: url('data:image/svg+xml;charset=UTF-8,<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="components-panel__arrow" aria-hidden="true" focusable="false"><path d="M6.5 12.4L12 8l5.5 4.4-.9 1.2L12 10l-4.5 3.6-1-1.2z"></path></svg>');
+}
+
+/**
  * Setup Wizard.
  */
 
