@@ -1,3 +1,7 @@
+.mai-columns-wrap {
+	flex: 1; /* handles justify-content (align-content setting) when set columns are set to Fit Content */
+}
+
 .mai-column {
 	display: flex;
 	flex-direction: column;
