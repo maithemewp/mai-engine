@@ -1594,11 +1594,9 @@ function mai_get_dom_document( $html ) {
 	// Modify state.
 	$libxml_previous_state = libxml_use_internal_errors( true );
 
-	// Encode.
-	$html = mb_convert_encoding( $html, 'HTML-ENTITIES', 'UTF-8' );
-	// $html = htmlspecialchars( $html, ENT_COMPAT, 'UTF-8' );
-	// $html = htmlspecialchars_decode( mb_encode_numericentity( htmlentities( $html, ENT_QUOTES, 'UTF-8' ), [0x80, 0x10FFFF, 0, ~0], 'UTF-8' ) );
-	// $html = mb_encode_numericentity( $html, [0x80, 0x10FFFF, 0, ~0], 'UTF-8' ), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+	// Encode. Can't use `mb_convert_encoding()` because it's deprecated in PHP 8.2.
+	// @link https://stackoverflow.com/questions/8218230/php-domdocument-loadhtml-not-encoding-utf-8-correctly
+	$html = mb_encode_numericentity( $html, [0x80, 0x10FFFF, 0, ~0], 'UTF-8' );
 
 	// Load the content in the document HTML.
 	$dom->loadHTML( "<div>$html</div>" );
