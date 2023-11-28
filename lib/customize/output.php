@@ -330,12 +330,15 @@ function mai_add_colors_css( $css ) {
 				}
 			}
 
-			$css['global'][ '.has-' . $name . '-color' ]['color']                       = 'var(--color-' . $name . ') !important';
-			$css['global'][ '.has-' . $name . '-color' ]['--body-color']                = 'var(--color-' . $name . ')';
-			$css['global'][ '.has-' . $name . '-color' ]['--heading-color']             = 'var(--color-' . $name . ')';
-			$css['global'][ '.has-' . $name . '-color' ]['--caption-color']             = 'var(--color-' . $name . ')';
-			$css['global'][ '.has-' . $name . '-color' ]['--cite-color']                = 'var(--color-' . $name . ')';
-			$css['global'][ '.has-' . $name . '-background-color' ]['background-color'] = 'var(--color-' . $name . ') !important';
+			// WP 6.4 added has-link-color and breaks stuff.
+			$class = 'link' === $name ? 'links' : $name;
+
+			$css['global'][ '.has-' . $class . '-color' ]['color']                       = 'var(--color-' . $name . ') !important';
+			$css['global'][ '.has-' . $class . '-color' ]['--body-color']                = 'var(--color-' . $name . ')';
+			$css['global'][ '.has-' . $class . '-color' ]['--heading-color']             = 'var(--color-' . $name . ')';
+			$css['global'][ '.has-' . $class . '-color' ]['--caption-color']             = 'var(--color-' . $name . ')';
+			$css['global'][ '.has-' . $class . '-color' ]['--cite-color']                = 'var(--color-' . $name . ')';
+			$css['global'][ '.has-' . $class . '-background-color' ]['background-color'] = 'var(--color-' . $name . ') !important';
 		}
 	}
 

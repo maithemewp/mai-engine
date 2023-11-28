@@ -50,3 +50,39 @@ function mai_acf_remove_wrap_frontend_innerblocks( $wrap, $name ) {
 
 	return $wrap;
 }
+
+add_filter( 'render_block', 'mai_render_block_handle_link_color', 10, 2 );
+/**
+ * Fixes WP 6.4 conflict with link color class.
+ *
+ * @since TBD
+ *
+ * @param string $block_content The existing block content.
+ * @param array  $block         The button block object.
+ *
+ * @return string
+ */
+function mai_render_block_handle_link_color( $block_content, $block ) {
+	if ( ! $block_content ) {
+		return $block_content;
+	}
+
+	// Get text color setting.
+	$text = mai_isset( $block['attrs'], 'textColor', false );
+
+	if ( 'link' !== $text ) {
+		return $block_content;
+	}
+
+	// Find first instance of has-link-color and add has-links-color.
+	$tags = new WP_HTML_Tag_Processor( $block_content );
+
+	while ( $tags->next_tag( [ 'class_name' => 'has-link-color' ] ) ) {
+		$class  = $tags->get_attribute( 'class' );
+		$class .= ' has-links-color';
+		$tags->set_attribute( 'class', $class );
+		break;
+	}
+
+	return $tags->get_updated_html();
+}
