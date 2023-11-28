@@ -1,12 +1,18 @@
 # Changelog
 
+## 2.31.0 (11/28/23)
+* Added: PHP 8.2 compatibility.
+* Added: ACF sidebar metaboxes now match WordPress core styling.
+* Changed: Update ACF to 6.2.4.
+* Changed: Converts has-link-color to has-links-color to fix WP 6.4 compatibility issue. This was causing some color choices to force text to the Mai link color value.
+
 ## 2.30.4 (11/8/23)
 * Fixed: Wrong closing tag on inline style causing broken or missing JS notice in the block editor in some scenarios.
 * Fixed: Force all attributes in `mai_get_image_src_srcset_sizes()` for scenarios where a plugin filters the values and removes some required attributes.
 
 ## 2.30.3 (10/25/23)
 * Added: Support for Mai Studio Real Estate demo.
-* Changed: Update ACF to 6.2.2
+* Changed: Update ACF to 6.2.2.
 * Changed: Style improvements for Genesis eNews Extended widget.
 * Fixed: Cover block markup logic not applying in some configurations when the wrapper element is not a div.
 * Fixed: Search block styles updated with changes in WP styles.
