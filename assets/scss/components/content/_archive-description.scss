@@ -16,14 +16,11 @@
 
 // This is for Mai Archive Pages plugin.
 .archive-page-content {
-	margin: var(--archive-page-content-margin, (var(--archive-page-content-margin-top, 0) auto var(--archive-page-content-margin-bottom, var(--spacing-xl))));
+	width: calc(100% - (var(--side-spacing) * 2));
+	max-width: var(--wrap-max-width);
+	margin: var(--archive-page-content-margin, (var(--archive-page-content-margin-top, 0) auto var(--archive-page-content-margin-bottom, 0)));
 
-	// This would be better if we knew there was an alignfull block first in the archive content.
-	.no-sidebar &:first-child {
-		--archive-page-content-margin-top: calc(var(--content-sidebar-wrap-margin-top) * -1);
-	}
-
-	.no-sidebar &:last-child {
+	.no-sidebar &:last-child:has(> .alignfull:last-child) {
 		--archive-page-content-margin-bottom: calc(var(--content-sidebar-wrap-margin-bottom) * -1);
 	}
 }

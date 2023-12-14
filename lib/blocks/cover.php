@@ -68,8 +68,11 @@ function mai_render_cover_block( $block_content, $block ) {
 			$styles[] = sprintf( '--cover-block-justify-content:%s', mai_get_flex_align( $content_align ) );
 		}
 
+		// Cleanup.
+		$styles = array_values( array_filter( $styles ) );
+
 		if ( $styles ) {
-			$tags->set_attribute( 'style', implode( ';', $styles ) );
+			$tags->set_attribute( 'style', implode( ';', $styles ) . ';' );
 		} else {
 			$tags->remove_attribute( 'style' );
 		}
@@ -100,11 +103,12 @@ function mai_render_cover_block( $block_content, $block ) {
 					$style .= sprintf( '--background-image-%s:url(%s);', $size, $url );
 				}
 
-				$styles = (string) $tags->get_attribute( 'style' );
+				$styles = $tags->get_attribute( 'style' );
 
 				if ( $styles ) {
 					$styles = explode( ';', $styles );
 					$styles = array_map( 'trim', $styles );
+					$styles = array_values( array_filter( $styles ) );
 
 					foreach ( $styles as $index => $string ) {
 						if ( ! str_starts_with( $string, 'background-image' ) ) {
@@ -114,7 +118,7 @@ function mai_render_cover_block( $block_content, $block ) {
 						unset( $styles[ $index ] );
 					}
 
-					$style = $style . implode( ';', $styles );
+					$style = $style . implode( ';', $styles ) . ';';
 				}
 
 				$tags->set_attribute( 'style', $style );
@@ -122,13 +126,13 @@ function mai_render_cover_block( $block_content, $block ) {
 			// Not fixed.
 			else {
 				// Get image atts.
-				$atts  = mai_get_image_src_srcset_sizes( $image_id, $image_size );
+				$atts = mai_get_image_src_srcset_sizes( $image_id, $image_size );
 
 				// Replace src.
 				$tags->set_attribute( 'src', $atts['src'] );
 
 				// Replace srcset.
-				$srcset = (string) $tags->get_attribute( 'srcset' );
+				$srcset = $tags->get_attribute( 'srcset' );
 				$srcset = $srcset ?: $atts['srcset'];
 
 				// Not sure why, but this doesn't always show srcet and breaks. See #515.
@@ -146,12 +150,14 @@ function mai_render_cover_block( $block_content, $block ) {
 				}
 
 				// Convert inline style to custom property.
-				$styles = (string) $tags->get_attribute( 'style' );
+				$styles = $tags->get_attribute( 'style' );
 
 				if ( $styles ) {
 					$styles = explode( ';', $styles );
 					$styles = array_map( 'trim', $styles );
-					$styles = str_replace( 'object-position:', '--object-position:', implode( ';', $styles ) );
+					$styles = array_values( array_filter( $styles ) );
+					$styles = str_replace( 'object-position:', '--object-position:', implode( ';', $styles ) . ';' );
+
 					$tags->set_attribute( 'style', $styles );
 				} else {
 					$tags->remove_attribute( 'style' );

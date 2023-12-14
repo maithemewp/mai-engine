@@ -355,6 +355,7 @@ add_action( 'admin_enqueue_scripts', 'mai_remove_block_library_theme_css', 9 );
  * @return void
  */
 function mai_remove_block_library_theme_css() {
+	// mai_deregister_asset( 'wp-block-library' );
 	mai_deregister_asset( 'wp-block-library-theme' );
 }
 

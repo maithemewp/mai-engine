@@ -246,8 +246,8 @@ add_filter( 'genesis_post_terms_shortcode', 'mai_post_terms_shortcode_classes', 
  * @since 2.10.0
  *
  * @param string $output The rendered HTML.
- * @param array $terms   The term link HTML.
- * @param array $atts    The shortcode attributes.
+ * @param array  $terms  The term link HTML.
+ * @param array  $atts   The shortcode attributes.
  *
  * @return string
  */
@@ -263,7 +263,7 @@ function mai_post_terms_shortcode_classes( $output, $terms, $atts ) {
 	$dom     = mai_get_dom_document( $output );
 	$first   = mai_get_dom_first_child( $dom );
 	$classes = $first->getAttribute( 'class' );
-	$classes = mai_add_classes( sprintf( 'entry-terms-%s', sanitize_html_class( $atts['taxonomy'] ) ), $classes );
+	$classes = mai_add_classes( sprintf( 'entry-terms-%s', sanitize_html_class( (string) $atts['taxonomy'] ) ), $classes );
 	$first->setAttribute( 'class', $classes );
 	$output  = trim( $dom->saveHTML() );
 

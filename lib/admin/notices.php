@@ -30,5 +30,5 @@ function mai_maybe_display_admin_notice() {
 	$type = mai_sanitize_get( 'mai_type' );
 	$type = $type ?: 'success';
 
-	printf( '<div class="notice notice-%s">%s</div>', sanitize_html_class( $type ), wpautop( $notice ) );
+	printf( '<div class="notice notice-%s">%s</div>', sanitize_html_class( (string) $type ), wpautop( $notice ) );
 }

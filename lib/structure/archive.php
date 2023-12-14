@@ -110,9 +110,9 @@ function mai_maybe_hide_blog_page_title() {
  */
 add_filter( 'genesis_cpt_archive_intro_text_output', 'do_shortcode' );
 
-add_filter( 'excerpt_more', 'mai_read_more_ellipsis' );
+add_filter( 'excerpt_more',              'mai_read_more_ellipsis' );
 add_filter( 'get_the_content_more_link', 'mai_read_more_ellipsis' );
-add_filter( 'the_content_more_link', 'mai_read_more_ellipsis' );
+add_filter( 'the_content_more_link',     'mai_read_more_ellipsis' );
 /**
  * Filter the excerpt and content "read more" string.
  *
@@ -148,7 +148,7 @@ function mai_author_box_gravatar( $size ) {
 }
 
 add_filter( 'genesis_attr_taxonomy-archive-description', 'mai_attributes_archive_description' );
-add_filter( 'genesis_attr_author-archive-description', 'mai_attributes_archive_description' );
+add_filter( 'genesis_attr_author-archive-description',   'mai_attributes_archive_description' );
 /**
  * Removes possible conflicting class names.
  *
@@ -159,7 +159,7 @@ add_filter( 'genesis_attr_author-archive-description', 'mai_attributes_archive_d
  * @return array
  */
 function mai_attributes_archive_description( $attributes ) {
-	$attributes['class'] = str_replace( ' taxonomy-description', '' ,$attributes['class'] );
+	$attributes['class'] = str_replace( ' taxonomy-description', '', $attributes['class'] );
 	$attributes['class'] = str_replace( ' author-description', '', $attributes['class'] );
 
 	return $attributes;

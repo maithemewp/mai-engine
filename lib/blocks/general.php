@@ -51,6 +51,27 @@ function mai_acf_remove_wrap_frontend_innerblocks( $wrap, $name ) {
 	return $wrap;
 }
 
+add_filter( 'render_block_data', 'mai_render_block_data_handle_link_color', 10, 3 );
+/**
+ * Removes inline styles from blocks.
+ *
+ * @since TBD
+ *
+ * @param array         $parsed_block The block being rendered.
+ * @param array         $source_block An un-modified copy of $parsed_block, as it appeared in the source content.
+ * @param WP_Block|null $parent_block If this is a nested block, a reference to the parent block.
+ *
+ * @return array
+ */
+function mai_render_block_data_handle_link_color( $parsed_block, $source_block, $parent_block ) {
+	// Remove link colors from inline styles.
+	if ( isset( $parsed_block['attrs']['style']['elements']['link']['color'] ) ) {
+		unset( $parsed_block['attrs']['style']['elements']['link']['color'] );
+	}
+
+	return $parsed_block;
+}
+
 add_filter( 'render_block', 'mai_render_block_handle_link_color', 10, 2 );
 /**
  * Fixes WP 6.4 conflict with link color class.
@@ -67,21 +88,37 @@ function mai_render_block_handle_link_color( $block_content, $block ) {
 		return $block_content;
 	}
 
-	// Get text color setting.
+	// Get color settings.
 	$text = mai_isset( $block['attrs'], 'textColor', false );
+	$bg   = mai_isset( $block['attrs'], 'backgroundColor', false );
 
-	if ( 'link' !== $text ) {
+	// Bail if no link colors.
+	if ( ! in_array( 'link', [ $text, $bg ], true ) ) {
 		return $block_content;
 	}
 
-	// Find first instance of has-link-color and add has-links-color.
+	// Find first instance of has-link-color and replace with has-links-color.
 	$tags = new WP_HTML_Tag_Processor( $block_content );
 
-	while ( $tags->next_tag( [ 'class_name' => 'has-link-color' ] ) ) {
-		$class  = $tags->get_attribute( 'class' );
-		$class .= ' has-links-color';
-		$tags->set_attribute( 'class', $class );
-		break;
+	if ( 'link' === $text ) {
+		while ( $tags->next_tag( [ 'class_name' => 'has-link-color' ] ) ) {
+			$class  = $tags->get_attribute( 'class' );
+			$class .= ' has-links-color';
+			$tags->set_attribute( 'class', $class );
+			break;
+		}
+	}
+
+	if ( 'link' === $bg ) {
+		// Find first instance of has-link-background-color and replace with has-links-background-color.
+		$tags = new WP_HTML_Tag_Processor( $block_content );
+
+		while ( $tags->next_tag( [ 'class_name' => 'has-link-background-color' ] ) ) {
+			$class  = $tags->get_attribute( 'class' );
+			$class .= ' has-links-background-color';
+			$tags->set_attribute( 'class', $class );
+			break;
+		}
 	}
 
 	return $tags->get_updated_html();
