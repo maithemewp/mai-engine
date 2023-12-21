@@ -1,7 +1,6 @@
 .sidebar {
 	margin-top: var(--sidebar-margin-top, var(--spacing-xl));
 	font-size: var(--sidebar-font-size, var(--font-size-sm));
-	z-index: -1; /* mostly for fixed position ads popping up over the sidebar */
 
 	--widget-margin-bottom: var(--spacing-xl);
 	--entry-title-margin-bottom: var(--spacing-xs);
