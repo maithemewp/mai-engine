@@ -247,7 +247,7 @@
 
 @include mq(false, sm) {
 
-	.hidden-xs {
+	.hidden-xs:not([class*="block-editor"]) {
 		display: none !important;
 		visibility: hidden !important;
 	}
@@ -255,7 +255,7 @@
 
 @include mq(sm, md) {
 
-	.hidden-sm {
+	.hidden-sm:not([class*="block-editor"]) {
 		display: none !important;
 		visibility: hidden !important;
 	}
@@ -263,7 +263,7 @@
 
 @include mq(md, lg) {
 
-	.hidden-md {
+	.hidden-md:not([class*="block-editor"]) {
 		display: none !important;
 		visibility: hidden !important;
 	}
@@ -271,7 +271,7 @@
 
 @include mq(lg, xl) {
 
-	.hidden-lg {
+	.hidden-lg:not([class*="block-editor"]) {
 		display: none !important;
 		visibility: hidden !important;
 	}
@@ -279,7 +279,7 @@
 
 @include mq(xs) {
 
-	.hidden-xs-up {
+	.hidden-xs-up:not([class*="block-editor"]) {
 		display: none !important;
 		visibility: hidden !important;
 	}
@@ -287,7 +287,7 @@
 
 @include mq(sm) {
 
-	.hidden-sm-up {
+	.hidden-sm-up:not([class*="block-editor"]) {
 		display: none !important;
 		visibility: hidden !important;
 	}
@@ -295,7 +295,7 @@
 
 @include mq(md) {
 
-	.hidden-md-up {
+	.hidden-md-up:not([class*="block-editor"]) {
 		display: none !important;
 		visibility: hidden !important;
 	}
@@ -303,7 +303,7 @@
 
 @include mq(lg) {
 
-	.hidden-lg-up {
+	.hidden-lg-up:not([class*="block-editor"]) {
 		display: none !important;
 		visibility: hidden !important;
 	}
@@ -311,7 +311,7 @@
 
 @include mq(xl) {
 
-	.hidden-xl-up {
+	.hidden-xl-up:not([class*="block-editor"]) {
 		display: none !important;
 		visibility: hidden !important;
 	}
@@ -321,7 +321,7 @@
 
 @include mq(false, xs) {
 
-	.hidden-xs-down {
+	.hidden-xs-down:not([class*="block-editor"]) {
 		display: none !important;
 		visibility: hidden !important;
 	}
@@ -329,7 +329,7 @@
 
 @include mq(false, sm) {
 
-	.hidden-sm-down {
+	.hidden-sm-down:not([class*="block-editor"]) {
 		display: none !important;
 		visibility: hidden !important;
 	}
@@ -337,7 +337,7 @@
 
 @include mq(false, md) {
 
-	.hidden-md-down {
+	.hidden-md-down:not([class*="block-editor"]) {
 		display: none !important;
 		visibility: hidden !important;
 	}
@@ -345,7 +345,7 @@
 
 @include mq(false, lg) {
 
-	.hidden-lg-down {
+	.hidden-lg-down:not([class*="block-editor"]) {
 		display: none !important;
 		visibility: hidden !important;
 	}
@@ -353,7 +353,7 @@
 
 @include mq(false, xl) {
 
-	.hidden-xl-down {
+	.hidden-xl-down:not([class*="block-editor"]) {
 		display: none !important;
 		visibility: hidden !important;
 	}
