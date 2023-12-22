@@ -289,21 +289,6 @@ function mai_do_block_margin_settings( $block_content, $block ) {
 
 		if ( $first_block ) {
 			$classes = $first_block->getAttribute( 'class' );
-			// $overlap = false;
-
-			// if ( str_starts_with( $top, '-' ) ) {
-			// 	$overlap = true;
-			// } elseif ( str_starts_with( $right, '-' ) ) {
-			// 	$overlap = true;
-			// } elseif ( str_starts_with( $bottom, '-' ) ) {
-			// 	$overlap = true;
-			// } elseif ( str_starts_with( $left, '-' ) ) {
-			// 	$overlap = true;
-			// }
-
-			// if ( $overlap ) {
-			// 	$classes = mai_add_classes( 'has-overlap', $classes );
-			// }
 
 			if ( $top ) {
 				$classes = mai_add_classes( sprintf( 'has-%s-margin-top', $top ), $classes );
