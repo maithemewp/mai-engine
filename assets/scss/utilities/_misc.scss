@@ -191,6 +191,7 @@
 
 	.has--#{ $spacing-name }-margin-top {
 		margin-top: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
+
 	}
 
 	.has--#{ $spacing-name }-margin-bottom {
@@ -208,14 +209,27 @@
 
 		.has--#{ $spacing-name }-margin-left {
 			margin-left: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
+
 		}
 	}
 }
 
 .has-overlap {
 	position: relative;
-	z-index: 2;
+	z-index: 1;
 	overflow: visible;
+}
+
+.has-z-index--1 {
+	z-index: -1 !important;
+}
+
+.has-z-index-0 {
+	z-index: 0 !important;
+}
+
+.has-z-index-1 {
+	z-index: 1 !important;
 }
 
 // TODO: Use custom properties?
