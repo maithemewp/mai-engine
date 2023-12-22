@@ -214,6 +214,7 @@
 	}
 }
 
+// No longer used by default on group/cover blocks, but here for backwards compatibility.
 .has-overlap {
 	position: relative;
 	z-index: 1;
