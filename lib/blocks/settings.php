@@ -229,7 +229,7 @@ function mai_do_block_spacing_settings( $block_content, $block ) {
 		$first_block = mai_get_dom_first_child( $dom );
 
 		if ( $first_block ) {
-			$classes = $first_block->getAttribute( 'class' );
+			$classes  = $first_block->getAttribute( 'class' );
 
 			if ( $top ) {
 				$classes = mai_add_classes( sprintf( 'has-%s-margin-top', $top ), $classes );
@@ -289,21 +289,21 @@ function mai_do_block_margin_settings( $block_content, $block ) {
 
 		if ( $first_block ) {
 			$classes = $first_block->getAttribute( 'class' );
-			$overlap = false;
+			// $overlap = false;
 
-			if ( mai_has_string( '-', $top ) ) {
-				$overlap = true;
-			} elseif ( mai_has_string( '-', $right ) ) {
-				$overlap = true;
-			} elseif ( mai_has_string( '-', $bottom ) ) {
-				$overlap = true;
-			} elseif ( mai_has_string( '-', $left ) ) {
-				$overlap = true;
-			}
+			// if ( str_starts_with( $top, '-' ) ) {
+			// 	$overlap = true;
+			// } elseif ( str_starts_with( $right, '-' ) ) {
+			// 	$overlap = true;
+			// } elseif ( str_starts_with( $bottom, '-' ) ) {
+			// 	$overlap = true;
+			// } elseif ( str_starts_with( $left, '-' ) ) {
+			// 	$overlap = true;
+			// }
 
-			if ( $overlap ) {
-				$classes = mai_add_classes( 'has-overlap', $classes );
-			}
+			// if ( $overlap ) {
+			// 	$classes = mai_add_classes( 'has-overlap', $classes );
+			// }
 
 			if ( $top ) {
 				$classes = mai_add_classes( sprintf( 'has-%s-margin-top', $top ), $classes );
