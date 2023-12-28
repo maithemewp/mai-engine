@@ -16,8 +16,7 @@
 
 // This is for Mai Archive Pages plugin.
 .archive-page-content {
-	width: calc(100% - (var(--side-spacing) * 2));
-	max-width: var(--wrap-max-width);
+	width: 100%; /* when outside of the content-sidebar-wrap, this needs to be 100% */
 	margin: var(--archive-page-content-margin, (var(--archive-page-content-margin-top, 0) auto var(--archive-page-content-margin-bottom, 0)));
 
 	.no-sidebar &:last-child:has(> .alignfull:last-child) {
