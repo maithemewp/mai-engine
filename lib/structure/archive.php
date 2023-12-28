@@ -118,6 +118,7 @@ add_filter( 'the_content_more_link',     'mai_read_more_ellipsis' );
  *
  * @since 0.1.0
  * @since 0.3.11 Modified and added excerpt_more.
+ * @since TBD Bail if this is the more link inside the latest posts block.
  *
  * @uses excerpt_more              When the excerpt is shorter then the full content, this read more link will show.
  * @uses get_the_content_more_link Genesis function to get the more link, if characters are limited.
@@ -128,6 +129,12 @@ add_filter( 'the_content_more_link',     'mai_read_more_ellipsis' );
  * @return string
  */
 function mai_read_more_ellipsis( $more ) {
+	global $block_core_latest_posts_excerpt_length;
+
+	if ( $block_core_latest_posts_excerpt_length ) {
+		return $more;
+	}
+
 	return mai_get_ellipsis();
 }
 
