@@ -58,6 +58,10 @@
 	.entry {
 		aspect-ratio: var(--aspect-ratio, 4/3);
 	}
+
+	.entry-wrap {
+		z-index: 0; /* this is needed for the overlay to work */
+	}
 }
 
 @supports not (aspect-ratio: 4/3) {
@@ -112,8 +116,8 @@
 	box-shadow: var(--entry-wrap-box-shadow, unset);
 	transition: all 0.3s ease-in-out;
 
-	> *:not(.entry-overlay) {
-		z-index: 1;
+	> .entry-overlay {
+		z-index: -1;
 	}
 }
 

@@ -132,8 +132,6 @@ function mai_render_button_block( $block_content, $block ) {
 				if ( '' !== $background_value ) {
 					$styles[] = sprintf( '%s-background:%s', $prefix, mai_get_color_css( $background_value ) );
 
-					mai_get_color_name( $background_value );
-
 					if ( ! $is_outline ) {
 						$styles[] = sprintf( '%s-background-hover:%s', $prefix, mai_get_color_css( mai_get_color_variant( $background_value, 'dark', 10 ) ) );
 					}
@@ -143,8 +141,11 @@ function mai_render_button_block( $block_content, $block ) {
 					$styles[] = sprintf( '--button-border-radius:%s', $radius );
 				}
 
+				// Cleanup.
+				$styles = array_values( array_filter( $styles ) );
+
 				if ( $styles ) {
-					$wrap->setAttribute( 'style', implode( ';', $styles ) );
+					$wrap->setAttribute( 'style', implode( ';', $styles ) . ';' );
 				} else {
 					$wrap->removeAttribute( 'style' );
 				}

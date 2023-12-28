@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.31.1 (12/28/23)
+* Added: Better PHP 8.2 compatibility.
+* Changed: Element stacking via z-index is now less aggressive by default. This fixes some edge-case scenarios where floating elements are behind other elements on the page.
+* Changed: Converts has-link-background-color to has-links-background-color to fix WP 6.4 compatibility issue. This was causing some color choices to remove the background color from the element.
+* Changed: Only apply hidden-{break} and hidden-{break}-down/up classes on the front end. These classes were causing elements to be hidden in the editor.
+* Changed: Better compatibility with the latest version of Mai Archive Pages plugin.
+* Changed: CSS styling consistencies for Latest Posts block.
+* Fixed: Latest Posts block now correctly shows the "Read more" link.
+
 ## 2.31.0 (11/28/23)
 * Added: PHP 8.2 compatibility.
 * Added: ACF sidebar metaboxes now match WordPress core styling.

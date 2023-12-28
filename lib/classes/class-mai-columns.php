@@ -96,11 +96,11 @@ class Mai_Columns {
 		$args['class']                  = esc_html( $args['class'] );
 		$args['column_gap']             = esc_html( $args['column_gap'] );
 		$args['row_gap']                = esc_html( $args['row_gap'] );
-		$args['align']                  = sanitize_html_class( $args['align'] );
+		$args['align']                  = sanitize_html_class( (string) $args['align'] );
 		$args['align_columns']          = esc_html( $args['align_columns'] );
 		$args['align_columns_vertical'] = esc_html( $args['align_columns_vertical'] );
-		$args['margin_top']             = sanitize_html_class( $args['margin_top'] );
-		$args['margin_bottom']          = sanitize_html_class( $args['margin_bottom'] );
+		$args['margin_top']             = sanitize_html_class( (string) $args['margin_top'] );
+		$args['margin_bottom']          = sanitize_html_class( (string) $args['margin_bottom'] );
 		$args['preview']                = mai_sanitize_bool( $args['preview'] );
 
 		return $args;
