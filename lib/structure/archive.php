@@ -257,6 +257,11 @@ function mai_do_term_description() {
 		return;
 	}
 
+	// Bail if hidden.
+	if ( mai_is_element_hidden( 'entry_excerpt' ) ) {
+		return;
+	}
+
 	$description = apply_filters( 'mai_term_description', term_description() );
 	$description = wp_kses_post( $description );
 
