@@ -13,322 +13,6 @@
 defined( 'ABSPATH' ) || die();
 
 /**
- * Get the active engine theme. Defaults to the default theme.
- *
- * @since 0.1.0
- *
- * @return bool|string
- */
-function mai_get_engine_theme() {
-	static $theme = null;
-
-	if ( ! is_null( $theme ) ) {
-		return $theme;
-	}
-
-	$engine_themes = mai_get_engine_themes();
-
-	if ( current_theme_supports( 'mai-engine' ) ) {
-		// Custom themes can load a specific theme default via `add_theme_support( 'mai-engine', 'success' );`.
-		$theme_support = get_theme_support( 'mai-engine' );
-
-		if ( $theme_support && is_array( $theme_support ) && in_array( $theme_support[0], $engine_themes, true ) ) {
-			$theme = $theme_support[0];
-		}
-	}
-
-	if ( ! $theme ) {
-		$current_theme = defined( 'CHILD_THEME_NAME' ) ? CHILD_THEME_NAME : null;
-
-		if ( $current_theme ) {
-			$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $current_theme ) );
-
-			if ( in_array( $current_theme, $engine_themes, true ) ) {
-				$theme = $current_theme;
-			}
-		}
-	}
-
-	if ( ! $theme ) {
-		$current_theme = wp_get_theme()->get( 'Name' );
-
-		if ( $current_theme ) {
-			$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $current_theme ) );
-
-			if ( in_array( $current_theme, $engine_themes, true ) ) {
-				$theme = $current_theme;
-			}
-		}
-	}
-
-	if ( ! $theme ) {
-		$current_theme = wp_get_theme()->get( 'TextDomain' );
-
-		if ( $current_theme ) {
-			$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $current_theme ) );
-
-			if ( in_array( $current_theme, $engine_themes, true ) ) {
-				$theme = $current_theme;
-			}
-		}
-	}
-
-	if ( ! $theme ) {
-		$current_theme = basename( get_stylesheet_directory() );
-
-		if ( $current_theme ) {
-			$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $current_theme ) );
-
-			if ( in_array( $current_theme, $engine_themes, true ) ) {
-				$theme = $current_theme;
-			}
-		}
-	}
-
-	$theme = $theme ?: 'default';
-
-	return $theme;
-}
-
-/**
- * Get available engine themes.
- *
- * @since 2.0.0
- *
- * @return array
- */
-function mai_get_engine_themes() {
-	static $themes = null;
-
-	if ( ! is_null( $themes ) ) {
-		return $themes;
-	}
-
-	$configs = glob( dirname( __DIR__ ) . '/config/*.php' );
-	$themes  = [];
-
-	foreach ( $configs as $index => $config ) {
-		$base = basename( $config, '.php' );
-
-		if ( in_array( $base, [ '_default', '_settings' ], true ) ) {
-			continue;
-		}
-
-		$themes[] = $base;
-	}
-
-	return $themes;
-}
-
-/**
- * Returns the plugin directory.
- *
- * @since 0.1.0
- *
- * @return string
- */
-function mai_get_dir() {
-	static $dir = null;
-
-	if ( is_null( $dir ) ) {
-		$dir = trailingslashit( dirname( dirname( __DIR__ ) ) );
-	}
-
-	return $dir;
-}
-
-/**
- * Returns the plugin URL.
- *
- * @since 0.1.0
- *
- * @return string
- */
-function mai_get_url() {
-	static $url = null;
-
-	if ( ! is_null( $url ) ) {
-		return $url;
-	}
-
-	$url = trailingslashit( plugins_url( basename( mai_get_dir() ) ) );
-
-	return $url;
-}
-
-/**
- * Gets the plugin basename.
- *
- * @since 0.1.0
- *
- * @return string
- */
-function mai_get_base() {
-	static $base = null;
-
-	if ( ! is_null( $base ) ) {
-		return $base;
-	}
-
-	$dir  = basename( dirname( dirname( __DIR__ ) ) );
-	$file = mai_get_handle() . '.php';
-	$base = $dir . DIRECTORY_SEPARATOR . $file;
-
-	return $base;
-}
-
-/**
- * Returns an array of plugin data from the main plugin file.
- *
- * @since 0.1.0
- *
- * @param string $key Optionally return one key.
- *
- * @return array|string|null
- */
-function mai_get_plugin_data( $key = '' ) {
-	static $data = null;
-
-	if ( is_null( $data ) ) {
-		$data = get_file_data(
-			mai_get_dir() . 'mai-engine.php',
-			[
-				'name'        => 'Plugin Name',
-				'version'     => 'Version',
-				'plugin-uri'  => 'Plugin URI',
-				'text-domain' => 'Text Domain',
-				'description' => 'Description',
-				'author'      => 'Author',
-				'author-uri'  => 'Author URI',
-				'domain-path' => 'Domain Path',
-				'network'     => 'Network',
-			],
-			'plugin'
-		);
-	}
-
-	if ( array_key_exists( $key, $data ) ) {
-		return $data[ $key ];
-	}
-
-	return $data;
-}
-
-/**
- * Returns the plugin name.
- *
- * @since 0.1.0
- *
- * @return string
- */
-function mai_get_name() {
-	static $name = null;
-
-	if ( is_null( $name ) ) {
-		$name = mai_get_plugin_data( 'name' );
-	}
-
-	return $name;
-}
-
-/**
- * Returns the plugin handle/text domain.
- *
- * @since 0.1.0
- *
- * @return string
- */
-function mai_get_handle() {
-	static $handle = null;
-
-	if ( is_null( $handle ) ) {
-		$handle = mai_get_plugin_data( 'text-domain' );
-	}
-
-	return $handle;
-}
-
-/**
- * Returns the plugin version.
- *
- * @since 0.1.0
- *
- * @return string
- */
-function mai_get_version() {
-	static $version = null;
-
-	if ( is_null( $version ) ) {
-		$version = mai_get_plugin_data( 'version' );
-	}
-
-	return $version;
-}
-
-/**
- * Gets the plugin updater icons.
- * This may be used in additiona Mai Plugins.
- *
- * @since 2.11.0
- *
- * @return array
- */
-function mai_get_updater_icons() {
-	$icons    = [];
-	$standard = mai_get_logo_icon_1x();
-	$retina   = mai_get_logo_icon_2x();
-
-	if ( $standard && $retina ) {
-		$icons = [
-			'1x' => $standard,
-			'2x' => $retina,
-		];
-	}
-
-	return $icons;
-}
-
-/**
- * Gets the Mai Theme logo icon @1x for plugin updater.
- *
- * @since 2.11.0
- *
- * @return string
- */
-function mai_get_logo_icon_1x() {
-	static $icon = null;
-
-	if ( ! is_null( $icon ) ) {
-		return $icon;
-	}
-
-	$file = 'assets/img/icon-128x128.png';
-	$icon = file_exists( mai_get_dir() . $file ) ? mai_get_url() . $file : '';
-
-	return $icon;
-}
-
-/**
- * Gets the Mai Theme logo icon @1x for plugin updater.
- *
- * @since 2.11.0
- *
- * @return string
- */
-function mai_get_logo_icon_2x() {
-	static $icon = null;
-
-	if ( ! is_null( $icon ) ) {
-		return $icon;
-	}
-
-	$file = 'assets/img/icon-256x256.png';
-	$icon = file_exists( mai_get_dir() . $file ) ? mai_get_url() . $file : '';
-
-	return $icon;
-}
-
-/**
  * Deactivate Mai Engine plugin.
  *
  * @since 0.1.0
@@ -771,6 +455,400 @@ function mai_load_files() {
 			WP_CLI::success( $message );
 		});
 	}
+}
+
+/**
+ * Returns the plugin directory.
+ *
+ * @since 0.1.0
+ *
+ * @return string
+ */
+function mai_get_dir() {
+	static $dir = null;
+
+	if ( is_null( $dir ) ) {
+		$dir = trailingslashit( dirname( __DIR__ ) );
+	}
+
+	return $dir;
+}
+
+/**
+ * Returns the plugin URL.
+ *
+ * @since 0.1.0
+ *
+ * @return string
+ */
+function mai_get_url() {
+	static $url = null;
+
+	if ( ! is_null( $url ) ) {
+		return $url;
+	}
+
+	$url = trailingslashit( plugins_url( basename( mai_get_dir() ) ) );
+
+	return $url;
+}
+
+/**
+ * Gets the plugin basename.
+ *
+ * @since 0.1.0
+ *
+ * @return string
+ */
+function mai_get_base() {
+	static $base = null;
+
+	if ( ! is_null( $base ) ) {
+		return $base;
+	}
+
+	$dir  = basename( dirname( dirname( __DIR__ ) ) );
+	$file = mai_get_handle() . '.php';
+	$base = $dir . DIRECTORY_SEPARATOR . $file;
+
+	return $base;
+}
+
+/**
+ * Returns an array of plugin data from the main plugin file.
+ *
+ * @since 0.1.0
+ *
+ * @param string $key Optionally return one key.
+ *
+ * @return array|string|null
+ */
+function mai_get_plugin_data( $key = '' ) {
+	static $data = null;
+
+	if ( is_null( $data ) ) {
+		$data = get_file_data(
+			mai_get_dir() . 'mai-engine.php',
+			[
+				'name'        => 'Plugin Name',
+				'version'     => 'Version',
+				'plugin-uri'  => 'Plugin URI',
+				'text-domain' => 'Text Domain',
+				'description' => 'Description',
+				'author'      => 'Author',
+				'author-uri'  => 'Author URI',
+				'domain-path' => 'Domain Path',
+				'network'     => 'Network',
+			],
+			'plugin'
+		);
+	}
+
+	if ( array_key_exists( $key, $data ) ) {
+		return $data[ $key ];
+	}
+
+	return $data;
+}
+
+/**
+ * Returns the plugin name.
+ *
+ * @since 0.1.0
+ *
+ * @return string
+ */
+function mai_get_name() {
+	static $name = null;
+
+	if ( is_null( $name ) ) {
+		$name = mai_get_plugin_data( 'name' );
+	}
+
+	return $name;
+}
+
+/**
+ * Returns the plugin handle/text domain.
+ *
+ * @since 0.1.0
+ *
+ * @return string
+ */
+function mai_get_handle() {
+	static $handle = null;
+
+	if ( is_null( $handle ) ) {
+		$handle = mai_get_plugin_data( 'text-domain' );
+	}
+
+	return $handle;
+}
+
+/**
+ * Returns the plugin version.
+ *
+ * @since 0.1.0
+ *
+ * @return string
+ */
+function mai_get_version() {
+	static $version = null;
+
+	if ( is_null( $version ) ) {
+		$version = mai_get_plugin_data( 'version' );
+	}
+
+	return $version;
+}
+
+/**
+ * Get the active engine theme. Defaults to the default theme.
+ *
+ * @since 0.1.0
+ *
+ * @return bool|string
+ */
+function mai_get_engine_theme() {
+	static $theme = null;
+
+	if ( ! is_null( $theme ) ) {
+		return $theme;
+	}
+
+	$engine_themes = mai_get_engine_themes();
+
+	if ( current_theme_supports( 'mai-engine' ) ) {
+		// Custom themes can load a specific theme default via `add_theme_support( 'mai-engine', 'success' );`.
+		$theme_support = get_theme_support( 'mai-engine' );
+
+		if ( $theme_support && is_array( $theme_support ) && in_array( $theme_support[0], $engine_themes, true ) ) {
+			$theme = $theme_support[0];
+		}
+	}
+
+	if ( ! $theme ) {
+		$current_theme = defined( 'CHILD_THEME_NAME' ) ? CHILD_THEME_NAME : null;
+
+		if ( $current_theme ) {
+			$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $current_theme ) );
+
+			if ( in_array( $current_theme, $engine_themes, true ) ) {
+				$theme = $current_theme;
+			}
+		}
+	}
+
+	if ( ! $theme ) {
+		$current_theme = wp_get_theme()->get( 'Name' );
+
+		if ( $current_theme ) {
+			$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $current_theme ) );
+
+			if ( in_array( $current_theme, $engine_themes, true ) ) {
+				$theme = $current_theme;
+			}
+		}
+	}
+
+	if ( ! $theme ) {
+		$current_theme = wp_get_theme()->get( 'TextDomain' );
+
+		if ( $current_theme ) {
+			$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $current_theme ) );
+
+			if ( in_array( $current_theme, $engine_themes, true ) ) {
+				$theme = $current_theme;
+			}
+		}
+	}
+
+	if ( ! $theme ) {
+		$current_theme = basename( get_stylesheet_directory() );
+
+		if ( $current_theme ) {
+			$current_theme = str_replace( 'mai-', '', sanitize_title_with_dashes( $current_theme ) );
+
+			if ( in_array( $current_theme, $engine_themes, true ) ) {
+				$theme = $current_theme;
+			}
+		}
+	}
+
+	$theme = $theme ?: 'default';
+
+	return $theme;
+}
+
+/**
+ * Get available engine themes.
+ *
+ * @since 2.0.0
+ *
+ * @return array
+ */
+function mai_get_engine_themes() {
+	static $themes = null;
+
+	if ( ! is_null( $themes ) ) {
+		return $themes;
+	}
+
+	$configs = glob( dirname( __DIR__ ) . '/config/*.php' );
+	$themes  = [];
+
+	foreach ( $configs as $index => $config ) {
+		$base = basename( $config, '.php' );
+
+		if ( in_array( $base, [ '_default', '_settings' ], true ) ) {
+			continue;
+		}
+
+		$themes[] = $base;
+	}
+
+	return $themes;
+}
+
+
+/**
+ * Returns asset version with filetime.
+ *
+ * @since 0.1.0
+ *
+ * @param string $file File path.
+ *
+ * @return string
+ */
+function mai_get_asset_version( $file ) {
+	$file    = str_replace( content_url(), WP_CONTENT_DIR, $file );
+	$version = mai_get_version();
+
+	if ( file_exists( $file ) ) {
+		$version .= '.' . date( 'njYHi', filemtime( $file ) );
+	}
+
+	return $version;
+}
+
+/**
+ * Returns minified version of asset if in dev mode.
+ *
+ * @since 0.1.0
+ * @since 2.4.0 Removed min dir if CSS file. Always return minified CSS.
+ *
+ * @param string $file File base name (relative to type directory).
+ *
+ * @return string
+ */
+function mai_get_asset_url( $file ) {
+	$type    = false !== strpos( $file, '.js' ) ? 'js' : 'css';
+	$name    = str_replace( [ '.js', '.css' ], '', $file );
+	$uri     = mai_get_url();
+	$default = "{$uri}assets/{$type}/{$name}.{$type}";
+	$dir     = 'js' === $type ? '/min/' : '/';
+	$min     = "{$uri}assets/{$type}{$dir}{$name}.min.{$type}";
+
+	return mai_is_in_dev_mode() && 'js' === $type ? $default : $min;
+}
+
+/**
+ * Returns the active child theme's sub config.
+ *
+ * @since 0.1.0
+ * @since 2.11.0 Add static caching.
+ *
+ * @param string $sub_config Name of config to get.
+ *
+ * @return array
+ */
+function mai_get_config( $sub_config ) {
+	static $configs = null;
+
+	if ( is_array( $configs ) && isset( $configs[ $sub_config ] ) ) {
+		return $configs[ $sub_config ];
+	}
+
+	if ( ! is_array( $configs ) ) {
+		$configs = [];
+	}
+
+	$config                 = mai_get_full_config();
+	$value                  = isset( $config[ $sub_config ] ) ? $config[ $sub_config ] : [];
+	$configs[ $sub_config ] = apply_filters( "mai_{$sub_config}_config", $value );
+
+	return $configs[ $sub_config ];
+}
+
+/**
+ * Returns the active child theme's full config.
+ *
+ * @access private
+ *
+ * @since 2.11.0
+ *
+ * @return array
+ */
+function mai_get_full_config() {
+	static $config = null;
+
+	if ( ! is_null( $config ) ) {
+		return $config;
+	}
+
+	$config = require mai_get_dir() . 'config/_default.php';
+	$theme  = mai_get_active_theme();
+	$theme  = ( 'default' === $theme ) ? '_default' : $theme;
+	$path   = mai_get_dir() . 'config/' . $theme . '.php';
+
+	if ( is_readable( $path ) ) {
+		$new    = require $path;
+		$config = array_replace_recursive( $config, $new );
+		if ( isset( $new['settings']['content-archives'] ) ) {
+			foreach ( $new['settings']['content-archives'] as $key => $settings ) {
+				if ( ! ( isset( $new['settings']['content-archives'][ $key ]['show'] ) && isset( $config['settings']['content-archives'][ $key ]['show'] ) ) ) {
+					continue;
+				}
+				$config['settings']['content-archives'][ $key ]['show'] = $new['settings']['content-archives'][ $key ]['show'];
+			}
+		}
+		if ( isset( $new['settings']['single-content'] ) ) {
+			foreach ( $new['settings']['single-content'] as $key => $settings ) {
+				if ( ! ( isset( $new['settings']['single-content'][ $key ]['show'] ) && isset( $config['settings']['single-content'][ $key ]['show'] ) ) ) {
+					continue;
+				}
+				$config['settings']['single-content'][ $key ]['show'] = $new['settings']['single-content'][ $key ]['show'];
+			}
+		}
+	}
+
+	// Allow users to override from within actual child theme.
+	$child = get_stylesheet_directory() . '/config.php';
+
+	if ( is_readable( $child ) ) {
+		$new    = require $child;
+		$config = array_replace_recursive( $config, $new );
+		if ( isset( $new['settings']['content-archives'] ) ) {
+			foreach ( $new['settings']['content-archives'] as $key => $settings ) {
+				if ( ! ( isset( $new['settings']['content-archives'][ $key ]['show'] ) && isset( $config['settings']['content-archives'][ $key ]['show'] ) ) ) {
+					continue;
+				}
+				$config['settings']['content-archives'][ $key ]['show'] = $new['settings']['content-archives'][ $key ]['show'];
+			}
+		}
+		if ( isset( $new['settings']['single-content'] ) ) {
+			foreach ( $new['settings']['single-content'] as $key => $settings ) {
+				if ( ! ( isset( $new['settings']['single-content'][ $key ]['show'] ) && isset( $config['settings']['single-content'][ $key ]['show'] ) ) ) {
+					continue;
+				}
+				$config['settings']['single-content'][ $key ]['show'] = $new['settings']['single-content'][ $key ]['show'];
+			}
+		}
+	}
+
+	$config = apply_filters( 'mai_config', $config );
+
+	return $config;
 }
 
 /**
