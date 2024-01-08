@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.31.3 (1/8/24)
+* Fixed: Added back updater icon functions.
+
 ## 2.31.2 (1/8/24)
 * Changed: Now Load core getter functions immediately instead of `after_setup_theme`.
 * Fixed: Cover block overlay was not rendering correctly when using Link as the overlay color.
