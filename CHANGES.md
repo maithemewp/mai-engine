@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.31.2 (1/8/24)
+* Changed: Now Load core getter functions immediately instead of `after_setup_theme`.
+* Fixed: Cover block overlay was not rendering correctly when using Link as the overlay color.
+
 ## 2.31.1 (12/28/23)
 * Added: Better PHP 8.2 compatibility.
 * Changed: Element stacking via z-index is now less aggressive by default. This fixes some edge-case scenarios where floating elements are behind other elements on the page.
