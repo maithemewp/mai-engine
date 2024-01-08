@@ -852,6 +852,61 @@ function mai_get_full_config() {
 }
 
 /**
+ * Gets the plugin updater icons.
+ * This may be used in additiona Mai Plugins.
+ *
+ * @since 2.11.0
+ *
+ * @return array
+ */
+function mai_get_updater_icons() {
+	$icons    = [];
+	$standard = mai_get_logo_icon_1x();
+	$retina   = mai_get_logo_icon_2x();
+	if ( $standard && $retina ) {
+		$icons = [
+			'1x' => $standard,
+			'2x' => $retina,
+		];
+	}
+	return $icons;
+}
+
+/**
+ * Gets the Mai Theme logo icon @1x for plugin updater.
+ *
+ * @since 2.11.0
+ *
+ * @return string
+ */
+function mai_get_logo_icon_1x() {
+	static $icon = null;
+	if ( ! is_null( $icon ) ) {
+		return $icon;
+	}
+	$file = 'assets/img/icon-128x128.png';
+	$icon = file_exists( mai_get_dir() . $file ) ? mai_get_url() . $file : '';
+	return $icon;
+}
+
+/**
+ * Gets the Mai Theme logo icon @1x for plugin updater.
+ *
+ * @since 2.11.0
+ *
+ * @return string
+ */
+function mai_get_logo_icon_2x() {
+	static $icon = null;
+	if ( ! is_null( $icon ) ) {
+		return $icon;
+	}
+	$file = 'assets/img/icon-256x256.png';
+	$icon = file_exists( mai_get_dir() . $file ) ? mai_get_url() . $file : '';
+	return $icon;
+}
+
+/**
  * Checks if Mai needs to load ACF Pro.
  *
  * @access private
