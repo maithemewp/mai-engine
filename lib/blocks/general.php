@@ -89,34 +89,49 @@ function mai_render_block_handle_link_color( $block_content, $block ) {
 	}
 
 	// Get color settings.
-	$text = mai_isset( $block['attrs'], 'textColor', false );
-	$bg   = mai_isset( $block['attrs'], 'backgroundColor', false );
+	$text    = mai_isset( $block['attrs'], 'textColor', false );
+	$bg      = mai_isset( $block['attrs'], 'backgroundColor', false );
+	$overlay = mai_isset( $block['attrs'], 'overlayColor', false );
 
 	// Bail if no link colors.
-	if ( ! in_array( 'link', [ $text, $bg ], true ) ) {
+	if ( ! in_array( 'link', [ $text, $bg, $overlay ], true ) ) {
 		return $block_content;
 	}
 
 	// Find first instance of has-link-color and replace with has-links-color.
 	$tags = new WP_HTML_Tag_Processor( $block_content );
 
+	// Handle text color.
 	if ( 'link' === $text ) {
 		while ( $tags->next_tag( [ 'class_name' => 'has-link-color' ] ) ) {
-			$class  = $tags->get_attribute( 'class' );
-			$class .= ' has-links-color';
-			$tags->set_attribute( 'class', $class );
+			// Get array of classes, add new, and flip.
+			$class   = explode( ' ', $tags->get_attribute( 'class' ) );
+			$class[] = 'has-links-color';
+			$class   = array_flip( $class );
+
+			// Remove link color class.
+			unset( $class['has-link-color'] );
+
+			$tags->set_attribute( 'class', implode( ' ', array_flip( $class ) ) );
 			break;
 		}
 	}
 
-	if ( 'link' === $bg ) {
+	// Handle background and overlay color.
+	if ( 'link' === $bg || 'link' === $overlay ) {
 		// Find first instance of has-link-background-color and replace with has-links-background-color.
 		$tags = new WP_HTML_Tag_Processor( $block_content );
 
 		while ( $tags->next_tag( [ 'class_name' => 'has-link-background-color' ] ) ) {
-			$class  = $tags->get_attribute( 'class' );
-			$class .= ' has-links-background-color';
-			$tags->set_attribute( 'class', $class );
+			// Get array of classes, add new, and flip.
+			$class   = explode( ' ', $tags->get_attribute( 'class' ) );
+			$class[] = 'has-links-background-color';
+			$class   = array_flip( $class );
+
+			// Remove link background color class.
+			unset( $class['has-link-background-color'] );
+
+			$tags->set_attribute( 'class', implode( ' ', array_flip( $class ) ) );
 			break;
 		}
 	}
