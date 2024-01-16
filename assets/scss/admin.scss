@@ -206,6 +206,16 @@ body.has-boxed-container .editor-styles-wrapper {
 }
 
 /**
+ * Advanced Custom Fields license and upgrade notices.
+ */
+#tmpl-acf-field-group-pro-features,
+.acf-admin-toolbar-upgrade-btn {
+	display: none !important;
+	width: 0 !important;
+	height: 0 !important;
+}
+
+/**
  * Setup Wizard.
  */
 
