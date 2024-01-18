@@ -427,6 +427,10 @@ function mai_load_files() {
 		$files[] = 'support/rankmath';
 	}
 
+	if ( function_exists( 'ss_get_podcast' ) ) {
+		$files[] = 'support/seriously-simple-podcasting';
+	}
+
 	if ( class_exists( 'SitePress' ) ) {
 		$files[] = 'support/wpml';
 	}
@@ -435,12 +439,12 @@ function mai_load_files() {
 		$files[] = 'support/woocommerce';
 	}
 
-	if ( function_exists( 'ss_get_podcast' ) ) {
-		$files[] = 'support/seriously-simple-podcasting';
-	}
-
 	if ( class_exists( 'WPForms' ) || function_exists( 'wpforms' ) ) {
 		$files[] = 'support/wpforms';
+	}
+
+	if ( class_exists( 'WP_Recipe_Maker' ) ) {
+		$files[] = 'support/wp-recipe-maker';
 	}
 
 	foreach ( $files as $file ) {

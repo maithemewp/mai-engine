@@ -234,3 +234,46 @@ function mai_change_plugin_dependency_text( $actions ) {
  * @return bool
  */
 add_filter( 'kirki_settings_page', '__return_false', 8 );
+
+add_filter( 'acf/settings/show_updates', 'mai_acf_settings_show_updates' );
+/**
+ * Disables ACF updates settings page.
+ *
+ * @since 2.32.0
+ *
+ * @param bool $value The current value.
+ *
+ * @return bool
+ */
+function mai_acf_settings_show_updates( $value ) {
+	return false;
+}
+
+add_action( 'admin_notices', 'mai_render_acf_admin_notices', 98 );
+/**
+ * Removes ACF license notices.
+ * We're legally bundling ACF in Mai Engine so we don't need to show license notices.
+ *
+ * @since 2.32.0
+ *
+ * @return void
+ */
+function mai_render_acf_admin_notices() {
+	global $acf_stores;
+
+	// Bail if no notices.
+	if ( ! $acf_stores || ! is_array( $acf_stores ) || ! isset( $acf_stores['notices'] ) ) {
+		return;
+	}
+
+	// Get notices.
+	$notices = $acf_stores['notices']->get_data();
+
+	// Loop through and check for license text.
+	foreach ( $notices as $index => $notice ) {
+		if ( isset( $notice->data['text'] ) && str_contains( $notice->data['text'], 'license' ) ) {
+			// Remove.
+			unset( $acf_stores['notices']->data[ $index ] );
+		}
+	}
+}
