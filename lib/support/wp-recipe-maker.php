@@ -17,7 +17,7 @@ add_filter( 'do_shortcode_tag', 'mai_recipe_maker_button_shortcodes', 10, 2 );
  * Adds button classes to WP Recipe Maker shortcodes.
  * Removes inline styles.
  *
- * @since TBD
+ * @since 2.31.4
  *
  * @param string $output The output from the shortcode.
  * @param string $tag    The name of the shortcode.

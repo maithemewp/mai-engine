@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.31.4 (1/18/24)
+* Fixed: Remove unecessary encoding in PHP's DOMDocument which was unintentionally encoding some special characters from non-English languages.
+
 ## 2.31.3 (1/8/24)
 * Fixed: Added back updater icon functions.
 
