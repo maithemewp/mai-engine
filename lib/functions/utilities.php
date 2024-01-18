@@ -1309,14 +1309,6 @@ function mai_get_dom_document( $html ) {
 	// Modify state.
 	$libxml_previous_state = libxml_use_internal_errors( true );
 
-	// Encode. Can't use `mb_convert_encoding()` because it's deprecated in PHP 8.2.
-	// @link https://stackoverflow.com/questions/8218230/php-domdocument-loadhtml-not-encoding-utf-8-correctly
-	// @link https://php.watch/versions/8.2/mbstring-qprint-base64-uuencode-html-entities-deprecated#html
-	// $html = mb_encode_numericentity( $html, [0x80, 0x10FFFF, 0, ~0], 'UTF-8' );
-	// $html = mb_convert_encoding( $html, 'UTF-8' );
-	// $html = htmlentities( $html );
-	// $html = htmlspecialchars_decode( $html );
-
 	// Load the content in the document HTML.
 	$dom->loadHTML( "<div>$html</div>" );
 
