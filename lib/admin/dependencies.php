@@ -239,7 +239,7 @@ add_filter( 'acf/settings/show_updates', 'mai_acf_settings_show_updates' );
 /**
  * Disables ACF updates settings page.
  *
- * @since 2.31.4
+ * @since 2.32.0
  *
  * @param bool $value The current value.
  *
@@ -254,7 +254,7 @@ add_action( 'admin_notices', 'mai_render_acf_admin_notices', 98 );
  * Removes ACF license notices.
  * We're legally bundling ACF in Mai Engine so we don't need to show license notices.
  *
- * @since 2.31.4
+ * @since 2.32.0
  *
  * @return void
  */

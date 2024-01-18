@@ -55,7 +55,7 @@ add_filter( 'render_block_data', 'mai_render_block_data_handle_link_color', 10, 
 /**
  * Removes inline styles from blocks.
  *
- * @since 2.31.4
+ * @since 2.32.0
  *
  * @param array         $parsed_block The block being rendered.
  * @param array         $source_block An un-modified copy of $parsed_block, as it appeared in the source content.
@@ -76,7 +76,7 @@ add_filter( 'render_block', 'mai_render_block_handle_link_color', 10, 2 );
 /**
  * Fixes WP 6.4 conflict with link color class.
  *
- * @since 2.31.4
+ * @since 2.32.0
  *
  * @param string $block_content The existing block content.
  * @param array  $block         The button block object.
