@@ -63,7 +63,7 @@ function mai_render_search_block( $block_content, $block ) {
 			}
 		}
 
-		$block_content = $dom->saveHTML();
+		$block_content = mai_get_dom_html( $dom );
 	}
 
 	return $block_content;

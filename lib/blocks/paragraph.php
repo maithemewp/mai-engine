@@ -110,7 +110,7 @@ function mai_render_paragraph_block( $block_content, $block ) {
 		$classes = mai_add_classes( sprintf( 'has-no-margin-%s', $side ), $classes );
 		$first_block->setAttribute( 'class', $classes );
 
-		$block_content = $dom->saveHTML();
+		$block_content = mai_get_dom_html( $dom );
 	}
 
 	return $block_content;
