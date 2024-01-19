@@ -4,13 +4,13 @@
 * Fixed: Even more efficient JS to change no-js to js class on the body. In some instances, this class change was not firing.
 
 ## 2.32.1 (1/19/24)
-* Fixed: Encoded special characters were displaying on the front end in some configurations.
+* Fixed: Encoded special characters were displaye on the front end in some configurations.
 
 ## 2.32.0 (1/18/24)
 * Added: Better support for WP Recipe Maker. Recipe buttons now inherit styling from Mai.
 * Changed: Update ACF to 6.2.5.
 * Changed: Simplified inline script to toggle no-js to js body class if JS is enabled in the browser.
-* Fixed: Cleanup confusing notices from ACF.
+* Fixed: Clean up confusing notices from ACF.
 * Fixed: Remove unnecessary encoding in PHP's DOMDocument which was unintentionally encoding some special characters from non-English languages.
 
 ## 2.31.3 (1/8/24)
