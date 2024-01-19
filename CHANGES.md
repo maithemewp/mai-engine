@@ -4,7 +4,7 @@
 * Fixed: Even more efficient JS to change no-js to js class on the body. In some instances, this class change was not firing.
 
 ## 2.32.1 (1/19/24)
-* Fixed: Encoded special characters were displaye on the front end in some configurations.
+* Fixed: Encoded special characters were displayed on the front end in some configurations.
 
 ## 2.32.0 (1/18/24)
 * Added: Better support for WP Recipe Maker. Recipe buttons now inherit styling from Mai.
