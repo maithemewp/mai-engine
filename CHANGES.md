@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.32.1 (1/19/24)
+* Fixed: Encoded special characters were displaying on the front end in some configurations.
+
 ## 2.32.0 (1/18/24)
 * Added: Better support for WP Recipe Maker. Recipe buttons now inherit styling from Mai.
 * Changed: Update ACF to 6.2.5.
