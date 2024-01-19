@@ -110,7 +110,9 @@ function mai_product_loop_start_columns( $html ) {
 
 	$first->setAttribute( 'style', $style );
 
-	return str_replace( '</ul>', '', $dom->saveHTML() );
+	$html = mai_get_dom_html( $dom );
+
+	return str_replace( '</ul>', '', $html );
 }
 
 add_filter( 'woocommerce_pagination_args', 'mai_woocommerce_pagination_previous_next_text' );
