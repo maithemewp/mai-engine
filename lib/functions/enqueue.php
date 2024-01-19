@@ -39,7 +39,7 @@ add_action( 'genesis_before', 'mai_js_nojs_script', 1 );
  * @return void
  */
 function mai_js_nojs_script() {
-	echo "<script>document.body.className = document.body.className.replace('no-js','js');</script>";
+	echo "<script>document.body.classList.replace('no-js','js');</script>";
 }
 
 add_action( 'wp_enqueue_scripts', 'mai_enqueue_assets' );
