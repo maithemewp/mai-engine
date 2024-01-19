@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.32.2 (1/19/24)
+* Fixed: Even more efficient JS to change no-js to js class on the body. In some instances, this class change was not firing.
+
 ## 2.32.1 (1/19/24)
 * Fixed: Encoded special characters were displaying on the front end in some configurations.
 
