@@ -72,7 +72,7 @@ function mai_render_group_block( $block_content, $block ) {
 				$first_block->setAttribute( 'class', $classes );
 			}
 
-			$block_content = $dom->saveHTML();
+			$block_content = mai_get_dom_html( $dom );
 		}
 	}
 

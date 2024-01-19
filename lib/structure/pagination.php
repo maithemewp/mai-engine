@@ -158,7 +158,7 @@ function mai_posts_nav() {
 			}
 		}
 
-		$pagination = $dom->saveHTML();
+		$pagination = mai_get_dom_html( $dom );
 	}
 
 	echo $pagination;
@@ -201,7 +201,7 @@ function mai_adjacent_entry( $content, $args ) {
 		$link->setAttribute( 'class', $classes );
 	}
 
-	$content = $dom->saveHTML();
+	$content = mai_get_dom_html( $dom );
 
 	return $content;
 }

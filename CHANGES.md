@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.32.0 (1/18/24)
+* Added: Better support for WP Recipe Maker. Recipe buttons now inherit styling from Mai.
+* Changed: Update ACF to 6.2.5.
+* Changed: Simplified inline script to toggle no-js to js body class if JS is enabled in the browser.
+* Fixed: Cleanup confusing notices from ACF.
+* Fixed: Remove unnecessary encoding in PHP's DOMDocument which was unintentionally encoding some special characters from non-English languages.
+
 ## 2.31.3 (1/8/24)
 * Fixed: Added back updater icon functions.
 

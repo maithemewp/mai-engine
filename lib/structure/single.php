@@ -46,7 +46,7 @@ function mai_entry_pagination_button_class( $link, $i ) {
 		$new  .= ' button-small';
 		$class = mai_add_classes( $new, $class );
 		$first->setAttribute( 'class', $class );
-		$link = $dom->saveHTML();
+		$link = mai_get_dom_html( $dom );
 	}
 
 	return $link;
