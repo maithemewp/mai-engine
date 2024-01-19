@@ -55,7 +55,7 @@ function mai_comment_reply_button_class( $link ) {
 		$classes = $button->setAttribute( 'class', $classes );
 	}
 
-	return $dom->saveHTML();
+	return mai_get_dom_html( $dom );
 }
 
 /**
@@ -84,5 +84,5 @@ function mai_comment_reply_link( $formatted_link, $link, $text ) {
 	$classes = mai_add_classes( 'cancel-comment-reply-link', $classes );
 	$classes = $link->setAttribute( 'class', $classes );
 
-	return $dom->saveHTML();
+	return mai_get_dom_html( $dom );
 }

@@ -329,7 +329,7 @@ function mai_gallery_shortcode_tag( $output, $tag, $atts, $m ) {
 		$first->removeAttribute( 'style' );
 	}
 
-	$output = $dom->saveHTML();
+	$output = mai_get_dom_html( $dom );
 
 	return $output;
 }
