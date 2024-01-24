@@ -250,6 +250,34 @@ function mai_get_mobile_menu_breakpoint() {
 }
 
 /**
+ * Gets an incremented index.
+ *
+ * @since TBD
+ *
+ * @param string $context The context for the counter.
+ * @param bool $reset Whether to reset the index.
+ *
+ * @return int
+ */
+function mai_get_index( $context, $reset = false ) {
+	static $indexes = [];
+
+	if ( isset( $indexes[ $context ] ) ) {
+		if ( $reset ) {
+			$indexes[ $context ] = 0;
+		} else {
+			$indexes[ $context ]++;
+		}
+
+		return $indexes[ $context ];
+	}
+
+	$indexes[ $context ] = 0;
+
+	return $indexes[ $context ];
+}
+
+/**
  * Return the current post type.
  * Sometimes we need this earlier than get_post_type()
  * can handle, so we fall back to the query var.
