@@ -91,7 +91,7 @@
 	}
 }
 
-// Invert logo for dark background header that does not have an unstuck transparent header.
+// Inverts logo for dark background header (not when a transparent header is displayed, and before it's scrolled/sticky).
 // Invert logo for dark transparent header that is not stuck.
 .has-logo-invert.has-dark-header:not(.has-transparent-header:not(.header-stuck)),
 .has-logo-invert.has-dark-transparent-header:not(.header-stuck) {
