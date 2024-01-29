@@ -56,6 +56,17 @@ function mai_site_header_customizer_settings() {
 		)
 	);
 
+	new \Kirki\Field\Checkbox(
+		mai_parse_kirki_args(
+			[
+				'settings'        => mai_get_kirki_setting( 'logo-invert' ),
+				'section'         => $section,
+				'label'           => __( 'Force logo to white on dark background?', 'mai-engine' ),
+				'default'         => false,
+			]
+		)
+	);
+
 	new \Kirki\Field\Sortable(
 		mai_parse_kirki_args(
 			[
