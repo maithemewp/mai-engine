@@ -88,6 +88,7 @@ function mai_body_classes( $classes ) {
 	if ( mai_has_transparent_header() ) {
 		$classes[] = 'has-transparent-header';
 
+		// Add dark transparent header class.
 		if ( $has_dark_page_header || ( ! $has_page_header && mai_has_dark_background_first() ) ) {
 			$classes[] = 'has-dark-transparent-header';
 		}
@@ -126,6 +127,11 @@ function mai_body_classes( $classes ) {
 		$classes[] = 'has-logo-right';
 	} elseif ( ( $header_left && $header_right ) || ( ! $header_right && ! $header_right ) ) {
 		$classes[] = 'has-logo-center';
+	}
+
+	// Add logo invert class.
+	if ( mai_get_option( 'logo-invert', false ) ) {
+		$classes[] = 'has-logo-invert';
 	}
 
 	// Add single type class.

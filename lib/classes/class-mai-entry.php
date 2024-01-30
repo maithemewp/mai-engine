@@ -133,9 +133,8 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function render() {
-		if ( 'archive' === $this->context ) {
-			static $entry_index = 1;
-		}
+		// Get context for index, then get the index. This gets reset in `mai_do_entries_open()`.
+		$entry_index = in_array( $this->context, [ 'archive', 'block' ] ) ? mai_get_index( mai_get_entry_index_context( $this->context ) ) : 0;
 
 		// Remove post attributes.
 		remove_filter( 'genesis_attr_entry', 'genesis_attributes_entry' );
@@ -163,7 +162,7 @@ class Mai_Entry {
 		}
 
 		// Add index for easy custom ordering.
-		if ( 'archive' === $this->context ) {
+		if ( $entry_index ) {
 			$atts['style'] = sprintf( '--entry-index:%s;', $entry_index );
 		}
 
@@ -228,6 +227,9 @@ class Mai_Entry {
 		// Remove duplicate classes.
 		$atts['class'] = implode( ' ', array_unique( explode( ' ', $atts['class'] ) ) );
 
+		// Hook.
+		do_action( 'mai_before_entry', $this->entry, $this->args );
+
 		// Open.
 		genesis_markup(
 			[
@@ -285,7 +287,7 @@ class Mai_Entry {
 				if ( in_array( 'title', $this->args['show'], true ) ) {
 					$overlay_atts['aria-labelledby'] = 'entry-title-' . $this::$index;
 				} else {
-					$overlay_atts['aria-label'] = $this->title;
+					$overlay_atts['aria-label'] = esc_attr( $this->title );
 				}
 			}
 
@@ -399,9 +401,8 @@ class Mai_Entry {
 			remove_filter( 'post_class', [ $this, 'has_image_class' ] );
 		}
 
-		if ( 'archive' === $this->context ) {
-			$entry_index++;
-		}
+		// Hook.
+		do_action( 'mai_after_entry', $this->entry, $this->args );
 
 		$this::$index++;
 	}
@@ -527,7 +528,7 @@ class Mai_Entry {
 			}
 			// Otherwise add aria-label because links must have discernible text.
 			elseif ( $this->title ) {
-				$atts['aria-label'] = $this->title;
+				$atts['aria-label'] = esc_attr( $this->title );
 			}
 		}
 
@@ -561,7 +562,6 @@ class Mai_Entry {
 	 * @return string
 	 */
 	public function get_image() {
-
 		// Get the image ID.
 		$image_id = $this->image_id;
 

@@ -138,7 +138,7 @@ class Mai_Grid {
 			break;
 		}
 
-		// TODO: Should this be before our sanitization? Seems weird.
+		// Filter to add args via custom ACF fields.
 		$args = apply_filters( 'mai_grid_args', $sanitized );
 
 		return $args;
