@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.33.0 (1/30/24)
+* Added: New setting to force the logo to white on dark backgrounds (dark header or transparent header background). Find the setting in Customizer > Theme Settings > Site Header.
+* Added: [Developers] New `mai_before_entry` and `mai_after_entry` action hooks.
+* Added: [Developers] New `mai_get_index()` function to increment and reset an index/count based on context string.
+* Changed: Adds CSS order/index to Mai Post/Term Grid entries.
+* Fixed: Escapes `aria-label` attribute in entry titles, so HTML in the editor title field won't break the markup.
+
 ## 2.32.2 (1/19/24)
 * Fixed: Even more efficient JS to change no-js to js class on the body. In some instances, this class change was not firing.
 
