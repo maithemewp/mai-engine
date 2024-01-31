@@ -133,6 +133,11 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function render() {
+		// // Bail if not rendering this empty via a filter.
+		// if ( ! (bool) apply_filters( 'mai_do_entry', true, $this->entry, $this->args ) ) {
+		// 	return;
+		// }
+
 		// Get context for index, then get the index. This gets reset in `mai_do_entries_open()`.
 		$entry_index = in_array( $this->context, [ 'archive', 'block' ] ) ? mai_get_index( mai_get_entry_index_context( $this->context ) ) : 0;
 

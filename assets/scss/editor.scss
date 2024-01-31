@@ -412,6 +412,10 @@ input[type="submit"],
 	pointer-events: none;
 }
 
+.entry-grid {
+	order: var(--entry-order, var(--entry-index, var(--order, unset))) !important;
+}
+
 // Columns.
 
 .has-columns:not(.has-columns-nested) {
