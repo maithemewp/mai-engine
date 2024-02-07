@@ -235,6 +235,10 @@
 	z-index: 1 !important;
 }
 
+.has-z-index-2 {
+	z-index: 1 !important;
+}
+
 // TODO: Use custom properties?
 // If so, update editor.scss to match.
 @each $padding-name, $padding-size in $padding_scale {
