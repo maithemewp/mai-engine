@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.33.1 (2/7/24)
+* Added: [Developers] Add entry-grid order to the editor CSS.
+* Added: New `has-z-index-2` helper class along with the existing `has-z-index-1`, `has-z-index-0`, and `has-z-index--1` classes.
+* Changed: Update ACF to 6.2.6.1.
+* Fixed: The `font_size` param on `[mai_menu]` shortcode was not working correctly for custom values.
+* Fixed: Negative margin on nested elements was not overlapping correctly in some configurations.
+* Fixed: Unwanted vertical scroll on ACF top tabs in the block editor.
+
 ## 2.33.0 (1/30/24)
 * Added: New setting to force the logo to white on dark backgrounds (dark header or transparent header background). Find the setting in Customizer > Theme Settings > Site Header.
 * Added: [Developers] New `mai_before_entry` and `mai_after_entry` action hooks.

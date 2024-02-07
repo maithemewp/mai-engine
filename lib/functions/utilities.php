@@ -806,7 +806,7 @@ function mai_get_menu( $menu, $args = [] ) {
 			if ( in_array( $args['font_size'], ['xs', 'sm', 'md', 'lg', 'xl', 'xxl' ] ) ) {
 				$size = sprintf( 'var(--font-size-%s)', $args['font_size'] );
 			} else {
-				$size = mai_get_unit_value( $args['font-size'] );
+				$size = mai_get_unit_value( $args['font_size'] );
 			}
 
 			$atts['style'] .= sprintf( '--menu-font-size:%s;', $size );
