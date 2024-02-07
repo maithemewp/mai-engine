@@ -191,11 +191,12 @@
 
 	.has--#{ $spacing-name }-margin-top {
 		margin-top: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
-
+		z-index: 1;
 	}
 
 	.has--#{ $spacing-name }-margin-bottom {
 		margin-bottom: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
+		z-index: 1;
 	}
 }
 
@@ -205,11 +206,12 @@
 
 		.has--#{ $spacing-name }-margin-right {
 			margin-right: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
+			z-index: 1;
 		}
 
 		.has--#{ $spacing-name }-margin-left {
 			margin-left: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
-
+			z-index: 1;
 		}
 	}
 }
