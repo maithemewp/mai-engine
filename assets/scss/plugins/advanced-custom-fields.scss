@@ -1,5 +1,13 @@
 @import "../abstracts/_index";
 
+// tabs.
+
+.acf-tab-wrap.-top {
+	padding-bottom: 1px; // Fixes vertical scrollbar on tabs.
+}
+
+// end tabs.
+
 // acf sortable checkbox.
 
 .mai-sortable ul.acf-checkbox-list > li {
@@ -54,14 +62,15 @@
 // clone.
 
 .acf-field-clone[class*="mai"] {
-	margin: var(--mai-field-clone-margin, 0) !important;
+	margin: 0 !important;
+	// margin: var(--mai-field-clone-margin, 0) !important;
 	padding: 0 !important;
 	border: 0 !important;
 }
 
-.acf-field[class*="mai"] + .acf-field-clone[class*="mai"] {
-	--mai-field-clone-margin: -16px 0 0;
-}
+// .acf-field[class*="mai"] + .acf-field-clone[class*="mai"] {
+	// --mai-field-clone-margin: -16px 0 0;
+// }
 
 .acf-field-clone[class*="mai"] .acf-clone-fields {
 	border: 0 !important;
@@ -356,7 +365,7 @@
 	margin-left: 0;
 }
 
-.acf-block-panel .acf-block-fields div.acf-field[data-name="border_radius"] {
+.acf-block-panel .acf-block-fields div.acf-field[data-key="mai_icon_round_corners"] {
 	padding-top: 16px;
 	border-top: 1px solid #e2e4e7;
 }
