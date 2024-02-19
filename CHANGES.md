@@ -1,10 +1,31 @@
 # Changelog
 
+## 2.33.1 (2/7/24)
+* Added: [Developers] Add entry-grid order to the editor CSS.
+* Added: New `has-z-index-2` helper class along with the existing `has-z-index-1`, `has-z-index-0`, and `has-z-index--1` classes.
+* Changed: Update ACF to 6.2.6.1.
+* Fixed: The `font_size` param on `[mai_menu]` shortcode was not working correctly for custom values.
+* Fixed: Negative margin on nested elements was not overlapping correctly in some configurations.
+* Fixed: Unwanted vertical scroll on ACF top tabs in the block editor.
+
+## 2.33.0 (1/30/24)
+* Added: New setting to force the logo to white on dark backgrounds (dark header or transparent header background). Find the setting in Customizer > Theme Settings > Site Header.
+* Added: [Developers] New `mai_before_entry` and `mai_after_entry` action hooks.
+* Added: [Developers] New `mai_get_index()` function to increment and reset an index/count based on context string.
+* Changed: Adds CSS order/index to Mai Post/Term Grid entries.
+* Fixed: Escapes `aria-label` attribute in entry titles, so HTML in the editor title field won't break the markup.
+
+## 2.32.2 (1/19/24)
+* Fixed: Even more efficient JS to change no-js to js class on the body. In some instances, this class change was not firing.
+
+## 2.32.1 (1/19/24)
+* Fixed: Encoded special characters were displayed on the front end in some configurations.
+
 ## 2.32.0 (1/18/24)
 * Added: Better support for WP Recipe Maker. Recipe buttons now inherit styling from Mai.
 * Changed: Update ACF to 6.2.5.
 * Changed: Simplified inline script to toggle no-js to js body class if JS is enabled in the browser.
-* Fixed: Cleanup confusing notices from ACF.
+* Fixed: Clean up confusing notices from ACF.
 * Fixed: Remove unnecessary encoding in PHP's DOMDocument which was unintentionally encoding some special characters from non-English languages.
 
 ## 2.31.3 (1/8/24)

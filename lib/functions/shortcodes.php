@@ -265,9 +265,9 @@ function mai_post_terms_shortcode_classes( $output, $terms, $atts ) {
 	$classes = $first->getAttribute( 'class' );
 	$classes = mai_add_classes( sprintf( 'entry-terms-%s', sanitize_html_class( (string) $atts['taxonomy'] ) ), $classes );
 	$first->setAttribute( 'class', $classes );
-	$output  = trim( $dom->saveHTML() );
+	$output  = mai_get_dom_html( $dom );
 
-	return $output;
+	return trim( $output );
 }
 
 /**

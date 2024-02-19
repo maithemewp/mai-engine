@@ -15,6 +15,7 @@ msgstr ""
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "PO-Revision-Date: 2023-06-27T14:09:59+00:00\n"
 =======
 "PO-Revision-Date: 2023-10-25T08:59:42+00:00\n"
@@ -24,6 +25,9 @@ msgstr ""
 >>>>>>> develop
 =======
 "PO-Revision-Date: 2024-01-12T11:58:55+00:00\n"
+>>>>>>> develop
+=======
+"PO-Revision-Date: 2024-02-05T19:27:11+00:00\n"
 >>>>>>> develop
 "Report-Msgid-Bugs-To: http://support.advancedcustomfields.com\n"
 "Language: hu_HU\n"
@@ -94,17 +98,17 @@ msgstr "Beállítások elmentve"
 #: pro/updates.php:99
 #, fuzzy
 #| msgid ""
-#| "To enable updates, please enter your license key on the <a href=\"%s"
-#| "\">Updates</a> page. If you don't have a licence key, please see <a href="
-#| "\"%s\">details & pricing</a>"
+#| "To enable updates, please enter your license key on the <a "
+#| "href=\"%s\">Updates</a> page. If you don't have a licence key, please see "
+#| "<a href=\"%s\">details & pricing</a>"
 msgid ""
-"To enable updates, please enter your license key on the <a href=\"%1$s"
-"\">Updates</a> page. If you don't have a licence key, please see <a href="
-"\"%2$s\" target=\"_blank\">details & pricing</a>."
+"To enable updates, please enter your license key on the <a "
+"href=\"%1$s\">Updates</a> page. If you don't have a licence key, please see "
+"<a href=\"%2$s\" target=\"_blank\">details & pricing</a>."
 msgstr ""
-"A frissítések engedélyezéséhez adjuk meg a licenckulcsot a <a href=\"%s"
-"\">Frissítések</a> oldalon. Ha még nem rendelkezünk licenckulcsal, tekintsük "
-"át a licencek <a href=\"%s\">részleteit és árait</a>."
+"A frissítések engedélyezéséhez adjuk meg a licenckulcsot a <a "
+"href=\"%s\">Frissítések</a> oldalon. Ha még nem rendelkezünk licenckulcsal, "
+"tekintsük át a licencek <a href=\"%s\">részleteit és árait</a>."
 
 #: pro/updates.php:159
 msgid ""
@@ -149,8 +153,8 @@ msgid ""
 "No Custom Field Groups found for this options page. <a href=\"%s\">Create a "
 "Custom Field Group</a>"
 msgstr ""
-"Nincsenek mezőcsoportok ehhez a beállítás oldalhoz. <a href=\"%s"
-"\">Mezőcsoport hozzáadása</a>"
+"Nincsenek mezőcsoportok ehhez a beállítás oldalhoz. <a "
+"href=\"%s\">Mezőcsoport hozzáadása</a>"
 
 #: pro/admin/admin-options-page.php:309
 msgid "Edit field group"
@@ -806,17 +810,17 @@ msgstr "Frissítési információ"
 #: pro/admin/views/html-settings-updates.php:34
 #, fuzzy
 #| msgid ""
-#| "To enable updates, please enter your license key on the <a href=\"%s"
-#| "\">Updates</a> page. If you don't have a licence key, please see <a href="
-#| "\"%s\">details & pricing</a>"
+#| "To enable updates, please enter your license key on the <a "
+#| "href=\"%s\">Updates</a> page. If you don't have a licence key, please see "
+#| "<a href=\"%s\">details & pricing</a>"
 msgid ""
 "To unlock updates, please enter your license key below. If you don't have a "
 "licence key, please see <a href=\"%s\" target=\"_blank\">details & pricing</"
 "a>."
 msgstr ""
-"A frissítések engedélyezéséhez adjuk meg a licenckulcsot a <a href=\"%s"
-"\">Frissítések</a> oldalon. Ha még nem rendelkezünk licenckulcsal, tekintsük "
-"át a licencek <a href=\"%s\">részleteit és árait</a>."
+"A frissítések engedélyezéséhez adjuk meg a licenckulcsot a <a "
+"href=\"%s\">Frissítések</a> oldalon. Ha még nem rendelkezünk licenckulcsal, "
+"tekintsük át a licencek <a href=\"%s\">részleteit és árait</a>."
 
 #: pro/admin/views/html-settings-updates.php:37
 msgid "License Key"

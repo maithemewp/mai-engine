@@ -167,6 +167,9 @@ function mai_do_entries_open( $args ) {
 			],
 		]
 	);
+
+	// Reset entry index.
+	mai_get_index( mai_get_entry_index_context( $args['context'] ), true );
 }
 
 /**
@@ -215,4 +218,28 @@ function mai_do_entries_close( $args ) {
 function mai_do_entry( $entry, $args = [] ) {
 	$entry = new Mai_Entry( $entry, $args );
 	$entry->render();
+}
+
+/**
+ * Get the entry index context, for use in mai_get_index().
+ *
+ * @since TBD
+ *
+ * @param string $context The existing context.
+ *
+ * @return string
+ */
+function mai_get_entry_index_context( $context ) {
+	switch ( $context ) {
+		case 'archive':
+			$return = 'entry-archive';
+		break;
+		case 'block':
+			$return = 'entry-grid';
+		break;
+		default:
+			$return = "entry-$context";
+	}
+
+	return $return;
 }

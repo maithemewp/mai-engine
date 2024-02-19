@@ -15,6 +15,7 @@ msgstr ""
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "PO-Revision-Date: 2023-06-27T14:09:59+00:00\n"
 =======
 "PO-Revision-Date: 2023-10-25T08:59:42+00:00\n"
@@ -24,6 +25,9 @@ msgstr ""
 >>>>>>> develop
 =======
 "PO-Revision-Date: 2024-01-12T11:58:55+00:00\n"
+>>>>>>> develop
+=======
+"PO-Revision-Date: 2024-02-05T19:27:11+00:00\n"
 >>>>>>> develop
 "Report-Msgid-Bugs-To: http://support.advancedcustomfields.com\n"
 "Language: id_ID\n"
@@ -89,17 +93,17 @@ msgstr "Pilihan Diperbarui"
 #: pro/updates.php:99
 #, fuzzy
 #| msgid ""
-#| "To enable updates, please enter your license key on the <a href=\"%s"
-#| "\">Updates</a> page. If you don't have a licence key, please see <a href="
-#| "\"%s\">details & pricing</a>."
+#| "To enable updates, please enter your license key on the <a "
+#| "href=\"%s\">Updates</a> page. If you don't have a licence key, please see "
+#| "<a href=\"%s\">details & pricing</a>."
 msgid ""
-"To enable updates, please enter your license key on the <a href=\"%1$s"
-"\">Updates</a> page. If you don't have a licence key, please see <a href="
-"\"%2$s\" target=\"_blank\">details & pricing</a>."
+"To enable updates, please enter your license key on the <a "
+"href=\"%1$s\">Updates</a> page. If you don't have a licence key, please see "
+"<a href=\"%2$s\" target=\"_blank\">details & pricing</a>."
 msgstr ""
-"Untuk mengaktifkan update, masukkan kunci lisensi Anda pada halaman <a href="
-"\"%s\">Pembaruan</a>. Jika anda tidak memiliki kunci lisensi, silakan lihat "
-"<a href=\"%s\">rincian & harga</a>."
+"Untuk mengaktifkan update, masukkan kunci lisensi Anda pada halaman <a "
+"href=\"%s\">Pembaruan</a>. Jika anda tidak memiliki kunci lisensi, silakan "
+"lihat <a href=\"%s\">rincian & harga</a>."
 
 #: pro/updates.php:159
 msgid ""
@@ -144,8 +148,8 @@ msgid ""
 "No Custom Field Groups found for this options page. <a href=\"%s\">Create a "
 "Custom Field Group</a>"
 msgstr ""
-"Tidak ada Grup Bidang Kustom ditemukan untuk halaman pilihan ini. <a href="
-"\"%s\">Buat Grup Bidang Kustom</a>"
+"Tidak ada Grup Bidang Kustom ditemukan untuk halaman pilihan ini. <a "
+"href=\"%s\">Buat Grup Bidang Kustom</a>"
 
 #: pro/admin/admin-options-page.php:309
 msgid "Edit field group"

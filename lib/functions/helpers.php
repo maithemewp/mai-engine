@@ -283,7 +283,12 @@ function mai_has_dark_background_first() {
 		if ( $first ) {
 			$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
 			if ( 'core/cover' === $block_name ) {
-				$has_dark_first = true;
+				if ( isset( $first['attrs']['overlayColor'] ) ) {
+					$color          = mai_get_color_value( $first['attrs']['overlayColor'] );
+					$has_dark_first = $color && ! mai_is_light_color( $color );
+				} else {
+					$has_dark_first = true;
+				}
 			}
 			if ( 'core/group' === $block_name && isset( $first['attrs']['backgroundColor'] ) ) {
 				$color          = mai_get_color_value( $first['attrs']['backgroundColor'] );

@@ -29,7 +29,8 @@
 	box-shadow: var(--entry-box-shadow, unset);
 }
 
-.entry-archive {
+.entry-archive,
+.entry-grid {
 	order: var(--entry-order, var(--entry-index, unset));
 }
 

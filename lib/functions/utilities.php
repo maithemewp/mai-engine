@@ -250,6 +250,34 @@ function mai_get_mobile_menu_breakpoint() {
 }
 
 /**
+ * Gets an incremented index.
+ *
+ * @since TBD
+ *
+ * @param string $context The context for the counter.
+ * @param bool $reset Whether to reset the index.
+ *
+ * @return int
+ */
+function mai_get_index( $context, $reset = false ) {
+	static $indexes = [];
+
+	if ( isset( $indexes[ $context ] ) ) {
+		if ( $reset ) {
+			$indexes[ $context ] = 0;
+		} else {
+			$indexes[ $context ]++;
+		}
+
+		return $indexes[ $context ];
+	}
+
+	$indexes[ $context ] = 0;
+
+	return $indexes[ $context ];
+}
+
+/**
  * Return the current post type.
  * Sometimes we need this earlier than get_post_type()
  * can handle, so we fall back to the query var.
@@ -778,7 +806,7 @@ function mai_get_menu( $menu, $args = [] ) {
 			if ( in_array( $args['font_size'], ['xs', 'sm', 'md', 'lg', 'xl', 'xxl' ] ) ) {
 				$size = sprintf( 'var(--font-size-%s)', $args['font_size'] );
 			} else {
-				$size = mai_get_unit_value( $args['font-size'] );
+				$size = mai_get_unit_value( $args['font_size'] );
 			}
 
 			$atts['style'] .= sprintf( '--menu-font-size:%s;', $size );
