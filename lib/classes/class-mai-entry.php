@@ -217,11 +217,8 @@ class Mai_Entry {
 		// Add atts from `genesis_attributes_entry` but only when we need it.
 		if ( 'post' === $this->type ) {
 			$atts['class']      = mai_add_classes( implode( ' ', get_post_class() ), $atts['class'] );
-			$atts['aria-label'] = the_title_attribute(
-				[
-					'echo' => false,
-				]
-			);
+			$atts['aria-label'] = the_title_attribute( [ 'echo' => false ] );
+			$atts['aria-label'] = str_replace( ['[', ']'], '', $atts['aria-label'] ); // Remove brackets. These were blowing up the editor. See #642.
 		}
 
 		// Term classes.
