@@ -73,6 +73,13 @@ class Mai_Entry {
 	protected $title;
 
 	/**
+	 * Title attribute.
+	 *
+	 * @var $title_attr
+	 */
+	protected $title_attr;
+
+	/**
 	 * Breakpoints.
 	 *
 	 * @var $breakpoints
@@ -118,6 +125,7 @@ class Mai_Entry {
 		$this->id          = $this->get_id();
 		$this->url         = $this->get_url();
 		$this->title       = $this->get_title();
+		$this->title_attr  = $this->get_title_attr();
 		$this->breakpoints = mai_get_breakpoints();
 		$this->link_entry  = apply_filters( 'mai_link_entry', (bool) ! $this->args['disable_entry_link'], $this->args, $this->entry );
 		$this->image_id    = $this->get_image_id();
@@ -217,8 +225,7 @@ class Mai_Entry {
 		// Add atts from `genesis_attributes_entry` but only when we need it.
 		if ( 'post' === $this->type ) {
 			$atts['class']      = mai_add_classes( implode( ' ', get_post_class() ), $atts['class'] );
-			$atts['aria-label'] = the_title_attribute( [ 'echo' => false ] );
-			$atts['aria-label'] = str_replace( ['[', ']'], '', $atts['aria-label'] ); // Remove brackets. These were blowing up the editor. See #642.
+			$atts['aria-label'] = $this->title_attr;
 		}
 
 		// Term classes.
@@ -289,7 +296,7 @@ class Mai_Entry {
 				if ( in_array( 'title', $this->args['show'], true ) ) {
 					$overlay_atts['aria-labelledby'] = 'entry-title-' . $this::$index;
 				} else {
-					$overlay_atts['aria-label'] = esc_attr( $this->title );
+					$overlay_atts['aria-label'] = $this->title_attr;
 				}
 			}
 
@@ -491,6 +498,21 @@ class Mai_Entry {
 	}
 
 	/**
+	 * Gets the title attribute.
+	 * Remove brackets, as these were blowing up the editor. See #642.
+	 *
+	 * @since 2.33.2
+	 *
+	 * @return string
+	 */
+	public function get_title_attr() {
+		$title = 'post' === $this->type ? the_title_attribute( [ 'echo' => false ] ) : $this->title;
+		$title = str_replace( ['[', ']'], '', $title );
+
+		return $title;
+	}
+
+	/**
 	 * Render the image.
 	 *
 	 * @since 0.1.0
@@ -530,7 +552,7 @@ class Mai_Entry {
 			}
 			// Otherwise add aria-label because links must have discernible text.
 			elseif ( $this->title ) {
-				$atts['aria-label'] = esc_attr( $this->title );
+				$atts['aria-label'] = $this->title_attr;
 			}
 		}
 
