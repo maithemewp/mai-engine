@@ -501,7 +501,7 @@ class Mai_Entry {
 	 * Gets the title attribute.
 	 * Remove brackets, as these were blowing up the editor. See #642.
 	 *
-	 * @since TBD
+	 * @since 2.33.2
 	 *
 	 * @return string
 	 */
