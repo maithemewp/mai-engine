@@ -274,14 +274,15 @@ function mai_has_alignfull_first() {
  */
 function mai_has_dark_background_first() {
 	static $has_dark_first = null;
+	       $first          = null;
 
 	if ( is_null( $has_dark_first ) ) {
 		$has_dark_first = false;
-
-		$first = mai_get_first_block();
+		$first          = mai_get_first_block();
 
 		if ( $first ) {
 			$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
+
 			if ( 'core/cover' === $block_name ) {
 				if ( isset( $first['attrs']['overlayColor'] ) ) {
 					$color          = mai_get_color_value( $first['attrs']['overlayColor'] );
@@ -290,6 +291,7 @@ function mai_has_dark_background_first() {
 					$has_dark_first = true;
 				}
 			}
+
 			if ( 'core/group' === $block_name && isset( $first['attrs']['backgroundColor'] ) ) {
 				$color          = mai_get_color_value( $first['attrs']['backgroundColor'] );
 				$has_dark_first = $color && ! mai_is_light_color( $color );
@@ -297,7 +299,7 @@ function mai_has_dark_background_first() {
 		}
 	}
 
-	return $has_dark_first;
+	return apply_filters( 'mai_has_dark_background_first', $has_dark_first, $first );
 }
 
 /**
