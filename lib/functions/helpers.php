@@ -212,6 +212,11 @@ function mai_has_dark_header() {
 	$light  = mai_is_light_color( $colors['header'] );
 	$dark   = ! $light;
 
+	// Handle transparent header.
+	if ( mai_has_transparent_header() ) {
+		$dark = mai_has_dark_background_first();
+	}
+
 	return $dark;
 }
 
@@ -269,6 +274,7 @@ function mai_has_alignfull_first() {
  * Checks if first block has dark background.
  *
  * @since 2.12.0
+ * @since TBD Added filter.
  *
  * @return bool
  */
@@ -281,7 +287,7 @@ function mai_has_dark_background_first() {
 		$first          = mai_get_first_block();
 
 		if ( $first ) {
-			$block_name  = isset( $first['blockName'] ) ? $first['blockName'] : '';
+			$block_name = isset( $first['blockName'] ) ? $first['blockName'] : '';
 
 			if ( 'core/cover' === $block_name ) {
 				if ( isset( $first['attrs']['overlayColor'] ) ) {
@@ -292,9 +298,26 @@ function mai_has_dark_background_first() {
 				}
 			}
 
-			if ( 'core/group' === $block_name && isset( $first['attrs']['backgroundColor'] ) ) {
-				$color          = mai_get_color_value( $first['attrs']['backgroundColor'] );
-				$has_dark_first = $color && ! mai_is_light_color( $color );
+			if ( 'core/group' === $block_name ) {
+				if ( isset( $first['attrs']['backgroundColor'] ) ) {
+					$color          = mai_get_color_value( $first['attrs']['backgroundColor'] );
+					$has_dark_first = $color && ! mai_is_light_color( $color );
+				} elseif ( isset( $first['attrs']['gradient'] ) ) {
+					$gradient  = $first['attrs']['gradient'];
+					$gradients = mai_get_config( 'theme-support' )['add']['editor-gradient-presets'];
+
+					if ( $gradient && $gradients ) {
+						// Most gradients have dark bg?
+						$has_dark_first = false;
+
+						foreach ( $gradients as $values ) {
+							if ( $values['slug'] === $gradient ) {
+								$has_dark_first = isset( $values['dark'] ) ? $values['dark'] : $has_dark_first;
+								break;
+							}
+						}
+					}
+				}
 			}
 		}
 	}
