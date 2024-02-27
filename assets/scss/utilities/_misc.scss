@@ -187,16 +187,48 @@
 }
 
 // This is in editor.scss too, for block settings.
+
+.has--xxxxs-margin-top,
+.has--xxxs-margin-top,
+.has--xxs-margin-top,
+.has--xs-margin-top,
+.has--sm-margin-top,
+.has--md-margin-top,
+.has--lg-margin-top,
+.has--xl-margin-top,
+.has--xxl-margin-top,
+.has--xxxl-margin-top,
+.has--xxxxl-margin-top {
+	position: relative;
+	z-index: 1;
+}
+
+@include mq(md) {
+
+	.has--xxxxs-margin-bottom,
+	.has--xxxs-margin-bottom,
+	.has--xxs-margin-bottom,
+	.has--xs-margin-bottom,
+	.has--sm-margin-bottom,
+	.has--md-margin-bottom,
+	.has--lg-margin-bottom,
+	.has--xl-margin-bottom,
+	.has--xxl-margin-bottom,
+	.has--xxxl-margin-bottom,
+	.has--xxxxl-margin-bottom {
+		position: relative;
+		z-index: 1;
+	}
+}
+
 @each $spacing-name, $spacing-size in $spacing {
 
 	.has--#{ $spacing-name }-margin-top {
 		margin-top: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
-		z-index: 1;
 	}
 
 	.has--#{ $spacing-name }-margin-bottom {
 		margin-bottom: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
-		z-index: 1;
 	}
 }
 
@@ -206,12 +238,10 @@
 
 		.has--#{ $spacing-name }-margin-right {
 			margin-right: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
-			z-index: 1;
 		}
 
 		.has--#{ $spacing-name }-margin-left {
 			margin-left: calc(var(--spacing-#{ $spacing-name }) * -1) !important;
-			z-index: 1;
 		}
 	}
 }

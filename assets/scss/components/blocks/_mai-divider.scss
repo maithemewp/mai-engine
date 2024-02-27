@@ -1,6 +1,6 @@
 .mai-divider {
 	position: var(--divider-position, static);
-	z-index: var(--divider-z-index, 1);
+	z-index: var(--divider-z-index, initial);
 	display: block;
 	width: var(--divider-width, var(--alignfull-width, auto));
 	height: var(--divider-height);
