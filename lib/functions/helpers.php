@@ -212,11 +212,6 @@ function mai_has_dark_header() {
 	$light  = mai_is_light_color( $colors['header'] );
 	$dark   = ! $light;
 
-	// Handle transparent header.
-	if ( mai_has_transparent_header() ) {
-		$dark = mai_has_dark_background_first();
-	}
-
 	return $dark;
 }
 
