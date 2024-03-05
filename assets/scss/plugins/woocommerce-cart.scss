@@ -33,6 +33,17 @@
 	}
 }
 
+.wc-item-meta {
+	--list-style-type: none;
+	--list-margin: var(--spacing-xxs) 0 0;
+
+	li {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--spacing-xs);
+	}
+}
+
 // Cart.
 
 .woocommerce-form-coupon {
@@ -318,7 +329,7 @@
 		font-size: var(--font-size-md);
 		font-family: var(--heading-font-family);
 		font-style: var(--heading-font-style, normal);
-		line-height: var(--heading-line-height, 1.219);
+		line-height: var(--heading-line-height, var(--line-height-sm));
 		letter-spacing: var(--heading-letter-spacing, normal);
 		text-transform: var(--heading-text-transform, none);
 
@@ -386,4 +397,11 @@
 
 .checkout-button {
 	margin-bottom: var(--spacing-lg);
+}
+
+// Order received, thank you page.
+
+.order_details {
+	--list-style-type: none;
+	--list-margin: 0 0 var(--spacing-xl) 0;
 }

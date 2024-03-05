@@ -1,6 +1,7 @@
 :root {
 	--font-scale-desktop: 1.29;
-	--heading-line-height: 1.4;
+	--line-height-md: 1.4;
+	--heading-line-height: var(--line-height-md);
 	--button-border-radius: 100px;
 	--menu-font-size: var(--font-size-sm);
 }

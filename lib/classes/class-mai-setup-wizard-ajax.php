@@ -92,7 +92,7 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 		$email = apply_filters(
 			'mai_setup_wizard_email',
 			[
-				'to'          => apply_filters( 'mai_setup_wizard_email_address', 'seothemeswp@gmail.com' ),
+				'to'          => apply_filters( 'mai_setup_wizard_email_address', 'help@bizbudding.com' ),
 				'subject'     => $this->name,
 				'message'     => $email_address,
 				'headers'     => [ 'Content-Type: text/html; charset=UTF-8' ],

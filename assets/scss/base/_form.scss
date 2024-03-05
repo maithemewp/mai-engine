@@ -6,11 +6,11 @@ abbr[title] {
 	text-decoration: none;
 }
 
-label {
+label:not([class*="gform"]):not([class*="wpform"]) {
 	display: inline-block;
 	margin: var(--label-margin, 0 0 var(--spacing-xs));
 	font-weight: var(--label-font-weight, var(--heading-font-weight));
-	font-size: var(--label-font-size, (smaller));
+	font-size: var(--label-font-size, inherit);
 
 	--input-font-size: smaller;
 	--input-font-weight: var(--body-font-weight);
@@ -52,7 +52,7 @@ input::placeholder {
 }
 
 textarea {
-	--input-line-height: var(--body-line-height, 1.625);
+	--input-line-height: var(--body-line-height, var(--line-height-lg));
 	--input-border-radius: var(--border-radius);
 }
 
@@ -90,8 +90,9 @@ input[type="search"] {
 }
 
 fieldset {
+	--list-style-type: none; // Found lists in some fieldsets, first in WP Forms modern markup feature.
 	min-width: 0;
-	margin: 0 0 var(--spacing-lg);
+	margin: 0 0 var(--spacing-md);
 	padding: 0.01em 0 0 0;
 	border: 0;
 
@@ -100,13 +101,13 @@ fieldset {
 	}
 }
 
-legend {
+legend:not([class*="gform"]):not([class*="wpform"]) {
 	display: table;
 	float: left;
 	width: 100%;
 	margin: var(--legend-margin, 0 0 var(--spacing-md));
 	padding: var(--legend-padding, 0);
-	font-size: var(--legend-font-size, var(--font-size-xs));
+	font-size: var(--legend-font-size, var(--font-size-md));
 
 	+ * {
 		clear: both;
