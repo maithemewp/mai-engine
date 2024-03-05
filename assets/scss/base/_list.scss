@@ -14,9 +14,10 @@ dl {
 ul,
 ol,
 dl {
-	margin: var(--list-margin, var(--list-margin-top, 0) var(--list-margin-right, 0) var(--list-margin-bottom, var(--spacing-sm)) var(--list-margin-left, 0));
+	margin: var(--list-margin, var(--list-margin-top, 0) var(--list-margin-right, 0) var(--list-margin-bottom, var(--spacing-sm)) var(--list-margin-left, 1em));
 	padding: var(--list-padding, 0);
-	list-style-position: var(--list-style-position, inside);
+	list-style-position: var(--list-style-position, outside);
+	line-height: var(--list-line-height, var(--line-height-md));
 
 	ul,
 	ol,
@@ -39,12 +40,10 @@ ul.has-background {
 .term-description,
 .entry-content,
 .sidebar {
-
-	/* These are added to editor.scss too */
-	--list-style-position: outside;
-	--list-margin-left: var(--spacing-xl);
-	--list-margin-bottom: var(--spacing-lg);
-	--list-item-margin-bottom: var(--spacing-xs);
+// 	/* These are added to editor.scss too */
+// 	--list-margin-left: var(--spacing-xl);
+// 	--list-margin-bottom: var(--spacing-lg);
+	--list-item-margin-bottom: 0.5em;
 }
 
 dd,

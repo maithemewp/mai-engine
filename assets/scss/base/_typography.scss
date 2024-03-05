@@ -101,3 +101,9 @@ pre {
 code.hljs {
 	background: transparent;
 }
+
+.entry-excerpt,
+.sidebar,
+.author-box-content {
+	line-height: var(--line-height-md);
+}
