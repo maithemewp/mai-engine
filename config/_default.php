@@ -656,7 +656,7 @@ return [
 				'header_meta'                  => 'mai_get_header_meta_default',
 				'footer_meta'                  => 'mai_get_footer_meta_default',
 				'custom_content'               => '',
-				// 'custom_content_2'             => '',
+				'custom_content_2'             => '',
 				'page-header-image'            => '',
 				'page-header-featured'         => false,
 				'page-header-background-color' => '',
