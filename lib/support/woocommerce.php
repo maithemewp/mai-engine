@@ -235,6 +235,7 @@ function mai_woocommerce_edit_shop_link( $wp_admin_bar ) {
 	);
 }
 
+add_filter( 'woocommerce_add_to_cart_fragments', 'mai_cart_total_fragment' );
 /**
  * Ajax update cart contents total.
  *
@@ -244,7 +245,6 @@ function mai_woocommerce_edit_shop_link( $wp_admin_bar ) {
  *
  * @return array
  */
-add_filter( 'woocommerce_add_to_cart_fragments', 'mai_cart_total_fragment' );
 function mai_cart_total_fragment( $fragments ) {
 	$fragments['mai-cart-total'] = mai_get_cart_total();
 	return $fragments;
