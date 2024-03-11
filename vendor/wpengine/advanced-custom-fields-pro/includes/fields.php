@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( 'acf_fields' ) ) :
-	#[\AllowDynamicProperties]
+	#[AllowDynamicProperties]
 	class acf_fields {
 
 		/** @var array Contains an array of field type instances */
