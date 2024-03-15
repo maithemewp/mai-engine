@@ -192,6 +192,7 @@ function mai_learndash_handle_content( $buffer ) {
 		$tags->add_class( 'entry-content' );
 	}
 
+	// Update the buffer.
 	$buffer = $tags->get_updated_html();
 
 	return $buffer;

@@ -24,8 +24,7 @@
 
 .learndash-wrapper .learndash_mark_complete_button,
 .learndash-wrapper #learndash_mark_complete_button {
-	background: none;
-	border-radius: var(--button-border-radius, var(--border-radius));
+	@include button();
 }
 
 .learndash-wrapper .sfwd-mark-complete::after,
