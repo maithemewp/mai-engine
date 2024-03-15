@@ -1,22 +1,21 @@
 @import "../abstracts/_index";
 
-// Using double learndash-wrapper to override the default LearnDash styles.
-// Can't use entry-content because focus mode doesn't have it.
+// Using body because we use entry-content because focus mode doesn't have it.
 
-.learndash-wrapper .learndash-wrapper .ld-breadcrumbs,
-.learndash-wrapper .learndash-wrapper .ld-course-status,
-.learndash-wrapper .learndash-wrapper .ld-topic-status,
-.learndash-wrapper .learndash-wrapper .ld-lesson-status,
-.learndash-wrapper .learndash-wrapper .ld-focus .ld-focus-sidebar .ld-course-navigation .ld-topic-list.ld-table-list {
+body .learndash-wrapper .ld-breadcrumbs,
+body .learndash-wrapper .ld-course-status,
+body .learndash-wrapper .ld-topic-status,
+body .learndash-wrapper .ld-lesson-status,
+body .learndash-wrapper .ld-focus .ld-focus-sidebar .ld-course-navigation .ld-topic-list.ld-table-list {
 	background: var(--color-alt);
 }
 
-.learndash-wrapper .learndash-wrapper .ld-breadcrumbs,
-.learndash-wrapper .learndash-wrapper .ld-lesson-status {
+body .learndash-wrapper .ld-breadcrumbs,
+body .learndash-wrapper .ld-lesson-status {
 	border-radius: var(--border-radius);
 }
 
-.learndash-wrapper .learndash-wrapper .ld-status-incomplete.ld-status-icon {
+body .learndash-wrapper .ld-status-incomplete.ld-status-icon {
 	border-color: var(--color-alt);
 }
 
@@ -25,32 +24,32 @@
 	margin: var(--learndash-content-margin, 0 0 var(--learndash-content-margin-bottom, var(--spacing-xl)));
 }
 
-.learndash-wrapper .learndash-wrapper .ld-content-actions {
+body .learndash-wrapper .ld-content-actions {
 	gap: 1em;
 }
 
-.learndash-wrapper .learndash-wrapper .ld-content-actions .ld-content-action {
+body .learndash-wrapper .ld-content-actions .ld-content-action {
 	--button-width: 100%;
 	flex: 1;
 	padding: 0;
 }
 
-.learndash-wrapper .learndash-wrapper .sfwd-mark-complete,
-.learndash-wrapper .learndash-wrapper #sfwd-mark-complete {
+body .learndash-wrapper .sfwd-mark-complete,
+body .learndash-wrapper #sfwd-mark-complete {
 	width: 100%;
 }
 
-.learndash-wrapper .learndash-wrapper .sfwd-mark-complete::after,
-.learndash-wrapper .learndash-wrapper #sfwd-mark-complete::after {
+body .learndash-wrapper .sfwd-mark-complete::after,
+body .learndash-wrapper #sfwd-mark-complete::after {
 	display: none;
 }
 
-.learndash-wrapper .learndash-wrapper .learndash_mark_complete_button,
-.learndash-wrapper .learndash-wrapper #learndash_mark_complete_button {
+body .learndash-wrapper .learndash_mark_complete_button,
+body .learndash-wrapper #learndash_mark_complete_button {
 	@include button();
 }
 
-.learndash-wrapper .learndash-wrapper .ld-content-actions .ld-content-action .ld-course-step-back {
+body .learndash-wrapper .ld-content-actions .ld-content-action .ld-course-step-back {
 	display: flex;
 	justify-content: center;
 	align-items: center;
