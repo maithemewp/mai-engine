@@ -19,8 +19,7 @@ body .learndash-wrapper .ld-status-incomplete.ld-status-icon {
 	border-color: var(--color-alt);
 }
 
-
-.learndash_content {
+body .learndash_content {
 	margin: var(--learndash-content-margin, 0 0 var(--learndash-content-margin-bottom, var(--spacing-xl)));
 }
 
