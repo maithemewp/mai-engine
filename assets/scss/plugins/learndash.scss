@@ -36,6 +36,7 @@
 
 .entry-content .learndash-wrapper .learndash_mark_complete_button,
 .entry-content .learndash-wrapper #learndash_mark_complete_button {
+	--button-width: 100%;
 	@include button();
 }
 
