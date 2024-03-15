@@ -1,8 +1,9 @@
 @import "../abstracts/_index";
 
 .entry-content .learndash-wrapper .ld-breadcrumbs,
-.entry-content .learndash-wrapper .ld-lesson-status,
-.entry-content .learndash-wrapper .ld-course-status.ld-course-status-enrolled {
+.entry-content .learndash-wrapper .ld-course-status,
+.entry-content .learndash-wrapper .ld-topic-status,
+.entry-content .learndash-wrapper .ld-lesson-status {
 	background: var(--color-alt);
 }
 
@@ -37,6 +38,7 @@
 .entry-content .learndash-wrapper .learndash_mark_complete_button,
 .entry-content .learndash-wrapper #learndash_mark_complete_button {
 	--button-width: 100%;
+
 	@include button();
 }
 
