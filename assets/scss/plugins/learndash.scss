@@ -11,8 +11,16 @@ body .learndash-wrapper .ld-focus .ld-focus-sidebar .ld-course-navigation .ld-to
 }
 
 body .learndash-wrapper .ld-breadcrumbs,
-body .learndash-wrapper .ld-lesson-status {
+body .learndash-wrapper .ld-course-status,
+body .learndash-wrapper .ld-topic-status,
+body .learndash-wrapper .ld-lesson-status,
+body .learndash-wrapper .ld-item-list .ld-item-list-item {
 	border-radius: var(--border-radius);
+}
+
+body .learndash-wrapper .ld-status,
+body .learndash-wrapper .ld-expand-button {
+	border-radius: var(--button-border-radius, var(--border-radius));
 }
 
 body .learndash-wrapper .ld-status-incomplete.ld-status-icon {
