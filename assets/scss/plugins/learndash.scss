@@ -17,8 +17,9 @@
 }
 
 .learndash-wrapper .ld-content-actions .ld-content-action {
+	--button-width: 100%;
 	display: grid;
-	place-items: start;
+	place-items: start center;
 }
 
 .learndash_content {
@@ -37,9 +38,11 @@
 
 .entry-content .learndash-wrapper .learndash_mark_complete_button,
 .entry-content .learndash-wrapper #learndash_mark_complete_button {
-	--button-width: 100%;
-
 	@include button();
+}
+
+.entry-content .learndash-wrapper .ld-course-step-back {
+	padding-top: .75em;
 }
 
 #learndash_lesson_topics_list > div,
