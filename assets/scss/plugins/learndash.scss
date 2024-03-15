@@ -16,14 +16,16 @@
 	border-color: var(--color-alt);
 }
 
-.learndash-wrapper .ld-content-actions .ld-content-action {
-	--button-width: 100%;
-	display: grid;
-	place-items: start center;
-}
 
 .learndash_content {
 	margin: var(--learndash-content-margin, 0 0 var(--learndash-content-margin-bottom, var(--spacing-xl)));
+}
+
+.entry-content .learndash-wrapper .ld-content-actions .ld-content-action {
+	--button-width: 100%;
+	flex: 1;
+	display: grid;
+	place-items: start center;
 }
 
 .entry-content .learndash-wrapper .sfwd-mark-complete,
@@ -41,7 +43,10 @@
 	@include button();
 }
 
-.entry-content .learndash-wrapper .ld-course-step-back {
+.learndash-wrapper .ld-content-actions .ld-content-action .ld-course-step-back {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	padding-top: .75em;
 }
 
