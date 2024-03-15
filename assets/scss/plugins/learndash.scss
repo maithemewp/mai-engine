@@ -21,9 +21,14 @@
 	margin: var(--learndash-content-margin, 0 0 var(--learndash-content-margin-bottom, var(--spacing-xl)));
 }
 
+.entry-content .learndash-wrapper .ld-content-actions {
+	gap: 1em;
+}
+
 .entry-content .learndash-wrapper .ld-content-actions .ld-content-action {
 	--button-width: 100%;
 	flex: 1;
+	padding: 0;
 }
 
 .entry-content .learndash-wrapper .sfwd-mark-complete,
