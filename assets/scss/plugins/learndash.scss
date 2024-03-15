@@ -24,6 +24,11 @@
 	margin: var(--learndash-content-margin, 0 0 var(--learndash-content-margin-bottom, var(--spacing-xl)));
 }
 
+.entry-content .learndash-wrapper .sfwd-mark-complete,
+.entry-content .learndash-wrapper #sfwd-mark-complete {
+	width: 100%;
+}
+
 .entry-content .learndash-wrapper .sfwd-mark-complete::after,
 .entry-content .learndash-wrapper #sfwd-mark-complete::after {
 	display: none;
