@@ -1,3 +1,5 @@
+@import "../abstracts/_index";
+
 .entry-content .learndash-wrapper .ld-breadcrumbs,
 .entry-content .learndash-wrapper .ld-lesson-status,
 .entry-content .learndash-wrapper .ld-course-status.ld-course-status-enrolled {
@@ -22,14 +24,14 @@
 	margin: var(--learndash-content-margin, 0 0 var(--learndash-content-margin-bottom, var(--spacing-xl)));
 }
 
-.learndash-wrapper .learndash_mark_complete_button,
-.learndash-wrapper #learndash_mark_complete_button {
-	@include button();
-}
-
 .learndash-wrapper .sfwd-mark-complete::after,
 .learndash-wrapper #sfwd-mark-complete::after {
 	display: none;
+}
+
+.learndash-wrapper .learndash_mark_complete_button,
+.learndash-wrapper #learndash_mark_complete_button {
+	@include button();
 }
 
 #learndash_lesson_topics_list > div,
