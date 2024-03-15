@@ -24,13 +24,13 @@
 	margin: var(--learndash-content-margin, 0 0 var(--learndash-content-margin-bottom, var(--spacing-xl)));
 }
 
-.learndash-wrapper .sfwd-mark-complete::after,
-.learndash-wrapper #sfwd-mark-complete::after {
+.entry-content .learndash-wrapper .sfwd-mark-complete::after,
+.entry-content .learndash-wrapper #sfwd-mark-complete::after {
 	display: none;
 }
 
-.learndash-wrapper .learndash_mark_complete_button,
-.learndash-wrapper #learndash_mark_complete_button {
+.entry-content .learndash-wrapper .learndash_mark_complete_button,
+.entry-content .learndash-wrapper #learndash_mark_complete_button {
 	@include button();
 }
 
