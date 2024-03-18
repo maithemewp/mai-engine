@@ -36,6 +36,34 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
+	 * Adds a field.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	public function add_fields() {
+		if ( ! $this->admin->is_setup_wizard_screen() ) {
+			return;
+		}
+
+		foreach ( $this->get_default_fields() as $step => $fields ) {
+			if ( empty( $fields ) ) {
+				continue;
+			}
+
+			foreach ( $fields as $field ) {
+				$defaults            = $this->get_defaults( $field['id'] );
+				$attributes          = isset( $field['attributes'] ) ? wp_parse_args( $field['attributes'], $defaults['attributes'] ) : $defaults['attributes'];
+				$field               = wp_parse_args( $field, $defaults );
+				$field['attributes'] = $attributes;
+
+				$this->all_fields[ $step ][ $field['id'] ] = $field;
+			}
+		}
+	}
+
+	/**
 	 * Returns default fields.
 	 *
 	 * @since 1.0.0
@@ -61,30 +89,6 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 				],
 			]
 		);
-	}
-
-	/**
-	 * Adds a field.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function add_fields() {
-		foreach ( $this->get_default_fields() as $step => $fields ) {
-			if ( empty( $fields ) ) {
-				continue;
-			}
-
-			foreach ( $fields as $field ) {
-				$defaults            = $this->get_defaults( $field['id'] );
-				$attributes          = isset( $field['attributes'] ) ? wp_parse_args( $field['attributes'], $defaults['attributes'] ) : $defaults['attributes'];
-				$field               = wp_parse_args( $field, $defaults );
-				$field['attributes'] = $attributes;
-
-				$this->all_fields[ $step ][ $field['id'] ] = $field;
-			}
-		}
 	}
 
 	/**
@@ -216,7 +220,7 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 						'name'      => 'plugins',
 						'type'      => 'checkbox',
 						'checked'   => true,
-						'data-demo' => $demo['id'],
+						'data-demo' => wp_json_encode( $demo ),
 					],
 				];
 			}
@@ -268,7 +272,7 @@ class Mai_Setup_Wizard_Fields extends Mai_Setup_Wizard_Service_Provider {
 						'name'      => $content_type,
 						'type'      => 'checkbox',
 						'checked'   => true,
-						'data-demo' => $demo['id'],
+						'data-demo' => wp_json_encode( $demo ),
 					],
 				];
 			}

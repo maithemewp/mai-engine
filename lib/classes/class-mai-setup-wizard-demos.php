@@ -43,6 +43,11 @@ class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 	 * @return void
 	 */
 	public function add_demos() {
+		if ( ! $this->admin->is_setup_wizard_screen() ) {
+			return;
+		}
+
+		// Get the demos.
 		$demos = apply_filters( 'mai_setup_wizard_demos', [] );
 
 		foreach ( $demos as $demo ) {
@@ -138,7 +143,7 @@ class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 		 * Make sure the saved value is for the current theme.
 		 * Some testing showed an old value stored differently than the active theme.
 		 */
-		if ( $current && ( $active === $current ) && isset( $options['demo'] ) ) {
+		if ( $current && ( $active === $current ) && isset( $options['demo'] ) && $options['demo'] ) {
 			return $options['demo'];
 		}
 

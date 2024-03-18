@@ -175,10 +175,11 @@
 
 		elements.each( function() {
 			var element  = $( this );
-			var demoAttr = element.attr( 'data-demo' );
-			var checked  = chosenDemo === demoAttr;
-			var disabled = chosenDemo !== demoAttr;
-			var hidden   = chosenDemo !== demoAttr;
+			var demoAttr = JSON.parse( element.attr( 'data-demo' ) );
+			var demoId   = demoAttr.id;
+			var checked  = chosenDemo === demoId;
+			var disabled = chosenDemo !== demoId;
+			var hidden   = chosenDemo !== demoId;
 
 			element.attr( 'checked', checked );
 			element.prop( 'disabled', disabled );
