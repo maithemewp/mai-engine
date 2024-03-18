@@ -14,7 +14,7 @@ dl {
 ul,
 ol,
 dl {
-	margin: var(--list-margin, var(--list-margin-top, 0) var(--list-margin-right, 0) var(--list-margin-bottom, var(--spacing-sm)) var(--list-margin-left, 1em));
+	margin: var(--list-margin, var(--list-margin-top, 0) var(--list-margin-right, 0) var(--list-margin-bottom, var(--spacing-sm)) var(--list-margin-left, 1.75em));
 	padding: var(--list-padding, 0);
 	list-style-position: var(--list-style-position, outside);
 	line-height: var(--list-line-height, var(--line-height-md));
@@ -22,7 +22,7 @@ dl {
 	ul,
 	ol,
 	dl {
-		margin: var(--sub-list-margin, (var(--spacing-md) var(--spacing-md)));
+		margin: var(--sub-list-margin, (var(--spacing-sm) 0 var(--spacing-sm) 1em));
 	}
 
 }
