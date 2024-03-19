@@ -11,6 +11,7 @@ dl {
 	list-style-type: var(--list-style-type, var(--definition-list-style-type, unset));
 }
 
+// These are added to editor.scss too
 ul,
 ol,
 dl {
@@ -24,7 +25,6 @@ dl {
 	dl {
 		margin: var(--sub-list-margin, (var(--spacing-sm) 0 var(--spacing-sm) 1em));
 	}
-
 }
 
 ul li,
@@ -40,9 +40,6 @@ ul.has-background {
 .term-description,
 .entry-content,
 .sidebar {
-// 	/* These are added to editor.scss too */
-// 	--list-margin-left: var(--spacing-xl);
-// 	--list-margin-bottom: var(--spacing-lg);
 	--list-item-margin-bottom: 0.5em;
 }
 
