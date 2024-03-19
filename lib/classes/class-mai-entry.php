@@ -1307,11 +1307,45 @@ class Mai_Entry {
 	 * @return void
 	 */
 	public function do_custom_content() {
-		if ( ( 'single' === $this->context ) && mai_is_element_hidden( 'custom_content', $this->id ) ) {
+		echo $this->get_custom_content(
+			[
+				'key'   => 'custom_content',
+				'class' => 'entry-custom-content',
+			]
+		);
+	}
+
+	/**
+	 * Display the custom content 2.
+	 *
+	 * @since 2.13.0
+	 *
+	 * @return void
+	 */
+	public function do_custom_content_2() {
+		echo $this->get_custom_content(
+			[
+				'key'   => 'custom_content_2',
+				'class' => 'entry-custom-content-2',
+			]
+		);
+	}
+
+	/**
+	 * Get the custom content.
+	 *
+	 * @since TBD
+	 *
+	 * @param array $args
+	 *
+	 * @return string
+	 */
+	public function get_custom_content( $args ) {
+		if ( ( 'single' === $this->context ) && mai_is_element_hidden( $args['key'], $this->id ) ) {
 			return;
 		}
 
-		if ( ! ( isset( $this->args['custom_content'] ) && $this->args['custom_content'] ) ) {
+		if ( ! ( isset( $this->args[ $args['key'] ] ) && $this->args[ $args['key'] ] ) ) {
 			return;
 		}
 
@@ -1334,23 +1368,29 @@ class Mai_Entry {
 			return $out;
 		};
 
+		// Remove filter if block context.
 		if ( 'block' === $this->context ) {
 			add_filter( 'shortcode_atts_acf', $filter, 10, 3 );
 		}
 
-		$content = mai_get_processed_content( $this->args['custom_content'] );
+		// Get the content.
+		$content = mai_get_processed_content( $this->args[ $args['key'] ] );
 
+		// Remove filter if block context.
 		if ( 'block' === $this->context ) {
 			remove_filter( 'shortcode_atts_acf', $filter, 10, 3 );
 		}
 
-		genesis_markup(
+		return genesis_markup(
 			[
 				'open'    => '<div %s>',
 				'close'   => '</div>',
 				'content' => trim( $content ),
 				'context' => 'entry-custom-content',
-				'echo'    => true,
+				'echo'    => false,
+				'atts'    => [
+					'class' => $args['class'],
+				],
 				'params'  => [
 					'args'  => $this->args,
 					'entry' => $this->entry,
@@ -1358,37 +1398,6 @@ class Mai_Entry {
 			]
 		);
 	}
-
-	// /**
-	//  * Display the custom content 2.
-	//  *
-	//  * @since 2.13.0
-	//  *
-	//  * @return void
-	//  */
-	// public function do_custom_content_2() {
-	// 	if ( ( 'single' === $this->context ) && mai_is_element_hidden( 'custom_content_2', $this->id ) ) {
-	// 		return;
-	// 	}
-
-	// 	if ( ! ( isset( $this->args['custom_content_2'] ) && $this->args['custom_content_2'] ) ) {
-	// 		return;
-	// 	}
-
-	// 	genesis_markup(
-	// 		[
-	// 			'open'    => '<div %s>',
-	// 			'close'   => '</div>',
-	// 			'content' => mai_get_processed_content( $this->args['custom_content_2'] ),
-	// 			'context' => 'entry-custom-content-2',
-	// 			'echo'    => true,
-	// 			'params'  => [
-	// 				'args'  => $this->args,
-	// 				'entry' => $this->entry,
-	// 			],
-	// 		]
-	// 	);
-	// }
 
 	/**
 	 * Display the header meta.

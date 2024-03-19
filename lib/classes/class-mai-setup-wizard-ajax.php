@@ -33,7 +33,36 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 	}
 
 	/**
-	 * Returns the  sanitized field value passed from ajax.
+	 * Returns the sanitized demo id passed from ajax.
+	 *
+	 * @since TBD
+	 *
+	 * @return string
+	 */
+	public function get_demo_id() {
+		$demo = $this->get_demo();
+		$demo = $demo ? $demo['id'] : '';
+
+		return $demo;
+	}
+
+	/**
+	 * Returns the sanitized demo value passed from ajax.
+	 *
+	 * @since TBD
+	 *
+	 * @return array
+	 */
+	public function get_demo() {
+		$demo = isset( $_POST['field']['data-demo'] ) ? $_POST['field']['data-demo'] : [];
+		$demo = $demo ? json_decode( wp_unslash( $demo ), true ) : [];
+		$demo = $demo ? $this->sanitize_field( $demo ) : [];
+
+		return $demo;
+	}
+
+	/**
+	 * Returns the sanitized field value passed from ajax.
 	 *
 	 * @since 1.0.0
 	 *
@@ -122,7 +151,7 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 		check_ajax_referer( $this->slug, 'nonce' );
 
 		$field = $this->get_field();
-		$demo  = isset( $field['value'] ) ? $field['value'] : $this->demos->get_default_demo();
+		$demo  = isset( $field['value'] ) ? $field['value'] : $this->get_demo_id();
 
 		if ( $demo ) {
 			$options          = get_option( $this->slug, [] );
@@ -203,6 +232,7 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 
 		$field        = $this->get_field();
 		$content_type = isset( $field['value'] ) ? $field['value'] : false;
+		$demo         = $this->get_demo_id();
 
 		if ( ! $content_type ) {
 			wp_send_json_error( __( 'No field value.', 'mai-engine' ) );
@@ -211,7 +241,7 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 		set_time_limit( apply_filters( 'mai_setup_wizard_time_limit', 300 ) );
 
 		$options          = get_option( $this->slug, [] );
-		$options['demo']  = $this->demos->get_chosen_demo();
+		$options['demo']  = $demo;
 		$options['theme'] = mai_get_active_theme();
 
 		update_option( $this->slug, $options );

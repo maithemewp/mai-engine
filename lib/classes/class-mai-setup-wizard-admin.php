@@ -25,7 +25,7 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 	 * @return void
 	 */
 	public function add_hooks() {
-		add_action( 'admin_menu', [ $this, 'add_menu_page' ], 20 );
+		add_action( 'admin_menu',            [ $this, 'add_menu_page' ], 20 );
 		add_action( 'admin_enqueue_scripts', [ $this, 'load_scripts' ] );
 	}
 
@@ -104,7 +104,7 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 			do_action( 'mai_setup_wizard_after_steps' );
 			?>
 			<p>
-				<a href="<?php echo admin_url(); ?>"><?php esc_html_e( 'Return to dashboard', 'mai-engine' ); ?></a>
+				<a href="<?php echo admin_url(); ?>"><?php esc_html_e( 'Return to Dashboard', 'mai-engine' ); ?></a>
 			</p>
 		</div>
 		<?php
@@ -114,28 +114,43 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 	 * Checks if were on the setup wizard page.
 	 *
 	 * @since 1.0.0
+	 * @since TBD Added request check when this is called fbefore `get_current_screen` is available.
 	 *
 	 * @return bool
 	 */
-	private function is_setup_wizard_screen() {
-		$base = false;
+	public function is_setup_wizard_screen() {
+		static $cache = null;
 
+		// Return cached value.
+		if ( ! is_null( $cache ) ) {
+			return $cache;
+		}
+
+		// Bail if not in the dashboard.
+		if ( ! is_admin() ) {
+			$cache = false;
+
+			return false;
+		}
+
+		// If we have the current screen function, use it. I don't think this ever runs with static caching.
 		if ( function_exists( 'get_current_screen' ) ) {
-			$current = get_current_screen();
-			$base    = isset( $current->base ) ? $current->base : false;
+			$screen = get_current_screen();
+
+			if ( $screen ) {
+				// ray( '$screen->id', $screen->id, 'mai-theme_page_mai-setup-wizard' === $screen->id );
+				$cache = 'mai-theme_page_mai-setup-wizard' === $screen->id;
+				return $cache;
+			}
 		}
 
-		$menu   = $this->get_menu_defaults();
-		$screen = '';
+		// Get data.
+		$parts = wp_parse_url( filter_input( INPUT_SERVER, 'REQUEST_URI' ) );
+		$path  = isset( $parts['path'] ) ? basename( $parts['path'] ) : '';
+		$page  = filter_input( INPUT_GET, 'page' );
+		$cache = 'admin.php' === $path && 'mai-setup-wizard' === $page;
 
-		if ( isset( $menu['parent_slug'] ) ) {
-			$screen .= $menu['parent_slug'];
-		}
-
-		$screen .= '_page_';
-		$screen .= $menu['menu_slug'];
-
-		return $screen === $base;
+		return $cache;
 	}
 
 	/**
@@ -150,8 +165,9 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 			return;
 		}
 
-		$file = 'assets/js/setup-wizard.js';
-		$demo = $this->demos->get_chosen_demo();
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		$file   = "assets/js/setup-wizard{$suffix}.js";
+		$demo   = $this->demos->get_chosen_demo();
 
 		wp_enqueue_script(
 			$this->slug,

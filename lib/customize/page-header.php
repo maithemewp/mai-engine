@@ -221,6 +221,7 @@ function mai_page_header_customizer_settings() {
 					''      => __( 'None', 'mai-engine' ),
 					'angle' => __( 'Angle', 'mai-engine' ),
 					'curve' => __( 'Curve', 'mai-engine' ),
+					'oval'  => __( 'Oval', 'mai-engine' ),
 					'point' => __( 'Point', 'mai-engine' ),
 					'round' => __( 'Round', 'mai-engine' ),
 					'wave'  => __( 'Wave', 'mai-engine' ),

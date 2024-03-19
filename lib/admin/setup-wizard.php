@@ -12,10 +12,6 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-if ( ! apply_filters( 'mai_init_setup_wizard', true ) ) {
-	return;
-}
-
 /**
  * Returns the setup wizard shared instance, or a service provider instance.
  *
@@ -45,6 +41,7 @@ function mai_get_setup_wizard_instance( $service_provider = '' ) {
 add_action( 'init', 'mai_setup_wizard_init' );
 /**
  * Registers setup wizard service providers and adds hooks.
+ * Can't use `admin_init` because the settings page wasn't loading.
  *
  * @since 1.0.0
  *
@@ -68,7 +65,7 @@ function mai_setup_wizard_init() {
 	}
 }
 
-add_action( 'after_switch_theme', 'mai_reset_setup_wizard_options' );
+add_action( 'after_switch_theme',                        'mai_reset_setup_wizard_options' );
 add_action( 'mai_setup_wizard_after_import_all_content', 'mai_reset_setup_wizard_options' );
 /**
  * Resets setup wizard options after swithing themes or after content is imported.

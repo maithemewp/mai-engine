@@ -1,5 +1,66 @@
-.learndash_content {
+@import "../abstracts/_index";
+
+// Using body because we use entry-content because focus mode doesn't have it.
+
+body .learndash-wrapper .ld-breadcrumbs,
+body .learndash-wrapper .ld-course-status,
+body .learndash-wrapper .ld-topic-status,
+body .learndash-wrapper .ld-lesson-status,
+body .learndash-wrapper .ld-focus .ld-focus-sidebar .ld-course-navigation .ld-topic-list.ld-table-list {
+	background: var(--color-alt);
+}
+
+body .learndash-wrapper .ld-breadcrumbs,
+body .learndash-wrapper .ld-course-status,
+body .learndash-wrapper .ld-topic-status,
+body .learndash-wrapper .ld-lesson-status,
+body .learndash-wrapper .ld-item-list .ld-item-list-item {
+	border-radius: var(--border-radius);
+}
+
+body .learndash-wrapper .ld-status,
+body .learndash-wrapper .ld-expand-button {
+	border-radius: var(--button-border-radius, var(--border-radius));
+}
+
+body .learndash-wrapper .ld-status-incomplete.ld-status-icon {
+	border-color: var(--color-alt);
+}
+
+body .learndash_content {
 	margin: var(--learndash-content-margin, 0 0 var(--learndash-content-margin-bottom, var(--spacing-xl)));
+}
+
+body .learndash-wrapper .ld-content-actions {
+	gap: 1em;
+}
+
+body .learndash-wrapper .ld-content-actions .ld-content-action {
+	--button-width: 100%;
+	flex: 1;
+	padding: 0;
+}
+
+body .learndash-wrapper .sfwd-mark-complete,
+body .learndash-wrapper #sfwd-mark-complete {
+	width: 100%;
+}
+
+body .learndash-wrapper .sfwd-mark-complete::after,
+body .learndash-wrapper #sfwd-mark-complete::after {
+	display: none;
+}
+
+body .learndash-wrapper .learndash_mark_complete_button,
+body .learndash-wrapper #learndash_mark_complete_button {
+	@include button();
+}
+
+body .learndash-wrapper .ld-content-actions .ld-content-action .ld-course-step-back {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: var(--button-small-padding, 0.75rem 1.25rem);
 }
 
 #learndash_lesson_topics_list > div,

@@ -43,6 +43,10 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 	 * @return array
 	 */
 	public function add_steps() {
+		if ( ! $this->admin->is_setup_wizard_screen() ) {
+			return;
+		}
+
 		$steps = $this->get_default_steps();
 
 		foreach ( $steps as $step ) {

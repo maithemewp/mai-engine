@@ -218,7 +218,8 @@ function mai_login_css() {
 		}
 		body.login #login form p.forgetmenot,
 		body.login #login form p.submit .button {
-			line-height: 1.625;
+			font-size: var(--font-size-sm);
+			line-height: var(--line-height-sm);
 		}
 		body.login #login form p.submit.reset-pass-submit {
 			float: none;
