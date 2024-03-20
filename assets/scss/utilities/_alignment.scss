@@ -14,7 +14,7 @@
 	}
 
 	.aligncenter {
-		margin: 0 auto;
+		margin-inline: auto;
 
 		@include clearfix;
 	}

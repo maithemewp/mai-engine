@@ -1,7 +1,21 @@
 .wp-block-embed {
+	float: none;
 	display: block;
 	width: 100%;
+	max-width: 100%;
 	margin: var(--spacing-md) auto;
+
+	&.alignleft {
+		text-align: start;
+	}
+
+	&.alignright {
+		text-align: end;
+	}
+
+	&.aligncenter {
+		text-align: center;
+	}
 
 	figcaption {
 

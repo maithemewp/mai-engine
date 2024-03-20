@@ -12,9 +12,3 @@
 		// font-size: var(--#{$heading}-font-size, var(--heading-font-size));
 	}
 }
-
-.is-style-subheading {
-	--heading-font-size: var(--font-size-lg);
-	--heading-text-transform: uppercase;
-	--heading-letter-spacing: 1px;
-}

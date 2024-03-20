@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.33.2-beta.6\n"
+"Project-Id-Version: Mai Engine 2.33.2-beta.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-03-15T03:46:58+00:00\n"
+"POT-Creation-Date: 2024-03-20T19:20:45+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: mai-engine\n"
@@ -52,63 +52,63 @@ msgstr ""
 msgid "Read the Post →"
 msgstr ""
 
-#: config/_default.php:100
+#: config/_default.php:101
 msgid "Standard Content"
 msgstr ""
 
-#: config/_default.php:107
+#: config/_default.php:108
 msgid "Narrow Content"
 msgstr ""
 
-#: config/_default.php:113
+#: config/_default.php:114
 msgid "Wide Content"
 msgstr ""
 
-#: config/_default.php:119
+#: config/_default.php:120
 msgid "Content, Sidebar"
 msgstr ""
 
-#: config/_default.php:125
+#: config/_default.php:126
 msgid "Sidebar, Content"
 msgstr ""
 
-#: config/_default.php:191
+#: config/_default.php:192
 #: lib/functions/deprecated.php:264
 msgid "Mobile Menu"
 msgstr ""
 
-#: config/_default.php:192
+#: config/_default.php:193
 msgid "Sub Menu"
 msgstr ""
 
-#: config/_default.php:227
+#: config/_default.php:228
 msgid "Loading"
 msgstr ""
 
-#: config/_default.php:438
+#: config/_default.php:439
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/_default.php:439
+#: config/_default.php:440
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/_default.php:440
+#: config/_default.php:441
 #: lib/admin/hide-elements.php:142
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default.php:558
+#: config/_default.php:559
 #: lib/functions/deprecated.php:254
 msgid "Sidebar"
 msgstr ""
 
-#: config/_default.php:559
+#: config/_default.php:560
 #: lib/functions/deprecated.php:255
 msgid "The Sidebar widget area."
 msgstr ""
 
-#: config/_default.php:669
+#: config/_default.php:670
 msgid "Read more"
 msgstr ""
 
@@ -128,7 +128,7 @@ msgstr ""
 #: lib/admin/admin-menu.php:50
 #: lib/admin/admin-menu.php:51
 #: lib/admin/template-parts.php:127
-#: lib/classes/class-mai-setup-wizard-fields.php:247
+#: lib/classes/class-mai-setup-wizard-fields.php:251
 #: lib/functions/templates.php:27
 #: lib/functions/templates.php:35
 #: lib/functions/templates.php:125
@@ -395,19 +395,19 @@ msgstr ""
 msgid "Page Header Description"
 msgstr ""
 
-#: lib/admin/setup-wizard.php:113
+#: lib/admin/setup-wizard.php:110
 msgid "Setup Wizard"
 msgstr ""
 
-#: lib/admin/setup-wizard.php:191
+#: lib/admin/setup-wizard.php:188
 msgid "Mai Theme Setup Wizard Page"
 msgstr ""
 
-#: lib/admin/setup-wizard.php:196
+#: lib/admin/setup-wizard.php:193
 msgid "Welcome to the Mai Setup Wizard! Enter your email address in the form below to receive automatic updates, share your environment information, win free swag, receive the latest news and get special offers. To learn more about providing your email and claiming your free goodies, visit the"
 msgstr ""
 
-#: lib/admin/setup-wizard.php:198
+#: lib/admin/setup-wizard.php:195
 msgid "on BizBudding for all the details, terms and conditions of this program."
 msgstr ""
 
@@ -499,6 +499,12 @@ msgstr ""
 msgid "Subheading"
 msgstr ""
 
+#: lib/blocks/heading.php:45
+#: lib/blocks/paragraph.php:54
+#: lib/customize/typography.php:112
+msgid "Alternate"
+msgstr ""
+
 #: lib/blocks/mai-column/block.php:82
 msgid "Mai Column"
 msgstr ""
@@ -566,6 +572,7 @@ msgstr ""
 #: lib/blocks/mai-columns/block.php:434
 #: lib/blocks/mai-columns/block.php:453
 #: lib/customize/page-header.php:221
+#: lib/customize/typography.php:113
 #: lib/fields/columns.php:266
 #: lib/fields/columns.php:285
 #: lib/fields/columns.php:304
@@ -589,9 +596,9 @@ msgstr ""
 #: lib/blocks/mai-columns/block.php:417
 #: lib/blocks/mai-columns/block.php:435
 #: lib/blocks/mai-columns/block.php:454
-#: lib/blocks/mai-divider/block.php:224
+#: lib/blocks/mai-divider/block.php:225
 #: lib/customize/page-header.php:113
-#: lib/customize/page-header.php:240
+#: lib/customize/page-header.php:241
 #: lib/fields/columns.php:267
 #: lib/fields/columns.php:286
 #: lib/fields/columns.php:305
@@ -637,9 +644,9 @@ msgstr ""
 #: lib/blocks/mai-columns/block.php:421
 #: lib/blocks/mai-columns/block.php:439
 #: lib/blocks/mai-columns/block.php:458
-#: lib/blocks/mai-divider/block.php:228
+#: lib/blocks/mai-divider/block.php:229
 #: lib/customize/page-header.php:117
-#: lib/customize/page-header.php:244
+#: lib/customize/page-header.php:245
 #: lib/fields/columns.php:271
 #: lib/fields/columns.php:290
 #: lib/fields/columns.php:309
@@ -807,8 +814,8 @@ msgid "Fit"
 msgstr ""
 
 #: lib/blocks/mai-columns/block.php:132
-#: lib/classes/class-mai-setup-wizard-fields.php:241
-#: lib/classes/class-mai-setup-wizard-steps.php:202
+#: lib/classes/class-mai-setup-wizard-fields.php:245
+#: lib/classes/class-mai-setup-wizard-steps.php:206
 #: lib/fields/grid-display.php:196
 #: lib/functions/loop.php:514
 #: lib/functions/loop.php:547
@@ -952,9 +959,9 @@ msgstr ""
 #: lib/blocks/mai-columns/block.php:418
 #: lib/blocks/mai-columns/block.php:436
 #: lib/blocks/mai-columns/block.php:455
-#: lib/blocks/mai-divider/block.php:225
+#: lib/blocks/mai-divider/block.php:226
 #: lib/customize/page-header.php:114
-#: lib/customize/page-header.php:241
+#: lib/customize/page-header.php:242
 #: lib/fields/columns.php:268
 #: lib/fields/columns.php:287
 #: lib/fields/columns.php:306
@@ -984,9 +991,9 @@ msgstr ""
 #: lib/blocks/mai-columns/block.php:419
 #: lib/blocks/mai-columns/block.php:437
 #: lib/blocks/mai-columns/block.php:456
-#: lib/blocks/mai-divider/block.php:226
+#: lib/blocks/mai-divider/block.php:227
 #: lib/customize/page-header.php:115
-#: lib/customize/page-header.php:242
+#: lib/customize/page-header.php:243
 #: lib/fields/columns.php:269
 #: lib/fields/columns.php:288
 #: lib/fields/columns.php:307
@@ -1016,9 +1023,9 @@ msgstr ""
 #: lib/blocks/mai-columns/block.php:420
 #: lib/blocks/mai-columns/block.php:438
 #: lib/blocks/mai-columns/block.php:457
-#: lib/blocks/mai-divider/block.php:227
+#: lib/blocks/mai-divider/block.php:228
 #: lib/customize/page-header.php:116
-#: lib/customize/page-header.php:243
+#: lib/customize/page-header.php:244
 #: lib/fields/columns.php:270
 #: lib/fields/columns.php:289
 #: lib/fields/columns.php:308
@@ -1082,43 +1089,48 @@ msgid "Curve"
 msgstr ""
 
 #: lib/blocks/mai-divider/block.php:212
-#: lib/customize/page-header.php:226
-msgid "Wave"
+#: lib/customize/page-header.php:224
+msgid "Oval"
 msgstr ""
 
 #: lib/blocks/mai-divider/block.php:213
-#: lib/customize/page-header.php:224
+#: lib/customize/page-header.php:225
 msgid "Point"
 msgstr ""
 
 #: lib/blocks/mai-divider/block.php:214
-#: lib/customize/page-header.php:225
+#: lib/customize/page-header.php:226
 msgid "Round"
 msgstr ""
 
-#: lib/blocks/mai-divider/block.php:219
+#: lib/blocks/mai-divider/block.php:215
+#: lib/customize/page-header.php:227
+msgid "Wave"
+msgstr ""
+
+#: lib/blocks/mai-divider/block.php:220
 msgid "Height"
 msgstr ""
 
-#: lib/blocks/mai-divider/block.php:233
+#: lib/blocks/mai-divider/block.php:234
 msgid "Flip Horizontally"
 msgstr ""
 
-#: lib/blocks/mai-divider/block.php:254
+#: lib/blocks/mai-divider/block.php:255
 msgid "Flip Vertically"
 msgstr ""
 
-#: lib/blocks/mai-divider/block.php:261
+#: lib/blocks/mai-divider/block.php:262
 msgid "Color"
 msgstr ""
 
-#: lib/blocks/mai-grid/blocks.php:34
-#: lib/blocks/mai-grid/blocks.php:38
+#: lib/blocks/mai-grid/blocks.php:33
+#: lib/blocks/mai-grid/blocks.php:37
 msgid "Mai Post Grid"
 msgstr ""
 
-#: lib/blocks/mai-grid/blocks.php:61
-#: lib/blocks/mai-grid/blocks.php:65
+#: lib/blocks/mai-grid/blocks.php:60
+#: lib/blocks/mai-grid/blocks.php:64
 msgid "Mai Term Grid"
 msgstr ""
 
@@ -1454,126 +1466,130 @@ msgid "No saved reusable blocks yet."
 msgstr ""
 
 #: lib/classes/class-mai-setup-wizard-admin.php:107
-msgid "Return to dashboard"
+msgid "Return to Dashboard"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:83
+#: lib/classes/class-mai-setup-wizard-ajax.php:112
 msgid "Email address can not be empty."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:87
-#: lib/classes/class-mai-setup-wizard-steps.php:123
+#: lib/classes/class-mai-setup-wizard-ajax.php:116
+#: lib/classes/class-mai-setup-wizard-steps.php:127
 msgid "Please enter a valid email address."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:108
+#: lib/classes/class-mai-setup-wizard-ajax.php:137
 msgid "Email address sent."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:111
+#: lib/classes/class-mai-setup-wizard-ajax.php:140
 msgid "Email entered but not sent."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:134
+#: lib/classes/class-mai-setup-wizard-ajax.php:163
 msgid " selected."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:137
-#: lib/classes/class-mai-setup-wizard-importer.php:94
+#: lib/classes/class-mai-setup-wizard-ajax.php:166
+#: lib/classes/class-mai-setup-wizard-importer.php:98
 msgid "No demo selected."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:153
+#: lib/classes/class-mai-setup-wizard-ajax.php:182
 msgid "WP Dependency Installer is missing."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:160
+#: lib/classes/class-mai-setup-wizard-ajax.php:189
 msgid "No plugins selected."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:185
+#: lib/classes/class-mai-setup-wizard-ajax.php:214
 msgid "Error installing "
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:189
+#: lib/classes/class-mai-setup-wizard-ajax.php:218
 msgid "Installed "
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-ajax.php:208
+#: lib/classes/class-mai-setup-wizard-ajax.php:238
 msgid "No field value."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-fields.php:137
+#: lib/classes/class-mai-setup-wizard-fields.php:141
 msgid "Email address"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-fields.php:167
+#: lib/classes/class-mai-setup-wizard-fields.php:171
 msgid "Preview"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-fields.php:212
+#: lib/classes/class-mai-setup-wizard-fields.php:216
 msgid " View details"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-fields.php:243
+#: lib/classes/class-mai-setup-wizard-fields.php:247
 msgid "Existing posts, pages, and menus will not be deleted."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-fields.php:248
+#: lib/classes/class-mai-setup-wizard-fields.php:252
 msgid "Our block-based replacement for widgets."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-fields.php:249
+#: lib/classes/class-mai-setup-wizard-fields.php:253
 msgid "Requires \"Content\" in order to import images."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-fields.php:250
+#: lib/classes/class-mai-setup-wizard-fields.php:254
 msgid "Moves any existing content areas into the trash."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-fields.php:254
+#: lib/classes/class-mai-setup-wizard-fields.php:258
 msgid "Customizer Settings"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-fields.php:292
+#: lib/classes/class-mai-setup-wizard-fields.php:296
 msgid "View your site"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:100
+#: lib/classes/class-mai-setup-wizard-importer.php:50
+msgid "No file to import."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-importer.php:104
 msgid " could not be retrieved."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:106
+#: lib/classes/class-mai-setup-wizard-importer.php:110
 msgid " response body could not be retrieved."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:148
-#: lib/classes/class-mai-setup-wizard-importer.php:187
+#: lib/classes/class-mai-setup-wizard-importer.php:152
+#: lib/classes/class-mai-setup-wizard-importer.php:191
 msgid "Finished importing "
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:151
+#: lib/classes/class-mai-setup-wizard-importer.php:155
 msgid "Failed importing "
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:171
+#: lib/classes/class-mai-setup-wizard-importer.php:175
 msgid "Something went wrong downloading content area data. Please contact BizBudding support for assistance."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:203
+#: lib/classes/class-mai-setup-wizard-importer.php:207
 msgid "Error importing settings! Please try again."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:219
 #: lib/classes/class-mai-setup-wizard-importer.php:223
+#: lib/classes/class-mai-setup-wizard-importer.php:227
 msgid "Error importing settings! Please check that you uploaded a customizer export file."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:227
+#: lib/classes/class-mai-setup-wizard-importer.php:231
 msgid "Error importing settings! The settings you uploaded are not for the current theme."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:262
+#: lib/classes/class-mai-setup-wizard-importer.php:266
 msgid "Sucessfully imported customizer."
 msgstr ""
 
@@ -1581,141 +1597,141 @@ msgstr ""
 msgid "Mai Setup Wizard"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:120
+#: lib/classes/class-mai-setup-wizard-steps.php:124
 msgid "Welcome"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:121
+#: lib/classes/class-mai-setup-wizard-steps.php:125
 msgid "Welcome to the Mai Setup Wizard! Enter your email address in the form below to receive automatic updates, latest news and special offers."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:124
+#: lib/classes/class-mai-setup-wizard-steps.php:128
 msgid "Success!"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:125
+#: lib/classes/class-mai-setup-wizard-steps.php:129
 msgid "Yes please, sign me up!"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:126
+#: lib/classes/class-mai-setup-wizard-steps.php:130
 msgid "Sending..."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:127
+#: lib/classes/class-mai-setup-wizard-steps.php:131
 msgid "No thanks"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:146
+#: lib/classes/class-mai-setup-wizard-steps.php:150
 msgid "Site Style"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:147
+#: lib/classes/class-mai-setup-wizard-steps.php:151
 msgid "Please select your site style below (required)."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:149
+#: lib/classes/class-mai-setup-wizard-steps.php:153
 msgid "Please select a site style to continue."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:150
+#: lib/classes/class-mai-setup-wizard-steps.php:154
 msgid "Good choice!"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:151
-#: lib/classes/class-mai-setup-wizard-steps.php:258
+#: lib/classes/class-mai-setup-wizard-steps.php:155
+#: lib/classes/class-mai-setup-wizard-steps.php:262
 msgid "Continue"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:174
+#: lib/classes/class-mai-setup-wizard-steps.php:178
 msgid "Recommended Plugins"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:175
+#: lib/classes/class-mai-setup-wizard-steps.php:179
 msgid "The following plugins will be installed and activated."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:177
+#: lib/classes/class-mai-setup-wizard-steps.php:181
 msgid "Plugins could not be installed."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:178
+#: lib/classes/class-mai-setup-wizard-steps.php:182
 msgid "Plugins successfully installed!"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:179
+#: lib/classes/class-mai-setup-wizard-steps.php:183
 msgid "Install Plugins"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:180
+#: lib/classes/class-mai-setup-wizard-steps.php:184
 msgid "Installing plugins..."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:203
+#: lib/classes/class-mai-setup-wizard-steps.php:207
 msgid "Select which content you would like to import."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:203
+#: lib/classes/class-mai-setup-wizard-steps.php:207
 msgid "Please note that this step can take up to 5 minutes."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:205
+#: lib/classes/class-mai-setup-wizard-steps.php:209
 msgid "Content could not be installed."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:206
+#: lib/classes/class-mai-setup-wizard-steps.php:210
 msgid "Content successfully installed!"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:207
+#: lib/classes/class-mai-setup-wizard-steps.php:211
 msgid "Import Content"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:208
+#: lib/classes/class-mai-setup-wizard-steps.php:212
 msgid "Importing content..."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:226
+#: lib/classes/class-mai-setup-wizard-steps.php:230
 msgid "Done"
 msgstr ""
 
 #. translators: %s is replaced with a link to regenerate images.
-#: lib/classes/class-mai-setup-wizard-steps.php:228
+#: lib/classes/class-mai-setup-wizard-steps.php:232
 msgid "Your theme has been all set up. Don't forget to %s."
 msgstr ""
 
 #. translators: %s is replaced with a link to regenerate images.
-#: lib/classes/class-mai-setup-wizard-steps.php:228
+#: lib/classes/class-mai-setup-wizard-steps.php:232
 msgid "regenerate images"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:230
+#: lib/classes/class-mai-setup-wizard-steps.php:234
 msgid "View Your Site"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:232
+#: lib/classes/class-mai-setup-wizard-steps.php:236
 msgid "Edit Your Site"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:260
+#: lib/classes/class-mai-setup-wizard-steps.php:264
 msgid "Loading..."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:261
+#: lib/classes/class-mai-setup-wizard-steps.php:265
 msgid "Skip this step"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:314
+#: lib/classes/class-mai-setup-wizard-steps.php:318
 #: lib/structure/pagination.php:218
 #: lib/support/facetwp.php:61
 #: lib/support/woocommerce.php:129
 msgid "Previous"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:329
+#: lib/classes/class-mai-setup-wizard-steps.php:333
 msgid "Step"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-steps.php:331
+#: lib/classes/class-mai-setup-wizard-steps.php:335
 msgid "of"
 msgstr ""
 
@@ -1921,23 +1937,23 @@ msgstr ""
 msgid "Divider style"
 msgstr ""
 
-#: lib/customize/page-header.php:237
+#: lib/customize/page-header.php:238
 msgid "Divider height"
 msgstr ""
 
-#: lib/customize/page-header.php:263
+#: lib/customize/page-header.php:264
 msgid "Flip divider horizontally"
 msgstr ""
 
-#: lib/customize/page-header.php:292
+#: lib/customize/page-header.php:293
 msgid "Flip divider vertically"
 msgstr ""
 
-#: lib/customize/page-header.php:310
+#: lib/customize/page-header.php:311
 msgid "Divider color"
 msgstr ""
 
-#: lib/customize/page-header.php:311
+#: lib/customize/page-header.php:312
 msgid "This should match your body background color"
 msgstr ""
 
@@ -2085,22 +2101,44 @@ msgstr ""
 
 #: lib/customize/typography.php:51
 #: lib/customize/typography.php:74
+#: lib/customize/typography.php:113
 msgid "Default: "
 msgstr ""
 
-#: lib/customize/typography.php:92
+#: lib/customize/typography.php:96
+msgid "Add alternate font"
+msgstr ""
+
+#: lib/customize/typography.php:97
+msgid "This option will register new paragraph and heading block styles for the chosen alternate font."
+msgstr ""
+
+#: lib/customize/typography.php:100
+msgid "Yes"
+msgstr ""
+
+#: lib/customize/typography.php:101
+#: lib/customize/typography.php:144
+msgid "No"
+msgstr ""
+
+#: lib/customize/typography.php:138
 msgid "Flush local fonts"
 msgstr ""
 
-#: lib/customize/typography.php:93
+#: lib/customize/typography.php:139
 msgid "Warning: This will delete the entire /wp-content/fonts/ directory and all of it's contents. Enable this setting if your Google fonts are not loading correctly."
 msgstr ""
 
-#: lib/customize/typography.php:139
+#: lib/customize/typography.php:143
+msgid "Flush once"
+msgstr ""
+
+#: lib/customize/typography.php:185
 msgid "does not exist."
 msgstr ""
 
-#: lib/customize/typography.php:168
+#: lib/customize/typography.php:214
 msgid "Fonts flushed successfully"
 msgstr ""
 

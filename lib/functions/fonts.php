@@ -129,7 +129,16 @@ function mai_get_default_font_weights( $element ) {
  * @return string
  */
 function mai_get_default_font_weight( $element ) {
-	return mai_get_default_font_weights( $element )[0];
+	static $weights = null;
+
+	if ( is_array( $weights ) && isset( $weights[ $element ] ) ) {
+		return $weights[ $element ];
+	}
+
+	$weights             = mai_get_default_font_weights( $element );
+	$weights[ $element ] = reset( $weights );
+
+	return $weights[ $element ];
 }
 
 /**
