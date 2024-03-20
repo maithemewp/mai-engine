@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-03-20T15:21:48+00:00\n"
+"POT-Creation-Date: 2024-03-20T19:20:45+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: mai-engine\n"
@@ -52,63 +52,63 @@ msgstr ""
 msgid "Read the Post →"
 msgstr ""
 
-#: config/_default.php:100
+#: config/_default.php:101
 msgid "Standard Content"
 msgstr ""
 
-#: config/_default.php:107
+#: config/_default.php:108
 msgid "Narrow Content"
 msgstr ""
 
-#: config/_default.php:113
+#: config/_default.php:114
 msgid "Wide Content"
 msgstr ""
 
-#: config/_default.php:119
+#: config/_default.php:120
 msgid "Content, Sidebar"
 msgstr ""
 
-#: config/_default.php:125
+#: config/_default.php:126
 msgid "Sidebar, Content"
 msgstr ""
 
-#: config/_default.php:191
+#: config/_default.php:192
 #: lib/functions/deprecated.php:264
 msgid "Mobile Menu"
 msgstr ""
 
-#: config/_default.php:192
+#: config/_default.php:193
 msgid "Sub Menu"
 msgstr ""
 
-#: config/_default.php:227
+#: config/_default.php:228
 msgid "Loading"
 msgstr ""
 
-#: config/_default.php:438
+#: config/_default.php:439
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/_default.php:439
+#: config/_default.php:440
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/_default.php:440
+#: config/_default.php:441
 #: lib/admin/hide-elements.php:142
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default.php:558
+#: config/_default.php:559
 #: lib/functions/deprecated.php:254
 msgid "Sidebar"
 msgstr ""
 
-#: config/_default.php:559
+#: config/_default.php:560
 #: lib/functions/deprecated.php:255
 msgid "The Sidebar widget area."
 msgstr ""
 
-#: config/_default.php:669
+#: config/_default.php:670
 msgid "Read more"
 msgstr ""
 
@@ -499,6 +499,12 @@ msgstr ""
 msgid "Subheading"
 msgstr ""
 
+#: lib/blocks/heading.php:45
+#: lib/blocks/paragraph.php:54
+#: lib/customize/typography.php:112
+msgid "Alternate"
+msgstr ""
+
 #: lib/blocks/mai-column/block.php:82
 msgid "Mai Column"
 msgstr ""
@@ -566,6 +572,7 @@ msgstr ""
 #: lib/blocks/mai-columns/block.php:434
 #: lib/blocks/mai-columns/block.php:453
 #: lib/customize/page-header.php:221
+#: lib/customize/typography.php:113
 #: lib/fields/columns.php:266
 #: lib/fields/columns.php:285
 #: lib/fields/columns.php:304
@@ -2094,22 +2101,44 @@ msgstr ""
 
 #: lib/customize/typography.php:51
 #: lib/customize/typography.php:74
+#: lib/customize/typography.php:113
 msgid "Default: "
 msgstr ""
 
-#: lib/customize/typography.php:115
+#: lib/customize/typography.php:96
+msgid "Add alternate font"
+msgstr ""
+
+#: lib/customize/typography.php:97
+msgid "This option will register new paragraph and heading block styles for the chosen alternate font."
+msgstr ""
+
+#: lib/customize/typography.php:100
+msgid "Yes"
+msgstr ""
+
+#: lib/customize/typography.php:101
+#: lib/customize/typography.php:144
+msgid "No"
+msgstr ""
+
+#: lib/customize/typography.php:138
 msgid "Flush local fonts"
 msgstr ""
 
-#: lib/customize/typography.php:116
+#: lib/customize/typography.php:139
 msgid "Warning: This will delete the entire /wp-content/fonts/ directory and all of it's contents. Enable this setting if your Google fonts are not loading correctly."
 msgstr ""
 
-#: lib/customize/typography.php:162
+#: lib/customize/typography.php:143
+msgid "Flush once"
+msgstr ""
+
+#: lib/customize/typography.php:185
 msgid "does not exist."
 msgstr ""
 
-#: lib/customize/typography.php:191
+#: lib/customize/typography.php:214
 msgid "Fonts flushed successfully"
 msgstr ""
 

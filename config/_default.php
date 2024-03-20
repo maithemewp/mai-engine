@@ -34,13 +34,13 @@ return [
 			'primary'    => '#007bff', // Button primary background color.
 			'secondary'  => '#6c747d', // Button secondary background color.
 		],
-		'custom-colors'  => [
+		'custom-colors' => [
 			// [
 			// 	'color' => '#bcda83', // var(--color-custom-1).
 			// 	'color' => '#6c747d', // var(--color-custom-2).
 			// ],
 		],
-		'fonts'          => [
+		'fonts'  => [
 			'body'    => 'sans-serif:400',
 			'heading' => 'sans-serif:600',
 			'alt'     => '',
@@ -62,7 +62,7 @@ return [
 				'additional' => '', // Optionally add comma-separated list of additional heading font weights to load. Uses chosen heading font family.
 			],
 		],
-		'extra'          => [],
+		'extra' => [],
 	],
 
 	/*
