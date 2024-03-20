@@ -1,23 +1,19 @@
 .wp-block-embed {
+	float: none;
 	display: block;
 	width: 100%;
+	max-width: 100%;
 	margin: var(--spacing-md) auto;
 
 	&.alignleft {
-		float: none;
-		max-width: unset;
 		text-align: start;
 	}
 
 	&.alignright {
-		float: none;
-		max-width: unset;
 		text-align: end;
 	}
 
 	&.aligncenter {
-		float: none;
-		max-width: unset;
 		text-align: center;
 	}
 
