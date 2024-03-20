@@ -31,6 +31,24 @@ wp.domReady( () => {
 		return args;
 	});
 
+	// ACF args to allow svgs in icon select fields.
+	acf.add_filter( 'select2_args', function( args, $select, settings, field, instance ) {
+		// Bail if `settings.field.data.key` is not set or is not `mai_icon_choices` or `mai_icon_brand_choices`.
+		if ( ! settings.field.data.key || ! [ 'mai_icon_choices', 'mai_icon_brand_choices' ].includes( settings.field.data.key ) ) {
+			return args;
+		}
+
+		// Taken from `acf-input.js`, just removed escaping from `$selection.html(acf.strEscape(selection.text));`.
+		args.templateSelection = function( selection ) {
+			var $selection = $( '<span class="acf-selection"></span>' );
+			$selection.html( selection.text );
+			$selection.data( 'element', selection.element );
+			return $selection;
+		};
+
+		return args;
+	});
+
 	var icons = [ 'mai_icon_choices', 'mai_icon_brand_choices' ];
 	var post  = maiEditorVars.post;
 	var term  = maiEditorVars.term;

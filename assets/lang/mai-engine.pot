@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-03-20T14:01:45+00:00\n"
+"POT-Creation-Date: 2024-03-20T15:21:48+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: mai-engine\n"
@@ -1141,7 +1141,7 @@ msgstr ""
 #: lib/blocks/mai-icon/block.php:100
 #: lib/blocks/mai-icon/block.php:105
 #: lib/blocks/mai-icon/block.php:388
-#: lib/fields/icons.php:193
+#: lib/fields/icons.php:157
 msgid "Icon"
 msgstr ""
 
@@ -1223,7 +1223,7 @@ msgid "Styles"
 msgstr ""
 
 #: lib/blocks/mai-icon/block.php:196
-#: lib/fields/icons.php:234
+#: lib/fields/icons.php:198
 msgid "Icon Color"
 msgstr ""
 
@@ -1914,7 +1914,7 @@ msgid "Default text color"
 msgstr ""
 
 #: lib/customize/page-header.php:206
-#: lib/fields/icons.php:181
+#: lib/fields/icons.php:145
 #: lib/functions/customizer.php:890
 #: lib/functions/customizer.php:1097
 msgid "Light"
@@ -2094,12 +2094,7 @@ msgstr ""
 
 #: lib/customize/typography.php:51
 #: lib/customize/typography.php:74
-#: lib/customize/typography.php:97
 msgid "Default: "
-msgstr ""
-
-#: lib/customize/typography.php:96
-msgid "Accent"
 msgstr ""
 
 #: lib/customize/typography.php:115
@@ -2402,31 +2397,31 @@ msgstr ""
 msgid "Entries"
 msgstr ""
 
-#: lib/fields/icons.php:177
+#: lib/fields/icons.php:141
 msgid "Icon Style"
 msgstr ""
 
-#: lib/fields/icons.php:182
+#: lib/fields/icons.php:146
 msgid "Regular"
 msgstr ""
 
-#: lib/fields/icons.php:183
+#: lib/fields/icons.php:147
 msgid "Solid"
 msgstr ""
 
-#: lib/fields/icons.php:184
+#: lib/fields/icons.php:148
 msgid "Brands"
 msgstr ""
 
-#: lib/fields/icons.php:193
+#: lib/fields/icons.php:157
 msgid "full search via"
 msgstr ""
 
-#: lib/fields/icons.php:214
+#: lib/fields/icons.php:178
 msgid "Icon (Brands)"
 msgstr ""
 
-#: lib/fields/icons.php:256
+#: lib/fields/icons.php:220
 msgid "Icon Background Color"
 msgstr ""
 
