@@ -85,6 +85,29 @@ function mai_typography_customizer_settings() {
 		)
 	);
 
+	$alt_font_family = mai_get_default_font_family( 'alt' );
+	$alt_font_weight = mai_get_default_font_weight( 'alt' );
+
+	new \Kirki\Field\Typography(
+		mai_parse_kirki_args(
+			[
+				'settings'    => mai_get_kirki_setting( 'alt-typography' ),
+				'section'     => $section,
+				'label'       => __( 'Alternate', 'mai-engine' ),
+				'description' => $alt_font_family && $alt_font_weight ?  __( 'Default: ', 'mai-engine' ) . $alt_font_family . ' ' . $alt_font_weight : '',
+				'choices'     => [
+					'fonts'   => [
+						'standard' => [ 'serif', 'sans-serif', 'monospace' ],
+					],
+				],
+				'default'     => [
+					'font-family' => $alt_font_family,
+					'variant'     => $alt_font_weight,
+				],
+			]
+		)
+	);
+
 	new \Kirki\Field\Checkbox_Switch(
 		mai_parse_kirki_args(
 			[

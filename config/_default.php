@@ -43,6 +43,7 @@ return [
 		'fonts'          => [
 			'body'    => 'sans-serif:400',
 			'heading' => 'sans-serif:600',
+			'alt'     => '',
 		],
 		'font-variants'  => [
 			// TODO: Add semibold and others as options?

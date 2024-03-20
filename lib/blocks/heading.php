@@ -32,6 +32,14 @@ function mai_register_heading_styles() {
 			'label' => __( 'Subheading', 'mai-engine' ),
 		]
 	);
+
+	register_block_style(
+		'core/heading',
+		[
+			'name'  => 'alternate',
+			'label' => __( 'Alternate', 'mai-engine' ),
+		]
+	);
 }
 
 add_filter( 'render_block', 'mai_render_heading_block', 10, 2 );

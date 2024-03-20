@@ -41,6 +41,14 @@ function mai_register_paragraph_styles() {
 			'label' => __( 'Subheading', 'mai-engine' ),
 		]
 	);
+
+	register_block_style(
+		'core/paragraph',
+		[
+			'name'  => 'alternate',
+			'label' => __( 'Alternate', 'mai-engine' ),
+		]
+	);
 }
 
 add_filter( 'render_block', 'mai_render_paragraph_block', 10, 2 );

@@ -107,3 +107,14 @@ code.hljs {
 .author-box-content {
 	line-height: var(--line-height-md);
 }
+
+.is-style-subheading {
+	--heading-font-size: var(--font-size-lg);
+	--heading-text-transform: uppercase;
+	--heading-letter-spacing: 1px;
+}
+
+.is-style-alternate {
+	font-family: var(--alt-font-family);
+	font-weight: var(--alt-font-weight);
+}
