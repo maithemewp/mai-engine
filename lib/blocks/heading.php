@@ -33,13 +33,19 @@ function mai_register_heading_styles() {
 		]
 	);
 
-	register_block_style(
-		'core/heading',
-		[
-			'name'  => 'alternate',
-			'label' => __( 'Alternate', 'mai-engine' ),
-		]
-	);
+	// Check if alt font is enabled.
+	$altfont = mai_get_option( 'altfont-enabled', false );
+
+	// If we have an alt font, add new style.
+	if ( $altfont ) {
+		register_block_style(
+			'core/heading',
+			[
+				'name'  => 'altfont',
+				'label' => __( 'Alternate', 'mai-engine' ),
+			]
+		);
+	}
 }
 
 add_filter( 'render_block', 'mai_render_heading_block', 10, 2 );
@@ -62,6 +68,7 @@ function mai_render_heading_block( $block_content, $block ) {
 		return $block_content;
 	}
 
+	// Bail if no content align setting.
 	if ( ! ( isset( $block['attrs']['contentAlign'] ) && $block['attrs']['contentAlign'] ) ) {
 		return $block_content;
 	}

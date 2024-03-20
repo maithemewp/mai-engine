@@ -55,8 +55,8 @@ function mai_typography_customizer_settings() {
 					],
 				],
 				'default'     => [
-					'font-family' => $body_font_family,
-					'variant'     => $body_font_weight,
+					'font-family' => (string) $body_font_family,
+					'variant'     => (string) $body_font_weight,
 				],
 			]
 		)
@@ -78,8 +78,8 @@ function mai_typography_customizer_settings() {
 					],
 				],
 				'default'     => [
-					'font-family' => $heading_font_family,
-					'variant'     => $heading_font_weight,
+					'font-family' => (string) $heading_font_family,
+					'variant'     => (string) $heading_font_weight,
 				],
 			]
 		)
@@ -88,21 +88,44 @@ function mai_typography_customizer_settings() {
 	$alt_font_family = mai_get_default_font_family( 'alt' );
 	$alt_font_weight = mai_get_default_font_weight( 'alt' );
 
+	new \Kirki\Field\Checkbox_Switch(
+		mai_parse_kirki_args(
+			[
+				'settings'    => mai_get_kirki_setting( 'altfont-enabled' ),
+				'section'     => $section,
+				'label'       => __( 'Add alternate font', 'mai-engine' ),
+				'description' => __( 'This option will register new paragraph and heading block styles for the chosen alternate font.', 'mai-engine' ),
+				'default'     => mai_sanitize_bool( $alt_font_family ),
+				'choices'     => [
+					'on'  => __( 'Yes', 'mai-engine' ),
+					'off' => __( 'No', 'mai-engine' )
+				]
+			]
+		)
+	);
+
 	new \Kirki\Field\Typography(
 		mai_parse_kirki_args(
 			[
 				'settings'    => mai_get_kirki_setting( 'alt-typography' ),
 				'section'     => $section,
 				'label'       => __( 'Alternate', 'mai-engine' ),
-				'description' => $alt_font_family && $alt_font_weight ?  __( 'Default: ', 'mai-engine' ) . $alt_font_family . ' ' . $alt_font_weight : '',
+				'description' => __( 'Default: ', 'mai-engine' ) . ( $alt_font_family && $alt_font_weight ? $alt_font_family . ' ' . $alt_font_weight : __( 'None', 'mai-engine' ) ),
 				'choices'     => [
 					'fonts'   => [
 						'standard' => [ 'serif', 'sans-serif', 'monospace' ],
 					],
 				],
 				'default'     => [
-					'font-family' => $alt_font_family,
-					'variant'     => $alt_font_weight,
+					'font-family' => '',
+					'variant'     => '',
+				],
+				'active_callback' => [
+					[
+						'setting'  => mai_get_kirki_setting( 'altfont-enabled' ),
+						'operator' => '==',
+						'value'    => true,
+					],
 				],
 			]
 		)
@@ -117,8 +140,8 @@ function mai_typography_customizer_settings() {
 				'section'     => $section,
 				'transport'   => 'postMessage',
 				'choices' => [
-					'on'  => __( 'Flush once', 'kirki' ),
-					'off' => __( 'No', 'kirki' )
+					'on'  => __( 'Flush once', 'mai-engine' ),
+					'off' => __( 'No', 'mai-engine' )
 				]
 			]
 		)

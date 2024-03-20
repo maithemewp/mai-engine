@@ -290,6 +290,26 @@ function mai_add_fonts_custom_properties( $css ) {
 		}
 	}
 
+	// Check if alt font is enabled.
+	$altfont = mai_get_option( 'altfont-enabled', false );
+
+	// Bail if no alt font.
+	if ( ! $altfont ) {
+		return $css;
+	}
+
+	// Add heading alt font custom properties.
+	$css['global']['.is-style-altfont:where(h1, h2, h3, h4, h5, h6)'] = [
+		'--heading-font-family' => 'var(--alt-font-family)',
+		'--heading-font-weight' => 'var(--alt-font-weight)',
+	];
+
+	// Add paragraph alt font custom properties.
+	$css['global']['.is-style-altfont:where(p)'] = [
+		'font-family' => 'var(--alt-font-family)',
+		'font-weight' => 'var(--alt-font-weight)',
+	];
+
 	return $css;
 }
 

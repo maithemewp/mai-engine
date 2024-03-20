@@ -42,18 +42,26 @@ function mai_register_paragraph_styles() {
 		]
 	);
 
-	register_block_style(
-		'core/paragraph',
-		[
-			'name'  => 'alternate',
-			'label' => __( 'Alternate', 'mai-engine' ),
-		]
-	);
+	// Check if alt font is enabled.
+	$altfont = mai_get_option( 'altfont-enabled', false );
+
+	// If we have an alt font, add new style.
+	if ( $altfont ) {
+		register_block_style(
+			'core/heading',
+			[
+				'name'  => 'altfont',
+				'label' => __( 'Alternate', 'mai-engine' ),
+			]
+		);
+	}
 }
 
 add_filter( 'render_block', 'mai_render_paragraph_block', 10, 2 );
 /**
- * Remove empty paragraph block markup.
+ * Removes empty paragraph block markup.
+ * Removes altfont class if alt font family and weight are not set.
+ * Adds margin utility classes for content alignment settings.
  *
  * For some reason, `' <p></p> ' === $block_content` doesn't work, so
  * instead we have to count the number of characters in the string.
@@ -78,6 +86,7 @@ function mai_render_paragraph_block( $block_content, $block ) {
 		return '';
 	}
 
+	// Bail if no content alignment setting.
 	if ( ! ( isset( $block['attrs']['contentAlign'] ) && $block['attrs']['contentAlign'] ) ) {
 		return $block_content;
 	}
