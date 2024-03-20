@@ -48,7 +48,7 @@ function mai_register_paragraph_styles() {
 	// If we have an alt font, add new style.
 	if ( $altfont ) {
 		register_block_style(
-			'core/heading',
+			'core/paragraph',
 			[
 				'name'  => 'altfont',
 				'label' => __( 'Alternate', 'mai-engine' ),
