@@ -50,6 +50,7 @@
 }
 
 .menu-item-link {
+	--link-filter-hover: brightness(1);
 	display: var(--menu-item-link-display, (flex));
 	flex: var(--menu-item-link-flex, unset);
 	align-items: center;
@@ -72,10 +73,7 @@
 	&:hover,
 	&:focus {
 		color: var(--menu-item-link-color-hover, var(--menu-item-link-color, var(--color-link)));
-
-		> span {
-			filter: var(--menu-item-name-filter-hover, unset);
-		}
+		filter: var(--menu-item-name-filter-hover, var(--link-filter-hover));
 	}
 }
 
