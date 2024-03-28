@@ -76,13 +76,9 @@
 	/*******************
 	 * Line height scale.
 	 */
-	// --line-height-xs: 1.1;
-	// --line-height-sm: 1.25;
-	// --line-height-md: 1.5;
-	// --line-height-lg: 1.6;
-	--line-height-one: 1;
 	--line-height-scale: 1.125;
-	--line-height-xs: calc(var(--line-height-one) * var(--line-height-scale)); // 1.125
+	--line-height-1: 1;
+	--line-height-xs: calc(var(--line-height-1) * var(--line-height-scale)); // 1.125
 	--line-height-sm: calc(var(--line-height-xs) * var(--line-height-scale)); // 1.266
 	--line-height-md: calc(var(--line-height-sm) * var(--line-height-scale)); // 1.424
 	--line-height-lg: calc(var(--line-height-md) * var(--line-height-scale)); // 1.602

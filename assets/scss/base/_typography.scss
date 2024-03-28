@@ -113,3 +113,19 @@ code.hljs {
 	--heading-text-transform: uppercase;
 	--heading-letter-spacing: 1px;
 }
+
+.has-line-height-1 {
+	line-height: 1;
+}
+
+.has-line-height-xs {
+	line-height: var(--line-height-xs);
+}
+
+.has-line-height-sm {
+	line-height: var(--line-height-sm);
+}
+
+.has-line-height-md {
+	line-height: var(--line-height-md);
+}
