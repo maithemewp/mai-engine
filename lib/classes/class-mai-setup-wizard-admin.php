@@ -166,7 +166,7 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 		}
 
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		$file   = "assets/js/setup-wizard{$suffix}.js";
+		$file   = $suffix ? "assets/js/min/setup-wizard{$suffix}.js" : 'assets/js/setup-wizard.js';
 		$demo   = $this->demos->get_chosen_demo();
 
 		wp_enqueue_script(
