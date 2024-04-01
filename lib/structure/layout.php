@@ -78,10 +78,7 @@ function mai_body_classes( $classes ) {
 	}
 
 	if ( mai_has_dark_header() ) {
-		if ( ! mai_has_transparent_header() ) {
-			$classes[] = 'has-dark-header';
-		}
-
+		$classes[] = 'has-dark-header';
 		$classes[] = 'has-dark-mobile-menu';
 	}
 
