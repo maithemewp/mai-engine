@@ -88,6 +88,30 @@ function mai_render_block_handle_link_color( $block_content, $block ) {
 		return $block_content;
 	}
 
+	// Find marks with has-link-color and replace with has-links-color.
+	$mark = false;
+	$tags = new WP_HTML_Tag_Processor( $block_content );
+
+	// Handle mark color.
+	while ( $tags->next_tag( [ 'tag_name' => 'mark', 'class_name' => 'has-link-color' ] ) ) {
+		// Get array of classes, add new, and flip.
+		$class   = explode( ' ', $tags->get_attribute( 'class' ) );
+		$class[] = 'has-links-color';
+		$class   = array_flip( $class );
+
+		// Remove link color class.
+		unset( $class['has-link-color'] );
+
+		$tags->set_attribute( 'class', implode( ' ', array_flip( $class ) ) );
+		$mark = true;
+		break;
+	}
+
+	// If we have a mark, update the content.
+	if ( $mark ) {
+		$block_content = $tags->get_updated_html();
+	}
+
 	// Get color settings.
 	$text    = mai_isset( $block['attrs'], 'textColor', false );
 	$bg      = mai_isset( $block['attrs'], 'backgroundColor', false );
