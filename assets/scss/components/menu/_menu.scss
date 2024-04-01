@@ -13,9 +13,6 @@
 	text-transform: var(--menu-text-transform, normal);
 	columns: var(--menu-columns, auto);
 	list-style-type: none;
-
-	--link-text-decoration: var(--menu-item-link-text-decoration, none);
-	--link-text-decoration-hover: var(--menu-item-link-text-decoration-hover, none);
 }
 
 .menu-item {
@@ -50,6 +47,8 @@
 }
 
 .menu-item-link {
+	--link-text-decoration: var(--menu-item-link-text-decoration, none);
+	--link-text-decoration-hover: var(--menu-item-link-text-decoration-hover, none);
 	--link-filter-hover: brightness(1);
 	display: var(--menu-item-link-display, (flex));
 	flex: var(--menu-item-link-flex, unset);

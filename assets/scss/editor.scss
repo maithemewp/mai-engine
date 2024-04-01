@@ -75,6 +75,10 @@ ol.wp-block li.wp-block {
 	--heading-color: var(--color-heading);
 }
 
+.has-inline-color.has-link-color {
+	color: var(--color-link);
+}
+
 .alignfull {
 	width: 100%;
 	max-width: 100%;
