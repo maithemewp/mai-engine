@@ -81,7 +81,7 @@ function mai_has_string( $needle, $haystack ) {
 
 	if ( is_array( $needle ) ) {
 		foreach ( $needle as $string ) {
-			if ( false !== strpos( $haystack, $string ) ) {
+			if ( str_contains( $haystack, $string ) ) {
 				return true;
 			}
 		}
@@ -89,7 +89,7 @@ function mai_has_string( $needle, $haystack ) {
 		return false;
 	}
 
-	return false !== strpos( $haystack, $needle );
+	return str_contains( $haystack, $needle );
 }
 
 /**
