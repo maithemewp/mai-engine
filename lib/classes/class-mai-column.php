@@ -62,7 +62,7 @@ class Mai_Column {
 	 * @return void
 	 */
 	public function __construct( $args ) {
-		$this->args  = $this->get_sanitized_args( $args );
+		$this->args = $this->get_sanitized_args( $args );
 
 		if ( ! $this->args['preview'] ) {
 			$this->hash        = $this->get_hash();
