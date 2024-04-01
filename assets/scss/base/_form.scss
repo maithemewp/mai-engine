@@ -46,9 +46,9 @@ label:not([class*="gform"]):not([class*="wpform"]) {
 
 ::placeholder,
 input::placeholder {
-	color: var(--input-placeholder-color, var(--color-body));
+	color: var(--input-placeholder-color, currentColor);
 	font-size: var(--input-placeholder-font-size, var(--font-size-base));
-	opacity: 0.5; // Firefox requires opacity to stay consistent.
+	opacity: var(--input-placeholder-opacity, 0.5); // Firefox requires opacity to stay consistent.
 }
 
 textarea {
