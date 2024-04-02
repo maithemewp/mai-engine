@@ -391,6 +391,7 @@ class Mai_Grid {
 			case 'tax_meta':
 			case 'trending': // For Mai Publisher/Trending Posts.
 				$tax_query = [];
+
 				if ( $this->args['taxonomies'] ) {
 					foreach ( $this->args['taxonomies'] as $taxo ) {
 						$taxonomy = mai_isset( $taxo, 'taxonomy', '' );
@@ -447,6 +448,7 @@ class Mai_Grid {
 				}
 
 				$meta_query = [];
+
 				if ( $this->args['meta_keys'] ) {
 					foreach ( $this->args['meta_keys'] as $meta ) {
 						$key     = mai_isset( $meta, 'meta_key', '' );

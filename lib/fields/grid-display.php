@@ -210,11 +210,12 @@ function mai_get_grid_display_fields() {
 			'type'              => 'button_group',
 			'default_value'     => $defaults['title_size'],
 			'choices'           => [
-				'sm'  => esc_html__( 'XS', 'mai-engine' ),
-				'md'  => esc_html__( 'S', 'mai-engine' ),
-				'lg'  => esc_html__( 'M', 'mai-engine' ),
-				'xl'  => esc_html__( 'L', 'mai-engine' ),
-				'xxl' => esc_html__( 'XL', 'mai-engine' ),
+				'sm'    => esc_html__( 'XS', 'mai-engine' ),
+				'md'    => esc_html__( 'S', 'mai-engine' ),
+				'lg'    => esc_html__( 'M', 'mai-engine' ),
+				'xl'    => esc_html__( 'L', 'mai-engine' ),
+				'xxl'   => esc_html__( 'XL', 'mai-engine' ),
+				'xxxl'  => esc_html__( '2XL', 'mai-engine' ),
 			],
 			'wrapper'           => [
 				'class' => 'mai-acf-button-group',

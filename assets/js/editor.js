@@ -31,10 +31,10 @@ wp.domReady( () => {
 		return args;
 	});
 
-	// ACF args to allow svgs in icon select fields.
+	// Allow svgs in icon select fields. ACF < 2.6.8.
 	acf.add_filter( 'select2_args', function( args, $select, settings, field, instance ) {
-		// Bail if `settings.field.data.key` is not set or is not `mai_icon_choices` or `mai_icon_brand_choices`.
-		if ( ! settings.field.data.key || ! [ 'mai_icon_choices', 'mai_icon_brand_choices' ].includes( settings.field.data.key ) ) {
+		// Bail if `field.data( 'key' )` is not set or is not `mai_icon_choices` or `mai_icon_brand_choices`.
+		if ( ! field.data( 'key' ) || ! [ 'mai_icon_choices', 'mai_icon_brand_choices' ].includes( field.data( 'key' ) ) ) {
 			return args;
 		}
 
@@ -47,6 +47,16 @@ wp.domReady( () => {
 		};
 
 		return args;
+	});
+
+	// Allow svgs in icon select fields. ACF >= 2.6.8.
+	acf.add_filter( 'select2_escape_markup', function( escaped_value, original_value, $select, settings, field, instance ) {
+		// Bail if `field.data( 'key' )` is not set or is not `mai_icon_choices` or `mai_icon_brand_choices`.
+		if ( ! field.data( 'key' ) || ! [ 'mai_icon_choices', 'mai_icon_brand_choices' ].includes( field.data( 'key' ) ) ) {
+			return escaped_value;
+		}
+
+		return original_value;
 	});
 
 	var icons = [ 'mai_icon_choices', 'mai_icon_brand_choices' ];

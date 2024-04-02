@@ -1208,7 +1208,6 @@ class Mai_Entry {
 			echo $close;
 
 		} else {
-
 			// Content.
 			switch ( $this->type ) {
 				case 'post':
@@ -1264,6 +1263,7 @@ class Mai_Entry {
 		if ( isset( $content[ $post_id ] ) ) {
 			return $content[ $post_id ];
 		}
+
 		$content[ $post_id ] = get_the_content( null, false, $post_id );
 		$content[ $post_id ] = mai_get_processed_content( $content[ $post_id ] );
 

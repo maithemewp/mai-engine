@@ -170,7 +170,8 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 				'lg'    => __( 'S', 'mai-engine' ),
 				'xl'    => __( 'M', 'mai-engine' ),
 				'xxl'   => __( 'L', 'mai-engine' ),
-				'xxxxl' => __( 'XL', 'mai-engine' ),
+				'xxxl'  => __( 'XL', 'mai-engine' ),
+				'xxxxl' => __( '2XL', 'mai-engine' ),
 			],
 			'active_callback' => [
 				[

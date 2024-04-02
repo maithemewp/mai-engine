@@ -4,15 +4,20 @@
 // Archive, Single, Cart.
 
 .quantity {
+	display: grid;
+	place-items: center;
+	height: 100%;
 
 	.summary & {
 		float: left;
 	}
 
-	.input-text {
+	.qty {
 		max-width: 72px;
-		margin: 0 var(--spacing-sm) 0 0;
-		padding: calc(0.9em - 2px); // Input padding minus 2px.
+		height: 100%;
+		margin-block: 0;
+		margin-inline: 0 var(--spacing-sm);
+		padding-block: 0;
 	}
 }
 

@@ -18,7 +18,7 @@
     "kirki-framework/kirki": "^4.0",
     "proteusthemes/wp-content-importer-v2": "^2.1",
     "yahnis-elsts/plugin-update-checker": "^5",
-    "wpengine/advanced-custom-fields-pro": "^6.2.7"
+    "wpengine/advanced-custom-fields-pro": "^6.2.8"
   },
   "require-dev": {
     "php": "^7|^8",

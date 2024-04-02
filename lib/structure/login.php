@@ -33,6 +33,11 @@ function mai_login_body_class( $classes ) {
 
 	$classes[] = 'has-dark-background';
 
+	// Add logo invert class.
+	if ( mai_get_option( 'logo-invert', false ) ) {
+		$classes[] = 'has-logo-invert';
+	}
+
 	return $classes;
 }
 
@@ -69,6 +74,9 @@ function mai_login_css() {
 		body.login.has-dark-background #nav a,
 		body.login.has-dark-background #backtoblog a {
 			color: var(--color-white);
+		}
+		body.login.has-dark-background.has-logo-invert .mai-login-logo {
+			--image-filter: brightness(0) invert(1);
 		}
 		body.login #login {
 			margin: 16vh auto 36px !important;
@@ -209,6 +217,10 @@ function mai_login_css() {
 			align-items: center;
 			margin-top: 18px;
 		}
+		body.login #login form p.forgetmenot #rememberme,
+		body.login #login form p.forgetmenot label {
+			margin-block: auto;
+		}
 		body.login #login form p.forgetmenot #rememberme {
 			margin-right: 8px;
 		}
@@ -288,6 +300,11 @@ function mai_login_css() {
 		#language-switcher {
 			display: flex;
 			align-items: center;
+		}
+		#language-switcher label {
+			display: grid;
+			place-items: center;
+			margin: 0 var(--spacing-sm) 0 0;
 		}
 		#language-switcher > select,
 		#language-switcher > .button {
