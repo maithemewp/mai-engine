@@ -5,7 +5,7 @@
 
 .quantity {
 	display: grid;
-	place-items: center;
+	place-items: center start;
 	height: 100%;
 
 	.summary & {
