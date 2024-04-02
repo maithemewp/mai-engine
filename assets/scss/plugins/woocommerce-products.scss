@@ -12,12 +12,15 @@
 		float: left;
 	}
 
+	// This affects the qty input on single products and the cart.
+	// This margin/padding seems to make things consistent with limited code.
 	.qty {
 		max-width: 72px;
 		height: 100%;
 		margin-block: 0;
 		margin-inline: 0 var(--spacing-sm);
-		padding-block: 0;
+		padding-block: var(--spacing-xs);
+		padding-inline: var(--spacing-sm) 0;
 	}
 }
 
