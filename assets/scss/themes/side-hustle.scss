@@ -13,6 +13,8 @@
 	--border: var(--color-secondary-dark) 1px solid;
 	--input-border: 1px solid var(--color-heading);
 	--input-background-color: transparent;
+	--cart-total-font-size: 0.75rem;
+	--cart-total-background: var(--color-link);
 }
 
 .menu-item-link-current,
@@ -74,54 +76,20 @@ h1,
 	--entry-image-link-margin-bottom: var(--spacing-lg);
 }
 
-// .has-image-full .entry-wrap.entry-wrap-grid .entry-title-link {
-// 	letter-spacing: 1px;
-// 	font-family: var(--body-font-family);
-// 	text-transform: uppercase;
-// 	font-weight: bold;
-// 	padding-top: var(--spacing-sm);
-// }
-
-// .has-dark-background {
-// 	--link-text-decoration: none;
-// 	--link-text-decoration-hover: none;
-// 	--border: 1px solid hsla(0,0%,100%,1);
-// 	--link-filter-hover: var(--color-white);
-// 	--menu-item-link-color-hover: var(--color-white);
-// 	--menu-item-name-filter-hover: var(--color-white);
-// }
-
-// .has-dark-header .site-header-wrap,
-// .has-dark-mobile-menu .mobile-menu,
-// .has-dark-transparent-header:not(.header-stuck) .site-header-wrap {
-// 	--link-text-decoration: none;
-// 	--link-filter-hover: brightness(1);
-// 	--entry-title-link-color-hover: brightness(1);
-// 	--menu-item-name-filter-hover: brightness(1);
-// }
-
-input[type=email][placeholder],
-input[type=number][placeholder],
-input[type=password][placeholder],
-input[type=search][placeholder],
-input[type=tel][placeholder],
-input[type=text][placeholder],
-input[type=url][placeholder],
-textarea[placeholder] {
-	// padding-inline-start: 0;
+input[type=email][placeholder]:not([placeholder=""]),
+input[type=number][placeholder]:not([placeholder=""]),
+input[type=password][placeholder]:not([placeholder=""]),
+input[type=search][placeholder]:not([placeholder=""]),
+input[type=tel][placeholder]:not([placeholder=""]),
+input[type=text][placeholder]:not([placeholder=""]),
+input[type=url][placeholder]:not([placeholder=""]),
+textarea[placeholder]:not([placeholder=""]) {
+	padding-inline-start: 0;
+	padding-block-end: var(--spacing-xxs);
 	border-width: 0;
-	border-left-width: 1px;
 	border-bottom-width: 1px;
-	// padding: var(--input-padding,.1em);
-	// font-family: var(--heading-font-family);
-	// font-style: italic;
-	// border: 0 !important;
-	// color: currentcolor !important;
+	border-color: currentColor;
 }
-
-// textarea[placeholder] {
-// 	border-right-width: 1px;
-// }
 
 input[type=email]::placeholder,
 input[type=number]::placeholder,
@@ -131,72 +99,27 @@ input[type=tel]::placeholder,
 input[type=text]::placeholder,
 input[type=url]::placeholder,
 textarea::placeholder {
-	color: currentColor !important;
-	--input-placeholder-color: currentColor !important;
 	font-family: var(--heading-font-family);
 	font-style: italic;
 }
 
 .wp-block-search__button-inside .wp-block-search__inside-wrapper {
-	border-top: 0 !important;
-	border-left: 0 !important;
-	border-right: 0 !important;
-	border-bottom: 1px solid currentcolor !important;
+	--input-border: 0;
+	border-bottom: 1px solid currentcolor;
 }
-
-// .wpforms-container input[type=date],
-// .wpforms-container input[type=datetime],
-// .wpforms-container input[type=datetime-local],
-// .wpforms-container input[type=email],
-// .wpforms-container input[type=month],
-// .wpforms-container input[type=number],
-// .wpforms-container input[type=password],
-// .wpforms-container input[type=range],
-// .wpforms-container input[type=search],
-// .wpforms-container input[type=tel],
-// .wpforms-container input[type=text],
-// .wpforms-container input[type=time],
-// .wpforms-container input[type=url],
-// .wpforms-container input[type=week],
-// .wpforms-container select,
-// .wpforms-container textarea {
-// 	font-family: var(--heading-font-family);
-// 	font-style: italic;
-// 	color: currentcolor !important;
-// 	border-top: 0 !important;
-// 	border-left: 0 !important;
-// 	border-right: 0 !important;
-// 	border-bottom: 1px solid currentcolor !important;
-// }
-
-// input[type=search]::placeholder {
-// 	color: currentcolor !important;
-// }
 
 .entry-title-link {
 	letter-spacing: -1px;
 }
 
-.pagination-link.button.button-small.button-secondary {
+.archive-pagination {
+	--button-small-padding: 0.4rem 0.6rem;
+}
+
+.archive-pagination .button-secondary {
 	--button-background: transparent;
-	--button-padding: var(--button-small-padding,0.4rem 0.6rem);
 }
 
-.pagination-link {
-	--button-padding: var(--button-small-padding,0.4rem 0.6rem)
-}
-
-.entry.entry-grid.has-entry-link.has-image .entry-custom-content {
-	margin-bottom: 0px;
-}
-
-.entry.entry-grid.has-entry-link.has-image .entry-title  {
-	margin-bottom: 20px;
-	margin-top: 0px;
-}
-
- .mai-cart-total:not(:empty) {
-    padding: var(--cart-total-padding,var(--spacing-xxxs));
-    font-size: var(--cart-total-font-size,0.5rem);
-    background: var(--cart-total-background,var(--color-link));
+.entry-custom-content:first-child {
+	--entry-custom-content-margin-bottom: 0;
 }
