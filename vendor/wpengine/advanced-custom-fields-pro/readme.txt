@@ -4,7 +4,7 @@ Tags: acf, fields, custom fields, meta, repeater
 Requires at least: 5.8
 Tested up to: 6.5
 Requires PHP: 7.0
-Stable tag: 6.2.8-RC1
+Stable tag: 6.2.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -92,16 +92,17 @@ From your WordPress dashboard
 
 == Changelog ==
 
-= 6.2.8-RC1 =
-*Release Date 21st March 2024*
+= 6.2.8 =
+*Release Date 2nd April 2024*
 
-* New - Support for the Block Bindings API in WordPress 6.5 with a new `acf/field` source. For more information on how to use this, please read [the release blog post](https://www.advancedcustomfields.com/blogl/acf-6-2-8-RC1)
+* New - Support for the Block Bindings API in WordPress 6.5 with a new `acf/field` source. For more information on how to use this, please read [the release blog post](https://www.advancedcustomfields.com/blog/acf-6-2-8)
 * New - Support for performance improvements for translations in WordPress 6.5
 * Enhancement - A new JS filter, `select2_escape_markup` now allows fields to customize select2's HTML escaping behavior
 * Fix - Options pages can no longer set to have a parent of themselves
 * Fix - ACF PRO license activations on multisite subsite installs will now use the correct site URL
-* Fix - ACF PRO installed as a  must-use plugin on multisite installs will no longer try to check for updates resulting in 404 errors
+* Fix - ACF PRO installed on multisite installs will no longer try to check for updates resulting in 404 errors when the updates page is not visible
 * Fix - ACF JSON no longer produces warnings on Windows servers when no ACF JSON folder is found
+* Fix - Field and layout names can now contain valid non-ASCII characters
 * Other - ACF PRO now requires a valid license to be activated in order to use PRO features. [Learn more](https://www.advancedcustomfields.com/resources/license-activations/)
 
 = 6.2.7 =

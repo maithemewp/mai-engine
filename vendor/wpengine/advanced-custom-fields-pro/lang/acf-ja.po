@@ -12,7 +12,7 @@
 # This file is distributed under the same license as Advanced Custom Fields.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-03-21T11:19:27+00:00\n"
+"PO-Revision-Date: 2024-03-29T21:10:52+00:00\n"
 "Report-Msgid-Bugs-To: http://support.advancedcustomfields.com\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -54,7 +54,7 @@ msgstr ""
 
 #: includes/admin/admin.php:63
 msgid "Hide&nbsp;details"
-msgstr ""
+msgstr "詳細を隠す"
 
 #: includes/admin/admin.php:62 includes/admin/views/escaped-html-notice.php:11
 msgid "Show&nbsp;details"
@@ -495,7 +495,7 @@ msgstr ""
 
 #: includes/fields/class-acf-field-textarea.php:24
 msgid "A basic textarea input for storing paragraphs of text."
-msgstr ""
+msgstr "テキストの段落を保存するための標準的な入力テキストエリア。"
 
 #: includes/fields/class-acf-field-text.php:24
 msgid "A basic text input, useful for storing single string values."
@@ -711,7 +711,7 @@ msgstr "無効な投稿 ID です。"
 
 #: includes/ajax/class-acf-ajax-local-json-diff.php:47
 msgid "Invalid post type selected for review."
-msgstr ""
+msgstr "レビューには無効な投稿タイプが選択されています。"
 
 #: includes/admin/views/global/navigation.php:186
 msgid "More"
@@ -741,7 +741,7 @@ msgstr "よく使うフィールド"
 #. translators: %s: The invalid search term
 #: includes/admin/views/browse-fields-modal.php:40
 msgid "No search results for '%s'"
-msgstr ""
+msgstr "「%s」に合う検索結果はありません"
 
 #: includes/admin/views/browse-fields-modal.php:13
 msgid "Search fields..."
@@ -765,7 +765,7 @@ msgstr ""
 
 #: includes/admin/views/acf-taxonomy/list-empty.php:13
 msgid "Add Your First Taxonomy"
-msgstr ""
+msgstr "最初のタクソノミーを追加"
 
 #: includes/admin/views/acf-taxonomy/basic-settings.php:122
 msgid "Hierarchical taxonomies can have descendants (like categories)."

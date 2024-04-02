@@ -1208,7 +1208,7 @@ function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t =
       $handle.find('.li-field-label strong a').html(label);
 
       // update name
-      $handle.find('.li-field-name').html(this.makeCopyable(name));
+      $handle.find('.li-field-name').html(this.makeCopyable(acf.strSanitize(name)));
 
       // update type
       const iconName = acf.strSlugify(this.getType());
@@ -1425,16 +1425,10 @@ function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t =
       }
     },
     onChangeName: function (e, $el) {
-      // set
-      var name = $el.val();
-
-      // strip any invalid characters.
-      name = name.replace(/[^A-Za-zŽžÀ-ÿ0-9_-]+/g, '-');
-      $el.val(name);
-      this.set('name', name);
-
-      // error
-      if (name.substr(0, 6) === 'field_') {
+      const sanitizedName = acf.strSanitize($el.val());
+      $el.val(sanitizedName);
+      this.set('name', sanitizedName);
+      if (sanitizedName.startsWith('field_')) {
         alert(acf.__('The string "field_" may not be used at the start of a field name'));
       }
     },
@@ -3104,7 +3098,7 @@ __webpack_require__.r(__webpack_exports__);
 
 function toPropertyKey(t) {
   var i = (0,_toPrimitive_js__WEBPACK_IMPORTED_MODULE_1__["default"])(t, "string");
-  return "symbol" == (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(i) ? i : String(i);
+  return "symbol" == (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(i) ? i : i + "";
 }
 
 /***/ }),
