@@ -41,7 +41,7 @@ function mai_render_search_block( $block_content, $block ) {
 		$style = (string) $tags->get_attribute( 'style' );
 
 		if ( $style ) {
-			$style = str_replace( 'width', '--width', $style );
+			$style = str_replace( 'width', '--search-max-width', $style );
 			$tags->set_attribute( 'style', $style );
 		}
 	}

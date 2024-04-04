@@ -18,7 +18,7 @@
 	}
 
 	.wp-block-search__inside-wrapper {
-		--search-inside-wrapper-width: min(320px, var(--width, 100%));
+		--search-inside-wrapper-width: min(var(--search-min-width, 320px), var(--search-max-width, 100%));
 		width: var(--search-inside-wrapper-width);
 	}
 
