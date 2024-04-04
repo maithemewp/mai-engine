@@ -103,7 +103,7 @@
 		--button-color-hover: var(--button-outline-color-hover, var(--color-white));
 		--button-background: var(--button-outline-background, transparent);
 		--button-background-hover: var(--button-outline-background-hover, var(--button-outline-color, var(--button-color)));
-		--button-border: 2px solid var(--button-outline-color, var(--button-color));
+		--button-border: var(--button-outline-width, 2px) solid var(--button-outline-color, var(--button-color));
 		--button-border-hover: var(--button-border);
 	}
 
