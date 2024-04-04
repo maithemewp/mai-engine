@@ -33,38 +33,32 @@ function mai_render_search_block( $block_content, $block ) {
 		return $block_content;
 	}
 
-	$dom = mai_get_dom_document( $block_content );
+	// Set up tag processor.
+	$tags = new WP_HTML_Tag_Processor( $block_content );
 
-	/**
-	 * The search block container.
-	 *
-	 * @var DOMElement $first_block The search block container.
-	 */
-	$first_block = mai_get_dom_first_child( $dom );
+	// Loop through tags.
+	while ( $tags->next_tag( [ 'tag_name' => 'div', 'class_name' => 'wp-block-search__inside-wrapper' ] ) ) {
+		$style = (string) $tags->get_attribute( 'style' );
 
-	if ( $first_block ) {
-		$classes = $first_block->getAttribute( 'class' );
-		$classes = mai_add_classes( 'button-secondary', $classes );
-
-		$first_block->setAttribute( 'class', $classes );
-
-		$xpath   = new DOMXPath( $dom );
-		$wrapper = $xpath->query( 'div[contains(concat(" ", normalize-space(@class), " "), " wp-block-search__inside-wrapper ")]' );
-
-		if ( $wrapper->length ) {
-			$wrapper = $wrapper->item(0);
-			$style   = $wrapper->getAttribute( 'style' );
-			$style   = str_replace( 'width', '--min-width', $style );
-
-			if ( $style ) {
-				$wrapper->setAttribute( 'style', $style );
-			} else {
-				$wrapper->removeAttribute( 'style' );
-			}
+		if ( $style ) {
+			$style = str_replace( 'width', '--width', $style );
+			$tags->set_attribute( 'style', $style );
 		}
-
-		$block_content = mai_get_dom_html( $dom );
 	}
+
+	// Save the updated HTML.
+	$block_content = $tags->get_updated_html();
+
+	// Set up tag processor.
+	$tags = new WP_HTML_Tag_Processor( $block_content );
+
+	// Loop through tags.
+	while ( $tags->next_tag( [ 'tag_name' => 'button', 'class_name' => 'wp-block-search__button' ] ) ) {
+		$class = $tags->add_class( 'button button-secondary button-small' );
+	}
+
+	// Save the updated HTML.
+	$block_content = $tags->get_updated_html();
 
 	return $block_content;
 }

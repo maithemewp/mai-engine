@@ -513,7 +513,12 @@ input[type="submit"],
 .has-columns-nested > .acf-innerblocks-container > .wp-block {
 	flex: var(--flex, var(--flex-default));
 	order: var(--order, unset);
-	margin: 0; /* overrides core editor margin on wp-block */
+	// overrides core editor margin on wp-block
+	margin: 0;
+	// Fixes search block weirdness and other flex issues.
+	// @link https://defensivecss.dev/tip/flexbox-min-content-size/
+	// @link https://dfmcphee.com/flex-items-and-min-width-0/
+	min-width: 0;
 }
 
 .has-columns-nested > .acf-innerblocks-container > .wp-block > .is-column {
