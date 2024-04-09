@@ -440,7 +440,7 @@ function mai_load_files() {
 		$files[] = 'support/wpforms';
 	}
 
-	if ( class_exists( 'WP_Recipe_Maker' ) ) {
+	if ( class_exists( 'WP_Recipe_Maker' ) && (bool) apply_filters( 'mai_enable_wprm_support', false ) ) {
 		$files[] = 'support/wp-recipe-maker';
 	}
 
