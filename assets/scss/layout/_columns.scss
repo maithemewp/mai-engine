@@ -40,6 +40,10 @@
 .is-column {
 	flex: var(--flex, var(--flex-default));
 	order: var(--order, unset);
+	// Fixes search block weirdness and other flex issues.
+	// @link https://defensivecss.dev/tip/flexbox-min-content-size/
+	// @link https://dfmcphee.com/flex-items-and-min-width-0/
+	min-width: 0;
 
 	@include mq(false, sm) {
 		--order: var(--order-xs, initial);

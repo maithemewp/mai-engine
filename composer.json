@@ -17,8 +17,8 @@
     "afragen/wp-dependency-installer": "^4",
     "kirki-framework/kirki": "^4.0",
     "proteusthemes/wp-content-importer-v2": "^2.1",
-    "yahnis-elsts/plugin-update-checker": "^4.10",
-    "wpengine/advanced-custom-fields-pro": "^6.2.5"
+    "yahnis-elsts/plugin-update-checker": "^5",
+    "wpengine/advanced-custom-fields-pro": "^6.2.8"
   },
   "require-dev": {
     "php": "^7|^8",

@@ -34,15 +34,16 @@ return [
 			'primary'    => '#007bff', // Button primary background color.
 			'secondary'  => '#6c747d', // Button secondary background color.
 		],
-		'custom-colors'  => [
+		'custom-colors' => [
 			// [
 			// 	'color' => '#bcda83', // var(--color-custom-1).
 			// 	'color' => '#6c747d', // var(--color-custom-2).
 			// ],
 		],
-		'fonts'          => [
+		'fonts'  => [
 			'body'    => 'sans-serif:400',
 			'heading' => 'sans-serif:600',
+			'alt'     => '',
 		],
 		'font-variants'  => [
 			// TODO: Add semibold and others as options?
@@ -61,7 +62,7 @@ return [
 				'additional' => '', // Optionally add comma-separated list of additional heading font weights to load. Uses chosen heading font family.
 			],
 		],
-		'extra'          => [],
+		'extra' => [],
 	],
 
 	/*
@@ -656,7 +657,7 @@ return [
 				'header_meta'                  => 'mai_get_header_meta_default',
 				'footer_meta'                  => 'mai_get_footer_meta_default',
 				'custom_content'               => '',
-				// 'custom_content_2'             => '',
+				'custom_content_2'             => '',
 				'page-header-image'            => '',
 				'page-header-featured'         => false,
 				'page-header-background-color' => '',

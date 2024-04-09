@@ -1,7 +1,8 @@
 :root {
 	--font-scale-tablet: 1.165;
 	--font-scale-desktop: 1.165;
-	--heading-line-height: 1.44;
+	--line-height-md: 1.44;
+	--heading-line-height: var(--line-height-md);
 	--border-radius: 0;
 	--shadow: 0;
 	--button-font-weight: var(--body-font-weight-bold);

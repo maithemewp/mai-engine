@@ -58,8 +58,7 @@ function mai_do_breadcrumbs() {
 				$tags = new WP_HTML_Tag_Processor( $breadcrumbs );
 
 				while ( $tags->next_tag( [ 'tag_name' => 'div', 'class_name' => 'aioseo-breadcrumbs' ] ) ) {
-					$classes = mai_add_classes( 'breadcrumb', $tags->get_attribute( 'class' ) );
-					$tags->set_attribute( 'class', $classes );
+					$tags->add_class( 'breadcrumb' );
 					break;
 				}
 

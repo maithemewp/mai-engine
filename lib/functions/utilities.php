@@ -252,7 +252,7 @@ function mai_get_mobile_menu_breakpoint() {
 /**
  * Gets an incremented index.
  *
- * @since TBD
+ * @since 2.34.0
  *
  * @param string $context The context for the counter.
  * @param bool $reset Whether to reset the index.
@@ -1389,7 +1389,7 @@ function mai_get_dom_first_child( $dom ) {
 /**
  * Saves HTML from DOMDocument and decode entities.
  *
- * @since TBD
+ * @since 2.34.0
  *
  * @param DOMDocument $dom
  *

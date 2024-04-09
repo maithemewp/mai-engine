@@ -4,7 +4,7 @@
 	font-size: var(--body-font-size, var(--font-size-md));
 	font-family: var(--body-font-family, unset);
 	font-style: var(--body-font-style, normal);
-	line-height: var(--body-line-height, 1.625); // Perfect fourth.
+	line-height: var(--body-line-height, var(--line-height-lg));
 	background: var(--body-background-color, var(--color-background));
 }
 
@@ -15,7 +15,7 @@
 	font-weight: var(--heading-font-weight, unset);
 	font-family: var(--heading-font-family, unset);
 	font-style: var(--heading-font-style, normal);
-	line-height: var(--heading-line-height, 1.219); // Perfect fourth.
+	line-height: var(--heading-line-height, var(--line-height-sm));
 	letter-spacing: var(--heading-letter-spacing, normal);
 	text-transform: var(--heading-text-transform, none);
 
@@ -103,7 +103,7 @@
 		--button-color-hover: var(--button-outline-color-hover, var(--color-white));
 		--button-background: var(--button-outline-background, transparent);
 		--button-background-hover: var(--button-outline-background-hover, var(--button-outline-color, var(--button-color)));
-		--button-border: 2px solid var(--button-outline-color, var(--button-color));
+		--button-border: var(--button-outline-width, 2px) solid var(--button-outline-color, var(--button-color));
 		--button-border-hover: var(--button-border);
 	}
 
@@ -175,7 +175,7 @@
 	--link-text-decoration: underline;
 	--link-filter-hover: brightness(0.8);
 	--entry-title-link-color: var(--color-white); // For Mai Post Grid in side has-dark-background.
-	--entry-title-link-color-hover: brightness(0.8); // For Mai Post Grid in side has-dark-background.
+	--entry-title-link-color-hover: var(--color-white); // For Mai Post Grid in side has-dark-background.
 	--menu-item-link-color: var(--color-white);
 	--menu-item-link-color-hover: var(--color-white);
 	--menu-item-name-filter-hover: brightness(0.8);

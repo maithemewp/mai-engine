@@ -207,11 +207,12 @@ function mai_register_divider_field_group() {
 					'type'          => 'radio',
 					'default_value' => 'wave',
 					'choices'       => [
-						'angle' => esc_html__( 'Angle', 'mai-engine' ),
-						'curve' => esc_html__( 'Curve', 'mai-engine' ),
-						'wave'  => esc_html__( 'Wave', 'mai-engine' ),
-						'point' => esc_html__( 'Point', 'mai-engine' ),
-						'round' => esc_html__( 'Round', 'mai-engine' ),
+						'angle' => __( 'Angle', 'mai-engine' ),
+						'curve' => __( 'Curve', 'mai-engine' ),
+						'oval'  => __( 'Oval', 'mai-engine' ),
+						'point' => __( 'Point', 'mai-engine' ),
+						'round' => __( 'Round', 'mai-engine' ),
+						'wave'  => __( 'Wave', 'mai-engine' ),
 					],
 				],
 				[

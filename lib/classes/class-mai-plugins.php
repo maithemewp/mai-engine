@@ -141,7 +141,7 @@ class Mai_Plugins {
 			'https://bizbudding.com/mai-theme-pro/'
 		);
 		$theme_link   = '<a target="_blank" rel="noopener" href="https://bizbudding.com/mai-theme/">Mai Theme</a>';
-		$plugins_link = sprintf( '<a target="_blank" rel="noopener" href="%s">Mai Theme Pro Plugin</a>', $plugins_url );
+		$plugins_link = sprintf( '<a target="_blank" rel="noopener" href="%s">Mai Pro Plugin</a>', $plugins_url );
 
 		echo '<div class="wrap">';
 			echo '<h1 class="wp-heading-inline">Mai Plugins</h1>';
@@ -157,7 +157,7 @@ class Mai_Plugins {
 
 				if ( ! class_exists( 'Mai_Design_Pack' ) ) {
 					echo '<div class="mai-plugins-cta">';
-						printf( '<p><a target="_blank" rel="noopener" href="%s" class="button button-primary">%s</a></p>', $plugins_url, sprintf( '%s Mai Theme Pro', esc_html__( 'Get', 'mai-engine' ) ) );
+						printf( '<p><a target="_blank" rel="noopener" href="%s" class="button button-primary">%s</a></p>', $plugins_url, sprintf( '%s Mai Pro Plugin', esc_html__( 'Get', 'mai-engine' ) ) );
 						printf( '<p><a target="_blank" rel="noopener" href="https://bizbudding.com/my-account/">%s  →</a></p>', sprintf( 'BizBudding %s', esc_html__( 'Account', 'mai-engine' ) ) );
 					echo '</div>';
 				}

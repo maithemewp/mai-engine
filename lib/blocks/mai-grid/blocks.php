@@ -12,7 +12,6 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-
 add_action( 'acf/init', 'mai_register_grid_field_groups' );
 /**
  * Register field groups for the grid block.
@@ -120,11 +119,11 @@ function mai_get_grid_field_keys() {
 		}
 	}
 
-	$display         = array_merge( [ 'mai_grid_block_display_tab' ], array_diff( $names['display'], [ 'mai_grid_block_disable_entry_link', 'mai_grid_block_no_results' ] ) );
-	$layout          = array_merge( [ 'mai_grid_block_layout_tab' ], $names['layout'] );
-	$wp_query        = array_merge( [ 'mai_grid_block_entries_tab' ], $names['wp_query'] );
-	$wp_term_query   = array_merge( [ 'mai_grid_block_entries_tab' ], $names['wp_term_query'] );
-	$keys            = [
+	$display       = array_merge( [ 'mai_grid_block_display_tab' ], array_diff( $names['display'], [ 'mai_grid_block_disable_entry_link', 'mai_grid_block_no_results' ] ) );
+	$layout        = array_merge( [ 'mai_grid_block_layout_tab' ], $names['layout'] );
+	$wp_query      = array_merge( [ 'mai_grid_block_entries_tab' ], $names['wp_query'] );
+	$wp_term_query = array_merge( [ 'mai_grid_block_entries_tab' ], $names['wp_term_query'] );
+	$keys          = [
 		'post' => array_merge( $display, $layout, $wp_query, [ 'mai_grid_block_disable_entry_link', 'mai_grid_block_no_results' ] ),
 		'term' => array_merge( $display, $layout, $wp_term_query, [ 'mai_grid_block_disable_entry_link', 'mai_grid_block_no_results' ] ),
 	];

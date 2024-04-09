@@ -12,6 +12,9 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die();
 
+// Must be at the top of the file.
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+
 /**
  * Deactivate Mai Engine plugin.
  *
@@ -183,19 +186,13 @@ add_action( 'plugins_loaded', 'mai_plugin_update_checker' );
  * @return void
  */
 function mai_plugin_update_checker() {
-	if ( ! current_user_can( 'install_plugins' ) ) {
+	// Bail if plugin updater is not loaded.
+	if ( ! class_exists( 'YahnisElsts\PluginUpdateChecker\v5\PucFactory' ) ) {
 		return;
 	}
 
-	if ( ! class_exists( 'Puc_v4_Factory' ) ) {
-		return;
-	}
-
-	$updater = Puc_v4_Factory::buildUpdateChecker(
-		'https://github.com/maithemewp/mai-engine',
-		realpath( __DIR__ . '/..' ) . '/mai-engine.php',
-		'mai-engine'
-	);
+	// Setup udpater.
+	$updater = PucFactory::buildUpdateChecker( 'https://github.com/maithemewp/mai-engine', realpath( __DIR__ . '/..' ) . '/mai-engine.php', 'mai-engine' );
 
 	// Get the branch. If checking for beta releases.
 	$options = get_option( 'genesis-settings' ); // Too early to use `genesis_get_option()` and GENESIS_SETTINGS_FIELD.
@@ -443,7 +440,7 @@ function mai_load_files() {
 		$files[] = 'support/wpforms';
 	}
 
-	if ( class_exists( 'WP_Recipe_Maker' ) ) {
+	if ( class_exists( 'WP_Recipe_Maker' ) && (bool) apply_filters( 'mai_enable_wprm_support', false ) ) {
 		$files[] = 'support/wp-recipe-maker';
 	}
 

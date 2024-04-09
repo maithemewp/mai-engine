@@ -3,7 +3,7 @@
         'name' => 'maithemewp/mai-engine',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => '68bdde60d4f9ac33f2a87f5a35de03644aef0b1c',
+        'reference' => '91cf734647170852244ea033877438a56e8d787c',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -319,7 +319,7 @@
         'maithemewp/mai-engine' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => '68bdde60d4f9ac33f2a87f5a35de03644aef0b1c',
+            'reference' => '91cf734647170852244ea033877438a56e8d787c',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -337,12 +337,12 @@
         'wpackagist-plugin/advanced-custom-fields' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => '6.2.6.1',
+                0 => '6.2.9',
             ),
         ),
         'wpengine/advanced-custom-fields-pro' => array(
-            'pretty_version' => '6.2.6.1',
-            'version' => '6.2.6.1',
+            'pretty_version' => '6.2.9',
+            'version' => '6.2.9.0',
             'reference' => NULL,
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../wpengine/advanced-custom-fields-pro',
@@ -350,9 +350,9 @@
             'dev_requirement' => false,
         ),
         'yahnis-elsts/plugin-update-checker' => array(
-            'pretty_version' => 'v4.13',
-            'version' => '4.13.0.0',
-            'reference' => '6eb27a6911e0e0880d09e5b11f577d3f688f7da7',
+            'pretty_version' => 'v5.4',
+            'version' => '5.4.0.0',
+            'reference' => 'e8e53e6d98e37fa7c895c93417f52e3775494715',
             'type' => 'library',
             'install_path' => __DIR__ . '/../yahnis-elsts/plugin-update-checker',
             'aliases' => array(),

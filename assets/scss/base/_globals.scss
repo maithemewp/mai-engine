@@ -74,6 +74,16 @@
 	--font-size-xxxxl: calc(var(--font-size-xxxl) * var(--font-scale));
 
 	/*******************
+	 * Line height scale.
+	 */
+	--line-height-scale: 1.125;
+	--line-height-1: 1;
+	--line-height-xs: calc(var(--line-height-1) * var(--line-height-scale)); // 1.125
+	--line-height-sm: calc(var(--line-height-xs) * var(--line-height-scale)); // 1.266
+	--line-height-md: calc(var(--line-height-sm) * var(--line-height-scale)); // 1.424
+	--line-height-lg: calc(var(--line-height-md) * var(--line-height-scale)); // 1.602
+
+	/*******************
 	 * Spacing scale.
 	 */
 

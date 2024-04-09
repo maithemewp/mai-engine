@@ -20,7 +20,7 @@
 
 		display: grid;
 		grid-column-gap: var(--author-box-grid-column-gap, var(--spacing-lg));
-		grid-template-rows: 1fr;
+		grid-template-rows: auto;
 		grid-template-columns: auto 1fr;
 
 		.avatar {

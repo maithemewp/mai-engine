@@ -95,3 +95,141 @@ function mai_learndash_adjacent_post_link( $link, $permalink, $link_name, $post 
 	$link = str_replace( 'next-link', 'next-link button button-secondary button-small', $link );
 	return $link;
 }
+
+add_action( 'learndash-content-tabs-before', 'mai_learndash_content_tabs_before', 10, 3 );
+/**
+ * Fires before the content tabs.
+ *
+ * @since 2.34.0
+ *
+ * @param int|false $post_id   Post ID.
+ * @param int       $course_id Course ID.
+ * @param int       $user_id   User ID.
+ *
+ * @return void
+ */
+function mai_learndash_content_tabs_before( $post_id, $group_id, $user_id ) {
+	ob_start( 'mai_learndash_handle_content' );
+}
+
+add_action( 'learndash-content-tabs-after', 'mai_learndash_content_tabs_after', 10, 3 );
+/**
+ * Fires after the content tabs.
+ *
+ * @since 2.34.0
+ *
+ * @param int|false $post_id   Post ID.
+ * @param int       $course_id Course ID.
+ * @param int       $user_id   User ID.
+ *
+ * @return voide
+ */
+function mai_learndash_content_tabs_after( $post_id, $group_id, $user_id ) {
+	/**
+	 * End flush.
+	 *
+	 * @link https://stackoverflow.com/questions/7355356/whats-the-difference-between-ob-flush-and-ob-end-flush
+	 */
+	if ( ob_get_length() ) {
+		ob_end_flush();
+	}
+}
+
+add_action( 'learndash-all-course-steps-before', 'mai_learndash_all_course_steps_before', 10, 3 );
+/**
+ * Fires before the content tabs.
+ *
+ * @since 2.34.0
+ *
+ * @param string $post_type The post type.
+ * @param int    $course_id Course ID.
+ * @param int    $user_id   User ID.
+ *
+ * @return void
+ */
+function mai_learndash_all_course_steps_before( $post_type, $course_id, $user_id ) {
+	ob_start( 'mai_learndash_handle_course_steps' );
+}
+
+add_action( 'learndash-all-course-steps-after', 'mai_learndash_all_course_steps_after', 10, 3 );
+/**
+ * Fires after the content tabs.
+ *
+ * @since 2.34.0
+ *
+ * @param string $post_type The post type.
+ * @param int    $course_id Course ID.
+ * @param int    $user_id   User ID.
+ *
+ * @return voide
+ */
+function mai_learndash_all_course_steps_after( $post_type, $course_id, $user_id ) {
+	/**
+	 * End flush.
+	 *
+	 * @link https://stackoverflow.com/questions/7355356/whats-the-difference-between-ob-flush-and-ob-end-flush
+	 */
+	if ( ob_get_length() ) {
+		ob_end_flush();
+	}
+}
+
+/**
+ * Buffer callback.
+ *
+ * @since 2.34.0
+ *
+ * @param string $buffer The full dom markup.
+ *
+ * @return string
+ */
+function mai_learndash_handle_content( $buffer ) {
+	// Set up tag processor.
+	$tags = new WP_HTML_Tag_Processor( $buffer );
+
+	// Loop through ad units.
+	while ( $tags->next_tag( [ 'tag_name' => 'div', 'class_name' => 'ld-tab-content' ] ) ) {
+		$tags->add_class( 'entry-content' );
+	}
+
+	// Update the buffer.
+	$buffer = $tags->get_updated_html();
+
+	return $buffer;
+}
+
+/**
+ * Buffer callback.
+ *
+ * @since 2.34.0
+ *
+ * @param string $buffer The full dom markup.
+ *
+ * @return string
+ */
+function mai_learndash_handle_course_steps( $buffer ) {
+	// Set up tag processor.
+	$tags = new WP_HTML_Tag_Processor( $buffer );
+
+	// Loop through elements.
+	while ( $tags->next_tag( [ 'tag_name' => 'a', 'class_name' => 'ld-button' ] ) ) {
+		$tags->remove_class( 'ld-button' );
+		$tags->add_class( 'button button-secondary button-small' );
+	}
+
+	// Update the buffer.
+	$buffer = $tags->get_updated_html();
+
+	// Set up tag processor.
+	$tags = new WP_HTML_Tag_Processor( $buffer );
+
+	// Loop through elements.
+	while ( $tags->next_tag( [ 'tag_name' => 'input', 'class_name' => 'learndash_mark_complete_button' ] ) ) {
+		$tags->add_class( 'button button-small' );
+	}
+
+	// Update the buffer.
+	$buffer = $tags->get_updated_html();
+
+	return $buffer;
+}

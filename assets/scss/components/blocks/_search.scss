@@ -1,11 +1,7 @@
 .wp-block-search {
-	display: flex;
-	flex-wrap: wrap;
-	margin: var(--search-block-margin, 0);
-
 	--input-margin: 0 var(--search-input-margin-right, var(--spacing-xs)) var(--search-input-margin-bottom, 0) 0;
 	--search-input-max-width: 100%;
-	// --button-margin: 0 0 0 var(--search-button-margin-left, calc(var(--spacing-xl) * -1));
+	margin: var(--search-block-margin, 0);
 
 	&.alignleft {
 		justify-content: start;
@@ -22,17 +18,12 @@
 	}
 
 	.wp-block-search__inside-wrapper {
-		flex: 0 1 var(--min-width, 3em);
-	}
-
-	.wp-block-search__label {
-		flex: 1 1 100%;
-		font-weight: var(--body-font-weight-bold);
+		--search-inside-wrapper-width: min(var(--search-min-width, 320px), var(--search-max-width, 100%));
+		width: var(--search-inside-wrapper-width);
 	}
 
 	.wp-block-search__input {
 		flex: 1;
-		// padding-right: var(--search-input-padding-right, calc(var(--spacing-xl) * -1));
 		border: var(--input-border, 1px solid rgba(0, 0, 0, 0.1)); // Overides WP core styles.
 
 		&:focus {
@@ -41,22 +32,15 @@
 	}
 
 	.search-icon {
-		position: absolute;
-		top: calc(50% - 12px);
-		left: calc(50% - 12px);
-		width: 24px;
-		height: 24px;
+		width: 1.5rem;
+		height: 1.5rem;
+		margin-inline: -.5rem;
 		fill: currentColor;
 	}
 }
 
 .wp-block-search__button {
 	position: relative;
-	margin: var(--button-margin) !important; // Overides WP core styles.
-	padding: var(--button-padding, 0.9em 1.625em) !important; // Overides WP core styles.
-
-	@include button();
-	@include button-style("secondary");
 }
 
 .wp-block-search__button-inside {
@@ -64,14 +48,10 @@
 
 	// Overrides WP core styles.
 	.wp-block-search__inside-wrapper {
-		padding: 0 !important;
-		background: var(--input-background-color, var(--color-white));
-		border: var(--input-border, 0) !important;
-		border-radius: var(--input-border-radius, var(--border-radius)) !important;
-
-		&:focus-within {
-			border-color: var(--input-border-color-focus, var(--color-link));
-		}
+		padding: 0;
+		background: unset;
+		border: 0;
+		border-radius: 0;
 	}
 
 	.wp-block-search__input {

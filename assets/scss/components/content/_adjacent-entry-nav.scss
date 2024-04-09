@@ -30,7 +30,7 @@
 	justify-content: var(--adjacent-entry-link-inner-justify-content, normal);
 	height: 100%;
 	padding: var(--adjacent-entry-link-inner-padding, var(--spacing-lg));
-	line-height: var(--heading-line-height, 1.219);
+	line-height: var(--heading-line-height, var(--line-height-sm));
 	text-align: var(--adjacent-entry-link-text-align);
 	background: var(--adjacent-entry-link-inner-background, none);
 	border: var(--adjacent-entry-link-inner-border, var(--border));

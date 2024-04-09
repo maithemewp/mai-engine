@@ -225,11 +225,16 @@ class Mai_Grid {
 				$this->query_args = $this->get_post_query_args();
 
 				if ( $this->query_args['post_type'] ) {
-					// Bail if a grid was set to a post_type that no longer exists.
-					foreach ( (array) $this->query_args['post_type'] as $post_type ) {
+					// Remove any post_types that no longer exist.
+					foreach ( (array) $this->query_args['post_type'] as $index => $post_type ) {
 						if ( ! post_type_exists( $post_type ) ) {
-							return;
+							unset( $this->query_args['post_type'][ $index ] );
 						};
+					}
+
+					// Bail if no post types.
+					if ( ! $this->query_args['post_type'] ) {
+						return;
 					}
 
 					$query = new WP_Query( $this->query_args );
@@ -246,12 +251,17 @@ class Mai_Grid {
 			case 'term':
 				$this->query_args = $this->get_term_query_args();
 
-				// Bail if a grid was set to a taxonomy that no longer exists.
+				// Remove any taxonomies that no longer exist.
 				if ( $this->query_args['taxonomy'] ) {
-					foreach ( (array) $this->query_args['taxonomy'] as $taxonomy ) {
+					foreach ( (array) $this->query_args['taxonomy'] as $index => $taxonomy ) {
 						if ( ! taxonomy_exists( $taxonomy ) ) {
-							return;
+							unset( $this->query_args['taxonomy'][ $index ] );
 						};
+					}
+
+					// Bail if no taxonomies.
+					if ( ! $this->query_args['taxonomy'] ) {
+						return;
 					}
 
 					$query = new WP_Term_Query( $this->query_args );
@@ -381,6 +391,7 @@ class Mai_Grid {
 			case 'tax_meta':
 			case 'trending': // For Mai Publisher/Trending Posts.
 				$tax_query = [];
+
 				if ( $this->args['taxonomies'] ) {
 					foreach ( $this->args['taxonomies'] as $taxo ) {
 						$taxonomy = mai_isset( $taxo, 'taxonomy', '' );
@@ -437,6 +448,7 @@ class Mai_Grid {
 				}
 
 				$meta_query = [];
+
 				if ( $this->args['meta_keys'] ) {
 					foreach ( $this->args['meta_keys'] as $meta ) {
 						$key     = mai_isset( $meta, 'meta_key', '' );
@@ -542,7 +554,7 @@ class Mai_Grid {
 	 */
 	public function get_term_query_args() {
 		$query_args = [
-			'taxonomy' => $this->args['taxonomy'],
+			'taxonomy' => (array) $this->args['taxonomy'],
 			'offset'   => $this->args['offset'],
 		];
 
@@ -556,7 +568,8 @@ class Mai_Grid {
 			case 'name':
 				// Top level terms only. Only add if at least one taxonomy is hierarchical. See #597.
 				// TODO: Add a setting to show child terms too.
-				foreach ( $this->args['taxonomy'] as $taxonomy ) {
+				foreach ( (array) $this->args['taxonomy'] as $taxonomy ) {
+					// Skip if taxonomy does not exist.
 					if ( is_taxonomy_hierarchical( $taxonomy ) ) {
 						$query_args['parent'] = 0;
 						break;

@@ -1,11 +1,11 @@
 .mai-divider {
 	position: var(--divider-position, static);
-	z-index: var(--divider-z-index, 1);
+	z-index: var(--divider-z-index, initial);
 	display: block;
 	width: var(--divider-width, var(--alignfull-width, auto));
 	height: var(--divider-height);
-	margin-top: -1px;
-	margin-bottom: -1px;
+	margin-top: -0.5px;
+	margin-bottom: -0.5px;
 	background: var(--divider-background-color, transparent);
 }
 

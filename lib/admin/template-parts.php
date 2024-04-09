@@ -227,6 +227,7 @@ function mai_template_parts_import_row_action( $actions, $post ) {
 	}
 
 	$trash = '';
+
 	if ( isset( $actions['trash'] ) ) {
 		$trash = $actions['trash'];
 		unset( $actions['trash'] );
@@ -246,6 +247,7 @@ add_filter( 'display_post_states', 'mai_template_part_post_state', 10, 2 );
  * Display active content areas.
  *
  * @since 2.0.0
+ * @since 2.34.0 Added `is_admin()` check.
  *
  * @param array   $states Array of post states.
  * @param WP_Post $post   Post object.
@@ -253,6 +255,12 @@ add_filter( 'display_post_states', 'mai_template_part_post_state', 10, 2 );
  * @return array
  */
 function mai_template_part_post_state( $states, $post ) {
+	// Bail if not in the Dashboard. WP 5.5. added this filter to the Customizer.
+	if ( ! is_admin() ) {
+		return $states;
+	}
+
+	// Bail if not a content area.
 	if ( 'mai_template_part' !== $post->post_type ) {
 		return $states;
 	}
