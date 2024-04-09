@@ -114,7 +114,7 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 	 * Checks if were on the setup wizard page.
 	 *
 	 * @since 1.0.0
-	 * @since TBD Added request check when this is called fbefore `get_current_screen` is available.
+	 * @since 2.34.0 Added request check when this is called fbefore `get_current_screen` is available.
 	 *
 	 * @return bool
 	 */

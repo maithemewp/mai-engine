@@ -269,7 +269,7 @@ function mai_has_alignfull_first() {
  * Checks if first block has dark background.
  *
  * @since 2.12.0
- * @since TBD Added filter.
+ * @since 2.34.0 Added filter.
  *
  * @return bool
  */

@@ -100,7 +100,7 @@ add_action( 'learndash-content-tabs-before', 'mai_learndash_content_tabs_before'
 /**
  * Fires before the content tabs.
  *
- * @since TBD
+ * @since 2.34.0
  *
  * @param int|false $post_id   Post ID.
  * @param int       $course_id Course ID.
@@ -116,7 +116,7 @@ add_action( 'learndash-content-tabs-after', 'mai_learndash_content_tabs_after', 
 /**
  * Fires after the content tabs.
  *
- * @since TBD
+ * @since 2.34.0
  *
  * @param int|false $post_id   Post ID.
  * @param int       $course_id Course ID.
@@ -139,7 +139,7 @@ add_action( 'learndash-all-course-steps-before', 'mai_learndash_all_course_steps
 /**
  * Fires before the content tabs.
  *
- * @since TBD
+ * @since 2.34.0
  *
  * @param string $post_type The post type.
  * @param int    $course_id Course ID.
@@ -155,7 +155,7 @@ add_action( 'learndash-all-course-steps-after', 'mai_learndash_all_course_steps_
 /**
  * Fires after the content tabs.
  *
- * @since TBD
+ * @since 2.34.0
  *
  * @param string $post_type The post type.
  * @param int    $course_id Course ID.
@@ -177,7 +177,7 @@ function mai_learndash_all_course_steps_after( $post_type, $course_id, $user_id 
 /**
  * Buffer callback.
  *
- * @since TBD
+ * @since 2.34.0
  *
  * @param string $buffer The full dom markup.
  *
@@ -201,7 +201,7 @@ function mai_learndash_handle_content( $buffer ) {
 /**
  * Buffer callback.
  *
- * @since TBD
+ * @since 2.34.0
  *
  * @param string $buffer The full dom markup.
  *
