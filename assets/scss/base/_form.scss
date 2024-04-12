@@ -6,7 +6,7 @@ abbr[title] {
 	text-decoration: none;
 }
 
-label:not([class*="gform"]):not([class*="wpform"]) {
+label:not([class*="gfield"]):not([class*="gform"]):not([class*="wpform"]) {
 	display: inline-block;
 	margin: var(--label-margin, 0 0 var(--spacing-xs));
 	font-weight: var(--label-font-weight, var(--heading-font-weight));
@@ -101,7 +101,7 @@ fieldset {
 	}
 }
 
-legend:not([class*="gform"]):not([class*="wpform"]) {
+legend:not([class*="gfield"]):not([class*="gform"]):not([class*="wpform"]) {
 	display: table;
 	float: left;
 	width: 100%;
