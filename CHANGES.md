@@ -2,7 +2,7 @@
 
 ## 2.34.1 (4/18/24)
 * Changed: Order of processing in `mai_get_processed_content()` to match `get_the_block_template_html()` function in WP core.
-* Fixed: The Setup Wizard was missing steps for some users.
+* Fixed: The Setup Wizard missing steps for some users.
 
 ## 2.34.0 (4/9/24)
 * Added: Support for the new "Mai Side Hustle" theme.
