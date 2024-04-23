@@ -4,8 +4,7 @@ body {
 
 	display: flex;
 	flex-direction: column;
-	min-height: var(--body-min-height, calc(100vh - var(--body-top)));
-	min-height: -webkit-fill-available;
+	min-height: var(--body-min-height, calc(100dvh - var(--body-top)));
 	overflow-x: hidden; // Prevent horizontal scrollbars.
 
 	@include body;
