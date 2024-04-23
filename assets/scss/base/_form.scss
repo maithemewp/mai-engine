@@ -58,6 +58,7 @@ textarea {
 
 select {
 	height: var(--select-height, calc(var(--font-size-md, 1em) * 2));
+	accent-color: currentColor;
 	--input-padding: var(--select-padding, 0 var(--spacing-sm));
 
 	&[multiple] {
