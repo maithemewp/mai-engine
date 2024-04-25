@@ -10,6 +10,7 @@
 
 	&.aligncenter {
 		justify-content: center;
+		margin-inline: unset; /* override margin-inline on aligncenter in Mai Engine. */
 	}
 
 	&.alignright {
