@@ -20,6 +20,13 @@ defined( 'ABSPATH' ) || die;
 class Mai_Grid {
 
 	/**
+	 * Index.
+	 *
+	 * @var int
+	 */
+	static protected $index = 0;
+
+	/**
 	 * Type.
 	 *
 	 * @var $type
@@ -156,6 +163,12 @@ class Mai_Grid {
 		if ( empty( $this->args['show'] ) ) {
 			return;
 		}
+
+		// Increment index.
+		$this::$index++;
+
+		// Add index to args.
+		$this->args['index'] = $this::$index;
 
 		// do_action( 'mai_before_grid_query', $this->args );
 		$this->query = $this->get_query();
