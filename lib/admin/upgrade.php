@@ -38,6 +38,7 @@ function mai_upgrade_complete( $upgrader_object, $options ) {
 		if ( $current_plugin !== $plugin ) {
 			mai_flush_customizer_transients();
 			delete_transient( 'mai_template_parts' );
+			delete_transient( 'mai_classic_editor_styles' );
 		}
 	}
 }
