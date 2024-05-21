@@ -4,8 +4,4 @@ html {
 
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-
-	&.admin-bar-showing {
-		height: calc(100% - 32px);
-	}
 }
