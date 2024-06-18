@@ -19,7 +19,7 @@ html {
 
 body {
 	min-height: auto;
-	--viewport-width: calc(100dvw - var(--admin-menu-width, 160px) - var(--block-sidebar-width, 0px)); // Requires 0px for calc().
+	--viewport-width: calc(100vw - var(--admin-menu-width, 160px) - var(--block-sidebar-width, 0px)); // Requires 0px for calc().
 	--list-item-margin-bottom: var(--spacing-xs);
 
 	@include body();
