@@ -536,6 +536,16 @@ class Mai_Grid {
 				$query_args['post__not_in'] = $this->args['post__not_in'];
 			}
 
+			// Make sure existing post IDs are for the post type(s) we are querying.
+			if ( ! empty( self::$existing_post_ids ) ) {
+				foreach ( self::$existing_post_ids as $index => $existing_post_id ) {
+					// Remove post IDs that are not in any of the post_types from the query.
+					if ( ! in_array( get_post_type( $existing_post_id ), (array) $this->args['post_type'] ) ) {
+						unset( self::$existing_post_ids[ $index ] );
+					}
+				}
+			}
+
 			// Exclude displayed.
 			if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'] ) && ! empty( self::$existing_post_ids ) ) {
 				if ( isset( $query_args['post__not_in'] ) ) {
@@ -630,6 +640,17 @@ class Mai_Grid {
 		} else {
 			$query_args['hide_empty'] = false;
 		}
+
+		// Not sure if this is needed. Added this commented out code when we hit the bug in post__not_in in WP_Query above.
+		// Make sure existing term IDs are for the taxonomies we are querying.
+		// if ( ! empty( self::$existing_term_ids ) ) {
+		// 	foreach ( self::$existing_term_ids as $index => $existing_term_id ) {
+		// 		// Remove term IDs that are not in any of the taxonomies from the query.
+		// 		if ( ! in_array( get_term( $existing_term_id )->taxonomy, (array) $this->args['taxonomy'] ) ) {
+		// 			unset( self::$existing_term_ids[ $index ] );
+		// 		}
+		// 	}
+		// }
 
 		// Exclude displayed.
 		if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'], true ) && ! empty( self::$existing_term_ids ) ) {
