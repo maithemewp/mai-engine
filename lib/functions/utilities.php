@@ -1334,13 +1334,14 @@ function mai_get_search_icon_form( $title = '', $icon_size = '16' ) {
  */
 function mai_get_dom_document( $html ) {
 	// Create the new document.
-	$dom = new DOMDocument();
+	$dom = new DOMDocument( '1.0', 'UTF-8' );
 
 	// Modify state.
 	$libxml_previous_state = libxml_use_internal_errors( true );
 
 	// Encode.
-	$html = mb_encode_numericentity( $html, [0x80, 0x10FFFF, 0, ~0], 'UTF-8' );
+	$html = mai_convert_quotes( $html );
+	$html = mb_encode_numericentity( $html, [0x80, 0x10FFFF, 0, ~0], 'UTF-8' ); // Final encoding before processing.
 
 	// Load the content in the document HTML.
 	$dom->loadHTML( "<div>$html</div>" );
@@ -1367,6 +1368,40 @@ function mai_get_dom_document( $html ) {
 }
 
 /**
+ * Saves HTML from DOMDocument and decode entities.
+ *
+ * @since 2.34.0
+ *
+ * @param DOMDocument $dom
+ *
+ * @return string
+ */
+function mai_get_dom_html( $dom ) {
+	$html = $dom->saveHTML();
+	// $html = mb_convert_encoding( $html, 'UTF-8', 'HTML-ENTITIES' );
+	$html = html_entity_decode( $html, ENT_QUOTES | ENT_HTML5, 'UTF-8' ); // Decode to curly quotes.
+
+	return $html;
+}
+
+/**
+ * Convert quotes to curly quotes.
+ *
+ * @since 1.4.0
+ *
+ * @param string $string The string to convert.
+ *
+ * @return string
+ */
+function mai_convert_quotes( $string ) {
+	$string = htmlspecialchars_decode( $string ); // Decode entities like single quotes to actual single quotes.
+	$string = wptexturize( $string ); // Convert straight quotes to curly, this also encodes again.
+	$string = html_entity_decode( $string, ENT_QUOTES | ENT_HTML5, 'UTF-8' ); // Decode to curly quotes.
+
+	return $string;
+}
+
+/**
  * Gets a DOMDocument first child element.
  *
  * @since 2.4.1.
@@ -1386,22 +1421,6 @@ function mai_get_dom_first_child( $dom ) {
 	}
 
 	return false;
-}
-
-/**
- * Saves HTML from DOMDocument and decode entities.
- *
- * @since 2.34.0
- *
- * @param DOMDocument $dom
- *
- * @return string
- */
-function mai_get_dom_html( $dom ) {
-	$html = $dom->saveHTML();
-	$html = mb_convert_encoding( $html, 'UTF-8', 'HTML-ENTITIES' );
-
-	return $html;
 }
 
 /**
