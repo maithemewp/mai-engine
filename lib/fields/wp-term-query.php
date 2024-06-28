@@ -293,6 +293,7 @@ function mai_get_term_choices_from_taxonomy( $taxonomy = '' ) {
 		$taxonomy,
 		[
 			'hide_empty' => false,
+			'fields'     => 'id=>name',
 		]
 	);
 
@@ -300,9 +301,7 @@ function mai_get_term_choices_from_taxonomy( $taxonomy = '' ) {
 		return $choices;
 	}
 
-	foreach ( $terms as $term ) {
-		$choices[ $term->term_id ] = $term->name;
-	}
+	$choices[] = $terms;
 
 	return $choices;
 }
