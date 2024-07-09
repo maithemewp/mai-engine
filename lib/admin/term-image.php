@@ -77,6 +77,10 @@ add_filter( 'acf/load_field/key=featured_image', 'mai_load_featured_image_field'
  * @return array
  */
 function mai_load_featured_image_field( $field ) {
+	if ( ! is_admin() ) {
+		return $field;
+	}
+
 	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : false;
 
 	if ( ! ( $screen && 'edit-tags' === $screen->base ) ) {

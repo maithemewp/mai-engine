@@ -118,6 +118,10 @@ add_filter( 'acf/load_field/key=hide_elements', 'mai_load_hide_elements_field' )
  * @return array
  */
 function mai_load_hide_elements_field( $field ) {
+	if ( ! is_admin() ) {
+		return $field;
+	}
+
 	if ( ! function_exists( 'get_current_screen' ) ) {
 		return $field;
 	}
