@@ -247,6 +247,7 @@ add_filter( 'woocommerce_add_to_cart_fragments', 'mai_cart_total_fragment' );
  */
 function mai_cart_total_fragment( $fragments ) {
 	$fragments['mai-cart-total'] = mai_get_cart_total();
+
 	return $fragments;
 }
 
@@ -274,7 +275,17 @@ function mai_render_woocommerce_blocks( $block_content, $block ) {
 		return $block_content;
 	}
 
-	$block_content = str_replace( 'wp-block-button__link', 'wp-block-button__link button button-secondary button-small', $block_content );
+	// Set up tag processor.
+	$tags = new WP_HTML_Tag_Processor( $html );
+
+	// Loop through tags.
+	while ( $tags->next_tag( [ 'class_name' => 'wp-block-button__link' ] ) ) {
+		$tags->add_class( 'button' );
+		$tags->add_class( 'button-secondary' );
+		$tags->add_class( 'button-small' );
+	}
+
+	$block_content = $tags->get_updated_html();
 
 	return $block_content;
 }
