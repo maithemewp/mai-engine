@@ -544,22 +544,13 @@ class Mai_Grid {
 			// Start with empty array.
 			$post__not_ins = [];
 
+			// Make sure existing post IDs are for the post type(s) we are querying.
 			foreach ( (array) $this->args['post_type'] as $post_type ) {
 				// Add existing post IDs for this post type.
 				if ( isset( self::$existing_post_ids[ $post_type ] ) ) {
 					$post__not_ins = array_merge( $post__not_ins, self::$existing_post_ids[ $post_type ] );
 				}
 			}
-
-			// // Make sure existing post IDs are for the post type(s) we are querying.
-			// if ( ! empty( self::$existing_post_ids ) ) {
-			// 	foreach ( self::$existing_post_ids as $post_type => $existing_post_ids ) {
-			// 		// Remove post IDs that are not in any of the post_types from the query.
-			// 		if ( ! in_array( get_post_type( $existing_post_id ), (array) $this->args['post_type'] ) ) {
-			// 			unset( self::$existing_post_ids[ $index ] );
-			// 		}
-			// 	}
-			// }
 
 			// Exclude displayed.
 			if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'] ) && ! empty( $post__not_ins ) ) {
