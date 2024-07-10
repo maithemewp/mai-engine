@@ -604,7 +604,7 @@ function mai_get_post_content( $post_slug_or_id, $post_type = 'wp_block' ) {
  * @since 0.3.0
  * @since 2.4.2  Remove use of wp_make_content_images_responsive.
  * @since 2.19.0 Conditionally `do_blocks()` or `wpautop()`.
- * @since TBD Changed order to match default-filters.php.
+ * @since TBD Added encoding to prevent double decoding. Example: Curly quotes like `“` were displaying as `â€œ`.
  *
  * @param string $content The unprocessed content.
  *
@@ -619,6 +619,7 @@ function mai_get_processed_content( $content ) {
 	global $wp_embed;
 
 	$blocks  = has_blocks( $content );
+	$content = mb_encode_numericentity( $content, [0x80, 0x10FFFF, 0, ~0], 'UTF-8' ); // Encoding to prevent double decoding.
 	$content = $wp_embed->autoembed( $content );            // WP runs priority 8.
 	$content = $wp_embed->run_shortcode( $content );        // WP runs priority 8.
 	$content = $blocks ? do_blocks( $content ) : $content;  // WP runs priority 9.
@@ -1339,10 +1340,6 @@ function mai_get_dom_document( $html ) {
 	// Modify state.
 	$libxml_previous_state = libxml_use_internal_errors( true );
 
-	// Encode.
-	$html = mai_convert_quotes( $html );
-	$html = mb_encode_numericentity( $html, [0x80, 0x10FFFF, 0, ~0], 'UTF-8' ); // Final encoding before processing.
-
 	// Load the content in the document HTML.
 	$dom->loadHTML( "<div>$html</div>" );
 
@@ -1378,27 +1375,8 @@ function mai_get_dom_document( $html ) {
  */
 function mai_get_dom_html( $dom ) {
 	$html = $dom->saveHTML();
-	// $html = mb_convert_encoding( $html, 'UTF-8', 'HTML-ENTITIES' );
-	$html = html_entity_decode( $html, ENT_QUOTES | ENT_HTML5, 'UTF-8' ); // Decode to curly quotes.
 
 	return $html;
-}
-
-/**
- * Convert quotes to curly quotes.
- *
- * @since 1.4.0
- *
- * @param string $string The string to convert.
- *
- * @return string
- */
-function mai_convert_quotes( $string ) {
-	$string = htmlspecialchars_decode( $string ); // Decode entities like single quotes to actual single quotes.
-	$string = wptexturize( $string ); // Convert straight quotes to curly, this also encodes again.
-	$string = html_entity_decode( $string, ENT_QUOTES | ENT_HTML5, 'UTF-8' ); // Decode to curly quotes.
-
-	return $string;
 }
 
 /**
