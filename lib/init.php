@@ -361,6 +361,7 @@ function mai_load_files() {
 		'fields/icons',
 		'fields/wp-query',
 		'fields/wp-term-query',
+		'fields/validate',
 
 		// Blocks.
 		'blocks/general',
