@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.34.1\n"
+"Project-Id-Version: Mai Engine 2.35.0-beta.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-05-21T14:06:43+00:00\n"
+"POT-Creation-Date: 2024-07-11T17:59:09+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: mai-engine\n"
@@ -94,7 +94,7 @@ msgid "Header Right Menu"
 msgstr ""
 
 #: config/_default.php:441
-#: lib/admin/hide-elements.php:142
+#: lib/admin/hide-elements.php:146
 msgid "After Header Menu"
 msgstr ""
 
@@ -115,7 +115,7 @@ msgstr ""
 #: lib/admin/admin-menu.php:28
 #: lib/admin/admin-menu.php:29
 #: lib/functions/deprecated.php:289
-#: lib/functions/utilities.php:1515
+#: lib/functions/utilities.php:1514
 msgid "Mai Theme"
 msgstr ""
 
@@ -251,54 +251,54 @@ msgstr ""
 msgid "Select elements to hide on this page."
 msgstr ""
 
-#: lib/admin/hide-elements.php:131
+#: lib/admin/hide-elements.php:135
 #: lib/functions/deprecated.php:231
 msgid "Before Header"
 msgstr ""
 
-#: lib/admin/hide-elements.php:132
+#: lib/admin/hide-elements.php:136
 #: lib/customize/site-header.php:32
 #: lib/functions/colors.php:253
 msgid "Site Header"
 msgstr ""
 
-#: lib/admin/hide-elements.php:135
+#: lib/admin/hide-elements.php:139
 msgid "Sticky Header"
 msgstr ""
 
-#: lib/admin/hide-elements.php:139
+#: lib/admin/hide-elements.php:143
 msgid "Transparent Header"
 msgstr ""
 
-#: lib/admin/hide-elements.php:143
+#: lib/admin/hide-elements.php:147
 msgid "After Header"
 msgstr ""
 
-#: lib/admin/hide-elements.php:144
+#: lib/admin/hide-elements.php:148
 #: lib/admin/page-header.php:107
 #: lib/customize/page-header.php:56
 msgid "Page Header"
 msgstr ""
 
-#: lib/admin/hide-elements.php:145
+#: lib/admin/hide-elements.php:149
 msgid "Breadcrumbs"
 msgstr ""
 
-#: lib/admin/hide-elements.php:148
+#: lib/admin/hide-elements.php:152
 #: lib/admin/term-image.php:51
-#: lib/admin/term-image.php:86
+#: lib/admin/term-image.php:90
 msgid "Featured Image"
 msgstr ""
 
-#: lib/admin/hide-elements.php:151
+#: lib/admin/hide-elements.php:155
 msgid "Entry Title"
 msgstr ""
 
-#: lib/admin/hide-elements.php:152
+#: lib/admin/hide-elements.php:156
 msgid "Entry Excerpt"
 msgstr ""
 
-#: lib/admin/hide-elements.php:155
+#: lib/admin/hide-elements.php:159
 #: lib/fields/grid-display.php:194
 #: lib/fields/grid-display.php:495
 #: lib/functions/customizer.php:388
@@ -308,7 +308,7 @@ msgstr ""
 msgid "Header Meta"
 msgstr ""
 
-#: lib/admin/hide-elements.php:156
+#: lib/admin/hide-elements.php:160
 #: lib/customize/site-header.php:83
 #: lib/customize/site-header.php:94
 #: lib/fields/grid-display.php:197
@@ -320,7 +320,7 @@ msgstr ""
 msgid "Custom Content"
 msgstr ""
 
-#: lib/admin/hide-elements.php:157
+#: lib/admin/hide-elements.php:161
 #: lib/fields/grid-display.php:198
 #: lib/fields/grid-display.php:525
 #: lib/functions/customizer.php:1028
@@ -328,7 +328,7 @@ msgstr ""
 msgid "Custom Content 2"
 msgstr ""
 
-#: lib/admin/hide-elements.php:158
+#: lib/admin/hide-elements.php:162
 #: lib/fields/grid-display.php:200
 #: lib/fields/grid-display.php:600
 #: lib/functions/customizer.php:477
@@ -338,27 +338,27 @@ msgstr ""
 msgid "Footer Meta"
 msgstr ""
 
-#: lib/admin/hide-elements.php:159
+#: lib/admin/hide-elements.php:163
 #: lib/functions/deprecated.php:259
 msgid "After Entry"
 msgstr ""
 
-#: lib/admin/hide-elements.php:160
+#: lib/admin/hide-elements.php:164
 #: lib/functions/loop.php:554
 msgid "Author Box"
 msgstr ""
 
-#: lib/admin/hide-elements.php:163
+#: lib/admin/hide-elements.php:167
 #: lib/functions/deprecated.php:269
 msgid "Before Footer"
 msgstr ""
 
-#: lib/admin/hide-elements.php:164
+#: lib/admin/hide-elements.php:168
 #: lib/functions/deprecated.php:275
 msgid "Footer"
 msgstr ""
 
-#: lib/admin/hide-elements.php:165
+#: lib/admin/hide-elements.php:169
 #: lib/functions/deprecated.php:280
 msgid "Footer Credits"
 msgstr ""
@@ -387,11 +387,11 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: lib/admin/page-header.php:133
+#: lib/admin/page-header.php:137
 msgid "Page Header Image"
 msgstr ""
 
-#: lib/admin/page-header.php:155
+#: lib/admin/page-header.php:163
 msgid "Page Header Description"
 msgstr ""
 
@@ -469,8 +469,8 @@ msgid "Active"
 msgstr ""
 
 #: lib/admin/template-parts.php:292
-#: lib/fields/wp-query.php:768
-#: lib/fields/wp-term-query.php:549
+#: lib/fields/wp-query.php:773
+#: lib/fields/wp-term-query.php:548
 msgid "Slug"
 msgstr ""
 
@@ -513,7 +513,7 @@ msgstr ""
 msgid "Align Content (vertical)"
 msgstr ""
 
-#: lib/blocks/mai-column/block.php:90
+#: lib/blocks/mai-column/block.php:91
 #: lib/blocks/mai-columns/block.php:382
 #: lib/blocks/mai-icon/block.php:343
 #: lib/customize/page-header.php:95
@@ -531,7 +531,7 @@ msgstr ""
 msgid "Top"
 msgstr ""
 
-#: lib/blocks/mai-column/block.php:91
+#: lib/blocks/mai-column/block.php:92
 #: lib/blocks/mai-columns/block.php:383
 #: lib/fields/columns.php:243
 #: lib/fields/grid-display.php:636
@@ -541,7 +541,7 @@ msgstr ""
 msgid "Middle"
 msgstr ""
 
-#: lib/blocks/mai-column/block.php:92
+#: lib/blocks/mai-column/block.php:93
 #: lib/blocks/mai-columns/block.php:384
 #: lib/blocks/mai-icon/block.php:351
 #: lib/customize/page-header.php:96
@@ -1211,7 +1211,7 @@ msgstr ""
 #: lib/fields/grid-display.php:587
 #: lib/functions/colors.php:256
 #: lib/functions/customizer.php:465
-#: lib/functions/utilities.php:1444
+#: lib/functions/utilities.php:1443
 msgid "Link"
 msgstr ""
 
@@ -2197,8 +2197,8 @@ msgid "Show/hide and re-order elements."
 msgstr ""
 
 #: lib/fields/grid-display.php:193
-#: lib/fields/wp-query.php:767
-#: lib/fields/wp-term-query.php:548
+#: lib/fields/wp-query.php:772
+#: lib/fields/wp-term-query.php:547
 #: lib/functions/loop.php:510
 #: lib/functions/loop.php:543
 msgid "Title"
@@ -2424,7 +2424,7 @@ msgid "Layout"
 msgstr ""
 
 #: lib/fields/grid-tabs.php:47
-#: lib/fields/wp-term-query.php:429
+#: lib/fields/wp-term-query.php:428
 msgid "Entries"
 msgstr ""
 
@@ -2456,269 +2456,269 @@ msgstr ""
 msgid "Icon Background Color"
 msgstr ""
 
-#: lib/fields/wp-query.php:359
+#: lib/fields/wp-query.php:364
 msgid "Post Type"
 msgstr ""
 
-#: lib/fields/wp-query.php:370
-#: lib/fields/wp-term-query.php:411
+#: lib/fields/wp-query.php:375
+#: lib/fields/wp-term-query.php:410
 msgid "Get Entries By"
 msgstr ""
 
-#: lib/fields/wp-query.php:374
+#: lib/fields/wp-query.php:379
 msgid "Default Query"
 msgstr ""
 
-#: lib/fields/wp-query.php:375
-#: lib/fields/wp-term-query.php:416
+#: lib/fields/wp-query.php:380
+#: lib/fields/wp-term-query.php:415
 msgid "Choice"
 msgstr ""
 
-#: lib/fields/wp-query.php:376
+#: lib/fields/wp-query.php:381
 msgid "Taxonomy/Meta"
 msgstr ""
 
-#: lib/fields/wp-query.php:377
-#: lib/fields/wp-query.php:641
-#: lib/fields/wp-term-query.php:417
-#: lib/fields/wp-term-query.php:472
+#: lib/fields/wp-query.php:382
+#: lib/fields/wp-query.php:646
+#: lib/fields/wp-term-query.php:416
+#: lib/fields/wp-term-query.php:471
 msgid "Parent"
 msgstr ""
 
-#: lib/fields/wp-query.php:389
+#: lib/fields/wp-query.php:394
 msgid "Choose Entries"
 msgstr ""
 
-#: lib/fields/wp-query.php:390
+#: lib/fields/wp-query.php:395
 msgid "Show specific entries. Choose all that apply."
 msgstr ""
 
-#: lib/fields/wp-query.php:411
+#: lib/fields/wp-query.php:416
 msgid "Taxonomies"
 msgstr ""
 
-#: lib/fields/wp-query.php:426
-#: lib/fields/wp-query.php:533
+#: lib/fields/wp-query.php:431
+#: lib/fields/wp-query.php:538
 msgid "Add Condition"
 msgstr ""
 
-#: lib/fields/wp-query.php:431
-#: lib/fields/wp-term-query.php:400
-#: lib/fields/wp-term-query.php:415
+#: lib/fields/wp-query.php:436
+#: lib/fields/wp-term-query.php:399
+#: lib/fields/wp-term-query.php:414
 msgid "Taxonomy"
 msgstr ""
 
-#: lib/fields/wp-query.php:441
+#: lib/fields/wp-query.php:446
 msgid "Terms"
 msgstr ""
 
-#: lib/fields/wp-query.php:460
+#: lib/fields/wp-query.php:465
 msgid "Use current"
 msgstr ""
 
-#: lib/fields/wp-query.php:471
+#: lib/fields/wp-query.php:476
 msgid "Operator"
 msgstr ""
 
-#: lib/fields/wp-query.php:475
+#: lib/fields/wp-query.php:480
 msgid "In"
 msgstr ""
 
-#: lib/fields/wp-query.php:476
+#: lib/fields/wp-query.php:481
 msgid "Not In"
 msgstr ""
 
-#: lib/fields/wp-query.php:490
+#: lib/fields/wp-query.php:495
 msgid "Taxonomies Relation"
 msgstr ""
 
-#: lib/fields/wp-query.php:494
-#: lib/fields/wp-query.php:599
+#: lib/fields/wp-query.php:499
+#: lib/fields/wp-query.php:604
 msgid "And"
 msgstr ""
 
-#: lib/fields/wp-query.php:495
-#: lib/fields/wp-query.php:600
+#: lib/fields/wp-query.php:500
+#: lib/fields/wp-query.php:605
 msgid "Or"
 msgstr ""
 
-#: lib/fields/wp-query.php:517
+#: lib/fields/wp-query.php:522
 msgid "Meta Keys"
 msgstr ""
 
-#: lib/fields/wp-query.php:539
+#: lib/fields/wp-query.php:544
 msgid "Meta Key"
 msgstr ""
 
-#: lib/fields/wp-query.php:546
+#: lib/fields/wp-query.php:551
 msgid "Compare"
 msgstr ""
 
-#: lib/fields/wp-query.php:550
+#: lib/fields/wp-query.php:555
 msgid "Is equal to"
 msgstr ""
 
-#: lib/fields/wp-query.php:551
+#: lib/fields/wp-query.php:556
 msgid "Is not equal to"
 msgstr ""
 
-#: lib/fields/wp-query.php:552
+#: lib/fields/wp-query.php:557
 msgid "Is greater than"
 msgstr ""
 
-#: lib/fields/wp-query.php:553
+#: lib/fields/wp-query.php:558
 msgid "Is great than or equal to"
 msgstr ""
 
-#: lib/fields/wp-query.php:554
+#: lib/fields/wp-query.php:559
 msgid "Is less than"
 msgstr ""
 
-#: lib/fields/wp-query.php:555
+#: lib/fields/wp-query.php:560
 msgid "Is less than or equal to"
 msgstr ""
 
-#: lib/fields/wp-query.php:556
+#: lib/fields/wp-query.php:561
 msgid "Exists"
 msgstr ""
 
-#: lib/fields/wp-query.php:557
+#: lib/fields/wp-query.php:562
 msgid "Does not exist"
 msgstr ""
 
-#: lib/fields/wp-query.php:570
+#: lib/fields/wp-query.php:575
 msgid "Meta Value"
 msgstr ""
 
-#: lib/fields/wp-query.php:595
+#: lib/fields/wp-query.php:600
 msgid "Meta Keys Relation"
 msgstr ""
 
-#: lib/fields/wp-query.php:625
-#: lib/fields/wp-term-query.php:456
+#: lib/fields/wp-query.php:630
+#: lib/fields/wp-term-query.php:455
 msgid "Show children of current entry"
 msgstr ""
 
-#: lib/fields/wp-query.php:678
-#: lib/fields/wp-term-query.php:500
+#: lib/fields/wp-query.php:683
+#: lib/fields/wp-term-query.php:499
 msgid "Number of Entries"
 msgstr ""
 
-#: lib/fields/wp-query.php:679
-#: lib/fields/wp-term-query.php:501
+#: lib/fields/wp-query.php:684
+#: lib/fields/wp-term-query.php:500
 msgid "Use 0 to show all."
 msgstr ""
 
-#: lib/fields/wp-query.php:699
-#: lib/fields/wp-term-query.php:521
+#: lib/fields/wp-query.php:704
+#: lib/fields/wp-term-query.php:520
 msgid "Offset"
 msgstr ""
 
-#: lib/fields/wp-query.php:700
-#: lib/fields/wp-term-query.php:522
+#: lib/fields/wp-query.php:705
+#: lib/fields/wp-term-query.php:521
 msgid "Skip this number of entries."
 msgstr ""
 
-#: lib/fields/wp-query.php:720
+#: lib/fields/wp-query.php:725
 msgid "After date"
 msgstr ""
 
 #. translators: %s is replaced with a documentation link.
-#: lib/fields/wp-query.php:722
-#: lib/fields/wp-query.php:742
+#: lib/fields/wp-query.php:727
+#: lib/fields/wp-query.php:747
 msgid "Get posts after a date/time. %s"
 msgstr ""
 
-#: lib/fields/wp-query.php:741
+#: lib/fields/wp-query.php:746
 msgid "Before date"
 msgstr ""
 
-#: lib/fields/wp-query.php:761
-#: lib/fields/wp-term-query.php:542
+#: lib/fields/wp-query.php:766
+#: lib/fields/wp-term-query.php:541
 msgid "Order By"
 msgstr ""
 
-#: lib/fields/wp-query.php:769
+#: lib/fields/wp-query.php:774
 msgid "Date"
 msgstr ""
 
-#: lib/fields/wp-query.php:770
+#: lib/fields/wp-query.php:775
 msgid "Modified"
 msgstr ""
 
-#: lib/fields/wp-query.php:771
+#: lib/fields/wp-query.php:776
 msgid "Random"
 msgstr ""
 
-#: lib/fields/wp-query.php:772
+#: lib/fields/wp-query.php:777
 msgid "Comment Count"
 msgstr ""
 
-#: lib/fields/wp-query.php:773
+#: lib/fields/wp-query.php:778
 msgid "Menu Order"
 msgstr ""
 
-#: lib/fields/wp-query.php:774
+#: lib/fields/wp-query.php:779
 msgid "Meta Value Number"
 msgstr ""
 
-#: lib/fields/wp-query.php:791
+#: lib/fields/wp-query.php:796
 msgid "Meta key"
 msgstr ""
 
-#: lib/fields/wp-query.php:809
-#: lib/fields/wp-term-query.php:568
+#: lib/fields/wp-query.php:814
+#: lib/fields/wp-term-query.php:567
 msgid "Order"
 msgstr ""
 
-#: lib/fields/wp-query.php:813
-#: lib/fields/wp-term-query.php:572
+#: lib/fields/wp-query.php:818
+#: lib/fields/wp-term-query.php:571
 msgid "Ascending"
 msgstr ""
 
-#: lib/fields/wp-query.php:814
-#: lib/fields/wp-term-query.php:573
+#: lib/fields/wp-query.php:819
+#: lib/fields/wp-term-query.php:572
 msgid "Descending"
 msgstr ""
 
-#: lib/fields/wp-query.php:831
-#: lib/fields/wp-term-query.php:590
+#: lib/fields/wp-query.php:836
+#: lib/fields/wp-term-query.php:589
 msgid "Exclude Entries"
 msgstr ""
 
-#: lib/fields/wp-query.php:832
-#: lib/fields/wp-term-query.php:591
+#: lib/fields/wp-query.php:837
+#: lib/fields/wp-term-query.php:590
 msgid "Hide specific entries. Choose all that apply."
 msgstr ""
 
-#: lib/fields/wp-query.php:853
-#: lib/fields/wp-term-query.php:615
+#: lib/fields/wp-query.php:858
+#: lib/fields/wp-term-query.php:614
 msgid "Exclude"
 msgstr ""
 
-#: lib/fields/wp-query.php:857
-#: lib/fields/wp-term-query.php:620
+#: lib/fields/wp-query.php:862
+#: lib/fields/wp-term-query.php:619
 msgid "Exclude displayed"
 msgstr ""
 
-#: lib/fields/wp-query.php:858
-#: lib/fields/wp-term-query.php:621
+#: lib/fields/wp-query.php:863
+#: lib/fields/wp-term-query.php:620
 msgid "Exclude current"
 msgstr ""
 
-#: lib/fields/wp-term-query.php:430
+#: lib/fields/wp-term-query.php:429
 msgid "Show specific entries. Choose all that apply. If empty, Grid will get entries by date."
 msgstr ""
 
-#: lib/fields/wp-term-query.php:550
+#: lib/fields/wp-term-query.php:549
 msgid "Entry Totals"
 msgstr ""
 
-#: lib/fields/wp-term-query.php:551
+#: lib/fields/wp-term-query.php:550
 msgid "Term ID"
 msgstr ""
 
-#: lib/fields/wp-term-query.php:619
+#: lib/fields/wp-term-query.php:618
 msgid "Exclude terms with no posts"
 msgstr ""
 
@@ -3027,27 +3027,27 @@ msgstr ""
 msgid "Search..."
 msgstr ""
 
-#: lib/functions/utilities.php:1441
+#: lib/functions/utilities.php:1440
 msgid "Primary"
 msgstr ""
 
-#: lib/functions/utilities.php:1442
+#: lib/functions/utilities.php:1441
 msgid "Secondary"
 msgstr ""
 
-#: lib/functions/utilities.php:1443
+#: lib/functions/utilities.php:1442
 msgid "Outline"
 msgstr ""
 
-#: lib/functions/utilities.php:1512
+#: lib/functions/utilities.php:1511
 msgid "View available shortcodes from"
 msgstr ""
 
-#: lib/functions/utilities.php:1513
+#: lib/functions/utilities.php:1512
 msgid "Genesis"
 msgstr ""
 
-#: lib/functions/utilities.php:1514
+#: lib/functions/utilities.php:1513
 msgid "and"
 msgstr ""
 
@@ -3083,19 +3083,19 @@ msgstr ""
 msgid "Skip to after header navigation"
 msgstr ""
 
-#: lib/structure/page-header.php:439
+#: lib/structure/page-header.php:440
 msgid "Latest Posts"
 msgstr ""
 
-#: lib/structure/page-header.php:473
+#: lib/structure/page-header.php:474
 msgid "Search results for: "
 msgstr ""
 
-#: lib/structure/page-header.php:482
+#: lib/structure/page-header.php:483
 msgid "Archives for "
 msgstr ""
 
-#: lib/structure/page-header.php:494
+#: lib/structure/page-header.php:495
 msgid "Not found, error 404"
 msgstr ""
 
