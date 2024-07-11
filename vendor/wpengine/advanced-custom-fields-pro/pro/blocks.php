@@ -1275,6 +1275,11 @@ function acf_validate_block_from_local_meta( $block_id, $field_objects ) {
 			continue;
 		}
 
+		// Skip for nested fields - these don't work correctly on initial load of a saved block.
+		if ( ! empty( $field['sub_fields'] ) ) {
+			continue;
+		}
+
 		$key   = $field['key'];
 		$value = $field['value'];
 		acf_validate_value( $value, $field, "acf-{$block_id}[{$key}]" );
