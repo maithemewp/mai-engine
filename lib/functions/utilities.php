@@ -604,7 +604,6 @@ function mai_get_post_content( $post_slug_or_id, $post_type = 'wp_block' ) {
  * @since 0.3.0
  * @since 2.4.2  Remove use of wp_make_content_images_responsive.
  * @since 2.19.0 Conditionally `do_blocks()` or `wpautop()`.
- * @since TBD Added encoding to prevent double decoding. Example: Curly quotes like `“` were displaying as `â€œ`.
  *
  * @param string $content The unprocessed content.
  *
@@ -619,7 +618,6 @@ function mai_get_processed_content( $content ) {
 	global $wp_embed;
 
 	$blocks  = has_blocks( $content );
-	$content = mb_encode_numericentity( $content, [0x80, 0x10FFFF, 0, ~0], 'UTF-8' ); // Encoding to prevent double decoding.
 	$content = $wp_embed->autoembed( $content );            // WP runs priority 8.
 	$content = $wp_embed->run_shortcode( $content );        // WP runs priority 8.
 	$content = $blocks ? do_blocks( $content ) : $content;  // WP runs priority 9.
@@ -1339,6 +1337,9 @@ function mai_get_dom_document( $html ) {
 
 	// Modify state.
 	$libxml_previous_state = libxml_use_internal_errors( true );
+
+	// Encode.
+	$html = mb_encode_numericentity( $html, [0x80, 0x10FFFF, 0, ~0], 'UTF-8' );
 
 	// Load the content in the document HTML.
 	$dom->loadHTML( "<div>$html</div>" );
