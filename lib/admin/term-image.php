@@ -47,7 +47,7 @@ function mai_add_featured_image_metabox() {
 	}
 
 	$field_data = [
-		'key'      => 'featured_image_field_group',
+		'key'      => 'mai_featured_image_field_group',
 		'title'    => esc_html__( 'Featured Image', 'mai-engine' ),
 		'location' => $locations ?: false,
 		'fields'   => [
