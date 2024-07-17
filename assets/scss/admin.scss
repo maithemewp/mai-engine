@@ -9,6 +9,27 @@
  * max-width + 160 (admin menu width) + 280 (block editor sidebar width) + 60px (extra).
  */
 
+
+body {
+	--admin-menu-width: 160px;
+}
+
+// After .folded since it doesn't matter what size the admin menu actually is.
+body.is-fullscreen-mode {
+	--admin-menu-width: 0px; // Requires 0px for calc().
+}
+
+@media only screen and (max-width: 960px) {
+	body {
+		--admin-menu-width: 36px;
+	}
+}
+
+.editor-styles-wrapper {
+	--viewport-width: calc(100vw - var(--admin-menu-width, 160px) - var(--block-sidebar-width, 0px)); // Requires 0px for calc(). These are both in editor.scss too. Not sure if we need both.
+	--editor-viewport-width: calc(100vw - var(--admin-menu-width, 160px) - var(--block-sidebar-width, 0px)); // Requires 0px for calc(). These are both in editor.scss too. Not sure if we need both.
+}
+
 body.has-dark-body .editor-styles-wrapper {
 	--heading-color: var(--color-white);
 	--body-color: var(--color-white);
@@ -20,16 +41,8 @@ body.has-boxed-container .editor-styles-wrapper {
 	--mai-block-appender-color: #1e1e1e;
 }
 
-.folded {
-	--admin-menu-width: 36px;
-}
-
-// After .folded since it doesn't matter what size the admin menu actually is.
-.is-fullscreen-mode {
-	--admin-menu-width: 0px; // Requires 0px for calc().
-}
-
-.edit-post-layout.is-sidebar-opened {
+// Can't use is-sidebar-open anymore, since https://github.com/WordPress/gutenberg/issues/62599.
+.interface-interface-skeleton__body:has(.interface-interface-skeleton__sidebar:not(:empty)) {
 	--block-sidebar-width: 281px;
 }
 
@@ -61,7 +74,6 @@ body.has-boxed-container .editor-styles-wrapper {
 }
 
 // Wide Content (Default).
-
 
 @media only screen and (min-width: 1220px) {
 
