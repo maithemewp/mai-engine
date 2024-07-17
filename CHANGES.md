@@ -1,5 +1,30 @@
 # Changelog
 
+## 2.35.0 (TBD)
+* Added: New `--button-outline-width` custom prop to more consistently override outline button styles.
+* Changed: Update ACF to 6.3.4.
+* Changed: More through and simpler encoding handling with PHP's `DOMDocument`.
+* Changed: Better handling of post exclusion when using Mai Post Grid.
+* Changed: Using 100svh instead of 100dvh for body height.
+* Changed: Add transient caching to classic editor styles from customizer.
+* Changed: Tweak order of processing in `mai_get_processed_content()`.
+* Changed: [Performance] More efficient `get_terms()` queries when we only need `id` and `name`.
+* Changed: [Performance] Only run ACF field filters in the admin, when loading field data dynamically.
+* Changed: Disable preloading of featured and page header images. This was often causing more issues than it was helping.
+* Changed: Convert `DOMDocument` to `WP_HTML_Tag_Processor` for Mai custom attributes.
+* Changed: Convert `DOMDocument` to `WP_HTML_Tag_Processor` for WooCommerce button classes.
+* Changed: Check if post type exists after `mai_grid_post_types` filter.
+* Changed: Validate ACF fields that don't use `field_` as the field key prefix.
+* Fixed: Full aligned blocks did not always display correctly in the editor, particularly when nested, and/or when the content alignment was left or right.
+* Fixed: The has-z-index-2 wasn't applying the correct z-index of 2.
+* Fixed: Search block was not centering correctly in some scenarios, when set to be center aligned.
+* Fixed: Author description not always showing correctly on the author archive.
+* Fixed: Invalid markup in page header when a category/term has no intro text.
+* Fixed: Site title was not always white when using a dark transparent header.
+* Fixed: Menu toggle text color was not styed correctly when screen-reader-text class is removed.
+* Fixed: Accent color being applied unexpectedly on select fields in some browsers, looking at you Safari.
+* Fixed: Select field now sets min-height instead of height.
+
 ## 2.34.1 (4/18/24)
 * Changed: Order of processing in `mai_get_processed_content()` to match `get_the_block_template_html()` function in WP core.
 * Fixed: The Setup Wizard missing steps for some users.
