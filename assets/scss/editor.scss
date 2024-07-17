@@ -20,6 +20,7 @@ html {
 body {
 	min-height: auto;
 	--viewport-width: calc(100vw - var(--admin-menu-width, 160px) - var(--block-sidebar-width, 0px)); // Requires 0px for calc().
+	--editor-viewport-width: calc(100vw - var(--admin-menu-width, 160px) - var(--block-sidebar-width, 0px)); // Requires 0px for calc().
 	--list-item-margin-bottom: var(--spacing-xs);
 
 	@include body();
@@ -84,6 +85,21 @@ ol.wp-block li.wp-block {
 	max-width: 100%;
 	margin-right: 0;
 	margin-left: 0;
+
+	// Fixes Mai Divider (and other stuff) when alignfull inside of a Group or Cover block where content align is not center.
+	// This needs to be accounted for in editor.scss too.
+
+	&.wp-block-cover[style*="--cover-block-justify-content:start"] > .wp-block-cover__inner-container > .alignfull,
+	&.wp-block-group[style*="--group-block-justify-content:start"] > .wp-block-group__inner-container > .alignfull {
+		margin-left: calc(var(--side-spacing) * -1);
+		width: var(--viewport-width);
+	}
+
+	&.wp-block-cover[style*="--cover-block-justify-content:end"] > .wp-block-cover__inner-container > .alignfull,
+	&.wp-block-group[style*="--group-block-justify-content:end"] > .wp-block-group__inner-container > .alignfull {
+		margin-right: calc(var(--side-spacing) * -1);
+		width: var(--viewport-width);
+	}
 }
 
 .wp-block.is-reusable {

@@ -9,7 +9,6 @@
 	// FB/IG gets wonky and calculates this to something huge causing the window to be squished.
 	if ( scrollBarWidth > 0 && scrollBarWidth <= 20 ) {
 		root.style.setProperty( '--scrollbar-width', scrollBarWidth + 'px' ); // Needs px value for calculations.
-		root.style.setProperty( '--viewport-width', 'calc(100vw - var(--scrollbar-width, 0px))' ); // Needs px value for calculations.
 	}
 
 	var toggleSearchFormEvent = function( event ) {

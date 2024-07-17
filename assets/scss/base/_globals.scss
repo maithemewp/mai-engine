@@ -119,6 +119,7 @@
 	 * Misc.
 	 */
 
+	--viewport-width: calc(100vw - var(--scrollbar-width, 0px)); // Needs px value for calculations.
 	--row-gap: var(--spacing-md);
 	--column-gap: var(--spacing-md);
 	--wrap-max-width: var(--breakpoint-xl);
