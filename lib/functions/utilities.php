@@ -252,7 +252,7 @@ function mai_get_mobile_menu_breakpoint() {
 /**
  * Gets an incremented index.
  *
- * @since TBD
+ * @since 2.34.0
  *
  * @param string $context The context for the counter.
  * @param bool $reset Whether to reset the index.
@@ -601,9 +601,9 @@ function mai_get_post_content( $post_slug_or_id, $post_type = 'wp_block' ) {
  *
  * Most of the order comes from /wp-includes/default-filters.php.
  *
- * @since 2.19.0 Conditionally `do_blocks()` or `wpautop()`.
- * @since 2.4.2  Remove use of wp_make_content_images_responsive.
  * @since 0.3.0
+ * @since 2.4.2  Remove use of wp_make_content_images_responsive.
+ * @since 2.19.0 Conditionally `do_blocks()` or `wpautop()`.
  *
  * @param string $content The unprocessed content.
  *
@@ -618,15 +618,16 @@ function mai_get_processed_content( $content ) {
 	global $wp_embed;
 
 	$blocks  = has_blocks( $content );
-	$content = $wp_embed->autoembed( $content );           // WP runs priority 8.
-	$content = $wp_embed->run_shortcode( $content );       // WP runs priority 8.
-	$content = $blocks ? do_blocks( $content ) : $content; // WP runs priority 9.
-	$content = wptexturize( $content );                    // WP runs priority 10.
-	$content = ! $blocks ? wpautop( $content ) : $content; // WP runs priority 10.
-	$content = shortcode_unautop( $content );              // WP runs priority 10.
-	$content = function_exists( 'wp_filter_content_tags' ) ? wp_filter_content_tags( $content ) : wp_make_content_images_responsive( $content ); // WP runs priority 10. WP 5.5 with fallback.
-	$content = do_shortcode( $content );                   // WP runs priority 11.
-	$content = convert_smilies( $content );                // WP runs priority 20.
+	$content = $wp_embed->autoembed( $content );            // WP runs priority 8.
+	$content = $wp_embed->run_shortcode( $content );        // WP runs priority 8.
+	$content = $blocks ? do_blocks( $content ) : $content;  // WP runs priority 9.
+	$content = wptexturize( $content );                     // WP runs priority 10.
+	$content = ! $blocks ? wpautop( $content ) : $content;  // WP runs priority 10.
+	$content = shortcode_unautop( $content );               // WP runs priority 10.
+	$content = do_shortcode( $content );                    // WP runs priority 11.
+	$content = wp_filter_content_tags( $content );          // WP runs priority 12.
+	$content = convert_smilies( $content );                 // WP runs priority 20.
+	$content = str_replace( ']]>', ']]&gt;', $content );
 
 	return $content;
 }
@@ -1332,7 +1333,7 @@ function mai_get_search_icon_form( $title = '', $icon_size = '16' ) {
  */
 function mai_get_dom_document( $html ) {
 	// Create the new document.
-	$dom = new DOMDocument();
+	$dom = new DOMDocument( '1.0', 'UTF-8' );
 
 	// Modify state.
 	$libxml_previous_state = libxml_use_internal_errors( true );
@@ -1365,6 +1366,21 @@ function mai_get_dom_document( $html ) {
 }
 
 /**
+ * Saves HTML from DOMDocument and decode entities.
+ *
+ * @since 2.34.0
+ *
+ * @param DOMDocument $dom
+ *
+ * @return string
+ */
+function mai_get_dom_html( $dom ) {
+	$html = $dom->saveHTML();
+
+	return $html;
+}
+
+/**
  * Gets a DOMDocument first child element.
  *
  * @since 2.4.1.
@@ -1384,22 +1400,6 @@ function mai_get_dom_first_child( $dom ) {
 	}
 
 	return false;
-}
-
-/**
- * Saves HTML from DOMDocument and decode entities.
- *
- * @since TBD
- *
- * @param DOMDocument $dom
- *
- * @return string
- */
-function mai_get_dom_html( $dom ) {
-	$html = $dom->saveHTML();
-	$html = mb_convert_encoding( $html, 'UTF-8', 'HTML-ENTITIES' );
-
-	return $html;
 }
 
 /**

@@ -241,7 +241,8 @@ function mai_load_vendor_plugins() {
 	}
 
 	if ( ! class_exists( 'Kirki' ) ) {
-		$files[] = '../vendor/kirki-framework/kirki/kirki';
+		// Keep up to date manually since Themeum doesn't update Releases/Packagist.
+		$files[] = '../packages/kirki/kirki';
 	}
 
 	if ( ! $files ) {
@@ -252,6 +253,34 @@ function mai_load_vendor_plugins() {
 		require_once __DIR__ . "/$file.php";
 	}
 }
+
+// add_action( 'admin_bar_menu', 'mai_admin_bar_menu', 99 );
+// function mai_admin_bar_menu( $admin_bar ) {
+// 	$admin_bar->add_menu(
+// 		[
+// 			'id'    => 'mai-toolbar',
+// 			'title' => 'Mai Theme',
+// 			'href'  => admin_url( 'admin.php?page=mai-theme' ),
+// 			'meta'  => [
+// 				'class' => 'mai-toolbar',
+// 				'title' => __( 'Mai Toolbar Menu', 'mai-engine' ),
+// 			],
+// 		],
+// 	);
+
+// 	$admin_bar->add_menu(
+// 		[
+// 			'parent' => 'mai-toolbar',
+// 			'id'     => 'mai-toolbar-ccas',
+// 			'title'  => __( 'Content Areas', 'mai-engine' ),
+// 			'href'   => admin_url( 'edit.php?post_type=mai_template_part' ),
+// 			'meta'   => [
+// 				'class' => 'mai-toolbar-ccas',
+// 				'title' => __( 'Content Areas', 'mai-engine' ),
+// 			],
+// 		],
+// 	);
+// }
 
 add_action( 'after_setup_theme', 'mai_load_files', 0 );
 /**
@@ -333,6 +362,7 @@ function mai_load_files() {
 		'fields/icons',
 		'fields/wp-query',
 		'fields/wp-term-query',
+		'fields/validate',
 
 		// Blocks.
 		'blocks/general',
@@ -440,7 +470,7 @@ function mai_load_files() {
 		$files[] = 'support/wpforms';
 	}
 
-	if ( class_exists( 'WP_Recipe_Maker' ) ) {
+	if ( class_exists( 'WP_Recipe_Maker' ) && (bool) apply_filters( 'mai_enable_wprm_support', false ) ) {
 		$files[] = 'support/wp-recipe-maker';
 	}
 

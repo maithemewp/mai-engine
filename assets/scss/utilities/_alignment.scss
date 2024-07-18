@@ -49,6 +49,21 @@
 	max-width: var(--alignfull-max-width, var(--viewport-width));
 	margin-right: var(--alignfull-margin-right, calc(50% - (50vw - (var(--scrollbar-width, 0px) / 2))));
 	margin-left: var(--alignfull-margin-left, calc(50% - (50vw - (var(--scrollbar-width, 0px) / 2))));
+
+	// Fixes Mai Divider (and other stuff) when alignfull inside of a Group or Cover block where content align is not center.
+	// This needs to be accounted for in editor.scss too.
+
+	&.wp-block-cover[style*="--cover-block-justify-content:start"] > .wp-block-cover__inner-container > .alignfull,
+	&.wp-block-group[style*="--group-block-justify-content:start"] > .wp-block-group__inner-container > .alignfull {
+		margin-left: calc(var(--side-spacing) * -1);
+		width: var(--viewport-width);
+	}
+
+	&.wp-block-cover[style*="--cover-block-justify-content:end"] > .wp-block-cover__inner-container > .alignfull,
+	&.wp-block-group[style*="--group-block-justify-content:end"] > .wp-block-group__inner-container > .alignfull {
+		margin-right: calc(var(--side-spacing) * -1);
+		width: var(--viewport-width);
+	}
 }
 
 .content {

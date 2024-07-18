@@ -1,5 +1,71 @@
 # Changelog
 
+## 2.35.0 (TBD)
+* Added: New `--button-outline-width` custom prop to more consistently override outline button styles.
+* Changed: Update ACF to 6.3.4.
+* Changed: More through and simpler encoding handling with PHP's `DOMDocument`.
+* Changed: Better handling of post exclusion when using Mai Post Grid.
+* Changed: Using 100svh instead of 100dvh for body height.
+* Changed: Add transient caching to classic editor styles from customizer.
+* Changed: Tweak order of processing in `mai_get_processed_content()`.
+* Changed: [Performance] More efficient `get_terms()` queries when we only need `id` and `name`.
+* Changed: [Performance] Only run ACF field filters in the admin, when loading field data dynamically.
+* Changed: Disable preloading of featured and page header images. This was often causing more issues than it was helping.
+* Changed: Convert `DOMDocument` to `WP_HTML_Tag_Processor` for Mai custom attributes.
+* Changed: Convert `DOMDocument` to `WP_HTML_Tag_Processor` for WooCommerce button classes.
+* Changed: Check if post type exists after `mai_grid_post_types` filter.
+* Changed: Validate ACF fields that don't use `field_` as the field key prefix.
+* Fixed: Full aligned blocks did not always display correctly in the editor, particularly when nested, and/or when the content alignment was left or right.
+* Fixed: The has-z-index-2 wasn't applying the correct z-index of 2.
+* Fixed: Search block was not centering correctly in some scenarios, when set to be center aligned.
+* Fixed: Author description not always showing correctly on the author archive.
+* Fixed: Invalid markup in page header when a category/term has no intro text.
+* Fixed: Site title was not always white when using a dark transparent header.
+* Fixed: Menu toggle text color was not styed correctly when screen-reader-text class is removed.
+* Fixed: Accent color being applied unexpectedly on select fields in some browsers, looking at you Safari.
+* Fixed: Select field now sets min-height instead of height.
+
+## 2.34.1 (4/18/24)
+* Changed: Order of processing in `mai_get_processed_content()` to match `get_the_block_template_html()` function in WP core.
+* Fixed: The Setup Wizard missing steps for some users.
+
+## 2.34.0 (4/9/24)
+* Added: Support for the new "Mai Side Hustle" theme.
+* Added: New "Alternate" typography/font setting.
+* Added: New "Alternate" block style option on Paragraph and Heading blocks, to use the new "Alternate" font settings in the Customizer.
+* Added: New "Oval" divider option. Props Jo Waltham.
+* Added: New XXL title size option in Customizer content archive settings and Mai Post/Term Grid title size block settings.
+* Added: New Custom Content 2 setting for Customizer Single/Archive COntent settings and Mai Post/Term Grid blocks.
+* Added: Better default styling for the core Query block.
+* Added: [Developers] New `has-line-height-1`, has-line-height-xs`, `has-line-height-sm`, and `has-line-height-md` helper classes to override default line-height values.
+* Added: [Developers] New `mai_has_dark_background_first` filter for custom handling of dark transparent header background.
+* Added: [Developers] Override WP Recipe Maker buttons/styles for better theme integration with `mai_enable_wprm_support` filter (false by default). Basic styling support is still always loaded.
+* Added: [Developers] New `--button-outline-width` css custom property to override the button border width without overriding other border styles.
+* Changed: Minor list styling tweaks on front end and in the editor.
+* Changed: Tightened up default body line-height as well as specific areas like archive/grid excerpts, breadcrumbs, and more.
+* Changed: Exclude Gravity Forms and WP Forms field labels from default styling so their forms are more consistently styled.
+* Changed: [WooCommerce] Better styling for order details/meta and quantity input.
+* Changed: [LearnDash] Better styling for deeper visual integration with the theme/settings.
+* Changed: Update ACF to 6.2.9.
+* Changed: More z-index tweaks so overlap and stacking is more natural and expected.
+* Changed: Allow shortcodes, etc. in single content excerpt.
+* Changed: Mai Divider now only uses -.5px to handle the slight gap sometimes caused by pixel rounding in some browsers.
+* Changed: Better handling of input placeholder color.
+* Changed: Update the updater.
+* Fixed: Mai Columns was wrapping unexpectedly, more often in the editor.
+* Fixed: Logo not inverting on the login page when using the setting to force the logo to white on dark backgrounds.
+* Fixed: Better styling of the Search block, including when using the width settings.
+* Fixed: Some logic from the setup wizard was running outside of the setup wizard itself.
+* Fixed: The icon field picker on various blocks was showing SVG markup instead of the actual icon.
+* Fixed: Alignment settings on Embed blocks not working correctly.
+* Fixed: Better handling of non-existent taxonomies in Mai Post/Term Grid blocks. This was causing some issues when an instance of the block was configured with a taxonomy that was no longer registered, typically by deactivating a plugin that registered a custom taxonomy.
+* Fixed: Inline highlights when using link color as the color setting.
+* Fixed: Competing filter-hover declarations in CSS. Now developers only need to use `--menu-item-name-filter-hover` custom property in CSS to remove the brightness dimming of menu items with a dark header.
+* Fixed: Better spacing/styling of LearnDash content by adding `entry-content` class to the `ld-tab-content` div.
+* Fixed: Better handling of dark/transparent header when registered gradients are used in config.php.
+* Fixed: Using square brackets in the post title was breaking `aria-label` in Mai Post/Term Grid.
+* Fixed: The `display_post_states` filter adding "Active" Content Area was running on the front end unnecessarily.
+
 ## 2.33.1 (2/7/24)
 * Added: [Developers] Add entry-grid order to the editor CSS.
 * Added: New `has-z-index-2` helper class along with the existing `has-z-index-1`, `has-z-index-0`, and `has-z-index--1` classes.

@@ -114,7 +114,7 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 	 * Checks if were on the setup wizard page.
 	 *
 	 * @since 1.0.0
-	 * @since TBD Added request check when this is called fbefore `get_current_screen` is available.
+	 * @since 2.34.0 Added request check when this is called fbefore `get_current_screen` is available.
 	 *
 	 * @return bool
 	 */
@@ -129,8 +129,7 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 		// Bail if not in the dashboard.
 		if ( ! is_admin() ) {
 			$cache = false;
-
-			return false;
+			return $cache;
 		}
 
 		// If we have the current screen function, use it. I don't think this ever runs with static caching.
@@ -138,14 +137,13 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 			$screen = get_current_screen();
 
 			if ( $screen ) {
-				// ray( '$screen->id', $screen->id, 'mai-theme_page_mai-setup-wizard' === $screen->id );
 				$cache = 'mai-theme_page_mai-setup-wizard' === $screen->id;
 				return $cache;
 			}
 		}
 
 		// Get data.
-		$parts = wp_parse_url( filter_input( INPUT_SERVER, 'REQUEST_URI' ) );
+		$parts = wp_parse_url( filter_input( INPUT_SERVER, 'PHP_SELF' ) );
 		$path  = isset( $parts['path'] ) ? basename( $parts['path'] ) : '';
 		$page  = filter_input( INPUT_GET, 'page' );
 		$cache = 'admin.php' === $path && 'mai-setup-wizard' === $page;

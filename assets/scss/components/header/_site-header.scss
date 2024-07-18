@@ -42,6 +42,7 @@
 }
 
 .has-dark-header:not(.has-transparent-header),
+.has-dark-header.has-dark-transparent-header:not(.header-stuck),
 .has-dark-header.has-transparent-header.header-stuck {
 	--site-header-color: var(--color-white);
 	--title-area-color: var(--color-white);

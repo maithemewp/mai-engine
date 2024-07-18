@@ -103,7 +103,7 @@ function mai_add_page_header_metabox() {
 	];
 
 	$field_group_data = [
-		'key'      => 'page_header_field_group',
+		'key'      => 'mai_page_header_field_group',
 		'title'    => esc_html__( 'Page Header', 'mai-engine' ),
 		'location' => $locations ?: false,
 		'position' => 'side',
@@ -124,6 +124,10 @@ add_filter( 'acf/load_field/key=page_header_image', 'mai_load_page_header_image_
  * @return array
  */
 function mai_load_page_header_image_field( $field ) {
+	if ( ! is_admin() ) {
+		return $field;
+	}
+
 	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : false;
 
 	if ( ! $screen || 'edit-tags' !== $screen->base ) {
@@ -146,6 +150,10 @@ add_filter( 'acf/load_field/key=page_header_description', 'mai_load_page_header_
  * @return array
  */
 function mai_load_page_header_description_field( $field ) {
+	if ( ! is_admin() ) {
+		return $field;
+	}
+
 	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : false;
 
 	if ( ! $screen || 'edit-tags' !== $screen->base ) {

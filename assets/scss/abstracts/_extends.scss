@@ -98,12 +98,12 @@
 	}
 
 	@if ("outline" == $style) {
-		--button-max-height: calc(100% - 4px); // Makes height same as button with no border.
+		--button-max-height: calc(100% - (var(--button-outline-width, 2px) * 2)); // Makes height same as button with no border.
 		--button-color: var(--button-outline-color, var(--color-primary));
 		--button-color-hover: var(--button-outline-color-hover, var(--color-white));
 		--button-background: var(--button-outline-background, transparent);
 		--button-background-hover: var(--button-outline-background-hover, var(--button-outline-color, var(--button-color)));
-		--button-border: 2px solid var(--button-outline-color, var(--button-color));
+		--button-border: var(--button-outline-width, 2px) solid var(--button-outline-color, var(--button-color));
 		--button-border-hover: var(--button-border);
 	}
 

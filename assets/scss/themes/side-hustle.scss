@@ -9,8 +9,9 @@
 	--button-letter-spacing: 1px;
 	--button-font-size: var(--font-size-xs);
 	--button-font-weight: bold;
+	--button-outline-width: 1px;
 	--border-radius: 0;
-	--border: var(--color-secondary-dark) 1px solid;
+	--border: 1px var(--color-secondary-dark) solid;
 	--input-border: 1px solid var(--color-heading);
 	--input-background-color: transparent;
 	--cart-total-font-size: 0.75rem;
@@ -41,10 +42,6 @@ h1,
 .has-xxxl-font-size,
 .has-xxxxl-font-size {
 	--heading-line-height: var(--line-height-xs);
-}
-
-.button-outline {
-	border-width: 1px;
 }
 
 .is-style-altfont:where(p) {

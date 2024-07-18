@@ -247,7 +247,7 @@ add_filter( 'display_post_states', 'mai_template_part_post_state', 10, 2 );
  * Display active content areas.
  *
  * @since 2.0.0
- * @since TBD Added `is_admin()` check.
+ * @since 2.34.0 Added `is_admin()` check.
  *
  * @param array   $states Array of post states.
  * @param WP_Post $post   Post object.

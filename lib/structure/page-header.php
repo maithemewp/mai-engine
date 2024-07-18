@@ -61,7 +61,8 @@ function mai_page_header_setup() {
 			remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_close', 15 );
 		} elseif ( ! $intro_text ) {
 			// Remove archive-description wrap if no intro text is displayed.
-			remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_intro_text', 12 );
+			remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_open', 5 );
+			// remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_intro_text', 12 );
 			remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_close', 15 );
 		}
 	}

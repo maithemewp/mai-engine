@@ -223,7 +223,7 @@ function mai_do_entry( $entry, $args = [] ) {
 /**
  * Get the entry index context, for use in mai_get_index().
  *
- * @since TBD
+ * @since 2.34.0
  *
  * @param string $context The existing context.
  *

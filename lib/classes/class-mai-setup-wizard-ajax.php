@@ -35,7 +35,7 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 	/**
 	 * Returns the sanitized demo id passed from ajax.
 	 *
-	 * @since TBD
+	 * @since 2.34.0
 	 *
 	 * @return string
 	 */
@@ -49,7 +49,7 @@ class Mai_Setup_Wizard_Ajax extends Mai_Setup_Wizard_Service_Provider {
 	/**
 	 * Returns the sanitized demo value passed from ajax.
 	 *
-	 * @since TBD
+	 * @since 2.34.0
 	 *
 	 * @return array
 	 */

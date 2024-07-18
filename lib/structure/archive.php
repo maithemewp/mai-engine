@@ -306,14 +306,15 @@ function mai_do_author_description() {
 	}
 
 	$description = '';
+	$author_id   = get_query_var( 'author' );
 
 	// Bail if author box is enabled.
-	if ( get_the_author_meta( 'genesis_author_box_archive', get_query_var( 'author' ) ) ) {
+	if ( get_the_author_meta( 'genesis_author_box_archive', $author_id ) ) {
 		return;
 	}
 
-	$description = get_the_author_meta( 'description' );
-	$description = apply_filters( 'mai_author_description', $description );
+	$description = get_the_author_meta( 'description', $author_id );
+	$description = apply_filters( 'mai_author_description', $description, $author_id );
 	$description = wp_kses_post( $description );
 
 	if ( ! $description ) {
@@ -351,13 +352,13 @@ function mai_do_author_archive_author_box() {
 		return;
 	}
 
+	// Get the author ID.
+	$author_id = get_query_var( 'author' );
+
 	// Bail if author box is not enabled.
-	if ( ! get_the_author_meta( 'genesis_author_box_archive', get_query_var( 'author' ) ) ) {
+	if ( ! get_the_author_meta( 'genesis_author_box_archive', $author_id ) ) {
 		return;
 	}
 
-	global $authordata;
-	$authordata = is_object( $authordata ) ? $authordata : get_userdata( get_query_var( 'author' ) );
-
-	echo mai_get_processed_content( genesis_get_author_box_by_user( $authordata->ID ) );
+	echo mai_get_processed_content( genesis_get_author_box_by_user( $author_id ) );
 }

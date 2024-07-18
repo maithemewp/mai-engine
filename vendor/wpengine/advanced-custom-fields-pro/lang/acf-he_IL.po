@@ -18,6 +18,7 @@ msgstr ""
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "PO-Revision-Date: 2023-06-27T14:09:59+00:00\n"
 =======
 "PO-Revision-Date: 2023-10-25T08:59:42+00:00\n"
@@ -36,6 +37,9 @@ msgstr ""
 >>>>>>> develop
 =======
 "PO-Revision-Date: 2024-03-29T21:10:52+00:00\n"
+>>>>>>> develop
+=======
+"PO-Revision-Date: 2024-07-18T08:39:03+00:00\n"
 >>>>>>> develop
 "Report-Msgid-Bugs-To: http://support.advancedcustomfields.com\n"
 "Language: he_IL\n"

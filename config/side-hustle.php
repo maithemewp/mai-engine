@@ -10,13 +10,13 @@
  */
 
 return [
-	'demos'         => [
+	'demos' => [
 		'influencer' => 'https://demo.bizbudding.com/side-hustle-influencer/wp-content/uploads/sites/83/mai-engine/',
 	],
 	'global-styles' => [
 		'colors' => [
 			'link'      => '#ac0254',
-			'primary'   => '#000000',
+			'primary'   => '#ac0254',
 			'secondary' => '#e4e4dd',
 			'alt'       => '#f7f7f5',
 			'header'    => '#000000',

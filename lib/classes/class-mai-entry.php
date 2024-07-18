@@ -1334,7 +1334,7 @@ class Mai_Entry {
 	/**
 	 * Get the custom content.
 	 *
-	 * @since TBD
+	 * @since 2.34.0
 	 *
 	 * @param array $args
 	 *

@@ -20,6 +20,13 @@ defined( 'ABSPATH' ) || die;
 class Mai_Grid {
 
 	/**
+	 * Index.
+	 *
+	 * @var int
+	 */
+	static protected $index = 0;
+
+	/**
 	 * Type.
 	 *
 	 * @var $type
@@ -156,6 +163,12 @@ class Mai_Grid {
 		if ( empty( $this->args['show'] ) ) {
 			return;
 		}
+
+		// Increment index.
+		$this::$index++;
+
+		// Add index to args.
+		$this->args['index'] = $this::$index;
 
 		// do_action( 'mai_before_grid_query', $this->args );
 		$this->query = $this->get_query();
@@ -298,11 +311,16 @@ class Mai_Grid {
 							mai_do_entry( $post, $this->args );
 
 							// Add this post to the existing post IDs.
-							self::$existing_post_ids[] = get_the_ID();
+							// self::$existing_post_ids[] = get_the_ID();
+
+							self::$existing_post_ids[ $post->post_type ][] = $post->ID;
 						}
 
 						// Clear duplicate IDs.
-						self::$existing_post_ids = array_unique( self::$existing_post_ids );
+						// self::$existing_post_ids = array_unique( self::$existing_post_ids );
+						foreach ( self::$existing_post_ids as $post_type => $ids ) {
+							self::$existing_post_ids[ $post_type ] = array_unique( $ids );
+						}
 					}
 					wp_reset_postdata();
 				}
@@ -523,12 +541,23 @@ class Mai_Grid {
 				$query_args['post__not_in'] = $this->args['post__not_in'];
 			}
 
+			// Start with empty array.
+			$post__not_ins = [];
+
+			// Make sure existing post IDs are for the post type(s) we are querying.
+			foreach ( (array) $this->args['post_type'] as $post_type ) {
+				// Add existing post IDs for this post type.
+				if ( isset( self::$existing_post_ids[ $post_type ] ) ) {
+					$post__not_ins = array_merge( $post__not_ins, self::$existing_post_ids[ $post_type ] );
+				}
+			}
+
 			// Exclude displayed.
-			if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'] ) && ! empty( self::$existing_post_ids ) ) {
+			if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'] ) && ! empty( $post__not_ins ) ) {
 				if ( isset( $query_args['post__not_in'] ) ) {
-					$query_args['post__not_in'] = array_merge( $query_args['post__not_in'], self::$existing_post_ids );
+					$query_args['post__not_in'] = array_merge( $query_args['post__not_in'], $post__not_ins );
 				} else {
-					$query_args['post__not_in'] = self::$existing_post_ids;
+					$query_args['post__not_in'] = $post__not_ins;
 				}
 			}
 
@@ -617,6 +646,17 @@ class Mai_Grid {
 		} else {
 			$query_args['hide_empty'] = false;
 		}
+
+		// Not sure if this is needed. Added this commented out code when we hit the bug in post__not_in in WP_Query above.
+		// Make sure existing term IDs are for the taxonomies we are querying.
+		// if ( ! empty( self::$existing_term_ids ) ) {
+		// 	foreach ( self::$existing_term_ids as $index => $existing_term_id ) {
+		// 		// Remove term IDs that are not in any of the taxonomies from the query.
+		// 		if ( ! in_array( get_term( $existing_term_id )->taxonomy, (array) $this->args['taxonomy'] ) ) {
+		// 			unset( self::$existing_term_ids[ $index ] );
+		// 		}
+		// 	}
+		// }
 
 		// Exclude displayed.
 		if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'], true ) && ! empty( self::$existing_term_ids ) ) {

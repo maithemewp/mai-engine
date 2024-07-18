@@ -41,6 +41,7 @@ function mai_flush_customizer_transients() {
 	$transients = [
 		'mai_dynamic_css',
 		'mai_dynamic_fonts',
+		'mai_classic_editor_styles',
 	];
 	foreach ( $transients as $transient ) {
 		delete_transient( $transient );
@@ -595,6 +596,8 @@ function mai_add_classic_editor_styles() {
 	add_editor_style( admin_url( 'admin-ajax.php' ) . '?action=mai_classic_editor_styles' ); // Default styles from Kirki. Mostly for WYSIWYG.
 }
 
+add_action( 'wp_ajax_nopriv_mai_classic_editor_styles', 'mai_do_classic_editor_styles' );
+add_action( 'wp_ajax_mai_classic_editor_styles',        'mai_do_classic_editor_styles' );
 /**
  * Generates a virtual file for Kirki WP Editor styles.
  *
@@ -602,37 +605,44 @@ function mai_add_classic_editor_styles() {
  * @link http://wordpress.stackexchange.com/a/226623/2807
  *
  * @since 2.25.0
+ * @since TBD Added transient for CSS.
  *
  * @return void
  */
-add_action( 'wp_ajax_nopriv_mai_classic_editor_styles', 'mai_do_classic_editor_styles' );
-add_action( 'wp_ajax_mai_classic_editor_styles',        'mai_do_classic_editor_styles' );
 function mai_do_classic_editor_styles() {
-	$css      = '';
-	$contents = get_transient( 'kirki_remote_url_contents' ); // This is rebuilt in Kirki's `Downloader` class `get_cached_url_contents()` method.
+	$transient = 'mai_classic_editor_styles';
 
-	if ( $contents ) {
-		foreach ( $contents as $font_css ) {
-			// Strip comments.
-			$font_css = str_replace( '/*', '_COMSTART', $font_css );
-			$font_css = str_replace( '*/', 'COMEND_', $font_css );
-			$font_css = preg_replace( '/_COMSTART.*?COMEND_/s', '', $font_css );
+	// If transient isn't set.
+	if ( false === ( $css = get_transient( $transient ) ) ) {
+		$css      = '';
+		$contents = get_transient( 'kirki_remote_url_contents' ); // This is rebuilt in Kirki's `Downloader` class `get_cached_url_contents()` method.
 
-			// Add font CSS.
-			$css .= $font_css;
+		if ( $contents && is_array( $contents ) ) {
+			foreach ( $contents as $font_css ) {
+				// Strip comments.
+				$font_css = str_replace( '/*', '_COMSTART', $font_css );
+				$font_css = str_replace( '*/', 'COMEND_', $font_css );
+				$font_css = preg_replace( '/_COMSTART.*?COMEND_/s', '', $font_css );
+
+				// Add font CSS.
+				$css .= $font_css;
+			}
 		}
-	}
 
-	if ( class_exists( 'Kirki\Module\CSS' ) ) {
-		ob_start();
-		$module = new \Kirki\Module\CSS();
-		$module->print_styles_inline();
-		$dynamic = ob_get_clean();
-		$css    .= strip_tags( $dynamic );
-	}
+		if ( class_exists( 'Kirki\Module\CSS' ) ) {
+			ob_start();
+			$module = new \Kirki\Module\CSS();
+			$module->print_styles_inline();
+			$dynamic = ob_get_clean();
+			$css    .= strip_tags( $dynamic );
+		}
 
-	if ( mai_has_boxed_container() ) {
-		$css .= '.mce-content-body {--body-background-color: var(--color-white);}';
+		if ( mai_has_boxed_container() ) {
+			$css .= '.mce-content-body {--body-background-color: var(--color-white);}';
+		}
+
+		// Set transient, and expire after n hours
+		set_transient( $transient, $css, 1 * HOUR_IN_SECONDS );
 	}
 
 	if ( $css ) {

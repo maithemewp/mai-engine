@@ -18,6 +18,7 @@ msgstr ""
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "PO-Revision-Date: 2023-06-27T14:09:59+00:00\n"
 =======
 "PO-Revision-Date: 2023-10-25T08:59:42+00:00\n"
@@ -37,6 +38,9 @@ msgstr ""
 =======
 "PO-Revision-Date: 2024-03-29T21:10:52+00:00\n"
 >>>>>>> develop
+=======
+"PO-Revision-Date: 2024-07-18T08:39:03+00:00\n"
+>>>>>>> develop
 "Report-Msgid-Bugs-To: http://support.advancedcustomfields.com\n"
 "Language: hr\n"
 "MIME-Version: 1.0\n"
@@ -45,6 +49,7 @@ msgstr ""
 "X-Generator: gettext\n"
 "Project-Id-Version: Advanced Custom Fields\n"
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -7015,6 +7020,8 @@ msgstr ""
 msgid "Advanced Custom Fields"
 msgstr "Advanced Custom Fields"
 
+=======
+>>>>>>> develop
 #: pro/acf-pro.php:27
 msgid "Advanced Custom Fields PRO"
 msgstr "Advanced Custom Fields PRO"
@@ -7059,6 +7066,14 @@ msgid ""
 "Assign a <a href=\"%s\" target=\"_blank\">field group</a> to add fields to "
 "this block."
 msgstr ""
+
+#: pro/options-page.php:47
+msgid "Options"
+msgstr "Postavke"
+
+#: pro/options-page.php:77, pro/fields/class-acf-field-gallery.php:527
+msgid "Update"
+msgstr "Ažuriraj"
 
 #: pro/options-page.php:78
 msgid "Options Updated"
@@ -7125,9 +7140,18 @@ msgstr ""
 "Niste dodali nijedan skup polja na ovu stranicu, <a href=\"%s\">Dodaj skup "
 "polja</a>"
 
+#: pro/admin/admin-options-page.php:309
+msgid "Edit field group"
+msgstr "Uredi skup polja"
+
 #: pro/admin/admin-updates.php:52
 msgid "<b>Error</b>. Could not connect to update server"
 msgstr "<b>Greška</b>. Greška prilikom spajanja na server"
+
+#: pro/admin/admin-updates.php:122,
+#: pro/admin/views/html-settings-updates.php:12
+msgid "Updates"
+msgstr "Ažuriranja"
 
 #: pro/admin/admin-updates.php:212
 msgid ""
@@ -7141,6 +7165,11 @@ msgid ""
 "Please reactivate your ACF PRO license."
 msgstr ""
 
+#: pro/fields/class-acf-field-clone.php:25
+msgctxt "noun"
+msgid "Clone"
+msgstr "Kloniraj"
+
 #: pro/fields/class-acf-field-clone.php:27,
 #: pro/fields/class-acf-field-repeater.php:31
 msgid ""
@@ -7149,6 +7178,11 @@ msgid ""
 "time. The Clone field can either replace itself with the selected fields or "
 "display the selected fields as a group of subfields."
 msgstr ""
+
+#: pro/fields/class-acf-field-clone.php:818,
+#: pro/fields/class-acf-field-flexible-content.php:78
+msgid "Fields"
+msgstr "Polja"
 
 #: pro/fields/class-acf-field-clone.php:819
 msgid "Select one or more fields you wish to clone"
@@ -7171,6 +7205,36 @@ msgstr ""
 msgid "Seamless (replaces this field with selected fields)"
 msgstr "Zamjena (Prikazuje odabrana polja umjesto trenutnog polja)"
 
+#: pro/fields/class-acf-field-clone.php:854,
+#: pro/fields/class-acf-field-flexible-content.php:558,
+#: pro/fields/class-acf-field-flexible-content.php:616,
+#: pro/fields/class-acf-field-repeater.php:177
+msgid "Layout"
+msgstr "Format"
+
+#: pro/fields/class-acf-field-clone.php:855
+msgid "Specify the style used to render the selected fields"
+msgstr "Odaberite način prikaza odabranih polja"
+
+#: pro/fields/class-acf-field-clone.php:860,
+#: pro/fields/class-acf-field-flexible-content.php:629,
+#: pro/fields/class-acf-field-repeater.php:185,
+#: pro/locations/class-acf-location-block.php:22
+msgid "Block"
+msgstr "Blok"
+
+#: pro/fields/class-acf-field-clone.php:861,
+#: pro/fields/class-acf-field-flexible-content.php:628,
+#: pro/fields/class-acf-field-repeater.php:184
+msgid "Table"
+msgstr "Tablica"
+
+#: pro/fields/class-acf-field-clone.php:862,
+#: pro/fields/class-acf-field-flexible-content.php:630,
+#: pro/fields/class-acf-field-repeater.php:186
+msgid "Row"
+msgstr "Red"
+
 #: pro/fields/class-acf-field-clone.php:868
 msgid "Labels will be displayed as %s"
 msgstr "Oznake će biti prikazane kao %s"
@@ -7191,6 +7255,10 @@ msgstr "Dodaj prefiks ispred naziva polja"
 msgid "Unknown field"
 msgstr "Nepoznato polje"
 
+#: pro/fields/class-acf-field-clone.php:1009
+msgid "(no title)"
+msgstr "(bez naziva)"
+
 #: pro/fields/class-acf-field-clone.php:1042
 msgid "Unknown field group"
 msgstr "Nepoznat skup polja"
@@ -7199,10 +7267,18 @@ msgstr "Nepoznat skup polja"
 msgid "All fields from %s field group"
 msgstr "Sva polje iz %s skupa polja"
 
+#: pro/fields/class-acf-field-flexible-content.php:25
+msgid "Flexible Content"
+msgstr "Fleksibilno polje"
+
 #: pro/fields/class-acf-field-flexible-content.php:27
 msgid ""
 "Allows you to define, create and manage content with total control by "
 "creating layouts that contain subfields that content editors can choose from."
+msgstr ""
+
+#: pro/fields/class-acf-field-flexible-content.php:27
+msgid "We do not recommend using this field in ACF Blocks."
 msgstr ""
 
 #: pro/fields/class-acf-field-flexible-content.php:36,
@@ -7254,6 +7330,11 @@ msgstr "Potrebno je unijeti najmanje jedno fleksibilni polje"
 msgid "Click the \"%s\" button below to start creating your layout"
 msgstr "Kliknite “%s” gumb kako bi započeki kreiranje raspored"
 
+#: pro/fields/class-acf-field-flexible-content.php:420,
+#: pro/fields/class-acf-repeater-table.php:366
+msgid "Drag to reorder"
+msgstr "Presloži polja povlačenjem"
+
 #: pro/fields/class-acf-field-flexible-content.php:423
 msgid "Add layout"
 msgstr "Dodaj razmještaj"
@@ -7290,6 +7371,14 @@ msgstr "Dodaj novi razmještaj"
 #| msgid "Add layout"
 msgid "Add Layout"
 msgstr "Dodaj razmještaj"
+
+#: pro/fields/class-acf-field-flexible-content.php:593
+msgid "Label"
+msgstr "Oznaka"
+
+#: pro/fields/class-acf-field-flexible-content.php:609
+msgid "Name"
+msgstr "Naziv"
 
 #: pro/fields/class-acf-field-flexible-content.php:647
 msgid "Min"
@@ -7331,6 +7420,10 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
+#: pro/fields/class-acf-field-gallery.php:25
+msgid "Gallery"
+msgstr "Galerija"
+
 #: pro/fields/class-acf-field-gallery.php:27
 msgid ""
 "An interactive interface for managing a collection of attachments, such as "
@@ -7349,6 +7442,19 @@ msgstr "Već ste dodali najviše dozovoljenih polja"
 msgid "Length"
 msgstr "Dužina"
 
+#: pro/fields/class-acf-field-gallery.php:339
+msgid "Edit"
+msgstr "Uredi"
+
+#: pro/fields/class-acf-field-gallery.php:340,
+#: pro/fields/class-acf-field-gallery.php:495
+msgid "Remove"
+msgstr "Ukloni"
+
+#: pro/fields/class-acf-field-gallery.php:356
+msgid "Title"
+msgstr "Naziv"
+
 #: pro/fields/class-acf-field-gallery.php:368
 msgid "Caption"
 msgstr "Potpis"
@@ -7356,6 +7462,10 @@ msgstr "Potpis"
 #: pro/fields/class-acf-field-gallery.php:380
 msgid "Alt Text"
 msgstr "Alternativni tekst"
+
+#: pro/fields/class-acf-field-gallery.php:392
+msgid "Description"
+msgstr "Opis"
 
 #: pro/fields/class-acf-field-gallery.php:504
 msgid "Add to gallery"
@@ -7385,6 +7495,39 @@ msgstr "Obrnuti redosljed"
 msgid "Close"
 msgstr "Zatvori"
 
+#: pro/fields/class-acf-field-gallery.php:556
+msgid "Return Format"
+msgstr "Format za prikaz na web stranici"
+
+#: pro/fields/class-acf-field-gallery.php:562
+msgid "Image Array"
+msgstr "Podaci kao niz"
+
+#: pro/fields/class-acf-field-gallery.php:563
+msgid "Image URL"
+msgstr "Putanja slike"
+
+#: pro/fields/class-acf-field-gallery.php:564
+msgid "Image ID"
+msgstr "ID slike"
+
+#: pro/fields/class-acf-field-gallery.php:572
+msgid "Library"
+msgstr "Zbirka"
+
+#: pro/fields/class-acf-field-gallery.php:573
+msgid "Limit the media library choice"
+msgstr "Ograniči odabir iz zbirke"
+
+#: pro/fields/class-acf-field-gallery.php:578,
+#: pro/locations/class-acf-location-block.php:66
+msgid "All"
+msgstr "Sve"
+
+#: pro/fields/class-acf-field-gallery.php:579
+msgid "Uploaded to post"
+msgstr "Dodani uz trenutnu objavu"
+
 #: pro/fields/class-acf-field-gallery.php:615
 msgid "Minimum Selection"
 msgstr "Minimalni odabri"
@@ -7393,6 +7536,47 @@ msgstr "Minimalni odabri"
 msgid "Maximum Selection"
 msgstr "Maksimalni odabir"
 
+<<<<<<< HEAD
+=======
+#: pro/fields/class-acf-field-gallery.php:635
+msgid "Minimum"
+msgstr "Minimum"
+
+#: pro/fields/class-acf-field-gallery.php:636,
+#: pro/fields/class-acf-field-gallery.php:672
+msgid "Restrict which images can be uploaded"
+msgstr "Ograniči koje slike mogu biti dodane"
+
+#: pro/fields/class-acf-field-gallery.php:639,
+#: pro/fields/class-acf-field-gallery.php:675
+msgid "Width"
+msgstr "Širina"
+
+#: pro/fields/class-acf-field-gallery.php:650,
+#: pro/fields/class-acf-field-gallery.php:686
+msgid "Height"
+msgstr "Visina"
+
+#: pro/fields/class-acf-field-gallery.php:662,
+#: pro/fields/class-acf-field-gallery.php:698
+msgid "File size"
+msgstr "Veličina datoteke"
+
+#: pro/fields/class-acf-field-gallery.php:671
+msgid "Maximum"
+msgstr "Maksimum"
+
+#: pro/fields/class-acf-field-gallery.php:707
+msgid "Allowed file types"
+msgstr "Dozvoljeni tipovi datoteka"
+
+#: pro/fields/class-acf-field-gallery.php:708
+msgid "Comma separated list. Leave blank for all types"
+msgstr ""
+"Dodaj kao niz odvojen zarezom, npr: .txt, .jpg, ... Ukoliko je prazno, sve "
+"datoteke su dozvoljene"
+
+>>>>>>> develop
 #: pro/fields/class-acf-field-gallery.php:727
 msgid "Insert"
 msgstr "Umetni"
@@ -7408,6 +7592,23 @@ msgstr "Umetni na kraj"
 #: pro/fields/class-acf-field-gallery.php:733
 msgid "Prepend to the beginning"
 msgstr "Umetni na početak"
+
+#: pro/fields/class-acf-field-gallery.php:741
+msgid "Preview Size"
+msgstr "Veličina prikaza prilikom uređivanja stranice"
+
+#: pro/fields/class-acf-field-gallery.php:844
+#, fuzzy
+#| msgid "1 field requires attention"
+msgid "%1$s requires at least %2$s selection"
+msgid_plural "%1$s requires at least %2$s selections"
+msgstr[0] "1 polje treba vašu pažnju"
+msgstr[1] "1 polje treba vašu pažnju"
+msgstr[2] "1 polje treba vašu pažnju"
+
+#: pro/fields/class-acf-field-repeater.php:29
+msgid "Repeater"
+msgstr "Ponavljajuće polje"
 
 #: pro/fields/class-acf-field-repeater.php:66,
 #: pro/fields/class-acf-field-repeater.php:463
@@ -7430,6 +7631,16 @@ msgstr "Neuspješno učitavanje"
 #: pro/fields/class-acf-field-repeater.php:69
 msgid "Order will be assigned upon save"
 msgstr ""
+
+#: pro/fields/class-acf-field-repeater.php:162
+msgid "Sub Fields"
+msgstr "Pod polja"
+
+#: pro/fields/class-acf-field-repeater.php:195
+#, fuzzy
+#| msgid "Position"
+msgid "Pagination"
+msgstr "Pozicija"
 
 #: pro/fields/class-acf-field-repeater.php:196
 msgid "Useful for fields with a large number of rows."
@@ -7462,6 +7673,10 @@ msgstr "Sklopljeno"
 #: pro/fields/class-acf-field-repeater.php:282
 msgid "Select a sub field to show when row is collapsed"
 msgstr "Odaberite pod polje koje će biti prikazano dok je red sklopljen"
+
+#: pro/fields/class-acf-field-repeater.php:1045
+msgid "Invalid nonce."
+msgstr ""
 
 #: pro/fields/class-acf-field-repeater.php:1060
 #, fuzzy
@@ -7541,6 +7756,10 @@ msgstr "Stranica za objave"
 msgid "No block types exist"
 msgstr "Ne postoji stranica sa postavkama"
 
+#: pro/locations/class-acf-location-options-page.php:22
+msgid "Options Page"
+msgstr "Postavke"
+
 #: pro/locations/class-acf-location-options-page.php:70
 msgid "No options pages exist"
 msgstr "Ne postoji stranica sa postavkama"
@@ -7596,6 +7815,14 @@ msgstr "Posljednja dostupna verzija"
 #: pro/admin/views/html-settings-updates.php:84
 msgid "Update Available"
 msgstr "Dostupna nadogradnja"
+
+#: pro/admin/views/html-settings-updates.php:91
+msgid "No"
+msgstr "Ne"
+
+#: pro/admin/views/html-settings-updates.php:89
+msgid "Yes"
+msgstr "Da"
 
 #: pro/admin/views/html-settings-updates.php:98
 msgid "Upgrade Notice"

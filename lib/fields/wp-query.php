@@ -216,6 +216,11 @@ function mai_get_post_type_choices() {
 
 	if ( $post_types ) {
 		foreach ( $post_types as $post_type ) {
+			// Skip if post type does not exist.
+			if ( ! post_type_exists( $post_type ) ) {
+				continue;
+			}
+
 			$choices[ $post_type ] = get_post_type_object( $post_type )->label;
 		}
 	}

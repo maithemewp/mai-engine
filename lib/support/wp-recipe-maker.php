@@ -17,7 +17,7 @@ add_filter( 'render_block', 'mai_recipe_maker_handle_blocks', 10, 2 );
  * Adds button classes to WP Recipe Maker blocks.
  * Removes inline styles.
  *
- * @since TBD
+ * @since 2.34.0
  *
  * @param string $block_content The existing block content.
  * @param object $block         The button block object.
@@ -67,7 +67,7 @@ function mai_recipe_maker_handle_shortcodes( $output, $tag ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.34.0
  *
  * @param string $html The existing content.
  *
@@ -139,7 +139,7 @@ function mai_wprm_convert_buttons( $html ) {
  *
  * @access private
  *
- * @since TBD
+ * @since 2.34.0
  *
  * @param DOMElement $node
  *
