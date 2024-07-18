@@ -65,7 +65,6 @@ wp.domReady( () => {
 	// var user  = maiEditorVars.user;
 
 	acf.addFilter( 'select2_ajax_data', function( data, args, $input, field, instance ) {
-
 		// If Mai Icon or Icon (Brands) select field.
 		if ( icons.includes( data.field_key ) ) {
 			data.style = acf.getField( 'mai_icon_style' ).val(); // Style.

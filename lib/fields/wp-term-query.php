@@ -301,7 +301,7 @@ function mai_get_term_choices_from_taxonomy( $taxonomy = '' ) {
 		return $choices;
 	}
 
-	$choices[] = $terms;
+	$choices = $terms;
 
 	return $choices;
 }
