@@ -241,7 +241,8 @@ function mai_load_vendor_plugins() {
 	}
 
 	if ( ! class_exists( 'Kirki' ) ) {
-		$files[] = '../vendor/kirki-framework/kirki/kirki';
+		// Keep up to date manually since Themeum doesn't update Releases/Packagist.
+		$files[] = '../packages/kirki/kirki';
 	}
 
 	if ( ! $files ) {
