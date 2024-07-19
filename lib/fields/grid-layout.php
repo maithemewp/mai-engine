@@ -308,6 +308,7 @@ function mai_get_grid_layout_fields() {
 			'label'             => esc_html__( 'Top Margin', 'mai-engine' ),
 			'name'              => 'margin_top',
 			'type'              => 'button_group',
+			'default_value'     => '',
 			'choices'           => [
 				''      => esc_html__( 'None', 'mai-engine' ),
 				'md'    => esc_html__( 'XS', 'mai-engine' ),
@@ -317,7 +318,6 @@ function mai_get_grid_layout_fields() {
 				'xxxl'  => esc_html__( 'XL', 'mai-engine' ),
 				'xxxxl' => esc_html__( '2XL', 'mai-engine' ),
 			],
-			'default_value'     => '',
 			'wrapper'           => [
 				'class'            => 'mai-acf-button-group mai-acf-button-group-small',
 			],
@@ -327,6 +327,7 @@ function mai_get_grid_layout_fields() {
 			'label'             => esc_html__( 'Bottom Margin', 'mai-engine' ),
 			'name'              => 'margin_bottom',
 			'type'              => 'button_group',
+			'default_value'     => '',
 			'choices'           => [
 				''      => esc_html__( 'None', 'mai-engine' ),
 				'md'    => esc_html__( 'XS', 'mai-engine' ),
@@ -336,7 +337,6 @@ function mai_get_grid_layout_fields() {
 				'xxxl'  => esc_html__( 'XL', 'mai-engine' ),
 				'xxxxl' => esc_html__( '2XL', 'mai-engine' ),
 			],
-			'default_value'     => '',
 			'wrapper'           => [
 				'class'            => 'mai-acf-button-group mai-acf-button-group-small',
 			],
