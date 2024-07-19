@@ -16,18 +16,18 @@ defined( 'ABSPATH' ) || die;
  * Gets an ACF request, checking nonce and value.
  *
  * @since 0.1.0
- * @since TBD Remove unnecessary nonce check.
+ * @since TBD Switched to using `acf_verify_ajax` for nonce verification.
  *
  * @param string $request Request data.
  *
  * @return bool
  */
 function mai_get_acf_request( $request ) {
-	if ( isset( $_REQUEST[ $request ] ) && ! empty( $_REQUEST[ $request ] ) ) {
-		return $_REQUEST[ $request ];
-	}
+	$nonce  = isset( $_REQUEST['nonce'] ) ? $_REQUEST['nonce'] : '';
+	$action = isset( $_REQUEST['field_key'] ) ? $_REQUEST['field_key'] : '';
+	$return = isset( $_REQUEST[ $request ] ) ? $_REQUEST[ $request ] : false;
 
-	return false;
+	return $nonce && $action && $return && acf_verify_ajax( $nonce, $action ) ? $return : false;
 }
 
 /**
