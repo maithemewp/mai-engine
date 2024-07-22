@@ -8,11 +8,6 @@
 
 // end tabs.
 
-.acf-block-fields.acf-fields:not(.acf-clone-fields):has(.acf-field[data-key^="mai"]),
-.acf-block-fields .acf-fields:not(.acf-clone-fields):has(.acf-field[data-key^="mai"]) {
-	// padding-bottom: 16px;
-}
-
 .acf-block-fields:has(.acf-field[data-key^="mai"]) .acf-field {
 	border-top: 0;
 }
