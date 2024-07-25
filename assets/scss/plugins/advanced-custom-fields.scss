@@ -12,7 +12,7 @@
 	border-top: 0;
 }
 
-.acf-block-fields:has(.acf-field[data-key^="mai"]) .acf-field:not(.acf-hidden):not(.acf-field-tab) {
+.acf-block-fields:has(.acf-field[data-key^="mai"]) .acf-field:not(.acf-hidden):not(.acf-field-tab):not(.acf-field-accordion) {
 	margin-block: 16px;
 	padding-block: 0;
 }
