@@ -2,7 +2,7 @@ $all-buttons: append($all-buttons, ".button");
 $all-buttons: append($all-buttons, ".button:visited");
 $all-text-inputs: append($all-text-inputs, "select");
 $all-text-inputs: append($all-text-inputs, "optgroup");
-$all-headings: (h1, h2, h3, h4, h5, h6, 'legend:not([class*="gfield"]):not([class*="gform"]):not([class*="wpform"])', ".is-style-heading", ".is-style-subheading");
+$all-headings: (h1, h2, h3, h4, h5, h6, 'legend:where(:not([class*="gfield"]):not([class*="gform"]):not([class*="wpform"]))', ".is-style-heading", ".is-style-subheading");
 
 $breakpoint: 1200;
 
