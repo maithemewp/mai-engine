@@ -12,35 +12,7 @@
 # This file is distributed under the same license as Advanced Custom Fields.
 msgid ""
 msgstr ""
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-"PO-Revision-Date: 2023-06-27T14:09:59+00:00\n"
-=======
-"PO-Revision-Date: 2023-10-25T08:59:42+00:00\n"
->>>>>>> develop
-=======
-"PO-Revision-Date: 2023-11-28T09:14:32+00:00\n"
->>>>>>> develop
-=======
-"PO-Revision-Date: 2024-01-12T11:58:55+00:00\n"
->>>>>>> develop
-=======
-"PO-Revision-Date: 2024-02-05T19:27:11+00:00\n"
->>>>>>> develop
-=======
-"PO-Revision-Date: 2024-02-26T11:26:19+00:00\n"
->>>>>>> develop
-=======
-"PO-Revision-Date: 2024-03-29T21:10:52+00:00\n"
->>>>>>> develop
-=======
-"PO-Revision-Date: 2024-07-18T08:39:03+00:00\n"
->>>>>>> develop
+"PO-Revision-Date: 2024-08-01T09:50:26+00:00\n"
 "Report-Msgid-Bugs-To: http://support.advancedcustomfields.com\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -49,28 +21,14 @@ msgstr ""
 "X-Generator: gettext\n"
 "Project-Id-Version: Advanced Custom Fields\n"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
-#: includes/admin/views/global/navigation.php:221
-=======
-=======
-#. translators: %1$s - The selector used  %2$s The field name  3%$s The parent
-#. function name
-#: includes/admin/views/escaped-html-notice.php:59
-msgid "%1$s (%2$s) - rendered via %3$s"
-=======
-#: includes/api/api-template.php:461 includes/api/api-template.php:515
-=======
-#: includes/api/api-template.php:376 includes/api/api-template.php:430
->>>>>>> develop
-=======
+#: includes/api/api-template.php:1054
+msgid "[The ACF shortcode cannot display fields from non-public posts]"
+msgstr ""
+
+#: includes/api/api-template.php:1011
+msgid "[The ACF shortcode is disabled on this site]"
+msgstr ""
+
 #: includes/fields/class-acf-field-icon_picker.php:451
 msgid "Businessman Icon"
 msgstr ""
@@ -752,7 +710,7 @@ msgstr ""
 msgid "Sorry, you are not allowed to do that."
 msgstr ""
 
-#: includes/ajax/class-acf-ajax-check-screen.php:27
+#: includes/ajax/class-acf-ajax-check-screen.php:37
 #: includes/ajax/class-acf-ajax-query-users.php:32
 #: includes/ajax/class-acf-ajax-user-setting.php:38
 msgid "Sorry, you do not have permission to do that."
@@ -1892,19 +1850,17 @@ msgstr ""
 msgid "Please activate your ACF PRO license to edit this options page."
 msgstr ""
 
-#: includes/api/api-template.php:381 includes/api/api-template.php:435
->>>>>>> develop
+#: includes/api/api-template.php:385 includes/api/api-template.php:439
 msgid ""
 "Returning escaped HTML values is only possible when format_value is also "
 "true. The field values have not been returned for security."
 msgstr ""
 
-#: includes/api/api-template.php:46 includes/api/api-template.php:247
-#: includes/api/api-template.php:939
+#: includes/api/api-template.php:46 includes/api/api-template.php:251
+#: includes/api/api-template.php:947
 msgid ""
 "Returning an escaped HTML value is only possible when format_value is also "
 "true. The field value has not been returned for security."
->>>>>>> develop
 msgstr ""
 
 #. translators: %1$s - name of the ACF plugin. %2$s - Link to documentation.
@@ -1939,13 +1895,7 @@ msgstr "詳細を表示"
 msgid "%1$s (%2$s) - rendered via %3$s"
 msgstr ""
 
-<<<<<<< HEAD
->>>>>>> develop
-#: includes/admin/views/global/navigation.php:223
->>>>>>> develop
-=======
 #: includes/admin/views/global/navigation.php:226
->>>>>>> develop
 msgid "Renew ACF PRO License"
 msgstr "ACF プロ版を更新する"
 
@@ -1977,12 +1927,7 @@ msgstr ""
 msgid "Add Options Page"
 msgstr "オプションページを追加"
 
-<<<<<<< HEAD
->>>>>>> develop
-#: includes/admin/views/acf-post-type/advanced-settings.php:703
-=======
 #: includes/admin/views/acf-post-type/advanced-settings.php:708
->>>>>>> develop
 msgid "In the editor used as the placeholder of the title."
 msgstr "タイトルのプレースホルダーとして使用されます。"
 
@@ -2178,57 +2123,12 @@ msgstr ""
 msgid "Unlock Advanced Features and Build Even More with ACF PRO"
 msgstr ""
 
->>>>>>> develop
 #. translators: %s - singular label of post type/taxonomy, i.e. "Movie"/"Genre"
 #: includes/admin/views/global/form-top.php:19
 msgid "%s fields"
 msgstr "%s フィールド"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-taxonomies.php:260
-msgid "No terms"
-msgstr "タームはありません"
-
-#: includes/admin/post-types/admin-taxonomies.php:233
-msgid "No post types"
-msgstr "投稿タイプはありません"
-
-#: includes/admin/post-types/admin-post-types.php:256
-msgid "No posts"
-msgstr "投稿はありません"
-
-#: includes/admin/post-types/admin-post-types.php:230
-msgid "No taxonomies"
-msgstr "タクソノミーはありません"
-
-#: includes/admin/post-types/admin-post-types.php:175
-#: includes/admin/post-types/admin-taxonomies.php:175
-msgid "No field groups"
-msgstr "フィールドグループはありません"
-
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-field-groups.php:259
-msgid "No fields"
-msgstr "フィールドはありません"
-
-#: includes/admin/post-types/admin-field-groups.php:132
-#: includes/admin/post-types/admin-post-types.php:139
-#: includes/admin/post-types/admin-taxonomies.php:139
-=======
-#: includes/admin/post-types/admin-field-groups.php:280
-msgid "No fields"
-msgstr "フィールドはありません"
-
-#: includes/admin/post-types/admin-field-groups.php:153
-#: includes/admin/post-types/admin-post-types.php:172
-#: includes/admin/post-types/admin-taxonomies.php:172
->>>>>>> develop
-=======
-#: includes/admin/post-types/admin-taxonomies.php:285
-=======
 #: includes/admin/post-types/admin-taxonomies.php:267
->>>>>>> develop
 msgid "No terms"
 msgstr "タームはありません"
 
@@ -2253,16 +2153,9 @@ msgstr "フィールドグループはありません"
 msgid "No fields"
 msgstr "フィールドはありません"
 
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-field-groups.php:145
-#: includes/admin/post-types/admin-post-types.php:165
-#: includes/admin/post-types/admin-taxonomies.php:164
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-field-groups.php:128
 #: includes/admin/post-types/admin-post-types.php:147
 #: includes/admin/post-types/admin-taxonomies.php:146
->>>>>>> develop
 msgid "No description"
 msgstr "説明はありません"
 
@@ -2272,21 +2165,13 @@ msgstr "説明はありません"
 msgid "Any post status"
 msgstr "すべての投稿ステータス"
 
-<<<<<<< HEAD
-#: includes/post-types/class-acf-taxonomy.php:278
-=======
 #: includes/post-types/class-acf-taxonomy.php:288
->>>>>>> develop
 msgid ""
 "This taxonomy key is already in use by another taxonomy registered outside "
 "of ACF and cannot be used."
 msgstr ""
 
-<<<<<<< HEAD
-#: includes/post-types/class-acf-taxonomy.php:273
-=======
 #: includes/post-types/class-acf-taxonomy.php:284
->>>>>>> develop
 msgid ""
 "This taxonomy key is already in use by another taxonomy in ACF and cannot be "
 "used."
@@ -2294,11 +2179,7 @@ msgstr ""
 "このタクソノミーのキーはすでに ACF の他のタクソノミーで使用されているので使用"
 "できません。"
 
-<<<<<<< HEAD
-#: includes/post-types/class-acf-taxonomy.php:246
-=======
 #: includes/post-types/class-acf-taxonomy.php:256
->>>>>>> develop
 msgid ""
 "The taxonomy key must only contain lower case alphanumeric characters, "
 "underscores or dashes."
@@ -2306,19 +2187,9 @@ msgstr ""
 "タクソノミーのキーは小文字の英数字、アンダースコア、またはダッシュのみが含ま"
 "れます。"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/post-types/class-acf-taxonomy.php:241
-msgid "The taxonomy key must be under 20 characters."
-msgstr "タクソノミーのキーは 20字以内にする必要があります。"
-=======
-#: includes/post-types/class-acf-taxonomy.php:247
-=======
 #: includes/post-types/class-acf-taxonomy.php:251
->>>>>>> develop
 msgid "The taxonomy key must be under 32 characters."
 msgstr "タクソノミーのキーは32字以内にする必要があります。"
->>>>>>> develop
 
 #: includes/post-types/class-acf-taxonomy.php:99
 msgid "No Taxonomies found in Trash"
@@ -2393,18 +2264,8 @@ msgstr ""
 "使用できません。"
 
 #. translators: %s a link to WordPress.org's Reserved Terms page
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/post-types/class-acf-post-type.php:312
-#: includes/post-types/class-acf-taxonomy.php:252
-=======
-#: includes/post-types/class-acf-post-type.php:335
-#: includes/post-types/class-acf-taxonomy.php:258
->>>>>>> develop
-=======
 #: includes/post-types/class-acf-post-type.php:339
 #: includes/post-types/class-acf-taxonomy.php:262
->>>>>>> develop
 msgid ""
 "This field must not be a WordPress <a href=\"%s\" target=\"_blank\">reserved "
 "term</a>."
@@ -2617,31 +2478,7 @@ msgstr ""
 "グループ化して整理することができます。大規模なデータセットを整理整頓するのに"
 "便利です。"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/fields.php:473
-=======
-#: includes/fields.php:475
->>>>>>> develop
-=======
-#: includes/fields.php:474
->>>>>>> develop
-=======
-#: includes/fields.php:492
->>>>>>> develop
-=======
-#: includes/fields.php:493
->>>>>>> develop
-=======
-#: includes/fields.php:456
->>>>>>> develop
-=======
 #: includes/fields.php:449
->>>>>>> develop
 msgid ""
 "This provides a solution for repeating content such as slides, team members, "
 "and call-to-action tiles, by acting as a parent to a set of subfields which "
@@ -2651,31 +2488,7 @@ msgstr ""
 "するためのソリューションで、繰り返し表示できる一連のサブフィールドの親として"
 "機能します。"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/fields.php:463
-=======
-#: includes/fields.php:465
->>>>>>> develop
-=======
-#: includes/fields.php:464
->>>>>>> develop
-=======
-#: includes/fields.php:482
->>>>>>> develop
-=======
-#: includes/fields.php:483
->>>>>>> develop
-=======
-#: includes/fields.php:446
->>>>>>> develop
-=======
 #: includes/fields.php:439
->>>>>>> develop
 msgid ""
 "This provides an interactive interface for managing a collection of "
 "attachments. Most settings are similar to the Image field type. Additional "
@@ -2687,31 +2500,7 @@ msgstr ""
 "設定では、ギャラリーで新しい添付ファイルを追加する場所と、許可される添付ファ"
 "イルの最小/最大数を指定できます。"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/fields.php:453
-=======
-#: includes/fields.php:455
->>>>>>> develop
-=======
-#: includes/fields.php:454
->>>>>>> develop
-=======
-#: includes/fields.php:472
->>>>>>> develop
-=======
-#: includes/fields.php:473
->>>>>>> develop
-=======
-#: includes/fields.php:436
->>>>>>> develop
-=======
 #: includes/fields.php:429
->>>>>>> develop
 msgid ""
 "This provides a simple, structured, layout-based editor. The Flexible "
 "Content field allows you to define, create and manage content with total "
@@ -2756,19 +2545,7 @@ msgstr "無効な投稿 ID です。"
 msgid "Invalid post type selected for review."
 msgstr "レビューには無効な投稿タイプが選択されています。"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/views/global/navigation.php:104
-=======
-#: includes/admin/views/global/navigation.php:182
->>>>>>> develop
-=======
-#: includes/admin/views/global/navigation.php:186
->>>>>>> develop
-=======
 #: includes/admin/views/global/navigation.php:189
->>>>>>> develop
 msgid "More"
 msgstr "詳細"
 
@@ -2846,20 +2623,12 @@ msgstr "ジャンル"
 msgid "Genres"
 msgstr "ジャンル"
 
-<<<<<<< HEAD
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1129
-=======
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:1211
->>>>>>> develop
 msgid ""
 "Optional custom controller to use instead of `WP_REST_Terms_Controller `."
 msgstr ""
 
-<<<<<<< HEAD
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1073
-=======
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:1155
->>>>>>> develop
 msgid "Expose this post type in the REST API."
 msgstr "この投稿タイプをREST APIで公開する。"
 
@@ -2930,7 +2699,7 @@ msgstr "タグクラウド"
 
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:824
 msgid ""
-"A PHP function name to be called tor sanitizing taxonomy data saved from a "
+"A PHP function name to be called for sanitizing taxonomy data saved from a "
 "meta box."
 msgstr ""
 "メタボックスから保存されたタクソノミーデータをサニタイズするために呼び出され"
@@ -3441,12 +3210,7 @@ msgstr "一般公開"
 msgid "movie"
 msgstr "動画"
 
-<<<<<<< HEAD
-#: includes/admin/views/acf-post-type/basic-settings.php:41
-#: includes/admin/views/acf-taxonomy/basic-settings.php:42
-=======
 #: includes/admin/views/acf-post-type/basic-settings.php:57
->>>>>>> develop
 msgid "Lower case letters, underscores and dashes only, Max 20 characters."
 msgstr ""
 
@@ -3475,39 +3239,7 @@ msgid ""
 "Optional custom controller to use instead of `WP_REST_Posts_Controller`."
 msgstr ""
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/views/acf-post-type/advanced-settings.php:1249
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1128
-msgid "Controller Class"
-msgstr ""
-
-#: includes/admin/views/acf-post-type/advanced-settings.php:1231
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1109
-msgid "The namespace part of the REST API URL."
-msgstr ""
-
-#: includes/admin/views/acf-post-type/advanced-settings.php:1230
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1108
-msgid "Namespace Route"
-msgstr ""
-
-#: includes/admin/views/acf-post-type/advanced-settings.php:1212
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1090
-msgid "The base URL for the post type REST API URLs."
-msgstr ""
-
-#: includes/admin/views/acf-post-type/advanced-settings.php:1211
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1089
-=======
-#: includes/admin/views/acf-post-type/advanced-settings.php:1269
-=======
-#: includes/admin/views/acf-post-type/advanced-settings.php:1274
->>>>>>> develop
-=======
 #: includes/admin/views/acf-post-type/advanced-settings.php:1297
->>>>>>> develop
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:1210
 msgid "Controller Class"
 msgstr "コントローラークラス"
@@ -3529,7 +3261,6 @@ msgstr ""
 
 #: includes/admin/views/acf-post-type/advanced-settings.php:1259
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:1171
->>>>>>> develop
 msgid "Base URL"
 msgstr "ベース URL"
 
@@ -3538,21 +3269,8 @@ msgid ""
 "Exposes this post type in the REST API. Required to use the block editor."
 msgstr ""
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/views/acf-post-type/advanced-settings.php:1196
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:1072
-=======
-#: includes/admin/views/acf-post-type/advanced-settings.php:1216
-=======
-#: includes/admin/views/acf-post-type/advanced-settings.php:1221
->>>>>>> develop
-=======
 #: includes/admin/views/acf-post-type/advanced-settings.php:1244
->>>>>>> develop
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:1154
->>>>>>> develop
 msgid "Show In REST API"
 msgstr "REST API で表示"
 
@@ -3735,23 +3453,7 @@ msgstr ""
 msgid "Rename Capabilities"
 msgstr "リネーム機能"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/views/acf-post-type/advanced-settings.php:866
-msgid "Sets whether posts should be excluded from search results."
-msgstr ""
-
-#: includes/admin/views/acf-post-type/advanced-settings.php:865
-=======
-#: includes/admin/views/acf-post-type/advanced-settings.php:885
->>>>>>> develop
-=======
-#: includes/admin/views/acf-post-type/advanced-settings.php:890
->>>>>>> develop
-=======
 #: includes/admin/views/acf-post-type/advanced-settings.php:913
->>>>>>> develop
 msgid "Exclude From Search"
 msgstr "検索から除外する"
 
@@ -4467,22 +4169,7 @@ msgid "Exported 1 item."
 msgid_plural "Exported %s items."
 msgstr[0] ""
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-taxonomy.php:124
-#: assets/build/js/acf-internal-post-type.js:144
-#: assets/build/js/acf-internal-post-type.js:204
-msgid "Category"
-msgstr ""
-
-#: includes/admin/post-types/admin-taxonomy.php:122
-#: assets/build/js/acf-internal-post-type.js:141
-#: assets/build/js/acf-internal-post-type.js:201
-=======
-#: includes/admin/post-types/admin-taxonomy.php:129
-=======
 #: includes/admin/post-types/admin-taxonomy.php:127
->>>>>>> develop
 #: assets/build/js/acf-internal-post-type.js:182
 #: assets/build/js/acf-internal-post-type.js:256
 msgid "Category"
@@ -4491,7 +4178,6 @@ msgstr "カテゴリー"
 #: includes/admin/post-types/admin-taxonomy.php:125
 #: assets/build/js/acf-internal-post-type.js:179
 #: assets/build/js/acf-internal-post-type.js:253
->>>>>>> develop
 msgid "Tag"
 msgstr "タグ"
 
@@ -4529,171 +4215,68 @@ msgstr "タクソノミーを削除しました。"
 msgid "Taxonomy updated."
 msgstr "タクソノミーを更新しました。"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-taxonomies.php:344
-#: includes/admin/post-types/admin-taxonomy.php:152
-=======
-#: includes/admin/post-types/admin-taxonomies.php:377
-#: includes/admin/post-types/admin-taxonomy.php:157
->>>>>>> develop
-=======
-#: includes/admin/post-types/admin-taxonomies.php:369
-=======
 #: includes/admin/post-types/admin-taxonomies.php:351
->>>>>>> develop
 #: includes/admin/post-types/admin-taxonomy.php:153
->>>>>>> develop
 msgid ""
 "This taxonomy could not be registered because its key is in use by another "
 "taxonomy registered by another plugin or theme."
 msgstr ""
 
 #. translators: %s number of taxonomies synchronized
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-taxonomies.php:326
-=======
-#: includes/admin/post-types/admin-taxonomies.php:351
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-taxonomies.php:333
->>>>>>> develop
 msgid "Taxonomy synchronized."
 msgid_plural "%s taxonomies synchronized."
 msgstr[0] ""
 
 #. translators: %s number of taxonomies duplicated
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-taxonomies.php:319
-=======
-#: includes/admin/post-types/admin-taxonomies.php:344
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-taxonomies.php:326
->>>>>>> develop
 msgid "Taxonomy duplicated."
 msgid_plural "%s taxonomies duplicated."
 msgstr[0] "%s タクソノミーを複製しました。"
 
 #. translators: %s number of taxonomies deactivated
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-taxonomies.php:312
-=======
-#: includes/admin/post-types/admin-taxonomies.php:337
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-taxonomies.php:319
->>>>>>> develop
 msgid "Taxonomy deactivated."
 msgid_plural "%s taxonomies deactivated."
 msgstr[0] ""
 
 #. translators: %s number of taxonomies activated
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-taxonomies.php:305
-=======
-#: includes/admin/post-types/admin-taxonomies.php:330
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-taxonomies.php:312
->>>>>>> develop
 msgid "Taxonomy activated."
 msgid_plural "%s taxonomies activated."
 msgstr[0] "%s タクソノミーを有効化しました。"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-taxonomies.php:106
-=======
-#: includes/admin/post-types/admin-taxonomies.php:131
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-taxonomies.php:113
->>>>>>> develop
 msgid "Terms"
 msgstr "規約"
 
 #. translators: %s number of post types synchronized
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-post-types.php:319
-=======
-#: includes/admin/post-types/admin-post-types.php:345
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-post-types.php:327
->>>>>>> develop
 msgid "Post type synchronized."
 msgid_plural "%s post types synchronized."
 msgstr[0] "投稿タイプ %s が同期されました。"
 
 #. translators: %s number of post types duplicated
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-post-types.php:312
-=======
-#: includes/admin/post-types/admin-post-types.php:338
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-post-types.php:320
->>>>>>> develop
 msgid "Post type duplicated."
 msgid_plural "%s post types duplicated."
 msgstr[0] "投稿タイプ %s が複製されました。"
 
 #. translators: %s number of post types deactivated
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-post-types.php:305
-=======
-#: includes/admin/post-types/admin-post-types.php:331
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-post-types.php:313
->>>>>>> develop
 msgid "Post type deactivated."
 msgid_plural "%s post types deactivated."
 msgstr[0] "投稿タイプ %s が無効化されました。"
 
 #. translators: %s number of post types activated
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-post-types.php:298
-=======
-#: includes/admin/post-types/admin-post-types.php:324
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-post-types.php:306
->>>>>>> develop
 msgid "Post type activated."
 msgid_plural "%s post types activated."
 msgstr[0] "投稿タイプ %s が有効化されました。"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-post-types.php:79
-#: includes/admin/post-types/admin-taxonomies.php:104
-#: includes/admin/tools/class-acf-admin-tool-import.php:82
-=======
-#: includes/admin/post-types/admin-post-types.php:112
-#: includes/admin/post-types/admin-taxonomies.php:137
-=======
-#: includes/admin/post-types/admin-post-types.php:105
-#: includes/admin/post-types/admin-taxonomies.php:129
->>>>>>> develop
-#: includes/admin/tools/class-acf-admin-tool-import.php:81
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-post-types.php:87
 #: includes/admin/post-types/admin-taxonomies.php:111
 #: includes/admin/tools/class-acf-admin-tool-import.php:79
->>>>>>> develop
 #: includes/admin/views/acf-taxonomy/basic-settings.php:82
 #: includes/post-types/class-acf-post-type.php:91
 msgid "Post Types"
@@ -4709,40 +4292,16 @@ msgstr "高度な設定"
 msgid "Basic Settings"
 msgstr "基本設定"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-post-type.php:152
-#: includes/admin/post-types/admin-post-types.php:337
-=======
-#: includes/admin/post-types/admin-post-type.php:155
-#: includes/admin/post-types/admin-post-types.php:370
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-post-type.php:151
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-post-types.php:363
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-post-types.php:345
->>>>>>> develop
 msgid ""
 "This post type could not be registered because its key is in use by another "
 "post type registered by another plugin or theme."
 msgstr ""
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-post-type.php:125
-#: assets/build/js/acf-internal-post-type.js:138
-#: assets/build/js/acf-internal-post-type.js:198
-=======
-#: includes/admin/post-types/admin-post-type.php:128
-=======
 #: includes/admin/post-types/admin-post-type.php:126
->>>>>>> develop
 #: assets/build/js/acf-internal-post-type.js:176
 #: assets/build/js/acf-internal-post-type.js:250
->>>>>>> develop
 msgid "Pages"
 msgstr "固定ページ"
 
@@ -4803,18 +4362,9 @@ msgstr "入力して検索…"
 msgid "PRO Only"
 msgstr "PRO 限定"
 
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-field-group.php:97
-<<<<<<< HEAD
-#: assets/build/js/acf-internal-post-type.js:270
-#: assets/build/js/acf-internal-post-type.js:365
-=======
-=======
 #: includes/admin/post-types/admin-field-group.php:93
->>>>>>> develop
 #: assets/build/js/acf-internal-post-type.js:308
 #: assets/build/js/acf-internal-post-type.js:417
->>>>>>> develop
 msgid "Field groups linked successfully."
 msgstr ""
 
@@ -4859,70 +4409,19 @@ msgid "Field group linked successfully."
 msgid_plural "Field groups linked successfully."
 msgstr[0] ""
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/admin-internal-post-type-list.php:255
-#: includes/admin/post-types/admin-post-types.php:338
-#: includes/admin/post-types/admin-taxonomies.php:345
-=======
-#: includes/admin/admin-internal-post-type-list.php:261
-=======
-#: includes/admin/admin-internal-post-type-list.php:264
->>>>>>> develop
-#: includes/admin/post-types/admin-post-types.php:371
-#: includes/admin/post-types/admin-taxonomies.php:378
->>>>>>> develop
-=======
-#: includes/admin/admin-internal-post-type-list.php:255
-#: includes/admin/post-types/admin-post-types.php:364
-#: includes/admin/post-types/admin-taxonomies.php:370
->>>>>>> develop
-=======
 #: includes/admin/admin-internal-post-type-list.php:277
 #: includes/admin/post-types/admin-post-types.php:346
 #: includes/admin/post-types/admin-taxonomies.php:352
->>>>>>> develop
 msgctxt "post status"
 msgid "Registration Failed"
 msgstr "登録に失敗しました"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/admin-internal-post-type-list.php:254
-=======
-#: includes/admin/admin-internal-post-type-list.php:260
->>>>>>> develop
-=======
-#: includes/admin/admin-internal-post-type-list.php:263
->>>>>>> develop
-=======
-#: includes/admin/admin-internal-post-type-list.php:254
->>>>>>> develop
-=======
 #: includes/admin/admin-internal-post-type-list.php:276
->>>>>>> develop
 msgid ""
 "This item could not be registered because its key is in use by another item "
 "registered by another plugin or theme."
 msgstr ""
 
-<<<<<<< HEAD
-#: includes/acf-internal-post-type-functions.php:482
-#: includes/acf-internal-post-type-functions.php:510
-msgid "REST API"
-msgstr "REST API"
-
-#: includes/acf-internal-post-type-functions.php:481
-<<<<<<< HEAD
-=======
-#: includes/acf-internal-post-type-functions.php:510
-#: includes/acf-internal-post-type-functions.php:537
->>>>>>> develop
-=======
 #: includes/acf-internal-post-type-functions.php:509
 #: includes/acf-internal-post-type-functions.php:538
 msgid "REST API"
@@ -4931,7 +4430,6 @@ msgstr "REST API"
 #: includes/acf-internal-post-type-functions.php:508
 #: includes/acf-internal-post-type-functions.php:537
 #: includes/acf-internal-post-type-functions.php:564
->>>>>>> develop
 msgid "Permissions"
 msgstr "パーミッション"
 
@@ -4952,23 +4450,7 @@ msgstr "可視性"
 msgid "Labels"
 msgstr "ラベル"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-field-group.php:243
-=======
-#: includes/admin/post-types/admin-field-group.php:269
->>>>>>> develop
-=======
-#: includes/admin/post-types/admin-field-group.php:261
->>>>>>> develop
-=======
-#: includes/admin/post-types/admin-field-group.php:249
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-field-group.php:279
->>>>>>> develop
 msgid "Field Settings Tabs"
 msgstr "フィールド設定タブ"
 
@@ -4979,31 +4461,12 @@ msgid ""
 "org&utm_medium=referral&utm_campaign=plugin_directory&utm_content=advanced_custom_fields"
 msgstr ""
 
-#: includes/api/api-template.php:1015
+#: includes/api/api-template.php:1027
 msgid "[ACF shortcode value disabled for preview]"
 msgstr ""
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/admin-internal-post-type.php:287
-#: includes/admin/post-types/admin-field-group.php:545
-=======
-#: includes/admin/admin-internal-post-type.php:298
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-field-group.php:571
->>>>>>> develop
-=======
-#: includes/admin/post-types/admin-field-group.php:563
->>>>>>> develop
-=======
-#: includes/admin/admin-internal-post-type.php:287
-#: includes/admin/post-types/admin-field-group.php:538
->>>>>>> develop
-=======
 #: includes/admin/admin-internal-post-type.php:290
 #: includes/admin/post-types/admin-field-group.php:572
->>>>>>> develop
 msgid "Close Modal"
 msgstr "モーダルを閉じる"
 
@@ -5059,27 +4522,8 @@ msgstr ""
 msgid "Updates"
 msgstr "更新"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/views/global/navigation.php:83
-msgid "Advanced Custom Fields logo"
-msgstr ""
-
-#: includes/admin/views/global/form-top.php:57
-msgid "Save Changes"
-msgstr ""
-
-#: includes/admin/views/global/form-top.php:44
-=======
-#: includes/admin/views/global/navigation.php:172
-=======
-#: includes/admin/views/global/navigation.php:176
->>>>>>> develop
-=======
 #: includes/admin/views/global/navigation.php:177
 #: includes/admin/views/global/navigation.php:181
->>>>>>> develop
 msgid "Advanced Custom Fields logo"
 msgstr "Advanced Custom Fields ロゴ"
 
@@ -5087,12 +4531,7 @@ msgstr "Advanced Custom Fields ロゴ"
 msgid "Save Changes"
 msgstr "変更内容を保存"
 
-<<<<<<< HEAD
-#: includes/admin/views/global/form-top.php:76
->>>>>>> develop
-=======
 #: includes/admin/views/global/form-top.php:79
->>>>>>> develop
 msgid "Field Group Title"
 msgstr "フィールドグループタイトル"
 
@@ -5126,65 +4565,13 @@ msgstr ""
 msgid "Add Your First Field Group"
 msgstr ""
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/views/acf-field-group/pro-features.php:16
-msgid "Upgrade Now"
-msgstr ""
-
-#: includes/admin/views/acf-field-group/pro-features.php:11
-=======
-#: includes/admin/views/acf-field-group/pro-features.php:39
-#: includes/admin/views/global/navigation.php:82
->>>>>>> develop
-=======
 #: includes/admin/admin-options-pages-preview.php:28
 #: includes/admin/views/acf-field-group/pro-features.php:58
 #: includes/admin/views/global/navigation.php:86
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/views/global/navigation.php:250
->>>>>>> develop
-=======
-#: includes/admin/views/global/navigation.php:252
->>>>>>> develop
-=======
 #: includes/admin/views/global/navigation.php:255
->>>>>>> develop
 msgid "Options Pages"
 msgstr "設定ページ"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/views/acf-field-group/pro-features.php:10
-=======
-#: includes/admin/views/acf-field-group/pro-features.php:50
->>>>>>> develop
-msgid "ACF Blocks"
-msgstr "ACF Blocks"
-
-<<<<<<< HEAD
-#: includes/admin/views/acf-field-group/pro-features.php:8
-=======
-#: includes/admin/views/acf-field-group/pro-features.php:58
->>>>>>> develop
-msgid "Gallery Field"
-msgstr "ギャラリーフィールド"
-
-<<<<<<< HEAD
-#: includes/admin/views/acf-field-group/pro-features.php:7
-msgid "Flexible Content Field"
-msgstr ""
-
-#: includes/admin/views/acf-field-group/pro-features.php:6
-=======
-#: includes/admin/views/acf-field-group/pro-features.php:38
-msgid "Flexible Content Field"
-msgstr ""
-
-#: includes/admin/views/acf-field-group/pro-features.php:42
->>>>>>> develop
-=======
 #: includes/admin/views/acf-field-group/pro-features.php:54
 msgid "ACF Blocks"
 msgstr "ACF Blocks"
@@ -5198,24 +4585,10 @@ msgid "Flexible Content Field"
 msgstr ""
 
 #: includes/admin/views/acf-field-group/pro-features.php:46
->>>>>>> develop
 msgid "Repeater Field"
 msgstr "リピーターフィールド"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/views/acf-field-group/pro-features.php:4
-#: includes/admin/views/global/navigation.php:125
-=======
-#: includes/admin/views/global/navigation.php:207
->>>>>>> develop
-=======
-#: includes/admin/views/global/navigation.php:212
->>>>>>> develop
-=======
 #: includes/admin/views/global/navigation.php:215
->>>>>>> develop
 msgid "Unlock Extra Features with ACF PRO"
 msgstr ""
 
@@ -5237,47 +4610,32 @@ msgid "Location Rules"
 msgstr "ロケーションルール"
 
 #. translators: %s url to field types list
-<<<<<<< HEAD
-#: includes/admin/views/acf-field-group/fields.php:61
-=======
 #: includes/admin/views/acf-field-group/fields.php:73
->>>>>>> develop
 msgid ""
 "Choose from over 30 field types. <a href=\"%s\" target=\"_blank\">Learn "
 "more</a>."
 msgstr ""
 
-#: includes/admin/views/acf-field-group/fields.php:54
+#: includes/admin/views/acf-field-group/fields.php:65
 msgid ""
 "Get started creating new custom fields for your posts, pages, custom post "
 "types and other WordPress content."
 msgstr ""
 
-#: includes/admin/views/acf-field-group/fields.php:53
+#: includes/admin/views/acf-field-group/fields.php:64
 msgid "Add Your First Field"
 msgstr "最初のフィールドを追加"
 
 #. translators: A symbol (or text, if not available in your locale) meaning
 #. "Order Number", in terms of positional placement.
-#: includes/admin/views/acf-field-group/fields.php:32
+#: includes/admin/views/acf-field-group/fields.php:43
 msgid "#"
 msgstr "No."
 
-<<<<<<< HEAD
-#: includes/admin/views/acf-field-group/fields.php:22
-#: includes/admin/views/acf-field-group/fields.php:56
-#: includes/admin/views/acf-field-group/fields.php:92
-#: includes/admin/views/global/form-top.php:53
-=======
 #: includes/admin/views/acf-field-group/fields.php:33
 #: includes/admin/views/acf-field-group/fields.php:67
 #: includes/admin/views/acf-field-group/fields.php:101
-<<<<<<< HEAD
-#: includes/admin/views/global/form-top.php:85
->>>>>>> develop
-=======
 #: includes/admin/views/global/form-top.php:88
->>>>>>> develop
 msgid "Add Field"
 msgstr "フィールドを追加"
 
@@ -5303,75 +4661,19 @@ msgid "Export As JSON"
 msgstr "JSON をエクスポート"
 
 #. translators: %s number of field groups deactivated
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-field-groups.php:345
-=======
-#: includes/admin/post-types/admin-field-groups.php:366
->>>>>>> develop
-=======
-#: includes/admin/post-types/admin-field-groups.php:358
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-field-groups.php:360
->>>>>>> develop
 msgid "Field group deactivated."
 msgid_plural "%s field groups deactivated."
 msgstr[0] ""
 
 #. translators: %s number of field groups activated
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-field-groups.php:338
-=======
-#: includes/admin/post-types/admin-field-groups.php:359
->>>>>>> develop
-=======
-#: includes/admin/post-types/admin-field-groups.php:351
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-field-groups.php:353
->>>>>>> develop
 msgid "Field group activated."
 msgid_plural "%s field groups activated."
 msgstr[0] ""
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/admin-internal-post-type-list.php:430
-#: includes/admin/admin-internal-post-type-list.php:461
-msgid "Deactivate"
-msgstr ""
-
-#: includes/admin/admin-internal-post-type-list.php:430
-msgid "Deactivate this item"
-msgstr ""
-
-#: includes/admin/admin-internal-post-type-list.php:426
-#: includes/admin/admin-internal-post-type-list.php:460
-msgid "Activate"
-msgstr ""
-
-#: includes/admin/admin-internal-post-type-list.php:426
-=======
-#: includes/admin/admin-internal-post-type-list.php:452
-#: includes/admin/admin-internal-post-type-list.php:478
-=======
-#: includes/admin/admin-internal-post-type-list.php:455
-#: includes/admin/admin-internal-post-type-list.php:481
->>>>>>> develop
-=======
-#: includes/admin/admin-internal-post-type-list.php:446
-#: includes/admin/admin-internal-post-type-list.php:472
->>>>>>> develop
-=======
 #: includes/admin/admin-internal-post-type-list.php:470
 #: includes/admin/admin-internal-post-type-list.php:496
->>>>>>> develop
 msgid "Deactivate"
 msgstr "無効化"
 
@@ -5384,20 +4686,7 @@ msgstr "この項目を無効化する"
 msgid "Activate"
 msgstr "有効化"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/admin-internal-post-type-list.php:448
->>>>>>> develop
-=======
-#: includes/admin/admin-internal-post-type-list.php:451
->>>>>>> develop
-=======
-#: includes/admin/admin-internal-post-type-list.php:442
->>>>>>> develop
-=======
 #: includes/admin/admin-internal-post-type-list.php:466
->>>>>>> develop
 msgid "Activate this item"
 msgstr "この項目を有効化する"
 
@@ -5407,42 +4696,10 @@ msgstr "この項目を有効化する"
 msgid "Move field group to trash?"
 msgstr ""
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: acf.php:485 includes/admin/admin-internal-post-type-list.php:242
-#: includes/admin/post-types/admin-field-group.php:271
-#: includes/admin/post-types/admin-post-type.php:292
-#: includes/admin/post-types/admin-taxonomy.php:292
-=======
-#: acf.php:493 includes/admin/admin-internal-post-type-list.php:248
-=======
-#: acf.php:497 includes/admin/admin-internal-post-type-list.php:248
->>>>>>> develop
-#: includes/admin/post-types/admin-field-group.php:297
-=======
-#: acf.php:496 includes/admin/admin-internal-post-type-list.php:248
-=======
-#: acf.php:493 includes/admin/admin-internal-post-type-list.php:251
->>>>>>> develop
-#: includes/admin/post-types/admin-field-group.php:289
->>>>>>> develop
-#: includes/admin/post-types/admin-post-type.php:295
-#: includes/admin/post-types/admin-taxonomy.php:297
->>>>>>> develop
-=======
-#: acf.php:483 includes/admin/admin-internal-post-type-list.php:242
-#: includes/admin/post-types/admin-field-group.php:274
-=======
 #: acf.php:500 includes/admin/admin-internal-post-type-list.php:264
 #: includes/admin/post-types/admin-field-group.php:304
->>>>>>> develop
 #: includes/admin/post-types/admin-post-type.php:282
 #: includes/admin/post-types/admin-taxonomy.php:284
->>>>>>> develop
 msgctxt "post status"
 msgid "Inactive"
 msgstr "無効"
@@ -5539,29 +4796,9 @@ msgstr "16進値文字列"
 msgid "Upgrade to PRO"
 msgstr "プロ版にアップグレード"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-field-group.php:271
-#: includes/admin/post-types/admin-post-type.php:292
-#: includes/admin/post-types/admin-taxonomy.php:292
-=======
-#: includes/admin/post-types/admin-field-group.php:297
-=======
-#: includes/admin/post-types/admin-field-group.php:289
->>>>>>> develop
-#: includes/admin/post-types/admin-post-type.php:295
-#: includes/admin/post-types/admin-taxonomy.php:297
->>>>>>> develop
-=======
-#: includes/admin/post-types/admin-field-group.php:274
-=======
 #: includes/admin/post-types/admin-field-group.php:304
->>>>>>> develop
 #: includes/admin/post-types/admin-post-type.php:282
 #: includes/admin/post-types/admin-taxonomy.php:284
->>>>>>> develop
 msgctxt "post status"
 msgid "Active"
 msgstr "有効"
@@ -5606,64 +4843,22 @@ msgstr "ウィジェット"
 msgid "Attachments"
 msgstr "添付ファイル"
 
-<<<<<<< HEAD
-#: includes/acf-wp-functions.php:54
-#: includes/admin/post-types/admin-post-types.php:104
-#: includes/admin/post-types/admin-taxonomies.php:79
-=======
 #: includes/acf-wp-functions.php:57
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-post-types.php:137
-#: includes/admin/post-types/admin-taxonomies.php:112
-<<<<<<< HEAD
->>>>>>> develop
-#: includes/admin/tools/class-acf-admin-tool-import.php:93
-=======
-=======
-#: includes/admin/post-types/admin-post-types.php:130
-#: includes/admin/post-types/admin-taxonomies.php:104
->>>>>>> develop
-#: includes/admin/tools/class-acf-admin-tool-import.php:92
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-post-types.php:112
 #: includes/admin/post-types/admin-taxonomies.php:86
 #: includes/admin/tools/class-acf-admin-tool-import.php:90
->>>>>>> develop
 #: includes/admin/views/acf-post-type/basic-settings.php:86
 #: includes/post-types/class-acf-taxonomy.php:90
 #: includes/post-types/class-acf-taxonomy.php:91
 msgid "Taxonomies"
 msgstr "タクソノミー"
 
-<<<<<<< HEAD
-#: includes/acf-wp-functions.php:41
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-post-type.php:123
-#: includes/admin/post-types/admin-post-types.php:106
-#: includes/admin/views/acf-post-type/advanced-settings.php:102
-#: assets/build/js/acf-internal-post-type.js:135
-#: assets/build/js/acf-internal-post-type.js:195
-=======
-=======
 #: includes/acf-wp-functions.php:44
-<<<<<<< HEAD
->>>>>>> develop
-#: includes/admin/post-types/admin-post-type.php:126
-#: includes/admin/post-types/admin-post-types.php:139
-=======
 #: includes/admin/post-types/admin-post-type.php:124
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-post-types.php:132
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-post-types.php:114
->>>>>>> develop
 #: includes/admin/views/acf-post-type/advanced-settings.php:106
 #: assets/build/js/acf-internal-post-type.js:173
 #: assets/build/js/acf-internal-post-type.js:247
->>>>>>> develop
 msgid "Posts"
 msgstr "投稿"
 
@@ -5679,30 +4874,7 @@ msgstr "このフィールドグループは diff 比較に使用できません
 msgid "Invalid field group parameter(s)."
 msgstr "無効なフィールドグループパラメータ。"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/admin-internal-post-type-list.php:396
-msgid "Awaiting save"
-msgstr "保存待ち"
-
-#: includes/admin/admin-internal-post-type-list.php:393
-msgid "Saved"
-msgstr "保存しました"
-
-#: includes/admin/admin-internal-post-type-list.php:389
-=======
-#: includes/admin/admin-internal-post-type-list.php:413
-=======
-#: includes/admin/admin-internal-post-type-list.php:416
->>>>>>> develop
-=======
-#: includes/admin/admin-internal-post-type-list.php:407
->>>>>>> develop
-=======
 #: includes/admin/admin-internal-post-type-list.php:429
->>>>>>> develop
 msgid "Awaiting save"
 msgstr "保存待ち"
 
@@ -5710,57 +4882,12 @@ msgstr "保存待ち"
 msgid "Saved"
 msgstr "保存しました"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/admin-internal-post-type-list.php:406
-<<<<<<< HEAD
->>>>>>> develop
-#: includes/admin/tools/class-acf-admin-tool-import.php:49
-=======
-=======
-#: includes/admin/admin-internal-post-type-list.php:409
->>>>>>> develop
-=======
-#: includes/admin/admin-internal-post-type-list.php:400
->>>>>>> develop
-#: includes/admin/tools/class-acf-admin-tool-import.php:48
->>>>>>> develop
-msgid "Import"
-msgstr "インポート"
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/admin-internal-post-type-list.php:385
-msgid "Review changes"
-msgstr "変更をレビュー"
-
-#: includes/admin/admin-internal-post-type-list.php:361
-msgid "Located in: %s"
-msgstr "位置: %s"
-
-#: includes/admin/admin-internal-post-type-list.php:358
-msgid "Located in plugin: %s"
-msgstr "プラグイン中の位置: %s"
-
-#: includes/admin/admin-internal-post-type-list.php:355
-=======
-#: includes/admin/admin-internal-post-type-list.php:402
-=======
-#: includes/admin/admin-internal-post-type-list.php:405
->>>>>>> develop
-=======
-#: includes/admin/admin-internal-post-type-list.php:396
->>>>>>> develop
-=======
 #: includes/admin/admin-internal-post-type-list.php:422
 #: includes/admin/tools/class-acf-admin-tool-import.php:46
 msgid "Import"
 msgstr "インポート"
 
 #: includes/admin/admin-internal-post-type-list.php:418
->>>>>>> develop
 msgid "Review changes"
 msgstr "変更をレビュー"
 
@@ -5772,49 +4899,7 @@ msgstr "位置: %s"
 msgid "Located in plugin: %s"
 msgstr "プラグイン中の位置: %s"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/admin-internal-post-type-list.php:372
->>>>>>> develop
-=======
-#: includes/admin/admin-internal-post-type-list.php:375
->>>>>>> develop
-msgid "Located in theme: %s"
-msgstr "テーマ内の位置: %s"
-
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-field-groups.php:239
-=======
-#: includes/admin/post-types/admin-field-groups.php:260
->>>>>>> develop
-msgid "Various"
-msgstr "各種"
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/admin-internal-post-type-list.php:210
-#: includes/admin/admin-internal-post-type-list.php:468
-msgid "Sync changes"
-msgstr "変更を同期"
-
-#: includes/admin/admin-internal-post-type-list.php:209
-msgid "Loading diff"
-msgstr "差分を読み込み中"
-
-#: includes/admin/admin-internal-post-type-list.php:208
-=======
-#: includes/admin/admin-internal-post-type-list.php:216
-#: includes/admin/admin-internal-post-type-list.php:485
-=======
-#: includes/admin/admin-internal-post-type-list.php:219
-#: includes/admin/admin-internal-post-type-list.php:488
->>>>>>> develop
-=======
-#: includes/admin/admin-internal-post-type-list.php:366
-=======
 #: includes/admin/admin-internal-post-type-list.php:388
->>>>>>> develop
 msgid "Located in theme: %s"
 msgstr "テーマ内の位置: %s"
 
@@ -5822,14 +4907,8 @@ msgstr "テーマ内の位置: %s"
 msgid "Various"
 msgstr "各種"
 
-<<<<<<< HEAD
-#: includes/admin/admin-internal-post-type-list.php:210
-#: includes/admin/admin-internal-post-type-list.php:479
->>>>>>> develop
-=======
 #: includes/admin/admin-internal-post-type-list.php:230
 #: includes/admin/admin-internal-post-type-list.php:503
->>>>>>> develop
 msgid "Sync changes"
 msgstr "変更を同期"
 
@@ -5837,20 +4916,7 @@ msgstr "変更を同期"
 msgid "Loading diff"
 msgstr "差分を読み込み中"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/admin-internal-post-type-list.php:214
->>>>>>> develop
-=======
-#: includes/admin/admin-internal-post-type-list.php:217
->>>>>>> develop
-=======
-#: includes/admin/admin-internal-post-type-list.php:208
->>>>>>> develop
-=======
 #: includes/admin/admin-internal-post-type-list.php:228
->>>>>>> develop
 msgid "Review local JSON changes"
 msgstr "ローカルの JSON 変更をレビュー"
 
@@ -6113,57 +5179,18 @@ msgstr "このフィールドグループの表示条件"
 msgid "Conditional Logic"
 msgstr "条件判定"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/admin.php:234
-=======
->>>>>>> develop
-#: includes/admin/views/acf-field-group/conditional-logic.php:156
-#: includes/admin/views/acf-field-group/location-rule.php:92
-msgid "and"
-msgstr "と"
-
-#: includes/admin/post-types/admin-field-groups.php:101
-#: includes/admin/post-types/admin-post-types.php:110
-#: includes/admin/post-types/admin-taxonomies.php:110
-=======
-#: includes/admin/views/acf-field-group/conditional-logic.php:161
-=======
 #: includes/admin/views/acf-field-group/conditional-logic.php:169
->>>>>>> develop
 #: includes/admin/views/acf-field-group/location-rule.php:84
 msgid "and"
 msgstr "と"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-field-groups.php:122
-#: includes/admin/post-types/admin-post-types.php:143
-#: includes/admin/post-types/admin-taxonomies.php:143
->>>>>>> develop
-msgid "Local JSON"
-msgstr "ローカル JSON"
-
-<<<<<<< HEAD
-#: includes/admin/views/acf-field-group/pro-features.php:9
-=======
-#: includes/admin/views/acf-field-group/pro-features.php:46
->>>>>>> develop
-=======
-#: includes/admin/post-types/admin-field-groups.php:114
-#: includes/admin/post-types/admin-post-types.php:136
-#: includes/admin/post-types/admin-taxonomies.php:135
-=======
 #: includes/admin/post-types/admin-field-groups.php:97
 #: includes/admin/post-types/admin-post-types.php:118
 #: includes/admin/post-types/admin-taxonomies.php:117
->>>>>>> develop
 msgid "Local JSON"
 msgstr "ローカル JSON"
 
 #: includes/admin/views/acf-field-group/pro-features.php:50
->>>>>>> develop
 msgid "Clone Field"
 msgstr "フィールドを複製"
 
@@ -6196,38 +5223,7 @@ msgstr "データベースのアップグレードが必要"
 msgid "Options Page"
 msgstr "オプションページ"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/views/upgrade/notice.php:15 includes/fields.php:460
-msgid "Gallery"
-msgstr "ギャラリー"
-
-#: includes/admin/views/upgrade/notice.php:12 includes/fields.php:450
-msgid "Flexible Content"
-msgstr "柔軟なコンテンツ"
-
-#: includes/admin/views/upgrade/notice.php:9 includes/fields.php:470
-=======
-#: includes/admin/views/upgrade/notice.php:15 includes/fields.php:462
-=======
-#: includes/admin/views/upgrade/notice.php:14 includes/fields.php:461
->>>>>>> develop
-=======
-#: includes/admin/views/upgrade/notice.php:14 includes/fields.php:479
->>>>>>> develop
-=======
-#: includes/admin/views/upgrade/notice.php:14 includes/fields.php:480
->>>>>>> develop
-=======
-#: includes/admin/views/upgrade/notice.php:14 includes/fields.php:443
->>>>>>> develop
-=======
 #: includes/admin/views/upgrade/notice.php:14 includes/fields.php:436
->>>>>>> develop
 msgid "Gallery"
 msgstr "ギャラリー"
 
@@ -6235,28 +5231,7 @@ msgstr "ギャラリー"
 msgid "Flexible Content"
 msgstr "柔軟なコンテンツ"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/views/upgrade/notice.php:9 includes/fields.php:472
->>>>>>> develop
-=======
-#: includes/admin/views/upgrade/notice.php:8 includes/fields.php:471
->>>>>>> develop
-=======
-#: includes/admin/views/upgrade/notice.php:8 includes/fields.php:489
->>>>>>> develop
-=======
-#: includes/admin/views/upgrade/notice.php:8 includes/fields.php:490
->>>>>>> develop
-=======
-#: includes/admin/views/upgrade/notice.php:8 includes/fields.php:453
->>>>>>> develop
-=======
 #: includes/admin/views/upgrade/notice.php:8 includes/fields.php:446
->>>>>>> develop
 msgid "Repeater"
 msgstr "繰り返し"
 
@@ -6284,25 +5259,7 @@ msgstr "画面上で非表示"
 msgid "Send Trackbacks"
 msgstr "トラックバック送信"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-taxonomy.php:123
-#: includes/admin/views/acf-field-group/options.php:170
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:155
-#: assets/build/js/acf-internal-post-type.js:142
-#: assets/build/js/acf-internal-post-type.js:202
-msgid "Tags"
-msgstr "タグ"
-
-#: includes/admin/post-types/admin-taxonomy.php:125
-#: includes/admin/views/acf-field-group/options.php:169
-#: assets/build/js/acf-internal-post-type.js:145
-#: assets/build/js/acf-internal-post-type.js:205
-=======
-#: includes/admin/post-types/admin-taxonomy.php:128
-=======
 #: includes/admin/post-types/admin-taxonomy.php:126
->>>>>>> develop
 #: includes/admin/views/acf-field-group/options.php:185
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:159
 #: assets/build/js/acf-internal-post-type.js:180
@@ -6314,7 +5271,6 @@ msgstr "タグ"
 #: includes/admin/views/acf-field-group/options.php:184
 #: assets/build/js/acf-internal-post-type.js:183
 #: assets/build/js/acf-internal-post-type.js:257
->>>>>>> develop
 msgid "Categories"
 msgstr "カテゴリー"
 
@@ -6384,31 +5340,13 @@ msgstr "フィールドの下"
 msgid "Below labels"
 msgstr "ラベルの下"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/views/acf-field-group/options.php:124
-msgid "Instruction placement"
-msgstr "手順の配置"
-
-#: includes/admin/views/acf-field-group/options.php:107
-msgid "Label placement"
-msgstr "ラベルの配置"
-=======
-#: includes/admin/views/acf-field-group/options.php:137
-=======
 #: includes/admin/views/acf-field-group/options.php:139
->>>>>>> develop
 msgid "Instruction Placement"
 msgstr "手順の配置"
 
 #: includes/admin/views/acf-field-group/options.php:122
 msgid "Label Placement"
-<<<<<<< HEAD
-msgstr ""
->>>>>>> develop
-=======
 msgstr "ラベルの配置"
->>>>>>> develop
 
 #: includes/admin/views/acf-field-group/options.php:110
 msgid "Side"
@@ -6438,39 +5376,20 @@ msgstr "標準 (WP メタボックス)"
 msgid "Style"
 msgstr "スタイル"
 
-#: includes/admin/views/acf-field-group/fields.php:44
+#: includes/admin/views/acf-field-group/fields.php:55
 msgid "Type"
 msgstr "タイプ"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-field-groups.php:95
-#: includes/admin/post-types/admin-post-types.php:103
-#: includes/admin/post-types/admin-taxonomies.php:103
-#: includes/admin/views/acf-field-group/fields.php:43
-=======
-#: includes/admin/post-types/admin-field-groups.php:116
-#: includes/admin/post-types/admin-post-types.php:136
-#: includes/admin/post-types/admin-taxonomies.php:136
-=======
-#: includes/admin/post-types/admin-field-groups.php:108
-#: includes/admin/post-types/admin-post-types.php:129
-#: includes/admin/post-types/admin-taxonomies.php:128
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-field-groups.php:91
 #: includes/admin/post-types/admin-post-types.php:111
 #: includes/admin/post-types/admin-taxonomies.php:110
->>>>>>> develop
 #: includes/admin/views/acf-field-group/fields.php:54
->>>>>>> develop
 msgid "Key"
 msgstr "キー"
 
 #. translators: Hidden accessibility text for the positional order number of
 #. the field.
-#: includes/admin/views/acf-field-group/fields.php:37
+#: includes/admin/views/acf-field-group/fields.php:48
 msgid "Order"
 msgstr "順序"
 
@@ -6720,31 +5639,7 @@ msgstr ""
 msgid "Import Field Groups"
 msgstr "フィールドグループをインポート"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/admin-internal-post-type-list.php:384
-msgid "Sync"
-msgstr "同期"
-
-#: includes/admin/admin-internal-post-type-list.php:841
-msgid "Select %s"
-msgstr "%sを選択"
-
-#: includes/admin/admin-internal-post-type-list.php:419
-#: includes/admin/admin-internal-post-type-list.php:457
-=======
-#: includes/admin/admin-internal-post-type-list.php:401
-=======
-#: includes/admin/admin-internal-post-type-list.php:404
->>>>>>> develop
-=======
-#: includes/admin/admin-internal-post-type-list.php:395
->>>>>>> develop
-=======
 #: includes/admin/admin-internal-post-type-list.php:417
->>>>>>> develop
 msgid "Sync"
 msgstr "同期"
 
@@ -6753,43 +5648,6 @@ msgstr "同期"
 msgid "Select %s"
 msgstr "%sを選択"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/admin-internal-post-type-list.php:442
-#: includes/admin/admin-internal-post-type-list.php:474
-<<<<<<< HEAD
->>>>>>> develop
-#: includes/admin/views/acf-field-group/field.php:73
-=======
-#: includes/admin/views/acf-field-group/field.php:77
->>>>>>> develop
-msgid "Duplicate"
-msgstr "複製"
-
-<<<<<<< HEAD
-#: includes/admin/admin-internal-post-type-list.php:419
-=======
-#: includes/admin/admin-internal-post-type-list.php:442
->>>>>>> develop
-=======
-#: includes/admin/admin-internal-post-type-list.php:445
-#: includes/admin/admin-internal-post-type-list.php:477
-=======
-#: includes/admin/admin-internal-post-type-list.php:436
-#: includes/admin/admin-internal-post-type-list.php:468
->>>>>>> develop
-#: includes/admin/views/acf-field-group/field.php:79
-msgid "Duplicate"
-msgstr "複製"
-
-<<<<<<< HEAD
-#: includes/admin/admin-internal-post-type-list.php:445
->>>>>>> develop
-=======
-#: includes/admin/admin-internal-post-type-list.php:436
->>>>>>> develop
-=======
 #: includes/admin/admin-internal-post-type-list.php:460
 #: includes/admin/admin-internal-post-type-list.php:492
 #: includes/admin/views/acf-field-group/field.php:90
@@ -6797,7 +5655,6 @@ msgid "Duplicate"
 msgstr "複製"
 
 #: includes/admin/admin-internal-post-type-list.php:460
->>>>>>> develop
 msgid "Duplicate this item"
 msgstr "この項目を複製"
 
@@ -6810,53 +5667,9 @@ msgstr "サポート"
 msgid "Documentation"
 msgstr "ドキュメンテーション"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-field-groups.php:94
-#: includes/admin/post-types/admin-post-types.php:102
-#: includes/admin/post-types/admin-taxonomies.php:102
-#: includes/admin/views/acf-field-group/options.php:234
-#: includes/admin/views/acf-post-type/advanced-settings.php:58
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:110
-=======
-#: includes/admin/post-types/admin-field-groups.php:116
-=======
-#: includes/admin/post-types/admin-field-groups.php:115
->>>>>>> develop
-#: includes/admin/post-types/admin-post-types.php:135
-#: includes/admin/post-types/admin-taxonomies.php:135
-#: includes/admin/views/acf-field-group/options.php:249
-#: includes/admin/views/acf-post-type/advanced-settings.php:62
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:114
->>>>>>> develop
-#: includes/admin/views/upgrade/network.php:38
-#: includes/admin/views/upgrade/network.php:49
-msgid "Description"
-msgstr "説明"
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/admin-internal-post-type-list.php:381
-#: includes/admin/admin-internal-post-type-list.php:730
-=======
-#: includes/admin/admin-internal-post-type-list.php:398
-#: includes/admin/admin-internal-post-type-list.php:747
->>>>>>> develop
-=======
-#: includes/admin/admin-internal-post-type-list.php:401
-#: includes/admin/admin-internal-post-type-list.php:750
->>>>>>> develop
-=======
-#: includes/admin/post-types/admin-field-groups.php:107
-#: includes/admin/post-types/admin-post-types.php:128
-#: includes/admin/post-types/admin-taxonomies.php:127
-=======
 #: includes/admin/post-types/admin-field-groups.php:90
 #: includes/admin/post-types/admin-post-types.php:110
 #: includes/admin/post-types/admin-taxonomies.php:109
->>>>>>> develop
 #: includes/admin/views/acf-field-group/options.php:249
 #: includes/admin/views/acf-post-type/advanced-settings.php:62
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:114
@@ -6865,70 +5678,24 @@ msgstr "説明"
 msgid "Description"
 msgstr "説明"
 
-<<<<<<< HEAD
-#: includes/admin/admin-internal-post-type-list.php:392
-#: includes/admin/admin-internal-post-type-list.php:735
->>>>>>> develop
-=======
 #: includes/admin/admin-internal-post-type-list.php:414
 #: includes/admin/admin-internal-post-type-list.php:832
->>>>>>> develop
 msgid "Sync available"
 msgstr "同期が利用できます"
 
 #. translators: %s number of field groups synchronized
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-field-groups.php:359
-=======
-#: includes/admin/post-types/admin-field-groups.php:380
->>>>>>> develop
-=======
-#: includes/admin/post-types/admin-field-groups.php:372
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-field-groups.php:374
->>>>>>> develop
 msgid "Field group synchronized."
 msgid_plural "%s field groups synchronized."
 msgstr[0] "%s件のフィールドグループを同期しました。"
 
 #. translators: %s number of field groups duplicated
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-field-groups.php:352
-=======
-#: includes/admin/post-types/admin-field-groups.php:373
->>>>>>> develop
-=======
-#: includes/admin/post-types/admin-field-groups.php:365
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-field-groups.php:367
->>>>>>> develop
 msgid "Field group duplicated."
 msgid_plural "%s field groups duplicated."
 msgstr[0] "%s件のフィールドグループを複製しました。"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/admin-internal-post-type-list.php:131
-=======
-#: includes/admin/admin-internal-post-type-list.php:137
->>>>>>> develop
-=======
-#: includes/admin/admin-internal-post-type-list.php:140
->>>>>>> develop
-=======
-#: includes/admin/admin-internal-post-type-list.php:137
->>>>>>> develop
-=======
 #: includes/admin/admin-internal-post-type-list.php:155
->>>>>>> develop
 msgid "Active <span class=\"count\">(%s)</span>"
 msgid_plural "Active <span class=\"count\">(%s)</span>"
 msgstr[0] "使用中 <span class=\"count\">(%s)</span>"
@@ -6949,90 +5716,22 @@ msgstr "データベースをアップグレード"
 msgid "Custom Fields"
 msgstr "カスタムフィールド"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-field-group.php:590
-msgid "Move Field"
-msgstr "フィールドを移動"
-
-#: includes/admin/post-types/admin-field-group.php:579
-#: includes/admin/post-types/admin-field-group.php:583
-=======
-#: includes/admin/post-types/admin-field-group.php:616
-msgid "Move Field"
-msgstr "フィールドを移動"
-
-#: includes/admin/post-types/admin-field-group.php:605
-#: includes/admin/post-types/admin-field-group.php:609
->>>>>>> develop
-=======
-#: includes/admin/post-types/admin-field-group.php:608
-msgid "Move Field"
-msgstr "フィールドを移動"
-
-#: includes/admin/post-types/admin-field-group.php:597
-#: includes/admin/post-types/admin-field-group.php:601
->>>>>>> develop
-=======
-#: includes/admin/post-types/admin-field-group.php:583
-msgid "Move Field"
-msgstr "フィールドを移動"
-
-#: includes/admin/post-types/admin-field-group.php:572
-#: includes/admin/post-types/admin-field-group.php:576
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-field-group.php:609
 msgid "Move Field"
 msgstr "フィールドを移動"
 
 #: includes/admin/post-types/admin-field-group.php:602
 #: includes/admin/post-types/admin-field-group.php:606
->>>>>>> develop
 msgid "Please select the destination for this field"
 msgstr "このフィールドの移動先を選択してください"
 
 #. translators: Confirmation message once a field has been moved to a different
 #. field group.
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-field-group.php:541
-msgid "The %1$s field can now be found in the %2$s field group"
-msgstr "%1$s フィールドは現在 %2$s フィールドグループにあります"
-
-#: includes/admin/post-types/admin-field-group.php:538
-=======
-#: includes/admin/post-types/admin-field-group.php:567
-msgid "The %1$s field can now be found in the %2$s field group"
-msgstr "%1$s フィールドは現在 %2$s フィールドグループにあります"
-
-#: includes/admin/post-types/admin-field-group.php:564
->>>>>>> develop
-=======
-#: includes/admin/post-types/admin-field-group.php:559
-msgid "The %1$s field can now be found in the %2$s field group"
-msgstr "%1$s フィールドは現在 %2$s フィールドグループにあります"
-
-#: includes/admin/post-types/admin-field-group.php:556
->>>>>>> develop
-=======
-#: includes/admin/post-types/admin-field-group.php:534
-msgid "The %1$s field can now be found in the %2$s field group"
-msgstr "%1$s フィールドは現在 %2$s フィールドグループにあります"
-
-#: includes/admin/post-types/admin-field-group.php:531
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-field-group.php:568
 msgid "The %1$s field can now be found in the %2$s field group"
 msgstr "%1$s フィールドは現在 %2$s フィールドグループにあります"
 
 #: includes/admin/post-types/admin-field-group.php:565
->>>>>>> develop
 msgid "Move Complete."
 msgstr "移動が完了しました。"
 
@@ -7043,36 +5742,7 @@ msgstr "移動が完了しました。"
 msgid "Active"
 msgstr "有効"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-field-group.php:240
-msgid "Field Keys"
-msgstr "フィールドキー"
-
-#: includes/admin/post-types/admin-field-group.php:158
-#: includes/admin/tools/class-acf-admin-tool-export.php:320
-=======
-#: includes/admin/post-types/admin-field-group.php:266
-msgid "Field Keys"
-msgstr "フィールドキー"
-
-#: includes/admin/post-types/admin-field-group.php:164
-#: includes/admin/tools/class-acf-admin-tool-export.php:342
->>>>>>> develop
-msgid "Settings"
-msgstr "設定"
-
-#: includes/admin/post-types/admin-field-groups.php:96
-=======
-#: includes/admin/post-types/admin-field-group.php:258
-=======
-#: includes/admin/post-types/admin-field-group.php:246
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-field-group.php:276
->>>>>>> develop
 msgid "Field Keys"
 msgstr "フィールドキー"
 
@@ -7080,16 +5750,7 @@ msgstr "フィールドキー"
 msgid "Settings"
 msgstr "設定"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-field-groups.php:117
->>>>>>> develop
-=======
-#: includes/admin/post-types/admin-field-groups.php:109
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-field-groups.php:92
->>>>>>> develop
 msgid "Location"
 msgstr "所在地"
 
@@ -7176,33 +5837,9 @@ msgstr "フィールドグループを削除しました。"
 msgid "Field group updated."
 msgstr "フィールドグループを更新しました。"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/admin-tools.php:118
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/admin/views/global/navigation.php:138
-=======
-#: includes/admin/views/global/navigation.php:224
->>>>>>> develop
-=======
-#: includes/admin/views/global/navigation.php:246
->>>>>>> develop
-=======
-#: includes/admin/admin-tools.php:114
-#: includes/admin/views/global/navigation.php:248
->>>>>>> develop
-#: includes/admin/views/tools/tools.php:21
-=======
-#: includes/admin/admin-tools.php:112
-#: includes/admin/views/global/navigation.php:248
-=======
 #: includes/admin/admin-tools.php:107
 #: includes/admin/views/global/navigation.php:251
->>>>>>> develop
 #: includes/admin/views/tools/tools.php:13
->>>>>>> develop
 msgid "Tools"
 msgstr "ツール"
 
@@ -7220,25 +5857,15 @@ msgstr "フォーム"
 
 #: includes/admin/post-types/admin-post-type.php:125 includes/locations.php:102
 #: includes/locations/class-acf-location-page.php:22
-<<<<<<< HEAD
-#: assets/build/js/acf-internal-post-type.js:137
-#: assets/build/js/acf-internal-post-type.js:197
-=======
 #: assets/build/js/acf-internal-post-type.js:175
 #: assets/build/js/acf-internal-post-type.js:249
->>>>>>> develop
 msgid "Page"
 msgstr "固定ページ"
 
 #: includes/admin/post-types/admin-post-type.php:123 includes/locations.php:101
 #: includes/locations/class-acf-location-post.php:22
-<<<<<<< HEAD
-#: assets/build/js/acf-internal-post-type.js:134
-#: assets/build/js/acf-internal-post-type.js:194
-=======
 #: assets/build/js/acf-internal-post-type.js:172
 #: assets/build/js/acf-internal-post-type.js:246
->>>>>>> develop
 msgid "Post"
 msgstr "投稿"
 
@@ -7413,27 +6040,7 @@ msgstr "編集"
 msgid "The changes you made will be lost if you navigate away from this page"
 msgstr "このページから移動した場合、変更は失われます"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/api/api-helpers.php:3482
-=======
-#: includes/api/api-helpers.php:3494
->>>>>>> develop
-=======
-#: includes/api/api-helpers.php:3395
->>>>>>> develop
-=======
-#: includes/api/api-helpers.php:2967
->>>>>>> develop
-=======
-#: includes/api/api-helpers.php:2950
->>>>>>> develop
-=======
-#: includes/api/api-helpers.php:2959
->>>>>>> develop
+#: includes/api/api-helpers.php:2984
 msgid "File type must be %s."
 msgstr "ファイル形式は %s である必要があります。"
 
@@ -7441,130 +6048,39 @@ msgstr "ファイル形式は %s である必要があります。"
 #: includes/admin/views/acf-field-group/conditional-logic.php:64
 #: includes/admin/views/acf-field-group/conditional-logic.php:182
 #: includes/admin/views/acf-field-group/location-group.php:3
-<<<<<<< HEAD
-#: includes/admin/views/acf-field-group/locations.php:36
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/api/api-helpers.php:3478 assets/build/js/acf-field-group.js:771
-#: assets/build/js/acf-field-group.js:2361
-=======
-#: includes/api/api-helpers.php:3490 assets/build/js/acf-field-group.js:771
-#: assets/build/js/acf-field-group.js:2377
->>>>>>> develop
-=======
-#: includes/api/api-helpers.php:3391 assets/build/js/acf-field-group.js:771
-=======
 #: includes/admin/views/acf-field-group/locations.php:35
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/api/api-helpers.php:2964 assets/build/js/acf-field-group.js:771
-<<<<<<< HEAD
->>>>>>> develop
-#: assets/build/js/acf-field-group.js:2385
->>>>>>> develop
-=======
-#: assets/build/js/acf-field-group.js:2384
->>>>>>> develop
-=======
-#: includes/api/api-helpers.php:2947 assets/build/js/acf-field-group.js:771
-#: assets/build/js/acf-field-group.js:2388
->>>>>>> develop
-#: assets/build/js/acf-field-group.js:933
-#: assets/build/js/acf-field-group.js:2813
-msgid "or"
-msgstr "または"
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/api/api-helpers.php:3451
-msgid "File size must not exceed %s."
-msgstr "ファイルサイズは %s 以下である必要があります。"
-
-#: includes/api/api-helpers.php:3446
-msgid "File size must be at least %s."
-msgstr "ファイルサイズは %s 以上である必要があります。"
-
-#: includes/api/api-helpers.php:3431
-msgid "Image height must not exceed %dpx."
-msgstr "画像の高さは %dpx 以下である必要があります。"
-
-#: includes/api/api-helpers.php:3426
-msgid "Image height must be at least %dpx."
-msgstr "画像の高さは %dpx 以上である必要があります。"
-
-#: includes/api/api-helpers.php:3412
-msgid "Image width must not exceed %dpx."
-msgstr "画像の幅は %dpx 以下である必要があります。"
-
-#: includes/api/api-helpers.php:3407
-msgid "Image width must be at least %dpx."
-msgstr "画像の幅は %dpx 以上である必要があります。"
-
-#: includes/api/api-helpers.php:1653 includes/api/api-term.php:147
-=======
-#: includes/api/api-helpers.php:3463
-=======
-#: includes/api/api-helpers.php:3364
->>>>>>> develop
-=======
-#: includes/api/api-helpers.php:2940
->>>>>>> develop
-=======
-#: includes/api/api-helpers.php:2923
->>>>>>> develop
-=======
-#: includes/api/api-helpers.php:2956 assets/build/js/acf-field-group.js:781
+#: includes/api/api-helpers.php:2981 assets/build/js/acf-field-group.js:781
 #: assets/build/js/acf-field-group.js:2427
 #: assets/build/js/acf-field-group.js:946
 #: assets/build/js/acf-field-group.js:2859
 msgid "or"
 msgstr "または"
 
-#: includes/api/api-helpers.php:2932
->>>>>>> develop
+#: includes/api/api-helpers.php:2957
 msgid "File size must not exceed %s."
 msgstr "ファイルサイズは %s 以下である必要があります。"
 
-#: includes/api/api-helpers.php:2928
+#: includes/api/api-helpers.php:2953
 msgid "File size must be at least %s."
 msgstr "ファイルサイズは %s 以上である必要があります。"
 
-#: includes/api/api-helpers.php:2915
+#: includes/api/api-helpers.php:2940
 msgid "Image height must not exceed %dpx."
 msgstr "画像の高さは %dpx 以下である必要があります。"
 
-#: includes/api/api-helpers.php:2911
+#: includes/api/api-helpers.php:2936
 msgid "Image height must be at least %dpx."
 msgstr "画像の高さは %dpx 以上である必要があります。"
 
-#: includes/api/api-helpers.php:2899
+#: includes/api/api-helpers.php:2924
 msgid "Image width must not exceed %dpx."
 msgstr "画像の幅は %dpx 以下である必要があります。"
 
-#: includes/api/api-helpers.php:2895
+#: includes/api/api-helpers.php:2920
 msgid "Image width must be at least %dpx."
 msgstr "画像の幅は %dpx 以上である必要があります。"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/api/api-helpers.php:1665 includes/api/api-term.php:147
->>>>>>> develop
-=======
-#: includes/api/api-helpers.php:1561 includes/api/api-term.php:147
->>>>>>> develop
-=======
-#: includes/api/api-helpers.php:1400 includes/api/api-term.php:147
->>>>>>> develop
-=======
-#: includes/api/api-helpers.php:1400 includes/api/api-term.php:140
->>>>>>> develop
-=======
 #: includes/api/api-helpers.php:1409 includes/api/api-term.php:140
->>>>>>> develop
 msgid "(no title)"
 msgstr "(タイトルなし)"
 
@@ -7640,25 +6156,8 @@ msgstr "ページリンク"
 msgid "Add"
 msgstr "追加"
 
-<<<<<<< HEAD
-#: includes/admin/views/acf-field-group/fields.php:42
-#: includes/fields/class-acf-field-taxonomy.php:913
-=======
 #: includes/admin/views/acf-field-group/fields.php:53
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/fields/class-acf-field-taxonomy.php:908
->>>>>>> develop
-=======
-#: includes/fields/class-acf-field-taxonomy.php:864
->>>>>>> develop
-=======
-#: includes/fields/class-acf-field-taxonomy.php:843
->>>>>>> develop
-=======
 #: includes/fields/class-acf-field-taxonomy.php:851
->>>>>>> develop
 msgid "Name"
 msgstr "名前"
 
@@ -7789,28 +6288,8 @@ msgid "Allow this accordion to open without closing others."
 msgstr ""
 "他のアコーディオンを閉じずにこのアコーディオンを開くことができるようにする。"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/fields/class-acf-field-accordion.php:95
-<<<<<<< HEAD
-msgid "Multi-expand"
-=======
-=======
-#: includes/fields/class-acf-field-accordion.php:94
->>>>>>> develop
-=======
-#: includes/fields/class-acf-field-accordion.php:95
->>>>>>> develop
-=======
-#: includes/fields/class-acf-field-accordion.php:93
->>>>>>> develop
-=======
 #: includes/fields/class-acf-field-accordion.php:91
->>>>>>> develop
 msgid "Multi-Expand"
->>>>>>> develop
 msgstr "マルチ展開"
 
 #: includes/fields/class-acf-field-accordion.php:81
@@ -7980,23 +6459,9 @@ msgstr "ユーザー配列"
 msgid "All user roles"
 msgstr "すべてのユーザー権限グループ"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/fields/class-acf-field-user.php:55
-msgid "Filter by role"
-msgstr "権限グループで絞り込む"
-=======
-#: includes/fields/class-acf-field-user.php:51
-=======
 #: includes/fields/class-acf-field-user.php:80
->>>>>>> develop
 msgid "Filter by Role"
-<<<<<<< HEAD
-msgstr ""
->>>>>>> develop
-=======
 msgstr "権限グループで絞り込む"
->>>>>>> develop
 
 #: includes/fields/class-acf-field-user.php:15 includes/locations.php:103
 msgid "User"
@@ -8010,30 +6475,11 @@ msgstr "区切り"
 msgid "Select Color"
 msgstr "色を選択"
 
-<<<<<<< HEAD
-#: includes/admin/post-types/admin-post-type.php:129
-#: includes/admin/post-types/admin-taxonomy.php:131
-<<<<<<< HEAD
-#: includes/fields/class-acf-field-color_picker.php:74
-<<<<<<< HEAD
-#: assets/build/js/acf-internal-post-type.js:54
-#: assets/build/js/acf-internal-post-type.js:59
-=======
-=======
-#: includes/fields/class-acf-field-color_picker.php:73
->>>>>>> develop
-=======
 #: includes/admin/post-types/admin-post-type.php:127
 #: includes/admin/post-types/admin-taxonomy.php:129
-<<<<<<< HEAD
-#: includes/fields/class-acf-field-color_picker.php:69
->>>>>>> develop
-=======
 #: includes/fields/class-acf-field-color_picker.php:67
->>>>>>> develop
 #: assets/build/js/acf-internal-post-type.js:72
 #: assets/build/js/acf-internal-post-type.js:86
->>>>>>> develop
 msgid "Default"
 msgstr "デフォルト"
 
@@ -8202,33 +6648,11 @@ msgstr "範囲"
 msgid "Both (Array)"
 msgstr "両方 (配列)"
 
-<<<<<<< HEAD
-#: includes/admin/views/acf-field-group/fields.php:41
-#: includes/fields/class-acf-field-button-group.php:174
-#: includes/fields/class-acf-field-checkbox.php:378
-#: includes/fields/class-acf-field-radio.php:219
-#: includes/fields/class-acf-field-select.php:398
-=======
 #: includes/admin/views/acf-field-group/fields.php:52
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/fields/class-acf-field-button-group.php:170
-#: includes/fields/class-acf-field-checkbox.php:368
-#: includes/fields/class-acf-field-radio.php:218
-#: includes/fields/class-acf-field-select.php:387
->>>>>>> develop
-=======
-#: includes/fields/class-acf-field-button-group.php:165
-#: includes/fields/class-acf-field-checkbox.php:354
-#: includes/fields/class-acf-field-radio.php:212
-#: includes/fields/class-acf-field-select.php:377
->>>>>>> develop
-=======
 #: includes/fields/class-acf-field-button-group.php:164
 #: includes/fields/class-acf-field-checkbox.php:349
 #: includes/fields/class-acf-field-radio.php:209
 #: includes/fields/class-acf-field-select.php:371
->>>>>>> develop
 msgid "Label"
 msgstr "ラベル"
 
@@ -8283,47 +6707,6 @@ msgstr "選択肢"
 msgid "Button Group"
 msgstr "ボタングループ"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/fields/class-acf-field-page_link.php:517
-#: includes/fields/class-acf-field-post_object.php:433
-#: includes/fields/class-acf-field-select.php:413
-#: includes/fields/class-acf-field-user.php:86
-msgid "Select multiple values?"
-msgstr "複数値を選択可能にしますか ?"
-
-#: includes/fields/class-acf-field-button-group.php:194
-#: includes/fields/class-acf-field-page_link.php:538
-#: includes/fields/class-acf-field-post_object.php:448
-#: includes/fields/class-acf-field-radio.php:238
-<<<<<<< HEAD
-#: includes/fields/class-acf-field-select.php:435
-#: includes/fields/class-acf-field-taxonomy.php:789
-#: includes/fields/class-acf-field-user.php:107
-msgid "Allow Null?"
-msgstr "空の値を許可しますか ?"
-=======
-#: includes/fields/class-acf-field-select.php:429
-#: includes/fields/class-acf-field-taxonomy.php:772
-=======
-#: includes/fields/class-acf-field-button-group.php:189
-#: includes/fields/class-acf-field-page_link.php:500
-#: includes/fields/class-acf-field-post_object.php:420
-#: includes/fields/class-acf-field-radio.php:237
-#: includes/fields/class-acf-field-select.php:417
-#: includes/fields/class-acf-field-taxonomy.php:729
->>>>>>> develop
-=======
-#: includes/fields/class-acf-field-button-group.php:184
-#: includes/fields/class-acf-field-page_link.php:486
-#: includes/fields/class-acf-field-post_object.php:408
-#: includes/fields/class-acf-field-radio.php:231
-#: includes/fields/class-acf-field-select.php:407
-#: includes/fields/class-acf-field-taxonomy.php:710
->>>>>>> develop
-#: includes/fields/class-acf-field-user.php:103
-=======
 #: includes/fields/class-acf-field-button-group.php:183
 #: includes/fields/class-acf-field-page_link.php:519
 #: includes/fields/class-acf-field-post_object.php:432
@@ -8331,14 +6714,8 @@ msgstr "空の値を許可しますか ?"
 #: includes/fields/class-acf-field-select.php:401
 #: includes/fields/class-acf-field-taxonomy.php:705
 #: includes/fields/class-acf-field-user.php:132
->>>>>>> develop
 msgid "Allow Null"
-<<<<<<< HEAD
-msgstr ""
->>>>>>> develop
-=======
 msgstr "空の値を許可"
->>>>>>> develop
 
 #: includes/fields/class-acf-field-page_link.php:273
 #: includes/fields/class-acf-field-post_object.php:254
@@ -8350,43 +6727,13 @@ msgstr "親"
 msgid "TinyMCE will not be initialized until field is clicked"
 msgstr "フィールドがクリックされるまで TinyMCE は初期化されません"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/fields/class-acf-field-wysiwyg.php:396
-msgid "Delay initialization?"
-msgstr "初期化を遅延させますか ?"
-
-#: includes/fields/class-acf-field-wysiwyg.php:385
-msgid "Show Media Upload Buttons?"
-msgstr "メディアアップロードボタンを表示しますか ?"
-=======
-#: includes/fields/class-acf-field-wysiwyg.php:389
-=======
-#: includes/fields/class-acf-field-wysiwyg.php:377
->>>>>>> develop
-=======
-#: includes/fields/class-acf-field-wysiwyg.php:380
->>>>>>> develop
-=======
-#: includes/fields/class-acf-field-wysiwyg.php:370
->>>>>>> develop
-=======
 #: includes/fields/class-acf-field-wysiwyg.php:366
->>>>>>> develop
 msgid "Delay Initialization"
 msgstr "初期化を遅延させる"
 
 #: includes/fields/class-acf-field-wysiwyg.php:355
 msgid "Show Media Upload Buttons"
-<<<<<<< HEAD
-msgstr ""
->>>>>>> develop
-=======
 msgstr "メディアアップロードボタンを表示"
->>>>>>> develop
 
 #: includes/fields/class-acf-field-wysiwyg.php:339
 msgid "Toolbar"
@@ -8519,39 +6866,13 @@ msgstr "投稿 ID"
 msgid "Post Object"
 msgstr "投稿オブジェクト"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/fields/class-acf-field-relationship.php:683
-msgid "Maximum posts"
-msgstr "最大投稿"
-
-#: includes/fields/class-acf-field-relationship.php:673
-msgid "Minimum posts"
-msgstr "最小投稿"
-=======
-#: includes/fields/class-acf-field-relationship.php:676
-=======
-#: includes/fields/class-acf-field-relationship.php:642
->>>>>>> develop
-=======
-#: includes/fields/class-acf-field-relationship.php:628
->>>>>>> develop
-=======
 #: includes/fields/class-acf-field-relationship.php:648
->>>>>>> develop
 msgid "Maximum Posts"
 msgstr "最大投稿数"
 
 #: includes/fields/class-acf-field-relationship.php:638
 msgid "Minimum Posts"
-<<<<<<< HEAD
-msgstr ""
->>>>>>> develop
-=======
 msgstr "最小投稿数"
->>>>>>> develop
 
 #: includes/admin/views/acf-field-group/options.php:183
 #: includes/admin/views/acf-post-type/advanced-settings.php:29
@@ -8644,30 +6965,10 @@ msgstr "関係"
 msgid "Comma separated list. Leave blank for all types"
 msgstr "カンマ区切りのリスト。すべてのタイプを許可する場合は空白のままにします"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: includes/fields/class-acf-field-file.php:290
-#: includes/fields/class-acf-field-image.php:316
-<<<<<<< HEAD
-msgid "Allowed file types"
-msgstr "許可されたファイルの種類"
-=======
-=======
-#: includes/fields/class-acf-field-file.php:287
-#: includes/fields/class-acf-field-image.php:315
->>>>>>> develop
-=======
-#: includes/fields/class-acf-field-file.php:279
-#: includes/fields/class-acf-field-image.php:309
->>>>>>> develop
-=======
 #: includes/fields/class-acf-field-file.php:276
 #: includes/fields/class-acf-field-image.php:306
->>>>>>> develop
 msgid "Allowed File Types"
 msgstr "許可されるファイルの種類"
->>>>>>> develop
 
 #: includes/fields/class-acf-field-file.php:264
 #: includes/fields/class-acf-field-image.php:270
@@ -9113,31 +7414,7 @@ msgstr "フィールドを検索"
 msgid "View Field"
 msgstr "フィールドを表示"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: acf.php:446 includes/admin/views/acf-field-group/fields.php:104
-=======
-#: acf.php:454 includes/admin/views/acf-field-group/fields.php:115
->>>>>>> develop
-=======
-#: acf.php:458 includes/admin/views/acf-field-group/fields.php:115
->>>>>>> develop
-=======
-#: acf.php:457 includes/admin/views/acf-field-group/fields.php:111
->>>>>>> develop
-=======
-#: acf.php:454 includes/admin/views/acf-field-group/fields.php:111
->>>>>>> develop
-=======
-#: acf.php:446 includes/admin/views/acf-field-group/fields.php:113
->>>>>>> develop
-=======
 #: acf.php:463 includes/admin/views/acf-field-group/fields.php:113
->>>>>>> develop
 msgid "New Field"
 msgstr "新規フィールド"
 
@@ -9153,38 +7430,9 @@ msgstr "新規フィールドを追加"
 msgid "Field"
 msgstr "フィールド"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: acf.php:441 includes/admin/post-types/admin-field-group.php:154
-#: includes/admin/post-types/admin-field-groups.php:97
-#: includes/admin/views/acf-field-group/fields.php:21
-=======
-#: acf.php:449 includes/admin/post-types/admin-field-group.php:163
-=======
-#: acf.php:453 includes/admin/post-types/admin-field-group.php:163
->>>>>>> develop
-#: includes/admin/post-types/admin-field-groups.php:119
-=======
-#: acf.php:452 includes/admin/post-types/admin-field-group.php:155
-=======
-#: acf.php:449 includes/admin/post-types/admin-field-group.php:155
->>>>>>> develop
-#: includes/admin/post-types/admin-field-groups.php:118
->>>>>>> develop
-=======
-#: acf.php:441 includes/admin/post-types/admin-field-group.php:149
-#: includes/admin/post-types/admin-field-groups.php:110
->>>>>>> develop
-=======
 #: acf.php:458 includes/admin/post-types/admin-field-group.php:179
 #: includes/admin/post-types/admin-field-groups.php:93
->>>>>>> develop
 #: includes/admin/views/acf-field-group/fields.php:32
->>>>>>> develop
 msgid "Fields"
 msgstr "フィールド"
 
@@ -9227,39 +7475,9 @@ msgstr "新規追加"
 msgid "Field Group"
 msgstr "フィールドグループ"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: acf.php:407 includes/admin/post-types/admin-field-groups.php:56
-#: includes/admin/post-types/admin-post-types.php:105
-#: includes/admin/post-types/admin-taxonomies.php:105
-=======
-#: acf.php:415 includes/admin/post-types/admin-field-groups.php:78
-=======
-#: acf.php:419 includes/admin/post-types/admin-field-groups.php:78
->>>>>>> develop
-=======
-#: acf.php:418 includes/admin/post-types/admin-field-groups.php:77
->>>>>>> develop
-=======
-#: acf.php:415 includes/admin/post-types/admin-field-groups.php:77
->>>>>>> develop
-#: includes/admin/post-types/admin-post-types.php:138
-#: includes/admin/post-types/admin-taxonomies.php:138
->>>>>>> develop
-=======
-#: acf.php:407 includes/admin/post-types/admin-field-groups.php:72
-#: includes/admin/post-types/admin-post-types.php:131
-#: includes/admin/post-types/admin-taxonomies.php:130
->>>>>>> develop
-=======
 #: acf.php:424 includes/admin/post-types/admin-field-groups.php:55
 #: includes/admin/post-types/admin-post-types.php:113
 #: includes/admin/post-types/admin-taxonomies.php:112
->>>>>>> develop
 msgid "Field Groups"
 msgstr "フィールドグループ"
 
@@ -9632,6 +7850,10 @@ msgstr "最小選択数"
 #: pro/fields/class-acf-field-gallery.php:625
 msgid "Maximum Selection"
 msgstr "最大選択数"
+
+#: pro/fields/class-acf-field-gallery.php:707
+msgid "Allowed file types"
+msgstr "許可するファイルタイプ"
 
 #: pro/fields/class-acf-field-gallery.php:727
 msgid "Insert"
