@@ -1,18 +1,19 @@
 {
-  "name": "acf/mai-column",
-  "title": "Mai Column",
-  "description": "A column item.",
-  "category": "layout",
-  "keywords": [],
-  "textdomain": "mai-engine",
-  "usesContext": [ "acf/fields" ],
-  "acf": {
-    "mode": "preview",
-    "renderCallback": "mai_do_column_block"
-  },
-  "parent": [ "acf/mai-columns" ],
-  "supports": {
-    "align": false,
-    "anchor": false
-  }
+	"name": "acf/mai-column",
+	"title": "Mai Column",
+	"description": "A column item.",
+	"category": "layout",
+	"keywords": [],
+	"textdomain": "mai-engine",
+	"usesContext": ["acf/fields"],
+	"acf": {
+		"mode": "preview",
+		"renderCallback": "mai_do_column_block",
+		"validate": false
+	},
+	"parent": ["acf/mai-columns"],
+	"supports": {
+		"align": false,
+		"anchor": false
+	}
 }
