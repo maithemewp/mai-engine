@@ -253,6 +253,10 @@
 	overflow: visible;
 }
 
+:where([class*="has-z-index-"]) {
+	position: relative;
+}
+
 .has-z-index--1 {
 	z-index: -1 !important;
 }
