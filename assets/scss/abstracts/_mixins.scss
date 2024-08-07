@@ -1,18 +1,18 @@
-@mixin mq($min: false, $max: false) {
-	$query: "";
+@mixin mq($min: false, $max: false, $orientation: false) {
+	$query: "only screen";
 
 	@if ($min) {
-		$min: map_get($breakpoints, $min);
-		$query: "only screen and (min-width: #{$min})";
+		$min-value: map_get($breakpoints, $min);
+		$query: "#{$query} and (min-width: #{$min-value})";
 	}
 
 	@if ($max) {
-		$max: map_get($breakpoints, $max) - 1;
-		$query: "only screen and (max-width: #{$max})";
+		$max-value: map_get($breakpoints, $max) - 1;
+		$query: "#{$query} and (max-width: #{$max-value})";
 	}
 
-	@if ($min and $max) {
-		$query: "only screen and (min-width: #{$min} ) and (max-width: #{$max})";
+	@if ($orientation) {
+		$query: "#{$query} and (orientation: #{$orientation})";
 	}
 
 	@media #{$query} {

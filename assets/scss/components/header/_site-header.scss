@@ -74,7 +74,7 @@
 
 .has-sticky-header {
 
-	@include mq(sm) {
+	@include mq(sm, false, portrait) {
 		--site-header-position: sticky;
 		--site-header-top: var(--body-top);
 	}
