@@ -79,6 +79,12 @@
 		--site-header-top: var(--body-top);
 	}
 
+	@include mq(md) {
+		--site-header-position: sticky;
+		--site-header-top: var(--body-top);
+	}
+
+
 	&.header-stuck {
 
 		@include mq(lg) {
