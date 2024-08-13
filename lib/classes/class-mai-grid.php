@@ -34,13 +34,6 @@ class Mai_Grid {
 	protected $type;
 
 	/**
-	 * Defaults.
-	 *
-	 * @var $defaults
-	 */
-	protected $defaults;
-
-	/**
 	 * Args.
 	 *
 	 * @var $args
@@ -87,11 +80,9 @@ class Mai_Grid {
 	public function __construct( $args ) {
 		$args['context']  = 'block'; // Required for Mai_Entry.
 		$this->type       = isset( $args['type'] ) ? $args['type'] : 'post';
-		$this->defaults   = $this->get_defaults();
-		$this->args       = $this->get_sanitized_args( $args );
+		$this->args       = wp_parse_args( $this->get_sanitized_args( $args ), $this->get_defaults() );
 		$this->query_args = [];
 	}
-
 
 	/**
 	 * Get default settings.
@@ -472,6 +463,7 @@ class Mai_Grid {
 						$key     = mai_isset( $meta, 'meta_key', '' );
 						$compare = mai_isset( $meta, 'meta_compare', '' );
 						$value   = mai_isset( $meta, 'meta_value', '' );
+						$type    = mai_isset( $meta, 'meta_type', '' );
 
 						// Skip if we don't have the meta query args.
 						if ( ! ( $key && $compare ) ) {
@@ -490,6 +482,13 @@ class Mai_Grid {
 
 						if ( ! in_array( $compare, [ 'EXISTS', 'NOT EXISTS' ] ) ) {
 							$meta_query_args['value'] = $value;
+						}
+
+						// Add type.
+						// TODO: Add field for this in the block.
+						// Right now it only works programmatically.
+						if ( $type ) {
+							$meta_query_args['type'] = $type;
 						}
 
 						$meta_query[] = $meta_query_args;
