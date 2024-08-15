@@ -1,6 +1,5 @@
 body {
-	// --body-top: 0px; // Requires 0px value. 0 breaks this when it's used in calc() in some instances.
-	--body-top: var(--wp-admin--admin-bar--height, 0px);
+	--body-top: 0px; // Requires 0px value. 0 breaks this when it's used in calc() in some instances.
 	--scroll-margin-top: calc(var(--body-top) + var(--spacing-lg));
 
 	display: flex;
@@ -9,6 +8,13 @@ body {
 	overflow-x: hidden; // Prevent horizontal scrollbars.
 
 	@include body;
+}
+
+@media screen and (min-width: 601px) {
+	// Admin bar is only sticky after 600px.
+	body {
+		--body-top: var(--wp-admin--admin-bar--height, 0px);
+	}
 }
 
 .has-sticky-header {
