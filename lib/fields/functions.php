@@ -23,6 +23,10 @@ defined( 'ABSPATH' ) || die;
  * @return bool
  */
 function mai_get_acf_request( $request ) {
+	if ( ! function_exists( 'acf_verify_ajax' ) ) {
+		return false;
+	}
+
 	$nonce  = isset( $_REQUEST['nonce'] ) ? $_REQUEST['nonce'] : '';
 	$action = isset( $_REQUEST['field_key'] ) ? $_REQUEST['field_key'] : '';
 	$return = isset( $_REQUEST[ $request ] ) ? $_REQUEST[ $request ] : false;
