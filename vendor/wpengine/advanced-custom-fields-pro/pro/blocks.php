@@ -736,6 +736,8 @@ function acf_block_render_template( $block, $content, $is_preview, $post_id, $wp
 	// Include template.
 	if ( file_exists( $path ) ) {
 		include $path;
+	} elseif ( $is_preview ) {
+		echo acf_esc_html( apply_filters( 'acf/blocks/template_not_found_message', '<p>' . __( 'The render template for this ACF Block was not found', 'acf' ) . '</p>' ) );
 	}
 }
 
