@@ -227,7 +227,7 @@ body.has-boxed-container .editor-styles-wrapper {
  * Setup Wizard.
  */
 
-.setup-wizard {
+.mai-setup-wizard {
 	--color-primary: #2cb563;
 
 	position: fixed;
@@ -244,13 +244,13 @@ body.has-boxed-container .editor-styles-wrapper {
 	text-align: center;
 	background: #f1f1f1;
 
-	> .setup-wizard-logo-wrap {
+	> .mai-setup-wizard-logo-wrap {
 		order: -2;
 		width: 100%;
 		margin-bottom: 0;
 	}
 
-	.setup-wizard-logo {
+	.mai-setup-wizard-logo {
 		width: 100%;
 		max-width: 100px;
 	}
