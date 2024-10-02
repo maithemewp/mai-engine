@@ -419,7 +419,6 @@ return [
 			'automatic-feed-links',
 			'editor-styles',
 			'genesis-accessibility'    => [
-				'404-page',
 				'headings',
 				'search-form',
 				'skip-links',
