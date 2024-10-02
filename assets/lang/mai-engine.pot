@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-09-17T14:07:48+00:00\n"
+"POT-Creation-Date: 2024-10-02T15:16:50+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: mai-engine\n"
@@ -85,30 +85,30 @@ msgstr ""
 msgid "Loading"
 msgstr ""
 
-#: config/_default.php:439
+#: config/_default.php:438
 msgid "Header Left Menu"
 msgstr ""
 
-#: config/_default.php:440
+#: config/_default.php:439
 msgid "Header Right Menu"
 msgstr ""
 
-#: config/_default.php:441
+#: config/_default.php:440
 #: lib/admin/hide-elements.php:146
 msgid "After Header Menu"
 msgstr ""
 
-#: config/_default.php:559
+#: config/_default.php:558
 #: lib/functions/deprecated.php:254
 msgid "Sidebar"
 msgstr ""
 
-#: config/_default.php:560
+#: config/_default.php:559
 #: lib/functions/deprecated.php:255
 msgid "The Sidebar widget area."
 msgstr ""
 
-#: config/_default.php:670
+#: config/_default.php:669
 msgid "Read more"
 msgstr ""
 

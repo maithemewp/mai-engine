@@ -312,7 +312,7 @@
 
 	> .input-radio {
 		grid-row: 1/1;
-		margin: 0;
+		margin: var(--spacing-xxs) 0 0;
 	}
 
 	> *:not(.input-radio) {
