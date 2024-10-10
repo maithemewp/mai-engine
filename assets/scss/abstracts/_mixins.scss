@@ -23,7 +23,7 @@
 @mixin hover-focus {
 
 	&:hover,
-	&:focus,
+	&:focus-visible,
 	&:active {
 		@content;
 	}

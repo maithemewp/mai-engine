@@ -688,7 +688,7 @@
 /* Matches .components-button.is-small in core. */
 .acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child,
 .acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:hover,
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:focus {
+.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:focus-visible {
 	flex: 0;
 	order: 99;
 	font-size: 11px;
@@ -704,7 +704,7 @@
 
 /* Matches .components-button.is-small in core. */
 .acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:hover,
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:focus {
+.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:focus-visible {
 	color: #00a0d2 !important;
 	background: transparent !important;
 	border: transparent !important;
@@ -716,7 +716,7 @@
 }
 
 .acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:hover,
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:focus {
+.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:focus-visible {
 	color: #016087;
 	background: #f3f5f6;
 	border-color: #0071a1;

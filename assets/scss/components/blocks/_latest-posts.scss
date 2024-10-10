@@ -17,7 +17,7 @@
 	line-height: var(--heading-line-height);
 }
 
-.wp-block-latest-posts__post-title:focus,
+.wp-block-latest-posts__post-title:focus-visible,
 .wp-block-latest-posts__post-title:hover {
 	color: var(--entry-title-link-hover-color, var(--color-link));
 }

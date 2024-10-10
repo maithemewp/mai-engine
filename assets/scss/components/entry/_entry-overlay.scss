@@ -29,7 +29,7 @@
 			--entry-title-text-decoration-hover: none;
 
 			&:hover,
-			&:focus {
+			&:focus-visible {
 				--entry-overlay-opacity: var(--entry-overlay-hover-opacity, 0.8);
 				--entry-overlay-background: linear-gradient(var(--entry-overlay-hover-background-direction, var(--entry-overlay-background-direction, to bottom)), var(--entry-overlay-hover-color-start, var(--entry-overlay-color-start, var(--color-heading))) 0%, var(--entry-overlay-hover-color-end, var(--entry-overlay-color-end, var(--color-heading))) 100%);
 			}

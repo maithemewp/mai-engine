@@ -49,9 +49,9 @@
 	overflow: hidden;
 }
 
-.entries.has-image-background .has-image.has-entry-link:focus,
+.entries.has-image-background .has-image.has-entry-link:focus-visible,
 .entries.has-image-background .has-image.has-entry-link:hover,
-.entries:not(.has-image-background) .has-image.has-entry-link .entry-image-link:focus,
+.entries:not(.has-image-background) .has-image.has-entry-link .entry-image-link:focus-visible,
 .entries:not(.has-image-background) .has-image.has-entry-link .entry-image-link:hover {
 	--image-transform: scale(1.05);
 }

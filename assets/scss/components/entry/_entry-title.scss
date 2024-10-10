@@ -16,7 +16,7 @@
 	text-decoration: var(--entry-title-text-decoration, none);
 
 	&:hover,
-	&:focus {
+	&:focus-visible {
 		color: var(--entry-title-link-color-hover, var(--link-color-hover, var(--color-link)));
 		text-decoration: var(--entry-title-text-decoration-hover, var(--entry-title-text-decoration, none));
 	}

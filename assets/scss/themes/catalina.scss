@@ -39,7 +39,7 @@
 }
 
 .nav-header .sub-menu .menu-item-link-current,
-.nav-header .sub-menu .menu-item-link:focus,
+.nav-header .sub-menu .menu-item-link:focus-visible,
 .nav-header .sub-menu .menu-item-link:hover {
 	color: var(--color-white);
 	background-color: var(--color-secondary);

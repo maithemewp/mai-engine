@@ -70,7 +70,7 @@
 
 	&-current,
 	&:hover,
-	&:focus {
+	&:focus-visible {
 		color: var(--menu-item-link-color-hover, var(--menu-item-link-color, var(--color-link)));
 		filter: var(--menu-item-name-filter-hover, var(--link-filter-hover));
 	}

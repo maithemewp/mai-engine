@@ -208,7 +208,7 @@
 	border-radius: 50%;
 
 	&:hover,
-	&:focus {
+	&:focus-visible {
 		color: var(--color-white);
 		text-decoration: none;
 		background-color: var(--color-danger);

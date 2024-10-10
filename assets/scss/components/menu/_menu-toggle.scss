@@ -20,7 +20,7 @@
 	--button-transform: 0;
 	--button-transform-hover: 0;
 
-	&:focus {
+	&:focus-visible {
 		outline: var(--border);
 	}
 }

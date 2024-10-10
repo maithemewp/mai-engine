@@ -32,7 +32,7 @@
 
 .nav-after-header .menu > .menu-item > .menu-item-link-current,
 .nav-after-header .menu > .menu-item > .menu-item-link:hover,
-.nav-after-header .menu > .menu-item > .menu-item-link:focus {
+.nav-after-header .menu > .menu-item > .menu-item-link:focus-visible {
 	--menu-item-link-border-color: var(--color-primary);
 }
 
@@ -61,9 +61,9 @@
 	overflow: hidden;
 }
 
-.entries.has-image-background .has-image.has-entry-link:focus,
+.entries.has-image-background .has-image.has-entry-link:focus-visible,
 .entries.has-image-background .has-image.has-entry-link:hover,
-.entries:not(.has-image-background) .has-image.has-entry-link .entry-image-link:focus,
+.entries:not(.has-image-background) .has-image.has-entry-link .entry-image-link:focus-visible,
 .entries:not(.has-image-background) .has-image.has-entry-link .entry-image-link:hover {
 	--image-transform: scale(1.05);
 }
@@ -84,11 +84,11 @@
 }
 
 .entry-categories a:hover,
-.entry-categories a:focus,
+.entry-categories a:focus-visible,
 .entry-tags a:hover,
-.entry-tags a:focus,
+.entry-tags a:focus-visible,
 .entry-terms a:hover,
-.entry-terms a:focus {
+.entry-terms a:focus-visible {
 	--entry-term-link-background: var(--entry-term-link-background-hover, var(--color-primary));
 }
 

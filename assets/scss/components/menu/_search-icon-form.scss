@@ -31,7 +31,7 @@
 	box-shadow: none;
 
 	&:hover,
-	&:focus {
+	&:focus-visible {
 		color: var(--search-toggle-color-hover, var(--search-toggle-color, var(--menu-item-link-color, var(--color-heading))));
 		background: transparent;
 		border: none;

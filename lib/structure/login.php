@@ -105,7 +105,7 @@ function mai_login_css() {
 
 		}
 		body.login.wp-core-ui .button:hover,
-		body.login.wp-core-ui .button:focus {
+		body.login.wp-core-ui .button:focus-visible {
 			color: var(--button-color-hover, var(--button-color));
 			background: var(--button-background-hover, var(--color-primary-dark, var(--button-background, var(--color-primary))));
 			border: var(--button-border-hover, var(--button-border, 0));
@@ -169,31 +169,31 @@ function mai_login_css() {
 			border: var(--input-border, 1px solid rgba(0,0,0,.1));
 			border-radius: var(--input-border-radius, var(--border-radius));
 		}
-		body.login input[type="color"]:focus,
-		body.login input[type="date"]:focus,
-		body.login input[type="datetime-local"]:focus,
-		body.login input[type="datetime"]:focus,
-		body.login input[type="email"]:focus,
-		body.login input[type="month"]:focus,
-		body.login input[type="number"]:focus,
-		body.login input[type="password"]:focus,
-		body.login input[type="search"]:focus,
-		body.login input[type="tel"]:focus,
-		body.login input[type="text"]:focus,
-		body.login input[type="time"]:focus,
-		body.login input[type="url"]:focus,
-		body.login input[type="week"]:focus,
-		body.login inputinput:not([type]):focus,
-		body.login inputoptgroup:focus,
-		body.login inputselect:focus,
-		body.login inputtextarea:focus {
+		body.login input[type="color"]:focus-visible,
+		body.login input[type="date"]:focus-visible,
+		body.login input[type="datetime-local"]:focus-visible,
+		body.login input[type="datetime"]:focus-visible,
+		body.login input[type="email"]:focus-visible,
+		body.login input[type="month"]:focus-visible,
+		body.login input[type="number"]:focus-visible,
+		body.login input[type="password"]:focus-visible,
+		body.login input[type="search"]:focus-visible,
+		body.login input[type="tel"]:focus-visible,
+		body.login input[type="text"]:focus-visible,
+		body.login input[type="time"]:focus-visible,
+		body.login input[type="url"]:focus-visible,
+		body.login input[type="week"]:focus-visible,
+		body.login inputinput:not([type]):focus-visible,
+		body.login inputoptgroup:focus-visible,
+		body.login inputselect:focus-visible,
+		body.login inputtextarea:focus-visible {
 			border-color: var(--input-border-color-focus, var(--color-link));
 			box-shadow: none;
 			outline: none;
 		}
 		body.login.wp-core-ui .button.wp-hide-pw,
 		body.login.wp-core-ui .button.wp-hide-pw:hover,
-		body.login.wp-core-ui .button.wp-hide-pw:focus,
+		body.login.wp-core-ui .button.wp-hide-pw:focus-visible,
 		body.login.wp-core-ui .button.wp-hide-pw:active {
 			--button-color: var(--color-primary);
 			--button-color-hover: var(--color-primary-dark);
@@ -279,7 +279,7 @@ function mai_login_css() {
 			text-decoration: none;
 		}
 		.login .mai-login-logo a:hover,
-		.login .mai-login-logo a:focus {
+		.login .mai-login-logo a:focus-visible {
 			color: var(--color-link);
 		}
 		.login .mai-login-logo img {
