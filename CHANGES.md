@@ -2,7 +2,7 @@
 
 ## 2.35.0 (TBD)
 * Added: New `--button-outline-width` custom prop to more consistently override outline button styles.
-* Changed: Update ACF to 6.3.6.
+* Changed: Update ACF to 6.3.8.
 * Changed: More through and simpler encoding handling with PHP's `DOMDocument`.
 * Changed: Better handling of post exclusion when using Mai Post Grid.
 * Changed: Using 100svh instead of 100dvh for body height.
