@@ -16,6 +16,7 @@
 * Changed: Convert `DOMDocument` to `WP_HTML_Tag_Processor` for WooCommerce button classes.
 * Changed: Check if post type exists after `mai_grid_post_types` filter.
 * Changed: Validate ACF fields that don't use `field_` as the field key prefix.
+* Changed: Update the updater.
 * Fixed: Full aligned blocks did not always display correctly in the editor, particularly when nested, and/or when the content alignment was left or right.
 * Fixed: The has-z-index-2 wasn't applying the correct z-index of 2.
 * Fixed: Search block was not centering correctly in some scenarios, when set to be center aligned.
