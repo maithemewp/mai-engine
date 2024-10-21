@@ -6,15 +6,15 @@
 
 	// Backwards compatibility since WP changed to flex
 	// in 5.7 and new instances use .is-content-justification-{alignment}
-	&.alignleft {
+	&:has(.alignleft) {
 		justify-content: start;
 	}
 
-	&.aligncenter {
+	&:has(.aligncenter) {
 		justify-content: center;
 	}
 
-	&.alignright {
+	&:has(.alignright) {
 		justify-content: end;
 	}
 }

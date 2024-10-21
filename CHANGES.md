@@ -6,6 +6,7 @@
 * Changed: More through and simpler encoding handling with PHP's `DOMDocument`.
 * Changed: Better handling of post exclusion when using Mai Post Grid.
 * Changed: Using 100svh instead of 100dvh for body height.
+* Changed: Now using less specific `:has()` for CSS class checks.
 * Changed: Add transient caching to classic editor styles from customizer.
 * Changed: Tweak order of processing in `mai_get_processed_content()`.
 * Changed: [Performance] More efficient `get_terms()` queries when we only need `id` and `name`.

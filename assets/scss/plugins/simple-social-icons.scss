@@ -51,15 +51,15 @@
 			}
 		}
 
-		&.aligncenter {
+		&:has(.aligncenter) {
 			justify-content: center;
 		}
 
-		&.alignleft {
+		&:has(.alignleft) {
 			justify-content: start;
 		}
 
-		&.alignright {
+		&:has(.alignright) {
 			justify-content: end;
 		}
 	}

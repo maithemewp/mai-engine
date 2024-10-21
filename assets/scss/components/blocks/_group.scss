@@ -4,7 +4,7 @@
 	justify-content: var(--group-block-justify-content, center);
 	padding: var(--group-block-padding-top, 0.05px) var(--group-block-padding-right, 0.05px) var(--group-block-padding-bottom, 0.05px) var(--group-block-padding-left, 0.05px); // 0.05px prevents margin collapsing.
 
-	&.alignfull {
+	&:has(.alignfull) {
 		// Can't override property or it will break nested blocks.
 		padding-right: var(--group-block-alignfull-padding-right, calc(((var(--viewport-width) - var(--breakpoint-xl)) / 2) - var(--side-spacing)));
 		padding-left: var(--group-block-alignfull-padding-left, calc(((var(--viewport-width) - var(--breakpoint-xl)) / 2) - var(--side-spacing)));
