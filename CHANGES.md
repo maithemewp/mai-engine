@@ -27,6 +27,7 @@
 * Fixed: Menu toggle text color was not styed correctly when screen-reader-text class is removed.
 * Fixed: Accent color being applied unexpectedly on select fields in some browsers, looking at you Safari.
 * Fixed: Select field now sets min-height instead of height.
+* Fixed: Removed the "remove global styles" setting to maintain compatibility with WP and fix "Missing Dependencies" error.
 
 ## 2.34.1 (4/18/24)
 * Changed: Order of processing in `mai_get_processed_content()` to match `get_the_block_template_html()` function in WP core.

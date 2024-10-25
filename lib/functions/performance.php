@@ -81,22 +81,22 @@ function mai_disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
  *
  * @return void
  */
-add_action( 'init', 'mai_remove_wp_global_styles' );
-function mai_remove_wp_global_styles() {
-	if ( ! mai_get_option( 'remove-global-styles', mai_get_performance_default( 'remove-global-styles' ) ) ) {
-		return;
-	}
+// add_action( 'init', 'mai_remove_wp_global_styles' );
+// function mai_remove_wp_global_styles() {
+// 	if ( ! mai_get_option( 'remove-global-styles', mai_get_performance_default( 'remove-global-styles' ) ) ) {
+// 		return;
+// 	}
 
-	// Global styles.
-	remove_action( 'wp_enqueue_scripts', 'wp_enqueue_global_styles' );
-	remove_action( 'wp_footer', 'wp_enqueue_global_styles', 1 );
-	// Inline SVGs.
-	remove_action( 'wp_body_open', 'wp_global_styles_render_svg_filters' );
+// 	// Global styles.
+// 	remove_action( 'wp_enqueue_scripts', 'wp_enqueue_global_styles' );
+// 	remove_action( 'wp_footer', 'wp_enqueue_global_styles', 1 );
+// 	// Inline SVGs.
+// 	remove_action( 'wp_body_open', 'wp_global_styles_render_svg_filters' );
 
-	// Editor.
-	remove_action( 'enqueue_block_editor_assets', 'wp_enqueue_global_styles_css_custom_properties' );
-	remove_action( 'in_admin_header', 'wp_global_styles_render_svg_filters' );
-}
+// 	// Editor.
+// 	remove_action( 'enqueue_block_editor_assets', 'wp_enqueue_global_styles_css_custom_properties' );
+// 	remove_action( 'in_admin_header', 'wp_global_styles_render_svg_filters' );
+// }
 
 add_action( 'wp_default_scripts', 'mai_remove_jquery_migrate' );
 /**

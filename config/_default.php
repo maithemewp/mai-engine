@@ -777,7 +777,7 @@ return [
 			'remove-template-classes'    => true,
 			'disable-emojis'             => true,
 			'remove-recent-comments-css' => true,
-			'remove-global-styles'       => true,
+			// 'remove-global-styles'       => true,
 			'remove-jquery-migrate'      => true,
 		],
 		'genesis'             => [
