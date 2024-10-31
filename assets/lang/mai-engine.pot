@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-10-21T16:26:31+00:00\n"
+"POT-Creation-Date: 2024-10-31T01:10:30+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: mai-engine\n"
@@ -1989,10 +1989,6 @@ msgstr ""
 
 #: lib/customize/performance.php:111
 msgid "Remove jQuery Migrate script"
-msgstr ""
-
-#: lib/customize/performance.php:123
-msgid "Remove unused global styles and inline svgs"
 msgstr ""
 
 #: lib/customize/setup.php:51

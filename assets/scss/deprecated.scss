@@ -32,14 +32,14 @@ $colors: (
 
 @each $color-name, $color-value in $colors {
 
-	.has-#{ $color-name }-color,
-	.has-#{ $color-name }-color:hover,
-	.has-#{ $color-name }-color:focus {
-		color: #{ $color-value };
+	.has-#{"#{$color-name}" }-color,
+	.has-#{"#{$color-name}" }-color:hover,
+	.has-#{"#{$color-name}" }-color:focus {
+		color: #{$color-value};
 	}
 
-	.has-#{ $color-name }-background-color {
-		background-color: #{ $color-value };
+	.has-#{"#{$color-name}" }-background-color {
+		background-color: #{$color-value};
 	}
 }
 

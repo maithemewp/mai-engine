@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 $all-buttons: append($all-buttons, ".button");
 $all-buttons: append($all-buttons, ".button:visited");
 $all-text-inputs: append($all-text-inputs, "select");
@@ -7,11 +9,11 @@ $all-headings: (h1, h2, h3, h4, h5, h6, 'legend:where(:not([class*="gfield"]):no
 $breakpoint: 1200;
 
 $breakpoints: (
-	xl: ($breakpoint / 1) * 1px,
-	lg: ($breakpoint / 1.2) * 1px,
-	md: ($breakpoint / 1.5) * 1px,
-	sm: ($breakpoint / 2) * 1px,
-	xs: ($breakpoint / 3) * 1px,
+	xl: math.div($breakpoint, 1) * 1px,
+	lg: math.div($breakpoint, 1.2) * 1px,
+	md: math.div($breakpoint, 1.5) * 1px,
+	sm: math.div($breakpoint, 2) * 1px,
+	xs: math.div($breakpoint, 3) * 1px,
 ) !default;
 
 // $colors: (
