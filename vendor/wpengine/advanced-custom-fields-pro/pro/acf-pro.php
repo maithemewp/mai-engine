@@ -24,7 +24,6 @@ if ( ! class_exists( 'acf_pro' ) ) :
 			acf_include( 'pro/blocks.php' );
 			acf_include( 'pro/options-page.php' );
 			acf_include( 'pro/acf-ui-options-page-functions.php' );
-			acf_include( 'pro/class-acf-updates.php' );
 			acf_include( 'pro/updates.php' );
 
 			if ( is_admin() ) {
