@@ -123,7 +123,7 @@ function mai_render_admin_patterns_menu_page() {
 	<style>
 	.mai-patterns {
 		display: grid;
-		grid-template-columns: repeat(var(--mai-patterns-columns, 1), 1fr);
+		grid-template-columns: repeat(var(--mai-patterns-columns, 1), minmax(10px, 1fr));
 		gap: 48px 24px;
 		margin: 60px 0;
 	}

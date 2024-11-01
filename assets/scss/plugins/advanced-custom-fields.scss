@@ -377,7 +377,7 @@
 [id$="-mai_icon_choices-results"],
 [id$="-mai_icon_brand_choices-results"] {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(3, minmax(10px, 1fr));
 }
 
 [id$="-mai_icon_choices-results"] .select2-results__option,
