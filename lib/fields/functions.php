@@ -31,7 +31,7 @@ function mai_get_acf_request( $request ) {
 	$action = isset( $_REQUEST['field_key'] ) ? $_REQUEST['field_key'] : '';
 	$return = isset( $_REQUEST[ $request ] ) ? $_REQUEST[ $request ] : false;
 
-	return $nonce && $action && $return && acf_verify_ajax( $nonce, $action ) ? $return : false;
+	return $nonce && $action && $return && acf_verify_ajax( $nonce, $action, true ) ? $return : false;
 }
 
 /**
