@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || die;
 add_action( 'admin_menu', 'mai_admin_menu_pages' );
 /**
  * Registers plugin admin menu pages.
- * Exposes Reusable Blocks UI in backend.
+ * Exposes Patterns UI in backend.
  *
  * @link  https://www.billerickson.net/reusable-blocks-accessible-in-wordpress-admin-area
  *
@@ -57,8 +57,8 @@ function mai_admin_menu_pages() {
 
 	add_submenu_page(
 		'mai-theme',
-		esc_html__( 'Reusable Blocks', 'mai-engine' ),
-		esc_html__( 'Reusable Blocks', 'mai-engine' ),
+		esc_html__( 'Patterns', 'mai-engine' ),
+		esc_html__( 'Patterns', 'mai-engine' ),
 		'edit_posts',
 		'edit.php?post_type=wp_block',
 		'',
@@ -68,7 +68,7 @@ function mai_admin_menu_pages() {
 	add_submenu_page(
 		'mai-theme',
 		'Mai Pattern Library',
-		esc_html__( 'Patterns', 'mai-engine' ),
+		esc_html__( 'Pattern Library', 'mai-engine' ),
 		'edit_posts',
 		'mai-patterns',
 		'mai_render_admin_patterns_menu_page',
@@ -78,8 +78,8 @@ function mai_admin_menu_pages() {
 	if ( current_user_can( 'edit_theme_options' ) ) {
 		add_submenu_page(
 			'themes.php',
-			esc_html__( 'Reusable Blocks', 'mai-engine' ),
-			esc_html__( 'Reusable Blocks', 'mai-engine' ),
+			esc_html__( 'Patterns', 'mai-engine' ),
+			esc_html__( 'Patterns', 'mai-engine' ),
 			'edit_posts',
 			'edit.php?post_type=wp_block',
 			'',

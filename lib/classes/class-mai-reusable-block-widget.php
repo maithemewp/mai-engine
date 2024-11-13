@@ -27,7 +27,7 @@ class Mai_Reusable_Block_Widget extends WP_Widget {
 	public function __construct() {
 		parent::__construct(
 			'mai_reusable_block_widget',
-			esc_html__( 'Mai Reusable Block', 'mai-engine' ),
+			esc_html__( 'Mai Synced Patterns', 'mai-engine' ),
 			[
 				'classname'   => 'mai-reusable-block-widget',
 				'description' => esc_html__( 'Display an existing reusable block in a widget area.', 'mai-engine' ),
@@ -93,7 +93,7 @@ class Mai_Reusable_Block_Widget extends WP_Widget {
 
 		if ( $blocks->have_posts() ) {
 			echo '<p>';
-			printf( '<label for="%s">%s</label>', esc_attr( $this->get_field_id( 'block' ) ), esc_attr__( 'Select from saved Reusable Blocks: ', 'mai-engine' ) );
+			printf( '<label for="%s">%s</label>', esc_attr( $this->get_field_id( 'block' ) ), esc_attr__( 'Select from saved Synced Patterns: ', 'mai-engine' ) );
 			printf( '<select class="widefat" id="%s" name="%s">', esc_attr( $this->get_field_id( 'block' ) ), esc_attr( $this->get_field_name( 'block' ) ) );
 			printf( '<option values="">%s</option>', esc_html__( 'Select Reusable Block', 'mai-engine' ) );
 
