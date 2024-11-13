@@ -2,6 +2,7 @@
 
 ## 2.35.0 (TBD)
 * Added: New `--button-outline-width` custom prop to more consistently override outline button styles.
+* Changed: Reusable Blocks are now Synced Patterns to stay aligned with WP terminology.
 * Changed: Update ACF to 6.3.11.
 * Changed: Update Gulp to 5.0.0.
 * Changed: More through and simpler encoding handling with PHP's `DOMDocument`.
