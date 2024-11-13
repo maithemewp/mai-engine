@@ -17,13 +17,15 @@ add_filter( 'acf/load_field/key=mai_grid_block_show', 'mai_acf_load_show', 10, 1
  * Loads the "Show" field.
  *
  * @since 0.1.0
+ * @since 2.25.6 Added admin check.
+ * @since TBD Added ajax check.
  *
  * @param array $field Field array.
  *
  * @return mixed
  */
 function mai_acf_load_show( $field ) {
-	if ( ! is_admin() ) {
+	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
 		return $field;
 	}
 
@@ -50,13 +52,15 @@ add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_not_in', 'mai_
  * Gets chosen post type for use in other field filters.
  *
  * @since 0.1.0
+ * @since 2.25.6 Added admin check.
+ * @since TBD Added ajax check.
  *
  * @param array $args Field args.
  *
  * @return mixed
  */
 function mai_acf_get_posts( $args ) {
-	if ( ! is_admin() ) {
+	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
 		return $args;
 	}
 

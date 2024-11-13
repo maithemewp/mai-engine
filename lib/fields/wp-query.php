@@ -17,14 +17,15 @@ add_filter( 'acf/load_field/key=mai_grid_block_post_type', 'mai_grid_load_post_t
  * Loads post type choices.
  *
  * @since 2.21.0
- * @since 2.25.6 Only run in admin.
+ * @since 2.25.6 Added admin check.
+ * @since TBD Added ajax check.
  *
  * @param array $field The existing field array.
  *
  * @return array
  */
 function mai_grid_load_post_type_field( $field ) {
-	if ( ! is_admin() ) {
+	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
 		return $field;
 	}
 
@@ -33,23 +34,99 @@ function mai_grid_load_post_type_field( $field ) {
 	return $field;
 }
 
+add_filter( 'acf/prepare_field/key=mai_grid_block_tax_taxonomy', 'mai_grid_prepare_tax_taxonomy_field' );
+/**
+ * Load taxonomy choices based on existing saved field value.
+ * Since we're using ajax to load choices, we need to load the saved value as an initial choice.
+ *
+ * @link https://github.com/maithemewp/mai-engine/issues/93
+ *
+ * @since TBD
+ *
+ * @param array $field The existing field array.
+ *
+ * @return array
+ */
+function mai_grid_prepare_tax_taxonomy_field( $field ) {
+	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
+		return $field;
+	}
+
+	if ( $field['value'] ) {
+		$taxonomy = get_taxonomy( $field['value'] );
+
+		if ( $taxonomy ) {
+			$field['choices'] = [ $taxonomy->name => $taxonomy->label ];
+		}
+	}
+
+	return $field;
+}
+
 add_filter( 'acf/load_field/key=mai_grid_block_tax_taxonomy', 'mai_grid_load_tax_taxonomy_field' );
 /**
- * Loads taxonomy choices.
+ * Loads taxonomy choices from post type value.
  *
  * @since 2.21.0
- * @since 2.25.6 Only run in admin.
+ * @since 2.25.6 Added admin check.
+ * @since TBD Added ajax check.
  *
  * @param array $field The existing field array.
  *
  * @return array
  */
 function mai_grid_load_tax_taxonomy_field( $field ) {
-	if ( ! is_admin() ) {
+	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
 		return $field;
 	}
 
-	$field['choices'] = mai_get_post_types_taxonomy_choices();
+	if ( ! isset( $_REQUEST['post_type'] ) ) {
+		return $field;
+	}
+
+	$field['choices'] = mai_get_taxonomy_choices_from_post_types( (array) $_REQUEST['post_type'] );
+
+	return $field;
+}
+
+add_filter( 'acf/prepare_field/key=mai_grid_block_tax_terms', 'mai_acf_prepare_terms', 10, 1 );
+/**
+ * Load term choices based on existing saved field value.
+ * Ajax loading terms was working, but if a term was already saved
+ * it was not loading correctly when editing a post.
+ *
+ * @link https://github.com/maithemewp/mai-engine/issues/93
+ *
+ * @since 0.3.3
+ * @since 2.25.6 Added admin check.
+ * @since TBD Added ajax check.
+ *
+ * @param array $field The ACF field array.
+ *
+ * @return mixed
+ */
+function mai_acf_prepare_terms( $field ) {
+	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
+		return $field;
+	}
+
+	if ( ! $field['value'] ) {
+		return $field;
+	}
+
+	$term_id = reset( $field['value'] );
+
+	if ( ! $term_id ) {
+		return $field;
+	}
+
+	$term = get_term( $term_id );
+
+	if ( ! $term || is_wp_error( $term ) ) {
+		return $field;
+	}
+
+	$field['choices'] = mai_get_term_choices_from_taxonomy( $term->taxonomy );
 
 	return $field;
 }
@@ -60,14 +137,15 @@ add_filter( 'acf/load_field/key=mai_grid_block_tax_terms', 'mai_acf_load_terms',
  * The taxonomy is passed via JS on select2_query_args filter.
  *
  * @since 0.1.0
- * @since 2.25.6 Only run in admin.
+ * @since 2.25.6 Added admin check.
+ * @since TBD Added ajax check.
  *
  * @param array $field The ACF field array.
  *
  * @return mixed
  */
 function mai_acf_load_terms( $field ) {
-	if ( ! is_admin() ) {
+	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
 		return $field;
 	}
 
@@ -82,65 +160,24 @@ function mai_acf_load_terms( $field ) {
 	return $field;
 }
 
-add_filter( 'acf/prepare_field/key=mai_grid_block_tax_terms', 'mai_acf_prepare_terms', 10, 1 );
-/**
- * Load term choices based on existing saved field value.
- * Ajax loading terms was working, but if a term was already saved
- * it was not loading correctly when editing a post.
- *
- * @link  https://github.com/maithemewp/mai-engine/issues/93
- *
- * @since 0.3.3
- * @since 2.25.6 Only run in admin.
- *
- * @param array $field The ACF field array.
- *
- * @return mixed
- */
-function mai_acf_prepare_terms( $field ) {
-	if ( ! is_admin() ) {
-		return $field;
-	}
-
-	if ( ! $field['value'] ) {
-		return $field;
-	}
-
-	$term_id = $field['value'][0];
-
-	if ( ! $term_id ) {
-		return $field;
-	}
-
-	$term = get_term( $term_id );
-
-	if ( ! $term ) {
-		return $field;
-	}
-
-	$field['choices'] = mai_get_term_choices_from_taxonomy( $term->taxonomy );
-
-	return $field;
-}
-
 add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_parent_in', 'mai_acf_get_post_parents', 10, 1 );
 /**
  * Set the post type args for post_object query in ACF.
  *
  * @since 0.1.0
- * @since 2.25.6 Only run in admin.
+ * @since 2.25.6 Added admin check.
+ * @since TBD Added ajax check.
  *
  * @param array $args Field args.
  *
  * @return mixed
  */
 function mai_acf_get_post_parents( $args ) {
-	if ( ! is_admin() ) {
+	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
 		return $args;
 	}
 
-	$args['post_type'] = [];
-	$post_types        = mai_get_acf_request( 'post_type' );
+	$args['post_type'] = (array) mai_get_acf_request( 'post_type' );
 
 	if ( ! $post_types ) {
 		return $args;
@@ -166,14 +203,15 @@ add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_parent_in','ma
  * Allow searching for posts by ID.
  *
  * @since 2.15.0
- * @since 2.25.6 Only run in admin.
+ * @since 2.25.6 Added admin check.
+ * @since TBD Added ajax check.
  *
  * @link https://www.powderkegwebdesign.com/fantastic-way-allow-searching-id-advanced-custom-fields-objects/
  *
  * @return array
  */
 function mai_acf_get_posts_by_id( $args, $field, $post_id ) {
-	if ( ! is_admin() ) {
+	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
 		return $args;
 	}
 

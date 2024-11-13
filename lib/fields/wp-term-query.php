@@ -17,14 +17,15 @@ add_filter( 'acf/load_field/key=mai_grid_block_taxonomy', 'mai_grid_load_taxonom
  * Loads taxonomy choices.
  *
  * @since 2.21.0
- * @since 2.25.6 Only run in admin.
+ * @since 2.25.6 Added admin check.
+ * @since TBD Added ajax check.
  *
  * @param array $field The existing field array.
  *
  * @return array
  */
 function mai_grid_load_taxonomy_field( $field ) {
-	if ( ! is_admin() ) {
+	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
 		return $field;
 	}
 
@@ -39,15 +40,18 @@ add_filter( 'acf/load_field/key=mai_grid_block_tax_exclude', 'mai_grid_load_incl
  * Sets taxonomy based on the block taxonomies field, when the include/exclude fields are initially loaded.
  *
  * @since 2.27.0
+ * @since TBD Added ajax check.
  *
  * @param array $field
  *
  * @return array
  */
 function mai_grid_load_include_terms_field( $field ) {
-	if ( ! is_admin() ) {
+	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
 		return $field;
 	}
+
+	$taxonomies = mai_get_acf_request( 'taxonomy' );
 
 	$action = mai_get_acf_request( 'action' );
 	$block  = mai_get_acf_request( 'block' );
@@ -77,15 +81,16 @@ add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_exclude', 'mai_acf
  * The taxonomy is passed via JS on select2_query_args filter.
  *
  * @since 0.1.0
- * @since 2.25.6 Only run in admin.
+ * @since 2.25.6 Added admin check.
  * @since 2.27.0 Force first taxonomy. See #631.
+ * @since TBD Added ajax check.
  *
  * @param array $args Field args.
  *
  * @return mixed
  */
 function mai_acf_get_terms( $args, $field, $post_id  ) {
-	if ( ! is_admin() ) {
+	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
 		return $args;
 	}
 
@@ -109,14 +114,15 @@ add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_parent', 'mai_acf_
  * The taxonomy is passed via JS on select2_query_args filter.
  *
  * @since 0.1.0
- * @since 2.25.6 Only run in admin.
+ * @since 2.25.6 Added admin check.
+ * @since TBD Added ajax check.
  *
  * @param array $args Field args.
  *
  * @return mixed
  */
 function mai_acf_get_term_parents( $args ) {
-	if ( ! is_admin() ) {
+	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
 		return $args;
 	}
 
@@ -149,14 +155,15 @@ add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_parent',  'mai_acf
  * Allow searching for terms by ID.
  *
  * @since 2.22.0
- * @since 2.25.6 Only run in admin.
+ * @since 2.25.6 Added admin check.
+ * @since TBD Added ajax check.
  *
  * @link https://www.powderkegwebdesign.com/fantastic-way-allow-searching-id-advanced-custom-fields-objects/
  *
  * @return array
  */
 function mai_acf_get_terms_by_id( $args, $field, $post_id ) {
-	if ( ! is_admin() ) {
+	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
 		return $args;
 	}
 
@@ -188,18 +195,15 @@ function mai_acf_get_terms_by_id( $args, $field, $post_id ) {
  * @return array
  */
 function mai_get_taxonomy_choices() {
-	$choices = [];
-
+	$choices    = [];
 	$taxonomies = get_taxonomies(
 		[
 			'public' => true,
 		],
 		'objects',
-		'or'
 	);
 
 	if ( $taxonomies ) {
-
 		// Remove taxonomies we don't want.
 		unset( $taxonomies['post_format'] );
 		unset( $taxonomies['product_shipping_class'] );
@@ -211,36 +215,6 @@ function mai_get_taxonomy_choices() {
 	}
 
 	return $choices;
-}
-
-/**
- * Get taxonomy choices from the current post type.
- * The post_type is passed via JS on select2_query_args filter.
- *
- * @since 0.1.0
- * @since 2.18.0 Added $fallback.
- *
- * @param bool $fallback Whether to use fallback choices.
- *
- * @return array
- */
-function mai_get_post_types_taxonomy_choices( $fallback = true ) {
-	$choices = [];
-
-	if ( ! ( is_admin() || is_customize_preview() ) ) {
-		return $choices;
-	}
-
-	$post_types = mai_get_acf_request( 'post_type' );
-
-	if ( ! $post_types && $fallback ) {
-		$taxonomies = get_taxonomies( [], 'objects' );
-		$choices    = wp_list_pluck( $taxonomies, 'label', 'name' );
-
-		return $choices;
-	}
-
-	return mai_get_taxonomy_choices_from_post_types( $post_types );
 }
 
 /**
@@ -297,7 +271,7 @@ function mai_get_term_choices_from_taxonomy( $taxonomy = '' ) {
 		]
 	);
 
-	if ( ! $terms ) {
+	if ( ! $terms || is_wp_error( $terms ) ) {
 		return $choices;
 	}
 
