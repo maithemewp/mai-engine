@@ -404,6 +404,10 @@
 	margin-bottom: var(--spacing-lg);
 }
 
+.is-large .wc-block-checkout__sidebar.is-sticky {
+	top: var(--scroll-margin-top);
+}
+
 // Order received, thank you page.
 
 .order_details {
