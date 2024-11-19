@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-11-13T19:25:58+00:00\n"
+"POT-Creation-Date: 2024-11-19T19:51:21+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: mai-engine\n"
@@ -140,7 +140,7 @@ msgstr ""
 #: lib/admin/admin-menu.php:81
 #: lib/admin/admin-menu.php:82
 #: lib/functions/templates.php:140
-msgid "Patterns"
+msgid "Synced Patterns"
 msgstr ""
 
 #: lib/admin/admin-menu.php:71
