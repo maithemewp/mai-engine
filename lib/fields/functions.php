@@ -13,7 +13,7 @@
 defined( 'ABSPATH' ) || die;
 
 /**
- * Gets an ACF request, checking nonce and value.
+ * Gets an ACF request.
  *
  * @since 0.1.0
  *

@@ -13,7 +13,6 @@
 * Changed: Tweak order of processing in `mai_get_processed_content()`.
 * Changed: [Performance] More efficient `get_terms()` queries when we only need `id` and `name`.
 * Changed: [Performance] Only run ACF field filters in the admin, when loading field data dynamically.
-* Changed: Use `acf_verify_ajax()` for nonce check when editing Mai Post/Term Grid.
 * Changed: Disable preloading of featured and page header images. This was often causing more issues than it was helping.
 * Changed: Convert `DOMDocument` to `WP_HTML_Tag_Processor` for Mai custom attributes.
 * Changed: Convert `DOMDocument` to `WP_HTML_Tag_Processor` for WooCommerce button classes.

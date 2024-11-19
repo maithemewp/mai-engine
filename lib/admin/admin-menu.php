@@ -57,8 +57,8 @@ function mai_admin_menu_pages() {
 
 	add_submenu_page(
 		'mai-theme',
-		esc_html__( 'Patterns', 'mai-engine' ),
-		esc_html__( 'Patterns', 'mai-engine' ),
+		esc_html__( 'Synced Patterns', 'mai-engine' ),
+		esc_html__( 'Synced Patterns', 'mai-engine' ),
 		'edit_posts',
 		'edit.php?post_type=wp_block',
 		'',
@@ -78,8 +78,8 @@ function mai_admin_menu_pages() {
 	if ( current_user_can( 'edit_theme_options' ) ) {
 		add_submenu_page(
 			'themes.php',
-			esc_html__( 'Patterns', 'mai-engine' ),
-			esc_html__( 'Patterns', 'mai-engine' ),
+			esc_html__( 'Synced Patterns', 'mai-engine' ),
+			esc_html__( 'Synced Patterns', 'mai-engine' ),
 			'edit_posts',
 			'edit.php?post_type=wp_block',
 			'',
