@@ -44,6 +44,11 @@
 	}
 }
 
+.wc-block-cart-item__prices,
+.wc-block-components-order-summary-item__individual-prices {
+	--price-font-size: var(--font-size-sm);
+}
+
 // Cart.
 
 .woocommerce-form-coupon {

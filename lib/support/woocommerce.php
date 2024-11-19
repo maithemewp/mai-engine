@@ -266,17 +266,18 @@ add_filter( 'render_block', 'mai_render_woocommerce_blocks', 10, 2 );
  * @return string The modified block HTML.
  */
 function mai_render_woocommerce_blocks( $block_content, $block ) {
-	if ( ! $block_content ) {
+	// Bail if not content or block name.
+	if ( ! $block_content || ! $block['blockName'] ) {
 		return $block_content;
 	}
 
 	// Bail if not a button block.
-	if ( ! mai_has_string( 'woocommerce/', $block['blockName'] ) ) {
+	if ( ! str_starts_with( $block['blockName'], 'woocommerce/' ) ) {
 		return $block_content;
 	}
 
 	// Set up tag processor.
-	$tags = new WP_HTML_Tag_Processor( $html );
+	$tags = new WP_HTML_Tag_Processor( $block_content );
 
 	// Loop through tags.
 	while ( $tags->next_tag( [ 'class_name' => 'wp-block-button__link' ] ) ) {
@@ -285,6 +286,7 @@ function mai_render_woocommerce_blocks( $block_content, $block ) {
 		$tags->add_class( 'button-small' );
 	}
 
+	// Get the updated HTML.
 	$block_content = $tags->get_updated_html();
 
 	return $block_content;

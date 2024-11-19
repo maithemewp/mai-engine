@@ -1,16 +1,22 @@
 # Changelog
 
 ## 2.35.0 (TBD)
+* Added: New `current` value can be used for `id` and `post_type` parameters in `mai_content` shortcode.
 * Added: New `--button-outline-width` custom prop to more consistently override outline button styles.
+* Added: Prior `—viewport-width` property is now included again.
 * Changed: Reusable Blocks are now Synced Patterns to stay aligned with WP terminology.
 * Changed: Update ACF to 6.3.11.
 * Changed: Update Gulp to 5.0.0.
+* Changed: Removed legacy genesis-accessibility attribute for 404-page.
 * Changed: More through and simpler encoding handling with PHP's `DOMDocument`.
 * Changed: Better handling of post exclusion when using Mai Post Grid.
 * Changed: Using 100svh instead of 100dvh for body height.
 * Changed: Now using less specific `:has()` for CSS class checks.
 * Changed: Add transient caching to classic editor styles from customizer.
 * Changed: Tweak order of processing in `mai_get_processed_content()`.
+* Changed: Sticky header is now disabled in landscape mode on mobile.
+* Changed: CSS is now on `:focus-visible` instead of `:focus` better visual handling of non-keyboard enabled focus.
+* Changed: CSS grid now uses `minmax()` instead of `1fr` in some scenarios to prevent grid blowout.
 * Changed: [Performance] More efficient `get_terms()` queries when we only need `id` and `name`.
 * Changed: [Performance] Only run ACF field filters in the admin, when loading field data dynamically.
 * Changed: Disable preloading of featured and page header images. This was often causing more issues than it was helping.
@@ -18,8 +24,13 @@
 * Changed: Convert `DOMDocument` to `WP_HTML_Tag_Processor` for WooCommerce button classes.
 * Changed: Check if post type exists after `mai_grid_post_types` filter.
 * Changed: Validate ACF fields that don't use `field_` as the field key prefix.
+* Changed: Added prefixes for our ACF field groups that didn't have one.
 * Changed: Update the updater.
+* Fixed: Social links gap when inside Mai Columns.
 * Fixed: Full aligned blocks did not always display correctly in the editor, particularly when nested, and/or when the content alignment was left or right.
+* Fixed: Wide aligned blocks were sometimes cut off in the editor.
+* Fixed: Mai Divider was not showing full width when inside Group/Cover block with content aligned left/right.
+* Fixed: Comments had unexpected list margin in some scenarios.
 * Fixed: The has-z-index-2 wasn't applying the correct z-index of 2.
 * Fixed: Search block was not centering correctly in some scenarios, when set to be center aligned.
 * Fixed: Author description not always showing correctly on the author archive.
