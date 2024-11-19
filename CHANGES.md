@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2.35.0 (TBD)
+* Added: [WooCommerce] Better compatibility with WooCommerce Cart and Checkout blocks.
 * Added: New `current` value can be used for `id` and `post_type` parameters in `mai_content` shortcode.
 * Added: New `--button-outline-width` custom prop to more consistently override outline button styles.
 * Added: Prior `—viewport-width` property is now included again.
