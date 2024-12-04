@@ -960,7 +960,7 @@ function mai_get_mai_acf_plugin_data() {
 		return $data;
 	}
 
-	$data = get_plugin_data( trailingslashit( dirname( __DIR__ ) ) . 'vendor/wpengine/advanced-custom-fields-pro/acf.php' );
+	$data = get_plugin_data( trailingslashit( dirname( __DIR__ ) ) . 'vendor/wpengine/advanced-custom-fields-pro/acf.php', true, false );
 
 	return $data;
 }
