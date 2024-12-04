@@ -1,7 +1,8 @@
 # Changelog
 
-## 2.35.0 (TBD)
+## 2.35.0 (12/4/24)
 * Added: [WooCommerce] Better compatibility with WooCommerce Cart and Checkout blocks.
+* Added: [FacetWP] Now allow FacetWP on a single Mai Post Grid instance by adding `facetwp-template` class to the block.
 * Added: New `current` value can be used for `id` and `post_type` parameters in `mai_content` shortcode.
 * Added: New `--button-outline-width` custom prop to more consistently override outline button styles.
 * Added: Prior `—viewport-width` property is now included again.
@@ -11,7 +12,7 @@
 * Changed: Removed legacy genesis-accessibility attribute for 404-page.
 * Changed: More through and simpler encoding handling with PHP's `DOMDocument`.
 * Changed: Better handling of post exclusion when using Mai Post Grid.
-* Changed: Using 100svh instead of 100dvh for body height.
+* Changed: Using `100svh` instead of `100dvh` for body height.
 * Changed: Now using less specific `:has()` for CSS class checks.
 * Changed: Add transient caching to classic editor styles from customizer.
 * Changed: Tweak order of processing in `mai_get_processed_content()`.
