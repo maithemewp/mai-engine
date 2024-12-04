@@ -8,6 +8,7 @@
 	min-height: 2em;
 	margin: 0;
 	padding: var(--menu-toggle-padding, 0);
+	color: currentColor; // Mostly for the 'Menu' text when screen-reader-text class is removed.
 	--button-background: transparent;
 	--button-background-hover: transparent;
 	--button-text-decoration: none;
@@ -19,7 +20,7 @@
 	--button-transform: 0;
 	--button-transform-hover: 0;
 
-	&:focus {
+	&:focus-visible {
 		outline: var(--border);
 	}
 }

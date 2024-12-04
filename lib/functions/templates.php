@@ -137,10 +137,10 @@ function mai_add_admin_bar_links( $wp_admin_bar ) {
 			[
 				'id'     => 'mai-reusable-blocks',
 				'parent' => 'site-name',
-				'title'  => __( 'Reusable Blocks', 'mai-engine' ),
+				'title'  => __( 'Synced Patterns', 'mai-engine' ),
 				'href'   => admin_url( 'edit.php?post_type=wp_block' ),
 				'meta'   => [
-					'title' => __( 'Edit Reusable Blocks', 'mai-engine' ),
+					'title' => __( 'Edit Patterns', 'mai-engine' ),
 				],
 			]
 		);

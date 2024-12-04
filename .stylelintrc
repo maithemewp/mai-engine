@@ -3,8 +3,5 @@
     "stylelint-config-wordpress",
     "stylelint-config-wordpress/scss",
     "stylelint-config-rational-order"
-  ],
-  "rules": {
-    "color-named": always-where-possible
-  }
+  ]
 }

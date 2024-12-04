@@ -53,7 +53,7 @@
 }
 
 .menu-item-link span:hover,
-.menu-item-link span:focus,
+.menu-item-link span:focus-visible,
 .entry-meta a:not(.button),
 .entry-content a:not([class]) {
 	border-bottom: 1px solid var(--color-link);

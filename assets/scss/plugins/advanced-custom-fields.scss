@@ -8,6 +8,15 @@
 
 // end tabs.
 
+.acf-block-fields:has(.acf-field[data-key^="mai"]) .acf-field {
+	border-top: 0;
+}
+
+.acf-block-fields:has(.acf-field[data-key^="mai"]) .acf-field:not(.acf-hidden):not(.acf-field-tab):not(.acf-field-accordion) {
+	margin-block: 16px;
+	padding-block: 0;
+}
+
 // acf sortable checkbox.
 
 .mai-sortable ul.acf-checkbox-list > li {
@@ -61,30 +70,29 @@
 
 // clone.
 
-.acf-field-clone[class*="mai"] {
+.acf-field-clone[data-key^="mai"] {
 	margin: 0 !important;
-	// margin: var(--mai-field-clone-margin, 0) !important;
 	padding: 0 !important;
 	border: 0 !important;
 }
 
-// .acf-field[class*="mai"] + .acf-field-clone[class*="mai"] {
-	// --mai-field-clone-margin: -16px 0 0;
-// }
+.acf-field[data-key^="mai"] + .acf-field-clone[data-key^="mai"] {
+	margin-top: -16px;
+}
 
-.acf-field-clone[class*="mai"] .acf-clone-fields {
+.acf-field-clone[data-key^="mai"] .acf-clone-fields {
 	border: 0 !important;
 }
 
-.acf-field-clone[class*="mai"] + .acf-field:not(.acf-field-clone) {
-	margin-top: 0 !important;
-}
+// .acf-field-clone[class*="mai"] + .acf-field:not(.acf-field-clone) {
+// 	margin-top: 0 !important;
+// }
 
-.acf-field-clone[class*="mai"] > .acf-input > .acf-clone-fields > .acf-field:not(.acf-hidden):last-of-type {
-	margin-bottom: 16px !important;
-}
+// .acf-field-clone[data-key^="mai"] > .acf-input > .acf-clone-fields > .acf-field:not(.acf-hidden):last-of-type {
+// 	margin-bottom: 16px !important;
+// }
 
-.acf-field-clone[class*="mai"] > .acf-label {
+.acf-field-clone[data-key^="mai"] > .acf-label {
 	display: none;
 }
 
@@ -278,22 +286,17 @@
 	display: flex;
 }
 
-.acf-block-panel .acf-block-fields div.acf-field.acf-field-mai-icon-padding {
-	clear: both !important;
-	padding-top: 16px;
-	border-top: 1px solid #e2e4e7;
-}
-
 .acf-block-panel .acf-block-fields div.acf-field.acf-field-mai-icon-padding .acf-input {
 	max-width: calc(50% - 16px) !important;
 }
 
 .acf-block-panel .acf-block-fields div.acf-field[data-name="margin_message"] {
-	clear: both !important;
+	margin-bottom: 0 !important;
+}
+
+.acf-block-panel .acf-field[data-key="mai_icon_margin"] > .acf-label,
+.acf-block-panel .acf-field[data-key="mai_icon_margin"] > .acf-label label {
 	margin-bottom: 0;
-	padding-top: 16px;
-	padding-bottom: 0;
-	border-top: 1px solid #e2e4e7;
 }
 
 .acf-block-panel .acf-block-fields div.acf-field-number[data-name="margin_top"] .acf-label label,
@@ -308,7 +311,7 @@
 .acf-block-panel .acf-block-fields div.acf-field-number[data-name="margin_left"],
 .acf-block-panel .acf-block-fields div.acf-field-number[data-name="margin_right"] {
 	clear: none !important;
-	max-width: calc(50% - 32px) !important;
+	max-width: 50% !important;
 }
 
 .acf-block-panel .acf-block-fields div.acf-field-number[data-name="margin_top"],
@@ -328,13 +331,7 @@
 
 .acf-block-panel .acf-block-fields div.acf-field[data-name="border_width"] {
 	clear: none !important;
-	max-width: calc(50% - 32px) !important;
-}
-
-.acf-block-panel .acf-block-fields div.acf-field[data-name="color_shadow"] {
-	clear: both !important;
-	padding-top: 16px;
-	border-top: 1px solid #e2e4e7;
+	max-width: 50% !important;
 }
 
 .acf-block-panel .acf-block-fields div.acf-field[data-name="x_offset"],
@@ -347,27 +344,13 @@
 	clear: none !important;
 	max-width: calc(33.33333333% - 16px) !important;
 	margin-top: 0 !important;
+	margin-right: 8px !important;
+	padding: 0 !important;
 }
 
 .acf-block-panel .acf-block-fields div.acf-field[data-name="x_offset"],
 .acf-block-panel .acf-block-fields div.acf-field[data-name="text_shadow_x_offset"] {
-	margin-right: 0;
-}
-
-.acf-block-panel .acf-block-fields div.acf-field[data-name="y_offset"],
-.acf-block-panel .acf-block-fields div.acf-field[data-name="text_shadow_y_offset"] {
-	margin-right: 8px;
-	margin-left: 8px;
-}
-
-.acf-block-panel .acf-block-fields div.acf-field[data-name="blur"],
-.acf-block-panel .acf-block-fields div.acf-field[data-name="text_shadow_blur"] {
-	margin-left: 0;
-}
-
-.acf-block-panel .acf-block-fields div.acf-field[data-key="mai_icon_round_corners"] {
-	padding-top: 16px;
-	border-top: 1px solid #e2e4e7;
+	margin-left: 16px;
 }
 
 /* icon select field */
@@ -394,7 +377,7 @@
 [id$="-mai_icon_choices-results"],
 [id$="-mai_icon_brand_choices-results"] {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(3, minmax(10px, 1fr));
 }
 
 [id$="-mai_icon_choices-results"] .select2-results__option,
@@ -705,7 +688,7 @@
 /* Matches .components-button.is-small in core. */
 .acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child,
 .acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:hover,
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:focus {
+.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:focus-visible {
 	flex: 0;
 	order: 99;
 	font-size: 11px;
@@ -721,7 +704,7 @@
 
 /* Matches .components-button.is-small in core. */
 .acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:hover,
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:focus {
+.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:focus-visible {
 	color: #00a0d2 !important;
 	background: transparent !important;
 	border: transparent !important;
@@ -733,7 +716,7 @@
 }
 
 .acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:hover,
-.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:focus {
+.acf-block-component.acf-block-panel .acf-block-fields div.acf-field.mai-acf-button-group-clear .acf-button-group label:first-child:focus-visible {
 	color: #016087;
 	background: #f3f5f6;
 	border-color: #0071a1;

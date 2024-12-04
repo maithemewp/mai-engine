@@ -1,41 +1,81 @@
 'use strict';
 
-module.exports = {
-	'build:admin-css': [ require( './styles' ).admin ],
-	'build:blocks-css': [ require( './styles' ).blocks ],
-	'build:columns-css': [ require( './styles' ).columns ],
-	'build:deprecated-css': [ require( './styles' ).deprecated ],
-	'build:desktop-css': [ require( './styles' ).desktop ],
-	'build:editor-css': [ require( './styles' ).editor ],
-	'build:footer-css': [ require( './styles' ).footer ],
-	'build:header-css': [ require( './styles' ).header ],
-	'build:page-header-css': [ require( './styles' ).pageheader ],
-	'build:main-css': [ require( './styles' ).main ],
-	'build:maiplugins-css': [ require( './styles' ).maiplugins ],
-	'build:plugin-css': [ require( './styles' ).plugins ],
-	'build:theme-css': [ require( './styles' ).themes ],
-	'build:utilities-css': [ require( './styles' ).utilities ],
+const gulp = require('gulp');
+const styles = require('./styles'); // Import style tasks
+const scripts = require('./scripts'); // Import script tasks
+const images = require('./images'); // Import image tasks
+const i18n = require('./i18n'); // Import translation task
+const create = require('./create'); // Import theme creation task
+const watch = require('./watch'); // Import watch task
 
-	'build:css': [ [ 'build:admin-css', 'build:blocks-css', 'build:columns-css', 'build:deprecated-css', 'build:desktop-css', 'build:editor-css', 'build:footer-css', 'build:header-css', 'build:page-header-css', 'build:main-css', 'build:maiplugins-css', 'build:plugin-css', 'build:theme-css', 'build:utilities-css' ] ],
+// Array of CSS tasks
+const cssTasks = [
+    styles.admin,
+    styles.blocks,
+    styles.deprecated,
+    styles.desktop,
+    styles.editor,
+    styles.footer,
+    styles.header,
+    styles.pageheader,
+    styles.main,
+    styles.maiplugins,
+    styles.plugins,
+    styles.themes,
+    styles.utilities,
+];
 
-	'build:blocks': [ require( './scripts' ).blocks ],
-	'build:scripts': [ require( './scripts' ).js ],
+// Gulp task exports
+exports['build:admin-css'] = styles.admin;
+exports['build:blocks-css'] = styles.blocks;
+exports['build:deprecated-css'] = styles.deprecated;
+exports['build:desktop-css'] = styles.desktop;
+exports['build:editor-css'] = styles.editor;
+exports['build:footer-css'] = styles.footer;
+exports['build:header-css'] = styles.header;
+exports['build:page-header-css'] = styles.pageheader;
+exports['build:main-css'] = styles.main;
+exports['build:maiplugins-css'] = styles.maiplugins;
+exports['build:plugin-css'] = styles.plugins;
+exports['build:theme-css'] = styles.themes;
+exports['build:utilities-css'] = styles.utilities;
 
-	'build:js': [ [ 'build:scripts', 'build:blocks' ] ],
+// Grouped CSS Task
+exports['build:css'] = gulp.parallel(...cssTasks);
 
-	'build:images': [ require( './images' ).img ],
-	'build:svg': [ require( './images' ).svg ],
+// JS Tasks
+exports['build:blocks'] = scripts.blocks;
+exports['build:scripts'] = scripts.js;
+exports['build:js'] = gulp.parallel(scripts.js, scripts.blocks);
 
-	'build:img': [ [ 'build:images', 'build:svg' ] ],
+// Image Tasks
+exports['build:images'] = images.img;
+exports['build:svg'] = images.svg;
+exports['build:img'] = gulp.parallel(images.img, images.svg);
 
-	'build:i18n': [ require( './i18n' ) ],
+// I18n Task
+exports['build:i18n'] = i18n;
 
-	'build': [ [ 'build:css', 'build:js', 'build:img', 'build:i18n' ] ],
+// Full Build Task
+exports['build'] = gulp.series(
+    gulp.parallel(...cssTasks),
+    gulp.parallel(scripts.js, scripts.blocks),
+    gulp.parallel(images.img, images.svg),
+    i18n
+);
 
-	'create:theme': [ require( './create' ) ],
+// Theme Creation Task
+exports['create:theme'] = create;
+exports['create'] = gulp.series(create, gulp.parallel(...cssTasks));
 
-	'create': [ [ 'create:theme', 'build:css' ] ],
+// Watch Task
+exports['watch'] = watch;
 
-	'watch': [ require( './watch' ) ],
-	'default': [ [ 'build', 'watch' ] ],
-};
+// Default Task
+exports['default'] = gulp.series(
+    gulp.parallel(...cssTasks),
+    gulp.parallel(scripts.js, scripts.blocks),
+    gulp.parallel(images.img, images.svg),
+    i18n,
+    watch
+);

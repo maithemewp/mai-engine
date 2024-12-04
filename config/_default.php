@@ -419,7 +419,6 @@ return [
 			'automatic-feed-links',
 			'editor-styles',
 			'genesis-accessibility'    => [
-				'404-page',
 				'headings',
 				'search-form',
 				'skip-links',
@@ -778,7 +777,7 @@ return [
 			'remove-template-classes'    => true,
 			'disable-emojis'             => true,
 			'remove-recent-comments-css' => true,
-			'remove-global-styles'       => true,
+			// 'remove-global-styles'       => true,
 			'remove-jquery-migrate'      => true,
 		],
 		'genesis'             => [

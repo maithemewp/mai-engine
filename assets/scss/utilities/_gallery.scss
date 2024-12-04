@@ -3,7 +3,7 @@
 
 	display: grid;
 	grid-gap: var(--gallery-grid-gap, var(--spacing-lg));
-	grid-template-columns: repeat(var(--gallery-columns), 1fr);
+	grid-template-columns: repeat(var(--gallery-columns), minmax(10px, 1fr));
 }
 
 @media only screen and (min-width: 400px) {

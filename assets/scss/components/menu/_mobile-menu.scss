@@ -32,7 +32,7 @@
 	}
 
 	.menu-item:hover > .sub-menu:not(.visible),
-	.menu-item:focus > .sub-menu:not(.visible),
+	.menu-item:focus-visible > .sub-menu:not(.visible),
 	.menu-item:focus-within > .sub-menu:not(.visible) {
 		display: none;
 	}

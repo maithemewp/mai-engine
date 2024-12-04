@@ -42,6 +42,7 @@
 }
 
 .has-dark-header:not(.has-transparent-header),
+.has-dark-header.has-dark-transparent-header:not(.header-stuck),
 .has-dark-header.has-transparent-header.header-stuck {
 	--site-header-color: var(--color-white);
 	--title-area-color: var(--color-white);
@@ -73,10 +74,16 @@
 
 .has-sticky-header {
 
-	@include mq(sm) {
+	@include mq(sm, false, portrait) {
 		--site-header-position: sticky;
 		--site-header-top: var(--body-top);
 	}
+
+	@include mq(md) {
+		--site-header-position: sticky;
+		--site-header-top: var(--body-top);
+	}
+
 
 	&.header-stuck {
 

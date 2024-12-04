@@ -5,11 +5,11 @@
 		--image-block-margin-bottom: 0;
 	}
 
-	&.alignleft {
+	&:has(.alignleft) {
 		margin-right: var(--spacing-md);
 	}
 
-	&.alignright {
+	&:has(.alignright) {
 		margin-left: var(--spacing-md);
 	}
 }

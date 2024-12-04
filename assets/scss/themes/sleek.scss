@@ -89,7 +89,7 @@
 }
 
 .entries.has-image-full .has-no-content-excerpt .entry.has-image-first:hover .entry-wrap,
-.entries.has-image-full .has-no-content-excerpt .entry.has-image-first:focus .entry-wrap {
+.entries.has-image-full .has-no-content-excerpt .entry.has-image-first:focus-visible .entry-wrap {
 	padding-bottom: var(--spacing-xl);
 	color: var(--button-color);
 	--entry-wrap-background: var(--button-background, var(--color-primary));

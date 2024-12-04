@@ -235,11 +235,12 @@ function mai_change_plugin_dependency_text( $actions ) {
  */
 add_filter( 'kirki_settings_page', '__return_false', 8 );
 
-add_filter( 'acf/settings/show_updates', 'mai_acf_settings_show_updates' );
+// add_filter( 'acf/settings/show_updates', 'mai_acf_settings_show_updates' );
 /**
  * Disables ACF updates settings page.
  *
  * @since 2.32.0
+ * @since TBD Disabled so uses can update their own licenses.
  *
  * @param bool $value The current value.
  *

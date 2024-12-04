@@ -430,6 +430,7 @@ function mai_register_columns_field_group() {
 					'label'             => __( 'Top Margin', 'mai-engine' ),
 					'name'              => 'margin_top',
 					'type'              => 'button_group',
+					'default_value'     => '',
 					'choices'           => [
 						''                 => __( 'None', 'mai-engine' ),
 						'md'               => __( 'XS', 'mai-engine' ),
@@ -439,7 +440,6 @@ function mai_register_columns_field_group() {
 						'xxxl'             => __( 'XL', 'mai-engine' ),
 						'xxxxl'            => __( '2XL', 'mai-engine' ),
 					],
-					'default_value'     => '',
 					'wrapper'           => [
 						'class'            => 'mai-acf-button-group mai-acf-button-group-small',
 					],
@@ -449,6 +449,7 @@ function mai_register_columns_field_group() {
 					'label'             => __( 'Bottom Margin', 'mai-engine' ),
 					'name'              => 'margin_bottom',
 					'type'              => 'button_group',
+					'default_value'     => '',
 					'choices'           => [
 						''                 => __( 'None', 'mai-engine' ),
 						'md'               => __( 'XS', 'mai-engine' ),
@@ -458,7 +459,6 @@ function mai_register_columns_field_group() {
 						'xxxl'             => __( 'XL', 'mai-engine' ),
 						'xxxxl'            => __( '2XL', 'mai-engine' ),
 					],
-					'default_value'     => '',
 					'wrapper'           => [
 						'class'            => 'mai-acf-button-group mai-acf-button-group-small',
 					],

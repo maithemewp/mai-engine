@@ -13,7 +13,7 @@
 defined( 'ABSPATH' ) || die;
 
 /**
- * Gets an ACF request, checking nonce and value.
+ * Gets an ACF request.
  *
  * @since 0.1.0
  *
@@ -22,11 +22,7 @@ defined( 'ABSPATH' ) || die;
  * @return bool
  */
 function mai_get_acf_request( $request ) {
-	if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'acf_nonce' ) && isset( $_REQUEST[ $request ] ) && ! empty( $_REQUEST[ $request ] ) ) {
-		return $_REQUEST[ $request ];
-	}
-
-	return false;
+	return isset( $_REQUEST[ $request ] ) ? $_REQUEST[ $request ] : null;
 }
 
 /**

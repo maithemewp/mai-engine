@@ -604,7 +604,6 @@ function mai_get_post_content( $post_slug_or_id, $post_type = 'wp_block' ) {
  * @since 0.3.0
  * @since 2.4.2  Remove use of wp_make_content_images_responsive.
  * @since 2.19.0 Conditionally `do_blocks()` or `wpautop()`.
- * @since TBD Changed order to match `get_the_block_template_html()`.
  *
  * @param string $content The unprocessed content.
  *
@@ -619,14 +618,15 @@ function mai_get_processed_content( $content ) {
 	global $wp_embed;
 
 	$blocks  = has_blocks( $content );
-	$content = $wp_embed->run_shortcode( $content );
-	$content = $wp_embed->autoembed( $content );
-	$content = shortcode_unautop( $content );
-	$content = do_shortcode( $content );
-	$content = $blocks ? do_blocks( $content ) : $content;
-	$content = wptexturize( $content );
-	$content = convert_smilies( $content );
-	$content = wp_filter_content_tags( $content, 'template' );
+	$content = $wp_embed->autoembed( $content );            // WP runs priority 8.
+	$content = $wp_embed->run_shortcode( $content );        // WP runs priority 8.
+	$content = $blocks ? do_blocks( $content ) : $content;  // WP runs priority 9.
+	$content = wptexturize( $content );                     // WP runs priority 10.
+	$content = ! $blocks ? wpautop( $content ) : $content;  // WP runs priority 10.
+	$content = shortcode_unautop( $content );               // WP runs priority 10.
+	$content = do_shortcode( $content );                    // WP runs priority 11.
+	$content = wp_filter_content_tags( $content );          // WP runs priority 12.
+	$content = convert_smilies( $content );                 // WP runs priority 20.
 	$content = str_replace( ']]>', ']]&gt;', $content );
 
 	return $content;
@@ -1333,7 +1333,7 @@ function mai_get_search_icon_form( $title = '', $icon_size = '16' ) {
  */
 function mai_get_dom_document( $html ) {
 	// Create the new document.
-	$dom = new DOMDocument();
+	$dom = new DOMDocument( '1.0', 'UTF-8' );
 
 	// Modify state.
 	$libxml_previous_state = libxml_use_internal_errors( true );
@@ -1366,6 +1366,21 @@ function mai_get_dom_document( $html ) {
 }
 
 /**
+ * Saves HTML from DOMDocument and decode entities.
+ *
+ * @since 2.34.0
+ *
+ * @param DOMDocument $dom
+ *
+ * @return string
+ */
+function mai_get_dom_html( $dom ) {
+	$html = $dom->saveHTML();
+
+	return $html;
+}
+
+/**
  * Gets a DOMDocument first child element.
  *
  * @since 2.4.1.
@@ -1385,22 +1400,6 @@ function mai_get_dom_first_child( $dom ) {
 	}
 
 	return false;
-}
-
-/**
- * Saves HTML from DOMDocument and decode entities.
- *
- * @since 2.34.0
- *
- * @param DOMDocument $dom
- *
- * @return string
- */
-function mai_get_dom_html( $dom ) {
-	$html = $dom->saveHTML();
-	$html = mb_convert_encoding( $html, 'UTF-8', 'HTML-ENTITIES' );
-
-	return $html;
 }
 
 /**

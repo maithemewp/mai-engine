@@ -64,7 +64,7 @@ ul.products {
 
 	display: grid;
 	grid-gap: var(--products-gap, var(--spacing-xl) var(--spacing-lg));
-	grid-template-columns: repeat(var(--columns, 1), 1fr);
+	grid-template-columns: repeat(var(--columns, 1), minmax(10px, 1fr));
 
 	.woocommerce &::before,
 	.woocommerce-page &::before,
@@ -184,7 +184,7 @@ li.wc-block-grid__product .wp-block-button {
 	width: 100%;
 
 	&:hover,
-	&:focus {
+	&:focus-visible {
 		--heading-color: var(--color-primary);
 	}
 
@@ -204,7 +204,7 @@ li.wc-block-grid__product .wp-block-button {
 
 .added,
 .added:hover,
-.added:focus {
+.added:focus-visible {
 	margin: auto auto var(--spacing-xs);
 	--button-opacity: 0.5;
 }
@@ -249,7 +249,7 @@ li.wc-block-grid__product .wp-block-button {
 	@include button-style(small);
 
 	&:hover,
-	&:focus {
+	&:focus-visible {
 		color: var(--color-white);
 		background: var(--color-primary);
 	}
@@ -421,7 +421,7 @@ li.wc-block-grid__product .wp-block-button {
 		}
 
 		&.active a,
-		&.active a:focus {
+		&.active a:focus-visible {
 			background-color: var(--color-white);
 			border-bottom-color: var(--color-white);
 			outline: none;

@@ -6,7 +6,7 @@ a {
 	transition: var(--link-transition, var(--transition));
 
 	&:hover,
-	&:focus {
+	&:focus-visible {
 		color: var(--link-color-hover, var(--color-link-dark, var(--link-color, var(--color-link))));
 		text-decoration: var(--link-text-decoration-hover, underline);
 		text-underline-offset: var(--link-text-decoration-offset-hover, var(--link-text-decoration-offset, var(--spacing-xxs)));

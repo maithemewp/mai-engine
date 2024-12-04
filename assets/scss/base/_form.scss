@@ -6,7 +6,7 @@ abbr[title] {
 	text-decoration: none;
 }
 
-label:not([class*="gfield"]):not([class*="gform"]):not([class*="wpform"]) {
+label:where(:not([class*="gfield"]):not([class*="gform"]):not([class*="wpform"])) {
 	display: inline-block;
 	margin: var(--label-margin, 0 0 var(--spacing-xs));
 	font-weight: var(--label-font-weight, var(--heading-font-weight));
@@ -57,7 +57,8 @@ textarea {
 }
 
 select {
-	height: var(--select-height, calc(var(--font-size-md, 1em) * 2));
+	min-height: var(--select-height, calc(var(--font-size-md, 1em) * 2));
+	accent-color: currentColor;
 	--input-padding: var(--select-padding, 0 var(--spacing-sm));
 
 	&[multiple] {
@@ -101,7 +102,7 @@ fieldset {
 	}
 }
 
-legend:not([class*="gfield"]):not([class*="gform"]):not([class*="wpform"]) {
+legend:where(:not([class*="gfield"]):not([class*="gform"]):not([class*="wpform"])) {
 	display: table;
 	float: left;
 	width: 100%;

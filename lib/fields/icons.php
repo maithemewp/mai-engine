@@ -18,14 +18,15 @@ add_filter( 'acf/load_field/key=mai_icon_choices', 'mai_load_icon_choices' );
  * Uses sprite for performance of loading choices in the field.
  *
  * @since 0.1.0
- * @since 2.25.6 Only get choices in admin.
+ * @since 2.25.6 Added admin check.
+ * @since TBD Added ajax check.
  *
  * @param array $field The ACF field.
  *
  * @return array
  */
 function mai_load_icon_choices( $field ) {
-	if ( ! is_admin() ) {
+	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
 		return $field;
 	}
 
@@ -44,14 +45,15 @@ add_filter( 'acf/load_field/key=mai_icon_brand_choices', 'mai_load_icon_brand_ch
  * Add icon brand choices.
  *
  * @since 0.1.0
- * @since 2.25.6 Only get choices in admin.
+ * @since 2.25.6 Added admin check.
+ * @since TBD Added ajax check.
  *
  * @param array $field Field args.
  *
  * @return mixed
  */
 function mai_load_icon_brand_choices( $field ) {
-	if ( ! is_admin() ) {
+	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
 		return $field;
 	}
 

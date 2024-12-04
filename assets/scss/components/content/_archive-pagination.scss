@@ -9,6 +9,7 @@
 	ul {
 		display: var(--archive-pagination-ul-display, block);
 		width: 100%;
+		margin: 0;
 		text-align: var(--archive-pagination-ul-text-align, center);
 	}
 

@@ -27,13 +27,13 @@
 .content-sidebar {
 
 	@include mq(lg) {
-		--content-sidebar-wrap-columns: 1fr var(--sidebar-width);
+		--content-sidebar-wrap-columns: minmax(10px, 1fr) var(--sidebar-width);
 	}
 }
 
 .sidebar-content {
 
 	@include mq(lg) {
-		--content-sidebar-wrap-columns: var(--sidebar-width) 1fr;
+		--content-sidebar-wrap-columns: var(--sidebar-width) minmax(10px, 1fr);
 	}
 }

@@ -110,8 +110,19 @@ function mai_content_shortcode( $atts = [] ) {
 		'mai_content'
 	);
 
-	$atts = array_map( 'esc_html', $atts );
+	$atts = array_map( 'sanitize_text_field', $atts );
 
+	// If current ID.
+	if ( 'current' === $atts['id'] && in_the_loop() ) {
+		$atts['id'] = get_the_ID();
+	}
+
+	// If current post_type.
+	if ( 'current' === $atts['post_type'] && in_the_loop() ) {
+		$atts['post_type'] = get_post_type();
+	}
+
+	// Bail if empty.
 	if ( empty( $atts['id'] ) ) {
 		return;
 	}

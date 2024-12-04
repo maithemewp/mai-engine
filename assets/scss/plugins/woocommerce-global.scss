@@ -137,3 +137,18 @@ p.demo_store {
 .shop_table {
 	--table-margin: var(--spacing-md) 0 var(--spacing-xl);
 }
+
+/**
+ * WooCommerce Blocks.
+ */
+
+.wp-element-button.wc-block-components-button:not(.is-link) {
+	@include button(false);
+}
+
+.wc-block-cart__submit-button,
+.wc-block-components-checkout-place-order-button--full-width {
+	--button-width: 100%;
+	--button-padding: var(--spacing-lg);
+	--button-font-size: var(--font-size-md);
+}

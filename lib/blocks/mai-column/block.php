@@ -86,12 +86,12 @@ function mai_register_column_field_group() {
 					'label'             => __( 'Align Content (vertical)', 'mai-engine' ),
 					'name'              => 'align_column_vertical',
 					'type'              => 'button_group',
+					'default_value'     => 'start',
 					'choices'           => [
 						'start'            => __( 'Top', 'mai-engine' ),
 						'middle'           => __( 'Middle', 'mai-engine' ),
 						'end'              => __( 'Bottom', 'mai-engine' ),
 					],
-					'default_value'     => 'start',
 					'wrapper'           => [
 						'class'            => 'mai-acf-button-group',
 					],

@@ -5,15 +5,15 @@
 	max-width: 100%;
 	margin: var(--spacing-md) auto;
 
-	&.alignleft {
+	&:has(.alignleft) {
 		text-align: start;
 	}
 
-	&.alignright {
+	&:has(.alignright) {
 		text-align: end;
 	}
 
-	&.aligncenter {
+	&:has(.aligncenter) {
 		text-align: center;
 	}
 

@@ -241,7 +241,8 @@ function mai_load_vendor_plugins() {
 	}
 
 	if ( ! class_exists( 'Kirki' ) ) {
-		$files[] = '../vendor/kirki-framework/kirki/kirki';
+		// Keep up to date manually since Themeum doesn't update Releases/Packagist.
+		$files[] = '../packages/kirki/kirki';
 	}
 
 	if ( ! $files ) {
@@ -333,6 +334,7 @@ function mai_load_files() {
 		'fields/icons',
 		'fields/wp-query',
 		'fields/wp-term-query',
+		'fields/validate',
 
 		// Blocks.
 		'blocks/general',
@@ -958,7 +960,7 @@ function mai_get_mai_acf_plugin_data() {
 		return $data;
 	}
 
-	$data = get_plugin_data( trailingslashit( dirname( __DIR__ ) ) . 'vendor/wpengine/advanced-custom-fields-pro/acf.php' );
+	$data = get_plugin_data( trailingslashit( dirname( __DIR__ ) ) . 'vendor/wpengine/advanced-custom-fields-pro/acf.php', true, false );
 
 	return $data;
 }

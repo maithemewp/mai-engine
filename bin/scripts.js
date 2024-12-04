@@ -1,32 +1,44 @@
 'use strict';
 
-const gulp    = require( 'gulp' ),
-	  config  = require( './config' ),
-	  plumber = require( 'gulp-plumber' ),
-	  uglify  = require( 'gulp-uglify-es' ).default,
-	  rename  = require( 'gulp-rename' ),
-	  fs      = require( 'fs' ),
-	  notify  = require( 'gulp-notify' ),
-	  map     = require( 'lodash.map' );
+const gulp       = require('gulp');
+const config     = require('./config');
+const plumber    = require('gulp-plumber');
+const uglify     = require('gulp-uglify-es').default;
+const fs         = require('fs');
+const notify     = require('gulp-notify');
+const map        = require('lodash.map');
+const exec       = require('child_process').exec;
+const rename     = require('gulp-rename');
 
-module.exports.blocks = function() {
-	return require( 'child_process' ).exec( 'npm run blocks' );
+// Named function for processing blocks
+module.exports.blocks = function blocksTaskScripts() {
+    return new Promise((resolve, reject) => {
+        exec('npm run blocks', (err, stdout, stderr) => {
+            if (err) {
+                console.error(stderr);
+                reject(err);
+                return;
+            }
+            console.log(stdout);
+            resolve();
+        });
+    });
 };
 
-module.exports.js = function() {
-	const dir   = './assets/js/';
-	const files = fs.readdirSync( dir ).filter( function( file ) {
-		if ( file.indexOf( '.js' ) > + 1 ) return file;
-	} );
+// Named function for processing JavaScript files
+module.exports.js = function jsTask() {
+    const dir = './assets/js/';
+    const files = fs.readdirSync(dir).filter(function(file) {
+        return file.indexOf('.js') > -1;
+    });
 
-	return map( files, function( file ) {
-		return gulp.src( dir + file )
-			.pipe( plumber() )
-			.pipe( rename( {
-				suffix: '.min'
-			} ) )
-			.pipe( uglify() )
-			.pipe( gulp.dest( config.dest.js ) )
-			.pipe( notify( { message: config.messages.js } ) );
-	} );
+    // Return a promise that resolves when all tasks are complete
+    return Promise.all(map(files, function(file) {
+        return gulp.src(dir + file)
+            .pipe(plumber())
+            .pipe(rename({ basename: file.replace('.js', ''), suffix: '.min' })) // Rename to add .min before .js
+            .pipe(uglify())
+            .pipe(gulp.dest(config.dest.js))
+            .pipe(notify({ message: config.messages.js }));
+    }));
 };

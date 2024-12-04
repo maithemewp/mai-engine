@@ -11,7 +11,7 @@
 		--cover-block-padding-left: var(--spacing-lg);
 	}
 
-	&.alignfull {
+	&:where(.alignfull) {
 		// Can't override property or it will break nested blocks.
 		padding-right: var(--cover-block-alignfull-padding-left, calc(((var(--viewport-width) - var(--breakpoint-xl)) / 2) - var(--side-spacing)));
 		padding-left: var(--cover-block-alignfull-padding-right, calc(((var(--viewport-width) - var(--breakpoint-xl)) / 2) - var(--side-spacing)));

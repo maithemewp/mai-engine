@@ -4,26 +4,16 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit193dd487f01e372a39e98b2dfebd3ce6
+class ComposerStaticInit9e67745729d23cd12c1cc70fc3d46e58
 {
     public static $files = array (
-        'd05ecc14ff93fd612a81ec7e8ab4c2c9' => __DIR__ . '/..' . '/yahnis-elsts/plugin-update-checker/load-v5p4.php',
+        '256558b1ddf2fa4366ea7d7602798dd1' => __DIR__ . '/..' . '/yahnis-elsts/plugin-update-checker/load-v5p5.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'P' => 
         array (
             'ProteusThemes\\WPContentImporter2\\' => 33,
-        ),
-        'K' => 
-        array (
-            'Kirki\\Util\\' => 11,
-            'Kirki\\Settings\\' => 15,
-            'Kirki\\Module\\' => 13,
-            'Kirki\\Field\\' => 12,
-            'Kirki\\Data\\' => 11,
-            'Kirki\\Compatibility\\' => 20,
-            'Kirki\\' => 6,
         ),
         'C' => 
         array (
@@ -35,77 +25,6 @@ class ComposerStaticInit193dd487f01e372a39e98b2dfebd3ce6
         'ProteusThemes\\WPContentImporter2\\' => 
         array (
             0 => __DIR__ . '/..' . '/proteusthemes/wp-content-importer-v2/src',
-        ),
-        'Kirki\\Util\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/util/src',
-        ),
-        'Kirki\\Settings\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/settings/src',
-        ),
-        'Kirki\\Module\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/module-css/src',
-            1 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/module-editor-styles/src',
-            2 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/module-field-dependencies/src',
-            3 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/module-postmessage/src',
-            4 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/module-preset/src',
-            5 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/module-section-icons/src',
-            6 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/module-selective-refresh/src',
-            7 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/module-tooltips/src',
-            8 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/module-webfonts/src',
-        ),
-        'Kirki\\Field\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/field/src/Field',
-            1 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/field-background/src',
-            2 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/field-dimensions/src',
-            3 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/field-fontawesome/src',
-            4 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/field-multicolor/src/Field',
-            5 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/field-multicolor/src',
-            6 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/field-typography/src/Field',
-            7 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/field-typography/src',
-        ),
-        'Kirki\\Data\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/data-option/src',
-        ),
-        'Kirki\\Compatibility\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/compatibility/src',
-        ),
-        'Kirki\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-base/src',
-            1 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-checkbox/src',
-            2 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-code/src',
-            3 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-color/src',
-            4 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-color-palette/src',
-            5 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-cropped-image/src',
-            6 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-custom/src',
-            7 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-dashicons/src',
-            8 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-date/src',
-            9 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-dimension/src',
-            10 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-editor/src',
-            11 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-generic/src',
-            12 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-image/src',
-            13 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-multicheck/src',
-            14 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-palette/src',
-            15 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-radio/src',
-            16 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-react-colorful/src',
-            17 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-react-select/src',
-            18 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-repeater/src',
-            19 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-select/src',
-            20 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-slider/src',
-            21 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-sortable/src',
-            22 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/control-upload/src',
-            23 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/field/src',
-            24 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/googlefonts/src',
-            25 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/l10n/src',
-            26 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/module-panels/src',
-            27 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/module-sections/src',
-            28 => __DIR__ . '/..' . '/kirki-framework/kirki/kirki-packages/url-getter/src',
         ),
         'Composer\\Installers\\' => 
         array (
@@ -123,9 +42,9 @@ class ComposerStaticInit193dd487f01e372a39e98b2dfebd3ce6
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit193dd487f01e372a39e98b2dfebd3ce6::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit193dd487f01e372a39e98b2dfebd3ce6::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit193dd487f01e372a39e98b2dfebd3ce6::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit9e67745729d23cd12c1cc70fc3d46e58::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit9e67745729d23cd12c1cc70fc3d46e58::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit9e67745729d23cd12c1cc70fc3d46e58::$classMap;
 
         }, null, ClassLoader::class);
     }

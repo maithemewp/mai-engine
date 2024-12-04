@@ -5,6 +5,7 @@
 
 .comment-list {
 	list-style-type: none;
+	margin: 0;
 }
 
 .comment {
@@ -77,7 +78,7 @@
 }
 
 .comment-edit-link:hover,
-.comment-edit-link:focus {
+.comment-edit-link:focus-visible {
 	color: var(--color-link);
 	opacity: 1;
 }

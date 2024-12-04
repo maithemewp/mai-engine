@@ -21,7 +21,7 @@
 	};
 
 	var data  = typeof setupWizardData === 'undefined' ? [] : setupWizardData;
-	var steps = $( '.setup-wizard .step' );
+	var steps = $( '.mai-setup-wizard .step' );
 	var page  = getUrlParameter( 'page' );
 
 	var hideOtherSteps = function( currentStepID, steps, speed ) {

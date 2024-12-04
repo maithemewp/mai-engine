@@ -101,43 +101,56 @@ function mai_do_cover_group_block_settings( $block_content, $block ) {
 	$left   = mai_isset( $block['attrs'], 'verticalSpacingLeft', '' );
 	$right  = mai_isset( $block['attrs'], 'verticalSpacingRight', '' );
 
+	// If we have values.
 	if ( $width || $top || $bottom || $left || $right ) {
-		$dom = mai_get_dom_document( $block_content );
+		// Get class for tag processor.
+		switch ( $block['blockName'] ) {
+			case 'core/cover':
+				$args = [ 'class_name' => 'wp-block-cover' ];
+			break;
+			case 'core/group':
+				$args = [ 'class_name' => 'wp-block-group' ];
+			break;
+			default:
+				$args = [];
+		}
 
-		/**
-		 * The block container.
-		 *
-		 * @var DOMElement $first_block The block container.
-		 */
-		$first_block = mai_get_dom_first_child( $dom );
+		// Bail if no class.
+		if ( ! $args ) {
+			return $block_content;
+		}
 
-		if ( $first_block ) {
-			$classes = $first_block->getAttribute( 'class' );
+		// Set up tag processor.
+		$tags = new WP_HTML_Tag_Processor( $block_content );
 
+		// Loop through tags.
+		while ( $tags->next_tag( $args ) ) {
 			if ( $width ) {
-				$classes = mai_add_classes( sprintf( 'has-%s-content-width', $width ), $classes );
+				$tags->add_class( sprintf( 'has-%s-content-width', $width ) );
 			}
 
 			if ( $top ) {
-				$classes = mai_add_classes( sprintf( 'has-%s-padding-top', $top ), $classes );
+				$tags->add_class( sprintf( 'has-%s-padding-top', $top ) );
 			}
 
 			if ( $bottom ) {
-				$classes = mai_add_classes( sprintf( 'has-%s-padding-bottom', $bottom ), $classes );
+				$tags->add_class( sprintf( 'has-%s-padding-bottom', $bottom ) );
 			}
 
 			if ( $left ) {
-				$classes = mai_add_classes( sprintf( 'has-%s-padding-left', $left ), $classes );
+				$tags->add_class( sprintf( 'has-%s-padding-left', $left ) );
 			}
 
 			if ( $right ) {
-				$classes = mai_add_classes( sprintf( 'has-%s-padding-right', $right ), $classes );
+				$tags->add_class( sprintf( 'has-%s-padding-right', $right ) );
 			}
 
-			$first_block->setAttribute( 'class', $classes );
-
-			$block_content = mai_get_dom_html( $dom );
+			// Only apply to the first instance. Not nested blocks.
+			break;
 		}
+
+		// Update the content.
+		$block_content = $tags->get_updated_html();
 	}
 
 	return $block_content;
@@ -167,25 +180,39 @@ function mai_do_block_max_width_settings( $block_content, $block ) {
 		return $block_content;
 	}
 
-	$width  = mai_isset( $block['attrs'], 'maxWidth', '' );
+	$width = mai_isset( $block['attrs'], 'maxWidth', '' );
 
 	if ( $width ) {
-		$dom = mai_get_dom_document( $block_content );
-
-		/**
-		 * The block container.
-		 *
-		 * @var DOMElement $first_block The block container.
-		 */
-		$first_block = mai_get_dom_first_child( $dom );
-
-		if ( $first_block ) {
-			$classes = mai_add_classes( sprintf( 'has-%s-max-width', $width ), $first_block->getAttribute( 'class' ) );
-
-			$first_block->setAttribute( 'class', $classes );
-
-			$block_content = mai_get_dom_html( $dom );
+		// Get class for tag processor.
+		switch ( $block['blockName'] ) {
+			case 'core/paragraph':
+				$args = [ 'tag_name' => 'p' ];
+			break;
+			case 'core/heading':
+				$args = [ 'class_name' => 'wp-block-heading' ];
+			break;
+			default:
+				$args = [];
 		}
+
+		// Bail if no args.
+		if ( ! $args ) {
+			return $block_content;
+		}
+
+		// Set up tag processor.
+		$tags = new WP_HTML_Tag_Processor( $block_content );
+
+		// Loop through tags.
+		while ( $tags->next_tag( $args ) ) {
+			$tags->add_class( sprintf( 'has-%s-max-width', $width ) );
+
+			// Only apply to the first instance. Not nested blocks.
+			break;
+		}
+
+		// Update the content.
+		$block_content = $tags->get_updated_html();
 	}
 
 	return $block_content;
@@ -219,30 +246,45 @@ function mai_do_block_spacing_settings( $block_content, $block ) {
 	$bottom = mai_isset( $block['attrs'], 'spacingBottom', '' );
 
 	if ( $top || $bottom ) {
-		$dom = mai_get_dom_document( $block_content );
+		// Get class for tag processor.
+		switch ( $block['blockName'] ) {
+			case 'core/paragraph':
+				$args = [ 'tag_name' => 'p' ];
+			break;
+			case 'core/heading':
+				$args = [ 'class_name' => 'wp-block-heading' ];
+			break;
+			case 'core/separator':
+				$args = [ 'class_name' => 'wp-block-separator' ];
+			break;
+			default:
+				$args = [];
+		}
 
-		/**
-		 * The block container.
-		 *
-		 * @var DOMElement $first_block The block container.
-		 */
-		$first_block = mai_get_dom_first_child( $dom );
+		// Bail if no class.
+		if ( ! $args ) {
+			return $block_content;
+		}
 
-		if ( $first_block ) {
-			$classes  = $first_block->getAttribute( 'class' );
+		// Set up tag processor.
+		$tags = new WP_HTML_Tag_Processor( $block_content );
 
+		// Loop through tags.
+		while ( $tags->next_tag( $args ) ) {
 			if ( $top ) {
-				$classes = mai_add_classes( sprintf( 'has-%s-margin-top', $top ), $classes );
+				$tags->add_class( sprintf( 'has-%s-margin-top', $top ) );
 			}
 
 			if ( $bottom ) {
-				$classes = mai_add_classes( sprintf( 'has-%s-margin-bottom', $bottom ), $classes );
+				$tags->add_class( sprintf( 'has-%s-margin-bottom', $bottom ) );
 			}
 
-			$first_block->setAttribute( 'class', $classes );
-
-			$block_content = mai_get_dom_html( $dom );
+			// Only apply to the first instance. Not nested blocks.
+			break;
 		}
+
+		// Update the content.
+		$block_content = $tags->get_updated_html();
 	}
 
 	return $block_content;
@@ -278,38 +320,53 @@ function mai_do_block_margin_settings( $block_content, $block ) {
 	$left   = mai_isset( $block['attrs'], 'marginLeft', '' );
 
 	if ( $top || $right || $bottom || $left ) {
-		$dom = mai_get_dom_document( $block_content );
+		// Get class for tag processor.
+		switch ( $block['blockName'] ) {
+			case 'core/image':
+				$args = [ 'class_name' => 'wp-block-image' ];
+			break;
+			case 'core/cover':
+				$args = [ 'class_name' => 'wp-block-cover' ];
+			break;
+			case 'core/group':
+				$args = [ 'class_name' => 'wp-block-group' ];
+			break;
+			default:
+				$args = [];
+		}
 
-		/**
-		 * The block container.
-		 *
-		 * @var DOMElement $first_block The block container.
-		 */
-		$first_block = mai_get_dom_first_child( $dom );
+		// Bail if no class.
+		if ( ! $args ) {
+			return $block_content;
+		}
 
-		if ( $first_block ) {
-			$classes = $first_block->getAttribute( 'class' );
+		// Set up tag processor.
+		$tags = new WP_HTML_Tag_Processor( $block_content );
 
+		// Loop through tags.
+		while ( $tags->next_tag( $args ) ) {
 			if ( $top ) {
-				$classes = mai_add_classes( sprintf( 'has-%s-margin-top', $top ), $classes );
+				$tags->add_class( sprintf( 'has-%s-margin-top', $top ) );
 			}
 
 			if ( $right ) {
-				$classes = mai_add_classes( sprintf( 'has-%s-margin-right', $right ), $classes );
+				$tags->add_class( sprintf( 'has-%s-margin-right', $right ) );
 			}
 
 			if ( $bottom ) {
-				$classes = mai_add_classes( sprintf( 'has-%s-margin-bottom', $bottom ), $classes );
+				$tags->add_class( sprintf( 'has-%s-margin-bottom', $bottom ) );
 			}
 
 			if ( $left ) {
-				$classes = mai_add_classes( sprintf( 'has-%s-margin-left', $left ), $classes );
+				$tags->add_class( sprintf( 'has-%s-margin-left', $left ) );
 			}
 
-			$first_block->setAttribute( 'class', $classes );
-
-			$block_content = mai_get_dom_html( $dom );
+			// Only apply to the first instance. Not nested blocks.
+			break;
 		}
+
+		// Update the content.
+		$block_content = $tags->get_updated_html();
 	}
 
 	return $block_content;

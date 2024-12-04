@@ -94,7 +94,7 @@ function mai_render_cover_block( $block_content, $block ) {
 			if ( $fixed ) {
 				$style = '';
 				$sizes     = [
-					'sm' => wp_get_attachment_image_url( $image_id, $image_size ),
+					'sm' => wp_get_attachment_image_url( $image_id, 'large' ),
 					'md' => wp_get_attachment_image_url( $image_id, 'large' ),
 					'lg' => wp_get_attachment_image_url( $image_id, 'cover' ),
 				];

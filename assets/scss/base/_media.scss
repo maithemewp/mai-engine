@@ -14,7 +14,7 @@ img {
 	filter: var(--image-filter, unset);
 	transition: var(--transition);
 
-	&.aligncenter {
+	&:has(.aligncenter) {
 		display: block;
 	}
 }

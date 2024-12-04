@@ -171,7 +171,7 @@ add_action( 'mai_setup_wizard_before_steps', 'mai_setup_wizard_header_content' )
  * @return void
  */
 function mai_setup_wizard_header_content() {
-	printf( '<p class="setup-wizard-logo-wrap"><img class="setup-wizard-logo" src="%sassets/img/wizard-icon.png" alt="Mai Theme logo"></p>', mai_get_url() );
+	printf( '<p class="mai-setup-wizard-logo-wrap"><img class="mai-setup-wizard-logo" src="%sassets/img/wizard-icon.png" alt="Mai Theme logo"></p>', mai_get_url() );
 }
 
 add_filter( 'mai_setup_wizard_steps', 'mai_setup_wizard_welcome_step_description' );

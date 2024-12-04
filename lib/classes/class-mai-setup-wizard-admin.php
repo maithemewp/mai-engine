@@ -83,7 +83,7 @@ class Mai_Setup_Wizard_Admin extends Mai_Setup_Wizard_Service_Provider {
 	 */
 	public function render_admin_page() {
 		?>
-		<div class="setup-wizard">
+		<div class="mai-setup-wizard">
 			<h1><?php echo esc_html( $this->name ); ?></h1>
 			<?php
 			do_action( 'mai_setup_wizard_before_steps' );

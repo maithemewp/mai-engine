@@ -68,7 +68,7 @@
 	// Ordered via https://css-tricks.com/snippets/css/link-pseudo-classes-in-order/
 	&:hover,
 	&:active,
-	&:focus {
+	&:focus-visible {
 		color: var(--button-color-hover, var(--button-color));
 		text-decoration: var(--button-text-decoration-hover, var(--button-text-decoration, none));
 		background: var(--button-background-hover, var(--color-primary-dark, var(--button-background, var(--color-primary))));
@@ -98,7 +98,7 @@
 	}
 
 	@if ("outline" == $style) {
-		--button-max-height: calc(100% - 4px); // Makes height same as button with no border.
+		--button-max-height: calc(100% - (var(--button-outline-width, 2px) * 2)); // Makes height same as button with no border.
 		--button-color: var(--button-outline-color, var(--color-primary));
 		--button-color-hover: var(--button-outline-color-hover, var(--color-white));
 		--button-background: var(--button-outline-background, transparent);

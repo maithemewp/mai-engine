@@ -507,7 +507,7 @@ class Mai_Entry {
 	 */
 	public function get_title_attr() {
 		$title = 'post' === $this->type ? the_title_attribute( [ 'echo' => false ] ) : $this->title;
-		$title = str_replace( ['[', ']'], '', $title );
+		$title = $title ? str_replace( ['[', ']'], '', $title ) : $title;
 
 		return $title;
 	}
