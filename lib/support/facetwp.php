@@ -12,6 +12,56 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
+/**
+ * Forces FacetWP support for when the MPG has `facetwp-template` class.
+ *
+ * @since TBD
+ *
+ * @param array $query_args WP_Query args.
+ * @param array $args       Mai Post Grid args.
+ *
+ * @return array
+ */
+add_filter( 'mai_post_grid_query_args', 'mai_facetwp_post_grid_query_args', 10, 2 );
+function mai_facetwp_post_grid_query_args( $query_args, $args ) {
+	// Bail if not a post grid.
+	if ( ! isset( $args['type'] ) || 'post' !== $args['type'] ) {
+		return $query_args;
+	}
+
+	// Bail if no class.
+	if ( ! isset( $args['class'] ) || empty( $args['class'] ) ) {
+		return $query_args;
+	}
+
+	// Bail if not a facetwp template.
+	if ( ! mai_has_string( 'facetwp-template', $args['class'] ) ) {
+		return $query_args;
+	}
+
+	// Bail if already facetwp.
+	if ( isset( $query_args['facetwp'] ) ) {
+		return $query_args;
+	}
+
+	$query_args['facetwp'] = true;
+
+	return $query_args;
+}
+
+// add_filter( 'facetwp_is_main_query', function( $is_main_query, $query ) {
+// 	// if ( $query->is_archive() && $query->is_main_query() ) {
+// 	// 	$is_main_query = false;
+// 	// }
+
+// 	if ( 'mai_ad' == $query->get( 'post_type' ) ) {
+// 		$is_main_query = false;
+// 	}
+
+// 	return $is_main_query;
+
+// }, 10, 2 );
+
 add_filter( 'facetwp_shortcode_html', 'mai_facetwp_page_wrap', 10, 2 );
 /**
  * Add the wrap class to facetwp pager element.
