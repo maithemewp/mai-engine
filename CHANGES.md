@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.35.0 (12/4/24)
+## 2.35.0 (12/5/24)
 * Added: [WooCommerce] Better compatibility with WooCommerce Cart and Checkout blocks.
 * Added: [FacetWP] Now allow FacetWP on a single Mai Post Grid instance by adding `facetwp-template` class to the block.
 * Added: New `current` value can be used for `id` and `post_type` parameters in `mai_content` shortcode.
