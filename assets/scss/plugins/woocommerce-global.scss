@@ -146,9 +146,23 @@ p.demo_store {
 	@include button(false);
 }
 
+.wc-block-components-product-price {
+	--price-font-size: var(--font-size-sm);
+}
+
 .wc-block-cart__submit-button,
 .wc-block-components-checkout-place-order-button--full-width {
 	--button-width: 100%;
 	--button-padding: var(--spacing-lg);
 	--button-font-size: var(--font-size-md);
+}
+
+@media only screen and (max-width: 778px) {
+
+	.wc-block-checkout:not(.is-large) {
+
+		.wc-block-checkout__sidebar.is-sticky {
+			position: static !important;
+		}
+	}
 }
