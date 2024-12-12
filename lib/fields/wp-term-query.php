@@ -18,7 +18,7 @@ add_filter( 'acf/load_field/key=mai_grid_block_taxonomy', 'mai_grid_load_taxonom
  *
  * @since 2.21.0
  * @since 2.25.6 Added admin check.
- * @since TBD Added ajax check.
+ * @since 2.35.0 Added ajax check.
  *
  * @param array $field The existing field array.
  *
@@ -34,13 +34,45 @@ function mai_grid_load_taxonomy_field( $field ) {
 	return $field;
 }
 
+add_filter( 'acf/prepare_field/key=mai_grid_block_taxonomy', 'mai_grid_prepare_taxonomy_field' );
+/**
+ * Load taxonomy choices based on existing saved field value.
+ * Since we're using ajax to load choices, we need to load the saved value as an initial choice.
+ *
+ * @link https://github.com/maithemewp/mai-engine/issues/93
+ *
+ * @since 2.35.0
+ *
+ * @param array $field The existing field array.
+ *
+ * @return array
+ */
+function mai_grid_prepare_taxonomy_field( $field ) {
+	// Bail if not in admin. No AJAX check here because we need this on page load.
+	if ( ! is_admin() ) {
+		return $field;
+	}
+
+	if ( $field['value'] ) {
+		foreach ( $field['value'] as $taxonomy ) {
+			$taxonomy = get_taxonomy( $taxonomy );
+
+			if ( $taxonomy ) {
+				$field['choices'] = [ $taxonomy->name => $taxonomy->label ];
+			}
+		}
+	}
+
+	return $field;
+}
+
 add_filter( 'acf/load_field/key=mai_grid_block_tax_include', 'mai_grid_load_include_terms_field' );
 add_filter( 'acf/load_field/key=mai_grid_block_tax_exclude', 'mai_grid_load_include_terms_field' );
 /**
  * Sets taxonomy based on the block taxonomies field, when the include/exclude fields are initially loaded.
  *
  * @since 2.27.0
- * @since TBD Added ajax check.
+ * @since 2.35.0 Added ajax check.
  *
  * @param array $field
  *
@@ -83,7 +115,7 @@ add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_exclude', 'mai_acf
  * @since 0.1.0
  * @since 2.25.6 Added admin check.
  * @since 2.27.0 Force first taxonomy. See #631.
- * @since TBD Added ajax check.
+ * @since 2.35.0 Added ajax check.
  *
  * @param array $args Field args.
  *
@@ -115,7 +147,7 @@ add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_parent', 'mai_acf_
  *
  * @since 0.1.0
  * @since 2.25.6 Added admin check.
- * @since TBD Added ajax check.
+ * @since 2.35.0 Added ajax check.
  *
  * @param array $args Field args.
  *
@@ -156,7 +188,7 @@ add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_parent',  'mai_acf
  *
  * @since 2.22.0
  * @since 2.25.6 Added admin check.
- * @since TBD Added ajax check.
+ * @since 2.35.0 Added ajax check.
  *
  * @link https://www.powderkegwebdesign.com/fantastic-way-allow-searching-id-advanced-custom-fields-objects/
  *
@@ -195,6 +227,12 @@ function mai_acf_get_terms_by_id( $args, $field, $post_id ) {
  * @return array
  */
 function mai_get_taxonomy_choices() {
+	static $choices = null;
+
+	if ( ! is_null( $choices ) ) {
+		return $choices;
+	}
+
 	$choices    = [];
 	$taxonomies = get_taxonomies(
 		[

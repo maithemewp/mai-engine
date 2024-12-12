@@ -20,7 +20,7 @@ add_filter( 'acf/prepare_field/key=mai_grid_block_row_gap',    'mai_acf_load_gap
  *
  * @since 2.4.0
  * @since 2.25.6 Added admin check.
- * @since TBD Added ajax check.
+ * @since 2.35.0 Added ajax check.
  *
  * @param array $field The existing field.
  *

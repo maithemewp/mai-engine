@@ -240,7 +240,7 @@ add_filter( 'kirki_settings_page', '__return_false', 8 );
  * Disables ACF updates settings page.
  *
  * @since 2.32.0
- * @since TBD Disabled so uses can update their own licenses.
+ * @since 2.35.0 Disabled so users can update their own licenses.
  *
  * @param bool $value The current value.
  *

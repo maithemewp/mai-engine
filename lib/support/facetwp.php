@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || die;
 /**
  * Forces FacetWP support for when the MPG has `facetwp-template` class.
  *
- * @since TBD
+ * @since 2.35.0
  *
  * @param array $query_args WP_Query args.
  * @param array $args       Mai Post Grid args.
