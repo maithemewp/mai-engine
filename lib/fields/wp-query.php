@@ -18,7 +18,7 @@ add_filter( 'acf/load_field/key=mai_grid_block_post_type', 'mai_grid_load_post_t
  *
  * @since 2.21.0
  * @since 2.25.6 Added admin check.
- * @since TBD Added ajax check.
+ * @since 2.35.0 Added ajax check.
  *
  * @param array $field The existing field array.
  *
@@ -41,14 +41,15 @@ add_filter( 'acf/prepare_field/key=mai_grid_block_tax_taxonomy', 'mai_grid_prepa
  *
  * @link https://github.com/maithemewp/mai-engine/issues/93
  *
- * @since TBD
+ * @since ?
  *
  * @param array $field The existing field array.
  *
  * @return array
  */
 function mai_grid_prepare_tax_taxonomy_field( $field ) {
-	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
+	// Bail if not in admin. No AJAX check here because we need this on page load.
+	if ( ! is_admin() ) {
 		return $field;
 	}
 
@@ -69,7 +70,7 @@ add_filter( 'acf/load_field/key=mai_grid_block_tax_taxonomy', 'mai_grid_load_tax
  *
  * @since 2.21.0
  * @since 2.25.6 Added admin check.
- * @since TBD Added ajax check.
+ * @since 2.35.0 Added ajax check.
  *
  * @param array $field The existing field array.
  *
@@ -99,7 +100,7 @@ add_filter( 'acf/prepare_field/key=mai_grid_block_tax_terms', 'mai_acf_prepare_t
  *
  * @since 0.3.3
  * @since 2.25.6 Added admin check.
- * @since TBD Added ajax check.
+ * @since 2.35.0 Added ajax check.
  *
  * @param array $field The ACF field array.
  *
@@ -138,7 +139,7 @@ add_filter( 'acf/load_field/key=mai_grid_block_tax_terms', 'mai_acf_load_terms',
  *
  * @since 0.1.0
  * @since 2.25.6 Added admin check.
- * @since TBD Added ajax check.
+ * @since 2.35.0 Added ajax check.
  *
  * @param array $field The ACF field array.
  *
@@ -166,7 +167,7 @@ add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_parent_in', 'm
  *
  * @since 0.1.0
  * @since 2.25.6 Added admin check.
- * @since TBD Added ajax check.
+ * @since 2.35.0 Added ajax check.
  *
  * @param array $args Field args.
  *
@@ -204,7 +205,7 @@ add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_parent_in','ma
  *
  * @since 2.15.0
  * @since 2.25.6 Added admin check.
- * @since TBD Added ajax check.
+ * @since 2.35.0 Added ajax check.
  *
  * @link https://www.powderkegwebdesign.com/fantastic-way-allow-searching-id-advanced-custom-fields-objects/
  *
