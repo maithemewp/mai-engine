@@ -93,7 +93,7 @@ function mai_grid_prepare_include_terms_field( $field ) {
 		foreach( $term_ids as $term_id ) {
 			$term = get_term( $term_id );
 
-			if ( $term ) {
+			if ( $term && ! is_wp_error( $term ) ) {
 				$field['taxonomy'] = $term->taxonomy;
 				break;
 			}
