@@ -12,28 +12,6 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-add_filter( 'acf/load_field/key=mai_grid_block_taxonomy', 'mai_grid_load_taxonomy_field' );
-/**
- * Loads taxonomy choices.
- *
- * @since 2.21.0
- * @since 2.25.6 Added admin check.
- * @since 2.35.0 Added ajax check.
- *
- * @param array $field The existing field array.
- *
- * @return array
- */
-function mai_grid_load_taxonomy_field( $field ) {
-	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
-		return $field;
-	}
-
-	$field['choices'] = mai_get_taxonomy_choices();
-
-	return $field;
-}
-
 add_filter( 'acf/prepare_field/key=mai_grid_block_taxonomy', 'mai_grid_prepare_taxonomy_field' );
 /**
  * Load taxonomy choices based on existing saved field value.
@@ -55,10 +33,10 @@ function mai_grid_prepare_taxonomy_field( $field ) {
 
 	if ( $field['value'] ) {
 		foreach ( $field['value'] as $taxonomy ) {
-			$taxonomy = get_taxonomy( $taxonomy );
+			$object = get_taxonomy( $taxonomy );
 
-			if ( $taxonomy ) {
-				$field['choices'] = [ $taxonomy->name => $taxonomy->label ];
+			if ( $object ) {
+				$field['choices'] = [ $object->name => $object->label ];
 			}
 		}
 	}
@@ -66,41 +44,60 @@ function mai_grid_prepare_taxonomy_field( $field ) {
 	return $field;
 }
 
-add_filter( 'acf/load_field/key=mai_grid_block_tax_include', 'mai_grid_load_include_terms_field' );
-add_filter( 'acf/load_field/key=mai_grid_block_tax_exclude', 'mai_grid_load_include_terms_field' );
+add_filter( 'acf/load_field/key=mai_grid_block_taxonomy', 'mai_grid_load_taxonomy_field' );
+/**
+ * Loads taxonomy choices.
+ *
+ * @since 2.21.0
+ * @since 2.25.6 Added admin check.
+ * @since 2.35.0 Added ajax check.
+ *
+ * @param array $field The existing field array.
+ *
+ * @return array
+ */
+function mai_grid_load_taxonomy_field( $field ) {
+	// Bail if not in admin and doing ajax.
+	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
+		return $field;
+	}
+
+	$field['choices'] = mai_get_taxonomy_choices();
+
+	return $field;
+}
+
+add_filter( 'acf/prepare_field/key=mai_grid_block_tax_include', 'mai_grid_prepare_include_terms_field' );
+add_filter( 'acf/prepare_field/key=mai_grid_block_tax_exclude', 'mai_grid_prepare_include_terms_field' );
+add_filter( 'acf/prepare_field/key=mai_grid_block_tax_parent',  'mai_grid_prepare_include_terms_field' );
 /**
  * Sets taxonomy based on the block taxonomies field, when the include/exclude fields are initially loaded.
+ * The ACF taxonomy field can only load terms from a single taxonomy, so we use the first and assume
+ * all terms are from the same taxonomy.
  *
- * @since 2.27.0
- * @since 2.35.0 Added ajax check.
+ * @since TBD
  *
  * @param array $field
  *
  * @return array
  */
-function mai_grid_load_include_terms_field( $field ) {
-	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
+function mai_grid_prepare_include_terms_field( $field ) {
+	// Bail if not in admin. No AJAX check here because we need this on page load.
+	if ( ! is_admin() ) {
 		return $field;
 	}
 
-	$taxonomies = mai_get_acf_request( 'taxonomy' );
+	$term_ids = (array) $field['value'];
 
-	$action = mai_get_acf_request( 'action' );
-	$block  = mai_get_acf_request( 'block' );
+	if ( $term_ids ) {
+		foreach( $term_ids as $term_id ) {
+			$term = get_term( $term_id );
 
-	if ( ! ( $action && $block && 'acf/ajax/fetch-block' === $action ) ) {
-		return $field;
-	}
-
-	$block = json_decode( wp_unslash( $block ), true );
-
-	if ( ! isset( $block['name'] ) || 'acf/mai-term-grid' !== $block['name'] ) {
-		return $field;
-	}
-
-	if ( isset( $block['data']['taxonomy'] ) ) {
-		$taxonomies        = (array) $block['data']['taxonomy'];
-		$field['taxonomy'] = reset( $taxonomies );
+			if ( $term ) {
+				$field['taxonomy'] = $term->taxonomy;
+				break;
+			}
+		}
 	}
 
 	return $field;
@@ -108,6 +105,7 @@ function mai_grid_load_include_terms_field( $field ) {
 
 add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_include', 'mai_acf_get_terms', 10, 3 );
 add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_exclude', 'mai_acf_get_terms', 10, 3 );
+add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_parent',  'mai_acf_get_terms', 10, 3 );
 /**
  * Get terms from an ajax query.
  * The taxonomy is passed via JS on select2_query_args filter.
@@ -122,60 +120,13 @@ add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_exclude', 'mai_acf
  * @return mixed
  */
 function mai_acf_get_terms( $args, $field, $post_id  ) {
+	// Bail if not in admin and doing ajax.
 	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
 		return $args;
 	}
 
-	$args['taxonomy'] = [];
-	$taxonomies       = mai_get_acf_request( 'taxonomy' );
-
-	if ( ! $taxonomies ) {
-		return $args;
-	}
-
-	// Forces first taxonomy, since ACF's Taxonomy field type does not allow multiple taxonomies.
-	$taxonomies       = wp_unslash( (array) $taxonomies );
+	$taxonomies       = (array) mai_get_acf_request( 'taxonomy' );
 	$args['taxonomy'] = reset( $taxonomies );
-
-	return $args;
-}
-
-add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_parent', 'mai_acf_get_term_parents', 10, 1 );
-/**
- * Get taxonomies from an ajax query.
- * The taxonomy is passed via JS on select2_query_args filter.
- *
- * @since 0.1.0
- * @since 2.25.6 Added admin check.
- * @since 2.35.0 Added ajax check.
- *
- * @param array $args Field args.
- *
- * @return mixed
- */
-function mai_acf_get_term_parents( $args ) {
-	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
-		return $args;
-	}
-
-	$args['taxonomy'] = [];
-	$taxonomies       = mai_get_acf_request( 'taxonomy' );
-
-	if ( ! $taxonomies ) {
-		return $args;
-	}
-
-	foreach ( (array) $taxonomies as $taxonomy ) {
-		$args['taxonomy'][] = sanitize_text_field( wp_unslash( $taxonomy ) );
-	}
-
-	foreach ( $args['taxonomy'] as $index => $taxonomy ) {
-		if ( ! is_taxonomy_hierarchical( $taxonomy ) ) {
-			unset( $args['taxonomy'][ $index ] );
-		}
-
-		continue;
-	}
 
 	return $args;
 }
@@ -195,11 +146,12 @@ add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_parent',  'mai_acf
  * @return array
  */
 function mai_acf_get_terms_by_id( $args, $field, $post_id ) {
+	// Bail if not in admin and doing ajax.
 	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
 		return $args;
 	}
 
-	$query = ! empty( $args['search'] ) ? $args['search'] : false;
+	$query = isset( $args['search'] ) && ! empty( $args['search'] ) ? $args['search'] : false;
 
 	if ( ! $query ) {
 		return $args;
@@ -414,7 +366,7 @@ function mai_get_wp_term_query_fields() {
 			'choices'       => '', // Loaded in filter later.
 			'multiple'      => 1,
 			'ui'            => 1,
-			'ajax'          => 0,
+			'ajax'          => 1,
 		],
 		[
 			'key'               => 'mai_grid_block_tax_query_by',

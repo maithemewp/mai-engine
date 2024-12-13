@@ -12,6 +12,38 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
+add_filter( 'acf/prepare_field/key=mai_grid_block_post_type', 'mai_grid_prepare_post_type_field' );
+/**
+ * Load post type choices based on existing saved field value.
+ * Since we're using ajax to load choices, we need to load the saved value as an initial choice.
+ *
+ * @link https://github.com/maithemewp/mai-engine/issues/93
+ *
+ * @since TBD
+ *
+ * @param array $field The existing field array.
+ *
+ * @return array
+ */
+function mai_grid_prepare_post_type_field( $field ) {
+	// Bail if not in admin. No AJAX check here because we need this on page load.
+	if ( ! is_admin() ) {
+		return $field;
+	}
+
+	if ( $field['value'] ) {
+		foreach ( $field['value'] as $post_type ) {
+			$object = get_post_type_object( $post_type );
+
+			if ( $object ) {
+				$field['choices'] = [ $object->name => $object->label ];
+			}
+		}
+	}
+
+	return $field;
+}
+
 add_filter( 'acf/load_field/key=mai_grid_block_post_type', 'mai_grid_load_post_type_field' );
 /**
  * Loads post type choices.
@@ -25,6 +57,7 @@ add_filter( 'acf/load_field/key=mai_grid_block_post_type', 'mai_grid_load_post_t
  * @return array
  */
 function mai_grid_load_post_type_field( $field ) {
+	// Bail if not in admin and doing ajax.
 	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
 		return $field;
 	}
@@ -77,11 +110,14 @@ add_filter( 'acf/load_field/key=mai_grid_block_tax_taxonomy', 'mai_grid_load_tax
  * @return array
  */
 function mai_grid_load_tax_taxonomy_field( $field ) {
+	// Bail if not in admin and doing ajax.
 	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
 		return $field;
 	}
 
-	if ( ! isset( $_REQUEST['post_type'] ) ) {
+	$post_types = (array) mai_get_acf_request( 'post_type' );
+
+	if ( ! $post_types ) {
 		return $field;
 	}
 
@@ -93,21 +129,22 @@ function mai_grid_load_tax_taxonomy_field( $field ) {
 add_filter( 'acf/prepare_field/key=mai_grid_block_tax_terms', 'mai_acf_prepare_terms', 10, 1 );
 /**
  * Load term choices based on existing saved field value.
- * Ajax loading terms was working, but if a term was already saved
- * it was not loading correctly when editing a post.
+ * Since we're using ajax to load choices, we need to load the saved value as an initial choice.
  *
  * @link https://github.com/maithemewp/mai-engine/issues/93
  *
  * @since 0.3.3
  * @since 2.25.6 Added admin check.
  * @since 2.35.0 Added ajax check.
+ * @since TBD Limited choices to only the current term.
  *
  * @param array $field The ACF field array.
  *
  * @return mixed
  */
 function mai_acf_prepare_terms( $field ) {
-	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
+	// Bail if not in admin. No AJAX check here because we need this on page load.
+	if ( ! is_admin() ) {
 		return $field;
 	}
 
@@ -115,19 +152,17 @@ function mai_acf_prepare_terms( $field ) {
 		return $field;
 	}
 
-	$term_id = reset( $field['value'] );
+	$field['choices'] = isset( $field['choices'] ) ? (array) $field['choices'] : [];
 
-	if ( ! $term_id ) {
-		return $field;
+	foreach ( $field['value'] as $term_id ) {
+		$term = get_term( $term_id );
+
+		if ( ! $term || is_wp_error( $term ) ) {
+			continue;
+		}
+
+		$field['choices'][ $term->term_id ] = $term->name;
 	}
-
-	$term = get_term( $term_id );
-
-	if ( ! $term || is_wp_error( $term ) ) {
-		return $field;
-	}
-
-	$field['choices'] = mai_get_term_choices_from_taxonomy( $term->taxonomy );
 
 	return $field;
 }
@@ -146,6 +181,7 @@ add_filter( 'acf/load_field/key=mai_grid_block_tax_terms', 'mai_acf_load_terms',
  * @return mixed
  */
 function mai_acf_load_terms( $field ) {
+	// Bail if not in admin and doing ajax.
 	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
 		return $field;
 	}
@@ -174,6 +210,7 @@ add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_parent_in', 'm
  * @return mixed
  */
 function mai_acf_get_post_parents( $args ) {
+	// Bail if not in admin and doing ajax.
 	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
 		return $args;
 	}
@@ -212,6 +249,7 @@ add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_parent_in','ma
  * @return array
  */
 function mai_acf_get_posts_by_id( $args, $field, $post_id ) {
+	// Bail if not in admin and doing ajax.
 	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
 		return $args;
 	}
@@ -245,6 +283,12 @@ function mai_acf_get_posts_by_id( $args, $field, $post_id ) {
  * @return array
  */
 function mai_get_post_type_choices() {
+	static $choices = null;
+
+	if ( ! is_null( $choices ) ) {
+		return $choices;
+	}
+
 	$choices    = [];
 	$post_types = get_post_types( [ 'public' => true ] );
 
@@ -406,7 +450,7 @@ function mai_get_wp_query_fields() {
 			'choices'       => [], // Added later via load_field.
 			'multiple'      => 1,
 			'ui'            => 1,
-			'ajax'          => 0,
+			'ajax'          => 1,
 		],
 		[
 			'key'               => 'mai_grid_block_query_by',
