@@ -136,7 +136,7 @@ add_filter( 'acf/prepare_field/key=mai_grid_block_tax_terms', 'mai_acf_prepare_t
  * @since 0.3.3
  * @since 2.25.6 Added admin check.
  * @since 2.35.0 Added ajax check.
- * @since TBD Limited choices to only the current term.
+ * @since TBD Removed ajax check and limited choices to only the current term.
  *
  * @param array $field The ACF field array.
  *
