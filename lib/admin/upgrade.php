@@ -142,7 +142,7 @@ function mai_upgrade_2_11_0() {
 		$text   = __( 'Error migrating content areas.', 'mai-engine' );
 		$text   = $message ? $text . ' ' . $message : $text;
 		$notice = sprintf(
-			'<div class="notice notice-error"><p>%s <a target="_blank" href="https://docs.bizbudding.com/support/">%s</a>.</p></div>',
+			'<div class="notice notice-error"><p>%s <a target="_blank" href="https://help.bizbudding.com/">%s</a>.</p></div>',
 			$text,
 			__( 'Please contact BizBudding support.', 'mai-engine' )
 		);

@@ -122,7 +122,7 @@ function mai_template_parts_admin_notice() {
 
 	add_action( 'admin_notices', function() {
 		printf(
-			'<div class="notice notice-success is-dismissible"><p>%s <a target="_blank" href="https://docs.bizbudding.com/docs/template-parts/">%s</a>.</p></div>',
+			'<div class="notice notice-success is-dismissible"><p>%s <a target="_blank" href="https://help.bizbudding.com/article/161-content-areas">%s</a>.</p></div>',
 			__( 'View documentation for', 'mai-engine' ),
 			__( 'Content Areas', 'mai-engine' )
 		);

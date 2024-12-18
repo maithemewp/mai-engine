@@ -4,6 +4,7 @@
 * Fixed: Mai Term Grid saved taxonomies were occasionally not loading when the editor was first loaded.
 * Fixed: Dynamic field choice queries are more stable in Mai Post Grid and Mai Term Grid.
 * Fixed: Outline buttons were not the same height as standard buttons since WP changed the button's container class names.
+* Fixed: Update all docs links to go to the correct url at https://help.bizbudding.com.
 * Fixed: [WooCommerce] Checkout block sticky elements were covering the checkout fields on mobile.
 
 ## 2.35.0 (12/5/24)
