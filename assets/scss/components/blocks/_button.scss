@@ -19,7 +19,7 @@
 	}
 }
 
-.wp-block-buttons[class*="wp-container-"] {
+.wp-block-buttons-is-layout-flex {
 	// To allow outline buttons to be the same height.
 	// See https://github.com/maithemewp/mai-engine/issues/602.
 	align-items: normal;

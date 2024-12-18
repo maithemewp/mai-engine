@@ -19,7 +19,7 @@ add_filter( 'acf/load_field/key=mai_icon_choices', 'mai_load_icon_choices' );
  *
  * @since 0.1.0
  * @since 2.25.6 Added admin check.
- * @since TBD Added ajax check.
+ * @since 2.35.0 Added ajax check.
  *
  * @param array $field The ACF field.
  *
@@ -46,7 +46,7 @@ add_filter( 'acf/load_field/key=mai_icon_brand_choices', 'mai_load_icon_brand_ch
  *
  * @since 0.1.0
  * @since 2.25.6 Added admin check.
- * @since TBD Added ajax check.
+ * @since 2.35.0 Added ajax check.
  *
  * @param array $field Field args.
  *

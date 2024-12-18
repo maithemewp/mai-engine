@@ -605,7 +605,7 @@ add_action( 'wp_ajax_mai_classic_editor_styles',        'mai_do_classic_editor_s
  * @link http://wordpress.stackexchange.com/a/226623/2807
  *
  * @since 2.25.0
- * @since TBD Added transient for CSS.
+ * @since 2.35.0 Added transient for CSS.
  *
  * @return void
  */

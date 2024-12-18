@@ -18,7 +18,7 @@ add_filter( 'acf/load_field/key=mai_grid_block_show', 'mai_acf_load_show', 10, 1
  *
  * @since 0.1.0
  * @since 2.25.6 Added admin check.
- * @since TBD Added ajax check.
+ * @since 2.35.0 Added ajax check.
  *
  * @param array $field Field array.
  *
@@ -53,7 +53,7 @@ add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_not_in', 'mai_
  *
  * @since 0.1.0
  * @since 2.25.6 Added admin check.
- * @since TBD Added ajax check.
+ * @since 2.35.0 Added ajax check.
  *
  * @param array $args Field args.
  *

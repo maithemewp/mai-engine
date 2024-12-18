@@ -18,7 +18,7 @@ add_filter( 'acf/is_field_key', 'mai_acf_is_field_key', 10, 2 );
  * We need this because we wrongly used custom field keys that don't start with `field_`.
  * Our engine blocks use `mai_` and plugin blocks use `maicca_', `maipub_`, etc., so we check for `mai`.
  *
- * @since TBD
+ * @since 2.35.0
  *
  * @param bool   $bool The result.
  * @param string $id   The identifier.
