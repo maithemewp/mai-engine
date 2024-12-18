@@ -1507,7 +1507,7 @@ function mai_get_admin_post_type() {
  * @return string
  */
 function mai_get_entry_meta_setting_description() {
-	return sprintf( '%s <a href="https://studiopress.github.io/genesis/basics/genesis-shortcodes/" target="_blank" rel="noopener nofollow">%s</a> %s <a href="https://docs.bizbudding.com/kb/shortcodes/" target="_blank" rel="noopener nofollow">%s</a>.',
+	return sprintf( '%s <a href="https://studiopress.github.io/genesis/basics/genesis-shortcodes/" target="_blank" rel="noopener nofollow">%s</a> %s <a href="https://help.bizbudding.com/category/135-shortcodes" target="_blank" rel="noopener nofollow">%s</a>.',
 		__( 'View available shortcodes from', 'mai-engine' ),
 		__( 'Genesis', 'mai-engine' ),
 		__( 'and', 'mai-engine' ),

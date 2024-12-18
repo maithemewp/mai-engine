@@ -545,7 +545,7 @@ function mai_get_wp_query_fields() {
 					'label'             => '',
 					'type'              => 'true_false',
 					'default_value'     => $defaults['current'],
-					'message'           => sprintf( '%s %s', esc_html__( 'Use current', 'mai-engine' ), mai_get_block_setting_info_link( 'https://docs.bizbudding.com/docs/mai-grid-blocks/#taxonomy-meta' ) ),
+					'message'           => sprintf( '%s %s', esc_html__( 'Use current', 'mai-engine' ), mai_get_block_setting_info_link( 'https://help.bizbudding.com/article/176-mai-grid-blocks' ) ),
 					'conditional_logic' => [
 						[
 							'field'    => 'mai_grid_block_tax_taxonomy',

@@ -229,7 +229,7 @@ class Mai_Setup_Wizard_Steps extends Mai_Setup_Wizard_Service_Provider {
 			'id'            => 'done',
 			'title'         => __( 'Done', 'mai-engine' ),
 			/* translators: %s is replaced with a link to regenerate images. */
-			'description'   => sprintf( __( 'Your theme has been all set up. Don\'t forget to %s.', 'mai-engine' ), sprintf( '<a target="_blank" href="https://docs.bizbudding.com/docs/regenerating-images/">%s</a>', __( 'regenerate images', 'mai-engine' ) ) ),
+			'description'   => sprintf( __( 'Your theme has been all set up. Don\'t forget to %s.', 'mai-engine' ), sprintf( '<a target="_blank" href="https://help.bizbudding.com/article/153-regenerating-images">%s</a>', __( 'regenerate images', 'mai-engine' ) ) ),
 			'order'         => 50,
 			'continue_text' => __( 'View Your Site', 'mai-engine' ),
 			'continue_url'  => get_home_url(),
