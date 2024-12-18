@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.35.1 (12/18/24)
+* Fixed: Mai Term Grid saved taxonomies were occassionally not loading when the editor is first loaded.
+* Fixed: Dynamic field choices queries are more stable in Mai Post Grid and Mai Term Grid.
+* Fixed: Outline buttons were not the same height as standard buttons since WP changed the buttons container class names.
+* Fixed: [WooCommerce] Checkout block sticky was covering the checkout fields on mobile.
+
 ## 2.35.0 (12/5/24)
 * Added: [WooCommerce] Better compatibility with WooCommerce Cart and Checkout blocks.
 * Added: [FacetWP] Now allow FacetWP on a single Mai Post Grid instance by adding `facetwp-template` class to the block.
