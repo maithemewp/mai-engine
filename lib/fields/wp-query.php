@@ -215,7 +215,8 @@ function mai_acf_get_post_parents( $args ) {
 		return $args;
 	}
 
-	$args['post_type'] = (array) mai_get_acf_request( 'post_type' );
+	$args['post_type'] = [];
+	$post_types        = (array) mai_get_acf_request( 'post_type' );
 
 	if ( ! $post_types ) {
 		return $args;
