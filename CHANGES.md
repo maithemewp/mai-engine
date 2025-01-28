@@ -1,5 +1,8 @@
 # Changelog
 
+## TBD
+* Changed: Update ACF to 6.3.12.
+
 ## 2.35.1 (12/18/24)
 * Fixed: Mai Term Grid saved taxonomies were occasionally not loading when the editor was first loaded.
 * Fixed: Dynamic field choice queries are more stable in Mai Post Grid and Mai Term Grid.

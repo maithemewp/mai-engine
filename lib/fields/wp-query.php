@@ -358,6 +358,9 @@ function mai_get_wp_query_defaults() {
 		'excludes'            => '',
 	];
 
+	// Allow filtering of defaults.
+	$defaults = apply_filters( 'mai_grid_wp_query_defaults', $defaults );
+
 	return $defaults;
 }
 

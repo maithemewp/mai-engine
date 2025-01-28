@@ -301,6 +301,9 @@ function mai_get_wp_term_query_defaults() {
 		'excludes'         => [ 'hide_empty' ],
 	];
 
+	// Allow filtering of defaults.
+	$defaults = apply_filters( 'mai_grid_wp_term_query_defaults', $defaults );
+
 	return $defaults;
 }
 
