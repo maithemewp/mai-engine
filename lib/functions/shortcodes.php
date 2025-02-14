@@ -271,10 +271,10 @@ function mai_terms_shortcode( $atts ) {
 	], $atts );
 
 	// Sanitize.
-	$atts['taxonomy'] = sanitize_text_field( $atts['taxonomy'] );
-	$atts['before']   = wp_kses_post( $atts['before'] );
-	$atts['after']    = wp_kses_post( $atts['after'] );
-	$atts['sep']      = wp_kses_post( $atts['sep'] );
+	$atts['taxonomy'] = esc_html( $atts['taxonomy'] );
+	$atts['before']   = esc_html( $atts['before'] );
+	$atts['after']    = esc_html( $atts['after'] );
+	$atts['sep']      = esc_html( $atts['sep'] );
 	$atts['post_id']  = absint( $atts['post_id'] );
 	$atts['link']     = filter_var( $atts['link'], FILTER_VALIDATE_BOOLEAN );
 
