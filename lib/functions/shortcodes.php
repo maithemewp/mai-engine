@@ -267,7 +267,16 @@ function mai_terms_shortcode( $atts ) {
 		'after'    => '',
 		'sep'      => ', ',
 		'post_id'  => get_the_ID(),
+		'link'     => true,
 	], $atts );
+
+	// Sanitize.
+	$atts['taxonomy'] = sanitize_text_field( $atts['taxonomy'] );
+	$atts['before']   = wp_kses_post( $atts['before'] );
+	$atts['after']    = wp_kses_post( $atts['after'] );
+	$atts['sep']      = wp_kses_post( $atts['sep'] );
+	$atts['post_id']  = absint( $atts['post_id'] );
+	$atts['link']     = filter_var( $atts['link'], FILTER_VALIDATE_BOOLEAN );
 
 	// Get it started.
 	$html       = '';
@@ -285,10 +294,9 @@ function mai_terms_shortcode( $atts ) {
 		// Loop through terms.
 		foreach ( $terms as $term ) {
 			$html .= sprintf(
-				'<span class="mai-term mai-term-%s"><a href="%s" rel="tag">%s</a></span>',
+				'<span class="mai-term mai-term-%s">%s</span>',
 				esc_attr( $taxonomy ),
-				esc_url( get_term_link( $term ) ),
-				esc_html( $term->name )
+				$atts['link'] ? sprintf( '<a href="%s" rel="tag">%s</a>', esc_url( get_term_link( $term ) ), esc_html( $term->name ) ) : esc_html( $term->name )
 			);
 		}
 	}
