@@ -1316,7 +1316,11 @@ function mai_get_search_icon_form( $title = '', $icon_size = '16' ) {
 		$close
 	);
 
-	$html .= mai_get_search_form();
+	$html .= mai_get_search_form(
+		[
+			'placeholder' => esc_html( $title ?: __( 'Search...', 'mai-engine' ) ),
+		]
+	);
 
 	return $html;
 }
