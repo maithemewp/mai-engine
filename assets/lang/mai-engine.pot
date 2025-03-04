@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-03-04T15:59:44+00:00\n"
+"POT-Creation-Date: 2025-03-04T21:15:04+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: mai-engine\n"
@@ -231,7 +231,7 @@ msgstr ""
 msgid "View Patterns"
 msgstr ""
 
-#: lib/admin/admin-menu.php:364
+#: lib/admin/admin-menu.php:380
 msgid "Docs & Support"
 msgstr ""
 
@@ -375,6 +375,14 @@ msgstr ""
 msgid "Large"
 msgstr ""
 
+#: lib/admin/notices.php:122
+msgid "Don't show again"
+msgstr ""
+
+#: lib/admin/notices.php:126
+msgid "Remind me later"
+msgstr ""
+
 #: lib/admin/page-header.php:88
 #: lib/admin/term-image.php:56
 #: lib/fields/grid-display.php:196
@@ -464,7 +472,7 @@ msgid "Warning! Importing will move the existing template part to the trash."
 msgstr ""
 
 #: lib/admin/template-parts.php:272
-#: lib/classes/class-mai-plugins.php:239
+#: lib/classes/class-mai-plugins.php:249
 msgid "Active"
 msgstr ""
 
@@ -1336,106 +1344,101 @@ msgid "Sorry, something went wrong."
 msgstr ""
 
 #. translators: %s is replaced with the linked theme name.
-#: lib/classes/class-mai-plugins.php:151
-msgid "The Mai Theme Pro Bundle provides everything you need to enhance your website once it's up and running on %s."
+#: lib/classes/class-mai-plugins.php:160
+msgid "Mai Theme Pro includes everything you need to enhance your website once it's up and running on %s."
 msgstr ""
 
 #. translators: %s is replaced with the linked plugin name.
-#: lib/classes/class-mai-plugins.php:153
-msgid "Learn more about pro plugins and the pattern library included with the %s (%s)."
+#: lib/classes/class-mai-plugins.php:162
+msgid "Learn more about pro plugins, AskAI, and the pattern library included with %s and %s plugins."
 msgstr ""
 
-#. translators: %s is replaced with the linked plugin name.
-#: lib/classes/class-mai-plugins.php:153
-msgid "formerly Mai Design Pack"
-msgstr ""
-
-#: lib/classes/class-mai-plugins.php:159
+#: lib/classes/class-mai-plugins.php:168
 msgid "Get"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:160
+#: lib/classes/class-mai-plugins.php:169
 msgid "Account"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:165
+#: lib/classes/class-mai-plugins.php:174
 msgid "You are running Mai Engine version"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:215
-#: lib/classes/class-mai-plugins.php:535
+#: lib/classes/class-mai-plugins.php:225
+#: lib/classes/class-mai-plugins.php:545
 msgid "Settings"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:219
+#: lib/classes/class-mai-plugins.php:229
 msgid "Documentation"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:240
+#: lib/classes/class-mai-plugins.php:250
 msgid "Deactivate"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:252
+#: lib/classes/class-mai-plugins.php:262
 msgid "Activate"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:263
+#: lib/classes/class-mai-plugins.php:273
 msgid "Install & Activate"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:274
+#: lib/classes/class-mai-plugins.php:284
 msgid "required"
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:385
-msgid "TBD"
-msgstr ""
-
 #: lib/classes/class-mai-plugins.php:395
-msgid "Mai Accordion is perfect for displaying expandable FAQs, transcripts, resources, and even research. Add a title/question, then easily insert any block you want into the answer section."
+msgid "Activate natural language search, personalized content recommendations, and AskAI with the Mai AI Pack. Quickly add smart search and instant answers to your site — all sourced exclusively from your website’s content. Keep visitors engaged with accurate, AI-powered responses, without pulling from external sources or outside information."
 msgstr ""
 
 #: lib/classes/class-mai-plugins.php:405
-msgid "Mai Archive Pages plugin allows you to build robust and SEO-friendly archive pages with blocks. Customize the content before and after your archive content to strategically build out your archive pages for SEO."
+msgid "Mai Accordion is perfect for displaying expandable FAQs, transcripts, resources, and even research. Add a title/question, then easily insert any block you want into the answer section."
 msgstr ""
 
 #: lib/classes/class-mai-plugins.php:415
-msgid "Mai Custom Content Areas is a game changer when it comes to creating a conversion marketing strategy on your website. Easily display calls to action and other custom content in different locations on posts, pages, and custom post types conditionally by category, tag, taxonomy, keyword, and more."
+msgid "Mai Archive Pages plugin allows you to build robust and SEO-friendly archive pages with blocks. Customize the content before and after your archive content to strategically build out your archive pages for SEO."
 msgstr ""
 
 #: lib/classes/class-mai-plugins.php:425
+msgid "Mai Custom Content Areas is a game changer when it comes to creating a conversion marketing strategy on your website. Easily display calls to action and other custom content in different locations on posts, pages, and custom post types conditionally by category, tag, taxonomy, keyword, and more."
+msgstr ""
+
+#: lib/classes/class-mai-plugins.php:435
 msgid "Mai Display Taxonomy is a utility plugin that creates a category to use with Mai Post Grid. It gives you total control over your grid content in various areas of your website."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:436
+#: lib/classes/class-mai-plugins.php:446
 msgid "Use Mai Favorites to give your visitors a way to easily browse collections of your favorite things such as affiliate products, recommendations, services, and more."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:447
+#: lib/classes/class-mai-plugins.php:457
 msgid "Mai Galleries allows you to easily create responsive image galleries with optional image lightbox."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:457
+#: lib/classes/class-mai-plugins.php:467
 msgid "Include unique icons on your website with the Mai Icons plugin. There are over 7000 icons to choose from! Customization options include size, color, spacing, and more."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:468
+#: lib/classes/class-mai-plugins.php:478
 msgid "Mai Lists is a versatile block to create simple and beautiful icon or numbered lists and responsive icon feature grids."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:478
+#: lib/classes/class-mai-plugins.php:488
 msgid "Use our Mai Notices plugin to display custom callout notices to grab attention and share special information in any content area on your posts, pages, and products."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:488
+#: lib/classes/class-mai-plugins.php:498
 msgid "Mai Portfolio is a versatile and lightweight portfolio plugin for Mai Theme. It creates a custom post type called “Portfolio” that has all of our Customizer layout settings ready to customize."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:499
+#: lib/classes/class-mai-plugins.php:509
 msgid "Add the Mai Table of Contents to the beginning of your posts or pages to improve readability. The table is auto-created from your heading structure so readers can jump to the section they want easily."
 msgstr ""
 
-#: lib/classes/class-mai-plugins.php:510
+#: lib/classes/class-mai-plugins.php:520
 msgid "With Mai Testimonials, show off all the great things your customers have to say about you, while building credibility and increasing conversions."
 msgstr ""
 
@@ -2148,12 +2151,17 @@ msgstr ""
 msgid "By checking this box, you allow Mai Engine to periodically check for Mai Theme updates. Update requests send information about your site including software and theme data, as well as the site’s URL and locale. See the privacy policy for more details. Please note that updating your child theme may override any customizations that you have made inside the theme files. Customizer settings will not be affected."
 msgstr ""
 
-#: lib/customize/upsell.php:30
-msgid "Mai Theme Pro Bundle"
+#: lib/customize/upsell.php:31
+msgid "Mai Pro Pack"
 msgstr ""
 
-#: lib/customize/upsell.php:31
+#: lib/customize/upsell.php:32
+#: lib/customize/upsell.php:53
 msgid "Learn More"
+msgstr ""
+
+#: lib/customize/upsell.php:52
+msgid "Mai AI Pack"
 msgstr ""
 
 #: lib/fields/clone.php:41
