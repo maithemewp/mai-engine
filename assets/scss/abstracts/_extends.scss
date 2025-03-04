@@ -18,6 +18,7 @@
 	line-height: var(--heading-line-height, var(--line-height-sm));
 	letter-spacing: var(--heading-letter-spacing, normal);
 	text-transform: var(--heading-text-transform, none);
+	text-wrap: var(--heading-text-wrap, wrap);
 
 	@include mq(false, md) {
 		word-break: var(--heading-word-break, break-word);
