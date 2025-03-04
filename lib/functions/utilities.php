@@ -1695,7 +1695,8 @@ function mai_get_index_value_from_array( $index, $array, $default = null ) {
  *
  * @param string $param    The parameter name.
  * @param string $function The sanitization function.
- * @return void
+ *
+ * @return mixed
  */
 function mai_sanitize_get( $param, $function = 'esc_html' ) {
 	return isset( $_GET[ $param ] ) ? $function( $_GET[ $param ] ) : null;

@@ -37,7 +37,7 @@
 .mai-plugins {
 	display: grid;
 	grid-gap: 24px;
-	grid-template-columns: repeat(var(--mai-plugins-columns, 1), 1fr);
+	grid-template-columns: repeat(auto-fit, minmax(18rem,1fr));
 	margin-top: 32px;
 }
 
@@ -54,13 +54,23 @@
 
 .mai-plugin-name {
 	display: flex;
+	gap: .5rem;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: start;
 	margin: 0;
 }
 
+.mai-plugin-name__mark {
+	padding: 4px 8px;
+	background: #5cb85c;
+	color: #fff;
+	font-size: 0.8rem;
+	font-weight: 600;
+	border-radius: 3px;
+}
+
 .mai-plugin-version {
-	margin-left: 0.8em;
+	margin-left: auto;
 	font-weight: 400;
 	font-size: 0.8em;
 	opacity: 0.6;
@@ -156,20 +166,6 @@
 
 .mai-plugin-is-active {
 	--mai-plugin-settings-display: inline-flex;
-}
-
-@media only screen and (min-width: 400px) and (max-width: 599px) {
-
-	:root {
-		--mai-plugins-columns: 2;
-	}
-}
-
-@media only screen and (min-width: 600px) {
-
-	:root {
-		--mai-plugins-columns: 3;
-	}
 }
 
 .mai-plugin-loading {

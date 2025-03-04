@@ -103,6 +103,7 @@ function mai_script_loader_tag( $tag, $handle, $src ) {
 	return $tag;
 }
 
+add_filter( 'style_loader_tag', 'mai_style_loader_tag', 10, 4 );
 /**
  * Adds attributes to styles.
  *
@@ -115,7 +116,6 @@ function mai_script_loader_tag( $tag, $handle, $src ) {
  *
  * @return string
  */
-add_filter( 'style_loader_tag', 'mai_style_loader_tag', 10, 4 );
 function mai_style_loader_tag( $html, $handle, $href, $media ) {
 	$attributes = mai_get_style_attributes();
 	if ( ! ( isset( $attributes[ $handle ] ) && $attributes[ $handle ] ) ) {

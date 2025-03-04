@@ -24,28 +24,46 @@ add_action( 'init', 'mai_customizer_upsell' );
  */
 function mai_customizer_upsell( $manager ) {
 	$handle  = mai_get_handle();
-	$section = $handle . '-upsell';
-	$args    = [
-		'type'            => 'link',
-		'title'           => __( 'Mai Theme Pro Bundle', 'mai-engine' ),
-		'button_text'     => __( 'Learn More', 'mai-engine' ),
-		'button_url'      => add_query_arg(
-			[
-				'utm_source'    => 'engine',
-				'utm_medium'    => 'customizer',
-				'utm_campaign'  => 'mai-theme-pro',
-			],
-			'https://bizbudding.com/mai-theme-pro/'
-		),
-		'priority'        => 999,
-		'active_callback' => function() {
-			return ! class_exists( 'Mai_Design_Pack' );
-		},
-	];
 
-	new \Kirki\Section( $section, $args );
+	new \Kirki\Section( $handle . '-pro-pack-upsell',
+		[
+			'type'            => 'link',
+			'title'           => __( 'Mai Pro Pack', 'mai-engine' ),
+			'button_text'     => __( 'Learn More', 'mai-engine' ),
+			'button_url'      => add_query_arg(
+				[
+					'utm_source'    => 'engine',
+					'utm_medium'    => 'customizer',
+					'utm_campaign'  => 'mai-pro-pack',
+				],
+				'https://bizbudding.com/mai-theme-pro/'
+			),
+			'panel'           => $handle,
+			'priority'        => 999,
+			'active_callback' => function() {
+				return ! class_exists( 'Mai_Design_Pack' );
+			},
+		]
+	);
 
-	$args['panel'] = $handle;
-
-	new \Kirki\Section( $handle . '-theme-settings-upsell', $args );
+	new \Kirki\Section( $handle . '-ai-pack-upsell',
+		[
+			'type'            => 'link',
+			'title'           => __( 'Mai AI Pack', 'mai-engine' ),
+			'button_text'     => __( 'Learn More', 'mai-engine' ),
+			'button_url'      => add_query_arg(
+				[
+					'utm_source'    => 'engine',
+					'utm_medium'    => 'customizer',
+					'utm_campaign'  => 'mai-ai-pack',
+				],
+				'https://bizbudding.com/mai-ai-pack/'
+			),
+			'panel'           => $handle,
+			'priority'        => 999,
+			'active_callback' => function() {
+				return ! class_exists( 'Mai_AI_Pack' );
+			},
+		]
+	);
 }
