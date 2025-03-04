@@ -148,8 +148,8 @@ class Mai_Plugins {
 			'https://bizbudding.com/mai-ai-pack/'
 		);
 		$theme_link    = '<a target="_blank" rel="noopener" href="https://bizbudding.com/mai-theme/">Mai Theme</a>';
-		$pro_pack_link = sprintf( '<a target="_blank" rel="noopener" href="%s">Mai Pro Pack plugin</a>', $pro_pack_url );
-		$ai_pack_link  = sprintf( '<a target="_blank" rel="noopener" href="%s">Mai AI Pack plugin</a>', $ai_pack_url );
+		$pro_pack_link = sprintf( '<a target="_blank" rel="noopener" href="%s">Mai Pro Pack</a>', $pro_pack_url );
+		$ai_pack_link  = sprintf( '<a target="_blank" rel="noopener" href="%s">Mai AI Pack</a>', $ai_pack_url );
 
 		echo '<div class="wrap">';
 			echo '<h1 class="wp-heading-inline">Mai Plugins</h1>';
@@ -157,15 +157,15 @@ class Mai_Plugins {
 				echo '<div class="mai-plugins-content">';
 					printf( '<p>%s %s</p>',
 						/* translators: %s is replaced with the linked theme name. */
-						sprintf( esc_html__( 'Mai Theme Pro provides everything you need to enhance your website once it\'s up and running on %s.', 'mai-engine' ), $theme_link ),
+						sprintf( esc_html__( 'Mai Theme Pro includes everything you need to enhance your website once it\'s up and running on %s.', 'mai-engine' ), $theme_link ),
 						/* translators: %s is replaced with the linked plugin name. */
-						sprintf( esc_html__( 'Learn more about pro plugins and the pattern library included with the %s as well as the %s.', 'mai-engine' ), $pro_pack_link, $ai_pack_link )
+						sprintf( esc_html__( 'Learn more about pro plugins, AskAI, and the pattern library included with %s and %s plugins.', 'mai-engine' ), $pro_pack_link, $ai_pack_link )
 					);
 				echo '</div>';
 
 				if ( ! class_exists( 'Mai_Design_Pack' ) ) {
 					echo '<div class="mai-plugins-cta">';
-						printf( '<p><a target="_blank" rel="noopener" href="%s" class="button button-primary">%s</a></p>', $pro_pack_url, sprintf( '%s Mai Pro Plugin', esc_html__( 'Get', 'mai-engine' ) ) );
+						printf( '<p><a target="_blank" rel="noopener" href="%s" class="button button-primary">%s</a></p>', $pro_pack_url, sprintf( '%s Mai Theme Pro', esc_html__( 'Get', 'mai-engine' ) ) );
 						printf( '<p><a target="_blank" rel="noopener" href="https://bizbudding.com/my-account/">%s  →</a></p>', sprintf( 'BizBudding %s', esc_html__( 'Account', 'mai-engine' ) ) );
 					echo '</div>';
 				}

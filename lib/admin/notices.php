@@ -52,6 +52,8 @@ function mai_ai_pack_notice() {
 		return;
 	}
 
+	// delete_user_meta( get_current_user_id(), 'mai_ai_pack_notice_dismissed' );
+
 	// Get user ID and dismissed status.
 	$user_id   = get_current_user_id();
 	$dismissed = get_user_meta( $user_id, 'mai_ai_pack_notice_dismissed', true );
@@ -77,7 +79,7 @@ function mai_ai_pack_notice() {
 				top: 0;
 				right: 0;
 				display: flex;
-				gap: 1rem;
+				gap: .5rem;
 				padding: 8px;
 				background: none;
 				color: #787c82;
@@ -94,25 +96,32 @@ function mai_ai_pack_notice() {
 				color: #bcda83;
 				text-decoration: underline;
 			}
+
+			.button {
+				color: #181f09;
+				background: #bcda83;
+				border-color: #bcda83;
+			}
 		}
 	</style>
 	<div class="notice mai-ai-pack-notice">
 		<div style="display:flex;align-items:center;gap:.5rem;">
 			<img width="24" height="24" src="<?php echo mai_get_url() . 'assets/svg/mai-logo-icon.svg'; ?>" alt="Mai AI Pack">
-			<h2>Discover Smarter Search & Relevant Recommendations</h2>
+			<h2>Enable Intuitive Site Search and Intelligent Suggestions for Your Visitors.</h2>
 		</div>
-		<p><strong>Turn your web site into an AI-powered experience with the Mai AI Pack.</strong></p>
+		<p><strong>Turn your website into an AI-Powered Search Engine with the Mai AI Pack.</strong></p>
 		<ul>
-			<li>✅ <strong>AI Search:</strong> Visitors ask natural questions and get instant answers — all from your content.</li>
-			<li>✅ <strong>Smart Recommendations:</strong> Automatically show related posts that match what visitors want next.</li>
-			<li>✅ <strong>Boost Engagement:</strong> Keep visitors exploring longer with trending, popular, and ultra-relevant content.</li>
+			<li>✅&nbsp;&nbsp;<strong>AI Search:</strong> Visitors ask natural questions and get instant answers — all from your content.</li>
+			<li>✅&nbsp;&nbsp;<strong>Smart Recommendations:</strong> Automatically show related posts that match what visitors want next.</li>
+			<li>✅&nbsp;&nbsp;<strong>Boost Engagement:</strong> Keep visitors exploring longer with trending, popular, and ultra-relevant content.</li>
 		</ul>
 		<p>Upgrade your site with the Mai AI Pack today!</p>
-		<p><a target="_blank" rel="noopener noreferrer" href="https://bizbudding.com/mai-ai-pack/?utm_source=engine&utm_medium=mai-ai-pack&utm_campaign=mai-ai-pack" class="button button-primary" style="color:#181f09;background:#bcda83;border-color:#bcda83;">Get the Mai AI Pack</a></p>
+		<p><a target="_blank" rel="noopener noreferrer" href="https://bizbudding.com/mai-ai-pack/?utm_source=engine&utm_medium=mai-ai-pack&utm_campaign=mai-ai-pack" class="button button-primary">Learn More about the Mai AI Pack</a></p>
 		<div class="mai-dismissers">
 			<a href="#" class="mai-dismiss mai-dismiss__forever">
 				<?php _e( 'Don\'t show again', 'mai-engine' ); ?>
 			</a>
+			<span>·</span>
 			<a href="#" class="mai-dismiss mai-dismiss__later">
 				<?php _e( 'Remind me later', 'mai-engine' ); ?>
 			</a>
