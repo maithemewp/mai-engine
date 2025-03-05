@@ -1,7 +1,13 @@
 # Changelog
 
-## TBD
+## 2.36.0 (TBD)
+* Added: Better support for the core Row block alignment and justification settings.
+* Added: New `mai_terms` shortcode to show terms from multiple taxonomies in the same list.
+* Added: [Developers] New `mai_grid_wp_query_defaults` and `mai_grid_wp_term_query_defaults` filters for Mai Post Grid and Mai Term Grid default query args.
 * Changed: Update ACF to 6.3.12.
+* Changed: Nav menu search now uses the menu item label as the search input placeholder.
+* Changed: Bring back final encoding when using PHP's `DOMDocument`.
+* Fixed: Undefined variable warning when using the parent field via ACF.
 
 ## 2.35.1 (12/18/24)
 * Fixed: Mai Term Grid saved taxonomies were occasionally not loading when the editor was first loaded.
