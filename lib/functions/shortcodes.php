@@ -254,7 +254,7 @@ add_shortcode( 'mai_terms', 'mai_terms_shortcode' );
 /**
  * Displays the terms for a post.
  *
- * @since TBD
+ * @since 2.35.2
  *
  * @param array $atts The shortcode attributes.
  *

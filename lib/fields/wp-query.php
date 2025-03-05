@@ -19,7 +19,7 @@ add_filter( 'acf/prepare_field/key=mai_grid_block_post_type', 'mai_grid_prepare_
  *
  * @link https://github.com/maithemewp/mai-engine/issues/93
  *
- * @since TBD
+ * @since 2.35.0
  *
  * @param array $field The existing field array.
  *
@@ -136,7 +136,7 @@ add_filter( 'acf/prepare_field/key=mai_grid_block_tax_terms', 'mai_acf_prepare_t
  * @since 0.3.3
  * @since 2.25.6 Added admin check.
  * @since 2.35.0 Added ajax check.
- * @since TBD Removed ajax check and limited choices to only the current term.
+ * @since 2.35.1 Removed ajax check and limited choices to only the current term.
  *
  * @param array $field The ACF field array.
  *

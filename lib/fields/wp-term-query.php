@@ -75,7 +75,7 @@ add_filter( 'acf/prepare_field/key=mai_grid_block_tax_parent',  'mai_grid_prepar
  * The ACF taxonomy field can only load terms from a single taxonomy, so we use the first and assume
  * all terms are from the same taxonomy.
  *
- * @since TBD
+ * @since 2.35.1
  *
  * @param array $field
  *
