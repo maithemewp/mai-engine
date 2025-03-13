@@ -293,10 +293,24 @@ function mai_terms_shortcode( $atts ) {
 
 		// Loop through terms.
 		foreach ( $terms as $term ) {
-			$html .= sprintf(
+			$inside = esc_html( $term->name );
+
+			// If we're linking the terms.
+			if ( $atts['link'] ) {
+				// Get the term link.
+				$link = get_term_link( $term );
+
+				// If we have a link, wrap the term in an anchor tag.
+				if ( $link ) {
+					$inside = sprintf( '<a href="%s" rel="tag">%s</a>', esc_url( $link ), $inside );
+				}
+			}
+
+			// Build the html.
+			$html  .= sprintf(
 				'<span class="mai-term mai-term-%s">%s</span>',
 				esc_attr( $taxonomy ),
-				$atts['link'] ? sprintf( '<a href="%s" rel="tag">%s</a>', esc_url( get_term_link( $term ) ), esc_html( $term->name ) ) : esc_html( $term->name )
+				$inside
 			);
 		}
 	}
