@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.36.0 (TBD)
+## 2.36.0 (3/13/25)
 * Added: Better support for the core Row block alignment and justification settings.
 * Added: New `mai_terms` shortcode to show terms from multiple taxonomies in the same list.
 * Added: [Developers] New `mai_grid_wp_query_defaults` and `mai_grid_wp_term_query_defaults` filters for Mai Post Grid and Mai Term Grid default query args.
