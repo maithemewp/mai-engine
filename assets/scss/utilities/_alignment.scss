@@ -1,4 +1,7 @@
 .is-layout-flex {
+	--group-block-justify-content: start;
+	--row-gap: var(--spacing-md);
+	--column-gap: var(--spacing-md);
 	display: flex;
 	flex-wrap: wrap;
 	gap: var(--row-gap) var(--column-gap);

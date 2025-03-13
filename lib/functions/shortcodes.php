@@ -250,6 +250,82 @@ function mai_price_shortcode( $atts ) {
 	return $price;
 }
 
+add_shortcode( 'mai_terms', 'mai_terms_shortcode' );
+/**
+ * Displays the terms for a post.
+ *
+ * @since 2.35.2
+ *
+ * @param array $atts The shortcode attributes.
+ *
+ * @return string
+ */
+function mai_terms_shortcode( $atts ) {
+	$atts = shortcode_atts( [
+		'taxonomy' => 'category', // Comma separated list of taxonomies.
+		'before'   => '',
+		'after'    => '',
+		'sep'      => ', ',
+		'post_id'  => get_the_ID(),
+		'link'     => true,
+	], $atts );
+
+	// Sanitize.
+	$atts['taxonomy'] = esc_html( $atts['taxonomy'] );
+	$atts['before']   = esc_html( $atts['before'] );
+	$atts['after']    = esc_html( $atts['after'] );
+	$atts['sep']      = esc_html( $atts['sep'] );
+	$atts['post_id']  = absint( $atts['post_id'] );
+	$atts['link']     = filter_var( $atts['link'], FILTER_VALIDATE_BOOLEAN );
+
+	// Get it started.
+	$html       = '';
+	$taxonomies = explode( ',', $atts['taxonomy'] );
+
+	// Loop through taxonomies.
+	foreach ( $taxonomies as $taxonomy ) {
+		$terms = get_the_terms( $atts['post_id'], $taxonomy );
+
+		// Bail if no terms.
+		if ( ! $terms || is_wp_error( $terms ) ) {
+			continue;
+		}
+
+		// Loop through terms.
+		foreach ( $terms as $term ) {
+			$inside = esc_html( $term->name );
+
+			// If we're linking the terms.
+			if ( $atts['link'] ) {
+				// Get the term link.
+				$link = get_term_link( $term );
+
+				// If we have a link, wrap the term in an anchor tag.
+				if ( $link ) {
+					$inside = sprintf( '<a href="%s" rel="tag">%s</a>', esc_url( $link ), $inside );
+				}
+			}
+
+			// Build the html.
+			$html  .= sprintf(
+				'<span class="mai-term mai-term-%s">%s</span>',
+				esc_attr( $taxonomy ),
+				$inside
+			);
+		}
+	}
+
+	// Bail if no terms.
+	if ( empty( $html ) ) {
+		return $html;
+	}
+
+	// Build the html.
+	$html = sprintf( '<div %s>%s%s%s</div>', genesis_attr( 'mai-terms' ), $atts['before'], $html, $atts['after'] );
+
+	return $html;
+}
+
 add_filter( 'genesis_post_terms_shortcode', 'mai_post_terms_shortcode_classes', 10, 3 );
 /**
  * Adds taxonomy name as class to entry-terms wrap.

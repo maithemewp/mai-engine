@@ -212,5 +212,4 @@ wp.domReady( () => {
 		acf.addAction( 'append_field/key=mai_icon_color', initialize_color_field );
 		acf.addAction( 'append_field/key=mai_icon_background', initialize_color_field );
 	}
-
 } )( jQuery );

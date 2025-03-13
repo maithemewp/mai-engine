@@ -314,7 +314,7 @@ function mai_admin_menu_subpages() {
 	global $submenu;
 
 	// Set vars.
-	$ordered = $plugins = $content_areas = $reusable_blocks = $patterns = $setup_wizard = [];
+	$plugins = $content_areas = $reusable_blocks = $patterns = $setup_wizard = [];
 
 	// Store fixed items.
 	foreach ( $submenu['mai-theme'] as $index => $item ) {
@@ -347,12 +347,28 @@ function mai_admin_menu_subpages() {
 		return $item[0];
 	},  $submenu['mai-theme'] ), SORT_ASC, $submenu['mai-theme'] );
 
+	// Mai Pro Pack.
+	$pro_pack = [
+		'Mai Pro Pack',
+		'edit_posts',
+		'https://bizbudding.com/mai-theme-pro/?utm_source=engine&utm_medium=mai-pro-pack&utm_campaign=mai-pro-pack',
+	];
+
+	// Mai AI Pack.
+	$ai_pack = [
+		'Mai AI Pack',
+		'edit_posts',
+		'https://bizbudding.com/mai-ai-pack/?utm_source=engine&utm_medium=mai-ai-pack&utm_campaign=mai-ai-pack',
+	];
+
 	// Add starting items.
 	$submenu['mai-theme'] = array_merge(
 		[
 			$plugins,
 			$content_areas,
 			$reusable_blocks,
+			! class_exists( 'Mai_Design_Pack' ) ? $pro_pack : null,
+			! class_exists( 'Mai_AI_Pack' ) ? $ai_pack : null,
 		],
 		$submenu['mai-theme']
 	);

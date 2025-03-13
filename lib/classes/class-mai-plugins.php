@@ -59,7 +59,6 @@ class Mai_Plugins {
 
 		check_ajax_referer( 'mai-plugins', 'nonce' );
 
-		$succes  = false;
 		$plugins = $this->get_plugins();
 		$action  = mai_sanitize_get( 'trigger' );
 		$slug    = mai_sanitize_get( 'slug' );
@@ -132,16 +131,25 @@ class Mai_Plugins {
 		$plugins      = $this->get_plugins();
 		$can_activate = current_user_can( 'activate_plugins' );
 		$can_install  = current_user_can( 'install_plugins' );
-		$plugins_url  = add_query_arg(
+		$pro_pack_url = add_query_arg(
 			[
 				'utm_source'    => 'engine',
-				'utm_medium'    => 'mai-theme-pro',
-				'utm_campaign'  => 'mai-theme-pro',
+				'utm_medium'    => 'mai-pro-pack',
+				'utm_campaign'  => 'mai-pro-pack',
 			],
 			'https://bizbudding.com/mai-theme-pro/'
 		);
-		$theme_link   = '<a target="_blank" rel="noopener" href="https://bizbudding.com/mai-theme/">Mai Theme</a>';
-		$plugins_link = sprintf( '<a target="_blank" rel="noopener" href="%s">Mai Pro Plugin</a>', $plugins_url );
+		$ai_pack_url = add_query_arg(
+			[
+				'utm_source'    => 'engine',
+				'utm_medium'    => 'mai-ai-pack',
+				'utm_campaign'  => 'mai-ai-pack',
+			],
+			'https://bizbudding.com/mai-ai-pack/'
+		);
+		$theme_link    = '<a target="_blank" rel="noopener" href="https://bizbudding.com/mai-theme/">Mai Theme</a>';
+		$pro_pack_link = sprintf( '<a target="_blank" rel="noopener" href="%s">Mai Pro Pack</a>', $pro_pack_url );
+		$ai_pack_link  = sprintf( '<a target="_blank" rel="noopener" href="%s">Mai AI Pack</a>', $ai_pack_url );
 
 		echo '<div class="wrap">';
 			echo '<h1 class="wp-heading-inline">Mai Plugins</h1>';
@@ -149,15 +157,15 @@ class Mai_Plugins {
 				echo '<div class="mai-plugins-content">';
 					printf( '<p>%s %s</p>',
 						/* translators: %s is replaced with the linked theme name. */
-						sprintf( esc_html__( 'The Mai Theme Pro Bundle provides everything you need to enhance your website once it\'s up and running on %s.', 'mai-engine' ), $theme_link ),
+						sprintf( esc_html__( 'Mai Theme Pro includes everything you need to enhance your website once it\'s up and running on %s.', 'mai-engine' ), $theme_link ),
 						/* translators: %s is replaced with the linked plugin name. */
-						sprintf( esc_html__( 'Learn more about pro plugins and the pattern library included with the %s (%s).', 'mai-engine' ), $plugins_link, __( 'formerly Mai Design Pack', 'mai-engine' ) )
+						sprintf( esc_html__( 'Learn more about pro plugins, AskAI, and the pattern library included with %s and %s plugins.', 'mai-engine' ), $pro_pack_link, $ai_pack_link )
 					);
 				echo '</div>';
 
 				if ( ! class_exists( 'Mai_Design_Pack' ) ) {
 					echo '<div class="mai-plugins-cta">';
-						printf( '<p><a target="_blank" rel="noopener" href="%s" class="button button-primary">%s</a></p>', $plugins_url, sprintf( '%s Mai Pro Plugin', esc_html__( 'Get', 'mai-engine' ) ) );
+						printf( '<p><a target="_blank" rel="noopener" href="%s" class="button button-primary">%s</a></p>', $pro_pack_url, sprintf( '%s Mai Theme Pro', esc_html__( 'Get', 'mai-engine' ) ) );
 						printf( '<p><a target="_blank" rel="noopener" href="https://bizbudding.com/my-account/">%s  →</a></p>', sprintf( 'BizBudding %s', esc_html__( 'Account', 'mai-engine' ) ) );
 					echo '</div>';
 				}
@@ -183,10 +191,11 @@ class Mai_Plugins {
 					$version      = $version ? sprintf( '<span class="mai-plugin-version">%s</span>', $version ) : '';
 					$is_installed = $this->is_installed( $plugin_slug );
 					$is_active    = $this->is_active( $plugin_slug );
-					$class        = 'mai-plugin';
-					$class       .= $is_active ? ' mai-plugin-is-active' : '';
+					$class        = [ 'mai-plugin' ];
+					$class[]      = sanitize_title_with_dashes( $plugin['name'] );
+					$class[]      = $is_active ? 'mai-plugin-is-active' : '';
 
-					printf( '<div class="%s">', $class );
+					printf( '<div class="%s">', implode( ' ', $class ) );
 
 						printf( '<h2 class="mai-plugin-name">%s</h2>', $plugin['name'] . $version );
 						printf( '<p class="mai-plugin-desc">%s</p>', $plugin['desc'] );
@@ -272,7 +281,7 @@ class Mai_Plugins {
 	 * @return string
 	 */
 	function get_button( $action, $class, $text, $slug ) {
-		$data_disabled = $this->is_disabled( $slug ) ? sprintf( ' data-disabled="Mai Theme Pro Plugin %s."', esc_html__( 'required', 'mai-engine' ) ) : '';
+		$data_disabled = $this->is_disabled( $slug ) ? sprintf( ' data-disabled="Mai Pro Pack plugin %s."', esc_html__( 'required', 'mai-engine' ) ) : '';
 		$disabled      = $this->is_disabled( $slug ) ? ' disabled' : '';
 
 		return sprintf( '<button class="mai-plugin-%s button button-%s" data-action="%s" data-slug="%s"%s%s>%s</button>',
@@ -376,27 +385,56 @@ class Mai_Plugins {
 		}
 
 		$plugins = [
-			'mai-icons' => [
-				'name'     => 'Mai Icons',
+			'mai-ai-pack' => [
+				'name'     => 'Mai AI Pack <span class="mai-plugin-name__mark">New!</span>',
 				'host'     => 'github',
-				'slug'     => 'mai-icons/mai-icons.php',
-				'uri'      => 'maithemewp/mai-icons',
-				'branch'   => 'master',
+				'slug'     => 'mai-ai-pack/mai-ai-pack.php',
+				'uri'      => 'maithemewp/mai-ai-pack',
+				'branch'   => 'main',
 				'required' => true,
-				'desc'     => esc_html__( 'Include unique icons on your website with the Mai Icons plugin. There are over 7000 icons to choose from! Customization options include size, color, spacing, and more.', 'mai-engine' ),
-				'docs'     => 'https://help.bizbudding.com/article/143-mai-icons',
-				'settings' => '',
+				'desc'     => esc_html__( 'Activate natural language search, personalized content recommendations, and AskAI with the Mai AI Pack. Quickly add smart search and instant answers to your site — all sourced exclusively from your website’s content. Keep visitors engaged with accurate, AI-powered responses, without pulling from external sources or outside information.', 'mai-engine' ),
+				'docs'     => 'https://help.bizbudding.com/article/210-mai-ai-pack',
 			],
-			'mai-testimonials' => [
-				'name'     => 'Mai Testimonials',
+			'mai-accordion' => [
+				'name'     => 'Mai Accordion',
 				'host'     => 'github',
-				'slug'     => 'mai-testimonials/mai-testimonials.php',
-				'uri'      => 'maithemewp/mai-testimonials',
+				'slug'     => 'mai-accordion/mai-accordion.php',
+				'uri'      => 'maithemewp/mai-accordion',
 				'branch'   => 'master',
 				'required' => true,
-				'desc'     => esc_html__( 'With Mai Testimonials, show off all the great things your customers have to say about you, while building credibility and increasing conversions.', 'mai-engine' ),
-				'docs'     => 'https://help.bizbudding.com/article/141-mai-testimonials',
-				'settings' => admin_url( 'edit.php?post_type=testimonial' ),
+				'desc'     => esc_html__( 'Mai Accordion is perfect for displaying expandable FAQs, transcripts, resources, and even research. Add a title/question, then easily insert any block you want into the answer section.', 'mai-engine' ),
+				'docs'     => 'https://help.bizbudding.com/article/147-mai-accordian',
+			],
+			'mai-archive-pages' => [
+				'name'     => 'Mai Archive Pages',
+				'host'     => 'github',
+				'slug'     => 'mai-archive-pages/mai-archive-pages.php',
+				'uri'      => 'maithemewp/mai-archive-pages',
+				'branch'   => 'master',
+				'required' => true,
+				'desc'     => esc_html__( 'Mai Archive Pages plugin allows you to build robust and SEO-friendly archive pages with blocks. Customize the content before and after your archive content to strategically build out your archive pages for SEO.', 'mai-engine' ),
+				'docs'     => 'https://help.bizbudding.com/article/148-mai-archive-pages',
+			],
+			'mai-custom-content-areas' => [
+				'name'     => 'Mai Custom Content Areas',
+				'host'     => 'github',
+				'slug'     => 'mai-custom-content-areas/mai-custom-content-areas.php',
+				'uri'      => 'maithemewp/mai-custom-content-areas',
+				'branch'   => 'master',
+				'required' => true,
+				'desc'     => esc_html__( 'Mai Custom Content Areas is a game changer when it comes to creating a conversion marketing strategy on your website. Easily display calls to action and other custom content in different locations on posts, pages, and custom post types conditionally by category, tag, taxonomy, keyword, and more.', 'mai-engine' ),
+				'docs'     => 'https://help.bizbudding.com/article/192-mai-custom-content-areas',
+			],
+			'mai-display-taxonomy' => [
+				'name'     => 'Mai Display Taxonomy',
+				'host'     => 'github',
+				'slug'     => 'mai-display-taxonomy/mai-display-taxonomy.php',
+				'uri'      => 'maithemewp/mai-display-taxonomy',
+				'branch'   => 'master',
+				'required' => true,
+				'desc'     => esc_html__( 'Mai Display Taxonomy is a utility plugin that creates a category to use with Mai Post Grid. It gives you total control over your grid content in various areas of your website.', 'mai-engine' ),
+				'docs'     => 'https://help.bizbudding.com/article/149-mai-display-taxonomy',
+				'settings' => admin_url( 'admin.php?page=mai-display-taxonomy' ),
 			],
 			'mai-favorites' => [
 				'name'     => 'Mai Favorites',
@@ -409,27 +447,6 @@ class Mai_Plugins {
 				'docs'     => 'https://help.bizbudding.com/article/144-mai-favorites',
 				'settings' => admin_url( 'edit.php?post_type=favorite' ),
 			],
-			'mai-portfolio' => [
-				'name'     => 'Mai Portfolio',
-				'host'     => 'github',
-				'slug'     => 'mai-portfolio/mai-portfolio.php',
-				'uri'      => 'maithemewp/mai-portfolio',
-				'branch'   => 'master',
-				'required' => true,
-				'desc'     => esc_html__( 'Mai Portfolio is a versatile and lightweight portfolio plugin for Mai Theme. It creates a custom post type called “Portfolio” that has all of our Customizer layout settings ready to customize.', 'mai-engine' ),
-				'docs'     => 'https://help.bizbudding.com/article/191-mai-portfolio',
-				'settings' => admin_url( 'edit.php?post_type=portfolio' ),
-			],
-			'mai-accordion' => [
-				'name'     => 'Mai Accordion',
-				'host'     => 'github',
-				'slug'     => 'mai-accordion/mai-accordion.php',
-				'uri'      => 'maithemewp/mai-accordion',
-				'branch'   => 'master',
-				'required' => true,
-				'desc'     => esc_html__( 'Mai Accordion is perfect for displaying expandable FAQs, transcripts, resources, and even research. Add a title/question, then easily insert any block you want into the answer section.', 'mai-engine' ),
-				'docs'     => 'https://help.bizbudding.com/article/147-mai-accordian',
-			],
 			'mai-galleries' => [
 				'name'     => 'Mai Galleries',
 				'host'     => 'github',
@@ -439,6 +456,17 @@ class Mai_Plugins {
 				'required' => true,
 				'desc'     => esc_html__( 'Mai Galleries allows you to easily create responsive image galleries with optional image lightbox.', 'mai-engine' ),
 				'docs'     => 'https://help.bizbudding.com/article/207-mai-galleries',
+			],
+			'mai-icons' => [
+				'name'     => 'Mai Icons',
+				'host'     => 'github',
+				'slug'     => 'mai-icons/mai-icons.php',
+				'uri'      => 'maithemewp/mai-icons',
+				'branch'   => 'master',
+				'required' => true,
+				'desc'     => esc_html__( 'Include unique icons on your website with the Mai Icons plugin. There are over 7000 icons to choose from! Customization options include size, color, spacing, and more.', 'mai-engine' ),
+				'docs'     => 'https://help.bizbudding.com/article/143-mai-icons',
+				'settings' => '',
 			],
 			'mai-lists' => [
 				'name'     => 'Mai Lists',
@@ -460,6 +488,17 @@ class Mai_Plugins {
 				'desc'     => esc_html__( 'Use our Mai Notices plugin to display custom callout notices to grab attention and share special information in any content area on your posts, pages, and products.', 'mai-engine' ),
 				'docs'     => 'https://help.bizbudding.com/article/142-mai-notices',
 			],
+			'mai-portfolio' => [
+				'name'     => 'Mai Portfolio',
+				'host'     => 'github',
+				'slug'     => 'mai-portfolio/mai-portfolio.php',
+				'uri'      => 'maithemewp/mai-portfolio',
+				'branch'   => 'master',
+				'required' => true,
+				'desc'     => esc_html__( 'Mai Portfolio is a versatile and lightweight portfolio plugin for Mai Theme. It creates a custom post type called “Portfolio” that has all of our Customizer layout settings ready to customize.', 'mai-engine' ),
+				'docs'     => 'https://help.bizbudding.com/article/191-mai-portfolio',
+				'settings' => admin_url( 'edit.php?post_type=portfolio' ),
+			],
 			'mai-table-of-contents' => [
 				'name'     => 'Mai Table of Contents',
 				'host'     => 'github',
@@ -471,59 +510,17 @@ class Mai_Plugins {
 				'docs'     => 'https://help.bizbudding.com/article/145-mai-table-of-contents',
 				'settings' => admin_url( 'admin.php?page=mai-table-of-contents' ),
 			],
-			'mai-custom-content-areas' => [
-				'name'     => 'Mai Custom Content Areas',
+			'mai-testimonials' => [
+				'name'     => 'Mai Testimonials',
 				'host'     => 'github',
-				'slug'     => 'mai-custom-content-areas/mai-custom-content-areas.php',
-				'uri'      => 'maithemewp/mai-custom-content-areas',
+				'slug'     => 'mai-testimonials/mai-testimonials.php',
+				'uri'      => 'maithemewp/mai-testimonials',
 				'branch'   => 'master',
 				'required' => true,
-				'desc'     => esc_html__( 'Mai Custom Content Areas is a game changer when it comes to creating a conversion marketing strategy on your website. Easily display calls to action and other custom content in different locations on posts, pages, and custom post types conditionally by category, tag, taxonomy, keyword, and more.', 'mai-engine' ),
-				'docs'     => 'https://help.bizbudding.com/article/192-mai-custom-content-areas',
+				'desc'     => esc_html__( 'With Mai Testimonials, show off all the great things your customers have to say about you, while building credibility and increasing conversions.', 'mai-engine' ),
+				'docs'     => 'https://help.bizbudding.com/article/141-mai-testimonials',
+				'settings' => admin_url( 'edit.php?post_type=testimonial' ),
 			],
-			'mai-archive-pages' => [
-				'name'     => 'Mai Archive Pages',
-				'host'     => 'github',
-				'slug'     => 'mai-archive-pages/mai-archive-pages.php',
-				'uri'      => 'maithemewp/mai-archive-pages',
-				'branch'   => 'master',
-				'required' => true,
-				'desc'     => esc_html__( 'Mai Archive Pages plugin allows you to build robust and SEO-friendly archive pages with blocks. Customize the content before and after your archive content to strategically build out your archive pages for SEO.', 'mai-engine' ),
-				'docs'     => 'https://help.bizbudding.com/article/148-mai-archive-pages',
-			],
-			'mai-display-taxonomy' => [
-				'name'     => 'Mai Display Taxonomy',
-				'host'     => 'github',
-				'slug'     => 'mai-display-taxonomy/mai-display-taxonomy.php',
-				'uri'      => 'maithemewp/mai-display-taxonomy',
-				'branch'   => 'master',
-				'required' => true,
-				'desc'     => esc_html__( 'Mai Display Taxonomy is a utility plugin that creates a category to use with Mai Post Grid. It gives you total control over your grid content in various areas of your website.', 'mai-engine' ),
-				'docs'     => 'https://help.bizbudding.com/article/149-mai-display-taxonomy',
-				'settings' => admin_url( 'admin.php?page=mai-display-taxonomy' ),
-			],
-			'mai-config-generator' => [
-				'name'     => 'Mai Config Generator',
-				'host'     => 'github',
-				'slug'     => 'mai-config-generator/mai-config-generator.php',
-				'uri'      => 'maithemewp/mai-config-generator',
-				'branch'   => 'master',
-				'required' => true,
-				'desc'     => esc_html__( 'A developer plugin to help set custom defaults for a custom Mai Theme. The config.php file is the “default settings” for your site. If you install your custom theme, or site managers change any of the Customizer settings, the defaults will now come from your custom config.', 'mai-engine' ),
-				'docs'     => 'https://help.bizbudding.com/article/193-mai-config-generator',
-				'settings' => admin_url( 'admin.php?page=mai-config-generator' ),
-			],
-			// 'mai-ads-extra-content' => [
-			// 	'name'     => sprintf( 'Mai Ads & Extra Content (%s)', esc_html( 'legacy', 'mai-engine' ) ),
-			// 	'host'     => 'github',
-			// 	'slug'     => 'mai-ads-extra-content/mai-ads-extra-content.php',
-			// 	'uri'      => 'maithemewp/mai-ads-extra-content',
-			// 	'branch'   => 'master',
-			// 	'required' => true,
-			// 	'desc'     => sprintf( esc_html__( 'Boost your sales by easily embedding CTAs, display ads, and more, anywhere on your site, all from one simple to manage location.%s', 'mai-engine' ), sprintf( '<br><br><strong>%s</strong>', sprintf( esc_html__( 'Note: This plugin has been replaced with %s', 'mai-engine' ), 'Mai Custom Content Areas' ) ) ),
-			// 	'docs'     => 'https://help.bizbudding.com/article/146-mai-ads-extra-content',
-			// 	'settings' => admin_url( 'admin.php?page=mai_aec' ),
-			// ],
 		];
 
 		$plugins = apply_filters( 'mai_plugins', $plugins );

@@ -1316,7 +1316,11 @@ function mai_get_search_icon_form( $title = '', $icon_size = '16' ) {
 		$close
 	);
 
-	$html .= mai_get_search_form();
+	$html .= mai_get_search_form(
+		[
+			'placeholder' => esc_html( $title ?: __( 'Search...', 'mai-engine' ) ),
+		]
+	);
 
 	return $html;
 }
@@ -1376,6 +1380,7 @@ function mai_get_dom_document( $html ) {
  */
 function mai_get_dom_html( $dom ) {
 	$html = $dom->saveHTML();
+	$html = mb_convert_encoding( $html, 'UTF-8', 'HTML-ENTITIES' );
 
 	return $html;
 }
@@ -1690,7 +1695,8 @@ function mai_get_index_value_from_array( $index, $array, $default = null ) {
  *
  * @param string $param    The parameter name.
  * @param string $function The sanitization function.
- * @return void
+ *
+ * @return mixed
  */
 function mai_sanitize_get( $param, $function = 'esc_html' ) {
 	return isset( $_GET[ $param ] ) ? $function( $_GET[ $param ] ) : null;

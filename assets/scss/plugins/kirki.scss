@@ -406,7 +406,8 @@ $sections: (
 	section-genesis_breadcrumbs,
 	section-genesis_comments,
 	section-genesis_scripts,
-	section-mai-engine-theme-settings-upsell,
+	section-mai-engine-pro-pack-upsell,
+	section-mai-engine-ai-pack-upsell,
 );
 
 @each $section in $sections {
@@ -416,5 +417,9 @@ $sections: (
 	#accordion-#{$section} {
 		order: $priority;
 		border-top: $border !important;
+
+		.accordion-section-title:after {
+			display: none;
+		}
 	}
 }
