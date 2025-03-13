@@ -56,15 +56,15 @@ function mai_ai_pack_notice() {
 
 	// Get user ID and dismissed status.
 	$user_id   = get_current_user_id();
-	$dismissed = get_user_meta( $user_id, 'mai_ai_pack_notice_dismissed', true );
+	$dismissed = (int) get_user_meta( $user_id, 'mai_ai_pack_notice_dismissed', true );
 
-	// If dismissed is true, it's permanent dismissal.
-	if ( true === $dismissed || 1 === $dismissed ) {
+	// If dismissed is 1 (int), it's permanent dismissal.
+	if ( 1 === $dismissed ) {
 		return;
 	}
 
-	// If dismissed is a timestamp, check if 24 hours have passed
-	if ( is_numeric( $dismissed ) && ( time() - $dismissed ) < DAY_IN_SECONDS ) {
+	// If dismissed temporarily, check if 24 hours have passed
+	if ( $dismissed && ( time() - $dismissed ) < DAY_IN_SECONDS ) {
 		return;
 	}
 	?>
