@@ -25,7 +25,7 @@ add_filter( 'acf/load_field/key=mai_grid_block_show', 'mai_acf_load_show', 10, 1
  * @return mixed
  */
 function mai_acf_load_show( $field ) {
-	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
+	if ( ! mai_is_editor() ) {
 		return $field;
 	}
 
@@ -60,7 +60,7 @@ add_filter( 'acf/fields/post_object/query/key=mai_grid_block_post_not_in', 'mai_
  * @return mixed
  */
 function mai_acf_get_posts( $args ) {
-	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
+	if ( ! mai_is_editor() ) {
 		return $args;
 	}
 

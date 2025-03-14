@@ -32,6 +32,43 @@ function mai_is_in_dev_mode() {
 }
 
 /**
+ * Checks if the current request is in the editor.
+ * For use in block callbacks.
+ *
+ * @since TBD
+ *
+ * @return bool
+ */
+function mai_is_editor() {
+	$editor = defined('REST_REQUEST') && true === REST_REQUEST && 'edit' === filter_input( INPUT_GET, 'context', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+	$editor = is_admin() || $editor;
+
+	return $editor;
+}
+
+/**
+ * Checks if the current site scheme is https.
+ *
+ * @since 2.6.0
+ *
+ * @access private
+ *
+ * @return bool
+ */
+function mai_is_https() {
+	static $https = null;
+
+	if ( ! is_null( $https ) ) {
+		return $https;
+	}
+
+	$url   = wp_parse_url( home_url() );
+	$https = 'https' === $url['scheme'];
+
+	return $https;
+}
+
+/**
  * Helper function for debugging.
  *
  * @since 0.3.0

@@ -156,6 +156,11 @@ function mai_get_grid_field_values( $type ) {
 
 	foreach ( $defaults as $key => $default ) {
 		$value          = get_field( $key );
+
+		if ( 'orderby_dappier' === $key ) {
+			ray( $value );
+		}
+
 		$values[ $key ] = is_null( $value ) ? $default : $value;
 	}
 

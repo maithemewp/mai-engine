@@ -58,7 +58,7 @@ add_filter( 'acf/load_field/key=mai_grid_block_taxonomy', 'mai_grid_load_taxonom
  */
 function mai_grid_load_taxonomy_field( $field ) {
 	// Bail if not in admin and doing ajax.
-	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
+	if ( ! mai_is_editor() ) {
 		return $field;
 	}
 
@@ -121,7 +121,7 @@ add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_parent',  'mai_acf
  */
 function mai_acf_get_terms( $args, $field, $post_id  ) {
 	// Bail if not in admin and doing ajax.
-	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
+	if ( ! mai_is_editor() ) {
 		return $args;
 	}
 
@@ -147,7 +147,7 @@ add_filter( 'acf/fields/taxonomy/query/key=mai_grid_block_tax_parent',  'mai_acf
  */
 function mai_acf_get_terms_by_id( $args, $field, $post_id ) {
 	// Bail if not in admin and doing ajax.
-	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
+	if ( ! mai_is_editor() ) {
 		return $args;
 	}
 
@@ -594,6 +594,9 @@ function mai_get_wp_term_query_fields() {
 			],
 		],
 	];
+
+	// Add filter.
+	$fields = apply_filters( 'mai_grid_block_wp_term_query_fields', $fields );
 
 	return $fields;
 }
