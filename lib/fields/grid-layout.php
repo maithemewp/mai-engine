@@ -349,5 +349,8 @@ function mai_get_grid_layout_fields() {
 		],
 	];
 
+	// Add filter.
+	$fields = apply_filters( 'mai_grid_block_layout_fields', $fields );
+
 	return $fields;
 }

@@ -888,5 +888,8 @@ function mai_get_grid_display_fields() {
 		],
 	];
 
+	// Add filter.
+	$fields = apply_filters( 'mai_grid_block_display_fields', $fields );
+
 	return $fields;
 }
