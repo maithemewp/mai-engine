@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.36.0\n"
+"Project-Id-Version: Mai Engine 2.36.1-beta.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-03-13T15:01:09+00:00\n"
+"POT-Creation-Date: 2025-04-17T16:46:25+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: mai-engine\n"
@@ -115,7 +115,7 @@ msgstr ""
 #: lib/admin/admin-menu.php:28
 #: lib/admin/admin-menu.php:29
 #: lib/functions/deprecated.php:289
-#: lib/functions/utilities.php:1519
+#: lib/functions/utilities.php:1497
 msgid "Mai Theme"
 msgstr ""
 
@@ -1219,7 +1219,7 @@ msgstr ""
 #: lib/fields/grid-display.php:591
 #: lib/functions/colors.php:256
 #: lib/functions/customizer.php:465
-#: lib/functions/utilities.php:1448
+#: lib/functions/utilities.php:1426
 msgid "Link"
 msgstr ""
 
@@ -2865,23 +2865,23 @@ msgstr ""
 msgid "Powered by"
 msgstr ""
 
-#: lib/functions/helpers.php:1097
+#: lib/functions/helpers.php:1134
 msgid "More info"
 msgstr ""
 
-#: lib/functions/images.php:402
+#: lib/functions/images.php:403
 msgid "Landscape"
 msgstr ""
 
-#: lib/functions/images.php:403
+#: lib/functions/images.php:404
 msgid "Portrait"
 msgstr ""
 
-#: lib/functions/images.php:404
+#: lib/functions/images.php:405
 msgid "Square"
 msgstr ""
 
-#: lib/functions/images.php:413
+#: lib/functions/images.php:414
 msgid "Custom"
 msgstr ""
 
@@ -3032,27 +3032,27 @@ msgstr ""
 msgid "Search..."
 msgstr ""
 
-#: lib/functions/utilities.php:1445
+#: lib/functions/utilities.php:1423
 msgid "Primary"
 msgstr ""
 
-#: lib/functions/utilities.php:1446
+#: lib/functions/utilities.php:1424
 msgid "Secondary"
 msgstr ""
 
-#: lib/functions/utilities.php:1447
+#: lib/functions/utilities.php:1425
 msgid "Outline"
 msgstr ""
 
-#: lib/functions/utilities.php:1516
+#: lib/functions/utilities.php:1494
 msgid "View available shortcodes from"
 msgstr ""
 
-#: lib/functions/utilities.php:1517
+#: lib/functions/utilities.php:1495
 msgid "Genesis"
 msgstr ""
 
-#: lib/functions/utilities.php:1518
+#: lib/functions/utilities.php:1496
 msgid "and"
 msgstr ""
 
@@ -3088,19 +3088,19 @@ msgstr ""
 msgid "Skip to after header navigation"
 msgstr ""
 
-#: lib/structure/page-header.php:440
+#: lib/structure/page-header.php:439
 msgid "Latest Posts"
 msgstr ""
 
-#: lib/structure/page-header.php:474
+#: lib/structure/page-header.php:473
 msgid "Search results for: "
 msgstr ""
 
-#: lib/structure/page-header.php:483
+#: lib/structure/page-header.php:482
 msgid "Archives for "
 msgstr ""
 
-#: lib/structure/page-header.php:495
+#: lib/structure/page-header.php:494
 msgid "Not found, error 404"
 msgstr ""
 
