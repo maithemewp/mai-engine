@@ -27,7 +27,7 @@ add_filter( 'acf/prepare_field/key=mai_grid_block_row_gap',    'mai_acf_load_gap
  * @return array
  */
 function mai_acf_load_gap( $field ) {
-	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
+	if ( ! mai_is_editor() ) {
 		return $field;
 	}
 
@@ -348,6 +348,9 @@ function mai_get_grid_layout_fields() {
 			],
 		],
 	];
+
+	// Add filter.
+	$fields = apply_filters( 'mai_grid_block_layout_fields', $fields );
 
 	return $fields;
 }

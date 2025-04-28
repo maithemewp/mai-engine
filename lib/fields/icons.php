@@ -26,7 +26,7 @@ add_filter( 'acf/load_field/key=mai_icon_choices', 'mai_load_icon_choices' );
  * @return array
  */
 function mai_load_icon_choices( $field ) {
-	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
+	if ( ! mai_is_editor() ) {
 		return $field;
 	}
 
@@ -53,7 +53,7 @@ add_filter( 'acf/load_field/key=mai_icon_brand_choices', 'mai_load_icon_brand_ch
  * @return mixed
  */
 function mai_load_icon_brand_choices( $field ) {
-	if ( ! ( is_admin() && wp_doing_ajax() ) ) {
+	if ( ! mai_is_editor() ) {
 		return $field;
 	}
 

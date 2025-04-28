@@ -188,8 +188,9 @@ function mai_add_logo_attributes( $attr ) {
 	$mobile    = isset( $widths['mobile'] ) ? $widths['mobile'] : 0;
 	$mobile    = max( $mobile, 1 );
 	$overrides = [
-		'loading' => 'eager',
-		'sizes'   => sprintf( '(min-width: %s) %s, %s', $break, mai_get_unit_value( $desktop ), mai_get_unit_value( $mobile ) ),
+		'loading'       => 'eager',
+		'fetchpriority' => 'high',
+		'sizes'         => sprintf( '(min-width: %s) %s, %s', $break, mai_get_unit_value( $desktop ), mai_get_unit_value( $mobile ) ),
 	];
 
 	return wp_parse_args( $overrides, $attr	);

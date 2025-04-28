@@ -1408,28 +1408,6 @@ function mai_get_dom_first_child( $dom ) {
 }
 
 /**
- * Checks if the current site scheme is https.
- *
- * @since 2.6.0
- *
- * @access private
- *
- * @return bool
- */
-function mai_is_https() {
-	static $https = null;
-
-	if ( ! is_null( $https ) ) {
-		return $https;
-	}
-
-	$url   = wp_parse_url( home_url() );
-	$https = 'https' === $url['scheme'];
-
-	return $https;
-}
-
-/**
  * Localize data for editor JS.
  *
  * @since 0.1.0
