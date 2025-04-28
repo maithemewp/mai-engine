@@ -133,12 +133,14 @@ function mai_do_page_header_image() {
 		$image_size = mai_get_page_header_image_size();
 		$filter     = function() { return false; };
 		add_filter( 'wp_lazy_loading_enabled', $filter );
-		echo wp_get_attachment_image( $image_id, $image_size, false,
+		$image = wp_get_attachment_image( $image_id, $image_size, false,
 			[
 				'class' => 'page-header-image',
 				'sizes' => '100vw',
 			]
 		);
+		$image = apply_filters( 'mai_page_header_img', $image, $image_id, $image_size );
+		echo $image; // Don't use wp_kses_post() because it was stripping the srcset attribute somehow.
 		remove_filter( 'wp_lazy_loading_enabled', $filter );
 	}
 }
