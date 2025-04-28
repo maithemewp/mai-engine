@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.36.1 (4/28/25)
+* Added: [Performance] Logo now has `fetchpriority="high"` to go along with the eager loading already in place.
+* Added: Support the Page Header Image field on static blog page.
+* Added: [Developers] New `mai_grid_block_wp_query_fields`, `mai_grid_block_wp_term_query_fields`, `mai_grid_block_display_fields`, and `mai_grid_block_layout_fields` filters on Mai Post/Term Grid blocks.
+* Added: [Developers] New `mai_page_header_img` filter to filter the actual page header image markup.
+* Added: [Developers] New `mai_is_editor()` helper function to know if you're in the block editor in PHP.
+* Changed: Update ACF to v6.4.0.1.
+* Changed: [Performance] Update Kirki for better woff2 support.
+* Changed: Some default transitions are now `.15s` instead of `.3s` in CSS.
+
 ## 2.36.0 (3/13/25)
 * Added: Better support for the core Row block alignment and justification settings.
 * Added: New `mai_terms` shortcode to show terms from multiple taxonomies in the same list.
