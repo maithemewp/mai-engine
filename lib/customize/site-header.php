@@ -86,12 +86,31 @@ function mai_site_header_customizer_settings() {
 		)
 	);
 
+	new \Kirki\Field\Text(
+		mai_parse_kirki_args(
+			[
+				'settings'        => mai_get_kirki_setting( 'site-header-mobile-search-placeholder' ),
+				'section'         => $section,
+				'label'           => __( 'Search Form Placeholder', 'mai-engine' ),
+				'default'         => mai_get_config( 'settings')['site-header-mobile-search-placeholder'],
+				'active_callback' => [
+					[
+						'setting'  => mai_get_kirki_setting( 'site-header-mobile' ),
+						'operator' => 'contains',
+						'value'    => 'header_search',
+					],
+				],
+			]
+		)
+	);
+
 	new \Kirki\Field\Textarea(
 		mai_parse_kirki_args(
 			[
 				'settings'        => mai_get_kirki_setting( 'site-header-mobile-content' ),
 				'section'         => $section,
 				'label'           => __( 'Custom Content', 'mai-engine' ),
+				'default'         => mai_get_config( 'settings')['site-header-mobile-content'],
 				'active_callback' => [
 					[
 						'setting'  => mai_get_kirki_setting( 'site-header-mobile' ),

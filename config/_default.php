@@ -589,6 +589,7 @@ return [
 			'menu_toggle',
 		],
 		'site-header-mobile-content' => '',
+		'site-header-mobile-search-placeholder' => __( 'Search...', 'mai-engine' ),
 		'site-layouts'         => [
 			'default' => [
 				'site'    => 'standard-content',
