@@ -3,7 +3,7 @@
         'name' => 'maithemewp/mai-engine',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => '02b9fdd3de294c0d6b1e047e5cd37b2047fd9d2d',
+        'reference' => 'db442f76be5f92005e1f104906bf2698f314d9e2',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'afragen/wp-dependency-installer' => array(
-            'pretty_version' => '4.3.13',
-            'version' => '4.3.13.0',
-            'reference' => '6a6366d21710a34f134d747b1ae673daa165b78c',
+            'pretty_version' => '4.3.14',
+            'version' => '4.3.14.0',
+            'reference' => '38f127feeaeb1cfc8544c120d4e9e372fa41f79e',
             'type' => 'library',
             'install_path' => __DIR__ . '/../afragen/wp-dependency-installer',
             'aliases' => array(),
@@ -40,7 +40,7 @@
         'maithemewp/mai-engine' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => '02b9fdd3de294c0d6b1e047e5cd37b2047fd9d2d',
+            'reference' => 'db442f76be5f92005e1f104906bf2698f314d9e2',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
