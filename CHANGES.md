@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.36.2 (TBD)
+
+* Changed: Update ACF to 6.4.2.
+* Changed: Update the updater.
+
 ## 2.36.1 (4/28/25)
 * Added: [Performance] Logo now has `fetchpriority="high"` to go along with the eager loading already in place.
 * Added: Support the Page Header Image field on static blog page.
