@@ -210,7 +210,7 @@ function mai_preload_fonts() {
 	}
 }
 
-add_action( 'wp_head', 'mai_preload_logo', 2 );
+// add_action( 'wp_head', 'mai_preload_logo', 2 );
 /**
  * Preloads logo.
  *
@@ -379,6 +379,7 @@ function mai_get_performance_default( $setting ) {
 	return isset( $performance['disable-emojis'] ) ? $performance['disable-emojis'] : true;
 }
 
+add_action( 'the_posts', 'mai_prime_featured_images_cache', 10, 2 );
 /**
  * Prime post thumbnail cache.
  *
@@ -399,7 +400,6 @@ function mai_get_performance_default( $setting ) {
  *
  * @return array
  */
-add_action( 'the_posts', 'mai_prime_featured_images_cache', 10, 2 );
 function mai_prime_featured_images_cache( $posts, $wp_query ) {
 	if ( ! ( $wp_query->is_main_query() && mai_is_type_archive() ) ) {
 		return $posts;
