@@ -157,7 +157,7 @@ add_filter( 'script_loader_tag', 'mai_skip_links_script_attributes', 10, 3 );
 /**
  * Add async and defer attributes to scripts.
  *
- * @since TBD
+ * @since 2.37.0
  *
  * @param string $tag    The script tag.
  * @param string $handle The script handle.

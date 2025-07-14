@@ -35,7 +35,7 @@ function mai_is_in_dev_mode() {
  * Checks if the current request is in the editor.
  * For use in block callbacks.
  *
- * @since TBD
+ * @since 2.36.1
  *
  * @return bool
  */

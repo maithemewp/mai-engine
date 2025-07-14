@@ -37,7 +37,7 @@ add_action( 'admin_notices', 'mai_ai_pack_notice' );
 /**
  * Displays the AI Pack notice.
  *
- * @since TBD
+ * @since 2.36.1
  *
  * @return void
  */
@@ -153,7 +153,7 @@ add_action( 'wp_ajax_mai_dismiss_ai_pack_notice', 'mai_dismiss_ai_pack_notice' )
 /**
  * Handles the AJAX request to dismiss the AI Pack notice.
  *
- * @since TBD
+ * @since 2.36.1
  *
  * @return void
  */
