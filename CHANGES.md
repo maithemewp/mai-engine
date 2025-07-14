@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.37.0 (7/14/25)
+* Changed: Bump minimum PHP version to 8.1.
+* Changed: [Performance] The Genesis skip-links script is now deferred.
+* Changed: Disable preloading of logo as sometimes it’s not used in time and throwing performance warnings.
+* Changed: Update ACF to 6.4.2.
+* Changed: Update the updater.
+
 ## 2.36.1 (4/28/25)
 * Added: [Performance] Logo now has `fetchpriority="high"` to go along with the eager loading already in place.
 * Added: Support the Page Header Image field on static blog page.

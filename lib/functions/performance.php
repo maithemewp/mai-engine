@@ -153,6 +153,38 @@ function mai_remove_recent_comments_style() {
 	remove_action( 'wp_head', [ $wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style' ] );
 }
 
+add_filter( 'script_loader_tag', 'mai_skip_links_script_attributes', 10, 3 );
+/**
+ * Add async and defer attributes to scripts.
+ *
+ * @since 2.37.0
+ *
+ * @param string $tag    The script tag.
+ * @param string $handle The script handle.
+ * @param string $src    The script source.
+ *
+ * @return string
+ */
+function mai_skip_links_script_attributes( $tag, $handle, $src ) {
+	// Bail if not the skip links script.
+	if ( 'skip-links' !== $handle ) {
+		return $tag;
+	}
+
+	// Set up tag processor.
+	$tags = new WP_HTML_Tag_Processor( $tag );
+
+	// Loop through tags.
+	while ( $tags->next_tag( [ 'tag_name' => 'script' ] ) ) {
+		$tags->set_attribute( 'defer', 'defer' );
+	}
+
+	// Get updated tag.
+	$tag = $tags->get_updated_html();
+
+	return $tag;
+}
+
 add_action( 'wp_print_scripts', 'mai_dequeue_comment_reply', 99 );
 /**
  * Dequeue comment reply script if there are no comments to reply to.
@@ -210,7 +242,7 @@ function mai_preload_fonts() {
 	}
 }
 
-add_action( 'wp_head', 'mai_preload_logo', 2 );
+// add_action( 'wp_head', 'mai_preload_logo', 2 );
 /**
  * Preloads logo.
  *
@@ -379,6 +411,7 @@ function mai_get_performance_default( $setting ) {
 	return isset( $performance['disable-emojis'] ) ? $performance['disable-emojis'] : true;
 }
 
+add_action( 'the_posts', 'mai_prime_featured_images_cache', 10, 2 );
 /**
  * Prime post thumbnail cache.
  *
@@ -399,7 +432,6 @@ function mai_get_performance_default( $setting ) {
  *
  * @return array
  */
-add_action( 'the_posts', 'mai_prime_featured_images_cache', 10, 2 );
 function mai_prime_featured_images_cache( $posts, $wp_query ) {
 	if ( ! ( $wp_query->is_main_query() && mai_is_type_archive() ) ) {
 		return $posts;

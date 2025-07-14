@@ -255,12 +255,15 @@ function mai_do_menu_toggle() {
  * @return void
  */
 function mai_do_header_search() {
+	$placeholder = mai_get_option( 'site-header-mobile-search-placeholder', mai_get_config( 'settings')['site-header-mobile-search-placeholder'] );
+	$placeholder = $placeholder ?: __( 'Search...', 'mai-engine' );
+
 	genesis_markup(
 		[
 			'open'    => '<div %s>',
 			'close'   => '</div>',
 			'context' => 'header-search',
-			'content' => mai_get_search_icon_form( __( 'Header Search', 'mai-engine' ), 24 ),
+			'content' => mai_get_search_icon_form( $placeholder, 24 ),
 			'echo'    => true,
 			'atts'    => [
 				'class' => 'header-search search-icon-form',

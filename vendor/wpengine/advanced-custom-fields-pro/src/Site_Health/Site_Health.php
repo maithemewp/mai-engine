@@ -291,6 +291,11 @@ class Site_Health {
 			'debug' => $is_pro ? 'PRO' : 'Free',
 		);
 
+		$fields['update_source'] = array(
+			'label' => __( 'Update Source', 'acf' ),
+			'value' => apply_filters( 'acf/site_health/update_source', __( 'wordpress.org', 'acf' ) ),
+		);
+
 		if ( $is_pro ) {
 			$fields['activated'] = array(
 				'label' => __( 'License Activated', 'acf' ),
@@ -455,7 +460,13 @@ class Site_Health {
 
 			foreach ( $field_group['location'] as $rules ) {
 				foreach ( $rules as $rule ) {
-					$all_rules[] = $rule['param'] . $rule['operator'] . $rule['value'];
+					if ( empty( $rule['param'] ) ) {
+						continue;
+					}
+
+					$operator    = ! empty( $rule['operator'] ) ? $rule['operator'] : '';
+					$value       = ! empty( $rule['value'] ) ? $rule['value'] : '';
+					$all_rules[] = $rule['param'] . $operator . $value;
 
 					if ( ! $is_pro ) {
 						continue;

@@ -192,6 +192,8 @@ function mai_get_template_parts() {
 		}
 	}
 
+	$template_parts = apply_filters( 'mai_template_parts', $template_parts );
+
 	return $template_parts;
 }
 
