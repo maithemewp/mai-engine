@@ -13,7 +13,7 @@ import assign from 'lodash.assign';
 
 const { __ }                         = wp.i18n;
 const { createHigherOrderComponent } = wp.compose;
-const { Fragment }                   = wp.element;
+const { Fragment, useEffect }        = wp.element;
 const { InspectorControls }          = wp.blockEditor;
 const { addFilter }                  = wp.hooks;
 const { PanelBody, BaseControl, ButtonGroup, Button, SelectControl } = wp.components;
@@ -30,19 +30,80 @@ const enableMaxWidthSettingsBlocks = [
 	'core/paragraph',
 ];
 
-// Margin, only Top and Bottom.
-const enableSpacingSettingsBlocks = [
+// Legacy spacing blocks (deprecated - will migrate to core spacing).
+const enableLegacySpacingSettingsBlocks = [
 	'core/heading',
 	'core/paragraph',
 	'core/separator',
 ];
 
-// Margin, Top, Right, Bottom, and Left.
-const enableMarginSettingsBlocks = [
+// Legacy margin blocks (deprecated - will migrate to core spacing).
+const enableLegacyMarginSettingsBlocks = [
 	'core/image',
 	'core/cover',
 	'core/group',
 ];
+
+/**
+ * Spacing value mapping from legacy to core spacing scale.
+ */
+const spacingValueMap = {
+	// Padding mapping
+	'no': '0',
+	'xs': '20',
+	'sm': '30',
+	'md': '40',
+	'lg': '50',
+	'xl': '60',
+
+	// Margin mapping
+	'md': '40',
+	'lg': '50',
+	'xl': '60',
+	'xxl': '70',
+	'xxxl': '80',
+	'xxxxl': '90',
+
+	// Negative margin mapping - WordPress core spacing doesn't support negative values
+	// These will remain as legacy attributes
+	'-md': '-md',
+	'-lg': '-lg',
+	'-xl': '-xl',
+	'-xxl': '-xxl',
+	'-xxxl': '-xxxl',
+	'-xxxxl': '-xxxxl',
+};
+
+/**
+ * Check if block supports core spacing.
+ */
+const blockSupportsCoreSpacing = (blockName) => {
+	const blockType = wp.blocks.getBlockType(blockName);
+	return blockType && blockType.supports && blockType.supports.spacing;
+};
+
+/**
+ * Migrate legacy spacing values to core spacing.
+ */
+const migrateSpacingValue = (legacyValue) => {
+	if (!legacyValue || legacyValue === '') {
+		return '';
+	}
+
+	// Don't migrate negative values - WordPress core spacing doesn't support them
+	if (legacyValue.startsWith('-')) {
+		return legacyValue; // Keep as legacy attribute
+	}
+
+	// Map to core spacing scale values
+	const mappedValue = spacingValueMap[legacyValue];
+	if (mappedValue) {
+		// WordPress core spacing uses the format: var:preset|spacing|{slug}
+		return `var:preset|spacing|${mappedValue}`;
+	}
+
+	return legacyValue;
+};
 
 /**
  * Add layout control attributes to block.
@@ -56,9 +117,6 @@ const addLayoutControlAttribute = ( settings, name ) => {
 	if ( enableLayoutSettingsBlocks.includes( name ) ) {
 		/**
 		 * Use Lodash's assign to gracefully handle if attributes are undefined.
-		 *
-		 * TODO: These should be named spacingTop not verticalSpacingTop since left/right aren't vertical.
-		 * I wonder if it's too late to change and safely deprecate?
 		 */
 		settings.attributes = assign( settings.attributes, {
 			contentWidth: {
@@ -69,6 +127,7 @@ const addLayoutControlAttribute = ( settings, name ) => {
 				type: 'string',
 				default: '',
 			},
+			// Legacy spacing attributes (deprecated)
 			verticalSpacingTop: {
 				type: 'string',
 				default: '',
@@ -104,10 +163,8 @@ const addLayoutControlAttribute = ( settings, name ) => {
 		} );
 	}
 
-	if ( enableSpacingSettingsBlocks.includes( name ) ) {
-		/**
-		 * Use Lodash's assign to gracefully handle if attributes are undefined.
-		 */
+	// Add legacy spacing attributes for backward compatibility
+	if ( enableLegacySpacingSettingsBlocks.includes( name ) ) {
 		settings.attributes = assign( settings.attributes, {
 			spacingTop: {
 				type: 'string',
@@ -120,10 +177,8 @@ const addLayoutControlAttribute = ( settings, name ) => {
 		} );
 	}
 
-	if ( enableMarginSettingsBlocks.includes( name ) ) {
-		/**
-		 * Use Lodash's assign to gracefully handle if attributes are undefined.
-		 */
+	// Add legacy margin attributes for backward compatibility
+	if ( enableLegacyMarginSettingsBlocks.includes( name ) ) {
 		settings.attributes = assign( settings.attributes, {
 			marginTop: {
 				type: 'string',
@@ -306,144 +361,148 @@ const withLayoutControls = createHigherOrderComponent( ( BlockEdit ) => {
 								</div>
 							</BaseControl>
 						</PanelBody>
-						<PanelBody
-							title={__( 'Padding', 'mai-engine' )}
-							initialOpen={false}
-							className={'mai-spacing-settings'}
-						>
-							<BaseControl
-								id="mai-vertical-spacing-top"
-								label={__( 'Top', 'mai-engine' )}
+						{/* Legacy padding controls - only show if block doesn't support core spacing */}
+						{!blockSupportsCoreSpacing(props.name) && (
+							<PanelBody
+								title={__( 'Padding (Legacy)', 'mai-engine' )}
+								initialOpen={false}
+								className={'mai-spacing-settings'}
 							>
-								<div>
-									<ButtonGroup mode="radio" data-chosen={verticalSpacingTop}>
-										{paddingChoices.map( sizeInfo => (
-											<Button
-											onClick={() => {
-												props.setAttributes( {
-													verticalSpacingTop: sizeInfo.value,
-												} );
-											}}
-											data-checked={verticalSpacingTop === sizeInfo.value}
-											value={sizeInfo.value}
-											key={`mai-vertical-space-top-${sizeInfo.value}`}
-											index={sizeInfo.value}
-											isSecondary={verticalSpacingTop !== sizeInfo.value}
-											isPrimary={verticalSpacingTop === sizeInfo.value}
-											>
-												<small>{sizeInfo.label}</small>
-											</Button>
-										) )}
-									</ButtonGroup>
-									<Button isDestructive isSmall isLink onClick={() => {
-										props.setAttributes( {
-											verticalSpacingTop: null,
-										} );
-									}}>
-										{__( 'Clear', 'mai-engine' )}
-									</Button>
-								</div>
-							</BaseControl>
-							<BaseControl
-								id="mai-vertical-spacing-bottom"
-								label={__( 'Bottom', 'mai-engine' )}
-							>
-								<div>
-									<ButtonGroup mode="radio" data-chosen={verticalSpacingBottom}>
-										{paddingChoices.map( sizeInfo => (
-											<Button
+								<p><em>{ __( 'Note: This is a legacy control. Consider using the core spacing controls instead.', 'mai-engine' ) }</em></p>
+								<BaseControl
+									id="mai-vertical-spacing-top"
+									label={__( 'Top', 'mai-engine' )}
+								>
+									<div>
+										<ButtonGroup mode="radio" data-chosen={verticalSpacingTop}>
+											{paddingChoices.map( sizeInfo => (
+												<Button
 												onClick={() => {
 													props.setAttributes( {
-														verticalSpacingBottom: sizeInfo.value,
+														verticalSpacingTop: sizeInfo.value,
 													} );
 												}}
-												data-checked={verticalSpacingBottom === sizeInfo.value}
+												data-checked={verticalSpacingTop === sizeInfo.value}
 												value={sizeInfo.value}
-												key={`mai-vertical-space-bottom-${sizeInfo.value}`}
+												key={`mai-vertical-space-top-${sizeInfo.value}`}
 												index={sizeInfo.value}
-												isSecondary={verticalSpacingBottom !== sizeInfo.value}
-												isPrimary={verticalSpacingBottom === sizeInfo.value}
-											>
-												<small>{sizeInfo.label}</small>
-											</Button>
-										) )}
-									</ButtonGroup>
-									<Button isDestructive isSmall isLink onClick={() => {
-										props.setAttributes( {
-											verticalSpacingBottom: null,
-										} );
-									}}>
-										{__( 'Clear', 'mai-engine' )}
-									</Button>
-								</div>
-							</BaseControl>
-							<BaseControl
-								id="mai-vertical-spacing-left"
-								label={__( 'Left', 'mai-engine' )}
-							>
-								<div>
-									<ButtonGroup mode="radio" data-chosen={verticalSpacingLeft}>
-										{paddingChoices.map( sizeInfo => (
-											<Button
-												onClick={() => {
-													props.setAttributes( {
-														verticalSpacingLeft: sizeInfo.value,
-													} );
-												}}
-												data-checked={verticalSpacingLeft === sizeInfo.value}
-												value={sizeInfo.value}
-												key={`mai-vertical-space-left-${sizeInfo.value}`}
-												index={sizeInfo.value}
-												isSecondary={verticalSpacingLeft !== sizeInfo.value}
-												isPrimary={verticalSpacingLeft === sizeInfo.value}
-											>
-												<small>{sizeInfo.label}</small>
-											</Button>
-										) )}
-									</ButtonGroup>
-									<Button isDestructive isSmall isLink onClick={() => {
-										props.setAttributes( {
-											verticalSpacingLeft: null,
-										} );
-									}}>
-										{__( 'Clear', 'mai-engine' )}
-									</Button>
-								</div>
-							</BaseControl>
-							<BaseControl
-								id="mai-vertical-spacing-right"
-								label={__( 'Right', 'mai-engine' )}
-							>
-								<div>
-									<ButtonGroup mode="radio" data-chosen={verticalSpacingRight}>
-										{paddingChoices.map( sizeInfo => (
-											<Button
-												onClick={() => {
-													props.setAttributes( {
-														verticalSpacingRight: sizeInfo.value,
-													} );
-												}}
-												data-checked={verticalSpacingRight === sizeInfo.value}
-												value={sizeInfo.value}
-												key={`mai-vertical-space-right-${sizeInfo.value}`}
-												index={sizeInfo.value}
-												isSecondary={verticalSpacingRight !== sizeInfo.value}
-												isPrimary={verticalSpacingRight === sizeInfo.value}
-											>
-												<small>{sizeInfo.label}</small>
-											</Button>
-										) )}
-									</ButtonGroup>
-									<Button isDestructive isSmall isLink onClick={() => {
-										props.setAttributes( {
-											verticalSpacingRight: null,
-										} );
-									}}>
-										{__( 'Clear', 'mai-engine' )}
-									</Button>
-								</div>
-							</BaseControl>
-						</PanelBody>
+												isSecondary={verticalSpacingTop !== sizeInfo.value}
+												isPrimary={verticalSpacingTop === sizeInfo.value}
+												>
+													<small>{sizeInfo.label}</small>
+												</Button>
+											) )}
+										</ButtonGroup>
+										<Button isDestructive isSmall isLink onClick={() => {
+											props.setAttributes( {
+												verticalSpacingTop: null,
+											} );
+										}}>
+											{__( 'Clear', 'mai-engine' )}
+										</Button>
+									</div>
+								</BaseControl>
+								<BaseControl
+									id="mai-vertical-spacing-bottom"
+									label={__( 'Bottom', 'mai-engine' )}
+								>
+									<div>
+										<ButtonGroup mode="radio" data-chosen={verticalSpacingBottom}>
+											{paddingChoices.map( sizeInfo => (
+												<Button
+													onClick={() => {
+														props.setAttributes( {
+															verticalSpacingBottom: sizeInfo.value,
+														} );
+													}}
+													data-checked={verticalSpacingBottom === sizeInfo.value}
+													value={sizeInfo.value}
+													key={`mai-vertical-space-bottom-${sizeInfo.value}`}
+													index={sizeInfo.value}
+													isSecondary={verticalSpacingBottom !== sizeInfo.value}
+													isPrimary={verticalSpacingBottom === sizeInfo.value}
+												>
+													<small>{sizeInfo.label}</small>
+												</Button>
+											) )}
+										</ButtonGroup>
+										<Button isDestructive isSmall isLink onClick={() => {
+											props.setAttributes( {
+												verticalSpacingBottom: null,
+											} );
+										}}>
+											{__( 'Clear', 'mai-engine' )}
+										</Button>
+									</div>
+								</BaseControl>
+								<BaseControl
+									id="mai-vertical-spacing-left"
+									label={__( 'Left', 'mai-engine' )}
+								>
+									<div>
+										<ButtonGroup mode="radio" data-chosen={verticalSpacingLeft}>
+											{paddingChoices.map( sizeInfo => (
+												<Button
+													onClick={() => {
+														props.setAttributes( {
+															verticalSpacingLeft: sizeInfo.value,
+														} );
+													}}
+													data-checked={verticalSpacingLeft === sizeInfo.value}
+													value={sizeInfo.value}
+													key={`mai-vertical-space-left-${sizeInfo.value}`}
+													index={sizeInfo.value}
+													isSecondary={verticalSpacingLeft !== sizeInfo.value}
+													isPrimary={verticalSpacingLeft === sizeInfo.value}
+												>
+													<small>{sizeInfo.label}</small>
+												</Button>
+											) )}
+										</ButtonGroup>
+										<Button isDestructive isSmall isLink onClick={() => {
+											props.setAttributes( {
+												verticalSpacingLeft: null,
+											} );
+										}}>
+											{__( 'Clear', 'mai-engine' )}
+										</Button>
+									</div>
+								</BaseControl>
+								<BaseControl
+									id="mai-vertical-spacing-right"
+									label={__( 'Right', 'mai-engine' )}
+								>
+									<div>
+										<ButtonGroup mode="radio" data-chosen={verticalSpacingRight}>
+											{paddingChoices.map( sizeInfo => (
+												<Button
+													onClick={() => {
+														props.setAttributes( {
+															verticalSpacingRight: sizeInfo.value,
+														} );
+													}}
+													data-checked={verticalSpacingRight === sizeInfo.value}
+													value={sizeInfo.value}
+													key={`mai-vertical-space-right-${sizeInfo.value}`}
+													index={sizeInfo.value}
+													isSecondary={verticalSpacingRight !== sizeInfo.value}
+													isPrimary={verticalSpacingRight === sizeInfo.value}
+												>
+													<small>{sizeInfo.label}</small>
+												</Button>
+											) )}
+										</ButtonGroup>
+										<Button isDestructive isSmall isLink onClick={() => {
+											props.setAttributes( {
+												verticalSpacingRight: null,
+											} );
+										}}>
+											{__( 'Clear', 'mai-engine' )}
+										</Button>
+									</div>
+								</BaseControl>
+							</PanelBody>
+						)}
 					</InspectorControls>
 				</Fragment>
 			);
@@ -607,17 +666,18 @@ addFilter( 'editor.BlockEdit', 'mai-engine/with-max-width-settings', withMaxWidt
 
 
 /*****************************
- * Spacing Settings (padding) *
+ * Legacy Spacing Settings *
  *****************************/
 
 
 /**
- * Create HOC to add SpacingTop and SpacingBottom controls to inspector controls of block.
+ * Create HOC to add legacy SpacingTop and SpacingBottom controls to inspector controls of block.
+ * @deprecated Use core spacing controls instead.
  */
-const withSpacingControls = createHigherOrderComponent( ( BlockEdit ) => {
+const withLegacySpacingControls = createHigherOrderComponent( ( BlockEdit ) => {
 	return ( props ) => {
 
-		if ( enableSpacingSettingsBlocks.includes( props.name ) ) {
+		if ( enableLegacySpacingSettingsBlocks.includes( props.name ) && !blockSupportsCoreSpacing(props.name) ) {
 
 			// Values mapped to a spacing sizes, labels kept consistent. Matches grid/archive column and row gap.
 			const marginTopBottomChoices = [
@@ -669,10 +729,11 @@ const withSpacingControls = createHigherOrderComponent( ( BlockEdit ) => {
 					<BlockEdit {...props} />
 					<InspectorControls>
 						<PanelBody
-								title={__( 'Margin', 'mai-engine' )}
+								title={__( 'Margin (Legacy)', 'mai-engine' )}
 								initialOpen={false}
 								className={'mai-margin-settings'}
 							>
+							<p><em>{ __( 'Note: This is a legacy control. Consider using the core spacing controls instead.', 'mai-engine' ) }</em></p>
 							<SelectControl
 								label={ __( 'Top', 'mai-engine' ) }
 								value={ spacingTop }
@@ -704,21 +765,22 @@ const withSpacingControls = createHigherOrderComponent( ( BlockEdit ) => {
 		);
 	};
 
-}, 'withSpacingControls' );
+}, 'withLegacySpacingControls' );
 
-addFilter( 'editor.BlockEdit', 'mai-engine/with-spacing-settings', withSpacingControls );
+addFilter( 'editor.BlockEdit', 'mai-engine/with-legacy-spacing-settings', withLegacySpacingControls );
 
 /*******************
- * Margin Settings *
+ * Legacy Margin Settings *
  *******************/
 
 /**
- * Create HOC to add Margin controls to inspector controls of block.
+ * Create HOC to add legacy Margin controls to inspector controls of block.
+ * @deprecated Use core spacing controls instead.
  */
-const withMarginControls = createHigherOrderComponent( ( BlockEdit ) => {
+const withLegacyMarginControls = createHigherOrderComponent( ( BlockEdit ) => {
 	return ( props ) => {
 
-		if ( enableMarginSettingsBlocks.includes( props.name ) ) {
+		if ( enableLegacyMarginSettingsBlocks.includes( props.name ) && !blockSupportsCoreSpacing(props.name) ) {
 
 			// Values mapped to a spacing sizes, labels kept consistent. Matches grid/archive column and row gap.
 			const widthChoices = [
@@ -792,10 +854,11 @@ const withMarginControls = createHigherOrderComponent( ( BlockEdit ) => {
 					<BlockEdit {...props} />
 					<InspectorControls>
 						<PanelBody
-							title={__( 'Margin', 'mai-engine' )}
+							title={__( 'Margin (Legacy)', 'mai-engine' )}
 							initialOpen={false}
 							className={'mai-margin-settings'}
 						>
+							<p><em>{ __( 'Note: This is a legacy control. Consider using the core spacing controls instead.', 'mai-engine' ) }</em></p>
 							<SelectControl
 								label={ __( 'Top', 'mai-engine' ) }
 								value={ marginTop }
@@ -848,9 +911,9 @@ const withMarginControls = createHigherOrderComponent( ( BlockEdit ) => {
 		);
 	};
 
-}, 'withMarginControls' );
+}, 'withLegacyMarginControls' );
 
-addFilter( 'editor.BlockEdit', 'mai-engine/with-margin-settings', withMarginControls );
+addFilter( 'editor.BlockEdit', 'mai-engine/with-legacy-margin-settings', withLegacyMarginControls );
 
 
 /**********************************
@@ -866,10 +929,14 @@ const addCustomAttributes = createHigherOrderComponent( ( BlockListBlock ) => {
 		if ( enableLayoutSettingsBlocks.includes( props.name ) ) {
 			wrapperProps['data-content-width']  = props.attributes.contentWidth;
 			wrapperProps['data-content-align']  = props.attributes.contentAlign;
-			wrapperProps['data-spacing-top']    = props.attributes.verticalSpacingTop;
-			wrapperProps['data-spacing-bottom'] = props.attributes.verticalSpacingBottom;
-			wrapperProps['data-spacing-left']   = props.attributes.verticalSpacingLeft;
-			wrapperProps['data-spacing-right']  = props.attributes.verticalSpacingRight;
+
+			// Legacy spacing attributes - only apply if no core spacing exists
+			if (!props.attributes.style || !props.attributes.style.spacing || !props.attributes.style.spacing.padding) {
+				wrapperProps['data-spacing-top']    = props.attributes.verticalSpacingTop;
+				wrapperProps['data-spacing-bottom'] = props.attributes.verticalSpacingBottom;
+				wrapperProps['data-spacing-left']   = props.attributes.verticalSpacingLeft;
+				wrapperProps['data-spacing-right']  = props.attributes.verticalSpacingRight;
+			}
 		}
 
 		if ( enableMaxWidthSettingsBlocks.includes( props.name ) ) {
@@ -877,19 +944,21 @@ const addCustomAttributes = createHigherOrderComponent( ( BlockListBlock ) => {
 			wrapperProps['data-content-align'] = props.attributes.contentAlign;
 		}
 
-		if ( enableSpacingSettingsBlocks.includes( props.name ) ) {
+		// Legacy spacing attributes - only apply if no core spacing exists
+		if ( enableLegacySpacingSettingsBlocks.includes( props.name ) && (!props.attributes.style || !props.attributes.style.spacing || !props.attributes.style.spacing.margin) ) {
 			wrapperProps['data-spacing-top']    = props.attributes.spacingTop;
 			wrapperProps['data-spacing-bottom'] = props.attributes.spacingBottom;
 		}
 
-		if ( enableMarginSettingsBlocks.includes( props.name ) ) {
+		// Legacy margin attributes - only apply if no core spacing exists
+		if ( enableLegacyMarginSettingsBlocks.includes( props.name ) && (!props.attributes.style || !props.attributes.style.spacing || !props.attributes.style.spacing.margin) ) {
 			wrapperProps['data-margin-top']    = props.attributes.marginTop;
 			wrapperProps['data-margin-bottom'] = props.attributes.marginBottom;
 			wrapperProps['data-margin-left']   = props.attributes.marginLeft;
 			wrapperProps['data-margin-right']  = props.attributes.marginRight;
 		}
 
-		if ( wrapperProps ) {
+		if ( Object.keys(wrapperProps).length > 0 ) {
 			return (
 				<BlockListBlock {...props} wrapperProps={wrapperProps}/>
 			);
@@ -903,3 +972,226 @@ const addCustomAttributes = createHigherOrderComponent( ( BlockListBlock ) => {
 }, 'addCustomAttributes' );
 
 addFilter( 'editor.BlockListBlock', 'mai-engine/add-custom-attributes', addCustomAttributes );
+
+
+/**********************************
+ * Block Migration Support *
+ **********************************/
+
+/**
+ * Add migration support to blocks that have legacy spacing attributes.
+ */
+const addMigrationSupport = ( settings, name ) => {
+	// Only add migration for blocks that had legacy spacing
+	const hasLegacySpacing = enableLayoutSettingsBlocks.includes( name ) ||
+							enableLegacySpacingSettingsBlocks.includes( name ) ||
+							enableLegacyMarginSettingsBlocks.includes( name );
+
+
+
+	if ( hasLegacySpacing && settings.deprecated ) {
+		// Add our migration to existing deprecated versions
+		settings.deprecated = settings.deprecated.map( deprecated => {
+			if ( deprecated.migrate ) {
+				// Wrap existing migrate function
+				const originalMigrate = deprecated.migrate;
+				deprecated.migrate = ( attributes, innerBlocks ) => {
+					// Call original migrate function
+					const migratedAttributes = originalMigrate( attributes, innerBlocks );
+
+					// Apply our migration
+					return migrateLegacySpacingAttributes( migratedAttributes );
+				};
+			} else {
+				// Add our migration function
+				deprecated.migrate = ( attributes ) => {
+					return migrateLegacySpacingAttributes( attributes );
+				};
+			}
+			return deprecated;
+		});
+	} else if ( hasLegacySpacing ) {
+		// Add deprecated version with migration
+		settings.deprecated = settings.deprecated || [];
+		settings.deprecated.push({
+			attributes: assign( {}, settings.attributes, {
+				// Add legacy attributes for migration
+				verticalSpacingTop: { type: 'string' },
+				verticalSpacingBottom: { type: 'string' },
+				verticalSpacingLeft: { type: 'string' },
+				verticalSpacingRight: { type: 'string' },
+				spacingTop: { type: 'string' },
+				spacingBottom: { type: 'string' },
+				marginTop: { type: 'string' },
+				marginBottom: { type: 'string' },
+				marginLeft: { type: 'string' },
+				marginRight: { type: 'string' },
+			}),
+			migrate: ( attributes ) => {
+				return migrateLegacySpacingAttributes( attributes );
+			},
+		});
+	}
+
+	return settings;
+};
+
+/**
+ * Migrate legacy spacing attributes to core spacing format.
+ */
+const migrateLegacySpacingAttributes = ( attributes ) => {
+	console.log( 'Migrating legacy spacing attributes:', attributes );
+	const migratedAttributes = assign( {}, attributes );
+
+	// Initialize style object if it doesn't exist
+	if ( !migratedAttributes.style ) {
+		migratedAttributes.style = {};
+	}
+	if ( !migratedAttributes.style.spacing ) {
+		migratedAttributes.style.spacing = {};
+	}
+
+	// Migrate padding attributes
+	if ( attributes.verticalSpacingTop || attributes.verticalSpacingBottom ||
+		 attributes.verticalSpacingLeft || attributes.verticalSpacingRight ) {
+
+		if ( !migratedAttributes.style.spacing.padding ) {
+			migratedAttributes.style.spacing.padding = {};
+		}
+
+		if ( attributes.verticalSpacingTop ) {
+			migratedAttributes.style.spacing.padding.top = migrateSpacingValue( attributes.verticalSpacingTop );
+		}
+		if ( attributes.verticalSpacingBottom ) {
+			migratedAttributes.style.spacing.padding.bottom = migrateSpacingValue( attributes.verticalSpacingBottom );
+		}
+		if ( attributes.verticalSpacingLeft ) {
+			migratedAttributes.style.spacing.padding.left = migrateSpacingValue( attributes.verticalSpacingLeft );
+		}
+		if ( attributes.verticalSpacingRight ) {
+			migratedAttributes.style.spacing.padding.right = migrateSpacingValue( attributes.verticalSpacingRight );
+		}
+
+		// Remove legacy attributes
+		delete migratedAttributes.verticalSpacingTop;
+		delete migratedAttributes.verticalSpacingBottom;
+		delete migratedAttributes.verticalSpacingLeft;
+		delete migratedAttributes.verticalSpacingRight;
+	}
+
+	// Migrate margin attributes
+	if ( attributes.spacingTop || attributes.spacingBottom ) {
+		if ( !migratedAttributes.style.spacing.margin ) {
+			migratedAttributes.style.spacing.margin = {};
+		}
+
+		if ( attributes.spacingTop ) {
+			migratedAttributes.style.spacing.margin.top = migrateSpacingValue( attributes.spacingTop );
+		}
+		if ( attributes.spacingBottom ) {
+			migratedAttributes.style.spacing.margin.bottom = migrateSpacingValue( attributes.spacingBottom );
+		}
+
+		// Remove legacy attributes
+		delete migratedAttributes.spacingTop;
+		delete migratedAttributes.spacingBottom;
+	}
+
+	if ( attributes.marginTop || attributes.marginBottom ||
+		 attributes.marginLeft || attributes.marginRight ) {
+
+		if ( !migratedAttributes.style.spacing.margin ) {
+			migratedAttributes.style.spacing.margin = {};
+		}
+
+		if ( attributes.marginTop ) {
+			migratedAttributes.style.spacing.margin.top = migrateSpacingValue( attributes.marginTop );
+		}
+		if ( attributes.marginBottom ) {
+			migratedAttributes.style.spacing.margin.bottom = migrateSpacingValue( attributes.marginBottom );
+		}
+		if ( attributes.marginLeft ) {
+			migratedAttributes.style.spacing.margin.left = migrateSpacingValue( attributes.marginLeft );
+		}
+		if ( attributes.marginRight ) {
+			migratedAttributes.style.spacing.margin.right = migrateSpacingValue( attributes.marginRight );
+		}
+
+		// Remove legacy attributes
+		delete migratedAttributes.marginTop;
+		delete migratedAttributes.marginBottom;
+		delete migratedAttributes.marginLeft;
+		delete migratedAttributes.marginRight;
+	}
+
+	return migratedAttributes;
+};
+
+addFilter( 'blocks.registerBlockType', 'mai-engine/migration-support', addMigrationSupport );
+
+/**
+ * Migrate legacy blocks when they're parsed from content.
+ */
+const migrateLegacyBlocks = ( block ) => {
+	// Check if block has legacy spacing attributes
+	const hasLegacySpacing = block.attributes && (
+		block.attributes.verticalSpacingTop ||
+		block.attributes.verticalSpacingBottom ||
+		block.attributes.verticalSpacingLeft ||
+		block.attributes.verticalSpacingRight ||
+		block.attributes.spacingTop ||
+		block.attributes.spacingBottom ||
+		block.attributes.marginTop ||
+		block.attributes.marginBottom ||
+		block.attributes.marginLeft ||
+		block.attributes.marginRight
+	);
+
+	if ( hasLegacySpacing ) {
+		console.log( 'Migrating legacy block:', block.name, block.attributes );
+		block.attributes = migrateLegacySpacingAttributes( block.attributes );
+	}
+
+	// Recursively migrate inner blocks
+	if ( block.innerBlocks ) {
+		block.innerBlocks = block.innerBlocks.map( migrateLegacyBlocks );
+	}
+
+	return block;
+};
+
+/**
+ * Migrate legacy blocks when they're edited in the editor.
+ */
+const withLegacyMigration = createHigherOrderComponent( ( BlockEdit ) => {
+	return ( props ) => {
+		// Use useEffect to handle migration after render
+		useEffect( () => {
+			// Check if block has legacy spacing attributes that need migration
+			const hasLegacySpacing = props.attributes && (
+				props.attributes.verticalSpacingTop ||
+				props.attributes.verticalSpacingBottom ||
+				props.attributes.verticalSpacingLeft ||
+				props.attributes.verticalSpacingRight ||
+				props.attributes.spacingTop ||
+				props.attributes.spacingBottom ||
+				props.attributes.marginTop ||
+				props.attributes.marginBottom ||
+				props.attributes.marginLeft ||
+				props.attributes.marginRight
+			);
+
+						if ( hasLegacySpacing && (!props.attributes.style || !props.attributes.style.spacing) ) {
+				// Migrate the attributes
+				const migratedAttributes = migrateLegacySpacingAttributes( props.attributes );
+
+				// Update the block attributes
+				props.setAttributes( migratedAttributes );
+			}
+		}, [props.attributes] ); // Only run when attributes change
+
+		return <BlockEdit {...props} />;
+	};
+}, 'withLegacyMigration' );
+
+addFilter( 'editor.BlockEdit', 'mai-engine/with-legacy-migration', withLegacyMigration );
