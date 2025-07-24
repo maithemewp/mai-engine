@@ -1,5 +1,5 @@
-@import "../abstracts/_index";
-@import "../utilities/woocommerce-font"; // For stars ratings.
+@use "../abstracts/__index" as *;
+@use "../utilities/woocommerce-font" as woocommerce-font; // For stars ratings.
 
 // Archive, Single, Cart.
 
@@ -46,6 +46,10 @@ ul.products {
 	--list-margin-left: 0;
 	--list-style-type: none;
 
+	display: grid;
+	grid-gap: var(--products-gap, var(--spacing-xl) var(--spacing-lg));
+	grid-template-columns: repeat(var(--columns, 1), minmax(10px, 1fr));
+
 	@include mq(false, xs) {
 		--columns: var(--columns-xs);
 	}
@@ -61,10 +65,6 @@ ul.products {
 	@include mq(md) {
 		--columns: var(--columns-lg);
 	}
-
-	display: grid;
-	grid-gap: var(--products-gap, var(--spacing-xl) var(--spacing-lg));
-	grid-template-columns: repeat(var(--columns, 1), minmax(10px, 1fr));
 
 	.woocommerce &::before,
 	.woocommerce-page &::before,
@@ -103,7 +103,7 @@ li.wc-block-grid__product {
 
 .wc-block-grid__product-title {
 
-	@include heading;
+	@extend %heading;
 }
 
 .onsale,
@@ -133,8 +133,8 @@ li.wc-block-grid__product .price {
 li.product .button:not(.added_to_cart),
 li.wc-block-grid__product .wp-block-button {
 
-	@include button-style(secondary);
-	@include button-style(small);
+	@extend %button-secondary;
+	@extend %button-small;
 }
 
 // Blocks.
@@ -245,8 +245,8 @@ li.wc-block-grid__product .wp-block-button {
 
 .added_to_cart {
 
-	@include button;
-	@include button-style(small);
+	@extend %button;
+	@extend %button-small;
 
 	&:hover,
 	&:focus-visible {
@@ -259,16 +259,15 @@ li.wc-block-grid__product .wp-block-button {
 
 	a {
 
-		@include button;
-		@include button-style("secondary");
-		@include button-style("small");
+		@extend %button;
+		@extend %button-secondary;
+		@extend %button-small;
 	}
 
 	.current {
 
-		@include button;
-		@include button-style("primary");
-		@include button-style("small");
+		@extend %button;
+		@extend %button-small;
 	}
 }
 
@@ -632,7 +631,7 @@ form.cart {
 
 	.comment-reply-title {
 
-		@include heading;
+		@extend %heading;
 	}
 
 	#respond {

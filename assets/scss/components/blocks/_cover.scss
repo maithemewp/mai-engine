@@ -1,3 +1,5 @@
+@use "../../abstracts/mixins";
+
 .wp-block-cover {
 	position: relative; // so negative margins inside will work.
 	overflow: initial; // WP 6.3 added overflow clip/hidden.
@@ -41,11 +43,11 @@
 	&.has-parallax {
 		background-image: var(--cover-block-background-image, var(--background-image-sm, var(--background-image, none)));
 
-		@include mq(sm) {
+		@include mixins.mq(sm) {
 			--cover-block-background-image: var(--background-image-md);
 		}
 
-		@include mq(md) {
+		@include mixins.mq(md) {
 			--cover-block-background-image: var(--background-image-lg);
 		}
 	}

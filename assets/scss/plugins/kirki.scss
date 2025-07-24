@@ -1,4 +1,4 @@
-@import "../abstracts/_index";
+@use 'sass:list';
 
 /* kirki default spacing */
 
@@ -411,7 +411,7 @@ $sections: (
 );
 
 @each $section in $sections {
-	$priority: index($sections, $section);
+	$priority: list.index($sections, $section);
 	$border: if(1 == $priority, 1px solid #ddd, 0);
 
 	#accordion-#{$section} {

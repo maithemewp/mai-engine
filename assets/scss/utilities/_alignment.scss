@@ -1,3 +1,5 @@
+@use "../abstracts/mixins";
+
 .is-layout-flex {
 	--group-block-justify-content: start;
 	--row-gap: var(--spacing-md);
@@ -7,7 +9,7 @@
 	gap: var(--row-gap) var(--column-gap);
 }
 
-@include mq(md) {
+@include mixins.mq(md) {
 
 	.alignleft {
 		float: left;
@@ -20,7 +22,7 @@
 	.aligncenter {
 		margin-inline: auto;
 
-		@include clearfix;
+		@include mixins.clearfix;
 	}
 }
 
@@ -35,7 +37,7 @@
 
 .content-sidebar-wrap {
 
-	@include mq(lg) {
+	@include mixins.mq(lg) {
 
 		.content-sidebar &,
 		.sidebar-content & {
@@ -82,7 +84,7 @@
 
 .has-boxed-container {
 
-	@include mq(xl) {
+	@include mixins.mq(xl) {
 		--alignfull-max-width: var(--breakpoint-xl);
 		--alignfull-margin-right: auto;
 		--alignfull-margin-left: auto;

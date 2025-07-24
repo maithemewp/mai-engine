@@ -1,3 +1,5 @@
+@use "../abstracts/__index" as *;
+
 a {
 	color: var(--link-color, var(--color-link));
 	text-decoration: var(--link-text-decoration, none);
@@ -76,7 +78,7 @@ blockquote {
 
 cite {
 
-	@include cite();
+	@extend %cite;
 }
 
 pre,

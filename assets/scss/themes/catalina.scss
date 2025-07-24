@@ -1,4 +1,4 @@
-@import "../abstracts/_index";
+@use "../abstracts/_index" as abstracts;
 
 :root {
 	--color-border: var(--color-heading);

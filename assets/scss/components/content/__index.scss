@@ -1,10 +1,10 @@
 // @import "adjacent-entry-nav"; // footer.scss
 // @import "after-entry"; // footer.scss
-@import "archive-description";
+@forward "archive-description";
 // @import "archive-pagination"; // footer.scss
 // @import "author-box"; // footer.scss
-@import "avatar";
-@import "breadcrumb";
+@forward "avatar";
+@forward "breadcrumb";
 // @import "comments"; // footer.scss
-@import "search-form";
-@import "widget";
+@forward "search-form";
+@forward "widget";

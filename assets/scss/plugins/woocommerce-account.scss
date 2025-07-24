@@ -1,7 +1,5 @@
-@import "../abstracts/_index";
-
-// Mostly for password eye icon.
-@import "../utilities/woocommerce-font";
+@use "../abstracts/__index" as *;
+@use "../utilities/woocommerce-font" as woocommerce-font; // Mostly for password eye icon.
 
 .woocommerce-MyAccount-navigation {
 	margin-bottom: var(--spacing-xxl);
@@ -74,7 +72,7 @@
 		--button-font-size: var(--font-size-xs);
 		--button-white-space: nowrap;
 
-		@include button-style("secondary");
+		@extend %button-secondary;
 
 		&:not(:first-child) {
 			margin-left: var(--spacing-xs);

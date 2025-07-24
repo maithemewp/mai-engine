@@ -1,3 +1,5 @@
+@use "../../abstracts/mixins";
+
 .header-section-mobile {
 	position: var(--header-section-mobile-position, relative);
 	display: var(--header-section-mobile-display, flex);
@@ -36,7 +38,7 @@
 	--search-input-max-width: 100%;
 }
 
-@include mq(md) {
+@include mixins.mq(md) {
 
 	.header-section-mobile {
 		--search-icon-form-width: calc(var(--viewport-width) - (var(--side-spacing) * 2));

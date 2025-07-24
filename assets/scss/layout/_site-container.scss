@@ -1,3 +1,5 @@
+@use "../abstracts/mixins";
+
 .site-container {
 	display: flex;
 	flex-direction: column;
@@ -15,7 +17,7 @@
 		--site-container-margin-top: 0;
 	}
 
-	@include mq(xl) {
+	@include mixins.mq(xl) {
 		--site-container-max-width: var(--breakpoint-xl);
 		--site-container-margin: var(--site-container-margin-top, var(--spacing-md)) var(--site-container-margin-sides, auto) var(--site-container-margin-bottom, var(--spacing-md));
 

@@ -1,3 +1,5 @@
+@use "../../abstracts/__index" as *;
+
 .site-header {
 	position: var(--site-header-position, relative);
 	top: var(--site-header-top, auto);
@@ -63,7 +65,7 @@
 .has-dark-transparent-header:not(.header-stuck) .site-header-wrap,
 .has-dark-mobile-menu .mobile-menu {
 
-	@include dark_bg();
+	@extend %dark-bg;
 }
 
 .has-dark-mobile-menu .mobile-menu {

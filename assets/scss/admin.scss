@@ -1,3 +1,5 @@
+@use "abstracts/__index" as *;
+
 /**
  * Editor block content width.
  * Needs to be here (not in editor.scss) so we can target body classes.

@@ -1,3 +1,5 @@
+@use "../../abstracts/mixins";
+
 .content {
 	--columns: 0; // Fallback for single entries. Using 1 broke alignfull.
 }
@@ -65,20 +67,6 @@
 	}
 }
 
-@supports not (aspect-ratio: 4/3) {
-
-	.has-image-left-full .entry-image-link::before,
-	.has-image-right-full .entry-image-link::before,
-	.has-image-background .entry::before {
-		display: block;
-		width: 1px;
-		height: 0;
-		margin-left: -1px;
-		padding-bottom: calc(100% / (var(--aspect-ratio, 4/3)));
-		content: "";
-	}
-}
-
 [class*="has-image-left"],
 [class*="has-image-right"] {
 	--entry-flex-direction: row;
@@ -127,7 +115,7 @@
 	--entry-wrap-padding: 0;
 }
 
-@include mq(false, sm) {
+@include mixins.mq(false, sm) {
 
 	.has-image-stack {
 		--entry-flex-direction: column;

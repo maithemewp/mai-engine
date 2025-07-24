@@ -1,13 +1,18 @@
+@use "variables";
+
+@use 'sass:map';
+@use 'sass:list';
+
 @mixin mq($min: false, $max: false, $orientation: false) {
 	$query: "only screen";
 
 	@if ($min) {
-		$min-value: map_get($breakpoints, $min);
+		$min-value: map.get(variables.$breakpoints, $min);
 		$query: "#{$query} and (min-width: #{$min-value})";
 	}
 
 	@if ($max) {
-		$max-value: map_get($breakpoints, $max) - 1;
+		$max-value: map.get(variables.$breakpoints, $max) - 1;
 		$query: "#{$query} and (max-width: #{$max-value})";
 	}
 
@@ -26,5 +31,65 @@
 	&:focus-visible,
 	&:active {
 		@content;
+	}
+}
+
+@mixin position($position, $coordinates: null) {
+	position: $position;
+
+	@if $coordinates {
+		@if list.length($coordinates) == 4 {
+			top: list.nth($coordinates, 1);
+			right: list.nth($coordinates, 2);
+			bottom: list.nth($coordinates, 3);
+			left: list.nth($coordinates, 4);
+		} @else if list.length($coordinates) == 2 {
+			top: list.nth($coordinates, 1);
+			left: list.nth($coordinates, 2);
+		}
+	}
+}
+
+@mixin margin($values...) {
+	@if list.length($values) == 1 {
+		margin: list.nth($values, 1);
+	} @else if list.length($values) == 2 {
+		margin: list.nth($values, 1) list.nth($values, 2);
+	} @else if list.length($values) == 3 {
+		margin: list.nth($values, 1) list.nth($values, 2) list.nth($values, 3);
+	} @else if list.length($values) == 4 {
+		margin: list.nth($values, 1) list.nth($values, 2) list.nth($values, 3) list.nth($values, 4);
+	}
+}
+
+@mixin clearfix {
+	&::after {
+		content: "";
+		display: table;
+		clear: both;
+	}
+}
+
+@mixin hide-visually($toggle: "hide") {
+	@if $toggle == "hide" {
+		position: absolute !important;
+		width: 1px !important;
+		height: 1px !important;
+		padding: 0 !important;
+		margin: -1px !important;
+		overflow: hidden !important;
+		clip: rect(0, 0, 0, 0) !important;
+		white-space: nowrap !important;
+		border: 0 !important;
+	} @else if $toggle == "unhide" {
+		position: static !important;
+		width: auto !important;
+		height: auto !important;
+		padding: inherit !important;
+		margin: inherit !important;
+		overflow: visible !important;
+		clip: auto !important;
+		white-space: inherit !important;
+		border: inherit !important;
 	}
 }

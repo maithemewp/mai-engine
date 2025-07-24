@@ -1,4 +1,4 @@
-@import "../abstracts/_index";
+@use "../abstracts/mixins";
 
 :root {
 	--font-scale-desktop: 1.24;
@@ -41,7 +41,7 @@
 	--archive-title-font-size: 2em;
 	--after-entry-text-align: center;
 
-	@include mq(sm) {
+	@include mixins.mq(sm) {
 		--menu-font-size: var(--font-size-sm);
 	}
 }

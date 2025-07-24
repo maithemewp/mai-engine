@@ -1,6 +1,6 @@
-@import "abstracts/_index";
-@import "base/_index";
-@import "layout/_index";
-@import "components/menu/_index";
-@import "components/content/_index";
-@import "components/entry/_index";
+@use "abstracts/__index" as *;
+@use "base/_index" as *;
+@use "layout/_index" as *;
+@use "components/menu/_index" as *;
+@use "components/content/_index" as *;
+@use "components/entry/_index" as *;

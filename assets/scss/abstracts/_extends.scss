@@ -1,4 +1,6 @@
-@mixin body {
+@use "mixins";
+
+%body {
 	color: var(--body-color, var(--color-body));
 	font-weight: var(--body-font-weight, unset);
 	font-size: var(--body-font-size, var(--font-size-md));
@@ -8,7 +10,7 @@
 	background: var(--body-background-color, var(--color-background));
 }
 
-@mixin heading {
+%heading {
 	margin-top: var(--heading-margin-top, 0);
 	margin-bottom: var(--heading-margin-bottom, var(--spacing-md));
 	color: var(--heading-color, var(--color-heading));
@@ -20,7 +22,7 @@
 	text-transform: var(--heading-text-transform, none);
 	text-wrap: var(--heading-text-wrap, wrap);
 
-	@include mq(false, md) {
+	@include mixins.mq(false, md) {
 		word-break: var(--heading-word-break, break-word);
 	}
 
@@ -33,7 +35,7 @@
 	}
 }
 
-@mixin button($is_admin: false) {
+%button {
 	position: relative;
 	display: var(--button-display, inline-flex);
 	gap: var(--spacing-xs);
@@ -80,87 +82,84 @@
 		filter: var(--button-filter-hover, var(--button-filter, none));
 	}
 
-	// Disable background color on hover.
-	@if ($is_admin) {
 
-		@include hover-focus {
-			--button-background-hover: var(--button-background, var(--color-primary));
-		}
+}
+
+%button-secondary {
+	--button-color: var(--button-secondary-color); // Color contrast automatically generated.
+	--button-color-hover: var(--button-secondary-color-hover, var(--button-secondary-color));
+	--button-background: var(--button-secondary-background, var(--color-secondary));
+	--button-background-hover: var(--button-secondary-background-hover, var(--color-secondary-dark, var(--color-secondary)));
+}
+
+%button-outline {
+	--button-max-height: calc(100% - (var(--button-outline-width, 2px) * 2)); // Makes height same as button with no border.
+	--button-color: var(--button-outline-color, var(--color-primary));
+	--button-color-hover: var(--button-outline-color-hover, var(--color-white));
+	--button-background: var(--button-outline-background, transparent);
+	--button-background-hover: var(--button-outline-background-hover, var(--button-outline-color, var(--button-color)));
+	--button-border: var(--button-outline-width, 2px) solid var(--button-outline-color, var(--button-color));
+	--button-border-hover: var(--button-border);
+}
+
+%button-link {
+	--button-color: var(--button-link-color, var(--color-link));
+	--button-color-hover: var(--button-link-color-hover, var(--color-link-dark, var(--link-color-hover, var(--color-link-dark))));
+	--button-background: var(--button-link-background, transparent);
+	--button-background-hover: var(--button-link-background-hover, transparent);
+	--button-padding: var(--button-link-padding, 0.9rem 0.5rem);
+	--button-border: 0;
+	--button-box-shadow: none;
+	--button-box-shadow-hover: none;
+
+	&::after {
+		display: inline-flex;
+		flex: 0 1 auto;
+		width: 0.75em;
+		height: 0.75em;
+		background: currentColor;
+		mask-image: var(--button-link-url, "");
+		mask-position: center;
+		mask-repeat: no-repeat;
+		mask-size: contain;
+		content: "";
 	}
 }
 
-@mixin button-style($style, $is_admin: false) {
+%button-small {
+	--button-padding: var(--button-small-padding, 0.75rem 1.25rem);
+	--button-font-size: var(--button-small-font-size, 0.8rem); // Default buttons use font-base so can't use scale.
+}
 
-	@if ("secondary" == $style) {
-		--button-color: var(--button-secondary-color); // Color contrast automatically generated.
-		--button-color-hover: var(--button-secondary-color-hover, var(--button-secondary-color));
-		--button-background: var(--button-secondary-background, var(--color-secondary));
-		--button-background-hover: var(--button-secondary-background-hover, var(--color-secondary-dark, var(--color-secondary)));
-	}
+%button-large {
+	--button-padding: var(--button-large-padding, 1.25rem 2.5rem);
+	--button-font-size: var(--button-large-font-size, 1.25rem); // Default buttons use font-base so can't use scale.
+}
 
-	@if ("outline" == $style) {
-		--button-max-height: calc(100% - (var(--button-outline-width, 2px) * 2)); // Makes height same as button with no border.
-		--button-color: var(--button-outline-color, var(--color-primary));
-		--button-color-hover: var(--button-outline-color-hover, var(--color-white));
-		--button-background: var(--button-outline-background, transparent);
-		--button-background-hover: var(--button-outline-background-hover, var(--button-outline-color, var(--button-color)));
-		--button-border: var(--button-outline-width, 2px) solid var(--button-outline-color, var(--button-color));
-		--button-border-hover: var(--button-border);
-	}
+%button-disabled {
+	cursor: not-allowed;
+	opacity: 0.5;
+}
 
-	@if ("link" == $style) {
-		--button-color: var(--button-link-color, var(--color-link));
-		--button-color-hover: var(--button-link-color-hover, var(--color-link-dark, var(--link-color-hover, var(--color-link-dark))));
-		--button-background: var(--button-link-background, transparent);
-		--button-background-hover: var(--button-link-background-hover, transparent);
-		--button-padding: var(--button-link-padding, 0.9rem 0.5rem);
-		--button-border: 0;
-		--button-box-shadow: none;
-		--button-box-shadow-hover: none;
+%button-editor {
+	// Admin logic for all editor buttons.
+	color: var(--button-color);
+	background: var(--button-background);
+	border-color: var(--button-border, currentColor);
 
-		&::after {
-			display: inline-flex;
-			flex: 0 1 auto;
-			width: 0.75em;
-			height: 0.75em;
-			background: currentColor;
-			mask-image: var(--button-link-url, "");
-			mask-position: center;
-			mask-repeat: no-repeat;
-			mask-size: contain;
-			content: "";
-		}
-	}
-
-	@if ("small" == $style) {
-		--button-padding: var(--button-small-padding, 0.75rem 1.25rem);
-		--button-font-size: var(--button-small-font-size, 0.8rem); // Default buttons use font-base so can't use scale.
-	}
-
-	@if ("large" == $style) {
-		--button-padding: var(--button-large-padding, 1.25rem 2.5rem);
-		--button-font-size: var(--button-large-font-size, 1.25rem); // Default buttons use font-base so can't use scale.
-	}
-
-	@if ("disabled" == $style) {
-		cursor: not-allowed;
-		opacity: 0.5;
-	}
-
-	@if ($is_admin) {
-		color: var(--button-color);
-		background: var(--button-background);
-		border-color: var(--button-border, currentColor);
+	// Disable background color on hover for editor.
+	@include mixins.hover-focus {
+		--button-background-hover: var(--button-background, var(--color-primary));
 	}
 }
 
-@mixin caption() {
+%caption {
 	color: var(--caption-color, var(--color-body));
 	font-size: var(--caption-font-size, var(--font-size-xs));
 	text-align: var(--caption-text-align, (center));
 }
 
-@mixin cite() {
+%cite {
 	color: var(--cite-color, var(--color-body));
 	font-weight: var(--cite-font-weight, bolder);
 	font-size: var(--cite-font-size, 0.8rem);
@@ -168,7 +167,7 @@
 	font-style: var(--cite-font-style, normal);
 }
 
-@mixin dark_bg() {
+%dark-bg {
 	color: var(--color-white);
 	--heading-color: var(--color-white);
 	--link-color: currentColor;

@@ -1,3 +1,5 @@
+@use "../../abstracts/__index" as *;
+
 .wp-block-image {
 	margin: var(--image-block-margin, 0 0 var(--image-block-margin-bottom, var(--spacing-md)));
 
@@ -18,5 +20,5 @@
 figcaption,
 .wp-block-image figcaption {
 
-	@include caption();
+	@extend %caption;
 }

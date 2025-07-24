@@ -1,3 +1,5 @@
+@use "abstracts/__index" as *;
+
 :root {
 	--color-primary: var(--color-primary);
 	--color-secondary: var(--color-secondary);

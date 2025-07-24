@@ -1,8 +1,10 @@
+@use "../../abstracts/mixins";
+
 .mai-icon {
 	line-height: 0;
 	vertical-align: middle;
 
-	@include clearfix();
+	@include mixins.clearfix();
 
 	svg {
 		position: relative;

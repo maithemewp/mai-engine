@@ -1,9 +1,11 @@
+@use "../abstracts/mixins";
+
 .site-inner {
 	flex-grow: 1;
 	width: 100%;
 	margin: var(--site-inner-margin, var(--site-inner-margin-top, 0) auto var(--site-inner-margin-bottom, 0));
 
-	@include mq(lg) {
+	@include mixins.mq(lg) {
 		display: flex;
 		flex-direction: column;
 	}

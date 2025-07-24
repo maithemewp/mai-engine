@@ -1,15 +1,15 @@
-@import "abstracts/_index";
-@import "base/box-sizing"; /* Something changed in WP 6.0 and we needed this for boxed entries. */
-@import "base/form";
-@import "base/globals";
-@import "base/heading";
-@import "base/list";
-@import "base/table";
-@import "base/typography";
+@use "abstracts/__index" as *;
+@use "base/box-sizing" as *;
+@use "base/form" as *;
+@use "base/globals" as *;
+@use "base/heading" as *;
+@use "base/list" as *;
+@use "base/table" as *;
+@use "base/typography" as *;
 // @import "layout/columns";
-@import "components/blocks/_index-editor";
-@import "components/entry/_index";
-@import "utilities/_index";
+@use "components/blocks/_index-editor" as *;
+@use "components/entry/_index" as *;
+@use "utilities/_index" as *;
 
 html {
 	font-size: 100%; // 16px browser default.
@@ -23,7 +23,7 @@ body {
 	--editor-viewport-width: calc(100vw - var(--admin-menu-width, 160px) - var(--block-sidebar-width, 0px)); // Requires 0px for calc(). These are both in admin.scss too. Not sure if we need both.
 	--list-item-margin-bottom: var(--spacing-xs);
 
-	@include body();
+	@extend %body;
 }
 
 ul.wp-block,
@@ -50,7 +50,7 @@ ol.wp-block li.wp-block {
 
 .editor-post-title__block .editor-post-title__input {
 
-	@include heading;
+	@extend %heading;
 }
 
 .block-editor-block-list__block .block-list-appender.block-list-appender {
@@ -68,7 +68,7 @@ ol.wp-block li.wp-block {
 // FYI: The has-dark-background class is not automatically added to Group blocks with dark color in the editor.
 .has-dark-background {
 
-	@include dark_bg();
+	@extend %dark-bg;
 }
 
 .has-light-background {
@@ -297,7 +297,7 @@ p[data-content-align="end"],
 	}
 }
 
-@each $size-name, $size-value in $font-sizes {
+@each $size-name, $size-value in $font_sizes {
 
 	[data-font-size="#{ $size-name }"] > .rich-text {
 		font-size: #{ $size-value };
@@ -316,12 +316,14 @@ input[type="submit"],
 .wp-block .button {
 	min-height: 1px; // Makes sure block styles are rendered correctly in editor. See #303.
 
-	@include button(true);
+	@extend %button;
+	@extend %button-editor;
 
 	// Default block style preview.
 	.is-style-default & {
 
-		@include button(true);
+		@extend %button;
+		@extend %button-editor;
 	}
 
 	&:active,
@@ -331,27 +333,27 @@ input[type="submit"],
 
 	.is-style-secondary & {
 
-		@include button-style("secondary", true);
+		@extend %button-secondary;
 	}
 
 	.is-style-link & {
 
-		@include button-style("link", true);
+		@extend %button-link;
 	}
 
 	.is-style-outline & {
 
-		@include button-style("outline", true);
+		@extend %button-outline;
 	}
 
 	.button-small & {
 
-		@include button-style("small");
+		@extend %button-small;
 	}
 
 	.button-large & {
 
-		@include button-style("large");
+		@extend %button-large;
 	}
 }
 
@@ -398,8 +400,9 @@ input[type="submit"],
 	.wp-block-search__button {
 		height: auto !important;
 
-		@include button(true);
-		@include button-style("secondary", true);
+		@extend %button;
+		@extend %button-editor;
+		@extend %button-secondary;
 
 		&.has-icon {
 			position: relative;

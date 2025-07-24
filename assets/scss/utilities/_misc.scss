@@ -1,3 +1,5 @@
+@use "../abstracts/__index" as *;
+
 .clear, // WooCommerce and likely other plugins.
 .clearfix {
 	clear: both;
@@ -10,7 +12,7 @@
 
 .has-dark-background {
 
-	@include dark_bg();
+	@extend %dark-bg !optional;
 }
 
 .has-light-background {

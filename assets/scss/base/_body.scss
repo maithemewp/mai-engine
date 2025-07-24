@@ -1,3 +1,5 @@
+@use "../abstracts/__index" as *;
+
 body {
 	--body-top: 0px; // Requires 0px value. 0 breaks this when it's used in calc() in some instances.
 	--scroll-margin-top: calc(var(--body-top) + var(--spacing-lg));
@@ -7,7 +9,7 @@ body {
 	min-height: var(--body-min-height, calc(100svh - var(--body-top)));
 	overflow-x: hidden; // Prevent horizontal scrollbars.
 
-	@include body;
+	@extend %body;
 }
 
 @media screen and (min-width: 601px) {

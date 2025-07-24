@@ -1,3 +1,5 @@
+@use "../abstracts/mixins";
+
 .content {
 	width: 100%;
 	max-width: var(--content-max-width); // Default set in global.
@@ -5,7 +7,7 @@
 	// padding: var(--content-padding, 0);
 	// background: var(--content-background);
 
-	@include mq(lg) {
+	@include mixins.mq(lg) {
 		order: var(--content-order, 0);
 	}
 }

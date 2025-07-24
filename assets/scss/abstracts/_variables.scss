@@ -1,9 +1,12 @@
 @use 'sass:math';
+@use 'sass:list';
 
-$all-buttons: append($all-buttons, ".button");
-$all-buttons: append($all-buttons, ".button:visited");
-$all-text-inputs: append($all-text-inputs, "select");
-$all-text-inputs: append($all-text-inputs, "optgroup");
+$all-buttons: ("button", "input[type='button']", "input[type='reset']", "input[type='submit']");
+$all-buttons: list.append($all-buttons, ".button");
+$all-buttons: list.append($all-buttons, ".button:visited");
+$all-text-inputs: ("input[type='text']", "input[type='email']", "input[type='password']", "input[type='search']", "input[type='tel']", "input[type='url']", "input[type='number']", "input[type='date']", "input[type='time']", "input[type='datetime-local']", "input[type='month']", "input[type='week']", "textarea");
+$all-text-inputs: list.append($all-text-inputs, "select");
+$all-text-inputs: list.append($all-text-inputs, "optgroup");
 $all-headings: (h1, h2, h3, h4, h5, h6, 'legend:where(:not([class*="gfield"]):not([class*="gform"]):not([class*="wpform"]))', ".is-style-heading", ".is-style-subheading");
 
 $breakpoint: 1200;

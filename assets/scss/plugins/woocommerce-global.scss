@@ -1,4 +1,4 @@
-@import "../abstracts/_index";
+@use "../abstracts/__index" as *;
 
 .woocommerce-store-notice,
 p.demo_store {
@@ -37,7 +37,7 @@ p.demo_store {
 
 	.button {
 
-		@include button-style("secondary");
+		@extend %button-secondary;
 	}
 
 	> .button {
@@ -143,7 +143,7 @@ p.demo_store {
  */
 
 .wp-element-button.wc-block-components-button:not(.is-link) {
-	@include button(false);
+	@extend %button;
 }
 
 .wc-block-components-product-price {

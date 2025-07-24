@@ -1,4 +1,4 @@
-@import "../abstracts/_index";
+@use "../abstracts/mixins";
 
 :root {
 	--color-border: rgba(0, 0, 0, 0.06);
@@ -36,7 +36,7 @@
 	--alignfull-first-margin-top: calc((var(--content-sidebar-wrap-margin-top) + 2em) * -1);
 	--alignfull-first-margin-bottom: calc((var(--content-sidebar-wrap-margin-bottom) + 2em) * -1);
 
-	@include mq(md) {
+	@include mixins.mq(md) {
 		padding: var(--content-padding, 2em);
 		background: var(--content-background, var(--color-white));
 		border: var(--content-border, var(--border));

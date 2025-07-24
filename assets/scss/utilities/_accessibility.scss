@@ -1,13 +1,15 @@
+@use "../abstracts/mixins";
+
 .screen-reader-shortcut,
 .screen-reader-text,
 .screen-reader-text span {
 
-	@include hide-visually;
+	@include mixins.hide-visually;
 
 	&:active,
 	&:focus-visible {
 
-		@include hide-visually(unhide);
+		@include mixins.hide-visually(unhide);
 
 		position: absolute; // override hide-visually.
 		z-index: 100000; /* Above WP toolbar. */

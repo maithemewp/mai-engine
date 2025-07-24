@@ -1,4 +1,4 @@
-@import "../abstracts/_index";
+@use "../abstracts/mixins";
 
 .enews {
 	--input-margin: 0 0 var(--spacing-sm);
@@ -52,7 +52,7 @@
 		}
 	}
 
-	@include mq(sm) {
+	@include mixins.mq(sm) {
 
 		&.enews-2-fields,
 		.enews-2-fields {
@@ -64,7 +64,7 @@
 		}
 	}
 
-	@include mq(md) {
+	@include mixins.mq(md) {
 
 		&.enews-3-fields,
 		.enews-3-fields {

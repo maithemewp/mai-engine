@@ -1,9 +1,9 @@
-@import "accessibility";
-@import "alignment";
-@import "gallery";
-@import "gutenberg";
-@import "shortcodes";
-@import "misc";
+@forward "accessibility";
+@forward "alignment";
+@forward "gallery";
+@forward "gutenberg";
+@forward "shortcodes";
+@forward "misc";
 // @import "no-js"; // footer.scss
 // @import "print"; // footer.scss
 // @import "woocommerce-font"; // imported into various woocommerce scss files.

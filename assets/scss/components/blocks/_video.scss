@@ -1,4 +1,6 @@
+@use "../../abstracts/__index" as *;
+
 .wp-block-video figcaption {
 
-	@include caption();
+	@extend %caption;
 }

@@ -1,7 +1,7 @@
-@import "before-header";
-@import "site-header";
-@import "title-area";
-@import "header-section";
-@import "mobile";
-@import "after-header";
-// @import "page-header"; /* Separate file */
+@forward "before-header";
+@forward "site-header";
+@forward "title-area";
+@forward "header-section";
+@forward "mobile";
+@forward "after-header";
+// @forward "page-header"; /* Separate file */

@@ -3,8 +3,7 @@
 const gulp              = require('gulp');
 const config            = require('./config');
 const autoprefix        = require('autoprefixer');
-const bourbon           = require('bourbon').includePaths;
-const mqpacker          = require('css-mqpacker');
+const sortMediaQueries  = require('postcss-sort-media-queries');
 const cssnano           = require('cssnano');
 const fs                = require('fs');
 const gulpif            = require('gulp-if');
@@ -12,7 +11,7 @@ const notify            = require('gulp-notify');
 const plumber           = require('gulp-plumber');
 const postcss           = require('gulp-postcss');
 const sourcemap         = require('gulp-sourcemaps');
-const sass              = require('gulp-sass')(require('sass'));
+const sass              = require('sass');
 const bulksass          = require('gulp-sass-bulk-import');
 const map               = require('lodash.map');
 const combineSelectors   = require('postcss-combine-duplicated-selectors');
@@ -20,10 +19,37 @@ const discardDuplicates  = require('postcss-discard-duplicates');
 const pxtorem           = require('postcss-pxtorem');
 const remtopx           = require('postcss-rem-to-pixel');
 const rename            = require('gulp-rename');
+const through2          = require('through2');
+
+// Custom Sass plugin using native compiler
+function nativeSass(options = {}) {
+    return through2.obj(function(file, enc, cb) {
+        if (file.isNull()) {
+            return cb(null, file);
+        }
+
+        if (file.isStream()) {
+            return cb(new Error('Streaming not supported'));
+        }
+
+        try {
+            const result = sass.compile(file.path, {
+                style: 'compressed',
+                loadPaths: ['./assets/scss'],
+                ...options
+            });
+
+            file.contents = Buffer.from(result.css);
+            cb(null, file);
+        } catch (error) {
+            cb(error);
+        }
+    });
+}
 
 // Post-processing configuration
 const postProcessors = [
-    mqpacker({ sort: true }),
+    sortMediaQueries(),
     autoprefix(),
     cssnano(config.css.cssnano),
     combineSelectors,
@@ -40,7 +66,7 @@ const pxtoremConfig = pxtorem({
 module.exports.main = function mainTask() {
     return gulp.src('./assets/scss/main.scss')
         .pipe(plumber())
-        .pipe(sass({ outputStyle: 'compressed', includePaths: [].concat(bourbon) }))
+        .pipe(nativeSass())
         .pipe(rename('main.min.css')) // Rename to add .min
         .pipe(postcss(postProcessors))
         .pipe(gulp.dest('./assets/css/'))
@@ -51,7 +77,7 @@ module.exports.main = function mainTask() {
 module.exports.header = function headerTask() {
     return gulp.src('./assets/scss/header.scss')
         .pipe(plumber())
-        .pipe(sass({ outputStyle: 'compressed', includePaths: [].concat(bourbon) }))
+        .pipe(nativeSass())
         .pipe(rename('header.min.css')) // Rename to add .min
         .pipe(postcss(postProcessors))
         .pipe(gulp.dest('./assets/css/'))
@@ -62,7 +88,7 @@ module.exports.header = function headerTask() {
 module.exports.pageheader = function pageheaderTask() {
     return gulp.src('./assets/scss/page-header.scss')
         .pipe(plumber())
-        .pipe(sass({ outputStyle: 'compressed', includePaths: [].concat(bourbon) }))
+        .pipe(nativeSass())
         .pipe(rename('page-header.min.css')) // Rename to add .min
         .pipe(postcss(postProcessors))
         .pipe(gulp.dest('./assets/css/'))
@@ -73,7 +99,7 @@ module.exports.pageheader = function pageheaderTask() {
 module.exports.blocks = function blocksTaskStyles() {
     return gulp.src('./assets/scss/blocks.scss')
         .pipe(plumber())
-        .pipe(sass({ outputStyle: 'compressed', includePaths: [].concat(bourbon) }))
+        .pipe(nativeSass())
         .pipe(rename('blocks.min.css')) // Rename to add .min
         .pipe(postcss(postProcessors))
         .pipe(gulp.dest('./assets/css/'))
@@ -84,7 +110,7 @@ module.exports.blocks = function blocksTaskStyles() {
 module.exports.utilities = function utilitiesTask() {
     return gulp.src('./assets/scss/utilities.scss')
         .pipe(plumber())
-        .pipe(sass({ outputStyle: 'compressed', includePaths: [].concat(bourbon) }))
+        .pipe(nativeSass())
         .pipe(rename('utilities.min.css')) // Rename to add .min
         .pipe(postcss(postProcessors))
         .pipe(gulp.dest('./assets/css/'))
@@ -95,7 +121,7 @@ module.exports.utilities = function utilitiesTask() {
 module.exports.footer = function footerTask() {
     return gulp.src('./assets/scss/footer.scss')
         .pipe(plumber())
-        .pipe(sass({ outputStyle: 'compressed', includePaths: [].concat(bourbon) }))
+        .pipe(nativeSass())
         .pipe(rename('footer.min.css')) // Rename to add .min
         .pipe(postcss(postProcessors))
         .pipe(gulp.dest('./assets/css/'))
@@ -108,7 +134,7 @@ module.exports.editor = function editorTask() {
 
     return gulp.src('./assets/scss/editor.scss')
         .pipe(plumber())
-        .pipe(sass({ outputStyle: 'compressed', includePaths: [].concat(bourbon) }))
+        .pipe(nativeSass())
         .pipe(rename('editor.min.css')) // Rename to add .min
         .pipe(postcss(editorPostProcessors))
         .pipe(gulp.dest('./assets/css/'))
@@ -121,11 +147,11 @@ module.exports.themes = function themesTask() {
         return gulp.src('./assets/scss/themes/' + stylesheet)
             .pipe(bulksass())
             .pipe(plumber())
-            .pipe(sass({ outputStyle: 'compressed', includePaths: [].concat(bourbon) }))
+            .pipe(nativeSass())
             .pipe(rename({ basename: stylesheet.replace('.scss', ''), suffix: '.min' })) // Correctly rename
             .pipe(gulpif(config.css.sourcemaps, sourcemap.init()))
             .pipe(postcss([
-                mqpacker({ sort: true }),
+                sortMediaQueries(),
                 autoprefix(),
                 cssnano({
                     discardComments: { removeAll: true },
@@ -156,7 +182,7 @@ module.exports.plugins = function pluginsTask() {
 
         return gulp.src(fileSrc())
             .pipe(plumber())
-            .pipe(sass({ outputStyle: 'compressed', includePaths: [].concat(bourbon) }))
+            .pipe(nativeSass())
             .pipe(rename({ basename: stylesheet.replace('.scss', ''), suffix: '.min' })) // Correctly rename
             .pipe(postcss(pluginPostProcessors))
             .pipe(gulp.dest('./assets/css/')) // Output to top-level directory
@@ -170,7 +196,7 @@ module.exports.maiplugins = function maipluginsTask() {
 
     return gulp.src('./assets/scss/plugins.scss')
         .pipe(plumber())
-        .pipe(sass({ outputStyle: 'compressed' }))
+        .pipe(nativeSass())
         .pipe(rename('plugins.min.css')) // Rename to add .min
         .pipe(postcss(maipluginsPostProcessors))
         .pipe(gulp.dest('./assets/css/'))
@@ -181,7 +207,7 @@ module.exports.maiplugins = function maipluginsTask() {
 module.exports.admin = function adminTask() {
     return gulp.src('./assets/scss/admin.scss')
         .pipe(plumber())
-        .pipe(sass({ outputStyle: 'compressed' }))
+        .pipe(nativeSass())
         .pipe(rename('admin.min.css')) // Rename to add .min
         .pipe(postcss(postProcessors))
         .pipe(gulp.dest('./assets/css/'))
@@ -192,7 +218,7 @@ module.exports.admin = function adminTask() {
 module.exports.desktop = function desktopTask() {
     return gulp.src('./assets/scss/desktop.scss')
         .pipe(plumber())
-        .pipe(sass({ outputStyle: 'compressed' }))
+        .pipe(nativeSass())
         .pipe(rename('desktop.min.css')) // Rename to add .min
         .pipe(postcss(postProcessors))
         .pipe(gulp.dest('./assets/css/'))
@@ -203,7 +229,7 @@ module.exports.desktop = function desktopTask() {
 module.exports.deprecated = function deprecatedTask() {
     return gulp.src('./assets/scss/deprecated.scss')
         .pipe(plumber())
-        .pipe(sass({ outputStyle: 'compressed' }))
+        .pipe(nativeSass())
         .pipe(rename('deprecated.min.css')) // Rename to add .min
         .pipe(postcss(postProcessors))
         .pipe(gulp.dest('./assets/css/'))

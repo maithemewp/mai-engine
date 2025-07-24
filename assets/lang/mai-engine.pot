@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.36.2-beta.1\n"
+"Project-Id-Version: Mai Engine 2.37.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-04-30T17:11:02+00:00\n"
+"POT-Creation-Date: 2025-07-24T19:48:34+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: mai-engine\n"
@@ -540,9 +540,9 @@ msgstr ""
 #: assets/js/blocks/layout-settings.js:316
 #: assets/js/blocks/layout-settings.js:677
 #: assets/js/blocks/layout-settings.js:800
-#: assets/js/min/blocks.js:954
-#: assets/js/min/blocks.js:1315
-#: assets/js/min/blocks.js:1438
+#: assets/js/min/blocks.js:1539
+#: assets/js/min/blocks.js:1900
+#: assets/js/min/blocks.js:2023
 msgid "Top"
 msgstr ""
 
@@ -568,16 +568,16 @@ msgstr ""
 #: assets/js/blocks/layout-settings.js:349
 #: assets/js/blocks/layout-settings.js:687
 #: assets/js/blocks/layout-settings.js:810
-#: assets/js/min/blocks.js:987
-#: assets/js/min/blocks.js:1325
-#: assets/js/min/blocks.js:1448
+#: assets/js/min/blocks.js:1572
+#: assets/js/min/blocks.js:1910
+#: assets/js/min/blocks.js:2033
 msgid "Bottom"
 msgstr ""
 
 #: lib/blocks/mai-column/block.php:101
 #: lib/blocks/mai-icon/block.php:329
 #: assets/js/blocks/layout-settings.js:310
-#: assets/js/min/blocks.js:948
+#: assets/js/min/blocks.js:1533
 msgid "Padding"
 msgstr ""
 
@@ -600,8 +600,8 @@ msgstr ""
 #: lib/functions/customizer.php:810
 #: assets/js/blocks/layout-settings.js:629
 #: assets/js/blocks/layout-settings.js:730
-#: assets/js/min/blocks.js:1267
-#: assets/js/min/blocks.js:1368
+#: assets/js/min/blocks.js:1852
+#: assets/js/min/blocks.js:1953
 msgid "None"
 msgstr ""
 
@@ -631,11 +631,11 @@ msgstr ""
 #: assets/js/blocks/layout-settings.js:477
 #: assets/js/blocks/layout-settings.js:637
 #: assets/js/blocks/layout-settings.js:734
-#: assets/js/min/blocks.js:799
-#: assets/js/min/blocks.js:841
-#: assets/js/min/blocks.js:1115
-#: assets/js/min/blocks.js:1275
-#: assets/js/min/blocks.js:1372
+#: assets/js/min/blocks.js:1384
+#: assets/js/min/blocks.js:1426
+#: assets/js/min/blocks.js:1700
+#: assets/js/min/blocks.js:1860
+#: assets/js/min/blocks.js:1957
 msgid "XS"
 msgstr ""
 
@@ -679,11 +679,11 @@ msgstr ""
 #: assets/js/blocks/layout-settings.js:493
 #: assets/js/blocks/layout-settings.js:653
 #: assets/js/blocks/layout-settings.js:750
-#: assets/js/min/blocks.js:815
-#: assets/js/min/blocks.js:857
-#: assets/js/min/blocks.js:1131
-#: assets/js/min/blocks.js:1291
-#: assets/js/min/blocks.js:1388
+#: assets/js/min/blocks.js:1400
+#: assets/js/min/blocks.js:1442
+#: assets/js/min/blocks.js:1716
+#: assets/js/min/blocks.js:1876
+#: assets/js/min/blocks.js:1973
 msgid "XL"
 msgstr ""
 
@@ -704,8 +704,8 @@ msgstr ""
 #: lib/functions/customizer.php:174
 #: assets/js/blocks/layout-settings.js:657
 #: assets/js/blocks/layout-settings.js:754
-#: assets/js/min/blocks.js:1295
-#: assets/js/min/blocks.js:1392
+#: assets/js/min/blocks.js:1880
+#: assets/js/min/blocks.js:1977
 msgid "2XL"
 msgstr ""
 
@@ -856,7 +856,7 @@ msgstr ""
 #: lib/functions/customizer.php:226
 #: lib/functions/customizer.php:775
 #: assets/js/blocks/layout-settings.js:181
-#: assets/js/min/blocks.js:819
+#: assets/js/min/blocks.js:1404
 msgid "Full"
 msgstr ""
 
@@ -923,8 +923,8 @@ msgstr ""
 #: lib/functions/customizer.php:756
 #: assets/js/blocks/layout-settings.js:188
 #: assets/js/blocks/layout-settings.js:500
-#: assets/js/min/blocks.js:826
-#: assets/js/min/blocks.js:1138
+#: assets/js/min/blocks.js:1411
+#: assets/js/min/blocks.js:1723
 msgid "Start"
 msgstr ""
 
@@ -943,8 +943,8 @@ msgstr ""
 #: lib/functions/customizer.php:757
 #: assets/js/blocks/layout-settings.js:192
 #: assets/js/blocks/layout-settings.js:504
-#: assets/js/min/blocks.js:830
-#: assets/js/min/blocks.js:1142
+#: assets/js/min/blocks.js:1415
+#: assets/js/min/blocks.js:1727
 msgid "Center"
 msgstr ""
 
@@ -996,11 +996,11 @@ msgstr ""
 #: assets/js/blocks/layout-settings.js:481
 #: assets/js/blocks/layout-settings.js:641
 #: assets/js/blocks/layout-settings.js:738
-#: assets/js/min/blocks.js:803
-#: assets/js/min/blocks.js:845
-#: assets/js/min/blocks.js:1119
-#: assets/js/min/blocks.js:1279
-#: assets/js/min/blocks.js:1376
+#: assets/js/min/blocks.js:1388
+#: assets/js/min/blocks.js:1430
+#: assets/js/min/blocks.js:1704
+#: assets/js/min/blocks.js:1864
+#: assets/js/min/blocks.js:1961
 msgid "S"
 msgstr ""
 
@@ -1028,11 +1028,11 @@ msgstr ""
 #: assets/js/blocks/layout-settings.js:485
 #: assets/js/blocks/layout-settings.js:645
 #: assets/js/blocks/layout-settings.js:742
-#: assets/js/min/blocks.js:807
-#: assets/js/min/blocks.js:849
-#: assets/js/min/blocks.js:1123
-#: assets/js/min/blocks.js:1283
-#: assets/js/min/blocks.js:1380
+#: assets/js/min/blocks.js:1392
+#: assets/js/min/blocks.js:1434
+#: assets/js/min/blocks.js:1708
+#: assets/js/min/blocks.js:1868
+#: assets/js/min/blocks.js:1965
 msgid "M"
 msgstr ""
 
@@ -1060,11 +1060,11 @@ msgstr ""
 #: assets/js/blocks/layout-settings.js:489
 #: assets/js/blocks/layout-settings.js:649
 #: assets/js/blocks/layout-settings.js:746
-#: assets/js/min/blocks.js:811
-#: assets/js/min/blocks.js:853
-#: assets/js/min/blocks.js:1127
-#: assets/js/min/blocks.js:1287
-#: assets/js/min/blocks.js:1384
+#: assets/js/min/blocks.js:1396
+#: assets/js/min/blocks.js:1438
+#: assets/js/min/blocks.js:1712
+#: assets/js/min/blocks.js:1872
+#: assets/js/min/blocks.js:1969
 msgid "L"
 msgstr ""
 
@@ -1193,8 +1193,8 @@ msgstr ""
 #: lib/customize/menus.php:111
 #: assets/js/blocks/layout-settings.js:382
 #: assets/js/blocks/layout-settings.js:820
-#: assets/js/min/blocks.js:1020
-#: assets/js/min/blocks.js:1458
+#: assets/js/min/blocks.js:1605
+#: assets/js/min/blocks.js:2043
 msgid "Left"
 msgstr ""
 
@@ -1207,10 +1207,10 @@ msgstr ""
 #: assets/js/blocks/layout-settings.js:415
 #: assets/js/blocks/layout-settings.js:508
 #: assets/js/blocks/layout-settings.js:830
-#: assets/js/min/blocks.js:834
-#: assets/js/min/blocks.js:1053
-#: assets/js/min/blocks.js:1146
-#: assets/js/min/blocks.js:1468
+#: assets/js/min/blocks.js:1419
+#: assets/js/min/blocks.js:1638
+#: assets/js/min/blocks.js:1731
+#: assets/js/min/blocks.js:2053
 msgid "Right"
 msgstr ""
 
@@ -1285,8 +1285,8 @@ msgstr ""
 #: lib/blocks/mai-icon/block.php:337
 #: assets/js/blocks/layout-settings.js:672
 #: assets/js/blocks/layout-settings.js:795
-#: assets/js/min/blocks.js:1310
-#: assets/js/min/blocks.js:1433
+#: assets/js/min/blocks.js:1895
+#: assets/js/min/blocks.js:2018
 msgid "Margin"
 msgstr ""
 
@@ -1326,11 +1326,11 @@ msgstr ""
 msgid "Updated options."
 msgstr ""
 
-#: lib/classes/class-mai-entry.php:1289
+#: lib/classes/class-mai-entry.php:1290
 msgid "Pages:"
 msgstr ""
 
-#: lib/classes/class-mai-entry.php:1297
+#: lib/classes/class-mai-entry.php:1298
 msgid "Page "
 msgstr ""
 
@@ -1893,8 +1893,8 @@ msgstr ""
 #: lib/customize/page-header.php:128
 #: assets/js/blocks/layout-settings.js:277
 #: assets/js/blocks/layout-settings.js:562
-#: assets/js/min/blocks.js:915
-#: assets/js/min/blocks.js:1200
+#: assets/js/min/blocks.js:1500
+#: assets/js/min/blocks.js:1785
 msgid "Content Alignment"
 msgstr ""
 
@@ -2354,8 +2354,8 @@ msgstr ""
 #: lib/functions/utilities.php:343
 #: assets/js/blocks/layout-settings.js:625
 #: assets/js/blocks/layout-settings.js:726
-#: assets/js/min/blocks.js:1263
-#: assets/js/min/blocks.js:1364
+#: assets/js/min/blocks.js:1848
+#: assets/js/min/blocks.js:1949
 msgid "Default"
 msgstr ""
 
@@ -2433,8 +2433,8 @@ msgstr ""
 #: lib/fields/grid-tabs.php:41
 #: assets/js/blocks/layout-settings.js:238
 #: assets/js/blocks/layout-settings.js:523
-#: assets/js/min/blocks.js:876
-#: assets/js/min/blocks.js:1161
+#: assets/js/min/blocks.js:1461
+#: assets/js/min/blocks.js:1746
 msgid "Layout"
 msgstr ""
 
@@ -2762,14 +2762,14 @@ msgstr ""
 #: assets/js/blocks/layout-settings.js:442
 #: assets/js/blocks/layout-settings.js:556
 #: assets/js/blocks/layout-settings.js:589
-#: assets/js/min/blocks.js:909
-#: assets/js/min/blocks.js:942
-#: assets/js/min/blocks.js:981
-#: assets/js/min/blocks.js:1014
-#: assets/js/min/blocks.js:1047
-#: assets/js/min/blocks.js:1080
-#: assets/js/min/blocks.js:1194
-#: assets/js/min/blocks.js:1227
+#: assets/js/min/blocks.js:1494
+#: assets/js/min/blocks.js:1527
+#: assets/js/min/blocks.js:1566
+#: assets/js/min/blocks.js:1599
+#: assets/js/min/blocks.js:1632
+#: assets/js/min/blocks.js:1665
+#: assets/js/min/blocks.js:1779
+#: assets/js/min/blocks.js:1812
 msgid "Clear"
 msgstr ""
 
@@ -3003,19 +3003,19 @@ msgstr ""
 msgid "Edit Patterns"
 msgstr ""
 
-#: lib/functions/templates.php:471
+#: lib/functions/templates.php:473
 msgid "Sorry, no template part available for this theme."
 msgstr ""
 
-#: lib/functions/templates.php:489
+#: lib/functions/templates.php:491
 msgid "Sorry, this template part is already in use."
 msgstr ""
 
-#: lib/functions/templates.php:501
+#: lib/functions/templates.php:503
 msgid "Sorry, "
 msgstr ""
 
-#: lib/functions/templates.php:501
+#: lib/functions/templates.php:503
 msgid "template part already exists"
 msgstr ""
 
@@ -3130,52 +3130,52 @@ msgid "Cheatin&#8217; huh?"
 msgstr ""
 
 #: assets/js/blocks/layout-settings.js:244
-#: assets/js/min/blocks.js:882
+#: assets/js/min/blocks.js:1467
 msgid "Content Max Width"
 msgstr ""
 
 #: assets/js/blocks/layout-settings.js:529
-#: assets/js/min/blocks.js:1167
+#: assets/js/min/blocks.js:1752
 msgid "Max Width"
 msgstr ""
 
 #: assets/js/blocks/layout-settings.js:633
-#: assets/js/min/blocks.js:1271
+#: assets/js/min/blocks.js:1856
 msgid "XXS"
 msgstr ""
 
 #: assets/js/blocks/layout-settings.js:758
-#: assets/js/min/blocks.js:1396
+#: assets/js/min/blocks.js:1981
 msgid "XS Overlap"
 msgstr ""
 
 #: assets/js/blocks/layout-settings.js:762
-#: assets/js/min/blocks.js:1400
+#: assets/js/min/blocks.js:1985
 msgid "S Overlap"
 msgstr ""
 
 #: assets/js/blocks/layout-settings.js:766
-#: assets/js/min/blocks.js:1404
+#: assets/js/min/blocks.js:1989
 msgid "M Overlap"
 msgstr ""
 
 #: assets/js/blocks/layout-settings.js:770
-#: assets/js/min/blocks.js:1408
+#: assets/js/min/blocks.js:1993
 msgid "L Overlap"
 msgstr ""
 
 #: assets/js/blocks/layout-settings.js:774
-#: assets/js/min/blocks.js:1412
+#: assets/js/min/blocks.js:1997
 msgid "XL Overlap"
 msgstr ""
 
 #: assets/js/blocks/layout-settings.js:778
-#: assets/js/min/blocks.js:1416
+#: assets/js/min/blocks.js:2001
 msgid "XXL Overlap"
 msgstr ""
 
 #: assets/js/blocks/layout-settings.js:839
-#: assets/js/min/blocks.js:1477
+#: assets/js/min/blocks.js:2062
 msgid "Note: Left/right overlap settings are disabled on smaller screens."
 msgstr ""
 
