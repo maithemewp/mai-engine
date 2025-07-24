@@ -1,8 +1,11 @@
 .wp-block-group {
 	position: relative; // so negative margins inside will work.
-	display: flex;
-	justify-content: var(--group-block-justify-content, center);
 	padding: var(--group-block-padding-top, 0.05px) var(--group-block-padding-right, 0.05px) var(--group-block-padding-bottom, 0.05px) var(--group-block-padding-left, 0.05px); // 0.05px prevents margin collapsing.
+
+	&:where([style*="--group-block-justify-content:start;"], [style*="--group-block-justify-content:end;"]) {
+		display: flex;
+		justify-content: var(--group-block-justify-content, center);
+	}
 
 	&:where(.alignfull) {
 		// Can't override property or it will break nested blocks.
