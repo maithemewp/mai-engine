@@ -103,53 +103,56 @@ function mai_has_custom_loop() {
 		$types    = mai_get_option( 'single-settings', $defaults );
 	}
 
+	$loop = false;
+
 	if ( isset( $name, $types ) ) {
 
 		if ( in_array( $name, $types, true ) ) {
 			$loop = true;
-			return $loop;
 		}
 
-		// All core WP post types and taxonomies use our custom loop.
-		$post_types = get_post_types(
-			[
-				'_builtin' => true,
-				'public'   => true,
-			]
-		);
-		$taxonomies = get_taxonomies(
-			[
-				'_builtin' => true,
-				'public'   => true,
-			]
-		);
+		if ( ! $loop ) {
+			// All core WP post types and taxonomies use our custom loop.
+			$post_types = get_post_types(
+				[
+					'_builtin' => true,
+					'public'   => true,
+				]
+			);
+			$taxonomies = get_taxonomies(
+				[
+					'_builtin' => true,
+					'public'   => true,
+				]
+			);
 
-		if ( isset( $post_types[ $name ] ) || isset( $taxonomies[ $name ] ) ) {
-			$loop = true;
-			return $loop;
-		}
-
-		// Check taxonomy post type.
-		if ( taxonomy_exists( $name ) ) {
-			$post_type = mai_get_taxonomy_post_type( $name );
-
-			if ( $post_type && in_array( $post_type, $types, true ) ) {
+			if ( isset( $post_types[ $name ] ) || isset( $taxonomies[ $name ] ) ) {
 				$loop = true;
-				return $loop;
 			}
-		}
 
-		$other_types = [ 'author', 'date', 'search' ];
+			if ( ! $loop ) {
+				// Check taxonomy post type.
+				if ( taxonomy_exists( $name ) ) {
+					$post_type = mai_get_taxonomy_post_type( $name );
 
-		if ( in_array( $name, $other_types, true ) ) {
-			$loop = true;
-			return $loop;
+					if ( $post_type && in_array( $post_type, $types, true ) ) {
+						$loop = true;
+						return $loop;
+					}
+				}
+
+				$other_types = [ 'author', 'date', 'search' ];
+
+				if ( in_array( $name, $other_types, true ) ) {
+					$loop = true;
+				}
+			}
 		}
 	}
 
-	$loop = false;
+	$loop = apply_filters( 'mai_has_custom_loop', $loop );
 
-	return $loop;
+	return (bool) $loop;
 }
 
 /**
