@@ -17,14 +17,15 @@ defined( 'ABSPATH' ) || die;
  *
  * @since 0.1.0
  *
- * @param array $args Entries open args.
+ * @param array $args       Entries open args.
+ * @param array $query_args Query args.
  *
  * @link  https://github.com/studiopress/genesis/blob/master/lib/structure/loops.php#L64
  * @link  https://github.com/studiopress/genesis/blob/master/lib/structure/post.php
  *
  * @return void
  */
-function mai_do_entries_open( $args ) {
+function mai_do_entries_open( $args, $query = null ) {
 	// Start the atts.
 	$atts = [
 		'class'   => mai_add_classes( 'entries', isset( $args['class'] ) ? $args['class'] : '' ),
@@ -136,7 +137,8 @@ function mai_do_entries_open( $args ) {
 			'echo'    => true,
 			'atts'    => $atts,
 			'params'  => [
-				'args' => $args,
+				'args'       => $args,
+				'query'      => $query,
 			],
 		]
 	);
@@ -163,7 +165,8 @@ function mai_do_entries_open( $args ) {
 			'echo'    => true,
 			'atts'    => $wrap_atts,
 			'params'  => [
-				'args' => $args,
+				'args'       => $args,
+				'query'      => $query,
 			],
 		]
 	);
@@ -177,18 +180,20 @@ function mai_do_entries_open( $args ) {
  *
  * @since 0.1.0
  *
- * @param array $args Entries close args.
+ * @param array                       $args  Entries close args.
+ * @param WP_Query|WP_Term_Query|null $query Query args.
  *
  * @return void
  */
-function mai_do_entries_close( $args ) {
+function mai_do_entries_close( $args, $query = null ) {
 	genesis_markup(
 		[
 			'close'   => '</div>',
 			'context' => 'entries-wrap',
 			'echo'    => true,
 			'params'  => [
-				'args' => $args,
+				'args'  => $args,
+				'query' => $query,
 			],
 		]
 	);
@@ -199,7 +204,8 @@ function mai_do_entries_close( $args ) {
 			'context' => 'entries',
 			'echo'    => true,
 			'params'  => [
-				'args' => $args,
+				'args'  => $args,
+				'query' => $query,
 			],
 		]
 	);

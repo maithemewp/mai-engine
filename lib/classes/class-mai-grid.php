@@ -26,6 +26,8 @@ class Mai_Grid {
 	 */
 	static protected $index = 0;
 
+
+
 	/**
 	 * Type.
 	 *
@@ -205,13 +207,13 @@ class Mai_Grid {
 		$this->args['class'] = trim( $this->args['class'] );
 
 		// Open.
-		mai_do_entries_open( $this->args );
+		mai_do_entries_open( $this->args, $this->query );
 
 		// Entries.
 		$this->do_grid_entries();
 
 		// Close.
-		mai_do_entries_close( $this->args );
+		mai_do_entries_close( $this->args, $this->query );
 	}
 
 	/**
