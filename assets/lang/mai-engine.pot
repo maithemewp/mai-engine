@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-07-24T20:03:34+00:00\n"
+"POT-Creation-Date: 2025-08-06T02:16:23+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: mai-engine\n"
@@ -310,8 +310,8 @@ msgstr ""
 #: lib/fields/grid-display.php:499
 #: lib/functions/customizer.php:388
 #: lib/functions/customizer.php:984
-#: lib/functions/loop.php:511
-#: lib/functions/loop.php:544
+#: lib/functions/loop.php:514
+#: lib/functions/loop.php:547
 msgid "Header Meta"
 msgstr ""
 
@@ -322,8 +322,8 @@ msgstr ""
 #: lib/fields/grid-display.php:514
 #: lib/functions/customizer.php:425
 #: lib/functions/customizer.php:1014
-#: lib/functions/loop.php:515
-#: lib/functions/loop.php:548
+#: lib/functions/loop.php:518
+#: lib/functions/loop.php:551
 msgid "Custom Content"
 msgstr ""
 
@@ -331,7 +331,7 @@ msgstr ""
 #: lib/fields/grid-display.php:202
 #: lib/fields/grid-display.php:529
 #: lib/functions/customizer.php:1028
-#: lib/functions/loop.php:549
+#: lib/functions/loop.php:552
 msgid "Custom Content 2"
 msgstr ""
 
@@ -340,8 +340,8 @@ msgstr ""
 #: lib/fields/grid-display.php:604
 #: lib/functions/customizer.php:477
 #: lib/functions/customizer.php:999
-#: lib/functions/loop.php:519
-#: lib/functions/loop.php:552
+#: lib/functions/loop.php:522
+#: lib/functions/loop.php:555
 msgid "Footer Meta"
 msgstr ""
 
@@ -351,7 +351,7 @@ msgid "After Entry"
 msgstr ""
 
 #: lib/admin/hide-elements.php:164
-#: lib/functions/loop.php:554
+#: lib/functions/loop.php:557
 msgid "Author Box"
 msgstr ""
 
@@ -393,8 +393,8 @@ msgstr ""
 #: lib/admin/page-header.php:88
 #: lib/admin/term-image.php:56
 #: lib/fields/grid-display.php:196
-#: lib/functions/loop.php:508
-#: lib/functions/loop.php:541
+#: lib/functions/loop.php:511
+#: lib/functions/loop.php:544
 msgid "Image"
 msgstr ""
 
@@ -834,8 +834,8 @@ msgstr ""
 #: lib/classes/class-mai-setup-wizard-fields.php:245
 #: lib/classes/class-mai-setup-wizard-steps.php:206
 #: lib/fields/grid-display.php:200
-#: lib/functions/loop.php:514
-#: lib/functions/loop.php:547
+#: lib/functions/loop.php:517
+#: lib/functions/loop.php:550
 msgid "Content"
 msgstr ""
 
@@ -2214,18 +2214,18 @@ msgstr ""
 #: lib/fields/grid-display.php:197
 #: lib/fields/wp-query.php:859
 #: lib/fields/wp-term-query.php:514
-#: lib/functions/loop.php:510
-#: lib/functions/loop.php:543
+#: lib/functions/loop.php:513
+#: lib/functions/loop.php:546
 msgid "Title"
 msgstr ""
 
 #: lib/fields/grid-display.php:199
-#: lib/functions/loop.php:513
+#: lib/functions/loop.php:516
 msgid "Excerpt"
 msgstr ""
 
 #: lib/fields/grid-display.php:203
-#: lib/functions/loop.php:517
+#: lib/functions/loop.php:520
 msgid "Read More link"
 msgstr ""
 
@@ -2896,15 +2896,15 @@ msgstr ""
 msgid "Custom"
 msgstr ""
 
-#: lib/functions/loop.php:546
+#: lib/functions/loop.php:549
 msgid "Manual Excerpts"
 msgstr ""
 
-#: lib/functions/loop.php:555
+#: lib/functions/loop.php:558
 msgid "After Entry Content Area"
 msgstr ""
 
-#: lib/functions/loop.php:556
+#: lib/functions/loop.php:559
 msgid "Previous/Next Entry Nav"
 msgstr ""
 
