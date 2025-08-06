@@ -148,7 +148,7 @@ module.exports.themes = function themesTask() {
             .pipe(bulksass())
             .pipe(plumber())
             .pipe(nativeSass())
-            .pipe(rename({ basename: stylesheet.replace('.scss', ''), suffix: '.min' })) // Correctly rename
+            .pipe(rename({ basename: stylesheet.replace('.scss', ''), suffix: '.min', extname: '.css' }))
             .pipe(gulpif(config.css.sourcemaps, sourcemap.init()))
             .pipe(postcss([
                 sortMediaQueries(),
@@ -183,7 +183,7 @@ module.exports.plugins = function pluginsTask() {
         return gulp.src(fileSrc())
             .pipe(plumber())
             .pipe(nativeSass())
-            .pipe(rename({ basename: stylesheet.replace('.scss', ''), suffix: '.min' })) // Correctly rename
+            .pipe(rename({ basename: stylesheet.replace('.scss', ''), suffix: '.min', extname: '.css' })) // Correctly rename with .css extension
             .pipe(postcss(pluginPostProcessors))
             .pipe(gulp.dest('./assets/css/')) // Output to top-level directory
             .pipe(notify({ message: config.messages.css }));
