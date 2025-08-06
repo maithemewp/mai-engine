@@ -334,26 +334,31 @@ input[type="submit"],
 	.is-style-secondary & {
 
 		@extend %button-secondary;
+		@extend %button-editor;
 	}
 
 	.is-style-link & {
 
 		@extend %button-link;
+		@extend %button-editor;
 	}
 
 	.is-style-outline & {
 
 		@extend %button-outline;
+		@extend %button-editor;
 	}
 
 	.button-small & {
 
 		@extend %button-small;
+		@extend %button-editor;
 	}
 
 	.button-large & {
 
 		@extend %button-large;
+		@extend %button-editor;
 	}
 }
 
