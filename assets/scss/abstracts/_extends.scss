@@ -142,12 +142,16 @@
 %button-editor {
 	// Admin logic for all editor buttons.
 	padding: var(--button-padding, 0.9rem 2rem);
-	color: var(--button-color);
-	// background: var(--button-background);
-	// border-color: var(--button-border, currentColor);
-	// border: var(--button-border, currentColor);
-	background: var(--button-background, var(--color-primary));
 	border: var(--button-border, 0);
+	border-color: currentColor;
+
+	&:not(.has-text-color) {
+		color: var(--button-color);
+	}
+
+	&:not(.has-background) {
+		background: var(--button-background, var(--color-primary));
+	}
 
 	// Disable background color on hover for editor.
 	@include mixins.hover-focus {
