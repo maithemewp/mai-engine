@@ -12,7 +12,7 @@
 @use "utilities/_index" as *;
 
 html {
-	font-size: 100%; // 16px browser default.
+	// font-size: 100%; // 16px browser default. This was breaking after the changes in 2.38.0.
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }

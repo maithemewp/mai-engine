@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.38.0 (TBD)
+* Changed: Build process.
+* Changed: Update ACF to 6.5.0.1.
+
 ## 2.37.0 (7/14/25)
 * Changed: Bump minimum PHP version to 8.1.
 * Changed: [Performance] The Genesis skip-links script is now deferred.
