@@ -360,6 +360,7 @@ function mai_post_terms_shortcode_classes( $output, $terms, $atts ) {
 	return trim( $output );
 }
 
+add_filter( 'do_shortcode_tag', 'mai_gallery_shortcode_tag', 10, 4 );
 /**
  * Add inline custom properties to native/classic WP galleries.
  *
@@ -372,7 +373,6 @@ function mai_post_terms_shortcode_classes( $output, $terms, $atts ) {
  *
  * @return  string  The gallery HTML.
  */
-add_filter( 'do_shortcode_tag', 'mai_gallery_shortcode_tag', 10, 4 );
 function mai_gallery_shortcode_tag( $output, $tag, $atts, $m ) {
 	if ( ! $output ) {
 		return $output;
