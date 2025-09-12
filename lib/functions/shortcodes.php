@@ -270,17 +270,20 @@ function mai_terms_shortcode( $atts ) {
 		'link'     => true,
 	], $atts );
 
+
 	// Sanitize.
-	$atts['taxonomy'] = esc_html( $atts['taxonomy'] );
-	$atts['before']   = esc_html( $atts['before'] );
-	$atts['after']    = esc_html( $atts['after'] );
-	$atts['sep']      = esc_html( $atts['sep'] );
+	$taxonomies       = explode( ',', $atts['taxonomy'] );
+	$taxonomies       = array_map( 'sanitize_text_field', $taxonomies );
+	$taxonomies       = array_filter( $taxonomies );
+	$atts['taxonomy'] = sanitize_text_field( $taxonomies );
+	$atts['before']   = sanitize_text_field( $atts['before'] );
+	$atts['after']    = sanitize_text_field( $atts['after'] );
+	$atts['sep']      = sanitize_text_field( $atts['sep'] );
 	$atts['post_id']  = absint( $atts['post_id'] );
 	$atts['link']     = filter_var( $atts['link'], FILTER_VALIDATE_BOOLEAN );
 
 	// Get it started.
-	$html       = '';
-	$taxonomies = explode( ',', $atts['taxonomy'] );
+	$html = '';
 
 	// Loop through taxonomies.
 	foreach ( $taxonomies as $taxonomy ) {
