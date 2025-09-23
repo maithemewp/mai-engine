@@ -57,15 +57,17 @@ function mai_do_header() {
 
 		add_filter( 'mai_icon_defaults', $filter );
 
-		$sections = [];
 		$left     = [];
 		$right    = [];
 		$flipped  = array_flip( $elements );
 
 		if ( isset( $flipped['title_area'] ) ) {
-			$left     = array_slice( $elements, 0, $flipped['title_area'] );
-			$right    = array_slice( $elements, $flipped['title_area'] + 1 );
-			$elements = array_values( array_diff( $elements, $left, $right ) );
+			$left      = array_slice( $elements, 0, $flipped['title_area'] );
+			$right     = array_slice( $elements, $flipped['title_area'] + 1 );
+			$elements  = array_values( array_diff( $elements, $left, $right ) );
+			$remaining = array_values( array_diff( $elements, [ 'title_area'] ) );
+		} else {
+			$remaining = $elements;
 		}
 
 		if ( $left ) {
@@ -79,7 +81,7 @@ function mai_do_header() {
 					]
 				]
 			);
-			foreach( $left as $index => $element ) {
+			foreach( $left as $element ) {
 				$function = "mai_do_{$element}";
 				if ( function_exists( $function ) ) {
 					$function();
@@ -94,13 +96,34 @@ function mai_do_header() {
 			);
 		}
 
-		if ( $elements ) {
-			foreach( $elements as $index => $element ) {
+		if ( isset( $flipped['title_area'] ) ) {
+			mai_do_title_area();
+		}
+
+		if ( $remaining ) {
+			genesis_markup(
+				[
+					'open'    => '<div %s>',
+					'context' => 'header-section-mobile',
+					'echo'    => true,
+					'atts'    => [
+						'class' => 'header-section-mobile'
+					]
+				]
+			);
+			foreach( $remaining as $element ) {
 				$function = "mai_do_{$element}";
 				if ( function_exists( $function ) ) {
 					$function();
 				}
 			}
+			genesis_markup(
+				[
+					'close'   => '</div>',
+					'context' => 'header-section-mobile',
+					'echo'    => true,
+				]
+			);
 		}
 
 		if ( $right ) {
@@ -114,7 +137,7 @@ function mai_do_header() {
 					]
 				]
 			);
-			foreach( $right as $index => $element ) {
+			foreach( $right as $element ) {
 				$function = "mai_do_{$element}";
 				if ( function_exists( $function ) ) {
 					$function();
