@@ -22,6 +22,7 @@ add_action( 'wp_head', 'mai_add_taxonomy_opengraph_image' );
  * Adds term featured image as Open Graph meta tags.
  *
  * @since 2.25.0
+ * @since TBD Get mime from attachment with fallback to extension.
  *
  * @return void
  */
@@ -47,14 +48,19 @@ function mai_add_taxonomy_opengraph_image() {
 	$url    = esc_url( $image[0] );
 	$width  = absint( $image[1] );
 	$height = absint( $image[2] );
-	$info   = pathinfo( $url );
-	$ext    = esc_attr( $info['extension'] );
-	$ext    = 'jpg' === $ext ? 'jpeg' : $ext;
+	$type   = get_post_mime_type( $image_id );
+
+	// If no mime, fall back to extension.
+	if ( ! $type ) {
+		$ext  = pathinfo( $url, PATHINFO_EXTENSION );
+		$ext  = 'jpg' === $ext ? 'jpeg' : $ext;
+		$type = $ext ? "image/{$ext}" : 'image/jpeg';
+	}
 
 	printf( '<meta property="og:image" content="%s" class="mai-meta-tag">', $url );
 	printf( '<meta property="og:image:width" content="%s" class="mai-meta-tag">', $width );
 	printf( '<meta property="og:image:height" content="%s" class="mai-meta-tag">', $height );
-	printf( '<meta property="og:image:type" content="image/%s" class="mai-meta-tag">', $ext );
+	printf( '<meta property="og:image:type" content="%s" class="mai-meta-tag">', $type );
 }
 
 add_action( 'genesis_before', 'mai_maybe_hide_archive_elements' );
