@@ -268,7 +268,7 @@ function mai_terms_shortcode( $atts ) {
 		'sep'      => ', ',
 		'post_id'  => get_the_ID(),
 		'link'     => true,
-	], $atts );
+	], $atts, 'mai_terms' );
 
 
 	// Sanitize.
