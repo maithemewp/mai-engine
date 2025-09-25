@@ -276,8 +276,8 @@ function mai_terms_shortcode( $atts ) {
 	$taxonomies       = array_map( 'sanitize_text_field', $taxonomies );
 	$taxonomies       = array_filter( $taxonomies );
 	$atts['taxonomy'] = sanitize_text_field( $taxonomies );
-	$atts['before']   = sanitize_text_field( $atts['before'] );
-	$atts['after']    = sanitize_text_field( $atts['after'] );
+	$atts['before']   = wp_kses_post( $atts['before'] );
+	$atts['after']    = wp_kses_post( $atts['after'] );
 	$atts['sep']      = sanitize_text_field( $atts['sep'] );
 	$atts['post_id']  = absint( $atts['post_id'] );
 	$atts['link']     = filter_var( $atts['link'], FILTER_VALIDATE_BOOLEAN );
