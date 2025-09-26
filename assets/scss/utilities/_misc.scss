@@ -131,8 +131,7 @@
 
 	.has-#{ $breakpoint-name }-max-width {
 		max-width: var(--breakpoint-#{ $breakpoint-name });
-
-		@include margin(null auto);
+		margin-inline: auto;
 	}
 
 	.has-#{ $breakpoint-name }-content-width {
