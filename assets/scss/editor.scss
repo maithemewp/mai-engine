@@ -26,6 +26,10 @@ body {
 	@extend %body;
 }
 
+p {
+	font-size: var(--body-font-size, var(--font-size-md));
+}
+
 ul.wp-block,
 ol.wp-block {
 	margin: var(--list-margin, var(--list-margin-top, 0) var(--list-margin-right, 0) var(--list-margin-bottom, var(--spacing-sm)) var(--list-margin-left, 1.75em));
