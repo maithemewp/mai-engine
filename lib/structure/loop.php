@@ -66,7 +66,11 @@ function mai_do_loop() {
 
 	$args    = mai_get_template_args();
 	$archive = ( 'archive' === $args['context'] );
+	$index   = $archive ? mai_get_index( 'entries' ) : mai_get_index( 'entry' );
 	$facetwp = class_exists( 'facetwp' );
+
+	// Add index to args.
+	$args['index'] = $index;
 
 	if ( $archive && $facetwp ) {
 		echo '<div class="facetwp-template">';

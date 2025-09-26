@@ -24,9 +24,7 @@ class Mai_Grid {
 	 *
 	 * @var int
 	 */
-	static protected $index = 0;
-
-
+	protected $index;
 
 	/**
 	 * Type.
@@ -158,10 +156,10 @@ class Mai_Grid {
 		}
 
 		// Increment index.
-		$this::$index++;
+		$this->index = mai_get_index( 'entries' );
 
 		// Add index to args.
-		$this->args['index'] = $this::$index;
+		$this->args['index'] = $this->index;
 
 		// do_action( 'mai_before_grid_query', $this->args );
 		$this->query = $this->get_query();
