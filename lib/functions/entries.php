@@ -137,8 +137,8 @@ function mai_do_entries_open( $args, $query = null ) {
 			'echo'    => true,
 			'atts'    => $atts,
 			'params'  => [
-				'args'       => $args,
-				'query'      => $query,
+				'args'  => $args,
+				'query' => $query,
 			],
 		]
 	);
@@ -165,8 +165,8 @@ function mai_do_entries_open( $args, $query = null ) {
 			'echo'    => true,
 			'atts'    => $wrap_atts,
 			'params'  => [
-				'args'       => $args,
-				'query'      => $query,
+				'args'  => $args,
+				'query' => $query,
 			],
 		]
 	);
