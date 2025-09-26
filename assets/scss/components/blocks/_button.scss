@@ -2,7 +2,7 @@
 	--row-gap: var(--spacing-xxs);
 	--column-gap: var(--spacing-xxs);
 	gap: var(--row-gap) var(--column-gap);
-	padding-top: var(--spacing-xs);
+	// padding-top: var(--spacing-xs);
 
 	// Backwards compatibility since WP changed to flex
 	// in 5.7 and new instances use .is-content-justification-{alignment}
