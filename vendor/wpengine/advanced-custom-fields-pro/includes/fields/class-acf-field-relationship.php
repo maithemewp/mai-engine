@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2025 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! class_exists( 'acf_field_relationship' ) ) :
 
@@ -422,7 +431,7 @@ if ( ! class_exists( 'acf_field_relationship' ) ) :
 
 			?>
 <div <?php echo acf_esc_attrs( $atts ); ?>>
-	
+
 			<?php
 			acf_hidden_input(
 				array(
@@ -431,7 +440,7 @@ if ( ! class_exists( 'acf_field_relationship' ) ) :
 				)
 			);
 			?>
-	
+
 			<?php
 
 			/* filters */
@@ -485,10 +494,10 @@ if ( ! class_exists( 'acf_field_relationship' ) ) :
 					);
 					?>
 		</div>
-				<?php endif; ?>		
+				<?php endif; ?>
 	</div>
 			<?php endif; ?>
-	
+
 	<div class="selection">
 		<div class="choices">
 			<ul class="acf-bl list choices-list"></ul>

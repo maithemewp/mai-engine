@@ -1,10 +1,10 @@
 === Advanced Custom Fields (ACF®) PRO ===
 Contributors: deliciousbrains, wpengine, elliotcondon, mattshaw, lgladdy, antpb, johnstonphilip, dalewilliams, polevaultweb
 Tags: acf, fields, custom fields, meta, repeater
-Requires at least: 6.0
+Requires at least: 6.2
 Tested up to: 6.8.2
 Requires PHP: 7.4
-Stable tag: 6.5.0.1
+Stable tag: 6.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -93,6 +93,44 @@ From your WordPress dashboard
 
 
 == Changelog ==
+
+= 6.6.0 =
+*Release Date 7th October 2025*
+
+* [View Release Post](https://www.advancedcustomfields.com/blog/acf-6-6-released/)
+* New - ACF Blocks Version 3 supports WordPress Block API Version 3
+* New - ACF now requires WordPress version 6.2 or newer
+* Enhancement - Field Groups can now have a separate Display Title
+* Enhancement - Accessibility improvements for button groups, checkbox, radio, and image field types
+* Enhancement - Color Picker field can now use a custom palette or use theme.json colors as the palette
+* Enhancement - ACF admin notices now use WordPress core styles again
+* Enhancement - The Flexible Content “Delete Layout” and “Rename Layout” modals now display correctly on mobile
+* Fix - Blocks V3: You can now edit ACF blocks in Edit mode inside WP Core's pattern editor
+* Fix - Blocks V3: Validation errors now first appear after you click "Save/publish", as opposed to immediately, while you are typing into a field for the first time
+* Fix - Blocks V3: After fixing a field validation error it shows as fixed immediately as opposed to needing to click out of the block and back into it
+* Fix - Blocks V3: Blocks with radio buttons no longer affect each other's field values
+* Fix - Blocks V3: Blocks with required radio buttons now validate correctly
+* Fix - Blocks V3: ACF field validation now works in the Site Editor
+* Fix - Blocks V3: WYSIWYG fields are no longer affected by typing into other blocks
+* Fix - New field names are lowercase only
+* Fix - Icon Picker now enforces required validation
+* Fix - Calls to jQuery’s deprecated focus function have been updated to use the trigger function
+* i18n - Updated PRO Japanese translations (props danielkun)
+
+= 6.5.1 =
+*Release Date 10th September 2025*
+
+* Enhancement - The Flexible Content “Expand All” and “Collapse All” button now appear correctly on mobile
+* Enhancement - The Flexible Content delete layout button is now back in the main layout header, making it easier to delete layouts
+* Enhancement - The JSON import tool now limits the selectable files to JSON files
+* Fix - Disabled Flexible Content layouts are no longer counted towards min/max layout validation
+* Fix - The top “Add Row” button for layouts is now disabled when layouts have reached the max layouts validation
+* Fix - The per-layout “Add Row” and “Duplicate Layout” buttons are now disabled when layouts have reached the max layouts validation
+* Fix - Disabling Flexible Content layouts no longer disables layouts in cloned Flexible Content fields using a different post ID on the same page
+* Fix - Flexible Content “Add Layout” menu is no longer hidden by some field types
+* Fix - Flexible Content layout names can now allow some safe HTML
+* Fix - When creating a temporary post type during import, ACF now correctly sets the ACF post type, rather than defaulting to post
+* Fix - ACF PRO updates are now shown even when no other plugins have an update available
 
 = 6.5.0.1 =
 *Release Date 12th August 2025*

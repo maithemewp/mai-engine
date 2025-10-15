@@ -1,8 +1,12 @@
 <?php
 /**
- * A helper class for rendering Flexible Content fields.
- *
  * @package ACF
+ * @author  WP Engine
+ *
+ * © 2025 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
  */
 
 namespace ACF\Pro\Fields\FlexibleContent;
@@ -76,9 +80,10 @@ class Render {
 	 */
 	public function render() {
 		$div_attrs = array(
-			'class'    => 'acf-flexible-content',
-			'data-min' => $this->field['min'],
-			'data-max' => $this->field['max'],
+			'class'             => 'acf-flexible-content',
+			'data-min'          => $this->field['min'],
+			'data-max'          => $this->field['max'],
+			'data-button-label' => $this->field['button_label'],
 		);
 
 		if ( empty( $this->field['value'] ) ) {
@@ -257,11 +262,6 @@ class Render {
 					</a>
 					<a class="acf-toggle-layout enable" data-action="toggle-layout" href="#" role="menuitem">
 						<?php esc_html_e( 'Enable', 'acf' ); ?>
-					</a>
-				</li>
-				<li>
-					<a class="acf-delete-layout" data-action="remove-layout" href="#" role="menuitem">
-						<?php esc_html_e( 'Delete', 'acf' ); ?>
 					</a>
 				</li>
 			</ul>
