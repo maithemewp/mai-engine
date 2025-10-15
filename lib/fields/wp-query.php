@@ -32,11 +32,13 @@ function mai_grid_prepare_post_type_field( $field ) {
 	}
 
 	if ( $field['value'] ) {
-		foreach ( $field['value'] as $post_type ) {
+		$field['choices'] = $field['choices'] ?? [];
+
+		foreach ( (array) $field['value'] as $post_type ) {
 			$object = get_post_type_object( $post_type );
 
 			if ( $object ) {
-				$field['choices'] = [ $object->name => $object->label ];
+				$field['choices'][ $object->name ] = $object->label;
 			}
 		}
 	}
@@ -87,10 +89,14 @@ function mai_grid_prepare_tax_taxonomy_field( $field ) {
 	}
 
 	if ( $field['value'] ) {
-		$taxonomy = get_taxonomy( $field['value'] );
+		$field['choices'] = $field['choices'] ?? [];
 
-		if ( $taxonomy ) {
-			$field['choices'] = [ $taxonomy->name => $taxonomy->label ];
+		foreach ( (array) $field['value'] as $taxonomy ) {
+			$object = get_taxonomy( $taxonomy );
+
+			if ( $object ) {
+				$field['choices'][ $object->name ] = $object->label;
+			}
 		}
 	}
 
