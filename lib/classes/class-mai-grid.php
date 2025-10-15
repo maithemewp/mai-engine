@@ -415,7 +415,7 @@ class Mai_Grid {
 
 						// Get current archive or entry terms.
 						if ( $current ) {
-							if ( ! is_admin() ) {
+							if ( ! mai_is_editor() ) {
 								if ( is_category() || is_tag() || is_tax() ) {
 									$terms[] = get_queried_object_id();
 								} elseif ( is_singular() ) {

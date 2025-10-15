@@ -126,7 +126,7 @@ function mai_get_divider( $atts = [] ) {
 		'style' => '',
 	];
 
-	if ( $atts['align'] && ! is_admin() ) {
+	if ( $atts['align'] && ! mai_is_editor() ) {
 		$attributes['class'] .= ' align' . $atts['align'];
 	}
 

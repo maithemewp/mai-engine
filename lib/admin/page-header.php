@@ -124,7 +124,7 @@ add_filter( 'acf/load_field/key=page_header_image', 'mai_load_page_header_image_
  * @return array
  */
 function mai_load_page_header_image_field( $field ) {
-	if ( ! is_admin() ) {
+	if ( ! mai_is_editor() ) {
 		return $field;
 	}
 
@@ -150,7 +150,7 @@ add_filter( 'acf/load_field/key=page_header_description', 'mai_load_page_header_
  * @return array
  */
 function mai_load_page_header_description_field( $field ) {
-	if ( ! is_admin() ) {
+	if ( ! mai_is_editor() ) {
 		return $field;
 	}
 

@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || die;
  */
 function mai_get_icon( $args ) {
 	if ( ! class_exists( 'Mai_Icons_Plugin' ) ) {
-		if ( ! is_admin() ) {
+		if ( ! mai_is_editor() ) {
 			return;
 		}
 
@@ -110,7 +110,7 @@ function mai_get_icon( $args ) {
 	$tag   = 'span';
 	$label = '';
 
-	if ( $args['link'] && ! is_admin() ) {
+	if ( $args['link'] && ! mai_is_editor() ) {
 		$tag          = 'a';
 		$atts['href'] = esc_url( $args['link'] );
 
