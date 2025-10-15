@@ -67,10 +67,10 @@ function mai_is_editor() {
 	$context = mai_get_request_context();
 
 	switch ( $context ) {
-		case 'ajax_admin':
-		case 'rest_admin':
-		case 'editor':
 		case 'admin';
+		case 'admin_ajax':
+		case 'admin_rest':
+		case 'editor':
 			return true;
 		default:
 			return false;
@@ -98,20 +98,24 @@ function mai_get_request_context() {
 	// Ajax.
 	if ( function_exists( 'wp_doing_ajax' ) && wp_doing_ajax() ) {
 		$ref = wp_get_referer();
+
 		// If the referer is wp-admin (e.g., ACF field loads in editor), treat as admin/editor-ish.
 		if ( $ref && str_starts_with( $ref, admin_url() ) ) {
-			return 'ajax_admin';
+			return 'admin_ajax';
 		}
-		return 'ajax_front';
+
+		return 'front_ajax';
 	}
 
 	// REST (used by the block editor for previews/renders and by front-end fetches).
 	if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
 		$ref = wp_get_referer();
+
 		if ( $ref && str_starts_with( $ref, admin_url() ) ) {
-			return 'rest_admin';
+			return 'admin_rest';
 		}
-		return 'rest_front';
+
+		return 'front_rest';
 	}
 
 	// Classic admin screens and the editor UI.
@@ -119,10 +123,12 @@ function mai_get_request_context() {
 		// Detect block editor proper.
 		if ( function_exists( 'get_current_screen' ) ) {
 			$screen = get_current_screen();
+
 			if ( $screen && method_exists( $screen, 'is_block_editor' ) && $screen->is_block_editor() ) {
 				return 'editor';
 			}
 		}
+
 		return 'admin';
 	}
 
