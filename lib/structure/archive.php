@@ -199,6 +199,8 @@ add_action( 'mai_archives_description', 'mai_do_blog_description' );
  * Output the static blog page content before the posts.
  *
  * @since 0.1.0
+ * @since TBD Removed `wp_kses_post()`, we sometimes want scripts in the description.
+ *              Use `get_post_field()` instead of `get_post()` directly.
  *
  * @return void
  */
@@ -219,8 +221,7 @@ function mai_do_blog_description() {
 		return;
 	}
 
-	$description = get_post( $posts_page )->post_content;
-	$description = wp_kses_post( $description );
+	$description = get_post_field( 'post_content', $posts_page );
 
 	// Bail if no description.
 	if ( empty( $description ) ) {
@@ -250,6 +251,7 @@ add_action( 'mai_archives_description', 'mai_do_term_description' );
  * Genesis Intro Text is in page header or before this.
  *
  * @since 2.4.2
+ * @since TBD Removed `wp_kses_post()`, we sometimes want scripts in the description.
  *
  * @return void
  */
@@ -269,7 +271,6 @@ function mai_do_term_description() {
 	}
 
 	$description = apply_filters( 'mai_term_description', term_description() );
-	$description = wp_kses_post( $description );
 
 	if ( ! $description ) {
 		return;
@@ -298,6 +299,7 @@ add_action( 'mai_archives_description', 'mai_do_author_description' );
  * Genesis Intro Text is in page header or before this.
  *
  * @since 2.4.2
+ * @since TBD Removed `wp_kses_post()`, we sometimes want scripts in the description.
  *
  * @return void
  */
@@ -321,7 +323,6 @@ function mai_do_author_description() {
 
 	$description = get_the_author_meta( 'description', $author_id );
 	$description = apply_filters( 'mai_author_description', $description, $author_id );
-	$description = wp_kses_post( $description );
 
 	if ( ! $description ) {
 		return;
