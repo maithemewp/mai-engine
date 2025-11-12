@@ -306,7 +306,7 @@ function mai_add_fonts_custom_properties( $css ) {
 	];
 
 	// Add paragraph alt font custom properties.
-	$css['global']['.is-style-altfont:where(p)'] = [
+	$css['global']['.is-style-altfont:where(p, span)'] = [
 		'font-family' => 'var(--alt-font-family)',
 		'font-weight' => 'var(--alt-font-weight)',
 	];
