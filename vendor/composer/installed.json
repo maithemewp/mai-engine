@@ -314,11 +314,11 @@
         },
         {
             "name": "wpengine/advanced-custom-fields-pro",
-            "version": "6.6.2",
-            "version_normalized": "6.6.2.0",
+            "version": "6.7.0",
+            "version_normalized": "6.7.0.0",
             "dist": {
                 "type": "zip",
-                "url": "https://connect.advancedcustomfields.com/v2/plugins/composer_download?s=composer&p=pro&t=6.6.2"
+                "url": "https://connect.advancedcustomfields.com/v2/plugins/composer_download?s=composer&p=pro&t=6.7.0"
             },
             "require": {
                 "composer/installers": "~1.0 || ~2.0"
