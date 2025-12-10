@@ -99,14 +99,10 @@ function mai_render_button_block( $block_content, $block ) {
 	}
 
 	// Border radius.
-	if ( isset( $block['attrs']['style']['border']['radius'] ) ) {
-		$radius = mai_get_unit_value( $block['attrs']['style']['border']['radius'] );
-	}
-	// Legacy.
-	elseif ( isset( $block['attrs']['borderRadius'] ) ) {
-		$radius = mai_get_unit_value( $block['attrs']['borderRadius'] );
-	}
+	$radius = $block['attrs']['style']['border']['radius'] ?? '';
+	$radius = '' !== $radius ? $radius : $block['attrs']['borderRadius'] ?? '';
 
+	// Conditions.
 	if ( $color_value || $background_value || $radius || $is_small || $is_large ) {
 		$dom     = mai_get_dom_document( $block_content );
 		$wraps   = $dom->getElementsByTagName( 'div' );
@@ -137,7 +133,8 @@ function mai_render_button_block( $block_content, $block ) {
 					}
 				}
 
-				if ( '' !== $radius ) {
+				// Radius. If it's an array, WP will automatically add it as inline styles on the <a> tag.
+				if ( '' !== $radius && ! is_array( $radius ) ) {
 					$styles[] = sprintf( '--button-border-radius:%s', $radius );
 				}
 
@@ -154,7 +151,6 @@ function mai_render_button_block( $block_content, $block ) {
 
 		if ( $buttons ) {
 			foreach ( $buttons as $button ) {
-				$style   = ''; // Clear default inline styles.
 				$classes = $button->getAttribute( 'class' );
 				$classes = str_replace( 'has-text-color', '', $classes );
 				$classes = str_replace( 'has-background', '', $classes );
@@ -176,12 +172,6 @@ function mai_render_button_block( $block_content, $block ) {
 
 				if ( $is_large ) {
 					$classes .= ' button-large';
-				}
-
-				if ( $style ) {
-					$button->setAttribute( 'style', trim( $style ) );
-				} else {
-					$button->removeAttribute( 'style' );
 				}
 
 				$button->setAttribute( 'class', trim( $classes ) );
