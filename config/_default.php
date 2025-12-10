@@ -456,6 +456,7 @@ return [
 			],
 			'post-thumbnails',
 			'responsive-embeds',
+
 			// Plugins.
 			'rank-math-breadcrumbs',
 			'woocommerce',
