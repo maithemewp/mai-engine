@@ -1,8 +1,26 @@
 # Changelog
 
-## 2.38.0 (TBD)
-* Changed: Build process.
+## 2.38.0 (12/17/25)
+* Added: The `mai_avatar` shortcode now allows `link="true"` to link the avatar to the user/author.
+* Added: [Developers] New `mai_has_custom_loop` filter.
+* Changed: Removed default top padding on button block wrapper.
+* Changed: Less specificity of default margin on max-width classes.
+* Changed: Better spacing around menu item spans, using ch sizing.
+* Changed: Allow `is-style-altfont` class on span tags.
+* Changed: Better handling of context in `mai_is_editor()` function.
+* Changed: Use `mai_is_editor()` in place of `is_admin()` in many scenarios for better contextual awareness.
+* Changed: Better handling of taxonomy term OG image mime type.
+* Changed: Updated build process for development.
 * Changed: Update ACF to 6.7.0.2.
+* Changed: [Developers] Now passing the query to `mai_do_entries_open()` and `mai_do_entries_close()` functions.
+* Changed: [Developers] Better handling of the current entries index.
+* Fixed: Handle header alignment when the logo or title are hidden via settings.
+* Fixed: Text spaces are now respected in `mai_terms` shortcode before/after/sep parameters.
+* Fixed: Editor font sizing was wrong since v2.38.0 in some instances.
+* Fixed: Mai Post/Term Grids were not respecting multiple values selected for some fields in certain scenarios.
+* Fixed: Outline button height did not match other buttons due to changes in WP.
+* Fixed: Compatibility with WP 6.9, particularly around button/border radius settings passing array values in attr.
+* Fixed: [Developers] The `shortcode_atts` filter now works as expected for `mai_terms` shortcode.
 
 ## 2.37.0 (7/14/25)
 * Changed: Bump minimum PHP version to 8.1.

@@ -81,7 +81,7 @@ function mai_get_truncated_text( $text, $max_characters, $ellipsis = true ) {
 /**
  * Check if a loop supports our loop settings.
  *
- * @since  0.1.0
+ * @since 0.1.0
  *
  * @return bool
  */

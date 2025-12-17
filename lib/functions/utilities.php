@@ -299,7 +299,7 @@ function mai_get_post_type() {
  *
  * @since 0.1.0
  * @since 2.11.0 Change intval to casting as int to allow negative numbers.
- * @since TBD Only trim if string.
+ * @since 2.38.0 Only trim if string.
  *
  * @param  string $value    The value. Could be integer 24 or with type 24px, 2rem, etc.
  * @param  string $fallback The fallback unit value.

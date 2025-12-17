@@ -58,12 +58,11 @@ function mai_is_https() {
  * For use in block callbacks.
  *
  * @since 2.36.1
+ * @since 2.38.0 Changed to use new `mai_get_request_context()` function.
  *
  * @return bool
  */
 function mai_is_editor() {
-	// $editor = defined('REST_REQUEST') && true === REST_REQUEST && 'edit' === filter_input( INPUT_GET, 'context', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-	// $editor = is_admin() || $editor;
 	$context = mai_get_request_context();
 
 	switch ( $context ) {
@@ -80,7 +79,7 @@ function mai_is_editor() {
 /**
  * Gets the request context.
  *
- * @since 0.1.0
+ * @since 2.38.0
  *
  * @return string
  */
