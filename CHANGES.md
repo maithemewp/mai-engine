@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.38.1 (12/17/25)
+* Changed: Added "Tested up to" header to the plugin, to show compatibility when updating.
+
 ## 2.38.0 (12/17/25)
 * Added: The `mai_avatar` shortcode now allows `link="true"` to link the avatar to the user/author.
 * Added: [Developers] New `mai_has_custom_loop` filter.
