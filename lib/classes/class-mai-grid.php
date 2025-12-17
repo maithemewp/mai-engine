@@ -24,7 +24,7 @@ class Mai_Grid {
 	 *
 	 * @var int
 	 */
-	static protected $index = 0;
+	protected $index;
 
 	/**
 	 * Type.
@@ -156,10 +156,10 @@ class Mai_Grid {
 		}
 
 		// Increment index.
-		$this::$index++;
+		$this->index = mai_get_index( 'entries' );
 
 		// Add index to args.
-		$this->args['index'] = $this::$index;
+		$this->args['index'] = $this->index;
 
 		// do_action( 'mai_before_grid_query', $this->args );
 		$this->query = $this->get_query();
@@ -205,13 +205,13 @@ class Mai_Grid {
 		$this->args['class'] = trim( $this->args['class'] );
 
 		// Open.
-		mai_do_entries_open( $this->args );
+		mai_do_entries_open( $this->args, $this->query );
 
 		// Entries.
 		$this->do_grid_entries();
 
 		// Close.
-		mai_do_entries_close( $this->args );
+		mai_do_entries_close( $this->args, $this->query );
 	}
 
 	/**
@@ -415,7 +415,7 @@ class Mai_Grid {
 
 						// Get current archive or entry terms.
 						if ( $current ) {
-							if ( ! is_admin() ) {
+							if ( ! mai_is_editor() ) {
 								if ( is_category() || is_tag() || is_tax() ) {
 									$terms[] = get_queried_object_id();
 								} elseif ( is_singular() ) {

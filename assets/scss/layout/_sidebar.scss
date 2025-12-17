@@ -1,3 +1,5 @@
+@use "../abstracts/mixins";
+
 .sidebar {
 	margin-top: var(--sidebar-margin-top, var(--spacing-xl));
 	font-size: var(--sidebar-font-size, var(--font-size-sm));
@@ -12,7 +14,7 @@
 		--widget-margin-top: 0;
 	}
 
-	@include mq(lg) {
+	@include mixins.mq(lg) {
 		width: var(--sidebar-width);
 
 		--sidebar-margin-top: 0;

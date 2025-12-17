@@ -1,4 +1,4 @@
-@import "../abstracts/_index";
+@use "../abstracts/mixins";
 
 :root {
 	--font-scale: 1.125;
@@ -40,7 +40,7 @@
 		border: 16px solid var(--color-alt);
 		box-shadow: 0 0 0 2px var(--color-white), 0 0 8px 4px rgba(0, 0, 0, 0.02);
 
-		@include mq(lg) {
+		@include mixins.mq(lg) {
 			margin-bottom: -60px;
 		}
 	}

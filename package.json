@@ -9,14 +9,12 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@babel/eslint-parser": "^7.23.10",
+    "@babel/plugin-transform-react-jsx": "^7.23.4",
     "autoprefixer": "^10.4.20",
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^10.1.0",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "bourbon": "^7.3.0",
     "colorguard": "^1.2.1",
     "css-dedoupe": "^0.1.1",
-    "css-mqpacker": "^7",
     "cssnano": "^7.0.6",
     "del": "^8",
     "eslint": "^9.13.0",
@@ -44,18 +42,21 @@
     "gulp-sass-bulk-import": "^1.0.1",
     "gulp-sourcemaps": "^3.0.0",
     "gulp-stylelint": "^13.0.0",
-    "gulp-uglify-es": "^3.0.0",
+    "gulp-terser": "^2.1.0",
     "lodash.assign": "^4.2.0",
     "lodash.map": "^4.6.0",
     "lodash.merge": "^4.6.2",
-    "parcel-bundler": "^1.12.5",
+    "parcel": "^2.12.0",
     "postcss-combine-duplicated-selectors": "^10.0.3",
     "postcss-discard-duplicates": "^7.0.1",
     "postcss-pxtorem": "^6.1.0",
     "postcss-rem-to-pixel": "^4.1.2",
+    "postcss-sort-media-queries": "^5.0.0",
+    "sass": "^1.89.2",
     "stylelint": "^13.13.1",
     "stylelint-config-rational-order": "^0.1.2",
     "stylelint-config-wordpress": "^17.0.0",
+    "through2": "^4.0.2",
     "yargs": "^17.7.2"
   },
   "scripts": {
@@ -67,7 +68,7 @@
     "images": "gulp images",
     "clearCache": "gulp clearCache",
     "translate": "gulp translate",
-    "blocks": "parcel build assets/js/blocks/blocks.js -d assets/js/min --no-cache"
+    "blocks": "parcel build assets/js/blocks/blocks.js --dist-dir assets/js/min --no-cache"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.6.0"

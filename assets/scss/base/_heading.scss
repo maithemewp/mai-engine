@@ -1,6 +1,8 @@
-#{$all-headings} {
+@use "../abstracts/__index" as *;
 
-	@include heading;
+#{ $all-headings } {
+
+	@extend %heading;
 }
 
 @each $heading, $font-size in $headings {

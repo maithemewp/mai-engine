@@ -3,7 +3,7 @@
 const gulp       = require('gulp');
 const config     = require('./config');
 const plumber    = require('gulp-plumber');
-const uglify     = require('gulp-uglify-es').default;
+const terser     = require('gulp-terser');
 const fs         = require('fs');
 const notify     = require('gulp-notify');
 const map        = require('lodash.map');
@@ -37,7 +37,7 @@ module.exports.js = function jsTask() {
         return gulp.src(dir + file)
             .pipe(plumber())
             .pipe(rename({ basename: file.replace('.js', ''), suffix: '.min' })) // Rename to add .min before .js
-            .pipe(uglify())
+            .pipe(terser())
             .pipe(gulp.dest(config.dest.js))
             .pipe(notify({ message: config.messages.js }));
     }));

@@ -32,21 +32,6 @@ function mai_is_in_dev_mode() {
 }
 
 /**
- * Checks if the current request is in the editor.
- * For use in block callbacks.
- *
- * @since 2.36.1
- *
- * @return bool
- */
-function mai_is_editor() {
-	$editor = defined('REST_REQUEST') && true === REST_REQUEST && 'edit' === filter_input( INPUT_GET, 'context', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-	$editor = is_admin() || $editor;
-
-	return $editor;
-}
-
-/**
  * Checks if the current site scheme is https.
  *
  * @since 2.6.0
@@ -66,6 +51,88 @@ function mai_is_https() {
 	$https = 'https' === $url['scheme'];
 
 	return $https;
+}
+
+/**
+ * Checks if the current request is in the editor.
+ * For use in block callbacks.
+ *
+ * @since 2.36.1
+ * @since 2.38.0 Changed to use new `mai_get_request_context()` function.
+ *
+ * @return bool
+ */
+function mai_is_editor() {
+	$context = mai_get_request_context();
+
+	switch ( $context ) {
+		case 'admin';
+		case 'admin_ajax':
+		case 'admin_rest':
+		case 'editor':
+			return true;
+		default:
+			return false;
+	}
+}
+
+/**
+ * Gets the request context.
+ *
+ * @since 2.38.0
+ *
+ * @return string
+ */
+function mai_get_request_context() {
+	// CLI.
+	if ( defined( 'WP_CLI' ) && WP_CLI ) {
+		return 'cli';
+	}
+
+	// Cron.
+	if ( function_exists( 'wp_doing_cron' ) && wp_doing_cron() ) {
+		return 'cron';
+	}
+
+	// Ajax.
+	if ( function_exists( 'wp_doing_ajax' ) && wp_doing_ajax() ) {
+		$ref = wp_get_referer();
+
+		// If the referer is wp-admin (e.g., ACF field loads in editor), treat as admin/editor-ish.
+		if ( $ref && str_starts_with( $ref, admin_url() ) ) {
+			return 'admin_ajax';
+		}
+
+		return 'front_ajax';
+	}
+
+	// REST (used by the block editor for previews/renders and by front-end fetches).
+	if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+		$ref = wp_get_referer();
+
+		if ( $ref && str_starts_with( $ref, admin_url() ) ) {
+			return 'admin_rest';
+		}
+
+		return 'front_rest';
+	}
+
+	// Classic admin screens and the editor UI.
+	if ( is_admin() ) {
+		// Detect block editor proper.
+		if ( function_exists( 'get_current_screen' ) ) {
+			$screen = get_current_screen();
+
+			if ( $screen && method_exists( $screen, 'is_block_editor' ) && $screen->is_block_editor() ) {
+				return 'editor';
+			}
+		}
+
+		return 'admin';
+	}
+
+	// Default: public front end.
+	return 'front';
 }
 
 /**

@@ -1,9 +1,9 @@
-@import "abstracts/_index";
-@import "components/content/adjacent-entry-nav";
-@import "components/content/after-entry";
-@import "components/content/archive-pagination";
-@import "components/content/author-box";
-@import "components/content/comments";
-@import "utilities/no-js.scss";
-@import "utilities/print.scss";
-@import "utilities/wordpress.scss";
+@use "abstracts/__index" as *;
+@use "components/content/adjacent-entry-nav" as *;
+@use "components/content/after-entry" as *;
+@use "components/content/archive-pagination" as *;
+@use "components/content/author-box" as *;
+@use "components/content/comments" as *;
+@use "utilities/no-js.scss" as *;
+@use "utilities/print.scss" as *;
+@use "utilities/wordpress.scss" as *;

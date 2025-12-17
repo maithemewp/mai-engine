@@ -1,3 +1,5 @@
+@use "../../abstracts/__index" as *;
+
 .wp-block-gallery {
 	margin: var(--spacing-md) auto;
 }
@@ -11,5 +13,5 @@
 
 .blocks-gallery-caption {
 
-	@include caption();
+	@extend %caption;
 }

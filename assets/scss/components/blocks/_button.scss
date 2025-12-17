@@ -2,7 +2,7 @@
 	--row-gap: var(--spacing-xxs);
 	--column-gap: var(--spacing-xxs);
 	gap: var(--row-gap) var(--column-gap);
-	padding-top: var(--spacing-xs);
+	// padding-top: var(--spacing-xs);
 
 	// Backwards compatibility since WP changed to flex
 	// in 5.7 and new instances use .is-content-justification-{alignment}
@@ -23,4 +23,10 @@
 	// To allow outline buttons to be the same height.
 	// See https://github.com/maithemewp/mai-engine/issues/602.
 	align-items: normal;
+
+	// To allow outline buttons to be the same height.
+	// I sometimes see `wp-block-button--1` instead of `wp-block-button` too. Strange.
+	> [class*="wp-block-button"]:not(:has(.button-outline)) {
+		height: 100%;
+	}
 }

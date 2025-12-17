@@ -268,19 +268,22 @@ function mai_terms_shortcode( $atts ) {
 		'sep'      => ', ',
 		'post_id'  => get_the_ID(),
 		'link'     => true,
-	], $atts );
+	], $atts, 'mai_terms' );
+
 
 	// Sanitize.
-	$atts['taxonomy'] = esc_html( $atts['taxonomy'] );
-	$atts['before']   = esc_html( $atts['before'] );
-	$atts['after']    = esc_html( $atts['after'] );
-	$atts['sep']      = esc_html( $atts['sep'] );
+	$taxonomies       = explode( ',', $atts['taxonomy'] );
+	$taxonomies       = array_map( 'sanitize_text_field', $taxonomies );
+	$taxonomies       = array_filter( $taxonomies );
+	$atts['taxonomy'] = sanitize_text_field( $taxonomies );
+	$atts['before']   = wp_kses_post( $atts['before'] );
+	$atts['after']    = wp_kses_post( $atts['after'] );
+	$atts['sep']      = sanitize_text_field( $atts['sep'] );
 	$atts['post_id']  = absint( $atts['post_id'] );
 	$atts['link']     = filter_var( $atts['link'], FILTER_VALIDATE_BOOLEAN );
 
 	// Get it started.
-	$html       = '';
-	$taxonomies = explode( ',', $atts['taxonomy'] );
+	$html = '';
 
 	// Loop through taxonomies.
 	foreach ( $taxonomies as $taxonomy ) {
@@ -357,6 +360,7 @@ function mai_post_terms_shortcode_classes( $output, $terms, $atts ) {
 	return trim( $output );
 }
 
+add_filter( 'do_shortcode_tag', 'mai_gallery_shortcode_tag', 10, 4 );
 /**
  * Add inline custom properties to native/classic WP galleries.
  *
@@ -369,7 +373,6 @@ function mai_post_terms_shortcode_classes( $output, $terms, $atts ) {
  *
  * @return  string  The gallery HTML.
  */
-add_filter( 'do_shortcode_tag', 'mai_gallery_shortcode_tag', 10, 4 );
 function mai_gallery_shortcode_tag( $output, $tag, $atts, $m ) {
 	if ( ! $output ) {
 		return $output;

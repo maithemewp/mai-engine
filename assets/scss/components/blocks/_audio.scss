@@ -1,4 +1,6 @@
+@use "../../abstracts/__index" as *;
+
 .wp-block-audio figcaption {
 
-	@include caption();
+	@extend %caption;
 }

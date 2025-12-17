@@ -1,4 +1,4 @@
-@import "../abstracts/_index";
+@use "../abstracts/mixins";
 
 :root {
 	--font-size-base: 14px;
@@ -73,7 +73,7 @@
 	--heading-color: var(--color-white);
 	--body-color: var(--color-white);
 
-	@include mq(sm) {
+	@include mixins.mq(sm) {
 		margin-top: var(--spacing-xxxl);
 
 		.avatar {

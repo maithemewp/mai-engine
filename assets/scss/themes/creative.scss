@@ -1,4 +1,4 @@
-@import "../abstracts/_index";
+@use "../abstracts/mixins";
 
 :root {
 	--font-scale: 1.1;
@@ -41,7 +41,7 @@
 	border: 0;
 }
 
-@include mq(null, lg) {
+@include mixins.mq(null, lg) {
 
 	.before-header {
 		display: none;

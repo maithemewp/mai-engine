@@ -1,3 +1,5 @@
+@use "../../abstracts/mixins";
+
 .page-header {
 	position: relative;
 	display: flex;
@@ -25,7 +27,7 @@
 	opacity: var(--page-header-overlay-opacity, 0.5);
 	content: "";
 
-	@include position(absolute, 0 0 0 0);
+	@include mixins.position(absolute, 0 0 0 0);
 }
 
 .page-header-image,
@@ -34,7 +36,7 @@
 	height: 100% !important; // WooCommerce CSS and possibly other plugin CSS was overriding this.
 	object-fit: cover;
 
-	@include position(absolute, 0 0 0 0);
+	@include mixins.position(absolute, 0 0 0 0);
 }
 
 .page-header-inner {

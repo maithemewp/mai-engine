@@ -1,4 +1,4 @@
-@import "../abstracts/_index";
+@use "../abstracts/mixins";
 
 :root {
 	--font-scale-desktop: 1.3;
@@ -76,7 +76,7 @@
 .entry-meta a:not(.button),
 .entry-content a:not([class]) {
 
-	@include hover-focus {
+	@include mixins.hover-focus {
 		box-shadow: inset 0 -22px 0 0 var(--color-link);
 	}
 }
@@ -119,7 +119,7 @@
 	margin: 1em auto;
 }
 
-@include mq(lg) {
+@include mixins.mq(lg) {
 
 	.no-sidebar .entry-single.has-image-first,
 	.no-sidebar [style*="--columns-md:1;"].has-image-full:not(.has-boxed) .has-image-first {

@@ -22,6 +22,7 @@ add_action( 'wp_head', 'mai_add_taxonomy_opengraph_image' );
  * Adds term featured image as Open Graph meta tags.
  *
  * @since 2.25.0
+ * @since 2.38.0 Get mime from attachment with fallback to extension.
  *
  * @return void
  */
@@ -47,14 +48,19 @@ function mai_add_taxonomy_opengraph_image() {
 	$url    = esc_url( $image[0] );
 	$width  = absint( $image[1] );
 	$height = absint( $image[2] );
-	$info   = pathinfo( $url );
-	$ext    = esc_attr( $info['extension'] );
-	$ext    = 'jpg' === $ext ? 'jpeg' : $ext;
+	$type   = get_post_mime_type( $image_id );
+
+	// If no mime, fall back to extension.
+	if ( ! $type ) {
+		$ext  = pathinfo( $url, PATHINFO_EXTENSION );
+		$ext  = 'jpg' === $ext ? 'jpeg' : $ext;
+		$type = $ext ? "image/{$ext}" : 'image/jpeg';
+	}
 
 	printf( '<meta property="og:image" content="%s" class="mai-meta-tag">', $url );
 	printf( '<meta property="og:image:width" content="%s" class="mai-meta-tag">', $width );
 	printf( '<meta property="og:image:height" content="%s" class="mai-meta-tag">', $height );
-	printf( '<meta property="og:image:type" content="image/%s" class="mai-meta-tag">', $ext );
+	printf( '<meta property="og:image:type" content="%s" class="mai-meta-tag">', $type );
 }
 
 add_action( 'genesis_before', 'mai_maybe_hide_archive_elements' );
@@ -193,6 +199,8 @@ add_action( 'mai_archives_description', 'mai_do_blog_description' );
  * Output the static blog page content before the posts.
  *
  * @since 0.1.0
+ * @since 2.38.0 Removed `wp_kses_post()`, we sometimes want scripts in the description.
+ *              Use `get_post_field()` instead of `get_post()` directly.
  *
  * @return void
  */
@@ -213,8 +221,7 @@ function mai_do_blog_description() {
 		return;
 	}
 
-	$description = get_post( $posts_page )->post_content;
-	$description = wp_kses_post( $description );
+	$description = get_post_field( 'post_content', $posts_page );
 
 	// Bail if no description.
 	if ( empty( $description ) ) {
@@ -244,6 +251,7 @@ add_action( 'mai_archives_description', 'mai_do_term_description' );
  * Genesis Intro Text is in page header or before this.
  *
  * @since 2.4.2
+ * @since 2.38.0 Removed `wp_kses_post()`, we sometimes want scripts in the description.
  *
  * @return void
  */
@@ -263,7 +271,6 @@ function mai_do_term_description() {
 	}
 
 	$description = apply_filters( 'mai_term_description', term_description() );
-	$description = wp_kses_post( $description );
 
 	if ( ! $description ) {
 		return;
@@ -292,6 +299,7 @@ add_action( 'mai_archives_description', 'mai_do_author_description' );
  * Genesis Intro Text is in page header or before this.
  *
  * @since 2.4.2
+ * @since 2.38.0 Removed `wp_kses_post()`, we sometimes want scripts in the description.
  *
  * @return void
  */
@@ -315,7 +323,6 @@ function mai_do_author_description() {
 
 	$description = get_the_author_meta( 'description', $author_id );
 	$description = apply_filters( 'mai_author_description', $description, $author_id );
-	$description = wp_kses_post( $description );
 
 	if ( ! $description ) {
 		return;

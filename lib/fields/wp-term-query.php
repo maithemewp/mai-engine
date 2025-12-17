@@ -32,11 +32,13 @@ function mai_grid_prepare_taxonomy_field( $field ) {
 	}
 
 	if ( $field['value'] ) {
-		foreach ( $field['value'] as $taxonomy ) {
+		$field['choices'] = $field['choices'] ?? [];
+
+		foreach ( (array) $field['value'] as $taxonomy ) {
 			$object = get_taxonomy( $taxonomy );
 
 			if ( $object ) {
-				$field['choices'] = [ $object->name => $object->label ];
+				$field['choices'][ $object->name ] = $object->label;
 			}
 		}
 	}

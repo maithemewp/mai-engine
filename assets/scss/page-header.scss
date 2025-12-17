@@ -1,2 +1,2 @@
-@import "abstracts/_index";
-@import "components/header/page-header";
+@use "abstracts/__index" as *;
+@use "components/header/page-header" as *;

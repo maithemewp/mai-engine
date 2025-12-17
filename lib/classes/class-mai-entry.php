@@ -1542,8 +1542,8 @@ class Mai_Entry {
 		$class      = 'entry-more-link';
 		$wrap_class = 'entry-more';
 
-		// Editor.
-		if ( is_admin() ) {
+		// If in the back end.
+		if ( mai_is_editor() ) {
 
 			switch ( $more_link_style ) {
 				case 'button':

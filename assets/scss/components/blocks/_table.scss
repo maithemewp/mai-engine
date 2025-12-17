@@ -1,3 +1,5 @@
+@use "../../abstracts/__index" as *;
+
 .wp-block-table {
 	border-collapse: collapse;
 
@@ -18,7 +20,7 @@
 
 	figcaption {
 
-		@include caption();
+		@extend %caption;
 	}
 
 	&.is-style-stripes tbody tr:nth-child(2n+1) {

@@ -1,10 +1,10 @@
-@import "../abstracts/_index";
+@use "../abstracts/__index" as *;
 
 .ab {
 
 	&-button {
 
-		@include button();
+		@extend %button;
 	}
 
 	&-container-image-wrap {

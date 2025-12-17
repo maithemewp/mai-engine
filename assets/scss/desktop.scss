@@ -1,3 +1,5 @@
+@use "abstracts/__index" as *;
+
 :root {
 	--site-header-wrap-justify-content: var(--site-header-wrap-justify-content-desktop, space-between);
 	--header-section-order: 0;

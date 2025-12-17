@@ -1,3 +1,5 @@
+@use "../../abstracts/__index" as *;
+
 .wp-block-embed {
 	float: none;
 	display: block;
@@ -19,6 +21,6 @@
 
 	figcaption {
 
-		@include caption();
+		@extend %caption;
 	}
 }

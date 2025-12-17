@@ -1,3 +1,5 @@
+@use "../abstracts/__index" as *;
+
 .clear, // WooCommerce and likely other plugins.
 .clearfix {
 	clear: both;
@@ -10,7 +12,7 @@
 
 .has-dark-background {
 
-	@include dark_bg();
+	@extend %dark-bg !optional;
 }
 
 .has-light-background {
@@ -129,8 +131,7 @@
 
 	.has-#{ $breakpoint-name }-max-width {
 		max-width: var(--breakpoint-#{ $breakpoint-name });
-
-		@include margin(null auto);
+		margin-inline: auto;
 	}
 
 	.has-#{ $breakpoint-name }-content-width {

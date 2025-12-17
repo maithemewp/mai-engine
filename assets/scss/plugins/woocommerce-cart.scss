@@ -1,4 +1,4 @@
-@import "../abstracts/_index";
+@use "../abstracts/mixins";
 
 // Cart and Checkout.
 
@@ -20,7 +20,7 @@
 
 	label {
 
-		@include hide-visually();
+		@include mixins.hide-visually();
 	}
 
 	.input-text {
@@ -81,7 +81,7 @@
 	}
 }
 
-@include mq(false, md) {
+@include mixins.mq(false, md) {
 
 	.woocommerce-cart-form {
 
@@ -134,7 +134,7 @@
 	}
 }
 
-@include mq(false, sm) {
+@include mixins.mq(false, sm) {
 
 	.woocommerce-cart-form {
 
@@ -245,7 +245,7 @@
 		margin-bottom: var(--spacing-md);
 	}
 
-	@include mq(false, sm) {
+	@include mixins.mq(false, sm) {
 		float: none !important;
 		width: 100% !important;
 	}

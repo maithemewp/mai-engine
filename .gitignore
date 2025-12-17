@@ -3,6 +3,7 @@
 .env
 .npmrc
 .cache
+.parcel-cache
 .vscode
 *.lock
 *.zip

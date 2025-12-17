@@ -1,4 +1,4 @@
-@import "../abstracts/_index";
+@use "../abstracts/__index" as *;
 
 // Using body because we use entry-content because focus mode doesn't have it.
 
@@ -53,7 +53,7 @@ body .learndash-wrapper #sfwd-mark-complete::after {
 
 body .learndash-wrapper .learndash_mark_complete_button,
 body .learndash-wrapper #learndash_mark_complete_button {
-	@include button();
+	@extend %button;
 }
 
 body .learndash-wrapper .ld-content-actions .ld-content-action .ld-course-step-back {

@@ -1,3 +1,5 @@
+@use "../abstracts/mixins";
+
 // These props needs to be set on both classes because
 // they are generated on the container for many uses,
 // but Mai Columns generates the sizes on the column itself.
@@ -8,22 +10,22 @@
 	--flex-basis: calc((100% * var(--columns) - (var(--column-gap) * (1 - var(--columns)))) - 0.025px); // Removes 0.025px to prevent margin collapsing.
 	--flex-default: 0 0 var(--flex-basis);
 
-	@include mq(false, sm) {
+	@include mixins.mq(false, sm) {
 		--flex: var(--flex-xs, var(--flex-default));
 		--columns: var(--columns-xs, 1);
 	}
 
-	@include mq(sm, md) {
+	@include mixins.mq(sm, md) {
 		--flex: var(--flex-sm, var(--flex-default));
 		--columns: var(--columns-sm, 1);
 	}
 
-	@include mq(md, lg) {
+	@include mixins.mq(md, lg) {
 		--flex: var(--flex-md, var(--flex-default));
 		--columns: var(--columns-md, 1);
 	}
 
-	@include mq(lg) {
+	@include mixins.mq(lg) {
 		--flex: var(--flex-lg, var(--flex-default));
 		--columns: var(--columns-lg, 1);
 	}
@@ -45,15 +47,15 @@
 	// @link https://dfmcphee.com/flex-items-and-min-width-0/
 	min-width: 0;
 
-	@include mq(false, sm) {
+	@include mixins.mq(false, sm) {
 		--order: var(--order-xs, initial);
 	}
 
-	@include mq(sm, md) {
+	@include mixins.mq(sm, md) {
 		--order: var(--order-sm, initial);
 	}
 
-	@include mq(md, lg) {
+	@include mixins.mq(md, lg) {
 		--order: var(--order-md, initial);
 	}
 }

@@ -1,3 +1,5 @@
+@use "../abstracts/__index" as *;
+
 @each $size-name, $size-value in $font-sizes {
 
 	.has-#{ $size-name }-font-size {

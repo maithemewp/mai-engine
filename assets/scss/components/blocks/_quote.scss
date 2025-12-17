@@ -1,10 +1,12 @@
+@use "../../abstracts/__index" as *;
+
 cite,
 .wp-block-quote footer,
 .wp-block-quote__citation,
 .wp-block-pullquote footer,
 .wp-block-pullquote__citation {
 
-	@include cite();
+	@extend %cite;
 }
 
 .wp-block-quote {
@@ -39,7 +41,7 @@ cite,
 
 		cite {
 
-			@include cite();
+			@extend %cite;
 		}
 
 		footer {

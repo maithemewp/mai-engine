@@ -1,3 +1,5 @@
+@use "../../abstracts/mixins";
+
 .mobile-menu {
 	--menu-item-width: 100%;
 	--menu-item-link-flex: 1;
@@ -19,7 +21,7 @@
 	border-bottom: var(--mobile-menu-border-bottom, var(--border));
 	animation: var(--mobile-menu-animation, none);
 
-	@include mq(false, sm) {
+	@include mixins.mq(false, sm) {
 		--sub-menu-toggle-margin: 0 0 0 auto;
 	}
 

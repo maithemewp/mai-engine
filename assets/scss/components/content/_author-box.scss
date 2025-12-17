@@ -1,3 +1,5 @@
+@use "../../abstracts/mixins";
+
 .author-box {
 	width: 100%;
 	margin: var(--author-box-margin, var(--spacing-xl) auto);
@@ -14,7 +16,7 @@
 		margin-bottom: var(--spacing-md);
 	}
 
-	@include mq(sm) {
+	@include mixins.mq(sm) {
 		--author-box-text-align: start;
 		--author-box-avatar-margin: 0;
 

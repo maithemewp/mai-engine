@@ -1,39 +1,41 @@
-#{$all-buttons} {
+@use "../abstracts/__index" as *;
 
-	@include button();
+#{ $all-buttons } {
+
+	@extend %button;
 
 	&:disabled {
 
-		@include button-style("disabled");
+		@extend %button-disabled;
 	}
 }
 
 .button-secondary,
 .button-secondary:visited {
 
-	@include button-style("secondary");
+	@extend %button-secondary;
 }
 
 .button-link,
 .button-link:visited {
 
-	@include button-style("link");
+	@extend %button-link;
 }
 
 .button-outline,
 .button-outline:visited {
 
-	@include button-style("outline");
+	@extend %button-outline;
 }
 
 .button-small {
 
-	@include button-style("small");
+	@extend %button-small;
 }
 
 .button-large {
 
-	@include button-style("large");
+	@extend %button-large;
 }
 
 .wp-block-button:first-child > .button-link {

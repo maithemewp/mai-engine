@@ -1,3 +1,5 @@
+@use "../abstracts/variables";
+
 form {
 	accent-color: var(--color-primary);
 }
@@ -16,7 +18,7 @@ label:where(:not([class*="gfield"]):not([class*="gform"]):not([class*="wpform"])
 	--input-font-weight: var(--body-font-weight);
 }
 
-#{$all-text-inputs} {
+#{variables.$all-text-inputs} {
 	display: var(--input-display, block);
 	width: var(--input-width, 100%);
 	margin: var(--input-margin, 0);

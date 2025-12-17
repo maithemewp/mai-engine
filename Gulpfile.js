@@ -1,10 +1,9 @@
 process.env.DISABLE_NOTIFIER = true;
 
-const gulp = require('gulp'),
-	tasks = require('./bin/tasks');
+const gulp = require('gulp');
+const tasks = require('./bin/tasks');
 
+// Modern Gulp 5 task registration
 Object.keys(tasks).forEach(function(taskName) {
-	const args = [taskName].concat(tasks[taskName]);
-
-	gulp.task.apply(gulp, args);
+	gulp.task(taskName, tasks[taskName]);
 });

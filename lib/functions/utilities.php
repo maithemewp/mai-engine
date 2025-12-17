@@ -255,7 +255,7 @@ function mai_get_mobile_menu_breakpoint() {
  * @since 2.34.0
  *
  * @param string $context The context for the counter.
- * @param bool $reset Whether to reset the index.
+ * @param bool   $reset   Whether to reset the index.
  *
  * @return int
  */
@@ -299,6 +299,7 @@ function mai_get_post_type() {
  *
  * @since 0.1.0
  * @since 2.11.0 Change intval to casting as int to allow negative numbers.
+ * @since 2.38.0 Only trim if string.
  *
  * @param  string $value    The value. Could be integer 24 or with type 24px, 2rem, etc.
  * @param  string $fallback The fallback unit value.
@@ -310,7 +311,11 @@ function mai_get_unit_value( $value, $fallback = 'px' ) {
 		return sprintf( '%s%s', (int) $value, $fallback );
 	}
 
-	return trim( $value );
+	if ( is_string( $value ) ) {
+		return trim( $value );
+	}
+
+	return $value;
 }
 
 /**
@@ -918,11 +923,13 @@ function mai_get_avatar( $args = [] ) {
 	}
 
 	$avatar = get_avatar( $args['id'], absint( $args['size'] ) );
+	$link   = (bool) $args['link'];
 
 	if ( ! $avatar ) {
 		return;
 	}
 
+	$tag  = 'span';
 	$atts = [
 		'class' => 'mai-avatar',
 		'style' => '',
@@ -933,10 +940,16 @@ function mai_get_avatar( $args = [] ) {
 	$atts['style'] .= sprintf( '--avatar-max-width:%s;', mai_get_unit_value( $args['size'] ) );
 	$atts['style'] .= sprintf( '--avatar-margin:%s %s %s %s;', mai_get_unit_value( $args['margin_top'] ), mai_get_unit_value( $args['margin_right'] ), mai_get_unit_value( $args['margin_bottom'] ), mai_get_unit_value( $args['margin_left'] ) );
 
+	// Add link if enabled.
+	if ( $link ) {
+		$tag          = 'a';
+		$atts['href'] = get_author_posts_url( $args['id'] );
+	}
+
 	return genesis_markup(
 		[
-			'open'    => "<span %s>",
-			'close'   => '</span>',
+			'open'    => "<{$tag} %s>",
+			'close'   => "</{$tag}>",
 			'content' => $avatar,
 			'context' => 'avatar',
 			'atts'    => $atts,
@@ -963,6 +976,7 @@ function mai_get_avatar_default_args() {
 		'id'            => 'current', // Or 'user', or a user ID.
 		'size'          => mai_get_image_width( 'tiny' ) / 2, // Half of the tiny size.
 		'display'       => in_the_loop() ? 'inline-block' : 'block',
+		'link'          => false,
 		'margin_top'    => 0,
 		'margin_right'  => in_the_loop() ? 'var(--spacing-xs)' : 0,
 		'margin_bottom' => 0,
@@ -988,6 +1002,8 @@ function mai_get_avatar_default_args() {
 function mai_get_author_id() {
 	if ( is_author() && ! in_the_loop() ) {
 		$author_id = get_query_var( 'author' );
+	} elseif ( in_the_loop() ) {
+		$author_id = get_the_author_meta( 'ID' );
 	} else {
 		$author_id = get_post_field( 'post_author' );
 	}

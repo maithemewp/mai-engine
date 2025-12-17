@@ -1,4 +1,4 @@
-@import "../abstracts/_index";
+@use "../abstracts/mixins";
 
 :root {
 	--color-border: rgba(0, 0, 0, 0.06);
@@ -8,6 +8,7 @@
 	--caption-font-size: smaller;
 	--caption-color: var(--color-heading);
 	--menu-font-size: var(--font-size-sm);
+	--site-header-border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 	--breadcrumb-font-size: small;
 	--page-header-inner-max-width: 100%;
 	--content-sidebar-wrap-margin-top: 1em;
@@ -16,10 +17,6 @@
 
 .has-boxed {
 	--entry-border: 0;
-}
-
-.site-header {
-	--site-header-border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .nav-after-header {
@@ -36,7 +33,7 @@
 	--alignfull-first-margin-top: calc((var(--content-sidebar-wrap-margin-top) + 2em) * -1);
 	--alignfull-first-margin-bottom: calc((var(--content-sidebar-wrap-margin-bottom) + 2em) * -1);
 
-	@include mq(md) {
+	@include mixins.mq(md) {
 		padding: var(--content-padding, 2em);
 		background: var(--content-background, var(--color-white));
 		border: var(--content-border, var(--border));

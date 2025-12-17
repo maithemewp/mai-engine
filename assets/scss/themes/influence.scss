@@ -1,4 +1,4 @@
-@import "../abstracts/_index";
+@use "../abstracts/mixins";
 
 :root {
 	--font-scale: 1.125; // Major second.
@@ -45,7 +45,7 @@
 	text-align: center;
 }
 
-@include mq(lg) {
+@include mixins.mq(lg) {
 
 	:root {
 		--sidebar-width: 368px;

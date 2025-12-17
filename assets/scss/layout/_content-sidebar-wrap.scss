@@ -1,9 +1,11 @@
+@use "../abstracts/mixins";
+
 .content-sidebar-wrap {
 	width: calc(100% - calc(var(--side-spacing) * 2));
 	max-width: var(--wrap-max-width);
 	margin: var(--content-sidebar-wrap-margin-top) auto var(--content-sidebar-wrap-margin-bottom);
 
-	@include mq(lg) {
+	@include mixins.mq(lg) {
 
 		.content-sidebar &,
 		.sidebar-content & {
@@ -26,14 +28,14 @@
 
 .content-sidebar {
 
-	@include mq(lg) {
+	@include mixins.mq(lg) {
 		--content-sidebar-wrap-columns: minmax(10px, 1fr) var(--sidebar-width);
 	}
 }
 
 .sidebar-content {
 
-	@include mq(lg) {
+	@include mixins.mq(lg) {
 		--content-sidebar-wrap-columns: var(--sidebar-width) minmax(10px, 1fr);
 	}
 }
