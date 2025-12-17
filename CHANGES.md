@@ -2,7 +2,7 @@
 
 ## 2.38.0 (TBD)
 * Changed: Build process.
-* Changed: Update ACF to 6.7.0.
+* Changed: Update ACF to 6.7.0.2.
 
 ## 2.37.0 (7/14/25)
 * Changed: Bump minimum PHP version to 8.1.
