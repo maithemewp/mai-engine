@@ -61,13 +61,13 @@ function mai_render_group_block( $block_content, $block ) {
 		if ( $first_block ) {
 
 			if ( $align ) {
-				$style = $first_block->getAttribute( 'style' );
+				$style = (string) $first_block->getAttribute( 'style' );
 				$style = sprintf( '--group-block-justify-content:%s;', mai_get_flex_align( $align ) ) . $style;
 				$first_block->setAttribute( 'style', $style );
 			}
 
 			if ( $light_or_dark ) {
-				$classes = $first_block->getAttribute( 'class' );
+				$classes = (string) $first_block->getAttribute( 'class' );
 				$classes = mai_add_classes( sprintf( 'has-%s-background', $light_or_dark ), $classes );
 				$first_block->setAttribute( 'class', $classes );
 			}
