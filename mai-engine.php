@@ -6,8 +6,9 @@
  * Plugin URI:        https://bizbudding.com/mai-theme/
  * GitHub Plugin URI: https://github.com/maithemewp/mai-engine/
  * Description:       The required plugin to power Mai child themes.
- * Version:           2.38.0
+ * Version:           2.38.1
  * Requires at least: 6.4
+ * Tested up to:      6.9
  * Requires PHP:      8.1
  * Author:            BizBudding
  * Author URI:        https://bizbudding.com/
