@@ -156,7 +156,8 @@ function mai_get_icons_fields() {
 		[
 			'key'               => 'mai_icon_choices',
 			'name'              => 'icon',
-			'label'             => esc_html__( 'Icon', 'mai-engine' ) . sprintf( ' (%s <a href="https://fontawesome.com/v5/search/">Font Awesome</a>)', esc_html__( 'full search via', 'mai-engine' ) ),
+			'label'             => esc_html__( 'Icon', 'mai-engine' ),
+			'instructions'      => sprintf( '%s <a target="_blank" rel="noopener noreferrer" href="https://fontawesome.com/v5/search/">Font Awesome</a>', esc_html__( 'Full search via', 'mai-engine' ) ),
 			'type'              => 'select',
 			'default_value'     => 'heart',
 			'allow_null'        => 1, // These fields are cloned in Mai Notices and other blocks so we need to allow null.
