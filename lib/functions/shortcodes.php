@@ -329,6 +329,146 @@ function mai_terms_shortcode( $atts ) {
 	return $html;
 }
 
+add_shortcode( 'mai_style_guide', 'mai_style_guide_shortcode' );
+/**
+ * Displays a style guide.
+ *
+ * @since TBD
+ *
+ * @return string
+ */
+function mai_style_guide_shortcode() {
+	$html = '<div class="mai-style-guide">';
+
+	// Logo.
+	$logo = mai_get_logo();
+
+	if ( $logo ) {
+		$html .= '<div class="mai-style-guide-section mai-style-guide-logo has-xxl-margin-bottom" style="max-width:400px;">';
+		$html .= $logo;
+		$html .= '</div>';
+	}
+
+	// Typography.
+	$fonts = [
+		'body'    => __( 'Body', 'mai-engine' ),
+		'heading' => __( 'Heading', 'mai-engine' ),
+	];
+
+	// Add alt font if configured.
+	$alt_family = mai_get_font_family( 'alt' );
+
+	if ( $alt_family && 'unset' !== $alt_family ) {
+		$fonts['alt'] = __( 'Alt', 'mai-engine' );
+	}
+
+	$html .= '<div class="mai-style-guide-section mai-style-guide-typography has-xxl-margin-bottom">';
+	$html .= sprintf( '<h2>%s</h2><hr>', __( 'Typography', 'mai-engine' ) );
+
+	foreach ( $fonts as $element => $label ) {
+		$family = mai_get_font_family( $element );
+
+		$html .= '<div class="mai-style-guide-font" style="margin-bottom:24px;">';
+		$html .= sprintf( '<p style="margin-bottom:8px;"><strong>%s:</strong> %s</p>', esc_html( $label ), esc_html( $family ) );
+		$html .= sprintf(
+			'<p style="font-family:var(--%s-font-family);font-size:1.25em;margin:0;">The quick brown fox jumps over the lazy dog</p>',
+			esc_attr( $element )
+		);
+		$html .= '</div>';
+	}
+
+	$html .= '</div>';
+
+	// Headings.
+	$html .= '<div class="mai-style-guide-section mai-style-guide-headings has-xxl-margin-bottom">';
+	$html .= sprintf( '<h2>%s</h2><hr>', __( 'Headings', 'mai-engine' ) );
+
+	for ( $i = 1; $i <= 6; $i++ ) {
+		$html .= sprintf( '<h%1$d>Heading %1$d</h%1$d>', $i );
+	}
+
+	$html .= '</div>';
+
+	// Colors.
+	$colors   = mai_get_colors();
+	$elements = mai_get_color_elements();
+
+	$html .= '<div class="mai-style-guide-section mai-style-guide-colors has-xxl-margin-bottom">';
+	$html .= sprintf( '<h2>%s</h2><hr>', __( 'Colors', 'mai-engine' ) );
+	$html .= '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:24px;">';
+
+	foreach ( $colors as $slug => $hex ) {
+		$is_light = mai_is_light_color( $hex );
+		$text     = $is_light ? '#000' : '#fff';
+		$name     = isset( $elements[ $slug ] ) ? $elements[ $slug ] : mai_convert_case( $slug, 'title' );
+
+		$html .= sprintf(
+			'<div class="mai-style-guide-color"><div style="background:%s;color:%s;aspect-ratio:1;border-radius:var(--border-radius, 4px);display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid rgba(0,0,0,.1);"><strong>%s</strong><span>%s</span></div></div>',
+			esc_attr( $hex ),
+			esc_attr( $text ),
+			esc_html( $name ),
+			esc_html( $hex )
+		);
+	}
+
+	$html .= '</div>';
+	$html .= '</div>';
+
+	// Buttons.
+	$buttons = [
+		__( 'Primary', 'mai-engine' )   => 'button',
+		__( 'Secondary', 'mai-engine' ) => 'button button-secondary',
+		__( 'Outline', 'mai-engine' )   => 'button button-outline',
+		__( 'Small', 'mai-engine' )     => 'button button-small',
+	];
+
+	$html .= '<div class="mai-style-guide-section mai-style-guide-buttons has-xxl-margin-bottom">';
+	$html .= sprintf( '<h2>%s</h2><hr>', __( 'Buttons', 'mai-engine' ) );
+	$html .= '<div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;">';
+
+	foreach ( $buttons as $label => $class ) {
+		$html .= sprintf( '<button type="button" class="%s">%s</button>', esc_attr( $class ), esc_html( $label ) );
+	}
+
+	$html .= '</div>';
+	$html .= '</div>';
+
+	// Lists.
+	$html .= '<div class="mai-style-guide-section mai-style-guide-lists has-xxl-margin-bottom">';
+	$html .= sprintf( '<h2>%s</h2><hr>', __( 'Lists', 'mai-engine' ) );
+	$html .= '<ul>';
+	$html .= sprintf( '<li>%s</li>', __( 'Unordered list item one', 'mai-engine' ) );
+	$html .= sprintf( '<li>%s', __( 'Unordered list item two', 'mai-engine' ) );
+	$html .= '<ul>';
+	$html .= sprintf( '<li>%s</li>', __( 'Nested list item one', 'mai-engine' ) );
+	$html .= sprintf( '<li>%s</li>', __( 'Nested list item two', 'mai-engine' ) );
+	$html .= '</ul>';
+	$html .= '</li>';
+	$html .= sprintf( '<li>%s</li>', __( 'Unordered list item three', 'mai-engine' ) );
+	$html .= '</ul>';
+	$html .= '<ol>';
+	$html .= sprintf( '<li>%s</li>', __( 'Ordered list item one', 'mai-engine' ) );
+	$html .= sprintf( '<li>%s', __( 'Ordered list item two', 'mai-engine' ) );
+	$html .= '<ol>';
+	$html .= sprintf( '<li>%s</li>', __( 'Nested list item one', 'mai-engine' ) );
+	$html .= sprintf( '<li>%s</li>', __( 'Nested list item two', 'mai-engine' ) );
+	$html .= '</ol>';
+	$html .= '</li>';
+	$html .= sprintf( '<li>%s</li>', __( 'Ordered list item three', 'mai-engine' ) );
+	$html .= '</ol>';
+	$html .= '</div>';
+
+	// Blockquote.
+	$html .= '<div class="mai-style-guide-section mai-style-guide-blockquote has-xxl-margin-bottom">';
+	$html .= sprintf( '<h2>%s</h2><hr>', __( 'Blockquote', 'mai-engine' ) );
+	$html .= '<blockquote><p>The quick brown fox jumps over the lazy dog.</p></blockquote>';
+	$html .= '</div>';
+
+	$html .= '</div>';
+
+	return $html;
+}
+
 add_filter( 'genesis_post_terms_shortcode', 'mai_post_terms_shortcode_classes', 10, 3 );
 /**
  * Adds taxonomy name as class to entry-terms wrap.
