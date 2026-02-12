@@ -344,15 +344,18 @@ function mai_style_guide_shortcode() {
 	$logo = mai_get_logo();
 
 	if ( $logo ) {
-		$html .= '<div class="mai-style-guide-section mai-style-guide-logo has-xxl-margin-bottom" style="max-width:400px;">';
+		$html .= '<div class="mai-style-guide-section mai-style-guide-logo has-xxl-margin-bottom">';
+		$html .= sprintf( '<h2>%s</h2><hr>', __( 'Logo', 'mai-engine' ) );
+		$html .= '<div style="max-width:400px;">';
 		$html .= $logo;
+		$html .= '</div>';
 		$html .= '</div>';
 	}
 
 	// Typography.
 	$fonts = [
-		'body'    => __( 'Body', 'mai-engine' ),
 		'heading' => __( 'Heading', 'mai-engine' ),
+		'body'    => __( 'Body', 'mai-engine' ),
 	];
 
 	// Add alt font if configured.
