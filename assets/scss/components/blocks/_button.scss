@@ -20,13 +20,7 @@
 }
 
 .wp-block-buttons-is-layout-flex {
-	// To allow outline buttons to be the same height.
+	// Allows buttons in the same row to match height.
 	// See https://github.com/maithemewp/mai-engine/issues/602.
 	align-items: normal;
-
-	// To allow outline buttons to be the same height.
-	// I sometimes see `wp-block-button--1` instead of `wp-block-button` too. Strange.
-	> [class*="wp-block-button"]:not(:has(.button-outline)) {
-		height: 100%;
-	}
 }
