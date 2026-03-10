@@ -1,6 +1,7 @@
 html {
 	max-width: var(--viewport-width);
 	font-size: 100%; // 16px browser default.
+	scrollbar-gutter: stable;
 
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
