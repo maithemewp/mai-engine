@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.38.2 (TBD)
+* Added: New `mai_style_guide` shortcode with logo, typography, headings, colors, buttons, lists, and blockquote sections.
+* Added: `scrollbar-gutter: stable` on the html element to prevent layout shift from scrollbar appearance.
+* Changed: Update ACF Pro to 6.7.1.
+* Fixed: Removed no longer necessary mai-divider negative margin hack in editor styles.
+
 ## 2.38.1 (12/17/25)
 * Changed: Added "Tested up to" header to the plugin, to show compatibility when updating.
 
