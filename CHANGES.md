@@ -5,6 +5,7 @@
 * Added: `scrollbar-gutter: stable` on the html element to prevent layout shift from scrollbar appearance.
 * Changed: Update ACF Pro to 6.7.1.
 * Fixed: Removed no longer necessary mai-divider negative margin hack in editor styles.
+* Fixed: Buttons stretching to full height when inside Mai Columns or other flex containers.
 
 ## 2.38.1 (12/17/25)
 * Changed: Added "Tested up to" header to the plugin, to show compatibility when updating.
