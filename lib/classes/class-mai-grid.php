@@ -660,18 +660,18 @@ class Mai_Grid {
 		// Exclude displayed.
 		if ( $this->args['excludes'] && in_array( 'exclude_displayed', $this->args['excludes'], true ) && ! empty( self::$existing_term_ids ) ) {
 			if ( isset( $query_args['exclude'] ) ) {
-				$query_args['exclude'] = array_push( $query_args['exclude'], self::$existing_term_ids );
+				$query_args['exclude'] = array_merge( $query_args['exclude'], self::$existing_term_ids );
 			} else {
 				$query_args['exclude'] = self::$existing_term_ids;
 			}
 		}
 
 		// Exclude current.
-		if ( ( is_category() || is_tag() || is_tax() ) && $this->args['excludes'] && in_array( 'exclude_current', $this->args['excludes'] ) ) {
-			if ( isset( $query_args['post__not_in'] ) ) {
-				$query_args['post__not_in'] = array_push( $query_args['post__not_in'], get_queried_object_id() );
+		if ( ( is_category() || is_tag() || is_tax() ) && $this->args['excludes'] && in_array( 'exclude_current', $this->args['excludes'], true ) ) {
+			if ( isset( $query_args['exclude'] ) ) {
+				$query_args['exclude'][] = get_queried_object_id();
 			} else {
-				$query_args['post__not_in'] = [ get_queried_object_id() ];
+				$query_args['exclude'] = [ get_queried_object_id() ];
 			}
 		}
 
