@@ -282,14 +282,31 @@ function mai_get_index( $context, $reset = false ) {
  * Sometimes we need this earlier than get_post_type()
  * can handle, so we fall back to the query var.
  *
+ * On post type archives, prioritizes the queried object
+ * to avoid issues when pre_get_posts modifies the post_type
+ * query var to an array of multiple post types.
+ *
  * @since 0.1.0
  *
  * @return string
  */
 function mai_get_post_type() {
+	if ( is_post_type_archive() ) {
+		$object = get_queried_object();
+
+		if ( $object ) {
+			return $object->name;
+		}
+	}
+
 	$name = get_post_type();
 
-	return $name ?: get_query_var( 'post_type' );
+	if ( ! $name ) {
+		$name = get_query_var( 'post_type' );
+		$name = is_array( $name ) ? reset( $name ) : (string) $name;
+	}
+
+	return $name;
 }
 
 /**

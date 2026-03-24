@@ -8,6 +8,7 @@
 * Fixed: Buttons stretching to full height when inside Mai Columns or other flex containers.
 * Fixed: Mai Term Grid "Exclude Current" and "Exclude Displayed" not working on term archives.
 * Fixed: Fatal error when `pre_get_posts` sets multiple post types on a CPT archive.
+* Fixed: `mai_get_post_type()` returning wrong post type on CPT archives when `pre_get_posts` modifies the query.
 
 ## 2.38.1 (12/17/25)
 * Changed: Added "Tested up to" header to the plugin, to show compatibility when updating.
