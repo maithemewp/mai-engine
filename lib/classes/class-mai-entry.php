@@ -788,7 +788,7 @@ class Mai_Entry {
 		switch ( $this->type ) {
 			case 'post':
 				$image_id = get_post_thumbnail_id( $this->id );
-				if ( ! $image_id && ( 'single' !== $this->context ) ) {
+				if ( ! $image_id && ( 'single' !== $this->context ) && post_type_supports( get_post_type( $this->id ), 'editor' ) ) {
 					$image_id = genesis_get_image_id( 0, $this->id );
 				}
 			break;
