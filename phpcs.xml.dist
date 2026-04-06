@@ -23,9 +23,7 @@
 	<!-- <rule ref="VariableAnalysis"/> -->
 
 	<!-- WordPress Rules -->
-	<!-- <rule ref="WordPress"> -->
-	<rule ref="vendor/wp-coding-standards/wpcs/WordPress">
-		<exclude name="WordPress.VIP"/>
+	<rule ref="WordPress">
 		<exclude name="WordPress-Docs"/>
 	</rule>
 
