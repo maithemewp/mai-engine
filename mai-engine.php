@@ -8,7 +8,7 @@
  * Description:       The required plugin to power Mai child themes.
  * Version:           2.38.2-beta.7
  * Requires at least: 6.4
- * Tested up to:      6.9
+ * Tested up to:      7.0
  * Requires PHP:      8.1
  * Author:            BizBudding
  * Author URI:        https://bizbudding.com/

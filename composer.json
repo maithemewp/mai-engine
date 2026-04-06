@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "php": "^7|^8",
+    "php": "^8.1",
     "ext-dom": "*",
     "ext-json": "*",
     "ext-libxml": "*",
@@ -20,7 +20,7 @@
     "yahnis-elsts/plugin-update-checker": "^5"
   },
   "require-dev": {
-    "php": "^7|^8",
+    "php": "^8.1",
     "brain/monkey": "^2.2",
     "dealerdirect/phpcodesniffer-composer-installer": "v0.7.0",
     "friendsofphp/php-cs-fixer": "^2.16",
