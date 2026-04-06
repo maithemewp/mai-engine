@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.3/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
          bootstrap="tests/phpunit/unit/bootstrap.php"
          backupGlobals="false"
          colors="true"
-         beStrictAboutCoversAnnotation="true"
+         beStrictAboutCoverageMetadata="true"
          beStrictAboutOutputDuringTests="true"
-         beStrictAboutTestsThatDoNotTestAnything="true"
-         beStrictAboutTodoAnnotatedTests="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         verbose="true">
+         failOnRisky="true"
+         failOnWarning="true">
 
     <testsuites>
         <testsuite name="unit">
@@ -20,10 +16,12 @@
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
+    <source>
+        <include>
             <directory suffix=".php">.</directory>
-            <exclude>./tests/TestCase.php</exclude>
-        </whitelist>
-    </filter>
+        </include>
+        <exclude>
+            <file>./tests/TestCase.php</file>
+        </exclude>
+    </source>
 </phpunit>
