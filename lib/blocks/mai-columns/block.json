@@ -7,6 +7,7 @@
 	"textdomain": "mai-engine",
 	"providesContext": { "acf/fields": "data" },
 	"acf": {
+		"blockVersion": 3,
 		"mode": "preview",
 		"renderCallback": "mai_do_columns_block",
 		"validate": false

@@ -6,6 +6,7 @@
 	"keywords": ["grid", "post", "page"],
 	"textdomain": "mai-engine",
 	"acf": {
+		"blockVersion": 3,
 		"mode": "preview",
 		"renderCallback": "mai_do_post_grid_block",
 		"validate": false

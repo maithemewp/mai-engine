@@ -12,25 +12,6 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-add_filter( 'acf/register_block_type_args', 'mai_acf_register_block_type_args' );
-/**
- * Makes sure all mai blocks are using the v2 API.
- * This insures blocks registered via Mai plugins use the current API.
- *
- * @since 2.25.0
- *
- * @param array $args The block args.
- *
- * @return array
- */
-function mai_acf_register_block_type_args( $args ) {
-	if ( mai_has_string( 'acf/mai-', $args['name'] ) ) {
-		$args['acf_block_version'] = 2;
-	}
-
-	return $args;
-}
-
 add_filter( 'acf/blocks/wrap_frontend_innerblocks', 'mai_acf_remove_wrap_frontend_innerblocks', 10, 2 );
 /**
  * Removes innerblocks wrap from ACF.
