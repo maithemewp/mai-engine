@@ -68,7 +68,9 @@
     "images": "gulp images",
     "clearCache": "gulp clearCache",
     "translate": "gulp translate",
-    "blocks": "parcel build assets/js/blocks/blocks.js --dist-dir assets/js/min --no-cache"
+    "blocks": "parcel build assets/js/blocks/blocks.js --dist-dir assets/js/min --no-cache",
+    "release": "composer validate --no-check-lock && gulp build && composer install --no-dev --optimize-autoloader",
+    "dev": "composer install"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.6.0"
