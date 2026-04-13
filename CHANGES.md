@@ -1,6 +1,10 @@
 # Changelog
 
-## 2.39.0-beta.1 (TBD)
+## 2.39.0-beta.2 (TBD)
+* Fixed: Color picker checkmark misaligned in WP 7.0 block editor.
+* Fixed: Customizer upsell buttons overflowing in WP 7.0.
+
+## 2.39.0-beta.1
 * Changed: Update ACF Pro to 6.8.0.1.
 * Changed: Migrate all Mai Engine ACF blocks to v3 block API.
 * Changed: Update WPCS to 3.3, dealerdirect installer to 1.2, PHPCompatibility to 2.1.
