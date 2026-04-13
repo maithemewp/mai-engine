@@ -6,6 +6,23 @@
 	margin-top: 12px;
 }
 
+/* kirki link sections (upsell buttons) */
+
+#customize-controls .control-section-kirki-link > .accordion-section-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-right: 10px !important;
+
+	.button {
+		float: none;
+		min-height: 0;
+		padding: 0 8px;
+		font-size: 12px;
+		line-height: 2;
+	}
+}
+
 /* kirki sortable */
 
 .customize-control.customize-control-kirki-sortable .mai-toggle-hooks {
