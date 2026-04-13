@@ -96,12 +96,27 @@ From there, make sure that Node is running the correct version (11.15.0). To do 
 composer setup-nvm
 ```
 
-#### CLI
+#### Build & Release Scripts
 
-Update the pot file by cd into mai-engine and running:
-```
-wp i18n make-pot ./ ./assets/lang/mai-engine.pot
-```
+| Command | Description |
+|---------|-------------|
+| `npm start` | Build all assets and watch for changes |
+| `npm run release` | Full production build: validate composer, build assets, strip dev deps |
+| `npm run beta` | Build assets, commit, push develop, merge/push beta, restore dev deps |
+| `npm run dev` | Restore dev dependencies after a release build |
+
+**Beta release workflow:**
+
+1. Bump the version in `mai-engine.php` (e.g. `2.39.0-beta.1`)
+2. Update `CHANGES.md` with changelog entries
+3. Run `npm run beta`
+
+**Production release workflow:**
+
+1. Set the final version in `mai-engine.php` (e.g. `2.39.0`)
+2. Update `CHANGES.md`
+3. Run `npm run release`
+4. Commit and push manually
 
 #### Gulp
 
