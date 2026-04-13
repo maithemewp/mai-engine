@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.39.0-beta.1 (TBD)
+* Changed: Update ACF Pro to 6.8.0.1.
+* Changed: Migrate all Mai Engine ACF blocks to v3 block API.
+* Changed: Update WPCS to 3.3, dealerdirect installer to 1.2, PHPCompatibility to 2.1.
+* Changed: Update php-cs-fixer to 3.94, PHPUnit to 10.5, wp-phpunit to 6.9.
+* Changed: Align PHP minimum to 8.1 in composer.json.
+* Changed: Update "Tested up to" to WordPress 7.0.
+* Changed: Fix php-cs-fixer composer script missing vendor/bin prefix.
+* Added: `npm run release`, `npm run beta`, and `npm run dev` scripts for build workflow.
+
 ## 2.38.2 (TBD)
 * Added: New `mai_style_guide` shortcode with logo, typography, headings, colors, buttons, lists, and blockquote sections.
 * Added: `scrollbar-gutter: stable` on the html element to prevent layout shift from scrollbar appearance.
