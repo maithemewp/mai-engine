@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.39.0-beta.3 (TBD)
+* Fixed: Sortable drag handle missing on Mai Post Grid/Term Grid "Show" field under ACF v3 block inspector, and hover tooltips on color radio fields not initializing.
+
 ## 2.39.0-beta.2 (TBD)
 * Fixed: Color picker checkmark misaligned in WP 7.0 block editor.
 * Fixed: Customizer upsell buttons overflowing in WP 7.0.
