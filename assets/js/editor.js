@@ -146,18 +146,32 @@ wp.domReady( () => {
 		return acf.getField( $field ).val();
 	}
 
+	var colorFieldKeys = [
+		'mai_column_background',
+		'mai_divider_color',
+		'mai_icon_color',
+		'mai_icon_background'
+	];
+
 	/**
 	 * Initialize the sortable field field.
 	 */
 	function initialize_sortable_field( field ) {
 
 		// Bail if not a sortable field.
-		if ( ! field.$el.hasClass( 'mai-sortable' ) ) {
+		if ( ! field.$el || ! field.$el.hasClass( 'mai-sortable' ) ) {
+			return;
+		}
+
+		var $list = field.$el.find( '.acf-checkbox-list' );
+
+		// Bail if no list or already initialized.
+		if ( ! $list.length || $list.hasClass( 'ui-sortable' ) ) {
 			return;
 		}
 
 		// Add sortable
-		field.$el.find( '.acf-checkbox-list' ).sortable( {
+		$list.sortable( {
 			items: '> li',
 			handle: '> .mai-acf-sortable-handle',
 			// forceHelperSize: true,
@@ -165,7 +179,12 @@ wp.domReady( () => {
 			forcePlaceholderSize: true,
 			scroll: true,
 			create: function( event, ui ) {
-				$( this ).find( 'li' ).append( '<span class="mai-acf-sortable-handle"><i class="dashicons dashicons-menu"></i></span>' );
+				$( this ).find( 'li' ).each( function() {
+					var $li = $( this );
+					if ( ! $li.children( '.mai-acf-sortable-handle' ).length ) {
+						$li.append( '<span class="mai-acf-sortable-handle"><i class="dashicons dashicons-menu"></i></span>' );
+					}
+				} );
 			},
 			stop: function( event, ui ) {},
 			update: function( event, ui ) {
@@ -178,38 +197,46 @@ wp.domReady( () => {
 	 * Adds spans to label text.
 	 */
 	function initialize_color_field( field ) {
+		if ( ! field.$el || ! field.get || colorFieldKeys.indexOf( field.get( 'key' ) ) === -1 ) {
+			return;
+		}
+
 		var $labels = field.$el.find( '.acf-radio-list label' );
 
-		if ( $labels.length ) {
-			$.each( $labels, function( index, value ) {
-				$(this)
-				.contents()
-				.filter((i, node) => node.nodeType === Node.TEXT_NODE && '' !== node.textContent.trim())
-				.wrap( '<span />' );
-			});
+		if ( ! $labels.length ) {
+			return;
 		}
+
+		$.each( $labels, function() {
+			var $label = $( this );
+			// Bail if already wrapped.
+			if ( $label.children( 'span' ).length ) {
+				return;
+			}
+			$label
+				.contents()
+				.filter( ( i, node ) => node.nodeType === Node.TEXT_NODE && '' !== node.textContent.trim() )
+				.wrap( '<span />' );
+		} );
 	}
 
 	if ( typeof acf.add_action !== 'undefined' ) {
 
 		/**
-		 * ready & append (ACF5)
-		 *
-		 * These events are called when a field element is ready for initialization.
-		 * - ready: on page load similar to $(document).ready()
-		 * - append: on new DOM elements appended via repeater field or other AJAX calls
+		 * new_field fires whenever acf.newField() creates a field instance.
+		 * This is the reliable hook in the ACF v3 block inspector, where the
+		 * legacy `ready_field`/`append_field` tagged chain doesn't consistently
+		 * fire. Both handlers self-filter and are idempotent.
 		 */
-		acf.addAction( 'ready_field/key=mai_grid_block_show', initialize_sortable_field );
-		acf.addAction( 'append_field/key=mai_grid_block_show', initialize_sortable_field );
+		acf.addAction( 'new_field', initialize_sortable_field );
+		acf.addAction( 'new_field', initialize_color_field );
 
-		acf.addAction( 'ready_field/key=mai_column_background', initialize_color_field );
-		acf.addAction( 'ready_field/key=mai_divider_color', initialize_color_field );
-		acf.addAction( 'ready_field/key=mai_icon_color', initialize_color_field );
-		acf.addAction( 'ready_field/key=mai_icon_background', initialize_color_field );
-
-		acf.addAction( 'append_field/key=mai_column_background', initialize_color_field );
-		acf.addAction( 'append_field/key=mai_divider_color', initialize_color_field );
-		acf.addAction( 'append_field/key=mai_icon_color', initialize_color_field );
-		acf.addAction( 'append_field/key=mai_icon_background', initialize_color_field );
+		// Re-init after block re-mount (deselect/reselect in v3 blocks).
+		acf.addAction( 'remount', function( $el ) {
+			acf.getFields( { parent: $el } ).forEach( function( field ) {
+				initialize_sortable_field( field );
+				initialize_color_field( field );
+			} );
+		} );
 	}
 } )( jQuery );

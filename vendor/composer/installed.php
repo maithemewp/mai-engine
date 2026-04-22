@@ -3,7 +3,7 @@
         'name' => 'maithemewp/mai-engine',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => '1df88df720cf6a375ab8f8312ca4a52563af1d05',
+        'reference' => '881c64aec24587c82dc76b5f4dc1a6df1c94b1e4',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -157,7 +157,7 @@
         'maithemewp/mai-engine' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => '1df88df720cf6a375ab8f8312ca4a52563af1d05',
+            'reference' => '881c64aec24587c82dc76b5f4dc1a6df1c94b1e4',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
