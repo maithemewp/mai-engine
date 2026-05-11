@@ -333,7 +333,7 @@ add_shortcode( 'mai_style_guide', 'mai_style_guide_shortcode' );
 /**
  * Displays a style guide.
  *
- * @since TBD
+ * @since 2.39.0
  *
  * @return string
  */

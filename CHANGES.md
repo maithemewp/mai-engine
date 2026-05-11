@@ -1,26 +1,15 @@
 # Changelog
 
-## 2.39.0-beta.3 (TBD)
-* Fixed: Sortable drag handle missing on Mai Post Grid/Term Grid "Show" field under ACF v3 block inspector, and hover tooltips on color radio fields not initializing.
-
-## 2.39.0-beta.2 (TBD)
-* Fixed: Color picker checkmark misaligned in WP 7.0 block editor.
-* Fixed: Customizer upsell buttons overflowing in WP 7.0.
-
-## 2.39.0-beta.1
-* Changed: Update ACF Pro to 6.8.0.1.
-* Changed: Migrate all Mai Engine ACF blocks to v3 block API.
-* Changed: Update WPCS to 3.3, dealerdirect installer to 1.2, PHPCompatibility to 2.1.
-* Changed: Update php-cs-fixer to 3.94, PHPUnit to 10.5, wp-phpunit to 6.9.
-* Changed: Align PHP minimum to 8.1 in composer.json.
-* Changed: Update "Tested up to" to WordPress 7.0.
-* Changed: Fix php-cs-fixer composer script missing vendor/bin prefix.
-* Added: `npm run release`, `npm run beta`, and `npm run dev` scripts for build workflow.
-
-## 2.38.2 (TBD)
+## 2.39.0 (5/12/26)
 * Added: New `mai_style_guide` shortcode with logo, typography, headings, colors, buttons, lists, and blockquote sections.
 * Added: `scrollbar-gutter: stable` on the html element to prevent layout shift from scrollbar appearance.
-* Changed: Update ACF Pro to 6.7.1.
+* Changed: Update ACF Pro to 6.8.0.1.
+* Changed: Migrate all Mai Engine ACF blocks to the v3 block API.
+* Changed: Update "Tested up to" to WordPress 7.0.
+* Fixed: Color picker checkmark misaligned in WP 7.0 block editor.
+* Fixed: Customizer upsell buttons overflowing in WP 7.0.
+* Fixed: Sortable drag handle missing on Mai Post Grid/Term Grid "Show" field under the ACF v3 block inspector, and hover tooltips on color radio fields not initializing.
+* Fixed: "Full search via Font Awesome" link in the icon picker field not displaying as a clickable link.
 * Fixed: Removed no longer necessary mai-divider negative margin hack in editor styles.
 * Fixed: Buttons stretching to full height when inside Mai Columns or other flex containers.
 * Fixed: Mai Term Grid "Exclude Current" and "Exclude Displayed" not working on term archives.
