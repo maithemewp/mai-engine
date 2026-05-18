@@ -278,12 +278,12 @@ function mai_terms_shortcode( $atts ) {
 	$atts['taxonomy'] = sanitize_text_field( $taxonomies );
 	$atts['before']   = wp_kses_post( $atts['before'] );
 	$atts['after']    = wp_kses_post( $atts['after'] );
-	$atts['sep']      = sanitize_text_field( $atts['sep'] );
+	$atts['sep']      = wp_kses_post( $atts['sep'] ); // Not sanitize_text_field(), which would strip intentional leading/trailing spaces.
 	$atts['post_id']  = absint( $atts['post_id'] );
 	$atts['link']     = filter_var( $atts['link'], FILTER_VALIDATE_BOOLEAN );
 
 	// Get it started.
-	$html = '';
+	$items = [];
 
 	// Loop through taxonomies.
 	foreach ( $taxonomies as $taxonomy ) {
@@ -309,8 +309,8 @@ function mai_terms_shortcode( $atts ) {
 				}
 			}
 
-			// Build the html.
-			$html  .= sprintf(
+			// Build the term html.
+			$items[] = sprintf(
 				'<span class="mai-term mai-term-%s">%s</span>',
 				esc_attr( $taxonomy ),
 				$inside
@@ -319,12 +319,12 @@ function mai_terms_shortcode( $atts ) {
 	}
 
 	// Bail if no terms.
-	if ( empty( $html ) ) {
-		return $html;
+	if ( ! $items ) {
+		return '';
 	}
 
 	// Build the html.
-	$html = sprintf( '<div %s>%s%s%s</div>', genesis_attr( 'mai-terms' ), $atts['before'], $html, $atts['after'] );
+	$html = sprintf( '<div %s>%s%s%s</div>', genesis_attr( 'mai-terms' ), $atts['before'], implode( $atts['sep'], $items ), $atts['after'] );
 
 	return $html;
 }

@@ -3,7 +3,7 @@
 ## 2.39.0 (5/12/26)
 * Added: New `mai_style_guide` shortcode with logo, typography, headings, colors, buttons, lists, and blockquote sections.
 * Added: `scrollbar-gutter: stable` on the html element to prevent layout shift from scrollbar appearance.
-* Changed: Update ACF Pro to 6.8.0.1.
+* Changed: Update ACF Pro to 6.8.1.
 * Changed: Migrate all Mai Engine ACF blocks to the v3 block API.
 * Changed: Update "Tested up to" to WordPress 7.0.
 * Fixed: Color picker checkmark misaligned in WP 7.0 block editor.
@@ -16,6 +16,7 @@
 * Fixed: Fatal error when `pre_get_posts` sets multiple post types on a CPT archive.
 * Fixed: `mai_get_post_type()` returning wrong post type on CPT archives when `pre_get_posts` modifies the query.
 * Fixed: Mai Post Grid showing unrelated images for post types without editor support (e.g. Favorites) when no featured image is set.
+* Fixed: The `sep` parameter on the `mai_terms` shortcode now actually outputs a separator between terms (it was previously parsed but never used).
 
 ## 2.38.1 (12/17/25)
 * Changed: Added "Tested up to" header to the plugin, to show compatibility when updating.
