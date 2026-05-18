@@ -293,9 +293,11 @@ add_filter( 'plugin_action_links_mai-engine/mai-engine.php', 'mai_add_plugins_li
  * @return array Associative array of plugin action links
  */
 function mai_add_plugins_link( $actions, $plugin_file, $plugin_data, $context ) {
-	$actions['settings'] = sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=mai-theme' ), __( 'Plugins', 'mai-engine' ) );
+	$custom = [
+		'settings' => sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=mai-theme' ), __( 'Plugins', 'mai-engine' ) ),
+	];
 
-	return $actions;
+	return array_merge( $custom, $actions );
 }
 
 add_action( 'admin_menu', 'mai_admin_menu_subpages', 999 );
