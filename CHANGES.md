@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.39.1
+* Fixed: Mai Post Grid/Columns layout breaking when a typography plugin converts the 1/3-style column fractions into Unicode glyphs.
+
 ## 2.39.0 (5/18/26)
 * Added: New `mai_style_guide` shortcode with logo, typography, headings, colors, buttons, lists, and blockquote sections.
 * Added: `scrollbar-gutter: stable` on the html element to prevent layout shift from scrollbar appearance.

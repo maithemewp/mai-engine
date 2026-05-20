@@ -258,6 +258,7 @@ function mai_columns_get_arrangement( $args ) {
  * @access private
  *
  * @since 2.22.0
+ * @since 2.39.1 Emit spaced fractions (`1 / 3`) so typography filters don't mangle them.
  *
  * @param string     $break The breakpoint value. Either xs, sm, md, etc.
  * @param int|string $size The columns args data.
@@ -267,10 +268,15 @@ function mai_columns_get_arrangement( $args ) {
 function mai_columns_get_columns( $break, $size ) {
 	$style = '';
 
+	// The spaces around the slash are intentional. Some typography filters/plugins
+	// rewrite a bare `1/3` fraction into a Unicode glyph (⅓), which is invalid
+	// inside the calc() that consumes this var and silently breaks the column
+	// layout. `1 / 3` evaluates identically in calc() but is not recognized as a
+	// fraction to convert.
 	if ( is_numeric( $size ) ) {
-		$style .= sprintf( '--columns-%s:1/%s;', $break, $size );
+		$style .= sprintf( '--columns-%s:1 / %s;', $break, $size );
 	} elseif ( mai_has_string( '/', $size ) ) {
-		$style .= sprintf( '--columns-%s:%s;', $break, $size );
+		$style .= sprintf( '--columns-%s:%s;', $break, str_replace( '/', ' / ', $size ) );
 	}
 
 	return $style;
