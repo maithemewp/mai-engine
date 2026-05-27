@@ -45,6 +45,7 @@ function mai_js_nojs_script() {
 add_action( 'wp_enqueue_scripts', 'mai_enqueue_assets' );
 add_action( 'admin_enqueue_scripts', 'mai_enqueue_assets' );
 add_action( 'enqueue_block_editor_assets', 'mai_enqueue_assets' );
+add_action( 'enqueue_block_assets', 'mai_enqueue_admin_iframe_styles' );
 add_action( 'customize_controls_enqueue_scripts', 'mai_enqueue_assets' );
 add_action( 'login_enqueue_scripts', 'mai_enqueue_assets' );
 /**
@@ -65,6 +66,36 @@ function mai_enqueue_assets() {
 
 	foreach ( $styles as $handle => $args ) {
 		mai_enqueue_asset( $handle, $args, 'style' );
+	}
+}
+
+/**
+ * Register admin-scoped styles through enqueue_block_assets so the
+ * WP 6.9+ block-editor iframe recognizes them via the supported channel
+ * and doesn't trigger "added to the iframe incorrectly" console warnings.
+ *
+ * @since 2.40.0
+ *
+ * @return void
+ */
+function mai_enqueue_admin_iframe_styles() {
+	if ( ! is_admin() ) {
+		return;
+	}
+
+	$styles = mai_get_config( 'styles' );
+
+	if ( isset( $styles['admin'] ) ) {
+		mai_enqueue_asset( 'admin', $styles['admin'], 'style' );
+	}
+
+	// Kirki registers its dynamic customizer CSS as `kirki-styles` but only
+	// enqueues it on outer admin/frontend hooks, so the editor iframe falls
+	// back to WP's heuristic copy (with warning + a flash of unstyled content
+	// before the copy lands). Enqueue it here so it's formally part of the
+	// iframe's assets and loads synchronously with the canvas.
+	if ( wp_style_is( 'kirki-styles', 'registered' ) ) {
+		wp_enqueue_style( 'kirki-styles' );
 	}
 }
 
@@ -324,20 +355,6 @@ function mai_deregister_asset( $handle ) {
 	wp_dequeue_style( $handle );
 	$wp_styles->remove( $handle );
 }
-
-// add_action( 'wp_enqueue_scripts', 'mai_remove_global_styles_css' );
-// add_action( 'admin_enqueue_scripts', 'mai_remove_global_styles_css', 9 );
-/**
- * Remove global styles CSS.
- *
- * @since 2.19.1
- *
- * @return void
- */
-function mai_remove_global_styles_css() {
-	mai_deregister_asset( 'global-styles' );
-}
-
 
 add_action( 'wp_enqueue_scripts', 'mai_remove_block_library_theme_css' );
 add_action( 'admin_enqueue_scripts', 'mai_remove_block_library_theme_css', 9 );
