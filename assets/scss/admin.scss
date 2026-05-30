@@ -1,37 +1,28 @@
 @use "abstracts/__index" as *;
 
 /**
- * Editor block content width.
- * Needs to be here (not in editor.scss) so we can target body classes.
+ * Admin chrome styles (outer WP admin doc).
  *
- * Media query size for :not(is-sidebar-opened):
- * max-width + 160 (admin menu width) + 60px (extra).
+ * Editor-canvas (iframe content) rules live in editor.scss and are loaded
+ * into the iframe via add_editor_style(). The admin handle below also rides
+ * enqueue_block_assets so WP 6.9+/7.0 stops emitting "added to the iframe
+ * incorrectly" warnings.
  *
- * Media query size for is-sidebar-opened:
- * max-width + 160 (admin menu width) + 280 (block editor sidebar width) + 60px (extra).
+ * Cross-iframe rules (mai_admin_body_classes targeting iframe content) still
+ * live in this file in the "Cross-iframe (Pass 3 TODO)" sections below — Mai
+ * body classes are not mirrored into the iframe body, so these descendant
+ * selectors no longer fire and need to be re-routed.
  */
 
-
-body {
-	--admin-menu-width: 160px;
+// Non-iframe editor canvas scroller — clip full-width (100vw) overhang.
+// !important beats WP's inline `overflow: auto`. Same guard as the front-end body.
+.editor-styles-wrapper.block-editor-writing-flow {
+	overflow-x: hidden !important;
 }
 
-// After .folded since it doesn't matter what size the admin menu actually is.
-body.is-fullscreen-mode {
-	--admin-menu-width: 0px; // Requires 0px for calc().
-}
-
-@media only screen and (max-width: 960px) {
-	body {
-		--admin-menu-width: 36px;
-	}
-}
-
-.editor-styles-wrapper {
-	--viewport-width: calc(100vw - var(--admin-menu-width, 160px) - var(--block-sidebar-width, 0px)); // Requires 0px for calc(). These are both in editor.scss too. Not sure if we need both.
-	--editor-viewport-width: calc(100vw - var(--admin-menu-width, 160px) - var(--block-sidebar-width, 0px)); // Requires 0px for calc(). These are both in editor.scss too. Not sure if we need both.
-}
-
+// Cross-iframe (Pass 3 TODO) — body classes set on outer admin doc, but the
+// .editor-styles-wrapper they target lives inside the iframe. Descendant
+// selectors don't cross the iframe boundary in WP 6.9+/7.0.
 body.has-dark-body .editor-styles-wrapper {
 	--heading-color: var(--color-white);
 	--body-color: var(--color-white);
@@ -43,38 +34,9 @@ body.has-boxed-container .editor-styles-wrapper {
 	--mai-block-appender-color: #1e1e1e;
 }
 
-// Can't use is-sidebar-open anymore, since https://github.com/WordPress/gutenberg/issues/62599.
-.interface-interface-skeleton__body:has(.interface-interface-skeleton__sidebar:not(:empty)) {
-	--block-sidebar-width: 281px;
-}
-
-.edit-post-visual-editor__post-title-wrapper,
-.block-editor-block-list__layout.is-root-container {
-	max-width: var(--wp-block-max-width, var(--breakpoint-lg));
-	margin-right: auto;
-	margin-left: auto;
-}
-
-html :where(.wp-block) {
-	max-width: var(--wp-block-max-width, var(--breakpoint-lg));
-	margin-top: 0;
-	margin-bottom: 0;
-}
-
-.wp-block[data-align="full"] {
-	max-width: var(--alignfull-max-width, var(--editor-viewport-width));
-	margin-right: var(--alignfull-margin-right, calc(50% - ((var(--editor-viewport-width) / 2) - (var(--scrollbar-width, 0px) / 2)))) !important;
-	margin-left: var(--alignfull-margin-left, calc(50% - ((var(--editor-viewport-width) / 2) - (var(--scrollbar-width, 0px) / 2)))) !important;
-}
-
-.wp-block[data-align="wide"] {
-	--alignwide-max-side-spacing: max(0px, calc((var(--editor-viewport-width) - var(--wp-block-max-width)) / 4));
-	--alignwide-side-spacing: min(var(--spacing-xxxxl), var(--alignwide-max-side-spacing));
-	width: calc(100% * (var(--alignwide-side-spacing) * 2));
-	max-width: unset;
-	margin-right: calc(var(--alignwide-side-spacing) * -1);
-	margin-left: calc(var(--alignwide-side-spacing) * -1);
-}
+// Cross-iframe (Pass 3 TODO) — .edit-post-layout is outer doc editor shell;
+// var is set on outer doc but consumed by .wp-block max-width inside the
+// iframe. Cascade is broken.
 
 // Wide Content (Default).
 

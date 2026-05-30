@@ -1,15 +1,11 @@
 ( function() {
-	var root           = document.documentElement;
 	var body           = document.getElementsByTagName( 'body' )[ 0 ];
-	var scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
 	var searchToggles  = document.querySelectorAll( '.search-toggle' );
 
-	// Sets scrollbar width on page load.
-	// Make sure it's a reasonable size. See https://github.com/maithemewp/mai-engine/issues/516.
-	// FB/IG gets wonky and calculates this to something huge causing the window to be squished.
-	if ( scrollBarWidth > 0 && scrollBarWidth <= 20 ) {
-		root.style.setProperty( '--scrollbar-width', scrollBarWidth + 'px' ); // Needs px value for calculations.
-	}
+	// Note: scrollbar width is no longer measured in JS. The page scrollbar is
+	// kept consistent via `scrollbar-gutter: stable` + `overflow-y: scroll` on
+	// <html> (base/_html.scss), and any full-bleed overflow is clipped by
+	// `overflow-x: hidden` on <body> — no scrollbar-width value is needed.
 
 	var toggleSearchFormEvent = function( event ) {
 		var element = event.target.closest( '.search-icon-form' );

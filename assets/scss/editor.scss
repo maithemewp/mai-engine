@@ -12,15 +12,28 @@
 
 html {
 	// font-size: 100%; // 16px browser default. This was breaking after the changes in 2.38.0.
+
+	// Mirror the frontend's scrollbar treatment (base/_html.scss) inside the editor
+	// iframe: persistent, gutter-reserved, thin scrollbar. `thin` matters most here —
+	// it shrinks the canvas scrollbar (~15px -> ~8px), which is the width a full-bleed
+	// block overhangs the body by (and that `overflow-x: clip` on the body trims). So
+	// this halves the overhang and keeps the canvas scrollbar consistent with the front
+	// end. It does NOT fully remove the overhang — that residual is `100vw` including
+	// the (now-thin) scrollbar; eliminating it entirely would need container units.
+	scrollbar-gutter: stable;
+	overflow-y: scroll;
+	scrollbar-width: thin;
+
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
 
 body {
 	min-height: auto;
-	--viewport-width: calc(100vw - var(--admin-menu-width, 160px) - var(--block-sidebar-width, 0px)); // Requires 0px for calc(). These are both in admin.scss too. Not sure if we need both.
-	--editor-viewport-width: calc(100vw - var(--admin-menu-width, 160px) - var(--block-sidebar-width, 0px)); // Requires 0px for calc(). These are both in admin.scss too. Not sure if we need both.
 	--list-item-margin-bottom: var(--spacing-xs);
+
+	// `vw` not `dvw` — dvw doesn't reliably resolve to the iframe's viewport.
+	--viewport-width: 100vw;
 
 	@extend %body;
 }
@@ -49,6 +62,13 @@ ol.wp-block li.wp-block {
 
 .edit-post-visual-editor__post-title-wrapper {
 	margin-bottom: var(--spacing-md); // this element is using var(--wp--style--block-gap) which is not defined in this non-FSE theme.
+}
+
+.edit-post-visual-editor__post-title-wrapper,
+.block-editor-block-list__layout.is-root-container {
+	max-width: var(--wp-block-max-width, var(--breakpoint-lg));
+	margin-right: auto;
+	margin-left: auto;
 }
 
 .editor-post-title__block .editor-post-title__input {
@@ -81,6 +101,12 @@ ol.wp-block li.wp-block {
 
 .has-inline-color.has-link-color {
 	color: var(--color-link);
+}
+
+html :where(.wp-block) {
+	max-width: var(--wp-block-max-width, var(--breakpoint-lg));
+	margin-top: 0;
+	margin-bottom: 0;
 }
 
 .alignfull {
@@ -126,6 +152,26 @@ ol.wp-block li.wp-block {
 	}
 }
 
+.wp-block[data-align="full"] {
+	max-width: var(--alignfull-max-width, var(--viewport-width));
+	margin-right: var(--alignfull-margin-right, calc(50% - (var(--viewport-width) / 2))) !important;
+	margin-left: var(--alignfull-margin-left, calc(50% - (var(--viewport-width) / 2))) !important;
+}
+
+.wp-block[data-align="wide"] {
+	// --wp-block-max-width is only set by specific selectors (data-max-width
+	// on heading/paragraph, data-content-width on group/cover). Most alignwide
+	// blocks don't have those attrs, so we need a fallback or the inner calc
+	// becomes invalid and --alignwide-side-spacing ends up "not defined."
+	// Matches the fallback used at the html :where(.wp-block) max-width rule.
+	--alignwide-max-side-spacing: max(0px, calc((var(--viewport-width) - var(--wp-block-max-width, var(--breakpoint-lg))) / 4));
+	--alignwide-side-spacing: min(var(--spacing-xxxxl), var(--alignwide-max-side-spacing));
+	width: min(var(--viewport-width), calc(100% + (var(--alignwide-side-spacing) * 2)));
+	max-width: unset;
+	margin-right: calc(var(--alignwide-side-spacing) * -1);
+	margin-left: calc(var(--alignwide-side-spacing) * -1);
+}
+
 .wp-block[data-align="full"] > .wp-block-group {
 	padding-right: var(--side-spacing);
 	padding-left: var(--side-spacing);
@@ -147,7 +193,7 @@ ol.wp-block li.wp-block {
 
 	> .wp-block-group__inner-container > .wp-block[data-align="full"],
 	> .wp-block-cover__inner-container > .wp-block[data-align="full"] {
-		width: var(--editor-viewport-width);
+		width: var(--viewport-width);
 		margin-left: calc(var(--side-spacing) * -1) !important;
 	}
 }
@@ -168,7 +214,7 @@ ol.wp-block li.wp-block {
 
 	> .wp-block-group__inner-container > .wp-block[data-align="full"],
 	> .wp-block-cover__inner-container > .wp-block[data-align="full"] {
-		width: var(--editor-viewport-width);
+		width: var(--viewport-width);
 		margin-right: calc(var(--side-spacing) * -1) !important;
 	}
 }

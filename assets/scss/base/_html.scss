@@ -1,7 +1,20 @@
 html {
 	max-width: var(--viewport-width);
 	font-size: 100%; // 16px browser default.
+
+	// Reserve the scrollbar's space AND always show a scrollbar:
+	// - `scrollbar-gutter: stable` reserves the gutter so page width stays
+	//   consistent — no horizontal "jump" between pages that do/don't overflow.
+	// - `overflow-y: scroll` forces the scrollbar to always render, so that
+	//   reserved gutter is filled by an actual scrollbar instead of sitting
+	//   empty (which `stable` alone leaves on short, non-scrolling pages).
+	// - `scrollbar-width: thin` slims the footprint.
+	// All three only affect classic/space-taking scrollbars (Windows default,
+	// macOS "Always"); overlay scrollbars (default macOS, mobile) reserve no
+	// space and auto-hide, so those users see no gutter, no gap, and no jump.
 	scrollbar-gutter: stable;
+	overflow-y: scroll;
+	scrollbar-width: thin;
 
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;

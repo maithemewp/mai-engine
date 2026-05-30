@@ -27,7 +27,7 @@
 .alignwide {
 	--alignwide-max-side-spacing: max(0px, calc((var(--viewport-width) - var(--content-max-width)) / 4));
 	--alignwide-side-spacing: min(var(--spacing-xxxxl), var(--alignwide-max-side-spacing));
-	width: calc(100% * (var(--alignwide-side-spacing) * 2));
+	width: min(var(--viewport-width), calc(100% + (var(--alignwide-side-spacing) * 2)));
 	max-width: var(--alignwide-max-width, unset);
 	margin-right: var(--alignwide-margin-left, calc(var(--alignwide-side-spacing) * -1));
 	margin-left: var(--alignwide-margin-left, calc(var(--alignwide-side-spacing) * -1));
@@ -51,8 +51,8 @@
 	clear: both;
 	width: var(--alignfull-width, var(--viewport-width));
 	max-width: var(--alignfull-max-width, var(--viewport-width));
-	margin-right: var(--alignfull-margin-right, calc(50% - (50vw - (var(--scrollbar-width, 0px) / 2))));
-	margin-left: var(--alignfull-margin-left, calc(50% - (50vw - (var(--scrollbar-width, 0px) / 2))));
+	margin-right: var(--alignfull-margin-right, calc(50% - 50dvw));
+	margin-left: var(--alignfull-margin-left, calc(50% - 50dvw));
 
 	// Fixes Mai Divider (and other stuff) when alignfull inside of a Group or Cover block where content align is not center.
 	// This needs to be accounted for in editor.scss too.

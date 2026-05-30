@@ -139,11 +139,11 @@
 }
 
 %button-editor {
-	// Admin logic for all editor buttons.
-	padding: var(--button-padding, 0.9rem 2rem);
-	border: var(--button-border, 0);
-	border-color: currentColor;
+	// Editor-only adjustments on top of %button. Padding, border, and base
+	// color/background all come from %button — extending both placeholders
+	// is enough.
 
+	// Respect WP block color picker: don't clobber a per-block color/background pick.
 	&:not(.has-text-color) {
 		color: var(--button-color);
 	}
@@ -152,7 +152,7 @@
 		background: var(--button-background, var(--color-primary));
 	}
 
-	// Disable background color on hover for editor.
+	// No background color change on hover in the editor (preview clarity).
 	@include mixins.hover-focus {
 		--button-background-hover: var(--button-background, var(--color-primary));
 	}
