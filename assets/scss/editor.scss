@@ -13,13 +13,10 @@
 html {
 	// font-size: 100%; // 16px browser default. This was breaking after the changes in 2.38.0.
 
-	// Mirror the frontend's scrollbar treatment (base/_html.scss) inside the editor
-	// iframe: persistent, gutter-reserved, thin scrollbar. `thin` matters most here —
-	// it shrinks the canvas scrollbar (~15px -> ~8px), which is the width a full-bleed
-	// block overhangs the body by (and that `overflow-x: clip` on the body trims). So
-	// this halves the overhang and keeps the canvas scrollbar consistent with the front
-	// end. It does NOT fully remove the overhang — that residual is `100vw` including
-	// the (now-thin) scrollbar; eliminating it entirely would need container units.
+	// Mirror the frontend scrollbar treatment (base/_html.scss) inside the iframe.
+	// `thin` matters most here: it shrinks the canvas scrollbar that full-bleed (100vw)
+	// blocks overhang the body by, halving the overhang. It can't be removed entirely —
+	// the residual is 100vw including the thin scrollbar; that would need container units.
 	scrollbar-gutter: stable;
 	overflow-y: scroll;
 	scrollbar-width: thin;

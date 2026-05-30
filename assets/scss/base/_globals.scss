@@ -123,11 +123,9 @@
 
 	--viewport-width: 100dvw; // Needs px value for calculations.
 
-	// Back-compat shim. Mai no longer measures the scrollbar (full-bleed now
-	// relies on scrollbar-gutter + overflow on html/body — see base/_html.scss),
-	// but child themes / custom CSS may still reference var(--scrollbar-width).
-	// Keep it defined as 0px so those consumers resolve cleanly instead of
-	// breaking on an undefined custom property.
+	// Back-compat shim: full-bleed now relies on scrollbar-gutter + overflow
+	// (see base/_html.scss), but child themes / custom CSS may still reference
+	// var(--scrollbar-width). Keep it at 0px so those consumers resolve cleanly.
 	--scrollbar-width: 0px;
 
 	--row-gap: var(--spacing-md);

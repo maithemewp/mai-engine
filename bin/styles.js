@@ -51,11 +51,10 @@ function nativeSass(options = {}) {
 const postProcessors = [
     sortMediaQueries(),
     autoprefix(),
-    // cssnano 7 reads optimization options from `preset`, NOT from the top-level
-    // object. Passing `cssnano(config.css.cssnano)` directly silently ignored the
-    // entire config (mergeRules/convertValues/etc.), so builds ran stock defaults.
-    // That let `mergeRules` hoist scoped alignfull selectors into bare ones and
-    // `convertValues` strip the unit off `@property { initial-value: 0px }`.
+    // cssnano 7 reads optimization options from `preset`, NOT from a top-level object;
+    // a flat `cssnano(config.css.cssnano)` is silently ignored and the build runs stock
+    // defaults (re-enabling the mergeRules/convertValues bugs guarded against in
+    // config.js). Always pass options under `preset`.
     cssnano({ preset: ['default', config.css.cssnano] }),
     combineSelectors,
     discardDuplicates,
@@ -148,12 +147,10 @@ module.exports.editor = function editorTask() {
 
 // Task to compile theme SCSS files
 module.exports.themes = function themesTask() {
-    // Process every theme stylesheet in a SINGLE stream and `return` it so gulp awaits
-    // completion natively (same as the single-file tasks above). The previous
-    // `Promise.all(map(..., () => gulp.src(...)...))` returned un-awaited gulp streams,
-    // so the task "finished" before writes flushed and theme .min.css files went stale.
-    // The themes dir is flat (no partials/subdirs), so a *.scss glob maps 1:1 to outputs;
-    // rename({ suffix: '.min' }) keeps each file's own basename. See issue #660.
+    // Process every theme stylesheet in a single `return`-ed stream so gulp awaits it
+    // natively — a Promise.all() of gulp streams resolves before writes flush, leaving
+    // theme .min.css stale. The themes dir is flat (no partials), so a *.scss glob maps
+    // 1:1 to outputs and rename({ suffix: '.min' }) keeps each file's basename. See #660.
     return gulp.src('./assets/scss/themes/*.scss')
         .pipe(bulksass())
         .pipe(plumber())
@@ -163,10 +160,8 @@ module.exports.themes = function themesTask() {
         .pipe(postcss([
             sortMediaQueries(),
             autoprefix(),
-            // Same preset wrapping as the shared `postProcessors` above — pass options
-            // under `preset` so cssnano 7 actually reads them (a flat object is silently
-            // ignored). Use the shared config.css.cssnano so theme CSS gets the same
-            // mergeRules/convertValues protection as the rest of the build. See #660.
+            // Same `preset` wrapping as the shared postProcessors above, so theme CSS
+            // gets the same cssnano config protection. See the note there and #660.
             cssnano({ preset: ['default', config.css.cssnano] }),
             combineSelectors,
             discardDuplicates,

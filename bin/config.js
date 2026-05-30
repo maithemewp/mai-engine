@@ -47,12 +47,11 @@ module.exports = {
 			// into bare `.wp-block[data-align="full"]` when another rule shares an !important
 			// margin declaration, which then over-applies to every alignfull block in the canvas.
 			mergeRules: false,
-			// convertValues strips units from zero values (`0px` -> `0`). That's safe
-			// for normal declarations, but INVALID inside an `@property` descriptor:
-			// `@property --x { syntax: "<length>"; initial-value: 0; }` fails to register
-			// because a `<length>` initial-value requires an explicit unit (`0px`). A failed
-			// registration silently un-registers the property, breaking our CSS-only
-			// --scrollbar-width detection. Disable so `initial-value: 0px` survives intact.
+			// convertValues strips the unit off zero-length values (`0px` -> `0`). That's
+			// safe for normal declarations but INVALID inside an `@property` descriptor:
+			// a `<length>` initial-value needs an explicit unit, and a bad value silently
+			// un-registers the property. Kept off as a guard so any future @property length
+			// descriptor survives the build intact.
 			convertValues: false,
 		},
 	},
