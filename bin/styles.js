@@ -51,7 +51,12 @@ function nativeSass(options = {}) {
 const postProcessors = [
     sortMediaQueries(),
     autoprefix(),
-    cssnano(config.css.cssnano),
+    // cssnano 7 reads optimization options from `preset`, NOT from the top-level
+    // object. Passing `cssnano(config.css.cssnano)` directly silently ignored the
+    // entire config (mergeRules/convertValues/etc.), so builds ran stock defaults.
+    // That let `mergeRules` hoist scoped alignfull selectors into bare ones and
+    // `convertValues` strip the unit off `@property { initial-value: 0px }`.
+    cssnano({ preset: ['default', config.css.cssnano] }),
     combineSelectors,
     discardDuplicates,
 ];
@@ -143,29 +148,33 @@ module.exports.editor = function editorTask() {
 
 // Task to compile theme SCSS files
 module.exports.themes = function themesTask() {
-    return Promise.all(map(fs.readdirSync('./assets/scss/themes/'), function (stylesheet) {
-        return gulp.src('./assets/scss/themes/' + stylesheet)
-            .pipe(bulksass())
-            .pipe(plumber())
-            .pipe(nativeSass())
-            .pipe(rename({ basename: stylesheet.replace('.scss', ''), suffix: '.min', extname: '.css' }))
-            .pipe(gulpif(config.css.sourcemaps, sourcemap.init()))
-            .pipe(postcss([
-                sortMediaQueries(),
-                autoprefix(),
-                cssnano({
-                    discardComments: { removeAll: true },
-                    zindex: false,
-                    reduceIdents: false,
-                }),
-                combineSelectors,
-                discardDuplicates,
-                pxtoremConfig,
-            ]))
-            .pipe(gulpif(config.css.sourcemaps, sourcemap.write('./')))
-            .pipe(gulp.dest('./assets/css/themes/'))
-            .pipe(notify({ message: config.messages.css }));
-    }));
+    // Process every theme stylesheet in a SINGLE stream and `return` it so gulp awaits
+    // completion natively (same as the single-file tasks above). The previous
+    // `Promise.all(map(..., () => gulp.src(...)...))` returned un-awaited gulp streams,
+    // so the task "finished" before writes flushed and theme .min.css files went stale.
+    // The themes dir is flat (no partials/subdirs), so a *.scss glob maps 1:1 to outputs;
+    // rename({ suffix: '.min' }) keeps each file's own basename. See issue #660.
+    return gulp.src('./assets/scss/themes/*.scss')
+        .pipe(bulksass())
+        .pipe(plumber())
+        .pipe(nativeSass())
+        .pipe(rename({ suffix: '.min', extname: '.css' }))
+        .pipe(gulpif(config.css.sourcemaps, sourcemap.init()))
+        .pipe(postcss([
+            sortMediaQueries(),
+            autoprefix(),
+            // Same preset wrapping as the shared `postProcessors` above — pass options
+            // under `preset` so cssnano 7 actually reads them (a flat object is silently
+            // ignored). Use the shared config.css.cssnano so theme CSS gets the same
+            // mergeRules/convertValues protection as the rest of the build. See #660.
+            cssnano({ preset: ['default', config.css.cssnano] }),
+            combineSelectors,
+            discardDuplicates,
+            pxtoremConfig,
+        ]))
+        .pipe(gulpif(config.css.sourcemaps, sourcemap.write('./')))
+        .pipe(gulp.dest('./assets/css/themes/'))
+        .pipe(notify({ message: config.messages.css }));
 };
 
 // Task to compile plugin SCSS files
