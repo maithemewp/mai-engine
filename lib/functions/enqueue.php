@@ -97,6 +97,61 @@ function mai_enqueue_admin_iframe_styles() {
 	if ( wp_style_is( 'kirki-styles', 'registered' ) ) {
 		wp_enqueue_style( 'kirki-styles' );
 	}
+
+	// Route Mai's per-post layout width and dark-body/boxed-container state into
+	// the iframe canvas. These come from outer-admin body classes that don't cross
+	// the iframe boundary, so the canvas can't see them — emit them as inline CSS
+	// scoped to .editor-styles-wrapper instead.
+	$handle = mai_get_handle() . '-admin';
+
+	if ( wp_style_is( $handle, 'registered' ) ) {
+		wp_add_inline_style( $handle, mai_minify_css( mai_get_admin_iframe_canvas_css() ) );
+	}
+}
+
+/**
+ * Builds inline canvas CSS mirroring Mai's outer-admin layout/color state into the
+ * block-editor iframe (layout content width, dark-body, boxed-container).
+ *
+ * The matching body classes (mai_admin_body_classes) are set on the OUTER admin
+ * document and aren't mirrored into the iframe, so the descendant selectors that
+ * used to live in admin.scss never fire there. Scope everything to
+ * .editor-styles-wrapper — the canvas wrapper present in both the iframe and the
+ * legacy non-iframe editor — so nothing leaks to the surrounding admin chrome.
+ *
+ * Reflects state at editor load; changing the layout/colors live needs a reload.
+ *
+ * @since 2.40.0
+ *
+ * @return string
+ */
+function mai_get_admin_iframe_canvas_css() {
+	// Mirror admin.scss's outer .edit-post-layout width map. Default and
+	// wide-content keep the breakpoint-xl base; narrow/standard/sidebar tighten it.
+	$widths = [
+		'narrow-content'   => 'sm',
+		'standard-content' => 'md',
+		'content-sidebar'  => 'md',
+		'sidebar-content'  => 'md',
+	];
+
+	$layout = genesis_site_layout();
+	$width  = isset( $widths[ $layout ] ) ? $widths[ $layout ] : 'xl';
+	$css    = sprintf( '--wp-block-max-width:var(--breakpoint-%s);', $width );
+
+	// Dark-body heading/body text already reaches the canvas via the Kirki color
+	// system, so only the block appender (and the boxed canvas background) need
+	// routing here. has-dark-body and has-boxed-container are mutually exclusive —
+	// see mai_admin_body_classes.
+	if ( mai_has_boxed_container() ) {
+		// The iframe <body> owns --body-background-color, not this child wrapper, so
+		// paint the wrapper directly to whiten the canvas inside the iframe too.
+		$css .= '--body-background-color:var(--color-white);background-color:var(--color-white);--mai-block-appender-color:#1e1e1e;';
+	} elseif ( mai_has_dark_body() ) {
+		$css .= '--mai-block-appender-color:var(--color-white);';
+	}
+
+	return sprintf( '.editor-styles-wrapper{%s}', $css );
 }
 
 add_filter( 'mai_styles_config', 'mai_styles_desktop_breakpoint' );

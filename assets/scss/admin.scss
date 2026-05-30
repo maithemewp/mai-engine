@@ -8,63 +8,16 @@
  * enqueue_block_assets so WP 6.9+/7.0 stops emitting "added to the iframe
  * incorrectly" warnings.
  *
- * Cross-iframe rules (mai_admin_body_classes targeting iframe content) still
- * live in this file in the "Cross-iframe (Pass 3 TODO)" sections below — Mai
- * body classes are not mirrored into the iframe body, so these descendant
- * selectors no longer fire and need to be re-routed.
+ * Mai's per-post layout width and dark-body/boxed-container state are routed
+ * into the iframe canvas from PHP (mai_get_admin_iframe_canvas_css in
+ * lib/functions/enqueue.php) — outer-doc body classes don't cross the iframe
+ * boundary, so those descendant selectors can't live here.
  */
 
 // Non-iframe editor canvas scroller — clip full-width (100vw) overhang.
 // !important beats WP's inline `overflow: auto`. Same guard as the front-end body.
 .editor-styles-wrapper.block-editor-writing-flow {
 	overflow-x: hidden !important;
-}
-
-// Cross-iframe (Pass 3 TODO) — body classes set on outer admin doc, but the
-// .editor-styles-wrapper they target lives inside the iframe. Descendant
-// selectors don't cross the iframe boundary in WP 6.9+/7.0.
-body.has-dark-body .editor-styles-wrapper {
-	--heading-color: var(--color-white);
-	--body-color: var(--color-white);
-	--mai-block-appender-color: var(--color-white);
-}
-
-body.has-boxed-container .editor-styles-wrapper {
-	--body-background-color: var(--color-white);
-	--mai-block-appender-color: #1e1e1e;
-}
-
-// Cross-iframe (Pass 3 TODO) — .edit-post-layout is outer doc editor shell;
-// var is set on outer doc but consumed by .wp-block max-width inside the
-// iframe. Cascade is broken.
-
-// Wide Content (Default).
-
-@media only screen and (min-width: 1220px) {
-
-	.edit-post-layout:not(.is-sidebar-opened) {
-		--wp-block-max-width: var(--breakpoint-xl);
-	}
-}
-
-// Narrow Content.
-
-@media only screen and (min-width: 820px) {
-
-	.narrow-content .edit-post-layout:not(.is-sidebar-opened) {
-		--wp-block-max-width: var(--breakpoint-sm);
-	}
-}
-
-// Sidebar.
-
-@media only screen and (min-width: 1020px) {
-
-	.content-sidebar .edit-post-layout:not(.is-sidebar-opened),
-	.sidebar-content .edit-post-layout:not(.is-sidebar-opened),
-	.standard-content .edit-post-layout:not(.is-sidebar-opened) {
-		--wp-block-max-width: var(--breakpoint-md);
-	}
 }
 
 /**
