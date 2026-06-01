@@ -2,6 +2,8 @@
 
 ## 2.39.1
 * Fixed: Mai Post Grid/Columns layout breaking when a typography plugin converts the 1/3-style column fractions into Unicode glyphs.
+* Fixed: Unreadable light-on-light text on dark-themed sites. The login form, boxed Mai Post Grid entries, light-background blocks, sub-menu dropdowns, and form inputs now keep dark text on their forced-light surfaces (and fall back to the normal body/heading color on light sites).
+* Fixed: `mai_is_light_color()` recomputed on every call due to a non-functional static cache; it now caches per request.
 
 ## 2.39.0 (5/18/26)
 * Added: New `mai_style_guide` shortcode with logo, typography, headings, colors, buttons, lists, and blockquote sections.

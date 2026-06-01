@@ -115,6 +115,7 @@ function mai_add_kirki_css( $css ) {
 	$css = mai_add_title_area_custom_properties( $css );
 	$css = mai_add_fonts_custom_properties( $css );
 	$css = mai_add_colors_css( $css );
+	$css = mai_add_light_surface_css( $css );
 	$css = mai_add_buttons_css( $css );
 	$css = mai_add_icons_css( $css );
 	$css = mai_add_extra_custom_properties( $css );
@@ -360,6 +361,45 @@ function mai_add_colors_css( $css ) {
 			$css['global'][ '.has-' . $class . '-color' ]['--caption-color']             = 'var(--color-' . $name . ')';
 			$css['global'][ '.has-' . $class . '-color' ]['--cite-color']                = 'var(--color-' . $name . ')';
 			$css['global'][ '.has-' . $class . '-background-color' ]['background-color'] = 'var(--color-' . $name . ') !important';
+		}
+	}
+
+	return $css;
+}
+
+/**
+ * Outputs "ink" text overrides for forced-light surfaces on dark-themed sites.
+ *
+ * --color-body and --color-heading follow the site theme: dark text on light
+ * sites, light/white text on dark sites (so they read against --color-background).
+ * That breaks any surface that is forced light regardless of theme (the login
+ * form card, .has-light-background blocks, .has-boxed entry cards), because on a
+ * dark-themed site those tokens resolve to white, leaving white text on white.
+ *
+ * To fix it, we substitute the dark end of the site's own palette (--color-background)
+ * as the text color on those surfaces. The override is only emitted when it is
+ * actually needed: the configured text color is light AND there is a dark background
+ * to borrow. On light sites nothing is emitted, so the consumers fall back to
+ * --color-body/--color-heading directly via `var(--color-…-on-light, var(--color-…))`,
+ * so their output is unchanged.
+ *
+ * @since 2.40.0
+ *
+ * @param array $css Kirki CSS.
+ *
+ * @return array
+ */
+function mai_add_light_surface_css( $css ) {
+	$background = mai_get_color_value( 'background' );
+
+	// No dark background to substitute (light site); consumers fall back to --color-body.
+	if ( mai_is_light_color( $background ) ) {
+		return $css;
+	}
+
+	foreach ( [ 'body', 'heading' ] as $element ) {
+		if ( mai_is_light_color( mai_get_color_value( $element ) ) ) {
+			$css['global'][':root'][ '--color-' . $element . '-on-light' ] = $background;
 		}
 	}
 

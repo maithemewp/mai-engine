@@ -16,8 +16,10 @@
 }
 
 .has-light-background {
-	--heading-color: var(--color-heading);
-	color: var(--color-body);
+	// Forced-light surface. -on-light tokens keep text dark on dark-themed sites (where
+	// --color-body/--color-heading are white); on light sites they're unset and fall back.
+	--heading-color: var(--color-heading-on-light, var(--color-heading));
+	color: var(--color-body-on-light, var(--color-body));
 }
 
 /**

@@ -85,7 +85,7 @@ function mai_login_css() {
 		.login .message,
 		.login .success,
 		.login #login_error {
-			color: var(--color-body);
+			color: var(--color-body-on-light, var(--color-body)); /* WP renders these as light notice boxes; force dark text on dark-themed sites, else use --color-body. */
 		}
 		.login .message a,
 		.login .success a,
@@ -120,7 +120,10 @@ function mai_login_css() {
 		}
 		body.login form {
 			padding: var(--spacing-lg);
-			color: var(--color-body);
+			/* The form is a forced-white card. The -on-light tokens keep its text dark on
+			   dark-themed sites; on light sites they're unset and fall back to --color-body/heading. */
+			color: var(--color-body-on-light, var(--color-body));
+			--heading-color: var(--color-heading-on-light, var(--color-heading));
 			background: var(--color-white);
 			border: var(--border);
 			border-radius: var(--border-radius);
@@ -165,7 +168,7 @@ function mai_login_css() {
 		body.login textarea {
 			line-height: var(--input-line-height, 1);
 			font-size: 18px;
-			color: var(--input-color, var(--color-body));
+			color: var(--input-color, var(--color-body-on-light, var(--color-body)));
 			border: var(--input-border, 1px solid rgba(0,0,0,.1));
 			border-radius: var(--input-border-radius, var(--border-radius));
 		}

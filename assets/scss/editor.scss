@@ -92,8 +92,10 @@ ol.wp-block li.wp-block {
 }
 
 .has-light-background {
-	color: var(--color-body);
-	--heading-color: var(--color-heading);
+	// Forced-light surface. -on-light tokens keep text dark on dark-themed sites (where
+	// --color-body/--color-heading are white); on light sites they're unset and fall back.
+	color: var(--color-body-on-light, var(--color-body));
+	--heading-color: var(--color-heading-on-light, var(--color-heading));
 }
 
 .has-inline-color.has-link-color {

@@ -19,7 +19,9 @@
 .sub-menu {
 	--menu-item-width: 100%;
 	--menu-item-link-width: 100%;
-	--menu-item-link-color: var(--sub-menu-link-color, var(--color-body));
+	// Sub-menus are forced-white dropdowns, so keep link text dark on dark-themed sites
+	// (where --color-body is white); on light sites the -on-light token is unset and falls back.
+	--menu-item-link-color: var(--sub-menu-link-color, var(--color-body-on-light, var(--color-body)));
 	--menu-item-link-color-hover: var(--sub-menu-link-color-hover, var(--color-primary));
 	--menu-item-link-padding: var(--spacing-sm) var(--spacing-md);
 

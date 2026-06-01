@@ -73,8 +73,10 @@
 }
 
 .has-boxed {
-	color: var(--color-body); // Force dark incase these entries are inside has-dark-background.
-	--heading-color: var(--color-heading); // Force dark incase these entries are inside has-dark-background.
+	// Boxed entries are forced-white cards (--entry-background below). The -on-light tokens
+	// keep text dark on dark-themed sites; on light sites they're unset and fall back.
+	color: var(--color-body-on-light, var(--color-body));
+	--heading-color: var(--color-heading-on-light, var(--color-heading));
 	--entry-background: var(--color-white);
 	--entry-border: var(--border);
 	--entry-box-shadow: var(--shadow);
