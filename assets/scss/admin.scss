@@ -14,9 +14,49 @@
  * boundary, so those descendant selectors can't live here.
  */
 
-// Non-iframe editor canvas scroller: clip full-width (100vw) overhang.
-// !important beats WP's inline `overflow: auto`. Same guard as the front-end body.
+/**
+ * Legacy (non-iframe / pre-WP-7.1) editor canvas: full-width block sizing.
+ *
+ * The canvas lives in the outer admin doc, where 100vw is the whole window. That
+ * overshoots the canvas by the admin menu (left) and the open settings sidebar
+ * (right), so full and wide blocks render too wide, mis-center, and get clipped
+ * behind the sidebar (illegible and uneditable). We recompute --viewport-width as
+ * the real canvas width by subtracting that chrome; the alignfull/alignwide math in
+ * editor.scss then centers on the canvas.
+ *
+ * Everything here is scoped to outer-doc selectors that exist ONLY in the non-iframe
+ * editor. The iframe editor never loads admin.scss and keeps editor.scss's plain
+ * 100vw (the chrome is outside the iframe, so it resolves to 0 there anyway). This
+ * block is isolated and safe to delete wholesale once WP 7.1 makes the iframe
+ * mandatory. The vars use 0px (not 0) fallbacks because they feed calc().
+ */
+body {
+	--admin-menu-width: 160px; // Expanded WP admin menu.
+}
+
+body.is-fullscreen-mode {
+	--admin-menu-width: 0px; // Fullscreen / distraction-free hides the admin menu.
+}
+
+@media only screen and (max-width: 960px) {
+	body {
+		--admin-menu-width: 36px; // Auto-folded admin menu.
+	}
+}
+
+// Right-hand settings sidebar when open. .is-sidebar-opened was removed
+// (gutenberg #62599), so detect a non-empty sidebar panel instead. 281px is the
+// WP settings-sidebar width.
+.interface-interface-skeleton__body:has(.interface-interface-skeleton__sidebar:not(:empty)) {
+	--block-sidebar-width: 281px;
+}
+
 .editor-styles-wrapper.block-editor-writing-flow {
+	// Real canvas width = window minus the admin menu and the open settings sidebar.
+	--viewport-width: calc(100vw - var(--admin-menu-width, 160px) - var(--block-sidebar-width, 0px));
+
+	// Safety net for the residual the calc can't subtract (the canvas's own vertical
+	// scrollbar). !important beats WP's inline `overflow: auto`.
 	overflow-x: hidden !important;
 }
 
