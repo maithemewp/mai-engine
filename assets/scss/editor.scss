@@ -15,7 +15,7 @@ html {
 
 	// Mirror the frontend scrollbar treatment (base/_html.scss) inside the iframe.
 	// `thin` matters most here: it shrinks the canvas scrollbar that full-bleed (100vw)
-	// blocks overhang the body by, halving the overhang. It can't be removed entirely —
+	// blocks overhang the body by, halving the overhang. It can't be removed entirely:
 	// the residual is 100vw including the thin scrollbar; that would need container units.
 	scrollbar-gutter: stable;
 	overflow-y: scroll;
@@ -29,7 +29,7 @@ body {
 	min-height: auto;
 	--list-item-margin-bottom: var(--spacing-xs);
 
-	// `vw` not `dvw` — dvw doesn't reliably resolve to the iframe's viewport.
+	// `vw` not `dvw`: dvw doesn't reliably resolve to the iframe's viewport.
 	--viewport-width: 100vw;
 
 	@extend %body;

@@ -4,7 +4,7 @@ html {
 
 	// Reserve the scrollbar's space AND always show a scrollbar:
 	// - `scrollbar-gutter: stable` reserves the gutter so page width stays
-	//   consistent — no horizontal "jump" between pages that do/don't overflow.
+	//   consistent; no horizontal "jump" between pages that do/don't overflow.
 	// - `overflow-y: scroll` forces the scrollbar to always render, so that
 	//   reserved gutter is filled by an actual scrollbar instead of sitting
 	//   empty (which `stable` alone leaves on short, non-scrolling pages).

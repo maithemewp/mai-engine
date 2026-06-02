@@ -100,7 +100,7 @@ function mai_enqueue_admin_iframe_styles() {
 
 	// Route Mai's per-post layout width and dark-body/boxed-container state into
 	// the iframe canvas. These come from outer-admin body classes that don't cross
-	// the iframe boundary, so the canvas can't see them — emit them as inline CSS
+	// the iframe boundary, so the canvas can't see them; emit them as inline CSS
 	// scoped to .editor-styles-wrapper instead.
 	$handle = mai_get_handle() . '-admin';
 
@@ -116,8 +116,8 @@ function mai_enqueue_admin_iframe_styles() {
  * The matching body classes (mai_admin_body_classes) are set on the OUTER admin
  * document and aren't mirrored into the iframe, so the descendant selectors that
  * used to live in admin.scss never fire there. Scope everything to
- * .editor-styles-wrapper — the canvas wrapper present in both the iframe and the
- * legacy non-iframe editor — so nothing leaks to the surrounding admin chrome.
+ * .editor-styles-wrapper (the canvas wrapper present in both the iframe and the
+ * legacy non-iframe editor), so nothing leaks to the surrounding admin chrome.
  *
  * Reflects state at editor load; changing the layout/colors live needs a reload.
  *
@@ -141,7 +141,7 @@ function mai_get_admin_iframe_canvas_css() {
 
 	// Dark-body heading/body text already reaches the canvas via the Kirki color
 	// system, so only the block appender (and the boxed canvas background) need
-	// routing here. has-dark-body and has-boxed-container are mutually exclusive —
+	// routing here. has-dark-body and has-boxed-container are mutually exclusive;
 	// see mai_admin_body_classes.
 	if ( mai_has_boxed_container() ) {
 		// The iframe <body> owns --body-background-color, not this child wrapper, so

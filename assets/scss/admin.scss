@@ -10,11 +10,11 @@
  *
  * Mai's per-post layout width and dark-body/boxed-container state are routed
  * into the iframe canvas from PHP (mai_get_admin_iframe_canvas_css in
- * lib/functions/enqueue.php) — outer-doc body classes don't cross the iframe
+ * lib/functions/enqueue.php); outer-doc body classes don't cross the iframe
  * boundary, so those descendant selectors can't live here.
  */
 
-// Non-iframe editor canvas scroller — clip full-width (100vw) overhang.
+// Non-iframe editor canvas scroller: clip full-width (100vw) overhang.
 // !important beats WP's inline `overflow: auto`. Same guard as the front-end body.
 .editor-styles-wrapper.block-editor-writing-flow {
 	overflow-x: hidden !important;

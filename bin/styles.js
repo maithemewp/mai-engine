@@ -148,7 +148,7 @@ module.exports.editor = function editorTask() {
 // Task to compile theme SCSS files
 module.exports.themes = function themesTask() {
     // Process every theme stylesheet in a single `return`-ed stream so gulp awaits it
-    // natively — a Promise.all() of gulp streams resolves before writes flush, leaving
+    // natively; a Promise.all() of gulp streams resolves before writes flush, leaving
     // theme .min.css stale. The themes dir is flat (no partials), so a *.scss glob maps
     // 1:1 to outputs and rename({ suffix: '.min' }) keeps each file's basename. See #660.
     return gulp.src('./assets/scss/themes/*.scss')
