@@ -1,10 +1,11 @@
 # Changelog
 
 ## 2.39.1
+* Changed: Reordered the plugin action links so Settings appears before Deactivate.
 * Fixed: Mai Post Grid/Columns layout breaking when a typography plugin converts the 1/3-style column fractions into Unicode glyphs.
 * Fixed: Unreadable light-on-light text on dark-themed sites. The login form, boxed Mai Post Grid entries, light-background blocks, sub-menu dropdowns, and form inputs now keep dark text on their forced-light surfaces (and fall back to the normal body/heading color on light sites).
 * Fixed: `mai_is_light_color()` recomputed on every call due to a non-functional static cache; it now caches per request.
-* Fixed: Full-width and wide blocks clipped behind the open settings sidebar in the legacy (non-iframe) block editor, which hid live content and made it uneditable; they now size to the editor canvas.
+* Fixed: Editor canvas not rendering correctly in the WP 6.9+ block editor iframe: full and wide blocks sized to the wrong width, and per-post layout width, dark body, and boxed-container backgrounds did not reach the canvas.
 
 ## 2.39.0 (5/18/26)
 * Added: New `mai_style_guide` shortcode with logo, typography, headings, colors, buttons, lists, and blockquote sections.
