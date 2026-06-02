@@ -43,6 +43,8 @@
 			--alignfull-margin-left: 0;
 			--alignwide-margin-right: 0;
 			--alignwide-margin-left: 0;
+			// No room to break out beside a sidebar; cap alignwide to the content column.
+			--alignwide-max-width: 100%;
 		}
 	}
 }
