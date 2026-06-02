@@ -114,8 +114,8 @@ function mai_enqueue_admin_iframe_styles() {
  * block-editor iframe (layout content width, dark-body, boxed-container).
  *
  * The matching body classes (mai_admin_body_classes) are set on the OUTER admin
- * document and aren't mirrored into the iframe, so the descendant selectors that
- * used to live in admin.scss never fire there. Scope everything to
+ * document and aren't mirrored into the iframe, so descendant selectors keyed on
+ * those classes never fire inside the canvas. Scope everything to
  * .editor-styles-wrapper (the canvas wrapper present in both the iframe and the
  * legacy non-iframe editor), so nothing leaks to the surrounding admin chrome.
  *

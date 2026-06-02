@@ -370,8 +370,7 @@ function mai_is_light_color( $color ) {
 
 	// Cache by resolved value. The ariColor luminance parse is the slow part. Keyed by the
 	// value (not the input name) so a changed Customizer color yields a fresh key, never a
-	// stale hit. (Previously this was a no-op: missing `static`, and the check/store keys
-	// didn't match, so it re-parsed on every call.)
+	// stale hit.
 	static $cache = [];
 
 	$value = mai_get_color_value( $color );

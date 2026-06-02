@@ -2,11 +2,6 @@
 	var body           = document.getElementsByTagName( 'body' )[ 0 ];
 	var searchToggles  = document.querySelectorAll( '.search-toggle' );
 
-	// Note: scrollbar width is no longer measured in JS. The page scrollbar is
-	// kept consistent via `scrollbar-gutter: stable` + `overflow-y: scroll` on
-	// <html> (base/_html.scss), and any full-bleed overflow is clipped by
-	// `overflow-x: hidden` on <body>; no scrollbar-width value is needed.
-
 	var toggleSearchFormEvent = function( event ) {
 		var element = event.target.closest( '.search-icon-form' );
 
