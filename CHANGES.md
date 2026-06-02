@@ -6,6 +6,7 @@
 * Fixed: Unreadable light-on-light text on dark-themed sites. The login form, boxed Mai Post Grid entries, light-background blocks, sub-menu dropdowns, and form inputs now keep dark text on their forced-light surfaces (and fall back to the normal body/heading color on light sites).
 * Fixed: `mai_is_light_color()` recomputed on every call due to a non-functional static cache; it now caches per request.
 * Fixed: Editor canvas not rendering correctly in the WP 6.9+ block editor iframe: full and wide blocks sized to the wrong width, and per-post layout width, dark body, and boxed-container backgrounds did not reach the canvas.
+* Fixed: Intermittent 500s and "refused to apply style" console errors from the classic/WYSIWYG editor styles endpoint. A failure generating the bundled Kirki CSS is now caught and logged, and the endpoint always returns a valid (possibly empty) stylesheet instead of a 500 or a non-CSS response.
 
 ## 2.39.0 (5/18/26)
 * Added: New `mai_style_guide` shortcode with logo, typography, headings, colors, buttons, lists, and blockquote sections.

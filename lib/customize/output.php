@@ -651,43 +651,64 @@ add_action( 'wp_ajax_mai_classic_editor_styles',        'mai_do_classic_editor_s
  */
 function mai_do_classic_editor_styles() {
 	$transient = 'mai_classic_editor_styles';
+	$css       = get_transient( $transient );
 
 	// If transient isn't set.
-	if ( false === ( $css = get_transient( $transient ) ) ) {
-		$css      = '';
-		$contents = get_transient( 'kirki_remote_url_contents' ); // This is rebuilt in Kirki's `Downloader` class `get_cached_url_contents()` method.
+	if ( false === $css ) {
+		$css   = '';
+		$error = false;
+
+		// Kirki remote font @imports (rebuilt in Kirki's `Downloader::get_cached_url_contents()`).
+		$contents = get_transient( 'kirki_remote_url_contents' );
 
 		if ( $contents && is_array( $contents ) ) {
 			foreach ( $contents as $font_css ) {
+				if ( ! is_string( $font_css ) ) {
+					continue;
+				}
+
 				// Strip comments.
 				$font_css = str_replace( '/*', '_COMSTART', $font_css );
 				$font_css = str_replace( '*/', 'COMEND_', $font_css );
 				$font_css = preg_replace( '/_COMSTART.*?COMEND_/s', '', $font_css );
 
 				// Add font CSS.
-				$css .= $font_css;
+				$css .= (string) $font_css;
 			}
 		}
 
+		// Kirki's dynamic CSS. print_styles_inline() can fatal on bad config, which would
+		// otherwise abort the whole response and leak the output buffer. Isolate it so a
+		// Kirki failure degrades to a partial (or empty) stylesheet, and always close the
+		// buffer we opened.
 		if ( class_exists( 'Kirki\Module\CSS' ) ) {
 			ob_start();
-			$module = new \Kirki\Module\CSS();
-			$module->print_styles_inline();
-			$dynamic = ob_get_clean();
-			$css    .= strip_tags( $dynamic );
+
+			try {
+				( new \Kirki\Module\CSS() )->print_styles_inline();
+				$css .= strip_tags( (string) ob_get_clean() );
+			} catch ( \Throwable $e ) {
+				ob_end_clean();
+				$error = true;
+
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					error_log( 'Mai Engine: classic editor styles generation failed: ' . $e->getMessage() );
+				}
+			}
 		}
 
 		if ( mai_has_boxed_container() ) {
 			$css .= '.mce-content-body {--body-background-color: var(--color-white);}';
 		}
 
-		// Set transient, and expire after n hours
-		set_transient( $transient, $css, 1 * HOUR_IN_SECONDS );
+		// Cache a clean result for the full hour. After a failure, cache only briefly so a
+		// transient Kirki error recovers on its own instead of serving broken CSS for an hour.
+		set_transient( $transient, $css, $error ? MINUTE_IN_SECONDS : HOUR_IN_SECONDS );
 	}
 
-	if ( $css ) {
-		header( 'Content-Type: text/css; charset=UTF-8' );
-		echo $css;
-	}
+	// Always answer with a valid (possibly empty) stylesheet and the right content type, so
+	// the editor never falls into a weird state from a missing header or a 500.
+	header( 'Content-Type: text/css; charset=UTF-8' );
+	echo $css;
 	exit;
 }
