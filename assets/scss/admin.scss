@@ -267,174 +267,177 @@ body.is-fullscreen-mode {
 		top: 6px;
 		right: calc(100% + 4px);
 	}
-}
 
-.error,
-.success {
-	margin-bottom: 0;
-	font-style: italic;
-}
+	// Step / AJAX content, rendered inside .mai-setup-wizard (class-mai-setup-wizard-admin.php).
+	// Scoped so the generic selectors (.error, .label, [data-status], #content, etc.) don't
+	// leak onto other admin pages.
+	.error,
+	.success {
+		margin-bottom: 0;
+		font-style: italic;
+	}
 
-.label {
-	display: inline-flex;
-	align-items: center;
-}
+	.label {
+		display: inline-flex;
+		align-items: center;
+	}
 
-[data-status] > label {
-	position: relative;
-}
+	[data-status] > label {
+		position: relative;
+	}
 
-[data-status] > label::after {
-	position: absolute;
-	top: 0;
-	left: calc(100% + 10px);
-	display: inline-block;
-	width: 18px;
-	height: 18px;
-	margin-left: 10px;
-	vertical-align: middle;
-	background-image: url(../img/spinner.gif);
-	background-position: center;
-	background-size: 18px;
-	visibility: hidden;
-	filter: brightness(0.5);
-	content: "";
-}
+	[data-status] > label::after {
+		position: absolute;
+		top: 0;
+		left: calc(100% + 10px);
+		display: inline-block;
+		width: 18px;
+		height: 18px;
+		margin-left: 10px;
+		vertical-align: middle;
+		background-image: url(../img/spinner.gif);
+		background-position: center;
+		background-size: 18px;
+		visibility: hidden;
+		filter: brightness(0.5);
+		content: "";
+	}
 
-[data-status="running"] > label::after {
-	visibility: visible;
-}
+	[data-status="running"] > label::after {
+		visibility: visible;
+	}
 
-[data-status="complete"] > label::after {
-	background-image: url(../img/tick.png);
-	visibility: visible;
-	filter: none;
-}
+	[data-status="complete"] > label::after {
+		background-image: url(../img/tick.png);
+		visibility: visible;
+		filter: none;
+	}
 
-.progress {
-	display: none;
-}
+	.progress {
+		display: none;
+	}
 
-#demo ul {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	margin-top: 3em;
-}
+	#demo ul {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		margin-top: 3em;
+	}
 
-#demo li {
-	margin: 0 0.75em 1.5em;
-}
+	#demo li {
+		margin: 0 0.75em 1.5em;
+	}
 
-#demo label {
-	display: flex;
-	flex-wrap: wrap;
-	width: 200px;
-	margin: 0;
-	text-align: center;
-	background: #fafafa;
-	outline: 1px solid #e8e8e8;
-	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-}
+	#demo label {
+		display: flex;
+		flex-wrap: wrap;
+		width: 200px;
+		margin: 0;
+		text-align: center;
+		background: #fafafa;
+		outline: 1px solid #e8e8e8;
+		box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+	}
 
-#demo label:focus-within {
-	outline: 1px solid #007cba;
-}
+	#demo label:focus-within {
+		outline: 1px solid #007cba;
+	}
 
-#demo input {
-	position: absolute;
-	width: 0;
-	height: 0;
-	opacity: 0;
-}
+	#demo input {
+		position: absolute;
+		width: 0;
+		height: 0;
+		opacity: 0;
+	}
 
-#demo img {
-	cursor: pointer;
-	pointer-events: none;
-}
+	#demo img {
+		cursor: pointer;
+		pointer-events: none;
+	}
 
-#demo h4 {
-	position: relative;
-}
+	#demo h4 {
+		position: relative;
+	}
 
-#demo [data-status]::after {
-	display: none;
-}
+	#demo [data-status]::after {
+		display: none;
+	}
 
-#demo h4::after {
-	position: absolute;
-	left: calc(100% + 5px);
-	display: inline-block;
-	width: 18px;
-	height: 18px;
-	vertical-align: middle;
-	background-image: url(../img/tick.png);
-	background-position: center;
-	background-size: 18px;
-	visibility: hidden;
-	content: "";
-}
+	#demo h4::after {
+		position: absolute;
+		left: calc(100% + 5px);
+		display: inline-block;
+		width: 18px;
+		height: 18px;
+		vertical-align: middle;
+		background-image: url(../img/tick.png);
+		background-position: center;
+		background-size: 18px;
+		visibility: hidden;
+		content: "";
+	}
 
-#demo input:checked ~ span h4::after {
-	visibility: visible;
-}
+	#demo input:checked ~ span h4::after {
+		visibility: visible;
+	}
 
-#demo .label {
-	display: flex;
-	justify-content: space-between;
-	width: 100%;
-	padding: 0 1em;
-	border-top: 1px solid #e8e8e8;
-}
+	#demo .label {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		padding: 0 1em;
+		border-top: 1px solid #e8e8e8;
+	}
 
-#demo .label a {
-	opacity: 0;
-	transition: 0.2s ease;
-}
+	#demo .label a {
+		opacity: 0;
+		transition: 0.2s ease;
+	}
 
-#demo label:hover a {
-	opacity: 1;
-}
+	#demo label:hover a {
+		opacity: 1;
+	}
 
-#plugins ul {
-	display: block;
-	margin: 36px auto;
-}
+	#plugins ul {
+		display: block;
+		margin: 36px auto;
+	}
 
-#content ul {
-	display: block;
-	max-width: 300px;
-	margin: 36px auto;
-	text-align: left;
-}
+	#content ul {
+		display: block;
+		max-width: 300px;
+		margin: 36px auto;
+		text-align: left;
+	}
 
-#content li {
-	margin-bottom: 24px;
-}
+	#content li {
+		margin-bottom: 24px;
+	}
 
-#content label {
-	display: block;
-}
+	#content label {
+		display: block;
+	}
 
-#content .label {
-	display: block;
-	align-items: unset;
-}
+	#content .label {
+		display: block;
+		align-items: unset;
+	}
 
-#content .label strong {
-	display: block;
-	margin-bottom: 8px;
-	font-size: 1.2em;
-}
+	#content .label strong {
+		display: block;
+		margin-bottom: 8px;
+		font-size: 1.2em;
+	}
 
-#content .step-description {
-	display: block;
-	width: 100%;
-	margin: 4px 0 0 16px;
-	list-style: disc;
-}
+	#content .step-description {
+		display: block;
+		width: 100%;
+		margin: 4px 0 0 16px;
+		list-style: disc;
+	}
 
-#content .step-description li {
-	margin-bottom: 8px;
+	#content .step-description li {
+		margin-bottom: 8px;
+	}
 }
 
