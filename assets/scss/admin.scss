@@ -30,18 +30,28 @@
  * block is isolated and safe to delete wholesale once WP 7.1 makes the iframe
  * mandatory. The vars use 0px (not 0) fallbacks because they feed calc().
  */
+// Admin menu width = WP core's own #wpcontent left offset, which is where the editor
+// canvas starts. Mirror core's exact selectors instead of guessing from viewport
+// width (the menu can be expanded below 960px), so the var can never diverge from the
+// real offset: expanded (160), manually collapsed (.folded, any width), or auto-folded
+// (.auto-fold below 960). Core doesn't model the editor's fullscreen mode, which hides
+// the menu, so exclude it from the auto-fold rule and zero it explicitly.
 body {
-	--admin-menu-width: 160px; // Expanded WP admin menu.
+	--admin-menu-width: 160px;
 }
 
-body.is-fullscreen-mode {
-	--admin-menu-width: 0px; // Fullscreen / distraction-free hides the admin menu.
+body.folded {
+	--admin-menu-width: 36px;
 }
 
 @media only screen and (max-width: 960px) {
-	body {
-		--admin-menu-width: 36px; // Auto-folded admin menu.
+	body.auto-fold:not(.is-fullscreen-mode) {
+		--admin-menu-width: 36px;
 	}
+}
+
+body.is-fullscreen-mode {
+	--admin-menu-width: 0px;
 }
 
 // Right-hand settings sidebar when open. .is-sidebar-opened was removed
