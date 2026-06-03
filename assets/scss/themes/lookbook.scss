@@ -33,14 +33,18 @@
 	--menu-toggle-line-spacing: 6px;
 	--entry-title-link-color-hover: var(--color-link);
 	--entry-meta-font-size: var(--font-size-xs);
-	--entry-excerpt-font-size: 1.2em;
-	--entry-excerpt-font-family: var(--heading-font-family);
 	--comments-max-width: var(--breakpoint-sm);
 	--archive-description-max-width: var(--breakpoint-sm);
 	--archive-description-text-align: center;
 	--archive-description-margin: 3em auto;
 	--archive-title-font-size: var(--font-size-lg);
 	--archive-title-font-weight: var(--body-font-weight-bold);
+}
+
+// Keep the larger excerpt type on single entries only; grid/archive excerpts use the base size. See #564.
+.entry-excerpt-single {
+	--entry-excerpt-font-size: 1.2em;
+	--entry-excerpt-font-family: var(--heading-font-family);
 }
 
 .single-post,
