@@ -415,6 +415,12 @@ input[type="submit"],
 	padding: 0;
 }
 
+// Match the frontend: preset button widths act as a floor so a long label expands
+// the button instead of cramping. See https://github.com/maithemewp/mai-engine/issues/635.
+.wp-block-buttons > .wp-block-button.has-custom-width:not(.wp-block-button__width-100) {
+	min-width: min(max-content, 100%);
+}
+
 .wp-block-search {
 
 	// When no alignment is set the wp-block is the same as the search block.
