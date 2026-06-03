@@ -299,6 +299,7 @@ function mai_load_files() {
 		'functions/setup',
 		'functions/shortcodes',
 		'functions/templates',
+		'functions/theme-json',
 		'functions/utilities',
 		'functions/widgets',
 
