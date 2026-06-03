@@ -29,7 +29,7 @@
 	--alignwide-side-spacing: min(var(--spacing-xxxxl), var(--alignwide-max-side-spacing));
 	width: min(var(--viewport-width), calc(100% + (var(--alignwide-side-spacing) * 2)));
 	max-width: var(--alignwide-max-width, unset);
-	margin-right: var(--alignwide-margin-left, calc(var(--alignwide-side-spacing) * -1));
+	margin-right: var(--alignwide-margin-right, calc(var(--alignwide-side-spacing) * -1));
 	margin-left: var(--alignwide-margin-left, calc(var(--alignwide-side-spacing) * -1));
 }
 
