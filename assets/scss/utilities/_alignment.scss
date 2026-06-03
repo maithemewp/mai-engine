@@ -89,10 +89,14 @@
 		--alignfull-margin-right: auto;
 		--alignfull-margin-left: auto;
 
+		// Sidebar layouts have no room to break out beside the sidebar, so the symmetric
+		// breakout collided with it. Pin alignfull to the content column instead.
+		// (Asymmetric content-side breakout is a possible future enhancement.)
 		.has-content-sidebar,
 		.has-sidebar-content {
-			--alignfull-margin-right: calc(var(--side-spacing) * -1);
-			--alignfull-margin-left: calc(var(--side-spacing) * -1);
+			--alignfull-max-width: 100%;
+			--alignfull-margin-right: 0;
+			--alignfull-margin-left: 0;
 		}
 
 		.has-narrow-content,
