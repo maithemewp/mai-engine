@@ -415,10 +415,15 @@ input[type="submit"],
 	padding: 0;
 }
 
-// Match the frontend: preset button widths act as a floor so a long label expands
-// the button instead of cramping. See https://github.com/maithemewp/mai-engine/issues/635.
-.wp-block-buttons > .wp-block-button.has-custom-width:not(.wp-block-button__width-100) {
-	min-width: min(max-content, 100%);
+// Match the frontend: below the md breakpoint, custom-width buttons keep their set %
+// when the label fits and grow to fit (capped at full width, then wrapping) when it
+// can't. fit-content avoids min() with an intrinsic keyword, which WebKit ignores.
+// 100% buttons stay full width. See https://github.com/maithemewp/mai-engine/issues/635.
+@include mq(false, md) {
+
+	.wp-block-buttons > .wp-block-button.has-custom-width:not(.wp-block-button__width-100) {
+		min-width: fit-content;
+	}
 }
 
 .wp-block-search {

@@ -1,3 +1,5 @@
+@use "../../abstracts/mixins";
+
 .wp-block-buttons {
 	--row-gap: var(--spacing-xxs);
 	--column-gap: var(--spacing-xxs);
@@ -25,9 +27,14 @@
 	align-items: normal;
 }
 
-// Treat WP's preset button widths (25/50/75%) as a floor: a button keeps its set
-// width but grows to fit a long label (capped at full width, then wraps) instead of
-// cramping the text. See https://github.com/maithemewp/mai-engine/issues/635.
-.wp-block-buttons > .wp-block-button.has-custom-width:not(.wp-block-button__width-100) {
-	min-width: min(max-content, 100%);
+// On mobile, keep WP's set percentage button widths (25/50/75%) when the label fits,
+// but let a button grow to fit its content (capped at full width, then wrapping) when
+// it can't. fit-content is used instead of min(max-content, 100%) because Safari/WebKit
+// ignores min() with an intrinsic keyword. 100% buttons stay full width.
+// See https://github.com/maithemewp/mai-engine/issues/635.
+@include mixins.mq($max: md) {
+
+	.wp-block-buttons > .wp-block-button.has-custom-width:not(.wp-block-button__width-100) {
+		min-width: fit-content;
+	}
 }
