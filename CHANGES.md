@@ -3,6 +3,7 @@
 ## 2.39.1
 * Changed: Reordered the plugin action links so Settings appears before Deactivate.
 * Changed: [Performance] Removed WordPress core's unused default theme.json presets (color palette, gradients, duotone, font sizes, spacing sizes, shadows, and aspect ratios) from the global styles output. Mai provides its own palette and font sizes, so these only added a large block of unused `--wp--preset--*` custom properties to every page and the editor.
+* Changed: Update ACF Pro to 6.8.4.
 * Fixed: Mai Post Grid/Columns layout breaking when a typography plugin converts the 1/3-style column fractions into Unicode glyphs.
 * Fixed: Unreadable light-on-light text on dark-themed sites. The login form, boxed Mai Post Grid entries, light-background blocks, sub-menu dropdowns, and form inputs now keep dark text on their forced-light surfaces (and fall back to the normal body/heading color on light sites).
 * Fixed: `mai_is_light_color()` recomputed on every call due to a non-functional static cache; it now caches per request.
