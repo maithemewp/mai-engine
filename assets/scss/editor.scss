@@ -1,3 +1,9 @@
+// Emitted first of all so its .wp-block margin reset loses the source-order tie
+// to every per-element typography rule below. This includes headings, whose
+// margins come from `@extend %heading`: Sass emits the placeholder's rule at the
+// abstracts position, so the reset must precede even abstracts. It needs nothing
+// from abstracts (pure CSS custom properties). See the partial header.
+@use "editor-block-reset" as *;
 @use "abstracts/__index" as *;
 @use "base/box-sizing" as *;
 @use "base/form" as *;
@@ -100,12 +106,6 @@ ol.wp-block li.wp-block {
 
 .has-inline-color.has-link-color {
 	color: var(--color-link);
-}
-
-html :where(.wp-block) {
-	max-width: var(--wp-block-max-width, var(--breakpoint-lg));
-	margin-top: 0;
-	margin-bottom: 0;
 }
 
 .alignfull {

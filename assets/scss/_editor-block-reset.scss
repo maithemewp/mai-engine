@@ -1,0 +1,25 @@
+// WordPress core ships edit-post/classic.css for classic themes that have no
+// physical theme.json file (Mai supplies theme.json via the wp_theme_json_data_*
+// filter, which core's file_exists() check in wp_theme_has_theme_json() ignores).
+// That stylesheet sets `html :where(.wp-block) { max-width: 840px; margin: 28px 0 }`
+// on the canvas: 840px is narrower than Mai's content width, and the 28px fights
+// Mai's per-element spacing. We override both with this reset.
+//
+// Order matters. The iframe editor injects styles raw (no .editor-styles-wrapper
+// prefix to raise specificity, the way the pre-iframe editor did), so this rule
+// and the per-element typography rules (p, h1-h6, hr, blockquote) all tie at
+// (0,0,1) and the cascade falls to source order. This partial is @use'd FIRST in
+// editor.scss (before abstracts) so it emits ahead of every per-element rule and
+// loses the tie to them, keeping their margins, while generic blocks with no
+// per-element rule fall through to margin 0. It must precede even abstracts
+// because heading margins come from `@extend %heading` and Sass emits that
+// placeholder's rule at the abstracts position. It still beats WP core's
+// classic.css, a separate stylesheet loaded earlier, so generic blocks lose the
+// 28px. Do not move this rule into editor.scss's body: Sass emits @use'd rules
+// first, so it would land after the typography it must lose to and silently zero
+// paragraph/heading margins again.
+html :where(.wp-block) {
+	max-width: var(--wp-block-max-width, var(--breakpoint-lg));
+	margin-top: 0;
+	margin-bottom: 0;
+}
