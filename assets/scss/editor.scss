@@ -23,8 +23,11 @@ html {
 	// `thin` matters most here: it shrinks the canvas scrollbar that full-bleed (100vw)
 	// blocks overhang the body by, halving the overhang. It can't be removed entirely:
 	// the residual is 100vw including the thin scrollbar; that would need container units.
+	//
+	// Do NOT add `overflow-y: scroll` here to force an always-visible scrollbar. It
+	// makes the iframe's <html> a scroll container, which breaks `position: sticky`
+	// in the canvas preview (e.g. editing templates that include the sticky header).
 	scrollbar-gutter: stable;
-	overflow-y: scroll;
 	scrollbar-width: thin;
 
 	-webkit-font-smoothing: antialiased;

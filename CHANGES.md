@@ -4,11 +4,13 @@
 * Changed: Reordered the plugin action links so Settings appears before Deactivate.
 * Changed: [Performance] Removed WordPress core's unused default theme.json presets (color palette, gradients, duotone, font sizes, spacing sizes, shadows, and aspect ratios) from the global styles output. Mai provides its own palette and font sizes, so these only added a large block of unused `--wp--preset--*` custom properties to every page and the editor.
 * Changed: Update ACF Pro to 6.8.4.
+* Changed: Slimmed the page scrollbar with `scrollbar-width: thin` on the html element.
 * Fixed: Mai Post Grid/Columns layout breaking when a typography plugin converts the 1/3-style column fractions into Unicode glyphs.
 * Fixed: Unreadable light-on-light text on dark-themed sites. The login form, boxed Mai Post Grid entries, light-background blocks, sub-menu dropdowns, and form inputs now keep dark text on their forced-light surfaces (and fall back to the normal body/heading color on light sites).
 * Fixed: `mai_is_light_color()` recomputed on every call due to a non-functional static cache; it now caches per request.
 * Fixed: Editor canvas not rendering correctly in the WP 6.9+ block editor iframe: full and wide blocks sized to the wrong width, and per-post layout width, dark body, and boxed-container backgrounds did not reach the canvas.
 * Fixed: Intermittent 500s and "refused to apply style" console errors from the classic/WYSIWYG editor styles endpoint. A failure generating the bundled Kirki CSS is now caught and logged, and the endpoint always returns a valid (possibly empty) stylesheet instead of a 500 or a non-CSS response.
+* Fixed: `position: sticky` elements (including the sticky header) not sticking, caused by `overflow-y: scroll` on the html element.
 
 ## 2.39.0 (5/18/26)
 * Added: New `mai_style_guide` shortcode with logo, typography, headings, colors, buttons, lists, and blockquote sections.
