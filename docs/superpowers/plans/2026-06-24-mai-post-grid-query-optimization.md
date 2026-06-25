@@ -113,6 +113,18 @@ final class SmokeTest extends TestCase {
 
 The `TestCase` base loads via the bootstrap's `require_once`, so it needs no PSR-4 entry.
 
+Also fix the existing `phpunit.xml.dist`: it collects the unit suite with `<directory suffix=".php">`, which loads `bootstrap.php` as a test class and warns (`failOnWarning="true"` then fails the run). Change that one line's suffix to `Test.php` (PHPUnit's default convention) so only `*Test.php` files are collected:
+
+```xml
+<directory suffix="Test.php">./tests/phpunit/unit/</directory>
+```
+
+And add PHPUnit's result-cache artifact to `.gitignore`:
+
+```
+.phpunit.result.cache
+```
+
 - [ ] **Step 5: Run the unit suite**
 
 Run: `composer test-unit`
