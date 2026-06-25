@@ -276,9 +276,7 @@ function mai_get_template_part_objects( $use_transient = true ) {
 	$posts = [];
 
 	if ( ! empty( $slugs ) ) {
-		$transient = 'mai_template_parts';
-
-		if ( ! ( $use_transient && $parts = get_transient( $transient ) ) ) {
+		if ( ! ( $use_transient && $parts = mai_cache( 'template-parts' )->get( 'objects' ) ) ) {
 
 			$parts = [];
 			$query = new WP_Query(
@@ -303,8 +301,8 @@ function mai_get_template_part_objects( $use_transient = true ) {
 
 			wp_reset_postdata();
 
-			// Set transient, and expire after 1 hour.
-			set_transient( $transient, $parts, HOUR_IN_SECONDS );
+			// Cache for 1 hour.
+			mai_cache( 'template-parts' )->set( 'objects', $parts, HOUR_IN_SECONDS );
 		}
 
 		$posts = $parts;
@@ -777,6 +775,21 @@ function mai_get_new_image_from_url( $image_url, $filename = '' ) {
 	return false;
 }
 
+add_action( 'after_switch_theme', 'mai_flush_demo_template_parts' );
+/**
+ * Flush the demo template-parts cache on theme switch.
+ *
+ * Demos are theme-dependent (registered via the mai_setup_wizard_demos filter),
+ * so switching themes should refresh the cached demo content.
+ *
+ * @since 2.40.0
+ *
+ * @return void
+ */
+function mai_flush_demo_template_parts() {
+	mai_cache( 'demo' )->flush();
+}
+
 /**
  * Gets content areas content from the demo.
  * Caches via a transient.
@@ -794,7 +807,7 @@ function mai_get_template_parts_from_demo() {
 		return $template_parts;
 	}
 
-	if ( false === ( $template_parts = get_transient( 'mai_demo_template_parts' ) ) ) {
+	if ( false === ( $template_parts = mai_cache( 'demo' )->get( 'objects' ) ) ) {
 		$template_parts = [];
 		$config         = mai_get_config( 'template-parts' );
 		$demos          = apply_filters( 'mai_setup_wizard_demos', [] );
@@ -841,7 +854,7 @@ function mai_get_template_parts_from_demo() {
 			}
 		}
 
-		set_transient( 'mai_demo_template_parts', $template_parts, HOUR_IN_SECONDS );
+		mai_cache( 'demo' )->set( 'objects', $template_parts, HOUR_IN_SECONDS );
 	}
 
 	$template_parts = (array) $template_parts;

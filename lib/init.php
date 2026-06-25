@@ -173,7 +173,7 @@ function mai_save_template_part_delete_transient( $post_id, $post, $update ) {
 		return;
 	}
 
-	delete_transient( 'mai_template_parts' );
+	mai_cache( 'template-parts' )->flush();
 }
 
 add_action( 'plugins_loaded', 'mai_plugin_update_checker' );
