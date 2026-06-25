@@ -30,7 +30,7 @@ add_action( 'after_switch_theme',       'mai_flush_customizer_transients' );
 add_action( 'customize_save_after',     'mai_flush_customizer_transients' );
 add_action( 'update_option_mai-engine', 'mai_flush_customizer_transients' );
 /**
- * Deletes kirki transients when switching themes, when the Customizer is saved, or when mai-engine option is updated.
+ * Flushes the css cache group when switching themes, when the Customizer is saved, or when the mai-engine option is updated.
  *
  * @since 2.12.0
  * @since 2.21.0 Added updated_option hook.

@@ -792,7 +792,7 @@ function mai_flush_demo_template_parts() {
 
 /**
  * Gets content areas content from the demo.
- * Caches via a transient.
+ * Caches the result via mai_cache.
  *
  * Requires Mai Demo Exporter plugin to be active on the demo site.
  *

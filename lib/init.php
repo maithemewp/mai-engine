@@ -156,7 +156,7 @@ function mai_load_default_favicon( $favicon ) {
 }
 
 /**
- * Clears the transient on post type save/update.
+ * Flushes the template-parts cache on post type save/update.
  * This was running too late in mai_load_files().
  *
  * @since 2.11.0
