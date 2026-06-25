@@ -11,7 +11,7 @@
 ## Global Constraints
 
 - Target runtime PHP 8.1+. Use modern idioms (`str_contains`, typed signatures, `match`).
-- Filter names exactly: `mai_post_grid_optimize_query` (master on/off, default `true`); `mai_post_grid_found_rows` (keep the row count, default `false`).
+- Filter: `mai_post_grid_optimize_query` (master on/off for the tax rewrite, default `true`). `no_found_rows` is a `Mai_Grid::get_post_query_args` default; pagination (mai-load-more) overrides it to `false` via the existing `mai_post_grid_query_args` filter. (Refactor: `no_found_rows` and the `mai_post_grid_found_rows` filter were moved out of the optimizer.)
 - Optimize only the simple case: a `tax_query` with exactly one clause whose operator is `IN`. Every other case (NOT IN, AND, multiple clauses, relations, no tax_query) returns the stock query untouched.
 - Output must equal stock for the simple case; the only allowed difference is deterministic tie ordering (`ORDER BY post_date DESC, ID DESC`).
 - No caching, no `mai-cache`, no optimizer hints, no engine/version detection. Portable SQL only.

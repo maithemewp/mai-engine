@@ -62,8 +62,8 @@ The optimization is a new, self-contained class `Mai_Post_Grid_Query_Optimizer` 
 
 ### Found-rows / pagination handling
 
-- `no_found_rows` is applied to every non-load-more post grid, independent of the tax rewrite. `SQL_CALC_FOUND_ROWS` forces a full scan of all matching posts ignoring `LIMIT`, and almost no grid needs that total; dropping it is the broad win that makes plain and `post__not_in` grids fast on its own, separate from the tax rewrite.
-- Grids that need the total (numbered pagination, load-more) opt in via the `mai_post_grid_found_rows` filter (default `false`, receives the grid args). When it returns `true`, the query keeps `SQL_CALC_FOUND_ROWS`; the tax rewrite still applies, but the query cannot stop early because the count forces full evaluation. The internal-only mai-load-more plugin flips this filter `true` for its grids.
+- `no_found_rows => true` is a default in `Mai_Grid::get_post_query_args()`, applied to every post grid (it is core grid behavior, not the optimizer's job). `SQL_CALC_FOUND_ROWS` forces a full scan of all matching posts ignoring `LIMIT`, and almost no grid needs that total; dropping it is the broad win that makes plain and `post__not_in` grids fast, independent of the tax rewrite. Keeping it in `Mai_Grid` also means the optimizer kill-switch reverts only the tax rewrite, not this safe default.
+- Grids that need the total (numbered pagination, load-more) set `no_found_rows => false` through the existing `mai_post_grid_query_args` filter, which runs at the end of `get_post_query_args` and so overrides the default. The internal-only mai-load-more plugin does this for its grids. No dedicated found-rows filter is needed.
 
 ### Safe fallback
 
@@ -75,8 +75,8 @@ The optimization must never change which posts a grid shows. It runs only when t
 
 ## Filter API
 
-- `apply_filters( 'mai_post_grid_optimize_query', bool $enabled, array $args )` — master on/off, default `true`.
-- `apply_filters( 'mai_post_grid_found_rows', bool $needs, array $args )` — opt in to keep the row count for pagination/load-more, default `false`.
+- `apply_filters( 'mai_post_grid_optimize_query', bool $enabled )` — master on/off for the tax rewrite, default `true`.
+- The `no_found_rows` default lives in `Mai_Grid::get_post_query_args()`; pagination consumers (mai-load-more) override it to `false` via the existing `mai_post_grid_query_args` filter. There is no dedicated found-rows filter.
 
 ## Edge cases and risks
 

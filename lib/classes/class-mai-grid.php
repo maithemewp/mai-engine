@@ -367,6 +367,7 @@ class Mai_Grid {
 			'post_status'         => $post_status,
 			'offset'              => $this->args['offset'],
 			'ignore_sticky_posts' => true,
+			'no_found_rows'       => true,
 		];
 
 		// Handle query_by.

@@ -29,25 +29,17 @@ class Mai_Post_Grid_Query_Optimizer {
 			return;
 		}
 
-		add_filter( 'mai_post_grid_query_args', [ $this, 'maybe_optimize' ], 99, 2 );
+		add_filter( 'mai_post_grid_query_args', [ $this, 'maybe_optimize' ], 99, 1 );
 		add_filter( 'posts_where', [ $this, 'add_subquery_where' ], 10, 2 );
 		add_filter( 'posts_orderby', [ $this, 'add_orderby_tiebreaker' ], 10, 2 );
 	}
 
-	public function maybe_optimize( array $query_args, array $args ): array {
-		// Broad win: drop SQL_CALC_FOUND_ROWS for every grid that does not need a total
-		// (plain "latest", post__not_in, tax, all of them). The count pass forces a full
-		// scan of all matching posts ignoring LIMIT, and almost no grid needs it. Gated by
-		// the opt-in so load-more and numbered pagination can keep the count.
-		if ( ! apply_filters( 'mai_post_grid_found_rows', false, $args ) ) {
-			$query_args['no_found_rows'] = true;
-		}
-
-		// Targeted win: rewrite the simple single-IN tax filter into a scalar subquery.
+	public function maybe_optimize( array $query_args ): array {
+		// Rewrite the simple single-IN tax filter into a correlated scalar subquery.
 		$clause = $this->get_simple_in_clause( $query_args );
 
 		if ( null === $clause ) {
-			return $query_args; // not the simple-IN shape; tax stays stock, no_found_rows still applied above.
+			return $query_args; // not the simple-IN shape; tax stays stock.
 		}
 
 		$tt_ids = $this->resolve_tt_ids( $clause['taxonomy'], (array) $clause['terms'] );
