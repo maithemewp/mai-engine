@@ -441,3 +441,15 @@ function mai_prime_featured_images_cache( $posts, $wp_query ) {
 
 	return $posts;
 }
+
+add_action( 'init', 'mai_register_post_grid_query_optimizer' );
+/**
+ * Registers the Mai Post Grid query optimizer.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+function mai_register_post_grid_query_optimizer() {
+	( new Mai_Post_Grid_Query_Optimizer() )->register();
+}
