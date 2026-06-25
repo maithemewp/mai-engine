@@ -289,7 +289,6 @@ use ReflectionMethod;
 final class PostGridQueryOptimizerClassifyTest extends TestCase {
 	private function classify( array $query_args ): ?array {
 		$m = new ReflectionMethod( Mai_Post_Grid_Query_Optimizer::class, 'get_simple_in_clause' );
-		$m->setAccessible( true );
 		return $m->invoke( new Mai_Post_Grid_Query_Optimizer(), $query_args );
 	}
 
@@ -425,7 +424,6 @@ final class PostGridQueryOptimizerArgsTest extends TestCase {
 
 		$o   = new Mai_Post_Grid_Query_Optimizer();
 		$ref = new \ReflectionMethod( $o, 'resolve_tt_ids' );
-		$ref->setAccessible( true );
 
 		$this->assertSame( [ 110, 111 ], $ref->invoke( $o, 'category', [ 10 ] ) );
 	}
