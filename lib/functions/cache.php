@@ -5,11 +5,12 @@
  * @package   BizBudding\MaiEngine
  * @link      https://bizbudding.com
  * @author    BizBudding
- * @copyright Copyright (c) BizBudding
+ * @copyright Copyright © 2020 BizBudding
  * @license   GPL-2.0-or-later
  */
 
-defined( 'ABSPATH' ) || exit;
+// Prevent direct file access.
+defined( 'ABSPATH' ) || die;
 
 if ( ! function_exists( 'mai_cache' ) ) {
 	/**
