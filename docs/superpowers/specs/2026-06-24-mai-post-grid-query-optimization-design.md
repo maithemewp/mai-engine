@@ -62,7 +62,7 @@ The optimization is a new, self-contained class `Mai_Post_Grid_Query_Optimizer` 
 
 ### Found-rows / pagination handling
 
-- Default: `no_found_rows` is on (fast, no count).
+- `no_found_rows` is applied to every non-load-more post grid, independent of the tax rewrite. `SQL_CALC_FOUND_ROWS` forces a full scan of all matching posts ignoring `LIMIT`, and almost no grid needs that total; dropping it is the broad win that makes plain and `post__not_in` grids fast on its own, separate from the tax rewrite.
 - Grids that need the total (numbered pagination, load-more) opt in via the `mai_post_grid_found_rows` filter (default `false`, receives the grid args). When it returns `true`, the query keeps `SQL_CALC_FOUND_ROWS`; the tax rewrite still applies, but the query cannot stop early because the count forces full evaluation. The internal-only mai-load-more plugin flips this filter `true` for its grids.
 
 ### Safe fallback

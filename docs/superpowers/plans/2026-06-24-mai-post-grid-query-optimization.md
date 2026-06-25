@@ -372,7 +372,7 @@ git commit -m "feat: classify simple single-IN grid tax queries"
 
 **Interfaces:**
 - Produces: `resolve_tt_ids( string $taxonomy, array $term_ids ): array` returns `int[]` term_taxonomy_ids including child terms (mirrors WP_Tax_Query `include_children` default).
-- Produces: `maybe_optimize()` now strips `tax_query`, sets `no_found_rows` (unless `mai_post_grid_found_rows` opts in), and stashes the ids under the `mai_post_grid_tt_ids` query var.
+- Produces: `maybe_optimize()` sets `no_found_rows` on every grid (unless `mai_post_grid_found_rows` opts in), and additionally, only for the simple-IN case, strips `tax_query` and stashes the resolved ids under the `mai_post_grid_tt_ids` query var.
 
 - [ ] **Step 1: Write the failing tests**
 
@@ -435,9 +435,16 @@ final class PostGridQueryOptimizerArgsTest extends TestCase {
 		$this->assertSame( [ 1 ], $out['mai_post_grid_tt_ids'] );
 	}
 
-	public function test_non_simple_query_is_untouched(): void {
-		$args_in = [ 'post_type' => 'post' ];
-		$this->assertSame( $args_in, ( new Mai_Post_Grid_Query_Optimizer() )->maybe_optimize( $args_in, [] ) );
+	public function test_non_tax_grid_gets_no_found_rows_but_no_rewrite(): void {
+		Functions\when( 'apply_filters' )->alias( fn( $tag, $value ) => $value ); // found_rows stays false
+
+		$args_in = [ 'post_type' => 'post', 'post__not_in' => [ 5, 6 ] ];
+
+		$out = ( new Mai_Post_Grid_Query_Optimizer() )->maybe_optimize( $args_in, [] );
+
+		$this->assertTrue( $out['no_found_rows'] );                   // broad no_found_rows applies
+		$this->assertArrayNotHasKey( 'mai_post_grid_tt_ids', $out );  // but no tax rewrite
+		$this->assertSame( [ 5, 6 ], $out['post__not_in'] );          // grid otherwise untouched
 	}
 }
 ```
@@ -453,30 +460,30 @@ Replace the stub `maybe_optimize` and add `resolve_tt_ids`:
 
 ```php
 public function maybe_optimize( array $query_args, array $args ): array {
+	// Broad win: drop SQL_CALC_FOUND_ROWS for every grid that does not need a total
+	// (plain "latest", post__not_in, tax, all of them). The count pass forces a full
+	// scan of all matching posts ignoring LIMIT, and almost no grid needs it. Gated by
+	// the opt-in so load-more and numbered pagination can keep the count.
+	if ( ! apply_filters( 'mai_post_grid_found_rows', false, $args ) ) {
+		$query_args['no_found_rows'] = true;
+	}
+
+	// Targeted win: rewrite the simple single-IN tax filter into a scalar subquery.
 	$clause = $this->get_simple_in_clause( $query_args );
 
 	if ( null === $clause ) {
-		return $query_args; // stock fallback.
+		return $query_args; // not the simple-IN shape; tax stays stock, no_found_rows still applied above.
 	}
 
 	$tt_ids = $this->resolve_tt_ids( $clause['taxonomy'], (array) $clause['terms'] );
 
 	if ( ! $tt_ids ) {
-		return $query_args; // could not resolve; stay on stock.
+		return $query_args; // could not resolve; tax stays stock.
 	}
 
 	// Remove the tax_query so WordPress emits no JOIN or GROUP BY; we add our own clause.
 	unset( $query_args['tax_query'] );
-
-	// Stash the resolved ids for the clause filters.
 	$query_args[ self::TT_IDS_VAR ] = $tt_ids;
-
-	// Drop SQL_CALC_FOUND_ROWS unless a consumer (e.g. load-more) needs the total.
-	// Required for the early stop: with the count on, MySQL evaluates the subquery
-	// for every matching row just to total them.
-	if ( ! apply_filters( 'mai_post_grid_found_rows', false, $args ) ) {
-		$query_args['no_found_rows'] = true;
-	}
 
 	return $query_args;
 }
