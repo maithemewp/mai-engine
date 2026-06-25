@@ -45,4 +45,44 @@ class Mai_Post_Grid_Query_Optimizer {
 	public function add_orderby_tiebreaker( string $orderby, $query ): string {
 		return $orderby;
 	}
+
+	/**
+	 * Return the single tax clause if this is the simple "one IN clause" case, else null.
+	 * Strips the 'relation' key, requires exactly one clause, operator IN (default),
+	 * a string taxonomy and a non-empty terms array.
+	 */
+	private function get_simple_in_clause( array $query_args ): ?array {
+		$tax_query = $query_args['tax_query'] ?? null;
+
+		if ( ! is_array( $tax_query ) || ! $tax_query ) {
+			return null;
+		}
+
+		// Drop the relation key; what remains must be exactly one first-order clause.
+		$clauses = array_filter(
+			$tax_query,
+			fn( $key ) => 'relation' !== $key,
+			ARRAY_FILTER_USE_KEY
+		);
+
+		if ( 1 !== count( $clauses ) ) {
+			return null;
+		}
+
+		$clause = reset( $clauses );
+
+		if ( ! is_array( $clause ) || isset( $clause['relation'] ) ) {
+			return null; // nested clause group, not first-order.
+		}
+
+		$operator = strtoupper( (string) ( $clause['operator'] ?? 'IN' ) );
+		$terms    = $clause['terms'] ?? [];
+
+		$is_simple = 'IN' === $operator
+			&& is_string( $clause['taxonomy'] ?? null )
+			&& is_array( $terms )
+			&& [] !== $terms;
+
+		return $is_simple ? $clause : null;
+	}
 }
