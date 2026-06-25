@@ -48,41 +48,65 @@ function mai_flush_customizer_transients() {
 
 add_filter( 'kirki_global_styles', 'mai_add_kirki_css' );
 /**
- * Outputs kirki css.
+ * Adds mai's global CSS custom properties to Kirki's styles array.
+ *
+ * mai's additions are a pure function of saved settings, so they are computed once and
+ * cached (mai_get_kirki_css_additions), then merged into whatever array Kirki passes in
+ * the current context. Nothing context-specific is ever cached.
  *
  * @since 2.12.0
  *
- * @param array $css Kirki CSS.
+ * @param array $css Kirki global styles array.
  *
  * @return array
  */
 function mai_add_kirki_css( $css ) {
-	/**
-	 * Check if this filter ran already.
-	 * loop_controls() method in Kirki calls this more than once.
-	 *
-	 * This was disabled in 2.22.0 because the loop_controls should only have this config_id once.
-	 */
-	// static $has_run = false;
-
-	// if ( $has_run ) {
-	// 	return $css;
-	// }
-
-	$admin          = did_action( 'wp_head' ); // This took a while to figure out, but this filter/css is only run on wp_head on front end. Using `is_admin()` doesn't work.
-	$ajax           = function_exists( 'wp_doing_ajax' ) && wp_doing_ajax();
-	$preview        = is_customize_preview();
-	$use_transients = ! ( $admin || $ajax || $preview );
-
-	if ( $use_transients && $cached_css = mai_cache( 'css' )->get( 'dynamic_css' ) ) {
-		return $cached_css;
+	if ( ! is_array( $css ) ) {
+		$css = [];
 	}
 
-	// Make sure :root is set before adding to it below.
-	if ( ! isset( $css['global'][':root'] ) ) {
-		$css['global'][':root'] = [];
+	return mai_merge_kirki_css( $css, mai_get_kirki_css_additions() );
+}
+
+/**
+ * Returns mai's global CSS additions, cached.
+ *
+ * The customizer preview reflects live, unsaved settings, so there the additions are
+ * recomputed and the cache is left untouched. Everywhere else the value is identical, so
+ * it is cached; the css-group flush busts it on any settings, theme, or option change.
+ *
+ * @since 2.40.0
+ *
+ * @return array
+ */
+function mai_get_kirki_css_additions() {
+	if ( is_customize_preview() ) {
+		return mai_build_kirki_css_additions();
 	}
 
+	$additions = mai_cache( 'css' )->get( 'dynamic_css' );
+
+	if ( false === $additions ) {
+		$additions = mai_build_kirki_css_additions();
+		mai_cache( 'css' )->set( 'dynamic_css', $additions, 12 * HOUR_IN_SECONDS );
+	}
+
+	return $additions;
+}
+
+/**
+ * Builds mai's global CSS additions on an empty base, so the result holds only mai's
+ * settings-derived custom properties with nothing context-specific captured.
+ *
+ * Every contributor here must stay a pure function of saved settings; if one starts
+ * reading request context, the cache-once assumption in mai_get_kirki_css_additions breaks.
+ *
+ * @since 2.40.0
+ *
+ * @return array
+ */
+function mai_build_kirki_css_additions() {
+	$css = [ 'global' => [ ':root' => [] ] ];
 	$css = mai_add_breakpoint_custom_properties( $css );
 	$css = mai_add_title_area_custom_properties( $css );
 	$css = mai_add_fonts_custom_properties( $css );
@@ -91,12 +115,6 @@ function mai_add_kirki_css( $css ) {
 	$css = mai_add_buttons_css( $css );
 	$css = mai_add_icons_css( $css );
 	$css = mai_add_extra_custom_properties( $css );
-
-	if ( $use_transients ) {
-		mai_cache( 'css' )->set( 'dynamic_css', $css, HOUR_IN_SECONDS );
-	}
-
-	// $has_run = true;
 
 	return $css;
 }
