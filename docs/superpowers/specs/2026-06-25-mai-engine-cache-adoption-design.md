@@ -19,7 +19,7 @@ Replace mai-engine's scattered transient calls with the shared `mai_cache()` wra
 
 ## Scope
 
-In scope: the seven mai-engine-owned transients.
+In scope: six of the seven mai-engine-owned transients (the mshots demo-screenshot cache is deliberately excluded, see below).
 
 | Current transient | TTL | Caches | Set / Get / Delete (file:line) |
 |---|---|---|---|
@@ -29,9 +29,10 @@ In scope: the seven mai-engine-owned transients.
 | `mai_template_parts` | HOUR | `mai_template_part` post objects by slug | set `lib/functions/templates.php:307`, get `:281` |
 | `mai_demo_template_parts` | HOUR | demo-site REST template parts | set `lib/functions/templates.php:844`, get `:797` |
 | `mai_icon_choices_{style}` | HOUR | SVG icon choices per style | set `lib/fields/icons.php:114`, get `:91`, key `:89` |
-| mshots screenshot (`md5($src)`) | DAY | base64 demo-screenshot data URI | set `lib/classes/class-mai-setup-wizard-demos.php:206`, get `:194`, key `:193` |
 
 Out of scope (not mai-engine-owned): `kirki_remote_url_contents` (Kirki's `Downloader` owns it; mai-engine only reads it at `lib/customize/output.php:662` and `lib/functions/performance.php:222`) and `pt_importer_data` (the importer vendor library owns it). Leave both untouched.
+
+Also deliberately excluded: the mshots demo-screenshot transient (`md5($src)` key, `lib/classes/class-mai-setup-wizard-demos.php`). It stays a raw transient so the broad `mai_cache()->flush()` (wp mai flush, upgrades) never touches it. Those screenshots are an expensive external resource (wordpress.com/mshots) that rarely changes, and flushing them only forces needless re-fetches; the cache ages out on its own DAY TTL, and it still uses a persistent object cache when present (transients route there automatically). Separately, the wizard fetches these synchronously on a cold load, which can lag the first wizard view; improving that (for example, letting the browser load the mShots URLs directly) is a follow-up to this sub-project and is a wizard-rendering change, not a caching change.
 
 ## Non-goals
 

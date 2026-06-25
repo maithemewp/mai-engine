@@ -419,15 +419,15 @@ git commit -m "refactor: move template-part caches to mai_cache; flush demo on t
 
 ---
 
-### Task 4: Migrate icons + mshots screenshot
+### Task 4: Migrate icons (leave mshots as a raw transient)
 
 **Files:**
 - Modify: `lib/fields/icons.php`
-- Modify: `lib/classes/class-mai-setup-wizard-demos.php`
+- Modify: `lib/classes/class-mai-setup-wizard-demos.php` (comment only)
 
 **Interfaces:**
-- Consumes: `mai_cache( 'icons' )` and `mai_cache( 'mshots' )` from Task 1.
-- Produces: `icons` group key `choices_{style}`; `mshots` group key `md5( $src )`.
+- Consumes: `mai_cache( 'icons' )` from Task 1.
+- Produces: `icons` group key `choices_{style}`. The mshots screenshot cache is intentionally NOT migrated; it stays a raw transient, exempt from the broad `mai_cache()->flush()`.
 
 - [ ] **Step 1: Swap `mai_icon_choices_{style}` storage** in `mai_get_icon_choices()`. Replace the line:
 
@@ -459,30 +459,14 @@ to:
 
 (Keep the `static $cache` per-request memoization and the early `return $choices;` when the icons dir/url are missing.)
 
-- [ ] **Step 2: Swap the mshots screenshot storage** in `Mai_Setup_Wizard_Demos::get_screenshot()`. Change the read from:
+- [ ] **Step 2: Document why mshots stays a raw transient.** In `Mai_Setup_Wizard_Demos::get_screenshot()` (`lib/classes/class-mai-setup-wizard-demos.php`), add a comment directly above the `$cache_key = md5( $src );` line. Do NOT change the `get_transient`/`set_transient` calls; mshots intentionally stays a raw transient so the broad `mai_cache()->flush()` (wp mai flush, upgrades) never touches it:
 
 ```php
+		// Intentionally a raw transient, not mai_cache: these mShots demo screenshots are an
+		// expensive external resource that rarely changes, so they are kept out of the
+		// flushable mai_cache layer and simply age out by the DAY TTL, which avoids needless
+		// re-fetches from wordpress.com/mshots.
 		$cache_key = md5( $src );
-		$data_uri  = get_transient( $cache_key );
-```
-
-to:
-
-```php
-		$cache_key = md5( $src );
-		$data_uri  = mai_cache( 'mshots' )->get( $cache_key );
-```
-
-and the write (preserving the only-on-HTTP-200 condition) from:
-
-```php
-					set_transient( $cache_key, $data_uri, DAY_IN_SECONDS );
-```
-
-to:
-
-```php
-					mai_cache( 'mshots' )->set( $cache_key, $data_uri, DAY_IN_SECONDS );
 ```
 
 - [ ] **Step 3: Verify.**
@@ -494,7 +478,7 @@ Expected: `No syntax errors detected` for both.
 
 ```bash
 git add lib/fields/icons.php lib/classes/class-mai-setup-wizard-demos.php
-git commit -m "refactor: move icon-choices and mshots caches to mai_cache()"
+git commit -m "refactor: move icon-choices cache to mai_cache; document mshots staying raw"
 ```
 
 (Append the Global Constraints commit footers.)
