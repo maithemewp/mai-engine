@@ -380,6 +380,7 @@ function mai_load_files() {
 				'customize/typography',
 				'customize/updates',
 				'customize/upsell',
+				'customize/css-cache',
 				'customize/output', // Output last.
 			]
 		);
