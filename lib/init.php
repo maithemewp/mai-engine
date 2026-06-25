@@ -281,6 +281,7 @@ function mai_load_files() {
 	$files = [
 		// Functions.
 		'functions/autoload',
+		'functions/cache',
 		'functions/colors',
 		'functions/columns',
 		'functions/customizer',

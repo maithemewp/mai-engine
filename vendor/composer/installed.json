@@ -1127,6 +1127,57 @@
             "install-path": "../hamcrest/hamcrest-php"
         },
         {
+            "name": "maithemewp/mai-cache",
+            "version": "dev-develop",
+            "version_normalized": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/maithemewp/mai-cache.git",
+                "reference": "70c37f911cc1530cc3aaa477a421b42c125d0e9e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/maithemewp/mai-cache/zipball/70c37f911cc1530cc3aaa477a421b42c125d0e9e",
+                "reference": "70c37f911cc1530cc3aaa477a421b42c125d0e9e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "brain/monkey": "^2.6",
+                "phpunit/phpunit": "^10.5"
+            },
+            "time": "2026-06-25T17:54:14+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "files": [
+                    "init.php"
+                ]
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Mai\\Cache\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test-unit": [
+                    "@php -d auto_prepend_file=tests/define-abspath.php vendor/bin/phpunit"
+                ]
+            },
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "Ergonomic remember()-pattern caching for WordPress transients and the object cache. SCRIPT_DEBUG-aware. Versioned, drop-in safe for use in multiple plugins on the same WordPress install.",
+            "homepage": "https://github.com/maithemewp/mai-cache",
+            "support": {
+                "source": "https://github.com/maithemewp/mai-cache/tree/develop",
+                "issues": "https://github.com/maithemewp/mai-cache/issues"
+            },
+            "install-path": "../maithemewp/mai-cache"
+        },
+        {
             "name": "mockery/mockery",
             "version": "1.6.12",
             "version_normalized": "1.6.12.0",
