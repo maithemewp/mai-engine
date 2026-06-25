@@ -38,34 +38,7 @@ add_action( 'update_option_mai-engine', 'mai_flush_customizer_transients' );
  * @return void
  */
 function mai_flush_customizer_transients() {
-	$transients = [
-		'mai_dynamic_css',
-		'mai_dynamic_fonts',
-		'mai_classic_editor_styles',
-	];
-	foreach ( $transients as $transient ) {
-		delete_transient( $transient );
-	}
-}
-
-add_action( 'save_post', 'mai_save_post_flush_customizer_transients', 999, 3 );
-/**
- * Flush transients when saving/updating posts.
- *
- * @since 2.21.0
- *
- * @param int     $post_id Post ID.
- * @param WP_Post $post    Post object.
- * @param bool    $update  Whether this is an existing post being updated.
- *
- * @return void
- */
-function mai_save_post_flush_customizer_transients( $post_id, $post, $update ) {
-	if ( wp_is_post_revision( $post_id ) ) {
-		return;
-	}
-
-	mai_flush_customizer_transients();
+	mai_cache( 'css' )->flush();
 }
 
 // For testing.
@@ -96,13 +69,12 @@ function mai_add_kirki_css( $css ) {
 	// 	return $css;
 	// }
 
-	$transient      = 'mai_dynamic_css';
 	$admin          = did_action( 'wp_head' ); // This took a while to figure out, but this filter/css is only run on wp_head on front end. Using `is_admin()` doesn't work.
 	$ajax           = function_exists( 'wp_doing_ajax' ) && wp_doing_ajax();
 	$preview        = is_customize_preview();
 	$use_transients = ! ( $admin || $ajax || $preview );
 
-	if ( $use_transients && $cached_css = get_transient( $transient ) ) {
+	if ( $use_transients && $cached_css = mai_cache( 'css' )->get( 'dynamic_css' ) ) {
 		return $cached_css;
 	}
 
@@ -121,7 +93,7 @@ function mai_add_kirki_css( $css ) {
 	$css = mai_add_extra_custom_properties( $css );
 
 	if ( $use_transients ) {
-		set_transient( $transient, $css, HOUR_IN_SECONDS );
+		mai_cache( 'css' )->set( 'dynamic_css', $css, HOUR_IN_SECONDS );
 	}
 
 	// $has_run = true;
@@ -155,12 +127,11 @@ function mai_add_kirki_fonts( $fonts ) {
 		return $fonts;
 	}
 
-	$transient = 'mai_dynamic_fonts';
-	$admin     = is_admin();
-	$ajax      = wp_doing_ajax();
-	$preview   = is_customize_preview();
+	$admin   = is_admin();
+	$ajax    = wp_doing_ajax();
+	$preview = is_customize_preview();
 
-	if ( ! ( $admin || $ajax || $preview ) && $cached_fonts = get_transient( $transient ) ) {
+	if ( ! ( $admin || $ajax || $preview ) && $cached_fonts = mai_cache( 'css' )->get( 'dynamic_fonts' ) ) {
 		return $cached_fonts;
 	}
 
@@ -173,7 +144,7 @@ function mai_add_kirki_fonts( $fonts ) {
 	}
 
 	if ( ! ( $admin || $ajax || $preview ) ) {
-		set_transient( $transient, $fonts, HOUR_IN_SECONDS );
+		mai_cache( 'css' )->set( 'dynamic_fonts', $fonts, HOUR_IN_SECONDS );
 	}
 
 	return $fonts;
@@ -650,8 +621,7 @@ add_action( 'wp_ajax_mai_classic_editor_styles',        'mai_do_classic_editor_s
  * @return void
  */
 function mai_do_classic_editor_styles() {
-	$transient = 'mai_classic_editor_styles';
-	$css       = get_transient( $transient );
+	$css       = mai_cache( 'css' )->get( 'classic_editor_styles' );
 
 	// If transient isn't set.
 	if ( false === $css ) {
@@ -703,7 +673,7 @@ function mai_do_classic_editor_styles() {
 
 		// Cache a clean result for the full hour. After a failure, cache only briefly so a
 		// transient Kirki error recovers on its own instead of serving broken CSS for an hour.
-		set_transient( $transient, $css, $error ? MINUTE_IN_SECONDS : HOUR_IN_SECONDS );
+		mai_cache( 'css' )->set( 'classic_editor_styles', $css, $error ? MINUTE_IN_SECONDS : HOUR_IN_SECONDS );
 	}
 
 	// Always answer with a valid (possibly empty) stylesheet and the right content type, so
