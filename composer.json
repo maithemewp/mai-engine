@@ -67,7 +67,7 @@
     "phpcs": "vendor/bin/phpcs --standard=WordPress --extensions=php -p -s lib config",
     "phpcbf": "vendor/bin/phpcbf --standard=WordPress --extensions=php -p lib config",
     "fixer": "vendor/bin/php-cs-fixer fix lib/ && vendor/bin/php-cs-fixer fix config/",
-    "test-unit": "composer dump && vendor/bin/phpunit --testsuite unit --color=always",
+    "test-unit": "composer dump && php -d auto_prepend_file=tests/phpunit/define-abspath.php vendor/bin/phpunit --testsuite unit --color=always",
     "test-integration": "composer dump && vendor/bin/phpunit --testsuite integration --configuration tests/phpunit/integration/phpunit.xml.dist --color=always"
   }
 }
