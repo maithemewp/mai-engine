@@ -73,7 +73,7 @@ namespace BizBudding\MaiEngine\Tests\Unit;
 
 use BizBudding\MaiEngine\Tests\TestCase;
 
-require_once dirname( __DIR__, 2 ) . '/lib/customize/css-cache.php';
+require_once dirname( __DIR__, 3 ) . '/lib/customize/css-cache.php';
 
 final class MergeKirkiCssTest extends TestCase {
 
