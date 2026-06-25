@@ -113,7 +113,25 @@ class Mai_Post_Grid_Query_Optimizer {
 	}
 
 	public function add_orderby_tiebreaker( string $orderby, $query ): string {
-		return $orderby;
+		$tt_ids = $query->query_vars[ self::TT_IDS_VAR ] ?? null;
+
+		if ( ! is_array( $tt_ids ) || ! $tt_ids ) {
+			return $orderby;
+		}
+
+		global $wpdb;
+
+		// Already has an ID tiebreaker, or not ordering by date: leave it.
+		if ( str_contains( $orderby, "{$wpdb->posts}.ID" ) ) {
+			return $orderby;
+		}
+
+		if ( ! preg_match( '/' . preg_quote( $wpdb->posts, '/' ) . '\.post_date\s+(ASC|DESC)/i', $orderby, $m ) ) {
+			return $orderby;
+		}
+
+		// Match the primary direction so it stays a single index scan.
+		return $orderby . ", {$wpdb->posts}.ID " . strtoupper( $m[1] );
 	}
 
 	/**
