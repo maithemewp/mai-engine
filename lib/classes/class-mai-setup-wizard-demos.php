@@ -190,6 +190,10 @@ class Mai_Setup_Wizard_Demos extends Mai_Setup_Wizard_Service_Provider {
 			'h' => 300,
 		];
 		$src       = 'https://wordpress.com/mshots/v1/' . $url . '?' . http_build_query( $params, '', '&' );
+		// Intentionally a raw transient, not mai_cache: these mShots demo screenshots are an
+		// expensive external resource that rarely changes, so they are kept out of the
+		// flushable mai_cache layer and simply age out by the DAY TTL, which avoids needless
+		// re-fetches from wordpress.com/mshots.
 		$cache_key = md5( $src );
 		$data_uri  = get_transient( $cache_key );
 

@@ -86,9 +86,7 @@ function mai_get_icon_choices( $style ) {
 		return $cache[ $style ];
 	}
 
-	$transient = 'mai_icon_choices_' . $style;
-
-	if ( false === ( $choices = get_transient( $transient ) ) ) {
+	if ( false === ( $choices = mai_cache( 'icons' )->get( "choices_{$style}" ) ) ) {
 		$choices = [];
 		$dir     = mai_get_icons_dir();
 		$url     = mai_get_icons_url();
@@ -110,8 +108,8 @@ function mai_get_icon_choices( $style ) {
 			);
 		}
 
-		// Set transient, and expire after 1 hour.
-		set_transient( $transient, $choices, 1 * HOUR_IN_SECONDS );
+		// Cache for 1 hour.
+		mai_cache( 'icons' )->set( "choices_{$style}", $choices, 1 * HOUR_IN_SECONDS );
 	}
 
 	// Set static caching.
