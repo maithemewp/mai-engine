@@ -94,6 +94,21 @@ class Mai_Post_Grid_Query_Optimizer {
 	}
 
 	public function add_subquery_where( string $where, $query ): string {
+		$tt_ids = $query->query_vars[ self::TT_IDS_VAR ] ?? null;
+
+		if ( ! is_array( $tt_ids ) || ! $tt_ids ) {
+			return $where;
+		}
+
+		global $wpdb;
+		$ids = implode( ',', array_map( 'intval', $tt_ids ) );
+
+		// Correlated scalar subquery. Not eligible for the semi-join transform, so MySQL
+		// keeps it correlated, drives from posts in date order, and stops at LIMIT.
+		$where .= " AND ( (SELECT mtr.object_id FROM {$wpdb->term_relationships} mtr"
+			. " WHERE mtr.object_id = {$wpdb->posts}.ID AND mtr.term_taxonomy_id IN ({$ids})"
+			. ' LIMIT 1) IS NOT NULL )';
+
 		return $where;
 	}
 
