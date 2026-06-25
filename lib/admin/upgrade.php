@@ -36,9 +36,7 @@ function mai_upgrade_complete( $upgrader_object, $options ) {
 
 	foreach( $options['plugins'] as $plugin ) {
 		if ( $current_plugin !== $plugin ) {
-			mai_flush_customizer_transients();
-			delete_transient( 'mai_template_parts' );
-			delete_transient( 'mai_classic_editor_styles' );
+			mai_cache()->flush();
 		}
 	}
 }
@@ -132,8 +130,7 @@ function mai_upgrade_2_11_0() {
 	$notice = '';
 
 	if ( $success ) {
-		delete_transient( 'mai_template_parts' );
-		delete_transient( 'mai_demo_template_parts' );
+		mai_cache()->flush();
 		flush_rewrite_rules( false );
 		$text   = __( 'Content Areas successfully updated for compatibility with WP 5.7+.', 'mai-engine' );
 		$notice = sprintf( '<div class="notice notice-success is-dismissable"><p>%s</p></div>', $text );
