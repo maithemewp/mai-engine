@@ -29,7 +29,7 @@
 - Modify: `composer.json` (add `autoload-dev` for the test base class)
 
 **Interfaces:**
-- Produces: `Mai\Engine\Tests\TestCase` base class extending `PHPUnit\Framework\TestCase`, wiring brain/monkey `setUp`/`tearDown`. All later unit tests extend it.
+- Produces: `BizBudding\MaiEngine\Tests\TestCase` base class extending `PHPUnit\Framework\TestCase`, wiring brain/monkey `setUp`/`tearDown`. All later unit tests extend it.
 
 - [ ] **Step 1: Create the unit bootstrap**
 
@@ -64,7 +64,7 @@ spl_autoload_register( function ( string $class ): void {
 ```php
 <?php
 // tests/TestCase.php
-namespace Mai\Engine\Tests;
+namespace BizBudding\MaiEngine\Tests;
 
 use Brain\Monkey;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
@@ -87,9 +87,9 @@ class TestCase extends PHPUnitTestCase {
 ```php
 <?php
 // tests/phpunit/unit/SmokeTest.php
-namespace Mai\Engine\Tests\Unit;
+namespace BizBudding\MaiEngine\Tests\Unit;
 
-use Mai\Engine\Tests\TestCase;
+use BizBudding\MaiEngine\Tests\TestCase;
 
 final class SmokeTest extends TestCase {
 	public function test_harness_runs(): void {
@@ -98,15 +98,20 @@ final class SmokeTest extends TestCase {
 }
 ```
 
-- [ ] **Step 4: Add autoload-dev to composer.json**
+- [ ] **Step 4: Fix the autoload-dev path in composer.json**
 
-In `composer.json`, add under the top-level object (sibling of `autoload`):
+`composer.json` already has an `autoload-dev` block. Do not add a second one. Change the existing Unit entry's path from `tests/php/unit/` to `tests/phpunit/unit/` so it matches the layout `phpunit.xml.dist` actually runs; leave the Integration entry unchanged:
 
 ```json
 "autoload-dev": {
-	"psr-4": { "Mai\\Engine\\Tests\\": "tests/" }
+	"psr-4": {
+		"BizBudding\\MaiEngine\\Tests\\Unit\\": "tests/phpunit/unit/",
+		"BizBudding\\MaiEngine\\Tests\\Integration\\": "tests/php/integration/"
+	}
 }
 ```
+
+The `TestCase` base loads via the bootstrap's `require_once`, so it needs no PSR-4 entry.
 
 - [ ] **Step 5: Run the unit suite**
 
@@ -137,11 +142,11 @@ git commit -m "test: add brain/monkey unit harness for mai-engine"
 ```php
 <?php
 // tests/phpunit/unit/PostGridQueryOptimizerRegisterTest.php
-namespace Mai\Engine\Tests\Unit;
+namespace BizBudding\MaiEngine\Tests\Unit;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
-use Mai\Engine\Tests\TestCase;
+use BizBudding\MaiEngine\Tests\TestCase;
 use Mai_Post_Grid_Query_Optimizer;
 
 final class PostGridQueryOptimizerRegisterTest extends TestCase {
@@ -263,9 +268,9 @@ git commit -m "feat: scaffold Mai_Post_Grid_Query_Optimizer with kill-switch"
 ```php
 <?php
 // tests/phpunit/unit/PostGridQueryOptimizerClassifyTest.php
-namespace Mai\Engine\Tests\Unit;
+namespace BizBudding\MaiEngine\Tests\Unit;
 
-use Mai\Engine\Tests\TestCase;
+use BizBudding\MaiEngine\Tests\TestCase;
 use Mai_Post_Grid_Query_Optimizer;
 use ReflectionMethod;
 
@@ -391,10 +396,10 @@ git commit -m "feat: classify simple single-IN grid tax queries"
 ```php
 <?php
 // tests/phpunit/unit/PostGridQueryOptimizerArgsTest.php
-namespace Mai\Engine\Tests\Unit;
+namespace BizBudding\MaiEngine\Tests\Unit;
 
 use Brain\Monkey\Functions;
-use Mai\Engine\Tests\TestCase;
+use BizBudding\MaiEngine\Tests\TestCase;
 use Mai_Post_Grid_Query_Optimizer;
 
 final class PostGridQueryOptimizerArgsTest extends TestCase {
@@ -559,9 +564,9 @@ git commit -m "feat: resolve tt_ids and rewrite grid args to drop the tax JOIN"
 ```php
 <?php
 // tests/phpunit/unit/PostGridQueryOptimizerWhereTest.php
-namespace Mai\Engine\Tests\Unit;
+namespace BizBudding\MaiEngine\Tests\Unit;
 
-use Mai\Engine\Tests\TestCase;
+use BizBudding\MaiEngine\Tests\TestCase;
 use Mai_Post_Grid_Query_Optimizer;
 
 final class PostGridQueryOptimizerWhereTest extends TestCase {
@@ -654,9 +659,9 @@ git commit -m "feat: inject correlated scalar subquery for grid term filter"
 ```php
 <?php
 // tests/phpunit/unit/PostGridQueryOptimizerOrderbyTest.php
-namespace Mai\Engine\Tests\Unit;
+namespace BizBudding\MaiEngine\Tests\Unit;
 
-use Mai\Engine\Tests\TestCase;
+use BizBudding\MaiEngine\Tests\TestCase;
 use Mai_Post_Grid_Query_Optimizer;
 
 final class PostGridQueryOptimizerOrderbyTest extends TestCase {
