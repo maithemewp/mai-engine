@@ -145,11 +145,11 @@ function mai_add_kirki_fonts( $fonts ) {
 		return $fonts;
 	}
 
-	$admin   = is_admin();
-	$ajax    = wp_doing_ajax();
-	$preview = is_customize_preview();
+	// The customizer preview reflects live, unsaved settings; everywhere else the font
+	// set is a pure function of saved settings, so it is safe to cache and reuse.
+	$skip_cache = is_customize_preview();
 
-	if ( ! ( $admin || $ajax || $preview ) && $cached_fonts = mai_cache( 'css' )->get( 'dynamic_fonts' ) ) {
+	if ( ! $skip_cache && $cached_fonts = mai_cache( 'css' )->get( 'dynamic_fonts' ) ) {
 		return $cached_fonts;
 	}
 
@@ -161,8 +161,8 @@ function mai_add_kirki_fonts( $fonts ) {
 		$fonts[ $font_family ] = array_unique( $fonts[ $font_family ] );
 	}
 
-	if ( ! ( $admin || $ajax || $preview ) ) {
-		mai_cache( 'css' )->set( 'dynamic_fonts', $fonts, HOUR_IN_SECONDS );
+	if ( ! $skip_cache ) {
+		mai_cache( 'css' )->set( 'dynamic_fonts', $fonts, 12 * HOUR_IN_SECONDS );
 	}
 
 	return $fonts;
