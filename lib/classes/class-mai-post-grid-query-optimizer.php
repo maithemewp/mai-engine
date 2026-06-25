@@ -35,7 +35,62 @@ class Mai_Post_Grid_Query_Optimizer {
 	}
 
 	public function maybe_optimize( array $query_args, array $args ): array {
+		// Broad win: drop SQL_CALC_FOUND_ROWS for every grid that does not need a total
+		// (plain "latest", post__not_in, tax, all of them). The count pass forces a full
+		// scan of all matching posts ignoring LIMIT, and almost no grid needs it. Gated by
+		// the opt-in so load-more and numbered pagination can keep the count.
+		if ( ! apply_filters( 'mai_post_grid_found_rows', false, $args ) ) {
+			$query_args['no_found_rows'] = true;
+		}
+
+		// Targeted win: rewrite the simple single-IN tax filter into a scalar subquery.
+		$clause = $this->get_simple_in_clause( $query_args );
+
+		if ( null === $clause ) {
+			return $query_args; // not the simple-IN shape; tax stays stock, no_found_rows still applied above.
+		}
+
+		$tt_ids = $this->resolve_tt_ids( $clause['taxonomy'], (array) $clause['terms'] );
+
+		if ( ! $tt_ids ) {
+			return $query_args; // could not resolve; tax stays stock.
+		}
+
+		// Remove the tax_query so WordPress emits no JOIN or GROUP BY; we add our own clause.
+		unset( $query_args['tax_query'] );
+		$query_args[ self::TT_IDS_VAR ] = $tt_ids;
+
 		return $query_args;
+	}
+
+	/**
+	 * Resolve term ids to term_taxonomy_ids, including child terms, mirroring the
+	 * WP_Tax_Query include_children default for IN queries.
+	 *
+	 * @return int[]
+	 */
+	private function resolve_tt_ids( string $taxonomy, array $term_ids ): array {
+		$term_ids = array_map( 'intval', $term_ids );
+
+		if ( is_taxonomy_hierarchical( $taxonomy ) ) {
+			foreach ( $term_ids as $term_id ) {
+				$children = get_term_children( $term_id, $taxonomy );
+				if ( ! is_wp_error( $children ) ) {
+					$term_ids = array_merge( $term_ids, array_map( 'intval', $children ) );
+				}
+			}
+			$term_ids = array_values( array_unique( $term_ids ) );
+		}
+
+		$tt_ids = [];
+		foreach ( $term_ids as $term_id ) {
+			$term = get_term( $term_id, $taxonomy );
+			if ( $term && ! is_wp_error( $term ) ) {
+				$tt_ids[] = (int) $term->term_taxonomy_id;
+			}
+		}
+
+		return array_values( array_unique( $tt_ids ) );
 	}
 
 	public function add_subquery_where( string $where, $query ): string {
