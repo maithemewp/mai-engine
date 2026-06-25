@@ -33,7 +33,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "BizBudding\\MaiEngine\\Tests\\Unit\\": "tests/php/unit/",
+      "BizBudding\\MaiEngine\\Tests\\Unit\\": "tests/phpunit/unit/",
       "BizBudding\\MaiEngine\\Tests\\Integration\\": "tests/php/integration/"
     }
   },
