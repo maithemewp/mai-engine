@@ -35,6 +35,13 @@ class Mai_Post_Grid_Query_Optimizer {
 	}
 
 	public function maybe_optimize( array $query_args ): array {
+		// ElasticPress (or any handler that offloads the query) runs it elsewhere and
+		// ignores our posts_where subquery, so stripping the tax filter would leave it
+		// querying with no taxonomy constraint. Leave the query untouched for it to handle.
+		if ( ! empty( $query_args['ep_integrate'] ) ) {
+			return $query_args;
+		}
+
 		// Rewrite the simple single-IN tax filter into a correlated scalar subquery.
 		$clause = $this->get_simple_in_clause( $query_args );
 

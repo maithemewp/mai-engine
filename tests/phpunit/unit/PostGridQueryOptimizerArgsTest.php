@@ -44,4 +44,19 @@ final class PostGridQueryOptimizerArgsTest extends TestCase {
 
 		$this->assertSame( $args_in, $out );
 	}
+
+	public function test_ep_integrate_query_is_untouched(): void {
+		$args_in = [
+			'post_type'    => 'post',
+			'ep_integrate' => true,
+			'tax_query'    => [ [ 'taxonomy' => 'category', 'field' => 'id', 'terms' => [ 5 ], 'operator' => 'IN' ] ],
+		];
+
+		$out = ( new Mai_Post_Grid_Query_Optimizer() )->maybe_optimize( $args_in );
+
+		// ElasticPress handles the query; we must not strip the tax filter for it.
+		$this->assertSame( $args_in, $out );
+		$this->assertArrayHasKey( 'tax_query', $out );
+		$this->assertArrayNotHasKey( 'mai_post_grid_tt_ids', $out );
+	}
 }
