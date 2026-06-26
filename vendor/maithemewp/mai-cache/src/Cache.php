@@ -186,6 +186,129 @@ class Cache {
 	}
 
 	/**
+	 * Object-cache group for single-flight locks (mai-cache owned, mai-branded).
+	 *
+	 * @since 0.3.0
+	 */
+	private const LOCK_GROUP = 'mai_cache_lock';
+
+	/**
+	 * Composite current version token for one or more consumer-defined scopes.
+	 *
+	 * Each scope's token is stored as a value (minted lazily), so rotating it does NOT
+	 * change the keys of cached results: the prior value stays readable for
+	 * stale-while-revalidate. Scope strings are the consumer's domain (e.g. post types).
+	 *
+	 * @since 0.3.0
+	 *
+	 * @param string[] $scopes Scope keys.
+	 *
+	 * @return string
+	 */
+	public function version( array $scopes ): string {
+		$scopes = $scopes ? $scopes : [ '' ];
+		sort( $scopes );
+
+		$parts = [];
+		foreach ( $scopes as $scope ) {
+			$parts[] = $this->scope_version( (string) $scope );
+		}
+
+		return implode( '.', $parts );
+	}
+
+	/**
+	 * Read (and lazily mint) one scope's stored version token.
+	 *
+	 * @since 0.3.0
+	 *
+	 * @param string $scope Scope key.
+	 *
+	 * @return string
+	 */
+	private function scope_version( string $scope ): string {
+		$key   = '__v_' . $scope;
+		$token = $this->get( $key );
+
+		if ( ! is_string( $token ) || '' === $token ) {
+			$token = self::new_token();
+			$this->set( $key, $token, 0 );
+		}
+
+		return $token;
+	}
+
+	/**
+	 * Rotate one scope's version token. Cached results keep their stable keys and become
+	 * stale (still readable) rather than orphaned.
+	 *
+	 * @since 0.3.0
+	 *
+	 * @param string $scope Scope key.
+	 *
+	 * @return bool
+	 */
+	public function bump( string $scope ): bool {
+		return $this->set( '__v_' . $scope, self::new_token(), 0 );
+	}
+
+	/**
+	 * Read a versioned value. Null when cold; otherwise the value plus whether the stored
+	 * version stamp matches the supplied current version (fresh) or not (stale).
+	 *
+	 * @since 0.3.0
+	 *
+	 * @param string $key     Cache key.
+	 * @param string $version Current composite version (from version()).
+	 *
+	 * @return array{value:mixed,fresh:bool}|null
+	 */
+	public function read_swr( string $key, string $version ): ?array {
+		$envelope = $this->get( $key );
+
+		if ( ! is_array( $envelope ) || ! array_key_exists( '_v', $envelope ) ) {
+			return null;
+		}
+
+		return [
+			'value' => $envelope['value'] ?? null,
+			'fresh' => hash_equals( (string) $envelope['_v'], $version ),
+		];
+	}
+
+	/**
+	 * Store a value with the current version stamped into the envelope.
+	 *
+	 * @since 0.3.0
+	 *
+	 * @param string $key     Cache key.
+	 * @param mixed  $value   Value.
+	 * @param string $version Current composite version.
+	 * @param int    $ttl     TTL in seconds.
+	 *
+	 * @return bool
+	 */
+	public function write_swr( string $key, mixed $value, string $version, int $ttl ): bool {
+		return $this->set( $key, [ '_v' => $version, 'value' => $value ], $ttl );
+	}
+
+	/**
+	 * Single-flight lock: true for the one caller that should recompute a stale/cold key.
+	 * Atomic only with a persistent object cache; degrades to per-request otherwise
+	 * (acceptable, since stampedes only matter on high-traffic Redis sites).
+	 *
+	 * @since 0.3.0
+	 *
+	 * @param string $key Lock key (typically the cache key).
+	 * @param int    $ttl Lock TTL in seconds.
+	 *
+	 * @return bool
+	 */
+	public function lock( string $key, int $ttl = 30 ): bool {
+		return wp_cache_add( $this->key( 'lock_' . $key ), 1, self::LOCK_GROUP, $ttl );
+	}
+
+	/**
 	 * Build the fully-namespaced key: prefix, prefix version token, optional
 	 * group + its version token, then the user key. Rotating a token (flush)
 	 * changes every key under that scope, so old entries become unreachable.
