@@ -282,6 +282,7 @@ function mai_load_files() {
 		// Functions.
 		'functions/autoload',
 		'functions/cache',
+		'functions/grid-cache',
 		'functions/colors',
 		'functions/columns',
 		'functions/customizer',
