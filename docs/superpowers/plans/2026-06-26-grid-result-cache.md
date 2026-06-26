@@ -842,7 +842,11 @@ git commit -m "feat(grid-cache): opt grids into the cache; disable single-IN opt
 
 ### Task 7: On-site verification (eurweb.test, totalprosports.test, seeded sportsdataio)
 
-No unit tests; each check is a hard gate run with WP-CLI. Pipe wp-cli through `grep -viE 'Deprecated|react/promise|_load_textdomain|version 6.7.0|wp-migrate-db'`. Environments:
+No unit tests; each check is a hard gate run with WP-CLI. Pipe wp-cli through `grep -viE 'Deprecated|react/promise|_load_textdomain|version 6.7.0|wp-migrate-db'`.
+
+**Prerequisite on every test site:** mai-cache's `can_cache()` bypasses when `SCRIPT_DEBUG` is true (intentional — it stays out of the way during debugging, and production has it false). Dev `.test` sites usually have it true, which silently disables the cache. Before verifying, set it off: `wp --path=<site> config set SCRIPT_DEBUG false --raw`, and restore it afterward (`... config set SCRIPT_DEBUG true --raw`). eurweb.test has already been set to false for this work (was `1`).
+
+Environments:
 - **eurweb.test** (Redis engaged, real prod data): with-Redis gates — hit/miss, invalidation, equivalence, SWR/stampede, cold-miss.
 - **totalprosports.test** (large, no Redis): the no-Redis `wp_options` persistence path + a second equivalence dataset.
 - **sportsdataio** (seed posts/categories/grids first): controlled invalidation precision + concurrency with no prod noise.
