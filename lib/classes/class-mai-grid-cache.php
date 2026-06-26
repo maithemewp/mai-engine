@@ -147,7 +147,7 @@ class Mai_Grid_Cache {
 			? (int) ceil( $query->found_posts / $query->query_vars['posts_per_page'] )
 			: 1;
 
-		return $this->hydrate( array_map( 'intval', $value['ids'] ) );
+		return $this->hydrate( array_map( 'intval', $value['ids'] ), $query->query_vars );
 	}
 
 	/**
@@ -180,18 +180,58 @@ class Mai_Grid_Cache {
 	/**
 	 * Hydrate post objects from cached IDs in stored order, with no query.
 	 *
-	 * @param int[] $ids Ordered post IDs.
+	 * A cached id may point to a post whose status changed after it was cached (published then
+	 * moved to draft, private, or pending). Because stale entries are served while a refresh
+	 * runs, drop any post that no longer satisfies the query's explicit post_status so a stale
+	 * grid can only shrink, never expose content that is no longer public. Hard-deleted ids
+	 * resolve to null via get_post and fall out the same array_filter.
+	 *
+	 * @param int[] $ids        Ordered post IDs.
+	 * @param array $query_vars The query vars, for the post_status guard.
 	 *
 	 * @return WP_Post[]
 	 */
-	public function hydrate( array $ids ): array {
+	public function hydrate( array $ids, array $query_vars = [] ): array {
 		if ( ! $ids ) {
 			return [];
 		}
 
 		_prime_post_caches( $ids, true, true );
 
-		return array_values( array_filter( array_map( 'get_post', $ids ) ) );
+		$posts   = array_filter( array_map( 'get_post', $ids ) );
+		$allowed = $this->allowed_statuses( $query_vars );
+
+		if ( $allowed ) {
+			$posts = array_filter(
+				$posts,
+				static function ( $post ) use ( $allowed ) {
+					return in_array( $post->post_status, $allowed, true );
+				}
+			);
+		}
+
+		return array_values( $posts );
+	}
+
+	/**
+	 * The post statuses a hit may return, taken from the query's explicit post_status.
+	 *
+	 * An empty status or 'any' means do not filter: the caller opted into whatever the stored
+	 * ids resolve to. Mai_Grid always sets post_status explicitly (publish, or publish+private
+	 * for editors), so real grids are always guarded.
+	 *
+	 * @param array $query_vars The query vars.
+	 *
+	 * @return string[] Allowed statuses, or [] to skip the guard.
+	 */
+	private function allowed_statuses( array $query_vars ): array {
+		$status = array_filter( (array) ( $query_vars['post_status'] ?? '' ) );
+
+		if ( ! $status || in_array( 'any', $status, true ) ) {
+			return [];
+		}
+
+		return $status;
 	}
 
 	/**
