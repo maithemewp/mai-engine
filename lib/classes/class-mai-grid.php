@@ -571,6 +571,10 @@ class Mai_Grid {
 			}
 		}
 
+		// Opt this grid into the result cache. Mai_Grid_Cache::pre_query re-checks
+		// cacheability and honors the `mai_post_grid_cache` filter, so this is opt-in only.
+		$query_args['mai_cache'] = true;
+
 		return apply_filters( 'mai_post_grid_query_args', $query_args, $this->args );
 	}
 

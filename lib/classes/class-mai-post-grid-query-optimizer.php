@@ -25,7 +25,11 @@ class Mai_Post_Grid_Query_Optimizer {
 	 * Register hooks, unless the master switch is off.
 	 */
 	public function register(): void {
-		if ( ! apply_filters( 'mai_post_grid_optimize_query', true ) ) {
+		// Off by default: the result cache makes warm hits free for every shape, so the
+		// optimizer (a cold-path-only accelerator that is unvalidated and fails dangerously
+		// on query offloaders) is opt-in. Enable with
+		// add_filter( 'mai_post_grid_optimize_query', '__return_true' ).
+		if ( ! apply_filters( 'mai_post_grid_optimize_query', false ) ) {
 			return;
 		}
 

@@ -9,7 +9,9 @@ use Mai_Post_Grid_Query_Optimizer;
 
 final class PostGridQueryOptimizerRegisterTest extends TestCase {
 	public function test_register_adds_filters_when_enabled(): void {
-		Functions\when( 'apply_filters' )->alias( fn( $tag, $value ) => $value ); // optimize_query stays true
+		Functions\when( 'apply_filters' )->alias(
+			fn( $tag, $value ) => 'mai_post_grid_optimize_query' === $tag ? true : $value
+		); // force optimize_query on to test the enabled path
 
 		( new Mai_Post_Grid_Query_Optimizer() )->register();
 
