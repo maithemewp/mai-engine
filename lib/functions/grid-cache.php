@@ -24,7 +24,6 @@ function mai_register_grid_cache() {
 
 	add_action( 'transition_post_status', [ $cache, 'on_transition' ], 10, 3 );
 	add_action( 'deleted_post', [ $cache, 'on_delete' ], 10, 2 );
-	add_action( 'save_post', [ $cache, 'on_save' ], 10, 2 );
 
 	if ( defined( 'WP_CLI' ) && WP_CLI && class_exists( 'WP_CLI' ) ) {
 		WP_CLI::add_hook( 'after_invoke:cache flush', [ $cache, 'flush_all' ] );

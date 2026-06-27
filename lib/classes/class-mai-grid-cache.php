@@ -71,10 +71,13 @@ class Mai_Grid_Cache {
 	/**
 	 * Build a stable cache key from the query vars and final SQL.
 	 *
-	 * The volatile-var denylist and the post_type / post__in normalization below are
-	 * copied from WordPress core's WP_Query::generate_cache_key() (wp-includes/class-wp-query.php,
-	 * verified against WP 6.x/7.0). Kept in sync by hand: if core changes how it derives its
-	 * query cache key, re-check this method against it to avoid drift.
+	 * Mirrors WordPress core's WP_Query cache-key derivation (wp-includes/class-wp-query.php,
+	 * verified against WP 6.x/7.0): the volatile-var denylist plus the post_type / post_status /
+	 * post__in / orderby normalization match generate_cache_key(), and the SELECT field list is
+	 * normalized out of the SQL the way get_posts() does before hashing, so a split
+	 * (SELECT wp_posts.ID) and a full (SELECT wp_posts.*) build of the same grid share one key.
+	 * Kept in sync by hand: if core changes how it derives its query cache key, re-check this
+	 * method against it to avoid drift.
 	 *
 	 * @param array  $query_vars The WP_Query vars.
 	 * @param string $sql        The final SQL request.
@@ -89,6 +92,13 @@ class Mai_Grid_Cache {
 		$query_vars['post_type'] = (array) ( $query_vars['post_type'] ?? 'post' );
 		sort( $query_vars['post_type'] );
 
+		$query_vars['post_status'] = (array) ( $query_vars['post_status'] ?? '' );
+		sort( $query_vars['post_status'] );
+
+		if ( empty( $query_vars['orderby'] ) ) {
+			$query_vars['orderby'] = 'date';
+		}
+
 		foreach ( self::SORTABLE as $key ) {
 			if ( isset( $query_vars[ $key ] ) && is_array( $query_vars[ $key ] ) ) {
 				$query_vars[ $key ] = array_values( array_unique( array_map( 'intval', $query_vars[ $key ] ) ) );
@@ -97,6 +107,11 @@ class Mai_Grid_Cache {
 		}
 
 		ksort( $query_vars );
+
+		// Normalize the SELECT field list out of the SQL: a split (SELECT wp_posts.ID) and a full
+		// (SELECT wp_posts.*) build of the same grid differ only by fields, which do not change the
+		// result. A regex miss leaves the SQL unchanged (at worst a duplicate entry, never wrong).
+		$sql = preg_replace( '/^(SELECT\s+(?:SQL_CALC_FOUND_ROWS\s+)?).*?(\s+FROM\s+)/is', '$1FIELDS$2', $sql, 1 );
 
 		return md5( serialize( $query_vars ) . $sql );
 	}
@@ -332,7 +347,10 @@ class Mai_Grid_Cache {
 	}
 
 	/**
-	 * Rotate a post type's token on a publish-affecting transition (publish/unpublish/trash).
+	 * Rotate a post type's token on any publish-affecting change. transition_post_status fires on
+	 * every save, so this also covers a live edit of an already-published post (publish->publish),
+	 * publish/unpublish/trash, and a scheduled post going live. Revisions and autosaves transition
+	 * inherit->inherit (neither status is publish) and so are skipped by the first guard.
 	 *
 	 * @param string  $new_status New status.
 	 * @param string  $old_status Old status.
@@ -360,24 +378,6 @@ class Mai_Grid_Cache {
 	 */
 	public function on_delete( $post_id, $post ) {
 		if ( $post && 'publish' === $post->post_status && 'revision' !== $post->post_type ) {
-			mai_cache( self::GROUP )->bump( $post->post_type );
-		}
-	}
-
-	/**
-	 * Rotate on a save to an already-published post (live edit). Drafts, autosaves, and
-	 * revisions are excluded.
-	 *
-	 * @param int     $post_id The post ID.
-	 * @param WP_Post $post    The post.
-	 *
-	 * @return void
-	 */
-	public function on_save( $post_id, $post ) {
-		if ( wp_is_post_revision( $post_id ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) ) {
-			return;
-		}
-		if ( 'publish' === $post->post_status && 'revision' !== $post->post_type ) {
 			mai_cache( self::GROUP )->bump( $post->post_type );
 		}
 	}

@@ -27,4 +27,38 @@ final class MaiGridCacheKeyTest extends TestCase {
 			$c->cache_key( [ 'post_type' => 'post', 'my_custom' => 'y' ], 'SELECT 1' )
 		);
 	}
+
+	public function test_post_status_order_does_not_change_the_key(): void {
+		$c = new Mai_Grid_Cache();
+		$this->assertSame(
+			$c->cache_key( [ 'post_type' => 'post', 'post_status' => [ 'publish', 'private' ] ], 'SELECT 1' ),
+			$c->cache_key( [ 'post_type' => 'post', 'post_status' => [ 'private', 'publish' ] ], 'SELECT 1' )
+		);
+	}
+
+	public function test_unset_orderby_matches_explicit_date(): void {
+		$c = new Mai_Grid_Cache();
+		$this->assertSame(
+			$c->cache_key( [ 'post_type' => 'post' ], 'SELECT 1' ),
+			$c->cache_key( [ 'post_type' => 'post', 'orderby' => 'date' ], 'SELECT 1' )
+		);
+	}
+
+	public function test_select_field_list_is_normalized_out(): void {
+		$c     = new Mai_Grid_Cache();
+		$split = 'SELECT wp_posts.ID FROM wp_posts WHERE 1=1 ORDER BY wp_posts.post_date DESC LIMIT 0, 12';
+		$full  = 'SELECT wp_posts.* FROM wp_posts WHERE 1=1 ORDER BY wp_posts.post_date DESC LIMIT 0, 12';
+		$this->assertSame(
+			$c->cache_key( [ 'post_type' => 'post' ], $split ),
+			$c->cache_key( [ 'post_type' => 'post' ], $full )
+		);
+	}
+
+	public function test_where_still_changes_the_key_after_field_normalization(): void {
+		$c = new Mai_Grid_Cache();
+		$this->assertNotSame(
+			$c->cache_key( [ 'post_type' => 'post' ], 'SELECT wp_posts.ID FROM wp_posts WHERE a=1' ),
+			$c->cache_key( [ 'post_type' => 'post' ], 'SELECT wp_posts.* FROM wp_posts WHERE a=2' )
+		);
+	}
 }
