@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || die;
 // this file without booting WP.
 defined( 'HOUR_IN_SECONDS' ) || define( 'HOUR_IN_SECONDS', 3600 );
 
-class Mai_Grid_Cache {
+class Mai_Query_Cache {
 
 	/**
 	 * mai-cache group. Transient mode: Redis when present, wp_options otherwise.

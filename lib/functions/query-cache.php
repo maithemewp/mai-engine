@@ -8,7 +8,7 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-add_action( 'init', 'mai_register_grid_cache' );
+add_action( 'init', 'mai_register_query_cache' );
 /**
  * Registers the grid result cache.
  *
@@ -16,8 +16,8 @@ add_action( 'init', 'mai_register_grid_cache' );
  *
  * @return void
  */
-function mai_register_grid_cache() {
-	$cache = new Mai_Grid_Cache();
+function mai_register_query_cache() {
+	$cache = new Mai_Query_Cache();
 
 	add_filter( 'posts_pre_query', [ $cache, 'pre_query' ], 10, 2 );
 	add_filter( 'the_posts', [ $cache, 'the_posts' ], 10, 2 );
