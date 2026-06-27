@@ -4,6 +4,12 @@ All notable changes to `mai-cache` are documented here.
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: [Semantic Versioning](https://semver.org/).
 
+## [0.3.0] - 2026-06-26
+
+### Added
+
+- Versioned stale-while-revalidate primitive: `version()`, `bump()`, `read_swr()`, `write_swr()`, `lock()`.
+
 ## [0.2.0] - 2026-06-25
 
 ### Added

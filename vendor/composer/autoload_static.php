@@ -280,7 +280,7 @@ class ComposerStaticInit9e67745729d23cd12c1cc70fc3d46e58
         ),
         'BizBudding\\MaiEngine\\Tests\\Unit\\' =>
         array (
-            0 => __DIR__ . '/../..' . '/tests/php/unit',
+            0 => __DIR__ . '/../..' . '/tests/phpunit/unit',
         ),
         'BizBudding\\MaiEngine\\Tests\\Integration\\' =>
         array (

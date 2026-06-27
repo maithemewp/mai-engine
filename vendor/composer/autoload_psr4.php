@@ -49,6 +49,6 @@ return array(
     'Composer\\Installers\\' => array($vendorDir . '/composer/installers/src/Composer/Installers'),
     'Clue\\React\\NDJson\\' => array($vendorDir . '/clue/ndjson-react/src'),
     'Brain\\Monkey\\' => array($vendorDir . '/brain/monkey/src'),
-    'BizBudding\\MaiEngine\\Tests\\Unit\\' => array($baseDir . '/tests/php/unit'),
+    'BizBudding\\MaiEngine\\Tests\\Unit\\' => array($baseDir . '/tests/phpunit/unit'),
     'BizBudding\\MaiEngine\\Tests\\Integration\\' => array($baseDir . '/tests/php/integration'),
 );
