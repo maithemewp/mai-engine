@@ -30,6 +30,23 @@ class Mai_Grid_Cache {
 	private const TTL = 4 * HOUR_IN_SECONDS;
 
 	/**
+	 * Single-flight lock TTL (seconds), filterable via `mai_post_grid_cache_lock_ttl`. Short so a
+	 * winner that dies mid-recompute releases quickly and the next request becomes the new winner.
+	 */
+	private const LOCK_TTL = 5;
+
+	/**
+	 * Default cap (ms) a cold-fill loser waits for the winner before falling back to its own
+	 * query. Filterable via `mai_post_grid_cache_wait_ms`. Cover the typical recompute time.
+	 */
+	private const WAIT_MS = 500;
+
+	/**
+	 * Poll interval (ms) while a cold-fill loser waits on the winner.
+	 */
+	private const POLL_MS = 25;
+
+	/**
 	 * Query vars that do not change which posts are returned, removed before hashing.
 	 * Mirrors WP_Query::generate_cache_key().
 	 */
@@ -133,21 +150,96 @@ class Mai_Grid_Cache {
 		$version = $cache->version( (array) ( $query->query_vars['post_type'] ?? 'post' ) );
 		$hit     = $cache->read_swr( $key, $version );
 
-		// Cold, or a stale entry where we won the single-flight lock: recompute.
-		if ( null === $hit || ( ! $hit['fresh'] && $cache->lock( $key ) ) ) {
+		// Cold key. With single-flight, one request recomputes while concurrent others briefly
+		// wait for it, so a flush/restart does not stampede the DB. Only attempt it where the
+		// lock is atomic (a persistent object cache); otherwise recompute (no worse than uncached).
+		if ( null === $hit ) {
+			if ( $this->use_single_flight() && ! $cache->lock( $key, $this->lock_ttl() ) ) {
+				// Lost the lock: another request is filling. Wait briefly, then serve its result.
+				$value = $this->wait_for_fill( $cache, $key, $version );
+				if ( null !== $value ) {
+					return $this->serve( $query, $value );
+				}
+				// Winner did not deliver in time: fall through and recompute ourselves.
+			}
 			$query->mai_cache_store_key     = $key;
 			$query->mai_cache_store_version = $version;
 			return $posts; // null -> WP runs the real query; the_posts stores it.
 		}
 
+		// Stale entry: the single-flight winner recomputes; everyone else serves the stale value.
+		if ( ! $hit['fresh'] && $cache->lock( $key, $this->lock_ttl() ) ) {
+			$query->mai_cache_store_key     = $key;
+			$query->mai_cache_store_version = $version;
+			return $posts;
+		}
+
 		// Fresh hit, or a stale hit served while another request refreshes.
-		$value                = $hit['value'];
+		return $this->serve( $query, $hit['value'] );
+	}
+
+	/**
+	 * Apply a cached result to the query and hydrate it.
+	 *
+	 * @param WP_Query $query The query.
+	 * @param array    $value Stored value: [ 'ids' => int[], 'found' => int ].
+	 *
+	 * @return WP_Post[]
+	 */
+	private function serve( $query, array $value ): array {
 		$query->found_posts   = (int) ( $value['found'] ?? count( $value['ids'] ) );
 		$query->max_num_pages = ( ( $query->query_vars['posts_per_page'] ?? 0 ) > 0 )
 			? (int) ceil( $query->found_posts / $query->query_vars['posts_per_page'] )
 			: 1;
 
 		return $this->hydrate( array_map( 'intval', $value['ids'] ), $query->query_vars );
+	}
+
+	/**
+	 * Whether to single-flight a cold fill. The lock is only atomic with a persistent object
+	 * cache, and that also confines the brief wait to better-provisioned hosts. Killable via
+	 * `mai_post_grid_cache_single_flight`.
+	 *
+	 * @return bool
+	 */
+	private function use_single_flight(): bool {
+		return wp_using_ext_object_cache() && (bool) apply_filters( 'mai_post_grid_cache_single_flight', true );
+	}
+
+	/**
+	 * Single-flight lock TTL in seconds.
+	 *
+	 * @return int
+	 */
+	private function lock_ttl(): int {
+		return max( 1, (int) apply_filters( 'mai_post_grid_cache_lock_ttl', self::LOCK_TTL ) );
+	}
+
+	/**
+	 * Wait briefly for the single-flight winner to store a fresh result for this key.
+	 *
+	 * Polls the cache up to a bounded cap (`mai_post_grid_cache_wait_ms`). Returns the stored
+	 * value once fresh, or null on timeout so the caller falls back to running the query itself.
+	 *
+	 * @param object $cache   The mai-cache instance.
+	 * @param string $key     Cache key.
+	 * @param string $version Current composite version.
+	 *
+	 * @return array|null
+	 */
+	private function wait_for_fill( $cache, string $key, string $version ): ?array {
+		$cap_ms   = max( 0, (int) apply_filters( 'mai_post_grid_cache_wait_ms', self::WAIT_MS ) );
+		$deadline = microtime( true ) + ( $cap_ms / 1000 );
+
+		while ( microtime( true ) < $deadline ) {
+			usleep( self::POLL_MS * 1000 );
+			$hit = $cache->read_swr( $key, $version );
+			if ( null !== $hit && $hit['fresh'] ) {
+				return $hit['value'];
+			}
+		}
+
+		return null;
 	}
 
 	/**
