@@ -33,7 +33,7 @@ final class MaiQueryCacheSingleFlightTest extends TestCase {
 	public function test_single_flight_kill_switch_filter(): void {
 		Functions\when( 'wp_using_ext_object_cache' )->justReturn( true );
 		Functions\when( 'apply_filters' )->alias(
-			fn( $tag, $value ) => 'mai_post_grid_cache_single_flight' === $tag ? false : $value
+			fn( $tag, $value ) => 'mai_query_cache_single_flight' === $tag ? false : $value
 		);
 		$this->assertFalse( $this->call( new Mai_Query_Cache(), 'use_single_flight' ) );
 	}
@@ -56,7 +56,7 @@ final class MaiQueryCacheSingleFlightTest extends TestCase {
 	public function test_wait_for_fill_times_out_to_null(): void {
 		// Short cap so the timeout path is fast; cache never goes fresh.
 		Functions\when( 'apply_filters' )->alias(
-			fn( $tag, $value ) => 'mai_post_grid_cache_wait_ms' === $tag ? 60 : $value
+			fn( $tag, $value ) => 'mai_query_cache_wait_ms' === $tag ? 60 : $value
 		);
 		$cache = new class {
 			public function read_swr( $key, $version ) {

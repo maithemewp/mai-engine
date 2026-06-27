@@ -25,12 +25,12 @@ class Mai_Query_Cache {
 	private const GROUP = 'grid';
 
 	/**
-	 * Default TTL backstop (filterable per grid via `mai_post_grid_cache_ttl`).
+	 * Default TTL backstop (filterable per grid via `mai_query_cache_ttl`).
 	 */
 	private const TTL = 4 * HOUR_IN_SECONDS;
 
 	/**
-	 * Single-flight lock TTL (seconds), filterable via `mai_post_grid_cache_lock_ttl`. The lock is
+	 * Single-flight lock TTL (seconds), filterable via `mai_query_cache_lock_ttl`. The lock is
 	 * released by TTL expiry only (there is no explicit unlock); once a fill stores, later requests
 	 * read the now-fresh value and never consult the lock. Short so a winner that dies mid-recompute
 	 * releases quickly and the next request becomes the new winner.
@@ -39,7 +39,7 @@ class Mai_Query_Cache {
 
 	/**
 	 * Default cap (ms) a cold-fill loser waits for the winner before falling back to its own
-	 * query. Filterable via `mai_post_grid_cache_wait_ms`. Cover the typical recompute time.
+	 * query. Filterable via `mai_query_cache_wait_ms`. Cover the typical recompute time.
 	 */
 	private const WAIT_MS = 500;
 
@@ -146,7 +146,7 @@ class Mai_Query_Cache {
 			$cacheable = false;
 		}
 
-		return (bool) apply_filters( 'mai_post_grid_cache', $cacheable, $query_vars );
+		return (bool) apply_filters( 'mai_query_cache', $cacheable, $query_vars );
 	}
 
 	/**
@@ -215,12 +215,12 @@ class Mai_Query_Cache {
 	/**
 	 * Whether to single-flight a cold fill. The lock is only atomic with a persistent object
 	 * cache, and that also confines the brief wait to better-provisioned hosts. Killable via
-	 * `mai_post_grid_cache_single_flight`.
+	 * `mai_query_cache_single_flight`.
 	 *
 	 * @return bool
 	 */
 	private function use_single_flight(): bool {
-		return wp_using_ext_object_cache() && (bool) apply_filters( 'mai_post_grid_cache_single_flight', true );
+		return wp_using_ext_object_cache() && (bool) apply_filters( 'mai_query_cache_single_flight', true );
 	}
 
 	/**
@@ -229,13 +229,13 @@ class Mai_Query_Cache {
 	 * @return int
 	 */
 	private function lock_ttl(): int {
-		return max( 1, (int) apply_filters( 'mai_post_grid_cache_lock_ttl', self::LOCK_TTL ) );
+		return max( 1, (int) apply_filters( 'mai_query_cache_lock_ttl', self::LOCK_TTL ) );
 	}
 
 	/**
 	 * Wait briefly for the single-flight winner to store a fresh result for this key.
 	 *
-	 * Polls the cache up to a bounded cap (`mai_post_grid_cache_wait_ms`). Returns the stored
+	 * Polls the cache up to a bounded cap (`mai_query_cache_wait_ms`). Returns the stored
 	 * value once fresh, or null on timeout so the caller falls back to running the query itself.
 	 *
 	 * @param object $cache   The mai-cache instance.
@@ -245,7 +245,7 @@ class Mai_Query_Cache {
 	 * @return array|null
 	 */
 	private function wait_for_fill( $cache, string $key, string $version ): ?array {
-		$cap_ms   = max( 0, (int) apply_filters( 'mai_post_grid_cache_wait_ms', self::WAIT_MS ) );
+		$cap_ms   = max( 0, (int) apply_filters( 'mai_query_cache_wait_ms', self::WAIT_MS ) );
 		$poll_ms  = max( 1, min( self::POLL_MS, $cap_ms ) );
 		$deadline = microtime( true ) + ( $cap_ms / 1000 );
 
@@ -274,7 +274,7 @@ class Mai_Query_Cache {
 			return $posts;
 		}
 
-		$ttl = (int) apply_filters( 'mai_post_grid_cache_ttl', self::TTL, $query->query_vars );
+		$ttl = (int) apply_filters( 'mai_query_cache_ttl', self::TTL, $query->query_vars );
 
 		mai_cache( self::GROUP )->write_swr(
 			$query->mai_cache_store_key,
