@@ -58,6 +58,12 @@ final class MaiGridCacheHydrateTest extends TestCase {
 		$this->assertSame( [ 1, 2 ], $this->ids( $posts ) );
 	}
 
+	public function test_all_status_skips_filter(): void {
+		$this->stub_posts( [ 1 => 'publish', 2 => 'draft' ] );
+		$posts = ( new Mai_Grid_Cache() )->hydrate( [ 1, 2 ], [ 'post_status' => 'all' ] );
+		$this->assertSame( [ 1, 2 ], $this->ids( $posts ) );
+	}
+
 	public function test_drops_hard_deleted_ids(): void {
 		$this->stub_posts( [ 1 => 'publish' ] ); // id 2 deleted -> get_post null
 		$posts = ( new Mai_Grid_Cache() )->hydrate( [ 1, 2 ], [ 'post_status' => 'publish' ] );

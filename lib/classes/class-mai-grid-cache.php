@@ -30,8 +30,10 @@ class Mai_Grid_Cache {
 	private const TTL = 4 * HOUR_IN_SECONDS;
 
 	/**
-	 * Single-flight lock TTL (seconds), filterable via `mai_post_grid_cache_lock_ttl`. Short so a
-	 * winner that dies mid-recompute releases quickly and the next request becomes the new winner.
+	 * Single-flight lock TTL (seconds), filterable via `mai_post_grid_cache_lock_ttl`. The lock is
+	 * released by TTL expiry only (there is no explicit unlock); once a fill stores, later requests
+	 * read the now-fresh value and never consult the lock. Short so a winner that dies mid-recompute
+	 * releases quickly and the next request becomes the new winner.
 	 */
 	private const LOCK_TTL = 5;
 
@@ -229,14 +231,16 @@ class Mai_Grid_Cache {
 	 */
 	private function wait_for_fill( $cache, string $key, string $version ): ?array {
 		$cap_ms   = max( 0, (int) apply_filters( 'mai_post_grid_cache_wait_ms', self::WAIT_MS ) );
+		$poll_ms  = max( 1, min( self::POLL_MS, $cap_ms ) );
 		$deadline = microtime( true ) + ( $cap_ms / 1000 );
 
+		// Read first, then sleep: serve immediately if the winner already stored.
 		while ( microtime( true ) < $deadline ) {
-			usleep( self::POLL_MS * 1000 );
 			$hit = $cache->read_swr( $key, $version );
 			if ( null !== $hit && $hit['fresh'] ) {
 				return $hit['value'];
 			}
+			usleep( $poll_ms * 1000 );
 		}
 
 		return null;
@@ -319,7 +323,8 @@ class Mai_Grid_Cache {
 	private function allowed_statuses( array $query_vars ): array {
 		$status = array_filter( (array) ( $query_vars['post_status'] ?? '' ) );
 
-		if ( ! $status || in_array( 'any', $status, true ) ) {
+		// 'any' and 'all' are WP_Query meta-statuses, not literal column values, so skip the guard.
+		if ( ! $status || in_array( 'any', $status, true ) || in_array( 'all', $status, true ) ) {
 			return [];
 		}
 
