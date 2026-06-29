@@ -1,0 +1,23 @@
+name: Deployable check
+
+# mai-engine deploys as-is (no composer build on the server), so the committed
+# autoloader must reference only committed files. This fails the build if a
+# dev-polluted autoloader (referencing gitignored dev deps) is ever committed.
+# actions/checkout does NOT run composer install, so the job sees exactly the
+# committed tree -- the same thing a raw-branch deploy would.
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  autoloader:
+    name: Committed autoloader is deployable as-is
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: Verify committed autoloader has no uncommitted (dev) deps
+        run: php bin/verify-deployable.php
