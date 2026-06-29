@@ -64,20 +64,31 @@ class Mai_Query_Cache {
 	];
 
 	/**
-	 * Order-insensitive id arrays, sorted before hashing.
+	 * Order-insensitive integer-id arrays: unique + int-cast + sorted before hashing.
 	 */
-	private const SORTABLE = [ 'post__in', 'post_parent__in', 'post_name__in' ];
+	private const SORTABLE_IDS = [ 'post__in', 'post_parent__in' ];
+
+	/**
+	 * Order-insensitive slug arrays: unique + sorted before hashing. NOT int-cast: these hold
+	 * strings (slugs), and int-casting would collapse every slug to 0 and alias different queries.
+	 */
+	private const SORTABLE_SLUGS = [ 'post_name__in' ];
 
 	/**
 	 * Build a stable cache key from the query vars and final SQL.
 	 *
-	 * Mirrors WordPress core's WP_Query cache-key derivation (wp-includes/class-wp-query.php,
-	 * verified against WP 6.x/7.0): the volatile-var denylist plus the post_type / post_status /
-	 * post__in / orderby normalization match generate_cache_key(), and the SELECT field list is
-	 * normalized out of the SQL the way get_posts() does before hashing, so a split
-	 * (SELECT wp_posts.ID) and a full (SELECT wp_posts.*) build of the same grid share one key.
-	 * Kept in sync by hand: if core changes how it derives its query cache key, re-check this
-	 * method against it to avoid drift.
+	 * Closely follows WordPress core's WP_Query cache-key derivation (generate_cache_key() plus the
+	 * field normalization in WP_Query::get_posts(), verified against WP 6.x/7.0): the same volatile
+	 * denylist, post_type / post_status / post__in / orderby normalization in the same spirit, and
+	 * the SELECT field list normalized out of the SQL so a split (SELECT wp_posts.ID) and a full
+	 * (SELECT wp_posts.*) build of the same grid share one key.
+	 *
+	 * Deliberate divergences from core (do NOT "fix" to match without re-checking): post_status is
+	 * normalized unconditionally (core only when set); orderby defaults to 'date' on empty() (core
+	 * only when unset, so orderby => '' differs); the field list becomes a literal 'FIELDS'
+	 * placeholder (core uses wp_posts.*). These differ only in the hashed representation, not in
+	 * which queries collapse, and the full SQL is in the hash as a backstop; Mai_Grid always sets
+	 * post_status/orderby explicitly so those two never fire for real grids. Kept in sync by hand.
 	 *
 	 * @param array  $query_vars The WP_Query vars.
 	 * @param string $sql        The final SQL request.
@@ -99,9 +110,16 @@ class Mai_Query_Cache {
 			$query_vars['orderby'] = 'date';
 		}
 
-		foreach ( self::SORTABLE as $key ) {
+		foreach ( self::SORTABLE_IDS as $key ) {
 			if ( isset( $query_vars[ $key ] ) && is_array( $query_vars[ $key ] ) ) {
 				$query_vars[ $key ] = array_values( array_unique( array_map( 'intval', $query_vars[ $key ] ) ) );
+				sort( $query_vars[ $key ] );
+			}
+		}
+
+		foreach ( self::SORTABLE_SLUGS as $key ) {
+			if ( isset( $query_vars[ $key ] ) && is_array( $query_vars[ $key ] ) ) {
+				$query_vars[ $key ] = array_values( array_unique( $query_vars[ $key ] ) );
 				sort( $query_vars[ $key ] );
 			}
 		}
@@ -173,37 +191,64 @@ class Mai_Query_Cache {
 		if ( null === $hit ) {
 			if ( $this->use_single_flight() && ! $cache->lock( $key, $this->lock_ttl() ) ) {
 				// Lost the lock: another request is filling. Wait briefly, then serve its result.
-				$value = $this->wait_for_fill( $cache, $key, $version );
-				if ( null !== $value ) {
-					return $this->serve( $query, $value );
+				$value  = $this->wait_for_fill( $cache, $key, $version );
+				$served = ( null !== $value ) ? $this->serve( $query, $value ) : null;
+				if ( null !== $served ) {
+					return $served;
 				}
-				// Winner did not deliver in time: fall through and recompute ourselves.
+				// Winner did not deliver (or gave a bad envelope): fall through and recompute.
 			}
-			$query->mai_cache_store_key     = $key;
-			$query->mai_cache_store_version = $version;
-			return $posts; // null -> WP runs the real query; the_posts stores it.
+			return $this->flag_miss( $query, $key, $version, $posts );
 		}
 
 		// Stale entry: the single-flight winner recomputes; everyone else serves the stale value.
 		if ( ! $hit['fresh'] && $cache->lock( $key, $this->lock_ttl() ) ) {
-			$query->mai_cache_store_key     = $key;
-			$query->mai_cache_store_version = $version;
-			return $posts;
+			return $this->flag_miss( $query, $key, $version, $posts );
 		}
 
-		// Fresh hit, or a stale hit served while another request refreshes.
-		return $this->serve( $query, $hit['value'] );
+		// Fresh hit, or a stale hit served while another request refreshes. A malformed envelope
+		// (serve returns null) is treated as a miss and recomputed rather than fataling.
+		$served = $this->serve( $query, $hit['value'] );
+
+		return ( null !== $served ) ? $served : $this->flag_miss( $query, $key, $version, $posts );
 	}
 
 	/**
-	 * Apply a cached result to the query and hydrate it.
+	 * Flag this query as a miss for the_posts to store, and let WP run the real query.
+	 *
+	 * @param WP_Query   $query   The query.
+	 * @param string     $key     Cache key.
+	 * @param string     $version Current composite version.
+	 * @param array|null $posts   The pre_query posts (null -> WP runs the real query).
+	 *
+	 * @return array|null
+	 */
+	private function flag_miss( $query, string $key, string $version, $posts ) {
+		$query->mai_cache_store_key     = $key;
+		$query->mai_cache_store_version = $version;
+		return $posts;
+	}
+
+	/**
+	 * Apply a cached result to the query and hydrate it. Returns null for a malformed or legacy
+	 * envelope (missing/!array `ids`) so the caller treats it as a miss and recomputes, rather than
+	 * fataling on a bad shape in posts_pre_query.
+	 *
+	 * Note on `found`: it is whatever WP_Query computed at store time. For grids built with
+	 * no_found_rows => true (the Mai_Grid default) that is the page count, not the site-wide total.
+	 * Mai_Grid does not read found_posts/max_num_pages, so this is correct for grids; a paginating
+	 * mai_cache consumer must run with no_found_rows => false to get an accurate total.
 	 *
 	 * @param WP_Query $query The query.
-	 * @param array    $value Stored value: [ 'ids' => int[], 'found' => int ].
+	 * @param mixed    $value Stored value, expected [ 'ids' => int[], 'found' => int ].
 	 *
-	 * @return WP_Post[]
+	 * @return WP_Post[]|null
 	 */
-	private function serve( $query, array $value ): array {
+	private function serve( $query, $value ): ?array {
+		if ( ! is_array( $value ) || ! isset( $value['ids'] ) || ! is_array( $value['ids'] ) ) {
+			return null;
+		}
+
 		$query->found_posts   = (int) ( $value['found'] ?? count( $value['ids'] ) );
 		$query->max_num_pages = ( ( $query->query_vars['posts_per_page'] ?? 0 ) > 0 )
 			? (int) ceil( $query->found_posts / $query->query_vars['posts_per_page'] )
@@ -362,6 +407,8 @@ class Mai_Query_Cache {
 		if ( 'publish' !== $new_status && 'publish' !== $old_status ) {
 			return;
 		}
+		// Belt-and-suspenders: a revision/autosave normally transitions inherit->inherit (caught
+		// above), but skip it explicitly in case a flow gives a revision a publish status.
 		if ( wp_is_post_revision( $post->ID ) || 'revision' === $post->post_type ) {
 			return;
 		}
