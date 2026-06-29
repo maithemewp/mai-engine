@@ -52,4 +52,33 @@ final class SwrTest extends TestCase {
 		$c->bump( 'page' );                       // bumping page must not change post's version
 		$this->assertSame( $v1, $c->version( [ 'post' ] ) );
 	}
+
+	public function test_bump_is_best_effort_when_caching_disabled(): void {
+		// can_cache() false via the prefix filter. Reads and writes through set() are gated off,
+		// but bump() is invalidation -- it must still rotate the token, like delete()/flush().
+		Functions\when( 'apply_filters' )->alias(
+			fn( $tag, $value = null ) => 'mai_can_cache' === $tag ? false : $value
+		);
+
+		$store = new class implements Store {
+			public array $data = [];
+			public function read( string $key ): mixed { return $this->data[ $key ] ?? false; }
+			public function write( string $key, mixed $value, int $expire ): bool { $this->data[ $key ] = $value; return true; }
+			public function remove( string $key ): bool { unset( $this->data[ $key ] ); return true; }
+			public function available(): bool { return true; }
+		};
+		$cache = new Cache( 'mai', $store );
+
+		// Control: a gated set() writes nothing while caching is disabled.
+		$cache->set( 'gated', 'v', 0 );
+		$this->assertSame( [], $store->data, 'set() should no-op when caching is disabled' );
+
+		// bump() must persist the rotated token even when can_cache() is false.
+		$this->assertTrue( $cache->bump( 'post' ) );
+		$this->assertArrayHasKey(
+			$cache->key( '__v_post' ),
+			$store->data,
+			'bump() must write the post token despite the can_cache() gate'
+		);
+	}
 }

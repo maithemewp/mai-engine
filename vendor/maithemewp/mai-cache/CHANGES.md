@@ -9,6 +9,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ### Added
 
 - Versioned stale-while-revalidate primitive: `version()`, `bump()`, `read_swr()`, `write_swr()`, `lock()`.
+- `bump()` is best-effort like `delete()` and `flush()`: it rotates the scope token even when caching is disabled (`SCRIPT_DEBUG`, or a `{prefix}_can_cache` filter), so invalidation never silently no-ops and leaves stale content readable as fresh until TTL.
 
 ## [0.2.0] - 2026-06-25
 

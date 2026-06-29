@@ -242,6 +242,11 @@ class Cache {
 	 * Rotate one scope's version token. Cached results keep their stable keys and become
 	 * stale (still readable) rather than orphaned.
 	 *
+	 * Intentionally not gated by can_cache() -- same rationale as delete()/flush(): invalidation
+	 * must always attempt. If a request that cannot cache (a conditional can_cache filter,
+	 * SCRIPT_DEBUG) silently skipped the rotation, stale content could stay readable as fresh by
+	 * requests that can cache until the entry's TTL expired.
+	 *
 	 * @since 0.3.0
 	 *
 	 * @param string $scope Scope key.
@@ -249,7 +254,7 @@ class Cache {
 	 * @return bool
 	 */
 	public function bump( string $scope ): bool {
-		return $this->set( '__v_' . $scope, self::new_token(), 0 );
+		return $this->store->write( $this->key( '__v_' . $scope ), self::new_token(), 0 );
 	}
 
 	/**
