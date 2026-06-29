@@ -5,13 +5,11 @@
 * Added: [Developers] Filters for the query cache: `mai_post_grid_cache` (per-grid opt-out, receives the grid args), `mai_query_cache` (per-query cacheability), `mai_query_cache_ttl`, `mai_query_cache_single_flight`, `mai_query_cache_lock_ttl`, and `mai_query_cache_wait_ms`.
 * Added: [Developers] Optional Mai Post Grid query optimizer, off by default, that rewrites a simple single-taxonomy grid query into a faster correlated subquery. Enable with `add_filter( 'mai_post_grid_optimize_query', '__return_true' )`.
 * Changed: [Performance] Moved Mai Engine's internal caches (global CSS, fonts, template parts, icon choices, and setup demos) onto the shared mai-cache layer with grouped, token-based invalidation, and switched plugin upgrades and `wp mai flush` to a full cache flush.
-* Fixed: [Performance] The generated global CSS cache had been inactive since June 2022 (its enable gate was always true during `wp_head`), so Mai's deterministic CSS was rebuilt on every request. It is cached again, rebuilt only when settings change or the customizer preview is active.
-
-## 2.39.1
-* Changed: Reordered the plugin action links so Settings appears before Deactivate.
 * Changed: [Performance] Removed WordPress core's unused default theme.json presets (color palette, gradients, duotone, font sizes, spacing sizes, shadows, and aspect ratios) from the global styles output. Mai provides its own palette and font sizes, so these only added a large block of unused `--wp--preset--*` custom properties to every page and the editor.
 * Changed: Update ACF Pro to 6.8.4.
+* Changed: Reordered the plugin action links so Settings appears before Deactivate.
 * Changed: Slimmed the page scrollbar with `scrollbar-width: thin` on the html element.
+* Fixed: [Performance] The generated global CSS cache had been inactive since June 2022 (its enable gate was always true during `wp_head`), so Mai's deterministic CSS was rebuilt on every request. It is cached again, rebuilt only when settings change or the customizer preview is active.
 * Fixed: Mai Post Grid/Columns layout breaking when a typography plugin converts the 1/3-style column fractions into Unicode glyphs.
 * Fixed: Unreadable light-on-light text on dark-themed sites. The login form, boxed Mai Post Grid entries, light-background blocks, sub-menu dropdowns, and form inputs now keep dark text on their forced-light surfaces (and fall back to the normal body/heading color on light sites).
 * Fixed: `mai_is_light_color()` recomputed on every call due to a non-functional static cache; it now caches per request.
