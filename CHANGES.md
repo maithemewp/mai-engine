@@ -10,6 +10,7 @@
 * Changed: Slimmed the page scrollbar with `scrollbar-width: thin` on the html element.
 * Fixed: [Performance] The generated global CSS cache had been inactive since June 2022 (its enable gate was always true during `wp_head`), so Mai's deterministic CSS was rebuilt on every request. It is cached again, rebuilt only when settings change or the customizer preview is active.
 * Fixed: Mai Post Grid/Columns layout breaking when a typography plugin converts the 1/3-style column fractions into Unicode glyphs.
+* Fixed: A standalone free ACF (or an older standalone ACF Pro) plugin could shadow the bundled ACF Pro and break every Mai ACF block, leaving columns with no wrapper. The auto-deactivation of conflicting bundled plugins only ran in the admin, so a front-end-only visit never cleared the conflict. It now runs on all requests and the site self-heals on the next load.
 * Fixed: Unreadable light-on-light text on dark-themed sites. The login form, boxed Mai Post Grid entries, light-background blocks, sub-menu dropdowns, and form inputs now keep dark text on their forced-light surfaces (and fall back to the normal body/heading color on light sites).
 * Fixed: `mai_is_light_color()` recomputed on every call due to a non-functional static cache; it now caches per request.
 * Fixed: Editor canvas not rendering correctly in the WP 6.9+ block editor iframe: full and wide blocks sized to the wrong width, and per-post layout width, dark body, and boxed-container backgrounds did not reach the canvas.
