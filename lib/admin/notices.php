@@ -33,30 +33,26 @@ function mai_maybe_display_admin_notice() {
 	printf( '<div class="notice notice-%s">%s</div>', sanitize_html_class( (string) $type ), wpautop( $notice ) );
 }
 
-add_action( 'admin_notices', 'mai_ai_pack_notice' );
+add_action( 'admin_notices', 'mai_lifetime_notice' );
 /**
- * Displays the AI Pack notice.
+ * Displays the Mai Lifetime Bundle notice.
  *
  * @since 2.36.1
+ * @since 2.40.0 Repurposed from the Mai AI Pack promo to the Lifetime Bundle promo.
  *
  * @return void
  */
-function mai_ai_pack_notice() {
-	// Bail if Mai AI Pack is active.
-	if ( class_exists( 'Mai_AI_Pack' ) ) {
-		return;
-	}
-
+function mai_lifetime_notice() {
 	// Bail if user is not an editor.
 	if ( ! current_user_can( 'edit_posts' ) ) {
 		return;
 	}
 
-	// delete_user_meta( get_current_user_id(), 'mai_ai_pack_notice_dismissed' );
+	// delete_user_meta( get_current_user_id(), 'mai_lifetime_notice_dismissed' );
 
 	// Get user ID and dismissed status.
 	$user_id   = get_current_user_id();
-	$dismissed = (int) get_user_meta( $user_id, 'mai_ai_pack_notice_dismissed', true );
+	$dismissed = (int) get_user_meta( $user_id, 'mai_lifetime_notice_dismissed', true );
 
 	// If dismissed is 1 (int), it's permanent dismissal.
 	if ( 1 === $dismissed ) {
@@ -69,7 +65,7 @@ function mai_ai_pack_notice() {
 	}
 	?>
 	<style>
-		.mai-ai-pack-notice {
+		.mai-lifetime-notice {
 			position: relative;
 			padding: 1rem;
 			border-left-color: #bcda83;
@@ -102,21 +98,29 @@ function mai_ai_pack_notice() {
 				background: #bcda83;
 				border-color: #bcda83;
 			}
+
+			.button:hover,
+			.button:focus {
+				/* Darken the brand green on hover instead of falling back to WP's blue. */
+				color: #181f09;
+				background: #a0b96f;
+				border-color: #a0b96f;
+			}
 		}
 	</style>
-	<div class="notice mai-ai-pack-notice">
-		<div style="display:flex;align-items:center;gap:.5rem;">
-			<img width="24" height="24" src="<?php echo mai_get_url() . 'assets/svg/mai-logo-icon.svg'; ?>" alt="Mai AI Pack">
-			<h2>Enable Intuitive Site Search and Intelligent Suggestions for Your Visitors.</h2>
+	<div class="notice mai-lifetime-notice">
+		<div style="display:flex;align-items:center;gap:.5rem;flex-wrap:nowrap;">
+			<img width="24" height="24" src="<?php echo mai_get_url() . 'assets/svg/mai-logo-icon.svg'; ?>" alt="Mai" style="flex-shrink:0">
+			<h2>Mai is now faster than ever.</h2>
 		</div>
-		<p><strong>Turn your website into an AI-Powered Search Engine with the Mai AI Pack.</strong></p>
+		<p><strong>Mai Engine 2.40 brings major performance upgrades that make your site load faster and scale further.</strong></p>
 		<ul>
-			<li>✅&nbsp;&nbsp;<strong>AI Search:</strong> Visitors ask natural questions and get instant answers — all from your content.</li>
-			<li>✅&nbsp;&nbsp;<strong>Smart Recommendations:</strong> Automatically show related posts that match what visitors want next.</li>
-			<li>✅&nbsp;&nbsp;<strong>Boost Engagement:</strong> Keep visitors exploring longer with trending, popular, and ultra-relevant content.</li>
+			<li>✅&nbsp;&nbsp;<strong>Faster pages:</strong> Mai Post Grid caches its query results and serves them instantly, even on busy, frequently-edited sites.</li>
+			<li>✅&nbsp;&nbsp;<strong>Lighter server load:</strong> Mai's global CSS and internal caches rebuild only when something changes, not on every request.</li>
+			<li>✅&nbsp;&nbsp;<strong>Built to scale:</strong> Stampede protection keeps things fast under heavy traffic.</li>
 		</ul>
-		<p>Upgrade your site with the Mai AI Pack today!</p>
-		<p><a target="_blank" rel="noopener noreferrer" href="https://bizbudding.com/mai-ai-pack/?utm_source=engine&utm_medium=mai-ai-pack&utm_campaign=mai-ai-pack" class="button button-primary">Learn More about the Mai AI Pack</a></p>
+		<p>Lock in every Mai plugin for life with a Lifetime License, and never pay for an upgrade again.</p>
+		<p><a target="_blank" rel="noopener noreferrer" href="https://bizbudding.com/products/mai-theme-lifetime-bundle/?utm_source=engine&utm_medium=lifetime-bundle&utm_campaign=lifetime-bundle" class="button button-primary">Get your Lifetime License</a></p>
 		<div class="mai-dismissers">
 			<a href="#" class="mai-dismiss mai-dismiss__forever">
 				<?php _e( 'Don\'t show again', 'mai-engine' ); ?>
@@ -129,13 +133,13 @@ function mai_ai_pack_notice() {
 	</div>
 	<script>
 		( function( $ ) {
-			$('.mai-ai-pack-notice').on('click', '.mai-dismiss', function(e) {
+			$('.mai-lifetime-notice').on('click', '.mai-dismiss', function(e) {
 				e.preventDefault();
 				const $notice = $(this).closest('.notice');
 				$.post( '<?php echo admin_url( 'admin-ajax.php' ); ?>', {
 					type: 'POST',
-					action: 'mai_dismiss_ai_pack_notice',
-					nonce: '<?php echo wp_create_nonce( 'mai_dismiss_ai_pack_notice' ); ?>',
+					action: 'mai_dismiss_lifetime_notice',
+					nonce: '<?php echo wp_create_nonce( 'mai_dismiss_lifetime_notice' ); ?>',
 					user_id: '<?php echo get_current_user_id(); ?>',
 					forever: $(this).hasClass('mai-dismiss__forever'),
 				}).done(function(response) {
@@ -149,16 +153,17 @@ function mai_ai_pack_notice() {
 	<?php
 }
 
-add_action( 'wp_ajax_mai_dismiss_ai_pack_notice', 'mai_dismiss_ai_pack_notice' );
+add_action( 'wp_ajax_mai_dismiss_lifetime_notice', 'mai_dismiss_lifetime_notice' );
 /**
- * Handles the AJAX request to dismiss the AI Pack notice.
+ * Handles the AJAX request to dismiss the Mai Lifetime Bundle notice.
  *
  * @since 2.36.1
+ * @since 2.40.0 Renamed from mai_dismiss_ai_pack_notice.
  *
  * @return void
  */
-function mai_dismiss_ai_pack_notice() {
-	check_ajax_referer( 'mai_dismiss_ai_pack_notice', 'nonce' );
+function mai_dismiss_lifetime_notice() {
+	check_ajax_referer( 'mai_dismiss_lifetime_notice', 'nonce' );
 
 	// Get user ID.
 	$user_id = isset( $_POST['user_id'] ) ? (int) $_POST['user_id'] : get_current_user_id();
@@ -172,7 +177,7 @@ function mai_dismiss_ai_pack_notice() {
 	}
 
 	// Update user meta.
-	update_user_meta( $user_id, 'mai_ai_pack_notice_dismissed', $forever ? true : time() );
+	update_user_meta( $user_id, 'mai_lifetime_notice_dismissed', $forever ? true : time() );
 
 	// Send success response.
 	wp_send_json_success( [

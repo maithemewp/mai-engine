@@ -139,17 +139,16 @@ class Mai_Plugins {
 			],
 			'https://bizbudding.com/mai-theme-pro/'
 		);
-		$ai_pack_url = add_query_arg(
+		$lifetime_url = add_query_arg(
 			[
 				'utm_source'    => 'engine',
-				'utm_medium'    => 'mai-ai-pack',
-				'utm_campaign'  => 'mai-ai-pack',
+				'utm_medium'    => 'lifetime-bundle',
+				'utm_campaign'  => 'lifetime-bundle',
 			],
-			'https://bizbudding.com/mai-ai-pack/'
+			'https://bizbudding.com/products/mai-theme-lifetime-bundle/'
 		);
 		$theme_link    = '<a target="_blank" rel="noopener" href="https://bizbudding.com/mai-theme/">Mai Theme</a>';
 		$pro_pack_link = sprintf( '<a target="_blank" rel="noopener" href="%s">Mai Pro Pack</a>', $pro_pack_url );
-		$ai_pack_link  = sprintf( '<a target="_blank" rel="noopener" href="%s">Mai AI Pack</a>', $ai_pack_url );
 
 		echo '<div class="wrap">';
 			echo '<h1 class="wp-heading-inline">Mai Plugins</h1>';
@@ -159,13 +158,13 @@ class Mai_Plugins {
 						/* translators: %s is replaced with the linked theme name. */
 						sprintf( esc_html__( 'Mai Theme Pro includes everything you need to enhance your website once it\'s up and running on %s.', 'mai-engine' ), $theme_link ),
 						/* translators: %s is replaced with the linked plugin name. */
-						sprintf( esc_html__( 'Learn more about pro plugins, AskAI, and the pattern library included with %s and %s plugins.', 'mai-engine' ), $pro_pack_link, $ai_pack_link )
+						sprintf( esc_html__( 'Learn more about the pro plugins and pattern library included with %s.', 'mai-engine' ), $pro_pack_link )
 					);
 				echo '</div>';
 
 				if ( ! class_exists( 'Mai_Design_Pack' ) ) {
 					echo '<div class="mai-plugins-cta">';
-						printf( '<p><a target="_blank" rel="noopener" href="%s" class="button button-primary">%s</a></p>', $pro_pack_url, sprintf( '%s Mai Theme Pro', esc_html__( 'Get', 'mai-engine' ) ) );
+						printf( '<p><a target="_blank" rel="noopener" href="%s" class="button button-primary">%s</a></p>', $lifetime_url, esc_html__( 'Get your Lifetime License', 'mai-engine' ) );
 						printf( '<p><a target="_blank" rel="noopener" href="https://bizbudding.com/my-account/">%s  →</a></p>', sprintf( 'BizBudding %s', esc_html__( 'Account', 'mai-engine' ) ) );
 					echo '</div>';
 				}
@@ -385,16 +384,6 @@ class Mai_Plugins {
 		}
 
 		$plugins = [
-			'mai-ai-pack' => [
-				'name'     => 'Mai AI Pack <span class="mai-plugin-name__mark">New!</span>',
-				'host'     => 'github',
-				'slug'     => 'mai-ai-pack/mai-ai-pack.php',
-				'uri'      => 'maithemewp/mai-ai-pack',
-				'branch'   => 'main',
-				'required' => true,
-				'desc'     => esc_html__( 'Activate natural language search, personalized content recommendations, and AskAI with the Mai AI Pack. Quickly add smart search and instant answers to your site — all sourced exclusively from your website’s content. Keep visitors engaged with accurate, AI-powered responses, without pulling from external sources or outside information.', 'mai-engine' ),
-				'docs'     => 'https://help.bizbudding.com/article/210-mai-ai-pack',
-			],
 			'mai-accordion' => [
 				'name'     => 'Mai Accordion',
 				'host'     => 'github',
@@ -404,6 +393,16 @@ class Mai_Plugins {
 				'required' => true,
 				'desc'     => esc_html__( 'Mai Accordion is perfect for displaying expandable FAQs, transcripts, resources, and even research. Add a title/question, then easily insert any block you want into the answer section.', 'mai-engine' ),
 				'docs'     => 'https://help.bizbudding.com/article/147-mai-accordian',
+			],
+			'mai-ai-pack' => [
+				'name'     => 'Mai AI Pack',
+				'host'     => 'github',
+				'slug'     => 'mai-ai-pack/mai-ai-pack.php',
+				'uri'      => 'maithemewp/mai-ai-pack',
+				'branch'   => 'main',
+				'required' => true,
+				'desc'     => esc_html__( 'Activate natural language search, personalized content recommendations, and AskAI with the Mai AI Pack. Quickly add smart search and instant answers to your site — all sourced exclusively from your website’s content. Keep visitors engaged with accurate, AI-powered responses, without pulling from external sources or outside information.', 'mai-engine' ),
+				'docs'     => 'https://help.bizbudding.com/article/210-mai-ai-pack',
 			],
 			'mai-archive-pages' => [
 				'name'     => 'Mai Archive Pages',
