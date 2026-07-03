@@ -70,6 +70,11 @@ function mai_lifetime_notice() {
 			padding: 1rem;
 			border-left-color: #bcda83;
 
+			/* Core's `.update-core-php h2 { margin-top: 4em }` on the Updates screen shoves this title down; neutralize it (also keeps the icon + title flush in the flex row everywhere). */
+			h2 {
+				margin: 0;
+			}
+
 			.mai-dismissers {
 				position: absolute;
 				top: 0;
