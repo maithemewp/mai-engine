@@ -11,6 +11,10 @@
     {
       "type": "vcs",
       "url": "https://github.com/maithemewp/mai-cache"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/maithemewp/deployable-guard"
     }
   ],
   "require": {
@@ -34,7 +38,8 @@
     "squizlabs/php_codesniffer": "3.*",
     "wp-coding-standards/wpcs": "^3.0",
     "wp-phpunit/wp-phpunit": "^5.1 || ^6.0",
-    "sirbrillig/phpcs-variable-analysis": "^2.10"
+    "sirbrillig/phpcs-variable-analysis": "^2.10",
+    "maithemewp/deployable-guard": "^1"
   },
   "autoload-dev": {
     "psr-4": {
@@ -68,6 +73,12 @@
     "phpcbf": "vendor/bin/phpcbf --standard=WordPress --extensions=php -p lib config",
     "fixer": "vendor/bin/php-cs-fixer fix lib/ && vendor/bin/php-cs-fixer fix config/",
     "test-unit": "composer dump && php -d auto_prepend_file=tests/phpunit/define-abspath.php vendor/bin/phpunit --testsuite unit --color=always",
-    "test-integration": "composer dump && vendor/bin/phpunit --testsuite integration --configuration tests/phpunit/integration/phpunit.xml.dist --color=always"
+    "test-integration": "composer dump && vendor/bin/phpunit --testsuite integration --configuration tests/phpunit/integration/phpunit.xml.dist --color=always",
+    "post-install-cmd": [
+      "@php vendor/bin/deployable-guard install-hook"
+    ],
+    "post-update-cmd": [
+      "@php vendor/bin/deployable-guard install-hook"
+    ]
   }
 }

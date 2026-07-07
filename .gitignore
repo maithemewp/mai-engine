@@ -23,7 +23,9 @@ vendor/composer/xdebug-handler
 !vendor/afragen
 !vendor/collizo4sky
 !vendor/maithemewp
+vendor/maithemewp/deployable-guard
 !vendor/proteusthemes
 !vendor/wpengine
 !vendor/yahnis-elsts
 .phpunit.result.cache
+.githooks/
