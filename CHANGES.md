@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.40.1 (7/7/26)
+* Changed: Update ACF Pro to 6.8.5.
+* Changed: Update Plugin Update Checker to 5.7.
+
 ## 2.40.0 (7/2/26)
 * Added: [Performance] Mai Post Grid now caches its resolved query results (the matching post IDs and total count) under a version token Mai controls, so the cache survives the constant cache-key churn that defeats WordPress's own query cache on busy, frequently-edited sites. It serves instantly on a hit, serves the previous result while one request refreshes a stale entry (stale-while-revalidate), and collapses a cold stampede to a single query (single-flight) where a persistent object cache is present. Any query can opt in via the `mai_cache` query var.
 * Added: [Developers] Filters for the query cache: `mai_post_grid_cache` (per-grid opt-out, receives the grid args), `mai_query_cache` (per-query cacheability), `mai_query_cache_ttl`, `mai_query_cache_single_flight`, `mai_query_cache_lock_ttl`, and `mai_query_cache_wait_ms`.
