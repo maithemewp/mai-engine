@@ -3,7 +3,7 @@
         'name' => 'maithemewp/mai-engine',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => 'b25c66670d3630b25ff3778559c3d9bb09e11c9c',
+        'reference' => '44e4329e910acc42db2fa10c17c6b743d17dfec9',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -49,7 +49,7 @@
         'maithemewp/mai-engine' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => 'b25c66670d3630b25ff3778559c3d9bb09e11c9c',
+            'reference' => '44e4329e910acc42db2fa10c17c6b743d17dfec9',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -67,18 +67,18 @@
         'wpackagist-plugin/advanced-custom-fields' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => '6.8.4',
+                0 => '6.8.5',
             ),
         ),
         'wpengine/advanced-custom-fields' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => '6.8.4',
+                0 => '6.8.5',
             ),
         ),
         'wpengine/advanced-custom-fields-pro' => array(
-            'pretty_version' => '6.8.4',
-            'version' => '6.8.4.0',
+            'pretty_version' => '6.8.5',
+            'version' => '6.8.5.0',
             'reference' => null,
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../wpengine/advanced-custom-fields-pro',
@@ -86,9 +86,9 @@
             'dev_requirement' => false,
         ),
         'yahnis-elsts/plugin-update-checker' => array(
-            'pretty_version' => 'v5.6',
-            'version' => '5.6.0.0',
-            'reference' => 'a2db6871deec989a74e1f90fafc6d58ae526a879',
+            'pretty_version' => 'v5.7',
+            'version' => '5.7.0.0',
+            'reference' => '275a96a2a18d03c34c87f35cb68673c8c49ac3b1',
             'type' => 'library',
             'install_path' => __DIR__ . '/../yahnis-elsts/plugin-update-checker',
             'aliases' => array(),
