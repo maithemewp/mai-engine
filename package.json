@@ -69,7 +69,7 @@
     "clearCache": "gulp clearCache",
     "translate": "gulp translate",
     "blocks": "parcel build assets/js/blocks/blocks.js --dist-dir assets/js/min --no-cache",
-    "release": "composer validate --no-check-lock && gulp build && composer install --no-dev --optimize-autoloader",
+    "release": "composer validate --no-check-lock && gulp build && composer dump-autoload --no-dev --optimize-autoloader",
     "dev": "composer install",
     "beta": "gulp build && composer dump-autoload --no-dev && git add -A && git commit -m \"Beta release\" && git push origin develop && git checkout beta && git merge develop --no-edit && git push origin beta && git checkout develop && composer install"
   },
