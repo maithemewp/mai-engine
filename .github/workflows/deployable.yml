@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/checkout@v4
         with:
-          repository: maithemewp/deployable-guard
+          repository: bizbudding/deployable-guard
           ref: v1
           path: .deployable-guard
       - uses: shivammathur/setup-php@v2
