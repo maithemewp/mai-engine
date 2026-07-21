@@ -1,7 +1,0 @@
-.DS_Store
-.idea/
-.vscode/
-*.log
-vendor/
-composer.lock
-.phpunit.result.cache

@@ -4,6 +4,12 @@ All notable changes to `mai-cache` are documented here.
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: [Semantic Versioning](https://semver.org/).
 
+## [0.3.1] - 2026-07-08
+
+### Changed
+
+- Added a `.gitattributes` with `export-ignore` so dev-only paths (`tests/`, `docs/`, `phpunit.xml.dist`) are stripped from the Composer dist archive, keeping a bundled copy of this package out of consumers' production trees.
+
 ## [0.3.0] - 2026-06-26
 
 ### Added

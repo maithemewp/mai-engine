@@ -1,7 +1,7 @@
 # Changelog
 
-## 2.40.1 (7/7/26)
-* Changed: Update ACF Pro to 6.8.5.
+## 2.40.1 (TBD)
+* Changed: Update ACF Pro to 6.8.6.
 * Changed: Update Plugin Update Checker to 5.7.
 
 ## 2.40.0 (7/2/26)
