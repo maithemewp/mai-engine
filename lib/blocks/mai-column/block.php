@@ -35,11 +35,11 @@ function mai_register_column_block() {
  * @since 2.10.0
  *
  * @param array    $attributes The block attributes.
- * @param string   $content The block content.
+ * @param string   $content    The block content.
  * @param bool     $is_preview Whether or not the block is being rendered for editing preview.
- * @param int      $post_id The current post being edited or viewed.
- * @param WP_Block $wp_block The block instance (since WP 5.5).
- * @param array    $context The block context array.
+ * @param int      $post_id    The current post being edited or viewed.
+ * @param WP_Block $wp_block   The block instance (since WP 5.5).
+ * @param array    $context    The block context array.
  *
  * @return void
  */
