@@ -595,7 +595,6 @@ class Mai_Entry {
 			return '';
 		}
 
-		// add_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
 		add_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 4 );
 
 		if ( 'single' === $this->context ) {
@@ -617,7 +616,6 @@ class Mai_Entry {
 		}
 
 		remove_filter( 'wp_calculate_image_sizes', [ $this, 'calculate_image_sizes' ], 10, 4 );
-		// remove_filter( 'max_srcset_image_width', [ $this, 'srcset_max_image_width' ], 10, 2 );
 
 		if ( 'single' === $this->context ) {
 			$caption = wp_get_attachment_caption( $image_id );
@@ -628,79 +626,6 @@ class Mai_Entry {
 		}
 
 		return $image;
-	}
-
-	/**
-	 * Modify the max image width to use in srcset based on the breakpoint and amount of columns.
-	 * This allows srcset to never show an image larger than it'll ever be displayed via the theme settings.
-	 *
-	 * @since 0.3.3
-	 *
-	 * @return int
-	 */
-	public function srcset_max_image_width( $max_image_width, $size_array ) {
-		$size        = 1600; // Max theme image size.
-		$has_sidebar = mai_has_sidebar();
-		$is_single   = 'single' === $this->context;
-		$img_aligned = ! $is_single && mai_has_string( ['left', 'right'], $this->args['image_position'] );
-		$img_widths  = [
-			'fourth' => 4,
-			'third'  => 3,
-			'half'   => 2,
-		];
-		$single_cols = [
-			'xs'     => 1,
-			'sm'     => 1,
-			'md'     => 1,
-			'lg'     => 1,
-		];
-		$image_cols = [
-			'xs'     => ! $is_single && $img_aligned && ! $this->args['image_stack'] ? $img_widths[ $this->args['image_width'] ] : 1,
-			'sm'     => ! $is_single && $img_aligned ? $img_widths[ $this->args['image_width'] ] : 1,
-			'md'     => ! $is_single && $img_aligned ? $img_widths[ $this->args['image_width'] ] : 1,
-			'lg'     => ! $is_single && $img_aligned ? $img_widths[ $this->args['image_width'] ] : 1,
-		];
-
-		$columns = $is_single ? $single_cols : array_reverse( mai_get_breakpoint_columns( $this->args ), true ); // Mobile first.
-		$columns = $this->get_image_breakpoint_columns( $columns );
-		$widths  = [];
-
-		foreach ( $columns as $break => $count ) {
-			switch ( $break ) {
-				case 'xs':
-					$max_width = $this->breakpoints['sm'];
-					$width     = $max_width / $columns['xs'];
-					$width     = $width / $image_cols['xs'];
-					$widths[]  = floor( $width );
-				break;
-				case 'sm':
-					$max_width = $this->breakpoints['md'];
-					$width     = $max_width / $columns['sm'];
-					$width     = $width / $image_cols['sm'];
-					$widths[]  = floor( $width );
-				break;
-				case 'md':
-					$max_width = $this->breakpoints['lg'];
-					$width     = $has_sidebar ? $max_width * 2 / 3 : $max_width;
-					$width     = $width / $columns['md'];
-					$width     = $width / $image_cols['md'];
-					$widths[]  = floor( $width );
-				break;
-				case 'lg':
-					$max_width = $this->breakpoints['xl'];
-					$width     = $has_sidebar ? $max_width * 2 / 3 : $max_width;
-					$width     = $width / $columns['lg'];
-					$width     = $width / $image_cols['lg'];
-					$widths[]  = floor( $width );
-				break;
-			}
-		}
-
-		if ( $widths ) {
-			$max_image_width = absint( max( $widths ) );
-		}
-
-		return $max_image_width > $size ? $size : $max_image_width;
 	}
 
 	/**

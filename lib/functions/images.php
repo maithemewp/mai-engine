@@ -472,66 +472,6 @@ function mai_get_cover_image_size() {
 }
 
 /**
- * Gets <link> tag with image preloading data.
- *
- * @access private
- *
- * @since 2.25.5
- *
- * @param int    $image_id   The image ID.
- * @param string $image_size The image size.
- *
- * @return string
- */
-function mai_get_preload_image_link( $image_id, $image_size = 'full' ) {
-	$image_url = wp_get_attachment_image_url( $image_id, $image_size );
-
-	if ( ! $image_url ) {
-		return;
-	}
-
-	$attr   = [];
-	$atts   = mai_get_image_src_srcset_sizes( $image_id, $image_size );
-	$src    = isset( $atts['src'] ) ? $atts['src'] : '';
-	$srcset = isset( $atts['srcset'] ) ? $atts['srcset'] : '';
-	$sizes  = isset( $atts['sizes'] ) ? $atts['sizes'] : '';
-
-	// Gets smallest image size.
-	// if ( $srcset ) {
-	// 	$array = explode( ',', $srcset );
-	// 	$first = reset( $array );
-	// 	$array = explode( ' ', $first );
-	// 	$first = reset( $array );
-	// 	$src   = esc_url( $first );
-	// }
-
-	if ( $src && ! $srcset ) {
-		$attr[] = sprintf( 'href="%s"', $src );
-	} else {
-		// @link https://nostrongbeliefs.com/blog/preloading-responsive-images/
-		$attr[] = sprintf( 'href=""' );
-	}
-
-	// Add srcset, and only add sizes if srcset exists.
-	// HTML validator threw errors if sizes was added without srcset.
-	if ( $srcset ) {
-		$attr[] = sprintf( 'imagesrcset="%s"', $srcset );
-
-		if ( $sizes ) {
-			$attr[] = sprintf( 'imagesizes="%s"', $sizes );
-		}
-	}
-
-	$attr = array_filter( $attr );
-
-	if ( ! $attr ) {
-		return;
-	}
-
-	return sprintf( '<link rel="preload" class="mai-preload" %s as="image" />%s', trim( implode( ' ', $attr ) ), PHP_EOL );
-}
-
-/**
  * Taken from `wp_get_attachment_image()`.
  *
  * @access private
@@ -556,18 +496,20 @@ function mai_get_image_src_srcset_sizes( $image_id, $size = 'full' ) {
 		list( $src, $width, $height ) = $image;
 
 		$attr['src'] = $src;
-	}
 
-	if ( is_array( $image_meta ) ) {
-		$size_array = array( absint( $width ), absint( $height ) );
-		$srcset     = wp_calculate_image_srcset( $size_array, $src, $image_meta, $image_id );
-		$sizes      = wp_calculate_image_sizes( $size_array, $src, $image_meta, $image_id );
+		// Nested because srcset/sizes need $src and the dimensions from above.
+		// Without a resolved src the size array would be [ 0, 0 ].
+		if ( is_array( $image_meta ) ) {
+			$size_array = array( absint( $width ), absint( $height ) );
+			$srcset     = wp_calculate_image_srcset( $size_array, $src, $image_meta, $image_id );
+			$sizes      = wp_calculate_image_sizes( $size_array, $src, $image_meta, $image_id );
 
-		if ( $srcset && ( $sizes || ! empty( $attr['sizes'] ) ) ) {
-			$attr['srcset'] = $srcset;
+			if ( $srcset && ( $sizes || ! empty( $attr['sizes'] ) ) ) {
+				$attr['srcset'] = $srcset;
 
-			if ( empty( $attr['sizes'] ) ) {
-				$attr['sizes'] = $sizes;
+				if ( empty( $attr['sizes'] ) ) {
+					$attr['sizes'] = $sizes;
+				}
 			}
 		}
 	}
@@ -594,45 +536,4 @@ function mai_get_image_src_srcset_sizes( $image_id, $size = 'full' ) {
 	);
 
 	return $attr;
-}
-
-/**
- * No longer used.
- * @see https://github.com/maithemewp/mai-engine/issues/482
- *
- * Limits the largest image size served.
- * Prevents cover blocks and page header from serving huge images.
- *
- * @param array|false  $image         {
- *     Array of image data, or boolean false if no image is available.
- *
- *     @type string $0 Image source URL.
- *     @type int    $1 Image width in pixels.
- *     @type int    $2 Image height in pixels.
- *     @type bool   $3 Whether the image is a resized image.
- * }
- * @param int          $attachment_id Image attachment ID.
- * @param string|int[] $size          Requested image size. Can be any registered image size name, or
- *                                    an array of width and height values in pixels (in that order).
- * @param bool         $icon          Whether the image should be treated as an icon.
- */
-// add_filter( 'wp_get_attachment_image_src', 'mai_limit_attachment_image_src', 10, 4 );
-function mai_limit_attachment_image_src( $image, $attachment_id, $size, $icon ) {
-	if ( 'full' !== $size ) {
-		return $image;
-	}
-
-	if ( ! $image ) {
-		return $image;
-	}
-
-	remove_filter( 'wp_get_attachment_image_src', 'mai_limit_attachment_image_src', 10, 4 );
-
-	$available = mai_get_available_image_sizes();
-	$size      = isset( $available['cover'] ) ? 'cover' : 'large';
-	$src       = wp_get_attachment_image_src( $attachment_id, $size );
-
-	add_filter( 'wp_get_attachment_image_src', 'mai_limit_attachment_image_src', 10, 4 );
-
-	return $src ?: $image;
 }

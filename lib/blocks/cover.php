@@ -146,7 +146,7 @@ function mai_render_cover_block( $block_content, $block ) {
 				}
 				// Full width on mobile, half width other.
 				else {
-					$tags->set_attribute( 'sizes', '(max-width: 600px) 100vw, 50vw' );
+					$tags->set_attribute( 'sizes', sprintf( '(max-width: %s) 100vw, 50vw', mai_get_breakpoint( 'sm', 'px' ) ) );
 				}
 
 				// Convert inline style to custom property.

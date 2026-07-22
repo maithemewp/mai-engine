@@ -3,6 +3,9 @@
 ## 2.40.1 (TBD)
 * Changed: Update ACF Pro to 6.8.6.
 * Changed: Update Plugin Update Checker to 5.7.
+* Changed: Removed unused image code that was disabled long ago.
+* Fixed: The Cover block's `sizes` attribute used a hard-coded 600px breakpoint rather than the theme's configured breakpoint, so themes with a custom breakpoint could get a mismatched value.
+* Fixed: PHP warnings and a bad srcset calculation when an attachment's file could not be resolved but its metadata still existed.
 
 ## 2.40.0 (7/2/26)
 * Added: [Performance] Mai Post Grid now caches its resolved query results (the matching post IDs and total count) under a version token Mai controls, so the cache survives the constant cache-key churn that defeats WordPress's own query cache on busy, frequently-edited sites. It serves instantly on a hit, serves the previous result while one request refreshes a stale entry (stale-while-revalidate), and collapses a cold stampede to a single query (single-flight) where a persistent object cache is present. Any query can opt in via the `mai_cache` query var.
