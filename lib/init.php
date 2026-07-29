@@ -965,6 +965,12 @@ function mai_get_mai_acf_plugin_data() {
 		return $data;
 	}
 
+	// Reached from mai_needs_mai_acf_pro() at plugins_loaded, front end included, where
+	// wp-admin/includes/plugin.php is not loaded.
+	if ( ! function_exists( 'get_plugin_data' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+	}
+
 	$data = get_plugin_data( trailingslashit( dirname( __DIR__ ) ) . 'vendor/wpengine/advanced-custom-fields-pro/acf.php', true, false );
 
 	return $data;
