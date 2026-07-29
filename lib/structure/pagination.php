@@ -251,9 +251,17 @@ add_filter( 'next_post_link', 'mai_adjacent_entry_link_thumbnail', 10, 5 );
 function mai_adjacent_entry_link_thumbnail( $output, $format, $link, $post, $adjacent ) {
 	$image      = '';
 	$show_image = apply_filters( 'mai_show_adjacent_entry_image', true );
-	$image_id   = get_post_thumbnail_id( $post );
 
-	if ( $show_image && $image_id ) {
+	if ( ! $show_image ) {
+		return str_replace( '%image', $image, $output );
+	}
+
+	// Queried only once the filter has allowed it. Adjacent posts are in no cache, so this
+	// is an uncached meta lookup on every singular request, previously paid even when the
+	// result was discarded below.
+	$image_id = get_post_thumbnail_id( $post );
+
+	if ( $image_id ) {
 		add_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
 		$image = wp_get_attachment_image(
 			$image_id,
@@ -266,8 +274,6 @@ function mai_adjacent_entry_link_thumbnail( $output, $format, $link, $post, $adj
 		);
 		remove_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
 	}
-
-	$image = $show_image && $image ? $image : '';
 
 	return str_replace( '%image', $image, $output );
 }
