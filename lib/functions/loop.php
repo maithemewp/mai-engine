@@ -329,13 +329,14 @@ function mai_get_sanitized_entry_args( $args, $context, $name = 'post' ) {
 		return $args;
 	}
 
-	// Make sure sanitize key is set.
-	if ( ! isset( $settings['sanitize'] ) ) {
+	// Keyed by 'settings', which holds the bare arg name. Previously plucked by 'name', a
+	// key no control array has, and guarded by an isset() on a numerically indexed list,
+	// so this returned early every time and none of these callbacks had ever run.
+	$sanitize = wp_list_pluck( $settings, 'sanitize', 'settings' );
+
+	if ( ! $sanitize ) {
 		return $args;
 	}
-
-	// Get sanitize array.
-	$sanitize = wp_list_pluck( $settings, 'sanitize', 'name' );
 
 	// Sanitize.
 	foreach ( $args as $key => $value ) {
