@@ -4,7 +4,6 @@
 * Changed: Update ACF Pro to 6.8.6.
 * Changed: Update Plugin Update Checker to 5.7.
 * Changed: Removed unused image code that was disabled long ago.
-* Changed: [Performance] Customizer controls are no longer built on front-end requests. They are only needed to render or save the Customizer, and the handful of settings that produce front-end CSS still register everywhere.
 * Changed: [Performance] Term Grids now cache their featured images in one pass, instead of two uncached queries per term.
 * Changed: [Performance] Related-posts grids now read the terms WordPress already loaded for the current post rather than querying them again.
 * Changed: [Performance] Blocks are no longer scanned for link-color markup unless the markup is actually present, saving a full pass over each block's HTML on every page.
