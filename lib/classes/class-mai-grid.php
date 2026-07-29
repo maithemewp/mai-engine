@@ -389,7 +389,17 @@ class Mai_Grid {
 		// Cap it so a single editor choice cannot take a site down; filterable for the rare
 		// legitimate case.
 		if ( -1 === $per_page ) {
-			$per_page = absint( apply_filters( 'mai_post_grid_max_posts_per_page', 1000 ) );
+			/**
+			 * Filters the ceiling applied when a post grid is set to show all entries.
+			 *
+			 * Return 0 or a negative number to opt back into an unbounded query.
+			 *
+			 * @since 2.40.1
+			 *
+			 * @param int $max The maximum number of entries. Default 1000.
+			 */
+			$max      = (int) apply_filters( 'mai_post_grid_max_posts_per_page', 1000 );
+			$per_page = $max > 0 ? $max : -1;
 		}
 
 		$query_args   = [
@@ -635,7 +645,17 @@ class Mai_Grid {
 			// setting. Taxonomies run far larger than editors expect (tens of thousands of
 			// tags is normal), and term grids get no query caching, so cap it.
 			if ( $number <= 0 ) {
-				$number = absint( apply_filters( 'mai_term_grid_max_number', 1000 ) );
+				/**
+				 * Filters the ceiling applied when a term grid is set to show all entries.
+				 *
+				 * Return 0 or a negative number to opt back into an unbounded query.
+				 *
+				 * @since 2.40.1
+				 *
+				 * @param int $max The maximum number of terms. Default 1000.
+				 */
+				$max    = (int) apply_filters( 'mai_term_grid_max_number', 1000 );
+				$number = $max > 0 ? $max : 0;
 			}
 
 			$query_args['number'] = $number;

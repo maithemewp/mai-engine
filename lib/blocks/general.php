@@ -71,9 +71,12 @@ function mai_render_block_handle_link_color( $block_content, $block ) {
 
 	// This filter runs for every block on every page, and `next_tag()` with an unmatched
 	// selector walks the block's entire HTML. Blocks are nested, so an outer group receives
-	// its whole rendered subtree here. A substring check is orders of magnitude cheaper than
-	// tokenizing, and no class below can apply without it appearing in the markup first.
-	if ( ! str_contains( $block_content, 'has-link-color' ) ) {
+	// its whole rendered subtree here. Both classes handled below share the `has-link`
+	// prefix (`has-link-color` and `has-link-background-color`), so a substring check on
+	// that prefix is a sound precondition and far cheaper than tokenizing. Matching the
+	// full `has-link-color` would miss background and overlay colors, whose class does not
+	// contain it. The trailing hyphen keeps already-converted `has-links-*` from matching.
+	if ( ! str_contains( $block_content, 'has-link-' ) ) {
 		return $block_content;
 	}
 

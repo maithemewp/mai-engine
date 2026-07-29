@@ -329,10 +329,17 @@ function mai_get_sanitized_entry_args( $args, $context, $name = 'post' ) {
 		return $args;
 	}
 
-	// Keyed by 'settings', which holds the bare arg name. Previously plucked by 'name', a
-	// key no control array has, and guarded by an isset() on a numerically indexed list,
-	// so this returned early every time and none of these callbacks had ever run.
-	$sanitize = wp_list_pluck( $settings, 'sanitize', 'settings' );
+	// Keyed by 'settings', which holds the bare arg name. Built by hand rather than with
+	// wp_list_pluck(): given an index key, pluck() reads the value field unguarded, and
+	// around a quarter of the controls (section headings, dividers, page header fields)
+	// carry no 'sanitize', so it would emit an undefined key warning for each one.
+	$sanitize = [];
+
+	foreach ( $settings as $setting ) {
+		if ( isset( $setting['settings'], $setting['sanitize'] ) ) {
+			$sanitize[ $setting['settings'] ] = $setting['sanitize'];
+		}
+	}
 
 	if ( ! $sanitize ) {
 		return $args;
@@ -345,11 +352,26 @@ function mai_get_sanitized_entry_args( $args, $context, $name = 'post' ) {
 			continue;
 		}
 		$function = $sanitize[ $key ];
+
+		// Callbacks come from filterable settings config, so a bad one would fatal on
+		// every front-end page. Skip and log rather than take the site down.
+		if ( ! is_callable( $function ) ) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( sprintf( 'Mai Engine: uncallable sanitize callback for entry arg "%s".', $key ) );
+			}
+
+			continue;
+		}
+
 		if ( is_array( $value ) ) {
 			$escaped = [];
-			foreach ( $value as $key => $val ) {
-				$escaped[ $key ] = $function( $val );
+
+			// $sub_key, not $key: reusing the outer variable wrote the sanitized array
+			// under the last inner key and left the real arg unsanitized.
+			foreach ( $value as $sub_key => $val ) {
+				$escaped[ $sub_key ] = $function( $val );
 			}
+
 			$args[ $key ] = $escaped;
 		} else {
 			$args[ $key ] = $function( $value );

@@ -28,17 +28,26 @@ function mai_upgrade_complete( $upgrader_object, $options ) {
 		return;
 	}
 
-	if ( ! ( isset( $options['plugins'] ) && $options['plugins'] ) ) {
+	// Bulk updates pass 'plugins'; Plugin_Upgrader::upgrade() passes 'plugin' (singular),
+	// which is the path WP_Automatic_Updater uses, so both must be read or auto-updates
+	// would never reach the flush below.
+	$updated = [];
+
+	if ( ! empty( $options['plugins'] ) ) {
+		$updated = (array) $options['plugins'];
+	} elseif ( ! empty( $options['plugin'] ) ) {
+		$updated = [ $options['plugin'] ];
+	}
+
+	if ( ! $updated ) {
 		return;
 	}
 
 	// Only our own update invalidates these caches: they are derived from Mai's config,
 	// settings, and generated CSS, none of which another plugin's update can change.
-	// `plugin_basename( __FILE__ )` resolved to this file, never a plugin entry point,
-	// so the comparison never matched and every plugin update flushed everything.
 	$plugin = plugin_basename( mai_get_dir() . 'mai-engine.php' );
 
-	if ( ! in_array( $plugin, (array) $options['plugins'], true ) ) {
+	if ( ! in_array( $plugin, $updated, true ) ) {
 		return;
 	}
 

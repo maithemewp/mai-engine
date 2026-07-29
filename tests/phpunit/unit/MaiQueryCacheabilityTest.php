@@ -11,8 +11,13 @@ final class MaiQueryCacheabilityTest extends TestCase {
 		Functions\when( 'apply_filters' )->alias( fn( $tag, $value ) => $value );
 	}
 
-	public function test_skips_query_by_id(): void {
-		$this->assertFalse( ( new Mai_Query_Cache() )->is_cacheable( [ 'query_by' => 'id', 'post_type' => 'post' ] ) );
+	/**
+	 * query_by lives on Mai_Grid::$args and is never copied into the query vars, so the
+	 * guard that used to test for it here could not fire. Caching these is fine anyway:
+	 * they are post__in with orderby post__in, already a primary key lookup.
+	 */
+	public function test_caches_query_by_id_because_the_var_never_reaches_the_query(): void {
+		$this->assertTrue( ( new Mai_Query_Cache() )->is_cacheable( [ 'query_by' => 'id', 'post_type' => 'post' ] ) );
 	}
 
 	public function test_skips_ep_integrate(): void {
@@ -29,6 +34,18 @@ final class MaiQueryCacheabilityTest extends TestCase {
 
 	public function test_skips_rand_orderby(): void {
 		$this->assertFalse( ( new Mai_Query_Cache() )->is_cacheable( [ 'orderby' => 'RAND()', 'post_type' => 'post' ] ) );
+	}
+
+	/**
+	 * Mai_Grid passes the bare string through from the Order By setting, which is the form
+	 * that actually reaches the cache; only the seeded RAND() form was matched before.
+	 */
+	public function test_skips_bare_rand_orderby(): void {
+		$this->assertFalse( ( new Mai_Query_Cache() )->is_cacheable( [ 'orderby' => 'rand', 'post_type' => 'post' ] ) );
+	}
+
+	public function test_caches_orderby_containing_rand_as_a_substring(): void {
+		$this->assertTrue( ( new Mai_Query_Cache() )->is_cacheable( [ 'orderby' => 'brand_name', 'post_type' => 'post' ] ) );
 	}
 
 	public function test_caches_a_normal_tax_grid(): void {

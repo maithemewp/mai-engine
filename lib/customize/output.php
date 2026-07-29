@@ -124,6 +124,15 @@ function mai_get_kirki_css_additions() {
  * @return mixed The cached value, or false on timeout.
  */
 function mai_wait_for_cache_fill( $cache, $key ) {
+	// lock() calls wp_cache_add() directly and is deliberately not gated by can_cache(),
+	// but get()/set() are. So when writes are no-ops (SCRIPT_DEBUG, or the mai_can_cache
+	// filter) the winner can never store anything and waiting would only burn the full
+	// timeout before the inevitable rebuild. Same reason a non-persistent object cache is
+	// excluded: the lock is not atomic there, so single-flight cannot hold.
+	if ( ! $cache->can_cache() || ! wp_using_ext_object_cache() ) {
+		return false;
+	}
+
 	$cap_ms   = max( 0, (int) apply_filters( 'mai_cache_wait_ms', 500 ) );
 	$poll_ms  = max( 1, min( 25, $cap_ms ) );
 	$deadline = microtime( true ) + ( $cap_ms / 1000 );
