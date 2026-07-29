@@ -131,6 +131,14 @@ class Mai_Query_Cache {
 		// result. A regex miss leaves the SQL unchanged (at worst a duplicate entry, never wrong).
 		$sql = preg_replace( '/^(SELECT\s+(?:SQL_CALC_FOUND_ROWS\s+)?).*?(\s+FROM\s+)/is', '$1FIELDS$2', $sql, 1 );
 
+		// Truncate datetime literals to the hour. The date fields accept relative values
+		// ("30 days ago" is the documented placeholder), and WP_Date_Query resolves those
+		// against now to the second, so the key changed every second: every read missed while
+		// every request still wrote a new entry, which is worse than not caching. Only the key
+		// is coarsened; the executed query keeps its exact bounds, so the result can be at most
+		// an hour stale against a TTL that already allows four.
+		$sql = preg_replace( "/'(\d{4}-\d{2}-\d{2} \d{2}):\d{2}:\d{2}'/", "'$1:00:00'", $sql );
+
 		return md5( serialize( $query_vars ) . $sql );
 	}
 
