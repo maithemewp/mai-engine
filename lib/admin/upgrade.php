@@ -24,8 +24,6 @@ add_action( 'upgrader_process_complete', 'mai_upgrade_complete', 10, 2 );
  * @return void
  */
 function mai_upgrade_complete( $upgrader_object, $options ) {
-	$current_plugin = plugin_basename( __FILE__ );
-
 	if ( 'update' !== $options['action'] ) {
 		return;
 	}
@@ -34,11 +32,21 @@ function mai_upgrade_complete( $upgrader_object, $options ) {
 		return;
 	}
 
-	foreach( $options['plugins'] as $plugin ) {
-		if ( $current_plugin !== $plugin ) {
-			mai_cache()->flush();
-		}
+	// Only our own update invalidates these caches: they are derived from Mai's config,
+	// settings, and generated CSS, none of which another plugin's update can change.
+	// `plugin_basename( __FILE__ )` resolved to this file, never a plugin entry point,
+	// so the comparison never matched and every plugin update flushed everything.
+	$plugin = plugin_basename( mai_get_dir() . 'mai-engine.php' );
+
+	if ( ! in_array( $plugin, (array) $options['plugins'], true ) ) {
+		return;
 	}
+
+	// Flushing the root instance rotates the `mai` prefix token, which is part of every
+	// key including grouped ones, so this clears css, template-parts, icons, demo, and all
+	// cached grid results at once. That is intended here, but only on our own update, and
+	// only once no matter how many plugins were in the batch.
+	mai_cache()->flush();
 }
 
 add_action( 'admin_init', 'mai_do_upgrade' );
