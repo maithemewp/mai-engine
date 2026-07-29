@@ -269,6 +269,28 @@ class Mai_Grid {
 					}
 
 					$query = new WP_Term_Query( $this->query_args );
+
+					// Cache featured images, mirroring the post branch above. WP_Term_Query primes
+					// term meta, so reading the image ID is cheap, but the attachments those IDs
+					// point at are in no cache: each entry's wp_get_attachment_image() would then
+					// cost a get_post() plus a get_post_meta(). Prime them all in one pass.
+					if ( $query->terms && in_array( 'image', $this->args['show'] ) ) {
+						$image_ids = [];
+
+						foreach ( $query->terms as $term ) {
+							$image_id = mai_get_term_image_id( $term );
+
+							if ( $image_id ) {
+								$image_ids[] = $image_id;
+							}
+						}
+
+						if ( $image_ids ) {
+							// Attachments carry no terms we need, but _wp_attachment_metadata is
+							// read for every srcset, so prime meta only.
+							_prime_post_caches( $image_ids, false, true );
+						}
+					}
 				}
 				break;
 		}
@@ -361,6 +383,15 @@ class Mai_Grid {
 		$post_status  = is_user_logged_in() && current_user_can( 'edit_posts' ) ? [ 'publish', 'private' ] : 'publish';
 		$per_page     = ( 0 === $this->args['posts_per_page'] ) ? -1 : $this->args['posts_per_page'];
 		$per_page     = ( 'id' === $this->args['query_by'] ) ? count( (array) $this->args['post__in'] ) : $per_page;
+
+		// "Use 0 to show all" is an advertised setting, but on a large site an unbounded query
+		// also means unbounded priming, an unbounded cache entry, and an unbounded render loop.
+		// Cap it so a single editor choice cannot take a site down; filterable for the rare
+		// legitimate case.
+		if ( -1 === $per_page ) {
+			$per_page = absint( apply_filters( 'mai_post_grid_max_posts_per_page', 1000 ) );
+		}
+
 		$query_args   = [
 			'post_type'           => $this->args['post_type'],
 			'posts_per_page'      => $per_page,
@@ -420,9 +451,14 @@ class Mai_Grid {
 								if ( is_category() || is_tag() || is_tax() ) {
 									$terms[] = get_queried_object_id();
 								} elseif ( is_singular() ) {
-									$entry_terms = wp_get_post_terms( get_the_ID(), $taxonomy );
+									// get_the_terms() reads the object term cache the main query already
+									// primed for this post. wp_get_post_terms() skips that cache and runs a
+									// WP_Term_Query keyed on the terms group's last_changed, which churns
+									// constantly on a busy site, so it rarely hits warm. Returns false (not
+									// an empty array) when the post has no terms in this taxonomy.
+									$entry_terms = get_the_terms( get_the_ID(), $taxonomy );
 
-									if ( ! is_wp_error( $entry_terms ) ) {
+									if ( $entry_terms && ! is_wp_error( $entry_terms ) ) {
 										foreach ( $entry_terms as $entry_term ) {
 											$terms[] = $entry_term->term_id;
 										}
@@ -593,7 +629,16 @@ class Mai_Grid {
 		];
 
 		if ( 'id' !== $this->args['query_by'] ) {
-			$query_args['number'] = $this->args['number'];
+			$number = (int) $this->args['number'];
+
+			// WP_Term_Query treats 0 as unlimited, and "Use 0 to show all" is an advertised
+			// setting. Taxonomies run far larger than editors expect (tens of thousands of
+			// tags is normal), and term grids get no query caching, so cap it.
+			if ( $number <= 0 ) {
+				$number = absint( apply_filters( 'mai_term_grid_max_number', 1000 ) );
+			}
+
+			$query_args['number'] = $number;
 		}
 
 		// Handle query_by.
