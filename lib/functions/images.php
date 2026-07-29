@@ -167,6 +167,91 @@ function mai_get_term_image_id( $term ) {
 }
 
 
+add_action( 'add_attachment',    'mai_flush_fallback_image_id' );
+add_action( 'edit_attachment',   'mai_flush_fallback_image_id' );
+add_action( 'delete_attachment', 'mai_flush_fallback_image_id' );
+/**
+ * Evicts a post's cached fallback image when its attachments change.
+ *
+ * Keyed per parent post rather than flushing the group, so one upload does not
+ * invalidate every other post's lookup.
+ *
+ * @since 2.40.1
+ *
+ * @param int $attachment_id The attachment being added, edited, or deleted.
+ *
+ * @return void
+ */
+function mai_flush_fallback_image_id( $attachment_id ) {
+	$parent_id = (int) wp_get_post_parent_id( $attachment_id );
+
+	if ( ! $parent_id ) {
+		return;
+	}
+
+	mai_cache( 'images' )->delete( 'fallback_image_' . $parent_id );
+}
+
+/**
+ * Gets the first attached image ID for a post, for entries with no featured image.
+ *
+ * Wraps `genesis_get_image_id()`, which runs an unbounded `get_children()` query per call.
+ * WP_Query caches that internally, but keyed on the posts group's `last_changed`, which
+ * bumps on every post save: on a busy publisher site it effectively never hits, so the
+ * query runs per image-less entry on every archive render. Caching it under a key we
+ * control, evicted only when the post's attachments change, is immune to that churn.
+ *
+ * A "no image found" result is cached as 0, because a cache miss also reads as false and
+ * those posts (no featured image, no attachments) are exactly the ones doing the most
+ * fruitless work.
+ *
+ * @since 2.40.1
+ *
+ * @param int $post_id The post ID.
+ *
+ * @return int The image ID, or 0 if none.
+ */
+function mai_get_fallback_image_id( $post_id ) {
+	$post_id = (int) $post_id;
+
+	if ( ! $post_id ) {
+		return 0;
+	}
+
+	/**
+	 * Allows the first-attached-image fallback to be disabled.
+	 *
+	 * Sites where most posts have no featured image pay an attachment query per entry
+	 * for a fallback they may not want. Returning false skips the lookup entirely.
+	 *
+	 * @since 2.40.1
+	 *
+	 * @param bool $enabled Whether the fallback runs.
+	 * @param int  $post_id The post ID.
+	 */
+	if ( ! apply_filters( 'mai_entry_image_fallback', true, $post_id ) ) {
+		return 0;
+	}
+
+	if ( ! function_exists( 'genesis_get_image_id' ) ) {
+		return 0;
+	}
+
+	$cache    = mai_cache( 'images' );
+	$key      = 'fallback_image_' . $post_id;
+	$image_id = $cache->get( $key );
+
+	if ( false !== $image_id ) {
+		return (int) $image_id;
+	}
+
+	$image_id = absint( genesis_get_image_id( 0, $post_id ) );
+
+	$cache->set( $key, $image_id, DAY_IN_SECONDS );
+
+	return $image_id;
+}
+
 /**
  * Adds (forces) logo attributes.
  * This makes sure the correct attributes are used, and match for preloading.

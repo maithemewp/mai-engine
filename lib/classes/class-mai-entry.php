@@ -714,7 +714,7 @@ class Mai_Entry {
 			case 'post':
 				$image_id = get_post_thumbnail_id( $this->id );
 				if ( ! $image_id && ( 'single' !== $this->context ) && post_type_supports( get_post_type( $this->id ), 'editor' ) ) {
-					$image_id = genesis_get_image_id( 0, $this->id );
+					$image_id = mai_get_fallback_image_id( $this->id );
 				}
 			break;
 			case 'term':
