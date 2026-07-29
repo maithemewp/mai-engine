@@ -303,7 +303,6 @@ return [
 		],
 		'easy-digital-downloads' => [
 			'location'  => 'public',
-			'inline'    => true,
 			'condition' => function() {
 				return class_exists( 'Easy_Digital_Downloads' );
 			},

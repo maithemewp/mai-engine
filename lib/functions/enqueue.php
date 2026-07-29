@@ -168,49 +168,6 @@ function mai_styles_desktop_breakpoint( $config ) {
 	return $config;
 }
 
-add_filter( 'script_loader_tag', 'mai_script_loader_tag', 10, 3 );
-/**
- * Adds attributes to scripts.
- *
- * @since 2.13.0
- *
- * @param string $tag    The <script> tag for the enqueued script.
- * @param string $handle The script's registered handle.
- * @param string $src    The script's source URL.
- *
- * @return string
- */
-function mai_script_loader_tag( $tag, $handle, $src ) {
-	$attributes = mai_get_script_attributes();
-	if ( ! ( isset( $attributes[ $handle ] ) && $attributes[ $handle ] ) ) {
-		return $tag;
-	}
-	$tag = mai_add_tag_attributes( $tag, $attributes[ $handle ] );
-	return $tag;
-}
-
-add_filter( 'style_loader_tag', 'mai_style_loader_tag', 10, 4 );
-/**
- * Adds attributes to styles.
- *
- * @since 2.13.0
- *
- * @param string $html   The link tag for the enqueued style.
- * @param string $handle The style's registered handle.
- * @param string $href   The stylesheet's source URL.
- * @param string $media  The stylesheet's media attribute.
- *
- * @return string
- */
-function mai_style_loader_tag( $html, $handle, $href, $media ) {
-	$attributes = mai_get_style_attributes();
-	if ( ! ( isset( $attributes[ $handle ] ) && $attributes[ $handle ] ) ) {
-		return $html;
-	}
-	$html = mai_add_tag_attributes( $html, $attributes[ $handle ] );
-	return $html;
-}
-
 /**
  * Register and enqueue script or style.
  *
@@ -234,7 +191,18 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 	$location  = isset( $args['location'] ) & ! empty( $args['location'] ) ? (array) $args['location'] : [ 'public' ];
 	$localize  = isset( $args['localize'] ) ? $args['localize'] : [];
 	$inline    = isset( $args['inline'] ) ? $args['inline'] : false;
+	$strategy  = ! empty( $args['async'] ) ? 'async' : ( ! empty( $args['defer'] ) ? 'defer' : '' );
 	$last_arg  = 'style' === $type ? $media : $in_footer;
+
+	// Scripts take a $args array so WordPress can apply the loading strategy itself. It is
+	// dependency aware, and will decline async/defer where a dependent script would break,
+	// which filtering script_loader_tag to bolt the attribute on could not do.
+	if ( 'script' === $type && $strategy ) {
+		$last_arg = [
+			'in_footer' => (bool) $in_footer,
+			'strategy'  => $strategy,
+		];
+	}
 	$register  = "wp_register_$type";
 	$enqueue   = "wp_enqueue_$type";
 	$load      = false;
@@ -295,101 +263,6 @@ function mai_enqueue_asset( $handle, $args, $type ) {
 
 		wp_localize_script( $handle, $localize['name'], $localize_data );
 	}
-}
-
-/**
- * Adds attributes to an HTML tag.
- *
- * @access private
- *
- * @since 2.13.0
- *
- * @param string $tag The <script> or <style> tag.
- * @param array  $attributes The attributes by name and value.
- *
- * @return string
- */
-function mai_add_tag_attributes( $tag, $attributes ) {
-	if ( ! $tag ) {
-		return $tag;
-	}
-	$dom   = mai_get_dom_document( $tag );
-	$first = mai_get_dom_first_child( $dom );
-	foreach ( $attributes as $name => $value ) {
-		$first->setAttribute( $name, $value );
-	}
-	return mai_get_dom_html( $dom );
-}
-
-/**
- * Gets script attributes to be added later.
- * These are not available to be added in wp_enqueue_script().
- *
- * @access private
- *
- * @since 2.13.0
- *
- * @return array
- */
-function mai_get_script_attributes() {
-	static $attributes = null;
-	if ( ! is_null( $attributes ) ) {
-		return $attributes;
-	}
-	$attributes = mai_get_tag_attributes( 'scripts' );
-	return $attributes;
-}
-
-/**
- * Gets style attributes to be added later.
- * These are not available to be added in wp_enqueue_style().
- *
- * @access private
- *
- * @since 2.13.0
- *
- * @return array
- */
-function mai_get_style_attributes() {
-	static $attributes = null;
-	if ( ! is_null( $attributes ) ) {
-		return $attributes;
-	}
-	$attributes = [
-		'wp-block-library' => [],
-	];
-	$attributes = array_merge( mai_get_tag_attributes( 'styles' ), $attributes );
-	return $attributes;
-}
-
-/**
- * Gets attributes of scripts or styles from the config.
- *
- * @access private
- *
- * @since 2.13.0
- *
- * @return array
- */
-function mai_get_tag_attributes( $script_or_style ) {
-	$attributes = [];
-	$tags       = mai_get_config( $script_or_style );
-
-	foreach ( $tags as $name => $args ) {
-		$handle = isset( $args['handle'] ) ? $args['handle'] : mai_get_handle() . '-' . $name;
-
-		if ( isset( $args[''] ) && $args['onload'] ) {
-			$attributes[ $handle ]['onload'] = $args['onload'];
-		}
-		if ( isset( $args['async'] ) ) {
-			$attributes[ $handle ]['async'] = 'async';
-		}
-		if ( isset( $args['defer'] ) ) {
-			$attributes[ $handle ]['defer'] = 'defer';
-		}
-	}
-
-	return $attributes;
 }
 
 /**
