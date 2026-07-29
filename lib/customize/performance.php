@@ -24,14 +24,6 @@ add_action( 'init', 'mai_performance_customizer_settings' );
  * @return  void
  */
 function mai_performance_customizer_settings() {
-	// Customizer controls are only read when the Customizer is rendered or saved. Building
-	// them on a front-end page view costs ~150 Kirki objects and several hundred hooks for a UI
-	// that is never drawn. No field in this file carries an `output` arg, so nothing here
-	// contributes front-end CSS.
-	if ( ! mai_is_customizer_context() ) {
-		return;
-	}
-
 	$config_id  = mai_get_handle();
 	$section_id = $config_id . '-performance';
 	$defaults   = mai_get_config( 'settings' )['performance'];

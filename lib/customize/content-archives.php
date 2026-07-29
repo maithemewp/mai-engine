@@ -23,14 +23,6 @@ add_action( 'init', 'mai_add_content_archive_settings', 99 );
  * @return void
  */
 function mai_add_content_archive_settings() {
-	// Customizer controls are only read when the Customizer is rendered or saved. Building
-	// them on a front-end page view costs ~150 Kirki objects and several hundred hooks for a UI
-	// that is never drawn. No field in this file carries an `output` arg, so nothing here
-	// contributes front-end CSS.
-	if ( ! mai_is_customizer_context() ) {
-		return;
-	}
-
 	$handle   = mai_get_handle();
 	$panel    = 'content-archives';
 	$defaults = mai_get_config( 'settings' )['content-archives']['enable'];
