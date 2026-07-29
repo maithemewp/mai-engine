@@ -66,7 +66,7 @@ function mai_is_editor() {
 	$context = mai_get_request_context();
 
 	switch ( $context ) {
-		case 'admin';
+		case 'admin':
 		case 'admin_ajax':
 		case 'admin_rest':
 		case 'editor':
@@ -782,10 +782,10 @@ function mai_has_breadcrumbs() {
  * @return string|array May be * for all or array of types.
  */
 function mai_get_page_header_types( $context ) {
-	static $types = null;
+	static $cache = [];
 
-	if ( is_array( $types ) && isset( $types[ $context ] ) ) {
-		return $types[ $context ];
+	if ( isset( $cache[ $context ] ) ) {
+		return $cache[ $context ];
 	}
 
 	$types   = [];
@@ -816,9 +816,11 @@ function mai_get_page_header_types( $context ) {
 		$types = $config[ $context ];
 	}
 
-	$types[ $context ] = mai_get_option( 'page-header-' . $context, $types );
+	// Cached separately from $types: the working value is a plain list, so writing the
+	// cache key into it both corrupted the list and reset the cache on every miss.
+	$cache[ $context ] = mai_get_option( 'page-header-' . $context, $types );
 
-	return $types[ $context ];
+	return $cache[ $context ];
 }
 
 /**
@@ -1040,10 +1042,15 @@ function mai_is_element_hidden( $element, $id = '' ) {
  * @return array
  */
 function mai_get_hidden_elements( $id, $type = 'post' ) {
-	static $elements = null;
+	// Keyed by type and id. Previously a single unkeyed static, so the first lookup in a
+	// request was returned for every post and term after it, which crossed post and term
+	// meta on term archives.
+	static $cache = [];
 
-	if ( ! is_null( $elements ) ) {
-		return $elements;
+	$cache_key = $type . ':' . $id;
+
+	if ( isset( $cache[ $cache_key ] ) ) {
+		return $cache[ $cache_key ];
 	}
 
 	$elements = [];
@@ -1060,6 +1067,8 @@ function mai_get_hidden_elements( $id, $type = 'post' ) {
 	// Filter.
 	$elements = apply_filters( 'mai_hidden_elements', $elements );
 	$elements = array_map( 'sanitize_key', (array) $elements );
+
+	$cache[ $cache_key ] = $elements;
 
 	return $elements;
 }

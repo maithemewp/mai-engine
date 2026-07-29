@@ -291,13 +291,12 @@ function mai_add_logo_attributes( $attr ) {
  * @return bool|mixed
  */
 function mai_get_aspect_ratio_from_orientation( $orientation ) {
-	static $ratios = null;
+	static $ratios = [];
 
-	if ( is_array( $ratios ) && isset( $ratios[ $orientation ] ) ) {
+	if ( isset( $ratios[ $orientation ] ) ) {
 		return $ratios[ $orientation ];
 	}
 
-	$ratios      = [];
 	$image_sizes = mai_get_config( 'image-sizes' );
 
 	if ( isset( $image_sizes['add'][ $orientation ] ) && is_string( $image_sizes['add'][ $orientation ] ) && mai_has_string( ':', $image_sizes['add'][ $orientation ] ) ) {
@@ -319,13 +318,12 @@ function mai_get_aspect_ratio_from_orientation( $orientation ) {
  * @return string
  */
 function mai_get_image_aspect_ratio( $image_size ) {
-	static $ratios = null;
+	static $ratios = [];
 
-	if ( is_array( $ratios ) && isset( $ratios[ $image_size ] ) ) {
+	if ( isset( $ratios[ $image_size ] ) ) {
 		return $ratios[ $image_size ];
 	}
 
-	$ratios                = [];
 	$all_sizes             = mai_get_available_image_sizes();
 	$sizes                 = isset( $all_sizes[ $image_size ] ) ? $all_sizes[ $image_size ] : false;
 	$ratios[ $image_size ] = $sizes ? sprintf( '%s/%s', $sizes['width'], $sizes['height'] ) : '4/3';
@@ -531,11 +529,14 @@ function mai_get_image_sizes_from_aspect_ratio( $size = 'md', $ratio = '16:9' ) 
  * @return string
  */
 function mai_get_page_header_image_size() {
-	$image_size = null;
+	static $image_size = null;
+
 	if ( ! is_null( $image_size ) ) {
 		return $image_size;
 	}
+
 	$image_size = (string) apply_filters( 'mai_page_header_image_size', 'medium' );
+
 	return $image_size;
 }
 
@@ -548,11 +549,14 @@ function mai_get_page_header_image_size() {
  * @return string
  */
 function mai_get_cover_image_size() {
-	$image_size = null;
+	static $image_size = null;
+
 	if ( ! is_null( $image_size ) ) {
 		return $image_size;
 	}
+
 	$image_size = (string) apply_filters( 'mai_cover_image_size', 'medium' );
+
 	return $image_size;
 }
 

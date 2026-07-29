@@ -98,10 +98,10 @@ function mai_get_default_font_family( $element ) {
  * @return array
  */
 function mai_get_default_font_weights( $element ) {
-	static $weights = null;
+	static $cache = [];
 
-	if ( is_array( $weights ) && isset( $weights[ $element ] ) ) {
-		return $weights[ $element ];
+	if ( isset( $cache[ $element ] ) ) {
+		return $cache[ $element ];
 	}
 
 	$fallback = [ 'regular' ];
@@ -116,6 +116,11 @@ function mai_get_default_font_weights( $element ) {
 		}
 	}
 
+	// Cached per element. The weights themselves are a numerically indexed list, so the
+	// cache must be a separate array: writing them into one keyed by element cannot work,
+	// and previously meant this never cached at all.
+	$cache[ $element ] = $weights;
+
 	return $weights;
 }
 
@@ -129,16 +134,17 @@ function mai_get_default_font_weights( $element ) {
  * @return string
  */
 function mai_get_default_font_weight( $element ) {
-	static $weights = null;
+	static $cache = [];
 
-	if ( is_array( $weights ) && isset( $weights[ $element ] ) ) {
-		return $weights[ $element ];
+	if ( isset( $cache[ $element ] ) ) {
+		return $cache[ $element ];
 	}
 
-	$weights             = mai_get_default_font_weights( $element );
-	$weights[ $element ] = reset( $weights );
+	$weights = mai_get_default_font_weights( $element );
 
-	return $weights[ $element ];
+	$cache[ $element ] = reset( $weights );
+
+	return $cache[ $element ];
 }
 
 /**
