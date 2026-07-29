@@ -1413,6 +1413,13 @@ function mai_get_dom_document( $html ) {
  */
 function mai_get_dom_html( $dom ) {
 	$html = $dom->saveHTML();
+
+	// 'HTML-ENTITIES' is deprecated as of PHP 8.2, but this call is deliberate. It was
+	// replaced with html_entity_decode() in e5e8ff818 and reverted in 8c51375c9 after it
+	// broke non-English content: Polish diacritics and curly quotes in particular. Do not
+	// swap it without testing against content covering those cases, plus pre-escaped
+	// entities and astral-plane characters. The encode side (mb_encode_numericentity in
+	// mai_get_dom_document) already migrated off mb_convert_encoding successfully.
 	$html = mb_convert_encoding( $html, 'UTF-8', 'HTML-ENTITIES' );
 
 	return $html;
