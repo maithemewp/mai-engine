@@ -256,7 +256,7 @@ function mai_get_performance_default( $setting ) {
 	$settings    = mai_get_config( 'settings' );
 	$performance = isset( $settings['performance'] ) ? $settings['performance'] : [];
 
-	return isset( $performance['disable-emojis'] ) ? $performance['disable-emojis'] : true;
+	return isset( $performance[ $setting ] ) ? $performance[ $setting ] : true;
 }
 
 add_action( 'the_posts', 'mai_prime_featured_images_cache', 10, 2 );
