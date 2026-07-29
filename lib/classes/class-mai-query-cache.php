@@ -152,10 +152,6 @@ class Mai_Query_Cache {
 	public function is_cacheable( array $query_vars ): bool {
 		$cacheable = true;
 
-		if ( isset( $query_vars['query_by'] ) && 'id' === $query_vars['query_by'] ) {
-			$cacheable = false;
-		}
-
 		// ElasticPress offloads to ES and hooks posts_pre_query itself; that interaction is
 		// unverified (eurweb is not on EP), so skip ep_integrate grids until it is tested.
 		if ( ! empty( $query_vars['ep_integrate'] ) ) {
@@ -167,8 +163,11 @@ class Mai_Query_Cache {
 			$cacheable = false;
 		}
 
+		// Caching a random order defeats it. Mai_Grid emits the bare string 'rand' from the
+		// Order By setting; WP_Query also accepts the seeded 'RAND(123)' form. Matching only
+		// the seeded form meant random grids were cached, so they were not random.
 		$orderby = $query_vars['orderby'] ?? '';
-		if ( is_string( $orderby ) && false !== stripos( $orderby, 'RAND(' ) ) {
+		if ( is_string( $orderby ) && preg_match( '/\brand\b|\bRAND\(/i', $orderby ) ) {
 			$cacheable = false;
 		}
 
