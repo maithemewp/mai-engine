@@ -27,6 +27,14 @@ add_action( 'init', 'mai_archive_settings_customizer_settings', 99 );
  * @return void
  */
 function mai_archive_settings_customizer_settings() {
+	// Customizer controls are only read when the Customizer is rendered or saved. Building
+	// them on a front-end page view costs ~150 Kirki objects and several hundred hooks for a UI
+	// that is never drawn. No field in this file carries an `output` arg, so nothing here
+	// contributes front-end CSS.
+	if ( ! mai_is_customizer_context() ) {
+		return;
+	}
+
 	$handle  = mai_get_handle();
 	$section = $handle . '-content-archives';
 	$choices = mai_get_loop_content_type_choices( true );
@@ -78,6 +86,14 @@ add_action( 'init', 'mai_single_settings_customizer_settings', 99 );
  * @return void
  */
 function mai_single_settings_customizer_settings() {
+	// Customizer controls are only read when the Customizer is rendered or saved. Building
+	// them on a front-end page view costs ~150 Kirki objects and several hundred hooks for a UI
+	// that is never drawn. No field in this file carries an `output` arg, so nothing here
+	// contributes front-end CSS.
+	if ( ! mai_is_customizer_context() ) {
+		return;
+	}
+
 	$handle  = mai_get_handle();
 	$section = $handle . '-single-content';
 	$choices = mai_get_loop_content_type_choices( false );

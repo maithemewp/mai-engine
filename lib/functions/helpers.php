@@ -77,6 +77,41 @@ function mai_is_editor() {
 }
 
 /**
+ * Checks whether Customizer controls need to be registered for this request.
+ *
+ * Registering Mai's Kirki fields builds ~150 objects and several hundred hooks. On a
+ * front-end page view none of that is read: the controls exist only to draw the Customizer
+ * UI. This gates that work to the contexts that actually render or save it.
+ *
+ * Deliberately generous. Registering when it was not strictly needed costs a few
+ * milliseconds; failing to register when it was needed silently drops controls from the
+ * Customizer, so every ambiguous context resolves to true.
+ *
+ * Note: fields carrying an `output` argument must register regardless, since Kirki derives
+ * front-end CSS from them, and Kirki bails out of its whole style pipeline when no fields
+ * are registered at all. See lib/customize/logo.php and lib/customize/menus.php.
+ *
+ * @since 2.40.1
+ *
+ * @return bool
+ */
+function mai_is_customizer_context() {
+	static $is = null;
+
+	if ( ! is_null( $is ) ) {
+		return $is;
+	}
+
+	$is = is_admin()
+		|| is_customize_preview()
+		|| ( defined( 'REST_REQUEST' ) && REST_REQUEST )
+		|| ( function_exists( 'wp_doing_ajax' ) && wp_doing_ajax() )
+		|| ( defined( 'WP_CLI' ) && WP_CLI );
+
+	return $is;
+}
+
+/**
  * Gets the request context.
  *
  * @since 2.38.0

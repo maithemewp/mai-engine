@@ -26,26 +26,34 @@ function mai_menus_customizer_settings() {
 	$handle  = mai_get_handle();
 	$section = $handle . '-menus';
 
-	new \Kirki\Section(
-		$section,
-		[
-			'title' => esc_html__( 'Menus', 'mai-engine' ),
-			'panel' => $handle,
-		]
-	);
+	// The three Radio_Buttonset fields below carry an `output` arg, so Kirki turns them into
+	// front-end CSS and they must register on every request. The section and text field are
+	// UI-only. Guarded per field rather than with one early return so registration order, and
+	// therefore control order in the Customizer, is byte-for-byte unchanged.
+	$customizing = mai_is_customizer_context();
 
-	new \Kirki\Field\Text(
-		mai_parse_kirki_args(
+	if ( $customizing ) {
+		new \Kirki\Section(
+			$section,
 			[
-				'settings'          => mai_get_kirki_setting( 'mobile-menu-breakpoint' ),
-				'label'             => __( 'Mobile Menu Breakpoint', 'mai-engine' ),
-				'section'           => $section,
-				'description'       => __( 'The largest screen width at which the mobile menu becomes active, in pixels.', 'mai-engine' ),
-				'sanitize_callback' => 'absint',
-				'default'           => mai_get_mobile_menu_breakpoint(),
+				'title' => esc_html__( 'Menus', 'mai-engine' ),
+				'panel' => $handle,
 			]
-		)
-	);
+		);
+
+		new \Kirki\Field\Text(
+			mai_parse_kirki_args(
+				[
+					'settings'          => mai_get_kirki_setting( 'mobile-menu-breakpoint' ),
+					'label'             => __( 'Mobile Menu Breakpoint', 'mai-engine' ),
+					'section'           => $section,
+					'description'       => __( 'The largest screen width at which the mobile menu becomes active, in pixels.', 'mai-engine' ),
+					'sanitize_callback' => 'absint',
+					'default'           => mai_get_mobile_menu_breakpoint(),
+				]
+			)
+		);
+	}
 
 	new \Kirki\Field\Radio_Buttonset(
 		mai_parse_kirki_args(

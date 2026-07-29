@@ -28,6 +28,10 @@ add_action( 'init', 'mai_typography_customizer_settings' );
  * @return void
  */
 function mai_typography_customizer_settings() {
+	// NOT gated to customizer contexts, unlike the other lib/customize files: Kirki derives
+	// its Google Fonts list from registered typography fields, so skipping registration here
+	// drops every @font-face rule from the front end (verified: 76 -> 0 on eurweb).
+
 	$handle  = mai_get_handle();
 	$section = $handle . '-typography';
 

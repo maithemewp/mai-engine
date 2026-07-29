@@ -25,35 +25,43 @@ add_action( 'init', 'mai_logo_customizer_settings' );
 function mai_logo_customizer_settings() {
 	$defaults = mai_get_config( 'settings' )['logo'];
 
-	new \Kirki\Field\Checkbox(
-		mai_parse_kirki_args(
-			[
-				'settings' => mai_get_kirki_setting( 'show-tagline' ),
-				'label'    => esc_html__( 'Show Tagline', 'mai-engine' ),
-				'section'  => 'title_tagline',
-				'priority' => 30,
-				'default'  => $defaults['show-tagline'],
-			]
-		)
-	);
+	// The two Dimensions fields below carry an `output` arg, so Kirki turns them into
+	// front-end CSS and they must register on every request. The rest are UI-only. Guarded
+	// per field rather than with one early return so registration order, and therefore
+	// control order in the Customizer, is byte-for-byte unchanged.
+	$customizing = mai_is_customizer_context();
 
-	new \Kirki\Field\Image(
-		mai_parse_kirki_args(
-			[
-				'settings'        => mai_get_kirki_setting( 'logo-scroll' ),
-				'label'           => esc_html__( 'Logo on scroll', 'mai-engine' ),
-				'section'         => 'title_tagline',
-				'priority'        => 60,
-				'default'         => '',
-				'choices'         => [
-					'save_as' => 'id',
-				],
-				'active_callback' => function() {
-					return (bool) mai_has_sticky_header_enabled() && has_custom_logo();
-				},
-			]
-		)
-	);
+	if ( $customizing ) {
+		new \Kirki\Field\Checkbox(
+			mai_parse_kirki_args(
+				[
+					'settings' => mai_get_kirki_setting( 'show-tagline' ),
+					'label'    => esc_html__( 'Show Tagline', 'mai-engine' ),
+					'section'  => 'title_tagline',
+					'priority' => 30,
+					'default'  => $defaults['show-tagline'],
+				]
+			)
+		);
+
+		new \Kirki\Field\Image(
+			mai_parse_kirki_args(
+				[
+					'settings'        => mai_get_kirki_setting( 'logo-scroll' ),
+					'label'           => esc_html__( 'Logo on scroll', 'mai-engine' ),
+					'section'         => 'title_tagline',
+					'priority'        => 60,
+					'default'         => '',
+					'choices'         => [
+						'save_as' => 'id',
+					],
+					'active_callback' => function() {
+						return (bool) mai_has_sticky_header_enabled() && has_custom_logo();
+					},
+				]
+			)
+		);
+	}
 
 	new \Kirki\Field\Dimensions(
 		mai_parse_kirki_args(
