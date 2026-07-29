@@ -19,7 +19,7 @@
 * Fixed: Mai Post Grids set to a random order are now random on every page load.
 * Fixed: Each performance setting now uses its own default rather than the emoji setting's.
 * Fixed: A fatal error on the front end when a separate ACF Pro plugin is active alongside the bundled copy.
-* Fixed: A PHP 8.4 deprecation notice, and a stray character added to the Easy Digital Downloads stylesheet.
+* Fixed: A PHP 8.5 deprecation notice, and a stray character added to the Easy Digital Downloads stylesheet.
 * Fixed: The Cover block's `sizes` attribute used a hard-coded 600px breakpoint rather than the theme's configured breakpoint, so themes with a custom breakpoint could get a mismatched value.
 * Fixed: PHP warnings and a bad srcset calculation when an attachment's file could not be resolved but its metadata still existed.
 
