@@ -69,6 +69,14 @@ function mai_render_block_handle_link_color( $block_content, $block ) {
 		return $block_content;
 	}
 
+	// This filter runs for every block on every page, and `next_tag()` with an unmatched
+	// selector walks the block's entire HTML. Blocks are nested, so an outer group receives
+	// its whole rendered subtree here. A substring check is orders of magnitude cheaper than
+	// tokenizing, and no class below can apply without it appearing in the markup first.
+	if ( ! str_contains( $block_content, 'has-link-color' ) ) {
+		return $block_content;
+	}
+
 	// Find marks with has-link-color and replace with has-links-color.
 	$mark = false;
 	$tags = new WP_HTML_Tag_Processor( $block_content );
