@@ -4,14 +4,14 @@
 * Changed: Update ACF Pro to 6.8.6.
 * Changed: Update Plugin Update Checker to 5.7.
 * Changed: Removed unused image code that was disabled long ago.
-* Changed: [Performance] Term Grids now cache their featured images in one pass, instead of two uncached queries per term.
-* Changed: [Performance] Related-posts grids now read the terms WordPress already loaded for the current post rather than querying them again.
-* Changed: [Performance] Blocks are no longer scanned for link-color markup unless the markup is actually present, saving a full pass over each block's HTML on every page.
-* Changed: [Performance] The generated CSS and font list are now rebuilt by a single request when their cache is empty, instead of by every request at once.
+* Changed: [Performance] Term Grids now cache their featured images in a single pass.
+* Changed: [Performance] Related-posts grids now reuse the terms WordPress has already loaded for the current post.
+* Changed: [Performance] Blocks are only scanned for link-color markup when that markup is present.
+* Changed: [Performance] The generated CSS and font list are rebuilt by a single request when their cache is empty.
 * Changed: [Performance] The first-attached-image fallback for entries without a featured image is now cached per post, and can be turned off with the new `mai_entry_image_fallback` filter.
-* Changed: [Developers] New `mai_post_grid_max_posts_per_page` and `mai_term_grid_max_number` filters, defaulting to 1000. Setting a grid to show all entries no longer runs an unlimited query, which could take down a large site.
-* Fixed: [Performance] Grids using a relative After/Before date (for example "30 days ago") could never hit their cache, and wrote a new cache entry on every page load.
-* Fixed: [Performance] Updating any plugin cleared Mai's entire cache, including all cached grid results. Only updating Mai Engine itself clears it now.
+* Changed: [Performance] Grids using a relative After/Before date (for example "30 days ago") now cache their results.
+* Changed: [Performance] Mai's caches are now cleared when Mai Engine itself updates, keeping cached grid results warm through unrelated plugin updates.
+* Changed: [Developers] New `mai_post_grid_max_posts_per_page` and `mai_term_grid_max_number` filters, defaulting to 1000, so a grid set to show all entries stays bounded on large sites.
 * Fixed: The Cover block's `sizes` attribute used a hard-coded 600px breakpoint rather than the theme's configured breakpoint, so themes with a custom breakpoint could get a mismatched value.
 * Fixed: PHP warnings and a bad srcset calculation when an attachment's file could not be resolved but its metadata still existed.
 
