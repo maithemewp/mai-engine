@@ -84,14 +84,62 @@ function mai_get_kirki_css_additions() {
 		return mai_build_kirki_css_additions();
 	}
 
-	$additions = mai_cache( 'css' )->get( 'dynamic_css' );
+	$cache     = mai_cache( 'css' );
+	$additions = $cache->get( 'dynamic_css' );
 
-	if ( false === $additions ) {
-		$additions = mai_build_kirki_css_additions();
-		mai_cache( 'css' )->set( 'dynamic_css', $additions, 12 * HOUR_IN_SECONDS );
+	if ( false !== $additions ) {
+		return $additions;
 	}
 
+	// Cold key: one request rebuilds while concurrent others wait briefly for its result.
+	// Without this, a flush (theme switch, settings save, plugin update) sends every
+	// in-flight request through the same palette/breakpoint/button build simultaneously.
+	if ( ! $cache->lock( 'dynamic_css' ) ) {
+		$additions = mai_wait_for_cache_fill( $cache, 'dynamic_css' );
+
+		if ( false !== $additions ) {
+			return $additions;
+		}
+	}
+
+	$additions = mai_build_kirki_css_additions();
+
+	$cache->set( 'dynamic_css', $additions, 12 * HOUR_IN_SECONDS );
+
 	return $additions;
+}
+
+/**
+ * Waits briefly for a single-flight winner to fill a cache key, then returns its value.
+ *
+ * Mirrors Mai_Query_Cache::wait_for_fill() for the simple (non-SWR) caches here. Returns
+ * false when the winner did not deliver in time, so the caller falls through and rebuilds
+ * rather than serving nothing.
+ *
+ * @since 2.40.1
+ *
+ * @param object $cache The mai_cache instance.
+ * @param string $key   The cache key being filled.
+ *
+ * @return mixed The cached value, or false on timeout.
+ */
+function mai_wait_for_cache_fill( $cache, $key ) {
+	$cap_ms   = max( 0, (int) apply_filters( 'mai_cache_wait_ms', 500 ) );
+	$poll_ms  = max( 1, min( 25, $cap_ms ) );
+	$deadline = microtime( true ) + ( $cap_ms / 1000 );
+
+	// Read first, then sleep: return immediately if the winner already stored.
+	while ( microtime( true ) < $deadline ) {
+		$value = $cache->get( $key );
+
+		if ( false !== $value ) {
+			return $value;
+		}
+
+		usleep( $poll_ms * 1000 );
+	}
+
+	return false;
 }
 
 /**
@@ -148,9 +196,25 @@ function mai_add_kirki_fonts( $fonts ) {
 	// The customizer preview reflects live, unsaved settings; everywhere else the font
 	// set is a pure function of saved settings, so it is safe to cache and reuse.
 	$skip_cache = is_customize_preview();
+	$cache      = mai_cache( 'css' );
 
-	if ( ! $skip_cache && $cached_fonts = mai_cache( 'css' )->get( 'dynamic_fonts' ) ) {
-		return $cached_fonts;
+	if ( ! $skip_cache ) {
+		// Strict comparison: a legitimately empty font set is a valid cached value, and a
+		// truthy check would rebuild it on every request.
+		$cached_fonts = $cache->get( 'dynamic_fonts' );
+
+		if ( false !== $cached_fonts ) {
+			return $cached_fonts;
+		}
+
+		// Cold key: single-flight, same rationale as mai_get_kirki_css_additions().
+		if ( ! $cache->lock( 'dynamic_fonts' ) ) {
+			$cached_fonts = mai_wait_for_cache_fill( $cache, 'dynamic_fonts' );
+
+			if ( false !== $cached_fonts ) {
+				return $cached_fonts;
+			}
+		}
 	}
 
 	$fonts = mai_add_font_variants( $fonts );
@@ -162,7 +226,7 @@ function mai_add_kirki_fonts( $fonts ) {
 	}
 
 	if ( ! $skip_cache ) {
-		mai_cache( 'css' )->set( 'dynamic_fonts', $fonts, 12 * HOUR_IN_SECONDS );
+		$cache->set( 'dynamic_fonts', $fonts, 12 * HOUR_IN_SECONDS );
 	}
 
 	return $fonts;
