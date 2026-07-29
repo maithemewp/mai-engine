@@ -12,6 +12,14 @@
 * Changed: [Performance] Grids using a relative After/Before date (for example "30 days ago") now cache their results.
 * Changed: [Performance] Mai's caches are now cleared when Mai Engine itself updates, keeping cached grid results warm through unrelated plugin updates.
 * Changed: [Developers] New `mai_post_grid_max_posts_per_page` and `mai_term_grid_max_number` filters, defaulting to 1000, so a grid set to show all entries stays bounded on large sites.
+* Changed: [Performance] Scripts now use WordPress's own async loading strategy, which respects script dependencies, and several unused asset helpers were removed.
+* Changed: [Performance] Repaired internal caches for font weights, image aspect ratios, page header types, and image sizes so each value is calculated once per page load.
+* Fixed: Entry settings from the Customizer are now sanitized as intended.
+* Fixed: Per-post and per-term hidden element settings are now applied to the correct entry on term archives.
+* Fixed: Mai Post Grids set to a random order are now random on every page load.
+* Fixed: Each performance setting now uses its own default rather than the emoji setting's.
+* Fixed: A fatal error on the front end when a separate ACF Pro plugin is active alongside the bundled copy.
+* Fixed: A PHP 8.4 deprecation notice, and a stray character added to the Easy Digital Downloads stylesheet.
 * Fixed: The Cover block's `sizes` attribute used a hard-coded 600px breakpoint rather than the theme's configured breakpoint, so themes with a custom breakpoint could get a mismatched value.
 * Fixed: PHP warnings and a bad srcset calculation when an attachment's file could not be resolved but its metadata still existed.
 
