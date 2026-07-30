@@ -270,11 +270,16 @@ function mai_get_template_args() {
 	// Allow devs to filter.
 	$args = apply_filters( 'mai_template_args', $args, $context, $name );
 
-	// Sanitize.
+	// Sanitize, and store the result in the static. $args is both the memo and the working
+	// variable, so returning the sanitized copy without assigning it would sanitize only the
+	// first call of the request and hand every later caller the raw array.
+	//
 	// $context, not $settings: this takes 'archive'/'single', while $settings holds the
 	// option name. Passing the wrong one matched neither branch, so the sanitizer bailed on
 	// every request and had never actually run.
-	return mai_get_sanitized_entry_args( $args, $context, $name );
+	$args = mai_get_sanitized_entry_args( $args, $context, $name );
+
+	return $args;
 }
 
 /**
