@@ -29,23 +29,27 @@ out to be a confirmed stored XSS, reproduced end to end and copied across severa
 plugins. See "Security finding" in the spec. The fix now leads. Nothing below is discarded;
 the tasks are reordered and three are added.
 
-| Phase | Tasks | Why here |
+| Phase | Tasks | Status |
 |---|---|---|
-| A | Task 1 | Green suite. Prerequisite for trusting anything else. |
-| B | Task 7 | The fixture. Runs on today's `composer test-unit` with **no** new infrastructure. |
-| C | Tasks 10, 11 | Real-content corpus diff, then the mai-engine fix. |
-| D | Task 12 | Propagate to the other affected plugins. |
-| E | Tasks 2, 3, 4, 5, 6, 8, 9 | The test-suite infrastructure, as originally specified. |
+| A | Task 1 | **DONE** `691298f89`. Suite went red to green, 69 tests. |
+| B | Task 7 | **DONE** `2bec7b900`. 63-row fixture on the existing suite, no new deps. |
+| C | Tasks 10, 11 | **DONE** `204eae813`. Corpus diff over 289,572 posts, then the fix. |
+| D | Task 12 | **DONE** `69240d3`, `426746a`, `96d83ee`. Three plugins, delegate with fallback. |
+| E | Tasks 2, 3, 4, 5, 6, 8, 9 | **NOT STARTED.** The test-suite infrastructure. |
 
-Phase B is the key scheduling fact: `DomEncodingTest` is a plain unit test in the existing
-suite. It needs none of `tests/composer.json`, wp-phpunit, MySQL or CI, so the safety net
-lands immediately rather than behind the harness work.
+Phases A through D shipped. What follows below for tasks 10 through 12 is the plan as
+written before execution; the spec's "Encoding migration: shipped" section is the record of
+what was actually built and why it differs. The short version: task 11 proposed candidate C,
+and the task 10 corpus diff disqualified it by finding 12,257 posts of legacy CP1252 content
+it would corrupt. The shipped fix keeps the encode and makes the decode selective.
 
-Tasks 10 through 12 are specified at the end of this document.
+Phase B was the key scheduling fact, and it paid off: `DomEncodingTest` is a plain unit test
+in the existing suite, needing none of `tests/composer.json`, wp-phpunit, MySQL or CI. The
+safety net landed immediately rather than behind the harness work, which is what made the
+corpus diff possible before any code changed.
 
-Two things remain unanswered by the user and gate Phase C's release step and Phase D:
-whether this rides the in-flight 2.40.0 beta or ships separately, and whether anything
-beyond the fix is wanted. Retired plugins (`_legacy/*`) are out of scope by decision.
+The release question is answered: this rides the next release, 2.41 or 2.40.x. Retired
+plugins (`_legacy/*`) are out of scope by decision. Nothing has been pushed.
 
 ## File Structure
 

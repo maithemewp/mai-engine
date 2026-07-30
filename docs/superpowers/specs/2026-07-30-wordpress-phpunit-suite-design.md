@@ -1,13 +1,17 @@
 # WordPress-integrated PHPUnit suite
 
 Date: 2026-07-30
-Status: Approved, reordered fix-first. Nothing implemented.
+Status: Encoding fix SHIPPED across four plugins. Test-suite infrastructure (phase E) not yet built.
 
-> **Reordered 2026-07-30.** While designing the encoding fixture, the defect it was meant to
-> de-risk turned out to be a confirmed stored XSS, reproduced end to end on a real site and
-> present in copied form across several other Mai plugins. See "Security finding" below.
-> The encoding fix moves ahead of the test-suite work; the fixture still lands first,
-> because it is the only thing that makes the fix verifiable.
+> **Reordered, then shipped, 2026-07-30.** While designing the encoding fixture, the defect
+> it was meant to de-risk turned out to be a confirmed stored XSS, reproduced end to end on
+> a real site and present in copied form across three other maintained Mai plugins. See
+> "Security finding" below. The encoding fix moved ahead of the test-suite work and has
+> landed in all four plugins. The fixture went first, and earned it: the corpus diff it
+> enabled disqualified the candidate the fixture alone had endorsed.
+>
+> Still outstanding: phase E, the test-suite infrastructure this document originally
+> specified. Tasks 2 through 6, 8 and 9 in the plan.
 
 ## Security finding
 
@@ -44,13 +48,13 @@ escaped form in the editor. It is not reachable by an anonymous visitor.
 
 Not `function_exists()` wrappers; independent copies.
 
-| Plugin | Blind decode | Local Herd sites |
-|---|---|---|
-| mai-engine | yes, 19 call sites | 16 |
-| mai-custom-content-areas | yes | 10 |
-| mai-table-of-contents | yes | 1 |
-| mai-url-parameter-content | yes | 0 |
-| mai-publisher | no | 10 |
+| Plugin | Blind decode | Local Herd sites | Status |
+|---|---|---|---|
+| mai-engine | yes, 19 call sites | 16 | fixed, `204eae813` |
+| mai-custom-content-areas | yes | 10 | fixed, `69240d3` |
+| mai-table-of-contents | yes | 1 | fixed, `426746a` |
+| mai-url-parameter-content | yes | 0 | fixed, `96d83ee` |
+| mai-publisher | no | 10 | not vulnerable |
 
 Retired plugins are out of scope by decision: `_legacy/mai-ctas`,
 `_legacy/mai-performance-enhancer` and `_legacy/mai-ads-extra-content` all carry the same
@@ -63,7 +67,8 @@ mai-publisher having already dropped its decode is **not** evidence that droppin
 safe. It runs on a small number of owned sites, none carrying Polish content, none heavily
 exercised, and it keeps the `mb_encode_numericentity` encode so its output is
 entity-encoded rather than raw UTF-8. It is a different variant that was never tested on
-the content class in question. The case for candidate C rests on measurement alone.
+the content class in question. Every claim about what is safe here rests on measurement
+against real content, nothing else.
 
 ## Summary
 
@@ -399,7 +404,7 @@ This group is not optional. It is the **entire** divergence surface between the 
 
 Twelve pathological inputs were also checked for a crash in the `getElementsByTagName('div')->item(0)` dereference, including a bare `</div>`, a lone doctype, 300-deep nesting and an embedded null byte. libxml always synthesizes the wrapper, so no crash path was found. No fixture row is needed for this.
 
-## Encoding migration: pulled forward, fix-first
+## Encoding migration: shipped
 
 Originally deferred to its own spec. The security finding above changed that: this is a
 live vulnerability, not a deprecation cleanup, so the fix leads and the test-suite
@@ -454,40 +459,77 @@ Five implementations were run over 65 fixtures covering all six groups above.
 
 **Candidate A diverges only on Unicode noncharacters.** PHP's `html_entity_decode` refuses to decode numeric references to noncharacters, where mbstring decodes them to raw bytes. Since noncharacters are illegal in interchange, A's behavior is defensible and arguably better. Nothing else moves across 65 rows.
 
-### Handover to the encoding spec
+### What the corpus disqualified
 
-The measurements above are the starting point, not a decision. The encoding spec owns the choice between candidates A and C, the F3 escaping question they interact with, whether the G2 noncharacter rows are an acceptable behavior change, and when `failOnDeprecation` gets enabled.
+The fixture measurements above pointed at candidate C. The corpus diff over real content, 289,572 posts across 13 local sites, disqualified it. This is the single most important entry in this document: **no fixture anyone would have written by hand would have caught this.**
 
-Its two hard prerequisites are phase B, the fixture existing with every golden reviewed by hand, and phase C's corpus diff over real content. Neither is skippable: the fixture covers only anticipated failure modes, and the corpus is what covers the rest.
+**Candidate C corrupts legacy imported content.** On allhiphop it broke 12,257 posts. The mechanism, traced byte by byte:
 
-### Candidate C, now the leading option
+1. Legacy content contains U+0092, a C1 control character. It is valid UTF-8, so no encoding check flags it, but semantically it is a CP1252 curly apostrophe from an old import. One sampled post held 14 of them.
+2. `mb_encode_numericentity` turns U+0092 into `&#146;`.
+3. libxml applies the HTML spec's C1 remapping to numeric character references, so `&#146;` becomes U+2019, a correct apostrophe.
 
-Drop the `mb_encode_numericentity` encode as well, declare UTF-8 to libxml, and do no decode at all:
+**The current implementation is accidentally repairing legacy mojibake**, and that repair depends on the encode step. Candidate C drops the encode, so libxml reads the raw `c2 92` as UTF-8, keeps U+0092, and the apostrophe disappears from the page. This is almost certainly the exact mechanism behind `e5e8ff818` and the reverts that followed it.
+
+**Candidate D**, keeping the encode and dropping only the decode, preserves that repair but regresses double-encoded legacy content: `&amp;period;` in the database currently renders as `.` and would start rendering as the literal text `&period;`.
+
+### What shipped
+
+Keep the encode exactly as it was. Replace the blind decode with one that decodes by *result* rather than by entity spelling: anything that would decode to a character capable of creating markup or ending an attribute value stays escaped, everything else decodes as before.
 
 ```php
-$dom->loadHTML( '<?xml encoding="UTF-8">' . "<div>$html</div>", LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
-// and mai_get_dom_html() becomes just: return $dom->saveHTML();
+static $structural = [ '<', '>', '"', "'" ];
+
+return preg_replace_callback(
+	'/&(?:#[0-9]+|#[xX][0-9a-fA-F]+|[A-Za-z][A-Za-z0-9]*);/',
+	static function ( $match ) use ( $structural ) {
+		$decoded = html_entity_decode( $match[0], ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+
+		if ( $decoded === $match[0] ) {
+			return $match[0];
+		}
+
+		return in_array( $decoded, $structural, true ) ? $match[0] : $decoded;
+	},
+	$dom->saveHTML()
+);
 ```
 
-It differs from current on 14 of 65 baseline rows, and every one of those is current losing escaping. Measured directly on the content classes that matter here:
+Matching decoded characters rather than a list of entity spellings is deliberate and was measured: `saveHTML()` normalizes `&#60;`, `&#x3C;` and `&LT;` all to `&lt;`, so a hand-maintained spelling list would be both redundant and a future hole. It emits only `&lt;`, `&gt;` and `&amp;` in text, plus `&quot;` in attributes, and leaves `'` raw. The apostrophe in the list is defensive and measured as a no-op.
 
-| Input | Candidate C output |
+### Corpus verdict on what shipped
+
+| | |
 |---|---|
-| `<div data-config='{"title":"Zażółć & B","n":1}'>` | correctly escaped, JSON intact |
-| `ZAŻÓŁĆ gęślą jaźń ąćęłńóśźż` | unchanged raw UTF-8 |
-| `"straight" 'single' “curly” ‘s’ it’s` | unchanged raw UTF-8 |
-| `🎉 👩‍💻 ☕` | unchanged raw UTF-8 |
-| `&amp; &lt; &amp;amp;` | escaping preserved |
-| `&lt;script&gt;alert(1)&lt;/script&gt;` | stays escaped |
-| `© ™ € — … →` | unchanged raw UTF-8 |
+| Posts measured | 289,572 across 13 sites |
+| Byte-identical to before | 276,180 (95.4%) |
+| Differ only in text escaping, renders identically | ~13,000 |
+| Markup structure actually changes | ~250 |
 
-So C resolves F3 and F5, keeps every non-English and typographic case identical to today, and uses no deprecated API on either side. Its one behavior change is that pre-escaped entities stay escaped instead of being decoded, which is correct HTML rather than a regression.
+The middle row is `SEO > Tools` becoming `SEO &gt; Tools`, which browsers render identically. Verified by comparing tag structure, not by eye.
 
-It is a larger change than this work scopes and has not been stress-tested against all 18 call sites, which is why it belongs to the encoding spec rather than here. But it should enter that spec as the leading option, not as an afterthought.
+The last row is the real cost and was accepted deliberately. Roughly 175 posts on allhiphop, 69 on mgnv and 8 on eurweb contain escaped markup that the blind decode was *activating* into live HTML. Those now render as visible text. Spread across 2003 to 2026, the tags involved are `div`, `a`, `br`, `p`, `iframe`, `script`, `font`, `img`, `embed`. Ten of them were activating live `<script>` tags, which is the vulnerability in production content. They are individually identifiable and repairable afterward.
 
-Note on the longer-term direction: `~/LocalPackages/mai-dom` is the eventual replacement for these helpers. It depends on PHP 8.4's `Dom\HTMLDocument`, a real HTML5 parser, which is not a realistic floor for a premium theme and plugin today. Candidate C works on the current `^8.1` floor and captures most of the correctness win in the meantime, so it is the right interim step rather than a competing direction.
+Inline JS was checked specifically and does not break. `<script>` and `<style>` bodies pass through byte-identical, since libxml treats them as raw CDATA. Event handler attributes change in the source, `onclick="if (a && b < c)"` becomes `onclick="if (a &amp;&amp; b &lt; c)"`, but HTML parsers decode attribute values before compiling the handler, so the JS engine receives identical code. Confirmed with WordPress's own spec-compliant HTML5 parser and in a browser.
 
-## Findings: defects discovered, not fixed here
+### Propagation across the fleet
+
+The same decode existed as an independent copy, not a `function_exists` wrapper, in three other maintained plugins. Each now delegates to mai-engine when it is active and keeps a local fallback for standalone operation:
+
+| Plugin | Approach |
+|---|---|
+| mai-engine | Canonical implementation |
+| mai-custom-content-areas | Delegates; fallback fixed |
+| mai-table-of-contents | Extracted from a class method; delegates; fallback fixed |
+| mai-url-parameter-content | Extracted into a new `includes/functions.php`; delegates; fallback fixed |
+
+The fallbacks are live code paths on sites running those plugins without mai-engine, not dead code, so each carries the fix rather than deferring. Each was verified by running all 63 fixture inputs through the fallback with mai-engine deliberately unloaded; all three matched byte for byte.
+
+Note on the longer-term direction: `~/LocalPackages/mai-dom` is the eventual replacement for these helpers. It depends on PHP 8.4's `Dom\HTMLDocument`, a real HTML5 parser, which is not a realistic floor for a premium theme and plugin today. A nearer step is migrating the block filters to `WP_HTML_Tag_Processor`, which does byte-exact attribute rewrites and never touches entities; `group.php`, `paragraph.php` and `heading.php` only read and write `class` and `style` on the first element, so they do not need a DOM at all.
+
+## Findings: defects discovered
+
+F3 and F5 are FIXED (see "What shipped"). F1, F2 and F4 remain as described.
 
 All four were reproduced against current `develop`. None is fixed by this work. Each is pinned by a characterization test so that fixing it later is a visible, deliberate diff.
 
