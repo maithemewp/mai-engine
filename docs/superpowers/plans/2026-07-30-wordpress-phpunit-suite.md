@@ -22,6 +22,31 @@
 - `tests/vendor/` must be gitignored **before** any `composer install -d tests` runs. Task 2 enforces this ordering and it is not negotiable.
 - The plugin deploys as a raw git tree with no build step. Anything committed ships to production.
 
+## Execution order: fix-first
+
+**Revised 2026-07-30.** The encoding defect this plan's fixture was meant to de-risk turned
+out to be a confirmed stored XSS, reproduced end to end and copied across several other Mai
+plugins. See "Security finding" in the spec. The fix now leads. Nothing below is discarded;
+the tasks are reordered and three are added.
+
+| Phase | Tasks | Why here |
+|---|---|---|
+| A | Task 1 | Green suite. Prerequisite for trusting anything else. |
+| B | Task 7 | The fixture. Runs on today's `composer test-unit` with **no** new infrastructure. |
+| C | Tasks 10, 11 | Real-content corpus diff, then the mai-engine fix. |
+| D | Task 12 | Propagate to the other affected plugins. |
+| E | Tasks 2, 3, 4, 5, 6, 8, 9 | The test-suite infrastructure, as originally specified. |
+
+Phase B is the key scheduling fact: `DomEncodingTest` is a plain unit test in the existing
+suite. It needs none of `tests/composer.json`, wp-phpunit, MySQL or CI, so the safety net
+lands immediately rather than behind the harness work.
+
+Tasks 10 through 12 are specified at the end of this document.
+
+Two things remain unanswered by the user and gate Phase C's release step and Phase D:
+whether this rides the in-flight 2.40.0 beta or ships separately, and whether anything
+beyond the fix is wanted. Retired plugins (`_legacy/*`) are out of scope by decision.
+
 ## File Structure
 
 **Created:**
@@ -1337,6 +1362,212 @@ git commit -m "docs: document the two test suites and their setup"
 
 ---
 
+---
+
+### Task 10: Real-content corpus diff
+
+Read-only. Establishes what candidate C actually changes across real editorial content,
+because the fixture only covers failure modes that were anticipated.
+
+**Files:**
+- Create: scratch only, nothing committed to the repo
+
+**Interfaces:**
+- Consumes: `mai_get_dom_document()` / `mai_get_dom_html()` from Task 7's fixture work
+- Produces: a reviewed list of content shapes that change, which gates Task 11
+
+- [ ] **Step 1: Write the corpus differ**
+
+Save to the scratch directory, not the repo. Run per site via `wp eval-file`.
+
+```php
+<?php
+// corpus-diff.php  ->  wp --path=<site> eval-file corpus-diff.php
+
+/** Candidate C: no encode, no decode, UTF-8 declared to libxml. */
+function mai_dom_candidate_c( string $html ): string {
+	$dom  = new DOMDocument( '1.0', 'UTF-8' );
+	$prev = libxml_use_internal_errors( true );
+	$dom->loadHTML( '<?xml encoding="UTF-8">' . "<div>$html</div>", LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+	$c = $dom->getElementsByTagName( 'div' )->item( 0 );
+	if ( ! $c ) { libxml_clear_errors(); libxml_use_internal_errors( $prev ); return $html; }
+	$c = $c->parentNode->removeChild( $c );
+	while ( $dom->firstChild ) { $dom->removeChild( $dom->firstChild ); }
+	while ( $c->firstChild ) { $dom->appendChild( $c->firstChild ); }
+	libxml_clear_errors();
+	libxml_use_internal_errors( $prev );
+	return $dom->saveHTML();
+}
+
+global $wpdb;
+$rows    = $wpdb->get_results( "SELECT ID, post_content FROM {$wpdb->posts} WHERE post_status IN ('publish','draft','pending','private') AND post_content <> ''" );
+$changed = 0;
+
+foreach ( $rows as $row ) {
+	$current = mai_get_dom_html( mai_get_dom_document( $row->post_content ) );
+	$next    = mai_dom_candidate_c( $row->post_content );
+	if ( $current === $next ) { continue; }
+	$changed++;
+	echo "--- post {$row->ID} ---\n";
+	// Print only the first differing line so the output stays reviewable.
+	$a = explode( "\n", $current );
+	$b = explode( "\n", $next );
+	foreach ( $a as $i => $line ) {
+		if ( ( $b[ $i ] ?? null ) !== $line ) {
+			echo "  current: " . trim( $line ) . "\n  next   : " . trim( $b[ $i ] ?? '' ) . "\n";
+			break;
+		}
+	}
+}
+
+printf( "%d of %d posts change\n", $changed, count( $rows ) );
+```
+
+- [ ] **Step 2: Run it across every local site that has mai-engine**
+
+```bash
+for s in /Users/jivedig/Herd/*/; do
+  [ -d "$s/wp-content/plugins/mai-engine" ] || continue
+  echo "===== $(basename $s) ====="
+  wp --path="$s" eval-file /path/to/corpus-diff.php 2>/dev/null | tail -40
+done
+```
+
+This only reads. It writes nothing to any database.
+
+- [ ] **Step 3: Review every distinct change shape by hand**
+
+Group the output by what kind of change it is, not by post. Expect the known categories:
+pre-escaped entities staying escaped, and attribute values keeping their escaping. Anything
+outside those two categories is a finding and blocks Task 11 until understood.
+
+Ask the user which sites carry Polish or other non-English content and read those first.
+
+- [ ] **Step 4: Record the result in the spec**
+
+Append the measured counts and the reviewed change categories to the spec's "Verification
+cannot rest on synthetic fixtures alone" section, then commit that doc change alone.
+
+---
+
+### Task 11: Apply candidate C to mai-engine
+
+**Files:**
+- Modify: `lib/functions/utilities.php:1371-1429`
+- Test: `tests/phpunit/unit/DomEncodingTest.php` (from Task 7)
+
+**Interfaces:**
+- Consumes: the fixture from Task 7, the corpus review from Task 10
+- Produces: the reference implementation that Task 12 copies to the other plugins
+
+- [ ] **Step 1: Confirm the fixture is green before touching anything**
+
+Run: `composer test-unit`. Expected: `OK`. If it is not green, stop.
+
+- [ ] **Step 2: Change both functions**
+
+In `mai_get_dom_document()`, drop the `mb_encode_numericentity()` line and change the load:
+
+```php
+	// UTF-8 is declared to libxml directly rather than pre-encoding to numeric entities.
+	// NOIMPLIED/NODEFDTD keep libxml from synthesizing html/body/doctype around the fragment.
+	$dom->loadHTML( '<?xml encoding="UTF-8">' . "<div>$html</div>", LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+```
+
+In `mai_get_dom_html()`, remove the decode entirely and replace the historical comment:
+
+```php
+function mai_get_dom_html( $dom ) {
+	// No entity decode. The previous mb_convert_encoding( ..., 'HTML-ENTITIES' ) call decoded
+	// entities across the whole document, which turned escaped text such as &lt;script&gt;
+	// back into live markup and broke JSON in data attributes out of their own quotes. See
+	// the security finding in docs/superpowers/specs/2026-07-30-wordpress-phpunit-suite-design.md.
+	return $dom->saveHTML();
+}
+```
+
+- [ ] **Step 3: Regenerate and diff the fixture goldens**
+
+```bash
+php tests/phpunit/unit/fixtures/generate.php
+git diff tests/phpunit/unit/fixtures/encoding.php
+```
+
+Expected: roughly 14 of 63 rows change, every one of them the current implementation losing
+escaping. The `g7_data_*` rows must go from corrupted to correctly escaped, and the
+`g3_escaped_*` rows must stay escaped. Any row where a Polish, quote, emoji or typographic
+case changes is a stop condition, not something to accept.
+
+- [ ] **Step 4: Re-run the real smoke test**
+
+```bash
+url=$(wp --path=/Users/jivedig/Herd/sportsdataio eval 'echo get_permalink(2937);')
+curl -sk "$url" | grep -cE '<script>alert\(1\)</script>'
+```
+
+Expected: `0`. Before the fix this returns `1`.
+
+- [ ] **Step 5: Run the whole suite and commit**
+
+```bash
+composer test-unit
+composer dump-autoload --no-dev && php vendor/bin/deployable-guard check
+git add lib/functions/utilities.php tests/phpunit/unit/fixtures/encoding.php
+git commit -m "fix(security): stop decoding entities across the serialized document
+
+mai_get_dom_html() decoded HTML entities over the whole document, so escaped text
+such as &lt;script&gt; became live markup and JSON in data attributes was broken
+out of its own quotes. A Contributor without unfiltered_html could get executable
+script onto any page containing a group block with a background color.
+
+Declares UTF-8 to libxml instead of pre-encoding to numeric entities, and returns
+saveHTML() unmodified. Verified against a 63 row encoding fixture and a real
+content corpus diff across local sites."
+```
+
+Do not push. Pushing needs explicit consent.
+
+---
+
+### Task 12: Propagate the fix to the other affected plugins
+
+Retired plugins under `_legacy/` are out of scope by decision.
+
+**Files:**
+- Modify: `~/Plugins/mai-custom-content-areas/includes/utilities.php:286-287`
+- Modify: `~/Plugins/mai-table-of-contents/classes/class-table-of-contents.php:359-360`
+- Modify: `~/Plugins/mai-url-parameter-content/classes/class-mai-upa.php:122-123`
+
+**Interfaces:**
+- Consumes: the reference implementation from Task 11
+- Produces: nothing
+
+- [ ] **Step 1: Confirm each copy before editing**
+
+For each plugin, read the surrounding function. These are independent copies, not wrappers,
+and they may differ in wrapper handling. Do not assume the mai-engine diff applies verbatim.
+
+- [ ] **Step 2: Apply the same change per plugin, one commit each**
+
+Same two edits as Task 11: declare UTF-8 to libxml on load, drop the decode on save. Each
+plugin gets its own commit with its own message referencing the mai-engine fix.
+
+- [ ] **Step 3: Verify each against the same content**
+
+These plugins have no test suite. Verify by running the encoding fixture inputs through the
+changed function directly in a scratch script, and confirm the `g3_` and `g7_` shapes behave
+as they do in mai-engine after Task 11.
+
+- [ ] **Step 4: Check for other copies before declaring done**
+
+```bash
+grep -rn "HTML-ENTITIES" /Users/jivedig/Plugins/ --include='*.php' | grep -v vendor | grep -v _legacy
+```
+
+Expected: no output. Any hit is an unfixed copy.
+
+---
+
 ## Verification
 
 After all tasks, from a clean clone:
@@ -1352,6 +1583,6 @@ Expected: both suites green, guard reports OK, working tree clean.
 
 ## Deferred, not part of this plan
 
-- **The `HTML-ENTITIES` migration and the F3 escaping defect.** Own spec, gated on Task 7's fixture existing and reviewed. The spec's "Encoding migration" section holds the measured 65-fixture comparison as input.
+- **Retired plugins.** `_legacy/mai-ctas`, `_legacy/mai-performance-enhancer` and `_legacy/mai-ads-extra-content` carry the same decode but are not maintained and are not being fixed, by decision.
 - **F1 and F2.** Pinned by Task 6, fixed separately. F1 needs a performance measurement, since removing the `break` turns a bounded scan into a full subtree walk on every block of every page.
 - **Moving the linting tools into `tests/composer.json`.** `phpcs`, `php-cs-fixer`, `wpcs` and `phpcompatibility-wp` stay in root `require-dev`, so a plain `composer install` still writes a dev autoloader. The pre-commit hook still covers it.

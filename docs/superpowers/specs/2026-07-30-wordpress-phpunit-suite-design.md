@@ -1,7 +1,69 @@
 # WordPress-integrated PHPUnit suite
 
 Date: 2026-07-30
-Status: Spec, awaiting approval. Nothing implemented.
+Status: Approved, reordered fix-first. Nothing implemented.
+
+> **Reordered 2026-07-30.** While designing the encoding fixture, the defect it was meant to
+> de-risk turned out to be a confirmed stored XSS, reproduced end to end on a real site and
+> present in copied form across several other Mai plugins. See "Security finding" below.
+> The encoding fix moves ahead of the test-suite work; the fixture still lands first,
+> because it is the only thing that makes the fix verifiable.
+
+## Security finding
+
+`mai_get_dom_html()` decodes HTML entities across the whole serialized document, turning
+escaped text back into live markup. Reproduced end to end on `sportsdataio` (WordPress
+7.0.2), served over HTTP:
+
+1. A Contributor types `<script>alert(1)</script>` as text in a paragraph block. The editor
+   stores it escaped as `&lt;script&gt;...`.
+2. `wp_kses_post()` leaves it untouched. Verified: escaped text survives sanitization,
+   because escaped text is harmless text.
+3. Contributors do not hold `unfiltered_html`. Verified: `false`.
+4. The paragraph sits in a group block with a background color. Core block, core feature,
+   no special capability.
+5. `lib/blocks/group.php:39` passes its gate (`contentAlign || backgroundColor ||
+   customBackgroundColor`) and runs the DOM round trip.
+6. `mai_get_dom_html()` decodes the entities into live markup.
+
+The served page contains `<script>alert(1)</script>`.
+
+A control isolates the cause. Identical content with only the group background removed, so
+the filter bails at its gate:
+
+```
+with group bg:     ESCAPED: <script>alert(1)</script>
+without group bg:  ESCAPED: &lt;script&gt;alert(1)&lt;/script&gt;
+```
+
+Scope note, stated honestly: this needs an authenticated account that can create content,
+and Contributor posts require review before publishing, though a reviewer sees the harmless
+escaped form in the editor. It is not reachable by an anonymous visitor.
+
+### The same code is copied across the fleet
+
+Not `function_exists()` wrappers; independent copies.
+
+| Plugin | Blind decode | Local Herd sites |
+|---|---|---|
+| mai-engine | yes, 19 call sites | 16 |
+| mai-custom-content-areas | yes | 10 |
+| mai-table-of-contents | yes | 1 |
+| mai-url-parameter-content | yes | 0 |
+| mai-publisher | no | 10 |
+
+Retired plugins are out of scope by decision: `_legacy/mai-ctas`,
+`_legacy/mai-performance-enhancer` and `_legacy/mai-ads-extra-content` all carry the same
+decode but are not maintained and are not being fixed.
+
+Local Herd copies are a sample, not a production inventory. `mai_get_processed_content()`
+is likewise duplicated as `maipub_get_processed_content()`.
+
+mai-publisher having already dropped its decode is **not** evidence that dropping it is
+safe. It runs on a small number of owned sites, none carrying Polish content, none heavily
+exercised, and it keeps the `mb_encode_numericentity` encode so its output is
+entity-encoded rather than raw UTF-8. It is a different variant that was never tested on
+the content class in question. The case for candidate C rests on measurement alone.
 
 ## Summary
 
@@ -19,7 +81,7 @@ Add a second PHPUnit suite that boots real WordPress via `wp-phpunit`, alongside
 
 - Full plugin activation under test. `lib/init.php` expects Genesis as the parent theme, and Genesis is not in the repo and is not Composer-installable.
 - Fixing the behavior defects this work uncovered. They are recorded in "Findings" below with recommended follow-ups.
-- Migrating off `mb_convert_encoding( ..., 'HTML-ENTITIES' )`. This work builds the fixture that makes that migration safe; the migration itself gets its own spec.
+- Fixing the retired `_legacy/*` plugins, which carry the same decode. Out of scope by decision.
 - Moving the linting dev dependencies out of the root `require-dev`. See "Out of scope".
 
 ## Verified starting state
@@ -337,15 +399,31 @@ This group is not optional. It is the **entire** divergence surface between the 
 
 Twelve pathological inputs were also checked for a crash in the `getElementsByTagName('div')->item(0)` dereference, including a bare `</div>`, a lone doctype, 300-deep nesting and an embedded null byte. libxml always synthesizes the wrapper, so no crash path was found. No fixture row is needed for this.
 
-## Encoding migration: deferred to its own spec
+## Encoding migration: pulled forward, fix-first
 
-This work delivers the fixture and stops there. The actual `HTML-ENTITIES` swap, and the F3 escaping defect below, get their own spec, design pass, test plan and release.
+Originally deferred to its own spec. The security finding above changed that: this is a
+live vulnerability, not a deprecation cleanup, so the fix leads and the test-suite
+infrastructure follows.
 
-That split is deliberate. Two prior attempts at this migration were reverted after Polish diacritics and other non-English content broke, and the surviving code comment blames the wrong change for it (see "Correcting the record"). A migration with that history should not ride along inside a test-infrastructure change.
+The fixture still lands first. Two prior attempts at this migration were reverted after
+Polish diacritics and other non-English content broke, and the surviving code comment
+blames the wrong change for it (see "Correcting the record"). Shipping a third attempt with
+no regression net would repeat that history.
 
-There is also no clock forcing it. Measured on PHP 8.4.23, the remaining call is the decode direction, which emits no deprecation at all; only the encode direction does, and that side already migrated to `mb_encode_numericentity` in `28310b4df`. Nothing is filling logs today. The real deadline is PHP 9.0 dropping the encoding.
+What has *not* changed is the deprecation timeline, and it was never the driver. Measured on
+PHP 8.4.23 the remaining call is the decode direction, which emits no deprecation at all;
+only the encode direction does, and that side already migrated to `mb_encode_numericentity`
+in `28310b4df`. PHP 9.0 dropping the encoding is a distant deadline. The reason to move now
+is the XSS, nothing else.
 
-What follows is retained as measured input for that spec, not as a plan to execute here.
+### Verification cannot rest on synthetic fixtures alone
+
+The fixture rows were authored by me, so they only cover failure modes I anticipated, which
+is precisely the gap that sank the previous attempts. Before the fix is applied, every post
+in the local Herd sites gets run through both the current and candidate implementations and
+diffed, with each changed post reviewed by hand. That is a corpus of real editorial content
+rather than a guess at what might break, and it is the only step that can catch a content
+class nobody thought to write a fixture for.
 
 ### Correcting the record
 
@@ -380,7 +458,7 @@ Five implementations were run over 65 fixtures covering all six groups above.
 
 The measurements above are the starting point, not a decision. The encoding spec owns the choice between candidates A and C, the F3 escaping question they interact with, whether the G2 noncharacter rows are an acceptable behavior change, and when `failOnDeprecation` gets enabled.
 
-Its one hard prerequisite is step 7 of this work: the fixture must exist and every golden must be reviewed by hand before any implementation is swapped.
+Its two hard prerequisites are phase B, the fixture existing with every golden reviewed by hand, and phase C's corpus diff over real content. Neither is skippable: the fixture covers only anticipated failure modes, and the corpus is what covers the rest.
 
 ### Candidate C, now the leading option
 
@@ -442,9 +520,9 @@ Low field likelihood since core joins with single spaces, but real. The round-tr
 
 Escaped text becomes live markup, attribute values break out of their quotes and gain event handlers, and one level of escaping is lost per pass. Eighteen call sites round-trip user-authored content through this, including `lib/blocks/paragraph.php`, `heading.php`, `group.php`, `button.php`, `lib/functions/shortcodes.php` and `lib/support/woocommerce.php`.
 
-This is recorded as G3 in the fixture, explicitly labelled as pinning known-dangerous behavior rather than endorsing it. The fix is owned by the encoding spec, where it belongs: candidate C is the only evaluated option that resolves it, and choosing it is inseparable from choosing the replacement for `mb_convert_encoding`.
+This is recorded as G3 in the fixture, explicitly labelled as pinning known-dangerous behavior rather than endorsing it. Candidate C is the only evaluated option that resolves it, and choosing it is inseparable from choosing the replacement for `mb_convert_encoding`, which is why the two move together in phase C.
 
-Not yet established, and the encoding spec's first question: whether `wp_kses_post` or equivalent runs upstream on every path that reaches these 18 call sites. Until that is traced, this is a defect of unknown reachability rather than a confirmed vulnerability.
+Reachability is no longer open. `wp_kses_post()` was traced and it leaves escaped text untouched, so a Contributor without `unfiltered_html` can reach this. See "Security finding" at the top; this is a confirmed vulnerability, not a defect of unknown severity.
 
 F5 below is the same defect reaching a content shape that needs no attacker at all.
 
@@ -505,11 +583,11 @@ Pinned by fixture group G7.
 
 Steps 1 through 4 are the risky ones for deploys and should be verified with `deployable-guard check` and a `beta` dry run before anything else lands. Steps 6 and 7 are pure additions.
 
-The encoding migration is deliberately not in this list. It is separate work with its own spec, which step 7 unblocks.
+This ordering is superseded by the fix-first phases in the plan. Steps 1 and 7 move to the front as phases A and B, the encoding fix and its corpus verification follow as phase C, propagation to the other affected plugins as phase D, and the remaining infrastructure steps as phase E.
 
 ## Out of scope
 
 - **Linting dev dependencies.** `phpcs`, `php-cs-fixer`, `wpcs` and `phpcompatibility-wp` stay in root `require-dev`, so a plain `composer install` still writes a dev autoloader, and php-cs-fixer's Symfony dependencies contribute 7 `autoload_files.php` entries, which is exactly what the guard catches. The pre-commit hook still covers it. Moving them to `tests/composer.json` would close the hole completely but changes the lint scripts and the `dealerdirect` plugin wiring, so it belongs in its own change.
 - **F1 and F2.** Recorded above, pinned by tests, triaged separately. Fixing F1 needs a performance measurement of its own.
-- **F3 and the `HTML-ENTITIES` migration, including candidate C.** These are one piece of work, owned by the encoding spec, gated on this spec's step 7.
+- **F3, F5 and the `HTML-ENTITIES` migration.** No longer deferred. These are one piece of work, now phase C of the plan, gated on the fixture from phase B and the corpus diff.
 - **`tests/` shipping in the deployed raw git tree.** Already true today; `tests/vendor/` being gitignored keeps it from getting heavier.
