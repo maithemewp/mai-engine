@@ -271,7 +271,10 @@ function mai_get_template_args() {
 	$args = apply_filters( 'mai_template_args', $args, $context, $name );
 
 	// Sanitize.
-	return mai_get_sanitized_entry_args( $args, $settings, $name );
+	// $context, not $settings: this takes 'archive'/'single', while $settings holds the
+	// option name. Passing the wrong one matched neither branch, so the sanitizer bailed on
+	// every request and had never actually run.
+	return mai_get_sanitized_entry_args( $args, $context, $name );
 }
 
 /**

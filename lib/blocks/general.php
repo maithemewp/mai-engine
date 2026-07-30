@@ -153,6 +153,11 @@ function mai_render_block_handle_link_color( $block_content, $block ) {
 		}
 	}
 
+	// Carry the text-color rewrite forward. The background pass below builds a new processor,
+	// and the return value comes from that one, so without this a block using the Link color
+	// for both text and background would lose the text rename.
+	$block_content = $tags->get_updated_html();
+
 	// Handle background and overlay color.
 	if ( 'link' === $bg || 'link' === $overlay ) {
 		// Find first instance of has-link-background-color and replace with has-links-background-color.

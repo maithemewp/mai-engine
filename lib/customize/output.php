@@ -136,7 +136,11 @@ function mai_wait_for_cache_fill( $cache, $key ) {
 		return false;
 	}
 
-	$cap_ms   = max( 0, (int) apply_filters( 'mai_css_cache_wait_ms', 500 ) );
+	// Short budget on purpose. Rebuilding this is array construction, not queries, so a
+	// loser is better off building than waiting. It also bounds the worst case on object
+	// cache drop-ins that memoize a miss for the request, where the poll can never observe
+	// the winner's write.
+	$cap_ms   = max( 0, (int) apply_filters( 'mai_css_cache_wait_ms', 75 ) );
 	$poll_ms  = max( 1, min( 25, $cap_ms ) );
 	$deadline = microtime( true ) + ( $cap_ms / 1000 );
 

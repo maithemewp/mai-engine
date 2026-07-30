@@ -297,6 +297,16 @@ function mai_get_fallback_image_id( $post_id ) {
 		return 0;
 	}
 
+	// Only cache where the store is Redis or similar. mai_cache() falls back to transients
+	// in wp_options, and because negatives are cached too, every image-less post rendered
+	// would write two option rows during a front-end GET. That turns reads into writes on
+	// the busiest table in WordPress, at traffic volume, which is the failure this cache is
+	// not worth risking. Without a persistent cache the lookup stays uncached, exactly as
+	// it was before.
+	if ( ! \Mai\Cache\Cache::has_persistent_object_cache() ) {
+		return absint( genesis_get_image_id( 0, $post_id ) );
+	}
+
 	$cache    = mai_cache( 'images' );
 	$key      = 'fallback_image_' . $post_id;
 	$image_id = $cache->get( $key );
