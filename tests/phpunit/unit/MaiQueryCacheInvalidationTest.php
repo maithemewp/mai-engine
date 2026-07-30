@@ -9,6 +9,10 @@ final class MaiQueryCacheInvalidationTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 		Functions\when( 'apply_filters' )->alias( fn( $tag, $value ) => $value );
+		// pre_query() reaches use_single_flight(), which calls this. Off by default here so
+		// these tests exercise the plain path; MaiQueryCacheSingleFlightTest owns the
+		// on/off behavior itself.
+		Functions\when( 'wp_using_ext_object_cache' )->justReturn( false );
 	}
 
 	/** A spy standing in for the mai_cache() instance. */
@@ -118,7 +122,11 @@ final class MaiQueryCacheInvalidationTest extends TestCase {
 	public function test_pre_query_passes_through_when_not_cacheable(): void {
 		$c = $this->spy();
 		Functions\when( 'mai_cache' )->justReturn( $c );
-		$query = (object) [ 'query_vars' => [ 'post_type' => 'post', 'mai_cache' => true, 'query_by' => 'id' ] ];
+		// A random orderby is non-cacheable. This used to use query_by => 'id', but af9cca00c
+		// removed that guard as dead (Mai_Grid keeps query_by on its own args and never copies
+		// it into the query args), which left this asserting a pass-through that no longer
+		// happened.
+		$query = (object) [ 'query_vars' => [ 'post_type' => 'post', 'mai_cache' => true, 'orderby' => 'rand' ] ];
 		$posts = [ 'sentinel' ];
 		$this->assertSame( $posts, ( new Mai_Query_Cache() )->pre_query( $posts, $query ) );
 		$this->assertSame( 0, $c->reads );
