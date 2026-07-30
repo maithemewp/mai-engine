@@ -11,10 +11,11 @@
 * Changed: [Performance] The first-attached-image fallback for entries without a featured image is now cached per post, and can be turned off with the new `mai_entry_image_fallback` filter.
 * Changed: [Performance] Grids using a relative After/Before date (for example "30 days ago") now cache their results.
 * Changed: [Performance] Mai's caches are now cleared when Mai Engine itself updates, keeping cached grid results warm through unrelated plugin updates.
-* Changed: [Developers] New `mai_post_grid_max_posts_per_page` and `mai_term_grid_max_number` filters, defaulting to 1000, so a grid set to show all entries stays bounded on large sites.
+* Changed: [Developers] New `mai_post_grid_max_posts_per_page` and `mai_term_grid_max_number` filters, defaulting to 1000, so a grid set to show all entries stays bounded on large sites. Return 0 to opt back into an unbounded query.
+* Changed: [Developers] New `mai_css_cache_wait_ms` filter for how long a request waits for another to finish rebuilding the generated CSS.
 * Changed: [Performance] Scripts now use WordPress's own async loading strategy, which respects script dependencies, and several unused asset helpers were removed.
 * Changed: [Performance] Repaired internal caches for font weights, image aspect ratios, page header types, and image sizes so each value is calculated once per page load.
-* Fixed: Entry settings from the Customizer are now sanitized as intended.
+* Changed: Content archive and single content settings are now sanitized when saved. The Header Meta, Footer Meta, and Custom Content fields still accept shortcodes and HTML, including ad tags and embeds, for anyone able to publish unfiltered HTML; on multisite, site administrators without that ability have their input filtered.
 * Fixed: Per-post and per-term hidden element settings are now applied to the correct entry on term archives.
 * Fixed: Mai Post Grids set to a random order are now random on every page load.
 * Fixed: Each performance setting now uses its own default rather than the emoji setting's.
