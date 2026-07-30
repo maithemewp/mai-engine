@@ -26,7 +26,7 @@ return [
 	],
 	'g1_entity_lt_gt' => [
 		'in'  => "<p>&lt;tag&gt;</p>",
-		'out' => "<p><tag></p>\n",
+		'out' => "<p>&lt;tag&gt;</p>\n",
 	],
 	'g1_entity_quot' => [
 		'in'  => "<p>&quot;q&quot;</p>",
@@ -86,7 +86,7 @@ return [
 	],
 	'g2_fdd0' => [
 		'in'  => "<p>&#64976;</p>",
-		'out' => "<p>\u{FDD0}</p>\n",
+		'out' => "<p>&#64976;</p>\n",
 	],
 	'g2_replacement' => [
 		'in'  => "<p>&#65533;</p>",
@@ -94,11 +94,11 @@ return [
 	],
 	'g2_fffe' => [
 		'in'  => "<p>&#65534;</p>",
-		'out' => "<p>\u{FFFE}</p>\n",
+		'out' => "<p>&#65534;</p>\n",
 	],
 	'g2_ffff' => [
 		'in'  => "<p>&#65535;</p>",
-		'out' => "<p>\u{FFFF}</p>\n",
+		'out' => "<p>&#65535;</p>\n",
 	],
 	'g2_10fffd' => [
 		'in'  => "<p>&#1114109;</p>",
@@ -106,11 +106,11 @@ return [
 	],
 	'g2_10fffe' => [
 		'in'  => "<p>&#1114110;</p>",
-		'out' => "<p>\u{10FFFE}</p>\n",
+		'out' => "<p>&#1114110;</p>\n",
 	],
 	'g2_10ffff' => [
 		'in'  => "<p>&#1114111;</p>",
-		'out' => "<p>\u{10FFFF}</p>\n",
+		'out' => "<p>&#1114111;</p>\n",
 	],
 	'g2_out_of_range' => [
 		'in'  => "<p>&#1114112;</p>",
@@ -118,15 +118,15 @@ return [
 	],
 	'g3_escaped_script' => [
 		'in'  => "<p>&lt;script&gt;alert(1)&lt;/script&gt;</p>",
-		'out' => "<p><script>alert(1)</script></p>\n",
+		'out' => "<p>&lt;script&gt;alert(1)&lt;/script&gt;</p>\n",
 	],
 	'g3_escaped_img_onerror' => [
 		'in'  => "<p>&lt;img src=x onerror=alert(1)&gt;</p>",
-		'out' => "<p><img src=x onerror=alert(1)></p>\n",
+		'out' => "<p>&lt;img src=x onerror=alert(1)&gt;</p>\n",
 	],
 	'g3_quot_in_attribute' => [
 		'in'  => "<a title=\u{22}a&quot; onmouseover=&quot;alert(1)\u{22}>x</a>",
-		'out' => "<a title=\u{22}a\u{22} onmouseover=\u{22}alert(1)\u{22}>x</a>\n",
+		'out' => "<a title=\u{22}a&quot; onmouseover=&quot;alert(1)\u{22}>x</a>\n",
 	],
 	'g3_apos_in_attribute' => [
 		'in'  => "<a title=\u{22}a&#039;b\u{22}>x</a>",
@@ -134,23 +134,23 @@ return [
 	],
 	'g3_lt_in_attribute' => [
 		'in'  => "<a title=\u{22}a&lt;b\u{22}>x</a>",
-		'out' => "<a title=\u{22}a<b\u{22}>x</a>\n",
+		'out' => "<a title=\u{22}a&lt;b\u{22}>x</a>\n",
 	],
 	'g3_script_body' => [
 		'in'  => "<script>if (a &amp;&amp; b &lt; c) x(\u{22}&quot;\u{22});</script>",
-		'out' => "<script>if (a && b < c) x(\u{22}\u{22}\u{22});</script>\n",
+		'out' => "<script>if (a && b &lt; c) x(\u{22}&quot;\u{22});</script>\n",
 	],
 	'g3_style_body' => [
 		'in'  => "<style>a[title=\u{22}&quot;\u{22}] { color: red; }</style>",
-		'out' => "<style>a[title=\u{22}\u{22}\u{22}] { color: red; }</style>\n",
+		'out' => "<style>a[title=\u{22}&quot;\u{22}] { color: red; }</style>\n",
 	],
 	'g3_textarea' => [
 		'in'  => "<textarea>&lt;b&gt; &amp; \u{E9}</textarea>",
-		'out' => "<textarea><b> & \u{E9}</textarea>\n",
+		'out' => "<textarea>&lt;b&gt; & \u{E9}</textarea>\n",
 	],
 	'g3_pre' => [
 		'in'  => "<pre>&lt;tag&gt; &amp;amp;</pre>",
-		'out' => "<pre><tag> &amp;</pre>\n",
+		'out' => "<pre>&lt;tag&gt; &amp;</pre>\n",
 	],
 	'g4_unclosed_tag' => [
 		'in'  => "<p>unclosed",
@@ -162,11 +162,11 @@ return [
 	],
 	'g4_stray_lt' => [
 		'in'  => "<p>a < b</p>",
-		'out' => "<p>a < b</p>\n",
+		'out' => "<p>a &lt; b</p>\n",
 	],
 	'g4_stray_gt' => [
 		'in'  => "<p>a > b</p>",
-		'out' => "<p>a > b</p>\n",
+		'out' => "<p>a &gt; b</p>\n",
 	],
 	'g4_comment_with_entity' => [
 		'in'  => "<p>x</p><!-- &amp; comment -->",
@@ -242,22 +242,22 @@ return [
 	],
 	'g7_data_json_single' => [
 		'in'  => "<div data-config='{\u{22}title\u{22}:\u{22}Za\u{17C}\u{F3}\u{142}\u{107}\u{22},\u{22}q\u{22}:\u{22}say \u{5C}\u{22}hi\u{5C}\u{22}\u{22},\u{22}n\u{22}:1,\u{22}ok\u{22}:true}'>x</div>",
-		'out' => "<div data-config=\u{22}{\u{22}title\u{22}:\u{22}Za\u{17C}\u{F3}\u{142}\u{107}\u{22},\u{22}q\u{22}:\u{22}say \u{5C}\u{22}hi\u{5C}\u{22}\u{22},\u{22}n\u{22}:1,\u{22}ok\u{22}:true}\u{22}>x</div>\n",
+		'out' => "<div data-config=\u{22}{&quot;title&quot;:&quot;Za\u{17C}\u{F3}\u{142}\u{107}&quot;,&quot;q&quot;:&quot;say \u{5C}&quot;hi\u{5C}&quot;&quot;,&quot;n&quot;:1,&quot;ok&quot;:true}\u{22}>x</div>\n",
 	],
 	'g7_data_json_escaped' => [
 		'in'  => "<div data-config=\u{22}{&quot;title&quot;:&quot;A &amp; B&quot;,&quot;n&quot;:1}\u{22}>x</div>",
-		'out' => "<div data-config=\u{22}{\u{22}title\u{22}:\u{22}A & B\u{22},\u{22}n\u{22}:1}\u{22}>x</div>\n",
+		'out' => "<div data-config=\u{22}{&quot;title&quot;:&quot;A & B&quot;,&quot;n&quot;:1}\u{22}>x</div>\n",
 	],
 	'g7_data_mixed_attrs' => [
 		'in'  => "<button data-a=\u{22}1\u{22} data-label=\u{22}Za\u{17C}\u{F3}\u{142}\u{107} \u{201C}x\u{201D}\u{22} data-json='{\u{22}k\u{22}:\u{22}v & w\u{22}}' aria-label=\u{22}It\u{2019}s\u{22}>go</button>",
-		'out' => "<button data-a=\u{22}1\u{22} data-label=\u{22}Za\u{17C}\u{F3}\u{142}\u{107} \u{201C}x\u{201D}\u{22} data-json=\u{22}{\u{22}k\u{22}:\u{22}v & w\u{22}}\u{22} aria-label=\u{22}It\u{2019}s\u{22}>go</button>\n",
+		'out' => "<button data-a=\u{22}1\u{22} data-label=\u{22}Za\u{17C}\u{F3}\u{142}\u{107} \u{201C}x\u{201D}\u{22} data-json=\u{22}{&quot;k&quot;:&quot;v & w&quot;}\u{22} aria-label=\u{22}It\u{2019}s\u{22}>go</button>\n",
 	],
 	'g7_data_url_and_json' => [
 		'in'  => "<a href=\u{22}/x?a=1&amp;b=2&amp;c=%20\u{22} data-track='{\u{22}u\u{22}:\u{22}/x?a=1&b=2\u{22}}'>l</a>",
-		'out' => "<a href=\u{22}/x?a=1&b=2&c=%20\u{22} data-track=\u{22}{\u{22}u\u{22}:\u{22}/x?a=1&b=2\u{22}}\u{22}>l</a>\n",
+		'out' => "<a href=\u{22}/x?a=1&b=2&c=%20\u{22} data-track=\u{22}{&quot;u&quot;:&quot;/x?a=1&b=2&quot;}\u{22}>l</a>\n",
 	],
 	'g7_kitchen_sink' => [
 		'in'  => "<div class=\u{22}c\u{22} data-cfg='{\u{22}t\u{22}:\u{22}Za\u{17C}\u{F3}\u{142}\u{107} & \u{201C}curly\u{201D}\u{22},\u{22}d\u{22}:\u{22}\u{2014}\u{22}}'><p>He said \u{22}it\u{2019}s\u{22} \u{2014} \u{1F389} &amp; &nbsp;done</p></div>",
-		'out' => "<div class=\u{22}c\u{22} data-cfg=\u{22}{\u{22}t\u{22}:\u{22}Za\u{17C}\u{F3}\u{142}\u{107} & \u{201C}curly\u{201D}\u{22},\u{22}d\u{22}:\u{22}\u{2014}\u{22}}\u{22}><p>He said \u{22}it\u{2019}s\u{22} \u{2014} \u{1F389} & \u{A0}done</p></div>\n",
+		'out' => "<div class=\u{22}c\u{22} data-cfg=\u{22}{&quot;t&quot;:&quot;Za\u{17C}\u{F3}\u{142}\u{107} & \u{201C}curly\u{201D}&quot;,&quot;d&quot;:&quot;\u{2014}&quot;}\u{22}><p>He said \u{22}it\u{2019}s\u{22} \u{2014} \u{1F389} & \u{A0}done</p></div>\n",
 	],
 ];

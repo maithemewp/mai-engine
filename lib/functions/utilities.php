@@ -1403,29 +1403,59 @@ function mai_get_dom_document( $html ) {
 }
 
 /**
- * Saves HTML from DOMDocument and decode entities.
+ * Saves HTML from DOMDocument and decodes entities, except those that would turn escaped
+ * text back into live markup.
+ *
+ * This used to run mb_convert_encoding( $html, 'UTF-8', 'HTML-ENTITIES' ) over the whole
+ * document, which decoded EVERYTHING. That un-escaped what DOMDocument had deliberately
+ * escaped, so `&lt;script&gt;` typed as text by an author came back out as a live <script>
+ * tag, and JSON in a data attribute was broken out of its own quotes. It was reachable by
+ * any user who can create content, without unfiltered_html, on any post containing a group
+ * block with a background color.
+ *
+ * The decode still has to happen. Two accidental behaviors depend on it, and both were
+ * measured across ~290k posts before this changed:
+ *
+ * 1. mai_get_dom_document() encodes to numeric entities first, and libxml applies the HTML
+ *    C1 remapping to them, so a legacy CP1252 byte stored as U+0092 comes back as a proper
+ *    U+2019 apostrophe. Dropping the encode to avoid the decode corrupts 12k+ posts of
+ *    imported content. That is what broke e5e8ff818 and caused its revert.
+ * 2. Double-encoded legacy content (`&amp;period;` in the database) relies on one level of
+ *    decoding to render as intended.
+ *
+ * So decode by result, not by spelling. Anything that would decode to a character capable
+ * of creating markup or ending an attribute value is left escaped; everything else, which
+ * is every accent, curly quote, dash, emoji and nbsp, decodes exactly as before. Matching
+ * decoded characters rather than a list of entity spellings is deliberate: saveHTML()
+ * normalizes &#60;, &#x3C; and &LT; all to &lt;, and a hand-maintained spelling list is how
+ * this becomes a hole again.
  *
  * @since 2.34.0
+ * @since 2.41.0 Stop decoding entities that would produce markup characters.
  *
  * @param DOMDocument $dom
  *
  * @return string
  */
 function mai_get_dom_html( $dom ) {
-	$html = $dom->saveHTML();
+	// Deliberately not extracted to its own function. There is one caller, and exposing it
+	// would invite other plugins to depend on it.
+	static $structural = [ '<', '>', '"', "'" ];
 
-	// 'HTML-ENTITIES' is deprecated as of PHP 8.2, but this call is deliberate. The history:
-	// 0b425cb87 ("more encoding tweaks") swapped it for html_entity_decode(), e5e8ff818
-	// ("remove encoding from domdocument") dropped the final decode entirely, and 8c51375c9
-	// ("bring back final encoding via mb_convert_encoding") restored this call after both
-	// alternatives broke non-English content: Polish diacritics and curly quotes in
-	// particular. Do not swap it without testing against content covering those cases, plus
-	// pre-escaped entities and astral-plane characters. The encode side
-	// (mb_encode_numericentity in mai_get_dom_document) migrated off mb_convert_encoding
-	// successfully in 28310b4df ("PHP 8.2 compat for encoding").
-	$html = mb_convert_encoding( $html, 'UTF-8', 'HTML-ENTITIES' );
+	return preg_replace_callback(
+		'/&(?:#[0-9]+|#[xX][0-9a-fA-F]+|[A-Za-z][A-Za-z0-9]*);/',
+		static function ( $match ) use ( $structural ) {
+			$decoded = html_entity_decode( $match[0], ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 
-	return $html;
+			// Unknown entity: html_entity_decode hands it back unchanged. Leave it alone.
+			if ( $decoded === $match[0] ) {
+				return $match[0];
+			}
+
+			return in_array( $decoded, $structural, true ) ? $match[0] : $decoded;
+		},
+		$dom->saveHTML()
+	);
 }
 
 /**
