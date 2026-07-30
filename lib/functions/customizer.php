@@ -47,6 +47,12 @@ function mai_parse_kirki_args( $args ) {
  * bypassed by a render path that forgets to escape, and it leaves already-saved values
  * alone instead of retroactively stripping them from live sites.
  *
+ * Safe on the scheduled-changeset path too: before calling save() on each setting,
+ * WP_Customize_Manager restores the user who wrote the value into the changeset,
+ * specifically so capability-sensitive filters like this one still see the right user when
+ * cron publishes. See the comment above wp_set_current_user() in
+ * WP_Customize_Manager::_publish_changeset_values().
+ *
  * @since 2.40.1
  *
  * @param string $value The submitted value.
