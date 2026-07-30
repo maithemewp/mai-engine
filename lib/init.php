@@ -956,7 +956,7 @@ function mai_needs_mai_acf_pro() {
  *
  * @since 2.25.0
  *
- * @return bool
+ * @return array
  */
 function mai_get_mai_acf_plugin_data() {
 	static $data = null;

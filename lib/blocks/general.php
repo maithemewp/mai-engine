@@ -57,6 +57,25 @@ add_filter( 'render_block', 'mai_render_block_handle_link_color', 10, 2 );
 /**
  * Fixes WP 6.4 conflict with link color class.
  *
+ * Mai's palette has a color slugged "link", so WordPress generates has-link-color for it.
+ * WP 6.4 introduced its own has-link-color for block link element color, so the same class
+ * name now means two different things. Mai's CSS therefore uses has-links-color and
+ * has-links-background-color, with the "s", and this filter rewrites the classes to match.
+ *
+ * The CSS half lives in mai_add_colors_css() (lib/customize/output.php). Both halves must
+ * change together: rename one without the other and the color silently disappears on the
+ * front end, with nothing wrong in the editor. Covered by
+ * tests/phpunit/unit/RenderBlockLinkColorTest.php.
+ *
+ * Three cases have accumulated, each from a separate bug report:
+ *  - text color, has-link-color on the block wrapper (d23afd367)
+ *  - background and overlay color, has-link-background-color (332fd61b4)
+ *  - inline highlights, has-link-color on a <mark> (94c368548)
+ *
+ * The rewrite has to happen here rather than earlier because for static blocks the class is
+ * baked into saved post content by the editor, so there is no render-time attribute to
+ * intercept.
+ *
  * @since 2.32.0
  *
  * @param string $block_content The existing block content.

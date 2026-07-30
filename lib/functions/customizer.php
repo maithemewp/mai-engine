@@ -31,6 +31,37 @@ function mai_parse_kirki_args( $args ) {
 }
 
 /**
+ * Sanitizes a Customizer field that is meant to hold arbitrary markup.
+ *
+ * These fields (header/footer meta, custom content) exist to take shortcodes and HTML,
+ * including ad tags and embeds, so filtering them unconditionally would silently delete
+ * what the field is for. They are gated on `edit_theme_options`, which on single-site is
+ * administrator-only and carries `unfiltered_html`, so those users are already trusted
+ * with markup elsewhere in WordPress and pass through untouched.
+ *
+ * Multisite is the case that needs filtering: a Site Administrator has
+ * `edit_theme_options` but not `unfiltered_html`, and must not be able to land executable
+ * script that a Super Admin would then load.
+ *
+ * Applied at save rather than at render deliberately. Sanitizing on input cannot be
+ * bypassed by a render path that forgets to escape, and it leaves already-saved values
+ * alone instead of retroactively stripping them from live sites.
+ *
+ * @since 2.40.1
+ *
+ * @param string $value The submitted value.
+ *
+ * @return string
+ */
+function mai_sanitize_customizer_html( $value ) {
+	if ( current_user_can( 'unfiltered_html' ) ) {
+		return $value;
+	}
+
+	return wp_kses_post( $value );
+}
+
+/**
  * Gets setting name for kirki.
  *
  * @since 2.21.0
@@ -384,13 +415,13 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			],
 		],
 		[
-			'settings'        => 'header_meta',
-			'label'           => __( 'Header Meta', 'mai-engine' ),
-			'description'     => mai_get_entry_meta_setting_description(),
-			'type'            => 'textarea',
-			'sanitize'        => 'wp_kses_post',
-			'default'         => $defaults['header_meta'],
-			'active_callback' => [
+			'settings'          => 'header_meta',
+			'label'             => __( 'Header Meta', 'mai-engine' ),
+			'description'       => mai_get_entry_meta_setting_description(),
+			'type'              => 'textarea',
+			'sanitize_callback' => 'mai_sanitize_customizer_html',
+			'default'           => $defaults['header_meta'],
+			'active_callback'   => [
 				[
 					'setting'  => 'show',
 					'operator' => 'contains',
@@ -421,12 +452,12 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			],
 		],
 		[
-			'settings'        => 'custom_content',
-			'label'           => __( 'Custom Content', 'mai-engine' ),
-			'type'            => 'textarea',
-			'sanitize'        => 'wp_kses_post',
-			'default'         => $defaults['custom_content'],
-			'active_callback' => [
+			'settings'          => 'custom_content',
+			'label'             => __( 'Custom Content', 'mai-engine' ),
+			'type'              => 'textarea',
+			'sanitize_callback' => 'mai_sanitize_customizer_html',
+			'default'           => $defaults['custom_content'],
+			'active_callback'   => [
 				[
 					'setting'  => 'show',
 					'operator' => 'contains',
@@ -473,13 +504,13 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			],
 		],
 		[
-			'settings'        => 'footer_meta',
-			'label'           => __( 'Footer Meta', 'mai-engine' ),
-			'description'     => mai_get_entry_meta_setting_description(),
-			'type'            => 'textarea',
-			'sanitize'        => 'wp_kses_post',
-			'default'         => $defaults['footer_meta'],
-			'active_callback' => [
+			'settings'          => 'footer_meta',
+			'label'             => __( 'Footer Meta', 'mai-engine' ),
+			'description'       => mai_get_entry_meta_setting_description(),
+			'type'              => 'textarea',
+			'sanitize_callback' => 'mai_sanitize_customizer_html',
+			'default'           => $defaults['footer_meta'],
+			'active_callback'   => [
 				[
 					'setting'  => 'show',
 					'operator' => 'contains',
@@ -980,13 +1011,13 @@ function mai_get_single_content_settings( $name = 'post' ) {
 			],
 		],
 		[
-			'settings'        => 'header_meta',
-			'label'           => __( 'Header Meta', 'mai-engine' ),
-			'description'     => mai_get_entry_meta_setting_description(),
-			'type'            => 'textarea',
-			'sanitize'        => 'wp_kses_post',
-			'default'         => $defaults['header_meta'],
-			'active_callback' => [
+			'settings'          => 'header_meta',
+			'label'             => __( 'Header Meta', 'mai-engine' ),
+			'description'       => mai_get_entry_meta_setting_description(),
+			'type'              => 'textarea',
+			'sanitize_callback' => 'mai_sanitize_customizer_html',
+			'default'           => $defaults['header_meta'],
+			'active_callback'   => [
 				[
 					'setting'  => 'show',
 					'operator' => 'contains',
@@ -995,13 +1026,13 @@ function mai_get_single_content_settings( $name = 'post' ) {
 			],
 		],
 		[
-			'settings'        => 'footer_meta',
-			'label'           => __( 'Footer Meta', 'mai-engine' ),
-			'description'     => mai_get_entry_meta_setting_description(),
-			'type'            => 'textarea',
-			'sanitize'        => 'wp_kses_post',
-			'default'         => $defaults['footer_meta'],
-			'active_callback' => [
+			'settings'          => 'footer_meta',
+			'label'             => __( 'Footer Meta', 'mai-engine' ),
+			'description'       => mai_get_entry_meta_setting_description(),
+			'type'              => 'textarea',
+			'sanitize_callback' => 'mai_sanitize_customizer_html',
+			'default'           => $defaults['footer_meta'],
+			'active_callback'   => [
 				[
 					'setting'  => 'show',
 					'operator' => 'contains',
@@ -1010,12 +1041,12 @@ function mai_get_single_content_settings( $name = 'post' ) {
 			],
 		],
 		[
-			'settings'        => 'custom_content',
-			'label'           => __( 'Custom Content', 'mai-engine' ),
-			'type'            => 'textarea',
-			'sanitize'        => 'wp_kses_post',
-			'default'         => $defaults['custom_content'],
-			'active_callback' => [
+			'settings'          => 'custom_content',
+			'label'             => __( 'Custom Content', 'mai-engine' ),
+			'type'              => 'textarea',
+			'sanitize_callback' => 'mai_sanitize_customizer_html',
+			'default'           => $defaults['custom_content'],
+			'active_callback'   => [
 				[
 					'setting'  => 'show',
 					'operator' => 'contains',
@@ -1024,12 +1055,12 @@ function mai_get_single_content_settings( $name = 'post' ) {
 			],
 		],
 		[
-			'settings'        => 'custom_content_2',
-			'label'           => __( 'Custom Content 2', 'mai-engine' ),
-			'type'            => 'textarea',
-			'sanitize'        => 'wp_kses_post',
-			'default'         => $defaults['custom_content_2'],
-			'active_callback' => [
+			'settings'          => 'custom_content_2',
+			'label'             => __( 'Custom Content 2', 'mai-engine' ),
+			'type'              => 'textarea',
+			'sanitize_callback' => 'mai_sanitize_customizer_html',
+			'default'           => $defaults['custom_content_2'],
+			'active_callback'   => [
 				[
 					'setting'  => 'show',
 					'operator' => 'contains',

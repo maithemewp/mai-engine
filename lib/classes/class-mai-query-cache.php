@@ -131,12 +131,19 @@ class Mai_Query_Cache {
 		// result. A regex miss leaves the SQL unchanged (at worst a duplicate entry, never wrong).
 		$sql = preg_replace( '/^(SELECT\s+(?:SQL_CALC_FOUND_ROWS\s+)?).*?(\s+FROM\s+)/is', '$1FIELDS$2', $sql, 1 );
 
-		// Truncate datetime literals to the hour. The date fields accept relative values
-		// ("30 days ago" is the documented placeholder), and WP_Date_Query resolves those
-		// against now to the second, so the key changed every second: every read missed while
-		// every request still wrote a new entry, which is worse than not caching. Only the key
-		// is coarsened; the executed query keeps its exact bounds, so the result can be at most
-		// an hour stale against a TTL that already allows four.
+		// Truncate datetime literals to the hour. The After/Before date fields ship
+		// "3 months ago" and "30 days" as placeholders, and WP_Date_Query resolves relative
+		// values against now to the second, so the key changed every second: every read missed
+		// while every request still wrote a new entry, which is worse than not caching.
+		//
+		// Only the key is coarsened; the executed query keeps its exact bounds, so a served
+		// result can be at most an hour stale against a TTL that already allows four. Two
+		// differently configured grids cannot collide, because $query_vars still holds the raw
+		// unresolved string and is hashed alongside this.
+		//
+		// Applies to every datetime literal in the statement, not just date_query bounds. A
+		// window shorter than an hour is therefore effectively widened to an hour, so short
+		// windows are not supported; the shortest in real use is measured in days.
 		$sql = preg_replace( "/'(\d{4}-\d{2}-\d{2} \d{2}):\d{2}:\d{2}'/", "'$1:00:00'", $sql );
 
 		return md5( serialize( $query_vars ) . $sql );
@@ -163,9 +170,9 @@ class Mai_Query_Cache {
 			$cacheable = false;
 		}
 
-		// Caching a random order defeats it. Mai_Grid emits the bare string 'rand' from the
-		// Order By setting; WP_Query also accepts the seeded 'RAND(123)' form. Matching only
-		// the seeded form meant random grids were cached, so they were not random.
+		// Caching a random order defeats it, so both spellings must match: Mai_Grid emits the
+		// bare string 'rand' from the Order By setting, and WP_Query also accepts the seeded
+		// 'RAND(123)' form.
 		$orderby = $query_vars['orderby'] ?? '';
 		if ( is_string( $orderby ) && preg_match( '/\brand\b|\bRAND\(/i', $orderby ) ) {
 			$cacheable = false;

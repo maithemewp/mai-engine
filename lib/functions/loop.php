@@ -329,10 +329,10 @@ function mai_get_sanitized_entry_args( $args, $context, $name = 'post' ) {
 		return $args;
 	}
 
-	// Keyed by 'settings', which holds the bare arg name. Built by hand rather than with
-	// wp_list_pluck(): given an index key, pluck() reads the value field unguarded, and
-	// around a quarter of the controls (section headings, dividers, page header fields)
-	// carry no 'sanitize', so it would emit an undefined key warning for each one.
+	// 'settings' holds the bare arg name, which is what $args is keyed by. Built by hand
+	// rather than with wp_list_pluck(): given an index key, pluck() reads the value field
+	// unguarded, and around a quarter of the controls (section headings, dividers, page
+	// header fields) carry no 'sanitize', so it would warn once for each.
 	$sanitize = [];
 
 	foreach ( $settings as $setting ) {

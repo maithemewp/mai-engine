@@ -779,7 +779,7 @@ function mai_has_breadcrumbs() {
  *
  * @param string $context 'archive' or 'single'.
  *
- * @return string|array May be * for all or array of types.
+ * @return array The enabled types for this context.
  */
 function mai_get_page_header_types( $context ) {
 	static $cache = [];
@@ -816,8 +816,8 @@ function mai_get_page_header_types( $context ) {
 		$types = $config[ $context ];
 	}
 
-	// Cached separately from $types: the working value is a plain list, so writing the
-	// cache key into it both corrupted the list and reset the cache on every miss.
+	// Cached separately from $types: the working value is a plain list rebuilt on every
+	// miss, so it cannot double as the per-context memo.
 	$cache[ $context ] = mai_get_option( 'page-header-' . $context, $types );
 
 	return $cache[ $context ];
@@ -1042,9 +1042,9 @@ function mai_is_element_hidden( $element, $id = '' ) {
  * @return array
  */
 function mai_get_hidden_elements( $id, $type = 'post' ) {
-	// Keyed by type and id. Previously a single unkeyed static, so the first lookup in a
-	// request was returned for every post and term after it, which crossed post and term
-	// meta on term archives.
+	// Keyed by type and id: post and term meta are separate namespaces and the same numeric
+	// id is valid in both, so an unkeyed memo would serve a term's hidden elements for a post
+	// on a term archive.
 	static $cache = [];
 
 	$cache_key = $type . ':' . $id;

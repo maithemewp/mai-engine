@@ -183,7 +183,65 @@ add_action( 'delete_attachment', 'mai_flush_fallback_image_id' );
  * @return void
  */
 function mai_flush_fallback_image_id( $attachment_id ) {
-	$parent_id = (int) wp_get_post_parent_id( $attachment_id );
+	mai_flush_fallback_image_for_parent( wp_get_post_parent_id( $attachment_id ) );
+}
+
+add_action( 'wp_media_attach_action', 'mai_flush_fallback_image_on_attach', 10, 3 );
+/**
+ * Evicts on Media Library attach and detach.
+ *
+ * Those actions re-parent with a direct database write and fire none of the attachment
+ * hooks above, so without this a detached image kept showing as a post's fallback until
+ * the entry expired. On detach the parent is already cleared, so the passed id is the
+ * only key that can be stale.
+ *
+ * @since 2.40.1
+ *
+ * @param string $action        Either 'attach' or 'detach'.
+ * @param int    $attachment_id The attachment being re-parented.
+ * @param int    $parent_id     The post being attached to, or detached from.
+ *
+ * @return void
+ */
+function mai_flush_fallback_image_on_attach( $action, $attachment_id, $parent_id ) {
+	mai_flush_fallback_image_for_parent( $parent_id );
+}
+
+add_action( 'attachment_updated', 'mai_flush_fallback_image_on_update', 10, 3 );
+/**
+ * Evicts both sides of a re-parent.
+ *
+ * `edit_attachment` fires after the row is written, so it can only see the new parent and
+ * the previous one would keep serving an image it no longer owns. This hook receives the
+ * pre-update post, so both are reachable.
+ *
+ * @since 2.40.1
+ *
+ * @param int     $attachment_id The attachment ID.
+ * @param WP_Post $after         The attachment after the update.
+ * @param WP_Post $before        The attachment before the update.
+ *
+ * @return void
+ */
+function mai_flush_fallback_image_on_update( $attachment_id, $after, $before ) {
+	mai_flush_fallback_image_for_parent( $before->post_parent );
+	mai_flush_fallback_image_for_parent( $after->post_parent );
+}
+
+/**
+ * Deletes one post's cached fallback image.
+ *
+ * Not exhaustive: deleting a parent post outright leaves an orphaned entry, which is
+ * harmless because WordPress never reuses post IDs, and it expires on its own.
+ *
+ * @since 2.40.1
+ *
+ * @param int $parent_id The parent post ID, or 0 for none.
+ *
+ * @return void
+ */
+function mai_flush_fallback_image_for_parent( $parent_id ) {
+	$parent_id = (int) $parent_id;
 
 	if ( ! $parent_id ) {
 		return;
@@ -199,11 +257,13 @@ function mai_flush_fallback_image_id( $attachment_id ) {
  * WP_Query caches that internally, but keyed on the posts group's `last_changed`, which
  * bumps on every post save: on a busy publisher site it effectively never hits, so the
  * query runs per image-less entry on every archive render. Caching it under a key we
- * control, evicted only when the post's attachments change, is immune to that churn.
+ * control, evicted on the attachment changes that can affect the result, is immune to that
+ * churn. See mai_flush_fallback_image_for_parent() for what eviction does not cover.
  *
- * A "no image found" result is cached as 0, because a cache miss also reads as false and
- * those posts (no featured image, no attachments) are exactly the ones doing the most
- * fruitless work.
+ * genesis_get_image_id() returns false when there is no image, which a cache read cannot
+ * tell apart from a miss, so negatives are stored as 0. Those posts (no featured image and
+ * no attachments) are exactly the ones repeating the most fruitless work, so they are the
+ * ones most worth caching.
  *
  * @since 2.40.1
  *

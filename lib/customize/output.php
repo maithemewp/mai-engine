@@ -91,9 +91,11 @@ function mai_get_kirki_css_additions() {
 		return $additions;
 	}
 
-	// Cold key: one request rebuilds while concurrent others wait briefly for its result.
-	// Without this, a flush (theme switch, settings save, plugin update) sends every
-	// in-flight request through the same palette/breakpoint/button build simultaneously.
+	// Cold key: where the lock is atomic (a persistent object cache), one request rebuilds
+	// while concurrent others wait briefly for its result, so a flush (theme switch, settings
+	// save, plugin update) cannot send every in-flight request through the same
+	// palette/breakpoint/button build at once. Elsewhere every request rebuilds, which is no
+	// worse than before.
 	if ( ! $cache->lock( 'dynamic_css' ) ) {
 		$additions = mai_wait_for_cache_fill( $cache, 'dynamic_css' );
 
@@ -112,13 +114,14 @@ function mai_get_kirki_css_additions() {
 /**
  * Waits briefly for a single-flight winner to fill a cache key, then returns its value.
  *
- * Mirrors Mai_Query_Cache::wait_for_fill() for the simple (non-SWR) caches here. Returns
- * false when the winner did not deliver in time, so the caller falls through and rebuilds
- * rather than serving nothing.
+ * Mirrors Mai_Query_Cache::wait_for_fill() for the simple (non-SWR) caches here, with the
+ * usable-cache gate inlined rather than left to the caller. Returns false when the winner
+ * did not deliver in time, so the caller falls through and rebuilds rather than serving
+ * nothing.
  *
  * @since 2.40.1
  *
- * @param object $cache The mai_cache instance.
+ * @param \Mai\Cache\Cache $cache The mai_cache instance.
  * @param string $key   The cache key being filled.
  *
  * @return mixed The cached value, or false on timeout.
@@ -133,7 +136,7 @@ function mai_wait_for_cache_fill( $cache, $key ) {
 		return false;
 	}
 
-	$cap_ms   = max( 0, (int) apply_filters( 'mai_cache_wait_ms', 500 ) );
+	$cap_ms   = max( 0, (int) apply_filters( 'mai_css_cache_wait_ms', 500 ) );
 	$poll_ms  = max( 1, min( 25, $cap_ms ) );
 	$deadline = microtime( true ) + ( $cap_ms / 1000 );
 
@@ -216,7 +219,7 @@ function mai_add_kirki_fonts( $fonts ) {
 			return $cached_fonts;
 		}
 
-		// Cold key: single-flight, same rationale as mai_get_kirki_css_additions().
+		// Cold key: single-flight where the lock is atomic, same as mai_get_kirki_css_additions().
 		if ( ! $cache->lock( 'dynamic_fonts' ) ) {
 			$cached_fonts = mai_wait_for_cache_fill( $cache, 'dynamic_fonts' );
 
@@ -414,7 +417,16 @@ function mai_add_colors_css( $css ) {
 				}
 			}
 
-			// WP 6.4 added has-link-color and breaks stuff.
+			// Mai's palette has a color slugged "link", and WordPress builds its color classes
+			// as has-{slug}-color. WP 6.4 introduced its own has-link-color for block link
+			// element color (see wp-includes/blocks/post-title.php and friends), so the two
+			// collide on the same class name with different meanings. Mai therefore emits
+			// has-links-color / has-links-background-color, with the "s".
+			//
+			// The other half of this lives in mai_render_block_handle_link_color()
+			// (lib/blocks/general.php), which rewrites the classes WordPress saved into post
+			// content so they match what is emitted here. Both halves must change together:
+			// renaming one without the other silently drops the color on the front end.
 			$class = 'link' === $name ? 'links' : $name;
 
 			$css['global'][ '.has-' . $class . '-color' ]['color']                       = 'var(--color-' . $name . ') !important';

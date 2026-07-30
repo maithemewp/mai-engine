@@ -116,9 +116,8 @@ function mai_get_default_font_weights( $element ) {
 		}
 	}
 
-	// Cached per element. The weights themselves are a numerically indexed list, so the
-	// cache must be a separate array: writing them into one keyed by element cannot work,
-	// and previously meant this never cached at all.
+	// Cached per element in a separate array. The weights are a numerically indexed list, so
+	// they cannot double as an element-keyed memo without colliding.
 	$cache[ $element ] = $weights;
 
 	return $weights;

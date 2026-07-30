@@ -256,9 +256,8 @@ function mai_adjacent_entry_link_thumbnail( $output, $format, $link, $post, $adj
 		return str_replace( '%image', $image, $output );
 	}
 
-	// Queried only once the filter has allowed it. Adjacent posts are in no cache, so this
-	// is an uncached meta lookup on every singular request, previously paid even when the
-	// result was discarded below.
+	// Queried only once the filter has allowed it. Adjacent posts are in no cache, so this is
+	// an uncached meta lookup on every singular request.
 	$image_id = get_post_thumbnail_id( $post );
 
 	if ( $image_id ) {
