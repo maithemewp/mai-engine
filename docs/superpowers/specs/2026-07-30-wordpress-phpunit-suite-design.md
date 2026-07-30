@@ -333,6 +333,8 @@ This group is not optional. It is the **entire** divergence surface between the 
 
 **G6, inline SVG.** Included because `lib/functions/icons.php` is a caller and HTML named entities are invalid in XML and SVG.
 
+**G7, quotes and JSON in data attributes.** Straight and curly quotes in one string, Polish in both cases, typographic characters, and five shapes of `data-*` attribute carrying JSON: single-quoted, pre-escaped, mixed with other attributes, alongside an entity-bearing `href`, and a combined case. Every `g7_data_*` row currently records corrupted output. This group pins F5.
+
 Twelve pathological inputs were also checked for a crash in the `getElementsByTagName('div')->item(0)` dereference, including a bare `</div>`, a lone doctype, 300-deep nesting and an embedded null byte. libxml always synthesizes the wrapper, so no crash path was found. No fixture row is needed for this.
 
 ## Encoding migration: deferred to its own spec
@@ -380,9 +382,32 @@ The measurements above are the starting point, not a decision. The encoding spec
 
 Its one hard prerequisite is step 7 of this work: the fixture must exist and every golden must be reviewed by hand before any implementation is swapped.
 
-### Candidate C, noted but not chosen
+### Candidate C, now the leading option
 
-Dropping the `mb_encode_numericentity` encode as well, declaring UTF-8 to libxml, and doing no decode at all differs from current on 14 of 65 rows, and every one of those is current losing escaping. Diacritics, curly quotes, dashes, CJK, astral emoji, ZWJ, RTL and `&nbsp;` all round-trip as raw UTF-8 identically to today, with zero deprecated APIs on either side. It is a larger change than this work scopes and has not been stress-tested against the 18 call sites, but it is the only option evaluated that does not carry the defect below, and it deserves evaluation as follow-up work.
+Drop the `mb_encode_numericentity` encode as well, declare UTF-8 to libxml, and do no decode at all:
+
+```php
+$dom->loadHTML( '<?xml encoding="UTF-8">' . "<div>$html</div>", LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+// and mai_get_dom_html() becomes just: return $dom->saveHTML();
+```
+
+It differs from current on 14 of 65 baseline rows, and every one of those is current losing escaping. Measured directly on the content classes that matter here:
+
+| Input | Candidate C output |
+|---|---|
+| `<div data-config='{"title":"Zażółć & B","n":1}'>` | correctly escaped, JSON intact |
+| `ZAŻÓŁĆ gęślą jaźń ąćęłńóśźż` | unchanged raw UTF-8 |
+| `"straight" 'single' “curly” ‘s’ it’s` | unchanged raw UTF-8 |
+| `🎉 👩‍💻 ☕` | unchanged raw UTF-8 |
+| `&amp; &lt; &amp;amp;` | escaping preserved |
+| `&lt;script&gt;alert(1)&lt;/script&gt;` | stays escaped |
+| `© ™ € — … →` | unchanged raw UTF-8 |
+
+So C resolves F3 and F5, keeps every non-English and typographic case identical to today, and uses no deprecated API on either side. Its one behavior change is that pre-escaped entities stay escaped instead of being decoded, which is correct HTML rather than a regression.
+
+It is a larger change than this work scopes and has not been stress-tested against all 18 call sites, which is why it belongs to the encoding spec rather than here. But it should enter that spec as the leading option, not as an afterthought.
+
+Note on the longer-term direction: `~/LocalPackages/mai-dom` is the eventual replacement for these helpers. It depends on PHP 8.4's `Dom\HTMLDocument`, a real HTML5 parser, which is not a realistic floor for a premium theme and plugin today. Candidate C works on the current `^8.1` floor and captures most of the correctness win in the meantime, so it is the right interim step rather than a competing direction.
 
 ## Findings: defects discovered, not fixed here
 
@@ -421,6 +446,8 @@ This is recorded as G3 in the fixture, explicitly labelled as pinning known-dang
 
 Not yet established, and the encoding spec's first question: whether `wp_kses_post` or equivalent runs upstream on every path that reaches these 18 call sites. Until that is traced, this is a defect of unknown reachability rather than a confirmed vulnerability.
 
+F5 below is the same defect reaching a content shape that needs no attacker at all.
+
 **F4. The unit suite is currently red.** Unrelated to this work but blocking, since CI cannot be added over a failing suite.
 
 ```
@@ -430,6 +457,31 @@ Error: Call to undefined function wp_using_ext_object_cache()
 ```
 
 `wp_using_ext_object_cache` is stubbed in `MaiQueryCacheSingleFlightTest.php:24` but not in the invalidation test. The fix is a `Functions\when()` stub matching the sibling tests, and it lands in this work because goal 3 requires the suite to be green before CI runs it.
+
+**F5. JSON in a data attribute is corrupted into invalid HTML.** This is F3 reaching ordinary content rather than attacker-supplied content, and it needs no unusual input at all.
+
+```
+in : <div data-config='{"title":"Zażółć & B","n":1}'>x</div>
+out: <div data-config="{"title":"Zażółć & B","n":1}">x</div>
+```
+
+The attribute terminates at the first `"` inside the JSON, so a browser parses `data-config="{"` followed by garbage attributes, and the payload is gone.
+
+Attribution is unambiguous, measured at each stage:
+
+| Stage | Output |
+|---|---|
+| `saveHTML()` alone | `data-config="{&quot;title&quot;:&quot;Za&#380;&oacute;&#322;&#263; &amp; B&quot;,&quot;n&quot;:1}"` |
+| current | `data-config="{"title":"Zażółć & B","n":1}"` |
+| candidate A | `data-config="{"title":"Zażółć & B","n":1}"` |
+| candidate B | `data-config="{&quot;title&quot;:&quot;Zaż&oacute;łć &amp; B&quot;,&quot;n&quot;:1}"` |
+| candidate C | `data-config="{&quot;title&quot;:&quot;Zażółć &amp; B&quot;,&quot;n&quot;:1}"` |
+
+DOMDocument escapes the attribute correctly on its own. The decode step is what breaks it. Pre-escaped input is destroyed identically: `data-config="{&quot;a&quot;:1}"` comes back as `data-config="{"a":1}"`.
+
+This changes the candidate assessment. Candidate A was leading purely on being byte-identical to current across 65 fixtures, but "byte-identical to current" now demonstrably includes "corrupts JSON data attributes into invalid HTML". A does not fix F5. C does, and C also keeps Polish diacritics, straight and curly quotes, emoji including ZWJ sequences, and typographic characters as raw UTF-8, exactly as today.
+
+Pinned by fixture group G7.
 
 ## Constraint compliance
 

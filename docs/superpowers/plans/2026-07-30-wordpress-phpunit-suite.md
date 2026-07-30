@@ -989,7 +989,7 @@ return [
 	'g2_10ffff'              => '<p>&#1114111;</p>',
 	'g2_out_of_range'        => '<p>&#1114112;</p>',
 
-	// G3: escaping-sensitive. PINS DANGEROUS BEHAVIOR. See F3 in the spec.
+	// G3: escaping-sensitive. PINS DANGEROUS BEHAVIOR. See F3 and F5 in the spec.
 	'g3_escaped_script'      => '<p>&lt;script&gt;alert(1)&lt;/script&gt;</p>',
 	'g3_escaped_img_onerror' => '<p>&lt;img src=x onerror=alert(1)&gt;</p>',
 	'g3_quot_in_attribute'   => '<a title="a&quot; onmouseover=&quot;alert(1)">x</a>',
@@ -999,6 +999,18 @@ return [
 	'g3_style_body'          => '<style>a[title="&quot;"] { color: red; }</style>',
 	'g3_textarea'            => '<textarea>&lt;b&gt; &amp; é</textarea>',
 	'g3_pre'                 => '<pre>&lt;tag&gt; &amp;amp;</pre>',
+
+	// G7: quotes, and JSON in data attributes. PINS F5, a live HTML corruption bug:
+	// saveHTML() escapes these attributes correctly and the decode step then breaks them
+	// out of their own quotes. Every g7_data_* row below is currently corrupted output.
+	'g7_straight_and_curly'  => '<p>She said "hi" and \'bye\' then “hi” and ‘bye’ and it’s fine</p>',
+	'g7_polish_both_cases'   => '<p>ZAŻÓŁĆ GĘŚLĄ JAŹŃ / zażółć gęślą jaźń / ĄĆĘŁŃÓŚŹŻ ąćęłńóśźż</p>',
+	'g7_typographic'         => '<p>© ® ™ ° ½ € £ ¥ § ¶ † ‡ • … ‰ ± × ÷ ≠ ≤ ≥ → ← ↔</p>',
+	'g7_data_json_single'    => '<div data-config=\'{"title":"Zażółć","q":"say \"hi\"","n":1,"ok":true}\'>x</div>',
+	'g7_data_json_escaped'   => '<div data-config="{&quot;title&quot;:&quot;A &amp; B&quot;,&quot;n&quot;:1}">x</div>',
+	'g7_data_mixed_attrs'    => '<button data-a="1" data-label="Zażółć “x”" data-json=\'{"k":"v & w"}\' aria-label="It’s">go</button>',
+	'g7_data_url_and_json'   => '<a href="/x?a=1&amp;b=2&amp;c=%20" data-track=\'{"u":"/x?a=1&b=2"}\'>l</a>',
+	'g7_kitchen_sink'        => '<div class="c" data-cfg=\'{"t":"Zażółć & “curly”","d":"—"}\'><p>He said "it’s" — 🎉 &amp; &nbsp;done</p></div>',
 
 	// G4: malformed and structural.
 	'g4_unclosed_tag'        => '<p>unclosed',
@@ -1036,7 +1048,7 @@ Run:
 php tests/phpunit/unit/fixtures/generate.php
 ```
 
-Expected: `Wrote 55 cases to encoding.php` (G1 17, G2 10, G3 9, G4 8, G5 9, G6 2).
+Expected: `Wrote 63 cases to encoding.php` (G1 17, G2 10, G3 9, G4 8, G5 9, G6 2, G7 8).
 
 Now **read `encoding.php` end to end**. This is a required review step, not a formality. For each row ask whether the recorded output is what should happen. Expect to be uncomfortable with the `g3_` rows: escaped markup becomes live markup, and attribute values break out of their quotes. That is the F3 defect, and pinning it is the point. Do not "fix" a golden by editing it; if a golden looks wrong, that is a finding to raise, and the encoding spec owns the fix.
 
@@ -1083,7 +1095,7 @@ final class DomEncodingTest extends TestCase {
 	public function test_fixture_covers_every_group(): void {
 		$keys = array_keys( require __DIR__ . '/fixtures/encoding.php' );
 
-		foreach ( [ 'g1_', 'g2_', 'g3_', 'g4_', 'g5_', 'g6_' ] as $group ) {
+		foreach ( [ 'g1_', 'g2_', 'g3_', 'g4_', 'g5_', 'g6_', 'g7_' ] as $group ) {
 			$this->assertNotEmpty(
 				array_filter( $keys, static fn ( $k ) => str_starts_with( $k, $group ) ),
 				sprintf( 'Fixture group %s is empty. g2_ in particular is the entire divergence surface for the migration.', $group )
@@ -1099,7 +1111,7 @@ The `@dataProvider` annotation works here because this suite does not extend `WP
 
 Run: `composer test-unit`
 
-Expected: `OK (125 tests, ...)` (69 existing, 55 fixture rows, 1 group check). Every fixture row must pass on the first run, since the goldens were generated from the same implementation. A failure means the generator and the test disagree about the input, most likely an escaping bug in `mai_test_escape()`.
+Expected: `OK (133 tests, ...)` (69 existing, 63 fixture rows, 1 group check). Every fixture row must pass on the first run, since the goldens were generated from the same implementation. A failure means the generator and the test disagree about the input, most likely an escaping bug in `mai_test_escape()`.
 
 - [ ] **Step 6: Commit**
 
