@@ -64,8 +64,9 @@ add_filter( 'render_block', 'mai_render_block_handle_link_color', 10, 2 );
  *
  * The CSS half lives in mai_add_colors_css() (lib/customize/output.php). Both halves must
  * change together: rename one without the other and the color silently disappears on the
- * front end, with nothing wrong in the editor. Covered by
- * tests/phpunit/unit/RenderBlockLinkColorTest.php.
+ * front end, with nothing wrong in the editor. There is no automated coverage: the unit
+ * suite runs without WordPress and this needs WP_HTML_Tag_Processor, so verify by hand
+ * against a block using the Link palette entry for text, background, and overlay.
  *
  * Three cases have accumulated, each from a separate bug report:
  *  - text color, has-link-color on the block wrapper (d23afd367)
