@@ -24,15 +24,22 @@ require_once dirname( __DIR__, 3 ) . '/lib/functions/utilities.php';
 final class DomEncodingTest extends TestCase {
 
 	/**
-	 * Rows whose serialization genuinely differs by libxml build.
+	 * Row prefixes whose serialization genuinely differs by libxml build, and why.
 	 *
-	 * libxml 2.15 preserves Unicode noncharacters; older builds drop them from the document
-	 * entirely. That is a real behavior difference in libxml, not in this plugin, so pinning
-	 * it would just fail on every machine that isn't the one that ran generate.php. These
-	 * rows are skipped when the running libxml differs from the recorded one, with the two
-	 * versions named, rather than being quietly dropped or silently passed.
+	 * These are differences in libxml itself, not in this plugin, so no golden can be correct
+	 * on every machine. They are skipped when the running libxml differs from the one that
+	 * generated the goldens, naming both versions, rather than being quietly dropped or
+	 * loosened into an assertion that pins nothing.
+	 *
+	 * Everything outside this list asserts strictly everywhere. Keep the list as short as the
+	 * evidence requires; each entry is a row the fixture can no longer fully protect.
 	 */
-	private const LIBXML_SENSITIVE_PREFIX = 'g2_';
+	private const LIBXML_SENSITIVE = [
+		// 2.15 preserves Unicode noncharacters; older builds drop them from the document.
+		'g2_'      => 'Unicode noncharacter handling',
+		// 2.15 rewrites CDATA into a comment; older builds escape it as text.
+		'g4_cdata' => 'CDATA handling',
+	];
 
 	/**
 	 * @return array<string, array{0: string, 1: string}>
@@ -87,13 +94,17 @@ final class DomEncodingTest extends TestCase {
 
 	#[DataProvider( 'encodingCases' )]
 	public function test_round_trip_matches_golden( string $in, string $expected ): void {
-		if ( str_starts_with( $this->dataName(), self::LIBXML_SENSITIVE_PREFIX )
-			&& LIBXML_DOTTED_VERSION !== self::goldenLibxml() ) {
-			$this->markTestSkipped( sprintf(
-				'Unicode noncharacter handling differs by libxml build; goldens recorded on %s, running %s.',
-				self::goldenLibxml(),
-				LIBXML_DOTTED_VERSION
-			) );
+		if ( LIBXML_DOTTED_VERSION !== self::goldenLibxml() ) {
+			foreach ( self::LIBXML_SENSITIVE as $prefix => $what ) {
+				if ( str_starts_with( (string) $this->dataName(), $prefix ) ) {
+					$this->markTestSkipped( sprintf(
+						'%s differs by libxml build; goldens recorded on %s, running %s.',
+						$what,
+						self::goldenLibxml(),
+						LIBXML_DOTTED_VERSION
+					) );
+				}
+			}
 		}
 
 		$this->assertSame(
