@@ -35,7 +35,18 @@ the tasks are reordered and three are added.
 | B | Task 7 | **DONE** `2bec7b900`. 63-row fixture on the existing suite, no new deps. |
 | C | Tasks 10, 11 | **DONE** `204eae813`. Corpus diff over 289,572 posts, then the fix. |
 | D | Task 12 | **DONE** `69240d3`, `426746a`, `96d83ee`. Three plugins, delegate with fallback. |
-| E | Tasks 2, 3, 4, 5, 6, 8, 9 | **NOT STARTED.** The test-suite infrastructure. |
+| E | Tasks 2, 3, 4, 5, 6, 8, 9 | **DONE.** See the commit list below. |
+
+All phases shipped. Phase E commits: `df26fa6e3` (tests/composer.json plus the two gitignore
+lines), `be8408603` (root composer migration, define-abspath.php deleted), `1478462e1`
+(phpunit source scoping), `3ee5035f2` (integration harness), `05d0cc0a2`
+(RenderBlockLinkColorTest), `1327bce50` (CI), `c272da3bb` (README).
+
+Two things differed from the plan as written. WP_PHP_BINARY needed
+`escapeshellarg( PHP_BINARY )`, not bare `PHP_BINARY`: the wp-phpunit bootstrap concatenates
+it into `system()` unquoted, and Herd installs PHP under a path containing a space. And the
+smoke test was kept, renamed to HarnessTest, rather than deleted, because it covers the
+harness itself (database, utf8mb4, factories, loader) and no feature test does.
 
 Phases A through D shipped. What follows below for tasks 10 through 12 is the plan as
 written before execution; the spec's "Encoding migration: shipped" section is the record of
