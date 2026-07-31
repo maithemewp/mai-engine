@@ -1,0 +1,92 @@
+name: Tests
+
+# Neither job runs a root `composer install`, so no ACF Pro credential is needed anywhere.
+# A bare checkout plus `composer install -d tests` is sufficient: the plugin's runtime deps
+# are committed to vendor/, and only the test deps are resolved.
+#
+# deployable.yml is a separate workflow and is not touched by this one. Each GitHub Actions
+# job gets its own checkout, so a test job cannot contaminate the deployable check.
+
+on: [push, pull_request]
+
+jobs:
+  unit:
+    name: Unit (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.1', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, libxml, mbstring, json
+          coverage: none
+
+      - name: Install test dependencies
+        run: composer install -d tests --no-interaction --no-progress
+
+      - name: Run the unit suite
+        run: composer test-unit
+
+      - name: Committed vendor/ untouched
+        run: git diff --exit-code -- vendor/
+
+      - name: tests/vendor is not tracked
+        run: |
+          count=$(git ls-files tests/vendor | wc -l | tr -d ' ')
+          test "$count" -eq 0 || { echo "tests/vendor has $count tracked files"; exit 1; }
+
+  wp:
+    name: WordPress (PHP 8.4)
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        # The official image refuses to start without MYSQL_ROOT_PASSWORD or
+        # MYSQL_ALLOW_EMPTY_PASSWORD, hence the explicit password threaded through below.
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: mai_engine_tests
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: dom, libxml, mbstring, json, mysqli
+          coverage: none
+
+      - name: Install test dependencies
+        run: composer install -d tests --no-interaction --no-progress
+
+      - name: Run the integration suite
+        env:
+          WP_TESTS_DB_NAME: mai_engine_tests
+          WP_TESTS_DB_USER: root
+          WP_TESTS_DB_PASS: root
+          WP_TESTS_DB_HOST: 127.0.0.1
+        run: composer test-integration
+
+      - name: Committed vendor/ untouched
+        run: git diff --exit-code -- vendor/
+
+      - name: tests/vendor is not tracked
+        # This is the assertion that catches something real: a .gitignore regression would
+        # let `npm run beta` (git add -A) push WordPress core to a deploy branch. The
+        # vendor/ diff above is a tripwire proving this job did not dirty the committed
+        # autoloader, NOT proof that the committed autoloader is deployable; CI diffs the
+        # working tree against the same commit. deployable.yml is the real guard for that.
+        run: |
+          count=$(git ls-files tests/vendor | wc -l | tr -d ' ')
+          test "$count" -eq 0 || { echo "tests/vendor has $count tracked files"; exit 1; }
