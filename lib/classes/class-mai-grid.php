@@ -394,7 +394,7 @@ class Mai_Grid {
 			 *
 			 * Return 0 or a negative number to opt back into an unbounded query.
 			 *
-			 * @since 2.40.1
+			 * @since 2.41.0
 			 *
 			 * @param int $max The maximum number of entries. Default 1000.
 			 */
@@ -650,7 +650,7 @@ class Mai_Grid {
 				 *
 				 * Return 0 or a negative number to opt back into an unbounded query.
 				 *
-				 * @since 2.40.1
+				 * @since 2.41.0
 				 *
 				 * @param int $max The maximum number of terms. Default 1000.
 				 */

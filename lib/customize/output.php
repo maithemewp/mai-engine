@@ -119,7 +119,7 @@ function mai_get_kirki_css_additions() {
  * did not deliver in time, so the caller falls through and rebuilds rather than serving
  * nothing.
  *
- * @since 2.40.1
+ * @since 2.41.0
  *
  * @param \Mai\Cache\Cache $cache The mai_cache instance.
  * @param string $key   The cache key being filled.

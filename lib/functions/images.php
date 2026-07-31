@@ -195,7 +195,7 @@ add_action( 'delete_attachment', 'mai_flush_fallback_image_id' );
  * Keyed per parent post rather than flushing the group, so one upload does not
  * invalidate every other post's lookup.
  *
- * @since 2.40.1
+ * @since 2.41.0
  *
  * @param int $attachment_id The attachment being added, edited, or deleted.
  *
@@ -214,7 +214,7 @@ add_action( 'wp_media_attach_action', 'mai_flush_fallback_image_on_attach', 10, 
  * the entry expired. On detach the parent is already cleared, so the passed id is the
  * only key that can be stale.
  *
- * @since 2.40.1
+ * @since 2.41.0
  *
  * @param string $action        Either 'attach' or 'detach'.
  * @param int    $attachment_id The attachment being re-parented.
@@ -234,7 +234,7 @@ add_action( 'attachment_updated', 'mai_flush_fallback_image_on_update', 10, 3 );
  * the previous one would keep serving an image it no longer owns. This hook receives the
  * pre-update post, so both are reachable.
  *
- * @since 2.40.1
+ * @since 2.41.0
  *
  * @param int     $attachment_id The attachment ID.
  * @param WP_Post $after         The attachment after the update.
@@ -253,7 +253,7 @@ function mai_flush_fallback_image_on_update( $attachment_id, $after, $before ) {
  * Not exhaustive: deleting a parent post outright leaves an orphaned entry, which is
  * harmless because WordPress never reuses post IDs, and it expires on its own.
  *
- * @since 2.40.1
+ * @since 2.41.0
  *
  * @param int $parent_id The parent post ID, or 0 for none.
  *
@@ -284,7 +284,7 @@ function mai_flush_fallback_image_for_parent( $parent_id ) {
  * no attachments) are exactly the ones repeating the most fruitless work, so they are the
  * ones most worth caching.
  *
- * @since 2.40.1
+ * @since 2.41.0
  *
  * @param int $post_id The post ID.
  *
@@ -303,7 +303,7 @@ function mai_get_fallback_image_id( $post_id ) {
 	 * Sites where most posts have no featured image pay an attachment query per entry
 	 * for a fallback they may not want. Returning false skips the lookup entirely.
 	 *
-	 * @since 2.40.1
+	 * @since 2.41.0
 	 *
 	 * @param bool $enabled Whether the fallback runs.
 	 * @param int  $post_id The post ID.
