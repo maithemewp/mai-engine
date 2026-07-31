@@ -410,23 +410,6 @@ function mai_custom_scroll_logo( $html, $blog_id ) {
 	return $html;
 }
 
-/**
- * Makes sure custom logo uses same attributes as scroll logo.
- * This also makes sure the scrset and sizes attributes match for preloading.
- *
- * @since 2.25.0
- *
- * @param array $attr      Custom logo image attributes.
- * @param int   $image_id  Custom logo attachment ID.
- * @param int   $blog_id   ID of the blog to get the custom logo for.
- *
- * @return array
- */
-add_filter( 'get_custom_logo_image_attributes', 'mai_custom_logo_image_attributes', 10, 3 );
-function mai_custom_logo_image_attributes( $attr, $image_id, $blog_id ) {
-	return mai_add_logo_attributes( $attr );
-}
-
 add_filter( 'genesis_site_title_wrap', 'mai_remove_site_title_h1' );
 /**
  * Removes h1 site title wrap.
