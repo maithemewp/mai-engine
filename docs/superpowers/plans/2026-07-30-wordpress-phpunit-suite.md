@@ -36,6 +36,7 @@ the tasks are reordered and three are added.
 | C | Tasks 10, 11 | **DONE** `204eae813`. Corpus diff over 289,572 posts, then the fix. |
 | D | Task 12 | **DONE** `69240d3`, `426746a`, `96d83ee`. Three plugins, delegate with fallback. |
 | E | Tasks 2, 3, 4, 5, 6, 8, 9 | **DONE.** See the commit list below. |
+| F | CI hardening | **DONE.** Three rounds of libxml-portability fixes the local run could not have caught: `5481cd0ca`, `8c43c40b9`, `6a568806b`. |
 
 All phases shipped. Phase E commits: `df26fa6e3` (tests/composer.json plus the two gitignore
 lines), `be8408603` (root composer migration, define-abspath.php deleted), `1478462e1`

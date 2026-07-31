@@ -380,6 +380,28 @@ Finally, calling the filter with `$block['attrs']` absent emits three `Undefined
 
 A characterization fixture at `tests/phpunit/unit/fixtures/encoding.php`, one row per input, each recording the exact current output of `mai_get_dom_html( mai_get_dom_document( $in ) )`. It lives in the WordPress-free unit suite because neither function touches WordPress, so it runs in well under a second with no database and no WordPress, which is what makes iterating the migration against it practical.
 
+### The goldens are libxml-coupled
+
+Found by CI, not locally, because a local clean-clone run still uses the same libxml. Three
+rounds of failures on the first pushes, all one root cause:
+
+| Rows | Difference | Resolution |
+|---|---|---|
+| 12 | Attribute quote style. 2.15 normalizes to double quotes and escapes inner ones; older builds preserve the source quote character. | Canonicalized on both sides of the comparison, and in the generator. A real fixture defect, now fixed for every machine. |
+| 6 | Unicode noncharacters. 2.15 preserves them; older builds drop them from the document. | Skipped when libxml differs. |
+| 1 | CDATA. 2.15 rewrites it to a comment; older builds escape it as text. | Skipped when libxml differs. |
+
+The last two are differences in libxml itself, not in this plugin, so no golden can be
+correct everywhere. The fixture records the libxml build it was generated against and skips
+those 11 rows when the running build differs, naming both versions. Everything else asserts
+strictly on every machine. Skipping beats loosening the assertion: those rows exist to pin
+that behavior byte-exactly, and a comparison relaxed enough to pass on both builds would pin
+nothing.
+
+Worth stating plainly, because it is the argument for having built CI at all: the suite was
+verified from a clean clone locally before the first push, and that verification could not
+have caught any of this, because the clone shared the same libxml.
+
 ### Golden storage
 
 Goldens are stored as escaped or hex-encoded literals, never as raw UTF-8 in a PHP array, and the trailing newline that `saveHTML()` appends to every output is recorded explicitly. This is not theoretical fastidiousness: the draft of this spec recorded a golden as `... 🎉  x` with two spaces when the real output has U+0020 followed by U+00A0, lost to a copy/paste round trip. That is precisely the failure mode the fixture exists to prevent.
@@ -600,6 +622,10 @@ Attribution is unambiguous, measured at each stage:
 DOMDocument escapes the attribute correctly on its own. The decode step is what breaks it. Pre-escaped input is destroyed identically: `data-config="{&quot;a&quot;:1}"` comes back as `data-config="{"a":1}"`.
 
 This changes the candidate assessment. Candidate A was leading purely on being byte-identical to current across 65 fixtures, but "byte-identical to current" now demonstrably includes "corrupts JSON data attributes into invalid HTML". A does not fix F5. C does, and C also keeps Polish diacritics, straight and curly quotes, emoji including ZWJ sequences, and typographic characters as raw UTF-8, exactly as today.
+
+**Correction, 2026-07-31: F5 is libxml-version-dependent.** Everything above was measured on libxml 2.15.3, which normalizes attributes to double quotes and escapes inner double quotes as `&quot;`. That `&quot;` is what the blind decode un-escaped, breaking the attribute. Older libxml, including the build on Ubuntu and therefore CI, preserves the source single quotes and never emits `&quot;` there, so the corruption does not occur on those builds. The first CI run surfaced this: twelve fixture rows failed purely on attribute quote style.
+
+F5 is therefore real but narrower than written here, affecting only sites running libxml 2.15 or later. It was never the justification for the fix. F3, escaped markup becoming live markup, is version-independent and is the actual reason, verified end to end on a real site.
 
 Pinned by fixture group G7.
 
