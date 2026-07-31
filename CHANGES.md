@@ -15,6 +15,8 @@
 * Changed: [Developers] New `mai_css_cache_wait_ms` filter for how long a request waits for another to finish rebuilding the generated CSS.
 * Changed: [Performance] Scripts now use WordPress's own async loading strategy, which respects script dependencies, and several unused asset helpers were removed.
 * Changed: [Performance] Repaired internal caches for font weights, image aspect ratios, page header types, and image sizes so each value is calculated once per page load.
+* Fixed: [Security] Hardened content rendering so markup that was escaped in the editor stays escaped on the front end.
+* Fixed: JSON stored in `data-` attributes is no longer corrupted when a block is rendered.
 * Fixed: Content archive and single content settings are now sanitized when rendered, not only when saved, so values written outside the Customizer (by an import, a migration, or a filter) are covered too.
 * Fixed: Per-post and per-term hidden element settings are now applied to the correct entry on term archives.
 * Fixed: Mai Post Grids set to a random order are now random on every page load.
