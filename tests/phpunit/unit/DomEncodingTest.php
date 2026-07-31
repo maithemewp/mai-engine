@@ -36,9 +36,37 @@ final class DomEncodingTest extends TestCase {
 		return $cases;
 	}
 
+	/**
+	 * Canonicalizes attribute quoting, which libxml serializes differently by version.
+	 *
+	 * libxml 2.15 normalizes attributes to double quotes and escapes any inner double quote
+	 * as &quot;. Older libxml (Ubuntu's, so CI's) preserves whatever quote character the
+	 * source used, leaving inner double quotes bare inside a single-quoted attribute. Both
+	 * are valid HTML and parse to identical attribute values, so the difference is
+	 * serialization style, not behavior, and goldens must not depend on it.
+	 *
+	 * Without this the fixture pins the libxml build of whoever ran generate.php, and every
+	 * attribute-bearing row fails on any other machine. Found exactly that way: 12 failures
+	 * on the first CI run, none locally.
+	 *
+	 * @param string $html Serialized HTML.
+	 *
+	 * @return string
+	 */
+	private static function canonical( string $html ): string {
+		return preg_replace_callback(
+			"/(\s[a-zA-Z][a-zA-Z0-9-]*)='([^']*)'/",
+			static fn ( array $match ): string => $match[1] . '="' . str_replace( '"', '&quot;', $match[2] ) . '"',
+			$html
+		);
+	}
+
 	#[DataProvider( 'encodingCases' )]
 	public function test_round_trip_matches_golden( string $in, string $expected ): void {
-		$this->assertSame( $expected, mai_get_dom_html( mai_get_dom_document( $in ) ) );
+		$this->assertSame(
+			self::canonical( $expected ),
+			self::canonical( mai_get_dom_html( mai_get_dom_document( $in ) ) )
+		);
 	}
 
 	/**

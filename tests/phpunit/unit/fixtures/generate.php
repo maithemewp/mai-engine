@@ -76,6 +76,28 @@ function mai_test_escape( string $string ): string {
 	return $out;
 }
 
+/**
+ * Canonicalizes attribute quoting so goldens do not depend on the libxml build that
+ * generated them.
+ *
+ * libxml 2.15 normalizes attributes to double quotes and escapes inner double quotes as
+ * &quot;. Older libxml preserves the source quote character. Both parse identically, so this
+ * is serialization style rather than behavior, but without normalizing it here the goldens
+ * pin whoever ran this script and fail everywhere else. DomEncodingTest applies the same
+ * transform to both sides when comparing.
+ *
+ * @param string $html Serialized HTML.
+ *
+ * @return string
+ */
+function mai_test_canonical( string $html ): string {
+	return preg_replace_callback(
+		"/(\s[a-zA-Z][a-zA-Z0-9-]*)='([^']*)'/",
+		static fn ( array $match ): string => $match[1] . '="' . str_replace( '"', '&quot;', $match[2] ) . '"',
+		$html
+	);
+}
+
 $cases = require __DIR__ . '/inputs.php';
 
 $php  = "<?php\n";
@@ -88,7 +110,7 @@ $php .= " * security finding in docs/superpowers/specs/2026-07-30-wordpress-phpu
 $php .= " */\n\nreturn [\n";
 
 foreach ( $cases as $key => $in ) {
-	$out  = mai_get_dom_html( mai_get_dom_document( $in ) );
+	$out  = mai_test_canonical( mai_get_dom_html( mai_get_dom_document( $in ) ) );
 	$php .= sprintf(
 		"\t%s => [\n\t\t'in'  => \"%s\",\n\t\t'out' => \"%s\",\n\t],\n",
 		var_export( $key, true ),
