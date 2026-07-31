@@ -62,6 +62,56 @@ To have PHP Code Sniffer attempt to automatically fix any warnings run the follo
 composer phpcbf
 ```
 
+### Testing
+
+Two suites. The `unit` suite runs with no WordPress and no database, using brain/monkey to
+mock WordPress functions. The `integration` suite boots real WordPress via wp-phpunit and
+needs MySQL.
+
+Test dependencies live in their own Composer project at `tests/composer.json` and install to
+`tests/vendor/`. That is deliberate: the plugin deploys as a raw git tree with no build step,
+so the committed `vendor/` autoloader must never contain dev entries. Keeping the test
+dependencies out of the root project means running the suites cannot regenerate it.
+
+#### Setup
+
+```shell
+composer test-setup                                   # installs tests/vendor, one time
+mysql -u root -e "CREATE DATABASE mai_engine_tests"   # integration suite only, one time
+```
+
+`npm install` and `composer install` do **not** install the test dependencies. If
+`composer test-unit` reports `tests/vendor/bin/phpunit: No such file or directory`, run
+`composer test-setup`.
+
+#### Running
+
+```shell
+composer test-unit          # no WordPress, no database, sub-second
+composer test-integration   # boots WordPress, needs MySQL
+composer test               # both
+```
+
+Database connection is read from `WP_TESTS_DB_NAME`, `WP_TESTS_DB_USER`, `WP_TESTS_DB_PASS`
+and `WP_TESTS_DB_HOST`, defaulting to `mai_engine_tests` / `root` / empty / `127.0.0.1`.
+
+**Warning:** the WordPress test bootstrap drops the WordPress core tables carrying the
+configured `$table_prefix` in the configured database, on every run. It does not drop every
+table, but pointing it at a real site's database with a matching prefix will destroy that
+site's content. Keep the dedicated database name.
+
+#### Notes
+
+- `wp-phpunit/wp-phpunit` and `roots/wordpress-no-content` in `tests/composer.json` are meant
+  to track together. Bump both, and only via `composer update -d tests`.
+- The integration suite boots WordPress but does not activate the plugin, because
+  `lib/init.php` expects Genesis as the parent theme. Tests load the specific `lib/` files
+  they exercise via `tests/phpunit/integration/plugin-loader.php`.
+- Integration tests extend `MaiIntegrationTestCase`, not `WP_UnitTestCase` directly. The base
+  class works around `WP_UnitTestCase` calling PHPUnit 9 APIs that PHPUnit 10 removed.
+- Encoding fixture goldens are generated, not hand-written. Regenerate with
+  `php tests/phpunit/unit/fixtures/generate.php` and review every changed golden by hand.
+
 ### NPM scripts
 
 Mai Engine utilizes Gulp and Sass to automate tedious tasks, such as automatically generating the many stylesheets required by the child themes.
