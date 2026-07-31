@@ -12,16 +12,19 @@
     <testsuites>
         <testsuite name="unit">
             <directory suffix="Test.php">./tests/phpunit/unit/</directory>
-            <exclude>./tests/phpunit/unit/*/*/fixtures/</exclude>
+            <exclude>./tests/phpunit/unit/fixtures/</exclude>
         </testsuite>
     </testsuites>
 
+    <!--
+        Scoped to first-party code. A bare `.` also covers vendor/, packages/kirki/ and now
+        tests/vendor/ (WordPress core plus PHPUnit), which matters once deprecation
+        attribution or coverage is turned on: everything in <source> is treated as our code.
+    -->
     <source>
         <include>
-            <directory suffix=".php">.</directory>
+            <directory suffix=".php">./lib/</directory>
+            <directory suffix=".php">./config/</directory>
         </include>
-        <exclude>
-            <file>./tests/TestCase.php</file>
-        </exclude>
     </source>
 </phpunit>
