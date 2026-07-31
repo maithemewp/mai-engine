@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    WordPress-loaded suite. Requires MySQL; see README.md.
+
+    beStrictAboutOutputDuringTests is deliberately absent: the WordPress bootstrap echoes
+    status lines before any test runs.
+-->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         bootstrap="bootstrap.php"
+         cacheDirectory="../../../.phpunit.cache/integration"
+         backupGlobals="false"
+         colors="true"
+         beStrictAboutCoverageMetadata="true"
+         failOnRisky="true"
+         failOnWarning="true">
+
+    <testsuites>
+        <testsuite name="integration">
+            <directory suffix="Test.php">./</directory>
+        </testsuite>
+    </testsuites>
+
+    <source>
+        <include>
+            <directory suffix=".php">../../../lib/</directory>
+        </include>
+    </source>
+</phpunit>
