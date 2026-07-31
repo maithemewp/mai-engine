@@ -6,6 +6,7 @@
 .parcel-cache
 .vscode
 *.lock
+!tests/composer.lock
 *.zip
 LICENSE
 README
@@ -28,4 +29,11 @@ vendor/maithemewp/deployable-guard
 !vendor/wpengine
 !vendor/yahnis-elsts
 .phpunit.result.cache
+.phpunit.cache/
 .githooks/
+
+# Test-only composer project. NOT covered by `vendor/*` above: that pattern is anchored to
+# this file's directory and matches the root vendor/ only. Without this line `npm run beta`
+# (git add -A) would commit ~98MB of WordPress core and PHPUnit to develop and beta, which
+# deploy as raw git trees to live sites.
+tests/vendor/

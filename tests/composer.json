@@ -1,0 +1,24 @@
+{
+  "name": "maithemewp/mai-engine-tests",
+  "description": "Test-only dependencies for mai-engine. Installed into tests/vendor/ so the plugin's committed vendor/ autoloader is never regenerated with dev entries. See README.md for setup; wp-phpunit and roots/wordpress-no-content are meant to track together and should only move via `composer update -d tests`.",
+  "license": "gpl-2.0-or-later",
+  "require": {
+    "php": "^8.1",
+    "phpunit/phpunit": "^10.5",
+    "brain/monkey": "^2.6",
+    "wp-phpunit/wp-phpunit": "^7.0",
+    "yoast/phpunit-polyfills": "^2.0",
+    "roots/wordpress-no-content": "^7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "BizBudding\\MaiEngine\\Tests\\": "",
+      "BizBudding\\MaiEngine\\Tests\\Unit\\": "phpunit/unit/",
+      "BizBudding\\MaiEngine\\Tests\\Integration\\": "phpunit/integration/"
+    }
+  },
+  "minimum-stability": "stable",
+  "config": {
+    "sort-packages": true
+  }
+}
