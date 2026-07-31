@@ -8,6 +8,7 @@
  */
 
 return [
+	'_meta' => [ 'libxml' => '2.15.3' ],
 	'g1_polish_diacritics' => [
 		'in'  => "<p>Za\u{17C}\u{F3}\u{142}\u{107} g\u{119}\u{15B}l\u{105} ja\u{17A}\u{144}</p>",
 		'out' => "<p>Za\u{17C}\u{F3}\u{142}\u{107} g\u{119}\u{15B}l\u{105} ja\u{17A}\u{144}</p>\n",

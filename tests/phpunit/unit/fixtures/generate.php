@@ -109,6 +109,11 @@ $php .= " * defects included. Groups g3 and g7 pin dangerous behavior deliberate
 $php .= " * security finding in docs/superpowers/specs/2026-07-30-wordpress-phpunit-suite-design.md.\n";
 $php .= " */\n\nreturn [\n";
 
+// Record the libxml build. Some rows, notably the g2 noncharacter group, serialize
+// differently by version: 2.15 preserves noncharacters, older builds drop them entirely.
+// DomEncodingTest skips those rows when the running libxml differs rather than failing.
+$php .= sprintf( "\t'_meta' => [ 'libxml' => '%s' ],\n", LIBXML_DOTTED_VERSION );
+
 foreach ( $cases as $key => $in ) {
 	$out  = mai_test_canonical( mai_get_dom_html( mai_get_dom_document( $in ) ) );
 	$php .= sprintf(

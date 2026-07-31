@@ -24,16 +24,40 @@ require_once dirname( __DIR__, 3 ) . '/lib/functions/utilities.php';
 final class DomEncodingTest extends TestCase {
 
 	/**
+	 * Rows whose serialization genuinely differs by libxml build.
+	 *
+	 * libxml 2.15 preserves Unicode noncharacters; older builds drop them from the document
+	 * entirely. That is a real behavior difference in libxml, not in this plugin, so pinning
+	 * it would just fail on every machine that isn't the one that ran generate.php. These
+	 * rows are skipped when the running libxml differs from the recorded one, with the two
+	 * versions named, rather than being quietly dropped or silently passed.
+	 */
+	private const LIBXML_SENSITIVE_PREFIX = 'g2_';
+
+	/**
 	 * @return array<string, array{0: string, 1: string}>
 	 */
 	public static function encodingCases(): array {
 		$cases = [];
 
 		foreach ( require __DIR__ . '/fixtures/encoding.php' as $key => $case ) {
+			if ( '_meta' === $key ) {
+				continue;
+			}
+
 			$cases[ $key ] = [ $case['in'], $case['out'] ];
 		}
 
 		return $cases;
+	}
+
+	/**
+	 * The libxml build the goldens were generated against.
+	 */
+	private static function goldenLibxml(): string {
+		$fixture = require __DIR__ . '/fixtures/encoding.php';
+
+		return $fixture['_meta']['libxml'] ?? 'unknown';
 	}
 
 	/**
@@ -63,6 +87,15 @@ final class DomEncodingTest extends TestCase {
 
 	#[DataProvider( 'encodingCases' )]
 	public function test_round_trip_matches_golden( string $in, string $expected ): void {
+		if ( str_starts_with( $this->dataName(), self::LIBXML_SENSITIVE_PREFIX )
+			&& LIBXML_DOTTED_VERSION !== self::goldenLibxml() ) {
+			$this->markTestSkipped( sprintf(
+				'Unicode noncharacter handling differs by libxml build; goldens recorded on %s, running %s.',
+				self::goldenLibxml(),
+				LIBXML_DOTTED_VERSION
+			) );
+		}
+
 		$this->assertSame(
 			self::canonical( $expected ),
 			self::canonical( mai_get_dom_html( mai_get_dom_document( $in ) ) )
