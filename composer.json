@@ -30,22 +30,13 @@
   },
   "require-dev": {
     "php": "^8.1",
-    "brain/monkey": "^2.2",
     "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
     "friendsofphp/php-cs-fixer": "^3.0",
     "phpcompatibility/phpcompatibility-wp": "^2.1",
-    "phpunit/phpunit": "^10.5",
     "squizlabs/php_codesniffer": "3.*",
     "wp-coding-standards/wpcs": "^3.0",
-    "wp-phpunit/wp-phpunit": "^5.1 || ^6.0",
     "sirbrillig/phpcs-variable-analysis": "^2.10",
     "bizbudding/deployable-guard": "^1"
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "BizBudding\\MaiEngine\\Tests\\Unit\\": "tests/phpunit/unit/",
-      "BizBudding\\MaiEngine\\Tests\\Integration\\": "tests/php/integration/"
-    }
   },
   "config": {
     "preferred-install": {
@@ -72,8 +63,13 @@
     "phpcs": "vendor/bin/phpcs --standard=WordPress --extensions=php -p -s lib config",
     "phpcbf": "vendor/bin/phpcbf --standard=WordPress --extensions=php -p lib config",
     "fixer": "vendor/bin/php-cs-fixer fix lib/ && vendor/bin/php-cs-fixer fix config/",
-    "test-unit": "composer dump && php -d auto_prepend_file=tests/phpunit/define-abspath.php vendor/bin/phpunit --testsuite unit --color=always",
-    "test-integration": "composer dump && vendor/bin/phpunit --testsuite integration --configuration tests/phpunit/integration/phpunit.xml.dist --color=always",
+    "test-setup": "composer install -d tests",
+    "test-unit": "tests/vendor/bin/phpunit --testsuite unit --color=always",
+    "test-integration": "tests/vendor/bin/phpunit --configuration tests/phpunit/integration/phpunit.xml.dist --color=always",
+    "test": [
+      "@test-unit",
+      "@test-integration"
+    ],
     "install-git-hooks": [
       "sh -c 'test -f vendor/bin/deployable-guard && php vendor/bin/deployable-guard install-hook || true'"
     ],

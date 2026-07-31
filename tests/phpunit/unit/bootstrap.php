@@ -2,6 +2,12 @@
 // tests/phpunit/unit/bootstrap.php
 // Unit suite: no WordPress, no DB. brain/monkey mocks WP functions.
 
+// ABSPATH must be defined BEFORE the root autoloader is required below. That autoloader
+// eagerly loads vendored WordPress drop-ins guarded by `defined( 'ABSPATH' ) || exit`
+// (mai-cache's init.php, via autoload.files). Reorder these two lines and the process exits
+// with status 0 and no output at all, which reads as "no tests ran" rather than as an error.
+// tests/vendor/autoload.php has its own files-autoloader, but nothing in it is
+// ABSPATH-guarded, which is why the phpunit bin proxy can load safely.
 defined( 'ABSPATH' ) || define( 'ABSPATH', sys_get_temp_dir() . '/' );
 
 require_once dirname( __DIR__, 3 ) . '/vendor/autoload.php';
