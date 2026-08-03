@@ -17,11 +17,15 @@ add_filter( 'wp_theme_json_data_default', 'mai_remove_default_theme_json_presets
  * Removes WordPress core's default theme.json presets.
  *
  * Mai provides its own color palette and font sizes via `add_theme_support()`, and
- * does not use core's default gradients, duotone, spacing sizes, shadows, or aspect
- * ratios. Emptying those default presets removes a large block of unused
- * `--wp--preset--*` custom properties from the global styles output on every page
- * (and in the editor). Mai's own colors are applied via `--color-*` and are
- * unaffected.
+ * does not use core's default gradients, duotone, spacing sizes, or shadows.
+ * Emptying those default presets removes a large block of unused `--wp--preset--*`
+ * custom properties from the global styles output on every page (and in the
+ * editor). Mai's own colors are applied via `--color-*` and are unaffected.
+ *
+ * `dimensions.aspectRatios` is deliberately NOT removed. That setting is also the
+ * data source for the Aspect Ratio control on the Image, Cover, and Post Featured
+ * Image blocks, so emptying it leaves editors with only "Original". The seven
+ * `--wp--preset--aspect-ratio--*` properties it emits are worth keeping the UI.
  *
  * @since TBD
  *
@@ -37,7 +41,6 @@ function mai_remove_default_theme_json_presets( $theme_json ) {
 		'typography' => [ 'fontSizes' ],
 		'spacing'    => [ 'spacingSizes' ],
 		'shadow'     => [ 'presets' ],
-		'dimensions' => [ 'aspectRatios' ],
 	];
 
 	foreach ( $remove as $group => $keys ) {
