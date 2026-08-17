@@ -373,7 +373,29 @@ function mai_setup_wizard_remove_image_sizes() {
 	});
 }
 
-add_filter( 'wp_import_post_data_processed', 'mai_setup_wizard_slash_data', 99, 1 );
+add_action( 'mai_setup_wizard_before_import', 'mai_setup_wizard_add_slash_data' );
+/**
+ * Slashes post data during the setup wizard import only.
+ *
+ * `wp_import_post_data_processed` is fired by more than one importer, and they disagree about
+ * who slashes. The wizard's vendored importer, proteusthemes/wp-content-importer-v2, fires the
+ * filter and then hands the data straight to wp_insert_post() with no wp_slash() of its own,
+ * so without this the single wp_unslash() inside wp_insert_post() eats block attribute JSON.
+ * The official WordPress Importer plugin fires the same filter and then applies its own
+ * wp_slash(), so registering this for the whole admin double-slashed every import run through
+ * that plugin: `{"level":3}` landed as `{\"level\":3}` and apostrophes as `\'`.
+ *
+ * Scoping it to the wizard's own import run keeps both importers correct.
+ *
+ * @since 2.13.0
+ * @since 2.41.0 Scoped to the wizard import instead of the whole admin.
+ *
+ * @return void
+ */
+function mai_setup_wizard_add_slash_data() {
+	add_filter( 'wp_import_post_data_processed', 'mai_setup_wizard_slash_data', 99, 1 );
+}
+
 /**
  * Adds slashes to post (block) content prior to creating.
  * Blocks with HTML in their attributes were breaking.

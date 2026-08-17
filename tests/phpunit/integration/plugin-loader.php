@@ -22,3 +22,7 @@ require_once $plugin_root . '/vendor/autoload.php';
 
 require_once $plugin_root . '/lib/functions/helpers.php';
 require_once $plugin_root . '/lib/blocks/general.php';
+
+// Only registers hooks and declares functions at load. Its init callback bails on
+// ! is_admin(), so the Genesis-dependent service providers are never constructed here.
+require_once $plugin_root . '/lib/admin/setup-wizard.php';

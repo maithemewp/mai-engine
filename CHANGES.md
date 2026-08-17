@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2.41.0 (TBD)
+* Fixed: Importing an XML file with the WordPress Importer plugin no longer adds stray backslashes to post content, which was stripping block settings and putting a backslash before apostrophes.
 * Fixed: Restored the aspect ratio controls on image blocks, unintentionally removed in 2.40.0.
 * Changed: Update ACF Pro to 6.8.6.
 * Changed: Update Plugin Update Checker to 5.7.
