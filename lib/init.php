@@ -810,53 +810,79 @@ function mai_get_full_config() {
 	$path   = mai_get_dir() . 'config/' . $theme . '.php';
 
 	if ( is_readable( $path ) ) {
-		$new    = require $path;
-		$config = array_replace_recursive( $config, $new );
-		if ( isset( $new['settings']['content-archives'] ) ) {
-			foreach ( $new['settings']['content-archives'] as $key => $settings ) {
-				if ( ! ( isset( $new['settings']['content-archives'][ $key ]['show'] ) && isset( $config['settings']['content-archives'][ $key ]['show'] ) ) ) {
-					continue;
-				}
-				$config['settings']['content-archives'][ $key ]['show'] = $new['settings']['content-archives'][ $key ]['show'];
-			}
-		}
-		if ( isset( $new['settings']['single-content'] ) ) {
-			foreach ( $new['settings']['single-content'] as $key => $settings ) {
-				if ( ! ( isset( $new['settings']['single-content'][ $key ]['show'] ) && isset( $config['settings']['single-content'][ $key ]['show'] ) ) ) {
-					continue;
-				}
-				$config['settings']['single-content'][ $key ]['show'] = $new['settings']['single-content'][ $key ]['show'];
-			}
-		}
+		$config = mai_merge_config( $config, require $path );
 	}
 
 	// Allow users to override from within actual child theme.
 	$child = get_stylesheet_directory() . '/config.php';
 
 	if ( is_readable( $child ) ) {
-		$new    = require $child;
-		$config = array_replace_recursive( $config, $new );
-		if ( isset( $new['settings']['content-archives'] ) ) {
-			foreach ( $new['settings']['content-archives'] as $key => $settings ) {
-				if ( ! ( isset( $new['settings']['content-archives'][ $key ]['show'] ) && isset( $config['settings']['content-archives'][ $key ]['show'] ) ) ) {
-					continue;
-				}
-				$config['settings']['content-archives'][ $key ]['show'] = $new['settings']['content-archives'][ $key ]['show'];
-			}
-		}
-		if ( isset( $new['settings']['single-content'] ) ) {
-			foreach ( $new['settings']['single-content'] as $key => $settings ) {
-				if ( ! ( isset( $new['settings']['single-content'][ $key ]['show'] ) && isset( $config['settings']['single-content'][ $key ]['show'] ) ) ) {
-					continue;
-				}
-				$config['settings']['single-content'][ $key ]['show'] = $new['settings']['single-content'][ $key ]['show'];
-			}
-		}
+		$config = mai_merge_config( $config, require $child );
 	}
 
 	$config = apply_filters( 'mai_config', $config );
 
 	return $config;
+}
+
+/**
+ * Merges a config over another one.
+ *
+ * Plain lists (arrays with numeric keys) mean two different things in a config, so
+ * they merge two different ways.
+ *
+ * Under an `add` or `remove` key they are things to accumulate, so a child theme
+ * listing one more theme support gets the defaults plus that one. Anywhere else a
+ * list is a complete declaration, like which post types have archive settings, so a
+ * child theme's list replaces the default outright.
+ *
+ * This is why `array_replace_recursive()` is not used. It merges lists by position,
+ * which silently overwrote whatever the default happened to have at index 0, 1 and
+ * so on, rather than adding to it or replacing it.
+ *
+ * @since 2.41.0
+ *
+ * @param array  $base     Config to merge into.
+ * @param array  $override Config to merge over the top.
+ * @param string $parent   Key the arrays sit under, used to spot `add` and `remove`.
+ *
+ * @return array
+ */
+function mai_merge_config( array $base, array $override, $parent = '' ) {
+	$list = [];
+
+	foreach ( $override as $key => $value ) {
+		// Collect the positional entries. An array can hold both, so this is not an early return.
+		if ( is_int( $key ) ) {
+			$list[] = $value;
+
+			continue;
+		}
+
+		if ( is_array( $value ) && isset( $base[ $key ] ) && is_array( $base[ $key ] ) ) {
+			$base[ $key ] = mai_merge_config( $base[ $key ], $value, $key );
+
+			continue;
+		}
+
+		$base[ $key ] = $value;
+	}
+
+	if ( ! $list ) {
+		return $base;
+	}
+
+	// Under add/remove the entries accumulate, so append and leave the named entries alone.
+	if ( in_array( $parent, [ 'add', 'remove' ], true ) ) {
+		foreach ( $list as $value ) {
+			$base[] = $value;
+		}
+
+		return $base;
+	}
+
+	// Anywhere else the override declares the whole list, so the base's positional entries go.
+	return array_merge( $list, array_filter( $base, 'is_string', ARRAY_FILTER_USE_KEY ) );
 }
 
 /**

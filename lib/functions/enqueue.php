@@ -284,18 +284,85 @@ function mai_deregister_asset( $handle ) {
 	$wp_styles->remove( $handle );
 }
 
-add_action( 'wp_enqueue_scripts', 'mai_remove_block_library_theme_css' );
-add_action( 'admin_enqueue_scripts', 'mai_remove_block_library_theme_css', 9 );
+add_action( 'wp_head', 'mai_reorder_core_block_styles', 7 );
 /**
- * Remove block library theme CSS.
+ * Moves core block stylesheets back in front of Mai's, when they land behind them.
  *
- * @since 2.4.0
+ * Since WP 6.9 core block styles load on demand for classic themes, and where a
+ * stylesheet lands depends on when its block first renders. A block rendered while
+ * the page body renders has its stylesheet hoisted into the head ahead of Mai's,
+ * which is the order Mai's block CSS is written against. A block rendered during
+ * `wp_head` instead, by an SEO plugin building an excerpt for example, is not late
+ * enough to be hoisted, so it prints at the end of the head after Mai and after the
+ * child theme's style.css, and core's rules win instead of Mai's.
+ *
+ * This restores the intended order without loading anything extra: core, then Mai,
+ * then style.css. Everything else keeps its position, so third party stylesheets
+ * still override Mai the way they do today.
+ *
+ * The handles come from the block registry, so nothing here needs updating when core
+ * adds or renames a block. Sites loading the single bundled block stylesheet have no
+ * per-block handles registered, so this finds nothing and does nothing.
+ *
+ * Priority 7 runs after anything that renders content in the head, and before
+ * `wp_print_styles()` at 8.
+ *
+ * @since 2.41.0
  *
  * @return void
  */
-function mai_remove_block_library_theme_css() {
-	// mai_deregister_asset( 'wp-block-library' );
-	mai_deregister_asset( 'wp-block-library-theme' );
+function mai_reorder_core_block_styles() {
+	$styles = wp_styles();
+	$queue  = $styles->queue;
+	$prefix = mai_get_handle() . '-';
+	$first  = null;
+
+	foreach ( $queue as $index => $handle ) {
+		if ( str_starts_with( $handle, $prefix ) ) {
+			$first = $index;
+			break;
+		}
+	}
+
+	if ( is_null( $first ) ) {
+		return;
+	}
+
+	$block_handles = [];
+
+	foreach ( WP_Block_Type_Registry::get_instance()->get_all_registered() as $block_type ) {
+		if ( ! str_starts_with( $block_type->name, 'core/' ) ) {
+			continue;
+		}
+
+		foreach ( $block_type->style_handles as $style_handle ) {
+			$block_handles[ $style_handle ] = true;
+		}
+	}
+
+	$behind = [];
+
+	foreach ( array_slice( $queue, $first ) as $handle ) {
+		if ( isset( $block_handles[ $handle ] ) ) {
+			$behind[] = $handle;
+		}
+	}
+
+	if ( ! $behind ) {
+		return;
+	}
+
+	$anchor    = $queue[ $first ];
+	$remaining = array_values( array_diff( $queue, $behind ) );
+	$position  = array_search( $anchor, $remaining, true );
+
+	if ( false === $position ) {
+		return;
+	}
+
+	array_splice( $remaining, $position, 0, $behind );
+
+	$styles->queue = $remaining;
 }
 
 add_action( 'wp_enqueue_scripts', 'mai_admin_bar_inline_styles' );

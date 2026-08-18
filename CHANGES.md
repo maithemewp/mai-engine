@@ -1,9 +1,7 @@
 # Changelog
 
 ## 2.41.0 (TBD)
-* Fixed: Importing an XML file with the WordPress Importer plugin no longer adds stray backslashes to post content, which was stripping block settings and putting a backslash before apostrophes.
-* Fixed: Restored the aspect ratio controls on image blocks, unintentionally removed in 2.40.0.
-* Changed: Update ACF Pro to 6.8.6.
+* Changed: Update ACF Pro to 6.8.7.
 * Changed: Update Plugin Update Checker to 5.7.
 * Changed: Removed unused image code that was disabled long ago.
 * Changed: [Performance] Term Grids now cache their featured images in a single pass.
@@ -17,6 +15,14 @@
 * Changed: [Developers] New `mai_css_cache_wait_ms` filter for how long a request waits for another to finish rebuilding the generated CSS.
 * Changed: [Performance] Scripts now use WordPress's own async loading strategy, which respects script dependencies, and several unused asset helpers were removed.
 * Changed: [Performance] Repaired internal caches for font weights, image aspect ratios, page header types, and image sizes so each value is calculated once per page load.
+* Changed: [Developers] Mai no longer removes WordPress's opinionated block styles, so a site that wants them can add `wp-block-styles` to `theme-support` in its config.
+* Changed: [Developers] Config files merge more predictably. A list under an `add` or `remove` key is added to the defaults, and any other list replaces the default outright. Lists used to merge by position, which quietly overwrote whichever default happened to sit in the same spot.
+* Changed: [Developers] Cleaned up duplicate and empty entries in the default config.
+* Fixed: A Mai theme that adds its own theme support, a sticky or transparent header for example, silently removed one of Mai's defaults instead of adding to it. Thirteen themes were affected.
+* Fixed: WordPress block styles loaded out of order on some pages and overrode Mai's, most visibly as table borders that were dark on some pages and light on others.
+* Fixed: WordPress's opinionated block styles are off by default again. They were always meant to be, but WordPress 6.9 changed how they load and they came back on.
+* Fixed: Importing an XML file with the WordPress Importer plugin no longer adds stray backslashes to post content, which was stripping block settings and putting a backslash before apostrophes.
+* Fixed: Restored the aspect ratio controls on image blocks, unintentionally removed in 2.40.0.
 * Fixed: [Security] Improved security when rendering content.
 * Fixed: JSON stored in `data-` attributes is no longer corrupted when a block is rendered.
 * Fixed: Content archive and single content settings are now sanitized when rendered, not only when saved, so values written outside the Customizer (by an import, a migration, or a filter) are covered too.

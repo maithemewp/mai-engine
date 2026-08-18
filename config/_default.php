@@ -314,7 +314,6 @@ return [
 			},
 		],
 		'genesis-enews-extended' => [
-			'location'  => 'public',
 			'location'  => [ 'public', 'editor' ],
 			'condition' => function() {
 				return class_exists( 'BJGK_Genesis_ENews_Extended' );
@@ -372,11 +371,6 @@ return [
 				return class_exists( 'WooCommerce' ) && is_account_page();
 			},
 		],
-		'wp-block-library-theme' => [
-			'location' => 'editor',
-			'handle'   => 'wp-block-library-theme',
-			'src'      => '',
-		],
 		'child-theme' => [
 			'location'  => [ 'public', 'login' ],
 			'handle'    => genesis_get_theme_handle(),
@@ -415,14 +409,12 @@ return [
 
 			// Engine.
 			'align-wide',
-			'automatic-feed-links',
 			'editor-styles',
 			'genesis-accessibility'    => [
 				'headings',
 				'search-form',
 				'skip-links',
 			],
-			'',
 			'genesis-custom-logo'      => [
 				'height'      => 60,
 				'width'       => 120,
@@ -453,7 +445,6 @@ return [
 				'gallery',
 				'search-form',
 			],
-			'post-thumbnails',
 			'responsive-embeds',
 
 			// Plugins.
@@ -462,7 +453,6 @@ return [
 			'wc-product-gallery-zoom',
 			'wc-product-gallery-lightbox',
 			'wc-product-gallery-slider',
-			'wp-block-styles',
 		],
 		'remove' => [
 			// 'core-block-patterns',
