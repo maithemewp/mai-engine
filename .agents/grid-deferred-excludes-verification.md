@@ -5,7 +5,7 @@ Written 2026-08-21 against branch `feat/grid-deferred-excludes`. This is the rec
 ## Setup
 
 - Site: `~/Herd/totalprosports`, served at `https://totalprosports.test`. Its `wp-content/plugins/mai-engine` is a symlink to this repo, so the branch under test was live.
-- Mai Load More 0.2.x was symlinked in from `~/Plugins/mai-load-more` and activated for the run.
+- Mai Load More 0.4.3 was symlinked in from `~/Plugins/mai-load-more` and activated for the run.
 - Category: `NFL`, `term_id` 6, 52,983 published posts at the time. The block resolves it to 33 `term_taxonomy_id` values because child categories are included.
 - Test page: one `page` holding two `acf/mai-post-grid` blocks. Same query on both (category NFL, 6 posts, date DESC, excludes `exclude_displayed` + `exclude_current`). The second block carried `className: "mai-grid-load-more"` as a top-level block attribute. Page ID 2593053, deleted afterwards.
 - SQL was captured with a temporary mu-plugin on `posts_request`, filtered to queries carrying the `mai_cache` query var. The object cache was flushed before each capture so the grid result cache could not serve a hit and skip the SQL.
