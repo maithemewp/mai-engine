@@ -69,6 +69,19 @@ class Mai_Grid {
 	public static $existing_term_ids = [];
 
 	/**
+	 * Post IDs this render contributed through the exclude_displayed and exclude_current
+	 * settings, as opposed to the author-set Exclude Entries field. These change with every
+	 * page view, so they shatter the result cache key when they reach the SQL. Recorded raw
+	 * here, exactly as they were added to post__not_in; get_query() normalizes them and
+	 * decides whether to keep them out of the query and apply them in PHP instead.
+	 *
+	 * @since 2.41.0
+	 *
+	 * @var array
+	 */
+	protected $deferred_excludes = [];
+
+	/**
 	 * Mai_Grid constructor.
 	 *
 	 * @since 0.1.0
@@ -380,6 +393,10 @@ class Mai_Grid {
 	 * @return array
 	 */
 	public function get_post_query_args() {
+		// get_post_query_args() is public and may be called more than once on one instance.
+		// Start clean so a second call cannot accumulate ids from the first.
+		$this->deferred_excludes = [];
+
 		$post_status  = is_user_logged_in() && current_user_can( 'edit_posts' ) ? [ 'publish', 'private' ] : 'publish';
 		$per_page     = ( 0 === $this->args['posts_per_page'] ) ? -1 : $this->args['posts_per_page'];
 		$per_page     = ( 'id' === $this->args['query_by'] ) ? count( (array) $this->args['post__in'] ) : $per_page;
@@ -605,6 +622,8 @@ class Mai_Grid {
 				} else {
 					$query_args['post__not_in'] = $post__not_ins;
 				}
+
+				$this->deferred_excludes = array_merge( $this->deferred_excludes, $post__not_ins );
 			}
 
 			// Exclude current.
@@ -614,6 +633,8 @@ class Mai_Grid {
 				} else {
 					$query_args['post__not_in'] = [ get_the_ID() ];
 				}
+
+				$this->deferred_excludes[] = get_the_ID();
 			}
 		}
 
