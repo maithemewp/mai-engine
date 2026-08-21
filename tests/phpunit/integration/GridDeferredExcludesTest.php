@@ -119,6 +119,7 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 		$this->assertSame( [], $deferred->posts );
 		$this->assertSame( 0, $deferred->post_count );
 		$this->assertFalse( $deferred->have_posts(), 'the no_results message depends on this' );
+		$this->assertNull( $deferred->post );
 	}
 
 	// ---- The restore ----
@@ -133,6 +134,9 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 		$this->assertSame( 3, $query->query_vars['posts_per_page'], 'padded page size must not leak' );
 		$this->assertContains( $current, $query->query_vars['post__not_in'], 'excluded ids must still be described' );
 		$this->assertSame( 3, $query->query['posts_per_page'], 'the raw args copy must be restored too' );
+		$this->assertContains( $current, $query->query['post__not_in'], 'the raw args copy must describe the exclusion too' );
+		$this->assertArrayNotHasKey( 'mai_grid_tiebreak', $query->query_vars, 'the tiebreak marker must not leak to downstream consumers' );
+		$this->assertArrayNotHasKey( 'mai_grid_tiebreak', $query->query, 'the tiebreak marker must not leak into the raw args copy' );
 	}
 
 	// ---- Guards ----
@@ -228,5 +232,73 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 		$this->go_to( get_permalink( $this->post_ids[0] ) );
 
 		$this->assertStringNotContainsString( '.ID DESC', $this->undeferred( $this->grid_args() )->request );
+	}
+
+	/**
+	 * The remove_filter after the WP_Query constructor must actually run, not just be dead code.
+	 *
+	 * Checking a subsequent plain WP_Query's request would not catch a broken remove_filter:
+	 * add_deferred_orderby_tiebreaker() itself no-ops unless query_vars['mai_grid_tiebreak'] is
+	 * set, which a plain query never sets. So this checks filter registration directly.
+	 */
+	public function test_tiebreaker_filter_does_not_survive_the_grid_that_added_it(): void {
+		$this->go_to( get_permalink( $this->post_ids[0] ) );
+
+		$grid = new Mai_Grid( $this->grid_args() );
+		$grid->get_query();
+
+		$this->assertFalse(
+			has_filter( 'posts_orderby', [ $grid, 'add_deferred_orderby_tiebreaker' ] ),
+			'the tiebreaker filter must not survive the grid that added it'
+		);
+	}
+
+	// ---- The cache key ----
+
+	/**
+	 * Captures the key exactly as Mai_Query_Cache::pre_query() computes it.
+	 *
+	 * This must run DURING the query. get_query() restores query_vars once the constructor
+	 * returns, so reading them afterwards shows the original request, complete with the
+	 * excluded id, and every key would look shattered. posts_pre_query fires with
+	 * $query->request already built, and the cache's own callback sits at priority 10.
+	 */
+	private function key_for( int $current ): string {
+		$this->go_to( get_permalink( $current ) );
+
+		$key     = '';
+		$capture = static function ( $posts, $query ) use ( &$key ) {
+			$key = ( new Mai_Query_Cache() )->cache_key( $query->query_vars, (string) $query->request );
+
+			return $posts;
+		};
+
+		add_filter( 'posts_pre_query', $capture, 9, 2 );
+		( new Mai_Grid( $this->grid_args() ) )->get_query();
+		remove_filter( 'posts_pre_query', $capture, 9 );
+
+		$this->assertNotSame( '', $key, 'the capture filter did not fire' );
+
+		return $key;
+	}
+
+	/** The reason the whole change exists. */
+	public function test_two_posts_in_the_same_category_share_a_cache_key(): void {
+		$this->assertSame(
+			$this->key_for( $this->post_ids[0] ),
+			$this->key_for( $this->post_ids[5] ),
+			'the excluded id must not reach the key'
+		);
+	}
+
+	public function test_an_undeferred_grid_still_shatters(): void {
+		add_filter( 'mai_post_grid_defer_excludes', '__return_false' );
+
+		$a = $this->key_for( $this->post_ids[0] );
+		$b = $this->key_for( $this->post_ids[5] );
+
+		remove_filter( 'mai_post_grid_defer_excludes', '__return_false' );
+
+		$this->assertNotSame( $a, $b, 'this is the behavior being fixed' );
 	}
 }
