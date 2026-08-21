@@ -100,7 +100,8 @@ function mai_get_breakpoint_columns( $args ) {
  * @since 2.21.0
  *
  * @param array $atts   The markup atts.
- * @param array $args   The columns args data.
+ * @param array $args   The columns args data. An optional `fit_basis` key sets the
+ *                      flex-basis used when columns are set to Fit.
  * @param bool  $nested Whether the columns are built via nested ACF blocks.
  *
  * @return string
@@ -115,6 +116,21 @@ function mai_get_columns_atts( $atts, $args, $nested = false ) {
 	// Get columns arrangement. Reverse order so it's mobile first.
 	$columns = array_reverse( mai_get_breakpoint_columns( $args ) );
 
+	// 0 is Fit, the same convention mai_columns_get_arrangement() uses. Without this
+	// the 0 reaches mai_columns_get_columns() as a number and builds `--columns: 1 / 0`,
+	// whose division by zero invalidates the flex-basis calc and drops every column to
+	// no width. Both a Fit setting and a missing value sanitize to 0, so this is the
+	// only place either can be caught.
+	$columns = array_map( fn( $value ) => 0 === $value ? 'auto' : $value, $columns );
+
+	// A Fit column has no width of its own, so its content decides. That is right for text
+	// and wrong for an image: WordPress adds sizes="auto" to lazy images, which puts them
+	// under size containment, and core's own rule then reports them as 3000px wide, so the
+	// column fills the row. An image that has not loaded yet has the opposite problem and
+	// reports nothing, so the column collapses to zero. Callers that know their content
+	// width pass fit_basis to make the column definite and side-step both.
+	$fit_basis = isset( $args['fit_basis'] ) ? $args['fit_basis'] : '';
+
 	// Set columns properties. Separate loops so it's more readable in the markup.
 	foreach ( $columns as $break => $value ) {
 		$atts['style'] .= mai_columns_get_columns( $break, $value );
@@ -122,7 +138,7 @@ function mai_get_columns_atts( $atts, $args, $nested = false ) {
 
 	// Set flex properties. Separate loops so it's more readable in the markup.
 	foreach ( $columns as $break => $value ) {
-		$atts['style'] .= mai_columns_get_flex( $break, $value );
+		$atts['style'] .= mai_columns_get_flex( $break, $value, $fit_basis );
 	}
 
 	// If preview.
@@ -289,15 +305,18 @@ function mai_columns_get_columns( $break, $size ) {
  *
  * @since 2.10.0
  * @since 2.22.0 Added $break to stay consistent with `mai_columns_get_columns()`.
+ * @since TBD Added $fit_basis.
  *
- * @param string $break Either xs, sm, md, etc.
+ * @param string $break     Either xs, sm, md, etc.
  * @param string $size
+ * @param string $fit_basis Optional flex-basis for Fit columns, so the column has a
+ *                          definite width instead of taking one from its content.
  *
  * @return string
  */
-function mai_columns_get_flex( $break, $size ) {
+function mai_columns_get_flex( $break, $size, $fit_basis = '' ) {
 	$style = '';
-	$basis = mai_columns_get_flex_basis( $size );
+	$basis = ( 'auto' === $size && $fit_basis ) ? $fit_basis : mai_columns_get_flex_basis( $size );
 
 	switch ( $size ) {
 		case 'auto':

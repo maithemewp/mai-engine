@@ -18,6 +18,10 @@
 * Changed: [Developers] Mai no longer removes WordPress's opinionated block styles, so a site that wants them can add `wp-block-styles` to `theme-support` in its config.
 * Changed: [Developers] Config files merge more predictably. A list under an `add` or `remove` key is added to the defaults, and any other list replaces the default outright. Lists used to merge by position, which quietly overwrote whichever default happened to sit in the same spot.
 * Changed: [Developers] Cleaned up duplicate and empty entries in the default config.
+* Fixed: Columns set to Fit collapsed the layout instead of sizing each item to its content. This affected Mai Gallery, Mai Testimonials, Mai Lists, and any grid whose columns setting was missing.
+* Fixed: Images in the editor canvas could run past the edge of their block. The canvas was missing the rule that keeps an image inside its container on the front end.
+* Changed: [Developers] `mai_get_columns_atts()` accepts a new `fit_basis` argument, and `mai_columns_get_flex()` a matching third parameter, so a block that knows its content width can give Fit columns a real width instead of one taken from their contents.
+* Fixed: The image edit panel in an ACF gallery field no longer overflows the block settings sidebar. Its labels were cut off and it covered the close button, so there was no way to leave it or pick another image.
 * Fixed: A Mai theme that adds its own theme support, a sticky or transparent header for example, silently removed one of Mai's defaults instead of adding to it. Thirteen themes were affected.
 * Fixed: WordPress block styles loaded out of order on some pages and overrode Mai's, most visibly as table borders that were dark on some pages and light on others.
 * Fixed: WordPress's opinionated block styles are off by default again. They were always meant to be, but WordPress 6.9 changed how they load and they came back on.

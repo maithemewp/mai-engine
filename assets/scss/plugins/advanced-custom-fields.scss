@@ -742,3 +742,53 @@
 	mask-repeat: no-repeat;
 	mask-size: contain;
 }
+
+/**
+ * ACF gallery field in a narrow container (the block inspector).
+ *
+ * ACF's openSidebar() sizes the image-edit panel as `Math.max( control.width() / 3, 350 )`
+ * (acf-pro-input.js), then slides .acf-gallery-main right by the same amount. The block
+ * inspector is only ~280px wide, so the 350px floor overflows the sidebar and pushes the
+ * thumbnail grid and its toolbar off-screen. The result: the field labels are clipped, and
+ * there is no way to close the panel or pick another image.
+ *
+ * Below the threshold, overlay the edit panel over the grid at the container's own width
+ * instead of sliding the grid away. A container query rather than a plain descendant
+ * selector because ACF moves this same panel into the wide Expanded Editor modal, where
+ * its side-by-side layout is correct and must be left alone.
+ *
+ * Scoped to .-open so closing still collapses the panel (ACF removes the class before
+ * animating the width back to 0). !important is required because the widths ACF animates
+ * land as inline styles.
+ */
+.acf-field-gallery > .acf-input {
+	container-type: inline-size;
+}
+
+// ACF's 350px panel plus a grid narrow enough to be unusable. Above this the panel and the
+// grid both still fit, so ACF's own layout stands.
+@container (max-width: 500px) {
+
+	.acf-gallery.-open {
+
+		.acf-gallery-main {
+			right: 0 !important;
+		}
+
+		.acf-gallery-side {
+			z-index: 3;
+			width: 100% !important;
+			border-left: 0;
+		}
+
+		.acf-gallery-side-inner {
+			width: 100% !important;
+		}
+
+		// The info header is 100% wide with a -10px left margin, so it runs past the
+		// padded scroll box and adds a horizontal scrollbar at this width.
+		.acf-gallery-side-data {
+			overflow-x: hidden;
+		}
+	}
+}
