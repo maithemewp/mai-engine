@@ -431,6 +431,42 @@ function mai_get_image_aspect_ratio( $image_size ) {
 }
 
 /**
+ * Gets a registered image size to fall back on when the requested one is missing.
+ *
+ * Themes choose which orientations they register, and a theme can remove one the
+ * default config added, so no single size name is safe to hardcode. Walk the
+ * orientations and keep the first whose `-md` size is actually registered.
+ * `mai_get_available_image_orientations()` reads the config's `add` list and ignores
+ * `remove`, so it can name an orientation whose sizes are gone. That is why this
+ * checks the registered sizes rather than trusting the orientation alone.
+ *
+ * @since TBD
+ *
+ * @return string An image size name, or an empty string if none are registered.
+ */
+function mai_get_default_image_size() {
+	static $size = null;
+
+	if ( ! is_null( $size ) ) {
+		return $size;
+	}
+
+	$size  = '';
+	$sizes = mai_get_available_image_sizes();
+
+	foreach ( mai_get_available_image_orientations() as $orientation ) {
+		$name = sprintf( '%s-md', $orientation );
+
+		if ( isset( $sizes[ $name ] ) ) {
+			$size = $name;
+			break;
+		}
+	}
+
+	return $size;
+}
+
+/**
  * Gets an image width by size name.
  *
  * @since 2.7.0

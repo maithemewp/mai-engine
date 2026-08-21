@@ -71,9 +71,11 @@ function mai_do_entries_open( $args, $query = null ) {
 					$image_width = mai_get_image_width( $args['image_size'] );
 					$image_width = $image_width ? mai_get_unit_value( $image_width ) : 'unset';
 				} else {
-					$image_sizes = mai_get_available_image_sizes();
-					$image_size  = isset( $image_sizes[ $args['image_size'] ] ) ? $image_sizes[ $args['image_size'] ] : $image_sizes['landscape-md'];
-					$image_width = $image_size['width'] . 'px';
+					// A theme picks which orientations it registers, so the chosen size may not
+					// exist. Fall back to one that does rather than a hardcoded name.
+					$image_width = mai_get_image_width( $args['image_size'] );
+					$image_width = $image_width ? $image_width : mai_get_image_width( mai_get_default_image_size() );
+					$image_width = $image_width ? $image_width . 'px' : 'unset';
 				}
 
 				$atts['style'] .= sprintf( '--entry-image-link-max-width:%s;', $image_width );

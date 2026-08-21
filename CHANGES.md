@@ -19,6 +19,7 @@
 * Changed: [Developers] Config files merge more predictably. A list under an `add` or `remove` key is added to the defaults, and any other list replaces the default outright. Lists used to merge by position, which quietly overwrote whichever default happened to sit in the same spot.
 * Changed: [Developers] Cleaned up duplicate and empty entries in the default config.
 * Fixed: Columns set to Fit collapsed the layout instead of sizing each item to its content. This affected Mai Gallery, Mai Testimonials, Mai Lists, and any grid whose columns setting was missing.
+* Fixed: Grids fell back to a hardcoded image size that some themes do not register, which produced a PHP warning. They now fall back to a size the site actually has.
 * Fixed: Images in the editor canvas could run past the edge of their block. The canvas was missing the rule that keeps an image inside its container on the front end.
 * Changed: [Developers] `mai_get_columns_atts()` accepts a new `fit_basis` argument, and `mai_columns_get_flex()` a matching third parameter, so a block that knows its content width can give Fit columns a real width instead of one taken from their contents.
 * Fixed: The image edit panel in an ACF gallery field no longer overflows the block settings sidebar. Its labels were cut off and it covered the close button, so there was no way to leave it or pick another image.
