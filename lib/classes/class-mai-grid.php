@@ -254,9 +254,74 @@ class Mai_Grid {
 						return;
 					}
 
+					// Decide here, not in get_post_query_args(), because every
+					// mai_post_grid_query_args filter has now run and the args are final.
+					$effective = $this->effective_excludes( $this->query_args );
+					$defer     = $this->can_defer_excludes( $this->query_args, $effective );
+					$asked     = $this->query_args;
+
+					if ( $defer ) {
+						// Keep the per-view ids out of the SQL so every page sharing this
+						// grid's filters shares one cache entry, and ask for enough extra
+						// rows that the grid still fills once they are dropped.
+						$this->query_args['post__not_in']      = array_values( array_diff( $asked['post__not_in'], $effective ) );
+						$this->query_args['posts_per_page']    = $asked['posts_per_page'] + count( $effective );
+						$this->query_args['mai_grid_tiebreak'] = true;
+
+						add_filter( 'posts_orderby', [ $this, 'add_deferred_orderby_tiebreaker' ], 99, 2 );
+					}
+
 					$query = new WP_Query( $this->query_args );
 
-					// Cache featured images.
+					if ( $defer ) {
+						remove_filter( 'posts_orderby', [ $this, 'add_deferred_orderby_tiebreaker' ], 99 );
+
+						// Apply the excludes now. The result cache has already stored the
+						// unfiltered superset during the_posts, which is what makes the entry
+						// shareable, so this has to happen after the constructor returns.
+						$kept = array_values(
+							array_filter(
+								$query->posts,
+								static function ( $post ) use ( $effective ) {
+									// fields => 'ids' gives ints and id=>parent gives stdClass,
+									// so do not assume a WP_Post.
+									$id = is_object( $post ) ? (int) $post->ID : (int) $post;
+
+									return ! in_array( $id, $effective, true );
+								}
+							)
+						);
+
+						// Anything a the_posts filter added on top of the LIMIT is kept, so a
+						// plugin that pins a post into grids is not silently truncated.
+						$injected = max( 0, count( $query->posts ) - $this->query_args['posts_per_page'] );
+
+						$query->posts      = array_slice( $kept, 0, $asked['posts_per_page'] + $injected );
+						$query->post_count = count( $query->posts );
+
+						// Put the query back the way it was asked for, before anything reads
+						// it. Mai Load More and any custom pagination serialize these and
+						// re-run them later: a padded posts_per_page would make them stride
+						// past posts, and a missing post__not_in would drop the exclusions.
+						$query->query_vars['posts_per_page'] = $asked['posts_per_page'];
+						$query->query_vars['post__not_in']   = $asked['post__not_in'];
+						$query->query['posts_per_page']      = $asked['posts_per_page'];
+						$query->query['post__not_in']        = $asked['post__not_in'];
+
+						unset( $query->query_vars['mai_grid_tiebreak'], $query->query['mai_grid_tiebreak'] );
+
+						$this->query_args = $asked;
+
+						// Core left $query->post pointing at the unfiltered first post, which
+						// with exclude_current is very often the post being excluded.
+						$query->rewind_posts();
+
+						if ( ! $query->post_count ) {
+							$query->post = null;
+						}
+					}
+
+					// Cache featured images. After the filter, so only visible posts prime.
 					if ( in_array( 'image', $this->args['show'] ) ) {
 						update_post_thumbnail_cache( $query );
 					}
@@ -767,6 +832,57 @@ class Mai_Grid {
 		 * @param array $args       The grid args.
 		 */
 		return $can && (bool) apply_filters( 'mai_post_grid_defer_excludes', true, $query_args, $this->args );
+	}
+
+	/**
+	 * Appends a post ID tiebreaker to a deferred grid's ORDER BY.
+	 *
+	 * Public only because it is a hook target. Runs on posts_orderby, scoped by the
+	 * mai_grid_tiebreak query var that get_query() sets, so it cannot reach into any other
+	 * query that happens to run while this one is being built.
+	 *
+	 * Why it is needed: the deferred path asks for posts_per_page + N rows. When rows tie on
+	 * the sort column, MySQL's LIMIT-aware sort is free to keep different ones for different
+	 * LIMITs, and it is free to answer differently between two runs of the same statement.
+	 * Measured on larrybrownsports with comment_count ordering, where 134,207 of 145,646 posts
+	 * tie at zero: across 120 grid renders, 20 differed between a LIMIT 6 and a LIMIT 13 read
+	 * of the same grid, 5 of them returning genuinely different posts rather than a reshuffle.
+	 *
+	 * What this buys is a stable answer, not the same answer as before. It is applied only to
+	 * the deferred query, so on tied rows a deferring grid can legitimately show different
+	 * posts than the same grid with deferring off. That is the accepted trade: today's order
+	 * among tied rows is arbitrary and can change between page loads, and this makes it fixed.
+	 *
+	 * @since 2.41.0
+	 *
+	 * @param string   $orderby The ORDER BY clause.
+	 * @param WP_Query $query   The query.
+	 *
+	 * @return string
+	 */
+	public function add_deferred_orderby_tiebreaker( $orderby, $query ) {
+		global $wpdb;
+
+		if ( empty( $query->query_vars['mai_grid_tiebreak'] ) ) {
+			return $orderby;
+		}
+
+		// Already deterministic.
+		if ( str_contains( $orderby, "{$wpdb->posts}.ID" ) ) {
+			return $orderby;
+		}
+
+		// Nothing to append to. An empty ORDER BY means no ordering was requested, and
+		// imposing one would change the grid rather than settle a tie.
+		if ( ! trim( $orderby ) ) {
+			return $orderby;
+		}
+
+		// Match the direction the last sort key uses, so the tiebreaker reads as a
+		// continuation of what the editor asked for rather than a reversal of it.
+		$direction = preg_match( '/\b(ASC|DESC)\s*$/i', trim( $orderby ), $matches ) ? strtoupper( $matches[1] ) : 'DESC';
+
+		return $orderby . ", {$wpdb->posts}.ID " . $direction;
 	}
 
 	/**
