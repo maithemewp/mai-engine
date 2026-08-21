@@ -5,7 +5,13 @@
  *   wp --path=<site> eval-file bin/grid-key-collapse.php
  *
  * Lab tool. It says nothing about what any other site has installed.
+ *
+ * @package BizBudding\MaiEngine
  */
+
+if ( ! defined( 'WP_CLI' ) || ! WP_CLI ) {
+	return;
+}
 
 $sample_size = 300;
 
