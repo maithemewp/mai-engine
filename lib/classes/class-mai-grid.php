@@ -647,6 +647,129 @@ class Mai_Grid {
 	}
 
 	/**
+	 * The dynamic exclude IDs that are still in play for the final query.
+	 *
+	 * Reconciles what get_post_query_args() recorded against what actually survived every
+	 * mai_post_grid_query_args filter. Two things fall out of that, both deliberate:
+	 *
+	 * A site that filters an id back out of post__not_in gets its override honored, because
+	 * an id that is no longer in the query is no longer ours to apply in PHP either.
+	 *
+	 * A post__not_in that a filter replaced with something that is not an array (WordPress
+	 * also accepts a comma string in places) returns empty here, so the grid falls back to
+	 * today's behavior instead of fataling on array_diff().
+	 *
+	 * @since 2.41.0
+	 *
+	 * @param array $query_args The final query args.
+	 *
+	 * @return int[]
+	 */
+	protected function effective_excludes( $query_args ) {
+		if ( ! $this->deferred_excludes ) {
+			return [];
+		}
+
+		$in_query = $query_args['post__not_in'] ?? null;
+
+		if ( ! is_array( $in_query ) ) {
+			return [];
+		}
+
+		// array_filter drops 0, which is what get_the_ID() casts to when it returns false.
+		$recorded = array_filter( array_map( 'intval', $this->deferred_excludes ) );
+		$in_query = array_map( 'intval', $in_query );
+
+		return array_values( array_unique( array_intersect( $recorded, $in_query ) ) );
+	}
+
+	/**
+	 * Whether this grid may keep its dynamic excludes out of the query and apply them in PHP.
+	 *
+	 * Called from get_query() with the final args, after every mai_post_grid_query_args filter
+	 * has run. Checking the block settings instead would read stale values.
+	 *
+	 * @since 2.41.0
+	 *
+	 * @param array $query_args The final query args.
+	 * @param int[] $effective  The exclude IDs still in play, from effective_excludes().
+	 *
+	 * @return bool
+	 */
+	protected function can_defer_excludes( $query_args, $effective ) {
+		$can = (bool) $effective;
+
+		// An offset makes the database skip rows before we can filter, so filtering after
+		// returns a different set. Measured on real archives: differs for roughly 1 article
+		// in 150. `paged` is the same mechanism, since the LIMIT start is
+		// (paged - 1) * posts_per_page and padding the page size multiplies the start row.
+		if ( ! empty( $query_args['offset'] ) || ! empty( $query_args['paged'] ) ) {
+			$can = false;
+		}
+
+		// No LIMIT is emitted at all, so there is nothing to pad and the slice would truncate
+		// a query that was deliberately asked to return everything.
+		if ( ! empty( $query_args['nopaging'] ) ) {
+			$can = false;
+		}
+
+		if ( ! isset( $query_args['posts_per_page'] ) || $query_args['posts_per_page'] < 1 ) {
+			$can = false;
+		}
+
+		// Something wants an accurate total, which means something is paginating this grid.
+		// Padding inflates found_posts and skews the page count derived from it. empty()
+		// rather than a false check on purpose: WP_Query's own default is false, so an absent
+		// key means counting is ON and must be treated the same as an explicit false.
+		if ( empty( $query_args['no_found_rows'] ) ) {
+			$can = false;
+		}
+
+		// FacetWP rewrites the query for its own pagination.
+		if ( ! empty( $query_args['facetwp'] ) ) {
+			$can = false;
+		}
+
+		// Never step over the ceiling that exists so one editor setting cannot take a site
+		// down. A show-all grid already sits at it, so it simply does not defer.
+		$max = (int) apply_filters( 'mai_post_grid_max_posts_per_page', 1000 );
+
+		if ( $max > 0 && isset( $query_args['posts_per_page'] ) && ( $query_args['posts_per_page'] + count( $effective ) ) > $max ) {
+			$can = false;
+		}
+
+		// No point paying for this on a grid whose result will not be cached: the whole
+		// benefit is a shared cache entry. Covers the mai_post_grid_cache opt-out, plus
+		// everything Mai_Query_Cache refuses (ElasticPress, random order, the optimizer's
+		// fast path). Calling is_cacheable() rather than restating its rules means the two
+		// cannot drift apart. It fires the mai_query_cache filter a second time for this
+		// query, which is harmless for a filter that only answers a question.
+		if ( empty( $query_args['mai_cache'] ) ) {
+			$can = false;
+		}
+
+		if ( $can && class_exists( 'Mai_Query_Cache' ) && ! ( new Mai_Query_Cache() )->is_cacheable( $query_args ) ) {
+			$can = false;
+		}
+
+		/**
+		 * Filters whether a grid keeps exclude_displayed and exclude_current out of the query
+		 * and applies them while rendering instead. Off means those IDs go into post__not_in
+		 * as before, which gives that grid a separate cache entry per page view.
+		 *
+		 * This is an opt-out. Returning true cannot turn deferring on for a grid the guards
+		 * above ruled out, because those guards protect correctness rather than preference.
+		 *
+		 * @since 2.41.0
+		 *
+		 * @param bool  $enabled    Whether deferring is allowed. Default true.
+		 * @param array $query_args The final query args.
+		 * @param array $args       The grid args.
+		 */
+		return $can && (bool) apply_filters( 'mai_post_grid_defer_excludes', true, $query_args, $this->args );
+	}
+
+	/**
 	 * Get the term query args.
 	 *
 	 * @since 0.1.0

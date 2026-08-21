@@ -126,4 +126,153 @@ final class GridDeferredExcludesTest extends TestCase {
 
 		$this->assertSame( [ 99 ], $this->read( $grid, 'deferred_excludes' ) );
 	}
+
+	private function effective( array $query_args, array $recorded = [ 99 ] ): array {
+		$grid = $this->grid( [] );
+
+		$prop = new ReflectionProperty( Mai_Grid::class, 'deferred_excludes' );
+		$prop->setAccessible( true );
+		$prop->setValue( $grid, $recorded );
+
+		$method = new \ReflectionMethod( Mai_Grid::class, 'effective_excludes' );
+		$method->setAccessible( true );
+
+		return $method->invoke( $grid, $query_args );
+	}
+
+	private function can_defer( array $query_args, array $effective = [ 99 ] ): bool {
+		Functions\when( 'apply_filters' )->alias( fn( $tag, $value ) => $value );
+
+		$grid   = $this->grid( [] );
+		$method = new \ReflectionMethod( Mai_Grid::class, 'can_defer_excludes' );
+		$method->setAccessible( true );
+
+		return $method->invoke( $grid, $query_args + [
+			'posts_per_page' => 6,
+			'offset'         => 0,
+			'no_found_rows'  => true,
+			'mai_cache'      => true,
+		], $effective );
+	}
+
+	// ---- effective_excludes() ----
+
+	public function test_effective_normalizes_and_intersects(): void {
+		$this->assertSame(
+			[ 11, 12 ],
+			$this->effective( [ 'post__not_in' => [ 7, 11, 12 ] ], [ 11, 12, 11 ] )
+		);
+	}
+
+	public function test_effective_drops_an_id_a_filter_removed(): void {
+		// A site filtered post__not_in to let the current post back in. Honour that.
+		$this->assertSame( [], $this->effective( [ 'post__not_in' => [ 7 ] ], [ 99 ] ) );
+	}
+
+	public function test_effective_drops_a_falsy_id(): void {
+		// get_the_ID() returns int|false on a malformed singular request.
+		$this->assertSame( [], $this->effective( [ 'post__not_in' => [ 0 ] ], [ false ] ) );
+	}
+
+	public function test_effective_is_empty_when_post_not_in_is_missing(): void {
+		// A filter unset the key. Must not fatal.
+		$this->assertSame( [], $this->effective( [], [ 99 ] ) );
+	}
+
+	public function test_effective_is_empty_when_post_not_in_is_not_an_array(): void {
+		// A filter set the comma string form WordPress also accepts. Leave the grid alone.
+		$this->assertSame( [], $this->effective( [ 'post__not_in' => '12,34' ], [ 12 ] ) );
+	}
+
+	// ---- can_defer_excludes() ----
+
+	public function test_defers_for_an_ordinary_grid(): void {
+		$this->assertTrue( $this->can_defer( [] ) );
+	}
+
+	public function test_does_not_defer_with_nothing_effective(): void {
+		$this->assertFalse( $this->can_defer( [], [] ) );
+	}
+
+	public function test_does_not_defer_with_an_offset(): void {
+		// The database skips rows before we can filter, so filtering after returns a
+		// different set. Measured: differs for roughly 1 article in 150.
+		$this->assertFalse( $this->can_defer( [ 'offset' => 3 ] ) );
+	}
+
+	public function test_does_not_defer_when_paged(): void {
+		// Same mechanism as offset. LIMIT start is (paged - 1) * posts_per_page, so padding
+		// the page size multiplies the start row and silently skips posts.
+		$this->assertFalse( $this->can_defer( [ 'paged' => 2 ] ) );
+	}
+
+	public function test_does_not_defer_when_nopaging(): void {
+		// No LIMIT is emitted at all, so padding does nothing and the slice would truncate.
+		$this->assertFalse( $this->can_defer( [ 'nopaging' => true ] ) );
+	}
+
+	public function test_does_not_defer_when_found_rows_are_wanted(): void {
+		$this->assertFalse( $this->can_defer( [ 'no_found_rows' => false ] ) );
+	}
+
+	public function test_does_not_defer_when_found_rows_key_is_absent(): void {
+		// WP_Query's own default is false, meaning counting is ON. Absent must be treated
+		// the same as false, not as true.
+		$args = [ 'posts_per_page' => 6, 'offset' => 0, 'mai_cache' => true ];
+
+		Functions\when( 'apply_filters' )->alias( fn( $tag, $value ) => $value );
+
+		$grid   = $this->grid( [] );
+		$method = new \ReflectionMethod( Mai_Grid::class, 'can_defer_excludes' );
+		$method->setAccessible( true );
+
+		$this->assertFalse( $method->invoke( $grid, $args, [ 99 ] ) );
+	}
+
+	public function test_does_not_defer_for_facetwp(): void {
+		$this->assertFalse( $this->can_defer( [ 'facetwp' => true ] ) );
+	}
+
+	public function test_does_not_defer_when_the_grid_is_not_cached(): void {
+		$this->assertFalse( $this->can_defer( [ 'mai_cache' => false ] ) );
+	}
+
+	public function test_does_not_defer_past_the_show_all_ceiling(): void {
+		// A show-all grid resolves to 1000. Padding it would step over the ceiling that
+		// exists so one editor setting cannot take a site down.
+		$this->assertFalse( $this->can_defer( [ 'posts_per_page' => 1000 ], range( 1, 5 ) ) );
+	}
+
+	public function test_pads_right_up_to_the_ceiling(): void {
+		$this->assertTrue( $this->can_defer( [ 'posts_per_page' => 995 ], range( 1, 5 ) ) );
+	}
+
+	public function test_filter_can_switch_it_off(): void {
+		Functions\when( 'apply_filters' )->alias(
+			fn( $tag, $value ) => 'mai_post_grid_defer_excludes' === $tag ? false : $value
+		);
+
+		$grid   = $this->grid( [] );
+		$method = new \ReflectionMethod( Mai_Grid::class, 'can_defer_excludes' );
+		$method->setAccessible( true );
+
+		$args = [ 'posts_per_page' => 6, 'offset' => 0, 'no_found_rows' => true, 'mai_cache' => true ];
+
+		$this->assertFalse( $method->invoke( $grid, $args, [ 99 ] ) );
+	}
+
+	public function test_filter_cannot_switch_it_on_past_a_guard(): void {
+		// The filter is an opt-out only. Returning true must not defeat the offset guard.
+		Functions\when( 'apply_filters' )->alias(
+			fn( $tag, $value ) => 'mai_post_grid_defer_excludes' === $tag ? true : $value
+		);
+
+		$grid   = $this->grid( [] );
+		$method = new \ReflectionMethod( Mai_Grid::class, 'can_defer_excludes' );
+		$method->setAccessible( true );
+
+		$args = [ 'posts_per_page' => 6, 'offset' => 3, 'no_found_rows' => true, 'mai_cache' => true ];
+
+		$this->assertFalse( $method->invoke( $grid, $args, [ 99 ] ) );
+	}
 }
