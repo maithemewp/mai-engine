@@ -246,6 +246,14 @@ final class GridDeferredExcludesTest extends TestCase {
 		$this->assertFalse( $this->can_defer( [ 'posts_per_page' => 0 ] ) );
 	}
 
+	public function test_does_not_defer_when_posts_per_page_is_not_numeric(): void {
+		// A shortcode att or a filter can hand over a string. PHP 8 compares it false against
+		// 1 and then throws a TypeError on the padding arithmetic, so the guard has to catch
+		// the type, not just the size. Failing here is a fatal on every post grid, including
+		// grids with no excludes at all, so assert it does not throw as well as the result.
+		$this->assertFalse( $this->can_defer( [ 'posts_per_page' => 'all' ] ) );
+	}
+
 	public function test_does_not_defer_for_facetwp(): void {
 		$this->assertFalse( $this->can_defer( [ 'facetwp' => true ] ) );
 	}
@@ -264,6 +272,27 @@ final class GridDeferredExcludesTest extends TestCase {
 		// Mai_Query_Cache::is_cacheable() refuses ep_integrate grids; that interaction with
 		// the result cache is unverified.
 		$this->assertFalse( $this->can_defer( [ 'ep_integrate' => true ] ) );
+	}
+
+	public function test_does_not_defer_when_filters_are_suppressed(): void {
+		// WP_Query runs posts_orderby and the_posts inside `if ( ! suppress_filters )`, so the
+		// padded LIMIT would get no tiebreaker and the superset would never be stored.
+		$this->assertFalse( $this->can_defer( [ 'suppress_filters' => true ] ) );
+	}
+
+	public function test_does_not_defer_for_an_ids_query(): void {
+		// Core returns before the_posts and before it sets $this->post.
+		$this->assertFalse( $this->can_defer( [ 'fields' => 'ids' ] ) );
+	}
+
+	public function test_does_not_defer_for_an_id_parent_query(): void {
+		$this->assertFalse( $this->can_defer( [ 'fields' => 'id=>parent' ] ) );
+	}
+
+	public function test_still_defers_for_the_default_fields_value(): void {
+		// The guard is only for the two shapes core short-circuits. Everything else, including
+		// the empty string WP_Query defaults to, gets full post objects and still defers.
+		$this->assertTrue( $this->can_defer( [ 'fields' => '' ] ) );
 	}
 
 	public function test_does_not_defer_past_the_show_all_ceiling(): void {

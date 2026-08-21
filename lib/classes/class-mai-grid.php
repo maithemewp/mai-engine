@@ -293,8 +293,11 @@ class Mai_Grid {
 						);
 
 						// Anything a the_posts filter added on top of the LIMIT is kept, so a
-						// plugin that pins a post into grids is not silently truncated.
-						$injected = max( 0, count( $query->posts ) - $this->query_args['posts_per_page'] );
+						// plugin that pins a post into grids is not silently truncated. The baseline
+						// comes off the query rather than our own args because pre_get_posts runs
+						// after the args were read: a callback without an is_main_query() check can
+						// change posts_per_page, and query_vars is what actually built the LIMIT.
+						$injected = max( 0, count( $query->posts ) - $query->query_vars['posts_per_page'] );
 
 						$query->posts      = array_slice( $kept, 0, $asked['posts_per_page'] + $injected );
 						$query->post_count = count( $query->posts );
@@ -778,7 +781,9 @@ class Mai_Grid {
 			$can = false;
 		}
 
-		if ( ! isset( $query_args['posts_per_page'] ) || $query_args['posts_per_page'] < 1 ) {
+		// A non-numeric value has no size to pad and adding to it is a TypeError in PHP 8.
+		// Decline and let WP_Query cast it the way it does for every other grid.
+		if ( ! isset( $query_args['posts_per_page'] ) || ! is_numeric( $query_args['posts_per_page'] ) || $query_args['posts_per_page'] < 1 ) {
 			$can = false;
 		}
 
@@ -795,11 +800,26 @@ class Mai_Grid {
 			$can = false;
 		}
 
+		// Both halves of the deal are switched off here. WP_Query runs posts_orderby and
+		// the_posts inside `if ( ! $query_vars['suppress_filters'] )`, so the padded LIMIT
+		// would get no tiebreaker, which is the tie instability the tiebreaker exists to
+		// prevent, and the result cache stores on the_posts, so nothing would be shared.
+		if ( ! empty( $query_args['suppress_filters'] ) ) {
+			$can = false;
+		}
+
+		// Core returns these straight out of get_posts(), before the_posts and before it sets
+		// $this->post. Nothing reaches the cache, and rewind_posts() would leave $query->post
+		// as an int or a stdClass where core leaves it null.
+		if ( isset( $query_args['fields'] ) && in_array( $query_args['fields'], [ 'ids', 'id=>parent' ], true ) ) {
+			$can = false;
+		}
+
 		// Never step over the ceiling that exists so one editor setting cannot take a site
 		// down. A show-all grid already sits at it, so it simply does not defer.
 		$max = (int) apply_filters( 'mai_post_grid_max_posts_per_page', 1000 );
 
-		if ( $max > 0 && isset( $query_args['posts_per_page'] ) && ( $query_args['posts_per_page'] + count( $effective ) ) > $max ) {
+		if ( $max > 0 && is_numeric( $query_args['posts_per_page'] ?? null ) && ( $query_args['posts_per_page'] + count( $effective ) ) > $max ) {
 			$can = false;
 		}
 
