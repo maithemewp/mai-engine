@@ -229,6 +229,23 @@ final class GridDeferredExcludesTest extends TestCase {
 		$this->assertFalse( $method->invoke( $grid, $args, [ 99 ] ) );
 	}
 
+	public function test_does_not_defer_when_posts_per_page_is_absent(): void {
+		// No default merged in here, unlike the can_defer() helper.
+		$args = [ 'offset' => 0, 'no_found_rows' => true, 'mai_cache' => true ];
+
+		Functions\when( 'apply_filters' )->alias( fn( $tag, $value ) => $value );
+
+		$grid   = $this->grid( [] );
+		$method = new \ReflectionMethod( Mai_Grid::class, 'can_defer_excludes' );
+		$method->setAccessible( true );
+
+		$this->assertFalse( $method->invoke( $grid, $args, [ 99 ] ) );
+	}
+
+	public function test_does_not_defer_when_posts_per_page_is_below_one(): void {
+		$this->assertFalse( $this->can_defer( [ 'posts_per_page' => 0 ] ) );
+	}
+
 	public function test_does_not_defer_for_facetwp(): void {
 		$this->assertFalse( $this->can_defer( [ 'facetwp' => true ] ) );
 	}
@@ -237,10 +254,23 @@ final class GridDeferredExcludesTest extends TestCase {
 		$this->assertFalse( $this->can_defer( [ 'mai_cache' => false ] ) );
 	}
 
+	public function test_does_not_defer_for_random_order(): void {
+		// Mai_Query_Cache::is_cacheable() refuses a random order because caching it would
+		// defeat the point of randomness.
+		$this->assertFalse( $this->can_defer( [ 'orderby' => 'rand' ] ) );
+	}
+
+	public function test_does_not_defer_for_elasticpress(): void {
+		// Mai_Query_Cache::is_cacheable() refuses ep_integrate grids; that interaction with
+		// the result cache is unverified.
+		$this->assertFalse( $this->can_defer( [ 'ep_integrate' => true ] ) );
+	}
+
 	public function test_does_not_defer_past_the_show_all_ceiling(): void {
 		// A show-all grid resolves to 1000. Padding it would step over the ceiling that
-		// exists so one editor setting cannot take a site down.
-		$this->assertFalse( $this->can_defer( [ 'posts_per_page' => 1000 ], range( 1, 5 ) ) );
+		// exists so one editor setting cannot take a site down. One id over the ceiling, not
+		// several, so an off-by-a-few comparison bug cannot slip through.
+		$this->assertFalse( $this->can_defer( [ 'posts_per_page' => 1000 ], range( 1, 1 ) ) );
 	}
 
 	public function test_pads_right_up_to_the_ceiling(): void {
