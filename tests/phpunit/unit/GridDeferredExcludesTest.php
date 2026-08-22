@@ -303,7 +303,37 @@ final class GridDeferredExcludesTest extends TestCase {
 	}
 
 	public function test_pads_right_up_to_the_ceiling(): void {
-		$this->assertTrue( $this->can_defer( [ 'posts_per_page' => 995 ], range( 1, 5 ) ) );
+		// The default ceiling is 1000, which now always loses to the 500-row guard below.
+		// A lowered ceiling isolates this guard so the boundary is still under test on its own.
+		Functions\when( 'apply_filters' )->alias(
+			fn( $tag, $value ) => 'mai_post_grid_max_posts_per_page' === $tag ? 100 : $value
+		);
+
+		$grid   = $this->grid( [] );
+		$method = new \ReflectionMethod( Mai_Grid::class, 'can_defer_excludes' );
+		$method->setAccessible( true );
+
+		$args = [ 'posts_per_page' => 95, 'offset' => 0, 'no_found_rows' => true, 'mai_cache' => true ];
+
+		$this->assertTrue( $method->invoke( $grid, $args, range( 1, 5 ) ) );
+	}
+
+	public function test_pads_right_up_to_the_split_query_threshold(): void {
+		// posts_per_page 498 + the default 1 effective id = 499, one below the 500 where
+		// core swaps its query shape.
+		$this->assertTrue( $this->can_defer( [ 'posts_per_page' => 498 ] ) );
+	}
+
+	public function test_does_not_defer_at_the_split_query_threshold(): void {
+		// posts_per_page 499 + the default 1 effective id = 500, where WP_Query::get_posts()
+		// drops $split_the_query and selects whole rows instead of ids-then-hydrate.
+		$this->assertFalse( $this->can_defer( [ 'posts_per_page' => 499 ] ) );
+	}
+
+	public function test_split_query_threshold_guard_does_not_fatal_on_non_numeric_posts_per_page(): void {
+		// Same protection this guard borrows from the ceiling guard above: a non-numeric
+		// value must not reach the addition here either, or PHP 8 throws a TypeError.
+		$this->assertFalse( $this->can_defer( [ 'posts_per_page' => 'all' ] ) );
 	}
 
 	public function test_filter_can_switch_it_off(): void {

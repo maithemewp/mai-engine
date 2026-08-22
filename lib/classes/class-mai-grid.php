@@ -823,6 +823,18 @@ class Mai_Grid {
 			$can = false;
 		}
 
+		// 500 is WordPress core's own threshold, not ours. WP_Query::get_posts() drops
+		// $split_the_query once posts_per_page reaches 500, so core selects whole rows
+		// instead of IDs then hydrating, and the tax query's temp table has to carry every
+		// matching post's full content. Measured on a 54,461-post category: 246ms at 499,
+		// 1190ms at 500, flat either side, a shape switch rather than a volume effect. Only
+		// bites on large categories, noise below roughly 12MB of category content, and
+		// wp_using_ext_object_cache() true skips the branch on core's side too, so this
+		// guard costs nothing there. The padded rows are cheap either way, about 0.2ms each.
+		if ( is_numeric( $query_args['posts_per_page'] ?? null ) && ( $query_args['posts_per_page'] + count( $effective ) ) >= 500 ) {
+			$can = false;
+		}
+
 		// No point paying for this on a grid whose result will not be cached: the whole
 		// benefit is a shared cache entry. Covers the mai_post_grid_cache opt-out, plus
 		// everything Mai_Query_Cache refuses (ElasticPress, random order, the optimizer's
