@@ -350,6 +350,32 @@ final class GridDeferredExcludesTest extends TestCase {
 		$this->assertFalse( $method->invoke( $grid, $args, [ 99 ] ) );
 	}
 
+	public function test_the_filter_fires_for_a_grid_the_guards_declined(): void {
+		// The filter is how a site answers "which of my grids are deferring, and which are
+		// not". That only works if it fires for every grid, and if the value handed in is the
+		// guards' own verdict rather than a fixed true.
+		$seen = 'never fired';
+
+		Functions\when( 'apply_filters' )->alias(
+			function ( $tag, $value ) use ( &$seen ) {
+				if ( 'mai_post_grid_defer_excludes' === $tag ) {
+					$seen = $value;
+				}
+
+				return $value;
+			}
+		);
+
+		$grid   = $this->grid( [] );
+		$method = new \ReflectionMethod( Mai_Grid::class, 'can_defer_excludes' );
+		$method->setAccessible( true );
+
+		$args = [ 'posts_per_page' => 6, 'offset' => 3, 'no_found_rows' => true, 'mai_cache' => true ];
+
+		$this->assertFalse( $method->invoke( $grid, $args, [ 99 ] ) );
+		$this->assertFalse( $seen, 'the filter must fire for a declined grid, with the guards\' verdict as its default' );
+	}
+
 	public function test_filter_cannot_switch_it_on_past_a_guard(): void {
 		// The filter is an opt-out only. Returning true must not defeat the offset guard.
 		Functions\when( 'apply_filters' )->alias(

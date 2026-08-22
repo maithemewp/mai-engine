@@ -857,13 +857,24 @@ class Mai_Grid {
 		 * This is an opt-out. Returning true cannot turn deferring on for a grid the guards
 		 * above ruled out, because those guards protect correctness rather than preference.
 		 *
+		 * Fires for every post grid, including the ones the guards already declined, and the
+		 * default it passes in is the guards' own verdict. That is what makes "which of my
+		 * grids are deferring, and which are not" answerable from a small mu-plugin. Without
+		 * it, a third-party filter that flips no_found_rows on every query would switch this
+		 * off site-wide and look exactly like the feature working.
+		 *
 		 * @since 2.41.0
 		 *
-		 * @param bool  $enabled    Whether deferring is allowed. Default true.
+		 * @param bool  $enabled    Whether deferring is allowed, as the guards left it.
 		 * @param array $query_args The final query args.
 		 * @param array $args       The grid args.
 		 */
-		return $can && (bool) apply_filters( 'mai_post_grid_defer_excludes', true, $query_args, $this->args );
+		$filtered = (bool) apply_filters( 'mai_post_grid_defer_excludes', $can, $query_args, $this->args );
+
+		// Two statements, not `$can && apply_filters( ... )`. PHP short-circuits &&, so writing
+		// it that way would skip the filter entirely for every grid a guard already declined,
+		// which is the half a site most needs to see.
+		return $can && $filtered;
 	}
 
 	/**
