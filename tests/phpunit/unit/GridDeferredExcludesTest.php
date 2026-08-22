@@ -106,7 +106,8 @@ final class GridDeferredExcludesTest extends TestCase {
 		Functions\when( 'is_singular' )->justReturn( true );
 		Functions\when( 'get_the_ID' )->justReturn( 99 );
 
-		// query_by 'id' skips the whole exclude block at class-mai-grid.php:584.
+		// query_by 'id' skips the whole exclude block, the one under
+		// `if ( 'id' !== $this->args['query_by'] )` in get_post_query_args().
 		$grid = $this->grid( [ 'query_by' => 'id', 'post__in' => [ 3, 4 ], 'excludes' => [ 'exclude_current' ] ] );
 		$args = $grid->get_post_query_args();
 

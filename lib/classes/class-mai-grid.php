@@ -283,8 +283,10 @@ class Mai_Grid {
 							array_filter(
 								$query->posts,
 								static function ( $post ) use ( $effective ) {
-									// fields => 'ids' gives ints and id=>parent gives stdClass,
-									// so do not assume a WP_Post.
+									// A the_posts callback can put anything in this list, so do
+									// not assume a WP_Post. The two field modes core answers with
+									// ints and stdClass cannot arrive here, because
+									// can_defer_excludes() refuses to defer for either.
 									$id = is_object( $post ) ? (int) $post->ID : (int) $post;
 
 									return ! in_array( $id, $effective, true );
@@ -292,11 +294,15 @@ class Mai_Grid {
 							)
 						);
 
-						// Anything a the_posts filter added on top of the LIMIT is kept, so a
-						// plugin that pins a post into grids is not silently truncated. The baseline
-						// comes off the query rather than our own args because pre_get_posts runs
-						// after the args were read: a callback without an is_main_query() check can
-						// change posts_per_page, and query_vars is what actually built the LIMIT.
+						// Widen the slice by however many rows a the_posts filter added on top of
+						// the LIMIT, so a plugin that pins posts into grids still gets its full
+						// count through. The slice keeps the first entries, so what is guaranteed
+						// is the count, not any particular pinned post: a post pinned to the top
+						// survives, one appended to the end can still fall off the slice. The
+						// baseline comes off the query rather than our own args because
+						// pre_get_posts runs after the args were read: a callback without an
+						// is_main_query() check can change posts_per_page, and query_vars is what
+						// actually built the LIMIT.
 						$injected = max( 0, count( $query->posts ) - $query->query_vars['posts_per_page'] );
 
 						$query->posts      = array_slice( $kept, 0, $asked['posts_per_page'] + $injected );
@@ -324,7 +330,10 @@ class Mai_Grid {
 						}
 					}
 
-					// Cache featured images. After the filter, so only visible posts prime.
+					// Cache featured images. After the filter, so only the posts that will be
+					// shown prime their thumbnails. Only the thumbnails: core primes post meta
+					// and terms for the whole padded set inside WP_Query::get_posts(), before
+					// anything here can run.
 					if ( in_array( 'image', $this->args['show'] ) ) {
 						update_post_thumbnail_cache( $query );
 					}
@@ -791,6 +800,13 @@ class Mai_Grid {
 		// Padding inflates found_posts and skews the page count derived from it. empty()
 		// rather than a false check on purpose: WP_Query's own default is false, so an absent
 		// key means counting is ON and must be treated the same as an explicit false.
+		//
+		// This guard is also what keeps the tiebreaker from desynchronising offset pagination.
+		// Page one would be ordered by (sort key, ID) and page two by sort key alone, so on a
+		// tied sort a reader could see the same post on both pages. Mai Load More sets
+		// no_found_rows false today, so it is caught here, but for the stated reason above.
+		// Do not drop this guard on the strength of having made the total accurate under
+		// padding: the ordering half would still be broken.
 		if ( empty( $query_args['no_found_rows'] ) ) {
 			$can = false;
 		}
