@@ -61,3 +61,24 @@ require_once $plugin_root . '/lib/functions/cache.php';
 // Registers Mai_Query_Cache on posts_pre_query and the_posts. Hooks on init, so it has to be
 // required here on muplugins_loaded; requiring it from inside a test is too late.
 require_once $plugin_root . '/lib/functions/query-cache.php';
+
+// Mai_Grid::do_grid_entries() renders each entry through mai_do_entry() before recording its
+// ID in Mai_Grid::$existing_post_ids, and mai_do_entry() builds a Mai_Entry, which reads the
+// Genesis-dependent config layer (mai_get_config()) this harness cannot load. A no-op keeps
+// the loop itself testable, which matters because that loop is the only thing that fills the
+// static behind the "Exclude displayed" setting. The markup it drops is not what any test
+// here asserts on.
+//
+// If lib/functions/entries.php is ever added to this file, delete this stub. Required above,
+// the guard stands down; required below, PHP fatals on the redeclare.
+if ( ! function_exists( 'mai_do_entry' ) ) {
+	/**
+	 * Test-harness no-op for the real mai_do_entry().
+	 *
+	 * @param WP_Post|WP_Term $entry The entry object.
+	 * @param array           $args  The grid args.
+	 *
+	 * @return void
+	 */
+	function mai_do_entry( $entry, $args = [] ) {}
+}

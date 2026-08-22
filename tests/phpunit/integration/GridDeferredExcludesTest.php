@@ -36,6 +36,16 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 		}
 	}
 
+	public function tear_down() {
+		// Several tests below set this static to drive "Exclude displayed". Clearing it inline
+		// after each one is not enough: a failed assertion between the set and the clear leaks
+		// the ids into every test that runs after it, and the failure that follows looks
+		// unrelated to what caused it.
+		Mai_Grid::$existing_post_ids = [];
+
+		parent::tear_down();
+	}
+
 	private function grid_args( array $overrides = [] ): array {
 		return array_merge( [
 			'type'           => 'post',
@@ -51,6 +61,24 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 
 	private function ids( \WP_Query $query ): array {
 		return wp_list_pluck( $query->posts, 'ID' );
+	}
+
+	/**
+	 * Renders a grid's entries the way a page render does.
+	 *
+	 * render() cannot run in this harness: it opens the entries wrapper through helpers that
+	 * reach into the Genesis-dependent layer. do_grid_entries() is the part that matters here,
+	 * because it is the only place Mai_Grid::$existing_post_ids is written. It reads the query
+	 * off the instance, which render() would have set.
+	 */
+	private function render_entries( Mai_Grid $grid ): void {
+		$query = $grid->get_query();
+
+		$prop = new \ReflectionProperty( Mai_Grid::class, 'query' );
+		$prop->setAccessible( true );
+		$prop->setValue( $grid, $query );
+
+		$grid->do_grid_entries();
 	}
 
 	/** Runs the same grid with deferring switched off, for a like-for-like comparison. */
@@ -88,6 +116,20 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 		$this->assertNotContains( $current, $this->ids( $deferred ) );
 	}
 
+	public function test_an_excluded_post_below_the_window_still_fills_the_grid(): void {
+		// The oldest post, so the padded read of 4 rows never reaches it and nothing is
+		// filtered out. The padding row then has to come off in the slice instead, which is
+		// otherwise only exercised by accident in one of the tie tests.
+		$this->go_to( get_permalink( $this->post_ids[9] ) );
+
+		$deferred = ( new Mai_Grid( $this->grid_args() ) )->get_query();
+
+		$this->assertStringNotContainsString( 'NOT IN', $deferred->request, 'must actually have deferred' );
+		$this->assertStringContainsString( 'LIMIT 0, 4', $deferred->request, 'the padding is asked for either way' );
+		$this->assertSame( array_slice( $this->post_ids, 0, 3 ), $this->ids( $deferred ), 'the padding row must be trimmed, not returned' );
+		$this->assertSame( $this->ids( $this->undeferred( $this->grid_args() ) ), $this->ids( $deferred ) );
+	}
+
 	public function test_short_result_matches(): void {
 		$current = $this->post_ids[0];
 		$this->go_to( get_permalink( $current ) );
@@ -116,10 +158,40 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 		$deferred = ( new Mai_Grid( $args ) )->get_query();
 		Mai_Grid::$existing_post_ids = [];
 
+		// Without this the test passes with the whole feature switched off, since an
+		// undeferred grid returns nothing here too.
+		$this->assertStringNotContainsString( 'NOT IN', $deferred->request, 'must actually have deferred' );
+
 		$this->assertSame( [], $deferred->posts );
 		$this->assertSame( 0, $deferred->post_count );
 		$this->assertFalse( $deferred->have_posts(), 'the no_results message depends on this' );
 		$this->assertNull( $deferred->post );
+	}
+
+	/**
+	 * The production shape of "Exclude displayed": one grid renders, the next one leaves out
+	 * what it showed. The ids come from do_grid_entries() rather than from the test, so this
+	 * covers the write into Mai_Grid::$existing_post_ids as well as the read back out of it.
+	 */
+	public function test_a_second_grid_excludes_what_the_first_one_rendered(): void {
+		$this->go_to( get_permalink( $this->post_ids[0] ) );
+
+		$args = $this->grid_args( [ 'excludes' => [ 'exclude_current', 'exclude_displayed' ] ] );
+
+		$this->render_entries( new Mai_Grid( $args ) );
+
+		$this->assertSame(
+			[ 'post' => array_slice( $this->post_ids, 1, 3 ) ],
+			Mai_Grid::$existing_post_ids,
+			'the first grid must record what it rendered, not what it queried'
+		);
+
+		$second = ( new Mai_Grid( $args ) )->get_query();
+
+		// 3 asked for, plus the current post and the 3 the first grid showed.
+		$this->assertStringNotContainsString( 'NOT IN', $second->request, 'must actually have deferred' );
+		$this->assertStringContainsString( 'LIMIT 0, 7', $second->request );
+		$this->assertSame( array_slice( $this->post_ids, 4, 3 ), $this->ids( $second ) );
 	}
 
 	// ---- The restore ----
@@ -129,6 +201,11 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 		$this->go_to( get_permalink( $current ) );
 
 		$query = ( new Mai_Grid( $this->grid_args() ) )->get_query();
+
+		// There is nothing to restore unless the grid deferred, so assert it did. Without
+		// this the whole test passes with the feature switched off, and it is the only guard
+		// on the Mai Load More contract.
+		$this->assertStringContainsString( 'LIMIT 0, 4', $query->request, 'must actually have deferred: 3 asked for, plus the 1 excluded' );
 
 		// Mai Load More serializes exactly these and rebuilds a WP_Query from them.
 		$this->assertSame( 3, $query->query_vars['posts_per_page'], 'padded page size must not leak' );
@@ -231,6 +308,10 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 	public function test_tiebreaker_is_not_applied_to_an_undeferred_grid(): void {
 		$this->go_to( get_permalink( $this->post_ids[0] ) );
 
+		// Prove the same grid does get a tiebreaker when it defers, or the assertion below
+		// passes for the wrong reason: with the feature off, nothing adds one anywhere.
+		$this->assertStringContainsString( '.ID DESC', ( new Mai_Grid( $this->grid_args() ) )->get_query()->request );
+
 		$this->assertStringNotContainsString( '.ID DESC', $this->undeferred( $this->grid_args() )->request );
 	}
 
@@ -244,8 +325,12 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 	public function test_tiebreaker_filter_does_not_survive_the_grid_that_added_it(): void {
 		$this->go_to( get_permalink( $this->post_ids[0] ) );
 
-		$grid = new Mai_Grid( $this->grid_args() );
-		$grid->get_query();
+		$grid  = new Mai_Grid( $this->grid_args() );
+		$query = $grid->get_query();
+
+		// The filter is only added when the grid defers, so without this the test passes with
+		// the feature switched off.
+		$this->assertStringNotContainsString( 'NOT IN', $query->request, 'must actually have deferred' );
 
 		$this->assertFalse(
 			has_filter( 'posts_orderby', [ $grid, 'add_deferred_orderby_tiebreaker' ] ),
@@ -256,30 +341,59 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 	// ---- The cache key ----
 
 	/**
-	 * Captures the key exactly as Mai_Query_Cache::pre_query() computes it.
+	 * Views one post and reports what the cache and the render each saw.
 	 *
-	 * This must run DURING the query. get_query() restores query_vars once the constructor
-	 * returns, so reading them afterwards shows the original request, complete with the
-	 * excluded id, and every key would look shattered. posts_pre_query fires with
-	 * $query->request already built, and the cache's own callback sits at priority 10.
+	 * Both captures must run DURING the query. get_query() restores query_vars once the
+	 * constructor returns, so reading them afterwards shows the original request, complete
+	 * with the excluded id, and every key would look shattered. posts_pre_query fires with
+	 * $query->request already built, and the cache's own callback sits at priority 10:
+	 * priority 9 sees the key the cache is about to use, priority 11 sees what it handed back.
+	 *
+	 * A non-null value at priority 11 is proof of a cache hit and of no fresh SELECT.
+	 * WP_Query::get_posts() only reaches its own $wpdb->get_results() when posts_pre_query
+	 * left $this->posts null.
+	 *
+	 * @param int $current The post to view.
+	 *
+	 * @return array{key:string,served:int[]|null,rendered:int[]}
 	 */
-	private function key_for( int $current ): string {
+	private function view( int $current ): array {
 		$this->go_to( get_permalink( $current ) );
 
-		$key     = '';
-		$capture = static function ( $posts, $query ) use ( &$key ) {
+		$key    = '';
+		$served = null;
+
+		$capture_key = static function ( $posts, $query ) use ( &$key ) {
 			$key = ( new Mai_Query_Cache() )->cache_key( $query->query_vars, (string) $query->request );
 
 			return $posts;
 		};
 
-		add_filter( 'posts_pre_query', $capture, 9, 2 );
-		( new Mai_Grid( $this->grid_args() ) )->get_query();
-		remove_filter( 'posts_pre_query', $capture, 9 );
+		$capture_served = static function ( $posts, $query ) use ( &$served ) {
+			$served = is_array( $posts ) ? wp_list_pluck( $posts, 'ID' ) : null;
+
+			return $posts;
+		};
+
+		add_filter( 'posts_pre_query', $capture_key, 9, 2 );
+		add_filter( 'posts_pre_query', $capture_served, 11, 2 );
+
+		$query = ( new Mai_Grid( $this->grid_args() ) )->get_query();
+
+		remove_filter( 'posts_pre_query', $capture_key, 9 );
+		remove_filter( 'posts_pre_query', $capture_served, 11 );
 
 		$this->assertNotSame( '', $key, 'the capture filter did not fire' );
 
-		return $key;
+		return [
+			'key'      => $key,
+			'served'   => $served,
+			'rendered' => $this->ids( $query ),
+		];
+	}
+
+	private function key_for( int $current ): string {
+		return $this->view( $current )['key'];
 	}
 
 	/** The reason the whole change exists. */
@@ -288,6 +402,37 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 			$this->key_for( $this->post_ids[0] ),
 			$this->key_for( $this->post_ids[5] ),
 			'the excluded id must not reach the key'
+		);
+	}
+
+	/**
+	 * The round trip, which is the whole point of the change: the entry one article warms up
+	 * serves a full grid to the next article, minus that article's own post.
+	 *
+	 * The current post here sits inside the grid's own result window. Pick one further down
+	 * and the last assertion is vacuous, because there would be nothing to filter out.
+	 *
+	 * This is what would break if the PHP filtering ever moved into a the_posts callback. The
+	 * entry would then store the FILTERED list, warm hits would render a post short, and every
+	 * other test in this file would still pass.
+	 */
+	public function test_a_warm_entry_serves_a_full_grid_to_the_next_post(): void {
+		$first  = $this->view( $this->post_ids[0] );
+		$second = $this->view( $this->post_ids[1] );
+
+		$this->assertNull( $first['served'], 'the first view has to run the query' );
+		$this->assertSame( $first['key'], $second['key'], 'both views must land on one entry' );
+		$this->assertIsArray( $second['served'], 'the second view must come from cache, with no fresh SELECT' );
+
+		// What was stored is the padded, unfiltered superset, not what the first view rendered.
+		$this->assertSame( array_slice( $this->post_ids, 0, 4 ), $second['served'] );
+		$this->assertSame( array_slice( $this->post_ids, 1, 3 ), $first['rendered'] );
+
+		// So the second view can still drop its own current post and fill the grid.
+		$this->assertSame(
+			[ $this->post_ids[0], $this->post_ids[2], $this->post_ids[3] ],
+			$second['rendered'],
+			'a warm hit must render a full grid without the post being viewed'
 		);
 	}
 
