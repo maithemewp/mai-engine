@@ -50,8 +50,51 @@ Date ordering never showed this in roughly 10,000 earlier cases, because two art
 - 1,400 real grid renders across 700 articles, date ordering: 0 mismatches.
 - 9,594 hostile cases aimed at short results, including excluding every article in a term: 0 mismatches. Grids showing 0, 1, 2, 3, 4 and 5 of 6 all matched.
 - Padding cost, cache cleared each run so priming is real: `LIMIT 6` 252.6ms, `LIMIT 7` 308.7ms, `LIMIT 13` 298.8ms, `LIMIT 24` 313.7ms, `LIMIT 48` 314.3ms, `LIMIT 106` 323.5ms, `LIMIT 1000` 1718.2ms, `LIMIT 1040` 1739.9ms. Flat from 7 to about 106; the cliff is the show-all ceiling, not the pad.
+- The 500-row split: `LIMIT 499` 246ms against `LIMIT 500` 1190ms, flat either side. A shape switch rather than a volume effect, and the reason for the guard in `can_defer_excludes()`. Method below, since a bare pair of numbers cannot be re-checked.
 - Cache keys collapse 107x, 20x and 583x on the three sites.
 - `offset > 0` genuinely differs, in roughly 1 of 150 articles. Hence the guard.
+
+**How to re-take the 500-row split numbers.** The site is the larrybrownsports mirror and the category is Football, `term_id` 5, which holds 54,461 of that mirror's 145,646 posts. Confirm the category first, because the counts move as the mirror is refreshed:
+
+```bash
+cd ~/Herd/larrybrownsports && wp --path=. db query "SELECT t.term_id, t.name, tt.count FROM wp_term_taxonomy tt JOIN wp_terms t ON t.term_id = tt.term_id WHERE tt.taxonomy = 'category' ORDER BY tt.count DESC LIMIT 5;"
+```
+
+Then time a plain `WP_Query` for that category at each page size. Flush the object cache between runs so the priming cost is real, pass `mai_cache => false` so the grid result cache does not answer instead of the database, and warm the buffer pool once before timing anything. Run it with `wp --path=. eval-file`:
+
+```php
+<?php
+$run = static function ( int $n ): float {
+	wp_cache_flush();
+
+	$start = microtime( true );
+
+	new WP_Query( [
+		'post_type'           => 'post',
+		'post_status'         => 'publish',
+		'posts_per_page'      => $n,
+		'no_found_rows'       => true,
+		'ignore_sticky_posts' => true,
+		'mai_cache'           => false,
+		'tax_query'           => [
+			[ 'taxonomy' => 'category', 'field' => 'term_id', 'terms' => [ 5 ], 'operator' => 'IN' ],
+		],
+	] );
+
+	return ( microtime( true ) - $start ) * 1000;
+};
+
+$run( 100 );
+
+foreach ( [ 400, 490, 498, 499, 500, 501, 510, 600 ] as $n ) {
+	$times = [ $run( $n ), $run( $n ), $run( $n ) ];
+	sort( $times );
+
+	printf( "LIMIT %4d: median %7.1fms\n", $n, $times[1] );
+}
+```
+
+The step sits at exactly 500 because that is core's own threshold: `$split_the_query` is `$is_unfiltered_query && ( wp_using_ext_object_cache() || ( ! empty( $limits ) && $query_vars['posts_per_page'] < 500 ) )` in `WP_Query::get_posts()`. Below it core selects IDs and hydrates them; at it core selects whole rows and the tax query's temp table has to carry every matching post's full content. A site with a persistent object cache keeps the split at any size, which is why the guard costs nothing there, and it is also why this must be measured with `wp_using_ext_object_cache()` false.
 
 Those mirrors are a **lab**, not a survey. They prove behavior against real data. They say nothing about what the wider fleet has installed, and no task may reason from what is or is not installed on them.
 
@@ -70,7 +113,7 @@ Decided, not oversights. Do not "fix" these without raising them first.
 - **A cache hit can render fewer entries than asked.** `Mai_Query_Cache::hydrate()` drops ids whose post status changed (`lib/classes/class-mai-query-cache.php:374-381`). That is deliberate, so a stale grid can only shrink. Before this change it almost never showed, because nearly every read missed. Now reads hit, so it will. There is no re-pad and no top-up.
 - **A third-party `posts_orderby` filter can defeat the tiebreaker.** The early return keys on the clause containing `wp_posts.ID`, which a "pin this post to the top" filter also produces without being deterministic. The tiebreaker is then skipped and the padded query stays tie-unstable. Nothing in the Mai fleet does this today.
 - **`can_defer_excludes()` can decline a grid the cache would have taken.** It calls `is_cacheable()` with the grid args, where a `meta_value_num` grid has `meta_key` but no `meta_query` yet; `pre_query()` calls it later with `meta_query` already built. Only reachable when the optimizer is switched on, which is off by default. Declining to defer is the safe direction.
-- **The filter never fires for a guarded-out grid**, because `$can &&` short-circuits. A site cannot use `mai_post_grid_defer_excludes` to observe which grids declined.
+- ~~**The filter never fires for a guarded-out grid**, because `$can &&` short-circuits. A site cannot use `mai_post_grid_defer_excludes` to observe which grids declined.~~ Changed in review: the filter now fires for every grid and is handed the guards' verdict as its default, so a site can observe which grids declined. `$can &&` still wraps it, so returning true still cannot defeat a guard.
 - **Sticky posts and image priming need nothing.** Core's sticky reshuffle is gated on `is_home && ! ignore_sticky_posts`, and grids always set `ignore_sticky_posts => true` (`lib/classes/class-mai-grid.php:410`). `mai_prime_featured_images_cache` returns early unless it is the main query on an archive (`lib/functions/performance.php:285`), so it never sees a grid.
 
 ## Preflight

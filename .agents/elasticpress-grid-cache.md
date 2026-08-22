@@ -1,4 +1,4 @@
-# mai-engine — Grid result cache on ElasticPress sites (TODO / untested)
+# mai-engine: Grid result cache on ElasticPress sites (TODO / untested)
 
 **Repo:** maithemewp/mai-engine · **Branch:** develop
 **Created:** 2026-08-21 · **Status:** deliberately deferred, not started
