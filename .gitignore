@@ -37,3 +37,6 @@ vendor/maithemewp/deployable-guard
 # (git add -A) would commit ~98MB of WordPress core and PHPUnit to develop and beta, which
 # deploy as raw git trees to live sites.
 tests/vendor/
+
+# Regenerates with the current git ref, so tracking it dirties the tree after every commit.
+/vendor/composer/installed.php
