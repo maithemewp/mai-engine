@@ -100,10 +100,37 @@ function mai_do_upgrade() {
 				return;
 			}
 		}
+
+		if ( version_compare( $db_version, '2.41.0', '<' ) ) {
+			mai_upgrade_2_41_0();
+		}
 	}
 
 	// Update database version after upgrade.
 	mai_update_option( 'db-version', $plugin_version );
+}
+
+/**
+ * Clears the Kirki downloaded font cache.
+ *
+ * Kirki used to write font files as an md5 of the source URL with no file
+ * extension, so servers could not match font MIME or cache rules against them.
+ * Filenames now keep their real .woff2 extension, which makes every previously
+ * downloaded file unreachable under the new naming scheme. Without this, sites
+ * keep the old broken set alongside the new one.
+ *
+ * Reuses the existing flush so there is a single code path for this.
+ *
+ * @since 2.41.0
+ *
+ * @return void
+ */
+function mai_upgrade_2_41_0() {
+	if ( ! function_exists( 'mai_typography_flush_local_fonts' ) ) {
+		return;
+	}
+
+	mai_typography_flush_local_fonts();
 }
 
 /**

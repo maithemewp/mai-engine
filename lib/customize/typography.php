@@ -211,5 +211,10 @@ function mai_typography_flush_local_fonts() {
 	// Delete stored Kirki font data.
 	delete_option( 'kirki_downloaded_font_files' );
 
+	// Kirki caches Google's raw CSS response for a week, keyed by url + user agent.
+	// Without clearing it the flush rebuilds from that same cached CSS, so any problem
+	// in the font URLs themselves survives the flush. See themeum/kirki#2524.
+	delete_transient( 'kirki_remote_url_contents' );
+
 	return __( 'Fonts flushed successfully', 'mai-engine' );
 }
