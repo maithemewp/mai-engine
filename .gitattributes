@@ -19,3 +19,5 @@ phpcs.xml.dist export-ignore
 
 /bin export-ignore
 /tests export-ignore
+/docs export-ignore
+/.agents export-ignore

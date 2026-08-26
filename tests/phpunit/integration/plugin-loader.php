@@ -26,3 +26,59 @@ require_once $plugin_root . '/lib/blocks/general.php';
 // Only registers hooks and declares functions at load. Its init callback bails on
 // ! is_admin(), so the Genesis-dependent service providers are never constructed here.
 require_once $plugin_root . '/lib/admin/setup-wizard.php';
+
+// Mirrors the runtime autoloader in lib/functions/autoload.php without loading it, because
+// that file depends on mai_get_dir() from lib/init.php, which drags in Genesis. Same mapping:
+// Mai_Grid -> lib/classes/class-mai-grid.php.
+spl_autoload_register(
+	static function ( $class ) use ( $plugin_root ) {
+		if ( ! str_starts_with( $class, 'Mai_' ) ) {
+			return;
+		}
+
+		$file = $plugin_root . '/lib/classes/class-' . strtolower( str_replace( '_', '-', $class ) ) . '.php';
+
+		if ( is_readable( $file ) ) {
+			require_once $file;
+		}
+	}
+);
+
+// Mai_Grid::__construct() calls get_sanitized_args() and get_defaults(), which need the
+// display, layout and query field helpers. These declare functions and register ACF hooks;
+// they do not need Genesis.
+require_once $plugin_root . '/lib/fields/grid-display.php';
+require_once $plugin_root . '/lib/fields/grid-layout.php';
+require_once $plugin_root . '/lib/fields/wp-query.php';
+
+// MUST come before query-cache.php. That file hooks Mai_Query_Cache::on_delete to
+// deleted_post, and wp-phpunit's bootstrap calls _delete_all_posts() while setting up, which
+// fires that hook and calls mai_cache(). Without this require the whole bootstrap dies with
+// "Call to undefined function mai_cache()" before a single test runs, including the two that
+// already pass today. Measured, not theoretical.
+require_once $plugin_root . '/lib/functions/cache.php';
+
+// Registers Mai_Query_Cache on posts_pre_query and the_posts. Hooks on init, so it has to be
+// required here on muplugins_loaded; requiring it from inside a test is too late.
+require_once $plugin_root . '/lib/functions/query-cache.php';
+
+// Mai_Grid::do_grid_entries() renders each entry through mai_do_entry() before recording its
+// ID in Mai_Grid::$existing_post_ids, and mai_do_entry() builds a Mai_Entry, which reads the
+// Genesis-dependent config layer (mai_get_config()) this harness cannot load. A no-op keeps
+// the loop itself testable, which matters because that loop is the only thing that fills the
+// static behind the "Exclude displayed" setting. The markup it drops is not what any test
+// here asserts on.
+//
+// If lib/functions/entries.php is ever added to this file, delete this stub. Required above,
+// the guard stands down; required below, PHP fatals on the redeclare.
+if ( ! function_exists( 'mai_do_entry' ) ) {
+	/**
+	 * Test-harness no-op for the real mai_do_entry().
+	 *
+	 * @param WP_Post|WP_Term $entry The entry object.
+	 * @param array           $args  The grid args.
+	 *
+	 * @return void
+	 */
+	function mai_do_entry( $entry, $args = [] ) {}
+}
