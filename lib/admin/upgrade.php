@@ -126,6 +126,9 @@ function mai_do_upgrade() {
  * @return void
  */
 function mai_upgrade_2_41_0() {
+	// Defined in lib/customize/typography.php, which loads on init in every context,
+	// so this should always pass. Guarded anyway because a fatal here would white
+	// screen wp-admin for every site in the fleet on the same update.
 	if ( ! function_exists( 'mai_typography_flush_local_fonts' ) ) {
 		return;
 	}

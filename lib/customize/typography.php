@@ -175,25 +175,22 @@ function mai_typography_maybe_flush_local_fonts() {
  *
  * @since 2.11.0
  *
- * @return void
+ * @return string Result message, used by the Customizer notice in lib/init.php.
  */
 function mai_typography_flush_local_fonts() {
-	$dir = WP_CONTENT_DIR . '/fonts';
-
 	// From get_local_files_from_css() in class-kirki-fonts-downloader.php.
-	if ( ! file_exists( $dir ) ) {
-		return sprintf( '%s %s', $dir, __( 'does not exist.', 'mai-engine' ) );
-	}
+	$dir     = WP_CONTENT_DIR . '/fonts';
+	$existed = file_exists( $dir );
 
-	$files = new RecursiveIteratorIterator(
-		new RecursiveDirectoryIterator(
-			$dir,
-			RecursiveDirectoryIterator::SKIP_DOTS
-		),
-		RecursiveIteratorIterator::CHILD_FIRST
-	);
+	if ( $existed ) {
+		$files = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator(
+				$dir,
+				RecursiveDirectoryIterator::SKIP_DOTS
+			),
+			RecursiveIteratorIterator::CHILD_FIRST
+		);
 
-	if ( $files ) {
 		foreach ( $files as $file ) {
 			if ( $file->isDir() ) {
 				rmdir( $file->getRealPath() );
@@ -201,9 +198,15 @@ function mai_typography_flush_local_fonts() {
 				unlink( $file->getRealPath() );
 			}
 		}
+
+		rmdir( $dir );
 	}
 
-	rmdir( $dir );
+	/**
+	 * Everything below runs whether or not the directory was there. A missing
+	 * directory used to return early, which left the option and transient behind
+	 * and made the flush a no-op on exactly the sites already in a broken state.
+	 */
 
 	// Set option back to false.
 	mai_update_option( 'flush-typography', 0 );
@@ -215,6 +218,10 @@ function mai_typography_flush_local_fonts() {
 	// Without clearing it the flush rebuilds from that same cached CSS, so any problem
 	// in the font URLs themselves survives the flush. See themeum/kirki#2524.
 	delete_transient( 'kirki_remote_url_contents' );
+
+	if ( ! $existed ) {
+		return sprintf( '%s %s', $dir, __( 'does not exist.', 'mai-engine' ) );
+	}
 
 	return __( 'Fonts flushed successfully', 'mai-engine' );
 }
