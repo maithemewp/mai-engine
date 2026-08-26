@@ -264,25 +264,12 @@ But we shouldn't use them like this, because the custom property may not be set:
 To summarise, we have the "color palette", which are globals and should never be changed in the CSS. They can only be changed from the theme config or the Customizer settings. Then we also have the "element properties" which should be used to change an elements styles depending on the context.
 
 ### Kirki custom fixes/overrides
-* Via: https://github.com/themeum/kirki/issues/2524
-* File: kirki/kirki-packages/module-webfonts/src/Webfonts/Downloader.php
 
-**Change #1**
+Kirki is vendored by hand and carries local patches. **See `patches/README.md` for the authoritative list**, with real diffs, the reasoning behind each one, and the paths they move to in Kirki 5.2.x.
 
-```$user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8';```
+Summary as of 2026-08-26:
 
-to
+1. `kirki-packages/data-option/src/Option.php` returns a field's declared `$default` rather than an empty string when a nested option key is missing.
+2. `kirki-packages/module-webfonts/src/Webfonts/Downloader.php` carries one commented out line recording the old Safari user-agent. It is inert and safe to drop.
 
-```$user_agent = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:73.0) Gecko/20100101 Firefox/73.0';```
-
-to force use of woff2 instead of woff.
-
-**Change #2**
-
-```basename( wp_parse_url( $url, PHP_URL_PATH ) );```
-
-to
-
-```md5( $url );```
-
-to hash the URL uniquely and not worry about exactly what format it takes.
+Two entries previously listed here were wrong and have been removed. The Firefox user-agent was never our change, upstream shipped it in 5.1.0 (commit `6908691b`) 49 minutes before the commit we vendored. And the `md5( $url )` filename change was removed on 2026-08-26 because it stripped the `.woff2` extension, so servers could not match font MIME or cache rules and every repeat visitor re-downloaded the fonts. `patches/README.md` records that with the measurements.
