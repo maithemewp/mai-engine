@@ -48,7 +48,7 @@ Both still apply to current upstream, but the paths moved in 5.2.x:
 
 **Keep this one.** In `kirki_get_value()`, when a nested option key like `foo[bar]` is missing, upstream returns an empty string. We return the field's declared `$default` instead. `$default` is already a parameter of the method, so this is a behavior fix rather than a hack.
 
-This patch was undocumented anywhere until 2026-08-26 and existed only on a local branch named `kirki` with no remote. Do not delete that branch, and push it somewhere.
+This patch was undocumented anywhere until 2026-08-26. Until then the only record of it was a local branch named `kirki` with no remote, carrying the July 2024 commits that first vendored Kirki. That branch was deleted on 2026-08-26 once this file existed: its file content was byte identical to `develop`, so nothing unique was lost. Its tip was `e6295448899caacc2ff8b449ac78adc015c66074` if it is ever needed from the reflog.
 
 ### kirki-webfonts-useragent.diff
 
