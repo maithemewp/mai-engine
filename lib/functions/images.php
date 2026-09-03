@@ -49,17 +49,114 @@ function mai_image_srcset_order( $sources, $size_array, $image_src, $image_meta,
 }
 
 /**
+ * Registers the logo filters.
+ *
+ * Both filters are scoped around a single logo render rather than registered
+ * globally. `get_custom_logo_image_attributes` fires for every consumer of the
+ * site logo, including core's Site Logo block, so registering it globally forced
+ * loading="eager" onto a block an editor may have placed in a footer or anywhere
+ * else below the fold, making the browser fetch an image the visitor may never
+ * scroll to. Scoping leaves that block on core's own defaults.
+ *
+ * The context filter names the image for anything reading
+ * `wp_get_loading_optimization_attributes`, which is where WordPress decides
+ * loading, fetchpriority and decoding. Without a name every site logo, header
+ * logo and Site Logo block looks identical there, because they all carry the
+ * same `custom-logo` class.
+ *
+ * Always pair this with mai_remove_logo_filters().
+ *
+ * @since 2.41.0
+ *
+ * @return void
+ */
+function mai_add_logo_filters() {
+	// accepted_args defaults to 1, so the filter's $image_id and $blog_id are
+	// never passed and mai_add_logo_attributes() can take the hook directly.
+	add_filter( 'get_custom_logo_image_attributes', 'mai_add_logo_attributes' );
+	add_filter( 'wp_get_attachment_image_context', 'mai_get_logo_context' );
+}
+
+/**
+ * Removes the logo filters.
+ *
+ * @since 2.41.0
+ *
+ * @return void
+ */
+function mai_remove_logo_filters() {
+	remove_filter( 'get_custom_logo_image_attributes', 'mai_add_logo_attributes' );
+	remove_filter( 'wp_get_attachment_image_context', 'mai_get_logo_context' );
+}
+
+/**
+ * Returns the image context used for the site logo.
+ *
+ * @access private
+ *
+ * @since 2.41.0
+ *
+ * @return string
+ */
+function mai_get_logo_context() {
+	return 'mai_logo';
+}
+
+add_filter( 'wp_get_loading_optimization_attributes', 'mai_logo_declines_high_priority', 10, 4 );
+/**
+ * Hands the page's high-priority slot back after a logo declines it.
+ *
+ * WordPress gives exactly one image per page fetchpriority="high", tracked with a
+ * flag it flips off the first time an eligible image is seen. Eligibility is judged
+ * on the file's own width times height against a 50,000 pixel threshold, so a logo
+ * uploaded large for retina qualifies even though it paints small.
+ *
+ * mai_add_logo_attributes() sets fetchpriority="auto", which stops WordPress writing
+ * "high" onto the logo. It does not stop WordPress spending the slot: the flag is
+ * flipped either way, so no later image can claim it. On a grid layout that left the
+ * page with no high-priority image at all, which is worse than the logo having it.
+ *
+ * Turning the flag back on lets the next eligible image, normally the first entry
+ * image, take the slot the logo declined.
+ *
+ * @access private
+ *
+ * @since 2.41.0
+ *
+ * @param array  $loading_attrs The loading optimization attributes.
+ * @param string $tag_name      The tag name.
+ * @param array  $attr          The attributes for the tag.
+ * @param string $context       The context for the element.
+ *
+ * @return array
+ */
+function mai_logo_declines_high_priority( $loading_attrs, $tag_name, $attr, $context ) {
+	if ( ! in_array( $context, [ 'mai_logo', 'mai_scroll_logo' ], true ) ) {
+		return $loading_attrs;
+	}
+
+	if ( function_exists( 'wp_high_priority_element_flag' ) ) {
+		wp_high_priority_element_flag( true );
+	}
+
+	return $loading_attrs;
+}
+
+/**
+ * Returns the image context used for the sticky header scroll logo.
+ *
+ * @access private
+ *
+ * @since 2.41.0
+ *
+ * @return string
+ */
+function mai_get_scroll_logo_context() {
+	return 'mai_scroll_logo';
+}
+
+/**
  * Gets logo markup.
- *
- * The attribute filter is registered around this one call rather than globally.
- * `get_custom_logo_image_attributes` fires for every consumer of the site logo,
- * including core's Site Logo block — so registering it globally forced
- * loading="eager" onto a block that an editor may have placed in a footer or
- * anywhere else below the fold, making the browser fetch an image the visitor
- * may never scroll to. Scoping it here leaves that block on core's own defaults.
- *
- * The scroll logo is unaffected either way: mai_get_scroll_logo() calls
- * mai_add_logo_attributes() directly rather than going through the filter.
  *
  * @since 2.25.0
  * @since 2.41.0 Scoped the attribute filter to this call rather than registering
@@ -75,13 +172,11 @@ function mai_get_logo() {
 		return $logo;
 	}
 
-	// accepted_args defaults to 1, so the filter's $image_id and $blog_id are
-	// never passed and mai_add_logo_attributes() can take the hook directly.
-	add_filter( 'get_custom_logo_image_attributes', 'mai_add_logo_attributes' );
+	mai_add_logo_filters();
 
 	$logo = get_custom_logo();
 
-	remove_filter( 'get_custom_logo_image_attributes', 'mai_add_logo_attributes' );
+	mai_remove_logo_filters();
 
 	return $logo;
 }
@@ -108,7 +203,13 @@ function mai_get_scroll_logo() {
 		]
 	);
 
+	// The scroll logo renders inside the header logo, so the header's context
+	// filter is already active. Registering later wins, naming this one correctly.
+	add_filter( 'wp_get_attachment_image_context', 'mai_get_scroll_logo_context' );
+
 	$logo = wp_get_attachment_image( $logo_id, 'large', false, $atts );
+
+	remove_filter( 'wp_get_attachment_image_context', 'mai_get_scroll_logo_context' );
 
 	return $logo;
 }
@@ -349,16 +450,29 @@ function mai_get_fallback_image_id( $post_id ) {
  * reveals it — a hidden img is still fetched during initial load, so eager is what
  * prevents a pop-in there.
  *
- * It deliberately does not set fetchpriority. That hint is relative: it earns its
- * value by being scarce, and only pays off when it points at the LCP element.
- * On a grid layout the LCP is an entry image, so claiming high priority for a
- * logo puts a small (or entirely hidden) image ahead of the one that actually
- * paints the LCP. Measured on allhiphop.com, the LCP element is img.entry-image.
+ * It sets fetchpriority="auto" rather than leaving fetchpriority alone. The hint is
+ * relative: it earns its value by being scarce, and only pays off when it points at
+ * the LCP element. On a grid layout the LCP is an entry image, so claiming high
+ * priority for a logo puts a small, or entirely hidden, image ahead of the one that
+ * actually paints the LCP. Measured on allhiphop.com, the LCP element is
+ * img.entry-image.
+ *
+ * Dropping our own fetchpriority="high" was not enough on its own, because WordPress
+ * adds it back. It reads the loading="eager" above as "this is in the viewport", then
+ * judges LCP candidacy on the file's own width times height against a 50,000 pixel
+ * threshold. A logo uploaded large for retina clears that easily. totalprosports
+ * ships a 1251x365 file, 456,615 pixels, that paints at 160x47, so WordPress spends
+ * the page's single high-priority slot on a logo 61 times smaller than it measured.
+ *
+ * "auto" is WordPress's own opt-out, added for blocks that may not be displayed. It
+ * stops the image being considered for the high slot, and stops it counting toward
+ * the threshold that decides which later images get lazy loaded.
  *
  * @access private
  *
  * @since 2.25.0
- * @since 2.41.0 Stopped forcing fetchpriority="high" — see above.
+ * @since 2.41.0 Stopped forcing fetchpriority="high", then set it to "auto" so
+ *               WordPress does not add "high" back. See above.
  *
  * @param array $attr The existing attributes.
  *
@@ -373,8 +487,9 @@ function mai_add_logo_attributes( $attr ) {
 	$mobile    = isset( $widths['mobile'] ) ? $widths['mobile'] : 0;
 	$mobile    = max( $mobile, 1 );
 	$overrides = [
-		'loading' => 'eager',
-		'sizes'   => sprintf( '(min-width: %s) %s, %s', $break, mai_get_unit_value( $desktop ), mai_get_unit_value( $mobile ) ),
+		'loading'       => 'eager',
+		'fetchpriority' => 'auto',
+		'sizes'         => sprintf( '(min-width: %s) %s, %s', $break, mai_get_unit_value( $desktop ), mai_get_unit_value( $mobile ) ),
 	];
 
 	return wp_parse_args( $overrides, $attr	);

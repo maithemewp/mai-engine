@@ -358,6 +358,21 @@ function mai_maybe_hide_site_header() {
 	remove_action( 'genesis_header', 'genesis_header_markup_close', 15 );
 }
 
+add_action( 'genesis_site_title', 'mai_add_logo_filters', -1 );
+add_action( 'genesis_site_title', 'mai_remove_logo_filters', 1 );
+/*
+ * Genesis prints the header logo with the_custom_logo() on genesis_site_title at
+ * priority 0, so the logo filters have to straddle that call. Registering them
+ * globally would also catch core's Site Logo block wherever an editor placed it,
+ * which is what this pair avoids.
+ *
+ * Without this the header logo gets no Mai attributes at all: mai_get_logo() is
+ * only reached through the [mai_logo] shortcode, so the logo lost its eager
+ * loading and its width-aware sizes, falling back to core's 100vw guess.
+ *
+ * @since 2.41.0
+ */
+
 add_action( 'genesis_site_title', 'mai_maybe_do_custom_scroll_logo', 0 );
 /**
  * Adds filter on custom logo before site title.
