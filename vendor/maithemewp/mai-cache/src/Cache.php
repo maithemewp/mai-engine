@@ -33,6 +33,18 @@ class Cache {
 	 */
 	private static array $tokens = [];
 
+	/**
+	 * Storage format segment in every key (from 0.4.0).
+	 *
+	 * Bumped whenever the shape of a stored value changes, so a newer version
+	 * never reads an older version's entries and vice versa. Without it, a
+	 * downgrade (or a lower bundled copy winning the bootstrap race) would read
+	 * an envelope as if it were the value inside it.
+	 *
+	 * @since 0.4.0
+	 */
+	private const FORMAT = 'e1';
+
 	private string $prefix;
 	private Store $store;
 	private string $group = '';
@@ -97,10 +109,10 @@ class Cache {
 	 * @since 0.1.0
 	 */
 	public function remember( string $key, callable $callback, int $expire ): mixed {
-		$cached = $this->get( $key );
+		$hit = $this->fetch( $key );
 
-		if ( false !== $cached ) {
-			return $cached;
+		if ( null !== $hit ) {
+			return $hit['value'];
 		}
 
 		$value = $callback();
@@ -119,14 +131,23 @@ class Cache {
 	 * @since 0.2.0
 	 */
 	public function pull( string $key, mixed $default = null ): mixed {
-		$cached = $this->get( $key );
+		$hit = $this->fetch( $key );
 
-		if ( false !== $cached ) {
+		if ( null !== $hit ) {
 			$this->delete( $key );
-			return $cached;
+			return $hit['value'];
 		}
 
 		return $default;
+	}
+
+	/**
+	 * Whether a value is stored, whatever that value is -- including false.
+	 *
+	 * @since 0.4.0
+	 */
+	public function has( string $key ): bool {
+		return null !== $this->fetch( $key );
 	}
 
 	/**
@@ -135,11 +156,9 @@ class Cache {
 	 * @since 0.1.0
 	 */
 	public function get( string $key ): mixed {
-		if ( ! $this->can_cache() ) {
-			return false;
-		}
+		$hit = $this->fetch( $key );
 
-		return $this->store->read( $this->key( $key ) );
+		return null === $hit ? false : $hit['value'];
 	}
 
 	/**
@@ -148,11 +167,54 @@ class Cache {
 	 * @since 0.1.0
 	 */
 	public function set( string $key, mixed $value, int $expire ): bool {
+		return $this->put( $key, $value, null, $expire );
+	}
+
+	/**
+	 * Read the stored envelope for a key, or null on a miss.
+	 *
+	 * Every value is stored wrapped, so a hit is always an array and a miss is
+	 * anything else. That is what lets a stored `false` be a hit: the store's
+	 * own miss sentinel is `false`, and before 0.4.0 the two were the same
+	 * thing, so remember() re-ran its callback on every request for any value
+	 * that happened to be false.
+	 *
+	 * A raw pre-0.4.0 value is not an envelope and reads as a miss. It is then
+	 * recomputed, rewritten wrapped, and the old entry ages out by TTL. The
+	 * FORMAT key segment means that case only arises for entries written by a
+	 * consumer bypassing key(), which nothing shipped does.
+	 *
+	 * @since 0.4.0
+	 *
+	 * @return array{_v: ?string, value: mixed}|null
+	 */
+	private function fetch( string $key ): ?array {
+		if ( ! $this->can_cache() ) {
+			return null;
+		}
+
+		$raw = $this->store->read( $this->key( $key ) );
+
+		if ( ! is_array( $raw ) || ! array_key_exists( 'value', $raw ) || ! array_key_exists( '_v', $raw ) ) {
+			return null;
+		}
+
+		return $raw;
+	}
+
+	/**
+	 * Write a value in its envelope. `_v` is null for a plain entry and the
+	 * scope version for a stale-while-revalidate one; read_swr() uses that to
+	 * tell them apart.
+	 *
+	 * @since 0.4.0
+	 */
+	private function put( string $key, mixed $value, ?string $version, int $expire ): bool {
 		if ( ! $this->can_cache() ) {
 			return false;
 		}
 
-		return $this->store->write( $this->key( $key ), $value, max( 0, $expire ) );
+		return $this->store->write( $this->key( $key ), [ '_v' => $version, 'value' => $value ], max( 0, $expire ) );
 	}
 
 	/**
@@ -269,15 +331,18 @@ class Cache {
 	 * @return array{value:mixed,fresh:bool}|null
 	 */
 	public function read_swr( string $key, string $version ): ?array {
-		$envelope = $this->get( $key );
+		$hit = $this->fetch( $key );
 
-		if ( ! is_array( $envelope ) || ! array_key_exists( '_v', $envelope ) ) {
+		// A plain set() entry carries no version. It is not this reader's to
+		// serve -- reporting it as stale would hand back a value nobody ever
+		// stamped, so it reads as cold instead.
+		if ( null === $hit || null === $hit['_v'] ) {
 			return null;
 		}
 
 		return [
-			'value' => $envelope['value'] ?? null,
-			'fresh' => hash_equals( (string) $envelope['_v'], $version ),
+			'value' => $hit['value'],
+			'fresh' => hash_equals( (string) $hit['_v'], $version ),
 		];
 	}
 
@@ -294,7 +359,7 @@ class Cache {
 	 * @return bool
 	 */
 	public function write_swr( string $key, mixed $value, string $version, int $ttl ): bool {
-		return $this->set( $key, [ '_v' => $version, 'value' => $value ], $ttl );
+		return $this->put( $key, $value, $version, $ttl );
 	}
 
 	/**
@@ -314,14 +379,16 @@ class Cache {
 	}
 
 	/**
-	 * Build the fully-namespaced key: prefix, prefix version token, optional
-	 * group + its version token, then the user key. Rotating a token (flush)
-	 * changes every key under that scope, so old entries become unreachable.
+	 * Build the fully-namespaced key: prefix, storage format, prefix version
+	 * token, optional group + its version token, then the user key. Rotating a
+	 * token (flush) changes every key under that scope, so old entries become
+	 * unreachable. The format segment does the same across versions of this
+	 * package -- see FORMAT.
 	 *
 	 * @since 0.1.0
 	 */
 	public function key( string $key ): string {
-		$parts = [ $this->prefix, $this->token( $this->prefix ) ];
+		$parts = [ $this->prefix, self::FORMAT, $this->token( $this->prefix ) ];
 
 		if ( '' !== $this->group ) {
 			$parts[] = $this->group;

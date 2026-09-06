@@ -23,7 +23,7 @@
     "ext-json": "*",
     "ext-libxml": "*",
     "afragen/wp-dependency-installer": "^4",
-    "maithemewp/mai-cache": "dev-develop",
+    "maithemewp/mai-cache": "^0.4.0",
     "proteusthemes/wp-content-importer-v2": "^2.1",
     "wpengine/advanced-custom-fields-pro": "^6.6.0",
     "yahnis-elsts/plugin-update-checker": "^5"

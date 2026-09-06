@@ -95,4 +95,4 @@ if ( ! class_exists( 'Mai_Cache_Bootstrap', false ) ) {
 }
 
 // Register THIS plugin's bundled version. Bump the string when releasing.
-Mai_Cache_Bootstrap::register( '0.2.0', __DIR__ . '/src' );
+Mai_Cache_Bootstrap::register( '0.4.0', __DIR__ . '/src' );

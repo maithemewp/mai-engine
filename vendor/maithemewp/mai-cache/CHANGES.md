@@ -4,6 +4,23 @@ All notable changes to `mai-cache` are documented here.
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: [Semantic Versioning](https://semver.org/).
 
+## [0.4.0] - 2026-09-06
+
+### Fixed
+
+- **A stored `false` is now a cache hit.** The transient and object-cache APIs both use `false` as their miss sentinel, so a value that happened to be `false` was indistinguishable from nothing at all, and `remember()` re-ran its callback on every request for it. For a cached yes/no answer that is every request on one side of the answer, forever. Every value is now stored in an envelope (`[ '_v' => ..., 'value' => ... ]`), so a hit is always an array and can never collide with the sentinel. `pull()` had the same bug and gets the same fix.
+- **The bootstrap registered every release as `0.2.0`.** `init.php` never had its version string bumped after 0.2.0, so the "highest bundled version wins" registry was comparing equal strings and the winner was whichever plugin loaded first. Now `0.4.0`, and worth checking on each release.
+
+### Added
+
+- `has( string $key ): bool` -- whether a value is stored, whatever it is. The only way to tell a stored `false` from a miss, since `get()` keeps returning `false` for both.
+- A storage-format segment in every key (`e1`), after the prefix. A newer version never reads an older version's entries and vice versa, so a downgrade -- or a lower bundled copy winning the bootstrap -- is a one-time miss rather than a misread of an envelope as a value.
+
+### Changed
+
+- `write_swr()` and `set()` now share one envelope; a plain entry carries `_v => null`. `read_swr()` returns `null` for a plain entry rather than reporting it stale, because nobody stamped a version on it.
+- On upgrade, existing entries live under the old key layout and are simply unreachable. They are recomputed on first request and age out by TTL -- the same story as the 0.2.0 upgrade. No flush needed.
+
 ## [0.3.1] - 2026-07-08
 
 ### Changed

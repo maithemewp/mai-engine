@@ -71,10 +71,11 @@ $value = $cache->remember( 'popular_posts', fn() => …, HOUR_IN_SECONDS );
 | `prefix()` | `string` | The instance's prefix. |
 | `remember(string $key, callable $callback, int $expire)` | `mixed` | Get cached value; on miss, run callback and cache the result. WP_Error results are NOT cached. |
 | `pull(string $key, mixed $default = null)` | `mixed` | Read-once: get value and delete it in one call. Returns `$default` if missing. |
-| `get(string $key)` | `mixed` | Direct read. Returns `false` on miss or when caching is disabled. |
+| `get(string $key)` | `mixed` | Direct read. Returns `false` on miss or when caching is disabled. A stored `false` also reads as `false`, so use `has()` when `false` is a value you cache. |
+| `has(string $key)` | `bool` | Whether a value is stored, whatever it is -- including `false`. The only way to tell a stored `false` from a miss. |
 | `set(string $key, mixed $value, int $expire)` | `bool` | Direct write. Returns `false` when caching is disabled. |
 | `delete(string $key)` | `bool` | Direct delete. |
-| `key(string $key)` | `string` | Builds the fully-prefixed transient key. |
+| `key(string $key)` | `string` | Builds the fully-prefixed transient key: prefix, storage format, version token, optional group and its token, then your key. |
 | `group(string $area)` | `Cache` | Return a scoped instance for the given sub-group (shares the same backing store). |
 | `flush()` | `bool` | Invalidate all entries under the current prefix or group by rotating the version token. |
 | `can_cache()` | `bool` | False when SCRIPT_DEBUG is on or `{prefix}_can_cache` filter returns false. |
@@ -209,6 +210,17 @@ define( 'SCRIPT_DEBUG', true );
 ```
 
 `SCRIPT_DEBUG` is checked automatically: when true, every `get()` returns `false` and `set()` is a no-op. No more "why is this still showing the old value" debugging sessions.
+
+### Caching a `false`
+
+Values are stored in an envelope, so a stored `false` is a real hit: `remember()` will not re-run its callback for it. `get()` still returns `false` for both a miss and a stored `false`, because that is its long-standing contract -- reach for `has()` or `remember()` when the distinction matters.
+
+```php
+$cache->set( 'has_tag', false, 300 );
+
+$cache->get( 'has_tag' );  // false -- same as a miss
+$cache->has( 'has_tag' );  // true  -- it is there
+```
 
 ### Direct get / set when you need it
 
