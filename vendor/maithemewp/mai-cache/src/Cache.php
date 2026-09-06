@@ -34,16 +34,17 @@ class Cache {
 	private static array $tokens = [];
 
 	/**
-	 * Storage format segment in every key (from 0.4.0).
+	 * Storage schema version, present in every key (from 0.4.0).
 	 *
-	 * Bumped whenever the shape of a stored value changes, so a newer version
-	 * never reads an older version's entries and vice versa. Without it, a
-	 * downgrade (or a lower bundled copy winning the bootstrap race) would read
-	 * an envelope as if it were the value inside it.
+	 * Bumped whenever the shape of a stored value changes -- s2, s3 and so on,
+	 * never a different letter -- so a newer version never reads an older
+	 * version's entries and vice versa. Without it, a downgrade (or a lower
+	 * bundled copy winning the bootstrap race) would read an envelope as if it
+	 * were the value inside it.
 	 *
 	 * @since 0.4.0
 	 */
-	private const FORMAT = 'e1';
+	private const SCHEMA = 's1';
 
 	private string $prefix;
 	private Store $store;
@@ -181,7 +182,7 @@ class Cache {
 	 *
 	 * A raw pre-0.4.0 value is not an envelope and reads as a miss. It is then
 	 * recomputed, rewritten wrapped, and the old entry ages out by TTL. The
-	 * FORMAT key segment means that case only arises for entries written by a
+	 * SCHEMA key segment means that case only arises for entries written by a
 	 * consumer bypassing key(), which nothing shipped does.
 	 *
 	 * @since 0.4.0
@@ -379,16 +380,16 @@ class Cache {
 	}
 
 	/**
-	 * Build the fully-namespaced key: prefix, storage format, prefix version
+	 * Build the fully-namespaced key: prefix, storage schema, prefix version
 	 * token, optional group + its version token, then the user key. Rotating a
 	 * token (flush) changes every key under that scope, so old entries become
-	 * unreachable. The format segment does the same across versions of this
-	 * package -- see FORMAT.
+	 * unreachable. The schema segment does the same across versions of this
+	 * package -- see SCHEMA.
 	 *
 	 * @since 0.1.0
 	 */
 	public function key( string $key ): string {
-		$parts = [ $this->prefix, self::FORMAT, $this->token( $this->prefix ) ];
+		$parts = [ $this->prefix, self::SCHEMA, $this->token( $this->prefix ) ];
 
 		if ( '' !== $this->group ) {
 			$parts[] = $this->group;

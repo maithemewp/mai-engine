@@ -75,7 +75,7 @@ $value = $cache->remember( 'popular_posts', fn() => …, HOUR_IN_SECONDS );
 | `has(string $key)` | `bool` | Whether a value is stored, whatever it is -- including `false`. The only way to tell a stored `false` from a miss. |
 | `set(string $key, mixed $value, int $expire)` | `bool` | Direct write. Returns `false` when caching is disabled. |
 | `delete(string $key)` | `bool` | Direct delete. |
-| `key(string $key)` | `string` | Builds the fully-prefixed transient key: prefix, storage format, version token, optional group and its token, then your key. |
+| `key(string $key)` | `string` | Builds the fully-prefixed transient key: prefix, storage schema, version token, optional group and its token, then your key. |
 | `group(string $area)` | `Cache` | Return a scoped instance for the given sub-group (shares the same backing store). |
 | `flush()` | `bool` | Invalidate all entries under the current prefix or group by rotating the version token. |
 | `can_cache()` | `bool` | False when SCRIPT_DEBUG is on or `{prefix}_can_cache` filter returns false. |

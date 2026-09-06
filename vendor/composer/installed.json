@@ -1002,12 +1002,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/maithemewp/mai-cache.git",
-                "reference": "21c8c5621acbc822dd8ec157a5e4a990a088c06e"
+                "reference": "3bb506f483d3191949263e5b7f1f11e464657dc6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/maithemewp/mai-cache/zipball/21c8c5621acbc822dd8ec157a5e4a990a088c06e",
-                "reference": "21c8c5621acbc822dd8ec157a5e4a990a088c06e",
+                "url": "https://api.github.com/repos/maithemewp/mai-cache/zipball/3bb506f483d3191949263e5b7f1f11e464657dc6",
+                "reference": "3bb506f483d3191949263e5b7f1f11e464657dc6",
                 "shasum": ""
             },
             "require": {
@@ -1017,7 +1017,7 @@
                 "brain/monkey": "^2.6",
                 "phpunit/phpunit": "^10.5"
             },
-            "time": "2026-09-06T21:55:28+00:00",
+            "time": "2026-09-06T22:02:21+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {

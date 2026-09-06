@@ -14,7 +14,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ### Added
 
 - `has( string $key ): bool` -- whether a value is stored, whatever it is. The only way to tell a stored `false` from a miss, since `get()` keeps returning `false` for both.
-- A storage-format segment in every key (`e1`), after the prefix. A newer version never reads an older version's entries and vice versa, so a downgrade -- or a lower bundled copy winning the bootstrap -- is a one-time miss rather than a misread of an envelope as a value.
+- A storage-schema segment in every key (`s1`), after the prefix. Bumps to `s2`, `s3` and so on whenever the stored shape changes. A newer version never reads an older version's entries and vice versa, so a downgrade -- or a lower bundled copy winning the bootstrap -- is a one-time miss rather than a misread of an envelope as a value.
 
 ### Changed
 
