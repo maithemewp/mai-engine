@@ -43,3 +43,5 @@ tests/vendor/
 
 # Local mai-sync environment config.
 mai-sync.json
+
+mai-sites.json
