@@ -35,6 +35,11 @@ add_filter( 'post_class', 'mai_remove_post_classes', 10, 3 );
  * @return array
  */
 function mai_remove_post_classes( $classes, $class, $post_id ) {
+	// Keep core classes in the admin. List tables use status-{status} on rows.
+	if ( is_admin() && ! wp_doing_ajax() ) {
+		return $classes;
+	}
+
 	return array_diff(
 		$classes,
 		[

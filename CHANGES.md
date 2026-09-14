@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2.41.0 (TBD)
+* Fixed: Post classes are no longer stripped in the WordPress admin, so rows on the Posts screen keep their `status-{status}` class.
 * Fixed: The header logo lost its eager loading and its width-aware `sizes` earlier in this release, falling back to WordPress's guess that it might fill the whole viewport. It is reconnected, and core's Site Logo block is still left on WordPress's own defaults wherever an editor places it.
 * Fixed: The logo could take the browser's single high-priority slot away from the page's main image. WordPress judges that on the file's own dimensions, so a logo uploaded large for retina looks like the biggest image on the page even when it paints small. The logo now declines the slot and passes it to the first entry image.
 * Changed: [Developers] Site logo and scroll logo images are now named through `wp_get_attachment_image_context` as `mai_logo` and `mai_scroll_logo`, so other code can tell them apart from anything else using the same `custom-logo` class.
