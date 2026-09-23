@@ -13,14 +13,18 @@ jobs:
     name: Committed autoloader is deployable as-is
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+      - uses: actions/checkout@v5
         with:
           repository: bizbudding/deployable-guard
           ref: v1
           path: .deployable-guard
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'
+          php-version: '8.1'
       - name: Verify committed autoloader has no uncommitted deps
         run: php .deployable-guard/bin/deployable-guard check --root="$GITHUB_WORKSPACE"
+      - name: How to fix a failed check
+        if: failure()
+        run: |
+          echo "::error title=Deployable check failed::A committed autoloader references files that are not git-tracked, so a raw-tree deploy would fatal on load. Fix: run 'composer dump-autoload --no-dev' and commit the result. Tip: run 'composer install' once to install the local pre-commit hook, which catches this before you push (see the step log above for the exact files)."
