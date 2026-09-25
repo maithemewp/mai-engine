@@ -133,17 +133,9 @@ class WidgetsBlockEditorTest extends MaiIntegrationTestCase {
 		$this->assertStringContainsString( 'Widget areas can now hold blocks.', $this->notice_html() );
 	}
 
-	public function test_the_block_screen_gets_a_pinned_link_back(): void {
+	public function test_the_block_screen_has_no_notice(): void {
 		wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
-		wp_register_script( 'wp-edit-widgets', false );
 
-		mai_widgets_classic_editor_link( 'widgets.php' );
-
-		$script = implode( '', (array) wp_scripts()->get_data( 'wp-edit-widgets', 'after' ) );
-
-		$this->assertStringContainsString( 'Switch to the classic widget screen', $script );
-		$this->assertStringContainsString( 'isDismissible: false', $script );
-		$this->assertStringNotContainsString( '&amp;', $script );
 		$this->assertSame( '', $this->notice_html() );
 	}
 

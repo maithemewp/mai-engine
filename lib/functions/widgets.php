@@ -167,7 +167,10 @@ function mai_switch_widgets_editor( $blocks ) {
 
 add_action( 'admin_post_mai_switch_widgets_editor', 'mai_switch_widgets_editor_action' );
 /**
- * Handles the switch link on the Widgets screen.
+ * Handles the Switch to blocks link on the Widgets screen.
+ *
+ * The switch only goes one way. Going back to the classic screen takes code:
+ * `add_filter( 'use_widgets_block_editor', '__return_false' );`.
  *
  * @since 2.41.0
  *
@@ -180,61 +183,19 @@ function mai_switch_widgets_editor_action() {
 		wp_die( esc_html__( 'You do not have permission to change the widget screen.', 'mai-engine' ), 403 );
 	}
 
-	mai_switch_widgets_editor( 'blocks' === sanitize_key( $_GET['to'] ?? '' ) );
+	mai_switch_widgets_editor( true );
 
 	wp_safe_redirect( admin_url( 'widgets.php' ) );
 	exit;
 }
 
 /**
- * Returns the link that switches the widget screen.
- *
- * The URL is not escaped. Escape it for the context it goes into.
+ * Returns the Switch to blocks link.
  *
  * @since 2.41.0
- *
- * @param bool $blocks Whether the link switches to blocks.
  *
  * @return string
  */
-function mai_get_switch_widgets_editor_url( $blocks ) {
-	// Built raw rather than with wp_nonce_url(), which escapes & for HTML. The block
-	// screen's link goes through a script, where an escaped & breaks the URL.
-	return add_query_arg(
-		[
-			'action'   => 'mai_switch_widgets_editor',
-			'to'       => $blocks ? 'blocks' : 'classic',
-			'_wpnonce' => wp_create_nonce( 'mai_switch_widgets_editor' ),
-		],
-		admin_url( 'admin-post.php' )
-	);
-}
-
-add_action( 'admin_enqueue_scripts', 'mai_widgets_classic_editor_link' );
-/**
- * Adds the link back to the classic widget screen on the block widget screen.
- *
- * The block widget editor clears the page's admin notices when it starts, so the
- * link goes through its own notices store instead. It's pinned, because it's the
- * only switch there is.
- *
- * @since 2.41.0
- *
- * @param string $hook_suffix The current admin page.
- *
- * @return void
- */
-function mai_widgets_classic_editor_link( $hook_suffix ) {
-	if ( 'widgets.php' !== $hook_suffix || ! wp_use_widgets_block_editor() || ! current_user_can( 'edit_theme_options' ) ) {
-		return;
-	}
-
-	$script = sprintf(
-		'wp.domReady( function() { wp.data.dispatch( "core/notices" ).createInfoNotice( %s, { id: "mai-widgets-classic-editor", isDismissible: false, actions: [ { label: %s, url: %s } ] } ); } );',
-		wp_json_encode( __( 'Widget areas use blocks.', 'mai-engine' ) ),
-		wp_json_encode( __( 'Switch to the classic widget screen', 'mai-engine' ) ),
-		wp_json_encode( mai_get_switch_widgets_editor_url( false ) )
-	);
-
-	wp_add_inline_script( 'wp-edit-widgets', $script );
+function mai_get_switch_widgets_editor_url() {
+	return wp_nonce_url( admin_url( 'admin-post.php?action=mai_switch_widgets_editor' ), 'mai_switch_widgets_editor' );
 }
