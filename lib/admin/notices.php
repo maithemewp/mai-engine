@@ -195,11 +195,14 @@ function mai_dismiss_lifetime_notice() {
 
 add_action( 'current_screen', 'mai_widgets_block_editor_notice' );
 /**
- * Tells sites on the classic widget screen they can switch to blocks.
+ * Adds the switch between the block and classic widget screens.
  *
- * Shows on the Widgets screen only, to people who can manage widgets, until they
- * dismiss it. Sites that need the classic screen, such as ones relying on a widget
- * add-on, can close it for good.
+ * A dismissible notice on the classic screen with a button to switch to blocks.
+ * Sites that need the classic screen, such as ones relying on a widget add-on,
+ * can close it for good. The block screen gets its link back from
+ * mai_widgets_classic_editor_link().
+ *
+ * Shows only to people who can manage widgets.
  *
  * @since 2.41.0
  *
@@ -208,7 +211,12 @@ add_action( 'current_screen', 'mai_widgets_block_editor_notice' );
  * @return void
  */
 function mai_widgets_block_editor_notice( $screen ) {
-	if ( 'widgets' !== $screen->id || wp_use_widgets_block_editor() || ! current_user_can( 'edit_theme_options' ) ) {
+	if ( 'widgets' !== $screen->id || ! current_user_can( 'edit_theme_options' ) ) {
+		return;
+	}
+
+	// The block screen's link back is added by mai_widgets_classic_editor_link().
+	if ( wp_use_widgets_block_editor() ) {
 		return;
 	}
 
@@ -218,10 +226,10 @@ function mai_widgets_block_editor_notice( $screen ) {
 
 	add_action( 'admin_notices', function() {
 		printf(
-			'<div class="notice notice-info is-dismissible mai-widgets-block-editor-notice"><p>%s <a href="%s">%s</a></p></div>',
-			esc_html__( 'Widget areas can now hold blocks.', 'mai-engine' ),
-			esc_url( admin_url( 'customize.php?autofocus[section]=' . mai_get_handle() . '-widgets' ) ),
-			esc_html__( 'Turn it on in the Customizer', 'mai-engine' )
+			'<div class="notice notice-info is-dismissible mai-widgets-block-editor-notice"><p>%s</p><p><a class="button button-primary" href="%s">%s</a></p></div>',
+			esc_html__( 'Widget areas can now hold blocks. Your current widgets stay as they are.', 'mai-engine' ),
+			esc_url( mai_get_switch_widgets_editor_url( true ) ),
+			esc_html__( 'Switch to blocks', 'mai-engine' )
 		);
 		?>
 		<script>

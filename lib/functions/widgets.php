@@ -145,3 +145,96 @@ add_action( 'admin_init', 'mai_remove_genesis_block_widgets_notice' );
 function mai_remove_genesis_block_widgets_notice() {
 	remove_action( 'admin_notices', 'genesis_block_widgets_optin_notification' );
 }
+
+/**
+ * Switches the widget screen between blocks and classic, and saves the choice.
+ *
+ * Widgets stay as they are. The block editor shows each classic widget as a
+ * Legacy Widget block, with a live preview and its own settings form. Mai
+ * Synced Patterns widgets are not converted to synced pattern blocks, because
+ * the block widget editor doesn't allow those (`ALLOW_REUSABLE_BLOCKS` is false
+ * in core's edit-widgets package).
+ *
+ * @since 2.41.0
+ *
+ * @param bool $blocks Whether to use the block widget editor.
+ *
+ * @return void
+ */
+function mai_switch_widgets_editor( $blocks ) {
+	mai_update_option( 'widgets-block-editor', (bool) $blocks );
+}
+
+add_action( 'admin_post_mai_switch_widgets_editor', 'mai_switch_widgets_editor_action' );
+/**
+ * Handles the switch link on the Widgets screen.
+ *
+ * @since 2.41.0
+ *
+ * @return void
+ */
+function mai_switch_widgets_editor_action() {
+	check_admin_referer( 'mai_switch_widgets_editor' );
+
+	if ( ! current_user_can( 'edit_theme_options' ) ) {
+		wp_die( esc_html__( 'You do not have permission to change the widget screen.', 'mai-engine' ), 403 );
+	}
+
+	mai_switch_widgets_editor( 'blocks' === sanitize_key( $_GET['to'] ?? '' ) );
+
+	wp_safe_redirect( admin_url( 'widgets.php' ) );
+	exit;
+}
+
+/**
+ * Returns the link that switches the widget screen.
+ *
+ * The URL is not escaped. Escape it for the context it goes into.
+ *
+ * @since 2.41.0
+ *
+ * @param bool $blocks Whether the link switches to blocks.
+ *
+ * @return string
+ */
+function mai_get_switch_widgets_editor_url( $blocks ) {
+	// Built raw rather than with wp_nonce_url(), which escapes & for HTML. The block
+	// screen's link goes through a script, where an escaped & breaks the URL.
+	return add_query_arg(
+		[
+			'action'   => 'mai_switch_widgets_editor',
+			'to'       => $blocks ? 'blocks' : 'classic',
+			'_wpnonce' => wp_create_nonce( 'mai_switch_widgets_editor' ),
+		],
+		admin_url( 'admin-post.php' )
+	);
+}
+
+add_action( 'admin_enqueue_scripts', 'mai_widgets_classic_editor_link' );
+/**
+ * Adds the link back to the classic widget screen on the block widget screen.
+ *
+ * The block widget editor clears the page's admin notices when it starts, so the
+ * link goes through its own notices store instead. It's pinned, because it's the
+ * only switch there is.
+ *
+ * @since 2.41.0
+ *
+ * @param string $hook_suffix The current admin page.
+ *
+ * @return void
+ */
+function mai_widgets_classic_editor_link( $hook_suffix ) {
+	if ( 'widgets.php' !== $hook_suffix || ! wp_use_widgets_block_editor() || ! current_user_can( 'edit_theme_options' ) ) {
+		return;
+	}
+
+	$script = sprintf(
+		'wp.domReady( function() { wp.data.dispatch( "core/notices" ).createInfoNotice( %s, { id: "mai-widgets-classic-editor", isDismissible: false, actions: [ { label: %s, url: %s } ] } ); } );',
+		wp_json_encode( __( 'Widget areas use blocks.', 'mai-engine' ) ),
+		wp_json_encode( __( 'Switch to the classic widget screen', 'mai-engine' ) ),
+		wp_json_encode( mai_get_switch_widgets_editor_url( false ) )
+	);
+
+	wp_add_inline_script( 'wp-edit-widgets', $script );
+}

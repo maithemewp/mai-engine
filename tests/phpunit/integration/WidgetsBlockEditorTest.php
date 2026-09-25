@@ -133,31 +133,37 @@ class WidgetsBlockEditorTest extends MaiIntegrationTestCase {
 		$this->assertStringContainsString( 'Widget areas can now hold blocks.', $this->notice_html() );
 	}
 
-	public function test_the_notice_hides_once_blocks_are_on_or_it_is_dismissed(): void {
+	public function test_the_block_screen_gets_a_pinned_link_back(): void {
+		wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
+		wp_register_script( 'wp-edit-widgets', false );
+
+		mai_widgets_classic_editor_link( 'widgets.php' );
+
+		$script = implode( '', (array) wp_scripts()->get_data( 'wp-edit-widgets', 'after' ) );
+
+		$this->assertStringContainsString( 'Switch to the classic widget screen', $script );
+		$this->assertStringContainsString( 'isDismissible: false', $script );
+		$this->assertStringNotContainsString( '&amp;', $script );
+		$this->assertSame( '', $this->notice_html() );
+	}
+
+	public function test_the_classic_notice_hides_once_dismissed(): void {
 		$user = self::factory()->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $user );
-
-		$this->assertSame( '', $this->notice_html() );
-
 		$this->use_widgets( [ 'search-2' ] );
 		update_user_meta( $user, 'mai_widgets_block_editor_notice_dismissed', 1 );
-		$this->assertSame( '', $this->notice_html() );
-	}
-
-	public function test_the_notice_needs_widget_permissions(): void {
-		wp_set_current_user( self::factory()->user->create( [ 'role' => 'editor' ] ) );
-		$this->use_widgets( [ 'search-2' ] );
 
 		$this->assertSame( '', $this->notice_html() );
 	}
 
-	public function test_a_new_install_saves_its_choice_so_it_cannot_flip(): void {
-		mai_do_upgrade();
+	public function test_switching_saves_the_choice_and_leaves_widgets_alone(): void {
+		$this->use_widgets( [ 'mai_reusable_block_widget-2', 'search-2' ] );
 
-		$this->assertTrue( get_option( 'mai-engine' )['widgets-block-editor'] );
-
-		// A plugin or import adds a classic widget later.
-		$this->use_widgets( [ 'search-2' ] );
+		mai_switch_widgets_editor( true );
 		$this->assertTrue( wp_use_widgets_block_editor() );
+		$this->assertSame( [ 'mai_reusable_block_widget-2', 'search-2' ], get_option( 'sidebars_widgets' )['sidebar'] );
+
+		mai_switch_widgets_editor( false );
+		$this->assertFalse( wp_use_widgets_block_editor() );
 	}
 }

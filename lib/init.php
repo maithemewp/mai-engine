@@ -379,7 +379,6 @@ function mai_load_files() {
 				'customize/site-header',
 				'customize/site-layouts',
 				'customize/typography',
-				'customize/widgets',
 				'customize/updates',
 				'customize/upsell',
 				'customize/css-cache',
