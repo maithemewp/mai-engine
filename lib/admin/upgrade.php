@@ -103,7 +103,11 @@ function mai_do_upgrade() {
 
 		if ( version_compare( $db_version, '2.41.0', '<' ) ) {
 			mai_upgrade_2_41_0();
+			mai_upgrade_2_41_0_widgets();
 		}
+	} else {
+		// A new install saves its widget editor choice too, so it can't flip later.
+		mai_upgrade_2_41_0_widgets();
 	}
 
 	// Update database version after upgrade.
@@ -134,6 +138,30 @@ function mai_upgrade_2_41_0() {
 	}
 
 	mai_typography_flush_local_fonts();
+}
+
+/**
+ * Saves the widget editor setting once, so an existing site keeps its screen.
+ *
+ * The block widget editor setting is new in 2.41.0. A site that already has
+ * classic widgets in its widget areas is saved as off and keeps the classic
+ * screen. Any other site is saved as on. Saving it now means the choice doesn't
+ * flip later when widgets are added or removed.
+ *
+ * Leaves a value that is already saved alone, including a saved off.
+ *
+ * @since 2.41.0
+ *
+ * @return void
+ */
+function mai_upgrade_2_41_0_widgets() {
+	$options = get_option( mai_get_handle(), [] );
+
+	if ( is_array( $options ) && array_key_exists( 'widgets-block-editor', $options ) ) {
+		return;
+	}
+
+	mai_update_option( 'widgets-block-editor', mai_get_widgets_block_editor_default() );
 }
 
 /**

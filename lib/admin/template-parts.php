@@ -352,7 +352,8 @@ add_action( 'current_screen', 'mai_widgets_template_parts_admin_notice' );
  * @return void
  */
 function mai_widgets_template_parts_admin_notice( $screen ) {
-	if ( 'widgets' !== $screen->id ) {
+	// Only on the classic screen. With block widgets on, widget areas hold blocks too.
+	if ( 'widgets' !== $screen->id || wp_use_widgets_block_editor() ) {
 		return;
 	}
 

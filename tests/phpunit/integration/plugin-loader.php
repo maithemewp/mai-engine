@@ -82,3 +82,55 @@ if ( ! function_exists( 'mai_do_entry' ) ) {
 	 */
 	function mai_do_entry( $entry, $args = [] ) {}
 }
+
+// Widget editor setting (#672). The real mai_get_handle() and mai_get_config() live in
+// lib/init.php, and the real config pulls in Genesis-dependent helpers. These stand-ins
+// return the plugin handle and only the settings the widget code reads. Tests change the
+// config through $GLOBALS['mai_test_config'].
+if ( ! function_exists( 'mai_get_handle' ) ) {
+	/**
+	 * Test-harness stand-in for the real mai_get_handle().
+	 *
+	 * @return string
+	 */
+	function mai_get_handle() {
+		return 'mai-engine';
+	}
+}
+
+if ( ! function_exists( 'mai_get_config' ) ) {
+	/**
+	 * Test-harness stand-in for the real mai_get_config().
+	 *
+	 * @param string $sub_config The config name.
+	 *
+	 * @return array
+	 */
+	function mai_get_config( $sub_config ) {
+		$config = $GLOBALS['mai_test_config'] ?? [
+			'settings' => [
+				'widgets' => [
+					'block-editor' => true,
+				],
+			],
+		];
+
+		return $config[ $sub_config ] ?? [];
+	}
+}
+
+if ( ! function_exists( 'mai_get_version' ) ) {
+	/**
+	 * Test-harness stand-in for the real mai_get_version().
+	 *
+	 * @return string
+	 */
+	function mai_get_version() {
+		return '2.41.0';
+	}
+}
+
+require_once $plugin_root . '/lib/functions/utilities.php';
+require_once $plugin_root . '/lib/functions/widgets.php';
+require_once $plugin_root . '/lib/admin/upgrade.php';
+require_once $plugin_root . '/lib/admin/notices.php';

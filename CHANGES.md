@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2.41.0 (TBD)
+* Added: A "Use blocks in widget areas" setting under Customizer, Theme Settings, Widgets. New sites use the block widget editor. A site that already has classic widgets keeps the classic screen and gets a dismissible notice on the Widgets screen pointing to the setting. Genesis's notice about adding a code snippet is removed. [Developers] The setting runs on `use_widgets_block_editor` at priority 5, so a value set at the default priority 10 still wins.
 * Changed: [Developers] Site logo and scroll logo images are now named through `wp_get_attachment_image_context` as `mai_logo` and `mai_scroll_logo`, so other code can tell them apart from anything else using the same `custom-logo` class.
 * Changed: Update ACF Pro to 6.8.7.
 * Changed: Update Plugin Update Checker to 5.7.

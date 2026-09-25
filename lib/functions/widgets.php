@@ -55,3 +55,93 @@ add_action( 'widgets_init', 'mai_register_reusable_block_widget' );
 function mai_register_reusable_block_widget() {
 	register_widget( 'Mai_Reusable_Block_Widget' );
 }
+
+add_filter( 'use_widgets_block_editor', 'mai_use_widgets_block_editor', 5 );
+/**
+ * Turns the block widget editor on or off from the Customizer setting.
+ *
+ * Genesis turns it off at priority 0. This runs at 5, so a site or plugin that
+ * sets its own value at the default priority 10 still wins.
+ *
+ * Reads the option straight from the database rather than through the cached
+ * mai_get_option(), because the upgrade saves it earlier in the same request.
+ *
+ * @since 2.41.0
+ *
+ * @param bool $use_block_editor Whether to use the block widget editor.
+ *
+ * @return bool
+ */
+function mai_use_widgets_block_editor( $use_block_editor ) {
+	$options = get_option( mai_get_handle(), [] );
+
+	if ( is_array( $options ) && array_key_exists( 'widgets-block-editor', $options ) ) {
+		return (bool) $options['widgets-block-editor'];
+	}
+
+	return mai_get_widgets_block_editor_default();
+}
+
+/**
+ * Returns the widget editor setting's value when nothing is saved.
+ *
+ * On, unless the site already uses classic widgets. A site with classic widgets
+ * in its widget areas keeps the classic screen until someone turns blocks on.
+ *
+ * @since 2.41.0
+ *
+ * @return bool
+ */
+function mai_get_widgets_block_editor_default() {
+	if ( ! mai_get_config( 'settings' )['widgets']['block-editor'] ) {
+		return false;
+	}
+
+	return ! mai_has_classic_widgets();
+}
+
+/**
+ * Whether any widget area holds a classic widget.
+ *
+ * Inactive widgets don't count. Block widgets are stored as `block-N` and don't
+ * count either.
+ *
+ * @since 2.41.0
+ *
+ * @return bool
+ */
+function mai_has_classic_widgets() {
+	$sidebars = get_option( 'sidebars_widgets', [] );
+
+	if ( ! is_array( $sidebars ) ) {
+		return false;
+	}
+
+	foreach ( $sidebars as $sidebar_id => $widget_ids ) {
+		if ( 'wp_inactive_widgets' === $sidebar_id || ! is_array( $widget_ids ) ) {
+			continue;
+		}
+
+		foreach ( $widget_ids as $widget_id ) {
+			if ( ! str_starts_with( (string) $widget_id, 'block-' ) ) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+add_action( 'admin_init', 'mai_remove_genesis_block_widgets_notice' );
+/**
+ * Removes Genesis's notice about opting in to block widgets.
+ *
+ * It tells people to add a code snippet, which the Customizer setting replaces.
+ *
+ * @since 2.41.0
+ *
+ * @return void
+ */
+function mai_remove_genesis_block_widgets_notice() {
+	remove_action( 'admin_notices', 'genesis_block_widgets_optin_notification' );
+}

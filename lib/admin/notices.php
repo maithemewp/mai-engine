@@ -192,3 +192,71 @@ function mai_dismiss_lifetime_notice() {
 	// Kill execution.
 	wp_die();
 }
+
+add_action( 'current_screen', 'mai_widgets_block_editor_notice' );
+/**
+ * Tells sites on the classic widget screen they can switch to blocks.
+ *
+ * Shows on the Widgets screen only, to people who can manage widgets, until they
+ * dismiss it. Sites that need the classic screen, such as ones relying on a widget
+ * add-on, can close it for good.
+ *
+ * @since 2.41.0
+ *
+ * @param WP_Screen $screen The current screen.
+ *
+ * @return void
+ */
+function mai_widgets_block_editor_notice( $screen ) {
+	if ( 'widgets' !== $screen->id || wp_use_widgets_block_editor() || ! current_user_can( 'edit_theme_options' ) ) {
+		return;
+	}
+
+	if ( get_user_meta( get_current_user_id(), 'mai_widgets_block_editor_notice_dismissed', true ) ) {
+		return;
+	}
+
+	add_action( 'admin_notices', function() {
+		printf(
+			'<div class="notice notice-info is-dismissible mai-widgets-block-editor-notice"><p>%s <a href="%s">%s</a></p></div>',
+			esc_html__( 'Widget areas can now hold blocks.', 'mai-engine' ),
+			esc_url( admin_url( 'customize.php?autofocus[section]=' . mai_get_handle() . '-widgets' ) ),
+			esc_html__( 'Turn it on in the Customizer', 'mai-engine' )
+		);
+		?>
+		<script>
+			document.addEventListener( 'click', function( event ) {
+				if ( ! event.target.closest( '.mai-widgets-block-editor-notice .notice-dismiss' ) ) {
+					return;
+				}
+
+				const data = new FormData();
+				data.append( 'action', 'mai_dismiss_widgets_block_editor_notice' );
+				data.append( 'nonce', '<?php echo esc_js( wp_create_nonce( 'mai_dismiss_widgets_block_editor_notice' ) ); ?>' );
+
+				fetch( '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>', { method: 'POST', credentials: 'same-origin', body: data } );
+			} );
+		</script>
+		<?php
+	});
+}
+
+add_action( 'wp_ajax_mai_dismiss_widgets_block_editor_notice', 'mai_dismiss_widgets_block_editor_notice' );
+/**
+ * Remembers that the current user dismissed the widget editor notice.
+ *
+ * @since 2.41.0
+ *
+ * @return void
+ */
+function mai_dismiss_widgets_block_editor_notice() {
+	check_ajax_referer( 'mai_dismiss_widgets_block_editor_notice', 'nonce' );
+
+	if ( ! current_user_can( 'edit_theme_options' ) ) {
+		wp_send_json_error( null, 403 );
+	}
+
+	update_user_meta( get_current_user_id(), 'mai_widgets_block_editor_notice_dismissed', 1 );
+
+	wp_send_json_success();
+}

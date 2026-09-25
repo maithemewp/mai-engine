@@ -761,6 +761,9 @@ return [
 				'style' => 'regular',
 			],
 		],
+		'widgets'             => [
+			'block-editor' => true,
+		],
 		'performance'         => [
 			'genesis-style-trump'        => true,
 			'preload-fonts'              => true,
