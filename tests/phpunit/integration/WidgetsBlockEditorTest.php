@@ -166,4 +166,26 @@ class WidgetsBlockEditorTest extends MaiIntegrationTestCase {
 		mai_switch_widgets_editor( false );
 		$this->assertFalse( wp_use_widgets_block_editor() );
 	}
+
+	public function test_the_help_tab_offers_the_switch_on_the_classic_screen(): void {
+		wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
+		$this->use_widgets( [ 'search-2' ] );
+		set_current_screen( 'widgets' );
+
+		mai_widgets_editor_help_tab();
+
+		$tab = get_current_screen()->get_help_tab( 'mai-block-widgets' );
+		$this->assertNotNull( $tab );
+		$this->assertStringContainsString( 'Switch to blocks', $tab['content'] );
+		get_current_screen()->remove_help_tab( 'mai-block-widgets' );
+	}
+
+	public function test_there_is_no_help_tab_on_the_block_screen(): void {
+		wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
+		set_current_screen( 'widgets' );
+
+		mai_widgets_editor_help_tab();
+
+		$this->assertNull( get_current_screen()->get_help_tab( 'mai-block-widgets' ) );
+	}
 }
