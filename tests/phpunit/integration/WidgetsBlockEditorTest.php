@@ -14,6 +14,7 @@ class WidgetsBlockEditorTest extends MaiIntegrationTestCase {
 		parent::set_up();
 
 		delete_option( 'mai-engine' );
+		mai_reset_options_cache();
 		update_option( 'sidebars_widgets', [ 'wp_inactive_widgets' => [], 'sidebar' => [], 'array_version' => 3 ] );
 		unset( $GLOBALS['mai_test_config'] );
 
@@ -284,12 +285,6 @@ class WidgetsBlockEditorTest extends MaiIntegrationTestCase {
 		$this->assertSame( '', $this->notice_html() );
 	}
 
-	/**
-	 * Runs alone, because mai_get_option() keeps options in a static that lives for the whole run.
-	 *
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 */
 	public function test_a_new_install_saves_its_choice_so_it_cannot_flip(): void {
 		mai_do_upgrade();
 
@@ -330,12 +325,6 @@ class WidgetsBlockEditorTest extends MaiIntegrationTestCase {
 		$this->assertEmpty( get_user_meta( $user, 'mai_widgets_block_editor_notice_dismissed', true ) );
 	}
 
-	/**
-	 * Runs alone, because mai_get_option() keeps options in a static that lives for the whole run.
-	 *
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 */
 	public function test_an_upgrade_from_2_40_saves_the_choice_through_the_real_routine(): void {
 		update_option( 'mai-engine', [ 'db-version' => '2.40.0', 'first-version' => '2.30.0' ] );
 		$this->use_widgets( [ 'search-2' ] );

@@ -296,6 +296,7 @@ function mai_load_files() {
 		'functions/images',
 		'functions/layout',
 		'functions/loop',
+		'functions/options',
 		'functions/performance',
 		'functions/plugins',
 		'functions/setup',

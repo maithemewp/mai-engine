@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2.41.0 (TBD)
+* Fixed: [Developers] `mai_get_option()` and `mai_get_options()` no longer return stale values after the Mai option is saved in the same request, whether by `mai_update_option()`, the Customizer or `update_option()`. The new `mai_reset_options_cache()` empties both caches by hand.
 * Added: Sites can switch the Widgets screen to blocks. New sites start on blocks. A site that already has classic widgets keeps the classic screen, with a notice offering "Switch to blocks" or "Hide forever", and the same switch in the Help menu. Existing widgets stay as they are. Going back to classic takes the `use_widgets_block_editor` filter. Genesis's notice about adding a code snippet is removed. [Developers] Mai's choice runs on `use_widgets_block_editor` at priority 5, so a value set at the default priority 10 still wins, and the notice explains when code keeps the classic screen.
 * Changed: [Developers] Site logo and scroll logo images are now named through `wp_get_attachment_image_context` as `mai_logo` and `mai_scroll_logo`, so other code can tell them apart from anything else using the same `custom-logo` class.
 * Changed: Update ACF Pro to 6.8.7.

@@ -85,15 +85,15 @@ function mai_get_widgets_block_editor_setting() {
 /**
  * Returns the saved widget screen choice, or null when none is saved.
  *
- * Skips mai_get_option()'s cache, because the choice can be saved earlier in the
- * same request, and that cache would still hold the options from before.
+ * Reads the whole options array, because mai_get_option() can't tell a saved
+ * false from nothing saved.
  *
  * @since 2.41.0
  *
  * @return bool|null
  */
 function mai_get_saved_widgets_block_editor() {
-	$options = mai_get_options( false );
+	$options = mai_get_options();
 
 	if ( ! is_array( $options ) || ! array_key_exists( 'widgets-block-editor', $options ) ) {
 		return null;

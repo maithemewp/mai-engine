@@ -67,39 +67,54 @@ function mai_get_active_theme() {
  *
  * @since 0.1.0
  *
+ * @since 2.41.0 Added the `$reset` parameter.
+ *
  * @param bool $use_cache Whether to use static variable.
+ * @param bool $reset     Whether to empty the static cache instead of reading.
  *
  * @return array
  */
-function mai_get_options( $use_cache = true ) {
-	$handle = mai_get_handle();
+function mai_get_options( $use_cache = true, $reset = false ) {
+	static $cached = [];
 
-	if ( ! $use_cache || is_customize_preview() ) {
-		$options = get_option( $handle );
-	} else {
-		static $options = [];
+	if ( $reset ) {
+		$cached = [];
 
-		if ( empty( $options ) ) {
-			$options = get_option( $handle );
-		}
+		return [];
 	}
 
-	return $options;
+	if ( ! $use_cache || is_customize_preview() ) {
+		return get_option( mai_get_handle() );
+	}
+
+	if ( empty( $cached ) ) {
+		$cached = get_option( mai_get_handle() );
+	}
+
+	return $cached;
 }
 
 /**
  * Get a single option from mai-engine array of options.
  *
  * @since 0.1.0
+ * @since 2.41.0 Added the `$reset` parameter.
  *
  * @param string $option    Option name.
  * @param mixed  $default   Default value.
  * @param bool   $use_cache Whether to use static cache when fetching option.
+ * @param bool   $reset     Whether to empty the static cache instead of reading.
  *
  * @return mixed
  */
-function mai_get_option( $option, $default = false, $use_cache = true ) {
+function mai_get_option( $option, $default = false, $use_cache = true, $reset = false ) {
 	static $values = null;
+
+	if ( $reset ) {
+		$values = null;
+
+		return $default;
+	}
 
 	if ( $use_cache && is_customize_preview() ) {
 		$use_cache = false;
@@ -137,6 +152,18 @@ function mai_update_option( $option, $value ) {
 	$options[ $option ] = $value;
 
 	update_option( $handle, $options );
+}
+
+/**
+ * Empties Mai's option caches.
+ *
+ * @since 2.41.0
+ *
+ * @return void
+ */
+function mai_reset_options_cache() {
+	mai_get_options( true, true );
+	mai_get_option( '', false, true, true );
 }
 
 /**
