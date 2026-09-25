@@ -22,6 +22,20 @@ class WidgetsBlockEditorTest extends MaiIntegrationTestCase {
 	}
 
 	/**
+	 * Logs in as a new user with the given role.
+	 *
+	 * @param string $role The role.
+	 *
+	 * @return int The user ID.
+	 */
+	private function log_in_as( string $role ): int {
+		$user = self::factory()->user->create( [ 'role' => $role ] );
+		wp_set_current_user( $user );
+
+		return $user;
+	}
+
+	/**
 	 * Puts widgets in the sidebar.
 	 *
 	 * @param string[] $widget_ids The widget IDs.
@@ -84,23 +98,31 @@ class WidgetsBlockEditorTest extends MaiIntegrationTestCase {
 		$this->assertFalse( wp_use_widgets_block_editor() );
 	}
 
-	public function test_the_upgrade_is_seen_in_the_same_request(): void {
-		$this->use_widgets( [ 'search-2' ] );
-
-		// Warm Mai's option cache first, the way mai_do_upgrade() does.
-		mai_get_option( 'first-version' );
-		mai_upgrade_2_41_0_widgets();
-
-		$this->assertFalse( wp_use_widgets_block_editor() );
+	/**
+	 * Saved choices, and widgets that would suggest the other one.
+	 *
+	 * @return array
+	 */
+	public static function saved_choices(): array {
+		return [
+			'saved blocks, classic widgets' => [ true, [ 'search-2' ] ],
+			'saved classic, block widgets'  => [ false, [ 'block-1' ] ],
+		];
 	}
 
-	public function test_the_upgrade_leaves_a_saved_value_alone(): void {
-		$this->use_widgets( [ 'search-2' ] );
-		update_option( 'mai-engine', [ 'widgets-block-editor' => true ] );
+	/**
+	 * @dataProvider saved_choices
+	 *
+	 * @param bool     $saved   The saved choice.
+	 * @param string[] $widgets The widgets in the sidebar.
+	 */
+	public function test_the_upgrade_leaves_a_saved_choice_alone( bool $saved, array $widgets ): void {
+		update_option( 'mai-engine', [ 'widgets-block-editor' => $saved ] );
+		$this->use_widgets( $widgets );
 
 		mai_upgrade_2_41_0_widgets();
 
-		$this->assertTrue( get_option( 'mai-engine' )['widgets-block-editor'] );
+		$this->assertSame( $saved, get_option( 'mai-engine' )['widgets-block-editor'] );
 	}
 
 	public function test_the_genesis_notice_is_removed(): void {
@@ -127,40 +149,28 @@ class WidgetsBlockEditorTest extends MaiIntegrationTestCase {
 	}
 
 	public function test_the_notice_shows_on_the_classic_screen(): void {
-		wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
+		$this->log_in_as( 'administrator' );
 		$this->use_widgets( [ 'search-2' ] );
 
 		$this->assertStringContainsString( 'Widget areas can now hold blocks.', $this->notice_html() );
 	}
 
 	public function test_the_block_screen_has_no_notice(): void {
-		wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
+		$this->log_in_as( 'administrator' );
 
 		$this->assertSame( '', $this->notice_html() );
 	}
 
 	public function test_the_classic_notice_hides_once_dismissed(): void {
-		$user = self::factory()->user->create( [ 'role' => 'administrator' ] );
-		wp_set_current_user( $user );
+		$user = $this->log_in_as( 'administrator' );
 		$this->use_widgets( [ 'search-2' ] );
 		update_user_meta( $user, 'mai_widgets_block_editor_notice_dismissed', 1 );
 
 		$this->assertSame( '', $this->notice_html() );
 	}
 
-	public function test_switching_saves_the_choice_and_leaves_widgets_alone(): void {
-		$this->use_widgets( [ 'mai_reusable_block_widget-2', 'search-2' ] );
-
-		mai_switch_widgets_editor( true );
-		$this->assertTrue( wp_use_widgets_block_editor() );
-		$this->assertSame( [ 'mai_reusable_block_widget-2', 'search-2' ], get_option( 'sidebars_widgets' )['sidebar'] );
-
-		mai_switch_widgets_editor( false );
-		$this->assertFalse( wp_use_widgets_block_editor() );
-	}
-
 	public function test_the_help_tab_offers_the_switch_on_the_classic_screen(): void {
-		wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
+		$this->log_in_as( 'administrator' );
 		$this->use_widgets( [ 'search-2' ] );
 		set_current_screen( 'widgets' );
 
@@ -173,11 +183,183 @@ class WidgetsBlockEditorTest extends MaiIntegrationTestCase {
 	}
 
 	public function test_there_is_no_help_tab_on_the_block_screen(): void {
-		wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
+		$this->log_in_as( 'administrator' );
 		set_current_screen( 'widgets' );
 
 		mai_widgets_editor_help_tab();
 
 		$this->assertNull( get_current_screen()->get_help_tab( 'mai-block-widgets' ) );
+	}
+
+	/**
+	 * Runs the switch handler and returns where it redirected.
+	 *
+	 * @param bool $nonce Whether to send a valid nonce.
+	 *
+	 * @return string
+	 */
+	private function run_switch_action( bool $nonce = true ): string {
+		$_REQUEST['_wpnonce'] = $nonce ? wp_create_nonce( 'mai_switch_widgets_editor' ) : 'bad';
+
+		add_filter(
+			'wp_redirect',
+			static function ( $location ) {
+				throw new \RuntimeException( $location );
+			}
+		);
+
+		try {
+			mai_switch_widgets_editor_action();
+		} catch ( \RuntimeException $redirect ) {
+			return $redirect->getMessage();
+		} finally {
+			unset( $_REQUEST['_wpnonce'] );
+		}
+
+		return '';
+	}
+
+	public function test_the_switch_link_turns_blocks_on_and_leaves_widgets_alone(): void {
+		$this->log_in_as( 'administrator' );
+
+		// Classic widgets would make the default classic, so only the saved choice can give blocks.
+		$this->use_widgets( [ 'mai_reusable_block_widget-2', 'search-2' ] );
+
+		// Warm Mai's option cache first, the way mai_do_upgrade() does, to prove the save is seen.
+		mai_get_option( 'first-version' );
+
+		$this->assertSame( admin_url( 'widgets.php' ), $this->run_switch_action() );
+		$this->assertTrue( wp_use_widgets_block_editor() );
+		$this->assertSame( [ 'mai_reusable_block_widget-2', 'search-2' ], get_option( 'sidebars_widgets' )['sidebar'] );
+	}
+
+	public function test_the_switch_link_needs_a_nonce(): void {
+		$this->log_in_as( 'administrator' );
+		$this->use_widgets( [ 'search-2' ] );
+
+		$this->expectException( \WPDieException::class );
+
+		try {
+			$this->run_switch_action( false );
+		} finally {
+			$this->assertFalse( wp_use_widgets_block_editor() );
+		}
+	}
+
+	public function test_the_switch_link_needs_widget_permissions(): void {
+		$this->log_in_as( 'editor' );
+		$this->use_widgets( [ 'search-2' ] );
+
+		$this->expectException( \WPDieException::class );
+
+		try {
+			$this->run_switch_action();
+		} finally {
+			$this->assertFalse( wp_use_widgets_block_editor() );
+		}
+	}
+
+	public function test_when_code_forces_classic_the_switch_says_so_and_is_no_longer_offered(): void {
+		$this->log_in_as( 'administrator' );
+		$this->use_widgets( [ 'search-2' ] );
+		add_filter( 'use_widgets_block_editor', '__return_false' );
+
+		$this->assertStringContainsString( 'mai-widgets=forced', $this->run_switch_action() );
+
+		$_GET['mai-widgets'] = 'forced';
+		$this->assertStringContainsString( 'Code on this site keeps the classic Widgets screen', $this->notice_html() );
+		unset( $_GET['mai-widgets'] );
+
+		$this->assertStringNotContainsString( 'Switch to blocks', $this->notice_html() );
+
+		set_current_screen( 'widgets' );
+		mai_widgets_editor_help_tab();
+		$this->assertNull( get_current_screen()->get_help_tab( 'mai-block-widgets' ) );
+	}
+
+	public function test_the_notice_needs_widget_permissions(): void {
+		$this->log_in_as( 'editor' );
+		$this->use_widgets( [ 'search-2' ] );
+
+		$this->assertSame( '', $this->notice_html() );
+	}
+
+	/**
+	 * Runs alone, because mai_get_option() keeps options in a static that lives for the whole run.
+	 *
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function test_a_new_install_saves_its_choice_so_it_cannot_flip(): void {
+		mai_do_upgrade();
+
+		$this->assertTrue( get_option( 'mai-engine' )['widgets-block-editor'] );
+
+		// A plugin or import adds a classic widget later.
+		$this->use_widgets( [ 'search-2' ] );
+		$this->assertTrue( wp_use_widgets_block_editor() );
+	}
+
+	public function test_the_help_tab_needs_widget_permissions(): void {
+		$this->log_in_as( 'editor' );
+		$this->use_widgets( [ 'search-2' ] );
+		set_current_screen( 'widgets' );
+
+		mai_widgets_editor_help_tab();
+
+		$this->assertNull( get_current_screen()->get_help_tab( 'mai-block-widgets' ) );
+	}
+
+	public function test_hide_forever_needs_widget_permissions(): void {
+		$user = $this->log_in_as( 'editor' );
+		$_REQUEST['nonce'] = wp_create_nonce( 'mai_dismiss_widgets_block_editor_notice' );
+		// Inside an AJAX request, wp_send_json_error() ends with wp_die() rather than a bare die.
+		add_filter( 'wp_doing_ajax', '__return_true' );
+		add_filter( 'wp_die_ajax_handler', static fn() => static function () { throw new \WPDieException(); } );
+
+		ob_start();
+
+		try {
+			mai_dismiss_widgets_block_editor_notice();
+		} catch ( \WPDieException $die ) {
+		} finally {
+			ob_end_clean();
+			unset( $_REQUEST['nonce'] );
+		}
+
+		$this->assertEmpty( get_user_meta( $user, 'mai_widgets_block_editor_notice_dismissed', true ) );
+	}
+
+	/**
+	 * Runs alone, because mai_get_option() keeps options in a static that lives for the whole run.
+	 *
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function test_an_upgrade_from_2_40_saves_the_choice_through_the_real_routine(): void {
+		update_option( 'mai-engine', [ 'db-version' => '2.40.0', 'first-version' => '2.30.0' ] );
+		$this->use_widgets( [ 'search-2' ] );
+
+		mai_do_upgrade();
+
+		$options = get_option( 'mai-engine' );
+		$this->assertFalse( $options['widgets-block-editor'] );
+		$this->assertSame( '2.41.0', $options['db-version'] );
+	}
+
+	public function test_the_content_areas_notice_only_shows_on_the_classic_screen(): void {
+		remove_all_actions( 'admin_notices' );
+		mai_widgets_template_parts_admin_notice( \WP_Screen::get( 'widgets' ) );
+		$this->assertFalse( has_action( 'admin_notices' ) );
+
+		$this->use_widgets( [ 'search-2' ] );
+		mai_widgets_template_parts_admin_notice( \WP_Screen::get( 'widgets' ) );
+		$this->assertTrue( has_action( 'admin_notices' ) );
+	}
+
+	public function test_the_default_config_turns_blocks_on(): void {
+		$config = (string) file_get_contents( dirname( __DIR__, 3 ) . '/config/_default.php' );
+
+		$this->assertMatchesRegularExpression( "/'widgets'\\s*=>\\s*\\[\\s*'block-editor'\\s*=>\\s*true,/", $config );
 	}
 }

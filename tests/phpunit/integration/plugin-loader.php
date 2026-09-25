@@ -83,7 +83,7 @@ if ( ! function_exists( 'mai_do_entry' ) ) {
 	function mai_do_entry( $entry, $args = [] ) {}
 }
 
-// Widget editor setting (#672). The real mai_get_handle() and mai_get_config() live in
+// Widget editor setting (#672). The real mai_get_handle(), mai_get_config() and mai_get_version() live in
 // lib/init.php, and the real config pulls in Genesis-dependent helpers. These stand-ins
 // return the plugin handle and only the settings the widget code reads. Tests change the
 // config through $GLOBALS['mai_test_config'].
@@ -134,3 +134,4 @@ require_once $plugin_root . '/lib/functions/utilities.php';
 require_once $plugin_root . '/lib/functions/widgets.php';
 require_once $plugin_root . '/lib/admin/upgrade.php';
 require_once $plugin_root . '/lib/admin/notices.php';
+require_once $plugin_root . '/lib/admin/template-parts.php';

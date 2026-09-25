@@ -195,7 +195,7 @@ function mai_dismiss_lifetime_notice() {
 
 add_action( 'current_screen', 'mai_widgets_block_editor_notice' );
 /**
- * Adds the switch between the block and classic widget screens.
+ * Adds the notice that offers to switch the Widgets screen to blocks.
  *
  * A notice on the classic screen with a button to switch to blocks. The X closes
  * it for one visit. Hide forever closes it for good, for sites that need the
@@ -211,11 +211,23 @@ add_action( 'current_screen', 'mai_widgets_block_editor_notice' );
  * @return void
  */
 function mai_widgets_block_editor_notice( $screen ) {
-	if ( 'widgets' !== $screen->id || ! current_user_can( 'edit_theme_options' ) ) {
+	if ( 'widgets' !== $screen->id ) {
 		return;
 	}
 
-	if ( wp_use_widgets_block_editor() ) {
+	// Switch to blocks was clicked, but code on the site keeps the classic screen.
+	if ( 'forced' === sanitize_key( $_GET['mai-widgets'] ?? '' ) && current_user_can( 'edit_theme_options' ) ) {
+		add_action( 'admin_notices', function() {
+			printf(
+				'<div class="notice notice-warning"><p>%s</p></div>',
+				esc_html__( 'Code on this site keeps the classic Widgets screen, so it can\'t switch to blocks.', 'mai-engine' )
+			);
+		});
+
+		return;
+	}
+
+	if ( ! mai_can_switch_widgets_to_blocks() ) {
 		return;
 	}
 
@@ -226,7 +238,7 @@ function mai_widgets_block_editor_notice( $screen ) {
 	add_action( 'admin_notices', function() {
 		printf(
 			'<div class="notice notice-info is-dismissible mai-widgets-block-editor-notice"><p>%s</p><p><a class="button button-primary" href="%s">%s</a> <a class="mai-widgets-hide-forever" href="#" style="margin-inline-start:8px">%s</a></p></div>',
-			esc_html__( 'Widget areas can now hold blocks. Your current widgets stay as they are. Switching to blocks cannot be undone here.', 'mai-engine' ),
+			esc_html( mai_get_switch_widgets_to_blocks_text() ),
 			esc_url( mai_get_switch_widgets_editor_url() ),
 			esc_html__( 'Switch to blocks', 'mai-engine' ),
 			esc_html__( 'Hide forever', 'mai-engine' )
@@ -284,7 +296,7 @@ add_action( 'load-widgets.php', 'mai_widgets_editor_help_tab' );
  * @return void
  */
 function mai_widgets_editor_help_tab() {
-	if ( wp_use_widgets_block_editor() || ! current_user_can( 'edit_theme_options' ) ) {
+	if ( ! mai_can_switch_widgets_to_blocks() ) {
 		return;
 	}
 
@@ -294,7 +306,7 @@ function mai_widgets_editor_help_tab() {
 			'title'   => __( 'Block widgets', 'mai-engine' ),
 			'content' => sprintf(
 				'<p>%s</p><p><a class="button" href="%s">%s</a></p>',
-				esc_html__( 'Widget areas can hold blocks instead of classic widgets. Your current widgets stay as they are. Switching to blocks cannot be undone here.', 'mai-engine' ),
+				esc_html( mai_get_switch_widgets_to_blocks_text() ),
 				esc_url( mai_get_switch_widgets_editor_url() ),
 				esc_html__( 'Switch to blocks', 'mai-engine' )
 			),

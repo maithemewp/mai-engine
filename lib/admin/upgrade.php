@@ -141,12 +141,11 @@ function mai_upgrade_2_41_0() {
 }
 
 /**
- * Saves the widget editor setting once, so an existing site keeps its screen.
+ * Saves the widget screen choice once, on upgrade and on a new install.
  *
- * The block widget editor setting is new in 2.41.0. A site that already has
- * classic widgets in its widget areas is saved as off and keeps the classic
- * screen. Any other site is saved as on. Saving it now means the choice doesn't
- * flip later when widgets are added or removed.
+ * The choice is new in 2.41.0. A site that already has classic widgets in its
+ * widget areas is saved as classic. Any other site is saved as blocks. Saving it
+ * now means the choice doesn't flip later when widgets are added or removed.
  *
  * Leaves a value that is already saved alone, including a saved off.
  *
@@ -155,9 +154,7 @@ function mai_upgrade_2_41_0() {
  * @return void
  */
 function mai_upgrade_2_41_0_widgets() {
-	$options = get_option( mai_get_handle(), [] );
-
-	if ( is_array( $options ) && array_key_exists( 'widgets-block-editor', $options ) ) {
+	if ( null !== mai_get_saved_widgets_block_editor() ) {
 		return;
 	}
 

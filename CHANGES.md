@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.41.0 (TBD)
-* Added: The Widgets screen can switch between blocks and the classic screen. New sites use blocks. A site that already has classic widgets keeps the classic screen and gets a notice with a "Switch to blocks" button and a "Hide forever" link. The switch is always in the Widgets screen's Help menu too. Switching to blocks is one way from the Widgets screen. Going back takes the `use_widgets_block_editor` filter. Existing widgets stay as they are and show as Legacy Widget blocks in the block editor. Genesis's notice about adding a code snippet is removed. [Developers] The choice runs on `use_widgets_block_editor` at priority 5, so a value set at the default priority 10 still wins.
+* Added: Sites can switch the Widgets screen to blocks. New sites start on blocks. A site that already has classic widgets keeps the classic screen, with a notice offering "Switch to blocks" or "Hide forever", and the same switch in the Help menu. Existing widgets stay as they are. Going back to classic takes the `use_widgets_block_editor` filter. Genesis's notice about adding a code snippet is removed. [Developers] Mai's choice runs on `use_widgets_block_editor` at priority 5, so a value set at the default priority 10 still wins, and the notice explains when code keeps the classic screen.
 * Changed: [Developers] Site logo and scroll logo images are now named through `wp_get_attachment_image_context` as `mai_logo` and `mai_scroll_logo`, so other code can tell them apart from anything else using the same `custom-logo` class.
 * Changed: Update ACF Pro to 6.8.7.
 * Changed: Update Plugin Update Checker to 5.7.
