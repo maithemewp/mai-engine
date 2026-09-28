@@ -17,7 +17,7 @@ namespace BizBudding\MaiEngine\Tests\Integration;
  *
  * Four further tests pin behavior that is currently WRONG, so a fix shows up as a deliberate
  * diff rather than an accident. See F1 and F2 in
- * docs/superpowers/specs/2026-07-30-wordpress-phpunit-suite-design.md.
+ * docs/specs/2026-07-30-wordpress-phpunit-suite-design.md.
  *
  * Every expected string below was measured against the implementation, not written by hand.
  */

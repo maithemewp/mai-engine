@@ -17,7 +17,7 @@ require_once dirname( __DIR__, 3 ) . '/lib/functions/utilities.php';
  * Several goldens record behavior that is actively wrong: escaped markup becoming live
  * markup (g3) and JSON data attributes broken out of their own quotes (g7). Those are
  * pinned so a fix shows up as a deliberate diff, not endorsed. See the security finding in
- * docs/superpowers/specs/2026-07-30-wordpress-phpunit-suite-design.md.
+ * docs/specs/2026-07-30-wordpress-phpunit-suite-design.md.
  *
  * Regenerate goldens with: php tests/phpunit/unit/fixtures/generate.php
  */

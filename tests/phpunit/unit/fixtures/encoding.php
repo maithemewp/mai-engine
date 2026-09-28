@@ -4,7 +4,7 @@
  *
  * Characterization of mai_get_dom_document() + mai_get_dom_html() as they ship TODAY,
  * defects included. Groups g3 and g7 pin dangerous behavior deliberately; see the
- * security finding in docs/superpowers/specs/2026-07-30-wordpress-phpunit-suite-design.md.
+ * security finding in docs/specs/2026-07-30-wordpress-phpunit-suite-design.md.
  */
 
 return [

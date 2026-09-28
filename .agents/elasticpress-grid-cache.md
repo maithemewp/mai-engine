@@ -54,5 +54,5 @@ Unknown and worth establishing before picking this up: **how many of the ~200 cl
 ## Related
 
 - `.claude` memory: `project-grid-cache-key-shatter` (the measured `post__not_in` key shatter and its fix)
-- `docs/superpowers/specs/2026-06-26-grid-result-cache-design.md`
+- `docs/specs/2026-06-26-grid-result-cache-design.md`
 - `lib/classes/class-mai-post-grid-query-optimizer.php:44-47` already bails on `ep_integrate` for the same reason
