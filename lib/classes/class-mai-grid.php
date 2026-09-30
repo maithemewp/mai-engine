@@ -1003,8 +1003,11 @@ class Mai_Grid {
 	 * 'prime_late' switched priming off for the padded query, so this is where the kept posts
 	 * get it. 'kept_only' already primed them in posts_pre_query, so for those this is only
 	 * cache reads. It still matters there for a post a the_posts callback added, and for the
-	 * fallback where Mai_Query_Cache could not answer and core ran the full query, since
-	 * cache_results was off and core skipped its own priming.
+	 * fallback where Mai_Query_Cache could not answer and core ran the grid's query itself.
+	 * Core primes the padded rows there when it splits the query, which it does for an
+	 * unfiltered statement. A statement it does not split, a rewritten one for example, gets
+	 * no priming from core, because the priming core does after the_posts checks cache_results,
+	 * and 'kept_only' switched that off.
 	 *
 	 * @since 2.41.0
 	 *
@@ -1016,8 +1019,9 @@ class Mai_Grid {
 	protected function prime_shown_posts( $query, $asked ) {
 		$flags = $this->get_query_cache_flags( $asked );
 
-		// Core gates its own priming on cache_results the same way.
-		if ( ! $query->posts || ! $flags['cache_results'] ) {
+		// Not gated on cache_results. Core primes a split query as the update flags ask whatever
+		// cache_results says, and every deferring grid's query splits when nothing rewrote it.
+		if ( ! $query->posts ) {
 			return;
 		}
 

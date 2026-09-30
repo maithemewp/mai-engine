@@ -436,6 +436,34 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		}
 	}
 
+	/**
+	 * A site can turn cache_results off for a grid. Core still primes meta and terms for a query
+	 * it splits, which every unfiltered deferring grid is. Only the priming it does after
+	 * the_posts checks cache_results. So the kept posts are primed under every strategy, as
+	 * they are under the current one.
+	 */
+	#[DataProvider( 'strategies' )]
+	public function test_kept_posts_are_primed_when_a_site_turned_cache_results_off( string $strategy ): void {
+		$off = static fn( $query_args ) => array_merge( $query_args, [ 'cache_results' => false ] );
+
+		add_filter( 'mai_post_grid_query_args', $off );
+
+		$prepared = $this->prepare( 'displayed_many' );
+
+		$this->flush_result_cache();
+		$this->clean_post_caches();
+		$query = $this->run_grid( $strategy, $prepared['args'] );
+
+		remove_filter( 'mai_post_grid_query_args', $off );
+
+		$this->assertStringNotContainsString( 'NOT IN', $query->request, 'must actually have deferred' );
+		$this->assertCount( self::PER_PAGE, $this->ids( $query ) );
+
+		foreach ( $this->cached( $this->ids( $query ) ) as $id => $state ) {
+			$this->assertSame( [ 'row' => true, 'meta' => true, 'terms' => true ], $state, "kept post {$id}" );
+		}
+	}
+
 	// ---- Miss, then hit ----
 
 	#[DataProvider( 'strategies' )]
