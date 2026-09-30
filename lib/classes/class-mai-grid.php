@@ -328,34 +328,36 @@ class Mai_Grid {
 						remove_filter( 'posts_orderby', [ $this, 'add_deferred_orderby_tiebreaker' ], 99 );
 
 						// Mai_Query_Cache already dropped the excludes and kept the asked count,
-						// before posts_results and the_posts ran. Doing it again here would also
-						// drop or cut a post a the_posts callback added, which a grid that does
-						// not defer keeps. Not set when it could not answer that way, or when
-						// another posts_pre_query callback answered instead, and then the grid
-						// falls through to doing it here.
+						// before posts_results and the_posts ran. Not set when it could not answer
+						// that way, or when another posts_pre_query callback answered instead.
 						$already_kept = isset( $query->mai_grid_kept );
 
 						unset( $query->mai_grid_kept );
 
+						// Apply the excludes now. The result cache has already stored the
+						// unfiltered superset, which is what makes the entry shareable, so this
+						// has to happen after the constructor returns. It runs on the kept path
+						// too, because a the_posts callback, or core's sticky handling, can put
+						// an excluded post back after the excludes were dropped.
+						$kept = array_values(
+							array_filter(
+								$query->posts,
+								static function ( $post ) use ( $effective ) {
+									// A the_posts callback can put anything in this list, so do
+									// not assume a WP_Post. The two field modes core answers with
+									// ints and stdClass cannot arrive here, because
+									// can_defer_excludes() refuses to defer for either.
+									$id = is_object( $post ) ? (int) $post->ID : (int) $post;
+
+									return ! in_array( $id, $effective, true );
+								}
+							)
+						);
+
+						// The kept path already has the asked count, so slicing it again would
+						// cut a post a the_posts callback added, which a grid that does not defer
+						// keeps.
 						if ( ! $already_kept ) {
-							// Apply the excludes now. The result cache has already stored the
-							// unfiltered superset during the_posts, which is what makes the entry
-							// shareable, so this has to happen after the constructor returns.
-							$kept = array_values(
-								array_filter(
-									$query->posts,
-									static function ( $post ) use ( $effective ) {
-										// A the_posts callback can put anything in this list, so do
-										// not assume a WP_Post. The two field modes core answers with
-										// ints and stdClass cannot arrive here, because
-										// can_defer_excludes() refuses to defer for either.
-										$id = is_object( $post ) ? (int) $post->ID : (int) $post;
-
-										return ! in_array( $id, $effective, true );
-									}
-								)
-							);
-
 							// Widen the slice by however many rows a the_posts filter added on top of
 							// the LIMIT, so a plugin that pins posts into grids still gets its full
 							// count through. The slice keeps the first entries, so what is guaranteed
@@ -367,9 +369,11 @@ class Mai_Grid {
 							// actually built the LIMIT.
 							$injected = max( 0, count( $query->posts ) - $query->query_vars['posts_per_page'] );
 
-							$query->posts      = array_slice( $kept, 0, $asked['posts_per_page'] + $injected );
-							$query->post_count = count( $query->posts );
+							$kept = array_slice( $kept, 0, $asked['posts_per_page'] + $injected );
 						}
+
+						$query->posts      = $kept;
+						$query->post_count = count( $query->posts );
 
 						if ( 'current' !== $strategy ) {
 							$this->prime_shown_posts( $query, $asked );

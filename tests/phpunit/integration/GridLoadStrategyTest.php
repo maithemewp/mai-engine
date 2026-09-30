@@ -741,6 +741,41 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 	}
 
 	/**
+	 * A the_posts callback can put an excluded post back, and core's sticky handling can too.
+	 * kept_only has already dropped the excludes by then, so the grid has to drop them again,
+	 * while still keeping every other post the callback added.
+	 */
+	#[DataProvider( 'strategies' )]
+	public function test_an_excluded_post_a_the_posts_callback_adds_back_is_dropped( string $strategy ): void {
+		$prepared = $this->prepare( 'current_in_window' );
+		$excluded = $prepared['excluded'][0];
+
+		$add_back = static function ( $posts, $query ) use ( $excluded ) {
+			if ( ! empty( $query->query_vars['mai_cache'] ) ) {
+				array_unshift( $posts, get_post( $excluded ) );
+			}
+
+			return $posts;
+		};
+
+		$this->flush_result_cache();
+		$baseline = $this->ids( $this->run_grid( 'current', $prepared['args'] ) );
+
+		add_filter( 'the_posts', $add_back, 20, 2 );
+
+		$this->flush_result_cache();
+		$miss = $this->ids( $this->run_grid( $strategy, $prepared['args'] ) );
+		$hit  = $this->ids( $this->run_grid( $strategy, $prepared['args'] ) );
+
+		remove_filter( 'the_posts', $add_back, 20 );
+
+		$this->assertNotContains( $excluded, $miss );
+		$this->assertNotContains( $excluded, $hit );
+		$this->assertSame( $baseline, $miss );
+		$this->assertSame( $baseline, $hit );
+	}
+
+	/**
 	 * The one place kept_only shows something the current strategy does not: a post a
 	 * the_posts callback appends. The current strategy slices after the_posts, so when nothing
 	 * was dropped the padding row takes the widened slot and the appended post falls off.
