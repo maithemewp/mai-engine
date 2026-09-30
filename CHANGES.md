@@ -49,6 +49,7 @@
 * Fixed: PHP warnings and a bad srcset calculation when an attachment's file could not be resolved but its metadata still existed.
 
 * Fixed: In the editor, items in Mai column layouts had their margins removed, so they could be spaced differently than on the front end. Only the wrappers of nested blocks are reset now.
+* Fixed: On the login page, "Remember Me" wrapped onto two lines once WordPress 7.1 added a help icon beside it. The row now keeps to one line.
 ## 2.40.0 (7/2/26)
 * Added: [Performance] Mai Post Grid now caches its resolved query results (the matching post IDs and total count) under a version token Mai controls, so the cache survives the constant cache-key churn that defeats WordPress's own query cache on busy, frequently-edited sites. It serves instantly on a hit, serves the previous result while one request refreshes a stale entry (stale-while-revalidate), and collapses a cold stampede to a single query (single-flight) where a persistent object cache is present. Any query can opt in via the `mai_cache` query var.
 * Added: [Developers] Filters for the query cache: `mai_post_grid_cache` (per-grid opt-out, receives the grid args), `mai_query_cache` (per-query cacheability), `mai_query_cache_ttl`, `mai_query_cache_single_flight`, `mai_query_cache_lock_ttl`, and `mai_query_cache_wait_ms`.

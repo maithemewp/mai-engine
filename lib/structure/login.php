@@ -210,7 +210,6 @@ function mai_login_css() {
 			top: 8px;
 			padding: 0;
 		}
-		body.login #login form p.forgetmenot,
 		body.login #login form p.submit {
 			max-width: 50%;
 		}
@@ -223,6 +222,9 @@ function mai_login_css() {
 		body.login #login form p.forgetmenot #rememberme,
 		body.login #login form p.forgetmenot label {
 			margin-block: auto;
+		}
+		body.login #login form p.forgetmenot label {
+			white-space: nowrap;
 		}
 		body.login #login form p.forgetmenot #rememberme {
 			margin-right: 8px;
