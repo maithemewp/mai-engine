@@ -78,6 +78,21 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		return $cases;
 	}
 
+	/** Every ordered pair of different strategies: the one that writes, then the one that reads. */
+	public static function strategy_pairs(): array {
+		$pairs = [];
+
+		foreach ( [ 'current', 'prime_late', 'kept_only' ] as $writer ) {
+			foreach ( [ 'current', 'prime_late', 'kept_only' ] as $reader ) {
+				if ( $writer !== $reader ) {
+					$pairs[ "{$writer} then {$reader}" ] = [ $writer, $reader ];
+				}
+			}
+		}
+
+		return $pairs;
+	}
+
 	// ---- Helpers ----
 
 	private function grid_args( array $overrides = [] ): array {
@@ -519,6 +534,31 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		[ $second, $sql ] = $this->capture_sql( fn() => $this->run_grid( $strategy, $args ) );
 
 		$this->assertSame( [], $this->grid_selects( $sql ), 'the second article must be served from the entry' );
+		$this->assertSame(
+			array_merge( [ $this->post_ids[0] ], array_slice( $this->post_ids, 2, self::PER_PAGE - 1 ) ),
+			$this->ids( $second ),
+			'a full grid without the post being viewed'
+		);
+	}
+
+	/**
+	 * An entry one strategy wrote must read back correctly under another, so switching the
+	 * strategy on a warm site cannot show a short or wrong grid.
+	 */
+	#[DataProvider( 'strategy_pairs' )]
+	public function test_an_entry_written_under_one_strategy_reads_under_another( string $writer, string $reader ): void {
+		$args = $this->grid_args();
+
+		$this->flush_result_cache();
+
+		$this->go_to( get_permalink( $this->post_ids[0] ) );
+		$first = $this->ids( $this->run_grid( $writer, $args ) );
+
+		$this->go_to( get_permalink( $this->post_ids[1] ) );
+		[ $second, $sql ] = $this->capture_sql( fn() => $this->run_grid( $reader, $args ) );
+
+		$this->assertSame( array_slice( $this->post_ids, 1, self::PER_PAGE ), $first );
+		$this->assertSame( [], $this->grid_selects( $sql ), "{$reader} must read the entry {$writer} wrote" );
 		$this->assertSame(
 			array_merge( [ $this->post_ids[0] ], array_slice( $this->post_ids, 2, self::PER_PAGE - 1 ) ),
 			$this->ids( $second ),
