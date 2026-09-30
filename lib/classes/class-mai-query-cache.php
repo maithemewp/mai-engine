@@ -290,7 +290,7 @@ class Mai_Query_Cache {
 		}
 
 		$keep = $this->keep_request( $posts, $query );
-		$ids  = $keep ? $this->fetch_ids( $query ) : null;
+		$ids  = $keep ? $this->fetch_ids( $query, $keep ) : null;
 
 		if ( null === $ids ) {
 			return $posts;
@@ -357,7 +357,8 @@ class Mai_Query_Cache {
 	 * usual way.
 	 *
 	 * Mai_Grid sets it as the mai_grid_keep property of its query when it defers its excludes:
-	 * the IDs to drop, and how many posts it will show. A property rather than a query var, so a
+	 * the IDs to drop, how many posts it will show, and the cache_results it was asked for. A
+	 * property rather than a query var, so a
 	 * copy another plugin builds from this query's vars does not carry it. Answering with only those posts means the padding rows and the excluded posts
 	 * are never loaded or primed, and posts_results and the_posts see what the grid shows, as
 	 * they did before excludes were deferred.
@@ -370,7 +371,7 @@ class Mai_Query_Cache {
 	 * @param array|null $posts The pre_query posts.
 	 * @param WP_Query   $query The query.
 	 *
-	 * @return array{exclude:int[],count:int}|null
+	 * @return array{exclude:int[],count:int,cache_results:bool}|null
 	 */
 	private function keep_request( $posts, $query ): ?array {
 		$keep = $query->mai_grid_keep ?? null;
@@ -384,8 +385,9 @@ class Mai_Query_Cache {
 		}
 
 		return [
-			'exclude' => array_map( 'intval', $keep['exclude'] ),
-			'count'   => max( 0, (int) $keep['count'] ),
+			'exclude'       => array_map( 'intval', $keep['exclude'] ),
+			'count'         => max( 0, (int) $keep['count'] ),
+			'cache_results' => (bool) ( $keep['cache_results'] ?? true ),
 		];
 	}
 
@@ -398,7 +400,9 @@ class Mai_Query_Cache {
 	 * core runs when it splits the grid's full query, so it returns the same rows in the same
 	 * order without loading them. It also reads and writes core's post-queries cache, which the
 	 * grid's own query cannot while it runs with cache_results off, so a result cache miss on a
-	 * warm site costs no SQL. It is built from the args rather than query_vars, because core
+	 * warm site costs no SQL. Unless the grid was asked to run with cache_results off: its
+	 * results may then depend on something core's cache does not track, so the copy skips that
+	 * cache too. It is built from the args rather than query_vars, because core
 	 * writes back-compat vars such as cat and category_name into query_vars as it runs, and a
 	 * query built from those would join the same taxonomy twice.
 	 *
@@ -427,10 +431,11 @@ class Mai_Query_Cache {
 	 *   the two differently, so the copy's IDs may not be the grid's.
 	 *
 	 * @param WP_Query $query The grid's query.
+	 * @param array    $keep  The kept-only request, from keep_request().
 	 *
 	 * @return int[]|null
 	 */
-	private function fetch_ids( $query ): ?array {
+	private function fetch_ids( $query, array $keep ): ?array {
 		global $wpdb;
 
 		if ( empty( $query->query_vars['no_found_rows'] ) ) {
@@ -445,7 +450,7 @@ class Mai_Query_Cache {
 				(array) $query->query,
 				[
 					'fields'        => 'ids',
-					'cache_results' => true,
+					'cache_results' => $keep['cache_results'],
 					'mai_cache'     => false,
 				]
 			)

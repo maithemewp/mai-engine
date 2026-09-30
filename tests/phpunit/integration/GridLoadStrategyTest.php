@@ -632,6 +632,38 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 	}
 
 	/**
+	 * A site that turned cache_results off for a grid does not want core's query cache for it:
+	 * its results may depend on something core's cache does not track. The ID query must not
+	 * read or write that cache either.
+	 */
+	public function test_the_id_query_skips_core_query_cache_when_the_grid_asked_to(): void {
+		global $wp_object_cache;
+
+		$off   = static fn( $query_args ) => array_merge( $query_args, [ 'cache_results' => false ] );
+		$count = static fn() => count( $wp_object_cache->cache['post-queries'] ?? [] );
+
+		$prepared = $this->prepare( 'current_in_window' );
+
+		add_filter( 'mai_post_grid_query_args', $off );
+
+		$this->flush_result_cache();
+		$before = $count();
+		[ , $first ] = $this->capture_sql( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
+		$added = $count() - $before;
+
+		$this->flush_result_cache();
+		[ $query, $second ] = $this->capture_sql( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
+
+		remove_filter( 'mai_post_grid_query_args', $off );
+
+		$this->assertStringNotContainsString( 'NOT IN', $query->request, 'must actually have deferred' );
+		$this->assertSame( 0, $added, 'nothing written to core\'s query cache' );
+		$this->assertCount( 1, $this->id_selects( $first ) );
+		$this->assertCount( 1, $this->id_selects( $second ), 'the second miss runs the ID query again' );
+		$this->assertCount( self::PER_PAGE, $this->ids( $query ) );
+	}
+
+	/**
 	 * The ID query is core's own ID-only statement, byte for byte the one core runs when it
 	 * splits the current strategy's query. So both return the same rows in the same order.
 	 */

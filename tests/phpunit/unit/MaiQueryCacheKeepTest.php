@@ -47,9 +47,14 @@ final class MaiQueryCacheKeepTest extends TestCase {
 	// ---- keep_request() ----
 
 	public function test_keep_request_reads_the_marker(): void {
-		$query = $this->query( [], self::SQL, [ 'exclude' => [ '10', 11 ], 'count' => '2' ] );
+		$query = $this->query( [], self::SQL, [ 'exclude' => [ '10', 11 ], 'count' => '2', 'cache_results' => 0 ] );
 
-		$this->assertSame( [ 'exclude' => [ 10, 11 ], 'count' => 2 ], $this->call( 'keep_request', null, $query ) );
+		$this->assertSame( [ 'exclude' => [ 10, 11 ], 'count' => 2, 'cache_results' => false ], $this->call( 'keep_request', null, $query ) );
+	}
+
+	public function test_keep_request_defaults_cache_results_to_on(): void {
+		// WP_Query's own default.
+		$this->assertTrue( $this->call( 'keep_request', null, $this->query() )['cache_results'] );
 	}
 
 	public function test_keep_request_declines_when_something_already_answered(): void {

@@ -296,14 +296,15 @@ class Mai_Grid {
 							// Mai_Query_Cache reads this in posts_pre_query and answers with
 							// only the posts that will be shown, so the rest are never loaded.
 							$keep = [
-								'exclude' => $effective,
-								'count'   => $asked['posts_per_page'],
+								'exclude'       => $effective,
+								'count'         => $asked['posts_per_page'],
+								'cache_results' => $this->get_query_cache_flags( $asked )['cache_results'],
 							];
 
 							// Core would store that kept answer under the padded query's key,
 							// where a later full run of this grid would read it back short. The
-							// IDs come from an ID-only copy of this query that keeps core's
-							// cache on (Mai_Query_Cache::fetch_ids()).
+							// IDs come from an ID-only copy of this query, which uses core's
+							// cache as asked, carried above (Mai_Query_Cache::fetch_ids()).
 							$overrides = [ 'cache_results' => false ];
 						}
 
