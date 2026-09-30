@@ -776,6 +776,44 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 	}
 
 	/**
+	 * With sticky posts on, core adds the stickies that are missing from the results, and it
+	 * reads post__not_in to know which to leave out (WP_Query::get_posts()). A deferring grid
+	 * has taken its excludes out of post__not_in, so core would add the post being viewed right
+	 * back. Such a grid must not defer.
+	 */
+	#[DataProvider( 'strategies' )]
+	public function test_a_grid_with_sticky_posts_on_does_not_defer( string $strategy ): void {
+		// Outside the window, so core fetches it and puts it first.
+		$current = $this->post_ids[39];
+
+		stick_post( $current );
+
+		$stickies = static fn( $query_args ) => array_merge( $query_args, [ 'ignore_sticky_posts' => false ] );
+
+		add_filter( 'mai_post_grid_query_args', $stickies );
+
+		$this->go_to( get_permalink( $current ) );
+
+		// No taxonomy, so the grid's query counts as the blog home, which is the only place
+		// core puts stickies first.
+		$args = $this->grid_args( [ 'query_by' => 'date', 'taxonomies' => [] ] );
+
+		$this->flush_result_cache();
+		$miss       = $this->run_grid( $strategy, $args );
+		$hit        = $this->run_grid( $strategy, $args );
+		$undeferred = $this->undeferred( $args );
+
+		remove_filter( 'mai_post_grid_query_args', $stickies );
+		unstick_post( $current );
+
+		$this->assertStringContainsString( 'NOT IN', $miss->request, 'the excludes stay in the SQL' );
+		$this->assertNotContains( $current, $this->ids( $miss ) );
+		$this->assertNotContains( $current, $this->ids( $hit ) );
+		$this->assertSame( $this->ids( $undeferred ), $this->ids( $miss ) );
+		$this->assertSame( $this->ids( $undeferred ), $this->ids( $hit ) );
+	}
+
+	/**
 	 * The one place kept_only shows something the current strategy does not: a post a
 	 * the_posts callback appends. The current strategy slices after the_posts, so when nothing
 	 * was dropped the padding row takes the widened slot and the appended post falls off.

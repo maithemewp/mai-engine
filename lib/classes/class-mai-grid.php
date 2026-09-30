@@ -914,6 +914,14 @@ class Mai_Grid {
 			$can = false;
 		}
 
+		// With sticky posts on, core fetches the stickies missing from the results and leaves out
+		// only those in post__not_in, which no longer holds the deferred excludes. It would put
+		// the post being viewed right back. empty() because WP_Query's own default is false,
+		// which means stickies are on.
+		if ( empty( $query_args['ignore_sticky_posts'] ) ) {
+			$can = false;
+		}
+
 		// Core returns these straight out of get_posts(), before the_posts and before it sets
 		// $this->post. Nothing reaches the cache, and rewind_posts() would leave $query->post
 		// as an int or a stdClass where core leaves it null.
