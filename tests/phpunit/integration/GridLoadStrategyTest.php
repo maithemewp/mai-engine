@@ -647,35 +647,26 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * mai-cache refusing to store (SCRIPT_DEBUG, or the mai_can_cache filter) leaves the grid
-	 * deferring with nothing ever stored. Every request is then a miss, and kept_only still has
-	 * to load only the kept posts on each one.
+	 * mai-cache refusing to store (SCRIPT_DEBUG, or the mai_can_cache filter) means there is no
+	 * shared entry to gain, so the grid must not defer. Deferring would only turn off core's
+	 * query cache under kept_only and pad the query under every strategy, for nothing.
 	 */
 	#[DataProvider( 'strategies' )]
-	public function test_a_store_that_cannot_cache_still_works( string $strategy ): void {
+	public function test_a_store_that_cannot_cache_does_not_defer( string $strategy ): void {
 		$prepared = $this->prepare( 'displayed_many' );
-		$window   = array_slice( $this->post_ids, 0, self::PER_PAGE + count( $prepared['excluded'] ) );
 
 		add_filter( 'mai_can_cache', '__return_false' );
 
-		$baseline = $this->ids( $this->run_grid( 'current', $prepared['args'] ) );
+		$baseline = $this->ids( $this->undeferred( $prepared['args'] ) );
 
 		foreach ( [ 1, 2 ] as $run ) {
-			$this->clean_post_caches();
+			[ $query, $stores ] = $this->count_stores( fn() => $this->run_grid( $strategy, $prepared['args'] ) );
 
-			[ $result, $stores ] = $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( $strategy, $prepared['args'] ) ) );
-			[ $query, $sql ]     = $result;
-
-			$this->assertStringNotContainsString( 'NOT IN', $query->request, 'the grid still defers' );
+			$this->assertStringContainsString( 'NOT IN', $query->request, "run {$run}: the excludes stay in the SQL" );
+			$this->assertStringContainsString( 'LIMIT 0, ' . self::PER_PAGE, $query->request, "run {$run}: not padded" );
+			$this->assertTrue( $query->query_vars['cache_results'], "run {$run}: core's query cache stays on" );
 			$this->assertSame( $baseline, $this->ids( $query ), "run {$run}" );
-			$this->assertCount( 1, $this->grid_selects( $sql ), "run {$run} has nothing cached to read" );
 			$this->assertSame( 0, $stores );
-
-			if ( 'kept_only' === $strategy ) {
-				foreach ( $this->cached( array_diff( $window, $baseline ) ) as $id => $state ) {
-					$this->assertFalse( $state['row'], "run {$run}: dropped post {$id} must not be loaded" );
-				}
-			}
 		}
 
 		remove_filter( 'mai_can_cache', '__return_false' );

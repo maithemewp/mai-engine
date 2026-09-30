@@ -44,6 +44,21 @@ final class GridDeferredExcludesTest extends TestCase {
 		return $prop->getValue( $grid );
 	}
 
+	/**
+	 * Stands in for mai_cache(), so Mai_Query_Cache::can_store() can answer.
+	 */
+	private function stub_store( bool $can_cache ): void {
+		$store = new class( $can_cache ) {
+			public function __construct( private bool $can_cache ) {}
+
+			public function can_cache(): bool {
+				return $this->can_cache;
+			}
+		};
+
+		Functions\when( 'mai_cache' )->justReturn( $store );
+	}
+
 	private function stub_wp(): void {
 		Functions\when( 'apply_filters' )->alias( fn( $tag, $value ) => $value );
 		Functions\when( 'is_user_logged_in' )->justReturn( false );
@@ -143,6 +158,7 @@ final class GridDeferredExcludesTest extends TestCase {
 
 	private function can_defer( array $query_args, array $effective = [ 99 ] ): bool {
 		Functions\when( 'apply_filters' )->alias( fn( $tag, $value ) => $value );
+		$this->stub_store( true );
 
 		$grid   = $this->grid( [] );
 		$method = new \ReflectionMethod( Mai_Grid::class, 'can_defer_excludes' );
@@ -283,6 +299,21 @@ final class GridDeferredExcludesTest extends TestCase {
 		$this->assertFalse( $this->can_defer( [ 'mai_cache' => false ] ) );
 	}
 
+	public function test_does_not_defer_when_the_store_cannot_cache(): void {
+		// SCRIPT_DEBUG, or the mai_can_cache filter. Nothing would ever be stored, so there is
+		// no shared entry to gain, and kept_only would switch off core's query cache for nothing.
+		Functions\when( 'apply_filters' )->alias( fn( $tag, $value ) => $value );
+		$this->stub_store( false );
+
+		$grid   = $this->grid( [] );
+		$method = new \ReflectionMethod( Mai_Grid::class, 'can_defer_excludes' );
+		$method->setAccessible( true );
+
+		$args = [ 'posts_per_page' => 6, 'offset' => 0, 'no_found_rows' => true, 'ignore_sticky_posts' => true, 'mai_cache' => true ];
+
+		$this->assertFalse( $method->invoke( $grid, $args, [ 99 ] ) );
+	}
+
 	public function test_does_not_defer_for_random_order(): void {
 		// Mai_Query_Cache::is_cacheable() refuses a random order because caching it would
 		// defeat the point of randomness.
@@ -329,6 +360,7 @@ final class GridDeferredExcludesTest extends TestCase {
 		Functions\when( 'apply_filters' )->alias(
 			fn( $tag, $value ) => 'mai_post_grid_max_posts_per_page' === $tag ? 100 : $value
 		);
+		$this->stub_store( true );
 
 		$grid   = $this->grid( [] );
 		$method = new \ReflectionMethod( Mai_Grid::class, 'can_defer_excludes' );
@@ -361,6 +393,7 @@ final class GridDeferredExcludesTest extends TestCase {
 		Functions\when( 'apply_filters' )->alias(
 			fn( $tag, $value ) => 'mai_post_grid_defer_excludes' === $tag ? false : $value
 		);
+		$this->stub_store( true );
 
 		$grid   = $this->grid( [] );
 		$method = new \ReflectionMethod( Mai_Grid::class, 'can_defer_excludes' );

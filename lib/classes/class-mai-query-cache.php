@@ -182,6 +182,16 @@ class Mai_Query_Cache {
 	}
 
 	/**
+	 * Whether the grid cache can write at all. mai-cache refuses under SCRIPT_DEBUG, when its
+	 * store is unavailable, and through the mai_can_cache filter.
+	 *
+	 * @return bool
+	 */
+	public function can_store(): bool {
+		return mai_cache( self::GROUP )->can_cache();
+	}
+
+	/**
 	 * posts_pre_query: serve from cache (fresh or stale) or flag a miss for storage.
 	 *
 	 * A kept-only grid (see keep_request()) is served here on a hit with only the posts it will
