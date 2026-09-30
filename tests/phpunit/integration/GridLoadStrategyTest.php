@@ -766,7 +766,11 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		$prepared = $this->prepare( 'current_in_window' );
 		$second   = 0;
 
-		$now = static function ( $query ) use ( &$second ) {
+		// Now, but never in the last minute of the hour, so the moving value stays in one hour.
+		$start = time();
+		$start = '59' === gmdate( 'i', $start ) ? $start - 60 : $start;
+
+		$now = static function ( $query ) use ( &$second, $start ) {
 			if ( $query->is_main_query() ) {
 				return;
 			}
@@ -776,7 +780,7 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 				[
 					'mai_test_now' => [
 						'key'     => 'mai_test_meta',
-						'value'   => '2026-09-30 15:24:' . str_pad( (string) ( 10 + $second++ ), 2, '0', STR_PAD_LEFT ),
+						'value'   => gmdate( 'Y-m-d H:i:s', $start + $second++ ),
 						'compare' => '!=',
 					],
 				]

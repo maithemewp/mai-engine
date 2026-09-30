@@ -49,6 +49,12 @@ class Mai_Query_Cache {
 	private const POLL_MS = 25;
 
 	/**
+	 * How close to now, in seconds, a datetime query var has to be for cache_key() to treat it
+	 * as "now" and truncate it to the hour.
+	 */
+	private const NOW_WINDOW = 300;
+
+	/**
 	 * Query vars that do not change which posts are returned, removed before hashing.
 	 * Mirrors WP_Query::generate_cache_key().
 	 */
@@ -146,16 +152,34 @@ class Mai_Query_Cache {
 		// windows are not supported; the shortest in real use is measured in days.
 		$sql = preg_replace( "/'(\d{4}-\d{2}-\d{2} \d{2}):\d{2}:\d{2}'/", "'$1:00:00'", $sql );
 
-		// The same for a query var whose whole value is a datetime. The Events Calendar writes
-		// "now", to the second, into the meta_query of every event query, so with only the SQL
-		// coarsened the key still changed every second, and a site without an object cache
-		// wrote a new row on every page view. A value that only contains a datetime, or holds
-		// a relative date, is left as it is.
+		// The same for a query var that holds "now". The Events Calendar writes it, to the
+		// second, into the meta_query of every event query, so with only the SQL coarsened the
+		// key still changed every second, and a site without an object cache wrote a new row
+		// on every page view. Only a whole datetime within NOW_WINDOW of now, in UTC or site
+		// time, counts as "now". Any other datetime was set on purpose and stays exact, so two
+		// grids set to different datetimes in the same hour still get different keys.
+		$now = null;
+
 		array_walk_recursive(
 			$query_vars,
-			static function ( &$value ) {
-				if ( is_string( $value ) ) {
-					$value = preg_replace( '/^(\d{4}-\d{2}-\d{2} \d{2}):\d{2}:\d{2}$/', '$1:00:00', $value );
+			static function ( &$value ) use ( &$now ) {
+				if ( ! is_string( $value ) || ! preg_match( '/^(\d{4}-\d{2}-\d{2} \d{2}):\d{2}:\d{2}$/', $value, $matches ) ) {
+					return;
+				}
+
+				$now ??= [
+					strtotime( current_time( 'mysql', true ) . ' UTC' ),
+					strtotime( current_time( 'mysql' ) . ' UTC' ),
+				];
+
+				$time = strtotime( $value . ' UTC' );
+
+				foreach ( $now as $reference ) {
+					if ( false !== $time && abs( $time - $reference ) <= self::NOW_WINDOW ) {
+						$value = $matches[1] . ':00:00';
+
+						return;
+					}
 				}
 			}
 		);
