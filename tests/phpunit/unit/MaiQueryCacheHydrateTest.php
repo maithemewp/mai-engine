@@ -70,6 +70,31 @@ final class MaiQueryCacheHydrateTest extends TestCase {
 		$this->assertSame( [ 1 ], $this->ids( $posts ) );
 	}
 
+	public function test_primes_meta_and_terms_as_the_query_asks(): void {
+		$calls = [];
+		Functions\when( '_prime_post_caches' )->alias(
+			function ( $ids, $terms, $meta ) use ( &$calls ) {
+				$calls[] = [ $ids, $terms, $meta ];
+			}
+		);
+		$this->stub_posts( [ 1 => 'publish' ] );
+
+		$cache = new Mai_Query_Cache();
+		$cache->hydrate( [ 1 ], [ 'update_post_term_cache' => false, 'update_post_meta_cache' => true ] );
+		$cache->hydrate( [ 1 ], [ 'update_post_term_cache' => true, 'update_post_meta_cache' => false ] );
+		$cache->hydrate( [ 1 ], [] );
+
+		// _prime_post_caches() takes the term flag before the meta flag.
+		$this->assertSame(
+			[
+				[ [ 1 ], false, true ],
+				[ [ 1 ], true, false ],
+				[ [ 1 ], true, true ],
+			],
+			$calls
+		);
+	}
+
 	public function test_empty_ids_returns_empty(): void {
 		$this->assertSame( [], ( new Mai_Query_Cache() )->hydrate( [], [ 'post_status' => 'publish' ] ) );
 	}

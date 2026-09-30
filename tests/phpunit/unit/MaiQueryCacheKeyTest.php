@@ -12,6 +12,15 @@ final class MaiQueryCacheKeyTest extends TestCase {
 		$this->assertSame( $a, $b );
 	}
 
+	public function test_the_kept_only_marker_does_not_change_the_key(): void {
+		// It carries the per-view excludes. Hashing it would give every page its own entry.
+		$c = new Mai_Query_Cache();
+		$this->assertSame(
+			$c->cache_key( [ 'post_type' => 'post' ], 'SELECT 1' ),
+			$c->cache_key( [ 'post_type' => 'post', 'mai_grid_keep' => [ 'exclude' => [ 99 ], 'count' => 6 ] ], 'SELECT 1' )
+		);
+	}
+
 	public function test_different_sql_changes_the_key(): void {
 		$c = new Mai_Query_Cache();
 		$this->assertNotSame(
