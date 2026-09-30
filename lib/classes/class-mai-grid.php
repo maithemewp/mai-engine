@@ -261,6 +261,7 @@ class Mai_Grid {
 					$asked     = $this->query_args;
 					$strategy  = '';
 					$overrides = [];
+					$keep      = null;
 
 					if ( $defer ) {
 						// TEMPORARY: benchmark switch, remove before merge.
@@ -294,14 +295,14 @@ class Mai_Grid {
 						if ( 'kept_only' === $strategy ) {
 							// Mai_Query_Cache reads this in posts_pre_query and answers with
 							// only the posts that will be shown, so the rest are never loaded.
-							$this->query_args['mai_grid_keep'] = [
+							$keep = [
 								'exclude' => $effective,
 								'count'   => $asked['posts_per_page'],
 							];
 
-							// Core's own query cache would hash mai_grid_keep, which holds the
-							// per-view ids, and write a new entry on every page view. The
-							// result cache already covers this query, keyed without them.
+							// Core would store that kept answer under the padded query's key,
+							// where a later full run of this grid would read it back short. The
+							// result cache already covers this query.
 							$overrides = [ 'cache_results' => false ];
 						}
 
@@ -310,7 +311,18 @@ class Mai_Grid {
 						add_filter( 'posts_orderby', [ $this, 'add_deferred_orderby_tiebreaker' ], 99, 2 );
 					}
 
-					$query = new WP_Query( $this->query_args );
+					$query = new WP_Query();
+
+					// Set on the query itself before it runs, never as a query var. A plugin
+					// that answers posts_pre_query by building its own query from this one's
+					// args and vars, as The Events Calendar does at priority 100, would carry a
+					// query var into that copy. The copy would then come back trimmed, and the
+					// result cache would store the trimmed list as the shared padded entry.
+					if ( $keep ) {
+						$query->mai_grid_keep = $keep;
+					}
+
+					$query->query( $this->query_args );
 
 					if ( $defer ) {
 						remove_filter( 'posts_orderby', [ $this, 'add_deferred_orderby_tiebreaker' ], 99 );
@@ -390,8 +402,7 @@ class Mai_Grid {
 						unset(
 							$query->query_vars['mai_grid_tiebreak'],
 							$query->query['mai_grid_tiebreak'],
-							$query->query_vars['mai_grid_keep'],
-							$query->query['mai_grid_keep']
+							$query->mai_grid_keep
 						);
 
 						$this->query_args = $asked;

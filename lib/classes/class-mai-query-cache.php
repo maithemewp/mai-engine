@@ -49,18 +49,8 @@ class Mai_Query_Cache {
 	private const POLL_MS = 25;
 
 	/**
-	 * Query var a deferring Mai_Grid sets to have posts_pre_query hand back only the posts it
-	 * will show: [ 'exclude' => int[], 'count' => int ]. See keep_request().
-	 */
-	private const KEEP_VAR = 'mai_grid_keep';
-
-	/**
 	 * Query vars that do not change which posts are returned, removed before hashing.
-	 * Mirrors WP_Query::generate_cache_key(), plus Mai's own markers.
-	 *
-	 * KEEP_VAR is here because what gets stored is the padded ID list, which is the same for
-	 * every page view. The excludes it carries differ per view, and hashing them would give
-	 * every page its own entry again.
+	 * Mirrors WP_Query::generate_cache_key().
 	 */
 	private const VOLATILE = [
 		'cache_results',
@@ -71,7 +61,6 @@ class Mai_Query_Cache {
 		'lazy_load_term_meta',
 		'suppress_filters',
 		'mai_cache',
-		self::KEEP_VAR,
 	];
 
 	/**
@@ -347,8 +336,9 @@ class Mai_Query_Cache {
 	 * The kept-only request a deferring grid attached to this query, or null to answer it the
 	 * usual way.
 	 *
-	 * Mai_Grid sets KEEP_VAR when it defers its excludes: the IDs to drop, and how many posts it
-	 * will show. Answering with only those posts means the padding rows and the excluded posts
+	 * Mai_Grid sets it as the mai_grid_keep property of its query when it defers its excludes:
+	 * the IDs to drop, and how many posts it will show. A property rather than a query var, so a
+	 * copy another plugin builds from this query's vars does not carry it. Answering with only those posts means the padding rows and the excluded posts
 	 * are never loaded or primed, and posts_results and the_posts see what the grid shows, as
 	 * they did before excludes were deferred.
 	 *
@@ -363,7 +353,7 @@ class Mai_Query_Cache {
 	 * @return array{exclude:int[],count:int}|null
 	 */
 	private function keep_request( $posts, $query ): ?array {
-		$keep = $query->query_vars[ self::KEEP_VAR ] ?? null;
+		$keep = $query->mai_grid_keep ?? null;
 
 		if ( null !== $posts || ! is_array( $keep ) || ! isset( $keep['exclude'], $keep['count'] ) || ! is_array( $keep['exclude'] ) ) {
 			return null;
@@ -390,7 +380,7 @@ class Mai_Query_Cache {
 	 * @return string
 	 */
 	public function note_request( $request, $query ) {
-		if ( ! empty( $query->query_vars[ self::KEEP_VAR ] ) ) {
+		if ( ! empty( $query->mai_grid_keep ) ) {
 			$query->mai_grid_request = $request;
 		}
 

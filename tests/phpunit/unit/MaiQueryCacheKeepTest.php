@@ -55,11 +55,20 @@ final class MaiQueryCacheKeepTest extends TestCase {
 		return ( new \ReflectionMethod( $cache, $method ) )->invoke( $cache, ...$args );
 	}
 
-	private function query( array $query_vars = [], string $request = self::SQL ): object {
-		return (object) [
-			'query_vars' => $query_vars + [ 'mai_grid_keep' => [ 'exclude' => [ 10 ], 'count' => 2 ] ],
+	/**
+	 * A query carrying the kept-only marker. Pass null for $keep to leave the marker off.
+	 */
+	private function query( array $query_vars = [], string $request = self::SQL, $keep = [ 'exclude' => [ 10 ], 'count' => 2 ] ): object {
+		$query = (object) [
+			'query_vars' => $query_vars,
 			'request'    => $request,
 		];
+
+		if ( null !== $keep ) {
+			$query->mai_grid_keep = $keep;
+		}
+
+		return $query;
 	}
 
 	// ---- note_request() ----
@@ -82,7 +91,7 @@ final class MaiQueryCacheKeepTest extends TestCase {
 	// ---- keep_request() ----
 
 	public function test_keep_request_reads_the_marker(): void {
-		$query = $this->query( [ 'mai_grid_keep' => [ 'exclude' => [ '10', 11 ], 'count' => '2' ] ] );
+		$query = $this->query( [], self::SQL, [ 'exclude' => [ '10', 11 ], 'count' => '2' ] );
 
 		$this->assertSame( [ 'exclude' => [ 10, 11 ], 'count' => 2 ], $this->call( 'keep_request', null, $query ) );
 	}
@@ -99,9 +108,17 @@ final class MaiQueryCacheKeepTest extends TestCase {
 
 	public function test_keep_request_declines_without_a_usable_marker(): void {
 		$this->assertNull( $this->call( 'keep_request', null, (object) [ 'query_vars' => [] ] ) );
-		$this->assertNull( $this->call( 'keep_request', null, $this->query( [ 'mai_grid_keep' => true ] ) ) );
-		$this->assertNull( $this->call( 'keep_request', null, $this->query( [ 'mai_grid_keep' => [ 'exclude' => '10', 'count' => 2 ] ] ) ) );
-		$this->assertNull( $this->call( 'keep_request', null, $this->query( [ 'mai_grid_keep' => [ 'exclude' => [ 10 ] ] ] ) ) );
+		$this->assertNull( $this->call( 'keep_request', null, $this->query( [], self::SQL, true ) ) );
+		$this->assertNull( $this->call( 'keep_request', null, $this->query( [], self::SQL, [ 'exclude' => '10', 'count' => 2 ] ) ) );
+		$this->assertNull( $this->call( 'keep_request', null, $this->query( [], self::SQL, [ 'exclude' => [ 10 ] ] ) ) );
+	}
+
+	public function test_keep_request_ignores_the_marker_as_a_query_var(): void {
+		// A plugin that answers posts_pre_query with a copy built from this query's vars must
+		// not get a kept-only copy. Only the property on the grid's own query counts.
+		$query = $this->query( [ 'mai_grid_keep' => [ 'exclude' => [ 10 ], 'count' => 2 ] ], self::SQL, null );
+
+		$this->assertNull( $this->call( 'keep_request', null, $query ) );
 	}
 
 	// ---- pre_query_kept() ----

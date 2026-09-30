@@ -487,9 +487,8 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * kept_only runs its grid query with cache_results off. Left on, core's own query cache
-	 * would hash mai_grid_keep, which holds the per-view excludes, and write a fresh
-	 * post-queries entry for every page view: the key shatter deferring exists to avoid.
+	 * kept_only runs its grid query with cache_results off. Left on, core would store the kept
+	 * answer, which differs per page view, under the padded query's key.
 	 */
 	public function test_kept_only_does_not_write_core_query_cache_entries(): void {
 		global $wp_object_cache;
@@ -561,6 +560,7 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 			$this->assertArrayNotHasKey( $marker, $deferred->query );
 		}
 
+		$this->assertObjectNotHasProperty( 'mai_grid_keep', $deferred );
 		$this->assertObjectNotHasProperty( 'mai_grid_kept', $deferred );
 		$this->assertObjectNotHasProperty( 'mai_grid_request', $deferred );
 	}
@@ -690,7 +690,8 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		$prepared = $this->prepare( 'displayed_many' );
 		$window   = array_slice( $this->post_ids, 0, self::PER_PAGE + count( $prepared['excluded'] ) );
 
-		$decline = static fn( $cacheable, $query_vars ) => isset( $query_vars['mai_grid_keep'] ) ? false : $cacheable;
+		// Only the padded query carries the tiebreak marker. The grid's own check runs before it is set.
+		$decline = static fn( $cacheable, $query_vars ) => isset( $query_vars['mai_grid_tiebreak'] ) ? false : $cacheable;
 
 		$baseline = $this->ids( $this->run_grid( 'current', $prepared['args'] ) );
 
@@ -890,6 +891,72 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		$this->assertSame( $expected, $this->ids( $miss ), 'their answer, with the excludes dropped by Mai_Grid' );
 		$this->assertSame( 1, $stores );
 		$this->assertSame( $expected, $this->ids( $hit ), 'the hit serves what they answered' );
+	}
+
+	/**
+	 * The Events Calendar answers posts_pre_query at priority 100 with a copy of the grid's
+	 * query: Custom_Tables_Query::from_wp_query() builds a new query from the grid's query and
+	 * query_vars and runs it. Anything Mai keeps in the query vars reaches that copy too. The
+	 * kept-only marker must not, or the copy comes back trimmed to the kept posts, and the
+	 * grid's miss stores that trimmed list as the shared padded entry. The next article then
+	 * drops its own post from a list that has no spare and shows one short.
+	 */
+	#[DataProvider( 'strategies' )]
+	public function test_a_plugin_answering_with_a_copy_of_the_query_leaves_the_entry_padded( string $strategy ): void {
+		$args    = $this->grid_args();
+		$running = false;
+
+		$theirs = static function ( $posts, $query ) use ( &$running ) {
+			if ( $running || null !== $posts || empty( $query->query_vars['mai_cache'] ) ) {
+				return $posts;
+			}
+
+			// What from_wp_query() does: a fresh query carrying the grid's args and vars.
+			$copy             = new WP_Query();
+			$copy->query      = $query->query;
+			$copy->query_vars = $query->query_vars;
+
+			$running = true;
+			$answer  = $copy->get_posts();
+			$running = false;
+
+			return $answer;
+		};
+
+		$key     = '';
+		$capture = static function ( $posts, $query ) use ( &$key ) {
+			// The grid's own query reaches priority 9 first. The copy runs inside priority 100.
+			if ( '' === $key && ! empty( $query->query_vars['mai_cache'] ) ) {
+				$key = ( new Mai_Query_Cache() )->cache_key( $query->query_vars, (string) $query->request );
+			}
+
+			return $posts;
+		};
+
+		add_filter( 'posts_pre_query', $theirs, 100, 2 );
+		add_filter( 'posts_pre_query', $capture, 9, 2 );
+
+		$this->flush_result_cache();
+
+		$this->go_to( get_permalink( $this->post_ids[0] ) );
+		$first = $this->ids( $this->run_grid( $strategy, $args ) );
+
+		remove_filter( 'posts_pre_query', $capture, 9 );
+
+		$stored = mai_cache( 'grid' )->read_swr( $key, mai_cache( 'grid' )->version( [ 'post' ] ) );
+
+		$this->go_to( get_permalink( $this->post_ids[1] ) );
+		$second = $this->ids( $this->run_grid( $strategy, $args ) );
+
+		remove_filter( 'posts_pre_query', $theirs, 100 );
+
+		$this->assertSame( array_slice( $this->post_ids, 1, self::PER_PAGE ), $first );
+		$this->assertSame( array_slice( $this->post_ids, 0, self::PER_PAGE + 1 ), $stored['value']['ids'], 'the padded list, excluded post included' );
+		$this->assertSame(
+			array_merge( [ $this->post_ids[0] ], array_slice( $this->post_ids, 2, self::PER_PAGE - 1 ) ),
+			$second,
+			'a full grid without the post being viewed'
+		);
 	}
 
 	/**
