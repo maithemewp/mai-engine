@@ -830,18 +830,16 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * The Events Calendar writes "now", to the second, into the meta_query of every event query.
-	 * The key has to hold still across page views anyway, or every view misses and writes a new
-	 * entry. Here the value moves one second on every query, within the same hour.
+	 * The Events Calendar writes "now", to the second, into the meta_query of every event query,
+	 * so its key changes on every view. Such a query is not cached at all: no entry is written,
+	 * each view runs its own query, and the grid still shows the right posts. Here the value
+	 * moves one second on every query.
 	 */
 	#[DataProvider( 'strategies' )]
-	public function test_a_datetime_written_into_the_query_vars_still_gets_a_hit( string $strategy ): void {
+	public function test_a_query_that_holds_now_is_not_cached( string $strategy ): void {
 		$prepared = $this->prepare( 'current_in_window' );
 		$second   = 0;
-
-		// Now, but never in the last minute of the hour, so the moving value stays in one hour.
-		$start = time();
-		$start = '59' === gmdate( 'i', $start ) ? $start - 60 : $start;
+		$start    = time();
 
 		$now = static function ( $query ) use ( &$second, $start ) {
 			if ( $query->is_main_query() ) {
@@ -863,16 +861,17 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		add_action( 'pre_get_posts', $now );
 
 		$this->flush_result_cache();
-		[ $miss, $miss_sql ] = $this->capture_sql( fn() => $this->run_grid( $strategy, $prepared['args'] ) );
-		[ $hit, $hit_sql ]   = $this->capture_sql( fn() => $this->run_grid( $strategy, $prepared['args'] ) );
+		[ [ $first, $first_sql ], $first_stores ]   = $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( $strategy, $prepared['args'] ) ) );
+		[ [ $second_run, $second_sql ], $second_stores ] = $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( $strategy, $prepared['args'] ) ) );
 
 		remove_action( 'pre_get_posts', $now );
 
 		$this->assertGreaterThan( 1, $second, 'the value moved between queries' );
-		$this->assertCount( 1, $this->grid_selects( $miss_sql ) );
-		$this->assertSame( [], $this->grid_selects( $hit_sql ), 'the second view is a hit' );
-		$this->assertCount( self::PER_PAGE, $this->ids( $hit ) );
-		$this->assertSame( $this->ids( $miss ), $this->ids( $hit ) );
+		$this->assertSame( 0, $first_stores + $second_stores, 'nothing is stored' );
+		$this->assertCount( 1, $this->grid_selects( $first_sql ) );
+		$this->assertCount( 1, $this->grid_selects( $second_sql ), 'the second view runs its own query' );
+		$this->assertCount( self::PER_PAGE, $this->ids( $second_run ) );
+		$this->assertSame( $this->ids( $first ), $this->ids( $second_run ) );
 	}
 
 	/** All three strategies land on one entry, so a benchmark can switch between them warm. */

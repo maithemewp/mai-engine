@@ -92,28 +92,20 @@ final class MaiQueryCacheKeyTest extends TestCase {
 		];
 	}
 
-	public function test_a_datetime_of_now_in_the_query_vars_is_truncated_to_the_hour(): void {
+	public function test_a_query_that_holds_now_is_not_cacheable(): void {
 		// The Events Calendar writes "now" into the meta_query of every event query, to the
-		// second. With only the SQL coarsened, the key still changed every second.
+		// second, so the key changes on every view. Caching it would never hit.
 		$this->freeze_now();
+		Functions\when( 'apply_filters' )->returnArg( 2 );
 
-		$c = new Mai_Query_Cache();
-
-		$this->assertSame(
-			$c->cache_key( $this->event_vars( '2026-09-30 15:24:24' ), 'SELECT 1' ),
-			$c->cache_key( $this->event_vars( '2026-09-30 15:24:29' ), 'SELECT 1' )
-		);
+		$this->assertFalse( ( new Mai_Query_Cache() )->is_cacheable( $this->event_vars( '2026-09-30 15:24:24' ) ) );
 	}
 
-	public function test_a_datetime_of_now_in_utc_is_truncated_too(): void {
+	public function test_a_query_that_holds_now_in_utc_is_not_cacheable(): void {
 		$this->freeze_now();
+		Functions\when( 'apply_filters' )->returnArg( 2 );
 
-		$c = new Mai_Query_Cache();
-
-		$this->assertSame(
-			$c->cache_key( $this->event_vars( '2026-09-30 19:24:24' ), 'SELECT 1' ),
-			$c->cache_key( $this->event_vars( '2026-09-30 19:24:29' ), 'SELECT 1' )
-		);
+		$this->assertFalse( ( new Mai_Query_Cache() )->is_cacheable( $this->event_vars( '2026-09-30 19:24:24' ) ) );
 	}
 
 	public function test_a_datetime_far_from_now_keeps_its_own_key(): void {
@@ -127,6 +119,10 @@ final class MaiQueryCacheKeyTest extends TestCase {
 			$c->cache_key( [ 'post_type' => 'post', 'date_query' => [ 'before' => '2026-06-01 10:05:00' ] ], 'SELECT 1' ),
 			$c->cache_key( [ 'post_type' => 'post', 'date_query' => [ 'before' => '2026-06-01 10:40:00' ] ], 'SELECT 1' )
 		);
+
+		// And a datetime set on purpose, far from now, is still cached.
+		Functions\when( 'apply_filters' )->returnArg( 2 );
+		$this->assertTrue( $c->is_cacheable( [ 'post_type' => 'post', 'date_query' => [ 'before' => '2026-06-01 10:05:00' ] ] ) );
 	}
 
 	public function test_a_relative_date_in_the_query_vars_still_changes_the_key(): void {

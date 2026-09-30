@@ -49,8 +49,8 @@ class Mai_Query_Cache {
 	private const POLL_MS = 25;
 
 	/**
-	 * How close to now, in seconds, a datetime query var has to be for cache_key() to treat it
-	 * as "now" and truncate it to the hour.
+	 * How close to now, in seconds, a datetime query var has to be for holds_now() to treat it
+	 * as "now" and the query as not cacheable.
 	 */
 	private const NOW_WINDOW = 300;
 
@@ -152,18 +152,29 @@ class Mai_Query_Cache {
 		// windows are not supported; the shortest in real use is measured in days.
 		$sql = preg_replace( "/'(\d{4}-\d{2}-\d{2} \d{2}):\d{2}:\d{2}'/", "'$1:00:00'", $sql );
 
-		// The same for a query var that holds "now". The Events Calendar writes it, to the
-		// second, into the meta_query of every event query, so with only the SQL coarsened the
-		// key still changed every second, and a site without an object cache wrote a new row
-		// on every page view. Only a whole datetime within NOW_WINDOW of now, in UTC or site
-		// time, counts as "now". Any other datetime was set on purpose and stays exact, so two
-		// grids set to different datetimes in the same hour still get different keys.
-		$now = null;
+		return md5( serialize( $query_vars ) . $sql );
+	}
+
+	/**
+	 * Whether a query var holds the current time, to the second.
+	 *
+	 * Something rewrote the query with "now" (The Events Calendar does this to every event
+	 * query), so its key changes on every page view. Caching it would never hit, and a site
+	 * without an object cache would write a new row on every view. Only a whole datetime within
+	 * NOW_WINDOW of now, in UTC or site time, counts. Any other datetime was set on purpose.
+	 *
+	 * @param array $query_vars The WP_Query vars.
+	 *
+	 * @return bool
+	 */
+	private function holds_now( array $query_vars ): bool {
+		$now   = null;
+		$found = false;
 
 		array_walk_recursive(
 			$query_vars,
-			static function ( &$value ) use ( &$now ) {
-				if ( ! is_string( $value ) || ! preg_match( '/^(\d{4}-\d{2}-\d{2} \d{2}):\d{2}:\d{2}$/', $value, $matches ) ) {
+			static function ( $value ) use ( &$now, &$found ) {
+				if ( $found || ! is_string( $value ) || ! preg_match( '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $value ) ) {
 					return;
 				}
 
@@ -176,7 +187,7 @@ class Mai_Query_Cache {
 
 				foreach ( $now as $reference ) {
 					if ( false !== $time && abs( $time - $reference ) <= self::NOW_WINDOW ) {
-						$value = $matches[1] . ':00:00';
+						$found = true;
 
 						return;
 					}
@@ -184,7 +195,7 @@ class Mai_Query_Cache {
 			}
 		);
 
-		return md5( serialize( $query_vars ) . $sql );
+		return $found;
 	}
 
 	/**
@@ -213,6 +224,11 @@ class Mai_Query_Cache {
 		// 'RAND(123)' form.
 		$orderby = $query_vars['orderby'] ?? '';
 		if ( is_string( $orderby ) && preg_match( '/\brand\b|\bRAND\(/i', $orderby ) ) {
+			$cacheable = false;
+		}
+
+		// A query that holds the current time gets a new key on every view, so it never hits.
+		if ( $cacheable && $this->holds_now( $query_vars ) ) {
 			$cacheable = false;
 		}
 
@@ -314,7 +330,14 @@ class Mai_Query_Cache {
 		}
 
 		$keep = $this->keep_request( $posts, $query );
-		$ids  = $keep ? $this->fetch_ids( $query, $keep ) : null;
+
+		// A copy of a query that holds the current time gets its own "now", so fetch_ids() would
+		// run it and then throw it away as a different query. Let the grid's own query answer.
+		if ( $keep && $this->holds_now( $query->query_vars ) ) {
+			$keep = null;
+		}
+
+		$ids = $keep ? $this->fetch_ids( $query, $keep ) : null;
 
 		if ( null === $ids ) {
 			return $posts;
