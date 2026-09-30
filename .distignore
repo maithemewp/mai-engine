@@ -19,3 +19,9 @@
 /.editorconfig
 /.github/
 /.githooks/
+/docs/
+/.agents/
+/Gulpfile.js
+/package.json
+/stylelint.config.js
+/phpmd.xml

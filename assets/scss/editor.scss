@@ -522,7 +522,7 @@ input[type="submit"],
 
 .has-columns:not(.has-columns-nested),
 .has-columns-nested > .acf-innerblocks-container {
-	display: flex;
+	display: var(--columns-display, flex);
 	flex-wrap: wrap;
 	gap: var(--row-gap) var(--column-gap);
 	align-items: var(--align-columns-vertical, initial); // Needs initial for nested columns.
@@ -566,12 +566,16 @@ input[type="submit"],
 .has-columns-nested > .acf-innerblocks-container > .wp-block {
 	flex: var(--flex, var(--flex-default));
 	order: var(--order, unset);
-	// overrides core editor margin on wp-block
-	margin: 0;
 	// Fixes search block weirdness and other flex issues.
 	// @link https://defensivecss.dev/tip/flexbox-min-content-size/
 	// @link https://dfmcphee.com/flex-items-and-min-width-0/
 	min-width: 0;
+}
+
+// Overrides core editor margin on wp-block. Only the nested block wrappers need it,
+// plain columns keep their own margins so the editor matches the front end.
+.has-columns-nested > .acf-innerblocks-container > .wp-block {
+	margin: 0;
 }
 
 .has-columns-nested > .acf-innerblocks-container > .wp-block > .is-column {
