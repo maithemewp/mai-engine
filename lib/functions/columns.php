@@ -305,7 +305,7 @@ function mai_columns_get_columns( $break, $size ) {
  *
  * @since 2.10.0
  * @since 2.22.0 Added $break to stay consistent with `mai_columns_get_columns()`.
- * @since TBD Added $fit_basis.
+ * @since 2.41.0 Added $fit_basis.
  *
  * @param string $break     Either xs, sm, md, etc.
  * @param string $size

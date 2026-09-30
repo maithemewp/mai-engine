@@ -555,7 +555,7 @@ function mai_get_image_aspect_ratio( $image_size ) {
  * `remove`, so it can name an orientation whose sizes are gone. That is why this
  * checks the registered sizes rather than trusting the orientation alone.
  *
- * @since TBD
+ * @since 2.41.0
  *
  * @return string An image size name, or an empty string if none are registered.
  */

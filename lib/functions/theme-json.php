@@ -27,7 +27,7 @@ add_filter( 'wp_theme_json_data_default', 'mai_remove_default_theme_json_presets
  * Image blocks, so emptying it leaves editors with only "Original". The seven
  * `--wp--preset--aspect-ratio--*` properties it emits are worth keeping the UI.
  *
- * @since TBD
+ * @since 2.41.0
  *
  * @param WP_Theme_JSON_Data $theme_json The default theme.json data.
  *

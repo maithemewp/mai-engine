@@ -294,7 +294,7 @@ add_action( 'init', 'mai_register_post_grid_query_optimizer' );
 /**
  * Registers the Mai Post Grid query optimizer.
  *
- * @since TBD
+ * @since 2.41.0
  *
  * @return void
  */

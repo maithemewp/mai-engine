@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.41.0-beta.3\n"
+"Project-Id-Version: Mai Engine 2.41.0-beta.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-18T13:42:41+00:00\n"
+"POT-Creation-Date: 2026-09-30T14:08:16+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: mai-engine\n"
@@ -114,8 +114,8 @@ msgid "The Sidebar widget area."
 msgstr ""
 
 #: config/_default.php:582
-#: lib/functions/utilities.php:1290
-#: lib/functions/utilities.php:1354
+#: lib/functions/utilities.php:1317
+#: lib/functions/utilities.php:1381
 #: lib/structure/header.php:282
 msgid "Search..."
 msgstr ""
@@ -127,7 +127,7 @@ msgstr ""
 #: lib/admin/admin-menu.php:28
 #: lib/admin/admin-menu.php:29
 #: lib/functions/deprecated.php:289
-#: lib/functions/utilities.php:1570
+#: lib/functions/utilities.php:1597
 msgid "Mai Theme"
 msgstr ""
 
@@ -395,6 +395,23 @@ msgstr ""
 msgid "Remind me later"
 msgstr ""
 
+#: lib/admin/notices.php:223
+msgid "Code on this site keeps the classic Widgets screen, so it can't switch to blocks."
+msgstr ""
+
+#: lib/admin/notices.php:243
+#: lib/admin/notices.php:311
+msgid "Switch to blocks"
+msgstr ""
+
+#: lib/admin/notices.php:244
+msgid "Hide forever"
+msgstr ""
+
+#: lib/admin/notices.php:306
+msgid "Block widgets"
+msgstr ""
+
 #: lib/admin/page-header.php:88
 #: lib/admin/term-image.php:56
 #: lib/fields/grid-display.php:196
@@ -494,23 +511,23 @@ msgstr ""
 msgid "Slug"
 msgstr ""
 
-#: lib/admin/template-parts.php:362
+#: lib/admin/template-parts.php:363
 msgid "Mai Theme uses \"Content Areas\" (block-based widget areas)."
 msgstr ""
 
-#: lib/admin/template-parts.php:364
+#: lib/admin/template-parts.php:365
 msgid "Edit content areas now"
 msgstr ""
 
-#: lib/admin/upgrade.php:152
+#: lib/admin/upgrade.php:207
 msgid "Content Areas successfully updated for compatibility with WP 5.7+."
 msgstr ""
 
-#: lib/admin/upgrade.php:156
+#: lib/admin/upgrade.php:211
 msgid "Error migrating content areas."
 msgstr ""
 
-#: lib/admin/upgrade.php:161
+#: lib/admin/upgrade.php:216
 msgid "Please contact BizBudding support."
 msgstr ""
 
@@ -1232,7 +1249,7 @@ msgstr ""
 #: lib/fields/grid-display.php:591
 #: lib/functions/colors.php:256
 #: lib/functions/customizer.php:465
-#: lib/functions/utilities.php:1499
+#: lib/functions/utilities.php:1526
 msgid "Link"
 msgstr ""
 
@@ -2050,7 +2067,7 @@ msgid "Menu Toggle"
 msgstr ""
 
 #: lib/customize/site-header.php:82
-#: lib/functions/utilities.php:1347
+#: lib/functions/utilities.php:1374
 #: lib/structure/menus.php:385
 msgid "Search"
 msgstr ""
@@ -2096,17 +2113,17 @@ msgid "Miscellaneous"
 msgstr ""
 
 #: lib/customize/site-layouts.php:189
-#: lib/functions/utilities.php:443
+#: lib/functions/utilities.php:470
 msgid "Search Results"
 msgstr ""
 
 #: lib/customize/site-layouts.php:201
-#: lib/functions/utilities.php:444
+#: lib/functions/utilities.php:471
 msgid "Author Archives"
 msgstr ""
 
 #: lib/customize/site-layouts.php:213
-#: lib/functions/utilities.php:445
+#: lib/functions/utilities.php:472
 msgid "Date Archives"
 msgstr ""
 
@@ -2160,11 +2177,11 @@ msgstr ""
 msgid "Flush once"
 msgstr ""
 
-#: lib/customize/typography.php:185
+#: lib/customize/typography.php:223
 msgid "does not exist."
 msgstr ""
 
-#: lib/customize/typography.php:214
+#: lib/customize/typography.php:226
 msgid "Fonts flushed successfully"
 msgstr ""
 
@@ -2365,7 +2382,7 @@ msgstr ""
 #: lib/functions/customizer.php:509
 #: lib/functions/customizer.php:890
 #: lib/functions/customizer.php:1097
-#: lib/functions/utilities.php:365
+#: lib/functions/utilities.php:392
 #: assets/js/blocks/layout-settings.js:625
 #: assets/js/blocks/layout-settings.js:726
 #: assets/js/min/blocks.js:1848
@@ -2895,19 +2912,19 @@ msgstr ""
 msgid "More info"
 msgstr ""
 
-#: lib/functions/images.php:585
+#: lib/functions/images.php:736
 msgid "Landscape"
 msgstr ""
 
-#: lib/functions/images.php:586
+#: lib/functions/images.php:737
 msgid "Portrait"
 msgstr ""
 
-#: lib/functions/images.php:587
+#: lib/functions/images.php:738
 msgid "Square"
 msgstr ""
 
-#: lib/functions/images.php:596
+#: lib/functions/images.php:747
 msgid "Custom"
 msgstr ""
 
@@ -2944,17 +2961,17 @@ msgid "Headings"
 msgstr ""
 
 #: lib/functions/shortcodes.php:422
-#: lib/functions/utilities.php:1496
+#: lib/functions/utilities.php:1523
 msgid "Primary"
 msgstr ""
 
 #: lib/functions/shortcodes.php:423
-#: lib/functions/utilities.php:1497
+#: lib/functions/utilities.php:1524
 msgid "Secondary"
 msgstr ""
 
 #: lib/functions/shortcodes.php:424
-#: lib/functions/utilities.php:1498
+#: lib/functions/utilities.php:1525
 msgid "Outline"
 msgstr ""
 
@@ -3107,35 +3124,43 @@ msgstr ""
 msgid "template part already exists"
 msgstr ""
 
-#: lib/functions/utilities.php:407
-#: lib/functions/utilities.php:466
+#: lib/functions/utilities.php:434
+#: lib/functions/utilities.php:493
 msgid "Post"
 msgstr ""
 
-#: lib/functions/utilities.php:467
+#: lib/functions/utilities.php:494
 msgid "Page"
 msgstr ""
 
-#: lib/functions/utilities.php:1045
-#: lib/functions/utilities.php:1061
+#: lib/functions/utilities.php:1072
+#: lib/functions/utilities.php:1088
 msgid "Updated"
 msgstr ""
 
-#: lib/functions/utilities.php:1094
-#: lib/functions/utilities.php:1107
+#: lib/functions/utilities.php:1121
+#: lib/functions/utilities.php:1134
 msgid "ago"
 msgstr ""
 
-#: lib/functions/utilities.php:1567
+#: lib/functions/utilities.php:1594
 msgid "View available shortcodes from"
 msgstr ""
 
-#: lib/functions/utilities.php:1568
+#: lib/functions/utilities.php:1595
 msgid "Genesis"
 msgstr ""
 
-#: lib/functions/utilities.php:1569
+#: lib/functions/utilities.php:1596
 msgid "and"
+msgstr ""
+
+#: lib/functions/widgets.php:202
+msgid "You do not have permission to change the widget screen."
+msgstr ""
+
+#: lib/functions/widgets.php:251
+msgid "Widget areas can now hold blocks. Your current widgets stay as they are. Once you switch, going back takes a code change."
 msgstr ""
 
 #: lib/init.php:39
