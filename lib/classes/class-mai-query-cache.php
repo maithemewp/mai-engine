@@ -422,7 +422,8 @@ class Mai_Query_Cache {
 	 * The copy is built from the args the grid's query was built from, so it goes through the
 	 * same pre_get_posts and SQL filters, and asks core for IDs only. Its statement is the one
 	 * core runs when it splits the grid's full query, so it returns the same rows in the same
-	 * order without loading them. It also reads and writes core's post-queries cache, which the
+	 * order without loading them. The one difference: core runs posts_request_ids on a split
+	 * statement only, so a callback there never sees the copy. It also reads and writes core's post-queries cache, which the
 	 * grid's own query cannot while it runs with cache_results off, so a result cache miss on a
 	 * warm site costs no SQL. Unless the grid was asked to run with cache_results off: its
 	 * results may then depend on something core's cache does not track, so the copy skips that

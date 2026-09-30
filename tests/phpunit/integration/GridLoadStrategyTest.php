@@ -665,7 +665,8 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 
 	/**
 	 * The ID query is core's own ID-only statement, byte for byte the one core runs when it
-	 * splits the current strategy's query. So both return the same rows in the same order.
+	 * splits the current strategy's query, before posts_request_ids. So both return the same
+	 * rows in the same order.
 	 */
 	public function test_the_id_query_is_the_statement_core_splits_the_grid_into(): void {
 		$prepared = $this->prepare( 'both_many' );
@@ -1092,9 +1093,10 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * A the_posts callback can put an excluded post back, and core's sticky handling can too.
-	 * kept_only has already dropped the excludes by then, so the grid has to drop them again,
-	 * while still keeping every other post the callback added.
+	 * A the_posts callback can put an excluded post back, and so can core's sticky handling if a
+	 * pre_get_posts callback turned stickies back on. kept_only has already dropped the excludes
+	 * by then, so the grid has to drop them again, while still keeping every other post the
+	 * callback added.
 	 */
 	#[DataProvider( 'strategies' )]
 	public function test_an_excluded_post_a_the_posts_callback_adds_back_is_dropped( string $strategy ): void {

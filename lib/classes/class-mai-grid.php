@@ -338,9 +338,11 @@ class Mai_Grid {
 
 						// Apply the excludes now. The result cache has already stored the
 						// unfiltered superset, which is what makes the entry shareable, so this
-						// has to happen after the constructor returns. It runs on the kept path
-						// too, because a the_posts callback, or core's sticky handling, can put
-						// an excluded post back after the excludes were dropped.
+						// has to happen after the query has run. It runs on the kept path too,
+						// because a the_posts callback can put an excluded post back after the
+						// excludes were dropped. So can core's sticky handling, when a
+						// pre_get_posts callback turned stickies back on after
+						// can_defer_excludes() checked.
 						$kept = array_values(
 							array_filter(
 								$query->posts,
