@@ -656,6 +656,48 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		$this->assertSame( 1, $next_stores, 'the next view fills the entry' );
 	}
 
+	/**
+	 * The Events Calendar writes "now", to the second, into the meta_query of every event query.
+	 * The key has to hold still across page views anyway, or every view misses and writes a new
+	 * entry. Here the value moves one second on every query, within the same hour.
+	 */
+	#[DataProvider( 'strategies' )]
+	public function test_a_datetime_written_into_the_query_vars_still_gets_a_hit( string $strategy ): void {
+		$prepared = $this->prepare( 'current_in_window' );
+		$second   = 0;
+
+		$now = static function ( $query ) use ( &$second ) {
+			if ( $query->is_main_query() ) {
+				return;
+			}
+
+			$query->set(
+				'meta_query',
+				[
+					'mai_test_now' => [
+						'key'     => 'mai_test_meta',
+						'value'   => '2026-09-30 15:24:' . str_pad( (string) ( 10 + $second++ ), 2, '0', STR_PAD_LEFT ),
+						'compare' => '!=',
+					],
+				]
+			);
+		};
+
+		add_action( 'pre_get_posts', $now );
+
+		$this->flush_result_cache();
+		[ $miss, $miss_sql ] = $this->capture_sql( fn() => $this->run_grid( $strategy, $prepared['args'] ) );
+		[ $hit, $hit_sql ]   = $this->capture_sql( fn() => $this->run_grid( $strategy, $prepared['args'] ) );
+
+		remove_action( 'pre_get_posts', $now );
+
+		$this->assertGreaterThan( 1, $second, 'the value moved between queries' );
+		$this->assertCount( 1, $this->grid_selects( $miss_sql ) );
+		$this->assertSame( [], $this->grid_selects( $hit_sql ), 'the second view is a hit' );
+		$this->assertCount( self::PER_PAGE, $this->ids( $hit ) );
+		$this->assertSame( $this->ids( $miss ), $this->ids( $hit ) );
+	}
+
 	/** All three strategies land on one entry, so a benchmark can switch between them warm. */
 	public function test_every_strategy_uses_the_same_cache_key(): void {
 		$prepared = $this->prepare( 'both_many' );

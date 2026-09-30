@@ -138,13 +138,27 @@ class Mai_Query_Cache {
 		//
 		// Only the key is coarsened; the executed query keeps its exact bounds, so a served
 		// result can be at most an hour stale against a TTL that already allows four. Two
-		// differently configured grids cannot collide, because $query_vars still holds the raw
-		// unresolved string and is hashed alongside this.
+		// grids with different relative dates cannot collide, because $query_vars still holds
+		// the raw unresolved string and is hashed alongside this.
 		//
 		// Applies to every datetime literal in the statement, not just date_query bounds. A
 		// window shorter than an hour is therefore effectively widened to an hour, so short
 		// windows are not supported; the shortest in real use is measured in days.
 		$sql = preg_replace( "/'(\d{4}-\d{2}-\d{2} \d{2}):\d{2}:\d{2}'/", "'$1:00:00'", $sql );
+
+		// The same for a query var whose whole value is a datetime. The Events Calendar writes
+		// "now", to the second, into the meta_query of every event query, so with only the SQL
+		// coarsened the key still changed every second, and a site without an object cache
+		// wrote a new row on every page view. A value that only contains a datetime, or holds
+		// a relative date, is left as it is.
+		array_walk_recursive(
+			$query_vars,
+			static function ( &$value ) {
+				if ( is_string( $value ) ) {
+					$value = preg_replace( '/^(\d{4}-\d{2}-\d{2} \d{2}):\d{2}:\d{2}$/', '$1:00:00', $value );
+				}
+			}
+		);
 
 		return md5( serialize( $query_vars ) . $sql );
 	}
