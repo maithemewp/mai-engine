@@ -19,6 +19,9 @@ add_action( 'init', 'mai_register_query_cache' );
 function mai_register_query_cache() {
 	$cache = new Mai_Query_Cache();
 
+	// Earliest priority on purpose: it records the statement before any other callback can
+	// rewrite it, which is how pre_query knows it may run an ID-only version of it.
+	add_filter( 'posts_request', [ $cache, 'note_request' ], PHP_INT_MIN, 2 );
 	add_filter( 'posts_pre_query', [ $cache, 'pre_query' ], 10, 2 );
 	add_filter( 'the_posts', [ $cache, 'the_posts' ], 10, 2 );
 
