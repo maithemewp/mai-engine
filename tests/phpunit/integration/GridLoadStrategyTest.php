@@ -713,12 +713,53 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 
 	/**
 	 * A failed ID query must not be stored as an empty result for the length of the TTL. The
-	 * grid falls back to its own query for that view and stores nothing. Core does keep the
-	 * failed statement's empty result in its own query cache, so the next view's ID query finds
-	 * nothing without running SQL. That view falls back too, and stores what the grid's own
-	 * query found.
+	 * grid falls back to its own query for that view and stores nothing, and the next view
+	 * fills the entry.
 	 */
 	public function test_a_failed_id_query_is_not_stored(): void {
+		global $wpdb;
+
+		$prepared = $this->prepare( 'both_many' );
+		$broken   = false;
+
+		$this->flush_result_cache();
+		$baseline = $this->ids( $this->run_grid( 'current', $prepared['args'] ) );
+
+		// Breaks the ID query's own statement, once.
+		$break = static function ( $sql, $query ) use ( &$broken ) {
+			if ( ! $broken && 'ids' === ( $query->query_vars['fields'] ?? '' ) && ! empty( $query->query_vars['mai_grid_tiebreak'] ) ) {
+				$broken = true;
+
+				return $sql . ' BROKEN';
+			}
+
+			return $sql;
+		};
+
+		add_filter( 'posts_request', $break, 10, 2 );
+		$suppress = $wpdb->suppress_errors( true );
+
+		$this->flush_result_cache();
+		[ $miss, $miss_stores ] = $this->count_stores( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
+		[ $next, $next_stores ] = $this->count_stores( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
+
+		$wpdb->suppress_errors( $suppress );
+		remove_filter( 'posts_request', $break, 10 );
+
+		$this->assertTrue( $broken, 'the ID query was broken' );
+		$this->assertSame( $baseline, $this->ids( $miss ), 'the grid fell back to its own query' );
+		$this->assertSame( 0, $miss_stores, 'nothing stored from the failed view' );
+		$this->assertSame( $baseline, $this->ids( $next ) );
+		$this->assertSame( 1, $next_stores, 'the next view fills the entry' );
+	}
+
+	/**
+	 * An empty ID list is not trusted. Core stores a failed statement's empty result in its
+	 * query cache like any other, and a failure fetch_ids() cannot see, here one in a query
+	 * filter that rewrote the statement, looks the same. The grid's own query answers instead,
+	 * and its result is what gets stored.
+	 */
+	public function test_an_empty_id_list_falls_back_to_the_grid_query(): void {
 		global $wpdb;
 
 		$prepared = $this->prepare( 'both_many' );
@@ -728,7 +769,7 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		$this->flush_result_cache();
 		$baseline = $this->ids( $this->run_grid( 'current', $prepared['args'] ) );
 
-		// Breaks the first ID-only statement over the padded window, once.
+		// Breaks the first ID-only statement over the padded window, once, as it reaches the database.
 		$break = static function ( $sql ) use ( &$broken, $padded, $wpdb ) {
 			if ( ! $broken && preg_match( '/^\s*SELECT\s+' . preg_quote( $wpdb->posts, '/' ) . '\.ID\s+FROM\s/', $sql ) && str_contains( $sql, 'LIMIT 0, ' . $padded ) ) {
 				$broken = true;
@@ -743,17 +784,48 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		$suppress = $wpdb->suppress_errors( true );
 
 		$this->flush_result_cache();
-		[ $miss, $miss_stores ] = $this->count_stores( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
-		[ $next, $next_stores ] = $this->count_stores( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
+		[ $miss, $stores ] = $this->count_stores( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
+		$hit = $this->run_grid( 'kept_only', $prepared['args'] );
 
 		$wpdb->suppress_errors( $suppress );
 		remove_filter( 'query', $break );
 
 		$this->assertTrue( $broken, 'the ID query was broken' );
 		$this->assertSame( $baseline, $this->ids( $miss ), 'the grid fell back to its own query' );
-		$this->assertSame( 0, $miss_stores, 'nothing stored from the failed view' );
-		$this->assertSame( $baseline, $this->ids( $next ) );
-		$this->assertSame( 1, $next_stores, 'the next view fills the entry' );
+		$this->assertSame( 1, $stores, 'and stored what that query found' );
+		$this->assertSame( $baseline, $this->ids( $hit ) );
+	}
+
+	/**
+	 * Only the ID query's own statement failing counts. When core answers the ID query from its
+	 * cache, a statement some callback ran and failed on the way must not stop the store.
+	 */
+	public function test_a_failed_statement_elsewhere_is_not_a_failed_id_query(): void {
+		global $wpdb;
+
+		$prepared = $this->prepare( 'current_in_window' );
+
+		// Warms core's query cache for the ID query.
+		$this->flush_result_cache();
+		$this->run_grid( 'kept_only', $prepared['args'] );
+
+		$noise = static function ( $query ) use ( $wpdb ) {
+			if ( 'ids' === ( $query->query_vars['fields'] ?? '' ) && ! empty( $query->query_vars['mai_grid_tiebreak'] ) ) {
+				$wpdb->query( "SELECT mai_no_such_column FROM {$wpdb->posts} LIMIT 1" );
+			}
+		};
+
+		add_action( 'pre_get_posts', $noise );
+		$suppress = $wpdb->suppress_errors( true );
+
+		$this->flush_result_cache();
+		[ $query, $stores ] = $this->count_stores( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
+
+		$wpdb->suppress_errors( $suppress );
+		remove_action( 'pre_get_posts', $noise );
+
+		$this->assertSame( 1, $stores, 'core answered the ID query, so the entry is stored' );
+		$this->assertCount( self::PER_PAGE, $this->ids( $query ) );
 	}
 
 	/**

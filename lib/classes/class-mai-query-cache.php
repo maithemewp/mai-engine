@@ -448,8 +448,9 @@ class Mai_Query_Cache {
 	 *   stores nothing, rather than an empty list for the length of the TTL.
 	 * - the copy found nothing. Core stores a failed statement's empty result in its query
 	 *   cache like any other, and reading that back runs no SQL, so there is no error to see.
-	 *   The grid's own query answers instead, and the_posts stores what it finds. For a grid
-	 *   that really is empty, that costs one cheap query per result cache miss.
+	 *   A failure in a statement a query filter rewrote on its way to the database looks the
+	 *   same. The grid's own query answers instead, and the_posts stores what it finds. For a
+	 *   grid that really is empty, that costs one cheap query per result cache miss.
 	 * - the copy selects more than the ID. get_col() reads the first column.
 	 * - the copy is not the grid's query once the select list is set aside: a callback treated
 	 *   the two differently, so the copy's IDs may not be the grid's.
@@ -466,8 +467,7 @@ class Mai_Query_Cache {
 			return null;
 		}
 
-		$copy   = new WP_Query();
-		$before = $wpdb->num_queries;
+		$copy = new WP_Query();
 
 		$copy->query(
 			array_merge(
@@ -480,9 +480,10 @@ class Mai_Query_Cache {
 			)
 		);
 
-		// Only an error from a statement the copy ran. last_error keeps the previous statement's
-		// error when core answers from its cache and runs nothing.
-		if ( $wpdb->num_queries > $before && $wpdb->last_error ) {
+		// Only an error from the copy's own statement, which is the last one it runs. When core
+		// answers the copy from its cache, that statement never runs, and last_error belongs to
+		// whatever ran before, possibly some callback's own query.
+		if ( $wpdb->last_error && $wpdb->last_query === $copy->request ) {
 			unset( $query->mai_cache_store_key, $query->mai_cache_store_version );
 
 			return null;
