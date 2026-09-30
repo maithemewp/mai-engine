@@ -81,23 +81,14 @@ final class MaiQueryCacheKeepTest extends TestCase {
 
 	// ---- keep_request() ----
 
-	public function test_keep_request_reads_the_marker_and_clears_the_capture(): void {
-		$query                   = $this->query( [ 'mai_grid_keep' => [ 'exclude' => [ '10', 11 ], 'count' => '2' ] ] );
-		$query->mai_grid_request = self::SQL;
+	public function test_keep_request_reads_the_marker(): void {
+		$query = $this->query( [ 'mai_grid_keep' => [ 'exclude' => [ '10', 11 ], 'count' => '2' ] ] );
 
-		$this->assertSame(
-			[ 'exclude' => [ 10, 11 ], 'count' => 2, 'request' => self::SQL ],
-			$this->call( 'keep_request', null, $query )
-		);
-		$this->assertObjectNotHasProperty( 'mai_grid_request', $query, 'the capture must not outlive the query' );
+		$this->assertSame( [ 'exclude' => [ 10, 11 ], 'count' => 2 ], $this->call( 'keep_request', null, $query ) );
 	}
 
 	public function test_keep_request_declines_when_something_already_answered(): void {
-		$query                   = $this->query();
-		$query->mai_grid_request = self::SQL;
-
-		$this->assertNull( $this->call( 'keep_request', [ 1, 2 ], $query ) );
-		$this->assertObjectNotHasProperty( 'mai_grid_request', $query, 'cleared even when declining' );
+		$this->assertNull( $this->call( 'keep_request', [ 1, 2 ], $this->query() ) );
 	}
 
 	public function test_keep_request_declines_for_ids_and_id_parent_queries(): void {
@@ -113,14 +104,72 @@ final class MaiQueryCacheKeepTest extends TestCase {
 		$this->assertNull( $this->call( 'keep_request', null, $this->query( [ 'mai_grid_keep' => [ 'exclude' => [ 10 ] ] ] ) ) );
 	}
 
-	// ---- fetch_ids() ----
+	// ---- pre_query_kept() ----
 
-	private function keep( ?string $request = self::SQL ): array {
-		return [ 'exclude' => [ 10 ], 'count' => 2, 'request' => $request ];
+	/** Stubs what keep() needs, so pre_query_kept() can answer. */
+	private function stub_every_post_published(): void {
+		Functions\when( '_prime_post_caches' )->justReturn( null );
+		Functions\when( 'get_post' )->alias( fn( $id ) => (object) [ 'ID' => $id, 'post_status' => 'publish' ] );
 	}
 
+	public function test_pre_query_kept_answers_a_miss_nobody_else_answered(): void {
+		$this->stub_every_post_published();
+
+		$query                   = $this->query();
+		$query->mai_grid_request = self::SQL;
+
+		$posts = ( new Mai_Query_Cache() )->pre_query_kept( null, $query );
+
+		// get_col() returned 12, 10, 11. 10 is excluded, and 2 are asked for.
+		$this->assertSame( [ 12, 11 ], array_map( fn( $p ) => $p->ID, $posts ) );
+		$this->assertSame( $posts, $query->mai_grid_kept );
+		$this->assertObjectNotHasProperty( 'mai_grid_request', $query, 'the capture must not outlive the query' );
+	}
+
+	public function test_pre_query_kept_leaves_another_callbacks_answer_alone(): void {
+		// The Events Calendar's custom tables query answers at priority 100, for one.
+		$query                   = $this->query();
+		$query->mai_grid_request = self::SQL;
+
+		$theirs = [ (object) [ 'ID' => 5 ] ];
+
+		$this->assertSame( $theirs, ( new Mai_Query_Cache() )->pre_query_kept( $theirs, $query ) );
+		$this->assertSame( [], $this->wpdb->ran, 'no ID query when the miss is already answered' );
+		$this->assertObjectNotHasProperty( 'mai_grid_kept', $query, 'Mai_Grid must filter their answer itself' );
+		$this->assertObjectNotHasProperty( 'mai_grid_request', $query, 'cleared even when declining' );
+	}
+
+	public function test_pre_query_kept_keeps_a_cached_kept_answer_that_survived(): void {
+		$ours                 = [ (object) [ 'ID' => 12 ] ];
+		$query                = $this->query();
+		$query->mai_grid_kept = $ours;
+
+		$this->assertSame( $ours, ( new Mai_Query_Cache() )->pre_query_kept( $ours, $query ) );
+		$this->assertSame( $ours, $query->mai_grid_kept );
+		$this->assertSame( [], $this->wpdb->ran );
+	}
+
+	public function test_pre_query_kept_drops_the_flag_when_a_later_callback_replaced_the_answer(): void {
+		$query                = $this->query();
+		$query->mai_grid_kept = [ (object) [ 'ID' => 12 ] ];
+
+		$theirs = [ (object) [ 'ID' => 10 ], (object) [ 'ID' => 12 ] ];
+
+		$this->assertSame( $theirs, ( new Mai_Query_Cache() )->pre_query_kept( $theirs, $query ) );
+		$this->assertObjectNotHasProperty( 'mai_grid_kept', $query, 'what replaced it may hold the excludes' );
+	}
+
+	public function test_pre_query_kept_ignores_queries_without_the_marker(): void {
+		$query = (object) [ 'query_vars' => [], 'request' => self::SQL ];
+
+		$this->assertNull( ( new Mai_Query_Cache() )->pre_query_kept( null, $query ) );
+		$this->assertSame( [], $this->wpdb->ran );
+	}
+
+	// ---- fetch_ids() ----
+
 	public function test_fetch_ids_selects_only_the_id_from_the_same_statement(): void {
-		$ids = $this->call( 'fetch_ids', $this->query(), $this->keep() );
+		$ids = $this->call( 'fetch_ids', $this->query(), self::SQL );
 
 		$this->assertSame( [ 12, 10, 11 ], $ids, 'in the order the database returned them, as ints' );
 		$this->assertCount( 1, $this->wpdb->ran );
@@ -130,19 +179,19 @@ final class MaiQueryCacheKeepTest extends TestCase {
 	public function test_fetch_ids_keeps_distinct(): void {
 		$sql = str_replace( 'SELECT   wp_posts.*', 'SELECT  DISTINCT wp_posts.*', self::SQL );
 
-		$this->call( 'fetch_ids', $this->query( [], $sql ), $this->keep( $sql ) );
+		$this->call( 'fetch_ids', $this->query( [], $sql ), $sql );
 
 		$this->assertStringStartsWith( 'SELECT  DISTINCT wp_posts.ID', $this->wpdb->ran[0] );
 	}
 
 	public function test_fetch_ids_declines_when_a_posts_request_callback_rewrote_the_statement(): void {
-		$this->assertNull( $this->call( 'fetch_ids', $this->query( [], self::SQL . ' /* rewritten */' ), $this->keep() ) );
+		$this->assertNull( $this->call( 'fetch_ids', $this->query( [], self::SQL . ' /* rewritten */' ), self::SQL ) );
 		$this->assertSame( [], $this->wpdb->ran );
 	}
 
 	public function test_fetch_ids_declines_without_a_capture(): void {
 		// posts_request is skipped under suppress_filters, so nothing was noted.
-		$this->assertNull( $this->call( 'fetch_ids', $this->query(), $this->keep( null ) ) );
+		$this->assertNull( $this->call( 'fetch_ids', $this->query(), null ) );
 		$this->assertSame( [], $this->wpdb->ran );
 	}
 
@@ -150,14 +199,14 @@ final class MaiQueryCacheKeepTest extends TestCase {
 		// An ORDER BY can sort on a column a posts_fields callback added.
 		$sql = str_replace( 'wp_posts.*', 'wp_posts.*, 1 AS distance', self::SQL );
 
-		$this->assertNull( $this->call( 'fetch_ids', $this->query( [], $sql ), $this->keep( $sql ) ) );
+		$this->assertNull( $this->call( 'fetch_ids', $this->query( [], $sql ), $sql ) );
 		$this->assertSame( [], $this->wpdb->ran );
 	}
 
 	public function test_fetch_ids_declines_when_the_query_counts_rows(): void {
 		$sql = str_replace( 'SELECT   wp_posts.*', 'SELECT SQL_CALC_FOUND_ROWS  wp_posts.*', self::SQL );
 
-		$this->assertNull( $this->call( 'fetch_ids', $this->query( [], $sql ), $this->keep( $sql ) ) );
+		$this->assertNull( $this->call( 'fetch_ids', $this->query( [], $sql ), $sql ) );
 		$this->assertSame( [], $this->wpdb->ran );
 	}
 
@@ -166,7 +215,7 @@ final class MaiQueryCacheKeepTest extends TestCase {
 			fn( $tag, $value ) => 'posts_request_ids' === $tag ? $value . ' /* ids */' : $value
 		);
 
-		$this->call( 'fetch_ids', $this->query(), $this->keep() );
+		$this->call( 'fetch_ids', $this->query(), self::SQL );
 
 		$this->assertStringEndsWith( ' /* ids */', $this->wpdb->ran[0] );
 	}
@@ -197,7 +246,7 @@ final class MaiQueryCacheKeepTest extends TestCase {
 
 		$this->assertSame( [ 2, 4 ], array_map( fn( $p ) => $p->ID, $posts ) );
 		$this->assertSame( [ [ [ 2, 4 ], true, true ] ], $primed, 'one priming call, for the kept posts only' );
-		$this->assertTrue( $query->mai_grid_kept, 'Mai_Grid must be told not to filter again' );
+		$this->assertSame( $posts, $query->mai_grid_kept, 'Mai_Grid must be told not to filter again' );
 	}
 
 	public function test_keep_tops_up_when_a_stale_entry_holds_a_post_that_left(): void {
@@ -230,6 +279,6 @@ final class MaiQueryCacheKeepTest extends TestCase {
 
 		$this->assertSame( [], $this->call( 'keep', $query, [ 'exclude' => [ 1, 2 ], 'count' => 3 ], [ 1, 2 ] ) );
 		$this->assertSame( [], $primed );
-		$this->assertTrue( $query->mai_grid_kept, 'an empty grid is still an answered one' );
+		$this->assertSame( [], $query->mai_grid_kept, 'an empty grid is still an answered one' );
 	}
 }

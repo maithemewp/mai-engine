@@ -853,6 +853,68 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		}
 	}
 
+	/**
+	 * A plugin that answers posts_pre_query after Mai, and steps aside when something already
+	 * answered, must still get a kept_only miss. The Events Calendar's custom tables query does
+	 * exactly that at priority 100. kept_only answers a miss last, so it must leave theirs
+	 * standing, store it, and let Mai_Grid filter it. Their answer here is the padded window in
+	 * reverse, so a grid that used Mai's own IDs instead would show different posts.
+	 */
+	public function test_a_plugin_answering_a_miss_after_mai_still_answers_it(): void {
+		$prepared = $this->prepare( 'both_many' );
+		$padded   = self::PER_PAGE + count( $prepared['excluded'] );
+		$window   = array_slice( $this->post_ids, 0, $padded );
+		$answered = 0;
+
+		$theirs = static function ( $posts, $query ) use ( $window, &$answered ) {
+			if ( null !== $posts || empty( $query->query_vars['mai_cache'] ) ) {
+				return $posts;
+			}
+
+			++$answered;
+
+			return array_map( 'get_post', array_reverse( $window ) );
+		};
+
+		add_filter( 'posts_pre_query', $theirs, 100, 2 );
+
+		$this->flush_result_cache();
+		[ $miss, $stores ] = $this->count_stores( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
+		$hit = $this->run_grid( 'kept_only', $prepared['args'] );
+
+		remove_filter( 'posts_pre_query', $theirs, 100 );
+
+		$expected = array_slice( array_values( array_diff( array_reverse( $window ), $prepared['excluded'] ) ), 0, self::PER_PAGE );
+
+		$this->assertSame( 1, $answered, 'their callback answers the miss, and steps aside on the hit' );
+		$this->assertSame( $expected, $this->ids( $miss ), 'their answer, with the excludes dropped by Mai_Grid' );
+		$this->assertSame( 1, $stores );
+		$this->assertSame( $expected, $this->ids( $hit ), 'the hit serves what they answered' );
+	}
+
+	/**
+	 * The other way round: a later callback replaces the kept answer Mai served from cache.
+	 * What it hands back can hold the excluded posts, so the grid has to filter it.
+	 */
+	public function test_a_hit_replaced_by_a_later_callback_is_still_filtered(): void {
+		$prepared = $this->prepare( 'both_many' );
+		$window   = array_slice( $this->post_ids, 0, self::PER_PAGE + count( $prepared['excluded'] ) );
+
+		$this->flush_result_cache();
+		$baseline = $this->ids( $this->run_grid( 'kept_only', $prepared['args'] ) );
+
+		$replace = static function ( $posts, $query ) use ( $window ) {
+			return ( null !== $posts && ! empty( $query->query_vars['mai_cache'] ) ) ? array_map( 'get_post', $window ) : $posts;
+		};
+
+		add_filter( 'posts_pre_query', $replace, 20, 2 );
+		$hit = $this->run_grid( 'kept_only', $prepared['args'] );
+		remove_filter( 'posts_pre_query', $replace, 20 );
+
+		$this->assertSame( $baseline, $this->ids( $hit ) );
+		$this->assertSame( [], array_intersect( $this->ids( $hit ), $prepared['excluded'] ) );
+	}
+
 	public function test_posts_request_ids_fires_on_the_id_query(): void {
 		$prepared = $this->prepare( 'both_many' );
 		$ids_sql  = [];

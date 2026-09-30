@@ -20,9 +20,14 @@ function mai_register_query_cache() {
 	$cache = new Mai_Query_Cache();
 
 	// Earliest priority on purpose: it records the statement before any other callback can
-	// rewrite it, which is how pre_query knows it may run an ID-only version of it.
+	// rewrite it, which is how pre_query_kept knows it may run an ID-only version of it.
 	add_filter( 'posts_request', [ $cache, 'note_request' ], PHP_INT_MIN, 2 );
 	add_filter( 'posts_pre_query', [ $cache, 'pre_query' ], 10, 2 );
+
+	// Latest priority on purpose: a kept-only grid's miss is answered only once every other
+	// posts_pre_query callback has had the chance to answer it first.
+	add_filter( 'posts_pre_query', [ $cache, 'pre_query_kept' ], PHP_INT_MAX, 2 );
+
 	add_filter( 'the_posts', [ $cache, 'the_posts' ], 10, 2 );
 
 	add_action( 'transition_post_status', [ $cache, 'on_transition' ], 10, 3 );

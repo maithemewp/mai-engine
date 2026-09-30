@@ -318,9 +318,10 @@ class Mai_Grid {
 						// Mai_Query_Cache already dropped the excludes and kept the asked count,
 						// before posts_results and the_posts ran. Doing it again here would also
 						// drop or cut a post a the_posts callback added, which a grid that does
-						// not defer keeps. Not set when it could not answer that way, and then
-						// the grid falls through to doing it here.
-						$already_kept = ! empty( $query->mai_grid_kept );
+						// not defer keeps. Not set when it could not answer that way, or when
+						// another posts_pre_query callback answered instead, and then the grid
+						// falls through to doing it here.
+						$already_kept = isset( $query->mai_grid_kept );
 
 						unset( $query->mai_grid_kept );
 
