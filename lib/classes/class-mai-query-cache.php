@@ -249,14 +249,13 @@ class Mai_Query_Cache {
 	 * This is the last stop before WordPress runs the SQL itself, so a plugin that answers
 	 * posts_pre_query, and steps aside when something already has, still gets to answer a
 	 * miss. The Events Calendar's custom tables query at priority 100 is one. When one does,
-	 * or when the ID-only statement cannot be built, this leaves the answer alone: the_posts
-	 * stores whatever came back, and Mai_Grid drops the excludes itself.
+	 * or when fetch_ids() cannot stand in for the grid's query, this leaves the answer alone:
+	 * the_posts stores whatever came back, and Mai_Grid drops the excludes itself.
 	 *
-	 * Otherwise the IDs come from an ID-only run of the grid's own SQL and are stored here,
-	 * then only the kept posts are loaded. The store has to happen here rather than on
-	 * the_posts, which only ever sees the kept posts on this path, and clearing the miss flag
-	 * stops the_posts storing a second time. A query the cache declined is answered the same
-	 * way, just with nothing stored.
+	 * Otherwise the IDs come from fetch_ids() and are stored here, then only the kept posts are
+	 * loaded. The store has to happen here rather than on the_posts, which only ever sees the
+	 * kept posts on this path, and clearing the miss flag stops the_posts storing a second
+	 * time. A query the cache declined is answered the same way, just with nothing stored.
 	 *
 	 * Also confirms a kept answer pre_query() served from cache is still the one in hand. A
 	 * later callback that replaced it could hand back anything, and then Mai_Grid has to
@@ -268,9 +267,6 @@ class Mai_Query_Cache {
 	 * @return array|null
 	 */
 	public function pre_query_kept( $posts, $query ) {
-		$request = $query->mai_grid_request ?? null;
-		unset( $query->mai_grid_request );
-
 		if ( isset( $query->mai_grid_kept ) ) {
 			if ( $posts !== $query->mai_grid_kept ) {
 				unset( $query->mai_grid_kept );
@@ -280,7 +276,7 @@ class Mai_Query_Cache {
 		}
 
 		$keep = $this->keep_request( $posts, $query );
-		$ids  = $keep ? $this->fetch_ids( $query, $request ) : null;
+		$ids  = $keep ? $this->fetch_ids( $query ) : null;
 
 		if ( null === $ids ) {
 			return $posts;
@@ -380,79 +376,90 @@ class Mai_Query_Cache {
 	}
 
 	/**
-	 * posts_request, at the earliest priority: note the statement core built for a kept-only
-	 * grid, before any other callback can rewrite it. fetch_ids() compares against it, and
-	 * pre_query_kept() clears it.
+	 * The grid's padded ID list, in order, from an ID-only copy of its query, or null when that
+	 * copy cannot stand in for it.
 	 *
-	 * @param string   $request The SQL statement.
-	 * @param WP_Query $query   The query.
+	 * The copy is built from the args the grid's query was built from, so it goes through the
+	 * same pre_get_posts and SQL filters, and asks core for IDs only. Its statement is the one
+	 * core runs when it splits the grid's full query, so it returns the same rows in the same
+	 * order without loading them. It also reads and writes core's post-queries cache, which the
+	 * grid's own query cannot while it runs with cache_results off, so a result cache miss on a
+	 * warm site costs no SQL. It is built from the args rather than query_vars, because core
+	 * writes back-compat vars such as cat and category_name into query_vars as it runs, and a
+	 * query built from those would join the same taxonomy twice.
 	 *
-	 * @return string
-	 */
-	public function note_request( $request, $query ) {
-		if ( ! empty( $query->mai_grid_keep ) ) {
-			$query->mai_grid_request = $request;
-		}
-
-		return $request;
-	}
-
-	/**
-	 * Run an ID-only version of the query's own SQL and return the IDs in order, or null when
-	 * that cannot be done safely.
+	 * Core files it under a key of its own, not the full query's. The key swaps every
+	 * wp_posts.ID in the statement for wp_posts.*, not only the select list, and a grid's
+	 * statement has more of them (the tiebreaker, a taxonomy JOIN and GROUP BY). So the entry is
+	 * shared with the next kept-only miss of the same grid, not with a full run of it.
 	 *
-	 * It is the statement core runs when it splits a query (the split_the_query branch of
-	 * WP_Query::get_posts()): the same FROM, JOIN, WHERE, GROUP BY, ORDER BY and LIMIT with only
-	 * the ID selected, so it returns the same rows in the same order without loading them. That
-	 * branch runs after posts_pre_query, so $query->request here is still the full statement,
-	 * and a plain get_col() on it would load every row just to read the first column.
+	 * mai_cache is off on the copy, so pre_query() does not treat it as a query to cache, and it
+	 * has no kept-only marker, so pre_query_kept() leaves it alone. It only runs once every
+	 * other posts_pre_query callback has declined the grid's query. Only fields and the cache
+	 * flags differ on the copy, so a callback that answers it anyway is answering the same
+	 * query, and its IDs stand.
 	 *
-	 * Core only splits a statement nothing has rewritten and that selects exactly wp_posts.*,
-	 * and so does this. posts_pre_query hands over the finished string, not the clauses, so
-	 * both checks are made on the string:
+	 * Declines when:
+	 * - the grid's query counts rows. The total is core's job, and a deferring grid never counts
+	 *   (can_defer_excludes()), so only a pre_get_posts callback gets here.
+	 * - the copy's statement failed. The miss flag is cleared too, so a view that just failed
+	 *   stores nothing, rather than an empty list for the length of the TTL.
+	 * - the copy found nothing. Core stores a failed statement's empty result in its query
+	 *   cache like any other, and reading that back runs no SQL, so there is no error to see.
+	 *   The grid's own query answers instead, and the_posts stores what it finds. For a grid
+	 *   that really is empty, that costs one cheap query per result cache miss.
+	 * - the copy selects more than the ID. get_col() reads the first column.
+	 * - the copy is not the grid's query once the select list is set aside: a callback treated
+	 *   the two differently, so the copy's IDs may not be the grid's.
 	 *
-	 * - Unrewritten: it still equals what note_request() saw going into posts_request. A
-	 *   posts_request callback can return anything, a UNION for one, where swapping the first
-	 *   select list would break the statement.
-	 * - wp_posts.* and nothing else: a posts_fields callback can add a computed column that the
-	 *   ORDER BY sorts on, and dropping it would break the statement too.
-	 *
-	 * SQL_CALC_FOUND_ROWS declines as well. The total needs a FOUND_ROWS() read right after the
-	 * statement, which is core's job, and a deferring grid never counts (can_defer_excludes()).
-	 *
-	 * posts_request_ids fires on the ID statement, as it does when core splits.
-	 *
-	 * @param WP_Query    $query       The query.
-	 * @param string|null $unrewritten The statement note_request() saw, or null if it saw none.
+	 * @param WP_Query $query The grid's query.
 	 *
 	 * @return int[]|null
 	 */
-	private function fetch_ids( $query, $unrewritten ): ?array {
+	private function fetch_ids( $query ): ?array {
 		global $wpdb;
 
-		$request = (string) $query->request;
-
-		if ( ! is_string( $unrewritten ) || $unrewritten !== $request ) {
+		if ( empty( $query->query_vars['no_found_rows'] ) ) {
 			return null;
 		}
 
-		$pattern = '/^(\s*SELECT\s+(?:DISTINCT\s+)?)' . preg_quote( "{$wpdb->posts}.*", '/' ) . '(\s+FROM\s)/i';
+		$copy   = new WP_Query();
+		$before = $wpdb->num_queries;
 
-		if ( ! preg_match( $pattern, $request ) ) {
-			return null;
-		}
-
-		$sql = preg_replace_callback(
-			$pattern,
-			static fn( $matches ) => $matches[1] . "{$wpdb->posts}.ID" . $matches[2],
-			$request,
-			1
+		$copy->query(
+			array_merge(
+				(array) $query->query,
+				[
+					'fields'        => 'ids',
+					'cache_results' => true,
+					'mai_cache'     => false,
+				]
+			)
 		);
 
-		/** This filter is documented in wp-includes/class-wp-query.php */
-		$sql = apply_filters( 'posts_request_ids', $sql, $query );
+		// Only an error from a statement the copy ran. last_error keeps the previous statement's
+		// error when core answers from its cache and runs nothing.
+		if ( $wpdb->num_queries > $before && $wpdb->last_error ) {
+			unset( $query->mai_cache_store_key, $query->mai_cache_store_version );
 
-		return array_map( 'intval', (array) $wpdb->get_col( $sql ) );
+			return null;
+		}
+
+		if ( ! $copy->posts ) {
+			return null;
+		}
+
+		$ids_only = '/^\s*SELECT\s+(?:DISTINCT\s+)?' . preg_quote( "{$wpdb->posts}.ID", '/' ) . '\s+FROM\s/i';
+
+		if ( ! preg_match( $ids_only, (string) $copy->request ) ) {
+			return null;
+		}
+
+		if ( $this->cache_key( $copy->query_vars, (string) $copy->request ) !== $this->cache_key( $query->query_vars, (string) $query->request ) ) {
+			return null;
+		}
+
+		return array_map( 'intval', $copy->posts );
 	}
 
 	/**

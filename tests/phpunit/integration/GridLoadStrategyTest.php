@@ -238,6 +238,18 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		);
 	}
 
+	/** ID-only statements against the posts table. */
+	private function id_selects( array $sql ): array {
+		global $wpdb;
+
+		return array_values(
+			array_filter(
+				$sql,
+				static fn( $statement ) => (bool) preg_match( '/^\s*SELECT\s+(?:DISTINCT\s+)?' . preg_quote( $wpdb->posts, '/' ) . '\.ID\s+FROM\s/i', $statement )
+			)
+		);
+	}
+
 	/**
 	 * Counts result-cache stores while the callback runs. mai-cache writes through transients
 	 * here (no persistent object cache in this suite), and a stored result is the only envelope
@@ -487,30 +499,161 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * kept_only runs its grid query with cache_results off. Left on, core would store the kept
-	 * answer, which differs per page view, under the padded query's key.
+	 * kept_only's miss gets its IDs from an ID-only copy of the grid's query, which uses core's
+	 * query cache. The grid's own query stays at cache_results off: left on, core would store
+	 * the kept answer, which differs per page view, under the padded query's key. So core gets
+	 * one entry per grid, whatever the page view excludes. go_to() empties the object cache, so
+	 * the views here differ by the posts already displayed instead.
 	 */
-	public function test_kept_only_does_not_write_core_query_cache_entries(): void {
+	public function test_kept_only_writes_one_core_query_cache_entry_per_grid_not_per_view(): void {
 		global $wp_object_cache;
 
 		$count = static fn() => count( $wp_object_cache->cache['post-queries'] ?? [] );
+		$args  = $this->grid_args( [ 'excludes' => [ 'exclude_displayed' ] ] );
+		$added = [];
 
-		foreach ( [ 1, 2, 3 ] as $post ) {
-			$this->go_to( get_permalink( $this->post_ids[ $post ] ) );
+		$this->go_to( home_url( '/' ) );
+
+		foreach ( [ 1, 3, 4 ] as $displayed ) {
+			Mai_Grid::$existing_post_ids = [ 'post' => [ $this->post_ids[ $displayed ] ] ];
+
+			// Every view is a result cache miss, so every view runs the ID query.
+			$this->flush_result_cache();
 
 			$before = $count();
-			$this->run_grid( 'kept_only', $this->grid_args() );
+			$query  = $this->run_grid( 'kept_only', $args );
 
-			$this->assertSame( $before, $count(), "view {$post} must not add a post-queries entry" );
+			$added[] = $count() - $before;
+
+			$this->assertStringNotContainsString( 'NOT IN', $query->request, 'must actually have deferred' );
+			$this->assertNotContains( $this->post_ids[ $displayed ], $this->ids( $query ) );
+			$this->assertCount( self::PER_PAGE, $this->ids( $query ) );
 		}
 
-		// And the check can see a write at all: the current strategy leaves core's cache on.
+		$this->assertSame( [ 1, 0, 0 ], $added, 'one entry for the grid, read back by the later views' );
+	}
+
+	/**
+	 * The warm case that used to be slower than the current strategy: the result cache has no
+	 * entry, but core's query cache does. The ID query must read core's entry instead of running
+	 * the grid's SQL again.
+	 */
+	public function test_a_kept_only_miss_reads_its_ids_from_core_query_cache(): void {
+		global $wpdb;
+
+		$prepared = $this->prepare( 'current_in_window' );
+
 		$this->flush_result_cache();
+		[ $first, $first_sql ] = $this->capture_sql( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
 
-		$before = $count();
-		$this->run_grid( 'current', $this->grid_args() );
+		// The result cache loses its entry. Core's query cache keeps its own.
+		$this->flush_result_cache();
+		[ $result, $stores ]     = $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) ) );
+		[ $second, $second_sql ] = $result;
 
-		$this->assertGreaterThan( $before, $count() );
+		$posts_reads = array_filter(
+			$second_sql,
+			static fn( $statement ) => (bool) preg_match( '/\bFROM\s+' . preg_quote( $wpdb->posts, '/' ) . '\b/', $statement )
+		);
+
+		$this->assertCount( 1, $this->grid_selects( $first_sql ), 'the first miss runs the ID query' );
+		$this->assertSame( [], array_values( $posts_reads ), 'the second miss reads nothing from the posts table' );
+		$this->assertSame( 1, $stores, 'and still stores the result cache entry' );
+		$this->assertSame( $this->ids( $first ), $this->ids( $second ) );
+		$this->assertCount( self::PER_PAGE, $this->ids( $second ) );
+	}
+
+	/**
+	 * The ID query is core's own ID-only statement, byte for byte the one core runs when it
+	 * splits the current strategy's query. So both return the same rows in the same order.
+	 */
+	public function test_the_id_query_is_the_statement_core_splits_the_grid_into(): void {
+		$prepared = $this->prepare( 'both_many' );
+
+		$this->flush_result_cache();
+		[ , $current ] = $this->capture_sql( fn() => $this->run_grid( 'current', $prepared['args'] ) );
+
+		$this->flush_result_cache();
+		[ , $kept_only ] = $this->capture_sql( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
+
+		$this->assertCount( 1, $this->grid_selects( $current ) );
+		$this->assertSame( $this->grid_selects( $current ), $this->grid_selects( $kept_only ) );
+	}
+
+	/**
+	 * The ID query must not reach the result cache as a query of its own. If it did, pre_query()
+	 * would flag it as a miss, and with a persistent object cache it would also take, or wait on,
+	 * the single-flight lock the grid's own query already holds.
+	 */
+	public function test_the_id_query_is_left_alone_by_the_result_cache(): void {
+		$prepared = $this->prepare( 'both_many' );
+		$seen     = [];
+
+		$watch = static function ( $posts, $query ) use ( &$seen ) {
+			if ( 'ids' === ( $query->query_vars['fields'] ?? '' ) && ! empty( $query->query_vars['mai_grid_tiebreak'] ) ) {
+				$seen[] = [
+					'answered' => null !== $posts,
+					'flagged'  => isset( $query->mai_cache_store_key ),
+				];
+			}
+
+			return $posts;
+		};
+
+		add_filter( 'posts_pre_query', $watch, 11, 2 );
+
+		$this->flush_result_cache();
+		[ , $stores ] = $this->count_stores( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
+
+		remove_filter( 'posts_pre_query', $watch, 11 );
+
+		$this->assertSame( [ [ 'answered' => false, 'flagged' => false ] ], $seen, 'one ID query, neither answered nor flagged by the result cache' );
+		$this->assertSame( 1, $stores );
+	}
+
+	/**
+	 * A failed ID query must not be stored as an empty result for the length of the TTL. The
+	 * grid falls back to its own query for that view and stores nothing. Core does keep the
+	 * failed statement's empty result in its own query cache, so the next view's ID query finds
+	 * nothing without running SQL. That view falls back too, and stores what the grid's own
+	 * query found.
+	 */
+	public function test_a_failed_id_query_is_not_stored(): void {
+		global $wpdb;
+
+		$prepared = $this->prepare( 'both_many' );
+		$padded   = self::PER_PAGE + count( $prepared['excluded'] );
+		$broken   = false;
+
+		$this->flush_result_cache();
+		$baseline = $this->ids( $this->run_grid( 'current', $prepared['args'] ) );
+
+		// Breaks the first ID-only statement over the padded window, once.
+		$break = static function ( $sql ) use ( &$broken, $padded, $wpdb ) {
+			if ( ! $broken && preg_match( '/^\s*SELECT\s+' . preg_quote( $wpdb->posts, '/' ) . '\.ID\s+FROM\s/', $sql ) && str_contains( $sql, 'LIMIT 0, ' . $padded ) ) {
+				$broken = true;
+
+				return $sql . ' BROKEN';
+			}
+
+			return $sql;
+		};
+
+		add_filter( 'query', $break );
+		$suppress = $wpdb->suppress_errors( true );
+
+		$this->flush_result_cache();
+		[ $miss, $miss_stores ] = $this->count_stores( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
+		[ $next, $next_stores ] = $this->count_stores( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
+
+		$wpdb->suppress_errors( $suppress );
+		remove_filter( 'query', $break );
+
+		$this->assertTrue( $broken, 'the ID query was broken' );
+		$this->assertSame( $baseline, $this->ids( $miss ), 'the grid fell back to its own query' );
+		$this->assertSame( 0, $miss_stores, 'nothing stored from the failed view' );
+		$this->assertSame( $baseline, $this->ids( $next ) );
+		$this->assertSame( 1, $next_stores, 'the next view fills the entry' );
 	}
 
 	/** All three strategies land on one entry, so a benchmark can switch between them warm. */
@@ -562,7 +705,6 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 
 		$this->assertObjectNotHasProperty( 'mai_grid_keep', $deferred );
 		$this->assertObjectNotHasProperty( 'mai_grid_kept', $deferred );
-		$this->assertObjectNotHasProperty( 'mai_grid_request', $deferred );
 	}
 
 	/**
@@ -842,34 +984,37 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		$this->assertSame( array_slice( $this->post_ids, 0, self::PER_PAGE + 1 ), $current, 'pinned so the difference is on record' );
 	}
 
-	// ---- When kept_only cannot build its ID query ----
+	// ---- When kept_only's ID query cannot stand in for the grid's ----
 
 	public static function rewrites(): array {
 		return [
-			'posts_request rewrote the statement' => [ 'posts_request' ],
-			'posts_fields added a column'         => [ 'posts_fields' ],
-			'pre_get_posts turned counting on'    => [ 'pre_get_posts' ],
+			'posts_request rewrote only the grid statement' => [ 'posts_request' ],
+			'posts_fields added a column'                   => [ 'posts_fields' ],
+			'pre_get_posts turned counting on'              => [ 'pre_get_posts' ],
 		];
 	}
 
 	/**
-	 * kept_only only builds its ID-only statement under the conditions core splits a query on.
-	 * Anything else falls back to the current strategy's filtering, and must still show the
-	 * right posts, prime them, and store the padded list.
+	 * kept_only answers a miss from its ID query only when that query is the grid's own query
+	 * with the IDs selected, and nothing counts rows. Anything else falls back to the current
+	 * strategy's filtering, and must still show the right posts, prime them, and store the
+	 * padded list.
 	 */
 	#[DataProvider( 'rewrites' )]
-	public function test_kept_only_falls_back_when_it_cannot_build_an_id_query( string $rewrite ): void {
+	public function test_kept_only_falls_back_when_its_id_query_cannot_stand_in( string $rewrite ): void {
 		$prepared = $this->prepare( 'both_many' );
 		$padded   = self::PER_PAGE + count( $prepared['excluded'] );
 
 		$callbacks = [
+			// The ID query runs with mai_cache off, so this leaves it alone.
 			'posts_request' => [
 				'posts_request',
 				static fn( $sql, $query ) => empty( $query->query_vars['mai_cache'] ) ? $sql : $sql . ' /* rewritten */',
 			],
+			// Both get the column, so the ID query selects more than the ID.
 			'posts_fields'  => [
 				'posts_fields',
-				static fn( $fields, $query ) => empty( $query->query_vars['mai_cache'] ) ? $fields : $fields . ', 1 AS mai_test_column',
+				static fn( $fields, $query ) => empty( $query->query_vars['mai_grid_tiebreak'] ) ? $fields : $fields . ', 1 AS mai_test_column',
 			],
 			'pre_get_posts' => [
 				'pre_get_posts',
@@ -944,10 +1089,13 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		add_filter( 'posts_pre_query', $theirs, 100, 2 );
 
 		$this->flush_result_cache();
-		[ $miss, $stores ] = $this->count_stores( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
+		[ $result, $stores ] = $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) ) );
+		[ $miss, $sql ]      = $result;
 		$hit = $this->run_grid( 'kept_only', $prepared['args'] );
 
 		remove_filter( 'posts_pre_query', $theirs, 100 );
+
+		$this->assertSame( [], $this->id_selects( $sql ), 'no ID query runs once another callback answered' );
 
 		$expected = array_slice( array_values( array_diff( array_reverse( $window ), $prepared['excluded'] ) ), 0, self::PER_PAGE );
 
@@ -1044,27 +1192,5 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 
 		$this->assertSame( $baseline, $this->ids( $hit ) );
 		$this->assertSame( [], array_intersect( $this->ids( $hit ), $prepared['excluded'] ) );
-	}
-
-	public function test_posts_request_ids_fires_on_the_id_query(): void {
-		$prepared = $this->prepare( 'both_many' );
-		$ids_sql  = [];
-
-		$watch = static function ( $sql ) use ( &$ids_sql ) {
-			$ids_sql[] = $sql;
-
-			return $sql;
-		};
-
-		add_filter( 'posts_request_ids', $watch );
-
-		$this->flush_result_cache();
-		$this->run_grid( 'kept_only', $prepared['args'] );
-		$this->run_grid( 'kept_only', $prepared['args'] );
-
-		remove_filter( 'posts_request_ids', $watch );
-
-		$this->assertCount( 1, $ids_sql, 'on the miss only' );
-		$this->assertStringContainsString( 'LIMIT 0, ' . ( self::PER_PAGE + count( $prepared['excluded'] ) ), $ids_sql[0] );
 	}
 }

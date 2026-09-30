@@ -302,7 +302,8 @@ class Mai_Grid {
 
 							// Core would store that kept answer under the padded query's key,
 							// where a later full run of this grid would read it back short. The
-							// result cache already covers this query.
+							// IDs come from an ID-only copy of this query that keeps core's
+							// cache on (Mai_Query_Cache::fetch_ids()).
 							$overrides = [ 'cache_results' => false ];
 						}
 
