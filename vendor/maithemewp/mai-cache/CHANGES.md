@@ -12,6 +12,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 - **`read_swr()` says why an entry is stale.** It returns a new `stale` key: `'version'` when the stored version no longer matches, `'age'` when the version matches but the soft lifetime has passed, and `null` when the entry is fresh. If both apply, `'version'` wins. It also returns `written`, the Unix time the entry was written, or `null` when unknown. `value` and `fresh` are unchanged.
 - **An injectable clock.** `Cache::now()` returns the current Unix time, and `Cache::set_clock( ?\Closure )` replaces it so a test can move time. `Cache::reset_runtime()` puts it back.
 - **`Mai\Cache\PrefixDelete`.** An optional interface with `delete_prefix( string $prefix ): int`, for a store that can delete every row under a key prefix. `TransientStore` implements it, and `ObjectCacheStore` implements it as a no-op. The `Store` interface is unchanged, so custom stores keep working.
+- **`unlock( $key )` releases a lock.** A lock taken with `lock()` otherwise stays held until it expires. After a rebuild gives up, that makes every other visitor wait out the lock and then run the query themselves. `unlock()` deletes the lock right away, so the next caller can take it and rebuild once. Release only a lock you still hold, because one that has already expired may belong to another request.
 
 ### Fixed
 

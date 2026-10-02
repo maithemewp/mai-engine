@@ -83,6 +83,7 @@ $value = $cache->remember( 'popular_posts', fn() => …, HOUR_IN_SECONDS );
 | `write_swr(string $key, mixed $value, string $version, int $ttl, ?int $hard_ttl = null)` | `bool` | Store a value stamped with a version. `$ttl` is the soft lifetime and `$hard_ttl` is when the entry is removed. See [Stale-while-revalidate](#stale-while-revalidate). |
 | `read_swr(string $key, string $version)` | `?array` | `null` when cold. Otherwise `value`, `fresh`, `stale` and `written`. See [Stale-while-revalidate](#stale-while-revalidate). |
 | `lock(string $key, int $ttl = 30)` | `bool` | True for the one caller that should rebuild a stale or cold key. Atomic only with a persistent object cache. |
+| `unlock(string $key)` | `bool` | Release a lock taken with `lock()`, so the next caller can take it. Release only a lock you still hold. An expired lock may belong to another request. |
 | `can_cache()` | `bool` | False when SCRIPT_DEBUG is on or `{prefix}_can_cache` filter returns false. |
 | `static has_persistent_object_cache()` | `bool` | True when WordPress is using an external object cache (e.g. Redis). |
 | `static now()` | `int` | The current Unix time. Code in this package reads the time here so a test can control it. |

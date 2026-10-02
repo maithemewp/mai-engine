@@ -60,7 +60,7 @@ class Cache {
 	 *
 	 * @since 0.5.0
 	 */
-	private const TOKEN_PATTERN = '/^[0-9a-f]{12}$/';
+	private const TOKEN_PATTERN = '/^[0-9a-f]{12}\z/';
 
 	private string $prefix;
 	private Store $store;
@@ -491,6 +491,23 @@ class Cache {
 	 */
 	public function lock( string $key, int $ttl = 30 ): bool {
 		return wp_cache_add( $this->key( 'lock_' . $key ), 1, self::LOCK_GROUP, $ttl );
+	}
+
+	/**
+	 * Release a lock taken with lock(), so the next caller can take it.
+	 *
+	 * Release a lock only if you still hold it. A lock that has already expired may now
+	 * belong to another request, and this deletes it too. Like lock(), this does not check
+	 * can_cache().
+	 *
+	 * @since 0.5.0
+	 *
+	 * @param string $key Lock key, the same one passed to lock().
+	 *
+	 * @return bool True if a lock was removed, false if there was none.
+	 */
+	public function unlock( string $key ): bool {
+		return wp_cache_delete( $this->key( 'lock_' . $key ), self::LOCK_GROUP );
 	}
 
 	/**
