@@ -13,6 +13,7 @@ add_action( 'init', 'mai_register_query_cache' );
  * Registers the grid result cache.
  *
  * @since 2.40.0
+ * @since TBD Registers the grid ID tiebreaker.
  *
  * @return void
  */
@@ -29,6 +30,11 @@ function mai_register_query_cache() {
 	add_filter( 'posts_results', [ $cache, 'posts_results' ], PHP_INT_MIN, 2 );
 
 	add_filter( 'the_posts', [ $cache, 'the_posts' ], 10, 2 );
+
+	// Registered for every query and left on, so an ID-only copy of a grid's query run after the
+	// page gets the grid's ORDER BY. It only touches queries with the mai_grid_tiebreak var.
+	// A static callable, so a second call replaces this entry rather than adding another.
+	add_filter( 'posts_orderby', [ 'Mai_Grid', 'add_deferred_orderby_tiebreaker' ], 99, 2 );
 
 	add_action( 'transition_post_status', [ $cache, 'on_transition' ], 10, 3 );
 	add_action( 'deleted_post', [ $cache, 'on_delete' ], 10, 2 );

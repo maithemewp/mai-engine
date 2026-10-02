@@ -282,8 +282,6 @@ class Mai_Grid {
 						// IDs come from an ID-only copy of this query, which uses core's
 						// cache as asked, carried above (Mai_Query_Cache::fetch_ids()).
 						$this->query_args['cache_results'] = false;
-
-						add_filter( 'posts_orderby', [ $this, 'add_deferred_orderby_tiebreaker' ], 99, 2 );
 					}
 
 					$query = new WP_Query();
@@ -300,8 +298,6 @@ class Mai_Grid {
 					$query->query( $this->query_args );
 
 					if ( $defer ) {
-						remove_filter( 'posts_orderby', [ $this, 'add_deferred_orderby_tiebreaker' ], 99 );
-
 						// Mai_Query_Cache already dropped the excludes and kept the asked count,
 						// before posts_results and the_posts ran. Not set when it could not answer
 						// that way, or when another posts_pre_query callback answered instead.
@@ -1052,9 +1048,11 @@ class Mai_Grid {
 	/**
 	 * Appends a post ID tiebreaker to a deferred grid's ORDER BY.
 	 *
-	 * Public only because it is a hook target. Runs on posts_orderby, scoped by the
+	 * Public only because it is a hook target. Registered once on posts_orderby, in
+	 * mai_register_query_cache(), and it stays registered. It only touches a query carrying the
 	 * mai_grid_tiebreak query var that get_query() sets, so it cannot reach into any other
-	 * query that happens to run while this one is being built.
+	 * query. Staying registered means an ID-only copy of a grid's query, run after the page by
+	 * Mai_Query_Cache, gets the same ORDER BY as the grid did.
 	 *
 	 * Why it is needed: the deferred path asks for posts_per_page + N rows. When rows tie on
 	 * the sort column, MySQL's LIMIT-aware sort is free to keep different ones for different
@@ -1069,13 +1067,14 @@ class Mai_Grid {
 	 * among tied rows is arbitrary and can change between page loads, and this makes it fixed.
 	 *
 	 * @since 2.41.0
+	 * @since TBD Static, and registered once instead of around each grid's query.
 	 *
 	 * @param string   $orderby The ORDER BY clause.
 	 * @param WP_Query $query   The query.
 	 *
 	 * @return string
 	 */
-	public function add_deferred_orderby_tiebreaker( $orderby, $query ) {
+	public static function add_deferred_orderby_tiebreaker( $orderby, $query ) {
 		global $wpdb;
 
 		if ( empty( $query->query_vars['mai_grid_tiebreak'] ) ) {

@@ -13,9 +13,10 @@
 // Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-// HOUR_IN_SECONDS is defined by WordPress; guard for unit-test environments that load
-// this file without booting WP.
+// HOUR_IN_SECONDS and DAY_IN_SECONDS are defined by WordPress; guard for unit-test
+// environments that load this file without booting WP.
 defined( 'HOUR_IN_SECONDS' ) || define( 'HOUR_IN_SECONDS', 3600 );
+defined( 'DAY_IN_SECONDS' ) || define( 'DAY_IN_SECONDS', 86400 );
 
 class Mai_Query_Cache {
 
@@ -25,7 +26,9 @@ class Mai_Query_Cache {
 	private const GROUP = 'grid';
 
 	/**
-	 * Default TTL backstop (filterable per grid via `mai_query_cache_ttl`).
+	 * Default soft lifetime (filterable per grid via `mai_query_cache_ttl`). After it an entry
+	 * reads as old but is still served. The store keeps it until the hard lifetime, see
+	 * lifetimes().
 	 */
 	private const TTL = 4 * HOUR_IN_SECONDS;
 
@@ -344,9 +347,15 @@ class Mai_Query_Cache {
 	 * kept posts on this path, and clearing the miss flag stops the_posts storing a second
 	 * time. A query the cache declined is answered the same way, just with nothing stored.
 	 *
+	 * The entry is marked 'by' => 'ids', because the ID-only copy built it. Only an entry with
+	 * that mark can be rebuilt after the page, since that rebuild runs the same copy and so
+	 * stores the same list. It is stored under the version pre_query() read before any SQL ran.
+	 *
 	 * Also confirms a kept answer pre_query() served from cache is still the one in hand. A
 	 * later callback that replaced it could hand back anything, and then Mai_Grid has to
 	 * filter it as before.
+	 *
+	 * @since TBD Stores the entry with the 'by' => 'ids' mark, and its soft and hard lifetimes.
 	 *
 	 * @param array|null $posts Posts (null to run the query normally).
 	 * @param WP_Query   $query The query.
@@ -364,25 +373,49 @@ class Mai_Query_Cache {
 
 		$keep = $this->keep_request( $posts, $query );
 
+		// The total is core's job. A deferring grid never counts rows (can_defer_excludes()),
+		// so only a pre_get_posts callback gets here, and then core runs the grid's query.
+		if ( $keep && empty( $query->query_vars['no_found_rows'] ) ) {
+			$keep = null;
+		}
+
 		// A copy of a query that holds the current time gets its own "now", so fetch_ids() would
 		// run it and then throw it away as a different query. Let the grid's own query answer.
 		if ( $keep && $this->holds_now( $query->query_vars ) ) {
 			$keep = null;
 		}
 
-		$ids = $keep ? $this->fetch_ids( $query, $keep ) : null;
+		if ( ! $keep ) {
+			return $posts;
+		}
 
-		if ( null === $ids ) {
+		$fetched = $this->fetch_ids(
+			(array) $query->query,
+			$keep['cache_results'],
+			$this->cache_key( $query->query_vars, (string) $query->request )
+		);
+
+		// The copy's statement failed. Store nothing, so a view that just failed does not leave
+		// an empty list behind for the length of the lifetime.
+		if ( false === $fetched ) {
+			unset( $query->mai_cache_store_key, $query->mai_cache_store_version );
+
+			return $posts;
+		}
+
+		if ( null === $fetched ) {
 			return $posts;
 		}
 
 		if ( ! empty( $query->mai_cache_store_key ) ) {
-			$this->store( $query, $query->mai_cache_store_key, $query->mai_cache_store_version, $ids );
+			[ $soft, $hard ] = $this->lifetimes( $query->query_vars );
+
+			$this->store( $query->mai_cache_store_key, $query->mai_cache_store_version, $fetched + [ 'by' => 'ids' ], $soft, $hard );
 
 			unset( $query->mai_cache_store_key, $query->mai_cache_store_version );
 		}
 
-		return $this->keep( $query, $keep, $ids );
+		return $this->keep( $query, $keep, $fetched['ids'] );
 	}
 
 	/**
@@ -472,8 +505,12 @@ class Mai_Query_Cache {
 	}
 
 	/**
-	 * The grid's padded ID list, in order, from an ID-only copy of its query, or null when that
-	 * copy cannot stand in for it.
+	 * The grid's padded ID list, in order, from an ID-only copy of its query, false when the
+	 * copy's statement failed, or null when the copy cannot stand in for the grid's query.
+	 *
+	 * It works from plain values, never from the grid's live query: the args, the cache_results
+	 * the grid asked for, and the key the grid's query has. So it gives the same answer when it
+	 * runs after the page, by which time Mai_Grid has put the query's vars back.
 	 *
 	 * The copy is built from the args the grid's query was built from, so it goes through the
 	 * same pre_get_posts and SQL filters, and asks core for IDs only. Its statement is the one
@@ -498,41 +535,43 @@ class Mai_Query_Cache {
 	 * flags differ on the copy, so a callback that answers it anyway is answering the same
 	 * query, and its IDs stand.
 	 *
-	 * Declines when:
-	 * - the grid's query counts rows. The total is core's job, and a deferring grid never counts
-	 *   (can_defer_excludes()), so only a pre_get_posts callback gets here.
-	 * - the copy's statement failed. The miss flag is cleared too, so a view that just failed
-	 *   stores nothing, rather than an empty list for the length of the TTL. Core is made to
-	 *   forget the copy's cached empty result as well (forget_failure()).
+	 * Returns false when the copy's statement failed. The caller then stores nothing, rather than
+	 * an empty list for the length of the lifetime. Core is made to forget the copy's cached
+	 * empty result here (forget_failure()).
+	 *
+	 * Returns null when:
 	 * - the copy found nothing. Core stores a failed statement's empty result in its query
 	 *   cache like any other, and reading that back runs no SQL, so there is no error to see.
 	 *   A failure in a statement a query filter rewrote on its way to the database looks the
 	 *   same. The grid's own query answers instead, and the_posts stores what it finds. For a
 	 *   grid that really is empty, that costs one cheap query per result cache miss.
 	 * - the copy selects more than the ID. get_col() reads the first column.
-	 * - the copy is not the grid's query once the select list is set aside: a callback treated
-	 *   the two differently, so the copy's IDs may not be the grid's.
+	 * - the copy's key is not the expected one. A callback treated the copy differently from the
+	 *   grid's query, so the copy's IDs may not be the grid's.
 	 *
-	 * @param WP_Query $query The grid's query.
-	 * @param array    $keep  The kept-only request, from keep_request().
+	 * Counting rows is the caller's check, because only the grid's own query can say whether
+	 * it counts.
 	 *
-	 * @return int[]|null
+	 * @since TBD Takes the args, the asked cache_results and the expected key instead of the
+	 *            live query, and returns the copy's found_posts with the IDs.
+	 *
+	 * @param array  $args          The args the grid's query was built from.
+	 * @param bool   $cache_results The cache_results the grid asked for.
+	 * @param string $expected_key  The grid query's cache key. The copy's must match it.
+	 *
+	 * @return array{ids:int[],found:int}|false|null
 	 */
-	private function fetch_ids( $query, array $keep ): ?array {
+	private function fetch_ids( array $args, bool $cache_results, string $expected_key ): array|false|null {
 		global $wpdb;
-
-		if ( empty( $query->query_vars['no_found_rows'] ) ) {
-			return null;
-		}
 
 		$copy = new WP_Query();
 
 		$copy->query(
 			array_merge(
-				(array) $query->query,
+				$args,
 				[
 					'fields'        => 'ids',
-					'cache_results' => $keep['cache_results'],
+					'cache_results' => $cache_results,
 					'mai_cache'     => false,
 				]
 			)
@@ -543,12 +582,10 @@ class Mai_Query_Cache {
 		// whatever ran before, possibly some callback's own query. last_query is recorded with
 		// the placeholder escape already stripped, so the request is compared the same way.
 		if ( $wpdb->last_error && $wpdb->last_query === $wpdb->remove_placeholder_escape( (string) $copy->request ) ) {
-			unset( $query->mai_cache_store_key, $query->mai_cache_store_version );
-
 			// Core cached the copy's empty result too, and the next view would read it back.
 			$this->forget_failure();
 
-			return null;
+			return false;
 		}
 
 		if ( ! $copy->posts ) {
@@ -561,11 +598,14 @@ class Mai_Query_Cache {
 			return null;
 		}
 
-		if ( $this->cache_key( $copy->query_vars, (string) $copy->request ) !== $this->cache_key( $query->query_vars, (string) $query->request ) ) {
+		if ( $this->cache_key( $copy->query_vars, (string) $copy->request ) !== $expected_key ) {
 			return null;
 		}
 
-		return array_map( 'intval', $copy->posts );
+		return [
+			'ids'   => array_map( 'intval', $copy->posts ),
+			'found' => (int) $copy->found_posts,
+		];
 	}
 
 	/**
@@ -710,6 +750,12 @@ class Mai_Query_Cache {
 	/**
 	 * the_posts: store the freshly computed result for a flagged miss.
 	 *
+	 * Stored without the 'by' => 'ids' mark, because the list is whatever the full query and
+	 * its filters returned, which a rebuild after the page could not reproduce. It is stored
+	 * under the version pre_query() read before any SQL ran.
+	 *
+	 * @since TBD Stores the entry with its soft and hard lifetimes.
+	 *
 	 * @param array    $posts The posts.
 	 * @param WP_Query $query The query.
 	 *
@@ -720,7 +766,15 @@ class Mai_Query_Cache {
 			return $posts;
 		}
 
-		$this->store( $query, $query->mai_cache_store_key, $query->mai_cache_store_version, wp_list_pluck( $posts, 'ID' ) );
+		[ $soft, $hard ] = $this->lifetimes( $query->query_vars );
+
+		$this->store(
+			$query->mai_cache_store_key,
+			$query->mai_cache_store_version,
+			[ 'ids' => wp_list_pluck( $posts, 'ID' ), 'found' => (int) $query->found_posts ],
+			$soft,
+			$hard
+		);
 
 		unset( $query->mai_cache_store_key, $query->mai_cache_store_version );
 
@@ -728,24 +782,44 @@ class Mai_Query_Cache {
 	}
 
 	/**
-	 * Write a result under the current version.
+	 * How long a grid's entry lasts, as soft and hard lifetimes in seconds.
 	 *
-	 * @param WP_Query $query   The query.
-	 * @param string   $key     Cache key.
-	 * @param string   $version Current composite version.
-	 * @param int[]    $ids     Ordered post IDs.
+	 * After the soft lifetime the entry reads as old but is still served. After the hard one
+	 * the store drops it. The hard lifetime is never shorter than the soft one.
+	 *
+	 * @since TBD
+	 *
+	 * @param array $query_vars The grid query's vars, passed to both filters.
+	 *
+	 * @return array{0:int,1:int} The soft and hard lifetimes.
+	 */
+	private function lifetimes( array $query_vars ): array {
+		$soft = (int) apply_filters( 'mai_query_cache_ttl', self::TTL, $query_vars );
+		$hard = (int) apply_filters( 'mai_query_cache_hard_ttl', DAY_IN_SECONDS, $query_vars );
+
+		return [ $soft, max( $soft, $hard ) ];
+	}
+
+	/**
+	 * Write a result.
+	 *
+	 * Takes plain values only, never the query, so it can run after the page, once Mai_Grid has
+	 * put the query's vars back.
+	 *
+	 * @since TBD Takes the value and the lifetimes instead of the query.
+	 *
+	 * @param string $key     Cache key.
+	 * @param string $version The version read before the query ran, never one read now. A post
+	 *                        saved while the query ran must leave the entry out of date.
+	 * @param array  $value   [ 'ids' => int[], 'found' => int ], plus 'by' => 'ids' when the
+	 *                        ID-only copy built it.
+	 * @param int    $soft    Soft lifetime in seconds, from lifetimes().
+	 * @param int    $hard    Hard lifetime in seconds, from lifetimes().
 	 *
 	 * @return void
 	 */
-	private function store( $query, string $key, string $version, array $ids ): void {
-		$ttl = (int) apply_filters( 'mai_query_cache_ttl', self::TTL, $query->query_vars );
-
-		mai_cache( self::GROUP )->write_swr(
-			$key,
-			[ 'ids' => $ids, 'found' => (int) $query->found_posts ],
-			$version,
-			$ttl
-		);
+	private function store( string $key, string $version, array $value, int $soft, int $hard ): void {
+		mai_cache( self::GROUP )->write_swr( $key, $value, $version, $soft, $hard );
 	}
 
 	/**

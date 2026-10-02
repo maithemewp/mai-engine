@@ -315,29 +315,6 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 		$this->assertStringNotContainsString( '.ID DESC', $this->undeferred( $this->grid_args() )->request );
 	}
 
-	/**
-	 * The remove_filter after the WP_Query constructor must actually run, not just be dead code.
-	 *
-	 * Checking a subsequent plain WP_Query's request would not catch a broken remove_filter:
-	 * add_deferred_orderby_tiebreaker() itself no-ops unless query_vars['mai_grid_tiebreak'] is
-	 * set, which a plain query never sets. So this checks filter registration directly.
-	 */
-	public function test_tiebreaker_filter_does_not_survive_the_grid_that_added_it(): void {
-		$this->go_to( get_permalink( $this->post_ids[0] ) );
-
-		$grid  = new Mai_Grid( $this->grid_args() );
-		$query = $grid->get_query();
-
-		// The filter is only added when the grid defers, so without this the test passes with
-		// the feature switched off.
-		$this->assertStringNotContainsString( 'NOT IN', $query->request, 'must actually have deferred' );
-
-		$this->assertFalse(
-			has_filter( 'posts_orderby', [ $grid, 'add_deferred_orderby_tiebreaker' ] ),
-			'the tiebreaker filter must not survive the grid that added it'
-		);
-	}
-
 	// ---- The cache key ----
 
 	/**
