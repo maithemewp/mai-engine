@@ -502,7 +502,8 @@ class Mai_Query_Cache {
 	 * - the grid's query counts rows. The total is core's job, and a deferring grid never counts
 	 *   (can_defer_excludes()), so only a pre_get_posts callback gets here.
 	 * - the copy's statement failed. The miss flag is cleared too, so a view that just failed
-	 *   stores nothing, rather than an empty list for the length of the TTL.
+	 *   stores nothing, rather than an empty list for the length of the TTL. Core is made to
+	 *   forget the copy's cached empty result as well (forget_failure()).
 	 * - the copy found nothing. Core stores a failed statement's empty result in its query
 	 *   cache like any other, and reading that back runs no SQL, so there is no error to see.
 	 *   A failure in a statement a query filter rewrote on its way to the database looks the
@@ -543,6 +544,9 @@ class Mai_Query_Cache {
 		// the placeholder escape already stripped, so the request is compared the same way.
 		if ( $wpdb->last_error && $wpdb->last_query === $wpdb->remove_placeholder_escape( (string) $copy->request ) ) {
 			unset( $query->mai_cache_store_key, $query->mai_cache_store_version );
+
+			// Core cached the copy's empty result too, and the next view would read it back.
+			$this->forget_failure();
 
 			return null;
 		}
@@ -658,6 +662,8 @@ class Mai_Query_Cache {
 	 * $wpdb records last_query after the query filter, where it strips its placeholder escape,
 	 * so the request is compared the same way. A grid with a LIKE holds that escape.
 	 *
+	 * Core has already put the empty result in its own query cache by now. See forget_failure().
+	 *
 	 * @since TBD
 	 *
 	 * @param array    $posts The posts.
@@ -674,9 +680,31 @@ class Mai_Query_Cache {
 
 		if ( $wpdb->last_query === $wpdb->remove_placeholder_escape( (string) $query->request ) ) {
 			unset( $query->mai_cache_store_key, $query->mai_cache_store_version );
+
+			$this->forget_failure();
 		}
 
 		return $posts;
+	}
+
+	/**
+	 * Make WordPress forget the empty result of a grid statement that just failed.
+	 *
+	 * Core puts a query's result in its post-queries cache before posts_results runs, failed or
+	 * not, under a key salted with the posts last_changed time. On a site with a persistent
+	 * object cache, the next view would get that empty result with no SQL, see no error, and
+	 * store it, and the grid would stay empty until a post or its meta was saved. Moving the
+	 * time on, as core does on every post save, means that entry is never read again.
+	 *
+	 * Only called when a grid's own statement failed, never on success. Every entry in core's
+	 * post-queries cache misses once afterwards, the same as after one post save.
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	private function forget_failure(): void {
+		wp_cache_set_posts_last_changed();
 	}
 
 	/**

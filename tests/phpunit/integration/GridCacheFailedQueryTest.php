@@ -136,24 +136,24 @@ final class GridCacheFailedQueryTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * Runs the grid, and returns the query, how many results were stored, and how many grid
-	 * statements ran.
+	 * Runs the grid, and returns the query, how many results were stored, how many grid
+	 * statements ran, and the ID lists stored.
 	 *
 	 * mai-cache writes through transients here (no persistent object cache in this suite), and
 	 * a stored result is the only envelope whose value carries `ids`. A grid statement is one
 	 * against the posts table with a LIMIT. Priming reads have none.
 	 *
-	 * @return array{0:WP_Query,1:int,2:int}
+	 * @return array{0:WP_Query,1:int,2:int,3:array<int[]>}
 	 */
 	private function render(): array {
 		global $wpdb;
 
-		$stores  = 0;
+		$stored  = [];
 		$selects = 0;
 
-		$count_stores = static function ( $transient, $value ) use ( &$stores ) {
+		$count_stores = static function ( $transient, $value ) use ( &$stored ) {
 			if ( is_array( $value ) && isset( $value['value']['ids'] ) ) {
-				++$stores;
+				$stored[] = $value['value']['ids'];
 			}
 		};
 
@@ -173,7 +173,14 @@ final class GridCacheFailedQueryTest extends MaiIntegrationTestCase {
 		remove_filter( 'query', $count_selects );
 		remove_action( 'set_transient', $count_stores, 10 );
 
-		return [ $query, $stores, $selects ];
+		return [ $query, count( $stored ), $selects, $stored ];
+	}
+
+	/** Whether a statement is the grid's own: an ID-only select from the posts table with a LIMIT. */
+	private static function is_grid_statement( string $sql ): bool {
+		global $wpdb;
+
+		return (bool) preg_match( '/^\s*SELECT\s+(?:SQL_CALC_FOUND_ROWS\s+)?(?:DISTINCT\s+)?' . preg_quote( $wpdb->posts, '/' ) . '\.ID\s+FROM\s/i', $sql ) && str_contains( $sql, 'LIMIT' );
 	}
 
 	/** What a new request starts with on a site without a persistent object cache. */
@@ -283,5 +290,55 @@ final class GridCacheFailedQueryTest extends MaiIntegrationTestCase {
 		$this->assertNotSame( '', end( $this->errors ), 'a failed statement was the last one run' );
 		$this->assertSame( 1, $stores, 'the grid did not fail, so its result is stored' );
 		$this->assertSame( wp_list_pluck( $warm->posts, 'ID' ), wp_list_pluck( $query->posts, 'ID' ) );
+	}
+
+	// ---- Core's query cache forgets a failed query ----
+
+	/**
+	 * Core keeps a failed statement's empty result in its query cache, under a key salted with
+	 * the posts last_changed time. Moving that time on, as a post save does, makes the entry
+	 * unreachable. Here MySQL refuses the statement without its text changing, so the next view
+	 * would look up the same entry.
+	 */
+	public function test_a_failed_query_moves_posts_last_changed(): void {
+		$before = wp_cache_get_last_changed( 'posts' );
+
+		[ [ $query, $stores ], $refused ] = $this->refuse_once( fn( $sql ) => self::is_grid_statement( $sql ), fn() => $this->render() );
+
+		$this->assertTrue( $refused, 'the grid statement was refused' );
+		$this->assertNotSame( '', $this->errors[0], 'and failed' );
+		$this->assertSame( [], $query->posts );
+		$this->assertSame( 0, $stores );
+		$this->assertNotSame( $before, wp_cache_get_last_changed( 'posts' ) );
+	}
+
+	/**
+	 * The next view, with the object cache as the failed view left it, runs the query again and
+	 * stores the real posts. Otherwise core would answer it from its cache with no SQL, the
+	 * result cache would see no error, and the empty list would be stored.
+	 */
+	public function test_after_a_failed_query_the_next_view_runs_it_and_stores_the_real_posts(): void {
+		[ , $refused ] = $this->refuse_once( fn( $sql ) => self::is_grid_statement( $sql ), fn() => $this->render() );
+
+		[ $next, $stores, $selects, $stored ] = $this->render();
+
+		$expected = array_slice( $this->post_ids, 0, self::PER_PAGE );
+
+		$this->assertTrue( $refused, 'the first view was refused' );
+		$this->assertSame( 1, $selects, 'the next view runs the grid statement' );
+		$this->assertSame( $expected, wp_list_pluck( $next->posts, 'ID' ) );
+		$this->assertSame( 1, $stores );
+		$this->assertSame( [ $expected ], $stored, 'and stores the real posts' );
+	}
+
+	public function test_a_successful_query_leaves_posts_last_changed_alone(): void {
+		$before = wp_cache_get_last_changed( 'posts' );
+
+		[ , $miss_stores ] = $this->render();
+		[ , $hit_stores ]  = $this->render();
+
+		$this->assertSame( 1, $miss_stores );
+		$this->assertSame( 0, $hit_stores );
+		$this->assertSame( $before, wp_cache_get_last_changed( 'posts' ) );
 	}
 }

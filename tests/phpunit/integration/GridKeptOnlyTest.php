@@ -904,6 +904,72 @@ final class GridKeptOnlyTest extends MaiIntegrationTestCase {
 	}
 
 	/**
+	 * Core keeps the ID query's empty result in its query cache even when the statement failed,
+	 * under a key salted with the posts last_changed time. Moving that time on, as a post save
+	 * does, makes the entry unreachable. Here MySQL refuses the ID query without its text
+	 * changing, so the next view looks up the same entry. With the object cache as the failed
+	 * view left it, the next view runs the ID query again and answers kept-only, rather than
+	 * reading the empty list back and falling back to the grid's own query until a post is saved.
+	 */
+	public function test_a_refused_id_query_is_forgotten_by_core_query_cache(): void {
+		global $wpdb;
+
+		$prepared = $this->prepare( 'both_many' );
+		$padded   = self::PER_PAGE + count( $prepared['excluded'] );
+
+		// The declined copy selects an extra column, so core caches nothing for it here.
+		$this->flush_result_cache();
+		$baseline = $this->ids( $this->run_grid( $prepared['args'], 'copy_declined' ) );
+
+		$this->flush_result_cache();
+		$before = wp_cache_get_last_changed( 'posts' );
+
+		// The first ID-only statement over the padded window is the ID query's.
+		$id_query = static fn( $sql ) => (bool) preg_match( '/^\s*SELECT\s+' . preg_quote( $wpdb->posts, '/' ) . '\.ID\s+FROM\s/', $sql ) && str_contains( $sql, 'LIMIT 0, ' . $padded );
+
+		[ [ $miss, $miss_stores ], $refused ] = $this->refuse_once( $id_query, fn() => $this->count_stores( fn() => $this->run_grid( $prepared['args'] ) ) );
+
+		$after_miss = wp_cache_get_last_changed( 'posts' );
+
+		// Core runs posts_request_ids only when it splits a query it runs itself, so it fires for
+		// the grid's own query on the fallback and never for the ID query.
+		$fallbacks = 0;
+		$watch     = static function ( $request, $query ) use ( &$fallbacks ) {
+			if ( ! empty( $query->query_vars['mai_cache'] ) ) {
+				++$fallbacks;
+			}
+
+			return $request;
+		};
+
+		add_filter( 'posts_request_ids', $watch, 10, 2 );
+		[ $next, $next_stores ] = $this->count_stores( fn() => $this->run_grid( $prepared['args'] ) );
+		remove_filter( 'posts_request_ids', $watch, 10 );
+
+		$this->assertTrue( $refused, 'the ID query was refused' );
+		$this->assertSame( $baseline, $this->ids( $miss ), 'the grid fell back to its own query' );
+		$this->assertSame( 0, $miss_stores, 'nothing stored from the failed view' );
+		$this->assertNotSame( $before, $after_miss, 'the failure moved the posts last_changed time' );
+		$this->assertSame( 0, $fallbacks, 'the next view answered kept-only, from a fresh ID query' );
+		$this->assertSame( $baseline, $this->ids( $next ) );
+		$this->assertSame( 1, $next_stores, 'and stored the padded list' );
+	}
+
+	public function test_a_kept_only_view_leaves_posts_last_changed_alone(): void {
+		$prepared = $this->prepare( 'both_many' );
+
+		$this->flush_result_cache();
+		$before = wp_cache_get_last_changed( 'posts' );
+
+		[ , $miss_stores ] = $this->count_stores( fn() => $this->run_grid( $prepared['args'] ) );
+		[ , $hit_stores ]  = $this->count_stores( fn() => $this->run_grid( $prepared['args'] ) );
+
+		$this->assertSame( 1, $miss_stores );
+		$this->assertSame( 0, $hit_stores );
+		$this->assertSame( $before, wp_cache_get_last_changed( 'posts' ) );
+	}
+
+	/**
 	 * An empty ID list is not trusted. Core stores a failed statement's empty result in its
 	 * query cache like any other, and a failure fetch_ids() cannot see, here one in a query
 	 * filter that rewrote the statement, looks the same. The grid's own query answers instead,

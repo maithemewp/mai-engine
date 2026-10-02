@@ -44,6 +44,67 @@ abstract class MaiIntegrationTestCase extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Has MySQL refuse one statement while the callback runs, without changing its text, as a
+	 * timeout or a lock wait would. The refused statement is the first one $pick matches.
+	 *
+	 * A max_join_size of 1 is a session limit that refuses any SELECT expected to examine more
+	 * than one row. It is set just before the picked statement and put back before the next one,
+	 * so nothing else is refused. Database errors are not printed meanwhile.
+	 *
+	 * @param callable $pick     Receives each statement's final text, returns whether to refuse it.
+	 * @param callable $callback The code to run.
+	 *
+	 * @return array{0:mixed,1:bool} What the callback returns, and whether a statement was refused.
+	 */
+	protected function refuse_once( callable $pick, callable $callback ): array {
+		global $wpdb;
+
+		$state  = 'waiting';
+		$inside = false;
+
+		// Latest priority, so $pick sees the text as it goes to the database. The SET statements
+		// run from inside the filter, which core applies before it resets $wpdb for a statement.
+		$filter = static function ( $sql ) use ( &$state, &$inside, $pick, $wpdb ) {
+			if ( $inside ) {
+				return $sql;
+			}
+
+			$inside = true;
+
+			if ( 'armed' === $state ) {
+				$wpdb->query( 'SET SESSION max_join_size = DEFAULT' );
+				$state = 'done';
+			}
+
+			if ( 'waiting' === $state && $pick( $sql ) ) {
+				$wpdb->query( 'SET SESSION max_join_size = 1' );
+				$state = 'armed';
+			}
+
+			$inside = false;
+
+			return $sql;
+		};
+
+		add_filter( 'query', $filter, PHP_INT_MAX );
+		$suppress = $wpdb->suppress_errors( true );
+
+		try {
+			$result = $callback();
+		} finally {
+			remove_filter( 'query', $filter, PHP_INT_MAX );
+
+			if ( 'armed' === $state ) {
+				$wpdb->query( 'SET SESSION max_join_size = DEFAULT' );
+			}
+
+			$wpdb->suppress_errors( $suppress );
+		}
+
+		return [ $result, 'waiting' !== $state ];
+	}
+
+	/**
 	 * Asserts no tag anywhere in the document carries a class.
 	 *
 	 * WP_HTML_Tag_Processor::has_class() is scoped to a single tag, so it cannot express the
