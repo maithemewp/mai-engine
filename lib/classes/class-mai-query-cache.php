@@ -248,6 +248,12 @@ class Mai_Query_Cache {
 			$cacheable = false;
 		}
 
+		// A hit returns post objects, and core turns those into 1s for an ids query
+		// (WP_Query::get_posts()). Mai's own grids never ask for either field mode.
+		if ( in_array( $query_vars['fields'] ?? '', [ 'ids', 'id=>parent' ], true ) ) {
+			$cacheable = false;
+		}
+
 		// A query that holds the current time gets a new key on every view, so it never hits.
 		if ( $cacheable && $this->holds_now( $query_vars ) ) {
 			$cacheable = false;

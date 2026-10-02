@@ -48,6 +48,22 @@ final class MaiQueryCacheabilityTest extends TestCase {
 		$this->assertTrue( ( new Mai_Query_Cache() )->is_cacheable( [ 'orderby' => 'brand_name', 'post_type' => 'post' ] ) );
 	}
 
+	/**
+	 * serve() returns post objects, and core turns those into 1s for an ids query.
+	 */
+	public function test_fields_ids_not_cacheable(): void {
+		$this->assertFalse( ( new Mai_Query_Cache() )->is_cacheable( [ 'fields' => 'ids', 'post_type' => 'post' ] ) );
+	}
+
+	public function test_fields_id_parent_not_cacheable(): void {
+		$this->assertFalse( ( new Mai_Query_Cache() )->is_cacheable( [ 'fields' => 'id=>parent', 'post_type' => 'post' ] ) );
+	}
+
+	public function test_caches_a_full_fields_query(): void {
+		$this->assertTrue( ( new Mai_Query_Cache() )->is_cacheable( [ 'fields' => '', 'post_type' => 'post' ] ) );
+		$this->assertTrue( ( new Mai_Query_Cache() )->is_cacheable( [ 'fields' => 'all', 'post_type' => 'post' ] ) );
+	}
+
 	public function test_caches_a_normal_tax_grid(): void {
 		$this->assertTrue( ( new Mai_Query_Cache() )->is_cacheable( [ 'post_type' => 'post', 'tax_query' => [ [ 'taxonomy' => 'category' ] ] ] ) );
 	}
