@@ -32,3 +32,9 @@ tests_add_filter(
 );
 
 require $wp_phpunit_dir . '/includes/bootstrap.php';
+
+// A test marked to run in its own process loads this file again in a child process, and
+// wp-phpunit would reinstall the database there, dropping every table while this process is
+// still using them. The database is installed by now, and a child process inherits this
+// environment, so it skips the install.
+putenv( 'WP_TESTS_SKIP_INSTALL=1' );

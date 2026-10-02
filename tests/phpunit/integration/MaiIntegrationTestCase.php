@@ -2,6 +2,12 @@
 
 namespace BizBudding\MaiEngine\Tests\Integration;
 
+use Mai_Query_Cache;
+use Mai_Query_Cache_Queue;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use ReflectionClass;
+use ReflectionMethod;
 use WP_HTML_Tag_Processor;
 use WP_UnitTestCase;
 
@@ -9,9 +15,74 @@ use WP_UnitTestCase;
  * Base class for the WordPress-loaded suite.
  *
  * Tests must extend this rather than WP_UnitTestCase directly. See expectDeprecated() below
- * for why.
+ * for why, and install_test_queue() for the grid cache queue every test starts and ends with.
  */
 abstract class MaiIntegrationTestCase extends WP_UnitTestCase {
+
+	/**
+	 * Starts every test with a test queue on the grid cache. See install_test_queue().
+	 *
+	 * @return void
+	 */
+	public function set_up() {
+		parent::set_up();
+
+		self::install_test_queue();
+	}
+
+	/**
+	 * Ends every test with a test queue on the grid cache, so the next test class, and the
+	 * queue run at shutdown, never get the one this test installed. See install_test_queue().
+	 *
+	 * @return void
+	 */
+	public function tear_down() {
+		self::install_test_queue();
+
+		parent::tear_down();
+	}
+
+	/**
+	 * Puts a fresh queue on the grid cache instance the hooks use. It works like the default
+	 * queue, except that asking page caches not to keep the page does nothing.
+	 *
+	 * The default queue defines DONOTCACHEPAGE for real, and this suite's requests count as
+	 * page views, since wp-phpunit sets REQUEST_METHOD to GET. A constant cannot be undefined,
+	 * so one grid served an out-of-date list would change what every later test in the process
+	 * sees. A test that needs a queue it can watch installs its own after parent::set_up().
+	 *
+	 * @return void
+	 */
+	protected static function install_test_queue(): void {
+		Mai_Query_Cache::instance()->set_queue( new Mai_Query_Cache_Queue( null, null, static function (): void {} ) );
+	}
+
+	/**
+	 * Fails a test that leaves DONOTCACHEPAGE defined in the main test process. Only a test
+	 * that runs in its own process may define it, since that process ends with the test.
+	 *
+	 * Uses fail() rather than an assertion, so a passing check does not count as one, and a test
+	 * that asserts nothing is still reported as risky.
+	 *
+	 * @return void
+	 */
+	protected function assert_post_conditions() {
+		parent::assert_post_conditions();
+
+		if ( defined( 'DONOTCACHEPAGE' ) && ! $this->runs_in_own_process() ) {
+			$this->fail( 'DONOTCACHEPAGE is defined in the main test process, and stays defined for every later test. Give the grid cache queue a no-page-cache seam, or run the test in its own process.' );
+		}
+	}
+
+	/**
+	 * Whether this test is marked to run in its own process.
+	 *
+	 * @return bool
+	 */
+	private function runs_in_own_process(): bool {
+		return [] !== ( new ReflectionMethod( $this, $this->name() ) )->getAttributes( RunInSeparateProcess::class )
+			|| [] !== ( new ReflectionClass( $this ) )->getAttributes( RunTestsInSeparateProcesses::class );
+	}
 
 	/**
 	 * PHPUnit 10 removed PHPUnit\Util\Test::parseTestMethodAnnotations() and

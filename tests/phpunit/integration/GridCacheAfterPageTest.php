@@ -22,7 +22,7 @@ use WP_Query;
  *
  * Time is moved with Cache::set_clock(), which only mai-cache reads. A pretend request is
  * go_to() plus a fresh queue, whose seams stand in for fastcgi_finish_request(). tear_down puts
- * a default queue and the real clock back, since MaiIntegrationTestCase resets neither.
+ * the real clock back, and MaiIntegrationTestCase puts a test queue back.
  */
 final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 
@@ -103,10 +103,6 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 	}
 
 	public function tear_down(): void {
-		// A default queue, so later test classes store inline as before, and the queue run at
-		// shutdown finds nothing.
-		Mai_Query_Cache::instance()->set_queue( new Mai_Query_Cache_Queue() );
-
 		Cache::set_clock( null );
 
 		Mai_Grid::$existing_post_ids = [];

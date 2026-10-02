@@ -22,10 +22,10 @@ use WP_Query;
  * - After the page, the waiting results are stored before any aged-out entry is rebuilt.
  *
  * Each test installs a fresh queue on the instance the hooks use. Its seams stand in for
- * fastcgi_finish_request() and DONOTCACHEPAGE. tear_down puts a default queue back, so no
- * other test class inherits this one, and nothing runs at shutdown. The suite sets
- * REQUEST_METHOD to GET (wp-phpunit's includes/functions.php), so these queues count the
- * request as a page view unless told otherwise.
+ * fastcgi_finish_request() and DONOTCACHEPAGE. MaiIntegrationTestCase puts a test queue back
+ * after each test, so no other test class inherits this one, and nothing runs at shutdown.
+ * The suite sets REQUEST_METHOD to GET (wp-phpunit's includes/functions.php), so these queues
+ * count the request as a page view unless told otherwise.
  */
 final class GridCacheDeferredStoreTest extends MaiIntegrationTestCase {
 
@@ -94,10 +94,6 @@ final class GridCacheDeferredStoreTest extends MaiIntegrationTestCase {
 	}
 
 	public function tear_down(): void {
-		// A default queue, so later test classes store inline as before, and the queue run at
-		// shutdown finds nothing.
-		Mai_Query_Cache::instance()->set_queue( new Mai_Query_Cache_Queue() );
-
 		Cache::set_clock( null );
 
 		$_SERVER['REQUEST_METHOD'] = $this->method;

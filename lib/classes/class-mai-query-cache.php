@@ -538,8 +538,13 @@ class Mai_Query_Cache {
 	 * wins the lock. A key that is already queued is served stale again, so one key gets one
 	 * decision per request.
 	 *
+	 * A request that loses the lock on an entry a save made out of date is served the old list,
+	 * and asks page caches not to keep its page (Mai_Query_Cache_Queue::no_page_cache()). A
+	 * fresh entry, or one that only aged out, still holds the right posts, so it never asks.
+	 *
 	 * @since TBD Serves a result waiting in the queue.
 	 * @since TBD Rebuilds an aged-out entry after the page.
+	 * @since TBD Asks page caches not to keep a page served an entry a save made out of date.
 	 *
 	 * @param array|null $posts Posts (null to run the query normally).
 	 * @param WP_Query   $query The query.
@@ -586,6 +591,8 @@ class Mai_Query_Cache {
 			return $this->flag_miss( $query, $key, $version, $posts );
 		}
 
+		$out_of_date = false;
+
 		// Stale entry. A key already queued for after the page skips this and is served stale.
 		if ( ! $hit['fresh'] && ! $this->queue->has_job( $key ) ) {
 			// Aged out with no save: serve it now and rebuild it after the page. An entry serve()
@@ -618,13 +625,25 @@ class Mai_Query_Cache {
 			if ( $cache->lock( $key, $this->lock_ttl() ) ) {
 				return $this->flag_miss( $query, $key, $version, $posts );
 			}
+
+			// Lost the lock on an entry a save made out of date. This page shows the old list
+			// until the winner stores the new one, so page caches must not keep it.
+			$out_of_date = 'version' === $hit['stale'];
 		}
 
 		// Fresh hit, or a stale hit served while another request refreshes. A malformed envelope
 		// (serve returns null) is treated as a miss and recomputed rather than fataling.
 		$served = $this->serve( $query, $hit['value'], $keep );
 
-		return ( null !== $served ) ? $served : $this->flag_miss( $query, $key, $version, $posts );
+		if ( null === $served ) {
+			return $this->flag_miss( $query, $key, $version, $posts );
+		}
+
+		if ( $out_of_date ) {
+			$this->queue->no_page_cache();
+		}
+
+		return $served;
 	}
 
 	/**
