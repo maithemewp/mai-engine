@@ -663,9 +663,8 @@ class Mai_Query_Cache {
 	 * resolve to null via get_post and fall out the same array_filter.
 	 *
 	 * Meta and terms are primed only when the query asks for them, as core does on its own
-	 * cache hits. A deferring grid can switch both off for its padded query and prime just the
-	 * posts it keeps afterwards. WP_Query fills both flags in before posts_pre_query, so the
-	 * true defaults here only apply to a direct caller that leaves them out.
+	 * cache hits. WP_Query fills both flags in before posts_pre_query, so the true defaults here
+	 * only apply to a direct caller that leaves them out.
 	 *
 	 * @param int[] $ids        Ordered post IDs.
 	 * @param array $query_vars The query vars, for the post_status guard and the cache flags.

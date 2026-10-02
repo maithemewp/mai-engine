@@ -9,18 +9,19 @@ use WP_Post;
 use WP_Query;
 
 /**
- * The three ways a deferring grid can load its posts, picked by the temporary
- * mai_grid_load_strategy filter.
+ * How a deferring grid loads its posts.
  *
- * - current: loads and primes the whole padded set, then Mai_Grid drops the excludes.
- * - prime_late: loads the padded set with meta and term priming off, then primes the kept posts.
- * - kept_only: Mai_Query_Cache answers posts_pre_query with only the kept posts.
+ * Kept-only: Mai_Query_Cache answers posts_pre_query with only the posts the grid shows, so
+ * the padding rows and the excluded posts are never loaded. Where kept-only steps aside, the
+ * grid falls back to filtering after the query: something else returns the padded set,
+ * the_posts stores it, and Mai_Grid drops the excludes. The paths provider forces the two
+ * ways that happens (see run_grid()).
  *
- * Contract: whatever the strategy, a grid shows the same posts in the same order, a miss and
- * the hit after it agree, and the query object handed back describes the request as it was
- * asked. What differs is how much gets loaded, which is what the priming tests pin.
+ * Contract: on every path a grid shows the same posts in the same order, a miss and the hit
+ * after it agree, and the query object handed back describes the request as it was asked.
+ * What differs is how much gets loaded, which is what the priming tests pin.
  */
-final class GridLoadStrategyTest extends MaiIntegrationTestCase {
+final class GridKeptOnlyTest extends MaiIntegrationTestCase {
 
 	private const PER_PAGE = 6;
 
@@ -53,44 +54,28 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 	public function tear_down() {
 		Mai_Grid::$existing_post_ids = [];
 
-		remove_all_filters( 'mai_grid_load_strategy' );
-
 		parent::tear_down();
 	}
 
-	public static function strategies(): array {
+	/** Kept-only, and the two ways it steps aside for the fallback. See run_grid(). */
+	public static function paths(): array {
 		return [
-			'current'    => [ 'current' ],
-			'prime_late' => [ 'prime_late' ],
-			'kept_only'  => [ 'kept_only' ],
+			'kept-only'                                => [ 'kept' ],
+			'fallback, another callback answers first' => [ 'answered_first' ],
+			'fallback, the ID copy is declined'        => [ 'copy_declined' ],
 		];
 	}
 
-	public static function strategies_and_scenarios(): array {
+	public static function paths_and_scenarios(): array {
 		$cases = [];
 
-		foreach ( [ 'prime_late', 'kept_only' ] as $strategy ) {
+		foreach ( self::paths() as $name => [ $path ] ) {
 			foreach ( [ 'current_none', 'current_in_window', 'current_outside_window', 'displayed_none', 'displayed_few', 'displayed_many', 'both_many', 'tied' ] as $scenario ) {
-				$cases[ "{$strategy} / {$scenario}" ] = [ $strategy, $scenario ];
+				$cases[ "{$name} / {$scenario}" ] = [ $path, $scenario ];
 			}
 		}
 
 		return $cases;
-	}
-
-	/** Every ordered pair of different strategies: the one that writes, then the one that reads. */
-	public static function strategy_pairs(): array {
-		$pairs = [];
-
-		foreach ( [ 'current', 'prime_late', 'kept_only' ] as $writer ) {
-			foreach ( [ 'current', 'prime_late', 'kept_only' ] as $reader ) {
-				if ( $writer !== $reader ) {
-					$pairs[ "{$writer} then {$reader}" ] = [ $writer, $reader ];
-				}
-			}
-		}
-
-		return $pairs;
 	}
 
 	// ---- Helpers ----
@@ -186,15 +171,73 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		];
 	}
 
-	/** Runs a grid under one strategy. */
-	private function run_grid( string $strategy, array $args ): WP_Query {
-		$pick = static fn() => $strategy;
+	/**
+	 * Runs a grid down one path.
+	 *
+	 * - kept: Mai_Query_Cache answers a miss with only the posts the grid shows.
+	 * - answered_first: another posts_pre_query callback answers the miss before kept-only's
+	 *   last-priority one, as The Events Calendar does at priority 100. It runs the grid's own
+	 *   statement, and steps aside once something has answered, so a hit is still kept-only.
+	 * - copy_declined: the ID-only copy selects an extra column, so fetch_ids() cannot use it.
+	 *   Core then runs the grid's own padded query, unchanged, which keeps the same cache key.
+	 *
+	 * On both fallbacks the_posts stores the padded set and Mai_Grid drops the excludes.
+	 */
+	private function run_grid( array $args, string $path = 'kept' ): WP_Query {
+		$hooks = $this->path_hooks( $path );
 
-		add_filter( 'mai_grid_load_strategy', $pick );
+		foreach ( $hooks as [ $hook, $callback, $priority ] ) {
+			add_filter( $hook, $callback, $priority, 2 );
+		}
+
 		$query = ( new Mai_Grid( $args ) )->get_query();
-		remove_filter( 'mai_grid_load_strategy', $pick );
+
+		foreach ( $hooks as [ $hook, $callback, $priority ] ) {
+			remove_filter( $hook, $callback, $priority );
+		}
 
 		return $query;
+	}
+
+	/**
+	 * The callbacks that send a grid down one path, each as hook, callback and priority.
+	 *
+	 * @return array<array{0:string,1:callable,2:int}>
+	 */
+	private function path_hooks( string $path ): array {
+		return match ( $path ) {
+			'kept'           => [],
+			'answered_first' => [
+				[
+					'posts_pre_query',
+					static function ( $posts, $query ) {
+						global $wpdb;
+
+						if ( null !== $posts || empty( $query->query_vars['mai_cache'] ) ) {
+							return $posts;
+						}
+
+						return array_map( 'get_post', $wpdb->get_results( $query->request ) );
+					},
+					100,
+				],
+			],
+			'copy_declined'  => [
+				[
+					'posts_fields',
+					static fn( $fields, $query ) => ( 'ids' === ( $query->query_vars['fields'] ?? '' ) && ! empty( $query->query_vars['mai_grid_tiebreak'] ) ) ? $fields . ', 1 AS mai_test_column' : $fields,
+					10,
+				],
+			],
+		};
+	}
+
+	/**
+	 * How many grid statements a miss runs on each path: kept-only's ID query, the other
+	 * callback's own statement, or the declined copy followed by core's split query.
+	 */
+	private function miss_selects( string $path ): int {
+		return 'copy_declined' === $path ? 2 : 1;
 	}
 
 	/** Runs the same grid with deferring switched off, for a like-for-like comparison. */
@@ -325,27 +368,33 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 
 	// ---- Same posts, same order ----
 
-	#[DataProvider( 'strategies_and_scenarios' )]
-	public function test_kept_posts_match_the_current_strategy( string $strategy, string $scenario ): void {
+	/**
+	 * The baseline is the fallback where core runs the grid's padded query and Mai_Grid drops
+	 * the excludes after it, as every deferring grid did before kept-only. Every path must show
+	 * the same posts. On that fallback path itself, what this adds is the hit, which kept-only
+	 * serves from the entry the fallback stored.
+	 */
+	#[DataProvider( 'paths_and_scenarios' )]
+	public function test_every_path_shows_what_the_fallback_shows( string $path, string $scenario ): void {
 		$prepared = $this->prepare( $scenario );
 		$args     = $prepared['args'];
 
 		$this->flush_result_cache();
-		$baseline = $this->ids( $this->run_grid( 'current', $args ) );
+		$baseline = $this->ids( $this->run_grid( $args, 'copy_declined' ) );
 
 		$this->flush_result_cache();
-		$miss = $this->run_grid( $strategy, $args );
-		$hit  = $this->run_grid( $strategy, $args );
+		$miss = $this->run_grid( $args, $path );
+		$hit  = $this->run_grid( $args, $path );
 
 		$this->assertCount( self::PER_PAGE, $baseline, 'every scenario has enough posts left to fill the grid' );
-		$this->assertSame( $baseline, $this->ids( $miss ), 'a miss must show what the current strategy shows' );
+		$this->assertSame( $baseline, $this->ids( $miss ), 'a miss must show what the fallback shows' );
 		$this->assertSame( $baseline, $this->ids( $hit ), 'the hit after it must too' );
 		$this->assertSame( [], array_intersect( $baseline, $prepared['excluded'] ) );
 
 		if ( $prepared['excluded'] ) {
 			$this->assertStringNotContainsString( 'NOT IN', $miss->request, 'must actually have deferred' );
 		} else {
-			// Nothing to exclude, so nothing defers, and every strategy is the same plain query.
+			// Nothing to exclude, so nothing defers, and every path is the same plain query.
 			$this->assertStringNotContainsString( '.ID DESC', $miss->request, 'a grid with nothing to exclude must not defer' );
 		}
 
@@ -358,8 +407,8 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 
 	// ---- What posts_results and the_posts see ----
 
-	#[DataProvider( 'strategies' )]
-	public function test_posts_results_and_the_posts_get_full_post_objects( string $strategy ): void {
+	#[DataProvider( 'paths' )]
+	public function test_posts_results_and_the_posts_get_full_post_objects( string $path ): void {
 		$prepared = $this->prepare( 'both_many' );
 		$seen     = [];
 
@@ -378,8 +427,8 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 
 		$this->flush_result_cache();
 		$shown = [
-			$this->ids( $this->run_grid( $strategy, $prepared['args'] ) ),
-			$this->ids( $this->run_grid( $strategy, $prepared['args'] ) ),
+			$this->ids( $this->run_grid( $prepared['args'], $path ) ),
+			$this->ids( $this->run_grid( $prepared['args'], $path ) ),
 		];
 
 		foreach ( [ 'posts_results', 'the_posts' ] as $hook ) {
@@ -390,12 +439,13 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 					$this->assertInstanceOf( WP_Post::class, $post, "{$hook} must get post objects, not IDs" );
 				}
 
-				if ( 'kept_only' === $strategy ) {
-					$this->assertSame( $shown[ $run ], wp_list_pluck( $posts, 'ID' ), "{$hook} must see only the posts the grid shows" );
+				if ( 0 === $run && 'kept' !== $path ) {
+					// A fallback miss hands the padded set to both hooks: 6 asked for, plus 27
+					// excluded. Pinned so the difference from kept-only is visible.
+					$this->assertCount( self::PER_PAGE + count( $prepared['excluded'] ), $posts, "{$hook} on the fallback miss" );
 				} else {
-					// The other two still hand the padded set to both hooks. Pinned so the
-					// difference is visible: 6 asked for, plus 27 excluded.
-					$this->assertCount( self::PER_PAGE + count( $prepared['excluded'] ), $posts );
+					// Kept-only, and every hit, which kept-only serves from the entry.
+					$this->assertSame( $shown[ $run ], wp_list_pluck( $posts, 'ID' ), "{$hook} must see only the posts the grid shows" );
 				}
 			}
 		}
@@ -403,8 +453,10 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 
 	// ---- How much gets loaded ----
 
-	#[DataProvider( 'strategies' )]
-	public function test_meta_and_terms_are_primed_only_for_kept_posts( string $strategy ): void {
+	#[DataProvider( 'paths' )]
+	public function test_meta_and_terms_are_primed_only_for_kept_posts( string $path ): void {
+		global $wpdb;
+
 		$prepared = $this->prepare( 'displayed_many' );
 		$window   = array_slice( $this->post_ids, 0, self::PER_PAGE + count( $prepared['excluded'] ) );
 
@@ -413,7 +465,7 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		foreach ( [ 'miss', 'hit' ] as $pass ) {
 			$this->clean_post_caches();
 
-			[ $query, $sql ] = $this->capture_sql( fn() => $this->run_grid( $strategy, $prepared['args'] ) );
+			[ $query, $sql ] = $this->capture_sql( fn() => $this->run_grid( $prepared['args'], $path ) );
 
 			$kept    = $this->ids( $query );
 			$dropped = array_values( array_diff( $window, $kept ) );
@@ -425,28 +477,31 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 				$this->assertSame( [ 'row' => true, 'meta' => true, 'terms' => true ], $state, "{$pass}: kept post {$id} must be fully primed" );
 			}
 
-			$expected = [
-				'current'    => [ 'row' => true, 'meta' => true, 'terms' => true ],
-				'prime_late' => [ 'row' => true, 'meta' => false, 'terms' => false ],
-				'kept_only'  => [ 'row' => false, 'meta' => false, 'terms' => false ],
-			][ $strategy ];
+			// Only a fallback miss where core runs the grid's query loads more than the kept
+			// posts: core splits it and primes every padded row, as every deferring grid did
+			// before kept-only. The other callback's answer here loads its rows without caching
+			// them, and Mai_Grid primes only the kept posts.
+			$expected = ( 'miss' === $pass && 'copy_declined' === $path )
+				? [ 'row' => true, 'meta' => true, 'terms' => true ]
+				: [ 'row' => false, 'meta' => false, 'terms' => false ];
 
 			foreach ( $this->cached( $dropped ) as $id => $state ) {
-				$this->assertSame( $expected, $state, "{$pass}: dropped post {$id} under {$strategy}" );
+				$this->assertSame( $expected, $state, "{$pass}: dropped post {$id} on the {$path} path" );
 			}
 
 			$selects = $this->grid_selects( $sql );
 
 			if ( 'hit' === $pass ) {
 				$this->assertSame( [], $selects, 'a hit must not run the grid query' );
-			} elseif ( 'kept_only' === $strategy ) {
-				global $wpdb;
 
-				$this->assertCount( 1, $selects );
+				continue;
+			}
+
+			$this->assertCount( $this->miss_selects( $path ), $selects );
+			$this->assertStringContainsString( 'LIMIT 0, ' . count( $window ), end( $selects ), 'over the padded window' );
+
+			if ( 'kept' === $path ) {
 				$this->assertMatchesRegularExpression( '/^\s*SELECT\s+' . preg_quote( $wpdb->posts, '/' ) . '\.ID\s+FROM\s/i', $selects[0], 'the miss must select IDs only' );
-				$this->assertStringContainsString( 'LIMIT 0, ' . count( $window ), $selects[0], 'over the padded window' );
-			} else {
-				$this->assertCount( 1, $selects );
 			}
 		}
 	}
@@ -454,11 +509,11 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 	/**
 	 * A site can turn cache_results off for a grid. Core still primes meta and terms for a query
 	 * it splits, which every unfiltered deferring grid is. Only the priming it does after
-	 * the_posts checks cache_results. So the kept posts are primed under every strategy, as
-	 * they are under the current one.
+	 * the_posts checks cache_results. So the kept posts are primed on every path, as they are
+	 * for a grid that does not defer.
 	 */
-	#[DataProvider( 'strategies' )]
-	public function test_kept_posts_are_primed_when_a_site_turned_cache_results_off( string $strategy ): void {
+	#[DataProvider( 'paths' )]
+	public function test_kept_posts_are_primed_when_a_site_turned_cache_results_off( string $path ): void {
 		$off = static fn( $query_args ) => array_merge( $query_args, [ 'cache_results' => false ] );
 
 		add_filter( 'mai_post_grid_query_args', $off );
@@ -467,7 +522,7 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 
 		$this->flush_result_cache();
 		$this->clean_post_caches();
-		$query = $this->run_grid( $strategy, $prepared['args'] );
+		$query = $this->run_grid( $prepared['args'], $path );
 
 		remove_filter( 'mai_post_grid_query_args', $off );
 
@@ -481,19 +536,19 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 
 	// ---- Miss, then hit ----
 
-	#[DataProvider( 'strategies' )]
-	public function test_a_miss_stores_once_and_the_hit_serves_the_same_posts( string $strategy ): void {
+	#[DataProvider( 'paths' )]
+	public function test_a_miss_stores_once_and_the_hit_serves_the_same_posts( string $path ): void {
 		$prepared = $this->prepare( 'both_many' );
 
 		$this->flush_result_cache();
 
-		[ $miss, $miss_stores ] = $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( $strategy, $prepared['args'] ) ) );
-		[ $hit, $hit_stores ]   = $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( $strategy, $prepared['args'] ) ) );
+		[ $miss, $miss_stores ] = $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( $prepared['args'], $path ) ) );
+		[ $hit, $hit_stores ]   = $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( $prepared['args'], $path ) ) );
 
 		$this->assertSame( 1, $miss_stores, 'a miss must store exactly once' );
 		$this->assertSame( 0, $hit_stores, 'a hit must not store' );
 
-		$this->assertCount( 1, $this->grid_selects( $miss[1] ) );
+		$this->assertCount( $this->miss_selects( $path ), $this->grid_selects( $miss[1] ) );
 		$this->assertSame( [], $this->grid_selects( $hit[1] ), 'the hit must not run the grid query' );
 
 		$this->assertCount( self::PER_PAGE, $this->ids( $miss[0] ) );
@@ -501,12 +556,14 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * The shared-entry round trip, for every strategy: what one article stores has to be the
-	 * padded list, so the next article can drop its own post and still fill the grid. For
-	 * kept_only this is the store in posts_pre_query, which never sees the_posts.
+	 * The shared-entry round trip, on every path: what one article stores has to be the padded
+	 * list, so the next article can drop its own post and still fill the grid. Kept-only stores
+	 * it in posts_pre_query, which never sees the_posts. The fallbacks store it on the_posts.
+	 * Either way the next article is a hit, which kept-only serves, so an entry the fallback
+	 * wrote must read back under kept-only.
 	 */
-	#[DataProvider( 'strategies' )]
-	public function test_the_stored_entry_is_the_padded_list_and_fills_the_next_page( string $strategy ): void {
+	#[DataProvider( 'paths' )]
+	public function test_the_stored_entry_is_the_padded_list_and_fills_the_next_page( string $path ): void {
 		$args = $this->grid_args();
 
 		$this->flush_result_cache();
@@ -521,7 +578,7 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		};
 
 		add_filter( 'posts_pre_query', $capture, 9, 2 );
-		$first = $this->ids( $this->run_grid( $strategy, $args ) );
+		$first = $this->ids( $this->run_grid( $args, $path ) );
 		remove_filter( 'posts_pre_query', $capture, 9 );
 
 		$stored = mai_cache( 'grid' )->read_swr( $key, mai_cache( 'grid' )->version( [ 'post' ] ) );
@@ -531,7 +588,7 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 
 		$this->go_to( get_permalink( $this->post_ids[1] ) );
 
-		[ $second, $sql ] = $this->capture_sql( fn() => $this->run_grid( $strategy, $args ) );
+		[ $second, $sql ] = $this->capture_sql( fn() => $this->run_grid( $args, $path ) );
 
 		$this->assertSame( [], $this->grid_selects( $sql ), 'the second article must be served from the entry' );
 		$this->assertSame(
@@ -542,32 +599,67 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * An entry one strategy wrote must read back correctly under another, so switching the
-	 * strategy on a warm site cannot show a short or wrong grid.
+	 * Sites updating from beta.4 hold entries that version wrote: the padded ID list and its
+	 * count, nothing more. Beta.4 ran a deferring grid's query with core's cache_results
+	 * default, which kept-only now turns off. That flag is not part of the key, so kept-only
+	 * looks up the same entry beta.4 wrote for the grid. The entry here is written by hand in
+	 * that shape, holding a list the grid's query would not return, so the posts shown can only
+	 * have come from it.
 	 */
-	#[DataProvider( 'strategy_pairs' )]
-	public function test_an_entry_written_under_one_strategy_reads_under_another( string $writer, string $reader ): void {
-		$args = $this->grid_args();
+	public function test_an_entry_beta_4_wrote_is_served(): void {
+		$args    = $this->grid_args();
+		$vars    = [];
+		$request = '';
+
+		$this->go_to( get_permalink( $this->post_ids[0] ) );
+
+		// Only the grid's own query. The ID-only copy runs this hook too, with mai_cache off.
+		$capture = static function ( $posts, $query ) use ( &$vars, &$request ) {
+			if ( ! $vars && ! empty( $query->query_vars['mai_cache'] ) ) {
+				$vars    = $query->query_vars;
+				$request = (string) $query->request;
+			}
+
+			return $posts;
+		};
+
+		add_filter( 'posts_pre_query', $capture, 9, 2 );
+		$this->run_grid( $args );
+		remove_filter( 'posts_pre_query', $capture, 9 );
+
+		$cache = new Mai_Query_Cache();
+		$key   = $cache->cache_key( array_merge( $vars, [ 'cache_results' => true ] ), $request );
+
+		$this->assertFalse( $vars['cache_results'], 'kept-only runs the grid query with cache_results off' );
+		$this->assertSame( $cache->cache_key( $vars, $request ), $key, 'the key beta.4 computed is the key kept-only computes' );
+
+		// Padded by one like the grid's own entry, with the post being viewed first, but every
+		// other post after it, which is not what the grid's query returns.
+		$padded_ids = [
+			$this->post_ids[0],
+			$this->post_ids[2],
+			$this->post_ids[4],
+			$this->post_ids[6],
+			$this->post_ids[8],
+			$this->post_ids[10],
+			$this->post_ids[12],
+		];
 
 		$this->flush_result_cache();
 
-		$this->go_to( get_permalink( $this->post_ids[0] ) );
-		$first = $this->ids( $this->run_grid( $writer, $args ) );
+		$version = mai_cache( 'grid' )->version( [ 'post' ] );
 
-		$this->go_to( get_permalink( $this->post_ids[1] ) );
-		[ $second, $sql ] = $this->capture_sql( fn() => $this->run_grid( $reader, $args ) );
+		set_transient( mai_cache( 'grid' )->key( $key ), [ '_v' => $version, 'value' => [ 'ids' => $padded_ids, 'found' => count( $padded_ids ) ] ], HOUR_IN_SECONDS );
 
-		$this->assertSame( array_slice( $this->post_ids, 1, self::PER_PAGE ), $first );
-		$this->assertSame( [], $this->grid_selects( $sql ), "{$reader} must read the entry {$writer} wrote" );
-		$this->assertSame(
-			array_merge( [ $this->post_ids[0] ], array_slice( $this->post_ids, 2, self::PER_PAGE - 1 ) ),
-			$this->ids( $second ),
-			'a full grid without the post being viewed'
-		);
+		[ [ $query, $sql ], $stores ] = $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( $args ) ) );
+
+		$this->assertSame( array_slice( $padded_ids, 1, self::PER_PAGE ), $this->ids( $query ), 'the entry\'s posts, without the post being viewed' );
+		$this->assertSame( [], $this->grid_selects( $sql ), 'no grid query runs' );
+		$this->assertSame( 0, $stores, 'a hit stores nothing' );
 	}
 
 	/**
-	 * kept_only's miss gets its IDs from an ID-only copy of the grid's query, which uses core's
+	 * A kept-only miss gets its IDs from an ID-only copy of the grid's query, which uses core's
 	 * query cache. The grid's own query stays at cache_results off: left on, core would store
 	 * the kept answer, which differs per page view, under the padded query's key. So core gets
 	 * one entry per grid, whatever the page view excludes. go_to() empties the object cache, so
@@ -589,7 +681,7 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 			$this->flush_result_cache();
 
 			$before = $count();
-			$query  = $this->run_grid( 'kept_only', $args );
+			$query  = $this->run_grid( $args );
 
 			$added[] = $count() - $before;
 
@@ -602,9 +694,8 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * The warm case that used to be slower than the current strategy: the result cache has no
-	 * entry, but core's query cache does. The ID query must read core's entry instead of running
-	 * the grid's SQL again.
+	 * The warm case: the result cache has no entry, but core's query cache does. The ID query
+	 * must read core's entry instead of running the grid's SQL again.
 	 */
 	public function test_a_kept_only_miss_reads_its_ids_from_core_query_cache(): void {
 		global $wpdb;
@@ -612,11 +703,11 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		$prepared = $this->prepare( 'current_in_window' );
 
 		$this->flush_result_cache();
-		[ $first, $first_sql ] = $this->capture_sql( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
+		[ $first, $first_sql ] = $this->capture_sql( fn() => $this->run_grid( $prepared['args'] ) );
 
 		// The result cache loses its entry. Core's query cache keeps its own.
 		$this->flush_result_cache();
-		[ $result, $stores ]     = $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) ) );
+		[ $result, $stores ]     = $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( $prepared['args'] ) ) );
 		[ $second, $second_sql ] = $result;
 
 		$posts_reads = array_filter(
@@ -648,11 +739,11 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 
 		$this->flush_result_cache();
 		$before = $count();
-		[ , $first ] = $this->capture_sql( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
+		[ , $first ] = $this->capture_sql( fn() => $this->run_grid( $prepared['args'] ) );
 		$added = $count() - $before;
 
 		$this->flush_result_cache();
-		[ $query, $second ] = $this->capture_sql( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
+		[ $query, $second ] = $this->capture_sql( fn() => $this->run_grid( $prepared['args'] ) );
 
 		remove_filter( 'mai_post_grid_query_args', $off );
 
@@ -665,20 +756,22 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 
 	/**
 	 * The ID query is core's own ID-only statement, byte for byte the one core runs when it
-	 * splits the current strategy's query, before posts_request_ids. So both return the same
-	 * rows in the same order.
+	 * splits the grid's query on the fallback, before posts_request_ids. So both return the
+	 * same rows in the same order.
 	 */
 	public function test_the_id_query_is_the_statement_core_splits_the_grid_into(): void {
 		$prepared = $this->prepare( 'both_many' );
 
 		$this->flush_result_cache();
-		[ , $current ] = $this->capture_sql( fn() => $this->run_grid( 'current', $prepared['args'] ) );
+		[ , $fallback ] = $this->capture_sql( fn() => $this->run_grid( $prepared['args'], 'copy_declined' ) );
 
 		$this->flush_result_cache();
-		[ , $kept_only ] = $this->capture_sql( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
+		[ , $kept ] = $this->capture_sql( fn() => $this->run_grid( $prepared['args'] ) );
 
-		$this->assertCount( 1, $this->grid_selects( $current ) );
-		$this->assertSame( $this->grid_selects( $current ), $this->grid_selects( $kept_only ) );
+		// The declined copy selects an extra column, so the fallback's only ID-only statement is
+		// the one core split the grid's query into.
+		$this->assertCount( 1, $this->id_selects( $fallback ) );
+		$this->assertSame( $this->id_selects( $fallback ), $this->id_selects( $kept ) );
 	}
 
 	/**
@@ -704,7 +797,7 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		add_filter( 'posts_pre_query', $watch, 11, 2 );
 
 		$this->flush_result_cache();
-		[ , $stores ] = $this->count_stores( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
+		[ , $stores ] = $this->count_stores( fn() => $this->run_grid( $prepared['args'] ) );
 
 		remove_filter( 'posts_pre_query', $watch, 11 );
 
@@ -724,7 +817,7 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		$broken   = false;
 
 		$this->flush_result_cache();
-		$baseline = $this->ids( $this->run_grid( 'current', $prepared['args'] ) );
+		$baseline = $this->ids( $this->run_grid( $prepared['args'], 'copy_declined' ) );
 
 		// Breaks the ID query's own statement, once.
 		$break = static function ( $sql, $query ) use ( &$broken ) {
@@ -741,8 +834,8 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		$suppress = $wpdb->suppress_errors( true );
 
 		$this->flush_result_cache();
-		[ $miss, $miss_stores ] = $this->count_stores( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
-		[ $next, $next_stores ] = $this->count_stores( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
+		[ $miss, $miss_stores ] = $this->count_stores( fn() => $this->run_grid( $prepared['args'] ) );
+		[ $next, $next_stores ] = $this->count_stores( fn() => $this->run_grid( $prepared['args'] ) );
 
 		$wpdb->suppress_errors( $suppress );
 		remove_filter( 'posts_request', $break, 10 );
@@ -768,7 +861,7 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		$broken   = false;
 
 		$this->flush_result_cache();
-		$baseline = $this->ids( $this->run_grid( 'current', $prepared['args'] ) );
+		$baseline = $this->ids( $this->run_grid( $prepared['args'], 'copy_declined' ) );
 
 		// Breaks the first ID-only statement over the padded window, once, as it reaches the database.
 		$break = static function ( $sql ) use ( &$broken, $padded, $wpdb ) {
@@ -785,8 +878,8 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		$suppress = $wpdb->suppress_errors( true );
 
 		$this->flush_result_cache();
-		[ $miss, $stores ] = $this->count_stores( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
-		$hit = $this->run_grid( 'kept_only', $prepared['args'] );
+		[ $miss, $stores ] = $this->count_stores( fn() => $this->run_grid( $prepared['args'] ) );
+		$hit = $this->run_grid( $prepared['args'] );
 
 		$wpdb->suppress_errors( $suppress );
 		remove_filter( 'query', $break );
@@ -808,7 +901,7 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 
 		// Warms core's query cache for the ID query.
 		$this->flush_result_cache();
-		$this->run_grid( 'kept_only', $prepared['args'] );
+		$this->run_grid( $prepared['args'] );
 
 		$noise = static function ( $query ) use ( $wpdb ) {
 			if ( 'ids' === ( $query->query_vars['fields'] ?? '' ) && ! empty( $query->query_vars['mai_grid_tiebreak'] ) ) {
@@ -820,7 +913,7 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		$suppress = $wpdb->suppress_errors( true );
 
 		$this->flush_result_cache();
-		[ $query, $stores ] = $this->count_stores( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
+		[ $query, $stores ] = $this->count_stores( fn() => $this->run_grid( $prepared['args'] ) );
 
 		$wpdb->suppress_errors( $suppress );
 		remove_action( 'pre_get_posts', $noise );
@@ -833,10 +926,11 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 	 * The Events Calendar writes "now", to the second, into the meta_query of every event query,
 	 * so its key changes on every view. Such a query is not cached at all: no entry is written,
 	 * each view runs its own query, and the grid still shows the right posts. Here the value
-	 * moves one second on every query.
+	 * moves one second on every query. Kept-only steps aside for such a query too, so every
+	 * path ends in the fallback.
 	 */
-	#[DataProvider( 'strategies' )]
-	public function test_a_query_that_holds_now_is_not_cached( string $strategy ): void {
+	#[DataProvider( 'paths' )]
+	public function test_a_query_that_holds_now_is_not_cached( string $path ): void {
 		$prepared = $this->prepare( 'current_in_window' );
 		$second   = 0;
 		$start    = time();
@@ -861,8 +955,8 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		add_action( 'pre_get_posts', $now );
 
 		$this->flush_result_cache();
-		[ [ $first, $first_sql ], $first_stores ]   = $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( $strategy, $prepared['args'] ) ) );
-		[ [ $second_run, $second_sql ], $second_stores ] = $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( $strategy, $prepared['args'] ) ) );
+		[ [ $first, $first_sql ], $first_stores ]   = $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( $prepared['args'], $path ) ) );
+		[ [ $second_run, $second_sql ], $second_stores ] = $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( $prepared['args'], $path ) ) );
 
 		remove_action( 'pre_get_posts', $now );
 
@@ -874,32 +968,12 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		$this->assertSame( $this->ids( $first ), $this->ids( $second_run ) );
 	}
 
-	/** All three strategies land on one entry, so a benchmark can switch between them warm. */
-	public function test_every_strategy_uses_the_same_cache_key(): void {
-		$prepared = $this->prepare( 'both_many' );
-		$keys     = [];
-
-		foreach ( [ 'current', 'prime_late', 'kept_only' ] as $strategy ) {
-			$capture = static function ( $posts, $query ) use ( &$keys, $strategy ) {
-				$keys[ $strategy ] = ( new Mai_Query_Cache() )->cache_key( $query->query_vars, (string) $query->request );
-
-				return $posts;
-			};
-
-			add_filter( 'posts_pre_query', $capture, 9, 2 );
-			$this->run_grid( $strategy, $prepared['args'] );
-			remove_filter( 'posts_pre_query', $capture, 9 );
-		}
-
-		$this->assertCount( 1, array_unique( $keys ), 'the strategy markers must not reach the key' );
-	}
-
 	// ---- The restore ----
 
-	#[DataProvider( 'strategies' )]
-	public function test_query_vars_are_restored( string $strategy ): void {
+	#[DataProvider( 'paths' )]
+	public function test_query_vars_are_restored( string $path ): void {
 		$prepared   = $this->prepare( 'both_many' );
-		$deferred   = $this->run_grid( $strategy, $prepared['args'] );
+		$deferred   = $this->run_grid( $prepared['args'], $path );
 		$undeferred = $this->undeferred( $prepared['args'] );
 
 		$this->assertStringNotContainsString( 'NOT IN', $deferred->request, 'must actually have deferred' );
@@ -926,11 +1000,11 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * Cache flags a site set itself must come back as set, including the one core rewrites:
+	 * Cache flags a site set must come back as set, including the one core rewrites:
 	 * lazy_load_term_meta on turns update_post_term_cache back on.
 	 */
-	#[DataProvider( 'strategies' )]
-	public function test_cache_flags_a_site_set_are_restored_as_set( string $strategy ): void {
+	#[DataProvider( 'paths' )]
+	public function test_cache_flags_a_site_set_are_restored_as_set( string $path ): void {
 		$flags = static fn( $query_args ) => array_merge( $query_args, [
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
@@ -940,7 +1014,7 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		add_filter( 'mai_post_grid_query_args', $flags );
 
 		$prepared   = $this->prepare( 'current_in_window' );
-		$deferred   = $this->run_grid( $strategy, $prepared['args'] );
+		$deferred   = $this->run_grid( $prepared['args'], $path );
 		$undeferred = $this->undeferred( $prepared['args'] );
 
 		remove_filter( 'mai_post_grid_query_args', $flags );
@@ -955,8 +1029,7 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 
 	// ---- Grids that do not defer ----
 
-	#[DataProvider( 'strategies' )]
-	public function test_a_grid_that_does_not_defer_is_unchanged( string $strategy ): void {
+	public function test_a_grid_that_does_not_defer_is_unchanged(): void {
 		$prepared = $this->prepare( 'current_in_window' );
 		$args     = $this->grid_args( [ 'offset' => 2 ] );
 		$seen     = [];
@@ -970,7 +1043,7 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		};
 
 		add_filter( 'the_posts', $watch, 5, 2 );
-		$query    = $this->run_grid( $strategy, $args );
+		$query    = $this->run_grid( $args );
 		$baseline = $this->undeferred( $args );
 		remove_filter( 'the_posts', $watch, 5 );
 
@@ -989,12 +1062,11 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 
 	// ---- Caching switched off ----
 
-	#[DataProvider( 'strategies' )]
-	public function test_a_grid_with_caching_off_does_not_defer( string $strategy ): void {
+	public function test_a_grid_with_caching_off_does_not_defer(): void {
 		$prepared = $this->prepare( 'both_many' );
 
 		add_filter( 'mai_post_grid_cache', '__return_false' );
-		$query    = $this->run_grid( $strategy, $prepared['args'] );
+		$query    = $this->run_grid( $prepared['args'] );
 		$baseline = $this->undeferred( $prepared['args'] );
 		remove_filter( 'mai_post_grid_cache', '__return_false' );
 
@@ -1008,11 +1080,10 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 
 	/**
 	 * mai-cache refusing to store (SCRIPT_DEBUG, or the mai_can_cache filter) means there is no
-	 * shared entry to gain, so the grid must not defer. Deferring would only turn off core's
-	 * query cache under kept_only and pad the query under every strategy, for nothing.
+	 * shared entry to gain, so the grid must not defer. Deferring would only pad the query and
+	 * turn off core's query cache for it, for nothing.
 	 */
-	#[DataProvider( 'strategies' )]
-	public function test_a_store_that_cannot_cache_does_not_defer( string $strategy ): void {
+	public function test_a_store_that_cannot_cache_does_not_defer(): void {
 		$prepared = $this->prepare( 'displayed_many' );
 
 		add_filter( 'mai_can_cache', '__return_false' );
@@ -1020,7 +1091,7 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		$baseline = $this->ids( $this->undeferred( $prepared['args'] ) );
 
 		foreach ( [ 1, 2 ] as $run ) {
-			[ $query, $stores ] = $this->count_stores( fn() => $this->run_grid( $strategy, $prepared['args'] ) );
+			[ $query, $stores ] = $this->count_stores( fn() => $this->run_grid( $prepared['args'] ) );
 
 			$this->assertStringContainsString( 'NOT IN', $query->request, "run {$run}: the excludes stay in the SQL" );
 			$this->assertStringContainsString( 'LIMIT 0, ' . self::PER_PAGE, $query->request, "run {$run}: not padded" );
@@ -1034,7 +1105,7 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 
 	/**
 	 * The result cache can decline a query at run time that the grid thought it would take:
-	 * mai_query_cache sees the final query vars, which only exist once the query runs. kept_only
+	 * mai_query_cache sees the final query vars, which only exist once the query runs. Kept-only
 	 * then answers without reading or storing anything.
 	 */
 	public function test_a_query_the_cache_declines_at_run_time_still_loads_only_kept_posts(): void {
@@ -1044,11 +1115,11 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		// Only the padded query carries the tiebreak marker. The grid's own check runs before it is set.
 		$decline = static fn( $cacheable, $query_vars ) => isset( $query_vars['mai_grid_tiebreak'] ) ? false : $cacheable;
 
-		$baseline = $this->ids( $this->run_grid( 'current', $prepared['args'] ) );
+		$baseline = $this->ids( $this->run_grid( $prepared['args'], 'copy_declined' ) );
 
 		add_filter( 'mai_query_cache', $decline, 10, 2 );
 		$this->clean_post_caches();
-		[ $query, $stores ] = $this->count_stores( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
+		[ $query, $stores ] = $this->count_stores( fn() => $this->run_grid( $prepared['args'] ) );
 		remove_filter( 'mai_query_cache', $decline, 10 );
 
 		$this->assertSame( $baseline, $this->ids( $query ) );
@@ -1061,8 +1132,8 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 
 	// ---- Posts a the_posts callback adds ----
 
-	#[DataProvider( 'strategies' )]
-	public function test_a_post_pinned_to_the_top_survives( string $strategy ): void {
+	#[DataProvider( 'paths' )]
+	public function test_a_post_pinned_to_the_top_survives( string $path ): void {
 		$prepared = $this->prepare( 'current_in_window' );
 		$pinned   = $this->post_ids[39];
 
@@ -1077,28 +1148,28 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		add_filter( 'the_posts', $pin, 20, 2 );
 
 		$this->flush_result_cache();
-		$miss = $this->ids( $this->run_grid( $strategy, $prepared['args'] ) );
-		$hit  = $this->ids( $this->run_grid( $strategy, $prepared['args'] ) );
+		$miss = $this->ids( $this->run_grid( $prepared['args'], $path ) );
+		$hit  = $this->ids( $this->run_grid( $prepared['args'], $path ) );
 
 		$this->flush_result_cache();
-		$current = $this->ids( $this->run_grid( 'current', $prepared['args'] ) );
+		$fallback = $this->ids( $this->run_grid( $prepared['args'], 'copy_declined' ) );
 
 		remove_filter( 'the_posts', $pin, 20 );
 
 		$this->assertSame( $pinned, $miss[0] );
 		$this->assertCount( self::PER_PAGE + 1, $miss, 'the pinned post widens the grid rather than pushing one out' );
-		$this->assertSame( $current, $miss );
+		$this->assertSame( $fallback, $miss );
 		$this->assertSame( $miss, $hit );
 	}
 
 	/**
 	 * A the_posts callback can put an excluded post back, and so can core's sticky handling if a
-	 * pre_get_posts callback turned stickies back on. kept_only has already dropped the excludes
+	 * pre_get_posts callback turned stickies back on. Kept-only has already dropped the excludes
 	 * by then, so the grid has to drop them again, while still keeping every other post the
 	 * callback added.
 	 */
-	#[DataProvider( 'strategies' )]
-	public function test_an_excluded_post_a_the_posts_callback_adds_back_is_dropped( string $strategy ): void {
+	#[DataProvider( 'paths' )]
+	public function test_an_excluded_post_a_the_posts_callback_adds_back_is_dropped( string $path ): void {
 		$prepared = $this->prepare( 'current_in_window' );
 		$excluded = $prepared['excluded'][0];
 
@@ -1111,13 +1182,13 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		};
 
 		$this->flush_result_cache();
-		$baseline = $this->ids( $this->run_grid( 'current', $prepared['args'] ) );
+		$baseline = $this->ids( $this->run_grid( $prepared['args'], 'copy_declined' ) );
 
 		add_filter( 'the_posts', $add_back, 20, 2 );
 
 		$this->flush_result_cache();
-		$miss = $this->ids( $this->run_grid( $strategy, $prepared['args'] ) );
-		$hit  = $this->ids( $this->run_grid( $strategy, $prepared['args'] ) );
+		$miss = $this->ids( $this->run_grid( $prepared['args'], $path ) );
+		$hit  = $this->ids( $this->run_grid( $prepared['args'], $path ) );
 
 		remove_filter( 'the_posts', $add_back, 20 );
 
@@ -1133,8 +1204,7 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 	 * has taken its excludes out of post__not_in, so core would add the post being viewed right
 	 * back. Such a grid must not defer.
 	 */
-	#[DataProvider( 'strategies' )]
-	public function test_a_grid_with_sticky_posts_on_does_not_defer( string $strategy ): void {
+	public function test_a_grid_with_sticky_posts_on_does_not_defer(): void {
 		// Outside the window, so core fetches it and puts it first.
 		$current = $this->post_ids[39];
 
@@ -1151,8 +1221,8 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		$args = $this->grid_args( [ 'query_by' => 'date', 'taxonomies' => [] ] );
 
 		$this->flush_result_cache();
-		$miss       = $this->run_grid( $strategy, $args );
-		$hit        = $this->run_grid( $strategy, $args );
+		$miss       = $this->run_grid( $args );
+		$hit        = $this->run_grid( $args );
 		$undeferred = $this->undeferred( $args );
 
 		remove_filter( 'mai_post_grid_query_args', $stickies );
@@ -1166,11 +1236,11 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * The one place kept_only shows something the current strategy does not: a post a
-	 * the_posts callback appends. The current strategy slices after the_posts, so when nothing
-	 * was dropped the padding row takes the widened slot and the appended post falls off.
-	 * kept_only slices before the_posts, so the appended post stays, which is also what a grid
-	 * that does not defer shows.
+	 * The one place kept-only shows something the fallback does not: a post a the_posts
+	 * callback appends. The fallback slices after the_posts, so when nothing was dropped the
+	 * padding row takes the widened slot and the appended post falls off. Kept-only slices
+	 * before the_posts, so the appended post stays, which is also what a grid that does not
+	 * defer shows.
 	 */
 	public function test_kept_only_keeps_an_appended_post_like_a_grid_that_does_not_defer(): void {
 		$prepared = $this->prepare( 'current_outside_window' );
@@ -1187,10 +1257,10 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		add_filter( 'the_posts', $pin, 20, 2 );
 
 		$this->flush_result_cache();
-		$kept_only = $this->ids( $this->run_grid( 'kept_only', $prepared['args'] ) );
+		$kept = $this->ids( $this->run_grid( $prepared['args'] ) );
 
 		$this->flush_result_cache();
-		$current = $this->ids( $this->run_grid( 'current', $prepared['args'] ) );
+		$fallback = $this->ids( $this->run_grid( $prepared['args'], 'copy_declined' ) );
 
 		$undeferred = $this->ids( $this->undeferred( $prepared['args'] ) );
 
@@ -1199,11 +1269,11 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		$expected = array_merge( array_slice( $this->post_ids, 0, self::PER_PAGE ), [ $pinned ] );
 
 		$this->assertSame( $expected, $undeferred );
-		$this->assertSame( $expected, $kept_only );
-		$this->assertSame( array_slice( $this->post_ids, 0, self::PER_PAGE + 1 ), $current, 'pinned so the difference is on record' );
+		$this->assertSame( $expected, $kept );
+		$this->assertSame( array_slice( $this->post_ids, 0, self::PER_PAGE + 1 ), $fallback, 'pinned so the difference is on record' );
 	}
 
-	// ---- When kept_only's ID query cannot stand in for the grid's ----
+	// ---- When kept-only's ID query cannot stand in for the grid's ----
 
 	public static function rewrites(): array {
 		return [
@@ -1214,10 +1284,10 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * kept_only answers a miss from its ID query only when that query is the grid's own query
-	 * with the IDs selected, and nothing counts rows. Anything else falls back to the current
-	 * strategy's filtering, and must still show the right posts, prime them, and store the
-	 * padded list.
+	 * Kept-only answers a miss from its ID query only when that query is the grid's own query
+	 * with the IDs selected, and nothing counts rows. Anything else falls back to filtering
+	 * after the query, and must still show what kept-only shows, prime the kept posts, and
+	 * store the padded list.
 	 */
 	#[DataProvider( 'rewrites' )]
 	public function test_kept_only_falls_back_when_its_id_query_cannot_stand_in( string $rewrite ): void {
@@ -1247,10 +1317,11 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 
 		[ $hook, $callback ] = $callbacks[ $rewrite ];
 
-		add_filter( $hook, $callback, 10, 2 );
-
+		// What kept-only shows when nothing gets in its way.
 		$this->flush_result_cache();
-		$baseline = $this->ids( $this->run_grid( 'current', $prepared['args'] ) );
+		$baseline = $this->ids( $this->run_grid( $prepared['args'] ) );
+
+		add_filter( $hook, $callback, 10, 2 );
 
 		$seen  = [];
 		$watch = static function ( $posts, $query ) use ( &$seen ) {
@@ -1265,8 +1336,11 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 
 		$this->flush_result_cache();
 		$this->clean_post_caches();
-		[ $miss, $stores ] = $this->count_stores( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) );
-		$hit = $this->run_grid( 'kept_only', $prepared['args'] );
+		[ $miss, $stores ] = $this->count_stores( fn() => $this->run_grid( $prepared['args'] ) );
+
+		// Read before the hit runs, because the hit primes the kept posts itself.
+		$primed = $this->cached( $this->ids( $miss ) );
+		$hit    = $this->run_grid( $prepared['args'] );
 
 		remove_filter( 'the_posts', $watch, 5 );
 		remove_filter( $hook, $callback, 10 );
@@ -1277,15 +1351,15 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		$this->assertSame( $padded, $seen[0], 'the miss fell back: the_posts saw the padded set' );
 		$this->assertSame( self::PER_PAGE, $seen[1], 'the hit still answers with the kept posts only' );
 
-		foreach ( $this->cached( $this->ids( $miss ) ) as $id => $state ) {
+		foreach ( $primed as $id => $state ) {
 			$this->assertTrue( $state['meta'] && $state['terms'], "kept post {$id} must be primed on the fallback too" );
 		}
 	}
 
 	/**
 	 * A plugin that answers posts_pre_query after Mai, and steps aside when something already
-	 * answered, must still get a kept_only miss. The Events Calendar's custom tables query does
-	 * exactly that at priority 100. kept_only answers a miss last, so it must leave theirs
+	 * answered, must still get a kept-only miss. The Events Calendar's custom tables query does
+	 * exactly that at priority 100. Kept-only answers a miss last, so it must leave theirs
 	 * standing, store it, and let Mai_Grid filter it. Their answer here is the padded window in
 	 * reverse, so a grid that used Mai's own IDs instead would show different posts.
 	 */
@@ -1308,9 +1382,9 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		add_filter( 'posts_pre_query', $theirs, 100, 2 );
 
 		$this->flush_result_cache();
-		[ $result, $stores ] = $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( 'kept_only', $prepared['args'] ) ) );
+		[ $result, $stores ] = $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( $prepared['args'] ) ) );
 		[ $miss, $sql ]      = $result;
-		$hit = $this->run_grid( 'kept_only', $prepared['args'] );
+		$hit = $this->run_grid( $prepared['args'] );
 
 		remove_filter( 'posts_pre_query', $theirs, 100 );
 
@@ -1332,8 +1406,7 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 	 * grid's miss stores that trimmed list as the shared padded entry. The next article then
 	 * drops its own post from a list that has no spare and shows one short.
 	 */
-	#[DataProvider( 'strategies' )]
-	public function test_a_plugin_answering_with_a_copy_of_the_query_leaves_the_entry_padded( string $strategy ): void {
+	public function test_a_plugin_answering_with_a_copy_of_the_query_leaves_the_entry_padded(): void {
 		$args    = $this->grid_args();
 		$running = false;
 
@@ -1370,14 +1443,14 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		$this->flush_result_cache();
 
 		$this->go_to( get_permalink( $this->post_ids[0] ) );
-		$first = $this->ids( $this->run_grid( $strategy, $args ) );
+		$first = $this->ids( $this->run_grid( $args ) );
 
 		remove_filter( 'posts_pre_query', $capture, 9 );
 
 		$stored = mai_cache( 'grid' )->read_swr( $key, mai_cache( 'grid' )->version( [ 'post' ] ) );
 
 		$this->go_to( get_permalink( $this->post_ids[1] ) );
-		$second = $this->ids( $this->run_grid( $strategy, $args ) );
+		$second = $this->ids( $this->run_grid( $args ) );
 
 		remove_filter( 'posts_pre_query', $theirs, 100 );
 
@@ -1399,14 +1472,14 @@ final class GridLoadStrategyTest extends MaiIntegrationTestCase {
 		$window   = array_slice( $this->post_ids, 0, self::PER_PAGE + count( $prepared['excluded'] ) );
 
 		$this->flush_result_cache();
-		$baseline = $this->ids( $this->run_grid( 'kept_only', $prepared['args'] ) );
+		$baseline = $this->ids( $this->run_grid( $prepared['args'] ) );
 
 		$replace = static function ( $posts, $query ) use ( $window ) {
 			return ( null !== $posts && ! empty( $query->query_vars['mai_cache'] ) ) ? array_map( 'get_post', $window ) : $posts;
 		};
 
 		add_filter( 'posts_pre_query', $replace, 20, 2 );
-		$hit = $this->run_grid( 'kept_only', $prepared['args'] );
+		$hit = $this->run_grid( $prepared['args'] );
 		remove_filter( 'posts_pre_query', $replace, 20 );
 
 		$this->assertSame( $baseline, $this->ids( $hit ) );

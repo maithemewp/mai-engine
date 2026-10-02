@@ -259,20 +259,9 @@ class Mai_Grid {
 					$effective = $this->effective_excludes( $this->query_args );
 					$defer     = $this->can_defer_excludes( $this->query_args, $effective );
 					$asked     = $this->query_args;
-					$strategy  = '';
-					$overrides = [];
 					$keep      = null;
 
 					if ( $defer ) {
-						// TEMPORARY: benchmark switch, remove before merge.
-						// How a deferring grid loads its posts, so all three can be timed in one
-						// code tree. 'current' loads and primes the whole padded set, then drops
-						// the excludes. 'prime_late' still loads the padded set, but primes meta
-						// and terms for the kept posts only. 'kept_only' loads only the posts
-						// the grid shows.
-						$strategy = apply_filters( 'mai_grid_load_strategy', 'kept_only', $this->query_args, $this->args );
-						$strategy = in_array( $strategy, [ 'current', 'prime_late', 'kept_only' ], true ) ? $strategy : 'kept_only';
-
 						// Keep the per-view ids out of the SQL so every page sharing this
 						// grid's filters shares one cache entry, and ask for enough extra
 						// rows that the grid still fills once they are dropped.
@@ -280,35 +269,19 @@ class Mai_Grid {
 						$this->query_args['posts_per_page']    = $asked['posts_per_page'] + count( $effective );
 						$this->query_args['mai_grid_tiebreak'] = true;
 
-						if ( 'prime_late' === $strategy ) {
-							// Core primes meta and terms inside get_posts() for every row the
-							// padded LIMIT returns. Switch that off here and prime the kept
-							// posts once the excludes are dropped. lazy_load_term_meta goes
-							// off too, because core turns term priming back on when it is set.
-							$overrides = [
-								'update_post_meta_cache' => false,
-								'update_post_term_cache' => false,
-								'lazy_load_term_meta'    => false,
-							];
-						}
+						// Mai_Query_Cache reads this in posts_pre_query and answers with only
+						// the posts that will be shown, so the rest are never loaded.
+						$keep = [
+							'exclude'       => $effective,
+							'count'         => $asked['posts_per_page'],
+							'cache_results' => $this->get_query_cache_flags( $asked )['cache_results'],
+						];
 
-						if ( 'kept_only' === $strategy ) {
-							// Mai_Query_Cache reads this in posts_pre_query and answers with
-							// only the posts that will be shown, so the rest are never loaded.
-							$keep = [
-								'exclude'       => $effective,
-								'count'         => $asked['posts_per_page'],
-								'cache_results' => $this->get_query_cache_flags( $asked )['cache_results'],
-							];
-
-							// Core would store that kept answer under the padded query's key,
-							// where a later full run of this grid would read it back short. The
-							// IDs come from an ID-only copy of this query, which uses core's
-							// cache as asked, carried above (Mai_Query_Cache::fetch_ids()).
-							$overrides = [ 'cache_results' => false ];
-						}
-
-						$this->query_args = array_merge( $this->query_args, $overrides );
+						// Core would store that kept answer under the padded query's key,
+						// where a later full run of this grid would read it back short. The
+						// IDs come from an ID-only copy of this query, which uses core's
+						// cache as asked, carried above (Mai_Query_Cache::fetch_ids()).
+						$this->query_args['cache_results'] = false;
 
 						add_filter( 'posts_orderby', [ $this, 'add_deferred_orderby_tiebreaker' ], 99, 2 );
 					}
@@ -379,9 +352,7 @@ class Mai_Grid {
 						$query->posts      = $kept;
 						$query->post_count = count( $query->posts );
 
-						if ( 'current' !== $strategy ) {
-							$this->prime_shown_posts( $query, $asked );
-						}
+						$this->prime_shown_posts( $query, $asked );
 
 						// Put the query back the way it was asked for, before anything reads
 						// it. Mai Load More and any custom pagination serialize these and
@@ -392,19 +363,15 @@ class Mai_Grid {
 						$query->query['posts_per_page']      = $asked['posts_per_page'];
 						$query->query['post__not_in']        = $asked['post__not_in'];
 
-						// Same for any cache flag the strategy switched off. query_vars gets the
-						// value core would have filled in for the asked args, and the raw args
-						// copy gets the key back only if it was asked for.
-						$flags = $this->get_query_cache_flags( $asked );
+						// Same for cache_results, switched off above. query_vars gets the value
+						// core would have filled in for the asked args, and the raw args copy
+						// gets the key back only if it was asked for.
+						$query->query_vars['cache_results'] = $keep['cache_results'];
 
-						foreach ( array_keys( $overrides ) as $var ) {
-							$query->query_vars[ $var ] = $flags[ $var ];
-
-							if ( array_key_exists( $var, $asked ) ) {
-								$query->query[ $var ] = $asked[ $var ];
-							} else {
-								unset( $query->query[ $var ] );
-							}
+						if ( array_key_exists( 'cache_results', $asked ) ) {
+							$query->query['cache_results'] = $asked['cache_results'];
+						} else {
+							unset( $query->query['cache_results'] );
 						}
 
 						unset(
@@ -425,9 +392,8 @@ class Mai_Grid {
 					}
 
 					// Cache featured images. After the filter, so only the posts that will be
-					// shown prime their thumbnails. Meta and terms are primed above for the
-					// 'prime_late' and 'kept_only' strategies. Under 'current', core has already
-					// primed them for the whole padded set inside WP_Query::get_posts().
+					// shown prime their thumbnails. Meta and terms are already primed, above
+					// for a grid that defers, and while the query ran for any other.
 					if ( in_array( 'image', $this->args['show'] ) ) {
 						update_post_thumbnail_cache( $query );
 					}
@@ -1003,14 +969,14 @@ class Mai_Grid {
 	/**
 	 * Primes meta and terms for the posts a deferring grid will show, as its own args asked.
 	 *
-	 * 'prime_late' switched priming off for the padded query, so this is where the kept posts
-	 * get it. 'kept_only' already primed them in posts_pre_query, so for those this is only
-	 * cache reads. It still matters there for a post a the_posts callback added, and for the
-	 * fallback where Mai_Query_Cache could not answer and core ran the grid's query itself.
-	 * Core primes the padded rows there when it splits the query, which it does for an
-	 * unfiltered statement. A statement it does not split, a rewritten one for example, gets
-	 * no priming from core, because the priming core does after the_posts checks cache_results,
-	 * and 'kept_only' switched that off.
+	 * When Mai_Query_Cache answered with only the kept posts, it already primed them, so this is
+	 * only cache reads. It still matters for a post a the_posts callback added, and for the
+	 * fallback, where Mai_Query_Cache could not answer that way and core or another
+	 * posts_pre_query callback answered the grid's query instead. Core primes the padded rows
+	 * there when it splits the query, which it does for an unfiltered statement. It does not
+	 * prime a statement it does not split, a rewritten one for example, or another callback's
+	 * answer, because the priming core does after the_posts checks cache_results, and
+	 * get_query() switched that off.
 	 *
 	 * @since 2.41.0
 	 *
@@ -1042,8 +1008,9 @@ class Mai_Grid {
 
 		_prime_post_caches( $ids, (bool) $flags['update_post_term_cache'], (bool) $flags['update_post_meta_cache'] );
 
-		// Core queues term meta while it builds the posts, reading only terms already cached, so
-		// the kept posts' terms missed that queue under 'prime_late'. Queueing twice is harmless.
+		// Core queues term meta while it builds the posts, reading only terms already cached. On
+		// a fallback core did not prime, the kept posts' terms missed that queue. Queueing twice
+		// is harmless.
 		if ( $flags['lazy_load_term_meta'] ) {
 			wp_queue_posts_for_term_meta_lazyload( $query->posts );
 		}

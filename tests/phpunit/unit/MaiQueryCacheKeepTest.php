@@ -8,7 +8,7 @@ use Mai_Query_Cache;
 /**
  * The kept-only path in Mai_Query_Cache: reading the grid's request, deciding when to answer,
  * and loading only the posts the grid keeps. The ID-only query itself needs WordPress, so the
- * integration suite covers it (GridLoadStrategyTest).
+ * integration suite covers it (GridKeptOnlyTest).
  */
 final class MaiQueryCacheKeepTest extends TestCase {
 	private const SQL = "SELECT   wp_posts.*

@@ -350,8 +350,8 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 	 * priority 9 sees the key the cache is about to use.
 	 *
 	 * Whether the view ran the grid's SELECT is counted off the statements themselves, not off
-	 * what posts_pre_query handed back. The kept_only strategy answers posts_pre_query on a miss
-	 * too, after running an ID-only SELECT of its own, so a non-null answer no longer proves a
+	 * what posts_pre_query handed back. Kept-only answers posts_pre_query on a miss too, after
+	 * running an ID-only SELECT of its own, so a non-null answer no longer proves a
 	 * hit. The grid's statement is the only one against the posts table carrying a LIMIT: the
 	 * priming reads select by ID IN (...) with none.
 	 *

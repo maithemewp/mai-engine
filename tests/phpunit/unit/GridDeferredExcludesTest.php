@@ -301,7 +301,7 @@ final class GridDeferredExcludesTest extends TestCase {
 
 	public function test_does_not_defer_when_the_store_cannot_cache(): void {
 		// SCRIPT_DEBUG, or the mai_can_cache filter. Nothing would ever be stored, so there is
-		// no shared entry to gain, and kept_only would switch off core's query cache for nothing.
+		// no shared entry to gain, and deferring would switch off core's query cache for nothing.
 		Functions\when( 'apply_filters' )->alias( fn( $tag, $value ) => $value );
 		$this->stub_store( false );
 
