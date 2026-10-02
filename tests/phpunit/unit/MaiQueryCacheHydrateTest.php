@@ -95,6 +95,29 @@ final class MaiQueryCacheHydrateTest extends TestCase {
 		);
 	}
 
+	/**
+	 * set_post_type() only cleans the post cache, it fires no status transition, so a cached
+	 * list can still hold a post that has since become a page.
+	 */
+	public function test_hydrate_drops_wrong_post_type(): void {
+		Functions\when( 'get_post' )->alias(
+			function ( $id ) {
+				$types = [ 1 => 'post', 2 => 'page', 3 => 'post' ];
+
+				return (object) [ 'ID' => $id, 'post_status' => 'publish', 'post_type' => $types[ $id ] ];
+			}
+		);
+
+		$cache = new Mai_Query_Cache();
+
+		$this->assertSame( [ 1, 3 ], $this->ids( $cache->hydrate( [ 1, 2, 3 ], [ 'post_type' => 'post' ] ) ), 'a string post_type' );
+		$this->assertSame( [ 1, 3 ], $this->ids( $cache->hydrate( [ 1, 2, 3 ], [ 'post_type' => [ 'post' ] ] ) ), 'an array post_type' );
+		$this->assertSame( [ 1, 2, 3 ], $this->ids( $cache->hydrate( [ 1, 2, 3 ], [ 'post_type' => [ 'post', 'page' ] ] ) ), 'both types asked for' );
+		$this->assertSame( [ 1, 2, 3 ], $this->ids( $cache->hydrate( [ 1, 2, 3 ], [ 'post_type' => 'any' ] ) ), "'any' keeps every type" );
+		$this->assertSame( [ 1, 2, 3 ], $this->ids( $cache->hydrate( [ 1, 2, 3 ], [ 'post_type' => '' ] ) ), 'an empty post_type keeps every type' );
+		$this->assertSame( [ 1, 2, 3 ], $this->ids( $cache->hydrate( [ 1, 2, 3 ], [] ) ), 'no post_type keeps every type' );
+	}
+
 	public function test_empty_ids_returns_empty(): void {
 		$this->assertSame( [], ( new Mai_Query_Cache() )->hydrate( [], [ 'post_status' => 'publish' ] ) );
 	}

@@ -689,12 +689,16 @@ class Mai_Query_Cache {
 	 * grid can only shrink, never expose content that is no longer public. Hard-deleted ids
 	 * resolve to null via get_post and fall out the same array_filter.
 	 *
+	 * A post whose type is no longer one the query asks for is dropped too. Changing a post's
+	 * type with set_post_type() fires no status transition, so it does not rotate any token.
+	 *
 	 * Meta and terms are primed only when the query asks for them, as core does on its own
 	 * cache hits. WP_Query fills both flags in before posts_pre_query, so the true defaults here
 	 * only apply to a direct caller that leaves them out.
 	 *
 	 * @param int[] $ids        Ordered post IDs.
-	 * @param array $query_vars The query vars, for the post_status guard and the cache flags.
+	 * @param array $query_vars The query vars, for the post_status and post_type guards and the
+	 *                          cache flags.
 	 *
 	 * @return WP_Post[]
 	 */
@@ -709,19 +713,41 @@ class Mai_Query_Cache {
 			(bool) ( $query_vars['update_post_meta_cache'] ?? true )
 		);
 
-		$posts   = array_filter( array_map( 'get_post', $ids ) );
-		$allowed = $this->allowed_statuses( $query_vars );
+		$posts    = array_filter( array_map( 'get_post', $ids ) );
+		$statuses = $this->allowed_statuses( $query_vars );
+		$types    = $this->allowed_types( $query_vars );
 
-		if ( $allowed ) {
+		if ( $statuses || $types ) {
 			$posts = array_filter(
 				$posts,
-				static function ( $post ) use ( $allowed ) {
-					return in_array( $post->post_status, $allowed, true );
+				static function ( $post ) use ( $statuses, $types ) {
+					return ( ! $statuses || in_array( $post->post_status, $statuses, true ) )
+						&& ( ! $types || in_array( $post->post_type, $types, true ) );
 				}
 			);
 		}
 
 		return array_values( $posts );
+	}
+
+	/**
+	 * The post types a hit may return, taken from the query's post_type.
+	 *
+	 * An empty post_type or 'any' means do not filter. Mai_Grid always sets post_type, so real
+	 * grids are always guarded.
+	 *
+	 * @param array $query_vars The query vars.
+	 *
+	 * @return string[] Allowed post types, or [] to skip the guard.
+	 */
+	private function allowed_types( array $query_vars ): array {
+		$types = array_filter( (array) ( $query_vars['post_type'] ?? '' ) );
+
+		if ( ! $types || in_array( 'any', $types, true ) ) {
+			return [];
+		}
+
+		return $types;
 	}
 
 	/**
