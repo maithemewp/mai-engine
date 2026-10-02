@@ -746,6 +746,26 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 		$this->assertSame( $warm['ids'], $this->stored( $warm['key'] )['value']['ids'], 'repaired' );
 	}
 
+	/**
+	 * Nothing stores an object today. If one were stored, reading its marker as an array key
+	 * would throw inside posts_pre_query. It is rebuilt during the page instead, never queued.
+	 */
+	public function test_object_value_is_not_queued_and_does_not_throw(): void {
+		$warm = $this->warm( 'current' );
+
+		$this->overwrite( $warm['key'], (object) [ 'ids' => $warm['ids'], 'found' => count( $warm['ids'] ), 'by' => 'ids' ] );
+		$this->age();
+		$this->new_request( 'current' );
+
+		$this->assertSame( 'age', $this->stored( $warm['key'] )['stale'] );
+		$this->assertIsObject( $this->stored( $warm['key'] )['value'], 'the value really is an object' );
+
+		$grid = $this->render( 'current' );
+
+		$this->assert_rebuilt_during_page( $grid );
+		$this->assertSame( array_slice( $this->post_ids, 1, self::PER_PAGE ), $this->ids( $grid['query'] ) );
+	}
+
 	// ---- One decision per key ----
 
 	/**

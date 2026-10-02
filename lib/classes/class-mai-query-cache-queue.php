@@ -8,8 +8,10 @@ declare(strict_types=1);
  * jobs waiting to run after it, and the keys already rebuilt during it. It also decides
  * whether this request can finish its response early, and finishes it.
  *
- * Everything that touches the real request goes through a seam (a callable passed to the
- * constructor), so tests never call fastcgi_finish_request() or define DONOTCACHEPAGE.
+ * Four things are seams, each a callable passed to the constructor: whether the server can
+ * finish the response early, finishing it, asking page caches not to keep the page, and whether
+ * this is a page view. Tests replace them, so they never call fastcgi_finish_request() or
+ * define DONOTCACHEPAGE. ignore_user_abort() and session_write_close() are called directly.
  *
  * @package BizBudding\MaiEngine
  */

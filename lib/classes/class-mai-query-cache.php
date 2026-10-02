@@ -34,9 +34,10 @@ class Mai_Query_Cache {
 
 	/**
 	 * Single-flight lock TTL (seconds), filterable via `mai_query_cache_lock_ttl`. The lock is
-	 * released by TTL expiry only (there is no explicit unlock); once a fill stores, later requests
-	 * read the now-fresh value and never consult the lock. Short so a winner that dies mid-recompute
-	 * releases quickly and the next request becomes the new winner.
+	 * released explicitly only after a declined or failed rebuild after the page, while the job
+	 * still holds it. Otherwise it expires. Once a fill stores, later requests read the now-fresh
+	 * value and never consult the lock. Short so a winner that dies mid-recompute releases quickly
+	 * and the next request becomes the new winner.
 	 */
 	private const LOCK_TTL = 5;
 
@@ -755,6 +756,7 @@ class Mai_Query_Cache {
 	private function can_rebuild_after_page( array $hit, ?array $keep ): bool {
 		return 'age' === $hit['stale']
 			&& null !== $keep
+			&& is_array( $hit['value'] )
 			&& 'ids' === ( $hit['value']['by'] ?? null )
 			&& ! $this->queue->closed()
 			&& $this->queue->can_finish_early()
