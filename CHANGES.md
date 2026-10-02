@@ -5,6 +5,7 @@
 * Changed: [Developers] Site logo and scroll logo images are now named through `wp_get_attachment_image_context` as `mai_logo` and `mai_scroll_logo`, so other code can tell them apart from anything else using the same `custom-logo` class.
 * Changed: Update ACF Pro to 6.8.7.
 * Changed: Update Plugin Update Checker to 5.7.
+* Changed: Update mai-cache to 0.5.0.
 * Changed: Removed unused image code that was disabled long ago.
 * Changed: [Performance] Term Grids now cache their featured images in a single pass.
 * Changed: [Performance] Related-posts grids now reuse the terms WordPress has already loaded for the current post.
@@ -22,6 +23,12 @@
 * Changed: [Developers] Cleaned up duplicate and empty entries in the default config.
 * Changed: Post grids using "Exclude current" or "Exclude displayed" no longer put those post IDs into the query. The grid asks for one extra entry for every entry it will drop, then drops them while rendering. With "Exclude current" that is a single extra entry. With "Exclude displayed" it is one for every entry already shown above it on the page, which can be a lot more. Caching improves either way. A grid pinned to fixed categories or tags is now one cached result shared by every page that runs it. A related-posts grid takes its categories and tags from the article being viewed, so it collapses to one cached result per set of them instead of one per article: on a site with 145,646 articles that came to 1,358 cached results. "Exclude displayed" lands somewhere above that, because the number of entries it asks for depends on how many appeared above it. Unchanged: grids with an offset, grids that count total results (Mai Load More), grids set to "Choice", grids set to a random order, grids set to show all entries, grids asking for 500 entries or more once the extras are counted, term grids, and grids handled by ElasticPress or FacetWP. Filterable with `mai_post_grid_defer_excludes`.
 * Changed: Post grids using "Exclude current" or "Exclude displayed" now break ties in their sort order by entry ID. When many entries share the same sort value, such as views, trending or comment count, the database could return a different set of them on each page load. Every other grid is unchanged, including one sorted by views or trending that does not use those two exclude settings.
+* Changed: [Performance] Post grids using "Exclude current" or "Exclude displayed" now load only the entries they show, instead of every entry they asked for to cover the excluded ones.
+* Changed: [Performance] A cached grid using "Exclude current" or "Exclude displayed" that is older than 4 hours is now shown as it is and refreshed after the page is sent, if no post of its post type has been saved since. This needs a PHP-FPM or LiteSpeed host. After a post is saved, the next visit still refreshes the grid before the page is sent.
+* Changed: [Performance] On PHP-FPM and LiteSpeed hosts without a persistent object cache, new grid results are now saved after the page is sent.
+* Changed: [Developers] Cached grid results are refreshed after 4 hours (`mai_query_cache_ttl`) and kept for up to 24 hours (`mai_query_cache_hard_ttl`). The new `mai_query_cache_hard_ttl` filter receives the query vars as its second argument, like `mai_query_cache_ttl`.
+* Changed: [Developers] New `mai_query_cache_after_page` filter to turn off refreshing grids after the page is sent, and `mai_query_cache_after_page_ms` to set how long that work may run, in milliseconds. The default is 1000.
+* Changed: On sites with a persistent object cache, a page is not saved by page cache plugins that honour `DONOTCACHEPAGE` when it was built while another visitor was refreshing one of its grids after a post save. That page shows the old list.
 * Changed: [Developers] `mai_get_columns_atts()` accepts a new `fit_basis` argument, and `mai_columns_get_flex()` a matching third parameter, so a block that knows its content width can give Fit columns a real width instead of one taken from their contents.
 * Changed: [Developers] Column layouts take their display from a new `--columns-display` custom property, defaulting to `flex`. A block can switch its columns to another layout, such as Mai Gallery's masonry, without fighting Mai's CSS.
 * Fixed: [Developers] `mai_get_option()` and `mai_get_options()` no longer return stale values after the Mai option is saved in the same request, whether by `mai_update_option()`, the Customizer or `update_option()`. The new `mai_reset_options_cache()` empties both caches by hand.
@@ -47,6 +54,11 @@
 * Fixed: A PHP 8.5 deprecation notice, and a stray character added to the Easy Digital Downloads stylesheet.
 * Fixed: The Cover block's `sizes` attribute used a hard-coded 600px breakpoint rather than the theme's configured breakpoint, so themes with a custom breakpoint could get a mismatched value.
 * Fixed: PHP warnings and a bad srcset calculation when an attachment's file could not be resolved but its metadata still existed.
+* Fixed: Saving a private post now refreshes cached grids that show private posts.
+* Fixed: Grids whose query uses `LIKE` got a new cache entry on every view, so they were never served from the cache.
+* Fixed: A grid whose query failed could cache an empty list. Nothing is stored now. On sites with a persistent object cache, WordPress's own cached query results are also reset, so it does not keep serving the failed empty list.
+* Fixed: Changing a post's type left it in cached grids for the old type.
+* Fixed: Old cached grid rows are now deleted from the database when the cache is flushed, on sites without a persistent object cache. The match is exact, so no other option is touched.
 
 * Fixed: In the editor, items in Mai column layouts had their margins removed, so they could be spaced differently than on the front end. Only the wrappers of nested blocks are reset now.
 * Fixed: On the login page, "Remember Me" wrapped onto two lines once WordPress 7.1 added a help icon beside it. The row now keeps to one line.
