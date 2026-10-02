@@ -34,6 +34,9 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 	/** Stands in for Mai Publisher's views count, which is not in this suite. */
 	private const VIEWS = 'mai_test_views';
 
+	/** The one test that runs with a persistent object cache. See set_up(). */
+	private const OBJECT_CACHE_TEST = 'test_decline_releases_the_lock';
+
 	/** @var int[] Posts in the category, newest first. */
 	private array $post_ids = [];
 
@@ -52,7 +55,18 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 
 	private string $method = 'GET';
 
+	/** The wp_using_ext_object_cache() value before the test, when this test changed it. */
+	private ?bool $object_cache_was = null;
+
 	public function set_up(): void {
+		// Before anything reads the cache, the posts made below included, so every token is
+		// read from and written to the object cache.
+		if ( self::OBJECT_CACHE_TEST === $this->name() ) {
+			$this->object_cache_was = (bool) wp_using_ext_object_cache( true );
+
+			Cache::reset_runtime();
+		}
+
 		parent::set_up();
 
 		$this->method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
@@ -100,6 +114,15 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 		$_SERVER['REQUEST_METHOD'] = $this->method;
 
 		parent::tear_down();
+
+		if ( null !== $this->object_cache_was ) {
+			wp_using_ext_object_cache( $this->object_cache_was );
+
+			// The tokens this test read came from the object cache, which is gone now.
+			Cache::reset_runtime();
+
+			$this->object_cache_was = null;
+		}
 	}
 
 	/** The kept-only grid shapes the no-drift rule is checked on. */
@@ -344,6 +367,104 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 		$this->assertSame( 1, $grid['selects'], 'one grid query during the page' );
 		$this->assertSame( [], $this->queue->jobs(), 'nothing queued' );
 		$this->assertTrue( $this->queue->was_rebuilt( $grid['key'] ) );
+	}
+
+	/**
+	 * Starts a new pretend request on the page already visited, keeping the object cache, as a
+	 * persistent object cache shared between requests would. go_to() would empty it. The last
+	 * request's locks have run out by now, and core's query cache is emptied so grid
+	 * statements still run.
+	 */
+	private function next_request_same_cache(): void {
+		$this->install_queue();
+
+		wp_cache_flush_group( 'mai_cache_lock' );
+		wp_cache_flush_group( 'post-queries' );
+	}
+
+	/**
+	 * Changes a deferring grid's SQL from now on, so the job's copy gets a different key and
+	 * declines. Returns the callback, for remove_filter().
+	 */
+	private function decline_at_shutdown(): \Closure {
+		$change = static fn( $sql, $query ) => empty( $query->query_vars['mai_grid_tiebreak'] ) ? $sql : str_replace( 'WHERE 1=1', 'WHERE 1=1 AND 2=2', $sql );
+
+		add_filter( 'posts_request', $change, 10, 2 );
+
+		return $change;
+	}
+
+	/**
+	 * Whether a query is a job's ID-only copy of one shape's grid: current, or views, which is
+	 * the only one sorted by a meta key.
+	 */
+	private static function is_copy_of( WP_Query $query, string $shape ): bool {
+		return 'ids' === ( $query->query_vars['fields'] ?? '' )
+			&& ! empty( $query->query_vars['mai_grid_tiebreak'] )
+			&& ( 'views' === $shape ) === ! empty( $query->query_vars['meta_key'] );
+	}
+
+	/**
+	 * Warms a current grid, then a views grid one second later, so the current grid's job runs
+	 * first. Then a new request after both aged out queues a job for each.
+	 *
+	 * @return array{0:string,1:string} The current and views keys.
+	 */
+	private function queue_two_jobs(): array {
+		$current = $this->warm( 'current' );
+
+		++$this->now;
+
+		$views = $this->warm( 'views' );
+
+		$this->age();
+		$this->new_request( 'current' );
+		$this->render( 'current' );
+		$this->render( 'views' );
+
+		$this->assertSame( [ $current['key'], $views['key'] ], array_column( $this->queue->jobs(), 'key' ), 'the current grid first' );
+
+		return [ $current['key'], $views['key'] ];
+	}
+
+	/**
+	 * Runs the callback with error_log() writing to a temporary file instead of the real log.
+	 *
+	 * @return array{0:mixed,1:string} What the callback returned, and what was logged.
+	 */
+	private function capture_error_log( callable $callback ): array {
+		$file = (string) tempnam( sys_get_temp_dir(), 'mai-test-log-' );
+		$was  = ini_set( 'error_log', $file );
+
+		try {
+			$result = $callback();
+		} finally {
+			ini_set( 'error_log', (string) $was );
+		}
+
+		$log = (string) file_get_contents( $file );
+
+		unlink( $file );
+
+		return [ $result, $log ];
+	}
+
+	/**
+	 * Installs a queue whose time after the page always reads the same, so a budget check can
+	 * be tested at its exact edge.
+	 */
+	private function install_queue_with_elapsed( float $elapsed ): void {
+		$this->queue = new class( $elapsed ) extends Mai_Query_Cache_Queue {
+			public function __construct( private float $fixed ) {
+				parent::__construct( static fn() => true, static function () {}, static function () {} );
+			}
+
+			public function elapsed_ms(): float {
+				return $this->fixed;
+			}
+		};
+
+		Mai_Query_Cache::instance()->set_queue( $this->queue );
 	}
 
 	// ---- Queued ----
@@ -686,12 +807,7 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 
 		$this->assertTrue( $this->queue->has_job( $warm['key'] ) );
 
-		add_filter(
-			'posts_request',
-			static fn( $sql, $query ) => empty( $query->query_vars['mai_grid_tiebreak'] ) ? $sql : str_replace( 'WHERE 1=1', 'WHERE 1=1 AND 2=2', $sql ),
-			10,
-			2
-		);
+		$this->decline_at_shutdown();
 
 		$stores  = 0;
 		$counter = static function ( $transient, $value ) use ( &$stores ) {
@@ -707,6 +823,141 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 		$this->assertSame( 1, $selects, 'the job ran its query' );
 		$this->assertSame( 0, $stores, 'nothing stored' );
 		$this->assertFalse( $this->envelope( $warm['key'] ), 'the entry is deleted' );
+	}
+
+	/**
+	 * After a decline the lock is released, so the next visitor can take it and rebuild at
+	 * once. Runs with a persistent object cache (see set_up()), where the lock is shared.
+	 * Without the release, the next visitor would lose the lock and wait for a rebuild nobody
+	 * is running.
+	 */
+	public function test_decline_releases_the_lock(): void {
+		$this->assertTrue( wp_using_ext_object_cache() );
+
+		// go_to() empties the object cache, so this test stays on one page throughout.
+		$this->visit( 'current' );
+
+		$key = $this->render( 'current' )['key'];
+
+		$this->assertTrue( $this->stored( $key )['fresh'] ?? false, 'stored during the page, as with any object cache' );
+
+		$this->age();
+		$this->next_request_same_cache();
+		$this->render( 'current' );
+
+		$this->assertTrue( $this->queue->has_job( $key ) );
+
+		$change = $this->decline_at_shutdown();
+
+		$this->run_queue();
+
+		remove_filter( 'posts_request', $change, 10 );
+
+		$this->assertFalse( $this->envelope( $key ), 'the entry is deleted' );
+		$this->assertTrue( mai_cache( 'grid' )->lock( $key, 5 ), 'the lock was released' );
+
+		mai_cache( 'grid' )->unlock( $key );
+
+		// The next visitor, while the job's lock would still be held had it not been released.
+		$waited = false;
+
+		add_filter(
+			'mai_query_cache_wait_ms',
+			static function () use ( &$waited ) {
+				$waited = true;
+
+				return 0;
+			}
+		);
+
+		$this->install_queue();
+
+		wp_cache_flush_group( 'post-queries' );
+
+		$next = $this->render( 'current' );
+
+		$this->assertFalse( $next['answered'], 'a cold miss' );
+		$this->assertSame( 1, $next['selects'], 'one rebuild during the page' );
+		$this->assertFalse( $waited, 'it took the lock, rather than wait for a rebuild nobody is running' );
+		$this->assertTrue( $this->stored( $key )['fresh'] );
+	}
+
+	/**
+	 * The lock is released only while it is still ours. A lock that lasts 1 second leaves no
+	 * margin, so the job cannot be sure it still holds it, and leaves it to expire.
+	 */
+	public function test_decline_keeps_a_lock_that_may_have_expired(): void {
+		add_filter( 'mai_query_cache_lock_ttl', static fn() => 1 );
+
+		$warm = $this->warm( 'current' );
+
+		$this->age();
+		$this->new_request( 'current' );
+		$this->render( 'current' );
+		$this->decline_at_shutdown();
+		$this->run_queue();
+
+		$this->assertFalse( $this->envelope( $warm['key'] ), 'the entry is deleted' );
+		$this->assertFalse( mai_cache( 'grid' )->lock( $warm['key'], 5 ), 'the lock is left to expire' );
+	}
+
+	/**
+	 * The other kind of decline: the copy's own statement fails after the page. refuse_once()
+	 * fails it without changing its SQL.
+	 */
+	public function test_failed_copy_statement_deletes_entry_and_releases_the_lock(): void {
+		global $wpdb;
+
+		$warm = $this->warm( 'current' );
+
+		$this->age();
+		$this->new_request( 'current' );
+		$this->render( 'current' );
+
+		$is_grid_statement = static fn( $sql ) => preg_match( '/\bFROM\s+' . preg_quote( $wpdb->posts, '/' ) . '\b/', $sql ) && str_contains( $sql, 'LIMIT' );
+
+		[ $selects, $refused ] = $this->refuse_once( $is_grid_statement, fn() => $this->run_queue() );
+
+		$this->assertTrue( $refused, 'the copy\'s statement was refused' );
+		$this->assertSame( 1, $selects );
+		$this->assertFalse( $this->envelope( $warm['key'] ), 'the entry is deleted' );
+		$this->assertTrue( mai_cache( 'grid' )->lock( $warm['key'], 5 ), 'the lock was released' );
+	}
+
+	/**
+	 * A job that throws is handled like a decline, and the job after it still runs. PHP would
+	 * have logged the throw had it not been caught, so it is logged whatever WP_DEBUG_LOG says.
+	 */
+	public function test_job_that_throws_does_not_stop_the_next(): void {
+		[ $current, $views ] = $this->queue_two_jobs();
+
+		$error = new \RuntimeException( 'Test failure in the ID query' );
+
+		add_filter(
+			'posts_pre_query',
+			static function ( $posts, $query ) use ( $error ) {
+				if ( self::is_copy_of( $query, 'current' ) ) {
+					throw $error;
+				}
+
+				return $posts;
+			},
+			1,
+			2
+		);
+
+		[ $selects, $log ] = $this->capture_error_log( fn() => $this->run_queue() );
+
+		$this->assertSame( 1, $selects, 'only the second job reached the database' );
+		$this->assertFalse( $this->envelope( $current ), 'the entry is deleted' );
+		$this->assertTrue( mai_cache( 'grid' )->lock( $current, 5 ), 'the lock was released' );
+		$this->assertTrue( $this->stored( $views )['fresh'], 'the next job still ran' );
+
+		$this->assertSame( 1, substr_count( $log, 'after the page failed with' ), 'logged once' );
+		$this->assertStringContainsString( $current, $log );
+		$this->assertStringContainsString( 'RuntimeException', $log );
+		$this->assertStringContainsString( 'Test failure in the ID query', $log );
+		$this->assertStringContainsString( $error->getFile() . ':' . $error->getLine(), $log );
 	}
 
 	/** A job captured on one blog does not run on another. Works on a single site. */
@@ -803,5 +1054,61 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 		$this->assertSame( 2, $this->run_queue() );
 		$this->assertTrue( $this->stored( $current['key'] )['fresh'] );
 		$this->assertTrue( $this->stored( $views['key'] )['fresh'] );
+	}
+
+	/**
+	 * The budget is checked before each job. The first job is made slower than the budget, so
+	 * it runs and the second does not.
+	 */
+	public function test_budget_stops_partway(): void {
+		[ $current, $views ] = $this->queue_two_jobs();
+
+		$before = $this->envelope( $views );
+
+		add_filter( 'mai_query_cache_after_page_ms', static fn() => 50 );
+		add_filter(
+			'posts_pre_query',
+			static function ( $posts, $query ) {
+				if ( self::is_copy_of( $query, 'current' ) ) {
+					usleep( 120000 );
+				}
+
+				return $posts;
+			},
+			1,
+			2
+		);
+
+		$this->assertSame( 1, $this->run_queue(), 'one job ran' );
+		$this->assertTrue( $this->stored( $current )['fresh'], 'the first' );
+		$this->assertSame( $before, $this->envelope( $views ), 'the second did not' );
+	}
+
+	/**
+	 * At exactly the budget no job starts. Just under it, the job runs. The queue here always
+	 * reports the same time after the page, so the edge is hit exactly, with no real timing.
+	 */
+	public function test_budget_reached_exactly_stops_jobs(): void {
+		$warm = $this->warm( 'current' );
+
+		add_filter( 'mai_query_cache_after_page_ms', static fn() => 50 );
+
+		$this->age();
+		$this->install_queue_with_elapsed( 50.0 );
+		$this->visit( 'current' );
+		$this->render( 'current' );
+
+		$before = $this->envelope( $warm['key'] );
+
+		$this->assertTrue( $this->queue->has_job( $warm['key'] ) );
+		$this->assertSame( 0, $this->run_queue(), 'at the budget, no job starts' );
+		$this->assertSame( $before, $this->envelope( $warm['key'] ) );
+
+		$this->install_queue_with_elapsed( 49.9 );
+		$this->visit( 'current' );
+		$this->render( 'current' );
+
+		$this->assertSame( 1, $this->run_queue(), 'just under it, the job runs' );
+		$this->assertTrue( $this->stored( $warm['key'] )['fresh'] );
 	}
 }

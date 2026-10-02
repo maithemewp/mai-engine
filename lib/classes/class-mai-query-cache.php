@@ -164,6 +164,8 @@ class Mai_Query_Cache {
 	 * slow rebuild or get cut off by the time limit. The rebuilds run oldest entry first. None
 	 * starts once the time spent after the page reaches `mai_query_cache_after_page_ms`.
 	 *
+	 * A rebuild that throws is logged, and the next one still runs.
+	 *
 	 * @since TBD
 	 * @since TBD Rebuilds aged-out entries after the stores.
 	 *
@@ -189,7 +191,22 @@ class Mai_Query_Cache {
 				break;
 			}
 
-			$this->run_job( $job );
+			// One failing rebuild must not stop the rest. run_job() has already cleaned up after
+			// it. Logged whatever WP_DEBUG_LOG says, since PHP would have logged it uncaught.
+			try {
+				$this->run_job( $job );
+			} catch ( Throwable $e ) {
+				error_log(
+					sprintf(
+						'Mai Engine: rebuilding grid cache entry %s after the page failed with %s "%s" at %s:%d.',
+						(string) ( $job['key'] ?? '' ),
+						get_class( $e ),
+						$e->getMessage(),
+						$e->getFile(),
+						$e->getLine()
+					)
+				);
+			}
 		}
 	}
 
@@ -204,12 +221,12 @@ class Mai_Query_Cache {
 	 * Skips the job when:
 	 * - this is not the blog it was queued on. Its args and key belong to that blog.
 	 * - this request already rebuilt the key.
-	 * - another request holds the lock the rebuild during the page takes. The lock is never
-	 *   released. It expires after `mai_query_cache_lock_ttl` seconds.
+	 * - another request holds the lock the rebuild during the page takes. After a rebuild that
+	 *   stores, the lock is not released. It expires after `mai_query_cache_lock_ttl` seconds.
 	 *
 	 * Stores under the version read before any SQL ran, so a post saved since still leaves the
-	 * entry out of date. When the copy cannot stand in for the grid, or its statement failed,
-	 * the entry is deleted, and the next visitor rebuilds it from cold.
+	 * entry out of date. When the copy cannot stand in for the grid, its statement failed, or
+	 * anything threw, give_up() deletes the entry. A throw then carries on to run_queue().
 	 *
 	 * @since TBD
 	 *
@@ -229,24 +246,73 @@ class Mai_Query_Cache {
 			return;
 		}
 
+		// Started before the lock is taken, so the time the lock has been held is never
+		// undercounted. See give_up().
+		$start = hrtime( true );
+
 		if ( ! mai_cache( self::GROUP )->lock( $key, $this->lock_ttl() ) ) {
 			return;
 		}
 
-		$start   = hrtime( true );
-		$fetched = $this->fetch_ids( (array) $job['args'], (bool) $job['cache_results'], $key );
+		$stored = false;
 
-		if ( is_array( $fetched ) ) {
-			$this->store( $key, (string) $job['version'], $fetched + [ 'by' => 'ids' ], (int) $job['soft'], (int) $job['hard'] );
+		try {
+			$fetched = $this->fetch_ids( (array) $job['args'], (bool) $job['cache_results'], $key );
 
-			$this->log( sprintf( 'rebuilt grid cache entry %s after the page in %.1f ms.', $key, ( hrtime( true ) - $start ) / 1e6 ) );
+			if ( is_array( $fetched ) ) {
+				$this->store( $key, (string) $job['version'], $fetched + [ 'by' => 'ids' ], (int) $job['soft'], (int) $job['hard'] );
 
-			return;
+				$stored = true;
+
+				$this->log( sprintf( 'rebuilt grid cache entry %s after the page in %.1f ms.', $key, $this->ms_since( $start ) ) );
+			}
+		} finally {
+			// A decline, or a throw on its way to run_queue().
+			if ( ! $stored ) {
+				$this->give_up( $key, $start );
+			}
 		}
+	}
 
+	/**
+	 * Deletes an entry a rebuild after the page gave up on, so the next visitor rebuilds it from
+	 * cold, and releases the job's lock while it is still the job's.
+	 *
+	 * Released, the next visitor takes the lock and rebuilds straight away. Held, every visitor
+	 * until it expired would lose the lock, wait for a rebuild nobody is running, then run the
+	 * query anyway. A rebuild that stored keeps its lock until it expires, as before.
+	 *
+	 * @since TBD
+	 *
+	 * @param string $key   Cache key.
+	 * @param int    $start When the job started, from hrtime( true ), taken before the lock.
+	 *
+	 * @return void
+	 */
+	private function give_up( string $key, int $start ): void {
 		mai_cache( self::GROUP )->delete( $key );
 
-		$this->log( sprintf( 'could not rebuild grid cache entry %s after the page, so it was deleted. Took %.1f ms.', $key, ( hrtime( true ) - $start ) / 1e6 ) );
+		// The lock expires lock_ttl() seconds after it was taken. From then on it may be another
+		// request's, and releasing theirs would let a second rebuild run beside it. So release
+		// it only with at least a second to spare.
+		if ( $this->ms_since( $start ) < ( $this->lock_ttl() - 1 ) * 1000 ) {
+			mai_cache( self::GROUP )->unlock( $key );
+		}
+
+		$this->log( sprintf( 'could not rebuild grid cache entry %s after the page, so it was deleted. Took %.1f ms.', $key, $this->ms_since( $start ) ) );
+	}
+
+	/**
+	 * Milliseconds since a time from hrtime( true ).
+	 *
+	 * @since TBD
+	 *
+	 * @param int $start The earlier time, from hrtime( true ).
+	 *
+	 * @return float
+	 */
+	private function ms_since( int $start ): float {
+		return ( hrtime( true ) - $start ) / 1e6;
 	}
 
 	/**
@@ -697,10 +763,11 @@ class Mai_Query_Cache {
 	 * envelope (missing/!array `ids`) so the caller treats it as a miss and recomputes, rather than
 	 * fataling on a bad shape in posts_pre_query.
 	 *
-	 * Note on `found`: it is whatever WP_Query computed at store time. For grids built with
-	 * no_found_rows => true (the Mai_Grid default) that is the page count, not the site-wide total.
-	 * Mai_Grid does not read found_posts/max_num_pages, so this is correct for grids; a paginating
-	 * mai_cache consumer must run with no_found_rows => false to get an accurate total.
+	 * Note on `found`: it is the found_posts of the query that built the entry. With
+	 * no_found_rows => true (the Mai_Grid default) core never counts rows, so both store paths
+	 * store 0, and max_num_pages comes out 0 too. Mai_Grid reads neither, so this is correct for
+	 * grids. A paginating mai_cache consumer must run with no_found_rows => false to get an
+	 * accurate total.
 	 *
 	 * @param WP_Query   $query The query.
 	 * @param mixed      $value Stored value, expected [ 'ids' => int[], 'found' => int ].
