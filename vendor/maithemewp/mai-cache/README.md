@@ -77,9 +77,16 @@ $value = $cache->remember( 'popular_posts', fn() => …, HOUR_IN_SECONDS );
 | `delete(string $key)` | `bool` | Direct delete. |
 | `key(string $key)` | `string` | Builds the fully-prefixed transient key: prefix, storage schema, version token, optional group and its token, then your key. |
 | `group(string $area)` | `Cache` | Return a scoped instance for the given sub-group (shares the same backing store). |
-| `flush()` | `bool` | Invalidate all entries under the current prefix or group by rotating the version token. |
+| `flush()` | `bool` | Invalidate all entries under the current prefix or group by rotating the version token. Then deletes the old rows when the store can (see [Grouping and flushing](#grouping-and-flushing)). |
+| `version(array $scopes)` | `string` | Current version for one or more scopes, such as post types. Mints a token for a scope that has none. |
+| `bump(string $scope)` | `bool` | Rotate one scope's version. Entries keep their keys and read as stale. Runs even when caching is disabled. |
+| `write_swr(string $key, mixed $value, string $version, int $ttl, ?int $hard_ttl = null)` | `bool` | Store a value stamped with a version. `$ttl` is the soft lifetime and `$hard_ttl` is when the entry is removed. See [Stale-while-revalidate](#stale-while-revalidate). |
+| `read_swr(string $key, string $version)` | `?array` | `null` when cold. Otherwise `value`, `fresh`, `stale` and `written`. See [Stale-while-revalidate](#stale-while-revalidate). |
+| `lock(string $key, int $ttl = 30)` | `bool` | True for the one caller that should rebuild a stale or cold key. Atomic only with a persistent object cache. |
 | `can_cache()` | `bool` | False when SCRIPT_DEBUG is on or `{prefix}_can_cache` filter returns false. |
 | `static has_persistent_object_cache()` | `bool` | True when WordPress is using an external object cache (e.g. Redis). |
+| `static now()` | `int` | The current Unix time. Code in this package reads the time here so a test can control it. |
+| `static set_clock(?\Closure $clock)` | `void` | Replace the clock `now()` reads. Pass `null` to go back to `time()`. `reset_runtime()` also restores it. |
 
 ---
 
@@ -117,6 +124,67 @@ mai_cache( 'menus' )->remember( $location, fn() => render_menu( $location ), DAY
 mai_cache( 'menus' )->flush();   // bust every menu cache
 mai_cache( 'menus' )->delete( $location ); // bust one entry
 mai_cache()->flush();            // bust everything under this prefix
+```
+
+`flush()` rotates the token, so the old entries can no longer be read. It then deletes their rows. With the default transient store and no persistent object cache, that removes the old rows from `wp_options`, 1000 rows at a time. With a persistent object cache it does nothing, because the object cache expires its own keys.
+
+A custom store can opt in by implementing `Mai\Cache\PrefixDelete`, which has one method: `delete_prefix( string $prefix ): int`. A store without it is skipped, and its old entries age out by TTL.
+
+---
+
+## Stale-while-revalidate
+
+For content that is costly to build, serve the old copy while one request builds the new one. Each entry is stamped with a version, and `read_swr()` tells you whether the copy you got is current.
+
+```php
+use Mai\Cache\Cache;
+
+$cache   = Cache::for( 'acme' );
+$version = $cache->version( [ 'post' ] );
+$hit     = $cache->read_swr( 'archive_html', $version );
+
+if ( null === $hit || ! $hit['fresh'] ) {
+    // With a persistent object cache, lock() lets only one request rebuild
+    // and the rest keep serving the old copy. Without one, each request
+    // takes its own lock, so several may rebuild at once.
+    if ( $cache->lock( 'archive_html' ) ) {
+        $html = build_archive();
+
+        // Soft lifetime 1 hour, hard lifetime 1 day.
+        $cache->write_swr( 'archive_html', $html, $version, HOUR_IN_SECONDS, DAY_IN_SECONDS );
+    }
+}
+
+$html = $html ?? ( $hit['value'] ?? '' );
+```
+
+Call `$cache->bump( 'post' )` when a post is saved. Every entry stamped with the old version then reads as stale, but is still served until it is rebuilt.
+
+`write_swr()` takes two lifetimes:
+
+- **`$ttl` is the soft lifetime.** After it the entry is still served, but `read_swr()` reports it as stale.
+- **`$hard_ttl` is the hard lifetime.** It is the store's own expiry, and after it the entry is gone. Leave it out and it equals `$ttl`. A value below `$ttl` is raised to `$ttl`.
+- **A `$ttl` of 0 or less sets no soft deadline**, so the entry never goes stale by age.
+
+`read_swr()` returns `null` when there is nothing stored. Otherwise it returns an array:
+
+- **`value`** is the stored value.
+- **`fresh`** is `true` only when `stale` is `null`.
+- **`stale`** says why the entry is not fresh. It is `'version'` when the stored version no longer matches the one you passed, `'age'` when the version matches but the soft lifetime has passed, and `null` when neither applies. If both apply, `'version'` wins.
+- **`written`** is the Unix time the entry was written, or `null` when unknown. An entry written by 0.4.0 has no write time and no soft deadline, so `written` is `null` and it is never stale by age.
+
+To test age-based staleness without waiting, replace the clock:
+
+```php
+$now = 1_000_000;
+Cache::set_clock( function () use ( &$now ) { return $now; } );
+
+$cache->write_swr( 'key', 'value', $version, 60 );
+
+$now += 61;
+$cache->read_swr( 'key', $version )['stale']; // 'age'
+
+Cache::reset_runtime(); // puts the real clock back
 ```
 
 ---

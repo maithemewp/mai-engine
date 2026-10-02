@@ -34,6 +34,13 @@ class Cache {
 	private static array $tokens = [];
 
 	/**
+	 * Replacement clock for tests, or null to use time().
+	 *
+	 * @since 0.5.0
+	 */
+	private static ?\Closure $clock = null;
+
+	/**
 	 * Storage schema version, present in every key (from 0.4.0).
 	 *
 	 * Bumped whenever the shape of a stored value changes -- s2, s3 and so on,
@@ -45,6 +52,15 @@ class Cache {
 	 * @since 0.4.0
 	 */
 	private const SCHEMA = 's1';
+
+	/**
+	 * The only shape new_token() has produced: 12 lowercase hex characters. flush()
+	 * deletes rows by token prefix, so it deletes only when every token in the prefix
+	 * has this shape.
+	 *
+	 * @since 0.5.0
+	 */
+	private const TOKEN_PATTERN = '/^[0-9a-f]{12}$/';
 
 	private string $prefix;
 	private Store $store;
@@ -186,8 +202,9 @@ class Cache {
 	 * consumer bypassing key(), which nothing shipped does.
 	 *
 	 * @since 0.4.0
+	 * @since 0.5.0 The envelope may also carry 'w' (written time) and 's' (soft deadline).
 	 *
-	 * @return array{_v: ?string, value: mixed}|null
+	 * @return array{_v: ?string, value: mixed, w?: int, s?: int}|null
 	 */
 	private function fetch( string $key ): ?array {
 		if ( ! $this->can_cache() ) {
@@ -209,13 +226,55 @@ class Cache {
 	 * tell them apart.
 	 *
 	 * @since 0.4.0
+	 * @since 0.5.0 Added $soft_ttl.
+	 *
+	 * @param string   $key      Cache key.
+	 * @param mixed    $value    Value.
+	 * @param ?string  $version  Scope version, or null for a plain entry.
+	 * @param int      $expire   Store expiry in seconds. 0 never expires.
+	 * @param int|null $soft_ttl Soft lifetime in seconds. See envelope().
+	 *
+	 * @return bool
 	 */
-	private function put( string $key, mixed $value, ?string $version, int $expire ): bool {
+	private function put( string $key, mixed $value, ?string $version, int $expire, ?int $soft_ttl = null ): bool {
 		if ( ! $this->can_cache() ) {
 			return false;
 		}
 
-		return $this->store->write( $this->key( $key ), [ '_v' => $version, 'value' => $value ], max( 0, $expire ) );
+		return $this->store->write( $this->key( $key ), self::envelope( $value, $version, $soft_ttl ), max( 0, $expire ) );
+	}
+
+	/**
+	 * Build the envelope stored for a value.
+	 *
+	 * With $soft_ttl null the envelope has only `_v` and `value`, which is all a plain
+	 * entry needs. Any int adds `w`, the time it was written. An int above 0 also adds
+	 * `s`, the soft deadline: read_swr() reports the entry as age-stale from then on. 0
+	 * adds no `s`, so a 0 lifetime never reads as age-stale.
+	 *
+	 * @since 0.5.0
+	 *
+	 * @param mixed    $value    Value.
+	 * @param ?string  $version  Scope version, or null for a plain entry.
+	 * @param int|null $soft_ttl Soft lifetime in seconds, or null for no timestamps.
+	 *
+	 * @return array{_v: ?string, value: mixed, w?: int, s?: int}
+	 */
+	private static function envelope( mixed $value, ?string $version, ?int $soft_ttl = null ): array {
+		$envelope = [ '_v' => $version, 'value' => $value ];
+
+		if ( null === $soft_ttl ) {
+			return $envelope;
+		}
+
+		$now           = self::now();
+		$envelope['w'] = $now;
+
+		if ( $soft_ttl > 0 ) {
+			$envelope['s'] = $now + $soft_ttl;
+		}
+
+		return $envelope;
 	}
 
 	/**
@@ -232,20 +291,42 @@ class Cache {
 
 	/**
 	 * Invalidate the current scope by rotating its version token: the whole
-	 * prefix when ungrouped, or just this group when grouped. Orphaned entries
-	 * become unreachable and age out by TTL.
+	 * prefix when ungrouped, or just this group when grouped. The old entries
+	 * become unreachable, and a store that implements PrefixDelete then deletes
+	 * them, version rows included. A store without it leaves them to age out by
+	 * TTL, as before.
+	 *
+	 * The old prefix is the key prefix up to and including the token being
+	 * rotated. For a group that is "{prefix}_s1_{root token}_{group}_{old group token}_".
+	 * For the whole prefix it is "{prefix}_s1_{old root token}_", which covers
+	 * every group. Rows are deleted only when each token in that prefix is the
+	 * 12 lowercase hex characters new_token() makes. A stored token of any other
+	 * shape could stand for a broader prefix than one retired token, so cleanup is
+	 * skipped and the old rows age out by TTL. The token still rotates.
 	 *
 	 * Intentionally not gated by can_cache() -- same rationale as delete().
 	 *
 	 * @since 0.2.0
+	 * @since 0.5.0 Deletes the old token's rows from a store that implements PrefixDelete.
 	 */
 	public function flush(): bool {
 		$scope = $this->scope();
+
+		// Read the old prefix before the rotation, and only when it will be used: reading
+		// a token mints one that is missing.
+		$old_prefix = $this->store instanceof PrefixDelete ? $this->retired_prefix() : null;
+
 		$token = self::new_token();
 
 		self::$tokens[ $scope ] = $token;
 
-		return $this->store->write( $this->token_key( $scope ), $token, 0 );
+		$written = $this->store->write( $this->token_key( $scope ), $token, 0 );
+
+		if ( null !== $old_prefix ) {
+			$this->store->delete_prefix( $old_prefix );
+		}
+
+		return $written;
 	}
 
 	/**
@@ -310,26 +391,42 @@ class Cache {
 	 * SCRIPT_DEBUG) silently skipped the rotation, stale content could stay readable as fresh by
 	 * requests that can cache until the entry's TTL expired.
 	 *
+	 * The token is written in the same envelope scope_version() reads back through get(), so
+	 * the next version() call finds it instead of minting a second token over it. The write goes
+	 * through the store directly, not through put(), because put() is gated by can_cache(). The
+	 * 'w' key records when the token was written.
+	 *
 	 * @since 0.3.0
+	 * @since 0.5.0 Writes the token in an envelope, with a write time.
 	 *
 	 * @param string $scope Scope key.
 	 *
 	 * @return bool
 	 */
 	public function bump( string $scope ): bool {
-		return $this->store->write( $this->key( '__v_' . $scope ), self::new_token(), 0 );
+		return $this->store->write(
+			$this->key( '__v_' . $scope ),
+			self::envelope( self::new_token(), null, 0 ),
+			0
+		);
 	}
 
 	/**
-	 * Read a versioned value. Null when cold; otherwise the value plus whether the stored
-	 * version stamp matches the supplied current version (fresh) or not (stale).
+	 * Read a versioned value. Null when cold; otherwise the value plus how current it is.
+	 *
+	 * `stale` says why the entry is not fresh. It is 'version' when the stored version no
+	 * longer matches the supplied one, and 'age' when the version matches but the entry is
+	 * past its soft lifetime. Version wins when both apply. It is null when neither does.
+	 * `fresh` is true only when `stale` is null. An entry without a soft deadline, as 2.40
+	 * and beta.4 wrote them, is never age-stale.
 	 *
 	 * @since 0.3.0
+	 * @since 0.5.0 Adds `stale` and `written`, and age-staleness.
 	 *
 	 * @param string $key     Cache key.
 	 * @param string $version Current composite version (from version()).
 	 *
-	 * @return array{value:mixed,fresh:bool}|null
+	 * @return array{value:mixed,fresh:bool,stale:'version'|'age'|null,written:int|null}|null
 	 */
 	public function read_swr( string $key, string $version ): ?array {
 		$hit = $this->fetch( $key );
@@ -341,26 +438,43 @@ class Cache {
 			return null;
 		}
 
+		$stale = null;
+
+		if ( ! hash_equals( (string) $hit['_v'], $version ) ) {
+			$stale = 'version';
+		} elseif ( isset( $hit['s'] ) && self::now() >= (int) $hit['s'] ) {
+			$stale = 'age';
+		}
+
 		return [
-			'value' => $hit['value'],
-			'fresh' => hash_equals( (string) $hit['_v'], $version ),
+			'value'   => $hit['value'],
+			'fresh'   => null === $stale,
+			'stale'   => $stale,
+			'written' => isset( $hit['w'] ) ? (int) $hit['w'] : null,
 		];
 	}
 
 	/**
 	 * Store a value with the current version stamped into the envelope.
 	 *
-	 * @since 0.3.0
+	 * `$ttl` is the soft lifetime: after it the entry reads as age-stale, but is still
+	 * served. The store's own expiry is the hard lifetime, after which the entry is gone.
+	 * With `$hard_ttl` null the hard lifetime equals the soft one. A `$hard_ttl` below
+	 * `$ttl` is raised to it. A `$ttl` of 0 or less sets no soft deadline.
 	 *
-	 * @param string $key     Cache key.
-	 * @param mixed  $value   Value.
-	 * @param string $version Current composite version.
-	 * @param int    $ttl     TTL in seconds.
+	 * @since 0.3.0
+	 * @since 0.5.0 Added $hard_ttl, and the soft deadline.
+	 *
+	 * @param string   $key      Cache key.
+	 * @param mixed    $value    Value.
+	 * @param string   $version  Current composite version.
+	 * @param int      $ttl      Soft lifetime in seconds.
+	 * @param int|null $hard_ttl Hard lifetime in seconds. Default: same as $ttl.
 	 *
 	 * @return bool
 	 */
-	public function write_swr( string $key, mixed $value, string $version, int $ttl ): bool {
-		return $this->put( $key, $value, $version, $ttl );
+	public function write_swr( string $key, mixed $value, string $version, int $ttl, ?int $hard_ttl = null ): bool {
+		return $this->put( $key, $value, $version, max( $ttl, $hard_ttl ?? $ttl ), $ttl );
 	}
 
 	/**
@@ -441,7 +555,7 @@ class Cache {
 	}
 
 	/**
-	 * Reset memoized instances and version tokens. For tests and long-running
+	 * Reset memoized instances, version tokens and the test clock. For tests and long-running
 	 * processes (e.g. WP-CLI) that must not hold stale state across boundaries.
 	 *
 	 * @since 0.2.0
@@ -449,6 +563,29 @@ class Cache {
 	public static function reset_runtime(): void {
 		self::$instances = [];
 		self::$tokens    = [];
+		self::$clock     = null;
+	}
+
+	/**
+	 * Current time as a Unix timestamp. Code in this package that needs the
+	 * time reads it here, so a test can control it with set_clock().
+	 *
+	 * @since 0.5.0
+	 */
+	public static function now(): int {
+		return null === self::$clock ? time() : (int) ( self::$clock )();
+	}
+
+	/**
+	 * Replace the clock that now() reads. Pass null to go back to time().
+	 * For tests; reset_runtime() also restores it.
+	 *
+	 * @since 0.5.0
+	 *
+	 * @param \Closure|null $clock Returns a Unix timestamp.
+	 */
+	public static function set_clock( ?\Closure $clock ): void {
+		self::$clock = $clock;
 	}
 
 	/**
@@ -488,6 +625,35 @@ class Cache {
 	 */
 	private function token_key( string $scope ): string {
 		return $scope . '__token';
+	}
+
+	/**
+	 * The key prefix that rotating the current scope's token retires, or null when
+	 * it is not safe to delete by it.
+	 *
+	 * key() with an empty user key ends in the joining underscore, which makes it
+	 * exactly the prefix of every key under the current tokens. Its tokens are read
+	 * here the way key() reads them, through token(): the root token, and for a group
+	 * the group token. A token that is not 12 lowercase hex characters gives null.
+	 *
+	 * @since 0.5.0
+	 *
+	 * @return string|null
+	 */
+	private function retired_prefix(): ?string {
+		$tokens = [ $this->token( $this->prefix ) ];
+
+		if ( '' !== $this->group ) {
+			$tokens[] = $this->token( $this->scope() );
+		}
+
+		foreach ( $tokens as $token ) {
+			if ( 1 !== preg_match( self::TOKEN_PATTERN, $token ) ) {
+				return null;
+			}
+		}
+
+		return $this->key( '' );
 	}
 
 	/**

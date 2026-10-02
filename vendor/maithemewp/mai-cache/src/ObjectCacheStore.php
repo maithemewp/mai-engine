@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 0.2.0
  */
-class ObjectCacheStore implements Store {
+class ObjectCacheStore implements Store, PrefixDelete {
 	private const GROUP = 'mai_cache';
 
 	public function read( string $key ): mixed {
@@ -36,5 +36,19 @@ class ObjectCacheStore implements Store {
 
 	public function available(): bool {
 		return (bool) wp_using_ext_object_cache();
+	}
+
+	/**
+	 * Does nothing and returns 0. The object cache expires its own keys, so a flush
+	 * leaves nothing here to clean up.
+	 *
+	 * @since 0.5.0
+	 *
+	 * @param string $prefix Key prefix. Unused.
+	 *
+	 * @return int Always 0.
+	 */
+	public function delete_prefix( string $prefix ): int {
+		return 0;
 	}
 }
