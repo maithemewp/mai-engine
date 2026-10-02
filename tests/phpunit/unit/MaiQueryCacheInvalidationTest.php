@@ -77,6 +77,23 @@ final class MaiQueryCacheInvalidationTest extends TestCase {
 		$this->assertSame( [ 'post' ], $c->bumped );
 	}
 
+	/**
+	 * Editors' grids show private posts, so a private post changing is a grid change too.
+	 */
+	public function test_private_transition_rotates(): void {
+		$c = $this->spy();
+		$this->transition( $c, 'private', 'private', [ 'ID' => 1, 'post_type' => 'post' ] );
+		$this->transition( $c, 'private', 'draft', [ 'ID' => 2, 'post_type' => 'page' ] );
+		$this->transition( $c, 'trash', 'private', [ 'ID' => 3, 'post_type' => 'post' ] );
+		$this->assertSame( [ 'post', 'page', 'post' ], $c->bumped );
+	}
+
+	public function test_transition_private_revision_does_not_bump(): void {
+		$c = $this->spy();
+		$this->transition( $c, 'private', 'private', [ 'ID' => 1, 'post_type' => 'post' ], true );
+		$this->assertSame( [], $c->bumped );
+	}
+
 	// ---- on_delete: rotate only on hard delete of a published, non-revision post ----
 
 	private function delete( object $cache, $post ): void {
@@ -105,6 +122,12 @@ final class MaiQueryCacheInvalidationTest extends TestCase {
 	public function test_delete_published_bumps(): void {
 		$c = $this->spy();
 		$this->delete( $c, (object) [ 'post_status' => 'publish', 'post_type' => 'post' ] );
+		$this->assertSame( [ 'post' ], $c->bumped );
+	}
+
+	public function test_delete_private_rotates(): void {
+		$c = $this->spy();
+		$this->delete( $c, (object) [ 'post_status' => 'private', 'post_type' => 'post' ] );
 		$this->assertSame( [ 'post' ], $c->bumped );
 	}
 

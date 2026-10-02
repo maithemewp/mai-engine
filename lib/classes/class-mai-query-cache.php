@@ -55,6 +55,12 @@ class Mai_Query_Cache {
 	private const NOW_WINDOW = 300;
 
 	/**
+	 * Post statuses a grid can show: published, and private for editors. A change to a post in
+	 * either status rotates its post type's token.
+	 */
+	private const SHOWN = [ 'publish', 'private' ];
+
+	/**
 	 * Query vars that do not change which posts are returned, removed before hashing.
 	 * Mirrors WP_Query::generate_cache_key().
 	 */
@@ -773,10 +779,12 @@ class Mai_Query_Cache {
 	}
 
 	/**
-	 * Rotate a post type's token on any publish-affecting change. transition_post_status fires on
-	 * every save, so this also covers a live edit of an already-published post (publish->publish),
-	 * publish/unpublish/trash, and a scheduled post going live. Revisions and autosaves transition
-	 * inherit->inherit (neither status is publish) and so are skipped by the first guard.
+	 * Rotate a post type's token on any change to a post a grid can show. Grids show published
+	 * posts, and editors' grids show private ones too, so both count. transition_post_status
+	 * fires on every save, so this also covers a live edit of an already-published or private
+	 * post (publish->publish), publish/unpublish/trash, and a scheduled post going live.
+	 * Revisions and autosaves transition inherit->inherit (neither status is shown) and so are
+	 * skipped by the first guard.
 	 *
 	 * @param string  $new_status New status.
 	 * @param string  $old_status Old status.
@@ -785,11 +793,11 @@ class Mai_Query_Cache {
 	 * @return void
 	 */
 	public function on_transition( $new_status, $old_status, $post ) {
-		if ( 'publish' !== $new_status && 'publish' !== $old_status ) {
+		if ( ! in_array( $new_status, self::SHOWN, true ) && ! in_array( $old_status, self::SHOWN, true ) ) {
 			return;
 		}
 		// Belt-and-suspenders: a revision/autosave normally transitions inherit->inherit (caught
-		// above), but skip it explicitly in case a flow gives a revision a publish status.
+		// above), but skip it explicitly in case a flow gives a revision a shown status.
 		if ( wp_is_post_revision( $post->ID ) || 'revision' === $post->post_type ) {
 			return;
 		}
@@ -797,7 +805,7 @@ class Mai_Query_Cache {
 	}
 
 	/**
-	 * Rotate on hard delete of a published post.
+	 * Rotate on hard delete of a published or private post.
 	 *
 	 * @param int     $post_id The post ID.
 	 * @param WP_Post $post    The post.
@@ -805,7 +813,7 @@ class Mai_Query_Cache {
 	 * @return void
 	 */
 	public function on_delete( $post_id, $post ) {
-		if ( $post && 'publish' === $post->post_status && 'revision' !== $post->post_type ) {
+		if ( $post && in_array( $post->post_status, self::SHOWN, true ) && 'revision' !== $post->post_type ) {
 			mai_cache( self::GROUP )->bump( $post->post_type );
 		}
 	}
