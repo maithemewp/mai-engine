@@ -18,7 +18,8 @@ use WP_Query;
  *   post saved in between still leaves it out of date.
  * - A second grid with the same key on the same page is served the waiting result.
  * - It is stored straight away when the request cannot finish early, when the site has a
- *   persistent object cache, and once the queue has already finished.
+ *   persistent object cache, and once the queue has run, even with nothing in it.
+ * - After the page, the waiting results are stored before any aged-out entry is rebuilt.
  *
  * Each test installs a fresh queue on the instance the hooks use. Its seams stand in for
  * fastcgi_finish_request() and DONOTCACHEPAGE. tear_down puts a default queue back, so no
@@ -97,6 +98,8 @@ final class GridCacheDeferredStoreTest extends MaiIntegrationTestCase {
 		// shutdown finds nothing.
 		Mai_Query_Cache::instance()->set_queue( new Mai_Query_Cache_Queue() );
 
+		Cache::set_clock( null );
+
 		$_SERVER['REQUEST_METHOD'] = $this->method;
 
 		parent::tear_down();
@@ -157,12 +160,12 @@ final class GridCacheDeferredStoreTest extends MaiIntegrationTestCase {
 		Mai_Query_Cache::instance()->set_queue( $this->queue );
 	}
 
-	private function grid_args( string $path ): array {
+	private function grid_args( string $path, int $per_page = self::PER_PAGE ): array {
 		return [
 			'type'           => 'post',
 			'post_type'      => [ 'post' ],
 			'query_by'       => 'tax_meta',
-			'posts_per_page' => self::PER_PAGE,
+			'posts_per_page' => $per_page,
 			'excludes'       => 'kept' === $path ? [ 'exclude_current' ] : [],
 			'taxonomies'     => [
 				[ 'taxonomy' => 'category', 'terms' => [ $this->term_id ], 'current' => false, 'operator' => 'IN' ],
@@ -189,7 +192,7 @@ final class GridCacheDeferredStoreTest extends MaiIntegrationTestCase {
 	 *
 	 * @return array{query:WP_Query,key:string,answered:?bool,selects:int}
 	 */
-	private function render( string $path ): array {
+	private function render( string $path, int $per_page = self::PER_PAGE ): array {
 		global $wpdb;
 
 		$key      = '';
@@ -224,7 +227,7 @@ final class GridCacheDeferredStoreTest extends MaiIntegrationTestCase {
 		add_filter( 'posts_pre_query', $capture_answer, 11, 2 );
 		add_filter( 'query', $count_selects );
 
-		$query = ( new Mai_Grid( $this->grid_args( $path ) ) )->get_query();
+		$query = ( new Mai_Grid( $this->grid_args( $path, $per_page ) ) )->get_query();
 
 		remove_filter( 'query', $count_selects );
 		remove_filter( 'posts_pre_query', $capture_answer, 11 );
@@ -418,26 +421,75 @@ final class GridCacheDeferredStoreTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * After the response is finished, the pending stores are written before anything else
-	 * runs, so the rebuild jobs that come after them read a stored entry. The job queued here
-	 * stays queued for the job runner.
+	 * The full order after the page: the response is finished, then the pending stores are
+	 * written, then the rebuild jobs run. One page here holds a cold grid, whose result waits
+	 * to be stored, and a second grid whose entry aged out, which queues a job. The job's own
+	 * query looks at the first grid's entry, and finds it already stored.
 	 */
 	public function test_pending_stores_written_before_jobs(): void {
+		$now = time();
+
+		Cache::set_clock( static fn() => $now );
+
+		// The second grid, showing two posts, gets an entry, which then ages out.
 		$this->visit( 'kept' );
 
-		$grid = $this->render( 'kept' );
-
-		$this->queue->add_job( [ 'key' => 'another-grid', 'written' => null ] );
-
-		$this->on_finish = fn() => $this->envelope( $grid['key'] );
+		$aged = $this->render( 'kept', 2 );
 
 		$this->run_queue();
 
+		Cache::set_clock( static fn() => $now + 4 * HOUR_IN_SECONDS + 1 );
+
+		$this->install_queue();
+		$this->visit( 'kept' );
+
+		$this->finishes = 0;
+
+		$grid  = $this->render( 'kept' );
+		$again = $this->render( 'kept', 2 );
+
+		$this->assertNotSame( $grid['key'], $aged['key'] );
+		$this->assertSame( 0, $again['selects'], 'the aged entry is served' );
+		$this->assertTrue( $this->queue->has_job( $aged['key'] ), 'and queued' );
+		$this->assertNotNull( $this->queue->pending( $grid['key'] ), 'the cold result waits' );
+
+		$during_job = null;
+		$watch      = function ( $posts, $query ) use ( &$during_job, $grid ) {
+			if ( null === $during_job && 'ids' === ( $query->query_vars['fields'] ?? '' ) && ! empty( $query->query_vars['mai_grid_tiebreak'] ) ) {
+				$during_job = $this->stored( $grid['key'] );
+			}
+
+			return $posts;
+		};
+
+		$this->on_finish = fn() => $this->envelope( $grid['key'] );
+
+		add_filter( 'posts_pre_query', $watch, 1, 2 );
+		$this->run_queue();
+		remove_filter( 'posts_pre_query', $watch, 1 );
+
 		$this->assertSame( 1, $this->finishes );
 		$this->assertFalse( $this->at_finish, 'the response is finished first' );
-		$this->assertTrue( $this->stored( $grid['key'] )['fresh'], 'then the store is written' );
-		$this->assertNull( $this->queue->pending( $grid['key'] ) );
-		$this->assertTrue( $this->queue->has_job( 'another-grid' ) );
+		$this->assertTrue( $during_job['fresh'] ?? false, 'the store was written before the job ran its query' );
+		$this->assertTrue( $this->stored( $aged['key'] )['fresh'], 'then the job rebuilt the aged entry' );
+		$this->assertTrue( $this->queue->is_empty() );
+	}
+
+	/**
+	 * Mai's queue runs on shutdown, but another plugin's shutdown callback can render a grid
+	 * after it. Even when the queue had nothing to do, a result stored then is written at once,
+	 * because nothing would write it later.
+	 */
+	public function test_store_after_an_empty_run_is_inline(): void {
+		$this->visit( 'kept' );
+
+		$this->run_queue();
+
+		$grid = $this->render( 'kept' );
+
+		$this->assertTrue( $this->stored( $grid['key'] )['fresh'] ?? false, 'stored at once' );
+		$this->assertTrue( $this->queue->is_empty(), 'nothing waits' );
+		$this->assertSame( 0, $this->finishes, 'an empty queue does not finish the response' );
 	}
 
 	/** Once the queue has finished, nothing reads the list again, so a later store is written at once. */

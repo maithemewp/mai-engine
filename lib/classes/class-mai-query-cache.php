@@ -52,6 +52,13 @@ class Mai_Query_Cache {
 	private const POLL_MS = 25;
 
 	/**
+	 * Default time (ms) the rebuilds after the page may take, filterable via
+	 * `mai_query_cache_after_page_ms`. No new rebuild starts once it is used up. What is left
+	 * is queued again by the next visitor.
+	 */
+	private const AFTER_PAGE_MS = 1000;
+
+	/**
 	 * How close to now, in seconds, a datetime query var has to be for holds_now() to treat it
 	 * as "now" and the query as not cacheable.
 	 */
@@ -140,21 +147,31 @@ class Mai_Query_Cache {
 	}
 
 	/**
-	 * shutdown, at the latest priority: send the visitor their page, then store the results
-	 * that waited for it.
+	 * shutdown, at the latest priority: send the visitor their page, store the results that
+	 * waited for it, then rebuild the aged-out entries queued for after it.
 	 *
 	 * The latest priority runs after WordPress flushes the output buffers (priority 1), and
 	 * after a page cache plugin that saves the page from an output buffer callback has saved
 	 * it. Does nothing when nothing is waiting, so a request with nothing queued is never
 	 * finished early.
 	 *
+	 * The queue is closed first, even when it is empty. A grid that another plugin's shutdown
+	 * callback renders after this one is then stored at once and never queued, since nothing
+	 * would run the queue again.
+	 *
 	 * Each result is stored under the version read before its query ran, never one read now.
+	 * The stores come first. They are cheap and already computed, so they never wait behind a
+	 * slow rebuild or get cut off by the time limit. The rebuilds run oldest entry first. None
+	 * starts once the time spent after the page reaches `mai_query_cache_after_page_ms`.
 	 *
 	 * @since TBD
+	 * @since TBD Rebuilds aged-out entries after the stores.
 	 *
 	 * @return void
 	 */
 	public function run_queue(): void {
+		$this->queue->close();
+
 		if ( $this->queue->is_empty() ) {
 			return;
 		}
@@ -163,6 +180,87 @@ class Mai_Query_Cache {
 
 		foreach ( $this->queue->take_stores() as $key => $store ) {
 			mai_cache( self::GROUP )->write_swr( (string) $key, $store['value'], $store['version'], $store['soft'], $store['hard'] );
+		}
+
+		$budget = (float) apply_filters( 'mai_query_cache_after_page_ms', self::AFTER_PAGE_MS );
+
+		foreach ( $this->queue->take_jobs() as $job ) {
+			if ( $this->queue->elapsed_ms() >= $budget ) {
+				break;
+			}
+
+			$this->run_job( $job );
+		}
+	}
+
+	/**
+	 * Rebuilds one aged-out entry after the page.
+	 *
+	 * Works only from the values pre_query() captured when it queued the job, never from the
+	 * grid's query, which Mai_Grid has put back the way it was asked for by now. It runs the
+	 * same ID-only copy, with the same args, that a rebuild during the page runs, so it stores
+	 * the same list.
+	 *
+	 * Skips the job when:
+	 * - this is not the blog it was queued on. Its args and key belong to that blog.
+	 * - this request already rebuilt the key.
+	 * - another request holds the lock the rebuild during the page takes. The lock is never
+	 *   released. It expires after `mai_query_cache_lock_ttl` seconds.
+	 *
+	 * Stores under the version read before any SQL ran, so a post saved since still leaves the
+	 * entry out of date. When the copy cannot stand in for the grid, or its statement failed,
+	 * the entry is deleted, and the next visitor rebuilds it from cold.
+	 *
+	 * @since TBD
+	 *
+	 * @param array{key:string,version:string,written:int|null,args:array,cache_results:bool,soft:int,hard:int,blog_id:int} $job
+	 *        The job pre_query() queued. args is a copy of the grid query's args as it ran them.
+	 *
+	 * @return void
+	 */
+	private function run_job( array $job ): void {
+		$key = (string) $job['key'];
+
+		if ( get_current_blog_id() !== (int) $job['blog_id'] ) {
+			return;
+		}
+
+		if ( $this->queue->was_rebuilt( $key ) ) {
+			return;
+		}
+
+		if ( ! mai_cache( self::GROUP )->lock( $key, $this->lock_ttl() ) ) {
+			return;
+		}
+
+		$start   = hrtime( true );
+		$fetched = $this->fetch_ids( (array) $job['args'], (bool) $job['cache_results'], $key );
+
+		if ( is_array( $fetched ) ) {
+			$this->store( $key, (string) $job['version'], $fetched + [ 'by' => 'ids' ], (int) $job['soft'], (int) $job['hard'] );
+
+			$this->log( sprintf( 'rebuilt grid cache entry %s after the page in %.1f ms.', $key, ( hrtime( true ) - $start ) / 1e6 ) );
+
+			return;
+		}
+
+		mai_cache( self::GROUP )->delete( $key );
+
+		$this->log( sprintf( 'could not rebuild grid cache entry %s after the page, so it was deleted. Took %.1f ms.', $key, ( hrtime( true ) - $start ) / 1e6 ) );
+	}
+
+	/**
+	 * Writes a line to the debug log when WP_DEBUG_LOG is on.
+	 *
+	 * @since TBD
+	 *
+	 * @param string $message The message.
+	 *
+	 * @return void
+	 */
+	private function log( string $message ): void {
+		if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
+			error_log( 'Mai Engine: ' . $message );
 		}
 	}
 
@@ -368,7 +466,14 @@ class Mai_Query_Cache {
 	 * A result this request already computed, and that is waiting to be stored after the page,
 	 * is served before the cache is read. See store().
 	 *
+	 * An entry past its soft lifetime, with no post saved since, is served as it is and rebuilt
+	 * after the page when can_rebuild_after_page() allows. Nothing is locked or written before
+	 * the page is sent. Every other stale entry is rebuilt during the page by the request that
+	 * wins the lock. A key that is already queued is served stale again, so one key gets one
+	 * decision per request.
+	 *
 	 * @since TBD Serves a result waiting in the queue.
+	 * @since TBD Rebuilds an aged-out entry after the page.
 	 *
 	 * @param array|null $posts Posts (null to run the query normally).
 	 * @param WP_Query   $query The query.
@@ -415,9 +520,38 @@ class Mai_Query_Cache {
 			return $this->flag_miss( $query, $key, $version, $posts );
 		}
 
-		// Stale entry: the single-flight winner recomputes; everyone else serves the stale value.
-		if ( ! $hit['fresh'] && $cache->lock( $key, $this->lock_ttl() ) ) {
-			return $this->flag_miss( $query, $key, $version, $posts );
+		// Stale entry. A key already queued for after the page skips this and is served stale.
+		if ( ! $hit['fresh'] && ! $this->queue->has_job( $key ) ) {
+			// Aged out with no save: serve it now and rebuild it after the page. An entry serve()
+			// cannot use goes on to be rebuilt during the page.
+			if ( $this->can_rebuild_after_page( $hit, $keep ) ) {
+				$served = $this->serve( $query, $hit['value'], $keep );
+
+				if ( null !== $served ) {
+					// Captured now, because Mai_Grid puts the query back once it returns.
+					[ $soft, $hard ] = $this->lifetimes( $query->query_vars );
+
+					$this->queue->add_job(
+						[
+							'key'           => $key,
+							'version'       => $version,
+							'written'       => $hit['written'],
+							'args'          => (array) $query->query,
+							'cache_results' => $keep['cache_results'],
+							'soft'          => $soft,
+							'hard'          => $hard,
+							'blog_id'       => get_current_blog_id(),
+						]
+					);
+
+					return $served;
+				}
+			}
+
+			// The single-flight winner recomputes; everyone else serves the stale value.
+			if ( $cache->lock( $key, $this->lock_ttl() ) ) {
+				return $this->flag_miss( $query, $key, $version, $posts );
+			}
 		}
 
 		// Fresh hit, or a stale hit served while another request refreshes. A malformed envelope
@@ -511,6 +645,35 @@ class Mai_Query_Cache {
 		}
 
 		return $this->keep( $query, $keep, $fetched['ids'] );
+	}
+
+	/**
+	 * Whether a stale entry can be served as it is and rebuilt after the page.
+	 *
+	 * All of these must hold:
+	 * - it aged out with no post saved since. A save means the visitor must see the new list.
+	 * - the grid is kept-only, so the job has the cache_results the grid asked for.
+	 * - the ID-only copy built the entry ('by' => 'ids'). The job runs that same copy, so it
+	 *   stores the same list. An entry built any other way, or by beta.4 or earlier, is rebuilt
+	 *   during the page and gets the mark on its next store if the copy built it.
+	 * - the queue has not run yet. Nothing would run a job added after it.
+	 * - this request can send the visitor their page and keep running.
+	 * - `mai_query_cache_after_page` is on.
+	 *
+	 * @since TBD
+	 *
+	 * @param array      $hit  The entry, from read_swr().
+	 * @param array|null $keep The kept-only request, from keep_request().
+	 *
+	 * @return bool
+	 */
+	private function can_rebuild_after_page( array $hit, ?array $keep ): bool {
+		return 'age' === $hit['stale']
+			&& null !== $keep
+			&& 'ids' === ( $hit['value']['by'] ?? null )
+			&& ! $this->queue->closed()
+			&& $this->queue->can_finish_early()
+			&& (bool) apply_filters( 'mai_query_cache_after_page', true );
 	}
 
 	/**
@@ -903,7 +1066,9 @@ class Mai_Query_Cache {
 	 * serves it to any other grid with the same key. It is written now instead when:
 	 * - the site has a persistent object cache. The write is one fast SET, and requests that
 	 *   lost the cold-miss lock are waiting for it (wait_for_fill()).
-	 * - the queue has already run, so nothing would read the list again.
+	 * - the queue has already run, even with nothing in it. Nothing would write the list again.
+	 *   This covers a rebuild after the page, and a grid another plugin's shutdown callback
+	 *   renders after the queue ran.
 	 * - this request cannot finish early. Waiting would only make the visitor wait longer.
 	 * - the cache cannot store at all. The write does nothing, and nothing should wait for it.
 	 *
@@ -912,6 +1077,7 @@ class Mai_Query_Cache {
 	 *
 	 * @since TBD Takes the value and the lifetimes instead of the query.
 	 * @since TBD Waits until after the page on sites without a persistent object cache.
+	 * @since TBD Writes straight away after the queue has run, even an empty one.
 	 *
 	 * @param string $key     Cache key.
 	 * @param string $version The version read before the query ran, never one read now. A post
@@ -924,7 +1090,7 @@ class Mai_Query_Cache {
 	 * @return void
 	 */
 	private function store( string $key, string $version, array $value, int $soft, int $hard ): void {
-		if ( wp_using_ext_object_cache() || $this->queue->finished() || ! $this->queue->can_finish_early() || ! $this->can_store() ) {
+		if ( wp_using_ext_object_cache() || $this->queue->closed() || ! $this->queue->can_finish_early() || ! $this->can_store() ) {
 			mai_cache( self::GROUP )->write_swr( $key, $value, $version, $soft, $hard );
 		} else {
 			$this->queue->add_store( $key, $version, $value, $soft, $hard );

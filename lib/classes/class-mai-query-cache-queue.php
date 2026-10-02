@@ -66,6 +66,11 @@ class Mai_Query_Cache_Queue {
 	private bool $abort_ignored = false;
 
 	/**
+	 * Whether close() has run.
+	 */
+	private bool $closed = false;
+
+	/**
 	 * Whether finish() has run.
 	 */
 	private bool $finished = false;
@@ -223,6 +228,20 @@ class Mai_Query_Cache_Queue {
 	}
 
 	/**
+	 * Returns the queued jobs, oldest entry first, and empties the list, so no job runs twice.
+	 *
+	 * @since TBD
+	 *
+	 * @return array[]
+	 */
+	public function take_jobs(): array {
+		$jobs       = $this->jobs();
+		$this->jobs = [];
+
+		return $jobs;
+	}
+
+	/**
 	 * Records that a key was rebuilt during this request.
 	 *
 	 * @since TBD
@@ -270,6 +289,29 @@ class Mai_Query_Cache_Queue {
 	 */
 	public function is_empty(): bool {
 		return ! $this->stores && ! $this->jobs;
+	}
+
+	/**
+	 * Marks the queue as run. Called first thing on shutdown, even when nothing is waiting.
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	public function close(): void {
+		$this->closed = true;
+	}
+
+	/**
+	 * Whether the queue has run, or the response is finished. A store or job added after this
+	 * would never run, so the caller does the work at once instead.
+	 *
+	 * @since TBD
+	 *
+	 * @return bool
+	 */
+	public function closed(): bool {
+		return $this->closed || $this->finished;
 	}
 
 	/**

@@ -306,6 +306,38 @@ final class MaiQueryCacheQueueTest extends TestCase {
 		$this->assertSame( [ 'a', 'd', 'b', 'e', 'c' ], array_column( $queue->jobs(), 'key' ) );
 	}
 
+	/** Taking the jobs empties the list, so a second run of the queue cannot run them again. */
+	public function test_take_jobs_oldest_first_and_empties(): void {
+		$queue = $this->queue();
+
+		$queue->add_job( [ 'key' => 'b', 'written' => 200 ] );
+		$queue->add_job( [ 'key' => 'a', 'written' => 100 ] );
+
+		$this->assertSame( [ 'a', 'b' ], array_column( $queue->take_jobs(), 'key' ) );
+		$this->assertSame( [], $queue->take_jobs() );
+		$this->assertSame( [], $queue->jobs() );
+		$this->assertFalse( $queue->has_job( 'a' ) );
+		$this->assertTrue( $queue->is_empty() );
+	}
+
+	/** Closed once the queue starts running, or once the response is finished. */
+	public function test_closed(): void {
+		$closed = $this->queue();
+
+		$this->assertFalse( $closed->closed() );
+
+		$closed->close();
+
+		$this->assertTrue( $closed->closed() );
+		$this->assertFalse( $closed->finished(), 'closing does not finish the response' );
+
+		$finished = $this->queue();
+
+		$finished->finish();
+
+		$this->assertTrue( $finished->closed() );
+	}
+
 	public function test_rebuilt_keys(): void {
 		$queue = $this->queue();
 
