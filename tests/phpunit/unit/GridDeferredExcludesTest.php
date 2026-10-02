@@ -44,6 +44,21 @@ final class GridDeferredExcludesTest extends TestCase {
 		return $prop->getValue( $grid );
 	}
 
+	/**
+	 * Stands in for mai_cache(), so Mai_Query_Cache::can_store() can answer.
+	 */
+	private function stub_store( bool $can_cache ): void {
+		$store = new class( $can_cache ) {
+			public function __construct( private bool $can_cache ) {}
+
+			public function can_cache(): bool {
+				return $this->can_cache;
+			}
+		};
+
+		Functions\when( 'mai_cache' )->justReturn( $store );
+	}
+
 	private function stub_wp(): void {
 		Functions\when( 'apply_filters' )->alias( fn( $tag, $value ) => $value );
 		Functions\when( 'is_user_logged_in' )->justReturn( false );
@@ -143,16 +158,18 @@ final class GridDeferredExcludesTest extends TestCase {
 
 	private function can_defer( array $query_args, array $effective = [ 99 ] ): bool {
 		Functions\when( 'apply_filters' )->alias( fn( $tag, $value ) => $value );
+		$this->stub_store( true );
 
 		$grid   = $this->grid( [] );
 		$method = new \ReflectionMethod( Mai_Grid::class, 'can_defer_excludes' );
 		$method->setAccessible( true );
 
 		return $method->invoke( $grid, $query_args + [
-			'posts_per_page' => 6,
-			'offset'         => 0,
-			'no_found_rows'  => true,
-			'mai_cache'      => true,
+			'posts_per_page'      => 6,
+			'offset'              => 0,
+			'no_found_rows'       => true,
+			'ignore_sticky_posts' => true,
+			'mai_cache'           => true,
 		], $effective );
 	}
 
@@ -219,7 +236,7 @@ final class GridDeferredExcludesTest extends TestCase {
 	public function test_does_not_defer_when_found_rows_key_is_absent(): void {
 		// WP_Query's own default is false, meaning counting is ON. Absent must be treated
 		// the same as false, not as true.
-		$args = [ 'posts_per_page' => 6, 'offset' => 0, 'mai_cache' => true ];
+		$args = [ 'posts_per_page' => 6, 'offset' => 0, 'ignore_sticky_posts' => true, 'mai_cache' => true ];
 
 		Functions\when( 'apply_filters' )->alias( fn( $tag, $value ) => $value );
 
@@ -232,7 +249,7 @@ final class GridDeferredExcludesTest extends TestCase {
 
 	public function test_does_not_defer_when_posts_per_page_is_absent(): void {
 		// No default merged in here, unlike the can_defer() helper.
-		$args = [ 'offset' => 0, 'no_found_rows' => true, 'mai_cache' => true ];
+		$args = [ 'offset' => 0, 'no_found_rows' => true, 'ignore_sticky_posts' => true, 'mai_cache' => true ];
 
 		Functions\when( 'apply_filters' )->alias( fn( $tag, $value ) => $value );
 
@@ -255,12 +272,46 @@ final class GridDeferredExcludesTest extends TestCase {
 		$this->assertFalse( $this->can_defer( [ 'posts_per_page' => 'all' ] ) );
 	}
 
+	public function test_does_not_defer_with_sticky_posts_on(): void {
+		// Core fetches the stickies missing from the results and leaves out only those in
+		// post__not_in, which no longer holds the deferred excludes.
+		$this->assertFalse( $this->can_defer( [ 'ignore_sticky_posts' => false ] ) );
+	}
+
+	public function test_does_not_defer_when_the_sticky_key_is_absent(): void {
+		// WP_Query's own default is false, meaning stickies are ON.
+		$args = [ 'posts_per_page' => 6, 'offset' => 0, 'no_found_rows' => true, 'mai_cache' => true ];
+
+		Functions\when( 'apply_filters' )->alias( fn( $tag, $value ) => $value );
+
+		$grid   = $this->grid( [] );
+		$method = new \ReflectionMethod( Mai_Grid::class, 'can_defer_excludes' );
+		$method->setAccessible( true );
+
+		$this->assertFalse( $method->invoke( $grid, $args, [ 99 ] ) );
+	}
+
 	public function test_does_not_defer_for_facetwp(): void {
 		$this->assertFalse( $this->can_defer( [ 'facetwp' => true ] ) );
 	}
 
 	public function test_does_not_defer_when_the_grid_is_not_cached(): void {
 		$this->assertFalse( $this->can_defer( [ 'mai_cache' => false ] ) );
+	}
+
+	public function test_does_not_defer_when_the_store_cannot_cache(): void {
+		// SCRIPT_DEBUG, or the mai_can_cache filter. Nothing would ever be stored, so there is
+		// no shared entry to gain, and deferring would switch off core's query cache for nothing.
+		Functions\when( 'apply_filters' )->alias( fn( $tag, $value ) => $value );
+		$this->stub_store( false );
+
+		$grid   = $this->grid( [] );
+		$method = new \ReflectionMethod( Mai_Grid::class, 'can_defer_excludes' );
+		$method->setAccessible( true );
+
+		$args = [ 'posts_per_page' => 6, 'offset' => 0, 'no_found_rows' => true, 'ignore_sticky_posts' => true, 'mai_cache' => true ];
+
+		$this->assertFalse( $method->invoke( $grid, $args, [ 99 ] ) );
 	}
 
 	public function test_does_not_defer_for_random_order(): void {
@@ -309,12 +360,13 @@ final class GridDeferredExcludesTest extends TestCase {
 		Functions\when( 'apply_filters' )->alias(
 			fn( $tag, $value ) => 'mai_post_grid_max_posts_per_page' === $tag ? 100 : $value
 		);
+		$this->stub_store( true );
 
 		$grid   = $this->grid( [] );
 		$method = new \ReflectionMethod( Mai_Grid::class, 'can_defer_excludes' );
 		$method->setAccessible( true );
 
-		$args = [ 'posts_per_page' => 95, 'offset' => 0, 'no_found_rows' => true, 'mai_cache' => true ];
+		$args = [ 'posts_per_page' => 95, 'offset' => 0, 'no_found_rows' => true, 'ignore_sticky_posts' => true, 'mai_cache' => true ];
 
 		$this->assertTrue( $method->invoke( $grid, $args, range( 1, 5 ) ) );
 	}
@@ -341,12 +393,13 @@ final class GridDeferredExcludesTest extends TestCase {
 		Functions\when( 'apply_filters' )->alias(
 			fn( $tag, $value ) => 'mai_post_grid_defer_excludes' === $tag ? false : $value
 		);
+		$this->stub_store( true );
 
 		$grid   = $this->grid( [] );
 		$method = new \ReflectionMethod( Mai_Grid::class, 'can_defer_excludes' );
 		$method->setAccessible( true );
 
-		$args = [ 'posts_per_page' => 6, 'offset' => 0, 'no_found_rows' => true, 'mai_cache' => true ];
+		$args = [ 'posts_per_page' => 6, 'offset' => 0, 'no_found_rows' => true, 'ignore_sticky_posts' => true, 'mai_cache' => true ];
 
 		$this->assertFalse( $method->invoke( $grid, $args, [ 99 ] ) );
 	}
@@ -371,7 +424,7 @@ final class GridDeferredExcludesTest extends TestCase {
 		$method = new \ReflectionMethod( Mai_Grid::class, 'can_defer_excludes' );
 		$method->setAccessible( true );
 
-		$args = [ 'posts_per_page' => 6, 'offset' => 3, 'no_found_rows' => true, 'mai_cache' => true ];
+		$args = [ 'posts_per_page' => 6, 'offset' => 3, 'no_found_rows' => true, 'ignore_sticky_posts' => true, 'mai_cache' => true ];
 
 		$this->assertFalse( $method->invoke( $grid, $args, [ 99 ] ) );
 		$this->assertFalse( $seen, 'the filter must fire for a declined grid, with the guards\' verdict as its default' );
@@ -387,7 +440,7 @@ final class GridDeferredExcludesTest extends TestCase {
 		$method = new \ReflectionMethod( Mai_Grid::class, 'can_defer_excludes' );
 		$method->setAccessible( true );
 
-		$args = [ 'posts_per_page' => 6, 'offset' => 3, 'no_found_rows' => true, 'mai_cache' => true ];
+		$args = [ 'posts_per_page' => 6, 'offset' => 3, 'no_found_rows' => true, 'ignore_sticky_posts' => true, 'mai_cache' => true ];
 
 		$this->assertFalse( $method->invoke( $grid, $args, [ 99 ] ) );
 	}

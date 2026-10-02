@@ -49,6 +49,12 @@ class Mai_Query_Cache {
 	private const POLL_MS = 25;
 
 	/**
+	 * How close to now, in seconds, a datetime query var has to be for holds_now() to treat it
+	 * as "now" and the query as not cacheable.
+	 */
+	private const NOW_WINDOW = 300;
+
+	/**
 	 * Query vars that do not change which posts are returned, removed before hashing.
 	 * Mirrors WP_Query::generate_cache_key().
 	 */
@@ -138,8 +144,8 @@ class Mai_Query_Cache {
 		//
 		// Only the key is coarsened; the executed query keeps its exact bounds, so a served
 		// result can be at most an hour stale against a TTL that already allows four. Two
-		// differently configured grids cannot collide, because $query_vars still holds the raw
-		// unresolved string and is hashed alongside this.
+		// grids with different relative dates cannot collide, because $query_vars still holds
+		// the raw unresolved string and is hashed alongside this.
 		//
 		// Applies to every datetime literal in the statement, not just date_query bounds. A
 		// window shorter than an hour is therefore effectively widened to an hour, so short
@@ -147,6 +153,49 @@ class Mai_Query_Cache {
 		$sql = preg_replace( "/'(\d{4}-\d{2}-\d{2} \d{2}):\d{2}:\d{2}'/", "'$1:00:00'", $sql );
 
 		return md5( serialize( $query_vars ) . $sql );
+	}
+
+	/**
+	 * Whether a query var holds the current time, to the second.
+	 *
+	 * Something rewrote the query with "now" (The Events Calendar does this to every event
+	 * query), so its key changes on every page view. Caching it would never hit, and a site
+	 * without an object cache would write a new row on every view. Only a whole datetime within
+	 * NOW_WINDOW of now, in UTC or site time, counts. Any other datetime was set on purpose.
+	 *
+	 * @param array $query_vars The WP_Query vars.
+	 *
+	 * @return bool
+	 */
+	private function holds_now( array $query_vars ): bool {
+		$now   = null;
+		$found = false;
+
+		array_walk_recursive(
+			$query_vars,
+			static function ( $value ) use ( &$now, &$found ) {
+				if ( $found || ! is_string( $value ) || ! preg_match( '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $value ) ) {
+					return;
+				}
+
+				$now ??= [
+					strtotime( current_time( 'mysql', true ) . ' UTC' ),
+					strtotime( current_time( 'mysql' ) . ' UTC' ),
+				];
+
+				$time = strtotime( $value . ' UTC' );
+
+				foreach ( $now as $reference ) {
+					if ( false !== $time && abs( $time - $reference ) <= self::NOW_WINDOW ) {
+						$found = true;
+
+						return;
+					}
+				}
+			}
+		);
+
+		return $found;
 	}
 
 	/**
@@ -178,11 +227,30 @@ class Mai_Query_Cache {
 			$cacheable = false;
 		}
 
+		// A query that holds the current time gets a new key on every view, so it never hits.
+		if ( $cacheable && $this->holds_now( $query_vars ) ) {
+			$cacheable = false;
+		}
+
 		return (bool) apply_filters( 'mai_query_cache', $cacheable, $query_vars );
 	}
 
 	/**
+	 * Whether the grid cache can write at all. mai-cache refuses under SCRIPT_DEBUG, when its
+	 * store is unavailable, and through the mai_can_cache filter.
+	 *
+	 * @return bool
+	 */
+	public function can_store(): bool {
+		return mai_cache( self::GROUP )->can_cache();
+	}
+
+	/**
 	 * posts_pre_query: serve from cache (fresh or stale) or flag a miss for storage.
+	 *
+	 * A kept-only grid (see keep_request()) is served here on a hit with only the posts it will
+	 * show. Its miss is answered later, by pre_query_kept(), so every other posts_pre_query
+	 * callback gets its turn first, exactly as it does for any other miss.
 	 *
 	 * @param array|null $posts Posts (null to run the query normally).
 	 * @param WP_Query   $query The query.
@@ -194,6 +262,7 @@ class Mai_Query_Cache {
 			return $posts;
 		}
 
+		$keep    = $this->keep_request( $posts, $query );
 		$cache   = mai_cache( self::GROUP );
 		$key     = $this->cache_key( $query->query_vars, (string) $query->request );
 		$version = $cache->version( (array) ( $query->query_vars['post_type'] ?? 'post' ) );
@@ -206,7 +275,7 @@ class Mai_Query_Cache {
 			if ( $this->use_single_flight() && ! $cache->lock( $key, $this->lock_ttl() ) ) {
 				// Lost the lock: another request is filling. Wait briefly, then serve its result.
 				$value  = $this->wait_for_fill( $cache, $key, $version );
-				$served = ( null !== $value ) ? $this->serve( $query, $value ) : null;
+				$served = ( null !== $value ) ? $this->serve( $query, $value, $keep ) : null;
 				if ( null !== $served ) {
 					return $served;
 				}
@@ -222,9 +291,65 @@ class Mai_Query_Cache {
 
 		// Fresh hit, or a stale hit served while another request refreshes. A malformed envelope
 		// (serve returns null) is treated as a miss and recomputed rather than fataling.
-		$served = $this->serve( $query, $hit['value'] );
+		$served = $this->serve( $query, $hit['value'], $keep );
 
 		return ( null !== $served ) ? $served : $this->flag_miss( $query, $key, $version, $posts );
+	}
+
+	/**
+	 * posts_pre_query, at the latest priority: answer a kept-only grid's miss with only the
+	 * posts it will show.
+	 *
+	 * This is the last stop before WordPress runs the SQL itself, so a plugin that answers
+	 * posts_pre_query, and steps aside when something already has, still gets to answer a
+	 * miss. The Events Calendar's custom tables query at priority 100 is one. When one does,
+	 * or when fetch_ids() cannot stand in for the grid's query, this leaves the answer alone:
+	 * the_posts stores whatever came back, and Mai_Grid drops the excludes itself.
+	 *
+	 * Otherwise the IDs come from fetch_ids() and are stored here, then only the kept posts are
+	 * loaded. The store has to happen here rather than on the_posts, which only ever sees the
+	 * kept posts on this path, and clearing the miss flag stops the_posts storing a second
+	 * time. A query the cache declined is answered the same way, just with nothing stored.
+	 *
+	 * Also confirms a kept answer pre_query() served from cache is still the one in hand. A
+	 * later callback that replaced it could hand back anything, and then Mai_Grid has to
+	 * filter it as before.
+	 *
+	 * @param array|null $posts Posts (null to run the query normally).
+	 * @param WP_Query   $query The query.
+	 *
+	 * @return array|null
+	 */
+	public function pre_query_kept( $posts, $query ) {
+		if ( isset( $query->mai_grid_kept ) ) {
+			if ( $posts !== $query->mai_grid_kept ) {
+				unset( $query->mai_grid_kept );
+			}
+
+			return $posts;
+		}
+
+		$keep = $this->keep_request( $posts, $query );
+
+		// A copy of a query that holds the current time gets its own "now", so fetch_ids() would
+		// run it and then throw it away as a different query. Let the grid's own query answer.
+		if ( $keep && $this->holds_now( $query->query_vars ) ) {
+			$keep = null;
+		}
+
+		$ids = $keep ? $this->fetch_ids( $query, $keep ) : null;
+
+		if ( null === $ids ) {
+			return $posts;
+		}
+
+		if ( ! empty( $query->mai_cache_store_key ) ) {
+			$this->store( $query, $query->mai_cache_store_key, $query->mai_cache_store_version, $ids );
+
+			unset( $query->mai_cache_store_key, $query->mai_cache_store_version );
+		}
+
+		return $this->keep( $query, $keep, $ids );
 	}
 
 	/**
@@ -253,12 +378,13 @@ class Mai_Query_Cache {
 	 * Mai_Grid does not read found_posts/max_num_pages, so this is correct for grids; a paginating
 	 * mai_cache consumer must run with no_found_rows => false to get an accurate total.
 	 *
-	 * @param WP_Query $query The query.
-	 * @param mixed    $value Stored value, expected [ 'ids' => int[], 'found' => int ].
+	 * @param WP_Query   $query The query.
+	 * @param mixed      $value Stored value, expected [ 'ids' => int[], 'found' => int ].
+	 * @param array|null $keep  The kept-only request, from keep_request(). Null hydrates every ID.
 	 *
 	 * @return WP_Post[]|null
 	 */
-	private function serve( $query, $value ): ?array {
+	private function serve( $query, $value, ?array $keep = null ): ?array {
 		if ( ! is_array( $value ) || ! isset( $value['ids'] ) || ! is_array( $value['ids'] ) ) {
 			return null;
 		}
@@ -268,7 +394,173 @@ class Mai_Query_Cache {
 			? (int) ceil( $query->found_posts / $query->query_vars['posts_per_page'] )
 			: 1;
 
-		return $this->hydrate( array_map( 'intval', $value['ids'] ), $query->query_vars );
+		$ids = array_map( 'intval', $value['ids'] );
+
+		return $keep ? $this->keep( $query, $keep, $ids ) : $this->hydrate( $ids, $query->query_vars );
+	}
+
+	/**
+	 * The kept-only request a deferring grid attached to this query, or null to answer it the
+	 * usual way.
+	 *
+	 * Mai_Grid sets it as the mai_grid_keep property of its query when it defers its excludes:
+	 * the IDs to drop, how many posts it will show, and the cache_results it was asked for. A
+	 * property rather than a query var, so a
+	 * copy another plugin builds from this query's vars does not carry it. Answering with only those posts means the padding rows and the excluded posts
+	 * are never loaded or primed, and posts_results and the_posts see what the grid shows, as
+	 * they did before excludes were deferred.
+	 *
+	 * Declines when another posts_pre_query callback already answered, so that answer stands,
+	 * and when the query has since become an ids or id=>parent query. Core returns those two
+	 * straight out of get_posts() as ints or stdClass, and a list of post objects is the wrong
+	 * shape for either.
+	 *
+	 * @param array|null $posts The pre_query posts.
+	 * @param WP_Query   $query The query.
+	 *
+	 * @return array{exclude:int[],count:int,cache_results:bool}|null
+	 */
+	private function keep_request( $posts, $query ): ?array {
+		$keep = $query->mai_grid_keep ?? null;
+
+		if ( null !== $posts || ! is_array( $keep ) || ! isset( $keep['exclude'], $keep['count'] ) || ! is_array( $keep['exclude'] ) ) {
+			return null;
+		}
+
+		if ( in_array( $query->query_vars['fields'] ?? '', [ 'ids', 'id=>parent' ], true ) ) {
+			return null;
+		}
+
+		return [
+			'exclude'       => array_map( 'intval', $keep['exclude'] ),
+			'count'         => max( 0, (int) $keep['count'] ),
+			'cache_results' => (bool) ( $keep['cache_results'] ?? true ),
+		];
+	}
+
+	/**
+	 * The grid's padded ID list, in order, from an ID-only copy of its query, or null when that
+	 * copy cannot stand in for it.
+	 *
+	 * The copy is built from the args the grid's query was built from, so it goes through the
+	 * same pre_get_posts and SQL filters, and asks core for IDs only. Its statement is the one
+	 * core runs when it splits the grid's full query, so it returns the same rows in the same
+	 * order without loading them. The one difference: core runs posts_request_ids on a split
+	 * statement only, so a callback there never sees the copy. It also reads and writes core's post-queries cache, which the
+	 * grid's own query cannot while it runs with cache_results off, so a result cache miss on a
+	 * warm site costs no SQL. Unless the grid was asked to run with cache_results off: its
+	 * results may then depend on something core's cache does not track, so the copy skips that
+	 * cache too. It is built from the args rather than query_vars, because core
+	 * writes back-compat vars such as cat and category_name into query_vars as it runs, and a
+	 * query built from those would join the same taxonomy twice.
+	 *
+	 * Core files it under a key of its own, not the full query's. The key swaps every
+	 * wp_posts.ID in the statement for wp_posts.*, not only the select list, and a grid's
+	 * statement has more of them (the tiebreaker, a taxonomy JOIN and GROUP BY). So the entry is
+	 * shared with the next kept-only miss of the same grid, not with a full run of it.
+	 *
+	 * mai_cache is off on the copy, so pre_query() does not treat it as a query to cache, and it
+	 * has no kept-only marker, so pre_query_kept() leaves it alone. It only runs once every
+	 * other posts_pre_query callback has declined the grid's query. Only fields and the cache
+	 * flags differ on the copy, so a callback that answers it anyway is answering the same
+	 * query, and its IDs stand.
+	 *
+	 * Declines when:
+	 * - the grid's query counts rows. The total is core's job, and a deferring grid never counts
+	 *   (can_defer_excludes()), so only a pre_get_posts callback gets here.
+	 * - the copy's statement failed. The miss flag is cleared too, so a view that just failed
+	 *   stores nothing, rather than an empty list for the length of the TTL.
+	 * - the copy found nothing. Core stores a failed statement's empty result in its query
+	 *   cache like any other, and reading that back runs no SQL, so there is no error to see.
+	 *   A failure in a statement a query filter rewrote on its way to the database looks the
+	 *   same. The grid's own query answers instead, and the_posts stores what it finds. For a
+	 *   grid that really is empty, that costs one cheap query per result cache miss.
+	 * - the copy selects more than the ID. get_col() reads the first column.
+	 * - the copy is not the grid's query once the select list is set aside: a callback treated
+	 *   the two differently, so the copy's IDs may not be the grid's.
+	 *
+	 * @param WP_Query $query The grid's query.
+	 * @param array    $keep  The kept-only request, from keep_request().
+	 *
+	 * @return int[]|null
+	 */
+	private function fetch_ids( $query, array $keep ): ?array {
+		global $wpdb;
+
+		if ( empty( $query->query_vars['no_found_rows'] ) ) {
+			return null;
+		}
+
+		$copy = new WP_Query();
+
+		$copy->query(
+			array_merge(
+				(array) $query->query,
+				[
+					'fields'        => 'ids',
+					'cache_results' => $keep['cache_results'],
+					'mai_cache'     => false,
+				]
+			)
+		);
+
+		// Only an error from the copy's own statement, which is the last one it runs. When core
+		// answers the copy from its cache, that statement never runs, and last_error belongs to
+		// whatever ran before, possibly some callback's own query.
+		if ( $wpdb->last_error && $wpdb->last_query === $copy->request ) {
+			unset( $query->mai_cache_store_key, $query->mai_cache_store_version );
+
+			return null;
+		}
+
+		if ( ! $copy->posts ) {
+			return null;
+		}
+
+		$ids_only = '/^\s*SELECT\s+(?:DISTINCT\s+)?' . preg_quote( "{$wpdb->posts}.ID", '/' ) . '\s+FROM\s/i';
+
+		if ( ! preg_match( $ids_only, (string) $copy->request ) ) {
+			return null;
+		}
+
+		if ( $this->cache_key( $copy->query_vars, (string) $copy->request ) !== $this->cache_key( $query->query_vars, (string) $query->request ) ) {
+			return null;
+		}
+
+		return array_map( 'intval', $copy->posts );
+	}
+
+	/**
+	 * Drop a kept-only grid's excludes from the padded ID list, keep the count it asked for,
+	 * and load only those posts.
+	 *
+	 * hydrate() drops an ID whose post was deleted or no longer has an allowed status, which a
+	 * stale entry can hold. Topping up from the rest of the list keeps the grid as full as
+	 * hydrating the whole list used to, while the usual case loads exactly the posts it shows.
+	 *
+	 * @param WP_Query $query The query.
+	 * @param array    $keep  The kept-only request, from keep_request().
+	 * @param int[]    $ids   The padded ID list, in order.
+	 *
+	 * @return WP_Post[]
+	 */
+	private function keep( $query, array $keep, array $ids ): array {
+		$candidates = array_values( array_diff( $ids, $keep['exclude'] ) );
+		$posts      = [];
+		$next       = 0;
+
+		while ( count( $posts ) < $keep['count'] && $next < count( $candidates ) ) {
+			$batch = array_slice( $candidates, $next, $keep['count'] - count( $posts ) );
+			$next += count( $batch );
+			$posts = array_merge( $posts, $this->hydrate( $batch, $query->query_vars ) );
+		}
+
+		// Tells Mai_Grid the excludes and the slice are already done, so it does not do them
+		// again. It holds the answer itself so pre_query_kept() can tell if a later callback
+		// replaced it.
+		$query->mai_grid_kept = $posts;
+
+		return $posts;
 	}
 
 	/**
@@ -333,18 +625,32 @@ class Mai_Query_Cache {
 			return $posts;
 		}
 
-		$ttl = (int) apply_filters( 'mai_query_cache_ttl', self::TTL, $query->query_vars );
-
-		mai_cache( self::GROUP )->write_swr(
-			$query->mai_cache_store_key,
-			[ 'ids' => wp_list_pluck( $posts, 'ID' ), 'found' => (int) $query->found_posts ],
-			$query->mai_cache_store_version,
-			$ttl
-		);
+		$this->store( $query, $query->mai_cache_store_key, $query->mai_cache_store_version, wp_list_pluck( $posts, 'ID' ) );
 
 		unset( $query->mai_cache_store_key, $query->mai_cache_store_version );
 
 		return $posts;
+	}
+
+	/**
+	 * Write a result under the current version.
+	 *
+	 * @param WP_Query $query   The query.
+	 * @param string   $key     Cache key.
+	 * @param string   $version Current composite version.
+	 * @param int[]    $ids     Ordered post IDs.
+	 *
+	 * @return void
+	 */
+	private function store( $query, string $key, string $version, array $ids ): void {
+		$ttl = (int) apply_filters( 'mai_query_cache_ttl', self::TTL, $query->query_vars );
+
+		mai_cache( self::GROUP )->write_swr(
+			$key,
+			[ 'ids' => $ids, 'found' => (int) $query->found_posts ],
+			$version,
+			$ttl
+		);
 	}
 
 	/**
@@ -356,8 +662,12 @@ class Mai_Query_Cache {
 	 * grid can only shrink, never expose content that is no longer public. Hard-deleted ids
 	 * resolve to null via get_post and fall out the same array_filter.
 	 *
+	 * Meta and terms are primed only when the query asks for them, as core does on its own
+	 * cache hits. WP_Query fills both flags in before posts_pre_query, so the true defaults here
+	 * only apply to a direct caller that leaves them out.
+	 *
 	 * @param int[] $ids        Ordered post IDs.
-	 * @param array $query_vars The query vars, for the post_status guard.
+	 * @param array $query_vars The query vars, for the post_status guard and the cache flags.
 	 *
 	 * @return WP_Post[]
 	 */
@@ -366,7 +676,11 @@ class Mai_Query_Cache {
 			return [];
 		}
 
-		_prime_post_caches( $ids, true, true );
+		_prime_post_caches(
+			$ids,
+			(bool) ( $query_vars['update_post_term_cache'] ?? true ),
+			(bool) ( $query_vars['update_post_meta_cache'] ?? true )
+		);
 
 		$posts   = array_filter( array_map( 'get_post', $ids ) );
 		$allowed = $this->allowed_statuses( $query_vars );

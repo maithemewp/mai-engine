@@ -343,25 +343,31 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 	/**
 	 * Views one post and reports what the cache and the render each saw.
 	 *
-	 * Both captures must run DURING the query. get_query() restores query_vars once the
+	 * The key capture must run DURING the query. get_query() restores query_vars once the
 	 * constructor returns, so reading them afterwards shows the original request, complete
 	 * with the excluded id, and every key would look shattered. posts_pre_query fires with
-	 * $query->request already built, and the cache's own callback sits at priority 10:
-	 * priority 9 sees the key the cache is about to use, priority 11 sees what it handed back.
+	 * $query->request already built, and the cache's own callback sits at priority 10, so
+	 * priority 9 sees the key the cache is about to use.
 	 *
-	 * A non-null value at priority 11 is proof of a cache hit and of no fresh SELECT.
-	 * WP_Query::get_posts() only reaches its own $wpdb->get_results() when posts_pre_query
-	 * left $this->posts null.
+	 * Whether the view ran the grid's SELECT is counted off the statements themselves, not off
+	 * what posts_pre_query handed back. Kept-only answers posts_pre_query on a miss too, after
+	 * running an ID-only SELECT of its own, so a non-null answer no longer proves a
+	 * hit. The grid's statement is the only one against the posts table carrying a LIMIT: the
+	 * priming reads select by ID IN (...) with none.
+	 *
+	 * `stored` is the entry as it stands after the view, read straight from the result cache.
 	 *
 	 * @param int $current The post to view.
 	 *
-	 * @return array{key:string,served:int[]|null,rendered:int[]}
+	 * @return array{key:string,selects:int,stored:int[]|null,rendered:int[]}
 	 */
 	private function view( int $current ): array {
+		global $wpdb;
+
 		$this->go_to( get_permalink( $current ) );
 
-		$key    = '';
-		$served = null;
+		$key     = '';
+		$selects = 0;
 
 		$capture_key = static function ( $posts, $query ) use ( &$key ) {
 			$key = ( new Mai_Query_Cache() )->cache_key( $query->query_vars, (string) $query->request );
@@ -369,25 +375,30 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 			return $posts;
 		};
 
-		$capture_served = static function ( $posts, $query ) use ( &$served ) {
-			$served = is_array( $posts ) ? wp_list_pluck( $posts, 'ID' ) : null;
+		$count_selects = static function ( $sql ) use ( &$selects, $wpdb ) {
+			if ( preg_match( '/\bFROM\s+' . preg_quote( $wpdb->posts, '/' ) . '\b/', $sql ) && str_contains( $sql, 'LIMIT' ) ) {
+				++$selects;
+			}
 
-			return $posts;
+			return $sql;
 		};
 
 		add_filter( 'posts_pre_query', $capture_key, 9, 2 );
-		add_filter( 'posts_pre_query', $capture_served, 11, 2 );
+		add_filter( 'query', $count_selects );
 
 		$query = ( new Mai_Grid( $this->grid_args() ) )->get_query();
 
 		remove_filter( 'posts_pre_query', $capture_key, 9 );
-		remove_filter( 'posts_pre_query', $capture_served, 11 );
+		remove_filter( 'query', $count_selects );
 
 		$this->assertNotSame( '', $key, 'the capture filter did not fire' );
 
+		$hit = mai_cache( 'grid' )->read_swr( $key, mai_cache( 'grid' )->version( [ 'post' ] ) );
+
 		return [
 			'key'      => $key,
-			'served'   => $served,
+			'selects'  => $selects,
+			'stored'   => $hit ? $hit['value']['ids'] : null,
 			'rendered' => $this->ids( $query ),
 		];
 	}
@@ -420,12 +431,13 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 		$first  = $this->view( $this->post_ids[0] );
 		$second = $this->view( $this->post_ids[1] );
 
-		$this->assertNull( $first['served'], 'the first view has to run the query' );
+		$this->assertSame( 1, $first['selects'], 'the first view has to run the query' );
 		$this->assertSame( $first['key'], $second['key'], 'both views must land on one entry' );
-		$this->assertIsArray( $second['served'], 'the second view must come from cache, with no fresh SELECT' );
+		$this->assertSame( 0, $second['selects'], 'the second view must come from cache, with no fresh SELECT' );
 
 		// What was stored is the padded, unfiltered superset, not what the first view rendered.
-		$this->assertSame( array_slice( $this->post_ids, 0, 4 ), $second['served'] );
+		$this->assertSame( array_slice( $this->post_ids, 0, 4 ), $first['stored'] );
+		$this->assertSame( $first['stored'], $second['stored'], 'the entry must still hold the padded superset after the hit' );
 		$this->assertSame( array_slice( $this->post_ids, 1, 3 ), $first['rendered'] );
 
 		// So the second view can still drop its own current post and fill the grid.

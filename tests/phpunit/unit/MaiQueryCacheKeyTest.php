@@ -1,6 +1,7 @@
 <?php
 namespace BizBudding\MaiEngine\Tests\Unit;
 
+use Brain\Monkey\Functions;
 use BizBudding\MaiEngine\Tests\TestCase;
 use Mai_Query_Cache;
 
@@ -59,6 +60,86 @@ final class MaiQueryCacheKeyTest extends TestCase {
 		$this->assertNotSame(
 			$c->cache_key( [ 'post_type' => 'post' ], 'SELECT wp_posts.ID FROM wp_posts WHERE a=1' ),
 			$c->cache_key( [ 'post_type' => 'post' ], 'SELECT wp_posts.* FROM wp_posts WHERE a=2' )
+		);
+	}
+
+	public function test_a_datetime_in_the_sql_is_truncated_to_the_hour(): void {
+		$c = new Mai_Query_Cache();
+		$this->assertSame(
+			$c->cache_key( [ 'post_type' => 'post' ], "SELECT wp_posts.* FROM wp_posts WHERE wp_posts.post_date > '2026-09-30 15:24:24'" ),
+			$c->cache_key( [ 'post_type' => 'post' ], "SELECT wp_posts.* FROM wp_posts WHERE wp_posts.post_date > '2026-09-30 15:59:59'" )
+		);
+	}
+
+	/**
+	 * Freezes "now" at 15:24:30 site time, 19:24:30 UTC.
+	 */
+	private function freeze_now(): void {
+		Functions\when( 'current_time' )->alias(
+			fn( $type, $gmt = false ) => $gmt ? '2026-09-30 19:24:30' : '2026-09-30 15:24:30'
+		);
+	}
+
+	/**
+	 * The Events Calendar's end-date clause, with "now" as its value.
+	 */
+	private function event_vars( string $now ): array {
+		return [
+			'post_type'  => 'tribe_events',
+			'meta_query' => [
+				'tec_event_end_date' => [ 'key' => '_EventEndDate', 'value' => $now, 'compare' => '>=', 'type' => 'DATETIME' ],
+			],
+		];
+	}
+
+	public function test_a_query_that_holds_now_is_not_cacheable(): void {
+		// The Events Calendar writes "now" into the meta_query of every event query, to the
+		// second, so the key changes on every view. Caching it would never hit.
+		$this->freeze_now();
+		Functions\when( 'apply_filters' )->returnArg( 2 );
+
+		$this->assertFalse( ( new Mai_Query_Cache() )->is_cacheable( $this->event_vars( '2026-09-30 15:24:24' ) ) );
+	}
+
+	public function test_a_query_that_holds_now_in_utc_is_not_cacheable(): void {
+		$this->freeze_now();
+		Functions\when( 'apply_filters' )->returnArg( 2 );
+
+		$this->assertFalse( ( new Mai_Query_Cache() )->is_cacheable( $this->event_vars( '2026-09-30 19:24:24' ) ) );
+	}
+
+	public function test_a_datetime_far_from_now_keeps_its_own_key(): void {
+		// Two grids set to different absolute datetimes in the same hour, say "posts before this
+		// article" on two articles published half an hour apart, must not share an entry.
+		$this->freeze_now();
+
+		$c = new Mai_Query_Cache();
+
+		$this->assertNotSame(
+			$c->cache_key( [ 'post_type' => 'post', 'date_query' => [ 'before' => '2026-06-01 10:05:00' ] ], 'SELECT 1' ),
+			$c->cache_key( [ 'post_type' => 'post', 'date_query' => [ 'before' => '2026-06-01 10:40:00' ] ], 'SELECT 1' )
+		);
+
+		// And a datetime set on purpose, far from now, is still cached.
+		Functions\when( 'apply_filters' )->returnArg( 2 );
+		$this->assertTrue( $c->is_cacheable( [ 'post_type' => 'post', 'date_query' => [ 'before' => '2026-06-01 10:05:00' ] ] ) );
+	}
+
+	public function test_a_relative_date_in_the_query_vars_still_changes_the_key(): void {
+		// Two grids whose relative dates resolve within the same hour still differ in the vars.
+		$c = new Mai_Query_Cache();
+		$this->assertNotSame(
+			$c->cache_key( [ 'post_type' => 'post', 'date_query' => [ 'after' => '3 months ago' ] ], 'SELECT 1' ),
+			$c->cache_key( [ 'post_type' => 'post', 'date_query' => [ 'after' => '90 days ago' ] ], 'SELECT 1' )
+		);
+	}
+
+	public function test_only_a_whole_datetime_value_is_truncated(): void {
+		// A value that merely contains a datetime is not one, and stays as it is.
+		$c = new Mai_Query_Cache();
+		$this->assertNotSame(
+			$c->cache_key( [ 'post_type' => 'post', 's' => 'at 2026-09-30 15:24:24 sharp' ], 'SELECT 1' ),
+			$c->cache_key( [ 'post_type' => 'post', 's' => 'at 2026-09-30 15:24:26 sharp' ], 'SELECT 1' )
 		);
 	}
 }
