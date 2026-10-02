@@ -90,6 +90,83 @@ class Mai_Query_Cache {
 	private const SORTABLE_SLUGS = [ 'post_name__in' ];
 
 	/**
+	 * The one instance the hooks use. See instance().
+	 *
+	 * @var Mai_Query_Cache|null
+	 */
+	private static ?Mai_Query_Cache $instance = null;
+
+	/**
+	 * This request's queue: results waiting to be stored after the page, and keys already
+	 * rebuilt during it.
+	 *
+	 * @var Mai_Query_Cache_Queue
+	 */
+	private Mai_Query_Cache_Queue $queue;
+
+	/**
+	 * Sets up the queue.
+	 *
+	 * @since TBD
+	 *
+	 * @param Mai_Query_Cache_Queue|null $queue The queue. Default: a new one.
+	 */
+	public function __construct( ?Mai_Query_Cache_Queue $queue = null ) {
+		$this->queue = $queue ?? new Mai_Query_Cache_Queue();
+	}
+
+	/**
+	 * The one instance the hooks use, so the queue it holds is the one run at shutdown.
+	 *
+	 * @since TBD
+	 *
+	 * @return Mai_Query_Cache
+	 */
+	public static function instance(): Mai_Query_Cache {
+		return self::$instance ??= new self();
+	}
+
+	/**
+	 * Replaces the queue. Tests install a fresh one per pretend request.
+	 *
+	 * @since TBD
+	 *
+	 * @param Mai_Query_Cache_Queue $queue The queue.
+	 *
+	 * @return void
+	 */
+	public function set_queue( Mai_Query_Cache_Queue $queue ): void {
+		$this->queue = $queue;
+	}
+
+	/**
+	 * shutdown, at the latest priority: send the visitor their page, then store the results
+	 * that waited for it.
+	 *
+	 * The latest priority runs after WordPress flushes the output buffers (priority 1), and
+	 * after a page cache plugin that saves the page from an output buffer callback has saved
+	 * it. Does nothing when nothing is waiting, so a request with nothing queued is never
+	 * finished early.
+	 *
+	 * Each result is stored under the version read before its query ran, never one read now.
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	public function run_queue(): void {
+		if ( $this->queue->is_empty() ) {
+			return;
+		}
+
+		$this->queue->finish();
+
+		foreach ( $this->queue->take_stores() as $key => $store ) {
+			mai_cache( self::GROUP )->write_swr( (string) $key, $store['value'], $store['version'], $store['soft'], $store['hard'] );
+		}
+	}
+
+	/**
 	 * Build a stable cache key from the query vars and final SQL.
 	 *
 	 * Closely follows WordPress core's WP_Query cache-key derivation (generate_cache_key() plus the
@@ -288,6 +365,11 @@ class Mai_Query_Cache {
 	 * show. Its miss is answered later, by pre_query_kept(), so every other posts_pre_query
 	 * callback gets its turn first, exactly as it does for any other miss.
 	 *
+	 * A result this request already computed, and that is waiting to be stored after the page,
+	 * is served before the cache is read. See store().
+	 *
+	 * @since TBD Serves a result waiting in the queue.
+	 *
 	 * @param array|null $posts Posts (null to run the query normally).
 	 * @param WP_Query   $query The query.
 	 *
@@ -298,9 +380,22 @@ class Mai_Query_Cache {
 			return $posts;
 		}
 
-		$keep    = $this->keep_request( $posts, $query );
-		$cache   = mai_cache( self::GROUP );
-		$key     = $this->cache_key( $query->query_vars, (string) $query->request );
+		$keep  = $this->keep_request( $posts, $query );
+		$cache = mai_cache( self::GROUP );
+		$key   = $this->cache_key( $query->query_vars, (string) $query->request );
+
+		// A grid earlier on this page already ran this query, and its result is waiting to be
+		// stored after the page. Serve that rather than run the query again.
+		$pending = $this->queue->pending( $key );
+
+		if ( null !== $pending ) {
+			$served = $this->serve( $query, $pending['value'], $keep );
+
+			if ( null !== $served ) {
+				return $served;
+			}
+		}
+
 		$version = $cache->version( (array) ( $query->query_vars['post_type'] ?? 'post' ) );
 		$hit     = $cache->read_swr( $key, $version );
 
@@ -801,12 +896,22 @@ class Mai_Query_Cache {
 	}
 
 	/**
-	 * Write a result.
+	 * Write a result, now or after the page.
+	 *
+	 * Without a persistent object cache a write is two wp_options rows, so it waits in the
+	 * queue until the visitor has their page, and run_queue() writes it. Meanwhile pre_query()
+	 * serves it to any other grid with the same key. It is written now instead when:
+	 * - the site has a persistent object cache. The write is one fast SET, and requests that
+	 *   lost the cold-miss lock are waiting for it (wait_for_fill()).
+	 * - the queue has already run, so nothing would read the list again.
+	 * - this request cannot finish early. Waiting would only make the visitor wait longer.
+	 * - the cache cannot store at all. The write does nothing, and nothing should wait for it.
 	 *
 	 * Takes plain values only, never the query, so it can run after the page, once Mai_Grid has
 	 * put the query's vars back.
 	 *
 	 * @since TBD Takes the value and the lifetimes instead of the query.
+	 * @since TBD Waits until after the page on sites without a persistent object cache.
 	 *
 	 * @param string $key     Cache key.
 	 * @param string $version The version read before the query ran, never one read now. A post
@@ -819,7 +924,13 @@ class Mai_Query_Cache {
 	 * @return void
 	 */
 	private function store( string $key, string $version, array $value, int $soft, int $hard ): void {
-		mai_cache( self::GROUP )->write_swr( $key, $value, $version, $soft, $hard );
+		if ( wp_using_ext_object_cache() || $this->queue->finished() || ! $this->queue->can_finish_early() || ! $this->can_store() ) {
+			mai_cache( self::GROUP )->write_swr( $key, $value, $version, $soft, $hard );
+		} else {
+			$this->queue->add_store( $key, $version, $value, $soft, $hard );
+		}
+
+		$this->queue->mark_rebuilt( $key );
 	}
 
 	/**

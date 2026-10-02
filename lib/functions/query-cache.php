@@ -14,11 +14,12 @@ add_action( 'init', 'mai_register_query_cache' );
  *
  * @since 2.40.0
  * @since TBD Registers the grid ID tiebreaker.
+ * @since TBD Uses the shared instance, and runs its queue on shutdown.
  *
  * @return void
  */
 function mai_register_query_cache() {
-	$cache = new Mai_Query_Cache();
+	$cache = Mai_Query_Cache::instance();
 
 	add_filter( 'posts_pre_query', [ $cache, 'pre_query' ], 10, 2 );
 
@@ -35,6 +36,10 @@ function mai_register_query_cache() {
 	// page gets the grid's ORDER BY. It only touches queries with the mai_grid_tiebreak var.
 	// A static callable, so a second call replaces this entry rather than adding another.
 	add_filter( 'posts_orderby', [ 'Mai_Grid', 'add_deferred_orderby_tiebreaker' ], 99, 2 );
+
+	// Latest priority on purpose: after WordPress flushes the output buffers (priority 1), and
+	// after a page cache plugin has saved the page from its output buffer callback.
+	add_action( 'shutdown', [ $cache, 'run_queue' ], PHP_INT_MAX );
 
 	add_action( 'transition_post_status', [ $cache, 'on_transition' ], 10, 3 );
 	add_action( 'deleted_post', [ $cache, 'on_delete' ], 10, 2 );
