@@ -6,6 +6,92 @@ use BizBudding\MaiEngine\Tests\TestCase;
 use Mai_Query_Cache;
 
 final class MaiQueryCacheKeyTest extends TestCase {
+	/** @var mixed The $wpdb global as it was before the test, or null when there was none. */
+	private $saved_wpdb;
+
+	protected function setUp(): void {
+		parent::setUp();
+		$this->saved_wpdb = $GLOBALS['wpdb'] ?? null;
+	}
+
+	protected function tearDown(): void {
+		if ( null === $this->saved_wpdb ) {
+			unset( $GLOBALS['wpdb'] );
+		} else {
+			$GLOBALS['wpdb'] = $this->saved_wpdb;
+		}
+
+		parent::tearDown();
+	}
+
+	/**
+	 * Installs a $wpdb stand-in whose placeholder escape is $placeholder, as one request's
+	 * $wpdb->placeholder_escape() would return. Core makes a new one on every request.
+	 */
+	private function use_placeholder( string $placeholder ): void {
+		$GLOBALS['wpdb'] = new class( $placeholder ) {
+			public function __construct( private string $placeholder ) {}
+
+			public function placeholder_escape(): string {
+				return $this->placeholder;
+			}
+
+			public function remove_placeholder_escape( $query ) {
+				return str_replace( $this->placeholder, '%', $query );
+			}
+		};
+	}
+
+	/**
+	 * The vars and SQL of a grid with a LIKE '%foo%' clause, as $wpdb->prepare() leaves them
+	 * in one request: every % swapped for that request's placeholder. Core keeps a prepared
+	 * clause in search_orderby_title, so the placeholder reaches the query vars too.
+	 *
+	 * @return array{0:array,1:string}
+	 */
+	private function like_grid( string $placeholder ): array {
+		$like = "{$placeholder}foo{$placeholder}";
+
+		return [
+			[
+				'post_type'            => 'post',
+				's'                    => $like,
+				'search_orderby_title' => [ "wp_posts.post_title LIKE '{$like}'" ],
+			],
+			"SELECT wp_posts.* FROM wp_posts WHERE 1=1 AND wp_posts.post_title LIKE '{$like}' LIMIT 0, 12",
+		];
+	}
+
+	public function test_placeholder_escape_does_not_change_key(): void {
+		$c    = new Mai_Query_Cache();
+		$keys = [];
+
+		foreach ( [ '{1a2b3c4d}', '{5e6f7a8b}' ] as $placeholder ) {
+			$this->use_placeholder( $placeholder );
+
+			[ $vars, $sql ] = $this->like_grid( $placeholder );
+			$keys[]         = $c->cache_key( $vars, $sql );
+		}
+
+		$this->assertSame( $keys[0], $keys[1] );
+	}
+
+	public function test_placeholder_escape_is_not_stripped_without_a_full_wpdb(): void {
+		// Two unit test files install a $wpdb stand-in without the escape methods and leave it
+		// behind, so the key has to build without them rather than fatal.
+		[ $vars, $sql ] = $this->like_grid( '{1a2b3c4d}' );
+		$c              = new Mai_Query_Cache();
+
+		unset( $GLOBALS['wpdb'] );
+		$without = $c->cache_key( $vars, $sql );
+
+		$GLOBALS['wpdb'] = new class {
+			public string $posts = 'wp_posts';
+		};
+
+		$this->assertSame( $without, $c->cache_key( $vars, $sql ) );
+	}
+
 	public function test_arg_order_and_volatile_vars_do_not_change_the_key(): void {
 		$c = new Mai_Query_Cache();
 		$a = $c->cache_key( [ 'post_type' => 'post', 'post__in' => [ 3, 1, 2 ], 'fields' => 'ids', 'cache_results' => true, 'update_post_meta_cache' => false ], 'SELECT 1' );

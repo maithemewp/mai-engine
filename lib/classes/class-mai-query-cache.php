@@ -130,6 +130,27 @@ class Mai_Query_Cache {
 			}
 		}
 
+		// $wpdb->prepare() swaps every % for a placeholder that changes on every request, so a
+		// grid with a LIKE, in its SQL or in a query var such as search_orderby_title, got a new
+		// key on every view. Swap it back first, as core does (WP_Query::generate_cache_key()).
+		// Skipped where $wpdb is missing or a stand-in without these methods, as in unit tests.
+		$wpdb = $GLOBALS['wpdb'] ?? null;
+
+		if ( is_object( $wpdb ) && method_exists( $wpdb, 'placeholder_escape' ) && method_exists( $wpdb, 'remove_placeholder_escape' ) ) {
+			$placeholder = $wpdb->placeholder_escape();
+
+			array_walk_recursive(
+				$query_vars,
+				static function ( &$value ) use ( $wpdb, $placeholder ) {
+					if ( is_string( $value ) && str_contains( $value, $placeholder ) ) {
+						$value = $wpdb->remove_placeholder_escape( $value );
+					}
+				}
+			);
+
+			$sql = $wpdb->remove_placeholder_escape( $sql );
+		}
+
 		ksort( $query_vars );
 
 		// Normalize the SELECT field list out of the SQL: a split (SELECT wp_posts.ID) and a full
