@@ -19,7 +19,8 @@ defined( 'ABSPATH' ) || exit;
  * This is a separate interface, not a method on Store, because Store has been
  * public since 0.2.0 and a method added to it would break every custom store.
  * A Store that does not implement this is skipped on flush: the token still
- * rotates, and its old rows age out by TTL as before.
+ * rotates. Its old rows stay until their own expiry, as before. Rows written
+ * without an expiry, such as version rows, stay for good.
  *
  * @since 0.5.0
  */

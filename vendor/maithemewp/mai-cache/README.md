@@ -72,7 +72,7 @@ $value = $cache->remember( 'popular_posts', fn() => …, HOUR_IN_SECONDS );
 | `remember(string $key, callable $callback, int $expire)` | `mixed` | Get cached value; on miss, run callback and cache the result. WP_Error results are NOT cached. |
 | `pull(string $key, mixed $default = null)` | `mixed` | Read-once: get value and delete it in one call. Returns `$default` if missing. |
 | `get(string $key)` | `mixed` | Direct read. Returns `false` on miss or when caching is disabled. A stored `false` also reads as `false`, so use `has()` when `false` is a value you cache. |
-| `has(string $key)` | `bool` | Whether a value is stored, whatever it is -- including `false`. The only way to tell a stored `false` from a miss. |
+| `has(string $key)` | `bool` | Whether a value is stored, whatever it is, including `false`. The only way to tell a stored `false` from a miss. |
 | `set(string $key, mixed $value, int $expire)` | `bool` | Direct write. Returns `false` when caching is disabled. |
 | `delete(string $key)` | `bool` | Direct delete. |
 | `key(string $key)` | `string` | Builds the fully-prefixed transient key: prefix, storage schema, version token, optional group and its token, then your key. |
@@ -129,7 +129,9 @@ mai_cache()->flush();            // bust everything under this prefix
 
 `flush()` rotates the token, so the old entries can no longer be read. It then deletes their rows. With the default transient store and no persistent object cache, that removes the old rows from `wp_options`, 1000 rows at a time. With a persistent object cache it does nothing, because the object cache expires its own keys.
 
-A custom store can opt in by implementing `Mai\Cache\PrefixDelete`, which has one method: `delete_prefix( string $prefix ): int`. A store without it is skipped, and its old entries age out by TTL.
+`flush()` skips cleanup if a stored token is not the 12 lowercase hex characters mai-cache makes. The old rows then stay until their own expiry, and rows written without an expiry, such as version rows, stay for good.
+
+A custom store can opt in by implementing `Mai\Cache\PrefixDelete`, which has one method: `delete_prefix( string $prefix ): int`. A store without it is skipped. Its old entries stay until their own expiry, and entries written without an expiry, such as version rows, stay for good.
 
 ---
 
@@ -180,7 +182,7 @@ To test age-based staleness without waiting, replace the clock:
 $now = 1_000_000;
 Cache::set_clock( function () use ( &$now ) { return $now; } );
 
-$cache->write_swr( 'key', 'value', $version, 60 );
+$cache->write_swr( 'key', 'value', $version, 60, 3600 );
 
 $now += 61;
 $cache->read_swr( 'key', $version )['stale']; // 'age'
@@ -282,13 +284,13 @@ define( 'SCRIPT_DEBUG', true );
 
 ### Caching a `false`
 
-Values are stored in an envelope, so a stored `false` is a real hit: `remember()` will not re-run its callback for it. `get()` still returns `false` for both a miss and a stored `false`, because that is its long-standing contract -- reach for `has()` or `remember()` when the distinction matters.
+Values are stored in an envelope, so a stored `false` is a real hit: `remember()` will not re-run its callback for it. `get()` still returns `false` for both a miss and a stored `false`, because that is its long-standing contract. Use `has()` or `remember()` when the distinction matters.
 
 ```php
 $cache->set( 'has_tag', false, 300 );
 
-$cache->get( 'has_tag' );  // false -- same as a miss
-$cache->has( 'has_tag' );  // true  -- it is there
+$cache->get( 'has_tag' );  // false, same as a miss
+$cache->has( 'has_tag' );  // true, it is there
 ```
 
 ### Direct get / set when you need it

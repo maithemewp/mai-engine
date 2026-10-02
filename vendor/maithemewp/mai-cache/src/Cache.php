@@ -293,8 +293,9 @@ class Cache {
 	 * Invalidate the current scope by rotating its version token: the whole
 	 * prefix when ungrouped, or just this group when grouped. The old entries
 	 * become unreachable, and a store that implements PrefixDelete then deletes
-	 * them, version rows included. A store without it leaves them to age out by
-	 * TTL, as before.
+	 * them, version rows included. A store without it leaves them until their
+	 * own expiry, as before. Rows written without an expiry, such as version
+	 * rows, stay for good.
 	 *
 	 * The old prefix is the key prefix up to and including the token being
 	 * rotated. For a group that is "{prefix}_s1_{root token}_{group}_{old group token}_".
@@ -302,7 +303,8 @@ class Cache {
 	 * every group. Rows are deleted only when each token in that prefix is the
 	 * 12 lowercase hex characters new_token() makes. A stored token of any other
 	 * shape could stand for a broader prefix than one retired token, so cleanup is
-	 * skipped and the old rows age out by TTL. The token still rotates.
+	 * skipped. The old rows stay until their own expiry, and rows written without
+	 * an expiry, such as version rows, stay for good. The token still rotates.
 	 *
 	 * Intentionally not gated by can_cache() -- same rationale as delete().
 	 *
