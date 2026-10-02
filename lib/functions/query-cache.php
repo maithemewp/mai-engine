@@ -34,8 +34,8 @@ function mai_register_query_cache() {
 
 	// Registered for every query and left on, so an ID-only copy of a grid's query run after the
 	// page gets the grid's ORDER BY. It only touches queries with the mai_grid_tiebreak var.
-	// A static callable, so a second call replaces this entry rather than adding another.
-	add_filter( 'posts_orderby', [ 'Mai_Grid', 'add_deferred_orderby_tiebreaker' ], 99, 2 );
+	// A function name, so a second call replaces this entry rather than adding another.
+	add_filter( 'posts_orderby', 'mai_add_grid_orderby_tiebreaker', 99, 2 );
 
 	// Latest priority on purpose: after WordPress flushes the output buffers (priority 1), and
 	// after a page cache plugin has saved the page from its output buffer callback.
@@ -47,4 +47,25 @@ function mai_register_query_cache() {
 	if ( defined( 'WP_CLI' ) && WP_CLI && class_exists( 'WP_CLI' ) ) {
 		WP_CLI::add_hook( 'after_invoke:cache flush', [ $cache, 'flush_all' ] );
 	}
+}
+
+/**
+ * Appends the grid ID tiebreaker to a query's ORDER BY, when the query asks for it.
+ *
+ * Runs on every filtered query, so it checks the mai_grid_tiebreak query var first and only
+ * then loads Mai_Grid. A page with no deferred grid never loads that class for this.
+ *
+ * @since TBD
+ *
+ * @param string   $orderby The ORDER BY clause.
+ * @param WP_Query $query   The query.
+ *
+ * @return string
+ */
+function mai_add_grid_orderby_tiebreaker( $orderby, $query ) {
+	if ( empty( $query->query_vars['mai_grid_tiebreak'] ) ) {
+		return $orderby;
+	}
+
+	return Mai_Grid::add_deferred_orderby_tiebreaker( $orderby, $query );
 }

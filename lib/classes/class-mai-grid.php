@@ -1048,10 +1048,11 @@ class Mai_Grid {
 	/**
 	 * Appends a post ID tiebreaker to a deferred grid's ORDER BY.
 	 *
-	 * Public only because it is a hook target. Registered once on posts_orderby, in
-	 * mai_register_query_cache(), and it stays registered. It only touches a query carrying the
-	 * mai_grid_tiebreak query var that get_query() sets, so it cannot reach into any other
-	 * query. Staying registered means an ID-only copy of a grid's query, run after the page by
+	 * Public only because mai_add_grid_orderby_tiebreaker() calls it. That function is registered
+	 * once on posts_orderby, in mai_register_query_cache(), and it stays registered. It only
+	 * calls this for a query carrying the mai_grid_tiebreak query var that get_query() sets, so
+	 * Mai_Grid is not loaded for any other query and this cannot reach into one. Staying
+	 * registered means an ID-only copy of a grid's query, run after the page by
 	 * Mai_Query_Cache, gets the same ORDER BY as the grid did.
 	 *
 	 * Why it is needed: the deferred path asks for posts_per_page + N rows. When rows tie on

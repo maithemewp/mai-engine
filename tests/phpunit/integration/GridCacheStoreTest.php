@@ -7,6 +7,7 @@ use Mai\Cache\Cache;
 use Mai_Grid;
 use Mai_Query_Cache;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use WP_Query;
 
 /**
@@ -180,7 +181,7 @@ final class GridCacheStoreTest extends MaiIntegrationTestCase {
 			foreach ( $callbacks as $callback ) {
 				$function = $callback['function'];
 
-				if ( is_array( $function ) && 'add_deferred_orderby_tiebreaker' === ( $function[1] ?? '' ) ) {
+				if ( 'mai_add_grid_orderby_tiebreaker' === $function || ( is_array( $function ) && 'add_deferred_orderby_tiebreaker' === ( $function[1] ?? '' ) ) ) {
 					++$count;
 				}
 			}
@@ -328,11 +329,11 @@ final class GridCacheStoreTest extends MaiIntegrationTestCase {
 			$this->render( 'kept' );
 		}
 
-		// Tests and odd load orders can register the cache twice. WordPress keys a static
-		// callable by its name at a priority, so a second add replaces the first.
+		// Tests and odd load orders can register the cache twice. WordPress keys a function name
+		// by that name at a priority, so a second add replaces the first.
 		mai_register_query_cache();
 
-		$this->assertSame( 99, has_filter( 'posts_orderby', [ 'Mai_Grid', 'add_deferred_orderby_tiebreaker' ] ) );
+		$this->assertSame( 99, has_filter( 'posts_orderby', 'mai_add_grid_orderby_tiebreaker' ) );
 		$this->assertSame( 1, $this->tiebreaker_registrations() );
 	}
 
@@ -340,7 +341,7 @@ final class GridCacheStoreTest extends MaiIntegrationTestCase {
 		global $wpdb;
 
 		// Live for every query, so the negative below is real.
-		$this->assertSame( 99, has_filter( 'posts_orderby', [ 'Mai_Grid', 'add_deferred_orderby_tiebreaker' ] ) );
+		$this->assertSame( 99, has_filter( 'posts_orderby', 'mai_add_grid_orderby_tiebreaker' ) );
 
 		$args = [
 			'post_type'      => 'post',
@@ -352,5 +353,30 @@ final class GridCacheStoreTest extends MaiIntegrationTestCase {
 
 		$this->assertStringNotContainsString( "{$wpdb->posts}.ID", $this->final_orderby( $args ), 'a query without mai_grid_tiebreak' );
 		$this->assertStringEndsWith( ", {$wpdb->posts}.ID DESC", $this->final_orderby( $args + [ 'mai_grid_tiebreak' => true ] ), 'the same query with it' );
+	}
+
+	/**
+	 * A query without the var never loads Mai_Grid, so a page with no deferred grid does not pay
+	 * for the class on every filtered query. Its own process, because a loaded class stays loaded.
+	 */
+	#[RunInSeparateProcess]
+	public function test_tiebreaker_does_not_load_the_grid_class_for_other_queries(): void {
+		$this->assertFalse( class_exists( 'Mai_Grid', false ), 'not loaded before the queries' );
+
+		$orderby = $this->final_orderby( [
+			'post_type'      => 'post',
+			'posts_per_page' => self::PER_PAGE,
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+			'no_found_rows'  => true,
+		] );
+
+		$this->assertStringContainsString( 'post_date', $orderby, 'the query did run through posts_orderby' );
+		$this->assertFalse( class_exists( 'Mai_Grid', false ), 'still not loaded after a query without mai_grid_tiebreak' );
+
+		// The same query with the var is what loads it, so the check above can fail.
+		$this->final_orderby( [ 'post_type' => 'post', 'orderby' => 'date', 'mai_grid_tiebreak' => true ] );
+
+		$this->assertTrue( class_exists( 'Mai_Grid', false ), 'loaded once a query asks for the tiebreaker' );
 	}
 }
