@@ -539,8 +539,9 @@ class Mai_Query_Cache {
 
 		// Only an error from the copy's own statement, which is the last one it runs. When core
 		// answers the copy from its cache, that statement never runs, and last_error belongs to
-		// whatever ran before, possibly some callback's own query.
-		if ( $wpdb->last_error && $wpdb->last_query === $copy->request ) {
+		// whatever ran before, possibly some callback's own query. last_query is recorded with
+		// the placeholder escape already stripped, so the request is compared the same way.
+		if ( $wpdb->last_error && $wpdb->last_query === $wpdb->remove_placeholder_escape( (string) $copy->request ) ) {
 			unset( $query->mai_cache_store_key, $query->mai_cache_store_version );
 
 			return null;
@@ -643,6 +644,39 @@ class Mai_Query_Cache {
 		}
 
 		return null;
+	}
+
+	/**
+	 * posts_results, at the earliest priority: store nothing when the grid's query failed.
+	 *
+	 * A failed statement returns no rows, and storing that would show an empty grid until the
+	 * entry expires. Only an error from the grid's own statement counts, so it is checked here,
+	 * while that statement is still the last one run. By the_posts, the last one is usually a
+	 * priming query. When core or another callback answered without running the statement,
+	 * last_error belongs to whatever ran before, so it does not count.
+	 *
+	 * $wpdb records last_query after the query filter, where it strips its placeholder escape,
+	 * so the request is compared the same way. A grid with a LIKE holds that escape.
+	 *
+	 * @since TBD
+	 *
+	 * @param array    $posts The posts.
+	 * @param WP_Query $query The query.
+	 *
+	 * @return array
+	 */
+	public function posts_results( $posts, $query ) {
+		global $wpdb;
+
+		if ( empty( $query->mai_cache_store_key ) || ! $wpdb->last_error ) {
+			return $posts;
+		}
+
+		if ( $wpdb->last_query === $wpdb->remove_placeholder_escape( (string) $query->request ) ) {
+			unset( $query->mai_cache_store_key, $query->mai_cache_store_version );
+		}
+
+		return $posts;
 	}
 
 	/**

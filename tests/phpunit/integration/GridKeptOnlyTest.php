@@ -848,6 +848,62 @@ final class GridKeptOnlyTest extends MaiIntegrationTestCase {
 	}
 
 	/**
+	 * The same, for a grid whose SQL holds a LIKE '%...%'. $wpdb records last_query after the
+	 * query filter, where it strips its placeholder escape, so the ID query's own statement is
+	 * compared without the escape too.
+	 */
+	public function test_a_failed_id_query_with_a_like_is_not_stored(): void {
+		global $wpdb;
+
+		$prepared = $this->prepare( 'both_many' );
+		$broken   = false;
+
+		// A LIKE '%title%' on the grid and its ID query. Factory titles all hold "title".
+		$like = static function ( $where, $query ) use ( $wpdb ) {
+			if ( empty( $query->query_vars['mai_grid_tiebreak'] ) ) {
+				return $where;
+			}
+
+			return $where . $wpdb->prepare( " AND {$wpdb->posts}.post_title LIKE %s", '%' . $wpdb->esc_like( 'title' ) . '%' );
+		};
+
+		// Breaks the ID query's own statement, once.
+		$break = static function ( $sql, $query ) use ( &$broken ) {
+			if ( ! $broken && 'ids' === ( $query->query_vars['fields'] ?? '' ) && ! empty( $query->query_vars['mai_grid_tiebreak'] ) ) {
+				$broken = true;
+
+				return $sql . ' BROKEN';
+			}
+
+			return $sql;
+		};
+
+		add_filter( 'posts_where', $like, 10, 2 );
+
+		$this->flush_result_cache();
+		$baseline = $this->ids( $this->run_grid( $prepared['args'], 'copy_declined' ) );
+
+		add_filter( 'posts_request', $break, 10, 2 );
+		$suppress = $wpdb->suppress_errors( true );
+
+		$this->flush_result_cache();
+		[ $miss, $miss_stores ] = $this->count_stores( fn() => $this->run_grid( $prepared['args'] ) );
+		[ $next, $next_stores ] = $this->count_stores( fn() => $this->run_grid( $prepared['args'] ) );
+
+		$wpdb->suppress_errors( $suppress );
+		remove_filter( 'posts_request', $break, 10 );
+		remove_filter( 'posts_where', $like, 10 );
+
+		$this->assertTrue( $broken, 'the ID query was broken' );
+		$this->assertStringContainsString( $wpdb->placeholder_escape(), $miss->request, 'the grid SQL holds the placeholder escape' );
+		$this->assertCount( self::PER_PAGE, $baseline );
+		$this->assertSame( $baseline, $this->ids( $miss ), 'the grid fell back to its own query' );
+		$this->assertSame( 0, $miss_stores, 'nothing stored from the failed view' );
+		$this->assertSame( $baseline, $this->ids( $next ) );
+		$this->assertSame( 1, $next_stores, 'the next view fills the entry' );
+	}
+
+	/**
 	 * An empty ID list is not trusted. Core stores a failed statement's empty result in its
 	 * query cache like any other, and a failure fetch_ids() cannot see, here one in a query
 	 * filter that rewrote the statement, looks the same. The grid's own query answers instead,
