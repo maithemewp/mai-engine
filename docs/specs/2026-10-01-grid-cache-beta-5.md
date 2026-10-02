@@ -190,7 +190,7 @@ Fleet check (2026-10-01): every BizBudding server runs PHP-FPM 8.2 to 8.4. The t
    - takes `lock()` for the key, the same lock the during-page rebuild uses (`mai_query_cache_lock_ttl`, 5 seconds, never released), and skips if it loses;
    - runs the ID-only copy from the captured args and checks its key against the captured key;
    - stores the IDs under the captured version, with `'by' => 'ids'` and the captured lifetimes;
-   - on a decline, deletes the entry and logs it when `WP_DEBUG_LOG` is on. The next visitor gets a cold miss, which on a persistent object cache is single-flighted.
+   - on a decline, deletes the entry, releases the lock if the job still holds it (it finished at least a second inside the lock's lifetime), and logs it when `WP_DEBUG_LOG` is on. The next visitor gets a cold miss, which on a persistent object cache is single-flighted. A job that throws is handled the same way, always logged, and the next job still runs (decided 2026-10-02).
 5. Each job logs how long it took when `WP_DEBUG_LOG` is on.
 
 There is no re-read of the entry before the job runs. Inside one request, a re-read returns that request's own copy, not the store (Redis drop-in `object-cache.php:1920`; `get_option()` serves the in-request options cache, `option.php:202`), so it could never see another request's write. Correctness does not depend on it: storing under the captured version means a save during the rebuild still reads as stale.
@@ -236,7 +236,7 @@ On read, an entry is version-stale when its version no longer matches the curren
   - Afterwards, clear the `alloptions` cache (`wp_cache_delete( 'alloptions', 'options' )`), since version rows are autoloaded.
   - The `Store` interface has been public since 0.2.0, so it gains no methods. Prefix delete goes on a separate optional interface that `TransientStore` and `ObjectCacheStore` implement. A custom store without it is skipped.
 
-Release as mai-cache 0.5.0: soft and hard expiry, the injectable clock, and both fixes. `lock()` does not change. Bump the version passed to `Mai_Cache_Bootstrap::register()` in `init.php:98`, tag `v0.5.0` on GitHub, and raise Mai Engine's constraint to `^0.5.0`.
+Release as mai-cache 0.5.0: soft and hard expiry, the injectable clock, both fixes, and `unlock()`, which Mai Engine calls when a rebuild after the page gives up (decided 2026-10-02). `lock()` does not change. Bump the version passed to `Mai_Cache_Bootstrap::register()` in `init.php:98`, tag `v0.5.0` on GitHub, and raise Mai Engine's constraint to `^0.5.0`.
 
 ### 5. Fixes (Mai Engine)
 
