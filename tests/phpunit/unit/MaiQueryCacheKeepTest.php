@@ -124,24 +124,6 @@ final class MaiQueryCacheKeepTest extends TestCase {
 		$this->assertObjectNotHasProperty( 'mai_grid_kept_primed', $query, 'what replaced it was never primed' );
 	}
 
-	public function test_pre_query_kept_takes_the_key_record_off_the_query_when_it_declines(): void {
-		// The record holds the query's vars. Left on the query it would outlive this run.
-		$record = [ 'key' => 'k', 'query_vars' => [], 'request' => self::SQL ];
-
-		$theirs                         = [ (object) [ 'ID' => 5 ] ];
-		$answered                       = $this->query();
-		$answered->mai_cache_key_record = $record;
-
-		$this->assertSame( $theirs, ( new Mai_Query_Cache() )->pre_query_kept( $theirs, $answered ) );
-		$this->assertObjectNotHasProperty( 'mai_cache_key_record', $answered );
-
-		$counts                       = $this->query( [ 'no_found_rows' => false ] );
-		$counts->mai_cache_key_record = $record;
-
-		$this->assertNull( ( new Mai_Query_Cache() )->pre_query_kept( null, $counts ) );
-		$this->assertObjectNotHasProperty( 'mai_cache_key_record', $counts );
-	}
-
 	public function test_pre_query_kept_ignores_queries_without_the_marker(): void {
 		$query = (object) [ 'query_vars' => [], 'request' => self::SQL ];
 
