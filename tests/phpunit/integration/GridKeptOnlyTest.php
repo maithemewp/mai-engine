@@ -970,13 +970,13 @@ final class GridKeptOnlyTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * An empty ID list is only trusted when no error could be hiding behind it. Here a query
-	 * filter rewrites the ID query's statement into one that fails, so last_query is the
-	 * rewritten text and fetch_ids() cannot tell the failure from an error some other statement
-	 * left behind. The empty result is not stored. The grid's own query answers, the_posts
-	 * stores what it finds without the 'by' => 'ids' mark, and core's query cache is left alone.
+	 * Here a query filter rewrites the ID query's statement into one that fails, so last_query
+	 * is the rewritten text, not the ID query's request. A statement still reached the database
+	 * while the ID query ran, and the last one failed, so the failure counts as the ID query's.
+	 * Nothing is stored, the grid's own query answers, and core forgets the failed empty list.
+	 * The next view runs the ID query again and stores the real list.
 	 */
-	public function test_a_failure_hidden_by_a_query_filter_falls_back_to_the_grid_query(): void {
+	public function test_a_failure_hidden_by_a_query_filter_is_forgotten_and_not_stored(): void {
 		global $wpdb;
 
 		$prepared = $this->prepare( 'both_many' );
@@ -1015,7 +1015,8 @@ final class GridKeptOnlyTest extends MaiIntegrationTestCase {
 
 		$after_miss = wp_cache_get_last_changed( 'posts' );
 
-		[ $hit, $hit_sql ] = $this->capture_sql( fn() => $this->run_grid( $prepared['args'] ) );
+		// Core's query cache is kept as the failed view left it.
+		[ [ $next, $next_sql ], $next_stores ] = $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( $prepared['args'] ) ) );
 
 		$wpdb->suppress_errors( $suppress );
 		remove_filter( 'posts_pre_query', $capture, 9 );
@@ -1026,11 +1027,12 @@ final class GridKeptOnlyTest extends MaiIntegrationTestCase {
 		$this->assertTrue( $broken, 'the ID query was broken' );
 		$this->assertCount( 2, $this->grid_selects( $sql ), 'the broken ID query, then the grid\'s own query' );
 		$this->assertSame( $baseline, $this->ids( $miss ), 'the grid fell back to its own query' );
-		$this->assertSame( 1, $stores, 'and stored what that query found' );
-		$this->assertArrayNotHasKey( 'by', $stored['value'], 'stored by the_posts, not by the ID query' );
-		$this->assertSame( $before, $after_miss, 'core\'s query cache was left alone' );
-		$this->assertSame( [], $this->grid_selects( $hit_sql ), 'served from the entry' );
-		$this->assertSame( $baseline, $this->ids( $hit ) );
+		$this->assertSame( 0, $stores, 'nothing stored from the failed view' );
+		$this->assertNotSame( $before, $after_miss, 'core forgot the failed empty list' );
+		$this->assertCount( 1, $this->grid_selects( $next_sql ), 'the next view ran the ID query, rather than read the failed list back' );
+		$this->assertSame( $baseline, $this->ids( $next ) );
+		$this->assertSame( 1, $next_stores );
+		$this->assertSame( 'ids', $stored['value']['by'] ?? null, 'stored by the ID query' );
 	}
 
 	/**
@@ -1052,16 +1054,28 @@ final class GridKeptOnlyTest extends MaiIntegrationTestCase {
 			}
 		};
 
+		$key     = '';
+		$capture = static function ( $posts, $query ) use ( &$key ) {
+			$key = ( new Mai_Query_Cache() )->cache_key( $query->query_vars, (string) $query->request );
+
+			return $posts;
+		};
+
 		add_action( 'pre_get_posts', $noise );
+		add_filter( 'posts_pre_query', $capture, 9, 2 );
 		$suppress = $wpdb->suppress_errors( true );
 
 		$this->flush_result_cache();
 		[ $query, $stores ] = $this->count_stores( fn() => $this->run_grid( $prepared['args'] ) );
 
 		$wpdb->suppress_errors( $suppress );
+		remove_filter( 'posts_pre_query', $capture, 9 );
 		remove_action( 'pre_get_posts', $noise );
 
+		$stored = mai_cache( 'grid' )->read_swr( $key, mai_cache( 'grid' )->version( [ 'post' ] ) );
+
 		$this->assertSame( 1, $stores, 'core answered the ID query, so the entry is stored' );
+		$this->assertSame( 'ids', $stored['value']['by'] ?? null, 'by the ID query, not by the grid\'s own query' );
 		$this->assertCount( self::PER_PAGE, $this->ids( $query ) );
 	}
 
