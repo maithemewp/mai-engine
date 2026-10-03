@@ -970,20 +970,18 @@ final class GridKeptOnlyTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * An empty ID list is not trusted. Core stores a failed statement's empty result in its
-	 * query cache like any other, and a failure fetch_ids() cannot see, here one in a query
-	 * filter that rewrote the statement, looks the same. The grid's own query answers instead,
-	 * and its result is what gets stored.
+	 * An empty ID list is an empty grid, stored and served like any other list. The cost is one
+	 * failure fetch_ids() cannot see: a statement a query filter rewrote on its way to the
+	 * database, so last_query is not the ID query's request. Its empty result is stored as an
+	 * empty grid, with no second query, and served until the entry goes out of date. Here a
+	 * post save does that, and the next view shows the posts again.
 	 */
-	public function test_an_empty_id_list_falls_back_to_the_grid_query(): void {
+	public function test_a_failure_hidden_by_a_query_filter_is_stored_as_an_empty_grid(): void {
 		global $wpdb;
 
 		$prepared = $this->prepare( 'both_many' );
 		$padded   = self::PER_PAGE + count( $prepared['excluded'] );
 		$broken   = false;
-
-		$this->flush_result_cache();
-		$baseline = $this->ids( $this->run_grid( $prepared['args'], 'copy_declined' ) );
 
 		// Breaks the first ID-only statement over the padded window, once, as it reaches the database.
 		$break = static function ( $sql ) use ( &$broken, $padded, $wpdb ) {
@@ -996,20 +994,40 @@ final class GridKeptOnlyTest extends MaiIntegrationTestCase {
 			return $sql;
 		};
 
+		$key     = '';
+		$capture = static function ( $posts, $query ) use ( &$key ) {
+			$key = ( new Mai_Query_Cache() )->cache_key( $query->query_vars, (string) $query->request );
+
+			return $posts;
+		};
+
 		add_filter( 'query', $break );
+		add_filter( 'posts_pre_query', $capture, 9, 2 );
 		$suppress = $wpdb->suppress_errors( true );
 
 		$this->flush_result_cache();
-		[ $miss, $stores ] = $this->count_stores( fn() => $this->run_grid( $prepared['args'] ) );
-		$hit = $this->run_grid( $prepared['args'] );
+		[ [ $miss, $sql ], $stores ] = $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( $prepared['args'] ) ) );
+		[ $hit, $hit_sql ]           = $this->capture_sql( fn() => $this->run_grid( $prepared['args'] ) );
 
 		$wpdb->suppress_errors( $suppress );
+		remove_filter( 'posts_pre_query', $capture, 9 );
 		remove_filter( 'query', $break );
 
+		$stored = mai_cache( 'grid' )->read_swr( $key, mai_cache( 'grid' )->version( [ 'post' ] ) );
+
 		$this->assertTrue( $broken, 'the ID query was broken' );
-		$this->assertSame( $baseline, $this->ids( $miss ), 'the grid fell back to its own query' );
-		$this->assertSame( 1, $stores, 'and stored what that query found' );
-		$this->assertSame( $baseline, $this->ids( $hit ) );
+		$this->assertCount( 1, $this->grid_selects( $sql ), 'only the ID query ran' );
+		$this->assertSame( [], $this->ids( $miss ), 'an empty grid' );
+		$this->assertSame( 1, $stores );
+		$this->assertSame( [ 'ids' => [], 'found' => 0, 'by' => 'ids' ], $stored['value'], 'stored as an empty grid' );
+		$this->assertSame( [], $this->grid_selects( $hit_sql ), 'served from the entry' );
+		$this->assertSame( [], $this->ids( $hit ) );
+
+		$new    = self::factory()->post->create( [ 'post_status' => 'publish', 'post_category' => [ $this->term_id ] ] );
+		$healed = $this->ids( $this->run_grid( $prepared['args'] ) );
+
+		$this->assertCount( self::PER_PAGE, $healed, 'a save puts the posts back' );
+		$this->assertSame( $new, $healed[0] );
 	}
 
 	/**

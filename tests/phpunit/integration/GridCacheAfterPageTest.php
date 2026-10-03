@@ -45,6 +45,9 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 
 	private int $term_id = 0;
 
+	/** A category with no posts in it, for the empty grid. */
+	private int $empty_term_id = 0;
+
 	/** What the mai-cache clock reads. Tests move it forward. */
 	private int $now = 0;
 
@@ -74,7 +77,8 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 
 		Cache::set_clock( fn() => $this->now );
 
-		$this->term_id = self::factory()->term->create( [ 'taxonomy' => 'category' ] );
+		$this->term_id       = self::factory()->term->create( [ 'taxonomy' => 'category' ] );
+		$this->empty_term_id = self::factory()->term->create( [ 'taxonomy' => 'category' ] );
 
 		// Ten posts one day apart, the newest a day old. Views tie in pairs after the first, so
 		// the ID tiebreaker settles the order of a views grid.
@@ -165,6 +169,7 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 	 * The grid for a shape.
 	 *
 	 * - current, views: on a single post, with Exclude current. views sorts by a meta number.
+	 * - empty: like current, over a category with no posts.
 	 * - displayed: on the home page, with Exclude displayed.
 	 * - plain: on the home page, with no excludes, so it does not defer.
 	 */
@@ -182,6 +187,7 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 
 		return match ( $shape ) {
 			'current'   => $args,
+			'empty'     => array_merge( $args, [ 'taxonomies' => [ [ 'taxonomy' => 'category', 'terms' => [ $this->empty_term_id ], 'current' => false, 'operator' => 'IN' ] ] ] ),
 			'displayed' => array_merge( $args, [ 'excludes' => [ 'exclude_displayed' ] ] ),
 			'views'     => array_merge( $args, [ 'orderby' => 'meta_value_num', 'orderby_meta_key' => self::VIEWS, 'order' => 'DESC' ] ),
 			'plain'     => array_merge( $args, [ 'excludes' => [] ] ),
@@ -190,7 +196,7 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 
 	/** Goes to the page a shape needs. */
 	private function visit( string $shape ): void {
-		$this->go_to( in_array( $shape, [ 'current', 'views' ], true ) ? get_permalink( $this->post_ids[0] ) : home_url( '/' ) );
+		$this->go_to( in_array( $shape, [ 'current', 'views', 'empty' ], true ) ? get_permalink( $this->post_ids[0] ) : home_url( '/' ) );
 
 		Mai_Grid::$existing_post_ids = 'displayed' === $shape ? [ 'post' => [ $this->post_ids[1] ] ] : [];
 	}
@@ -250,29 +256,44 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 		return [ 'query' => $query, 'key' => $key, 'answered' => $answered, 'selects' => $selects ];
 	}
 
-	/**
-	 * Runs the callback and counts the grid statements it ran: against the posts table and
-	 * carrying a LIMIT. Priming reads have none.
-	 *
-	 * @return array{0:mixed,1:int}
-	 */
-	private function count_selects( callable $callback ): array {
+	/** Whether a statement is a grid statement: against the posts table and carrying a LIMIT. Priming reads have none. */
+	private static function is_grid_statement( string $sql ): bool {
 		global $wpdb;
 
-		$selects = 0;
-		$count   = static function ( $sql ) use ( &$selects, $wpdb ) {
-			if ( preg_match( '/\bFROM\s+' . preg_quote( $wpdb->posts, '/' ) . '\b/', $sql ) && str_contains( $sql, 'LIMIT' ) ) {
-				++$selects;
+		return preg_match( '/\bFROM\s+' . preg_quote( $wpdb->posts, '/' ) . '\b/', $sql ) && str_contains( $sql, 'LIMIT' );
+	}
+
+	/**
+	 * Runs the callback and records the grid statements it ran, as they went to the database.
+	 *
+	 * @return array{0:mixed,1:string[]}
+	 */
+	private function grid_statements( callable $callback ): array {
+		$statements = [];
+		$record     = static function ( $sql ) use ( &$statements ) {
+			if ( self::is_grid_statement( (string) $sql ) ) {
+				$statements[] = (string) $sql;
 			}
 
 			return $sql;
 		};
 
-		add_filter( 'query', $count );
+		add_filter( 'query', $record );
 		$result = $callback();
-		remove_filter( 'query', $count );
+		remove_filter( 'query', $record );
 
-		return [ $result, $selects ];
+		return [ $result, $statements ];
+	}
+
+	/**
+	 * Runs the callback and counts the grid statements it ran.
+	 *
+	 * @return array{0:mixed,1:int}
+	 */
+	private function count_selects( callable $callback ): array {
+		[ $result, $statements ] = $this->grid_statements( $callback );
+
+		return [ $result, count( $statements ) ];
 	}
 
 	/** Runs the queue as shutdown would, and returns how many grid statements it ran. */
@@ -922,17 +943,13 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 	 * fails it without changing its SQL.
 	 */
 	public function test_failed_copy_statement_deletes_entry_and_releases_the_lock(): void {
-		global $wpdb;
-
 		$warm = $this->warm( 'current' );
 
 		$this->age();
 		$this->new_request( 'current' );
 		$this->render( 'current' );
 
-		$is_grid_statement = static fn( $sql ) => preg_match( '/\bFROM\s+' . preg_quote( $wpdb->posts, '/' ) . '\b/', $sql ) && str_contains( $sql, 'LIMIT' );
-
-		[ $selects, $refused ] = $this->refuse_once( $is_grid_statement, fn() => $this->run_queue() );
+		[ $selects, $refused ] = $this->refuse_once( self::is_grid_statement( ... ), fn() => $this->run_queue() );
 
 		$this->assertTrue( $refused, 'the copy\'s statement was refused' );
 		$this->assertSame( 1, $selects );
@@ -1126,5 +1143,226 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 
 		$this->assertSame( 1, $this->run_queue(), 'just under it, the job runs' );
 		$this->assertTrue( $this->stored( $warm['key'] )['fresh'] );
+	}
+
+	// ---- An empty grid ----
+
+	/** Whether a post joins the empty grid's category, without a save, before the job runs. */
+	public static function empty_grid_changes(): array {
+		return [
+			'still empty'                  => [ false ],
+			'a post joined without a save' => [ true ],
+		];
+	}
+
+	/**
+	 * The ID-only copy finding nothing is an answer, not a reason to run the grid's own query
+	 * as well. A cold miss runs that one statement, shows no posts, and stores the empty list
+	 * with the marker.
+	 */
+	public function test_empty_grid_cold_miss_runs_one_query_and_stores_the_empty_list(): void {
+		global $wpdb;
+
+		$this->new_request( 'empty' );
+
+		[ $grid, $statements ] = $this->grid_statements( fn() => $this->render( 'empty' ) );
+
+		$this->assertFalse( $grid['answered'], 'a cold miss' );
+		$this->assertCount( 1, $statements, 'one grid statement' );
+		$this->assertMatchesRegularExpression( '/^\s*SELECT\s+' . preg_quote( $wpdb->posts, '/' ) . '\.ID\s+FROM\s/', $statements[0], 'the ID-only copy' );
+		$this->assertSame( [], $this->ids( $grid['query'] ), 'no posts' );
+		$this->assertSame( 0, $grid['query']->post_count );
+
+		$this->run_queue();
+
+		$stored = $this->stored( $grid['key'] );
+
+		$this->assertTrue( $stored['fresh'] ?? false, 'stored' );
+		$this->assertSame( [ 'ids' => [], 'found' => 0, 'by' => 'ids' ], $stored['value'] );
+	}
+
+	/**
+	 * The stored empty list is served like any other entry: from the store waiting for after
+	 * the page, and on the next request from the cache. Neither runs a grid statement. Core's
+	 * query cache is emptied before the second render, so only the result cache could answer it.
+	 */
+	public function test_empty_grid_is_served_from_the_cache(): void {
+		$this->new_request( 'empty' );
+
+		$cold = $this->render( 'empty' );
+
+		wp_cache_flush_group( 'post-queries' );
+
+		$same_page = $this->render( 'empty' );
+
+		$this->run_queue();
+		$this->new_request( 'empty' );
+
+		$next = $this->render( 'empty' );
+
+		$this->assertSame( 1, $cold['selects'] );
+
+		foreach ( [ 'same page' => $same_page, 'next request' => $next ] as $name => $grid ) {
+			$this->assertSame( $cold['key'], $grid['key'], $name );
+			$this->assertTrue( $grid['answered'], "{$name}: a hit" );
+			$this->assertSame( 0, $grid['selects'], "{$name}: no grid statement" );
+			$this->assertSame( [], $this->ids( $grid['query'] ), "{$name}: no posts" );
+			$this->assertNull( $grid['query']->post, "{$name}: no current post" );
+		}
+
+		$this->assertSame( [], $this->queue->jobs(), 'fresh, so nothing queued' );
+	}
+
+	/**
+	 * An aged empty entry carries the marker, so it is served as it is and rebuilt after the
+	 * page, like any other. When a post joins the category without a save, the rebuild finds it.
+	 */
+	#[DataProvider( 'empty_grid_changes' )]
+	public function test_aged_empty_entry_is_rebuilt_after_the_page( bool $joined ): void {
+		$warm = $this->warm( 'empty' );
+
+		$this->assertSame( [], $warm['ids'] );
+
+		if ( $joined ) {
+			$before = $this->version();
+
+			wp_set_object_terms( $this->outsider, [ $this->empty_term_id ], 'category', true );
+
+			$this->assertSame( $before, $this->version(), 'no save, so the version stays' );
+		}
+
+		$this->age();
+		$this->new_request( 'empty' );
+
+		$version = $this->version();
+		$grid    = $this->render( 'empty' );
+
+		$this->assertTrue( $grid['answered'], 'served from the entry' );
+		$this->assertSame( 0, $grid['selects'], 'no grid query during the page' );
+		$this->assertSame( [], $this->ids( $grid['query'] ), 'the old, empty list' );
+		$this->assertTrue( $this->queue->has_job( $warm['key'] ), 'queued' );
+
+		$this->assertSame( 1, $this->run_queue(), 'the job ran its query' );
+		$this->assertSame( 1, $this->finishes, 'after the response was finished' );
+
+		$stored   = $this->stored( $warm['key'] );
+		$envelope = $this->envelope( $warm['key'] );
+		$expected = $joined ? [ $this->outsider ] : [];
+
+		$this->assertTrue( $stored['fresh'] );
+		$this->assertSame( $this->now, $envelope['w'], 'written now' );
+		$this->assertSame( $version, $envelope['_v'] );
+		$this->assertSame( [ 'ids' => $expected, 'found' => 0, 'by' => 'ids' ], $stored['value'] );
+
+		$this->new_request( 'empty' );
+
+		$next = $this->render( 'empty' );
+
+		$this->assertTrue( $next['answered'] );
+		$this->assertSame( 0, $next['selects'] );
+		$this->assertSame( $expected, $this->ids( $next['query'] ) );
+	}
+
+	/** A post published into the empty grid's category changes the version, so the next render shows it. */
+	public function test_post_added_to_an_empty_grid_shows_on_the_next_render(): void {
+		$warm   = $this->warm( 'empty' );
+		$before = $this->version();
+		$new    = self::factory()->post->create( [ 'post_status' => 'publish', 'post_category' => [ $this->empty_term_id ] ] );
+
+		$this->assertNotSame( $before, $this->version(), 'the save changed the version' );
+
+		$this->new_request( 'empty' );
+
+		$this->assertSame( 'version', $this->stored( $warm['key'] )['stale'] );
+
+		$grid = $this->render( 'empty' );
+
+		$this->assert_rebuilt_during_page( $grid );
+		$this->assertSame( [ $new ], $this->ids( $grid['query'] ), 'the new post shows' );
+
+		$this->run_queue();
+
+		$this->assertSame( [ 'ids' => [ $new ], 'found' => 0, 'by' => 'ids' ], $this->stored( $warm['key'] )['value'] );
+	}
+
+	/** The two ways an ID-only copy cannot stand in for the grid's query. */
+	public static function copy_declines(): array {
+		return [
+			'the copy selects more than the ID' => [ 'fields' ],
+			'the copy\'s key differs'            => [ 'key' ],
+		];
+	}
+
+	/**
+	 * An empty copy is still checked like any other. One that cannot stand in for the grid's
+	 * query is not an answer, so the grid's own query runs, and the_posts stores its empty
+	 * result without the marker.
+	 */
+	#[DataProvider( 'copy_declines' )]
+	public function test_empty_copy_that_cannot_stand_in_falls_back_to_the_grid_query( string $decline ): void {
+		$is_copy = static fn( $query ) => 'ids' === ( $query->query_vars['fields'] ?? '' ) && ! empty( $query->query_vars['mai_grid_tiebreak'] );
+
+		[ $hook, $change ] = match ( $decline ) {
+			'fields' => [ 'posts_fields', static fn( $fields, $query ) => $is_copy( $query ) ? $fields . ', 1 AS mai_test_column' : $fields ],
+			'key'    => [ 'posts_request', static fn( $sql, $query ) => $is_copy( $query ) ? str_replace( 'WHERE 1=1', 'WHERE 1=1 AND 2=2', $sql ) : $sql ],
+		};
+
+		add_filter( $hook, $change, 10, 2 );
+
+		$this->new_request( 'empty' );
+
+		$grid = $this->render( 'empty' );
+
+		remove_filter( $hook, $change, 10 );
+
+		$this->assertFalse( $grid['answered'] );
+		$this->assertSame( 2, $grid['selects'], 'the declined copy, then the grid\'s own query' );
+		$this->assertSame( [], $this->ids( $grid['query'] ) );
+
+		$this->run_queue();
+
+		$this->assertSame( [ 'ids' => [], 'found' => 0 ], $this->stored( $grid['key'] )['value'], 'stored by the_posts, without the marker' );
+	}
+
+	/**
+	 * A failed statement returns no rows too, so it must still be caught before an empty list
+	 * counts as an answer. The copy's statement is refused on a cold miss: nothing is stored,
+	 * core is made to forget its cached empty result, and the grid's own query answers.
+	 */
+	public function test_failed_copy_statement_on_an_empty_grid_stores_nothing(): void {
+		$this->new_request( 'empty' );
+
+		$before = wp_cache_get_last_changed( 'posts' );
+
+		[ $grid, $refused ] = $this->refuse_once( self::is_grid_statement( ... ), fn() => $this->render( 'empty' ) );
+
+		$this->assertTrue( $refused, 'the copy\'s statement was refused' );
+		$this->assertFalse( $grid['answered'] );
+		$this->assertSame( 2, $grid['selects'], 'the refused copy, then the grid\'s own query' );
+		$this->assertSame( [], $this->ids( $grid['query'] ) );
+		$this->assertNotSame( $before, wp_cache_get_last_changed( 'posts' ), 'core forgot the failed result' );
+		$this->assertNull( $this->queue->pending( $grid['key'] ), 'nothing waiting to be stored' );
+
+		$this->run_queue();
+
+		$this->assertFalse( $this->envelope( $grid['key'] ), 'nothing stored' );
+	}
+
+	/** The same after the page: a refused copy deletes the aged empty entry rather than store an empty list. */
+	public function test_failed_copy_statement_on_an_aged_empty_entry_deletes_it(): void {
+		$warm = $this->warm( 'empty' );
+
+		$this->age();
+		$this->new_request( 'empty' );
+		$this->render( 'empty' );
+
+		$this->assertTrue( $this->queue->has_job( $warm['key'] ) );
+
+		[ $selects, $refused ] = $this->refuse_once( self::is_grid_statement( ... ), fn() => $this->run_queue() );
+
+		$this->assertTrue( $refused, 'the copy\'s statement was refused' );
+		$this->assertSame( 1, $selects );
+		$this->assertFalse( $this->envelope( $warm['key'] ), 'the entry is deleted' );
+		$this->assertTrue( mai_cache( 'grid' )->lock( $warm['key'], 5 ), 'the lock was released' );
 	}
 }

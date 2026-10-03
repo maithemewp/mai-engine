@@ -226,8 +226,9 @@ class Mai_Query_Cache {
 	 *   stores, the lock is not released. It expires after `mai_query_cache_lock_ttl` seconds.
 	 *
 	 * Stores under the version read before any SQL ran, so a post saved since still leaves the
-	 * entry out of date. When the copy cannot stand in for the grid, its statement failed, or
-	 * anything threw, give_up() deletes the entry. A throw then carries on to run_queue().
+	 * entry out of date. An empty grid's empty list is stored like any other. When the copy
+	 * cannot stand in for the grid, its statement failed, or anything threw, give_up() deletes
+	 * the entry. A throw then carries on to run_queue().
 	 *
 	 * @since TBD
 	 *
@@ -662,6 +663,9 @@ class Mai_Query_Cache {
 	 * kept posts on this path, and clearing the miss flag stops the_posts storing a second
 	 * time. A query the cache declined is answered the same way, just with nothing stored.
 	 *
+	 * An empty grid's empty list is stored the same way, and answered with no posts. That is an
+	 * empty array, never null, which would make WordPress run the grid's query as well.
+	 *
 	 * The entry is marked 'by' => 'ids', because the ID-only copy built it. Only an entry with
 	 * that mark can be rebuilt after the page, since that rebuild runs the same copy and so
 	 * stores the same list. It is stored under the version pre_query() read before any SQL ran.
@@ -671,6 +675,7 @@ class Mai_Query_Cache {
 	 * filter it as before.
 	 *
 	 * @since TBD Stores the entry with the 'by' => 'ids' mark, and its soft and hard lifetimes.
+	 * @since TBD Stores an empty grid's empty list, and answers it with no posts.
 	 *
 	 * @param array|null $posts Posts (null to run the query normally).
 	 * @param WP_Query   $query The query.
@@ -722,6 +727,8 @@ class Mai_Query_Cache {
 			return $posts;
 		}
 
+		// From here an empty ID list is an empty grid. It is stored, and keep() answers it with
+		// an empty array, so WordPress does not run the grid's query.
 		if ( ! empty( $query->mai_cache_store_key ) ) {
 			[ $soft, $hard ] = $this->lifetimes( $query->query_vars );
 
@@ -784,6 +791,9 @@ class Mai_Query_Cache {
 	 * envelope (missing/!array `ids`) so the caller treats it as a miss and recomputes, rather than
 	 * fataling on a bad shape in posts_pre_query.
 	 *
+	 * An empty `ids` list is a valid entry, an empty grid. It returns an empty array, not null,
+	 * so the caller serves no posts and WordPress runs no query.
+	 *
 	 * Note on `found`: it is the found_posts of the query that built the entry. With
 	 * no_found_rows => true (the Mai_Grid default) core never counts rows, so both store paths
 	 * store 0, and max_num_pages comes out 0 too. Mai_Grid reads neither, so this is correct for
@@ -791,7 +801,7 @@ class Mai_Query_Cache {
 	 * accurate total.
 	 *
 	 * @param WP_Query   $query The query.
-	 * @param mixed      $value Stored value, expected [ 'ids' => int[], 'found' => int ].
+	 * @param mixed      $value Stored value, expected [ 'ids' => int[], 'found' => int ]. ids may be empty.
 	 * @param array|null $keep  The kept-only request, from keep_request(). Null hydrates every ID.
 	 *
 	 * @return WP_Post[]|null
@@ -852,7 +862,8 @@ class Mai_Query_Cache {
 
 	/**
 	 * The grid's padded ID list, in order, from an ID-only copy of its query, false when the
-	 * copy's statement failed, or null when the copy cannot stand in for the grid's query.
+	 * copy's statement failed, or null when the copy cannot stand in for the grid's query. The
+	 * list is empty when the grid is.
 	 *
 	 * It works from plain values, never from the grid's live query: the args, the cache_results
 	 * the grid asked for, and the key the grid's query has. So it gives the same answer when it
@@ -883,23 +894,29 @@ class Mai_Query_Cache {
 	 *
 	 * Returns false when the copy's statement failed. The caller then stores nothing, rather than
 	 * an empty list for the length of the lifetime. Core is made to forget the copy's cached
-	 * empty result here (forget_failure()).
+	 * empty result here (forget_failure()). This is checked first, because a failed statement
+	 * also returns no rows.
 	 *
 	 * Returns null when:
-	 * - the copy found nothing. Core stores a failed statement's empty result in its query
-	 *   cache like any other, and reading that back runs no SQL, so there is no error to see.
-	 *   A failure in a statement a query filter rewrote on its way to the database looks the
-	 *   same. The grid's own query answers instead, and the_posts stores what it finds. For a
-	 *   grid that really is empty, that costs one cheap query per result cache miss.
 	 * - the copy selects more than the ID. get_col() reads the first column.
 	 * - the copy's key is not the expected one. A callback treated the copy differently from the
 	 *   grid's query, so the copy's IDs may not be the grid's.
+	 *
+	 * Neither check reads rows, so an empty copy is checked like any other.
+	 *
+	 * A copy that passes and finds nothing is an empty grid, and returns an empty ID list. The
+	 * caller stores it like any other, so an empty grid costs one query per result cache miss,
+	 * is served from the cache, and is rebuilt after the page once it ages out. The one failure
+	 * this cannot tell from an empty grid is in a statement that a query filter rewrote on its
+	 * way to the database. last_query then differs from the copy's request, so the failure is
+	 * not seen, and its empty result is stored as an empty grid.
 	 *
 	 * Counting rows is the caller's check, because only the grid's own query can say whether
 	 * it counts.
 	 *
 	 * @since TBD Takes the args, the asked cache_results and the expected key instead of the
 	 *            live query, and returns the copy's found_posts with the IDs.
+	 * @since TBD Returns an empty ID list when the copy finds nothing, rather than null.
 	 *
 	 * @param array  $args          The args the grid's query was built from.
 	 * @param bool   $cache_results The cache_results the grid asked for.
@@ -927,6 +944,9 @@ class Mai_Query_Cache {
 		// answers the copy from its cache, that statement never runs, and last_error belongs to
 		// whatever ran before, possibly some callback's own query. last_query is recorded with
 		// the placeholder escape already stripped, so the request is compared the same way.
+		//
+		// This comes first. A failed statement returns no rows, and from here on no rows is an
+		// empty grid.
 		if ( $wpdb->last_error && $wpdb->last_query === $wpdb->remove_placeholder_escape( (string) $copy->request ) ) {
 			// Core cached the copy's empty result too, and the next view would read it back.
 			$this->forget_failure();
@@ -934,10 +954,8 @@ class Mai_Query_Cache {
 			return false;
 		}
 
-		if ( ! $copy->posts ) {
-			return null;
-		}
-
+		// Both checks read the copy's statement and vars, never its rows, so an empty copy is
+		// checked the same as any other.
 		$ids_only = '/^\s*SELECT\s+(?:DISTINCT\s+)?' . preg_quote( "{$wpdb->posts}.ID", '/' ) . '\s+FROM\s/i';
 
 		if ( ! preg_match( $ids_only, (string) $copy->request ) ) {
