@@ -113,13 +113,33 @@ final class MaiQueryCacheKeepTest extends TestCase {
 	}
 
 	public function test_pre_query_kept_drops_the_flag_when_a_later_callback_replaced_the_answer(): void {
-		$query                = $this->query();
-		$query->mai_grid_kept = [ (object) [ 'ID' => 12 ] ];
+		$query                       = $this->query();
+		$query->mai_grid_kept        = [ (object) [ 'ID' => 12 ] ];
+		$query->mai_grid_kept_primed = [ 'update_post_term_cache' => true, 'update_post_meta_cache' => true ];
 
 		$theirs = [ (object) [ 'ID' => 10 ], (object) [ 'ID' => 12 ] ];
 
 		$this->assertSame( $theirs, ( new Mai_Query_Cache() )->pre_query_kept( $theirs, $query ) );
 		$this->assertObjectNotHasProperty( 'mai_grid_kept', $query, 'what replaced it may hold the excludes' );
+		$this->assertObjectNotHasProperty( 'mai_grid_kept_primed', $query, 'what replaced it was never primed' );
+	}
+
+	public function test_pre_query_kept_takes_the_key_record_off_the_query_when_it_declines(): void {
+		// The record holds the query's vars. Left on the query it would outlive this run.
+		$record = [ 'key' => 'k', 'query_vars' => [], 'request' => self::SQL ];
+
+		$theirs                         = [ (object) [ 'ID' => 5 ] ];
+		$answered                       = $this->query();
+		$answered->mai_cache_key_record = $record;
+
+		$this->assertSame( $theirs, ( new Mai_Query_Cache() )->pre_query_kept( $theirs, $answered ) );
+		$this->assertObjectNotHasProperty( 'mai_cache_key_record', $answered );
+
+		$counts                       = $this->query( [ 'no_found_rows' => false ] );
+		$counts->mai_cache_key_record = $record;
+
+		$this->assertNull( ( new Mai_Query_Cache() )->pre_query_kept( null, $counts ) );
+		$this->assertObjectNotHasProperty( 'mai_cache_key_record', $counts );
 	}
 
 	public function test_pre_query_kept_ignores_queries_without_the_marker(): void {
@@ -155,6 +175,19 @@ final class MaiQueryCacheKeepTest extends TestCase {
 		$this->assertSame( [ 2, 4 ], array_map( fn( $p ) => $p->ID, $posts ) );
 		$this->assertSame( [ [ [ 2, 4 ], true, true ] ], $primed, 'one priming call, for the kept posts only' );
 		$this->assertSame( $posts, $query->mai_grid_kept, 'Mai_Grid must be told not to filter again' );
+	}
+
+	public function test_keep_records_the_flags_it_primed_with(): void {
+		// Mai_Grid compares these with the flags the grid asked for before priming again.
+		$primed = [];
+		$this->stub_posts( [ 1 => 'publish', 2 => 'publish' ], $primed );
+
+		$query = (object) [ 'query_vars' => [ 'post_status' => 'publish', 'update_post_term_cache' => true, 'update_post_meta_cache' => false ] ];
+
+		$this->call( 'keep', $query, [ 'exclude' => [], 'count' => 2 ], [ 1, 2 ] );
+
+		$this->assertSame( [ [ [ 1, 2 ], true, false ] ], $primed );
+		$this->assertSame( [ 'update_post_term_cache' => true, 'update_post_meta_cache' => false ], $query->mai_grid_kept_primed );
 	}
 
 	public function test_keep_tops_up_when_a_stale_entry_holds_a_post_that_left(): void {

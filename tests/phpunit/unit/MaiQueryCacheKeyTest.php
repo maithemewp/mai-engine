@@ -211,6 +211,40 @@ final class MaiQueryCacheKeyTest extends TestCase {
 		$this->assertTrue( $c->is_cacheable( [ 'post_type' => 'post', 'date_query' => [ 'before' => '2026-06-01 10:05:00' ] ] ) );
 	}
 
+	/**
+	 * pre_query() passes on whether the vars hold the current time, so kept-only does not check
+	 * them again. Null means an earlier rule refused the vars and they were never checked.
+	 */
+	public function test_is_cacheable_reports_whether_the_vars_hold_now(): void {
+		$this->freeze_now();
+		Functions\when( 'apply_filters' )->returnArg( 2 );
+
+		$c = new Mai_Query_Cache();
+
+		// Each starts at a value the call has to overwrite.
+		$holds_now = false;
+		$this->assertFalse( $c->is_cacheable( $this->event_vars( '2026-09-30 15:24:24' ), $holds_now ) );
+		$this->assertTrue( $holds_now );
+
+		$holds_now = true;
+		$this->assertTrue( $c->is_cacheable( $this->event_vars( '2026-06-01 10:05:00' ), $holds_now ) );
+		$this->assertFalse( $holds_now );
+
+		$holds_now = true;
+		$this->assertFalse( $c->is_cacheable( [ 'post_type' => 'post', 'orderby' => 'rand' ], $holds_now ) );
+		$this->assertNull( $holds_now, 'a random order is refused before the vars are checked' );
+	}
+
+	public function test_a_filter_that_caches_a_query_holding_now_still_reports_it(): void {
+		$this->freeze_now();
+		Functions\when( 'apply_filters' )->justReturn( true );
+
+		$holds_now = false;
+
+		$this->assertTrue( ( new Mai_Query_Cache() )->is_cacheable( $this->event_vars( '2026-09-30 15:24:24' ), $holds_now ) );
+		$this->assertTrue( $holds_now, 'kept-only must still step aside for it' );
+	}
+
 	public function test_a_relative_date_in_the_query_vars_still_changes_the_key(): void {
 		// Two grids whose relative dates resolve within the same hour still differ in the vars.
 		$c = new Mai_Query_Cache();

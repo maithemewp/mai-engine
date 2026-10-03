@@ -474,12 +474,18 @@ class Mai_Query_Cache {
 	/**
 	 * Whether this query should use the grid cache.
 	 *
-	 * @param array $query_vars The WP_Query vars.
+	 * @since TBD Reports whether the vars hold the current time.
+	 *
+	 * @param array     $query_vars The WP_Query vars.
+	 * @param bool|null $holds_now  Set to whether the vars hold the current time, or to null
+	 *                              when an earlier rule refused them and they were not checked.
+	 *                              The mai_query_cache filter can still say yes either way.
 	 *
 	 * @return bool
 	 */
-	public function is_cacheable( array $query_vars ): bool {
+	public function is_cacheable( array $query_vars, ?bool &$holds_now = null ): bool {
 		$cacheable = true;
+		$holds_now = null;
 
 		// ElasticPress offloads to ES and hooks posts_pre_query itself; that interaction is
 		// unverified (eurweb is not on EP), so skip ep_integrate grids until it is tested.
@@ -507,8 +513,9 @@ class Mai_Query_Cache {
 		}
 
 		// A query that holds the current time gets a new key on every view, so it never hits.
-		if ( $cacheable && $this->holds_now( $query_vars ) ) {
-			$cacheable = false;
+		if ( $cacheable ) {
+			$holds_now = $this->holds_now( $query_vars );
+			$cacheable = ! $holds_now;
 		}
 
 		return (bool) apply_filters( 'mai_query_cache', $cacheable, $query_vars );
@@ -544,9 +551,13 @@ class Mai_Query_Cache {
 	 * and asks page caches not to keep its page (Mai_Query_Cache_Queue::no_page_cache()). A
 	 * fresh entry, or one that only aged out, still holds the right posts, so it never asks.
 	 *
+	 * A kept-only miss leaves a record of its key on the query, so pre_query_kept() does not
+	 * build the key or check for the current time a second time. See reusable_key().
+	 *
 	 * @since TBD Serves a result waiting in the queue.
 	 * @since TBD Rebuilds an aged-out entry after the page.
 	 * @since TBD Asks page caches not to keep a page served an entry a save made out of date.
+	 * @since TBD Leaves a record of a kept-only miss's key for pre_query_kept().
 	 *
 	 * @param array|null $posts Posts (null to run the query normally).
 	 * @param WP_Query   $query The query.
@@ -554,13 +565,27 @@ class Mai_Query_Cache {
 	 * @return array|null
 	 */
 	public function pre_query( $posts, $query ) {
-		if ( empty( $query->query_vars['mai_cache'] ) || ! $this->is_cacheable( $query->query_vars ) ) {
+		$checked   = $query->query_vars;
+		$holds_now = null;
+
+		if ( empty( $checked['mai_cache'] ) || ! $this->is_cacheable( $checked, $holds_now ) ) {
 			return $posts;
 		}
 
-		$keep  = $this->keep_request( $posts, $query );
-		$cache = mai_cache( self::GROUP );
-		$key   = $this->cache_key( $query->query_vars, (string) $query->request );
+		$keep    = $this->keep_request( $posts, $query );
+		$cache   = mai_cache( self::GROUP );
+		$request = (string) $query->request;
+		$key     = $this->cache_key( $query->query_vars, $request );
+
+		// Only for a kept-only grid whose vars were checked above and do not hold the current
+		// time, and only when the key was built from those same vars.
+		$record = ( $keep && false === $holds_now && $checked === $query->query_vars )
+			? [
+				'key'        => $key,
+				'query_vars' => $checked,
+				'request'    => $request,
+			]
+			: null;
 
 		// A grid earlier on this page already ran this query, and its result is waiting to be
 		// stored after the page. Serve that rather than run the query again.
@@ -590,7 +615,7 @@ class Mai_Query_Cache {
 				}
 				// Winner did not deliver (or gave a bad envelope): fall through and recompute.
 			}
-			return $this->flag_miss( $query, $key, $version, $posts );
+			return $this->flag_miss( $query, $key, $version, $posts, $record );
 		}
 
 		$out_of_date = false;
@@ -625,7 +650,7 @@ class Mai_Query_Cache {
 
 			// The single-flight winner recomputes; everyone else serves the stale value.
 			if ( $cache->lock( $key, $this->lock_ttl() ) ) {
-				return $this->flag_miss( $query, $key, $version, $posts );
+				return $this->flag_miss( $query, $key, $version, $posts, $record );
 			}
 
 			// Lost the lock on an entry a save made out of date. This page shows the old list
@@ -638,7 +663,7 @@ class Mai_Query_Cache {
 		$served = $this->serve( $query, $hit['value'], $keep );
 
 		if ( null === $served ) {
-			return $this->flag_miss( $query, $key, $version, $posts );
+			return $this->flag_miss( $query, $key, $version, $posts, $record );
 		}
 
 		if ( $out_of_date ) {
@@ -674,8 +699,12 @@ class Mai_Query_Cache {
 	 * later callback that replaced it could hand back anything, and then Mai_Grid has to
 	 * filter it as before.
 	 *
+	 * The key the copy is checked against is the one pre_query() built, while the query still
+	 * holds the vars and SQL it was built from. See reusable_key().
+	 *
 	 * @since TBD Stores the entry with the 'by' => 'ids' mark, and its soft and hard lifetimes.
 	 * @since TBD Stores an empty grid's empty list, and answers it with no posts.
+	 * @since TBD Reuses the key pre_query() built, and its check for the current time.
 	 *
 	 * @param array|null $posts Posts (null to run the query normally).
 	 * @param WP_Query   $query The query.
@@ -683,9 +712,14 @@ class Mai_Query_Cache {
 	 * @return array|null
 	 */
 	public function pre_query_kept( $posts, $query ) {
+		// Taken off the query whatever happens next, so it never outlives this run of the query.
+		$record = $query->mai_cache_key_record ?? null;
+
+		unset( $query->mai_cache_key_record );
+
 		if ( isset( $query->mai_grid_kept ) ) {
 			if ( $posts !== $query->mai_grid_kept ) {
-				unset( $query->mai_grid_kept );
+				unset( $query->mai_grid_kept, $query->mai_grid_kept_primed );
 			}
 
 			return $posts;
@@ -699,21 +733,25 @@ class Mai_Query_Cache {
 			$keep = null;
 		}
 
-		// A copy of a query that holds the current time gets its own "now", so fetch_ids() would
-		// run it and then throw it away as a different query. Let the grid's own query answer.
-		if ( $keep && $this->holds_now( $query->query_vars ) ) {
-			$keep = null;
-		}
-
 		if ( ! $keep ) {
 			return $posts;
 		}
 
-		$fetched = $this->fetch_ids(
-			(array) $query->query,
-			$keep['cache_results'],
-			$this->cache_key( $query->query_vars, (string) $query->request )
-		);
+		$key = $this->reusable_key( $record, $query );
+
+		// Nothing to reuse, so check the vars and build the key here.
+		if ( null === $key ) {
+			// A copy of a query that holds the current time gets its own "now", so fetch_ids()
+			// would run it and then throw it away as a different query. Let the grid's own query
+			// answer.
+			if ( $this->holds_now( $query->query_vars ) ) {
+				return $posts;
+			}
+
+			$key = $this->cache_key( $query->query_vars, (string) $query->request );
+		}
+
+		$fetched = $this->fetch_ids( (array) $query->query, $keep['cache_results'], $key );
 
 		// The copy's statement failed. Store nothing, so a view that just failed does not leave
 		// an empty list behind for the length of the lifetime.
@@ -738,6 +776,39 @@ class Mai_Query_Cache {
 		}
 
 		return $this->keep( $query, $keep, $fetched['ids'] );
+	}
+
+	/**
+	 * The key pre_query() built for this query, when pre_query_kept() can use it instead of
+	 * building it again. Null when it cannot.
+	 *
+	 * pre_query() leaves a record for a kept-only miss whose vars it checked for the current
+	 * time and found clear: the key, and the vars and SQL it built the key from. cache_key()
+	 * reads nothing else that changes within a request, so while the query holds exactly those
+	 * vars and that SQL, building the key again gives the same key. A posts_pre_query callback
+	 * between the two priorities can change either. Then this returns null, and the key and the
+	 * check are worked out again from what the query holds now.
+	 *
+	 * The check for the current time reads only the vars and the clock. Between the two
+	 * priorities the clock moves by a fraction of a second, which only matters for a datetime
+	 * right at the edge of NOW_WINDOW.
+	 *
+	 * Comparing unchanged vars costs next to nothing, because PHP finds the same array and
+	 * stops there.
+	 *
+	 * @since TBD
+	 *
+	 * @param array|null $record The record pre_query() left on the query, or null.
+	 * @param WP_Query   $query  The query.
+	 *
+	 * @return string|null
+	 */
+	private function reusable_key( ?array $record, $query ): ?string {
+		if ( null === $record || $record['query_vars'] !== $query->query_vars || $record['request'] !== (string) $query->request ) {
+			return null;
+		}
+
+		return $record['key'];
 	}
 
 	/**
@@ -773,16 +844,25 @@ class Mai_Query_Cache {
 	/**
 	 * Flag this query as a miss for the_posts to store, and let WP run the real query.
 	 *
+	 * @since TBD Leaves the record pre_query() made of the key on the query.
+	 *
 	 * @param WP_Query   $query   The query.
 	 * @param string     $key     Cache key.
 	 * @param string     $version Current composite version.
 	 * @param array|null $posts   The pre_query posts (null -> WP runs the real query).
+	 * @param array|null $record  The key and the vars and SQL it was built from, for
+	 *                            pre_query_kept() to reuse. Null leaves none.
 	 *
 	 * @return array|null
 	 */
-	private function flag_miss( $query, string $key, string $version, $posts ) {
+	private function flag_miss( $query, string $key, string $version, $posts, ?array $record = null ) {
 		$query->mai_cache_store_key     = $key;
 		$query->mai_cache_store_version = $version;
+
+		if ( null !== $record ) {
+			$query->mai_cache_key_record = $record;
+		}
+
 		return $posts;
 	}
 
@@ -1021,6 +1101,12 @@ class Mai_Query_Cache {
 	 * stale entry can hold. Topping up from the rest of the list keeps the grid as full as
 	 * hydrating the whole list used to, while the usual case loads exactly the posts it shows.
 	 *
+	 * Also records the flags hydrate() primed those posts with, so Mai_Grid does not prime them
+	 * again. Nothing that runs while this primes is given the query, so its vars, and with them
+	 * the flags, are the same for every batch.
+	 *
+	 * @since TBD Records the flags it primed the posts with.
+	 *
 	 * @param WP_Query $query The query.
 	 * @param array    $keep  The kept-only request, from keep_request().
 	 * @param int[]    $ids   The padded ID list, in order.
@@ -1042,6 +1128,9 @@ class Mai_Query_Cache {
 		// again. It holds the answer itself so pre_query_kept() can tell if a later callback
 		// replaced it.
 		$query->mai_grid_kept = $posts;
+
+		// Tells Mai_Grid how every post in that answer was primed. See prime_shown_posts().
+		$query->mai_grid_kept_primed = $this->prime_flags( $query->query_vars );
 
 		return $posts;
 	}
@@ -1273,11 +1362,9 @@ class Mai_Query_Cache {
 			return [];
 		}
 
-		_prime_post_caches(
-			$ids,
-			(bool) ( $query_vars['update_post_term_cache'] ?? true ),
-			(bool) ( $query_vars['update_post_meta_cache'] ?? true )
-		);
+		$flags = $this->prime_flags( $query_vars );
+
+		_prime_post_caches( $ids, $flags['update_post_term_cache'], $flags['update_post_meta_cache'] );
 
 		$posts    = array_filter( array_map( 'get_post', $ids ) );
 		$statuses = $this->allowed_statuses( $query_vars );
@@ -1294,6 +1381,22 @@ class Mai_Query_Cache {
 		}
 
 		return array_values( $posts );
+	}
+
+	/**
+	 * The term and meta flags hydrate() primes posts with, read from the query vars.
+	 *
+	 * @since TBD
+	 *
+	 * @param array $query_vars The query vars.
+	 *
+	 * @return array{update_post_term_cache:bool,update_post_meta_cache:bool}
+	 */
+	private function prime_flags( array $query_vars ): array {
+		return [
+			'update_post_term_cache' => (bool) ( $query_vars['update_post_term_cache'] ?? true ),
+			'update_post_meta_cache' => (bool) ( $query_vars['update_post_meta_cache'] ?? true ),
+		];
 	}
 
 	/**

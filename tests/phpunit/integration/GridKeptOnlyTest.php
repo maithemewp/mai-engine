@@ -4,6 +4,7 @@ namespace BizBudding\MaiEngine\Tests\Integration;
 
 use Mai_Grid;
 use Mai_Query_Cache;
+use Mai_Query_Cache_Queue;
 use PHPUnit\Framework\Attributes\DataProvider;
 use WP_Post;
 use WP_Query;
@@ -364,6 +365,72 @@ final class GridKeptOnlyTest extends MaiIntegrationTestCase {
 		}
 
 		return $state;
+	}
+
+	/**
+	 * Runs the callback with the grid cache's hooks moved to a copy of the cache that counts the
+	 * keys it builds. The copy works exactly like the real one otherwise.
+	 *
+	 * @return array{0:mixed,1:int} What the callback returns, and how many keys were built.
+	 */
+	private function count_keys( callable $callback ): array {
+		$real    = Mai_Query_Cache::instance();
+		$counter = new class() extends Mai_Query_Cache {
+			public int $keys = 0;
+
+			public function cache_key( array $query_vars, string $sql ): string {
+				++$this->keys;
+
+				return parent::cache_key( $query_vars, $sql );
+			}
+		};
+
+		$counter->set_queue( new Mai_Query_Cache_Queue( null, null, static function (): void {} ) );
+
+		$hooks = [
+			[ 'posts_pre_query', 'pre_query', 10 ],
+			[ 'posts_pre_query', 'pre_query_kept', PHP_INT_MAX ],
+			[ 'posts_results', 'posts_results', PHP_INT_MIN ],
+			[ 'the_posts', 'the_posts', 10 ],
+		];
+
+		foreach ( $hooks as [ $hook, $method, $priority ] ) {
+			remove_filter( $hook, [ $real, $method ], $priority );
+			add_filter( $hook, [ $counter, $method ], $priority, 2 );
+		}
+
+		try {
+			$result = $callback();
+		} finally {
+			foreach ( $hooks as [ $hook, $method, $priority ] ) {
+				remove_filter( $hook, [ $counter, $method ], $priority );
+				add_filter( $hook, [ $real, $method ], $priority, 2 );
+			}
+		}
+
+		return [ $result, $counter->keys ];
+	}
+
+	/**
+	 * Records the posts each priming call loads meta for while the callback runs. Every
+	 * _prime_post_caches() call with meta on fires update_post_metadata_cache once, with its IDs,
+	 * whether or not the meta was cached already.
+	 *
+	 * @return array{0:mixed,1:array<int[]>}
+	 */
+	private function count_primes( callable $callback ): array {
+		$primes  = [];
+		$counter = static function ( $check, $ids ) use ( &$primes ) {
+			$primes[] = array_map( 'intval', $ids );
+
+			return $check;
+		};
+
+		add_filter( 'update_post_metadata_cache', $counter, 10, 2 );
+		$result = $callback();
+		remove_filter( 'update_post_metadata_cache', $counter, 10 );
+
+		return [ $result, $primes ];
 	}
 
 	// ---- Same posts, same order ----
@@ -1154,6 +1221,8 @@ final class GridKeptOnlyTest extends MaiIntegrationTestCase {
 
 		$this->assertObjectNotHasProperty( 'mai_grid_keep', $deferred );
 		$this->assertObjectNotHasProperty( 'mai_grid_kept', $deferred );
+		$this->assertObjectNotHasProperty( 'mai_grid_kept_primed', $deferred );
+		$this->assertObjectNotHasProperty( 'mai_cache_key_record', $deferred );
 	}
 
 	/**
@@ -1641,5 +1710,291 @@ final class GridKeptOnlyTest extends MaiIntegrationTestCase {
 
 		$this->assertSame( $baseline, $this->ids( $hit ) );
 		$this->assertSame( [], array_intersect( $this->ids( $hit ), $prepared['excluded'] ) );
+	}
+
+	// ---- Work a view does not repeat ----
+
+	/**
+	 * A kept-only miss builds its key in pre_query(), and kept-only reuses it rather than build
+	 * it again. The ID-only copy's own key is still built and checked. A hit builds one key.
+	 */
+	public function test_a_kept_only_miss_builds_the_key_once_and_checks_the_copy(): void {
+		$prepared = $this->prepare( 'both_many' );
+
+		$this->flush_result_cache();
+
+		[ [ $miss, $stores ], $miss_keys ] = $this->count_keys( fn() => $this->count_stores( fn() => $this->run_grid( $prepared['args'] ) ) );
+		[ $hit, $hit_keys ]                = $this->count_keys( fn() => $this->run_grid( $prepared['args'] ) );
+
+		$this->assertSame( 1, $stores );
+		$this->assertSame( 2, $miss_keys, 'the grid query in pre_query(), then the copy' );
+		$this->assertSame( 1, $hit_keys );
+		$this->assertCount( self::PER_PAGE, $this->ids( $miss ) );
+		$this->assertSame( $this->ids( $miss ), $this->ids( $hit ) );
+	}
+
+	/**
+	 * Another posts_pre_query callback can change the grid's query after pre_query() built its
+	 * key and before kept-only answers. Kept-only then builds the key again from what the query
+	 * holds now, as it always did. Here the callback adds a query var to the grid's query and to
+	 * the ID-only copy alike, so the copy still matches the changed query, kept-only answers,
+	 * and the entry is stored under the key the next view reads.
+	 */
+	public function test_kept_only_builds_the_key_again_when_a_callback_changed_the_query(): void {
+		$prepared = $this->prepare( 'both_many' );
+		$key      = '';
+		$seen     = [];
+
+		$capture = static function ( $posts, $query ) use ( &$key ) {
+			if ( '' === $key && ! empty( $query->query_vars['mai_cache'] ) ) {
+				$key = ( new Mai_Query_Cache() )->cache_key( $query->query_vars, (string) $query->request );
+			}
+
+			return $posts;
+		};
+
+		$between = static function ( $posts, $query ) {
+			if ( ! empty( $query->query_vars['mai_grid_tiebreak'] ) ) {
+				$query->set( 'mai_test_between', 1 );
+			}
+
+			return $posts;
+		};
+
+		$watch = static function ( $posts, $query ) use ( &$seen ) {
+			if ( ! empty( $query->query_vars['mai_cache'] ) ) {
+				$seen[] = count( $posts );
+			}
+
+			return $posts;
+		};
+
+		add_filter( 'posts_pre_query', $capture, 9, 2 );
+		add_filter( 'posts_pre_query', $between, 50, 2 );
+		add_filter( 'the_posts', $watch, 5, 2 );
+
+		$this->flush_result_cache();
+
+		[ [ [ $miss, $sql ], $stores ], $keys ] = $this->count_keys(
+			fn() => $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( $prepared['args'] ) ) )
+		);
+
+		$stored            = mai_cache( 'grid' )->read_swr( $key, mai_cache( 'grid' )->version( [ 'post' ] ) );
+		[ $hit, $hit_sql ] = $this->capture_sql( fn() => $this->run_grid( $prepared['args'] ) );
+
+		remove_filter( 'the_posts', $watch, 5 );
+		remove_filter( 'posts_pre_query', $between, 50 );
+		remove_filter( 'posts_pre_query', $capture, 9 );
+
+		$this->assertSame( 3, $keys, 'the grid query in pre_query(), again once it changed, then the copy' );
+		$this->assertCount( 1, $this->grid_selects( $sql ), 'only the ID-only copy ran' );
+		$this->assertSame( [ self::PER_PAGE, self::PER_PAGE ], $seen, 'kept-only answered the miss and the hit' );
+		$this->assertSame( 1, $stores );
+		$this->assertSame( 'ids', $stored['value']['by'] ?? null, 'the ID-only copy built the entry' );
+		$this->assertSame( [], $this->grid_selects( $hit_sql ), 'the next view reads the entry' );
+		$this->assertSame( $this->ids( $miss ), $this->ids( $hit ) );
+	}
+
+	/**
+	 * pre_query() checks the grid's vars for the current time, and kept-only relies on that
+	 * check while the vars are unchanged. Counted through the site's timezone, which a check
+	 * reads each time it compares a datetime with now. How often one check reads it is measured
+	 * first, with a single datetime var.
+	 */
+	public function test_a_kept_only_miss_checks_for_the_current_time_once(): void {
+		$prepared = $this->prepare( 'both_many' );
+		$reads    = 0;
+
+		// A datetime far from now, in the grid's query and in its ID-only copy.
+		$dated = static function ( $query ) {
+			if ( ! empty( $query->query_vars['mai_grid_tiebreak'] ) ) {
+				$query->set(
+					'meta_query',
+					[
+						[
+							'key'     => 'mai_test_meta',
+							'value'   => '2001-01-01 00:00:00',
+							'compare' => '!=',
+						],
+					]
+				);
+			}
+		};
+
+		$count = static function ( $value ) use ( &$reads ) {
+			++$reads;
+
+			return $value;
+		};
+
+		add_action( 'pre_get_posts', $dated );
+
+		$this->flush_result_cache();
+
+		add_filter( 'pre_option_timezone_string', $count );
+
+		( new Mai_Query_Cache() )->is_cacheable( [ 'mai_test_date' => '2001-01-01 00:00:00' ] );
+
+		$one_check = $reads;
+		$reads     = 0;
+
+		[ [ $query, $sql ], $stores ] = $this->count_stores( fn() => $this->capture_sql( fn() => $this->run_grid( $prepared['args'] ) ) );
+
+		remove_filter( 'pre_option_timezone_string', $count );
+		remove_action( 'pre_get_posts', $dated );
+
+		$this->assertGreaterThan( 0, $one_check, 'a check reads the timezone' );
+		$this->assertSame( $one_check, $reads, 'one check, in pre_query()' );
+		$this->assertSame( 1, $stores, 'the miss is stored' );
+		$this->assertCount( 1, $this->grid_selects( $sql ), 'kept-only answered with the ID-only copy' );
+		$this->assertCount( self::PER_PAGE, $this->ids( $query ) );
+	}
+
+	/**
+	 * A mai_query_cache filter can turn caching on for a query that holds the current time.
+	 * Kept-only still steps aside for it, so no ID-only copy runs: the copy would get its own
+	 * "now" and be thrown away. The grid runs its own query, as before.
+	 */
+	public function test_kept_only_steps_aside_for_a_query_that_holds_now_even_when_a_filter_caches_it(): void {
+		$prepared = $this->prepare( 'current_in_window' );
+		$second   = 0;
+		$start    = time();
+
+		$now = static function ( $query ) use ( &$second, $start ) {
+			if ( $query->is_main_query() ) {
+				return;
+			}
+
+			$query->set(
+				'meta_query',
+				[
+					'mai_test_now' => [
+						'key'     => 'mai_test_meta',
+						'value'   => gmdate( 'Y-m-d H:i:s', $start + $second++ ),
+						'compare' => '!=',
+					],
+				]
+			);
+		};
+
+		// Only the padded query carries the tiebreak marker. The grid's own check runs before it is set.
+		$force = static fn( $cacheable, $query_vars ) => isset( $query_vars['mai_grid_tiebreak'] ) ? true : $cacheable;
+
+		add_action( 'pre_get_posts', $now );
+		add_filter( 'mai_query_cache', $force, 10, 2 );
+
+		$this->flush_result_cache();
+		[ $query, $sql ] = $this->capture_sql( fn() => $this->run_grid( $prepared['args'] ) );
+
+		remove_filter( 'mai_query_cache', $force, 10 );
+		remove_action( 'pre_get_posts', $now );
+
+		$this->assertStringNotContainsString( 'NOT IN', $query->request, 'must actually have deferred' );
+		$this->assertSame( 1, $second, 'only the grid query ran pre_get_posts, so no copy was built' );
+		$this->assertCount( 1, $this->grid_selects( $sql ), 'the grid ran its own query' );
+		$this->assertCount( self::PER_PAGE, $this->ids( $query ) );
+		$this->assertNotContains( $prepared['excluded'][0], $this->ids( $query ) );
+	}
+
+	/**
+	 * keep() primes the posts it answers with. When the grid shows exactly those, Mai_Grid does
+	 * not prime them again, so every view primes its shown posts once. The fallbacks prime as
+	 * before: Mai_Grid primes the shown posts, after core primed the padded rows where it split
+	 * the grid's query.
+	 *
+	 * The grid shows no image here. Core's featured image priming loads the shown posts' meta
+	 * once more on every path, and it is not part of this count.
+	 */
+	#[DataProvider( 'paths' )]
+	public function test_the_shown_posts_are_primed_once_per_view( string $path ): void {
+		$prepared = $this->prepare( 'displayed_many' );
+		$args     = array_merge( $prepared['args'], [ 'show' => [ 'title' ] ] );
+		$window   = array_slice( $this->post_ids, 0, self::PER_PAGE + count( $prepared['excluded'] ) );
+
+		$this->flush_result_cache();
+
+		foreach ( [ 'miss', 'hit' ] as $pass ) {
+			$this->clean_post_caches();
+
+			[ $query, $primes ] = $this->count_primes( fn() => $this->run_grid( $args, $path ) );
+
+			$shown    = $this->ids( $query );
+			$expected = ( 'miss' === $pass && 'copy_declined' === $path ) ? [ $window, $shown ] : [ $shown ];
+
+			$this->assertCount( self::PER_PAGE, $shown );
+			$this->assertSame( $expected, $primes, "{$pass} on the {$path} path" );
+
+			foreach ( $this->cached( $shown ) as $id => $state ) {
+				$this->assertSame( [ 'row' => true, 'meta' => true, 'terms' => true ], $state, "{$pass}: shown post {$id} must be fully primed" );
+			}
+		}
+	}
+
+	/**
+	 * keep() never saw a post a the_posts callback adds, so the list the grid shows is no longer
+	 * the one keep() primed, and Mai_Grid primes it.
+	 */
+	#[DataProvider( 'paths' )]
+	public function test_a_post_a_the_posts_callback_adds_is_primed( string $path ): void {
+		$prepared = $this->prepare( 'current_in_window' );
+		$pinned   = $this->post_ids[39];
+
+		$pin = static function ( $posts, $query ) use ( $pinned ) {
+			if ( ! empty( $query->query_vars['mai_cache'] ) ) {
+				array_unshift( $posts, get_post( $pinned ) );
+			}
+
+			return $posts;
+		};
+
+		add_filter( 'the_posts', $pin, 20, 2 );
+
+		$this->flush_result_cache();
+
+		foreach ( [ 'miss', 'hit' ] as $pass ) {
+			$this->clean_post_caches();
+
+			$query = $this->run_grid( $prepared['args'], $path );
+
+			$this->assertSame( $pinned, $this->ids( $query )[0], "{$pass}: the pinned post is shown" );
+
+			foreach ( $this->cached( $this->ids( $query ) ) as $id => $state ) {
+				$this->assertSame( [ 'row' => true, 'meta' => true, 'terms' => true ], $state, "{$pass}: shown post {$id} must be fully primed" );
+			}
+		}
+
+		remove_filter( 'the_posts', $pin, 20 );
+	}
+
+	/**
+	 * keep() primes with the flags the grid's query holds. A pre_get_posts callback can change
+	 * them from what the grid asked for, and then Mai_Grid still primes as asked.
+	 */
+	public function test_the_shown_posts_are_primed_as_asked_when_a_callback_changed_the_flags(): void {
+		$prepared = $this->prepare( 'displayed_many' );
+
+		$no_terms = static function ( $query ) {
+			if ( ! empty( $query->query_vars['mai_cache'] ) ) {
+				$query->set( 'update_post_term_cache', false );
+			}
+		};
+
+		add_action( 'pre_get_posts', $no_terms );
+
+		$this->flush_result_cache();
+
+		foreach ( [ 'miss', 'hit' ] as $pass ) {
+			$this->clean_post_caches();
+
+			$query = $this->run_grid( $prepared['args'] );
+
+			$this->assertCount( self::PER_PAGE, $this->ids( $query ) );
+
+			foreach ( $this->cached( $this->ids( $query ) ) as $id => $state ) {
+				$this->assertTrue( $state['terms'], "{$pass}: shown post {$id} must have its terms primed, as the grid asked" );
+			}
+		}
+
+		remove_action( 'pre_get_posts', $no_terms );
 	}
 }

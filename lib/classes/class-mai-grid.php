@@ -303,7 +303,11 @@ class Mai_Grid {
 						// that way, or when another posts_pre_query callback answered instead.
 						$already_kept = isset( $query->mai_grid_kept );
 
-						unset( $query->mai_grid_kept );
+						// The answer it gave and how it primed it, so the posts are not primed twice.
+						$kept_answer = $query->mai_grid_kept ?? null;
+						$kept_primed = $query->mai_grid_kept_primed ?? null;
+
+						unset( $query->mai_grid_kept, $query->mai_grid_kept_primed );
 
 						// Apply the excludes now. The result cache has already stored the
 						// unfiltered superset, which is what makes the entry shareable, so this
@@ -348,7 +352,10 @@ class Mai_Grid {
 						$query->posts      = $kept;
 						$query->post_count = count( $query->posts );
 
-						$this->prime_shown_posts( $query, $asked );
+						// Still exactly the posts Mai_Query_Cache answered with, so it has primed
+						// them all. A the_posts callback that added or replaced a post changes the
+						// list, and then they are primed here as before.
+						$this->prime_shown_posts( $query, $asked, ( $already_kept && $kept === $kept_answer ) ? $kept_primed : null );
 
 						// Put the query back the way it was asked for, before anything reads
 						// it. Mai Load More and any custom pagination serialize these and
@@ -927,7 +934,7 @@ class Mai_Grid {
 		}
 
 		if ( $can && class_exists( 'Mai_Query_Cache' ) ) {
-			$cache = new Mai_Query_Cache();
+			$cache = Mai_Query_Cache::instance();
 
 			if ( ! $cache->is_cacheable( $query_args ) || ! $cache->can_store() ) {
 				$can = false;
@@ -974,14 +981,22 @@ class Mai_Grid {
 	 * answer, because the priming core does after the_posts checks cache_results, and
 	 * get_query() switched that off.
 	 *
-	 * @since 2.41.0
+	 * The priming is skipped only when Mai_Query_Cache already primed exactly these posts with
+	 * the same flags the grid asked for. Priming them again would only read the cache. The term
+	 * meta lazy load queue below still runs either way.
 	 *
-	 * @param WP_Query $query The query.
-	 * @param array    $asked The query args as asked, before padding.
+	 * @since 2.41.0
+	 * @since TBD Skips the priming Mai_Query_Cache already did.
+	 *
+	 * @param WP_Query   $query  The query.
+	 * @param array      $asked  The query args as asked, before padding.
+	 * @param array|null $primed How Mai_Query_Cache primed exactly these posts, as
+	 *                           update_post_term_cache and update_post_meta_cache. Null when it
+	 *                           did not, or when the posts are not the ones it answered with.
 	 *
 	 * @return void
 	 */
-	protected function prime_shown_posts( $query, $asked ) {
+	protected function prime_shown_posts( $query, $asked, $primed = null ) {
 		$flags = $this->get_query_cache_flags( $asked );
 
 		// Not gated on cache_results. Core primes a split query as the update flags ask whatever
@@ -1002,7 +1017,14 @@ class Mai_Grid {
 			return;
 		}
 
-		_prime_post_caches( $ids, (bool) $flags['update_post_term_cache'], (bool) $flags['update_post_meta_cache'] );
+		$asks = [
+			'update_post_term_cache' => (bool) $flags['update_post_term_cache'],
+			'update_post_meta_cache' => (bool) $flags['update_post_meta_cache'],
+		];
+
+		if ( $asks !== $primed ) {
+			_prime_post_caches( $ids, $asks['update_post_term_cache'], $asks['update_post_meta_cache'] );
+		}
 
 		// Core queues term meta while it builds the posts, reading only terms already cached. On
 		// a fallback core did not prime, the kept posts' terms missed that queue. Queueing twice
