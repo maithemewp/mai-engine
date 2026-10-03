@@ -863,7 +863,7 @@ class Mai_Query_Cache {
 	/**
 	 * The grid's padded ID list, in order, from an ID-only copy of its query, false when the
 	 * copy's statement failed, or null when the copy cannot stand in for the grid's query. The
-	 * list is empty when the grid is.
+	 * list is empty when the grid is and no database error could be hiding behind it.
 	 *
 	 * It works from plain values, never from the grid's live query: the args, the cache_results
 	 * the grid asked for, and the key the grid's query has. So it gives the same answer when it
@@ -898,25 +898,30 @@ class Mai_Query_Cache {
 	 * also returns no rows.
 	 *
 	 * Returns null when:
+	 * - the copy found nothing and $wpdb holds an error from some other statement. A failed
+	 *   SELECT returns no rows. When a query filter rewrote the copy's statement on its way to
+	 *   the database, last_query is the rewritten text, so its failure cannot be told from a
+	 *   stale error an earlier statement left. An empty result that cannot be vouched for falls
+	 *   back to the grid's own query, as before. Core's query cache is left alone here, since the
+	 *   error may be from a statement that fails on every view.
 	 * - the copy selects more than the ID. get_col() reads the first column.
 	 * - the copy's key is not the expected one. A callback treated the copy differently from the
 	 *   grid's query, so the copy's IDs may not be the grid's.
 	 *
-	 * Neither check reads rows, so an empty copy is checked like any other.
+	 * The last two checks read no rows, so an empty copy is checked like any other.
 	 *
-	 * A copy that passes and finds nothing is an empty grid, and returns an empty ID list. The
-	 * caller stores it like any other, so an empty grid costs one query per result cache miss,
-	 * is served from the cache, and is rebuilt after the page once it ages out. The one failure
-	 * this cannot tell from an empty grid is in a statement that a query filter rewrote on its
-	 * way to the database. last_query then differs from the copy's request, so the failure is
-	 * not seen, and its empty result is stored as an empty grid.
+	 * A copy that passes and finds nothing, with no error in sight, is an empty grid, and returns
+	 * an empty ID list. The caller stores it like any other, so an empty grid costs one query per
+	 * result cache miss, is served from the cache, and is rebuilt after the page once it ages
+	 * out.
 	 *
 	 * Counting rows is the caller's check, because only the grid's own query can say whether
 	 * it counts.
 	 *
 	 * @since TBD Takes the args, the asked cache_results and the expected key instead of the
 	 *            live query, and returns the copy's found_posts with the IDs.
-	 * @since TBD Returns an empty ID list when the copy finds nothing, rather than null.
+	 * @since TBD Returns an empty ID list when the copy finds nothing and no error could be
+	 *            hiding behind it, rather than null.
 	 *
 	 * @param array  $args          The args the grid's query was built from.
 	 * @param bool   $cache_results The cache_results the grid asked for.
@@ -945,13 +950,23 @@ class Mai_Query_Cache {
 		// whatever ran before, possibly some callback's own query. last_query is recorded with
 		// the placeholder escape already stripped, so the request is compared the same way.
 		//
-		// This comes first. A failed statement returns no rows, and from here on no rows is an
-		// empty grid.
+		// This comes first. A failed statement returns no rows, and after the next check no rows
+		// is an empty grid.
 		if ( $wpdb->last_error && $wpdb->last_query === $wpdb->remove_placeholder_escape( (string) $copy->request ) ) {
 			// Core cached the copy's empty result too, and the next view would read it back.
 			$this->forget_failure();
 
 			return false;
+		}
+
+		// An empty copy with an error on some other statement. A failed SELECT returns no rows.
+		// When a query filter rewrote the copy's statement, last_query is the rewritten text, so
+		// its failure looks just like a stale error some earlier statement left. An empty result
+		// nobody can vouch for falls back to the grid's own query, as before. Core's query cache
+		// is left alone: the error may belong to a statement that fails on every view, and
+		// resetting core's cache on every view would cost far more than one query.
+		if ( ! $copy->posts && $wpdb->last_error ) {
+			return null;
 		}
 
 		// Both checks read the copy's statement and vars, never its rows, so an empty copy is

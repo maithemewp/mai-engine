@@ -286,6 +286,41 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 	}
 
 	/**
+	 * Runs the callback with a query filter that rewrites the first ID-only grid statement into
+	 * one that fails, on its way to the database. last_query is then the rewritten text, so
+	 * fetch_ids() cannot see the failure as the copy's own. Database errors are not printed
+	 * meanwhile.
+	 *
+	 * @return array{0:mixed,1:bool} What the callback returned, and whether a statement was broken.
+	 */
+	private function break_copy_once( callable $callback ): array {
+		global $wpdb;
+
+		$broken = false;
+		$break  = static function ( $sql ) use ( &$broken, $wpdb ) {
+			if ( ! $broken && self::is_grid_statement( (string) $sql ) && preg_match( '/^\s*SELECT\s+' . preg_quote( $wpdb->posts, '/' ) . '\.ID\s+FROM\s/', (string) $sql ) ) {
+				$broken = true;
+
+				return $sql . ' BROKEN';
+			}
+
+			return $sql;
+		};
+
+		add_filter( 'query', $break );
+		$suppress = $wpdb->suppress_errors( true );
+
+		try {
+			$result = $callback();
+		} finally {
+			$wpdb->suppress_errors( $suppress );
+			remove_filter( 'query', $break );
+		}
+
+		return [ $result, $broken ];
+	}
+
+	/**
 	 * Runs the callback and counts the grid statements it ran.
 	 *
 	 * @return array{0:mixed,1:int}
@@ -1346,6 +1381,121 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 		$this->run_queue();
 
 		$this->assertFalse( $this->envelope( $grid['key'] ), 'nothing stored' );
+	}
+
+	/** A grid with posts, whose copy comes back empty only because it failed, and an empty grid. */
+	public static function hidden_failure_shapes(): array {
+		return [
+			'a grid with posts' => [ 'current' ],
+			'an empty grid'     => [ 'empty' ],
+		];
+	}
+
+	/**
+	 * A query filter rewrites the copy's statement into one that fails, so fetch_ids() cannot
+	 * tell the failure from an error some other statement left behind. The empty result is not
+	 * stored. The grid's own query answers, the_posts stores what it finds without the marker,
+	 * and core's query cache is left alone.
+	 */
+	#[DataProvider( 'hidden_failure_shapes' )]
+	public function test_failure_hidden_by_a_query_filter_falls_back_to_the_grid_query( string $shape ): void {
+		$this->new_request( $shape );
+
+		$before = wp_cache_get_last_changed( 'posts' );
+
+		[ $grid, $broken ] = $this->break_copy_once( fn() => $this->render( $shape ) );
+
+		$this->assertTrue( $broken, 'the copy\'s statement was broken' );
+		$this->assertFalse( $grid['answered'] );
+		$this->assertSame( 2, $grid['selects'], 'the broken copy, then the grid\'s own query' );
+		$this->assertSame( 'empty' === $shape ? [] : array_slice( $this->post_ids, 1, self::PER_PAGE ), $this->ids( $grid['query'] ), 'what the grid\'s own query found' );
+		$this->assertSame( $before, wp_cache_get_last_changed( 'posts' ), 'core\'s query cache was left alone' );
+
+		$this->run_queue();
+
+		$stored = $this->stored( $grid['key'] )['value'];
+
+		$this->assertArrayNotHasKey( 'by', $stored, 'stored by the_posts, not by the copy' );
+		$this->assertSame( 'empty' === $shape ? [] : array_slice( $this->post_ids, 0, self::PER_PAGE + 1 ), $stored['ids'], 'the padded list' );
+	}
+
+	/**
+	 * The same after the page. The job's copy fails behind a query filter, so its empty result
+	 * is not stored over the aged list. The entry is deleted, and core's query cache is left
+	 * alone.
+	 */
+	public function test_failure_hidden_by_a_query_filter_after_the_page_deletes_the_entry(): void {
+		$warm = $this->warm( 'current' );
+
+		$this->age();
+		$this->new_request( 'current' );
+		$this->render( 'current' );
+
+		$this->assertTrue( $this->queue->has_job( $warm['key'] ) );
+
+		$before = wp_cache_get_last_changed( 'posts' );
+
+		[ , $broken ] = $this->break_copy_once( fn() => $this->run_queue() );
+
+		$this->assertTrue( $broken, 'the copy\'s statement was broken' );
+		$this->assertFalse( $this->envelope( $warm['key'] ), 'deleted, not stored as an empty list' );
+		$this->assertSame( $before, wp_cache_get_last_changed( 'posts' ), 'core\'s query cache was left alone' );
+	}
+
+	/**
+	 * A copy that core answers from its query cache runs no SQL, so last_error still holds what
+	 * the last statement left. Here that is an unrelated statement that failed just before. An
+	 * empty result cannot be vouched for then, so the grid's own query answers, and core's
+	 * query cache is not reset for an error that was never the copy's.
+	 */
+	public function test_empty_copy_from_core_cache_after_an_unrelated_error_declines(): void {
+		global $wpdb;
+
+		// The first render runs the copy, which puts its empty result in core's query cache. A
+		// fresh queue drops the result waiting to be stored, so the next render is a cold miss.
+		$this->new_request( 'empty' );
+		$this->render( 'empty' );
+		$this->install_queue();
+
+		$noise = static function ( $posts, $query ) use ( $wpdb ) {
+			if ( 'ids' === ( $query->query_vars['fields'] ?? '' ) && ! empty( $query->query_vars['mai_grid_tiebreak'] ) ) {
+				$wpdb->query( "SELECT mai_no_such_column FROM {$wpdb->options} LIMIT 1" );
+			}
+
+			return $posts;
+		};
+
+		// Core runs posts_request_ids only when it splits a query it runs itself, so it fires for
+		// the grid's own query and never for the copy.
+		$fallbacks = 0;
+		$watch     = static function ( $request, $query ) use ( &$fallbacks ) {
+			if ( ! empty( $query->query_vars['mai_cache'] ) ) {
+				++$fallbacks;
+			}
+
+			return $request;
+		};
+
+		add_filter( 'posts_pre_query', $noise, 10, 2 );
+		add_filter( 'posts_request_ids', $watch, 10, 2 );
+		$suppress = $wpdb->suppress_errors( true );
+
+		$before = wp_cache_get_last_changed( 'posts' );
+		$grid   = $this->render( 'empty' );
+
+		$wpdb->suppress_errors( $suppress );
+		remove_filter( 'posts_request_ids', $watch, 10 );
+		remove_filter( 'posts_pre_query', $noise, 10 );
+
+		$this->assertFalse( $grid['answered'] );
+		$this->assertSame( 1, $fallbacks, 'the grid\'s own query answered' );
+		$this->assertSame( 1, $grid['selects'], 'and was the only grid statement, so core answered the copy' );
+		$this->assertSame( [], $this->ids( $grid['query'] ) );
+		$this->assertSame( $before, wp_cache_get_last_changed( 'posts' ), 'core\'s query cache was not reset' );
+
+		$this->run_queue();
+
+		$this->assertSame( [ 'ids' => [], 'found' => 0 ], $this->stored( $grid['key'] )['value'], 'stored by the_posts, without the marker' );
 	}
 
 	/** The same after the page: a refused copy deletes the aged empty entry rather than store an empty list. */
