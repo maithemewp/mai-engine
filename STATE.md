@@ -2,7 +2,7 @@
 Updated: 2026-10-02 by Claude
 
 ## Now
-The grid cache work for 2.41.0-beta.5 is built and reviewed on `develop`, not pushed. Plan Tasks 1 to 13 are done, plus a final whole-branch review and its fixes. Tasks 14 (local verification) and 15 (release) are left.
+The grid cache work for 2.41.0-beta.5 is built and reviewed on `develop`, not pushed. Plan Tasks 1 to 13 are done, plus a final whole-branch review and its fixes. Task 14 (local verification) is in progress: the first eurweb run missed three bars, Mike decided each (spec "Verification on local sites" and the ledger), and empty grids now store an empty result instead of running the query twice. Task 15 (release) is left.
 
 - Spec: `docs/specs/2026-10-01-grid-cache-beta-5.md`. Read "How it works, in plain terms" first. Decisions made during the build are marked "(decided 2026-10-02)".
 - Plan: `docs/plans/2026-10-01-grid-cache-beta-5.md`.
@@ -11,19 +11,18 @@ The grid cache work for 2.41.0-beta.5 is built and reviewed on `develop`, not pu
 - Progress ledger with every ruling: `.superpowers/sdd/2026-10-01-grid-cache-beta-5/progress.md` (git-ignored).
 
 ## Next
-1. Get Mike's answer on the larrybrownsports duplicate-query test (see Blocked).
-2. Task 14, local verification, exactly as the plan says, including the `wp-config.php` backup and `cmp` restore. Stop and tell Mike if any check misses its bar.
+1. Task 14, local verification, against the updated bars in the spec, with the rules in `.superpowers/sdd/2026-10-01-grid-cache-beta-5/task-14-rules.md` (wp-config backup and `cmp` restore, never `wp cache flush` on Redis sites). Re-run eurweb (part A, including the slider against beta.4 at expiry), then the 10-minute busy-site test, larrybrownsports with a local Redis drop-in on database 2, the no-Redis duplicate count on a small site, the two small sites and visitsleepyhollow. Results go in `task-14-results.md`, then the spec. Stop and tell Mike if any bar is missed.
+2. After beta.5: `TODO.md` and `docs/ideas/2026-10-02-grid-cache-refresh-every-grid-after-page.md`.
 3. Task 15, release. Every push, the `v0.5.0` tag and `npm run beta` need Mike's yes, each time.
 
 ## Blocked / waiting on
-- Mike: larrybrownsports no-Redis test. Without Redis, rebuilds after the page write late, so a load test can show more grid queries per note than beta.4, which the spec bar forbids. Recommended: test larrybrownsports with a local Redis drop-in (as production runs) and count no-Redis duplicates separately on a small site.
 - Mike runs the cleanup (auto mode blocks it):
   - `git -C ~/Plugins/mai-engine worktree remove ~/Plugins/mai-engine-grid-loading`
   - `git -C ~/Plugins/mai-engine branch -d feat/grid-load-kept-posts`
 
 ## Verify
 - mai-cache: `composer test-unit` in `~/LocalPackages/mai-cache` (99 tests).
-- Mai Engine: `composer test-unit` (234, 11 skipped libxml goldens) and `composer test-integration` (222). Both also pass with `--order-by=random`.
+- Mai Engine: `composer test-unit` (234, 11 skipped libxml goldens) and `composer test-integration` (235). Both also pass with `--order-by=random`.
 - `npx gulp build:main-css` and `build:editor-css` rebuild the CSS. `gulp styles` does not exist.
 
 ## Gotchas
