@@ -115,7 +115,7 @@ class Mai_Query_Cache {
 	/**
 	 * Sets up the queue.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @param Mai_Query_Cache_Queue|null $queue The queue. Default: a new one.
 	 */
@@ -126,7 +126,7 @@ class Mai_Query_Cache {
 	/**
 	 * The one instance the hooks use, so the queue it holds is the one run at shutdown.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @return Mai_Query_Cache
 	 */
@@ -137,7 +137,7 @@ class Mai_Query_Cache {
 	/**
 	 * Replaces the queue. Tests install a fresh one per pretend request.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @param Mai_Query_Cache_Queue $queue The queue.
 	 *
@@ -167,8 +167,8 @@ class Mai_Query_Cache {
 	 *
 	 * A rebuild that throws is logged, and the next one still runs.
 	 *
-	 * @since TBD
-	 * @since TBD Rebuilds aged-out entries after the stores.
+	 * @since 2.41.0
+	 * @since 2.41.0 Rebuilds aged-out entries after the stores.
 	 *
 	 * @return void
 	 */
@@ -230,7 +230,7 @@ class Mai_Query_Cache {
 	 * cannot stand in for the grid, its statement failed, or anything threw, give_up() deletes
 	 * the entry. A throw then carries on to run_queue().
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @param array{key:string,version:string,written:int|null,args:array,cache_results:bool,soft:int,hard:int,blog_id:int} $job
 	 *        The job pre_query() queued. args is a copy of the grid query's args as it ran them.
@@ -284,7 +284,7 @@ class Mai_Query_Cache {
 	 * until it expired would lose the lock, wait for a rebuild nobody is running, then run the
 	 * query anyway. A rebuild that stored keeps its lock until it expires, as before.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @param string $key   Cache key.
 	 * @param int    $start When the job started, from hrtime( true ), taken before the lock.
@@ -307,7 +307,7 @@ class Mai_Query_Cache {
 	/**
 	 * Milliseconds since a time from hrtime( true ).
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @param int $start The earlier time, from hrtime( true ).
 	 *
@@ -320,7 +320,7 @@ class Mai_Query_Cache {
 	/**
 	 * Writes a line to the debug log when WP_DEBUG_LOG is on.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @param string $message The message.
 	 *
@@ -544,9 +544,9 @@ class Mai_Query_Cache {
 	 * and asks page caches not to keep its page (Mai_Query_Cache_Queue::no_page_cache()). A
 	 * fresh entry, or one that only aged out, still holds the right posts, so it never asks.
 	 *
-	 * @since TBD Serves a result waiting in the queue.
-	 * @since TBD Rebuilds an aged-out entry after the page.
-	 * @since TBD Asks page caches not to keep a page served an entry a save made out of date.
+	 * @since 2.41.0 Serves a result waiting in the queue.
+	 * @since 2.41.0 Rebuilds an aged-out entry after the page.
+	 * @since 2.41.0 Asks page caches not to keep a page served an entry a save made out of date.
 	 *
 	 * @param array|null $posts Posts (null to run the query normally).
 	 * @param WP_Query   $query The query.
@@ -674,8 +674,8 @@ class Mai_Query_Cache {
 	 * later callback that replaced it could hand back anything, and then Mai_Grid has to
 	 * filter it as before.
 	 *
-	 * @since TBD Stores the entry with the 'by' => 'ids' mark, and its soft and hard lifetimes.
-	 * @since TBD Stores an empty grid's empty list, and answers it with no posts.
+	 * @since 2.41.0 Stores the entry with the 'by' => 'ids' mark, and its soft and hard lifetimes.
+	 * @since 2.41.0 Stores an empty grid's empty list, and answers it with no posts.
 	 *
 	 * @param array|null $posts Posts (null to run the query normally).
 	 * @param WP_Query   $query The query.
@@ -753,7 +753,7 @@ class Mai_Query_Cache {
 	 * - this request can send the visitor their page and keep running.
 	 * - `mai_query_cache_after_page` is on.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @param array      $hit  The entry, from read_swr().
 	 * @param array|null $keep The kept-only request, from keep_request().
@@ -926,11 +926,11 @@ class Mai_Query_Cache {
 	 * Counting rows is the caller's check, because only the grid's own query can say whether
 	 * it counts.
 	 *
-	 * @since TBD Takes the args, the asked cache_results and the expected key instead of the
+	 * @since 2.41.0 Takes the args, the asked cache_results and the expected key instead of the
 	 *            live query, and returns the copy's found_posts with the IDs.
-	 * @since TBD Returns an empty ID list when the copy finds nothing and $wpdb shows no error,
+	 * @since 2.41.0 Returns an empty ID list when the copy finds nothing and $wpdb shows no error,
 	 *            rather than null.
-	 * @since TBD Counts an empty copy's error as its own failure when a statement was sent
+	 * @since 2.41.0 Counts an empty copy's error as its own failure when a statement was sent
 	 *            while it ran.
 	 *
 	 * @param array  $args          The args the grid's query was built from.
@@ -1025,7 +1025,7 @@ class Mai_Query_Cache {
 	 * again. Nothing that runs while this primes is given the query, so its vars, and with them
 	 * the flags, are the same for every batch.
 	 *
-	 * @since TBD Records the flags it primed the posts with.
+	 * @since 2.41.0 Records the flags it primed the posts with.
 	 *
 	 * @param WP_Query $query The query.
 	 * @param array    $keep  The kept-only request, from keep_request().
@@ -1118,7 +1118,7 @@ class Mai_Query_Cache {
 	 *
 	 * Core has already put the empty result in its own query cache by now. See forget_failure().
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @param array    $posts The posts.
 	 * @param WP_Query $query The query.
@@ -1153,7 +1153,7 @@ class Mai_Query_Cache {
 	 * Only called when a grid's own statement failed, never on success. Every entry in core's
 	 * post-queries cache misses once afterwards, the same as after one post save.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @return void
 	 */
@@ -1168,7 +1168,7 @@ class Mai_Query_Cache {
 	 * its filters returned, which a rebuild after the page could not reproduce. It is stored
 	 * under the version pre_query() read before any SQL ran.
 	 *
-	 * @since TBD Stores the entry with its soft and hard lifetimes.
+	 * @since 2.41.0 Stores the entry with its soft and hard lifetimes.
 	 *
 	 * @param array    $posts The posts.
 	 * @param WP_Query $query The query.
@@ -1201,7 +1201,7 @@ class Mai_Query_Cache {
 	 * After the soft lifetime the entry reads as old but is still served. After the hard one
 	 * the store drops it. The hard lifetime is never shorter than the soft one.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @param array $query_vars The grid query's vars, passed to both filters.
 	 *
@@ -1231,9 +1231,9 @@ class Mai_Query_Cache {
 	 * Takes plain values only, never the query, so it can run after the page, once Mai_Grid has
 	 * put the query's vars back.
 	 *
-	 * @since TBD Takes the value and the lifetimes instead of the query.
-	 * @since TBD Waits until after the page on sites without a persistent object cache.
-	 * @since TBD Writes straight away after the queue has run, even an empty one.
+	 * @since 2.41.0 Takes the value and the lifetimes instead of the query.
+	 * @since 2.41.0 Waits until after the page on sites without a persistent object cache.
+	 * @since 2.41.0 Writes straight away after the queue has run, even an empty one.
 	 *
 	 * @param string $key     Cache key.
 	 * @param string $version The version read before the query ran, never one read now. A post
@@ -1306,7 +1306,7 @@ class Mai_Query_Cache {
 	/**
 	 * The term and meta flags hydrate() primes posts with, read from the query vars.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @param array $query_vars The query vars.
 	 *

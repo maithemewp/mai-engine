@@ -85,7 +85,7 @@ class Mai_Query_Cache_Queue {
 	/**
 	 * Sets up the seams. Each one left null uses the real behaviour.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @param callable|null $can_finish    Returns whether the server can finish the response
 	 *                                     early. Default: fastcgi_finish_request() or
@@ -108,7 +108,7 @@ class Mai_Query_Cache_Queue {
 	/**
 	 * Whether this request is a normal front-end page view.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @return bool
 	 */
@@ -119,7 +119,7 @@ class Mai_Query_Cache_Queue {
 	/**
 	 * Whether this request can send the visitor their page and keep running afterwards.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @return bool
 	 */
@@ -130,7 +130,7 @@ class Mai_Query_Cache_Queue {
 	/**
 	 * Holds a result to store after the page.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @param string $key     Cache key.
 	 * @param string $version The version read before the query ran.
@@ -154,7 +154,7 @@ class Mai_Query_Cache_Queue {
 	/**
 	 * The result waiting to be stored under a key, if there is one.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @param string $key Cache key.
 	 *
@@ -167,7 +167,7 @@ class Mai_Query_Cache_Queue {
 	/**
 	 * Returns every result waiting to be stored, by cache key, and empties the list.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @return array<string,array{version:string,value:array,soft:int,hard:int}>
 	 */
@@ -181,7 +181,7 @@ class Mai_Query_Cache_Queue {
 	/**
 	 * Queues a rebuild job. A second job for a key already queued is ignored.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @param array $job The job. 'key' is the cache key, and 'written' is when the entry was
 	 *                   written (a timestamp), or null when that is not known.
@@ -203,7 +203,7 @@ class Mai_Query_Cache_Queue {
 	/**
 	 * Whether a job is queued for a key.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @param string $key Cache key.
 	 *
@@ -217,7 +217,7 @@ class Mai_Query_Cache_Queue {
 	 * The queued jobs, oldest entry first. A job whose entry has no write time comes first.
 	 * Jobs written at the same time keep the order they were added in.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @return array[]
 	 */
@@ -232,7 +232,7 @@ class Mai_Query_Cache_Queue {
 	/**
 	 * Returns the queued jobs, oldest entry first, and empties the list, so no job runs twice.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @return array[]
 	 */
@@ -246,7 +246,7 @@ class Mai_Query_Cache_Queue {
 	/**
 	 * Records that a key was rebuilt during this request.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @param string $key Cache key.
 	 *
@@ -259,7 +259,7 @@ class Mai_Query_Cache_Queue {
 	/**
 	 * Whether a key was rebuilt during this request.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @param string $key Cache key.
 	 *
@@ -272,7 +272,7 @@ class Mai_Query_Cache_Queue {
 	/**
 	 * Asks page caches not to keep this page, on a page view only.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @return void
 	 */
@@ -285,7 +285,7 @@ class Mai_Query_Cache_Queue {
 	/**
 	 * Whether nothing is waiting: no stores and no jobs.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @return bool
 	 */
@@ -296,7 +296,7 @@ class Mai_Query_Cache_Queue {
 	/**
 	 * Marks the queue as run. Called first thing on shutdown, even when nothing is waiting.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @return void
 	 */
@@ -308,7 +308,7 @@ class Mai_Query_Cache_Queue {
 	 * Whether the queue has run, or the response is finished. A store or job added after this
 	 * would never run, so the caller does the work at once instead.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @return bool
 	 */
@@ -322,7 +322,7 @@ class Mai_Query_Cache_Queue {
 	 * A PHP session is closed first, so the visitor's next request is not kept waiting for
 	 * its lock.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @return void
 	 */
@@ -345,7 +345,7 @@ class Mai_Query_Cache_Queue {
 	/**
 	 * Whether finish() has run.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @return bool
 	 */
@@ -359,7 +359,7 @@ class Mai_Query_Cache_Queue {
 	 * Real time from hrtime(), never Cache::now(), which counts whole seconds and which tests
 	 * freeze.
 	 *
-	 * @since TBD
+	 * @since 2.41.0
 	 *
 	 * @return float
 	 */

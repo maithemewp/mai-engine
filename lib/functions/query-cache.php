@@ -13,8 +13,8 @@ add_action( 'init', 'mai_register_query_cache' );
  * Registers the grid result cache.
  *
  * @since 2.40.0
- * @since TBD Registers the grid ID tiebreaker.
- * @since TBD Uses the shared instance, and runs its queue on shutdown.
+ * @since 2.41.0 Registers the grid ID tiebreaker.
+ * @since 2.41.0 Uses the shared instance, and runs its queue on shutdown.
  *
  * @return void
  */
@@ -55,7 +55,7 @@ function mai_register_query_cache() {
  * Runs on every filtered query, so it checks the mai_grid_tiebreak query var first and only
  * then loads Mai_Grid. A page with no deferred grid never loads that class for this.
  *
- * @since TBD
+ * @since 2.41.0
  *
  * @param string   $orderby The ORDER BY clause.
  * @param WP_Query $query   The query.

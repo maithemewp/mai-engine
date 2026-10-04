@@ -986,7 +986,7 @@ class Mai_Grid {
 	 * meta lazy load queue below still runs either way.
 	 *
 	 * @since 2.41.0
-	 * @since TBD Skips the priming Mai_Query_Cache already did.
+	 * @since 2.41.0 Skips the priming Mai_Query_Cache already did.
 	 *
 	 * @param WP_Query   $query  The query.
 	 * @param array      $asked  The query args as asked, before padding.
@@ -1090,7 +1090,7 @@ class Mai_Grid {
 	 * among tied rows is arbitrary and can change between page loads, and this makes it fixed.
 	 *
 	 * @since 2.41.0
-	 * @since TBD Static, and registered once instead of around each grid's query.
+	 * @since 2.41.0 Static, and registered once instead of around each grid's query.
 	 *
 	 * @param string   $orderby The ORDER BY clause.
 	 * @param WP_Query $query   The query.
