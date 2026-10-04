@@ -18,8 +18,7 @@ $plugin_root = dirname( __DIR__, 3 );
 // plugin-update-checker (registers an autoloader and factory versions) and
 // mai-package-loader (defines Mai_Package_Loader, registers the autoloader that serves
 // mai-cache's Mai\Cache classes, and adds hooks on four WordPress load stages). This
-// suite therefore depends on the committed autoloader and
-// vendor/composer/installed.php being valid, which deployable-guard enforces.
+// suite therefore depends on the committed autoloader being valid.
 require_once $plugin_root . '/vendor/autoload.php';
 
 require_once $plugin_root . '/lib/functions/helpers.php';
