@@ -21,6 +21,16 @@ Fix 1 also shrinks the one case where beta.5 is slower than 2.40.1: the first vi
 - **Same posts, same order,** for every grid shape: one or several categories and tags, `AND` and `IN` and `NOT IN` operators, child categories, several post types, sticky posts, the ID-only copy and the full query alike.
 - **Never slower,** on small sites and big ones, and on MySQL 8.0 and MariaDB.
 
+## Safe fallbacks (Mike, 2026-10-04: "I don't like the fragility but maybe we can do it safely with fallbacks")
+
+Fix 1 should only ever take effect where it is known to be safe, and fall back to today's SQL everywhere else.
+
+- **Only Mai's own ID-only copy.** For grids that defer their excludes, the copy is the only statement that hits the database on a miss, and its answer is just a list of IDs. The page's own query is never rewritten. All six slow eurweb grids are of this kind.
+- **Only plain category and tag filters.** One or more terms with `IN`, the shapes the no-drift tests cover. Anything else (`AND`, `NOT IN`, `EXISTS` operators, meta queries mixed in, custom taxonomies Mai has not tested) keeps today's SQL.
+- **Only when nobody else touched the SQL.** At the last moment before the statement runs, Mai compares the join, where and group-by clauses with what WordPress itself built for that tax query. If another plugin changed any of them, Mai leaves the statement alone. A plugin rewriting the query can then never be broken or silently undone.
+- **A switch, off by default.** A filter turns it on, so a beta can ship it to a few sites first, and any site can turn it off again.
+- **Same posts, proven.** The no-drift tests compare the IDs from both forms for every covered shape, on MySQL and MariaDB.
+
 ## How to find out
 
 1. Run one read-only `EXPLAIN` of the rewritten statement on live eurweb's MySQL 8.0.46 (`mai-sites run`).
