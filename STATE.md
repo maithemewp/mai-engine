@@ -2,22 +2,19 @@
 Updated: 2026-10-04 by Claude
 
 ## Now
-2.41.0-beta.5 (the grid cache work) is ready for `npm run beta` on `develop`, waiting on Mike's yes. Nothing is pushed yet. `develop` is 62 commits ahead of `origin/develop` and 0 behind.
+2.41.0-beta.5 is released. `npm run beta` pushed `develop` and `beta` on 2026-10-04 (commit `6cd628ef3`, "Beta release"). It ships the grid cache work and mai-cache 0.6.0, loaded by mai-package-loader 0.1.0.
 
-- Spec: `docs/specs/2026-10-01-grid-cache-beta-5.md`, with local verification under "Results" and two accepted costs under "Risks". Plan: `docs/plans/2026-10-01-grid-cache-beta-5.md` (Task 15 is the release).
-- mai-cache ships as 0.6.0 (tagged on GitHub), loaded by mai-package-loader 0.1.0 through Composer. Its code matches what was measured, minus five `ABSPATH` lines.
-- Every comparison was against 2.40.1. The ledger with every ruling and measurement is `.superpowers/sdd/2026-10-01-grid-cache-beta-5/progress.md` (git-ignored).
+- Spec: `docs/specs/2026-10-01-grid-cache-beta-5.md`. Local verification is under "Results", and two accepted costs are under "Risks". Plan: `docs/plans/2026-10-01-grid-cache-beta-5.md`.
+- `develop` has one local commit not on GitHub: this STATE.md and the `installed.php` reference lines that `npm run beta`'s closing `composer install` rewrote. It goes out with the next push.
+- The working ledger and raw measurements stay in `.superpowers/sdd/2026-10-01-grid-cache-beta-5/` and `/tmp/t14-*` (git-ignored) until Mike decides whether to keep them.
 
 ## Next
-1. Ask Mike, then run `npm run beta`. It builds, commits "Beta release", runs `deployable-guard check`, and pushes `develop` and `beta`.
-2. After it: restore `vendor/composer/installed.php` if only its `reference` changed (see Gotchas), and check `git status` is clean.
-3. Watch the beta on real sites. Before 2.41.0 final, check MySQL's buffer pool size on the main hosts (`TODO.md`).
-4. After beta.5: the rest of `TODO.md`.
+1. Watch beta.5 on real sites: PHP error logs, page timings, and grids showing the right posts after a save.
+2. Before 2.41.0 final, check MySQL's buffer pool size on the main hosts (`TODO.md`, spec Risks).
+3. The rest of `TODO.md`: refresh every grid after the page (an idea to test), the local deployable-guard update, and the loader's self-version compare.
 
 ## Blocked / waiting on
-- Mike's yes for `npm run beta`.
 - Hindsight is switched off on purpose: top-level `"disabled": true` in `~/.agents/hindsight/coding-agent.json` (backup `/tmp/hindsight-coding-agent.json.bak`), `launchctl` service `com.jivedig.hindsight` booted out and disabled. Turn it back on only when Mike says.
-- Opus subagents hit the weekly limit until 2026-10-06 11:00 ET. Use Sonnet for reviews until then.
 
 ## Verify
 - Mai Engine: `composer test-unit` (235, 11 skipped libxml goldens) and `composer test-integration` (245). Both pass with `--order-by=random`.
@@ -25,8 +22,8 @@ Updated: 2026-10-04 by Claude
 - Local sites load `Mai\Cache\Cache` from this repo's `vendor/`: `wp eval 'echo (new ReflectionClass("Mai\\Cache\\Cache"))->getFileName();'`.
 
 ## Gotchas
-- `vendor/composer/installed.php` is tracked now (the loader reads it, and deployable-guard v1.1.0 requires it). Any `composer install`, including the one at the end of `npm run beta`, rewrites its `reference` to the current commit and dirties the tree. If only `reference` changed, restore it with `git checkout vendor/composer/installed.php`.
-- The committed autoloader must be no-dev. A dev autoloader crashes every site (a876863db, fixed by 4c8c6131e). Run `composer dump-autoload --no-dev` after anything that regenerates it.
+- `npm run beta` ends with `composer install`, which leaves a dev autoloader in the working tree and rewrites two `reference` lines in `vendor/composer/installed.php`. Run `composer dump-autoload --no-dev` to restore the committed autoloader. Commit the `installed.php` lines with the next change, as deployable-guard's README says.
+- The committed autoloader must be no-dev. A dev autoloader crashes every site (a876863db, fixed by 4c8c6131e).
 - Speed tests follow `.superpowers/sdd/2026-10-01-grid-cache-beta-5/task-14-rules.md`: `wp-config.php` backup and `cmp` restore, load under 20, never `wp cache flush` on Redis sites, `/bin/rm` for temp files.
 - Switching a site between 2.40.1 and beta.5 orphans beta.5 notes. Clean up with `delete_transient()` then `mai_cache( 'grid' )->flush()`.
 - `run_queue()` catches `Throwable`, so assertions inside hook callbacks during a job are swallowed. Assert after `run_queue()` returns.
