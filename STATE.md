@@ -1,42 +1,36 @@
 # State
-Updated: 2026-10-03 by Claude
+Updated: 2026-10-04 by Claude
 
 ## Now
-The grid cache work for 2.41.0-beta.5 is built and reviewed on `develop`, not pushed. Plan Tasks 1 to 13 are done, plus a final whole-branch review and its fixes. Task 14 (local verification) is in progress. Task 15 (release) is left.
+The grid cache work for 2.41.0-beta.5 is built and reviewed on `develop`, not pushed. Plan Tasks 1 to 13 are done. Task 14 (local verification) has finished every measurement, and three decisions are with Mike before the results go into the spec. Task 15 (release) is left.
 
-- Spec: `docs/specs/2026-10-01-grid-cache-beta-5.md`. Read "How it works, in plain terms" first. Decisions made during the build are marked "(decided 2026-10-02)" or "(decided 2026-10-03)", including the reworded bars in "Verification on local sites".
-- Plan: `docs/plans/2026-10-01-grid-cache-beta-5.md`.
-- Every comparison is against 2.40.1, the last real release (`origin/master` `44308c8dc`), copied to `/tmp/mai-engine-2401`. Not beta.4.
-- Since the final review: empty grids store an empty result instead of running the query twice, an empty copy whose failure cannot be attributed resets WordPress's query cache, and a priming trim removes repeated work on cached views.
-- mai-cache 0.5.0 is finished and release-reviewed on `develop` in `~/LocalPackages/mai-cache` (head `0beab0e`), not tagged or pushed. Mai Engine bundles that exact copy.
-- Progress ledger with every ruling and every measurement: `.superpowers/sdd/2026-10-01-grid-cache-beta-5/progress.md`. Measurements: `task-14-results.md` in the same folder (git-ignored).
+- Spec: `docs/specs/2026-10-01-grid-cache-beta-5.md`. Plan: `docs/plans/2026-10-01-grid-cache-beta-5.md`.
+- Every comparison is against 2.40.1 (`/tmp/mai-engine-2401`), the last real release.
+- Ledger with every ruling and measurement: `.superpowers/sdd/2026-10-01-grid-cache-beta-5/progress.md`. Measurements: `task-14-results.md`. Drafted spec section: `results-draft.md` (all three folder-local, git-ignored).
 
-## Task 14 so far (eurweb)
-- Against 2.40.1, beta.5 passed: everyday views, the aged slider, the first view after a save, bursts of 4 visitors (about 2 s faster, nobody waits for a refresh), the WP Rocket preload race (2.40.1 saved old lists, beta.5 never did), identical posts with the cache on and off.
-- The first view after Mai's cache is emptied costs up to about 1 ms per grid more than 2.40.1. Accepted by Mike; the bar was reworded.
-- The grid cache saves about 1.9 s per eurweb page when WordPress's own query cache is cold, and nothing measurable when it is warm or on a small site.
+## Waiting on Mike (walk, one at a time)
+1. **eurweb busy-site test, waits for a free PHP worker:** raw miss (55 of 7,009 vs 2 of 7,110 over 250 ms), 54 in two windows matching machine-wide stalls; runs with stall detectors 1 vs 1. Recommended: accept.
+2. **larrybrownsports, first view after a save slower on 2 of 6 pages** (burrow +119.7 ms). Measured cause: the ID copy has no `NOT IN`, so MySQL's row estimate doubles, and with `wp_term_relationships` out of the 128 MB buffer pool it picks a plan that reads `wp_posts` from disk. At 1 GB beta.5 is faster (pooled −273.8 ms). Production depends on each DB server's buffer pool; MariaDB untested.
+3. **Release step changed outside this session:** commit `002fa7c0a` (2026-10-03 20:45) says mai-cache shipped as `v0.6.0` (tagged and pushed) through mai-package-loader, and rewrote plan Task 15. The spec (lines 105, 240, 298-299), `CHANGES.md:8` and this file's old Next still say 0.5.0. v0.6.0's `src/` differs from the bundled copy only by five dropped `ABSPATH` lines (checked).
 
 ## Next
-1. Task 14 part B, the 10-minute busy-site test on eurweb against 2.40.1 (running when this was written; results go to `task-14-results.md`).
-2. Part C: larrybrownsports with a local Redis drop-in on Redis database 2 (wp-config backup, `wp redis enable`, then `wp redis disable`, `cp` + `cmp`, `redis-cli -n 2 flushdb`), and the no-Redis duplicate count on a small site.
-3. Part D: two small sites without Redis (churn), visitsleepyhollow (event grids render the same as with the cache off), identical IDs.
-4. Write the results into the spec under "Results" and commit. Stop and tell Mike if any bar is missed.
-5. Task 15, release. Every push, the `v0.5.0` tag and `npm run beta` need Mike's yes, each time.
-6. After beta.5: `TODO.md`.
+1. Apply Mike's three answers. Insert `results-draft.md` into the spec after "Verification on local sites", updating the two open bars. Commit "Grid cache beta.5: local verification results".
+2. Task 15 as the plan now reads (mai-cache `^0.6` through Composer and mai-package-loader), after Mike confirms item 3. That is new loading code: run both suites, `deployable-guard check`, a review, and a local smoke test on eurweb before the beta.
+3. Every push and `npm run beta` need Mike's yes, each time.
+4. After beta.5: `TODO.md`.
 
 ## Blocked / waiting on
 - Mike runs the cleanup (auto mode blocks it):
   - `git -C ~/Plugins/mai-engine worktree remove ~/Plugins/mai-engine-grid-loading`
   - `git -C ~/Plugins/mai-engine branch -d feat/grid-load-kept-posts`
-- Hindsight is switched off on purpose for the test window: top-level `"disabled": true` in `~/.agents/hindsight/coding-agent.json` (backup `/tmp/hindsight-coding-agent.json.bak`), and `launchctl` service `com.jivedig.hindsight` booted out and disabled. It leaked stuck Claude processes and pushed load above 200. Turn it back on only when Mike says.
+- Hindsight is switched off on purpose: top-level `"disabled": true` in `~/.agents/hindsight/coding-agent.json` (backup `/tmp/hindsight-coding-agent.json.bak`), `launchctl` service `com.jivedig.hindsight` booted out and disabled. Turn it back on only when Mike says.
 
 ## Verify
-- mai-cache: `composer test-unit` in `~/LocalPackages/mai-cache` (99 tests).
-- Mai Engine: `composer test-unit` (235, 11 skipped libxml goldens) and `composer test-integration` (245). Both also pass with `--order-by=random`.
+- Mai Engine: `composer test-unit` (235, 11 skipped libxml goldens) and `composer test-integration` (245). Both pass with `--order-by=random`.
+- Every local site used in Task 14 was checked clean: symlinks on the repo, `wp-config.php` `cmp` clean, probes removed, no Redis drop-in, Redis database 2 empty, MySQL buffer pool back to 128 MB, 0 leftover grid rows.
 
 ## Gotchas
-- Speed tests follow `.superpowers/sdd/2026-10-01-grid-cache-beta-5/task-14-rules.md`: `wp-config.php` backup and `cmp` restore (never `wp config set`), wait for a 1-minute load under 20, never `wp cache flush` on Redis sites, `/bin/rm` for temp files (`rm` is aliased to Trash).
-- Switching a site between versions can run Mai's upgrade routine and empty caches. Reload PHP-FPM (`kill -USR2`), probe, warm, then time.
-- Integration tests: every test runs with a queue whose `DONOTCACHEPAGE` step does nothing, and a check fails any test that defines the real constant in the main process.
-- `run_queue()` catches `Throwable`, so an assertion inside a hook callback during a job is swallowed. Assert after `run_queue()` returns.
-- Local eurweb and larrybrownsports symlink `wp-content/plugins/mai-engine` to this checkout.
+- Speed tests follow `.superpowers/sdd/2026-10-01-grid-cache-beta-5/task-14-rules.md`: `wp-config.php` backup and `cmp` restore, load under 20, never `wp cache flush` on Redis sites, `/bin/rm` for temp files.
+- Switching a site between 2.40.1 and beta.5 orphans beta.5 notes (2.40.1's flush rotates the token without deleting rows). Clean up with `delete_transient()` then `mai_cache( 'grid' )->flush()`.
+- Bump the post types a site's grids actually show; agiindustries shows none of type `post`.
+- `run_queue()` catches `Throwable`, so assertions inside hook callbacks during a job are swallowed. Assert after `run_queue()` returns.
