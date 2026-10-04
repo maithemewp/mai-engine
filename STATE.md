@@ -11,7 +11,8 @@ Updated: 2026-10-04 by Claude
 ## Next
 1. Watch beta.5 on real sites: PHP error logs, page timings, and grids showing the right posts after a save. Live larrybrownsports.com and eurweb.com run beta.5 since 2026-10-04 (`mai-sites push <site> .` from this repo, then `mai-sites run <site> -- wp mai flush`, because a push skips the flush a plugin update does). Both checked healthy after the flush.
 2. Before 2.41.0 final, check MySQL's buffer pool size on the main hosts (`TODO.md`, spec Risks).
-3. The rest of `TODO.md`: refresh every grid after the page (an idea to test), the local deployable-guard update, and the loader's self-version compare.
+3. Next piece of work: make "current category" grid queries cheap on big sites, safely, with fallbacks. Read `docs/ideas/2026-10-04-grid-related-posts-query-cost.md` (measured problem, two fixes, the fallback design Mike asked for). Start with its read-only steps: one `EXPLAIN` on live eurweb through `mai-sites run`, and a fleet scan for plugins hooking the SQL clause filters. Then a spec in `docs/specs/` before any code.
+4. The rest of `TODO.md`: refresh every grid after the page (an idea to test), the local deployable-guard update, and the loader's self-version compare.
 
 ## Blocked / waiting on
 - Hindsight is switched off on purpose: top-level `"disabled": true` in `~/.agents/hindsight/coding-agent.json` (backup `/tmp/hindsight-coding-agent.json.bak`), `launchctl` service `com.jivedig.hindsight` booted out and disabled. Turn it back on only when Mike says.
