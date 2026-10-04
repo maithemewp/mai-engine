@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use `subagent-driven-development` (recommended) or `executing-plans` to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Ship Mai Engine 2.41.0-beta.5 with mai-cache 0.5.0: grids load only the posts they show, a note that only aged out is rebuilt after the page, small sites without Redis save notes after the page, plus the agreed fixes.
+**Goal:** Ship Mai Engine 2.41.0-beta.5 with mai-cache 0.5.0 (released as 0.6.0, see Task 15): grids load only the posts they show, a note that only aged out is rebuilt after the page, small sites without Redis save notes after the page, plus the agreed fixes.
 
 **Architecture:** mai-cache gains soft and hard lifetimes, an injectable clock, a fixed `bump()`, and flush cleanup. Mai Engine merges the kept-only branch, then adds a small per-request queue (`Mai_Query_Cache_Queue`) that holds pending stores and rebuild jobs and finishes the response with `fastcgi_finish_request()` before running them. Version-stale notes (a post was saved) keep today's during-the-page rebuild.
 
@@ -153,6 +153,8 @@ git -C ~/Plugins/mai-engine branch -d feat/grid-load-kept-posts
 ```
 
 ### Task 7: Bundle local mai-cache 0.5.0
+
+**Done, do not repeat (2026-10-03).** mai-cache no longer has `init.php`, so these steps would now fail, and copying files by hand would leave `autoload_files.php` pointing at a deleted file. Task 15 replaces the copy through Composer.
 
 **Files:**
 - Modify: `vendor/maithemewp/mai-cache/` (copy of `~/LocalPackages/mai-cache` `src/`, `init.php`, `CHANGES.md`, `README.md`, `composer.json`)
@@ -341,8 +343,8 @@ cmp wp-config.php /tmp/<site>-wp-config.bak
 
 The beta goes out with the repo's own `npm run beta` (`package.json:74`), as 2.41.0-beta.4 did. It runs a preflight, `gulp build`, `composer dump-autoload --no-dev`, commits "Beta release", runs `deployable-guard check`, pushes `develop`, merges into `beta`, and pushes `beta`. Its preflight refuses to run with uncommitted changes outside `assets`, `vendor`, `mai-engine.php`, `CHANGES.md` and `readme.txt`, so commit everything else first.
 
-- [ ] **Step 1: Ask Mike:** "Push mai-cache `develop` and tag `v0.5.0`?" Wait for an explicit yes. Then in `~/LocalPackages/mai-cache`: set the `CHANGES.md` date, commit, `git tag -a v0.5.0 -m "mai-cache 0.5.0"` (tags go on `develop`, where `v0.4.0` is), `git push origin develop`, `git push origin v0.5.0`.
-- [ ] **Step 2: In Mai Engine:** set `"maithemewp/mai-cache": "^0.5.0"` in `composer.json`, run `composer update maithemewp/mai-cache`, then **`composer dump-autoload --no-dev`**. A dev autoloader committed to `vendor/composer` crashes every site (it happened before: a876863db, fixed by 4c8c6131e). Check `git diff --stat vendor/composer` shows only `installed.json` and `installed.php`, and `git diff --stat vendor/maithemewp/mai-cache/src` is empty (the tag matches what Task 7 bundled). Run both suites. Commit `"Require mai-cache 0.5.0"`.
+- [ ] **Step 1: mai-cache is already released (changed 2026-10-03).** Never tag `v0.5.0`. mai-cache shipped as `v0.6.0`: 0.5.0's code, loaded by mai-package-loader instead of its own bootstrap, and numbered 0.6.0 so it wins over this plugin's 2.40 copy, which registers itself as 0.5.0. Its `src/` differs from the copy Task 7 bundled only by five dropped `ABSPATH` guard lines.
+- [ ] **Step 2: In Mai Engine:** set `"maithemewp/mai-cache": "^0.6"` in `composer.json` and add `{ "type": "vcs", "url": "https://github.com/maithemewp/mai-package-loader" }` to `repositories`. Without that entry Composer cannot find the loader and silently keeps the old version. Remove the `/vendor/composer/installed.php` line from `.gitignore`: the loader reads that file, and deployable-guard v1.1.0 fails CI without it. Run `composer update maithemewp/mai-cache maithemewp/mai-package-loader`, then **`composer dump-autoload --no-dev`**. A dev autoloader committed to `vendor/composer` crashes every site (it happened before: a876863db, fixed by 4c8c6131e). Check `vendor/composer/autoload_files.php` lists `maithemewp/mai-package-loader/init.php` and no longer `maithemewp/mai-cache/init.php`, and `composer.lock` holds mai-cache `v0.6.0` and mai-package-loader `v0.1.0`. Fix the `Mai_Cache_Bootstrap` comments in `tests/phpunit/integration/plugin-loader.php` and `tests/phpunit/unit/bootstrap.php`. Run both suites, and `php vendor/bin/deployable-guard check`. Commit `"Require mai-cache 0.6, loaded by mai-package-loader"`, including `vendor/composer/installed.php` and `vendor/maithemewp/mai-package-loader/`.
 - [ ] **Step 3: Set the version in docblocks:** replace every `@since TBD` with `@since 2.41.0` (`grep -rn "@since TBD" lib` then prints nothing). Commit `"Set @since for 2.41.0"`.
 - [ ] **Step 4: Rewrite `STATE.md`** for the released state (Now, Next, Blocked, Verify, Gotchas; about 40 lines). Commit.
 - [ ] **Step 5: Prepare the beta files,** uncommitted: plugin header `Version: 2.41.0-beta.5` in `mai-engine.php`, then `composer i18n` (writes `assets/lang/mai-engine.pot`). `git status --short` shows only those two paths, plus anything under `assets` or `vendor` that the build touches.
