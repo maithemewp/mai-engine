@@ -102,7 +102,7 @@ This happens on a Mai Engine update, `wp mai flush`, or `wp cache flush`.
 
 ## What ships
 
-Two repos change: the cache library `maithemewp/mai-cache` (`~/LocalPackages/mai-cache`, released as 0.5.0) and Mai Engine (`~/Plugins/mai-engine`, released as 2.41.0-beta.5).
+Two repos change: the cache library `maithemewp/mai-cache` (`~/LocalPackages/mai-cache`, released as 0.6.0, see Release) and Mai Engine (`~/Plugins/mai-engine`, released as 2.41.0-beta.5).
 
 ### 1. Load only the posts a deferring grid shows (Mai Engine)
 
@@ -237,7 +237,7 @@ On read, an entry is version-stale when its version no longer matches the curren
   - Afterwards, clear the `alloptions` cache (`wp_cache_delete( 'alloptions', 'options' )`), since version rows are autoloaded.
   - The `Store` interface has been public since 0.2.0, so it gains no methods. Prefix delete goes on a separate optional interface that `TransientStore` and `ObjectCacheStore` implement. A custom store without it is skipped.
 
-Release as mai-cache 0.5.0: soft and hard expiry, the injectable clock, both fixes, and `unlock()`, which Mai Engine calls when a rebuild after the page gives up (decided 2026-10-02). `lock()` does not change. Bump the version passed to `Mai_Cache_Bootstrap::register()` in `init.php:98`, tag `v0.5.0` on GitHub, and raise Mai Engine's constraint to `^0.5.0`.
+The release holds soft and hard expiry, the injectable clock, both fixes, and `unlock()`, which Mai Engine calls when a rebuild after the page gives up (decided 2026-10-02). `lock()` does not change. It shipped as mai-cache 0.6.0, loaded by mai-package-loader instead of its own bootstrap (decided 2026-10-04, see Release).
 
 ### 5. Fixes (Mai Engine)
 
@@ -355,8 +355,8 @@ Beta.5 (the `develop` branch) was compared with 2.40.1, the last release, on loc
 
 ## Release
 
-1. Release mai-cache 0.5.0: changelog, version in `init.php`, tag `v0.5.0`, push the tag.
-2. In Mai Engine, raise the constraint to `^0.5.0` and update the vendored copy with Composer.
+1. mai-cache shipped as 0.6.0 (decided 2026-10-04): 0.5.0's code, loaded by mai-package-loader 0.1.0 instead of its own bootstrap, and numbered 0.6.0, above the copies that register through mai-cache's old bootstrap (2.40.1's registers 0.2.0, the copy bundled on `develop` for this work 0.5.0). Its `src/` differs from the copy measured above only by five dropped `ABSPATH` guard lines. No `v0.5.0` tag.
+2. In Mai Engine, require `^0.6` through Composer with mai-package-loader, as plan Task 15 step 2 says.
 3. Changelog entries under `## 2.41.0 (TBD)` in Mai Engine's `CHANGES.md`.
 4. Rewrite `STATE.md`.
 5. Replace `@since TBD` with `2.41.0` and commit. Bump the plugin header to `2.41.0-beta.5`, regenerate the `.pot` with `composer i18n`, then run the repo's own `npm run beta` (`package.json:74`), which builds, regenerates the autoloader without dev packages, commits "Beta release", runs `deployable-guard check`, and pushes `develop` and `beta`.
