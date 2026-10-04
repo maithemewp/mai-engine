@@ -4,7 +4,21 @@ All notable changes to `mai-cache` are documented here.
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: [Semantic Versioning](https://semver.org/).
 
-## [0.5.0] - TBD
+## [0.6.0] - 2026-10-03
+
+0.5.0 was never tagged, but mai-engine 2.40 bundles a copy that registers itself as 0.5.0. This release is 0.6.0 so it loads ahead of that copy, and it includes everything listed for 0.5.0 below.
+
+### Changed
+
+- **Loaded by [maithemewp/mai-package-loader](https://github.com/maithemewp/mai-package-loader)**, through a `mai-package.php` declaration, instead of this package's own bootstrap. `init.php` and `Mai_Cache_Bootstrap` are gone. Requires `maithemewp/mai-package-loader` `^0.1`.
+- **The test suite runs with plain `vendor/bin/phpunit`.** The `ABSPATH` workaround existed only for the old bootstrap's guard.
+- **No `ABSPATH` guard in the class files.** They only define classes, and the guard made a test suite, or anything loading them outside WordPress, end silently with exit code 0 and no output.
+
+### Fixed
+
+- **The newest copy now loads.** The old bootstrap was meant to load the highest version bundled on a site, but Composer runs a package's `files` entry only once per request, so only the first plugin's copy ever registered. Older copies keep working beside this one: the loader answers first.
+
+## [0.5.0] - never tagged, included in 0.6.0
 
 ### Added
 

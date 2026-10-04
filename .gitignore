@@ -38,9 +38,6 @@ vendor/maithemewp/deployable-guard
 # deploy as raw git trees to live sites.
 tests/vendor/
 
-# Regenerates with the current git ref, so tracking it dirties the tree after every commit.
-/vendor/composer/installed.php
-
 # Local mai-sync environment config.
 mai-sync.json
 

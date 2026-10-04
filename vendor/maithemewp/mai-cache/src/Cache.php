@@ -8,7 +8,6 @@
 
 namespace Mai\Cache;
 
-defined( 'ABSPATH' ) || exit;
 
 /**
  * Transient- or object-cache-backed cache with a Laravel-style remember()

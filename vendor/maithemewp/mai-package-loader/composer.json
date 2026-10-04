@@ -1,0 +1,20 @@
+{
+	"name": "maithemewp/mai-package-loader",
+	"description": "Loads the newest copy of each shared mai library, whichever plugin loads first.",
+	"type": "library",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"php": ">=8.1"
+	},
+	"autoload": {
+		"files": [
+			"init.php"
+		]
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-main": "0.1.x-dev",
+			"dev-develop": "0.1.x-dev"
+		}
+	}
+}

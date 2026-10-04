@@ -14,6 +14,10 @@
     },
     {
       "type": "vcs",
+      "url": "https://github.com/maithemewp/mai-package-loader"
+    },
+    {
+      "type": "vcs",
       "url": "https://github.com/bizbudding/deployable-guard"
     }
   ],
@@ -23,7 +27,7 @@
     "ext-json": "*",
     "ext-libxml": "*",
     "afragen/wp-dependency-installer": "^4",
-    "maithemewp/mai-cache": "^0.4.0",
+    "maithemewp/mai-cache": "^0.6",
     "proteusthemes/wp-content-importer-v2": "^2.1",
     "wpengine/advanced-custom-fields-pro": "^6.6.0",
     "yahnis-elsts/plugin-update-checker": "^5"

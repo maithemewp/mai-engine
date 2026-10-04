@@ -8,7 +8,6 @@
 
 namespace Mai\Cache;
 
-defined( 'ABSPATH' ) || exit;
 
 /**
  * Stores values with the WordPress object cache (wp_cache_*). It deliberately

@@ -7,7 +7,7 @@ namespace Composer\Autoload;
 class ComposerStaticInit9e67745729d23cd12c1cc70fc3d46e58
 {
     public static $files = array (
-        '5b772e17bffdd9a6c163b5b0653fd016' => __DIR__ . '/..' . '/maithemewp/mai-cache/init.php',
+        '671026b9d17335c2461acda5bb058348' => __DIR__ . '/..' . '/maithemewp/mai-package-loader/init.php',
         'bc0af1337b39f0d750e835f5263eb646' => __DIR__ . '/..' . '/yahnis-elsts/plugin-update-checker/load-v5p7.php',
     );
 

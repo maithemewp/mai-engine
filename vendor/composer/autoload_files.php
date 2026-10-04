@@ -6,6 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    '5b772e17bffdd9a6c163b5b0653fd016' => $vendorDir . '/maithemewp/mai-cache/init.php',
+    '671026b9d17335c2461acda5bb058348' => $vendorDir . '/maithemewp/mai-package-loader/init.php',
     'bc0af1337b39f0d750e835f5263eb646' => $vendorDir . '/yahnis-elsts/plugin-update-checker/load-v5p7.php',
 );

@@ -8,7 +8,6 @@
 
 namespace Mai\Cache;
 
-defined( 'ABSPATH' ) || exit;
 
 /**
  * Stores values with the WordPress transient API, which routes to the object

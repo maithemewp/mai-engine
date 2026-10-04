@@ -8,7 +8,6 @@
 
 namespace Mai\Cache;
 
-defined( 'ABSPATH' ) || exit;
 
 /**
  * A storage backend for Cache. Implementations decide where values live and

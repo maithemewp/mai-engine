@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace Mai\Cache;
 
-defined( 'ABSPATH' ) || exit;
 
 /**
  * A Store that can delete every row whose key starts with a prefix. Cache::flush()
