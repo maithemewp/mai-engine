@@ -72,6 +72,19 @@ final class HarnessTest extends MaiIntegrationTestCase {
 		$this->assertSame( [ 'recover', 'result cache' ], $order );
 	}
 
+	public function test_the_plugin_registers_the_grid_optimizer_on_init_at_9(): void {
+		// plugin-loader.php mirrors this registration, because performance.php cannot load here.
+		// Read the real one from its source, so the order checked above is the order sites get.
+		$source = (string) file_get_contents( dirname( __DIR__, 3 ) . '/lib/functions/performance.php' );
+
+		$this->assertSame( 1, preg_match_all( "/add_action\(\s*'init',\s*'mai_register_post_grid_query_optimizer',\s*(\d+)\s*\);/", $source, $matches ) );
+		$this->assertSame( '9', $matches[1][0] );
+		$this->assertMatchesRegularExpression( '/function mai_register_post_grid_query_optimizer\(\)\s*\{\s*Mai_Post_Grid_Query_Optimizer::instance\(\)->register\(\);\s*\}/', $source );
+
+		// And the result cache registers later on init, at the default 10.
+		$this->assertSame( 10, has_action( 'init', 'mai_register_query_cache' ) );
+	}
+
 	public function test_a_grid_can_be_built(): void {
 		$term = self::factory()->term->create( [ 'taxonomy' => 'category' ] );
 		self::factory()->post->create( [ 'post_status' => 'publish', 'post_category' => [ $term ] ] );

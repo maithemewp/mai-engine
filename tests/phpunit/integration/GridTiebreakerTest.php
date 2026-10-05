@@ -206,7 +206,7 @@ final class GridTiebreakerTest extends MaiIntegrationTestCase {
 
 		remove_filter( 'posts_orderby', $watch, 98 );
 
-		// Without these two the checks below pass with the feature off.
+		// Without the first two, the checks below them pass with the feature off.
 		$this->assertNotEmpty( $seen, 'the grid query reached posts_orderby' );
 		$this->assertContains( true, $seen, 'the marker was on the query while it ran' );
 		$this->assertSame( $defers, str_contains( (string) $query->request, 'LIMIT 0, 4' ), 'the grid deferred, or did not, as asked' );

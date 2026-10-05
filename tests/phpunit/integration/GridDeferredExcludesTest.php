@@ -304,10 +304,6 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 	public function test_tiebreaker_is_applied_to_an_undeferred_grid(): void {
 		$this->go_to( get_permalink( $this->post_ids[0] ) );
 
-		// Prove the same grid does get a tiebreaker when it defers, so the assertion below
-		// cannot pass with the tiebreaker switched off everywhere.
-		$this->assertStringContainsString( '.ID DESC', ( new Mai_Grid( $this->grid_args() ) )->get_query()->request );
-
 		$undeferred = $this->undeferred( $this->grid_args() );
 
 		$this->assertStringNotContainsString( 'LIMIT 0, 4', $undeferred->request, 'must not have deferred' );

@@ -19,8 +19,9 @@ use WP_Query;
  * no SQL. The tests empty the object cache between renders, which is what a new request does
  * on a site without a persistent object cache.
  *
- * The grid query optimizer is off for the whole class, since these tests fail the statement
- * WordPress writes. A failed faster statement is repaired before the result cache sees it, which
+ * The grid query optimizer stays on, as on a site. Most tests here change the grid's where, so it
+ * steps aside anyway. The two that have MySQL refuse the grid's statement turn it off, since the
+ * optimizer would repair a refused faster statement before the result cache saw it, which
  * PostGridQueryOptimizerGridTest tests.
  */
 final class GridCacheFailedQueryTest extends MaiIntegrationTestCase {
@@ -37,9 +38,6 @@ final class GridCacheFailedQueryTest extends MaiIntegrationTestCase {
 
 	public function set_up(): void {
 		parent::set_up();
-
-		// Today's failure path, not the optimizer's. See the class docblock.
-		add_filter( 'mai_post_grid_optimize_query', '__return_false' );
 
 		$this->term_id = self::factory()->term->create( [ 'taxonomy' => 'category' ] );
 
@@ -195,6 +193,14 @@ final class GridCacheFailedQueryTest extends MaiIntegrationTestCase {
 		wp_cache_flush();
 	}
 
+	/**
+	 * Turns the grid query optimizer off for the test, so a refused statement takes today's
+	 * failure path. See the class docblock.
+	 */
+	private function without_optimizer(): void {
+		add_filter( 'mai_post_grid_optimize_query', '__return_false' );
+	}
+
 	// ---- Tests ----
 
 	public function test_failed_query_is_not_stored(): void {
@@ -308,6 +314,8 @@ final class GridCacheFailedQueryTest extends MaiIntegrationTestCase {
 	 * would look up the same entry.
 	 */
 	public function test_a_failed_query_moves_posts_last_changed(): void {
+		$this->without_optimizer();
+
 		$before = wp_cache_get_last_changed( 'posts' );
 
 		[ [ $query, $stores ], $refused ] = $this->refuse_once( fn( $sql ) => self::is_grid_statement( $sql ), fn() => $this->render() );
@@ -325,6 +333,8 @@ final class GridCacheFailedQueryTest extends MaiIntegrationTestCase {
 	 * result cache would see no error, and the empty list would be stored.
 	 */
 	public function test_after_a_failed_query_the_next_view_runs_it_and_stores_the_real_posts(): void {
+		$this->without_optimizer();
+
 		[ , $refused ] = $this->refuse_once( fn( $sql ) => self::is_grid_statement( $sql ), fn() => $this->render() );
 
 		[ $next, $stores, $selects, $stored ] = $this->render();
