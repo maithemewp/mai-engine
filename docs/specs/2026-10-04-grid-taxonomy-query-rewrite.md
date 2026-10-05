@@ -91,11 +91,12 @@ Each piece must be non-empty and appear exactly once in the statement, or Mai st
 
 The mark is a property on the query, never a query var.
 
-**Every grid without Load More gets the ID tiebreaker.** Today only grids that defer their excludes get `, {posts}.ID` added to their `ORDER BY` (`class-mai-grid.php:1100`). Without it, posts that tie on the sort can come back in either order, so no form can promise the same posts. The tiebreaker follows the direction of the last sort key, as it does today. Grids that do not count rows now all get it:
+**Every grid without Load More gets the ID tiebreaker.** Today only grids that defer their excludes get `, {posts}.ID` added to their `ORDER BY` (`class-mai-grid.php:1100`). Without it, posts that tie on the sort can come back in either order, so no form can promise the same posts. Grids that do not count rows now all get it:
 
 - It is set in the same place as today, after `can_defer_excludes()` decides, and removed from the query afterwards for every grid, not only deferring ones (`class-mai-grid.php:380-386`).
 - Load More grids are left out, because their second page would be ordered without it.
 - Posts that tie now always come back in ID order. On sorts where almost every post ties, such as menu order on a site that never set it, the tiebreaker decides the whole grid (see "Ties" below).
+- It is always `, {posts}.ID DESC`, whatever the sort's direction. Today it copies the direction of the last sort key (`class-mai-grid.php:1118-1122`), which changes.
 - Cache keys of grids that did not defer change once. A Mai Engine update flushes grid results anyway (`lib/admin/upgrade.php:58`).
 
 ### 3. When Mai swaps
@@ -167,6 +168,7 @@ On a failure, in this order:
   - The comment about "the optimizer's fast path" in `class-mai-grid.php:927-928`, and the stale line numbers in `.agents/elasticpress-grid-cache.md:58`.
   - The new class takes the old name and filter, so Mai has one grid query optimizer.
 - **`Mai_Grid::get_query()`:** marks the query, sets the tiebreaker for every grid that does not count rows, and removes it afterwards for every grid.
+- **`Mai_Grid::add_deferred_orderby_tiebreaker()`:** always appends `, {posts}.ID DESC`, and its docblock says why.
 - **`Mai_Query_Cache::fetch_ids()`** (`class-mai-query-cache.php:942`): marks the copy, drops its prepared swap in a `finally`, and runs the failure and slow checks before its own checks. The key check (`:1006`) and the ID-only check (`:1002`) are unchanged, because the copy's request text is unchanged.
 - **`Mai_Query_Cache::posts_results()`:** unchanged. The new failure callback runs before it, at the same priority but registered first. After a successful resend `$wpdb->last_error` is empty, so it stores the list as usual.
 - **`mai_register_query_cache()`** (`lib/functions/query-cache.php:21`): registers the first-look and last-look callbacks (including `posts_search` and both ends of `posts_request`) and the failure callback once. Each returns at once unless the query is marked.
@@ -197,7 +199,9 @@ It makes a real difference for big taxonomies on big sites. On small ones the da
 
 ## Ties
 
-Open question for Mike, walked separately: on ascending sorts such as menu order or title, ties come back lowest ID first, which is the oldest post first. On a site that never set menu order, a "menu order" grid then shows its oldest posts. Today it shows whatever order the database happens to pick. Options are to keep the tiebreaker's direction as it is, or to break ties newest first on every sort.
+Tied posts show newest first on every sort (Mike, 2026-10-04). A grid where nobody set the sort field, such as menu order on a site that never used it, then looks like a normal latest-posts list instead of showing posts from years ago. Today it shows whatever order the database happens to pick.
+
+This also changes beta.5's deferring grids, whose tiebreaker followed the sort direction, so on ascending sorts their ties showed oldest first.
 
 ## Tests
 
@@ -225,7 +229,7 @@ Integration tests, on a real database:
   - the statement has a `%` placeholder escape
   - `$wpdb` is a class other than `wpdb` or `QM_DB`
   - a hook callback is handed `null`
-- **The tiebreaker** is added to grids that do not count rows and removed afterwards, and is not added to Load More grids.
+- **The tiebreaker** is added to grids that do not count rows and removed afterwards, and is not added to Load More grids. It is `{posts}.ID DESC` on ascending and descending sorts alike.
 - **The rebuild after the page swaps too** (`run_queue()`), and the copy's key still matches the grid's, so the note is stored.
 - **Failure,** for the copy and for the grid's own query, split and full: a `query` callback added after Mai's breaks the swapped statement. The grid still shows the right posts, nothing wrong is stored, every prepared swap is cleared, the 24-hour transient is set, a second grid on the same page is not swapped, one log line is written, and WordPress's query cache was reset.
 - **Slow:** a swapped copy statement held over 100 ms (a test `query` callback adds `SLEEP`) turns the swap off for the day.
