@@ -2,7 +2,7 @@
 Updated: 2026-10-04 by Claude
 
 ## Now
-Spec drafted for cheaper taxonomy grid queries: `docs/specs/2026-10-04-grid-taxonomy-query-rewrite.md`. Waiting for Mike's review. No code written.
+Spec drafted and revised after three reviews: `docs/specs/2026-10-04-grid-taxonomy-query-rewrite.md`. One walk question open (tie direction on ascending sorts, spec "Ties"), then Mike's review. No code written.
 
 - Mai post grid queries, and Mai's ID-only copy, would send an `EXISTS` form instead of WordPress's join plus `GROUP BY`, only when every check proves no plugin touched the SQL. It replaces the old `Mai_Post_Grid_Query_Optimizer` under its name and its filter `mai_post_grid_optimize_query`, now on by default.
 - Mike decided (2026-10-04): test MariaDB too and give it the swap only on versions that pass; on by default; cover several taxonomy filters and IN mixed with NOT IN; cover grids without excludes; cover custom taxonomies; totalprosports after eurweb and larrybrownsports. Nothing fragile or brittle, and it has to run on 5,000 sites.
